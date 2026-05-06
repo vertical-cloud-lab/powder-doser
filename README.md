@@ -2,6 +2,13 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Candidate powders
+
+A short-list of food- and laboratory-grade powders that mimic the flow
+behaviour of fine metal additive-manufacturing feedstocks (e.g. Si,
+AlSi10Mg) is documented in
+[`docs/candidate-powders.md`](docs/candidate-powders.md).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
