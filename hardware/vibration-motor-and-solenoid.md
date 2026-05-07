@@ -1,4 +1,4 @@
-# Vibration motor and solenoid — parts identification
+# Auger drive, vibration motor, and solenoid — parts identification
 
 Resolves [#24](https://github.com/vertical-cloud-lab/powder-doser/issues/24).
 Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
@@ -8,6 +8,9 @@ Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
 ## Goals (from #24)
 
 * Small enough to mount on / next to the 20 mm OD auger housing.
+* A **drive motor** to **rotate the auger** itself (this is what
+  actually meters the powder); preferably **direct-coupled to the
+  auger shaft**, with belt drive as a fallback.
 * A **vibration motor** to free bridged powder in the hopper / on the
   auger flights, ideally with **variable frequency and amplitude**.
 * A **solenoid** mounted **externally** (e.g. as a tap that strikes the
@@ -29,8 +32,13 @@ Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
 | 7 | 5 V / ≥1 A external supply (separate from the Pi 5 V rail) | 1 | — | any USB-C or barrel-jack PSU |
 | 8 | 2.1 mm barrel-jack breakout (or screw-terminal pigtail) for the 5 V supply input on the Bonnet | 1 | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
+| 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, ~0.67 A/phase, ~12 N·cm holding (e.g. SparkFun ROB-10848 or StepperOnline 11HS18-0674S) | 1 | $14–18 | [sparkfun.com/products/10848](https://www.sparkfun.com/products/10848) |
+| 11 | Pololu DRV8825 stepper-driver carrier — pre-soldered carrier PCB, on-board current limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi | 1 | $7.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
+| 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
+| 13 | 12 V / ≥1 A external supply (separate from the 5 V solenoid supply and from the Pi 5 V rail) for the stepper | 1 | — | any 12 V wall-wart |
+| 14 | 100 µF / 25 V electrolytic across the DRV8825's `VMOT` / `GND` (Pololu specifically calls this out as required) | 1 | <$0.50 | any |
 
-Total for the actuator stack (items 1, 2, 4, 5, 6): **≈ $26**.
+Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12): **≈ $60**.
 
 Everything in this list is a **pre-packaged board with screw terminals
 or 0.1" headers** — no transistor / diode / gate-resistor sizing
@@ -38,7 +46,81 @@ needed. You solder the two breakouts and the Pi's 2×20 header onto
 the Perma-Proto Bonnet, screw the motor and solenoid leads into the
 DRV2605L and DRV8871 terminals respectively, and you're done.
 
-## Vibration motor
+## Auger drive motor
+
+### Recommended: NEMA 11 bipolar stepper, direct-coupled to the auger shaft (items 10, 11, 12)
+
+Powder dosing is fundamentally an **angle-counting** problem — one
+revolution of the auger displaces a known volume of powder, so a
+**stepper** (open-loop position control by counting steps) is the
+natural fit. A NEMA 11 bipolar stepper is the smallest standard
+frame size and lines up well with the 20 mm OD housing footprint:
+
+* **28 mm × 28 mm faceplate**, ~30–45 mm body length, 5 mm output
+  shaft.
+* ~0.67 A/phase, ~12 N·cm holding torque — comfortably above what
+  a small Archimedes auger metering loose powder needs.
+* 200 full steps/rev (1.8°), down to 6400 microsteps/rev with the
+  DRV8825 at 1/32 microstepping → sub-degree dose resolution.
+* Direct-drive — the auger shaft from `cad/auger/` is sized for a
+  5 mm coupler bore, so the stepper output shaft mates to it
+  through a **flexible shaft coupler** (item 12). No belt, no
+  pulleys, no alignment tooling.
+
+### Driver: Pololu DRV8825 stepper-driver carrier (item 11)
+
+Same "pre-packaged board, just solder pin headers in" pattern as
+the rest of this BOM. The DRV8825 carrier provides:
+
+* Two integrated H-bridges with built-in flyback handling (no
+  external diodes).
+* On-board **current-limit potentiometer** — set once with a
+  multimeter (or by reading `Vref`) to ~0.67 A/phase to match the
+  motor; no current-sense resistor sizing needed.
+* 1/1, 1/2, 1/4, 1/8, 1/16, 1/32 microstepping selected by three
+  mode pins (tie to 3.3 V or GND through the Bonnet).
+* 3.3 V-tolerant `STEP` / `DIR` / `~ENABLE` logic inputs that the
+  Pi's GPIOs drive directly.
+* Screw-terminal-friendly 0.1" pin rows for both the motor coils
+  (`A1/A2/B1/B2`) and motor supply (`VMOT/GND`).
+
+Wire-up:
+
+* `VMOT` / `GND` ← **12 V external PSU** (item 13), with the
+  100 µF / 25 V cap (item 14) right at those pins. *Do not* power
+  the DRV8825 from the 5 V rail or the solenoid PSU — the stepper
+  needs the higher voltage to commutate quickly.
+* `A1, A2` ← stepper coil A; `B1, B2` ← stepper coil B (check
+  motor datasheet for pairs).
+* `STEP` ← Pi **GPIO20**, `DIR` ← Pi **GPIO21**, `~ENABLE` ← Pi
+  **GPIO16** (active-low; pull high to coast the motor between
+  doses to save power and heat).
+* `RESET` and `SLEEP` tied together and pulled high (otherwise the
+  driver stays asleep).
+* Common GND between the 12 V PSU, the DRV8825 logic GND, and the
+  Pi.
+
+### Belt-drive alternative
+
+If mechanical layout forces the motor off-axis (e.g. to clear the
+hopper or fit a smaller envelope around the housing), substitute
+the flexible coupler (item 12) for a small **GT2 timing-belt
+pulley pair + closed-loop belt** (e.g. 16T pulleys, 110–158 mm
+belt). 1:1 ratio keeps the dose calibration identical to direct
+drive; a 2:1 reduction (16T → 32T on the auger) doubles torque
+and halves max RPM if needed. Direct-drive is preferred per the
+issue comment because it removes belt tension/slip as a source of
+dose error.
+
+### Why not a brushed DC gearmotor (e.g. N20) with an encoder?
+
+Workable, but it adds an encoder + closed-loop control just to
+recover the absolute-position guarantee a stepper gives you for
+free. For a metered-dose application the stepper is simpler,
+cheaper at this scale, and the DRV8825 carrier keeps the wiring
+just as "solder-on" as the DRV8871.
+
+
 
 ### Why not just a bare ERM on a GPIO + transistor?
 
@@ -163,35 +245,39 @@ pre-made board, and the arrows are wires (jumper or screw-terminal)
 between named pads on those boards.
 
 ```
-                ┌──────────────────────────────────────────────┐
-                │  Raspberry Pi Zero 2 W  (mounted on Bonnet)  │
-                │                                              │
-                │   3V3  GND   SDA   SCL              GPIO18   │
-                └────┬────┬────┬─────┬───────────────────┬─────┘
-                     │    │    │     │                   │
-                     │    │    │     │                   │  PWM
-                     ▼    ▼    ▼     ▼                   ▼
-   ┌──────────────────────────────────┐    ┌──────────────────────────────┐
-   │  Adafruit DRV2605L breakout      │    │  Adafruit DRV8871 breakout   │
-   │  (haptic motor controller, I²C)  │    │  (H-bridge, screw terminals) │
-   │                                  │    │                              │
-   │  VIN GND SDA SCL    OUT+  OUT-   │    │  IN1  IN2  VM  GND  OUT1 OUT2│
-   └─────────────────────┬──────┬─────┘    └──┬────┬───┬────┬─────┬────┬──┘
-                         │      │             │    │   │    │     │    │
-                         │      │             PWM  GND │    │     │    │
-                         ▼      ▼                      │    │     ▼    ▼
-                  ┌──────────────────┐                 │    │   ┌────────────┐
-                  │  ERM coin (#2)   │                 │    │   │ Solenoid   │
-                  │   or LRA (#3)    │                 │    │   │  JF-0530B  │
-                  │  on auger wall   │                 │    │   │  (#4)      │
-                  └──────────────────┘                 │    │   └────────────┘
-                                                       │    │
-                                              ┌────────┴────┴────────┐
-                                              │  5 V external PSU    │
-                                              │  via barrel-jack     │
-                                              │  breakout (#7, #8)   │
-                                              │  GND tied to Pi GND  │
-                                              └──────────────────────┘
+                ┌─────────────────────────────────────────────────────────────┐
+                │  Raspberry Pi Zero 2 W  (mounted on Bonnet)                 │
+                │                                                             │
+                │   3V3  GND  SDA  SCL   GPIO18    GPIO20  GPIO21  GPIO16    │
+                └────┬────┬────┬────┬──────┬──────────┬───────┬───────┬───────┘
+                     │    │    │    │      │          │       │       │
+                     │    │    │    │      │ PWM      │ STEP  │ DIR   │ ~EN
+                     ▼    ▼    ▼    ▼      ▼          ▼       ▼       ▼
+   ┌──────────────────────────┐  ┌──────────────────────┐  ┌────────────────────────┐
+   │  Adafruit DRV2605L       │  │  Adafruit DRV8871    │  │  Pololu DRV8825        │
+   │  haptic driver (I²C)     │  │  H-bridge breakout   │  │  stepper-driver carrier│
+   │                          │  │                      │  │                        │
+   │ VIN GND SDA SCL  +    -  │  │ IN1 IN2 VM GND O1 O2 │  │ STEP DIR ~EN VMOT GND  │
+   │                          │  │                      │  │           A1 A2 B1 B2  │
+   └──────────────┬─────┬─────┘  └──┬───┬──┬───┬──┬──┬──┘  └──┬────┬───┬────┬───────┘
+                  │     │           │   │  │   │  │  │        │    │   │    │
+                  ▼     ▼           ▼   ▼  ▼   ▼  ▼  ▼        ▼    ▼   ▼    ▼
+            ┌──────────────┐    ┌─────────────────┐         ┌──────────────────┐
+            │ ERM/LRA (#2  │    │ Solenoid        │         │ NEMA 11 stepper  │
+            │ or #3) on    │    │ JF-0530B (#4)   │         │ (#10), 5 mm shaft│
+            │ auger wall   │    │ external tap    │         │ → flex coupler   │
+            └──────────────┘    └─────────────────┘         │ (#12) → auger    │
+                                                            │ shaft            │
+                                                            └──────────────────┘
+                                          ▲                           ▲
+                                ┌─────────┴────────┐         ┌────────┴─────────┐
+                                │ 5 V external PSU │         │ 12 V external PSU│
+                                │ via barrel-jack  │         │ for stepper      │
+                                │ breakout (#7,#8) │         │ (#13) + 100 µF   │
+                                │ → DRV8871 VM     │         │ cap (#14) across │
+                                │ GND tied to Pi   │         │ DRV8825 VMOT/GND │
+                                └──────────────────┘         │ GND tied to Pi   │
+                                                             └──────────────────┘
 ```
 
 Build order:
@@ -206,10 +292,25 @@ Build order:
    `IN1` to the Pi's GPIO18 pad, `IN2` to GND. Wire `OUT1`/`OUT2`
    to the solenoid coil leads (polarity doesn't matter for a single
    coil).
-4. Solder the **barrel-jack breakout** (item 8) onto the Bonnet;
-   jumper its `+` to the DRV8871's `VM` and the 100 µF cap's `+`,
-   and `−` to the DRV8871's `GND`, the cap's `−`, and a Pi GND
-   pad. Plug in the 5 V PSU.
+4. Solder the **DRV8825 carrier** (item 11) onto the Bonnet using
+   its included 0.1" pin headers. Jumper `STEP`→GPIO20, `DIR`→GPIO21,
+   `~ENABLE`→GPIO16; tie `RESET` and `SLEEP` together to `3V3`.
+   Pick a microstep mode by tying `M0/M1/M2` to `3V3` or `GND`
+   (start with all-low = full step, switch to all-high = 1/32 once
+   calibration is dialed in). Wire `A1/A2` and `B1/B2` to the
+   stepper coils.
+5. Solder the **barrel-jack breakout** (item 8) onto the Bonnet for
+   the 5 V supply; jumper its `+` to the DRV8871's `VM` and the
+   100 µF / 10 V cap's `+`, and `−` to the DRV8871's `GND`, the
+   cap's `−`, and a Pi GND pad.
+6. Bring the **12 V PSU** (item 13) in on a second screw-terminal
+   pad pair; jumper `+` to the DRV8825's `VMOT` and the 100 µF /
+   25 V cap's `+`, and `−` to the DRV8825's `GND`, the cap's `−`,
+   and the same Pi GND pad. **Set the DRV8825 current limit pot to
+   ~Vref = 0.42 V (≈0.67 A/phase) before powering the motor for the
+   first time** — this is the only "tuning" step in the build.
+7. Couple the stepper output shaft to the auger shaft with the
+   flexible coupler (item 12).
 
 That's the entire assembly — no transistor, diode, or resistor
 sizing.
@@ -223,7 +324,7 @@ PR's scope):
 import time
 import board, busio
 import adafruit_drv2605
-from gpiozero import PWMOutputDevice
+from gpiozero import PWMOutputDevice, DigitalOutputDevice
 
 # --- vibration motor (DRV2605L over I²C) ---
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -236,6 +337,17 @@ tap = PWMOutputDevice(18, frequency=10)  # 10 Hz tap train
 tap.value = 0.3                          # 30% duty → ~30 ms ON / 70 ms OFF
 time.sleep(1.0)
 tap.off()
+
+# --- auger drive (NEMA 11 + DRV8825: STEP/DIR/~EN on GPIO20/21/16) ---
+step  = DigitalOutputDevice(20)
+dir_  = DigitalOutputDevice(21)
+en_n  = DigitalOutputDevice(16, active_high=False, initial_value=False)  # enabled
+dir_.on()                              # forward
+STEPS_PER_REV = 200                    # full-step mode; ×microstep factor otherwise
+for _ in range(STEPS_PER_REV):         # one revolution of the auger
+    step.on();  time.sleep(0.001)
+    step.off(); time.sleep(0.001)
+en_n.off()                             # coast/disable to save power & heat
 ```
 
 ## Notes / open questions
@@ -248,5 +360,10 @@ tap.off()
   bulkier than item 2/3 and is only worth doing if the
   ERM/LRA + DRV2605L combo is not expressive enough.
 * Final mounting locations (vibration motor on the housing wall vs.
-  on the hopper; solenoid tap point) should be revisited once the
-  auger housing CAD from #16 is finalised.
+  on the hopper; solenoid tap point; stepper bracket and coupler
+  alignment) should be revisited once the auger housing CAD from
+  #16 is finalised.
+* Auger shaft bore in `cad/auger/` should be confirmed at 5 mm to
+  match the NEMA 11 output shaft (item 10) and the flexible coupler
+  (item 12); if it's a different diameter, swap to a 5 mm ↔ Xmm
+  coupler rather than re-picking the motor.
