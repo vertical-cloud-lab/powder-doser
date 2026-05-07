@@ -238,12 +238,14 @@ Bambu Studio and OrcaSlicer inherit:
 
 ### 1. Bambu Studio CLI (`bambu-studio --slice`)
 
-`bambu-studio` ships a CLI mode (no GUI required at runtime, but on
-Linux it still links wxWidgets, so containerised runs typically wrap
-it in `xvfb-run`).[^bambu-studio-cli] Typical headless flow:
+`bambu-studio` ships an officially documented CLI mode (no GUI required
+at runtime, but on Linux it still links wxWidgets, so containerised
+runs typically wrap it in `xvfb-run`).[^bambu-studio-cli] The wiki's
+own *"Slice stls"* example is exactly this STL → sliced-`.3mf` flow:
 
 ```bash
 xvfb-run -a bambu-studio \
+  --orient --arrange 1 \
   --load-settings  "machine.json;process.json" \
   --load-filaments "filament.json" \
   --slice 0 \
@@ -254,8 +256,11 @@ xvfb-run -a bambu-studio \
 - `--load-settings` / `--load-filaments` take JSON profiles exported
   from a desktop Bambu Studio that has an **H2D** machine profile
   installed — this is what gives the resulting `.gcode.3mf` the
-  per-tool / IDEX / laser metadata the H2D needs.
-- `--slice 0` slices all plates; pass a 1-based index to slice one.
+  per-tool / IDEX / laser metadata the H2D needs.[^bambu-studio-cli]
+- `--orient` and `--arrange 1` are needed for raw STL input because,
+  unlike a `.3mf`, an STL has no plate layout.[^bambu-studio-cli]
+- `--slice 0` slices all plates; pass a 1-based index to slice one
+  specific plate.[^bambu-studio-cli]
 - The output `.gcode.3mf` is the file you upload via FTPS in mode B
   and reference from `print.project_file`.
 
@@ -392,13 +397,21 @@ integrating, plan to:
     2026-05) and against `Doridian/OpenBambuAPI/cloud-http.md`, neither
     of which lists a `/slice` or equivalent endpoint.
 
-[^bambu-studio-cli]: Bambu Lab, *BambuStudio* — CLI mode source and
-    docs. <https://github.com/bambulab/BambuStudio>. The
-    `bambu-studio --help` output lists `--slice`, `--export-3mf`,
-    `--load-settings`, `--load-filaments` and related flags inherited
-    from the PrusaSlicer/SuperSlicer CLI lineage. On Linux, headless
-    runs in CI/containers typically wrap the binary in `xvfb-run`
-    because of the wxWidgets dependency.
+[^bambu-studio-cli]: Bambu Lab, *BambuStudio* — official
+    *Command Line Usage* wiki.
+    <https://github.com/bambulab/BambuStudio/wiki/Command-Line-Usage>
+    (consulted 2026-05). Documents the `bambu-studio` CLI, including
+    `--slice plate_index` (`0` = all plates), `--export-3mf`,
+    `--load-settings "machine.json;process.json"`,
+    `--load-filaments "filament1.json;..."`, `--orient`, `--arrange`,
+    `--outputdir`, `--export-slicedata`, `--info`, and the three-tier
+    settings precedence (CLI flags > `--load-*` files > settings
+    embedded in the `.3mf`). The wiki's third worked example —
+    *"Slice stls"* — explicitly slices a `.stl` input
+    (`./bambu-studio --orient --arrange 1 --load-settings ... --load-filaments ... --slice 0 --export-3mf output.3mf test_data/boat.stl`),
+    confirming STL → sliced-`.3mf` is a first-class CLI use case. On
+    Linux, headless runs in CI/containers typically wrap the binary in
+    `xvfb-run` because of the wxWidgets dependency.
 
 [^orcaslicer-cli]: SoftFever, *OrcaSlicer* — README and
     PrusaSlicer-derived CLI.
