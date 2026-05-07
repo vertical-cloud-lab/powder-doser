@@ -4,18 +4,21 @@
 % Cycle:     2026 (deadline: 8 May 2026)
 % Length:    3-5 pages (per program guidelines, see nasa-26-application.pdf)
 %
-% This is a placeholder template populated with lorem ipsum so the formatting,
-% bibliography, and length can be reviewed before the real narrative is
-% written.  Replace each \lipsum block with prose, and replace the placeholder
-% citations in refs.bib with real references before submission.
+% First-draft narrative populated from Sam's outline (see PR comment thread on
+% issue #26).  Assumptions and gaps that need Sam's input are flagged with the
+% \needsinput{...} macro -- search the source (or look for the bracketed
+% [needs input: ...] callouts in the rendered PDF) to find every spot that
+% requires a decision before submission.  Open questions are also collected
+% in the final "Open questions" section so they are easy to scan.
 %
 % Build (MiKTeX):
 %   cd proposals/byu-nasa-space-grant-2026
 %   latexmk -pdf proposal.tex
 %
-% Required MiKTeX packages (auto-installed when [MPM]AutoInstall=1):
+% Required MiKTeX packages (auto-installed when [MPM]AutoInstall=1) -- keep
+% this list in sync with the \usepackage lines below:
 %   geometry, times, microtype, graphicx, titlesec, fancyhdr, lastpage,
-%   natbib, hyperref, lipsum
+%   xcolor, soul, enumitem, natbib, hyperref
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[11pt]{article}
@@ -27,9 +30,17 @@
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{enumitem}
 \usepackage[round,authoryear]{natbib}
 \usepackage[hidelinks]{hyperref}
-\usepackage{lipsum} % placeholder text only -- remove for the real submission
+
+% Inline callout for assumptions / gaps that Sam still needs to confirm.
+% Renders as a highlighted "[needs input: ...]" so it is impossible to miss
+% in the PDF, and is also easy to grep for in the source.
+\sethlcolor{yellow}
+\newcommand{\needsinput}[1]{\hl{[needs input: #1]}}
 
 % Tighter, bolder section headings appropriate for a short proposal narrative.
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}
@@ -49,8 +60,9 @@
 \begin{document}
 
 \begin{center}
-  {\Large\bfseries Generative CAD for a Multi-Powder Doser:\\
-   Enabling Autonomous Discovery of Additively Manufactured Aerospace Alloys}\\[6pt]
+  {\Large\bfseries Generative CAD for an Open-Source Multi-Powder Doser:\\
+   A Tooling Step Toward Autonomous Discovery of Additively Manufactured
+   Aerospace Alloys}\\[6pt]
   {\large Sam Charles\\
    Undergraduate Applicant, Brigham Young University}\\[2pt]
   {\small Utah NASA Space Grant Consortium Fellowship --- 2026 Cycle}
@@ -58,37 +70,327 @@
 \vspace{0.4\baselineskip}
 
 \section{Introduction and Motivation}
-\lipsum[1-2]~\citep{placeholder_am_aerospace,placeholder_self_driving_lab}
+
+Additively manufactured (AM) structural alloys are an increasingly important
+class of materials for space applications, where launch-mass reduction,
+topology-optimized geometries, and rapid iteration on bespoke parts all
+favor laser powder-bed fusion (L-PBF) over conventional subtractive
+processes \citep{placeholder_am_aerospace}.  Discovering and qualifying
+\emph{new} aerospace alloys for these processes -- rather than only printing
+established compositions -- is currently bottlenecked not by the printers
+themselves, but by the upstream workflow that prepares the metal powder
+feedstock from which each candidate composition is built.
+
+A central, repetitive step in that workflow is \emph{powder dosing}:
+weighing out and combining individual elemental or pre-alloyed powders into
+a target blend before each L-PBF build or screening experiment.  In a
+research lab this is almost always done by hand, one powder at a time, with
+a balance and a spatula.  This is slow, error-prone, exposes researchers to
+fine reactive metal powders, and -- critically -- it caps the
+\emph{compositional throughput} of any downstream alloy-discovery
+campaign.  The few commercial automated dispensers that do exist are
+priced for industrial QC labs (typically tens of thousands of dollars),
+designed around pharmaceutical or analytical-chemistry workflows rather
+than L-PBF feedstock preparation, and ill-matched to the
+volume\,/\,particle-size regime that aerospace alloy printing actually
+needs \needsinput{confirm with Sam: typical price quotes and model numbers
+of the commercial dispensers we are positioning against -- pending
+literature/landscape sweep in issue~\#28~/~\#10}.
+
+Powder dispensing is therefore an \emph{unmet need} in the research
+laboratory setting.  Existing solutions -- including the open-source
+designs we have surveyed -- fall short of the rigorous design and testing
+required for an L-PBF feedstock workflow, where the dispenser must
+respect aerospace-grade powder characteristics (e.g.\ tightly controlled
+particle-size distribution, sphericity, oxygen pickup) and must deliver
+total dispense volumes large enough to actually fill a build hopper
+\citep{placeholder_powder_dosing}.
+
+This project will close that gap.  We will use a mix of traditional
+mechanical design and \emph{generative CAD} -- driven primarily by
+agentic AI tooling layered on top of GitHub Copilot -- with frequent
+build-test-feedback cycles between AI-generated designs and the human
+engineers (Sam and Will) to create a powder dosing system capable of
+handling \textbf{up to 30 unique powders} with \textbf{total dispense
+volumes up to 250\,mL}, suitable as the front-end of an autonomous
+aerospace-alloy discovery loop.
+
+The work has two complementary novel contributions:
+\begin{enumerate}[leftmargin=1.3em,itemsep=0.1em,topsep=0.2em]
+  \item A rigorous, documented exploration of the \emph{capabilities and
+        current limitations} of agentic AI applied to CAD and
+        electromechanical design, using a real, non-trivial aerospace-relevant
+        device as the test article.
+  \item An \emph{open-source}, accurate, low-cost, reliable multi-powder
+        dispenser that is purpose-built for L-PBF research workflows --
+        released as a complete repository (CAD, firmware, BOM, build
+        instructions, and test data) so other research groups can adopt
+        and extend it.
+\end{enumerate}
+
+A peer-reviewed paper documenting both contributions is planned as a
+follow-on deliverable.
 
 \section{Background}
-\lipsum[3]
 
-\subsection{Multi-powder dosing for additive manufacturing}
-\lipsum[4]~\citep{placeholder_powder_dosing}
+\subsection{Powder dispensing in research and industry}
+
+Accurate dispensing of fine metal powders at research scale is dominated
+today by a small number of commercial systems aimed at analytical-chemistry
+and pharmaceutical applications.  These systems achieve high single-dose
+accuracy, but at price points that are out of reach for most academic
+materials labs and with form factors and software stacks that assume a
+single feedstock at a time -- exactly the opposite of what an alloy
+combinatorial campaign needs \needsinput{cite specific commercial systems
+once the issue~\#28 / \#10 landscape sweep produces a reference list; the
+\texttt{placeholder\_commercial\_dispensers} entry in \texttt{refs.bib}
+is a stand-in until then}.
+
+On the open-source / DIY side, prior work has demonstrated single-powder
+augers, vibratory dispensers, and small carousel feeders, but to our
+knowledge none of these published designs has been validated end-to-end
+against L-PBF feedstock requirements -- particle-size-distribution
+preservation, cross-contamination between powders, oxygen exposure, and
+bulk volume per dispense -- in the way an aerospace alloy discovery
+workflow demands \citep{placeholder_powder_dosing}
+\needsinput{any specific open-source projects you want explicitly named
+and cited?  e.g.\ a particular GitHub repo or thesis; pending the
+\#28 background sweep}.
 
 \subsection{Generative CAD as a design accelerator}
-\lipsum[5]~\citep{placeholder_generative_cad}
+
+\emph{Generative CAD} here refers to the broader family of techniques in
+which a designer specifies intent (functional requirements, constraints,
+interfaces) and software produces candidate geometry, rather than the
+designer drawing the geometry directly.  In this project the ``generator''
+is an agentic large-language-model loop -- primarily GitHub Copilot
+backed by multiple model providers, augmented with task-specific tooling
+for CAD scripting, slicing, and printer control (cf.\ companion issues
+\#6 and \#24 in the project repository) -- not a topology-optimization
+solver or a parametric template library, although those are complementary
+techniques the loop is free to invoke
+\citep{placeholder_generative_cad,placeholder_agentic_ai_engineering}.
+
+The published research base on this style of LLM-driven, end-to-end
+electromechanical design is still thin: most of the literature is
+restricted either to topology optimization for a single fixed envelope
+or to short, demonstrative ``can the model produce a bracket'' studies.
+The open question is whether a tightly-supervised agentic loop can
+deliver an \emph{integrated} mechanical + electrical + firmware design
+for a real research instrument.  This proposal directly probes that
+question \needsinput{add concrete generative-CAD references once
+issue~\#28 produces them; until then the bib entry
+\texttt{placeholder\_generative\_cad} is a stand-in}.
+
+\subsection{Connection to autonomous AM alloy discovery}
+
+Autonomous, ``self-driving'' materials laboratories have shown the value
+of closing experimental loops with active learning over composition,
+process, and structure-property data \citep{placeholder_self_driving_lab}.
+Applied to AM aerospace alloys, the loop is gated by how quickly and
+reproducibly we can prepare new powder blends.  An accurate, scriptable,
+30-powder dispenser is the missing front-end for that loop and the
+direct technical contribution of this fellowship.
 
 \section{Project Objectives}
-\lipsum[6]
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.15em,topsep=0.2em]
+  \item \textbf{Open-source multi-powder doser (hardware).}  A working
+        prototype that handles up to 30 distinct powders with per-blend
+        total dispense volumes up to 250\,mL, with documented dispense
+        accuracy, repeatability, and cross-contamination characterization
+        on at least \needsinput{target number, e.g.\ 3?} representative
+        L-PBF feedstock powders.
+  \item \textbf{Open-source repository.}  A complete release at
+        \href{https://github.com/vertical-cloud-lab/powder-doser}%
+             {\texttt{github.com/vertical-cloud-lab/powder-doser}}
+        \citep{placeholder_powder_doser_repo} containing CAD sources,
+        firmware, BOM, assembly instructions, test data, and the AI
+        prompts/transcripts that produced each design revision.
+  \item \textbf{Generative-CAD-first design process.}  As little
+        traditional, hand-driven CAD as we can manage -- ideally the
+        engineers should never need to open a CAD GUI to author or edit
+        geometry, only to inspect and review what the agentic loop
+        produced.  Every deviation from that ideal will be logged and
+        analyzed.
+  \item \textbf{Documented capability/limitation study.}  A thorough,
+        reproducible record of where agentic AI succeeded, where it
+        failed, where engineer intervention was required, and what
+        tooling unlocked each capability.  This deliverable functions as
+        a litmus test for the current state of generative CAD applied to
+        a real electromechanical instrument and will be the basis of the
+        follow-on paper.
+\end{enumerate}
+
+It is important to state up front what this project is \emph{not}: this
+is not an evaluation of AI's ability to develop a product unsupervised.
+Capable engineers (Sam and Will) will review the AI's contributions at
+every step and make meaningful corrections.  The fellowship work is an
+honest evaluation of agentic AI as a \emph{tool} that augments capable
+engineers, with generative CAD as the sharpest test case.
 
 \section{Approach and Methods}
-\lipsum[7-8]
 
-\subsection{Generative CAD pipeline for the powder doser}
-\lipsum[9]~\citep{placeholder_powder_doser_repo}
+\subsection{Generative CAD pipeline}
+
+The design loop is anchored on GitHub Copilot used in agent mode, with
+the freedom to call out to multiple underlying language models and to
+auxiliary tooling exposed through the project's repository (e.g.\ the
+component-selection work in \#24 for the vibration motor / solenoid
+control stack on a Raspberry Pi Zero 2~W, and the meta-CAD tooling
+survey in \#6).  Each design iteration follows a build-test-feedback
+cycle:
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.1em,topsep=0.2em]
+  \item The engineers describe a requirement or failure mode in plain
+        language and reference data (test results, photos of failures,
+        powder-flow observations).
+  \item The agentic loop produces or edits CAD sources, electrical
+        layouts, and firmware -- preferring scriptable, version-controlled
+        formats so the diff is human-reviewable.
+  \item Prototypes are printed in-house on a Bambu Lab H2D
+        \needsinput{confirm: H2D is the printer we will use end-to-end?
+        Any second printer (resin? metal?) we should mention?}.  The
+        long-term goal is for the agent to drive the printer
+        \emph{directly} using the H2D programmatic-print pathway being
+        developed in \#23, so the loop can iterate without an
+        engineer-in-the-loop print step; in the near term the engineers
+        will trigger prints manually.
+  \item Sam and Will assemble, bench-test, and report results back into
+        the loop.  Each iteration's prompts, model outputs, and engineer
+        corrections are committed to the repo so the design history is
+        fully auditable.
+\end{enumerate}
+
+\subsection{Hardware design targets}
+
+The dispenser must, at minimum, satisfy the following functional
+requirements derived from the L-PBF feedstock-preparation use case:
+\needsinput{Sam: please confirm/adjust each of the targets below before
+submission -- I have inferred reasonable values from the project context
+but they have not been formally agreed.}
+\begin{itemize}[leftmargin=1.3em,itemsep=0.1em,topsep=0.2em]
+  \item Up to 30 distinct powder reservoirs, individually addressable.
+  \item Total per-blend dispense volume up to 250\,mL.
+  \item Per-powder dispense resolution and accuracy compatible with
+        compositional screening at the
+        \needsinput{target accuracy: e.g.\ $\pm 1$\,wt\%? $\pm 0.1$\,wt\%?}
+        level.
+  \item Particle-size-distribution preservation across the dispense
+        path (no significant attrition or segregation of the feedstock).
+  \item Negligible cross-contamination between adjacent powder
+        reservoirs.
+  \item Compatibility with reactive aerospace alloy powders
+        \needsinput{do we need an inert-atmosphere enclosure as part of
+        the deliverable, or is this out of scope for the fellowship
+        year?}.
+\end{itemize}
 
 \subsection{Validation and integration with the autonomous discovery loop}
-\lipsum[10]
+
+Validation will combine bench-level tests of the dispenser in isolation
+(gravimetric repeatability over hundreds of doses, PSD measurement
+before/after, cross-contamination checks) with an integration test in
+which the dispenser prepares blends consumed by a downstream L-PBF or
+small-scale alloy-screening experiment
+\needsinput{which downstream platform will consume the blends for the
+integration test? a specific L-PBF machine, an arc-melt screening
+setup, or both?}.  Results feed directly back into the generative-CAD
+loop both as design feedback and as the dataset that the follow-on paper
+will report.
 
 \section{Timeline and Deliverables}
-\lipsum[11]
+
+The bulk of the engineering work is targeted for the summer (May--August
+2026), when both engineers (Sam and Will) have the most concentrated
+availability.  The remainder of the calendar year is reserved for
+characterization, documentation, and writing.
+
+\begin{itemize}[leftmargin=1.3em,itemsep=0.1em,topsep=0.2em]
+  \item \textbf{May 2026 (Months 0--1):} Finalize requirements; complete
+        the issue~\#28 background sweep; stand up the agentic CAD loop
+        end-to-end against a stub problem; select and procure mechanical
+        + electrical components (cf.\ \#24).
+  \item \textbf{June 2026 (Month 2):} First full-system prototype
+        (\(\le\)\,4 reservoir subset) printed on the H2D, basic
+        dispense-accuracy bench tests, first round of generative-CAD
+        capability/limitation observations logged.
+  \item \textbf{July 2026 (Month 3):} Scale-up to the full 30-reservoir
+        envelope; close the loop on direct printer control via \#23 so
+        the agent can iterate prints without engineer intervention;
+        cross-contamination and PSD-preservation tests.
+  \item \textbf{August 2026 (Month 4) -- soft completion:} Integrated
+        dispenser delivered, repository public-ready, capability/limitation
+        study draft complete.
+  \item \textbf{Fall 2026 (Months 5--7):} Integration test with the
+        downstream alloy-screening workflow; expanded characterization;
+        first paper draft.
+  \item \textbf{Winter 2027 (Months 8--9):} Paper revisions and
+        submission; community release of v1.0 of the open-source
+        repository.
+\end{itemize}
 
 \section{Broader Impact and Relevance to NASA}
-\lipsum[12]
+
+The most direct line to NASA is through aerospace structural alloys: a
+research-grade, low-cost, open-source multi-powder dispenser shortens
+the compositional-discovery loop for the L-PBF alloys that go into
+launch vehicles, in-space structures, and propulsion components.  The
+same dispensing problem also appears, with different chemistries, in
+several other NASA-relevant areas: precise dispensing of fine powders
+for solid and hybrid rocket propellant formulation studies, regolith
+simulant handling for in-situ resource utilization (ISRU) experiments,
+and lunar/Martian regolith additive manufacturing research
+\needsinput{Sam, do you want to lean harder on any specific NASA
+mission directorate or program (e.g.\ STMD, Artemis, MSFC AM efforts)?
+that hook would strengthen this section}.
+
+The agentic-AI portion of the work is also directly relevant to NASA's
+broader interest in AI-assisted engineering for cost- and
+schedule-constrained missions: a documented, honest assessment of where
+generative CAD currently helps and where it currently fails is exactly
+the kind of evidence that mission engineering teams need before they can
+adopt these tools.  Finally, releasing the dispenser as a fully
+open-source design lowers the barrier of entry for other Utah and
+NASA-affiliated labs that want to run AM alloy-discovery campaigns
+without committing to industrial-scale capital equipment.
 
 \section{Qualifications of the Applicant}
-\lipsum[13]
+
+\needsinput{Sam to write -- short paragraph covering relevant coursework,
+prior project experience (especially anything mechanical, electrical,
+firmware, AM, or AI/CAD), and role on this project.  Mention Will and
+his role here as well.  Also list faculty advisor and the cost-share
+arrangement when known.}
+
+\section*{Open Questions for the Applicant}
+
+The first-draft prose above makes several reasonable-but-unconfirmed
+assumptions.  Each is also marked inline with \texttt{[needs input: \dots]}
+so they are easy to find in the rendered PDF.  Consolidated:
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.1em,topsep=0.2em]
+  \item Confirm or adjust the hardware targets in
+        \S\,Approach (per-powder accuracy, need for inert atmosphere,
+        number of validation powders).
+  \item Confirm the printer(s) we are committing to in this proposal --
+        is the Bambu H2D the only printer in scope, or do we also want
+        to mention any second machine?
+  \item Confirm the downstream consumer for the integration test (which
+        L-PBF or alloy-screening platform will eat the blends).
+  \item Decide which specific commercial dispensers, open-source prior
+        art, and generative-CAD references we want explicitly cited;
+        these are the gaps the issue~\#28 / \#10 background sweeps are
+        meant to fill.
+  \item Decide whether to lean on a particular NASA program/center hook
+        in the Broader Impact section.
+  \item Provide the Qualifications paragraph for Sam (and Will, where
+        relevant), plus faculty advisor and cost-share details.
+\end{enumerate}
+
+\textit{Suggested additions to consider:} a one-figure schematic of the
+dispenser concept (would help the narrative considerably -- a hand sketch
+or an early CAD render is fine); a brief letter-of-support style mention
+of Will's role; and a short sentence on data/code-availability
+commitments (open license, archived release, etc.).
 
 \section*{References}
 \vspace{-1.0\baselineskip}
