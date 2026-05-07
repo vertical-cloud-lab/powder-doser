@@ -22,7 +22,7 @@ documented by the community rather than by Bambu Lab.
 | Mode | Transport | Auth | Cloud needed? | Status for H2D |
 |---|---|---|---|---|
 | **A. Bambu Cloud** | HTTPS to `api.bambulab.com` (file upload + start) and MQTT-over-TLS to `us.mqtt.bambulab.com:8883` (status) | Bambu account → access/refresh token, MQTT user `u_{USER_ID}` / password = access token | Yes | Same endpoints as other models; subject to the new authorization system, so most write commands now require Bambu Connect.[^bambu-third-party][^openbambu-mqtt] |
-| **B. LAN / Developer Mode** | FTPS upload to `ftps://<printer>:990` then MQTT-over-TLS to `mqtt://<printer>:8883` | FTP user `bblp` + LAN access code; MQTT user `bblp` + LAN access code | No | Works the same way as on X1/P1/A1 *if Developer Mode is enabled*; community libraries (e.g. `bambulabs_api`) report H2D as "not yet tested".[^openbambu-ftp][^openbambu-mqtt][^bambulabs-readme] |
+| **B. LAN / Developer Mode** | FTPS upload to `ftps://<printer>:990` then MQTT-over-TLS to `mqtts://<printer>:8883` | FTP user `bblp` + LAN access code; MQTT user `bblp` + LAN access code | No | Works the same way as on X1/P1/A1 *if Developer Mode is enabled*; community libraries (e.g. `bambulabs_api`) report H2D as "not yet tested".[^openbambu-ftp][^openbambu-mqtt][^bambulabs-readme] |
 | **C. Bambu Connect (sanctioned third-party)** | Bambu Connect handles transport on behalf of the slicer | Cloud account login inside Bambu Connect | Yes (for login) | The path Bambu Lab tells third-party software (e.g. OrcaSlicer) to use under the new authorization system.[^bambu-third-party] |
 
 ## A. Cloud submission
