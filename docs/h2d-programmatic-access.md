@@ -224,6 +224,71 @@ for the H2D:
   parsing in `get_state()` / `get_bed_temperature()` should be verified
   against an actual H2D before relying on them.
 
+## Remote slicing (STL → 3MF)
+
+**Short answer: yes, but not on Bambu Lab's servers.** Bambu Cloud only
+accepts already-sliced project files; there is no public endpoint that
+takes an STL and returns a `.gcode.3mf`.[^bambu-cloud-no-slice] Remote
+slicing therefore means running a slicer headlessly on a machine *you*
+control (a workstation, a CI runner, or a container) and then handing
+the resulting `.gcode.3mf` to one of the three submission modes above.
+
+Two practical paths, both based on the PrusaSlicer-derived CLI that
+Bambu Studio and OrcaSlicer inherit:
+
+### 1. Bambu Studio CLI (`bambu-studio --slice`)
+
+`bambu-studio` ships a CLI mode (no GUI required at runtime, but on
+Linux it still links wxWidgets, so containerised runs typically wrap
+it in `xvfb-run`).[^bambu-studio-cli] Typical headless flow:
+
+```bash
+xvfb-run -a bambu-studio \
+  --load-settings  "machine.json;process.json" \
+  --load-filaments "filament.json" \
+  --slice 0 \
+  --export-3mf out.gcode.3mf \
+  part.stl
+```
+
+- `--load-settings` / `--load-filaments` take JSON profiles exported
+  from a desktop Bambu Studio that has an **H2D** machine profile
+  installed — this is what gives the resulting `.gcode.3mf` the
+  per-tool / IDEX / laser metadata the H2D needs.
+- `--slice 0` slices all plates; pass a 1-based index to slice one.
+- The output `.gcode.3mf` is the file you upload via FTPS in mode B
+  and reference from `print.project_file`.
+
+### 2. OrcaSlicer CLI
+
+OrcaSlicer is a Bambu Studio fork and accepts the same general CLI
+shape; it also retains the upstream PrusaSlicer flags (`--export-gcode`,
+`--load <profile.ini>`, positional STL).[^orcaslicer-cli] In a
+container it likewise wants `xvfb-run` because of wxWidgets. OrcaSlicer
+is useful when you want a profile that is not (yet) shipped in Bambu
+Studio, or when you want to pin a specific slicer version separately
+from Bambu Lab's release cadence.
+
+### Suggested pipeline for powder-excavator
+
+1. Generate or fetch the STL.
+2. Submit it to a self-hosted slicer worker (a container running
+   `bambu-studio --slice` or `OrcaSlicer --export-gcode`) with the
+   pinned H2D profile bundle. Capture the resulting `.gcode.3mf`.
+3. Hand the `.gcode.3mf` to mode A (cloud), B (LAN MQTT + FTPS), or C
+   (Bambu Connect) exactly as documented above.
+
+### What *won't* work
+
+- **No Bambu Cloud server-side slicer.** The cloud REST API only
+  exposes file-management and print-control endpoints; STL → G-code
+  conversion is not part of the surface.[^bambu-cloud-no-slice]
+- **No "slice on the printer."** The printer firmware consumes
+  `.gcode.3mf` (or raw `.gcode`) only.
+- **Don't ship STL through `print.project_file`.** That command
+  expects an already-sliced project file referenced by an FTP URL on
+  the printer; pointing it at a raw STL will fail.[^openbambu-mqtt]
+
 ## H2D-specific caveats
 
 The H2D's hardware features (true IDEX dual extruder, optional laser /
@@ -317,6 +382,32 @@ integrating, plan to:
     `M104`/`M109`/`M140`/`M190` setpoints in a G-code template based on
     the request's `parameters`, and shells out to a `print.py` that
     pushes the file to the printer.
+
+[^bambu-cloud-no-slice]: Bambu Lab's documented cloud surface (file
+    management, project upload, start/stop/status, AMS, etc.) does not
+    include a server-side slicer; STLs must be sliced client-side
+    before upload. Confirmed against the community-maintained Bambu
+    Cloud API reference at
+    <https://github.com/coelacant1/Bambu-Lab-Cloud-API> (consulted
+    2026-05) and against `Doridian/OpenBambuAPI/cloud-http.md`, neither
+    of which lists a `/slice` or equivalent endpoint.
+
+[^bambu-studio-cli]: Bambu Lab, *BambuStudio* — CLI mode source and
+    docs. <https://github.com/bambulab/BambuStudio>. The
+    `bambu-studio --help` output lists `--slice`, `--export-3mf`,
+    `--load-settings`, `--load-filaments` and related flags inherited
+    from the PrusaSlicer/SuperSlicer CLI lineage. On Linux, headless
+    runs in CI/containers typically wrap the binary in `xvfb-run`
+    because of the wxWidgets dependency.
+
+[^orcaslicer-cli]: SoftFever, *OrcaSlicer* — README and
+    PrusaSlicer-derived CLI.
+    <https://github.com/SoftFever/OrcaSlicer>. Accepts the upstream
+    PrusaSlicer flags (`--export-gcode`, `--load <profile.ini>`,
+    positional STL input); same `xvfb-run` caveat as Bambu Studio for
+    headless Linux runs. See also the upstream PrusaSlicer
+    *Command-Line Usage* wiki:
+    <https://github.com/prusa3d/PrusaSlicer/wiki/Command-Line-Interface>.
 
 [^paris-mqtt-tls]: Iqbal Luqman Bin Mohd Paris, Mohamed Hadi Habaebi,
     and Alhareth Mohammed Zyoud, *Implementation of SSL/TLS Security
