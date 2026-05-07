@@ -6,3 +6,10 @@ client = EdisonClient(api_key=EDISON_API_KEY)
 ```
 
 If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, etc.).
+
+If you make changes to LaTeX sources (e.g., anything under `paper/` or `proposals/`), build them with **MiKTeX** and install any required packages as you go. On a fresh environment:
+
+1. Install MiKTeX from the official repo (e.g., on Ubuntu: add the `https://miktex.org/download/ubuntu` apt source and `apt-get install -y miktex`), then run `miktexsetup finish` if needed.
+2. Install `miktex-pdftex` and `latexmk` via `miktex packages install miktex-pdftex latexmk`, then run `miktex links install` so `pdflatex`/`latexmk` are on `PATH` (typically under `~/bin`).
+3. Enable on-demand package installation with `initexmf --set-config-value=[MPM]AutoInstall=1` so missing LaTeX packages are pulled automatically during the build.
+4. Build with `latexmk -pdf <file>.tex` from the document's directory. Commit the regenerated PDF alongside the `.tex` source so reviewers can see the rendered output without rebuilding.

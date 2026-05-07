@@ -8,4 +8,4 @@
 *.out
 *.synctex.gz
 *.toc
-proposal.pdf
+# Note: proposal.pdf IS committed so reviewers can see the rendered output.

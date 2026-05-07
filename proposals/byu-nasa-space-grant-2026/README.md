@@ -19,7 +19,7 @@ enabling capability).
 | `proposal.tex` | LaTeX source for the 3--5 page narrative (lorem ipsum). |
 | `refs.bib` | BibTeX database (placeholder entries). |
 | `nasa-26-application.pdf` | Official Utah NASA Space Grant 2026 application packet (downloaded from BYU College of Engineering). |
-| `proposal.pdf` | Build artifact -- regenerate locally; not committed. |
+| `proposal.pdf` | Rendered PDF (committed for reviewer convenience; rebuild with `latexmk`). |
 
 ## Building (MiKTeX)
 
