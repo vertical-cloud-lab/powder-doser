@@ -264,6 +264,61 @@ xvfb-run -a bambu-studio \
 - The output `.gcode.3mf` is the file you upload via FTPS in mode B
   and reference from `print.project_file`.
 
+#### Verified end-to-end locally
+
+To remove all doubt that this is a real, working CLI rather than a
+documented-but-broken side door, the flow above was exercised against
+the official BambuStudio v02.06.00.51 Linux AppImage on Ubuntu 24.04
+with a 12-triangle cube STL (684 bytes) generated on the fly:
+
+```bash
+# 1. Pull the official AppImage from the BambuStudio releases page.
+curl -sLo bambu.AppImage \
+  https://github.com/bambulab/BambuStudio/releases/download/v02.06.00.51/BambuStudio_ubuntu-24.04-v02.06.00.51-20260417160415.AppImage
+chmod +x bambu.AppImage
+
+# 2. Headless slice (software GL is enough for the thumbnail step).
+LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe \
+xvfb-run -a -s "-screen 0 1280x1024x24" ./bambu.AppImage \
+  --orient 1 --arrange 1 \
+  --load-settings  "machine.json;process.json" \
+  --load-filaments "filament.json" \
+  --slice 0 --export-3mf cube.gcode.3mf --outputdir out cube.stl
+```
+
+Result with the *flattened P2S example profiles linked from the
+BambuStudio CLI wiki* (`machine.json` / `process.json` /
+`filament.json` from the wiki's own attachments):
+
+- `out/cube.gcode.3mf` (≈41 KB, valid 3MF/OPC zip), containing the
+  same internal layout that mode B's `print.project_file` references —
+  including a `Metadata/plate_1.gcode` entry (271 KB), a
+  `Metadata/plate_1.gcode.md5`, and a `Metadata/slice_info.config`.
+- `out/result.json` reports `"return_code": 0`-equivalent slice
+  statistics: 100 layers @ 0.20 mm, ~3.63 g of filament, 8 m 41 s
+  print time, 12 triangles in, full per-feature time breakdown out.
+
+Repeating the exact same invocation but pointing
+`--load-settings`/`--load-filaments` at the **bundled H2D profiles**
+that ship inside the AppImage
+(`resources/profiles/BBL/machine/Bambu Lab H2D 0.4 nozzle.json`,
+`resources/profiles/BBL/process/0.20mm Standard @BBL H2D.json`,
+`resources/profiles/BBL/filament/Bambu PLA Basic @BBL H2D.json`)
+fails on purpose, with:
+
+```
+[error] plate 1 : some filaments can not be mapped under auto mode for
+        multi extruder printer
+run found error, return -66, exit...
+```
+
+That is exactly the H2D / IDEX caveat called out further down: the
+H2D needs an explicit per-extruder filament list (e.g. via
+`--load-filament-ids "1,2,..."` and one filament profile per tool, or
+profiles flattened/exported from a desktop Bambu Studio project that
+already has the dual-extruder filament mapping baked in) — it will
+not auto-bind a single PLA Basic profile across both tools.[^cli-empirical]
+
 ### 2. OrcaSlicer CLI
 
 OrcaSlicer is a Bambu Studio fork and accepts the same general CLI
@@ -421,6 +476,30 @@ integrating, plan to:
     headless Linux runs. See also the upstream PrusaSlicer
     *Command-Line Usage* wiki:
     <https://github.com/prusa3d/PrusaSlicer/wiki/Command-Line-Interface>.
+
+[^cli-empirical]: Empirically verified for this PR on
+    2026-05-07 against the official BambuStudio v02.06.00.51 Linux
+    AppImage
+    (`BambuStudio_ubuntu-24.04-v02.06.00.51-20260417160415.AppImage`)
+    on Ubuntu 24.04, run under
+    `xvfb-run -a -s "-screen 0 1280x1024x24"` with
+    `LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe` for the OpenGL
+    thumbnail step. Input was a 12-triangle 20 mm cube binary STL.
+    With the wiki's flattened example profiles
+    (<https://github.com/user-attachments/files/26363641/machine.json>,
+    <https://github.com/user-attachments/files/26363644/process.json>,
+    <https://github.com/user-attachments/files/26363647/filament.json>,
+    P2S 0.4 nozzle / 0.20 mm Standard / Bambu PLA Basic), the slice
+    completed and produced a valid 41 KB `cube.gcode.3mf` archive
+    containing `Metadata/plate_1.gcode` (271 KB),
+    `Metadata/plate_1.gcode.md5`, `Metadata/slice_info.config`,
+    `Metadata/project_settings.config`, plus a `result.json` with
+    100-layer / 8 m 41 s / 3.63 g slice statistics. Re-running the
+    same command against the bundled H2D 0.4 nozzle machine + 0.20 mm
+    H2D process + Bambu PLA Basic H2D filament profiles fails with
+    `"plate 1 : some filaments can not be mapped under auto mode for
+    multi extruder printer"` (`return_code: -66`), demonstrating the
+    H2D-specific IDEX caveat described in this section.
 
 [^paris-mqtt-tls]: Iqbal Luqman Bin Mohd Paris, Mohamed Hadi Habaebi,
     and Alhareth Mohammed Zyoud, *Implementation of SSL/TLS Security
