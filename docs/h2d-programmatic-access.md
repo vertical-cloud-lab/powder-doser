@@ -167,6 +167,63 @@ against your specific firmware.
   most complete community protocol reference; the cloud HTTP, LAN MQTT,
   FTPS and TLS pages cited throughout this note live there.[^openbambu-mqtt][^openbambu-ftp][^openbambu-cloudhttp]
 
+## Prior art in the AC `ac-dev-lab` (A1 mini)
+
+The Acceleration Consortium's
+[`AccelerationConsortium/ac-dev-lab`](https://github.com/AccelerationConsortium/ac-dev-lab)
+training-lab repo has working code (against a **Bambu A1 mini**, not an
+H2D) that exercises the same LAN MQTT + FTPS path described above. Useful
+prior art when porting to the H2D:
+
+- **`src/ac_training_lab/bambu_a1_mini/_scripts/manual_print.py`** — a
+  minimal, end-to-end example that uses `bambulabs_api` to (1) read a
+  `.gcode` template, (2) wrap it as `Metadata/plate_1.gcode` inside an
+  in-memory zip, (3) `printer.upload_file(...)` over FTPS, and (4)
+  `printer.start_print(upload_fname, 1)` over MQTT. The same shape
+  should work for the H2D's plate 1 once the file is sliced with an H2D
+  profile.[^acdevlab-manual-print]
+- **`src/ac_training_lab/bambu_a1_mini/device.py`** — runs on a
+  Raspberry Pi 4B next to the printer and bridges an external MQTT
+  broker (subscribed to a `request` topic) to the printer: it loads a
+  G-code template, rewrites the embedded nozzle/bed/speed/fan setpoints
+  with `M104/M109/M140/M190` regex-style replacements, writes a temp
+  G-code, and shells out to a `print.py` that pushes the file. This is a
+  good template for an unattended powder-excavator dispatcher.[^acdevlab-device]
+- **`src/ac_training_lab/bambu_a1_mini/README.md`** plus the
+  [tracking issues](https://github.com/AccelerationConsortium/ac-dev-lab/issues)
+  worth reading before reimplementing for H2D — in particular
+  [#147 *Set up remote Python control on A1 mini*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/147),
+  [#149 *Set up A1 mini*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/149),
+  [#160 *Integration of Bambu 3D Printer with colab & hugging face*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/160),
+  [#168 *A1 Mini 3D printer — Self-driving Lab for MSE403H1*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/168),
+  and [PR #182 *MQTT client … for controlling a Bambu 3D printer*](https://github.com/AccelerationConsortium/ac-dev-lab/pull/182).
+
+Things from that prior art that should carry over to the H2D unchanged:
+
+- The `(IP, ACCESS_CODE, SERIAL)` triple as the only printer credentials
+  the LAN path needs, sourced from a `my_secrets.py` that is **not**
+  committed.
+- Wrapping the print payload as `Metadata/plate_1.gcode` inside a zip
+  and uploading it under any filename, then calling `start_print(fname,
+  plate_index)`.
+- Putting a small Pi (Pi 4B / Pi Zero 2 W) on the same LAN as the
+  printer and using an *external* MQTT broker (HiveMQ Cloud, mosquitto)
+  for orchestration, rather than driving the printer's own broker from
+  the cloud.
+
+Things that almost certainly will **not** carry over and need re-work
+for the H2D:
+
+- The G-code rewriting in `device.py` assumes single-extruder A1 mini
+  setpoints (`M104 S220`, `M140 S65`, etc.). On the H2D the sliced job
+  contains per-tool metadata for both extruders (and possibly the
+  laser / cutter), so any setpoint rewriting has to be tool-aware or
+  done at the slicer level instead.
+- `bambulabs_api`'s README still flags H2D as untested,[^bambulabs-readme]
+  so behaviours like `start_print(fname, plate)` and the status-field
+  parsing in `get_state()` / `get_bed_temperature()` should be verified
+  against an actual H2D before relying on them.
+
 ## H2D-specific caveats
 
 The H2D's hardware features (true IDEX dual extruder, optional laser /
@@ -243,6 +300,23 @@ integrating, plan to:
     been tested yet."* Source for the install command, basic `Printer`
     usage example, and the `(IP, access_code, serial)` constructor
     signature shown above.
+
+[^acdevlab-manual-print]: AccelerationConsortium, *ac-dev-lab* —
+    `src/ac_training_lab/bambu_a1_mini/_scripts/manual_print.py`.
+    <https://github.com/AccelerationConsortium/ac-dev-lab/blob/main/src/ac_training_lab/bambu_a1_mini/_scripts/manual_print.py>.
+    End-to-end A1-mini example: reads a `.gcode` file, wraps it as
+    `Metadata/plate_1.gcode` inside an in-memory zip, calls
+    `bambulabs_api.Printer(IP, ACCESS_CODE, SERIAL).upload_file(...)`
+    over FTPS, then `printer.start_print(upload_fname, 1)` over MQTT.
+
+[^acdevlab-device]: AccelerationConsortium, *ac-dev-lab* —
+    `src/ac_training_lab/bambu_a1_mini/device.py`.
+    <https://github.com/AccelerationConsortium/ac-dev-lab/blob/main/src/ac_training_lab/bambu_a1_mini/device.py>.
+    Pi-side MQTT bridge: subscribes to a `REQUEST_TOPIC`, rewrites the
+    embedded `nozzle_temperature` / `textured_plate_temp` /
+    `M104`/`M109`/`M140`/`M190` setpoints in a G-code template based on
+    the request's `parameters`, and shells out to a `print.py` that
+    pushes the file to the printer.
 
 [^paris-mqtt-tls]: Iqbal Luqman Bin Mohd Paris, Mohamed Hadi Habaebi,
     and Alhareth Mohammed Zyoud, *Implementation of SSL/TLS Security
