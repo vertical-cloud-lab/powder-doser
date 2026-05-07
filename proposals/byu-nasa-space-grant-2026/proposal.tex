@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BYU / Utah NASA Space Grant Consortium Fellowship -- Proposal Narrative
+% Applicant: Sam Charles (undergraduate)
+% Cycle:     2026 (deadline: 8 May 2026)
+% Length:    3-5 pages (per program guidelines, see nasa-26-application.pdf)
+%
+% This is a placeholder template populated with lorem ipsum so the formatting,
+% bibliography, and length can be reviewed before the real narrative is
+% written.  Replace each \lipsum block with prose, and replace the placeholder
+% citations in refs.bib with real references before submission.
+%
+% Build (MiKTeX):
+%   cd proposals/byu-nasa-space-grant-2026
+%   latexmk -pdf proposal.tex
+%
+% Required MiKTeX packages (auto-installed when [MPM]AutoInstall=1):
+%   geometry, fancyhdr, lastpage, lipsum, hyperref, natbib, microtype, titlesec
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[round,authoryear]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lipsum} % placeholder text only -- remove for the real submission
+
+% Tighter, bolder section headings appropriate for a short proposal narrative.
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.0\baselineskip}{0.3\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.6\baselineskip}{0.2\baselineskip}
+
+\setlength{\parskip}{0.4\baselineskip}
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sam Charles --- NASA Space Grant Fellowship Proposal}
+\fancyhead[R]{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Generative CAD for a Multi-Powder Doser:\\
+   Enabling Autonomous Discovery of Additively Manufactured Aerospace Alloys}\\[6pt]
+  {\large Sam Charles\\
+   Undergraduate Applicant, Brigham Young University}\\[2pt]
+  {\small Utah NASA Space Grant Consortium Fellowship --- 2026 Cycle}
+\end{center}
+\vspace{0.4\baselineskip}
+
+\section{Introduction and Motivation}
+\lipsum[1-2]~\citep{placeholder_am_aerospace,placeholder_self_driving_lab}
+
+\section{Background}
+\lipsum[3]
+
+\subsection{Multi-powder dosing for additive manufacturing}
+\lipsum[4]~\citep{placeholder_powder_dosing}
+
+\subsection{Generative CAD as a design accelerator}
+\lipsum[5]~\citep{placeholder_generative_cad}
+
+\section{Project Objectives}
+\lipsum[6]
+
+\section{Approach and Methods}
+\lipsum[7-8]
+
+\subsection{Generative CAD pipeline for the powder doser}
+\lipsum[9]~\citep{placeholder_powder_doser_repo}
+
+\subsection{Validation and integration with the autonomous discovery loop}
+\lipsum[10]
+
+\section{Timeline and Deliverables}
+\lipsum[11]
+
+\section{Broader Impact and Relevance to NASA}
+\lipsum[12]
+
+\section{Qualifications of the Applicant}
+\lipsum[13]
+
+\section*{References}
+\vspace{-1.0\baselineskip}
+\renewcommand{\bibsection}{}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
