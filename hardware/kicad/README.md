@@ -90,6 +90,15 @@ repository and clarify where needed"):
    only; no `.kicad_pcb` is included because the actuator stack
    sits on a hand-soldered Perma-Proto Bonnet rather than a
    custom-fab PCB.
+6. **Single-supply variant not drawn.** The schematic shows the
+   "two PSUs" wiring (J2 = 5 V jack, J3 = 12 V jack). The
+   recommended **single-supply variant** described in
+   `../vibration-motor-and-solenoid.md` ("Power supply" section)
+   replaces J2 with a Pololu D24V22F5 buck converter whose `VIN`
+   ties to the same `+12V` net as `VMOT` and whose `VOUT`
+   becomes the `+5V` net feeding the DRV8871 `VM` and the Pi
+   5 V rail. All net labels stay the same; only the source of
+   the `+5V` net changes.
 
 ## Regenerating the schematic and the PNG/PDF/SVG exports
 

@@ -22,6 +22,25 @@ Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
   current), so a small **driver / breakout board** is needed for each
   actuator.
 
+## Rotating vs stationary parts (no slip ring needed)
+
+To make the wire-routing constraints explicit:
+
+* **Stationary** (mounted to the frame / housing): the Pi Zero 2 W,
+  the Perma-Proto Bonnet, all three driver breakouts (DRV2605L,
+  DRV8871, DRV8825), the power supply / supplies, the vibration
+  motor (epoxied to the housing or hopper wall), the solenoid (on
+  a printed bracket beside the housing), and the **stepper motor
+  body** (bolted to a bracket co-axial with the auger).
+* **Rotating**: only the **auger shaft itself**. The shaft is
+  driven by the stepper through a **flexible shaft coupler**
+  (item 12) which sits *outside* the powder-side housing.
+* **Wires never cross a rotating boundary.** All four motor leads
+  on the stepper, the two leads on the vibration motor, and the
+  two leads on the solenoid land on stationary boards, so no slip
+  ring is needed. The flex coupler is the only mechanical link
+  between the rotating and stationary domains.
+
 ## TL;DR — recommended bill of materials
 
 | # | Part | Qty | Approx. price (USD) | Source / link |
@@ -32,22 +51,72 @@ Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
 | 4 | JF-0530B 5 V mini push–pull solenoid (~9.6 × 19 × 22 mm, ~4.5 mm stroke) | 1 | $4.95 | [adafruit.com/product/412](https://www.adafruit.com/product/412) |
 | 5 | Adafruit DRV8871 DC Motor Driver Breakout — 3.6 A peak, built-in flyback clamps + current limit, screw terminals, takes PWM logic in directly | 1 | $7.50 | [adafruit.com/product/3190](https://www.adafruit.com/product/3190) |
 | 6 | Adafruit Perma-Proto Bonnet Mini Kit for Pi — Pi-HAT-shaped solder substrate that the two breakouts and the Pi Zero 2 W's 2×20 header mate to | 1 | $4.95 | [adafruit.com/product/2310](https://www.adafruit.com/product/2310) |
-| 7 | 5 V / ≥1 A external supply (separate from the Pi 5 V rail) | 1 | — | any USB-C or barrel-jack PSU |
-| 8 | 2.1 mm barrel-jack breakout (or screw-terminal pigtail) for the 5 V supply input on the Bonnet | 1 | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
+| 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 0–1 | — | any 5 V barrel-jack PSU |
+| 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet (omit when using the consolidated single-supply variant) | 0–1 | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
 | 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, ~0.67 A/phase, ~12 N·cm holding (e.g. SparkFun ROB-10848 or StepperOnline 11HS18-0674S) | 1 | $14–18 | [sparkfun.com/products/10848](https://www.sparkfun.com/products/10848) |
 | 11 | Pololu DRV8825 stepper-driver carrier — pre-soldered carrier PCB, on-board current limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi | 1 | $7.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
 | 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
-| 13 | 12 V / ≥1 A external supply (separate from the 5 V solenoid supply and from the Pi 5 V rail) for the stepper | 1 | — | any 12 V wall-wart |
+| 13 | **12 V / ≥3 A external supply** — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant | 1 | ~$10 | any 12 V/3 A barrel-jack wall-wart, e.g. [adafruit.com/product/352](https://www.adafruit.com/product/352) (12 V/5 A) |
 | 14 | 100 µF / 25 V electrolytic across the DRV8825's `VMOT` / `GND` (Pololu specifically calls this out as required) | 1 | <$0.50 | any |
+| 15 | **Pololu D24V22F5** 5 V / 2.5 A step-down (buck) regulator — 12 V → 5 V, lets a single 12 V supply power the Pi *and* the DRV8871 solenoid rail, eliminating the second wall-wart and item 8 | 1 | $14.95 | [pololu.com/product/2858](https://www.pololu.com/product/2858) |
 
 Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12): **≈ $60**.
+With the **consolidated single-supply variant** (add item 15, drop
+items 7 and 8): **≈ $75** but with **only one wall plug** instead
+of two.
 
 Everything in this list is a **pre-packaged board with screw terminals
 or 0.1" headers** — no transistor / diode / gate-resistor sizing
 needed. You solder the two breakouts and the Pi's 2×20 header onto
 the Perma-Proto Bonnet, screw the motor and solenoid leads into the
 DRV2605L and DRV8871 terminals respectively, and you're done.
+
+## Power supply
+
+The actuators want two distinct rails:
+
+* **12 V / ≥1 A** for the stepper, into the DRV8825's `VMOT`.
+* **5 V / ≥1.5 A** for the solenoid coil (peak ~1.1 A inrush)
+  *and* the Pi Zero 2 W (~0.7 A under WiFi load), with a common
+  ground tied to the stepper supply's GND.
+
+There are two wiring options; **the single-supply variant is
+recommended** because it eliminates one wall-wart and one
+barrel-jack breakout:
+
+### Recommended: single 12 V supply + on-board buck (item 13 + item 15)
+
+* Use a single **12 V / 3 A barrel-jack wall-wart** (item 13,
+  e.g. [Adafruit #352](https://www.adafruit.com/product/352)
+  rated 12 V / 5 A so it stays cool at our ~1 A continuous draw).
+* Solder a **Pololu D24V22F5** 12 V → 5 V / 2.5 A step-down
+  (item 15, [Pololu #2858](https://www.pololu.com/product/2858))
+  onto the bonnet next to the DRV8825. It's a pre-built carrier
+  with `VIN`, `GND`, and `VOUT` pads on a 0.1" pitch — no
+  inductor or feedback-divider sizing needed.
+* Wire `VIN/GND` of the buck to the same 12 V net that feeds the
+  DRV8825's `VMOT`. Wire `VOUT` to the DRV8871's `VM` and to the
+  Pi Zero 2 W's 5 V rail (header pin 2 or 4) on the bonnet. All
+  GNDs are already common via the bonnet's ground rail.
+* Item 7 (separate 5 V PSU) and item 8 (second barrel-jack
+  breakout) become unnecessary — the wall-plug count drops from
+  **two to one**.
+* Why the D24V22F5 specifically: it's the cheapest Pololu buck
+  carrier that comfortably handles the Pi's startup transient
+  plus the JF-0530B's ~1.1 A inrush in the same 5 V rail (2.5 A
+  continuous, ~3 A peak). The D24V10F5 (1 A continuous) is too
+  small once the solenoid is firing while the Pi is busy on WiFi.
+
+### Alternative: two separate wall-warts (items 7, 8, 13)
+
+Keep this option if you already have a 5 V supply on the bench
+and don't want to buy a buck converter. In that case wire the
+5 V PSU through item 8 to the DRV8871's `VM` (and to a Pi USB
+power input), and the 12 V PSU through a screw-terminal pad to
+the DRV8825's `VMOT`. Tie all grounds together at the bonnet.
+This is also the configuration drawn in the KiCad schematic
+([`kicad/`](kicad/)).
 
 ## Auger drive motor
 
@@ -286,18 +355,37 @@ before fabrication.
    (start with all-low = full step, switch to all-high = 1/32 once
    calibration is dialed in). Wire `A1/A2` and `B1/B2` to the
    stepper coils.
-5. Solder the **barrel-jack breakout** (item 8) onto the Bonnet for
-   the 5 V supply; jumper its `+` to the DRV8871's `VM` and the
-   100 µF / 10 V cap's `+`, and `−` to the DRV8871's `GND`, the
-   cap's `−`, and a Pi GND pad.
-6. Bring the **12 V PSU** (item 13) in on a second screw-terminal
-   pad pair; jumper `+` to the DRV8825's `VMOT` and the 100 µF /
-   25 V cap's `+`, and `−` to the DRV8825's `GND`, the cap's `−`,
-   and the same Pi GND pad. **Set the DRV8825 current limit pot to
-   ~Vref = 0.42 V (≈0.67 A/phase) before powering the motor for the
-   first time** — this is the only "tuning" step in the build.
-7. Couple the stepper output shaft to the auger shaft with the
-   flexible coupler (item 12).
+5. **Power-supply wiring — pick one of the two variants in the
+   "Power supply" section above:**
+   * **Recommended (single-supply):** solder the **Pololu D24V22F5
+     buck converter** (item 15) onto the Bonnet next to the
+     DRV8825. Bring the **12 V PSU** (item 13) in on a
+     screw-terminal pad pair; jumper `+` to both the DRV8825's
+     `VMOT`, the buck's `VIN`, and the 100 µF / 25 V cap's `+`,
+     and `−` to the DRV8825's `GND`, the buck's `GND`, the cap's
+     `−`, and a Pi GND pad. Jumper the buck's `VOUT` to the
+     DRV8871's `VM`, the 100 µF / 10 V cap's `+`, and the Pi's
+     5 V rail (header pin 2 or 4 on the bonnet); jumper the
+     buck's `GND` side of `VOUT` to the DRV8871's `GND` and the
+     cap's `−`. Items 7 and 8 are not used in this variant.
+   * **Alternative (two PSUs):** solder the **barrel-jack
+     breakout** (item 8) onto the Bonnet for the 5 V supply
+     (item 7); jumper its `+` to the DRV8871's `VM` and the
+     100 µF / 10 V cap's `+`, and `−` to the DRV8871's `GND`,
+     the cap's `−`, and a Pi GND pad. Then bring the **12 V PSU**
+     (item 13) in on a second screw-terminal pad pair; jumper
+     `+` to the DRV8825's `VMOT` and the 100 µF / 25 V cap's
+     `+`, and `−` to the DRV8825's `GND`, the cap's `−`, and
+     the same Pi GND pad.
+
+   **In either variant, set the DRV8825 current-limit pot to
+   ~Vref = 0.42 V (≈0.67 A/phase) before powering the motor for
+   the first time** — this is the only "tuning" step in the
+   build.
+6. Couple the stepper output shaft to the auger shaft with the
+   flexible coupler (item 12). The coupler is the *only*
+   mechanical link between the rotating auger shaft and the
+   stationary stepper body — no wires cross this boundary.
 
 That's the entire assembly — no transistor, diode, or resistor
 sizing.
