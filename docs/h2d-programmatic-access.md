@@ -25,6 +25,150 @@ documented by the community rather than by Bambu Lab.
 | **B. LAN / Developer Mode** | FTPS upload to `ftps://<printer>:990` then MQTT-over-TLS to `mqtts://<printer>:8883` | FTP user `bblp` + LAN access code; MQTT user `bblp` + LAN access code | No | Works the same way as on X1/P1/A1 *if Developer Mode is enabled*; community libraries (e.g. `bambulabs_api`) report H2D as "not yet tested".[^openbambu-ftp][^openbambu-mqtt][^bambulabs-readme] |
 | **C. Bambu Connect (sanctioned third-party)** | Bambu Connect handles transport on behalf of the slicer | Cloud account login inside Bambu Connect | Yes (for login) | The path Bambu Lab tells third-party software (e.g. OrcaSlicer) to use under the new authorization system.[^bambu-third-party] |
 
+## Getting started — bringup checklist for a real H2D
+
+For the *powder-excavator* / powder-doser workflow the practical
+target is **mode B** (LAN / Developer Mode): no cloud account in the
+loop, no third-party authorization gate, and the same `(IP, access
+code, serial)` triple every open-source library already understands.
+The recommended bringup order is:
+
+### Step 0 — Get the printer onto the same LAN as your worker host
+
+1. Plug the H2D in, finish the on-screen setup, and connect it to the
+   wired or wireless LAN that the worker host (Raspberry Pi, lab PC,
+   container) lives on. A separate VLAN is fine as long as ports
+   `990/tcp` (FTPS) and `8883/tcp` (MQTT-over-TLS) are reachable from
+   the worker.
+2. On the printer screen: **Settings → WLAN → IP address** — note the
+   IPv4 address. Pin it via DHCP reservation so it does not move; the
+   LAN flow has no mDNS / discovery broker.
+
+### Step 1 — Enable LAN-only Developer Mode and capture credentials
+
+This is the single setting that decides whether mode B will work at
+all under the new authorization system.[^bambu-third-party]
+
+1. **Settings → General → enable "LAN Only Mode"** (and **"Developer
+   Mode"** if your firmware exposes it as a separate toggle).
+2. From **Settings → WLAN → Access Code**, write down the 8-digit
+   code. (This is the FTP and MQTT password — *not* your Bambu Cloud
+   password.)
+3. From **Settings → Device → Device Info / Serial**, write down the
+   15-character serial (e.g. `03919C…`). This is the `<SERIAL>` in
+   every MQTT topic (`device/<SERIAL>/report`, `…/request`).
+4. Also note the **firmware version** on the same screen and pin it
+   in your worker config — Bambu firmware updates have repeatedly
+   changed Developer-Mode behaviour and the authorization gate.
+
+You should now have a `(IP, ACCESS_CODE, SERIAL)` triple. Everything
+downstream — every Python library, every MQTT publish, every FTPS
+upload — needs exactly those three values.
+
+### Step 2 — Smoke-test reachability (no print yet)
+
+Before touching any slicer or print command, prove the two transports
+work from the worker host. Replace `<IP>`, `<ACCESS_CODE>`, `<SERIAL>`
+with the values from Step 1.
+
+```bash
+# 2a. MQTT-over-TLS handshake reachable on :8883?
+openssl s_client -connect <IP>:8883 -servername <IP> </dev/null \
+  | head -20
+# Expect: "CONNECTED(...)" and a self-signed cert (CN=BBL …). The
+# self-signed-ness is expected; see the security section below.
+
+# 2b. Subscribe to the printer's status topic and watch idle telemetry
+mosquitto_sub --insecure -h <IP> -p 8883 \
+  -u bblp -P "<ACCESS_CODE>" \
+  -t "device/<SERIAL>/report" -v
+# Expect: JSON push messages within a few seconds. Press Ctrl-C when
+# you see at least one. If you see "Connection refused" or auth
+# failures, you do *not* have Developer/LAN-only Mode actually on.
+
+# 2c. FTPS reachable + access-code accepted?
+lftp -u "bblp,<ACCESS_CODE>" -e \
+  "set ftp:ssl-allow yes; set ssl:verify-certificate no; \
+   ls /cache; bye" \
+  ftps://<IP>:990
+# Expect: a directory listing of /cache (may be empty on a fresh
+# printer). Auth failure here means the access code is wrong or LAN
+# Mode is off.
+```
+
+If both 2b and 2c succeed, you have proven the same `(IP, code,
+serial)` triple that the rest of the doc — and every library in the
+"Open-source Python libraries" table below — assumes.
+
+### Step 3 — End-to-end dry run with a real `.gcode.3mf`
+
+Use the H2D `cube_h2d.gcode.3mf` from the empirical CLI walkthrough
+([Remote slicing → Bambu Studio CLI](#1-bambu-studio-cli-bambu-studio---slice))
+as the test payload — it is small (36 KB), already carries the IDEX
+header the firmware expects, and has a known-good `Metadata/plate_1.gcode`
+inside.
+
+```bash
+# 3a. Upload the 3MF to the printer's /cache
+lftp -u "bblp,<ACCESS_CODE>" -e \
+  "set ftp:ssl-allow yes; set ssl:verify-certificate no; \
+   cd /cache; put cube_h2d.gcode.3mf; ls; bye" \
+  ftps://<IP>:990
+
+# 3b. In one terminal, watch status
+mosquitto_sub --insecure -h <IP> -p 8883 \
+  -u bblp -P "<ACCESS_CODE>" \
+  -t "device/<SERIAL>/report" -v
+
+# 3c. In another terminal, publish the start-print command
+#     (clear the bed first — this is a real print)
+mosquitto_pub --insecure -h <IP> -p 8883 \
+  -u bblp -P "<ACCESS_CODE>" \
+  -t "device/<SERIAL>/request" \
+  -m '{"print":{"sequence_id":"0","command":"project_file",
+       "param":"Metadata/plate_1.gcode","project_id":"0",
+       "profile_id":"0","task_id":"0","subtask_id":"0",
+       "subtask_name":"","url":"ftp:///cache/cube_h2d.gcode.3mf",
+       "md5":"","timelapse":false,"bed_type":"auto",
+       "bed_levelling":true,"flow_cali":true,"vibration_cali":true,
+       "layer_inspect":true,"ams_mapping":"","use_ams":false}}'
+```
+
+You should see `gcode_state` in the `report` stream walk through
+`IDLE → PREPARE → RUNNING` within ~30 s, and the printer should
+actually start the cube. If `gcode_state` never leaves `IDLE` (or
+returns to `IDLE` immediately with a non-zero `print_error`), the
+common causes — in roughly the order I'd check them — are:
+
+1. The `url` path doesn't match where the file actually landed (the
+   `ls` in step 3a tells you the truth; note the **three** slashes in
+   `ftp:///cache/cube_h2d.gcode.3mf`).
+2. The `.gcode.3mf` was sliced for a different printer (e.g. a P2S
+   profile pointed at an H2D) and the firmware rejects it for missing
+   IDEX metadata — re-slice with the verified H2D recipe.
+3. The new authorization gate is engaged because LAN-only / Developer
+   Mode silently came back off after a firmware update; re-check
+   Step 1.
+
+### Step 4 — Wrap mode B in code
+
+Once Steps 2 and 3 work from the shell, the same three values feed
+straight into a Python wrapper. The lowest-friction starting point
+is `bambulabs_api`'s `Printer(IP, ACCESS_CODE, SERIAL)` constructor,
+which internally does the same FTPS upload + MQTT-over-TLS publish
+you just verified by hand. (See the
+[Open-source Python libraries](#open-source-python-libraries)
+table for the H2D-readiness status of each option, and the
+[`ac-dev-lab` A1-mini prior art](#prior-art-in-the-ac-ac-dev-lab-a1-mini)
+section for a concrete `manual_print.py` template that already wires
+this up for the A1 mini and ports almost verbatim to H2D once you
+have a known-good `.gcode.3mf`.)
+
+Only *after* Step 4 is green for a static, hand-sliced cube does it
+make sense to plug in the headless slicer worker from the
+[Remote slicing](#remote-slicing-stl--3mf) section and close the loop
+STL → 3MF → upload → start.
+
 ## A. Cloud submission
 
 The undocumented-but-community-reverse-engineered cloud surface used by
