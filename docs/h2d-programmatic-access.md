@@ -313,11 +313,67 @@ run found error, return -66, exit...
 ```
 
 That is exactly the H2D / IDEX caveat called out further down: the
-H2D needs an explicit per-extruder filament list (e.g. via
-`--load-filament-ids "1,2,..."` and one filament profile per tool, or
-profiles flattened/exported from a desktop Bambu Studio project that
-already has the dual-extruder filament mapping baked in) — it will
-not auto-bind a single PLA Basic profile across both tools.[^cli-empirical]
+H2D needs an explicit per-extruder filament list and the bundled
+profiles are *templates* (they declare `inherits: "Bambu PLA Basic
+@base"` etc.) which the CLI does not resolve — the wiki itself notes
+*"the config file should be a full config instead of the one used in
+resources/profiles/BBL/filament"*.[^bambu-studio-cli]
+
+**Reproducing one filament profile per tool on the H2D — what
+actually works:** flatten the inheritance chain into a single full
+config per role, fix three identity fields, and pass an explicit
+manual filament-to-extruder map. With the same AppImage and cube STL
+as above:
+
+```bash
+# Walk machine/process/filament profiles' "inherits" chain and merge
+# parents into children → h2d_machine_flat.json, h2d_process_flat.json,
+# h2d_filament_flat.json. Then patch the resulting machine config so
+# the CLI's compatibility check accepts it:
+#   machine.from         = "system"   (so new_printer_system_name == name)
+#   machine.inherits     = ""         (do not look up a missing parent)
+#   machine.printer_settings_id = "Bambu Lab H2D 0.4 nozzle"
+# (mirror from=system / inherits="" on the process and filament configs).
+
+xvfb-run -a -s "-screen 0 1280x1024x24" ./bambu.AppImage \
+  --orient 1 --arrange 1 \
+  --load-settings  "h2d_machine_flat.json;h2d_process_flat.json" \
+  --load-filaments "h2d_filament_flat.json;h2d_filament_flat.json" \
+  --filament-map-mode "Manual" \
+  --filament-map "1,2" \
+  --slice 1 --export-3mf cube_h2d.gcode.3mf --outputdir h2d_out cube.stl
+```
+
+This run completes with `result.json` reporting `"return_code": 0`,
+`"error_string": "Success."`, and produces a valid 36 KB
+`cube_h2d.gcode.3mf`. The `Metadata/plate_1.gcode` inside the archive
+carries the IDEX header the printer actually expects:
+
+```
+; filament_map      = 1,2
+; filament_map_2    = 0,1
+; filament_map_mode = Manual
+; printer_extruder_id = 1,2
+; print_extruder_id   = 1,2
+; master_extruder_id  = 2
+```
+
+i.e. filament 1 → left extruder, filament 2 → right extruder, with
+explicit master-extruder selection — exactly the per-tool metadata
+the IDEX-aware firmware needs and that mode B's `print.project_file`
+references.[^cli-empirical] Two non-obvious gotchas surfaced by this
+exercise:
+
+- **`--slice 0` (all plates) silently skips the manual filament-map
+  setup**: the CLI's manual-mode block guards on `plate_to_slice != 0`,
+  so for STL → 3MF on a multi-extruder machine you must pass
+  `--slice 1` (or another explicit plate index). With `--slice 0`,
+  even correct flags still fail with `"some filaments can not be
+  mapped under manual mode for multi extruder printer"`.
+- **`--filament-map-mode` defaults to `Auto For Flush`** on the H2D,
+  which then trips the auto-mapping check; passing `Manual` is what
+  switches the message from `under auto mode` to `under manual mode`
+  and makes the explicit `--filament-map` array load.
 
 ### 2. OrcaSlicer CLI
 
@@ -499,7 +555,24 @@ integrating, plan to:
     H2D process + Bambu PLA Basic H2D filament profiles fails with
     `"plate 1 : some filaments can not be mapped under auto mode for
     multi extruder printer"` (`return_code: -66`), demonstrating the
-    H2D-specific IDEX caveat described in this section.
+    H2D-specific IDEX caveat described in this section. Resolving the
+    `inherits` chain of those bundled profiles into flat full configs
+    (and patching `from = "system"`, `inherits = ""`, and
+    `printer_settings_id = "Bambu Lab H2D 0.4 nozzle"` on the machine
+    config so the CLI's compatibility check accepts it), then passing
+    two filament profiles plus
+    `--filament-map-mode "Manual" --filament-map "1,2" --slice 1`,
+    *succeeds* on this same fresh AppImage: `result.json` reports
+    `"return_code": 0` / `"error_string": "Success."`, and the
+    resulting 36 KB `cube_h2d.gcode.3mf` contains a
+    `Metadata/plate_1.gcode` (~249 KB) whose header carries the IDEX
+    assignment (`filament_map = 1,2`, `filament_map_mode = Manual`,
+    `printer_extruder_id = 1,2`, `master_extruder_id = 2`). The same
+    invocation with `--slice 0` (all plates) instead of `--slice 1`
+    silently re-trips the `"can not be mapped under manual mode"`
+    error because the BambuStudio CLI's manual-filament-map setup is
+    guarded by `plate_to_slice != 0` (see `src/BambuStudio.cpp`
+    lines ~6491-6700 in tag `v02.06.00.51`).
 
 [^paris-mqtt-tls]: Iqbal Luqman Bin Mohd Paris, Mohamed Hadi Habaebi,
     and Alhareth Mohammed Zyoud, *Implementation of SSL/TLS Security
