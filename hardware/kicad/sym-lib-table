@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "powder_doser")(type "KiCad")(uri "${KIPRJMOD}/powder_doser.kicad_sym")(options "")(descr "Custom block symbols for the powder-doser breakout boards"))
+)

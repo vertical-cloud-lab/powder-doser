@@ -11,8 +11,11 @@ Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
 * A **drive motor** to **rotate the auger** itself (this is what
   actually meters the powder); preferably **direct-coupled to the
   auger shaft**, with belt drive as a fallback.
-* A **vibration motor** to free bridged powder in the hopper / on the
-  auger flights, ideally with **variable frequency and amplitude**.
+* A **vibration motor** to free bridged powder, mounted on the
+  **stationary auger housing or hopper wall** (not on the rotating
+  auger itself — wires can't follow a rotating shaft without a
+  slip ring, which we want to avoid). Ideally with **variable
+  frequency and amplitude**.
 * A **solenoid** mounted **externally** (e.g. as a tap that strikes the
   housing) to dislodge stuck powder.
 * All driven from a **Raspberry Pi Zero 2 W** (3.3 V GPIO, limited drive
@@ -108,9 +111,10 @@ the flexible coupler (item 12) for a small **GT2 timing-belt
 pulley pair + closed-loop belt** (e.g. 16T pulleys, 110–158 mm
 belt). 1:1 ratio keeps the dose calibration identical to direct
 drive; a 2:1 reduction (16T → 32T on the auger) doubles torque
-and halves max RPM if needed. Direct-drive is preferred per the
-issue comment because it removes belt tension/slip as a source of
-dose error.
+and halves max RPM if needed. **Direct-drive is preferred per the
+issue review** — the specific reasons for that preference haven't
+been spelled out yet, so this section captures both options and
+defers the final choice to the reviewer.
 
 ### Why not a brushed DC gearmotor (e.g. N20) with an encoder?
 
@@ -164,8 +168,11 @@ Pick **one** vibrating actuator:
   parameters in the paper.
 
 Both fit comfortably on the flat outer wall of the 20 mm auger
-housing (e.g. epoxied or held by a printed clip on the housing
-exterior).
+housing or on the hopper (e.g. epoxied or held by a printed clip
+on the housing exterior). They must **not** be attached to the
+rotating auger itself — the leads can't follow a spinning shaft
+without a slip ring, and a slip ring is exactly what we want to
+avoid.
 
 ### Wiring (Pi Zero 2 W ↔ DRV2605L ↔ motor)
 
@@ -238,49 +245,29 @@ similarly "just solder and go", but its 10–20 ms switching latency
 and finite contact life make it a poor fit for pulsed taps; the
 DRV8871 is silent, has no moving parts, and supports any PWM rate.
 
-## High-level system block diagram
+## Electrical schematic
 
-This is the level you actually need to assemble: each box is a
-pre-made board, and the arrows are wires (jumper or screw-terminal)
-between named pads on those boards.
+The full electrical schematic is a real KiCad 7 project under
+[`kicad/`](kicad/). Open it with `kicad
+hardware/kicad/powder_doser_actuators.kicad_pro`, or browse the
+rendered exports:
 
-```
-                ┌─────────────────────────────────────────────────────────────┐
-                │  Raspberry Pi Zero 2 W  (mounted on Bonnet)                 │
-                │                                                             │
-                │   3V3  GND  SDA  SCL   GPIO18    GPIO20  GPIO21  GPIO16    │
-                └────┬────┬────┬────┬──────┬──────────┬───────┬───────┬───────┘
-                     │    │    │    │      │          │       │       │
-                     │    │    │    │      │ PWM      │ STEP  │ DIR   │ ~EN
-                     ▼    ▼    ▼    ▼      ▼          ▼       ▼       ▼
-   ┌──────────────────────────┐  ┌──────────────────────┐  ┌────────────────────────┐
-   │  Adafruit DRV2605L       │  │  Adafruit DRV8871    │  │  Pololu DRV8825        │
-   │  haptic driver (I²C)     │  │  H-bridge breakout   │  │  stepper-driver carrier│
-   │                          │  │                      │  │                        │
-   │ VIN GND SDA SCL  +    -  │  │ IN1 IN2 VM GND O1 O2 │  │ STEP DIR ~EN VMOT GND  │
-   │                          │  │                      │  │           A1 A2 B1 B2  │
-   └──────────────┬─────┬─────┘  └──┬───┬──┬───┬──┬──┬──┘  └──┬────┬───┬────┬───────┘
-                  │     │           │   │  │   │  │  │        │    │   │    │
-                  ▼     ▼           ▼   ▼  ▼   ▼  ▼  ▼        ▼    ▼   ▼    ▼
-            ┌──────────────┐    ┌─────────────────┐         ┌──────────────────┐
-            │ ERM/LRA (#2  │    │ Solenoid        │         │ NEMA 11 stepper  │
-            │ or #3) on    │    │ JF-0530B (#4)   │         │ (#10), 5 mm shaft│
-            │ auger wall   │    │ external tap    │         │ → flex coupler   │
-            └──────────────┘    └─────────────────┘         │ (#12) → auger    │
-                                                            │ shaft            │
-                                                            └──────────────────┘
-                                          ▲                           ▲
-                                ┌─────────┴────────┐         ┌────────┴─────────┐
-                                │ 5 V external PSU │         │ 12 V external PSU│
-                                │ via barrel-jack  │         │ for stepper      │
-                                │ breakout (#7,#8) │         │ (#13) + 100 µF   │
-                                │ → DRV8871 VM     │         │ cap (#14) across │
-                                │ GND tied to Pi   │         │ DRV8825 VMOT/GND │
-                                └──────────────────┘         │ GND tied to Pi   │
-                                                             └──────────────────┘
-```
+* [`kicad/powder_doser_actuators.pdf`](kicad/powder_doser_actuators.pdf) — printable PDF.
+* [`kicad/powder_doser_actuators.svg`](kicad/powder_doser_actuators.svg) — vector SVG.
+* PNG render embedded below.
 
-Build order:
+![KiCad schematic of the powder-doser actuator stack](kicad/powder_doser_actuators.png)
+
+Connectivity is expressed by **matching global net labels** (KiCad
+treats identically-named labels as the same net) rather than drawn
+wires; see [`kicad/README.md`](kicad/README.md) for the symbol
+inventory, the labels-vs-wires rationale, and — importantly — the
+explicit list of **placeholder symbols** (the four breakout boards,
+for which no first-party Adafruit / Pololu KiCad library currently
+exists) and **assumed connections** that need a human to confirm
+before fabrication.
+
+## Build order
 
 1. Solder the Pi Zero 2 W's 2×20 header onto the **Perma-Proto
    Bonnet** (item 6) and seat the Pi on it.
