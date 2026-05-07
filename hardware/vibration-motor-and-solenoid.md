@@ -51,8 +51,8 @@ To make the wire-routing constraints explicit:
 | 4 | JF-0530B 5 V mini push–pull solenoid (~9.6 × 19 × 22 mm, ~4.5 mm stroke) | 1 | $4.95 | [adafruit.com/product/412](https://www.adafruit.com/product/412) |
 | 5 | Adafruit DRV8871 DC Motor Driver Breakout — 3.6 A peak, built-in flyback clamps + current limit, screw terminals, takes PWM logic in directly | 1 | $7.50 | [adafruit.com/product/3190](https://www.adafruit.com/product/3190) |
 | 6 | Adafruit Perma-Proto Bonnet Mini Kit for Pi — Pi-HAT-shaped solder substrate that the two breakouts and the Pi Zero 2 W's 2×20 header mate to | 1 | $4.95 | [adafruit.com/product/2310](https://www.adafruit.com/product/2310) |
-| 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 0–1 | — | any 5 V barrel-jack PSU |
-| 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet (omit when using the consolidated single-supply variant) | 0–1 | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
+| 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 1\* | — | any 5 V barrel-jack PSU |
+| 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet *(omit when using the consolidated single-supply variant)* | 1\* | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
 | 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, ~0.67 A/phase, ~12 N·cm holding (e.g. SparkFun ROB-10848 or StepperOnline 11HS18-0674S) | 1 | $14–18 | [sparkfun.com/products/10848](https://www.sparkfun.com/products/10848) |
 | 11 | Pololu DRV8825 stepper-driver carrier — pre-soldered carrier PCB, on-board current limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi | 1 | $7.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
@@ -65,6 +65,10 @@ Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12): **≈ $60**
 With the **consolidated single-supply variant** (add item 15, drop
 items 7 and 8): **≈ $75** but with **only one wall plug** instead
 of two.
+
+\* Items 7 and 8 are only used in the *dual-supply* variant. If
+you use the recommended single-supply variant (12 V wall-wart +
+item 15 buck converter), set their quantity to zero.
 
 Everything in this list is a **pre-packaged board with screw terminals
 or 0.1" headers** — no transistor / diode / gate-resistor sizing
@@ -365,9 +369,11 @@ before fabrication.
      and `−` to the DRV8825's `GND`, the buck's `GND`, the cap's
      `−`, and a Pi GND pad. Jumper the buck's `VOUT` to the
      DRV8871's `VM`, the 100 µF / 10 V cap's `+`, and the Pi's
-     5 V rail (header pin 2 or 4 on the bonnet); jumper the
-     buck's `GND` side of `VOUT` to the DRV8871's `GND` and the
-     cap's `−`. Items 7 and 8 are not used in this variant.
+     5 V rail (header pin 2 or 4 on the bonnet). The buck shares
+     the bonnet's common ground from the previous jumper, so its
+     `GND` pin needs no separate wire. Wire the DRV8871's `GND`
+     and the 100 µF / 10 V cap's `−` to that same ground rail.
+     Items 7 and 8 are not used in this variant.
    * **Alternative (two PSUs):** solder the **barrel-jack
      breakout** (item 8) onto the Bonnet for the 5 V supply
      (item 7); jumper its `+` to the DRV8871's `VM` and the
