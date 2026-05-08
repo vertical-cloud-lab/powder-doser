@@ -4,6 +4,16 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Design
+
+A written brainstorming pass over candidate dispenser architectures —
+parallel-channel, cartridge carousel, X-Y gantry, vibratory, pneumatic,
+and shared-auger-with-purge — with the benefits and pitfalls of each
+under the autonomous-loop / 30-powder requirements is in
+[`design/brainstorming.md`](design/brainstorming.md). No CAD or sketches
+are produced at this stage; that document is the output of the
+brainstorming session called for in the corresponding tracking issue.
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
