@@ -67,9 +67,9 @@
 Additively manufactured (AM) structural alloys are an increasingly
 important class of materials for space applications.  Launch-mass
 reduction, topology-optimized geometries, and rapid iteration on bespoke
-parts all favor laser powder-bed fusion (L-PBF, the dominant metal-AM
-process for aerospace structural parts) over conventional subtractive
-machining \citep{wei2021multimaterial}.  The bottleneck for discovering
+parts all favor laser powder-bed fusion (L-PBF, the dominant
+metal-3D-printing process for aerospace structural parts) over
+conventional subtractive machining \citep{wei2021multimaterial}.  The bottleneck for discovering
 and qualifying \emph{new} aerospace alloys for these processes -- as
 opposed to printing established compositions -- is not the printers
 themselves.  It is the upstream workflow that prepares the metal powder
@@ -96,13 +96,15 @@ reactive metal powders, and -- critically -- caps the
 campaign \citep{vecchio2021htread}.
 
 Powder dispensing is therefore an unmet need in the research-lab
-setting.  The few automated dispensers that do exist are validated
-mainly on pharmaceutical powders and aimed at industrial high-throughput
-experimentation: Mettler Toledo Quantos/CHRONECT, Chemspeed
-SWING/FLEX, and Unchained Labs systems all run roughly
-\$50\,k--\$150\,k+ when fully integrated, and even at those price
-points their precision degrades sharply below 10~mg per dose and varies
-strongly with powder properties \citep{bahr2018collaborative,bahr2020recent}.
+setting.  The few automated dispensers that do exist are designed for
+pharmaceutical powders and aimed at industrial high-throughput
+experimentation.  Commercial systems -- Mettler Toledo
+Quantos/CHRONECT, Chemspeed SWING/FLEX, and Unchained Labs platforms --
+all run roughly \$50\,k--\$150\,k+ when fully integrated.  Even at
+those price points, their precision degrades sharply below 10~mg per
+dose and varies strongly with powder properties
+\citep{bahr2018collaborative,bahr2020recent}.
+
 Lower-cost gravimetric trickler dispensers do exist -- our group has
 benchtested an Autotrickler unit -- but they are designed for the
 coarse, free-flowing grain sizes of reloading powders and are simply
@@ -114,35 +116,42 @@ dispenser, a custom 16-hopper feeder, and a directed-energy-deposition
 (DED) print head -- a powder-blown alternative to L-PBF that is more
 forgiving of feedstock variability but produces parts with very
 different microstructures \citep{vecchio2024htread,vecchio2021htread}.
-We have not identified any sub-\$10\,k multi-powder doser validated for
-L-PBF aerospace-alloy feedstocks in either the commercial or the
-open-hardware landscape, and DIY designs in the self-driving-lab
-community have not been rigorously characterized for the volumes,
-cohesive flow, and cross-contamination constraints of L-PBF
+
+We have not identified any sub-\$10\,k multi-powder doser validated
+for L-PBF aerospace-alloy feedstocks in either the commercial or the
+open-hardware landscape.  DIY designs in the self-driving-lab
+community have not been rigorously tested for the volumes, clumping
+behavior (``cohesive flow''), and cross-contamination constraints
+required for L-PBF
 \citep{tom2024sdl,lo2024frugal,pelkie2025democratizing}.
 
-This project will close that gap with two interlocking contributions.
-First, we will produce an \textbf{open-source, accurate, low-cost,
-reliable multi-powder dispenser} purpose-built for L-PBF research
-workflows.  It will handle up to \textbf{30 unique powders} with total
-per-blend dispense volumes up to \textbf{250~mL}, and is designed to
-slot in as the front-end of an autonomous AM aerospace-alloy discovery
-loop.
+This project will close that gap with two interlocking contributions:
 
-Second, we will use the design of that dispenser as a real,
-non-trivial test article for an \textbf{honest study of the
-capabilities and current limitations of agentic AI} applied to
-electromechanical and generative CAD design.  Existing peer-reviewed
-work on AI-driven CAD restricts itself either to single-component
-generation or to short ``can the model produce a bracket?''
-demonstrations \citep{wu2021deepcad,xie2025text2cadquery,rukhovich2025cadrecode}.
-Whether a tightly-supervised agentic loop can deliver an integrated
-mechanical, electrical, and firmware design for a real research
-instrument is an open question, and that is the question this project
-is built to answer.  We are not testing whether AI can build a product
-on its own -- we expect to guide it heavily.  We are testing how much
-further the human--AI partnership can push that boundary on a problem
-that actually matters for NASA-relevant materials research.
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.25em,topsep=0.15em,label=(\arabic*)]
+  \item An \textbf{open-source, accurate, low-cost, reliable
+        multi-powder dispenser} purpose-built for L-PBF research
+        workflows.  It will handle up to \textbf{30 unique powders}
+        with total per-blend dispense volumes up to \textbf{250~mL},
+        and is designed to slot in as the front-end of an autonomous
+        AM aerospace-alloy discovery loop.
+  \item An \textbf{honest study of the capabilities and current
+        limitations of agentic AI} applied to electromechanical and
+        generative CAD design, using the dispenser as a real,
+        non-trivial test article.  Existing peer-reviewed work on
+        AI-driven CAD restricts itself either to single-component
+        generation or to short ``can the model produce a bracket?''
+        demonstrations
+        \citep{wu2021deepcad,xie2025text2cadquery,rukhovich2025cadrecode}.
+        Whether a tightly-supervised agentic loop can deliver an
+        integrated mechanical, electrical, and firmware design for a
+        real research instrument is an open question -- and that is
+        the question this project is built to answer.
+\end{enumerate}
+
+We are not testing whether AI can build a product on its own; we
+expect to guide it heavily.  We are testing how much further the
+human--AI partnership can push that boundary on a problem that
+actually matters for NASA-relevant materials research.
 
 \begin{figure}[h]
   \centering
@@ -197,13 +206,14 @@ that actually matters for NASA-relevant materials research.
 \subsection{Generative CAD pipeline and AI--engineer roles}
 
 The design loop is anchored on GitHub Copilot in agent mode, free to
-invoke multiple underlying language models and to call out to auxiliary
-tooling for code-CAD scripting, slicing, and printer control.  Each
-iteration follows a build--test--feedback cycle.  The engineer (Sam)
-describes a requirement or failure mode in natural language plus
-reference data; the agent edits CAD sources, electrical layouts, and
-firmware in scriptable, version-controlled formats; and prototypes are
-printed in-house on a Bambu Lab~H2D used as the dispenser-prototyping
+invoke multiple underlying language models and to call out to
+auxiliary tooling -- writing code-based 3D models (``code-CAD''),
+preparing print files, and controlling the printer.  Each iteration
+follows a build--test--feedback cycle.  The engineer (Sam) describes a
+requirement or failure mode in natural language plus reference data;
+the agent edits CAD sources, electrical layouts, and firmware in
+scriptable, version-controlled formats; and prototypes are printed
+in-house on a Bambu Lab~H2D used as the dispenser-prototyping
 printer.  The near-term workflow has the engineer triggering prints
 manually; a longer-term goal is for the agent to drive the printer
 directly.
