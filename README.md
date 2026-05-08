@@ -1,5 +1,7 @@
 # powder-excavator
 
+[Presentation at POSE 2026](https://docs.google.com/presentation/d/1SZyMInTeK6V5QMu_9ptvdzXFou06gq9Mr7xBxdh9StA/edit?usp=sharing)
+
 ![Design sketch](powder-excavator-sketch.jpg)
 
 ## Paper
