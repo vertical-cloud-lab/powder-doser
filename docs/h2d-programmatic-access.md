@@ -295,6 +295,207 @@ one more route on the same FastAPI app.
 > e-stop or a "ready to print" key switch on the printer's mains)
 > before pointing it at a Colab notebook running unattended.
 
+### Step 6 — Slice on the Pi, ship STL+args remotely (Tailscale-as-LAN variant)
+
+Both of your instincts here are correct, and they line up cleanly with
+the R1 + R2 paths above:
+
+1. **"Slicing on the device side (Pi running Ubuntu) so Colab just
+   sends an STL and some args"** is just R1 with one more FastAPI
+   route on the same relay process. The Pi already has the H2D
+   `(IP, ACCESS_CODE, SERIAL)` triple and a known-good profile bundle;
+   adding `bambu-studio --slice` keeps the LAN access code, the
+   self-signed TLS, *and* the slicer-version pin all on the device so
+   the notebook only ever sees `POST /print_stl`. This is also the
+   right place to enforce safety limits — see below.
+2. **"We already use Tailscale; can that be our 'LAN'?"** Yes —
+   that's exactly path R2. A tailnet is an authenticated
+   WireGuard overlay; from the H2D's and the Pi's point of view,
+   anything you let into the tailnet *is* on the same L2-equivalent
+   network as them. Two practical patterns:
+
+   - **Pi inside the tailnet, H2D not.** Most common. The H2D stays
+     on its dumb VLAN (it doesn't speak WireGuard) and the Pi straddles
+     the two: physical NIC on the printer's LAN, Tailscale on `tailscale0`.
+     The relay's FastAPI app binds to the tailnet IP (e.g.
+     `uvicorn relay:app --host 100.x.y.z`), so callers (your laptop,
+     a lab dashboard, a Colab cell with `tailscale up` in a setup cell,
+     or a CI runner) reach `https://lab-pi.<tailnet>.ts.net:8000` over
+     TLS without ever exposing port 8000 to the public Internet.
+   - **Tailscale Funnel for true Internet ingress.** If you want a
+     Colab cell to hit the Pi *without* installing Tailscale in the
+     runtime, expose the relay through Funnel: `tailscale serve
+     --https=443 http://localhost:8000` then `tailscale funnel 443 on`
+     gives you a `https://lab-pi.<tailnet>.ts.net` URL with a real
+     LetsEncrypt cert, terminated on the Pi. Same FastAPI app,
+     same `RELAY_TOKEN` auth, no Caddy / Cloudflare needed.
+
+   Either way, **the LAN access code, the printer's self-signed cert,
+   and the H2D's MQTT/FTPS ports never leave the Pi.** The tailnet
+   replaces the Caddy-or-Cloudflare-Tunnel "real TLS in front of the
+   relay" piece from R1; everything else (token-auth FastAPI,
+   `try/finally` cleanup, `systemd`-supervised process, hardware
+   interlock) stays the same.
+
+#### `/print_stl` on the Pi: STL + args → safety-checked slice → start
+
+Concretely, replace `/print` from the Step 5 sketch with a route that
+takes the raw STL and a small JSON arg blob, runs the
+empirically-verified H2D slicing recipe, *then* enforces hard limits
+before handing the resulting `.gcode.3mf` to `start_print`:
+
+```python
+# relay.py — additions to the Step-5 sketch (still token-auth + try/finally)
+import asyncio, json, os, secrets, shutil, subprocess, tempfile, zipfile
+from pathlib import Path
+from fastapi import Form, Header, HTTPException, UploadFile
+
+BAMBU       = os.environ["BAMBU_APPIMAGE"]            # absolute path on the Pi
+PROFILES    = Path(os.environ["H2D_PROFILE_DIR"])     # holds h2d_*_flat.json
+ALLOWED_FIL = {"PLA", "PETG", "PLA-CF"}               # tighten per your lab
+LIMITS = {                                            # safety envelope
+    "max_stl_bytes":          50 * 1024 * 1024,
+    "max_print_minutes":      8 * 60,
+    "max_filament_grams":     500,
+    "max_first_layer_bed_c":  70,                     # PLA-only lab → cap bed temp
+    "max_nozzle_c":           260,
+}
+
+def _safe_slice(stl: Path, work: Path, layer_h: float, fil: str) -> Path:
+    if fil not in ALLOWED_FIL:
+        raise HTTPException(400, f"filament {fil!r} not in allow-list")
+    out = work / "out"
+    out.mkdir()
+    cp = subprocess.run(
+        ["xvfb-run", "-a", "-s", "-screen 0 1280x1024x24", BAMBU,
+         "--orient", "1", "--arrange", "1",
+         "--load-settings",  f"{PROFILES/'h2d_machine_flat.json'};{PROFILES/'h2d_process_flat.json'}",
+         "--load-filaments", f"{PROFILES/'h2d_filament_flat.json'};{PROFILES/'h2d_filament_flat.json'}",
+         "--filament-map-mode", "Manual", "--filament-map", "1,2",
+         "--slice", "1", "--export-3mf", "out.gcode.3mf",
+         "--outputdir", str(out), str(stl)],
+        capture_output=True, text=True, timeout=600, cwd=work, check=False,
+    )
+    try:
+        result = json.loads((out / "result.json").read_text())
+    except (FileNotFoundError, ValueError):
+        result = {}
+    if cp.returncode != 0 or result.get("return_code", -1) != 0:
+        raise HTTPException(422, f"slice failed: {result.get('error_string', cp.stderr[-500:])}")
+    return out / "out.gcode.3mf"
+
+def _enforce_envelope(gcode_3mf: Path) -> None:
+    # Parse the slicer's own header out of Metadata/plate_1.gcode and
+    # reject anything outside the lab's safety envelope BEFORE we publish
+    # the start command over MQTT.
+    with zipfile.ZipFile(gcode_3mf) as z:
+        head = z.read("Metadata/plate_1.gcode").decode("utf-8", "replace")[:8192]
+    def _g(key, cast=float):
+        for line in head.splitlines():
+            if line.startswith(f"; {key}") and "=" in line:
+                try:
+                    return cast(line.split("=", 1)[1].strip().split(",")[0])
+                except (ValueError, IndexError):
+                    return None
+        return None
+    # Fail-closed: a missing header is treated as a hard error rather than
+    # silently passing every numeric check (0 < every positive limit).
+    fields = {
+        "minutes": (_g("total_estimated_time", float) or None,
+                    lambda v: v / 60, LIMITS["max_print_minutes"], "print too long"),
+        "grams":   (_g("total_filament_weight", float),
+                    lambda v: v, LIMITS["max_filament_grams"], "too much filament"),
+        "bed_c":   (_g("first_layer_bed_temperature", float),
+                    lambda v: v, LIMITS["max_first_layer_bed_c"], "bed temp exceeds cap"),
+        "noz_c":   (_g("nozzle_temperature", float),
+                    lambda v: v, LIMITS["max_nozzle_c"], "nozzle temp exceeds cap"),
+    }
+    for name, (raw, scale, limit, msg) in fields.items():
+        if raw is None:
+            raise HTTPException(422, f"missing required slicer header for {name!r}; refusing print")
+        if scale(raw) > limit:
+            raise HTTPException(413, f"{msg}: {scale(raw):.1f} > {limit}")
+
+@app.post("/print_stl")
+async def print_stl(file: UploadFile,
+                    layer_height: float = Form(0.20),
+                    filament: str = Form("PLA"),
+                    x_relay_token: str | None = Header(None)):
+    auth(x_relay_token)
+    body = await file.read()
+    if len(body) > LIMITS["max_stl_bytes"]:
+        raise HTTPException(413, "STL too large")
+    work = Path(tempfile.mkdtemp(prefix="h2d_"))
+    try:
+        stl = work / "in.stl"; stl.write_bytes(body)
+        sliced = _safe_slice(stl, work, layer_height, filament)
+        _enforce_envelope(sliced)                     # safety gate
+        remote = f"colab_{secrets.token_hex(4)}.gcode.3mf"
+        printer.upload_file(str(sliced), remote)
+        printer.start_print(remote, "plate_1.gcode")
+        return {"uploaded_as": remote, "ok": True}
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+```
+
+The Colab cell shrinks accordingly:
+
+```python
+import os, requests
+RELAY = "https://lab-pi.<tailnet>.ts.net"             # Funnel URL, or tailnet IP
+H = {"X-Relay-Token": os.environ["RELAY_TOKEN"]}
+with open("part.stl", "rb") as f:
+    r = requests.post(f"{RELAY}/print_stl", headers=H,
+                      files={"file": ("part.stl", f, "model/stl")},
+                      data={"layer_height": "0.20", "filament": "PLA"},
+                      timeout=900)
+print(r.status_code, r.json())
+```
+
+Key safety properties of this shape (worth defending in code review):
+
+- **Allow-list, not deny-list, on filament + slicer args.** A
+  whitelist of materials and a numeric cap on layer height is much
+  harder to bypass than blocking known-bad strings.
+- **Limits are enforced on the *sliced output*, not on the request.**
+  A caller can't lie about print time or filament weight — the relay
+  parses the slicer's own G-code header and rejects before
+  `start_print()`. This catches both honest mistakes (10× scaled STL)
+  and malicious payloads (STL crafted to slice into a 14-hour job).
+- **`ALLOWED_FIL` / `LIMITS` live in environment variables on the
+  Pi**, not in the repo. Operators can tighten them per-lab without
+  shipping new code, and the values can't be overridden by the
+  caller.
+- **The Pi never exposes the LAN access code, the H2D's MQTT broker,
+  or the FTPS endpoint.** The tailnet (or Funnel URL) only ever sees
+  the FastAPI app on `:8000`.
+- **Bound CPU + wall-clock per slice** via `subprocess.run(...,
+  timeout=600)` and a `tempfile.mkdtemp()` that's `rmtree`'d in
+  `finally`, so a pathological STL can't fill the Pi's disk or wedge
+  the relay process.
+- **Hardware interlock still required.** Software limits stop most
+  bad jobs; a physical e-stop / mains key switch is the only thing
+  that stops *all* of them, including firmware bugs and stuck
+  thermistors.
+
+A reasonable order of operations to get this on a real Pi:
+
+1. Get the Pi onto Tailscale (`tailscale up`) and confirm
+   `tailscale ip -4` from another tailnet device.
+2. Drop the H2D AppImage + flattened H2D profile bundle on the Pi
+   under `~/h2d/`, then run the verified `--slice 1` command from the
+   "Verified end-to-end locally" section once by hand to confirm the
+   Pi can produce a valid `cube_h2d.gcode.3mf`.
+3. Install the relay (`pip install fastapi uvicorn[standard]
+   bambulabs_api python-multipart`), wire `BAMBU_APPIMAGE`,
+   `H2D_PROFILE_DIR`, `PRINTER_IP`, `ACCESS_CODE`, `SERIAL`,
+   `RELAY_TOKEN` via `systemd` `Environment=` lines.
+4. Smoke-test `POST /status` from a laptop on the tailnet, then
+   `POST /print_stl` with the same 12-tri cube STL used in the
+   empirical verification. Watch `gcode_state` walk
+   `IDLE → PREPARE → RUNNING` exactly as in bringup Step 3.
+5. *Then* point Colab at the URL.
+
 ## A. Cloud submission
 
 The undocumented-but-community-reverse-engineered cloud surface used by
