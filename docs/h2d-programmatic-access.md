@@ -169,6 +169,132 @@ make sense to plug in the headless slicer worker from the
 [Remote slicing](#remote-slicing-stl--3mf) section and close the loop
 STL → 3MF → upload → start.
 
+### Step 5 — Going remote (Internet / Google Colab access)
+
+Short answer: **no, you do not have to stay LAN-only.** The bringup
+checklist starts there because mode B is the only path that today is
+*both* unrestricted by the new third-party authorization gate *and*
+fully exercised by every open-source Python library. But the LAN
+boundary is just where the printer's transports terminate — there is
+nothing stopping you from putting *something* on that LAN that a
+remote caller (Colab notebook, lab dashboard, GitHub Action, another
+sandboxed agent) can reach over the Internet. There are three
+distinct shapes the "remote" path can take, and they trade off very
+differently:
+
+| Path | Where the credentials live | Who's exposed to the Internet | Works from a Colab notebook? | Caveats |
+|---|---|---|---|---|
+| **R1. Self-hosted relay on the printer's LAN** *(recommended; matches your "dedicated device" instinct)* | On the relay device only — never sent to the cloud or to the notebook | Just the relay's small HTTPS API (token-auth, TLS) | **Yes** — Colab does an `https://relay.example.com/print` POST | You own and operate one extra box (Pi/NUC/lab PC); same `(IP, code, serial)` triple from Steps 1–4, never leaves your LAN |
+| **R2. Network tunnel to the LAN (Tailscale / WireGuard / Cloudflare Tunnel / ngrok)** | On the worker host as before | Just the printer ports, but only inside the tunnel's overlay network | **Mostly** — Colab needs the tunnel client installed in the runtime, which is fragile across Colab kernel restarts | Easiest if you already use Tailscale; treat the tailnet as the trust boundary |
+| **R3. Direct Bambu Cloud (mode A) from anywhere** | Bambu account creds + access token in the caller (Colab) | Nothing of yours — Bambu's own infra | **Yes for status reads / push subscription; restricted for `print/project_file`** under the new authorization gate (see the warning at the top of this doc and mode A) | No relay needed, but write commands from non-Bambu software are exactly what Bambu Lab is locking down; expect this path to keep shrinking. Useful today for telemetry dashboards, not for "start a job from Colab." |
+
+**For a Colab smoke test specifically, use R1.** A Colab runtime is
+ephemeral, public-IP-roulette, and `pip install`s reset on every
+reconnect; you do not want to push the LAN access code or self-signed
+TLS pinning into that environment, and you do not want to rely on
+Bambu Cloud for the *write* path under the current authorization
+regime.
+
+#### Minimal R1 relay (what to put on the dedicated device)
+
+The relay is "the smallest possible HTTPS service that turns one
+authenticated REST call into the FTPS-upload + MQTT-publish
+sequence you already verified in Step 3." Sketch:
+
+```python
+# relay.py — runs on the dedicated device sitting on the printer's LAN
+# pip install fastapi uvicorn[standard] bambulabs_api python-multipart
+import os, secrets, tempfile
+from fastapi import FastAPI, UploadFile, Header, HTTPException
+import bambulabs_api as bl
+
+PRINTER_IP    = os.environ["PRINTER_IP"]
+ACCESS_CODE   = os.environ["ACCESS_CODE"]   # 8-digit LAN code, never leaves this box
+SERIAL        = os.environ["SERIAL"]
+RELAY_TOKEN   = os.environ["RELAY_TOKEN"]   # long random string; share with caller out-of-band
+
+app     = FastAPI()
+printer = bl.Printer(PRINTER_IP, ACCESS_CODE, SERIAL)
+printer.connect()
+
+def auth(token: str | None):
+    if not token or not secrets.compare_digest(token, RELAY_TOKEN):
+        raise HTTPException(401, "Unauthorized")
+
+@app.get("/status")
+def status(x_relay_token: str | None = Header(None)):
+    auth(x_relay_token)
+    return printer.mqtt_dump()        # last push_status snapshot
+
+@app.post("/print")
+async def start_print(file: UploadFile,
+                      x_relay_token: str | None = Header(None)):
+    auth(x_relay_token)
+    with tempfile.NamedTemporaryFile(suffix=".gcode.3mf", delete=False) as f:
+        f.write(await file.read())
+        local = f.name
+    remote = f"colab_{secrets.token_hex(4)}.gcode.3mf"
+    try:
+        printer.upload_file(local, remote)            # FTPS to /cache/<remote>
+        printer.start_print(remote, "plate_1.gcode")  # MQTT project_file
+    finally:
+        os.unlink(local)
+    return {"uploaded_as": remote, "ok": True}
+```
+
+Production hardening you'll want on top of the sketch (omitted to
+keep it readable): wrap `upload_file` / `start_print` in try/except
+that returns a structured 5xx and reconnects `printer` if the MQTT
+session has dropped, add a `/healthz` that pings the broker, and
+front the whole thing with `systemd` (or a container restart policy)
+so a crash doesn't strand the dedicated device.
+
+Run it on the dedicated device behind real TLS — Caddy or
+Cloudflare Tunnel are both two-line setups that hand you a
+`https://relay.<your-domain>` URL with a valid certificate; do **not**
+expose the FastAPI app on a raw public port with the self-signed dev
+cert.
+
+#### From a Google Colab cell, the entire client looks like:
+
+```python
+# In a Colab cell
+import os, requests
+RELAY = "https://relay.example.com"
+TOK   = os.environ["RELAY_TOKEN"]              # set via Colab Secrets UI
+H     = {"X-Relay-Token": TOK}
+
+# Status
+print(requests.get(f"{RELAY}/status", headers=H, timeout=10).json())
+
+# Start a print of a 3MF you sliced (or fetched from cloud storage) earlier
+with open("cube_h2d.gcode.3mf", "rb") as f:
+    r = requests.post(f"{RELAY}/print", headers=H,
+                      files={"file": ("cube_h2d.gcode.3mf", f,
+                                      "application/octet-stream")},
+                      timeout=60)
+print(r.status_code, r.json())
+```
+
+That's it — no MQTT client, no FTPS, no LAN access code, no
+self-signed certs in the notebook. The notebook only ever sees the
+relay token, which you can rotate from the dedicated device whenever
+a Colab session dies or leaks.
+
+If you want the slicer to also live remotely so Colab can hand the
+relay raw STLs, add a second endpoint that calls the headless Bambu
+Studio CLI from the [Remote slicing](#remote-slicing-stl--3mf)
+section before the `start_print()` step — same dedicated device, just
+one more route on the same FastAPI app.
+
+> [!CAUTION]
+> Anyone with the relay token can start a print, which can start a
+> fire. Treat `RELAY_TOKEN` like a production credential: long,
+> random, rotated, never in git, never in notebook output. Pair it
+> with at least one out-of-band physical interlock (e.g. a hardware
+> e-stop or a "ready to print" key switch on the printer's mains)
+> before pointing it at a Colab notebook running unattended.
+
 ## A. Cloud submission
 
 The undocumented-but-community-reverse-engineered cloud surface used by
