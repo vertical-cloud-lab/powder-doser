@@ -1,0 +1,372 @@
+# doser approaches
+
+  Meeting started: 5/11/2026, 1:17:04 PM
+  Duration: 48 minutes
+  Participants: Sam Charles, Sterling Baird
+
+  [View original transcript](https://app.tactiq.io/api/2/u/m/r/nTl9NTNPO5FKVFI5Ug8L?o=txt)
+
+    ## Detailed summary with citation
+
+# Meeting Summary
+
+## Project direction and near-term scope
+- The discussion opened with a review of the brainstorming output and the team’s desire to decide on next steps for the dispenser concept. Sam explained that Copilot had generated several architecture options, with some clearly weaker than others, while a few looked promising enough to pursue further. [00:54] [01:07] [04:13]
+- Sterling agreed that the main mechanisms to keep in view were an auger, a solenoid, and a vibration motor, and asked whether the team was comfortable constraining the design around those elements. The group agreed that this was a reasonable direction. [04:46] [05:18]
+
+## Cross-contamination and powder-handling constraints
+- Sterling emphasized that avoiding cross-contamination was a key requirement: powder should not repeatedly touch shared surfaces unless those surfaces were effectively single-use. This constraint shaped the rest of the architecture discussion. [05:18]
+- Two broad strategies were discussed for handling powder transfer without contamination: either use separate tubes feeding into a common container that then moves onward, or move the scale/container along a track to different dispensing stations. [06:17] [06:45] [08:10]
+- Sterling also described a larger carousel-style concept where a robot arm or automated system could move cartridges/vials into a dispensing position, enabling many unique powder combinations without manual swapping at every step. [08:46] [21:43] [23:53]
+
+## Review of existing commercial systems
+- The team examined examples of existing dispensing systems, including a multi-station scale setup and a cartridge-based robotic dosing-head system, to better understand how industrial products manage powder handling and reconfiguration. [08:10] [08:46] [23:53]
+- Sterling noted that these systems are already substantial investments, roughly in the $10,000–$30,000 range, and may not fully match the team’s workflow or powder requirements. He also pointed out that some appear to be auger-only, without the vibration-based mechanisms the team wants. [11:00] [11:26]
+- Although one manual module was relatively affordable, the system as a whole still looked expensive, and Sterling suggested that buying a unit or sending powders to the vendor for testing could still provide valuable benchmark data if budget permits. [11:52] [12:33] [14:04]
+
+## Recommended near-term design approach
+- Sterling recommended focusing first on a single functional module containing the auger, solenoid, and vibration motor, rather than trying to solve every multi-powder layout problem immediately. The idea is to get one repeatable module working, then scale it by replication and later decide the layout strategy. [15:34] [16:43] [18:35]
+- Sam confirmed the understanding that the current goal is to make one module work well and only later multiply that module into a larger system. [18:35] [18:44]
+- Sterling stressed that the most valuable workflow is to move quickly from design to printed prototype to powder testing, so the team can feed real-world results back into future iterations. [17:29] [18:09]
+
+## Modular versus integrated cartridge concept
+- Sam raised an alternate cost-reduction concept: keep one shared set of electromechanical parts but swap in different cartridges or vials, each with a 3D-printed auger or internal dispensing part. This could potentially reduce cost dramatically while preserving the same core mechanism. [19:10] [19:58]
+- Sterling said this modular cartridge concept was worth considering, but noted that it introduces extra engineering challenges, especially around rigid coupling, sealing, and ensuring good contact between the motor and the cartridge. [20:00] [21:12] [27:08]
+- The team concluded that the integrated design and the modular swap-out design are similar enough that they can proceed in parallel for a while without needing to choose immediately. [21:12] [21:43]
+- Sterling connected this cartridge idea to the industrial dosing-head example: the expensive part of the system is not the head itself, but the mechanism that picks up the head and mates it to the shared electromechanical components. [23:53] [26:09]
+
+## Capping, shutters, and leak prevention
+- A major concern in the modular approach was how to prevent powder leakage when cartridges are not in use. Sam suggested caps or a passive mechanical system that would keep cartridges sealed and only open them when aligned for dispensing. [28:28] [29:25]
+- Sterling framed the sealing problem as similar to a normally closed valve and proposed three possible approaches: a normally closed mechanism, a cap/seal design, or a shutter system. [29:52] [31:36]
+- He explained that a shutter does not stop leakage itself, but can protect the receiving area from contamination. He also said automated cap removal/insertion would be a tougher AI/design challenge than a shutter, though a shutter is less foolproof because it assumes some leakage may occur. [31:36] [32:54]
+
+## Cost targets and scaling expectations
+- Sterling gave a rough target of sub-$10,000 for a system supporting around 30 unique powders, with some flexibility up to about $15,000. He estimated that a dosing head could plausibly cost around $100 each when accounting for the stepper motor, solenoid, and vibration motor. [42:42]
+- He also reminded the team to include assembly labor in cost estimates, suggesting roughly $20/hour for build effort when thinking about open-source reproducibility. [43:27]
+- Sam clarified that the lab’s immediate alloy work usually involves no more than 7–8 powders, but Sterling still preferred designing toward 16 or more channels so that future campaigns could avoid manual swaps and support more ambitious automation goals. [44:05] [44:51] [46:09]
+- Sterling expressed a long-term vision of supporting 100–200 unique powders over the next few years, enabling evening and weekend operation and reducing manual intervention between experiments. [45:42] [46:44]
+
+## Copilot workflow, issue management, and cadence
+- Sam asked when the team should start requesting visuals and CAD models from Copilot. Sterling recommended asking for visualizations or CAD outputs right away, while expecting the first results to be rough and iterative. [34:20] [34:47]
+- Sterling challenged the team to aim for at least three Copilot feedback sessions per day, noting that this is a conservative benchmark and that the cycle could speed up once prints can be sent programmatically to the printer and tested more quickly. [34:47] [38:49]
+- Sam asked whether creating new GitHub issues as needed was acceptable. Sterling confirmed that this was fine, with the caution that pull requests tied to Copilot sessions should not be merged prematurely without a quick check, since merging can block further Copilot iterations on that branch. [40:30] [41:48]
+- The team agreed that the workflow should prioritize rapid iteration, practical testing, and continued refinement rather than waiting for a perfect design before moving ahead. [38:24] [39:59] [48:08]
+
+## Action items discussed
+- Sterling asked Sam or Sean to contact MTI for a lead time on the manual dispenser, quotes for the six-channel and sixteen-channel systems, and whether MTI could test some of the team’s powders in their system. [14:04] [15:18]
+- The team agreed to continue work on the single-module auger/solenoid/vibration design, while also spending some effort exploring the lower-cost modular cartridge path in parallel. [15:34] [19:58] [33:26]
+- Sterling said he would post edited notes and likely add autotranscribed notes to the pull request for reference. [48:19] [48:37]
+
+  
+
+  
+    ## Highlights
+
+    > 01:26 Sam Charles: And yeah. So some of the like next approaches we were talking about is potentially like picking our favorite designs and then making each of those like a new issue of like like each each design that it gave was like these are good things and these are the problems that we.
+> 15:34 Sterling Baird: From From there, I would say focus on. Making an individual module so like 1 channel out of. So, so sorry going, I guess back to the GitHub issue or the the pull request. So so sorry going I guess back to the GitHub issue
+> 16:43 Sterling Baird: See See, I would focus on. See just focusing on the. Taking that auger design from the other issue and trying to modify, modify that so it has.
+> 40:23 Sam Charles: Was Was, oh, I was just gonna say I'm still new to using GitHub and. Was oh I was just gonna
+> 40:56 Sterling Baird: Oh, the the main thing I would say is is don't merge pull requests without just spot checking with me first. I should specify I should specify don't merge pull requests that have a copilot session attached to it, or like copilot sessions. If you merge it, you can no longer trigger new copilot sessions. For it. So then you have to do a new issue. The new PR and sometimes it makes sense to do it that way, but.
+> 41:48 Sterling Baird: That is a little more work to correct, but just making new issues and assigning them to compile it, that's. Yeah that Yeah, that's that's no problem. And it's easy. It's much easier to close an issue NPR. And do a kind of make the make the nuance.
+
+  ## Transcript
+
+  00:00 Sam Charles: Hello.
+00:05 Sterling Baird: Hey. Yeah. Yeah, I can hear you.
+00:06 Sam Charles: You're fine. Hey can we show you something kinda Hey, can we show you something? Kinda cool really quick.
+00:09 Sterling Baird: Yeah, for sure.
+00:14 Sam Charles: Oh, no, wait. Wait how Wait, how is it we need to make this bigger? Hang on. Gosh Dang Gosh Dang it. That was not nearly as cool as it should have been. All right. Well, we have you on like the big screen, so.
+00:29 Sterling Baird: OK.
+00:30 Sam Charles: But before when it was like But before when it was But before, when it was like my camera was on, there was doing like the mirroring effect of like a bunch of. Anyways, we wanted to show you, but no, it's OK.
+00:36 Sterling Baird: Right. Yeah Yeah.
+00:40 Sam Charles: OK. This work is.
+00:42 Sterling Baird: See you guys.
+00:44 Sam Charles: OK.
+00:45 Sterling Baird: Yeah. Cough. So what can I help with?
+00:54 Sam Charles: Yeah. So we looked over your comments on the you want to talk kind of about next steps, where to go from here next step.
+01:01 Sterling Baird: Yeah.
+01:07 Sam Charles: Good OK let's let me know Good. OK, let's let me know if we. Yeah. So, so we started off with the brainstorming thing. And just like, what are some asking copilot? What are some different approaches we could take? Which really worked pretty well and Which really worked pretty well and gave us a lot of good directions and bad directions.
+01:26 Sterling Baird: Yeah.
+01:26 Sam Charles: And yeah. So some of the like next approaches we were talking about is potentially like picking our favorite designs and then making each of those like a new issue of like like each each design that it gave was like these are good things and these are the problems that we.
+01:39 Sterling Baird: Hmm.
+01:43 Sam Charles: Was saying it. It'd be nice to see kind of how copilot would address those problems, whatever they are. So.
+01:50 Sterling Baird: Yeah.
+01:50 Sam Charles: Like Like making Like making. Like picking two or three and saying giving those new issues saying hey like, go for this one.
+01:58 Sterling Baird: Mm-hmm.
+01:59 Sam Charles: And see how it approaches new problems. And yeah.
+02:02 Sterling Baird: Yeah. OK. Yeah. Sam, maybe on your laptop, if you could join the meeting. Mute your camera and microphone and then share screen. Or oh.
+02:14 Sam Charles: Yeah. Wait. Wait, say again. I'm I have my.
+02:19 Sterling Baird: Oh.
+02:19 Sam Charles: I have my iPad here and my laptop over here.
+02:21 Sterling Baird: Yeah, if you join the teams, call on your laptop and then mute your mic, you can turn off the video. But screen share at the the pull request I guess.
+02:34 Sam Charles: OK. Yeah, I see what you're saying, yes.
+02:38 Sterling Baird: Yeah.
+02:38 Sam Charles: OK, let me do that. Hopefully we'll get any crazies feedback.
+02:51 Sterling Baird: Oh yeah, and and turn off the sound, yeah.
+02:53 Sam Charles: Oh yeah. OK. Yeah. OK. That's weird. See myself right here. Umm.
+03:24 Sterling Baird: Yeah Yeah. And then share screen.
+03:36 Sam Charles: Is audio OK through the through here? Do you want? Would you rather have it through?
+03:39 Sterling Baird: Yeah, yeah, it's fine today, yeah.
+03:43 Sam Charles: I thought that was why we need that. That makes sense. Just to just to be able to show. Yeah, this OK.
+03:53 Sterling Baird: And then And then refresh that if you haven't. I I did update the the comment a little bit. So help me out with you. You mentioned a couple designs. I'm guessing that's in the markdown file that I put out.
+04:13 Sam Charles: Yes, I think it also mentioned them briefly in the top. Yes, like these. It gives these seven architecture options. It says. If some of them are entirely basically unhhhful, some of them are look pretty good and so.
+04:24 Sterling Baird: Right.
+04:32 Sam Charles: Yeah. Do you want us to run through those really quick or?
+04:32 Sterling Baird: Yeah. No, this is good. Really. Let's see.
+04:46 Sam Charles: The ones we were mostly like.
+04:46 Sterling Baird: Right. So this is yeah, like. EF. En E&F are next because we're essentially saying we want an auger, we want a solenoid and we want a vibration motor.
+04:59 Sam Charles: Yeah. Yeah.
+05:08 Sterling Baird: I feel OK. Constraining it to that point. Do you guys feel OK with that too? Just saying like? We want all those mechanisms in the same thing.
+05:18 Sam Charles: Yeah. OK.
+05:18 Sterling Baird: So then. When reservoir and auger. The channel I mean really it does. In my mind it comes down to, well, you either have. A a A. A bunch of. Oh, sorry, sorry. From from across contamination point. We We don't want to reuse. Like we don't want powder touching the same surface Like we don't want powder touching the same surface unless that surface is a one time use thing.
+05:56 Sam Charles: Right.
+05:58 Sterling Baird: And so. That either means I think one of two options. One and well, I think you're kind of picking up on this one and Samui talks about this a little bit. It's like you just have tubes pointed at the same. The container and so it's
+06:15 Sam Charles: Yeah.
+06:17 Sterling Baird: Container and so it's free falling into the container and that container is the thing that actually just goes directly into the into the atomizer, into the induction Crucible or. You have the scale. That's That's moving along a track kind of similar to this MTI one. I'll show that right MTI. Open.
+06:45 Sam Charles: Hello. Do you need me Do you need me to stop sharing the share? That or That. Are you gonna send a link or?
+06:57 Sterling Baird: No No, I'm gonna send the link. Yeah. So. So this one and.
+07:22 Sam Charles: Where are you Where are you sending a link to unsnap? Is it?
+07:25 Sterling Baird: Oh, in the teams meeting.
+07:28 Sam Charles: Yeah, I think they should show up as. Oh, good. Call me. Where is my team meeting? You see. A little chat in the bottom left. Yes, he said. I don't see it on on here. Oh. Oh, devices to be using. Let me stop sharing for a second so I can find it. There we go.
+07:55 Sterling Baird: OK OK.
+08:01 Sam Charles: Let me share that. There you go.
+08:10 Sterling Baird: Yeah, I gotcha. So. This one, I think, moves the balance. To each of the To each of the dispensing stations. Uh.
+08:23 Sam Charles: I mean, that's pretty good, right? That looks good.
+08:28 Sterling Baird: Yeah. And then there was one other link.
+08:29 Sam Charles: So I guess. Yes, pro that one real quick.
+08:33 Sterling Baird: Sorry if you go to.
+08:39 Sam Charles: Oh Dang. Started suspense.
+08:46 Sterling Baird: Yeah. And so this one it's saying. We've got. 16 cartridges 16 cartridges up top. Or Or 16 hoppers I guess and then. You're using carousel approach and that robotic arm is grabbing individual vials and so. You can dispense 16 unique powders into. I think they have something like 30. Two vials there. So you could do a lot of different combinations.
+09:20 Sam Charles: Yeah Yeah.
+09:23 Sterling Baird: So you instead of doing like 1 sample at a time. The video I think the video makes it kind of clear, but like the robot arm, the robotic arm is picking up, yeah. Oh, maybe. It's probably not It's probably not the right video. Yeah, this one.
+10:28 Sterling Baird: Get me. Yeah, sorry. That hopefully that kind of helps.
+10:41 Sam Charles: Yeah. That's great. So yes, so my my next question is if this exists, then what are we doing?
+10:52 Sterling Baird: Oh yeah, it's more.
+10:54 Sam Charles: Are trying to get cheaper or trying to get more. What's what's our new angle?
+11:00 Sterling Baird: Yeah. Can you hear me OK still. OK. So So I I So I I knew that this existed before. It's more. The. This would This would be. I think $20,000, maybe more.
+11:24 Sam Charles: OK.
+11:26 Sterling Baird: I I forget which one. Anyway like I got some ballparks, but I think like 10 to 30,000 for for the system and it's not necessarily. Tailored Tailored to. Our workflows are necessarily compatible with the powders we'd be using. Our workflows Like Like it's only Auger based, I don't think they have the vibration or anything like that. Like it's only auger based I don't think they have And so. Maybe like maybe it would work out OK.
+11:52 Sterling Baird: And we And we could check by buying one of those. They have a they have a manual dispenser. One we could try buying one of those and and link there. However, it's out of stock. But it did seem like that was the. Like if we tried to get. Like if we tried to get 1. Of those modules or we send in some pattern and ask them to do some testing for us. We could give that. We could give that a try, I guess is the.
+12:25 Sterling Baird: We could give that a try
+12:27 Sam Charles: OK. Yeah.
+12:29 Sterling Baird: Yeah, they said. Let's
+12:33 Sam Charles: If this is if this one piece the the manual piece is $300.00 oh.
+12:33 Sterling Baird: Let's just.
+12:38 Sam Charles: It's It's not looking great.
+12:43 Sterling Baird: Yeah Yeah, yeah. And in like in some sense if. We got the budget we could. We could go for something like this, especially if the grant comes through.
+13:03 Sam Charles: Is
+13:03 Sterling Baird: Sorry, there's a lot of feedback.
+13:03 Sam Charles: Is that a new? Are you muted on that? Is there Is there this feedback on our side?
+13:17 Sterling Baird: Oh, yeah, yeah. I'm hearing quite a bit of feedback, but. Maybe mute there and unmute on the iPad real quick.
+13:51 Sam Charles: OK. Can you hear me? Hey, can you hear me?
+13:58 Sterling Baird: Yes, yes. Sorry, I was muted. Yeah, that sounds a lot better. Thanks.
+14:00 Sam Charles: OK, there we go. Yeah, see.
+14:04 Sterling Baird: So I think it would be maybe if I could ask. One of you One of you to One of you to take on reaching out to MTI will maybe you could reach out to MTI and try to get a lead time for this manual one and also get quotes for the the other two. That were in there That were in there that I can just kinda help us.
+14:26 Sam Charles: Background information.
+14:27 Sterling Baird: On the way, yeah, background information. And then also I think it's worth asking them if they could. Try out. If If we could send them some powder for them too, dispense and kind of demo for us. I think those things would. Yeah, I think those things would help with kind of help in this process.
+14:54 Sam Charles: So you're saying get a lead time on the manual dispenser and then what was the quote for?
+14:55 Sterling Baird: Umm. To get quotes for those two other items, the six channel dispensing system and the 16 channel 1.
+15:13 Sam Charles: OK. And then potentially? Or Or ask about sending some of our powders to them.
+15:18 Sterling Baird: Yeah. Yeah, to have them. Yeah. To see if it works. OK, in there in their system.
+15:26 Sam Charles: OK.
+15:34 Sterling Baird: From From there, I would say focus on. Making an individual module so like 1 channel out of. So, so sorry going, I guess back to the GitHub issue or the the pull request. So so sorry going I guess back to the GitHub issue
+15:53 Sam Charles: There we go.
+15:54 Sterling Baird: Yeah, like focus on making. The design that has. The auger. The vibration motor and the solenoid just kind of as one module, and then we'll just assume we'll probably either do this sort of shared. This don't really care as self This don't really care as self it's not moving around, but this sort of shared circular dispense into a common container. Or we'll do some kind of movement, but. That may not. What affects the overall design as much in the end? Like if we it's just a matter of configuration, not necessarily the individual module design, at least not not as much.
+16:36 Sam Charles: M.
+16:43 Sterling Baird: See See, I would focus on. See just focusing on the. Taking that auger design from the other issue and trying to modify, modify that so it has.
+17:02 Sterling Baird: Yeah. I guess going for. The addition of a solenoid, the addition of a vibration motor and then maybe trying to deal with the the dispense volume a little more like the the current setup is is pretty small and it wasn't really designed for like a big dispense volume in there. The addition of a solenoid the addition of a vibration Or really like a reservoir. So but does that? Does that make sense though? Like focusing on the just like the individual module and the sooner we can get that get new iterations printed and test them with actual powders.
+17:29 Sam Charles: Yeah.
+17:37 Sterling Baird: That's where I think the the power of this workflow is really gonna. Start coming across. It's like OK, copilot go off and, you know, design this thing and then we we build and we put it together and then we test with six different types of powders and then we report that feedback. We continue the iteration process everything so. In some sense, it'd be like the sooner we can get to that initial prototype, like a draft of some design that we can buy or order parts for.
+18:09 Sterling Baird: Print Print and Print and test. The better there.
+18:15 Sam Charles: Good. So just be sure you're saying for now, be less concerned about how we will do multiple iterations of different powers and just focus on getting the system a singular module working.
+18:35 Sterling Baird: Yeah I think so
+18:35 Sam Charles: OK. So you're saying focus focus on this B version, right?
+18:36 Sterling Baird: Yeah, I think so.
+18:39 Sam Charles: Like the like, we make 11 module and then. We can just We can just multiply that a bunch of times.
+18:44 Sterling Baird: And decide how we're going to lay it out later. I think we'll be.
+18:49 Sam Charles: OK.
+18:51 Sterling Baird: Fine, just assuming that.
+18:51 Sam Charles: Right and. Yeah, there was one. There was some idea that we talked a little bit about with this one. Where the dispenshine wouldn't be just something modular where we would have like 1 mechanism but a carousel of like augers. The auger itself is this 3D printed part.
+19:00 Sterling Baird: Hmm. Mm-hmm.
+19:10 Sam Charles: It's cheap. And so that goes around. But then it's it'll kind of couples to the motor and the and the solenoid and stuff. And so. And we're trying to drive costs down. Then we could have like one step or one. Or whatever. Whatever. We're using one solenoid, 1 vibrator and then and then have the.
+19:28 Sterling Baird: OK.
+19:34 Sam Charles: Instead of having like each. Dispenser have it's own motor and all. It's all the the things you just have these different like vials of when and we were talking about ways that we could have like a cap or something. So they're not spilling everywhere when they're not in use, but like slots into. Dispenser have Dispenser have it's own motor and all it's all the the things
+19:43 Sterling Baird: Hmm. Mm-hmm.
+19:51 Sam Charles: Place uncapped itself and then the motor can couple to it and and use it that way.
+19:58 Sterling Baird: Right. Right.
+20:00 Sam Charles: Should do you want us to be pursuing that. We can just kind of be doing it on the side and see if copilot comes up with anything interesting. It would just cut down the price by like 30 times.
+20:07 Sterling Baird: Right. Yeah, what you mean?
+20:11 Sam Charles: But But but it might But, but it might be less good. So like it's it's, you know, trade off.
+20:15 Sterling Baird: Yeah, sort of. Like can you just swap out a a tube or cartridge that keep all the electronics? And And like Electro mechan And like Electro mechanical pieces. So yeah, sort of like.
+20:31 Sam Charles: Mega revolver but like not like a revolver.
+20:33 Sterling Baird: Yeah. Yeah, yeah, yeah, I got you.
+20:35 Sam Charles: Yes.
+20:37 Sterling Baird: Yeah. I think that I think that's, yeah, I think that's worth considering or pursuing. I wonder how much do you think it might affect things on like if you have this base design? That assumes it's all integrated versus a design that. Is a little more modular and kinda like just swapping out the tube. Because I'm I'm wondering if those would be kind of similar but just a matter of like.
+21:09 Sam Charles: Yeah.
+21:09 Sterling Baird: Keeping things detached.
+21:12 Sam Charles: Yeah, I guess it would be a very similar design either way.
+21:12 Sterling Baird: Or not.
+21:16 Sam Charles: Yeah, just making it modular or not and. Yeah, I think we can definitely like take some.
+21:22 Sterling Baird: Yeah.
+21:25 Sam Charles: We can probably take some steps without making that kind of decision, and there's because like they are pretty similar designs.
+21:29 Sterling Baird: Mm-hmm. Hmm.
+21:34 Sam Charles: She kind of applied She kind of applied in different ways.
+21:38 Sterling Baird: Yes.
+21:38 Sam Charles: I I like, yeah, they'll be parallel paths for at least a little while.
+21:43 Sterling Baird: Yeah, and something I like about that is if we did start saying, hey, we want to scale up to.
+21:43 Sam Charles: And.
+21:50 Sterling Baird: 100 unique powders. Is. Then we start assuming we have some kind of robotic arm in place that is picking up. These other cartridges and loading it in dispensing it and I could see something where like. The load position is is flat, so you're pretty confident no patterns gonna spill out. So you load this in and then it rotates to some angle. Does its dispensing comes back up? Robot arm grabs it, puts it back into a catalog or whatever grabs a new one, brings.
+22:23 Sam Charles: Mm-hmm. Yeah.
+22:32 Sterling Baird: It in is. It in is That's very similar to. This let me get it.
+22:51 Sam Charles: Blessed.
+22:52 Sterling Baird: Thanks. Let me find this. There's a few different versions of this one.
+23:53 Sterling Baird: Just look. Yeah, I think you just stumble on the same. Oh, no, no. But yeah, the just this general idea of, you know, like you have. A A station or a or a rack of the different. Items that you want and then you're bring that into a dispense mechanism. So maybe what I'm getting at this? System System and I sent another link for. System and I Ro next. Uh. This one. The electrical components. There's just one set of electrical components, and it's this cartridge that you're bringing in and and this one is the. The expensive salt shaker.
+25:01 Sam Charles: Wiping her brow from so much expensing, wow has a lot of expensing you gotta do. What's your solution?
+25:02 Sterling Baird: You know oh You know. Oh yeah. Yeah Yeah oh Yeah. Oh, yeah. The Cronk XBR.
+25:21 Sam Charles: Save me Cron HX PR. Steps. Yeah, I was thinking a lot simpler than this.
+25:44 Sterling Baird: Oh yeah, yeah, for sure.
+25:45 Sam Charles: Like like I mean, I went like I I just think you. For what we needed to do, just like dispensing powders, I think it wouldn't need to be. I don't think we need a robotic arm. I think we could do it without it, yeah.
+25:59 Sterling Baird: Yeah, yeah. But just noticing that like the dosing head placement part, that's where like it's it's picking up a dosing head, yeah.
+26:04 Sam Charles: Yeah, just that part of the end, yes.
+26:09 Sterling Baird: And so that what you guys were talking about with And so that what you guys were talking about with like, oh, could we use the same the same solenoid, the same vibration motor, the same stepper motor, just with a different cartridge that's more or less. What's happening here is that they're picking up a dosing head the do.
+26:22 Sam Charles: Yeah. OK.
+26:24 Sterling Baird: Head doesn't have any electrical pieces to it. When they put the dosing head in, then that's where they're doing the salt shaking like just reusing a piston or something.
+26:28 Sam Charles: Yeah. Yeah.
+26:36 Sterling Baird: To to To to tap it.
+26:39 Sam Charles: Yes, I guess that that's that's what I was thinking we would do.
+26:43 Sterling Baird: Mm-hmm.
+26:44 Sam Charles: So how do you feel like?
+26:46 Sterling Baird: Yeah.
+26:46 Sam Charles: How do you feel about How do you feel about that versus the? Versus having each of them have like the electric components together.
+26:52 Sterling Baird: Right, right. I.
+26:54 Sam Charles: Do you want us pursuing both of those simultaneously?
+26:58 Sterling Baird: Yeah I'm trying to think through it because it Yeah, I'm trying to think through it because it's. I I think it introduces some additional engineering challenges.
+27:08 Sam Charles: Yeah.
+27:08 Sterling Baird: To do a swap out. And maybe maybe what I'm for is. In automated fashion like I could, I definitely picture something where. You are manually loading it in and then you're just like screwing or tightening something.
+27:28 Sam Charles: Mm-hmm.
+27:29 Sterling Baird: And now the vibration motor. This like little coin motor has good contact with it and. Think everything's kind of locked in and place. Maybe it's just the? Like the precision of. Maybe it's it Maybe it's. It's not so much precision. It's like. How you grasp it and get it to be rigid against everything? Do you have some thoughts there already?
+27:57 Sam Charles: Yeah, we, I mean, we talked about some different ways to do it. The. I guess one big thing we brought up about it was that. I guess one big thing Because we're using this as a a way to test the capabilities and limitations of like generative, CAD, AI it's it's a much harder problem than like the can AI design, A bracket test, right? So like, it'd be interesting to see how it tries to handle those engineering problems. It could be a good like limits test to to throw at it and just see and we can kind of guide it along.
+28:23 Sterling Baird: Yeah, citrine.
+28:28 Sam Charles: We talked about a couple different ways to put in like a like a CAP mechanism or something. So that like it's sealed itself. So you kinda throw this not throw it around rapidly.
+28:35 Sterling Baird: Yeah Yeah.
+28:38 Sam Charles: It can be in some kind of. Like. Like a like a Like a like a categorical. I don't know what the word is like.
+28:46 Sterling Baird: Hmm.
+28:48 Sam Charles: Something like like this ad Something like like this ad or? It could be we were talking about like vertical cloud lab. It could be We could store them vertically, just have them something like that. Or on a carousel. I think if you have if you if you had some kind of cap there just becomes like moving these little tubes around and I don't know that would be too bad especially you have kind of like roll into place and roll out a place.
+28:59 Sterling Baird: Yeah. Yeah. Yes.
+29:11 Sam Charles: Or something and. Like Like I'm thinking Like I'm thinking more more passively, not like we need a six axis arm to be able to pick this up and move it, but just kind of like if if we just have a motive that moves the things that moves all the files in a carousel and then.
+29:15 Sterling Baird: Yeah. Mm-hmm.
+29:25 Sam Charles: It moves at just the right place and it It moves at just the right place and it kind of clicks out. Fix back in or something like that. And as long as you have like a cool
+29:31 Sterling Baird: Yeah.
+29:31 Sam Charles: And as long as you have like a cool cap design that can actually do that, then that could be more reliable.
+29:33 Sterling Baird: Yeah. That makes sense.
+29:37 Sam Charles: I don't know. I don't know
+29:40 Sterling Baird: The.
+29:40 Sam Charles: I like I don't. I don't have all like I don't have all the answers obviously, but like we I think it's something we could pursue. Like yeah, I don't know.
+29:52 Sterling Baird: Yes, sure. Yeah, a couple thoughts there. One, it's a similarity to the system is that. By default it's closed like you take one of those cartridges. You can shake it around like it's not leaking any powder out when it grabs the piston and starts doing the tapping mechanism, essentially opening it and closing it.
+30:10 Sam Charles: Yeah.
+30:17 Sterling Baird: So it's a normally closed. Normally closed valve.
+30:23 Sam Charles: Yeah.
+30:23 Sterling Baird: There and it's bring the piston up. So the cap like you're talking about is just adjust the same. The similar concern of leaking. You don't want powdered and leak anywhere. You only want the batter to go where it's supposed to. You only want the batter to go where
+30:36 Sam Charles: Brett. Yeah.
+30:39 Sterling Baird: Which from both like a contamination and a safety standpoint, like one you don't want powders that are not like not supposed to be active leaking into the container and messing up your composition.
+30:53 Sam Charles: Red.
+30:54 Sterling Baird: And you also just don't wanna like getting all over the place.
+30:56 Sam Charles: Yeah, and mixing with other things that it might be involved out with and etc. Yeah. Scary.
+31:00 Sterling Baird: Yeah. Yeah. So on that, on that front, I think. There may be 3 approaches 1 is There may be 3 approaches. One is to try to go with something that. Is Is normally closed, but with our augur design I don't. I don't think like that's very amenable to an auger necessarily. So then capping like you mentioned or a third one using a shutter mechanism, now the shutter like using a shutter doesn't prevent. Leaking it just keeps leaks from contaminating your.
+31:36 Sterling Baird: Yeah Yeah I Yeah, I guess. Like the thing you're trying to dispense into so. I always say shutter it's like. Basically BL Basically blocking the path temporarily to. For the dispensing. So you could, if you did, have a like a little bit of a carousel approach, then that might look like. Let's Let's say you had a a disk and it only has one hole in it and you move that hole around
+32:08 Sam Charles: Thanks.
+32:10 Sterling Baird: And so even if, like the vibration from 1 dosing head like causes some leakage in another one, it's just leaking onto this shutter.
+32:19 Sam Charles: Yeah.
+32:20 Sterling Baird: Yeah, sort of thing. Yeah sort So I those are all good things to be thinking about with the cap like a CAP mechanism specifically. Doing an automated cap removal and insertion. Seems Seems more of AI. Picture that being more of a challenge than a shutter mechanism, but a shutter is. Like Like not foolproof. Like like you would want to catch it. So it it assumes there is going to be leakage and it's sort of a secondary things.
+32:54 Sam Charles: Red. Red.
+33:03 Sterling Baird: And. Anyway, yeah, just just good things to to keep in mind for glad you think about that.
+33:08 Sam Charles: Yeah. So I think like. Is like next steps for us. So like we'll move forward with that with the like making a module, you still share my screen real quick to move forward with making like a module.
+33:26 Sterling Baird: Mm-hmm.
+33:31 Sam Charles: One that's like One that's like mod One that's like modular enough to One that's like modular enough to be, you can just like multiply them and have, like, a bazillion of them. Then you have N modules. If it's all right I'd like to put a little bit of time into the the other one as well If it's all right, I'd like to put a little bit of time into the the other one as well, just to see.
+33:44 Sterling Baird: Yeah, yeah. Yeah, sounds good.
+33:47 Sam Charles: I think it's I think it's enough. The cost benefit The cost benefit is is is enough, I think it's.
+33:51 Sterling Baird: Yeah. Yep.
+33:54 Sam Charles: The we had a question about where when do you when should we have it start? Sorry, so for this first round of brainstorming, we had to just kind of give us descriptions of how this would go and what was saying that a lot of the. So I'm talking about a lot of the designs might have been a little bit more helpful if we. Had a a nice visual to read off of as well.
+34:20 Sam Charles: When should we start asking it to generate visuals and like? CAD models of things like should we just start out the gate saying like if you think it's helpful generate things or I don't know Azure repurchase that?
+34:32 Sterling Baird: I I would I would just tell it to end just off the bat, say. Generate a visualization or generate a CAD model and part of it said it will probably start out with something that isn't very good. And doesn't.
+34:45 Sam Charles: Right.
+34:47 Sterling Baird: Imagine Imagine so then you can Imagine so then you can start doing on it. So I would I would add that. My challenge to you guys would be to have at least three copilot sessions per day.
+34:56 Sam Charles: Jen.
+35:01 Sterling Baird: In terms of the feedback, that's essentially saying like 15.
+35:01 Sam Charles: Yeah.
+35:07 Sterling Baird: Iterations per week which I think is actually even a bit conservative Iterations per week, which I think is actually even a bit conservative. If this is the main thing that both of you guys are working on to have it be. You know for my for my usage of of these things it can be a little bit different where I'm I'm doing so much asynchronous that I'll like at a
+37:10 Sterling Baird: But it looks like it just got resolved Sunday. Yeah. Oh, looks like my is backed. Yeah, Internet outage.
+37:10 Sam Charles: OK. OK. Last we heard you Last we heard you were talking Last we heard, you were talking about that with the amount of copilot stuff that you do as soon as you have, like and then you get out. Did.
+37:30 Sterling Baird: Yeah, yeah, I heard that. So. I I I I I tend to do a lot of asynchronous stuff and so then you know I might have like. 6 6 copilot sessions running like three to six concurrently throughout the day.
+37:48 Sam Charles: Yeah.
+37:48 Sterling Baird: Sort of thing, but I, but I think just saying like shoot for having three of these feedback loops per day. Is like a relatively conservative. Est Estimate Estimate where you know if three times a day you're telling it to. Do something meaningful to fix something to try something else out to refactor. Design then in in some sense it it kind of becomes a a question of like how how much human interaction is needed to get this thing to where it needs to be and.
+38:21 Sam Charles: Yeah.
+38:24 Sterling Baird: I think that. Pretty soon we'll we'll be at the point where it can also send prints programmatically to the H2D printer.
+38:35 Sam Charles: Right.
+38:35 Sterling Baird: And so it's like. Hey redesign this. Oh, that looks good. OK. Send it to the printer. OK, we grab it. We load it with powder. We test it. Hey, here are the results. Like Like this is what worked.
+38:49 Sam Charles: But yeah.
+38:49 Sterling Baird: This is what did in like those kinds of feedback cycles, I think will. Like look kind of accelerate. Like look kind of Tell everything a bit there. And obviously you don't wanna do just like a contrived thing like. And obviously you don't wanna do just like a contrived
+39:07 Sam Charles: Yeah.
+39:08 Sterling Baird: How are you feeling today? Or like just always being like, look, look back at what you've already done through things. Obviously there's yeah, like having some meaning to it, but it.
+39:12 Sam Charles: Right, right.
+39:18 Sterling Baird: It will always return something within an hour and so. Maybe you see some of the output after you know 10 to 30 minutes, like normally it wouldn't take a full hour. That's only if it times out, essentially. But if you're looking But if you're looking at what it what it's giving back and then you're providing feedback. Then that's where you know you could have those 3 copilot sessions within within an hour.
+39:48 Sam Charles: Yeah.
+39:48 Sterling Baird: If it requires more thought or you testing something on your side, that's where the there might be larger delays and in between.
+39:54 Sam Charles: Yeah.
+39:57 Sterling Baird: Does that sound reasonable for?
+39:59 Sam Charles: Yeah. It's good to know too that like three is 3 is a good benchmark, but it's still conservative. It's good to know too that like So like we can like that's. Yeah, we can totally do three in an hour. Yeah we can totally do three in an hour We're just designing stuff and so we should maybe go more than that. We're just designing stuff and so Like, yeah, that's a good.
+40:17 Sterling Baird: Yeah Alright, yeah, I think a full day.
+40:18 Sam Charles: It's a good a good It's a good a good challenge and a good perspective, so.
+40:21 Sterling Baird: Yes, and I Oh yeah, go.
+40:23 Sam Charles: Was Was, oh, I was just gonna say I'm still new to using GitHub and. Was oh I was just gonna
+40:30 Sam Charles: It's I'm still learning It's I'm still learning it's organization as far as organizing. Our our process on this. Are you concerned at all with us just making new issues whenever we feel we need them?
+40:39 Sterling Baird: Mm.
+40:43 Sam Charles: Like we just have free reign to.
+40:45 Sterling Baird: Yeah, that's fine for you to make new issues. I just say like use your best judgment for it. And if there's anything where it's like.
+40:54 Sam Charles: Yep.
+40:56 Sterling Baird: Oh, the the main thing I would say is is don't merge pull requests without just spot checking with me first. I should specify I should specify don't merge pull requests that have a copilot session attached to it, or like copilot sessions. If you merge it, you can no longer trigger new copilot sessions. For it. So then you have to do a new issue. The new PR and sometimes it makes sense to do it that way, but.
+41:22 Sterling Baird: If there's a sort of premature closure on a or merging of a pull request, then. And I And I was like, still planning to go in and do more copilot sessions than. I I I I I ended up making a new issues saying this is just picking up from where this got closed and that makes a new PR and like so from an organization that's probably the only thing where.
+41:41 Sam Charles: Yeah.
+41:48 Sterling Baird: That is a little more work to correct, but just making new issues and assigning them to compile it, that's. Yeah that Yeah, that's that's no problem. And it's easy. It's much easier to close an issue NPR. And do a kind of make the make the nuance.
+42:04 Sam Charles: Yeah Yeah.
+42:06 Sterling Baird: But yeah, I would say be. Be liberal in in that aspect of just like. Following your best judgment, feel free to check in with me and if I don't get back to you then just like. Following your best judgment
+42:18 Sam Charles: Yeah.
+42:23 Sterling Baird: Do what everything is is best. Almost.
+42:27 Sam Charles: Awesome. Sweet. As far as cost expectations for like the end product? Is in, like commercially available ones are like 10 to 30K. What would you like this to be like in the ballpark out like are we talking like $100 or like $1000? Or like, what would you like? What would you I mean, as cheap as we can make it right and make it good.
+42:51 Sterling Baird: Yeah, I would say sub 10K for 30 unique powders.
+42:52 Sam Charles: But like what you thinking?
+42:52 Sterling Baird: Yeah yeah That could go up to 15K. If we can do If we can do it If we can do it for 3000 or less, awesome, you know, I think there's there's potential for that, especially if. You know, I I I can imagine it being about $100 per dosing head even with repeating it every single time like the stepper motor plus the solenoid plus the the vibration motor.
+43:27 Sterling Baird: And considering the the Assembly time too, I would just make sure to when you think of $3000 or $10,000 factor in like a $20.00 an hour assembly time like for somebody to just kind of jump in. It's like how what would it act?
+43:40 Sam Charles: Yeah.
+43:43 Sterling Baird: Cost. For someone to grab this design and try to recreate it. Yeah, they have to order all these order, all these things. So, so I guess. Yeah they Assume that it's not us making it and selling it. It's somebody else taking open source designs. And building it themselves.
+44:05 Sam Charles: Yeah Yeah. OK, sweet. We had talked about like the alloys that we're gonna make in the lab are typically like. No more than like 7 or 8 powders. So do you wanna have? I guess for a couple different designs we have. What are you trying to say? I guess for a couple different designs we For us, it might be more helpful to have like 10 powders available before we need human intervention to like switch out the powders and things. Are you still looking for 30 powders that you can just kind of load into the machine and then do several different blends? Several.
+44:42 Sam Charles: Different types of blends? Or is it, like we're gonna put in 10 like this is gonna be an alloy that has ten different powders in it. So we load the 10 in and then does the blend. Does that make sense?
+44:51 Sterling Baird: Yeah Yeah. Yeah, it does. It does make sense, I would say. I still lean pretty heavily towards getting. More than 10. In In that it's like this with the proposal that we just submitted, we were saying there would be 16. In that it's like In that it's like this with Yeah, I think 6 teen unique periodic elements in the in the campaign. And if we had 16 channels then that means that we're never having to do.
+45:27 Sam Charles: Thank you.
+45:30 Sterling Baird: Manual swaps of things in between iterations. It's just. Manual SW Here's our new we want 8 out of 816 to be dispensed in this run sort of thing. Here's our new
+45:40 Sam Charles: Yeah.
+45:42 Sterling Baird: And so I guess with the and then also going going towards the like the 30 or more. Is that I would like the lab to be capable at some point in the future. I think like three to five years handling 1 to 200 unique powder types. At Will, and so even if you're only using three to five at a time, you're picking three to five out of these 200.
+46:08 Sam Charles: Yeah.
+46:09 Sterling Baird: And that's sort of the. Going back to an automation endpoint, there are 40 hours in a in a work week. And there's 168 hours in a, you know, kind of like clock time in a in a week sort of thing. And once we get closer to self driving lab aspects then. We can carry over into the evening runs and like Saturday runs and things like that. More and it's just it's not.
+46:44 Sam Charles: Yeah.
+46:44 Sterling Baird: It's not reasonable or feasible to say in the US at a university, we're going to have, you know, like 24/7 shifts, you know like around the clock, sort of at a synchrotron.
+46:55 Sam Charles: OK.
+46:58 Sterling Baird: Guess that's a that's there. That's an exception. In China, there's a different kind of exception there. But But in the you know, just in terms like expectations. But I think that the just the self driving lab aspect there.
+47:09 Sam Charles: Yeah, yeah.
+47:14 Sterling Baird: If we can have have it where we don't have to exchange. Cartridges manually. That would be. That would be ideal and also where like you can start doing multiple iterations of like here's the blend into this container. OK, move the container. Here's the next blend, and so even if we're not doing like a full feedback loop of atomize and test and everything we could. Still do batches of distinct compositions.
+47:49 Sam Charles: Yeah, that makes sense. I think that's. Sorry
+48:03 Sterling Baird: OK, cool.
+48:04 Sam Charles: And I think I think it's better off the questions that I had. Is it yeah, yeah.
+48:06 Sterling Baird: OK.
+48:08 Sam Charles: And we gotta get a good place to move forward now. So that's. Yeah Yeah.
+48:13 Sterling Baird: OK. Awesome. Thanks Sam.
+48:15 Sam Charles: Do you have any other quest Do you have any other questions for us or?
+48:19 Sterling Baird: No and and thanks for. Thanks for working on this. I'll I'll post the edits taking some some notes. Just like autotranscribe notes, I'll put those on the on the OR I guess on the pull request too, probably. And just feel free to ping me.
+48:37 Sam Charles: OK.
+48:37 Sterling Baird: Yeah
+48:37 Sam Charles: Awesome. That's great. OK.
+48:38 Sterling Baird: Yeah. OK.
+48:39 Sam Charles: Thank you very much.
+48:40 Sterling Baird: Thanks Sam thanks Sean OK
+48:40 Sam Charles: Yeah Yeah OK Yeah. OK.
+  
