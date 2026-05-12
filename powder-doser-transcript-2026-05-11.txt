@@ -1,0 +1,177 @@
+# doser approaches
+
+  Meeting started: 5/11/2026, 1:17:04 PM
+  Duration: 48 minutes
+  Participants: Sam Charles, Sterling Baird
+
+  [View original transcript](https://app.tactiq.io/api/2/u/m/r/nTl9NTNPO5FKVFI5Ug8L?o=txt)
+
+  Note: This file is a cleaned, line-by-line edit of the original Tactiq voice-to-text transcript. Non-technical exchanges (audio checks, screen-sharing logistics, greetings, filler interjections) have been removed and obvious voice-to-text artifacts (duplicated phrases, misheard words) have been corrected while preserving direct quotes wherever possible. The original is recoverable via git history.
+
+## Detailed summary with citation
+
+# Meeting Summary
+
+## Project direction and near-term scope
+- The discussion opened with a review of the brainstorming output and the team's desire to decide on next steps for the dispenser concept. Sam explained that Copilot had generated several architecture options, with some clearly weaker than others, while a few looked promising enough to pursue further. [00:54] [01:07] [04:13]
+- Sterling agreed that the main mechanisms to keep in view were an auger, a solenoid, and a vibration motor, and asked whether the team was comfortable constraining the design around those elements. The group agreed that this was a reasonable direction. [04:46] [05:18]
+
+## Cross-contamination and powder-handling constraints
+- Sterling emphasized that avoiding cross-contamination was a key requirement: powder should not repeatedly touch shared surfaces unless those surfaces were effectively single-use. This constraint shaped the rest of the architecture discussion. [05:18]
+- Two broad strategies were discussed for handling powder transfer without contamination: either use separate tubes feeding into a common container that then moves onward, or move the scale/container along a track to different dispensing stations. [06:17] [06:45] [08:10]
+- Sterling also described a larger carousel-style concept where a robot arm or automated system could move cartridges/vials into a dispensing position, enabling many unique powder combinations without manual swapping at every step. [08:46] [21:43] [23:53]
+
+## Review of existing commercial systems
+- The team examined examples of existing dispensing systems, including a multi-station scale setup and a cartridge-based robotic dosing-head system, to better understand how industrial products manage powder handling and reconfiguration. [08:10] [08:46] [23:53]
+- Sterling noted that these systems are already substantial investments, roughly in the $10,000–$30,000 range, and may not fully match the team's workflow or powder requirements. He also pointed out that some appear to be auger-only, without the vibration-based mechanisms the team wants. [11:00] [11:26]
+- Although one manual module was relatively affordable, the system as a whole still looked expensive, and Sterling suggested that buying a unit or sending powders to the vendor for testing could still provide valuable benchmark data if budget permits. [11:52] [12:33] [14:04]
+
+## Recommended near-term design approach
+- Sterling recommended focusing first on a single functional module containing the auger, solenoid, and vibration motor, rather than trying to solve every multi-powder layout problem immediately. The idea is to get one repeatable module working, then scale it by replication and later decide the layout strategy. [15:34] [16:43] [18:35]
+- Sam confirmed the understanding that the current goal is to make one module work well and only later multiply that module into a larger system. [18:35] [18:44]
+- Sterling stressed that the most valuable workflow is to move quickly from design to printed prototype to powder testing, so the team can feed real-world results back into future iterations. [17:29] [18:09]
+
+## Modular versus integrated cartridge concept
+- Sam raised an alternate cost-reduction concept: keep one shared set of electromechanical parts but swap in different cartridges or vials, each with a 3D-printed auger or internal dispensing part. This could potentially reduce cost dramatically while preserving the same core mechanism. [19:10] [19:58]
+- Sterling said this modular cartridge concept was worth considering, but noted that it introduces extra engineering challenges, especially around rigid coupling, sealing, and ensuring good contact between the motor and the cartridge. [20:00] [21:12] [27:08]
+- The team concluded that the integrated design and the modular swap-out design are similar enough that they can proceed in parallel for a while without needing to choose immediately. [21:12] [21:43]
+- Sterling connected this cartridge idea to the industrial dosing-head example: the expensive part of the system is not the head itself, but the mechanism that picks up the head and mates it to the shared electromechanical components. [23:53] [26:09]
+
+## Capping, shutters, and leak prevention
+- A major concern in the modular approach was how to prevent powder leakage when cartridges are not in use. Sam suggested caps or a passive mechanical system that would keep cartridges sealed and only open them when aligned for dispensing. [28:28] [29:25]
+- Sterling framed the sealing problem as similar to a normally closed valve and proposed three possible approaches: a normally closed mechanism, a cap/seal design, or a shutter system. [29:52] [31:36]
+- He explained that a shutter does not stop leakage itself, but can protect the receiving area from contamination. He also said automated cap removal/insertion would be a tougher AI/design challenge than a shutter, though a shutter is less foolproof because it assumes some leakage may occur. [31:36] [32:54]
+
+## Cost targets and scaling expectations
+- Sterling gave a rough target of sub-$10,000 for a system supporting around 30 unique powders, with some flexibility up to about $15,000. He estimated that a dosing head could plausibly cost around $100 each when accounting for the stepper motor, solenoid, and vibration motor. [42:42]
+- He also reminded the team to include assembly labor in cost estimates, suggesting roughly $20/hour for build effort when thinking about open-source reproducibility. [43:27]
+- Sam clarified that the lab's immediate alloy work usually involves no more than 7–8 powders, but Sterling still preferred designing toward 16 or more channels so that future campaigns could avoid manual swaps and support more ambitious automation goals. [44:05] [44:51] [46:09]
+- Sterling expressed a long-term vision of supporting 100–200 unique powders over the next few years, enabling evening and weekend operation and reducing manual intervention between experiments. [45:42] [46:44]
+
+## Copilot workflow, issue management, and cadence
+- Sam asked when the team should start requesting visuals and CAD models from Copilot. Sterling recommended asking for visualizations or CAD outputs right away, while expecting the first results to be rough and iterative. [34:20] [34:47]
+- Sterling challenged the team to aim for at least three Copilot feedback sessions per day, noting that this is a conservative benchmark and that the cycle could speed up once prints can be sent programmatically to the printer and tested more quickly. [34:47] [38:49]
+- Sam asked whether creating new GitHub issues as needed was acceptable. Sterling confirmed that this was fine, with the caution that pull requests tied to Copilot sessions should not be merged prematurely without a quick check, since merging can block further Copilot iterations on that branch. [40:30] [41:48]
+- The team agreed that the workflow should prioritize rapid iteration, practical testing, and continued refinement rather than waiting for a perfect design before moving ahead. [38:24] [39:59] [48:08]
+
+## Action items discussed
+- Sterling asked Sam or Sean to contact MTI for a lead time on the manual dispenser, quotes for the six-channel and sixteen-channel systems, and whether MTI could test some of the team's powders in their system. [14:04] [15:18]
+- The team agreed to continue work on the single-module auger/solenoid/vibration design, while also spending some effort exploring the lower-cost modular cartridge path in parallel. [15:34] [19:58] [33:26]
+- Sterling said he would post edited notes and likely add autotranscribed notes to the pull request for reference. [48:19] [48:37]
+
+
+
+## Highlights
+
+> 01:26 Sam Charles: Some of the next approaches we were talking about is picking our favorite designs and making each of those a new issue — each design that it gave was like, these are the good things and these are the problems.
+> 15:34 Sterling Baird: From there, I would say focus on making an individual module — like one channel.
+> 16:43 Sterling Baird: I would focus on taking that auger design from the other issue and trying to modify it.
+> 40:23 Sam Charles: I was just gonna say, I'm still new to using GitHub.
+> 40:56 Sterling Baird: The main thing I would say is don't merge pull requests without spot-checking with me first — specifically, don't merge pull requests that have a Copilot session attached to them. If you merge it, you can no longer trigger new Copilot sessions for it, so then you have to do a new issue and a new PR. Sometimes it makes sense to do it that way, but...
+> 41:48 Sterling Baird: That is a little more work to correct, but just making new issues and assigning them to Copilot — that's no problem. It's much easier to close an issue and PR than to handle the merged-PR case.
+
+## Transcript
+
+  00:54 Sam Charles: We looked over your comments — you want to talk about next steps, where to go from here?
+01:07 Sam Charles: We started off with the brainstorming, asking Copilot what some different approaches we could take. Which really worked pretty well and gave us a lot of good directions and bad directions.
+01:26 Sam Charles: Some of the next approaches we were talking about is picking our favorite designs and making each of those a new issue — each design that it gave was like, "these are the good things and these are the problems."
+01:43 Sam Charles: It'd be nice to see how Copilot would address those problems, whatever they are. Like picking two or three and giving those new issues saying, "hey, go for this one."
+01:59 Sam Charles: And see how it approaches new problems.
+03:53 Sterling Baird: I did update the comment a little bit. You mentioned a couple designs — I'm guessing that's in the markdown file that I put out.
+04:13 Sam Charles: Yes, it also mentioned them briefly in the top. It gives these seven architecture options. Some of them are basically unhelpful, some of them look pretty good.
+04:46 Sterling Baird: E and F are next, because we're essentially saying we want an auger, we want a solenoid, and we want a vibration motor.
+05:08 Sterling Baird: I feel OK constraining it to that point. Do you guys feel OK with that too — saying we want all those mechanisms in the same thing?
+05:18 Sam Charles: Yeah, OK.
+05:18 Sterling Baird: So then, "one reservoir and auger per channel" — in my mind it comes down to: from a cross-contamination point, we don't want to reuse — we don't want powder touching the same surface unless that surface is a one-time-use thing.
+05:58 Sterling Baird: That means one of two options. One — and I think you're picking up on this one, and Sam talks about this a little bit — you just have tubes pointed at the same container, so it's free-falling into the container, and that container is the thing that actually goes directly into the atomizer, into the induction crucible. Or you have the scale that's moving along a track, kind of similar to this MTI one.
+08:10 Sterling Baird: This one, I think, moves the balance to each of the dispensing stations.
+08:23 Sam Charles: That looks pretty good.
+08:46 Sterling Baird: This one — we've got 16 cartridges, or 16 hoppers, up top, and then you're using a carousel approach. That robotic arm is grabbing individual vials, so you can dispense 16 unique powders into — I think they have something like 32 vials there. So you could do a lot of different combinations.
+09:23 Sterling Baird: Instead of doing one sample at a time, the robotic arm is picking up [a dosing head and bringing it to each vial].
+10:41 Sam Charles: My next question is: if this exists, then what are we doing? Are we trying to get cheaper, or trying to get more? What's our new angle?
+11:00 Sterling Baird: I knew that this existed before. This would be — I think $20,000, maybe more. I forget which one. Anyway, I got some ballparks — like $10K to $30K for the system — and it's not necessarily tailored to our workflows or compatible with the powders we'd be using. Like, it's only auger-based; I don't think they have the vibration or anything like that. So maybe it would work out OK.
+11:52 Sterling Baird: We could check by buying one. They have a manual dispenser — we could try buying one of those. However, it's out of stock. But it did seem like that was the [option]. If we tried to get one of those modules, or we send in some powder and ask them to do some testing for us — we could give that a try.
+12:33 Sam Charles: If this manual piece is $300, it's not looking great.
+12:43 Sterling Baird: Yeah. And in some sense, if we got the budget, we could go for something like this, especially if the grant comes through.
+14:04 Sterling Baird: I'd like to ask one of you to take on reaching out to MTI — try to get a lead time for this manual one, and also get quotes for the other two that were in there.
+14:27 Sterling Baird: I also think it's worth asking them if we could send them some powder for them to dispense and demo for us. I think those things would help in this process.
+14:54 Sam Charles: So get a lead time on the manual dispenser, and what was the quote for?
+14:55 Sterling Baird: Quotes for those two other items — the six-channel dispensing system and the 16-channel one.
+15:13 Sam Charles: And potentially ask about sending some of our powders to them.
+15:18 Sterling Baird: Yeah, to see if it works OK in their system.
+15:34 Sterling Baird: From there, I would say focus on making an individual module — like one channel. Going back to the GitHub issue / pull request.
+15:54 Sterling Baird: Focus on making the design that has the auger, the vibration motor, and the solenoid as one module, and then we'll just assume we'll probably either do this shared circular dispense into a common container, or we'll do some kind of movement. But that doesn't affect the overall design as much in the end. It's just a matter of configuration, not necessarily the individual module design.
+16:43 Sterling Baird: I would focus on taking that auger design from the other issue and trying to modify it.
+17:02 Sterling Baird: Adding a solenoid, adding a vibration motor, and then maybe trying to deal with the dispense volume a little more — the current setup is pretty small and wasn't really designed for a big dispense volume, or really a reservoir. Does that make sense? Focus on the individual module, and the sooner we can get new iterations printed and test them with actual powders, [the better].
+17:37 Sterling Baird: That's where the power of this workflow is really going to start coming across. It's like, "OK, Copilot, go off and design this thing," and then we build it, we put it together, we test with six different types of powders, and then we report that feedback. We continue the iteration process. The sooner we can get to that initial prototype — a draft of some design that we can buy or order parts for, print, and test — the better.
+18:15 Sam Charles: So you're saying: for now, be less concerned about how we will do multiple iterations of different powders, and just focus on getting a singular module working.
+18:35 Sterling Baird: Yeah, I think so.
+18:35 Sam Charles: So you're saying focus on this "B" version, right? Like, we make one module, and then we can just multiply that a bunch of times.
+18:44 Sterling Baird: And decide how we're going to lay it out later. I think we'll be fine just assuming that.
+18:51 Sam Charles: There was some idea we talked about — where the dispenser wouldn't just be something modular where we'd have one mechanism, but a carousel of augers. The auger itself is the 3D-printed part.
+19:10 Sam Charles: It's cheap, and so that goes around. It couples to the motor and the solenoid. If we're trying to drive costs down, then we could have one stepper, one solenoid, one vibrator, and then —
+19:34 Sam Charles: Instead of having each dispenser have its own motor and all the things, you just have these different vials. We were talking about ways we could have a cap or something, so they're not spilling everywhere when they're not in use, but they slot into place, uncap themselves, and then the motor can couple to it and use it that way.
+20:00 Sam Charles: Do you want us to be pursuing that? We could just kind of be doing it on the side and see if Copilot comes up with anything interesting. It would just cut down the price by like 30 times. But it might be less good — it's a trade-off.
+20:15 Sterling Baird: You mean: can you just swap out a tube or cartridge that keeps all the electronics and electromechanical pieces?
+20:31 Sam Charles: Kind of like a revolver, but not like a revolver.
+20:37 Sterling Baird: I think that's worth considering or pursuing. I wonder how much it might affect things if you have this base design that assumes it's all integrated versus a design that's a little more modular — just swapping out the tube. I'm wondering if those would be similar, but just a matter of keeping things detached or not.
+21:12 Sam Charles: I guess it would be a very similar design either way — just making it modular or not. We can definitely take some steps without making that kind of decision, because they are pretty similar designs, applied in different ways. They'll be parallel paths for at least a little while.
+21:43 Sterling Baird: Something I like about that is, if we did start saying "hey, we want to scale up to 100 unique powders," then we start assuming we have some kind of robotic arm in place that is picking up these other cartridges and loading them in for dispensing. I could see something where the load position is flat, so you're pretty confident no powder is going to spill out. You load this in, then it rotates to some angle, does its dispensing, comes back up. The robot arm grabs it, puts it back into a catalog or whatever, grabs a new one, brings it in. That's very similar to [the system I sent].
+22:52 Sterling Baird: Let me find this — there are a few different versions of this one.
+23:53 Sterling Baird: The general idea: you have a station or a rack of the different items that you want, and then you bring that into a dispense mechanism. In this system [the one I just sent a link for], the electrical components — there's just one set of electrical components, and it's the cartridge that you're bringing in. This one is the expensive "salt shaker."
+25:21 Sam Charles: I was thinking a lot simpler than this.
+25:45 Sam Charles: For what we need to do — just dispensing powders — I don't think we need a robotic arm. I think we could do it without one.
+25:59 Sterling Baird: Yeah. But just noticing that with the dosing-head placement part, it's picking up a dosing head.
+26:09 Sterling Baird: What you guys were talking about — "could we use the same solenoid, the same vibration motor, the same stepper motor, just with a different cartridge?" — that's more or less what's happening here. They're picking up a dosing head. The dosing head doesn't have any electrical pieces to it. When they put the dosing head in, that's where they're doing the salt-shaking — just reusing a piston or something to tap it.
+26:39 Sam Charles: That's what I was thinking we would do. How do you feel about that versus having each of them have the electric components together? Do you want us pursuing both of those simultaneously?
+26:58 Sterling Baird: I'm trying to think it through, because I think it introduces some additional engineering challenges to do a swap-out — and maybe what I'm picturing is, in an automated fashion. I could definitely picture something where you are manually loading it in, and then you're just screwing or tightening something, and now the vibration motor — this little coin motor — has good contact with it, and everything's locked in place. Maybe it's not so much precision — it's how you grasp it and get it to be rigid against everything. Do you have some thoughts there already?
+27:57 Sam Charles: We talked about some different ways. One big thing we brought up: because we're using this as a way to test the capabilities and limitations of generative CAD AI, it's a much harder problem than "can AI design a bracket?" So it'd be interesting to see how it tries to handle those engineering problems. It could be a good limits test to throw at it, and we can guide it along.
+28:28 Sam Charles: We talked about a couple different ways to put in a cap mechanism so that it's sealed itself — so you can [move] it around without spilling.
+28:38 Sam Charles: It could be in some kind of — like a catalog [rack].
+28:48 Sam Charles: Or, we were talking about [the name] "vertical cloud lab" — we could store them vertically, just have them in something like that, or on a carousel. If you had some kind of cap there, it just becomes a matter of moving these little tubes around, and that wouldn't be too bad — especially if you can have it roll into place and roll out of place.
+29:11 Sam Charles: Thinking more passively — not like we need a six-axis arm to pick this up and move it, but just if we have a motor that moves all the vials in a carousel, and then it moves into just the right place and clicks out / clicks back in. As long as you have a good cap design that can actually do that, then that could be more reliable.
+29:33 Sterling Baird: That makes sense.
+29:52 Sterling Baird: A couple thoughts there. One: a similarity to that system is that, by default, it's closed. You take one of those cartridges; you can shake it around — it's not leaking any powder out. When it grabs the piston and starts doing the tapping mechanism, that's essentially opening and closing it.
+30:17 Sterling Baird: So it's a normally closed valve, and it's bringing the piston up. The cap, like you're talking about, addresses the similar concern of leaking — you don't want powder to leak anywhere. You only want the powder to go where it's supposed to.
+30:39 Sterling Baird: From both a contamination and a safety standpoint: one, you don't want powders that are not supposed to be active leaking into the container and messing up your composition. And you also just don't want it getting all over the place.
+30:56 Sam Charles: Yeah — mixing with other things that it might be reactive with, etc.
+31:00 Sterling Baird: On that front, I think there may be three approaches. One is to go with something that is normally closed — but with our auger design, I don't think that's very amenable to an auger necessarily. So then, capping like you mentioned, or a third one: using a shutter mechanism. A shutter doesn't prevent leaking; it just keeps leaks from contaminating your [target].
+31:36 Sterling Baird: A "shutter" — basically blocking the path temporarily for dispensing. If you did have a carousel approach, that might look like: you have a disk, and it only has one hole in it, and you move that hole around.
+32:10 Sterling Baird: Even if vibration from one dosing head causes some leakage in another one, it's just leaking onto this shutter.
+32:20 Sterling Baird: With a cap mechanism specifically: doing an automated cap removal and insertion seems like more of a challenge than a shutter mechanism. But a shutter is less foolproof — you would want to catch [leakage]. It assumes there is going to be leakage and is sort of a secondary [defense].
+33:08 Sam Charles: So as next steps for us, we'll move forward with making a module — one that's modular enough that you can just multiply them and have a bazillion of them, then you have N modules. If it's all right, I'd like to put a little bit of time into the other one as well, just to see.
+33:44 Sterling Baird: Yeah, sounds good.
+33:47 Sam Charles: The cost benefit is enough — I think it's [worthwhile].
+33:54 Sam Charles: We had a question: when should we have it start [generating visuals]? For this first round of brainstorming, we had it just give us descriptions of how this would go, and a lot of the designs might have been more helpful if we had a nice visual to read off of as well.
+34:20 Sam Charles: When should we start asking it to generate visuals and CAD models? Should we start out of the gate saying, "if you think it's helpful, generate things"?
+34:32 Sterling Baird: I would just tell it, right off the bat, "generate a visualization" or "generate a CAD model." It will probably start out with something that isn't very good, but you can start iterating on it.
+34:47 Sterling Baird: My challenge to you guys would be to have at least three Copilot sessions per day in terms of the feedback — that's essentially 15 iterations per week, which I think is actually a bit conservative if this is the main thing both of you are working on. For my usage of these things, it can be a little different — I'm doing so much asynchronous work.
+37:10 Sterling Baird: [After Internet outage] OK, looks like I'm back.
+37:10 Sam Charles: Last we heard, you were talking about the amount of Copilot stuff you do.
+37:30 Sterling Baird: I tend to do a lot of asynchronous stuff, so I might have like three to six Copilot sessions running concurrently throughout the day. But I think just saying "shoot for having three of these feedback loops per day" is a relatively conservative estimate — where, three times a day, you're telling it to do something meaningful: fix something, try something else out, refactor a design. In some sense, it becomes a question of how much human interaction is needed to get this thing to where it needs to be.
+38:24 Sterling Baird: I think pretty soon we'll be at the point where it can also send prints programmatically to the H2D printer. So it's like, "hey, redesign this — OK, that looks good — send it to the printer." We grab it, load it with powder, test it. "Hey, here are the results — this is what worked, this is what didn't." Those kinds of feedback cycles will really accelerate things.
+38:49 Sterling Baird: Obviously you don't want to do just a contrived thing — like "how are you feeling today?" — or always look back at what you've already done. Having some meaning to it [matters].
+39:18 Sterling Baird: It will always return something within an hour, so maybe you see some of the output after 10 to 30 minutes — normally it wouldn't take a full hour; that's only if it times out. If you're looking at what it's giving back and providing feedback, that's where you could have those three Copilot sessions within an hour.
+39:48 Sterling Baird: If it requires more thought or you testing something on your side, that's where there might be larger delays in between. Does that sound reasonable?
+39:59 Sam Charles: Yeah. Good to know that three is a good benchmark but is still conservative. We can totally do three in an hour — we're just designing stuff, so we should maybe go more than that. It's a good challenge and a good perspective.
+40:23 Sam Charles: I was just gonna say, I'm still new to using GitHub, and I'm still learning its organization, as far as organizing our process on this. Are you concerned at all with us just making new issues whenever we feel we need them? Like, do we have free reign?
+40:45 Sterling Baird: That's fine. Just use your best judgment.
+40:56 Sterling Baird: The main thing I would say is: don't merge pull requests without spot-checking with me first — specifically, don't merge pull requests that have a Copilot session attached to them. If you merge it, you can no longer trigger new Copilot sessions for it, so then you have to do a new issue and a new PR. Sometimes it makes sense to do it that way, but —
+41:22 Sterling Baird: If there's a premature closure or merging of a pull request, and I was still planning to do more Copilot sessions on it, then I end up making a new issue saying "this is just picking up from where this got closed," which makes a new PR. From an organization standpoint, that's probably the only thing where —
+41:48 Sterling Baird: That is a little more work to correct, but just making new issues and assigning them to Copilot — that's no problem. It's much easier to close an issue and PR than to handle the merged-PR case.
+42:06 Sterling Baird: Be liberal in that aspect — just follow your best judgment. Feel free to check in with me, and if I don't get back to you, then do whatever's best.
+42:27 Sam Charles: As far as cost expectations for the end product — commercially available ones are $10K to $30K. What would you like this to be, ballpark? Are we talking $100 or $1,000? I mean, as cheap as we can make it, right, and make it good. What are you thinking?
+42:51 Sterling Baird: I would say sub-$10K for 30 unique powders. That could go up to $15K. If we can do it for $3,000 or less, awesome — I think there's potential for that. I can imagine it being about $100 per dosing head, even with repeating it every single time — the stepper motor plus the solenoid plus the vibration motor.
+43:27 Sterling Baird: Considering the assembly time too: when you think of $3,000 or $10,000, factor in like $20/hour assembly time for somebody to jump in. What would it actually cost for someone to grab this design and try to recreate it? They have to order all these things. Assume it's not us making it and selling it — it's somebody else taking open-source designs and building it themselves.
+44:05 Sam Charles: We had talked about — the alloys we're gonna make in the lab are typically no more than 7 or 8 powders. For us, it might be more helpful to have like 10 powders available before we need human intervention to switch out the powders. Are you still looking for 30 powders that you can load into the machine and then do several different blends?
+44:42 Sam Charles: Or is it like, "we're going to put in 10 — this is going to be an alloy that has 10 different powders in it, so we load the 10 in and then it does the blend"? Does that make sense?
+44:51 Sterling Baird: Yeah, it does make sense. I still lean pretty heavily toward getting more than 10. With the proposal we just submitted, we were saying there would be 16 unique periodic elements in the campaign. If we had 16 channels, then we're never having to do manual swaps of things in between iterations. It's just, "here's our new run — we want 8 out of 16 to be dispensed in this run."
+45:42 Sterling Baird: Going toward 30 or more: I would like the lab to be capable, at some point in the future — I think three to five years — of handling 1 to 200 unique powder types at will. Even if you're only using three to five at a time, you're picking three to five out of those 200.
+46:09 Sterling Baird: Going back to an automation endpoint: there are 40 hours in a workweek, and there are 168 hours of clock time in a week. Once we get closer to self-driving lab aspects, then we can carry over into the evening runs and Saturday runs and things like that.
+46:44 Sterling Baird: It's not reasonable or feasible to say, in the US at a university, we're going to have 24/7 shifts around the clock — sort of like at a synchrotron. That's an exception. In China, there's a different kind of exception. But in terms of expectations — just the self-driving lab aspect there.
+47:14 Sterling Baird: If we can have it where we don't have to exchange cartridges manually, that would be ideal. Also where you can start doing multiple iterations of "here's the blend into this container, OK move the container, here's the next blend." Even if we're not doing a full feedback loop of atomize-and-test, we could still do batches of distinct compositions.
+47:49 Sam Charles: That makes sense.
+48:04 Sam Charles: I think that's the questions that I had. I think we're in a good place to move forward now.
+48:19 Sterling Baird: Thanks for working on this. I'll post the edits — taking some notes. I'll put the auto-transcribed notes on the pull request too, probably. Feel free to ping me.
+48:38 Sam Charles: Thank you very much.
+48:40 Sterling Baird: Thanks Sam, thanks Sean.
