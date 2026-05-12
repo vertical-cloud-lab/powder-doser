@@ -1,4 +1,4 @@
-# Single-channel powder-doser module — "Idea B" archetype (v2)
+# Single-channel powder-doser module — "Idea B" archetype (v3)
 
 This folder is the design pass for the powder doser. It implements
 "Idea B / §2.2" of the brainstorming doc that ships in
@@ -10,12 +10,15 @@ gets **replicated N times** around a shared collection cup to build the
 full multi-powder doser.
 
 > [!IMPORTANT]
-> **v2 (this revision)** is a substantial rework of the v1 design that
-> landed in commit c39e07f. v2 directly addresses
-> [@williamulbz's PR review feedback](https://github.com/vertical-cloud-lab/powder-doser/pull/35#pullrequestreview-4274628757).
+> **v3 (this revision)** is a mechanical rewrite of v2 (commit ed49e57)
+> that addresses [@swcharles's PR-#35 review](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447)
+> ("parts that don't touch", "belt under the cartridge", "ERM in the flow
+> path", "exploded-view bracket", "shrink the outboard plates", "add a
+> tilt-drive motor") AND a round of independent VLM-Judge feedback from
+> Edison Scientific (see [`edison_judge/round1.answer.md`](edison_judge/round1.answer.md)).
 > The high-level changes are summarised in
-> [§ What changed in v2](#what-changed-in-v2). v1 is preserved in the git
-> history but is no longer documented here.
+> [§ What changed in v3](#what-changed-in-v3). v1 and v2 are preserved
+> in the git history but are no longer documented here.
 
 Issue: **vertical-cloud-lab/powder-doser#33**.
 Resolves the design-execution half of the issue (the discussion half was
@@ -98,6 +101,33 @@ flat plate, printed flat-on-bed). All hardware bolts to the spine's
    printed cheeks straddle the spine on M5 trunnion pivots at the
    spine's waist, locking via an arc-slot detent at any of 0°, 15°,
    30°, 45°, 60°, 75°. The cheeks bolt to a flat printed base plate.
+
+## What changed in v3
+
+v3 is a mechanical rewrite driven by [@swcharles's PR-#35
+review](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447)
+("most of the parts here don't work") and [@sgbaird's request to use
+Edison Scientific as an independent VLM
+Judge](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4435069073).
+The Edison runner + raw answers are committed under
+[`edison_judge/`](edison_judge/) for reproducibility.
+
+| Critique (reviewer / Edison) | v2 design | v3 fix | Code |
+|---|---|---|---|
+| @swcharles S1, S4 + Edison r1 #2 — motor bracket plates don't touch; "exploded view" | Foot at Y=0, faceplate at Y=−50; 7.5 mm Z gap between halves | Rebuilt as a true L: foot is a vertical YZ-plane plate against the spine; faceplate is a horizontal XY-plane plate cantilevered off the foot's TOP edge, sharing the foot's Y range. Two triangular gussets tie the cantilever back to the foot. | `make_motor_bracket()` |
+| @swcharles S2 — belt drive directly under cartridge | Belt at Z ≈ rotor top (≈ 280 mm), in line with the cartridge | New `BELT_PLANE_Z = COLLAR_H + 4` puts both pulleys at Z ≈ 20 mm, just above the bearing collar. The cartridge above the rotor is unobstructed. | `BELT_PLANE_Z`, `make_motor_bracket()`, pulley placements |
+| @swcharles S2 + Edison r1 #3 — ERM coin in the powder flow path (centred under the rotor) | Disc pad at `(rotor_x, 0)` directly below the rotor's exit nozzle | ERM moved off-axis to a flat **side pad on the −Y face** of the bearing collar (`ERM_PAD_Y_OFFSET`). Coin still couples vibration into the bearing inner race in shear via the collar wall. The exit nozzle is clear. | `make_bearing_collar()`, `make_erm()` |
+| @swcharles S3 — large unnecessary outboard plates | `cradle_base` 220 × 180; `CHEEK_H` 220 mm in X | `cradle_base` trimmed to 140 × 110; `CHEEK_H` reduced from 220 → 130 mm in X (just enough to clear the 0–90° arc-slot at radius 60 mm). | `CRADLE_BASE_W/D`, `CHEEK_H`, `CHEEK_W` |
+| @swcharles S6 — show 0 / 45 / 90 ° tilt; need a second motor for automated tilt | 90 ° dashed (out of cradle range); manual wing-nut detent | Cradle range extended to 0–90 ° (`CRADLE_DETENT_ANGLES_DEG = [0,15,30,45,60,75,90]`). New **NEMA 17 + 30:1 worm gearbox** at the +Y trunnion drives tilt under software control; −Y trunnion remains a passive M5 pivot. Tilt-sweep render now shows 90 ° as a real (not dashed) state. | `make_tilt_drive()`, `CRADLE_DETENT_ANGLES_DEG` |
+| @swcharles S7 — small parts look too thin for FDM | `SPINE_T = 8`, `CHEEK_T = 6` | Stiffness pass: `SPINE_T 8 → 10`, `CHEEK_T 6 → 8`. | constants block |
+| Edison r1 #1 — cartridge floats ~56 mm above the rotor (`auger_top_z = COLLAR_H + 10 + AUGER_LEN`) | Cartridge rim at Z = 276 vs. rotor top at Z = 220 | `auger_top_z = (rotor_z0 + AUGER_LEN) − 4` so the cartridge collar slip-fits over the rotor's top cap, 4 mm engagement. | `make_cartridge()` |
+| Edison r1 #4 — solenoid plunger drawn as a Z-extruded coin | `Workplane("XY")...extrude(SOL_PLUNGER_D)` | Sketched in XZ, extruded along −Y so the plunger is a rod from the solenoid front face to the rotor wall through the collar window. | `make_solenoid()` |
+| Edison r1 #5b — cradle base sits 2 mm below the cheek foot | `cradle_base.translate((0, 0, -10))` with `CRADLE_BASE_T = 8` → top face at Z = −2; cheek foot starts at Z = 0 | `cradle_base.translate((0, 0, -CRADLE_BASE_T))` so the base top face is exactly Z = 0, flush with the cheek foot bottom. New continuous **spar** in the cheek body fills the previous gap between the pivot region and the foot, so each cheek prints as one connected solid. | cheek build; assembly placement |
+
+> Single source of truth for these critiques: the raw VLM-Judge run is at
+> [`edison_judge/round1.answer.md`](edison_judge/round1.answer.md);
+> the second round (post-fix) is at
+> [`edison_judge/round2.answer.md`](edison_judge/round2.answer.md).
 
 ## What changed in v2
 

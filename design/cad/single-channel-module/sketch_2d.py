@@ -31,13 +31,15 @@ PULLEY_H = 16.0
 SOL_W, SOL_H, SOL_L = 9.6, 19.0, 22.0
 ERM_D, ERM_T = 10.0, 2.7
 ERM_PAD_T = 3.0
+ERM_PAD_W = 14.0
+ERM_PAD_H = 14.0
 
 COLLAR_OD = 50.0
 COLLAR_H = 16.0
 COLLAR_FLANGE_T = 6.0
 
 SPINE_W = 90.0
-SPINE_T = 8.0
+SPINE_T = 10.0
 SPINE_H = 360.0
 
 CART_BASE_OD = 36.0
@@ -48,9 +50,14 @@ CART_NECK_H = 6.0
 
 CRADLE_PIVOT_Z = 200.0
 CRADLE_BASE_T = 8.0
-CRADLE_BASE_W = 220.0
+CRADLE_BASE_W = 140.0
 CHEEK_W = 80.0
 CHEEK_H = 220.0
+
+# v3: belt drive moved DOWN to just above the bearing collar (S2 fix).
+BELT_PLANE_Z = COLLAR_H + 4.0
+# v3: ERM coin moved off-axis to a side pad on the -Y face of the collar.
+ERM_PAD_Y_OFFSET = -(COLLAR_OD / 2 + ERM_PAD_T / 2 - 0.4)
 
 ROTOR_X_OFFSET = SPINE_T / 2 + COLLAR_OD / 2 + 4.0
 ROTOR_BOTTOM_Z = -30.0
@@ -124,10 +131,16 @@ def draw_side_panel(ax):
     add_box(ax, brg_x0 + (BRG_OD - BRG_ID) / 2,
             (COLLAR_H - BRG_T) / 2 - 0.2, BRG_ID, BRG_T + 0.4,
             fc="white", ec="0.6", lw=0.4)
-    add_box(ax, AX_ROTOR - (ERM_D / 2 + 4), -ERM_PAD_T,
-            ERM_D + 8, ERM_PAD_T, fc="#cfd8e3", alpha=0.7)
-    add_box(ax, AX_ROTOR - ERM_D / 2, -ERM_PAD_T - ERM_T,
-            ERM_D, ERM_T, fc="#f0c080", label="ERM coin\n(glued under collar)")
+    # v3: ERM coin moved off-axis to a side pad on -Y face of the collar
+    # (S2 fix: was directly under the rotor in v2). Drawn as the side pad
+    # plus the coin glued to its outer face. In side-view (looking along +Y)
+    # the coin appears edge-on at COLLAR mid-height, just outside the collar.
+    add_box(ax, AX_ROTOR + COLLAR_OD / 2 - 0.4, COLLAR_H / 2 - ERM_PAD_W / 2,
+            ERM_PAD_T, ERM_PAD_W, fc="#cfd8e3", alpha=0.7)
+    add_box(ax, AX_ROTOR + COLLAR_OD / 2 - 0.4 + ERM_PAD_T,
+            COLLAR_H / 2 - ERM_D / 2,
+            ERM_T, ERM_D, fc="#f0c080",
+            label="ERM coin\n(side pad,\noff-axis)")
 
     # Rotor
     add_box(ax, AX_ROTOR - AUGER_OD / 2, ROTOR_BOTTOM_Z, AUGER_OD,
@@ -150,14 +163,17 @@ def draw_side_panel(ax):
             CART_HOPPER_OD, CART_HOPPER_H, fc="#f8e5b0", alpha=0.7,
             label="cartridge\n(removable;\npowder enters here)")
 
-    # Pulley
-    pulley_z0 = ROTOR_BOTTOM_Z + AUGER_LEN + 6 + 4
+    # v3: GT2 pulley moved to BELT_PLANE_Z (just above the bearing collar)
+    # so the belt path is BELOW the cartridge, not under it (S2 fix).
+    pulley_z0 = BELT_PLANE_Z
     add_box(ax, AX_ROTOR - PULLEY_FLANGE_OD / 2, pulley_z0,
             PULLEY_FLANGE_OD, PULLEY_H, fc="#bbbbbb", alpha=0.7,
-            label="GT2 pulley\n(16T)")
+            label="GT2 pulley\n(16T,\nlow position)")
     ax.text(-90, 280,
-            "NEMA 11 stepper +\nGT2 belt drive sit\non a side bracket\n"
-            "(see front view ↗)",
+            "v3 BELT MOVED LOW:\nNEMA 11 + GT2 belt drive\n"
+            "now sits in the BELT_PLANE_Z plane,\n"
+            "BELOW the cartridge (S2 fix).\n"
+            "Cartridge top is unobstructed\nfor refills.",
             fontsize=7, ha="left", va="top",
             bbox=dict(boxstyle="round,pad=0.3", fc="#ffe", ec="0.5", lw=0.5))
 
@@ -189,15 +205,19 @@ def draw_front_panel(ax):
     # Insert holes
     for dy in (+30, -30):
         add_circle(ax, dy, COLLAR_H / 2 + 8, 2.25, fc="white", ec="black", lw=0.6)
-    for dy in (+25, -25):
-        for dz in (-10, +10):
-            add_circle(ax, dy, SPINE_H - 90 + dz, 2.25,
+    # v3: motor-bracket inserts moved to LOW Z (foot of L-bracket sits at
+    # Z ~ BELT_PLANE_Z - 30 ± 15) so the belt plane is below the cartridge.
+    foot_centre_z = BELT_PLANE_Z + PULLEY_H + 4.0 - 30.0
+    for dy in (+30, -30):
+        for dz in (+15, -15):
+            add_circle(ax, dy, foot_centre_z + dz, 2.25,
                        fc="white", ec="black", lw=0.6)
     add_circle(ax, 0, CRADLE_PIVOT_Z, 2.7, fc="#fcfcfc", ec="black", lw=0.6)
-    ax.text(SPINE_W / 2 + 4, CRADLE_PIVOT_Z, "M5 pivot",
+    ax.text(SPINE_W / 2 + 4, CRADLE_PIVOT_Z, "M5 pivot\n(+ NEMA 17 worm\ndrive on +Y side)",
             fontsize=6.5, va="center")
-    ax.text(SPINE_W / 2 + 4, SPINE_H - 90,
-            "motor bracket\n(4× M3 inserts)", fontsize=6.5, va="center")
+    ax.text(SPINE_W / 2 + 4, foot_centre_z,
+            "motor bracket\n(4× M3 inserts,\nLOW Z; belt below cartridge)",
+            fontsize=6.5, va="center")
     ax.text(SPINE_W / 2 + 4, COLLAR_H / 2 + 8,
             "collar feet\n(2× M3 inserts)", fontsize=6.5, va="center")
 
@@ -473,12 +493,13 @@ fig3, axes3 = plt.subplots(1, 4, figsize=(20, 8))
 draw_tilt_panel(axes3[0], 0)
 draw_tilt_panel(axes3[1], 45)
 draw_tilt_panel(axes3[2], 75)
-# 90° is past the cradle's locked range — show as dashed for context.
-draw_tilt_panel(axes3[3], 90, dashed=True)
-axes3[3].set_title("90° tilt (extrapolated;\noutside v2 cradle range 0–75°)",
+# 90° is now within the cradle's locked range — actuated by the tilt drive.
+draw_tilt_panel(axes3[3], 90)
+axes3[3].set_title("90° tilt (horizontal\ndispense, in v3 range 0–90°)",
                    fontsize=9)
 fig3.suptitle(
-    "Auger orientation through the v2 cradle's tilt range\n"
+    "Auger orientation through the v3 cradle's tilt range — actuated by\n"
+    "NEMA 17 + worm gearbox at +Y trunnion (no human intervention needed)\n"
     "addresses PR-#35 comment 4276136447 — \"image of the auger at 90, 45, and 0 degrees\"",
     fontsize=11, y=0.99,
 )
