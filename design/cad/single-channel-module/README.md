@@ -1,55 +1,55 @@
-# Single-channel powder-doser module — "Idea B" archetype
+# Single-channel powder-doser module — "Idea B" archetype (v2)
 
-This folder is the first physical-prototype design pass for the powder
-doser. It implements **Idea B / §2.2** of
-[`design/brainstorming.md`](../../brainstorming.md): a self-contained
-single-channel module — one auger + one stepper + one solenoid + one
-vibration motor + that channel's three driver carriers — that gets
-**replicated N times** around a shared collection cup to build the full
-multi-powder doser.
+This folder is the design pass for the powder doser. It implements
+"Idea B / §2.2" of [`design/brainstorming.md`](../../brainstorming.md):
+a self-contained single-channel module — one auger + one stepper +
+one solenoid + one vibration motor + that channel's electronics — that
+gets **replicated N times** around a shared collection cup to build the
+full multi-powder doser.
 
-> [!NOTE]
-> This is the **archetype**, not the full N-channel system. The fan-in
-> ring frame, the load-cell, and the inert-atmosphere enclosure are
-> deliberately deferred — see [§ Roadmap](#roadmap) for the staged plan.
-> The §2.2 fan-in geometry (12 channels around a shared cup) is already
-> sketched in the sibling folder
-> [`design/cad/inward-collection-cup/`](../inward-collection-cup/) for
-> orientation; this folder *zooms in* on a single channel of that ring.
+> [!IMPORTANT]
+> **v2 (this revision)** is a substantial rework of the v1 design that
+> landed in commit c39e07f. v2 directly addresses
+> [@williamulbz's PR review feedback](https://github.com/vertical-cloud-lab/powder-doser/pull/35#pullrequestreview-4274628757).
+> The high-level changes are summarised in
+> [§ What changed in v2](#what-changed-in-v2). v1 is preserved in the git
+> history but is no longer documented here.
 
-Issue: **vertical-cloud-lab/powder-doser#33** ("Modular Single-Channel
-Powder Doser Design").
+Issue: **vertical-cloud-lab/powder-doser#33**.
 Resolves the design-execution half of the issue (the discussion half was
-the brainstorming PR [#31](https://github.com/vertical-cloud-lab/powder-doser/pull/31)).
+the brainstorming PR
+[#31](https://github.com/vertical-cloud-lab/powder-doser/pull/31)).
 
 ## Renders
 
 | | |
 |---|---|
-| ![Isometric](renders/single_channel_module_iso.png) | ![Dimensioned sketch](renders/single_channel_module_sketch.png) |
-| Isometric line render of the full assembly (`cad_model.py` → `.step` → SVG → PNG). | 2D dimensioned schematic — front + side elevations (`sketch_2d.py`). |
+| ![Isometric](renders/single_channel_module_iso.png) | ![Dimensioned 3-panel sketch](renders/single_channel_module_sketch.png) |
+| Isometric line render of the assembly (`cad_model.py` → `.step` → SVG → PNG). | 2D dimensioned schematic — side, front, and powder-flow cross-section (`sketch_2d.py`). |
+| ![Powder flow](renders/single_channel_module_powder_flow.png) | |
+| Standalone larger view of the powder-flow path (cartridge → loading slots → helix → exit nozzle → cup). | |
 
-Additional orthographic SVG/PNG views (`single_channel_module_front`,
-`_side`, `_top`) are in [`renders/`](renders/).
+Additional orthographic SVG/PNG views (`*_front`, `*_side`, `*_top`) are
+in [`renders/`](renders/).
 
 ## What's in this folder
 
 | File | What it is |
 |---|---|
-| [`cad_model.py`](cad_model.py) | Parametric **CadQuery** model. Builds every printed part, places every vendor component (NEMA 11, JF-0530B, ERM coin, DRV8825 / DRV8871 / DRV2605L, 5 mm ↔ M3 flex coupler, the PR-#16 auger envelope), exports `single_channel_module.step` and per-part STLs. |
-| [`sketch_2d.py`](sketch_2d.py) | Matplotlib schematic with dimensions in millimetres (front + side). Same constants as `cad_model.py`. |
-| [`single_channel_module.step`](single_channel_module.step) | STEP export of the **full assembly** (printed parts in lavender, vendor placeholders in their own colours). Open in FreeCAD / Fusion 360 / SolidWorks / KiCad StepUp. |
-| [`stl/`](stl/) | Per-part STLs of every printed part — ready to drop into a slicer (PrusaSlicer / Cura / Bambu Studio). |
-| [`renders/`](renders/) | Isometric, front, side, top SVG line renders + PNG rasterizations + the 2D dimensioned PNG. |
+| [`cad_model.py`](cad_model.py) | Parametric **CadQuery** model. Builds every printed part, places every vendor component (NEMA 11, 6805ZZ bearing, GT2 16T pulleys + belt, JF-0530B, ERM coin, PR-#16 auger envelope), exports `single_channel_module.step` and per-printed-part STLs. |
+| [`sketch_2d.py`](sketch_2d.py) | Matplotlib schematic. 3-panel `single_channel_module_sketch.png` (side / front / flow) plus the standalone `single_channel_module_powder_flow.png`. Constants mirror `cad_model.py`. |
+| [`single_channel_module.step`](single_channel_module.step) | STEP export of the **full assembly** (printed parts in lavender, cradle in green, cartridge in straw, vendor placeholders in their own colours). |
+| [`stl/`](stl/) | Per-part STLs of every printed part — slicer-ready. |
+| [`renders/`](renders/) | All SVGs + PNGs. |
 
 ## Reproducing
 
 ```bash
 cd design/cad/single-channel-module
-pip install cadquery matplotlib cairosvg
+pip install cadquery matplotlib cairosvg numpy
 
 python cad_model.py     # writes the .step + stl/*.stl + renders/*.svg
-python sketch_2d.py     # writes renders/single_channel_module_sketch.png
+python sketch_2d.py     # writes the 2D PNGs
 
 # rasterize the four CAD SVGs to PNG
 python -c "import cairosvg
@@ -59,52 +59,92 @@ for v in ('iso','front','top','side'):
                      output_width=1600)"
 ```
 
-## Design requirements (cross-referenced)
+## Architecture
 
-Pulled from [`design/brainstorming.md`](../../brainstorming.md) §1, §1a,
-§2.2, and §3, with the corresponding bullet from this design called out.
+The module's load path is one **printed spine** (8 mm × 90 mm × 360 mm
+flat plate, printed flat-on-bed). All hardware bolts to the spine's
++X face:
 
-| # | Requirement (source) | How this design meets it |
+1. **Bearing collar** at the bottom of the spine. A 6805ZZ deep-groove
+   ball bearing (Ø25 ID × Ø37 OD × 7 mm) presses into a printed
+   stationary collar. The PR-#16 v4 auger rotor (Ø25 OD) press-fits into
+   the bearing's *inner* race — so the rotor spins on real bearings, and
+   tap/vibration energy from the stationary outer race transmits through
+   the ball/race contact into the rotor wall.
+2. The collar carries an **integral solenoid bracket** with a gusset rib
+   and a plunger-clearance window cut THROUGH the collar body — so the
+   JF-0530B's plunger taps the rotor wall *directly*, not the collar.
+3. The collar carries an **integral ERM-coin pad** on its underside
+   (-Z), close to the dispense end where the de-bridging effort matters
+   most.
+4. The collar's **mounting flange/feet are integral** to the same
+   printed part (no separate bosses); two M3 BHCS through the flange
+   thread into M3 brass heat-set inserts in the spine.
+5. **NEMA 11 stepper** mounts on a printed right-angle bracket bolted
+   to the spine higher up. It drives the rotor via a **1:1 GT2 belt**
+   (16T pulleys, ~110 mm closed-loop belt). With the motor on the
+   side, **the top of the rotor is free** so the user can drop on a
+   removable powder cartridge.
+6. **Cartridge** snaps onto the rotor's PR-#16-v4 top loading slots.
+   60 mm-Ø reservoir, 60° taper to a 36-mm collar, lifts off in one
+   piece for refills or colour swaps.
+7. The **rotor protrudes 30 mm below the bottom of the spine**, so the
+   dispensed powder column escapes the frame regardless of tilt
+   angle. There is no longer a "base plate exit hole" — the bearing
+   collar is the lowest frame point.
+8. The whole assembly mounts on an **adjustable-angle cradle** — two
+   printed cheeks straddle the spine on M5 trunnion pivots at the
+   spine's waist, locking via an arc-slot detent at any of 0°, 15°,
+   30°, 45°, 60°, 75°. The cheeks bolt to a flat printed base plate.
+
+## What changed in v2
+
+Each row links to the GitHub review comment that drove the change.
+
+| Review feedback | v1 design | v2 fix |
 |---|---|---|
-| R1 | Use the **PR-#16 Archimedes auger** as-is (issue text + brainstorming §2.2) | The rotor is modelled as a Ø25 × 250 mm envelope from `cad/auger/archimedes-auger.scad` v4. The frame's top-plate bore (Ø22) clears the auger's M3 spindle boss; the base-plate exit hole (Ø30) clears the auger OD with 2.5 mm radial gap for the powder column. |
-| R2 | Each station carries **all three #1a actuators** (auger + tap + vibration) | NEMA 11 stepper at the top plate (auger), JF-0530B solenoid bracketed against the +X face of the tap collar (tap), ERM coin pad on the −X face (vibration). |
-| R3 | Direct-drive auger via 5 mm flex coupler (PR-#25 item 12) | Top plate hosts NEMA 11 on its standard 23 mm BHC; coupler bridges 25 mm vertically from the stepper's 5 mm shaft to the auger's M3 boss. Coupler envelope (Ø14 × 25) is included in the assembly. |
-| R4 | **Modular / replicable** — N copies fit around a shared cup (§2.2: ~12 channels on a 150 mm pitch circle) | Module footprint is **80 × 80 mm** with 4 corner M4 bores on a 64 mm square pitch. With those 12 channels on a 150 mm-Ø pitch circle, adjacent module footprints don't collide (pitch-circle arc length per module ≈ 39 mm; the 80 mm module faces are oriented *radially* outward, so the tangential footprint is the 80 mm side as seen from the cup, which fits comfortably with ~10 mm gap). The design is intentionally **vertical first**; the 30°-inward tilt called out in §2.2 is added at the *next* level (the ring frame) by tilting each module's base-plate mount, not by re-cutting the module itself. |
-| R5 | Vibration / tap actuators must mount to **stationary** structure (PR-#25 "rotating vs stationary parts") | The tap collar is a separate stationary printed part bolted to the base plate via two M3 bosses; it surrounds the rotor with 1 mm radial clearance. Solenoid and ERM lead wires terminate on the stationary tray. Only the auger rotor + flex coupler rotate. |
-| R6 | Pi I/O fan-out (§2.2 pitfall): N step/dir lines exceed Pi Zero header capacity by ~12 channels | Each module hosts **its own DRV8825**, so the host bus to the Pi is a small set of shared signals (STEP/DIR pairs broken out per channel by an I²C GPIO expander, or TMC-style stepper bus). The electronics tray has stack space for the three driver carriers per module; Pi-side bus electronics are *not* part of the per-module design and live on a future shared backplane. |
-| R7 | Per-channel calibration burden (§2.2 pitfall) is software-side | Mechanical parts are identical across modules; calibration variance is captured per-channel in firmware (deferred). |
-| R8 | No cross-contamination at the wetted surface (§2.2 benefit) | A given printed module owns one rotor + one tap collar; both are dedicated to a single powder. The shared collection cup is a **deferred** problem (see [§ Roadmap](#roadmap) — a wash/swap or per-batch disposable-liner strategy is planned before v2). |
-| R9 | Dispense outlet ~80 mm above cup rim (§2.2 visualization) | With the module mounted vertically, the rotor exit sits at Z = `PLATE_T + EXIT_GAP` = 14 mm above the bottom of the base plate; the 80 mm clearance is achieved by the *ring frame* mounting the base plates that height above the cup. |
-| R10 | Print on a hobbyist FDM (matches existing `cad/auger/` convention) | All printed parts fit the Bambu Lab H2D bed (350 × 320 × 325 mm) — the largest piece is a corner post at Ø10 × 285 mm, oriented vertically with no support. See [§ Print orientation & settings](#print-orientation--settings). |
+| [#3228421681](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228421681) — vibration motor doesn't reach the rotor | 1 mm air gap between rotor and tap collar | **6805ZZ ball bearing** (Ø25/Ø37/7) press-fit into the collar; rotor presses into the inner race. Vibration transmits through the ball/race contact. |
+| [#3228681184](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228681184) — plunger needs through-hole or bearing | plunger pushed against air | The bearing handles vibration coupling. The solenoid plunger now passes **THROUGH a Ø5 window** in the collar body and impacts the rotor wall directly. |
+| [#3228441106](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228441106) — collar bosses appear separate | Two cylindrical bosses bolted to the base plate | Collar has an **integral L-flange** with two M3 through-bores; bolts through into spine inserts. One printed part. |
+| [#3228681184](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228681184) — fragile solenoid mount | 4 mm-thick wing, no gusset | Wing widened to 6 mm, **triangular gusset rib** ties wing back to the collar body. |
+| [#3228543667](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228543667) — stepper blocks powder entry | Stepper directly on top of rotor via flex coupler | Stepper moved to the side on its own bracket; **GT2 1:1 belt drive** to a pulley on the rotor's M3 boss. Top of rotor is free. |
+| [#3228854193](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228854193) — cartridges + flow | Nothing for powder loading | Removable **cartridge** part (60-mm reservoir, 60° taper, 36-mm collar) snaps onto the rotor's top loading slots. New **powder-flow cross-section** render in `renders/single_channel_module_powder_flow.png`. |
+| [#3228525590](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228525590) — base-plate exit bridging at angles | Rotor stopped flush with the base plate | Rotor now **protrudes 30 mm below the lowest frame point** (the bearing collar). No "base plate exit hole" any more. |
+| [#3228660546](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228660546) — open to alternatives to top/bottom-plate + 4 posts | 80 × 80 frame, 6 separate printed parts | **Single printed spine** is the entire structural backbone. Two top/bottom plates + 4 corner posts gone. |
+| [#3228508510](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228508510) — adjustable-angle stand | Vertical only | Separate **adjustable cradle** (2× cheeks + base) with M5 trunnion pivots and 0/15/30/45/60/75° detents. |
+| [#3228811380](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228811380) — 80 mm cup-rim height was made up | "R9" baked an unjustified 80 mm into the design | **R9 dropped.** The dispense height is now whatever the cradle tilt + ring-frame (deferred to v1.3) puts the rotor exit at — the module no longer cares. |
+| [#3228875238](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228875238) — threaded inserts not self-tapped holes | M3 self-tappers + M2 bolts straight into PETG | Every printed-part fastener hole is sized for a **brass heat-set insert** (Ruthex M3×5×4, OD 4.0 mm, install with a 4.5 mm pilot, soldering iron @ 240 °C). [§ Fastener strategy](#fastener-strategy) below. |
+| [#3228476410](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228476410) — use real PR-#25 part geometries | Boxes for everything | All PR-#25 envelopes kept and corrected against datasheets; new vendor parts (6805ZZ, GT2 pulley + belt) added with realistic dimensions. The CadQuery model still uses simplified box envelopes for PCB carriers — see [§ Parts I'd like added to the repo](#parts-id-like-added-to-the-repo) for the manufacturer STEP files that would let me drop in real geometry. |
 
 ## Geometry (single source of truth)
 
 Every dimension below is duplicated as a constant in **both**
 `cad_model.py` and `sketch_2d.py`; if you change one, change the other.
 
-### Printed parts (PETG or PLA, hobbyist FDM)
+### Printed parts (PETG recommended; PLA OK)
 
 | Part | Footprint / envelope | Notes |
 |---|---|---|
-| `base_plate` | 80 × 80 × 6 mm | Ø30 central exit hole; 4× M4 corner bores (Ø4.4) on 64 mm pitch; 2× M3 self-tap bosses on a 50 mm pitch for the tap-collar feet. |
-| `tap_collar` | Ø40 OD / Ø27 ID, 22 mm tall | 1 mm radial clearance to the Ø25 rotor. +X solenoid wing (4 × 30 × 23 mm) with 2× M2 bolt holes on 14 mm pitch + Ø5.5 plunger clearance hole. −X ERM pad (2 × 14 × 14 mm) with shallow Ø10.4 × 0.6 recess for adhesive alignment. |
-| `corner_post` | Ø10 × 285 mm | Axial Ø4.4 M4 bore. Four printed per module. |
-| `top_plate` | 80 × 80 × 6 mm | Ø22 stepper-boss clearance; 4× Ø3 NEMA-11 mounting holes on 23 mm BHC; 4× Ø4.4 corner bores. |
-| `electronics_tray` | 70 × 100 × 3 mm panel + two Ø-clamp ribs | Bolts to the +Y corner posts. Hole patterns for the three driver carriers are not yet drilled — the panel is intentionally over-sized so the user can match-drill to the carrier they actually receive (DRV-series board outlines vary slightly by vendor batch). |
+| `spine` | 8 × 90 × 360 mm flat plate | 2× M3 inserts at the collar mounting Z, 4× M3 inserts at the motor-bracket Z, 1× M5 through-hole at the trunnion-pivot waist. Printed flat-on-bed. |
+| `bearing_collar` | Ø50 OD × 16 H + flange + wing + pad (one piece) | Ø37 H7 bearing seat, Ø5 plunger window, integral 6 mm-thick flange (2× M3 BHCS clearance), gusseted solenoid wing (M2 mounting pattern for JF-0530B), Ø18 ERM pad on -Z face. |
+| `motor_bracket` | 50 × 50 face + 60 × 35 foot, 5 mm walls | Stepper mounts to the face on a 23 mm BHC + Ø22 boss bore; foot has 4× M3 clearance bores for the spine insert pattern. |
+| `cartridge` | Ø60 reservoir × 60 H + 60° taper + Ø36 base collar | Removable. Slip fit Ø25.6 over the rotor's top cap. Lifts off for refills. |
+| `cradle_cheek_L` / `cradle_cheek_R` | 220 × 80 × 6 mm cheek + foot | Mirrored pair. M5 pivot bore + arc-slot lock at 60 mm radius with 6 detents (0/15/30/45/60/75°). |
+| `cradle_base` | 220 × 180 × 8 mm | 4× corner Ø4.4 (M4 BHCS) for bench mounting / future ring-frame integration. |
 
 ### Vendor / placeholder parts (purchased — see [BOM](#bill-of-materials))
 
 | Part | Envelope | Source |
 |---|---|---|
-| NEMA 11 stepper | 28 × 28 × 45 mm body, 5 mm shaft | PR-#25 item 10 |
-| Flex coupler 5 mm ↔ M3 | Ø14 × 25 mm | PR-#25 item 12 |
-| JF-0530B solenoid | 9.6 × 19 × 22 mm, 4.5 mm stroke | PR-#25 item 4 |
+| PR-#16 v4 auger rotor (printed by user) | Ø25 × 250 mm rotor + Ø8 × 6 mm M3 boss on top cap, 4× sectoral loading slots in top cap | [`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad) |
+| 6805ZZ deep-groove ball bearing | Ø25 ID × Ø37 OD × 7 mm | McMaster-Carr 5972K368 / generic |
+| NEMA 11 bipolar stepper | 28 × 28 × 45 mm body, 5 mm shaft | PR-#25 item 10 |
+| GT2 pulley × 2 (16-tooth, 5 mm bore + adapter / 5 mm bore) | Ø10 × 16 mm body + Ø16 flanges | Amazon / Pololu generic |
+| GT2 closed-loop belt | 6 mm wide, ~110 mm closed loop, 1.4 mm thick | Amazon / Pololu generic |
+| JF-0530B push-pull 5 V solenoid | 9.6 × 19 × 22 mm, 4.5 mm stroke | PR-#25 item 4 |
 | ERM coin vibration motor | Ø10 × 2.7 mm | PR-#25 item 2 |
-| DRV8825 carrier (stepper) | 20 × 15.5 × 8 mm | PR-#25 item 11 |
-| DRV8871 carrier (solenoid) | 21 × 17 × 8 mm | PR-#25 item 5 |
-| DRV2605L breakout (ERM) | 18 × 20 × 8 mm | PR-#25 item 1 |
 
-Total module envelope: **80 × 80 × 342 mm** (W × D × H).
+Total module envelope: **~140 × 90 × 410 mm** (with cartridge in place).
 
 ## Bill of materials (per module)
 
@@ -112,159 +152,200 @@ Total module envelope: **80 × 80 × 342 mm** (W × D × H).
 |---|---|---|---|
 | 1 | PR-#16 v4 auger rotor (printed) | ~$1 (PETG) | `cad/auger/archimedes-auger.scad` |
 | 1 | NEMA 11 stepper, 5 mm shaft | $14–18 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) |
-| 1 | 5 mm ↔ M3 flexible shaft coupler | $3–6 | Amazon / McMaster |
+| 1 | 6805ZZ deep-groove ball bearing | $3–5 | McMaster 5972K368 / Amazon |
+| 2 | GT2 16T pulley, 5 mm bore | $4 each | Amazon |
+| 1 | GT2 closed-loop belt, 6 mm wide, ~110 mm | $2 | Amazon |
 | 1 | DRV8825 stepper-driver carrier | $7.95 | [Pololu #2133](https://www.pololu.com/product/2133) |
 | 1 | JF-0530B 5 V mini push-pull solenoid | $4.95 | [Adafruit #412](https://www.adafruit.com/product/412) |
 | 1 | DRV8871 DC motor driver breakout | $7.50 | [Adafruit #3190](https://www.adafruit.com/product/3190) |
 | 1 | ERM 10 mm vibration coin (or LRA #1631) | $1.95 | [Adafruit #1201](https://www.adafruit.com/product/1201) |
 | 1 | DRV2605L haptic-driver breakout | $7.95 | [Adafruit #2305](https://www.adafruit.com/product/2305) |
-| 8 | M4 × 35 mm BHCS + nyloc nut (4× base→post, 4× post→top) | <$3 | any |
-| 4 | M2.5 × 8 mm BHCS (NEMA 11 → top plate) | <$1 | any |
+| ~14 | M3 brass heat-set inserts (Ruthex M3×5×4 or equivalent) | <$3 | [Ruthex / E-Z LOK](https://www.ruthex.de/en/) |
+| ~12 | M3 × 8 mm BHCS | <$1 | any |
+| 2 | M3 × 12 mm BHCS (collar → spine) | <$0.50 | any |
+| 4 | M2.5 × 8 mm BHCS (NEMA 11 → bracket) | <$1 | any |
 | 2 | M2 × 6 mm BHCS (solenoid → wing) | <$0.50 | any |
-| 2 | M3 × 8 mm self-tapping (collar feet → base bosses) | <$0.50 | any |
-| 1 | Adhesive pad (3M VHB or instant) for the ERM coin | <$0.50 | any |
+| 2 | M5 × 25 mm BHCS + nyloc + washers (trunnion) | <$1 | any |
+| 1 | M5 × 25 + wing nut + washers (arc-slot lock) | <$1 | any |
+| 4 | M4 × 12 mm BHCS (cradle base → bench) | <$1 | any |
+| 1 | Adhesive pad (3M VHB or instant) for the ERM | <$0.50 | any |
 
-**Per-module electronics+motor sub-total ≈ $50.** Frame printing
-consumables are roughly $4 of PETG. Multiply by N (target 8–12 for v1).
+**Per-module electronics + motor + bearing sub-total ≈ $60.**
+Print consumables ≈ $5 of PETG. Multiply by N (target 8–12 for v1).
 
-The **shared** parts (12 V wall-wart + Pololu D24V22F5 buck converter +
-Pi Zero 2 W + Perma-Proto Bonnet, plus the GPIO expander / TMC bus) are
-*not* per-module and live on a future backplane PR.
+The **shared** parts (12 V wall-wart, Pololu D24V22F5 buck, Pi Zero 2 W,
+GPIO expander) are not per-module and live on a future backplane PR.
+
+## Fastener strategy
+
+Per [comment #3228875238](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228875238)
+all printed-part fasteners use **M3 brass heat-set threaded inserts**
+(Ruthex M3×5×4, OD 4.0 mm, length 4.0 mm) installed with a soldering
+iron at 240 °C into pre-printed Ø4.5 pilot holes. The `cad_model.py`
+emits Ø4.5 pilots at every insert location.
+
+| Joint | Fastener | Notes |
+|---|---|---|
+| `bearing_collar` ↔ `spine` | 2× M3 × 12 mm BHCS through the collar flange into M3 inserts in the spine | Collar bolt heads on the +X face; inserts on the -X face of the spine. |
+| `motor_bracket` ↔ `spine` | 4× M3 × 8 mm BHCS through the bracket foot into M3 inserts in the spine | 30 × 20 mm rectangular pattern. |
+| NEMA 11 ↔ `motor_bracket` | 4× M2.5 × 8 mm BHCS into the stepper's tapped faceplate | 23 mm BHC, no insert needed (stepper tapped). |
+| JF-0530B ↔ collar wing | 2× M2 × 6 mm BHCS into the solenoid's stock M2 tapped tabs | 14 mm pitch. |
+| ERM coin ↔ collar pad | adhesive (3M VHB pad or instant) | shallow Ø10.4 × 0.7 mm recess for alignment. |
+| Cradle cheek ↔ cradle base | 2× M3 × 8 mm BHCS into M3 inserts in the cheek foot | per cheek (4 total). |
+| Cradle pivot | M5 × 25 mm BHCS through cheek + spine + cheek + nyloc | The trunnion. |
+| Cradle lock | M5 × 25 mm BHCS + wing nut through arc slot | Frees up the angle. |
+| Cartridge ↔ rotor | none — slip fit on the rotor top cap | Lifts off; the cartridge's own weight + powder fill keeps it seated. |
+
+> [!NOTE]
+> Heat-set inserts are stronger than self-tapped holes in PETG by a
+> factor of ~3× in pull-out, repeatable across many install/uninstall
+> cycles, and forgiving of slightly off-tolerance prints. The downside
+> is a one-time investment in inserts and an iron tip; no special
+> press is required.
 
 ## Print orientation & settings
 
-All printed parts are sized for **PLA or PETG, 0.4 mm nozzle, 0.2 mm
-layers**, on any FDM bed ≥ 290 mm Z (the corner post is the height
-constraint). 0.2 mm layers + 4 perimeters + 25 % gyroid infill is the
-recommended starting point. Specifics:
+PETG (preferred) or PLA, 0.4 mm nozzle, 0.2 mm layers, 4 perimeters,
+25 % gyroid infill is the recommended baseline.
 
 | Part | Orientation | Supports | Notes |
 |---|---|---|---|
-| `base_plate.stl` | Flat on bed, exit hole down | none | Brim recommended (small cross-section near the exit hole). |
-| `top_plate.stl` | Flat on bed, NEMA-11 holes up | none | Same as base. |
-| `corner_post.stl` | Vertical, M4 bore axial | none | The Ø4.4 axial bore prints fine vertically with 4 perimeters; if you bridge instead, increase to 5 perimeters. |
-| `tap_collar.stl` | Solenoid wing on the bed | trees on the wing M2 holes only | The 22 mm-tall collar prints upright comfortably. |
-| `electronics_tray.stl` | Panel flat on the bed, ribs up | none | The two clamp ribs are short and bridge cleanly. |
+| `spine.stl` | Flat on bed | none | Largest plate part — 90 × 360 footprint fits any FDM bed. |
+| `bearing_collar.stl` | Solenoid wing on the bed; +Z (the bearing seat side) up | trees on the wing M2 holes only | The Ø37 bearing seat needs to be a vertical hole — print with the bore axis vertical so it stays round. |
+| `motor_bracket.stl` | Foot on the bed | brim recommended for the right-angle | A small part — print 4 at a time. |
+| `cartridge.stl` | Hopper rim on the bed | none | Tapered section bridges cleanly. |
+| `cradle_cheek_L.stl` / `_R.stl` | Cheek face on the bed | none | Print one of each (mirrored). |
+| `cradle_base.stl` | Flat | none | Brim recommended. |
 
 The PR-#16 v4 auger has its own print recipe in
 [`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad)
-— follow that file's header notes (vertical, exit hole on the bed,
-4 mm brim, 50° support overhangs).
+— follow that file's header notes.
 
 ## Assembly order
 
-1. Print all parts; tap the auger's M3 boss with an M3 hand tap.
-2. Bolt the **NEMA 11** to the **top plate** with 4× M2.5 × 8 (faceplate
-   *up*, shaft down through the Ø22 bore).
-3. Slide the four **corner posts** onto four M4 × 35 BHCS through the
-   **base plate** corners; finger-tight only.
-4. Drop the **top plate** (with stepper attached) onto the four M4
-   shafts; fasten with nyloc nuts.
-5. Bolt the **tap collar** to the base plate using 2× M3 self-tappers
-   into the printed bosses (collar centred on the rotor axis, solenoid
-   wing on +X).
-6. Bolt the **JF-0530B solenoid** to the +X wing with 2× M2 × 6.
-7. Adhere the **ERM coin** to the −X collar pad (clean both surfaces with
-   IPA first; press for 30 s).
-8. Slide the **flex coupler** down through the top-plate bore onto the
-   stepper's 5 mm shaft (set screw, 1 mm gap to the plate).
-9. Drop the **auger rotor** through the base-plate exit hole from above;
-   thread its M3 boss into the lower set-screw clamp of the flex coupler.
-   *Critical:* leave 1 mm of axial play so vibration doesn't preload the
-   rotor against the coupler.
-10. Mount the **electronics tray** to the +Y posts; match-drill the PCB
-    standoffs to your specific carrier boards; solder leads back to the
-    actuators.
+1. Print all parts. Heat-install M3 brass inserts at every Ø4.5 pilot
+   on the spine, the motor bracket, and the cradle cheeks (Ruthex
+   recommends 240 °C, 5–8 s push-in).
+2. **Press the 6805ZZ bearing into the collar's Ø37 bore.** A bench vise
+   or arbor press is fine; do *not* hammer. The seat is a slip fit at
+   nominal — if your printer over-extrudes you may need to ream.
+3. **Press the rotor into the bearing's inner race** from the +Z (top)
+   side. Again, smooth steady force; protect the rotor with a wood
+   block. The rotor should now spin freely in the collar.
+4. Bolt the collar to the spine using 2× M3 × 12 mm BHCS through the
+   flange into the spine inserts. Solenoid wing on +Y.
+5. Bolt the JF-0530B to the wing with 2× M2 × 6 mm. Verify the plunger
+   tip just clears the rotor wall when retracted (~1 mm) and impacts
+   solidly when actuated.
+6. Adhere the ERM coin to the bottom-of-collar recess with VHB.
+7. Bolt the **motor bracket** to the spine using 4× M3 × 8 mm into the
+   upper insert pattern.
+8. Bolt the **NEMA 11** to the bracket with 4× M2.5 × 8 mm.
+9. Slip the rotor pulley over the rotor's M3 top boss and tighten the
+   pulley set screw against the boss. Do the same for the motor pulley
+   on the stepper shaft. Loop the GT2 belt over both pulleys; tension by
+   sliding the motor bracket on its (slotted) foot holes.
+10. Slip the **cartridge** down over the rotor's top cap (it lands on the
+    PR-#16 v4 loading slots).
+11. Bolt the two **cradle cheeks** to the **cradle base** with 4× M3 × 8 mm
+    BHCS. Run the M5 trunnion bolt through one cheek, through the spine
+    waist hole, through the other cheek, and tighten with a nyloc nut.
+12. Set the desired tilt angle, drop the M5 lock bolt through the
+    nearest arc-slot detent, and finger-tighten with the wing nut.
 
 ## Roadmap
 
 > The issue text asks for a "project plan/pathway to a prototype" with
-> a `AI design → printing → testing → feedback → AI design` loop. This is
-> that plan, as far as the per-module mechanical archetype.
+> a `AI design → printing → testing → feedback → AI design` loop. v1
+> already executed one round of that loop (the @williamulbz review on
+> commit c39e07f); v2 (this revision) is the AI-redesign output of
+> that round.
 
-- [x] **v1.0 (this folder)** — single-module mechanical archetype.
-  Printable, full BOM, full assembly STEP. *Deliverable:* the
-  `stl/*.stl` + this README + the BOM above are sufficient for a single
-  user to print and bench-assemble one module.
-- [ ] **v1.1 — print + bench-test loop** *(needs human in the loop)*.
-  Print one module, populate it with the PR-#25 actuator stack, drive
-  it from the existing `hardware/kicad/` schematic, and dispense
-  xanthan gum + one metal powder (e.g. 316L) into a tared cup on a
-  bench scale. **Failure modes to look for:** rotor wobble (cantilever
-  off the coupler), tap-collar resonance frequency vs ERM band, M3
-  boss thread pull-out, solenoid plunger gap to rotor wall, exit-hole
-  bridging at low RPM. **Bring back:** photos, weighed-mass-vs-step
-  curve, and any printed-part fractures.
-- [ ] **v1.2 — N=2 fan-in test rig.** Two modules + a shared bench
-  load-cell, no ring frame yet — bolted to a piece of MDF on the
-  required 30°-inward tilt. Validates that the §2.2 cup geometry
-  works in the small before committing to the 12-channel ring.
-- [ ] **v1.3 — ring frame for N=12.** One printed (or laser-cut acrylic)
-  ring with 12 tilted module pads on the §2.2 150 mm pitch circle,
-  shared cup + load cell underneath. *Sibling folder:*
-  `design/cad/ring-frame/` (does not exist yet).
-- [ ] **v2.0 — inert-atmosphere enclosure.** Wrap the N-module ring in
-  a sealed box with a single dispense aperture; deferred until v1.3
-  has logged a campaign of dispenses without cross-contamination.
-- [ ] **(Idea C, deferred)** Swappable-cartridge variant. Once v1.x is
-  validated, evaluate replacing each module's printed `tap_collar` +
-  `auger rotor` with a quick-release cartridge that lets one module
-  service many powders. *Not designed here* — kept as a roadmap entry
-  per the issue text.
+- [x] **v1.0 (commit c39e07f)** — initial mechanical archetype.
+- [x] **v2.0 (this revision)** — review-feedback redesign:
+      bearing-coupled collar, side belt drive, cartridge, cradle,
+      heat-set inserts, integral collar features, rotor protrusion.
+- [ ] **v2.1 — print + bench-test loop** *(needs human in the loop)*.
+      Print one module, populate it with the actuator stack, drive it
+      from the existing `hardware/kicad/` schematic, and dispense
+      xanthan gum + one metal powder (e.g. 316L) into a tared cup.
+      **Failure modes to look for:** rotor wobble (only one bearing,
+      cantilevered ~250 mm — may need an upper support bearing on
+      v2.2), cartridge powder bridging at the loading slots, bearing
+      contamination from fines (consider a dust seal on the +Z face of
+      the collar), belt skip if the pulley set screw on the M3 boss
+      slips. **Bring back:** photos, weighed-mass-vs-step curves,
+      printed-part fractures, dispense-angle vs flow-rate curves.
+- [ ] **v2.2 — upper bearing + dust seal.** If v2.1 reveals rotor
+      wobble or fines ingress, add (a) a 608ZZ bearing in a printed
+      clamp at the top of the spine that captures the rotor's M3 boss
+      area, and (b) a felt or rubber dust wiper on the +Z bearing seat
+      face.
+- [ ] **v3.0 — N=2 fan-in test rig.** Two modules + a shared bench
+      load-cell on a piece of MDF. Validates that the §2.2 cup geometry
+      works in the small before committing to the 12-channel ring.
+- [ ] **v3.1 — ring frame for N=12.** A printed (or laser-cut acrylic)
+      ring with 12 cradle-base pads on the §2.2 150 mm pitch circle,
+      shared cup + load cell underneath. *Sibling folder:*
+      `design/cad/ring-frame/` (does not exist yet).
+- [ ] **v4.0 — inert-atmosphere enclosure.** Wrap the N-module ring in
+      a sealed box with a single dispense aperture; deferred until v3.x
+      has logged a dispense campaign without cross-contamination.
+- [ ] **(Idea C, deferred)** Swappable-cartridge variant. Once the
+      module is bench-validated, evaluate replacing the printed
+      `cartridge` and the rotor with a quick-release cartridge that
+      lets one motor service many powders.
 
-## Parts I'd like added to the repo (or links / models I couldn't find)
+## Parts I'd like added to the repo
 
-If the team can drop these into the repo I can pull them into the next
-revision of `cad_model.py` instead of using the rectangular envelopes
-I'm using now:
+If the team can drop these into `hardware/cad/vendor/`, I can swap them
+into `cad_model.py` instead of the box envelopes:
 
-- **NEMA 11 STEP model** for the specific stepper the team buys
-  (SparkFun ROB-10848 vs StepperOnline 11HS18-0674S — they differ in
-  body length and shaft flat). StepperOnline publishes STEP files;
-  SparkFun does not. Whichever is purchased, the manufacturer's STEP
-  in `hardware/cad/vendor/nema11-<part-number>.step` would let me
-  replace the box-envelope I'm using.
+- **NEMA 11 STEP** for the specific stepper purchased (SparkFun
+  ROB-10848 vs StepperOnline 11HS18-0674S — they differ in body
+  length and shaft flat). StepperOnline publishes STEP files;
+  SparkFun does not.
 - **JF-0530B STEP/STL.** No manufacturer file is published; a
-  community-modelled STEP would replace my box envelope and give a
-  more accurate plunger geometry.
-- **ERM coin model** with the actual lead-wire egress (currently
-  modelled as a featureless disc).
-- **Flex coupler** — the specific Ø/length the team purchases; mine
-  is a generic Ø14 × 25 placeholder.
-- **Driver carrier KiCad → STEP exports** for DRV8825 / DRV8871 /
-  DRV2605L (Pololu and Adafruit publish board outlines but not
-  full-component STEPs). My carriers are box envelopes with no
-  header pins / connector cutouts.
-- **M3, M4, M2.5, M2 fasteners** — McMaster STEPs would let me drop
-  bolts into the assembly for visual completeness; I have left them
-  out to keep the model load-time short, but they could be added in a
-  `_with_fasteners.step` variant.
-
-None of these are blocking; they would just upgrade the assembly
-realism in v1.1+.
+  community-modelled STEP would replace my box envelope.
+- **ERM coin model** with the actual lead-wire egress (currently a
+  featureless disc).
+- **Driver carrier exports** for DRV8825 / DRV8871 / DRV2605L (Pololu
+  and Adafruit publish board outlines but not full-component STEPs).
+  v2 doesn't show the driver carriers in the assembly any more (they
+  belong on a backplane PR), but they were called out in v1 and would
+  be useful for the future electronics-tray design.
+- **GT2 16T pulley STEP** with the real tooth profile (mine is a
+  smooth cylinder approximation).
+- **6805ZZ bearing STEP** (mine is a flat annulus).
+- **Cartridge** — clarification from the team on whether
+  ["cartridge" in #3228854193](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228854193)
+  meant the powder hopper I drew, or the swappable-channel carrier
+  from Idea C. v2 implements a removable powder hopper; if Idea-C
+  cartridges are intended for the next round, that's a much larger
+  redesign — see the open question for @williamulbz in
+  [PR #16 comment 4427453867](https://github.com/vertical-cloud-lab/powder-doser/pull/16#issuecomment-4427453867)
+  and [@sgbaird's clarifying ping](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4433748553).
 
 ## Known limitations / next steps
 
+- **Single-bearing cantilever.** The 6805 is the rotor's only support;
+  ~250 mm of rotor cantilevers above it. Whether wobble stays inside
+  acceptable bounds is a v2.1 bench-test question. Easy upgrade path
+  in v2.2 (add an upper bearing in a printed clamp).
 - **The auger is shown as a smooth Ø25 envelope**, not the actual
   v4 helical geometry. The real geometry lives in
   [`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad)
-  and is a separate solid; importing the OpenSCAD STL into CadQuery
-  would inflate this model's size by ~5 MB without changing any
-  fit-check that matters at this stage. (The two interfaces that *do*
-  matter — the M3 spindle at the top and the Ø3 exit hole at the
-  bottom — are modelled.)
-- **No cantilever / wobble analysis.** A 250 mm rotor hanging off a
-  flex coupler will deflect; whether it still clears the 1 mm tap-collar
-  gap under tap impact is a real question for v1.1 bench testing. If it
-  fails, the fix is a printed sleeve bearing in the base plate (a third
-  printed part), not a redesign of the module frame.
-- **The electronics tray's PCB hole pattern is intentionally not
-  drilled** — different vendor batches of DRV8825/8871/2605L use
-  slightly different mounting-hole positions, so the user is expected
-  to match-drill once the boards are in hand. Locking this in is
-  blocked on the team confirming which vendor SKU they're buying.
-- **No fan-in tilt yet.** The module is designed *vertical*; the §2.2
-  30°-inward tilt is delegated to the ring-frame design (v1.3 above).
-- **No collection cup or load cell** — those live in
-  `design/cad/inward-collection-cup/` (visualization) and a future
-  `design/cad/ring-frame/` (actual hardware).
+  and is a separate solid; importing it into CadQuery would inflate
+  the model's load time without changing any fit-check that matters
+  at this stage. The two interfaces that *do* matter — the M3 spindle
+  + 4× loading slots at the top, and the Ø3 exit hole at the bottom —
+  are documented in the powder-flow render.
+- **The `electronics_tray` from v1 is removed** in v2. Per-module
+  driver carriers (DRV8825 / DRV8871 / DRV2605L) belong on a shared
+  backplane that bolts behind the cradle base; that's a future PR.
+- **Bearing dust ingress** is unaddressed. ZZ-shielded bearings handle
+  the main hazard but a felt wiper on the +Z face would be belt-and-
+  braces for fine metal powders. Deferred to v2.2.
+- **Belt tensioning** is via slotted bracket-foot holes — quick to
+  prototype, not as elegant as a tensioner pulley. Tensioner pulley
+  is a v2.2 candidate if belt skip becomes a problem.
