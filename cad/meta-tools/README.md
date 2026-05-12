@@ -275,6 +275,90 @@ Net: **the API key works end-to-end.** The earlier 401s were the
 classroom-scoped key minted via the company-settings developer page
 clears that gate.
 
+### What we can actually *do* with it (in the context of #16)
+
+[`onshape_upload_step_probe.py`](onshape_upload_step_probe.py) extends
+the auth probe into a real round-trip relevant to the Archimedes auger
+of issue #16 — proving that the same REST surface CadQuery / build123d
+already export to (`*.step`) can be pushed *into* Onshape for
+collaboration, downstream CAM, drawing generation, etc. without a
+human ever clicking the import dialog:
+
+1. Generate a representative auger barrel locally with CadQuery
+   (20 mm OD × 100 mm tall, M3 spindle clearance hole on top, 2.5 mm
+   exit hole on the bottom — the parametric envelope from #16) and
+   write it to `zoo-output/auger_barrel_cadquery.step`.
+2. `GET /documents` → resolve `defaultWorkspace.id` of the first
+   document.
+3. Upload the STEP as a Blob Element via multipart
+   `POST /api/v6/blobelements/d/{did}/w/{wid}` with `translate=true`.
+   Onshape returns a `translationId` immediately (HTTP 200).
+4. Poll `GET /api/v6/translations/{tid}` until `requestState=DONE`.
+   Re-listing elements then shows a brand-new Part Studio
+   (`auger_barrel_cadquery`) sitting alongside the original blob.
+5. Round-trip: `POST /api/v6/partstudios/d/{did}/w/{wid}/e/{eid}/translations`
+   with `formatName=STL` against the freshly-imported Part Studio
+   returns `requestState=ACTIVE` (HTTP 200) — so STEP-in / STL-out
+   works against geometry we just authored.
+
+Output of the live run is appended to
+[`logs/onshape-auth-probe.log`](logs/onshape-auth-probe.log); the
+`elements before upload: 3 ... elements after upload: 5` line is the
+proof that two new elements (blob + Part Studio) actually persisted in
+the workspace.
+
+Concretely, the unlocked verbs are now:
+
+| Verb | Endpoint | Use in this repo |
+| --- | --- | --- |
+| Author in Python, push to Onshape | `POST /blobelements/.../?translate=true` | Hand a generated STEP from CadQuery / build123d / Zoo to a human reviewer in the Onshape UI without leaving CI. |
+| Read geometry back out | `POST /partstudios/.../translations` (`STEP` / `STL` / `3MF`) | CI-driven "convert any Onshape Part Studio to a slicer-ready mesh" — the alternative to having CadQuery as the sole BREP source. |
+| Pull existing FeatureScript | `GET /partstudios/d/{did}/w/{wid}/e/{eid}/features` | Treat Onshape as a versioned feature store and synthesise variants from the JSON tree (the FeatureScript-as-code path from §2). |
+| Diff workspaces / versions | `GET /documents/d/{did}/changes` | Detect "the auger spec changed in Onshape" and trigger the FDM/CNC pipeline automatically. |
+
+### Zoo (zoo.dev) — KittyCAD design API + ML-ephant text-to-CAD
+
+[`zoo_text_to_cad_probe.py`](zoo_text_to_cad_probe.py) drives the same
+auger-shaped use-case through Zoo's hosted APIs (the `kittycad` Python
+SDK is a thin wrapper around the same REST endpoints used here). Reads
+`ZOO_API_TOKEN` from env; never echoes it.
+
+* **KittyCAD design API** — `GET /user` returns the account profile
+  (HTTP 200, identity verified). The Cloudflare edge in front of
+  `api.zoo.dev` blocks the default `Python-urllib/3.x` UA with `error
+  code: 1010`; the probe sets an explicit project UA on every request.
+  The paid endpoint we'd extend this to is
+  `POST /file/conversion/{src}/{dst}` (e.g. `step → gltf`,
+  `stl → step`) — the headless format-conversion service that pairs
+  cleanly with the Onshape upload path above.
+* **ML-ephant text-to-CAD** — `POST /ai/text-to-cad/{output_format}`
+  with a JSON body `{"prompt": "..."}` queues an async ML job
+  (HTTP 201, returns a job id). Polling
+  `GET /user/text-to-cad/{id}` reports `status` transitions
+  `queued → in_progress → completed|failed`. Jobs typically finish in
+  ~5–15 min; outputs are returned as base64-encoded files in the
+  job dict and written to `zoo-output/`.
+
+For #16 the prompt sent was the verbatim spec from the issue
+("Archimedes auger / helical screw dispenser, 20 mm OD, 100 mm tall,
+M3 mounting hole, 2.5 mm exit hole, ~10 mm pitch single-start helix,
+~6 mm central shaft"). Run output is captured in
+[`logs/zoo-text-to-cad.log`](logs/zoo-text-to-cad.log).
+
+Practical fit for this repo:
+
+* **ML-ephant** is the closest thing to a true *generative* CAD
+  endpoint we've found that runs headless on a free-tier token — but
+  it's stochastic, not parametric, so it belongs in a "concept
+  exploration / first-draft geometry" lane upstream of CadQuery, not
+  as a replacement for it. The right pattern is: ML-ephant produces
+  a STEP candidate → CadQuery re-imports / measures it → DFM checks
+  → if it survives, push back to Onshape via the upload probe above.
+* **KittyCAD file conversion** is a useful fallback for the few
+  format pairs CadQuery / build123d don't handle natively (e.g.
+  `step → gltf` for web preview), but it's not a critical-path
+  dependency.
+
 ---
 
 ## 3. Fusion 360 / Generative Design

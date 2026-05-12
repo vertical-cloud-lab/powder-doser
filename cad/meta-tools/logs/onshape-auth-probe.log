@@ -75,3 +75,31 @@ HTTP 200
 HTTP 200
 items returned: 1
   - id=<redacted-doc-id>  name='test'  owner='Vertical Cloud Lab'  modified=2026-05-12T19:02:24.104+00:00
+=== Onshape upload-and-translate probe: 2026-05-12T22:00:58Z ===
+Demonstrates round-trip: local STEP -> Onshape blob upload
+  -> server-side translation -> Part Studio -> STL re-translate.
+Doc/workspace/element/translation/user IDs are redacted.
+
+BASE = https://cad.onshape.com
+upload source: auger_barrel_cadquery.step  (14150 bytes)
+
+== GET /documents ==
+HTTP 200
+  using doc name='test'  (id redacted)
+  default workspace resolved (id redacted)
+  elements before upload: 5  (['auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step'])
+
+== POST /blobelements/d/{did}/w/{wid} (translate=true) ==
+HTTP 200
+  response keys: ['accelerationUnits', 'angleUnits', 'angularVelocityUnits', 'applicationTarget', 'areaUnits', 'dataType', 'densityUnits', 'elementType', 'energyUnits', 'filename', 'forceUnits', 'foreignDataId', 'id', 'lengthUnits', 'massUnits', 'microversionId', 'momentUnits', 'name', 'pressureUnits', 'prettyType', 'safeToShow', 'specifiedUnit', 'thumbnailInfo', 'thumbnails', 'timeUnits', 'translationEventKey', 'translationId', 'type', 'unupdatable', 'volumeUnits', 'zip']
+  translation id (redacted) created; initial state=None
+
+== GET /translations/{tid} (poll) ==
+  state=ACTIVE
+  state=DONE
+
+  elements after upload: 7  (['auger_barrel_cadquery (1)', 'auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step', 'auger_barrel_cadquery.step'])
+
+== POST /partstudios/.../translations  (formatName=STL) ==
+HTTP 200
+  STL translation queued; initial state=ACTIVE

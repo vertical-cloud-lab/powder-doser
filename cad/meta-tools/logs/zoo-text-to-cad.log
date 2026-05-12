@@ -1,0 +1,80 @@
+=== Zoo (zoo.dev) probe: 2026-05-12T22:01:09Z ===
+ZOO_API_TOKEN present (len=40). Cloudflare requires explicit UA.
+
+BASE = https://api.zoo.dev
+token: len=40
+prompt: 'An Archimedes auger / helical screw dispenser, 20 mm outside diameter, 100 mm tall, with an M3 threaded mounting hole on the top spindle and a 2.5 mm exit hole at the bottom. Single-start helix, ~10 mm pitch, central shaft ~6 mm diameter.'
+
+== KittyCAD: GET /user (auth ping) ==
+HTTP 200
+{
+  "name": "Sterling Baird",
+  "company": "Brigham Young University",
+  "first_name": "Sterling",
+  "last_name": "Baird"
+}
+
+== KittyCAD: GET /user/file/conversions (history) ==
+HTTP 404
+items returned: 0
+
+== ML-ephant: POST /ai/text-to-cad/step (async submit) ==
+HTTP 201
+submitted id=87e812e2-9b6e-4f86-8601-8239e9f748d2 status=queued
+
+== ML-ephant: GET /user/text-to-cad/{id} (poll) ==
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  status=in_progress
+  poll deadline reached; giving up.
+
+final status: in_progress  prompt-id: 87e812e2-9b6e-4f86-8601-8239e9f748d2
+(no outputs returned)
+
+(Initial 4-min poll deadline reached; ML-ephant text-to-CAD jobs
+routinely take 5-15 min on the queue. A background re-poll continued
+until the job finished and saved outputs to ../zoo-output/.)
