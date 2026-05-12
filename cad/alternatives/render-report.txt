@@ -1,0 +1,8 @@
+A tap-sieve: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (6344181 B)
+B pez-strip: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (5963348 B)
+C capillary-wiper: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (6697827 B)
+D brush-comb: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (6059824 B)
+E shaker: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (6990599 B)
+F passive-auger: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (10385596 B)
+G erm-sieve: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (7491285 B)
+H solenoid-sieve: admesh[parts=None, bad_edges=0, deg=0, fix_edges=0, facets_removed=0] | prusa-slicer: ok (6814662 B)
