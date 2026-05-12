@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Powder Excavator — Archimedes auger v3: CuraEngine (Ultimaker Cura) slices.
+# Powder Excavator — Archimedes auger v4: CuraEngine (Ultimaker Cura) slice.
 #
-# Companion to render_print.sh. Slices BOTH parts of the v3 split design
-# (auger-shaft.stl + auger-housing.stl) with Ultimaker's open-source slicing
-# engine, for parity with what most desktop Cura users run.
+# Companion to render_print.sh. Slices the integrated archimedes-auger.stl
+# with Ultimaker's open-source slicing engine, for parity with what most
+# desktop Cura users run.
 #
 # CuraEngine isn't packaged in the GitHub-hosted runner's apt repos. We
 # install via `snap install cura-slicer`; falls back to a system PATH lookup
 # if a user installed CuraEngine manually.
 #
 # Outputs (under cad/auger/slices/):
-#   auger-shaft.MK3S.cura.gcode      Cura — shaft on Prusa MK3S+
-#   auger-shaft.Ender3.cura.gcode    Cura — shaft on Creality Ender-3
-#   auger-housing.MK3S.cura.gcode    Cura — housing on Prusa MK3S+
-#   auger-housing.Ender3.cura.gcode  Cura — housing on Creality Ender-3
+#   archimedes-auger.H2D.cura.gcode   Cura — Bambu Lab H2D
 # ============================================================================
 set -euo pipefail
 
@@ -22,7 +19,8 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SLICES_DIR="${HERE}/slices"
 mkdir -p "${SLICES_DIR}"
 
-PART_NAMES=(auger-shaft auger-housing)
+STL="${HERE}/archimedes-auger.stl"
+OUT="${SLICES_DIR}/archimedes-auger.H2D.cura.gcode"
 
 # ---------------------------------------------------------------------------
 # Locate CuraEngine + bundled resources. Try snap first (CI runner), then
@@ -59,82 +57,60 @@ if [[ ! -d "${RES}/definitions" ]]; then
 fi
 export CURA_ENGINE_SEARCH_PATH="${RES}/definitions:${RES}/extruders"
 
-# Sanity-check: each part STL must already exist (render_print.sh produces them).
-for n in "${PART_NAMES[@]}"; do
-    if [[ ! -f "${HERE}/${n}.stl" ]]; then
-        echo "ERROR: ${HERE}/${n}.stl missing. Run render_print.sh first." >&2
-        exit 1
-    fi
-done
+# Resolved Marlin-flavour start/end blocks. CuraEngine's bare CLI doesn't
+# resolve `{...}` placeholders the frontend normally substitutes, so the
+# blocks are spelled out here for the H2D's 350 × 320 mm bed at PLA temps.
+H2D_START=$'G21 ; mm\nG90 ; absolute pos\nM82 ; absolute extrusion\nM104 S210 ; set hotend\nM140 S60 ; set bed\nM190 S60 ; wait bed\nM109 S210 ; wait hotend\nG28 ; home\nG92 E0.0\nG1 Z5 F5000\n'
+H2D_END=$'M104 S0\nM140 S0\nM107\nG28 X\nM84\n'
 
-# ---------------------------------------------------------------------------
-# Hand-substituted Marlin start blocks. The bare CuraEngine binary does NOT
-# resolve {placeholder} tokens (Cura's frontend does that); we override
-# `machine_start_gcode` / `machine_end_gcode` with fully resolved blocks.
-# ---------------------------------------------------------------------------
-MK3S_START=$'G21 ; mm\nG90 ; absolute pos\nM82 ; absolute extrusion\nM104 S215 ; set hotend\nM140 S60 ; set bed\nM190 S60 ; wait bed\nM109 S215 ; wait hotend\nG28 W ; home no mesh\nG80 ; mesh bed leveling\nG92 E0.0\nG1 Y-3.0 F1000.0 ; outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0\n'
-MK3S_END=$'M104 S0\nM140 S0\nM107\nG1 X0 Y210\nM84\n'
-
-ENDER3_START=$'G21 ; mm\nG90 ; absolute pos\nM82 ; absolute extrusion\nM140 S60\nM104 S205\nM190 S60\nM109 S205\n; Ender-3 custom start\nG92 E0\nG28 ; home all axes\nG1 Z2.0 F3000\nG1 X0.1 Y20 Z0.3 F5000.0\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; first prime line\nG1 X0.4 Y200.0 Z0.3 F5000.0\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; second prime line\nG92 E0\nG1 Z2.0 F3000\nG1 X5 Y20 Z0.3 F5000.0\n'
-ENDER3_END=$'M140 S0\nM104 S0\nM107\nG91\nG1 E-2 F2700\nG1 E-2 Z0.2 F2400\nG1 X5 Y5 F3000\nG1 Z10\nG90\nG1 X0 Y220\nM84 X Y E\n'
-
-common_settings=(
-    -s layer_height=0.2
-    -s layer_height_0=0.2
-    -s wall_line_count=3
-    -s top_layers=5
-    -s bottom_layers=4
-    -s infill_sparse_density=40
-    -s infill_pattern=gyroid
-    -s adhesion_type=brim
-    -s brim_width=4
-    -s support_enable=True
-    -s support_angle=50
-    -s material_diameter=1.75
-    -s machine_nozzle_size=0.4
-    -s machine_gcode_flavor=Marlin
-)
-
-slice_one () {
-    local stl="$1" def="$2" out="$3" temp="$4" first_temp="$5" start="$6" end="$7"
-    echo "  -> ${out##*/}"
-    "${CURA}" slice -p -v \
-        -j "${RES}/definitions/${def}" \
-        "${common_settings[@]}" \
-        -s material_print_temperature="${temp}" \
-        -s material_print_temperature_layer_0="${first_temp}" \
-        -s material_bed_temperature=60 \
-        -s material_bed_temperature_layer_0=60 \
-        -s machine_start_gcode="${start}" \
-        -s machine_end_gcode="${end}" \
-        -e0 -s extruder_nr=0 \
-        -l "${stl}" \
-        -o "${out}" 2>&1 \
-        | grep -iE '^(Print time|Filament \()' | sed 's/^/      /'
+slice_h2d () {
+    local stl="$1" out="$2" temp="$3" first_temp="$4" start="$5" end="$6"
+    common_args=(
+        slice -j "${RES}/definitions/fdmprinter.def.json"
+        -s machine_width=350
+        -s machine_depth=320
+        -s machine_height=325
+        -s machine_center_is_zero=false
+        -s machine_nozzle_size=0.4
+        -s machine_gcode_flavor=Marlin
+        -s material_print_temperature="${temp}"
+        -s material_print_temperature_layer_0="${first_temp}"
+        -s material_bed_temperature=60
+        -s material_bed_temperature_layer_0=60
+        -s layer_height=0.2
+        -s layer_height_0=0.2
+        -s wall_line_count=3
+        -s top_layers=5
+        -s bottom_layers=4
+        -s infill_sparse_density=40
+        -s infill_pattern=gyroid
+        -s adhesion_type=brim
+        -s brim_width=4
+        -s support_enable=true
+        -s support_angle=50
+        -s machine_start_gcode="${start}"
+        -s machine_end_gcode="${end}"
+    )
+    # Assert no unresolved Cura placeholders survived into start/end blocks.
+    for s in "${start}" "${end}"; do
+        if [[ "${s}" == *"{"* ]]; then
+            echo "ERROR: unresolved {placeholder} in start/end gcode" >&2
+            return 1
+        fi
+    done
+    "${CURA}" "${common_args[@]}" -l "${stl}" -o "${out}" 2>&1 | tail -5
 }
 
-for n in "${PART_NAMES[@]}"; do
-    stl="${HERE}/${n}.stl"
-    echo "==> [${n}] CuraEngine -> MK3S+ + Ender-3"
-    slice_one "${stl}" "prusa_i3_mk3.def.json" \
-        "${SLICES_DIR}/${n}.MK3S.cura.gcode" 215 215 \
-        "${MK3S_START}" "${MK3S_END}"
-    slice_one "${stl}" "creality_ender3.def.json" \
-        "${SLICES_DIR}/${n}.Ender3.cura.gcode" 200 205 \
-        "${ENDER3_START}" "${ENDER3_END}"
-done
+echo "==> CuraEngine -> Bambu Lab H2D"
+slice_h2d "${STL}" "${OUT}" 210 215 "${H2D_START}" "${H2D_END}"
 
-# Sanity check: no unresolved {placeholder} braces left in the start blocks.
-# If the bundled definition adds new templated tokens in a future Cura
-# release, this guard fails the script before we ship a brick to a printer.
-for gcode in "${SLICES_DIR}"/auger-{shaft,housing}.{MK3S,Ender3}.cura.gcode; do
-    if [[ -f "${gcode}" ]] && head -200 "${gcode}" | grep -nE '\{[a-z_]+\}'; then
-        echo "ERROR: unresolved {} placeholder(s) in ${gcode##*/} start block." >&2
-        exit 1
-    fi
+for gcode in "${OUT}"; do
+    [[ -f "${gcode}" ]] || continue
+    bytes=$(wc -c <"${gcode}")
+    lines=$(wc -l <"${gcode}")
+    echo "      ${gcode##*/}: ${bytes} bytes, ${lines} lines"
 done
 
 echo
 echo "==> Done."
-echo "    Shaft:    ${SLICES_DIR}/auger-shaft.{MK3S,Ender3}.cura.gcode"
-echo "    Housing:  ${SLICES_DIR}/auger-housing.{MK3S,Ender3}.cura.gcode"
+echo "    Cura g-code: ${OUT}"
