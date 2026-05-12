@@ -1,6 +1,18 @@
 """Submit a single Edison Scientific **analysis** task with all the
 per-concept design data, code, and images attached.
 
+**Correct upload protocol** (per the official ``edison_client`` REST
+client docstring at ``rest_client.py:1166``): the ``files=`` argument to
+``EdisonClient.create_task`` expects a list of *data-entry URIs* in the
+form ``"data_entry:{uuid}"`` — **not** local file paths. Local paths
+must first be uploaded via ``client.upload_file(path)`` which stages the
+content in the data-storage service and returns a usable URI. Passing
+raw local paths writes them verbatim into ``runtime_config.environment_config.data_storage_uris``
+and Edison fails the task server-side with ``status=fail`` and
+``answer=None``. (Prior 4 analysis tasks on this PR all failed exactly
+that way — see ``edison_analysis_result.md``.) This script now does the
+upload step explicitly before calling ``create_task``.
+
 Per comment 4316944381 on PR #13 (issue #12) — submit, don't wait,
 fetch in next session. The submitted bundle includes:
 
@@ -38,69 +50,56 @@ PNG -> half-cutaway PNG -> 36-frame transparent rotating GIF ->
 PrusaSlicer slice on the MK3S+ profile (PETG, 0.2 mm, 3 perimeters,
 30% gyroid infill, 4 mm brim, supports on -- all 8 sliced cleanly).
 
-NEW since the prior analysis submission: the project reviewer asked
-that the per-concept dispensing animations "actually line up
-spatially" and that "the timing sequence for each component is
-sync'ing up with each other". We rewrote `scripts/animate_dispensing.py`
-around a shared `Stage` object that exposes fixed anchors used by
-**every** concept (same canvas size, same bed-line Y, same vial mouth
-position, same gantry-rail Y, same mechanism rest column) and a
-**shared phase clock** mapping the global cycle t in [0,1) to four
-named stages used by every concept (LOAD -> APPROACH -> DISPENSE ->
-SETTLE) at fixed boundaries (0.00, 0.25, 0.42, 0.85, 1.00). Each
-concept is composed from small independently-positioned sub-component
-draw functions (`draw_vial`, `draw_anvil`, `draw_cup_with_mesh`,
-`draw_pez_strip`, `draw_capillary`, `draw_brush_disc`, `draw_auger`,
-`draw_erm_motor`, `draw_solenoid_actuator`, `draw_balance`,
-`draw_powder_pad`, `draw_falling_stream`) layered on top of the
-shared Stage. The 4x2 `composite-animation.gif` is now built directly
-from the per-concept render functions (not from the on-disk per-tile
-GIFs) to bypass GIF palette/de-dup so tiles never desync. Net effect:
-the bed-line, vial mouths, gantry rails, and mechanism columns line
-up across tiles, and all eight mechanisms load/approach/dispense/
-settle at the same global t. The composite-animation.gif is the best
-single artefact to read first now; please use it as the entry point.
+**NEW in this submission (PR-#13 comment 4427631537):**
 
-The eight SCAD sources, iso renders, cutaway sections, the four
-composite previews (composite-animation.gif, composite-panel.png,
-composite-spin.gif, composite-cutaway.png), the eight per-concept
-panels, and the eight per-concept dispensing animations are all
-attached. The pipeline driver (scripts/render_alternatives.py),
-the panel annotator (scripts/annotate_alternatives.py), and the
-new dispensing animator (scripts/animate_dispensing.py) are also
-attached so you can see exactly what was generated.
+1. The dispensing visualisations are now grounded in **real CAD
+   geometry** built with CadQuery (8 STEP-203 files, one per concept,
+   attached as A_scene.step ... H_scene.step). Each scene contains the
+   3018-Pro V2 bed slab, gantry rail and 15 mm-OD vial in a single
+   shared millimetre world frame, plus the per-concept mechanism in
+   its LOAD pose. A single `SideProjector` then maps every part's
+   CadQuery AABB to pixels for every animation tile, so the bed-line,
+   vial mouths, gantry rail and mechanism home column line up across
+   all eight tiles **by construction** instead of by manual numeric
+   matching. See `cad/alternatives_cq/README.md`, the new
+   `composite_animation.gif`, and the per-concept phase stills
+   (`<X>_frame_<LOAD|APPROACH|DISPENSE|SETTLE>.png`).
+
+2. The Edison file-upload protocol was wrong on all 4 prior analysis
+   tasks: we passed raw local paths to `create_task(files=...)`, but
+   that argument expects `data_entry:{uuid}` URIs returned by
+   `client.upload_file()`. The submitter now uploads every file via
+   the data-storage service first, captures the returned URIs, and
+   only then calls `create_task`. This submission is the first that
+   actually delivers attachments to the analysis run.
 
 Please give us a critical engineering review covering:
 
 1. Per-concept printability and mechanism viability on the 3018-Pro
-   V2: pull from the SCAD parameters and the cutaway cross sections.
-   In particular flag any geometry where the cutaway suggests a
-   bridging / overhang / wall-thickness problem that the slicer
-   warned about but we may have missed.
+   V2: pull from the SCAD parameters, the cutaway cross sections, and
+   the new CAD-grounded scenes (STEP files attached). Flag any
+   geometry where the cutaway suggests a bridging / overhang /
+   wall-thickness problem.
 
-2. Per-concept dose floor and RSD vs the published analogues
-   already cited in our prior literature query (Besenhard 2015
-   vibratory sieve-chute, Faulhammer 2014 dosator, Alsenz 2011
-   PowderPicking, Hou 2024, Jiang 2023). We previously concluded G
-   then A. With the geometry and motion now both visible, do you
-   still agree, or does any other concept now look more promising?
+2. Per-concept dose floor and RSD vs the published analogues already
+   cited (Besenhard 2015, Faulhammer 2014, Alsenz 2011 PowderPicking,
+   Hou 2024, Jiang 2023). We previously concluded G then A. With the
+   geometry now visible in scale-correct mm and the motion in a
+   shared world frame, do you still agree, or does any other concept
+   now look more promising?
 
-3. Cohesive sub-100-um powder failure modes specific to each
-   geometry and motion sequence: bridging in B's chambers,
-   capillary plug variability in C, brush retention in D,
-   hole-clogging in E, helix pull-down in F, etc. Cite
-   peer-reviewed sources where available.
+3. Cohesive sub-100-um powder failure modes specific to each geometry
+   and motion sequence: bridging in B's chambers, capillary plug
+   variability in C, brush retention in D, hole-clogging in E,
+   helix pull-down in F, etc.
 
-4. Specific incremental design or motion-cycle changes (a sentence
-   or two each per concept) that would most reduce variability or
-   improve one-day-build success. Be concrete -- we are about to
-   print these.
+4. Specific incremental design or motion-cycle changes (a sentence or
+   two each per concept) that would most reduce variability or
+   improve one-day-build success.
 
-5. Anything obviously missing (a concept we should add, a
-   peer-reviewed analogue we should be benchmarking against, a
-   safety/EHS concern with HV / solenoid / heated alternatives).
+5. Anything obviously missing.
 
-Don't wait more than ~10 min — we will fetch then.
+Don't wait more than ~10 min — we will fetch next session.
 """
 
 
@@ -113,12 +112,18 @@ def _collect_files() -> list[str]:
         REPO / "scripts" / "render_alternatives.py",
         REPO / "scripts" / "annotate_alternatives.py",
         REPO / "scripts" / "animate_dispensing.py",
+        REPO / "scripts" / "scene_world_frame.py",
+        REPO / "scripts" / "scene_cad.py",
+        REPO / "scripts" / "animate_dispensing_cad.py",
         REPO / "cad" / "alternatives" / "render-report.txt",
         REPO / "cad" / "alternatives" / "composite-spin.gif",
         REPO / "cad" / "alternatives" / "composite-cutaway.png",
         REPO / "cad" / "alternatives" / "composite-panel.png",
         REPO / "cad" / "alternatives" / "composite-animation.gif",
         REPO / "cad" / "alternatives" / "README.md",
+        REPO / "cad" / "alternatives_cq" / "README.md",
+        REPO / "cad" / "alternatives_cq" / "manifest.json",
+        REPO / "cad" / "alternatives_cq" / "composite_animation.gif",
     ]
     alt_dir = REPO / "cad" / "alternatives"
     paths += sorted(alt_dir.glob("[A-H]_*.scad"))
@@ -126,6 +131,11 @@ def _collect_files() -> list[str]:
     paths += sorted(alt_dir.glob("[A-H]-*-cutaway.png"))
     paths += sorted(alt_dir.glob("[A-H]-*-panel.png"))
     paths += sorted(alt_dir.glob("[A-H]-*-animation.gif"))
+    # New CAD-grounded scenes + per-concept animations
+    cq_dir = REPO / "cad" / "alternatives_cq"
+    paths += sorted(cq_dir.glob("[A-H]_scene.step"))
+    paths += sorted(cq_dir.glob("[A-H]_animation.gif"))
+    paths += sorted(cq_dir.glob("[A-H]_frame_*.png"))
     return [str(p) for p in paths if p.exists()]
 
 
@@ -135,20 +145,51 @@ def main() -> int:
         sys.stderr.write("EDISON_API_KEY is not set\n")
         return 1
 
-    files = _collect_files()
-    if not files:
+    local_files = _collect_files()
+    if not local_files:
         sys.stderr.write("no files collected for upload; aborting\n")
         return 2
-    sys.stderr.write(f"submitting {len(files)} attachments\n")
+    sys.stderr.write(f"uploading {len(local_files)} attachments via data-storage service\n")
 
     client = EdisonClient(api_key=api_key)
+
+    # Edison's ``create_task(files=...)`` expects a list of
+    # ``data_entry:{uuid}`` URIs returned by ``upload_file`` — passing
+    # raw local paths writes them verbatim into ``data_storage_uris``
+    # and the task fails server-side (status=fail, answer=None). The
+    # 4 prior analysis tasks on this PR all failed for this reason;
+    # see docs/alternative-dosing/edison_analysis_result.md.
+    file_uris: list[str] = []
+    upload_errors: list[tuple[str, str]] = []
+    for path in local_files:
+        try:
+            uri = client.upload_file(
+                path,
+                description=f"Attachment for {QUERY_TAG} (PR #13)",
+                tags=[QUERY_TAG, "issue-12", "pr-13"],
+            )
+            file_uris.append(uri)
+            sys.stderr.write(f"  uploaded {os.path.relpath(path, REPO)} -> {uri}\n")
+        except Exception as exc:  # noqa: BLE001 — best-effort per-file
+            upload_errors.append((os.path.relpath(path, REPO), str(exc)))
+            sys.stderr.write(
+                f"  WARN: upload failed for {path}: {exc}\n"
+            )
+
+    if not file_uris:
+        sys.stderr.write(
+            "ERROR: no files uploaded successfully; refusing to submit "
+            "an analysis task with zero attachments.\n"
+        )
+        return 4
+
     request = TaskRequest(
         name=JobNames.ANALYSIS,
         query=QUERY,
         tags=[QUERY_TAG, "issue-12", "pr-13", "powder-excavator"],
     )
     submitted_at = _dt.datetime.now(tz=_dt.timezone.utc).isoformat()
-    task = client.create_task(request, files=files)
+    task = client.create_task(request, files=file_uris)
 
     if isinstance(task, str):
         task_id: str | None = task
@@ -176,7 +217,11 @@ def main() -> int:
         "submitted_at": submitted_at,
         "wait_policy": "do-not-wait (per comment 4316944381); fetch in next session",
         "query": QUERY,
-        "attached_files": [os.path.relpath(f, REPO) for f in files],
+        "attached_files": [os.path.relpath(f, REPO) for f in local_files],
+        "uploaded_file_uris": file_uris,
+        "upload_errors": [
+            {"path": p, "error": e} for p, e in upload_errors
+        ],
     }
 
     out_path = HERE / "edison_analysis_query.json"

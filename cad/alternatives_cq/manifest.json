@@ -1,0 +1,651 @@
+{
+  "world": {
+    "work_xmin": -160.0,
+    "work_xmax": 160.0,
+    "work_zmin": 0.0,
+    "work_zmax": 110.0,
+    "bed_z": 0.0,
+    "bed_thickness": 6.0,
+    "gantry_rail_z": 95.0,
+    "gantry_rail_h": 6.0,
+    "mech_home_x": -45.0,
+    "vial_x": 60.0,
+    "vial_od": 15.0,
+    "vial_h": 45.0,
+    "spindle_clamp_d": 43.0
+  },
+  "concepts": {
+    "A": {
+      "title": "A \u2014 Tap-driven sieve cup + anvil",
+      "step": "cad/alternatives_cq/A_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 89.0,
+          "dx_mm": 5.0,
+          "dz_mm": -2.0,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-boss",
+          "x_mm": -66.5,
+          "z_mm": 75.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "sieve-cup",
+          "x_mm": -58.0,
+          "z_mm": 55.0,
+          "dx_mm": 26.0,
+          "dz_mm": 20.0,
+          "color": "body"
+        },
+        {
+          "name": "mesh-disc",
+          "x_mm": -54.0,
+          "z_mm": 54.5,
+          "dx_mm": 18.0,
+          "dz_mm": 1.0,
+          "color": "accent"
+        },
+        {
+          "name": "anvil",
+          "x_mm": -60.0,
+          "z_mm": 0.0,
+          "dx_mm": 30,
+          "dz_mm": 8,
+          "color": "accent2"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        },
+        {
+          "name": "source-pad",
+          "x_mm": -63.0,
+          "z_mm": 0.0,
+          "dx_mm": 36,
+          "dz_mm": 4,
+          "color": "powder"
+        }
+      ]
+    },
+    "B": {
+      "title": "B \u2014 Pez-style chamber strip",
+      "step": "cad/alternatives_cq/B_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 72.0,
+          "dx_mm": 5.0,
+          "dz_mm": 15.0,
+          "color": "gantry"
+        },
+        {
+          "name": "loader-boss",
+          "x_mm": -66.5,
+          "z_mm": 60.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "strip",
+          "x_mm": 28.0,
+          "z_mm": 51.0,
+          "dx_mm": 64.0,
+          "dz_mm": 7.0,
+          "color": "body"
+        },
+        {
+          "name": "bed-pawl",
+          "x_mm": 42.0,
+          "z_mm": 0.0,
+          "dx_mm": 4,
+          "dz_mm": 51.0,
+          "color": "accent2"
+        },
+        {
+          "name": "chamber-0",
+          "x_mm": 30.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-1",
+          "x_mm": 38.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-2",
+          "x_mm": 46.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-3",
+          "x_mm": 54.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-4",
+          "x_mm": 62.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-5",
+          "x_mm": 70.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-6",
+          "x_mm": 78.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "chamber-7",
+          "x_mm": 86.5,
+          "z_mm": 52.0,
+          "dx_mm": 3.0,
+          "dz_mm": 4.0,
+          "color": "powder"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "C": {
+      "title": "C \u2014 Capillary dip + wiper",
+      "step": "cad/alternatives_cq/C_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 95.0,
+          "dx_mm": 5.0,
+          "dz_mm": -8.0,
+          "color": "gantry"
+        },
+        {
+          "name": "c-boss",
+          "x_mm": -66.5,
+          "z_mm": 81.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "capillary",
+          "x_mm": -45.75,
+          "z_mm": 2.0,
+          "dx_mm": 1.5,
+          "dz_mm": 79.0,
+          "color": "accent"
+        },
+        {
+          "name": "c-source",
+          "x_mm": -55.0,
+          "z_mm": 0.0,
+          "dx_mm": 20,
+          "dz_mm": 8,
+          "color": "powder"
+        },
+        {
+          "name": "wiper",
+          "x_mm": 44.0,
+          "z_mm": 0.0,
+          "dx_mm": 3,
+          "dz_mm": 12,
+          "color": "accent2"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "D": {
+      "title": "D \u2014 Brush pickup + comb",
+      "step": "cad/alternatives_cq/D_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 44.0,
+          "dx_mm": 5.0,
+          "dz_mm": 43.0,
+          "color": "gantry"
+        },
+        {
+          "name": "d-boss",
+          "x_mm": -66.5,
+          "z_mm": 30.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "brush",
+          "x_mm": -56.0,
+          "z_mm": 8.0,
+          "dx_mm": 22.0,
+          "dz_mm": 22.0,
+          "color": "body"
+        },
+        {
+          "name": "bristles",
+          "x_mm": -56.0,
+          "z_mm": 4.0,
+          "dx_mm": 22.0,
+          "dz_mm": 4,
+          "color": "accent"
+        },
+        {
+          "name": "comb",
+          "x_mm": 72.0,
+          "z_mm": 0.0,
+          "dx_mm": 14,
+          "dz_mm": 10,
+          "color": "accent2"
+        },
+        {
+          "name": "source-pad",
+          "x_mm": -63.0,
+          "z_mm": 0.0,
+          "dx_mm": 36,
+          "dz_mm": 4,
+          "color": "powder"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "E": {
+      "title": "E \u2014 Salt-shaker oscillation",
+      "step": "cad/alternatives_cq/E_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 95.0,
+          "dx_mm": 5.0,
+          "dz_mm": -8.0,
+          "color": "gantry"
+        },
+        {
+          "name": "e-boss",
+          "x_mm": -66.5,
+          "z_mm": 81.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "shaker-body",
+          "x_mm": -59.0,
+          "z_mm": 51.0,
+          "dx_mm": 28.0,
+          "dz_mm": 30.0,
+          "color": "body"
+        },
+        {
+          "name": "perf-cap",
+          "x_mm": -58.0,
+          "z_mm": 51.0,
+          "dx_mm": 26.0,
+          "dz_mm": 2,
+          "color": "accent"
+        },
+        {
+          "name": "powder-fill",
+          "x_mm": -57.0,
+          "z_mm": 53.0,
+          "dx_mm": 24.0,
+          "dz_mm": 22.0,
+          "color": "powder"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "F": {
+      "title": "F \u2014 Passive auger (rack/pinion)",
+      "step": "cad/alternatives_cq/F_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 99.0,
+          "dx_mm": 5.0,
+          "dz_mm": -12.0,
+          "color": "gantry"
+        },
+        {
+          "name": "f-boss",
+          "x_mm": -66.5,
+          "z_mm": 85.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "auger-tube",
+          "x_mm": -53.0,
+          "z_mm": 49.0,
+          "dx_mm": 16.0,
+          "dz_mm": 36.0,
+          "color": "body"
+        },
+        {
+          "name": "flight-0",
+          "x_mm": -50.0,
+          "z_mm": 54.0,
+          "dx_mm": 10,
+          "dz_mm": 1.2,
+          "color": "accent"
+        },
+        {
+          "name": "flight-1",
+          "x_mm": -50.0,
+          "z_mm": 60.5,
+          "dx_mm": 10,
+          "dz_mm": 1.2,
+          "color": "accent"
+        },
+        {
+          "name": "flight-2",
+          "x_mm": -50.0,
+          "z_mm": 67.0,
+          "dx_mm": 10,
+          "dz_mm": 1.2,
+          "color": "accent"
+        },
+        {
+          "name": "flight-3",
+          "x_mm": -50.0,
+          "z_mm": 73.5,
+          "dx_mm": 10,
+          "dz_mm": 1.2,
+          "color": "accent"
+        },
+        {
+          "name": "flight-4",
+          "x_mm": -50.0,
+          "z_mm": 80.0,
+          "dx_mm": 10,
+          "dz_mm": 1.2,
+          "color": "accent"
+        },
+        {
+          "name": "bed-rack",
+          "x_mm": 40.0,
+          "z_mm": 0.0,
+          "dx_mm": 30,
+          "dz_mm": 4,
+          "color": "accent2"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "G": {
+      "title": "G \u2014 ERM-augmented sieve",
+      "step": "cad/alternatives_cq/G_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 89.0,
+          "dx_mm": 5.0,
+          "dz_mm": -2.0,
+          "color": "gantry"
+        },
+        {
+          "name": "g-boss",
+          "x_mm": -66.5,
+          "z_mm": 75.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "g-cup",
+          "x_mm": -58.0,
+          "z_mm": 55.0,
+          "dx_mm": 26.0,
+          "dz_mm": 20.0,
+          "color": "body"
+        },
+        {
+          "name": "mesh-disc",
+          "x_mm": -54.0,
+          "z_mm": 54.5,
+          "dx_mm": 18.0,
+          "dz_mm": 1.0,
+          "color": "accent"
+        },
+        {
+          "name": "erm-motor",
+          "x_mm": -33.0,
+          "z_mm": 64.0,
+          "dx_mm": 4,
+          "dz_mm": 4,
+          "color": "accent"
+        },
+        {
+          "name": "cr2032",
+          "x_mm": -56.0,
+          "z_mm": 69.0,
+          "dx_mm": 6,
+          "dz_mm": 4,
+          "color": "accent"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    },
+    "H": {
+      "title": "H \u2014 Solenoid-tapped sieve",
+      "step": "cad/alternatives_cq/H_scene.step",
+      "step_error": null,
+      "parts_at_load_phase": [
+        {
+          "name": "gantry-carriage",
+          "x_mm": -59.0,
+          "z_mm": 87.0,
+          "dx_mm": 28,
+          "dz_mm": 10,
+          "color": "gantry"
+        },
+        {
+          "name": "spindle-stem",
+          "x_mm": -47.5,
+          "z_mm": 89.0,
+          "dx_mm": 5.0,
+          "dz_mm": -2.0,
+          "color": "gantry"
+        },
+        {
+          "name": "h-boss",
+          "x_mm": -66.5,
+          "z_mm": 75.0,
+          "dx_mm": 43.0,
+          "dz_mm": 14.0,
+          "color": "body"
+        },
+        {
+          "name": "h-cup",
+          "x_mm": -58.0,
+          "z_mm": 55.0,
+          "dx_mm": 26.0,
+          "dz_mm": 20.0,
+          "color": "body"
+        },
+        {
+          "name": "mesh-disc",
+          "x_mm": -54.0,
+          "z_mm": 54.5,
+          "dx_mm": 18.0,
+          "dz_mm": 1.0,
+          "color": "accent"
+        },
+        {
+          "name": "solenoid-body",
+          "x_mm": -28.0,
+          "z_mm": 61.0,
+          "dx_mm": 12,
+          "dz_mm": 8,
+          "color": "body"
+        },
+        {
+          "name": "solenoid-plunger",
+          "x_mm": -32.0,
+          "z_mm": 62.5,
+          "dx_mm": 4,
+          "dz_mm": 3,
+          "color": "accent2"
+        },
+        {
+          "name": "balance",
+          "x_mm": 42.0,
+          "z_mm": -6.0,
+          "dx_mm": 36,
+          "dz_mm": 6,
+          "color": "accent2"
+        },
+        {
+          "name": "vial-powder",
+          "x_mm": 54.0,
+          "z_mm": 1.0,
+          "dx_mm": 12.0,
+          "dz_mm": 1.72,
+          "color": "powder"
+        }
+      ]
+    }
+  }
+}
