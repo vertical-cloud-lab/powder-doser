@@ -35,14 +35,29 @@ The recommended bringup order is:
 
 ### Step 0 — Get the printer onto the same LAN as your worker host
 
-1. Plug the H2D in, finish the on-screen setup, and connect it to the
-   wired or wireless LAN that the worker host (Raspberry Pi, lab PC,
-   container) lives on. A separate VLAN is fine as long as ports
-   `990/tcp` (FTPS) and `8883/tcp` (MQTT-over-TLS) are reachable from
-   the worker.
-2. On the printer screen: **Settings → WLAN → IP address** — note the
-   IPv4 address. Pin it via DHCP reservation so it does not move; the
-   LAN flow has no mDNS / discovery broker.
+1. Plug the H2D in and finish the on-screen setup. **The H2D has a
+   built-in RJ45 Ethernet port on the back panel** (next to the power
+   inlet), so you have two options:
+   - **Wired (recommended for bringup):** run a Cat-5e/6 cable from
+     the H2D to the same switch/router as the worker host. Wired
+     usually side-steps the BYU-IoT-style client-isolation problem
+     that blocks laptop→printer traffic on shared Wi-Fi.
+   - **Wi-Fi:** Settings → WLAN → join the same SSID as the worker.
+     Fine for production but expect the client-isolation caveats in
+     Step 6 if you also want roaming laptops to reach the printer.
+
+   A separate VLAN is fine as long as ports `990/tcp` (FTPS) and
+   `8883/tcp` (MQTT-over-TLS) are reachable from the worker.
+2. On the printer screen: **Settings → WLAN → IP address** (or
+   **Settings → Network → IP address** if you plugged in Ethernet) —
+   note the IPv4 address. Pin it via DHCP reservation so it does not
+   move; the LAN flow has no mDNS / discovery broker.
+3. **What OS does the worker need?** Nothing exotic — the LAN
+   transports are just MQTT-over-TLS (`:8883`) and FTPS (`:990`), so
+   any OS with a Python 3.10+ install works. The empirical Step 2
+   commands below have **Linux / macOS / Windows-PowerShell** variants
+   so a Mac or Windows laptop on the lab Wi-Fi can do the smoke test
+   before you commit to a dedicated Pi.
 
 ### Step 1 — Enable LAN-only Developer Mode and capture credentials
 
@@ -71,6 +86,17 @@ Before touching any slicer or print command, prove the two transports
 work from the worker host. Replace `<IP>`, `<ACCESS_CODE>`, `<SERIAL>`
 with the values from Step 1.
 
+The three checks below are presented in **Linux / macOS** form first
+(`openssl`, `mosquitto_sub`, `lftp` — all in Homebrew / `apt`), then in
+**Windows PowerShell** form using only the cross-platform Python
+`paho-mqtt` client (`pip install paho-mqtt`) and the built-in
+`System.Net.Sockets.TcpClient`, so a Mac or Windows laptop on the lab
+Wi-Fi can run the smoke test directly. Pick whichever block matches
+the worker.
+
+**Linux / macOS** (install once: `brew install mosquitto lftp openssl`
+on macOS, `apt install mosquitto-clients lftp openssl` on Linux):
+
 ```bash
 # 2a. MQTT-over-TLS handshake reachable on :8883?
 openssl s_client -connect <IP>:8883 -servername <IP> </dev/null \
@@ -96,9 +122,45 @@ lftp -u "bblp,<ACCESS_CODE>" -e \
 # Mode is off.
 ```
 
-If both 2b and 2c succeed, you have proven the same `(IP, code,
-serial)` triple that the rest of the doc — and every library in the
-"Open-source Python libraries" table below — assumes.
+**Windows (PowerShell) — no Bambu Studio, no WSL required.** The
+same three checks using only Python + built-ins:
+
+```powershell
+# 2a. Can we open a TCP socket to :8883? (Python free.)
+Test-NetConnection -ComputerName <IP> -Port 8883
+# Expect: TcpTestSucceeded : True. Repeat with -Port 990 for FTPS.
+
+# 2b/2c. Subscribe to MQTT + list /cache over FTPS, both from one
+# Python script. Save as h2d_smoketest.py and run `python h2d_smoketest.py`.
+```
+
+```python
+# h2d_smoketest.py — works on Windows, macOS, and Linux.
+# pip install paho-mqtt
+import ssl, ftplib, paho.mqtt.client as mqtt
+IP, ACCESS_CODE, SERIAL = "<IP>", "<ACCESS_CODE>", "<SERIAL>"
+
+# 2b. MQTT-over-TLS — print first report message and exit
+def on_msg(c, u, m):
+    print("MQTT OK:", m.topic, m.payload[:120], "…"); c.disconnect()
+c = mqtt.Client()
+c.username_pw_set("bblp", ACCESS_CODE)
+c.tls_set(cert_reqs=ssl.CERT_NONE); c.tls_insecure_set(True)
+c.on_message = on_msg
+c.connect(IP, 8883, 30)
+c.subscribe(f"device/{SERIAL}/report"); c.loop_forever()
+
+# 2c. FTPS — list /cache
+ctx = ssl._create_unverified_context()
+ftps = ftplib.FTP_TLS(context=ctx); ftps.connect(IP, 990, 30)
+ftps.login("bblp", ACCESS_CODE); ftps.prot_p()
+print("FTPS /cache:", ftps.nlst("/cache")); ftps.quit()
+```
+
+If both blocks above succeed (you see a JSON `report` message + a
+listing of `/cache`, possibly empty), you have proven the same `(IP,
+code, serial)` triple that the rest of the doc — and every library in
+the "Open-source Python libraries" table below — assumes.
 
 ### Step 3 — End-to-end dry run with a real `.gcode.3mf`
 
@@ -518,7 +580,50 @@ Key safety properties of this shape (worth defending in code review):
 - **Hardware interlock still required.** Software limits stop most
   bad jobs; a physical e-stop / mains key switch is the only thing
   that stops *all* of them, including firmware bugs and stuck
-  thermistors.
+  thermistors. See "Hardware interlock — concrete options" below for
+  three off-the-shelf parts that satisfy this without modifying the
+  printer.
+
+### Hardware interlock — concrete options
+
+The "hardware e-stop / mains key switch" referenced above is a
+**physical means to cut power to the H2D that does not depend on
+firmware, MQTT, or the relay process being healthy.** The H2D draws
+roughly 1000–1500 W peak from a standard 120 V (NA) or 230 V (EU)
+outlet, so any UL/CE-listed interlock rated for that load works. Three
+options in increasing cost/effort, pick **one**:
+
+1. **In-line lockable mains switch (~$20, recommended baseline).** Buy
+   a UL-listed lockable plug-load disconnect like a Tripp-Lite
+   PS-415-HGLK or any "lockable inline power switch" rated ≥ 15 A
+   @ 120 V (or ≥ 10 A @ 230 V). Plug the H2D into it, plug it into
+   the wall, and hang the key on the lab wall. *Action when not in
+   use:* operator turns the key to OFF and removes it — Colab cannot
+   energise the printer no matter what the relay does.
+2. **Mushroom-head e-stop pendant (~$40).** A pre-wired 22 mm
+   latching e-stop button in an IP65 enclosure with a 1 m mains
+   pigtail (Allen-Bradley 800FP-MT44, IDEC HW1B-V401, or any
+   AliExpress equivalent rated for the printer's draw). Wire it in
+   series with the H2D's power cord — pressing the button latches the
+   contacts open and physically disconnects mains until twisted to
+   reset. *Action:* mounted within arm's reach of anyone in the lab,
+   tested once a quarter by pressing it mid-print and confirming the
+   printer drops out.
+3. **Smart plug with a local off-button + remote watchdog (~$15 +
+   software).** Kasa KP125M, Shelly Plug US, or any Matter/HomeKit
+   plug with a physical button. Wire a watchdog process on the Pi
+   that issues an "off" command if `/print_stl` jobs exceed the
+   `LIMITS["max_print_minutes"]` cap. *Caveat:* this is the *least*
+   robust of the three because it depends on the smart plug's
+   firmware — keep it as a belt-and-braces layer on top of #1 or #2,
+   not as the only interlock.
+
+For an *unattended* Colab notebook you want at least option 1 in
+place **before** flipping `RELAY_TOKEN` on. For a staffed lab you
+probably want option 2 anyway because it doubles as the e-stop for
+the rest of the rig (powder-doser, hot plate, etc.). None of these
+require modifying the printer or voiding the H2D warranty — they all
+sit upstream of the printer's IEC inlet.
 
 A reasonable order of operations to get this on a real Pi:
 
@@ -536,7 +641,14 @@ A reasonable order of operations to get this on a real Pi:
    `POST /print_stl` with the same 12-tri cube STL used in the
    empirical verification. Watch `gcode_state` walk
    `IDLE → PREPARE → RUNNING` exactly as in bringup Step 3.
-5. *Then* point Colab at the URL.
+5. **Install the hardware interlock from "Hardware interlock —
+   concrete options" above** (at minimum a lockable mains switch
+   with the key hung on the lab wall). Verify it kills the printer
+   mid-print by running `POST /print_stl` with the cube, then
+   turning the key — `gcode_state` should go to `FAILED` /
+   `OFFLINE` within seconds and the heaters should be cold to the
+   touch on the next pass.
+6. *Then* point Colab at the URL.
 
 ## A. Cloud submission
 
