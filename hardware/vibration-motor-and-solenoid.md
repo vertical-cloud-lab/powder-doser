@@ -1,9 +1,10 @@
 # Auger drive, vibration motor, and solenoid — parts identification
 
 Resolves [#24](https://github.com/vertical-cloud-lab/powder-doser/issues/24).
-Companion to the Archimedes auger CAD in [`cad/auger/`](../cad/auger/) (PR
-[#16](https://github.com/vertical-cloud-lab/powder-doser/pull/16); housing
-≈ 20 mm OD × 100 mm tall).
+Companion to the Archimedes auger CAD proposed in PR
+[#16](https://github.com/vertical-cloud-lab/powder-doser/pull/16) (housing
+≈ 20 mm OD × 100 mm tall). Once PR #16 lands, the auger CAD will live at
+[`cad/auger/`](https://github.com/vertical-cloud-lab/powder-doser/tree/main/cad/auger).
 
 ## Goals (from #24)
 
@@ -296,20 +297,36 @@ TI's DRV8871 H-bridge that already includes:
   our 5 V coil we'll feed 5 V here) and the load (`OUT1`, `OUT2`
   → solenoid coil).
 
-Functionally the DRV8871 is a full H-bridge; for a single-coil
-solenoid we only use one of its two output legs. Tying `IN2` low and
-PWM'ing `IN1` from the Pi gives standard "low-side switching with
-flyback handled internally" behaviour at any tap rate we care about
-(5–20 Hz, 20–80 ms pulses).
+Functionally the DRV8871 is a full H-bridge. The solenoid coil is
+wired across both outputs (`OUT1` and `OUT2`) — both half-bridges are
+always involved. We don't need to reverse current through the coil, so
+we operate the bridge in **single-direction PWM mode**: tie `IN2` low
+and PWM `IN1` from the Pi. This drives one half-bridge high (PWM) and
+the other low, which gates current through the coil for the duration
+of each pulse; the chip's internal flyback diodes clamp the coil at
+turn-off, so no external diode is required at any tap rate we care
+about (5–20 Hz, 20–80 ms pulses).
 
 * Use **GPIO18** (hardware PWM) on the Pi for `IN1` so pulse width is
   jitter-free; control with `pigpio` / `gpiozero`'s
   `PWMOutputDevice`. Tie `IN2` to Pi GND.
-* Feed the DRV8871's `VM` / `GND` from the **separate 5 V supply**
-  (item 7) via the barrel-jack breakout (item 8) so coil current
-  doesn't sag the Pi's 5 V rail. Add the 100 µF bulk cap (item 9)
-  across `VM` / `GND` to absorb the inrush.
-* Tie the 5 V supply ground to Pi ground — single common GND.
+* Feed the DRV8871's `VM` from the **5 V rail** and tie its `GND`
+  to the common bonnet ground:
+  * **Single-supply variant (recommended):** `VM` connects to the
+    `+5V` net produced by the D24V22F5 buck (item 15), the same
+    rail that powers the Pi. Because the buck is sized for 2.5 A
+    continuous / ~3 A peak (vs. the Pi's ~0.7 A and the JF-0530B's
+    ~1.1 A inrush), and because the 100 µF bulk cap (item 9) sits
+    right next to the DRV8871's `VM` / `GND` pins to absorb the
+    inrush locally, the Pi's 5 V rail stays within spec during a
+    tap. If you ever observe the Pi browning out (e.g. a
+    higher-current solenoid is substituted), fall back to the
+    two-PSU variant below.
+  * **Two-PSU variant:** wire `VM` from the **separate 5 V supply**
+    (item 7) via the barrel-jack breakout (item 8) so coil current
+    can't sag the Pi's 5 V rail at all. Same 100 µF bulk cap
+    across `VM` / `GND`.
+* Either way, tie the 5 V return to Pi ground — single common GND.
 
 ### Why not a relay HAT?
 
@@ -422,13 +439,13 @@ tap.off()
 # --- auger drive (NEMA 11 + DRV8825: STEP/DIR/~EN on GPIO20/21/16) ---
 step  = DigitalOutputDevice(20)
 dir_  = DigitalOutputDevice(21)
-en_n  = DigitalOutputDevice(16, active_high=False, initial_value=False)  # enabled
+en_n  = DigitalOutputDevice(16, active_high=False, initial_value=True)   # ~EN is active-low: initial_value=True asserts (drives pin LOW) → driver enabled
 dir_.on()                              # forward
 STEPS_PER_REV = 200                    # full-step mode; ×microstep factor otherwise
 for _ in range(STEPS_PER_REV):         # one revolution of the auger
     step.on();  time.sleep(0.001)
     step.off(); time.sleep(0.001)
-en_n.off()                             # coast/disable to save power & heat
+en_n.off()                             # deassert ~EN (pin HIGH) → coast/disable to save power & heat
 ```
 
 ## Notes / open questions

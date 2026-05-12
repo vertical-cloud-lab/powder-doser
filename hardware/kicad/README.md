@@ -100,13 +100,11 @@ repository and clarify where needed"):
    5 V rail. All net labels stay the same; only the source of
    the `+5V` net changes.
 
-## Regenerating the schematic and the PNG/PDF/SVG exports
+## Regenerating the PNG/PDF/SVG exports
 
-The schematic is produced by a small Python generator that lives
-under `/tmp/kicad_build/` during a build session (it embeds stock
-KiCad symbol definitions into the schematic so the project is
-self-contained). To regenerate the rendered exports from the
-checked-in `.kicad_sch`:
+The checked-in `.kicad_sch` is the source of truth; the rendered
+exports next to it are produced from it with `kicad-cli`. To
+regenerate them after editing the schematic in KiCad:
 
 ```bash
 sudo apt-get install -y kicad librsvg2-bin
