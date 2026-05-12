@@ -18,6 +18,7 @@ state of the art) and a *literature* review (recent peer-reviewed work):
 | [`02-powder-dispensing-academic-literature.md`](02-powder-dispensing-academic-literature.md) | Powder dispensing | Recent (2018–2025) peer-reviewed papers on automated dosing, multi-material/HT metal AM (Ni, Ti, HEAs, refractory alloys), compositionally graded alloy discovery, self-driving labs handling solids, and powder-flowability characterization. |
 | [`03-generative-cad-landscape.md`](03-generative-cad-landscape.md) | Generative CAD | Commercial (Fusion Generative Design, nTop, Siemens NX, PTC Creo, ANSYS Discovery, Altair Inspire, Rhino + Grasshopper) and code-based / parametric (CadQuery, OpenSCAD, build123d, Onshape FeatureScript, JSCAD) tools, plus AI/LLM-driven CAD research, with capability and limitation comparisons. References issue [#6](https://github.com/vertical-cloud-lab/powder-doser/issues/6). |
 | [`04-generative-cad-academic-literature.md`](04-generative-cad-academic-literature.md) | Generative CAD | Recent (2021–2025) peer-reviewed and arXiv work on generative CAD, AI-assisted CAD, LLM-based CAD code generation, programmatic CAD, and learning-based shape generation, plus landmark datasets (DeepCAD, Fusion 360 Gallery, ABC, SketchGraphs, Text2CAD). |
+| [`05-llm-cad-spatial-reasoning-mitigation.md`](05-llm-cad-spatial-reasoning-mitigation.md) | Generative CAD | Synthesis (triggered by [PR #34 comment 4433787200](https://github.com/vertical-cloud-lab/powder-doser/pull/34#issuecomment-4433787200)) on LLM/agent spatial-reasoning + assembly failures observed in [PR #35](https://github.com/vertical-cloud-lab/powder-doser/pull/35) (Claude Opus 4.7 CadQuery), with concrete tool-side / prompting / representation / human-in-the-loop mitigations. Backed by a follow-up Edison `LITERATURE_HIGH` query (see below). |
 
 ## Provenance
 
@@ -62,14 +63,17 @@ three files (`<key>.task.json`, `<key>.answer.md`, `<key>.references.md`); see
 
 ## Reproducing or refreshing the notes
 
-The four queries can be re-run end-to-end with
-[`edison_run.py`](edison_run.py), which embeds the verbatim prompts and writes
-the artifacts described above:
+The four original queries can be re-run end-to-end with
+[`edison_run.py`](edison_run.py); the follow-up spatial-reasoning query that
+backs `05-llm-cad-spatial-reasoning-mitigation.md` lives in
+[`edison_run_followup_spatial.py`](edison_run_followup_spatial.py). Both
+embed their prompts verbatim and write the artifacts described above:
 
 ```sh
 pip install edison_client
 export EDISON_API_KEY=...
 python paper/background/edison_run.py
+python paper/background/edison_run_followup_spatial.py
 ```
 
 A high-effort literature query takes roughly 20–30 minutes per task; all four
