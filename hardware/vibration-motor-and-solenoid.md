@@ -79,6 +79,18 @@ DRV2605L and DRV8871 terminals respectively, and you're done.
 
 ## What to order first (grouped by vendor)
 
+> **Operating-mode note (per maintainer feedback).** The system dispenses
+> **one powder at a time** into the scale (so we can attribute mass to
+> a single channel). This means the **12 V wall-wart only ever has to
+> source one stepper's worth of `VMOT` current at a time**, not all
+> N channels in parallel — so the Edison review's "12 V/3 A is too
+> small for 12 channels holding" concern does **not** apply to the
+> normal operating mode, as long as the firmware deasserts `~EN` on the
+> idle channels (the DRV8825 / Tic both coast at near-zero `VMOT`
+> draw with `~EN` deasserted). Keeping every idle channel coasted is
+> the recommended firmware default for the N-channel ring (PR #35);
+> only one driver is ever enabled at any moment.
+
 The BOM above is sourced from only **four vendors** for v1.0 of one
 single-channel module (PR #35). Order quantities below are
 **per channel** — multiply by `N` once the ring-frame replicates the
@@ -105,6 +117,7 @@ of 2026-Q2; reconfirm at checkout.
 | BOM # | Part | Qty / channel | Product page |
 |---|---|---|---|
 | 11 | DRV8825 stepper-driver carrier | 1 | [#2133](https://www.pololu.com/product/2133) |
+| 11-alt | **Tic T500** USB / serial / I²C stepper controller (drop-in alternative to item 11; recommended if you want USB-level control and to skip step-pulse generation on the Pi) | 1 (in place of item 11) | [#3135](https://www.pololu.com/product/3135) (~$33) |
 | 15 | D24V22F5 5 V / 2.5 A buck regulator | 1 | [#2858](https://www.pololu.com/product/2858) |
 
 ### 3. SparkFun ([sparkfun.com](https://www.sparkfun.com/)) or StepperOnline — ~$15 per channel
@@ -242,6 +255,20 @@ Wire-up:
   driver stays asleep).
 * Common GND between the 12 V PSU, the DRV8825 logic GND, and the
   Pi.
+
+### Driver alternative: Pololu Tic T500 (USB / step+dir / I²C)
+
+Per maintainer feedback, the **[Pololu Tic T500](https://www.pololu.com/product/3135)** ($32.95) is a known-good drop-in replacement for the DRV8825 carrier when you want to skip the step-pulse-generation/timing work on the host MCU. The Tic accepts high-level commands (target position / target velocity) over USB, TTL serial, I²C, analog, or RC, and generates the step/dir waveform itself — so a Pi Zero 2 W or Pico W just sends "go to position N" over USB and the Tic handles acceleration, deceleration, and current limiting. It also has an on-board ~EN safe state, which sidesteps the boot-time pull-up issue called out by the Edison review for the bare DRV8825.
+
+Trade-offs vs. the DRV8825 carrier (item 11):
+
+* **+** Plug-and-play USB control from any host with a USB port; no real-time step-pulse generation needed on the Pi.
+* **+** Built-in current limit, microstepping config, and ~EN handling configured from the Pololu GUI — no current-sense pot to tweak.
+* **+** Same 8.5–35 V `VIN` range and ~1.5 A/phase headroom as the DRV8825 (handles the NEMA 11 with margin).
+* **−** ~4× the cost (\$33 vs. \$8). For a single-channel v1.0 prototype this is a worthwhile simplification; for an N-channel ring you'd weigh per-channel cost vs. firmware complexity.
+* **−** No longer "soldered onto the bonnet" — the Tic is a standalone board with its own USB/screw-terminal IO. Fits the same wiring story (12 V in, motor coils out), but mounts on the chassis rather than on the Perma-Proto.
+
+If you've already had a good experience with Pololu's Tic family (and PSC stocks them), the Tic T500 is the recommended driver substitution. Net labels in the schematic (`STEP`, `DIR`, `~EN`, `VMOT`) all map cleanly to either driver — the DRV8825 carrier is drawn in the schematic because it's the cheaper baseline.
 
 ### Belt-drive alternative
 
