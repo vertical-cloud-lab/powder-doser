@@ -4,7 +4,7 @@ Question: Provide a comprehensive landscape review of commercial powder dispensi
 
 ## 1. Introduction
 
-Automated powder dispensing and dosing is a cross-cutting challenge spanning laboratory high-throughput experimentation (HTE), pharmaceutical continuous manufacturing, and metal additive manufacturing (AM). This review synthesizes the current commercial landscape, performance specifications, and a critical gap analysis for research labs pursuing high-throughput multi-material AM alloy discovery. All specification claims are cited from peer-reviewed or patent literature published between 2018 and 2025.
+Automated powder dispensing and dosing is a cross-cutting challenge spanning laboratory high-throughput experimentation (HTE), pharmaceutical continuous manufacturing, and metal additive manufacturing (AM). This review synthesizes the current commercial landscape, performance specifications, and a critical gap analysis for research labs pursuing high-throughput multi-material AM alloy discovery. Specification claims are primarily drawn from peer-reviewed and patent literature published between 2018 and 2025; a small number of cited sources (e.g., conference abstracts) lack a fully resolved venue/year and are flagged as such in the References section.
 
 ## 2. Laboratory High-Throughput Experimentation Platforms
 

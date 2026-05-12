@@ -69,13 +69,13 @@ Taken together, these 15 references illuminate the design space for a low-cost o
 
 References
 
-1. (neirinck2021powderdepositionsystems pages 4-5): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. ArXiv, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
+1. (neirinck2021powderdepositionsystems pages 4-5): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. Accounts of Materials Research, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
 
-2. (neirinck2021powderdepositionsystems pages 1-2): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. ArXiv, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
+2. (neirinck2021powderdepositionsystems pages 1-2): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. Accounts of Materials Research, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
 
-3. (neirinck2021powderdepositionsystems pages 2-4): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. ArXiv, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
+3. (neirinck2021powderdepositionsystems pages 2-4): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. Accounts of Materials Research, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
 
-4. (neirinck2021powderdepositionsystems pages 5-6): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. ArXiv, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
+4. (neirinck2021powderdepositionsystems pages 5-6): Bram Neirinck, Xiaoshuang Li, and Matthias Hick. Powder deposition systems used in powder bed-based multimetal additive manufacturing. Accounts of Materials Research, 2:387-393, Jun 2021. URL: https://doi.org/10.1021/accountsmr.1c00030, doi:10.1021/accountsmr.1c00030. This article has 53 citations.
 
 5. (schneck2021reviewonadditive pages 4-5): M. Schneck, M. Horn, Matthias Schmitt, C. Seidel, G. Schlick, and G. Reinhart. Review on additive hybrid- and multi-material-manufacturing of metals by powder bed fusion: state of technology and development potential. Progress in Additive Manufacturing, 6:881-894, Aug 2021. URL: https://doi.org/10.1007/s40964-021-00205-2, doi:10.1007/s40964-021-00205-2. This article has 130 citations and is from a peer-reviewed journal.
 

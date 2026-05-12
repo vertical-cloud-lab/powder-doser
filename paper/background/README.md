@@ -69,9 +69,12 @@ backs `05-llm-cad-spatial-reasoning-mitigation.md` lives in
 [`edison_run_followup_spatial.py`](edison_run_followup_spatial.py). Both
 embed their prompts verbatim and write the artifacts described above:
 
+Both runners read the API key from the `EDISON_API_KEY` environment variable
+via `os.environ["EDISON_API_KEY"]` (never hard-coded or logged):
+
 ```sh
 pip install edison_client
-export EDISON_API_KEY=...
+export EDISON_API_KEY=...   # never commit this value
 python paper/background/edison_run.py
 python paper/background/edison_run_followup_spatial.py
 ```
