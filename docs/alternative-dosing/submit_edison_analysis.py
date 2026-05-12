@@ -39,18 +39,27 @@ PrusaSlicer slice on the MK3S+ profile (PETG, 0.2 mm, 3 perimeters,
 30% gyroid infill, 4 mm brim, supports on -- all 8 sliced cleanly).
 
 NEW since the prior analysis submission: the project reviewer asked
-for **2-D animated visualizations** showing each mechanism actually
-loading and dispensing powder, since the static SCAD renders alone
-did not communicate motion. We have added a per-concept side-view
-schematic GIF (`<letter>-<slug>-animation.gif`) plus a 4x2 composite
-(`composite-animation.gif`) that walks through the loading and
-dispensing phases for each concept (cup descent + strike, chamber
-fill + pawl punch, capillary dip + wiper + eject, brush sweep +
-comb scrape, salt-shaker oscillation, rack-driven auger, ERM
-continuous flow, solenoid closed-loop with balance readout). The
-generator script (`scripts/animate_dispensing.py`, pure Pillow) is
-attached. The composite-animation.gif is the best single artefact
-to read first now; please use it as the entry point for your review.
+that the per-concept dispensing animations "actually line up
+spatially" and that "the timing sequence for each component is
+sync'ing up with each other". We rewrote `scripts/animate_dispensing.py`
+around a shared `Stage` object that exposes fixed anchors used by
+**every** concept (same canvas size, same bed-line Y, same vial mouth
+position, same gantry-rail Y, same mechanism rest column) and a
+**shared phase clock** mapping the global cycle t in [0,1) to four
+named stages used by every concept (LOAD -> APPROACH -> DISPENSE ->
+SETTLE) at fixed boundaries (0.00, 0.25, 0.42, 0.85, 1.00). Each
+concept is composed from small independently-positioned sub-component
+draw functions (`draw_vial`, `draw_anvil`, `draw_cup_with_mesh`,
+`draw_pez_strip`, `draw_capillary`, `draw_brush_disc`, `draw_auger`,
+`draw_erm_motor`, `draw_solenoid_actuator`, `draw_balance`,
+`draw_powder_pad`, `draw_falling_stream`) layered on top of the
+shared Stage. The 4x2 `composite-animation.gif` is now built directly
+from the per-concept render functions (not from the on-disk per-tile
+GIFs) to bypass GIF palette/de-dup so tiles never desync. Net effect:
+the bed-line, vial mouths, gantry rails, and mechanism columns line
+up across tiles, and all eight mechanisms load/approach/dispense/
+settle at the same global t. The composite-animation.gif is the best
+single artefact to read first now; please use it as the entry point.
 
 The eight SCAD sources, iso renders, cutaway sections, the four
 composite previews (composite-animation.gif, composite-panel.png,
@@ -91,7 +100,7 @@ Please give us a critical engineering review covering:
    peer-reviewed analogue we should be benchmarking against, a
    safety/EHS concern with HV / solenoid / heated alternatives).
 
-Don't wait for us; we will fetch your answer in the next session.
+Don't wait more than ~10 min — we will fetch then.
 """
 
 
