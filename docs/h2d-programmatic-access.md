@@ -337,6 +337,48 @@ the R1 + R2 paths above:
    `try/finally` cleanup, `systemd`-supervised process, hardware
    interlock) stays the same.
 
+> **"Does adding the Pi+tailnet relay break manual Bambu Studio prints
+> from a desktop?"** No. Adding the Pi-side relay is purely *additive* —
+> it does not require moving the H2D off its current network or
+> disabling Bambu Cloud. The relay is just one more LAN client of
+> the printer (FTPS on `:990` + MQTT-over-TLS on `:8883`), running
+> alongside whatever Bambu Studio instances are already there.
+> Concretely, the H2D supports two non-exclusive submission paths
+> simultaneously:
+>
+> - **Cloud-bound Bambu Studio** (the default for an account-linked,
+>   Internet-attached printer like one on a campus IoT VLAN such as
+>   BYU's): desktop Bambu Studio submits via `mode A` through Bambu's
+>   servers. Continues to work unchanged — the Pi/tailnet relay never
+>   touches Bambu Cloud.
+> - **LAN-direct Bambu Studio** (`Send to printer` over LAN when the
+>   desktop is on the same subnet as the H2D, with Developer Mode +
+>   Access Code): keeps working as long as the desktop and the H2D
+>   are on the same L2/subnet. The relay uses the *same* `(IP,
+>   ACCESS_CODE, SERIAL)` triple over `mode B` from the Pi — no
+>   exclusive lock, no MQTT session conflict in practice (the broker
+>   on the printer accepts multiple subscribers; only one print job
+>   can be `RUNNING` at a time, which is enforced by `gcode_state`,
+>   not by who's connected).
+>
+> Two practical caveats specific to a BYU-IoT-style network:
+>
+> 1. **Client isolation.** Many campus IoT VLANs block client-to-client
+>    traffic, so a laptop on the campus Wi-Fi often *cannot* reach the
+>    H2D directly even if both are "online" — Bambu Studio falls back
+>    to Cloud silently. The Pi solves this for programmatic use because
+>    it sits on the same VLAN as the printer (typically wired) and the
+>    tailnet bypasses client isolation for *its* traffic only. Manual
+>    Bambu Studio LAN sends from a laptop on the same VLAN may still
+>    fail; cloud sends still work.
+> 2. **If you later flip the printer to LAN Only Mode** to harden the
+>    setup (Step 1), *that* is what disables Bambu Cloud / desktop
+>    Bambu Studio's cloud submit — not the existence of the Pi relay.
+>    You can stay in mixed mode (Cloud + LAN both enabled) indefinitely
+>    and still use the Pi+tailnet relay; LAN Only is a separate,
+>    optional hardening step that trades manual-cloud convenience for
+>    a smaller attack surface.
+
 #### `/print_stl` on the Pi: STL + args → safety-checked slice → start
 
 Concretely, replace `/print` from the Step 5 sketch with a route that
