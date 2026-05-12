@@ -10,19 +10,24 @@ The first physical-prototype design — a single-channel powder-doser
 module that gets replicated `N` times around a shared collection cup —
 lives in
 [`design/cad/single-channel-module/`](design/cad/single-channel-module/).
-It is the "Idea B" archetype from the architecture brainstorm
-(`design/brainstorming.md` §2.2), packaging the
-[`cad/auger/`](cad/auger/) Archimedes auger together with the
-NEMA 11 / DRV8825 / JF-0530B / DRV8871 / ERM-coin / DRV2605L actuator
-stack identified in
-[`hardware/vibration-motor-and-solenoid.md`](hardware/vibration-motor-and-solenoid.md)
-on a printable 80 × 80 × 342 mm frame. The folder ships printable STLs,
+It is the "Idea B" archetype from the architecture brainstorm (the
+`design/brainstorming.md` §2.2 introduced in
+[PR #31](https://github.com/vertical-cloud-lab/powder-doser/pull/31)),
+packaging the Archimedes auger from
+[PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)
+together with the NEMA 11 / DRV8825 / JF-0530B / DRV8871 / ERM-coin /
+DRV2605L actuator stack identified in
+[PR #25](https://github.com/vertical-cloud-lab/powder-doser/pull/25)
+on a printable spine + cradle frame. The folder ships printable STLs,
 a full-assembly STEP, and a project plan / iteration roadmap for the
 `AI design → printing → testing → feedback` loop.
 
 A separate visualization of the §2.2 fan-in geometry (12 channels around
-a shared cup) lives in
-[`design/cad/inward-collection-cup/`](design/cad/inward-collection-cup/).
+a shared cup) lives in `design/cad/inward-collection-cup/` once
+[PR #31](https://github.com/vertical-cloud-lab/powder-doser/pull/31)
+merges. The cross-PR references above are intentional: PR #33 was
+opened as a **design-only** sibling of #16 / #25 / #31 and depends on
+none of those folders being on the default branch yet.
 
 ## Paper
 

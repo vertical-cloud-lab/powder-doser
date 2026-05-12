@@ -1,7 +1,9 @@
 # Single-channel powder-doser module — "Idea B" archetype (v2)
 
 This folder is the design pass for the powder doser. It implements
-"Idea B / §2.2" of [`design/brainstorming.md`](../../brainstorming.md):
+"Idea B / §2.2" of the brainstorming doc that ships in
+[PR #31](https://github.com/vertical-cloud-lab/powder-doser/pull/31)
+(`design/brainstorming.md` once that PR merges):
 a self-contained single-channel module — one auger + one stepper +
 one solenoid + one vibration motor + that channel's electronics — that
 gets **replicated N times** around a shared collection cup to build the
@@ -136,7 +138,7 @@ Every dimension below is duplicated as a constant in **both**
 
 | Part | Envelope | Source |
 |---|---|---|
-| PR-#16 v4 auger rotor (printed by user) | Ø25 × 250 mm rotor + Ø8 × 6 mm M3 boss on top cap, 4× sectoral loading slots in top cap | [`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad) |
+| PR-#16 v4 auger rotor (printed by user) | Ø25 × 250 mm rotor + Ø8 × 6 mm M3 boss on top cap, 4× sectoral loading slots in top cap | `cad/auger/archimedes-auger.scad` (lands with [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)) |
 | 6805ZZ deep-groove ball bearing | Ø25 ID × Ø37 OD × 7 mm | McMaster-Carr 5972K368 / generic |
 | NEMA 11 bipolar stepper | 28 × 28 × 45 mm body, 5 mm shaft | PR-#25 item 10 |
 | GT2 pulley × 2 (16-tooth, 5 mm bore + adapter / 5 mm bore) | Ø10 × 16 mm body + Ø16 flanges | Amazon / Pololu generic |
@@ -150,7 +152,7 @@ Total module envelope: **~140 × 90 × 410 mm** (with cartridge in place).
 
 | Qty | Item | Approx. \$ | Source |
 |---|---|---|---|
-| 1 | PR-#16 v4 auger rotor (printed) | ~$1 (PETG) | `cad/auger/archimedes-auger.scad` |
+| 1 | PR-#16 v4 auger rotor (printed) | ~$1 (PETG) | `cad/auger/archimedes-auger.scad` ([PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)) |
 | 1 | NEMA 11 stepper, 5 mm shaft | $14–18 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) |
 | 1 | 6805ZZ deep-groove ball bearing | $3–5 | McMaster 5972K368 / Amazon |
 | 2 | GT2 16T pulley, 5 mm bore | $4 each | Amazon |
@@ -217,8 +219,8 @@ PETG (preferred) or PLA, 0.4 mm nozzle, 0.2 mm layers, 4 perimeters,
 | `cradle_cheek_L.stl` / `_R.stl` | Cheek face on the bed | none | Print one of each (mirrored). |
 | `cradle_base.stl` | Flat | none | Brim recommended. |
 
-The PR-#16 v4 auger has its own print recipe in
-[`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad)
+The PR-#16 v4 auger has its own print recipe in `cad/auger/archimedes-auger.scad`
+(landing with [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16))
 — follow that file's header notes.
 
 ## Assembly order
@@ -267,7 +269,8 @@ The PR-#16 v4 auger has its own print recipe in
       heat-set inserts, integral collar features, rotor protrusion.
 - [ ] **v2.1 — print + bench-test loop** *(needs human in the loop)*.
       Print one module, populate it with the actuator stack, drive it
-      from the existing `hardware/kicad/` schematic, and dispense
+      from the `hardware/kicad/` schematic ([PR #36](https://github.com/vertical-cloud-lab/powder-doser/pull/36)),
+      and dispense
       xanthan gum + one metal powder (e.g. 316L) into a tared cup.
       **Failure modes to look for:** rotor wobble (only one bearing,
       cantilevered ~250 mm — may need an upper support bearing on
@@ -317,14 +320,18 @@ into `cad_model.py` instead of the box envelopes:
 - **GT2 16T pulley STEP** with the real tooth profile (mine is a
   smooth cylinder approximation).
 - **6805ZZ bearing STEP** (mine is a flat annulus).
-- **Cartridge** — clarification from the team on whether
+- ~~**Cartridge** — clarification from the team on whether
   ["cartridge" in #3228854193](https://github.com/vertical-cloud-lab/powder-doser/pull/35#discussion_r3228854193)
   meant the powder hopper I drew, or the swappable-channel carrier
-  from Idea C. v2 implements a removable powder hopper; if Idea-C
-  cartridges are intended for the next round, that's a much larger
-  redesign — see the open question for @williamulbz in
-  [PR #16 comment 4427453867](https://github.com/vertical-cloud-lab/powder-doser/pull/16#issuecomment-4427453867)
-  and [@sgbaird's clarifying ping](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4433748553).
+  from Idea C.~~ **Resolved** in
+  [@williamulbz's reply](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4433776251):
+  "by cartridge i meant whatever device will hold powder and connect
+  to the inlet of the auger and be easily reloadable" — which is
+  exactly what the v2 `cartridge.stl` implements (Ø60 reservoir →
+  60° taper → Ø36 collar that slip-fits over the rotor's PR-#16-v4
+  top loading slots; lifts off in one piece for refills). No further
+  redesign needed for v2; the swappable-cartridge variant from Idea C
+  remains deferred per the roadmap.
 
 ## Known limitations / next steps
 
@@ -334,7 +341,7 @@ into `cad_model.py` instead of the box envelopes:
   in v2.2 (add an upper bearing in a printed clamp).
 - **The auger is shown as a smooth Ø25 envelope**, not the actual
   v4 helical geometry. The real geometry lives in
-  [`cad/auger/archimedes-auger.scad`](../../../cad/auger/archimedes-auger.scad)
+  `cad/auger/archimedes-auger.scad` ([PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16))
   and is a separate solid; importing it into CadQuery would inflate
   the model's load time without changing any fit-check that matters
   at this stage. The two interfaces that *do* matter — the M3 spindle
