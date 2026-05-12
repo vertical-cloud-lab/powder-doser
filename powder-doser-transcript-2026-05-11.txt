@@ -59,19 +59,18 @@
 - The team agreed to continue work on the single-module auger/solenoid/vibration design, while also spending some effort exploring the lower-cost modular cartridge path in parallel. [15:34] [19:58] [33:26]
 - Sterling said he would post edited notes and likely add autotranscribed notes to the pull request for reference. [48:19] [48:37]
 
-  
 
-  
-    ## Highlights
 
-    > 01:26 Sam Charles: Some of the next approaches we were talking about is picking our favorite designs and making each of those a new issue — each design that it gave was like, these are the good things and these are the problems.
+## Highlights
+
+> 01:26 Sam Charles: Some of the next approaches we were talking about is picking our favorite designs and making each of those a new issue — each design that it gave was like, these are the good things and these are the problems.
 > 15:34 Sterling Baird: From there, I would say focus on making an individual module — like one channel.
 > 16:43 Sterling Baird: I would focus on taking that auger design from the other issue and trying to modify it.
 > 40:23 Sam Charles: I was just gonna say, I'm still new to using GitHub.
 > 40:56 Sterling Baird: The main thing I would say is don't merge pull requests without spot-checking with me first — specifically, don't merge pull requests that have a Copilot session attached to them. If you merge it, you can no longer trigger new Copilot sessions for it, so then you have to do a new issue and a new PR. Sometimes it makes sense to do it that way, but...
 > 41:48 Sterling Baird: That is a little more work to correct, but just making new issues and assigning them to Copilot — that's no problem. It's much easier to close an issue and PR than to handle the merged-PR case.
 
-  ## Transcript
+## Transcript
 
   00:54 Sam Charles: We looked over your comments — you want to talk about next steps, where to go from here?
 01:07 Sam Charles: We started off with the brainstorming, asking Copilot what some different approaches we could take. Which really worked pretty well and gave us a lot of good directions and bad directions.
