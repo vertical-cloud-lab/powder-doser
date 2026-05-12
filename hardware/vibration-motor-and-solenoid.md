@@ -77,6 +77,72 @@ needed. You solder the two breakouts and the Pi's 2×20 header onto
 the Perma-Proto Bonnet, screw the motor and solenoid leads into the
 DRV2605L and DRV8871 terminals respectively, and you're done.
 
+## What to order first (grouped by vendor)
+
+The BOM above is sourced from only **four vendors** for v1.0 of one
+single-channel module (PR #35). Order quantities below are
+**per channel** — multiply by `N` once the ring-frame replicates the
+module (e.g., the §2.2 N=12 layout in `design/brainstorming.md`),
+except for the Pi Zero 2 W and the wall-wart, which are **shared
+across all channels**. Prices and shipping are USD and approximate as
+of 2026-Q2; reconfirm at checkout.
+
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$33 + ship per channel
+
+| BOM # | Part | Qty / channel | Product page |
+|---|---|---|---|
+| 1 | DRV2605L Haptic Motor Controller breakout | 1 | [#2305](https://www.adafruit.com/product/2305) |
+| 2 | Vibrating Mini Motor Disc (ERM coin) | 1 | [#1201](https://www.adafruit.com/product/1201) |
+| 4 | JF-0530B 5 V mini push–pull solenoid | 1 | [#412](https://www.adafruit.com/product/412) |
+| 5 | DRV8871 DC Motor Driver Breakout | 1 | [#3190](https://www.adafruit.com/product/3190) |
+| 6 | Perma-Proto Bonnet Mini Kit for Pi | 1 | [#2310](https://www.adafruit.com/product/2310) |
+| 13 | 12 V / 5 A barrel-jack wall-wart | **1 per system** (not per channel) | [#352](https://www.adafruit.com/product/352) |
+| — | Raspberry Pi Zero 2 W (if not already on hand) | **1 per system** | [#5291](https://www.adafruit.com/product/5291) (~$15) |
+| — | microSD card + Pi power supply (if not already on hand) | 1 per system | any |
+
+### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$23 + ship per channel
+
+| BOM # | Part | Qty / channel | Product page |
+|---|---|---|---|
+| 11 | DRV8825 stepper-driver carrier | 1 | [#2133](https://www.pololu.com/product/2133) |
+| 15 | D24V22F5 5 V / 2.5 A buck regulator | 1 | [#2858](https://www.pololu.com/product/2858) |
+
+### 3. SparkFun ([sparkfun.com](https://www.sparkfun.com/)) or StepperOnline — ~$15 per channel
+
+| BOM # | Part | Qty / channel | Source |
+|---|---|---|---|
+| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, ~0.67 A/phase | 1 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) **or** [StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-2-phase-1-8deg-9-5ncm-13-4oz-in-0-67a-5-3v-28x28x32mm-4-wires-11hs18-0674s) |
+
+The StepperOnline part is ~$3 cheaper but has a longer lead time;
+either is electrically and mechanically equivalent for our use.
+
+### 4. Amazon / McMaster (commodity hardware) — ~$5 per channel
+
+| BOM # | Part | Qty / channel | Notes |
+|---|---|---|---|
+| 12 | 5 mm ↔ 5 mm flexible shaft coupler | 1 | Match the auger-shaft diameter from PR #16; if the auger uses an M3 or non-5 mm shaft, order a 5 mm ↔ matching-bore coupler instead. |
+| 14 | 100 µF / 25 V electrolytic cap | 1 | Required by Pololu across DRV8825 `VMOT`/`GND`. |
+| 9 | 100 µF / 10 V cap, 0.1" pin headers, jumper wires | as needed | Bench-stock; you almost certainly have these. |
+
+### Items to **skip** for the single-supply variant
+
+Items **7** (5 V PSU) and **8** ([Adafruit #373](https://www.adafruit.com/product/373) barrel-jack breakout) are only used in the dual-supply fallback. Don't order them unless you specifically need the two-PSU layout.
+
+### PSC / on-hand check before ordering
+
+Per the PR thread, BYU's PSC stocks some of these (and similar Tic-500 step/dir carriers). Worth a quick check against [psc.byu.edu/available%20for%20purchase](https://psc.byu.edu/available%20for%20purchase) for items 11, 13, and the Pi Zero 2 W before placing the orders above — anything already in stock saves shipping. The actuator-side parts (items 1, 2, 4, 5, 10) are unlikely to be on the PSC list and should come from Adafruit / SparkFun directly.
+
+### Suggested first-buy: one channel (v1.0 of PR #35)
+
+For the v1.0 single-channel prototype, **place all four carts above
+once with `qty = 1` per item** — total ≈ **$75 + shipping** for the
+electronics, plus the Pi Zero 2 W and microSD if you don't already
+have them. That's everything needed to assemble the actuator stack
+shown in the schematic and exercise it from the Python stub at the
+bottom of this doc. Multiply Adafruit/Pololu/SparkFun line items
+(but **not** the wall-wart or the Pi) by `N` once you're ready to
+fan out to the N-channel ring.
+
 ## Power supply
 
 The actuators want two distinct rails:
