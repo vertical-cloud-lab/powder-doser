@@ -208,6 +208,10 @@ __marimo__/
 
 # Meta-CAD tools eval — generated geometry
 cad/meta-tools/build/
+# Big preview meshes from Zoo ML-ephant (regenerable via zoo_text_to_cad_probe.py;
+# we keep the STEP + KCL source, not the multi-MB GLTF render).
+cad/meta-tools/zoo-output/*.gltf
+cad/meta-tools/zoo-output/*.glb
 
 # Meta-CAD tools eval — keep the audit-trail logs even though *.log is ignored
 !cad/meta-tools/logs/

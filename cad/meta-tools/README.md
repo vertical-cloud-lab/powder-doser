@@ -343,17 +343,33 @@ For #16 the prompt sent was the verbatim spec from the issue
 ("Archimedes auger / helical screw dispenser, 20 mm OD, 100 mm tall,
 M3 mounting hole, 2.5 mm exit hole, ~10 mm pitch single-start helix,
 ~6 mm central shaft"). Run output is captured in
-[`logs/zoo-text-to-cad.log`](logs/zoo-text-to-cad.log).
+[`logs/zoo-text-to-cad.log`](logs/zoo-text-to-cad.log). The job
+completed in ~16 min and returned three usable artefacts (saved
+under [`zoo-output/`](zoo-output/), `*.gltf` is gitignored as it's a
+14 MB regenerable web-preview render):
+
+* `auger_mlephant.step` — 3.5 MB BREP. Re-importing it in CadQuery
+  reports a bbox of **20.00 × 20.00 × 100.00 mm** and 2 solids,
+  i.e. ML-ephant honoured every numeric constraint in the prompt.
+* `auger_mlephant.kcl` — 4.3 KB of parametric KCL source with named
+  variables (`outerDiameter = 20mm`, `pitch = 10mm`, `shaftDiameter
+  = 6mm`, `m3TapDiameter = 2.5mm`, …). This is editable in the
+  zoo.dev web modeller and can be re-evaluated to other geometries.
+* `auger_mlephant.job.json` — full job metadata (model version,
+  prompt, conversation id) for reproducibility.
 
 Practical fit for this repo:
 
 * **ML-ephant** is the closest thing to a true *generative* CAD
-  endpoint we've found that runs headless on a free-tier token — but
-  it's stochastic, not parametric, so it belongs in a "concept
-  exploration / first-draft geometry" lane upstream of CadQuery, not
-  as a replacement for it. The right pattern is: ML-ephant produces
-  a STEP candidate → CadQuery re-imports / measures it → DFM checks
-  → if it survives, push back to Onshape via the upload probe above.
+  endpoint we've found that runs headless on a free-tier token.
+  Crucially it returns both a STEP *and* the parametric KCL source,
+  so it's not purely stochastic — the output is re-editable. It
+  still belongs in a "concept exploration / first-draft geometry"
+  lane upstream of CadQuery rather than as a replacement for it
+  (the helix tolerance choices are the model's, not ours), but the
+  pattern works: ML-ephant produces a STEP candidate → CadQuery
+  re-imports / measures it → DFM checks → if it survives, push back
+  to Onshape via the upload probe above.
 * **KittyCAD file conversion** is a useful fallback for the few
   format pairs CadQuery / build123d don't handle natively (e.g.
   `step → gltf` for web preview), but it's not a critical-path

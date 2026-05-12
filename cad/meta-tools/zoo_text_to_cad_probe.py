@@ -135,7 +135,8 @@ def save_outputs(job: dict, fmt: str) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for name, b64 in outputs.items():
         try:
-            data = base64.b64decode(b64)
+            # Zoo's API omits base64 padding; restore it before decoding.
+            data = base64.b64decode(b64 + "=" * (-len(b64) % 4))
         except Exception as e:
             print(f"  - {name}: not base64 ({e})")
             continue
@@ -144,6 +145,15 @@ def save_outputs(job: dict, fmt: str) -> None:
         dst = OUT_DIR / safe
         dst.write_bytes(data)
         print(f"  - wrote {dst.relative_to(OUT_DIR.parent)}  ({len(data)} bytes)")
+    # KCL "code" field is the parametric source; archive it too.
+    kcl = job.get("code")
+    if kcl:
+        (OUT_DIR / "auger_mlephant.kcl").write_text(kcl)
+        print(f"  - wrote zoo-output/auger_mlephant.kcl  ({len(kcl)} chars)")
+    meta = {k: v for k, v in job.items() if k not in ("outputs", "code")}
+    (OUT_DIR / "auger_mlephant.job.json").write_text(
+        json.dumps(meta, indent=2, default=str)
+    )
 
 
 def main() -> int:
