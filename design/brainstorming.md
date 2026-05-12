@@ -190,6 +190,11 @@ drives that cartridge's flight via a flexible coupler or splined shaft.
     torque, self-align after every index move, and not generate or
     accumulate powder on the engagement faces. A magnetic / Oldham /
     spring-loaded dog clutch are all candidates and all need prototyping.
+    Will flagged this on the PR thread as the single biggest area of
+    interest for 2.3 — *if* a simple, consistent coupling can be
+    designed, 2.3 (and the 1 × N variant of 2.4 that shares the same
+    clutch) becomes a clear v1 candidate; if it can't, the architecture
+    falls apart, so this is the highest-priority de-risking task in §4.
   - Cartridges are now a custom mechanical assembly that has to be
     produced in quantity (one per loaded powder, plus spares for
     off-line refills). Will pointed out on an earlier draft that since
@@ -405,6 +410,78 @@ top-level choice, but they constrain it.
   where N is the §1 "loaded subset" of ~8–12 rather than 30).
 
 ## 4. Recommendation and next steps
+
+### 4.1 Synthesis of PR-thread feedback (Will + Sterling)
+
+The two main review threads on this draft — Will's per-section
+[review][willreview] and Sterling's long architectural [comment][sterlingcomment]
+— pull in compatible directions, with a couple of useful tensions. This
+subsection pulls them together explicitly so the ranking below is
+traceable to the discussion rather than to any single line edit.
+
+[willreview]: https://github.com/vertical-cloud-lab/powder-doser/pull/31#pullrequestreview-4265422312
+[sterlingcomment]: https://github.com/vertical-cloud-lab/powder-doser/pull/31#issuecomment-4423553706
+
+**Where they agree (and how that landed in the doc):**
+
+- *Don't size for 30 powders simultaneously.* Will: ~8–10 metals is the
+  realistic per-alloy limit, and the per-campaign refill is also the
+  swap point for which subset is loaded. Sterling: even before full
+  autonomy, back-to-back blends drawn from a larger pool (e.g.
+  30-choose-6) are valuable, so the architecture must keep a path to
+  growing the addressable element library — not just be capped at the
+  loaded subset. → §1 was rewritten to ~8–12 *active* reservoirs with a
+  required path to a larger off-line library (e.g. the swappable
+  cartridge rack of §2.3 / 1 × N 2.4).
+- *Cartridges over hoppers, where reasonable.* Will explicitly likes the
+  shared-head + cartridge architectures (§2.3 and the 1 × N variant of
+  §2.4); Sterling's preference for cartridge-style reload to support
+  larger element libraries points the same way. → §2.3 promoted; 2.4
+  pitfall split by sub-variant; 1 × N 2.4 promoted to a serious
+  candidate alongside 2.3.
+- *Configuration between campaigns must be quick and simple.* Both
+  reviewers said this in different words. → reflected in the §3
+  reservoir-management bullet and the §4 follow-up issue list, and in
+  why 2.3 / 1 × N 2.4 are carried forward despite the clutch unknown.
+- *Out-of-scope mechanisms.* Sterling argued air-displacement and
+  scraping out, and pneumatic out for safety/targeting; Will's review
+  effectively concurred by treating §2.5 (vibratory-only) as
+  marginal for varied L-PBF feedstocks. → §1a out-of-scope flags;
+  §2.6 reclassified out of scope; §2.5 deprioritized in §4.
+
+**Where they apply pressure in different places:**
+
+- Sterling pushes the *dispense site* to be heavy: every powder gets an
+  auger + tap + vibration stack, and ideally an adjustable auger
+  angle (§1a). That is mechanically cheapest in §2.2 (each channel
+  already owns its own actuators), and most expensive in §2.3 / 2.4
+  (where the tap and vibration motor must either travel with the
+  shared head or live on each cartridge — adding mass, wiring, or
+  per-cartridge BOM). Will's enthusiasm for §2.3 / 1 × N 2.4 implicitly
+  bets that a clean shaft-engagement clutch makes the per-cartridge
+  cost worth it; if the clutch is hard, the bet flips back toward
+  §2.2.
+- Sterling pushes the *weighing side* to be heavy: 100–1000 g per build
+  with single-mg trace additions, possibly two stations (§3). That
+  pulls mildly in favor of architectures whose collection point can be
+  moved or replicated (small-station + large-station), which §2.2's
+  moving-cup variant and §2.3's cartridge carousel both accommodate
+  more naturally than a strictly stationary cup.
+- Sterling adds the *electrical-grounding* requirement on the
+  collection vessel; Will's review didn't touch this. The constraint
+  (flexible, low-stiffness ground link) is architecture-agnostic and
+  is captured in §3.
+
+**Net implication for the ranking:** the choice between §2.2 and
+§2.3 / 1 × N 2.4 is less about footprint and more about a single
+high-leverage prototype — the shaft-engagement clutch. Until that is
+de-risked, §2.2 stays the v1 reference (Sterling-favored mechanism
+density, easy to build); as soon as the clutch is demonstrated, §2.3
+/ 1 × N 2.4 (Will-favored cartridge style, larger addressable element
+library) becomes equally attractive. The §4 follow-up issues are
+written so both prototypes can proceed in parallel.
+
+### 4.2 Ranking and follow-ups
 
 Folding in the PR-thread feedback shifts the recommendation. With the §1
 clarification that only ~8–12 powders need to be loaded at a time
