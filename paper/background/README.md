@@ -52,28 +52,28 @@ preserved when individual passages are pulled into the LaTeX manuscript.
    `04-generative-cad-academic-literature.md` are particularly relevant
    for motivating the proposal's research questions.
 
+## Raw query artifacts (provenance)
+
+The full raw outputs from Edison — including the underlying contexts,
+references, agent state, cost, and token counts — are committed under
+[`edison_artifacts/`](edison_artifacts/) for reproducibility. Each query has
+three files (`<key>.task.json`, `<key>.answer.md`, `<key>.references.md`); see
+[`edison_artifacts/README.md`](edison_artifacts/README.md) for layout.
+
 ## Reproducing or refreshing the notes
 
-The four queries can be re-run with the Edison Python client. With
-`edison_client` installed (`pip install edison_client`) and an
-`EDISON_API_KEY` exported to the environment:
+The four queries can be re-run end-to-end with
+[`edison_run.py`](edison_run.py), which embeds the verbatim prompts and writes
+the artifacts described above:
 
-```python
-from edison_client import EdisonClient, JobNames
-
-client = EdisonClient(api_key=...)  # do not log/echo the key
-queries = [
-    ("powder_commercial", "Provide a comprehensive landscape review of commercial powder dispensing ..."),
-    ("powder_academic",   "Find recent (2018-2025) peer-reviewed academic publications on automated powder dispensing ..."),
-    ("gencad_landscape",  "Provide a state-of-the-art landscape of generative CAD and generative design ..."),
-    ("gencad_academic",   "Find recent (2021-2025) peer-reviewed and arXiv academic publications on generative CAD ..."),
-]
-results = client.run_tasks_until_done(
-    [{"name": JobNames.LITERATURE_HIGH, "query": q, "tags": ["powder-doser-grant", k]} for k, q in queries],
-    timeout=3000,
-)
+```sh
+pip install edison_client
+export EDISON_API_KEY=...
+python paper/background/edison_run.py
 ```
 
-The full prompts used to produce these notes are quoted at the top of each
-markdown file (the `Question:` line), so they can be edited and re-run
-verbatim.
+A high-effort literature query takes roughly 20–30 minutes per task; all four
+are dispatched in parallel via `EdisonClient.run_tasks_until_done`.
+
+The prompts are also quoted verbatim at the top of each `0*-*.md` file (the
+`Question:` line), so they can be edited and re-run independently.
