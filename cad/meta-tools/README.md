@@ -303,9 +303,21 @@ human ever clicking the import dialog:
 
 Output of the live run is appended to
 [`logs/onshape-auth-probe.log`](logs/onshape-auth-probe.log); the
-`elements before upload: 3 ... elements after upload: 5` line is the
+`elements before upload: N ... elements after upload: N+2` line is the
 proof that two new elements (blob + Part Studio) actually persisted in
-the workspace.
+the workspace. The probe is idempotent in the sense that re-running it
+keeps adding `auger_barrel_cadquery (k)` Part Studios to the same
+document — confirmed by a second run requested in the PR thread, which
+took the workspace from 7 → 9 elements (a fresh blob + a fresh Part
+Studio with the exact same 20 × 20 × 100 mm BREP), so the new geometry
+is browsable in the Onshape UI immediately.
+
+The CadQuery STEP that gets pushed up looks like this — a deliberately
+minimal envelope (cylinder + two through-holes) that proves the
+upload-and-translate round-trip without committing to any particular
+auger flighting geometry yet:
+
+![CadQuery auger barrel STEP, isometric](zoo-output/renders/auger_barrel_cadquery_iso.png)
 
 Concretely, the unlocked verbs are now:
 
@@ -351,10 +363,26 @@ under [`zoo-output/`](zoo-output/), `*.gltf` is gitignored as it's a
 * `auger_mlephant.step` — 3.5 MB BREP. Re-importing it in CadQuery
   reports a bbox of **20.00 × 20.00 × 100.00 mm** and 2 solids,
   i.e. ML-ephant honoured every numeric constraint in the prompt.
+  Rendered headlessly with `render_step.py` (CadQuery → VTK offscreen,
+  the same "Judge"-style render path described in #29):
+
+  ![ML-ephant auger STEP, isometric](zoo-output/renders/auger_mlephant_iso.png)
+
+  Note the geometry is "auger flighting on a separate ~6 mm shaft," not
+  "auger + outer barrel as a single part" — the prompt sent didn't
+  specify the latter, so this is on us to refine the spec next time
+  rather than a model failure. Cost note: this single 16-min job spent
+  ~$6.89 of the $10 free Zoo credit, so re-running ML-ephant for
+  iteration is not free; CadQuery remains the right primary path and
+  ML-ephant is best reserved for genuinely new concept seeding.
 * `auger_mlephant.kcl` — 4.3 KB of parametric KCL source with named
   variables (`outerDiameter = 20mm`, `pitch = 10mm`, `shaftDiameter
   = 6mm`, `m3TapDiameter = 2.5mm`, …). This is editable in the
   zoo.dev web modeller and can be re-evaluated to other geometries.
+  ([What KCL is](https://zoo.dev/research/introducing-kcl) — Zoo's
+  KittyCAD Language, a typed declarative DSL designed specifically for
+  LLM-emitted CAD; the relevant property here is that ML-ephant output
+  is editable source, not just a sealed mesh.)
 * `auger_mlephant.job.json` — full job metadata (model version,
   prompt, conversation id) for reproducibility.
 
