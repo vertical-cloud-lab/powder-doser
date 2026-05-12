@@ -10,3 +10,46 @@ HTTP 204
 HTTP 401
 {"message":"Unauthenticated API request", "status":401}
 items returned: 0
+=== Re-run: 2026-05-12T16:59:22Z, all three realms ===
+
+--- BASE=https://cad.onshape.com ---
+BASE = https://cad.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+
+--- BASE=https://partner.dev.onshape.com ---
+BASE = https://partner.dev.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+
+--- BASE=https://staging.dev.onshape.com ---
+BASE = https://staging.dev.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
