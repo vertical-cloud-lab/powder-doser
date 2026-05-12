@@ -48,6 +48,7 @@ printable part, and four orthographic SVG line renders into ./renders/.
 """
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 import cadquery as cq
