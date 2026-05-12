@@ -28,8 +28,8 @@ the brainstorming PR
 |---|---|
 | ![Isometric](renders/single_channel_module_iso.png) | ![Dimensioned 3-panel sketch](renders/single_channel_module_sketch.png) |
 | Isometric line render of the assembly (`cad_model.py` → `.step` → SVG → PNG). | 2D dimensioned schematic — side, front, and powder-flow cross-section (`sketch_2d.py`). |
-| ![Powder flow](renders/single_channel_module_powder_flow.png) | |
-| Standalone larger view of the powder-flow path (cartridge → loading slots → helix → exit nozzle → cup). | |
+| ![Powder flow](renders/single_channel_module_powder_flow.png) | ![Tilt sweep](renders/single_channel_module_tilt_sweep.png) |
+| Standalone larger view of the powder-flow path. Now uses **numbered nodes (1–5)** with a single **continuous chained arrow** linking reservoir → loading slots → helix → nozzle → cup, plus a 10 mm scale bar (addresses [PR-#35 comment 4276136447](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447)). | Side elevation of the module rotated to 0°, 45°, 75°, and 90° about the cradle's M5 trunnion pivot, each over a generic collection cup for context. 90° is shown dashed because the v2 cradle's locked range is 0–75°; reaching 90° in v3 needs the second motor called out in the roadmap. |
 
 Additional orthographic SVG/PNG views (`*_front`, `*_side`, `*_top`) are
 in [`renders/`](renders/).
@@ -284,9 +284,32 @@ The PR-#16 v4 auger has its own print recipe in `cad/auger/archimedes-auger.scad
       clamp at the top of the spine that captures the rotor's M3 boss
       area, and (b) a felt or rubber dust wiper on the +Z bearing seat
       face.
+- [ ] **v2.3 — mechanical-coupling pass.** Address the v2 mechanical
+      gaps called out by [@swcharles in PR-#35 comment 4276136447](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447):
+      audit every joint so that nothing reads as an "exploded view"
+      (currently the NEMA 11 envelope, the GT2 belt loop, and the cradle
+      cheek pivot are positioned correctly in code but rendered as
+      detached bodies in the assembly STEP and would benefit from
+      explicit `cq.Assembly` constraints + visible fasteners in the
+      isometric render); reroute or shrink anything that obstructs
+      gravity flow under the cartridge (the GT2 belt currently passes
+      directly under the cartridge collar — move the pulley pair up
+      onto the rotor's bearing-shoulder so the belt clears the powder
+      column, and shift the ERM coin off the rotor's vertical
+      centreline so it doesn't sit "in the middle of the collar"); trim
+      the spine and cradle-base outboard plate area that is not load-
+      bearing; up-scale all printed parts at least one wall-thickness
+      step now that v2.1 will tell us how thin we can really go on a
+      Ø25 rotor.
 - [ ] **v3.0 — N=2 fan-in test rig.** Two modules + a shared bench
       load-cell on a piece of MDF. Validates that the §2.2 cup geometry
       works in the small before committing to the 12-channel ring.
+      Also pulls in the v2.3 changes plus an **automated-tilt actuator**
+      (a second NEMA 11 driving the cradle's M5 trunnion through a
+      worm-gear or harmonic drive) so the dispense angle can be set
+      programmatically per powder — see PR-#35 comment 4276136447 — and
+      ships a `*_tilt_sweep.png` style render of the auger at 0/45/90°
+      analogous to `renders/single_channel_module_tilt_sweep.png`.
 - [ ] **v3.1 — ring frame for N=12.** A printed (or laser-cut acrylic)
       ring with 12 cradle-base pads on the §2.2 150 mm pitch circle,
       shared cup + load cell underneath. *Sibling folder:*
@@ -294,10 +317,17 @@ The PR-#16 v4 auger has its own print recipe in `cad/auger/archimedes-auger.scad
 - [ ] **v4.0 — inert-atmosphere enclosure.** Wrap the N-module ring in
       a sealed box with a single dispense aperture; deferred until v3.x
       has logged a dispense campaign without cross-contamination.
-- [ ] **(Idea C, deferred)** Swappable-cartridge variant. Once the
-      module is bench-validated, evaluate replacing the printed
-      `cartridge` and the rotor with a quick-release cartridge that
-      lets one motor service many powders.
+- [ ] **(Idea C, deferred — note: confirmed infeasible for cross-powder
+      reuse.)** [@sgbaird in PR-#35 comment 4434514153](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4434514153)
+      called out that *"once powder has contacted an auger, that auger
+      will be considered contaminated and won't be allowed any other
+      powder types."* That kills the original Idea-C framing of *"one
+      shared auger, swap the cartridge to change powder."* Any
+      swappable-cartridge variant must therefore swap the
+      **cartridge + rotor as one unit** (the rotor is what becomes
+      contaminated, not just the hopper) — i.e. a cassette that
+      includes its own auger, with a quick-release coupling on the
+      pulley side instead of the powder side. Re-evaluate after v2.1.
 
 ## Parts I'd like added to the repo
 
@@ -356,3 +386,27 @@ into `cad_model.py` instead of the box envelopes:
 - **Belt tensioning** is via slotted bracket-foot holes — quick to
   prototype, not as elegant as a tensioner pulley. Tensioner pulley
   is a v2.2 candidate if belt skip becomes a problem.
+- **Cartridge ↔ auger throat is the most under-specified interface
+  in v2** and is the most likely v2.1 failure mode. The
+  cartridge's Ø36 collar funnels into the rotor's 4× sectoral top
+  loading slots through a ~6 mm necked region (`CART_NECK_H`); for
+  cohesive powders this throat is exactly where a stable bridge
+  forms. [@sgbaird called this out explicitly in PR-#35 comment 4434514153](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4434514153)
+  ("the interface between a cartridge/hopper and the auger… could be
+  a pretty big hang-up/bottleneck in terms of powder flow"; see also
+  [PR-#16 comment 4427176284](https://github.com/vertical-cloud-lab/powder-doser/pull/16#issuecomment-4427176284)).
+  The ERM coin on the collar OD is the v2 mitigation — it shakes the
+  *rotor* to break bridges *inside* the helix, but does very little
+  for a bridge that forms one node above, in the cartridge throat.
+  v2.1 needs to characterise this; a v2.2 candidate fix is bonding a
+  second ERM (or the existing one, repositioned) onto the cartridge
+  body itself, plus widening `CART_NECK_H` and increasing the funnel
+  half-angle past the powder's measured angle of repose.
+- **Cross-powder contamination forecloses single-auger designs.**
+  Per [@sgbaird in PR-#35 comment 4434514153](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4434514153),
+  once a powder has touched a rotor, that rotor is dedicated to that
+  powder for the lifetime of the rig. The N-channel architecture is
+  therefore strictly **N dedicated rotors / N dedicated cartridges**
+  — there is no shared-auger short-cut. This is captured in the v3.0
+  / Idea-C bullets above and is the core reason the ring-frame ships
+  N modules rather than one motor with N cartridges.

@@ -302,24 +302,53 @@ def draw_flow_panel(ax):
             "shared collection cup\n(load cell — v1.2)",
             fontsize=6.5, ha="center", va="center")
 
-    # Stage callouts
-    label_to(ax, AX_ROTOR,
-             AUGER_TOP_Z + CART_BASE_H + CART_NECK_H + CART_HOPPER_H * 0.5,
-             AX_ROTOR - 100, AUGER_TOP_Z + CART_BASE_H + 30,
-             "(1) reservoir holds bulk powder")
-    label_to(ax, AX_ROTOR, AUGER_TOP_Z,
-             AX_ROTOR - 100, AUGER_TOP_Z - 25,
-             "(2) gravity feeds through\nrotor's top loading slots")
-    label_to(ax, AX_ROTOR + AUGER_OD / 2,
-             ROTOR_BOTTOM_Z + AUGER_LEN / 2,
-             AX_ROTOR - 100, ROTOR_BOTTOM_Z + AUGER_LEN / 2,
-             "(3) helical channel meters\nby step count\n(NEMA 11 + GT2 belt)")
-    label_to(ax, AX_ROTOR, -65,
-             AX_ROTOR - 100, -65,
-             "(4) protruding exit nozzle\ndelivers powder past\nthe frame at any tilt")
+    # ---- Continuous powder-flow path: numbered nodes + chained arrow ----
+    # Addresses @swcharles' ask in PR-#35 comment 4276136447 to "include a
+    # continuous arrow to show where the powder flows" with "nodes to show
+    # the process". Each node is a numbered circle; a single curved-arrow
+    # path links them in flow order so the eye can follow the powder's
+    # journey hopper → slots → helix → nozzle → cup without rereading.
+    nodes = [
+        (1, AX_ROTOR,
+         AUGER_TOP_Z + CART_BASE_H + CART_NECK_H + CART_HOPPER_H * 0.55,
+         "reservoir\n(bulk powder)"),
+        (2, AX_ROTOR, AUGER_TOP_Z + 4,
+         "top loading slots\n(PR-#16 v4 cap)"),
+        (3, AX_ROTOR, ROTOR_BOTTOM_Z + AUGER_LEN / 2,
+         "helical channel\n(NEMA 11 + GT2 belt\nmeters by step count)"),
+        (4, AX_ROTOR, ROTOR_BOTTOM_Z + 5,
+         "exit nozzle\n(protrudes past frame)"),
+        (5, AX_ROTOR, cup_y + 12,
+         "shared collection cup\n(load cell — v1.2)"),
+    ]
+    for n, nx, ny, lbl in nodes:
+        ax.add_patch(mpatches.Circle((nx, ny), 4.5, facecolor="#fff3c4",
+                                     edgecolor="#a07040", lw=1.2, zorder=5))
+        ax.text(nx, ny, str(n), ha="center", va="center",
+                fontsize=8, fontweight="bold", color="#604020", zorder=6)
+        ax.text(nx - 100, ny, lbl, ha="left", va="center", fontsize=6.5)
+        ax.annotate("", xy=(nx - 8, ny), xytext=(nx - 60, ny),
+                    arrowprops=dict(arrowstyle="-", color="0.55", lw=0.5))
+    # Chained continuous arrows between consecutive nodes
+    for (_, x0, y0, _l0), (_, x1, y1, _l1) in zip(nodes, nodes[1:]):
+        ax.annotate("",
+                    xy=(x1 + 4.5, y1 + (5 if y1 > y0 else -5)),
+                    xytext=(x0 + 4.5, y0 - (5 if y1 < y0 else -5)),
+                    arrowprops=dict(arrowstyle="->", color="#a07040",
+                                    lw=1.6, connectionstyle="arc3,rad=0.18"),
+                    zorder=4)
+
+    # ---- Scale bar (10 mm reference) -----------------------------------
+    # Addresses @swcharles' "include a generic cup and scale for context"
+    # ask. Cup is already drawn above; this gives an unambiguous size key.
+    sx0, sy = 60, -155
+    ax.plot([sx0, sx0 + 10], [sy, sy], color="black", lw=2)
+    ax.plot([sx0, sx0], [sy - 2, sy + 2], color="black", lw=2)
+    ax.plot([sx0 + 10, sx0 + 10], [sy - 2, sy + 2], color="black", lw=2)
+    ax.text(sx0 + 5, sy - 6, "10 mm", ha="center", va="top", fontsize=6.5)
 
     ax.set_xlim(-110, 200)
-    ax.set_ylim(-160, 410)
+    ax.set_ylim(-170, 410)
     ax.set_xticks([])
     ax.set_yticks([])
     for s in ax.spines.values():
@@ -357,3 +386,103 @@ fig2.tight_layout(rect=(0, 0, 1, 0.97))
 OUT2 = Path(__file__).parent / "renders" / "single_channel_module_powder_flow.png"
 fig2.savefig(OUT2, dpi=150, bbox_inches="tight")
 print(f"wrote {OUT2}")
+
+
+# ----------------------------------------------------------------------------
+# Tilt-sweep figure (addresses @swcharles' PR-#35 comment 4276136447 ask for
+# "an image of the auger at 90, 45, and 0 degrees"). Same simplified
+# side-elevation outline rendered three times, rotated about the M5 trunnion
+# pivot at the cradle's detent positions. 0° = vertical, 75° = closest to
+# horizontal the cradle locks at (the v2 cradle's full range is 0–75°; 90°
+# is shown extrapolated for context as a dashed outline).
+# ----------------------------------------------------------------------------
+def _module_outline_pts():
+    """Return a list of (x, z) polygon vertices tracing the module's
+    side-elevation envelope: spine + collar + protruding rotor + cartridge.
+    Used by the tilt-sweep figure so we can rotate one polygon per angle."""
+    spine = [(-SPINE_T / 2, 0), (SPINE_T / 2, 0),
+             (SPINE_T / 2, SPINE_H), (-SPINE_T / 2, SPINE_H)]
+    rotor_x0 = AX_ROTOR - AUGER_OD / 2
+    rotor = [(rotor_x0, ROTOR_BOTTOM_Z),
+             (rotor_x0 + AUGER_OD, ROTOR_BOTTOM_Z),
+             (rotor_x0 + AUGER_OD, ROTOR_BOTTOM_Z + AUGER_LEN + 6),
+             (rotor_x0, ROTOR_BOTTOM_Z + AUGER_LEN + 6)]
+    cart_x0 = AX_ROTOR - CART_HOPPER_OD / 2
+    cart_z0 = AUGER_TOP_Z + CART_BASE_H + CART_NECK_H
+    cart = [(cart_x0, cart_z0),
+            (cart_x0 + CART_HOPPER_OD, cart_z0),
+            (cart_x0 + CART_HOPPER_OD, cart_z0 + CART_HOPPER_H),
+            (cart_x0, cart_z0 + CART_HOPPER_H)]
+    return spine, rotor, cart
+
+
+def _rotate(pts, deg, cx, cz):
+    a = math.radians(deg)
+    ca, sa = math.cos(a), math.sin(a)
+    out = []
+    for x, z in pts:
+        dx, dz = x - cx, z - cz
+        out.append((cx + ca * dx - sa * dz, cz + sa * dx + ca * dz))
+    return out
+
+
+def draw_tilt_panel(ax, angle_deg, *, dashed=False):
+    ax.set_aspect("equal")
+    ax.set_title(f"{angle_deg}° tilt", fontsize=10)
+    spine, rotor, cart = _module_outline_pts()
+    pivot = (0.0, CRADLE_PIVOT_Z)
+    style = dict(fc="#dcdcea", ec="0.4", lw=1.0,
+                 linestyle="--" if dashed else "-",
+                 alpha=0.5 if dashed else 1.0)
+    ax.add_patch(mpatches.Polygon(_rotate(spine, angle_deg, *pivot), **style))
+    ax.add_patch(mpatches.Polygon(_rotate(rotor, angle_deg, *pivot),
+                                  fc="#fff4cc", ec="0.4", lw=1.0,
+                                  linestyle="--" if dashed else "-",
+                                  alpha=0.5 if dashed else 0.8))
+    ax.add_patch(mpatches.Polygon(_rotate(cart, angle_deg, *pivot),
+                                  fc="#f8e5b0", ec="0.4", lw=1.0,
+                                  linestyle="--" if dashed else "-",
+                                  alpha=0.5 if dashed else 0.8))
+    # Cradle base (always horizontal)
+    ax.add_patch(mpatches.Rectangle((-CRADLE_BASE_W / 2, -10 - CRADLE_BASE_T),
+                                    CRADLE_BASE_W, CRADLE_BASE_T,
+                                    fc="#bcd4bc", ec="0.4", lw=1.0))
+    ax.add_patch(mpatches.Circle(pivot, 3.0, fc="white", ec="black", lw=0.8))
+    # Generic cup placed under the rotor exit nozzle's projected ground hit
+    nozzle_world = _rotate([(AX_ROTOR, ROTOR_BOTTOM_Z)], angle_deg, *pivot)[0]
+    cup_y = -10 - CRADLE_BASE_T - 30
+    cup_cx = nozzle_world[0]
+    ax.plot([cup_cx - 30, cup_cx - 30, cup_cx + 30, cup_cx + 30],
+            [cup_y + 25, cup_y, cup_y, cup_y + 25],
+            color="#444", lw=1.2)
+    ax.text(cup_cx, cup_y + 10, "cup", ha="center", va="center", fontsize=7)
+    # Falling-powder arrow from nozzle straight down to cup rim
+    if not dashed:
+        ax.annotate("", xy=(cup_cx, cup_y + 25),
+                    xytext=(nozzle_world[0], nozzle_world[1]),
+                    arrowprops=dict(arrowstyle="->", color="#a07040", lw=1.2))
+    ax.set_xlim(-260, 260)
+    ax.set_ylim(-90, 430)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for s in ax.spines.values():
+        s.set_visible(False)
+
+
+fig3, axes3 = plt.subplots(1, 4, figsize=(20, 8))
+draw_tilt_panel(axes3[0], 0)
+draw_tilt_panel(axes3[1], 45)
+draw_tilt_panel(axes3[2], 75)
+# 90° is past the cradle's locked range — show as dashed for context.
+draw_tilt_panel(axes3[3], 90, dashed=True)
+axes3[3].set_title("90° tilt (extrapolated;\noutside v2 cradle range 0–75°)",
+                   fontsize=9)
+fig3.suptitle(
+    "Auger orientation through the v2 cradle's tilt range\n"
+    "addresses PR-#35 comment 4276136447 — \"image of the auger at 90, 45, and 0 degrees\"",
+    fontsize=11, y=0.99,
+)
+fig3.tight_layout(rect=(0, 0, 1, 0.95))
+OUT3 = Path(__file__).parent / "renders" / "single_channel_module_tilt_sweep.png"
+fig3.savefig(OUT3, dpi=150, bbox_inches="tight")
+print(f"wrote {OUT3}")
