@@ -10,8 +10,8 @@ issues once one or two architectures are chosen for prototyping.
 
 ## 1. Requirements recap
 
-The targets are pulled from the BYU NASA Space Grant 2026 proposal (issue
-[#27][i27]) and the actuator/electronics selection (issue [#25][i25]):
+The targets are pulled from the BYU NASA Space Grant 2026 proposal (PR
+[#27][i27]) and the actuator/electronics selection (PR [#25][i25]):
 
 - **Number of powders:** the proposal cites up to 30 distinct feedstocks
   available to the doser, but a *single* aerospace alloy realistically
