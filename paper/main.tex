@@ -1,0 +1,143 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bare-bones manuscript template for Digital Discovery (Royal Society of
+% Chemistry).  Built on the official RSC "Article" / "Paper" LaTeX template
+% (Copyright The Royal Society of Chemistry 2010).  Only the RSC-specific
+% assets (rsc.bst, rsc.bib, headers/) are vendored under paper/; all other
+% LaTeX packages used below (mhchem, balance, caption, fancyhdr, lipsum,
+% ...) are expected to be supplied by the local TeX distribution.
+%
+% Body text is filled with lorem ipsum (\lipsum) so the file is a placeholder
+% only.  Replace each section's content with your manuscript text.
+%
+% Build:
+%   cd paper && latexmk -pdf main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[9pt,twoside,twocolumn]{extarticle}
+\oddsidemargin -1.2cm
+\evensidemargin -1.2cm
+\textwidth 18cm
+\headheight 1.0in
+\topmargin -3.5cm
+\textheight 22cm
+\usepackage[super,sort&compress,comma]{natbib}
+\usepackage[version=3]{mhchem}
+\usepackage{times,mathptmx}
+\usepackage{balance}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage[format=plain,justification=raggedright,singlelinecheck=false,font=small,labelfont=bf,labelsep=space]{caption}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{lipsum} % placeholder text only -- remove for real submissions
+\pagestyle{fancy}
+
+\begin{document}
+
+\thispagestyle{plain}
+\fancypagestyle{plain}{
+\fancyhead[L]{\includegraphics[height=8pt]{headers/LH}}
+\fancyhead[C]{\hspace{-1cm}\includegraphics[height=20pt]{headers/CH}}
+\fancyhead[R]{\includegraphics[height=10pt]{headers/RH}\vspace{-0.2cm}}
+\renewcommand{\headrulewidth}{1pt}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand\footnoterule{\vspace*{1pt}%
+\hrule width 3.4in height 0.4pt \vspace*{5pt}}
+\setcounter{secnumdepth}{5}
+
+\makeatletter
+\def\subsubsection{\@startsection{subsubsection}{3}{10pt}{-1.25ex plus -1ex minus -.1ex}{0ex plus 0ex}{\normalsize\bf}}
+\def\paragraph{\@startsection{paragraph}{4}{10pt}{-1.25ex plus -1ex minus -.1ex}{0ex plus 0ex}{\normalsize\textit}}
+\renewcommand\@biblabel[1]{#1}
+\renewcommand\@makefntext[1]%
+{\noindent\makebox[0pt][r]{\@thefnmark\,}#1}
+\makeatother
+\renewcommand{\figurename}{\small{Fig.}~}
+% Minimal section-font tweaks (replaces previous use of the `sectsty` package,
+% which doesn't support the `extarticle` document class).
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}%
+  {\large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+  {\normalsize\bfseries}}
+\makeatother
+
+\fancyfoot{}
+\fancyfoot[LO,RE]{\vspace{-7pt}\includegraphics[height=9pt]{headers/LF}}
+\fancyfoot[CO]{\vspace{-7.2pt}\hspace{12.2cm}\includegraphics{headers/RF}}
+\fancyfoot[CE]{\vspace{-7.5pt}\hspace{-13.5cm}\includegraphics{headers/RF}}
+\fancyfoot[RO]{\footnotesize{\sffamily{1--\pageref{LastPage} ~\textbar  \hspace{2pt}\thepage}}}
+\fancyfoot[LE]{\footnotesize{\sffamily{\thepage~\textbar\hspace{3.45cm} 1--\pageref{LastPage}}}}
+\fancyhead{}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\columnsep}{6.5mm}
+\setlength\bibsep{1pt}
+
+\twocolumn[
+  \begin{@twocolumnfalse}
+% TODO: replace title before submission
+\noindent\LARGE{\textbf{A bare-bones Digital Discovery submission template$^\dag$}}
+\vspace{0.6cm}
+
+% TODO: replace author list before submission
+\noindent\large{\textbf{Jane Doe,$^{\ast}$\textit{$^{a}$} John Smith\textit{$^{a,b}$} and
+Alex Roe\textit{$^{a}$}}}\vspace{0.5cm}
+
+\noindent\textit{\small{\textbf{Received Xth XXXXXXXXXX 20XX, Accepted Xth XXXXXXXXX 20XX\newline
+First published on the web Xth XXXXXXXXXX 20XX}}}
+
+% TODO: replace DOI before submission
+\noindent \textbf{\small{DOI: 10.1039/b000000x}}
+\vspace{0.6cm}
+
+% TODO: replace abstract before submission
+\noindent \normalsize{\lipsum[1][1-4]}
+\vspace{0.5cm}
+ \end{@twocolumnfalse}
+  ]
+
+%Footnotes
+% TODO: if no ESI accompanies the submission, remove the $^\dag$ from the title
+% above and delete the ESI \footnotetext below.
+\footnotetext{\dag~Electronic Supplementary Information (ESI) available: [details of any supplementary information available should be included here]. See DOI: 10.1039/b000000x/}
+% TODO: replace affiliations and corresponding-author email before submission
+\footnotetext{\textit{$^{a}$~Department of Powder Science, University of Example, Town, Country. E-mail: jane.doe@example.org}}
+\footnotetext{\textit{$^{b}$~Vertical Cloud Lab, Example Institute, Town, Country.}}
+
+\section{Introduction}
+\lipsum[2-3]
+
+\section{Results and discussion}
+\lipsum[4-5]
+
+\section{Experimental}
+\lipsum[6]
+
+\section{Conclusions}
+\lipsum[7]
+
+\section*{Data availability}
+The data supporting this article have been included as part of the
+Electronic Supplementary Information. Source code is available at
+\url{https://github.com/vertical-cloud-lab/powder-excavator}.
+
+\section*{Conflicts of interest}
+There are no conflicts to declare.
+
+\section*{Acknowledgements}
+\lipsum[8][1-2]
+
+\balance
+
+\renewcommand\refname{Notes and references}
+
+\footnotesize{
+\bibliography{rsc}
+\bibliographystyle{rsc}
+}
+
+\end{document}
