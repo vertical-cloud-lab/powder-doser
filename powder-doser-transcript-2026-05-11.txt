@@ -8,7 +8,7 @@
 
   Note: This file is a cleaned, line-by-line edit of the original Tactiq voice-to-text transcript. Non-technical exchanges (audio checks, screen-sharing logistics, greetings, filler interjections) have been removed and obvious voice-to-text artifacts (duplicated phrases, misheard words) have been corrected while preserving direct quotes wherever possible. The original is recoverable via git history.
 
-    ## Detailed summary with citation
+## Detailed summary with citation
 
 # Meeting Summary
 
