@@ -124,10 +124,34 @@ The Edison runner + raw answers are committed under
 | Edison r1 #4 — solenoid plunger drawn as a Z-extruded coin | `Workplane("XY")...extrude(SOL_PLUNGER_D)` | Sketched in XZ, extruded along −Y so the plunger is a rod from the solenoid front face to the rotor wall through the collar window. | `make_solenoid()` |
 | Edison r1 #5b — cradle base sits 2 mm below the cheek foot | `cradle_base.translate((0, 0, -10))` with `CRADLE_BASE_T = 8` → top face at Z = −2; cheek foot starts at Z = 0 | `cradle_base.translate((0, 0, -CRADLE_BASE_T))` so the base top face is exactly Z = 0, flush with the cheek foot bottom. New continuous **spar** in the cheek body fills the previous gap between the pivot region and the foot, so each cheek prints as one connected solid. | cheek build; assembly placement |
 
-> Single source of truth for these critiques: the raw VLM-Judge run is at
-> [`edison_judge/round1.answer.md`](edison_judge/round1.answer.md);
-> the second round (post-fix) is at
+> Single source of truth for these critiques: the raw VLM-Judge runs are at
+> [`edison_judge/round1.answer.md`](edison_judge/round1.answer.md) and
 > [`edison_judge/round2.answer.md`](edison_judge/round2.answer.md).
+>
+> **Round-2 fixes layered on top** (Edison flagged 5 new issues introduced
+> by the round-1 changes; all were addressed):
+>
+> | Edison r2 finding | v3-r2 fix |
+> |---|---|
+> | #1 — Cradle cheek **axis bug**: cheeks at `y_face = ±5.5` are *embedded inside* the spine's Y range (-45..+45) instead of straddling its X-thinnest dimension | `make_cradle_cheek()` rewritten on `Workplane("YZ")` offset along ±X. Cheeks now bolt to the spine's flat ±X faces and pivot about the X axis (matching the spine's existing X-axis trunnion bore). |
+> | #2 — Motor bracket faceplate at `MB_FOOT_Y_HI = +12` cuts straight through the rotor (rotor occupies Y=±12.5) | `MB_FOOT_Y_HI = -(AUGER_OD/2 + 1.0) = -13.5` so the foot stops 1 mm short of the rotor wall. |
+> | #2 — Faceplate too narrow to capture the NEMA-11 23 mm BHC | `MB_FOOT_X` 32 → 45. |
+> | #3 — Bracket foot dangles below the spine bottom and clashes with the bearing collar flange (Z=0..16) | Foot now spans `Z = COLLAR_H + 4 .. MOTOR_FACE_TOP_Z`, completely above the flange. `BELT_PLANE_Z` raised from `COLLAR_H + 4` to `COLLAR_H + 34`. The 4-hole insert pattern is computed from the foot dimensions rather than hard-coded. |
+> | #5/#6 — `sketch_2d.py` `AUGER_TOP_Z` was stale, leaving a 56 mm air gap in the 2D sketches | `AUGER_TOP_Z = ROTOR_BOTTOM_Z + AUGER_LEN - 4.0`, matching `make_cartridge()` in the CAD. Cheek dimensions `CHEEK_H/CHEEK_W` re-synced (130/100). |
+> | #7 — At 75–90° tilt the spine bottom strikes the cradle base because `CRADLE_PIVOT_Z=200 < SPINE_H/2 + 20` | `CRADLE_PIVOT_Z` raised 200 → 220. |
+>
+> Round-2 issues left as **deferred / open questions** (documented but not
+> auto-fixed):
+>
+> * Pulley-on-rotor sizing — the GT2 16T pulley (Ø12.2) is smaller than
+>   the rotor body (Ø25), so it can't physically clamp on the rotor body
+>   at the belt plane. Two options are open: (a) spec a larger rotor
+>   pulley (e.g. 36T, Ø~26 mm OD), or (b) modify the PR-#16 v4 rotor to
+>   include a Ø8 turned-down clamping neck at `BELT_PLANE_Z`. Listed as
+>   an explicit reviewer question in [§ Open questions / asks](#parts-id-like-added-to-the-repo).
+> * Spine stiffness vs. ERM/belt loads at 360 mm cantilever — bench
+>   testing in v3.1 will tell us whether the 10 mm PETG spine needs
+>   ribbing.
 
 ## What changed in v2
 

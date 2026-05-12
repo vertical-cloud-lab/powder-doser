@@ -142,10 +142,11 @@ PULLEY_AXIS_OFFSET = ROTOR_X_OFFSET                  # rotor axis is also pulley
 # above is unobstructed.
 MOTOR_AXIS_OFFSET_Y = -45.0     # motor axis offset along Y from rotor axis
 MOTOR_AXIS_X = ROTOR_X_OFFSET   # both pulleys at same X
-# v3: belt drive moved DOWN to just above the bearing collar so the cartridge
-# sitting on top of the rotor is not obstructed (S2). COLLAR_H is defined
-# above; this is the Z-plane both pulleys ride at.
-BELT_PLANE_Z = COLLAR_H + 4.0   # 4 mm clearance above collar top face
+# v3 round-2 fix (Edison r2 #3): belt plane raised to clear the bearing collar
+# flange (Z=0..16) AND keep the bracket foot above the spine bottom. The
+# motor bracket foot extends DOWN from MOTOR_FACE_TOP_Z to COLLAR_H+4, which
+# requires MOTOR_FACE_TOP_Z to be high enough that the foot fits.
+BELT_PLANE_Z = COLLAR_H + 34.0   # = 50 mm; clears flange + leaves foot room
 MOTOR_FACE_TOP_Z = BELT_PLANE_Z + PULLEY_H + 4.0   # underside of bracket faceplate
 
 # --- Motor bracket (printed) -----------------------------------------------
@@ -157,10 +158,12 @@ MB_FACE_W = 42.0      # along Y (face plate width — must enclose NEMA-11 28mm 
 MB_FACE_H = 36.0      # along Z (face plate height — must enclose NEMA-11 face + bolts)
 MB_FACE_T = 5.0       # along X (faceplate thickness)
 MB_FOOT_T = 5.0       # foot thickness in Z (lays flat against spine +X face)
-MB_FOOT_X = 32.0      # how far foot extends in +X from spine face
+MB_FOOT_X = 45.0      # how far foot extends in +X from spine face — Edison r2 #2: was 32, too small for NEMA-11 23 mm BHC at MOTOR_AXIS_X=29
 MB_FOOT_Y_LO = MOTOR_AXIS_OFFSET_Y - MB_FACE_W / 2 - 4.0
-MB_FOOT_Y_HI = +12.0  # foot reaches near rotor centreline
-MB_FOOT_W = MB_FOOT_Y_HI - MB_FOOT_Y_LO   # ≈ 79 mm — Y-span of the foot
+# Edison r2 #2: faceplate must NOT cross the rotor (rotor occupies Y=±12.5).
+# Truncate the foot's Y_HI to leave 1 mm clearance from the rotor wall.
+MB_FOOT_Y_HI = -(AUGER_OD / 2 + 1.0)   # ≈ -13.5
+MB_FOOT_W = MB_FOOT_Y_HI - MB_FOOT_Y_LO   # ≈ 53 mm — Y-span of the foot
 
 # --- Cartridge / hopper (printed, removable) -------------------------------
 CART_BORE_D = AUGER_OD + 0.6     # slip fit over the rotor's top
@@ -176,7 +179,9 @@ CART_NECK_H = 6.0                # taper transition
 # ~0.6 N·m static moment of the loaded module about the pivot at any tilt
 # in 0–90°). The -Y trunnion is still a passive M5 bolt.
 CRADLE_PIVOT_X = 0.0     # pivot is at spine's centre-of-mass (waist)
-CRADLE_PIVOT_Z = 200.0
+CRADLE_PIVOT_Z = 220.0   # v3 r2 (Edison #7): raise from 200 -> 220 so the
+                          # 360 mm spine can swing through 90° without striking
+                          # the cradle base; CRADLE_PIVOT_Z >= SPINE_H/2 + 20.
 CRADLE_PIVOT_BOLT_D = 5.0     # M5 trunnion (passive side)
 CRADLE_DETENT_R = 60.0        # arc-slot radius from pivot
 CRADLE_DETENT_ANGLES_DEG = [0, 15, 30, 45, 60, 75, 90]
@@ -232,18 +237,24 @@ def make_spine() -> cq.Workplane:
             .center(dy, collar_z_centre - SPINE_H / 2)
             .hole(INSERT_PILOT_D)
         )
-    # Motor-bracket inserts — v3: 4-hole pattern on the foot of the L bracket,
-    # which now lives at LOW Z (just above the bearing collar) so the belt
-    # plane is below the cartridge (S2). The foot Y-extent reaches the motor
-    # face's Y-centre so the L is mechanically continuous (S1, S4).
+    # Motor-bracket inserts — v3 r2: 4-hole pattern on the foot of the L
+    # bracket. Foot must clear the bearing collar flange (Z=0..16) AND not
+    # dangle below the spine bottom; positions are kept in sync with
+    # `make_motor_bracket()` via a shared computation.
     foot_centre_y = (MB_FOOT_Y_LO + MB_FOOT_Y_HI) / 2
-    foot_centre_z = MOTOR_FACE_TOP_Z - 30.0   # foot extends 60 mm down from face
-    for dy in (-30, +30):
-        for dz in (+15, -15):
+    foot_bottom_z = COLLAR_H + 4.0
+    foot_top_z = MOTOR_FACE_TOP_Z
+    foot_h = foot_top_z - foot_bottom_z
+    foot_centre_z = (foot_bottom_z + foot_top_z) / 2
+    insert_dz = max(8.0, foot_h / 2 - 6.0)
+    insert_dy_step = max(12.0, MB_FOOT_W / 2 - 8.0)
+    for dy_sign in (-1, +1):
+        for dz_sign in (-1, +1):
             sp = (
                 sp.faces(">X")
                 .workplane(centerOption="CenterOfBoundBox")
-                .center(foot_centre_y + dy, foot_centre_z + dz - SPINE_H / 2)
+                .center(foot_centre_y + dy_sign * insert_dy_step,
+                        foot_centre_z + dz_sign * insert_dz - SPINE_H / 2)
                 .hole(INSERT_PILOT_D)
             )
     # Trunnion pivot bore (through hole, M5 clearance) at the waist
@@ -380,21 +391,31 @@ def make_motor_bracket() -> cq.Workplane:
     The NEMA 11 stepper bolts on TOP of the faceplate, shaft pointing
     DOWN through a clearance hole, pulley sitting in the belt plane.
     """
-    # 1) Vertical foot — a thin slab pressed against the spine.
+    # 1) Vertical foot — a thin slab pressed against the spine. v3 r2 fix
+    # (Edison #3): foot bottom must NOT clash with the bearing collar
+    # flange (Z=0..16) and must NOT dangle below the spine bottom (Z=0).
     foot_centre_y = (MB_FOOT_Y_LO + MB_FOOT_Y_HI) / 2
-    foot_centre_z = MOTOR_FACE_TOP_Z - 30.0
+    foot_bottom_z = COLLAR_H + 4.0          # 4 mm above collar flange top
+    foot_top_z = MOTOR_FACE_TOP_Z           # meets the cantilever face
+    foot_h = foot_top_z - foot_bottom_z
+    foot_centre_z = (foot_bottom_z + foot_top_z) / 2
     foot = (
         cq.Workplane("YZ")
         .workplane(offset=SPINE_T / 2)
         .moveTo(foot_centre_y, foot_centre_z)
-        .rect(MB_FOOT_W, 60.0)
+        .rect(MB_FOOT_W, foot_h)
         .extrude(MB_FOOT_T)
     )
     # Foot M3 clearance — 4 holes matching the spine's inserts.
+    insert_dz = max(8.0, foot_h / 2 - 6.0)
+    insert_dy_step = max(12.0, MB_FOOT_W / 2 - 8.0)
     foot = (
         foot.faces(">X")
         .workplane(centerOption="CenterOfBoundBox")
-        .pushPoints([(-30, +15), (-30, -15), (+30, +15), (+30, -15)])
+        .pushPoints([(-insert_dy_step, +insert_dz),
+                     (-insert_dy_step, -insert_dz),
+                     (+insert_dy_step, +insert_dz),
+                     (+insert_dy_step, -insert_dz)])
         .hole(3.4)
     )
 
@@ -506,68 +527,73 @@ def make_cartridge() -> cq.Workplane:
 
 
 def make_cradle_cheek(side: str) -> cq.Workplane:
-    """One side of the adjustable-angle cradle. ``side='L'`` puts the cheek
-    at +Y, ``'R'`` at -Y. The cheek is a flat plate with:
+    """One side of the adjustable-angle cradle. The two cheeks STRADDLE the
+    spine in the X direction (spine has X-thickness `SPINE_T`, so each
+    cheek bolts to one of the spine's flat ±X faces). ``side='L'`` puts
+    the cheek at -X, ``'R'`` at +X. The cheek is a flat plate parallel to
+    the YZ plane with:
       * an M5 pivot hole through the centre (matches spine waist hole)
       * an arc slot at radius CRADLE_DETENT_R for the M5 lock bolt
-      * 6 detent dimples at CRADLE_DETENT_ANGLES_DEG
+      * detent positions at CRADLE_DETENT_ANGLES_DEG
       * a foot at the bottom that bolts to cradle_base
-    """
-    sign = +1 if side == "L" else -1
-    y_face = sign * (SPINE_T / 2 + 0.5)   # cheek inside face just outside the spine
 
-    # Sketch the cheek profile in a plane offset along Y
+    v3 round-2 fix (Edison r2 #1): the v2/v3-r1 cheek used `Workplane("XZ")`
+    offset along Y, which embedded the cheek INSIDE the spine's Y range.
+    Cheeks now use `Workplane("YZ")` offset along ±X, so they actually
+    straddle the spine across its 10 mm X thickness.
+    """
+    sign = -1 if side == "L" else +1
+    x_face = sign * (SPINE_T / 2 + 0.5)   # cheek inside face just outside the spine
+
+    # Sketch the cheek profile in a YZ plane offset along X. On a YZ
+    # workplane, U=Y and V=Z, so rect(CHEEK_H, CHEEK_W) gives CHEEK_H
+    # along Y and CHEEK_W along Z. CHEEK_H=130 covers the arc-slot Y-range;
+    # CHEEK_W=100 covers the pivot ± half-arc in Z.
     cheek = (
-        cq.Workplane("XZ")
-        .workplane(offset=y_face)
+        cq.Workplane("YZ")
+        .workplane(offset=x_face)
         .center(0, CRADLE_PIVOT_Z)
-        .moveTo(-CHEEK_H / 2, -CHEEK_W / 2)
-        .rect(CHEEK_H, CHEEK_W, centered=False)
+        .rect(CHEEK_H, CHEEK_W)
         .extrude(sign * CHEEK_T)
     )
-    # Pivot hole
+    # Pivot hole — drilled along ±X through the cheek face.
     cheek = (
-        cheek.faces({"L": ">Y", "R": "<Y"}[side])
+        cheek.faces({"L": "<X", "R": ">X"}[side])
         .workplane(centerOption="CenterOfBoundBox")
         .hole(CRADLE_PIVOT_BOLT_D + 0.4)
     )
-    # Arc slot — sweep an oval along the arc by stamping holes; cheap
-    # but printable. Stamp a hole every 5° from -10° to 80° at radius
-    # CRADLE_DETENT_R.
+    # Arc-slot detent holes — pts are (Y, Z) relative to the face centre,
+    # which after rect-centred is at world (0, CRADLE_PIVOT_Z).
     pts = []
-    for ang_deg in range(-10, 85, 5):
+    for ang_deg in range(-10, 95, 5):
         a = math.radians(ang_deg)
         pts.append((CRADLE_DETENT_R * math.sin(a),
                     CRADLE_DETENT_R * math.cos(a) - CRADLE_DETENT_R))
-    # Convert points to be relative to the cheek face centre (which is
-    # CRADLE_PIVOT in world coords; so we shift Z by -CRADLE_PIVOT_Z).
     cheek = (
-        cheek.faces({"L": ">Y", "R": "<Y"}[side])
+        cheek.faces({"L": "<X", "R": ">X"}[side])
         .workplane(centerOption="CenterOfBoundBox")
         .pushPoints(pts)
         .hole(CRADLE_PIVOT_BOLT_D + 1.0)
     )
-    # v3: extend the cheek body DOWN as a continuous spar to the foot,
-    # so there's no air gap between the cheek body (around the pivot) and
-    # the foot (sitting on the cradle base). Edison r1 #5: cheek must be
-    # one continuous body, not two floating slabs.
+    # Continuous spar from the cheek body DOWN to the foot, so the
+    # printed cheek is one connected solid (no air gap between pivot
+    # region and the foot at the cradle base).
     spar_z_top = CRADLE_PIVOT_Z - CHEEK_W / 2
     spar_z_bot = 0.0
     spar_h = spar_z_top - spar_z_bot
     if spar_h > 0:
         spar = (
-            cq.Workplane("XZ")
-            .workplane(offset=y_face)
+            cq.Workplane("YZ")
+            .workplane(offset=x_face)
             .moveTo(-30, spar_z_bot)
             .rect(60, spar_h, centered=False)
             .extrude(sign * CHEEK_T)
         )
         cheek = cheek.union(spar)
-    # Foot — extends to Z=0 (cradle_base top, which is now at Z=0); a thicker
-    # rectangle at the bottom for the M3 insert holes that bolt to the base.
+    # Foot — sits flat on the cradle base (top at Z=0).
     foot = (
-        cq.Workplane("XZ")
-        .workplane(offset=y_face)
+        cq.Workplane("YZ")
+        .workplane(offset=x_face)
         .moveTo(-CHEEK_H / 2, 0)
         .rect(CHEEK_H, 10.0, centered=False)
         .extrude(sign * (CHEEK_T + 2))
@@ -785,42 +811,41 @@ def make_erm() -> cq.Workplane:
 
 
 def make_tilt_drive() -> cq.Workplane:
-    """v3 NEW: NEMA 17 + worm-gearbox envelope at the +Y trunnion of the
-    cradle. Output shaft of the gearbox couples directly to the spine's
-    M5 trunnion bore so the cradle tilt can be commanded by software
-    (S6/swcharles v3 ask: "you will need to add another motor"). The
-    -Y trunnion remains a passive M5 pivot bolt.
+    """v3 NEW: NEMA 17 + worm-gearbox envelope at the +X trunnion of the
+    cradle (v3 r2 fix: cheeks now straddle the spine in X, so the
+    tilt-drive sits adjacent to the +X cheek's outer face). Output shaft
+    of the gearbox couples directly to the spine's M5 trunnion bore so
+    the cradle tilt can be commanded by software. The -X trunnion remains
+    a passive M5 pivot bolt.
     """
     pivot_z = CRADLE_PIVOT_Z
-    # Worm-gearbox output flange faces -Y, mounted just outside the +Y cheek.
-    cheek_outer_y = +(SPINE_T / 2 + 0.5 + CHEEK_T)
-    box_y0 = cheek_outer_y + 4.0   # 4 mm air gap between cheek face and box
-    # Gearbox housing
+    # Cheek outer face on +X side (after v3 r2 axis fix)
+    cheek_outer_x = +(SPINE_T / 2 + 0.5 + CHEEK_T)
+    box_x0 = cheek_outer_x + 4.0   # 4 mm air gap between cheek face and box
+    # Gearbox housing — sketched in YZ workplane normal to X
     box = (
-        cq.Workplane("XZ")
-        .workplane(offset=box_y0)
+        cq.Workplane("YZ")
+        .workplane(offset=box_x0)
         .center(0, pivot_z)
-        .rect(WORM_GEARBOX_X, WORM_GEARBOX_H)
-        .extrude(WORM_GEARBOX_W)
+        .rect(WORM_GEARBOX_W, WORM_GEARBOX_H)
+        .extrude(WORM_GEARBOX_X)
     )
-    # NEMA 17 stepper bolted to the BACK (+Y) face of the gearbox, shaft
-    # going IN (-Y) to drive the worm.
-    stepper_y0 = box_y0 + WORM_GEARBOX_W
+    # NEMA 17 stepper bolted to the back (+X) face of the gearbox.
+    stepper_x0 = box_x0 + WORM_GEARBOX_X
     stepper = (
-        cq.Workplane("XZ")
-        .workplane(offset=stepper_y0)
+        cq.Workplane("YZ")
+        .workplane(offset=stepper_x0)
         .center(0, pivot_z)
         .rect(NEMA17_FACE, NEMA17_FACE)
         .extrude(NEMA17_BODY_L)
     )
-    # Output shaft of the gearbox — short stub on -Y face that engages the
-    # cheek + spine trunnion bore.
+    # Output shaft stub — engages cheek + spine trunnion bore in X axis.
     out_shaft = (
-        cq.Workplane("XZ")
-        .workplane(offset=cheek_outer_y - SPINE_T - CHEEK_T)
+        cq.Workplane("YZ")
+        .workplane(offset=cheek_outer_x - SPINE_T - CHEEK_T)
         .center(0, pivot_z)
         .circle(CRADLE_PIVOT_BOLT_D / 2 + 0.2)
-        .extrude(box_y0 - (cheek_outer_y - SPINE_T - CHEEK_T))
+        .extrude(box_x0 - (cheek_outer_x - SPINE_T - CHEEK_T))
     )
     return box.union(stepper).union(out_shaft)
 

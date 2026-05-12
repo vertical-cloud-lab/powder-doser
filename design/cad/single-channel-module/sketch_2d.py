@@ -48,11 +48,11 @@ CART_HOPPER_OD = 60.0
 CART_HOPPER_H = 60.0
 CART_NECK_H = 6.0
 
-CRADLE_PIVOT_Z = 200.0
+CRADLE_PIVOT_Z = 220.0   # v3 r2: raise from 200 -> 220 (Edison r2 #7)
 CRADLE_BASE_T = 8.0
 CRADLE_BASE_W = 140.0
-CHEEK_W = 80.0
-CHEEK_H = 220.0
+CHEEK_W = 100.0
+CHEEK_H = 130.0
 
 # v3: belt drive moved DOWN to just above the bearing collar (S2 fix).
 BELT_PLANE_Z = COLLAR_H + 4.0
@@ -62,7 +62,9 @@ ERM_PAD_Y_OFFSET = -(COLLAR_OD / 2 + ERM_PAD_T / 2 - 0.4)
 ROTOR_X_OFFSET = SPINE_T / 2 + COLLAR_OD / 2 + 4.0
 ROTOR_BOTTOM_Z = -30.0
 AX_ROTOR = SPINE_T / 2 + COLLAR_FLANGE_T + COLLAR_OD / 2
-AUGER_TOP_Z = COLLAR_H + 10 + AUGER_LEN
+# v3 r2 fix (Edison #5/#6): cartridge rim now slip-fits over the rotor's top
+# cap (rim 4 mm BELOW rotor top), instead of sitting 56 mm above it.
+AUGER_TOP_Z = ROTOR_BOTTOM_Z + AUGER_LEN - 4.0
 
 
 # ---- helpers -------------------------------------------------------------
