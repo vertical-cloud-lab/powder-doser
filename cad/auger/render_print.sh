@@ -11,13 +11,15 @@
 # Outputs (next to this script):
 #   archimedes-auger.stl              Binary STL, single closed-manifold part
 #   archimedes-auger.stp              STEP B-rep (faceted) via FreeCAD/OCCT
+#   archimedes-auger.3mf              Model-only 3MF (Bambu Studio importable)
 #   archimedes-auger-iso.png          Isometric preview
 #   archimedes-auger-cutaway.png      Half-cutaway showing internal helix
 #   slices/archimedes-auger.H2D.gcode PrusaSlicer slice for Bambu Lab H2D
 #   slices/AUGER.gcode                8.3-name USB-friendly copy
 # Plus optional CuraEngine slices via slice_cura.sh.
 #
-# Pre-reqs: openscad, admesh, prusa-slicer, freecadcmd, xvfb-run.
+# Pre-reqs: openscad, admesh, prusa-slicer, freecadcmd, xvfb-run,
+#           python3-trimesh (or `pip install trimesh networkx lxml`).
 #   sudo apt-get install -y openscad admesh prusa-slicer freecad xvfb
 # ============================================================================
 set -euo pipefail
@@ -26,6 +28,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCAD="${HERE}/archimedes-auger.scad"
 STL="${HERE}/archimedes-auger.stl"
 STP="${HERE}/archimedes-auger.stp"
+TMF="${HERE}/archimedes-auger.3mf"
 ISO_PNG="${HERE}/archimedes-auger-iso.png"
 CUT_PNG="${HERE}/archimedes-auger-cutaway.png"
 SLICES_REPO_DIR="${HERE}/slices"
@@ -56,6 +59,16 @@ if command -v freecadcmd >/dev/null 2>&1; then
     ls -la "${STP}" 2>/dev/null || echo "  (STEP not produced — continuing)"
 else
     echo "  (freecadcmd missing — skipping STEP)"
+fi
+
+echo "==> STL -> 3MF (model-only, for Bambu Studio / PrusaSlicer / Cura import)"
+# Generic 3D Manufacturing Format export; *not* a Bambu project 3MF (no
+# embedded gcode/printer profile), so Bambu Studio treats it as a fresh
+# importable model — see PR #16 for the gcode-3MF import-error history.
+if python3 -c "import trimesh" >/dev/null 2>&1; then
+    python3 "${HERE}/stl_to_3mf.py" "${STL}" "${TMF}"
+else
+    echo "  (python3 trimesh missing — skipping 3MF; pip install trimesh networkx lxml)"
 fi
 
 # ----------------------------------------------------------------------------
@@ -140,6 +153,7 @@ echo
 echo "==> Done."
 echo "    STL:      ${STL}"
 echo "    STEP:     ${STP}"
+echo "    3MF:      ${TMF}"
 echo "    Iso:      ${ISO_PNG}"
 echo "    Cutaway:  ${CUT_PNG}"
 echo "    G-code:   ${H2D_OUT}"
