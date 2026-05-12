@@ -4,9 +4,10 @@
 
 ## Candidate powders
 
-A short-list of food- and laboratory-grade powders that mimic the flow
-behaviour of fine metal additive-manufacturing feedstocks (e.g. Si,
-AlSi10Mg) is documented in
+The set of metal powders we intend to dispense (high-purity Si,
+AlSi10Mg, and the broader BYU VCL digital-alloy-lab element
+palette), together with handling/storage constraints and the
+custom-Al-crucible dispensing targets, is documented in
 [`docs/candidate-powders.md`](docs/candidate-powders.md).
 
 ## Paper
