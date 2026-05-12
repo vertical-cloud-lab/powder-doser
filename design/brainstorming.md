@@ -22,7 +22,14 @@ The targets are pulled from the BYU NASA Space Grant 2026 proposal (PR
   to host all 30 powders simultaneously — designs sized for ~8–12 active
   reservoirs with off-line cartridge/hopper storage for the rest are in
   scope and should be preferred where they materially shrink BOM or
-  footprint.
+  footprint. *However*, per a follow-up note from Sterling on the same
+  thread, even before a fully closed autonomous loop is in place there is
+  real value in being able to run *back-to-back* blends drawn from a
+  larger pool of distinct elements (e.g. picking many different 6-element
+  subsets out of 30 in one sitting), so a candidate architecture loses
+  points if it can *only* hit ~8–12 channels and has no plausible path
+  to growing the addressable element library beyond the currently-loaded
+  subset (e.g. via a rack/carousel of swappable cartridges, as in 2.3).
 - **Per-blend volume:** ≤ 250 mL of mixed powder per dispense cycle.
 - **Per-powder accuracy:** ±1 wt% baseline, ±0.1 wt% stretch goal.
 - **Powder family:** L-PBF metal feedstocks (representative candidates: 316L,
@@ -122,6 +129,10 @@ moved on a gantry or carousel under each channel in turn (similar to
 2.3/2.4 but with the *cup* moving instead of the dispense head); that
 removes the fan-in geometry constraint at the cost of motion on the
 weighing side, which is the noisier place to put it.
+
+A first-pass visualization of this geometry (2D dimensioned sketch + a
+parametric CadQuery STEP model with isometric and top-down line renders)
+lives in [`design/cad/inward-collection-cup/`](cad/inward-collection-cup/README.md).
 
 - **Benefits:**
   - Zero cross-contamination by construction — powders never share a
