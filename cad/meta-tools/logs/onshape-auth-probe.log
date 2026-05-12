@@ -53,3 +53,25 @@ HTTP 204
 HTTP 401
 {"message":"Unauthenticated API request", "status":401}
 items returned: 0
+
+=== Re-run: 2026-05-12T21:14Z, new "classroom" API key ===
+
+BASE = https://cad.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 200
+{
+  "id": "<redacted-user-id>",
+  "name": "Sterling",
+  "email": "<redacted>",
+  "role": 5,
+  "state": 1,
+  "company": null
+}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 200
+items returned: 1
+  - id=<redacted-doc-id>  name='test'  owner='Vertical Cloud Lab'  modified=2026-05-12T19:02:24.104+00:00

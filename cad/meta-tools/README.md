@@ -245,34 +245,35 @@ say the word and I'll wire it up.
 Once `ONSHAPE_ACCESS_KEY` + `ONSHAPE_SECRET_KEY` are set as encrypted
 GitHub Actions secrets, [`onshape_rest_probe_auth.py`](onshape_rest_probe_auth.py)
 performs an HMAC-signed `GET /api/v6/users/sessioninfo` and
-`GET /api/v6/documents`. Latest run with the keys @sgbaird-alt added
-(captured verbatim in [`logs/onshape-auth-probe.log`](logs/onshape-auth-probe.log)):
+`GET /api/v6/documents`. Latest run after @sgbaird minted a fresh
+classroom-scoped API key (captured verbatim in
+[`logs/onshape-auth-probe.log`](logs/onshape-auth-probe.log)):
 
 ```
 == GET /api/v6/users/sessioninfo ==
-HTTP 204
-{}
+HTTP 200
+{"id": "<redacted>", "name": "Sterling", "role": 5, "state": 1, ...}
 
 == GET /api/v6/documents (own, first page) ==
-HTTP 401
-{"message":"Unauthenticated API request", "status":401}
+HTTP 200
+items returned: 1
+  - name='test'  owner='Vertical Cloud Lab'  modified=2026-05-12T19:02:24Z
 ```
 
-Cross-checked against the official `onshape-client` Python lib (same
-`401 "Unauthenticated API request"` body) and against `partner.dev.onshape.com`
-(same 401), so the HMAC signing is correct and the keys are reaching the
-server — the **server is rejecting them as not authorised**. Most
-likely cause given @sgbaird-alt's earlier note ("I needed to request
-developer access to be able to use the API"): the dev-portal access
-request is still pending approval on the Education plan side. Once
-that approval lands the same probe should return `200` with the user's
-sessioninfo / a list of own documents — no code change needed, just
-re-run the workflow.
+Drilling one level deeper on the `test` document also returns `200`
+on `GET /documents/{did}` (workspace id), `GET /documents/d/{did}/w/{wid}/elements`
+(Part Studio + Assembly + BOM), and `GET /parts/d/{did}/w/{wid}/e/{eid}`
+(empty, `[]` — the test Part Studio has no geometry yet). HMAC-signed
+`POST /api/v6/partstudios/.../translations` with `formatName=STEP`
+returns `400` for that empty studio, which is the expected response
+for an empty Part Studio rather than an auth failure; once a real
+geometry lives in the Part Studio the same call should return a
+translation id we can poll and download.
 
-(`sessioninfo` returning `204` is consistent with this read: that
-endpoint replies with an empty body when no browser session is
-attached, regardless of whether the API key would otherwise be
-valid; the auth-required `/documents` is the meaningful signal.)
+Net: **the API key works end-to-end.** The earlier 401s were the
+"requested but not yet approved" state on the Education plan; the
+classroom-scoped key minted via the company-settings developer page
+clears that gate.
 
 ---
 
