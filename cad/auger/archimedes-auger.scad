@@ -152,10 +152,15 @@ module top_cap() {
         translate([0, 0, total_height - m3_pilot_depth - 0.1])
             cylinder(d=m3_pilot_d, h=m3_pilot_depth + 0.2);
 
-        // Powder loading slots (4×, 90° apart).
+        // Powder loading slots (4×, 90° apart). Centered vertically on
+        // the top cap so the cube cuts fully through (top_cap_height +
+        // 0.2 mm Z overshoot). Earlier versions translated to the cap's
+        // underside which left the top face sealed — re-rendered top-down
+        // showed only the M3 pilot, no slots, hence "I can't see any
+        // openings to load powder".
         for (i = [0 : slot_count - 1]) {
             angle = i * (360 / slot_count);
-            translate([0, 0, total_height - top_cap_height - 0.1])
+            translate([0, 0, total_height - top_cap_height / 2])
             rotate([0, 0, angle])
             translate([slot_radius, 0, 0])
                 cube([slot_length, slot_width, top_cap_height + 0.2], center=true);
