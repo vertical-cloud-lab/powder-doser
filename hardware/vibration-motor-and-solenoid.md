@@ -49,23 +49,38 @@ To make the wire-routing constraints explicit:
 | 1 | Adafruit DRV2605L Haptic Motor Controller breakout (I²C) | 1 | $7.95 | [adafruit.com/product/2305](https://www.adafruit.com/product/2305) |
 | 2 | Vibrating Mini Motor Disc — ERM coin, 10 mm × 2.7 mm, 3 V | 1 | $1.95 | [adafruit.com/product/1201](https://www.adafruit.com/product/1201) |
 | 3 | Linear Resonant Actuator (LRA) — 10 mm × 3.4 mm, ~175 Hz (alternative to #2) | 1 | $4.95 | [adafruit.com/product/1631](https://www.adafruit.com/product/1631) |
-| 4 | JF-0530B 5 V mini push–pull solenoid (~9.6 × 19 × 22 mm, ~4.5 mm stroke) | 1 | $4.95 | [adafruit.com/product/412](https://www.adafruit.com/product/412) |
+| 4 | JF-0530B 5 V mini push–pull solenoid (~9.6 × 19 × 22 mm, ~4.5 mm stroke) | 1 | $7.50 | [adafruit.com/product/412](https://www.adafruit.com/product/412) |
 | 5 | Adafruit DRV8871 DC Motor Driver Breakout — 3.6 A peak, built-in flyback clamps + current limit, screw terminals, takes PWM logic in directly | 1 | $7.50 | [adafruit.com/product/3190](https://www.adafruit.com/product/3190) |
 | 6 | Adafruit Perma-Proto Bonnet Mini Kit for Pi — Pi-HAT-shaped solder substrate that the two breakouts and the Pi Zero 2 W's 2×20 header mate to | 1 | $4.95 | [adafruit.com/product/2310](https://www.adafruit.com/product/2310) |
 | 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 1\* | — | any 5 V barrel-jack PSU |
 | 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet *(omit when using the consolidated single-supply variant)* | 1\* | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
 | 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, ~0.67 A/phase, ~12 N·cm holding (e.g. SparkFun ROB-10848 or StepperOnline 11HS18-0674S) | 1 | $14–18 | [sparkfun.com/products/10848](https://www.sparkfun.com/products/10848) |
-| 11 | Pololu DRV8825 stepper-driver carrier — pre-soldered carrier PCB, on-board current limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi | 1 | $7.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
+| 11 | **Pololu Tic T500** USB / TTL serial / I²C / analog / RC stepper-motor controller — pre-soldered carrier with on-board MP6500 driver, 4.5–35 V `VIN`, ~1.5 A/phase (≤2.5 A with airflow), high-level "go to position N" commands so the host MCU does **not** generate step pulses; built-in safe-state `~EN` handling sidesteps the boot-time-pull-up gotcha called out by the Edison review | 1 | $32.95 | [pololu.com/product/3135](https://www.pololu.com/product/3135) |
+| 11-alt | Pololu DRV8825 stepper-driver carrier — cheaper bare step/dir carrier; on-board current-limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi (use this if you want to save ~$17/channel and don't mind generating step pulses on the Pi) | 1 (in place of item 11) | $15.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
 | 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
-| 13 | **12 V / ≥3 A external supply** — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant | 1 | ~$10 | any 12 V/3 A barrel-jack wall-wart, e.g. [adafruit.com/product/352](https://www.adafruit.com/product/352) (12 V/5 A) |
-| 14 | 100 µF / 25 V electrolytic across the DRV8825's `VMOT` / `GND` (Pololu specifically calls this out as required) | 1 | <$0.50 | any |
-| 15 | **Pololu D24V22F5** 5 V / 2.5 A step-down (buck) regulator — 12 V → 5 V, lets a single 12 V supply power the Pi *and* the DRV8871 solenoid rail, eliminating the second wall-wart and item 8 | 1 | $14.95 | [pololu.com/product/2858](https://www.pololu.com/product/2858) |
+| 13 | **12 V / ≥3 A external supply** — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant | 1 | $24.95 | [adafruit.com/product/352](https://www.adafruit.com/product/352) (12 V / 5 A) |
+| 14 | 100 µF / 25 V electrolytic across the stepper driver's `VMOT` / `GND` (Pololu specifically calls this out as required for the DRV8825; the Tic T500 also benefits from a local bulk cap on its `VIN`) | 1 | <$0.50 | any |
+| 15 | **Pololu D24V22F5** 5 V / 2.5 A step-down (buck) regulator — 12 V → 5 V, lets a single 12 V supply power the Pi *and* the DRV8871 solenoid rail, eliminating the second wall-wart and item 8 | 1 | $18.95 | [pololu.com/product/2858](https://www.pololu.com/product/2858) |
 
-Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12): **≈ $60**.
-With the **consolidated single-supply variant** (add item 15, drop
-items 7 and 8): **≈ $75** but with **only one wall plug** instead
-of two.
+Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14)
+with the **default Tic T500** driver: **≈ $83/channel** plus
+**≈ $63 system-shared** (12 V wall-wart, D24V22F5 buck, Pi Zero 2 W)
+→ **≈ $146** for a single-channel v1.0 build.
+
+Substitute the cheaper bare DRV8825 carrier (item 11-alt, $15.95) for
+the Tic T500 (item 11, $32.95) and the per-channel cost drops by
+~$17 to **≈ $66/channel** (≈ $129 total for v1.0). The trade-off is
+that you generate the step pulses on the Pi yourself instead of
+sending high-level "go to position N" commands over USB; see the
+"Driver" subsection below.
+
+The **two-PSU fallback** (drop item 15; add items 7 and 8) lands in
+the same ballpark (~$148) but uses **two wall plugs** instead of one.
+
+Prices above are pulled directly from each vendor's product page (USD,
+single-unit price; Pololu has volume breaks at qty 5/25/100 if you're
+batching the N-channel ring from PR #35).
 
 \* Items 7 and 8 are only used in the *dual-supply* variant. If
 you use the recommended single-supply variant (12 V wall-wart +
@@ -99,43 +114,44 @@ except for the Pi Zero 2 W and the wall-wart, which are **shared
 across all channels**. Prices and shipping are USD and approximate as
 of 2026-Q2; reconfirm at checkout.
 
-### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$33 + ship per channel
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel + ~$45 system-shared (wall-wart + Pi)
 
-| BOM # | Part | Qty / channel | Product page |
-|---|---|---|---|
-| 1 | DRV2605L Haptic Motor Controller breakout | 1 | [#2305](https://www.adafruit.com/product/2305) |
-| 2 | Vibrating Mini Motor Disc (ERM coin) | 1 | [#1201](https://www.adafruit.com/product/1201) |
-| 4 | JF-0530B 5 V mini push–pull solenoid | 1 | [#412](https://www.adafruit.com/product/412) |
-| 5 | DRV8871 DC Motor Driver Breakout | 1 | [#3190](https://www.adafruit.com/product/3190) |
-| 6 | Perma-Proto Bonnet Mini Kit for Pi | 1 | [#2310](https://www.adafruit.com/product/2310) |
-| 13 | 12 V / 5 A barrel-jack wall-wart | **1 per system** (not per channel) | [#352](https://www.adafruit.com/product/352) |
-| — | Raspberry Pi Zero 2 W (if not already on hand) | **1 per system** | [#5291](https://www.adafruit.com/product/5291) (~$15) |
-| — | microSD card + Pi power supply (if not already on hand) | 1 per system | any |
+| BOM # | Part | Qty / channel | Unit price | Product page |
+|---|---|---|---|---|
+| 1 | DRV2605L Haptic Motor Controller breakout | 1 | $7.95 | [#2305](https://www.adafruit.com/product/2305) |
+| 2 | Vibrating Mini Motor Disc (ERM coin) | 1 | $1.95 | [#1201](https://www.adafruit.com/product/1201) |
+| 4 | JF-0530B 5 V mini push–pull solenoid | 1 | $7.50 | [#412](https://www.adafruit.com/product/412) |
+| 5 | DRV8871 DC Motor Driver Breakout | 1 | $7.50 | [#3190](https://www.adafruit.com/product/3190) |
+| 6 | Perma-Proto Bonnet Mini Kit for Pi | 1 | $4.95 | [#2310](https://www.adafruit.com/product/2310) |
+| 13 | 12 V / 5 A barrel-jack wall-wart | **1 per system** (not per channel) | $24.95 | [#352](https://www.adafruit.com/product/352) |
+| — | Raspberry Pi Zero 2 W (if not already on hand) | **1 per system** | $19.05 | [#5291](https://www.adafruit.com/product/5291) |
+| — | microSD card + Pi power supply (if not already on hand) | 1 per system | varies | any |
 
-### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$23 + ship per channel
+### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$52 + ship per channel (default Tic T500), or ~$35 + ship if you swap to the DRV8825 carrier
 
-| BOM # | Part | Qty / channel | Product page |
-|---|---|---|---|
-| 11 | DRV8825 stepper-driver carrier | 1 | [#2133](https://www.pololu.com/product/2133) |
-| 11-alt | **Tic T500** USB / serial / I²C stepper controller (drop-in alternative to item 11; recommended if you want USB-level control and to skip step-pulse generation on the Pi) | 1 (in place of item 11) | [#3135](https://www.pololu.com/product/3135) (~$33) |
-| 15 | D24V22F5 5 V / 2.5 A buck regulator | 1 | [#2858](https://www.pololu.com/product/2858) |
+| BOM # | Part | Qty / channel | Unit price | Product page |
+|---|---|---|---|---|
+| 11 | **Tic T500** USB / serial / I²C stepper-motor controller (**default** — high-level USB control, no Pi-side step-pulse generation, on-board safe-state `~EN`) | 1 | $32.95 | [#3135](https://www.pololu.com/product/3135) |
+| 11-alt | DRV8825 stepper-driver carrier (cheaper bare step/dir alternative; saves ~$17/channel if you're OK driving STEP/DIR from the Pi) | 1 (in place of item 11) | $15.95 | [#2133](https://www.pololu.com/product/2133) |
+| 15 | D24V22F5 5 V / 2.5 A buck regulator | 1 | $18.95 | [#2858](https://www.pololu.com/product/2858) |
 
-### 3. SparkFun ([sparkfun.com](https://www.sparkfun.com/)) or StepperOnline — ~$15 per channel
+### 3. SparkFun ([sparkfun.com](https://www.sparkfun.com/)) or StepperOnline — ~$15–18 per channel
 
-| BOM # | Part | Qty / channel | Source |
-|---|---|---|---|
-| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, ~0.67 A/phase | 1 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) **or** [StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-2-phase-1-8deg-9-5ncm-13-4oz-in-0-67a-5-3v-28x28x32mm-4-wires-11hs18-0674s) |
+| BOM # | Part | Qty / channel | Unit price | Source |
+|---|---|---|---|---|
+| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, ~0.67 A/phase | 1 | ~$11–18 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) **or** [StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-2-phase-1-8deg-9-5ncm-13-4oz-in-0-67a-5-3v-28x28x32mm-4-wires-11hs18-0674s) |
 
-The StepperOnline part is ~$3 cheaper but has a longer lead time;
-either is electrically and mechanically equivalent for our use.
+The StepperOnline part is usually a few dollars cheaper but has a longer
+lead time; either is electrically and mechanically equivalent for our
+use. Reconfirm price at checkout.
 
 ### 4. Amazon / McMaster (commodity hardware) — ~$5 per channel
 
-| BOM # | Part | Qty / channel | Notes |
-|---|---|---|---|
-| 12 | 5 mm ↔ 5 mm flexible shaft coupler | 1 | Match the auger-shaft diameter from PR #16; if the auger uses an M3 or non-5 mm shaft, order a 5 mm ↔ matching-bore coupler instead. |
-| 14 | 100 µF / 25 V electrolytic cap | 1 | Required by Pololu across DRV8825 `VMOT`/`GND`. |
-| 9 | 100 µF / 10 V cap, 0.1" pin headers, jumper wires | as needed | Bench-stock; you almost certainly have these. |
+| BOM # | Part | Qty / channel | Unit price | Notes |
+|---|---|---|---|---|
+| 12 | 5 mm ↔ 5 mm flexible shaft coupler | 1 | ~$3–6 | Match the auger-shaft diameter from PR #16; if the auger uses an M3 or non-5 mm shaft, order a 5 mm ↔ matching-bore coupler instead. |
+| 14 | 100 µF / 25 V electrolytic cap | 1 | <$0.50 | Required by Pololu across DRV8825 `VMOT`/`GND`; also recommended on the Tic T500's `VIN`. |
+| 9 | 100 µF / 10 V cap, 0.1" pin headers, jumper wires | as needed | bench-stock | You almost certainly have these. |
 
 ### Items to **skip** for the single-supply variant
 
@@ -148,19 +164,20 @@ Per the PR thread, BYU's PSC stocks some of these (and similar Tic-500 step/dir 
 ### Suggested first-buy: one channel (v1.0 of PR #35)
 
 For the v1.0 single-channel prototype, **place all four carts above
-once with `qty = 1` per item** — total ≈ **$75 + shipping** for the
-electronics, plus the Pi Zero 2 W and microSD if you don't already
-have them. That's everything needed to assemble the actuator stack
-shown in the schematic and exercise it from the Python stub at the
-bottom of this doc. Multiply Adafruit/Pololu/SparkFun line items
-(but **not** the wall-wart or the Pi) by `N` once you're ready to
-fan out to the N-channel ring.
+once with `qty = 1` per item** (default Tic T500 driver) — total
+**≈ $146 + shipping** for the electronics, including the Pi Zero 2 W
+and the 12 V wall-wart but excluding microSD. Substitute the
+DRV8825 carrier (item 11-alt) for the Tic T500 to bring it down to
+**≈ $129**. Multiply Adafruit/Pololu/SparkFun line items (but
+**not** the wall-wart, the buck, or the Pi) by `N` once you're
+ready to fan out to the N-channel ring.
 
 ## Power supply
 
 The actuators want two distinct rails:
 
-* **12 V / ≥1 A** for the stepper, into the DRV8825's `VMOT`.
+* **12 V / ≥1 A** for the stepper, into the Tic T500's `VIN` (or
+  the DRV8825 carrier's `VMOT` if you went with item 11-alt).
 * **5 V / ≥1.5 A** for the solenoid coil (peak ~1.1 A inrush)
   *and* the Pi Zero 2 W (~0.7 A under WiFi load), with a common
   ground tied to the stepper supply's GND.
@@ -223,10 +240,66 @@ frame size and lines up well with the 20 mm OD housing footprint:
   through a **flexible shaft coupler** (item 12). No belt, no
   pulleys, no alignment tooling.
 
-### Driver: Pololu DRV8825 stepper-driver carrier (item 11)
+### Driver: Pololu Tic T500 (item 11, **default** — USB / serial / I²C)
 
-Same "pre-packaged board, just solder pin headers in" pattern as
-the rest of this BOM. The DRV8825 carrier provides:
+Per maintainer feedback, the **[Pololu Tic T500](https://www.pololu.com/product/3135)**
+($32.95) is the **default recommended driver** for the auger
+stepper. The Tic accepts high-level commands (target position /
+target velocity) over USB, TTL serial, I²C, analog voltage
+(potentiometer), quadrature encoder, or hobby RC, and generates the
+step/dir waveform itself — so a Pi Zero 2 W or Pico W just sends
+"go to position N" over USB and the Tic handles acceleration,
+deceleration, microstepping, and current limiting. It also has an
+**on-board safe-state `~EN`** behaviour, which sidesteps the
+boot-time pull-up issue called out by the Edison review for the bare
+DRV8825.
+
+Spec highlights:
+
+* **`VIN`: 4.5 V – 35 V** — comfortably handles our 12 V rail.
+* **~1.5 A/phase** continuous without a heat sink (≤2.5 A with
+  airflow) — well above the 0.67 A/phase that the NEMA 11
+  (item 10) needs.
+* On-board MP6500 driver, current limit set in software (no `Vref`
+  pot to dial in by hand).
+* Configured once via the free [Pololu Tic Control Center
+  GUI](https://www.pololu.com/docs/0J71/3) over USB; the same USB
+  cable then becomes the runtime control link to the host.
+* Safe-state `~ENABLE` on power-up — no risk of the coils
+  energizing while the host MCU's GPIOs are still hi-Z during boot.
+
+Wire-up:
+
+* `VIN` / `GND` ← **12 V external PSU** (item 13), with the
+  100 µF / 25 V cap (item 14) right at those pins.
+* Stepper coils → the Tic's `A1, A2, B1, B2` screw terminals (or
+  pre-soldered headers, depending on the variant you order).
+* Host link → either a USB cable from the Pi Zero 2 W's micro-USB
+  OTG port, or `SCL`/`SDA` for I²C, or `TX`/`RX` for TTL serial.
+  No `STEP` / `DIR` pulses on the host — the Tic generates them
+  internally from high-level position/velocity commands.
+* Common GND between the 12 V PSU, the Tic's logic GND, and the Pi.
+
+The Tic is a **standalone board with its own USB / screw-terminal
+IO**, so unlike the DRV8825 carrier it doesn't sit on the
+Perma-Proto Bonnet. It mounts to the chassis next to the bonnet,
+sharing the 12 V rail and a common ground with everything else.
+
+The schematic in `hardware/kicad/` still draws the bare DRV8825
+carrier (item 11-alt) because it's the cheaper baseline and easier
+to capture as a single-page placeholder symbol; the net labels
+(`STEP`, `DIR`, `~EN`, `VMOT`) are unused when the Tic is the
+driver, since the Tic talks to the host over USB / I²C / serial
+instead.
+
+### Driver alternative: Pololu DRV8825 stepper-driver carrier (item 11-alt)
+
+The bare **DRV8825 carrier** ($15.95) is the cheaper, lower-level
+alternative — pick this if you'd rather save ~$17/channel and don't
+mind generating the step pulses on the Pi yourself. It's also the
+driver drawn in the KiCad schematic.
+
+It provides:
 
 * Two integrated H-bridges with built-in flyback handling (no
   external diodes).
@@ -250,25 +323,13 @@ Wire-up:
   motor datasheet for pairs).
 * `STEP` ← Pi **GPIO20**, `DIR` ← Pi **GPIO21**, `~ENABLE` ← Pi
   **GPIO16** (active-low; pull high to coast the motor between
-  doses to save power and heat).
+  doses to save power and heat). Add a **10 kΩ pull-up from
+  `~ENABLE` to `+3V3`** so the driver coasts safely while the Pi's
+  GPIOs are hi-Z during boot (per Edison review).
 * `RESET` and `SLEEP` tied together and pulled high (otherwise the
   driver stays asleep).
 * Common GND between the 12 V PSU, the DRV8825 logic GND, and the
   Pi.
-
-### Driver alternative: Pololu Tic T500 (USB / step+dir / I²C)
-
-Per maintainer feedback, the **[Pololu Tic T500](https://www.pololu.com/product/3135)** ($32.95) is a known-good drop-in replacement for the DRV8825 carrier when you want to skip the step-pulse-generation/timing work on the host MCU. The Tic accepts high-level commands (target position / target velocity) over USB, TTL serial, I²C, analog, or RC, and generates the step/dir waveform itself — so a Pi Zero 2 W or Pico W just sends "go to position N" over USB and the Tic handles acceleration, deceleration, and current limiting. It also has an on-board ~EN safe state, which sidesteps the boot-time pull-up issue called out by the Edison review for the bare DRV8825.
-
-Trade-offs vs. the DRV8825 carrier (item 11):
-
-* **+** Plug-and-play USB control from any host with a USB port; no real-time step-pulse generation needed on the Pi.
-* **+** Built-in current limit, microstepping config, and ~EN handling configured from the Pololu GUI — no current-sense pot to tweak.
-* **+** Same 8.5–35 V `VIN` range and ~1.5 A/phase headroom as the DRV8825 (handles the NEMA 11 with margin).
-* **−** ~4× the cost (\$33 vs. \$8). For a single-channel v1.0 prototype this is a worthwhile simplification; for an N-channel ring you'd weigh per-channel cost vs. firmware complexity.
-* **−** No longer "soldered onto the bonnet" — the Tic is a standalone board with its own USB/screw-terminal IO. Fits the same wiring story (12 V in, motor coils out), but mounts on the chassis rather than on the Perma-Proto.
-
-If you've already had a good experience with Pololu's Tic family (and PSC stocks them), the Tic T500 is the recommended driver substitution. Net labels in the schematic (`STEP`, `DIR`, `~EN`, `VMOT`) all map cleanly to either driver — the DRV8825 carrier is drawn in the schematic because it's the cheaper baseline.
 
 ### Belt-drive alternative
 
@@ -462,23 +523,39 @@ before fabrication.
    `IN1` to the Pi's GPIO18 pad, `IN2` to GND. Wire `OUT1`/`OUT2`
    to the solenoid coil leads (polarity doesn't matter for a single
    coil).
-4. Solder the **DRV8825 carrier** (item 11) onto the Bonnet using
-   its included 0.1" pin headers. Jumper `STEP`→GPIO20, `DIR`→GPIO21,
-   `~ENABLE`→GPIO16; tie `RESET` and `SLEEP` together to `3V3`.
-   Pick a microstep mode by tying `M0/M1/M2` to `3V3` or `GND`
-   (start with all-low = full step, switch to all-high = 1/32 once
-   calibration is dialed in). Wire `A1/A2` and `B1/B2` to the
-   stepper coils.
+4. **Wire up the stepper driver** — pick the variant matching the
+   driver you ordered:
+   * **Default (Tic T500, item 11):** mount the Tic on the chassis
+     near the Bonnet (it's a standalone board, not soldered onto
+     the Perma-Proto). Bring 12 V into its `VIN`/`GND` screw
+     terminals (with the 100 µF / 25 V cap right at the pins);
+     wire the four stepper coil leads into `A1/A2/B1/B2`. Connect
+     the Tic to the Pi via a **USB cable** (Pi micro-USB OTG →
+     Tic micro-USB) — no GPIO pulses needed. Configure once over
+     USB with the Pololu Tic Control Center (set current limit to
+     ~0.67 A/phase, pick microstep mode, enable safe-state
+     `~ENABLE`). Skip the per-Pi-GPIO wiring below.
+   * **Alternative (DRV8825 carrier, item 11-alt):** solder the
+     **DRV8825 carrier** onto the Bonnet using its included 0.1"
+     pin headers. Jumper `STEP`→GPIO20, `DIR`→GPIO21,
+     `~ENABLE`→GPIO16; tie `RESET` and `SLEEP` together to `3V3`.
+     Add a **10 kΩ pull-up from `~ENABLE` to `+3V3`** so the
+     driver coasts safely while the Pi's GPIOs are hi-Z during
+     boot. Pick a microstep mode by tying `M0/M1/M2` to `3V3` or
+     `GND` (start with all-low = full step, switch to all-high =
+     1/32 once calibration is dialed in). Wire `A1/A2` and `B1/B2`
+     to the stepper coils.
 5. **Power-supply wiring — pick one of the two variants in the
    "Power supply" section above:**
    * **Recommended (single-supply):** solder the **Pololu D24V22F5
      buck converter** (item 15) onto the Bonnet next to the
-     DRV8825. Bring the **12 V PSU** (item 13) in on a
-     screw-terminal pad pair; jumper `+` to both the DRV8825's
-     `VMOT`, the buck's `VIN`, and the 100 µF / 25 V cap's `+`,
-     and `−` to the DRV8825's `GND`, the buck's `GND`, the cap's
-     `−`, and a Pi GND pad. Jumper the buck's `VOUT` to the
-     DRV8871's `VM`, the 100 µF / 10 V cap's `+`, and the Pi's
+     stepper-driver feed. Bring the **12 V PSU** (item 13) in on a
+     screw-terminal pad pair; jumper `+` to both the stepper
+     driver's `VIN`/`VMOT` (Tic T500 or DRV8825 carrier
+     respectively), the buck's `VIN`, and the 100 µF / 25 V cap's
+     `+`, and `−` to the stepper driver's `GND`, the buck's `GND`,
+     the cap's `−`, and a Pi GND pad. Jumper the buck's `VOUT` to
+     the DRV8871's `VM`, the 100 µF / 10 V cap's `+`, and the Pi's
      5 V rail (header pin 2 or 4 on the bonnet). The buck shares
      the bonnet's common ground from the previous jumper, so its
      `GND` pin needs no separate wire. Wire the DRV8871's `GND`
@@ -490,14 +567,16 @@ before fabrication.
      100 µF / 10 V cap's `+`, and `−` to the DRV8871's `GND`,
      the cap's `−`, and a Pi GND pad. Then bring the **12 V PSU**
      (item 13) in on a second screw-terminal pad pair; jumper
-     `+` to the DRV8825's `VMOT` and the 100 µF / 25 V cap's
-     `+`, and `−` to the DRV8825's `GND`, the cap's `−`, and
-     the same Pi GND pad.
+     `+` to the stepper driver's `VIN`/`VMOT` and the
+     100 µF / 25 V cap's `+`, and `−` to the stepper driver's
+     `GND`, the cap's `−`, and the same Pi GND pad.
 
-   **In either variant, set the DRV8825 current-limit pot to
-   ~Vref = 0.42 V (≈0.67 A/phase) before powering the motor for
-   the first time** — this is the only "tuning" step in the
-   build.
+   **If you went with the DRV8825 carrier (item 11-alt), set its
+   current-limit pot to ~Vref = 0.42 V (≈0.67 A/phase) before
+   powering the motor for the first time** — this is the only
+   "tuning" step in that variant. The Tic T500 sets its current
+   limit in software via the Pololu GUI, so no pot adjustment is
+   needed there.
 6. Couple the stepper output shaft to the auger shaft with the
    flexible coupler (item 12). The coupler is the *only*
    mechanical link between the rotating auger shaft and the
