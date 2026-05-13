@@ -93,6 +93,10 @@ being handled are attached to that issue for reference. They should
 not, however, drive design decisions about flow behaviour for the
 actual metal powders listed above.
 
+A buy-list with validated product links and indicative prices for
+this surrogate set is kept separately in
+[`candidate-powders-shopping-list.md`](candidate-powders-shopping-list.md).
+
 ## Open questions
 
 - Confirm the explicit 15-element list from the digital-alloy-lab
