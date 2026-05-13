@@ -16,6 +16,19 @@ documented by the community rather than by Bambu Lab.
 > printer is in **Developer Mode** (LAN-only, no Bambu Cloud). The same
 > framework is expected to apply to the H2D. Plan integrations around
 > one of the three modes below.[^bambu-third-party]
+>
+> **Terminology note — Developer Mode vs LAN Only Mode.** These are two
+> *separate* toggles on the printer, and the doc uses both. **Developer
+> Mode** exposes the LAN MQTT broker (`8883/tcp`) + FTPS endpoint
+> (`990/tcp`) with the `(IP, access code, serial)` auth triple — that's
+> what mode B and the relay actually talk to. **LAN Only Mode** is an
+> *additional, optional* hardening step that disables the Bambu Cloud
+> link entirely. You can run mode B / the relay with Developer Mode
+> **on** and LAN Only Mode **off** (mixed Cloud+LAN) — that's what
+> [Step 6 → "additive" caveat](#step-6--slice-on-the-pi-ship-stlargs-remotely-tailscale-as-lan-variant)
+> assumes, and it lets manual Bambu Studio cloud-submit keep working
+> alongside the programmatic relay. Flipping LAN Only on is what would
+> break those manual cloud prints, not the relay itself.
 
 ## TL;DR — three viable modes
 
@@ -137,20 +150,26 @@ Test-NetConnection -ComputerName <IP> -Port 8883
 ```python
 # h2d_smoketest.py — works on Windows, macOS, and Linux.
 # pip install paho-mqtt
-import ssl, ftplib, paho.mqtt.client as mqtt
+import ssl, ftplib, threading, paho.mqtt.client as mqtt
 IP, ACCESS_CODE, SERIAL = "<IP>", "<ACCESS_CODE>", "<SERIAL>"
 
-# 2b. MQTT-over-TLS — print first report message and exit
+# 2b. MQTT-over-TLS — wait up to 15 s for the first report, then move on
+got = threading.Event()
 def on_msg(c, u, m):
-    print("MQTT OK:", m.topic, m.payload[:120], "…"); c.disconnect()
+    print("MQTT OK:", m.topic, m.payload[:120], "…"); got.set()
 c = mqtt.Client()
 c.username_pw_set("bblp", ACCESS_CODE)
 c.tls_set(cert_reqs=ssl.CERT_NONE); c.tls_insecure_set(True)
 c.on_message = on_msg
 c.connect(IP, 8883, 30)
-c.subscribe(f"device/{SERIAL}/report"); c.loop_forever()
+c.subscribe(f"device/{SERIAL}/report")
+c.loop_start()
+if not got.wait(timeout=15):
+    print("MQTT WARN: connected but no report in 15 s "
+          "(check SERIAL — FTPS check will still run below)")
+c.loop_stop(); c.disconnect()
 
-# 2c. FTPS — list /cache
+# 2c. FTPS — list /cache (runs regardless of MQTT result so failures are isolable)
 ctx = ssl._create_unverified_context()
 ftps = ftplib.FTP_TLS(context=ctx); ftps.connect(IP, 990, 30)
 ftps.login("bblp", ACCESS_CODE); ftps.prot_p()
@@ -277,7 +296,30 @@ RELAY_TOKEN   = os.environ["RELAY_TOKEN"]   # long random string; share with cal
 
 app     = FastAPI()
 printer = bl.Printer(PRINTER_IP, ACCESS_CODE, SERIAL)
-printer.connect()
+
+@app.on_event("startup")
+async def _connect():
+    # Connect inside the lifecycle hook (not at import time) so the
+    # service still starts if the printer is briefly unreachable and
+    # so Uvicorn --reload / multi-worker doesn't open duplicates.
+    try:
+        printer.connect()
+    except Exception as e:
+        # Defer hard failure to first request; /healthz can surface it.
+        print(f"[relay] initial connect failed: {e!r}; will retry on demand")
+
+@app.on_event("shutdown")
+async def _disconnect():
+    try:
+        printer.disconnect()
+    except Exception:
+        pass
+
+def _ensure_connected():
+    # Cheap reconnect helper for use in routes; bambulabs_api is
+    # idempotent on .connect() once an MQTT session is live.
+    if not getattr(printer, "_connected", True):
+        printer.connect()
 
 def auth(token: str | None):
     if not token or not secrets.compare_digest(token, RELAY_TOKEN):
@@ -286,12 +328,14 @@ def auth(token: str | None):
 @app.get("/status")
 def status(x_relay_token: str | None = Header(None)):
     auth(x_relay_token)
+    _ensure_connected()
     return printer.mqtt_dump()        # last push_status snapshot
 
 @app.post("/print")
 async def start_print(file: UploadFile,
                       x_relay_token: str | None = Header(None)):
     auth(x_relay_token)
+    _ensure_connected()
     with tempfile.NamedTemporaryFile(suffix=".gcode.3mf", delete=False) as f:
         f.write(await file.read())
         local = f.name
@@ -455,8 +499,17 @@ from pathlib import Path
 from fastapi import Form, Header, HTTPException, UploadFile
 
 BAMBU       = os.environ["BAMBU_APPIMAGE"]            # absolute path on the Pi
-PROFILES    = Path(os.environ["H2D_PROFILE_DIR"])     # holds h2d_*_flat.json
-ALLOWED_FIL = {"PLA", "PETG", "PLA-CF"}               # tighten per your lab
+PROFILES    = Path(os.environ["H2D_PROFILE_DIR"])     # holds h2d_*_flat.json bundles
+# Per-material profile bundles, exported once from a desktop Bambu Studio
+# with an H2D installed. Each value is the flattened filament JSON the CLI
+# loads into BOTH tools (filament-map "1,2") for that material.
+FILAMENT_PROFILES = {
+    "PLA":    PROFILES / "h2d_filament_pla_flat.json",
+    "PETG":   PROFILES / "h2d_filament_petg_flat.json",
+    "PLA-CF": PROFILES / "h2d_filament_placf_flat.json",
+}
+ALLOWED_FIL = set(FILAMENT_PROFILES)
+LAYER_H_RANGE = (0.08, 0.32)                          # numeric cap on layer height
 LIMITS = {                                            # safety envelope
     "max_stl_bytes":          50 * 1024 * 1024,
     "max_print_minutes":      8 * 60,
@@ -468,14 +521,18 @@ LIMITS = {                                            # safety envelope
 def _safe_slice(stl: Path, work: Path, layer_h: float, fil: str) -> Path:
     if fil not in ALLOWED_FIL:
         raise HTTPException(400, f"filament {fil!r} not in allow-list")
+    if not (LAYER_H_RANGE[0] <= layer_h <= LAYER_H_RANGE[1]):
+        raise HTTPException(400, f"layer_height {layer_h} outside {LAYER_H_RANGE}")
+    fil_json = FILAMENT_PROFILES[fil]                 # per-material profile
     out = work / "out"
     out.mkdir()
     cp = subprocess.run(
         ["xvfb-run", "-a", "-s", "-screen 0 1280x1024x24", BAMBU,
          "--orient", "1", "--arrange", "1",
          "--load-settings",  f"{PROFILES/'h2d_machine_flat.json'};{PROFILES/'h2d_process_flat.json'}",
-         "--load-filaments", f"{PROFILES/'h2d_filament_flat.json'};{PROFILES/'h2d_filament_flat.json'}",
+         "--load-filaments", f"{fil_json};{fil_json}",   # filament profile per tool
          "--filament-map-mode", "Manual", "--filament-map", "1,2",
+         "--layer-height", f"{layer_h}",                  # CLI overrides process profile
          "--slice", "1", "--export-3mf", "out.gcode.3mf",
          "--outputdir", str(out), str(stl)],
         capture_output=True, text=True, timeout=600, cwd=work, check=False,
@@ -526,6 +583,7 @@ async def print_stl(file: UploadFile,
                     filament: str = Form("PLA"),
                     x_relay_token: str | None = Header(None)):
     auth(x_relay_token)
+    _ensure_connected()
     body = await file.read()
     if len(body) > LIMITS["max_stl_bytes"]:
         raise HTTPException(413, "STL too large")
@@ -870,7 +928,7 @@ own *"Slice stls"* example is exactly this STL → sliced-`.3mf` flow:
 
 ```bash
 xvfb-run -a bambu-studio \
-  --orient --arrange 1 \
+  --orient 1 --arrange 1 \
   --load-settings  "machine.json;process.json" \
   --load-filaments "filament.json" \
   --slice 0 \
@@ -882,8 +940,14 @@ xvfb-run -a bambu-studio \
   from a desktop Bambu Studio that has an **H2D** machine profile
   installed — this is what gives the resulting `.gcode.3mf` the
   per-tool / IDEX / laser metadata the H2D needs.[^bambu-studio-cli]
-- `--orient` and `--arrange 1` are needed for raw STL input because,
-  unlike a `.3mf`, an STL has no plate layout.[^bambu-studio-cli]
+- `--orient 1` and `--arrange 1` are needed for raw STL input because,
+  unlike a `.3mf`, an STL has no plate layout. Both flags accept an
+  explicit `1` (enable) / `0` (disable) argument; the wiki also shows
+  `--orient` as a bare boolean toggle and both forms are accepted by
+  v02.06.00.51 — the doc standardises on the explicit `--orient 1
+  --arrange 1` form everywhere so the same command works whether you
+  copy from this section or from the verified H2D recipe
+  below.[^bambu-studio-cli]
 - `--slice 0` slices all plates; pass a 1-based index to slice one
   specific plate.[^bambu-studio-cli]
 - The output `.gcode.3mf` is the file you upload via FTPS in mode B
