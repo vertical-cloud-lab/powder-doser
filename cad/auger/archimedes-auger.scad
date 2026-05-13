@@ -1,5 +1,5 @@
 // ================================================================
-// Powder Excavator — Archimedes Auger Attachment  v4 (integrated)
+// Powder Excavator — Archimedes Auger Attachment  v4.1 (integrated)
 // ================================================================
 //
 // One-piece rotating helical dispenser — auger + tube fused as a single
@@ -11,7 +11,7 @@
 //   v1/v2/v2.1  monolithic union() rotor (this architecture).
 //   v3/v3.1     experiment: split into fixed shaft + rotating housing
 //               around a 0.5 mm radial-clearance journal fit.
-//   v4 (here)   REVERTED to monolithic per PR review. Reasons:
+//   v4          REVERTED to monolithic per PR review. Reasons:
 //                 - It worked fine for xanthan-gum dispensing in bench
 //                   testing.
 //                 - One rigid body means one rotating frame: easier to
@@ -19,6 +19,21 @@
 //                   vibration motor (#31) without wiring across a
 //                   journal bearing.
 //                 - Mimics autotrickler's tube-with-internal-helix.
+//   v4.1 (here) Add a central support shaft the helix wraps around
+//               (the actual Archimedes-screw geometry). v4 had no
+//               central column, so the helix fin's inner edge (radius
+//               2 mm) was unsupported above the funnel — the first
+//               few mm of fin material printed in mid-air. The H2D
+//               test print on 2026-05-13 confirmed this failure mode:
+//               outer tube printed cleanly, the inner helix came out
+//               as a tangled mass of strings (the "floating cantilever"
+//               warning Bambu Studio raised on import was a true
+//               positive for this geometry, not a false positive as my
+//               previous reply asserted). Real augers (autotrickler,
+//               trickle-charger, every grain-elevator screw) have a
+//               central shaft for exactly this reason. shaft_r = 2.5 mm
+//               costs ~6% channel volume (75 cm³ vs 80 cm³) and
+//               trades it for a printable inner edge.
 //
 // v4 changes vs v2.1 (capacity scale-up — review thread "we need larger
 // capacity here"):
@@ -83,7 +98,16 @@ pitch           = 10;    // mm per full 360° rotation
 // Helix angle at mid-radius ≈ 15° (was 18° at OD=20) → still printable
 // without per-layer support; each 0.2 mm layer rotates by 7.2°.
 fin_thickness   = 2;     // mm — blade thickness (≥1.6 mm for 0.4 mm nozzle)
-fin_inner_r     = 2.0;   // mm — inner edge radius (clear of exit hole & M3)
+fin_inner_r     = 2.0;   // mm — inner edge radius (sinks into central shaft)
+
+/* [Central Shaft] */
+// The helix wraps around this rod; it provides continuous radial support
+// for the fin's inner edge so each layer prints on top of the layer below
+// rather than in mid-air. v4 omitted the shaft and the H2D test print
+// failed (inner helix came out as a string-blob). shaft_r MUST be ≥
+// fin_inner_r so the fin sinks into the shaft (else CGAL splits the
+// union along zero-thickness coincident faces on STL export).
+shaft_r         = 2.5;   // mm — outer radius of central support rod
 
 /* [Loading Slots — Top Cap] */
 // Powder is loaded through these slots from above before the assembly
@@ -168,9 +192,23 @@ module top_cap() {
     }
 }
 
+// Central support shaft — the helix wraps around this rod, giving the
+// fin's inner edge continuous z-support during printing. Extends from
+// 1 mm into the funnel cone (below) to 1 mm into the M3 boss (above),
+// so the union() merges cleanly into a single closed manifold. The M3
+// pilot hole (drilled top-down by top_cap()) reaches into the upper
+// 12 mm of the shaft; the rest is solid PLA.
+module central_shaft() {
+    z0 = helix_z_start - 1;
+    z1 = helix_z_end   + 1;
+    translate([0, 0, z0])
+        cylinder(r=shaft_r, h=z1 - z0);
+}
+
 // Helical fin — the Archimedes element.
 // Single-start helix from fin_inner_r to (inner_r + fin_wall_overlap).
-// The outer edge sinks `fin_wall_overlap` into the tube wall and the
+// The outer edge sinks `fin_wall_overlap` into the tube wall, the inner
+// edge sinks (shaft_r - fin_inner_r) into the central shaft, and the
 // vertical extent sinks `fin_z_overlap` into the funnel/boss; without
 // these overlaps the union() produces zero-thickness coincident
 // surfaces, which CGAL splits into ~100 disconnected volumes on STL
@@ -204,6 +242,7 @@ module archimedes_auger() {
         tube_walls();
         bottom_funnel();
         top_cap();
+        central_shaft();
         helical_fin();
     }
 }
