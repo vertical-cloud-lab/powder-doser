@@ -1,39 +1,45 @@
 // ================================================================
-// Powder Excavator — Archimedes Auger Attachment  v4.1 (integrated)
+// Powder Excavator — Archimedes Auger Attachment  v5 (hollow tube)
 // ================================================================
 //
-// One-piece rotating helical dispenser — auger + tube fused as a single
-// rigid rotor, mirroring the autotrickler-style architecture. The whole
-// cylinder spins on the stepper-driven spindle; powder is advanced down
-// the helical channel and exits the on-axis hole at the bottom.
+// Rotating dispenser tube — hollow cylinder with conical exit funnel,
+// top loading slots, and M3 spindle mount. NO internal helix and NO
+// central shaft. Powder is metered by rotation + gravity through the
+// on-axis exit hole, with de-bridging from the planned solenoid (#25)
+// and coin vibration motor (#31).
 //
 // Architecture history (so future maintainers don't re-litigate this):
-//   v1/v2/v2.1  monolithic union() rotor (this architecture).
+//   v1/v2/v2.1  monolithic union() rotor — outer tube + helical fin.
 //   v3/v3.1     experiment: split into fixed shaft + rotating housing
 //               around a 0.5 mm radial-clearance journal fit.
-//   v4          REVERTED to monolithic per PR review. Reasons:
-//                 - It worked fine for xanthan-gum dispensing in bench
-//                   testing.
-//                 - One rigid body means one rotating frame: easier to
-//                   couple the planned solenoid (tapping, #25) and coin
-//                   vibration motor (#31) without wiring across a
-//                   journal bearing.
-//                 - Mimics autotrickler's tube-with-internal-helix.
-//   v4.1 (here) Add a central support shaft the helix wraps around
-//               (the actual Archimedes-screw geometry). v4 had no
-//               central column, so the helix fin's inner edge (radius
-//               2 mm) was unsupported above the funnel — the first
-//               few mm of fin material printed in mid-air. The H2D
-//               test print on 2026-05-13 confirmed this failure mode:
-//               outer tube printed cleanly, the inner helix came out
-//               as a tangled mass of strings (the "floating cantilever"
-//               warning Bambu Studio raised on import was a true
-//               positive for this geometry, not a false positive as my
-//               previous reply asserted). Real augers (autotrickler,
-//               trickle-charger, every grain-elevator screw) have a
-//               central shaft for exactly this reason. shaft_r = 2.5 mm
-//               costs ~6% channel volume (75 cm³ vs 80 cm³) and
-//               trades it for a printable inner edge.
+//   v4          Reverted to monolithic per PR review.
+//   v4.1        Added a central support shaft for the helix to print
+//               on (real-auger geometry).
+//   v5 (here)   Drop the inner core entirely. The H2D test print on
+//               2026-05-13 produced a clean outer tube + funnel + cap
+//               but the helix / central shaft inside came out as
+//               strings. Per PR #16 review thread: "We were able to
+//               print this without the inner core, leave the inner
+//               core out, and it's fine to make that 'empty core
+//               space' larger to reduce the cantilever effect. I don't
+//               want powder getting trapped." So:
+//                 - helical_fin() and central_shaft() removed from the
+//                   union; the assembly is now just tube_walls() +
+//                   bottom_funnel() + top_cap().
+//                 - The bottom funnel is lengthened (bottom_cap_h
+//                   8 mm → 12 mm) so the cone half-angle from vertical
+//                   drops below 45° (atan(8.5/12) ≈ 35°) — self-
+//                   supporting under any slicer, no helix-inner-edge
+//                   bridge to worry about.
+//                 - Inner bore (inner_r ≈ 10.5 mm, ID 21 mm) is left
+//                   untouched: it's already wide and smooth, with no
+//                   inward features for powder to lodge against, so
+//                   nothing can get trapped between auger and tube
+//                   (there is no auger).
+//                 - Throughput is now governed by the exit-hole
+//                   diameter + rotation speed + vibration tap, the
+//                   autotrickler-style metering scheme. Capacity ≈
+//                   80 cm³ usable.
 //
 // v4 changes vs v2.1 (capacity scale-up — review thread "we need larger
 // capacity here"):
@@ -89,25 +95,12 @@ m3_boss_h       = 6;     // mm — boss height below cap
 // 0.4 mm nozzle ≈ 2.5 mm functional diameter. Open with a 2.5 mm drill
 // bit if it comes out tight.
 exit_hole_d     = 3.0;   // mm — exit hole diameter (CAD)
-bottom_cap_h    = 8;     // mm — height of conical funnel section
-                          // (was 6 mm in v2.1; +2 mm gives a gentler
-                          // taper at the larger 25 mm OD)
-
-/* [Helical Fin] */
-pitch           = 10;    // mm per full 360° rotation
-// Helix angle at mid-radius ≈ 15° (was 18° at OD=20) → still printable
-// without per-layer support; each 0.2 mm layer rotates by 7.2°.
-fin_thickness   = 2;     // mm — blade thickness (≥1.6 mm for 0.4 mm nozzle)
-fin_inner_r     = 2.0;   // mm — inner edge radius (sinks into central shaft)
-
-/* [Central Shaft] */
-// The helix wraps around this rod; it provides continuous radial support
-// for the fin's inner edge so each layer prints on top of the layer below
-// rather than in mid-air. v4 omitted the shaft and the H2D test print
-// failed (inner helix came out as a string-blob). shaft_r MUST be ≥
-// fin_inner_r so the fin sinks into the shaft (else CGAL splits the
-// union along zero-thickness coincident faces on STL export).
-shaft_r         = 2.5;   // mm — outer radius of central support rod
+bottom_cap_h    = 12;    // mm — height of conical funnel section.
+                          // v5: 8 → 12 mm so the cone half-angle from
+                          // vertical = atan((inner_r - exit_r)/h) ≈ 35°,
+                          // well under any slicer's 50° overhang
+                          // threshold — funnel is fully self-supporting
+                          // without supports or a brim ring.
 
 /* [Loading Slots — Top Cap] */
 // Powder is loaded through these slots from above before the assembly
@@ -126,12 +119,6 @@ inner_d         = outer_diameter - 2 * wall_thickness;
 inner_r         = inner_d / 2;
 outer_r         = outer_diameter / 2;
 m3_pilot_depth  = top_cap_height + m3_boss_h;
-helix_z_start   = bottom_cap_h;
-helix_z_end     = total_height - top_cap_height - m3_boss_h;
-helix_height    = helix_z_end - helix_z_start;
-turns           = helix_height / pitch;
-slices_per_turn = 80;
-total_slices    = ceil(turns * slices_per_turn);
 
 $fn = 64;
 
@@ -192,46 +179,7 @@ module top_cap() {
     }
 }
 
-// Central support shaft — the helix wraps around this rod, giving the
-// fin's inner edge continuous z-support during printing. Extends from
-// 1 mm into the funnel cone (below) to 1 mm into the M3 boss (above),
-// so the union() merges cleanly into a single closed manifold. The M3
-// pilot hole (drilled top-down by top_cap()) reaches into the upper
-// 12 mm of the shaft; the rest is solid PLA.
-module central_shaft() {
-    z0 = helix_z_start - 1;
-    z1 = helix_z_end   + 1;
-    translate([0, 0, z0])
-        cylinder(r=shaft_r, h=z1 - z0);
-}
-
-// Helical fin — the Archimedes element.
-// Single-start helix from fin_inner_r to (inner_r + fin_wall_overlap).
-// The outer edge sinks `fin_wall_overlap` into the tube wall, the inner
-// edge sinks (shaft_r - fin_inner_r) into the central shaft, and the
-// vertical extent sinks `fin_z_overlap` into the funnel/boss; without
-// these overlaps the union() produces zero-thickness coincident
-// surfaces, which CGAL splits into ~100 disconnected volumes on STL
-// export. With them, admesh reports a single closed manifold.
-fin_wall_overlap = 0.4;   // mm
-fin_z_overlap    = 0.2;   // mm
-
-module helical_fin() {
-    fin_outer = inner_r + fin_wall_overlap;
-    fin_width = fin_outer - fin_inner_r;
-    z_start   = helix_z_start - fin_z_overlap;
-    z_height  = helix_height + 2 * fin_z_overlap;
-    translate([0, 0, z_start])
-    linear_extrude(
-        height    = z_height,
-        twist     = turns * 360,
-        slices    = total_slices,
-        convexity = 10
-    ) {
-        translate([(fin_inner_r + fin_outer) / 2, 0])
-            square([fin_width, fin_thickness], center=true);
-    }
-}
+// Central support shaft and helical fin removed in v5 — see header.
 
 // ================================================================
 // Assembly
@@ -242,8 +190,6 @@ module archimedes_auger() {
         tube_walls();
         bottom_funnel();
         top_cap();
-        central_shaft();
-        helical_fin();
     }
 }
 

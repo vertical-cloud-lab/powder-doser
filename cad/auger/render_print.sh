@@ -13,7 +13,7 @@
 #   archimedes-auger.stp              STEP B-rep (faceted) via FreeCAD/OCCT
 #   archimedes-auger.3mf              Model-only 3MF (Bambu Studio importable)
 #   archimedes-auger-iso.png          Isometric preview
-#   archimedes-auger-cutaway.png      Half-cutaway showing internal helix
+#   archimedes-auger-cutaway.png      Half-cutaway showing internal bore
 #   slices/archimedes-auger.H2D.gcode PrusaSlicer slice for Bambu Lab H2D
 #   slices/AUGER.gcode                8.3-name USB-friendly copy
 # Plus optional CuraEngine slices via slice_cura.sh.
