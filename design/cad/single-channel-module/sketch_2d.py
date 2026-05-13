@@ -48,14 +48,19 @@ CART_HOPPER_OD = 60.0
 CART_HOPPER_H = 60.0
 CART_NECK_H = 6.0
 
-CRADLE_PIVOT_Z = 220.0   # v3 r2: raise from 200 -> 220 (Edison r2 #7)
+CRADLE_PIVOT_Z = 70.0    # v4 (@swcharles): pivot lowered 220 -> 70 to keep
+                          # auger mouth near base — minimal swing across tilt
 CRADLE_BASE_T = 8.0
 CRADLE_BASE_W = 140.0
 CHEEK_W = 100.0
 CHEEK_H = 130.0
 
-# v3: belt drive moved DOWN to just above the bearing collar (S2 fix).
-BELT_PLANE_Z = COLLAR_H + 4.0
+# v4: belt plane raised so bracket foot fits between collar flange and faceplate;
+# rotor pulley sized UP to 36T (Ø26.5) so it can clamp the rotor (was 16T Ø12.2,
+# smaller than the rotor and so impossible to mount).
+BELT_PLANE_Z = COLLAR_H + 34.0
+MOTOR_PULLEY_OD = 12.2
+ROTOR_PULLEY_OD = 26.5
 # v3: ERM coin moved off-axis to a side pad on the -Y face of the collar.
 ERM_PAD_Y_OFFSET = -(COLLAR_OD / 2 + ERM_PAD_T / 2 - 0.4)
 
@@ -509,3 +514,124 @@ fig3.tight_layout(rect=(0, 0, 1, 0.95))
 OUT3 = Path(__file__).parent / "renders" / "single_channel_module_tilt_sweep.png"
 fig3.savefig(OUT3, dpi=150, bbox_inches="tight")
 print(f"wrote {OUT3}")
+
+
+# ----------------------------------------------------------------------------
+# v4: LABELED COMPONENT DIAGRAM (@swcharles' confusion about cheeks/spine/motor)
+# Annotated side-elevation of the v4 module showing every part with a leader
+# line to clearly-spaced text labels (no text-on-text overlap). Labels are
+# placed in two columns flanking the diagram so the labels themselves never
+# overlap.
+# ----------------------------------------------------------------------------
+def draw_labeled_diagram(ax):
+    ax.set_aspect("equal")
+    spine, rotor, cart = _module_outline_pts()
+    # Spine
+    ax.add_patch(mpatches.Polygon(spine, fc="#dcdcea", ec="0.3", lw=1.2))
+    # Bearing collar
+    ax.add_patch(mpatches.Rectangle(
+        (SPINE_T / 2 + COLLAR_FLANGE_T, COLLAR_H * 0),
+        COLLAR_OD, COLLAR_H, fc="#cccccc", ec="0.3", lw=1.0))
+    # Rotor (auger)
+    ax.add_patch(mpatches.Polygon(rotor, fc="#fff4cc", ec="0.4", lw=1.0))
+    # Cartridge
+    ax.add_patch(mpatches.Polygon(cart, fc="#f8e5b0", ec="0.4", lw=1.0))
+    # Motor bracket (foot + face L)
+    foot_lo_z = COLLAR_H + 4
+    face_top_z = BELT_PLANE_Z + PULLEY_H + 4
+    foot_h = face_top_z - foot_lo_z
+    ax.add_patch(mpatches.Rectangle((SPINE_T / 2, foot_lo_z),
+                                    5, foot_h, fc="#bbbbcc", ec="0.3", lw=1.0))
+    ax.add_patch(mpatches.Rectangle((SPINE_T / 2, face_top_z),
+                                    45, 5, fc="#bbbbcc", ec="0.3", lw=1.0))
+    # NEMA-11 stepper sitting on top of the faceplate
+    ax.add_patch(mpatches.Rectangle((SPINE_T / 2 + 22 - NEMA11_FACE / 2,
+                                     face_top_z + 5),
+                                    NEMA11_FACE, NEMA11_BODY_L,
+                                    fc="#3a3a40", ec="black", lw=0.8))
+    # Belt + pulleys (very small at this scale, drawn as dots)
+    ax.plot(SPINE_T / 2 + COLLAR_FLANGE_T + COLLAR_OD / 2, BELT_PLANE_Z + 6,
+            "o", ms=8, color="#777")
+    # Pivot dot
+    ax.plot(0, CRADLE_PIVOT_Z, "o", ms=8, color="white",
+            mec="black", mew=1.2)
+    # Cradle base (under everything)
+    base_top_z = -CRADLE_BASE_T - 2
+    ax.add_patch(mpatches.Rectangle((-CRADLE_BASE_W / 2, base_top_z - CRADLE_BASE_T + CRADLE_BASE_T),
+                                    CRADLE_BASE_W, CRADLE_BASE_T,
+                                    fc="#bcd4bc", ec="0.3", lw=1.0))
+    # Scale + cup envelope (context). Scale sits well below the cradle so
+    # the cup catches falling powder from the exit nozzle (z=-30) with
+    # ~120 mm drop distance.
+    scale_pan_top = -150
+    scale_pillar_h = 12
+    scale_base_h = 80
+    ax.add_patch(mpatches.Rectangle((-100, scale_pan_top - 4
+                                     - scale_pillar_h - scale_base_h),
+                                    200, scale_base_h,
+                                    fc="#e0e0e8", ec="0.3", lw=1.0))
+    ax.add_patch(mpatches.Rectangle((-26, scale_pan_top - 4 - scale_pillar_h),
+                                    52, scale_pillar_h,
+                                    fc="#e0e0e8", ec="0.3", lw=1.0))
+    ax.add_patch(mpatches.Rectangle((-65, scale_pan_top - 4),
+                                    130, 4, fc="#d0d0d8", ec="0.3", lw=1.0))
+    # Cup
+    ax.add_patch(mpatches.Rectangle((AX_ROTOR - 30, scale_pan_top), 60, 100,
+                                    fc="none", ec="0.4", lw=1.0))
+    ax.text(AX_ROTOR + 38, scale_pan_top + 50, "collection\ncup",
+            ha="left", va="center", fontsize=8, color="0.3")
+
+    # Leader lines + labels (left column)
+    leftc = -260
+    for x_to, y_to, lbl in [
+        (-SPINE_T / 2, 200, "SPINE\n(printed flat plate,\nstationary frame)"),
+        (-SPINE_T / 2, CRADLE_PIVOT_Z, "PIVOT BOLT (M5)\nspine ↔ cradle cheek\n(spine swings here)"),
+        (-CRADLE_BASE_W / 2 + 20, base_top_z, "CRADLE BASE\n(stationary, side-clamped\nto a stand or rack)"),
+        (-100, scale_pan_top - scale_pillar_h - scale_base_h / 2,
+         "A&D LAB SCALE\n(EJ-303B class, context)"),
+    ]:
+        ax.annotate(lbl, xy=(x_to, y_to), xytext=(leftc, y_to),
+                    fontsize=8, ha="right", va="center",
+                    arrowprops=dict(arrowstyle="-", color="0.4", lw=0.6))
+
+    # Leader lines + labels (right column)
+    rightc = 260
+    for x_to, y_to, lbl in [
+        (SPINE_T / 2 + COLLAR_OD, COLLAR_H / 2,
+         "BEARING COLLAR (printed)\n6805ZZ inside, holds rotor\n+ ERM pad + solenoid wing"),
+        (SPINE_T / 2 + 25, face_top_z + NEMA11_BODY_L / 2 + 5,
+         "NEMA 11 STEPPER\nshaft DOWN to belt plane\n(turns the auger)"),
+        (SPINE_T / 2 + COLLAR_OD / 2 + 4, BELT_PLANE_Z + 4,
+         "GT2 BELT DRIVE\n36T rotor / 16T motor\n(2.25:1 reduction)"),
+        (AX_ROTOR + AUGER_OD / 2, AUGER_LEN / 2,
+         "AUGER ROTOR\n(PR-#16 v4, swings\nwith spine)"),
+        (AX_ROTOR + CART_HOPPER_OD / 2, AUGER_TOP_Z + CART_HOPPER_H,
+         "CARTRIDGE\n(removable hopper,\npowder enters here)"),
+        (AX_ROTOR, ROTOR_BOTTOM_Z,
+         "EXIT NOZZLE\n(falls into cup)"),
+    ]:
+        ax.annotate(lbl, xy=(x_to, y_to), xytext=(rightc, y_to),
+                    fontsize=8, ha="left", va="center",
+                    arrowprops=dict(arrowstyle="-", color="0.4", lw=0.6))
+
+    ax.set_xlim(-380, 380)
+    ax.set_ylim(-260, 430)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for s in ax.spines.values():
+        s.set_visible(False)
+    ax.set_title(
+        "v4 LABELED COMPONENT DIAGRAM — what is what, what moves, "
+        "what stays still\n"
+        "(addresses @swcharles' PR-#35 review-comment 4283013832 confusion "
+        "about cheeks/spine/motor)",
+        fontsize=10, pad=10,
+    )
+
+
+fig4, ax4 = plt.subplots(figsize=(14, 12))
+draw_labeled_diagram(ax4)
+fig4.tight_layout()
+OUT4 = Path(__file__).parent / "renders" / "single_channel_module_labeled.png"
+fig4.savefig(OUT4, dpi=150, bbox_inches="tight")
+print(f"wrote {OUT4}")

@@ -86,12 +86,22 @@ NEMA11_BOSS_D = 22.0
 NEMA11_BOSS_H = 1.5
 NEMA11_BOLT_PCD = 23.0
 
-# --- GT2 belt drive (1:1, 16T pulleys) -------------------------------------
-PULLEY_OD = 12.2          # 16-tooth GT2, OD over teeth
-PULLEY_FLANGE_OD = 16.0
+# --- GT2 belt drive ---------------------------------------------------------
+# v4: rotor pulley sized UP from 16T (Ø12.2) to 36T (Ø~26.5) per @swcharles's
+# belt-clipping note: a 16T GT2 pulley (Ø12.2) is SMALLER than the rotor
+# body (Ø25), so the belt could not physically wrap a 16T pulley clamped to
+# the rotor without intersecting the rotor wall. A 36T (Ø26.5) rotor pulley
+# clears the rotor by ~0.75 mm and gives a 36:16 ≈ 2.25× reduction (a feature,
+# not a bug — slows the auger rotation, raising metering precision).
+MOTOR_PULLEY_OD = 12.2     # 16T GT2 motor pulley (small, on NEMA 11 shaft)
+ROTOR_PULLEY_OD = 26.5     # 36T GT2 rotor pulley (large, clamps onto rotor)
+PULLEY_FLANGE_DELTA = 4.0  # flange OD = pulley OD + this
 PULLEY_H = 16.0
-BELT_WIDTH = 6.0
+BELT_WIDTH = 9.0           # v4: 6 -> 9 mm wide (S-belt section was marginal at this size)
 BELT_THK = 1.4
+# Backwards-compat alias for sketch_2d.py
+PULLEY_OD = MOTOR_PULLEY_OD
+PULLEY_FLANGE_OD = MOTOR_PULLEY_OD + PULLEY_FLANGE_DELTA
 
 # --- JF-0530B 5 V mini push-pull solenoid (PR-#25 item 4) ------------------
 SOL_W = 9.6
@@ -179,9 +189,12 @@ CART_NECK_H = 6.0                # taper transition
 # ~0.6 N·m static moment of the loaded module about the pivot at any tilt
 # in 0–90°). The -Y trunnion is still a passive M5 bolt.
 CRADLE_PIVOT_X = 0.0     # pivot is at spine's centre-of-mass (waist)
-CRADLE_PIVOT_Z = 220.0   # v3 r2 (Edison #7): raise from 200 -> 220 so the
-                          # 360 mm spine can swing through 90° without striking
-                          # the cradle base; CRADLE_PIVOT_Z >= SPINE_H/2 + 20.
+# v4 (@swcharles): pivot moved DOWN from 220 → 70 so the rotor exit nozzle
+# (at z=-30) sits only ~100 mm below the pivot instead of 250 mm. This cuts
+# the dispense-nozzle swing arc by 60% across the 0–90° tilt range, so the
+# cup below it doesn't have to be re-positioned every time the angle changes
+# AND the powder drop height stays small/consistent.
+CRADLE_PIVOT_Z = 70.0    # was 220 — pivot near auger mouth, not near top of frame
 CRADLE_PIVOT_BOLT_D = 5.0     # M5 trunnion (passive side)
 CRADLE_DETENT_R = 60.0        # arc-slot radius from pivot
 CRADLE_DETENT_ANGLES_DEG = [0, 15, 30, 45, 60, 75, 90]
@@ -208,6 +221,21 @@ WORM_GEARBOX_X = 40.0       # how far it sticks out in X from the cheek face
 
 # --- Assembly working tilt for renders -------------------------------------
 DEMO_TILT_DEG = 30.0   # what the renders show the cradle locked at
+
+# --- A&D scale envelope (context body, not printed) ------------------------
+# v4 (@swcharles): module must rest on a real surface with the cup
+# directly under the dispense nozzle. A&D EJ-303B-class footprint.
+SCALE_BASE_D = 213.0
+SCALE_BASE_W = 213.0
+SCALE_BASE_H = 80.0
+SCALE_PAN_OD = 130.0
+SCALE_PAN_T = 4.0
+SCALE_PAN_PILLAR_H = 12.0
+
+# --- Generic collection cup (context body, not printed) --------------------
+CUP_OD = 60.0
+CUP_H = 100.0
+CUP_WALL = 1.5
 
 
 # ============================================================================
@@ -430,20 +458,27 @@ def make_motor_bracket() -> cq.Workplane:
         .extrude(MB_FACE_T)
     )
 
-    # 3) Triangular gusset under the faceplate — ties the cantilever back
-    # to the foot in two places along the foot's Y range (so the faceplate
-    # doesn't snap off in tension, S8/S1).
-    for gy in (foot_centre_y - 25, foot_centre_y + 25):
-        gusset = (
-            cq.Workplane("XZ")
-            .workplane(offset=gy - 2.5)
-            .moveTo(SPINE_T / 2, MOTOR_FACE_TOP_Z)
-            .lineTo(SPINE_T / 2 + 24, MOTOR_FACE_TOP_Z)
-            .lineTo(SPINE_T / 2, MOTOR_FACE_TOP_Z - 24)
-            .close()
-            .extrude(5.0)
-        )
-        face = face.union(gusset)
+    # 3) Continuous gusset web — v4 fix per @swcharles. The previous v3
+    # bracket had TWO separate triangular gussets (gy = ±25 from foot
+    # centre, each 5 mm thick along Y). They unioned correctly to the
+    # face/foot, but visually read as 3 disconnected bodies in renders
+    # because the Y span between them (≈ 45 mm) is empty. We now build
+    # a SINGLE solid gusset whose Y span equals the bracket's Y span
+    # (MB_FOOT_W) — guaranteed one-body, with a thinner top web and
+    # ribbed underside for filament economy.
+    gusset_y_span = MB_FOOT_W - 4.0   # 2 mm setback each side
+    gusset_x_max = 24.0               # how far it cantilevers in +X
+    gusset_z_drop = 24.0              # how far it descends in -Z
+    gusset = (
+        cq.Workplane("XZ")
+        .workplane(offset=foot_centre_y - gusset_y_span / 2)
+        .moveTo(SPINE_T / 2, MOTOR_FACE_TOP_Z)
+        .lineTo(SPINE_T / 2 + gusset_x_max, MOTOR_FACE_TOP_Z)
+        .lineTo(SPINE_T / 2, MOTOR_FACE_TOP_Z - gusset_z_drop)
+        .close()
+        .extrude(gusset_y_span)
+    )
+    face = face.union(gusset)
 
     # 4) NEMA 11 shaft clearance + 4× M2.5 mount holes through the faceplate
     # at MOTOR_AXIS_OFFSET_Y.
@@ -664,63 +699,82 @@ def make_bearing() -> cq.Workplane:
     )
 
 
-def make_pulley(rotor_x: float, rotor_y: float, z0: float) -> cq.Workplane:
-    """Generic GT2 16T pulley with two flanges. Drawn as toothed cylinder
-    + two flange disks; the teeth are not modelled at scale."""
+def make_pulley(rotor_x: float, rotor_y: float, z0: float,
+                pulley_od: float = MOTOR_PULLEY_OD) -> cq.Workplane:
+    """Generic GT2 pulley with two flanges. Drawn as toothed cylinder
+    + two flange disks; the teeth are not modelled at scale.
+
+    v4: ``pulley_od`` parameterised so the rotor pulley (36T, Ø26.5)
+    can be larger than the motor pulley (16T, Ø12.2). A 16T rotor
+    pulley would be SMALLER than the rotor body (Ø25), and its belt
+    wrap would intersect the rotor wall (@swcharles's belt-clipping
+    note); a 36T rotor pulley clears the rotor with ~0.75 mm margin.
+    """
+    flange_od = pulley_od + PULLEY_FLANGE_DELTA
     body = (
         cq.Workplane("XY")
         .workplane(offset=z0)
         .center(rotor_x, rotor_y)
-        .circle(PULLEY_OD / 2)
+        .circle(pulley_od / 2)
         .extrude(PULLEY_H - 4)
     )
     flange_b = (
         cq.Workplane("XY")
         .workplane(offset=z0 - 2)
         .center(rotor_x, rotor_y)
-        .circle(PULLEY_FLANGE_OD / 2)
+        .circle(flange_od / 2)
         .extrude(2)
     )
     flange_t = (
         cq.Workplane("XY")
         .workplane(offset=z0 + PULLEY_H - 4)
         .center(rotor_x, rotor_y)
-        .circle(PULLEY_FLANGE_OD / 2)
+        .circle(flange_od / 2)
         .extrude(2)
     )
     return body.union(flange_b).union(flange_t)
 
 
-def make_belt(motor_x, motor_y, rotor_x, rotor_y, z_centre) -> cq.Workplane:
-    """A planar oval ring approximating the GT2 belt path between the
-    two pulleys. Drawn as the outer offset minus the inner offset of
-    the two pulley circles, swept at belt thickness."""
-    # Two circles connected by tangent lines — easier as a rectangle with
-    # rounded ends spanning between the pulley centres.
+def make_belt(motor_x, motor_y, rotor_x, rotor_y, z_centre,
+              motor_pulley_od: float = MOTOR_PULLEY_OD,
+              rotor_pulley_od: float = ROTOR_PULLEY_OD) -> cq.Workplane:
+    """Planar oval ring approximating the GT2 belt path between the
+    two pulleys. Uses outer-tangent envelopes around two CIRCLES of
+    DIFFERENT radius (v4): the motor pulley is small, the rotor
+    pulley is large, so the belt envelope is a stadium with an
+    asymmetric tangent quadrilateral, not a uniform oval.
+    """
+    # Vector from rotor (large) to motor (small)
     span = math.hypot(motor_x - rotor_x, motor_y - rotor_y)
     angle = math.degrees(math.atan2(motor_y - rotor_y, motor_x - rotor_x))
-    # Make in local frame (rotor pulley at origin)
-    half_w = PULLEY_OD / 2 + BELT_THK / 2
-    inner_half_w = PULLEY_OD / 2 - BELT_THK / 2
+    r_big = rotor_pulley_od / 2
+    r_sml = motor_pulley_od / 2
+    # Build belt in local frame: rotor pulley centre at origin (0,0),
+    # motor pulley centre at (span, 0). Wrap each pulley with a half-
+    # disk; tangent lines link them on each side.
+    outer_big = r_big + BELT_THK / 2
+    inner_big = r_big - BELT_THK / 2
+    outer_sml = r_sml + BELT_THK / 2
+    inner_sml = r_sml - BELT_THK / 2
     outer = (
         cq.Workplane("XY")
         .workplane(offset=z_centre - BELT_WIDTH / 2)
-        .moveTo(0, half_w)
-        .lineTo(span, half_w)
-        .threePointArc((span + half_w, 0), (span, -half_w))
-        .lineTo(0, -half_w)
-        .threePointArc((-half_w, 0), (0, half_w))
+        .moveTo(0, outer_big)
+        .lineTo(span, outer_sml)
+        .threePointArc((span + outer_sml, 0), (span, -outer_sml))
+        .lineTo(0, -outer_big)
+        .threePointArc((-outer_big, 0), (0, outer_big))
         .close()
         .extrude(BELT_WIDTH)
     )
     inner = (
         cq.Workplane("XY")
         .workplane(offset=z_centre - BELT_WIDTH / 2)
-        .moveTo(0, inner_half_w)
-        .lineTo(span, inner_half_w)
-        .threePointArc((span + inner_half_w, 0), (span, -inner_half_w))
-        .lineTo(0, -inner_half_w)
-        .threePointArc((-inner_half_w, 0), (0, inner_half_w))
+        .moveTo(0, inner_big)
+        .lineTo(span, inner_sml)
+        .threePointArc((span + inner_sml, 0), (span, -inner_sml))
+        .lineTo(0, -inner_big)
+        .threePointArc((-inner_big, 0), (0, inner_big))
         .close()
         .extrude(BELT_WIDTH)
     )
@@ -850,6 +904,55 @@ def make_tilt_drive() -> cq.Workplane:
     return box.union(stepper).union(out_shaft)
 
 
+def make_scale() -> cq.Workplane:
+    """A&D EJ-303B-class lab scale envelope (context body, NOT printed).
+
+    Per @swcharles's v4 ask: every render needs a scale + cup so the
+    module isn't shown 'floating in midair'. Approximated as a flat
+    weighing pan platform on a stepped base. ~213×213×80 mm body
+    matches A&D's EJ-303B / FX-i series footprint cited in PR #31.
+
+    Origin: pan top is at Z=Z_SCALE_TOP (positioned in main below).
+    """
+    base = (
+        cq.Workplane("XY")
+        .box(SCALE_BASE_D, SCALE_BASE_W, SCALE_BASE_H,
+             centered=(True, True, False))
+    )
+    # Stepped weighing pan rest
+    pan_pillar = (
+        cq.Workplane("XY")
+        .workplane(offset=SCALE_BASE_H)
+        .box(SCALE_PAN_OD * 0.4, SCALE_PAN_OD * 0.4, SCALE_PAN_PILLAR_H,
+             centered=(True, True, False))
+    )
+    # Round weighing pan
+    pan = (
+        cq.Workplane("XY")
+        .workplane(offset=SCALE_BASE_H + SCALE_PAN_PILLAR_H)
+        .circle(SCALE_PAN_OD / 2)
+        .extrude(SCALE_PAN_T)
+    )
+    return base.union(pan_pillar).union(pan)
+
+
+def make_cup() -> cq.Workplane:
+    """Generic Ø60×100 mm collection cup — context body, NOT printed.
+    Sits on the scale pan, directly under the rotor exit nozzle."""
+    wall = (
+        cq.Workplane("XY")
+        .circle(CUP_OD / 2)
+        .circle(CUP_OD / 2 - CUP_WALL)
+        .extrude(CUP_H)
+    )
+    floor = (
+        cq.Workplane("XY")
+        .circle(CUP_OD / 2)
+        .extrude(CUP_WALL)
+    )
+    return wall.union(floor)
+
+
 # ============================================================================
 # Build instances of each part
 # ============================================================================
@@ -869,8 +972,8 @@ bearing = make_bearing()
 # onto the rotor shaft at this height (PR-#16 v4 rotor shaft is solid here).
 rotor_z0 = -30.0
 pulley_z0 = BELT_PLANE_Z
-rotor_pulley = make_pulley(ROTOR_X_OFFSET, 0, pulley_z0)
-motor_pulley = make_pulley(MOTOR_AXIS_X, MOTOR_AXIS_OFFSET_Y, pulley_z0)
+rotor_pulley = make_pulley(ROTOR_X_OFFSET, 0, pulley_z0, pulley_od=ROTOR_PULLEY_OD)
+motor_pulley = make_pulley(MOTOR_AXIS_X, MOTOR_AXIS_OFFSET_Y, pulley_z0, pulley_od=MOTOR_PULLEY_OD)
 belt = make_belt(MOTOR_AXIS_X, MOTOR_AXIS_OFFSET_Y, ROTOR_X_OFFSET, 0,
                  pulley_z0 + (PULLEY_H - 4) / 2)
 
@@ -878,6 +981,18 @@ stepper = make_stepper()
 solenoid = make_solenoid()
 erm = make_erm()
 tilt_drive = make_tilt_drive()
+
+# Context bodies (NOT printed): a real lab scale + collection cup so the
+# module isn't shown 'floating in midair' (@swcharles v4).
+# Place the scale BELOW the rotor exit nozzle (z=-30) so the cup actually
+# sits beneath the dispense column. Cradle base hangs above the scale via
+# the cradle cheeks (which would in real life clamp to a side stand or
+# equipment-rack mount; for visualisation we just drop the scale).
+SCALE_PAN_TOP_Z = -150.0   # 120 mm below the rotor exit nozzle
+Z_SCALE_BASE_BOTTOM = SCALE_PAN_TOP_Z - SCALE_PAN_T - SCALE_PAN_PILLAR_H - SCALE_BASE_H
+scale = make_scale().translate((0, 0, Z_SCALE_BASE_BOTTOM))
+# Cup sits ON the scale pan, directly under the rotor exit nozzle.
+cup = make_cup().translate((ROTOR_X_OFFSET, 0, SCALE_PAN_TOP_Z))
 
 
 # ============================================================================
@@ -903,6 +1018,11 @@ asm.add(stepper, name="NEMA11_stepper", color=cq.Color(0.25, 0.25, 0.28))
 asm.add(solenoid, name="JF0530B_solenoid", color=cq.Color(0.4, 0.25, 0.2))
 asm.add(erm, name="ERM_coin_vibration", color=cq.Color(0.9, 0.6, 0.2))
 asm.add(tilt_drive, name="NEMA17_tilt_worm_gearbox", color=cq.Color(0.25, 0.25, 0.28))
+
+# Context bodies — flagged in their names so anyone parsing the STEP
+# knows these are not part of the printed module.
+asm.add(scale, name="CONTEXT_AnD_lab_scale", color=cq.Color(0.7, 0.7, 0.75))
+asm.add(cup, name="CONTEXT_collection_cup", color=cq.Color(0.85, 0.92, 1.0))
 
 
 # ============================================================================
@@ -951,6 +1071,20 @@ combined = _union_all([
     stepper, solenoid, erm, tilt_drive,
 ])
 
+# v4 (@swcharles): export a single STL of the WHOLE assembly so reviewers
+# can load one file and see how every piece fits together. Also export
+# a "with-context" STL that includes the scale + cup envelopes.
+print("writing full-assembly STL ...")
+cq.exporters.export(combined, str(STL_DIR / "ASSEMBLY_full_module.stl"),
+                    tolerance=0.15, angularTolerance=0.3)
+print(f"wrote {STL_DIR / 'ASSEMBLY_full_module.stl'}")
+
+combined_with_context = _union_all([combined, scale, cup])
+cq.exporters.export(combined_with_context,
+                    str(STL_DIR / "ASSEMBLY_full_module_with_scale_and_cup.stl"),
+                    tolerance=0.2, angularTolerance=0.4)
+print(f"wrote {STL_DIR / 'ASSEMBLY_full_module_with_scale_and_cup.stl'}")
+
 opts = {
     "width": 1400, "height": 1100,
     "marginLeft": 12, "marginTop": 12,
@@ -967,7 +1101,8 @@ for name, projdir in [
     ("top",   (0, 0, 1)),
 ]:
     path = RENDER_DIR / f"single_channel_module_{name}.svg"
-    cq.exporters.export(combined, str(path), opt={**opts, "projectionDir": projdir})
+    cq.exporters.export(combined_with_context, str(path),
+                        opt={**opts, "projectionDir": projdir})
     print(f"wrote {path}")
 
 # Also clean up obsolete render PNGs that no longer match (we regenerate

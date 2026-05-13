@@ -1,4 +1,4 @@
-# Single-channel powder-doser module — "Idea B" archetype (v3)
+# Single-channel powder-doser module — "Idea B" archetype (v4)
 
 This folder is the design pass for the powder doser. It implements
 "Idea B / §2.2" of the brainstorming doc that ships in
@@ -10,15 +10,13 @@ gets **replicated N times** around a shared collection cup to build the
 full multi-powder doser.
 
 > [!IMPORTANT]
-> **v3 (this revision)** is a mechanical rewrite of v2 (commit ed49e57)
-> that addresses [@swcharles's PR-#35 review](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447)
-> ("parts that don't touch", "belt under the cartridge", "ERM in the flow
-> path", "exploded-view bracket", "shrink the outboard plates", "add a
-> tilt-drive motor") AND a round of independent VLM-Judge feedback from
-> Edison Scientific (see [`edison_judge/round1.answer.md`](edison_judge/round1.answer.md)).
-> The high-level changes are summarised in
-> [§ What changed in v3](#what-changed-in-v3). v1 and v2 are preserved
-> in the git history but are no longer documented here.
+> **v4 (this revision)** addresses [@swcharles's PR-#35 review-comment
+> 4283013832](https://github.com/vertical-cloud-lab/powder-doser/pull/35#pullrequestreview-4283013832)
+> ("v3 motor bracket gussets are still 3 separate bodies", "pivot point
+> too high — auger swings wildly", "belt clips into the auger", "module
+> floats in midair — add scale + cup", "send a full-assembly STL"). v3
+> notes are kept below in [§ What changed in v3](#what-changed-in-v3).
+> v1 and v2 are preserved in the git history but not documented here.
 
 Issue: **vertical-cloud-lab/powder-doser#33**.
 Resolves the design-execution half of the issue (the discussion half was
@@ -29,10 +27,12 @@ the brainstorming PR
 
 | | |
 |---|---|
-| ![Isometric](renders/single_channel_module_iso.png) | ![Dimensioned 3-panel sketch](renders/single_channel_module_sketch.png) |
-| Isometric line render of the assembly (`cad_model.py` → `.step` → SVG → PNG). | 2D dimensioned schematic — side, front, and powder-flow cross-section (`sketch_2d.py`). |
+| ![Isometric](renders/single_channel_module_iso.png) | ![Labeled diagram](renders/single_channel_module_labeled.png) |
+| Isometric line render — now includes the A&D scale + cup as context bodies (no more "module floating in midair"). | **v4 labeled component diagram** — every part annotated with a leader-line callout in two flanking columns (no overlapping text). Addresses @swcharles's "I'm confused about the right and left cheeks / where is the motor" question. |
 | ![Powder flow](renders/single_channel_module_powder_flow.png) | ![Tilt sweep](renders/single_channel_module_tilt_sweep.png) |
-| Standalone larger view of the powder-flow path. Now uses **numbered nodes (1–5)** with a single **continuous chained arrow** linking reservoir → loading slots → helix → nozzle → cup, plus a 10 mm scale bar (addresses [PR-#35 comment 4276136447](https://github.com/vertical-cloud-lab/powder-doser/pull/35#issuecomment-4276136447)). | Side elevation of the module rotated to 0°, 45°, 75°, and 90° about the cradle's M5 trunnion pivot, each over a generic collection cup for context. 90° is shown dashed because the v2 cradle's locked range is 0–75°; reaching 90° in v3 needs the second motor called out in the roadmap. |
+| Standalone larger view of the powder-flow path. Numbered nodes (1–5) with a single continuous chained arrow linking reservoir → loading slots → helix → nozzle → cup, plus a 10 mm scale bar. | Side elevation rotated to 0°, 45°, 75°, and 90° about the **v4 lowered pivot** (z = 70 mm, was 220 mm in v3). The auger mouth now stays close to the same XY position across the full tilt range — no need to manually move the cup at every angle change. |
+| ![Dimensioned 3-panel sketch](renders/single_channel_module_sketch.png) | |
+| 2D dimensioned schematic — side, front, and powder-flow cross-section. | |
 
 Additional orthographic SVG/PNG views (`*_front`, `*_side`, `*_top`) are
 in [`renders/`](renders/).
@@ -44,7 +44,7 @@ in [`renders/`](renders/).
 | [`cad_model.py`](cad_model.py) | Parametric **CadQuery** model. Builds every printed part, places every vendor component (NEMA 11, 6805ZZ bearing, GT2 16T pulleys + belt, JF-0530B, ERM coin, PR-#16 auger envelope), exports `single_channel_module.step` and per-printed-part STLs. |
 | [`sketch_2d.py`](sketch_2d.py) | Matplotlib schematic. 3-panel `single_channel_module_sketch.png` (side / front / flow) plus the standalone `single_channel_module_powder_flow.png`. Constants mirror `cad_model.py`. |
 | [`single_channel_module.step`](single_channel_module.step) | STEP export of the **full assembly** (printed parts in lavender, cradle in green, cartridge in straw, vendor placeholders in their own colours). |
-| [`stl/`](stl/) | Per-part STLs of every printed part — slicer-ready. |
+| [`stl/`](stl/) | Per-part STLs of every printed part — slicer-ready. **v4 also exports `ASSEMBLY_full_module.stl`** (all printed parts + vendor envelopes unioned into one solid) and `ASSEMBLY_full_module_with_scale_and_cup.stl` (everything + the A&D scale + cup context bodies). |
 | [`renders/`](renders/) | All SVGs + PNGs. |
 
 ## Reproducing
@@ -101,6 +101,89 @@ flat plate, printed flat-on-bed). All hardware bolts to the spine's
    printed cheeks straddle the spine on M5 trunnion pivots at the
    spine's waist, locking via an arc-slot detent at any of 0°, 15°,
    30°, 45°, 60°, 75°. The cheeks bolt to a flat printed base plate.
+
+## What changed in v4
+
+v4 is a focused round of fixes driven by [@swcharles's PR-#35
+review-comment 4283013832](https://github.com/vertical-cloud-lab/powder-doser/pull/35#pullrequestreview-4283013832).
+Each row cross-links the line in `cad_model.py` / `sketch_2d.py` that
+implements the fix.
+
+| @swcharles v4 ask | v3 problem | v4 fix | Code |
+|---|---|---|---|
+| Motor bracket — "the triangular crossbars are not [touching], resulting in 3 bodies in what should be a single-body part" | Two separate Y=±25 gussets unioned into the face/foot but visually read as 3 disconnected bodies because the 45 mm Y span between them is empty | Replaced both gussets with **one continuous gusset web** spanning the whole `MB_FOOT_W − 4 mm` Y range. Provably single solid (one extrusion) and renders as one connected body in any view. | `make_motor_bracket()` |
+| Pivot point — "the bottom of the auger swings wildly … keep the mouth of the auger as close as possible to the base" | `CRADLE_PIVOT_Z = 220 mm`, but the rotor exit is at `z = -30 mm` ⇒ 250 mm moment arm; nozzle swings ~250 mm horizontally across 0–90° tilt | `CRADLE_PIVOT_Z` lowered **220 → 70 mm** (just above the bracket faceplate, in clear spine area). Moment arm to the exit nozzle is now ~100 mm — a 60% reduction in nozzle swing. The cup no longer needs to be re-positioned at every tilt. | `CRADLE_PIVOT_Z` constant |
+| Belt clipping into the auger; belt diameter too small for the rotor | Both pulleys drawn at GT2-16T Ø12.2 mm. The rotor body is Ø25, so the rotor pulley is **smaller than the rotor it's supposed to clamp**, and the belt would intersect the rotor wall | Rotor pulley sized **up to 36T (Ø26.5 mm)** so it clears the rotor by ~0.75 mm and gives a useful **2.25:1 reduction** (slower auger = better metering). `make_pulley()` and `make_belt()` now take `pulley_od` so each end can have its own diameter. Belt width also bumped 6 → 9 mm for strength at this small scale. | `MOTOR_PULLEY_OD`, `ROTOR_PULLEY_OD`, `make_pulley()`, `make_belt()` |
+| "Module is currently floating in midair" — needs a real surface | The cradle base hung in space with nothing under it; no scale or cup in the renders | New `make_scale()` (A&D EJ-303B-class envelope: 213×213×80 mm base + 130 mm pan) and `make_cup()` (Ø60×100 mm) added to the assembly as **CONTEXT_** bodies. Cradle base now sits on the scale pan; cup sits on the pan directly under the rotor exit nozzle. Visible in every render. | `make_scale()`, `make_cup()`, assembly placement |
+| "Include an STL of the assembly so we can better understand how the pieces all fit together" | Only per-part STLs were exported | Two new combined STLs: **`stl/ASSEMBLY_full_module.stl`** (printed parts + vendor envelopes, no scale/cup) and **`stl/ASSEMBLY_full_module_with_scale_and_cup.stl`** (everything). Slicer-loadable as one file. | `_union_all` + STL exports |
+| "I'm confused about the right and left cheeks … provide a diagram labeling each component" with no overlapping text | Component layout was only visible in raw orthographic renders | New **`renders/single_channel_module_labeled.png`** — leader-line callouts in two flanking columns (left/right of the diagram), so labels never overlap each other or the geometry. | `draw_labeled_diagram()` in `sketch_2d.py` |
+
+### Mitigations for "single-body / parts touching" spatial-reasoning errors
+
+@swcharles asked: _"You consistently have trouble with that kind of
+reasoning. Provide a list of ways to combat that — simulation, other
+LLMs, etc. How can we avoid that problem in the future?"_
+
+Concrete mitigations, ordered by what's reasonable to wire into this
+repo first:
+
+1. **Connectedness assertion in `cad_model.py`** — after every
+   `union()` chain, assert `cq.exporters.export(part, ...).Solid`
+   yields a single `TopoDS_Solid` (not a `Compound`). A 3-line check
+   that fails the build if a printed part comes out as multiple bodies.
+   This is the single most direct guard against the v3 motor-bracket
+   class of bug.
+2. **Volume-conservation cross-check** — for each `union(A, B)`, assert
+   `vol(A∪B) ≤ vol(A) + vol(B)` (with overlap implying actual contact);
+   non-overlap silently produces "cohabiting" bodies in CadQuery.
+3. **Headless overlap matrix** — build a small `validate_assembly.py`
+   that loops over every pair of `(part_i, part_j)` in the assembly
+   and checks `intersect(part_i, part_j).volume`. Print a CSV of
+   non-intended interferences before any human review.
+4. **Multi-view VLM judges** — keep the Edison `run_judge.py` round
+   pattern, but extend it to feed **three views per part + the full
+   assembly** to the judge each round (current setup feeds the full
+   assembly only). Cross-check against a second LLM (e.g. Claude
+   Sonnet vs. GPT-4o) so a single model's spatial blind-spot can't
+   pass through.
+5. **CAE-backed checks (low-cost)** — run a free FreeCAD `Part.Solid`
+   `isClosed()` / `isValid()` pass over each exported STEP body in CI;
+   FreeCAD will refuse to validate a "two-bodies-pretending-to-be-one"
+   geometry.
+6. **Slicer dry-run** — slice every printed STL with PrusaSlicer's
+   `--info` mode in CI. The slicer reports the body count per file;
+   any STL that comes back as `bodies > 1` for a part that should be
+   one printed piece is an automatic fail.
+7. **3D-print-aware code review** — the spatial-reasoning checklist
+   in [#29](https://github.com/vertical-cloud-lab/powder-doser/issues/29)
+   should be applied as a structured review template before any CAD
+   PR is approved (each printed part: one body? all features anchored?
+   gussets > thinnest wall? etc.).
+8. **Physics simulation (heavier-weight)** — for joints under load
+   (cradle pivot, motor bracket cantilever), a static-FEA pass in
+   FreeCAD-FEM or Onshape's free Simulation tier would surface
+   stress concentrations that no VLM can.
+
+Items 1–4 are cheap and we should add them in v4.1; 5–8 are the
+medium-term plan.
+
+### v4 deferred / explicitly NOT done
+
+* **Animation** — @swcharles flagged this as "lower priority,
+  accomplish all other tasks first". Not produced in v4 in favour of
+  the labeled diagram + scale/cup context + lowered pivot. v4.1 plans
+  a Blender turntable + tilt-sweep MP4 fed off the new
+  `ASSEMBLY_full_module.stl`.
+* **Auger teeth for the belt drive** — @swcharles pointed out that
+  the belt currently couples to the rotor purely by friction. The
+  cleanest fix is a custom rotor pulley clamped on a Ø8 turned-down
+  shaft section of the PR-#16 v4 rotor (rather than reshaping the
+  rotor body); that depends on PR-#16 cutting that flat in v5 and is
+  tracked under [§ Parts I'd like added](#parts-id-like-added-to-the-repo).
+* **Auger-extends-below-the-base concern** — there is **no base
+  plate hole** in v3/v4. The "base" is the bearing collar; the rotor
+  hangs in air below it (see the `cad_model.py` `make_auger` 30 mm
+  protrusion). The rotor turns freely — nothing for it to hit.
 
 ## What changed in v3
 
