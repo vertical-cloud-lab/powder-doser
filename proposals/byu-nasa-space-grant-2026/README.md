@@ -20,6 +20,7 @@ enabling capability).
 | `refs.bib` | BibTeX database (placeholder entries). |
 | `nasa-26-application.pdf` | Official Utah NASA Space Grant 2026 application packet (downloaded from BYU College of Engineering). |
 | `proposal.pdf` | Rendered PDF (committed for reviewer convenience; rebuild with `latexmk`). |
+| `SUMMER_TIMELINE.md` | Week-by-week breakdown of the summer 2026 (M0--M4) milestones from the proposal timeline. |
 
 ## Building (MiKTeX)
 
