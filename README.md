@@ -15,6 +15,9 @@ Raspberry Pi Zero 2 W chosen in
 [PR #25](https://github.com/vertical-cloud-lab/powder-doser/pull/25),
 and reference Python / MicroPython code samples — lives in
 [`design/electrical-software-brainstorming.md`](design/electrical-software-brainstorming.md).
+The KiCad Rev A capture for the recommended USB-CDC satellite
+board (§3.4) lives at
+[`hardware/kicad/satellite-rev-a/`](hardware/kicad/satellite-rev-a/).
 
 ## Paper
 
