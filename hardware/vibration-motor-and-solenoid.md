@@ -62,11 +62,20 @@ To make the wire-routing constraints explicit:
 | 13 | **12 V / ≥3 A external supply** — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant | 1 | $24.95 | [adafruit.com/product/352](https://www.adafruit.com/product/352) (12 V / 5 A) |
 | 14 | 100 µF / 25 V electrolytic across the stepper driver's `VMOT` / `GND` (Pololu specifically calls this out as required for the DRV8825; the Tic T500 also benefits from a local bulk cap on its `VIN`) | 1 | <$0.50 | any |
 | 15 | **Pololu D24V22F5** 5 V / 2.5 A step-down (buck) regulator — 12 V → 5 V, lets a single 12 V supply power the Pi *and* the DRV8871 solenoid rail, eliminating the second wall-wart and item 8 | 1 | $18.95 | [pololu.com/product/2858](https://www.pololu.com/product/2858) |
+| 16 | **Auger-tilt servo** — Adafruit "Standard Size - High Torque - Metal Gear" digital servo (HD-1810MG, ~3 kg·cm, ±1° repeatability, 5 V PWM input) for the wiper-style angular-positioning add-on described under "Auger drive motor → Auger-tilt / wiper-style angular positioning" below | 0–1 *(optional add-on)* | $22.50 | [adafruit.com/product/1142](https://www.adafruit.com/product/1142) |
+| 16-alt | Cheaper micro-servo alternative for the tilt axis — Adafruit Micro Servo (SG-92R, ~2.5 kg·cm, plastic gears, ~3° repeatability — fine for ±15° wipers if the auger assembly is light) | 0–1 *(in place of item 16)* | $5.95 | [adafruit.com/product/169](https://www.adafruit.com/product/169) |
+| 17 | M2/M3 servo-horn → auger-tilt-bracket hardware (printed bracket lives in the auger CAD from PR #16; this row covers the screws + the metal servo horn that ships with item 16) | 0–1 *(only with item 16/16-alt)* | <$2 | bench-stock / hardware store |
 
 Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14)
 with the **default Tic T500** driver: **≈ $83/channel** plus
 **≈ $63 system-shared** (12 V wall-wart, D24V22F5 buck, Pi Zero 2 W)
 → **≈ $146** for a single-channel v1.0 build.
+
+Add **item 16 (auger-tilt servo, $22.50)** if you want the optional
+wiper-style angular-positioning feature — bringing the v1.0 single-channel
+total to **≈ $169** (Tic) or **≈ $152** (DRV8825-alt). The cheaper
+micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $152** /
+**≈ $135**.
 
 Substitute the cheaper bare DRV8825 carrier (item 11-alt, $15.95) for
 the Tic T500 (item 11, $32.95) and the per-channel cost drops by
@@ -114,7 +123,7 @@ except for the Pi Zero 2 W and the wall-wart, which are **shared
 across all channels**. Prices and shipping are USD and approximate as
 of 2026-Q2; reconfirm at checkout.
 
-### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel + ~$62 system-shared (wall-wart + Pi + heat sink + microSD + Pi PSU)
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel (+$22.50 if adding the optional tilt servo) + ~$62 system-shared (wall-wart + Pi + heat sink + microSD + Pi PSU)
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
@@ -128,6 +137,8 @@ of 2026-Q2; reconfirm at checkout.
 | — | Mini aluminum heat sink for Pi Zero 2 W (slim 13×13×3 mm, with thermal adhesive — ships peel-and-stick, fits under the Bonnet) | **1 per system** | $0.95 | [#3084](https://www.adafruit.com/product/3084) |
 | — | 16 GB microSD card (Class 10, with adapter — for Raspbian/Pi OS) | **1 per system** | $9.95 | [#2693](https://www.adafruit.com/product/2693) |
 | — | 5 V / 2.4 A USB power supply with micro-USB cable (for the Pi) | **1 per system** | $7.50 | [#1995](https://www.adafruit.com/product/1995) |
+| 16 | **Auger-tilt servo** (Standard size, High-Torque, Metal Gear, digital — for the optional wiper-style angular-positioning add-on; ~±1° repeatability, 5 V PWM input from a Pi hardware-PWM GPIO) | 0–1 per channel *(optional)* | $22.50 | [#1142](https://www.adafruit.com/product/1142) |
+| 16-alt | Cheaper micro-servo alternative (SG-92R, plastic gears, ~±3°) | 0–1 *(in place of #1142)* | $5.95 | [#169](https://www.adafruit.com/product/169) |
 
 ### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$52 + ship per channel (default Tic T500), or ~$35 + ship if you swap to the DRV8825 carrier
 
@@ -182,7 +193,14 @@ once with `qty = 1` per item** (default Tic T500 driver) — total
 **≈ $160 + shipping** for the electronics, including the Pi Zero 2 W,
 the 12 V wall-wart, the Pi heat sink, the microSD card, and the
 Pi USB power supply. Substitute the DRV8825 carrier (item 11-alt) for
-the Tic T500 to bring it down to **≈ $143**. Multiply
+the Tic T500 to bring it down to **≈ $143**.
+
+Add the **optional auger-tilt servo (item 16, $22.50)** if you want
+the wiper-style angular-positioning feature — bringing the total to
+**≈ $183** (Tic) / **≈ $166** (DRV8825-alt), or **≈ $166** /
+**≈ $149** with the cheaper micro-servo (item 16-alt, $5.95).
+
+Multiply
 Adafruit/Pololu/StepperOnline line items (but **not** the
 wall-wart, the buck, the Pi, the heat sink, the microSD, or the
 Pi PSU) by `N` once you're ready to fan out to the N-channel
@@ -364,6 +382,97 @@ Wire-up:
   driver stays asleep).
 * Common GND between the 12 V PSU, the DRV8825 logic GND, and the
   Pi.
+
+### Auger-tilt / wiper-style angular positioning (optional add-on)
+
+A second motion axis — **tilting** the whole auger assembly through
+a repeatable arc, windshield-wiper style — lets one channel
+deposit at multiple target positions on the scale (e.g. sweeping
+across a row of crucibles, or aiming the dispense nozzle at a
+specific spot in a well). Because dosing is **angle-counted on the
+auger spin axis** (Tic T500 + NEMA 11, above), the tilt axis only
+needs **absolute, repeatable position control over a limited arc**
+(typically ±30°-±90°). That's almost exactly what a **hobby servo**
+does, and it's much cheaper / smaller than a second stepper for
+this duty cycle.
+
+**Recommended — digital metal-gear servo (item 16, default).**
+The [Adafruit Standard High-Torque Metal-Gear digital servo
+(HD-1810MG, #1142, $22.50)](https://www.adafruit.com/product/1142)
+hits the right point in the trade-space:
+
+* **Digital control loop + metal gears** → ~±1° repeatability
+  across the full ~180° travel (analog plastic-gear servos drift
+  2–3° between commanded positions, which we can see at the
+  scale).
+* **5 V logic-level PWM input** — drive directly from a Pi GPIO
+  (the Pi has hardware PWM on GPIO12 / GPIO18; either is fine,
+  and GPIO13/19 are spares) using the stock `pigpio` or
+  `gpiozero.AngularServo` libraries. No extra driver IC needed.
+* **5 V power** — shares the same buck-derived 5 V rail as the
+  Pi and the DRV8871. Steady-state draw is ~5–15 mA at idle and
+  150–250 mA while slewing; peak stall is ~600–800 mA but a
+  wiper sweep never stalls. The Pololu D24V22F5 buck (item 15,
+  2.5 A continuous / 3 A peak) has plenty of headroom alongside
+  the Pi (~0.7 A) and a brief solenoid tap (~1.1 A peak), since
+  the tilt and the tap don't fire simultaneously.
+* ~3 kg·cm holding torque with metal output spline — comfortably
+  above the auger-assembly tilt load (a NEMA 11 + 5 mm coupler +
+  short auger weighs <100 g; the moment arm from the tilt pivot
+  is short).
+
+**Cheaper alternative — micro servo (item 16-alt).** If the auger
+assembly is light enough and the required arc is <30°, the
+[Adafruit Micro Servo (SG-92R, #169, $5.95)](https://www.adafruit.com/product/169)
+will work, at the cost of plastic gears and ~3° repeatability.
+Same PWM-from-Pi wiring; same 5 V rail.
+
+**Mechanical mount.** Print a single-axis pivot bracket sized for
+the standard 40.4×19.8 mm "standard size" servo body (item 16) or
+the 23×12.2 mm micro-servo body (item 16-alt). The bracket lives
+with the auger housing CAD (PR #16); two M2 screws fix the servo
+horn to a 3D-printed cradle that carries the stepper + auger
+sub-assembly, and the servo body bolts to the chassis. Item 17
+covers those screws + the metal servo horn that ships in the
+#1142 accessory bag.
+
+**Why not a second NEMA 11 + Tic T500 on the tilt axis?**
+Doable, and reuses the same driver topology as the auger spin —
+but it adds ~$48/channel (motor + Tic), needs a limit switch for
+homing (steppers are open-loop position from power-on), and
+brings the per-channel cost back above the "<$200" envelope.
+The single-axis tilt arc never needs sub-degree precision (it's
+positioning a dispense aim, not metering mass), so the servo
+hits the goal with far less hardware.
+
+**Software stub (Pi-side, `gpiozero`).** Using GPIO12 (hardware
+PWM channel 0) for the tilt servo:
+
+```python
+from gpiozero import AngularServo
+from time import sleep
+
+tilt = AngularServo(
+    12,
+    min_angle=-45,
+    max_angle=+45,
+    min_pulse_width=0.5e-3,   # 500 µs
+    max_pulse_width=2.5e-3,   # 2500 µs
+)
+
+# Sweep three repeatable wiper positions for a 3-target dispense:
+for angle in (-30, 0, +30):
+    tilt.angle = angle
+    sleep(0.4)            # let the servo settle (~150°/s typical)
+    # ... drive the auger Tic to dose mass at this position ...
+```
+
+Calibrate the per-target angles **once** by jogging the servo
+under software control while watching the dispense point on the
+scale, then store the calibrated angles in the channel's config
+file. Because the servo is absolute-position (PWM duty → angle),
+no homing routine is needed at power-on — it goes straight to the
+first commanded angle.
 
 ### Belt-drive alternative
 
