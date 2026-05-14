@@ -55,7 +55,7 @@ To make the wire-routing constraints explicit:
 | 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 1\* | — | any 5 V barrel-jack PSU |
 | 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet *(omit when using the consolidated single-supply variant)* | 1\* | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
-| 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, ~0.67 A/phase, ~12 N·cm holding (e.g. SparkFun ROB-10848 or StepperOnline 11HS18-0674S) | 1 | $14–18 | [sparkfun.com/products/10848](https://www.sparkfun.com/products/10848) |
+| 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | $13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-stepper-motor-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s.html) |
 | 11 | **Pololu Tic T500** USB / TTL serial / I²C / analog / RC stepper-motor controller — pre-soldered carrier with on-board MP6500 driver, 4.5–35 V `VIN`, ~1.5 A/phase (≤2.5 A with airflow), high-level "go to position N" commands so the host MCU does **not** generate step pulses; built-in safe-state `~EN` handling sidesteps the boot-time-pull-up gotcha called out by the Edison review | 1 | $32.95 | [pololu.com/product/3135](https://www.pololu.com/product/3135) |
 | 11-alt | Pololu DRV8825 stepper-driver carrier — cheaper bare step/dir carrier; on-board current-limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi (use this if you want to save ~$17/channel and don't mind generating step pulses on the Pi) | 1 (in place of item 11) | $15.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
 | 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
@@ -114,18 +114,20 @@ except for the Pi Zero 2 W and the wall-wart, which are **shared
 across all channels**. Prices and shipping are USD and approximate as
 of 2026-Q2; reconfirm at checkout.
 
-### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel + ~$45 system-shared (wall-wart + Pi)
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel + ~$62 system-shared (wall-wart + Pi + heat sink + microSD + Pi PSU)
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
 | 1 | DRV2605L Haptic Motor Controller breakout | 1 | $7.95 | [#2305](https://www.adafruit.com/product/2305) |
 | 2 | Vibrating Mini Motor Disc (ERM coin) | 1 | $1.95 | [#1201](https://www.adafruit.com/product/1201) |
-| 4 | JF-0530B 5 V mini push–pull solenoid | 1 | $7.50 | [#412](https://www.adafruit.com/product/412) |
-| 5 | DRV8871 DC Motor Driver Breakout | 1 | $7.50 | [#3190](https://www.adafruit.com/product/3190) |
+| 4 | JF-0530B 5 V mini push–pull solenoid (**function:** the tap actuator — driven by item 5 to knock powder loose from the housing wall) | 1 | $7.50 | [#412](https://www.adafruit.com/product/412) |
+| 5 | DRV8871 DC Motor Driver Breakout (**function:** H-bridge that drives the **solenoid** coil at item 4 — *not* the stepper) | 1 | $7.50 | [#3190](https://www.adafruit.com/product/3190) |
 | 6 | Perma-Proto Bonnet Mini Kit for Pi | 1 | $4.95 | [#2310](https://www.adafruit.com/product/2310) |
 | 13 | 12 V / 5 A barrel-jack wall-wart | **1 per system** (not per channel) | $24.95 | [#352](https://www.adafruit.com/product/352) |
 | — | Raspberry Pi Zero 2 W (if not already on hand) | **1 per system** | $19.05 | [#5291](https://www.adafruit.com/product/5291) |
-| — | microSD card + Pi power supply (if not already on hand) | 1 per system | varies | any |
+| — | Mini aluminum heat sink for Pi Zero 2 W (slim 13×13×3 mm, with thermal adhesive — ships peel-and-stick, fits under the Bonnet) | **1 per system** | $0.95 | [#3084](https://www.adafruit.com/product/3084) |
+| — | 16 GB microSD card (Class 10, with adapter — for Raspbian/Pi OS) | **1 per system** | $9.95 | [#2693](https://www.adafruit.com/product/2693) |
+| — | 5 V / 2.4 A USB power supply with micro-USB cable (for the Pi) | **1 per system** | $7.50 | [#1995](https://www.adafruit.com/product/1995) |
 
 ### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$52 + ship per channel (default Tic T500), or ~$35 + ship if you swap to the DRV8825 carrier
 
@@ -133,23 +135,25 @@ of 2026-Q2; reconfirm at checkout.
 |---|---|---|---|---|
 | 11 | **Tic T500** USB / serial / I²C stepper-motor controller (**default** — high-level USB control, no Pi-side step-pulse generation, on-board safe-state `~EN`) | 1 | $32.95 | [#3135](https://www.pololu.com/product/3135) |
 | 11-alt | DRV8825 stepper-driver carrier (cheaper bare step/dir alternative; saves ~$17/channel if you're OK driving STEP/DIR from the Pi) | 1 (in place of item 11) | $15.95 | [#2133](https://www.pololu.com/product/2133) |
-| 15 | D24V22F5 5 V / 2.5 A buck regulator | 1 | $18.95 | [#2858](https://www.pololu.com/product/2858) |
+| 15 | D24V22F5 5 V / 2.5 A buck regulator (**function:** steps the system 12 V rail down to 5 V to power the Pi *and* the DRV8871/solenoid in the single-supply variant — eliminates the second wall-wart and item 8) | 1 | $18.95 | [#2858](https://www.pololu.com/product/2858) |
 
-### 3. SparkFun ([sparkfun.com](https://www.sparkfun.com/)) or StepperOnline — ~$15–18 per channel
+### 3. StepperOnline — ~$15 per channel
 
 | BOM # | Part | Qty / channel | Unit price | Source |
 |---|---|---|---|---|
-| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, ~0.67 A/phase | 1 | ~$11–18 | [SparkFun ROB-10848](https://www.sparkfun.com/products/10848) **or** [StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-2-phase-1-8deg-9-5ncm-13-4oz-in-0-67a-5-3v-28x28x32mm-4-wires-11hs18-0674s) |
+| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | ~$13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-stepper-motor-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s.html) |
 
-The StepperOnline part is usually a few dollars cheaper but has a longer
-lead time; either is electrically and mechanically equivalent for our
-use. Reconfirm price at checkout.
+> The previously-listed [SparkFun ROB-10848](https://www.sparkfun.com/products/10848)
+> turned out to be a NEMA **17** part rated only 0.35 A / 22.5 N·cm
+> — both wrong frame size and noticeably under-rated for the auger
+> torque budget — so it has been dropped. Use the StepperOnline
+> NEMA 11 above. Reconfirm price at checkout.
 
-### 4. Amazon / McMaster (commodity hardware) — ~$5 per channel
+### 4. StepperOnline / Amazon / McMaster (commodity hardware) — ~$2–5 per channel
 
 | BOM # | Part | Qty / channel | Unit price | Notes |
 |---|---|---|---|---|
-| 12 | 5 mm ↔ 5 mm flexible shaft coupler | 1 | ~$3–6 | Match the auger-shaft diameter from PR #16; if the auger uses an M3 or non-5 mm shaft, order a 5 mm ↔ matching-bore coupler instead. |
+| 12 | 5 mm ↔ 5 mm aluminum flexible shaft coupler, 18×25 mm (StepperOnline ST-FC01) | 1 | $1.09 | Order from StepperOnline alongside item 10 to consolidate shipping: [omc-stepperonline.com ST-FC01](https://www.omc-stepperonline.com/5mm-5mm-flexible-shaft-coupling-18x25mm-cnc-stepper-motor-shaft-coupler-st-fc01). If the auger from PR #16 ends up using a non-5 mm shaft, swap the bore on the auger side to match (StepperOnline stocks every common bore combo on the same product family). |
 | 14 | 100 µF / 25 V electrolytic cap | 1 | <$0.50 | Required by Pololu across DRV8825 `VMOT`/`GND`; also recommended on the Tic T500's `VIN`. |
 | 9 | 100 µF / 10 V cap, 0.1" pin headers, jumper wires | as needed | bench-stock | You almost certainly have these. |
 
@@ -159,18 +163,30 @@ Items **7** (5 V PSU) and **8** ([Adafruit #373](https://www.adafruit.com/produc
 
 ### PSC / on-hand check before ordering
 
-Per the PR thread, BYU's PSC stocks some of these (and similar Tic-500 step/dir carriers). Worth a quick check against [psc.byu.edu/available%20for%20purchase](https://psc.byu.edu/available%20for%20purchase) for items 11, 13, and the Pi Zero 2 W before placing the orders above — anything already in stock saves shipping. The actuator-side parts (items 1, 2, 4, 5, 10) are unlikely to be on the PSC list and should come from Adafruit / SparkFun directly.
+The published BYU PSC inventory was spot-checked against the parts above
+([psc.byu.edu/available%20for%20purchase](https://psc.byu.edu/available%20for%20purchase),
+plus the ECE ELC inventory at [capstone.byu.edu/computing-resources](https://capstone.byu.edu/computing-resources)
+and the ME PSC list at [psc.me.byu.edu/our-inventory](https://psc.me.byu.edu/our-inventory)).
+What's likely already on-campus and worth checking before ordering:
+
+* **Raspberry Pi Zero 2 W** — ECE ELC (416 CB) stocks Raspberry Pis for purchase; confirm the Zero 2 W variant with current ELC staff (contact info on [capstone.byu.edu/computing-resources](https://capstone.byu.edu/computing-resources)) before checkout.
+* **Generic stepper-motor driver** — ME PSC (EB 107) lists a "Stepper Motor Driver" at ~$10. Brand/model is **not** specified, so confirm whether they stock a Pololu Tic T500 (item 11) or just a bare DRV8825/A4988-class step-and-direction carrier (item 11-alt) before counting on it.
+* **Consumables**: 100 µF caps (items 9, 14), 0.1" headers, jumper wires, microSD card, USB power supply, micro-USB cable, and the Pi heat sink (#3084) are the kinds of items the prototyping lab typically stocks for ~free; check before adding to the cart.
+* **Wall-wart (item 13)** and the **DRV2605L / ERM disc / JF-0530B / DRV8871 / Bonnet** actuator-side parts (items 1, 2, 4, 5, 6) are **not** on the published PSC list and should come from Adafruit directly.
+* **Tic T500 specifically**: not in the published PSC inventory — order from Pololu unless staff confirms otherwise.
 
 ### Suggested first-buy: one channel (v1.0 of PR #35)
 
 For the v1.0 single-channel prototype, **place all four carts above
 once with `qty = 1` per item** (default Tic T500 driver) — total
-**≈ $146 + shipping** for the electronics, including the Pi Zero 2 W
-and the 12 V wall-wart but excluding microSD. Substitute the
-DRV8825 carrier (item 11-alt) for the Tic T500 to bring it down to
-**≈ $129**. Multiply Adafruit/Pololu/SparkFun line items (but
-**not** the wall-wart, the buck, or the Pi) by `N` once you're
-ready to fan out to the N-channel ring.
+**≈ $160 + shipping** for the electronics, including the Pi Zero 2 W,
+the 12 V wall-wart, the Pi heat sink, the microSD card, and the
+Pi USB power supply. Substitute the DRV8825 carrier (item 11-alt) for
+the Tic T500 to bring it down to **≈ $143**. Multiply
+Adafruit/Pololu/StepperOnline line items (but **not** the
+wall-wart, the buck, the Pi, the heat sink, the microSD, or the
+Pi PSU) by `N` once you're ready to fan out to the N-channel
+ring.
 
 ## Power supply
 
@@ -208,6 +224,24 @@ barrel-jack breakout:
   plus the JF-0530B's ~1.1 A inrush in the same 5 V rail (2.5 A
   continuous, ~3 A peak). The D24V10F5 (1 A continuous) is too
   small once the solenoid is firing while the Pi is busy on WiFi.
+* **Optional but recommended: Pololu shunt regulator across the
+  12 V rail to clamp stepper back-EMF.** When the stepper
+  decelerates (or is back-driven by powder binding in the auger),
+  it dumps energy back into `VMOT`. With a wall-wart supply
+  (which can't sink current), that energy bumps the 12 V rail
+  upward as a transient spike — enough, in worst cases, to push
+  past the DRV8825 carrier's 45 V absolute max. A
+  [Pololu shunt regulator](https://www.pololu.com/category/249/shunt-regulators)
+  wired in parallel with the 12 V rail clamps these spikes by
+  shunting the excess to a built-in power resistor. For our
+  12 V system the **33 V / 9 W variant
+  ([Pololu #3776](https://www.pololu.com/product/3776), $14.95)**
+  is a safe choice — well above the 12 V operating point so it
+  draws no current normally, and well under the 45 V `VMOT`
+  abs max so it activates before the driver is at risk. Add to
+  the Pololu cart only if you see motor stalls or hot spinning
+  loads in bring-up; bench-tested couplings without an axial
+  load typically don't need it.
 
 ### Alternative: two separate wall-warts (items 7, 8, 13)
 
