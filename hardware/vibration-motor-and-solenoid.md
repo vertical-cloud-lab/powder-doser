@@ -48,14 +48,14 @@ To make the wire-routing constraints explicit:
 |---|------|-----|---------------------|---------------|
 | 1 | Adafruit DRV2605L Haptic Motor Controller breakout (I²C) | 1 | $7.95 | [adafruit.com/product/2305](https://www.adafruit.com/product/2305) |
 | 2 | Vibrating Mini Motor Disc — ERM coin, 10 mm × 2.7 mm, 3 V | 1 | $1.95 | [adafruit.com/product/1201](https://www.adafruit.com/product/1201) |
-| 3 | Linear Resonant Actuator (LRA) — 10 mm × 3.4 mm, ~175 Hz (alternative to #2) | 1 | $4.95 | [adafruit.com/product/1631](https://www.adafruit.com/product/1631) |
+| 3 | Linear Resonant Actuator (LRA) — ~10 mm coin, ~175–235 Hz (optional alternative to #2; Adafruit's old #1631 LRA is **discontinued**, so source a comparable LRA from Precision Microdrives, Vybronics, or Digi-Key if you want to A/B against the ERM) | 0–1 | ~$5 | [precisionmicrodrives.com LRAs](https://www.precisionmicrodrives.com/lra-linear-resonant-actuator-vibration-motors) |
 | 4 | JF-0530B 5 V mini push–pull solenoid (~9.6 × 19 × 22 mm, ~4.5 mm stroke) | 1 | $7.50 | [adafruit.com/product/412](https://www.adafruit.com/product/412) |
 | 5 | Adafruit DRV8871 DC Motor Driver Breakout — 3.6 A peak, built-in flyback clamps + current limit, screw terminals, takes PWM logic in directly | 1 | $7.50 | [adafruit.com/product/3190](https://www.adafruit.com/product/3190) |
 | 6 | Adafruit Perma-Proto Bonnet Mini Kit for Pi — Pi-HAT-shaped solder substrate that the two breakouts and the Pi Zero 2 W's 2×20 header mate to | 1 | $4.95 | [adafruit.com/product/2310](https://www.adafruit.com/product/2310) |
 | 7 | 5 V / ≥2 A external supply *(only needed if you do **not** use the consolidated single-supply variant — see "Power supply" below; if you use the buck converter (item 15) you can omit this and item 8)* | 1\* | — | any 5 V barrel-jack PSU |
 | 8 | 2.1 mm barrel-jack breakout for the 5 V supply input on the Bonnet *(omit when using the consolidated single-supply variant)* | 1\* | $0.95 | [adafruit.com/product/373](https://www.adafruit.com/product/373) |
 | 9 | 0.1" headers, jumper wires, 100 µF / 10 V bulk cap (across the DRV8871 motor supply) | — | — | any |
-| 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | $13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-stepper-motor-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s.html) |
+| 10 | NEMA 11 bipolar stepper motor — 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | $13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s) |
 | 11 | **Pololu Tic T500** USB / TTL serial / I²C / analog / RC stepper-motor controller — pre-soldered carrier with on-board MP6500 driver, 4.5–35 V `VIN`, ~1.5 A/phase (≤2.5 A with airflow), high-level "go to position N" commands so the host MCU does **not** generate step pulses; built-in safe-state `~EN` handling sidesteps the boot-time-pull-up gotcha called out by the Edison review | 1 | $32.95 | [pololu.com/product/3135](https://www.pololu.com/product/3135) |
 | 11-alt | Pololu DRV8825 stepper-driver carrier — cheaper bare step/dir carrier; on-board current-limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi (use this if you want to save ~$17/channel and don't mind generating step pulses on the Pi) | 1 (in place of item 11) | $15.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
 | 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
@@ -141,7 +141,7 @@ of 2026-Q2; reconfirm at checkout.
 
 | BOM # | Part | Qty / channel | Unit price | Source |
 |---|---|---|---|---|
-| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | ~$13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-stepper-motor-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s.html) |
+| 10 | NEMA 11 bipolar stepper, 28 mm faceplate, 5 mm shaft, 0.67 A/phase, 10 N·cm holding (StepperOnline 11HS18-0674S) | 1 | ~$13–15 | [omc-stepperonline.com 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s) |
 
 > The previously-listed [SparkFun ROB-10848](https://www.sparkfun.com/products/10848)
 > turned out to be a NEMA **17** part rated only 0.35 A / 22.5 N·cm
@@ -166,11 +166,11 @@ Items **7** (5 V PSU) and **8** ([Adafruit #373](https://www.adafruit.com/produc
 The published BYU PSC inventory was spot-checked against the parts above
 ([psc.byu.edu/available%20for%20purchase](https://psc.byu.edu/available%20for%20purchase),
 plus the ECE ELC inventory at [capstone.byu.edu/computing-resources](https://capstone.byu.edu/computing-resources)
-and the ME PSC list at [psc.me.byu.edu/our-inventory](https://psc.me.byu.edu/our-inventory)).
+and the ECE shop info at [eceshop.byu.edu/information-and-resources](https://eceshop.byu.edu/information-and-resources)).
 What's likely already on-campus and worth checking before ordering:
 
 * **Raspberry Pi Zero 2 W** — ECE ELC (416 CB) stocks Raspberry Pis for purchase; confirm the Zero 2 W variant with current ELC staff (contact info on [capstone.byu.edu/computing-resources](https://capstone.byu.edu/computing-resources)) before checkout.
-* **Generic stepper-motor driver** — ME PSC (EB 107) lists a "Stepper Motor Driver" at ~$10. Brand/model is **not** specified, so confirm whether they stock a Pololu Tic T500 (item 11) or just a bare DRV8825/A4988-class step-and-direction carrier (item 11-alt) before counting on it.
+* **Generic stepper-motor driver** — the BYU PSC inventory lists a "Stepper Motor Driver" at ~$10. Brand/model is **not** specified, so confirm whether they stock a Pololu Tic T500 (item 11) or just a bare DRV8825/A4988-class step-and-direction carrier (item 11-alt) before counting on it.
 * **Consumables**: 100 µF caps (items 9, 14), 0.1" headers, jumper wires, microSD card, USB power supply, micro-USB cable, and the Pi heat sink (#3084) are the kinds of items the prototyping lab typically stocks for ~free; check before adding to the cart.
 * **Wall-wart (item 13)** and the **DRV2605L / ERM disc / JF-0530B / DRV8871 / Bonnet** actuator-side parts (items 1, 2, 4, 5, 6) are **not** on the published PSC list and should come from Adafruit directly.
 * **Tic T500 specifically**: not in the published PSC inventory — order from Pololu unless staff confirms otherwise.
