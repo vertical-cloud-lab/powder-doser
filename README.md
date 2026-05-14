@@ -4,6 +4,21 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Design
+
+A brainstorming pass over the **electrical and software architecture**
+for the modular ("design 2.2") powder doser — three candidate
+host-to-module topologies (Pi-direct fan-out, CAN satellites,
+USB-CDC satellites), how channels stay simultaneous and independent,
+the load-cell feedback loop, the I/O expansion ceiling of the
+Raspberry Pi Zero 2 W chosen in
+[PR #25](https://github.com/vertical-cloud-lab/powder-doser/pull/25),
+and reference Python / MicroPython code samples — lives in
+[`design/electrical-software-brainstorming.md`](design/electrical-software-brainstorming.md).
+The KiCad Rev A capture for the recommended USB-CDC satellite
+board (§3.4) lives at
+[`hardware/kicad/satellite-rev-a/`](hardware/kicad/satellite-rev-a/).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
