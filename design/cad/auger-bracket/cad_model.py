@@ -45,10 +45,19 @@ PLATE_DEPTH = 10.0    # Y — into the page in the iso view, matches "10 mm"
 PLATE_THICKNESS = 4.0  # Z
 
 # Top clamp tabs (the two ears separated by the 2 mm gap on top).
+#
+# PR review (williamulbz, follow-up): the tabs don't need to be thick *along
+# the screw axis* — the M3 tightening screw is along X, perpendicular to the
+# auger and parallel to the bottom mounting face, so a smaller TOP_TAB_W
+# means a shorter screw that goes through less material.  At the same time,
+# TOP_TAB_H must be large enough that the screw hole (Ø CLAMP_SCREW_D) sits
+# centred between the top of the collar circle and the top of the part with
+# real material above and below it.
 TOP_GAP = 2.0          # called out as "2 mm" on the drawing
-TOP_TAB_W = 6.0        # X-width of each ear
-TOP_TAB_H = 4.0        # Z-height of each ear above the collar OD (thinner —
-                       # reviewer feedback on PR: tabs don't need to be thick)
+TOP_TAB_W = 3.0        # X-width of each ear (= half the screw length per
+                       # ear, kept slim so the M3 is short — review feedback)
+TOP_TAB_H = 7.0        # Z-height above the collar OD: ~1.8 mm wall above
+                       # and below the centred Ø3.4 hole (CLAMP_SCREW_D)
 CLAMP_SCREW_D = 3.4    # M3 clearance hole through both tabs
 
 # How far the tab block sinks into the collar so the union forms a continuous
@@ -162,10 +171,13 @@ def _apply_features(body: cq.Workplane) -> cq.Workplane:
     body = body.cut(slot)
 
     # --- Clamp screw hole through both tabs -----------------------------
+    # Centred between the top of the collar circle (Z = COLLAR_TOP_Z) and
+    # the top of the part (Z = COLLAR_TOP_Z + TOP_TAB_H), per PR review.
+    screw_centre_z = COLLAR_TOP_Z + TOP_TAB_H / 2
     screw_hole = (
         cq.Workplane("YZ")
         .workplane(offset=-(TOP_TAB_W + TOP_GAP / 2 + 1))
-        .center(0, COLLAR_TOP_Z + TOP_TAB_H / 2)
+        .center(0, screw_centre_z)
         .circle(CLAMP_SCREW_D / 2)
         .extrude(2 * TOP_TAB_W + TOP_GAP + 2)
     )
