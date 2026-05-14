@@ -437,6 +437,203 @@ SocketCAN, and the add-a-module workflow degenerates to "plug it
 in". A future v2 inside an inert-atmosphere enclosure can migrate
 the firmware to CAN with the satellite PCB largely unchanged.
 
+### 3.4 Satellite PCB outline (topology 3.3)
+
+Per Will's PR-thread question, the §3.3 satellite is the only new
+*board* this brainstorm proposes. This subsection sketches what
+that board would actually look like — enough detail to start a
+real layout in the next PR, not a fab-ready design. A separate
+follow-up issue should produce the actual KiCad project under
+`hardware/kicad/satellite-rev-a/` (using the same conventions as
+the per-module schematic from #25).
+
+**Form factor and mechanical interface.**
+
+- **Outline:** 50 mm × 50 mm rectangular outline (4-up panel of
+  ten boards on a 100 × 100 mm JLCPCB / OSH Park budget tile), with
+  3.2 mm mounting holes on a 44 × 44 mm pattern matching the
+  NEMA 11 stepper bracket from #25 so the board can be screwed
+  to the back of the per-module bracket.
+- **Stackup:** 2-layer FR-4, 1.6 mm, 1 oz copper. The 12 V → 5 V
+  buck and the TMC2209 are the only parts that move real current
+  (~1 A peak); a 2-layer board with poured copper on both sides
+  for `GND` and `+12V` is enough.
+- **Edge connectors (3 of them):**
+  1. **USB micro-B or USB-C** along one edge, for the USB-CDC link
+     to the host (also used to flash the RP2040 over BOOTSEL).
+  2. **2-pin screw terminal** for the 12 V backbone tap.
+  3. **2 × 4-pin keyed JST-XH header** for the four motor leads
+     (two pins per stepper coil) — same pinout as the per-module
+     bracket already uses in #25.
+- **On-board headers (passthrough to the per-module actuators):**
+  - 2-pin JST-PH for the JF-0530B solenoid coil leads.
+  - 2-pin JST-PH for the ERM/LRA vibration-motor leads.
+  - 3-pin servo header (signal / +5 V / GND) for the angle servo
+    (or a 4-pin TMC2209 carrier socket if the angle actuator turns
+    out to be a NEMA 8 — see §2b).
+
+**Block diagram of one satellite board.**
+
+```mermaid
+flowchart LR
+    USB["USB-C connector<br/>(host link + flash)"]
+    Buck["MP1584 buck<br/>12 V → 5 V @ 1 A"]
+    PWR12["Screw terminal<br/>+12 V / GND"]
+    Pico["RP2040 + 2 MB flash<br/>(Pi Pico footprint or<br/>RP2040 + W25Q16 directly)"]
+    TMC["TMC2209<br/>SilentStepStick socket<br/>(STEP, DIR, EN, UART)"]
+    DRV8871["DRV8871<br/>H-bridge, IN1/IN2 PWM"]
+    DRV2605["DRV2605L<br/>(I²C0 @ 0x5A, local bus)"]
+    Servo["3-pin servo header<br/>(GPIO16 → PWM)"]
+    Stepper["Stepper coil header<br/>(2 × 2-pin JST-XH)"]
+    Sol["Solenoid header<br/>(2-pin JST-PH)"]
+    Erm["ERM/LRA header<br/>(2-pin JST-PH)"]
+
+    PWR12 -- "+12V" --> Buck
+    PWR12 -- "+12V" --> TMC
+    PWR12 -- "+12V" --> DRV8871
+    Buck -- "+5V" --> Pico
+    Buck -- "+5V" --> DRV2605
+    Buck -- "+5V" --> Servo
+
+    USB -- "D+/D-" --> Pico
+
+    Pico -- "STEP/DIR/~EN" --> TMC
+    Pico -- "UART (TX/RX)" --> TMC
+    Pico -- "IN1 (PWM)" --> DRV8871
+    Pico -- "I²C0 SDA/SCL" --> DRV2605
+    Pico -- "GPIO16 PWM" --> Servo
+
+    TMC --> Stepper
+    DRV8871 --> Sol
+    DRV2605 --> Erm
+```
+
+**Pin assignment on the RP2040** (matches the §6 firmware sketch):
+
+| RP2040 GPIO | Net    | Goes to                                     |
+|-------------|--------|---------------------------------------------|
+| GP2         | STEP   | TMC2209 STEP                                |
+| GP3         | DIR    | TMC2209 DIR                                 |
+| GP4         | ~EN    | TMC2209 EN                                  |
+| GP5         | TAP    | DRV8871 IN1 (IN2 tied to GND)               |
+| GP6         | SERVO  | Servo signal (50 Hz PWM, 1–2 ms pulse)      |
+| GP8 / GP9   | I²C0   | DRV2605L SDA / SCL (with 4.7 kΩ pull-ups)   |
+| GP12 / GP13 | UART0  | TMC2209 PDN_UART (single-wire) + spare      |
+
+**Component placement notes.**
+
+- TMC2209 SilentStepStick goes on a socketed 2 × 4 header at the
+  centre of the board so the heatsink can vent vertically.
+- 100 µF / 25 V bulk cap right at the TMC2209 `VM` pin (per the
+  Trinamic datasheet; same cap value already specified in #25).
+- 100 nF decoupling on every active IC.
+- DRV2605L's local I²C bus is **physically isolated** to a small
+  region near the ERM header — the trace length stays under
+  ~25 mm so it can run at 400 kHz cleanly, and there is **no I²C
+  connection between this bus and the host**, which is what
+  resolves the 0x5A address-collision problem from §2 (every
+  satellite has its own independent 0x5A device).
+- BOOTSEL button + RUN button on the edge opposite the USB
+  connector, so the board can be reflashed without unmounting.
+- A status LED on the same edge for "armed / running / fault".
+
+**BOM estimate per board** (volume of 12, hand-solderable):
+
+| Item                                | Qty | Unit cost | Notes                                |
+|-------------------------------------|-----|-----------|--------------------------------------|
+| Bare PCB (JLCPCB, panel of 5)       | 1   | ~$1       | 2-layer, 1.6 mm                      |
+| Raspberry Pi Pico (or bare RP2040)  | 1   | ~$4       | bare RP2040 + W25Q16 = ~$1.50 BOM    |
+| TMC2209 SilentStepStick             | 1   | ~$5       | reuses the same socket as 3D-printer mainboards |
+| DRV8871 (Adafruit breakout or bare) | 1   | ~$8 / ~$2 | bare IC + diode + cap is cheaper at qty |
+| DRV2605L (Adafruit breakout or bare)| 1   | ~$8 / ~$3 | bare IC + crystal + caps             |
+| MP1584 buck (or pre-made module)    | 1   | ~$2       | 12 V→5 V @ 1 A is plenty             |
+| Connectors + headers + passives     | —   | ~$2       | JSTs, screw terminal, USB-C, R/C, LED|
+| **Total / channel**                 |     | **~$15–25**| matches §3 comparison-table estimate |
+
+**Bring-up order** (so the first board doesn't brick everyone):
+
+1. Stuff and power **only** the USB + Pico + buck. Confirm
+   enumeration as `usb-VCL_powderdoser_module_<sn>`.
+2. Add the DRV2605L. Confirm I²C scan finds 0x5A. Run the §6
+   firmware's `set_vibration` op on a bare ERM.
+3. Add the DRV8871 + solenoid header. Confirm `set_tap` produces
+   the expected PWM at the IN1 pin.
+4. Add the TMC2209 socket + stepper header. Confirm `set_auger`
+   spins a bench-top NEMA 11 at the commanded RPM.
+5. Add the servo header last. Confirm `set_angle` lands a hobby
+   servo at the commanded degrees.
+
+Each step is a separate stuffing pass on the bare PCB, so a
+mistake at step *N* doesn't damage the parts from step *N-1*.
+
+**Open layout questions** (these are the actual design decisions
+the next PR will have to make, not punted forever):
+
+- *Pi Pico module vs bare RP2040.* Pico is faster to prototype
+  but eats ~21 × 51 mm of board area and only exposes a subset
+  of GPIOs; bare RP2040 + W25Q16 + 12 MHz crystal halves the
+  area but adds USB-C ESD protection and the RP2040's specific
+  power-sequencing requirements. **Recommend bare RP2040** once
+  the firmware is stable, **Pico** for rev A.
+- *USB-C vs micro-B.* USB-C is mechanically more robust and
+  matches what the lab's hubs already supply, but needs the two
+  CC1/CC2 5.1 kΩ pulldowns or it won't enumerate.
+- *Whether to combine the satellite with the per-module load
+  cell.* If we adopt the §4 "scale-satellite" variant we can
+  populate an HX711 footprint on the same PCB and depopulate the
+  motor-driver footprints — i.e. the same board layout serves as
+  both an actuator satellite and a scale satellite. This is the
+  most attractive option for keeping the BOM small and is the
+  recommended path.
+
+### 3.5 PCB design software available in this environment
+
+Per Will's PR-thread ask, here is what is actually installable
+inside the agent's Ubuntu sandbox today (and therefore what can
+produce review-able artifacts in this repo without a manual
+human step):
+
+| Tool                                | Install path inside sandbox                                | License      | Fit for this project                                                                 |
+|-------------------------------------|------------------------------------------------------------|--------------|--------------------------------------------------------------------------------------|
+| **KiCad 7** *(recommended)*         | `apt install kicad` — `7.0.11+dfsg-1build4` from `noble/universe` | GPL-3        | **Already adopted by the repo** for the per-module schematic in #25 (`hardware/kicad/`). Produces `.kicad_pro` / `.kicad_sch` / `.kicad_pcb` plus `kicad-cli`-rendered SVG/PDF/PNG that can be committed alongside. |
+| Horizon EDA                         | `apt install horizon-eda`                                  | GPL-3        | Modern PCB suite, hierarchical-by-default schematic. Worth knowing about, but switching tools mid-stream loses the #25 KiCad investment. |
+| LibrePCB                            | not in `apt` (AppImage from upstream)                      | GPL-3        | Easier learning curve than KiCad but smaller component-library ecosystem; same loss-of-#25-investment concern. |
+| pcb-rnd                             | `apt install pcb-rnd` (older `geda-pcb` fork)              | GPL-2        | Layout-only — no integrated schematic capture; not a fit for a multi-IC board. |
+| **Web-based** (KiCanvas viewer, EasyEDA, Flux.ai) | n/a (no install needed; can render committed `.kicad_sch` in a browser) | varies       | Useful for *viewing* committed KiCad files in a PR diff (KiCanvas, https://kicanvas.org/). Not a source-of-truth editor for this repo. |
+| Render-only utilities (`librsvg`, `imagemagick`, `inkscape`) | `apt install librsvg2-bin imagemagick inkscape` | various OSS | Already used in `hardware/kicad/README.md` (#25) to convert `kicad-cli`-exported SVG to PNG for embedding in markdown. |
+
+**Recommendation:** stay on **KiCad 7** for the satellite PCB to
+match the per-module schematic project from #25. The same
+`kicad-cli sch export svg / pdf` + `rsvg-convert` flow already
+documented in [`hardware/kicad/README.md`][kicad25] works
+unchanged for `pcb` exports — `kicad-cli pcb export svg` and
+`kicad-cli pcb render` produce the rendered top/bottom views that
+can be committed next to the project files.
+
+A typical workflow inside this sandbox for the next PR:
+
+```bash
+sudo apt-get install -y kicad librsvg2-bin
+mkdir -p hardware/kicad/satellite-rev-a
+cd hardware/kicad/satellite-rev-a
+# (lay out schematic + PCB in KiCad GUI or by editing .kicad_sch text)
+kicad-cli sch export svg satellite.kicad_sch -o ./
+kicad-cli sch export pdf satellite.kicad_sch -o satellite_sch.pdf
+kicad-cli pcb export svg --layers F.Cu,F.SilkS,F.Mask,Edge.Cuts \
+    satellite.kicad_pcb -o satellite_top.svg
+kicad-cli pcb render --side top satellite.kicad_pcb -o satellite_top.png
+rsvg-convert -o satellite_sch.png satellite.svg
+```
+
+[kicad25]: https://github.com/vertical-cloud-lab/powder-doser/pull/25
+
+The actual KiCad project for the satellite PCB is **out of scope
+for this brainstorming PR** (which is documentation-only by
+design, matching the precedent set by `design/brainstorming.md`
+in #31 — that PR also deferred per-architecture CAD/electrical
+work to follow-ups). It is the natural first deliverable for the
+follow-up issue once topology 3.3 is approved.
+
 ## 4. Where the load cell lives, and why it matters
 
 The §1 closed-loop dispense requires a mass reading at ≥10 Hz that
