@@ -86,6 +86,15 @@ COLLAR_PLATE_OVERLAP = 1.5
 COLLAR_CENTRE_Z = PLATE_THICKNESS + COLLAR_OD / 2 - COLLAR_PLATE_OVERLAP
 COLLAR_TOP_Z = COLLAR_CENTRE_Z + COLLAR_OD / 2
 
+# Constraint: the tab block's outer X-faces must lie within the collar OD
+# at Y = 0 (i.e. the half-tab-width must not exceed the collar radius), so
+# the tab/collar union has a real intersection edge that
+# FILLET_TAB_COLLAR can blend.  Catch parameter retunes that violate this.
+assert (2 * TOP_TAB_W + TOP_GAP) / 2 <= COLLAR_OD / 2, (
+    "Tab footprint wider than collar OD: "
+    f"half_tw={(2 * TOP_TAB_W + TOP_GAP) / 2} > collar_r={COLLAR_OD / 2}"
+)
+
 
 def _apply_features(body: cq.Workplane) -> cq.Workplane:
     """Apply fillets and subtractive features (bore, slot, screw holes)."""
