@@ -22,8 +22,8 @@ OUT = HERE / "renders"
 OUT.mkdir(parents=True, exist_ok=True)
 
 # Bracket spacing (mm)
-BRACKET_SPACING = 80.0  # along the auger axis (Y)
-AUGER_LENGTH = 140.0
+BRACKET_SPACING = 180.0  # along the auger axis (Y); auger total height 250 mm
+AUGER_LENGTH = 250.0     # PR #16 auger total_height
 AUGER_SHAFT_OD = AUGER_OD
 
 # --- Build solids -----------------------------------------------------------

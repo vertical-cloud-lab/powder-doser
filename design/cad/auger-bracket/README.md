@@ -21,7 +21,7 @@ called out on the original drawing ("Brackets x2").
                  │  │          │  │
               ───┴──┴──────────┴──┴───
             ╱                          ╲
-           │      auger bore Ø 8.5      │  ← split collar
+           │     auger bore Ø 25.5      │  ← split collar
             ╲                          ╱      (closes on the shaft when
               ───────╲          ╱──────         the screw is tightened)
                       ╲ fillet ╱
@@ -30,10 +30,11 @@ called out on the original drawing ("Brackets x2").
         └─────────────────────────────────────┘
 ```
 
-* The **bore** (Ø 8.5 mm) is sized for an 8 mm auger shaft with a 0.5 mm
-  diametral clearance — a free-running fit that lets the auger spin freely
-  while the bracket still constrains it radially. The clearance also
-  accounts for the typical FDM elephant-foot squish on the bore wall.
+* The **bore** (Ø 25.5 mm) is sized for the 25 mm OD Archimedes auger from
+  PR #16 with a 0.5 mm diametral clearance — a free-running fit that lets
+  the auger spin freely while the bracket still constrains it radially.
+  The clearance also accounts for the typical FDM elephant-foot squish on
+  the bore wall.
 * A **2 mm slot** runs from the very top of the part down through the
   collar wall and into the bore. This is what splits the upper half of
   the collar into two ears so a single M3 clamp screw passing through
@@ -66,10 +67,10 @@ are easy to retune after the first print test.
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
-| `AUGER_OD` | 8.0 | Nominal auger shaft OD (assumed; change once measured). |
+| `AUGER_OD` | 25.0 | Auger shaft OD — matches PR #16 (Archimedes auger, `outer_diameter = 25 mm`). |
 | `BORE_CLEARANCE` | 0.5 | Diametral clearance — free-running fit on FDM. |
-| `COLLAR_WALL` | 4.0 | Wall thickness around the bore. |
-| `PLATE_LENGTH × DEPTH × THICKNESS` | 40 × 10 × 4 | Plate footprint; the 10 mm depth matches the drawing callout. |
+| `COLLAR_WALL` | 4.0 | Wall thickness around the bore (collar OD = 33.5 mm). |
+| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × 12 × 4 | Plate footprint sized so the 33.5 mm collar OD fits with comfortable margin to each corner mounting hole. |
 | `TOP_GAP` | 2.0 | Drawing callout — clamp slot width. |
 | `TOP_TAB_W × H` | 3 × 7 | Each clamp ear. Slim along the screw axis (X) so the M3 tightening screw is short and goes through less material; tall enough in Z that the centred Ø3.4 hole has ~1.8 mm of wall above and below it. |
 | `TAB_COLLAR_OVERLAP` | 6.0 | How far the ears sink into the collar wall so they grow out of it continuously instead of sitting on top. |

@@ -27,21 +27,24 @@ import cadquery as cq
 # ---------------------------------------------------------------------------
 # Parameters (mm)
 # ---------------------------------------------------------------------------
-# Auger shaft and bore.  Auger OD is taken as a typical small auger (8 mm).
-# A diametral clearance of 0.5 mm gives a comfortable running fit on an FDM
-# print (accounts for elephant-foot / first-layer squish on the bore walls)
-# while still keeping the shaft well constrained.
-AUGER_OD = 8.0
+# Auger shaft and bore.  Sized to PR #16 (Archimedes auger): outer_diameter
+# = 25 mm, total_height = 250 mm, M3 spindle mount on top.  A diametral
+# clearance of 0.5 mm gives a comfortable running fit on an FDM print
+# (accounts for elephant-foot / first-layer squish on the bore walls) while
+# still keeping the shaft well constrained.
+AUGER_OD = 25.0
 BORE_CLEARANCE = 0.5  # diametral clearance for a free-running fit
-BORE_D = AUGER_OD + BORE_CLEARANCE
+BORE_D = AUGER_OD + BORE_CLEARANCE  # = 25.5 mm
 
 # Collar wall thickness and resulting collar OD.
 COLLAR_WALL = 4.0
-COLLAR_OD = BORE_D + 2 * COLLAR_WALL  # = 16.5 mm
+COLLAR_OD = BORE_D + 2 * COLLAR_WALL  # = 33.5 mm
 
 # Plate (mounting flange) — "print on this face" is the bottom of this plate.
-PLATE_LENGTH = 40.0   # X — long axis, with mounting holes near each end
-PLATE_DEPTH = 10.0    # Y — into the page in the iso view, matches "10 mm"
+# Sized so the collar OD (33.5 mm) fits with comfortable margin to each
+# corner mounting hole.
+PLATE_LENGTH = 60.0   # X — long axis, with mounting holes near each end
+PLATE_DEPTH = 12.0    # Y — bore length along the auger axis
 PLATE_THICKNESS = 4.0  # Z
 
 # Top clamp tabs (the two ears separated by the 2 mm gap on top).
@@ -70,8 +73,8 @@ TAB_COLLAR_OVERLAP = 6.0
 
 # Mounting holes through the plate (one near each corner).
 MOUNT_HOLE_D = 3.4     # M3 clearance
-MOUNT_HOLE_INSET_X = 5.0  # distance from each plate end (X) to hole centre
-# Mounting holes are centred in Y (plate depth = 10 mm, hole D = 3.4 mm).
+MOUNT_HOLE_INSET_X = 6.0  # distance from each plate end (X) to hole centre
+# Mounting holes are centred in Y (plate depth = 12 mm, hole D = 3.4 mm).
 
 # Fillets.  The collar/plate intersection is the callout "smooth transition"
 # from the drawing — make it generous so the moment arm at the base is well
@@ -109,11 +112,14 @@ def _apply_features(body: cq.Workplane) -> cq.Workplane:
     """Apply fillets and subtractive features (bore, slot, screw holes)."""
 
     # --- Smooth collar/plate transition ---------------------------------
-    # The plate-top face and the collar OD intersect along two arcs that
-    # become straight edges in Y after the cylindrical/planar boolean.  Pick
-    # them by proximity to the two tangent points.
-    tp_y = 0.0  # any Y on the edge works for selection
-    tp_x = COLLAR_OD / 2 * 0.95  # slightly inside the collar OD
+    # The plate-top face and the collar OD intersect in two edges (Y-parallel
+    # lines when the collar OD extends beyond the plate top, or arcs when it
+    # doesn't quite reach).  Compute the true X of the intersection at
+    # Y = 0, Z = PLATE_THICKNESS so the selector finds the right edge across
+    # any reasonable AUGER_OD / COLLAR_WALL retune.
+    dz = COLLAR_CENTRE_Z - PLATE_THICKNESS
+    tp_x = math.sqrt(max((COLLAR_OD / 2) ** 2 - dz ** 2, 0.0))
+    tp_y = 0.0
     tp_z = PLATE_THICKNESS
     body = (
         body.edges(cq.selectors.NearestToPointSelector((+tp_x, tp_y, tp_z)))
