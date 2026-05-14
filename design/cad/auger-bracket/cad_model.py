@@ -60,12 +60,17 @@ MOUNT_HOLE_INSET_X = 5.0  # distance from each plate end (X) to hole centre
 FILLET_COLLAR_PLATE = 3.0
 FILLET_TAB_TOP = 1.0
 
+# How far the collar dips into the plate top before fillet blending.  Picked
+# so that FILLET_COLLAR_PLATE (3 mm) has clean geometry to bite into without
+# eating through the plate (PLATE_THICKNESS = 4 mm).
+COLLAR_PLATE_OVERLAP = 1.5
+
 # ---------------------------------------------------------------------------
 # Derived geometry
 # ---------------------------------------------------------------------------
 # Place the collar so a small portion overlaps the plate.  The overlap is
 # what the FILLET_COLLAR_PLATE fillet will smooth into a tangent blend.
-COLLAR_CENTRE_Z = PLATE_THICKNESS + COLLAR_OD / 2 - 1.5
+COLLAR_CENTRE_Z = PLATE_THICKNESS + COLLAR_OD / 2 - COLLAR_PLATE_OVERLAP
 COLLAR_TOP_Z = COLLAR_CENTRE_Z + COLLAR_OD / 2
 
 

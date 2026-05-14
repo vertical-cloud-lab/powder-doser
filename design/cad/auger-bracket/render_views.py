@@ -53,10 +53,11 @@ window.SetSize(900, 700)
 window.AddRenderer(renderer)
 
 VIEWS = {
-    "iso":   ((45, 30), True),
-    "front": ((0, 0), False),
-    "side":  ((90, 0), False),
-    "top":   ((0, 90), False),
+    # name: (azimuth_deg, elevation_deg)
+    "iso":   (45, 30),
+    "front": (0, 0),
+    "side":  (90, 0),
+    "top":   (0, 90),
 }
 
 
@@ -71,7 +72,7 @@ def set_camera(az_el):
     cam.Zoom(1.3)
 
 
-for name, (az_el, _) in VIEWS.items():
+for name, az_el in VIEWS.items():
     set_camera(az_el)
     window.Render()
     w2i = vtk.vtkWindowToImageFilter()
