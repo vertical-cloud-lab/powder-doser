@@ -71,9 +71,11 @@ are easy to retune after the first print test.
 | `COLLAR_WALL` | 4.0 | Wall thickness around the bore. |
 | `PLATE_LENGTH × DEPTH × THICKNESS` | 40 × 10 × 4 | Plate footprint; the 10 mm depth matches the drawing callout. |
 | `TOP_GAP` | 2.0 | Drawing callout — clamp slot width. |
-| `TOP_TAB_W × H` | 6 × 6 | Each clamp ear. |
+| `TOP_TAB_W × H` | 6 × 4 | Each clamp ear (height reduced after PR review — ears are integrally joined to the collar via overlap + fillet). |
+| `TAB_COLLAR_OVERLAP` | 6.0 | How far the ears sink into the collar wall so they grow out of it continuously instead of sitting on top. |
 | `CLAMP_SCREW_D` / `MOUNT_HOLE_D` | 3.4 | M3 clearance through-holes. |
 | `FILLET_COLLAR_PLATE` | 3.0 | "Smooth transition" between collar and plate. |
+| `FILLET_TAB_COLLAR` | 1.0 | Smooth transition between clamp ears and collar OD. |
 
 ## Print orientation
 

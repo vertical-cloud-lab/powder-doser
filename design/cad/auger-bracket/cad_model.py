@@ -19,6 +19,7 @@ Run from the package directory to (re)generate the STEP + STL exports::
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 import cadquery as cq
@@ -46,8 +47,17 @@ PLATE_THICKNESS = 4.0  # Z
 # Top clamp tabs (the two ears separated by the 2 mm gap on top).
 TOP_GAP = 2.0          # called out as "2 mm" on the drawing
 TOP_TAB_W = 6.0        # X-width of each ear
-TOP_TAB_H = 6.0        # Z-height of each ear above the collar OD
+TOP_TAB_H = 4.0        # Z-height of each ear above the collar OD (thinner —
+                       # reviewer feedback on PR: tabs don't need to be thick)
 CLAMP_SCREW_D = 3.4    # M3 clearance hole through both tabs
+
+# How far the tab block sinks into the collar so the union forms a continuous
+# solid (not a knife-edge tangent).  Sized so the tab's outer X-faces
+# (X = ±half_tab_width) actually penetrate the cylinder OD by ~1 mm at the
+# tab base elevation, giving the FILLET_TAB_COLLAR blend room to work and
+# making the ears appear to grow out of the collar wall rather than sit on
+# top of it.  See PR review feedback (#34 follow-up).
+TAB_COLLAR_OVERLAP = 6.0
 
 # Mounting holes through the plate (one near each corner).
 MOUNT_HOLE_D = 3.4     # M3 clearance
@@ -56,8 +66,11 @@ MOUNT_HOLE_INSET_X = 5.0  # distance from each plate end (X) to hole centre
 
 # Fillets.  The collar/plate intersection is the callout "smooth transition"
 # from the drawing — make it generous so the moment arm at the base is well
-# blended.  The top tab corners get a smaller cosmetic break.
+# blended.  The tab/collar intersection gets the same treatment per PR
+# review feedback (so the clamp ears are integrally joined to the collar
+# body, not just sitting on top).
 FILLET_COLLAR_PLATE = 3.0
+FILLET_TAB_COLLAR = 1.0
 FILLET_TAB_TOP = 1.0
 
 # How far the collar dips into the plate top before fillet blending.  Picked
@@ -92,6 +105,25 @@ def _apply_features(body: cq.Workplane) -> cq.Workplane:
         body.edges(cq.selectors.NearestToPointSelector((-tp_x, tp_y, tp_z)))
         .fillet(FILLET_COLLAR_PLATE)
     )
+
+    # --- Smooth tab/collar transition (PR review: tabs must be integrally
+    # joined to the collar body, not just sit on top).  Sinking the tab
+    # block into the collar via TAB_COLLAR_OVERLAP already provides the
+    # structural merge; the fillet below is the cosmetic / stress-relieving
+    # blend on the resulting Y-parallel intersection edges.
+    half_tw = (2 * TOP_TAB_W + TOP_GAP) / 2
+    z_above_centre = math.sqrt(max((COLLAR_OD / 2) ** 2 - half_tw ** 2, 0.0))
+    tab_int_z = COLLAR_CENTRE_Z + z_above_centre
+    tab_int_y = 0.0
+    for sx in (+half_tw, -half_tw):
+        try:
+            body = (
+                body.edges(
+                    cq.selectors.NearestToPointSelector((sx, tab_int_y, tab_int_z))
+                ).fillet(FILLET_TAB_COLLAR)
+            )
+        except Exception:  # pragma: no cover — selector may pick a non-fillet-able edge
+            pass
 
     # --- Bore through the collar (auger shaft), absolute coords ---------
     bore = (
@@ -170,10 +202,15 @@ def build() -> cq.Workplane:
         .extrude(PLATE_DEPTH)
     )
     tabs_total_w = 2 * TOP_TAB_W + TOP_GAP
+    # Sink the tab block into the collar by TAB_COLLAR_OVERLAP so the union
+    # produces a real merged solid with a fillet-able intersection (rather
+    # than the previous knife-edge tangent at the top of the cylinder).
+    tabs_z0 = COLLAR_TOP_Z - TAB_COLLAR_OVERLAP
+    tabs_height = TAB_COLLAR_OVERLAP + TOP_TAB_H
     tabs = (
         cq.Workplane("XY")
-        .workplane(offset=COLLAR_TOP_Z)
-        .box(tabs_total_w, PLATE_DEPTH, TOP_TAB_H, centered=(True, True, False))
+        .workplane(offset=tabs_z0)
+        .box(tabs_total_w, PLATE_DEPTH, tabs_height, centered=(True, True, False))
     )
     body = plate.union(collar).union(tabs)
     return _apply_features(body)
