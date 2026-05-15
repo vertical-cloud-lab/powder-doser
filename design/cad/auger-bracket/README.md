@@ -70,7 +70,7 @@ are easy to retune after the first print test.
 | `AUGER_OD` | 25.0 | Auger shaft OD — matches PR #16 (Archimedes auger, `outer_diameter = 25 mm`). |
 | `BORE_CLEARANCE` | 0.5 | Diametral clearance — free-running fit on FDM. |
 | `COLLAR_WALL` | 4.0 | Wall thickness around the bore (collar OD = 33.5 mm). |
-| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × 12 × 4 | Plate footprint sized so the 33.5 mm collar OD fits with comfortable margin to each corner mounting hole. |
+| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × 12 × **14** | Plate footprint sized so the 33.5 mm collar OD fits with comfortable margin to each corner mounting hole. **Thickness = 14 mm (was 4 mm)** so the bore axis sits at Z = 29.25 mm above the bottom face — gives 4.25 mm of radial clearance between the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) geared auger's Ø50 mm gear OD and the chassis baseplate. |
 | `TOP_GAP` | 2.0 | Drawing callout — clamp slot width. |
 | `TOP_TAB_W × H` | 3 × 7 | Each clamp ear. Slim along the screw axis (X) so the M3 tightening screw is short and goes through less material; tall enough in Z that the centred Ø3.4 hole has ~1.8 mm of wall above and below it. |
 | `TAB_COLLAR_OVERLAP` | 6.0 | How far the ears sink into the collar wall so they grow out of it continuously instead of sitting on top. |

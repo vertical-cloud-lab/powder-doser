@@ -43,9 +43,24 @@ COLLAR_OD = BORE_D + 2 * COLLAR_WALL  # = 33.5 mm
 # Plate (mounting flange) — "print on this face" is the bottom of this plate.
 # Sized so the collar OD (33.5 mm) fits with comfortable margin to each
 # corner mounting hole.
-PLATE_LENGTH = 60.0   # X — long axis, with mounting holes near each end
-PLATE_DEPTH = 12.0    # Y — bore length along the auger axis
-PLATE_THICKNESS = 4.0  # Z
+#
+# PR review (williamulbz, post-#49 follow-up): with the geared auger from
+# PR #49 the gear OD reaches Ø50 mm (gear_tip_r = 25 mm, auger OR = 12.5 mm
+# → 12.5 mm radial protrusion past the bare-shaft surface), so when the
+# bracket is mounted on the chassis baseplate the auger axis must sit
+# higher than 25 mm above the plate bottom or the gear teeth will collide
+# with the baseplate as the auger rotates.  PLATE_THICKNESS was 4 mm,
+# putting the bore axis at COLLAR_CENTRE_Z = 4 + 16.75 - 1.5 = 19.25 mm
+# (≈5.75 mm of interference with the gear).  Bumped to 14 mm → bore axis
+# at 29.25 mm → 4.25 mm radial clearance between the gear OD and the
+# baseplate.  All collar / tab / fillet / clamp-screw geometry is keyed to
+# COLLAR_CENTRE_Z / COLLAR_TOP_Z, so it auto-translates with the lift, and
+# the corner mounting holes still pass straight through to the bottom face.
+PLATE_LENGTH = 60.0    # X — long axis, with mounting holes near each end
+PLATE_DEPTH = 12.0     # Y — bore length along the auger axis
+PLATE_THICKNESS = 14.0  # Z — total plate height; ≥9 mm of "lift" added to
+                       # the original 4 mm so the geared auger (gear tip
+                       # radius 25 mm, PR #49) clears the chassis baseplate
 
 # Top clamp tabs (the two ears separated by the 2 mm gap on top).
 #
