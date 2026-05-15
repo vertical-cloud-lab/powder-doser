@@ -65,21 +65,22 @@ To make the wire-routing constraints explicit:
 | 16 | **Auger-tilt servo** — Adafruit "Standard Size - High Torque - Metal Gear" digital servo (HD-1810MG, ~3 kg·cm, ±1° repeatability, 5 V PWM input) for the wiper-style angular-positioning add-on described under "Auger drive motor → Auger-tilt / wiper-style angular positioning" below | 0–1 *(optional add-on)* | $22.50 | [adafruit.com/product/1142](https://www.adafruit.com/product/1142) |
 | 16-alt | Cheaper micro-servo alternative for the tilt axis — Adafruit Micro Servo (SG-92R, ~2.5 kg·cm, plastic gears, ~3° repeatability — fine for ±15° wipers if the auger assembly is light) | 0–1 *(in place of item 16)* | $5.95 | [adafruit.com/product/169](https://www.adafruit.com/product/169) |
 | 17 | M2/M3 servo-horn → auger-tilt-bracket hardware (printed bracket lives in the auger CAD from PR #16; this row covers the screws + the metal servo horn that ships with item 16) | 0–1 *(only with item 16/16-alt)* | <$2 | bench-stock / hardware store |
+| 18 | **Pololu 33 V / 9 W shunt regulator** — clamps stepper back-EMF transients on the 12 V `VMOT` rail so a wall-wart-powered system can't push the DRV8825 carrier past its 45 V abs max during deceleration / back-driving (33 V trip point sits comfortably above 12 V nominal so it draws no current normally) | 1 | $14.95 | [pololu.com/product/3776](https://www.pololu.com/product/3776) |
 
-Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14)
-with the **default Tic T500** driver: **≈ $83/channel** plus
+Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14, 18)
+with the **default Tic T500** driver: **≈ $98/channel** plus
 **≈ $63 system-shared** (12 V wall-wart, D24V22F5 buck, Pi Zero 2 W)
-→ **≈ $146** for a single-channel v1.0 build.
+→ **≈ $161** for a single-channel v1.0 build.
 
 Add **item 16 (auger-tilt servo, $22.50)** if you want the optional
 wiper-style angular-positioning feature — bringing the v1.0 single-channel
-total to **≈ $169** (Tic) or **≈ $152** (DRV8825-alt). The cheaper
-micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $152** /
-**≈ $135**.
+total to **≈ $184** (Tic) or **≈ $167** (DRV8825-alt). The cheaper
+micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $167** /
+**≈ $150**.
 
 Substitute the cheaper bare DRV8825 carrier (item 11-alt, $15.95) for
 the Tic T500 (item 11, $32.95) and the per-channel cost drops by
-~$17 to **≈ $66/channel** (≈ $129 total for v1.0). The trade-off is
+~$17 to **≈ $81/channel** (≈ $144 total for v1.0). The trade-off is
 that you generate the step pulses on the Pi yourself instead of
 sending high-level "go to position N" commands over USB; see the
 "Driver" subsection below.
@@ -140,13 +141,14 @@ of 2026-Q2; reconfirm at checkout.
 | 16 | **Auger-tilt servo** (Standard size, High-Torque, Metal Gear, digital — for the optional wiper-style angular-positioning add-on; ~±1° repeatability, 5 V PWM input from a Pi hardware-PWM GPIO) | 0–1 per channel *(optional)* | $22.50 | [#1142](https://www.adafruit.com/product/1142) |
 | 16-alt | Cheaper micro-servo alternative (SG-92R, plastic gears, ~±3°) | 0–1 *(in place of #1142)* | $5.95 | [#169](https://www.adafruit.com/product/169) |
 
-### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$52 + ship per channel (default Tic T500), or ~$35 + ship if you swap to the DRV8825 carrier
+### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$67 + ship per channel (default Tic T500 + shunt regulator), or ~$50 + ship if you swap to the DRV8825 carrier
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
 | 11 | **Tic T500** USB / serial / I²C stepper-motor controller (**default** — high-level USB control, no Pi-side step-pulse generation, on-board safe-state `~EN`) | 1 | $32.95 | [#3135](https://www.pololu.com/product/3135) |
 | 11-alt | DRV8825 stepper-driver carrier (cheaper bare step/dir alternative; saves ~$17/channel if you're OK driving STEP/DIR from the Pi) | 1 (in place of item 11) | $15.95 | [#2133](https://www.pololu.com/product/2133) |
 | 15 | D24V22F5 5 V / 2.5 A buck regulator (**function:** steps the system 12 V rail down to 5 V to power the Pi *and* the DRV8871/solenoid in the single-supply variant — eliminates the second wall-wart and item 8) | 1 | $18.95 | [#2858](https://www.pololu.com/product/2858) |
+| 18 | **33 V / 9 W shunt regulator** (**function:** clamps stepper back-EMF transients on the 12 V `VMOT` rail so the wall-wart-powered system can't push the DRV8825 carrier past its 45 V abs max during deceleration / back-driving) | 1 | $14.95 | [#3776](https://www.pololu.com/product/3776) |
 
 ### 3. StepperOnline — ~$15 per channel
 
@@ -242,8 +244,8 @@ barrel-jack breakout:
   plus the JF-0530B's ~1.1 A inrush in the same 5 V rail (2.5 A
   continuous, ~3 A peak). The D24V10F5 (1 A continuous) is too
   small once the solenoid is firing while the Pi is busy on WiFi.
-* **Optional but recommended: Pololu shunt regulator across the
-  12 V rail to clamp stepper back-EMF.** When the stepper
+* **Pololu shunt regulator across the 12 V rail to clamp stepper
+  back-EMF (item 18 — required, not optional).** When the stepper
   decelerates (or is back-driven by powder binding in the auger),
   it dumps energy back into `VMOT`. With a wall-wart supply
   (which can't sink current), that energy bumps the 12 V rail
@@ -254,12 +256,12 @@ barrel-jack breakout:
   shunting the excess to a built-in power resistor. For our
   12 V system the **33 V / 9 W variant
   ([Pololu #3776](https://www.pololu.com/product/3776), $14.95)**
-  is a safe choice — well above the 12 V operating point so it
+  is the right choice — well above the 12 V operating point so it
   draws no current normally, and well under the 45 V `VMOT`
-  abs max so it activates before the driver is at risk. Add to
-  the Pololu cart only if you see motor stalls or hot spinning
-  loads in bring-up; bench-tested couplings without an axial
-  load typically don't need it.
+  abs max so it activates before the driver is at risk. Add it to
+  the Pololu cart by default; bench-tested couplings without an
+  axial load might not strictly need it, but the cost is small
+  enough that the safety margin is worth carrying on every build.
 
 ### Alternative: two separate wall-warts (items 7, 8, 13)
 
