@@ -30,23 +30,34 @@ function tooth_half_angle(r, pitch_r, m, PA) =
 
 function clamp_half_angle(a, Z) = min(a, 360 / (2 * Z));
 
-// 2D spur-gear cross-section: a root-circle disc unioned with `Z`
-// trapezoidal teeth. Caller supplies the derived radii so the same
-// helper works for any module / tooth count.
-module spur_gear_2d(Z, m, PA, root_r, pitch_r, tip_r) {
-    union() {
-        circle(r = root_r);
-        for (i = [0 : Z - 1]) {
-            rotate(360 * i / Z) {
-                a_root = clamp_half_angle(tooth_half_angle(root_r, pitch_r, m, PA), Z);
-                a_tip  = tooth_half_angle(tip_r,  pitch_r, m, PA);
-                polygon(points = [
-                    [root_r * cos(-a_root), root_r * sin(-a_root)],
-                    [tip_r  * cos(-a_tip),  tip_r  * sin(-a_tip) ],
-                    [tip_r  * cos( a_tip),  tip_r  * sin( a_tip) ],
-                    [root_r * cos( a_root), root_r * sin( a_root)],
-                ]);
+// 2D spur-gear cross-section: a root-circle disc (optionally hollowed
+// to `inner_r`) unioned with `Z` trapezoidal teeth. Caller supplies
+// the derived radii so the same helper works for any module / tooth
+// count. `inner_r` defaults to 0 (solid disc, the natural pinion
+// shape). For an external gear *band* integrated into a hollow tube
+// (e.g. the geared Archimedes auger) pass `inner_r` equal to the
+// tube's inner radius so the central bore stays open through the
+// gear's axial slice -- otherwise the disc would seal the bore where
+// the band sits and turn the auger into a closed cup. See
+// archimedes-auger-geared.scad for the integrated-band use case.
+module spur_gear_2d(Z, m, PA, root_r, pitch_r, tip_r, inner_r = 0) {
+    difference() {
+        union() {
+            circle(r = root_r);
+            for (i = [0 : Z - 1]) {
+                rotate(360 * i / Z) {
+                    a_root = clamp_half_angle(tooth_half_angle(root_r, pitch_r, m, PA), Z);
+                    a_tip  = tooth_half_angle(tip_r,  pitch_r, m, PA);
+                    polygon(points = [
+                        [root_r * cos(-a_root), root_r * sin(-a_root)],
+                        [tip_r  * cos(-a_tip),  tip_r  * sin(-a_tip) ],
+                        [tip_r  * cos( a_tip),  tip_r  * sin( a_tip) ],
+                        [root_r * cos( a_root), root_r * sin( a_root)],
+                    ]);
+                }
             }
         }
+        if (inner_r > 0)
+            circle(r = inner_r);
     }
 }

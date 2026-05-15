@@ -2,7 +2,7 @@
 // Powder Excavator - NEMA 11 stepper pinion  v1
 // ================================================================
 //
-// 12-tooth, module-1 mm spur pinion sized to mate with the 30-tooth
+// 16-tooth, module-1 mm spur pinion sized to mate with the 48-tooth
 // integrated gear band on cad/auger-geared/archimedes-auger-geared.scad
 // (which itself is the geared variant of the Archimedes auger from
 // PR #16). The pinion mounts on the 5 mm round output shaft of a
@@ -10,23 +10,28 @@
 // 11HS18-0674S that PR #25 selected as the auger drive motor (item 10
 // in hardware/vibration-motor-and-solenoid.md).
 //
-// Drive parameters
-// ----------------
-//   Pinion teeth          (Z_p) = 12
-//   Driven (auger) teeth  (Z_g) = 30
+// Drive parameters (v2 -- see ./README.md "v1 -> v2" for the resize)
+// ------------------------------------------------------------------
+//   Pinion teeth          (Z_p) = 16
+//   Driven (auger) teeth  (Z_g) = 48
 //   Module                (m)   = 1.0 mm
 //   Pressure angle        (PA)  = 20 deg
-//   Center distance       (C)   = (Z_g + Z_p) * m / 2 = 21.0 mm
-//   Gear ratio (reduction)      = Z_g / Z_p = 30 / 12 = 2.5 : 1
+//   Center distance       (C)   = (Z_g + Z_p) * m / 2 = 32.0 mm
+//   Gear ratio (reduction)      = Z_g / Z_p = 48 / 16 = 3.0 : 1
+//   NEMA 11 body clearance      = C - auger_OR - motor_half_body
+//                                = 32 - 12.5 - 14.1 = 5.4 mm
+//                                (this is what v1 got wrong: 21 -
+//                                 12.5 - 14.1 = -5.6 mm, body-into-
+//                                 auger collision)
 //   Backlash allowance          = ~0.15 mm at pitch (printed-gear rule
 //                                  of thumb; absorbed by adjustable
 //                                  bracket slots, see ./README.md)
 //
 // At the NEMA 11's native 1.8 deg/full-step:
-//   Per auger revolution = 200 * 2.5 = 500 full-steps = 8000 microsteps
+//   Per auger revolution = 200 * 3.0 = 600 full-steps = 9600 microsteps
 //                           at 1/16 microstepping.
-//   Per microstep        = 360 / 8000 = 0.045 deg of auger rotation,
-//                           i.e. ~6.1 um of arc at the 25 mm OD.
+//   Per microstep        = 360 / 9600 = 0.0375 deg of auger rotation,
+//                           i.e. ~5.1 um of arc at the 25 mm OD.
 //
 // Print:   PLA or PETG, 0.2 mm layers, 0.4 mm nozzle. Print FLAT on
 //          the build plate (gear face down) so the teeth come out as
@@ -45,7 +50,7 @@
 
 /* [Gear teeth] */
 gear_module      = 1.0;   // mm  (must match archimedes-auger-geared.scad)
-pinion_teeth     = 12;
+pinion_teeth     = 16;
 pressure_angle   = 20;    // deg
 face_width       = 10;    // mm  (must match archimedes-auger-geared.scad)
 
@@ -65,26 +70,27 @@ $fn = 96;
 // ----------------------------------------------------------------
 // Derived gear geometry
 // ----------------------------------------------------------------
-pinion_pitch_r   = gear_module * pinion_teeth / 2;       // 6.0 mm
+// Derived gear geometry  (Z_p = 16, m = 1)
+pinion_pitch_r   = gear_module * pinion_teeth / 2;       // 8.0 mm
 pinion_addendum  = gear_module;                           // 1.0 mm
 pinion_dedendum  = 1.25 * gear_module;                    // 1.25 mm
-pinion_tip_r     = pinion_pitch_r + pinion_addendum;      // 7.0 mm
-pinion_root_r    = pinion_pitch_r - pinion_dedendum;      // 4.75 mm
+pinion_tip_r     = pinion_pitch_r + pinion_addendum;      // 9.0 mm
+pinion_root_r    = pinion_pitch_r - pinion_dedendum;      // 6.75 mm
 bore_r           = shaft_d / 2 + shaft_clearance;         // 2.70 mm
 
 // Sanity:
-//   pinion_root_r (4.75) > bore_r (2.70) by 2.05 mm -> ample wall
+//   pinion_root_r (6.75) > bore_r (2.70) by 4.05 mm -> ample wall
 //   between the bore and the tooth roots.
+//   hub_d/2 (4.5) < pinion_root_r (6.75) -> the hub never collides
+//   with a meshing tooth.
 
 // ----------------------------------------------------------------
 // Stub-tooth helper - shared with archimedes-auger-geared.scad via
 // gear-teeth.scad so the meshing pair cannot drift apart. Linear-
 // flank approximation of a 20-deg involute (see gear-teeth.scad
-// header for rationale). For Z=12 the analytic root half-angle would
-// exceed the half-pitch (360/2Z = 15 deg); spur_gear_2d() clamps to
-// the half-pitch in that case, so the tooth roots meet tangentially
-// with zero gap, which prints cleanly and is fine for the low-speed
-// metering drive.
+// header for rationale). For Z=16 the analytic root half-angle is
+// well under the half-pitch (360/2Z = 11.25 deg), so spur_gear_2d()
+// renders proper trapezoidal teeth with a small gap at the root.
 // ----------------------------------------------------------------
 
 include <gear-teeth.scad>;
