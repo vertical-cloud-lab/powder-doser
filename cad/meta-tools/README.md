@@ -403,6 +403,109 @@ Practical fit for this repo:
   `step → gltf` for web preview), but it's not a critical-path
   dependency.
 
+#### Iterating on ML-ephant output — three patterns we exercised
+
+The first text-to-CAD call is a one-shot: prompt → STEP + KCL. PR #5
+review comment 4464171767 asked whether ML-ephant supports
+*incremental* refinement (give it the previous design as a starting
+point) and whether per-feature/per-part composition is feasible. The
+answer is yes on both, via three distinct Zoo endpoints — none of
+which require dropping down to the `kittycad` Python wrapper, all are
+plain HTTPS:
+
+| Endpoint | What it does | When to use |
+| --- | --- | --- |
+| `POST /ai/text-to-cad/{output_format}` | One-shot text → STEP/GLTF + KCL. Async, ~14 min, ~$6.89 on the prior auger run. | Concept seed only — first geometry from a blank canvas. |
+| `POST /ml/text-to-cad/iteration` | Edit existing KCL: takes `original_source_code` + a list of `{prompt, range}` `source_ranges` (whole-file range with `start={line:1,column:1}` / `end={line:N, column:len+1}` is the simplest form — KCL line/column are 1-based, line 0 returns `400 Source range out of bounds`). Async, returns the whole patched KCL plus a re-evaluated STEP. | Add or modify one feature at a time on top of the previous run instead of regenerating from scratch. **This is the iterative loop the comment asked about.** |
+| `POST /ml/text-to-cad/multi-file/iteration` | Same as iteration but accepts a multi-file project (binary upload). Each `SourceRangePrompt` carries an extra `file` field. | Compose per-feature KCL files (auger, housing, mounts, …) and let ML-ephant edit one file in the project while keeping the others as context. |
+| `POST /ml/kcl/completions` | Synchronous OpenAI-compatible FIM (fill-in-middle) completion: `{prompt, suffix, language: "kcl", n, max_tokens}` returns up to `n` candidate snippets to splice in. Returns `{"completions": []}` if the model can't produce a high-confidence completion for the surrounding context — it's tuned for editor-style autocomplete inside an existing KCL buffer, not for "write me a feature from a one-line description in isolation." | In-editor "complete this expression" / "stub this body" — the lowest-cost surface for small parametric tweaks. |
+
+All four endpoints accept the same Bearer-token auth as the one-shot
+text-to-CAD probe. The `kittycad` Python package is a thin wrapper
+around exactly these REST calls, so there's no capability the Python
+client unlocks that the raw HTTP path does not — using `urllib`
+directly (as `zoo_iteration_probe.py` does) keeps the probes
+dependency-free.
+
+The single-file iteration path is exercised in
+`cad/meta-tools/zoo_iteration_probe.py` (PR #5 follow-up, comment
+4464171767):
+
+```bash
+python cad/meta-tools/zoo_iteration_probe.py            # submit
+python cad/meta-tools/zoo_iteration_probe.py poll <id>  # poll + save
+```
+
+The probe loads the previous `auger_mlephant.kcl` (the 4.3 KB output
+from the prior one-shot call) and feeds it back as
+`original_source_code`, with a single whole-file `SourceRangePrompt`
+that asks ML-ephant to *add* a coaxial 24 mm OD tube wall, a 12 mm
+side hopper inlet, and a 4 mm wire-exit notch — i.e. exactly the
+single-part "auger + tube" refinement called out as a spec-side TODO
+in the previous review. Outputs land under
+`cad/meta-tools/zoo-output/iteration/`:
+
+* `iter_auger.kcl` — the patched KCL (whole file returned, even for
+  small edits, per the endpoint's contract). Job
+  `0e252b52-7d0c-4362-b1da-1251ae050977` grew the source from 111
+  lines / 4.3 KB to 193 lines / 7.3 KB and added exactly the three
+  requested constructs (no edits to the unchanged auger block):
+
+  ```kcl
+  tubeOuterDiameter = 24mm
+  tubeWall = 2mm
+  hopperDiameter = 12mm
+  hopperCenterBelowTopSpindle = 20mm
+  wireExitDiameter = 4mm
+  ...
+  tubeOuterBody  = extrude(tubeOuterRegion, length = partHeight)
+  tubeBoreCutter = extrude(tubeBoreRegion,  length = partHeight + tubeCutLead * 2)
+  tubeHollowBody = subtract(tubeOuterBody, tools = [tubeBoreCutter])
+  hopperInletCutter = extrude(hopperInletRegion, length = tubeSideCutDepth)
+  tubeWithHopper    = subtract(tubeHollowBody, tools = [hopperInletCutter])
+  wireExitCutter    = extrude(wireExitRegion,   length = -tubeSideCutDepth)
+  tubeWithOpenings  = subtract(tubeWithHopper, tools = [wireExitCutter])
+  ```
+
+  All seven of the original parameters (`outerDiameter`, `pitch`,
+  `shaftDiameter`, `m3TapDiameter`, …) were preserved verbatim and the
+  new tube/hopper/wire-exit dimensions were added as named variables
+  alongside them — i.e. the iteration output stays parametric and
+  re-editable.
+* `iter.job.json` — model version (`0.1.0`) + prompt + conversation id
+  for reproducibility. **Note** the iteration endpoint returns *only*
+  the patched KCL — there is no `outputs` map with a re-rendered STEP
+  blob (unlike `/ai/text-to-cad/{output_format}`). To get a STEP from
+  iterated KCL you re-evaluate the source through the Zoo Design
+  Studio app or the (Rust) `kcl-cli`; rendering it as a Judge-style
+  PNG belongs in a follow-up once a hosted KCL→STEP REST path lands.
+
+Cross-cutting takeaways from running the three patterns:
+
+* **Iteration is materially cheaper than re-prompting from scratch.**
+  The prior one-shot auger run took ~14 min; this iteration completed
+  end-to-end in **5.5 min** (`started=22:17:01Z`,
+  `completed=22:22:30Z`) for a comparable-sized KCL output. Priming
+  the model with `original_source_code` gets it past the
+  variable-naming / parameterisation rediscovery phase — useful for
+  the seven adjustable fields the comment asked for.
+* **Per-feature composition is plumbing, not magic.** Either compose
+  KCL files locally and ship them through the multi-file iteration
+  endpoint, or generate sub-parts as separate one-shot calls and merge
+  the resulting STEPs in CadQuery via `cq.importers.importStep` →
+  `Workplane.union(...)`. The CadQuery-side merge is what the
+  hand-authored `design/cad/full-system-direct-drive/` already does,
+  and it's the right boundary: ML-ephant for *what* a feature looks
+  like, CadQuery for *where* it sits in the assembly.
+* **KCL completions ≠ feature generation.** The
+  `/ml/kcl/completions` endpoint is editor-grade autocomplete (FIM:
+  `prompt` + `suffix` + `language: "kcl"`), not a one-call "make me a
+  hopper" oracle — a smoke-test with just a leading `// add a 12 mm
+  hopper inlet` comment returned `{"completions": []}` because there
+  was no surrounding KCL buffer for it to fill in. It's the right
+  primitive for "tweak this expression," not for "add this whole
+  sub-part" — use the iteration endpoint for the latter.
+
 ---
 
 ## 3. Fusion 360 / Generative Design

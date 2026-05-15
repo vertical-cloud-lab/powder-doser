@@ -1,0 +1,193 @@
+// Archimedes auger dispenser with coaxial tube
+// Preserves the original auger flight and adds a hollow casing with side ports.
+@settings(defaultLengthUnit = mm, kclVersion = 1.0)
+
+outerDiameter = 20mm
+outerRadius = outerDiameter / 2
+shaftDiameter = 6mm
+shaftRadius = shaftDiameter / 2
+partHeight = 100mm
+pitch = 10mm
+bottomSpindleLength = 7mm
+topSpindleLength = 7mm
+flightHeight = partHeight - bottomSpindleLength - topSpindleLength
+flightTwist = flightHeight / pitch * 360deg
+flightInnerRadius = shaftRadius - 0.15mm
+bladePlanHalfWidth = 0.75mm
+bladePlanWidth = bladePlanHalfWidth * 2
+bladeOuterX = 9.97mm
+m3TapDiameter = 2.5mm
+throughBoreLead = 0.25mm
+m3ThreadPitch = 0.5mm
+m3ThreadDepth = 8mm
+threadStartHeight = partHeight - m3ThreadDepth
+threadRidgeRadius = 1.3mm
+threadWireDiameter = 0.18mm
+
+tubeOuterDiameter = 24mm
+tubeWall = 2mm
+tubeOuterRadius = tubeOuterDiameter / 2
+tubeInnerDiameter = tubeOuterDiameter - (tubeWall * 2)
+tubeInnerRadius = tubeInnerDiameter / 2
+tubeCutLead = 0.5mm
+tubeSideCutDepth = tubeWall + tubeCutLead * 2
+hopperDiameter = 12mm
+hopperCenterBelowTopSpindle = 20mm
+hopperCenterHeight = partHeight - topSpindleLength - hopperCenterBelowTopSpindle
+wireExitDiameter = 4mm
+wireExitCenterHeight = wireExitDiameter / 2 - (tubeCutLead / 2)
+
+shaftSketch = sketch(on = XY) {
+  shaftCircle = circle(start = [var 3mm, var 0mm], center = [var 0mm, var 0mm])
+  coincident([shaftCircle.center, ORIGIN])
+  horizontalDistance([shaftCircle.center, shaftCircle.start]) == shaftRadius
+  verticalDistance([shaftCircle.center, shaftCircle.start]) == 0mm
+}
+shaftRegion = region(point = [0mm, 0mm], sketch = shaftSketch)
+hide(shaftSketch)
+shaftBody = extrude(shaftRegion, length = partHeight)
+
+flightSketch = sketch(on = XY) {
+  lowerEdge = line(start = [var 2.85mm, var -0.75mm], end = [var 9.97mm, var -0.75mm])
+  outerEdge = line(start = [var 9.97mm, var -0.75mm], end = [var 9.97mm, var 0.75mm])
+  upperEdge = line(start = [var 9.97mm, var 0.75mm], end = [var 2.85mm, var 0.75mm])
+  innerEdge = line(start = [var 2.85mm, var 0.75mm], end = [var 2.85mm, var -0.75mm])
+
+  coincident([lowerEdge.end, outerEdge.start])
+  coincident([outerEdge.end, upperEdge.start])
+  coincident([upperEdge.end, innerEdge.start])
+  coincident([innerEdge.end, lowerEdge.start])
+  horizontal(lowerEdge)
+  vertical(outerEdge)
+  horizontal(upperEdge)
+  vertical(innerEdge)
+  horizontalDistance([ORIGIN, lowerEdge.start]) == flightInnerRadius
+  verticalDistance([ORIGIN, lowerEdge.start]) == -bladePlanHalfWidth
+  horizontalDistance([lowerEdge.start, lowerEdge.end]) == bladeOuterX - flightInnerRadius
+  verticalDistance([lowerEdge.start, innerEdge.start]) == bladePlanWidth
+}
+flightRegion = region(point = [6mm, 0mm], sketch = flightSketch)
+hide(flightSketch)
+flightRaw = extrude(
+  flightRegion,
+  length = flightHeight,
+  twistAngle = flightTwist,
+  twistAngleStep = 12deg,
+  twistCenter = [0mm, 0mm],
+)
+flightBody = translate(flightRaw, z = bottomSpindleLength, global = true)
+
+augerBlank = union([shaftBody, flightBody])
+
+throughBoreSketch = sketch(on = offsetPlane(XY, offset = partHeight + throughBoreLead)) {
+  boreCircle = circle(start = [var 1.25mm, var 0mm], center = [var 0mm, var 0mm])
+  coincident([boreCircle.center, ORIGIN])
+  diameter(boreCircle) == m3TapDiameter
+  verticalDistance([boreCircle.center, boreCircle.start]) == 0mm
+}
+throughBoreRegion = region(point = [0mm, 0mm], sketch = throughBoreSketch)
+hide(throughBoreSketch)
+throughBoreCutter = extrude(throughBoreRegion, length = -(partHeight + throughBoreLead * 2))
+
+augerWithBore = subtract(augerBlank, tools = [throughBoreCutter])
+auger = augerWithBore
+  |> appearance(color = "#c9c0ac", metalness = 70, roughness = 35)
+
+threadAxis = {
+  origin = [0mm, 0mm, threadStartHeight],
+  direction = [0, 0, 1]
+}
+threadPath = helix(
+  revolutions = m3ThreadDepth / m3ThreadPitch,
+  angleStart = 0deg,
+  ccw = true,
+  radius = threadRidgeRadius,
+  axis = threadAxis,
+  length = m3ThreadDepth,
+)
+
+threadProfileSketch = sketch(on = XZ) {
+  threadCircle = circle(start = [var 1.39mm, var 92mm], center = [var 1.3mm, var 92mm])
+  horizontalDistance([ORIGIN, threadCircle.center]) == threadRidgeRadius
+  verticalDistance([ORIGIN, threadCircle.center]) == threadStartHeight
+  diameter(threadCircle) == threadWireDiameter
+  verticalDistance([
+  threadCircle.center,
+  threadCircle.start
+]) == 0mm
+}
+threadProfileRegion = region(point = [1.3mm, 92mm], sketch = threadProfileSketch)
+hide(threadProfileSketch)
+threadRidge = sweep(threadProfileRegion, path = threadPath)
+  |> appearance(color = "#2d2d2d", metalness = 40, roughness = 45)
+
+tubeOuterSketch = sketch(on = XY) {
+  tubeOuterCircle = circle(start = [var 12mm, var 0mm], center = [var 0mm, var 0mm])
+  coincident([tubeOuterCircle.center, ORIGIN])
+  horizontalDistance([
+  tubeOuterCircle.center,
+  tubeOuterCircle.start
+]) == tubeOuterRadius
+  verticalDistance([
+  tubeOuterCircle.center,
+  tubeOuterCircle.start
+]) == 0mm
+}
+tubeOuterRegion = region(point = [0mm, 0mm], sketch = tubeOuterSketch)
+hide(tubeOuterSketch)
+tubeOuterBody = extrude(tubeOuterRegion, length = partHeight)
+
+tubeBoreSketch = sketch(on = offsetPlane(XY, offset = -tubeCutLead)) {
+  tubeBoreCircle = circle(start = [var 10mm, var 0mm], center = [var 0mm, var 0mm])
+  coincident([tubeBoreCircle.center, ORIGIN])
+  horizontalDistance([
+  tubeBoreCircle.center,
+  tubeBoreCircle.start
+]) == tubeInnerRadius
+  verticalDistance([
+  tubeBoreCircle.center,
+  tubeBoreCircle.start
+]) == 0mm
+}
+tubeBoreRegion = region(point = [0mm, 0mm], sketch = tubeBoreSketch)
+hide(tubeBoreSketch)
+tubeBoreCutter = extrude(tubeBoreRegion, length = partHeight + tubeCutLead * 2)
+tubeHollowBody = subtract(tubeOuterBody, tools = [tubeBoreCutter])
+
+hopperInletSketch = sketch(on = offsetPlane(YZ, offset = tubeInnerRadius - tubeCutLead)) {
+  hopperInletCircle = circle(start = [var 6mm, var 73mm], center = [var 0mm, var 73mm])
+  horizontalDistance([ORIGIN, hopperInletCircle.center]) == 0mm
+  verticalDistance([ORIGIN, hopperInletCircle.center]) == hopperCenterHeight
+  horizontalDistance([
+  hopperInletCircle.center,
+  hopperInletCircle.start
+]) == hopperDiameter / 2
+  verticalDistance([
+  hopperInletCircle.center,
+  hopperInletCircle.start
+]) == 0mm
+}
+hopperInletRegion = region(point = [0mm, hopperCenterHeight], sketch = hopperInletSketch)
+hide(hopperInletSketch)
+hopperInletCutter = extrude(hopperInletRegion, length = tubeSideCutDepth)
+tubeWithHopper = subtract(tubeHollowBody, tools = [hopperInletCutter])
+
+wireExitSketch = sketch(on = offsetPlane(YZ, offset = tubeCutLead - tubeInnerRadius)) {
+  wireExitCircle = circle(start = [var 2mm, var 1.75mm], center = [var 0mm, var 1.75mm])
+  horizontalDistance([ORIGIN, wireExitCircle.center]) == 0mm
+  verticalDistance([ORIGIN, wireExitCircle.center]) == wireExitCenterHeight
+  horizontalDistance([
+  wireExitCircle.center,
+  wireExitCircle.start
+]) == wireExitDiameter / 2
+  verticalDistance([
+  wireExitCircle.center,
+  wireExitCircle.start
+]) == 0mm
+}
+wireExitRegion = region(point = [0mm, wireExitCenterHeight], sketch = wireExitSketch)
+hide(wireExitSketch)
+wireExitCutter = extrude(wireExitRegion, length = -tubeSideCutDepth)
+tubeWithOpenings = subtract(tubeWithHopper, tools = [wireExitCutter])
+tube = tubeWithOpenings
+  |> appearance(color = "#d9e8f2", metalness = 10, roughness = 55)
