@@ -102,15 +102,31 @@ bottom_cap_h    = 12;    // mm — height of conical funnel section.
                           // threshold — funnel is fully self-supporting
                           // without supports or a brim ring.
 
-/* [Loading Slots — Top Cap] */
-// Powder is loaded through these slots from above before the assembly
-// is mounted on the spindle. NOT a hopper — see header note on
+/* [Loading Opening — Top Cap] */
+// Single large pie-slice opening through the top cap (v6, per review
+// comment #4464237145: "make it so there's just one opening to put the
+// powder into from the top, and that it's larger so it's easier to
+// pour into… Even just creating a single larger opening will help").
+// Replaces v5's four 7×4 mm sectoral slots, which together gave only
+// ~112 mm² of pour area split across four narrow windows. The new
+// kidney-shaped opening spans `loading_arc_deg` of the annulus between
+// the M3 boss and the inner tube wall — ~250 mm² of clear pour area in
+// a single mouth, big enough for a powder scoop or a squeeze-bottle
+// nozzle to fit straight in. NOT a hopper — see header note on
 // bridging/ratholing for cohesive powders.
-slot_count      = 4;
-slot_width      = 4;     // mm
-slot_length     = 7;     // mm (was 6; +1 to track the larger top cap)
-slot_radius     = 6.5;   // mm from center (was 5; sits inside the new
-                          // inner_r = 10.5 mm at OD=25)
+loading_arc_deg = 150;   // degrees of the cap annulus opened up
+loading_inner_r = 4.5;   // mm — clears m3_boss_r=4 by 0.5 mm
+loading_outer_r = 10.0;  // mm — clears inner_r=10.5 by 0.5 mm
+
+/* [Pour Lip — One-sided "slide" / scoop wall] */
+// Thin arc wall standing above the top cap on the OUTER rim of the
+// loading opening, acting as a one-sided funnel: pour powder against
+// the wall and it slides down into the opening rather than skating off
+// the flat cap. Non-invasive (3 perimeters thick, ~25% of the cap arc),
+// prints in-place with the rest of the part — no separate piece, no
+// supports. Set lip_height = 0 to disable entirely.
+lip_height      = 4;     // mm — wall height above cap (0 = disabled)
+lip_thickness   = 1.2;   // mm — wall thickness (3 perimeters at 0.4 mm)
 
 // ================================================================
 // Derived — do not edit
@@ -150,32 +166,70 @@ module bottom_funnel() {
     }
 }
 
-// Top cap with M3 boss, pilot hole, and powder loading slots.
+// 2D pie wedge centered on the +X axis, spanning `angle` degrees
+// (±angle/2 about +X), used to carve the loading opening out of the
+// annular top cap.
+module pie_wedge_2d(angle, r) {
+    n = max(8, ceil(angle / 5));
+    pts = concat(
+        [[0, 0]],
+        [for (i = [0 : n])
+            let (a = -angle / 2 + i * angle / n)
+                [r * cos(a), r * sin(a)]]
+    );
+    polygon(pts);
+}
+
+// Single large pie-slice loading opening — 2D footprint extruded
+// through the full top cap (with ±0.1 mm Z overshoot to guarantee
+// a clean cut on both faces).
+module loading_opening_negative() {
+    translate([0, 0, total_height - top_cap_height - 0.1])
+    linear_extrude(height = top_cap_height + 0.2)
+    intersection() {
+        difference() {
+            circle(r = loading_outer_r);
+            circle(r = loading_inner_r);
+        }
+        pie_wedge_2d(loading_arc_deg, outer_r + 1);
+    }
+}
+
+// One-sided pour-lip arc wall — sits on top of the cap, hugging the
+// outer rim of the loading opening. Acts as a "slide": powder poured
+// against it falls into the opening below instead of off the cap.
+// Open on the inner side (toward the M3 boss) so a scoop can come in
+// from above without snagging.
+module pour_lip() {
+    if (lip_height > 0) {
+        translate([0, 0, total_height])
+        linear_extrude(height = lip_height)
+        intersection() {
+            difference() {
+                circle(r = loading_outer_r + lip_thickness);
+                circle(r = loading_outer_r);
+            }
+            pie_wedge_2d(loading_arc_deg, outer_r + 1);
+        }
+    }
+}
+
+// Top cap with M3 boss, pilot hole, single large loading opening, and
+// a one-sided pour lip / "slide" along the opening's outer rim.
 module top_cap() {
     difference() {
         union() {
             translate([0, 0, total_height - top_cap_height])
-                cylinder(r=outer_r, h=top_cap_height);
+                cylinder(r = outer_r, h = top_cap_height);
             translate([0, 0, total_height - top_cap_height - m3_boss_h])
-                cylinder(r=m3_boss_r, h=m3_boss_h);
+                cylinder(r = m3_boss_r, h = m3_boss_h);
+            pour_lip();
         }
         // M3 pilot hole — full depth through cap + boss.
         translate([0, 0, total_height - m3_pilot_depth - 0.1])
-            cylinder(d=m3_pilot_d, h=m3_pilot_depth + 0.2);
-
-        // Powder loading slots (4×, 90° apart). Centered vertically on
-        // the top cap so the cube cuts fully through (top_cap_height +
-        // 0.2 mm Z overshoot). Earlier versions translated to the cap's
-        // underside which left the top face sealed — re-rendered top-down
-        // showed only the M3 pilot, no slots, hence "I can't see any
-        // openings to load powder".
-        for (i = [0 : slot_count - 1]) {
-            angle = i * (360 / slot_count);
-            translate([0, 0, total_height - top_cap_height / 2])
-            rotate([0, 0, angle])
-            translate([slot_radius, 0, 0])
-                cube([slot_length, slot_width, top_cap_height + 0.2], center=true);
-        }
+            cylinder(d = m3_pilot_d, h = m3_pilot_depth + 0.2);
+        // Single large loading opening (replaces v5's 4 small slots).
+        loading_opening_negative();
     }
 }
 
