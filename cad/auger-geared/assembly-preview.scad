@@ -49,6 +49,11 @@ include <archimedes-auger-geared.scad>;
 // --------------------------------------------------------------
 // Geometry
 // --------------------------------------------------------------
+// Pull the height + gear-axial-position from archimedes-auger-geared.scad
+// so the preview tracks the printable part automatically.
+auger_total_h    = total_height_full;     // 250 mm
+auger_gear_z     = gear_center_z_full;    // 83.33 mm
+
 pinion_teeth_assembly = 16;
 center_distance       = (gear_teeth + pinion_teeth_assembly)
                           * gear_module / 2;               // 32.0 mm
@@ -68,12 +73,13 @@ nema_shaft_l  = 20.0;   // protrusion past front face
 // +face_width up the shaft. Align that face with the bottom of
 // the auger gear band so the teeth overlap fully:
 //   auger band bottom z = gear_center_z - gear_face_width / 2
-motor_front_z = gear_center_z - gear_face_width / 2;
+motor_front_z = auger_gear_z - gear_face_width / 2;
 
 // --------------------------------------------------------------
-// Auger
+// Auger (full-length variant -- the include above already
+// instantiates one at the origin via archimedes-auger-geared.scad's
+// top-level call, so we don't add a second one here)
 // --------------------------------------------------------------
-archimedes_auger_geared();
 
 // --------------------------------------------------------------
 // Pinion (imported pre-rendered STL so we don't re-mesh here)
@@ -110,7 +116,7 @@ nema11_dummy();
 // auger OD and the nearest face of the motor frame, at the same
 // z as the gear band. Comment out for export-quality renders.
 // --------------------------------------------------------------
-gap_z = gear_center_z;
+gap_z = auger_gear_z;
 gap_x_start = outer_r;                            // 12.5 mm
 gap_x_end   = center_distance - nema_frame / 2;   // 17.9 mm
 color("#1AA64A")
