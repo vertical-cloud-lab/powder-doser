@@ -21,9 +21,19 @@ def render(inp: pathlib.Path, out: pathlib.Path,
            size: int = 1200, tol: float = 0.03, ang_tol: float = 0.1) -> None:
     shape = cq.importers.importStep(str(inp))
     solids = shape.solids().vals()
-    bb = shape.val().BoundingBox()
+    if solids:
+        # Compound bbox via val() can underreport when val() returns the
+        # first child rather than the whole compound — union the per-solid
+        # bboxes instead so multi-body STEPs render at the correct extent.
+        xs = [s.BoundingBox() for s in solids]
+        xlen = max(b.xmax for b in xs) - min(b.xmin for b in xs)
+        ylen = max(b.ymax for b in xs) - min(b.ymin for b in xs)
+        zlen = max(b.zmax for b in xs) - min(b.zmin for b in xs)
+    else:
+        b = shape.val().BoundingBox()
+        xlen, ylen, zlen = b.xlen, b.ylen, b.zlen
     print(f"{inp.name}: {len(solids)} solid(s); "
-          f"bbox = {bb.xlen:.2f} x {bb.ylen:.2f} x {bb.zlen:.2f} mm")
+          f"bbox = {xlen:.2f} x {ylen:.2f} x {zlen:.2f} mm")
 
     ren = vtk.vtkRenderer()
     ren.SetBackground(1.0, 1.0, 1.0)
