@@ -44,6 +44,10 @@ To make the wire-routing constraints explicit:
 
 ## TL;DR — recommended bill of materials
 
+> **Vendor design files** (mechanical CAD, PCB sources, drill guides) for the
+> parts below are mirrored under [`vendor-files/`](vendor-files/) where the
+> upstream license permits, with manual-download links for the rest.
+
 | # | Part | Qty | Approx. price (USD) | Source / link |
 |---|------|-----|---------------------|---------------|
 | 1 | Adafruit DRV2605L Haptic Motor Controller breakout (I²C) | 1 | $7.95 | [adafruit.com/product/2305](https://www.adafruit.com/product/2305) |
