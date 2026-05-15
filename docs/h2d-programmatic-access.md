@@ -150,7 +150,7 @@ Test-NetConnection -ComputerName <IP> -Port 8883
 ```python
 # h2d_smoketest.py — works on Windows, macOS, and Linux.
 # pip install paho-mqtt
-import ssl, ftplib, threading, paho.mqtt.client as mqtt
+import ssl, socket, ftplib, threading, paho.mqtt.client as mqtt
 IP, ACCESS_CODE, SERIAL = "<IP>", "<ACCESS_CODE>", "<SERIAL>"
 
 # 2b. MQTT-over-TLS — wait up to 15 s for the first report, then move on
@@ -169,9 +169,28 @@ if not got.wait(timeout=15):
           "(check SERIAL — FTPS check will still run below)")
 c.loop_stop(); c.disconnect()
 
-# 2c. FTPS — list /cache (runs regardless of MQTT result so failures are isolable)
+# 2c. FTPS — list /cache. The H2D speaks *implicit* FTPS on :990 (TLS
+# handshake immediately on TCP connect — there is no plaintext
+# `220` welcome banner, no `AUTH TLS` command). Python's stdlib
+# `ftplib.FTP_TLS` is *explicit*-FTPS by default, so a bare
+# `FTP_TLS().connect(IP, 990)` will hang and time out: ftplib waits
+# for a plaintext greeting while the printer waits for a ClientHello.
+# Fix: wrap the socket with TLS *before* the first read.
+class ImplicitFTP_TLS(ftplib.FTP_TLS):
+    def connect(self, host="", port=0, timeout=-999, source_address=None):
+        if host: self.host = host
+        if port: self.port = port
+        if timeout != -999: self.timeout = timeout
+        if source_address is not None: self.source_address = source_address
+        self.sock = socket.create_connection((self.host, self.port), self.timeout)
+        self.af = self.sock.family
+        self.sock = self.context.wrap_socket(self.sock, server_hostname=self.host)
+        self.file = self.sock.makefile("r", encoding=self.encoding)
+        self.welcome = self.getresp()
+        return self.welcome
+
 ctx = ssl._create_unverified_context()
-ftps = ftplib.FTP_TLS(context=ctx); ftps.connect(IP, 990, 30)
+ftps = ImplicitFTP_TLS(context=ctx); ftps.connect(IP, 990, 30)
 ftps.login("bblp", ACCESS_CODE); ftps.prot_p()
 print("FTPS /cache:", ftps.nlst("/cache")); ftps.quit()
 ```
@@ -180,6 +199,45 @@ If both blocks above succeed (you see a JSON `report` message + a
 listing of `/cache`, possibly empty), you have proven the same `(IP,
 code, serial)` triple that the rest of the doc — and every library in
 the "Open-source Python libraries" table below — assumes.
+
+**Troubleshooting — `MQTT OK` but `FTPS ERROR: timed out`.**
+Reported by @ctrhjk in PR #23 against firmware on serial
+`0947AJ622500469`. Two checks, in order:
+
+1. **You're using stdlib `ftplib.FTP_TLS` directly (explicit FTPS)
+   instead of the `ImplicitFTP_TLS` subclass above.** This is the
+   most common cause and matches the symptom exactly: TCP connect
+   succeeds, then `ftps.connect()` blocks reading a plaintext
+   welcome banner that never arrives because the printer is waiting
+   for a TLS handshake on port 990. **Switching to the
+   `ImplicitFTP_TLS` subclass above resolves it without any printer
+   side change.** (`bambulabs_api` and OpenBambuAPI both wrap the
+   socket the same way internally — see
+   [bambulabs_api `Printer.upload_file`][bbl-upload].) Cross-check
+   from the same machine with `lftp -u "bblp,<CODE>" -e "set
+   ftp:ssl-allow yes; set ssl:verify-certificate no; ls; bye"
+   ftps://<IP>:990` — `lftp` does implicit-FTPS correctly, so if
+   `lftp` lists the directory and the Python script times out, the
+   stdlib-vs-implicit issue is confirmed.
+
+2. **Developer Mode is not actually enabled on the H2D.** MQTT can
+   succeed without Developer Mode in some firmware revisions
+   (telemetry on `device/<SERIAL>/report` keeps publishing because
+   the local broker runs for the cloud bridge), while the FTPS
+   server on `:990` only listens once Developer Mode is on. On the
+   touchscreen, Settings → General → confirm **Developer Mode** is
+   ON (separate from LAN Only Mode — see the terminology note at
+   the top of this doc). After toggling, re-run the smoke test;
+   `Test-NetConnection -Port 990` going from `False`/timeout to
+   `True` is the one-line confirmation.
+
+If both of those check out and FTPS still times out, the BYU IoT
+VLAN is likely doing port-level filtering of `:990` (most campus IoT
+networks block FTP family ports outright). Move the test laptop to
+the printer's wired Ethernet port — that bypasses the per-VLAN
+filter and is also what the production Pi relay will be wired into.
+
+[bbl-upload]: https://github.com/mattcar15/bambu-printer-api/blob/main/bambulabs_api/printer.py
 
 ### Step 3 — End-to-end dry run with a real `.gcode.3mf`
 
