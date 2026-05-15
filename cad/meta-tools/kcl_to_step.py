@@ -24,7 +24,10 @@ import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE / "zoo-output" / "multi-part"
+ROOTS = [
+    HERE / "zoo-output" / "multi-part",
+    HERE / "zoo-output" / "multi-part-iter",
+]
 ZOO_BIN = os.environ.get("ZOO_CLI", "/tmp/zoo")
 
 
@@ -67,20 +70,23 @@ def main(argv: list[str]) -> int:
         print("ZOO_API_TOKEN not set", file=sys.stderr)
         return 1
     only = set(argv[1:]) if len(argv) > 1 else None
-    parts = sorted(p for p in ROOT.iterdir() if p.is_dir())
     n_ok = n_fail = 0
-    for part_dir in parts:
-        if only and part_dir.name not in only:
+    for ROOT in ROOTS:
+        if not ROOT.exists():
             continue
-        kcl = part_dir / f"{part_dir.name}.kcl"
-        if not kcl.exists():
-            print(f"[{part_dir.name}] no KCL — skipping")
-            continue
-        print(f"[{part_dir.name}]")
-        if export_one(kcl, part_dir):
-            n_ok += 1
-        else:
-            n_fail += 1
+        print(f"\n## {ROOT.relative_to(HERE.parent.parent)}")
+        for part_dir in sorted(p for p in ROOT.iterdir() if p.is_dir()):
+            if only and part_dir.name not in only:
+                continue
+            kcl = part_dir / f"{part_dir.name}.kcl"
+            if not kcl.exists():
+                print(f"[{part_dir.name}] no KCL — skipping")
+                continue
+            print(f"[{part_dir.name}]")
+            if export_one(kcl, part_dir):
+                n_ok += 1
+            else:
+                n_fail += 1
     print(f"\n== {n_ok} exported, {n_fail} failed ==")
     return 0 if n_fail == 0 else 1
 

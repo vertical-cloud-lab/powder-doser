@@ -51,11 +51,13 @@ PART_COLORS = {
 
 
 def _load_step(name: str, fallback: str | None) -> cq.Workplane | None:
-    """Prefer Zoo-returned STEP; fall back to ground-truth when present."""
+    """Prefer Phase-2 iterated STEP, then Phase-1 STEP, then ground truth."""
     candidates = []
-    zoo_dir = ZOO_OUT / name
-    if zoo_dir.exists():
-        candidates += sorted(zoo_dir.glob("*.step"))
+    iter_dir = ZOO_OUT.parent / "multi-part-iter" / name
+    p1_dir = ZOO_OUT / name
+    for d in (iter_dir, p1_dir):
+        if d.exists():
+            candidates += sorted(d.glob("*.step"))
     if fallback:
         candidates += [HERE / fallback]
     for c in candidates:
