@@ -63,7 +63,9 @@ To make the wire-routing constraints explicit:
 | 11 | **Pololu Tic T500** USB / TTL serial / I²C / analog / RC stepper-motor controller — pre-soldered carrier with on-board MP6500 driver, 4.5–35 V `VIN`, ~1.5 A/phase (≤2.5 A with airflow), high-level "go to position N" commands so the host MCU does **not** generate step pulses; built-in safe-state `~EN` handling sidesteps the boot-time-pull-up gotcha called out by the Edison review | 1 | $32.95 | [pololu.com/product/3135](https://www.pololu.com/product/3135) |
 | 11-alt | Pololu DRV8825 stepper-driver carrier — cheaper bare step/dir carrier; on-board current-limit pot, 1/32 microstepping, accepts 3.3 V STEP/DIR/EN logic from the Pi (use this if you want to save ~$17/channel and don't mind generating step pulses on the Pi) | 1 (in place of item 11) | $15.95 | [pololu.com/product/2133](https://www.pololu.com/product/2133) |
 | 12 | 5 mm ↔ 5 mm flexible shaft coupler (or 5 mm ↔ auger shaft diameter) for direct-drive to the auger | 1 | $3–6 | any (Amazon / McMaster) |
-| 13 | **12 V / ≥3 A external supply** — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant. Adafruit #352 (the previously-recommended fixed 12 V / 5 A wall-wart) went out of stock in 2026-Q2 with no Digi-Key replacement, so the default is now Adafruit #4880 (3–12 V adjustable, 5 A, 2.1 mm barrel; **dial it to 12 V before plugging anything in** and verify with a meter). Drop-in fixed-12 V alternates: Pololu #1468 (12 V / 5 A, 2.1 mm barrel) or Mean Well GST60A12-P1J on Digi-Key | 1 | $17.50 | [adafruit.com/product/4880](https://www.adafruit.com/product/4880) (3–12 V / 5 A adjustable) |
+| 13 | **Mean Well GST60A12-P1J** desktop AC adapter (12 V / 5 A / 60 W, fixed output, 2.1 × 5.5 mm barrel plug, IEC-C14 inlet) — sized to power the stepper *and* (via item 15) the 5 V rail in the consolidated single-supply variant. Order from Digi-Key (Adafruit #352, the original fixed-12 V pick, went out of stock 2026-Q2 with no Adafruit replacement; the only Adafruit-stock 12 V / 5 A option is the **adjustable** #4880, which we deliberately avoid here so the output can't be mis-knobbed). Add a Digi-Key IEC-C14 line cord (item 13a) and a 2.1 mm barrel-jack-to-screw-terminal pigtail (item 13b) to the same cart — both ship separately from the brick. | **1 per system** (not per channel) | $18.60 | [digikey.com Mean Well GST60A12-P1J](https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712) |
+| 13a | IEC-C14 line cord, US 3-prong NEMA 5-15P → C13, ~6 ft (the GST60A12-P1J ships **without** an AC cord) | **1 per system** | ~$5 | Digi-Key (e.g. Tripp Lite P006-006 or Qualtek 234007-01); any standard "PC power cord" works |
+| 13b | 2.1 × 5.5 mm DC barrel jack → screw-terminal pigtail / panel jack (so the brick's barrel plug lands on the bonnet's 12 V screw terminals) | **1 per system** | ~$2.50 | Digi-Key (e.g. CUI Devices PJ-002A + screw-terminal block, or any "DC power jack adapter" on the [Digi-Key barrel-jack page](https://www.digikey.com/en/products/filter/barrel-power-connectors/436)); Adafruit [#368](https://www.adafruit.com/product/368) is the equivalent if you'd rather grab it from the Adafruit cart |
 | 14 | 100 µF / 25 V electrolytic across the stepper driver's `VMOT` / `GND` (Pololu specifically calls this out as required for the DRV8825; the Tic T500 also benefits from a local bulk cap on its `VIN`) | 1 | <$0.50 | any |
 | 15 | **Pololu D24V22F5** 5 V / 2.5 A step-down (buck) regulator — 12 V → 5 V, lets a single 12 V supply power the Pi *and* the DRV8871 solenoid rail, eliminating the second wall-wart and item 8 | 1 | $18.95 | [pololu.com/product/2858](https://www.pololu.com/product/2858) |
 | 16 | **Auger-tilt servo** — Adafruit "Standard Size - High Torque - Metal Gear" digital servo (HD-1810MG, ~3 kg·cm, ±1° repeatability, 5 V PWM input) for the wiper-style angular-positioning add-on described under "Auger drive motor → Auger-tilt / wiper-style angular positioning" below | 0–1 *(optional add-on)* | $22.50 | [adafruit.com/product/1142](https://www.adafruit.com/product/1142) |
@@ -73,18 +75,19 @@ To make the wire-routing constraints explicit:
 
 Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14, 18)
 with the **default Tic T500** driver: **≈ $98/channel** plus
-**≈ $56 system-shared** (12 V wall-wart, D24V22F5 buck, Pi Zero 2 W)
-→ **≈ $154** for a single-channel v1.0 build.
+**≈ $65 system-shared** (Mean Well 12 V brick + IEC cord + barrel pigtail,
+D24V22F5 buck, Pi Zero 2 W + heat sink + microSD + Pi USB PSU)
+→ **≈ $163** for a single-channel v1.0 build.
 
 Add **item 16 (auger-tilt servo, $22.50)** if you want the optional
 wiper-style angular-positioning feature — bringing the v1.0 single-channel
-total to **≈ $177** (Tic) or **≈ $160** (DRV8825-alt). The cheaper
-micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $160** /
-**≈ $143**.
+total to **≈ $186** (Tic) or **≈ $169** (DRV8825-alt). The cheaper
+micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $169** /
+**≈ $152**.
 
 Substitute the cheaper bare DRV8825 carrier (item 11-alt, $15.95) for
 the Tic T500 (item 11, $32.95) and the per-channel cost drops by
-~$17 to **≈ $81/channel** (≈ $137 total for v1.0). The trade-off is
+~$17 to **≈ $81/channel** (≈ $146 total for v1.0). The trade-off is
 that you generate the step pulses on the Pi yourself instead of
 sending high-level "go to position N" commands over USB; see the
 "Driver" subsection below.
@@ -128,7 +131,7 @@ except for the Pi Zero 2 W and the wall-wart, which are **shared
 across all channels**. Prices and shipping are USD and approximate as
 of 2026-Q2; reconfirm at checkout.
 
-### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel (+$22.50 if adding the optional tilt servo) + ~$55 system-shared (wall-wart + Pi + heat sink + microSD + Pi PSU)
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel (+$22.50 if adding the optional tilt servo) + ~$38 system-shared (Pi + heat sink + microSD + Pi USB PSU; the 12 V brick now ships from Digi-Key, see §5)
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
@@ -137,7 +140,6 @@ of 2026-Q2; reconfirm at checkout.
 | 4 | JF-0530B 5 V mini push–pull solenoid (**function:** the tap actuator — driven by item 5 to knock powder loose from the housing wall) | 1 | $7.50 | [#412](https://www.adafruit.com/product/412) |
 | 5 | DRV8871 DC Motor Driver Breakout (**function:** H-bridge that drives the **solenoid** coil at item 4 — *not* the stepper) | 1 | $7.50 | [#3190](https://www.adafruit.com/product/3190) |
 | 6 | Perma-Proto Bonnet Mini Kit for Pi | 1 | $4.95 | [#2310](https://www.adafruit.com/product/2310) |
-| 13 | 12 V / 5 A barrel-jack wall-wart — **default:** Adafruit #4880 (3–12 V adjustable, **dial to 12 V before first plug-in**); fixed-12 V alternates: Pololu #1468 or Mean Well GST60A12-P1J on Digi-Key. (Adafruit #352, the original fixed-12 V pick, went out of stock 2026-Q2 with no Digi-Key replacement.) | **1 per system** (not per channel) | $17.50 | [#4880](https://www.adafruit.com/product/4880) |
 | — | Raspberry Pi Zero 2 W (if not already on hand) | **1 per system** | $19.05 | [#5291](https://www.adafruit.com/product/5291) |
 | — | Mini aluminum heat sink for Pi Zero 2 W (slim 13×13×3 mm, with thermal adhesive — ships peel-and-stick, fits under the Bonnet) | **1 per system** | $0.95 | [#3084](https://www.adafruit.com/product/3084) |
 | — | 16 GB microSD card (Class 10, with adapter — for Raspbian/Pi OS) | **1 per system** | $9.95 | [#2693](https://www.adafruit.com/product/2693) |
@@ -174,6 +176,26 @@ of 2026-Q2; reconfirm at checkout.
 | 14 | 100 µF / 25 V electrolytic cap | 1 | <$0.50 | Required by Pololu across DRV8825 `VMOT`/`GND`; also recommended on the Tic T500's `VIN`. |
 | 9 | 100 µF / 10 V cap, 0.1" pin headers, jumper wires | as needed | bench-stock | You almost certainly have these. |
 
+### 5. Digi-Key ([digikey.com](https://www.digikey.com/)) — single cart, ~$26 system-shared (12 V brick + line cord + barrel-jack pigtail)
+
+The 12 V system brick lives here instead of the Adafruit cart now that
+[Adafruit #352](https://www.adafruit.com/product/352) (the original
+fixed-output 12 V / 5 A pick) is out of stock at Adafruit and Digi-Key
+with no near-term restock. The Adafruit-stock replacement is the
+**adjustable** [#4880](https://www.adafruit.com/product/4880), which
+we deliberately avoid — a knob-set output is one accidental nudge away
+from feeding 9 V or 12 V into a circuit that wanted exactly 12 V.
+[Pololu #1468](https://www.pololu.com/product/1468) is a fixed-12 V
+drop-in but lists at **US $40.33**, more than 2× the Mean Well unit
+below. So the recommended path is a Mean Well desktop brick from
+Digi-Key plus the line cord and barrel pigtail it ships without.
+
+| BOM # | Part | Qty / system | Unit price | Source |
+|---|---|---|---|---|
+| 13 | **Mean Well GST60A12-P1J** desktop AC adapter — 12 V / 5 A / 60 W, fixed output, 2.1 × 5.5 mm center-positive barrel plug, IEC-C14 inlet | 1 | $18.60 | [digikey.com Mean Well GST60A12-P1J](https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712) |
+| 13a | IEC-C14 line cord (US 3-prong NEMA 5-15P → C13, ~6 ft) — the GST60A12-P1J ships **without** an AC cord | 1 | ~$5 | Digi-Key (e.g. Tripp Lite P006-006 or Qualtek 234007-01); any standard "PC power cord" works. Skip if you have a spare desktop / monitor cord on hand. |
+| 13b | 2.1 × 5.5 mm DC barrel jack → screw-terminal pigtail (so the brick's barrel plug lands on the bonnet's 12 V screw terminals) | 1 | ~$2.50 | Digi-Key [barrel-jack adapters](https://www.digikey.com/en/products/filter/barrel-power-connectors/436) (e.g. CUI Devices PJ-002A in a screw-terminal block); Adafruit [#368](https://www.adafruit.com/product/368) is the equivalent if you'd rather grab it from the Adafruit cart |
+
 ### Items to **skip** for the single-supply variant
 
 Items **7** (5 V PSU) and **8** ([Adafruit #373](https://www.adafruit.com/product/373) barrel-jack breakout) are only used in the dual-supply fallback. Don't order them unless you specifically need the two-PSU layout.
@@ -189,22 +211,23 @@ What's likely already on-campus and worth checking before ordering:
 * **Raspberry Pi Zero 2 W** — ECE ELC (416 CB) stocks Raspberry Pis for purchase; confirm the Zero 2 W variant with current ELC staff (contact info on [capstone.byu.edu/computing-resources](https://capstone.byu.edu/computing-resources)) before checkout.
 * **Generic stepper-motor driver** — the BYU PSC inventory lists a "Stepper Motor Driver" at ~$10. Brand/model is **not** specified, so confirm whether they stock a Pololu Tic T500 (item 11) or just a bare DRV8825/A4988-class step-and-direction carrier (item 11-alt) before counting on it.
 * **Consumables**: 100 µF caps (items 9, 14), 0.1" headers, jumper wires, microSD card, USB power supply, micro-USB cable, and the Pi heat sink (#3084) are the kinds of items the prototyping lab typically stocks for ~free; check before adding to the cart.
-* **Wall-wart (item 13)** and the **DRV2605L / ERM disc / JF-0530B / DRV8871 / Bonnet** actuator-side parts (items 1, 2, 4, 5, 6) are **not** on the published PSC list and should come from Adafruit directly.
+* **Wall-wart (item 13)** ships from Digi-Key (Mean Well GST60A12-P1J), and the **DRV2605L / ERM disc / JF-0530B / DRV8871 / Bonnet** actuator-side parts (items 1, 2, 4, 5, 6) are **not** on the published PSC list and should come from Adafruit directly.
 * **Tic T500 specifically**: not in the published PSC inventory — order from Pololu unless staff confirms otherwise.
 
 ### Suggested first-buy: one channel (v1.0 of PR #35)
 
-For the v1.0 single-channel prototype, **place all four carts above
+For the v1.0 single-channel prototype, **place all five carts above
 once with `qty = 1` per item** (default Tic T500 driver) — total
-**≈ $160 + shipping** for the electronics, including the Pi Zero 2 W,
-the 12 V wall-wart, the Pi heat sink, the microSD card, and the
+**≈ $163 + shipping** for the electronics, including the Pi Zero 2 W,
+the Mean Well 12 V brick (with line cord + barrel pigtail from
+Digi-Key), the Pi heat sink, the microSD card, and the
 Pi USB power supply. Substitute the DRV8825 carrier (item 11-alt) for
-the Tic T500 to bring it down to **≈ $143**.
+the Tic T500 to bring it down to **≈ $146**.
 
 Add the **optional auger-tilt servo (item 16, $22.50)** if you want
 the wiper-style angular-positioning feature — bringing the total to
-**≈ $183** (Tic) / **≈ $166** (DRV8825-alt), or **≈ $166** /
-**≈ $149** with the cheaper micro-servo (item 16-alt, $5.95).
+**≈ $186** (Tic) / **≈ $169** (DRV8825-alt), or **≈ $169** /
+**≈ $152** with the cheaper micro-servo (item 16-alt, $5.95).
 
 Multiply
 Adafruit/Pololu/StepperOnline line items (but **not** the
@@ -228,17 +251,21 @@ barrel-jack breakout:
 
 ### Recommended: single 12 V supply + on-board buck (item 13 + item 15)
 
-* Use a single **12 V / 5 A barrel-jack wall-wart** (item 13). The
-  default is now [Adafruit #4880](https://www.adafruit.com/product/4880)
-  ($17.50, 3–12 V adjustable / 5 A — **set the front-panel knob to
-  12 V and verify with a meter before plugging anything else in**),
-  which replaces the previously-recommended fixed-output Adafruit #352
-  (out of stock at Adafruit and Digi-Key as of 2026-Q2).
-  Drop-in fixed-output alternates if you'd rather not rely on a knob:
-  [Pololu #1468](https://www.pololu.com/product/1468) (12 V / 5 A,
-  2.1 mm barrel) or a Mean Well GST60A12-P1J on Digi-Key. Either way
-  the supply only carries ~1 A continuous in our worst case so it
-  stays cool.
+* Use a single **fixed-output 12 V / 5 A barrel-jack brick** (item 13).
+  Default: **Mean Well GST60A12-P1J** from Digi-Key
+  ([digikey.com Mean Well GST60A12-P1J](https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712),
+  $18.60), plus an IEC-C14 line cord (item 13a, ~$5) and a 2.1 mm
+  barrel-jack-to-screw-terminal pigtail (item 13b, ~$2.50) from the
+  same Digi-Key cart — both ship separately from the brick.
+  This replaces the previously-recommended fixed-output Adafruit #352,
+  which went out of stock at Adafruit and Digi-Key 2026-Q2.
+  Adafruit's only in-stock 12 V / 5 A option is the **adjustable**
+  [#4880](https://www.adafruit.com/product/4880); we deliberately
+  avoid it because a knob-set output can be mis-set to 9 V or 12 V
+  by accident. [Pololu #1468](https://www.pololu.com/product/1468)
+  is a fixed-12 V drop-in but lists at US $40.33, more than 2× the
+  Mean Well unit. Either way the supply only carries ~1 A continuous
+  in our worst case so it stays cool.
 * Solder a **Pololu D24V22F5** 12 V → 5 V / 2.5 A step-down
   (item 15, [Pololu #2858](https://www.pololu.com/product/2858))
   onto the bonnet next to the DRV8825. It's a pre-built carrier
