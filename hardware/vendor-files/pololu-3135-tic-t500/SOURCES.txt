@@ -1,0 +1,32 @@
+Pololu Tic T500 USB Multi-Interface Stepper Motor Controller (#3135)
+====================================================================
+
+BOM item 11 (default driver) in ../../vibration-motor-and-solenoid.md
+
+Product page Resources tab (source for everything in this folder):
+  https://www.pololu.com/product/3135/resources
+
+Files
+-----
+cad/tic-stepper-motor-controller-models.zip
+    Vendor ZIP bundle of STEP / STL models for the entire Tic family
+    (T500, T834, T825, T249, 36v4, etc.). Use the T500-specific files
+    inside; the others are kept for reference since the PCB outline is
+    shared across most of the family.
+
+dimensions/tic-t500-drill-guide.pdf
+    Original Pololu T500 drill-guide PDF (already in this folder before
+    the manual-download batch).
+
+dimensions/tic-stepper-motor-controller-dimensions.pdf
+    Full mechanical dimension diagram (covers the whole Tic family).
+
+datasheets/tic.pdf
+    Tic stepper-motor-controller user's guide (covers serial / I²C /
+    USB protocol, Tic Control Center configuration, current-limit
+    setup, etc. — same PDF as on the product Resources tab).
+
+License: Pololu reproduces these from the product-page Resources tab;
+redistribution rights follow Pololu's posted terms of use
+(https://www.pololu.com/about/copyright). Included here as engineering
+reference, not as design originals.
