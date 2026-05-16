@@ -1,0 +1,13 @@
+# onshape upload-assembly summary  2026-05-16T02:29Z
+BASE = https://cad.onshape.com
+document URL (redacted): https://cad.onshape.com/documents/<did>/w/<wid>
+
+## uploaded elements
+- auger_solid: 1 element(s)  (source: cad/meta-tools/zoo-output/multi-part-iter/auger_solid/auger_solid.step)
+- stepper_mount_collar: 1 element(s)  (source: cad/meta-tools/zoo-output/multi-part-iter/stepper_mount_collar/stepper_mount_collar.step)
+- embed_pocket_sleeve: 1 element(s)  (source: cad/meta-tools/zoo-output/multi-part-iter/embed_pocket_sleeve/embed_pocket_sleeve.step)
+- servo_yoke: 1 element(s)  (source: cad/meta-tools/zoo-output/multi-part/servo_yoke/servo_yoke.step)
+- pi_mount_bracket: 1 element(s)  (source: cad/meta-tools/zoo-output/multi-part/pi_mount_bracket/pi_mount_bracket.step)
+- full_system_assembly: 2 element(s)  (source: design/cad/full-system-modular/full_system_assembly.step)
+
+(real did/wid/eid printed to stdout only; not committed)
