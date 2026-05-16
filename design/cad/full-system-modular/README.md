@@ -131,26 +131,21 @@ repo memo). The delta prompts are intentionally surgical: "fuse plate
 + sleeve + flange via union", "replace the protruding wire tubes with
 cut Ø4 mm holes", etc.
 
-| part | iteration id | status (session boundary) | delta |
+| part | iteration id | result | delta |
 | --- | --- | --- | --- |
-| `auger_solid` | `6ce8d143-f510-47e0-9e9a-4df404e0c56c` | **in_progress** | union the 4 disjoint solids into one watertight body |
-| `stepper_mount_collar` | `4c8eb83a-f3f7-4d79-a508-3dfb5df9b5cf` | completed (still 2 solids — iteration did not honor the fuse-via-union delta; documented limitation) | fuse plate + sleeve + flange into one solid |
-| `embed_pocket_sleeve` | `db0122d6-dd33-4961-a527-3e834d785726` | **in_progress** | cut the wire-exit channels into the sleeve wall (no protrusions) |
+| `auger_solid` | `6ce8d143-f510-47e0-9e9a-4df404e0c56c` | completed → **1 solid, 24×24×100 mm** ✓ (down from 4 solids in Phase 1) | union the 4 disjoint solids into one watertight body |
+| `stepper_mount_collar` | `4c8eb83a-f3f7-4d79-a508-3dfb5df9b5cf` | completed → still 2 solids ⚠ (iteration did not honor the fuse-via-union delta; documented limitation) | fuse plate + sleeve + flange into one solid |
+| `embed_pocket_sleeve` | `db0122d6-dd33-4961-a527-3e834d785726` | completed → **1 solid, 30×30×24 mm** ✓ (down from 3 solids / 54 mm X-extent) | cut the wire-exit channels into the sleeve wall (no protrusions) |
 
-> Two of the three Phase-2 iterations were still `in_progress` at
-> session handoff. The job ids are persisted at
-> `zoo-output/multi-part-iter/job-ids.json` (and per-part
-> `job-id.txt`). To resume in a follow-up session:
->
-> ```bash
-> python cad/meta-tools/zoo_iteration_phase2.py poll
-> python cad/meta-tools/kcl_to_step.py auger_solid embed_pocket_sleeve
-> python design/cad/full-system-modular/assemble.py
-> ```
->
-> `assemble.py` already prefers `multi-part-iter/<part>/<part>.step`
-> over the Phase-1 STEP when present, so re-running it picks up the
-> iterated parts automatically.
+Two of the three iterations (`auger_solid`, `embed_pocket_sleeve`) were
+still `in_progress` at the previous session's handoff and were polled
+to completion in a follow-up session; both resolved cleanly to single
+fused solids with sensible bboxes. `stepper_mount_collar` remains a
+2-solid composite — iteration runs that ask the LLM to fuse separately
+extruded bodies via a closing `union` reliably produce a delta with the
+right *intent* but the wrong *placement* (see the rendered PNG); the
+assembly merge in Phase 3 handles this transparently since CadQuery's
+`Assembly` accepts multi-body STEPs.
 
 The iteration responses (KCL only, per the same regression — the
 [`zoo iteration api`](#) memo notes the iteration endpoint never
@@ -173,14 +168,21 @@ embed sleeve slipped over the auger near the dispense end, servo yoke
 under the dispense exit, Pi bracket on the back face. Each part keeps
 its own colour in the assembly tree so the Judge render is legible.
 
-Composite extents: 5 components, 11 sub-solids,
-57.6 mm × 32.0 mm × 108.0 mm bbox — matches the design envelope
-specified in the original PR-#5 comment.
+Composite extents: 5 components, 6 sub-solids,
+40.0 mm × 32.0 mm × 108.0 mm bbox — tighter than the Phase-1 composite
+(11 solids, 57.6 × 32.0 × 108.0 mm) because the Phase-2 iterations
+collapsed the auger into one solid (was 4) and the embed sleeve into
+one solid + 30 mm OD (was 3 solids, 54 mm OD with the protruding wire
+tubes). The stepper collar still contributes 2 solids; everything
+else is 1 solid each.
 
 | view | image |
 | --- | --- |
 | Phase 0 ground-truth auger | ![ground truth](renders/ground_truth_auger.png) |
-| Phase 3 composite assembly (Phase 1 parts) | ![assembly](renders/full_system_assembly.png) |
+| Phase 2 iterated `auger_solid` (1 fused solid, 24×24×100 mm) | ![auger phase2](../../../cad/meta-tools/zoo-output/multi-part-iter/renders/auger_solid.png) |
+| Phase 2 iterated `embed_pocket_sleeve` (1 solid, channels cut in) | ![embed phase2](../../../cad/meta-tools/zoo-output/multi-part-iter/renders/embed_pocket_sleeve.png) |
+| Phase 2 iterated `stepper_mount_collar` (2 solids — fuse delta not honored) | ![collar phase2](../../../cad/meta-tools/zoo-output/multi-part-iter/renders/stepper_mount_collar.png) |
+| Phase 3 composite assembly (Phase 2 parts where available) | ![assembly](renders/full_system_assembly.png) |
 
 Reproduce:
 
