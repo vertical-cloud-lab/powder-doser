@@ -72,6 +72,9 @@ To make the wire-routing constraints explicit:
 | 16-alt | Cheaper micro-servo alternative for the tilt axis — Adafruit Micro Servo (SG-92R, ~2.5 kg·cm, plastic gears, ~3° repeatability — fine for ±15° wipers if the auger assembly is light) | 0–1 *(in place of item 16)* | $5.95 | [adafruit.com/product/169](https://www.adafruit.com/product/169) |
 | 17 | M2/M3 servo-horn → auger-tilt-bracket hardware (printed bracket lives in the auger CAD from PR #16; this row covers the screws + the metal servo horn that ships with item 16) | 0–1 *(only with item 16/16-alt)* | <$2 | bench-stock / hardware store |
 | 18 | **Pololu 33 V / 9 W shunt regulator** — clamps stepper back-EMF transients on the 12 V `VMOT` rail so a wall-wart-powered system can't push the DRV8825 carrier past its 45 V abs max during deceleration / back-driving (33 V trip point sits comfortably above 12 V nominal so it draws no current normally) | 1 | $14.95 | [pololu.com/product/3776](https://www.pololu.com/product/3776) |
+| 19 | **Baseplate-tilt linear actuator** — Glideforce GF01-121010-1-66 (12 V brushed DC lead-screw actuator, **100 mm stroke**, 100:1 gearing, 4.3 kgf / 9.4 lb dynamic load, ~17.6 mm/s no-load, IP66, integrated **limit switches at both ends of stroke** so it safely stops itself at full extend/retract). Pivot-mounts between the chassis frame and the underside of the mounting plate (one end on each) to swing the whole plate from **horizontal (0°) to vertical (90°)** — see "Baseplate-tilt linear actuator" subsection below. Limit-switch variant is preferred over the feedback-pot variant (`-2-66`) because the Pi Zero 2 W has no on-board ADC, and timed-run positioning against the hard end-stops is plenty accurate for a horizontal↔vertical aim that only changes between runs. | **1 per system** *(not per channel)* | $79.95 | [pololu.com/product/4467](https://www.pololu.com/product/4467) |
+| 19-alt | Generic 12 V mini linear actuator (~100 mm stroke, ~7–10 lb force, built-in limit switches, two-wire polarity-reversal control) — Amazon search "12V linear actuator 100mm". Lower duty-cycle quality than the Glideforce, plastic gearbox, but plug-compatible with the same DRV8871-driven wiring below. | 1 per system *(in place of item 19)* | ~$25–35 | Amazon / eBay (e.g. ECO-WORTHY, JQDML, Eintosti families) |
+| 20 | Second **Adafruit DRV8871 DC Motor Driver Breakout** — drives the linear actuator (item 19/19-alt) off the 12 V rail. Brushed DC + integrated end-stops = textbook DRV8871 load; same part as item 5 (which drives the solenoid), so you can buy two of #3190 and not stock anything extra. Two PWM/DIR-style Pi GPIOs from `pigpio` software-PWM are sufficient (the actuator only moves between runs, so hardware-PWM is not required). | **1 per system** *(only with item 19/19-alt)* | $7.50 | [adafruit.com/product/3190](https://www.adafruit.com/product/3190) |
 
 Total for the full actuator stack (items 1, 2, 4, 5, 6, 10, 11, 12, 14, 18)
 with the **default Tic T500** driver: **≈ $98/channel** plus
@@ -84,6 +87,13 @@ wiper-style angular-positioning feature — bringing the v1.0 single-channel
 total to **≈ $186** (Tic) or **≈ $169** (DRV8825-alt). The cheaper
 micro-servo (item 16-alt, $5.95) drops those numbers to **≈ $169** /
 **≈ $152**.
+
+Add **item 19 (Glideforce baseplate-tilt linear actuator, $79.95) + item 20
+(second DRV8871, $7.50)** if you want the whole-mounting-plate
+horizontal↔vertical tilt — **+$87.45 system-shared** (one set per
+system, not per channel), bringing the v1.0 single-channel total to
+**≈ $250** (Tic) / **≈ $233** (DRV8825-alt). The generic-Amazon
+alternate (item 19-alt, ~$30) drops the linear-actuator adder to ~$37.
 
 Substitute the cheaper bare DRV8825 carrier (item 11-alt, $15.95) for
 the Tic T500 (item 11, $32.95) and the per-channel cost drops by
@@ -131,7 +141,7 @@ except for the Pi Zero 2 W and the wall-wart, which are **shared
 across all channels**. Prices and shipping are USD and approximate as
 of 2026-Q2; reconfirm at checkout.
 
-### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel (+$22.50 if adding the optional tilt servo) + ~$38 system-shared (Pi + heat sink + microSD + Pi USB PSU; the 12 V brick now ships from Digi-Key, see §5)
+### 1. Adafruit ([adafruit.com](https://www.adafruit.com/)) — single cart, ~$30 + ship per channel (+$22.50 if adding the optional tilt servo) + ~$38 system-shared (Pi + heat sink + microSD + Pi USB PSU; the 12 V brick now ships from Digi-Key, see §5; +$7.50 system-shared for a second DRV8871 if adding the optional baseplate-tilt linear actuator from §2 below)
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
@@ -146,8 +156,9 @@ of 2026-Q2; reconfirm at checkout.
 | — | 5 V / 2.4 A USB power supply with micro-USB cable (for the Pi) | **1 per system** | $7.50 | [#1995](https://www.adafruit.com/product/1995) |
 | 16 | **Auger-tilt servo** (Standard size, High-Torque, Metal Gear, digital — for the optional wiper-style angular-positioning add-on; ~±1° repeatability, 5 V PWM input from a Pi hardware-PWM GPIO) | 0–1 per channel *(optional)* | $22.50 | [#1142](https://www.adafruit.com/product/1142) |
 | 16-alt | Cheaper micro-servo alternative (SG-92R, plastic gears, ~±3°) | 0–1 *(in place of #1142)* | $5.95 | [#169](https://www.adafruit.com/product/169) |
+| 20 | Second **DRV8871 DC Motor Driver Breakout** (only with item 19/19-alt; drives the baseplate-tilt linear actuator off the 12 V rail — same #3190 as item 5, just bump the quantity in the Adafruit cart from 1 → 2 when you order) | **1 per system** *(optional, only with item 19)* | $7.50 | [#3190](https://www.adafruit.com/product/3190) |
 
-### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$67 + ship per channel (default Tic T500 + shunt regulator), or ~$50 + ship if you swap to the DRV8825 carrier
+### 2. Pololu ([pololu.com](https://www.pololu.com/)) — single cart, ~$67 + ship per channel (default Tic T500 + shunt regulator), or ~$50 + ship if you swap to the DRV8825 carrier; +$79.95 system-shared if adding the optional baseplate-tilt linear actuator (item 19)
 
 | BOM # | Part | Qty / channel | Unit price | Product page |
 |---|---|---|---|---|
@@ -155,6 +166,7 @@ of 2026-Q2; reconfirm at checkout.
 | 11-alt | DRV8825 stepper-driver carrier (cheaper bare step/dir alternative; saves ~$17/channel if you're OK driving STEP/DIR from the Pi) | 1 (in place of item 11) | $15.95 | [#2133](https://www.pololu.com/product/2133) |
 | 15 | D24V22F5 5 V / 2.5 A buck regulator (**function:** steps the system 12 V rail down to 5 V to power the Pi *and* the DRV8871/solenoid in the single-supply variant — eliminates the second wall-wart and item 8) | 1 | $18.95 | [#2858](https://www.pololu.com/product/2858) |
 | 18 | **33 V / 9 W shunt regulator** (**function:** clamps stepper back-EMF transients on the 12 V `VMOT` rail so the wall-wart-powered system can't push the DRV8825 carrier past its 45 V abs max during deceleration / back-driving) | 1 | $14.95 | [#3776](https://www.pololu.com/product/3776) |
+| 19 | **Glideforce GF01-121010-1-66** baseplate-tilt linear actuator (**function:** swings the whole mounting plate from horizontal to vertical; 12 V brushed DC + lead screw, 100 mm stroke, 100:1, 9.4 lb dynamic load, built-in limit switches at both ends of stroke so it can't over-travel — driven by item 20 below) | **1 per system** *(optional add-on)* | $79.95 | [#4467](https://www.pololu.com/product/4467) |
 
 ### 3. StepperOnline — ~$15 per channel
 
@@ -228,6 +240,15 @@ Add the **optional auger-tilt servo (item 16, $22.50)** if you want
 the wiper-style angular-positioning feature — bringing the total to
 **≈ $186** (Tic) / **≈ $169** (DRV8825-alt), or **≈ $169** /
 **≈ $152** with the cheaper micro-servo (item 16-alt, $5.95).
+
+Add the **baseplate-tilt linear actuator (item 19, $79.95) + a second
+DRV8871 (item 20, $7.50)** if you want the
+horizontal-to-vertical whole-plate tilt described in the
+"Baseplate-tilt linear actuator" subsection below — **+$87.45
+system-shared** (one set per system, not per channel). Bringing the
+v1.0 single-channel total to **≈ $250** (Tic) / **≈ $233**
+(DRV8825-alt). The generic-Amazon alternate (item 19-alt, ~$30)
+drops the linear-actuator adder to ~$37 instead.
 
 Multiply
 Adafruit/Pololu/StepperOnline line items (but **not** the
@@ -426,6 +447,14 @@ Wire-up:
 
 ### Auger-tilt / wiper-style angular positioning (optional add-on)
 
+> **Two tilt axes, two different parts.** This subsection covers the
+> **per-channel wiper sweep** of a *single auger* through a small arc
+> (typically ±30–±90°) — a fast, low-torque motion used during a
+> dispense to aim across multiple targets on the scale. For tilting the
+> **entire mounting plate** from fully horizontal to fully vertical
+> as a per-system aim *between* dispense runs, see the
+> "Baseplate-tilt linear actuator" subsection below instead.
+
 A second motion axis — **tilting** the whole auger assembly through
 a repeatable arc, windshield-wiper style — lets one channel
 deposit at multiple target positions on the scale (e.g. sweeping
@@ -514,6 +543,164 @@ scale, then store the calibrated angles in the channel's config
 file. Because the servo is absolute-position (PWM duty → angle),
 no homing routine is needed at power-on — it goes straight to the
 first commanded angle.
+
+### Baseplate-tilt linear actuator (per-system aim, horizontal ↔ vertical)
+
+Separately from the per-channel wiper servo above, the **whole
+mounting plate** that carries the channel(s) is hinged along one
+edge to the chassis frame so it can be swung from **fully
+horizontal (0°, dispense straight down)** to **fully vertical
+(90°, dispense sideways)** — see the chassis CAD in PRs
+[#57](https://github.com/vertical-cloud-lab/powder-doser/pull/57)
+and [#59](https://github.com/vertical-cloud-lab/powder-doser/pull/59)
+for the hinge geometry. That whole-plate tilt is driven by a
+single **linear actuator** anchored between the chassis frame
+(lower pivot) and the underside of the mounting plate (upper
+pivot, offset from the hinge line). Because the actuator only
+needs to reposition the plate *between* dispense runs (not during
+mass-metering), this axis can be slow, infrequent, and open-loop —
+which lets us pick the cheapest reliable part that hits the
+geometry and the load.
+
+**Sizing the stroke.** With the upper pivot a distance `R` (mm)
+from the hinge line on the underside of the plate, and the lower
+pivot directly below the hinge at depth `R` as well (i.e. an
+isoceles right-triangle layout in the home position), the actuator
+length goes from `R·√2 ≈ 1.41·R` at 0° (plate horizontal) to
+`R + R = 2R` at 90° (plate vertical) — i.e. the **stroke needed
+is ≈ 0.59·R**. For the v1.0 baseplate footprint (≈ 150 mm wide,
+upper pivot ~80–100 mm out from the hinge), that gives a stroke
+budget of **~50–60 mm**, so a **100 mm-stroke** actuator gives
+generous headroom for tuning pivot locations later. A shorter
+50 mm-stroke actuator works for `R ≤ 85 mm` if shaving cost matters.
+
+**Sizing the force.** The static torque about the hinge in the
+worst-case (plate horizontal, full mass of channels + auger
+assemblies + collection cup hanging out at the actuator pivot) is
+~`m·g·R`. For a v1.0 single-channel plate (~0.5 kg total above
+the hinge, `R ≈ 80 mm`), that's ~0.4 N·m. The actuator only sees
+that load reduced by its mechanical advantage about the hinge
+(≈ `R/L` where `L` is the actuator-to-hinge perpendicular distance,
+typically `~R`), so it sees ~0.5 kg ≈ 5 N at the rod end. The
+Glideforce 100:1 in item 19 is rated for **42 N** dynamic and
+**40 N** static — ~8× margin, which leaves plenty of headroom for
+an N-channel scale-up of the plate.
+
+**Recommended — Glideforce GF01-121010-1-66 (item 19, default).**
+[Pololu #4467](https://www.pololu.com/product/4467), $79.95, 12 V
+brushed DC + lead screw, 100 mm stroke, 100:1 gearing, 4.3 kgf
+(9.4 lb) dynamic load, 17.6 mm/s no-load speed, IP66. The
+**`-1-66` (limit-switch) variant** is preferred over the
+`-2-66` feedback-pot variant because:
+
+* The Pi Zero 2 W has no on-board ADC — using the
+  feedback-pot variant would mean adding an MCP3008 / ADS1115
+  ADC and a closed-loop position loop in software, which is
+  overkill for an aim that only needs to land on `~0°` or `~90°`
+  (the mechanical hard stops).
+* The limit-switch variant **automatically de-energises the
+  motor** at full extend and full retract while still allowing
+  reverse drive — so a timed-run that overshoots simply parks
+  against the relevant end-stop instead of damaging the gearbox.
+  Calibrate the two end positions once mechanically, then any
+  dispense recipe just commands "extend until limit" (horizontal)
+  or "retract until limit" (vertical).
+* 12 V matches the system PSU (item 13, Mean Well GST60A12-P1J)
+  exactly — no extra rail, no buck — and the ~0.3 A max-load
+  draw is a rounding error against the brick's 5 A budget.
+* The shaft holds position **unpowered** under static loads up to
+  4 kgf, so the plate stays put between runs without the actuator
+  drawing current.
+
+**Cheaper alternative — generic 12 V Amazon linear actuator (item 19-alt).**
+~$25–35 on Amazon (search "12 V linear actuator 100 mm" — most
+hits are mechanically equivalent generic-brand Concentric clones).
+Built-in limit switches at both ends of stroke; two-wire polarity-reversal
+control. Lower duty-cycle quality than the Glideforce, plastic
+gearbox, IP rating typically unspecified. Plug-compatible with the
+exact same DRV8871 wiring below — pick it if the Glideforce blows the
+budget and the duty cycle is low (a few tilts per run, indoor benchtop).
+
+**Driver — second Adafruit DRV8871 (item 20, $7.50).** The actuator
+is just a brushed DC motor with end-stops, so it's a textbook
+**single-H-bridge** load. Reuse the same Adafruit
+[DRV8871 #3190](https://www.adafruit.com/product/3190) breakout
+that item 5 uses for the solenoid (3.6 A peak, built-in flyback
+clamps, takes Pi-logic-level PWM directly). Wire its `VM`/`GND`
+to the 12 V `VMOT` rail, and its `IN1`/`IN2` to two spare Pi
+GPIOs (anything not on the I²C/SPI/UART used elsewhere — e.g.
+GPIO20/GPIO21, since the wiper servo already takes GPIO12 if
+present). Two pulls high in opposite combinations control the
+direction:
+
+| `IN1` | `IN2` | Actuator behaviour |
+|------|------|---------------------|
+| LOW  | LOW  | Coast (high-impedance, plate held by lead screw self-locking) |
+| HIGH | LOW  | Extend (tilt **toward 0° / horizontal**, until the extend limit switch opens) |
+| LOW  | HIGH | Retract (tilt **toward 90° / vertical**, until the retract limit switch opens) |
+| HIGH | HIGH | Brake (active short across the motor) — **avoid** holding this state while the limit switch is closed, since it briefly short-circuits the H-bridge through the cap; use `LOW`/`LOW` (coast) for "hold position". |
+
+**Mechanical mount.** Both ends of the actuator need a single-axis
+**pivot pin** (not a rigid bolt) so the actuator can rotate freely
+as the plate angle changes — anchoring the body rigidly will bind
+the lead screw and stall the motor. The Glideforce GF01 ships with
+4.25 mm mounting holes at each end; pair them with 4 mm clevis pins
++ retaining clips (any bench-stock hardware bag) and printed pivot
+brackets on the chassis frame and the plate underside. Place the
+chassis-side pivot **directly below the hinge line** if you want
+the symmetric isoceles-right-triangle geometry from the stroke
+calculation above; offset forward or back to skew the angle vs
+stroke ratio.
+
+**Software stub (Pi-side, `gpiozero`).** Open-loop, runs until the
+relevant limit switch opens (the DRV8871 will see the motor stall
+to zero current, and the GF01's internal limit switch interrupts
+the motor circuit cleanly so the stall is brief and harmless):
+
+```python
+from gpiozero import OutputDevice
+from time import sleep
+
+# DRV8871 IN1/IN2 wired to GPIO20/GPIO21 (or any two spare GPIOs):
+tilt_in1 = OutputDevice(20)
+tilt_in2 = OutputDevice(21)
+
+# Approximate stroke time (100 mm @ ~17 mm/s no-load → ~6 s end-to-end,
+# +20 % margin to guarantee the end-stop is reached on slower loads):
+STROKE_TIME_S = 7.5
+
+def tilt_to_horizontal():
+    """Extend until the GF01 extend-limit switch opens (plate goes to ~0°)."""
+    tilt_in1.on(); tilt_in2.off()
+    sleep(STROKE_TIME_S)
+    tilt_in1.off(); tilt_in2.off()  # coast — lead screw self-locks position
+
+def tilt_to_vertical():
+    """Retract until the GF01 retract-limit switch opens (plate goes to ~90°)."""
+    tilt_in1.off(); tilt_in2.on()
+    sleep(STROKE_TIME_S)
+    tilt_in1.off(); tilt_in2.off()
+```
+
+For intermediate angles between the two hard end-stops, use a
+**shorter timed run** instead of `STROKE_TIME_S` — calibrate seconds
+↔ degrees once with a protractor on the plate, then store the table
+in the channel config file. For sub-degree absolute positioning at
+intermediate angles, switch to the feedback-pot variant
+([Pololu #4487](https://www.pololu.com/product/4487), same $79.95)
+plus an MCP3008 ADC on the Pi's SPI bus, and run a PID loop on the
+ADC value.
+
+**Why not a hobby servo for this axis too?** The wiper-servo
+approach (items 16 / 16-alt above) works fine for small-arc
+per-auger aim, but it tops out at ~3 kg·cm of torque (≈ 0.3 N·m)
+and ~180° of travel — both marginal for tilting an entire
+multi-channel plate that may weigh several hundred grams when fully
+populated. A lead-screw linear actuator gives 10–50× the torque at
+the pivot for similar money, plus the lead screw self-locks so the
+plate stays put unpowered (a servo holds position by drawing
+continuous current against the load, which heats it under sustained
+gravity loading).
 
 ### Belt-drive alternative
 
