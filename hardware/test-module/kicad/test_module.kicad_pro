@@ -1,0 +1,26 @@
+{
+  "board": {},
+  "boards": [],
+  "cvpcb": {"equivalence_files": []},
+  "erc": {"erc_exclusions": [], "meta": {"version": 0}},
+  "libraries": {"pinned_footprint_libs": [], "pinned_symbol_libs": []},
+  "meta": {"filename": "test_module.kicad_pro", "version": 1},
+  "net_settings": {"classes": [], "meta": {"version": 3}, "net_colors": null},
+  "pcbnew": {"page_layout_descr_file": ""},
+  "schematic": {
+    "annotate_start_num": 0,
+    "drawing": {"default_line_thickness": 6.0, "default_text_size": 50.0},
+    "legacy_lib_dir": "",
+    "legacy_lib_list": [],
+    "meta": {"version": 1},
+    "net_format_name": "Pcbnew",
+    "ngspice": {"meta": {"version": 0}, "workbook_filename": ""},
+    "page_layout_descr_file": "",
+    "plot_directory": "",
+    "spice_external_command": "spice \"%I\"",
+    "subpart_first_id": 65,
+    "subpart_id_separator": 0
+  },
+  "sheets": [["00000000-0000-0000-0003-000000000001", ""]],
+  "text_variables": {}
+}
