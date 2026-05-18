@@ -7,14 +7,23 @@ Re-design per the second review on the issue #62 thread (#56 follow-up):
   * The plate has **NO holes other than mounting holes** and **NO gaps**
     other than a single open U-notch in the +Y edge.  The auger
     overhangs through that notch in mid-air; the gear band & pinion
-    have *air-clearance* above the plate top (the auger axis is now
-    high enough that the gear band tip clears the plate top by 5 mm).
+    have *air-clearance* above the plate top.
+  * The auger sits **centred on the plate in X** (auger axis at X=0;
+    plate is symmetric about X=0 so the central auger gap is in the
+    middle of the +Y edge).
+  * The brackets bolt **directly to the plate top** with no plinths
+    (per the third review).  The auger centreline therefore sits at
+    the bracket's native bore height above the plate top.
   * The hinge is **split into two separate hinges** — one on each
-    side of the auger.  Each side: one mounting-plate eye + one
-    baseplate-arm eye butted axially on a short M5 pin.
+    side of the auger, **equal in size and symmetric about X=0**.
+    Each side: one mounting-plate eye + one baseplate-arm eye butted
+    axially on a short M5 pin.  Hinge eye thickness has been bumped
+    to make the hinges noticeably beefier.
   * Each hinge eye is fed by a **full-width front ramp** rising from
     the plate top to the hinge axis.  Together the two ramps cover the
     entire +Y face of the plate except for the central auger-gap.
+  * **No features hang from the plate underside** — the linear-actuator
+    rod-end lug from earlier revisions has been removed.
   * The **hinge axis is 10 mm in front of the baseplate's front edge**
     (i.e., the dispense point is held 10 mm clear of the baseplate),
     so the auger dispenses into a cup placed in front of the baseplate.
@@ -111,11 +120,9 @@ TAP_COLLAR_BORE_LOCAL_Z = 30.25
 # --------------------------------------------------------------------- #
 PLATE_T = 6.0
 
-# Auger axis sits at the tap-collar's native bore height so the
-# tap-collar mount bolts flush.  Brackets bolt on top of integrated
-# plinths whose height makes the bracket bore land on the same z.
-Z_AUG = TAP_COLLAR_BORE_LOCAL_Z                              # +30.25
-PLINTH_BRK_H = Z_AUG - BRK_RING_CENTRE_LOCAL_Z               # +10.51
+# Brackets bolt directly to the plate top (no plinths per the third
+# review).  Auger axis sits at the bracket's native bore-centre height.
+Z_AUG = BRK_RING_CENTRE_LOCAL_Z                              # +19.74
 
 # Auger spans Y = [Y_REAR, Y_DISP].  Dispense end at +Y.
 Y_DISP = +AUGER_LEN / 2.0                                    # +125
@@ -123,18 +130,17 @@ Y_REAR = -AUGER_LEN / 2.0                                    # -125
 Y_GEAR_BAND = Y_DISP - GEAR_BAND_AXIAL_FROM_DISP             # +41.67
 
 # Component Y positions along the auger (hinge end → motor end).
-# Shifted ~10 mm back vs. the previous revision to leave room at the
-# +Y end of the plate for the new front ramps + hinge eyes.  The
-# component ORDER matches the drawing.
-Y_BRK_FRONT = +85.0      # was +95; shifted -10 mm to make room for ramp
-Y_TAP       = +60.0      # was +70; shifted -10 mm
-Y_BRK_REAR  = -95.0      # unchanged
+# Component ORDER matches the drawing.
+Y_BRK_FRONT = +85.0
+Y_TAP       = +60.0
+Y_BRK_REAR  = -95.0
 
-# --- Plate X envelope (asymmetric: clear side at -X, motor side at +X) --
-PLATE_X_MIN = -(BRK_FLANGE_W / 2.0) - 4.0                    # -34
-PLATE_X_MAX = +GEAR_CENTRE_DISTANCE + NEMA11_BODY_W / 2.0 + 8.0  # +54.1
+# --- Plate X envelope (SYMMETRIC about X=0 — auger in the middle) ------
+PLATE_X_HALF = GEAR_CENTRE_DISTANCE + NEMA11_BODY_W / 2.0 + 8.0  # 54.1
+PLATE_X_MIN = -PLATE_X_HALF
+PLATE_X_MAX = +PLATE_X_HALF
 PLATE_W = PLATE_X_MAX - PLATE_X_MIN
-PLATE_X_CENTRE = (PLATE_X_MIN + PLATE_X_MAX) / 2.0
+PLATE_X_CENTRE = 0.0
 
 # --- Plate Y envelope --------------------------------------------------
 # Plate front edge sits 10 mm short of the hinge axis (the hinge axis
@@ -149,13 +155,15 @@ AUGER_GAP_W = 32.0                          # X width of the notch
 AUGER_GAP_Y_BACK = PLATE_Y_FRONT - 35.0     # how far back the notch goes
 
 # --- Hinge eyes (one each side of the auger gap) -----------------------
-HINGE_EYE_OD = 12.0
+# Equal-sized, symmetric about X=0; thicker than the previous pass per
+# the third review.
+HINGE_EYE_OD = 14.0
 HINGE_EYE_ID = 5.4
-HINGE_EYE_THK = 6.0
+HINGE_EYE_THK = 10.0
 # Inboard X of each mounting-plate eye = outer edge of the auger gap.
-HINGE_MP_X_INNER = AUGER_GAP_W / 2.0                       # 16
+HINGE_MP_X_INNER = AUGER_GAP_W / 2.0
 # Centreline of each mounting-plate eye in X.
-HINGE_MP_X = HINGE_MP_X_INNER + HINGE_EYE_THK / 2.0        # 19
+HINGE_MP_X = HINGE_MP_X_INNER + HINGE_EYE_THK / 2.0
 
 # --- Front ramps (one each side of the auger gap) ----------------------
 # Each ramp is a right-triangle prism in the YZ plane, extruded along X
@@ -171,12 +179,7 @@ MOTOR_FACE_Y = Y_GEAR_BAND - GEAR_BAND_FACE_W / 2.0 - 2.0  # +34.67
 X_MOTOR = +GEAR_CENTRE_DISTANCE                            # +32
 Z_MOTOR = Z_AUG
 
-# --- Linear-actuator rod-end pivot lug (on plate UNDERSIDE) ------------
-ACT_LUG_Y = -60.0
-ACT_LUG_T = 8.0
-ACT_LUG_W = 12.0
-ACT_LUG_H = 24.0
-ACT_LUG_BORE_D = 5.4
+# --- Linear-actuator rod-end pivot lug — REMOVED (no underside features).
 
 # --- Baseplate --------------------------------------------------------
 BASE_W = 200.0
@@ -263,23 +266,29 @@ def build_mounting_plate() -> cq.Workplane:
     )
     plate = plate.cut(notch)
 
-    # ---- Integrated bracket plinths (PR #55: 60 × 25 × 10 flange) ------
-    # Plinth height raises the bracket flange-bottom so its bore lands
-    # on Z_AUG.  Footprint = bracket flange.
-    for cy in (Y_BRK_FRONT, Y_BRK_REAR):
-        plinth = (
-            cq.Workplane("XY")
-            .box(BRK_FLANGE_W, BRK_FLANGE_D, PLINTH_BRK_H,
-                 centered=(True, True, False))
-            .translate((0, cy, 0))
-        )
-        plate = plate.union(plinth)
-    # Bracket mounting holes (M3 clearance through plinth + plate).
+    # ---- Bracket mounting holes (M3 clearance through plate) ----------
+    # Brackets bolt directly to the plate top (no plinths).
     brk_hole_x = BRK_FLANGE_W / 2.0 - BRK_MOUNT_HOLE_INSET_X         # ±24
     for cy in (Y_BRK_FRONT, Y_BRK_REAR):
         for sx in (+brk_hole_x, -brk_hole_x):
-            plate = plate.cut(_through_plate_hole(sx, cy, M3_CLEAR,
-                                                 plinth_h=PLINTH_BRK_H))
+            plate = plate.cut(_through_plate_hole(sx, cy, M3_CLEAR))
+
+    # ---- Gear-band + pinion clearance cutout --------------------------
+    # With brackets bolted flat (no plinths), the Ø50 gear band centred
+    # at (X=0, Y=Y_GEAR_BAND) and its mating Ø18 pinion at X=+32 dip
+    # below the plate top.  A minimum-area through-cutout under just
+    # the band+pinion footprint keeps the rest of the plate solid.
+    GEAR_SLOT_Y_HALF = (GEAR_BAND_FACE_W + PINION_LEN) / 2.0 + 3.0
+    gear_slot = (
+        cq.Workplane("XY")
+        .workplane(offset=1.0)
+        .moveTo(-GEAR_BAND_TIP_DIA / 2 - 3.0, Y_GEAR_BAND)
+        .rect(GEAR_BAND_TIP_DIA + 6.0 + GEAR_CENTRE_DISTANCE,
+              GEAR_SLOT_Y_HALF * 2.0,
+              centered=(False, True))
+        .extrude(-(PLATE_T + 2.0))
+    )
+    plate = plate.cut(gear_slot)
 
     # ---- Tap-collar mount holes (no plinth — mount sits flush) ---------
     tap_hole_x = TAP_PLATE_W / 2.0 - TAP_MOUNT_HOLE_INSET_X          # ±24
@@ -366,22 +375,6 @@ def build_mounting_plate() -> cq.Workplane:
             .extrude(HINGE_EYE_THK + 2)
         )
         plate = plate.cut(bore)
-
-    # ---- Linear-actuator rod-end pivot lug on plate UNDERSIDE ---------
-    lug = (
-        cq.Workplane("XY")
-        .box(ACT_LUG_W, ACT_LUG_T, ACT_LUG_H, centered=(True, True, False))
-        .translate((0, ACT_LUG_Y, -PLATE_T - ACT_LUG_H))
-    )
-    plate = plate.union(lug)
-    lug_bore = (
-        cq.Workplane("YZ")
-        .workplane(offset=-(ACT_LUG_W / 2.0 + 1.0))
-        .center(ACT_LUG_Y, -PLATE_T - ACT_LUG_H + 6.0)
-        .circle(ACT_LUG_BORE_D / 2.0)
-        .extrude(ACT_LUG_W + 2.0)
-    )
-    plate = plate.cut(lug_bore)
 
     return plate
 
@@ -508,12 +501,15 @@ def main() -> None:
 
     print()
     print(f"Plate X envelope             : [{PLATE_X_MIN:+.2f}, {PLATE_X_MAX:+.2f}] mm  "
-          f"(asymmetric)")
+          f"(symmetric about X=0)")
     print(f"Plate Y envelope             : [{PLATE_Y_BACK:+.2f}, {PLATE_Y_FRONT:+.2f}] mm")
     print(f"Auger axis Z (Z_AUG)         : {Z_AUG:+.2f} mm  "
-          f"(via {PLINTH_BRK_H:.2f} mm bracket plinths)")
-    print(f"Gear-band-tip air gap above  : {Z_AUG - GEAR_BAND_TIP_DIA/2:+.2f} mm")
+          f"(bracket native — no plinths)")
+    print(f"Gear-band-tip clearance over : {Z_AUG - GEAR_BAND_TIP_DIA/2:+.2f} mm "
+          f"(negative = below plate top — overhangs through the open notch)")
     print(f"Auger gap (notch) X-width    : {AUGER_GAP_W:.1f} mm")
+    print(f"Hinge eye OD × thickness     : {HINGE_EYE_OD:.1f} × {HINGE_EYE_THK:.1f} mm "
+          f"(equal-sized, mirror-symmetric about X=0)")
     print(f"Ramp top Z                   : {RAMP_TOP_Z:+.2f} mm")
     print(f"Hinge axis                   : X-axis through (Y={Y_DISP:+.2f}, Z={Z_AUG:+.2f})")
     print(f"Baseplate front edge Y       : {BASE_Y_FRONT:+.2f} (hinge axis "

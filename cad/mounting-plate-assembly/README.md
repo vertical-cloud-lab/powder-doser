@@ -31,30 +31,25 @@ the dispense point.
    — every component on the **TOP** of the plate, hinge through the
    auger's dispense point, plate asymmetric in X, component order
    along the auger matching the drawing.
-3. The **current** revision implements the issue #62 *follow-up*
-   review (comment 4314329233):
-   * **Motor face-mounted** on a vertical block on the plate top (the
-     NEMA-11 bolts through its **front** face, not its back).
-   * **Auger raised on integrated bracket plinths** so the gear band
-     tip clears the plate top — there is **no longer a through-plate
-     gear-band slot or any other hole** in the plate other than the
-     mounting holes and one open notch (see next bullet).
-   * **Single open U-notch** in the +Y plate edge for the auger.  The
-     end of the auger overhangs in mid-air through this gap (this is
-     intentional per the review).
-   * **Two SEPARATE side hinges**, one each side of the auger gap
-     (a single central tang would foul the auger).  Each side: one
-     mounting-plate eye + one baseplate-arm eye butted axially on a
-     short M5 pin.
-   * **Full-width front ramps** rise from the plate top up to the
-     hinge eyes, one each side of the gap — together they cover the
-     entire +Y face of the plate except for the auger gap.
-   * **Hinge axis sits 10 mm in front of the baseplate's front edge**
-     so the dispense point clears the baseplate.  The baseplate
-     therefore has **no powder window** — powder simply falls in front
-     of the baseplate into the cup.
-   * The baseplate carries **two forward-and-up arms**, one each side
-     of the auger, ending in the matching eyes at the hinge axis.
+3. The **previous** revision implemented the issue #62 *follow-up*
+   review (comment 4314329233): face-mounted NEMA-11, auger raised on
+   bracket plinths so the gear band tip cleared the plate top, single
+   U-notch for the auger overhang, two SEPARATE side hinges fed by
+   full-width front ramps, hinge axis 10 mm forward of the baseplate.
+4. The **current** revision implements the issue #62 *third* review
+   (comment 4314491753):
+   * **Auger now sits in the middle** of the plate (X=0).  The plate
+     is **symmetric about X=0** (`X ∈ [−54.1, +54.1]`); the central
+     auger gap in the +Y edge is therefore in the middle.
+   * **Equal-sized, thicker hinges** (Ø14 × 10 mm-thick eyes,
+     mirror-symmetric about X=0; previously Ø12 × 6 mm).
+   * **Bracket plinths removed** — brackets bolt directly to the plate
+     top.  The auger axis is now at the bracket's native bore height
+     (Z_AUG ≈ 19.74 mm above plate top, down from 30.25 mm).  A
+     minimum gear-band+pinion clearance cutout is reintroduced under
+     the band only, so the rest of the plate stays solid.
+   * **Plate underside is now feature-free** — the linear-actuator
+     rod-end lug that used to hang below the plate has been removed.
 
 The package was also requested as an **exploration of zoo.dev** for
 parametric CAD; see [§ zoo.dev experience](#zoodev-experience-pros--cons)

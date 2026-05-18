@@ -40,7 +40,7 @@ from cad_model import (
     HINGE_MP_X_INNER, MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
     NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN, PINION_TIP_DIA,
     PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MAX, PLATE_X_MIN,
-    PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT, PLINTH_BRK_H,
+    PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT,
     RAMP_TOP_Z, RAMP_Y_BACK, TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
     TAP_MOUNT_HOLE_INSET_X, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP,
     Y_GEAR_BAND, Y_REAR, Y_TAP, Z_AUG, Z_BASE_TOP, Z_MOTOR,
@@ -136,13 +136,13 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
 
     # ---- imported BRACKETS (PR #55): native frame has flange-bottom on z=0
     # and the bore at z=BRK_RING_CENTRE_LOCAL_Z (≈19.74).  We bolt the
-    # bracket FLANGE-DOWN to the TOP OF EACH PLINTH (z=PLINTH_BRK_H) so the
-    # bore lands at z = PLINTH_BRK_H + BRK_RING_CENTRE_LOCAL_Z = Z_AUG.
+    # bracket FLANGE-DOWN to the plate TOP (z=0) so the bore lands
+    # exactly at Z_AUG = BRK_RING_CENTRE_LOCAL_Z.  No plinths.
     bracket_stl = HERE / "imported-parts/auger-bracket/auger-bracket.stl"
     for cy in (Y_BRK_FRONT, Y_BRK_REAR):
         pre = vtk.vtkTransform()
         pre.PostMultiply()
-        pre.Translate(0, cy, PLINTH_BRK_H)
+        pre.Translate(0, cy, 0)
         actors.append(_set_tilt(_stl_actor(bracket_stl, COL_BRACKET),
                                 tilt_deg, pre))
 

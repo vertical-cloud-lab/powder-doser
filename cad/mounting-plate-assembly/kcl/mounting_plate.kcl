@@ -1,15 +1,17 @@
 // Mounting plate — top half of the rotating sub-assembly.
 //
-// Layout per the issue #62 follow-up review:
+// Layout per the issue #62 third review:
 //   * every component (brackets, tap-collar mount, motor block, ramps,
 //     hinge eyes) sits on the TOP of the plate
-//   * NO holes/gaps other than mounting holes + a single open U-notch
-//     in the +Y edge (the auger overhangs through that notch)
-//   * two SEPARATE side hinges, one each side of the auger
+//   * auger in the MIDDLE — plate symmetric about X=0
+//   * brackets bolt DIRECTLY to the plate top (no plinths)
+//   * NO features hang from the plate underside
+//   * NO holes/gaps other than mounting holes, a single open U-notch
+//     in the +Y edge (the auger overhangs through it), and a minimum
+//     gear-band+pinion clearance cutout under the band
+//   * two EQUAL-sized side hinges (mirror-symmetric about X=0)
 //   * two full-width front ramps split by the auger gap, rising up to
 //     the hinge eyes
-//   * auger axis raised on integrated bracket plinths so the gear band
-//     tip clears the plate top without a through-plate slot
 //
 // Top surface at Z=0, bottom at Z=-plateT.
 // Issue: vertical-cloud-lab/powder-doser#56  (drawing in #62)
@@ -38,22 +40,20 @@ notch = startSketchOn(plate, face = START)
   |> close()
   |> extrude(length = -(p.plateT + 2))
 
-// ---- bracket plinths (front + rear) ----
-frontPlinth = startSketchOn(plate, face = START)
-  |> startProfile(at = [-p.brkFlangeW/2, p.yBrkFront - p.brkFlangeD/2])
-  |> line(end = [p.brkFlangeW, 0])
-  |> line(end = [0, p.brkFlangeD])
-  |> line(end = [-p.brkFlangeW, 0])
+// ---- gear-band + pinion clearance cutout ----
+// Minimum-area through-cutout under the Ø50 gear band + Ø18 pinion so
+// they don't interfere with the plate (the auger sits at bracket-native
+// height with no plinths).
+gearSlotXMin = -p.gearBandTipDia/2 - 3
+gearSlotXMax = +p.gearBandTipDia/2 + p.gearCentreDistance + 3
+gearSlotYHalf = (p.gearBandFaceW + p.pinionLen)/2 + 3
+gearSlot = startSketchOn(plate, face = START)
+  |> startProfile(at = [gearSlotXMin, p.yGearBand - gearSlotYHalf])
+  |> line(end = [gearSlotXMax - gearSlotXMin, 0])
+  |> line(end = [0, gearSlotYHalf * 2])
+  |> line(end = [-(gearSlotXMax - gearSlotXMin), 0])
   |> close()
-  |> extrude(length = p.plinthBrkH)
-
-rearPlinth = startSketchOn(plate, face = START)
-  |> startProfile(at = [-p.brkFlangeW/2, p.yBrkRear - p.brkFlangeD/2])
-  |> line(end = [p.brkFlangeW, 0])
-  |> line(end = [0, p.brkFlangeD])
-  |> line(end = [-p.brkFlangeW, 0])
-  |> close()
-  |> extrude(length = p.plinthBrkH)
+  |> extrude(length = -(p.plateT + 2))
 
 // ---- NEMA-11 motor mount block (vertical wall on plate TOP) ----
 // Wall stands at MotorFaceY; its +Y face carries the NEMA-11 face
@@ -106,11 +106,4 @@ leftTab = startSketchOn(YZ)
   |> close()
   |> extrude(length = -p.hingeEyeThk)
 
-// ---- actuator rod-end lug on plate UNDERSIDE ----
-lug = startSketchOn(XY)
-  |> startProfile(at = [-p.actLugW/2, p.actLugY - p.actLugT/2])
-  |> line(end = [p.actLugW, 0])
-  |> line(end = [0, p.actLugT])
-  |> line(end = [-p.actLugW, 0])
-  |> close()
-  |> extrude(length = -(p.plateT + p.actLugH))
+// (No actuator rod-end lug — no underside features per the third review.)
