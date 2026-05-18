@@ -73,7 +73,12 @@ COLLAR_OD = BORE_D + 2 * COLLAR_WALL  # = 33.5 mm
 # Plate footprint and corner mount holes — identical to the bracket so the
 # tap-collar mounting plate drops into the same chassis hole pattern.
 PLATE_LENGTH = 60.0              # X
-PLATE_DEPTH = 12.0               # Y (along the auger axis) — matches bracket
+PLATE_DEPTH = 18.0               # Y (along the auger axis) — matched to
+                                 # TC_COLLAR_DEPTH so the mount plate is the
+                                 # same width as the tap collar along the
+                                 # auger axis (PR #51 v4 feedback from Will;
+                                 # was 12 mm in v1-v3, inherited from the
+                                 # bracket footprint in PR #47).
 PLATE_THICKNESS = 14.0           # Z (lifted to clear the PR #49 gear OD)
 
 MOUNT_HOLE_D = 3.4               # M3 clearance through-hole
@@ -85,11 +90,17 @@ COLLAR_PLATE_OVERLAP = 1.5
 COLLAR_CENTRE_Z = PLATE_THICKNESS + COLLAR_OD / 2 - COLLAR_PLATE_OVERLAP
 COLLAR_TOP_Z = COLLAR_CENTRE_Z + COLLAR_OD / 2
 
-# Collar Y-extent (along the auger axis).  The bracket uses PLATE_DEPTH
-# (12 mm) but the tap collar needs to be longer so the full solenoid
-# mounting boss sits over solid collar wall (rather than letting the M2
-# screw holes cantilever off the boss into mid-air, per PR review).
+# Collar Y-extent (along the auger axis).  Lengthened from the bracket's
+# 12 mm so the full solenoid mounting boss sits over solid collar wall
+# (rather than letting the M2 screw holes cantilever off the boss into
+# mid-air, per PR review).  PLATE_DEPTH is matched to this so the mount
+# plate is the same width as the tap collar along the auger axis (PR #51
+# v4 feedback from Will).
 TC_COLLAR_DEPTH = 18.0
+assert PLATE_DEPTH == TC_COLLAR_DEPTH, (
+    "PLATE_DEPTH must match TC_COLLAR_DEPTH so the mount plate is the "
+    "same width as the tap collar along the auger axis."
+)
 
 # Top clamp tabs (the two ears separated by the clamp slot).  Same Z height
 # and clamp-screw centring rule as the bracket; tabs are widened along the

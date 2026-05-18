@@ -144,8 +144,8 @@ parameters added in the v2 / v3 redesigns.
 | `AUGER_OD` | 25.0 | Matches the Archimedes auger OD from [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16). |
 | `BORE_CLEARANCE` | 0.5 | Diametral clearance — same free-running fit as the bracket. |
 | `COLLAR_WALL` | 4.0 | Collar OD = 33.5 mm. |
-| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × 12 × 14 | Identical to [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47); preserves the corner-hole pattern and the 29.25 mm bore-axis lift that clears the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) gear OD. |
-| `TC_COLLAR_DEPTH` | **18.0** | Collar Y-extent — longer than `PLATE_DEPTH` so the solenoid boss is fully supported underneath (was 12 mm in v1; M2 holes hung off in mid-air). |
+| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × **18** × 14 | Same X length and corner-hole pattern as [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47), and same 29.25 mm bore-axis lift that clears the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) gear OD. `PLATE_DEPTH` is matched to `TC_COLLAR_DEPTH` (v4 — Will's print feedback) so the mounting plate is the same width as the tap collar along the auger axis. |
+| `TC_COLLAR_DEPTH` | **18.0** | Collar Y-extent — longer than the bracket's 12 mm so the solenoid boss is fully supported underneath (was 12 mm in v1; M2 holes hung off in mid-air).  `PLATE_DEPTH` tracks this value. |
 | `MOUNT_HOLE_INSET_X` / `MOUNT_HOLE_D` | 6.0 / 3.4 | M3 corner mounting holes — same as the bracket. |
 | `BUMP_INNER_X / BUMP_OUTER_X` | 17.25 / 27.20 | Hardstop bump straddles the +X corner mount hole — Ø3.4 cut-out through the bump preserves screwdriver access. |
 | `BUMP_TOP_Z / BUMP_HEIGHT` | 21.00 / 7.00 | Bump top sits 0.25 mm below the lower clamp tab's bottom face — no collar interference, single-direction hard contact at rest. |
