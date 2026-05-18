@@ -1,23 +1,22 @@
 // Mounting plate — top half of the rotating sub-assembly.
 //
-// Layout per the hand-drawn spec in issue #62 (vertical-cloud-lab/
-// powder-doser#56's sub-issue tree).  Top surface at Z=0, bottom at
-// Z=-plateT.  EVERY component sits on the TOP of the plate; nothing
-// hangs below except the actuator rod-end pivot lug.
+// Layout per the issue #62 follow-up review:
+//   * every component (brackets, tap-collar mount, motor block, ramps,
+//     hinge eyes) sits on the TOP of the plate
+//   * NO holes/gaps other than mounting holes + a single open U-notch
+//     in the +Y edge (the auger overhangs through that notch)
+//   * two SEPARATE side hinges, one each side of the auger
+//   * two full-width front ramps split by the auger gap, rising up to
+//     the hinge eyes
+//   * auger axis raised on integrated bracket plinths so the gear band
+//     tip clears the plate top without a through-plate slot
 //
-// Order along the auger (hinge end +Y → motor end -Y):
-//   1. Hinge yoke wedges  (triangular wedges on TOP, eyes at yDisp,zAug)
-//   2. Front PR#55 bracket at Y = yBrkFront (+95)
-//   3. PR#51 tap-collar mount plate at Y = yTap (+70)
-//   4. NEMA 11 motor mount block centred over the gear band at yGearBand
-//      (+41.67), motor body extends in -Y, pinion meshes the auger.
-//   5. Rear PR#55 bracket at Y = yBrkRear (-95)
-//
-// The plate is ASYMMETRIC in X (auger near the -X edge, motor extends
-// to the +X edge, opposite side trimmed close to the auger so there is
-// no "unnecessary space").
-//
+// Top surface at Z=0, bottom at Z=-plateT.
 // Issue: vertical-cloud-lab/powder-doser#56  (drawing in #62)
+//
+// NOTE: this file is the KCL mirror of cad_model.py.  cad_model.py is
+// the source of truth for geometry (it is what generates the STEP/STL
+// shipped in this PR — see README "zoo.dev experience").
 import "params.kcl" as p
 
 // ---- main plate body (top at Z=0, bottom at Z=-plateT) ----
@@ -29,109 +28,85 @@ plate = startSketchOn(XY)
   |> close()
   |> extrude(length = -p.plateT)
 
-// ---- powder-fall slot through the plate at the dispense end ----
-slotW = p.yokeWedgeGap
-slotL = 30.0
-slotY0 = p.plateYFront - slotL + 2
-slot = startSketchOn(plate, face = START)
-  |> startProfile(at = [-slotW/2, slotY0])
-  |> line(end = [slotW, 0])
-  |> line(end = [0, slotL])
-  |> line(end = [-slotW, 0])
-  |> close()
-  |> extrude(length = p.plateT + 2)
-
-// ---- gear-band / pinion clearance slot ----
-gbSlotXLo = -(p.gearBandTipDia/2) - 2.0
-gbSlotXHi = p.xMotor + p.pinionTipDia/2 + 2.0
-gbSlotW   = gbSlotXHi - gbSlotXLo
-gbSlotL   = p.gearBandFaceW + 8.0
-gbSlot    = startSketchOn(XY)
-  |> startProfile(at = [gbSlotXLo, p.yGearBand - gbSlotL/2])
-  |> line(end = [gbSlotW, 0])
-  |> line(end = [0, gbSlotL])
-  |> line(end = [-gbSlotW, 0])
+// ---- open U-notch in the +Y plate edge (auger gap) ----
+notchL = p.plateYFront - p.augerGapYBack + 4
+notch = startSketchOn(plate, face = START)
+  |> startProfile(at = [-p.augerGapW/2, p.augerGapYBack - 2])
+  |> line(end = [p.augerGapW, 0])
+  |> line(end = [0, notchL])
+  |> line(end = [-p.augerGapW, 0])
   |> close()
   |> extrude(length = -(p.plateT + 2))
 
-// ---- hinge yoke wedges (two right-triangular wedges on TOP of plate
-// at the +Y edge). Vertical face on the plate's +Y edge, horizontal
-// face on plate top, hypotenuse rising back. Bore eye extends forward
-// of the wedge so the bore lands on (yDisp, zAug).
-wedge_R = startSketchOn(YZ)
-  |> startProfile(at = [p.yokeWedgeYBack, 0])
-  |> line(end = [p.plateYFront - p.yokeWedgeYBack, 0])
-  |> line(end = [0, p.yokeWedgeTopZ])
+// ---- bracket plinths (front + rear) ----
+frontPlinth = startSketchOn(plate, face = START)
+  |> startProfile(at = [-p.brkFlangeW/2, p.yBrkFront - p.brkFlangeD/2])
+  |> line(end = [p.brkFlangeW, 0])
+  |> line(end = [0, p.brkFlangeD])
+  |> line(end = [-p.brkFlangeW, 0])
   |> close()
-  |> extrude(length = p.yokeWedgeThk)
-  // Offset along +X handled by translate in assembly; this sketch
-  // builds the right-hand wedge centred at X = +yokeXInner.
-eye_R = startSketchOn(YZ)
-  |> circle(center = [p.yDisp, p.zAug], radius = p.yokeEyeOd/2)
-  |> extrude(length = p.yokeWedgeThk)
-bore_R = startSketchOn(YZ)
-  |> circle(center = [p.yDisp, p.zAug], radius = p.yokeEyeId/2)
-  |> extrude(length = p.yokeWedgeThk * 2 + 2)
+  |> extrude(length = p.plinthBrkH)
 
-wedge_L = startSketchOn(YZ)
-  |> startProfile(at = [p.yokeWedgeYBack, 0])
-  |> line(end = [p.plateYFront - p.yokeWedgeYBack, 0])
-  |> line(end = [0, p.yokeWedgeTopZ])
+rearPlinth = startSketchOn(plate, face = START)
+  |> startProfile(at = [-p.brkFlangeW/2, p.yBrkRear - p.brkFlangeD/2])
+  |> line(end = [p.brkFlangeW, 0])
+  |> line(end = [0, p.brkFlangeD])
+  |> line(end = [-p.brkFlangeW, 0])
   |> close()
-  |> extrude(length = p.yokeWedgeThk)
-eye_L = startSketchOn(YZ)
-  |> circle(center = [p.yDisp, p.zAug], radius = p.yokeEyeOd/2)
-  |> extrude(length = p.yokeWedgeThk)
-bore_L = startSketchOn(YZ)
-  |> circle(center = [p.yDisp, p.zAug], radius = p.yokeEyeId/2)
-  |> extrude(length = p.yokeWedgeThk * 2 + 2)
+  |> extrude(length = p.plinthBrkH)
 
-// ---- mounting holes for the upstream parts ----
-// PR#55 bracket : 2 × M3 at X = ±(brkFlangeW/2 - brkMountHoleInsetX) = ±24
-// PR#51 tap-collar mount : 2 × M3 at X = ±24
-mountHole = fn(@cy, sx) {
-  return startSketchOn(XY)
-    |> circle(center = [sx, cy], radius = p.m3Clear/2)
-    |> extrude(length = -(p.plateT + 2))
-}
-brkHoleX = p.brkFlangeW/2 - p.brkMountHoleInsetX
-tapHoleX = p.tapPlateW/2 - p.tapMountHoleInsetX
-fb_h1 = mountHole(p.yBrkFront, +brkHoleX)
-fb_h2 = mountHole(p.yBrkFront, -brkHoleX)
-rb_h1 = mountHole(p.yBrkRear,  +brkHoleX)
-rb_h2 = mountHole(p.yBrkRear,  -brkHoleX)
-tc_h1 = mountHole(p.yTap,      +tapHoleX)
-tc_h2 = mountHole(p.yTap,      -tapHoleX)
-
-// ---- NEMA 11 mount block (sits ON TOP of plate; its +Y face carries
-// the motor face holes). 4 × M3 at the NEMA 11 standard 23 mm pitch +
-// Ø22 pilot for the shaft + pinion.  Block bottom on z=0 (plate top),
-// block top on z=zMotor + bossH/2.
-bossBotZ = 0.0
-bossTopZ = p.zMotor + p.bossH/2.0
-bossH    = bossTopZ - bossBotZ
-boss = startSketchOn(XY)
+// ---- NEMA-11 motor mount block (vertical wall on plate TOP) ----
+// Wall stands at MotorFaceY; its +Y face carries the NEMA-11 face
+// holes; motor body extends in -Y.
+bossTopZ   = p.zMotor + p.bossH/2
+motorBoss = startSketchOn(plate, face = START)
   |> startProfile(at = [p.xMotor - p.bossW/2, p.motorFaceY - p.bossT])
   |> line(end = [p.bossW, 0])
   |> line(end = [0, p.bossT])
   |> line(end = [-p.bossW, 0])
   |> close()
-  |> extrude(length = bossH)
+  |> extrude(length = bossTopZ)
 
-nemaFaceHole = fn(@sx, sz) {
-  return startSketchOn(XZ)
-    |> circle(center = [p.xMotor + sx, p.zMotor + sz], radius = p.m3Clear/2)
-    |> extrude(length = p.bossT + 2)
-}
-n_h1 = nemaFaceHole(+p.nema11FaceHolePitch/2, +p.nema11FaceHolePitch/2)
-n_h2 = nemaFaceHole(-p.nema11FaceHolePitch/2, +p.nema11FaceHolePitch/2)
-n_h3 = nemaFaceHole(+p.nema11FaceHolePitch/2, -p.nema11FaceHolePitch/2)
-n_h4 = nemaFaceHole(-p.nema11FaceHolePitch/2, -p.nema11FaceHolePitch/2)
-nPilot = startSketchOn(XZ)
-  |> circle(center = [p.xMotor, p.zMotor], radius = p.nema11PilotDia/2)
-  |> extrude(length = p.bossT + 2)
+// ---- front ramps (two YZ-prism triangles, extruded along X) ----
+rampRunY = p.plateYFront - p.rampYBack
+rightRamp = startSketchOn(YZ)
+  |> startProfile(at = [p.rampYBack, 0])
+  |> line(end = [rampRunY, 0])
+  |> line(end = [0, p.rampTopZ])
+  |> close()
+  |> extrude(length = (p.plateXMax - p.augerGapW/2))
 
-// ---- linear-actuator rod-end pivot lug on plate UNDERSIDE ----
+leftRamp = startSketchOn(YZ)
+  |> startProfile(at = [p.rampYBack, 0])
+  |> line(end = [rampRunY, 0])
+  |> line(end = [0, p.rampTopZ])
+  |> close()
+  |> extrude(length = -(p.plateXMin*-1 + p.augerGapW/2))
+
+// ---- hinge eye-tabs (one each side of the auger gap) ----
+// Rectangular tab in YZ from (plateYFront-1, zAug±eyeOd/2) to
+// (yDisp+eyeOd/2, zAug±eyeOd/2), extruded HingeEyeThk along X.
+tabBackY = p.plateYFront - 1
+tabFrontY = p.yDisp + p.hingeEyeOd/2
+tabLen = tabFrontY - tabBackY
+
+rightTab = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = p.hingeEyeThk)
+
+leftTab = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = -p.hingeEyeThk)
+
+// ---- actuator rod-end lug on plate UNDERSIDE ----
 lug = startSketchOn(XY)
   |> startProfile(at = [-p.actLugW/2, p.actLugY - p.actLugT/2])
   |> line(end = [p.actLugW, 0])
@@ -139,6 +114,3 @@ lug = startSketchOn(XY)
   |> line(end = [-p.actLugW, 0])
   |> close()
   |> extrude(length = -(p.plateT + p.actLugH))
-lugBore = startSketchOn(XZ)
-  |> circle(center = [0, -(p.plateT + p.actLugH - 6)], radius = p.actLugBoreD/2)
-  |> extrude(length = p.actLugT + 4)

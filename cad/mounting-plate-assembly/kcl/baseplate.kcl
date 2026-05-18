@@ -1,83 +1,98 @@
-// Baseplate — bottom half of the assembly.
+// Baseplate — bench side of the rotating sub-assembly.
 //
-//   * Four corner legs raise the assembly above the bench so a cup +
-//     scale fit underneath.
-//   * Central single-tang hinge clevis at Y = tangY (= yDisp), bored
-//     for the hinge pin along X at the auger centreline Z = zAug.
-//     Sits between the two yoke wedges on the mounting plate.
-//   * Powder window directly under the dispense point.
-//   * Rear clevis for the linear-actuator base pivot.
+// Per the issue #62 follow-up review:
+//   * front edge sits 10 mm BEHIND the hinge axis (i.e. the hinge axis
+//     is 10 mm in front of the baseplate's front edge)
+//   * two complementary forward-and-up hinge arms (one each side of the
+//     auger) with a central gap between them, mirroring the mounting
+//     plate's two side hinges
+//   * NO powder window — powder falls in front of the baseplate
 //
-// Frame: this script builds the baseplate with its BOTTOM on z=0; the
-// assembly stage shifts the whole part by tz = zBaseTop so the top face
-// lands at z = zBaseTop + baseT and the tang bore at z = zAug.
+// Local coordinates: base bottom on Z=0, base top at Z=baseT.  Final
+// translate moves the assembly so the bottom lands at zBaseTop.
 //
-// Issue: vertical-cloud-lab/powder-doser#56  (drawing in #62)
+// NOTE: this is the KCL mirror of cad_model.py.  cad_model.py is the
+// source of truth (see README "zoo.dev experience").
 import "params.kcl" as p
 
+// ---- baseplate body ----
 base = startSketchOn(XY)
-  |> startProfile(at = [-p.baseW/2, -p.baseL/2])
+  |> startProfile(at = [-p.baseW/2, p.baseYBack])
   |> line(end = [p.baseW, 0])
   |> line(end = [0, p.baseL])
   |> line(end = [-p.baseW, 0])
   |> close()
   |> extrude(length = p.baseT)
 
-// ---- powder window directly under the dispense point ----
-window = startSketchOn(XY)
-  |> startProfile(at = [-p.windowW/2, p.windowY - p.windowL/2])
-  |> line(end = [p.windowW, 0])
-  |> line(end = [0, p.windowL])
-  |> line(end = [-p.windowW, 0])
+// ---- four corner legs ----
+legX = p.baseW/2 - p.baseLegInset - p.baseLegW/2
+legYF = p.baseYFront - p.baseLegInset - p.baseLegW/2
+legYB = p.baseYBack  + p.baseLegInset + p.baseLegW/2
+
+legFR = startSketchOn(XY)
+  |> startProfile(at = [legX - p.baseLegW/2, legYF - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
   |> close()
-  |> extrude(length = -(p.baseT + 2))
+  |> extrude(length = -p.baseLegH)
 
-// ---- four legs (corners) ----
-mkLeg = fn(@sx, sy) {
-  return startSketchOn(XY)
-    |> startProfile(at = [sx - p.baseLegW/2, sy - p.baseLegW/2])
-    |> line(end = [p.baseLegW, 0])
-    |> line(end = [0, p.baseLegW])
-    |> line(end = [-p.baseLegW, 0])
-    |> close()
-    |> extrude(length = -p.baseLegH)
-}
-legXc = p.baseW/2 - p.baseLegInset - p.baseLegW/2
-legYc = p.baseL/2 - p.baseLegInset - p.baseLegW/2
-leg1 = mkLeg(+legXc, +legYc)
-leg2 = mkLeg(-legXc, +legYc)
-leg3 = mkLeg(+legXc, -legYc)
-leg4 = mkLeg(-legXc, -legYc)
-
-// ---- central hinge tang on the baseplate TOP ----
-// In local frame (base bottom on z=0), the tang top must reach
-// tangTopZAbs - zBaseTop and the tang bore tangBoreZAbs - zBaseTop.
-tangTopLocal  = p.tangTopZAbs  - p.zBaseTop
-tangBoreLocal = p.tangBoreZAbs - p.zBaseTop
-tangH         = tangTopLocal - p.baseT
-tang = startSketchOn(XY)
-  |> startProfile(at = [-p.tangW/2, p.tangY - p.tangT/2])
-  |> line(end = [p.tangW, 0])
-  |> line(end = [0, p.tangT])
-  |> line(end = [-p.tangW, 0])
+legFL = startSketchOn(XY)
+  |> startProfile(at = [-legX - p.baseLegW/2, legYF - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
   |> close()
-  |> extrude(length = tangH)
-  // The extrude is taken from the base TOP face (z = baseT) upward.
+  |> extrude(length = -p.baseLegH)
 
-// Hinge pin bore at the auger centreline (local z = tangBoreLocal).
-tangBore = startSketchOn(YZ)
-  |> circle(center = [p.tangY, tangBoreLocal], radius = p.yokeEyeId/2)
-  |> extrude(length = p.tangW + 2)
+legBR = startSketchOn(XY)
+  |> startProfile(at = [legX - p.baseLegW/2, legYB - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+legBL = startSketchOn(XY)
+  |> startProfile(at = [-legX - p.baseLegW/2, legYB - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+// ---- forward-and-up hinge arms (one each side of the auger) ----
+// In local frame, base top is at z=baseT; the hinge axis is at
+// z = hingeAxisZLocal.  Each arm fills the rectangle
+// (baseYFront..yDisp+eyeOd/2, baseT..hingeAxisZLocal+eyeOd/2) and is
+// extruded armThk along X.
+armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
+armBackY = p.baseYFront
+armFrontY = p.yDisp + p.hingeEyeOd/2
+armLen = armFrontY - armBackY
+armHeight = armTopLocal - p.baseT
+
+rightArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armLen, 0])
+  |> line(end = [0, armHeight])
+  |> line(end = [-armLen, 0])
+  |> close()
+  |> extrude(length = p.armThk)
+
+leftArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armLen, 0])
+  |> line(end = [0, armHeight])
+  |> line(end = [-armLen, 0])
+  |> close()
+  |> extrude(length = -p.armThk)
 
 // ---- linear-actuator base clevis on baseplate TOP ----
-actClevis = startSketchOn(XY)
+clevis = startSketchOn(XY)
   |> startProfile(at = [-p.actBaseW/2, p.actBaseY - p.actBaseT/2])
   |> line(end = [p.actBaseW, 0])
   |> line(end = [0, p.actBaseT])
   |> line(end = [-p.actBaseW, 0])
   |> close()
-  |> extrude(length = p.actBaseH)
-
-actClevisBore = startSketchOn(YZ)
-  |> circle(center = [p.actBaseY, p.baseT + p.actBaseH - 6.0], radius = p.actBaseBoreD/2)
-  |> extrude(length = p.actBaseW + 2)
+  |> extrude(length = p.baseT + p.actBaseH)

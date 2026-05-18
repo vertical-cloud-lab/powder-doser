@@ -1,12 +1,14 @@
-// Hinge pin / linear-actuator pin.  Plain M5 steel rod; printed in plastic
-// here only for visualization and BoM completeness.
+// Hinge pins — two short M5 pins (one per side hinge).
+//
+// Each pin spans (mounting-plate eye thickness) + (baseplate arm
+// thickness) + 4 mm slop.  The two pins are separated by the central
+// auger gap; this file only models one pin (the +X side); the mirror
+// is added in cad_model.py.
 import "params.kcl" as p
 
-pinLen = (p.yokeEyeGap + 2 * p.yokeEyeOd + 2.0)
-shaft = startSketchOn(XY)
-  |> circle(center = [0, 0], radius = (p.m5Clear/2 - 0.2))
-  |> extrude(length = pinLen)
+pinLen = p.hingeEyeThk + p.armThk + 4
+pinXC  = p.augerGapW/2 + (p.hingeEyeThk + p.armThk)/2
 
-head = startSketchOn(XY)
-  |> circle(center = [0, 0], radius = 4.5)
-  |> extrude(length = -2.5)
+pin = startSketchOn(YZ)
+  |> circle(center = [0, 0], radius = 5.0 / 2)
+  |> extrude(length = pinLen)

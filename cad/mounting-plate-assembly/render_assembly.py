@@ -3,11 +3,16 @@
 Loads the IMPORTED STLs from upstream PRs (#49, #51, #55) via
 ``vtkSTLReader`` (cadquery 2.7.0 has no ``importStl`` helper — see repo
 memory) and positions them on top of the freshly-generated mounting
-plate + baseplate + hinge pin from this package.
+plate + baseplate + hinge pins from this package.
 
-Per issue #62's hand drawing, every component sits on the TOP of the
-mounting plate; the auger lies horizontal at Z=+19.74 mm directly above
-the plate, supported by two PR#55 brackets bolted flange-DOWN.
+Per the issue #62 follow-up:
+  * components on TOP of plate
+  * auger axis raised on integrated plinths (no through-plate slot)
+  * single open U-notch in the +Y plate edge for the auger overhang
+  * two SEPARATE side hinges with the rotation axis 10 mm forward of
+    the baseplate's front edge
+  * full-width front ramps rising up to the hinge axis on each side
+    of the auger gap
 
 Run from the package directory (xvfb required for headless VTK)::
 
@@ -27,16 +32,18 @@ import numpy as np
 import vtk
 
 from cad_model import (
-    AUGER_LEN, AUGER_OD, BASE_T, BRK_FLANGE_T, BRK_FLANGE_W, BRK_FLANGE_D,
-    BRK_MOUNT_HOLE_INSET_X, BRK_RING_CENTRE_LOCAL_Z, GEAR_BAND_FACE_W,
-    GEAR_BAND_TIP_DIA, GEAR_CENTRE_DISTANCE, MOTOR_FACE_Y, NEMA11_BODY_L,
-    NEMA11_BODY_W, NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN,
-    PINION_TIP_DIA, PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MIN,
-    PLATE_X_MAX, PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT, TAP_PLATE_D,
-    TAP_PLATE_T, TAP_PLATE_W, TAP_MOUNT_HOLE_INSET_X, WINDOW_L, WINDOW_W,
-    WINDOW_Y, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP, Y_GEAR_BAND, Y_REAR,
-    Y_TAP, Z_AUG, Z_BASE_TOP, Z_MOTOR, YOKE_WEDGE_GAP, YOKE_WEDGE_THK,
-    YOKE_WEDGE_TOP_Z, YOKE_WEDGE_Y_BACK, YOKE_EYE_OD, YOKE_X_INNER,
+    AUGER_GAP_W, AUGER_GAP_Y_BACK, AUGER_LEN, AUGER_OD, ARM_THK, ARM_X_INNER,
+    BASE_T, BASE_Y_BACK, BASE_Y_CENTRE, BASE_Y_FRONT, BRK_FLANGE_T,
+    BRK_FLANGE_W, BRK_FLANGE_D, BRK_MOUNT_HOLE_INSET_X,
+    BRK_RING_CENTRE_LOCAL_Z, GEAR_BAND_FACE_W, GEAR_BAND_TIP_DIA,
+    GEAR_CENTRE_DISTANCE, HINGE_EYE_ID, HINGE_EYE_OD, HINGE_EYE_THK,
+    HINGE_MP_X_INNER, MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
+    NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN, PINION_TIP_DIA,
+    PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MAX, PLATE_X_MIN,
+    PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT, PLINTH_BRK_H,
+    RAMP_TOP_Z, RAMP_Y_BACK, TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
+    TAP_MOUNT_HOLE_INSET_X, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP,
+    Y_GEAR_BAND, Y_REAR, Y_TAP, Z_AUG, Z_BASE_TOP, Z_MOTOR,
     build_baseplate, build_hinge_pin, build_mounting_plate,
 )
 
@@ -118,14 +125,10 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
 
     # ---- imported AUGER: native frame has axis along +Z with the dispensing
     # end at z=0.  We want it horizontal along +Y with the dispensing end at
-    # Y=Y_DISP and centred at X=0, Z=Z_AUG.  Rotation -90° about X maps
-    # (X,Y,Z)→(X,Z,-Y) in PostMultiply: so a point at z=L ends up at y=L.
-    # After rotation the dispensing end (originally z=0) is at y=0; we then
-    # translate by (0, Y_DISP, Z_AUG) so the dispensing end lands at +Y_DISP
-    # and the motor end at +Y_DISP-AUGER_LEN = Y_REAR.
+    # Y=Y_DISP and centred at X=0, Z=Z_AUG.
     pre_auger = vtk.vtkTransform()
     pre_auger.PostMultiply()
-    pre_auger.RotateX(-90)
+    pre_auger.RotateX(+90)
     pre_auger.Translate(0, Y_DISP, Z_AUG)
     actors.append(_set_tilt(_stl_actor(
         HERE / "imported-parts/auger-geared/archimedes-auger-geared.stl",
@@ -133,19 +136,18 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
 
     # ---- imported BRACKETS (PR #55): native frame has flange-bottom on z=0
     # and the bore at z=BRK_RING_CENTRE_LOCAL_Z (≈19.74).  We bolt the
-    # bracket FLANGE-DOWN to the plate TOP (z=0) so the bore lands at
-    # z=+19.74 = Z_AUG exactly.  No rotation needed — just translate to
-    # (0, cy, 0).
+    # bracket FLANGE-DOWN to the TOP OF EACH PLINTH (z=PLINTH_BRK_H) so the
+    # bore lands at z = PLINTH_BRK_H + BRK_RING_CENTRE_LOCAL_Z = Z_AUG.
     bracket_stl = HERE / "imported-parts/auger-bracket/auger-bracket.stl"
     for cy in (Y_BRK_FRONT, Y_BRK_REAR):
         pre = vtk.vtkTransform()
         pre.PostMultiply()
-        pre.Translate(0, cy, 0)
+        pre.Translate(0, cy, PLINTH_BRK_H)
         actors.append(_set_tilt(_stl_actor(bracket_stl, COL_BRACKET),
                                 tilt_deg, pre))
 
     # ---- imported TAP-COLLAR MOUNT PLATE (PR #51): same mounting style as
-    # the brackets — flange-DOWN on plate top.  Translate to (0, Y_TAP, 0).
+    # the brackets but with NO plinth — sits flush on the plate top.
     pre_tm = vtk.vtkTransform()
     pre_tm.PostMultiply()
     pre_tm.Translate(0, Y_TAP, 0)
@@ -153,10 +155,8 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
         HERE / "imported-parts/tap-collar/mount_plate.stl",
         COL_TAP_MOUNT), tilt_deg, pre_tm))
 
-    # ---- imported TAP COLLAR (PR #51) - wraps the auger at Y_TAP.  Native
-    # frame: auger axis along Y, bore centre at z ≈ +30.25 (collar inner
-    # tube above its own native base on z=0).  Translate so its bore centre
-    # lands on the auger centreline (0, Y_TAP, Z_AUG).
+    # ---- imported TAP COLLAR (PR #51): native bore at z=+30.25 above its
+    # own z=0 base, so with Z_AUG=30.25 it bolts down flush with no z shift.
     pre_tc = vtk.vtkTransform()
     pre_tc.PostMultiply()
     pre_tc.Translate(0, Y_TAP, Z_AUG - 30.25)
@@ -164,22 +164,17 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
         HERE / "imported-parts/tap-collar/tap_collar.stl",
         COL_TAP_COLLAR), tilt_deg, pre_tc))
 
-    # ---- imported PINION (PR #49): native frame has axis along +Z, length
-    # PINION_LEN.  After RotateX -90 it lies along +Y.  We then translate
-    # so the pinion is centred on the gear band at (X_MOTOR, Y_GEAR_BAND,
-    # Z_AUG) with the pinion's front face poking out of the motor.
+    # ---- imported PINION (PR #49): along +Z native, rotated to +Y, centred
+    # on the gear band at (X_MOTOR, Y_GEAR_BAND, Z_AUG).
     pre_p = vtk.vtkTransform()
     pre_p.PostMultiply()
-    pre_p.RotateX(-90)
-    pre_p.Translate(X_MOTOR, Y_GEAR_BAND - PINION_LEN / 2.0, Z_AUG)
+    pre_p.RotateX(+90)
+    pre_p.Translate(X_MOTOR, Y_GEAR_BAND + PINION_LEN / 2.0, Z_AUG)
     actors.append(_set_tilt(_stl_actor(
         HERE / "imported-parts/auger-geared/stepper-pinion.stl",
         COL_PINION), tilt_deg, pre_p))
 
-    # ---- NEMA 11 motor body (drawn as a box for visualisation; the real
-    # part is part of the assembly-preview in PR #49 but we want it sized
-    # and located against the integrated boss on our plate top).  Body
-    # centred at (X_MOTOR, MOTOR_FACE_Y - NEMA11_BODY_L/2, Z_MOTOR).
+    # ---- NEMA 11 motor body (box; +Y face mates with the motor mount block).
     motor_box = (
         cq.Workplane("XY")
         .box(NEMA11_BODY_W, NEMA11_BODY_L, NEMA11_BODY_W, centered=(True, True, True))
@@ -190,12 +185,16 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
     pre_m.Translate(X_MOTOR, MOTOR_FACE_Y - NEMA11_BODY_L / 2.0, Z_MOTOR)
     actors.append(_set_tilt(_shape_actor(motor_box, COL_MOTOR), tilt_deg, pre_m))
 
-    # ---- HINGE PIN ---------------------------------------------------------
+    # ---- HINGE PINS (two pins, one per side; the build_hinge_pin compound
+    # is already centred on Y=0,Z=0 in its own frame -> translate to hinge
+    # axis (0, Y_DISP, Z_AUG)).  The pins are rigidly attached to the
+    # baseplate arms here for visualisation (they could equally be attached
+    # to the mounting plate eyes — they sit at the hinge axis either way).
     pre_hp = vtk.vtkTransform()
     pre_hp.PostMultiply()
     pre_hp.Translate(0, Y_DISP, Z_AUG)
-    actors.append(_set_tilt(_shape_actor(build_hinge_pin().val(), COL_PIN),
-                            tilt_deg, pre_hp))
+    actors.append(_shape_actor(build_hinge_pin().val(), COL_PIN))
+    actors[-1].SetUserTransform(pre_hp)
 
     return actors
 
@@ -245,54 +244,75 @@ def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0) -> No
 # Diagrams (matplotlib)
 # --------------------------------------------------------------------------- #
 def installation_diagram(out_path: Path) -> None:
-    """Top-down annotated map of every mounting hole on the mounting plate.
-
-    Annotations follow the issue #62 layout: hinge at the bottom (the +Y
-    end), components on the TOP surface of an asymmetric plate.
-    """
+    """Top-down annotated map of every mounting hole on the mounting plate."""
     fig, ax = plt.subplots(figsize=(11, 8.5), dpi=140)
     ax.set_aspect("equal")
     ax.set_title("Mounting plate (TOP view, components on TOP surface)\n"
-                 "asymmetric: clear side at $-X$, components at $+X$")
+                 "asymmetric: clear side at $-X$, components at $+X$ — "
+                 "auger overhangs through the +Y notch")
     ax.set_xlabel("X (mm)")
     ax.set_ylabel("Y (mm)")
 
-    # Plate outline
-    ax.add_patch(patches.Rectangle((PLATE_X_MIN, PLATE_Y_BACK),
-                                   PLATE_W, PLATE_L,
-                                   facecolor="#e8e8ec", edgecolor="#444", lw=1.5))
+    # Plate outline (rectangle minus the central +Y notch).
+    plate_poly = patches.Polygon([
+        (PLATE_X_MIN, PLATE_Y_BACK),
+        (PLATE_X_MAX, PLATE_Y_BACK),
+        (PLATE_X_MAX, PLATE_Y_FRONT),
+        (+AUGER_GAP_W / 2, PLATE_Y_FRONT),
+        (+AUGER_GAP_W / 2, AUGER_GAP_Y_BACK),
+        (-AUGER_GAP_W / 2, AUGER_GAP_Y_BACK),
+        (-AUGER_GAP_W / 2, PLATE_Y_FRONT),
+        (PLATE_X_MIN, PLATE_Y_FRONT),
+    ], closed=True, facecolor="#e8e8ec", edgecolor="#444", lw=1.5)
+    ax.add_patch(plate_poly)
 
-    # Yoke wedges (projected as rectangles at the +Y edge, with eyes
-    # projecting forward)
-    for sx in (+YOKE_X_INNER, -YOKE_X_INNER):
-        ax.add_patch(patches.Rectangle((sx - YOKE_WEDGE_THK / 2, YOKE_WEDGE_Y_BACK),
-                                       YOKE_WEDGE_THK,
-                                       PLATE_Y_FRONT - YOKE_WEDGE_Y_BACK,
-                                       facecolor="#d0d0d8", edgecolor="#444", lw=1.2))
-        ax.add_patch(patches.Circle((sx, Y_DISP), YOKE_EYE_OD / 2,
+    # Front ramps (shaded regions on either side of the auger gap, top view)
+    for x0, x1 in ((+AUGER_GAP_W / 2, PLATE_X_MAX),
+                   (PLATE_X_MIN, -AUGER_GAP_W / 2)):
+        ax.add_patch(patches.Rectangle((x0, RAMP_Y_BACK),
+                                       x1 - x0, PLATE_Y_FRONT - RAMP_Y_BACK,
+                                       facecolor="#d0d0d8", edgecolor="#666",
+                                       lw=0.6, alpha=0.7))
+
+    # Hinge eyes (mounting plate) — one each side, overhanging the +Y edge.
+    for side in (+1, -1):
+        cx = side * (AUGER_GAP_W / 2 + HINGE_EYE_THK / 2)
+        ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_OD / 2,
                                     facecolor="#bcbcc6",
                                     edgecolor="#444", lw=1.2))
-        ax.add_patch(patches.Circle((sx, Y_DISP), 5.4 / 2, facecolor="white",
+        ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_ID / 2,
+                                    facecolor="white",
                                     edgecolor="#444", lw=0.8))
 
-    # Powder-fall slot through plate
-    slot_l = 30.0
-    slot_y_centre = PLATE_Y_FRONT - slot_l / 2 + 2
-    ax.add_patch(patches.Rectangle((-YOKE_WEDGE_GAP / 2, slot_y_centre - slot_l / 2),
-                                   YOKE_WEDGE_GAP, slot_l, facecolor="white",
-                                   edgecolor="#444", lw=1.0, ls="--"))
+    # Baseplate hinge arms (dashed — they belong to the baseplate, drawn
+    # here for context).
+    for side in (+1, -1):
+        x0 = side * ARM_X_INNER
+        x1 = side * (ARM_X_INNER + ARM_THK)
+        ax.add_patch(patches.Rectangle((min(x0, x1), BASE_Y_FRONT),
+                                       abs(ARM_THK), Y_DISP - BASE_Y_FRONT,
+                                       facecolor="#c8c8d0", edgecolor="#444",
+                                       lw=0.8, ls="--"))
+        cx = (x0 + x1) / 2
+        ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_OD / 2,
+                                    facecolor="#a8a8b4",
+                                    edgecolor="#444", lw=1.0, ls="--"))
 
-    # Gear-band clearance slot
-    gb_x_min = -(GEAR_BAND_TIP_DIA / 2.0) - 2.0
-    gb_x_max = +X_MOTOR + PINION_TIP_DIA / 2.0 + 2.0
-    gb_w = gb_x_max - gb_x_min
-    gb_l = GEAR_BAND_FACE_W + 8.0
-    ax.add_patch(patches.Rectangle((gb_x_min, Y_GEAR_BAND - gb_l / 2),
-                                   gb_w, gb_l, facecolor="white",
-                                   edgecolor="#444", lw=1.0, ls="--"))
+    # Bracket plinths (raised rectangles, top view) at the bracket Ys.
+    for cy in (Y_BRK_FRONT, Y_BRK_REAR):
+        ax.add_patch(patches.Rectangle((-BRK_FLANGE_W / 2, cy - BRK_FLANGE_D / 2),
+                                       BRK_FLANGE_W, BRK_FLANGE_D,
+                                       facecolor="#c8d0dc", edgecolor="#446",
+                                       lw=1.0))
+
+    # Tap-collar mount footprint (no plinth, flush).
+    ax.add_patch(patches.Rectangle((-TAP_PLATE_W / 2, Y_TAP - TAP_PLATE_D / 2),
+                                   TAP_PLATE_W, TAP_PLATE_D,
+                                   facecolor="#dcd0e4", edgecolor="#646",
+                                   lw=1.0))
 
     # Hole groups
-    def add_hole_group(cy, x_spacing, dia, label, colour, label_x=None):
+    def add_hole_group(cy, x_spacing, dia, label, colour):
         for sx in (+x_spacing / 2, -x_spacing / 2):
             ax.add_patch(patches.Circle((sx, cy), dia / 2, facecolor=colour,
                                         edgecolor="black", lw=0.8))
@@ -302,30 +322,25 @@ def installation_diagram(out_path: Path) -> None:
                     arrowprops=dict(arrowstyle="-", color="black", lw=0.6))
 
     add_hole_group(Y_BRK_FRONT, 48.0, 3.4,
-                   "Front bracket (#55) — 2 × M3 @ X=±24", "#3a78b8")
+                   "Front bracket (#55) — 2 × M3 @ X=±24 (on plinth)", "#3a78b8")
     add_hole_group(Y_TAP,       48.0, 3.4,
-                   "Tap-collar mount (#51) — 2 × M3 @ X=±24", "#6a3a8b")
+                   "Tap-collar mount (#51) — 2 × M3 @ X=±24 (flush)", "#6a3a8b")
     add_hole_group(Y_BRK_REAR,  48.0, 3.4,
-                   "Rear bracket (#55) — 2 × M3 @ X=±24", "#3a78b8")
+                   "Rear bracket (#55) — 2 × M3 @ X=±24 (on plinth)", "#3a78b8")
 
-    # NEMA 11 motor face: 4 × M3 + Ø22 pilot at (X_MOTOR, MOTOR_FACE_Y)
-    pitch = NEMA11_FACE_HOLE_PITCH
-    # In top view the boss is at +Y of the motor body (at Y=MOTOR_FACE_Y).
-    # Project the face holes onto the X-Y plane (they're actually in X-Z).
-    # Draw a vertical-face indicator instead.
+    # NEMA 11 motor face on the vertical mount block.
     ax.add_patch(patches.Rectangle((X_MOTOR - NEMA11_BODY_W / 2 - 4,
                                     MOTOR_FACE_Y - 6),
                                    NEMA11_BODY_W + 8, 6,
                                    facecolor="#88b88f", edgecolor="black",
-                                   lw=0.8, alpha=0.6,
-                                   label="NEMA 11 mount boss (vertical)"))
+                                   lw=0.8, alpha=0.6))
     ax.add_patch(patches.Rectangle((X_MOTOR - NEMA11_BODY_W / 2,
                                     MOTOR_FACE_Y - NEMA11_BODY_L),
                                    NEMA11_BODY_W, NEMA11_BODY_L,
                                    facecolor="#888", edgecolor="black",
                                    lw=0.8, alpha=0.4))
     ax.annotate("NEMA 11 (#49) — 4 × M3 @ 23 mm pitch + Ø22 pilot\n"
-                "(face holes on the +Y vertical face of the boss)",
+                "(face holes on +Y vertical face of mount block)",
                 xy=(X_MOTOR, MOTOR_FACE_Y - NEMA11_BODY_L / 2),
                 xytext=(PLATE_X_MAX + 12, MOTOR_FACE_Y - NEMA11_BODY_L / 2),
                 fontsize=9, va="center", ha="left",
@@ -339,27 +354,31 @@ def installation_diagram(out_path: Path) -> None:
                 fontsize=9, va="center", ha="left",
                 arrowprops=dict(arrowstyle="-", color="black", lw=0.6))
 
-    # Auger projection
-    ax.plot([0, 0], [Y_REAR, Y_DISP], color="#a07020", lw=1.0, ls=":",
-            label="Auger centreline (above plate)")
+    # Auger projection (overhangs through the gap into mid-air at +Y).
+    ax.plot([0, 0], [Y_REAR, Y_DISP], color="#a07020", lw=1.5, ls=":",
+            label="Auger centreline (above plate, overhangs through gap)")
     ax.plot([0], [Y_GEAR_BAND], "o", color="#a07020", ms=8, mfc="none",
-            label=f"Gear band (Y={Y_GEAR_BAND:.1f})")
+            label=f"Gear band (Y={Y_GEAR_BAND:.1f}, clears plate top by 5 mm)")
     ax.plot([X_MOTOR], [Y_GEAR_BAND], "x", color="#3a8b48", ms=10,
             label="Pinion centreline")
 
-    # Annotate axis labels
-    ax.annotate("HINGE AXIS\n(along X, through dispensing point)",
+    # Hinge axis annotation
+    ax.annotate("HINGE AXIS\n(X-axis through dispense point;\n"
+                "10 mm forward of baseplate front edge)",
                 xy=(0, Y_DISP + 2),
                 xytext=(PLATE_X_MIN - 8, Y_DISP),
                 fontsize=8, va="center", ha="right", color="red",
                 arrowprops=dict(arrowstyle="->", color="red", lw=0.8))
-    ax.annotate("DISPENSING POINT", xy=(0, Y_DISP),
-                xytext=(PLATE_X_MIN - 8, Y_DISP - 12),
-                fontsize=8, va="center", ha="right", color="red",
-                arrowprops=dict(arrowstyle="->", color="red", lw=0.6))
+
+    # Auger gap label
+    ax.annotate("AUGER GAP\n(open notch in +Y edge)",
+                xy=(0, AUGER_GAP_Y_BACK + 8),
+                xytext=(PLATE_X_MIN - 8, AUGER_GAP_Y_BACK),
+                fontsize=8, va="center", ha="right", color="#a04a20",
+                arrowprops=dict(arrowstyle="->", color="#a04a20", lw=0.6))
 
     ax.legend(loc="lower left", fontsize=8)
-    ax.set_xlim(PLATE_X_MIN - 70, PLATE_X_MAX + 130)
+    ax.set_xlim(PLATE_X_MIN - 80, PLATE_X_MAX + 150)
     ax.set_ylim(PLATE_Y_BACK - 20, Y_DISP + 20)
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
@@ -373,7 +392,8 @@ def rotation_diagram(out_path: Path) -> None:
     fig, axes = plt.subplots(1, 3, figsize=(15, 7), dpi=140)
     fig.suptitle("Rotation about the auger dispensing point — hinge axis is "
                  f"X through (Y={Y_DISP:.0f}, Z={Z_AUG:.1f})\n"
-                 "dispensing point literally does not move (red dot)")
+                 "dispense point literally does not move (red dot); axis "
+                 f"sits {Y_DISP - BASE_Y_FRONT:.0f} mm forward of baseplate front edge")
     tilts = [0, 45, 90]
     L_act = []
 
@@ -389,8 +409,17 @@ def rotation_diagram(out_path: Path) -> None:
         ax.set_title(f"tilt = {tilt}°")
 
         # Baseplate (side projection)
-        ax.add_patch(patches.Rectangle((-160, Z_BASE_TOP), 320, BASE_T,
+        ax.add_patch(patches.Rectangle((BASE_Y_BACK, Z_BASE_TOP),
+                                       BASE_Y_FRONT - BASE_Y_BACK, BASE_T,
                                        facecolor="#c0c0c8", edgecolor="#444"))
+        # Baseplate hinge arm side projection (vertical column reaching up to
+        # the hinge axis)
+        ax.add_patch(patches.Polygon([
+            (BASE_Y_FRONT, Z_BASE_TOP + BASE_T),
+            (Y_DISP + HINGE_EYE_OD / 2, Z_BASE_TOP + BASE_T),
+            (Y_DISP + HINGE_EYE_OD / 2, Z_AUG + HINGE_EYE_OD / 2),
+            (BASE_Y_FRONT, Z_AUG + HINGE_EYE_OD / 2),
+        ], closed=True, facecolor="#a8a8b4", edgecolor="#444"))
 
         c, s = math.cos(math.radians(-tilt)), math.sin(math.radians(-tilt))
 
@@ -398,11 +427,25 @@ def rotation_diagram(out_path: Path) -> None:
             dy, dz = y - hy, z - hz
             return hy + c * dy - s * dz, hz + s * dy + c * dz
 
-        # Mounting plate
+        # Mounting plate body (rectangle)
         pts_plate = [(PLATE_Y_BACK, -PLATE_T), (PLATE_Y_FRONT, -PLATE_T),
                      (PLATE_Y_FRONT, 0), (PLATE_Y_BACK, 0)]
         ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_plate],
                                      facecolor="#d8d8e0", edgecolor="#333"))
+        # Front ramp (side projection)
+        pts_ramp = [(RAMP_Y_BACK, 0), (PLATE_Y_FRONT, 0),
+                    (PLATE_Y_FRONT, RAMP_TOP_Z)]
+        ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_ramp],
+                                     facecolor="#c8c8d0", edgecolor="#444"))
+        # Eye tab projection (rectangle in YZ)
+        pts_tab = [
+            (PLATE_Y_FRONT - 1, Z_AUG - HINGE_EYE_OD / 2),
+            (Y_DISP + HINGE_EYE_OD / 2, Z_AUG - HINGE_EYE_OD / 2),
+            (Y_DISP + HINGE_EYE_OD / 2, Z_AUG + HINGE_EYE_OD / 2),
+            (PLATE_Y_FRONT - 1, Z_AUG + HINGE_EYE_OD / 2),
+        ]
+        ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_tab],
+                                     facecolor="#bcbcc6", edgecolor="#444"))
 
         # Auger (above the plate at Z=Z_AUG)
         pts_aug = [(Y_REAR, Z_AUG - AUGER_OD / 2),
@@ -428,21 +471,8 @@ def rotation_diagram(out_path: Path) -> None:
         ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_mb],
                                      facecolor="#444", edgecolor="#222"))
 
-        # Yoke wedge (single profile in side view)
-        pts_wedge = [(YOKE_WEDGE_Y_BACK, 0), (PLATE_Y_FRONT, 0),
-                     (PLATE_Y_FRONT, YOKE_WEDGE_TOP_Z)]
-        ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_wedge],
-                                     facecolor="#bcbcc6", edgecolor="#444"))
-
         # Hinge axis marker (always at the same physical point!)
         ax.plot(*rot(hy, hz), "o", color="red", ms=10, zorder=10)
-        # Baseplate tang
-        pts_tang = [(Y_DISP - 10, Z_BASE_TOP + BASE_T),
-                    (Y_DISP + 10, Z_BASE_TOP + BASE_T),
-                    (Y_DISP + 10, Z_AUG + 8),
-                    (Y_DISP - 10, Z_AUG + 8)]
-        ax.add_patch(patches.Polygon(pts_tang, facecolor="#a8a8b4",
-                                     edgecolor="#444"))
 
         # Actuator line
         rod_y, rod_z = rot(rod_y0, rod_z0)
@@ -468,10 +498,11 @@ def rotation_diagram(out_path: Path) -> None:
 
 
 def powder_flow_diagram(out_path: Path) -> None:
-    """Side view at 90° tilt showing the powder path auger → window → cup."""
+    """Side view at 90° tilt showing the powder path auger → cup."""
     fig, ax = plt.subplots(figsize=(11, 9), dpi=140)
     ax.set_aspect("equal")
-    ax.set_title("Powder flow (assembly tilted 90° about the auger dispensing point)")
+    ax.set_title("Powder flow (assembly tilted 90° about the auger dispensing point) — "
+                 "powder falls in front of the baseplate")
 
     tilt = 90
     hy, hz = Y_DISP, Z_AUG
@@ -481,18 +512,27 @@ def powder_flow_diagram(out_path: Path) -> None:
         dy, dz = y - hy, z - hz
         return hy + c * dy - s * dz, hz + s * dy + c * dz
 
-    # Baseplate
-    ax.add_patch(patches.Rectangle((-160, Z_BASE_TOP), 320, BASE_T,
+    # Baseplate (front edge at BASE_Y_FRONT = +115; hinge axis is +10 mm
+    # forward).
+    ax.add_patch(patches.Rectangle((BASE_Y_BACK, Z_BASE_TOP),
+                                   BASE_Y_FRONT - BASE_Y_BACK, BASE_T,
                                    facecolor="#c0c0c8", edgecolor="#444"))
-    # Powder window cutout
-    ax.add_patch(patches.Rectangle((WINDOW_Y - WINDOW_L / 2, Z_BASE_TOP - 1),
-                                   WINDOW_L, BASE_T + 2,
-                                   facecolor="white", edgecolor="#444", ls="--"))
-    # Mounting plate rotated
+    # Baseplate forward-and-up arm (side projection).
+    ax.add_patch(patches.Polygon([
+        (BASE_Y_FRONT, Z_BASE_TOP + BASE_T),
+        (Y_DISP + HINGE_EYE_OD / 2, Z_BASE_TOP + BASE_T),
+        (Y_DISP + HINGE_EYE_OD / 2, Z_AUG + HINGE_EYE_OD / 2),
+        (BASE_Y_FRONT, Z_AUG + HINGE_EYE_OD / 2),
+    ], closed=True, facecolor="#a8a8b4", edgecolor="#444"))
+
+    # Mounting plate + ramp (rotated)
     pts_plate = [(PLATE_Y_BACK, -PLATE_T), (PLATE_Y_FRONT, -PLATE_T),
                  (PLATE_Y_FRONT, 0), (PLATE_Y_BACK, 0)]
     ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_plate],
                                  facecolor="#d8d8e0", edgecolor="#333"))
+    pts_ramp = [(RAMP_Y_BACK, 0), (PLATE_Y_FRONT, 0), (PLATE_Y_FRONT, RAMP_TOP_Z)]
+    ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_ramp],
+                                 facecolor="#c8c8d0", edgecolor="#444"))
     # Auger rotated
     pts_aug = [(Y_REAR, Z_AUG - AUGER_OD / 2),
                (Y_DISP, Z_AUG - AUGER_OD / 2),
@@ -501,8 +541,8 @@ def powder_flow_diagram(out_path: Path) -> None:
     ax.add_patch(patches.Polygon([rot(y, z) for y, z in pts_aug],
                                  facecolor="#e8c98a", edgecolor="#a07020"))
 
-    # Cup + scale below the powder window
-    scale_y = WINDOW_Y
+    # Cup + scale in front of the baseplate (at Y > BASE_Y_FRONT).
+    scale_y = Y_DISP                 # under the dispense point
     scale_z = Z_BASE_TOP - 65
     ax.add_patch(patches.Rectangle((scale_y - 40, scale_z), 80, 12,
                                    facecolor="#222", edgecolor="black"))
@@ -517,15 +557,15 @@ def powder_flow_diagram(out_path: Path) -> None:
     ax.text(scale_y, scale_z + 32, "cup", color="#604020",
             ha="center", va="center", fontsize=10)
 
-    # Powder path arrow: from auger dispensing point (= hinge point) down
+    # Powder path arrow: from auger dispensing point straight down.
     disp_y, disp_z = hy, hz
     ax.annotate("", xy=(scale_y, scale_z + 50), xytext=(disp_y, disp_z),
                 arrowprops=dict(arrowstyle="->", color="#a07020", lw=3))
     ax.text(disp_y + 8, (disp_z + scale_z + 50) / 2,
-            "powder falls straight\ndown through window\ninto cup on scale",
+            "powder falls in front\nof the baseplate\ninto cup on scale",
             fontsize=10, color="#604020")
     ax.plot([disp_y], [disp_z], "o", color="red", ms=10, zorder=10)
-    ax.annotate("dispensing point\n(also = hinge axis)",
+    ax.annotate("dispense point\n(= hinge axis)",
                 xy=(disp_y, disp_z), xytext=(disp_y - 80, disp_z + 30),
                 fontsize=9, color="red",
                 arrowprops=dict(arrowstyle="->", color="red", lw=0.8))
@@ -554,13 +594,12 @@ def main() -> None:
     rotation_diagram(ASM / "rotation_0_45_90.png")
     powder_flow_diagram(ASM / "powder_flow.png")
 
-    # Combined-STEP export of the NEW parts only (the imported parts ship
-    # their own STEPs upstream).
+    # Combined-STEP export of the NEW parts only.
     asm_step = ASM / "full_assembly.step"
     a = cq.Assembly()
     a.add(build_mounting_plate(), name="mounting_plate", color=cq.Color(*COL_PLATE))
     a.add(build_baseplate(), name="baseplate", color=cq.Color(*COL_BASE))
-    a.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pin",
+    a.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pins",
           color=cq.Color(*COL_PIN))
     a.save(str(asm_step))
     print(f"  → {asm_step.relative_to(HERE)}")
