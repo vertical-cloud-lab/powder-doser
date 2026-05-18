@@ -7,8 +7,9 @@ and tap the auger so powder flows more reliably.
 
 The piece is split into two independently-printed parts so the collar can
 spin freely on the auger (which lets the motor and solenoid wiring stay
-put) while a hardstop on the chassis-mounted plate keeps it from being
-dragged all the way around with the auger and winding up the cabling.
+put) while a small hardstop bump on the chassis-mounted plate keeps it
+from being dragged all the way around with the auger and winding up the
+cabling.
 
 ![Assembly — front view](renders/assembly_front.png)
 
@@ -20,18 +21,22 @@ dragged all the way around with the auger and winding up the cabling.
                 │ ─── plunger ─┘                  Ø6 hole in the collar wall
                 ▼   ↓  Ø6 plunger clearance       to tap the auger directly)
               ╱  ╲  ╱  ╲
-             │ M2 ⊙ ⊙ M2 │      ← solenoid top boss (Ø2.4 M2 mount holes)
-              ─────┬─────
-        ┌──┐  ╱        ╲   ┌──┐
-        │  │ │  auger   │  │  │ ← M3 clamp screw (also the visual hardstop
-   coin │  │ │   bore   │  ├──┤    "contact point": the two clamp ears
-  motor │  │ │  Ø 25.5  │  │  │    swing into the +X column on the
-        │  │  ╲        ╱   └──┘    mounting plate to arrest rotation)
-        └──┘   ────────       ▲
-        ↑                     │
-       coin-motor pad         column on mount plate (+X)
-       (Ø10 × 1 mm recess
-        on -X tangent face)
+             │ M2 ⊙ ⊙ M2 │      ← solenoid top boss (Ø2.4 M2 mount holes,
+              ╲────┬────╱          full-collar-length tapered wedge with
+               ╲   │   ╱           integral gussets flaring into the OD)
+        ┌──┐    ────────    ┌──┐
+        │  │  ╱        ╲    │  │  ← M3 clamp screw (sets the running fit;
+   coin │  │ │  auger   │   ├──┤    the two horizontal clamp ears are the
+  motor │  │ │   bore   │   │  │    "contact point" — the bottom ear rests
+        │  │ │  Ø 25.5  │   └──┘    on the bump on the mounting plate,
+        │  │  ╲        ╱            arresting rotation)
+        └──┘   ────────
+        ↑       (lower tab) ──┐
+       coin-motor pad         │ rests on
+       (tapered wedge,        ▼
+        Ø10×1 mm recess     ┌─── small hardstop bump (top just below the
+        on -X tangent)      │    lower tab; +X corner M3 hole punches
+                            ▼    straight through it for screwdriver access)
         ─────────────────────────────
         │ ⊙ M3                  M3 ⊙ │  ← rectangular mounting plate
         └─────────────────────────────┘     (4 corner M3 mounting holes,
@@ -40,35 +45,56 @@ dragged all the way around with the auger and winding up the cabling.
 
 * The **mounting plate** (`mount_plate`) is the same rectangular flange and
   4-corner M3 mounting-hole pattern as the auger bracket from
-  [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47),
-  *with the circular collar replaced by a tall raised column on the +X
-  end of the plate*.  The column extends up past the bore axis and reaches
-  the elevation of the tap collar's clamp tabs so it can stop them from
-  swinging through.  Its X position was chosen to leave ~6 mm of clear
-  access to the +X corner mounting screws.
+  [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47).
+  Instead of a circular collar it carries a small **hardstop bump** on
+  the +X end of the plate top.  The bump:
+
+  - has its top face 0.25 mm below the bottom face of the resting lower
+    clamp tab, so the lower tab rests on the bump (the *contact point*
+    from the drawing) and CCW rotation of the collar is arrested
+    immediately;
+  - sits **fully below** the lower-tab Z range, so it does *not*
+    interfere with the collar at rest or while sliding it onto the
+    auger (this fixes the PR #51 v1 column that was taller than the
+    whole collar and made assembly physically impossible);
+  - **straddles** the +X corner M3 mount hole (X = 17.25 → 27.20 mm), with
+    a Ø 3.4 cylindrical cut-out through the bump body so the mount screw
+    drives straight through it — the "hollow" option the reviewer called
+    out.
+
 * The **tap collar** (`tap_collar`) reuses the bracket's bore (Ø 25.5 for
   the Ø 25 mm Archimedes auger of [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)),
   collar OD (Ø 33.5), 2 mm clamp slot, and clamp-ear / clamp-screw
-  geometry — but with the slot rotated 90° so it opens to the +X side.
-  The two clamp ears double as the hardstop "**contact point**" called
-  out on the drawing: as the auger drags the collar around, one clamp
-  ear hits the mount-plate column (the other ear hits it on the return
-  swing).  Each ear is 8 mm wide along X (vs. 3 mm on the bracket) so it
-  reaches the column without needing a separate "stop arm" feature.
-* The collar's clamp screw is intended to set the running fit of the
-  collar on the auger (snug enough that the collar stays put axially;
-  loose enough that the auger can rotate freely inside it), not to lock
-  it onto the shaft.
+  geometry — but with the slot rotated 90° so it opens to the +X side
+  and the two clamp ears are horizontal at rest.  The collar's clamp
+  screw is intended to set the running fit of the collar on the auger
+  (snug enough that the collar stays put axially; loose enough that the
+  auger can rotate freely inside it), not to lock it onto the shaft.
+
+  The collar is **lengthened along the auger axis to 18 mm** (vs 12 mm on
+  the bracket).  The extra Y-extent fixes the v1 problem where the
+  solenoid mounting boss was wider than the collar in Y, so its M2 mount
+  holes hung half off the boss into mid-air; with the lengthened collar,
+  every M2 hole sits fully over solid collar material.
+
 * The **coin vibration motor** (Ø 10 × 3 mm adhesive coin-style motor, e.g.
-  any "10 mm flat coin vibration motor") sits in a Ø 10.5 × 1 mm recess
-  on a flat tangent pad on the **-X side** of the collar.  Adhere it
-  with the motor's own foam-tape backing.
+  any "10 mm flat coin vibration motor") sits in a Ø 10 × 1 mm recess
+  on a flat face on the **-X side** of the collar.  The face is the
+  narrow end of a **tapered wedge** whose base flares out to a wider
+  footprint where it meets the cylinder, so the side walls of the wedge
+  act as integral gussets blending into the collar OD — no more fragile
+  flat plate hanging off the cylinder.  Adhere the motor with its own
+  foam-tape backing.
+
 * The **push/pull solenoid** (small ~17 × 11 × 30 mm class with M2 screw
-  mounts, e.g. JF-0530B / SDM-0530) sits on a flat boss on the **+Z**
-  (top) side of the collar.  Two M2 clearance holes at 12 mm pitch along
-  the auger axis hold the solenoid down; a Ø 6 plunger clearance hole
-  drops straight through the collar wall so the plunger can hammer the
-  auger directly from above.
+  mounts, e.g. JF-0530B / SDM-0530) sits on a flat face on the **+Z**
+  (top) side of the collar.  The face is the narrow end of a **tapered
+  wedge** (same gusset trick as the coin pad).  Two M2 clearance holes
+  at 12 mm pitch along the auger axis hold the solenoid down — both
+  holes sit fully over solid collar material thanks to the 18 mm collar
+  length.  A Ø 6 plunger clearance hole drops straight through the boss
+  and the collar wall so the plunger can hammer the auger directly from
+  above.
 
 The drawing called the motor / solenoid arrangement explicitly
 "unspecified" — both are mounted around the OD as suggested in the
@@ -90,7 +116,9 @@ changing the angle in `cad_model.py`.
 ## Key parameters (mm)
 
 All parameters live at the top of [`cad_model.py`](cad_model.py).  The
-shared geometry block is kept in lock-step with the bracket from PR #47.
+shared geometry block is kept in lock-step with the bracket from PR #47;
+the collar-only `TC_COLLAR_DEPTH` and the wedge-base widths are the new
+parameters added in the PR #51 v2 redesign.
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
@@ -98,22 +126,27 @@ shared geometry block is kept in lock-step with the bracket from PR #47.
 | `BORE_CLEARANCE` | 0.5 | Diametral clearance — same free-running fit as the bracket. |
 | `COLLAR_WALL` | 4.0 | Collar OD = 33.5 mm. |
 | `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × 12 × 14 | Identical to [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47); preserves the corner-hole pattern and the 29.25 mm bore-axis lift that clears the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) gear OD. |
+| `TC_COLLAR_DEPTH` | **18.0** | Collar Y-extent — longer than `PLATE_DEPTH` so the solenoid boss is fully supported underneath (was 12 mm in v1; M2 holes hung off in mid-air). |
 | `MOUNT_HOLE_INSET_X` / `MOUNT_HOLE_D` | 6.0 / 3.4 | M3 corner mounting holes — same as the bracket. |
-| `COLUMN_INNER_X / OUTER_X` | 10.0 / 16.0 | Hardstop column on +X.  The inboard face leaves a 1 mm rotational clearance to the resting clamp-tab outboard face; the outboard face leaves ~6 mm of access to the +X corner mount-screw heads. |
-| `COLUMN_HEIGHT` | 39 | Reaches `COLLAR_TOP_Z + TC_TAB_H + 1` so the column overlaps the full clamp-tab Z range. |
+| `BUMP_INNER_X / BUMP_OUTER_X` | 17.25 / 27.20 | Hardstop bump straddles the +X corner mount hole — Ø3.4 cut-out through the bump preserves screwdriver access. |
+| `BUMP_TOP_Z / BUMP_HEIGHT` | 21.00 / 7.00 | Bump top sits 0.25 mm below the lower clamp tab's bottom face — no collar interference, single-direction hard contact at rest. |
 | `CLAMP_GAP` / `CLAMP_SCREW_D` | 2.0 / 3.4 | Drawing callout slot width + M3 clearance through both ears. |
-| `TC_TAB_W × H` | 8 × 7 | Clamp ears, widened along X (was 3 mm on the bracket) so they reach the +X column without needing a separate stop arm. |
+| `TC_TAB_W × H` | 8 × 7 | Clamp ears, widened along X (was 3 mm on the bracket) so the lower ear reaches over the +X hardstop bump. |
 | `TAB_COLLAR_OVERLAP` | 6.0 | How far the tab block sinks into the collar OD so the union forms a continuous solid. |
 | `COIN_MOTOR_D` / `COIN_MOTOR_RECESS_DEPTH` | 10.0 / 1.0 | Adhesive Ø10 coin vibration motor; 1 mm shallow recess locates the motor on the side pad. |
-| `SOLENOID_BOSS_W × DEPTH × PROUD` | 14 × 17 × 2 | Top boss for the solenoid; the 17 mm Y-extent (wider than `PLATE_DEPTH = 12`) leaves clear material between the central Ø6 plunger hole and the M2 mount holes. |
+| `COIN_PAD_W / COIN_PAD_BASE_W` | 14 / 22 | Tapered wedge face / base widths (the base flares out → integral gussets fused into the collar OD). |
+| `SOLENOID_BOSS_W / SOLENOID_BOSS_BASE_W / PROUD` | 14 / 22 / 2 | Tapered wedge face / base / height for the solenoid boss; same gusset trick as the coin pad. |
 | `SOLENOID_SCREW_D / PITCH_Y` | 2.4 / 12.0 | M2 clearance, 12 mm pitch along the auger axis. |
 | `SOLENOID_PLUNGER_D` | 6.0 | Plunger clearance hole through the full collar wall. |
-| `FILLET_PLATE_COLUMN` / `FILLET_TAB_COLLAR` | 2.0 / 1.0 | Stress-relief / cosmetic blends. |
+| `FILLET_PLATE_BUMP` / `FILLET_TAB_COLLAR` | 1.5 / 1.0 | Stress-relief / cosmetic blends. |
 
-Defensive `assert`s catch parameter retunes that would push the
-solenoid M2 mount holes through the central plunger hole, off the
-boss footprint, or push the hardstop column through the corner mount
-holes.
+Defensive `assert`s catch parameter retunes that would:
+- push the solenoid M2 mount holes through the central plunger hole, off
+  the boss footprint, or off the collar Y-extent (so it isn't possible
+  to silently regress the v1 cantilever bug);
+- push the hardstop bump above the lower-tab Z range (which would make
+  the collar physically un-installable);
+- push the hardstop bump past the plate end.
 
 ## Print orientation
 
