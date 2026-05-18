@@ -2,15 +2,17 @@
 //
 //   * Four corner legs raise the assembly above the bench so a cup +
 //     scale fit underneath.
-//   * Central single-tang hinge clevis at Y = yDisp, between the mounting
-//     plate's two yoke eyes, with bore at Z = zAug (the auger dispense
-//     point). Powder still drops through the slot in the mounting plate
-//     and the gap between yoke eyes onto the cup centred below the
-//     powder window.
+//   * Central single-tang hinge clevis at Y = tangY (= yDisp), bored
+//     for the hinge pin along X at the auger centreline Z = zAug.
+//     Sits between the two yoke wedges on the mounting plate.
 //   * Powder window directly under the dispense point.
 //   * Rear clevis for the linear-actuator base pivot.
 //
-// Issue: vertical-cloud-lab/powder-doser#56
+// Frame: this script builds the baseplate with its BOTTOM on z=0; the
+// assembly stage shifts the whole part by tz = zBaseTop so the top face
+// lands at z = zBaseTop + baseT and the tang bore at z = zAug.
+//
+// Issue: vertical-cloud-lab/powder-doser#56  (drawing in #62)
 import "params.kcl" as p
 
 base = startSketchOn(XY)
@@ -23,7 +25,7 @@ base = startSketchOn(XY)
 
 // ---- powder window directly under the dispense point ----
 window = startSketchOn(XY)
-  |> startProfile(at = [-p.windowW/2, p.yDisp - p.windowL/2])
+  |> startProfile(at = [-p.windowW/2, p.windowY - p.windowL/2])
   |> line(end = [p.windowW, 0])
   |> line(end = [0, p.windowL])
   |> line(end = [-p.windowW, 0])
@@ -47,23 +49,27 @@ leg2 = mkLeg(-legXc, +legYc)
 leg3 = mkLeg(+legXc, -legYc)
 leg4 = mkLeg(-legXc, -legYc)
 
-// ---- central hinge tang ----
-// Tang top reaches past the auger centreline by 8 mm so the hinge pin
-// clears the auger at all rotation angles.
+// ---- central hinge tang on the baseplate TOP ----
+// In local frame (base bottom on z=0), the tang top must reach
+// tangTopZAbs - zBaseTop and the tang bore tangBoreZAbs - zBaseTop.
+tangTopLocal  = p.tangTopZAbs  - p.zBaseTop
+tangBoreLocal = p.tangBoreZAbs - p.zBaseTop
+tangH         = tangTopLocal - p.baseT
 tang = startSketchOn(XY)
-  |> startProfile(at = [-p.tangW/2, p.yDisp - p.tangT/2])
+  |> startProfile(at = [-p.tangW/2, p.tangY - p.tangT/2])
   |> line(end = [p.tangW, 0])
   |> line(end = [0, p.tangT])
   |> line(end = [-p.tangW, 0])
   |> close()
-  |> extrude(length = p.tangH)
+  |> extrude(length = tangH)
+  // The extrude is taken from the base TOP face (z = baseT) upward.
 
-// Hinge pin bore at Z = zAug
+// Hinge pin bore at the auger centreline (local z = tangBoreLocal).
 tangBore = startSketchOn(YZ)
-  |> circle(center = [p.yDisp, p.zAug], radius = p.yokeEyeId/2)
+  |> circle(center = [p.tangY, tangBoreLocal], radius = p.yokeEyeId/2)
   |> extrude(length = p.tangW + 2)
 
-// ---- linear-actuator base clevis ----
+// ---- linear-actuator base clevis on baseplate TOP ----
 actClevis = startSketchOn(XY)
   |> startProfile(at = [-p.actBaseW/2, p.actBaseY - p.actBaseT/2])
   |> line(end = [p.actBaseW, 0])
@@ -73,5 +79,5 @@ actClevis = startSketchOn(XY)
   |> extrude(length = p.actBaseH)
 
 actClevisBore = startSketchOn(YZ)
-  |> circle(center = [p.actBaseY, p.actBaseH - 6.0], radius = p.actBaseBoreD/2)
+  |> circle(center = [p.actBaseY, p.baseT + p.actBaseH - 6.0], radius = p.actBaseBoreD/2)
   |> extrude(length = p.actBaseW + 2)

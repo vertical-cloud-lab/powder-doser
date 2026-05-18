@@ -1,40 +1,51 @@
 """Mounting plate + baseplate + hinge pin for the powder-doser.
 
-Only the **new** parts in this package are generated here: the mounting
-plate (top half of the rotating sub-assembly, carries two PR#55 brackets,
-one PR#51 tap-collar mount and one NEMA 11 motor that drives the PR#49
-geared auger), the baseplate (sits on the bench, has a central hinge
-tang and a powder-fall window) and the M5 hinge pin that joins them.
+Layout is built directly from the hand-drawn spec attached to issue
+`#62 Mounting Plate Design` (the parent issue #56 references it through
+the #46 part-by-part design tree).  In particular:
 
-Every other part used in the assembly renderer is **imported** from its
-own upstream PR — see ``imported-parts/``:
+  * Every component (brackets, tap-collar mount, motor mount block, NEMA
+    motor body and pinion, hinge brackets) lives on the **TOP** surface
+    of the plate.  Nothing hangs below.
+  * The plate is **asymmetric in X**: the auger runs along one edge,
+    the motor extends out to the opposite long edge, and the side
+    opposite the motor is intentionally trimmed close to the auger so
+    there is no "unnecessary space".
+  * Order along the auger from the hinge end (+Y) going away towards the
+    motor end (-Y) is exactly: **front bracket → tap-collar mount →
+    motor (= over the gear band at Y_GEAR_BAND) → rear bracket**.
+  * The hinge axis is the global X axis through the auger's dispensing
+    point (Y_DISP, Z_AUG) so the dispensing point literally does not
+    move when the plate tilts 0..90°.
+  * The two yoke brackets that carry the hinge pin are right-triangular
+    wedges sitting on the plate **top** at the +Y edge, with bore axis
+    along X.  The baseplate carries a matching central tang that rises
+    UP from its top surface to interleave between the two yoke
+    brackets, with the bore on the same X-axis.
+
+Only the **new** parts are generated here (mounting_plate, baseplate,
+hinge_pin).  The auger, brackets, tap-collar and motor STLs are imported
+verbatim from the upstream PRs in ``imported-parts/``:
 
   - PR #49 v3 — ``cad/auger-geared/archimedes-auger-geared.stl``,
                 ``cad/auger-geared/stepper-pinion.stl``
-  - PR #51    — ``design/cad/tap-collar/stl/tap_collar.stl`` (the
-                rotating split-collar; the mount-plate it bolts to is
-                ``design/cad/tap-collar/stl/mount_plate.stl``)
+  - PR #51    — ``design/cad/tap-collar/stl/tap_collar.stl`` +
+                ``mount_plate.stl``
   - PR #55    — ``cad/auger-bracket/auger-bracket.stl``
 
 Coordinate frame
 ================
-
-  +X to the right (looking at the front of the machine)
-  +Y forward (= the direction the auger discharges powder when tilted)
+  +X to the right (looking at the front of the machine from the
+                    dispense end)
+  +Y forward       (= the direction the auger discharges powder when
+                    tilted; the dispense end of the auger is at +Y_DISP)
   +Z up
 
-The mounting plate's top face is at z = 0, bottom at z = -PLATE_T.
-The auger lies horizontal along +Y; its centreline at
-(x = 0, z = Z_AUG = -PLATE_T - (BRK_RING_CENTRE_LOCAL_Z - BRK_FLANGE_T))
-because the two PR#55 brackets are bolted FLANGE-UP to the plate
-underside, so the bracket's bore ends up below the plate.
-
-The hinge axis is the global x-axis at (y = Y_DISP, z = Z_AUG); a single
-M5 pin passes through the mounting plate's left yoke eye, through the
-baseplate's central tang, and out the mounting plate's right yoke eye.
-Rotation about this axis tilts the auger from horizontal (0°) to
-straight-down (90°) about its own dispense point — no hinge hardware
-ever crosses the powder path.
+  Mounting plate top face is at z = 0, bottom at z = -PLATE_T.
+  Auger centreline at (x = 0, z = Z_AUG = +BRK_RING_CENTRE_LOCAL_Z),
+  i.e. one bracket "ring-centre-over-flange-bottom" height above the
+  plate top, since both brackets bolt **flange-DOWN** onto the plate
+  top surface.
 
 Run from the package directory to (re)generate all three STEPs + STLs::
 
@@ -67,7 +78,6 @@ NEMA11_BODY_W = 28.2                  # square cross-section
 NEMA11_BODY_L = 32.0                  # along motor axis
 NEMA11_FACE_HOLE_PITCH = 23.0         # M2.5 corner-hole pitch on motor face
 NEMA11_PILOT_DIA = 22.0               # central pilot Ø
-NEMA11_SCREW_CLEAR = 3.0              # M2.5 clearance (use M3 hardware in plate)
 NEMA11_SHAFT_DIA = 5.0
 NEMA11_SHAFT_LEN = 18.0               # shaft length out the front face
 
@@ -79,8 +89,7 @@ BRK_MOUNT_HOLE_INSET_X = 6.0          # from each X end → hole centre at ±24
 BRK_MOUNT_HOLE_D = 3.4                # M3 clearance through plate
 BRK_RING_OD = 35.4
 BRK_RING_OR = BRK_RING_OD / 2
-# In the bracket's native frame the flange bottom is at z=0 and the ring
-# centre is at z = FLANGE_T + RING_OR * 0.55 (see PR #55 source).
+# Bracket's native frame: flange bottom on z=0, ring centre at z = ~19.74.
 BRK_RING_CENTRE_LOCAL_Z = BRK_FLANGE_T + BRK_RING_OR * 0.55  # 19.74 mm
 
 # PR #51 — tap-collar mount plate (60 × 12 × 14, 2 × M3 at X = ±24).
@@ -91,102 +100,121 @@ TAP_MOUNT_HOLE_INSET_X = 6.0
 TAP_MOUNT_HOLE_D = 3.4
 
 # --------------------------------------------------------------------- #
-# Mounting plate parameters (the ONLY parts we generate here).
+# Mounting-plate parameters
 # --------------------------------------------------------------------- #
-PLATE_W = 120.0       # X — wide enough for the NEMA 11 boss at X=+32
-PLATE_L = 220.0       # Y — covers the bracket span (Y=±95) with margin;
-                      # yoke arms extend forward past the +Y edge to the
-                      # dispense point at Y = +125.
-PLATE_T = 6.0         # Z — thickness
+PLATE_T = 6.0                         # Z thickness
 
-# Auger centred along the plate's Y axis. Dispense end at +Y.
-Y_DISP = AUGER_LEN / 2                 # +125 mm — front edge of auger
-Y_REAR = -AUGER_LEN / 2                # -125 mm — motor end of auger
+# Auger centreline = ring centre of brackets bolted flange-DOWN on top.
+Z_AUG = +BRK_RING_CENTRE_LOCAL_Z      # +19.74 mm above plate top
+
+# Auger spans Y = [Y_REAR, Y_DISP].  Dispense end at +Y.
+Y_DISP = +AUGER_LEN / 2.0             # +125 mm — front edge of auger (= hinge)
+Y_REAR = -AUGER_LEN / 2.0             # -125 mm — motor end of auger
 Y_GEAR_BAND = Y_DISP - GEAR_BAND_AXIAL_FROM_DISP   # +41.67 mm
 
-# Auger centreline Z, set by the bracket geometry: brackets bolt FLANGE-UP
-# to the plate underside (flange-bottom mating face mates against plate
-# underside at z = -PLATE_T), and the bracket's bore centre is at
-# BRK_RING_CENTRE_LOCAL_Z above its native flange-bottom — so the bore
-# ends up that far BELOW the plate underside after the flip-and-mate.
-Z_AUG = -(PLATE_T + BRK_RING_CENTRE_LOCAL_Z)   # -25.74 mm
+# --- Component Y positions (hinge end → away) -------------------------
+# Order per the issue #62 drawing:
+#   hinge axis @ Y_DISP=+125
+#   front bracket
+#   tap-collar mount
+#   motor (constrained by gear-band Y)
+#   rear bracket
+Y_BRK_FRONT = +95.0                   # just behind dispense, ≥7 mm clear
+                                      # of yoke wedge base (Y=+88)
+Y_TAP       = +70.0                   # between front bracket and gear band
+Y_BRK_REAR  = -95.0                   # near auger's motor end
+# Y of the NEMA pinion shaft is locked by the gear mesh at Y_GEAR_BAND.
 
-# Baseplate sits BELOW the mounting plate, on the bench. Its top surface
-# is set well below the auger so the assembly can tilt 0..90° about the
-# hinge axis (at Y_DISP, Z_AUG) without the tilting auger crashing into
-# the baseplate. The hinge tang rises from the baseplate top up to the
-# auger centreline (Z_AUG) where the hinge pin passes through.
-Z_BASE_TOP = -55.0                              # 39.3 mm below the auger
-                                                 # = AUGER_OD/2 + 26.8 mm gap
+# --- Plate X envelope (asymmetric: clear side -X, component side +X) --
+# Auger at X=0; bracket flange extends ±30 (60 mm wide); motor body
+# centreline at X=+GEAR_CENTRE_DISTANCE=+32 with body ±NEMA11_BODY_W/2.
+# Trim the -X side to just past the bracket flange edge; extend +X to
+# enclose the motor body + a margin so a future motor cowling can bolt
+# down without overhanging.
+PLATE_X_MIN = -(BRK_FLANGE_W / 2.0) - 4.0          # -34 mm
+PLATE_X_MAX = +GEAR_CENTRE_DISTANCE + NEMA11_BODY_W / 2.0 + 8.0  # +54.1 mm
+PLATE_W = PLATE_X_MAX - PLATE_X_MIN                 # ~88 mm
+PLATE_X_CENTRE = (PLATE_X_MIN + PLATE_X_MAX) / 2.0  # ~+10 mm
 
-# Bracket Y positions: near the auger ends, well clear of the gear band
-# (Y = +41.67 ± 5) and the tap-collar (Y = -40).
-Y_BRK_FRONT = +95.0
-Y_BRK_REAR  = -95.0
+# --- Plate Y envelope --------------------------------------------------
+# Encloses rear bracket (-95) and stops just past the front bracket
+# (+95+12.5 = +107).  Yoke wedges extend forward on top of the plate to
+# Y_DISP=+125 where the hinge eyes sit.
+PLATE_Y_FRONT = +110.0
+PLATE_Y_BACK  = Y_BRK_REAR - BRK_FLANGE_D / 2.0 - 7.0   # -114.5 mm
+PLATE_L = PLATE_Y_FRONT - PLATE_Y_BACK                  # ~224.5 mm
+PLATE_Y_CENTRE = (PLATE_Y_FRONT + PLATE_Y_BACK) / 2.0   # ~-2.25 mm
 
-# Tap-collar mount Y — between gear band and rear bracket, leaving
-# clearance on both sides.
-Y_TAP = -40.0
+# --- Hinge yoke wedges (on TOP of plate, +Y edge) ---------------------
+# Right-triangular wedges in the Y-Z plane: vertical face at the +Y plate
+# edge, horizontal face on the plate top, hypotenuse rising from
+# Y=YOKE_WEDGE_Y_BACK at z=0 to Y=PLATE_Y_FRONT at z=YOKE_WEDGE_TOP_Z.
+# The hinge bore is at (Y_DISP, Z_AUG) so it overhangs the plate edge by
+# (Y_DISP - PLATE_Y_FRONT) = 15 mm — supported by a short cylindrical
+# eye that extends forward of the wedge.
+YOKE_WEDGE_THK     = 8.0              # wedge thickness in X (each)
+YOKE_WEDGE_GAP     = 26.0             # central X clearance between wedges
+YOKE_WEDGE_TOP_Z   = Z_AUG + 8.0      # wedge rises a bit above auger axis
+YOKE_WEDGE_Y_BACK  = PLATE_Y_FRONT - 22.0   # wedge base extends 22 mm back
+YOKE_EYE_OD        = 14.0
+YOKE_EYE_ID        = 5.4              # M5 hinge-pin clearance
+YOKE_EYE_AXIAL_LEN = YOKE_WEDGE_THK   # eye is just an extension of the wedge
 
-# NEMA 11 mount: motor axis parallel to auger, pinion shaft pointing in
-# +Y so the pinion sits over the gear band at Y = Y_GEAR_BAND.
-# Motor body centre Y = Y_GEAR_BAND - PINION_LEN - NEMA11_BODY_L/2 + face_overshoot.
-# We mount the motor face flush against an integrated boss on the plate
-# underside; the boss face is at Y = MOTOR_FACE_Y, motor extends in -Y.
-MOTOR_FACE_Y = Y_GEAR_BAND - GEAR_BAND_FACE_W / 2.0 - 2.0   # 2 mm air gap
-# Pinion centred axially on the gear band → pinion length straddles the
-# band evenly: pinion centre Y = Y_GEAR_BAND, pinion z aligned to Z_AUG.
-# Motor centre X offset by the gear-mesh centre distance.
-X_MOTOR = +GEAR_CENTRE_DISTANCE              # +32 mm
-Z_MOTOR = Z_AUG                              # parallel-axis with auger
+# Each yoke wedge centred in X at:
+YOKE_X_INNER = YOKE_WEDGE_GAP / 2 + YOKE_WEDGE_THK / 2   # ±17
 
-# Motor mount boss (drops from plate underside to hold the motor face in
-# the right XYZ). The boss face is a vertical wall at Y = MOTOR_FACE_Y
-# facing +Y; bolts pass THROUGH the boss into the motor's M2.5 face holes.
-BOSS_W = NEMA11_BODY_W + 2 * 4.0             # 28.2 + 8 = 36.2 mm
-BOSS_H = NEMA11_BODY_W + 2 * 4.0             # square block in (X,Z)
-BOSS_T = 4.0                                 # wall thickness along Y
-# Boss centred on (X_MOTOR, Z_MOTOR), spanning Y = [MOTOR_FACE_Y, MOTOR_FACE_Y + BOSS_T]
+# --- NEMA-11 motor mount block (on TOP of plate) ----------------------
+# Per the drawing, the motor sits on top of the plate with its axis
+# parallel to the plate (= parallel to the auger).  Pinion sticks out
+# the front face of the motor in the +Y direction so it meshes with the
+# auger's gear band at Y = Y_GEAR_BAND.
+# The integrated "Motor Mounting Block" is a vertical wall on the plate
+# top.  Its +Y face carries the NEMA 11 face holes; the motor body
+# extends in -Y away from that face.
+BOSS_W   = NEMA11_BODY_W + 8.0        # X width of boss (36.2 mm)
+BOSS_H   = NEMA11_BODY_W + 8.0        # Z height of boss (36.2 mm)
+BOSS_T   = 6.0                        # Y wall thickness
+# +Y face of the boss = motor-face plane (2 mm air gap to gear band).
+MOTOR_FACE_Y = Y_GEAR_BAND - GEAR_BAND_FACE_W / 2.0 - 2.0   # +34.67 mm
+X_MOTOR  = +GEAR_CENTRE_DISTANCE      # +32 mm — pinion meshes auger
+Z_MOTOR  = Z_AUG                      # parallel-axis with auger
 
-# Hinge yoke (forward of the plate's +Y edge, eyes coaxial with the
-# auger's dispense point).
-YOKE_ARM_LEN = Y_DISP - PLATE_L / 2 + 25.0   # arm reaches from the plate
-                                              # +Y edge to past the auger tip
-YOKE_EYE_OD = 14.0
-YOKE_EYE_ID = 5.4                            # M5 hinge pin clearance
-YOKE_EYE_GAP = 26.0                          # central powder slot
-YOKE_DROP_W = YOKE_EYE_OD                    # drop-leg cross-section
-
-# Linear-actuator rod-end pivot lug on plate underside.
+# --- Linear-actuator rod-end pivot lug (on plate UNDERSIDE) -----------
+# The actuator pulls down on the rear of the plate from below.  Lug
+# hangs from the underside of the plate at the rear.
 ACT_LUG_Y = -60.0
-ACT_LUG_T = 8.0                              # along Y
-ACT_LUG_W = 12.0                             # along X
-ACT_LUG_H = 24.0                             # how far it drops below plate
-ACT_LUG_BORE_D = 5.4                         # M5 clearance
+ACT_LUG_T = 8.0                       # along Y
+ACT_LUG_W = 12.0                      # along X
+ACT_LUG_H = 24.0                      # how far it drops below the plate
+ACT_LUG_BORE_D = 5.4
 
-# Baseplate dimensions (sits on the bench, has central tang + powder
-# window + linear-actuator clevis + four corner legs).
+# --- Baseplate --------------------------------------------------------
 BASE_W = 200.0
 BASE_L = 320.0
 BASE_T = 6.0
-BASE_LEG_H = 95.0                            # clears 50 mm cup + 30 mm scale
-BASE_LEG_W = 18.0                            # square leg cross-section
-BASE_LEG_INSET = 12.0                        # legs inset from each corner
+BASE_LEG_H = 95.0                     # clears 50 mm cup + 30 mm scale
+BASE_LEG_W = 18.0
+BASE_LEG_INSET = 12.0
 
-WINDOW_W = 60.0                              # powder-fall hole
+# Baseplate top just below mounting-plate bottom with a small clearance.
+# With everything ABOVE the mounting plate, tilting forward 0..90° lifts
+# the plate's rear corner UP, not down — so no deep gap is required.
+Z_BASE_TOP = -PLATE_T - 6.0            # -12 mm  (6 mm air gap)
+
+# Powder window directly under the dispense point.
+WINDOW_W = 60.0
 WINDOW_L = 60.0
-WINDOW_Y = Y_DISP                            # directly below the dispense point
+WINDOW_Y = Y_DISP
 
-# Central tang on baseplate top — fits in the yoke gap, bored for the
-# hinge pin along X.
-TANG_W = YOKE_EYE_GAP - 0.4                  # 0.2 mm clearance per side
-TANG_T = YOKE_EYE_OD + 6.0                   # in Y
-# Tang rises from baseplate TOP up to past the auger centreline by 8 mm.
-TANG_H = (Z_AUG + 8.0) - Z_BASE_TOP          # ≈ 47.3 mm
-TANG_Y = WINDOW_Y                            # tang centred on dispense
-TANG_HINGE_Z = Z_AUG                         # hinge bore at auger centreline
+# Central hinge tang on baseplate top.  Single tab sitting between the
+# two mounting-plate yoke wedges, bored for the hinge pin.
+TANG_W = YOKE_WEDGE_GAP - 0.4         # 0.2 mm clearance per side
+TANG_T = YOKE_EYE_OD + 6.0            # Y depth
+TANG_Y = Y_DISP
+TANG_BORE_Z_ABS = Z_AUG               # bore on the auger centreline
+TANG_TOP_Z_ABS = Z_AUG + 8.0          # rises to match yoke top
 
-# Linear-actuator base clevis on baseplate.
+# Linear-actuator base clevis on baseplate top.
 ACT_BASE_Y = -110.0
 ACT_BASE_W = 16.0
 ACT_BASE_T = 10.0
@@ -197,148 +225,151 @@ ACT_BASE_BORE_D = 5.4
 M3_CLEAR = 3.4
 M5_CLEAR = 5.4
 
+
 # --------------------------------------------------------------------- #
 # Builders
 # --------------------------------------------------------------------- #
-def _hole_along_z(x: float, y: float, dia: float, depth: float = PLATE_T + 2.0,
-                  z_top: float = 1.0) -> cq.Workplane:
-    """Through-hole along -Z, centred at (x, y, z_top)."""
+def _through_hole(x: float, y: float, dia: float) -> cq.Workplane:
+    """A through-hole boolean tool spanning z=[-PLATE_T-1, +1]."""
     return (
         cq.Workplane("XY")
-        .workplane(offset=z_top)
+        .workplane(offset=1.0)
         .center(x, y)
-        .circle(dia / 2)
-        .extrude(-depth)
+        .circle(dia / 2.0)
+        .extrude(-(PLATE_T + 2.0))
     )
 
 
 def build_mounting_plate() -> cq.Workplane:
-    """Top plate: carries 2 brackets + tap-collar + NEMA 11 + yoke + lug."""
+    """Top plate: brackets + tap-collar + NEMA 11 + yoke ALL on top."""
+    # Asymmetric plate centred on (PLATE_X_CENTRE, PLATE_Y_CENTRE).
     plate = (
         cq.Workplane("XY")
         .box(PLATE_W, PLATE_L, PLATE_T, centered=(True, True, False))
-        .translate((0, 0, -PLATE_T))
+        .translate((PLATE_X_CENTRE, PLATE_Y_CENTRE, -PLATE_T))
     )
 
-    # ------ Bracket mount holes (PR #55: 2 × M3 at X = ±24, on plate Y) ----
-    brk_x = BRK_FLANGE_W / 2 - BRK_MOUNT_HOLE_INSET_X       # 24
+    # ------ Bracket mount holes (2 × M3 at X = ±24) ----------------------
+    brk_x = BRK_FLANGE_W / 2.0 - BRK_MOUNT_HOLE_INSET_X            # 24
     for cy in (Y_BRK_FRONT, Y_BRK_REAR):
         for sx in (+brk_x, -brk_x):
-            plate = plate.cut(_hole_along_z(sx, cy, M3_CLEAR))
+            plate = plate.cut(_through_hole(sx, cy, M3_CLEAR))
 
-    # ------ Tap-collar mount holes (PR #51: 2 × M3 at X = ±24, Y = Y_TAP) --
-    tap_x = TAP_PLATE_W / 2 - TAP_MOUNT_HOLE_INSET_X        # 24
+    # ------ Tap-collar mount holes (2 × M3 at X = ±24, Y = Y_TAP) --------
+    tap_x = TAP_PLATE_W / 2.0 - TAP_MOUNT_HOLE_INSET_X             # 24
     for sx in (+tap_x, -tap_x):
-        plate = plate.cut(_hole_along_z(sx, Y_TAP, M3_CLEAR))
+        plate = plate.cut(_through_hole(sx, Y_TAP, M3_CLEAR))
 
-    # ------ NEMA 11 mount boss on plate underside -------------------------
-    # The boss is a small block whose +Y face mates with the motor face.
-    # Its bottom Z encloses the motor body; its top Z bites a couple of mm
-    # into the plate underside so the union with the plate is solid.
-    boss_top_z = -PLATE_T + 1.0
-    boss_bot_z = Z_MOTOR - NEMA11_BODY_W / 2 - 4.0
+    # ------ NEMA 11 motor mount block (sits ON TOP of plate) -------------
+    # Block bottom mates with plate top (z=0); block extends up to
+    # boss_top_z; +Y face is at MOTOR_FACE_Y and carries 4 × M3 +
+    # central Ø22 pilot for the NEMA 11.
+    boss_bot_z = 0.0
+    boss_top_z = Z_MOTOR + BOSS_H / 2.0
     boss_h = boss_top_z - boss_bot_z
-    boss_centre_z = (boss_top_z + boss_bot_z) / 2
+    boss_centre_z = (boss_top_z + boss_bot_z) / 2.0
     boss = (
         cq.Workplane("XY")
         .box(BOSS_W, BOSS_T, boss_h, centered=(True, True, True))
-        .translate((X_MOTOR, MOTOR_FACE_Y + BOSS_T / 2, boss_centre_z))
+        .translate((X_MOTOR, MOTOR_FACE_Y - BOSS_T / 2.0, boss_centre_z))
     )
     plate = plate.union(boss)
-    # M3 mount holes through the boss into the motor face (4 corners +
-    # central pilot for the shaft + pinion).
+    # M3 holes through the boss for the NEMA 11 face screws.
     for sx in (+NEMA11_FACE_HOLE_PITCH / 2, -NEMA11_FACE_HOLE_PITCH / 2):
         for sz in (+NEMA11_FACE_HOLE_PITCH / 2, -NEMA11_FACE_HOLE_PITCH / 2):
             hole = (
                 cq.Workplane("XZ")
-                .workplane(offset=-(MOTOR_FACE_Y + BOSS_T + 1))  # XZ-plane is at Y=0
+                .workplane(offset=-(MOTOR_FACE_Y + 1))
                 .center(X_MOTOR + sx, Z_MOTOR + sz)
-                .circle(M3_CLEAR / 2)
-                .extrude(BOSS_T + 2)
+                .circle(M3_CLEAR / 2.0)
+                .extrude(BOSS_T + 2.0)
             )
             plate = plate.cut(hole)
+    # Central Ø22 pilot for the shaft + pinion.
     pilot = (
         cq.Workplane("XZ")
-        .workplane(offset=-(MOTOR_FACE_Y + BOSS_T + 1))
+        .workplane(offset=-(MOTOR_FACE_Y + 1))
         .center(X_MOTOR, Z_MOTOR)
-        .circle(NEMA11_PILOT_DIA / 2)
-        .extrude(BOSS_T + 2)
+        .circle(NEMA11_PILOT_DIA / 2.0)
+        .extrude(BOSS_T + 2.0)
     )
     plate = plate.cut(pilot)
 
-    # ------ Forward yoke: two arms + drop legs + eyes ---------------------
-    arm_offset_x = YOKE_EYE_GAP / 2 + YOKE_EYE_OD / 2
-    arm_w = YOKE_EYE_OD
-    arm_y0 = PLATE_L / 2
-    arm_y1 = Y_DISP                              # eye at the dispense point
-    arm_len = arm_y1 - arm_y0
+    # ------ Hinge yoke wedges (two triangular wedges on plate TOP) -------
     for side in (+1, -1):
-        cx = side * arm_offset_x
-        # Horizontal arm (continues the plate forward at plate level)
-        arm = (
-            cq.Workplane("XY")
-            .box(arm_w, arm_len + 2, PLATE_T, centered=(True, True, False))
-            .translate((cx, (arm_y0 + arm_y1) / 2, -PLATE_T))
+        cx = side * YOKE_X_INNER
+        # Triangular wedge in the Y-Z plane: vertices
+        #   A = (YOKE_WEDGE_Y_BACK, 0)            # back-bottom
+        #   B = (PLATE_Y_FRONT,     0)            # front-bottom (plate edge)
+        #   C = (PLATE_Y_FRONT,     YOKE_WEDGE_TOP_Z)   # front-top
+        wedge = (
+            cq.Workplane("YZ")
+            .workplane(offset=cx - YOKE_WEDGE_THK / 2.0)
+            .moveTo(YOKE_WEDGE_Y_BACK, 0)
+            .lineTo(PLATE_Y_FRONT, 0)
+            .lineTo(PLATE_Y_FRONT, YOKE_WEDGE_TOP_Z)
+            .close()
+            .extrude(YOKE_WEDGE_THK)
         )
-        plate = plate.union(arm)
-        # Vertical drop leg from plate bottom down to the eye centreline.
-        drop_h = abs(Z_AUG - (-PLATE_T)) + YOKE_EYE_OD / 2
-        drop = (
-            cq.Workplane("XY")
-            .box(arm_w, arm_w, drop_h, centered=(True, True, False))
-            .translate((cx, arm_y1, -PLATE_T - drop_h))
-        )
-        plate = plate.union(drop)
-        # Eye disc — bore axis along X (perpendicular to auger Y), centred
-        # on the auger centreline Z = Z_AUG.
+        plate = plate.union(wedge)
+        # Eye extension: a thick disc sticking forward of the wedge,
+        # centred on (Y_DISP, Z_AUG), so the bore overhangs the plate edge
+        # by exactly (Y_DISP - PLATE_Y_FRONT) = 15 mm.
         eye = (
             cq.Workplane("YZ")
-            .workplane(offset=cx - YOKE_EYE_OD / 2)
-            .center(arm_y1, Z_AUG)
-            .circle(YOKE_EYE_OD / 2)
-            .extrude(YOKE_EYE_OD)
+            .workplane(offset=cx - YOKE_WEDGE_THK / 2.0)
+            .center(Y_DISP, Z_AUG)
+            .circle(YOKE_EYE_OD / 2.0)
+            .extrude(YOKE_EYE_AXIAL_LEN)
         )
         plate = plate.union(eye)
-        # Hinge pin bore
+        # Hinge pin bore through the eye + wedge along X.
         bore = (
             cq.Workplane("YZ")
-            .workplane(offset=cx - YOKE_EYE_OD)
-            .center(arm_y1, Z_AUG)
-            .circle(YOKE_EYE_ID / 2)
-            .extrude(YOKE_EYE_OD * 2 + 1)
+            .workplane(offset=cx - YOKE_WEDGE_THK)
+            .center(Y_DISP, Z_AUG)
+            .circle(YOKE_EYE_ID / 2.0)
+            .extrude(YOKE_WEDGE_THK * 2 + 2)
         )
         plate = plate.cut(bore)
 
-    # ------ Powder-fall slot through the plate (front section) ------------
-    slot_w = YOKE_EYE_GAP
-    slot_l = 50.0
-    slot_y_centre = PLATE_L / 2 - slot_l / 2 + 2
-    slot = (
-        cq.Workplane("XY")
-        .workplane(offset=1)
-        .center(0, slot_y_centre)
-        .rect(slot_w, slot_l)
-        .extrude(-(PLATE_T + 2))
-    )
-    plate = plate.cut(slot)
-
-    # ------ Gear-band / pinion clearance slot -----------------------------
-    # The PR#49 auger gear band (Ø50 tip) and the pinion (Ø18 at X=+32) both
-    # extend above the plate bottom by a few mm at Y = Y_GEAR_BAND, so cut a
-    # rectangular clearance slot through the plate covering both.
-    gb_clearance_w = (X_MOTOR + PINION_TIP_DIA / 2 + 2.0) - (-(GEAR_BAND_TIP_DIA / 2) - 2.0)
-    gb_clearance_x_centre = (X_MOTOR + PINION_TIP_DIA / 2 + 2.0 + -(GEAR_BAND_TIP_DIA / 2) - 2.0) / 2
-    gb_clearance_l = GEAR_BAND_FACE_W + 6.0
+    # ------ Gear-band / pinion clearance pocket on plate TOP -------------
+    # Component side: cut a shallow pocket on the plate top so the gear
+    # band (Ø50 tip, dips to z=Z_AUG-25=−5.3 → below the plate top by
+    # 5.3 mm) and the pinion (Ø18 tip, at X=+32) have free clearance
+    # against the plate top.  Pocket spans through-plate so chips also
+    # fall away.
+    gb_x_min = -(GEAR_BAND_TIP_DIA / 2.0) - 2.0      # -27
+    gb_x_max = +X_MOTOR + PINION_TIP_DIA / 2.0 + 2.0  # +43
+    gb_w = gb_x_max - gb_x_min
+    gb_cx = (gb_x_min + gb_x_max) / 2.0
+    gb_l = GEAR_BAND_FACE_W + 8.0
     gb_slot = (
         cq.Workplane("XY")
-        .workplane(offset=1)
-        .center(gb_clearance_x_centre, Y_GEAR_BAND)
-        .rect(gb_clearance_w, gb_clearance_l)
-        .extrude(-(PLATE_T + 2))
+        .workplane(offset=1.0)
+        .center(gb_cx, Y_GEAR_BAND)
+        .rect(gb_w, gb_l)
+        .extrude(-(PLATE_T + 2.0))
     )
     plate = plate.cut(gb_slot)
 
-    # ------ Linear-actuator rod-end pivot lug on underside ----------------
+    # ------ Powder-fall slot through plate at the dispense end -----------
+    # The auger's dispense hole sits just behind the hinge axis (Y just
+    # short of +125).  A slot through the plate lets powder fall when
+    # the assembly is tilted vertical.
+    slot_w = YOKE_WEDGE_GAP                          # 26
+    slot_l = 30.0
+    slot_y_centre = PLATE_Y_FRONT - slot_l / 2.0 + 2.0
+    slot = (
+        cq.Workplane("XY")
+        .workplane(offset=1.0)
+        .center(0, slot_y_centre)
+        .rect(slot_w, slot_l)
+        .extrude(-(PLATE_T + 2.0))
+    )
+    plate = plate.cut(slot)
+
+    # ------ Linear-actuator rod-end pivot lug on plate UNDERSIDE ---------
     lug = (
         cq.Workplane("XY")
         .box(ACT_LUG_W, ACT_LUG_T, ACT_LUG_H, centered=(True, True, False))
@@ -347,10 +378,10 @@ def build_mounting_plate() -> cq.Workplane:
     plate = plate.union(lug)
     lug_bore = (
         cq.Workplane("YZ")
-        .workplane(offset=-(ACT_LUG_W / 2 + 1))
-        .center(ACT_LUG_Y, -PLATE_T - ACT_LUG_H + 6)
-        .circle(ACT_LUG_BORE_D / 2)
-        .extrude(ACT_LUG_W + 2)
+        .workplane(offset=-(ACT_LUG_W / 2.0 + 1.0))
+        .center(ACT_LUG_Y, -PLATE_T - ACT_LUG_H + 6.0)
+        .circle(ACT_LUG_BORE_D / 2.0)
+        .extrude(ACT_LUG_W + 2.0)
     )
     plate = plate.cut(lug_bore)
 
@@ -358,13 +389,13 @@ def build_mounting_plate() -> cq.Workplane:
 
 
 def build_baseplate() -> cq.Workplane:
-    """Bench-side plate: legs, central hinge tang, powder window, actuator clevis."""
+    """Bench-side plate: legs, central hinge tang on TOP, powder window."""
     base = (
         cq.Workplane("XY")
         .box(BASE_W, BASE_L, BASE_T, centered=(True, True, False))
     )
 
-    # Corner legs
+    # Corner legs (drop below to give cup + scale clearance).
     for sx in (+(BASE_W / 2 - BASE_LEG_INSET - BASE_LEG_W / 2),
                -(BASE_W / 2 - BASE_LEG_INSET - BASE_LEG_W / 2)):
         for sy in (+(BASE_L / 2 - BASE_LEG_INSET - BASE_LEG_W / 2),
@@ -376,41 +407,42 @@ def build_baseplate() -> cq.Workplane:
             )
             base = base.union(leg)
 
-    # Powder window directly under the dispense point
+    # Powder window directly under the dispense point.
     win = (
         cq.Workplane("XY")
-        .workplane(offset=-1)
+        .workplane(offset=-1.0)
         .center(0, WINDOW_Y)
         .rect(WINDOW_W, WINDOW_L)
-        .extrude(BASE_T + 2)
+        .extrude(BASE_T + 2.0)
     )
     base = base.cut(win)
 
-    # Central hinge tang — solid block on top, bored for the hinge pin
-    # Tang bore centred at TANG_HINGE_Z (= Z_AUG). In this builder we work
-    # in a local frame where the baseplate top is at z=BASE_T (untranslated);
-    # the final translate to Z_BASE_TOP at the end of the function shifts
-    # everything down so the tang bore lands on Z_AUG exactly.
+    # Central hinge tang on baseplate top.  Local frame: baseplate
+    # bottom on z=0, top on z=BASE_T.  We want, AFTER the final
+    # translate (0, 0, Z_BASE_TOP), the tang's bore to land on
+    # z=TANG_BORE_Z_ABS=Z_AUG=+19.74 and the tang's top on
+    # z=TANG_TOP_Z_ABS=Z_AUG+8.  In local frame this is:
+    #   tang_top_local = TANG_TOP_Z_ABS - Z_BASE_TOP
+    #   tang_bore_local = TANG_BORE_Z_ABS - Z_BASE_TOP
+    tang_top_local = TANG_TOP_Z_ABS - Z_BASE_TOP
+    tang_bore_local = TANG_BORE_Z_ABS - Z_BASE_TOP
+    tang_h = tang_top_local - BASE_T
     tang = (
         cq.Workplane("XY")
-        .box(TANG_W, TANG_T, TANG_H, centered=(True, True, False))
+        .box(TANG_W, TANG_T, tang_h, centered=(True, True, False))
         .translate((0, TANG_Y, BASE_T))
     )
     base = base.union(tang)
-    # Bore at z = (TANG_HINGE_Z - Z_BASE_TOP) above the baseplate bottom
-    # (= local z origin), which after translation lands on Z_AUG.
-    tang_bore_local_z = TANG_HINGE_Z - Z_BASE_TOP
     tang_bore = (
         cq.Workplane("YZ")
-        .workplane(offset=-(TANG_W / 2 + 1))
-        .center(TANG_Y, tang_bore_local_z)
-        .circle(YOKE_EYE_ID / 2)
-        .extrude(TANG_W + 2)
+        .workplane(offset=-(TANG_W / 2 + 1.0))
+        .center(TANG_Y, tang_bore_local)
+        .circle(YOKE_EYE_ID / 2.0)
+        .extrude(TANG_W + 2.0)
     )
     base = base.cut(tang_bore)
 
-    # Linear-actuator base clevis (single tab with X-bore). Pivot z chosen
-    # so the actuator line stays clear of the hinge tang.
+    # Linear-actuator base clevis on baseplate top.
     clevis = (
         cq.Workplane("XY")
         .box(ACT_BASE_W, ACT_BASE_T, ACT_BASE_H, centered=(True, True, False))
@@ -419,10 +451,10 @@ def build_baseplate() -> cq.Workplane:
     base = base.union(clevis)
     clevis_bore = (
         cq.Workplane("YZ")
-        .workplane(offset=-(ACT_BASE_W / 2 + 1))
-        .center(ACT_BASE_Y, BASE_T + ACT_BASE_H - 6)
-        .circle(ACT_BASE_BORE_D / 2)
-        .extrude(ACT_BASE_W + 2)
+        .workplane(offset=-(ACT_BASE_W / 2.0 + 1.0))
+        .center(ACT_BASE_Y, BASE_T + ACT_BASE_H - 6.0)
+        .circle(ACT_BASE_BORE_D / 2.0)
+        .extrude(ACT_BASE_W + 2.0)
     )
     base = base.cut(clevis_bore)
 
@@ -431,13 +463,13 @@ def build_baseplate() -> cq.Workplane:
 
 
 def build_hinge_pin() -> cq.Workplane:
-    """M5-pattern hinge pin: long enough to span both yoke eyes + tang."""
-    length = YOKE_EYE_GAP + 2 * YOKE_EYE_OD + 4
+    """M5-pattern hinge pin: spans both yoke eyes + central tang + slop."""
+    length = TANG_W + 2 * YOKE_WEDGE_THK + 2 * YOKE_EYE_AXIAL_LEN + 4
     return (
         cq.Workplane("YZ")
-        .circle(5.0 / 2)
+        .circle(5.0 / 2.0)
         .extrude(length)
-        .translate((-length / 2, 0, 0))
+        .translate((-length / 2.0, 0, 0))
     )
 
 
@@ -468,10 +500,16 @@ def main() -> None:
         print(f"    → {step_path.relative_to(here)}, {stl_path.relative_to(here)}")
 
     print()
-    print(f"Auger centreline Z (Z_AUG)   : {Z_AUG:.2f} mm")
-    print(f"Gear band Y (Y_GEAR_BAND)    : {Y_GEAR_BAND:.2f} mm")
-    print(f"Motor centre (X,Y,Z)         : ({X_MOTOR}, {MOTOR_FACE_Y - NEMA11_BODY_L/2:.2f}, {Z_MOTOR:.2f}) mm")
-    print(f"Hinge axis Y (Y_DISP)        : {Y_DISP:.2f} mm  (auger dispense point)")
+    print(f"Plate X envelope             : [{PLATE_X_MIN:+.2f}, {PLATE_X_MAX:+.2f}] mm  "
+          f"(asymmetric; clear side -X, motor side +X)")
+    print(f"Plate Y envelope             : [{PLATE_Y_BACK:+.2f}, {PLATE_Y_FRONT:+.2f}] mm")
+    print(f"Auger centreline Z (Z_AUG)   : {Z_AUG:+.2f} mm  (above plate top)")
+    print(f"Gear band Y (Y_GEAR_BAND)    : {Y_GEAR_BAND:+.2f} mm")
+    print(f"Motor centre (X,Y,Z)         : ({X_MOTOR:+.2f}, "
+          f"{MOTOR_FACE_Y - NEMA11_BODY_L / 2:+.2f}, {Z_MOTOR:+.2f}) mm")
+    print(f"Hinge axis                   : X-axis through (Y={Y_DISP:+.2f}, Z={Z_AUG:+.2f})")
+    print(f"Component order (Y, hinge→far): brkF={Y_BRK_FRONT:+.0f}  "
+          f"tap={Y_TAP:+.0f}  motor={Y_GEAR_BAND:+.2f}  brkR={Y_BRK_REAR:+.0f}")
 
 
 if __name__ == "__main__":

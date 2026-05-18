@@ -53,40 +53,72 @@ m3Clear                = 3.4
 m5Clear                = 5.4
 
 // ============================ THIS PACKAGE =============================== //
+//
+// Layout per the hand-drawn spec in issue #62 (sub-issue of #46/#56):
+//   * every component (brackets, tap-collar mount, motor block, yoke
+//     wedges) sits on the TOP surface of the mounting plate
+//   * plate is ASYMMETRIC in X — auger near one edge, motor on the far
+//     edge, opposite side trimmed close to the auger (no wasted space)
+//   * Y order from the hinge end to the motor end:
+//         hinge → front bracket → tap collar → motor (over gear band) →
+//         rear bracket
 
 // ---- Mounting plate ----
-plateW                 = 120.0                // along X
-plateL                 = 220.0                // along Y
-plateT                 = 6.0                  // Z
+plateT                 = 6.0                  // Z thickness
 
-// Auger centreline Z: brackets bolt FLANGE-UP to plate underside, so the
-// bore ends up brkRingCentreLocalZ below the underside.
-zAug                   = -(plateT + brkRingCentreLocalZ)   // -25.74 mm
+// Auger centreline = bracket bore centre, ABOVE the plate top (brackets
+// bolt FLANGE-DOWN onto the plate top so the bore lands one ring-centre
+// height above z=0).
+zAug                   = +brkRingCentreLocalZ              // +19.74 mm
 
-// Bracket Y positions (centred on the auger; clear of the gear band at +41.67
-// and the tap collar at -40).
-yBrkFront              = +95.0
-yBrkRear               = -95.0
-yTap                   = -40.0
-yDisp                  = augerLen / 2.0                    // +125 mm
-
-// Gear band Y, and motor placement (parallel-axis with the auger).
+// Auger spans Y = [yRear, yDisp]. Dispense end at +Y.
+yDisp                  = +augerLen / 2.0                   // +125 mm
+yRear                  = -augerLen / 2.0                   // -125 mm
 yGearBand              = yDisp - gearBandFromDispEnd       // +41.67 mm
+
+// Component Y positions (hinge end → far end, matching issue #62 drawing).
+yBrkFront              = +95.0       // just behind dispense, clear of yoke
+yTap                   = +70.0       // between front bracket and gear band
+yBrkRear               = -95.0       // near auger motor end
+
+// Asymmetric plate X envelope: clear side at -X, components extend out
+// the +X side to enclose the NEMA-11 motor body.
+plateXMin              = -(brkFlangeW / 2.0) - 4.0         // -34
+plateXMax              = +gearCentreDistance + (nema11BodyW / 2.0) + 8.0   // +54.1
+plateW                 = plateXMax - plateXMin             // ~88
+plateXCentre           = (plateXMin + plateXMax) / 2.0     // ~+10
+
+// Plate Y envelope (encloses both brackets with margin; yoke wedges
+// extend forward on top to reach the hinge eye at yDisp).
+plateYFront            = +110.0
+plateYBack             = yBrkRear - (brkFlangeD / 2.0) - 7.0     // -114.5
+plateL                 = plateYFront - plateYBack          // ~224.5
+plateYCentre           = (plateYFront + plateYBack) / 2.0
+
+// NEMA-11 motor mount block — sits ON TOP of plate; its +Y face carries
+// the motor face holes; motor body extends in -Y from that face.
 xMotor                 = +gearCentreDistance               // +32 mm
+zMotor                 = zAug                              // parallel-axis
 motorFaceY             = yGearBand - (gearBandFaceW / 2.0) - 2.0
-zMotor                 = zAug                              // parallel-axis with auger
-
-// NEMA 11 mount boss on the plate underside.
 bossW                  = nema11BodyW + 8.0                 // 36.2
-bossThicknessY         = 4.0
+bossH                  = nema11BodyW + 8.0                 // 36.2
+bossT                  = 6.0                               // Y wall thickness
 
-// Forward yoke (hinge axis = X through (yDisp, zAug)).
+// Hinge yoke — two triangular wedges on plate TOP at the +Y edge, eyes
+// overhang the plate edge so the bore lands on (yDisp, zAug).
+yokeWedgeThk           = 8.0                // X thickness of each wedge
+yokeWedgeGap           = 26.0               // central X gap between wedges
+yokeWedgeTopZ          = zAug + 8.0
+yokeWedgeYBack         = plateYFront - 22.0
 yokeEyeOd              = 14.0
 yokeEyeId              = m5Clear
-yokeEyeGap             = 26.0
+yokeXInner             = (yokeWedgeGap / 2.0) + (yokeWedgeThk / 2.0)   // ±17
 
-// Linear-actuator rod-end pivot lug on plate underside.
+// Linear-actuator rod-end pivot lug on plate UNDERSIDE.
 actLugY                = -60.0
+actLugT                = 8.0
+actLugW                = 12.0
+actLugH                = 24.0
 actLugBoreD            = m5Clear
 
 // ---- Baseplate (sits on the bench) ----
@@ -96,15 +128,24 @@ baseT                  = 6.0
 baseLegH               = 95.0
 baseLegW               = 18.0
 baseLegInset           = 12.0
-zBaseTop               = -55.0                // 29 mm below the auger
+
+// Baseplate top is just below the mounting plate bottom with a small
+// air gap (no need for a deep gap — when the assembly tilts 0..90°
+// about the hinge axis ABOVE the plate, the plate's rear corner sweeps
+// UP, not down, so it never hits the baseplate).
+zBaseTop               = -plateT - 6.0                     // -12 mm
+
 windowW                = 60.0
 windowL                = 60.0
+windowY                = yDisp
 
-// Central hinge tang on the baseplate top.
-tangW                  = yokeEyeGap - 0.4
+// Central hinge tang on the baseplate TOP — fits between the two yoke
+// wedges, bored for the hinge pin along X at the auger centreline.
+tangW                  = yokeWedgeGap - 0.4
 tangT                  = yokeEyeOd + 6.0
-tangH                  = (zAug + 8.0) - zBaseTop          // tang reaches past
-                                                          // auger centreline by 8 mm
+tangY                  = yDisp
+tangBoreZAbs           = zAug
+tangTopZAbs            = zAug + 8.0
 
 // Linear-actuator base clevis on baseplate.
 actBaseY               = -110.0
