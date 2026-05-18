@@ -136,52 +136,83 @@ BUMP_OUTER_X = (PLATE_LENGTH / 2 - MOUNT_HOLE_INSET_X) + MOUNT_HOLE_D / 2 + 1.5
                                                                   # = 27.20 mm
 BUMP_DEPTH = PLATE_DEPTH                                           # full plate Y
 
+# M3 countersink (90° included angle, standard ISO 10642 flat-head) for the
+# +X corner mount screw — sunk into the bump top so the bump's top face
+# stays flat once the screw is installed (PR review v3 feedback).
+CSK_HEAD_D = 6.0                 # M3 flat-head OD across the rim
+CSK_INCLUDED_ANGLE_DEG = 90.0    # ISO 10642 / DIN 7991 default
+# Depth from top surface to the point where the cone reaches MOUNT_HOLE_D.
+# tan(45°) = 1, so depth = (head_d - hole_d) / 2 for a 90° included angle.
+CSK_DEPTH = (CSK_HEAD_D - MOUNT_HOLE_D) / 2 / math.tan(
+    math.radians(CSK_INCLUDED_ANGLE_DEG / 2)
+)                                # = 1.30 mm
+
 assert BUMP_OUTER_X <= PLATE_LENGTH / 2, (
     "Hardstop bump extends past the plate end."
 )
 assert BUMP_TOP_Z < LOWER_TAB_BOTTOM_Z, (
     "Hardstop bump top would interfere with the lower clamp tab at rest."
 )
+assert CSK_DEPTH < BUMP_HEIGHT, (
+    "Countersink for the +X mount screw is deeper than the hardstop bump."
+)
+
+# ---------------------------------------------------------------------------
+# Mounting-plate collar relief (per PR review v3)
+# ---------------------------------------------------------------------------
+# The tap collar must spin freely above the mounting plate, but the
+# collar's cylindrical body sits 1.5 mm into the plate at rest (the
+# COLLAR_PLATE_OVERLAP that the bracket fillets into a tangent blend).
+# For the *bracket* that is fine because the bracket and collar are one
+# rigid part; for the *tap collar* this overlap is direct mechanical
+# interference between two parts that must rotate relative to each other.
+#
+# Cut a cylindrical relief into the mounting-plate top that gives the
+# collar OD the same 0.5 mm diametral free-running clearance as the bore
+# uses on the auger (matching the PR #46 / #47 bracket convention).
+COLLAR_RELIEF_CLEARANCE = 0.5    # diametral, same fit as BORE_CLEARANCE
+COLLAR_RELIEF_R = COLLAR_OD / 2 + COLLAR_RELIEF_CLEARANCE / 2  # = 17.00 mm
+COLLAR_RELIEF_DEPTH_OVERSHOOT = 1.0  # extend the cylinder past the Y faces
+                                     # of the plate to guarantee through-cut
 
 # ---------------------------------------------------------------------------
 # Tap-collar-only parameters: coin-motor side pad and solenoid top boss
 # ---------------------------------------------------------------------------
+# Both mounting features are now built as full *rectangular slabs* that
+# sink deeply into the collar OD, with the collar-cylinder/slab
+# intersection blended by a fillet — mirroring the bracket-plate ↔ collar
+# template from PR #46 / #47 (where the collar dips into the plate by
+# COLLAR_PLATE_OVERLAP = 1.5 mm and a 3 mm fillet smooths the
+# intersection).  This replaces the v2 tapered-wedge approach, which
+# left a weak point right at the cylinder/face intersection (per PR
+# review: "directly at the intersection of the plates and the collar
+# circle there is a weak point — make it look like the mounting plates
+# are coming out of the collar, a rectangle, not a line and a circle").
+PAD_COLLAR_OVERLAP = 3.0         # how deep each slab sinks into the collar OD
+FILLET_PAD_COLLAR = 1.5          # blend at the slab/collar intersection
+
 # Coin vibration motor (e.g. 10 mm Ø × 3 mm thick adhesive coin motor).
-# A flat tangent pad on the -X side of the collar with a shallow circular
-# recess locates the motor for adhesive mounting.  The pad base is built
-# as a tapered wedge wider than the mounting face so it merges into the
-# collar OD with integral gussets (PR review feedback — no more fragile
-# flat plate hanging off the cylinder).
+# Slab on the -X side of the collar with a shallow circular recess on the
+# mounting face for adhesive location.
 COIN_MOTOR_D = 10.0
 COIN_MOTOR_RECESS_DEPTH = 1.0
-COIN_PAD_W = 14.0                # Z-extent of the flat mounting face
-COIN_PAD_BASE_W = 22.0           # Z-extent of the wedge base at the collar
-                                 # (wider than COIN_PAD_W → gussets)
+COIN_PAD_W = 14.0                # Z-extent of the rectangular slab
 COIN_PAD_DEPTH = TC_COLLAR_DEPTH # Y-extent (full collar length)
 COIN_PAD_PROUD = 1.0             # how far the flat face sits outboard of
                                  # the collar OD's tangent at -X
-assert COIN_PAD_BASE_W >= COIN_PAD_W, (
-    "Coin-motor pad base must be at least as wide as the mounting face."
-)
 
 # Push/pull solenoid (small, e.g. ~17 × 11 × 30 mm with M2 screw holes
-# 12 mm apart on its mounting face).  Flat boss on +Z with two M2
+# 12 mm apart on its mounting face).  Rectangular slab on +Z with two M2
 # clearance holes and a Ø6 plunger-clearance hole through the collar
-# wall.  Built as a tapered wedge for the same reason as the coin pad,
-# *and* fully supported underneath by the lengthened collar (M2 mount
-# holes sit over solid collar wall now, not cantilevered mid-air).
-SOLENOID_BOSS_W = 14.0           # X-extent of the top mounting face
-SOLENOID_BOSS_BASE_W = 22.0      # X-extent of the wedge base at the collar
-                                 # (wider than SOLENOID_BOSS_W → gussets)
+# wall.  Full Y-extent of the lengthened collar so the M2 mount holes
+# sit fully over solid collar material.
+SOLENOID_BOSS_W = 14.0           # X-extent of the rectangular slab
 SOLENOID_BOSS_DEPTH = TC_COLLAR_DEPTH  # Y-extent (full collar length)
 SOLENOID_BOSS_PROUD = 2.0        # how far the boss sits proud of COLLAR_TOP_Z
 SOLENOID_SCREW_D = 2.4           # M2 clearance
 SOLENOID_SCREW_PITCH_Y = 12.0    # M2 holes spacing along Y (auger axis)
 SOLENOID_PLUNGER_D = 6.0         # plunger clearance hole through the wall
 
-assert SOLENOID_BOSS_BASE_W >= SOLENOID_BOSS_W, (
-    "Solenoid boss base must be at least as wide as the mounting face."
-)
 # Sanity check: M2 mount holes must clear the central plunger hole.
 assert SOLENOID_SCREW_PITCH_Y / 2 - SOLENOID_SCREW_D / 2 > SOLENOID_PLUNGER_D / 2 + 0.5, (
     "Solenoid M2 mount holes overlap the plunger clearance hole."
@@ -192,11 +223,16 @@ assert SOLENOID_SCREW_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= SOLENOID_BOSS_
     "Solenoid M2 mount holes fall outside the boss footprint."
 )
 # Sanity check: with the collar lengthened to TC_COLLAR_DEPTH, the M2
-# mount holes must sit fully *inside* the collar Y-extent (the original
-# bug was that the holes hung off the 12 mm bracket-depth collar).
+# mount holes must sit fully *inside* the collar Y-extent (the v1 bug
+# was that the holes hung off the 12 mm bracket-depth collar).
 assert SOLENOID_SCREW_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= TC_COLLAR_DEPTH / 2, (
     "Solenoid M2 mount holes hang off the collar Y-extent — "
     "increase TC_COLLAR_DEPTH."
+)
+# Sanity check: pad overlap must be smaller than the collar wall, or the
+# slab cuts through into the bore.
+assert PAD_COLLAR_OVERLAP < COLLAR_WALL, (
+    "PAD_COLLAR_OVERLAP would cut through the collar wall into the bore."
 )
 
 
@@ -204,7 +240,13 @@ assert SOLENOID_SCREW_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= TC_COLLAR_DEPT
 # Builders
 # ---------------------------------------------------------------------------
 def build_mount_plate() -> cq.Workplane:
-    """The chassis-side mounting plate with the +X hardstop bump."""
+    """The chassis-side mounting plate with the +X hardstop bump.
+
+    Carries a cylindrical relief cut into its top so the tap collar can
+    spin freely above it (the v2 plate physically intersected the collar
+    OD by 1.5 mm — per PR review v3 we cut a free-running pocket out of
+    the plate using the same 0.5 mm diametral fit as the bracket bore).
+    """
     plate = cq.Workplane("XY").box(
         PLATE_LENGTH, PLATE_DEPTH, PLATE_THICKNESS, centered=(True, True, False)
     )
@@ -231,6 +273,20 @@ def build_mount_plate() -> cq.Workplane:
         except Exception:  # pragma: no cover — selector may pick a non-fillet-able edge
             pass
 
+    # Collar relief: cylindrical pocket cut into the plate top, axis along
+    # Y, centred on (x=0, z=COLLAR_CENTRE_Z), radius = collar OD/2 + 0.25
+    # (= 0.5 mm diametral free-running clearance, matching the bracket
+    # bore fit from PR #46 / #47).
+    relief_len = PLATE_DEPTH + 2 * COLLAR_RELIEF_DEPTH_OVERSHOOT
+    relief = (
+        cq.Workplane("XZ")
+        .workplane(offset=-relief_len / 2)
+        .center(0, COLLAR_CENTRE_Z)
+        .circle(COLLAR_RELIEF_R)
+        .extrude(relief_len)
+    )
+    body = body.cut(relief)
+
     # Corner mounting holes (same pattern as the bracket).  The +X hole
     # punches through the hardstop bump as well — that is intentional, it
     # is the "hollow" cut-out that lets the M3 screw drive through the
@@ -249,81 +305,63 @@ def build_mount_plate() -> cq.Workplane:
         )
         body = body.cut(hole)
 
+    # 90° countersink on the +X mount hole, sunk into the bump top so the
+    # screw head sits flush with the bump's top face (PR review v3 —
+    # keeps the contact surface flat for the lower clamp tab even with
+    # the screw installed).  Built as a cone: Ø MOUNT_HOLE_D at depth
+    # CSK_DEPTH below the bump top, Ø CSK_HEAD_D at the bump top.
+    csk_x = +(PLATE_LENGTH / 2 - MOUNT_HOLE_INSET_X)
+    csk = (
+        cq.Workplane("XY")
+        .workplane(offset=BUMP_TOP_Z - CSK_DEPTH)
+        .center(csk_x, 0)
+        .circle(MOUNT_HOLE_D / 2)
+        .workplane(offset=CSK_DEPTH)
+        .circle(CSK_HEAD_D / 2)
+        .loft(combine=False)
+    )
+    body = body.cut(csk)
+
     return body
 
 
-def _tapered_wedge_z(
-    centre_xy: tuple[float, float],
-    base_z: float,
-    face_z: float,
-    base_w: float,
-    face_w: float,
-    depth: float,
-) -> cq.Workplane:
-    """Tapered wedge whose mounting face is offset along +Z from the base.
-
-    Used for the solenoid boss: the boss extrudes upward in Z from a wider
-    base (at the collar OD) to a narrower mounting face proud of it.  The
-    width (``base_w`` → ``face_w``) tapers along X; the Y-extent stays
-    fixed at ``depth`` (the full collar length).
-    """
-    cx, cy = centre_xy
-    return (
-        cq.Workplane("XY", origin=(cx, cy, base_z))
-        .rect(base_w, depth)
-        .workplane(offset=face_z - base_z)
-        .rect(face_w, depth)
-        .loft(combine=True)
-    )
-
-
-def _tapered_wedge_x(
-    centre_yz: tuple[float, float],
-    base_x: float,
-    face_x: float,
-    base_w: float,
-    face_w: float,
-    depth: float,
-) -> cq.Workplane:
-    """Tapered wedge whose mounting face is offset along X from the base.
-
-    Used for the coin-motor pad: the pad extrudes in -X from a wider base
-    (at the collar OD) to a narrower mounting face proud of it.  The
-    width (``base_w`` → ``face_w``) tapers along Z; the Y-extent stays
-    fixed at ``depth`` (the full collar length).
-    """
-    cy, cz = centre_yz
-    # Build sketches on YZ workplane (X is the "depth" of the loft).
-    return (
-        cq.Workplane("YZ", origin=(base_x, cy, cz))
-        .rect(depth, base_w)
-        .workplane(offset=face_x - base_x)
-        .rect(depth, face_w)
-        .loft(combine=True)
-    )
-
-
 def _add_coin_motor_pad(body: cq.Workplane) -> cq.Workplane:
-    """Tapered wedge on the -X side with a Ø10 × 1 mm adhesive recess.
+    """Rectangular reinforced slab on the -X side with a Ø10 × 1 mm recess.
 
-    Wider at the collar OD, narrower at the mounting face → integral
-    gussets, no fragile flat plate.
+    The slab sinks PAD_COLLAR_OVERLAP (3 mm) into the collar OD — the
+    same reinforcement template the bracket uses for its plate ↔ collar
+    intersection — so the slab/cylinder intersection is structurally
+    integral instead of a tangent contact line.
     """
-    # Mounting face is at X = -(collar_OD/2 + COIN_PAD_PROUD), Z = collar centre.
+    # Mounting face is at X = -(collar_OD/2 + COIN_PAD_PROUD).
     face_x = -(COLLAR_OD / 2 + COIN_PAD_PROUD)
-    # Base is at X = -(collar_OD/2 - 0.5), i.e. 0.5 mm inside the collar wall,
-    # so the wedge fuses cleanly into the cylinder.
-    base_x = -(COLLAR_OD / 2 - 0.5)
+    # Base sinks 3 mm into the collar OD.
+    base_x = -(COLLAR_OD / 2 - PAD_COLLAR_OVERLAP)
+    pad_thickness = base_x - face_x  # X-thickness of the slab
 
-    wedge = _tapered_wedge_x(
-        centre_yz=(0.0, COLLAR_CENTRE_Z),
-        base_x=base_x,
-        face_x=face_x,
-        base_w=COIN_PAD_BASE_W,
-        face_w=COIN_PAD_W,
-        depth=COIN_PAD_DEPTH,
+    slab = (
+        cq.Workplane("XY")
+        .workplane(offset=COLLAR_CENTRE_Z - COIN_PAD_W / 2)
+        .center((face_x + base_x) / 2, 0)
+        .box(pad_thickness, COIN_PAD_DEPTH, COIN_PAD_W, centered=(True, True, False))
     )
-    body = body.union(wedge)
+    body = body.union(slab)
+
+    # Fillet the slab/collar intersection (Y-parallel edges at the top
+    # and bottom of the slab where it crosses the cylinder OD) — same
+    # cosmetic + stress-relief blend the bracket uses on its plate/collar
+    # intersection.
+    half_w = COIN_PAD_W / 2
+    x_at_z = -math.sqrt(max((COLLAR_OD / 2) ** 2 - half_w ** 2, 0.0))
+    for sz in (+half_w, -half_w):
+        try:
+            body = (
+                body.edges(
+                    cq.selectors.NearestToPointSelector((x_at_z, 0.0, COLLAR_CENTRE_Z + sz))
+                ).fillet(FILLET_PAD_COLLAR)
+            )
+        except Exception:  # pragma: no cover
+            pass
 
     # Shallow circular recess for the adhesive coin motor, centred on the
     # mounting face.
@@ -339,27 +377,41 @@ def _add_coin_motor_pad(body: cq.Workplane) -> cq.Workplane:
 
 
 def _add_solenoid_boss(body: cq.Workplane) -> cq.Workplane:
-    """Tapered wedge on +Z with two M2 mount holes + a Ø6 plunger hole.
+    """Rectangular reinforced slab on +Z with two M2 holes + Ø6 plunger hole.
 
-    Wider at the collar OD, narrower at the mounting face → integral
-    gussets.  The full Y-extent (TC_COLLAR_DEPTH) is solid collar
-    underneath so the M2 mount holes sit fully over collar material.
+    Same template as the coin pad: a full rectangular slab that sinks
+    PAD_COLLAR_OVERLAP (3 mm) into the collar OD, with the
+    slab/cylinder intersection filleted for stress relief.  The full
+    Y-extent (TC_COLLAR_DEPTH) is solid collar underneath so the M2 mount
+    holes sit fully over collar material.
     """
-    # Mounting face is at Z = COLLAR_TOP_Z + SOLENOID_BOSS_PROUD.
+    # Mounting face at Z = COLLAR_TOP_Z + SOLENOID_BOSS_PROUD.
     face_z = COLLAR_TOP_Z + SOLENOID_BOSS_PROUD
-    # Base is at Z = COLLAR_TOP_Z - 0.5, i.e. 0.5 mm inside the collar wall,
-    # so the wedge fuses cleanly into the cylinder.
-    base_z = COLLAR_TOP_Z - 0.5
+    # Base sinks 3 mm into the collar OD from the top.
+    base_z = COLLAR_TOP_Z - PAD_COLLAR_OVERLAP
+    boss_thickness = face_z - base_z  # Z-thickness of the slab
 
-    wedge = _tapered_wedge_z(
-        centre_xy=(0.0, 0.0),
-        base_z=base_z,
-        face_z=face_z,
-        base_w=SOLENOID_BOSS_BASE_W,
-        face_w=SOLENOID_BOSS_W,
-        depth=SOLENOID_BOSS_DEPTH,
+    slab = (
+        cq.Workplane("XY")
+        .workplane(offset=base_z)
+        .center(0, 0)
+        .box(SOLENOID_BOSS_W, SOLENOID_BOSS_DEPTH, boss_thickness, centered=(True, True, False))
     )
-    body = body.union(wedge)
+    body = body.union(slab)
+
+    # Fillet the slab/collar intersection (Y-parallel edges at the ±X
+    # edges of the slab where it crosses the cylinder OD).
+    half_w = SOLENOID_BOSS_W / 2
+    z_at_x = COLLAR_CENTRE_Z + math.sqrt(max((COLLAR_OD / 2) ** 2 - half_w ** 2, 0.0))
+    for sx in (+half_w, -half_w):
+        try:
+            body = (
+                body.edges(
+                    cq.selectors.NearestToPointSelector((sx, 0.0, z_at_x))
+                ).fillet(FILLET_PAD_COLLAR)
+            )
+        except Exception:  # pragma: no cover
+            pass
 
     # M2 mounting holes — through the boss into the collar wall (~4 mm
     # of thread engagement).  Holes sit fully over the lengthened collar.
@@ -395,8 +447,10 @@ def build_tap_collar() -> cq.Workplane:
       * the collar Y-extent is TC_COLLAR_DEPTH = 18 mm (vs 12 mm on the
         bracket) so the solenoid mounting boss has solid material under
         the full M2 mount-hole pattern;
-      * the coin-motor pad and solenoid boss are tapered wedges with
-        integral gussets that flare out into the collar OD.
+      * the coin-motor pad and solenoid boss are rectangular reinforced
+        slabs that sink PAD_COLLAR_OVERLAP (3 mm) into the collar OD,
+        with the slab/cylinder intersection filleted — same template
+        the bracket uses for its plate ↔ collar intersection.
     """
     # Collar cylinder, axis along Y (matching the bracket convention).
     collar = (

@@ -22,8 +22,8 @@ cabling.
                 ▼   ↓  Ø6 plunger clearance       to tap the auger directly)
               ╱  ╲  ╱  ╲
              │ M2 ⊙ ⊙ M2 │      ← solenoid top boss (Ø2.4 M2 mount holes,
-              ╲────┬────╱          full-collar-length tapered wedge with
-               ╲   │   ╱           integral gussets flaring into the OD)
+              ╲────┬────╱          rectangular reinforced slab that sinks
+               ╲   │   ╱           3 mm into the collar OD, filleted at the
         ┌──┐    ────────    ┌──┐
         │  │  ╱        ╲    │  │  ← M3 clamp screw (sets the running fit;
    coin │  │ │  auger   │   ├──┤    the two horizontal clamp ears are the
@@ -33,14 +33,18 @@ cabling.
         └──┘   ────────
         ↑       (lower tab) ──┐
        coin-motor pad         │ rests on
-       (tapered wedge,        ▼
-        Ø10×1 mm recess     ┌─── small hardstop bump (top just below the
-        on -X tangent)      │    lower tab; +X corner M3 hole punches
-                            ▼    straight through it for screwdriver access)
+       (rectangular slab,     ▼
+        Ø10×1 mm recess,    ┌─── small hardstop bump (top just below the
+        sinks 3 mm into     │    lower tab; +X corner M3 hole is countersunk
+        the OD, filleted    │    through it for flush screw + screwdriver
+        at the join)        ▼    access)
         ─────────────────────────────
         │ ⊙ M3                  M3 ⊙ │  ← rectangular mounting plate
-        └─────────────────────────────┘     (4 corner M3 mounting holes,
-                                             same footprint as PR #47 bracket)
+        │     half-cyl. collar relief │     (4 corner M3 mounting holes,
+        └─────────────────────────────┘      same footprint as PR #47 bracket,
+                                             plus a half-cylindrical relief
+                                             cut into the top so the collar
+                                             can spin freely above it)
 ```
 
 * The **mounting plate** (`mount_plate`) is the same rectangular flange and
@@ -60,7 +64,18 @@ cabling.
   - **straddles** the +X corner M3 mount hole (X = 17.25 → 27.20 mm), with
     a Ø 3.4 cylindrical cut-out through the bump body so the mount screw
     drives straight through it — the "hollow" option the reviewer called
-    out.
+    out.  The +X corner hole is **countersunk** (M3 90° flat-head,
+    Ø 6 × 1.3 mm) into the bump top so the screw head sits flush and the
+    bump's top face stays flat against the resting lower clamp tab.
+
+  The plate top also carries a half-cylindrical **collar relief** at
+  (x = 0, axis along Y, R = 17.00 mm = collar OD / 2 + 0.25 mm) cut
+  straight through the plate Y-extent.  This gives the collar 0.5 mm
+  diametral free-running clearance over the plate — the **same fit the
+  bracket bore uses on the auger in [PR #46 / #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47)**
+  — so the collar can rotate freely above the plate instead of physically
+  interfering with it (fix for the v2 1.5 mm direct overlap that came
+  from inheriting `COLLAR_PLATE_OVERLAP` straight from the bracket).
 
 * The **tap collar** (`tap_collar`) reuses the bracket's bore (Ø 25.5 for
   the Ø 25 mm Archimedes auger of [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)),
@@ -80,21 +95,24 @@ cabling.
 * The **coin vibration motor** (Ø 10 × 3 mm adhesive coin-style motor, e.g.
   any "10 mm flat coin vibration motor") sits in a Ø 10 × 1 mm recess
   on a flat face on the **-X side** of the collar.  The face is the
-  narrow end of a **tapered wedge** whose base flares out to a wider
-  footprint where it meets the cylinder, so the side walls of the wedge
-  act as integral gussets blending into the collar OD — no more fragile
-  flat plate hanging off the cylinder.  Adhere the motor with its own
-  foam-tape backing.
+  outer face of a **rectangular reinforced slab** (14 mm × 18 mm × ~4 mm)
+  that sinks `PAD_COLLAR_OVERLAP` = 3 mm into the collar OD, with the
+  slab/cylinder intersection blended by a 1.5 mm fillet — the same
+  reinforcement template the bracket uses for its plate ↔ collar
+  intersection in PR #47.  Result: the slab looks like it is coming out
+  of the cylinder, instead of being a fragile flat plate tangent to it.
+  Adhere the motor with its own foam-tape backing.
 
 * The **push/pull solenoid** (small ~17 × 11 × 30 mm class with M2 screw
   mounts, e.g. JF-0530B / SDM-0530) sits on a flat face on the **+Z**
-  (top) side of the collar.  The face is the narrow end of a **tapered
-  wedge** (same gusset trick as the coin pad).  Two M2 clearance holes
-  at 12 mm pitch along the auger axis hold the solenoid down — both
-  holes sit fully over solid collar material thanks to the 18 mm collar
-  length.  A Ø 6 plunger clearance hole drops straight through the boss
-  and the collar wall so the plunger can hammer the auger directly from
-  above.
+  (top) side of the collar.  Same template as the coin pad: a
+  **rectangular reinforced slab** (14 mm × 18 mm × 5 mm) sinking 3 mm
+  into the collar OD with a 1.5 mm fillet at the intersection.  Two M2
+  clearance holes at 12 mm pitch along the auger axis hold the solenoid
+  down — both holes sit fully over solid collar material thanks to the
+  18 mm collar length.  A Ø 6 plunger clearance hole drops straight
+  through the boss and the collar wall so the plunger can hammer the
+  auger directly from above.
 
 The drawing called the motor / solenoid arrangement explicitly
 "unspecified" — both are mounted around the OD as suggested in the
@@ -117,8 +135,9 @@ changing the angle in `cad_model.py`.
 
 All parameters live at the top of [`cad_model.py`](cad_model.py).  The
 shared geometry block is kept in lock-step with the bracket from PR #47;
-the collar-only `TC_COLLAR_DEPTH` and the wedge-base widths are the new
-parameters added in the PR #51 v2 redesign.
+the collar-only `TC_COLLAR_DEPTH`, the slab `PAD_COLLAR_OVERLAP`, the
+plate `COLLAR_RELIEF_R`, and the bump-top countersink are the new
+parameters added in the v2 / v3 redesigns.
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
@@ -134,8 +153,10 @@ parameters added in the PR #51 v2 redesign.
 | `TC_TAB_W × H` | 8 × 7 | Clamp ears, widened along X (was 3 mm on the bracket) so the lower ear reaches over the +X hardstop bump. |
 | `TAB_COLLAR_OVERLAP` | 6.0 | How far the tab block sinks into the collar OD so the union forms a continuous solid. |
 | `COIN_MOTOR_D` / `COIN_MOTOR_RECESS_DEPTH` | 10.0 / 1.0 | Adhesive Ø10 coin vibration motor; 1 mm shallow recess locates the motor on the side pad. |
-| `COIN_PAD_W / COIN_PAD_BASE_W` | 14 / 22 | Tapered wedge face / base widths (the base flares out → integral gussets fused into the collar OD). |
-| `SOLENOID_BOSS_W / SOLENOID_BOSS_BASE_W / PROUD` | 14 / 22 / 2 | Tapered wedge face / base / height for the solenoid boss; same gusset trick as the coin pad. |
+| `COIN_PAD_W` / `PAD_COLLAR_OVERLAP` | 14 / 3 | Rectangular slab face width × overlap into the collar OD (same template as the bracket's plate↔collar reinforcement in PR #47). |
+| `SOLENOID_BOSS_W` / `PROUD` | 14 / 2 | Rectangular slab face width × height above `COLLAR_TOP_Z`; same 3 mm overlap into the collar OD as the coin pad. |
+| `COLLAR_RELIEF_R` / `COLLAR_RELIEF_CLEARANCE` | 17.00 / 0.5 | Half-cylindrical relief in the mounting plate top — same 0.5 mm diametral free-running fit the bracket bore uses on the auger. |
+| `CSK_HEAD_D / CSK_DEPTH` | 6.0 / 1.30 | M3 90° flat-head countersink in the +X mount hole, sunk into the bump top so the screw head sits flush. |
 | `SOLENOID_SCREW_D / PITCH_Y` | 2.4 / 12.0 | M2 clearance, 12 mm pitch along the auger axis. |
 | `SOLENOID_PLUNGER_D` | 6.0 | Plunger clearance hole through the full collar wall. |
 | `FILLET_PLATE_BUMP` / `FILLET_TAB_COLLAR` | 1.5 / 1.0 | Stress-relief / cosmetic blends. |
