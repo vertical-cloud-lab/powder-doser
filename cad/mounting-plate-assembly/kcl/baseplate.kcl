@@ -1,0 +1,87 @@
+// Baseplate: bottom half of the assembly.
+//
+//   * Four legs raise the assembly above the bench so a cup + scale fit.
+//   * One central single-tang clevis sits forward, between the mounting
+//     plate's two yoke eyes, and shares the hinge pin.  Because the hinge
+//     axis IS the auger's dispense axis, powder still drops cleanly through
+//     the slot in the mounting plate and the gap between yoke eyes onto the
+//     cup centred below the baseplate's powder window.
+//   * One rear clevis pin-mounts the linear-actuator base.
+//
+// Issue: vertical-cloud-lab/powder-doser#56
+import "params.kcl" as p
+
+base = startSketchOn(XY)
+  |> startProfile(at = [-p.baseWidth/2, -p.baseLen/2])
+  |> line(end = [p.baseWidth, 0])
+  |> line(end = [0, p.baseLen])
+  |> line(end = [-p.baseWidth, 0])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// ---- powder window: directly under the dispense hole / hinge axis so
+//      falling powder reaches the cup placed on the scale BELOW the
+//      baseplate ----
+windowW = 60.0
+windowL = 60.0
+windowY = p.plateLen/2 + p.yokeArmLen
+window = startSketchOn(base, face = END)
+  |> startProfile(at = [-windowW/2, windowY - windowL/2])
+  |> line(end = [windowW, 0])
+  |> line(end = [0, windowL])
+  |> line(end = [-windowW, 0])
+  |> close()
+  |> extrude(length = -(p.baseT + 2))
+
+// ---- four legs (corners) ----
+mkLeg = fn(@sx, sy) {
+  return startSketchOn(XY)
+    |> startProfile(at = [sx - p.legW/2, sy - p.legT/2])
+    |> line(end = [p.legW, 0])
+    |> line(end = [0, p.legT])
+    |> line(end = [-p.legW, 0])
+    |> close()
+    |> extrude(length = -p.legH)
+}
+leg1 = mkLeg(+p.baseWidth/2 - p.legW/2, +p.baseLen/2 - p.legT/2)
+leg2 = mkLeg(-p.baseWidth/2 + p.legW/2, +p.baseLen/2 - p.legT/2)
+leg3 = mkLeg(+p.baseWidth/2 - p.legW/2, -p.baseLen/2 + p.legT/2)
+leg4 = mkLeg(-p.baseWidth/2 + p.legW/2, -p.baseLen/2 + p.legT/2)
+
+// ---- central hinge clevis (single tang) ----
+// Sits between the mounting-plate yoke eyes.  Top of tang reaches the hinge
+// axis at Z = baseT + clevisH.
+clevisY = p.plateLen/2 + p.yokeArmLen
+clevis = startSketchOn(XZ)
+  |> startProfile(at = [-p.clevisT/2, p.baseT])
+  |> line(end = [p.clevisT, 0])
+  |> line(end = [0, p.clevisH])
+  |> line(end = [-p.clevisT/2, p.clevisH/2])  // chamfer top corner
+  |> line(end = [-p.clevisT/2, -p.clevisH/2])
+  |> close()
+  |> extrude(length = p.clevisRoot)
+// Note: extruded in +Y from XZ.  We translate by offset below using a second
+// solid centred at clevisY.
+
+// (KCL has no easy "translate-existing-solid"; for the assembly diagrams we
+// rebuild parts in a single coordinate frame inside cad_model.py.)
+
+// Hinge pin bore through clevis tang.
+clevisBore = startSketchOn(XZ)
+  |> circle(center = [0, p.baseT + p.clevisH - 6.0], radius = p.m5Clear/2)
+  |> extrude(length = p.clevisRoot + 2)
+
+// ---- rear clevis for linear-actuator base ----
+actClevisH = 18.0
+actClevisRoot = 14.0
+actClevis = startSketchOn(XZ)
+  |> startProfile(at = [-p.clevisT/2, p.baseT])
+  |> line(end = [p.clevisT, 0])
+  |> line(end = [0, actClevisH])
+  |> line(end = [-p.clevisT, 0])
+  |> close()
+  |> extrude(length = actClevisRoot)
+
+actClevisBore = startSketchOn(XZ)
+  |> circle(center = [0, p.baseT + actClevisH - 4], radius = p.m5Clear/2)
+  |> extrude(length = actClevisRoot + 2)

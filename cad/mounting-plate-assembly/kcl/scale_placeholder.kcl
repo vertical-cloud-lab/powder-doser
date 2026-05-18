@@ -1,0 +1,18 @@
+// Placeholder kitchen / lab scale: 100 x 80 x 25 with a 50 mm round platter.
+scaleW = 100.0
+scaleD = 80.0
+scaleH = 25.0
+platterDia = 50.0
+platterH = 4.0
+
+body = startSketchOn(XY)
+  |> startProfile(at = [-scaleW/2, -scaleD/2])
+  |> line(end = [scaleW, 0])
+  |> line(end = [0, scaleD])
+  |> line(end = [-scaleW, 0])
+  |> close()
+  |> extrude(length = scaleH)
+
+platter = startSketchOn(XY)
+  |> circle(center = [0, 0], radius = platterDia/2)
+  |> extrude(length = scaleH + platterH)

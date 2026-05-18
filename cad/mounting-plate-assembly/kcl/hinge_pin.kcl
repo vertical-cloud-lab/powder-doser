@@ -1,0 +1,12 @@
+// Hinge pin / linear-actuator pin.  Plain M5 steel rod; printed in plastic
+// here only for visualization and BoM completeness.
+import "params.kcl" as p
+
+pinLen = (p.yokeEyeGap + 2 * p.yokeEyeOd + 2.0)
+shaft = startSketchOn(XY)
+  |> circle(center = [0, 0], radius = (p.m5Clear/2 - 0.2))
+  |> extrude(length = pinLen)
+
+head = startSketchOn(XY)
+  |> circle(center = [0, 0], radius = 4.5)
+  |> extrude(length = -2.5)

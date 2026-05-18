@@ -1,0 +1,23 @@
+// Two-body telescoping placeholder for a small electric linear actuator
+// (e.g. Actuonix L12).  Body length actBodyLen; rod extends up to actStrokeMax.
+import "params.kcl" as p
+
+body = startSketchOn(XY)
+  |> circle(center = [0, 0], radius = p.actBodyDia/2)
+  |> extrude(length = p.actBodyLen)
+
+rod = startSketchOn(XY)
+  |> circle(center = [0, 0], radius = p.actBodyDia/4)
+  |> extrude(length = p.actBodyLen + p.actStrokeMax/2)  // mid-stroke
+
+// Base clevis (with cross-bore for M5 pin).
+baseClv = startSketchOn(XY)
+  |> startProfile(at = [-7, -3])
+  |> line(end = [14, 0])
+  |> line(end = [0, 6])
+  |> line(end = [-14, 0])
+  |> close()
+  |> extrude(length = -8)
+baseClvBore = startSketchOn(YZ)
+  |> circle(center = [0, -4], radius = p.m5Clear/2)
+  |> extrude(length = 20)

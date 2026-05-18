@@ -1,0 +1,78 @@
+// Shared parameter sheet for the powder-doser mounting-plate assembly.
+// Coordinate convention: auger long axis = +Y. Dispense tip is at +Y, motor
+// at -Y. Up is +Z. Powder falls in -Z. All units mm.
+
+// ---- Auger (placeholder, see issues #16, #48) ----
+augerOd        = 15.0
+augerLen       = 180.0
+// Distance from the dispense tip (auger's +Y face) at which the powder exit
+// hole pierces the bottom (-Z) wall of the auger tube.
+dispOffset     = 12.0
+dispHoleDia    = 8.0
+
+// ---- Mounting hardware (shared) ----
+m3Clear        = 3.4   // clearance hole for M3
+m3HeadCbore    = 6.2   // M3 socket head counterbore dia
+m5Clear        = 5.4   // hinge pin / actuator pin clearance
+
+// ---- Bracket (from #46): rectangular mount-plate footprint ----
+brkPlateW      = 30.0  // along auger (Y)
+brkPlateL      = 24.0  // perpendicular (X)
+brkPlateT      = 4.0
+brkHoleSpanX   = 16.0  // mounting hole c/c across the plate
+brkHoleSpanY   = 22.0  // mounting hole c/c along the auger
+
+// ---- Tap-collar mount plate (from #50): same footprint as bracket ----
+tapPlateW      = brkPlateW
+tapPlateL      = brkPlateL
+tapPlateT      = brkPlateT
+
+// ---- NEMA 17 stepper (typical; see #24/#25) ----
+nemaBody       = 42.3
+nemaHoleSpan   = 31.0
+nemaPilotDia   = 22.5
+nemaShaftDia   = 5.0
+nemaShaftLen   = 24.0
+
+// ---- Mounting plate ----
+plateLen       = 180.0   // along Y (motor to yoke)
+plateWidth     = 70.0    // along X
+plateT         = 6.0
+yokeArmLen     = 22.0    // how far the yoke extends past the dispense tip in +Y
+yokeEyeOd      = 14.0
+yokeEyeId      = m5Clear
+yokeEyeGap     = 24.0    // inner-face gap between the two eyes (powder slot)
+plateFillet    = 4.0
+
+// Placement of mounted parts along Y (Y=0 is plate centre):
+brkRearY       = -55.0
+brkFrontY      = +25.0
+tapPlateY      = +5.0
+nemaCentreY    = -75.0
+
+// Distance from plate underside down to auger centerline.
+augerDrop      = 18.0   // bracket plate(4) + bracket boss(~9) + clearance
+
+// ---- Baseplate ----
+baseLen        = 280.0
+baseWidth      = 180.0
+baseT          = 6.0
+legW           = 18.0
+legT           = 12.0
+legH           = 95.0    // tall enough for a 50 mm cup on a 30 mm scale + clearance
+
+// Hinge clevis on baseplate (single tang between the mounting-plate yoke eyes)
+clevisT        = (yokeEyeGap - 0.4)  // slip fit between the two yoke eyes
+clevisH        = 28.0                // tang height above baseplate top
+clevisRoot     = 18.0                // tang width at root (Y direction)
+
+// Linear actuator placeholder.
+actBodyLen     = 80.0
+actBodyDia     = 18.0
+actStrokeMax   = 60.0
+// Actuator base pivot (on baseplate), rear of hinge.
+actBaseY       = -85.0
+actBaseZ       = 14.0
+// Actuator rod-end pivot (on mounting plate underside).
+actRodPlateY   = -40.0
+// All pivots use the same M5 pin.

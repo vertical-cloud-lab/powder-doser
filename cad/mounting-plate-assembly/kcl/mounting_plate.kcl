@@ -1,0 +1,152 @@
+// Mounting plate: top half of the rotating sub-assembly.
+//
+// Holds (from −Y rear to +Y front, along the auger axis):
+//   * NEMA 17 stepper at the rear, driving the auger spur band (#48).
+//   * Two bracket mount-plate positions (#46) — bracket plate mates to the
+//     plate underside.
+//   * One tap-collar mount plate (#50).
+//   * A forward yoke whose two eyes are coaxial with the dispense hole, so
+//     the hinge axis passes THROUGH the powder exit point — the assembly
+//     pivots about the dispense point itself.  The eyes are gapped by
+//     yokeEyeGap so powder falls freely between them.
+//
+// Hinge geometry: each yoke side is an L-shaped piece — a horizontal arm at
+// plate level + a vertical drop leg that lowers the eye disc to the auger
+// centreline (Z = HINGE_Z).  Each eye is a YZ-plane circle extruded in X,
+// so the bore axis is along X (perpendicular to the auger).
+//
+// Issue: vertical-cloud-lab/powder-doser#56
+import "params.kcl" as p
+
+// HINGE_Z mirrors the CadQuery model: −(plateT + brkPlateT + collarH/2)
+// with collarH = 12 mm, giving −16 mm — the auger centreline once the
+// brackets are mounted to the plate underside.
+hingeZ = -(p.plateT + p.brkPlateT + 6.0)
+
+// ---- main plate body (top at Z=0, bottom at Z=-plateT) ----
+plate = startSketchOn(XY)
+  |> startProfile(at = [-p.plateWidth/2, -p.plateLen/2])
+  |> line(end = [p.plateWidth, 0])
+  |> line(end = [0, p.plateLen])
+  |> line(end = [-p.plateWidth, 0])
+  |> close()
+  |> extrude(length = -p.plateT)
+
+// ---- powder-fall slot through the plate (front section) ----
+slotW = p.yokeEyeGap
+slotL = 35.0
+slotY0 = p.plateLen/2 - slotL
+slot = startSketchOn(plate, face = START)
+  |> startProfile(at = [-slotW/2, slotY0])
+  |> line(end = [slotW, 0])
+  |> line(end = [0, slotL + 2])
+  |> line(end = [-slotW, 0])
+  |> close()
+  |> extrude(length = p.plateT + 2)
+
+// ---- yoke arms + drop legs + eyes (per side) ----
+armOffsetX = p.yokeEyeGap/2 + p.yokeEyeOd/2
+armW = p.yokeEyeOd
+armL = p.yokeArmLen
+eyeY = p.plateLen/2 + armL
+
+// Right-hand side (+X):
+horiz_R = startSketchOn(XY)
+  |> startProfile(at = [armOffsetX - armW/2, p.plateLen/2 - 2])
+  |> line(end = [armW, 0])
+  |> line(end = [0, armL + 2])
+  |> line(end = [-armW, 0])
+  |> close()
+  |> extrude(length = -p.plateT)
+
+// Vertical drop leg at the +Y end (plate underside → eye top):
+drop_R = startSketchOn(XY)
+  |> startProfile(at = [armOffsetX - armW/2, eyeY - armW/2])
+  |> line(end = [armW, 0])
+  |> line(end = [0, armW])
+  |> line(end = [-armW, 0])
+  |> close()
+  |> extrude(length = hingeZ - p.yokeEyeOd/2)
+
+// Eye disc (axis = X, YZ-plane circle extruded in +X):
+eye_R = startSketchOn(YZ)
+  |> circle(center = [eyeY, hingeZ], radius = p.yokeEyeOd/2)
+  |> extrude(length = p.yokeEyeOd)
+
+// Hinge pin bore through the eye:
+bore_R = startSketchOn(YZ)
+  |> circle(center = [eyeY, hingeZ], radius = p.yokeEyeId/2)
+  |> extrude(length = p.yokeEyeOd * 2 + 2)
+
+// Left-hand side (−X) — mirror:
+horiz_L = startSketchOn(XY)
+  |> startProfile(at = [-armOffsetX - armW/2, p.plateLen/2 - 2])
+  |> line(end = [armW, 0])
+  |> line(end = [0, armL + 2])
+  |> line(end = [-armW, 0])
+  |> close()
+  |> extrude(length = -p.plateT)
+drop_L = startSketchOn(XY)
+  |> startProfile(at = [-armOffsetX - armW/2, eyeY - armW/2])
+  |> line(end = [armW, 0])
+  |> line(end = [0, armW])
+  |> line(end = [-armW, 0])
+  |> close()
+  |> extrude(length = hingeZ - p.yokeEyeOd/2)
+eye_L = startSketchOn(YZ)
+  |> circle(center = [eyeY, hingeZ], radius = p.yokeEyeOd/2)
+  |> extrude(length = p.yokeEyeOd)
+bore_L = startSketchOn(YZ)
+  |> circle(center = [eyeY, hingeZ], radius = p.yokeEyeId/2)
+  |> extrude(length = p.yokeEyeOd * 2 + 2)
+
+// ---- mounting holes ----
+brkHole = fn(@cy, sx) {
+  return startSketchOn(XY)
+    |> circle(center = [sx, cy], radius = p.m3Clear/2)
+    |> extrude(length = -(p.plateT + 2))
+}
+// Front bracket (#46)
+fb_h1 = brkHole(p.brkFrontY - p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+fb_h2 = brkHole(p.brkFrontY - p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+fb_h3 = brkHole(p.brkFrontY + p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+fb_h4 = brkHole(p.brkFrontY + p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+// Rear bracket (#46)
+rb_h1 = brkHole(p.brkRearY - p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+rb_h2 = brkHole(p.brkRearY - p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+rb_h3 = brkHole(p.brkRearY + p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+rb_h4 = brkHole(p.brkRearY + p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+// Tap-collar mount (#50)
+tc_h1 = brkHole(p.tapPlateY - p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+tc_h2 = brkHole(p.tapPlateY - p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+tc_h3 = brkHole(p.tapPlateY + p.brkHoleSpanY/2, +p.brkHoleSpanX/2)
+tc_h4 = brkHole(p.tapPlateY + p.brkHoleSpanY/2, -p.brkHoleSpanX/2)
+
+// NEMA 17: 4 corner M3 + central Ø22.5 pilot
+nemaHole = fn(@sx, sy) {
+  return startSketchOn(XY)
+    |> circle(center = [sx, sy], radius = p.m3Clear/2)
+    |> extrude(length = -(p.plateT + 2))
+}
+n_h1 = nemaHole(+p.nemaHoleSpan/2, p.nemaCentreY + p.nemaHoleSpan/2)
+n_h2 = nemaHole(-p.nemaHoleSpan/2, p.nemaCentreY + p.nemaHoleSpan/2)
+n_h3 = nemaHole(+p.nemaHoleSpan/2, p.nemaCentreY - p.nemaHoleSpan/2)
+n_h4 = nemaHole(-p.nemaHoleSpan/2, p.nemaCentreY - p.nemaHoleSpan/2)
+n_pilot = startSketchOn(XY)
+  |> circle(center = [0, p.nemaCentreY], radius = p.nemaPilotDia/2)
+  |> extrude(length = -(p.plateT + 2))
+
+// ---- linear-actuator rod-end pivot lug on plate underside ----
+lugW = 10.0
+lugT = 8.0
+lugH = 16.0
+lug = startSketchOn(XY)
+  |> startProfile(at = [-lugW/2, p.actRodPlateY - lugT/2])
+  |> line(end = [lugW, 0])
+  |> line(end = [0, lugT])
+  |> line(end = [-lugW, 0])
+  |> close()
+  |> extrude(length = -(p.plateT + lugH))
+lugBore = startSketchOn(XZ)
+  |> circle(center = [0, -(p.plateT + lugH - 5)], radius = p.m5Clear/2)
+  |> extrude(length = lugT + 4)
