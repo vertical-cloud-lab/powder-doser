@@ -4,6 +4,16 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Hardware
+
+A single-microcontroller bench rig that exercises one powder-doser
+module (auger rotation + tapping + vibration + dispensing angle) lives
+under [`hardware/test-module/`](hardware/test-module/).  It contains
+the KiCad schematic, BOM, wiring / assembly instructions with a full
+pin and net table, and CircuitPython firmware for the Raspberry Pi
+Pico with every test parameter exposed in a top-level
+[`config.py`](hardware/test-module/firmware/config.py).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
