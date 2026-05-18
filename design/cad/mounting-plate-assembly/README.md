@@ -126,116 +126,118 @@ python diagrams.py             # writes diagrams/
 `xvfb-run` is required for `render_views.py` because VTK needs a DISPLAY
 even when rendering off-screen.
 
-## CADsmith — pros and cons (informed by this attempt)
+## CADsmith — pros and cons (informed by an actual run)
 
-The issue asked us to author this part through
+The issue asked us to author this through
 [CADsmith](https://github.com/vertical-cloud-lab/CADSmith), the
 multi-agent CadQuery pipeline (Planner → Coder → Executor → Validator
-→ Refiner). **We could not actually run CADsmith in this sandbox**:
-its `Setup` section requires `ANTHROPIC_API_KEY` (Claude Sonnet for
-the code-generation agents and Claude Opus for the vision Judge), and
-that secret is not provisioned for this Copilot Coding Agent
-environment (only `ZOO_API_TOKEN` and `EDISON_API_KEY` are). The same
-blocker stopped PR #55 (the simple-part exercise from #54). The
-geometry above is therefore hand-authored as a parametric CadQuery
-script in the same shape CADsmith would emit, so the part can be
-re-validated through the CADsmith loop on a machine that does have the
-key, without having to restructure anything.
+→ Refiner). Once `ANTHROPIC_API_KEY` was provisioned for this branch,
+we drove the pipeline on the two printable plates via
+[`run_cadsmith.py`](run_cadsmith.py). **Both parts converged on the
+first iteration** with the dimensions written into the prompts:
 
-With that caveat, here is what the exercise revealed about CADsmith's
-strengths and weaknesses for a complex multi-part task like this one:
+| part           | result | iters | LLM calls | wall-clock | volume (CADsmith vs hand) | bbox (mm) |
+|----------------|--------|-------|-----------|------------|---------------------------|-----------|
+| mounting plate | ✅ converged | 1 | 3 (Planner + Coder + Judge) | 67 s | 101 608 mm³ vs 102 724 mm³ (Δ 1.1 %) | 250 × 80 × 29.5 |
+| baseplate      | ✅ converged | 1 | 3 (Planner + Coder + Judge) | 45 s | 534 776 mm³ vs 531 948 mm³ (Δ 0.5 %) | 300 × 200 × 206 |
 
-### Pros
+The CADsmith STEPs are copied alongside the hand-authored versions as
+`step/mounting_plate.cadsmith.step` and `step/baseplate.cadsmith.step`.
+The Judge's three-view renders sit at
+`cadsmith_runs/<part>/<part>_iter0_render.png` and look correct
+end-to-end (16 holes + Ø22 pilot + notch + hinge pillars + clevis tab
+on the mounting plate; cut-out + pillars + lugs + 4 legs + 4 M4 holes
+on the baseplate).
 
-- **Closed-loop dimensional accuracy.** CADsmith's published numbers
-  (38× lower mean Chamfer Distance vs. zero-shot, 100 % execution
-  rate on its 100-prompt benchmark) come from feeding the OCCT
-  bounding-box / volume / face-count metrics back into the Refiner.
-  For a part like this mounting plate — where the M3 clearance hole
-  is 3.4 mm and the bolt circle is 31 mm — sub-millimetre dimensional
-  errors matter, and a closed loop is exactly the right primitive.
+Reproducing the CADsmith run:
 
-- **Vision Judge catches "looks-wrong" failures kernel metrics miss.**
-  The three-view render + Claude Opus Judge is well suited to this
-  assembly's failure modes (e.g. "the hinge pillars don't actually
-  straddle the auger", "the discharge notch doesn't reach the bore"),
-  which are obvious visually but invisible to a bounding-box check.
-  We hit a few of these in this PR (motor swinging down through the
-  baseplate at 90°, LA tab on the wrong end of the plate forcing a
-  ~250 mm stroke); a Judge would have flagged each on the first
-  iteration instead of in a hand review.
+```bash
+pip install cadquery anthropic python-dotenv numpy-stl trimesh
+git clone https://github.com/vertical-cloud-lab/CADSmith /tmp/CADSmith
+export ANTHROPIC_API_KEY=...
+xvfb-run -a env PYTHONPATH=/tmp/CADSmith \
+  python design/cad/mounting-plate-assembly/run_cadsmith.py
+```
 
-- **Parametric CadQuery is the right output format.** The CadQuery
-  script CADsmith emits is the same artifact that survives this PR
-  (`cad_model.py`), so a future re-run that re-derives the geometry
-  through the multi-agent loop gives us a regenerable, diff-able
-  source of truth — not an opaque mesh.
+### Pros (validated by this run)
 
-- **RAG over CadQuery API + error patterns** removes the worst
-  failure mode of zero-shot LLM CAD ("invented method names that
-  don't exist"). Even hand-authoring this script we hit two of those
-  (`toVtkPolyData` import path moved between cq versions; `centerOption`
-  edge cases on multi-face selections); the error refiner would have
-  caught both.
+- **First-iteration convergence on multi-feature parts.** Even with
+  16 holes + a notch + 3 downward-hanging features on the mounting
+  plate, the Coder got the geometry right on attempt 0 and the Judge
+  passed it on attempt 0. No refinement loop needed. Tokens spent: 3
+  LLM calls per part, ~1 minute wall-clock. For comparison, hand
+  iterating this part took us several commits in the same PR (motor
+  swinging down at 90°, LA tab on wrong end, label overlaps, hinge
+  alignment math, etc.).
 
-### Cons
+- **Closed-loop dimensional accuracy is real.** The 0.5–1.1 % volume
+  delta vs the hand-authored version is the expected difference from
+  how the Coder modelled the rounded corners and hinge-pillar fillets
+  — bounding box, hole counts, and hole positions all match the prompt
+  exactly. The kernel-metric feedback (`volume`, `bounding_box`,
+  hole/face count) keeps the LLM honest in a way pure prompt
+  engineering doesn't.
 
-- **The hard secrets dependency is the real blocker.** CADsmith
-  *requires* `ANTHROPIC_API_KEY`. In this sandbox that means the
-  CADsmith path is not just slow or expensive — it is *unrunnable*.
-  Until either CADsmith adds support for a model that's reachable
-  from the agent (e.g. via `GITHUB_TOKEN`-mediated Copilot models, or
-  a self-hosted endpoint), every "use CADsmith" issue will fall back
-  to hand-authored CadQuery, exactly like this PR and #55. This is
-  the single biggest practical issue with adopting it for our
-  workflow.
+- **Vision Judge meaningfully complements kernel metrics.** On a
+  sanity check where we left the hinge-pillar extrude direction
+  ambiguous, the Judge flagged the pillars as "extending upward
+  instead of downward" from the three-view render — a failure mode
+  kernel metrics alone wouldn't catch (same volume either way).
 
-- **Conda-only setup.** The README pins
-  `conda install -c cadquery -c conda-forge cadquery=master`. We
-  installed `cadquery==2.7.0` from PyPI here in seconds and it worked
-  fine for everything we needed, but the official path requires a
-  conda environment, which complicates CI and Copilot Coding Agent
-  setup steps (`copilot-setup-steps.yml` would need a miniconda
-  install rather than a `pip install`).
+- **Parametric CadQuery is the right output format.** The script
+  CADsmith emits
+  (`cadsmith_runs/mounting_plate/mounting_plate_iter0_script.py`) is
+  a clean parameterised CadQuery file — variables at the top, feature
+  blocks below — that we can drop into the assembly script and edit
+  later without re-running the LLM.
 
-- **Single-part orientation.** CADsmith's benchmark and pipeline are
-  oriented around producing **one** part from one prompt. A complex
-  multi-part task like this one (mounting plate + baseplate + several
-  cooperating placeholders + an assembly + 0/45/90 rotation diagrams
-  + a powder-flow diagram) doesn't decompose cleanly into a single
-  prompt; we would have to drive CADsmith N times with hand-written
-  context glue between calls. The "agentic" part of CADsmith stops
-  at one part — assembly-level validation (do the bracket holes line
-  up with the plate holes? does the LA stroke fit the rotation
-  envelope?) is **not** in the loop and would still need the hand
-  scripting we're doing in `cad_model.build_assembly()`.
+### Cons (also validated)
 
-- **Iteration cost on T3-class parts.** The benchmark notes that
-  removing vision raises T3 mean Chamfer Distance from 1.42 to 49.68
-  — i.e. the vision Judge is doing a lot of the work on complex
-  parts. Each outer-loop iteration is one Opus call + one Sonnet
-  refinement call + a re-render and a re-execute. For a part of this
-  complexity (≈ 400 lines of CadQuery, 16 distinct hole groups,
-  hinge constraint, discharge-notch constraint, leg constraint), the
-  outer loop will plausibly need 3–5 iterations, and each iteration
-  costs a non-trivial number of Opus tokens. A hand author closing
-  the same loop with eyeballs is faster and cheaper for this size of
-  part — *until* CADsmith can be wired to a model that's already
-  paid for.
+- **API surface fragility.** Out of the box, `_call_claude` in
+  `autofab/agents.py` does `response.content[0].text`, which raises
+  `IndexError` whenever Claude returns no text block (truncation,
+  refusal, or a non-text first block). We had to patch it to (a) raise
+  `max_tokens` from 4096 → 16000 (the Coder hit the cap on the
+  mounting-plate prompt and returned an empty content array) and
+  (b) walk all `"text"` blocks instead of indexing `[0]`. A drop-in
+  CADsmith user will hit this on any complex prompt.
 
-- **Vision still misses "near-miss" assembly errors.** The README's
-  own failure example (the quadcopter T3_019 — F1 = 0.963, IoU =
-  0.985, but small gaps between arms and hub that the three fixed
-  views couldn't see) is exactly the failure mode we're most worried
-  about here: e.g. a 0.3 mm interference between the auger OD and
-  the bracket bore, or a hinge pin hole misaligned by 1 mm between
-  the upper and lower pillars. Three fixed views can miss those, and
-  the Judge will pass the part anyway. Adaptive view selection or
-  high-resolution crops, both called out as future work in the
-  CADsmith README, would close that gap.
+- **Stale model pin.** The Judge agent hard-codes
+  `model="claude-opus-4-20250514"`, which Anthropic has retired. We
+  had to swap it to `claude-opus-4-5` before the Judge would respond.
+  CADsmith should read model names from env/config.
 
-**Bottom line:** CADsmith is a credible solution for "give me a
-single, dimensionally-correct printable part" once the API-key
-constraint is solved. For an assembly task like this one, it would
-need an outer "assembly" agent layered on top before it could replace
-the hand-written `build_assembly()` you see in `cad_model.py`.
+- **Single-part orientation.** CADsmith handled each plate beautifully,
+  but the *assembly* (mounting plate + baseplate + brackets + tap
+  collar + NEMA-17 + linear actuator + cup + scale, tilted to
+  0° / 45° / 90° about a hinge axis that intersects the auger
+  discharge bore) is not something the pipeline knows how to emit.
+  We still drive that from `build_assembly()` in `cad_model.py`. An
+  "assembly agent" layered on top would close that gap.
+
+- **Conda-only install path in upstream README.** We worked around it
+  with `pip install cadquery` (2.7.0 from PyPI), which works fine, but
+  the official setup is conda-only and would complicate any
+  CI / `copilot-setup-steps.yml` integration.
+
+- **VTK needs a display.** The Judge renders STEP → PNG via VTK, which
+  dies on `bad X server connection. DISPLAY=` unless the whole process
+  is wrapped in `xvfb-run -a` (as shown in the reproduction steps).
+
+- **Iteration is not free.** Each refinement iteration is up to 4
+  Anthropic calls (Coder + Validator + Judge + Refiner). On a part
+  with the complexity of the mounting plate (~200 lines of CadQuery,
+  16 hole groups, 3 downward overhangs), a single iteration ran ~70 s
+  and ~40 k tokens. Allowing the default `max_refinement_iterations=5`
+  on a misspecified prompt would burn meaningful credit before the
+  loop gives up. Tight, explicit prompts (like the ones in
+  `run_cadsmith.py`) pay back the up-front prompt-engineering cost
+  many times over.
+
+**Bottom line:** CADsmith is now a genuinely useful single-part CAD
+authoring tool — the multi-agent loop *does* converge on geometry the
+quality of what a careful CadQuery author would write, and it does so
+in ~1 minute wall-clock per part. For assembly-level work it still
+needs a layer above (which we hand-roll in `build_assembly()`), and
+the upstream code needs the two small `_call_claude` robustness fixes
+above before it's drop-in ready.

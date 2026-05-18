@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+# CADsmith executor-internal runner scripts (regenerated per-iteration).
+cadsmith_runs/*/*_runner.py
