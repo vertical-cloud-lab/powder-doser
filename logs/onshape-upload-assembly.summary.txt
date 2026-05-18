@@ -1,6 +1,8 @@
-# onshape upload-assembly summary  2026-05-18T21:32Z
+# onshape upload-assembly summary  2026-05-18T22:31Z
 BASE = https://cad.onshape.com
-target document name: 'Powder Doser v2 (Zoo ML-ephant)'  (created)
+target document name: 'Powder Doser v2 (Zoo ML-ephant)'  (found)
+owner               : 'Vertical Cloud Lab' (type=1, companyId redacted)
+public              : True
 element name prefix : 'zoo__'  (makes Zoo ML-ephant provenance obvious in Onshape UI)
 document URL (redacted): https://cad.onshape.com/documents/<did>/w/<wid>
 

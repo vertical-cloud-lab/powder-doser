@@ -17,6 +17,15 @@ run if it doesn't yet exist. Override with the ``ONSHAPE_TARGET_DOC_NAME``
 env var. Uploaded blobs/Part Studios are also prefixed with ``zoo__`` so
 the provenance is clear even from element names inside the document.
 
+By default the document is owned by the ``Vertical Cloud Lab`` Onshape
+classroom (BTOwnerType=COMPANY) and is **public**, so URLs the script
+prints are openable without sign-in. Override with::
+
+    ONSHAPE_OWNER_NAME=<classroom or company name>   # default: Vertical Cloud Lab
+    ONSHAPE_OWNER_ID=<companyId>                     # takes precedence over name
+    ONSHAPE_OWNER_TYPE=<0=user|1=company|2=team>     # default: 1
+    ONSHAPE_PUBLIC=0                                 # opt out of public
+
 Run with::
 
     python cad/meta-tools/onshape_upload_assembly.py
@@ -50,6 +59,25 @@ TARGET_DOC_NAME = os.environ.get(
 # Element-name prefix to make per-Part-Studio provenance obvious even inside
 # the document (e.g. ``zoo__auger_solid``). Honours the doc name override.
 NAME_PREFIX = os.environ.get("ONSHAPE_NAME_PREFIX", "zoo__")
+
+# Classroom / company ownership. When set, newly-created documents are owned
+# by the named Onshape company/classroom (rather than by the calling user)
+# and shared with everyone enrolled. ``ONSHAPE_OWNER_NAME`` is resolved to
+# an id by name-matching against ``GET /api/v6/companies`` on first run;
+# alternately set ``ONSHAPE_OWNER_ID`` directly. ``ONSHAPE_OWNER_TYPE``
+# follows Onshape's ``BTOwnerType``: 0=user, 1=company (the EDU classroom
+# case), 2=team. Default is the "Vertical Cloud Lab" classroom so that the
+# uploaded geometry inherits classroom membership for collaborators.
+OWNER_NAME = os.environ.get("ONSHAPE_OWNER_NAME", "Vertical Cloud Lab")
+OWNER_ID = os.environ.get("ONSHAPE_OWNER_ID")  # if set, takes precedence
+OWNER_TYPE = int(os.environ.get("ONSHAPE_OWNER_TYPE", "1"))  # 1 = COMPANY
+
+# Public-by-default: matches the user's manual setting on prior documents in
+# this PR. Set ``ONSHAPE_PUBLIC=0`` (or ``false``/``no``) to opt out and
+# create a private document instead.
+def _truthy(val: str) -> bool:
+    return val.strip().lower() not in ("", "0", "false", "no", "off")
+IS_PUBLIC = _truthy(os.environ.get("ONSHAPE_PUBLIC", "1"))
 
 # Prefer Phase-2 iterated outputs; fall back to Phase-1 if missing.
 PARTS = [
@@ -134,48 +162,98 @@ def multipart_signed(access: str, secret: bytes, path: str, fields: dict,
         return e.code, e.read()
 
 
-def _resolve_doc(access: str, sk: bytes,
-                 target_name: str = TARGET_DOC_NAME) -> tuple[str, str, str, bool]:
-    """Return (did, wid, doc_name, created) for the document named
-    ``target_name``. Creates it on first run if not already present so the
-    Zoo-produced parts land in a clearly-named, dedicated document rather
-    than the first document on the account (which may carry an unrelated
-    name like "Powder Doser v2 (CADSmith)").
+def _resolve_owner(access: str, sk: bytes) -> tuple[str | None, int]:
+    """Return (owner_id, owner_type) for the classroom/company to own newly
+    created documents. Resolves ``ONSHAPE_OWNER_NAME`` against the user's
+    company list when ``ONSHAPE_OWNER_ID`` is not provided. Returns
+    ``(None, 0)`` (i.e. owned by the calling user) if no match is found,
+    so the script degrades gracefully on accounts without a classroom.
     """
-    # Search by name first (paginate across the user's docs).
-    offset = 0
-    while True:
-        q = (f"filter=0&limit=20&offset={offset}"
-             f"&sortColumn=modifiedAt&sortOrder=desc")
-        code, body = signed("GET", access, sk, "/api/v6/documents", q)
-        if code != 200:
-            raise SystemExit(f"GET /documents HTTP {code}: {body[:200]!r}")
-        page = json.loads(body)
-        items = page.get("items", [])
-        for doc in items:
-            if doc.get("name") == target_name:
-                did = doc["id"]
-                code, body = signed("GET", access, sk,
-                                    f"/api/v6/documents/{did}")
-                if code != 200:
-                    raise SystemExit(
-                        f"GET /documents/{{did}} HTTP {code}: {body[:200]!r}"
-                    )
-                wid = json.loads(body)["defaultWorkspace"]["id"]
-                return did, wid, doc.get("name", "?"), False
-        if not page.get("next") and len(items) < 20:
-            break
-        offset += 20
+    if OWNER_ID:
+        return OWNER_ID, OWNER_TYPE
+    if not OWNER_NAME:
+        return None, 0
+    # Company / classroom lookup (BTOwnerType.COMPANY = 1).
+    code, body = signed("GET", access, sk, "/api/v6/companies")
+    if code != 200:
+        print(f"  [owner] GET /companies HTTP {code} -> falling back to user-owned")
+        return None, 0
+    for c in json.loads(body).get("items", []):
+        if c.get("name") == OWNER_NAME:
+            return c["id"], 1
+    # Try teams as a secondary lookup (BTOwnerType.TEAM = 2).
+    code, body = signed("GET", access, sk, "/api/v6/teams")
+    if code == 200:
+        for t in json.loads(body).get("items", []):
+            if t.get("name") == OWNER_NAME:
+                return t["id"], 2
+    print(f"  [owner] no company/team named {OWNER_NAME!r}; "
+          "falling back to user-owned")
+    return None, 0
 
-    # Not found -> create a fresh document with the desired name.
-    payload = json.dumps({
+
+def _resolve_doc(access: str, sk: bytes,
+                 target_name: str = TARGET_DOC_NAME) -> tuple[str, str, str, bool, str]:
+    """Return (did, wid, doc_name, created, owner_label) for the document
+    named ``target_name``. Creates it on first run if not already present,
+    owned by the configured classroom/company (so members can see it) and
+    public by default (so the per-element URLs the script prints are
+    openable without sign-in).
+    """
+    owner_id, owner_type = _resolve_owner(access, sk)
+    owner_label = (f"{OWNER_NAME} (companyId={owner_id}, type={owner_type})"
+                   if owner_id else "calling user")
+
+    # Search by name first across both user-visible and (when configured)
+    # classroom-owned documents.
+    def _scan(filter_id: int, extra: str = "") -> str | None:
+        offset = 0
+        while True:
+            q = (f"filter={filter_id}&limit=20&offset={offset}"
+                 f"&sortColumn=modifiedAt&sortOrder=desc{extra}")
+            code, body = signed("GET", access, sk, "/api/v6/documents", q)
+            if code != 200:
+                return None
+            page = json.loads(body)
+            for doc in page.get("items", []):
+                if doc.get("name") == target_name:
+                    return doc["id"]
+            if not page.get("next") and len(page.get("items", [])) < 20:
+                return None
+            offset += 20
+
+    did = None
+    # filter=0: My Onshape (covers user-owned + shared with user, incl.
+    # documents within the user's classrooms).
+    did = _scan(0)
+    if did is None and owner_id:
+        # filter=7: documents owned by a specific company/team.
+        did = _scan(7, f"&owner={owner_id}&ownerType={owner_type}")
+
+    if did is not None:
+        code, body = signed("GET", access, sk, f"/api/v6/documents/{did}")
+        if code != 200:
+            raise SystemExit(
+                f"GET /documents/{{did}} HTTP {code}: {body[:200]!r}"
+            )
+        j = json.loads(body)
+        wid = j["defaultWorkspace"]["id"]
+        return did, wid, j.get("name", target_name), False, owner_label
+
+    # Not found -> create a fresh document with the desired ownership /
+    # visibility.
+    doc_payload: dict = {
         "name": target_name,
         "description": ("Zoo ML-ephant (KittyCAD /ai/text-to-cad + "
                         "/ml/text-to-cad/iteration) outputs for the "
                         "powder-doser full-system design. Auto-created by "
                         "cad/meta-tools/onshape_upload_assembly.py."),
-        "isPublic": False,
-    }).encode("utf-8")
+        "isPublic": IS_PUBLIC,
+    }
+    if owner_id:
+        doc_payload["ownerId"] = owner_id
+        doc_payload["ownerType"] = owner_type
+    payload = json.dumps(doc_payload).encode("utf-8")
     code, body = signed("POST", access, sk, "/api/v6/documents", "",
                         body=payload)
     if code not in (200, 201):
@@ -185,7 +263,7 @@ def _resolve_doc(access: str, sk: bytes,
     j = json.loads(body)
     did = j["id"]
     wid = j["defaultWorkspace"]["id"]
-    return did, wid, j.get("name", target_name), True
+    return did, wid, j.get("name", target_name), True, owner_label
 
 
 def _upload_step(access: str, sk: bytes, did: str, wid: str,
@@ -251,9 +329,11 @@ def main() -> int:
     sk = secret.encode("utf-8")
     print(f"BASE = {BASE}")
 
-    did, wid, doc_name, created = _resolve_doc(access, sk)
+    did, wid, doc_name, created, owner_label = _resolve_doc(access, sk)
     verb = "created" if created else "found"
     print(f"target document ({verb}): {doc_name!r}")
+    print(f"  owner: {owner_label}")
+    print(f"  public: {IS_PUBLIC}  (override via ONSHAPE_PUBLIC=0)")
     doc_url = f"{BASE}/documents/{did}/w/{wid}"
     print(f"document URL: {doc_url}")
 
@@ -307,6 +387,10 @@ def main() -> int:
         f.write(f"# onshape upload-assembly summary  {ts}\n")
         f.write(f"BASE = {BASE}\n")
         f.write(f"target document name: {doc_name!r}  ({verb})\n")
+        f.write(f"owner               : {OWNER_NAME!r} "
+                f"(type={OWNER_TYPE if OWNER_ID else (1 if OWNER_NAME else 0)}, "
+                "companyId redacted)\n")
+        f.write(f"public              : {IS_PUBLIC}\n")
         f.write(f"element name prefix : {NAME_PREFIX!r}  "
                 "(makes Zoo ML-ephant provenance obvious in Onshape UI)\n")
         f.write("document URL (redacted): "
