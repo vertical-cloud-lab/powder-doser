@@ -628,9 +628,11 @@ is just a brushed DC motor with end-stops, so it's a textbook
 that item 5 uses for the solenoid (3.6 A peak, built-in flyback
 clamps, takes Pi-logic-level PWM directly). Wire its `VM`/`GND`
 to the 12 V `VMOT` rail, and its `IN1`/`IN2` to two spare Pi
-GPIOs (anything not on the I²C/SPI/UART used elsewhere — e.g.
-GPIO20/GPIO21, since the wiper servo already takes GPIO12 if
-present). Two pulls high in opposite combinations control the
+GPIOs (anything not on the I²C/SPI/UART used elsewhere — the
+default pin map under "Pi Zero 2 W GPIO budget & PWM availability"
+below puts them on **GPIO5 / GPIO6** so they don't collide with
+the DRV8825 stepper path's GPIO20/GPIO21 if you ever switch from
+the Tic T500). Two pulls high in opposite combinations control the
 direction:
 
 | `IN1` | `IN2` | Actuator behaviour |
@@ -661,9 +663,10 @@ the motor circuit cleanly so the stall is brief and harmless):
 from gpiozero import OutputDevice
 from time import sleep
 
-# DRV8871 IN1/IN2 wired to GPIO20/GPIO21 (or any two spare GPIOs):
-tilt_in1 = OutputDevice(20)
-tilt_in2 = OutputDevice(21)
+# DRV8871 IN1/IN2 wired to GPIO5/GPIO6 (default pin map; see
+# "Pi Zero 2 W GPIO budget & PWM availability" section):
+tilt_in1 = OutputDevice(5)
+tilt_in2 = OutputDevice(6)
 
 # Approximate stroke time (100 mm @ ~17 mm/s no-load → ~6 s end-to-end,
 # +20 % margin to guarantee the end-stop is reached on slower loads):
@@ -859,6 +862,105 @@ A mechanical-relay Pi HAT (e.g. Waveshare RPi Relay Board) is
 similarly "just solder and go", but its 10–20 ms switching latency
 and finite contact life make it a poor fit for pulsed taps; the
 DRV8871 is silent, has no moving parts, and supports any PWM rate.
+
+## Pi Zero 2 W GPIO budget & PWM availability
+
+**Short answer: yes, a single Raspberry Pi Zero 2 W can drive
+every peripheral in this BOM with GPIO pins to spare, and it has
+two independent hardware-PWM channels plus DMA-backed software PWM
+on any GPIO.** Detail follows.
+
+### PWM on the Pi Zero 2 W
+
+The Pi Zero 2 W exposes the same 40-pin header as the Pi 3 / 4 /
+Zero W, with the same BCM2710A1 PWM peripheral, so:
+
+* **2 independent hardware-PWM channels** with jitter-free
+  duty-cycle control:
+  * `PWM0` → **GPIO12** (header pin 32) **or GPIO18** (pin 12)
+  * `PWM1` → **GPIO13** (header pin 33) **or GPIO19** (pin 35)
+  * Each channel is one peripheral, so only **one of the two GPIOs
+    per channel** can output a distinct PWM at a time — you cannot
+    run GPIO12 and GPIO18 with different duty cycles simultaneously.
+* **DMA-backed software PWM on any GPIO** via `pigpio`
+  (`gpiozero` falls back to this when a non-PWM-capable pin is
+  used). Resolution is ~1 µs and jitter is in the low-microsecond
+  range — plenty good for an H-bridge `IN1`/`IN2` driving a
+  brushed-DC motor or solenoid, and good enough for a hobby servo
+  if hardware PWM is already spoken for (Adafruit publishes a
+  [Pi-PWM guide](https://learn.adafruit.com/circuitpython-essentials/circuitpython-pwm) confirming this).
+* Per-pin sink/source is **~16 mA** with a **~50 mA total** budget
+  across all GPIOs — fine for driving logic-level CMOS inputs on
+  the DRV2605L, DRV8871, DRV8825, Tic T500, and servo signal
+  pins, all of which are high-impedance.
+
+### Pin assignment (default Tic T500 stepper path, single-supply variant)
+
+The wiring sprinkled across the subsections above is consolidated
+here so you can see at a glance that nothing collides:
+
+| BCM GPIO | Header pin | Function | Peripheral | PWM type |
+|---------:|-----------:|----------|------------|----------|
+| GPIO2  (SDA1) | 3  | I²C data  | DRV2605L (item 1) — vibration-motor controller | — (I²C) |
+| GPIO3  (SCL1) | 5  | I²C clock | DRV2605L (item 1) | — (I²C) |
+| GPIO18 | 12 | `IN1` (PWM) | DRV8871 #1 (item 5) — solenoid driver (`IN2` tied to GND) | **HW PWM0** |
+| GPIO12 | 32 | Servo signal (PWM) | Tilt servo (item 16/16-alt) — *optional wiper-style aim* | **HW PWM0** *(see note)* |
+| GPIO5  | 29 | `IN1` | DRV8871 #2 (item 20) — baseplate-tilt linear actuator (item 19) | software PWM (only moves between runs, hardware PWM not needed) |
+| GPIO6  | 31 | `IN2` | DRV8871 #2 (item 20) | software PWM |
+| — (USB micro-B) | — | USB host link | Tic T500 (item 11) — stepper controller | — (no Pi GPIO pulses needed) |
+| 3V3 (pin 1 or 17) | — | Logic supply | DRV2605L, DRV8871 `VCC` pins | — |
+| 5V  (pin 2 or 4)  | — | Servo + solenoid logic rail | Servo `+`, DRV8871 logic side via D24V22F5 buck (item 15) | — |
+| GND | many | Common ground | All breakouts + 12 V rail return | — |
+
+**Note on GPIO12/18 sharing PWM0.** The default config above
+assigns the **solenoid driver to GPIO18** (always present) and the
+**optional tilt servo to GPIO12** (only present when the wiper-style
+add-on is fitted). Both are on PWM0, so they share the same
+frequency — that's fine because the solenoid's `IN1` is a slow
+pulse (a tap is ~10–50 ms wide and fires at most a few Hz) and the
+servo's standard 50 Hz / 1–2 ms pulse train can coexist if you set
+the channel to 50 Hz and write the solenoid pulse as a
+short-duration full-duty burst rather than a PWM duty cycle.
+**If you'd rather keep the two PWM channels independent**, move
+the tilt servo to **GPIO13 or GPIO19** (PWM1) — the
+`gpiozero.AngularServo` constructor accepts any pin number and
+`pigpio` routes hardware PWM transparently. The
+[Pi pinout](https://pinout.xyz/pinout/pwm) confirms PWM0 and PWM1
+are fully independent peripherals.
+
+### Pin assignment delta for the DRV8825 stepper path (item 11-alt)
+
+If you swap the Tic T500 for the bare DRV8825 carrier, the Pi has
+to generate the STEP pulses itself, which adds **three** GPIOs:
+
+| BCM GPIO | Header pin | Function | Notes |
+|---------:|-----------:|----------|-------|
+| GPIO20 | 38 | `STEP`     | software PWM on the step-pulse rate (≈ 0.2–10 kHz typical) |
+| GPIO21 | 40 | `DIR`      | static high/low — picks rotation direction |
+| GPIO16 | 36 | `~ENABLE`  | active-low; pull high to coast the motor between dispenses, with the **10 kΩ external pull-up to 3V3** from the Edison-review fix |
+
+These are deliberately on a different cluster from the actuator
+and solenoid pins above, so no PWM-channel sharing is needed even
+when both the linear actuator and the DRV8825 path are active.
+
+### GPIO budget summary
+
+The Pi Zero 2 W has **26 GPIOs** on the 40-pin header (GPIO0–GPIO27,
+minus the I²C-EEPROM-reserved GPIO0/GPIO1). The maximum
+configuration in this BOM — Tic T500 + solenoid + tilt servo +
+baseplate linear actuator — uses **6 GPIOs** (GPIO2/3 for I²C,
+GPIO18 solenoid PWM, GPIO12 servo PWM, GPIO5/6 actuator IN1/IN2),
+leaving **20 GPIOs free** for future expansion (load-cell HX711,
+limit-switch endstops, status LEDs, fan PWM, etc.). The DRV8825-alt
+path bumps usage to **9 GPIOs** still leaving **17 free**.
+
+The only hard limit you can hit on the Pi Zero 2 W is the **two**
+independent hardware-PWM channels — fine for this BOM because the
+two simultaneously-active loads that *need* clean PWM (solenoid
+fast-pulse + servo position) can both live on PWM0 as described
+above, and the H-bridge IN1/IN2 lines for the actuator are
+software-PWM-only by intent (the actuator only moves between
+dispense runs, so PWM jitter is irrelevant).
 
 ## Electrical schematic
 
