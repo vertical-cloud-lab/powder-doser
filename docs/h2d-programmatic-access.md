@@ -189,7 +189,27 @@ class ImplicitFTP_TLS(ftplib.FTP_TLS):
         self.welcome = self.getresp()
         return self.welcome
 
+    # The H2D's FTPS server *requires* the data connection to reuse
+    # the TLS session from the control connection (RFC 5077). Without
+    # this, LIST/STOR/RETR fail with `522 SSL connection failed:
+    # session reuse required`. `bambulabs_api` and OpenBambuAPI both
+    # do this same override internally.
+    def ntransfercmd(self, cmd, rest=None):
+        conn, size = ftplib.FTP.ntransfercmd(self, cmd, rest)
+        if self._prot_p:
+            conn = self.context.wrap_socket(
+                conn,
+                server_hostname=self.host,
+                session=self.sock.session,
+            )
+        return conn, size
+
 ctx = ssl._create_unverified_context()
+# Session resumption only works when both control and data sockets share
+# the same SSLContext, and only when the context advertises TLS 1.2 (the
+# H2D's FTPS server does not implement TLS 1.3 session tickets).
+ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+ctx.maximum_version = ssl.TLSVersion.TLSv1_2
 ftps = ImplicitFTP_TLS(context=ctx); ftps.connect(IP, 990, 30)
 ftps.login("bblp", ACCESS_CODE); ftps.prot_p()
 print("FTPS /cache:", ftps.nlst("/cache")); ftps.quit()
@@ -236,6 +256,49 @@ VLAN is likely doing port-level filtering of `:990` (most campus IoT
 networks block FTP family ports outright). Move the test laptop to
 the printer's wired Ethernet port — that bypasses the per-VLAN
 filter and is also what the production Pi relay will be wired into.
+
+**Troubleshooting — `522 SSL connection failed: session reuse
+required`.** Reported by @ctrhjk in PR #23 after the implicit-FTPS
+fix above. This is the *next* Bambu Lab FTPS quirk you hit once the
+control connection works: control logs in over TLS, then `nlst` /
+`stor` / `retr` opens a fresh data connection on a new port (`PASV`)
+and the printer rejects the data-channel TLS handshake unless it
+resumes the session from the control channel. RFC 5077 session
+resumption is *required*, not optional — same behaviour every
+vsftpd-with-`require_ssl_reuse=YES` server has, and what
+`bambulabs_api` works around. Three things have to line up for
+Python's `ssl` module to actually resume:
+
+1. **Override `ntransfercmd` to wrap the data socket with
+   `session=self.sock.session`** (the control socket's SSLSession
+   object). The updated `ImplicitFTP_TLS` above does this — copy it
+   verbatim; without the override, OpenSSL starts a fresh handshake
+   on the data port and the printer returns `522`.
+
+2. **Pin the SSLContext to TLS 1.2 on both sockets.** TLS 1.3
+   session tickets are negotiated post-handshake, and the H2D's
+   FTPS server (vsftpd-derived) does not implement
+   `NewSessionTicket`, so under TLS 1.3 `self.sock.session` is
+   either `None` or unusable for resumption and you get `522` even
+   with the `ntransfercmd` override. The `ctx.maximum_version =
+   ssl.TLSVersion.TLSv1_2` line in the smoke-test snippet above is
+   what forces this; if you build your own context, set both
+   `minimum_version` and `maximum_version` to `TLSv1_2`.
+
+3. **Reuse the same SSLContext for control and data.** Constructing
+   a second `ssl.create_default_context()` for the data socket
+   produces an unrelated session cache; `ntransfercmd` above passes
+   `self.context` implicitly (since it's an instance method of
+   `FTP_TLS`), so as long as you don't override `_get_conn_class` or
+   pass a different context downstream, this is automatic.
+
+Cross-check from the same Windows laptop:
+`lftp -u "bblp,<CODE>" -e "set ftp:ssl-allow yes; set
+ssl:verify-certificate no; set ssl:use-poodle-workaround yes; set
+ftp:ssl-protect-data yes; ls /cache; bye" ftps://<IP>:990` — `lftp`
+does implicit FTPS + TLS-1.2 session reuse by default, so a
+successful `ls /cache` here while the Python script returns `522`
+confirms the resumption / TLS-version mismatch above.
 
 [bbl-upload]: https://github.com/mattcar15/bambu-printer-api/blob/main/bambulabs_api/printer.py
 
