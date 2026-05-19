@@ -32,16 +32,18 @@ import numpy as np
 import vtk
 
 from cad_model import (
-    AUGER_GAP_W, AUGER_GAP_Y_BACK, AUGER_LEN, AUGER_OD, ARM_THK, ARM_X_INNER,
+    AUGER_GAP_W, AUGER_GAP_Y_BACK, AUGER_LEN, AUGER_OD, ARM_THK,
     BASE_T, BASE_Y_BACK, BASE_Y_CENTRE, BASE_Y_FRONT, BRK_FLANGE_T,
     BRK_FLANGE_W, BRK_FLANGE_D, BRK_MOUNT_HOLE_INSET_X,
     BRK_RING_CENTRE_LOCAL_Z, GEAR_BAND_FACE_W, GEAR_BAND_TIP_DIA,
-    GEAR_CENTRE_DISTANCE, HINGE_EYE_ID, HINGE_EYE_OD, HINGE_EYE_THK,
-    HINGE_MP_X_INNER, MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
+    GEAR_CENTRE_DISTANCE, HINGE_EYE_ID, HINGE_EYE_OD,
+    HINGE_LOBE_W, HINGE_X0, HINGE_X1, HINGE_X2, HINGE_X3,
+    MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
     NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN, PINION_TIP_DIA,
     PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MAX, PLATE_X_MIN,
     PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT,
-    RAMP_TOP_Z, RAMP_Y_BACK, TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
+    RAMP_TOP_Z, RAMP_Y_BACK, TAP_COLLAR_BORE_LOCAL_Z,
+    TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
     TAP_MOUNT_HOLE_INSET_X, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP,
     Y_GEAR_BAND, Y_REAR, Y_TAP, Z_AUG, Z_BASE_TOP, Z_MOTOR,
     build_baseplate, build_hinge_pin, build_mounting_plate,
@@ -155,21 +157,23 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
         HERE / "imported-parts/tap-collar/mount_plate.stl",
         COL_TAP_MOUNT), tilt_deg, pre_tm))
 
-    # ---- imported TAP COLLAR (PR #51): native bore at z=+30.25 above its
-    # own z=0 base, so with Z_AUG=30.25 it bolts down flush with no z shift.
+    # ---- imported TAP COLLAR (PR #51): native bore at z=+29.25 above its
+    # own z=0 base, so with Z_AUG=29.25 it bolts down flush with no z shift.
     pre_tc = vtk.vtkTransform()
     pre_tc.PostMultiply()
-    pre_tc.Translate(0, Y_TAP, Z_AUG - 30.25)
+    pre_tc.Translate(0, Y_TAP, Z_AUG - TAP_COLLAR_BORE_LOCAL_Z)
     actors.append(_set_tilt(_stl_actor(
         HERE / "imported-parts/tap-collar/tap_collar.stl",
         COL_TAP_COLLAR), tilt_deg, pre_tc))
 
     # ---- imported PINION (PR #49): along +Z native, rotated to +Y, centred
-    # on the gear band at (X_MOTOR, Y_GEAR_BAND, Z_AUG).
+    # *on* the gear band at (X_MOTOR, Y_GEAR_BAND, Z_AUG).  Per the fifth
+    # review the pinion must be Y-aligned with the gear band (no offset)
+    # so the mesh transfers full torque across the gear face.
     pre_p = vtk.vtkTransform()
     pre_p.PostMultiply()
     pre_p.RotateX(+90)
-    pre_p.Translate(X_MOTOR, Y_GEAR_BAND + PINION_LEN / 2.0, Z_AUG)
+    pre_p.Translate(X_MOTOR, Y_GEAR_BAND, Z_AUG)
     actors.append(_set_tilt(_stl_actor(
         HERE / "imported-parts/auger-geared/stepper-pinion.stl",
         COL_PINION), tilt_deg, pre_p))
@@ -248,8 +252,8 @@ def installation_diagram(out_path: Path) -> None:
     fig, ax = plt.subplots(figsize=(11, 8.5), dpi=140)
     ax.set_aspect("equal")
     ax.set_title("Mounting plate (TOP view, components on TOP surface)\n"
-                 "asymmetric: clear side at $-X$, components at $+X$ — "
-                 "auger overhangs through the +Y notch")
+                 "symmetric about $X=0$ — auger overhangs through the central "
+                 "+Y notch")
     ax.set_xlabel("X (mm)")
     ax.set_ylabel("Y (mm)")
 
@@ -274,23 +278,27 @@ def installation_diagram(out_path: Path) -> None:
                                        facecolor="#d0d0d8", edgecolor="#666",
                                        lw=0.6, alpha=0.7))
 
-    # Hinge eyes (mounting plate) — one each side, overhanging the +Y edge.
+    # Hinge sandwich — top view of all 3 layers per side at the +Y edge.
+    # Inner & outer thirds belong to the mounting plate; middle third
+    # belongs to the baseplate (drawn dashed).
     for side in (+1, -1):
-        cx = side * (AUGER_GAP_W / 2 + HINGE_EYE_THK / 2)
-        ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_OD / 2,
-                                    facecolor="#bcbcc6",
-                                    edgecolor="#444", lw=1.2))
-        ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_ID / 2,
-                                    facecolor="white",
-                                    edgecolor="#444", lw=0.8))
-
-    # Baseplate hinge arms (dashed — they belong to the baseplate, drawn
-    # here for context).
-    for side in (+1, -1):
-        x0 = side * ARM_X_INNER
-        x1 = side * (ARM_X_INNER + ARM_THK)
+        if side > 0:
+            mp_spans = ((HINGE_X0, HINGE_X1), (HINGE_X2, HINGE_X3))
+            bp_span = (HINGE_X1, HINGE_X2)
+        else:
+            mp_spans = ((-HINGE_X1, -HINGE_X0), (-HINGE_X3, -HINGE_X2))
+            bp_span = (-HINGE_X2, -HINGE_X1)
+        for x0, x1 in mp_spans:
+            cx = (x0 + x1) / 2
+            ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_OD / 2,
+                                        facecolor="#bcbcc6",
+                                        edgecolor="#444", lw=1.2))
+            ax.add_patch(patches.Circle((cx, Y_DISP), HINGE_EYE_ID / 2,
+                                        facecolor="white",
+                                        edgecolor="#444", lw=0.8))
+        x0, x1 = bp_span
         ax.add_patch(patches.Rectangle((min(x0, x1), BASE_Y_FRONT),
-                                       abs(ARM_THK), Y_DISP - BASE_Y_FRONT,
+                                       abs(x1 - x0), Y_DISP - BASE_Y_FRONT,
                                        facecolor="#c8c8d0", edgecolor="#444",
                                        lw=0.8, ls="--"))
         cx = (x0 + x1) / 2
@@ -322,11 +330,11 @@ def installation_diagram(out_path: Path) -> None:
                     arrowprops=dict(arrowstyle="-", color="black", lw=0.6))
 
     add_hole_group(Y_BRK_FRONT, 48.0, 3.4,
-                   "Front bracket (#55) — 2 × M3 @ X=±24 (on plinth)", "#3a78b8")
+                   "Front bracket (#47 lifted) — 2 × M3 @ X=±24 (flush)", "#3a78b8")
     add_hole_group(Y_TAP,       48.0, 3.4,
                    "Tap-collar mount (#51) — 2 × M3 @ X=±24 (flush)", "#6a3a8b")
     add_hole_group(Y_BRK_REAR,  48.0, 3.4,
-                   "Rear bracket (#55) — 2 × M3 @ X=±24 (on plinth)", "#3a78b8")
+                   "Rear bracket (#47 lifted) — 2 × M3 @ X=±24 (flush)", "#3a78b8")
 
     # NEMA 11 motor face on the vertical mount block.
     ax.add_patch(patches.Rectangle((X_MOTOR - NEMA11_BODY_W / 2 - 4,
@@ -346,21 +354,16 @@ def installation_diagram(out_path: Path) -> None:
                 fontsize=9, va="center", ha="left",
                 arrowprops=dict(arrowstyle="-", color="black", lw=0.6))
 
-    # Actuator lug (on UNDERSIDE — dashed)
-    ax.add_patch(patches.Rectangle((-6, -60 - 4), 12, 8, facecolor="#b88a3a",
-                                   edgecolor="black", lw=0.8, alpha=0.4))
-    ax.annotate("Linear-actuator rod-end lug (UNDERSIDE)",
-                xy=(0, -60), xytext=(PLATE_X_MAX + 12, -60),
-                fontsize=9, va="center", ha="left",
-                arrowprops=dict(arrowstyle="-", color="black", lw=0.6))
+    # (Plate underside is feature-free — no actuator lug.)
 
     # Auger projection (overhangs through the gap into mid-air at +Y).
     ax.plot([0, 0], [Y_REAR, Y_DISP], color="#a07020", lw=1.5, ls=":",
             label="Auger centreline (above plate, overhangs through gap)")
     ax.plot([0], [Y_GEAR_BAND], "o", color="#a07020", ms=8, mfc="none",
-            label=f"Gear band (Y={Y_GEAR_BAND:.1f}, clears plate top by 5 mm)")
+            label=f"Gear band (Y={Y_GEAR_BAND:.1f}, "
+                  f"clears plate top by {Z_AUG - GEAR_BAND_TIP_DIA/2:.2f} mm)")
     ax.plot([X_MOTOR], [Y_GEAR_BAND], "x", color="#3a8b48", ms=10,
-            label="Pinion centreline")
+            label="Pinion centreline (Y-aligned with gear band)")
 
     # Hinge axis annotation
     ax.annotate("HINGE AXIS\n(X-axis through dispense point;\n"

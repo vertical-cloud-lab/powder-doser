@@ -1,39 +1,26 @@
 """Mounting plate + hinged baseplate + hinge pins for the powder-doser.
 
-Re-design per the second review on the issue #62 thread (#56 follow-up):
+Re-design per the fifth review on the issue #62 thread:
 
-  * All components (brackets, tap-collar mount, NEMA-11 mount block,
-    front ramps, hinge eyes) sit on the **TOP** of the mounting plate.
-  * The plate has **NO holes other than mounting holes** and **NO gaps**
-    other than a single open U-notch in the +Y edge.  The auger
-    overhangs through that notch in mid-air; the gear band & pinion
-    have *air-clearance* above the plate top.
-  * The auger sits **centred on the plate in X** (auger axis at X=0;
-    plate is symmetric about X=0 so the central auger gap is in the
-    middle of the +Y edge).
-  * The brackets bolt **directly to the plate top** with no plinths
-    (per the third review).  The auger centreline therefore sits at
-    the bracket's native bore height above the plate top.
-  * The hinge is **split into two separate hinges** — one on each
-    side of the auger, **equal in size and symmetric about X=0**.
-    Each side: one mounting-plate eye + one baseplate-arm eye butted
-    axially on a short M5 pin.  Hinge eye thickness has been bumped
-    to make the hinges noticeably beefier.
-  * Each hinge eye is fed by a **full-width front ramp** rising from
-    the plate top to the hinge axis.  Together the two ramps cover the
-    entire +Y face of the plate except for the central auger-gap.
-  * **No features hang from the plate underside** — the linear-actuator
-    rod-end lug from earlier revisions has been removed.
-  * The **hinge axis is 10 mm in front of the baseplate's front edge**
-    (i.e., the dispense point is held 10 mm clear of the baseplate),
-    so the auger dispenses into a cup placed in front of the baseplate.
-  * The baseplate carries **two complementary forward-and-up arms**,
-    one on each side of the auger, each ending in an eye at the
-    hinge axis with a corresponding gap between them.
-  * Component order along the auger from the hinge end toward the
-    motor end matches the drawing exactly:
-        hinge → front bracket → tap collar mount → motor (over the
-        gear band) → rear bracket.
+  * **Lifted brackets from PR #47** — the 14 mm-thick flange raises
+    the auger bore to Z = 29.25 mm, giving the PR #49 Ø50 gear band
+    4.25 mm of radial clearance over a flat plate.  There is now
+    **no plinth under the brackets** and **no through-plate slot**
+    under the gear band.
+  * **Updated tap-collar mount plate from PR #51** (60 × 18 × 14 mm,
+    bore at the same Z = 29.25 mm as the bracket).
+  * **Auger gear, tap collar and front bracket are packed flush** —
+    only 1 mm of air clearance between the gear-band face, the tap
+    collar and the front bracket so gravity holds them against each
+    other.
+  * **Pinion centred on the gear band in Y** — the motor face is set
+    so the pinion centre lands exactly on the gear-band centre,
+    transferring full torque across the gear face.
+  * **3-layer sandwich hinges** — each side of the auger gap carries
+    {inner mounting-plate lobe, middle baseplate arm, outer
+    mounting-plate lobe} sharing a single M5 pin per side.  The
+    layers each occupy one third of their ramp half-span, so the
+    hinge spans the full front of the plate.
 
 Only the **new** parts are generated here (mounting_plate, baseplate,
 hinge_pins).  The auger, brackets, tap-collar and motor STLs are
@@ -43,7 +30,8 @@ imported verbatim from the upstream PRs in ``imported-parts/``:
                 ``cad/auger-geared/stepper-pinion.stl``
   - PR #51    — ``design/cad/tap-collar/stl/tap_collar.stl`` +
                 ``mount_plate.stl``
-  - PR #55    — ``cad/auger-bracket/auger-bracket.stl``
+  - PR #47    — ``design/cad/auger-bracket/stl/auger_bracket.stl``
+                (the *lifted* 14 mm-flange variant)
 
 Coordinate frame
 ================
@@ -54,9 +42,8 @@ Coordinate frame
   +Z up
 
   Mounting plate top face is at z = 0, bottom at z = -PLATE_T.
-  The auger is held above the plate top on integrated **plinths** under
-  each bracket footprint (so the gear band tip clears the plate top
-  with no through-plate slot).  Auger centreline is at z = Z_AUG.
+  Auger centreline is at z = Z_AUG = 29.25 mm (= bracket native bore
+  height, set by the lifted PR #47 flange).
 
 Run from the package directory to (re)generate all three STEPs + STLs::
 
@@ -92,28 +79,40 @@ NEMA11_PILOT_DIA = 22.0
 NEMA11_SHAFT_DIA = 5.0
 NEMA11_SHAFT_LEN = 18.0
 
-# PR #55 — auger bracket (CadQuery; bore Ø25.4, plate 60 × 25 × 10).
+# PR #47 — auger bracket (CadQuery; bore Ø25.5, plate 60 × 12 × 14).
+# The PR #47 bracket is the **lifted** variant whose 14 mm-thick flange
+# raises the bore axis to 29.25 mm above the flange-bottom, giving the
+# Ø50 PR #49 gear band 4.25 mm of radial clearance over a flat plate.
+# This is what eliminates both the under-bracket plinths and the
+# through-plate gear-band slot from the previous pass (per @swcharles'
+# fifth review on the issue #62 thread).
 BRK_FLANGE_W = 60.0
-BRK_FLANGE_D = 25.0
-BRK_FLANGE_T = 10.0
+BRK_FLANGE_D = 12.0
+BRK_FLANGE_T = 14.0
 BRK_MOUNT_HOLE_INSET_X = 6.0
 BRK_MOUNT_HOLE_D = 3.4
-BRK_RING_OD = 35.4
-BRK_RING_OR = BRK_RING_OD / 2
-BRK_RING_CENTRE_LOCAL_Z = BRK_FLANGE_T + BRK_RING_OR * 0.55  # 19.74 mm
+BRK_COLLAR_OD = 33.5
+BRK_COLLAR_OR = BRK_COLLAR_OD / 2
+BRK_COLLAR_PLATE_OVERLAP = 1.5
+BRK_RING_CENTRE_LOCAL_Z = (
+    BRK_FLANGE_T + BRK_COLLAR_OR - BRK_COLLAR_PLATE_OVERLAP
+)                                                    # 29.25 mm
 
-# PR #51 — tap-collar mount plate (60 × 12 × 14, 2 × M3 at X = ±24).
+# PR #51 — tap-collar mount plate (60 × 18 × 14, 2 × M3 at X = ±24).
+# The latest #51 head bumps PLATE_DEPTH from 12 → 18 mm to match the
+# lengthened TC collar so the M2 solenoid holes sit fully over solid
+# collar material.  The mount-plate is dimensionally locked to the
+# PR #47 bracket so the same M3 corner pattern works for both, and the
+# collar bore sits at exactly the same Z = 29.25 mm above the plate
+# bottom as the bracket bore — so bracket and tap-collar bolt flat to
+# the same plate top with no Z shim and the auger threads through both
+# at the same Z.
 TAP_PLATE_W = 60.0
-TAP_PLATE_D = 12.0
+TAP_PLATE_D = 18.0
 TAP_PLATE_T = 14.0
 TAP_MOUNT_HOLE_INSET_X = 6.0
 TAP_MOUNT_HOLE_D = 3.4
-# In the upstream tap-collar STL, the collar bore sits 30.25 mm above
-# the bottom of the mount plate (i.e., above the mating face that bolts
-# to OUR mounting plate top).  Choosing Z_AUG = this value means the
-# tap-collar bolts flat to the plate top with no plinth, while keeping
-# the auger axis aligned with the collar bore.
-TAP_COLLAR_BORE_LOCAL_Z = 30.25
+TAP_COLLAR_BORE_LOCAL_Z = 29.25
 
 # --------------------------------------------------------------------- #
 # Mounting-plate parameters
@@ -130,9 +129,18 @@ Y_REAR = -AUGER_LEN / 2.0                                    # -125
 Y_GEAR_BAND = Y_DISP - GEAR_BAND_AXIAL_FROM_DISP             # +41.67
 
 # Component Y positions along the auger (hinge end → motor end).
-# Component ORDER matches the drawing.
-Y_BRK_FRONT = +85.0
-Y_TAP       = +60.0
+# Component ORDER matches the drawing.  Per the fifth review, front
+# bracket / tap-collar / gear band are packed flush along Y with only
+# a 1 mm air-clearance gap between adjacent ring faces so gravity holds
+# them together against the brackets.
+#   gear band       : Y_GEAR_BAND ± GEAR_BAND_FACE_W/2 = +41.67 ± 5
+#   tap collar      : Y_TAP       ± TAP_PLATE_D/2     = +56.67 ± 9
+#   front bracket   : Y_BRK_FRONT ± BRK_FLANGE_D/2    = +72.67 ± 6
+PACK_GAP = 1.0
+Y_TAP       = (Y_GEAR_BAND + GEAR_BAND_FACE_W / 2.0
+               + PACK_GAP + TAP_PLATE_D / 2.0)                # +56.67
+Y_BRK_FRONT = (Y_TAP + TAP_PLATE_D / 2.0
+               + PACK_GAP + BRK_FLANGE_D / 2.0)               # +72.67
 Y_BRK_REAR  = -95.0
 
 # --- Plate X envelope (SYMMETRIC about X=0 — auger in the middle) ------
@@ -154,16 +162,35 @@ PLATE_Y_CENTRE = (PLATE_Y_FRONT + PLATE_Y_BACK) / 2.0
 AUGER_GAP_W = 32.0                          # X width of the notch
 AUGER_GAP_Y_BACK = PLATE_Y_FRONT - 35.0     # how far back the notch goes
 
-# --- Hinge eyes (one each side of the auger gap) -----------------------
-# Equal-sized, symmetric about X=0; thicker than the previous pass per
-# the third review.
-HINGE_EYE_OD = 14.0
+# --- Hinge sandwich (3 layers per side: plate / base / plate) ---------
+# Per the fifth review, each side of the auger gap carries a 3-layer
+# sandwich joint instead of a single-pin contact.  The +X half-ramp
+# (from the auger-gap edge at X = +AUGER_GAP_W/2 out to PLATE_X_MAX)
+# is divided equally into thirds along X:
+#
+#   inner third  : mounting-plate hinge lobe (inboard)
+#   middle third : baseplate arm eye         (sandwiched)
+#   outer third  : mounting-plate hinge lobe (outboard)
+#
+# A single M5 pin per side runs through all three lobes, making a much
+# stiffer pivot.  The mirror layout applies on the -X side.
+HINGE_EYE_OD = 18.0                       # thicker than the v4 (Ø14) pass
 HINGE_EYE_ID = 5.4
-HINGE_EYE_THK = 10.0
-# Inboard X of each mounting-plate eye = outer edge of the auger gap.
-HINGE_MP_X_INNER = AUGER_GAP_W / 2.0
-# Centreline of each mounting-plate eye in X.
-HINGE_MP_X = HINGE_MP_X_INNER + HINGE_EYE_THK / 2.0
+# Each ramp half-span runs from the auger-gap edge to the plate X edge.
+RAMP_HALF_SPAN = (PLATE_X_MAX - PLATE_X_CENTRE) - (AUGER_GAP_W / 2.0)  # 38.05
+HINGE_LOBE_W = RAMP_HALF_SPAN / 3.0       # ≈ 12.68 mm — each of 3 layers
+# A tiny shim of clearance between layers so the pin spins freely.
+HINGE_LAYER_GAP = 0.4
+
+# Convenience: X-coordinates of the layer boundaries on the +X side.
+#   x0 = +AUGER_GAP_W/2                 (inner edge of the inner lobe)
+#   x1 = x0 + HINGE_LOBE_W              (mounting/baseplate boundary)
+#   x2 = x0 + 2 * HINGE_LOBE_W          (baseplate/mounting boundary)
+#   x3 = PLATE_X_MAX                    (outer edge of the outer lobe)
+HINGE_X0 = +AUGER_GAP_W / 2.0
+HINGE_X1 = HINGE_X0 + HINGE_LOBE_W
+HINGE_X2 = HINGE_X0 + 2.0 * HINGE_LOBE_W
+HINGE_X3 = PLATE_X_MAX
 
 # --- Front ramps (one each side of the auger gap) ----------------------
 # Each ramp is a right-triangle prism in the YZ plane, extruded along X
@@ -175,7 +202,7 @@ RAMP_TOP_Z = Z_AUG + HINGE_EYE_OD / 2.0                    # +36.25
 BOSS_W = NEMA11_BODY_W + 8.0                               # 36.2
 BOSS_H = NEMA11_BODY_W + 8.0
 BOSS_T = 6.0
-MOTOR_FACE_Y = Y_GEAR_BAND - GEAR_BAND_FACE_W / 2.0 - 2.0  # +34.67
+MOTOR_FACE_Y = Y_GEAR_BAND - PINION_LEN / 2.0 - 2.0        # +31.67
 X_MOTOR = +GEAR_CENTRE_DISTANCE                            # +32
 Z_MOTOR = Z_AUG
 
@@ -202,16 +229,13 @@ BASE_Y_CENTRE = (BASE_Y_FRONT + BASE_Y_BACK) / 2.0
 Z_BASE_TOP = -PLATE_T - 8.0                                # -14
 
 # --- Baseplate hinge arms (forward-and-up, one each side) -------------
-# Each arm extends forward from the base front edge (Y=BASE_Y_FRONT) to
-# the hinge axis (Y=Y_DISP), rising vertically from base top to the
-# hinge axis level.  Its eye sits OUTBOARD of the mounting-plate eye on
-# the same side (axially butted, sharing one M5 pin per side).
-ARM_THK = 8.0
-# Inboard X of each baseplate arm = outboard X of the mounting-plate eye.
-ARM_X_INNER = HINGE_MP_X_INNER + HINGE_EYE_THK             # 22
-ARM_X = ARM_X_INNER + ARM_THK / 2.0                        # 26
+# Each arm now occupies the MIDDLE third of its ramp half-span so it is
+# sandwiched between the mounting plate's inner and outer hinge lobes
+# (per the fifth review).  The arm rises from the base top to the
+# hinge axis level and shares the same M5 pin.
+ARM_THK = HINGE_LOBE_W - HINGE_LAYER_GAP                   # ≈ 12.28 mm
 # Hinge axis in baseplate's local frame (before final translate).
-HINGE_AXIS_Z_LOCAL = Z_AUG - Z_BASE_TOP                    # +44.25
+HINGE_AXIS_Z_LOCAL = Z_AUG - Z_BASE_TOP                    # +43.25
 
 # --- Linear-actuator base clevis on baseplate top ---------------------
 ACT_BASE_Y = -110.0
@@ -273,24 +297,7 @@ def build_mounting_plate() -> cq.Workplane:
         for sx in (+brk_hole_x, -brk_hole_x):
             plate = plate.cut(_through_plate_hole(sx, cy, M3_CLEAR))
 
-    # ---- Gear-band + pinion clearance cutout --------------------------
-    # With brackets bolted flat (no plinths), the Ø50 gear band centred
-    # at (X=0, Y=Y_GEAR_BAND) and its mating Ø18 pinion at X=+32 dip
-    # below the plate top.  A minimum-area through-cutout under just
-    # the band+pinion footprint keeps the rest of the plate solid.
-    GEAR_SLOT_Y_HALF = (GEAR_BAND_FACE_W + PINION_LEN) / 2.0 + 3.0
-    gear_slot = (
-        cq.Workplane("XY")
-        .workplane(offset=1.0)
-        .moveTo(-GEAR_BAND_TIP_DIA / 2 - 3.0, Y_GEAR_BAND)
-        .rect(GEAR_BAND_TIP_DIA + 6.0 + GEAR_CENTRE_DISTANCE,
-              GEAR_SLOT_Y_HALF * 2.0,
-              centered=(False, True))
-        .extrude(-(PLATE_T + 2.0))
-    )
-    plate = plate.cut(gear_slot)
-
-    # ---- Tap-collar mount holes (no plinth — mount sits flush) ---------
+    # ---- Tap-collar mount holes (mount sits flush, no plinth) ---------
     tap_hole_x = TAP_PLATE_W / 2.0 - TAP_MOUNT_HOLE_INSET_X          # ±24
     for sx in (+tap_hole_x, -tap_hole_x):
         plate = plate.cut(_through_plate_hole(sx, Y_TAP, M3_CLEAR))
@@ -327,54 +334,77 @@ def build_mounting_plate() -> cq.Workplane:
     )
     plate = plate.cut(pilot)
 
-    # ---- Front ramps (full-width, one each side of the auger gap) ------
-    # Each ramp is a right-triangle prism extruded along X.  The
-    # triangle (in YZ) is: A=(RAMP_Y_BACK,0), B=(PLATE_Y_FRONT,0),
-    # C=(PLATE_Y_FRONT, RAMP_TOP_Z).
-    ramp_spans = (
-        (+AUGER_GAP_W / 2.0, PLATE_X_MAX),     # +X side
-        (PLATE_X_MIN, -AUGER_GAP_W / 2.0),     # -X side
-    )
-    for x_inner, x_outer in ramp_spans:
-        ramp = (
-            cq.Workplane("YZ")
-            .workplane(offset=x_inner)
-            .moveTo(RAMP_Y_BACK, 0)
-            .lineTo(PLATE_Y_FRONT, 0)
-            .lineTo(PLATE_Y_FRONT, RAMP_TOP_Z)
-            .close()
-            .extrude(x_outer - x_inner)
-        )
-        plate = plate.union(ramp)
-
-    # ---- Hinge eyes (one each side of the auger gap) -------------------
-    # Each eye is a thin disk extruded outboard from the auger-gap
-    # edge, joined to the ramp front face by a small horizontal tab so
-    # the bore sits 10 mm forward of the plate edge (= at Y=Y_DISP).
+    # ---- Front ramps + sandwich hinge lobes ----------------------------
+    # Per the fifth review each side of the auger gap is a continuous
+    # ramp from the plate top up to the hinge axis, with the +X and -X
+    # halves each split along X into thirds:
+    #
+    #     inner third  : mounting-plate hinge lobe   (this part)
+    #     middle third : baseplate arm eye           (baseplate part)
+    #     outer third  : mounting-plate hinge lobe   (this part)
+    #
+    # The outermost surface of every lobe is the ramp face, so the ramp
+    # geometry naturally inherits the lobe boundaries.  All three lobes
+    # share one M5 pin per side that runs along X through the eye bore.
+    HINGE_R = HINGE_EYE_OD / 2.0
     for side in (+1, -1):
-        x_inner = side * (AUGER_GAP_W / 2.0)          # inboard X
-        # Horizontal tab from ramp front face out to the eye centre.
-        tab_y_back = PLATE_Y_FRONT - 1.0  # 1 mm overlap so union is robust
-        tab = (
-            cq.Workplane("YZ")
-            .workplane(offset=x_inner if side > 0 else x_inner - HINGE_EYE_THK)
-            .moveTo(tab_y_back, Z_AUG - HINGE_EYE_OD / 2.0)
-            .lineTo(Y_DISP + HINGE_EYE_OD / 2.0, Z_AUG - HINGE_EYE_OD / 2.0)
-            .lineTo(Y_DISP + HINGE_EYE_OD / 2.0, Z_AUG + HINGE_EYE_OD / 2.0)
-            .lineTo(tab_y_back, Z_AUG + HINGE_EYE_OD / 2.0)
-            .close()
-            .extrude(HINGE_EYE_THK)
-        )
-        plate = plate.union(tab)
-        # Through-hole along X (M5 clearance).
-        bore = (
-            cq.Workplane("YZ")
-            .workplane(offset=x_inner - 1 if side > 0 else x_inner - HINGE_EYE_THK - 1)
-            .center(Y_DISP, Z_AUG)
-            .circle(HINGE_EYE_ID / 2.0)
-            .extrude(HINGE_EYE_THK + 2)
-        )
-        plate = plate.cut(bore)
+        # X coordinates of the lobe boundaries on this side.
+        if side > 0:
+            x0, x1, x2, x3 = HINGE_X0, HINGE_X1, HINGE_X2, HINGE_X3
+            mp_layers = ((x0, x1 - HINGE_LAYER_GAP / 2),
+                         (x2 + HINGE_LAYER_GAP / 2, x3))
+        else:
+            x0, x1, x2, x3 = -HINGE_X0, -HINGE_X1, -HINGE_X2, -HINGE_X3
+            mp_layers = ((x1 + HINGE_LAYER_GAP / 2, x0),
+                         (x3, x2 - HINGE_LAYER_GAP / 2))
+
+        for x_inner, x_outer in mp_layers:
+            x_lo, x_hi = sorted((x_inner, x_outer))
+            # Ramp wedge for this lobe — triangular YZ prism that fills
+            # from the back of the ramp footprint forward to the plate
+            # front edge, rising from z=0 up to the hinge axis.
+            ramp = (
+                cq.Workplane("YZ")
+                .workplane(offset=x_lo)
+                .moveTo(RAMP_Y_BACK, 0)
+                .lineTo(PLATE_Y_FRONT, 0)
+                .lineTo(PLATE_Y_FRONT, RAMP_TOP_Z)
+                .close()
+                .extrude(x_hi - x_lo)
+            )
+            plate = plate.union(ramp)
+            # Eye lobe — disc-cap that overhangs the plate front edge so
+            # the bore axis lands at the dispense point (Y_DISP).  Built
+            # as a rectangle + half-cylinder cap so it fairs smoothly
+            # into the ramp top face.
+            tab_y_back = PLATE_Y_FRONT - 1.0  # 1 mm overlap for robust union
+            tab = (
+                cq.Workplane("YZ")
+                .workplane(offset=x_lo)
+                .moveTo(tab_y_back, Z_AUG - HINGE_R)
+                .lineTo(Y_DISP, Z_AUG - HINGE_R)
+                .lineTo(Y_DISP, Z_AUG + HINGE_R)
+                .lineTo(tab_y_back, Z_AUG + HINGE_R)
+                .close()
+                .extrude(x_hi - x_lo)
+            )
+            cap = (
+                cq.Workplane("YZ")
+                .workplane(offset=x_lo)
+                .center(Y_DISP, Z_AUG)
+                .circle(HINGE_R)
+                .extrude(x_hi - x_lo)
+            )
+            plate = plate.union(tab).union(cap)
+            # Through-bore (M5 clearance) along X through this lobe.
+            bore = (
+                cq.Workplane("YZ")
+                .workplane(offset=x_lo - 1.0)
+                .center(Y_DISP, Z_AUG)
+                .circle(HINGE_EYE_ID / 2.0)
+                .extrude((x_hi - x_lo) + 2.0)
+            )
+            plate = plate.cut(bore)
 
     return plate
 
@@ -405,34 +435,43 @@ def build_baseplate() -> cq.Workplane:
             )
             base = base.union(leg)
 
-    # Forward-and-up hinge arms.  Each arm is a YZ rectangle from
-    # (BASE_Y_FRONT, BASE_T) to (Y_DISP, HINGE_AXIS_Z_LOCAL + HINGE_EYE_OD/2)
-    # extruded ARM_THK along X.  The arm carries the M5 bore at
-    # (Y_DISP, HINGE_AXIS_Z_LOCAL).  Each side gets its own arm so the
-    # auger has a central gap between them, mirroring the mounting plate.
-    arm_top_local = HINGE_AXIS_Z_LOCAL + HINGE_EYE_OD / 2.0
-    for side in (+1, -1):
-        x_inner = side * ARM_X_INNER                        # ±22
-        x_outer = side * (ARM_X_INNER + ARM_THK)            # ±30
-        # 4-point arm profile (rectangle in YZ).
+    # Forward-and-up hinge arms — middle layer of the 3-layer sandwich.
+    # Each arm occupies the centre third of its ramp half-span so it
+    # slips between the mounting plate's inner and outer hinge lobes.
+    # The arm rises from the base top to the hinge axis level and ends
+    # in a disc-cap eye that shares the M5 pin with the plate lobes.
+    HINGE_R = HINGE_EYE_OD / 2.0
+    arm_top_local = HINGE_AXIS_Z_LOCAL + HINGE_R
+    arm_spans = (
+        (HINGE_X1 + HINGE_LAYER_GAP / 2,  HINGE_X2 - HINGE_LAYER_GAP / 2),
+        (-HINGE_X2 + HINGE_LAYER_GAP / 2, -HINGE_X1 - HINGE_LAYER_GAP / 2),
+    )
+    for x_lo, x_hi in arm_spans:
         arm = (
             cq.Workplane("YZ")
-            .workplane(offset=x_inner if side > 0 else x_outer)
+            .workplane(offset=x_lo)
             .moveTo(BASE_Y_FRONT, BASE_T)
-            .lineTo(Y_DISP + HINGE_EYE_OD / 2.0, BASE_T)
-            .lineTo(Y_DISP + HINGE_EYE_OD / 2.0, arm_top_local)
+            .lineTo(Y_DISP, BASE_T)
+            .lineTo(Y_DISP, arm_top_local)
             .lineTo(BASE_Y_FRONT, arm_top_local)
             .close()
-            .extrude(ARM_THK)
+            .extrude(x_hi - x_lo)
         )
         base = base.union(arm)
-        # M5 bore along X through the arm at the hinge axis.
+        cap = (
+            cq.Workplane("YZ")
+            .workplane(offset=x_lo)
+            .center(Y_DISP, HINGE_AXIS_Z_LOCAL)
+            .circle(HINGE_R)
+            .extrude(x_hi - x_lo)
+        )
+        base = base.union(cap)
         bore = (
             cq.Workplane("YZ")
-            .workplane(offset=(x_inner if side > 0 else x_outer) - 1)
+            .workplane(offset=x_lo - 1.0)
             .center(Y_DISP, HINGE_AXIS_Z_LOCAL)
             .circle(HINGE_EYE_ID / 2.0)
-            .extrude(ARM_THK + 2)
+            .extrude((x_hi - x_lo) + 2.0)
         )
         base = base.cut(bore)
 
@@ -457,17 +496,22 @@ def build_baseplate() -> cq.Workplane:
 
 
 def build_hinge_pin() -> cq.Workplane:
-    """A pair of short M5 pins (one per side), separated by the auger
-    gap.  Each pin spans the mounting-plate eye + baseplate arm eye on
-    its side, with 2 mm of slop at each end."""
-    pin_len = HINGE_EYE_THK + ARM_THK + 4.0
-    # Pin centre X (on +X side): centred over its (eye + arm) pair.
-    x_centre_plus = AUGER_GAP_W / 2.0 + (HINGE_EYE_THK + ARM_THK) / 2.0
+    """A pair of long M5 pins (one per side), each running through the
+    full 3-layer sandwich on its side:
+
+        inner mounting-plate lobe + middle baseplate arm eye +
+        outer mounting-plate lobe.
+
+    Pin length spans HINGE_X0 → HINGE_X3 (= one ramp half-span) plus
+    2 mm of slop at each end so the head can grip outside the outer
+    lobe and the tail clears the inner lobe when withdrawn."""
+    pin_len = (HINGE_X3 - HINGE_X0) + 4.0
+    pin_centre_plus = (HINGE_X0 + HINGE_X3) / 2.0
     pin_plus = (
         cq.Workplane("YZ")
         .circle(5.0 / 2.0)
         .extrude(pin_len)
-        .translate((x_centre_plus - pin_len / 2.0, 0, 0))
+        .translate((pin_centre_plus - pin_len / 2.0, 0, 0))
     )
     pin_minus = pin_plus.mirror("YZ")
     return pin_plus.union(pin_minus)
@@ -508,8 +552,8 @@ def main() -> None:
     print(f"Gear-band-tip clearance over : {Z_AUG - GEAR_BAND_TIP_DIA/2:+.2f} mm "
           f"(negative = below plate top — overhangs through the open notch)")
     print(f"Auger gap (notch) X-width    : {AUGER_GAP_W:.1f} mm")
-    print(f"Hinge eye OD × thickness     : {HINGE_EYE_OD:.1f} × {HINGE_EYE_THK:.1f} mm "
-          f"(equal-sized, mirror-symmetric about X=0)")
+    print(f"Hinge eye OD                 : {HINGE_EYE_OD:.1f} mm  "
+          f"(3-layer sandwich, each lobe ≈ {HINGE_LOBE_W:.2f} mm thick along X)")
     print(f"Ramp top Z                   : {RAMP_TOP_Z:+.2f} mm")
     print(f"Hinge axis                   : X-axis through (Y={Y_DISP:+.2f}, Z={Z_AUG:+.2f})")
     print(f"Baseplate front edge Y       : {BASE_Y_FRONT:+.2f} (hinge axis "

@@ -32,19 +32,23 @@ nema11PilotDia         = 22.0                 // central pilot
 nema11ShaftDia         = 5.0
 nema11ShaftLen         = 18.0
 
-// ---- Auger bracket (PR #55: 60 × 25 × 10 mm flange, 2 × M3 at X = ±24) ----
+// ---- Auger bracket (PR #47: 60 × 12 × 14 mm flange, 2 × M3 at X = ±24)
+//      LIFTED variant: 14 mm-thick flange raises the bore axis to 29.25 mm
+//      above the flange bottom, giving the PR #49 Ø50 gear band 4.25 mm of
+//      radial clearance over a flat plate (no slot, no plinth required). ----
 brkFlangeW             = 60.0                 // along X
-brkFlangeD             = 25.0                 // along Y (auger axis)
-brkFlangeT             = 10.0                 // Z
+brkFlangeD             = 12.0                 // along Y (auger axis)
+brkFlangeT             = 14.0                 // Z (lifted)
 brkMountHoleInsetX     = 6.0                  // → hole centres at X = ±24
 brkMountHoleD          = 3.4                  // M3 clearance
-brkRingOd              = 35.4                 // outside diameter of the collar ring
-brkRingCentreLocalZ    = brkFlangeT + (brkRingOd / 2.0) * 0.55   // 19.74 mm above flange bottom
+brkCollarOd            = 33.5                 // outside diameter of the collar ring
+brkCollarPlateOverlap  = 1.5
+brkRingCentreLocalZ    = brkFlangeT + (brkCollarOd / 2.0) - brkCollarPlateOverlap   // 29.25 mm
 
-// ---- Tap-collar mount plate (PR #51: 60 × 12 × 14, 2 × M3 at X = ±24) ----
+// ---- Tap-collar mount plate (PR #51 latest: 60 × 18 × 14, 2 × M3 at X = ±24) ----
 tapPlateW              = 60.0                 // along X
-tapPlateD              = 12.0                 // along Y
-tapPlateT              = 14.0                 // Z
+tapPlateD              = 18.0                 // along Y — matches lengthened TC collar
+tapPlateT              = 14.0                 // Z — matches bracket flange thickness
 tapMountHoleInsetX     = 6.0
 tapMountHoleD          = 3.4
 
@@ -71,16 +75,20 @@ m5Clear                = 5.4
 //         hinge → front bracket → tap collar → motor (over gear band) →
 //         rear bracket
 
-// Tap-collar bore Z (above the mount-plate bottom).  Kept here for
-// reference; auger axis is now set by the bracket native bore height.
-tapCollarBoreLocalZ    = 30.25
+// Tap-collar bore Z (above the mount-plate bottom).  The PR #51 collar
+// bore is at 29.25 mm — exactly the same as the PR #47 bracket bore —
+// so bracket + tap-collar + auger gear are at the same Z and bolt flat
+// to a flush plate top.
+tapCollarBoreLocalZ    = 29.25
 
 // ---- Mounting plate ----
 plateT                 = 6.0                  // Z thickness
 
 // Brackets bolt directly to the plate top — auger axis sits at the
-// bracket's native bore height above the plate top, NO plinths.
-zAug                   = brkRingCentreLocalZ               // +19.74 mm
+// LIFTED bracket's native bore height (29.25 mm) above the plate top,
+// so the Ø50 gear band clears the plate top by 4.25 mm — no plinths
+// and no through-plate slot.
+zAug                   = brkRingCentreLocalZ               // +29.25 mm
 
 // Auger spans Y = [yRear, yDisp]. Dispense end at +Y.
 yDisp                  = +augerLen / 2.0                   // +125 mm
@@ -88,8 +96,12 @@ yRear                  = -augerLen / 2.0                   // -125 mm
 yGearBand              = yDisp - gearBandFromDispEnd       // +41.67 mm
 
 // Component Y positions (hinge end → far end, matching issue #62 drawing).
-yBrkFront              = +85.0
-yTap                   = +60.0
+// Front bracket / tap collar / gear band are packed flush along Y with
+// only a 1 mm air-clearance gap so gravity holds them against the
+// brackets (per the fifth review).
+packGap                = 1.0
+yTap                   = yGearBand + (gearBandFaceW / 2.0) + packGap + (tapPlateD / 2.0)   // +56.67
+yBrkFront              = yTap + (tapPlateD / 2.0) + packGap + (brkFlangeD / 2.0)           // +72.67
 yBrkRear               = -95.0
 
 // SYMMETRIC plate X envelope (auger centred at X=0, plate mirrored).
@@ -112,21 +124,29 @@ augerGapW              = 32.0
 augerGapYBack          = plateYFront - 35.0                // +80
 
 // NEMA-11 motor mount block — sits ON TOP of plate; its +Y face carries
-// the motor face holes; motor body extends in -Y from that face.
+// the motor face holes; motor body extends in -Y from that face.  The
+// motor face is placed so the pinion centre sits exactly on the gear
+// band centre in Y — no Y-axis offset (per the fifth review).
 xMotor                 = +gearCentreDistance               // +32 mm
 zMotor                 = zAug
-motorFaceY             = yGearBand - (gearBandFaceW / 2.0) - 2.0
+motorFaceY             = yGearBand - (pinionLen / 2.0) - 2.0   // +31.67
 bossW                  = nema11BodyW + 8.0                 // 36.2
 bossH                  = nema11BodyW + 8.0                 // 36.2
 bossT                  = 6.0
 
-// Two SEPARATE side hinges, one each side of the auger gap.  Equal-sized
-// and mirror-symmetric about X=0; thicker than the previous pass.
-hingeEyeOd             = 14.0
+// 3-layer sandwich hinges — each side of the auger gap carries
+// {inner mounting-plate lobe, middle baseplate arm, outer mounting-plate
+// lobe} sharing a single M5 pin per side (per the fifth review).  Each
+// lobe takes one third of the ramp half-span.
+hingeEyeOd             = 18.0
 hingeEyeId             = m5Clear
-hingeEyeThk            = 10.0
-hingeMpXInner          = augerGapW / 2.0
-hingeMpX               = hingeMpXInner + hingeEyeThk / 2.0
+hingeLayerGap          = 0.4
+rampHalfSpan           = (plateXMax - plateXCentre) - (augerGapW / 2.0)
+hingeLobeW             = rampHalfSpan / 3.0
+hingeX0                = +augerGapW / 2.0
+hingeX1                = hingeX0 + hingeLobeW
+hingeX2                = hingeX0 + 2.0 * hingeLobeW
+hingeX3                = plateXMax
 
 // Front ramps — each is a right-triangle prism (in YZ) extruded along
 // X from the auger-gap edge out to the plate X edge for its side.
@@ -154,11 +174,10 @@ baseYCentre            = (baseYFront + baseYBack) / 2.0
 // zBaseTop is the BOTTOM of the baseplate body; base top = zBaseTop + baseT.
 zBaseTop               = -plateT - 8.0                     // -14
 
-// Baseplate hinge arms — forward-and-up, one each side of the auger.
-// Each arm sits OUTBOARD of the matching mounting-plate eye.
-armThk                 = 8.0
-armXInner              = hingeMpXInner + hingeEyeThk
-armX                   = armXInner + armThk / 2.0
+// Baseplate hinge arms — middle layer of the 3-layer sandwich, one each
+// side of the auger gap.  Each arm occupies the centre third of its
+// ramp half-span between the mounting plate's inner and outer lobes.
+armThk                 = hingeLobeW - hingeLayerGap
 hingeAxisZLocal        = zAug - zBaseTop
 
 // Linear-actuator base clevis on baseplate.

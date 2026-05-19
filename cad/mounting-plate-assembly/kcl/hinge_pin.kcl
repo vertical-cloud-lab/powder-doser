@@ -1,13 +1,14 @@
-// Hinge pins — two short M5 pins (one per side hinge).
+// Hinge pins — two long M5 pins (one per side).
 //
-// Each pin spans (mounting-plate eye thickness) + (baseplate arm
-// thickness) + 4 mm slop.  The two pins are separated by the central
-// auger gap; this file only models one pin (the +X side); the mirror
-// is added in cad_model.py.
+// Each pin runs through all three layers of its 3-layer sandwich:
+//   inner mounting-plate lobe + middle baseplate arm eye + outer
+//   mounting-plate lobe.
+// The two pins are separated by the central auger gap; this file only
+// models one pin (the +X side); the mirror is added in cad_model.py.
 import "params.kcl" as p
 
-pinLen = p.hingeEyeThk + p.armThk + 4
-pinXC  = p.augerGapW/2 + (p.hingeEyeThk + p.armThk)/2
+pinLen = (p.hingeX3 - p.hingeX0) + 4
+pinXC  = (p.hingeX0 + p.hingeX3) / 2
 
 pin = startSketchOn(YZ)
   |> circle(center = [0, 0], radius = 5.0 / 2)

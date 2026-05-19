@@ -83,27 +83,51 @@ leftRamp = startSketchOn(YZ)
   |> close()
   |> extrude(length = -(p.plateXMin*-1 + p.augerGapW/2))
 
-// ---- hinge eye-tabs (one each side of the auger gap) ----
-// Rectangular tab in YZ from (plateYFront-1, zAug±eyeOd/2) to
-// (yDisp+eyeOd/2, zAug±eyeOd/2), extruded HingeEyeThk along X.
+// ---- hinge sandwich lobes (inner + outer thirds, each side) ----
+// Per the fifth review each side of the auger gap is split along X
+// into thirds: inner and outer thirds belong to the mounting plate
+// (this file); middle third belongs to the baseplate.  Tabs span from
+// the ramp front face out to the eye centre at Y = yDisp.
 tabBackY = p.plateYFront - 1
 tabFrontY = p.yDisp + p.hingeEyeOd/2
 tabLen = tabFrontY - tabBackY
+lobeLen = p.hingeLobeW - p.hingeLayerGap
 
-rightTab = startSketchOn(YZ)
+// +X side, inner lobe
+rightInnerLobe = startSketchOn(YZ)
   |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
   |> line(end = [tabLen, 0])
   |> line(end = [0, p.hingeEyeOd])
   |> line(end = [-tabLen, 0])
   |> close()
-  |> extrude(length = p.hingeEyeThk)
+  |> extrude(length = lobeLen)
 
-leftTab = startSketchOn(YZ)
+// +X side, outer lobe
+rightOuterLobe = startSketchOn(YZ)
   |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
   |> line(end = [tabLen, 0])
   |> line(end = [0, p.hingeEyeOd])
   |> line(end = [-tabLen, 0])
   |> close()
-  |> extrude(length = -p.hingeEyeThk)
+  |> extrude(length = lobeLen)
+// (rightOuterLobe is positioned at p.hingeX2 in cad_model.py.)
+
+// -X side, inner lobe (mirror)
+leftInnerLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = -lobeLen)
+
+// -X side, outer lobe (mirror)
+leftOuterLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = -lobeLen)
 
 // (No actuator rod-end lug — no underside features per the third review.)

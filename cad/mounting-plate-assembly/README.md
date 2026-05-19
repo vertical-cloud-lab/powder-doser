@@ -4,10 +4,10 @@
 > Upstream parts (consumed as STL/STEP from `imported-parts/`):
 > [#49 geared auger + pinion + NEMA 11](https://github.com/vertical-cloud-lab/powder-doser/pull/49),
 > [#51 split tap-collar + mount plate](https://github.com/vertical-cloud-lab/powder-doser/pull/51),
-> [#55 split shaft-collar auger bracket](https://github.com/vertical-cloud-lab/powder-doser/pull/55)
+> [#47 lifted split shaft-collar auger bracket](https://github.com/vertical-cloud-lab/powder-doser/pull/47)
 
 This package designs the **foundation** of the powder-doser machine: a
-mounting plate that carries the auger brackets (PR #55 ×2), the tap-collar
+mounting plate that carries the auger brackets (PR #47 ×2), the tap-collar
 mount (PR #51) and the NEMA 11 stepper (PR #49), and a baseplate that
 holds the other half of the hinge plus a linear-actuator base clevis. The
 mounting plate **rotates about the auger's own dispense axis** so that no
@@ -15,41 +15,30 @@ part of the hinge ever crosses the powder path, and the baseplate's legs
 raise everything above the bench so a cup sits on a scale directly under
 the dispense point.
 
-**This PR was rewritten twice** in response to review feedback:
-1. The first cut used hand-modelled placeholders for the auger / bracket
-   / tap-collar / motor.  The next iteration imported the actual
-   most-recent STL/STEP from PRs #49, #51 and #55 into
-   `imported-parts/`, and the mounting plate's hole pattern and motor
-   mount are derived from those files' real dimensions (e.g. PR #55
-   brackets really have only **2 × M3 corner holes at X = ±24**, not the
-   4 holes I assumed; PR #49's motor is a **NEMA 11 driving a
-   parallel-axis pinion at C = 32 mm**, not a NEMA 17 sitting square to
-   the plate).
-2. The **previous** revision aligned the layout with the original
-   hand-drawn spec attached to
-   [#62 Mounting Plate Design](https://github.com/vertical-cloud-lab/powder-doser/issues/62)
-   — every component on the **TOP** of the plate, hinge through the
-   auger's dispense point, plate asymmetric in X, component order
-   along the auger matching the drawing.
-3. The **previous** revision implemented the issue #62 *follow-up*
-   review (comment 4314329233): face-mounted NEMA-11, auger raised on
-   bracket plinths so the gear band tip cleared the plate top, single
-   U-notch for the auger overhang, two SEPARATE side hinges fed by
-   full-width front ramps, hinge axis 10 mm forward of the baseplate.
-4. The **current** revision implements the issue #62 *third* review
-   (comment 4314491753):
-   * **Auger now sits in the middle** of the plate (X=0).  The plate
-     is **symmetric about X=0** (`X ∈ [−54.1, +54.1]`); the central
-     auger gap in the +Y edge is therefore in the middle.
-   * **Equal-sized, thicker hinges** (Ø14 × 10 mm-thick eyes,
-     mirror-symmetric about X=0; previously Ø12 × 6 mm).
-   * **Bracket plinths removed** — brackets bolt directly to the plate
-     top.  The auger axis is now at the bracket's native bore height
-     (Z_AUG ≈ 19.74 mm above plate top, down from 30.25 mm).  A
-     minimum gear-band+pinion clearance cutout is reintroduced under
-     the band only, so the rest of the plate stays solid.
-   * **Plate underside is now feature-free** — the linear-actuator
-     rod-end lug that used to hang below the plate has been removed.
+**This PR has been iterated several times** in response to review feedback.
+The **current** revision implements the issue #62 *fifth* review
+(comment 4320428756):
+
+* **Lifted PR #47 brackets** replace the earlier PR #55 ones.  The
+  14 mm-thick flange raises the auger axis to `Z_AUG = +29.25 mm`,
+  giving the Ø50 gear band 4.25 mm of radial clearance over a flat
+  plate.  The gear-band clearance slot in the plate is gone.
+* **Updated PR #51 tap-collar mount plate** (60 × 18 × 14, bore at the
+  same Z = 29.25 mm as the bracket) — bracket and tap-collar bolt flat
+  to the same plate top with no shim and the auger threads through
+  both at the same Z.
+* **Gear band, tap collar and front bracket are packed flush** with
+  only 1 mm of air clearance between adjacent ring faces, so gravity
+  pushes them against the front bracket.
+  (`Y_GEAR_BAND = +41.67`, `Y_TAP = +56.67`, `Y_BRK_FRONT = +72.67`.)
+* **Pinion centred on the gear band in Y** — the motor face is set so
+  the pinion centre lands exactly on the gear band centre (previously
+  it was offset by 8 mm).
+* **3-layer sandwich hinges.**  Each side of the auger gap carries
+  `{inner mounting-plate lobe, middle baseplate arm, outer
+  mounting-plate lobe}` sharing one long M5 pin per side.  Each
+  layer takes one third of its ramp half-span (`≈ 12.7 mm`), so the
+  hinges span the entire front of the plate.
 
 The package was also requested as an **exploration of zoo.dev** for
 parametric CAD; see [§ zoo.dev experience](#zoodev-experience-pros--cons)
@@ -61,7 +50,7 @@ below.
 cad/mounting-plate-assembly/
 ├── imported-parts/                   ← real geometry from upstream PRs
 │   ├── auger-geared/                  – PR #49: auger + pinion + preview
-│   ├── auger-bracket/                 – PR #55: bracket
+│   ├── auger-bracket/                 – PR #47: lifted bracket
 │   └── tap-collar/                    – PR #51: collar + mount plate
 ├── kcl/                              ← primary zoo.dev sources (KCL)
 │   ├── params.kcl                    – shared parameter sheet
@@ -87,65 +76,71 @@ cad/mounting-plate-assembly/
 
 The layout follows the issue
 [#62 Mounting Plate Design](https://github.com/vertical-cloud-lab/powder-doser/issues/62)
-drawing and its **follow-up review** (comment 4314329233):
+drawing and its five rounds of review:
 
 * **Components on TOP of the plate.**  Front bracket, tap-collar mount,
-  NEMA-11 motor mount block, front ramps and hinge eye-tabs all sit on
-  the plate top.  Nothing hangs below except the linear-actuator
-  rod-end pivot lug.
+  NEMA-11 motor mount block, front ramps and hinge lobes all sit on
+  the plate top.  Nothing hangs below — the plate underside is
+  completely feature-free.
 * **No holes or gaps in the plate other than mounting holes** and a
   single open **U-notch in the +Y plate edge** that lets the auger
   overhang in mid-air at the dispense end.
-* **Auger raised on integrated plinths.**  The brackets bolt
-  flange-down onto `~10.5 mm`-tall integrated plinths at `Y = ±` their
-  respective Ys, raising the auger axis to `Z_AUG = +30.25 mm`.  At
-  that height the Ø50 gear-band tip clears the plate top by 5 mm — no
-  through-plate clearance slot needed.  The tap-collar mount bolts
-  **flush** on the plate top (no plinth) because the upstream
-  tap-collar's native bore is at exactly `+30.25 mm` above its
-  mating face.
+* **Lifted brackets (PR #47) — no plinths, no slot.**  The 14 mm-thick
+  bracket flange raises the auger axis to `Z_AUG = +29.25 mm`.  At
+  that height the Ø50 gear-band tip clears the plate top by 4.25 mm,
+  so the gear-band clearance slot in the plate is gone.  The PR #51
+  tap-collar bolts **flush** on the plate top because its native bore
+  is at the same `Z = +29.25 mm` as the bracket bore.
+* **Front bracket / tap collar / gear band are packed flush** with
+  only 1 mm of air clearance between adjacent ring faces, so gravity
+  holds them against the front bracket.
+* **Pinion centred on the gear band in Y** — the motor face is set
+  so the pinion centre lands exactly on the gear band centre,
+  transferring full torque across the gear face.
 * **Motor face-mounted** on a vertical wall on the plate top: the
-  NEMA-11 bolts through the wall's **+Y face** (i.e. its **front** face,
-  permitted by the follow-up review).  The motor body extends in **−Y**
-  away from that face; its shaft + 16T pinion pokes back through the
-  wall's Ø22 pilot and meshes with the auger's Ø50 gear band at the
-  standard `C = 32 mm` centre distance.
-* **Asymmetric in X.**  Plate `X ∈ [−34, +54]` — clear side at −X, the
-  motor block extends out the +X side.
+  NEMA-11 bolts through the wall's **+Y face**, its body extends in
+  **−Y** away from that face, and its shaft + 16T pinion pokes back
+  through the wall's Ø22 pilot to mesh with the auger's Ø50 gear band
+  at the standard `C = 32 mm` centre distance.
+* **Symmetric in X.**  Plate `X ∈ [−54.1, +54.1]` — auger centred at
+  `X = 0`; the central auger gap in the +Y edge sits in the middle.
 * **Component order along the auger (hinge end → motor end):**
-  `hinge axis @ Y=+125` → `front bracket @ Y=+85` → `tap-collar mount
-  @ Y=+60` → `NEMA-11 over the gear band @ Y=+41.67` → `rear bracket
-  @ Y=−95`.  Front bracket + tap-collar Ys shifted back ~10 mm vs. the
-  prior revision to make room for the new front ramps.
-* **Two SEPARATE side hinges** (one each side of the auger gap).  A
-  single central hinge would foul the auger; instead each side carries
-  one mounting-plate eye + one baseplate arm eye, butted axially on
-  one short M5 pin.  The mounting plate's two eye-tabs and the two
-  full-width **front ramps** together cover the entire +Y face of the
-  plate except for the auger gap.
+  `hinge axis @ Y=+125` → `front bracket @ Y=+72.67` → `tap-collar
+  mount @ Y=+56.67` → `NEMA-11 over the gear band @ Y=+41.67` →
+  `rear bracket @ Y=−95`.
+* **3-layer sandwich hinges.**  Each side of the auger gap carries
+  `{inner mounting-plate lobe, middle baseplate arm, outer
+  mounting-plate lobe}` sharing one long M5 pin per side.  Each
+  layer takes one third of its ramp half-span (`≈ 12.7 mm` thick
+  along X), so the hinges span the entire front of the plate.  The
+  mounting plate's four eye lobes and the two **full-width front
+  ramps** together cover the entire +Y face of the plate except for
+  the central auger gap.
 * **Hinge axis is 10 mm in front of the baseplate's front edge.**
   Baseplate `Y ∈ [−135, +115]`, hinge axis at `Y = +125`.  The
   baseplate has two **forward-and-up hinge arms** (one each side of
-  the auger) that reach from `Y = +115` forward to `Y = +125`, rising
-  from the baseplate top up to the hinge axis.
+  the auger) that reach from `Y = +115` forward to `Y = +125`, each
+  arm slotting into the centre third of its ramp half-span.
 * **No powder window** in the baseplate — the dispense point sits
   10 mm forward of the baseplate's front edge, so powder falls in
   front of the baseplate directly into the cup on the scale.
 
 **Geometry.**  The auger (PR #49, Ø25 × 250 mm with a Ø50 spur-gear
 band centred at `total_h/3` from the dispense end) lies along **+Y**,
-dispense end at `Y = +125`.  Two PR #55 brackets bolt flange-down onto
-~10.5 mm plinths at `Y = +85` / `Y = −95`, gripping the auger 19.74 mm
-above the plinth top → auger axis at `Z = +30.25 mm`.  The PR #51
-tap-collar wraps the auger at `Y = +60`, bolted flush to the plate top.
+dispense end at `Y = +125`.  Two PR #47 lifted brackets bolt flange-down
+flush onto the plate top at `Y = +72.67` / `Y = −95`, gripping the
+auger 29.25 mm above the plate top → auger axis at `Z = +29.25 mm`.
+The PR #51 tap-collar wraps the auger at `Y = +56.67`, bolted flush to
+the plate top right next to the front bracket with 1 mm of air gap.
 
-**Hinge axis = dispense-point axis.**  Two side eye-tabs on the plate
-top (at `X = ±19`) carry the bore at `(Y = +125, Z = +30.25)` — the
-auger's dispense point.  Two matching baseplate arms carry the
-matching eye on the same axis, offset outboard at `X = ±26`.  Two
-short M5 pins (one per side) tie the two halves together.  Because
-the rotation axis IS the dispense axis, the dispense point literally
-**does not move** while the plate tilts 0–90° (see
+**Hinge axis = dispense-point axis.**  Four eye lobes on the plate top
+(two each side, sandwich-style at one-third spacings of each ramp
+half-span) and two baseplate arms (one each side, occupying the middle
+third) all carry the bore at `(Y = +125, Z = +29.25)` — the auger's
+dispense point.  Two long M5 pins (one per side, each running through
+all three layers of its sandwich) tie the two halves together.
+Because the rotation axis IS the dispense axis, the dispense point
+literally **does not move** while the plate tilts 0–90° (see
 `rotation_0_45_90.png` — red dot is fixed across all three tilts).
 
 ### Mounting-hole map (top view)
@@ -156,12 +151,11 @@ upstream parts' own bolt patterns:
 
 | Part                  | Source PR | Pattern                                              | Hole size  | Centre Y (mm) |
 | --------------------- | --------- | ---------------------------------------------------- | ---------- | ------------- |
-| Front bracket         | #55       | 2 × M3 at X = ±24 (on a ~10.5 mm plinth)             | Ø3.4 (M3)  | +85           |
-| Tap-collar mount      | #51       | 2 × M3 at X = ±24 (flush — no plinth)                | Ø3.4 (M3)  | +60           |
-| NEMA 11 motor mount   | #49       | 4 × M3 at 23 mm pitch + Ø22 pilot **on the vertical front face of the wall** | Ø3.4 (M3) | motor face at +34.67 |
-| Rear bracket          | #55       | 2 × M3 at X = ±24 (on a ~10.5 mm plinth)             | Ø3.4 (M3)  | −95           |
-| Side hinge eyes (×2)  | this PR   | 2 separate eye-tabs at X = ±19, one each side of the auger gap | Ø5.4 (M5)  | +125         |
-| Actuator rod-end lug  | this PR   | cross-bore on a 24 mm-tall lug (UNDERSIDE)           | Ø5.4 (M5)  | −60           |
+| Front bracket         | #47       | 2 × M3 at X = ±24 (flush — lifted flange)            | Ø3.4 (M3)  | +72.67        |
+| Tap-collar mount      | #51       | 2 × M3 at X = ±24 (flush)                            | Ø3.4 (M3)  | +56.67        |
+| NEMA 11 motor mount   | #49       | 4 × M3 at 23 mm pitch + Ø22 pilot **on the vertical front face of the wall** | Ø3.4 (M3) | motor face at +31.67 |
+| Rear bracket          | #47       | 2 × M3 at X = ±24 (flush — lifted flange)            | Ø3.4 (M3)  | −95           |
+| Side hinge sandwich   | this PR   | 4 plate eye-lobes (Ø18 × ≈12.7 mm) at X = inner+outer thirds of each ramp half-span | Ø5.4 (M5)  | +125         |
 
 ### Rotation kinematics
 

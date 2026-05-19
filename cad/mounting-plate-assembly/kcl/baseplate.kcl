@@ -61,14 +61,16 @@ legBL = startSketchOn(XY)
   |> close()
   |> extrude(length = -p.baseLegH)
 
-// ---- forward-and-up hinge arms (one each side of the auger) ----
+// ---- baseplate hinge arms (middle layer of the 3-layer sandwich) ----
 // In local frame, base top is at z=baseT; the hinge axis is at
 // z = hingeAxisZLocal.  Each arm fills the rectangle
-// (baseYFront..yDisp+eyeOd/2, baseT..hingeAxisZLocal+eyeOd/2) and is
-// extruded armThk along X.
+// (baseYFront..yDisp, baseT..hingeAxisZLocal+eyeOd/2) and is extruded
+// armThk along X — armThk = hingeLobeW - hingeLayerGap so the arm fits
+// snugly in the middle third of the ramp half-span between the
+// mounting plate's inner and outer hinge lobes (per the fifth review).
 armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
 armBackY = p.baseYFront
-armFrontY = p.yDisp + p.hingeEyeOd/2
+armFrontY = p.yDisp
 armLen = armFrontY - armBackY
 armHeight = armTopLocal - p.baseT
 
