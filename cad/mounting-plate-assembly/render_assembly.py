@@ -37,17 +37,25 @@ from cad_model import (
     BASE_T, BASE_Y_BACK, BASE_Y_CENTRE, BASE_Y_FRONT, BRK_FLANGE_T,
     BRK_FLANGE_W, BRK_FLANGE_D, BRK_MOUNT_HOLE_INSET_X,
     BRK_RING_CENTRE_LOCAL_Z, GEAR_BAND_FACE_W, GEAR_BAND_TIP_DIA,
-    GEAR_CENTRE_DISTANCE, HINGE_EYE_ID, HINGE_EYE_OD,
+    GEAR_CENTRE_DISTANCE,
+    GEAR_HINGE_TIP_D, GEAR_HINGE_PCD, GEAR_PINION_TIP_D, GEAR_PINION_PCD,
+    GEAR_X_CENTRE, GEAR_X_LO, GEAR_X_HI, GEAR_FACE_W, GEAR_CENTRE_C,
+    HINGE_EYE_ID, HINGE_EYE_OD,
     HINGE_LOBE_W, HINGE_X0, HINGE_X1, HINGE_X2, HINGE_X3,
+    MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T, MG996R_SPLINE_Y_OFFSET,
     MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
     NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN, PINION_TIP_DIA,
+    PINION_X_LO, PINION_X_HI, PINION_Y, PINION_Z,
     PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MAX, PLATE_X_MIN,
     PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT,
-    RAMP_TOP_Z, RAMP_Y_BACK, TAP_COLLAR_BORE_LOCAL_Z,
+    RAMP_TOP_Z, RAMP_Y_BACK,
+    SERVO_BODY_X_LO, SERVO_BODY_X_HI, SERVO_WALL_X, SERVO_WALL_T,
+    TAP_COLLAR_BORE_LOCAL_Z,
     TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
     TAP_MOUNT_HOLE_INSET_X, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP,
     Y_GEAR_BAND, Y_REAR, Y_TAP, Z_AUG, Z_BASE_TOP, Z_MOTOR,
     build_baseplate, build_hinge_pin, build_mounting_plate,
+    build_servo_pinion,
 )
 
 HERE = Path(__file__).resolve().parent
@@ -66,6 +74,8 @@ COL_TAP_MOUNT = (0.55, 0.40, 0.70)
 COL_PINION = (0.45, 0.70, 0.55)
 COL_MOTOR = (0.30, 0.30, 0.35)
 COL_PIN = (0.85, 0.55, 0.20)
+COL_SERVO_PINION = (0.50, 0.85, 0.55)
+COL_SERVO_BODY = (0.20, 0.20, 0.22)
 
 
 def _stl_actor(stl_path: Path, colour) -> vtk.vtkActor:
@@ -200,6 +210,30 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
     pre_hp.Translate(0, Y_DISP, Z_AUG)
     actors.append(_shape_actor(build_hinge_pin().val(), COL_PIN))
     actors[-1].SetUserTransform(pre_hp)
+
+    # ---- SERVO PINION (this package; build_servo_pinion is at origin in
+    # its own frame, axis along +X).  Bolted to the MG996R spline on the
+    # baseplate, so it does NOT tilt — only spins about its own +X axis.
+    pinion_shape = build_servo_pinion().translate(
+        (PINION_X_LO, PINION_Y, PINION_Z)
+    ).val()
+    actors.append(_shape_actor(pinion_shape, COL_SERVO_PINION))
+
+    # ---- MG996R BODY (simplified box for visualisation only — the
+    # actual servo is a black plastic body 40.7 × 19.7 × 42.9 mm with
+    # flange ears, mounted on the baseplate wall).  Body sits outboard
+    # of the servo wall in +X; spline pokes -X through the wall onto
+    # the pinion.
+    body = (
+        cq.Workplane("XY")
+        .box(MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
+             centered=(False, False, True))
+        .translate((SERVO_BODY_X_LO,
+                    PINION_Y - MG996R_SPLINE_Y_OFFSET,
+                    PINION_Z))
+        .val()
+    )
+    actors.append(_shape_actor(body, COL_SERVO_BODY))
 
     return actors
 
@@ -591,6 +625,8 @@ def main() -> None:
     a.add(build_baseplate(), name="baseplate", color=cq.Color(*COL_BASE))
     a.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pins",
           color=cq.Color(*COL_PIN))
+    a.add(build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z)),
+          name="servo_pinion", color=cq.Color(*COL_SERVO_PINION))
     a.save(str(asm_step))
     print(f"  → {asm_step.relative_to(HERE)}")
 

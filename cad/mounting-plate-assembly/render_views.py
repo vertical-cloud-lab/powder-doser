@@ -81,12 +81,14 @@ def main() -> None:
     out_dir.mkdir(exist_ok=True)
 
     # Build each part fresh (faster than re-importing the STEP).
-    from cad_model import build_mounting_plate, build_baseplate, build_hinge_pin
+    from cad_model import (build_mounting_plate, build_baseplate,
+                           build_hinge_pin, build_servo_pinion)
 
     parts = {
         "mounting_plate": build_mounting_plate(),
         "baseplate": build_baseplate(),
         "hinge_pin": build_hinge_pin(),
+        "servo_pinion": build_servo_pinion(),
     }
     for name, wp in parts.items():
         shape = wp.val()

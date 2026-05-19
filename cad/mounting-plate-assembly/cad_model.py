@@ -246,14 +246,175 @@ ARM_BASE_SUPPORT_LEN = 40.0
 # (Linear-actuator base clevis removed — the linear actuator is no
 # longer part of the design.)
 
+# --- Hinge gear band + servo pinion (issue #63) ----------------------
+# A spur gear is added to the +X OUTER mounting-plate hinge lobe so a
+# servo on the baseplate can drive the tilt of the mounting plate.
+# A 2:1 reduction between hinge gear and pinion keeps the torque load
+# on the MG996R within its 9.4 kgf·cm rating.
+GEAR_MODULE = 1.0
+GEAR_PA_DEG = 20.0                        # pressure angle (standard 20°)
+GEAR_HINGE_TEETH = 40                     # → PCD 40, tip Ø42
+GEAR_PINION_TEETH = 20                    # → PCD 20, tip Ø22 (2:1 reduction)
+GEAR_FACE_W = HINGE_LOBE_W - HINGE_LAYER_GAP  # match the outer lobe thickness
+GEAR_HINGE_PCD = GEAR_HINGE_TEETH * GEAR_MODULE
+GEAR_PINION_PCD = GEAR_PINION_TEETH * GEAR_MODULE
+GEAR_HINGE_TIP_D = GEAR_HINGE_PCD + 2 * GEAR_MODULE
+GEAR_HINGE_ROOT_D = GEAR_HINGE_PCD - 2.5 * GEAR_MODULE
+GEAR_PINION_TIP_D = GEAR_PINION_PCD + 2 * GEAR_MODULE
+GEAR_PINION_ROOT_D = GEAR_PINION_PCD - 2.5 * GEAR_MODULE
+GEAR_CENTRE_C = (GEAR_HINGE_PCD + GEAR_PINION_PCD) / 2.0  # 30 mm
+# The hinge gear band sits just outboard of the existing +X outer hinge
+# lobe (replacing the cylindrical 18 mm-OD eye on that side with a
+# Ø42 gear).  X centre: midpoint of the +X outer-lobe span.
+GEAR_X_CENTRE = (HINGE_X2 + HINGE_LAYER_GAP / 2 + HINGE_X3) / 2.0
+GEAR_X_LO = GEAR_X_CENTRE - GEAR_FACE_W / 2.0
+GEAR_X_HI = GEAR_X_CENTRE + GEAR_FACE_W / 2.0
+
+# --- MG996R servo + mount (TowerPro datasheet, baseplate-mounted) ----
+# https://towerpro.com.tw/product/mg996r/  — body 40.7 × 19.7 × 42.9.
+# The spline axis is parallel to the hinge axis (along X) so the pinion
+# meshes with the hinge gear face.  Pinion sits OUTBOARD of the
+# mounting plate (X > PLATE_X_MAX) with the servo body even further
+# outboard; the spline points -X (toward the gear) and the body
+# extends +X away from the mounting plate so there is no body
+# interference at any tilt angle.
+MG996R_BODY_L = 40.7    # along spline-perpendicular long axis (we orient along Y)
+MG996R_BODY_T = 19.7    # body thickness (we orient along Z)
+MG996R_BODY_H = 42.9    # body height to spline base (we orient along X — INWARD from wall)
+MG996R_FLANGE_L = 54.38                 # flange total length along Y
+MG996R_FLANGE_T = 2.5                   # flange ear thickness along X
+MG996R_HOLE_DIA = 4.1                   # Ø4.1 mounting holes
+MG996R_HOLE_Y_SPREAD = 49.36            # hole pair spread along body length (Y)
+MG996R_HOLE_Z_SPREAD = 10.0             # hole pair spread along body thickness (Z)
+MG996R_SPLINE_Y_OFFSET = 10.0           # spline offset from one flange-end along Y
+MG996R_SPLINE_LEN = 4.0                 # spline protrusion past flange face
+# Pinion lies at the same X centre as the gear, offset in -Z by the
+# centre distance C so the spline sits just above the baseplate top.
+PINION_X_CENTRE = GEAR_X_CENTRE
+PINION_X_LO = GEAR_X_LO
+PINION_X_HI = GEAR_X_HI
+PINION_Y = Y_DISP                       # parallel to hinge axis
+PINION_Z = Z_AUG - GEAR_CENTRE_C        # = -0.75 mm — about 7 mm above baseplate top
+# Servo mount wall is a vertical wall on the baseplate top, perpendicular
+# to the spline axis, just outboard of the pinion.  4 × Ø4.1 holes
+# matching MG996R's mounting-flange pattern.
+SERVO_WALL_X = PINION_X_HI + 1.0        # 1 mm clearance between pinion tip and wall
+SERVO_WALL_T = 4.0                      # wall thickness along X
+SERVO_BODY_X_LO = SERVO_WALL_X + SERVO_WALL_T
+SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
+# Wall spans Y/Z to enclose the flange-hole pattern with a margin.
+SERVO_WALL_Y_HALF = (MG996R_FLANGE_L / 2.0) + 4.0     # ± from spline axis... but spline is OFFSET in Y by MG996R_SPLINE_Y_OFFSET from one flange end
+# So with spline at Y=PINION_Y, the flange spans
+#   Y ∈ [PINION_Y - MG996R_SPLINE_Y_OFFSET, PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_FLANGE_L]
+# = [PINION_Y - 10, PINION_Y + 44.38].
+SERVO_WALL_Y_MIN = PINION_Y - MG996R_SPLINE_Y_OFFSET - 4.0
+SERVO_WALL_Y_MAX = PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_FLANGE_L + 4.0
+# Wall Z: from baseplate top up to a bit above the upper flange hole.
+SERVO_WALL_Z_LO = BASE_T                # baseplate top in baseplate-local frame
+SERVO_WALL_Z_HI_LOCAL = (PINION_Z - Z_BASE_TOP) + MG996R_BODY_T / 2.0 + 4.0
+# Hole positions (in the wall plane, absolute Y/Z).
+MG996R_HOLE_Y_OFFSETS = (
+    -MG996R_SPLINE_Y_OFFSET,                              # = -10
+    -MG996R_SPLINE_Y_OFFSET + MG996R_HOLE_Y_SPREAD,       # = +39.34
+)
+
 # Hardware
 M3_CLEAR = 3.4
 M5_CLEAR = 5.4
+
+# --- Arm-clearance slots in the mounting plate (interference fix) ----
+# The baseplate's two forward-and-up hinge arms occupy the MIDDLE third
+# of each ramp half-span and extend back from the hinge axis to
+# ``arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN`` along the
+# baseplate top.  When the mounting plate folds flush to 0° the
+# baseplate arms would pierce the solid mounting-plate body wherever
+# their Y/X envelopes overlap (Y∈[75, 115], X∈[±28.7, ±41.4] — total
+# interference volume ≈ 5900 mm³).  Cut a clearance slot through the
+# mounting plate at each arm's middle-third X band, from the front
+# (+Y) edge back to just behind the arm's back face, so the arm passes
+# cleanly through the plate when folded.
+ARM_SLOT_Y_BACK = (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN) - 2.0   # +73 (2 mm clear)
+ARM_SLOT_CLEARANCE = 0.5                # per side along X
 
 
 # --------------------------------------------------------------------- #
 # Builders
 # --------------------------------------------------------------------- #
+def _gear_polygon(num_teeth: int, module: float,
+                  pa_deg: float = 20.0) -> list[tuple[float, float]]:
+    """Return a closed 2D polygon (list of (x, y) points) describing a
+    standard spur gear with straight-flank trapezoidal teeth — a
+    printable involute approximation suitable for FDM/SLA.
+
+    Geometry:
+        * pitch radius   Rp = N · m / 2
+        * addendum       a  = m         → tip radius   Ra = Rp + m
+        * dedendum       d  = 1.25 · m  → root radius  Rd = Rp − 1.25 m
+        * tooth thickness at pitch line = π · m / 2
+        * tooth flank slope at the pressure angle (20° standard)
+    """
+    rp = num_teeth * module / 2.0
+    ra = rp + module
+    rd = rp - 1.25 * module
+    tan_pa = math.tan(math.radians(pa_deg))
+    t_p = math.pi * module / 2.0          # tooth thickness at pitch circle
+    # Linear-flank approximation: half-thickness vs radius.
+    # At pitch r=rp, half_t = t_p/2.  Tooth thickens toward root.
+    half_t_tip = max(0.10, t_p / 2.0 - module * tan_pa)
+    half_t_root = t_p / 2.0 + 1.25 * module * tan_pa
+    # Convert linear half-thicknesses to angular half-widths at each radius.
+    half_a_tip = half_t_tip / ra
+    half_a_root = half_t_root / rd
+
+    pts: list[tuple[float, float]] = []
+    step = 2.0 * math.pi / num_teeth
+    for i in range(num_teeth):
+        c = i * step                       # tooth-centre angle
+        # 4 corners of the tooth: root-right, tip-right, tip-left, root-left.
+        for r, ang in (
+            (rd, c - step / 2.0 + half_a_root),   # left-root start (after valley)
+            (ra, c - half_a_tip),                 # left-tip
+            (ra, c + half_a_tip),                 # right-tip
+            (rd, c + step / 2.0 - half_a_root),   # right-root end (before valley)
+        ):
+            pts.append((r * math.cos(ang), r * math.sin(ang)))
+    return pts
+
+
+def _build_spur_gear(num_teeth: int, module: float, face_w: float,
+                     bore_dia: float, flat: bool = False,
+                     pa_deg: float = 20.0) -> cq.Workplane:
+    """Build a spur gear extruded along +Z, centred on the origin.
+
+    ``flat=True`` adds a 0.5 mm chordal flat to the bore — useful for
+    set-screw bores (e.g. the MG996R 25-T spline workaround).
+    """
+    pts = _gear_polygon(num_teeth, module, pa_deg)
+    gear = (
+        cq.Workplane("XY")
+        .polyline(pts).close()
+        .extrude(face_w)
+    )
+    if bore_dia > 0:
+        bore = (
+            cq.Workplane("XY")
+            .circle(bore_dia / 2.0)
+            .extrude(face_w + 2.0)
+            .translate((0, 0, -1.0))
+        )
+        gear = gear.cut(bore)
+        if flat:
+            flat_depth = 0.5
+            flat = (
+                cq.Workplane("XY")
+                .box(bore_dia + 2.0, flat_depth,
+                     face_w + 2.0, centered=(True, False, True))
+                .translate((0, bore_dia / 2.0 - flat_depth / 2.0, face_w / 2.0))
+            )
+            gear = gear.cut(flat)
+    return gear
+
+
 def _through_plate_hole(x: float, y: float, dia: float,
                         plinth_h: float = 0.0) -> cq.Workplane:
     """Through-hole from plinth-top down to plate-bottom + slop."""
@@ -408,6 +569,50 @@ def build_mounting_plate() -> cq.Workplane:
             )
             plate = plate.cut(bore)
 
+    # ---- Hinge gear band on the +X OUTER lobe (issue #63) --------------
+    # The outermost +X mounting-plate hinge lobe carries a 40-tooth
+    # spur gear band that meshes with the servo pinion at C = 30 mm,
+    # 2:1 reduction.  The gear band is integrated into the mounting
+    # plate as a single solid (not a separate STL part) per the issue.
+    # The gear is built in the XY plane (axis along Z), then rotated to
+    # align its axis with the X-axis at (Y_DISP, Z_AUG).
+    gear = _build_spur_gear(GEAR_HINGE_TEETH, GEAR_MODULE,
+                            GEAR_FACE_W, HINGE_EYE_ID)
+    # Rotate so the gear axis (was +Z) becomes +X (extrusion goes from
+    # X=0 to X=+face_w in the rotated frame), then translate to the
+    # hinge axis at the +X outer-lobe X centre.
+    gear = (
+        gear.rotate((0, 0, 0), (0, 1, 0), 90)
+            .translate((GEAR_X_LO, Y_DISP, Z_AUG))
+    )
+    plate = plate.union(gear)
+
+    # ---- Arm-clearance slots through the plate body (interference fix) --
+    # The two baseplate hinge arms (one each side of the auger gap)
+    # pass through the plate body when folded flush to the baseplate.
+    # Cut a vertical clearance slot through the plate at each arm's X
+    # band, from the +Y edge back to just behind the arm's back face.
+    # Without this, the arms pierce the plate by ~5900 mm³ at 0° tilt.
+    slot_y_back = ARM_SLOT_Y_BACK
+    slot_y_front = PLATE_Y_FRONT + 2.0
+    slot_l = slot_y_front - slot_y_back
+    slot_y_centre = (slot_y_front + slot_y_back) / 2.0
+    for sign in (+1, -1):
+        slot_x_lo = sign * HINGE_X1 if sign > 0 else -HINGE_X2
+        slot_x_hi = sign * HINGE_X2 if sign > 0 else -HINGE_X1
+        # Pad both X edges with ARM_SLOT_CLEARANCE so the arm slides
+        # freely through the slot.
+        slot_x_lo -= ARM_SLOT_CLEARANCE
+        slot_x_hi += ARM_SLOT_CLEARANCE
+        slot = (
+            cq.Workplane("XY")
+            .workplane(offset=1.0)
+            .center((slot_x_lo + slot_x_hi) / 2.0, slot_y_centre)
+            .rect(slot_x_hi - slot_x_lo, slot_l)
+            .extrude(-(PLATE_T + 2.0))
+        )
+        plate = plate.cut(slot)
+
     return plate
 
 
@@ -483,8 +688,90 @@ def build_baseplate() -> cq.Workplane:
     # (Linear-actuator base clevis removed — no longer using a linear
     # actuator.)
 
+    # ---- MG996R servo mount wall (issue #63) ----------------------------
+    # Vertical wall on the baseplate top, perpendicular to the spline
+    # axis, just outboard of the pinion.  Servo body sits at X > wall_X
+    # entirely outboard of the mounting plate; spline points -X and the
+    # pinion meshes with the gear band at C = 30 mm.  4 × Ø4.1 holes
+    # in the standard MG996R 49.36 × 10 mm flange pattern.
+    wall_y_lo = SERVO_WALL_Y_MIN
+    wall_y_hi = SERVO_WALL_Y_MAX
+    wall_z_lo = SERVO_WALL_Z_LO
+    wall_z_hi = SERVO_WALL_Z_HI_LOCAL
+    wall = (
+        cq.Workplane("YZ")
+        .workplane(offset=SERVO_WALL_X)
+        .moveTo((wall_y_lo + wall_y_hi) / 2.0,
+                (wall_z_lo + wall_z_hi) / 2.0)
+        .rect(wall_y_hi - wall_y_lo, wall_z_hi - wall_z_lo)
+        .extrude(SERVO_WALL_T)
+    )
+    base = base.union(wall)
+    # Spline-clearance bore (Ø9 so the spline + small clearance pass
+    # through the wall) at the pinion axis.
+    pinion_z_local = PINION_Z - Z_BASE_TOP
+    spline_hole = (
+        cq.Workplane("YZ")
+        .workplane(offset=SERVO_WALL_X - 1.0)
+        .center(PINION_Y, pinion_z_local)
+        .circle(9.0 / 2.0)
+        .extrude(SERVO_WALL_T + 2.0)
+    )
+    base = base.cut(spline_hole)
+    # 4 × Ø4.1 mounting holes in the standard MG996R flange pattern.
+    for dy in MG996R_HOLE_Y_OFFSETS:
+        for dz in (-MG996R_HOLE_Z_SPREAD / 2.0, +MG996R_HOLE_Z_SPREAD / 2.0):
+            hole = (
+                cq.Workplane("YZ")
+                .workplane(offset=SERVO_WALL_X - 1.0)
+                .center(PINION_Y + dy, pinion_z_local + dz)
+                .circle(MG996R_HOLE_DIA / 2.0)
+                .extrude(SERVO_WALL_T + 2.0)
+            )
+            base = base.cut(hole)
+
+    # Pinion-swing clearance pocket — the pinion's tip Ø22 dips ~4 mm
+    # below the baseplate top at the front-edge corner where the disc
+    # tangents the baseplate.  Cut a shallow pocket through the front
+    # corner under the pinion footprint to clear the swept disc.
+    pocket_x_pad = 2.0
+    pocket_y_pad = 2.0
+    pocket = (
+        cq.Workplane("XY")
+        .workplane(offset=BASE_T + 1.0)
+        .center((GEAR_X_LO + GEAR_X_HI) / 2.0,
+                BASE_Y_FRONT - pocket_y_pad / 2.0)
+        .rect(GEAR_FACE_W + 2 * pocket_x_pad,
+              2 * pocket_y_pad + 2.0)
+        .extrude(-(BASE_T + 2.0))
+    )
+    base = base.cut(pocket)
+
     # Translate the whole baseplate so its bottom face sits at Z_BASE_TOP.
     return base.translate((0, 0, Z_BASE_TOP))
+
+
+def build_servo_pinion() -> cq.Workplane:
+    """20-tooth m=1.0 spur pinion for the MG996R (PCD 20, tip Ø22).
+
+    Bore is Ø6 with a 0.5 mm chordal flat — the simplest printable
+    interface to the MG996R's 25-T spline (set-screw retention).
+    The pinion is built in its own frame (axis along X, centred on
+    origin in YZ) ready for translation to (PINION_X_LO, PINION_Y,
+    PINION_Z) at assembly time.
+    """
+    pinion = _build_spur_gear(GEAR_PINION_TEETH, GEAR_MODULE,
+                              GEAR_FACE_W, 6.0, flat=True)
+    # Phase the pinion by half a tooth pitch about its own axis so its
+    # teeth align with the hinge gear's gaps at the mesh point (avoids
+    # static tooth-on-tooth interpenetration in CAD; in practice the
+    # servo will rotate to the correct phase on power-up anyway).
+    half_pitch = 360.0 / GEAR_PINION_TEETH / 2.0
+    pinion = pinion.rotate((0, 0, 0), (0, 0, 1), half_pitch)
+    # Rotate so the axis (was +Z) becomes +X (extrusion goes from X=0
+    # to X=+face_w in the rotated frame); translate at assembly time.
+    pinion = pinion.rotate((0, 0, 0), (0, 1, 0), 90)
+    return pinion
 
 
 def build_hinge_pin() -> cq.Workplane:
@@ -509,6 +796,53 @@ def build_hinge_pin() -> cq.Workplane:
     return pin_plus.union(pin_minus)
 
 
+def _tilt_mounting_plate(plate: cq.Workplane, tilt_deg: float) -> cq.Workplane:
+    """Rotate the mounting plate about the hinge axis (global X through
+    (Y_DISP, Z_AUG)) by ``tilt_deg`` (positive = lifts the rear up)."""
+    if abs(tilt_deg) < 1e-9:
+        return plate
+    return (
+        plate.translate((0, -Y_DISP, -Z_AUG))
+             .rotate((0, 0, 0), (1, 0, 0), -tilt_deg)
+             .translate((0, Y_DISP, Z_AUG))
+    )
+
+
+def validate_no_interference(verbose: bool = True) -> dict[str, float]:
+    """Compute interference volumes between key moving + static parts:
+
+      * mounting_plate ∩ baseplate at 0° (folded flush)
+      * mounting_plate ∩ baseplate at 90° (vertical)
+      * pinion ∩ baseplate (mounted servo position — should be 0)
+
+    A non-zero interference volume means the parts physically overlap
+    and the CAD is wrong.  Returns a dict of {check_name: volume_mm3}.
+    """
+    results: dict[str, float] = {}
+    mp = build_mounting_plate()
+    bp = build_baseplate()
+
+    for tilt in (0.0, 90.0):
+        mp_t = _tilt_mounting_plate(mp, tilt)
+        inter = mp_t.val().intersect(bp.val())
+        vol = inter.Volume() if inter is not None else 0.0
+        results[f"plate∩base @ {tilt:.0f}°"] = vol
+
+    # Pinion sits on the baseplate; should not interfere with the base.
+    pinion = build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z))
+    inter = pinion.val().intersect(bp.val())
+    vol = inter.Volume() if inter is not None else 0.0
+    results["pinion∩base (servo install)"] = vol
+
+    if verbose:
+        print()
+        print("Interference checks (volume in mm³; should be ~0):")
+        for name, v in results.items():
+            tag = "OK   " if v < 1.0 else "FAIL "
+            print(f"  [{tag}] {name:36s}  {v:10.2f} mm³")
+    return results
+
+
 # --------------------------------------------------------------------- #
 # Export
 # --------------------------------------------------------------------- #
@@ -523,6 +857,7 @@ def main() -> None:
         "mounting_plate": build_mounting_plate(),
         "baseplate": build_baseplate(),
         "hinge_pin": build_hinge_pin(),
+        "servo_pinion": build_servo_pinion(),
     }
     for name, part in parts.items():
         step_path = step_dir / f"{name}.step"
@@ -552,6 +887,17 @@ def main() -> None:
           f"= front edge + {Y_DISP - BASE_Y_FRONT:.0f} mm)")
     print(f"Component order (Y, hinge→far): brkF={Y_BRK_FRONT:+.0f}  "
           f"tap={Y_TAP:+.0f}  motor={Y_GEAR_BAND:+.2f}  brkR={Y_BRK_REAR:+.0f}")
+    print(f"Hinge gear (mounting plate)  : Z={GEAR_HINGE_TEETH}T m={GEAR_MODULE}  "
+          f"PCD={GEAR_HINGE_PCD:.1f}  tipØ={GEAR_HINGE_TIP_D:.1f}  "
+          f"face={GEAR_FACE_W:.2f} mm @ X={GEAR_X_CENTRE:.2f}")
+    print(f"Servo pinion                 : Z={GEAR_PINION_TEETH}T m={GEAR_MODULE}  "
+          f"PCD={GEAR_PINION_PCD:.1f}  tipØ={GEAR_PINION_TIP_D:.1f}  "
+          f"→ 2:1 reduction, C={GEAR_CENTRE_C:.1f} mm")
+    print(f"MG996R spline axis           : (X={PINION_X_CENTRE:.2f}, "
+          f"Y={PINION_Y:.2f}, Z={PINION_Z:+.2f})  "
+          f"servo wall at X={SERVO_WALL_X:.2f}")
+
+    validate_no_interference()
 
 
 if __name__ == "__main__":
