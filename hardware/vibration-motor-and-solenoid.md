@@ -703,7 +703,148 @@ populated. A lead-screw linear actuator gives 10–50× the torque at
 the pivot for similar money, plus the lead screw self-locks so the
 plate stays put unpowered (a servo holds position by drawing
 continuous current against the load, which heats it under sustained
-gravity loading).
+gravity loading). The next subsection captures the
+**high-torque-servo alternative** anyway — it's lighter, fewer
+parts, and turns out to be MCU-compatible with the
+[#45](https://github.com/vertical-cloud-lab/powder-doser/issues/45)
+architecture 2.2 satellite design without changing the MCU.
+
+### Servo-driven baseplate tilt — alternative to the linear actuator
+
+Per Will's comment on this PR
+([#25 review](https://github.com/vertical-cloud-lab/powder-doser/pull/25#issuecomment-4489465865)),
+the team is considering swapping the linear actuator (items 19 / 19-alt /
+20 above) for a single **high-torque hobby servo mounted directly on the
+hinge pin from [#57](https://github.com/vertical-cloud-lab/powder-doser/pull/57)**.
+This subsection lays out the sizing math, recommended servos, and the
+impact on the MCU/PWM design from
+[#45](https://github.com/vertical-cloud-lab/powder-doser/issues/45)
+(architecture 2.2 = Pi Zero 2 W as the per-system satellite controller).
+
+**Sizing the holding torque.** With the servo body fixed to one side of
+the hinge bracket and the splined output horn coupled directly to the
+plate (no lever arm — the servo *is* the hinge actuator), the worst-case
+load on the servo is the **static gravitational torque of the plate about
+the hinge line** when the plate is horizontal (the moment arm to the
+plate's centre of mass is at its maximum). For the v1.0 single-channel
+plate (≈ 0.5 kg above the hinge, CoG ~80 mm from the hinge line) that's
+`τ = m·g·R = 0.5 · 9.81 · 0.080 ≈ 0.39 N·m ≈ 4.0 kg·cm`. For an
+N-channel scale-up to ~2 kg above the hinge with `R ≈ 100 mm`, the worst
+case grows to `≈ 2.0 N·m ≈ 20 kg·cm`. So the servo needs **≥ 20 kg·cm
+stall torque at 6 V** to cover the N-channel growth path with margin —
+the wiper servo (item 16, HD-1810MG, 3 kg·cm) is firmly out and a
+proper standard-size "high-torque digital" servo is needed instead.
+
+**Recommended servos** (all 180° travel, metal gear, 4.8–6.8 V, standard
+JR/Futaba 3-wire connector — pick one):
+
+| Suggestion | Stall torque @ 6 V | Speed @ 6 V | Travel | Price | Source |
+|------------|--------------------|-------------|--------|-------|--------|
+| **DS3225MG** (recommended default) | **25 kg·cm** | 0.13 s/60° | 180° (270° SKU also exists — pick the 180°) | ~$18–25 | Amazon — search "DS3225 25KG digital servo 180" |
+| Hitec HS-805BB "Mega Giant" | 24.7 kg·cm | 0.14 s/60° | 180° | ~$40 | [Pololu #2156](https://www.pololu.com/product/2156) (dual ball bearings, conservative duty rating) |
+| DS3218MG (budget) | 20 kg·cm | 0.16 s/60° | 180° | ~$13–16 | Amazon — search "DS3218 20KG digital servo 180" |
+| Savöx SV-1270TG (high-end) | 35 kg·cm | 0.16 s/60° | 180° | ~$100 | [ServoCity](https://www.servocity.com/sv-1270tg-monster-torque-titanium-gear-digital-servo/) (overkill but built like a tank) |
+
+The **DS3225MG** is the recommended default: 5× margin on the v1.0 plate,
+~1.25× margin on the N-channel scale-up, in stock on Amazon Prime in 2 days,
+and the metal-gear / dual-bearing construction stands up to the sustained
+gravity-loaded holding current much better than a plastic-gear servo. The
+HS-805BB is the conservative pick if you'd rather buy from Pololu in the
+same cart as the rest of the BOM and don't mind paying ~2× for the brand
+and the duty-cycle headroom.
+
+> ⚠️ **180° travel is a configuration choice on the DS-series.** Some
+> Amazon listings for "DS3225" or "DS3218" ship a **270°-travel** firmware
+> by default. We want **180°** (matches the plate's 0°→90° tilt range with
+> a 1:1 horn-to-plate coupling, leaves 45° of mechanical safety margin at
+> each end). Confirm the SKU is `…180°` before adding to cart.
+
+**Mechanical mount.** Bolt the servo body to the chassis-frame side of
+the hinge bracket from
+[#57](https://github.com/vertical-cloud-lab/powder-doser/pull/57)
+so the **servo's output shaft is collinear with the hinge axis**, and
+key the metal output horn directly to the mounting plate's hinge sleeve
+(printed clamp or M3-through-horn). This makes the servo *the* hinge
+pivot on one side; the opposite side of the plate still rides on a plain
+hinge pin / sleeve bearing so it doesn't fight the servo. A 1:1 direct
+coupling is preferred over a gear/belt reduction at this scale — a 25 kg·cm
+servo is already 5× over-spec on the v1.0 plate, and adding a reduction
+stage only buys headroom at the cost of backlash. If the N-channel plate
+grows past the servo's holding torque, add a **brass spur-gear reduction
+(e.g. 1:2)** between the servo horn and the hinge sleeve before
+upgrading to a more expensive servo.
+
+**Impact on the MCU / architecture 2.2 from
+[#45](https://github.com/vertical-cloud-lab/powder-doser/issues/45).**
+**It works on the same Pi Zero 2 W with no change to the MCU choice** —
+in fact it *frees up* GPIO and BOM cost vs. the linear-actuator path:
+
+* **PWM.** Standard hobby-servo control is a **50 Hz, 1–2 ms pulse-width
+  position signal** on one GPIO — exactly the same protocol as the wiper
+  servo (item 16). It needs **one hardware-PWM channel** for jitter-free
+  hold. Because the existing pin map already parks the solenoid (`IN1`
+  PWM) **and** the optional wiper servo on `PWM0` (GPIO18 + GPIO12, see
+  the "Pi Zero 2 W GPIO budget & PWM availability" section below),
+  assign the baseplate-tilt servo to **`PWM1` on GPIO13 (header pin 33)
+  or GPIO19 (pin 35)** so it gets its own independent PWM frequency and
+  doesn't have to coexist on 50 Hz with the solenoid's tap bursts.
+* **GPIO count.** Net **−1 GPIO** vs. the linear-actuator path: drops
+  GPIO5 + GPIO6 (the DRV8871 #2 IN1/IN2 from item 20), adds one PWM pin
+  for the servo signal. The Pi Zero 2 W still has both HW-PWM channels
+  in use (PWM0 = solenoid + optional wiper, PWM1 = baseplate-tilt
+  servo) — exactly the max it supports — and ~20 GPIOs still free for
+  future expansion.
+* **BOM delta.** Drops **item 19 ($79.95 Glideforce)** and **item 20
+  ($7.50 second DRV8871)**, **adds the high-torque servo (~$20)**. Net
+  savings ≈ **$67.45 system-shared** — and fewer parts to source.
+* **Power budget — the one real gotcha.** A DS3225MG stalls at ~2.5 A
+  @ 6 V (~15 W); the cheaper DS3218 at ~1.5 A. Sustained holding
+  current under a horizontal-plate gravity load is typically
+  **0.3–0.8 A**. That's **too much for the existing D24V22F5 5 V
+  / 2.5 A buck (item 15)** to share with the Pi + solenoid +
+  optional wiper servo — it would brown out the Pi during a slew.
+  Two acceptable fixes:
+  1. **Dedicate a second buck to the tilt servo** at 5–6 V / 3 A:
+     [Pololu D24V22F6 (6 V / 2.5 A)](https://www.pololu.com/product/2856)
+     or [D36V28F6 (6 V / 3.2 A)](https://www.pololu.com/product/3796) —
+     wire its input to the same 12 V `VMOT` rail from item 13 (Mean Well
+     GST60A12-P1J), and its output **only** to the servo's red lead.
+     Add ~$15 to the Pololu cart; tie all grounds together at the
+     Bonnet.
+  2. **Upgrade item 15 to a higher-current buck.** Replace the D24V22F5
+     with the [Pololu D24V50F5 (5 V / 5 A)](https://www.pololu.com/product/2851)
+     or [D36V50F5 (5 V / 5 A)](https://www.pololu.com/product/3781) so
+     the single 5 V rail covers Pi + solenoid + wiper servo + tilt
+     servo simultaneously. Add ~$5 over the current part.
+  
+  Do **not** try to feed a 20 kg·cm digital servo from the Pi's own
+  5 V header pin — its over-current protection trips at ~1.5 A on the
+  Pi Zero 2 W and you'll see USB / Wi-Fi resets every time the plate
+  starts moving.
+* **Self-lock vs. holding current.** Unlike the linear actuator's
+  self-locking lead screw, the servo holds position **only while
+  powered**. Mitigations: (a) wire the servo's V+ through a soft-start
+  RC so it doesn't snap to position at boot, (b) park the plate at
+  **horizontal (0°)** between sessions — that's the orientation closest
+  to mechanical rest, and any printed end-stop on the chassis can take
+  the static load if power is lost mid-session, and (c) on shutdown,
+  command the servo to horizontal and then drop V+ via a load switch
+  driven from a Pi GPIO. The
+  [#45](https://github.com/vertical-cloud-lab/powder-doser/issues/45)
+  architecture 2.2 satellite design already includes a per-system 12 V
+  power switch — wire a small SPST relay (or a load switch IC like the
+  AP22802) in series with the new tilt-servo buck so the satellite Pi
+  can drop only the servo rail without dropping its own rail.
+
+**TL;DR: yes, swap from linear actuator → high-torque servo is fully
+compatible with the
+[#45](https://github.com/vertical-cloud-lab/powder-doser/issues/45)
+architecture 2.2 (Pi Zero 2 W) design.** The only architectural change
+is *one extra buck* (or *one bigger buck*) on the 12 V rail to source the
+servo's holding current; no MCU change, no extra I/O board, no
+encoder/ADC. If we go this route, the BOM changes are: **drop items 19 +
+19-alt + 20**, **add item 19-svo (DS3225MG ~$20)** and **item 19-buck
+(Pololu D24V22F6 ~$15)** — netting ~$50 in savings and ~2 GPIO freed.
 
 ### Belt-drive alternative
 
