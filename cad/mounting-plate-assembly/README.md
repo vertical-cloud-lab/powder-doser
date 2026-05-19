@@ -40,6 +40,41 @@ The **current** revision implements the issue #62 *fifth* review
   layer takes one third of its ramp half-span (`≈ 12.7 mm`), so the
   hinges span the entire front of the plate.
 
+### Servo-driven hinge (issue #63)
+
+The mounting-plate tilt is now driven by an **MG996R servo** through
+a **2:1 spur-gear reduction**:
+
+* **Hinge gear** — the outermost +X mounting-plate hinge lobe carries
+  an integrated **40-tooth, m = 1.0** spur-gear band (PCD 40, tip Ø 42,
+  face width = lobe thickness ≈ 12.30 mm).  The gear is part of the
+  mounting plate's single solid — not a separate STL.
+* **Servo pinion** (new part `servo_pinion.{step,stl}`) — **20 teeth,
+  m = 1.0** (PCD 20, tip Ø 22), giving a **2:1 reduction** at
+  `C = 30 mm`.  Bore is Ø 6 with a 0.5 mm chordal flat for set-screw
+  retention on the MG996R 25-T spline (the simplest printable
+  interface — for production swap to a true 25-T spline socket).
+* **Servo mount** — a vertical wall on the baseplate top, perpendicular
+  to the spline axis, located just outboard of the pinion at
+  `X = +55 mm` (1 mm clearance between pinion tip and wall).  The wall
+  carries 4 × Ø 4.1 mm holes in the standard MG996R
+  49.36 × 10 mm flange pattern and a Ø 9 mm spline-clearance bore.
+  The servo body sits at `X ∈ [+59, +101.9] mm` entirely outboard of
+  the mounting plate so there is no body interference at any tilt
+  angle.
+* **Interference fix** — the baseplate's middle-third hinge arms used
+  to pierce the mounting-plate body at 0° fold-down (5904 mm³ of
+  overlap).  The fix cuts two vertical clearance slots through the
+  plate (one per arm) at `Y ∈ [+73, +117]`, X-bands matching the arm
+  spans with ±0.5 mm clearance, so the arms pass cleanly through the
+  plate when folded.
+* **Validation** — `cad_model.py` now defines
+  `validate_no_interference()` which is called from `main()` and
+  reports the intersection volume of:
+    * `mounting_plate ∩ baseplate` at 0° (folded flush) — **0.00 mm³**
+    * `mounting_plate ∩ baseplate` at 90° (vertical)      — **0.00 mm³**
+    * `pinion ∩ baseplate` (installed servo)              — **0.00 mm³**
+
 The package was also requested as an **exploration of zoo.dev** for
 parametric CAD; see [§ zoo.dev experience](#zoodev-experience-pros--cons)
 below.
