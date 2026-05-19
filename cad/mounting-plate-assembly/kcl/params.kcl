@@ -177,12 +177,10 @@ zBaseTop               = -plateT - 8.0                     // -14
 // Baseplate hinge arms — middle layer of the 3-layer sandwich, one each
 // side of the auger gap.  Each arm occupies the centre third of its
 // ramp half-span between the mounting plate's inner and outer lobes.
+// The arm bottom face extends BACK onto the baseplate top for full
+// contact with the baseplate (per Will's review).
 armThk                 = hingeLobeW - hingeLayerGap
 hingeAxisZLocal        = zAug - zBaseTop
+armBaseSupportLen      = 40.0
 
-// Linear-actuator base clevis on baseplate.
-actBaseY               = -110.0
-actBaseW               = 16.0
-actBaseT               = 10.0
-actBaseH               = 30.0
-actBaseBoreD           = m5Clear
+// (Linear-actuator base clevis removed — no longer using a linear actuator.)

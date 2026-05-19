@@ -9,7 +9,7 @@
 This package designs the **foundation** of the powder-doser machine: a
 mounting plate that carries the auger brackets (PR #47 ×2), the tap-collar
 mount (PR #51) and the NEMA 11 stepper (PR #49), and a baseplate that
-holds the other half of the hinge plus a linear-actuator base clevis. The
+holds the other half of the hinge. The
 mounting plate **rotates about the auger's own dispense axis** so that no
 part of the hinge ever crosses the powder path, and the baseplate's legs
 raise everything above the bench so a cup sits on a scale directly under
@@ -68,7 +68,7 @@ cad/mounting-plate-assembly/
     ├── assembly_45deg_iso.png / assembly_90deg_iso.png
     ├── full_assembly.step
     ├── installation_diagram.png      ← top view, every mounting hole labelled
-    ├── rotation_0_45_90.png          ← tilt sequence driven by actuator
+    ├── rotation_0_45_90.png          ← tilt sequence about the auger dispense point
     └── powder_flow.png               ← auger → dispense → cup
 ```
 
@@ -162,15 +162,8 @@ upstream parts' own bolt patterns:
 `rotation_0_45_90.png` walks the assembly through 0°, 45° and 90° tilt
 about the hinge axis.  At 0° the auger is horizontal; at 90° it points
 straight down past the front of the baseplate into the cup.  The
-diagram annotates the corresponding linear-actuator length (computed
-live from the current pivot placement).
-
-The current pivot placement gives a large length swing (≈ 200 mm) for
-a 0–90° sweep, which is more than a typical Actuonix L12 (50 mm
-stroke) can deliver.  Noted as a follow-up for the BOM stage — easy
-fixes are:
-* Move `ACT_LUG_Y` further from the hinge to shorten the required stroke.
-* Use a longer-stroke actuator class (e.g. L16-100) or stack two L12s.
+hinge axis is fixed at the auger's dispense point so that point does
+not move as the assembly tilts (red dot in the diagram).
 
 ### Powder-flow
 

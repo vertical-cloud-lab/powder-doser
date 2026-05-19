@@ -64,12 +64,14 @@ legBL = startSketchOn(XY)
 // ---- baseplate hinge arms (middle layer of the 3-layer sandwich) ----
 // In local frame, base top is at z=baseT; the hinge axis is at
 // z = hingeAxisZLocal.  Each arm fills the rectangle
-// (baseYFront..yDisp, baseT..hingeAxisZLocal+eyeOd/2) and is extruded
+// (armBackY..yDisp, baseT..hingeAxisZLocal+eyeOd/2) and is extruded
 // armThk along X — armThk = hingeLobeW - hingeLayerGap so the arm fits
 // snugly in the middle third of the ramp half-span between the
 // mounting plate's inner and outer hinge lobes (per the fifth review).
+// The arm bottom extends BACK onto the baseplate top (armBaseSupportLen)
+// so it is in full contact with the baseplate (per Will's review).
 armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
-armBackY = p.baseYFront
+armBackY = p.baseYFront - p.armBaseSupportLen
 armFrontY = p.yDisp
 armLen = armFrontY - armBackY
 armHeight = armTopLocal - p.baseT
@@ -90,11 +92,4 @@ leftArm = startSketchOn(YZ)
   |> close()
   |> extrude(length = -p.armThk)
 
-// ---- linear-actuator base clevis on baseplate TOP ----
-clevis = startSketchOn(XY)
-  |> startProfile(at = [-p.actBaseW/2, p.actBaseY - p.actBaseT/2])
-  |> line(end = [p.actBaseW, 0])
-  |> line(end = [0, p.actBaseT])
-  |> line(end = [-p.actBaseW, 0])
-  |> close()
-  |> extrude(length = p.baseT + p.actBaseH)
+// (Linear-actuator base clevis removed — no longer using a linear actuator.)

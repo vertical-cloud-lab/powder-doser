@@ -32,7 +32,8 @@ import numpy as np
 import vtk
 
 from cad_model import (
-    AUGER_GAP_W, AUGER_GAP_Y_BACK, AUGER_LEN, AUGER_OD, ARM_THK,
+    ARM_BASE_SUPPORT_LEN, AUGER_GAP_W, AUGER_GAP_Y_BACK, AUGER_LEN,
+    AUGER_OD, ARM_THK,
     BASE_T, BASE_Y_BACK, BASE_Y_CENTRE, BASE_Y_FRONT, BRK_FLANGE_T,
     BRK_FLANGE_W, BRK_FLANGE_D, BRK_MOUNT_HOLE_INSET_X,
     BRK_RING_CENTRE_LOCAL_Z, GEAR_BAND_FACE_W, GEAR_BAND_TIP_DIA,
@@ -398,14 +399,8 @@ def rotation_diagram(out_path: Path) -> None:
                  "dispense point literally does not move (red dot); axis "
                  f"sits {Y_DISP - BASE_Y_FRONT:.0f} mm forward of baseplate front edge")
     tilts = [0, 45, 90]
-    L_act = []
-
-    # Actuator pivots in untilted frame
-    rod_y0 = -60.0
-    rod_z0 = -PLATE_T - (24.0 - 6)
-    base_y = -110.0
-    base_z = Z_BASE_TOP + BASE_T + (30.0 - 6)
     hy, hz = Y_DISP, Z_AUG
+    arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN
 
     for ax, tilt in zip(axes, tilts):
         ax.set_aspect("equal")
@@ -415,13 +410,14 @@ def rotation_diagram(out_path: Path) -> None:
         ax.add_patch(patches.Rectangle((BASE_Y_BACK, Z_BASE_TOP),
                                        BASE_Y_FRONT - BASE_Y_BACK, BASE_T,
                                        facecolor="#c0c0c8", edgecolor="#444"))
-        # Baseplate hinge arm side projection (vertical column reaching up to
-        # the hinge axis)
+        # Baseplate hinge arm side projection — bottom face sits on the
+        # baseplate top from arm_back_y forward to the hinge eye, in full
+        # contact with the baseplate.
         ax.add_patch(patches.Polygon([
-            (BASE_Y_FRONT, Z_BASE_TOP + BASE_T),
+            (arm_back_y, Z_BASE_TOP + BASE_T),
             (Y_DISP + HINGE_EYE_OD / 2, Z_BASE_TOP + BASE_T),
             (Y_DISP + HINGE_EYE_OD / 2, Z_AUG + HINGE_EYE_OD / 2),
-            (BASE_Y_FRONT, Z_AUG + HINGE_EYE_OD / 2),
+            (arm_back_y, Z_AUG + HINGE_EYE_OD / 2),
         ], closed=True, facecolor="#a8a8b4", edgecolor="#444"))
 
         c, s = math.cos(math.radians(-tilt)), math.sin(math.radians(-tilt))
@@ -477,15 +473,6 @@ def rotation_diagram(out_path: Path) -> None:
         # Hinge axis marker (always at the same physical point!)
         ax.plot(*rot(hy, hz), "o", color="red", ms=10, zorder=10)
 
-        # Actuator line
-        rod_y, rod_z = rot(rod_y0, rod_z0)
-        ax.plot([base_y, rod_y], [base_z, rod_z], "-", color="#666", lw=2.5)
-        L = math.hypot(rod_y - base_y, rod_z - base_z)
-        L_act.append(L)
-        ax.text((base_y + rod_y) / 2, (base_z + rod_z) / 2 + 8,
-                f"actuator L = {L:.1f} mm", ha="center", fontsize=9,
-                bbox=dict(boxstyle="round", facecolor="white", edgecolor="#666"))
-
         ax.set_xlim(-200, 200)
         ax.set_ylim(-130, 280)
         ax.grid(True, alpha=0.3)
@@ -496,8 +483,7 @@ def rotation_diagram(out_path: Path) -> None:
     fig.tight_layout()
     fig.savefig(out_path)
     plt.close(fig)
-    print(f"  → {out_path.relative_to(HERE)}  (actuator lengths: "
-          + ", ".join(f"{t}°={L:.1f}mm" for t, L in zip(tilts, L_act)) + ")")
+    print(f"  → {out_path.relative_to(HERE)}")
 
 
 def powder_flow_diagram(out_path: Path) -> None:
@@ -520,12 +506,13 @@ def powder_flow_diagram(out_path: Path) -> None:
     ax.add_patch(patches.Rectangle((BASE_Y_BACK, Z_BASE_TOP),
                                    BASE_Y_FRONT - BASE_Y_BACK, BASE_T,
                                    facecolor="#c0c0c8", edgecolor="#444"))
-    # Baseplate forward-and-up arm (side projection).
+    # Baseplate forward-and-up arm (side projection) — bottom face sits
+    # on the baseplate top, extending back ARM_BASE_SUPPORT_LEN.
     ax.add_patch(patches.Polygon([
-        (BASE_Y_FRONT, Z_BASE_TOP + BASE_T),
+        (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN, Z_BASE_TOP + BASE_T),
         (Y_DISP + HINGE_EYE_OD / 2, Z_BASE_TOP + BASE_T),
         (Y_DISP + HINGE_EYE_OD / 2, Z_AUG + HINGE_EYE_OD / 2),
-        (BASE_Y_FRONT, Z_AUG + HINGE_EYE_OD / 2),
+        (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN, Z_AUG + HINGE_EYE_OD / 2),
     ], closed=True, facecolor="#a8a8b4", edgecolor="#444"))
 
     # Mounting plate + ramp (rotated)

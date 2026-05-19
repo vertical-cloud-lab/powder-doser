@@ -237,12 +237,14 @@ ARM_THK = HINGE_LOBE_W - HINGE_LAYER_GAP                   # ≈ 12.28 mm
 # Hinge axis in baseplate's local frame (before final translate).
 HINGE_AXIS_Z_LOCAL = Z_AUG - Z_BASE_TOP                    # +43.25
 
-# --- Linear-actuator base clevis on baseplate top ---------------------
-ACT_BASE_Y = -110.0
-ACT_BASE_W = 16.0
-ACT_BASE_T = 10.0
-ACT_BASE_H = 30.0
-ACT_BASE_BORE_D = 5.4
+# How far back of the baseplate's front edge the hinge-arm bottom sits
+# on the baseplate top.  Per Will's review the arm bottom face must be
+# in COMPLETE contact with the baseplate — so extend the arm back into
+# the baseplate area for solid support (no cantilever).
+ARM_BASE_SUPPORT_LEN = 40.0
+
+# (Linear-actuator base clevis removed — the linear actuator is no
+# longer part of the design.)
 
 # Hardware
 M3_CLEAR = 3.4
@@ -440,8 +442,11 @@ def build_baseplate() -> cq.Workplane:
     # slips between the mounting plate's inner and outer hinge lobes.
     # The arm rises from the base top to the hinge axis level and ends
     # in a disc-cap eye that shares the M5 pin with the plate lobes.
+    # The arm bottom face extends BACK onto the baseplate top so it is
+    # in full contact with the baseplate (per Will's review).
     HINGE_R = HINGE_EYE_OD / 2.0
     arm_top_local = HINGE_AXIS_Z_LOCAL + HINGE_R
+    arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN
     arm_spans = (
         (HINGE_X1 + HINGE_LAYER_GAP / 2,  HINGE_X2 - HINGE_LAYER_GAP / 2),
         (-HINGE_X2 + HINGE_LAYER_GAP / 2, -HINGE_X1 - HINGE_LAYER_GAP / 2),
@@ -450,10 +455,10 @@ def build_baseplate() -> cq.Workplane:
         arm = (
             cq.Workplane("YZ")
             .workplane(offset=x_lo)
-            .moveTo(BASE_Y_FRONT, BASE_T)
+            .moveTo(arm_back_y, BASE_T)
             .lineTo(Y_DISP, BASE_T)
             .lineTo(Y_DISP, arm_top_local)
-            .lineTo(BASE_Y_FRONT, arm_top_local)
+            .lineTo(arm_back_y, arm_top_local)
             .close()
             .extrude(x_hi - x_lo)
         )
@@ -475,21 +480,8 @@ def build_baseplate() -> cq.Workplane:
         )
         base = base.cut(bore)
 
-    # Linear-actuator base clevis on baseplate TOP (z = BASE_T+).
-    clevis = (
-        cq.Workplane("XY")
-        .box(ACT_BASE_W, ACT_BASE_T, ACT_BASE_H, centered=(True, True, False))
-        .translate((0, ACT_BASE_Y, BASE_T))
-    )
-    base = base.union(clevis)
-    clevis_bore = (
-        cq.Workplane("YZ")
-        .workplane(offset=-(ACT_BASE_W / 2.0 + 1.0))
-        .center(ACT_BASE_Y, BASE_T + ACT_BASE_H - 6.0)
-        .circle(ACT_BASE_BORE_D / 2.0)
-        .extrude(ACT_BASE_W + 2.0)
-    )
-    base = base.cut(clevis_bore)
+    # (Linear-actuator base clevis removed — no longer using a linear
+    # actuator.)
 
     # Translate the whole baseplate so its bottom face sits at Z_BASE_TOP.
     return base.translate((0, 0, Z_BASE_TOP))
