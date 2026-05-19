@@ -343,41 +343,87 @@ ARM_SLOT_CLEARANCE = 0.5                # per side along X
 def _gear_polygon(num_teeth: int, module: float,
                   pa_deg: float = 20.0) -> list[tuple[float, float]]:
     """Return a closed 2D polygon (list of (x, y) points) describing a
-    standard spur gear with straight-flank trapezoidal teeth — a
-    printable involute approximation suitable for FDM/SLA.
+    true-involute spur gear — matches the geometry used by the
+    ``spur_gear_2d`` module in PR #49 (cad/auger-geared/gear-teeth.scad).
 
     Geometry:
-        * pitch radius   Rp = N · m / 2
-        * addendum       a  = m         → tip radius   Ra = Rp + m
-        * dedendum       d  = 1.25 · m  → root radius  Rd = Rp − 1.25 m
-        * tooth thickness at pitch line = π · m / 2
-        * tooth flank slope at the pressure angle (20° standard)
+        * pitch radius     Rp = N · m / 2
+        * base radius      Rb = Rp · cos(α)            (involute starts here)
+        * addendum         a  = m         → tip radius  Ra = Rp + m
+        * dedendum         d  = 1.25 · m  → root radius Rd = Rp − 1.25 m
+        * tooth thickness at pitch circle = π · m / 2
+        * each flank is the true involute of the base circle,
+          sampled at ``FLANK_STEPS`` points between base and tip
+
+    Returns one closed CCW polygon walking root → −θ-flank (base→tip)
+    → tip arc → +θ-flank (tip→base) → root arc to next tooth.  Suitable
+    for ``cq.Workplane.polyline(...).close().extrude(...)``.
     """
+    pa = math.radians(pa_deg)
     rp = num_teeth * module / 2.0
+    rb = rp * math.cos(pa)
     ra = rp + module
-    rd = rp - 1.25 * module
-    tan_pa = math.tan(math.radians(pa_deg))
-    t_p = math.pi * module / 2.0          # tooth thickness at pitch circle
-    # Linear-flank approximation: half-thickness vs radius.
-    # At pitch r=rp, half_t = t_p/2.  Tooth thickens toward root.
-    half_t_tip = max(0.10, t_p / 2.0 - module * tan_pa)
-    half_t_root = t_p / 2.0 + 1.25 * module * tan_pa
-    # Convert linear half-thicknesses to angular half-widths at each radius.
-    half_a_tip = half_t_tip / ra
-    half_a_root = half_t_root / rd
+    # If undercut would put the root inside the base circle, just clip
+    # the involute at the base circle (the visible root then sits at rb).
+    rd_target = rp - 1.25 * module
+    rd = max(rd_target, rb)
+
+    inv_pa = math.tan(pa) - pa                       # involute(α)
+    half_tooth = math.pi / (2.0 * num_teeth)         # angular ½-thickness at pitch
+    # Angular position (relative to tooth centre) of the involute
+    # at the base circle, chosen so the involute passes through the
+    # pitch circle at ±half_tooth (i.e. correct pitch-line thickness).
+    flank_base_theta = half_tooth + inv_pa
+
+    # Sample involute from base/root → tip in parameter t,
+    # where r = rb·√(1+t²) and the involute angle = t − atan(t).
+    t_start = math.sqrt(max((rd / rb) ** 2 - 1.0, 0.0))
+    t_end = math.sqrt((ra / rb) ** 2 - 1.0)
+    FLANK_STEPS = 12
+
+    # +θ-side flank samples (root → tip), as (r, θ_rel_to_tooth_centre).
+    # On the +θ flank, θ_rel = +flank_base_theta − (t − atan(t)).
+    plus_flank: list[tuple[float, float]] = []
+    for k in range(FLANK_STEPS + 1):
+        t = t_start + (t_end - t_start) * k / FLANK_STEPS
+        r = rb * math.sqrt(1.0 + t * t)
+        theta_rel = flank_base_theta - (t - math.atan(t))
+        plus_flank.append((r, theta_rel))
+
+    # Mirror to get the −θ-side flank (same r, opposite θ).
+    minus_flank = [(r, -th) for (r, th) in plus_flank]
+
+    # Tip arc — a few extra samples between the two flank tips so
+    # the tooth crown is a true arc and not a chord.
+    TIP_ARC_STEPS = 3
+    tip_theta_plus = plus_flank[-1][1]               # > 0
+    tip_theta_minus = minus_flank[-1][1]             # < 0
+    tip_arc: list[tuple[float, float]] = []
+    for k in range(1, TIP_ARC_STEPS):
+        frac = k / TIP_ARC_STEPS
+        # interpolate from -tip_theta → +tip_theta
+        th = tip_theta_minus + (tip_theta_plus - tip_theta_minus) * frac
+        tip_arc.append((ra, th))
 
     pts: list[tuple[float, float]] = []
-    step = 2.0 * math.pi / num_teeth
+    angular_pitch = 2.0 * math.pi / num_teeth
     for i in range(num_teeth):
-        c = i * step                       # tooth-centre angle
-        # 4 corners of the tooth: root-right, tip-right, tip-left, root-left.
-        for r, ang in (
-            (rd, c - step / 2.0 + half_a_root),   # left-root start (after valley)
-            (ra, c - half_a_tip),                 # left-tip
-            (ra, c + half_a_tip),                 # right-tip
-            (rd, c + step / 2.0 - half_a_root),   # right-root end (before valley)
-        ):
+        c = i * angular_pitch
+        # CCW around tooth boundary:
+        #   1. −θ flank, base → tip (θ_rel increases from −flank_base_theta toward 0)
+        for r, th in minus_flank:
+            ang = c + th
             pts.append((r * math.cos(ang), r * math.sin(ang)))
+        #   2. tip arc, −θ side → +θ side
+        for r, th in tip_arc:
+            ang = c + th
+            pts.append((r * math.cos(ang), r * math.sin(ang)))
+        #   3. +θ flank, tip → base (θ_rel increases from small + toward +flank_base_theta)
+        for r, th in reversed(plus_flank):
+            ang = c + th
+            pts.append((r * math.cos(ang), r * math.sin(ang)))
+        # Root arc to next tooth is implicit (next iteration's first
+        # point is on the root circle at the next −θ-flank base).
     return pts
 
 
@@ -649,9 +695,20 @@ def build_baseplate() -> cq.Workplane:
     # in a disc-cap eye that shares the M5 pin with the plate lobes.
     # The arm bottom face extends BACK onto the baseplate top so it is
     # in full contact with the baseplate (per Will's review).
+    #
+    # The BACK (toward −Y, motor) edge is sloped from arm_back_y at the
+    # baseplate top down to a point near the hinge axis, so the mounting
+    # plate's underside has clearance to sweep through 45° and beyond
+    # without colliding with the arm (also per Will's review).
     HINGE_R = HINGE_EYE_OD / 2.0
     arm_top_local = HINGE_AXIS_Z_LOCAL + HINGE_R
     arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN
+    # The sloped back face runs from (arm_back_y, BASE_T) up to
+    # (slope_top_y, arm_top_local); ARM_SLOPE_RUN = 16 mm gives ~58°
+    # from horizontal (steeper than 45° so the arm clears the plate
+    # underside throughout the 0-90° tilt range).
+    ARM_SLOPE_RUN = 16.0
+    slope_top_y = arm_back_y + ARM_SLOPE_RUN
     arm_spans = (
         (HINGE_X1 + HINGE_LAYER_GAP / 2,  HINGE_X2 - HINGE_LAYER_GAP / 2),
         (-HINGE_X2 + HINGE_LAYER_GAP / 2, -HINGE_X1 - HINGE_LAYER_GAP / 2),
@@ -663,7 +720,7 @@ def build_baseplate() -> cq.Workplane:
             .moveTo(arm_back_y, BASE_T)
             .lineTo(Y_DISP, BASE_T)
             .lineTo(Y_DISP, arm_top_local)
-            .lineTo(arm_back_y, arm_top_local)
+            .lineTo(slope_top_y, arm_top_local)
             .close()
             .extrude(x_hi - x_lo)
         )
@@ -694,10 +751,38 @@ def build_baseplate() -> cq.Workplane:
     # entirely outboard of the mounting plate; spline points -X and the
     # pinion meshes with the gear band at C = 30 mm.  4 × Ø4.1 holes
     # in the standard MG996R 49.36 × 10 mm flange pattern.
+    #
+    # The wall would otherwise cantilever ~58 mm past the baseplate's
+    # front edge (Y=+115) — the MG996R flange/body extends out to
+    # Y≈+173 — so we (a) extend the baseplate top forward as a
+    # "porch" under the full servo footprint, and (b) add a triangular
+    # gusset on the back (interior) side of the wall.  Together they
+    # carry the servo weight and reaction torque (per Will's review).
     wall_y_lo = SERVO_WALL_Y_MIN
     wall_y_hi = SERVO_WALL_Y_MAX
     wall_z_lo = SERVO_WALL_Z_LO
     wall_z_hi = SERVO_WALL_Z_HI_LOCAL
+
+    # (a) baseplate porch — a slab of baseplate-thickness material
+    # under the servo body footprint, fused to the baseplate front
+    # edge.  Spans from a few mm INBOARD of the wall (so it overlaps
+    # the baseplate without leaving a sliver) out to the servo body
+    # X-far edge, and from the baseplate front edge out to the wall's
+    # +Y extent.
+    PORCH_X_LO = SERVO_WALL_X             # flush with wall's inboard face
+    PORCH_X_HI = SERVO_BODY_X_HI + 4.0
+    PORCH_Y_LO = BASE_Y_FRONT - 2.0       # 2 mm overlap into baseplate
+    PORCH_Y_HI = wall_y_hi + 2.0
+    porch = (
+        cq.Workplane("XY")
+        .box(PORCH_X_HI - PORCH_X_LO,
+             PORCH_Y_HI - PORCH_Y_LO,
+             BASE_T,
+             centered=(False, False, False))
+        .translate((PORCH_X_LO, PORCH_Y_LO, 0))
+    )
+    base = base.union(porch)
+
     wall = (
         cq.Workplane("YZ")
         .workplane(offset=SERVO_WALL_X)
@@ -707,6 +792,24 @@ def build_baseplate() -> cq.Workplane:
         .extrude(SERVO_WALL_T)
     )
     base = base.union(wall)
+
+    # (b) back-side triangular gusset — a thin web on the −Y face of
+    # the wall, rooted on the baseplate top, that ties the wall's top
+    # back into the baseplate.  Placed inboard of the wall (toward
+    # smaller Y) where there's solid baseplate, with the same X span
+    # as the wall.
+    GUSSET_LEN = 22.0                                   # along −Y from wall
+    GUSSET_H = wall_z_hi - BASE_T                       # from base top to wall top
+    gusset = (
+        cq.Workplane("YZ")
+        .workplane(offset=SERVO_WALL_X)
+        .moveTo(BASE_Y_FRONT, BASE_T)
+        .lineTo(BASE_Y_FRONT, BASE_T + GUSSET_H)
+        .lineTo(BASE_Y_FRONT - GUSSET_LEN, BASE_T)
+        .close()
+        .extrude(SERVO_WALL_T)
+    )
+    base = base.union(gusset)
     # Spline-clearance bore (Ø9 so the spline + small clearance pass
     # through the wall) at the pinion axis.
     pinion_z_local = PINION_Z - Z_BASE_TOP
@@ -822,7 +925,7 @@ def validate_no_interference(verbose: bool = True) -> dict[str, float]:
     mp = build_mounting_plate()
     bp = build_baseplate()
 
-    for tilt in (0.0, 90.0):
+    for tilt in (0.0, 45.0, 90.0):
         mp_t = _tilt_mounting_plate(mp, tilt)
         inter = mp_t.val().intersect(bp.val())
         vol = inter.Volume() if inter is not None else 0.0

@@ -54,6 +54,11 @@ a **2:1 spur-gear reduction**:
   `C = 30 mm`.  Bore is Ø 6 with a 0.5 mm chordal flat for set-screw
   retention on the MG996R 25-T spline (the simplest printable
   interface — for production swap to a true 25-T spline socket).
+* **Gear tooth profile** — both the hinge gear band and the servo
+  pinion use **true involute** tooth flanks (base-circle involute
+  sampled at 12 points per flank + a 3-point tip arc), matching the
+  involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
+  trapezoidal teeth.
 * **Servo mount** — a vertical wall on the baseplate top, perpendicular
   to the spline axis, located just outboard of the pinion at
   `X = +55 mm` (1 mm clearance between pinion tip and wall).  The wall
@@ -61,7 +66,21 @@ a **2:1 spur-gear reduction**:
   49.36 × 10 mm flange pattern and a Ø 9 mm spline-clearance bore.
   The servo body sits at `X ∈ [+59, +101.9] mm` entirely outboard of
   the mounting plate so there is no body interference at any tilt
-  angle.
+  angle.  The wall is **structurally tied** to the baseplate by:
+    * a **forward porch** of baseplate-thickness material that extends
+      the baseplate top from `Y = +115` (front edge) out to `Y ≈ +175`
+      under the full servo footprint (`X ∈ [+55, +106]`); and
+    * a **triangular gusset** on the back (interior) face of the wall
+      that ties the top of the wall back into the baseplate top over
+      22 mm of run.
+  Together these carry the servo's static weight and the reaction
+  torque it applies through the pinion.
+* **Hinge-arm back face is sloped**, not vertical — the back-top corner
+  of each baseplate hinge arm is replaced with a ~58°-from-horizontal
+  slope (the back edge runs from `Y = +75` at the baseplate top up to
+  `Y = +91` at the hinge-axis level).  This gives the mounting plate's
+  underside clearance to sweep through 45° and beyond without colliding
+  with the arm.
 * **Interference fix** — the baseplate's middle-third hinge arms used
   to pierce the mounting-plate body at 0° fold-down (5904 mm³ of
   overlap).  The fix cuts two vertical clearance slots through the
@@ -72,6 +91,7 @@ a **2:1 spur-gear reduction**:
   `validate_no_interference()` which is called from `main()` and
   reports the intersection volume of:
     * `mounting_plate ∩ baseplate` at 0° (folded flush) — **0.00 mm³**
+    * `mounting_plate ∩ baseplate` at 45°                 — **0.00 mm³**
     * `mounting_plate ∩ baseplate` at 90° (vertical)      — **0.00 mm³**
     * `pinion ∩ baseplate` (installed servo)              — **0.00 mm³**
 
