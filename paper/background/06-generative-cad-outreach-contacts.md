@@ -99,127 +99,225 @@ from `edison_artifacts/gencad_outreach_contacts.references.md`.
 
 ## 1. Academic CAD-LLM / Generative-CAD Researchers
 
-- **Rundi Wu** — Columbia University, PhD researcher. First author of **DeepCAD** (ICCV 2021), one of the earliest and most cited transformer-based generative CAD models, which represents shapes as sequences of CAD operations. Directly relevant for programmatic CAD representation design. Email: `rundi@cs.columbia.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2105.09492) (wu2021deepcadadeep pages 1-2)
+### Rundi Wu
 
-- **Changxi Zheng** — Columbia University, Professor. Senior author and PI on the DeepCAD line of work. Email: `cxz@cs.columbia.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2105.09492) (wu2021deepcadadeep pages 1-2)
+Columbia University, PhD researcher. First author of **DeepCAD** (ICCV 2021), one of the earliest and most cited transformer-based generative CAD models, which represents shapes as sequences of CAD operations. Directly relevant for programmatic CAD representation design. Email: `rundi@cs.columbia.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2105.09492) (wu2021deepcadadeep pages 1-2)
 
-- **Haoyang Xie** — Arizona State University, School of Computing and Augmented Intelligence. First author of **Text-to-CadQuery**, which is directly aligned with the lab's need: fine-tuning LLMs to generate executable CadQuery Python code from natural language descriptions, with a 170K annotation dataset. GitHub repo: https://github.com/Text-to-CadQuery/Text-to-CadQuery. Email: `hxie40@asu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.06507) (xie2505texttocadqueryanew pages 1-3)
+### Changxi Zheng
 
-- **Feng Ju** — Arizona State University. Co-author on Text-to-CadQuery; can advise on LLM fine-tuning and evaluation for CadQuery generation. Email: `fengju@asu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.06507) (xie2505texttocadqueryanew pages 1-3)
+Columbia University, Professor. Senior author and PI on the DeepCAD line of work. Email: `cxz@cs.columbia.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2105.09492) (wu2021deepcadadeep pages 1-2)
 
-- **Danila Rukhovich** — SnT, University of Luxembourg. First author of **CAD-Recode**, which translates point clouds into executable Python CAD code by fine-tuning an LLM decoder — relevant for scan-to-edit and model-repair workflows. Email: `danila.rukhovich@uni.lu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2412.14042) (rukhovich2025cadrecodereverseengineering pages 1-2)
+### Haoyang Xie
 
-- **Djamila Aouada** — SnT, University of Luxembourg, Professor. Senior author on CAD-Recode; leads LLM-mediated CAD reverse-engineering research. Email: `djamila.aouada@uni.lu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2412.14042) (rukhovich2025cadrecodereverseengineering pages 1-2)
+Arizona State University, School of Computing and Augmented Intelligence. First author of **Text-to-CadQuery**, which is directly aligned with the lab's need: fine-tuning LLMs to generate executable CadQuery Python code from natural language descriptions, with a 170K annotation dataset. GitHub repo: https://github.com/Text-to-CadQuery/Text-to-CadQuery. Email: `hxie40@asu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.06507) (xie2505texttocadqueryanew pages 1-3)
 
-- **Jesse Barkley** — Carnegie Mellon University, Department of Mechanical Engineering. First author of **CADSmith**, a multi-agent CAD generation pipeline with programmatic geometric validation — closely matching an agentic, manufacturability-aware design loop. Email: `jabarkle@andrew.cmu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2603.26512) (barkley2603cadsmithmultiagentcad pages 1-2)
+### Feng Ju
 
-- **Amir Barati Farimani** — Carnegie Mellon University, Professor. Senior author on CADSmith; leads the lab where multi-agent validated CAD generation was developed. Email: `afariman@andrew.cmu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2603.26512) (barkley2603cadsmithmultiagentcad pages 1-2)
+Arizona State University. Co-author on Text-to-CadQuery; can advise on LLM fine-tuning and evaluation for CadQuery generation. Email: `fengju@asu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.06507) (xie2505texttocadqueryanew pages 1-3)
 
-- **Qian Yu** — Beihang University, School of Software. Corresponding author on **ArtiCAD**, which targets articulated CAD assembly design via multi-agent code generation — directly relevant for mechanical assemblies rather than single parts. Project page: https://shui-yuan.github.io/articad/. Email: `qianyu@buaa.edu.cn` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2604.10992) (shui2026articadarticulatedcad pages 1-3)
+### Danila Rukhovich
 
-- **Ari Seff** — Princeton University. First author of **SketchGraphs**, a foundational dataset of 15 million parametric CAD sketches with geometric constraints, useful for constraint-aware CAD generation and repair. Email: `aseff@princeton.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2007.08506) (seff2020sketchgraphsalargescale pages 1-3)
+SnT, University of Luxembourg. First author of **CAD-Recode**, which translates point clouds into executable Python CAD code by fine-tuning an LLM decoder — relevant for scan-to-edit and model-repair workflows. Email: `danila.rukhovich@uni.lu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2412.14042) (rukhovich2025cadrecodereverseengineering pages 1-2)
 
-- **Ryan P. Adams** — Princeton University, Professor. Senior author on SketchGraphs and PI of the Laboratory for Intelligent Probabilistic Systems. Email: `rpa@princeton.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2007.08506) (seff2020sketchgraphsalargescale pages 1-3)
+### Djamila Aouada
 
-- **Karl D. D. Willis** — Autodesk Research, USA. Lead author of the **Fusion 360 Gallery** dataset and environment for programmatic CAD reconstruction from human design sequences (8,625 models), a key benchmark in the field. Email: `karl.willis@autodesk.com` (listed in paper header). (source: https://doi.org/10.1145/3450626.3459818) (willis2021fusion360gallery pages 1-2)
+SnT, University of Luxembourg, Professor. Senior author on CAD-Recode; leads LLM-mediated CAD reverse-engineering research. Email: `djamila.aouada@uni.lu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2412.14042) (rukhovich2025cadrecodereverseengineering pages 1-2)
 
-- **Faez Ahmed** — MIT, Department of Mechanical Engineering, Professor. PI on the **GenCAD** and **CAD-Coder** lines of work, spanning image-conditioned CAD generation, CadQuery code output, and agentic engineering design. No public direct email found in cited papers; reachable via group members (e.g., Anna Doris at `adoris@mit.edu`) and the MIT DECODE Lab page. (source: https://doi.org/10.48550/arxiv.2505.14646) (doris2026cadcoderanopensource pages 1-2)
+### Jesse Barkley
 
-- **Anna C. Doris** — MIT. First author of **CAD-Coder**, an open-source VLM fine-tuned to generate editable CadQuery code from images, with a 163K-pair dataset (GenCAD-Code). GitHub: https://github.com/anniedoris/CAD-Coder. Email: `adoris@mit.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.14646) (doris2026cadcoderanopensource pages 1-2)
+Carnegie Mellon University, Department of Mechanical Engineering. First author of **CADSmith**, a multi-agent CAD generation pipeline with programmatic geometric validation — closely matching an agentic, manufacturability-aware design loop. Email: `jabarkle@andrew.cmu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2603.26512) (barkley2603cadsmithmultiagentcad pages 1-2)
 
-- **Ahmed R. Sadik** — Honda Research Institute Europe, Offenbach, Germany. Corresponding author on a 2025 paper quantitatively evaluating LLM-generated 3D CAD models and co-author of "From Idea to CAD" (multi-agent collaborative design). Email: `ahmed.sadik@honda-ri.de` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2509.07010) (sadik2509humanintheloopquantitativeevaluation pages 1-2)
+### Amir Barati Farimani
+
+Carnegie Mellon University, Professor. Senior author on CADSmith; leads the lab where multi-agent validated CAD generation was developed. Email: `afariman@andrew.cmu.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2603.26512) (barkley2603cadsmithmultiagentcad pages 1-2)
+
+### Qian Yu
+
+Beihang University, School of Software. Corresponding author on **ArtiCAD**, which targets articulated CAD assembly design via multi-agent code generation — directly relevant for mechanical assemblies rather than single parts. Project page: https://shui-yuan.github.io/articad/. Email: `qianyu@buaa.edu.cn` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2604.10992) (shui2026articadarticulatedcad pages 1-3)
+
+### Ari Seff
+
+Princeton University. First author of **SketchGraphs**, a foundational dataset of 15 million parametric CAD sketches with geometric constraints, useful for constraint-aware CAD generation and repair. Email: `aseff@princeton.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2007.08506) (seff2020sketchgraphsalargescale pages 1-3)
+
+### Ryan P. Adams
+
+Princeton University, Professor. Senior author on SketchGraphs and PI of the Laboratory for Intelligent Probabilistic Systems. Email: `rpa@princeton.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2007.08506) (seff2020sketchgraphsalargescale pages 1-3)
+
+### Karl D. D. Willis
+
+Autodesk Research, USA. Lead author of the **Fusion 360 Gallery** dataset and environment for programmatic CAD reconstruction from human design sequences (8,625 models), a key benchmark in the field. Email: `karl.willis@autodesk.com` (listed in paper header). (source: https://doi.org/10.1145/3450626.3459818) (willis2021fusion360gallery pages 1-2)
+
+### Faez Ahmed
+
+MIT, Department of Mechanical Engineering, Professor. PI on the **GenCAD** and **CAD-Coder** lines of work, spanning image-conditioned CAD generation, CadQuery code output, and agentic engineering design. No public direct email found in cited papers; reachable via group members (e.g., Anna Doris at `adoris@mit.edu`) and the MIT DECODE Lab page. (source: https://doi.org/10.48550/arxiv.2505.14646) (doris2026cadcoderanopensource pages 1-2)
+
+### Anna C. Doris
+
+MIT. First author of **CAD-Coder**, an open-source VLM fine-tuned to generate editable CadQuery code from images, with a 163K-pair dataset (GenCAD-Code). GitHub: https://github.com/anniedoris/CAD-Coder. Email: `adoris@mit.edu` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2505.14646) (doris2026cadcoderanopensource pages 1-2)
+
+### Ahmed R. Sadik
+
+Honda Research Institute Europe, Offenbach, Germany. Corresponding author on a 2025 paper quantitatively evaluating LLM-generated 3D CAD models and co-author of "From Idea to CAD" (multi-agent collaborative design). Email: `ahmed.sadik@honda-ri.de` (listed in paper header). (source: https://doi.org/10.48550/arxiv.2509.07010) (sadik2509humanintheloopquantitativeevaluation pages 1-2)
 
 ---
 
 ## 2. Code-CAD / Programmatic-CAD Open-Source Maintainers
 
-- **Adam Urbanczyk** — Core maintainer of **CadQuery**, the Python parametric CAD library that is the most common target for LLM-generated CAD code. CadQuery sits on top of OpenCASCADE (OCCT) and is explicitly used by Text-to-CadQuery, CAD-Recode, CADSmith, and many other papers listed above. GitHub: `adam-urbanczyk`. Discord: CadQuery has a Discord linked from its documentation. (source: https://github.com/CadQuery/cadquery)
+### Adam Urbanczyk
 
-- **Jeremy Wright** — Long-time CadQuery co-maintainer and contributor to the broader Pythonic CAD ecosystem. GitHub: `jmwright`. (source: https://github.com/jmwright)
+Core maintainer of **CadQuery**, the Python parametric CAD library that is the most common target for LLM-generated CAD code. CadQuery sits on top of OpenCASCADE (OCCT) and is explicitly used by Text-to-CadQuery, CAD-Recode, CADSmith, and many other papers listed above. GitHub: `adam-urbanczyk`. Discord: CadQuery has a Discord linked from its documentation. (source: https://github.com/CadQuery/cadquery)
 
-- **Roger Maitland** — Creator and primary maintainer of **build123d**, a modern Python parametric CAD library that is increasingly considered alongside CadQuery for code-generation workflows, with a cleaner builder-pattern API. GitHub: `gumyr`. Discord: build123d has a Discord linked from its ReadTheDocs. (source: https://github.com/gumyr/build123d)
+### Jeremy Wright
 
-- **Marius Kintel** — Core developer of **OpenSCAD**, the original text-based CSG CAD tool that remains a durable backend for generated geometry. GitHub: `kintel`. (source: https://github.com/openscad/openscad)
+Long-time CadQuery co-maintainer and contributor to the broader Pythonic CAD ecosystem. GitHub: `jmwright`. (source: https://github.com/jmwright)
 
-- **Yorik van Havre** — Core developer of **FreeCAD**, a major open-source parametric CAD platform. FreeCAD's robust CAD kernel and workbenches are relevant for future CAD/CAM integration. GitHub: `yorikvanhavre`. Community forum: https://forum.freecad.org/. (source: https://github.com/yorikvanhavre)
+### Roger Maitland
+
+Creator and primary maintainer of **build123d**, a modern Python parametric CAD library that is increasingly considered alongside CadQuery for code-generation workflows, with a cleaner builder-pattern API. GitHub: `gumyr`. Discord: build123d has a Discord linked from its ReadTheDocs. (source: https://github.com/gumyr/build123d)
+
+### Marius Kintel
+
+Core developer of **OpenSCAD**, the original text-based CSG CAD tool that remains a durable backend for generated geometry. GitHub: `kintel`. (source: https://github.com/openscad/openscad)
+
+### Yorik van Havre
+
+Core developer of **FreeCAD**, a major open-source parametric CAD platform. FreeCAD's robust CAD kernel and workbenches are relevant for future CAD/CAM integration. GitHub: `yorikvanhavre`. Community forum: https://forum.freecad.org/. (source: https://github.com/yorikvanhavre)
 
 ---
 
 ## 3. Commercial Generative-Design / CAD-API Contacts
 
-- **Jessie Frazelle** — CEO of **Zoo.dev** (formerly KittyCAD). Zoo.dev is one of the few companies explicitly building a text-to-CAD API and programmable CAD infrastructure, with an open-source geometry engine (KittyCAD engine). Highly relevant for API-driven CAD generation. GitHub: `jessfraz`. X/Twitter: `@jessfraz`. (source: https://github.com/jessfraz)
+### Jessie Frazelle
 
-- **Karl D. D. Willis** — Autodesk Research (also listed in §1). Can connect to Autodesk's broader research group working on CAD-as-program, generative design, and the Fusion 360 ecosystem. Email: `karl.willis@autodesk.com` (listed in paper header). (source: https://doi.org/10.1145/3450626.3459818) (willis2021fusion360gallery pages 1-2)
+CEO of **Zoo.dev** (formerly KittyCAD). Zoo.dev is one of the few companies explicitly building a text-to-CAD API and programmable CAD infrastructure, with an open-source geometry engine (KittyCAD engine). Highly relevant for API-driven CAD generation. GitHub: `jessfraz`. X/Twitter: `@jessfraz`. (source: https://github.com/jessfraz)
 
-- **Steve Baer** — Robert McNeel & Associates (**Rhino/Grasshopper**), developer relations and engineering lead. McNeel is notably open to developer engagement around CAD scripting (RhinoCommon, Grasshopper) and geometry kernels. GitHub: `sbaer`. Rhino developer forum: https://discourse.mcneel.com/. (source: https://github.com/sbaer)
+### Karl D. D. Willis
 
-- **Nick Kallen** — Founder of **Plasticity**, a modern direct-modeling CAD tool with growing adoption among technical users doing code-heavy and generative workflows. No public email found; reachable via X/Twitter: `@nickkallen`. (source: https://x.com/nickkallen)
+Autodesk Research (also listed in §1). Can connect to Autodesk's broader research group working on CAD-as-program, generative design, and the Fusion 360 ecosystem. Email: `karl.willis@autodesk.com` (listed in paper header). (source: https://doi.org/10.1145/3450626.3459818) (willis2021fusion360gallery pages 1-2)
 
-- **Zoo.dev developer relations** — In addition to Jessie Frazelle personally, Zoo.dev maintains public developer documentation and API access at https://zoo.dev/docs. No individual DevRel email published; use their Discord or GitHub issues. (source: https://zoo.dev/)
+### Steve Baer
+
+Robert McNeel & Associates (**Rhino/Grasshopper**), developer relations and engineering lead. McNeel is notably open to developer engagement around CAD scripting (RhinoCommon, Grasshopper) and geometry kernels. GitHub: `sbaer`. Rhino developer forum: https://discourse.mcneel.com/. (source: https://github.com/sbaer)
+
+### Nick Kallen
+
+Founder of **Plasticity**, a modern direct-modeling CAD tool with growing adoption among technical users doing code-heavy and generative workflows. No public email found; reachable via X/Twitter: `@nickkallen`. (source: https://x.com/nickkallen)
+
+### Zoo.dev developer relations
+
+In addition to Jessie Frazelle personally, Zoo.dev maintains public developer documentation and API access at https://zoo.dev/docs. No individual DevRel email published; use their Discord or GitHub issues. (source: https://zoo.dev/)
 
 ---
 
 ## 4. Self-Driving-Lab / Agentic-Hardware Groups
 
-- **Alán Aspuru-Guzik** — University of Toronto, Professor; Director of the **Acceleration Consortium**. Co-authored the landmark "Self-Driving Laboratories for Chemistry and Materials Science" review (Chemical Reviews, 2024) and leads multiple agent-based experimental automation efforts. Lab/consortium page: https://acceleration.utoronto.ca/. No public direct email found; reachable via the Acceleration Consortium contact page. (source: https://acceleration.utoronto.ca/) (tom2024selfdrivinglaboratoriesfor pages 86-87)
+### Alán Aspuru-Guzik
 
-- **Sterling G. Baird** — Acceleration Consortium, Research Scientist. Co-authored the SDL review with Aspuru-Guzik and works on practical autonomous materials discovery infrastructure. GitHub: `sgbaird`. Reachable via Acceleration Consortium profile. (source: https://acceleration.utoronto.ca/) (tom2024selfdrivinglaboratoriesfor pages 91-92)
+University of Toronto, Professor; Director of the **Acceleration Consortium**. Co-authored the landmark "Self-Driving Laboratories for Chemistry and Materials Science" review (Chemical Reviews, 2024) and leads multiple agent-based experimental automation efforts. Lab/consortium page: https://acceleration.utoronto.ca/. No public direct email found; reachable via the Acceleration Consortium contact page. (source: https://acceleration.utoronto.ca/) (tom2024selfdrivinglaboratoriesfor pages 86-87)
 
-- **Andrew I. Cooper** — University of Liverpool, Professor. Known for mobile robot chemists and autonomous chemistry platforms. Lab page: https://www.liverpool.ac.uk/chemistry/staff/andy-cooper/. Contact via university page. (source: https://www.liverpool.ac.uk/chemistry/staff/andy-cooper/)
+### Sterling G. Baird
 
-- **Lee Cronin** — University of Glasgow, Professor; co-founder of **Chemify**. Develops digitized, programmable chemistry workflows — a conceptual model for hardware-control abstractions in self-driving labs. Chemify site: https://chemify.io/. University page: https://www.gla.ac.uk/schools/chemistry/staff/leecronin/. (source: https://chemify.io/)
+Acceleration Consortium, Research Scientist. Co-authored the SDL review with Aspuru-Guzik and works on practical autonomous materials discovery infrastructure. GitHub: `sgbaird`. Reachable via Acceleration Consortium profile. (source: https://acceleration.utoronto.ca/) (tom2024selfdrivinglaboratoriesfor pages 91-92)
 
-- **Milad Abolhasani** — North Carolina State University, Associate Professor, Department of Chemical and Biomolecular Engineering. Leads autonomous flow chemistry and Pareto-front mapping with self-driving catalysis labs. Faculty page: https://cbe.ncsu.edu/people/mabolha/. (source: https://cbe.ncsu.edu/people/mabolha/) (tom2024selfdrivinglaboratoriesfor pages 91-92)
+### Andrew I. Cooper
 
-- **Joshua Schrier** — Fordham University, Professor. Active in autonomous chemistry and AI-for-chemistry; a practical advisor for small academic-lab strategy and software architecture for SDLs. Faculty page: https://www.fordham.edu/academics/departments/chemistry/faculty-and-staff/joshua-schrier/. (source: https://www.fordham.edu/academics/departments/chemistry/faculty-and-staff/joshua-schrier/)
+University of Liverpool, Professor. Known for mobile robot chemists and autonomous chemistry platforms. Lab page: https://www.liverpool.ac.uk/chemistry/staff/andy-cooper/. Contact via university page. (source: https://www.liverpool.ac.uk/chemistry/staff/andy-cooper/)
 
-- **Keith A. Brown** — Boston University, Associate Professor. Leads the Brown Lab working on Bayesian self-driving experimentation for mechanics and materials, relevant to closed-loop optimization with physical hardware. Lab page: https://brownlab.bu.edu/. (source: https://brownlab.bu.edu/)
+### Lee Cronin
+
+University of Glasgow, Professor; co-founder of **Chemify**. Develops digitized, programmable chemistry workflows — a conceptual model for hardware-control abstractions in self-driving labs. Chemify site: https://chemify.io/. University page: https://www.gla.ac.uk/schools/chemistry/staff/leecronin/. (source: https://chemify.io/)
+
+### Milad Abolhasani
+
+North Carolina State University, Associate Professor, Department of Chemical and Biomolecular Engineering. Leads autonomous flow chemistry and Pareto-front mapping with self-driving catalysis labs. Faculty page: https://cbe.ncsu.edu/people/mabolha/. (source: https://cbe.ncsu.edu/people/mabolha/) (tom2024selfdrivinglaboratoriesfor pages 91-92)
+
+### Joshua Schrier
+
+Fordham University, Professor. Active in autonomous chemistry and AI-for-chemistry; a practical advisor for small academic-lab strategy and software architecture for SDLs. Faculty page: https://www.fordham.edu/academics/departments/chemistry/faculty-and-staff/joshua-schrier/. (source: https://www.fordham.edu/academics/departments/chemistry/faculty-and-staff/joshua-schrier/)
+
+### Keith A. Brown
+
+Boston University, Associate Professor. Leads the Brown Lab working on Bayesian self-driving experimentation for mechanics and materials, relevant to closed-loop optimization with physical hardware. Lab page: https://brownlab.bu.edu/. (source: https://brownlab.bu.edu/)
 
 ---
 
 ## 5. Additive-Manufacturing + Design-for-AM Experts
 
-- **Timothy W. Simpson** — Penn State University, Paul Morrow Professor of Engineering Design and Manufacturing. Leads CIMP-3D and has extensive work on design for AM, topology optimization, and digital design/manufacturing integration. Faculty page: https://www.me.psu.edu/department/directory-detail-g.aspx?q=tws8. (source: https://www.me.psu.edu/department/directory-detail-g.aspx?q=tws8)
+### Timothy W. Simpson
 
-- **Allison M. Beese** — Penn State University, Professor. Bridges materials science, process constraints, and AM part performance — important for understanding manufacturability constraints in L-PBF. Faculty page: https://www.matse.psu.edu/directory/allison-beese. (source: https://www.matse.psu.edu/directory/allison-beese)
+Penn State University, Paul Morrow Professor of Engineering Design and Manufacturing. Leads CIMP-3D and has extensive work on design for AM, topology optimization, and digital design/manufacturing integration. Faculty page: https://www.me.psu.edu/department/directory-detail-g.aspx?q=tws8. (source: https://www.me.psu.edu/department/directory-detail-g.aspx?q=tws8)
 
-- **Tresa M. Pollock** — University of California, Santa Barbara, Alcoa Distinguished Professor. High-profile AM and alloy/process expert; valuable for L-PBF integration paths and alloy discovery collaborations. Faculty page: https://www.materials.ucsb.edu/people/faculty/tresa-pollock. (source: https://www.materials.ucsb.edu/people/faculty/tresa-pollock)
+### Allison M. Beese
 
-- **Kenneth S. Vecchio** — University of California, San Diego, Professor, MAE Department. Leads advanced materials and high-throughput experimental alloy work (HT-READ), with links to digital metallurgy and AM-oriented research. Faculty page: https://mae.ucsd.edu/faculty/kenneth-vecchio. (source: https://mae.ucsd.edu/faculty/kenneth-vecchio)
+Penn State University, Professor. Bridges materials science, process constraints, and AM part performance — important for understanding manufacturability constraints in L-PBF. Faculty page: https://www.matse.psu.edu/directory/allison-beese. (source: https://www.matse.psu.edu/directory/allison-beese)
+
+### Tresa M. Pollock
+
+University of California, Santa Barbara, Alcoa Distinguished Professor. High-profile AM and alloy/process expert; valuable for L-PBF integration paths and alloy discovery collaborations. Faculty page: https://www.materials.ucsb.edu/people/faculty/tresa-pollock. (source: https://www.materials.ucsb.edu/people/faculty/tresa-pollock)
+
+### Kenneth S. Vecchio
+
+University of California, San Diego, Professor, MAE Department. Leads advanced materials and high-throughput experimental alloy work (HT-READ), with links to digital metallurgy and AM-oriented research. Faculty page: https://mae.ucsd.edu/faculty/kenneth-vecchio. (source: https://mae.ucsd.edu/faculty/kenneth-vecchio)
 
 ---
 
 ## 6. Communities, Discords, Forums, and Conferences
 
-- **CadQuery Discord** — The primary real-time community for CadQuery users and developers. Best cold-start venue for help on CadQuery APIs, OpenCASCADE issues, exporters, and debugging LLM-generated scripts. Invite link available from the docs landing page. (source: https://cadquery.readthedocs.io/en/latest/)
+### CadQuery Discord
 
-- **build123d Discord** — Community server for build123d users. Good for rapid feedback on build123d syntax, assembly APIs, and Pythonic CAD agent tooling. Invite link available from the docs landing page. (source: https://build123d.readthedocs.io/en/latest/)
+The primary real-time community for CadQuery users and developers. Best cold-start venue for help on CadQuery APIs, OpenCASCADE issues, exporters, and debugging LLM-generated scripts. Invite link available from the docs landing page. (source: https://cadquery.readthedocs.io/en/latest/)
 
-- **FreeCAD Forum** — Active community forum for FreeCAD users and developers; strong for questions about parametric workflows, kernels, and future CAM/L-PBF integration. (source: https://forum.freecad.org/)
+### build123d Discord
 
-- **OpenSCAD subreddit (r/openscad)** — Useful for script-level CAD questions, printable geometry feedback, and rapid community input. (source: https://www.reddit.com/r/openscad/)
+Community server for build123d users. Good for rapid feedback on build123d syntax, assembly APIs, and Pythonic CAD agent tooling. Invite link available from the docs landing page. (source: https://build123d.readthedocs.io/en/latest/)
 
-- **Self-Driving Labs community** — Community site and resources for autonomous/self-driving laboratory practitioners, including a community Discord. (source: https://selfdrivinglabs.org/)
+### FreeCAD Forum
 
-- **ASME IDETC-CIE** — The ASME International Design Engineering Technical Conferences and Computers and Information in Engineering Conference. Practical venue for presenting design automation, CAD, and engineering AI work with publication and networking value. (source: https://event.asme.org/IDETC-CIE)
+Active community forum for FreeCAD users and developers; strong for questions about parametric workflows, kernels, and future CAM/L-PBF integration. (source: https://forum.freecad.org/)
 
-- **SCF (Symposium on Computational Fabrication)** — Academic venue directly targeting geometry/fabrication workflows between CAD generation and manufacturing. (source: https://www.compfab.org/)
+### OpenSCAD subreddit (r/openscad)
 
-- **CAD Conference (CAD'25)** — Dedicated computer-aided design conference where generative CAD, datasets, and engineering AI presentations are well-received. (source: https://cad-conference.net/)
+Useful for script-level CAD questions, printable geometry feedback, and rapid community input. (source: https://www.reddit.com/r/openscad/)
+
+### Self-Driving Labs community
+
+Community site and resources for autonomous/self-driving laboratory practitioners, including a community Discord. (source: https://selfdrivinglabs.org/)
+
+### ASME IDETC-CIE
+
+The ASME International Design Engineering Technical Conferences and Computers and Information in Engineering Conference. Practical venue for presenting design automation, CAD, and engineering AI work with publication and networking value. (source: https://event.asme.org/IDETC-CIE)
+
+### SCF (Symposium on Computational Fabrication)
+
+Academic venue directly targeting geometry/fabrication workflows between CAD generation and manufacturing. (source: https://www.compfab.org/)
+
+### CAD Conference (CAD'25)
+
+Dedicated computer-aided design conference where generative CAD, datasets, and engineering AI presentations are well-received. (source: https://cad-conference.net/)
 
 ---
 
 ## 7. Funding Programs and Program Officers
 
-- **NSF DMREF (Designing Materials to Revolutionize and Engineer our Future)** — One of the most natural NSF homes for autonomous alloy-discovery infrastructure linking design, materials, and manufacturing. Supports integrated computational/experimental materials research. (source: https://www.nsf.gov/funding/opportunities/dmref-designing-materials-revolutionize-engineer-our-future)
+### NSF DMREF (Designing Materials to Revolutionize and Engineer our Future)
 
-- **NSF Future Manufacturing** — Strong fit for intelligent design-to-manufacturing workflows and academic cyber-physical manufacturing research, especially for small teams building novel automation. (source: https://new.nsf.gov/funding/opportunities/future-manufacturing-fm)
+One of the most natural NSF homes for autonomous alloy-discovery infrastructure linking design, materials, and manufacturing. Supports integrated computational/experimental materials research. (source: https://www.nsf.gov/funding/opportunities/dmref-designing-materials-revolutionize-engineer-our-future)
 
-- **ARPA-E DIFFERENTIATE** — ARPA-E program supporting AI-assisted engineering design and optimization. While broader than CAD, the program framing aligns well with agentic design-to-manufacturing workflows. (source: https://arpa-e.energy.gov/technologies/programs/differentiate)
+### NSF Future Manufacturing
 
-- **America Makes** — The U.S. national additive manufacturing innovation institute. Best practical contact for AM transition, industrial partners, design-for-AM tooling, and workforce development. (source: https://www.americamakes.us/)
+Strong fit for intelligent design-to-manufacturing workflows and academic cyber-physical manufacturing research, especially for small teams building novel automation. (source: https://new.nsf.gov/funding/opportunities/future-manufacturing-fm)
 
-- **Acceleration Consortium** — University of Toronto-led research and funding ecosystem for autonomous scientific discovery. Natural partner for small academic teams building agent-driven discovery infrastructure spanning robotics, materials, and software. (source: https://acceleration.utoronto.ca/)
+### ARPA-E DIFFERENTIATE
+
+ARPA-E program supporting AI-assisted engineering design and optimization. While broader than CAD, the program framing aligns well with agentic design-to-manufacturing workflows. (source: https://arpa-e.energy.gov/technologies/programs/differentiate)
+
+### America Makes
+
+The U.S. national additive manufacturing innovation institute. Best practical contact for AM transition, industrial partners, design-for-AM tooling, and workforce development. (source: https://www.americamakes.us/)
+
+### Acceleration Consortium
+
+University of Toronto-led research and funding ecosystem for autonomous scientific discovery. Natural partner for small academic teams building agent-driven discovery infrastructure spanning robotics, materials, and software. (source: https://acceleration.utoronto.ca/)
 
 ---
 
