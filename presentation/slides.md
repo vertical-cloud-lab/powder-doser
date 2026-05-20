@@ -62,10 +62,12 @@ footer: "powder-doser · project wrap-up"
 
 # Powder dispenser
 
-![w:560](assets/final-print-on-ultimaker.jpg)
+[![w:560](assets/final-print-on-ultimaker.jpg)](https://www.youtube.com/watch?v=0CAu-x3wXns)
 
 Sterling Baird · Devora Najjar · Ron
 *with Nasa's help on the Ultimaker print*
+
+[▶ Project walkthrough on YouTube — *AI-designed powder dispenser, POSE 2026*](https://www.youtube.com/watch?v=0CAu-x3wXns)
 
 [github.com/vertical-cloud-lab/powder-doser — PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)
 
@@ -128,7 +130,9 @@ Sterling Baird · Devora Najjar · Ron
 
 # Hand-scooping established the dose target — and the failure modes.
 
-![w:760](assets/manual-deck/manual-scoop-1.jpg)
+[![w:760](assets/manual-deck/manual-scoop-1.jpg)](https://www.youtube.com/watch?v=VAltAawtkA4)
+
+[▶ Pouring xanthan gum — youtube.com/watch?v=VAltAawtkA4](https://www.youtube.com/watch?v=VAltAawtkA4)
 
 ---
 
@@ -136,7 +140,9 @@ Sterling Baird · Devora Najjar · Ron
 
 # Powder clung to scoop walls; one sample stayed put after dumping.
 
-![w:760](assets/manual-deck/manual-scoop-2.jpg)
+[![w:760](assets/manual-deck/manual-scoop-2.jpg)](https://www.youtube.com/watch?v=IMuK3LTAWLM)
+
+[▶ Pouring rice flour — youtube.com/watch?v=IMuK3LTAWLM](https://www.youtube.com/watch?v=IMuK3LTAWLM)
 
 *Surface forces (electrostatic, van der Waals) dominate at this scale — Devora's call from issue #3.*
 
