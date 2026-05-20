@@ -80,6 +80,9 @@ m3_pilot_depth  = top_cap_height + m3_boss_h;
 //   shaft_r            radius of the central support shaft (Ø8 mm).
 //                      Sits in the centre of the bore; powder is
 //                      lifted by the helical fin wrapped around it.
+//   shaft_tip_r        radius the shaft tapers down to at the exit
+//                      hole (1.5 mm, matching exit_hole_d/2 -- see
+//                      "Funnel-region clearance" note below).
 //   fin_thickness      radial-cross-section thickness of the helical
 //                      fin (2 mm -- a 5x perimeter at 0.4 mm nozzle).
 //   fin_pitch          axial rise per 360 deg of helix (10 mm, same
@@ -89,24 +92,43 @@ m3_pilot_depth  = top_cap_height + m3_boss_h;
 //   fin_outer_sink     overlap of the fin outer edge into the inside
 //                      of the tube wall (0.2 mm, same reason).
 shaft_r         = 4;
+shaft_tip_r     = 0.5;               // 0.5 mm; leaves a 1.0 mm
+                                     // annular gap at the exit hole
+                                     // (Ø3 mm), so powder can flow
+                                     // around the shaft tip.
 fin_thickness   = 2;
 fin_pitch       = 10;
 fin_inner_sink  = 0.4;
 fin_outer_sink  = 0.2;
 
-// Z range over which the central shaft + helix exist.  Bottom is the
-// height inside the funnel where the cone's inner radius equals
-// shaft_r -- so the shaft fuses to the funnel cone wall with no
-// floating tip.  Top is the underside of the top cap, so the shaft
-// fuses into the cap and the M3 boss above it.
+// Funnel-region clearance
+// -----------------------
+// v3.1 (this revision): the shaft tapers from `shaft_r` at the top of
+// the funnel (z = bottom_cap_h) down to `shaft_tip_r` at the exit
+// hole (z = 0).  That keeps the "screw continuing down as the auger
+// funnels" appearance from v3 while widening the annular gap between
+// the shaft and the funnel cone wall.  Worked example at the first
+// printable layer above the exit (z ~ 4 mm):
 //
-//   funnel cone interior radius at z  =  exit_hole_d/2 +
-//          (inner_r - 0.5 - exit_hole_d/2) * z / bottom_cap_h
-//   solve for z when that = shaft_r:
-shaft_bottom_z  = bottom_cap_h *
-                    (shaft_r - exit_hole_d / 2) /
-                    (inner_r - 0.5 - exit_hole_d / 2);
-                  // = 12 * (4 - 1.5) / (10 - 1.5) ~= 3.53 mm
+//   funnel inner r(z) = exit_hole_d/2 + (inner_r - 0.5 - exit_hole_d/2)*z/bottom_cap_h
+//                     = 1.5 + 8.5*z/12
+//   shaft    r(z) = shaft_tip_r + (shaft_r - shaft_tip_r)*z/bottom_cap_h
+//                 = 0.5 + 3.5*z/12
+//   radial gap(z) = 1.0 + 5.0 * z / 12
+//
+// So at z = 4 mm the gap is ~2.7 mm wide -- up from ~0.26 mm in v3,
+// where the shaft was a constant-r cylinder that kissed the cone
+// wall at z = 3.53 mm.  At the exit hole (z = 0) the gap is 1.0 mm
+// (shaft tip Ø1.0 inside the Ø3.0 exit hole) so the dispensing path
+// is open.  See PR #68 comment 4330241789 for the slicer layer-13
+// screenshot that motivated this change.
+//
+// The helical fin still wraps a constant-r cylinder, so it starts at
+// the top of the funnel (z = bottom_cap_h) and runs up to the
+// underside of the top cap.  The conical tip below the fin provides
+// the "screw extending into the funnel" visual continuity without
+// sealing the powder path.
+shaft_bottom_z  = bottom_cap_h;       // = 12 mm; fin starts here
 
 // ----------------------------------------------------------------
 // External gear-band parameters  (unchanged from v2)
@@ -169,13 +191,19 @@ module top_cap(total_h) {
     }
 }
 
-// Central support shaft -- runs from where it kisses the funnel cone
-// wall (shaft_bottom_z) up to the underside of the top cap, so it
-// fuses into both ends of the assembly with no floating geometry.
+// Central support shaft -- a conical tip in the funnel region
+// (z = 0 .. bottom_cap_h, tapering from shaft_tip_r up to shaft_r)
+// fused to a cylinder of radius shaft_r above the funnel, running up
+// to the underside of the top cap.  The tapered tip keeps a clear
+// annular gap to the funnel cone wall everywhere below the fin --
+// see the "Funnel-region clearance" comment block above.
 module central_shaft(total_h) {
-    h = total_h - top_cap_height - shaft_bottom_z;
-    translate([0, 0, shaft_bottom_z])
-        cylinder(r = shaft_r, h = h);
+    cyl_h = total_h - top_cap_height - bottom_cap_h;
+    // Conical tip following the screw down into the funnel.
+    cylinder(r1 = shaft_tip_r, r2 = shaft_r, h = bottom_cap_h);
+    // Cylindrical body above the funnel.
+    translate([0, 0, bottom_cap_h])
+        cylinder(r = shaft_r, h = cyl_h);
 }
 
 // Helical fin -- a flat radial blade swept around the shaft with a
