@@ -46,12 +46,17 @@ The mounting-plate tilt is now driven by an **MG996R servo** through
 a **2:1 spur-gear reduction**:
 
 * **Hinge gear** — the outermost +X mounting-plate hinge lobe carries
-  an integrated **40-tooth, m = 1.0** spur-gear band (PCD 40, tip Ø 42,
+  an integrated **40-tooth, m ≈ 0.908** spur-gear band (PCD 36.3,
+  tip Ø 38.2,
   face width = lobe thickness ≈ 12.30 mm).  The gear is part of the
   mounting plate's single solid — not a separate STL.
 * **Servo pinion** (new part `servo_pinion.{step,stl}`) — **20 teeth,
-  m = 1.0** (PCD 20, tip Ø 22), giving a **2:1 reduction** at
-  `C = 30 mm`.  Bore is Ø 6 with a 0.5 mm chordal flat for set-screw
+  m ≈ 0.908** (PCD 18.2, tip Ø 20.2), giving a **2:1 reduction** at
+  `C = 27.25 mm` — the module is back-solved so that the 40-T hinge
+  gear at the auger axis still meshes with the 20-T pinion whose
+  spline axis sits exactly 10 mm above the baseplate top (= the
+  centreline of the MG996R's 20 mm-thick body, per the dimensioned
+  drawing).  Bore is Ø 6 with a 0.5 mm chordal flat for set-screw
   retention on the MG996R 25-T spline (the simplest printable
   interface — for production swap to a true 25-T spline socket).
 * **Gear tooth profile** — both the hinge gear band and the servo

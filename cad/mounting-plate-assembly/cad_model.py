@@ -251,18 +251,28 @@ ARM_BASE_SUPPORT_LEN = 40.0
 # servo on the baseplate can drive the tilt of the mounting plate.
 # A 2:1 reduction between hinge gear and pinion keeps the torque load
 # on the MG996R within its 9.4 kgf·cm rating.
-GEAR_MODULE = 1.0
 GEAR_PA_DEG = 20.0                        # pressure angle (standard 20°)
-GEAR_HINGE_TEETH = 40                     # → PCD 40, tip Ø42
-GEAR_PINION_TEETH = 20                    # → PCD 20, tip Ø22 (2:1 reduction)
+GEAR_HINGE_TEETH = 40                     # 2 : 1 reduction with the 20-T pinion
+GEAR_PINION_TEETH = 20
 GEAR_FACE_W = HINGE_LOBE_W - HINGE_LAYER_GAP  # match the outer lobe thickness
+# Pinion centreline placement is dictated by the MG996R geometry:
+# the spline sits on the midline of the 20 mm-thick body, so seating
+# the body flat on a wall that rises from the baseplate top puts the
+# spline axis exactly 10 mm above the baseplate top (Will's
+# annotation on PR #66 image attachment to comment 4500836183).
+# We therefore drive the pinion Z from that spec and back-solve the
+# gear module so the 40-T hinge gear at Z = Z_AUG still meshes with
+# the 20-T pinion at the required Z, preserving the 2 : 1 ratio.
+PINION_Z_ABOVE_BASE_TOP = 10.0
+GEAR_CENTRE_C = (Z_AUG - (Z_BASE_TOP + BASE_T + PINION_Z_ABOVE_BASE_TOP))  # 27.25
+GEAR_MODULE = (2.0 * GEAR_CENTRE_C
+               / (GEAR_HINGE_TEETH + GEAR_PINION_TEETH))                   # ≈ 0.9083
 GEAR_HINGE_PCD = GEAR_HINGE_TEETH * GEAR_MODULE
 GEAR_PINION_PCD = GEAR_PINION_TEETH * GEAR_MODULE
 GEAR_HINGE_TIP_D = GEAR_HINGE_PCD + 2 * GEAR_MODULE
 GEAR_HINGE_ROOT_D = GEAR_HINGE_PCD - 2.5 * GEAR_MODULE
 GEAR_PINION_TIP_D = GEAR_PINION_PCD + 2 * GEAR_MODULE
 GEAR_PINION_ROOT_D = GEAR_PINION_PCD - 2.5 * GEAR_MODULE
-GEAR_CENTRE_C = (GEAR_HINGE_PCD + GEAR_PINION_PCD) / 2.0  # 30 mm
 # The hinge gear band sits just outboard of the existing +X outer hinge
 # lobe (replacing the cylindrical 18 mm-OD eye on that side with a
 # Ø42 gear).  X centre: midpoint of the +X outer-lobe span.
@@ -309,7 +319,7 @@ PINION_X_CENTRE = GEAR_X_CENTRE
 PINION_X_LO = GEAR_X_LO
 PINION_X_HI = GEAR_X_HI
 PINION_Y = Y_DISP                       # parallel to hinge axis
-PINION_Z = Z_AUG - GEAR_CENTRE_C        # = -0.75 mm — about 7 mm above baseplate top
+PINION_Z = Z_AUG - GEAR_CENTRE_C        # = +2.0 mm — 10 mm above baseplate top
 # Servo mount wall is a vertical wall on the baseplate top, perpendicular
 # to the spline axis, just outboard of the pinion.  4 × Ø5 holes
 # matching MG996R's mounting-flange pattern.
