@@ -123,12 +123,20 @@ fin_outer_sink  = 0.2;
 // is open.  See PR #68 comment 4330241789 for the slicer layer-13
 // screenshot that motivated this change.
 //
-// The helical fin still wraps a constant-r cylinder, so it starts at
-// the top of the funnel (z = bottom_cap_h) and runs up to the
-// underside of the top cap.  The conical tip below the fin provides
-// the "screw extending into the funnel" visual continuity without
-// sealing the powder path.
-shaft_bottom_z  = bottom_cap_h;       // = 12 mm; fin starts here
+// v3.2 (this revision): the helical fin now also continues down
+// through the funnel region.  Inside z = 0 .. bottom_cap_h the fin
+// is intersected with the (funnel cone interior - shaft frustum)
+// annulus, so its inner edge follows the tapered shaft while its
+// outer edge follows the tapered funnel cone wall.  The fin's helix
+// phase is matched across z = bottom_cap_h so the flight is one
+// continuous surface from the exit hole all the way up to the top
+// cap.  See PR #68 comment 4330577754 for the request that motivated
+// this change ("the screw would continue [to the end], but the
+// middle pole would taper").
+shaft_bottom_z  = bottom_cap_h;       // = 12 mm; upper (cylindrical)
+                                      // fin starts here.  Tapered
+                                      // funnel-region fin runs
+                                      // z = 0 .. bottom_cap_h below.
 
 // ----------------------------------------------------------------
 // External gear-band parameters  (unchanged from v2)
@@ -207,25 +215,72 @@ module central_shaft(total_h) {
 }
 
 // Helical fin -- a flat radial blade swept around the shaft with a
-// fin_pitch mm axial rise per turn.  Same z range as the shaft so
-// the auger surface is CONTINUOUS from the funnel mouth to the top
-// cap (no gap at the gear band).  Inner edge sinks `fin_inner_sink`
-// into the shaft, outer edge sinks `fin_outer_sink` into the inside
-// of the tube wall, both for manifold safety.
+// fin_pitch mm axial rise per turn.  Runs CONTINUOUSLY from the
+// exit hole (z = 0) up to the underside of the top cap.
+//
+// Built as two stacked, phase-aligned linear_extrude pieces:
+//   1. Funnel region (z = 0 .. bottom_cap_h): a wide twisted blade
+//      intersected with the conical annulus between the shaft
+//      frustum and the funnel cone wall, so the fin tapers with
+//      the funnel.
+//   2. Above the funnel (z = bottom_cap_h .. total_h - top_cap_height):
+//      constant-radius blade between the shaft cylinder and the tube
+//      wall.  Rotated to match the funnel-region fin's exit phase
+//      so the helix is continuous across z = bottom_cap_h.
+// Inner edge sinks `fin_inner_sink` into the shaft, outer edge sinks
+// `fin_outer_sink` into the inside of the tube wall / funnel cone,
+// both for CGAL-manifold safety.
 module helical_fin(total_h) {
-    h = total_h - top_cap_height - shaft_bottom_z;
-    turns = h / fin_pitch;
-    twist = -360 * turns;
-    // Slices: 4 per mm gives a smooth printed surface without
-    // exploding render time at OpenSCAD's default $fn.
-    slices = max(120, ceil(h * 4));
-    inner_edge = shaft_r - fin_inner_sink;       // 3.6 mm
-    outer_edge = inner_r + fin_outer_sink;       // 10.7 mm
-    fin_radial = outer_edge - inner_edge;        // 7.1 mm
+    h_upper      = total_h - top_cap_height - shaft_bottom_z;
+    turns_upper  = h_upper / fin_pitch;
+    twist_upper  = -360 * turns_upper;
+    slices_upper = max(120, ceil(h_upper * 4));
+    inner_edge   = shaft_r - fin_inner_sink;   // 3.6 mm
+    outer_edge   = inner_r + fin_outer_sink;   // 10.7 mm
+    fin_radial   = outer_edge - inner_edge;    // 7.1 mm
+
+    // ---- Funnel-region fin (tapered) -------------------------------
+    funnel_h      = bottom_cap_h;
+    funnel_turns  = funnel_h / fin_pitch;
+    funnel_twist  = -360 * funnel_turns;       // -432 deg over 12 mm
+    funnel_slices = max(96, ceil(funnel_h * 8));
+    intersection() {
+        // Oversized twisted blade -- spans from the axis out past
+        // the funnel mouth; the intersection below clips it to the
+        // tapered annulus.
+        linear_extrude(height = funnel_h, twist = funnel_twist,
+                       slices = funnel_slices, convexity = 4)
+            translate([0, -fin_thickness / 2])
+                square([outer_r, fin_thickness]);
+        // Conical annulus: funnel cone interior minus shaft frustum,
+        // each grown/shrunk by the manifold sinks so the fin fuses
+        // cleanly to the surrounding solids.
+        difference() {
+            translate([0, 0, -0.05])
+                cylinder(
+                    r1 = exit_hole_d / 2 + fin_outer_sink,
+                    r2 = inner_r - 0.5  + fin_outer_sink,
+                    h  = funnel_h + 0.1
+                );
+            translate([0, 0, -0.1])
+                cylinder(
+                    r1 = shaft_tip_r - fin_inner_sink,
+                    r2 = shaft_r    - fin_inner_sink,
+                    h  = funnel_h + 0.2
+                );
+        }
+    }
+
+    // ---- Upper fin (constant radius) -------------------------------
+    // Rotated by funnel_twist so its profile at z = shaft_bottom_z
+    // is at the same world angle as the funnel-region fin's exit
+    // profile -- the helix is continuous across the seam.
     translate([0, 0, shaft_bottom_z])
-        linear_extrude(height = h, twist = twist, slices = slices, convexity = 4)
-            translate([inner_edge, -fin_thickness / 2])
-                square([fin_radial, fin_thickness]);
+        rotate([0, 0, funnel_twist])
+            linear_extrude(height = h_upper, twist = twist_upper,
+                           slices = slices_upper, convexity = 4)
+                translate([inner_edge, -fin_thickness / 2])
+                    square([fin_radial, fin_thickness]);
 }
 
 // External spur-tooth band.  ANNULAR (inner_r passed through to
