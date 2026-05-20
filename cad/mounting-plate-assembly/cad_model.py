@@ -270,24 +270,39 @@ GEAR_X_CENTRE = (HINGE_X2 + HINGE_LAYER_GAP / 2 + HINGE_X3) / 2.0
 GEAR_X_LO = GEAR_X_CENTRE - GEAR_FACE_W / 2.0
 GEAR_X_HI = GEAR_X_CENTRE + GEAR_FACE_W / 2.0
 
-# --- MG996R servo + mount (TowerPro datasheet, baseplate-mounted) ----
-# https://towerpro.com.tw/product/mg996r/  — body 40.7 × 19.7 × 42.9.
+# --- MG996R servo + mount (per Will's annotated datasheet, PR #66) ----
+# Dimensions sourced from the dimensioned drawing posted by @williamulbz
+# on PR #66 (image attachment to comment 4500498763).  Key callouts:
+#   * body 40 × 20 × 36.8 mm
+#   * flange ears tip-to-tip 54.5 mm (each ear 7.25 mm wide)
+#   * 4 × Ø5 mounting holes on a 49.5 (Y) × 10 (Z) rectangular pattern
+#   * spline axis sits 10.1 mm from the near body end → hole offsets
+#     from the spline axis are −14.85 mm (near pair) and +34.65 mm
+#     (far pair), both annotated directly on the drawing
+#   * flange thickness 2 mm; total height 44.8 mm (28.7 below flange
+#     to body bottom + 14.1 above flange to body top + 2 mm flange)
 # The spline axis is parallel to the hinge axis (along X) so the pinion
 # meshes with the hinge gear face.  Pinion sits OUTBOARD of the
 # mounting plate (X > PLATE_X_MAX) with the servo body even further
 # outboard; the spline points -X (toward the gear) and the body
 # extends +X away from the mounting plate so there is no body
 # interference at any tilt angle.
-MG996R_BODY_L = 40.7    # along spline-perpendicular long axis (we orient along Y)
-MG996R_BODY_T = 19.7    # body thickness (we orient along Z)
-MG996R_BODY_H = 42.9    # body height to spline base (we orient along X — INWARD from wall)
-MG996R_FLANGE_L = 54.38                 # flange total length along Y
-MG996R_FLANGE_T = 2.5                   # flange ear thickness along X
-MG996R_HOLE_DIA = 4.1                   # Ø4.1 mounting holes
-MG996R_HOLE_Y_SPREAD = 49.36            # hole pair spread along body length (Y)
-MG996R_HOLE_Z_SPREAD = 10.0             # hole pair spread along body thickness (Z)
-MG996R_SPLINE_Y_OFFSET = 10.0           # spline offset from one flange-end along Y
-MG996R_SPLINE_LEN = 4.0                 # spline protrusion past flange face
+MG996R_BODY_L = 40.0     # along spline-perpendicular long axis (Y)
+MG996R_BODY_T = 20.0     # body thickness (Z)
+MG996R_BODY_H = 36.8     # body height (X — inward from flange face)
+MG996R_FLANGE_L = 54.5                   # flange total length along Y
+MG996R_FLANGE_T = 2.0                    # flange ear thickness along X
+MG996R_HOLE_DIA = 5.0                    # Ø5 mounting holes (n5 callout)
+MG996R_HOLE_Y_SPREAD = 49.5              # hole pair spread along body length (Y)
+MG996R_HOLE_Z_SPREAD = 10.0              # hole pair spread along body thickness (Z)
+MG996R_SPLINE_Y_OFFSET = 10.1            # spline offset from near body-end along Y
+MG996R_SPLINE_LEN = 4.0                  # spline protrusion past flange face
+# Spline output collar Ø (the raised boss the pinion-hub sits over).
+# The MG996R has a ~Ø14 mm collar around the 25-T spline; we bore the
+# wall to Ø10 so the printed pinion hub + set-screw clamp passes
+# through and the collar tucks into a shallow counter-bore.
+MG996R_SPLINE_COLLAR_DIA = 14.0
+MG996R_SPLINE_CLEAR_DIA = 10.0
 # Pinion lies at the same X centre as the gear, offset in -Z by the
 # centre distance C so the spline sits just above the baseplate top.
 PINION_X_CENTRE = GEAR_X_CENTRE
@@ -296,26 +311,27 @@ PINION_X_HI = GEAR_X_HI
 PINION_Y = Y_DISP                       # parallel to hinge axis
 PINION_Z = Z_AUG - GEAR_CENTRE_C        # = -0.75 mm — about 7 mm above baseplate top
 # Servo mount wall is a vertical wall on the baseplate top, perpendicular
-# to the spline axis, just outboard of the pinion.  4 × Ø4.1 holes
+# to the spline axis, just outboard of the pinion.  4 × Ø5 holes
 # matching MG996R's mounting-flange pattern.
 SERVO_WALL_X = PINION_X_HI + 1.0        # 1 mm clearance between pinion tip and wall
 SERVO_WALL_T = 4.0                      # wall thickness along X
 SERVO_BODY_X_LO = SERVO_WALL_X + SERVO_WALL_T
 SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
-# Wall spans Y/Z to enclose the flange-hole pattern with a margin.
-SERVO_WALL_Y_HALF = (MG996R_FLANGE_L / 2.0) + 4.0     # ± from spline axis... but spline is OFFSET in Y by MG996R_SPLINE_Y_OFFSET from one flange end
-# So with spline at Y=PINION_Y, the flange spans
-#   Y ∈ [PINION_Y - MG996R_SPLINE_Y_OFFSET, PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_FLANGE_L]
-# = [PINION_Y - 10, PINION_Y + 44.38].
-SERVO_WALL_Y_MIN = PINION_Y - MG996R_SPLINE_Y_OFFSET - 4.0
-SERVO_WALL_Y_MAX = PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_FLANGE_L + 4.0
+# Wall Y extent — flange spans
+#   Y ∈ [PINION_Y - MG996R_SPLINE_Y_OFFSET - 7.25,
+#        PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_BODY_L + 7.25]
+# = [PINION_Y - 17.35, PINION_Y + 37.15].  Add 4 mm margin each side.
+SERVO_WALL_Y_MIN = PINION_Y - MG996R_SPLINE_Y_OFFSET - 7.25 - 4.0
+SERVO_WALL_Y_MAX = PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_BODY_L + 7.25 + 4.0
 # Wall Z: from baseplate top up to a bit above the upper flange hole.
 SERVO_WALL_Z_LO = BASE_T                # baseplate top in baseplate-local frame
 SERVO_WALL_Z_HI_LOCAL = (PINION_Z - Z_BASE_TOP) + MG996R_BODY_T / 2.0 + 4.0
-# Hole positions (in the wall plane, absolute Y/Z).
+# Hole-centre Y offsets from the spline axis — annotated directly on
+# the dimensioned drawing as −14.85 mm and +34.65 mm (= 49.5 mm hole
+# spacing, with holes seated 2.5 mm in from each ear tip).
 MG996R_HOLE_Y_OFFSETS = (
-    -MG996R_SPLINE_Y_OFFSET,                              # = -10
-    -MG996R_SPLINE_Y_OFFSET + MG996R_HOLE_Y_SPREAD,       # = +39.34
+    -(MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),               # = -14.85
+    +(MG996R_BODY_L - MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),  # = +34.65
 )
 
 # Hardware
@@ -749,8 +765,9 @@ def build_baseplate() -> cq.Workplane:
     # Vertical wall on the baseplate top, perpendicular to the spline
     # axis, just outboard of the pinion.  Servo body sits at X > wall_X
     # entirely outboard of the mounting plate; spline points -X and the
-    # pinion meshes with the gear band at C = 30 mm.  4 × Ø4.1 holes
-    # in the standard MG996R 49.36 × 10 mm flange pattern.
+    # pinion meshes with the gear band at C = 30 mm.  4 × Ø5 holes
+    # in the MG996R 49.5 × 10 mm flange pattern (hole-centre Y
+    # offsets from the spline axis −14.85 mm and +34.65 mm).
     #
     # The wall would otherwise cantilever ~58 mm past the baseplate's
     # front edge (Y=+115) — the MG996R flange/body extends out to
@@ -810,18 +827,32 @@ def build_baseplate() -> cq.Workplane:
         .extrude(SERVO_WALL_T)
     )
     base = base.union(gusset)
-    # Spline-clearance bore (Ø9 so the spline + small clearance pass
-    # through the wall) at the pinion axis.
+    # Spline-clearance bore at the pinion axis — Ø10 through the wall
+    # to clear the printed pinion hub with set-screw, plus a shallow
+    # counter-bore on the servo side that recesses the MG996R's ~Ø14
+    # output collar so the flange seats flat against the wall.
     pinion_z_local = PINION_Z - Z_BASE_TOP
     spline_hole = (
         cq.Workplane("YZ")
         .workplane(offset=SERVO_WALL_X - 1.0)
         .center(PINION_Y, pinion_z_local)
-        .circle(9.0 / 2.0)
+        .circle(MG996R_SPLINE_CLEAR_DIA / 2.0)
         .extrude(SERVO_WALL_T + 2.0)
     )
     base = base.cut(spline_hole)
-    # 4 × Ø4.1 mounting holes in the standard MG996R flange pattern.
+    # Collar counter-bore: 1.5 mm deep on the +X (servo) side of the wall.
+    collar_cb_depth = 1.5
+    collar_cb = (
+        cq.Workplane("YZ")
+        .workplane(offset=SERVO_WALL_X + SERVO_WALL_T - collar_cb_depth)
+        .center(PINION_Y, pinion_z_local)
+        .circle(MG996R_SPLINE_COLLAR_DIA / 2.0)
+        .extrude(collar_cb_depth + 1.0)
+    )
+    base = base.cut(collar_cb)
+    # 4 × Ø5 mounting holes on the standard MG996R 49.5 × 10 mm flange
+    # pattern (hole-centre Y offsets from the spline axis: −14.85 mm
+    # and +34.65 mm, per Will's dimensioned drawing).
     for dy in MG996R_HOLE_Y_OFFSETS:
         for dz in (-MG996R_HOLE_Z_SPREAD / 2.0, +MG996R_HOLE_Z_SPREAD / 2.0):
             hole = (

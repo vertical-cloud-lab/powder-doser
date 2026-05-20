@@ -62,11 +62,14 @@ a **2:1 spur-gear reduction**:
 * **Servo mount** — a vertical wall on the baseplate top, perpendicular
   to the spline axis, located just outboard of the pinion at
   `X = +55 mm` (1 mm clearance between pinion tip and wall).  The wall
-  carries 4 × Ø 4.1 mm holes in the standard MG996R
-  49.36 × 10 mm flange pattern and a Ø 9 mm spline-clearance bore.
-  The servo body sits at `X ∈ [+59, +101.9] mm` entirely outboard of
-  the mounting plate so there is no body interference at any tilt
-  angle.  The wall is **structurally tied** to the baseplate by:
+  carries 4 × Ø 5 mm holes on the MG996R 49.5 × 10 mm flange pattern
+  (hole-centre Y offsets from the spline axis −14.85 mm and +34.65 mm,
+  read directly from the dimensioned drawing) plus a Ø 10 mm
+  spline-clearance bore with a Ø 14 mm × 1.5 mm collar counter-bore on
+  the servo side so the flange seats flat against the wall.
+  The servo body sits at `X ∈ [+59, +95.8] mm` (body length 36.8 mm
+  per the diagram) entirely outboard of the mounting plate so there is
+  no body interference at any tilt angle.  The wall is **structurally tied** to the baseplate by:
     * a **forward porch** of baseplate-thickness material that extends
       the baseplate top from `Y = +115` (front edge) out to `Y ≈ +175`
       under the full servo footprint (`X ∈ [+55, +106]`); and

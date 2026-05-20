@@ -220,10 +220,10 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
     actors.append(_shape_actor(pinion_shape, COL_SERVO_PINION))
 
     # ---- MG996R BODY (simplified box for visualisation only — the
-    # actual servo is a black plastic body 40.7 × 19.7 × 42.9 mm with
-    # flange ears, mounted on the baseplate wall).  Body sits outboard
-    # of the servo wall in +X; spline pokes -X through the wall onto
-    # the pinion.
+    # actual servo is a black plastic body 40 × 20 × 36.8 mm with
+    # flange ears, per Will's dimensioned drawing on PR #66).  Body
+    # sits outboard of the servo wall in +X; spline pokes -X through
+    # the wall onto the pinion.
     body = (
         cq.Workplane("XY")
         .box(MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
