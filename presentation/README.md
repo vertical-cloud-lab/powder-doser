@@ -1,6 +1,6 @@
 # Project wrap-up presentation
 
-Marp slides for the `powder-excavator` project (issue #17, PR #18).
+Marp slides for the `powder-doser` project (issue #17, PR #18).
 
 ## Build
 
@@ -23,7 +23,7 @@ ways to drive the live deck:
    (*Settings → Pages → Source: GitHub Actions*), the deck is served at:
 
    ```
-   https://vertical-cloud-lab.github.io/powder-excavator/
+   https://vertical-cloud-lab.github.io/powder-doser/
    ```
 
    Marp's HTML output is a self-contained Bespoke deck, so the served page
@@ -33,9 +33,7 @@ ways to drive the live deck:
 
 2. **Browser, fullscreen, local file** — open `slides.html` in
    Chrome/Firefox, press <kbd>F11</kbd> for fullscreen, then arrow keys to
-   advance. The print-video slide ("The print video confirms the auger
-   geometry was manufacturable") autoplays muted and loops; click it for
-   audio.
+   advance. GIFs autoplay and loop in both HTML and PDF.
 3. **Marp watch/server mode** — for editing while presenting, run
 
    ```bash
@@ -46,10 +44,6 @@ ways to drive the live deck:
    live.
 4. **Marp Preview / VS Code Marp extension** — opens the deck in a
    presenter-style window with speaker notes; `<video>` plays here too.
-
-The slide that immediately follows the print video is the **GIF** version
-of the same moment, so the **PDF** export still carries the motion (e.g.
-when sharing the deck after the talk).
 
 ## Files
 

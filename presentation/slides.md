@@ -42,7 +42,9 @@ style: |
   section.image-only img { display: block; margin: 0 auto; max-height: 70vh; }
   section.image-only p { font-size: 22px; color: #444; }
   /* Two-column comparison */
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; align-items: center; }
+  .cols3 img { max-width: 100%; max-height: 58vh; display: block; margin: 0 auto; }
   .cols h3 { margin-top: 0; }
   .label-before { color: #b00020; }
   .label-after  { color: #1b6e1b; }
@@ -52,254 +54,126 @@ style: |
     margin-top: 18px; padding-top: 6px; border-top: 1px dashed #ccc;
   }
   .timeline .hinge { color: #1b6e1b; font-weight: 700; }
-footer: "powder-excavator · project wrap-up"
+footer: "powder-doser · project wrap-up"
 ---
 
 <!-- _class: title -->
 <!-- _paginate: false -->
 
-# We got from a hand sketch to a printed auger by treating a coding agent like a junior engineer.
+# Powder dispenser
 
-**powder-excavator** — project wrap-up
+![w:560](assets/final-print-on-ultimaker.jpg)
 
 Sterling Baird · Devora Najjar · Ron
 *with Nasa's help on the Ultimaker print*
 
-vertical-cloud-lab · April 2026
+[github.com/vertical-cloud-lab/powder-doser — PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16)
 
 ---
-
-# Dispensing micron powders at mg–μg precision is dominated by surface forces, not gravity.
-
-- Target dose range: **micrograms to milligrams** of micron-sized solid powders
-- Hardware on hand: a Genmitsu 3018-PROVer V2 gantry and a 3D printer
-- One workshop week, a small team (Sterling, Devora, Ron), one coding agent
-
-> A 3D-printed scoop will retain powder on its walls after dumping —
-> electrostatics and van der Waals dominate at this scale.
-> *— Devora's technical-viability writeup, issue #3*
-
----
-
-# We started from a dip-and-dump scoop sketch on the gantry.
 
 <!-- _class: image-only -->
 
-![w:680](assets/initial-sketch.jpg)
-
-Issue #1 — the original mechanical concept: a pivoted scoop on a gantry, no second axis on the bucket.
-
----
-
-# We animated the side view to make the kinematics concrete.
-
-<!-- _class: image-only -->
-
-![h:460](assets/mechanism.gif)
-
-PR #2 — `mechanism.gif`, generated from the parametric CadQuery model.
-Pure-X gantry motion → wall ramp → trough rotation about the pin → dump.
-
----
-
-# Six candidate powders immediately showed bridging, channeling, and clinging.
-
-<!-- _class: image-only -->
-
-![w:520](assets/powder-rice-flour-card.png)
-
-Issue #15 — rice flour, brown rice flour, sodium alginate, calcium lactate, CMC, and xanthan gum, tested by hand.
-
----
-
-# Before: the agent rejected real CAD options on a single criterion.
+# Our final concept is a 3D-printed Archimedes auger.
 
 <div class="cols">
-
-<div>
-
-### <span class="label-before">PR #2 — early verdict</span>
-
-> chosen over Rhino/Grasshopper, Fusion, nTop, Onshape because it's pure-Python and pip-installable — none of the others survive the "freshly-cloned repo on a CI runner" test
-
-One-line dismissal. No install attempt. No scoreboard.
-
-</div>
-
-<div>
-
-### <span class="label-after">Issue #6 — pushback</span>
-
-> You have a full dev environment. Try to install each of these. If you really can't do anything meaningful in a 60-minute session, that's one thing — but show me.
-
-The fix wasn't a smarter model. It was an instruction to **try**.
-
-</div>
-
+  <div><img src="assets/manual-deck/auger-iso.png" alt="Auger side view" style="max-height:62vh;"></div>
+  <div><img src="assets/manual-deck/auger-top-cross-section.png" alt="Auger top cross-section" style="max-height:62vh;"></div>
 </div>
 
 ---
-
-# After: the agent installed each option, scored them, and changed its own recommendation.
-
-<div class="cols">
-
-<div>
-
-### <span class="label-after">PR #7 — evidence-based scoreboard</span>
-
-- **CadQuery** + **build123d** (pure-Python, OCP/OpenCascade) → primary
-- **OpenSCAD** / **Grasshopper** → alternates
-- **Fusion Generative Design** → genuinely doesn't fit CI
-- **rhino3dm** → read/write `.3dm` only, no STEP
-
-Verdict per tool, with install logs.
-
-</div>
-
-<div>
-
-### Concrete deliverables
-
-- STEP export wired in alongside STL
-- 3MF preferred over STL on the Cura path
-- Both **PrusaSlicer** and **CuraEngine** CLIs added (PR #16)
-
-</div>
-
-</div>
-
-<div class="timeline">trajectory: <b>#2</b> → <span class="hinge">#6 → #7</span> → #16</div>
-
----
-
-# Edison Scientific acted as an external reviewer, not just a search tool.
-
-<div class="cols">
-
-<div>
-
-### What Edison did
-
-- PR #2: introduction-grade powder-handling literature synthesis
-- PR #7: independent corroboration of the CAD-tool scoreboard
-- PR #14: turned `data_entry` uploads into a review loop for CAD, code, and figures
-
-</div>
-
-<div>
-
-### What Edison surfaced (we had missed)
-
-- **build123d** — sibling to CadQuery on the same OCP kernel
-- **Will It Print** (Budinoff 2021) — five validated AM-DFM checks
-- **Jubilee + balance + OpenCV + Ax/BoTorch** as the canonical open-hardware closed-loop rig (cited as inspiration, not built here)
-
-</div>
-
-</div>
-
----
-
-# A bistable snap-through trough was a sibling concept we tried and parked.
 
 <!-- _class: image-only -->
 
-![h:380](assets/bimodal-mechanism.gif)
+# First sketch: a side-pivoting trough that pours over its long edge.
 
-PR #5 — parametric OpenSCAD + FEA cross-check. Peak snap **2.36 N**, wells at **±1.9 mm**. Parked because it didn't fit the workshop budget — kept on the shelf.
+![w:880](assets/manual-deck/pivot-original.gif)
+
+*Pivot axis runs along the trough length L; the trough rolls sideways and pours over the full long edge.*
 
 ---
-
-# When the snap-through didn't fit, we generated eight alternatives in one panel.
 
 <!-- _class: image-only -->
 
-![h:400](assets/composite-spin.gif)
+# Revised: a cam ramp keeps the rim engaged through the full rotation.
 
-PR #13 — sieve cup, Pez strip, capillary dip, brush pickup, salt-shaker, passive auger, ERM-augmented sieve, solenoid-tap. Edison promoted the ERM-augmented sieve on published vibratory-sieve evidence (Besenhard 2015).
+![w:880](assets/mechanism.gif)
+
+*Rim stays in contact with the cam ramp throughout rotation; pours over the full long edge.*
 
 ---
 
-# Powder behavior forced a pivot from a scoop to a vertical Archimedes auger.
+<!-- _class: image-only -->
 
-<div class="cols">
+# Cam-driven scoop — side, iso, and top views.
 
-<div>
-
-### Why we pivoted (issue #1, in-person conversation)
-
-> **Devora, Ron, and I talked.** We're moving towards a vertical auger / Archimedes screw — based system with a sieve at the end, possibly a solenoid for tapping and a small disc vibration motor.
-
-</div>
-
-<div>
-
-![w:280](assets/auger-iso.png)
-
-**Dose ≈ rotations × pitch.** Sieve decouples flow from release; tap solenoid + ERM motor break electrostatic clinging. Devora opened **PR #16** with the initial OpenSCAD auger.
-
-</div>
-
+<div class="cols3">
+  <div><img src="assets/manual-deck/cam-scoop-side.png" alt="Side view"></div>
+  <div><img src="assets/manual-deck/cam-scoop-iso.png" alt="Iso view"></div>
+  <div><img src="assets/manual-deck/cam-scoop-top.png" alt="Top view"></div>
 </div>
 
 ---
 
-# The final part is a closed-tube auger printed on the Ultimaker 3 Extended.
+<!-- _class: image-only -->
+
+# We screened seven candidate powders by hand-feel.
+
+![w:880](assets/manual-deck/powder-candidates.png)
+
+*Rice flour · brown rice flour · sodium alginate · calcium lactate · carboxymethyl cellulose · xanthan gum.*
+
+---
 
 <!-- _class: image-only -->
 
-![h:460](assets/final-print-on-ultimaker.jpg)
+# Hand-scooping established the dose target — and the failure modes.
 
-PR #16 (Devora's CAD) — `cad/auger/archimedes-auger.{stl,stp}`, sliced for both Ultimaker and Ender‑3, printed with Nasa's help.
-*Outer tube shown; the internal helix is hidden inside the print.*
+![w:760](assets/manual-deck/manual-scoop-1.jpg)
 
 ---
-
-# The print video confirms the auger geometry was manufacturable.
 
 <!-- _class: image-only -->
 
-<video src="assets/final-print-video.mp4" poster="assets/final-print-on-ultimaker.jpg" controls autoplay muted loop playsinline style="max-height:64vh; display:block; margin:0 auto;"></video>
+# Powder clung to scoop walls; one sample stayed put after dumping.
 
-PR #16 — print in progress on the Ultimaker 3 Extended (Nasa ran the print). *(In the HTML build the MP4 plays inline; the GIF on the next slide preserves the motion in the PDF.)*
+![w:760](assets/manual-deck/manual-scoop-2.jpg)
+
+*Surface forces (electrostatic, van der Waals) dominate at this scale — Devora's call from issue #3.*
 
 ---
-
-# Same moment, GIF version, so the PDF carries the same signal as the HTML.
 
 <!-- _class: image-only -->
 
-![h:460](assets/final-print-video.gif)
+# A bistable snap-through trough was one alternative we explored.
 
-PR #16 — print in progress on the Ultimaker 3 Extended (Nasa ran the print).
-
----
-
-# The lesson generalizes: the agent improves when you ask it to *try* tools, not just *recommend* them.
-
-- "Pure-Python only" → installed every CAD tool, kept logs, and revised the recommendation.
-- "I can't reach Edison from the sandbox" → Edison key + endpoint added to `copilot-instructions.md`; queries fired async, results fetched next session.
-- "STL only" → STL **and** STEP **and** 3MF, plus PrusaSlicer **and** CuraEngine g-code per printer.
-
-The unlock was process, not capability.
-
-<div class="timeline">covered: #1 · #2 · #3 · #5 · #6 · #7 · #13 · #14 · #15 · <span class="hinge">#16</span> · #17 · #18</div>
+![w:760](assets/manual-deck/bistable-trough.gif)
 
 ---
 
-# Next time, we would front-load tooling, review, and export discipline.
+<!-- _class: image-only -->
 
-1. **Give the agent CAD + slicer tools on day one** — not after a PR's worth of pushback.
-2. **Treat Edison as a peer reviewer from the start** — fire the literature query before writing the design doc, not after.
-3. **Always export the BREP (STEP) alongside the mesh** — a one-line cost that keeps CAM, FreeCAD Path, and archival on the table.
+# The bistable mechanism has two energy wells at ±1.9 mm.
+
+![w:880](assets/bimodal-mechanism.gif)
+
+*PR #5 — parametric OpenSCAD + FEA cross-check, peak snap **2.36 N**, 23 passing / 1 skipped.*
 
 ---
 
-<!-- _class: title -->
-<!-- _paginate: false -->
+<!-- _class: image-only -->
 
-# Thanks.
+# Commercial dispensers span lab balances to industrial feeders.
 
-Repo: `vertical-cloud-lab/powder-excavator`
-Final design: PR #16 · Wrap-up: PR #18 · Issue: #17
+![w:880](assets/manual-deck/commercial-landscape.png)
+
+*Edison Scientific surveyed the landscape — no off-the-shelf unit hit our μg–mg, low-cost, open-source target.*
+
+---
+
+<!-- _class: image-only -->
+
+# We considered eight concepts before converging on the auger.
+
+![w:880](assets/composite-spin.gif)
+
+*Sterling Baird · Devora Najjar · Ron · with Nasa's help on the Ultimaker print.*
