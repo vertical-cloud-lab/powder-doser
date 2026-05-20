@@ -272,11 +272,18 @@ module helical_fin(total_h) {
     }
 
     // ---- Upper fin (constant radius) -------------------------------
-    // Rotated by funnel_twist so its profile at z = shaft_bottom_z
+    // Rotated by -funnel_twist so its profile at z = shaft_bottom_z
     // is at the same world angle as the funnel-region fin's exit
-    // profile -- the helix is continuous across the seam.
+    // profile.  Note the sign flip: linear_extrude(twist=T) follows
+    // the LEFT-hand rule (top rotates CW from above for positive T),
+    // while rotate([0,0,a]) follows the RIGHT-hand rule (CCW from
+    // above for positive a) -- so the matching world-angle rotation
+    // is -funnel_twist, not funnel_twist.  Funnel-fin's top profile
+    // ends at world angle = -funnel_twist (= +432 deg = +72 deg mod
+    // 360), so the upper fin is pre-rotated by the same amount and
+    // then continues with the same per-mm twist rate.
     translate([0, 0, shaft_bottom_z])
-        rotate([0, 0, funnel_twist])
+        rotate([0, 0, -funnel_twist])
             linear_extrude(height = h_upper, twist = twist_upper,
                            slices = slices_upper, convexity = 4)
                 translate([inner_edge, -fin_thickness / 2])
