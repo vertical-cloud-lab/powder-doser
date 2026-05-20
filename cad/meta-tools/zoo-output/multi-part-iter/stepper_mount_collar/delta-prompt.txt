@@ -1,0 +1,1 @@
+Fuse the top mounting plate, the cylindrical sleeve below it, and the bottom 24 mm flange into a single solid via union. Verify the four M2.5 bolt holes pass cleanly through the plate and that the 22 mm pilot hole is concentric with the 5.5 mm coupler bore. The resulting STEP must contain exactly one solid. Do not change any dimensions.
