@@ -1,4 +1,4 @@
-"""Powder-doser test-rig firmware (CircuitPython, Raspberry Pi Pico).
+"""Powder-doser test-rig firmware (CircuitPython, Raspberry Pi Pico W).
 
 This file is the entry point CircuitPython auto-runs on boot.  It
 brings up the four actuators wired in `hardware/test-module/README.md`
@@ -6,10 +6,16 @@ brings up the four actuators wired in `hardware/test-module/README.md`
 servo) and exposes a one-character-per-command serial REPL so the bench
 operator can exercise any single channel while the others stay idle.
 
+The firmware targets the **Raspberry Pi Pico W** (RP2040 + CYW43439).
+Every pin we use is in the GP0..GP15 range, which is identical between
+the Pico and Pico W; the Pico W's wireless module uses GP23/24/25/29
+internally, none of which are wired in this design, so the same binary
+runs unmodified on either board.
+
 Tunables live in ``config.py``.  Reload-on-save means tweaking a
 parameter does not require re-flashing the firmware.
 
-Required CircuitPython libraries (drop into /lib on the Pico):
+Required CircuitPython libraries (drop into /lib on the Pico W):
   - adafruit_bus_device
   - adafruit_drv2605
 
@@ -20,8 +26,8 @@ Wire-on commands (one per line over USB-serial):
     r <deg>      rotate auger by <deg> degrees (signed)
     v            vibrate (single canned effect)
     t            tap (run TAP_COUNT solenoid pulses)
-    a <deg>      move dispensing-angle servo to <deg>
-    p <name>     move servo to a preset (horizontal/tilt/vertical/tip)
+    a <deg>      smoothly move dispensing-angle servo to <deg>
+    p <name>     smoothly move servo to a preset (horizontal/tilt/vertical/tip)
     !            emergency stop -- de-energise everything
 """
 
@@ -182,23 +188,72 @@ class Tap:
 # ---------------------------------------------------------------------------
 
 class Servo:
+    """Hobby servo with smooth interpolated motion.
+
+    Every angle command is ramped from the current position to the
+    target at ``config.SERVO_SPEED_DEG_PER_S`` deg/s, updated at
+    ``config.SERVO_UPDATE_HZ`` Hz.  This avoids the violent "snap" you
+    get from writing the new pulse width in a single PWM frame, which
+    is important on the powder-doser dispense axis to keep loose powder
+    from jumping out of the cup.
+    """
+
     PERIOD_US = 20_000  # 50 Hz
 
     def __init__(self) -> None:
         self.pwm = _pwm(config.PIN_SERVO_SIG, frequency=50, duty=0.0)
+        # Track position internally so smoothing can interpolate from
+        # "wherever we are now" without re-querying the servo.
+        self.angle = float(config.SERVO_DEFAULT_DEG)
+        # Seed the PWM at the default angle so the servo doesn't jump
+        # from 0 on its first interpolated move.
+        self._write_angle(self.angle)
+        # Then re-issue the default through the smooth path so a freshly
+        # powered (but already-centred) servo still ramps gently into
+        # position rather than slamming there.
         self.move_to(config.SERVO_DEFAULT_DEG)
 
-    def move_to(self, angle_deg: float) -> None:
-        ang = max(config.SERVO_MIN_ANGLE_DEG,
-                  min(config.SERVO_MAX_ANGLE_DEG, angle_deg))
+    def _write_angle(self, angle_deg: float) -> None:
+        """Drive the PWM hard to the given angle (no smoothing)."""
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
-        frac = (ang - config.SERVO_MIN_ANGLE_DEG) / span if span else 0
+        frac = ((angle_deg - config.SERVO_MIN_ANGLE_DEG) / span
+                if span else 0)
         pulse_us = (config.SERVO_MIN_PULSE_US
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
         duty = pulse_us / self.PERIOD_US
         self.pwm.duty_cycle = int(duty * 0xFFFF)
-        self.angle = ang
+
+    def move_to(self, angle_deg: float) -> None:
+        """Smoothly interpolate from the current angle to ``angle_deg``.
+
+        Falls back to an instantaneous jump if
+        ``config.SERVO_SPEED_DEG_PER_S`` is non-positive.
+        """
+        target = max(config.SERVO_MIN_ANGLE_DEG,
+                     min(config.SERVO_MAX_ANGLE_DEG, angle_deg))
+        speed = float(config.SERVO_SPEED_DEG_PER_S)
+        if speed <= 0:
+            self._write_angle(target)
+            self.angle = target
+            return
+        update_hz = max(1, config.SERVO_UPDATE_HZ)
+        step_deg = speed / update_hz
+        dt = 1.0 / update_hz
+        delta = target - self.angle
+        # Walk toward the target in fixed-size steps; the final iteration
+        # snaps exactly onto the target so we don't accumulate float drift.
+        if abs(delta) <= step_deg:
+            self._write_angle(target)
+            self.angle = target
+            return
+        step = step_deg if delta > 0 else -step_deg
+        while abs(target - self.angle) > step_deg:
+            self.angle += step
+            self._write_angle(self.angle)
+            time.sleep(dt)
+        self._write_angle(target)
+        self.angle = target
 
 
 # ---------------------------------------------------------------------------
@@ -251,10 +306,12 @@ class Rig:
                 d=config.TAP_PWM_DUTY,
             ))
         print(
-            "servo: angle={a:.1f}, range=[{lo}..{hi}], presets={p}".format(
+            "servo: angle={a:.1f}, range=[{lo}..{hi}], "
+            "speed={s} deg/s, presets={p}".format(
                 a=self.servo.angle,
                 lo=config.SERVO_MIN_ANGLE_DEG,
                 hi=config.SERVO_MAX_ANGLE_DEG,
+                s=config.SERVO_SPEED_DEG_PER_S,
                 p=list(config.SERVO_PRESETS),
             ))
 

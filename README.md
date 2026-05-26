@@ -11,7 +11,7 @@ module (auger rotation + tapping + vibration + dispensing angle) lives
 under [`hardware/test-module/`](hardware/test-module/).  It contains
 the KiCad schematic, BOM, wiring / assembly instructions with a full
 pin and net table, and CircuitPython firmware for the Raspberry Pi
-Pico with every test parameter exposed in a top-level
+Pico W with every test parameter exposed in a top-level
 [`config.py`](hardware/test-module/firmware/config.py).
 
 ## Paper

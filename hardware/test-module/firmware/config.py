@@ -1,17 +1,23 @@
 """Easily-adjustable configuration for the powder-doser test rig.
 
-Edit any of these values, save the file, and the Pico will reload the
+Edit any of these values, save the file, and the Pico W will reload the
 firmware automatically.  All values are documented in the header next
 to each block — typical / safe ranges are in the comments.
 
 The default values match the hardware in `hardware/test-module/README.md`:
 NEMA-11 11HS18-0674S stepper + DRV8825, JF-0530B 5 V solenoid + DRV8871,
 10 mm ERM coin + DRV2605L, and an HD-1810MG servo on the dispensing
-axis.
+axis, all driven from a single Raspberry Pi Pico W.
 """
 
 # -----------------------------------------------------------------------
-# Pin assignments (Pi Pico GPIO numbers; must match the KiCad schematic).
+# Pin assignments (Pi Pico W GPIO numbers; must match the KiCad schematic).
+#
+# These all live on the Pico W's left-column header (GP0..GP15), which
+# has the same pinout as the standard Pico.  The Pico W reuses
+# GP23/GP24/GP25/GP29 for its on-board CYW43439 wireless module, so we
+# intentionally stay below GP16 and the rig is firmware-compatible with
+# both Pico and Pico W.
 # -----------------------------------------------------------------------
 PIN_I2C_SDA   = 0          # DRV2605L SDA (I2C0)
 PIN_I2C_SCL   = 1          # DRV2605L SCL (I2C0)
@@ -76,6 +82,14 @@ SERVO_MAX_PULSE_US    = 2400
 SERVO_MIN_ANGLE_DEG   = 0             # mechanical min
 SERVO_MAX_ANGLE_DEG   = 180
 SERVO_DEFAULT_DEG     = 90            # home position on boot
+# Smooth-motion parameters.  Every angle command (a / p / SERVO_DEFAULT
+# on boot) is interpolated from the current position to the target at
+# SERVO_SPEED_DEG_PER_S deg/s with a 50 Hz update rate.  Lower speed =
+# gentler motion and less powder spillage; higher = snappier response.
+# Set SERVO_SPEED_DEG_PER_S to 0 to fall back to instantaneous "snap"
+# moves (the pre-smoothing behaviour).
+SERVO_SPEED_DEG_PER_S = 60            # 30..120 is a comfortable range
+SERVO_UPDATE_HZ       = 50            # matches the servo's PWM frame
 # Pre-canned positions exposed as CLI shortcuts:
 SERVO_PRESETS = {
     "horizontal": 0,

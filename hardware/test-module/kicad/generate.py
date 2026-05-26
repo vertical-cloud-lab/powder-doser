@@ -2,17 +2,30 @@
 
 The test rig consolidates one full powder-doser channel
 (auger stepper + vibration ERM + tap solenoid + dispensing-angle servo)
-onto a single Raspberry Pi Pico (RP2040) so the whole module can be
-exercised over USB-serial without bringing up the production Pi Zero 2 W
-stack from PR #25.
+onto a single Raspberry Pi Pico W (RP2040) so the whole module can be
+exercised over USB-serial (or, in a future revision, wirelessly) without
+bringing up the production Pi Zero 2 W stack from PR #25.
 
-Because none of the breakouts we use (Pi Pico, DRV2605L, DRV8871,
-DRV8825, hobby servo, JF-0530B solenoid, NEMA-11 4-wire stepper) have
-KiCad symbols in the stock symbol libraries, we author a project-local
-``test_module.kicad_sym`` library here and place those symbols on the
-sheet purely with global net labels — no wires.  KiCad treats matching
-global labels as electrically connected, which makes the schematic both
-machine-generatable and human-readable.
+Because none of the breakouts we use (Pi Pico W, DRV2605L, DRV8871,
+DRV8825, Pololu shunt regulator, hobby servo, JF-0530B solenoid, NEMA-11
+4-wire stepper) have KiCad symbols in the stock symbol libraries, we
+author a project-local ``test_module.kicad_sym`` library here and place
+those symbols on the sheet purely with global net labels — no wires.
+KiCad treats matching global labels as electrically connected, which
+makes the schematic both machine-generatable and human-readable.
+
+Coordinate convention used in this file:
+  * Symbol library internals (``_pin`` / ``_rectangle``) use KiCad's
+    symbol-editor convention: Y is positive UP, so a pin "below" the
+    origin has a negative local Y.
+  * The schematic page uses the opposite convention (Y positive DOWN),
+    so when KiCad places a symbol on the page it FLIPS the local Y.
+    ``SYMBOL_PINS`` therefore stores label-side offsets in *page*
+    coordinates (Y positive DOWN) — that is, with the sign flipped
+    relative to the corresponding pin's ``(at ...)`` entry in the
+    symbol library.  Skipping the flip is what produced the
+    "labels float above the body" rendering that was flagged in PR
+    review.
 
 After writing the project files the script invokes ``kicad-cli`` to
 render SVG / PDF / PNG previews next to the source.
@@ -75,9 +88,15 @@ def build_symbol_lib() -> str:
     symbols = []
 
     # ------------------------------------------------------------------
-    # Raspberry Pi Pico (RP2040) — 20-pin DIP-style breakout, two columns.
-    # We expose every pin we use in this design + the 5V / 3V3 / GND rails.
-    # Pin numbers follow the official Pico pinout silkscreen.
+    # Raspberry Pi Pico W (RP2040 + CYW43439 wireless).  Same 2x20
+    # castellated header / GPIO pinout as the Pi Pico for pins 1..20
+    # (the GPIOs we use here); the only differences are on the right
+    # side -- the Pico W reuses GP23/24/25/29 for the wireless module's
+    # SPI, so those four GPIOs are NOT general-purpose on the Pico W.
+    # We don't use any of GP23..GP29 in this design, so the rig is
+    # firmware-compatible with both the Pico and the Pico W; we draw
+    # the symbol as the Pico W (with VBUS/VSYS/3V3 etc. on the right)
+    # so the silkscreen matches the production part.
     # ------------------------------------------------------------------
     pico_left = [
         ("GP0", "1"),  ("GP1", "2"),   ("GND", "3"),   ("GP2", "4"),   ("GP3", "5"),
@@ -106,12 +125,12 @@ def build_symbol_lib() -> str:
         pins.append(_pin(name, num, body_w / 2 + 2.54, y, 180, etype=etype))
     pico_body = _rectangle(-body_w / 2, body_top, body_w / 2, body_bot)
     symbols.append(dedent(f"""\
-        (symbol "Pi_Pico" (in_bom yes) (on_board yes)
-          {_props("U", -body_w / 2, body_top + 2.54, "Pi_Pico", -body_w / 2, body_top + 0.8)}
-          (symbol "Pi_Pico_0_1"
+        (symbol "Pi_Pico_W" (in_bom yes) (on_board yes)
+          {_props("U", -body_w / 2, body_top + 2.54, "Pi_Pico_W", -body_w / 2, body_top + 0.8)}
+          (symbol "Pi_Pico_W_0_1"
             {pico_body}
           )
-          (symbol "Pi_Pico_1_1"
+          (symbol "Pi_Pico_W_1_1"
             {chr(10).join(pins)}
           )
         )"""))
@@ -222,11 +241,16 @@ def build_symbol_lib() -> str:
         )"""))
 
     # ------------------------------------------------------------------
-    # Generic 2-pin load (ERM motor, solenoid, electrolytic cap).
+    # Generic 2-pin load (ERM motor, solenoid, electrolytic cap, shunt
+    # regulator).  Each lays out the same way; the value label
+    # differentiates them in the BOM.
     # ------------------------------------------------------------------
-    for sym_name, value_label in (("ERM_Motor", "ERM 10mm coin"),
-                                  ("Solenoid", "JF-0530B 5V"),
-                                  ("Cap_Polar", "100u/25V")):
+    for sym_name, value_label, ref_prefix in (
+            ("ERM_Motor", "ERM 10mm coin", "M"),
+            ("Solenoid", "JF-0530B 5V", "SOL"),
+            ("Cap_Polar", "100u/25V", "C"),
+            ("Shunt_Regulator", "Pololu #3776 33V 9W shunt", "SR"),
+    ):
         pins = [
             _pin("+", "1", -5.08, 0, 0),
             _pin("-", "2", 5.08, 0, 180),
@@ -234,7 +258,7 @@ def build_symbol_lib() -> str:
         body = _rectangle(-2.54, 1.27, 2.54, -1.27)
         symbols.append(dedent(f"""\
             (symbol "{sym_name}" (in_bom yes) (on_board yes)
-              {_props("M" if sym_name == "ERM_Motor" else ("SOL" if sym_name == "Solenoid" else "C"), -2.54, 3.81, value_label, -2.54, 2.54)}
+              {_props(ref_prefix, -2.54, 3.81, value_label, -2.54, 2.54)}
               (symbol "{sym_name}_0_1" {body})
               (symbol "{sym_name}_1_1"
                 {chr(10).join(pins)}
@@ -326,10 +350,10 @@ PLACEMENTS = [
     ("Cap_Polar",     "C2",   30,  120, [("+", "+5V"),  ("-", "GND")]),
 
     # ---- MCU (centre) ----
-    # The Pico is powered from the buck via VSYS so it can survive USB
+    # The Pico W is powered from the buck via VSYS so it can survive USB
     # disconnect; VBUS is left floating.  3V3 logic is sourced from the
-    # Pico's on-board LDO and feeds the DRV8825 / DRV2605L logic rails.
-    ("Pi_Pico", "U2", 110, 50,
+    # Pico W's on-board LDO and feeds the DRV8825 / DRV2605L logic rails.
+    ("Pi_Pico_W", "U2", 110, 50,
         [("VSYS", "+5V"), ("GND", "GND"), ("3V3", "+3V3"),
          # I2C0 for DRV2605L
          ("GP0", "I2C_SDA"), ("GP1", "I2C_SCL"),
@@ -370,6 +394,12 @@ PLACEMENTS = [
          ("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("Cap_Polar", "C3", 210, 195, [("+", "+12V"), ("-", "GND")]),
+    # Pololu #3776 33 V / 9 W shunt regulator across +12V / GND, sitting
+    # right next to the DRV8825's VMOT screw terminals.  Clamps back-EMF
+    # transients during deceleration / back-driving so the wall-wart-
+    # powered 12 V rail can't push the DRV8825 past its 45 V abs max.
+    # See PR #25 BOM item 18 for rationale.
+    ("Shunt_Regulator", "SR1", 175, 195, [("+", "+12V"), ("-", "GND")]),
     ("Stepper_4wire", "M2", 285, 145,
         [("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
@@ -426,60 +456,73 @@ def _symbol_instance(lib_id: str, ref: str, x: float, y: float, unit: int = 1) -
 
 # Geometry of the symbols we authored above — needed to place labels at
 # the correct world coordinates relative to each instance's origin.
-# Returns (x_offset, y_offset) for each (lib_id, pin_name).
+# Returns (x_offset, y_offset, label_rotation) for each (lib_id, pin_name).
+#
+# NB: The Y values here are in SCHEMATIC PAGE coordinates (Y positive
+# DOWN), so they are the NEGATIVE of the Y in the corresponding
+# ``(pin ... (at x y orient))`` entry in the symbol library (which
+# uses the symbol-editor convention of Y positive UP).  When KiCad
+# places the symbol on the sheet it flips Y, so the page-space tip of
+# a pin defined at local (x, -7.62) ends up at world y = instance_y +
+# 7.62.  Without this flip, labels render *above* the symbol body
+# instead of next to the actual pins -- which is the rendering bug
+# flagged in PR review.
 SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
     "Barrel_Jack_12V": {
-        "+12V": (-7.62, 1.27, 180), "GND": (-7.62, -1.27, 180),
+        "+12V": (-7.62, -1.27, 180), "GND": (-7.62, 1.27, 180),
     },
     "D24V22F5_Buck": {
-        "VIN":     (-10.16, -2.54, 180), "GND_IN":  (-10.16, -5.08, 180),
-        "SHDN":    (-10.16, -7.62, 180),
-        "VOUT":    (10.16,  -2.54, 0),   "GND_OUT": (10.16,  -5.08, 0),
+        "VIN":     (-10.16, 2.54, 180), "GND_IN":  (-10.16, 5.08, 180),
+        "SHDN":    (-10.16, 7.62, 180),
+        "VOUT":    (10.16,  2.54, 0),   "GND_OUT": (10.16,  5.08, 0),
     },
     "Cap_Polar": {
         "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
     },
-    "Pi_Pico": {
+    "Shunt_Regulator": {
+        "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
+    },
+    "Pi_Pico_W": {
         # Left column GP0..GP15 + GNDs (we only need ones we actually wire)
-        "GP0": (-13.97, -2.54, 180),   "GP1": (-13.97, -5.08, 180),
-        "GP2": (-13.97, -10.16, 180),  "GP3": (-13.97, -12.7, 180),
-        "GP4": (-13.97, -15.24, 180),  "GP5": (-13.97, -17.78, 180),
-        "GP6": (-13.97, -22.86, 180),  "GP7": (-13.97, -25.4, 180),
-        "GP10": (-13.97, -35.56, 180), "GP11": (-13.97, -38.1, 180),
-        "GP14": (-13.97, -48.26, 180), "GP15": (-13.97, -50.8, 180),
+        "GP0": (-13.97, 2.54, 180),   "GP1": (-13.97, 5.08, 180),
+        "GP2": (-13.97, 10.16, 180),  "GP3": (-13.97, 12.7, 180),
+        "GP4": (-13.97, 15.24, 180),  "GP5": (-13.97, 17.78, 180),
+        "GP6": (-13.97, 22.86, 180),  "GP7": (-13.97, 25.4, 180),
+        "GP10": (-13.97, 35.56, 180), "GP11": (-13.97, 38.1, 180),
+        "GP14": (-13.97, 48.26, 180), "GP15": (-13.97, 50.8, 180),
         # Right column power
-        "VSYS": (13.97, -5.08, 0),     "GND":  (13.97, -7.62, 0),
-        "3V3":  (13.97, -12.7, 0),
+        "VSYS": (13.97, 5.08, 0),     "GND":  (13.97, 7.62, 0),
+        "3V3":  (13.97, 12.7, 0),
     },
     "DRV2605L_Breakout": {
-        "VIN":     (-11.43, -2.54, 180), "GND":     (-11.43, -5.08, 180),
-        "SDA":     (-11.43, -7.62, 180), "SCL":     (-11.43, -10.16, 180),
-        "IN_TRIG": (-11.43, -12.7, 180), "EN":      (-11.43, -15.24, 180),
-        "OUT+":    (11.43,  -2.54, 0),   "OUT-":    (11.43,  -5.08, 0),
+        "VIN":     (-11.43, 2.54, 180), "GND":     (-11.43, 5.08, 180),
+        "SDA":     (-11.43, 7.62, 180), "SCL":     (-11.43, 10.16, 180),
+        "IN_TRIG": (-11.43, 12.7, 180), "EN":      (-11.43, 15.24, 180),
+        "OUT+":    (11.43,  2.54, 0),   "OUT-":    (11.43,  5.08, 0),
     },
     "DRV8871_Breakout": {
-        "VM":   (-11.43, -2.54, 180), "GND":  (-11.43, -5.08, 180),
-        "IN1":  (-11.43, -7.62, 180), "IN2":  (-11.43, -10.16, 180),
-        "OUT1": (11.43,  -2.54, 0),   "OUT2": (11.43,  -5.08, 0),
+        "VM":   (-11.43, 2.54, 180), "GND":  (-11.43, 5.08, 180),
+        "IN1":  (-11.43, 7.62, 180), "IN2":  (-11.43, 10.16, 180),
+        "OUT1": (11.43,  2.54, 0),   "OUT2": (11.43,  5.08, 0),
     },
     "DRV8825_Carrier": {
-        "STEP":   (-11.43, -2.54, 180), "DIR":    (-11.43, -5.08, 180),
-        "nEN":    (-11.43, -7.62, 180), "nSLP":   (-11.43, -10.16, 180),
-        "nRST":   (-11.43, -12.7, 180), "M0":     (-11.43, -15.24, 180),
-        "M1":     (-11.43, -17.78, 180),"M2":     (-11.43, -20.32, 180),
-        "nFAULT": (-11.43, -22.86, 180),
-        "VMOT":   (11.43, -2.54, 0),   "GND_M":  (11.43, -5.08, 0),
-        "A1":     (11.43, -7.62, 0),   "A2":     (11.43, -10.16, 0),
-        "B1":     (11.43, -12.7, 0),   "B2":     (11.43, -15.24, 0),
-        "VDD":    (11.43, -17.78, 0),  "GND_L":  (11.43, -20.32, 0),
+        "STEP":   (-11.43, 2.54, 180), "DIR":    (-11.43, 5.08, 180),
+        "nEN":    (-11.43, 7.62, 180), "nSLP":   (-11.43, 10.16, 180),
+        "nRST":   (-11.43, 12.7, 180), "M0":     (-11.43, 15.24, 180),
+        "M1":     (-11.43, 17.78, 180),"M2":     (-11.43, 20.32, 180),
+        "nFAULT": (-11.43, 22.86, 180),
+        "VMOT":   (11.43, 2.54, 0),   "GND_M":  (11.43, 5.08, 0),
+        "A1":     (11.43, 7.62, 0),   "A2":     (11.43, 10.16, 0),
+        "B1":     (11.43, 12.7, 0),   "B2":     (11.43, 15.24, 0),
+        "VDD":    (11.43, 17.78, 0),  "GND_L":  (11.43, 20.32, 0),
     },
     "Stepper_4wire": {
-        "A1": (-10.16, 0, 180), "A2": (-10.16, -2.54, 180),
-        "B1": (10.16,  0, 0),   "B2": (10.16,  -2.54, 0),
+        "A1": (-10.16, 0, 180), "A2": (-10.16, 2.54, 180),
+        "B1": (10.16,  0, 0),   "B2": (10.16,  2.54, 0),
     },
     "Servo_3pin": {
-        "+5V": (-10.16, 2.54, 180), "GND": (-10.16, 0, 180),
-        "SIG": (-10.16, -2.54, 180),
+        "+5V": (-10.16, -2.54, 180), "GND": (-10.16, 0, 180),
+        "SIG": (-10.16, 2.54, 180),
     },
     "ERM_Motor": {
         "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
