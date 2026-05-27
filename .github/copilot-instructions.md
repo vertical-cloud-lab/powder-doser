@@ -5,4 +5,6 @@ from edison_client import EdisonClient, JobNames
 client = EdisonClient(api_key=EDISON_API_KEY)
 ```
 
+If using Edison Analysis, refer to https://docs.edisonscientific.com/edison-client/file-management#upload for instructions on how to upload files. If able to use Context7, to better inform use of EdisonClient, see https://context7.com/future-house/edison-client-docs/llms.txt?tokens=10000
+
 If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, etc.).
