@@ -94,6 +94,45 @@ It mounts as a single 2-pin part across `+12V` / `GND`, electrically
 in parallel with C3, as close to U5's `VMOT` screw terminals as the
 breadboard allows.  See SR1 in the schematic.
 
+### Why the Tic T500 USB stepper controller from PR #25 is *not* on the bench rig
+
+PR #25 lists the **Pololu Tic T500 USB multi-interface stepper motor
+controller** (item 11) as the production option for driving the auger.
+The Tic is essentially a DRV8825 + an on-board microcontroller that
+exposes USB / I²C / TTL-serial / step-and-direction inputs and runs
+its own motion planner (acceleration ramps, current-position
+tracking, soft limits).
+
+This bench rig deliberately drops the Tic and drives the bare
+**DRV8825 carrier (item 11-alt, Pololu #2133)** straight from the
+Pico W's GPIOs instead, because:
+
+1. **No second microcontroller in the chain.**  The whole point of
+   this rig is "one MCU, one breadboard, USB-serial REPL".  The Tic
+   T500 would put a second MCU between the host (the Pico W on
+   USB-serial) and the driver, doubling the firmware surface for no
+   added capability.
+2. **The Pico W already does what the Tic does.**  STEP/DIR pulse
+   generation, microstep selection (M0/M1/M2), enable, fault
+   detection, and accel/decel ramps are all handled in
+   [`firmware/code.py`](firmware/code.py)'s `Stepper` class.  The Tic's
+   on-board motion planner would just duplicate that.
+3. **Cost & part count.**  A Tic T500 is ~$40 plus a USB cable; a
+   bare DRV8825 carrier is ~$8 and uses six Pico GPIOs we already
+   have free.  For a one-channel bench rig the bare carrier wins on
+   both axes.
+4. **The production system can still use it.**  Nothing in this rig
+   precludes swapping to a Tic T500 (or scaling to 30 Tics on a USB
+   hub) for the production multi-channel system — the firmware
+   pin/net contract documented above is what would change, not the
+   bench wiring philosophy.
+
+If you want to re-introduce the Tic T500 for a side-by-side compare,
+delete the `DRV8825_Carrier` placement in `kicad/generate.py`, add a
+`Tic_T500` symbol with `STEP`/`DIR`/`ERR`/`USB` pins, wire `STP_STEP`
+/ `STP_DIR` to it instead of U5, and rebuild — the firmware will run
+unchanged because it only sees STEP/DIR pulses on GP2/GP3.
+
 Total ≈ **$45 + $19 (PSU) + $13 (stepper) + ~$10 (breadboard / jumpers)**
 on top of whatever Pico W is on the bench.
 
@@ -108,8 +147,8 @@ These nets are the contract between
 |---|---|---|---|
 | `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VMOT , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
 | `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , C2.+              | —     | Buck output; powers Pico W + servo. |
-| `+3V3`       | U2.3V3 , U3.VIN , U5.VDD , U5.nSLP , U5.nRST   | —     | Pico W on-board LDO; logic + DRV2605L. |
-| `GND`        | (all, incl. SR1.-) | —     | Common ground (DRV8825 VMOT and VDD grounds tied at the carrier). |
+| `+3V3`       | U2.3V3 , U3.VIN , U5.nSLP , U5.nRST           | —     | Pico W on-board LDO; logic + DRV2605L.  The DRV8825 carrier (#2133) has no separate VDD pin — its logic supply is generated internally from VMOT — so only `nSLP` / `nRST` are pulled up to `+3V3`. |
+| `GND`        | (all, incl. SR1.-) | —     | Common ground (DRV8825 motor- and logic-side GND pins both land here). |
 | `I2C_SDA`    | U3.SDA            | GP0   | I2C0 SDA to DRV2605L. |
 | `I2C_SCL`    | U3.SCL            | GP1   | I2C0 SCL to DRV2605L. |
 | `STP_STEP`   | U5.STEP           | GP2   | DRV8825 step pulse. |
@@ -175,7 +214,13 @@ Build order, top to bottom:
      `+` to `+12V` and `-` to `GND`, as close to `VMOT` as possible.
      Its on-board power resistor handles the back-EMF clamp described
      in the BOM section.
-   * `U5 VDD → +3V3`, `U5 GND_L → GND` (logic-side ground).
+   * `U5 GND_L → GND` (the second GND pin on the motor-side header is
+     the same node as `GND_M` — both go to the breadboard ground rail).
+     The Pololu #2133 carrier has **no separate VDD pin**: its logic
+     supply is generated internally from `VMOT` by the on-chip 3.3 V
+     LDO, and the STEP/DIR/M0..2/nEN inputs are happy with the Pico
+     W's 3.3 V logic directly.  If you have an older 9-pin clone with
+     a VDD pin, tie it to `+3V3`; otherwise leave it out.
    * Tie both `U5 nSLP` and `U5 nRST` to `+3V3` (they ship pulled low
      on the carrier; without this the driver stays asleep).
    * `Pico W GP2 → STEP`, `GP3 → DIR`, `GP4 → nEN`, `GP5 → M0`,

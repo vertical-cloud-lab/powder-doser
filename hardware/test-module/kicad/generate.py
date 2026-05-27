@@ -186,18 +186,23 @@ def build_symbol_lib() -> str:
         )"""))
 
     # ------------------------------------------------------------------
-    # DRV8825 stepper driver carrier (Pololu #2133).
-    # Left: logic pins.  Right: motor / power pins.
+    # DRV8825 stepper driver carrier (Pololu #2133): 16 pins total,
+    # 8 per side, matching the physical 2x8 0.1" header on the carrier.
+    # Left (logic): nEN, M0, M1, M2, nRST, nSLP, STEP, DIR.
+    # Right (motor): VMOT, GND, B2, B1, A1, A2, nFAULT, GND.
+    # There is no separate VDD pin — the carrier's logic supply is
+    # generated internally from VMOT by the DRV8825's 3.3 V LDO, and
+    # the logic inputs are 3.3 V / 5 V tolerant directly (no level
+    # shifter required).  See Pololu #2133 product page / schematic.
     # ------------------------------------------------------------------
-    drv8825_left = [("STEP", "1", "input"), ("DIR", "2", "input"),
-                    ("nEN", "3", "input"), ("nSLP", "4", "input"),
-                    ("nRST", "5", "input"), ("M0", "6", "input"),
-                    ("M1", "7", "input"), ("M2", "8", "input"),
-                    ("nFAULT", "9", "output")]
-    drv8825_right = [("VMOT", "10", "power_in"), ("GND_M", "11", "power_in"),
-                     ("A1", "12", "passive"), ("A2", "13", "passive"),
-                     ("B1", "14", "passive"), ("B2", "15", "passive"),
-                     ("VDD", "16", "power_in"), ("GND_L", "17", "power_in")]
+    drv8825_left = [("nEN", "1", "input"),  ("M0", "2", "input"),
+                    ("M1", "3", "input"),   ("M2", "4", "input"),
+                    ("nRST", "5", "input"), ("nSLP", "6", "input"),
+                    ("STEP", "7", "input"), ("DIR", "8", "input")]
+    drv8825_right = [("VMOT", "9", "power_in"),  ("GND_M", "10", "power_in"),
+                     ("B2", "11", "passive"),    ("B1", "12", "passive"),
+                     ("A1", "13", "passive"),    ("A2", "14", "passive"),
+                     ("nFAULT", "15", "output"), ("GND_L", "16", "power_in")]
     w = 17.78
     top = 0
     bot = top - row_pitch * (max(len(drv8825_left), len(drv8825_right)) + 1)
@@ -389,8 +394,7 @@ PLACEMENTS = [
          ("nSLP", "+3V3"), ("nRST", "+3V3"),
          ("M0", "STP_M0"), ("M1", "STP_M1"), ("M2", "STP_M2"),
          ("nFAULT", "STP_FAULT"),
-         ("VMOT", "+12V"), ("GND_M", "GND"),
-         ("VDD", "+3V3"),  ("GND_L", "GND"),
+         ("VMOT", "+12V"), ("GND_M", "GND"), ("GND_L", "GND"),
          ("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("Cap_Polar", "C3", 210, 195, [("+", "+12V"), ("-", "GND")]),
@@ -506,15 +510,18 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "OUT1": (11.43,  2.54, 0),   "OUT2": (11.43,  5.08, 0),
     },
     "DRV8825_Carrier": {
-        "STEP":   (-11.43, 2.54, 180), "DIR":    (-11.43, 5.08, 180),
-        "nEN":    (-11.43, 7.62, 180), "nSLP":   (-11.43, 10.16, 180),
-        "nRST":   (-11.43, 12.7, 180), "M0":     (-11.43, 15.24, 180),
-        "M1":     (-11.43, 17.78, 180),"M2":     (-11.43, 20.32, 180),
-        "nFAULT": (-11.43, 22.86, 180),
-        "VMOT":   (11.43, 2.54, 0),   "GND_M":  (11.43, 5.08, 0),
-        "A1":     (11.43, 7.62, 0),   "A2":     (11.43, 10.16, 0),
-        "B1":     (11.43, 12.7, 0),   "B2":     (11.43, 15.24, 0),
-        "VDD":    (11.43, 17.78, 0),  "GND_L":  (11.43, 20.32, 0),
+        # Left side (logic), 8 pins, top → bottom matching the symbol
+        # pin order (nEN, M0, M1, M2, nRST, nSLP, STEP, DIR):
+        "nEN":    (-11.43, 2.54, 180), "M0":     (-11.43, 5.08, 180),
+        "M1":     (-11.43, 7.62, 180), "M2":     (-11.43, 10.16, 180),
+        "nRST":   (-11.43, 12.7, 180), "nSLP":   (-11.43, 15.24, 180),
+        "STEP":   (-11.43, 17.78, 180),"DIR":    (-11.43, 20.32, 180),
+        # Right side (motor), 8 pins, top → bottom (VMOT, GND, B2, B1,
+        # A1, A2, nFAULT, GND).  No separate VDD pin on this carrier.
+        "VMOT":   (11.43, 2.54, 0),    "GND_M":  (11.43, 5.08, 0),
+        "B2":     (11.43, 7.62, 0),    "B1":     (11.43, 10.16, 0),
+        "A1":     (11.43, 12.7, 0),    "A2":     (11.43, 15.24, 0),
+        "nFAULT": (11.43, 17.78, 0),   "GND_L":  (11.43, 20.32, 0),
     },
     "Stepper_4wire": {
         "A1": (-10.16, 0, 180), "A2": (-10.16, 2.54, 180),
