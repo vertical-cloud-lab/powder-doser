@@ -191,6 +191,39 @@ For prototyping, any rigid plate with two parallel bores 32 mm apart
 the motor side) is sufficient. Pre-load the mesh by sliding the motor
 outward by ~0.05 mm before tightening, then back off if the gears bind.
 
+## Short test pieces — one per nozzle design (issue #48)
+
+@williamulbz (PR #49 review comment [4566308356][pr49-c4566308356]) asked for **shorter test designs for each of the 4 nozzle designs** that @swcharles documented in [issue #48 comment 4513155870][i48-c4513155870] (a/k/a the "v1..v4 nozzle types"), so all four can be printed and bench-tested side-by-side without burning filament on a full 250 mm geared body:
+
+| Variant | Bottom-end geometry | Test file | STL | Cross-section |
+|---------|---------------------|-----------|-----|---------------|
+| **1** | Direct cutoff of the screw, large open funnel below | `archimedes-auger-test-nozzle1.scad` | `archimedes-auger-test-nozzle1.stl` | `archimedes-auger-test-nozzle1-cross-section.png` |
+| **2** | Continue the screw to just before the exit; straight Ø8 shaft; small short funnel | `archimedes-auger-test-nozzle2.scad` | `archimedes-auger-test-nozzle2.stl` | `archimedes-auger-test-nozzle2-cross-section.png` |
+| **3** | Direct cutoff of the screw above a tapered shaft tip that shrinks to a near-point at the exit | `archimedes-auger-test-nozzle3.scad` | `archimedes-auger-test-nozzle3.stl` | `archimedes-auger-test-nozzle3-cross-section.png` |
+| **4** | Continue the screw as the shaft tapers down — combines v2 and v3 | `archimedes-auger-test-nozzle4.scad` | `archimedes-auger-test-nozzle4.stl` | `archimedes-auger-test-nozzle4-cross-section.png` |
+
+All four test pieces share the same outer geometry and the same inlets / outlets as the production part:
+
+- Total height **90 mm (≈ 3.54 in)** — in the 3–4 in band asked for.
+- Tube OD 25 mm, ID 21 mm, 2 mm wall — unchanged from the geared part.
+- Top cap: 4 radial loading slots + M3 spindle pilot — unchanged.
+- Bottom: Ø3 mm exit hole — unchanged.
+- Helix: 2 mm thick, 10 mm pitch — unchanged.
+- **No external gear band.** Spin the spindle by hand (or chuck the M3 pilot into a low-speed cordless drill) during the bench test.
+
+Helix-turn count by variant (the spec asks for ≥ 3 full turns; all four clear the bar by a wide margin):
+
+| Variant | Helix z-range | Full turns |
+|---------|---------------|-----------:|
+| v1 | 3.53 mm → 84 mm | **8.05** |
+| v2 | 3 mm → 84 mm | **8.10** |
+| v3 | 12 mm → 84 mm | **7.20** |
+| v4 | 0.5 mm → 84 mm | **8.35** |
+
+Geometry is shared in `nozzle-variants.scad`, which adds variant-aware bottom-funnel / central-shaft / helical-fin modules on top of the constants in `auger-core.scad`. Each top-level test `.scad` just sets `nozzle_variant = 1..4` and calls `archimedes_auger_test(total_h, nozzle_variant)`, so the four files cannot drift apart.
+
+The cross-section PNGs above are the same kind of half-cut render that confirmed the helix presence in v3 of the geared body — they make the difference between the four variants obvious at a glance and confirm that all four have the full inner Archimedean screw across the bench-test length.
+
 ## Print notes
 
 Both parts are sized for the same stack as PR #16:
@@ -259,6 +292,26 @@ xvfb-run -a openscad -o assembly-preview-top.png \
 xvfb-run -a openscad -o assembly-preview-front.png \
     --imgsize=1100,800 --camera=15,0,83,90,0,0,260 \
     --projection=ortho --colorscheme=Tomorrow assembly-preview.scad
+
+# Nozzle-variant test pieces (one .stl + one cross-section .png per variant)
+for N in 1 2 3 4; do
+  openscad -o "archimedes-auger-test-nozzle${N}.stl" \
+              "archimedes-auger-test-nozzle${N}.scad"
+  cat > "_cs_tmp${N}.scad" <<EOF
+include <nozzle-variants.scad>;
+total_h = 90;
+difference() {
+    archimedes_auger_test(total_h, ${N});
+    translate([-30, -0.5, -1]) cube([60, 30, total_h + 2]);
+}
+EOF
+  xvfb-run -a openscad --render \
+    -o "archimedes-auger-test-nozzle${N}-cross-section.png" \
+    --imgsize=500,900 --camera=0,120,45,0,0,45 \
+    --projection=ortho --viewall --colorscheme=Tomorrow \
+    "_cs_tmp${N}.scad"
+  rm "_cs_tmp${N}.scad"
+done
 ```
 
 Or paste either `.scad` into <https://openscad.org/demo/> → **F6**
@@ -276,3 +329,5 @@ Or paste either `.scad` into <https://openscad.org/demo/> → **F6**
 [pr16]: https://github.com/vertical-cloud-lab/powder-doser/pull/16
 [i24]:  https://github.com/vertical-cloud-lab/powder-doser/issues/24
 [pr25]: https://github.com/vertical-cloud-lab/powder-doser/pull/25
+[i48-c4513155870]:    https://github.com/vertical-cloud-lab/powder-doser/issues/48#issuecomment-4513155870
+[pr49-c4566308356]:   https://github.com/vertical-cloud-lab/powder-doser/pull/49#issuecomment-4566308356
