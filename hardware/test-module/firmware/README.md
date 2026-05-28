@@ -16,6 +16,7 @@ plain Pico and the Pico W, so the same `code.py` runs on either board.
 |---|---|
 | `code.py`   | Main loop + driver classes; CircuitPython auto-runs this on boot. |
 | `config.py` | Pin map + every adjustable parameter.  Edit & save -> Pico W reloads. |
+| `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`) — keyboard-driven, one channel at a time.  See [`tests/README.md`](tests/README.md). |
 
 ## Install
 
