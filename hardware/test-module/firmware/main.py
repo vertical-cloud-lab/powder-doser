@@ -1,23 +1,32 @@
-"""Powder-doser test-rig firmware (CircuitPython, Raspberry Pi Pico W).
+"""Powder-doser test-rig firmware (MicroPython, Raspberry Pi Pico W).
 
-This file is the entry point CircuitPython auto-runs on boot.  It
-brings up the four actuators wired in `hardware/test-module/README.md`
+This is the multi-channel REPL ``main.py`` for the bench rig described
+in ``hardware/test-module/README.md``.  It brings up the four actuators
 (stepper, ERM coin via DRV2605L, solenoid via DRV8871, dispensing-angle
-servo) and exposes a one-character-per-command serial REPL so the bench
+servo) and exposes a one-line-per-command serial REPL so the bench
 operator can exercise any single channel while the others stay idle.
 
-The firmware targets the **Raspberry Pi Pico W** (RP2040 + CYW43439).
-Every pin we use is in the GP0..GP15 range, which is identical between
-the Pico and Pico W; the Pico W's wireless module uses GP23/24/25/29
-internally, none of which are wired in this design, so the same binary
-runs unmodified on either board.
+Target stack
+------------
+* MicroPython 1.22+ for the Raspberry Pi Pico W (RP2040 + CYW43439).
+* Edited and run from VS Code via the **MicroPico** extension
+  ( https://marketplace.visualstudio.com/items?itemName=paulober.pico-w-go ).
+  MicroPico uploads this file as ``main.py`` and gives you a built-in
+  terminal that's already wired to the Pico's USB-CDC serial port, so
+  the keyboard-driven test scripts in ``tests/`` work without any extra
+  terminal program.
 
-Tunables live in ``config.py``.  Reload-on-save means tweaking a
-parameter does not require re-flashing the firmware.
+Every pin we use is in the GP0..GP15 range, which is identical on the
+plain Pico and the Pico W; the Pico W's wireless module owns
+GP23/24/25/29 internally, none of which are wired here, so the same
+firmware runs unmodified on either board.
 
-Required CircuitPython libraries (drop into /lib on the Pico W):
-  - adafruit_bus_device
-  - adafruit_drv2605
+Tunables live in ``config.py``; the MicroPico "Run" button re-uploads
+and re-runs in a second, so edit-save-run stays quick.
+
+Required modules on the Pico (upload alongside this file):
+  - ``config.py``   (next to this file)
+  - ``drv2605.py``  (next to this file)
 
 Wire-on commands (one per line over USB-serial):
     h            help
@@ -31,16 +40,10 @@ Wire-on commands (one per line over USB-serial):
     !            emergency stop -- de-energise everything
 """
 
-from __future__ import annotations
-
 import sys
 import time
 
-import board
-import busio
-import digitalio
-import pwmio
-from microcontroller import Pin
+from machine import I2C, Pin, PWM
 
 import config
 
@@ -49,20 +52,14 @@ import config
 # Low-level driver helpers
 # ---------------------------------------------------------------------------
 
-def _gpio(pin_num: int, *, direction=digitalio.Direction.OUTPUT,
-          initial: bool = False) -> digitalio.DigitalInOut:
-    pin: Pin = getattr(board, f"GP{pin_num}")
-    io = digitalio.DigitalInOut(pin)
-    io.direction = direction
-    if direction == digitalio.Direction.OUTPUT:
-        io.value = initial
-    return io
+def _out(pin_num, value=0):
+    return Pin(pin_num, Pin.OUT, value=value)
 
 
-def _pwm(pin_num: int, frequency: int, duty: float = 0.0) -> pwmio.PWMOut:
-    pin: Pin = getattr(board, f"GP{pin_num}")
-    pwm = pwmio.PWMOut(pin, frequency=frequency, duty_cycle=0)
-    pwm.duty_cycle = int(max(0.0, min(1.0, duty)) * 0xFFFF)
+def _pwm(pin_num, freq, duty=0.0):
+    pwm = PWM(Pin(pin_num))
+    pwm.freq(freq)
+    pwm.duty_u16(int(max(0.0, min(1.0, duty)) * 65535))
     return pwm
 
 
@@ -71,58 +68,52 @@ def _pwm(pin_num: int, frequency: int, duty: float = 0.0) -> pwmio.PWMOut:
 # ---------------------------------------------------------------------------
 
 _MICROSTEP_TABLE = {
-    1: (False, False, False),
-    2: (False, False, True),
-    4: (False, True, False),
-    8: (False, True, True),
-    16: (True, False, False),
-    32: (True, True, True),
+    1:  (0, 0, 0),
+    2:  (0, 0, 1),
+    4:  (0, 1, 0),
+    8:  (0, 1, 1),
+    16: (1, 0, 0),
+    32: (1, 1, 1),
 }
 
 
 class Stepper:
-    def __init__(self) -> None:
-        self.step = _gpio(config.PIN_STEP)
-        self.dir = _gpio(config.PIN_DIR)
+    def __init__(self):
+        self.step = _out(config.PIN_STEP)
+        self.dir = _out(config.PIN_DIR)
         # ~ENABLE is active-low; start disabled (high) so the motor coasts.
-        self.enable_n = _gpio(config.PIN_STEPPER_EN, initial=True)
+        self.enable_n = _out(config.PIN_STEPPER_EN, 1)
         m2, m1, m0 = _MICROSTEP_TABLE[config.STEPPER_MICROSTEPS]
-        self.m0 = _gpio(config.PIN_M0, initial=m0)
-        self.m1 = _gpio(config.PIN_M1, initial=m1)
-        self.m2 = _gpio(config.PIN_M2, initial=m2)
+        self.m0 = _out(config.PIN_M0, m0)
+        self.m1 = _out(config.PIN_M1, m1)
+        self.m2 = _out(config.PIN_M2, m2)
         self.steps_per_rev = (config.STEPPER_FULL_STEPS_REV
                               * config.STEPPER_MICROSTEPS)
         self.set_speed(config.STEPPER_SPEED_RPM)
 
-    def set_speed(self, rpm: float) -> None:
-        # half-period of the STEP square wave at the requested RPM
+    def set_speed(self, rpm):
         steps_per_sec = rpm / 60.0 * self.steps_per_rev
-        self._half_period_s = max(1e-6, 0.5 / steps_per_sec)
+        # time.sleep_us takes an int; cache the half-period in microseconds.
+        self._half_period_us = max(1, int(0.5 * 1_000_000 / steps_per_sec))
 
-    def enable(self, on: bool = True) -> None:
-        self.enable_n.value = not on
+    def enable(self, on=True):
+        self.enable_n.value(0 if on else 1)
 
-    def rotate_degrees(self, degrees: float) -> None:
+    def rotate_degrees(self, degrees):
         signed = degrees * (1 if config.STEPPER_DIRECTION >= 0 else -1)
-        direction = signed >= 0
-        self.dir.value = direction
+        self.dir.value(1 if signed >= 0 else 0)
         steps = int(abs(signed) / 360.0 * self.steps_per_rev)
         if steps == 0:
             return
         self.enable(True)
-        # DRV8825 needs ~1.7 us setup after DIR change; the call overhead
-        # of CircuitPython is already >> that, so no explicit delay.
-        try:
-            half = self._half_period_s
-            for _ in range(steps):
-                self.step.value = True
-                time.sleep(half)
-                self.step.value = False
-                time.sleep(half)
-        finally:
-            # Leave the driver enabled briefly so the auger can hold position
-            # against bridged powder; the operator can disable via "!".
-            pass
+        half = self._half_period_us
+        sleep_us = time.sleep_us
+        step_pin = self.step
+        for _ in range(steps):
+            step_pin.value(1)
+            sleep_us(half)
+            step_pin.value(0)
+            sleep_us(half)
 
 
 # ---------------------------------------------------------------------------
@@ -130,27 +121,28 @@ class Stepper:
 # ---------------------------------------------------------------------------
 
 class Vibration:
-    def __init__(self) -> None:
-        self.enable_pin = _gpio(config.PIN_HAPT_EN, initial=True)
+    def __init__(self):
+        self.enable_pin = _out(config.PIN_HAPT_EN, 1)
         try:
-            import adafruit_drv2605
-            self.i2c = busio.I2C(getattr(board, f"GP{config.PIN_I2C_SCL}"),
-                                 getattr(board, f"GP{config.PIN_I2C_SDA}"))
-            self.drv = adafruit_drv2605.DRV2605(self.i2c)
+            import drv2605
+            self.i2c = I2C(0, scl=Pin(config.PIN_I2C_SCL),
+                              sda=Pin(config.PIN_I2C_SDA),
+                              freq=400_000)
+            self.drv = drv2605.DRV2605(self.i2c)
             self.drv.library = config.VIBRATION_LIBRARY
-            self.drv.sequence[0] = adafruit_drv2605.Effect(
-                config.VIBRATION_EFFECT_ID)
+            self.drv.effect = config.VIBRATION_EFFECT_ID
             self._available = True
-        except Exception as exc:  # noqa: BLE001 -- bench tool, log + degrade
-            print(f"[vib] DRV2605L unavailable ({exc!r}); skipping init")
+        except Exception as exc:
+            print("[vib] DRV2605L unavailable ({}); skipping init".format(exc))
             self._available = False
 
-    def buzz(self, duration_s: float | None = None) -> None:
+    def buzz(self, duration_s=None):
         if not self._available:
             print("[vib] driver missing -- ignoring buzz")
             return
-        seconds = config.VIBRATION_DURATION_S if duration_s is None else duration_s
-        self.enable_pin.value = True
+        seconds = (config.VIBRATION_DURATION_S
+                   if duration_s is None else duration_s)
+        self.enable_pin.value(1)
         self.drv.play()
         time.sleep(seconds)
         self.drv.stop()
@@ -162,29 +154,29 @@ class Vibration:
 # ---------------------------------------------------------------------------
 
 class Tap:
-    def __init__(self) -> None:
+    def __init__(self):
         # 20 kHz PWM is above audible, well within DRV8871's input filter.
-        self.in1 = _pwm(config.PIN_SOL_IN1, frequency=20_000, duty=0.0)
-        self.in2 = _gpio(config.PIN_SOL_IN2, initial=False)
+        self.in1 = _pwm(config.PIN_SOL_IN1, freq=20_000, duty=0.0)
+        self.in2 = _out(config.PIN_SOL_IN2, 0)
 
-    def _on(self, duty: float) -> None:
-        self.in2.value = False
-        self.in1.duty_cycle = int(max(0.0, min(1.0, duty)) * 0xFFFF)
+    def _on(self, duty):
+        self.in2.value(0)
+        self.in1.duty_u16(int(max(0.0, min(1.0, duty)) * 65535))
 
-    def _off(self) -> None:
-        self.in1.duty_cycle = 0
+    def _off(self):
+        self.in1.duty_u16(0)
 
-    def tap(self, count: int | None = None) -> None:
+    def tap(self, count=None):
         n = config.TAP_COUNT if count is None else count
         for _ in range(n):
             self._on(config.TAP_PWM_DUTY)
-            time.sleep(config.TAP_ON_MS / 1000.0)
+            time.sleep_ms(config.TAP_ON_MS)
             self._off()
-            time.sleep(config.TAP_OFF_MS / 1000.0)
+            time.sleep_ms(config.TAP_OFF_MS)
 
 
 # ---------------------------------------------------------------------------
-# Dispensing-angle servo (5 V hobby servo on Pico GPIO via 50 Hz PWM).
+# Dispensing-angle servo (hobby servo on Pico GPIO via 50 Hz PWM).
 # ---------------------------------------------------------------------------
 
 class Servo:
@@ -200,21 +192,17 @@ class Servo:
 
     PERIOD_US = 20_000  # 50 Hz
 
-    def __init__(self) -> None:
-        self.pwm = _pwm(config.PIN_SERVO_SIG, frequency=50, duty=0.0)
-        # Track position internally so smoothing can interpolate from
-        # "wherever we are now" without re-querying the servo.
+    def __init__(self):
+        self.pwm = _pwm(config.PIN_SERVO_SIG, freq=50, duty=0.0)
         self.angle = float(config.SERVO_DEFAULT_DEG)
         # Seed the PWM at the default angle so the servo doesn't jump
         # from 0 on its first interpolated move.
         self._write_angle(self.angle)
-        # Then re-issue the default through the smooth path so a freshly
-        # powered (but already-centred) servo still ramps gently into
-        # position rather than slamming there.
+        # Re-issue through the smooth path so a freshly powered (but
+        # already-centred) servo still ramps gently into position.
         self.move_to(config.SERVO_DEFAULT_DEG)
 
-    def _write_angle(self, angle_deg: float) -> None:
-        """Drive the PWM hard to the given angle (no smoothing)."""
+    def _write_angle(self, angle_deg):
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
         frac = ((angle_deg - config.SERVO_MIN_ANGLE_DEG) / span
                 if span else 0)
@@ -222,14 +210,9 @@ class Servo:
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
         duty = pulse_us / self.PERIOD_US
-        self.pwm.duty_cycle = int(duty * 0xFFFF)
+        self.pwm.duty_u16(int(duty * 65535))
 
-    def move_to(self, angle_deg: float) -> None:
-        """Smoothly interpolate from the current angle to ``angle_deg``.
-
-        Falls back to an instantaneous jump if
-        ``config.SERVO_SPEED_DEG_PER_S`` is non-positive.
-        """
+    def move_to(self, angle_deg):
         target = max(config.SERVO_MIN_ANGLE_DEG,
                      min(config.SERVO_MAX_ANGLE_DEG, angle_deg))
         speed = float(config.SERVO_SPEED_DEG_PER_S)
@@ -241,8 +224,6 @@ class Servo:
         step_deg = speed / update_hz
         dt = 1.0 / update_hz
         delta = target - self.angle
-        # Walk toward the target in fixed-size steps; the final iteration
-        # snaps exactly onto the target so we don't accumulate float drift.
         if abs(delta) <= step_deg:
             self._write_angle(target)
             self.angle = target
@@ -275,7 +256,7 @@ HELP = (
 
 
 class Rig:
-    def __init__(self) -> None:
+    def __init__(self):
         print("[rig] bringing up powder-doser test module")
         self.stepper = Stepper()
         self.vib = Vibration()
@@ -283,7 +264,7 @@ class Rig:
         self.servo = Servo()
         print("[rig] ready -- type 'h' for help")
 
-    def state(self) -> None:
+    def state(self):
         print(
             "stepper: rpm={rpm}, microsteps=1/{ms}, steps/rev={spr}, "
             "dispense_deg={dd}".format(
@@ -315,7 +296,7 @@ class Rig:
                 p=list(config.SERVO_PRESETS),
             ))
 
-    def emergency_stop(self) -> None:
+    def emergency_stop(self):
         print("[rig] EMERGENCY STOP")
         self.stepper.enable(False)
         self.tap._off()
@@ -324,9 +305,9 @@ class Rig:
                 self.vib.drv.stop()
             except Exception:
                 pass
-            self.vib.enable_pin.value = False
+            self.vib.enable_pin.value(0)
 
-    def handle(self, line: str) -> None:
+    def handle(self, line):
         line = line.strip()
         if not line:
             return
@@ -349,52 +330,51 @@ class Rig:
                 self.servo.move_to(float(arg))
             elif cmd == "p":
                 if arg not in config.SERVO_PRESETS:
-                    print(f"unknown preset {arg!r}; "
-                          f"choose from {list(config.SERVO_PRESETS)}")
+                    print("unknown preset {!r}; choose from {}".format(
+                        arg, list(config.SERVO_PRESETS)))
                     return
                 self.servo.move_to(config.SERVO_PRESETS[arg])
             elif cmd in ("!", "stop"):
                 self.emergency_stop()
             else:
-                print(f"unknown command {cmd!r}; 'h' for help")
-        except Exception as exc:  # noqa: BLE001
-            print(f"[rig] command failed: {exc!r}")
+                print("unknown command {!r}; 'h' for help".format(cmd))
+        except Exception as exc:
+            print("[rig] command failed: {!r}".format(exc))
 
 
-def _readline_nonblocking() -> str | None:
-    """Buffer characters from sys.stdin until a newline arrives."""
-    if not hasattr(_readline_nonblocking, "buf"):
-        _readline_nonblocking.buf = ""  # type: ignore[attr-defined]
+def _readline_nonblocking(buf=[""]):
+    """Buffer characters from stdin until a newline arrives.
+
+    Uses ``uselect.poll()`` on ``sys.stdin`` (MicroPython) so the main
+    loop doesn't block while waiting for the operator to finish typing
+    the next command.
+    """
     try:
-        import supervisor
-        n = supervisor.runtime.serial_bytes_available
-    except (ImportError, AttributeError):
-        n = 0
-    if not n:
+        import uselect
+    except ImportError:
+        # CPython fallback (no non-blocking stdin): just read a line.
+        return sys.stdin.readline().rstrip("\r\n")
+    if not hasattr(_readline_nonblocking, "_poll"):
+        _readline_nonblocking._poll = uselect.poll()
+        _readline_nonblocking._poll.register(sys.stdin, uselect.POLLIN)
+    if not _readline_nonblocking._poll.poll(0):
         return None
-    ch = sys.stdin.read(n)
-    buf = _readline_nonblocking.buf + ch  # type: ignore[attr-defined]
-    if "\n" not in buf and "\r" not in buf:
-        _readline_nonblocking.buf = buf  # type: ignore[attr-defined]
-        return None
-    # Split on first newline, keep remainder.
-    nl = min((buf.find(c) for c in "\r\n" if c in buf), default=-1)
-    line, rest = buf[:nl], buf[nl + 1:]
-    # Skip an immediately-following \n after \r (CRLF).
-    if rest.startswith("\n"):
-        rest = rest[1:]
-    _readline_nonblocking.buf = rest  # type: ignore[attr-defined]
-    return line
+    ch = sys.stdin.read(1)
+    if ch in ("\r", "\n"):
+        line, buf[0] = buf[0], ""
+        return line
+    buf[0] += ch
+    return None
 
 
-def main() -> None:
+def main():
     rig = Rig()
     rig.state()
     while True:
         line = _readline_nonblocking()
         if line is not None:
             rig.handle(line)
-        time.sleep(0.01)
+        time.sleep_ms(10)
 
 
 if __name__ == "__main__":

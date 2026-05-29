@@ -1,1 +1,1 @@
-"""Marker so CircuitPython treats ``tests/`` as a package."""
+"""Marker so MicroPython treats ``tests/`` as a package."""

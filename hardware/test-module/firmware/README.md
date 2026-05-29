@@ -1,42 +1,56 @@
-# Test-module firmware (CircuitPython, Raspberry Pi Pico W)
+# Test-module firmware (MicroPython, Raspberry Pi Pico W)
 
 This is the single-MCU firmware for the bench rig described in
-[`hardware/test-module/README.md`](../README.md).  It exposes a tiny
-serial REPL so a bench operator can fire any one of the four channels
-(auger, vibration, tap, dispense-angle servo) independently, with every
-runtime parameter exposed in a top-level `config.py`.
+[`hardware/test-module/README.md`](../README.md).  It runs on
+**MicroPython** on a Pico W and exposes a tiny serial REPL so a bench
+operator can fire any one of the four channels (auger, vibration, tap,
+dispense-angle servo) independently, with every runtime parameter
+exposed in a top-level `config.py`.
 
 The firmware targets the **Raspberry Pi Pico W** (RP2040 + CYW43439).
 Every pin we use sits in GP0..GP15, which is wired identically on the
-plain Pico and the Pico W, so the same `code.py` runs on either board.
+plain Pico and the Pico W, so the same `main.py` runs on either board.
+
+The editor / upload toolchain is **VS Code + the MicroPico extension**
+([`paulober.pico-w-go` on the marketplace](https://marketplace.visualstudio.com/items?itemName=paulober.pico-w-go)).
+MicroPico handles flashing the project to the Pico, opens a built-in
+terminal that's already connected to the Pico's USB-CDC serial port,
+and provides a one-click "Run current file on Pico" button — that's
+the same terminal the keyboard-controlled test scripts in
+[`tests/`](tests/) read keystrokes from.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `code.py`   | Main loop + driver classes; CircuitPython auto-runs this on boot. |
-| `config.py` | Pin map + every adjustable parameter.  Edit & save -> Pico W reloads. |
+| `main.py`   | Main loop + driver classes; MicroPython auto-runs this on boot. |
+| `config.py` | Pin map + every adjustable parameter.  Edit, re-upload via MicroPico, the Pico reboots and picks up the changes. |
+| `drv2605.py`| Tiny in-tree MicroPython driver for the DRV2605L haptic chip (Adafruit's library is CircuitPython-only). |
 | `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`) — keyboard-driven, one channel at a time.  See [`tests/README.md`](tests/README.md). |
 
-## Install
+## One-time setup
 
-1. **Flash CircuitPython 9.x for the Pico W** (UF2 from
-   [circuitpython.org/board/raspberry_pi_pico_w](https://circuitpython.org/board/raspberry_pi_pico_w/)).
-   Hold `BOOTSEL`, plug in USB, drop the UF2 onto the `RPI-RP2` drive.
-   The same image works for the plain Pico — just grab
-   `raspberry_pi_pico` instead.
-2. The Pico W re-enumerates as `CIRCUITPY`.  Copy this folder's
-   `code.py` and `config.py` to the root.
-3. Drop the following libraries from the
-   [Adafruit CircuitPython library bundle](https://circuitpython.org/libraries)
-   into `CIRCUITPY/lib/`:
-   - `adafruit_bus_device/`
-   - `adafruit_drv2605.mpy`
-4. Open a serial terminal on the Pico's USB CDC port at any baud
-   (CircuitPython ignores it):
-   - macOS / Linux: `tio /dev/tty.usbmodem*` or
-     `screen /dev/ttyACM0 115200`
-   - Windows: any PuTTY-style terminal on the new COM port.
+1. **Flash MicroPython** on the Pico W.  Hold `BOOTSEL`, plug the USB
+   cable in, and drop the latest Pico W UF2 from
+   [micropython.org/download/RPI_PICO_W/](https://micropython.org/download/RPI_PICO_W/)
+   onto the `RPI-RP2` drive.  The plain Pico uses the
+   [`RPI_PICO`](https://micropython.org/download/RPI_PICO/) image
+   instead — the firmware here is unchanged for both because we only
+   use GP0..GP15.
+2. **Install the MicroPico extension** in VS Code (search for
+   "MicroPico" or use
+   `code --install-extension paulober.pico-w-go`).  Open the
+   `hardware/test-module/firmware/` folder as the workspace root.
+3. **Configure the project** from the Command Palette: run
+   `MicroPico: Configure project`.  This drops a `.micropico` /
+   `.vscode/` config that points the extension at the right serial
+   port.
+4. **Upload the project** with `MicroPico: Upload project to Pico`.
+   This copies `main.py`, `config.py`, `drv2605.py`, and the `tests/`
+   folder onto the Pico's flash filesystem.  After the upload finishes
+   MicroPico opens its terminal automatically; press the soft-reset
+   button (`Ctrl+D` in the terminal) or unplug/replug to start
+   `main.py`.
 
 ## Use
 
@@ -68,6 +82,10 @@ Examples:
 > !               # de-energise everything (stepper, solenoid, haptic)
 ```
 
+To exercise just one channel, open the matching script under `tests/`
+and click MicroPico's **"Run current file on Pico"** — see
+[`tests/README.md`](tests/README.md) for the full per-script keymap.
+
 ## Adjustable configurations
 
 Every parameter the bench operator cares about lives in `config.py`.
@@ -90,16 +108,17 @@ Common knobs:
 | Servo    | `SERVO_UPDATE_HZ`        | Interpolation update rate; default 50 Hz matches the servo PWM frame. |
 | Servo    | `SERVO_PRESETS`          | Add/rename `p <preset>` shortcuts. |
 
-Saving the file causes CircuitPython to reload `code.py` automatically;
-no re-flash needed.
+After editing `config.py`, re-run `MicroPico: Upload project to Pico`
+(or just **right-click → "Upload file to Pico"** on the changed file)
+and soft-reset.
 
 ## Pin map
 
 Same as the schematic — see the "Pin / net table" section of the
-[parent README](../README.md).  If you ever re-pin, the constants at the
-top of `config.py` are the single source of truth on the firmware side
-and `hardware/test-module/kicad/generate.py` is the single source of
-truth on the schematic side; keep them in sync.
+[parent README](../README.md).  If you ever re-pin, the constants at
+the top of `config.py` are the single source of truth on the firmware
+side and `hardware/test-module/kicad/generate.py` is the single source
+of truth on the schematic side; keep them in sync.
 
 ## Safety notes
 

@@ -1,10 +1,12 @@
-"""Haptic-motor (DRV2605L + ERM coin) standalone test script.
+"""Haptic-motor (DRV2605L + ERM coin) standalone test (MicroPython).
 
-Same pin map as the main rig firmware -- ``config.py`` is the
-single source of truth.  Only the DRV2605L is touched.
+Pin assignments come from ``config.py`` so this mirrors the main rig
+wiring exactly.  Only the DRV2605L on I2C0 (SDA=GP0 / SCL=GP1) and the
+EN line on GP14 are touched.  Uses the tiny ``drv2605.py`` driver
+sitting next to ``main.py``.
 
-To run on the Pico W:
-    cp tests/test_haptic.py /Volumes/CIRCUITPY/code.py
+Run from VS Code via the MicroPico extension's "Run current file on
+Pico" button -- stdout/stdin land in the built-in MicroPico terminal.
 
 Keyboard controls (single keystroke; no Enter needed):
     space   play the configured effect (TEST_EFFECT_ID) for TEST_DURATION_S
@@ -15,16 +17,16 @@ Keyboard controls (single keystroke; no Enter needed):
     q       quit
 """
 
-from __future__ import annotations
-
+import sys
 import time
 
-import board
-import busio
-import digitalio
-from microcontroller import Pin
+sys.path.insert(0, "..")
+sys.path.insert(0, "/")
+
+from machine import I2C, Pin
 
 import config
+import drv2605
 from tests._keypress import read_key
 
 
@@ -39,41 +41,36 @@ TEST_LIBRARY      = config.VIBRATION_LIBRARY     # 1 = ERM, 6 = LRA
 TEST_EFFECT_SWEEP = [1, 14, 47, 70, 84, 118]
 
 
-def main() -> None:
-    enable_pin = digitalio.DigitalInOut(
-        getattr(board, "GP{}".format(config.PIN_HAPT_EN)))
-    enable_pin.direction = digitalio.Direction.OUTPUT
-    enable_pin.value = True
-
-    import adafruit_drv2605
-    i2c = busio.I2C(getattr(board, "GP{}".format(config.PIN_I2C_SCL)),
-                    getattr(board, "GP{}".format(config.PIN_I2C_SDA)))
-    drv = adafruit_drv2605.DRV2605(i2c)
-
-    state = {"effect": TEST_EFFECT_ID, "library": TEST_LIBRARY,
+def main():
+    enable_pin = Pin(config.PIN_HAPT_EN, Pin.OUT, value=1)
+    i2c = I2C(0, scl=Pin(config.PIN_I2C_SCL),
+                 sda=Pin(config.PIN_I2C_SDA),
+                 freq=400_000)
+    drv = drv2605.DRV2605(i2c)
+    state = {"effect": TEST_EFFECT_ID,
+             "library": TEST_LIBRARY,
              "duration": TEST_DURATION_S}
 
-    def apply() -> None:
+    def apply():
         drv.library = state["library"]
-        drv.sequence[0] = adafruit_drv2605.Effect(state["effect"])
+        drv.effect = state["effect"]
 
     apply()
 
-    def buzz() -> None:
-        enable_pin.value = True
+    def buzz():
+        enable_pin.value(1)
         drv.play()
         time.sleep(state["duration"])
         drv.stop()
 
-    def show() -> str:
+    def show():
         return ("haptic: effect={effect} (library={library}), "
                 "duration={duration:.2f}s, enabled={en}").format(
-                    en=enable_pin.value, **state)
+                    en=enable_pin.value(), **state)
 
-    print("[haptic-test] ready on I2C SCL=GP{scl}/SDA=GP{sda}, "
-          "EN=GP{en}".format(scl=config.PIN_I2C_SCL,
-                             sda=config.PIN_I2C_SDA,
-                             en=config.PIN_HAPT_EN))
+    print("[haptic-test] ready on I2C SCL=GP{scl}/SDA=GP{sda}, EN=GP{en}".format(
+        scl=config.PIN_I2C_SCL, sda=config.PIN_I2C_SDA,
+        en=config.PIN_HAPT_EN))
     print("space=buzz  n=next effect  p=prev  l=toggle ERM/LRA  s=state  q=quit")
     print(show())
 
@@ -83,7 +80,7 @@ def main() -> None:
         while True:
             key = read_key()
             if key is None:
-                time.sleep(0.01)
+                time.sleep_ms(10)
                 continue
             if key == " ":
                 buzz()
@@ -105,7 +102,7 @@ def main() -> None:
                 print(show())
             elif key == "q":
                 drv.stop()
-                enable_pin.value = False
+                enable_pin.value(0)
                 print("[haptic-test] stopped; exiting")
                 return
             elif key in ("h", "?"):
@@ -113,7 +110,7 @@ def main() -> None:
                       "l=toggle library  s=state  q=quit")
     except KeyboardInterrupt:
         drv.stop()
-        enable_pin.value = False
+        enable_pin.value(0)
         print("[haptic-test] interrupted; stopped")
 
 

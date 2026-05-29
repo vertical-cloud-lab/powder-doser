@@ -1,35 +1,33 @@
-"""Hobby-servo (dispensing-angle axis) standalone test script.
+"""Hobby-servo (dispensing-angle axis) standalone test (MicroPython).
 
-Same pin map as the main rig firmware -- ``config.py`` is the
-single source of truth.  Only the servo PWM pin is touched.
+Pin map from ``config.py``.  Only the servo PWM pin is touched.
+Smoothing is on by default (interpolated motion at
+``TEST_SPEED_DEG_PER_S`` deg/s) so the test mirrors what the powder
+actually sees on the production rig.  Set ``TEST_SPEED_DEG_PER_S = 0``
+to revert to instantaneous moves.
 
-Smoothing is enabled by default (interpolated motion at
-``TEST_SPEED_DEG_PER_S`` deg/s), matching the main rig's behaviour
-so the bench-side test mirrors what powder actually sees.  Set
-``TEST_SPEED_DEG_PER_S = 0`` to fall back to instantaneous moves.
-
-To run on the Pico W:
-    cp tests/test_servo.py /Volumes/CIRCUITPY/code.py
+Run from VS Code via the MicroPico extension's "Run current file on
+Pico" button.
 
 Keyboard controls (single keystroke; no Enter needed):
     space   toggle between TEST_ANGLE_A and TEST_ANGLE_B
     a       go to TEST_ANGLE_A
     b       go to TEST_ANGLE_B
     c       go to centre (midpoint of the configured range)
-    left  -> ``j``   nudge by -TEST_STEP_DEG (single-char alias)
-    right -> ``k``   nudge by +TEST_STEP_DEG (single-char alias)
+    j       nudge by -TEST_STEP_DEG
+    k       nudge by +TEST_STEP_DEG
     +/-     adjust the smoothing speed by 10 deg/s
     s       print state
     q       quit
 """
 
-from __future__ import annotations
-
+import sys
 import time
 
-import board
-import pwmio
-from microcontroller import Pin
+sys.path.insert(0, "..")
+sys.path.insert(0, "/")
+
+from machine import Pin, PWM
 
 import config
 from tests._keypress import read_key
@@ -49,23 +47,23 @@ PERIOD_US = 20_000  # 50 Hz servo frame
 
 
 class ServoTest:
-    def __init__(self) -> None:
-        self.pwm = pwmio.PWMOut(
-            getattr(board, "GP{}".format(config.PIN_SERVO_SIG)),
-            frequency=50, duty_cycle=0)
+    def __init__(self):
+        self.pwm = PWM(Pin(config.PIN_SERVO_SIG))
+        self.pwm.freq(50)
+        self.pwm.duty_u16(0)
         self.angle = TEST_START_ANGLE
         self.speed = float(TEST_SPEED_DEG_PER_S)
         self._write(self.angle)
 
-    def _write(self, angle: float) -> None:
+    def _write(self, angle):
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
         frac = ((angle - config.SERVO_MIN_ANGLE_DEG) / span) if span else 0
         pulse_us = (config.SERVO_MIN_PULSE_US
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
-        self.pwm.duty_cycle = int((pulse_us / PERIOD_US) * 0xFFFF)
+        self.pwm.duty_u16(int((pulse_us / PERIOD_US) * 65535))
 
-    def move_to(self, target: float) -> None:
+    def move_to(self, target):
         target = max(config.SERVO_MIN_ANGLE_DEG,
                      min(config.SERVO_MAX_ANGLE_DEG, target))
         if self.speed <= 0:
@@ -88,15 +86,15 @@ class ServoTest:
         self._write(target)
         self.angle = target
 
-    def nudge(self, delta: float) -> None:
+    def nudge(self, delta):
         self.move_to(self.angle + delta)
 
 
-def main() -> None:
+def main():
     servo = ServoTest()
     last_target = TEST_ANGLE_A
 
-    def show() -> str:
+    def show():
         return ("servo: angle={a:.1f}, range=[{lo}..{hi}], "
                 "speed={s} deg/s, smoothing={on}").format(
                     a=servo.angle,
@@ -115,7 +113,7 @@ def main() -> None:
         while True:
             key = read_key()
             if key is None:
-                time.sleep(0.01)
+                time.sleep_ms(10)
                 continue
             if key == " ":
                 last_target = (TEST_ANGLE_B if last_target == TEST_ANGLE_A

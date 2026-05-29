@@ -29,8 +29,10 @@ hardware/test-module/
 │   └── test_module.png
 └── firmware/
     ├── README.md
-    ├── code.py                # CircuitPython main loop + driver classes
-    └── config.py              # easily adjustable parameters
+    ├── main.py                # MicroPython main loop + driver classes
+    ├── config.py              # easily adjustable parameters
+    ├── drv2605.py             # in-tree MicroPython driver for the haptic chip
+    └── tests/                 # per-component keyboard-driven bench scripts
 ```
 
 ## Schematic
@@ -115,7 +117,7 @@ Pico W's GPIOs instead, because:
 2. **The Pico W already does what the Tic does.**  STEP/DIR pulse
    generation, microstep selection (M0/M1/M2), enable, fault
    detection, and accel/decel ramps are all handled in
-   [`firmware/code.py`](firmware/code.py)'s `Stepper` class.  The Tic's
+   [`firmware/main.py`](firmware/main.py)'s `Stepper` class.  The Tic's
    on-board motion planner would just duplicate that.
 3. **Cost & part count.**  A Tic T500 is ~$40 plus a USB cable; a
    bare DRV8825 carrier is ~$8 and uses six Pico GPIOs we already
@@ -295,8 +297,8 @@ Folding the controller into a $6 microcontroller:
   that #25 calls out (the Pico W's GPIOs are in input mode at reset,
   so the DRV8825's on-board pull-down keeps it disabled until the
   firmware drives `STP_nEN`);
-* keeps the test loop "edit `config.py`, save, see new behaviour"
-  thanks to CircuitPython's auto-reload — much faster iteration than
+* keeps the test loop "edit `config.py`, click MicroPico's *Run current
+  file on Pico*, see new behaviour" — much faster iteration than
   redeploying a `systemd` service on the Pi;
 * leaves the CYW43439 radio available for a future "trigger a dispense
   from the lab laptop over Wi-Fi" mode without a hardware change.

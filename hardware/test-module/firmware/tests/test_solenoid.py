@@ -1,10 +1,7 @@
-"""Solenoid (DRV8871 + JF-0530B) standalone test script.
+"""Solenoid (DRV8871 + JF-0530B) standalone test (MicroPython).
 
-Same pin map as the main rig firmware; ``config.py`` is the single
-source of truth.  Only the DRV8871 outputs are touched.
-
-To run on the Pico W:
-    cp tests/test_solenoid.py /Volumes/CIRCUITPY/code.py
+Pin map from ``config.py``.  Only the DRV8871 outputs are touched.
+Run from VS Code's MicroPico extension ("Run current file on Pico").
 
 Keyboard controls (single keystroke; no Enter needed):
     space   one tap (energise TEST_ON_MS, then off)
@@ -14,14 +11,13 @@ Keyboard controls (single keystroke; no Enter needed):
     q       quit
 """
 
-from __future__ import annotations
-
+import sys
 import time
 
-import board
-import digitalio
-import pwmio
-from microcontroller import Pin
+sys.path.insert(0, "..")
+sys.path.insert(0, "/")
+
+from machine import Pin, PWM
 
 import config
 from tests._keypress import read_key
@@ -37,37 +33,35 @@ TEST_DUTY        = config.TAP_PWM_DUTY    # 0.0..1.0 holding force
 PWM_FREQ_HZ      = 20_000                 # >> audible, within DRV8871 filter
 
 
-def main() -> None:
-    in1 = pwmio.PWMOut(getattr(board, "GP{}".format(config.PIN_SOL_IN1)),
-                       frequency=PWM_FREQ_HZ, duty_cycle=0)
-    in2 = digitalio.DigitalInOut(
-        getattr(board, "GP{}".format(config.PIN_SOL_IN2)))
-    in2.direction = digitalio.Direction.OUTPUT
-    in2.value = False
+def main():
+    in1 = PWM(Pin(config.PIN_SOL_IN1))
+    in1.freq(PWM_FREQ_HZ)
+    in1.duty_u16(0)
+    in2 = Pin(config.PIN_SOL_IN2, Pin.OUT, value=0)
 
     state = {"duty": float(TEST_DUTY),
              "on_ms": TEST_ON_MS,
              "off_ms": TEST_OFF_MS,
              "burst": TEST_BURST_COUNT}
 
-    def _energise(duty: float) -> None:
-        in2.value = False
-        in1.duty_cycle = int(max(0.0, min(1.0, duty)) * 0xFFFF)
+    def _energise(duty):
+        in2.value(0)
+        in1.duty_u16(int(max(0.0, min(1.0, duty)) * 65535))
 
-    def _off() -> None:
-        in1.duty_cycle = 0
+    def _off():
+        in1.duty_u16(0)
 
-    def tap_once() -> None:
+    def tap_once():
         _energise(state["duty"])
-        time.sleep(state["on_ms"] / 1000.0)
+        time.sleep_ms(state["on_ms"])
         _off()
 
-    def burst() -> None:
+    def burst():
         for _ in range(state["burst"]):
             tap_once()
-            time.sleep(state["off_ms"] / 1000.0)
+            time.sleep_ms(state["off_ms"])
 
-    def show() -> str:
+    def show():
         return ("solenoid: on={on}ms, off={off}ms, burst={n}, "
                 "duty={d:.2f}").format(on=state["on_ms"], off=state["off_ms"],
                                         n=state["burst"], d=state["duty"])
@@ -81,7 +75,7 @@ def main() -> None:
         while True:
             key = read_key()
             if key is None:
-                time.sleep(0.01)
+                time.sleep_ms(10)
                 continue
             if key == " ":
                 tap_once()

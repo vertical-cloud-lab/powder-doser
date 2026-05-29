@@ -1,37 +1,43 @@
-"""Tiny non-blocking single-keypress reader shared by the test scripts.
+"""Non-blocking single-keystroke reader for MicroPython on the Pico W.
 
-CircuitPython exposes :mod:`supervisor` so we can poll
-``serial_bytes_available`` and then ``sys.stdin.read(n)`` without
-blocking the main loop -- this is what lets us treat each USB-serial
-keystroke from the bench operator as an "event" (e.g. spacebar fires
-the haptic motor) instead of having to type a command + Enter.
+MicroPython doesn't expose CircuitPython's ``supervisor.runtime`` so we
+use ``uselect.poll()`` on ``sys.stdin`` instead.  Each test script
+calls :func:`read_key` once per main-loop iteration and treats every
+returned character as an event (e.g. spacebar fires the haptic motor),
+so the operator can drive the bench rig from the MicroPico VS Code
+terminal without having to type a command + Enter.
 
-Falls back to a blocking ``sys.stdin.read(1)`` on CPython (handy when
-unit-checking the helper outside the Pico).
+CPython has neither ``uselect`` nor a non-blocking stdin by default,
+so on the desktop the helper falls back to a blocking ``sys.stdin.read(1)``
+which is enough for unit-checking the helper offline.
 """
-
-from __future__ import annotations
 
 import sys
 
+try:
+    import uselect  # MicroPython
+    _poll = uselect.poll()
+    _poll.register(sys.stdin, uselect.POLLIN)
+    _HAVE_POLL = True
+except ImportError:
+    _HAVE_POLL = False
 
-def read_key() -> str | None:
+
+def read_key():
     """Return one buffered character if available, else ``None``.
 
-    Newlines (``\\r`` and ``\\n``) are normalised to ``"\\n"`` so the
-    test scripts can match on a single character regardless of the
+    ``\\r`` and ``\\n`` are both normalised to ``"\\n"`` so the test
+    scripts can match on a single character regardless of the
     terminal's line-ending convention.
     """
-    try:
-        import supervisor
-        n = supervisor.runtime.serial_bytes_available
-    except (ImportError, AttributeError):
-        # CPython / desktop -- fall back to blocking single-char read.
+    if _HAVE_POLL:
+        if not _poll.poll(0):
+            return None
         ch = sys.stdin.read(1)
-        return ch or None
-    if not n:
-        return None
-    ch = sys.stdin.read(1)
+    else:
+        ch = sys.stdin.read(1)
+        if not ch:
+            return None
     if ch in ("\r", "\n"):
         return "\n"
     return ch

@@ -1,8 +1,9 @@
 """Easily-adjustable configuration for the powder-doser test rig.
 
-Edit any of these values, save the file, and the Pico W will reload the
-firmware automatically.  All values are documented in the header next
-to each block — typical / safe ranges are in the comments.
+Edit any of these values and re-upload via the MicroPico extension's
+"Upload project to Pico" (or right-click → "Upload file to Pico" on
+just `config.py`); a soft-reset (Ctrl+D in the terminal) picks up the
+new values.
 
 The default values match the hardware in `hardware/test-module/README.md`:
 NEMA-11 11HS18-0674S stepper + DRV8825, JF-0530B 5 V solenoid + DRV8871,
