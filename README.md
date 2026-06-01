@@ -4,6 +4,12 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Record of designs
+
+[`DESIGN-LOG.md`](DESIGN-LOG.md) is a single, scrollable, chronological record of
+every design — and every iteration of every design — created in this repository,
+each entry with render views and a short note on what changed and why.
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
