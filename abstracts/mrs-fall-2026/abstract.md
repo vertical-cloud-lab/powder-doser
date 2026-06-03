@@ -3,8 +3,16 @@ Meeting: 2026 MRS Fall Meeting & Exhibit (Boston, MA)
 Submission deadline: June 17, 2026, 11:59 pm ET
 Format: abstract body limited to 4000 characters including spaces; no images,
 graphics, or charts; title and body in mixed/Title Case.
-Target symposium: see edison/analysis_out/analysis.answer.md for the Edison
-ANALYSIS ranking of best-aligned symposia from the Call for Abstracts.
+Target symposium (Edison ANALYSIS ranking; full rationale in
+edison/analysis_out/analysis.answer.md):
+  1. MT03 — AI-Driven Workflows and Autonomous Platforms for Functional
+     Material Design and Catalysis (primary)
+  2. MT01 — Leveraging Advances in AI for Materials Design and Autonomous
+     Materials Science (alternate)
+  3. MT04 — Technologies for Informed and Accelerated Synthesis of Inorganic
+     Materials (alternate, synthesis-enablement framing)
+  Materials-application alternates: SF03 (Intermetallics), SF01 (High-Entropy
+  Materials). Submit each abstract to only one symposium.
 ---
 
 Title: An Open-Source, Low-Cost Powder Doser Built with Agentic AI and Generative CAD for Autonomous Alloy Discovery
