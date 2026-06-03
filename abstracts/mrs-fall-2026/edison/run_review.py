@@ -17,6 +17,15 @@ HERE = Path(__file__).parent
 OUT = HERE / "review_out"
 OUT.mkdir(exist_ok=True)
 
+TASK_TIMEOUT_SECONDS = 2200
+
+
+def _api_key() -> str:
+    key = os.environ.get("EDISON_API_KEY")
+    if not key:
+        raise SystemExit("EDISON_API_KEY is not set in the environment.")
+    return key
+
 ABSTRACT_TITLE = (
     "An Open-Source, Low-Cost Powder Doser Built with Agentic AI and Generative "
     "CAD for Autonomous Alloy Discovery"
@@ -63,7 +72,7 @@ Title: {ABSTRACT_TITLE}
 
 
 def main() -> None:
-    client = EdisonClient(api_key=os.environ["EDISON_API_KEY"])
+    client = EdisonClient(api_key=_api_key())
     task = TaskRequest(name=JobNames.LITERATURE_HIGH, query=QUERY)
     tid = client.create_task(task)
     print("trajectory_id:", tid, flush=True)
@@ -71,7 +80,7 @@ def main() -> None:
         json.dumps({"trajectory_id": str(tid), "query": QUERY}, indent=2)
     )
 
-    deadline = time.time() + 2200
+    deadline = time.time() + TASK_TIMEOUT_SECONDS
     while time.time() < deadline:
         time.sleep(30)
         r = client.get_task(tid)

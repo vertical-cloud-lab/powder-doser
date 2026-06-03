@@ -17,6 +17,15 @@ BUNDLE = HERE / "analysis_bundle"
 OUT = HERE / "analysis_out"
 OUT.mkdir(exist_ok=True)
 
+TASK_TIMEOUT_SECONDS = 2200
+
+
+def _api_key() -> str:
+    key = os.environ.get("EDISON_API_KEY")
+    if not key:
+        raise SystemExit("EDISON_API_KEY is not set in the environment.")
+    return key
+
 QUERY = (
     "You are helping select where to submit a conference abstract to the 2026 MRS "
     "Fall Meeting (Boston). Two files are attached: (1) the official MRS Fall 2026 "
@@ -45,7 +54,7 @@ QUERY = (
 
 
 def main() -> None:
-    client = EdisonClient(api_key=os.environ["EDISON_API_KEY"])
+    client = EdisonClient(api_key=_api_key())
 
     print("Uploading bundle as collection ...", flush=True)
     resp = client.store_file_content(
@@ -68,7 +77,7 @@ def main() -> None:
         json.dumps({"trajectory_id": str(tid), "data_entry": uri, "query": QUERY}, indent=2)
     )
 
-    deadline = time.time() + 2200
+    deadline = time.time() + TASK_TIMEOUT_SECONDS
     while time.time() < deadline:
         time.sleep(30)
         r = client.get_task(tid)
