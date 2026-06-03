@@ -64,25 +64,45 @@ a **2:1 spur-gear reduction**:
   sampled at 12 points per flank + a 3-point tip arc), matching the
   involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
   trapezoidal teeth.
-* **Servo mount** — a vertical wall on the baseplate top, perpendicular
-  to the spline axis, located just outboard of the pinion at
-  `X = +55 mm` (1 mm clearance between pinion tip and wall).  The wall
-  carries 4 × Ø 5 mm holes on the MG996R 49.5 × 10 mm flange pattern
-  (hole-centre Y offsets from the spline axis −14.85 mm and +34.65 mm,
-  read directly from the dimensioned drawing) plus a Ø 10 mm
-  spline-clearance bore with a Ø 14 mm × 1.5 mm collar counter-bore on
-  the servo side so the flange seats flat against the wall.
-  The servo body sits at `X ∈ [+59, +95.8] mm` (body length 36.8 mm
-  per the diagram) entirely outboard of the mounting plate so there is
-  no body interference at any tilt angle.  The wall is **structurally tied** to the baseplate by:
-    * a **forward porch** of baseplate-thickness material that extends
-      the baseplate top from `Y = +115` (front edge) out to `Y ≈ +175`
-      under the full servo footprint (`X ∈ [+55, +106]`); and
-    * a **triangular gusset** on the back (interior) face of the wall
-      that ties the top of the wall back into the baseplate top over
-      22 mm of run.
-  Together these carry the servo's static weight and the reaction
-  torque it applies through the pinion.
+* **Servo mount — two posts** (per Will's PR #66 review).  Instead of a
+  full-face wall, the MG996R bolts to **two separate posts**, one under
+  each flange ear, standing on the baseplate top just outboard of the
+  pinion at `X = +55 mm` (1 mm clearance between pinion tip and post,
+  4 mm post thickness).  Each post carries that ear's **two Ø 5 mm
+  holes** on the MG996R 49.5 × 10 mm flange pattern (hole-centre Y
+  offsets from the spline axis −14.85 mm and +34.65 mm, read directly
+  from the dimensioned drawing).  The posts' inboard face is the flange
+  seating plane, so when the ears bolt flush the spline (and pinion)
+  land **in line with the mounting-plate gear** — the centre distance
+  is unchanged, so the 2:1 ratio is preserved.  The **servo body +
+  output boss protrude past the posts** through the open gap between
+  them; the body sits at `X ∈ [+59, +95.8] mm` and rests on a forward
+  **porch** of baseplate-thickness material (the porch front edge runs
+  out to `Y ≈ +169` under the servo footprint).  The mount is
+  **structurally tied** to the baseplate by:
+    * a **back brace** behind each post that ties the post top down to
+      the porch top; and
+    * a **triangular flange under the tabletop** that ties the
+      cantilevered porch down to the adjacent (+X) front leg, resisting
+      the bending the servo's weight + lifting reaction torque would
+      otherwise put into the cantilever.
+* **Trapezoidal tabletop on a tripod** (per Will's PR #66 review).  The
+  baseplate is trimmed from a 200 × 250 mm rectangle on four legs to a
+  **trapezoidal tabletop** — full width (±100 mm) at the front edge
+  (`Y = +115`, near the hinge), tapering to a narrow rear edge
+  (±32 mm) — standing on a **tripod**: the two rear-corner legs are
+  replaced by a **single rear-centre leg**.  The rear edge is pulled in
+  from `Y = −135` to `Y = −75` (rear foot at `Y ≈ −54`): per
+  @swcharles' note the rear leg only has to sit a small distance behind
+  the worst-case (fully-loaded) centre of mass — which the dominant
+  auger mass (loaded COM ≈ 0) and the front-biased stepper/gear cluster
+  put at roughly `Y ≈ +15` — so a foot ~70 mm behind it gives a
+  generous stability margin while removing ~60 mm of unused baseplate.
+* **Gear tooth profile** — both the hinge gear band and the servo
+  pinion use **true involute** tooth flanks (base-circle involute
+  sampled at 12 points per flank + a 3-point tip arc), matching the
+  involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
+  trapezoidal teeth.
 * **Hinge-arm back face is sloped**, not vertical — the back-top corner
   of each baseplate hinge arm is replaced with a ~58°-from-horizontal
   slope (the back edge runs from `Y = +75` at the baseplate top up to
@@ -180,7 +200,8 @@ drawing and its five rounds of review:
   ramps** together cover the entire +Y face of the plate except for
   the central auger gap.
 * **Hinge axis is 10 mm in front of the baseplate's front edge.**
-  Baseplate `Y ∈ [−135, +115]`, hinge axis at `Y = +125`.  The
+  Baseplate front edge at `Y = +115`, rear edge at `Y = −75`
+  (trapezoidal tabletop), hinge axis at `Y = +125`.  The
   baseplate has two **forward-and-up hinge arms** (one each side of
   the auger) that reach from `Y = +115` forward to `Y = +125`, each
   arm slotting into the centre third of its ramp half-span.

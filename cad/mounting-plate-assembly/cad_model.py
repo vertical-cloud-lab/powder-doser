@@ -208,20 +208,41 @@ Z_MOTOR = Z_AUG
 
 # --- Linear-actuator rod-end pivot lug — REMOVED (no underside features).
 
-# --- Baseplate --------------------------------------------------------
-BASE_W = 200.0
-BASE_L = 250.0
+# --- Baseplate (trapezoidal tripod) -----------------------------------
+# Per Will's PR #66 review (comment 4615931709) the baseplate is
+# trimmed from a 200 × 250 mm rectangle on four corner legs to a
+# trapezoidal tabletop on a TRIPOD: the two rear corner legs are
+# replaced by a single rear-centre leg and the tabletop tapers from
+# the full-width front edge back to a narrow rear edge over that leg.
+#
+# Rear-leg placement.  @swcharles' note: the rear leg need not reach the
+# auger's rear end (Y = -125); it only has to sit a small distance
+# behind the worst-case (fully-loaded) centre of mass.  The dominant
+# masses are the auger (Y ∈ [-125, +125], loaded COM ≈ 0) and the
+# front-mounted stepper + gear/tap/bracket cluster (Y ≈ +30…+70), which
+# bias the assembly COM FORWARD to roughly Y ≈ +15.  A rear foot at
+# Y ≈ -54 therefore sits ~70 mm behind the COM — a generous stability
+# margin — while removing ~60 mm of unused rear baseplate.
 BASE_T = 6.0
 BASE_LEG_H = 95.0
 BASE_LEG_W = 18.0
 BASE_LEG_INSET = 12.0
 
+# Tabletop trapezoid — full width at the front edge (near the hinge),
+# tapering to a narrow rear edge centred over the single rear leg.
+BASE_FRONT_HALF_W = 100.0                                  # ±100 at front
+BASE_REAR_HALF_W = 32.0                                    # ±32 at rear
+
 # Baseplate position — front edge 10 mm BEHIND the hinge axis
 # (= the hinge axis is 10 mm forward of the baseplate's front edge,
 # per the issue #62 follow-up drawing).
 BASE_Y_FRONT = Y_DISP - 10.0                               # +115
-BASE_Y_BACK  = BASE_Y_FRONT - BASE_L                       # -135
-BASE_Y_CENTRE = (BASE_Y_FRONT + BASE_Y_BACK) / 2.0
+BASE_Y_REAR  = -75.0                                       # was -135 (rect)
+# Back-compat aliases used by the side-view render diagrams.
+BASE_Y_BACK  = BASE_Y_REAR
+BASE_Y_CENTRE = (BASE_Y_FRONT + BASE_Y_REAR) / 2.0
+BASE_W = 2.0 * BASE_FRONT_HALF_W                           # front-edge width
+BASE_L = BASE_Y_FRONT - BASE_Y_REAR
 
 # Z_BASE_TOP is the BOTTOM of the baseplate body in absolute frame.
 # Baseplate top face is at z = Z_BASE_TOP + BASE_T.  Choose so there's
@@ -320,20 +341,22 @@ PINION_X_LO = GEAR_X_LO
 PINION_X_HI = GEAR_X_HI
 PINION_Y = Y_DISP                       # parallel to hinge axis
 PINION_Z = Z_AUG - GEAR_CENTRE_C        # = +2.0 mm — 10 mm above baseplate top
-# Servo mount wall is a vertical wall on the baseplate top, perpendicular
-# to the spline axis, just outboard of the pinion.  4 × Ø5 holes
-# matching MG996R's mounting-flange pattern.
-SERVO_WALL_X = PINION_X_HI + 1.0        # 1 mm clearance between pinion tip and wall
-SERVO_WALL_T = 4.0                      # wall thickness along X
+# Servo mount — TWO separate posts (per Will's PR #66 review, comment
+# 4615931709) rather than a full-face wall.  Each post is a short
+# pillar that carries one MG996R flange ear (its two Ø5 holes); the
+# servo body + output boss protrude past the posts in the open gap
+# between them for proper alignment.  The posts' inboard (-X) face is
+# the flange seating plane, set so that when the ears bolt flush the
+# spline (and pinion) land in line with the mounting-plate gear.
+SERVO_WALL_X = PINION_X_HI + 1.0        # 1 mm clearance between pinion tip and post
+SERVO_WALL_T = 4.0                      # post thickness along X (flange seat → +X)
 SERVO_BODY_X_LO = SERVO_WALL_X + SERVO_WALL_T
 SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
-# Wall Y extent — flange spans
-#   Y ∈ [PINION_Y - MG996R_SPLINE_Y_OFFSET - 7.25,
-#        PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_BODY_L + 7.25]
-# = [PINION_Y - 17.35, PINION_Y + 37.15].  Add 4 mm margin each side.
+# Full flange Y-span (kept for the side-view render diagrams).
 SERVO_WALL_Y_MIN = PINION_Y - MG996R_SPLINE_Y_OFFSET - 7.25 - 4.0
 SERVO_WALL_Y_MAX = PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_BODY_L + 7.25 + 4.0
-# Wall Z: from baseplate top up to a bit above the upper flange hole.
+# Posts run from the baseplate/porch top up to a little above the
+# upper flange hole so the ear is fully backed by post material.
 SERVO_WALL_Z_LO = BASE_T                # baseplate top in baseplate-local frame
 SERVO_WALL_Z_HI_LOCAL = (PINION_Z - Z_BASE_TOP) + MG996R_BODY_T / 2.0 + 4.0
 # Hole-centre Y offsets from the spline axis — annotated directly on
@@ -343,6 +366,11 @@ MG996R_HOLE_Y_OFFSETS = (
     -(MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),               # = -14.85
     +(MG996R_BODY_L - MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),  # = +34.65
 )
+# Each post is centred on its ear's hole-Y and is wide enough in Y to
+# leave ~4.5 mm of material around the Ø5 hole.
+SERVO_POST_W_Y = 14.0                   # post width along Y
+SERVO_POST_HOLE_Z = (-MG996R_HOLE_Z_SPREAD / 2.0,         # 2 holes / post (Z ±5)
+                     +MG996R_HOLE_Z_SPREAD / 2.0)
 
 # Hardware
 M3_CLEAR = 3.4
@@ -692,27 +720,43 @@ def build_baseplate() -> cq.Workplane:
     """Bench-side plate with two forward-and-up hinge arms (one each
     side of the auger).  No powder window — powder falls in front of
     the baseplate (the dispense point sits 10 mm forward of the base
-    front edge)."""
+    front edge).
+
+    The tabletop is a TRAPEZOID — full width at the front edge (near the
+    hinge), tapering back to a narrow rear edge — standing on a TRIPOD:
+    two front-corner legs plus a single rear-centre leg (per Will's
+    PR #66 review)."""
     base = (
         cq.Workplane("XY")
-        .box(BASE_W, BASE_L, BASE_T, centered=(True, True, False))
-        .translate((0, BASE_Y_CENTRE, 0))
+        .polyline([
+            (-BASE_FRONT_HALF_W, BASE_Y_FRONT),
+            (+BASE_FRONT_HALF_W, BASE_Y_FRONT),
+            (+BASE_REAR_HALF_W,  BASE_Y_REAR),
+            (-BASE_REAR_HALF_W,  BASE_Y_REAR),
+        ]).close()
+        .extrude(BASE_T)
     )
 
-    # Corner legs (drop the bench-side plate to give cup + scale
-    # clearance in front of the baseplate).
-    leg_x = BASE_W / 2 - BASE_LEG_INSET - BASE_LEG_W / 2
-    leg_y_front = BASE_Y_FRONT - BASE_LEG_INSET - BASE_LEG_W / 2
-    leg_y_back  = BASE_Y_BACK  + BASE_LEG_INSET + BASE_LEG_W / 2
-    for sx in (+leg_x, -leg_x):
-        for sy in (leg_y_front, leg_y_back):
-            leg = (
-                cq.Workplane("XY")
-                .box(BASE_LEG_W, BASE_LEG_W, BASE_LEG_H,
-                     centered=(True, True, False))
-                .translate((sx, sy, -BASE_LEG_H))
-            )
-            base = base.union(leg)
+    # Tripod legs.  Two at the front corners (just inboard of the wide
+    # front edge) and ONE at the rear centre (replacing the old pair of
+    # rear-corner legs).  Each leg drops the tabletop to give cup +
+    # scale clearance in front of the baseplate.
+    front_leg_x = BASE_FRONT_HALF_W - BASE_LEG_INSET - BASE_LEG_W / 2
+    front_leg_y = BASE_Y_FRONT - BASE_LEG_INSET - BASE_LEG_W / 2
+    rear_leg_y  = BASE_Y_REAR  + BASE_LEG_INSET + BASE_LEG_W / 2
+    leg_positions = [
+        (+front_leg_x, front_leg_y),
+        (-front_leg_x, front_leg_y),
+        (0.0,          rear_leg_y),
+    ]
+    for sx, sy in leg_positions:
+        leg = (
+            cq.Workplane("XY")
+            .box(BASE_LEG_W, BASE_LEG_W, BASE_LEG_H,
+                 centered=(True, True, False))
+            .translate((sx, sy, -BASE_LEG_H))
+        )
+        base = base.union(leg)
 
     # Forward-and-up hinge arms — middle layer of the 3-layer sandwich.
     # Each arm occupies the centre third of its ramp half-span so it
@@ -771,35 +815,32 @@ def build_baseplate() -> cq.Workplane:
     # (Linear-actuator base clevis removed — no longer using a linear
     # actuator.)
 
-    # ---- MG996R servo mount wall (issue #63) ----------------------------
-    # Vertical wall on the baseplate top, perpendicular to the spline
-    # axis, just outboard of the pinion.  Servo body sits at X > wall_X
-    # entirely outboard of the mounting plate; spline points -X and the
-    # pinion meshes with the gear band at C = 30 mm.  4 × Ø5 holes
-    # in the MG996R 49.5 × 10 mm flange pattern (hole-centre Y
-    # offsets from the spline axis −14.85 mm and +34.65 mm).
+    # ---- MG996R servo mount — TWO posts (issue #63, PR #66 review) ------
+    # Per Will's review (comment 4615931709) the full-face mounting wall
+    # is replaced by TWO separate posts, one under each MG996R flange
+    # ear, so the servo body + output boss protrude past the posts in
+    # the open gap between them.  Each post carries that ear's two Ø5
+    # holes.  The posts' inboard (-X) face is the flange seating plane
+    # at X = SERVO_WALL_X, so when the ears bolt flush the spline (and
+    # pinion) land in line with the mounting-plate gear (C unchanged →
+    # 2:1 ratio preserved).
     #
-    # The wall would otherwise cantilever ~58 mm past the baseplate's
-    # front edge (Y=+115) — the MG996R flange/body extends out to
-    # Y≈+173 — so we (a) extend the baseplate top forward as a
-    # "porch" under the full servo footprint, and (b) add a triangular
-    # gusset on the back (interior) side of the wall.  Together they
-    # carry the servo weight and reaction torque (per Will's review).
-    wall_y_lo = SERVO_WALL_Y_MIN
-    wall_y_hi = SERVO_WALL_Y_MAX
-    wall_z_lo = SERVO_WALL_Z_LO
-    wall_z_hi = SERVO_WALL_Z_HI_LOCAL
+    # The far post sits ~45 mm forward of the baseplate front edge
+    # (Y=+115), so we (a) extend the baseplate top forward as a "porch"
+    # under the servo footprint, (b) add a back brace behind each post,
+    # and (c) tie the cantilevered porch down to the adjacent front leg
+    # with a triangular flange under the tabletop (Will's 2nd bullet).
+    pinion_z_local = PINION_Z - Z_BASE_TOP
+    post_z_lo = SERVO_WALL_Z_LO
+    post_z_hi = pinion_z_local + MG996R_HOLE_Z_SPREAD / 2.0 + 5.0
 
-    # (a) baseplate porch — a slab of baseplate-thickness material
-    # under the servo body footprint, fused to the baseplate front
-    # edge.  Spans from a few mm INBOARD of the wall (so it overlaps
-    # the baseplate without leaving a sliver) out to the servo body
-    # X-far edge, and from the baseplate front edge out to the wall's
-    # +Y extent.
-    PORCH_X_LO = SERVO_WALL_X             # flush with wall's inboard face
-    PORCH_X_HI = SERVO_BODY_X_HI + 4.0
+    # (a) baseplate porch — a slab of baseplate-thickness material under
+    # the servo footprint, fused to the baseplate front edge.
+    PORCH_X_LO = SERVO_WALL_X             # flush with the posts' inboard face
+    PORCH_X_HI = SERVO_BODY_X_HI + 2.0    # out under the servo body
     PORCH_Y_LO = BASE_Y_FRONT - 2.0       # 2 mm overlap into baseplate
-    PORCH_Y_HI = wall_y_hi + 2.0
+    PORCH_Y_HI = (PINION_Y + MG996R_HOLE_Y_OFFSETS[1]
+                  + SERVO_POST_W_Y / 2.0 + 2.0)
     porch = (
         cq.Workplane("XY")
         .box(PORCH_X_HI - PORCH_X_LO,
@@ -810,69 +851,60 @@ def build_baseplate() -> cq.Workplane:
     )
     base = base.union(porch)
 
-    wall = (
-        cq.Workplane("YZ")
-        .workplane(offset=SERVO_WALL_X)
-        .moveTo((wall_y_lo + wall_y_hi) / 2.0,
-                (wall_z_lo + wall_z_hi) / 2.0)
-        .rect(wall_y_hi - wall_y_lo, wall_z_hi - wall_z_lo)
-        .extrude(SERVO_WALL_T)
-    )
-    base = base.union(wall)
-
-    # (b) back-side triangular gusset — a thin web on the −Y face of
-    # the wall, rooted on the baseplate top, that ties the wall's top
-    # back into the baseplate.  Placed inboard of the wall (toward
-    # smaller Y) where there's solid baseplate, with the same X span
-    # as the wall.
-    GUSSET_LEN = 22.0                                   # along −Y from wall
-    GUSSET_H = wall_z_hi - BASE_T                       # from base top to wall top
-    gusset = (
-        cq.Workplane("YZ")
-        .workplane(offset=SERVO_WALL_X)
-        .moveTo(BASE_Y_FRONT, BASE_T)
-        .lineTo(BASE_Y_FRONT, BASE_T + GUSSET_H)
-        .lineTo(BASE_Y_FRONT - GUSSET_LEN, BASE_T)
-        .close()
-        .extrude(SERVO_WALL_T)
-    )
-    base = base.union(gusset)
-    # Spline-clearance bore at the pinion axis — Ø10 through the wall
-    # to clear the printed pinion hub with set-screw, plus a shallow
-    # counter-bore on the servo side that recesses the MG996R's ~Ø14
-    # output collar so the flange seats flat against the wall.
-    pinion_z_local = PINION_Z - Z_BASE_TOP
-    spline_hole = (
-        cq.Workplane("YZ")
-        .workplane(offset=SERVO_WALL_X - 1.0)
-        .center(PINION_Y, pinion_z_local)
-        .circle(MG996R_SPLINE_CLEAR_DIA / 2.0)
-        .extrude(SERVO_WALL_T + 2.0)
-    )
-    base = base.cut(spline_hole)
-    # Collar counter-bore: 1.5 mm deep on the +X (servo) side of the wall.
-    collar_cb_depth = 1.5
-    collar_cb = (
-        cq.Workplane("YZ")
-        .workplane(offset=SERVO_WALL_X + SERVO_WALL_T - collar_cb_depth)
-        .center(PINION_Y, pinion_z_local)
-        .circle(MG996R_SPLINE_COLLAR_DIA / 2.0)
-        .extrude(collar_cb_depth + 1.0)
-    )
-    base = base.cut(collar_cb)
-    # 4 × Ø5 mounting holes on the standard MG996R 49.5 × 10 mm flange
-    # pattern (hole-centre Y offsets from the spline axis: −14.85 mm
-    # and +34.65 mm, per Will's dimensioned drawing).
+    # (b) the two posts + their back braces.
     for dy in MG996R_HOLE_Y_OFFSETS:
-        for dz in (-MG996R_HOLE_Z_SPREAD / 2.0, +MG996R_HOLE_Z_SPREAD / 2.0):
+        post_yc = PINION_Y + dy
+        post = (
+            cq.Workplane("YZ")
+            .workplane(offset=SERVO_WALL_X)
+            .moveTo(post_yc, (post_z_lo + post_z_hi) / 2.0)
+            .rect(SERVO_POST_W_Y, post_z_hi - post_z_lo)
+            .extrude(SERVO_WALL_T)
+        )
+        base = base.union(post)
+        # back brace — triangular web on the −Y face of the post that
+        # ties the post top back down onto the porch/baseplate top.
+        BRACE_LEN = 12.0
+        brace_y_root = post_yc - SERVO_POST_W_Y / 2.0
+        brace = (
+            cq.Workplane("YZ")
+            .workplane(offset=SERVO_WALL_X)
+            .moveTo(brace_y_root, post_z_lo)
+            .lineTo(brace_y_root, post_z_hi)
+            .lineTo(brace_y_root - BRACE_LEN, post_z_lo)
+            .close()
+            .extrude(SERVO_WALL_T)
+        )
+        base = base.union(brace)
+        # this ear's two Ø5 mounting holes through the post (along X).
+        for dz in SERVO_POST_HOLE_Z:
             hole = (
                 cq.Workplane("YZ")
                 .workplane(offset=SERVO_WALL_X - 1.0)
-                .center(PINION_Y + dy, pinion_z_local + dz)
+                .center(post_yc, pinion_z_local + dz)
                 .circle(MG996R_HOLE_DIA / 2.0)
                 .extrude(SERVO_WALL_T + 2.0)
             )
             base = base.cut(hole)
+
+    # (c) underside triangular flange — stiffens the cantilevered porch
+    # against the servo's weight + lifting reaction torque by tying it
+    # down to the adjacent (+X) front leg.  A downstand rib hanging
+    # below the tabletop in the Y-Z plane at the leg's X, deepest over
+    # the leg and tapering to nothing at the porch front edge.
+    FLANGE_THK = 6.0                      # rib thickness along X
+    FLANGE_DEPTH = 30.0                   # how far it hangs below the tabletop
+    flange_x = front_leg_x                # align with the +X front leg
+    flange = (
+        cq.Workplane("YZ")
+        .workplane(offset=flange_x - FLANGE_THK / 2.0)
+        .moveTo(front_leg_y, BASE_T)                 # over the leg, at tabletop
+        .lineTo(PORCH_Y_HI, BASE_T)                  # forward to porch front
+        .lineTo(front_leg_y, BASE_T - FLANGE_DEPTH)  # down into the leg
+        .close()
+        .extrude(FLANGE_THK)
+    )
+    base = base.union(flange)
 
     # Pinion-swing clearance pocket — the pinion's tip Ø22 dips ~4 mm
     # below the baseplate top at the front-edge corner where the disc
