@@ -4,6 +4,13 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Documentation
+
+- [Programmatic and remote printing on the Bambu Lab H2D](docs/h2d-programmatic-access.md)
+  — research notes on the cloud, LAN/Developer-Mode and Bambu Connect
+  paths for sending sliced jobs to an H2D from code, with citations to
+  the primary community and vendor sources.
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
