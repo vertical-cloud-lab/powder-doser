@@ -24,6 +24,25 @@ For each generative-EDA/PCB query key (`gen_eda_landscape`,
 
 All seven generative-EDA/PCB runs returned `status=success`.
 
+## Analysis pass (`pcb_recommendations_for_powder_doser`)
+
+In addition to the `LITERATURE_HIGH` runs above, an Edison **`ANALYSIS`** task
+([`../edison_run_pcb_recommendation_analysis.py`](../edison_run_pcb_recommendation_analysis.py))
+reads the seven rendered reviews back in — uploaded as a single zipped
+*collection* via `store_file_content(..., as_collection=True)`, per the
+[Edison file-management docs](https://docs.edisonscientific.com/edison-client/file-management) —
+and synthesizes them into concrete, powder-doser-specific PCB-implementation
+recommendations (answering @lbwinters' review request on PR
+[#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4615501821)).
+Its rendered output is the note
+[`../14-pcb-design-recommendations-for-powder-doser.md`](../14-pcb-design-recommendations-for-powder-doser.md).
+
+| File | Content |
+| --- | --- |
+| `pcb_recommendations_for_powder_doser.task.json` | Full Edison `TaskResponse.model_dump()` for the analysis task. |
+| `pcb_recommendations_for_powder_doser.answer.md` | The rendered analysis answer (same body as `../14-*.md`). |
+| `pcb_recommendations_for_powder_doser.notebook.ipynb` | The analysis notebook Edison generated, when present. |
+
 These artifacts are committed for reproducibility and traceability of every
 claim in the background notes — see issues
 [#26](https://github.com/vertical-cloud-lab/powder-doser/issues/26) and

@@ -44,6 +44,7 @@ feedback, expandable I/O; see issues
 | [`11-code-based-eda-frameworks.md`](11-code-based-eda-frameworks.md) | Generative EDA/PCB | **Design-as-code** / programmatic EDA that is version-controllable and CI-friendly (the electrical analogue of code-CAD): atopile, tscircuit, SKiDL, PCBmodE, gEDA, Horizon EDA, Edea, KiCad Python/IPC + `kicad-cli`, JITX; programming models, manufacturability/DRC, export, maturity, licensing. |
 | [`12-eda-datasets-benchmarks.md`](12-eda-datasets-benchmarks.md) | Generative EDA/PCB | **Datasets & benchmarks** for ML/generative EDA across PCB- and chip-level design (VerilogEval, RTLLM, ISPD/ICCAD placement & routing benchmarks, CircuitNet, Open Circuit Benchmark, open KiCad/PCB corpora), the metrics used, and the gaps in evaluating manufacturable generative PCB design. |
 | [`13-open-hardware-eda-for-labs.md`](13-open-hardware-eda-for-labs.md) | Generative EDA/PCB | Generative/automated electrical design in the **open-hardware lab-automation** context (OpenFlexure, Jubilee, Opentrons, HardwareX norms; modular motor/sensor control boards, multiplexed I/O, load-cell front-ends, DfM for low-cost assembly) and how mature generative EDA is for such instruments — the gap this project's control electronics sit in. |
+| [`14-pcb-design-recommendations-for-powder-doser.md`](14-pcb-design-recommendations-for-powder-doser.md) | Generative EDA/PCB | **Synthesis / recommendation** pass: an Edison `ANALYSIS` task that reads notes `07`–`13` back in and turns them into ranked, powder-doser-specific recommendations for how the GitHub Copilot coding agent could draft the control PCB (most-feasible approaches, whether each can run inside the headless GitHub/Copilot environment, and per-option pros/cons, limitations, and next steps). Answers @lbwinters' review request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4615501821). |
 
 ## Provenance
 
@@ -53,10 +54,15 @@ These notes were produced by parallel
 generative-EDA/PCB pillar (`07`–`13`) was dispatched by
 [`edison_run_electrical_pcb.py`](edison_run_electrical_pcb.py); the prior
 powder/CAD pillar by `edison_run.py` / `edison_run_followup_spatial.py` (PR
-[#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29)). Each claim in
-the notes is followed by a citation key of the form `(authorYYYYshortid pages
-X-Y)`; the corresponding numbered references — with authors, journal, DOI, and
-citation count — are listed at the bottom of each file. Raw artifacts (full
+[#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29)). The
+recommendation note (`14`) is produced by a follow-on Edison `ANALYSIS` run,
+[`edison_run_pcb_recommendation_analysis.py`](edison_run_pcb_recommendation_analysis.py),
+which uploads the seven rendered reviews as a single zipped *collection* (per the
+[Edison file-management docs](https://docs.edisonscientific.com/edison-client/file-management))
+and analyzes them rather than searching new literature. Each claim in the
+literature notes is followed by a citation key of the form `(authorYYYYshortid
+pages X-Y)`; the corresponding numbered references — with authors, journal, DOI,
+and citation count — are listed at the bottom of each file. Raw artifacts (full
 `TaskResponse` JSON, rendered answer, standalone references list) live under
 [`edison_artifacts/`](edison_artifacts/).
 
@@ -85,3 +91,18 @@ python paper/background/edison_run_electrical_pcb.py
 A high-effort `LITERATURE_HIGH` query takes ~20–30 min; all seven are dispatched
 in parallel via `EdisonClient.run_tasks_until_done`. The exact prompts are
 embedded verbatim in the runner.
+
+To regenerate the recommendation note (`14`) — an Edison `ANALYSIS` run over the
+seven rendered reviews:
+
+```bash
+pip install edison_client
+export EDISON_API_KEY=...
+python paper/background/edison_run_pcb_recommendation_analysis.py
+```
+
+The analysis runner uploads every `edison_artifacts/*.answer.md` and
+`*.references.md` as a single zipped collection
+(`store_file_content(..., as_collection=True)`) and asks the data-analysis agent
+to synthesize powder-doser-specific PCB recommendations; the embedded prompt is
+verbatim in the runner.
