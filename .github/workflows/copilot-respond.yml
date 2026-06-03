@@ -1,0 +1,27 @@
+name: Copilot respond to mentions
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    # Only run when the comment body contains the literal "@copilot"
+    if: contains(github.event.comment.body, '@copilot')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Run responder
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          # Use BOT_TOKEN if you want comments from a bot account; otherwise GITHUB_TOKEN (actions bot)
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node .github/scripts/respond.js
