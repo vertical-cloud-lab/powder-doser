@@ -17,13 +17,22 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 - **Trigger** names the issue, comment, or review that prompted that version, and
   who raised it.
 - **Design** is a 1–2 sentence summary of the design and what changed and why.
-- Each entry shows 1–3 **render views** (iso / front / top / side / cross-section /
-  assembly / exploded) to communicate the geometry. A few entries reference
-  diagrams or sketches where those best capture the design at that moment.
+- Each entry shows one or more **render views** (iso / front / top / side /
+  cross-section / assembly / exploded) to communicate the geometry. Where a design
+  also has an **animated GIF** (a rotating spin or an actuation loop), that GIF is
+  shown too. A few entries reference diagrams or sketches where those best capture
+  the design at that moment.
+- Where a design was physically printed and bench-tested, the entry also embeds the
+  **printed-part photos** and links the **test videos** that were attached to the
+  corresponding GitHub issue or pull-request comment.
+- Every image and animation here is an **artifact that was actually generated** —
+  a render, GIF, or photo committed to a branch or attached to a comment. Nothing
+  was re-rendered ad-hoc for this log.
 - Images are pinned to the exact commit they were generated at, so each thumbnail
   shows that *specific* iteration — even when a later version reused the same
   filename. Many designs live on still-open pull-request branches; the pinned
-  commit SHAs keep these visuals stable.
+  commit SHAs keep these visuals stable. Photos and videos attached to comments are
+  linked via their GitHub user-attachment URLs.
 - This record currently spans 97 design iterations across the project's first
   weeks. It will keep growing as new designs land.
 
@@ -89,6 +98,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The visual panels were iterated through multiple cycles to show pin stubs, cam contact, an end-view pin marker, ghost arm, and a better-scaled pin-slot panel. This was primarily a clarity iteration to make the same mechanism legible.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/8327943dcc87e7d0130ef5b483526e16c2aa9ec5/docs/figures/panel-A-orthographic.svg" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/8327943dcc87e7d0130ef5b483526e16c2aa9ec5/docs/figures/panel-D-mechanism.svg" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/8327943dcc87e7d0130ef5b483526e16c2aa9ec5/docs/figures/panel-E-pin-slot.svg" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/8327943dcc87e7d0130ef5b483526e16c2aa9ec5/docs/figures/mechanism.gif" width="300">
 
 ---
 
@@ -98,6 +108,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The first visualized compliant trough used flexural snap-through between scoop and hold/dump states, paired with an energy/bistability checker. It explored a passive way to get two stable powder-handling poses.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a14afd7649bc34b86aba2cfbe07dd90dbc9b4226/docs/figures/bimodal-mechanism.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a14afd7649bc34b86aba2cfbe07dd90dbc9b4226/docs/figures/bimodal-energy.svg" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a14afd7649bc34b86aba2cfbe07dd90dbc9b4226/docs/figures/bimodal-mechanism.gif" width="300">
 
 ---
 
@@ -125,6 +136,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The concept became a CadQuery-derived assembly with trough, arms, pin, cam ramp, strike-off bar, and slot board render views. This moved the design history from drawings into a parametric CAD/DFM pipeline.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/93769924837e4a3919b3dd0007ef9ee7805f062d/docs/figures/cad/assembly.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/93769924837e4a3919b3dd0007ef9ee7805f062d/docs/figures/cad/assembly-side.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/93769924837e4a3919b3dd0007ef9ee7805f062d/docs/figures/cad/assembly-end.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/93769924837e4a3919b3dd0007ef9ee7805f062d/docs/figures/mechanism.gif" width="300">
 
 ---
 
@@ -134,6 +146,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The flexure curve was corrected so the apex carrier was physically connected in the rendered trough. The iteration tightened the printed geometry before final deterministic re-renders and Edison design review packaging.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/319653f4429853ac90da40fe1b482cbf712f2efd/cad/bimodal-trough-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/319653f4429853ac90da40fe1b482cbf712f2efd/docs/figures/bimodal-mechanism.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/319653f4429853ac90da40fe1b482cbf712f2efd/cad/bimodal-trough-spin.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/319653f4429853ac90da40fe1b482cbf712f2efd/docs/figures/bimodal-mechanism.gif" width="300">
 
 ---
 
@@ -143,6 +156,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The CAD assembly and part renders were regenerated after geometry/documentation corrections, especially around the cam ramp and pivot/statics assumptions. This is the final PR #2 CAD-state visual after review-driven tuning.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f78ec7272f43c55424b42441e845c80c8395e472/docs/figures/cad/assembly.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f78ec7272f43c55424b42441e845c80c8395e472/docs/figures/cad/assembly-side.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f78ec7272f43c55424b42441e845c80c8395e472/docs/figures/cad/assembly-end.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f78ec7272f43c55424b42441e845c80c8395e472/docs/figures/mechanism.gif" width="300">
 
 ---
 
@@ -152,6 +166,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The first alternative CAD covered a passive gantry-tapped sieve cup, an ERM-augmented sieve cup, and a tap anvil. It followed the PR #2/#5 procedure with OpenSCAD, STL, iso renders, and a one-day workshop build focus.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/sieve-cup-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/sieve-cup-erm-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/tap-anvil-iso.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/sieve-cup-spin.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/sieve-cup-erm-spin.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/360d9c20305830e17d1f882f02fdd61adda89474/cad/tap-anvil-spin.gif" width="300">
 
 ---
 
@@ -206,6 +221,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative A became a tap-driven sieve cup with dedicated OpenSCAD/STL, iso render, and cutaway. It keeps actuation gantry-mechanical by striking an anvil to meter powder through sieve holes.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/A-tap-sieve-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/A-tap-sieve-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/A-tap-sieve-spin.gif" width="300">
 
 ---
 
@@ -215,6 +231,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative B modeled a Pez-like indexed strip of small powder chambers. The design explores discrete volumetric doses by translating chambers past a loading/dispense location.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/B-pez-strip-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/B-pez-strip-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/B-pez-strip-spin.gif" width="300">
 
 ---
 
@@ -224,6 +241,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative C modeled a capillary pickup/wiper concept that loads powder by contact and meters it by wiping excess. The cutaway exposes the pickup channel and wiper path.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/C-capillary-wiper-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/C-capillary-wiper-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/C-capillary-wiper-spin.gif" width="300">
 
 ---
 
@@ -233,6 +251,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative D became a brush/comb pickup that carries powder mechanically and releases it by combing or scraping. The design tests whether bristles/teeth can manage cohesive powders without a full auger.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/D-brush-comb-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/D-brush-comb-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/D-brush-comb-spin.gif" width="300">
 
 ---
 
@@ -242,6 +261,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative E modeled a salt-shaker-like oscillating dispenser. It uses holes and vibration/gantry agitation to meter powder, trading dose precision for simplicity.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/E-shaker-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/E-shaker-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/E-shaker-spin.gif" width="300">
 
 ---
 
@@ -251,6 +271,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative F captured a passive auger-style dispenser in the A–H comparison set. It borrowed the screw-feed direction from the vertical auger work while keeping the alternative compact for side-by-side evaluation.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/F-passive-auger-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/F-passive-auger-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/F-passive-auger-spin.gif" width="300">
 
 ---
 
@@ -260,6 +281,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative G added an ERM vibration path to the sieve-cup concept. The geometry provides motor/battery accommodation while preserving sieve metering as the powder-release primitive.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/G-erm-sieve-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/G-erm-sieve-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/G-erm-sieve-spin.gif" width="300">
 
 ---
 
@@ -269,6 +291,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Alternative H modeled a solenoid-tapped sieve as the higher-actuation-risk member of the set. It separates the tapping actuator idea from the passive and ERM sieve options for comparison.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/H-solenoid-sieve-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/H-solenoid-sieve-cutaway.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7bd37cbc443568fa947029f00a531fac1ad19a99/cad/alternatives/H-solenoid-sieve-spin.gif" width="300">
 
 ---
 
@@ -278,6 +301,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Each A–H concept received an annotated panel with title, iso, cutaway, numbered parts, and a three-step operating cycle. This did not mainly change geometry; it was a visual iteration to make function and part roles understandable.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/e63ff26b7c14c6ddd7126c98b625ee0e8e0b6649/cad/alternatives/composite-panel.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/e63ff26b7c14c6ddd7126c98b625ee0e8e0b6649/cad/alternatives/A-tap-sieve-panel.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/e63ff26b7c14c6ddd7126c98b625ee0e8e0b6649/cad/alternatives/G-erm-sieve-panel.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/e63ff26b7c14c6ddd7126c98b625ee0e8e0b6649/cad/alternatives/composite-spin.gif" width="300">
 
 ---
 
@@ -332,6 +356,7 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** A CadQuery-grounded scene/animator was added so the A–H mechanisms shared physical anchors and clearer load/dispense positions. The visuals move beyond schematic panels toward spatially consistent CAD-based operation frames.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/ccdabf3e7b7b7d020e50a25b76e690f56a0f69a8/cad/alternatives_cq/A_frame_LOAD.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/ccdabf3e7b7b7d020e50a25b76e690f56a0f69a8/cad/alternatives_cq/A_frame_DISPENSE.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/ccdabf3e7b7b7d020e50a25b76e690f56a0f69a8/cad/alternatives_cq/G_frame_DISPENSE.png" width="300">
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/ccdabf3e7b7b7d020e50a25b76e690f56a0f69a8/cad/alternatives_cq/composite_animation.gif" width="300">
 
 ---
 
@@ -575,6 +600,10 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** The four small loading slots were replaced by a single large pie-slice opening plus a one-sided pour lip/slide. This made loading less fiddly while keeping the change small and non-invasive.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/3c4b80f7977e252cafc32ff16333919de6e62839/cad/auger/views/archimedes-auger-top-down.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/3c4b80f7977e252cafc32ff16333919de6e62839/cad/auger/archimedes-auger-iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/3c4b80f7977e252cafc32ff16333919de6e62839/cad/auger/archimedes-auger-cutaway.png" width="300">
+
+**Printed & bench-tested** (issue [#16](https://github.com/vertical-cloud-lab/powder-doser/issues/16), @sgbaird): the auger printed cleanly (oriented upside-down to avoid a floating internal region) and was run with NaCl. ▶ [NaCl dispensing test](https://youtu.be/5nx-SDRfRgg)
+
+<img src="https://github.com/user-attachments/assets/1afaf560-96d5-4989-8369-3d355e25ffa8" width="300"> <img src="https://github.com/user-attachments/assets/df4e9653-c8af-433a-bc47-bea38c3af430" width="220">
 
 ---
 
@@ -846,6 +875,8 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/70c2b8509658ec1e00c32ea045184ba73c5d3e54/cad/mounting-plate-assembly/assembly/assembly_side.png" width="300">
 
+**Hardware test** (issue [#65](https://github.com/vertical-cloud-lab/powder-doser/issues/65), @swcharles): the MG996R servo drove the printed mounting-plate hinge through its angle change on the baseplate. ▶ [Servo angle-change video](https://youtu.be/ASQb1NmKOFs)
+
 ---
 
 <!-- ENTRY date=2026-05-26T18:01:52Z pr=61 -->
@@ -864,6 +895,8 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/12aa3eb0fe9b50d0b6801bde7eb1fdae28438f48/hardware/test-module/kicad/test_module.png" width="300">
 
+**Bench tests** (issue [#60](https://github.com/vertical-cloud-lab/powder-doser/issues/60), @williamulbz): the assembled single-Pico-W module drove each actuator following the firmware/wiring docs from PR #61. ▶ [Haptic motor](https://youtu.be/hIK3kkgJRD4) · ▶ [Servo control](https://youtu.be/NQX6OudTasM) · ▶ [Solenoid control](https://youtu.be/HvvvGUM0XXY)
+
 ---
 
 <!-- ENTRY date=2026-05-28T17:21:17Z pr=49 -->
@@ -872,6 +905,10 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Added the type 1 test piece with direct screw cutoff into a large open funnel leading to the nozzle exit. It kept the production inlet/outlet geometry, omitted the external gear, and used a 90 mm body for bench testing.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a136ae1ed3dd0ce0b5a8e26ad75741c8024b9a25/cad/auger-geared/archimedes-auger-test-nozzle1-cross-section.png" width="300">
+
+**Printed & NaCl-tested** (issue [#48](https://github.com/vertical-cloud-lab/powder-doser/issues/48), @williamulbz / @swcharles): all four gearless nozzle augers were printed and dispensed table salt; type 1 worked well but dispensed large volumes and risked over-running when fully vertical. ▶ [Whole process](https://www.youtube.com/watch?v=rPkqHXSsHqU&t=20s) · ▶ [Auger 1](https://www.youtube.com/watch?v=eSp2F_uMj6o)
+
+<img src="https://github.com/user-attachments/assets/87dd0685-afcc-4f0d-baa4-7769e9e7e5df" width="320">
 
 ---
 
@@ -882,6 +919,8 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a136ae1ed3dd0ce0b5a8e26ad75741c8024b9a25/cad/auger-geared/archimedes-auger-test-nozzle2-cross-section.png" width="300">
 
+**NaCl test** (issue [#48](https://github.com/vertical-cloud-lab/powder-doser/issues/48), @swcharles): type 2 did not work for salt — the small pre-nozzle gap let it rattle like a maraca with the crystals stuck at the end; smaller powders might still pass. ▶ [Auger 2](https://www.youtube.com/watch?v=T0gh_4o2ak8)
+
 ---
 
 <!-- ENTRY date=2026-05-28T17:21:17Z pr=49 -->
@@ -891,6 +930,8 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a136ae1ed3dd0ce0b5a8e26ad75741c8024b9a25/cad/auger-geared/archimedes-auger-test-nozzle3-cross-section.png" width="300">
 
+**NaCl test** (issue [#48](https://github.com/vertical-cloud-lab/powder-doser/issues/48), @swcharles): type 3 worked well, though crystals might jam in the small gap when fully vertical. ▶ [Auger 3](https://www.youtube.com/watch?v=lMtbQKnj60g)
+
 ---
 
 <!-- ENTRY date=2026-05-28T17:21:17Z pr=49 -->
@@ -899,3 +940,5 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 **Design:** Added the type 4 test piece combining the type 2 and type 3 ideas: the screw continues as the center shaft tapers down. This variant was created to test the combined metering effect in a short, gearless, printable sample.
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a136ae1ed3dd0ce0b5a8e26ad75741c8024b9a25/cad/auger-geared/archimedes-auger-test-nozzle4-cross-section.png" width="300">
+
+**NaCl test** (issue [#48](https://github.com/vertical-cloud-lab/powder-doser/issues/48), @swcharles): type 4 was the standout — it metered well in every orientation, even pushing uphill past horizontal, and started/stopped readily in small, consistent amounts. ▶ [Auger 4](https://www.youtube.com/watch?v=lWmswxWfWuA)
