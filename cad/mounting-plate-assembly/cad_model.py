@@ -350,15 +350,25 @@ PINION_Z = Z_AUG - GEAR_CENTRE_C        # = +2.0 mm — 10 mm above baseplate to
 # plane.
 SERVO_WALL_T = 6.0                      # post thickness along X (flange seat → +X)
 # Post inboard (-X) face position.  Per Will's review (comment
-# 4624739034, "blue line") the distance from the post face to the FAR
-# (low-X) edge of the hinge gear band must be 14.1 mm — the MG996R
-# flange-to-output reach read from the dimensioned drawing.  This pulls
-# the posts OUTBOARD of the pinion so the servo spline carries the
-# pinion exactly onto the hinge-gear face (centre distance and the 2:1
-# ratio are unchanged — the gears themselves are untouched).
-SERVO_FACE_TO_GEAR_FAR = 14.1
-SERVO_WALL_X = GEAR_X_LO + SERVO_FACE_TO_GEAR_FAR       # ≈ 55.8
-SERVO_BODY_X_LO = SERVO_WALL_X + SERVO_WALL_T
+# 4625212895) the posts sit BEHIND the MG996R mounting holes and the
+# servo is placed so the very TIP of its driving head hangs 8 mm past
+# the baseplate front edge.  On the dimensioned drawing the driving
+# head (output boss + horn) protrudes 8 mm = 6 mm + 2 mm above the
+# servo body top, and the mounting flange (the two ears) sits at that
+# same body top.  So the flange seating plane = the servo body top =
+# the baseplate front edge, and the 8 mm driving head overhangs that
+# edge by its full length.  The printed pinion is pressed onto the
+# servo spline at the driving-head tip and meshes across the hinge-gear
+# face (X = GEAR_X_LO..GEAR_X_HI); the spline meets the pinion at the
+# gear's near (+X) face, so the flange plane sits 8 mm outboard of it.
+# Centre distance and the 2:1 ratio live in Z and are unchanged — only
+# the X placement of the posts/servo moves, so the gears are untouched.
+DRIVE_HEAD_LEN = 8.0                    # output boss + horn above body top (6 + 2)
+SERVO_WALL_X = GEAR_X_HI + DRIVE_HEAD_LEN               # = 62.0 (flange/edge plane)
+# The mounting flange is AT the servo body top, so the body top plane
+# coincides with the flange seating plane (the posts back the ears at
+# the body's -X end, flanking it in ±Y).
+SERVO_BODY_X_LO = SERVO_WALL_X
 SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
 # Posts run from the porch/baseplate top up to a little above the upper
 # flange hole so the ear is fully backed by post material.
@@ -843,8 +853,12 @@ def build_baseplate() -> cq.Workplane:
     # mounting holes).  The gap between the posts' inner faces equals the
     # 40 mm body length (+ clearance) so the body fits between them; the
     # posts' inboard (-X) face is the flange seating plane at
-    # X = SERVO_WALL_X, pulled outboard so the post-face-to-far-gear-edge
-    # distance is 14.1 mm (gears untouched → centre distance and the 2:1
+    # X = SERVO_WALL_X.  Per Will's review (comment 4625212895) the posts
+    # sit BEHIND the mounting holes and the servo is placed so the very
+    # tip of its driving head hangs 8 mm past the baseplate front edge —
+    # i.e. the flange plane (= the body top = the porch's -X edge) is
+    # 8 mm outboard of the gear's near face, so the 8 mm driving head
+    # overhangs the edge (gears untouched → centre distance and the 2:1
     # ratio are preserved).
     #
     # The far post sits well forward of the baseplate front edge, so we
