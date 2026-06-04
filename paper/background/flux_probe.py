@@ -52,7 +52,12 @@ def classify(body: bytes, content_type: str) -> str:
     text = body[:512].lstrip().lower()
     if "json" in content_type.lower() or text.startswith(b"{") or text.startswith(b"["):
         return "json-like"
-    if text.startswith(b"<!doctype html") or text.startswith(b"<html"):
+    if (
+        text.startswith(b"<!doctype html")
+        or text.startswith(b"<html")
+        or b"<head" in text
+        or b"<body" in text
+    ):
         return "html-spa-shell"
     return "other"
 
@@ -102,7 +107,7 @@ def probe(url: str) -> dict:
 
 def main() -> int:
     results = [probe(u) for u in ENDPOINTS]
-    print(f"# flux.ai remote-API probe (dummy key: {DUMMY_KEY[:8]}...)\n")
+    print("# flux.ai remote-API probe (sending a dummy/placeholder API key)\n")
     header = f"{'STATUS':>7}  {'KIND':<22}  URL"
     print(header)
     print("-" * len(header))

@@ -16,9 +16,9 @@ fit for rapid prototyping of "standard" boards (MCU + sensors + drivers), which
 is exactly the shape of our dosing controller (MCU + stepper driver + HX711
 load-cell front end).
 
-Copilot is metered in **ACU credits** (AI Compute Units): roughly 10 ACU/month
-on Starter and ~100 ACU/editor/month on Pro/Teams, with overage billed per ACU.
-Larger/more complex generations consume more credits.
+Copilot is metered in **ACU credits** (AI Compute Units): as of June 2026,
+roughly 10 ACU/month on Starter and ~100 ACU/editor/month on Pro/Teams, with
+overage billed per ACU. Larger/more complex generations consume more credits.
 
 ## Remote-usage attempt with a dummy API key
 
