@@ -245,7 +245,7 @@ def print_sizing_table(target_ml, shaft_r=SHAFT_R):
             continue
         outer_d = 2 * rb + 2 * WALL_THICKNESS
         per_rev = straight_slope(rb, shaft_r) * FIN_PITCH / MM3_PER_ML
-        ratio = (2 * rb + 2 * WALL_THICKNESS) / (2 * OUTER_R)
+        ratio = outer_d / (2 * OUTER_R)
         print(f"  {length:11.0f}  {length / MM_PER_IN:11.2f}  "
               f"{2 * rb:11.1f}  {outer_d:12.1f}  "
               f"{per_rev:7.1f}  {ratio:7.2f}×")
