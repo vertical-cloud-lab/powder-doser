@@ -31,18 +31,29 @@ evidence" table.
 
 ### Edits applied from the review
 
-Conservative, accuracy-only edits were applied to the abstract:
+Most of the reviewer punch-list (Sections 5–7) has now been applied, using
+bracketed placeholders where real numbers/decisions are still pending from the
+engineers (so nothing is fabricated):
 
-- Softened the closed-loop claim ("as part of … loop" → "designed for
-  integration into … loop"; "feed" → "will feed") to avoid overclaiming a
-  demonstrated self-driving loop.
-- Sharpened the commercial-dispenser problem statement (cost-prohibitive;
-  frequent recipe changes; reproducible metering).
+- Softened the closed-loop claim and sharpened the commercial-dispenser problem
+  statement (as before).
+- Added a quantitative dosing hook and powder-target sentence with a
+  `[±X mg]` placeholder, naming representative L-PBF feedstocks (AlSi10Mg,
+  silicon, stainless steel) and the non-hazardous-first test plan.
+- Added a hardware-specifics paragraph: stepper-driven Archimedean auger, tap
+  collar (coin vibration motor + solenoid), tilting baseplate, the actuator
+  trade-study (solenoid vs. servo tilt vs. vibration motor vs. stepper), and the
+  motivation to span small/large dispense volumes by adjusting auger diameter
+  and flight width (`[X]` mL/revolution placeholder).
+- Added a calibration paragraph describing the machine-learning-based
+  calibration algorithm and the parameter sweep over auger/tap/vibration/tilt
+  settings.
+- Trimmed the AI-CAD discussion (per punch-list items 6/13) to rebalance toward
+  the materials/hardware contribution, and added the explicit open-source
+  deliverables list (parametric CAD, BOM, control code, validation protocols).
 
-The remaining reviewer suggestions (adding quantitative dosing metrics, BOM
-cost, correction-cycle counts, explicit open-source deliverable lists, and the
-optional title rewrite) were intentionally **not** auto-applied: they require
-real numbers/decisions from the engineers and should not be fabricated. See
+Remaining `[…]` placeholders (dose accuracy, mL/revolution) should be replaced
+with measured/target values by the engineers before submission. See
 `review_out/review.answer.md` Sections 5–7 for the full punch-list.
 
 ## Reproducing
