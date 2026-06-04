@@ -45,6 +45,9 @@ Observed result (2026-06):
     ERR  connection-error        https://api.flux.ai/v1
 ```
 
+(The `api.flux.ai` errors are DNS resolution failures — the host does not
+exist — not timeouts or refused connections.)
+
 Interpretation:
 
 - There is **no `api.flux.ai` host** (DNS/connection failure), and no

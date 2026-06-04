@@ -30,7 +30,7 @@ import urllib.request
 
 # A deliberately fake key. Flux has no public API-key scheme, so this should
 # never authenticate; the point is to observe how each endpoint reacts.
-DUMMY_KEY = os.environ.get("FLUX_API_KEY", "dummy-flux-api-key-0000000000000000")
+PROBE_API_KEY = os.environ.get("FLUX_API_KEY", "dummy-flux-api-key-0000000000000000")
 
 # Candidate endpoints: the documented docs host plus the paths a programmatic
 # Copilot / project API would most plausibly live at if one existed.
@@ -68,8 +68,8 @@ def probe(url: str) -> dict:
         method="GET",
         headers={
             # Pretend to be an API client carrying a key.
-            "Authorization": "Bearer " + DUMMY_KEY,
-            "X-Api-Key": DUMMY_KEY,
+            "Authorization": "Bearer " + PROBE_API_KEY,
+            "X-Api-Key": PROBE_API_KEY,
             "Accept": "application/json",
             "User-Agent": "powder-doser-flux-probe/1.0",
         },
