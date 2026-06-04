@@ -178,6 +178,86 @@ def linear_model(variant, dz=0.002):
 
 
 # ----------------------------------------------------------------
+# Scaling / sizing helpers -- "how do we reach a target volume?"
+# ----------------------------------------------------------------
+# The current Ø25 mm barrel tops out near 67 mL even at 250 mm length
+# (length alone is hopeless for a 250 mL goal: 250 mL / 283 mm^3/mm
+# ~= 884 mm ~= 35 in).  Capacity instead scales with bore *area*, so
+# the practical lever is barrel diameter.  These helpers size the bore
+# diameter needed to hit a target volume at a chosen length, holding
+# the Ø8 mm shaft, 2 mm fin and 2 mm wall fixed (the parts tied to the
+# drive shaft, print strength and tube wall), so they answer
+# "what would it take to get to 250 mL without a hopper?".
+
+WALL_THICKNESS = OUTER_R - INNER_R   # 2.0 mm
+
+
+def straight_slope(bore_r, shaft_r=SHAFT_R, fin_thickness=FIN_THICKNESS):
+    """Void volume per mm of straight barrel (mm^3/mm) for a given bore."""
+    annulus = PI * (bore_r * bore_r - shaft_r * shaft_r)
+    fin = fin_thickness * (bore_r - shaft_r)
+    return annulus - fin
+
+
+def bore_radius_for_target(target_ml, length_mm, shaft_r=SHAFT_R,
+                           fin_thickness=FIN_THICKNESS, intercept=None):
+    """Bore radius (mm) needed to hold target_ml over a length_mm barrel.
+
+    Inverts the linear straight-barrel model
+    ``V = straight_slope(R)*L + intercept`` for R, holding the shaft,
+    fin and the Auger-4 end-effect intercept fixed.  The intercept is a
+    small (~ -4 mL) funnel/top-cap correction, so the sizing is accurate
+    to a few percent -- enough to choose a diameter; confirm the final
+    pick by re-running the full slice model on the resized geometry.
+    """
+    if intercept is None:
+        _, intercept = linear_model(4)
+    target_mm3 = target_ml * MM3_PER_ML
+    slope = (target_mm3 - intercept) / length_mm
+    # slope = pi*(R^2 - shaft_r^2) - fin*(R - shaft_r)
+    #  =>  pi*R^2 - fin*R - (slope + pi*shaft_r^2 - fin*shaft_r) = 0
+    a = PI
+    b = -fin_thickness
+    c = -(slope + PI * shaft_r * shaft_r - fin_thickness * shaft_r)
+    disc = b * b - 4 * a * c
+    if disc < 0:
+        return None
+    return (-b + math.sqrt(disc)) / (2 * a)
+
+
+def print_sizing_table(target_ml, shaft_r=SHAFT_R):
+    """How big must the barrel be (vs length) to reach target_ml?"""
+    _, intercept = linear_model(4)
+    print(f"Sizing to reach {target_ml:.0f} mL of powder void "
+          f"(no hopper) -- bore grows with capacity ~ diameter^2.")
+    print(f"  Held fixed: Ø{2 * shaft_r:.0f} mm shaft, "
+          f"{FIN_THICKNESS:.0f} mm fin, {WALL_THICKNESS:.0f} mm wall, "
+          f"{FIN_PITCH:.0f} mm pitch.\n")
+    print(f"  {'length (mm)':>11}  {'length (in)':>11}  "
+          f"{'bore Ø (mm)':>11}  {'outer Ø (mm)':>12}  "
+          f"{'mL/rev':>7}  {'×Ø25 now':>8}")
+    for length in (150, 200, 250, 300, 350):
+        rb = bore_radius_for_target(target_ml, float(length), shaft_r,
+                                    intercept=intercept)
+        if rb is None or rb <= shaft_r:
+            print(f"  {length:11.0f}  {length / MM_PER_IN:11.2f}  "
+                  f"{'(infeasible)':>11}")
+            continue
+        outer_d = 2 * rb + 2 * WALL_THICKNESS
+        per_rev = straight_slope(rb, shaft_r) * FIN_PITCH / MM3_PER_ML
+        ratio = (2 * rb + 2 * WALL_THICKNESS) / (2 * OUTER_R)
+        print(f"  {length:11.0f}  {length / MM_PER_IN:11.2f}  "
+              f"{2 * rb:11.1f}  {outer_d:12.1f}  "
+              f"{per_rev:7.1f}  {ratio:7.2f}×")
+    print("\n  Note: capacity grows as the square of the diameter but the "
+          "per-revolution\n  dose grows with it too, so a bigger barrel "
+          "trades metering resolution for\n  volume (drop the 10 mm pitch "
+          "to claw resolution back).  A bigger gear band,\n  bracket bore "
+          "and likely a larger motor than the NEMA 11 follow from the "
+          "wider tube.")
+
+
+# ----------------------------------------------------------------
 # Solid-volume model (only used by --validate against the STL mesh)
 # ----------------------------------------------------------------
 def solid_volume_mm3(variant, total_h, dz=0.002):
@@ -342,12 +422,19 @@ def main(argv=None):
                     help="summarise all four variants")
     ap.add_argument("--validate", action="store_true",
                     help="check the model against the committed STLs")
+    ap.add_argument("--target-ml", type=float, metavar="ML",
+                    help="size the bore/length needed to reach ML of void "
+                         "(e.g. 250) instead of reporting a fixed barrel")
     ap.add_argument("--csv", metavar="PATH",
                     help="write a V(length) table to PATH")
     args = ap.parse_args(argv)
 
     if args.validate:
         return 0 if run_validation() else 1
+
+    if args.target_ml:
+        print_sizing_table(args.target_ml)
+        return 0
 
     if args.csv:
         with open(args.csv, "w", newline="") as fh:

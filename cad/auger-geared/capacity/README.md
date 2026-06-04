@@ -138,6 +138,44 @@ For dosing control the **per-revolution** figure (≈ 2.83 mL/rev) multiplied by
 calibrated volumetric-efficiency factor is the number to use; the bench tests in
 issue #48 are the right way to fit that factor per powder.
 
+## Reaching a larger target volume (e.g. 250 mL, no hopper)
+
+`V(L)` makes the design trade-off explicit. Length alone cannot get far: at the
+current Ø25 mm barrel the void is only `283 mm³/mm`, so 250 mL would need
+`250 000 / 283 ≈ 884 mm ≈ 35 in` of barrel — not buildable as one screw. Capacity
+instead scales with the bore **area**, i.e. roughly the **square of the
+diameter**, so the practical lever is diameter, not length.
+
+`python3 auger_capacity.py --target-ml 250` inverts the model to size the bore
+needed at each length (holding the Ø8 mm shaft, 2 mm fin, 2 mm wall and 10 mm
+pitch fixed):
+
+| length (mm) | length (in) | bore Ø (mm) | outer Ø (mm) | mL/rev | vs Ø25 now |
+|------------:|------------:|------------:|-------------:|-------:|-----------:|
+| 150 | 5.91 | 47.6 | 51.6 | 16.9 | 2.07× |
+| 200 | 7.87 | 41.5 | 45.5 | 12.7 | 1.82× |
+| 250 | 9.84 | 37.3 | 41.3 | 10.2 | 1.65× |
+| 300 | 11.81 | 34.3 | 38.3 |  8.5 | 1.53× |
+| 350 | 13.78 | 31.9 | 35.9 |  7.3 | 1.44× |
+
+So a 250 mL screw is a roughly **1.5–1.8× wider barrel** (outer Ø ≈ 38–46 mm) at
+a 250–300 mm length — a modest diameter bump, not a 35 in tube. Two design
+consequences cross-reference against the current geared auger
+([PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49)):
+
+- **Drive torque & gear band.** A wider tube needs a larger gear band (the
+  Ø48 mm/48-tooth band roots on the bore) and lifts more powder per turn, so the
+  NEMA 11 likely needs more reduction or a NEMA 14/17.
+- **Metering resolution.** The per-revolution dose grows with the bore too
+  (≈ 8–17 mL/rev above), which is coarse for fine dosing; dropping the 10 mm
+  pitch claws resolution back without losing volume.
+
+The bracket/clamp ([PRs #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47),
+[#53](https://github.com/vertical-cloud-lab/powder-doser/pull/53)) bore would
+also follow the wider tube. The intercept-based sizing is accurate to a few
+percent; confirm a final pick by re-running the slice model on the resized
+geometry.
+
 ## Reproducing
 
 ```sh
@@ -145,6 +183,7 @@ python3 auger_capacity.py                  # Auger 4 summary + length table
 python3 auger_capacity.py --all            # all four variants at 5 in
 python3 auger_capacity.py --variant 4 --length 127
 python3 auger_capacity.py --validate       # check vs committed STL meshes
+python3 auger_capacity.py --target-ml 250  # size bore/length to reach 250 mL
 python3 auger_capacity.py --csv auger_capacity_table.csv
 ```
 
