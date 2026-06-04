@@ -31,30 +31,38 @@ evidence" table.
 
 ### Edits applied from the review
 
-Most of the reviewer punch-list (Sections 5–7) has now been applied, using
-bracketed placeholders where real numbers/decisions are still pending from the
-engineers (so nothing is fabricated):
+The reviewer punch-list (Sections 5–7) was used as input, then narrowed per
+PR feedback from @williamulbz to only claims that are grounded in this
+repository (notably proposal PR #27):
 
 - Softened the closed-loop claim and sharpened the commercial-dispenser problem
-  statement (as before).
-- Added a quantitative dosing hook and powder-target sentence with a
-  `[±X mg]` placeholder, naming representative L-PBF feedstocks (AlSi10Mg,
-  silicon, stainless steel) and the non-hazardous-first test plan.
-- Added a hardware-specifics paragraph: stepper-driven Archimedean auger, tap
-  collar (coin vibration motor + solenoid), tilting baseplate, the actuator
-  trade-study (solenoid vs. servo tilt vs. vibration motor vs. stepper), and the
-  motivation to span small/large dispense volumes by adjusting auger diameter
-  and flight width (`[X]` mL/revolution placeholder).
-- Added a calibration paragraph describing the machine-learning-based
-  calibration algorithm and the parameter sweep over auger/tap/vibration/tilt
-  settings.
-- Trimmed the AI-CAD discussion (per punch-list items 6/13) to rebalance toward
-  the materials/hardware contribution, and added the explicit open-source
-  deliverables list (parametric CAD, BOM, control code, validation protocols).
+  statement.
+- Replaced the abstract's dosing-metric placeholders with the proposal-defined
+  hardware targets from #27: up to 30 reservoirs, blends up to ≤250 mL,
+  per-powder gravimetric accuracy of ±1 mg with a ±0.1 mg stretch goal,
+  cross-contamination tests on five to seven representative L-PBF feedstock
+  powders, and an inert-atmosphere enclosure deferred to a later version.
+- Named representative L-PBF feedstocks (AlSi10Mg, silicon, stainless steel)
+  and the non-hazardous-first test plan.
+- Added a hardware-specifics paragraph grounded in repository discussions:
+  stepper-driven Archimedean auger (cad/auger, cad/auger-geared), tap collar
+  with coin vibration motor and solenoid (PR #51, issue #24), and tilting
+  baseplate driven by a hobby servo (issue #65). The actuator trade-study is
+  described in terms of options the project has actually considered
+  (solenoid vs. vibration motor for flow promotion; servo vs. linear actuator
+  for tilt).
+- Added the explicit open-source deliverables list (parametric CAD, BOM,
+  control code, validation protocols).
 
-Remaining `[…]` placeholders (dose accuracy, mL/revolution) should be replaced
-with measured/target values by the engineers before submission. See
-`review_out/review.answer.md` Sections 5–7 for the full punch-list.
+Reviewer suggestions **not** applied (and why):
+
+- Machine-learning-based calibration algorithm and a systematic parameter
+  sweep: removed per @williamulbz — these have been discussed but not yet
+  worked on in this repository, so they should not appear in the abstract.
+- Tuning auger throughput by adjusting auger diameter and flight width:
+  removed per @williamulbz — this has not been a discussed design path.
+- BOM cost, correction-cycle counts, and CALPHAD/Scheil coupling: still
+  unsupported by repository evidence; left out.
 
 ## Reproducing
 
