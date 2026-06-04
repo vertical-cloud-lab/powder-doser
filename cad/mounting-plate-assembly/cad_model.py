@@ -341,24 +341,28 @@ PINION_X_LO = GEAR_X_LO
 PINION_X_HI = GEAR_X_HI
 PINION_Y = Y_DISP                       # parallel to hinge axis
 PINION_Z = Z_AUG - GEAR_CENTRE_C        # = +2.0 mm — 10 mm above baseplate top
-# Servo mount — TWO separate posts (per Will's PR #66 review, comment
-# 4615931709) rather than a full-face wall.  Each post is a short
-# pillar that carries one MG996R flange ear (its two Ø5 holes); the
-# servo body + output boss protrude past the posts in the open gap
-# between them for proper alignment.  The posts' inboard (-X) face is
-# the flange seating plane, set so that when the ears bolt flush the
-# spline (and pinion) land in line with the mounting-plate gear.
-SERVO_WALL_X = PINION_X_HI + 1.0        # 1 mm clearance between pinion tip and post
-SERVO_WALL_T = 4.0                      # post thickness along X (flange seat → +X)
+# Servo mount — TWO separate SQUARE posts (per Will's PR #66 reviews,
+# comments 4615931709 + 4624739034) rather than a full-face wall.  Each
+# post is a clean rectangular pillar (no back brace / wedge) that
+# carries one MG996R flange ear (its two Ø5 holes); the servo body +
+# output boss protrude past the posts in the open gap between them for
+# proper alignment.  The posts' inboard (-X) face is the flange seating
+# plane.
+SERVO_WALL_T = 6.0                      # post thickness along X (flange seat → +X)
+# Post inboard (-X) face position.  Per Will's review (comment
+# 4624739034, "blue line") the distance from the post face to the FAR
+# (low-X) edge of the hinge gear band must be 14.1 mm — the MG996R
+# flange-to-output reach read from the dimensioned drawing.  This pulls
+# the posts OUTBOARD of the pinion so the servo spline carries the
+# pinion exactly onto the hinge-gear face (centre distance and the 2:1
+# ratio are unchanged — the gears themselves are untouched).
+SERVO_FACE_TO_GEAR_FAR = 14.1
+SERVO_WALL_X = GEAR_X_LO + SERVO_FACE_TO_GEAR_FAR       # ≈ 55.8
 SERVO_BODY_X_LO = SERVO_WALL_X + SERVO_WALL_T
 SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
-# Full flange Y-span (kept for the side-view render diagrams).
-SERVO_WALL_Y_MIN = PINION_Y - MG996R_SPLINE_Y_OFFSET - 7.25 - 4.0
-SERVO_WALL_Y_MAX = PINION_Y - MG996R_SPLINE_Y_OFFSET + MG996R_BODY_L + 7.25 + 4.0
-# Posts run from the baseplate/porch top up to a little above the
-# upper flange hole so the ear is fully backed by post material.
+# Posts run from the porch/baseplate top up to a little above the upper
+# flange hole so the ear is fully backed by post material.
 SERVO_WALL_Z_LO = BASE_T                # baseplate top in baseplate-local frame
-SERVO_WALL_Z_HI_LOCAL = (PINION_Z - Z_BASE_TOP) + MG996R_BODY_T / 2.0 + 4.0
 # Hole-centre Y offsets from the spline axis — annotated directly on
 # the dimensioned drawing as −14.85 mm and +34.65 mm (= 49.5 mm hole
 # spacing, with holes seated 2.5 mm in from each ear tip).
@@ -366,9 +370,23 @@ MG996R_HOLE_Y_OFFSETS = (
     -(MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),               # = -14.85
     +(MG996R_BODY_L - MG996R_SPLINE_Y_OFFSET + 7.25 - 2.5),  # = +34.65
 )
-# Each post is centred on its ear's hole-Y and is wide enough in Y to
-# leave ~4.5 mm of material around the Ø5 hole.
-SERVO_POST_W_Y = 14.0                   # post width along Y
+# The MG996R body (40 mm long in Y) must protrude PAST the two posts
+# through the open gap between them (per Will's review, comment
+# 4624739034 — "green dimension").  So the posts sit just OUTBOARD of
+# each body end with a small clearance: the gap between the posts' inner
+# faces equals the 40 mm body length + 2·SERVO_GAP_CLEAR.  Each post
+# extends further OUTBOARD (away from the gap) to fully back its ear's
+# two Ø5 holes.
+SERVO_BODY_Y_LO = PINION_Y - MG996R_SPLINE_Y_OFFSET       # near body end (Y)
+SERVO_BODY_Y_HI = SERVO_BODY_Y_LO + MG996R_BODY_L         # far  body end (Y)
+SERVO_GAP_CLEAR = 0.5                    # per-side body clearance into the gap
+SERVO_POST_W_Y = 14.0                    # post width along Y (outboard of the body)
+SERVO_POST_Y_SPANS = (
+    (SERVO_BODY_Y_LO - SERVO_GAP_CLEAR - SERVO_POST_W_Y,
+     SERVO_BODY_Y_LO - SERVO_GAP_CLEAR),                  # near post
+    (SERVO_BODY_Y_HI + SERVO_GAP_CLEAR,
+     SERVO_BODY_Y_HI + SERVO_GAP_CLEAR + SERVO_POST_W_Y),  # far  post
+)
 SERVO_POST_HOLE_Z = (-MG996R_HOLE_Z_SPREAD / 2.0,         # 2 holes / post (Z ±5)
                      +MG996R_HOLE_Z_SPREAD / 2.0)
 
@@ -815,21 +833,25 @@ def build_baseplate() -> cq.Workplane:
     # (Linear-actuator base clevis removed — no longer using a linear
     # actuator.)
 
-    # ---- MG996R servo mount — TWO posts (issue #63, PR #66 review) ------
-    # Per Will's review (comment 4615931709) the full-face mounting wall
-    # is replaced by TWO separate posts, one under each MG996R flange
-    # ear, so the servo body + output boss protrude past the posts in
-    # the open gap between them.  Each post carries that ear's two Ø5
-    # holes.  The posts' inboard (-X) face is the flange seating plane
-    # at X = SERVO_WALL_X, so when the ears bolt flush the spline (and
-    # pinion) land in line with the mounting-plate gear (C unchanged →
-    # 2:1 ratio preserved).
+    # ---- MG996R servo mount — TWO SQUARE posts (issue #63, PR #66) ------
+    # Per Will's reviews (comments 4615931709 + 4624739034) the full-face
+    # mounting wall is replaced by TWO separate square posts, one under
+    # each MG996R flange ear, so the servo body + output boss protrude
+    # PAST the posts through the open gap between them.  Each post is a
+    # clean rectangular pillar (no back brace / wedge — the brace was the
+    # "red" shape Will flagged as blocking proper seating of the servo's
+    # mounting holes).  The gap between the posts' inner faces equals the
+    # 40 mm body length (+ clearance) so the body fits between them; the
+    # posts' inboard (-X) face is the flange seating plane at
+    # X = SERVO_WALL_X, pulled outboard so the post-face-to-far-gear-edge
+    # distance is 14.1 mm (gears untouched → centre distance and the 2:1
+    # ratio are preserved).
     #
-    # The far post sits ~45 mm forward of the baseplate front edge
-    # (Y=+115), so we (a) extend the baseplate top forward as a "porch"
-    # under the servo footprint, (b) add a back brace behind each post,
-    # and (c) tie the cantilevered porch down to the adjacent front leg
-    # with a triangular flange under the tabletop (Will's 2nd bullet).
+    # The far post sits well forward of the baseplate front edge, so we
+    # (a) extend the baseplate top forward as a "porch" under the servo
+    # footprint, and (b) tie the cantilevered porch down to the adjacent
+    # front leg with a triangular flange under the tabletop (Will's
+    # earlier 2nd bullet — kept).
     pinion_z_local = PINION_Z - Z_BASE_TOP
     post_z_lo = SERVO_WALL_Z_LO
     post_z_hi = pinion_z_local + MG996R_HOLE_Z_SPREAD / 2.0 + 5.0
@@ -837,10 +859,9 @@ def build_baseplate() -> cq.Workplane:
     # (a) baseplate porch — a slab of baseplate-thickness material under
     # the servo footprint, fused to the baseplate front edge.
     PORCH_X_LO = SERVO_WALL_X             # flush with the posts' inboard face
-    PORCH_X_HI = SERVO_BODY_X_HI + 2.0    # out under the servo body
+    PORCH_X_HI = min(SERVO_BODY_X_HI + 1.0, BASE_FRONT_HALF_W)
     PORCH_Y_LO = BASE_Y_FRONT - 2.0       # 2 mm overlap into baseplate
-    PORCH_Y_HI = (PINION_Y + MG996R_HOLE_Y_OFFSETS[1]
-                  + SERVO_POST_W_Y / 2.0 + 2.0)
+    PORCH_Y_HI = SERVO_POST_Y_SPANS[1][1] + 1.0   # just past the far post
     porch = (
         cq.Workplane("XY")
         .box(PORCH_X_HI - PORCH_X_LO,
@@ -851,37 +872,21 @@ def build_baseplate() -> cq.Workplane:
     )
     base = base.union(porch)
 
-    # (b) the two posts + their back braces.
-    for dy in MG996R_HOLE_Y_OFFSETS:
-        post_yc = PINION_Y + dy
+    # (b) the two square posts, each carrying its ear's two Ø5 holes.
+    for (y_lo, y_hi), hole_y in zip(SERVO_POST_Y_SPANS, MG996R_HOLE_Y_OFFSETS):
         post = (
-            cq.Workplane("YZ")
-            .workplane(offset=SERVO_WALL_X)
-            .moveTo(post_yc, (post_z_lo + post_z_hi) / 2.0)
-            .rect(SERVO_POST_W_Y, post_z_hi - post_z_lo)
-            .extrude(SERVO_WALL_T)
+            cq.Workplane("XY")
+            .box(SERVO_WALL_T, y_hi - y_lo, post_z_hi - post_z_lo,
+                 centered=(False, False, False))
+            .translate((SERVO_WALL_X, y_lo, post_z_lo))
         )
         base = base.union(post)
-        # back brace — triangular web on the −Y face of the post that
-        # ties the post top back down onto the porch/baseplate top.
-        BRACE_LEN = 12.0
-        brace_y_root = post_yc - SERVO_POST_W_Y / 2.0
-        brace = (
-            cq.Workplane("YZ")
-            .workplane(offset=SERVO_WALL_X)
-            .moveTo(brace_y_root, post_z_lo)
-            .lineTo(brace_y_root, post_z_hi)
-            .lineTo(brace_y_root - BRACE_LEN, post_z_lo)
-            .close()
-            .extrude(SERVO_WALL_T)
-        )
-        base = base.union(brace)
         # this ear's two Ø5 mounting holes through the post (along X).
         for dz in SERVO_POST_HOLE_Z:
             hole = (
                 cq.Workplane("YZ")
                 .workplane(offset=SERVO_WALL_X - 1.0)
-                .center(post_yc, pinion_z_local + dz)
+                .center(PINION_Y + hole_y, pinion_z_local + dz)
                 .circle(MG996R_HOLE_DIA / 2.0)
                 .extrude(SERVO_WALL_T + 2.0)
             )
@@ -905,23 +910,6 @@ def build_baseplate() -> cq.Workplane:
         .extrude(FLANGE_THK)
     )
     base = base.union(flange)
-
-    # Pinion-swing clearance pocket — the pinion's tip Ø22 dips ~4 mm
-    # below the baseplate top at the front-edge corner where the disc
-    # tangents the baseplate.  Cut a shallow pocket through the front
-    # corner under the pinion footprint to clear the swept disc.
-    pocket_x_pad = 2.0
-    pocket_y_pad = 2.0
-    pocket = (
-        cq.Workplane("XY")
-        .workplane(offset=BASE_T + 1.0)
-        .center((GEAR_X_LO + GEAR_X_HI) / 2.0,
-                BASE_Y_FRONT - pocket_y_pad / 2.0)
-        .rect(GEAR_FACE_W + 2 * pocket_x_pad,
-              2 * pocket_y_pad + 2.0)
-        .extrude(-(BASE_T + 2.0))
-    )
-    base = base.cut(pocket)
 
     # Translate the whole baseplate so its bottom face sits at Z_BASE_TOP.
     return base.translate((0, 0, Z_BASE_TOP))

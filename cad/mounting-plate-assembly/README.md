@@ -64,28 +64,32 @@ a **2:1 spur-gear reduction**:
   sampled at 12 points per flank + a 3-point tip arc), matching the
   involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
   trapezoidal teeth.
-* **Servo mount — two posts** (per Will's PR #66 review).  Instead of a
-  full-face wall, the MG996R bolts to **two separate posts**, one under
-  each flange ear, standing on the baseplate top just outboard of the
-  pinion at `X = +55 mm` (1 mm clearance between pinion tip and post,
-  4 mm post thickness).  Each post carries that ear's **two Ø 5 mm
+* **Servo mount — two square posts** (per Will's PR #66 reviews).
+  Instead of a full-face wall, the MG996R bolts to **two separate
+  square posts** (clean rectangular pillars — no back brace/wedge), one
+  under each flange ear.  Each post carries that ear's **two Ø 5 mm
   holes** on the MG996R 49.5 × 10 mm flange pattern (hole-centre Y
   offsets from the spline axis −14.85 mm and +34.65 mm, read directly
-  from the dimensioned drawing).  The posts' inboard face is the flange
-  seating plane, so when the ears bolt flush the spline (and pinion)
-  land **in line with the mounting-plate gear** — the centre distance
-  is unchanged, so the 2:1 ratio is preserved.  The **servo body +
-  output boss protrude past the posts** through the open gap between
-  them; the body sits at `X ∈ [+59, +95.8] mm` and rests on a forward
-  **porch** of baseplate-thickness material (the porch front edge runs
-  out to `Y ≈ +169` under the servo footprint).  The mount is
-  **structurally tied** to the baseplate by:
-    * a **back brace** behind each post that ties the post top down to
-      the porch top; and
-    * a **triangular flange under the tabletop** that ties the
-      cantilevered porch down to the adjacent (+X) front leg, resisting
-      the bending the servo's weight + lifting reaction torque would
-      otherwise put into the cantilever.
+  from the dimensioned drawing).  Key fixes from Will's
+  comment 4624739034:
+    * **The body protrudes between the posts.**  The gap between the
+      posts' inner faces is the **40 mm body length** (+1 mm clearance),
+      so the MG996R body + output boss pass cleanly through the open gap
+      between them — the posts sit just *outboard* of each body end.
+    * **Posts moved outboard for proper gear mesh.**  The posts' inboard
+      (−X) face is the flange seating plane, set at `X = +55.8 mm` so
+      the distance from the post face to the **far edge of the hinge
+      gear band is 14.1 mm** (the MG996R flange-to-output reach from the
+      drawing).  This carries the pinion on the servo spline exactly
+      onto the hinge-gear face; the centre distance — and the 2:1 ratio
+      — are unchanged (the gears themselves are untouched).
+  The **servo body** sits at `X ∈ [+61.8, +98.6] mm` and rests on a
+  forward **porch** of baseplate-thickness material under the servo
+  footprint.  The cantilevered porch is **structurally tied** to the
+  baseplate by a **triangular flange under the tabletop** that ties it
+  down to the adjacent (+X) front leg, resisting the bending the servo's
+  weight + lifting reaction torque would otherwise put into the
+  cantilever.
 * **Trapezoidal tabletop on a tripod** (per Will's PR #66 review).  The
   baseplate is trimmed from a 200 × 250 mm rectangle on four legs to a
   **trapezoidal tabletop** — full width (±100 mm) at the front edge
