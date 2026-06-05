@@ -76,21 +76,23 @@ a **2:1 spur-gear reduction**:
       posts' inner faces is the **40 mm body length** (+1 mm clearance),
       so the MG996R body + output boss pass cleanly through the open gap
       between them — the posts sit just *outboard* of each body end.
-    * **Posts placed behind the holes; driving head overhangs 8 mm.**
-      Per Will's comment 4625212895 the posts sit *behind* the servo's
-      mounting holes and the servo is positioned so the very **tip of its
-      driving head hangs 8 mm past the baseplate front edge** — the
-      `6 mm + 2 mm` output-boss + horn protrusion above the body top read
-      from the dimensioned drawing.  The MG996R mounting flange (the two
-      ears) is at the body top, so the flange seating plane = the body
-      top = the baseplate (porch) front edge.  The posts' inboard (−X)
-      face is therefore set at `X = +62.0 mm` (= the gear's near face at
-      `+54.0 mm` plus the 8 mm driving head), and the 8 mm driving head
-      overhangs that edge by its full length.  The pinion on the servo
+    * **Posts placed behind the holes; driving head overhangs 5 mm.**
+      Per Will's comments 4625212895 / 4633722007 the posts sit *behind*
+      the servo's mounting holes and the servo is positioned so the very
+      **tip of its driving head hangs 5 mm past the baseplate front
+      edge** (revised down from 8 mm).  The driving head (output boss +
+      horn) physically protrudes `6 mm + 2 mm = 8 mm` above the body
+      top per the dimensioned drawing; with the flange seated 3 mm
+      inboard of the body top plane only the outermost 5 mm of the
+      driving head now overhangs.  The MG996R mounting flange (the two
+      ears) is at the body top, so the flange seating plane = the
+      baseplate (porch) front edge.  The posts' inboard (−X) face is
+      therefore set at `X = +59.0 mm` (= the gear's near face at
+      `+54.0 mm` plus the 5 mm overhang).  The pinion on the servo
       spline still lands exactly on the hinge-gear face, so the centre
       distance — and the 2:1 ratio — are unchanged (the gears themselves
       are untouched, as the placement only moves in X).
-  The **servo body** sits at `X ∈ [+62.0, +98.8] mm` and rests on a
+  The **servo body** sits at `X ∈ [+59.0, +95.8] mm` and rests on a
   forward **porch** of baseplate-thickness material under the servo
   footprint.  The cantilevered porch is **structurally tied** to the
   baseplate by a **triangular flange under the tabletop** that ties it
