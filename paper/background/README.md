@@ -46,6 +46,7 @@ feedback, expandable I/O; see issues
 | [`13-open-hardware-eda-for-labs.md`](13-open-hardware-eda-for-labs.md) | Generative EDA/PCB | Generative/automated electrical design in the **open-hardware lab-automation** context (OpenFlexure, Jubilee, Opentrons, HardwareX norms; modular motor/sensor control boards, multiplexed I/O, load-cell front-ends, DfM for low-cost assembly) and how mature generative EDA is for such instruments — the gap this project's control electronics sit in. |
 | [`14-pcb-design-recommendations-for-powder-doser.md`](14-pcb-design-recommendations-for-powder-doser.md) | Generative EDA/PCB | **Synthesis / recommendation** pass: an Edison `ANALYSIS` task that reads notes `07`–`13` back in and turns them into ranked, powder-doser-specific recommendations for how the GitHub Copilot coding agent could draft the control PCB (most-feasible approaches, whether each can run inside the headless GitHub/Copilot environment, and per-option pros/cons, limitations, and next steps). Answers @lbwinters' review request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4615501821). |
 | [`16-quilter-ai-pcb-layout.md`](16-quilter-ai-pcb-layout.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **Quilter.ai** (commercial autonomous PCB-*layout* SaaS) — what it does (KiCad-native placement/routing, not schematics), free-tier eligibility and the train-on-your-data caveat, community/Reddit sentiment and the DeepPCB benchmark (with the company-vs-academic-baseline name collision called out), and the key finding that it is **web-UI-only (no public API)** so it cannot be driven from the headless GitHub/Copilot CI. "No API" is verified by [`quilter_probe.py`](quilter_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635695822). |
+| [`17-deeppcb-ai-pcb-routing.md`](17-deeppcb-ai-pcb-routing.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **DeepPCB** (InstaDeep's commercial autonomous PCB-*routing* SaaS) — the direct counterpart to note `16`. Covers what it does (RL placement/routing, KiCad-native I/O, not schematics), its one-board / 30-minute free trial and per-minute pricing, and mixed/skeptical Reddit + EEVblog sentiment with the vendor-published DeepPCB-vs-Quilter benchmarks called out as non-neutral. Key finding: unlike Quilter/Flux.ai, DeepPCB **does expose a real public API** (`api.deeppcb.ai`, Swagger-documented), so it *is* headless/CI-scriptable — but needs a manually provisioned, paid, per-minute-metered API key. "Has a real API" is verified empirically by [`deeppcb_probe.py`](deeppcb_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635908170). |
 
 (Note `15` is reserved for the parallel **Flux.ai** tool deep-dive investigated
 separately for this PR; this branch jumps `14` → `16` to avoid renumbering.)
@@ -70,10 +71,12 @@ and citation count — are listed at the bottom of each file. Raw artifacts (ful
 `TaskResponse` JSON, rendered answer, standalone references list) live under
 [`edison_artifacts/`](edison_artifacts/).
 
-Note `16` (Quilter.ai) is **not** an Edison output: it is a hand-authored tool
-deep-dive from vendor pages, third-party reviews, and community/benchmark posts
-(cited inline by URL), with its central "no public API" claim verified
-empirically by the read-only [`quilter_probe.py`](quilter_probe.py).
+Note `16` (Quilter.ai) and note `17` (DeepPCB) are **not** Edison outputs: they
+are hand-authored tool deep-dives from vendor pages, third-party reviews, and
+community/benchmark posts (cited inline by URL), with their central API claims
+verified empirically by the read-only probes
+[`quilter_probe.py`](quilter_probe.py) ("no public API") and
+[`deeppcb_probe.py`](deeppcb_probe.py) ("has a real public API").
 
 The notes are intentionally kept verbatim (lightly formatted markdown) rather
 than paraphrased, so that citation provenance to the underlying sources is
