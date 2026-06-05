@@ -1,6 +1,7 @@
 name: Agentic testing (issue #87 only)
 
 on:
+  workflow_dispatch: 
   issues:
     types: [labeled]
   issue_comment:
