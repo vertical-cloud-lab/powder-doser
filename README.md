@@ -26,3 +26,10 @@ RSC-specific assets (`rsc.bst`, `rsc.bib`, `headers/`) are vendored in
 cd paper
 latexmk -pdf main.tex
 ```
+
+## Tooling notes
+
+- [OCP CAD Viewer for VS Code (assessment)](docs/tooling/ocp-cad-viewer.md) —
+  evaluation of the [`bernhard-42.ocp-cad-viewer`](https://marketplace.visualstudio.com/items?itemName=bernhard-42.ocp-cad-viewer)
+  extension as the local authoring loop for the repo's CadQuery scripts,
+  compared against Onshape and CQ-editor.
