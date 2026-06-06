@@ -8,7 +8,14 @@
 
 [`DESIGN-LOG.md`](DESIGN-LOG.md) is a single, scrollable, chronological record of
 every design — and every iteration of every design — created in this repository,
-each entry with render views and a short note on what changed and why.
+each entry with render views, a short note on **what** changed, the **rationale**
+(*why*), and the **outcome** where a design was built, bench-tested, or superseded.
+An [index by subsystem](DESIGN-LOG.md#index-by-subsystem) and a machine-readable
+YAML summary at the top group the iterations and link to each one; both are
+regenerated from the entries by
+[`tools/design_log/build_design_log.py`](tools/design_log/build_design_log.py).
+Printed-part photos pulled from issue/PR comments are archived under
+[`docs/assets/`](docs/assets).
 
 ## Paper
 
