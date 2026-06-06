@@ -3,7 +3,10 @@
 Binary artifacts referenced by [`DESIGN-LOG.md`](../../DESIGN-LOG.md) that were
 originally **attached to GitHub issue/PR comments** are archived here so the log
 survives even if the source attachment is later removed. Photos are downscaled
-(long edge ≤ 1600 px) and stripped of camera EXIF/GPS metadata before committing.
+(long edge ≤ 1600 px) and stripped of camera EXIF/GPS metadata before committing,
+using [Pillow](https://python-pillow.org/) (`ImageOps.exif_transpose` to bake in
+orientation, then re-saving the raw pixel data with no `exif`/metadata so embedded
+GPS coordinates are dropped).
 
 Bench-test **videos** are *not* mirrored here: they live on YouTube and are linked
 in-line from the log. (CAD renders/GIFs that live on still-open PR branches are

@@ -31,7 +31,10 @@ import re
 import sys
 from collections import Counter, OrderedDict
 
-LOG = pathlib.Path(__file__).resolve().parents[2] / "DESIGN-LOG.md"
+# This file lives at <repo>/tools/design_log/build_design_log.py, so the repo
+# root is two parent levels up.
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
+LOG = REPO_ROOT / "DESIGN-LOG.md"
 
 # Each pull request in this repository corresponds to one design subsystem, so the
 # pr= tag on every entry is an authoritative subsystem signal (more reliable than
@@ -73,7 +76,7 @@ SUBSYSTEM_ORDER = [
     "Electronics & PCB",
 ]
 
-ENTRY_RE = re.compile(r"<!-- ENTRY (?P<meta>[^>]*?)-->\n", re.S)
+ENTRY_RE = re.compile(r"<!-- ENTRY (?P<meta>[^>]*?)-->\r?\n", re.S)
 HEAD_RE = re.compile(r"^### (?P<head>.+)$", re.M)
 ANCHOR_RE = re.compile(r'^<a id="e\d+"></a>\n', re.M)
 NAME_RE = re.compile(r"—\s*(?P<name>.+?)\s*·")
