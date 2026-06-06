@@ -130,6 +130,9 @@ def main() -> None:
         "tags": [TAG, "consolidated_recommendation"],
     }
     print("Dispatching ANALYSIS task...", flush=True)
+    # ANALYSIS (data-analysis crow) runs are notably slower than the
+    # LITERATURE_HIGH batches because the crow executes a notebook over the
+    # uploaded collection; allow up to 90 min before giving up.
     results = client.run_tasks_until_done(
         [task], verbose=True, progress_bar=False, timeout=5400, files=[file_uri]
     )
