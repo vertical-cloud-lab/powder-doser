@@ -24,7 +24,9 @@ e-mail addresses and requires a public, verifiable source URL for every named
 person (editorial-board page, faculty page, ORCID, conference committee page).
 
 Outputs go to ``paper/background/edison_artifacts/`` as
-``<key>.{task.json,answer.md,references.md}``. Run with::
+``<key>.{task.json,answer.md,references.md}``, plus any agent-generated
+structured tables as ``<key>.<artifact>.md`` (e.g. ``<key>.artifact-00.md``).
+Run with::
 
     pip install edison_client
     export EDISON_API_KEY=...
@@ -132,18 +134,25 @@ QUERIES: dict[str, str] = {
 TAG = "powder-doser-venues"
 
 
-def extract_answer(data: dict) -> tuple[str, str]:
-    """Pull the formatted answer + references out of a task model_dump()."""
+def extract_answer(data: dict) -> tuple[str, str, dict]:
+    """Pull the formatted answer, references, and agent-generated artifacts.
+
+    PaperQA emits structured tables under ``answer.artifacts`` (e.g.
+    ``artifact-00``); these are distinct from the prose answer and references and
+    must be persisted alongside them so no associated artifact is dropped.
+    """
     try:
         answer = data["environment_frame"]["state"]["state"]["response"]["answer"]
         formatted = answer.get("formatted_answer") or answer.get("answer") or ""
         references = answer.get("references") or ""
-        return formatted, references
+        artifacts = answer.get("artifacts") or {}
+        return formatted, references, artifacts
     except (KeyError, TypeError):
         pass
     formatted = data.get("formatted_answer") or data.get("answer") or ""
     references = data.get("references") or ""
-    return formatted, references
+    artifacts = data.get("artifacts") or {}
+    return formatted, references, artifacts
 
 
 def main() -> None:
@@ -178,13 +187,19 @@ def main() -> None:
         (out_dir / f"{key}.task.json").write_text(
             json.dumps(data, default=str, indent=2)
         )
-        formatted, references = extract_answer(data)
+        formatted, references, artifacts = extract_answer(data)
         (out_dir / f"{key}.answer.md").write_text(formatted)
         (out_dir / f"{key}.references.md").write_text(references)
+        for akey, content in sorted((artifacts or {}).items()):
+            text = content or ""
+            if not text.endswith("\n"):
+                text += "\n"
+            (out_dir / f"{key}.{akey}.md").write_text(text)
         task_ids[key] = str(data.get("task_id") or data.get("id") or "")
         print(
             f"  {key}: status={data.get('status')} id={task_ids[key]} "
-            f"answer_chars={len(formatted)} refs_chars={len(references)}",
+            f"answer_chars={len(formatted)} refs_chars={len(references)} "
+            f"artifacts={len(artifacts or {})}",
             flush=True,
         )
 
