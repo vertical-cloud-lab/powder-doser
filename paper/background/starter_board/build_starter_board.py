@@ -149,8 +149,8 @@ def _pad(number: str, lx: float, ly: float, net: Net | None, pin1: bool) -> Pad:
 
 
 def _make_footprint(ref: str, lib_id: str, x: float, y: float,
-                    pin_nets: dict[str, str], nets: dict[str, Net]) -> tuple[Footprint, list[tuple[float, float]]]:
-    """Build one proxy footprint; return it plus the world (x, y) of every pad."""
+                    pin_nets: dict[str, str], nets: dict[str, Net]) -> tuple[Footprint, list[tuple[float, float]], tuple[float, float]]:
+    """Build one proxy footprint; return it, the world (x, y) of every pad, and (hw, hh)."""
     cols = PINOUTS[lib_id]
     left, right = cols["left"], cols["right"]
     n_rows = max(len(left), len(right)) or 1
@@ -214,7 +214,7 @@ def _assert_no_overlap(courtyards: list[tuple[str, float, float, float, float]])
                     f"footprints {ra} and {rb} overlap; increase FLOORPLAN_SCALE")
 
 
-def build_board() -> Board:
+def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
     board = Board.create_new()
     board.generator = "powder_doser_build_starter_board"
 
