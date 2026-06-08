@@ -50,6 +50,7 @@ feedback, expandable I/O; see issues
 | [`18-celus-ai-schematic-floorplan.md`](18-celus-ai-schematic-floorplan.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **CELUS** (the CELUS Design Platform) — the **intermediate "topology → router-ready starter board" bridge** @lbwinters identified between an LLM topology tool (LaMAGIC) and an autonomous router (Quilter/DeepPCB, which both require a fully-footprinted KiCad starter board). Covers what it does (block-diagram / natural-language → connected schematic + BOM + floorplan via pre-verified **CUBO** blocks, with native **KiCad** project export including symbols + footprints), free sign-up tier, and review/forum sentiment (with the competitor-published Quilter-vs-CELUS ranking flagged as non-neutral). Key finding: CELUS is the best *capability* match for the bridge but is **web-UI / login-only with no public API**, so — like Quilter/Flux.ai — it is a manual, human-in-the-loop step, not a headless CI one. "No public API" is verified by [`celus_probe.py`](celus_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
 | [`19-topology-to-starter-board-tools.md`](19-topology-to-starter-board-tools.md) | Generative EDA/PCB | **Edison `LITERATURE_HIGH` survey** of the *intermediate* "topology + BOM → router-ready KiCad starter board" step that Quilter/DeepPCB cannot do themselves: commercial/AI-native bridges (CELUS, Flux.ai, JITX, Circuit Mind, Cofactr), design-as-code frameworks (atopile, tscircuit, SKiDL, Horizon EDA, KiCad-CLI + Python, PCBmodE), and 2020–2025 research on netlist/topology → placement/floorplan (incl. recent NL→KiCad systems pcbGPT, PCBSchemaGen, SchGen, and the HWE-Bench 8.15% end-to-end warning), each scored on input→output, KiCad interoperability, scriptability/API, licensing, and maturity. Kept verbatim. Produced by [`edison_run_topology_to_board.py`](edison_run_topology_to_board.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
 | [`20-topology-to-starter-board-for-powder-doser.md`](20-topology-to-starter-board-for-powder-doser.md) | Generative EDA/PCB | **Synthesis / recommendation** pass: an Edison `ANALYSIS` task that audits **this repo's actual KiCad control-board schematic** (`hardware/test-module/kicad/` from PR [#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61)) and turns it into concrete, ranked steps for the Copilot agent to produce the footprinted, outlined `.kicad_pcb` starter board Quilter/DeepPCB need. Finds the schematic complete (14 parts / 20 nets) but missing footprints, board file, outline, and placement; ranks **(1)** extending the existing `generate.py` + `kiutils` to emit an unplaced outlined board headlessly, **(2)** migrating to atopile/tscircuit, **(3)** a human-in-the-loop GUI init for the mixed-signal partitioning — flagging CELUS/Flux.ai as login-only and JITX as paywalled for CI. Kept verbatim. Produced by [`edison_run_topology_to_board_analysis.py`](edison_run_topology_to_board_analysis.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
+| [`21-starter-board-for-quilter-deeppcb.md`](21-starter-board-for-quilter-deeppcb.md) | Generative EDA/PCB | **Build note (not Edison):** the concrete implementation of note `20`'s Rank-1 plan — a headless, self-contained [`starter_board/build_starter_board.py`](starter_board/build_starter_board.py) (pure-Python `kiutils`, no KiCad/GUI/network) that turns the PR [#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61) schematic's 14-part / 20-net topology into an actual **router-ready starter board** — [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) (14 proxy footprints, 66 pads / 59 net-assigned, 145 × 109 mm Edge.Cuts outline) plus a [`.kicad_pro`](starter_board/test_module_starter.kicad_pro) with `Default`/`Power` net classes — that uploads directly to Quilter or DeepPCB. Verified in KiCad 7 (`WriteDRCReport`): **0 footprint errors**, 39 unconnected ratsnest items (the routing work), only harmless embedded-library warnings. Honest caveats carried from note `20`: proxy (not final) footprints, and mixed-signal partitioning still wants a human pass. Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654482011). |
 
 (Note `15` is reserved for the parallel **Flux.ai** tool deep-dive investigated
 separately for this PR; this branch jumps `14` → `16` to avoid renumbering.
@@ -99,6 +100,14 @@ board/constraints schemas) — it never prints the key and **consumes no credits
 The notes are intentionally kept verbatim (lightly formatted markdown) rather
 than paraphrased, so that citation provenance to the underlying sources is
 preserved when individual passages are pulled into the LaTeX manuscript.
+
+Note `21` (starter board) is likewise **not** an Edison output: it is a
+hand-built artifact. [`starter_board/build_starter_board.py`](starter_board/build_starter_board.py)
+generates the uploadable `test_module_starter.kicad_pcb` headlessly from a
+netlist transcribed verbatim from PR
+[#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61)'s
+`generate.py`; it depends only on pure-Python `kiutils` (no KiCad install
+required to build the board).
 
 ## How to use these notes when drafting the proposal
 
@@ -170,3 +179,14 @@ python paper/background/quilter_probe.py
 python paper/background/deeppcb_probe.py
 python paper/background/celus_probe.py
 ```
+
+To regenerate the **starter board** (note `21`) — the actual router-ready
+`.kicad_pcb` that uploads to Quilter/DeepPCB:
+
+```bash
+pip install kiutils            # pure-Python; cairosvg optional for the PNG
+python paper/background/starter_board/build_starter_board.py
+```
+
+`kicad-cli` (KiCad ≥ 7) is optional and only used to render the SVG/PNG
+preview; the board, project, and summary are produced without it.

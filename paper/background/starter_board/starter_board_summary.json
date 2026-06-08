@@ -1,0 +1,87 @@
+{
+  "board": "test_module_starter.kicad_pcb",
+  "components": 14,
+  "nets": 20,
+  "outline_mm": [
+    145.12,
+    109.01
+  ],
+  "power_nets": [
+    "+12V",
+    "+3V3",
+    "+5V",
+    "GND"
+  ],
+  "bom": [
+    {
+      "ref": "J1",
+      "proxy": "Barrel_Jack_12V",
+      "pins": 2
+    },
+    {
+      "ref": "U1",
+      "proxy": "D24V22F5_Buck",
+      "pins": 5
+    },
+    {
+      "ref": "C1",
+      "proxy": "Cap_Polar",
+      "pins": 2
+    },
+    {
+      "ref": "C2",
+      "proxy": "Cap_Polar",
+      "pins": 2
+    },
+    {
+      "ref": "U2",
+      "proxy": "Pi_Pico_W",
+      "pins": 11
+    },
+    {
+      "ref": "U3",
+      "proxy": "DRV2605L_Breakout",
+      "pins": 8
+    },
+    {
+      "ref": "M1",
+      "proxy": "ERM_Motor",
+      "pins": 2
+    },
+    {
+      "ref": "U4",
+      "proxy": "DRV8871_Breakout",
+      "pins": 6
+    },
+    {
+      "ref": "SOL1",
+      "proxy": "Solenoid",
+      "pins": 2
+    },
+    {
+      "ref": "U5",
+      "proxy": "Tic_T500",
+      "pins": 8
+    },
+    {
+      "ref": "C3",
+      "proxy": "Cap_Polar",
+      "pins": 2
+    },
+    {
+      "ref": "SR1",
+      "proxy": "Shunt_Regulator",
+      "pins": 2
+    },
+    {
+      "ref": "M2",
+      "proxy": "Stepper_4wire",
+      "pins": 4
+    },
+    {
+      "ref": "M3",
+      "proxy": "Servo_3pin",
+      "pins": 3
+    }
+  ]
+}
