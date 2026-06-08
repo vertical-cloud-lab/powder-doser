@@ -32,6 +32,7 @@ hardware/test-module/
     ├── main.py                # MicroPython main loop + driver classes
     ├── config.py              # easily adjustable parameters
     ├── drv2605.py             # in-tree MicroPython driver for the haptic chip
+    ├── tic.py                 # in-tree MicroPython driver for the Tic T500
     └── tests/                 # per-component keyboard-driven bench scripts
 ```
 
@@ -41,7 +42,7 @@ hardware/test-module/
 
 Open `kicad/test_module.kicad_pro` in KiCad 7.  The schematic is
 authored as global-label-only connectivity — matching label names
-(`+12V`, `GND`, `I2C_SDA`, `STP_STEP`, etc.) are electrically connected
+(`+12V`, `GND`, `I2C_SDA`, `STP_TX`, etc.) are electrically connected
 across the sheet.  No wires are routed, which keeps the layout
 trivially regeneratable from `generate.py`.
 
@@ -61,14 +62,14 @@ hosting all the wiring on a half-size breadboard.
 | M1  | 10 mm ERM coin motor (Adafruit #1201) | 2 | 1 | Or any LRA on `VIBRATION_LIBRARY = 6`. |
 | U4  | Adafruit DRV8871 motor driver breakout (#3190) | 5 | 1 | Drives the solenoid. |
 | SOL1| JF-0530B 5 V push-pull solenoid (Adafruit #412) | 4 | 1 | The tap actuator. |
-| U5  | Pololu DRV8825 stepper driver carrier (#2133) | 11-alt | 1 | DRV8825 over Tic T500 for bench — the Pico W can generate STEP/DIR directly. |
-| SR1 | Pololu #3776 33 V / 9 W shunt regulator | 18 | 1 | Across `+12V` / `GND` next to U5's `VMOT` to clamp stepper back-EMF — see notes below. |
+| U5  | Pololu Tic T500 USB stepper motor controller (#3134, MP6500) | 11 | 1 | Drives the auger over TTL serial from the Pico W; on-board motion planner + software-set current limit. |
+| SR1 | Pololu #3776 33 V / 9 W shunt regulator | 18 | 1 | Across `+12V` / `GND` next to U5's `VIN` to clamp stepper back-EMF — see notes below. |
 | M2  | NEMA-11 11HS18-0674S bipolar stepper | 10 | 1 | Direct-coupled to the auger. |
 | M3  | HD-1810MG metal-gear digital servo (#1142) | 16 | 1 | Dispensing-angle / wiper axis. |
 | J1  | Mean Well GST60A12-P1J 12 V / 5 A barrel-jack PSU | 13 + 13a/13b | 1 | System power. |
-| C1  | 100 µF / 25 V electrolytic, 12 V bulk | 14 | 1 | Required by Pololu on DRV8825 V_MOT. |
+| C1  | 100 µF / 25 V electrolytic, 12 V bulk | 14 | 1 | 12 V rail bulk decoupling. |
 | C2  | 100 µF / 10 V electrolytic, 5 V bulk | 9 | 1 | Tames the servo + solenoid transients on the 5 V rail. |
-| C3  | 100 µF / 25 V electrolytic, second bulk | 14 | 1 | Sits directly on the DRV8825's V_MOT screw terminals. |
+| C3  | 100 µF / 25 V electrolytic, second bulk | 14 | 1 | Sits directly on the Tic T500's `VIN` screw terminals. |
 | —   | Half-size breadboard, jumper wires, 0.1" headers | 9 | — | Bench wiring substrate (replaces item 6 bonnet for tests). |
 
 ### Why the shunt regulator (SR1) is on the bench rig
@@ -79,63 +80,66 @@ keeps it for three reasons:
 
 1. **Back-EMF clamping.**  When the auger decelerates or is back-driven
    (e.g. clogged powder pushes the stepper backwards), the motor pumps
-   energy back into the `VMOT` rail.  With only the 100 µF bulk cap
+   energy back into the `VIN` rail.  With only the 100 µF bulk cap
    (C3) and a wall-wart that can't sink current, the rail voltage can
-   transient well above 12 V — the DRV8825's absolute max is 45 V, so a
-   single mistimed stop can kill the driver.  The shunt regulator
-   begins conducting at ~33 V and dumps the excess into its on-board
-   power resistor, holding the rail safely below the DRV8825's limit.
+   transient well above 12 V — the Tic T500's maximum input is 35 V, so
+   a hard stop on a fast move can push it past its limit.  The shunt
+   regulator begins conducting at ~33 V and dumps the excess into its
+   on-board power resistor, holding the rail safely below the Tic's
+   35 V ceiling.
 2. **Identical-to-production wiring.**  Keeping SR1 on the bench means
    step-rate / acceleration profiles found here transfer directly to
    the 30-channel system without re-tuning for a different transient
    envelope.
-3. **Cheap insurance.**  At ~$7 it costs less than one DRV8825
+3. **Cheap insurance.**  At ~$7 it costs less than one Tic T500
    replacement.
 
 It mounts as a single 2-pin part across `+12V` / `GND`, electrically
-in parallel with C3, as close to U5's `VMOT` screw terminals as the
+in parallel with C3, as close to U5's `VIN` screw terminals as the
 breadboard allows.  See SR1 in the schematic.
 
-### Why the Tic T500 USB stepper controller from PR #25 is *not* on the bench rig
+### Why the Tic T500 is the stepper driver on the bench rig
 
 PR #25 lists the **Pololu Tic T500 USB multi-interface stepper motor
-controller** (item 11) as the production option for driving the auger.
-The Tic is essentially a DRV8825 + an on-board microcontroller that
-exposes USB / I²C / TTL-serial / step-and-direction inputs and runs
-its own motion planner (acceleration ramps, current-position
-tracking, soft limits).
+controller** (item 11) as the option for driving the auger, and this
+bench rig uses it directly.  The Tic T500 is an MP6500 stepper driver
+plus an on-board microcontroller that exposes USB / I²C / TTL-serial /
+RC / analog / encoder / step-and-direction inputs and runs its own
+motion planner (acceleration ramps, current-position tracking, soft
+limits, software-set current limit).  We picked it over a bare driver
+carrier for the bench because:
 
-This bench rig deliberately drops the Tic and drives the bare
-**DRV8825 carrier (item 11-alt, Pololu #2133)** straight from the
-Pico W's GPIOs instead, because:
+1. **It is easy to bring up and tune.**  The free Tic Control Center
+   configures the current limit (in mA, no `V_REF` pot maths), step
+   mode, decay, and lets you jog the motor over USB before any
+   microcontroller is involved — so a wiring or motor problem is caught
+   in minutes.
+2. **It matches the production plan from PR #25.**  Using the same Tic
+   T500 here means the bench numbers (current limit, microstepping,
+   accel) transfer unchanged to the multi-channel system instead of
+   being re-derived for a different driver.
+3. **The Pico W just sends targets.**  The Pico W drives the Tic over
+   **UART1 (TTL serial)** — `Pico GP4 (TX) → Tic RX`,
+   `Pico GP5 (RX) ← Tic TX` — using the Tic serial command set in
+   [`firmware/tic.py`](firmware/tic.py).  The firmware sets step mode,
+   max speed, and acceleration on boot and then issues
+   "set target position" commands; the Tic handles the step generation
+   and ramps.  This frees the six GPIOs a bare STEP/DIR/M0–2/nEN driver
+   would have needed.
 
-1. **No second microcontroller in the chain.**  The whole point of
-   this rig is "one MCU, one breadboard, USB-serial REPL".  The Tic
-   T500 would put a second MCU between the host (the Pico W on
-   USB-serial) and the driver, doubling the firmware surface for no
-   added capability.
-2. **The Pico W already does what the Tic does.**  STEP/DIR pulse
-   generation, microstep selection (M0/M1/M2), enable, fault
-   detection, and accel/decel ramps are all handled in
-   [`firmware/main.py`](firmware/main.py)'s `Stepper` class.  The Tic's
-   on-board motion planner would just duplicate that.
-3. **Cost & part count.**  A Tic T500 is ~$40 plus a USB cable; a
-   bare DRV8825 carrier is ~$8 and uses six Pico GPIOs we already
-   have free.  For a one-channel bench rig the bare carrier wins on
-   both axes.
-4. **The production system can still use it.**  Nothing in this rig
-   precludes swapping to a Tic T500 (or scaling to 30 Tics on a USB
-   hub) for the production multi-channel system — the firmware
-   pin/net contract documented above is what would change, not the
-   bench wiring philosophy.
+> **Why not the bare DRV8825 carrier (Pololu #2133)?**  An earlier
+> revision of this rig drove a DRV8825 carrier straight from the Pico
+> W's GPIOs to save a few dollars.  The team chose the Tic T500 instead
+> because its USB configuration utility and on-board motion planner make
+> it markedly easier to interface with and tune — the priority is to
+> prove out one channel quickly, not to shave cost on a single bench
+> rig.  The DRV8825-based **Tic T825** is a drop-in alternative if a
+> higher microstep count (1/16, 1/32) or a higher (45 V) input ceiling
+> is ever needed; only the BOM line and the Control-Center current
+> limit would change, not the firmware (it talks the same serial
+> protocol to every Tic).
 
-If you want to re-introduce the Tic T500 for a side-by-side compare,
-delete the `DRV8825_Carrier` placement in `kicad/generate.py`, add a
-`Tic_T500` symbol with `STEP`/`DIR`/`ERR`/`USB` pins, wire `STP_STEP`
-/ `STP_DIR` to it instead of U5, and rebuild — the firmware will run
-unchanged because it only sees STEP/DIR pulses on GP2/GP3.
-
-Total ≈ **$45 + $19 (PSU) + $13 (stepper) + ~$10 (breadboard / jumpers)**
+Total ≈ **$70 + $19 (PSU) + $13 (stepper) + ~$10 (breadboard / jumpers)**
 on top of whatever Pico W is on the bench.
 
 ## Pin / net table
@@ -147,18 +151,14 @@ These nets are the contract between
 
 | Net | DRV / actuator pin | Pico W pin | Notes |
 |---|---|---|---|
-| `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VMOT , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
+| `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VIN , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
 | `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , C2.+              | —     | Buck output; powers Pico W + servo. |
-| `+3V3`       | U2.3V3 , U3.VIN , U5.nSLP , U5.nRST           | —     | Pico W on-board LDO; logic + DRV2605L.  The DRV8825 carrier (#2133) has no separate VDD pin — its logic supply is generated internally from VMOT — so only `nSLP` / `nRST` are pulled up to `+3V3`. |
-| `GND`        | (all, incl. SR1.-) | —     | Common ground (DRV8825 motor- and logic-side GND pins both land here). |
+| `+3V3`       | U2.3V3 , U3.VIN                                | —     | Pico W on-board LDO; powers the DRV2605L logic.  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
+| `GND`        | (all, incl. SR1.- , U5.GND) | —     | Common ground. |
 | `I2C_SDA`    | U3.SDA            | GP0   | I2C0 SDA to DRV2605L. |
 | `I2C_SCL`    | U3.SCL            | GP1   | I2C0 SCL to DRV2605L. |
-| `STP_STEP`   | U5.STEP           | GP2   | DRV8825 step pulse. |
-| `STP_DIR`    | U5.DIR            | GP3   | DRV8825 direction. |
-| `STP_nEN`    | U5.nEN            | GP4   | Active-low enable; high to disable. |
-| `STP_M0`     | U5.M0             | GP5   | DRV8825 microstep select. |
-| `STP_M1`     | U5.M1             | GP6   | "                            " |
-| `STP_M2`     | U5.M2             | GP7   | "                            " |
+| `STP_TX`     | U5.RX             | GP4   | Pico UART1 TX → Tic T500 RX (commands to the Tic). |
+| `STP_RX`     | U5.TX             | GP5   | Pico UART1 RX ← Tic T500 TX (telemetry / current position). |
 | `SOL_IN1`    | U4.IN1            | GP10  | DRV8871 IN1 — PWM, drives the solenoid forward. |
 | `SOL_IN2`    | U4.IN2            | GP11  | DRV8871 IN2 — held low. |
 | `HAPT_EN`    | U3.EN , U3.IN_TRIG| GP14  | Hard-mute / wake for DRV2605L. |
@@ -167,19 +167,23 @@ These nets are the contract between
 | `STP_B1/B2`  | U5.B1/B2 ↔ M2.B1/B2 | —   | Stepper coil B. |
 | `VIB_A/B`    | U3.OUT± ↔ M1.±    | —     | ERM coin motor leads. |
 | `SOL_A/B`    | U4.OUT1/OUT2 ↔ SOL1.± | — | Solenoid coil. |
-| `STP_FAULT`  | U5.nFAULT         | (n/c) | Optional — wire to a free GPIO if you want fault detection. |
+| —            | U5.ERR            | (n/c) | Optional — Tic error line; wire to a free GPIO for fault detection. |
 
 ## Assembly / wiring instructions
 
 Build order, top to bottom:
 
-1. **Adjust the DRV8825 current-limit pot** (U5) *before* installing it.
-   With the carrier on a bench supply at the same 12 V you'll use later,
-   measure `V_REF` between the pot wiper and `GND` while the motor is
-   disconnected and turn the pot until `V_REF ≈ I_motor × 2 × R_sense`.
-   For the 11HS18-0674S (0.67 A/phase) on the Pololu #2133 (R_sense =
-   0.1 Ω): `V_REF ≈ 0.13 V`.  Skipping this step *will* cook the motor
-   the first time you press `d`.
+1. **Configure the Tic T500 over USB** (U5) *before* installing it.
+   Plug the Tic into your computer with a micro-USB cable and open the
+   **Tic Control Center**.  Set *Control mode* to "Serial / I²C / USB",
+   set the *current limit* to the motor's per-phase rating (≈ 0.67 A /
+   `670 mA` for the 11HS18-0674S; never above the Tic T500's `1500 mA`
+   continuous limit), choose the *step mode* (1/8 by default), and set
+   the *Command timeout* to 0 (disabled) so a long move can't be cut
+   short.  There is **no `V_REF` pot** — the current limit is a software
+   setting enforced by the MP6500's on-chip current sensing.  Use the
+   Control Center's manual jog to confirm the motor spins before wiring
+   anything to the Pico.
 
 2. **Power rails**. Plug the Mean Well 12 V brick (item 13) into the
    barrel-jack pigtail (item 13b) and land the two leads on the
@@ -207,30 +211,26 @@ Build order, top to bottom:
    * `Pico W GP11 (pin 15) → U4 IN2`
    * `U4 OUT1 → solenoid +`, `U4 OUT2 → solenoid -`.
 
-6. **Stepper (DRV8825 + shunt regulator).** Wire:
-   * `U5 VMOT → +12V`, `U5 GND_M → GND` (motor-side ground).
-     Add C3 (100 µF/25 V) directly across these two terminals; Pololu
-     specifically calls this out and the bench rig will brown out the
-     +12V rail without it.
+6. **Stepper (Tic T500 + shunt regulator).** Wire:
+   * `U5 VIN → +12V`, `U5 GND → GND` (the `GND` next to `VIN` on the
+     high-current side).  Add C3 (100 µF/25 V) directly across these two
+     terminals; it tames the 12 V rail when the motor starts and stops.
    * **Mount SR1 (Pololu #3776 shunt regulator) in parallel with C3**,
-     `+` to `+12V` and `-` to `GND`, as close to `VMOT` as possible.
+     `+` to `+12V` and `-` to `GND`, as close to `VIN` as possible.
      Its on-board power resistor handles the back-EMF clamp described
-     in the BOM section.
-   * `U5 GND_L → GND` (the second GND pin on the motor-side header is
-     the same node as `GND_M` — both go to the breadboard ground rail).
-     The Pololu #2133 carrier has **no separate VDD pin**: its logic
-     supply is generated internally from `VMOT` by the on-chip 3.3 V
-     LDO, and the STEP/DIR/M0..2/nEN inputs are happy with the Pico
-     W's 3.3 V logic directly.  If you have an older 9-pin clone with
-     a VDD pin, tie it to `+3V3`; otherwise leave it out.
-   * Tie both `U5 nSLP` and `U5 nRST` to `+3V3` (they ship pulled low
-     on the carrier; without this the driver stays asleep).
-   * `Pico W GP2 → STEP`, `GP3 → DIR`, `GP4 → nEN`, `GP5 → M0`,
-     `GP6 → M1`, `GP7 → M2`.
+     in the BOM section (the Tic T500's max input is 35 V).
+   * `Pico W GP4 (pin 6) → U5 RX`, `Pico W GP5 (pin 7) → U5 TX`
+     (UART1 cross-over: Pico TX → Tic RX, Pico RX ← Tic TX).  A common
+     `GND` between the Pico and the Tic is already provided by the
+     shared breadboard ground rail.  The Tic generates its own logic
+     supply from `VIN`, so there is **no logic-rail or enable wire** to
+     run from the Pico.
    * `U5 A1/A2 → stepper coil A`, `U5 B1/B2 → stepper coil B`.
      For the 11HS18-0674S: black/green = coil A, red/blue = coil B
      (verify with a multimeter — adjacent leads with low resistance
-     belong to the same coil).
+     belong to the same coil).  **Never connect or disconnect the
+     stepper while `VIN` is powered** — doing so can destroy the Tic's
+     driver.
 
 7. **Dispense-angle servo.**
    * `M3 +5V → +5V`, `M3 GND → GND`
@@ -242,9 +242,9 @@ Build order, top to bottom:
 8. **Sanity check before powering.** With the brick **unplugged**:
    * Confirm no continuity between `+12V` and `GND`, or between `+5V`
      and `GND`.
-   * Confirm the DRV8825 current-limit pot is at the value you set in
-     step 1.
-   * Confirm `nSLP` and `nRST` on U5 are tied high.
+   * Confirm the Tic T500 current limit / control mode are set (step 1).
+   * Confirm the UART cross-over is right: `Pico GP4 → U5 RX` and
+     `Pico GP5 → U5 TX` (TX-to-RX, not TX-to-TX).
    * Confirm SR1's `+` is on `+12V` and `-` is on `GND` (it is a
      polarised part and reversing it kills the regulator instantly).
 
@@ -288,15 +288,15 @@ hitting *File → Export → Schematic*.
 The production system in #25 needs Linux for I²C device trees, USB
 control of the Tic T500, networking, and the eventual 30-channel
 multiplexer.  The bench rig has none of those requirements — it just
-needs to wiggle four GPIO pins reliably with adjustable timing.
-Folding the controller into a $6 microcontroller:
+needs to drive a handful of GPIO pins (and one UART to the Tic)
+reliably with adjustable timing.  Folding the controller into a $6
+microcontroller:
 
 * eliminates the Pi Zero 2 W + microSD + USB power brick + bonnet
   (≈ $38 of system-shared cost in #25);
-* drops the boot-time-pull-up gotcha on the stepper `~ENABLE` line
-  that #25 calls out (the Pico W's GPIOs are in input mode at reset,
-  so the DRV8825's on-board pull-down keeps it disabled until the
-  firmware drives `STP_nEN`);
+* leans on the Tic T500's own safe-start / command-timeout watchdog so
+  the auger stays put until the firmware explicitly energises it and
+  sends a target — no boot-time enable-line gotcha to engineer around;
 * keeps the test loop "edit `config.py`, click MicroPico's *Run current
   file on Pico*, see new behaviour" — much faster iteration than
   redeploying a `systemd` service on the Pi;
@@ -304,6 +304,6 @@ Folding the controller into a $6 microcontroller:
   from the lab laptop over Wi-Fi" mode without a hardware change.
 
 When the system grows past one channel the wiring is identical — just
-move the same four nets onto the production Pi Zero 2 W + Perma-Proto
-Bonnet from #25 and re-use the same DRV2605L / DRV8871 / DRV8825 /
+move the same nets onto the production Pi Zero 2 W + Perma-Proto
+Bonnet from #25 and re-use the same DRV2605L / DRV8871 / Tic T500 /
 shunt regulator / servo parts.

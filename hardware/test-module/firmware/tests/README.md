@@ -9,11 +9,11 @@ before running the full `main.py`.
 
 The setup is unchanged from the main rig: a Raspberry Pi Pico W powered
 from the Pololu D24V22F5 buck regulator (12 V → 5 V), with the same
-DRV8825 / DRV2605L / DRV8871 / servo wiring.
+Tic T500 / DRV2605L / DRV8871 / servo wiring.
 
 | File | What it tests | Driver IC |
 |---|---|---|
-| [`test_stepper.py`](test_stepper.py)   | Auger stepper motor       | DRV8825 |
+| [`test_stepper.py`](test_stepper.py)   | Auger stepper motor       | Tic T500 (MP6500) |
 | [`test_haptic.py`](test_haptic.py)     | Vibration / haptic motor  | DRV2605L |
 | [`test_solenoid.py`](test_solenoid.py) | Tap solenoid              | DRV8871 |
 | [`test_servo.py`](test_servo.py)       | Dispensing-angle servo    | (direct PWM) |

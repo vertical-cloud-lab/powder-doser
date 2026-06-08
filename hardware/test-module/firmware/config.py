@@ -6,9 +6,9 @@ just `config.py`); a soft-reset (Ctrl+D in the terminal) picks up the
 new values.
 
 The default values match the hardware in `hardware/test-module/README.md`:
-NEMA-11 11HS18-0674S stepper + DRV8825, JF-0530B 5 V solenoid + DRV8871,
-10 mm ERM coin + DRV2605L, and an HD-1810MG servo on the dispensing
-axis, all driven from a single Raspberry Pi Pico W.
+NEMA-11 11HS18-0674S stepper + Pololu Tic T500, JF-0530B 5 V solenoid +
+DRV8871, 10 mm ERM coin + DRV2605L, and an HD-1810MG servo on the
+dispensing axis, all driven from a single Raspberry Pi Pico W.
 """
 
 # -----------------------------------------------------------------------
@@ -23,12 +23,12 @@ axis, all driven from a single Raspberry Pi Pico W.
 PIN_I2C_SDA   = 0          # DRV2605L SDA (I2C0)
 PIN_I2C_SCL   = 1          # DRV2605L SCL (I2C0)
 
-PIN_STEP      = 2          # DRV8825 STEP
-PIN_DIR       = 3          # DRV8825 DIR
-PIN_STEPPER_EN = 4         # DRV8825 ~ENABLE (active low)
-PIN_M0        = 5          # DRV8825 microstep select
-PIN_M1        = 6
-PIN_M2        = 7
+# Pololu Tic T500 stepper controller over UART1 (TTL serial).
+PIN_TIC_TX    = 4          # Pico UART1 TX -> Tic RX
+PIN_TIC_RX    = 5          # Pico UART1 RX <- Tic TX
+TIC_UART_ID   = 1          # RP2040 UART1 (TX=GP4, RX=GP5)
+TIC_BAUD      = 9600       # match the Tic's "Serial / I2C / USB" baud
+TIC_READ_TIMEOUT_MS = 50   # how long to wait for a get-variable reply
 
 PIN_SOL_IN1   = 10         # DRV8871 IN1
 PIN_SOL_IN2   = 11         # DRV8871 IN2
@@ -39,13 +39,21 @@ PIN_SERVO_SIG = 15         # Servo PWM signal
 
 # -----------------------------------------------------------------------
 # Auger (stepper) configuration.
+#
+# The Tic T500 runs the step generation and motion planner internally; the
+# Pico W just sends target positions over serial.  Set the Tic's *current
+# limit* and "Control mode = Serial / I2C / USB" once with the Tic Control
+# Center over USB (recommend the motor's rated 670 mA, never above the
+# Tic T500's 1500 mA continuous limit); the firmware pushes the step mode,
+# max speed, and acceleration below over serial on boot.  Disabling the
+# Tic's "Command timeout" in the Control Center avoids the motor stopping
+# mid-move during a long rotation.
 # -----------------------------------------------------------------------
-# Microstep resolution -- DRV8825 M2/M1/M0 truth table:
-#   (0,0,0)=full, (0,0,1)=1/2, (0,1,0)=1/4, (0,1,1)=1/8,
-#   (1,0,0)=1/16, (1,0,1)..(1,1,1)=1/32.
-STEPPER_MICROSTEPS    = 16            # 1, 2, 4, 8, 16, 32
+# Microstep resolution -- the Tic T500 (MP6500) supports 1, 2, 4, 8 only.
+STEPPER_MICROSTEPS    = 8             # 1, 2, 4, 8
 STEPPER_FULL_STEPS_REV = 200          # 1.8 deg/step NEMA-11
 STEPPER_SPEED_RPM     = 60            # 5 .. 240 RPM is a safe range
+STEPPER_ACCEL_REV_PER_S2 = 4.0        # auger accel/decel ramp (rev/s^2)
 STEPPER_DIRECTION     = 1             # +1 = CW from motor face, -1 = CCW
 # Per-shot dispense in degrees of auger rotation; the test CLI will run
 # this on the "dispense" command.  Keep small for incremental dosing.

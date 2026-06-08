@@ -26,6 +26,7 @@ the same terminal the keyboard-controlled test scripts in
 | `main.py`   | Main loop + driver classes; MicroPython auto-runs this on boot. |
 | `config.py` | Pin map + every adjustable parameter.  Edit, re-upload via MicroPico, the Pico reboots and picks up the changes. |
 | `drv2605.py`| Tiny in-tree MicroPython driver for the DRV2605L haptic chip (Adafruit's library is CircuitPython-only). |
+| `tic.py`    | Tiny in-tree MicroPython driver for the Pololu Tic T500 stepper controller (TTL-serial command protocol). |
 | `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`) — keyboard-driven, one channel at a time.  See [`tests/README.md`](tests/README.md). |
 
 ## One-time setup
@@ -46,11 +47,20 @@ the same terminal the keyboard-controlled test scripts in
    `.vscode/` config that points the extension at the right serial
    port.
 4. **Upload the project** with `MicroPico: Upload project to Pico`.
-   This copies `main.py`, `config.py`, `drv2605.py`, and the `tests/`
-   folder onto the Pico's flash filesystem.  After the upload finishes
-   MicroPico opens its terminal automatically; press the soft-reset
-   button (`Ctrl+D` in the terminal) or unplug/replug to start
-   `main.py`.
+   This copies `main.py`, `config.py`, `drv2605.py`, `tic.py`, and the
+   `tests/` folder onto the Pico's flash filesystem.  After the upload
+   finishes MicroPico opens its terminal automatically; press the
+   soft-reset button (`Ctrl+D` in the terminal) or unplug/replug to
+   start `main.py`.
+
+   > Before the first run, connect the **Tic T500** to your computer
+   > over USB and use the **Tic Control Center** to set its *Control
+   > mode* to "Serial / I²C / USB", set the *current limit* to the
+   > motor's rating (670 mA for the 11HS18-0674S; never above the Tic
+   > T500's 1500 mA continuous limit), and set the *Command timeout* to
+   > 0 (disabled).  The firmware pushes step mode / speed / acceleration
+   > over serial on boot, but the current limit and control mode are
+   > one-time USB settings.
 
 ## Use
 
@@ -93,8 +103,9 @@ Common knobs:
 
 | Block | Parameter | Effect |
 |---|---|---|
-| Stepper  | `STEPPER_MICROSTEPS`     | DRV8825 1, 2, 4, 8, 16, 32 microstepping. |
-| Stepper  | `STEPPER_SPEED_RPM`      | Step rate (5..240 is safe; the Pololu #3776 shunt regulator added across `VMOT`/`GND` clamps the back-EMF transients during deceleration). |
+| Stepper  | `STEPPER_MICROSTEPS`     | Tic T500 microstepping (1, 2, 4, 8 — the MP6500 driver's full range). Pushed to the Tic over serial on boot. |
+| Stepper  | `STEPPER_SPEED_RPM`      | Auger speed; the firmware converts it to the Tic's max-speed setting (the Pololu #3776 shunt regulator across `VIN`/`GND` clamps the back-EMF transients during deceleration). |
+| Stepper  | `STEPPER_ACCEL_REV_PER_S2` | Acceleration/deceleration ramp the Tic's motion planner uses. |
 | Stepper  | `STEPPER_DIRECTION`      | Flip auger sense without re-wiring. |
 | Stepper  | `STEPPER_DISPENSE_DEG`   | How much auger rotation per `d` command. |
 | Vibration| `VIBRATION_EFFECT_ID`    | Pick from DRV2605L's 123-effect ROM. |
@@ -122,12 +133,13 @@ of truth on the schematic side; keep them in sync.
 
 ## Safety notes
 
-* `!` issues an asynchronous "everything off" — it disables the
-  DRV8825, drops both DRV8871 inputs, and stops the DRV2605L.  It does
-  **not** cut motor power; for that, pull the 12 V barrel jack.
-* The DRV8825 carrier needs its current-limit pot adjusted to the
-  motor's per-phase current (≈ 0.67 A for the 11HS18-0674S — refer to
-  Pololu's `Vref = I × 2 × R_sense` cheat-sheet) **before** the first
-  `d` command, or the stepper will overheat.
-* The 100 µF capacitor across the DRV8825's `VMOT` is mandatory per
-  Pololu; it's shown as C3 on the schematic.
+* `!` issues an asynchronous "everything off" — it de-energises the
+  Tic T500 stepper, drops both DRV8871 inputs, and stops the DRV2605L.
+  It does **not** cut motor power; for that, pull the 12 V barrel jack.
+* Set the Tic T500's current limit to the motor's per-phase current
+  (≈ 0.67 A for the 11HS18-0674S) in the **Tic Control Center** over USB
+  **before** the first `d` command, or the stepper will overheat.  The
+  Tic has no `V_REF` pot — the limit is a software setting (and is
+  enforced by the driver's on-chip current sensing).
+* The 100 µF capacitor across the Tic's `VIN` is recommended for the
+  12 V motor rail; it's shown as C3 on the schematic.

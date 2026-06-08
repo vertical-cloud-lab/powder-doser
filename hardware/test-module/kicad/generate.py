@@ -7,8 +7,9 @@ exercised over USB-serial (or, in a future revision, wirelessly) without
 bringing up the production Pi Zero 2 W stack from PR #25.
 
 Because none of the breakouts we use (Pi Pico W, DRV2605L, DRV8871,
-DRV8825, Pololu shunt regulator, hobby servo, JF-0530B solenoid, NEMA-11
-4-wire stepper) have KiCad symbols in the stock symbol libraries, we
+Tic T500 stepper controller, Pololu shunt regulator, hobby servo,
+JF-0530B solenoid, NEMA-11 4-wire stepper) have KiCad symbols in the
+stock symbol libraries, we
 author a project-local ``test_module.kicad_sym`` library here and place
 those symbols on the sheet purely with global net labels — no wires.
 KiCad treats matching global labels as electrically connected, which
@@ -186,37 +187,43 @@ def build_symbol_lib() -> str:
         )"""))
 
     # ------------------------------------------------------------------
-    # DRV8825 stepper driver carrier (Pololu #2133): 16 pins total,
-    # 8 per side, matching the physical 2x8 0.1" header on the carrier.
-    # Left (logic): nEN, M0, M1, M2, nRST, nSLP, STEP, DIR.
-    # Right (motor): VMOT, GND, B2, B1, A1, A2, nFAULT, GND.
-    # There is no separate VDD pin — the carrier's logic supply is
-    # generated internally from VMOT by the DRV8825's 3.3 V LDO, and
-    # the logic inputs are 3.3 V / 5 V tolerant directly (no level
-    # shifter required).  See Pololu #2133 product page / schematic.
+    # Pololu Tic T500 USB multi-interface stepper motor controller
+    # (item #3134, MP6500 driver).  Instead of bit-banging STEP/DIR into
+    # a bare driver carrier, the Pico W talks to the Tic over TTL serial
+    # (UART) and lets the Tic's on-board microcontroller run the motion
+    # planner (accel/decel ramps, position tracking, current limiting).
+    #
+    # We model the two header rows we actually wire:
+    #   Left  (control header): SCL, SDA, TX, RX, ERR.
+    #   Right (high-current side): VIN, GND, A1, A2, B1, B2.
+    # The Tic also exposes STEP/DIR/RC/SLP pins for the other control
+    # modes; we leave those off the symbol because this rig uses the
+    # serial interface exclusively.  Current limit, step mode, and the
+    # Serial/I2C/USB control mode are configured once over USB with the
+    # Tic Control Center (and step mode / speed / accel are then set from
+    # firmware over serial), so there is no V_REF pot or microstep
+    # jumper on this part.
     # ------------------------------------------------------------------
-    drv8825_left = [("nEN", "1", "input"),  ("M0", "2", "input"),
-                    ("M1", "3", "input"),   ("M2", "4", "input"),
-                    ("nRST", "5", "input"), ("nSLP", "6", "input"),
-                    ("STEP", "7", "input"), ("DIR", "8", "input")]
-    drv8825_right = [("VMOT", "9", "power_in"),  ("GND_M", "10", "power_in"),
-                     ("B2", "11", "passive"),    ("B1", "12", "passive"),
-                     ("A1", "13", "passive"),    ("A2", "14", "passive"),
-                     ("nFAULT", "15", "output"), ("GND_L", "16", "power_in")]
+    tic_left = [("SCL", "1", "input"),  ("SDA", "2", "bidirectional"),
+                ("TX", "3", "output"),  ("RX", "4", "input"),
+                ("ERR", "5", "output")]
+    tic_right = [("VIN", "6", "power_in"), ("GND", "7", "power_in"),
+                 ("A1", "8", "passive"),   ("A2", "9", "passive"),
+                 ("B1", "10", "passive"),  ("B2", "11", "passive")]
     w = 17.78
     top = 0
-    bot = top - row_pitch * (max(len(drv8825_left), len(drv8825_right)) + 1)
+    bot = top - row_pitch * (max(len(tic_left), len(tic_right)) + 1)
     pins = []
-    for i, (n, num, et) in enumerate(drv8825_left):
+    for i, (n, num, et) in enumerate(tic_left):
         pins.append(_pin(n, num, -w / 2 - 2.54, top - row_pitch * (i + 1), 0, etype=et))
-    for i, (n, num, et) in enumerate(drv8825_right):
+    for i, (n, num, et) in enumerate(tic_right):
         pins.append(_pin(n, num, w / 2 + 2.54, top - row_pitch * (i + 1), 180, etype=et))
     body = _rectangle(-w / 2, top, w / 2, bot)
     symbols.append(dedent(f"""\
-        (symbol "DRV8825_Carrier" (in_bom yes) (on_board yes)
-          {_props("U", -w / 2, top + 2.54, "DRV8825_Carrier", -w / 2, top + 0.8)}
-          (symbol "DRV8825_Carrier_0_1" {body})
-          (symbol "DRV8825_Carrier_1_1"
+        (symbol "Tic_T500" (in_bom yes) (on_board yes)
+          {_props("U", -w / 2, top + 2.54, "Tic_T500", -w / 2, top + 0.8)}
+          (symbol "Tic_T500_0_1" {body})
+          (symbol "Tic_T500_1_1"
             {chr(10).join(pins)}
           )
         )"""))
@@ -357,14 +364,13 @@ PLACEMENTS = [
     # ---- MCU (centre) ----
     # The Pico W is powered from the buck via VSYS so it can survive USB
     # disconnect; VBUS is left floating.  3V3 logic is sourced from the
-    # Pico W's on-board LDO and feeds the DRV8825 / DRV2605L logic rails.
+    # Pico W's on-board LDO and feeds the DRV2605L logic rail.
     ("Pi_Pico_W", "U2", 110, 50,
         [("VSYS", "+5V"), ("GND", "GND"), ("3V3", "+3V3"),
          # I2C0 for DRV2605L
          ("GP0", "I2C_SDA"), ("GP1", "I2C_SCL"),
-         # DRV8825 stepper control
-         ("GP2", "STP_STEP"), ("GP3", "STP_DIR"), ("GP4", "STP_nEN"),
-         ("GP5", "STP_M0"),   ("GP6", "STP_M1"),  ("GP7", "STP_M2"),
+         # Tic T500 stepper controller over UART1 (TTL serial)
+         ("GP4", "STP_TX"), ("GP5", "STP_RX"),
          # DRV8871 (solenoid)
          ("GP10", "SOL_IN1"), ("GP11", "SOL_IN2"),
          # Servo PWM (dispensing angle)
@@ -389,19 +395,21 @@ PLACEMENTS = [
     ("Solenoid", "SOL1", 275, 100, [("+", "SOL_A"), ("-", "SOL_B")]),
 
     # ---- Stepper / auger channel ----
-    ("DRV8825_Carrier", "U5", 210, 140,
-        [("STEP", "STP_STEP"), ("DIR", "STP_DIR"), ("nEN", "STP_nEN"),
-         ("nSLP", "+3V3"), ("nRST", "+3V3"),
-         ("M0", "STP_M0"), ("M1", "STP_M1"), ("M2", "STP_M2"),
-         ("nFAULT", "STP_FAULT"),
-         ("VMOT", "+12V"), ("GND_M", "GND"), ("GND_L", "GND"),
+    # Pololu Tic T500 (item #3134).  The Pico W drives it over UART1:
+    #   Pico GP4 (UART1 TX) -> Tic RX  (net STP_TX)
+    #   Pico GP5 (UART1 RX) <- Tic TX  (net STP_RX)
+    # VIN is the 12 V motor rail; the four coil pins go straight to the
+    # NEMA-11.  ERR / SCL / SDA stay unconnected on this rig (serial only).
+    ("Tic_T500", "U5", 210, 140,
+        [("RX", "STP_TX"), ("TX", "STP_RX"),
+         ("VIN", "+12V"), ("GND", "GND"),
          ("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("Cap_Polar", "C3", 210, 195, [("+", "+12V"), ("-", "GND")]),
     # Pololu #3776 33 V / 9 W shunt regulator across +12V / GND, sitting
-    # right next to the DRV8825's VMOT screw terminals.  Clamps back-EMF
+    # right next to the Tic T500's VIN screw terminals.  Clamps back-EMF
     # transients during deceleration / back-driving so the wall-wart-
-    # powered 12 V rail can't push the DRV8825 past its 45 V abs max.
+    # powered 12 V rail can't push the Tic T500 past its 35 V max input.
     # See PR #25 BOM item 18 for rationale.
     ("Shunt_Regulator", "SR1", 175, 195, [("+", "+12V"), ("-", "GND")]),
     ("Stepper_4wire", "M2", 285, 145,
@@ -509,19 +517,17 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "IN1":  (-11.43, 7.62, 180), "IN2":  (-11.43, 10.16, 180),
         "OUT1": (11.43,  2.54, 0),   "OUT2": (11.43,  5.08, 0),
     },
-    "DRV8825_Carrier": {
-        # Left side (logic), 8 pins, top → bottom matching the symbol
-        # pin order (nEN, M0, M1, M2, nRST, nSLP, STEP, DIR):
-        "nEN":    (-11.43, 2.54, 180), "M0":     (-11.43, 5.08, 180),
-        "M1":     (-11.43, 7.62, 180), "M2":     (-11.43, 10.16, 180),
-        "nRST":   (-11.43, 12.7, 180), "nSLP":   (-11.43, 15.24, 180),
-        "STEP":   (-11.43, 17.78, 180),"DIR":    (-11.43, 20.32, 180),
-        # Right side (motor), 8 pins, top → bottom (VMOT, GND, B2, B1,
-        # A1, A2, nFAULT, GND).  No separate VDD pin on this carrier.
-        "VMOT":   (11.43, 2.54, 0),    "GND_M":  (11.43, 5.08, 0),
-        "B2":     (11.43, 7.62, 0),    "B1":     (11.43, 10.16, 0),
-        "A1":     (11.43, 12.7, 0),    "A2":     (11.43, 15.24, 0),
-        "nFAULT": (11.43, 17.78, 0),   "GND_L":  (11.43, 20.32, 0),
+    "Tic_T500": {
+        # Left side (control header), top → bottom matching the symbol
+        # pin order (SCL, SDA, TX, RX, ERR):
+        "SCL":  (-11.43, 2.54, 180), "SDA":  (-11.43, 5.08, 180),
+        "TX":   (-11.43, 7.62, 180), "RX":   (-11.43, 10.16, 180),
+        "ERR":  (-11.43, 12.7, 180),
+        # Right side (high-current / power), top → bottom (VIN, GND,
+        # A1, A2, B1, B2):
+        "VIN":  (11.43, 2.54, 0),    "GND":  (11.43, 5.08, 0),
+        "A1":   (11.43, 7.62, 0),    "A2":   (11.43, 10.16, 0),
+        "B1":   (11.43, 12.7, 0),    "B2":   (11.43, 15.24, 0),
     },
     "Stepper_4wire": {
         "A1": (-10.16, 0, 180), "A2": (-10.16, 2.54, 180),

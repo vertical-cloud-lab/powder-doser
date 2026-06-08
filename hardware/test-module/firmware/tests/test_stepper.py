@@ -1,9 +1,16 @@
-"""Stepper-motor (DRV8825 + NEMA-11) standalone test (MicroPython).
+"""Stepper-motor (Pololu Tic T500 + NEMA-11) standalone test (MicroPython).
 
 Pin assignments are imported from ``config.py``, which is also the
 contract the KiCad schematic is generated from -- so this script and
 the full rig firmware stay in lockstep.  Only the stepper channel is
 exercised; everything else (haptic, solenoid, servo) is untouched.
+
+The auger is driven through a Pololu Tic T500 over UART (TTL serial):
+this script opens the same UART1 the main firmware uses and sends the
+Tic serial commands via the shared ``tic.TicSerial`` driver.  Set the
+Tic's current limit and "Control mode = Serial / I2C / USB" once with
+the Tic Control Center over USB before running this (and disable the
+Tic's "Command timeout" so a long move isn't cut short).
 
 To run on the Pico W from VS Code + MicroPico:
 
@@ -18,7 +25,7 @@ Keyboard controls (single keystroke; no Enter needed):
     r       reverse the direction flag
     +       speed up by SPEED_STEP_RPM
     -       slow down by SPEED_STEP_RPM
-    e       toggle ~ENABLE (drive de-energised vs. holding torque)
+    e       toggle energise (drive de-energised vs. holding torque)
     s       print state
     q       quit (de-energise and exit the loop)
 """
@@ -31,9 +38,10 @@ import time
 sys.path.insert(0, "..")
 sys.path.insert(0, "/")
 
-from machine import Pin
+from machine import Pin, UART
 
 import config
+import tic
 from tests._keypress import read_key
 
 
@@ -45,66 +53,70 @@ SPEED_STEP_RPM   = 10        # +/- adjustment granularity
 START_DIRECTION  = +1        # +1 = CW from motor face, -1 = CCW
 
 
-_MICROSTEP_TABLE = {
-    1:  (0, 0, 0),
-    2:  (0, 0, 1),
-    4:  (0, 1, 0),
-    8:  (0, 1, 1),
-    16: (1, 0, 0),
-    32: (1, 1, 1),
-}
-
-
-def _out(n, v=0):
-    return Pin(n, Pin.OUT, value=v)
-
-
 class StepperTest:
     def __init__(self):
-        self.step_pin = _out(config.PIN_STEP)
-        self.dir_pin = _out(config.PIN_DIR)
-        # ~ENABLE active-low; start disabled so a mis-wired board can't
-        # cook the motor while the operator is still hooking up the rig.
-        self.enable_n = _out(config.PIN_STEPPER_EN, 1)
-        m2, m1, m0 = _MICROSTEP_TABLE[config.STEPPER_MICROSTEPS]
-        _out(config.PIN_M0, m0)
-        _out(config.PIN_M1, m1)
-        _out(config.PIN_M2, m2)
+        self.uart = UART(config.TIC_UART_ID, baudrate=config.TIC_BAUD,
+                         tx=Pin(config.PIN_TIC_TX), rx=Pin(config.PIN_TIC_RX),
+                         timeout=config.TIC_READ_TIMEOUT_MS)
+        self.tic = tic.TicSerial(self.uart)
         self.steps_per_rev = (config.STEPPER_FULL_STEPS_REV
                               * config.STEPPER_MICROSTEPS)
         self.rpm = float(config.STEPPER_SPEED_RPM)
         self.direction = +1 if START_DIRECTION >= 0 else -1
         self.enabled = False
-        self._recompute_period()
+        self._position = 0
+        # Bring the Tic up, push step mode / speed / accel, zero position.
+        self.tic.exit_safe_start()
+        self.tic.clear_driver_error()
+        self.tic.set_step_mode(config.STEPPER_MICROSTEPS)
+        self._apply_speed()
+        accel = max(1, int(config.STEPPER_ACCEL_REV_PER_S2
+                           * self.steps_per_rev * 100))
+        self.tic.set_max_accel(accel)
+        self.tic.set_max_decel(accel)
+        self.tic.halt_and_set_position(0)
 
-    def _recompute_period(self):
-        sps = self.rpm / 60.0 * self.steps_per_rev
-        self._half_us = max(1, int(0.5 * 1_000_000 / sps))
+    def _apply_speed(self):
+        usteps_per_s = self.rpm / 60.0 * self.steps_per_rev
+        self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
 
     def enable(self, on=True):
-        self.enable_n.value(0 if on else 1)
+        if on:
+            self.tic.energize()
+            self.tic.exit_safe_start()
+        else:
+            self.tic.deenergize()
         self.enabled = on
 
     def set_rpm(self, rpm):
         self.rpm = max(1.0, rpm)
-        self._recompute_period()
+        self._apply_speed()
 
     def rotate(self, degrees):
         signed = degrees * self.direction
-        self.dir_pin.value(1 if signed >= 0 else 0)
-        steps = int(abs(signed) / 360.0 * self.steps_per_rev)
-        if steps == 0:
+        delta = int(round(signed / 360.0 * self.steps_per_rev))
+        if delta == 0:
             return
         if not self.enabled:
             self.enable(True)
-        half = self._half_us
-        sleep_us = time.sleep_us
-        sp = self.step_pin
-        for _ in range(steps):
-            sp.value(1)
-            sleep_us(half)
-            sp.value(0)
-            sleep_us(half)
+        self._position += delta
+        self.tic.set_target_position(self._position)
+        self._wait_until_reached()
+
+    def _wait_until_reached(self):
+        target = self._position
+        usteps_per_s = max(1.0, self.rpm / 60.0 * self.steps_per_rev)
+        est_s = abs(target) / usteps_per_s + 1.0
+        deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
+        while time.ticks_diff(deadline, time.ticks_ms()) > 0:
+            self.tic.reset_command_timeout()
+            pos = self.tic.current_position()
+            if pos is None:
+                time.sleep_ms(50)
+                continue
+            if pos == target:
+                return
+            time.sleep_ms(10)
 
     def state(self):
         return ("stepper: rpm={:.1f}, dir={:+d}, microsteps=1/{}, "
@@ -115,12 +127,12 @@ class StepperTest:
 
 
 HELP = (
-    "Stepper test -- keyboard controls:\n"
+    "Stepper test (Tic T500) -- keyboard controls:\n"
     "  space  rotate {move} deg\n"
     "  f      one full revolution (360 deg)\n"
     "  r      reverse direction\n"
     "  +/-    adjust RPM by {step}\n"
-    "  e      toggle ~ENABLE (holding torque on/off)\n"
+    "  e      toggle energise (holding torque on/off)\n"
     "  s      print state\n"
     "  q      quit\n"
 ).format(move=DEFAULT_MOVE_DEG, step=SPEED_STEP_RPM)
@@ -128,8 +140,8 @@ HELP = (
 
 def main():
     rig = StepperTest()
-    print("[stepper-test] ready on GP{step}/GP{dir}/GP{en}".format(
-        step=config.PIN_STEP, dir=config.PIN_DIR, en=config.PIN_STEPPER_EN))
+    print("[stepper-test] Tic T500 on UART{id} (TX=GP{tx}, RX=GP{rx})".format(
+        id=config.TIC_UART_ID, tx=config.PIN_TIC_TX, rx=config.PIN_TIC_RX))
     print(HELP)
     print(rig.state())
     try:

@@ -27,6 +27,7 @@ and re-runs in a second, so edit-save-run stays quick.
 Required modules on the Pico (upload alongside this file):
   - ``config.py``   (next to this file)
   - ``drv2605.py``  (next to this file)
+  - ``tic.py``      (next to this file -- Tic T500 serial driver)
 
 Wire-on commands (one per line over USB-serial):
     h            help
@@ -43,9 +44,10 @@ Wire-on commands (one per line over USB-serial):
 import sys
 import time
 
-from machine import I2C, Pin, PWM
+from machine import I2C, Pin, PWM, UART
 
 import config
+import tic
 
 
 # ---------------------------------------------------------------------------
@@ -64,56 +66,91 @@ def _pwm(pin_num, freq, duty=0.0):
 
 
 # ---------------------------------------------------------------------------
-# Stepper (DRV8825 -> NEMA-11)
+# Stepper (Pololu Tic T500 over TTL serial -> NEMA-11)
+#
+# The Pico W no longer bit-bangs STEP/DIR; it sends serial commands to the
+# Tic T500, whose on-board MCU runs the motion planner (accel/decel ramps,
+# position tracking) and current limiting.  We keep a shadow of the target
+# position in microsteps so ``rotate_degrees`` can issue relative moves.
 # ---------------------------------------------------------------------------
-
-_MICROSTEP_TABLE = {
-    1:  (0, 0, 0),
-    2:  (0, 0, 1),
-    4:  (0, 1, 0),
-    8:  (0, 1, 1),
-    16: (1, 0, 0),
-    32: (1, 1, 1),
-}
-
 
 class Stepper:
     def __init__(self):
-        self.step = _out(config.PIN_STEP)
-        self.dir = _out(config.PIN_DIR)
-        # ~ENABLE is active-low; start disabled (high) so the motor coasts.
-        self.enable_n = _out(config.PIN_STEPPER_EN, 1)
-        m2, m1, m0 = _MICROSTEP_TABLE[config.STEPPER_MICROSTEPS]
-        self.m0 = _out(config.PIN_M0, m0)
-        self.m1 = _out(config.PIN_M1, m1)
-        self.m2 = _out(config.PIN_M2, m2)
+        self.uart = UART(config.TIC_UART_ID, baudrate=config.TIC_BAUD,
+                         tx=Pin(config.PIN_TIC_TX), rx=Pin(config.PIN_TIC_RX),
+                         timeout=config.TIC_READ_TIMEOUT_MS)
+        self.tic = tic.TicSerial(self.uart)
         self.steps_per_rev = (config.STEPPER_FULL_STEPS_REV
                               * config.STEPPER_MICROSTEPS)
+        # Shadow target position (microsteps); the Tic starts at 0 once we
+        # call halt_and_set_position below.
+        self._position = 0
+        self._enabled = False
+        self._configure()
+
+    def _accel_units(self):
+        # Tic acceleration unit = 1/100 microstep per second per second.
+        usteps_per_s2 = config.STEPPER_ACCEL_REV_PER_S2 * self.steps_per_rev
+        return max(1, int(usteps_per_s2 * 100))
+
+    def _configure(self):
+        t = self.tic
+        # Bring the driver out of any latched error/safe-start state, push
+        # the motion settings the firmware owns, and zero the position.
+        t.exit_safe_start()
+        t.clear_driver_error()
+        t.set_step_mode(config.STEPPER_MICROSTEPS)
         self.set_speed(config.STEPPER_SPEED_RPM)
+        accel = self._accel_units()
+        t.set_max_accel(accel)
+        t.set_max_decel(accel)
+        t.halt_and_set_position(0)
+        self._position = 0
 
     def set_speed(self, rpm):
-        steps_per_sec = rpm / 60.0 * self.steps_per_rev
-        # time.sleep_us takes an int; cache the half-period in microseconds.
-        self._half_period_us = max(1, int(0.5 * 1_000_000 / steps_per_sec))
+        # Tic speed unit = 1/10000 microstep per second.
+        usteps_per_s = rpm / 60.0 * self.steps_per_rev
+        self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
 
     def enable(self, on=True):
-        self.enable_n.value(0 if on else 1)
+        if on:
+            self.tic.energize()
+            self.tic.exit_safe_start()
+        else:
+            self.tic.deenergize()
+        self._enabled = on
 
     def rotate_degrees(self, degrees):
         signed = degrees * (1 if config.STEPPER_DIRECTION >= 0 else -1)
-        self.dir.value(1 if signed >= 0 else 0)
-        steps = int(abs(signed) / 360.0 * self.steps_per_rev)
-        if steps == 0:
+        delta = int(round(signed / 360.0 * self.steps_per_rev))
+        if delta == 0:
             return
-        self.enable(True)
-        half = self._half_period_us
-        sleep_us = time.sleep_us
-        step_pin = self.step
-        for _ in range(steps):
-            step_pin.value(1)
-            sleep_us(half)
-            step_pin.value(0)
-            sleep_us(half)
+        if not self._enabled:
+            self.enable(True)
+        self._position += delta
+        self.tic.set_target_position(self._position)
+        self._wait_until_reached()
+
+    def _wait_until_reached(self):
+        # Poll the Tic's reported position until it matches the target.  If
+        # the Tic's TX line isn't wired back (current_position() returns
+        # None) we fall back to an estimated timed wait, still pinging the
+        # command-timeout watchdog so a long move can't be cut short.
+        target = self._position
+        usteps_per_s = max(1.0, config.STEPPER_SPEED_RPM / 60.0
+                           * self.steps_per_rev)
+        # Generous ceiling: move time at max speed + accel margin.
+        est_s = abs(target) / usteps_per_s + 1.0
+        deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
+        while time.ticks_diff(deadline, time.ticks_ms()) > 0:
+            self.tic.reset_command_timeout()
+            pos = self.tic.current_position()
+            if pos is None:
+                time.sleep_ms(50)
+                continue
+            if pos == target:
+                return
+            time.sleep_ms(10)
 
 
 # ---------------------------------------------------------------------------
