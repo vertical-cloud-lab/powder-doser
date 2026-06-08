@@ -85,6 +85,34 @@ routed board" is buildable. **But two real blockers remain:**
    only when paid) is friendlier for repeated runs, but is *not* automatable;
    DeepPCB is automatable but *metered by time*.
 
+## Update — authenticated API ping confirms it (key now provisioned)
+
+@sgbaird provisioned a real `DEEPPCB_API_KEY` as a repo secret and asked
+([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992))
+whether the API can actually be reached from the sandbox. It can.
+[`deeppcb_api_ping.py`](deeppcb_api_ping.py) (read-only, **consumes no credits**)
+authenticates with the key over **HTTPS** (`https://api.deeppcb.ai`; the public
+OpenAPI doc lists `http://`, but TLS works and is used) via the
+`x-deeppcb-api-key` header and successfully calls the three free/read-only
+endpoints:
+
+- `GET /api/v1/apiuser/credit-flow` → `200`, account summary (this trial key:
+  **0.0 credits, 0 boards created** — so no routing/placement can be run until
+  credits are added);
+- `GET /api/v1/boards/board-schema` → `200`, the ~42 KB "DeepPCB File Format"
+  JSON Schema;
+- `GET /api/v1/boards/constraints-schema` → `200`, the board-constraints schema.
+
+The ping deliberately **does not** touch the credit-consuming endpoints
+(`POST /boards`, `PATCH /boards/{id}/confirm` with `jobType` Routing/Placement),
+so it is safe to re-run in CI as a connectivity/auth check. This upgrades the
+earlier unauthenticated `deeppcb_probe.py` finding from "a real API appears to
+exist" to "the API **authenticates and answers from our environment**" — DeepPCB
+is genuinely wirable into the headless pipeline. The only remaining gate is
+economic: the provisioned account has **0 credits**, so an actual route still
+needs the free trial (1 board / ~30 min) or paid credits, consistent with the
+cost caveat below.
+
 ## Free tier & pricing (relevant to an academic open-hardware project)
 
 - **Free trial:** **30 minutes of AI routing time, one board**, within the

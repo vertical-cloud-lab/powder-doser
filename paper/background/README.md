@@ -46,10 +46,16 @@ feedback, expandable I/O; see issues
 | [`13-open-hardware-eda-for-labs.md`](13-open-hardware-eda-for-labs.md) | Generative EDA/PCB | Generative/automated electrical design in the **open-hardware lab-automation** context (OpenFlexure, Jubilee, Opentrons, HardwareX norms; modular motor/sensor control boards, multiplexed I/O, load-cell front-ends, DfM for low-cost assembly) and how mature generative EDA is for such instruments — the gap this project's control electronics sit in. |
 | [`14-pcb-design-recommendations-for-powder-doser.md`](14-pcb-design-recommendations-for-powder-doser.md) | Generative EDA/PCB | **Synthesis / recommendation** pass: an Edison `ANALYSIS` task that reads notes `07`–`13` back in and turns them into ranked, powder-doser-specific recommendations for how the GitHub Copilot coding agent could draft the control PCB (most-feasible approaches, whether each can run inside the headless GitHub/Copilot environment, and per-option pros/cons, limitations, and next steps). Answers @lbwinters' review request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4615501821). |
 | [`16-quilter-ai-pcb-layout.md`](16-quilter-ai-pcb-layout.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **Quilter.ai** (commercial autonomous PCB-*layout* SaaS) — what it does (KiCad-native placement/routing, not schematics), free-tier eligibility and the train-on-your-data caveat, community/Reddit sentiment and the DeepPCB benchmark (with the company-vs-academic-baseline name collision called out), and the key finding that it is **web-UI-only (no public API)** so it cannot be driven from the headless GitHub/Copilot CI. "No API" is verified by [`quilter_probe.py`](quilter_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635695822). |
-| [`17-deeppcb-ai-pcb-routing.md`](17-deeppcb-ai-pcb-routing.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **DeepPCB** (InstaDeep's commercial autonomous PCB-*routing* SaaS) — the direct counterpart to note `16`. Covers what it does (RL placement/routing, KiCad-native I/O, not schematics), its one-board / 30-minute free trial and per-minute pricing, and mixed/skeptical Reddit + EEVblog sentiment with the vendor-published DeepPCB-vs-Quilter benchmarks called out as non-neutral. Key finding: unlike Quilter/Flux.ai, DeepPCB **does expose a real public API** (`api.deeppcb.ai`, Swagger-documented), so it *is* headless/CI-scriptable — but needs a manually provisioned, paid, per-minute-metered API key. "Has a real API" is verified empirically by [`deeppcb_probe.py`](deeppcb_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635908170). |
+| [`17-deeppcb-ai-pcb-routing.md`](17-deeppcb-ai-pcb-routing.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **DeepPCB** (InstaDeep's commercial autonomous PCB-*routing* SaaS) — the direct counterpart to note `16`. Covers what it does (RL placement/routing, KiCad-native I/O, not schematics), its one-board / 30-minute free trial and per-minute pricing, and mixed/skeptical Reddit + EEVblog sentiment with the vendor-published DeepPCB-vs-Quilter benchmarks called out as non-neutral. Key finding: unlike Quilter/Flux.ai, DeepPCB **does expose a real public API** (`api.deeppcb.ai`, Swagger-documented), so it *is* headless/CI-scriptable — but needs a manually provisioned, paid, per-minute-metered API key. "Has a real API" is verified empirically by [`deeppcb_probe.py`](deeppcb_probe.py); the API is further confirmed to **authenticate and answer from this sandbox** with the provisioned `DEEPPCB_API_KEY` by the read-only [`deeppcb_api_ping.py`](deeppcb_api_ping.py). Answers @sgbaird's requests on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635908170). |
+| [`18-celus-ai-schematic-floorplan.md`](18-celus-ai-schematic-floorplan.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **CELUS** (the CELUS Design Platform) — the **intermediate "topology → router-ready starter board" bridge** @lbwinters identified between an LLM topology tool (LaMAGIC) and an autonomous router (Quilter/DeepPCB, which both require a fully-footprinted KiCad starter board). Covers what it does (block-diagram / natural-language → connected schematic + BOM + floorplan via pre-verified **CUBO** blocks, with native **KiCad** project export including symbols + footprints), free sign-up tier, and review/forum sentiment (with the competitor-published Quilter-vs-CELUS ranking flagged as non-neutral). Key finding: CELUS is the best *capability* match for the bridge but is **web-UI / login-only with no public API**, so — like Quilter/Flux.ai — it is a manual, human-in-the-loop step, not a headless CI one. "No public API" is verified by [`celus_probe.py`](celus_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
 
 (Note `15` is reserved for the parallel **Flux.ai** tool deep-dive investigated
-separately for this PR; this branch jumps `14` → `16` to avoid renumbering.)
+separately for this PR; this branch jumps `14` → `16` to avoid renumbering.
+Notes `19` and `20` are reserved for the two Edison runs added for the
+topology→starter-board question — a `LITERATURE_HIGH` survey of
+topology/concept→KiCad-board tools and an `ANALYSIS` over this repo's actual
+KiCad test-module schematic — and are filled in verbatim when those runs
+complete.)
 
 ## Provenance
 
@@ -71,12 +77,19 @@ and citation count — are listed at the bottom of each file. Raw artifacts (ful
 `TaskResponse` JSON, rendered answer, standalone references list) live under
 [`edison_artifacts/`](edison_artifacts/).
 
-Note `16` (Quilter.ai) and note `17` (DeepPCB) are **not** Edison outputs: they
-are hand-authored tool deep-dives from vendor pages, third-party reviews, and
-community/benchmark posts (cited inline by URL), with their central API claims
-verified empirically by the read-only probes
-[`quilter_probe.py`](quilter_probe.py) ("no public API") and
-[`deeppcb_probe.py`](deeppcb_probe.py) ("has a real public API").
+Note `16` (Quilter.ai), note `17` (DeepPCB), and note `18` (CELUS) are **not**
+Edison outputs: they are hand-authored tool deep-dives from vendor pages,
+third-party reviews, and community/benchmark posts (cited inline by URL), with
+their central API claims verified empirically by the read-only probes
+[`quilter_probe.py`](quilter_probe.py) ("no public API"),
+[`deeppcb_probe.py`](deeppcb_probe.py) ("has a real public API"), and
+[`celus_probe.py`](celus_probe.py) ("resolves but no documented public API →
+web-UI/login-only"). For DeepPCB, [`deeppcb_api_ping.py`](deeppcb_api_ping.py)
+additionally performs an **authenticated, read-only** check against the live API
+using the repo's provisioned `DEEPPCB_API_KEY` secret (credit-flow + the
+board/constraints schemas) — it never prints the key and **consumes no credits**
+(it deliberately avoids the credit-charging `POST /boards` /
+`PATCH /boards/{id}/confirm` routing endpoints).
 
 The notes are intentionally kept verbatim (lightly formatted markdown) rather
 than paraphrased, so that citation provenance to the underlying sources is
@@ -118,3 +131,37 @@ The analysis runner uploads every `edison_artifacts/*.answer.md` and
 (`store_file_content(..., as_collection=True)`) and asks the data-analysis agent
 to synthesize powder-doser-specific PCB recommendations; the embedded prompt is
 verbatim in the runner.
+
+To regenerate the two topology→starter-board Edison runs added for this PR — a
+`LITERATURE_HIGH` survey of topology/concept→KiCad-board tools (note `19`) and an
+`ANALYSIS` over this repo's actual KiCad test-module schematic (note `20`):
+
+```bash
+pip install edison_client
+export EDISON_API_KEY=...
+python paper/background/edison_run_topology_to_board.py
+python paper/background/edison_run_topology_to_board_analysis.py
+```
+
+The analysis runner stages the KiCad sources from `hardware/test-module/kicad/`
+(falling back to downloading them from the pinned PR
+[#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61) commit when
+that hardware is not on the current branch) and uploads them as a single zipped
+collection before asking which tools could turn a topology + parts list into
+that board.
+
+The DeepPCB API can be smoke-tested (authenticated, read-only, no credits spent)
+once a key is provisioned as the `DEEPPCB_API_KEY` secret:
+
+```bash
+export DEEPPCB_API_KEY=...
+python paper/background/deeppcb_api_ping.py
+```
+
+The Quilter and CELUS probes need no key or network credentials:
+
+```bash
+python paper/background/quilter_probe.py
+python paper/background/deeppcb_probe.py
+python paper/background/celus_probe.py
+```
