@@ -43,6 +43,32 @@ Its rendered output is the note
 | `pcb_recommendations_for_powder_doser.answer.md` | The rendered analysis answer (same body as `../14-*.md`). |
 | `pcb_recommendations_for_powder_doser.notebook.ipynb` | The analysis notebook Edison generated, when present. |
 
+## Topology → starter-board runs (`topology_to_starter_board_tools`, `topology_to_board_for_powder_doser`)
+
+Two further Edison runs were added for the **topology → router-ready starter
+board** question on PR
+[#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992)
+(the gap that Quilter/DeepPCB cannot bridge themselves):
+
+- `topology_to_starter_board_tools` — a `LITERATURE_HIGH` survey
+  ([`../edison_run_topology_to_board.py`](../edison_run_topology_to_board.py)) of
+  tools/research that turn a topology + BOM into a footprinted, netlisted KiCad
+  starter board (CELUS, Flux.ai, JITX, atopile/tscircuit/SKiDL, KiCad-CLI +
+  Python, and recent NL→KiCad research systems). Rendered output:
+  [`../19-topology-to-starter-board-tools.md`](../19-topology-to-starter-board-tools.md).
+  Files: `<key>.{task.json,answer.md,references.md}`.
+- `topology_to_board_for_powder_doser` — an `ANALYSIS` run
+  ([`../edison_run_topology_to_board_analysis.py`](../edison_run_topology_to_board_analysis.py))
+  that uploads **this repo's actual KiCad test-module project**
+  (`hardware/test-module/kicad/` from PR
+  [#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61)) as a single
+  zipped *collection* and recommends, per the audited schematic, how the Copilot
+  agent should produce the starter board. Rendered output:
+  [`../20-topology-to-starter-board-for-powder-doser.md`](../20-topology-to-starter-board-for-powder-doser.md).
+  Files: `<key>.{task.json,answer.md,notebook.ipynb}`.
+
+Both runs returned `status=success`.
+
 These artifacts are committed for reproducibility and traceability of every
 claim in the background notes — see issues
 [#26](https://github.com/vertical-cloud-lab/powder-doser/issues/26) and

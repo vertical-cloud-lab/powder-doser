@@ -48,14 +48,15 @@ feedback, expandable I/O; see issues
 | [`16-quilter-ai-pcb-layout.md`](16-quilter-ai-pcb-layout.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **Quilter.ai** (commercial autonomous PCB-*layout* SaaS) — what it does (KiCad-native placement/routing, not schematics), free-tier eligibility and the train-on-your-data caveat, community/Reddit sentiment and the DeepPCB benchmark (with the company-vs-academic-baseline name collision called out), and the key finding that it is **web-UI-only (no public API)** so it cannot be driven from the headless GitHub/Copilot CI. "No API" is verified by [`quilter_probe.py`](quilter_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635695822). |
 | [`17-deeppcb-ai-pcb-routing.md`](17-deeppcb-ai-pcb-routing.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **DeepPCB** (InstaDeep's commercial autonomous PCB-*routing* SaaS) — the direct counterpart to note `16`. Covers what it does (RL placement/routing, KiCad-native I/O, not schematics), its one-board / 30-minute free trial and per-minute pricing, and mixed/skeptical Reddit + EEVblog sentiment with the vendor-published DeepPCB-vs-Quilter benchmarks called out as non-neutral. Key finding: unlike Quilter/Flux.ai, DeepPCB **does expose a real public API** (`api.deeppcb.ai`, Swagger-documented), so it *is* headless/CI-scriptable — but needs a manually provisioned, paid, per-minute-metered API key. "Has a real API" is verified empirically by [`deeppcb_probe.py`](deeppcb_probe.py); the API is further confirmed to **authenticate and answer from this sandbox** with the provisioned `DEEPPCB_API_KEY` by the read-only [`deeppcb_api_ping.py`](deeppcb_api_ping.py). Answers @sgbaird's requests on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4635908170). |
 | [`18-celus-ai-schematic-floorplan.md`](18-celus-ai-schematic-floorplan.md) | Generative EDA/PCB | **Tool deep-dive:** hands-on landscape note on **CELUS** (the CELUS Design Platform) — the **intermediate "topology → router-ready starter board" bridge** @lbwinters identified between an LLM topology tool (LaMAGIC) and an autonomous router (Quilter/DeepPCB, which both require a fully-footprinted KiCad starter board). Covers what it does (block-diagram / natural-language → connected schematic + BOM + floorplan via pre-verified **CUBO** blocks, with native **KiCad** project export including symbols + footprints), free sign-up tier, and review/forum sentiment (with the competitor-published Quilter-vs-CELUS ranking flagged as non-neutral). Key finding: CELUS is the best *capability* match for the bridge but is **web-UI / login-only with no public API**, so — like Quilter/Flux.ai — it is a manual, human-in-the-loop step, not a headless CI one. "No public API" is verified by [`celus_probe.py`](celus_probe.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
+| [`19-topology-to-starter-board-tools.md`](19-topology-to-starter-board-tools.md) | Generative EDA/PCB | **Edison `LITERATURE_HIGH` survey** of the *intermediate* "topology + BOM → router-ready KiCad starter board" step that Quilter/DeepPCB cannot do themselves: commercial/AI-native bridges (CELUS, Flux.ai, JITX, Circuit Mind, Cofactr), design-as-code frameworks (atopile, tscircuit, SKiDL, Horizon EDA, KiCad-CLI + Python, PCBmodE), and 2020–2025 research on netlist/topology → placement/floorplan (incl. recent NL→KiCad systems pcbGPT, PCBSchemaGen, SchGen, and the HWE-Bench 8.15% end-to-end warning), each scored on input→output, KiCad interoperability, scriptability/API, licensing, and maturity. Kept verbatim. Produced by [`edison_run_topology_to_board.py`](edison_run_topology_to_board.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
+| [`20-topology-to-starter-board-for-powder-doser.md`](20-topology-to-starter-board-for-powder-doser.md) | Generative EDA/PCB | **Synthesis / recommendation** pass: an Edison `ANALYSIS` task that audits **this repo's actual KiCad control-board schematic** (`hardware/test-module/kicad/` from PR [#61](https://github.com/vertical-cloud-lab/powder-doser/pull/61)) and turns it into concrete, ranked steps for the Copilot agent to produce the footprinted, outlined `.kicad_pcb` starter board Quilter/DeepPCB need. Finds the schematic complete (14 parts / 20 nets) but missing footprints, board file, outline, and placement; ranks **(1)** extending the existing `generate.py` + `kiutils` to emit an unplaced outlined board headlessly, **(2)** migrating to atopile/tscircuit, **(3)** a human-in-the-loop GUI init for the mixed-signal partitioning — flagging CELUS/Flux.ai as login-only and JITX as paywalled for CI. Kept verbatim. Produced by [`edison_run_topology_to_board_analysis.py`](edison_run_topology_to_board_analysis.py). Answers @sgbaird's request on PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654166992). |
 
 (Note `15` is reserved for the parallel **Flux.ai** tool deep-dive investigated
 separately for this PR; this branch jumps `14` → `16` to avoid renumbering.
-Notes `19` and `20` are reserved for the two Edison runs added for the
+Notes `19` and `20` cover the two Edison runs added for the
 topology→starter-board question — a `LITERATURE_HIGH` survey of
 topology/concept→KiCad-board tools and an `ANALYSIS` over this repo's actual
-KiCad test-module schematic — and are filled in verbatim when those runs
-complete.)
+KiCad test-module schematic.)
 
 ## Provenance
 
@@ -63,12 +64,16 @@ These notes were produced by parallel
 [Edison Scientific](https://edisonscientific.gitbook.io/edison-cookbook)
 `LITERATURE_HIGH` queries (the `paperqa`-class deep literature pipeline). The
 generative-EDA/PCB pillar (`07`–`13`) was dispatched by
-[`edison_run_electrical_pcb.py`](edison_run_electrical_pcb.py); the prior
+[`edison_run_electrical_pcb.py`](edison_run_electrical_pcb.py); the
+topology→starter-board survey (`19`) by
+[`edison_run_topology_to_board.py`](edison_run_topology_to_board.py); the prior
 powder/CAD pillar by `edison_run.py` / `edison_run_followup_spatial.py` (PR
 [#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29)). The
-recommendation note (`14`) is produced by a follow-on Edison `ANALYSIS` run,
-[`edison_run_pcb_recommendation_analysis.py`](edison_run_pcb_recommendation_analysis.py),
-which uploads the seven rendered reviews as a single zipped *collection* (per the
+recommendation notes (`14`, `20`) are produced by follow-on Edison `ANALYSIS`
+runs ([`edison_run_pcb_recommendation_analysis.py`](edison_run_pcb_recommendation_analysis.py)
+uploads the seven rendered reviews; [`edison_run_topology_to_board_analysis.py`](edison_run_topology_to_board_analysis.py)
+uploads this repo's actual KiCad test-module project) as a single zipped
+*collection* (per the
 [Edison file-management docs](https://docs.edisonscientific.com/edison-client/file-management))
 and analyzes them rather than searching new literature. Each claim in the
 literature notes is followed by a citation key of the form `(authorYYYYshortid
