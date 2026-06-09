@@ -1,5 +1,7 @@
 {
   "board": "test_module_starter.kicad_pcb",
+  "schematic": "test_module_starter.kicad_sch",
+  "project": "test_module_starter.kicad_pro",
   "components": 14,
   "nets": 20,
   "outline_mm": [

@@ -7,6 +7,10 @@
       }
     }
   },
+  "libraries": {
+    "pinned_footprint_libs": [],
+    "pinned_symbol_libs": []
+  },
   "net_settings": {
     "classes": [
       {
@@ -39,6 +43,16 @@
       "GND": "Power"
     }
   },
+  "schematic": {
+    "legacy_lib_dir": "",
+    "legacy_lib_list": []
+  },
+  "sheets": [
+    [
+      "00000000-0000-0000-0003-000000000001",
+      ""
+    ]
+  ],
   "meta": {
     "filename": "test_module_starter.kicad_pro",
     "version": 1

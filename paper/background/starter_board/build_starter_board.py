@@ -65,6 +65,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+from hashlib import md5
 from pathlib import Path
 
 from kiutils.board import Board
@@ -214,6 +215,32 @@ CRTYD_CLEARANCE = 0.5  # F.CrtYd gap around the real body outline
 # bodies do not collide. The exact placement is unimportant (Quilter/DeepPCB
 # re-place everything); _assert_no_overlap() guarantees it stays DRC-clean.
 FLOORPLAN_SCALE = 1.0
+
+# ---------------------------------------------------------------------------
+# Schematic (.kicad_sch) geometry. Quilter / DeepPCB also ask for the
+# schematic alongside the .kicad_pcb / .kicad_pro, so we emit a matching
+# KiCad 7 schematic from the *same* NETLIST/PINOUTS data, guaranteeing the
+# schematic netlist is identical to the board's. Each part is a labelled
+# rectangle symbol with one pin per physical pin (numbered exactly like the
+# board pads), and connectivity is expressed with global net labels placed
+# directly on the pin endpoints — KiCad treats matching global labels as
+# electrically connected, so no wires are drawn. The board flips Y between
+# the symbol-editor frame (Y up) and the schematic sheet (Y down): a pin
+# whose connection point is at symbol-local (px, py) lands on the sheet at
+# (instance_x + px, instance_y - py), and a global label placed there
+# connects to it (verified with kicad-cli's netlist exporter).
+# ---------------------------------------------------------------------------
+SYMBOL_LIB_NICK = "powder_doser_parts"  # matches the board footprint library id
+SCH_ROOT_UUID = "00000000-0000-0000-0003-000000000001"
+SCH_BODY_HW = 6.35    # symbol rectangle half-width (mm)
+SCH_PIN_LEN = 2.54    # pin graphic length (endpoint -> body edge)
+SCH_STUB = SCH_BODY_HW + SCH_PIN_LEN  # pin connection-point half-extent
+
+
+def _uid(group: str, *parts: object) -> str:
+    """Deterministic UUID-shaped id (stable across runs, unlike salted hash())."""
+    digest = md5("|".join(map(str, parts)).encode()).hexdigest()[:12]
+    return f"00000000-0000-0000-{group}-{digest}"
 
 
 def _effects(size: float = 1.0) -> Effects:
@@ -365,10 +392,16 @@ def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
 
 
 def write_project(net_names_by_class: dict[str, list[str]]) -> None:
-    """Write a minimal .kicad_pro with Default + Power net classes (DRC rules)."""
+    """Write a minimal .kicad_pro with Default + Power net classes (DRC rules).
+
+    Also registers the root schematic sheet (``SCH_ROOT_UUID``) so the
+    ``.kicad_pcb`` / ``.kicad_pro`` / ``.kicad_sch`` open together as one
+    coherent KiCad project (the trio Quilter / DeepPCB ask for).
+    """
     pro = {
         "board": {"design_settings": {"rules": {"min_clearance": 0.2,
                                                  "min_track_width": 0.25}}},
+        "libraries": {"pinned_footprint_libs": [], "pinned_symbol_libs": []},
         "net_settings": {
             "classes": [
                 {"name": "Default", "clearance": 0.2, "track_width": 0.25,
@@ -382,9 +415,227 @@ def write_project(net_names_by_class: dict[str, list[str]]) -> None:
             ],
             "netclass_assignments": {n: "Power" for n in net_names_by_class["Power"]},
         },
+        "schematic": {"legacy_lib_dir": "", "legacy_lib_list": []},
+        "sheets": [[SCH_ROOT_UUID, ""]],
         "meta": {"filename": f"{BOARD_NAME}.kicad_pro", "version": 1},
     }
     (HERE / f"{BOARD_NAME}.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
+
+
+# ---------------------------------------------------------------------------
+# Schematic (.kicad_sch) generation, from the same NETLIST / PINOUTS data.
+# ---------------------------------------------------------------------------
+def _symbol_pin_layout(lib_id: str) -> tuple[list[str], list[str],
+                                             dict[str, tuple[float, float, int, int]], float]:
+    """Pin geometry for one symbol, derived from PINOUTS.
+
+    Returns ``(left, right, geom, half_h)`` where ``geom[pin] = (px, py,
+    angle, number)`` is the pin's symbol-local connection point (Y up),
+    its KiCad orientation, and its pin number. Pins are numbered left
+    column first then right column — identical to the board pad numbering
+    in ``_make_footprint`` — and laid out on the same 0.1" pitch / column
+    centring as the board pads, so the schematic mirrors the board exactly.
+    """
+    cols = PINOUTS[lib_id]
+    left, right = cols["left"], cols["right"]
+
+    def col_y(i: int, n: int) -> float:  # board/page convention (Y down)
+        return (i - (n - 1) / 2.0) * PITCH
+
+    geom: dict[str, tuple[float, float, int, int]] = {}
+    num = 1
+    for i, pin in enumerate(left):
+        geom[pin] = (-SCH_STUB, -col_y(i, len(left)), 0, num)  # Y up = -page Y
+        num += 1
+    for j, pin in enumerate(right):
+        geom[pin] = (SCH_STUB, -col_y(j, len(right)), 180, num)
+        num += 1
+    n_rows = max(len(left), len(right)) or 1
+    half_h = (n_rows - 1) / 2.0 * PITCH + PITCH
+    return left, right, geom, half_h
+
+
+def _sym_pin(name: str, number: int, x: float, y: float, angle: int) -> str:
+    return (f'        (pin passive line (at {x:g} {y:g} {angle}) (length {SCH_PIN_LEN:g})\n'
+            f'          (name "{name}" (effects (font (size 1.27 1.27))))\n'
+            f'          (number "{number}" (effects (font (size 1.27 1.27))))\n'
+            f'        )')
+
+
+def _lib_symbol(lib_id: str) -> str:
+    left, right, geom, half_h = _symbol_pin_layout(lib_id)
+    pins = []
+    for pin in left + right:
+        px, py, angle, number = geom[pin]
+        pins.append(_sym_pin(pin, number, px, py, angle))
+    body = (f'(rectangle (start {-SCH_BODY_HW:g} {half_h:g}) (end {SCH_BODY_HW:g} {-half_h:g})\n'
+            f'        (stroke (width 0.254) (type default)) (fill (type background)))')
+    name = f"{SYMBOL_LIB_NICK}:{lib_id}"
+    return (f'    (symbol "{name}" (in_bom yes) (on_board yes)\n'
+            f'      (property "Reference" "U" (id 0) (at {-SCH_BODY_HW:g} {half_h + 2.54:g} 0)\n'
+            f'        (effects (font (size 1.27 1.27))))\n'
+            f'      (property "Value" "{lib_id}" (id 1) (at {-SCH_BODY_HW:g} {half_h + 0.8:g} 0)\n'
+            f'        (effects (font (size 1.27 1.27))))\n'
+            f'      (property "Footprint" "" (id 2) (at 0 0 0) (effects (font (size 1.27 1.27)) hide))\n'
+            f'      (property "Datasheet" "" (id 3) (at 0 0 0) (effects (font (size 1.27 1.27)) hide))\n'
+            f'      (symbol "{lib_id}_0_1" {body})\n'
+            f'      (symbol "{lib_id}_1_1"\n' + "\n".join(pins) + "\n      )\n    )")
+
+
+def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float) -> str:
+    uid = _uid("0001", lib_id, ref, x, y)
+    rx, ry = x - SCH_BODY_HW, y - half_h
+    return (f'  (symbol (lib_id "{SYMBOL_LIB_NICK}:{lib_id}") (at {x:g} {y:g} 0) (unit 1)\n'
+            f'    (in_bom yes) (on_board yes) (dnp no)\n'
+            f'    (uuid "{uid}")\n'
+            f'    (property "Reference" "{ref}" (id 0) (at {rx:g} {ry - 3.81:g} 0)\n'
+            f'      (effects (font (size 1.27 1.27)) (justify left)))\n'
+            f'    (property "Value" "{lib_id}" (id 1) (at {rx:g} {ry - 1.27:g} 0)\n'
+            f'      (effects (font (size 1.27 1.27)) (justify left)))\n'
+            f'    (property "Footprint" "" (id 2) (at {x:g} {y:g} 0)\n'
+            f'      (effects (font (size 1.27 1.27)) hide))\n'
+            f'    (property "Datasheet" "" (id 3) (at {x:g} {y:g} 0)\n'
+            f'      (effects (font (size 1.27 1.27)) hide))\n'
+            f'    (instances\n'
+            f'      (project "{BOARD_NAME}"\n'
+            f'        (path "/{SCH_ROOT_UUID}" (reference "{ref}") (unit 1))\n'
+            f'      )\n'
+            f'    )\n'
+            f'  )')
+
+
+def _global_label(net: str, x: float, y: float, rot: int) -> str:
+    uid = _uid("0009", net, x, y)
+    return (f'  (global_label "{net}" (shape input) (at {x:g} {y:g} {rot}) (fields_autoplaced)\n'
+            f'    (effects (font (size 1.27 1.27)) (justify left))\n'
+            f'    (uuid "{uid}")\n'
+            f'  )')
+
+
+def _wire(x1: float, y1: float, x2: float, y2: float) -> str:
+    uid = _uid("0004", x1, y1, x2, y2)
+    return (f'  (wire (pts (xy {x1:g} {y1:g}) (xy {x2:g} {y2:g}))\n'
+            f'    (stroke (width 0) (type default)) (uuid "{uid}")\n'
+            f'  )')
+
+
+# Stub length from each pin endpoint out to its net label, so labels read
+# clear of the symbol body / pin-name text instead of overlapping it. KiCad
+# joins pin -> stub wire -> global label, so connectivity is unchanged.
+SCH_STUB_OUT = 5.08
+
+
+def build_schematic() -> str:
+    """Compose a self-contained KiCad 7 schematic for the starter board."""
+    lib_ids: list[str] = []
+    for _, lib_id, *_ in NETLIST:
+        if lib_id not in lib_ids:
+            lib_ids.append(lib_id)
+    lib_symbols = "  (lib_symbols\n" + "\n".join(_lib_symbol(l) for l in lib_ids) + "\n  )"
+
+    body: list[str] = []
+    placed: dict[tuple[float, float], str] = {}
+    for ref, lib_id, x, y, pins in NETLIST:
+        px, py = float(x) * FLOORPLAN_SCALE, float(y) * FLOORPLAN_SCALE
+        _, _, geom, half_h = _symbol_pin_layout(lib_id)
+        body.append(_sym_instance(lib_id, ref, px, py, half_h))
+        for pin_name, net in pins:
+            if pin_name not in geom:
+                raise KeyError(f"{lib_id!r} has no pin {pin_name!r}; check PINOUTS")
+            ppx, ppy, angle, _ = geom[pin_name]
+            tip_x, tip_y = round(px + ppx, 4), round(py - ppy, 4)  # sheet pin endpoint
+            # Push the label outward (left pins to -x, right pins to +x) along a
+            # short stub wire so the label text doesn't sit on the pin name.
+            lx = round(tip_x - SCH_STUB_OUT if angle == 0 else tip_x + SCH_STUB_OUT, 4)
+            ly = tip_y
+            key = (lx, ly)
+            if key in placed and placed[key] != net:
+                raise ValueError(
+                    f"label for {ref}.{pin_name} ({net}) collides with net {placed[key]} "
+                    f"at ({lx}, {ly})")
+            placed[key] = net
+            body.append(_wire(tip_x, tip_y, lx, ly))
+            body.append(_global_label(net, lx, ly, 180 if angle == 0 else 0))
+
+    title_block = (
+        '  (title_block\n'
+        '    (title "Powder-doser test-module starter board")\n'
+        '    (rev "A")\n'
+        '    (company "Vertical Cloud Lab")\n'
+        '    (comment 1 "Schematic companion to test_module_starter.kicad_pcb")\n'
+        '    (comment 2 "Netlist transcribed from PR #61 generate.py; upload trio for Quilter/DeepPCB")\n'
+        '  )')
+    header = (f'(kicad_sch (version 20230121) (generator powder_doser_build_starter_board)\n'
+              f'  (uuid "{SCH_ROOT_UUID}")\n'
+              f'  (paper "A3")\n'
+              f'{title_block}\n'
+              f'{lib_symbols}\n')
+    footer = ('  (sheet_instances\n'
+              '    (path "/" (page "1"))\n'
+              '  )\n)\n')
+    return header + "\n".join(body) + "\n" + footer
+
+
+def validate_schematic_netlist(sch_path: Path) -> None:
+    """If kicad-cli is present, export the netlist and assert every wired pin
+    landed on its intended net (no ``unconnected-`` stragglers). This catches
+    any label/pin misalignment exactly as KiCad's connectivity engine sees it.
+    Skipped silently when kicad-cli is unavailable (e.g. CI / sandbox)."""
+    cli = shutil.which("kicad-cli")
+    if not cli:
+        print("note: kicad-cli not on PATH; skipping schematic netlist check", flush=True)
+        return
+    net_path = sch_path.with_suffix(".net")
+    try:
+        subprocess.run(
+            [cli, "sch", "export", "netlist", "--format", "kicadsexpr",
+             "-o", str(net_path), str(sch_path)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        import re
+        txt = net_path.read_text()
+        net_nodes: dict[str, set[tuple[str, str]]] = {}
+        for m in re.finditer(
+                r'\(net \(code "\d+"\) \(name "([^"]*)"\)(.*?)(?=\(net \(code|\Z)', txt, re.S):
+            name, nodes = m.group(1), set(re.findall(
+                r'\(node \(ref "([^"]+)"\) \(pin "([^"]+)"\)', m.group(2)))
+            net_nodes[name] = nodes
+        errors = []
+        for ref, lib_id, _x, _y, pins in NETLIST:
+            _, _, geom, _ = _symbol_pin_layout(lib_id)
+            for pin_name, net in pins:
+                number = str(geom[pin_name][3])
+                if (ref, number) not in net_nodes.get(net, set()):
+                    errors.append(f"{ref}.{pin_name} (#{number}) not on net {net}")
+        if errors:
+            raise ValueError("schematic connectivity check failed:\n  " + "\n  ".join(errors))
+        n_conn = sum(len(p) for *_, p in NETLIST)
+        print(f"verified schematic netlist: {n_conn} pins connected across "
+              f"{len([n for n in net_nodes if not n.startswith('unconnected-')])} named nets")
+    finally:
+        net_path.unlink(missing_ok=True)
+
+
+def render_schematic_preview(sch_path: Path) -> None:
+    """Render the schematic to SVG via kicad-cli when present (committed as
+    test_module_starter_schematic.svg). Skipped when kicad-cli is unavailable."""
+    cli = shutil.which("kicad-cli")
+    if not cli:
+        print("note: kicad-cli not on PATH; skipping schematic render", flush=True)
+        return
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        tmp = Path(td)
+        subprocess.run(
+            [cli, "sch", "export", "svg", "--no-background-color",
+             "--exclude-drawing-sheet", "-o", str(tmp), str(sch_path)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        produced = tmp / f"{BOARD_NAME}.svg"
+        if produced.exists():
+            dest = sch_path.with_name(f"{BOARD_NAME}_schematic.svg")
+            shutil.copyfile(produced, dest)
+            print(f"wrote {dest.name}")
 
 
 def _render_svg_fallback(pcb_path: Path) -> Path:
@@ -495,9 +746,16 @@ def main() -> None:
     power = sorted(n for n in nets if n in POWER_NETS and n)
     write_project({"Power": power})
 
+    # Schematic companion (same netlist as the board) — the third file in the
+    # Quilter / DeepPCB upload trio (.kicad_pcb + .kicad_pro + .kicad_sch).
+    sch_path = HERE / f"{BOARD_NAME}.kicad_sch"
+    sch_path.write_text(build_schematic())
+
     # Human-readable BOM / net summary for review and provenance.
     summary = {
         "board": f"{BOARD_NAME}.kicad_pcb",
+        "schematic": f"{BOARD_NAME}.kicad_sch",
+        "project": f"{BOARD_NAME}.kicad_pro",
         "components": len(NETLIST),
         "nets": len(nets) - 1,
         "outline_mm": [round(bw, 2), round(bh, 2)],
@@ -516,7 +774,10 @@ def main() -> None:
 
     print(f"wrote {pcb_path.name}: {len(NETLIST)} footprints, "
           f"{len(nets) - 1} nets, outline {bw:.1f}x{bh:.1f} mm")
+    print(f"wrote {sch_path.name}: {len(NETLIST)} symbols, {len(nets) - 1} nets")
     render_preview(pcb_path)
+    validate_schematic_netlist(sch_path)
+    render_schematic_preview(sch_path)
 
 
 if __name__ == "__main__":

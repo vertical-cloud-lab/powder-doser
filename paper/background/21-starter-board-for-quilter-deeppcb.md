@@ -44,9 +44,13 @@ sandbox and in CI — and emits, under
 | File | What it is |
 | --- | --- |
 | [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 66 pads (59 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a 279 × 199 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 59 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
+| [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
 | [`starter_board_summary.json`](starter_board/starter_board_summary.json) | Machine-readable BOM + net summary, including each part's real `body_mm`, vendor 3-D `model` path, and `source` provenance. |
+
+![Generated starter-board schematic (14 symbols, 20 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
 ## How it was built (note `20` Rank 1)
 
@@ -85,6 +89,16 @@ sandbox and in CI — and emits, under
    guarantees the result stays DRC-clean, and an Edge.Cuts rectangle is drawn
    around all component courtyards + 5 mm. Absolute placement is unimportant —
    Quilter/DeepPCB re-place everything.
+5. **Schematic companion.** From the same `NETLIST` / `PINOUTS`, the script also
+   emits `test_module_starter.kicad_sch`: each part becomes a labelled rectangle
+   symbol with one pin per physical pin (numbered exactly like the board pads),
+   and each connected pin gets a global net label on a short stub wire.
+   KiCad treats matching global labels as one net, so the 20-net topology is
+   reproduced with no drawn nets to route. `validate_schematic_netlist()` then
+   round-trips it through `kicad-cli` to prove the connectivity (see below).
+   This answers @lbwinters' request on PR
+   [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4663888863)
+   for the `.kicad_sch` needed to run a Quilter / DeepPCB test.
 
 ## Verification
 
@@ -105,6 +119,17 @@ This real-component revision is verified structurally, headlessly, with
 - **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
   **84 F.Fab** body-outline + **56 F.CrtYd** courtyard segments emitted.
 
+The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
+own connectivity engine sees it: the build exports its netlist with
+`kicad-cli sch export netlist` and asserts every one of the **59 connected pins
+lands on its intended net across all 20 named nets**, with no stray
+`unconnected-(…)` entries (`validate_schematic_netlist()`; runs automatically
+when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
+board and the schematic are emitted from the same `NETLIST` / `PINOUTS` tables —
+pins numbered identically (left column then right) and placed on the same 0.1″
+pitch — the schematic netlist matches the board's pad nets exactly. UUIDs are
+derived with a stable `md5` hash, so re-running is byte-for-byte reproducible.
+
 A KiCad GUI/`kicad-cli` DRC pass is still recommended before routing (it
 couldn't be run in this headless sandbox), but the board opens as a
 fully-netted, outlined, unrouted board — the precise hand-off artifact Quilter
@@ -112,12 +137,17 @@ and DeepPCB ask for.
 
 ## Uploading it
 
+DeepPCB and Quilter ask for the full KiCad project — board **and** schematic —
+so upload the trio together: `test_module_starter.kicad_pcb` +
+`test_module_starter.kicad_sch` + `test_module_starter.kicad_pro`.
+
 - **Quilter** (note `16`, manual / web-UI only): open
-  [app.quilter.ai](https://app.quilter.ai), start a new project from the
-  `.kicad_pcb` (+ `.kicad_pro` for the net-class rules), and let it place +
-  route. No API, so this step is human-in-the-loop.
-- **DeepPCB** (note `17`, scriptable API): the same `.kicad_pcb` is the upload
-  payload for `POST /boards`; the provisioned `DEEPPCB_API_KEY`
+  [app.quilter.ai](https://app.quilter.ai), start a new project from the trio
+  (`.kicad_pcb` + `.kicad_sch` + `.kicad_pro`), and let it place + route. No
+  API, so this step is human-in-the-loop.
+- **DeepPCB** (note `17`, scriptable API): the `.kicad_pcb` is the upload
+  payload for `POST /boards` (with the `.kicad_sch` / `.kicad_pro` for a
+  complete project); the provisioned `DEEPPCB_API_KEY`
   ([`deeppcb_api_ping.py`](deeppcb_api_ping.py)) authenticates from this
   sandbox, but a real route is **credit-metered** (free tier = 1 board /
   ~30 min), so the actual `POST /boards` + `PATCH /boards/{id}/confirm` calls
