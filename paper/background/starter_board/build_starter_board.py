@@ -63,9 +63,11 @@ Run:  python3 build_starter_board.py
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
-from hashlib import md5
+import tempfile
+from hashlib import sha256
 from pathlib import Path
 
 from kiutils.board import Board
@@ -239,7 +241,7 @@ SCH_STUB = SCH_BODY_HW + SCH_PIN_LEN  # pin connection-point half-extent
 
 def _uid(group: str, *parts: object) -> str:
     """Deterministic UUID-shaped id (stable across runs, unlike salted hash())."""
-    digest = md5("|".join(map(str, parts)).encode()).hexdigest()[:12]
+    digest = sha256("|".join(map(str, parts)).encode()).hexdigest()[:12]
     return f"00000000-0000-0000-{group}-{digest}"
 
 
@@ -587,12 +589,15 @@ def validate_schematic_netlist(sch_path: Path) -> None:
         return
     net_path = sch_path.with_suffix(".net")
     try:
-        subprocess.run(
+        proc = subprocess.run(
             [cli, "sch", "export", "netlist", "--format", "kicadsexpr",
              "-o", str(net_path), str(sch_path)],
-            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
         )
-        import re
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"kicad-cli netlist export failed (exit {proc.returncode}):\n"
+                + (proc.stderr or "").strip())
         txt = net_path.read_text()
         net_nodes: dict[str, set[tuple[str, str]]] = {}
         for m in re.finditer(
@@ -623,7 +628,6 @@ def render_schematic_preview(sch_path: Path) -> None:
     if not cli:
         print("note: kicad-cli not on PATH; skipping schematic render", flush=True)
         return
-    import tempfile
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
         subprocess.run(

@@ -128,7 +128,7 @@ when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
 board and the schematic are emitted from the same `NETLIST` / `PINOUTS` tables —
 pins numbered identically (left column then right) and placed on the same 0.1″
 pitch — the schematic netlist matches the board's pad nets exactly. UUIDs are
-derived with a stable `md5` hash, so re-running is byte-for-byte reproducible.
+derived with a stable `sha256` hash, so re-running is byte-for-byte reproducible.
 
 A KiCad GUI/`kicad-cli` DRC pass is still recommended before routing (it
 couldn't be run in this headless sandbox), but the board opens as a
