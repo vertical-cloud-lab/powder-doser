@@ -11,8 +11,10 @@ Note ``20`` (the Edison ``ANALYSIS`` pass over this repo's actual
 ``hardware/test-module/kicad`` schematic from PR #61) found that schematic
 has the full 14-component / 20-net topology but **no footprints, no
 ``.kicad_pcb``, no outline**, and recommended (Rank 1) a code-first
-"design-as-code → KiCad" build that assigns 0.1" pin-header *proxy*
-footprints and emits the starter board headlessly in CI.
+"design-as-code → KiCad" build that emits the starter board headlessly in
+CI. Component pads are 0.1" headers (one per schematic pin), while each part's
+body outline / courtyard / 3-D model is taken from the real vendor design
+files committed under ``hardware/vendor-files/`` (PR #25).
 
 This script is that Rank-1 implementation. It is fully self-contained and
 headless: it depends only on the pure-Python ``kiutils`` package (no KiCad
@@ -28,10 +30,32 @@ Provenance of the netlist
 ``PLACEMENTS`` / ``SYMBOL_PINS`` data structures in PR #61's
 ``hardware/test-module/kicad/generate.py`` (commit ``147e505``), so the
 component set, pin names, and net connectivity match the bench-rig
-schematic exactly. Each breakout is rendered as a through-hole 0.1"
-header *proxy* (one pad per schematic pin) — functionally correct for
-routing even though the silkscreen outline is a generic header rather
-than the exact Pololu/Adafruit/Pico board shape (note ``20`` §4 Rank 1).
+schematic exactly. Each schematic pin still becomes one through-hole
+0.1" pad (so the 20-net ratsnest is preserved exactly), but the body
+**outline, courtyard, and 3-D model** are now taken from the real
+vendor design files committed to the repo under
+``hardware/vendor-files/`` (PR #25), instead of a generic header box.
+
+Provenance of the component packages (``PACKAGES``)
+---------------------------------------------------
+The real per-part body sizes in ``PACKAGES`` come from the committed
+vendor files (PR #25, ``hardware/vendor-files/``):
+
+* Adafruit breakouts (DRV2605L #2305, DRV8871 #3190) — board outline
+  read from the vendor **Eagle ``.brd``** (layer 20 / Dimension).
+* Pololu carriers (D24V22F5 #2858, Tic T500 #3135, shunt regulator
+  #3776) — published 0.1"-grid PCB size, cross-checked against the
+  vendor **STEP** envelope.
+* Off-board actuators (NEMA-11 stepper #11HS18, servo #1142, solenoid
+  #412, ERM #1201) — they live *off* the PCB, so they appear here as
+  their on-board **connector** only; the actuator body size / STEP is
+  recorded for reference (mating part), not drawn as a board courtyard.
+* Raspberry Pi Pico W (PR #61's MCU, not in the PR #25 vendor set) —
+  standard 51 x 21 mm / 2x20 0.1" mechanical outline.
+
+3-D model paths point at ``hardware/vendor-files/...`` so they resolve
+once PR #25 is merged; KiCad simply omits a missing model (the
+``.kicad_pcb`` itself is self-contained and needs no external file).
 
 Run:  python3 build_starter_board.py
 """
@@ -44,7 +68,7 @@ import subprocess
 from pathlib import Path
 
 from kiutils.board import Board
-from kiutils.footprint import DrillDefinition, Footprint, FpLine, FpText, Pad
+from kiutils.footprint import DrillDefinition, Footprint, FpLine, FpText, Model, Pad
 from kiutils.items.common import Effects, Font, Net, Position
 from kiutils.items.gritems import GrLine
 
@@ -117,6 +141,66 @@ PINOUTS = {
 # Nets carrying power; routed wider / with more clearance. The rest are signals.
 POWER_NETS = {"+12V", "+5V", "+3V3", "GND"}
 
+# ---------------------------------------------------------------------------
+# Real component packages, sourced from the committed vendor design files
+# under hardware/vendor-files/ (PR #25). Each entry:
+#   kind   "module"    -> an on-board breakout; draw its real PCB outline +
+#                         courtyard and attach the vendor 3-D model.
+#          "connector" -> an off-board actuator (motor/solenoid/servo) that
+#                         only appears on the PCB as its wiring connector;
+#                         the body/outline auto-fits the header (the actuator
+#                         body is recorded in "ref" for provenance only).
+#          "passive"   -> generic discrete (electrolytic cap); auto-fit body.
+#   body   (w, h) real board outline in mm, or None to auto-fit to the pads.
+#   model  vendor STEP path (relative to repo root) or None.
+#   source human-readable provenance (which committed file the size came from).
+# ---------------------------------------------------------------------------
+VENDOR = "hardware/vendor-files"
+PACKAGES = {
+    "Barrel_Jack_12V": dict(
+        kind="module", body=(14.0, 11.0), model=None,
+        source="Adafruit #373 2.1 mm DC barrel-jack breakout (datasheet)"),
+    "D24V22F5_Buck": dict(
+        kind="module", body=(12.70, 10.16),
+        model=f"{VENDOR}/pololu-2858-d24v22f5/cad/d24v22fx-step-down-voltage-regulator.step",
+        source="Pololu #2858 0.5x0.4 in PCB; STEP envelope 19.5x20.7x13.8 mm"),
+    "Cap_Polar": dict(
+        kind="passive", body=(8.5, 8.5), model=None,
+        source="generic radial electrolytic, Ø8 mm body"),
+    "Shunt_Regulator": dict(
+        kind="module", body=(24.13, 10.16),
+        model=f"{VENDOR}/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
+        source="Pololu #3776 0.95x0.4 in PCB; STEP envelope 28.6x21.2x13.8 mm"),
+    "Pi_Pico_W": dict(
+        kind="module", body=(51.0, 21.0), model=None,
+        source="Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in (PR #61 MCU)"),
+    "DRV2605L_Breakout": dict(
+        kind="module", body=(17.78, 16.51),
+        model=f"{VENDOR}/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
+        source="Adafruit #2305 Eagle .brd outline (layer 20) 17.78x16.51 mm"),
+    "DRV8871_Breakout": dict(
+        kind="module", body=(20.32, 24.13),
+        model=f"{VENDOR}/adafruit-3190-drv8871/cad/3190 DRV8871 Breakout.step",
+        source="Adafruit #3190 Eagle .brd outline (layer 20) 20.32x24.13 mm"),
+    "Tic_T500": dict(
+        kind="module", body=(25.40, 15.24), model=None,
+        source="Pololu #3135 1.0x0.6 in PCB; STEP/STL in "
+               f"{VENDOR}/pololu-3135-tic-t500/cad/tic-stepper-motor-controller-models.zip"),
+    "Stepper_4wire": dict(
+        kind="connector", body=None, model=None,
+        source="off-board StepperOnline 11HS18-0674S NEMA-11 28x28x45 mm; STEP in "
+               f"{VENDOR}/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP"),
+    "Servo_3pin": dict(
+        kind="connector", body=None, model=None,
+        source="off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"),
+    "ERM_Motor": dict(
+        kind="connector", body=None, model=None,
+        source="off-board Adafruit #1201 ERM coin, Ø10 x 2.7 mm"),
+    "Solenoid": dict(
+        kind="connector", body=None, model=None,
+        source="off-board Adafruit #412 JF-0530B 5 V push-pull solenoid"),
+}
+
 # Geometry (mm).
 PITCH = 2.54          # 0.1" pad pitch within a header column
 ROW_GAP = 7.62        # 0.3" between the left and right header columns
@@ -124,10 +208,12 @@ PAD_SIZE = 1.7
 PAD_DRILL = 1.0
 EDGE_MARGIN = 5.0     # board-outline clearance around the outermost pads
 SILK_MARGIN = 1.0
-# Compaction of the schematic-sheet anchor coordinates into a tidier board
-# floorplan. The exact placement is unimportant (Quilter/DeepPCB re-place
-# everything); _assert_no_overlap() guarantees the result stays DRC-clean.
-FLOORPLAN_SCALE = 0.5
+CRTYD_CLEARANCE = 0.5  # F.CrtYd gap around the real body outline
+# Spread of the schematic-sheet anchor coordinates into a board floorplan.
+# Scaled up to 1.0 (vs the old proxy 0.5) so the now-real, larger component
+# bodies do not collide. The exact placement is unimportant (Quilter/DeepPCB
+# re-place everything); _assert_no_overlap() guarantees it stays DRC-clean.
+FLOORPLAN_SCALE = 1.0
 
 
 def _effects(size: float = 1.0) -> Effects:
@@ -150,13 +236,13 @@ def _pad(number: str, lx: float, ly: float, net: Net | None, pin1: bool) -> Pad:
 
 def _make_footprint(ref: str, lib_id: str, x: float, y: float,
                     pin_nets: dict[str, str], nets: dict[str, Net]) -> tuple[Footprint, list[tuple[float, float]], tuple[float, float]]:
-    """Build one proxy footprint; return it, the world (x, y) of every pad, and (hw, hh)."""
+    """Build one footprint (real body from PACKAGES); return it, the world (x, y) of every pad, and (hw, hh)."""
     cols = PINOUTS[lib_id]
     left, right = cols["left"], cols["right"]
     n_rows = max(len(left), len(right)) or 1
 
     fp = Footprint.create_new(
-        library_id=f"powder_doser_proxies:{lib_id}",
+        library_id=f"powder_doser_parts:{lib_id}",
         value=lib_id,
         reference=ref,
     )
@@ -188,18 +274,41 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
         pad_world.append((x + lx, y + ly))
         pad_num += 1
 
-    # Silkscreen courtyard rectangle + reference designator.
-    hw = half_x + PAD_SIZE / 2 + SILK_MARGIN
-    hh = (n_rows - 1) / 2.0 * PITCH + PAD_SIZE / 2 + SILK_MARGIN
-    corners = [(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh), (-hw, -hh)]
-    for (x1, y1), (x2, y2) in zip(corners, corners[1:]):
-        fp.graphicItems.append(FpLine(start=Position(x1, y1), end=Position(x2, y2),
-                                      layer="F.SilkS", width=0.12))
+    # Real component body outline (F.Fab) + courtyard (F.CrtYd) + silk, sized
+    # from the committed vendor files (PACKAGES). The outline never shrinks
+    # below the pad cluster, so the pads always stay inside the body.
+    pkg = PACKAGES[lib_id]
+    pad_hw = half_x + PAD_SIZE / 2 + SILK_MARGIN
+    pad_hh = (n_rows - 1) / 2.0 * PITCH + PAD_SIZE / 2 + SILK_MARGIN
+    if pkg["body"] is not None:
+        body_hw = max(pad_hw, pkg["body"][0] / 2.0)
+        body_hh = max(pad_hh, pkg["body"][1] / 2.0)
+    else:
+        body_hw, body_hh = pad_hw, pad_hh
+
+    def _rect(hw: float, hh: float, layer: str, width: float) -> None:
+        corners = [(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh), (-hw, -hh)]
+        for (x1, y1), (x2, y2) in zip(corners, corners[1:]):
+            fp.graphicItems.append(FpLine(start=Position(x1, y1), end=Position(x2, y2),
+                                          layer=layer, width=width))
+
+    _rect(body_hw, body_hh, "F.Fab", 0.1)                                  # real body
+    _rect(body_hw + 0.1, body_hh + 0.1, "F.SilkS", 0.12)                   # silk
+    _rect(body_hw + CRTYD_CLEARANCE, body_hh + CRTYD_CLEARANCE, "F.CrtYd", 0.05)  # courtyard
+
     for item in fp.graphicItems:
         if isinstance(item, FpText) and item.type == "reference":
-            item.position = Position(0, -hh - 1.0, 0)
+            item.position = Position(0, -body_hh - 1.0, 0)
             item.layer = "F.SilkS"
             item.effects = _effects()
+
+    # Attach the vendor 3-D model (resolves once PR #25 is merged; KiCad just
+    # omits it if absent, so the .kicad_pcb stays self-contained).
+    if pkg["model"]:
+        fp.models.append(Model(path=pkg["model"]))
+
+    hw = body_hw + CRTYD_CLEARANCE
+    hh = body_hh + CRTYD_CLEARANCE
     return fp, pad_world, (hw, hh)
 
 
@@ -231,23 +340,23 @@ def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
         nets[name] = Net(i, name)
         board.nets.append(nets[name])
 
-    all_pads: list[tuple[float, float]] = []
     courtyards: list[tuple[str, float, float, float, float]] = []
     for ref, lib_id, x, y, pins in NETLIST:
         px, py = float(x) * FLOORPLAN_SCALE, float(y) * FLOORPLAN_SCALE
         pin_nets = {pin: net for pin, net in pins}
         fp, pad_world, (hw, hh) = _make_footprint(ref, lib_id, px, py, pin_nets, nets)
         board.footprints.append(fp)
-        all_pads.extend(pad_world)
         courtyards.append((ref, px - hw, py - hh, px + hw, py + hh))
 
     _assert_no_overlap(courtyards)
 
-    # Board outline (Edge.Cuts rectangle) around all pads + margin.
-    xs = [p[0] for p in all_pads]
-    ys = [p[1] for p in all_pads]
-    x0, x1 = min(xs) - EDGE_MARGIN, max(xs) + EDGE_MARGIN
-    y0, y1 = min(ys) - EDGE_MARGIN, max(ys) + EDGE_MARGIN
+    # Board outline (Edge.Cuts rectangle) around every component courtyard +
+    # margin (courtyards now reflect the real body sizes, which extend past the
+    # pad cluster, so the outline is taken from them rather than the pads).
+    x0 = min(c[1] for c in courtyards) - EDGE_MARGIN
+    x1 = max(c[3] for c in courtyards) + EDGE_MARGIN
+    y0 = min(c[2] for c in courtyards) - EDGE_MARGIN
+    y1 = max(c[4] for c in courtyards) + EDGE_MARGIN
     rect = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
     for (ax, ay), (bx, by) in zip(rect, rect[1:]):
         board.graphicItems.append(GrLine(start=Position(ax, ay), end=Position(bx, by),
@@ -278,20 +387,95 @@ def write_project(net_names_by_class: dict[str, list[str]]) -> None:
     (HERE / f"{BOARD_NAME}.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
 
 
-def render_preview(pcb_path: Path) -> None:
-    """Render a board-only SVG preview when kicad-cli is available (optional)."""
-    cli = shutil.which("kicad-cli")
-    if not cli:
-        print("note: kicad-cli not on PATH; skipping SVG preview", flush=True)
-        return
+def _render_svg_fallback(pcb_path: Path) -> Path:
+    """Write a dependency-free SVG preview straight from the board model.
+
+    Used when ``kicad-cli`` is not installed, so the preview is reproducible
+    in the headless sandbox / CI. Draws the Edge.Cuts outline, each component's
+    real F.Fab body rectangle + reference, every pad, and the unrouted ratsnest
+    (pads sharing a net), matching what ``kicad-cli`` would render.
+    """
+    board = Board.from_file(str(pcb_path))
+
+    # Edge.Cuts bbox.
+    ex, ey = [], []
+    for g in board.graphicItems:
+        if isinstance(g, GrLine) and g.layer == "Edge.Cuts":
+            ex += [g.start.X, g.end.X]
+            ey += [g.start.Y, g.end.Y]
+    x0, x1, y0, y1 = min(ex), max(ex), min(ey), max(ey)
+    pad = 4.0
+    vb_w, vb_h = (x1 - x0) + 2 * pad, (y1 - y0) + 2 * pad
+    scale = 1100.0 / vb_w
+
+    def X(v: float) -> float: return (v - x0 + pad)
+    def Y(v: float) -> float: return (v - y0 + pad)
+
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{vb_w * scale:.0f}" '
+        f'height="{vb_h * scale:.0f}" viewBox="0 0 {vb_w:.2f} {vb_h:.2f}">',
+        f'<rect x="0" y="0" width="{vb_w:.2f}" height="{vb_h:.2f}" fill="#0b1a12"/>',
+    ]
+    # Edge.Cuts outline.
+    for g in board.graphicItems:
+        if isinstance(g, GrLine) and g.layer == "Edge.Cuts":
+            parts.append(f'<line x1="{X(g.start.X):.2f}" y1="{Y(g.start.Y):.2f}" '
+                         f'x2="{X(g.end.X):.2f}" y2="{Y(g.end.Y):.2f}" '
+                         f'stroke="#e8d44d" stroke-width="0.3"/>')
+
+    # Ratsnest: collect pad world positions per net.
+    net_pads: dict[str, list[tuple[float, float]]] = {}
+    for fp in board.footprints:
+        fx, fy = fp.position.X, fp.position.Y
+        for p in fp.pads:
+            if p.net and p.net.name:
+                net_pads.setdefault(p.net.name, []).append((fx + p.position.X, fy + p.position.Y))
+    for pts in net_pads.values():
+        for (ax, ay), (bx, by) in zip(pts, pts[1:]):
+            parts.append(f'<line x1="{X(ax):.2f}" y1="{Y(ay):.2f}" x2="{X(bx):.2f}" '
+                         f'y2="{Y(by):.2f}" stroke="#3a6ea5" stroke-width="0.12"/>')
+
+    # Component bodies (F.Fab), pads, and reference designators.
+    for fp in board.footprints:
+        fx, fy = fp.position.X, fp.position.Y
+        fab = [g for g in fp.graphicItems if isinstance(g, FpLine) and g.layer == "F.Fab"]
+        xs = [g.start.X for g in fab] + [g.end.X for g in fab]
+        ys = [g.start.Y for g in fab] + [g.end.Y for g in fab]
+        ref = next((g.text for g in fp.graphicItems
+                    if isinstance(g, FpText) and g.type == "reference"), "")
+        if xs:
+            bx0, bx1, by0, by1 = min(xs), max(xs), min(ys), max(ys)
+            parts.append(f'<rect x="{X(fx + bx0):.2f}" y="{Y(fy + by0):.2f}" '
+                         f'width="{bx1 - bx0:.2f}" height="{by1 - by0:.2f}" '
+                         f'fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>')
+            parts.append(f'<text x="{X(fx):.2f}" y="{Y(fy + by0) - 0.4:.2f}" '
+                         f'font-size="1.6" fill="#e0e0e0" text-anchor="middle">'
+                         f'{ref} {fp.entryName.split(":")[-1]}</text>')
+        for p in fp.pads:
+            cx, cy = X(fx + p.position.X), Y(fy + p.position.Y)
+            parts.append(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{PAD_SIZE / 2:.2f}" '
+                         f'fill="#d08a2c"/>')
+    parts.append('</svg>')
     svg = pcb_path.with_suffix(".svg")
-    subprocess.run(
-        [cli, "pcb", "export", "svg",
-         "--layers", "F.Cu,B.Cu,F.SilkS,Edge.Cuts",
-         "--exclude-drawing-sheet", "--page-size-mode", "2",
-         "-o", str(svg), str(pcb_path)],
-        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    )
+    svg.write_text("\n".join(parts) + "\n")
+    return svg
+
+
+def render_preview(pcb_path: Path) -> None:
+    """Render a board preview. Uses kicad-cli if present, else a pure-Python SVG."""
+    cli = shutil.which("kicad-cli")
+    svg = pcb_path.with_suffix(".svg")
+    if cli:
+        subprocess.run(
+            [cli, "pcb", "export", "svg",
+             "--layers", "F.Cu,B.Cu,F.SilkS,F.Fab,Edge.Cuts",
+             "--exclude-drawing-sheet", "--page-size-mode", "2",
+             "-o", str(svg), str(pcb_path)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+    else:
+        print("note: kicad-cli not on PATH; using built-in SVG fallback", flush=True)
+        _render_svg_fallback(pcb_path)
     print(f"wrote {svg.name}")
     try:
         import cairosvg  # type: ignore
@@ -318,7 +502,15 @@ def main() -> None:
         "nets": len(nets) - 1,
         "outline_mm": [round(bw, 2), round(bh, 2)],
         "power_nets": power,
-        "bom": [{"ref": r, "proxy": lib, "pins": len(p)} for r, lib, _, _, p in NETLIST],
+        "bom": [{
+            "ref": r,
+            "part": lib,
+            "kind": PACKAGES[lib]["kind"],
+            "pins": len(p),
+            "body_mm": list(PACKAGES[lib]["body"]) if PACKAGES[lib]["body"] else None,
+            "model": PACKAGES[lib]["model"],
+            "source": PACKAGES[lib]["source"],
+        } for r, lib, _, _, p in NETLIST],
     }
     (HERE / "starter_board_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
 
