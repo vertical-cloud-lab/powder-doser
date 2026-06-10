@@ -16,15 +16,15 @@ cabling.
 ## How it works
 
 ```
-                ┌──────────────┐               ← solenoid (mounts on +Z boss,
-                │   solenoid   │                  plunger drops through the
-                │ ─── plunger ─┘                  Ø6 hole in the collar wall
-                ▼   ↓  Ø6 plunger clearance       to tap the auger directly)
-              ╱  ╲  ╱  ╲
-             │ M2 ⊙ ⊙ M2 │      ← solenoid top boss (Ø2.4 M2 mount holes,
-              ╲────┬────╱          rectangular reinforced slab that sinks
-               ╲   │   ╱           3 mm into the collar OD, filleted at the
-        ┌──┐    ────────    ┌──┐
+               ┌──────────────┐               ← push/pull solenoid
+               │   solenoid   │                  (Adafruit 412 / TAU0730TM;
+               │ ─── plunger ─┘                  plunger drops through the
+               ▼   ↓  Ø7.5 plunger clearance     Ø7.5 hole — clears the Ø6.9
+             ╱  ╲  ╱  ╲                          plunger bushing — and taps
+            │ M3 ⊙   ⊙ M3│      ← solenoid top boss; the two M3 mount holes
+             ╲────┬────╱          follow the real solenoid flange: diagonally
+              ╲   │   ╱           opposite, 18.2 mm apart in X and 16.0 mm in
+        ┌──┐    ────────    ┌──┐  Y.  Rectangular reinforced slab that sinks
         │  │  ╱        ╲    │  │  ← M3 clamp screw (sets the running fit;
    coin │  │ │  auger   │   ├──┤    the two horizontal clamp ears are the
   motor │  │ │   bore   │   │  │    "contact point" — the bottom ear rests
@@ -86,16 +86,18 @@ cabling.
   (snug enough that the collar stays put axially; loose enough that the
   auger can rotate freely inside it), not to lock it onto the shaft.
 
-  The collar is **lengthened along the auger axis to 18 mm** (vs 12 mm on
+  The collar is **lengthened along the auger axis to 22 mm** (vs 12 mm on
   the bracket).  The extra Y-extent fixes the v1 problem where the
-  solenoid mounting boss was wider than the collar in Y, so its M2 mount
+  solenoid mounting boss was wider than the collar in Y, so its mount
   holes hung half off the boss into mid-air; with the lengthened collar,
-  every M2 hole sits fully over solid collar material.
+  both holes of the real solenoid's 16 mm Y-pitch pattern sit fully over
+  solid collar material.  (It grew 18 → 22 mm in v6 to fit that real
+  pattern — see the solenoid note below.)
 
 * The **coin vibration motor** (Ø 10 × 3 mm adhesive coin-style motor, e.g.
   any "10 mm flat coin vibration motor") sits in a Ø 10 × 1 mm recess
   on a flat face on the **-X side** of the collar.  The face is the
-  outer face of a **rectangular reinforced slab** (14 mm × 18 mm × ~4 mm)
+  outer face of a **rectangular reinforced slab** (14 mm × 22 mm × ~4 mm)
   that sinks `PAD_COLLAR_OVERLAP` = 3 mm into the collar OD, with the
   slab/cylinder intersection blended by a 1.5 mm fillet — the same
   reinforcement template the bracket uses for its plate ↔ collar
@@ -103,21 +105,27 @@ cabling.
   of the cylinder, instead of being a fragile flat plate tangent to it.
   Adhere the motor with its own foam-tape backing.
 
-* The **push/pull solenoid** (small ~17 × 11 × 30 mm class with M2 screw
-  mounts, e.g. JF-0530B / SDM-0530) sits on a flat face on the **+Z**
-  (top) side of the collar.  Same template as the coin pad: a
-  **rectangular reinforced slab** (14 mm × 18 mm × 5 mm) sinking 3 mm
-  into the collar OD with a 1.5 mm fillet at the intersection.  Two M2
-  clearance holes at 12 mm pitch along the auger axis hold the solenoid
-  down — both holes sit fully over solid collar material thanks to the
-  18 mm collar length.  A Ø 6 plunger clearance hole drops straight
-  through the boss and the collar wall so the plunger can hammer the
-  auger directly from above.
+* The **push/pull solenoid** is the real part now in hand: an open-frame
+  push/pull solenoid (**Adafruit 412** / Shanghai Chaocheng **TAU0730TM**,
+  12 V; 51.9 mm overall incl. plunger, 29.7 mm body, 14 × 17 mm
+  cross-section, Ø5 plunger cap, Ø6.9 plunger bushing).  It sits on a flat
+  face on the **+Z** (top) side of the collar.  Same template as the coin
+  pad: a **rectangular reinforced slab** (24 mm × 22 mm × ~7.75 mm)
+  sinking 3 mm into the collar OD with a 1.5 mm fillet at the
+  intersection.  The two mount holes follow the **real solenoid flange**
+  — two **M3** holes on diagonally-opposite ears, **18.2 mm apart across
+  the body (X) and 16.0 mm along it (Y)**, sized as self-tapping pilots
+  for M3 screws driven through the solenoid's Ø3 flange holes into the
+  printed boss.  Both holes sit fully over solid collar material thanks to
+  the 22 mm collar length.  A **Ø 7.5** plunger clearance hole (opened
+  from Ø6 to clear the Ø6.9 bushing) drops straight through the boss and
+  the collar wall so the plunger can hammer the auger directly from above.
+  Source: Adafruit 412 datasheet `412_C514-B_diagram.PDF` (PR #51
+  [`4672498176`](https://github.com/vertical-cloud-lab/powder-doser/pull/51#issuecomment-4672498176)).
 
-The drawing called the motor / solenoid arrangement explicitly
-"unspecified" — both are mounted around the OD as suggested in the
-sketch, but rotating the boss and pad to taste is just a matter of
-changing the angle in `cad_model.py`.
+The motor and solenoid are mounted around the OD as suggested in the
+sketch; rotating the boss and pad to taste is just a matter of changing
+the angle in `cad_model.py`.
 
 ## Files
 
@@ -144,8 +152,8 @@ parameters added in the v2 / v3 redesigns.
 | `AUGER_OD` | 25.0 | Matches the Archimedes auger OD from [PR #16](https://github.com/vertical-cloud-lab/powder-doser/pull/16). |
 | `BORE_CLEARANCE` | 0.5 | Diametral clearance — same free-running fit as the bracket. |
 | `COLLAR_WALL` | 4.0 | Collar OD = 33.5 mm. |
-| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × **18** × 14 | Same X length and corner-hole pattern as [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47), and same 29.25 mm bore-axis lift that clears the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) gear OD. `PLATE_DEPTH` is matched to `TC_COLLAR_DEPTH` (v4 — Will's print feedback) so the mounting plate is the same width as the tap collar along the auger axis. |
-| `TC_COLLAR_DEPTH` | **18.0** | Collar Y-extent — longer than the bracket's 12 mm so the solenoid boss is fully supported underneath (was 12 mm in v1; M2 holes hung off in mid-air).  `PLATE_DEPTH` tracks this value. |
+| `PLATE_LENGTH × DEPTH × THICKNESS` | 60 × **22** × 14 | Same X length and corner-hole pattern as [PR #47](https://github.com/vertical-cloud-lab/powder-doser/pull/47), and same 29.25 mm bore-axis lift that clears the [PR #49](https://github.com/vertical-cloud-lab/powder-doser/pull/49) gear OD. `PLATE_DEPTH` is matched to `TC_COLLAR_DEPTH` (v4 — Will's print feedback) so the mounting plate is the same width as the tap collar along the auger axis. |
+| `TC_COLLAR_DEPTH` | **22.0** | Collar Y-extent — longer than the bracket's 12 mm so the solenoid boss is fully supported underneath (was 12 mm in v1, 18 mm in v4; grew to 22 mm in v6 so the real solenoid's 16 mm Y mount-hole pitch fits over solid material).  `PLATE_DEPTH` tracks this value. |
 | `MOUNT_HOLE_INSET_X` / `MOUNT_HOLE_D` | 6.0 / 3.4 | M3 corner mounting holes — same as the bracket. |
 | `BUMP_INNER_X / BUMP_OUTER_X` | 17.25 / 27.20 | Hardstop bump straddles the +X corner mount hole — Ø3.4 cut-out through the bump preserves screwdriver access. |
 | `BUMP_TOP_Z / BUMP_HEIGHT` | 21.00 / 7.00 | Bump top sits 0.25 mm below the lower clamp tab's bottom face — no collar interference, single-direction hard contact at rest. |
@@ -154,17 +162,18 @@ parameters added in the v2 / v3 redesigns.
 | `TAB_COLLAR_OVERLAP` | 6.0 | How far the tab block sinks into the collar OD so the union forms a continuous solid. |
 | `COIN_MOTOR_D` / `COIN_MOTOR_RECESS_DEPTH` | 10.0 / 1.0 | Adhesive Ø10 coin vibration motor; 1 mm shallow recess locates the motor on the side pad. |
 | `COIN_PAD_W` / `PAD_COLLAR_OVERLAP` | 14 / 3 | Rectangular slab face width × overlap into the collar OD (same template as the bracket's plate↔collar reinforcement in PR #47). |
-| `SOLENOID_BOSS_W` / `PROUD` | 14 / 2 | Rectangular slab face width × height above `COLLAR_TOP_Z`; same 3 mm overlap into the collar OD as the coin pad. |
+| `SOLENOID_BOSS_W` / `PROUD` | 24 / 4 | Rectangular slab face width × height above `COLLAR_TOP_Z`; widened to carry the X = ±9.1 mm mount holes, raised so the M3 holes have slab depth to thread into.  Same 3 mm overlap into the collar OD as the coin pad. |
 | `COLLAR_RELIEF_R` / `COLLAR_RELIEF_CLEARANCE` | 17.00 / 0.5 | Half-cylindrical relief in the mounting plate top — same 0.5 mm diametral free-running fit the bracket bore uses on the auger. |
 | `CSK_HEAD_D / CSK_DEPTH` | 6.0 / 1.30 | M3 90° flat-head countersink in the +X mount hole, sunk into the bump top so the screw head sits flush. |
-| `SOLENOID_SCREW_D / PITCH_Y` | 2.4 / 12.0 | M2 clearance, 12 mm pitch along the auger axis. |
-| `SOLENOID_PLUNGER_D` | 6.0 | Plunger clearance hole through the full collar wall. |
+| `SOLENOID_HOLE_PITCH_X / _Y` | 18.2 / 16.0 | Real **Adafruit 412 / TAU0730TM** flange: two diagonally-opposite mount holes, 18.2 mm apart across the body and 16.0 mm along it. |
+| `SOLENOID_SCREW_D` | 2.7 | Self-tapping pilot for M3 screws driven through the solenoid's Ø3 flange holes into the printed boss. |
+| `SOLENOID_PLUNGER_D` | 7.5 | Plunger clearance hole through the full collar wall — opened from Ø6 to clear the Ø6.9 plunger bushing. |
 | `FILLET_PLATE_BUMP` / `FILLET_TAB_COLLAR` | 1.5 / 1.0 | Stress-relief / cosmetic blends. |
 
 Defensive `assert`s catch parameter retunes that would:
-- push the solenoid M2 mount holes through the central plunger hole, off
-  the boss footprint, or off the collar Y-extent (so it isn't possible
-  to silently regress the v1 cantilever bug);
+- push the solenoid mount holes through the central plunger hole, off
+  the boss footprint (X or Y), or off the collar Y-extent (so it isn't
+  possible to silently regress the v1 cantilever bug);
 - push the hardstop bump above the lower-tab Z range (which would make
   the collar physically un-installable);
 - push the hardstop bump past the plate end.

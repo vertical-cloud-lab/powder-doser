@@ -22,16 +22,18 @@ each other or to the chassis baseplate:
   bracket so the slot opens to the +X side and the two clamp ears form a
   pair of *contact-point tabs* whose horizontal rest orientation is
   defined by the mounting-plate bump beneath the lower tab.  The collar
-  is longer along the auger axis than the bracket (18 mm vs 12 mm) so
+  is longer along the auger axis than the bracket (22 mm vs 12 mm) so
   there is solid material beneath the full solenoid mounting boss, with
-  every M2 mounting hole sitting fully over collar wall rather than
+  every mounting hole sitting fully over collar wall rather than
   being cantilevered into mid-air.  The collar also carries:
 
     - a flat *side pad* on the -X side for adhesive-mounting a Ø10 mm
       coin vibration motor, and
-    - a flat *top boss* on the +Z side with two M2 mounting holes for a
-      small push/pull solenoid plus a plunger-clearance hole through the
-      collar wall so the solenoid plunger can tap the auger directly.
+    - a flat *top boss* on the +Z side with the real Adafruit 412 /
+      TAU0730TM push/pull solenoid's two diagonal M3 mounting holes
+      (18.2 mm pitch in X, 16.0 mm in Y) plus a plunger-clearance hole
+      through the collar wall so the solenoid plunger can tap the auger
+      directly.
 
   Both mounting features are built as *tapered wedges* whose base flares
   out wider than the mounting face and merges into the collar OD,
@@ -73,12 +75,15 @@ COLLAR_OD = BORE_D + 2 * COLLAR_WALL  # = 33.5 mm
 # Plate footprint and corner mount holes — identical to the bracket so the
 # tap-collar mounting plate drops into the same chassis hole pattern.
 PLATE_LENGTH = 60.0              # X
-PLATE_DEPTH = 18.0               # Y (along the auger axis) — matched to
+PLATE_DEPTH = 22.0               # Y (along the auger axis) — matched to
                                  # TC_COLLAR_DEPTH so the mount plate is the
                                  # same width as the tap collar along the
                                  # auger axis (PR #51 v4 feedback from Will;
                                  # was 12 mm in v1-v3, inherited from the
-                                 # bracket footprint in PR #47).
+                                 # bracket footprint in PR #47; bumped 18→22
+                                 # in v6 so the real Adafruit 412 / TAU0730TM
+                                 # solenoid mount-hole pattern fits — see
+                                 # TC_COLLAR_DEPTH).
 PLATE_THICKNESS = 14.0           # Z (lifted to clear the PR #49 gear OD)
 
 MOUNT_HOLE_D = 3.4               # M3 clearance through-hole
@@ -92,11 +97,15 @@ COLLAR_TOP_Z = COLLAR_CENTRE_Z + COLLAR_OD / 2
 
 # Collar Y-extent (along the auger axis).  Lengthened from the bracket's
 # 12 mm so the full solenoid mounting boss sits over solid collar wall
-# (rather than letting the M2 screw holes cantilever off the boss into
+# (rather than letting the screw holes cantilever off the boss into
 # mid-air, per PR review).  PLATE_DEPTH is matched to this so the mount
 # plate is the same width as the tap collar along the auger axis (PR #51
-# v4 feedback from Will).
-TC_COLLAR_DEPTH = 18.0
+# v4 feedback from Will).  v6: bumped 18 → 22 mm so the *real* push/pull
+# solenoid (Adafruit 412 / TAU0730TM) mounting-hole pattern fits — its two
+# mount holes are 16.0 mm apart along the auger axis (vs the 12 mm pitch
+# the v1-v5 boss assumed), which needs a wider collar to keep both holes
+# over solid material (Will's print-fit comment, PR #51 4672498176).
+TC_COLLAR_DEPTH = 22.0
 assert PLATE_DEPTH == TC_COLLAR_DEPTH, (
     "PLATE_DEPTH must match TC_COLLAR_DEPTH so the mount plate is the "
     "same width as the tap collar along the auger axis."
@@ -212,32 +221,62 @@ COIN_PAD_DEPTH = TC_COLLAR_DEPTH # Y-extent (full collar length)
 COIN_PAD_PROUD = 1.0             # how far the flat face sits outboard of
                                  # the collar OD's tangent at -X
 
-# Push/pull solenoid (small, e.g. ~17 × 11 × 30 mm with M2 screw holes
-# 12 mm apart on its mounting face).  Rectangular slab on +Z with two M2
-# clearance holes and a Ø6 plunger-clearance hole through the collar
-# wall.  Full Y-extent of the lengthened collar so the M2 mount holes
-# sit fully over solid collar material.
-SOLENOID_BOSS_W = 14.0           # X-extent of the rectangular slab
+# Push/pull solenoid — the real part now in hand is a small open-frame
+# push/pull solenoid (Adafruit 412 / Shanghai Chaocheng TAU0730TM, 12 V,
+# 51.9 mm long incl. plunger, 29.7 mm body, 14 × 17 mm cross-section,
+# Ø5 plunger cap, Ø6.9 plunger bushing).  Its mounting flange has TWO
+# screw holes (≈ Ø3, M3) on diagonally-opposite ears, not the two
+# symmetric M2 holes the v1-v5 boss assumed:
+#
+#       18.2 ±0.05 mm apart across the body  (SOLENOID_HOLE_PITCH_X)
+#       16.0      mm apart along the body     (SOLENOID_HOLE_PITCH_Y)
+#
+# The boss is still a rectangular reinforced slab on +Z with the plunger
+# clearance hole through the collar wall, but the two mount holes are now
+# placed in the real diagonal pattern and sized for M3, and the plunger
+# clearance hole is opened up to clear the Ø6.9 plunger bushing.  Source:
+# Adafruit 412 datasheet 412_C514-B_diagram.PDF (PR #51 4672498176).
+SOLENOID_BOSS_W = 24.0           # X-extent of the rectangular slab — wide
+                                 # enough to carry the X = ±9.1 mm holes
 SOLENOID_BOSS_DEPTH = TC_COLLAR_DEPTH  # Y-extent (full collar length)
-SOLENOID_BOSS_PROUD = 2.0        # how far the boss sits proud of COLLAR_TOP_Z
-SOLENOID_SCREW_D = 2.4           # M2 clearance
-SOLENOID_SCREW_PITCH_Y = 12.0    # M2 holes spacing along Y (auger axis)
-SOLENOID_PLUNGER_D = 6.0         # plunger clearance hole through the wall
+SOLENOID_BOSS_PROUD = 4.0        # how far the boss sits proud of COLLAR_TOP_Z
+                                 # (raised from 2 mm so the M3 mount holes
+                                 # have enough slab depth to thread into)
+SOLENOID_SCREW_D = 2.7           # self-tapping pilot for an M3 screw driven
+                                 # through the solenoid's Ø3 flange holes
+                                 # into the printed boss
+SOLENOID_HOLE_PITCH_X = 18.2     # mount-hole pitch across the body (datasheet
+                                 # 18.2 ±0.05 mm)
+SOLENOID_HOLE_PITCH_Y = 16.0     # mount-hole pitch along the auger axis
+SOLENOID_PLUNGER_D = 7.5         # plunger clearance hole through the wall —
+                                 # opened from Ø6 to clear the Ø6.9 plunger
+                                 # bushing (Max 0.5 mm proud) of the real part
 
-# Sanity check: M2 mount holes must clear the central plunger hole.
-assert SOLENOID_SCREW_PITCH_Y / 2 - SOLENOID_SCREW_D / 2 > SOLENOID_PLUNGER_D / 2 + 0.5, (
-    "Solenoid M2 mount holes overlap the plunger clearance hole."
+# Mount-hole centres (diagonally opposite ears, plunger centred between).
+SOLENOID_HOLE_OFFSETS = (
+    (+SOLENOID_HOLE_PITCH_X / 2, +SOLENOID_HOLE_PITCH_Y / 2),
+    (-SOLENOID_HOLE_PITCH_X / 2, -SOLENOID_HOLE_PITCH_Y / 2),
 )
-# Sanity check: M2 mount holes must stay inside the boss footprint with
-# at least 1 mm of edge wall.
-assert SOLENOID_SCREW_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= SOLENOID_BOSS_DEPTH / 2, (
-    "Solenoid M2 mount holes fall outside the boss footprint."
+
+# Sanity check: the diagonal mount holes must clear the central plunger
+# hole.
+_hole_centre_dist = math.hypot(SOLENOID_HOLE_PITCH_X / 2, SOLENOID_HOLE_PITCH_Y / 2)
+assert _hole_centre_dist - SOLENOID_SCREW_D / 2 > SOLENOID_PLUNGER_D / 2 + 0.5, (
+    "Solenoid mount holes overlap the plunger clearance hole."
 )
-# Sanity check: with the collar lengthened to TC_COLLAR_DEPTH, the M2
-# mount holes must sit fully *inside* the collar Y-extent (the v1 bug
-# was that the holes hung off the 12 mm bracket-depth collar).
-assert SOLENOID_SCREW_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= TC_COLLAR_DEPTH / 2, (
-    "Solenoid M2 mount holes hang off the collar Y-extent — "
+# Sanity check: mount holes must stay inside the boss footprint with at
+# least 1 mm of edge wall, in both X and Y.
+assert SOLENOID_HOLE_PITCH_X / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= SOLENOID_BOSS_W / 2, (
+    "Solenoid mount holes fall outside the boss footprint in X."
+)
+assert SOLENOID_HOLE_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= SOLENOID_BOSS_DEPTH / 2, (
+    "Solenoid mount holes fall outside the boss footprint in Y."
+)
+# Sanity check: the mount holes must sit fully *inside* the collar
+# Y-extent (the v1 bug was that the holes hung off the 12 mm bracket-depth
+# collar; the real solenoid's 16 mm Y-pitch needs the v6 22 mm collar).
+assert SOLENOID_HOLE_PITCH_Y / 2 + SOLENOID_SCREW_D / 2 + 1.0 <= TC_COLLAR_DEPTH / 2, (
+    "Solenoid mount holes hang off the collar Y-extent — "
     "increase TC_COLLAR_DEPTH."
 )
 # Sanity check: pad overlap must be smaller than the collar wall, or the
@@ -388,13 +427,19 @@ def _add_coin_motor_pad(body: cq.Workplane) -> cq.Workplane:
 
 
 def _add_solenoid_boss(body: cq.Workplane) -> cq.Workplane:
-    """Rectangular reinforced slab on +Z with two M2 holes + Ø6 plunger hole.
+    """Rectangular reinforced slab on +Z with the real solenoid mount pattern.
 
     Same template as the coin pad: a full rectangular slab that sinks
     PAD_COLLAR_OVERLAP (3 mm) into the collar OD, with the
     slab/cylinder intersection filleted for stress relief.  The full
-    Y-extent (TC_COLLAR_DEPTH) is solid collar underneath so the M2 mount
+    Y-extent (TC_COLLAR_DEPTH) is solid collar underneath so the mount
     holes sit fully over collar material.
+
+    The two mount holes follow the real Adafruit 412 / TAU0730TM
+    flange: diagonally-opposite ears 18.2 mm apart across the body
+    (X) and 16.0 mm apart along the body (Y), sized to thread an M3
+    screw.  The central plunger clearance hole is opened to Ø7.5 to
+    clear the Ø6.9 plunger bushing.
     """
     # Mounting face at Z = COLLAR_TOP_Z + SOLENOID_BOSS_PROUD.
     face_z = COLLAR_TOP_Z + SOLENOID_BOSS_PROUD
@@ -424,13 +469,15 @@ def _add_solenoid_boss(body: cq.Workplane) -> cq.Workplane:
         except Exception:  # pragma: no cover
             pass
 
-    # M2 mounting holes — through the boss into the collar wall (~4 mm
-    # of thread engagement).  Holes sit fully over the lengthened collar.
-    for sy in (-SOLENOID_SCREW_PITCH_Y / 2, +SOLENOID_SCREW_PITCH_Y / 2):
+    # Mount holes — the real solenoid's two diagonally-opposite M3 flange
+    # holes (18.2 mm pitch in X, 16.0 mm in Y).  Driven from the boss top
+    # down into the collar wall (~4 mm of thread engagement); both holes
+    # sit fully over the lengthened collar.
+    for sx, sy in SOLENOID_HOLE_OFFSETS:
         hole = (
             cq.Workplane("XY")
             .workplane(offset=face_z + 1)
-            .center(0, sy)
+            .center(sx, sy)
             .circle(SOLENOID_SCREW_D / 2)
             .extrude(-(SOLENOID_BOSS_PROUD + 4.0))
         )
@@ -455,9 +502,9 @@ def build_tap_collar() -> cq.Workplane:
     Geometry mirrors the bracket's collar (bore, OD, slot, clamp ears) but:
       * the slot is rotated 90° so the clamp ears face +X and double as
         the hardstop contact tabs;
-      * the collar Y-extent is TC_COLLAR_DEPTH = 18 mm (vs 12 mm on the
+      * the collar Y-extent is TC_COLLAR_DEPTH = 22 mm (vs 12 mm on the
         bracket) so the solenoid mounting boss has solid material under
-        the full M2 mount-hole pattern;
+        the full diagonal M3 mount-hole pattern;
       * the coin-motor pad and solenoid boss are rectangular reinforced
         slabs that sink PAD_COLLAR_OVERLAP (3 mm) into the collar OD,
         with the slab/cylinder intersection filleted — same template
