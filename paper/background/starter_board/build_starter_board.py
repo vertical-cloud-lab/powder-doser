@@ -78,6 +78,14 @@ from kiutils.items.gritems import GrLine
 HERE = Path(__file__).resolve().parent
 BOARD_NAME = "test_module_starter"
 
+# kiutils' ``create_new`` stamps every board/footprint with the KiCad 6 file
+# format version (20211014). Quilter (and other KiCad 7+ tools) reject that
+# with "Version 20211014 not supported. ... KiCAD versions 7.0 and newer".
+# Emit the KiCad 7.0 stable .kicad_pcb format version instead so the upload
+# trio is accepted (the matching .kicad_sch already uses the KiCad 7 20230121
+# schematic version).
+KICAD7_PCB_VERSION = "20221018"
+
 # ---------------------------------------------------------------------------
 # Netlist, transcribed from PR #61 hardware/test-module/kicad/generate.py
 # (PLACEMENTS). (x, y) are the schematic-sheet anchor coordinates; we reuse
@@ -275,6 +283,7 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
         value=lib_id,
         reference=ref,
     )
+    fp.version = KICAD7_PCB_VERSION
     fp.position = Position(x, y, 0)
     fp.layer = "F.Cu"
     fp.tedit = "00000000"  # fixed so regeneration is byte-for-byte reproducible
@@ -354,6 +363,7 @@ def _assert_no_overlap(courtyards: list[tuple[str, float, float, float, float]])
 
 def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
     board = Board.create_new()
+    board.version = KICAD7_PCB_VERSION
     board.generator = "powder_doser_build_starter_board"
 
     # Net table: net 0 is the unconnected net.

@@ -119,6 +119,16 @@ This real-component revision is verified structurally, headlessly, with
 - **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
   **84 F.Fab** body-outline + **56 F.CrtYd** courtyard segments emitted.
 
+**File-format version (KiCad 7+).** The board is written with the **KiCad 7.0
+`.kicad_pcb` format version `20221018`** (board and every embedded footprint),
+matching the schematic's KiCad 7 `20230121` version. This addresses the Quilter
+upload error reported on PR
+[#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4665359897)
+— *"Version 20211014 not supported. Quilter supports KiCAD versions 7.0 and
+newer"* — which came from `kiutils`' default `create_new` stamp of the KiCad 6
+version `20211014`. The builder now overrides it via `KICAD7_PCB_VERSION` so the
+upload trio is accepted.
+
 The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
 own connectivity engine sees it: the build exports its netlist with
 `kicad-cli sch export netlist` and asserts every one of the **59 connected pins
