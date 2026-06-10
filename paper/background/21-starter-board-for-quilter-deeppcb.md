@@ -145,6 +145,34 @@ courtyards), shrinking the outline to **~82 × 113 mm** (≈6× less area) while
 `_assert_no_overlap()` keeps it DRC-clean. The schematic-sheet layout is
 unchanged (its spacing doesn't affect connectivity or routing).
 
+**Placement review (Edison `ANALYSIS`).** The compact board, generator, and both
+trios were fed back through an Edison data-analysis pass
+([`edison_artifacts/board_placement_review_for_powder_doser.*`](edison_artifacts/board_placement_review_for_powder_doser.answer.md);
+runner [`edison_run_board_placement_analysis.py`](edison_run_board_placement_analysis.py))
+to sanity-check the layout. It confirmed the ~82 × 113 mm board is well-sized
+(~46 % courtyard fill, ample 2-layer routing room) and surfaced concrete
+follow-ups, of which one is applied here and the rest are recorded as future work:
+
+- **Applied — power breakout clearance.** A 0.6 mm `Power` trace plus the old
+  0.3 mm clearance (1.2 mm) could not fit between adjacent 0.1″ header pads (the
+  copper-to-copper gap is only `PITCH − PAD_SIZE = 0.84 mm`). The `Power` class
+  clearance is now held at the board minimum (0.2 mm) so power can break out of
+  the headers and neck down through them — the routing behaviour the
+  DeepPCB/Quilter test is meant to exercise.
+- **Tested, not adopted — domain-grouped input order.** The review suggested
+  reordering `NETLIST` into power/logic/motor domains to shorten the ratsnest.
+  Measured against the actual left-to-right shelf-packer this *increased* the
+  MST ratsnest (≈1087 → ≈1104 mm); connectivity-greedy orderings were worse
+  still, so the existing order is kept. A connectivity-aware *packer* (not just
+  input reordering) would be the real win.
+- **Future work.** Edge-pin the off-board connectors (`J1`, `M1`–`M3`, `SOL1`),
+  pre-place decoupling caps (`C1`–`C3`) rigidly beside their targets, add four
+  M3 mounting-hole keep-outs, and give the barrel jack (`J1`) its real
+  oversized/slotted pads instead of the 0.1″ proxy. These need per-part
+  placement/footprint overrides and are deliberately left for the
+  footprint-swap pass below.
+
+
 **File-format version (KiCad 7+).** The board is written with the **KiCad 7.0
 `.kicad_pcb` format version `20221018`** (board and every embedded footprint),
 matching the schematic's KiCad 7 `20230121` version. This addresses the Quilter

@@ -501,12 +501,18 @@ def write_project(net_names_by_class: dict[str, list[str]],
                                                  "min_track_width": 0.25}}},
         "libraries": {"pinned_footprint_libs": [], "pinned_symbol_libs": []},
         "net_settings": {
+            # Power class clearance is held at the board min (0.2 mm, not 0.3)
+            # so a 0.6 mm power trace can break out between adjacent 0.1" header
+            # pads (copper-to-copper gap is only PITCH-PAD_SIZE = 0.84 mm); wide
+            # power nets still neck down through headers, which is exactly the
+            # behaviour the DeepPCB/Quilter routing test is meant to exercise
+            # (see edison_artifacts/board_placement_review_for_powder_doser).
             "classes": [
                 {"name": "Default", "clearance": 0.2, "track_width": 0.25,
                  "via_diameter": 0.8, "via_drill": 0.4,
                  "microvia_diameter": 0.3, "microvia_drill": 0.2,
                  "diff_pair_gap": 0.25, "diff_pair_width": 0.2},
-                {"name": "Power", "clearance": 0.3, "track_width": 0.6,
+                {"name": "Power", "clearance": 0.2, "track_width": 0.6,
                  "via_diameter": 1.0, "via_drill": 0.5,
                  "microvia_diameter": 0.3, "microvia_drill": 0.2,
                  "diff_pair_gap": 0.25, "diff_pair_width": 0.2},
