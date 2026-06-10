@@ -13,6 +13,7 @@ Related xrefs:
 - Zoo Design Studio docs (feature subtree): https://zoo.dev/docs/zoo-design-studio
 - Zoo Design Studio trial + exported transcript: https://github.com/vertical-cloud-lab/powder-doser/pull/7#issuecomment-4482605596
 - Team trial observations (editing/interaction feedback): issue #92 (https://github.com/vertical-cloud-lab/powder-doser/issues/92#issuecomment-4672557336)
+- Zoo community thread on editing AI-designed parts (manual-dimension bug fixed in 1.2.16; sketch-on-face issue): https://community.zoo.dev/t/editing-ai-designed-parts/560
 - Multi-doser brainstorming (architecture options, no shared wetted path before the cup): issue #30
 - Synthesized dispenser-architecture write-up (per-channel auger, gravimetric weighing, A&D balance): PR #31
 
@@ -109,8 +110,12 @@ Our testers found editing more constrained than a traditional history-based CAD 
 specifically: only being able to nudge parameters the agent had set, manual values "failing"
 when typed over a driven dimension, not being able to sketch on an arbitrary face, and
 parameters built from other parameters being hard to untangle (issue #92
-[comment](https://github.com/vertical-cloud-lab/powder-doser/issues/92#issuecomment-4672557336)).
-The official docs explain why and give the supported path for each:
+[comment](https://github.com/vertical-cloud-lab/powder-doser/issues/92#issuecomment-4672557336),
+and the [Zoo community thread](https://community.zoo.dev/t/editing-ai-designed-parts/560)).
+Important context from that thread: **editing an AI-generated model is an intended, supported
+workflow**, and two of the symptoms above were version-specific rough edges, not fundamental
+limitations — **keep ZDS updated**. The official docs explain the model and the supported path
+for each:
 
 - **KCL is the single source of truth; graphical and code edits stay linked.** Point-and-click
   edits are *not* a separate layer — they regenerate the KCL, so the clean way to override a
@@ -122,17 +127,25 @@ The official docs explain why and give the supported path for each:
   parameter-of-parameters evaluates to, then edit the underlying definition.
   ([variables pane](https://zoo.dev/docs/zoo-design-studio/features/workspace/variables-pane))
 - **To change a driving dimension, double-click the dimension label** (in the sketch or the
-  feature-tree operation) and type the new value; dimensions can be parameters/formulas. If a
-  new value "won't take", the sketch is likely **over-constrained** — ZDS highlights the
-  conflicting geometry/dimension in **red**, and you loosen one competing constraint before it
-  re-solves. ([dimensions](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/sketching/dimensions))
+  feature-tree operation) and type the new value; dimensions can be parameters/formulas.
+  **The "manual value briefly applies then reverts to the parameter" symptom our tester hit was
+  a known bug** ([modeling-app#11995](https://github.com/KittyCAD/modeling-app/issues/11995)),
+  fixed in **ZDS 1.2.16**; the tester confirmed manual dimension editing works after updating,
+  so update first if a value won't stick. Separately, if a value legitimately can't solve, the
+  sketch is **over-constrained** — ZDS highlights the conflicting geometry/dimension in **red**,
+  and you loosen one competing constraint before it re-solves.
+  ([dimensions](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/sketching/dimensions))
 - **Sketch-on-a-face is supported, but it is scene-driven.** Select the face in the modeling
   area to start a sketch directly on it; the feature tree explicitly notes that "some
   sketch-on-face or offset-plane workflows still require scene-based editing" and that
   user-defined function/module operations must be edited in code, not from the tree. For an
   arbitrary datum, add an
   [offset/construction plane](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/construction-geometry/offset-plane)
-  first. ([sketching](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/sketching),
+  first. The specific *"refactor: Could not find the KCL source for this edit"* error our tester
+  saw when sketching on a face of an AI-generated body is a tracked open bug
+  ([modeling-app#11472](https://github.com/KittyCAD/modeling-app/issues/11472)) — workaround is
+  to reload / "update from code", or sketch from an offset plane until it lands.
+  ([sketching](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/sketching),
   [feature tree](https://zoo.dev/docs/zoo-design-studio/features/workspace/feature-tree))
 - **When the agent gets stuck, steer it instead of restarting.** ZDS gives three official
   levers, all better than re-prompting from scratch:
@@ -183,9 +196,10 @@ These tripped the agent mid-run and are worth knowing:
 
 ## Recommended workflow for the team
 
-1. **Install the desktop app** (browser only for quick throwaway tests), and confirm
-   reasoning-time budget against the [pricing tiers](https://zoo.dev/zoo-pricing) before a
-   session.
+1. **Install the desktop app and keep it updated** (browser only for quick throwaway tests),
+   and confirm reasoning-time budget against the [pricing tiers](https://zoo.dev/zoo-pricing)
+   before a session. ZDS is moving fast and several editing rough edges are version-specific
+   (e.g. the manual-dimension revert fixed in 1.2.16), so update before reporting a blocker.
 2. **Frame the prompt as a spec sheet** following Zoo's "be specific" guidance: dispenser
    count, per-channel capacity, dose tolerance (±mg/±%), balance model, "no shared wetted path
    before the cup", inert-gas requirement, and overall envelope. Reuse the issue #30 / PR #31
@@ -219,6 +233,10 @@ These tripped the agent mid-run and are worth knowing:
 - Non-deterministic: the same prompt can yield different layouts; pin a run by committing its
   KCL + transcript.
 - Reasoning-time metering and the desktop-first / cloud-dependent model can gate a session.
+- Editing rough edges are version-dependent and actively being fixed (manual-dimension revert
+  closed in 1.2.16; sketch-on-face on AI-generated bodies tracked in modeling-app#11472), so
+  pin the ZDS version when reporting an editing bug and re-test on the latest before concluding
+  it's a hard limitation.
 - Not a safety or compliance authority.
 
 ## Next steps
