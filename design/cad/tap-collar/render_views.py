@@ -64,9 +64,10 @@ def _set_camera(renderer, az_el, focal_z):
     cam.SetFocalPoint(0, 0, focal_z)
     cam.SetPosition(0, -120, focal_z)
     cam.SetViewUp(0, 0, 1)
+    renderer.ResetCamera()
     cam.Azimuth(az_el[0])
     cam.Elevation(az_el[1])
-    renderer.ResetCamera()
+    renderer.ResetCameraClippingRange()
     cam.Zoom(1.3)
 
 
