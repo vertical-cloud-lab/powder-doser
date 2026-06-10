@@ -69,9 +69,11 @@ def _pwm(pin_num, freq, duty=0.0):
 # Stepper (Pololu Tic T500 over TTL serial -> NEMA-11)
 #
 # The Pico W no longer bit-bangs STEP/DIR; it sends serial commands to the
-# Tic T500, whose on-board MCU runs the motion planner (accel/decel ramps,
-# position tracking) and current limiting.  We keep a shadow of the target
-# position in microsteps so ``rotate_degrees`` can issue relative moves.
+# Tic T500, whose on-board MCU runs the motion planner (accel/decel ramps)
+# and current limiting.  We keep a local shadow of the target position in
+# microsteps so ``rotate_degrees`` can issue relative moves and estimate
+# move durations -- the Tic's position telemetry proved unreliable on the
+# bench rig, so the firmware does not read it back (see ``_wait_estimated_time``).
 # ---------------------------------------------------------------------------
 
 class Stepper:
@@ -85,6 +87,7 @@ class Stepper:
         # Shadow target position (microsteps); the Tic starts at 0 once we
         # call halt_and_set_position below.
         self._position = 0
+        self._rpm = float(config.STEPPER_SPEED_RPM)
         self._enabled = False
         self._configure()
 
@@ -109,6 +112,7 @@ class Stepper:
 
     def set_speed(self, rpm):
         # Tic speed unit = 1/10000 microstep per second.
+        self._rpm = float(rpm)
         usteps_per_s = rpm / 60.0 * self.steps_per_rev
         self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
 
@@ -129,28 +133,26 @@ class Stepper:
             self.enable(True)
         self._position += delta
         self.tic.set_target_position(self._position)
-        self._wait_until_reached()
+        self._wait_estimated_time(delta)
 
-    def _wait_until_reached(self):
-        # Poll the Tic's reported position until it matches the target.  If
-        # the Tic's TX line isn't wired back (current_position() returns
-        # None) we fall back to an estimated timed wait, still pinging the
-        # command-timeout watchdog so a long move can't be cut short.
-        target = self._position
-        usteps_per_s = max(1.0, config.STEPPER_SPEED_RPM / 60.0
-                           * self.steps_per_rev)
-        # Generous ceiling: move time at max speed + accel margin.
-        est_s = abs(target) / usteps_per_s + 1.0
+    def _wait_estimated_time(self, delta):
+        # The Tic T500's TX line proved unreliable at reporting position
+        # back to the Pico on the bench rig, so instead of polling
+        # ``current_position()`` we wait an estimated time based on the
+        # commanded microstep delta and the current speed.  We still ping
+        # the Tic's command-timeout watchdog throughout so a long move
+        # isn't cut short.  Position is tracked locally (``self._position``);
+        # missed steps go undetected, which is acceptable for auger
+        # rotation where exact position isn't critical.
+        usteps_per_s = max(1.0, self._rpm / 60.0 * self.steps_per_rev)
+        est_s = abs(delta) / usteps_per_s + 0.2
         deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
         while time.ticks_diff(deadline, time.ticks_ms()) > 0:
-            self.tic.reset_command_timeout()
-            pos = self.tic.current_position()
-            if pos is None:
-                time.sleep_ms(50)
-                continue
-            if pos == target:
-                return
-            time.sleep_ms(10)
+            try:
+                self.tic.reset_command_timeout()
+            except Exception:
+                pass
+            time.sleep_ms(50)
 
 
 # ---------------------------------------------------------------------------
