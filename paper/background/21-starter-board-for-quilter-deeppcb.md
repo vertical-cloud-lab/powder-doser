@@ -43,12 +43,28 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 66 pads (59 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a 279 × 199 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 66 pads (59 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~82 × 113 mm Edge.Cuts outline. **This is the file you upload.** |
 | [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 59 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
-| [`starter_board_summary.json`](starter_board/starter_board_summary.json) | Machine-readable BOM + net summary, including each part's real `body_mm`, vendor 3-D `model` path, and `source` provenance. |
+| [`starter_board_summary.json`](starter_board/starter_board_summary.json) | Machine-readable BOM + net summary, including each part's real `body_mm`, vendor 3-D `model` path, and `source` provenance, plus the `unplaced_variant` filenames/outline. |
+
+### Two variants: pre-placed vs. unplaced (auto-place test)
+
+The generator emits **two** upload trios from the same netlist so the autonomous
+tools can be tested on *placement* as well as *routing*, and so their placement
+can be compared against this generator's:
+
+| Variant | Files | Components | Use |
+| --- | --- | --- | --- |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~82 × 113 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
+
+The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
+placement); only the `.kicad_pcb` differs — the unplaced board has the same empty
+Edge.Cuts target rectangle with every footprint shifted one board-width + 12 mm
+to its right, so the board area is empty and the router must place the parts.
 
 ![Generated starter-board schematic (14 symbols, 20 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
@@ -114,10 +130,20 @@ This real-component revision is verified structurally, headlessly, with
   written `.kicad_pcb` (identical to the KiCad-checked proxy version).
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
-  larger real bodies stay clearance-clean (the floorplan scale was bumped to ×1.0
-  to accommodate them).
+  compact placement stays clearance-clean.
 - **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
   **84 F.Fab** body-outline + **56 F.CrtYd** courtyard segments emitted.
+
+**Compact placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
+The first DeepPCB run flagged the board as *"still very spaced out"*: the earlier
+build reused the schematic-sheet anchor coordinates as the board floorplan, which
+left 14 small breakouts strewn across a **279 × 199 mm** board (routers keep that
+excess area). The board now ignores those coordinates and **compact-packs** the
+real component bodies into a near-square grid (`_pack_positions()` — left-to-right
+rows wrapping at a `sqrt(total-area)`-derived width, `PLACE_GAP = 1.5 mm` between
+courtyards), shrinking the outline to **~82 × 113 mm** (≈6× less area) while
+`_assert_no_overlap()` keeps it DRC-clean. The schematic-sheet layout is
+unchanged (its spacing doesn't affect connectivity or routing).
 
 **File-format version (KiCad 7+).** The board is written with the **KiCad 7.0
 `.kicad_pcb` format version `20221018`** (board and every embedded footprint),

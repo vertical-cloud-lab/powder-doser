@@ -1,140 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="793" viewBox="0 0 286.66 206.64">
-<rect x="0" y="0" width="286.66" height="206.64" fill="#0b1a12"/>
-<line x1="4.00" y1="4.00" x2="282.66" y2="4.00" stroke="#e8d44d" stroke-width="0.3"/>
-<line x1="282.66" y1="4.00" x2="282.66" y2="202.64" stroke="#e8d44d" stroke-width="0.3"/>
-<line x1="282.66" y1="202.64" x2="4.00" y2="202.64" stroke="#e8d44d" stroke-width="0.3"/>
-<line x1="4.00" y1="202.64" x2="4.00" y2="4.00" stroke="#e8d44d" stroke-width="0.3"/>
-<line x1="12.69" y1="16.48" x2="12.69" y2="45.21" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="45.21" x2="12.69" y2="50.30" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="50.30" x2="12.69" y2="77.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="77.75" x2="192.69" y2="63.95" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="192.69" y1="63.95" x2="200.31" y2="111.41" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="111.41" x2="192.69" y2="172.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="192.69" y1="172.75" x2="157.69" y2="172.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="19.03" x2="12.69" y2="47.76" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="47.76" x2="20.31" y2="49.02" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="20.31" y1="49.02" x2="20.31" y2="77.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="20.31" y1="77.75" x2="20.31" y2="97.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="20.31" y1="97.75" x2="100.31" y2="27.76" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="100.31" y1="27.76" x2="192.69" y2="13.95" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="192.69" y1="13.95" x2="192.69" y2="66.49" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="192.69" y1="66.49" x2="200.31" y2="113.94" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="113.94" x2="200.31" y2="172.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="172.75" x2="165.31" y2="172.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="165.31" y1="172.75" x2="192.69" y2="192.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="20.31" y1="46.49" x2="12.69" y2="97.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="12.69" y1="97.75" x2="100.31" y2="25.22" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="100.31" y1="25.22" x2="192.69" y2="190.22" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="13.79" x2="192.69" y2="16.48" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="16.33" x2="192.69" y2="19.03" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="23.95" x2="192.69" y2="120.29" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="26.48" x2="192.69" y2="117.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="34.11" x2="192.69" y2="69.03" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="36.65" x2="192.69" y2="71.56" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="39.19" x2="192.69" y2="21.57" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="192.69" y1="21.57" x2="192.69" y2="24.11" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="92.69" y1="41.73" x2="192.69" y2="195.29" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="100.31" y1="30.30" x2="192.69" y2="11.41" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="16.48" x2="257.69" y2="27.76" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="19.03" x2="265.31" y2="27.76" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="66.49" x2="257.69" y2="77.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="69.03" x2="265.31" y2="77.75" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="116.48" x2="267.69" y2="121.48" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="119.03" x2="267.69" y2="124.03" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="121.56" x2="275.31" y2="121.48" stroke="#3a6ea5" stroke-width="0.12"/>
-<line x1="200.31" y1="124.10" x2="275.31" y2="124.03" stroke="#3a6ea5" stroke-width="0.12"/>
-<rect x="9.50" y="12.26" width="14.00" height="11.00" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="16.50" y="11.86" font-size="1.6" fill="#e0e0e0" text-anchor="middle">J1 Barrel_Jack_12V</text>
-<circle cx="12.69" cy="16.48" r="0.85" fill="#d08a2c"/>
-<circle cx="12.69" cy="19.03" r="0.85" fill="#d08a2c"/>
-<rect x="10.15" y="42.68" width="12.70" height="10.16" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="16.50" y="42.28" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U1 D24V22F5_Buck</text>
-<circle cx="12.69" cy="45.21" r="0.85" fill="#d08a2c"/>
-<circle cx="12.69" cy="47.76" r="0.85" fill="#d08a2c"/>
-<circle cx="12.69" cy="50.30" r="0.85" fill="#d08a2c"/>
-<circle cx="20.31" cy="46.49" r="0.85" fill="#d08a2c"/>
-<circle cx="20.31" cy="49.02" r="0.85" fill="#d08a2c"/>
-<rect x="10.84" y="73.50" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="16.50" y="73.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C1 Cap_Polar</text>
-<circle cx="12.69" cy="77.75" r="0.85" fill="#d08a2c"/>
-<circle cx="20.31" cy="77.75" r="0.85" fill="#d08a2c"/>
-<rect x="10.84" y="93.50" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="16.50" y="93.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C2 Cap_Polar</text>
-<circle cx="12.69" cy="97.75" r="0.85" fill="#d08a2c"/>
-<circle cx="20.31" cy="97.75" r="0.85" fill="#d08a2c"/>
-<rect x="71.00" y="11.94" width="51.00" height="31.64" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="96.50" y="11.54" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U2 Pi_Pico_W</text>
-<circle cx="92.69" cy="13.79" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="16.33" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="18.87" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="21.41" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="23.95" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="26.48" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="29.03" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="31.57" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="34.11" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="36.65" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="39.19" r="0.85" fill="#d08a2c"/>
-<circle cx="92.69" cy="41.73" r="0.85" fill="#d08a2c"/>
-<circle cx="100.31" cy="25.22" r="0.85" fill="#d08a2c"/>
-<circle cx="100.31" cy="27.76" r="0.85" fill="#d08a2c"/>
-<circle cx="100.31" cy="30.30" r="0.85" fill="#d08a2c"/>
-<rect x="187.61" y="9.50" width="17.78" height="16.51" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="196.50" y="9.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U3 DRV2605L_Breakout</text>
-<circle cx="192.69" cy="11.41" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="13.95" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="16.48" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="19.03" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="21.57" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="24.11" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="16.48" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="19.03" r="0.85" fill="#d08a2c"/>
-<rect x="255.84" y="25.91" width="11.32" height="3.70" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="261.50" y="25.51" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M1 ERM_Motor</text>
-<circle cx="257.69" cy="27.76" r="0.85" fill="#d08a2c"/>
-<circle cx="265.31" cy="27.76" r="0.85" fill="#d08a2c"/>
-<rect x="186.34" y="55.69" width="20.32" height="24.13" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="196.50" y="55.29" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U4 DRV8871_Breakout</text>
-<circle cx="192.69" cy="63.95" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="66.49" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="69.03" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="71.56" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="66.49" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="69.03" r="0.85" fill="#d08a2c"/>
-<rect x="255.84" y="75.91" width="11.32" height="3.70" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="261.50" y="75.50" font-size="1.6" fill="#e0e0e0" text-anchor="middle">SOL1 Solenoid</text>
-<circle cx="257.69" cy="77.75" r="0.85" fill="#d08a2c"/>
-<circle cx="265.31" cy="77.75" r="0.85" fill="#d08a2c"/>
-<rect x="183.80" y="109.56" width="25.40" height="16.40" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="196.50" y="109.16" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U5 Tic_T500</text>
-<circle cx="192.69" cy="112.67" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="115.22" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="117.75" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="120.29" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="122.84" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="111.41" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="113.94" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="116.48" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="119.03" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="121.56" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="124.10" r="0.85" fill="#d08a2c"/>
-<rect x="190.84" y="168.50" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="196.50" y="168.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C3 Cap_Polar</text>
-<circle cx="192.69" cy="172.75" r="0.85" fill="#d08a2c"/>
-<circle cx="200.31" cy="172.75" r="0.85" fill="#d08a2c"/>
-<rect x="149.44" y="167.67" width="24.13" height="10.16" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="161.50" y="167.27" font-size="1.6" fill="#e0e0e0" text-anchor="middle">SR1 Shunt_Regulator</text>
-<circle cx="157.69" cy="172.75" r="0.85" fill="#d08a2c"/>
-<circle cx="165.31" cy="172.75" r="0.85" fill="#d08a2c"/>
-<rect x="265.84" y="119.63" width="11.32" height="6.24" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="271.50" y="119.23" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M2 Stepper_4wire</text>
-<circle cx="267.69" cy="121.48" r="0.85" fill="#d08a2c"/>
-<circle cx="267.69" cy="124.03" r="0.85" fill="#d08a2c"/>
-<circle cx="275.31" cy="121.48" r="0.85" fill="#d08a2c"/>
-<circle cx="275.31" cy="124.03" r="0.85" fill="#d08a2c"/>
-<rect x="190.84" y="188.37" width="11.32" height="8.78" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
-<text x="196.50" y="187.97" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M3 Servo_3pin</text>
-<circle cx="192.69" cy="190.22" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="192.75" r="0.85" fill="#d08a2c"/>
-<circle cx="192.69" cy="195.29" r="0.85" fill="#d08a2c"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1474" viewBox="0 0 90.28 120.95">
+<rect x="0" y="0" width="90.28" height="120.95" fill="#0b1a12"/>
+<line x1="4.00" y1="4.00" x2="86.28" y2="4.00" stroke="#e8d44d" stroke-width="0.3"/>
+<line x1="86.28" y1="4.00" x2="86.28" y2="116.95" stroke="#e8d44d" stroke-width="0.3"/>
+<line x1="86.28" y1="116.95" x2="4.00" y2="116.95" stroke="#e8d44d" stroke-width="0.3"/>
+<line x1="4.00" y1="116.95" x2="4.00" y2="4.00" stroke="#e8d44d" stroke-width="0.3"/>
+<line x1="12.69" y1="13.73" x2="28.54" y2="12.04" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="28.54" y1="12.04" x2="28.54" y2="17.12" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="28.54" y1="17.12" x2="43.05" y2="13.75" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="43.05" y1="13.75" x2="29.67" y2="65.39" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="29.67" y1="65.39" x2="26.01" y2="85.62" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="85.62" x2="39.25" y2="88.02" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="39.25" y1="88.02" x2="59.47" y2="88.85" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="12.69" y1="16.27" x2="28.54" y2="14.58" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="28.54" y1="14.58" x2="36.16" y2="15.85" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="36.16" y1="15.85" x2="50.67" y2="13.75" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="50.67" y1="13.75" x2="64.49" y2="13.75" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="64.49" y1="13.75" x2="38.81" y2="38.82" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="38.81" y1="38.82" x2="68.08" y2="27.45" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="68.08" y1="27.45" x2="29.67" y2="67.94" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="29.67" y1="67.94" x2="26.01" y2="88.16" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="88.16" x2="46.87" y2="88.02" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="46.87" y1="88.02" x2="67.09" y2="88.85" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="67.09" y1="88.85" x2="25.17" y2="107.06" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="36.16" y1="13.31" x2="56.87" y2="13.75" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="56.87" y1="13.75" x2="38.81" y2="36.28" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="38.81" y1="36.28" x2="25.17" y2="104.52" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="24.85" x2="68.08" y2="29.99" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="27.39" x2="68.08" y2="32.53" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="35.01" x2="18.39" y2="94.51" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="37.55" x2="18.39" y2="91.97" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="45.17" x2="29.67" y2="70.47" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="47.71" x2="29.67" y2="73.02" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="50.25" x2="68.08" y2="35.06" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="68.08" y1="35.06" x2="68.08" y2="37.61" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="31.19" y1="52.79" x2="25.17" y2="109.60" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="38.81" y1="41.36" x2="68.08" y2="24.91" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="75.70" y1="29.99" x2="11.35" y2="58.99" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="75.70" y1="32.53" x2="18.97" y2="58.99" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="37.29" y1="67.94" x2="47.99" y2="58.99" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="37.29" y1="70.47" x2="55.61" y2="58.99" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="90.70" x2="11.35" y2="104.52" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="93.24" x2="11.35" y2="107.06" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="95.78" x2="18.97" y2="104.52" stroke="#3a6ea5" stroke-width="0.12"/>
+<line x1="26.01" y1="98.32" x2="18.97" y2="107.06" stroke="#3a6ea5" stroke-width="0.12"/>
+<rect x="9.50" y="9.50" width="14.00" height="11.00" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="16.50" y="9.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">J1 Barrel_Jack_12V</text>
+<circle cx="12.69" cy="13.73" r="0.85" fill="#d08a2c"/>
+<circle cx="12.69" cy="16.27" r="0.85" fill="#d08a2c"/>
+<rect x="26.00" y="9.50" width="12.70" height="10.16" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="32.35" y="9.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U1 D24V22F5_Buck</text>
+<circle cx="28.54" cy="12.04" r="0.85" fill="#d08a2c"/>
+<circle cx="28.54" cy="14.58" r="0.85" fill="#d08a2c"/>
+<circle cx="28.54" cy="17.12" r="0.85" fill="#d08a2c"/>
+<circle cx="36.16" cy="13.31" r="0.85" fill="#d08a2c"/>
+<circle cx="36.16" cy="15.85" r="0.85" fill="#d08a2c"/>
+<rect x="41.20" y="9.50" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="46.86" y="9.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C1 Cap_Polar</text>
+<circle cx="43.05" cy="13.75" r="0.85" fill="#d08a2c"/>
+<circle cx="50.67" cy="13.75" r="0.85" fill="#d08a2c"/>
+<rect x="55.02" y="9.50" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="60.68" y="9.10" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C2 Cap_Polar</text>
+<circle cx="56.87" cy="13.75" r="0.85" fill="#d08a2c"/>
+<circle cx="64.49" cy="13.75" r="0.85" fill="#d08a2c"/>
+<rect x="9.50" y="23.00" width="51.00" height="31.64" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="35.00" y="22.60" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U2 Pi_Pico_W</text>
+<circle cx="31.19" cy="24.85" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="27.39" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="29.93" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="32.47" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="35.01" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="37.55" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="40.09" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="42.63" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="45.17" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="47.71" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="50.25" r="0.85" fill="#d08a2c"/>
+<circle cx="31.19" cy="52.79" r="0.85" fill="#d08a2c"/>
+<circle cx="38.81" cy="36.28" r="0.85" fill="#d08a2c"/>
+<circle cx="38.81" cy="38.82" r="0.85" fill="#d08a2c"/>
+<circle cx="38.81" cy="41.36" r="0.85" fill="#d08a2c"/>
+<rect x="63.00" y="23.00" width="17.78" height="16.51" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="71.89" y="22.60" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U3 DRV2605L_Breakout</text>
+<circle cx="68.08" cy="24.91" r="0.85" fill="#d08a2c"/>
+<circle cx="68.08" cy="27.45" r="0.85" fill="#d08a2c"/>
+<circle cx="68.08" cy="29.99" r="0.85" fill="#d08a2c"/>
+<circle cx="68.08" cy="32.53" r="0.85" fill="#d08a2c"/>
+<circle cx="68.08" cy="35.06" r="0.85" fill="#d08a2c"/>
+<circle cx="68.08" cy="37.61" r="0.85" fill="#d08a2c"/>
+<circle cx="75.70" cy="29.99" r="0.85" fill="#d08a2c"/>
+<circle cx="75.70" cy="32.53" r="0.85" fill="#d08a2c"/>
+<rect x="9.50" y="57.14" width="11.32" height="3.70" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="15.16" y="56.74" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M1 ERM_Motor</text>
+<circle cx="11.35" cy="58.99" r="0.85" fill="#d08a2c"/>
+<circle cx="18.97" cy="58.99" r="0.85" fill="#d08a2c"/>
+<rect x="23.32" y="57.14" width="20.32" height="24.13" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="33.48" y="56.74" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U4 DRV8871_Breakout</text>
+<circle cx="29.67" cy="65.39" r="0.85" fill="#d08a2c"/>
+<circle cx="29.67" cy="67.94" r="0.85" fill="#d08a2c"/>
+<circle cx="29.67" cy="70.47" r="0.85" fill="#d08a2c"/>
+<circle cx="29.67" cy="73.02" r="0.85" fill="#d08a2c"/>
+<circle cx="37.29" cy="67.94" r="0.85" fill="#d08a2c"/>
+<circle cx="37.29" cy="70.47" r="0.85" fill="#d08a2c"/>
+<rect x="46.14" y="57.14" width="11.32" height="3.70" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="51.80" y="56.74" font-size="1.6" fill="#e0e0e0" text-anchor="middle">SOL1 Solenoid</text>
+<circle cx="47.99" cy="58.99" r="0.85" fill="#d08a2c"/>
+<circle cx="55.61" cy="58.99" r="0.85" fill="#d08a2c"/>
+<rect x="9.50" y="83.77" width="25.40" height="16.40" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="22.20" y="83.37" font-size="1.6" fill="#e0e0e0" text-anchor="middle">U5 Tic_T500</text>
+<circle cx="18.39" cy="86.89" r="0.85" fill="#d08a2c"/>
+<circle cx="18.39" cy="89.43" r="0.85" fill="#d08a2c"/>
+<circle cx="18.39" cy="91.97" r="0.85" fill="#d08a2c"/>
+<circle cx="18.39" cy="94.51" r="0.85" fill="#d08a2c"/>
+<circle cx="18.39" cy="97.05" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="85.62" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="88.16" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="90.70" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="93.24" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="95.78" r="0.85" fill="#d08a2c"/>
+<circle cx="26.01" cy="98.32" r="0.85" fill="#d08a2c"/>
+<rect x="37.40" y="83.77" width="11.32" height="8.50" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="43.06" y="83.37" font-size="1.6" fill="#e0e0e0" text-anchor="middle">C3 Cap_Polar</text>
+<circle cx="39.25" cy="88.02" r="0.85" fill="#d08a2c"/>
+<circle cx="46.87" cy="88.02" r="0.85" fill="#d08a2c"/>
+<rect x="51.22" y="83.77" width="24.13" height="10.16" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="63.28" y="83.37" font-size="1.6" fill="#e0e0e0" text-anchor="middle">SR1 Shunt_Regulator</text>
+<circle cx="59.47" cy="88.85" r="0.85" fill="#d08a2c"/>
+<circle cx="67.09" cy="88.85" r="0.85" fill="#d08a2c"/>
+<rect x="9.50" y="102.67" width="11.32" height="6.24" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="15.16" y="102.27" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M2 Stepper_4wire</text>
+<circle cx="11.35" cy="104.52" r="0.85" fill="#d08a2c"/>
+<circle cx="11.35" cy="107.06" r="0.85" fill="#d08a2c"/>
+<circle cx="18.97" cy="104.52" r="0.85" fill="#d08a2c"/>
+<circle cx="18.97" cy="107.06" r="0.85" fill="#d08a2c"/>
+<rect x="23.32" y="102.67" width="11.32" height="8.78" fill="#14543a" stroke="#cfcfcf" stroke-width="0.12"/>
+<text x="28.98" y="102.27" font-size="1.6" fill="#e0e0e0" text-anchor="middle">M3 Servo_3pin</text>
+<circle cx="25.17" cy="104.52" r="0.85" fill="#d08a2c"/>
+<circle cx="25.17" cy="107.06" r="0.85" fill="#d08a2c"/>
+<circle cx="25.17" cy="109.60" r="0.85" fill="#d08a2c"/>
 </svg>

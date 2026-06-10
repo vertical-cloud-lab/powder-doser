@@ -63,6 +63,7 @@ Run:  python3 build_starter_board.py
 from __future__ import annotations
 
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -77,6 +78,12 @@ from kiutils.items.gritems import GrLine
 
 HERE = Path(__file__).resolve().parent
 BOARD_NAME = "test_module_starter"
+# Second variant: same netlist/parts but every footprint staged *outside* an
+# empty board outline, so DeepPCB/Quilter can be tested on auto-*placement* (not
+# just routing). Lets us compare their placement against this generator's compact
+# placement (issue #94 / PR #76). Emitted as its own .kicad_pcb/.kicad_sch/
+# .kicad_pro trio.
+UNPLACED_NAME = "test_module_unplaced"
 
 # kiutils' ``create_new`` stamps every board/footprint with the KiCad 6 file
 # format version (20211014). Quilter (and other KiCad 7+ tools) reject that
@@ -220,11 +227,20 @@ PAD_DRILL = 1.0
 EDGE_MARGIN = 5.0     # board-outline clearance around the outermost pads
 SILK_MARGIN = 1.0
 CRTYD_CLEARANCE = 0.5  # F.CrtYd gap around the real body outline
-# Spread of the schematic-sheet anchor coordinates into a board floorplan.
-# Scaled up to 1.0 (vs the old proxy 0.5) so the now-real, larger component
-# bodies do not collide. The exact placement is unimportant (Quilter/DeepPCB
-# re-place everything); _assert_no_overlap() guarantees it stays DRC-clean.
+# Board placement. The earlier build reused the schematic-sheet anchor
+# coordinates (NETLIST x/y) as the board floorplan, scaled by FLOORPLAN_SCALE,
+# which left the parts ridiculously spread out (~279x199 mm board; issue #94).
+# The board now ignores those coordinates and compact-packs the real component
+# bodies into a near-square grid (_pack_positions); PLACE_GAP is the clearance
+# left between adjacent courtyards and TARGET_ASPECT tunes the row width toward
+# a square. The exact placement is unimportant (Quilter/DeepPCB re-place
+# everything) but a *tight* start avoids handing the routers an oversized board.
+# FLOORPLAN_SCALE is retained only for the schematic-sheet layout below.
 FLOORPLAN_SCALE = 1.0
+PLACE_GAP = 1.5        # extra gap (mm) between courtyards in the compact pack
+TARGET_ASPECT = 1.15   # row-width target = sqrt(total courtyard area) x this
+STAGE_GAP = 12.0       # gap (mm) between the empty board outline and the parts
+#                        staged beside it in the unplaced (auto-place) variant
 
 # ---------------------------------------------------------------------------
 # Schematic (.kicad_sch) geometry. Quilter / DeepPCB also ask for the
@@ -269,6 +285,61 @@ def _pad(number: str, lx: float, ly: float, net: Net | None, pin1: bool) -> Pad:
         layers=["*.Cu", "*.Mask"],
         net=net,
     )
+
+
+def _body_extents(lib_id: str) -> tuple[float, float]:
+    """Half-width/height of one part's drawn body (F.Fab), no courtyard gap.
+
+    Factored out of ``_make_footprint`` so the compact placer (``_pack_positions``)
+    can size every part *before* the footprints are built.
+    """
+    cols = PINOUTS[lib_id]
+    left, right = cols["left"], cols["right"]
+    n_rows = max(len(left), len(right)) or 1
+    half_x = ROW_GAP / 2.0
+    pad_hw = half_x + PAD_SIZE / 2 + SILK_MARGIN
+    pad_hh = (n_rows - 1) / 2.0 * PITCH + PAD_SIZE / 2 + SILK_MARGIN
+    pkg = PACKAGES[lib_id]
+    if pkg["body"] is not None:
+        return max(pad_hw, pkg["body"][0] / 2.0), max(pad_hh, pkg["body"][1] / 2.0)
+    return pad_hw, pad_hh
+
+
+def _courtyard_extents(lib_id: str) -> tuple[float, float]:
+    """Half-width/height including the F.CrtYd clearance (collision footprint)."""
+    body_hw, body_hh = _body_extents(lib_id)
+    return body_hw + CRTYD_CLEARANCE, body_hh + CRTYD_CLEARANCE
+
+
+def _pack_positions() -> dict[str, tuple[float, float]]:
+    """Compact shelf-pack every part into a tight grid of centre coordinates.
+
+    The earlier build reused the schematic-sheet anchor coordinates as the board
+    floorplan, which left the components *ridiculously spaced out* (a ~279x199 mm
+    board for 14 small breakouts; see issue #94). Routers (DeepPCB/Quilter) keep
+    that excess area, so the board must start compact. This lays the parts out in
+    left-to-right rows whose width targets a near-square board, wrapping to a new
+    row when the next part would overflow, with a fixed ``PLACE_GAP`` between
+    courtyards. Order follows ``NETLIST`` so the result is deterministic and
+    ``_assert_no_overlap`` still guarantees it is DRC-clean.
+    """
+    sizes = [(ref, *_courtyard_extents(lib_id)) for ref, lib_id, *_ in NETLIST]
+    total_area = sum((2 * hw) * (2 * hh) for _, hw, hh in sizes)
+    widest = max(2 * hw for _, hw, _ in sizes)
+    # Aim for a roughly square board, but never narrower than the widest part.
+    target_w = max(widest, math.sqrt(total_area) * TARGET_ASPECT)
+
+    positions: dict[str, tuple[float, float]] = {}
+    cursor_x = cursor_y = row_h = 0.0
+    for ref, hw, hh in sizes:
+        w, h = 2 * hw, 2 * hh
+        if cursor_x > 0 and cursor_x + w > target_w:
+            cursor_y += row_h + PLACE_GAP
+            cursor_x = row_h = 0.0
+        positions[ref] = (cursor_x + hw, cursor_y + hh)
+        cursor_x += w + PLACE_GAP
+        row_h = max(row_h, h)
+    return positions
 
 
 def _make_footprint(ref: str, lib_id: str, x: float, y: float,
@@ -316,13 +387,7 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
     # from the committed vendor files (PACKAGES). The outline never shrinks
     # below the pad cluster, so the pads always stay inside the body.
     pkg = PACKAGES[lib_id]
-    pad_hw = half_x + PAD_SIZE / 2 + SILK_MARGIN
-    pad_hh = (n_rows - 1) / 2.0 * PITCH + PAD_SIZE / 2 + SILK_MARGIN
-    if pkg["body"] is not None:
-        body_hw = max(pad_hw, pkg["body"][0] / 2.0)
-        body_hh = max(pad_hh, pkg["body"][1] / 2.0)
-    else:
-        body_hw, body_hh = pad_hw, pad_hh
+    body_hw, body_hh = _body_extents(lib_id)
 
     def _rect(hw: float, hh: float, layer: str, width: float) -> None:
         corners = [(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh), (-hw, -hh)]
@@ -361,7 +426,18 @@ def _assert_no_overlap(courtyards: list[tuple[str, float, float, float, float]])
                     f"footprints {ra} and {rb} overlap; increase FLOORPLAN_SCALE")
 
 
-def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
+def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[str, Net]]:
+    """Build the starter board.
+
+    ``mode="placed"`` (default) emits the compact, pre-placed board this
+    generator lays out. ``mode="unplaced"`` emits the *same* parts and nets but
+    staged entirely **outside** an empty board outline, so autonomous tools
+    (DeepPCB/Quilter) can be tested on placement as well as routing. In both
+    modes the empty/target outline is identical, so the two variants target the
+    same board area.
+    """
+    if mode not in ("placed", "unplaced"):
+        raise ValueError(f"unknown board mode {mode!r}")
     board = Board.create_new()
     board.version = KICAD7_PCB_VERSION
     board.generator = "powder_doser_build_starter_board"
@@ -379,9 +455,22 @@ def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
         nets[name] = Net(i, name)
         board.nets.append(nets[name])
 
+    # Compact placement (centre coords) and the resulting board outline. The
+    # outline is computed from the *placed* positions so both variants share it.
+    positions = _pack_positions()
+    ext = {ref: _courtyard_extents(lib_id) for ref, lib_id, *_ in NETLIST}
+    x0 = min(positions[r][0] - ext[r][0] for r in positions) - EDGE_MARGIN
+    x1 = max(positions[r][0] + ext[r][0] for r in positions) + EDGE_MARGIN
+    y0 = min(positions[r][1] - ext[r][1] for r in positions) - EDGE_MARGIN
+    y1 = max(positions[r][1] + ext[r][1] for r in positions) + EDGE_MARGIN
+
+    # In the unplaced variant, shift every part one board-width + gap to the
+    # right so it sits wholly outside the (now empty) outline.
+    dx = (x1 - x0) + STAGE_GAP if mode == "unplaced" else 0.0
+
     courtyards: list[tuple[str, float, float, float, float]] = []
     for ref, lib_id, x, y, pins in NETLIST:
-        px, py = float(x) * FLOORPLAN_SCALE, float(y) * FLOORPLAN_SCALE
+        px, py = positions[ref][0] + dx, positions[ref][1]
         pin_nets = {pin: net for pin, net in pins}
         fp, pad_world, (hw, hh) = _make_footprint(ref, lib_id, px, py, pin_nets, nets)
         board.footprints.append(fp)
@@ -389,13 +478,9 @@ def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
 
     _assert_no_overlap(courtyards)
 
-    # Board outline (Edge.Cuts rectangle) around every component courtyard +
-    # margin (courtyards now reflect the real body sizes, which extend past the
-    # pad cluster, so the outline is taken from them rather than the pads).
-    x0 = min(c[1] for c in courtyards) - EDGE_MARGIN
-    x1 = max(c[3] for c in courtyards) + EDGE_MARGIN
-    y0 = min(c[2] for c in courtyards) - EDGE_MARGIN
-    y1 = max(c[4] for c in courtyards) + EDGE_MARGIN
+    # Board outline (Edge.Cuts rectangle): in "placed" mode it encloses every
+    # courtyard; in "unplaced" mode it is the same empty target rectangle while
+    # the parts sit to its right.
     rect = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
     for (ax, ay), (bx, by) in zip(rect, rect[1:]):
         board.graphicItems.append(GrLine(start=Position(ax, ay), end=Position(bx, by),
@@ -403,7 +488,8 @@ def build_board() -> tuple[Board, tuple[float, float], dict[str, Net]]:
     return board, (x1 - x0, y1 - y0), nets
 
 
-def write_project(net_names_by_class: dict[str, list[str]]) -> None:
+def write_project(net_names_by_class: dict[str, list[str]],
+                  name: str = BOARD_NAME) -> None:
     """Write a minimal .kicad_pro with Default + Power net classes (DRC rules).
 
     Also registers the root schematic sheet (``SCH_ROOT_UUID``) so the
@@ -429,9 +515,9 @@ def write_project(net_names_by_class: dict[str, list[str]]) -> None:
         },
         "schematic": {"legacy_lib_dir": "", "legacy_lib_list": []},
         "sheets": [[SCH_ROOT_UUID, ""]],
-        "meta": {"filename": f"{BOARD_NAME}.kicad_pro", "version": 1},
+        "meta": {"filename": f"{name}.kicad_pro", "version": 1},
     }
-    (HERE / f"{BOARD_NAME}.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
+    (HERE / f"{name}.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
 
 
 # ---------------------------------------------------------------------------
@@ -645,9 +731,9 @@ def render_schematic_preview(sch_path: Path) -> None:
              "--exclude-drawing-sheet", "-o", str(tmp), str(sch_path)],
             check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
-        produced = tmp / f"{BOARD_NAME}.svg"
+        produced = tmp / f"{sch_path.stem}.svg"
         if produced.exists():
-            dest = sch_path.with_name(f"{BOARD_NAME}_schematic.svg")
+            dest = sch_path.with_name(f"{sch_path.stem}_schematic.svg")
             shutil.copyfile(produced, dest)
             print(f"wrote {dest.name}")
 
@@ -662,12 +748,22 @@ def _render_svg_fallback(pcb_path: Path) -> Path:
     """
     board = Board.from_file(str(pcb_path))
 
-    # Edge.Cuts bbox.
+    # View bounds: include the Edge.Cuts outline *and* every footprint, so the
+    # unplaced variant (parts staged outside the outline) is fully visible.
     ex, ey = [], []
     for g in board.graphicItems:
         if isinstance(g, GrLine) and g.layer == "Edge.Cuts":
             ex += [g.start.X, g.end.X]
             ey += [g.start.Y, g.end.Y]
+    for fp in board.footprints:
+        fx, fy = fp.position.X, fp.position.Y
+        for p in fp.pads:
+            ex.append(fx + p.position.X)
+            ey.append(fy + p.position.Y)
+        for g in fp.graphicItems:
+            if isinstance(g, FpLine):
+                ex += [fx + g.start.X, fx + g.end.X]
+                ey += [fy + g.start.Y, fy + g.end.Y]
     x0, x1, y0, y1 = min(ex), max(ex), min(ey), max(ey)
     pad = 4.0
     vb_w, vb_h = (x1 - x0) + 2 * pad, (y1 - y0) + 2 * pad
@@ -752,28 +848,64 @@ def render_preview(pcb_path: Path) -> None:
     print(f"wrote {png.name}")
 
 
-def main() -> None:
-    board, (bw, bh), nets = build_board()
-    pcb_path = HERE / f"{BOARD_NAME}.kicad_pcb"
+def write_variant(name: str, mode: str, schematic_text: str) -> dict:
+    """Write one .kicad_pcb/.kicad_sch/.kicad_pro trio + previews; return summary."""
+    board, (bw, bh), nets = build_board(mode)
+    pcb_path = HERE / f"{name}.kicad_pcb"
     board.to_file(str(pcb_path))
 
     power = sorted(n for n in nets if n in POWER_NETS and n)
-    write_project({"Power": power})
+    write_project({"Power": power}, name)
 
-    # Schematic companion (same netlist as the board) — the third file in the
-    # Quilter / DeepPCB upload trio (.kicad_pcb + .kicad_pro + .kicad_sch).
-    sch_path = HERE / f"{BOARD_NAME}.kicad_sch"
-    sch_path.write_text(build_schematic())
+    # The schematic is identical for both variants (same netlist); only the
+    # board placement differs, which is exactly what the auto-place test probes.
+    sch_path = HERE / f"{name}.kicad_sch"
+    sch_path.write_text(schematic_text)
+
+    print(f"wrote {pcb_path.name}: {len(NETLIST)} footprints, "
+          f"{len(nets) - 1} nets, outline {bw:.1f}x{bh:.1f} mm ({mode})")
+    print(f"wrote {sch_path.name}: {len(NETLIST)} symbols, {len(nets) - 1} nets")
+    render_preview(pcb_path)
+    validate_schematic_netlist(sch_path)
+    render_schematic_preview(sch_path)
+    return {
+        "board": f"{name}.kicad_pcb",
+        "schematic": f"{name}.kicad_sch",
+        "project": f"{name}.kicad_pro",
+        "mode": mode,
+        "outline_mm": [round(bw, 2), round(bh, 2)],
+        "power_nets": power,
+    }
+
+
+def main() -> None:
+    schematic_text = build_schematic()
+
+    # Variant 1: compact, pre-placed board (this generator's placement).
+    placed = write_variant(BOARD_NAME, "placed", schematic_text)
+    # Variant 2: same parts staged outside an empty outline, for testing the
+    # routers' auto-placement (compare against the placed variant).
+    unplaced = write_variant(UNPLACED_NAME, "unplaced", schematic_text)
 
     # Human-readable BOM / net summary for review and provenance.
     summary = {
-        "board": f"{BOARD_NAME}.kicad_pcb",
-        "schematic": f"{BOARD_NAME}.kicad_sch",
-        "project": f"{BOARD_NAME}.kicad_pro",
+        "board": placed["board"],
+        "schematic": placed["schematic"],
+        "project": placed["project"],
         "components": len(NETLIST),
-        "nets": len(nets) - 1,
-        "outline_mm": [round(bw, 2), round(bh, 2)],
-        "power_nets": power,
+        "nets": len({net for *_, pins in NETLIST for _, net in pins}),
+        "outline_mm": placed["outline_mm"],
+        "power_nets": placed["power_nets"],
+        "unplaced_variant": {
+            "board": unplaced["board"],
+            "schematic": unplaced["schematic"],
+            "project": unplaced["project"],
+            "outline_mm": unplaced["outline_mm"],
+            "note": ("Same netlist/parts as the placed board, but every "
+                     "footprint is staged outside the (empty) board outline so "
+                     "DeepPCB/Quilter can be tested on auto-placement, not just "
+                     "routing."),
+        },
         "bom": [{
             "ref": r,
             "part": lib,
@@ -785,13 +917,8 @@ def main() -> None:
         } for r, lib, _, _, p in NETLIST],
     }
     (HERE / "starter_board_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-
-    print(f"wrote {pcb_path.name}: {len(NETLIST)} footprints, "
-          f"{len(nets) - 1} nets, outline {bw:.1f}x{bh:.1f} mm")
-    print(f"wrote {sch_path.name}: {len(NETLIST)} symbols, {len(nets) - 1} nets")
-    render_preview(pcb_path)
-    validate_schematic_netlist(sch_path)
-    render_schematic_preview(sch_path)
+    print(f"wrote starter_board_summary.json (placed {placed['outline_mm']} mm, "
+          f"unplaced {unplaced['outline_mm']} mm)")
 
 
 if __name__ == "__main__":

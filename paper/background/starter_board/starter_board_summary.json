@@ -5,8 +5,8 @@
   "components": 14,
   "nets": 20,
   "outline_mm": [
-    278.66,
-    198.64
+    82.28,
+    112.95
   ],
   "power_nets": [
     "+12V",
@@ -14,6 +14,16 @@
     "+5V",
     "GND"
   ],
+  "unplaced_variant": {
+    "board": "test_module_unplaced.kicad_pcb",
+    "schematic": "test_module_unplaced.kicad_sch",
+    "project": "test_module_unplaced.kicad_pro",
+    "outline_mm": [
+      82.28,
+      112.95
+    ],
+    "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
+  },
   "bom": [
     {
       "ref": "J1",
