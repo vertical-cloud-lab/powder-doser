@@ -117,7 +117,6 @@ We encourage the citation of primary research over review articles, where approp
 \noindent{\color{cream}\rule[-\figrulesep]{\textwidth}{1.5pt}} }
 
 \makeatother
-%%%END OF FIGURE SETUP%%%
 
 %%%TITLE, AUTHORS AND ABSTRACT%%%
 \twocolumn[
@@ -128,12 +127,12 @@ We encourage the citation of primary research over review articles, where approp
 \sffamily
 \begin{tabular}{m{4.5cm} p{13.5cm} }
 
-\includegraphics{head_foot/DOI} & \noindent\LARGE{\textbf{This is the title$^\dag$}} \\%Article title goes here instead of the text "This is the title"
+\includegraphics{head_foot/DOI} & \noindent\LARGE{\textbf{An open-source, 3D-printed auger powder doser designed with generative artificial intelligence$^\dag$}} \\
 \vspace{0.3cm} & \vspace{0.3cm} \\
 
- & \noindent\large{Full Name,$^{\ast}$\textit{$^{a}$} Full Name,\textit{$^{b\ddag}$} and Full Name\textit{$^{a}$}} \\%Author names go here instead of "Full name", etc.
+ & \noindent\large{Sam Charles,$^{\ast}$\textit{$^{a}$} Will Mulberry,\textit{$^{a}$} Luke Winters,\textit{$^{a}$} Carl Robinson,\textit{$^{a}$} Gage Erickson,\textit{$^{a}$} and Sterling G. Baird\textit{$^{b}$}} \\
 
-\includegraphics{head_foot/dates} & \noindent\normalsize{The abstract should be a single paragraph which summarises the content of the article. Any references in the abstract should be written out in full \textit{e.g.}\ [Surname \textit{et al., Journal Title}, 2000, \textbf{35}, 3523].} \\%The abstrast goes here instead of the text "The abstract should be..."
+\includegraphics{head_foot/dates} & \noindent\normalsize{Accurate, automated dispensing of many different powders is a recurring bottleneck for self-driving laboratories and high-throughput materials discovery, yet commercial automated powder dosers cost tens to hundreds of thousands of dollars. Here we present the base module of an open-source, low-cost powder doser: a 3D-printed Archimedes-auger dispenser with solenoid tapping and vibration assistance, servo-controlled tilt, and closed-loop gravimetric feedback from an integrated load cell, controlled by a \$6 microcontroller. The complete single-channel module is built from printed parts and off-the-shelf components for under \$200. Uniquely, nearly every mechanical part of the platform was designed through iterative collaboration with generative artificial-intelligence (AI) tools---large-language-model coding agents writing parametric CAD code, plus emerging text-to-CAD services---and the full design history, including failures, is preserved in a public version-controlled repository. We report what worked and what did not: whole-assembly generation failed repeatedly, while a part-by-part workflow with explicit interface specifications, automated self-checks, and human visual review converged to printable, functional parts. We characterize dispensing performance across surrogate and target powders and discuss the implications of low-cost multi-powder dosing for autonomous additive-manufacturing alloy discovery. All design files, firmware, AI prompt/response logs, and data are openly available.} \\
 
 \end{tabular}
 
@@ -151,127 +150,134 @@ We encourage the citation of primary research over review articles, where approp
 
 %%%FOOTNOTES%%%
 
-\footnotetext{\textit{$^{a}$~Address, Address, Town, Country. Fax: XX XXXX XXXX; Tel: XX XXXX XXXX; E-mail: xxxx@aaa.bbb.ccc}}
-\footnotetext{\textit{$^{b}$~Address, Address, Town, Country. }}
+\footnotetext{\textit{$^{a}$~Department of Mechanical Engineering, Brigham Young University, Provo, UT, USA. E-mail: TODO-corresponding-email}}
+\footnotetext{\textit{$^{b}$~Department of Materials Science \& Engineering, University of Utah, Salt Lake City, UT, USA.}}
 
-%Please use \dag to cite the ESI in the main text of the article.
-%If you article does not have ESI please remove the the \dag symbol from the title and the footnotetext below.
-%\footnotetext{\dag~Supplementary Information available: [details of any supplementary information available should be included here]. See DOI: 00.0000/00000000.}
-%additional addresses can be cited as above using the lower-case letters, c, d, e... If all authors are from the same address, no letter is required
-
-\footnotetext{\dag~Additional footnotes to the title and authors can be included \textit{e.g.}\ `Present address:' or `These authors contributed equally to this work' as above using the symbols: \ddag, \textsection, and \P. Please place the appropriate symbol next to the author's name and include a \texttt{\textbackslash footnotetext} entry in the the correct place in the list.}
-
+\footnotetext{\dag~Supplementary Information available: bill of materials, construction guide, auger exit-nozzle variants, and AI interaction logs. See DOI: 00.0000/00000000.}
 
 %%%END OF FOOTNOTES%%%
 
 %%%MAIN TEXT%%%%
-The main text of the article\cite{Mena2000} should appear here.
 
-\subsection{This is the subsection heading style}
-Section headings can be typeset with and without numbers.\cite{Abernethy2003}
+\section{Introduction}
 
-\subsubsection{This is the subsubsection style.~~} These headings should end in a full point.  
+Self-driving laboratories (SDLs) couple automated experimentation hardware with machine-learning planners to close the loop between hypothesis and measurement, and have delivered order-of-magnitude accelerations in chemistry and materials discovery.\cite{Abolhasani2023Rise,Tom2024Self,Szymanski2023Autonomous,Seifrid2022Autonomous} A decade of digital-chemistry infrastructure has matured software orchestration,\cite{Fei2024Alabos,Guzik2023Decade} Bayesian experiment planning,\cite{Baird2026Honegumi} and liquid-handling robotics, but \emph{solid} handling remains comparatively underdeveloped: most SDL demonstrations either restrict themselves to liquids or rely on manual powder weighing as a hidden human-in-the-loop step.\cite{Maffettone2023What,Canty2025Science} For autonomous alloy design by additive manufacturing (AM)---where candidate compositions are realized by blending elemental or master-alloy powders\cite{Li2018Combinatorial,Vecchio2021Throughput,Moorehead2020Throughput,Mooraj2024Additive,Nelaturu2024Multi}---accurate, repeatable, multi-powder dosing is the gating unit operation.
 
-\paragraph{This is the next level heading.~~} For this level please use \texttt{\textbackslash paragraph}. These headings should also end in a full point.
+Commercial automated powder-dosing systems exist and perform well, but at a cost and form factor that excludes most academic SDLs. Gravimetric benchtop dispensers such as the METTLER TOLEDO XPR/CHRONECT line, Labman powder-dosing stations, and MTI's AM powder dispensers are priced from tens of thousands to several hundred thousand dollars, are designed around pharmaceutical or quality-control workflows, and typically dose one vial at a time from proprietary dosing heads.\cite{Besenhard2015Accuracy,Yang2007Metering} Loss-in-weight feeders from continuous pharmaceutical manufacturing solve a related problem at much larger mass flow rates,\cite{Engisch2012Method,Engisch2015Feedrate,Hanson2018Control} and laboratory micro-dosing studies have demonstrated mg-scale dosing with capillary, vibratory, and auger mechanisms,\cite{Besenhard2017Micro,Faulhammer2014Dose,Chianrabutra2014Powder,Alsenz2011Powderpicking} but none of these are available as open, reproducible, low-cost designs that a lab can print, assemble, and extend. The open-source hardware movement has shown that 3D-printed instruments can reach research-grade performance at 1--10\% of commercial cost while enabling community-driven improvement,\cite{Pearce2020Economic,Hohlbein2022Open,Wenzel2023Open,Stirling2022Hardops} with platforms such as Jubilee and low-cost SDL toolkits demonstrating the pattern for automation hardware specifically.\cite{Vasquez2020Jubilee,Subbaraman2024Duckbot}
 
-\section{Graphics and tables}
-\subsection{Graphics}
-Graphics should be inserted on the page where they are first mentioned (unless they are equations, which appear in the flow of the text).\cite{Cotton1999}
+This paper presents the base module of such an instrument: a single-channel, 3D-printed Archimedes-auger powder doser with tapping and vibration assistance, closed-loop gravimetric feedback, and a parts cost under \$200 (Fig.~\ref{fgr:overview}). The module is explicitly designed for replication---each channel is an independent printable unit that will later be arrayed around a shared collection cup to form a multi-powder doser (Section~\ref{sec:future}).
 
-\begin{figure}[h]
-\centering
-  \includegraphics[height=3cm]{example1}
-  \caption{An example figure caption.}
-  \label{fgr:example}
-\end{figure}
+The second, equally deliberate contribution of this work is methodological. Essentially every mechanical part of the platform was designed in collaboration with generative artificial intelligence: large-language-model (LLM) coding agents writing parametric CAD code under human review, supplemented by emerging text-to-CAD services. Generative CAD research has produced impressive datasets and models,\cite{Wu2021Deepcad,Willis2021Fusion,Seff2021Vitruvion,Xu2024Brepgen} and LLMs can emit CAD programs from natural-language prompts,\cite{Alrashedy2025Generating,Badagabettu2024Query2cad,Jansen2023Words,Rios2023Text} but published evaluations focus on benchmark geometry rather than the messy reality of designing a working instrument end-to-end. Because the entire design history of this project---every prompt, every generated part, every review comment, and every failure---is preserved in a public GitHub repository, this platform doubles as a documented case study of AI-assisted hardware design.\footnote{All issue threads, pull requests, and design-log entries cited in this paper are preserved at \url{https://github.com/vertical-cloud-lab/powder-doser}.} We report the workflow that ultimately worked (part-by-part generation against explicit interface specifications, with automated geometry checks and human visual review), the recurring failure modes (assembly-level spatial reasoning, silent regressions, hallucinated part choices), and practical observations for others considering AI-assisted instrument design.
+
+The objectives of this work are therefore: (1) deliver an open-source, low-cost, accurate single-powder dosing module suitable for SDL integration; (2) document and critically evaluate the use of generative AI as a primary CAD tool across a complete hardware project; and (3) establish the modular foundation---mechanical, electronic, and firmware---for the multi-powder doser, automated calibration, and powder-property database that constitute the subsequent stages of this program.
+
+\section{Results and discussion}
+
+\subsection{Platform overview}
+
+Fig.~\ref{fgr:overview} shows the single-channel module. Powder is loaded into a removable hopper feeding a printed Archimedes auger (25~mm OD) driven through a printed gear train by a NEMA-11 stepper motor. Dosing resolution is set by step-counted auger rotation; powder adhesion and bridging are broken by two auxiliary actuators: a 12~V push--pull solenoid striking a printed tap collar clamped to the auger tube, and an eccentric-rotating-mass (ERM) vibration motor mounted on the same collar. The auger assembly rides on a hinged mounting plate whose tilt is set by a servo-driven gear sector, so the auger can be parked horizontally (no gravity feed, clean shutoff) and tilted toward vertical for dispensing; the hinge geometry keeps the exit-nozzle dispense point stationary during tilt (Fig.~\ref{fgr:overview}c), so the dose lands in the same spot at any angle. Dispensed mass is measured by a load cell beneath the collection cup, read by an HX711 amplifier, closing the loop for coarse-then-trickle gravimetric dosing (Fig.~\ref{fgr:overview}d).
 
 \begin{figure*}
  \centering
- \includegraphics[height=3cm]{example2}
- \caption{A two-column figure.}
- \label{fgr:example2col}
+ \includegraphics[width=17.1cm]{figures/fig1_overview}
+ \caption{Platform overview. (a) Single-channel powder-doser module (CAD render; photograph of the printed platform will replace this render): printed Archimedes auger, gear drive from a NEMA-11 stepper, tap collar with solenoid and vibration motor, and servo-tilted hinged mounting plate on the baseplate. (b) Powder-flow path through the module cross-section: hopper $\rightarrow$ loading slots $\rightarrow$ helical channel $\rightarrow$ exit nozzle $\rightarrow$ collection cup on the balance. (c) Tilt sweep about the fixed dispense point: the hinge axis passes through the exit-nozzle tip so the dispense point does not translate as the channel tilts from 0$^\circ$ (sealed park) to 90$^\circ$ (vertical dispense). (d) Closed-loop gravimetric dosing concept. (e) Compressed design timeline; the complete 97-entry design log is available in the repository.}
+ \label{fgr:overview}
 \end{figure*}
 
-\subsection{Tables}
-Tables typeset in RSC house style do not include vertical lines. Table footnote symbols are lower-case italic letters and are typeset at the bottom of the table. Table captions do not end in a full point.\cite{Arduengo1992,Eisenstein2005}
+All structural parts are fused-filament printed in PLA with no support-critical geometry; non-printed components are commodity items (stepper, servo, solenoid, ERM motor, bearings, fasteners, load cell). The bill of materials totals under \$200 per channel (SI Table~S1), roughly two orders of magnitude below commercial gravimetric dosing heads. Control electronics are a single Raspberry Pi Pico~W microcontroller running MicroPython, with a Tic T500 driver for the stepper, DRV8871 for the solenoid, DRV2605L for the vibration motor, and HX711 for the load cell; the full schematic, firmware, and wiring guide are in the repository.
 
+\subsection{Design evolution}
 
-\begin{table}[h]
-\small
-  \caption{\ An example of a caption to accompany a table}
-  \label{tbl:example1}
-  \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}lll}
-    \hline
-    Header one (units) & Header two & Header three \\
-    \hline
-    1 & 2 & 3 \\
-    4 & 5 & 6 \\
-    7 & 8 & 9 \\
-    10 & 11 & 12 \\
-    \hline
-  \end{tabular*}
-\end{table}
+The mechanical design passed through four distinct generations in six weeks, all documented chronologically in a 97-entry design log in the repository (compressed in Fig.~\ref{fgr:overview}e). The project began as a hand-sketched mechanical scoop (``powder excavator'') intended to ride an existing CNC gantry. Early viability analysis of dose control and powder adhesion, informed by literature on micro-dosing mechanisms,\cite{Besenhard2017Micro,Faulhammer2014Dose} prompted a structured comparison of eight dosing archetypes (tap-sieve, metering wheel, capillary wiper, auger, and others). The Archimedes auger won on dose resolution, printability, and powder generality, consistent with its dominance in commercial micro-feeders.\cite{Yang2007Metering,Besenhard2015Accuracy}
 
-Adding notes to tables can be complicated.  Perhaps the easiest method is to generate these manually.\footnote[4]{Footnotes should appear here. These might include comments relevant to but not central to the matter under discussion, limited experimental and spectral data, and crystallographic data.}
+The second generation embedded the auger in a self-contained single-channel module (hopper, frame, drive, actuators) conceived as the repeating unit of a modular multi-powder architecture. The third generation was a deliberate methodological pivot: rather than asking the AI tools to generate the whole module at once, each part---auger, geared auger, bracket, tap collar, mounting plate, baseplate, servo hinge---was designed, reviewed, and printed individually against explicit interface specifications (Section~\ref{sec:genai}). The fourth generation integrated the printed parts on a hinged baseplate with servo tilt control and the fixed-dispense-point geometry of Fig.~\ref{fgr:overview}c. Key design specifics, including the auger tube cross-section and the split-clamp tap collar that couples solenoid impacts into the powder column without loading the auger bearing, are shown in Fig.~\ref{fgr:design}. Exit-nozzle geometry strongly affects flow initiation and dribble; four printed nozzle variants are compared in SI Fig.~S1.
 
-\begin{table*}
-\small
-  \caption{\ An example of a caption to accompany a table \textendash\ table captions do not end in a full point}
-  \label{tbl:example2}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lllllll}
-    \hline
-    Header one & Header two & Header three & Header four & Header five & Header six  & Header seven\\
-    \hline
-    1 & 2 & 3 & 4 & 5 & 6  & 7\\
-    8 & 9 & 10 & 11 & 12 & 13 & 14 \\
-    15 & 16 & 17 & 18 & 19 & 20 & 21\\
-    \hline
-  \end{tabular*}
-\end{table*}
+\begin{figure}[h]
+\centering
+  \includegraphics[width=8.3cm]{figures/fig4_design}
+  \caption{Design specifics. (a) Cross-section of the printed auger tube showing the helical channel and flight clearances. (b) Split-clamp tap collar carrying the solenoid striker and ERM vibration motor; the clamp couples impacts into the powder column without transmitting load to the auger drive.}
+  \label{fgr:design}
+\end{figure}
 
-\section{Equations}
+\subsection{Generative AI as a CAD tool}
+\label{sec:genai}
 
-Equations can be typeset inline \textit{e.g.}\ $ y = mx + c$ or displayed with and without numbers:
+Our AI workflow used LLM coding agents (GitHub Copilot coding agent, primarily Claude-family models) operating directly on the version-controlled repository: the agent wrote parametric CAD as Python (build123d/CadQuery) or OpenSCAD code, rendered multi-view images and STLs in continuous integration, and opened pull requests that the human team reviewed using the rendered views. Two commercial text-to-CAD services, CADSmith and Zoo Design Studio, were evaluated on the same parts for comparison. Every prompt, generated file, render, and review comment is preserved in the repository's pull requests and a dedicated discussion thread, satisfying emerging reproducibility guidance for LLM-assisted research.
 
- \[ A = \pi r^2 \]
+\begin{figure*}
+ \centering
+ \includegraphics[width=17.1cm]{figures/fig2_genai}
+ \caption{Generative-AI CAD outcomes, good and bad. (a) First AI-generated tap collar: the main body is not connected to its mounting points---an amalgamation of separate functions. (b) The same part after iterative review. (c) Geared auger and stepper pinion produced by the part-by-part workflow. (d) A whole-assembly generation attempt (single prompt): plausible at a glance, but with interferences and floating components that took longer to diagnose than the part-by-part route took to build. (e--h) Four review iterations of the mounting plate: the agent inserted an unexplained hole (e), then raised platforms (f), then a gap that left the motor plate floating (g); only when the correct upstream part files were supplied did it produce a clean plate (h). The root cause was stale input files---a human-side error the agent silently designed around.}
+ \label{fgr:genai}
+\end{figure*}
 
-\begin{equation}
-  \frac{\gamma}{\epsilon x} r^2 = 2r
-\end{equation}
+\paragraph{Whole-assembly generation fails; part-by-part succeeds.~~} Early attempts asked the agent to generate the complete module from an architecture description. The results were visually plausible but mechanically incoherent: the first tap collar's body was not connected to its own mounting points (Fig.~\ref{fgr:genai}a), and assembly-level prompts repeatedly produced interferences, floating parts, and regressions, with feedback on one defect introducing new defects elsewhere. Restricting each generation task to a single part with explicitly enumerated interfaces (bolt patterns, shaft diameters, mating faces) converted the agent from a liability into a productive collaborator (Fig.~\ref{fgr:genai}c). This mirrors the known weakness of current LLMs in compositional spatial reasoning\cite{Alrashedy2025Generating} and suggests that interface-first decomposition---standard practice in human mechanical design---is currently \emph{mandatory} rather than optional for AI CAD.
 
-You can also put lists into the text. You can have bulleted or numbered lists of almost any kind. 
-The \texttt{mhchem} package can also be used so that formulae are easy to input: \texttt{\textbackslash ce\{H2SO4\}} gives \ce{H2SO4}. 
+\paragraph{Trust, verification, and silent regressions.~~} The dominant cost of the workflow was verification. Because any iteration could silently alter unrelated geometry, every generated part required full re-inspection; in one documented case the agent produced four miniature test nozzles with two of the four silently swapped relative to their documentation, which would have invalidated a dispensing comparison had it not been caught. Automated self-checks (single-body assertions, watertightness, interface-dimension probes run in CI) caught a useful subset of defects cheaply, but small-scale errors---a one-layer height mismatch discovered only when a print peeled off the build plate---escaped both the checks and three-view visual review. We adopted the working principle that AI gets a part ``X\% of the way'': generative exploration was genuinely valuable early (the agent proposed the raised-bracket solution to a gear-clearance problem we had misdiagnosed, Fig.~\ref{fgr:genai}e--h), while final-stage convergence suffered from the agent's inability to recognize how close a design was to its optimum, perturbing already-refined features. A corollary we observed repeatedly is that AI-designed parts plateau at ``good enough'': the cost and risk of additional iterations discourages the final refinements a human designer would make by habit.
 
-For footnotes in the main text of the article please number the footnotes to avoid duplicate symbols. \textit{e.g.}\ \texttt{\textbackslash footnote[num]\{your text\}}. The corresponding author $\ast$ counts as footnote 1, Supplementary Information (SI) as footnote 2, \textit{e.g.}\ if there is no SI, please start at [num]=[2], if SI is cited in the title please start at [num]=[3] \textit{etc.} Please also cite the SI within the main body of the text using \dag.
+\paragraph{Tool comparison.~~} The code-writing agent workflow (Copilot on the repository) was the most controllable and fully auditable, at the cost of long feedback cycles (minutes per iteration) and review burden. CADSmith converged quickly on bracket- and plate-class parts once supplied with the same interface specifications. Zoo Design Studio's KCL/Text-to-CAD workflow handled single parts well but, at evaluation time, treated imported reference CAD as read-only and lacked multi-part assembly constraints, limiting its use for integration tasks. A quantitative cross-tool benchmark (identical prompts, identical parts, iteration counts and defect taxonomies) is in progress and will be reported with the multi-doser follow-up; the qualitative ranking above should be read as experience, not measurement.
 
-\section*{Conclusions}
-The conclusions section should come in this section at the end of the article, before the Author contributions statement and/or Conflicts of interest statement.
+\subsection{Dispensing performance}
+
+Fig.~\ref{fgr:dispense} summarizes the dispensing characterization protocol on four powders spanning the flowability range of interest (free-flowing glass beads, alumina, 316L steel powder, and cohesive xanthan gum). \textbf{The data shown are synthetic placeholders} (watermarked in the figure) illustrating the analysis and presentation that the bench campaign now under way will populate: (a) cumulative dispensed mass versus time at fixed auger speed, establishing per-powder mass-flow calibrations; (b) requested-versus-measured dose parity across 20~mg--5~g with closed-loop gravimetric control, the primary accuracy metric; and (c) the speed--accuracy trade-off (dose coefficient of variation versus auger speed) that motivates the coarse-then-trickle dosing strategy. Acceptance targets, chosen to match the requirements of AM alloy blending,\cite{Vecchio2021Throughput,Moorehead2020Throughput} are $\pm$5\% accuracy above 100~mg and $\pm$10\% at 20~mg, with per-dose times under 30~s.
+
+\begin{figure*}
+ \centering
+ \includegraphics[width=17.1cm]{figures/fig3_dispense}
+ \caption{Dispensing characterization (SYNTHETIC placeholder data, to be replaced by bench measurements; watermarks will be removed when real data are substituted). (a) Cumulative dispensed mass versus time per powder at fixed auger speed. (b) Requested versus measured dose with closed-loop gravimetric control; shaded band is $\pm$10\%. (c) Dose repeatability (coefficient of variation) versus auger speed, motivating coarse-then-trickle dosing.}
+ \label{fgr:dispense}
+\end{figure*}
+
+\subsection{Cost and accessibility}
+
+The complete single-channel module---printed parts, motors, drivers, microcontroller, and load cell---costs under \$200 in single-unit quantities (SI Table~S1), and prints in under 24~h on a consumer printer. For comparison, automated gravimetric dosing modules from commercial vendors are quoted at \$30k--\$300k depending on configuration. Even where commercial instruments outperform on absolute accuracy, the two-orders-of-magnitude cost gap changes what is possible: a lab can dedicate one printed channel per powder, accept cross-contamination-free disposable wetted parts, and replicate failed channels in a day. This is the economic logic of open-source laboratory hardware\cite{Pearce2020Economic,Hohlbein2022Open} applied to the solid-handling gap in SDLs.
+
+\section{Experimental}
+\label{sec:methods}
+
+\subsection{Mechanical design and fabrication}
+All printed parts were produced in PLA on a Bambu Lab H2D (0.2~mm layers, 4 perimeters, 25\% infill). The auger (25~mm OD printed helix), gear train (printed spur pair, 2.25:1), bracket, tap collar, mounting plate, hinged baseplate, and servo sector are parametric models; source (build123d/OpenSCAD/KCL), STLs, and renders for every iteration are in the repository. Non-printed components: NEMA-11 stepper (auger drive), MG996R-class servo (tilt), 12~V push--pull solenoid (tap), coin-type ERM motor (vibration), 6805ZZ bearing (auger support), and a 500~g strain-gauge load cell.
+
+\subsection{Electronics and firmware}
+A single Raspberry Pi Pico~W runs MicroPython firmware exposing dose primitives (rotate-by-steps, tap-burst, vibrate-burst, tilt-to-angle, read-mass). The stepper is driven by a Pololu Tic T500 over UART, the solenoid by a DRV8871 H-bridge, the vibration motor by a DRV2605L haptic driver over I$^2$C, and the load cell by an HX711 amplifier. KiCad schematics, the wiring guide, and firmware are in \texttt{hardware/} in the repository.
+
+\subsection{AI design workflow and logging}
+LLM coding agents (GitHub Copilot coding agent; Claude-family models, 2026 sessions) executed design tasks specified as GitHub issues; each agent session produced a pull request containing generated CAD code, rendered orthographic/isometric views, and STLs, which the team reviewed in-browser. Literature and design-review queries were run through Edison Scientific; commercial text-to-CAD evaluations used CADSmith and Zoo Design Studio with the same part specifications. In line with Digital Discovery's LLM-usage guidance, the complete prompt/response history (issues, pull-request threads, and agent session logs), model identifiers, and generation dates are preserved in the public repository and summarized in the SI.
+
+\subsection{Dispensing characterization protocol}
+Doses are dispensed onto a tared collection cup on the load cell (laboratory balance cross-check at 1~mg resolution), with $n\ge10$ replicates per condition. Per-powder calibration sweeps auger speed at fixed dose; closed-loop accuracy is evaluated across 20~mg--5~g requested masses with coarse-then-trickle control. The protocol, scripts, and (forthcoming) raw data accompany the repository.
+
+\section{Conclusions}
+
+A single-channel, 3D-printed auger powder doser with closed-loop gravimetric control can be built for under \$200 from printed parts and commodity electronics, and its design process---conducted almost entirely through generative-AI tools under human review---is fully documented and reusable. The methodological result is as transferable as the hardware: whole-assembly AI generation is not currently viable, but part-by-part generation against explicit interfaces, fortified by automated geometry checks and disciplined human review, is a practical and auditable way to design instruments. The complete, honest design history (97 logged iterations including failures) is itself a dataset for studying AI-assisted hardware design.
+
+\label{sec:future}
+This base module is the first of five planned stages. Ongoing work extends the platform to (1) a multi-powder doser arraying $N$ printed channels around a shared collection cup (Fig.~\ref{fgr:future}), with a loaded subset of 8--12 powders and a path to a 50-powder pool via swappable sealed cartridges; (2) automated per-powder calibration that optimizes dosing parameters (speed, tap/vibration schedules) against the gravimetric loop; (3) a public database of optimized parameters across a large powder library, linking flowability descriptors to dosing behaviour; and (4) continued evaluation of generative tools, including AI-generated PCBs to replace the breadboard electronics. Each will be reported separately; the multi-doser geometry and the cartridge-sealing concepts already have working CAD in the repository.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=8.3cm]{figures/fig5_future}
+  \caption{Future work: multi-powder doser. (a) $N$-channel radial array concept around a shared collection cup on a single load cell. (b) CAD study of inward-tilting channels over the shared cup.}
+  \label{fgr:future}
+\end{figure}
 
 \section*{Author contributions}
-We strongly encourage authors to include author contributions and recommend using \href{https://casrai.org/credit/}{CRediT} for standardised contribution descriptions. Please refer to our general \href{https://www.rsc.org/journals-books-databases/journal-authors-reviewers/author-responsibilities/}{author guidelines} for more information about authorship.
+S.C.: conceptualization, methodology, investigation, CAD review, writing---original draft. W.M.: investigation, CAD review, validation. L.W.: investigation (electronics, PCB workflows), software. C.R.: investigation, hardware fabrication. G.E.: investigation, hardware fabrication. S.G.B.: conceptualization, supervision, funding acquisition, writing---review \& editing.
 
 \section*{Conflicts of interest}
-In accordance with our policy on \href{https://www.rsc.org/journals-books-databases/journal-authors-reviewers/author-responsibilities/#code-of-conduct}{Conflicts of interest} please ensure that a conflicts of interest statement is included in your manuscript here.  Please note that this statement is required for all submitted manuscripts.  If no conflicts exist, please state that ``There are no conflicts to declare''.
+S.G.B. is a member of the Digital Discovery advisory board. There are no other conflicts to declare.
 
 \section*{Data availability}
-
-
-A data availability statement (DAS) is required to be submitted alongside all articles. Please read our \href{https://www.rsc.org/journals-books-databases/author-and-reviewer-hub/authors-information/prepare-and-format/data-sharing/#dataavailabilitystatements}{full guidance on data availability statements} for more details and examples of suitable statements you can use.
+All design files (parametric CAD source, STLs, renders), KiCad schematics, MicroPython firmware, AI prompt/response logs, the 97-entry design log, and characterization scripts are openly available at \url{https://github.com/vertical-cloud-lab/powder-doser}. Hardware designs are released under an open license (see repository); dispensing datasets will be deposited with a DOI upon completion of the bench campaign. References cited in the SI are listed in this article's reference list.
 
 \section*{Acknowledgements}
-
-The acknowledgements come at the end of an article after the conclusions and before the notes and references. 
-
-%%%END OF MAIN TEXT%%%
-
-%The \balance command can be used to balance the columns on the final page if desired. It should be placed anywhere within the first column of the last page.
+This work was supported in part by a Utah NASA Space Grant Consortium undergraduate fellowship. Generative AI tools were used extensively and deliberately as research objects and assistants in this work: GitHub Copilot coding agent (Claude-family models) generated CAD code, firmware, and figure scripts under human review; Edison Scientific was used for literature search and design review; CADSmith and Zoo Design Studio were evaluated as text-to-CAD tools. All AI usage is logged in the public repository.
 
 \balance
 
-%If notes are included in your references you can change the title from 'References' to 'Notes and references' using the following command:
-%\renewcommand\refname{Notes and references}
+\renewcommand\refname{Notes and references}
 
-%%%REFERENCES%%%
-\bibliography{rsc} %You need to replace "rsc" on this line with the name of your .bib file
-\bibliographystyle{rsc} %the RSC's .bst file
+\bibliography{references}
+\bibliographystyle{rsc}
+
 \end{document}
