@@ -225,3 +225,5 @@ paper/*.fls
 paper/*.log
 paper/*.out
 paper/*.toc
+paper/mock_review/inputs/main.pdf
+paper/mock_review/inputs/si.pdf
