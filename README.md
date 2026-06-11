@@ -32,10 +32,16 @@ latexmk -pdf main.tex
 A running list of individuals, academic groups, commercial vendors, and
 open-source projects we could reach out to for help with accurate, automated
 powder dispensing is kept in
-[`docs/outreach/powder-dispensing-contacts.md`](docs/outreach/powder-dispensing-contacts.md).
-It is compiled from the accelerated-discovery forum thread on [accurate
+[`paper/background/07-powder-dispensing-outreach-contacts.md`](paper/background/07-powder-dispensing-outreach-contacts.md)
+(Edison-backed; per-entry `### Name` anchors and verifiable `(source: <URL>)`
+tags). The synthesis is produced by
+[`paper/background/edison_run_powder_dispensing_outreach_contacts.py`](paper/background/edison_run_powder_dispensing_outreach_contacts.py),
+with raw artifacts under
+[`paper/background/edison_artifacts/`](paper/background/edison_artifacts/),
+and is compiled from the accelerated-discovery forum thread on [accurate
 powder dispensing for chemistry and
 materials-science applications](https://accelerated-discovery.org/t/accurate-powder-dispensing-for-chemistry-and-materials-science-applications/177),
 the background notes in
 [#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29), and other
-references throughout this repository.
+references throughout this repository. Same workflow as the generative-CAD
+outreach note in [#43](https://github.com/vertical-cloud-lab/powder-doser/pull/43).
