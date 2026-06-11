@@ -1,0 +1,13 @@
+{
+  "id": "16b3ab1a-1b56-4be6-ae77-f17238b0c63d",
+  "created_at": "2026-05-15T22:46:56.513666430Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "queued",
+  "updated_at": "2026-05-15T22:46:56.513666430Z",
+  "conversation_id": "825e37b1-0be5-4b7d-a8f1-5c6257ba0d93",
+  "prompt": "An Archimedes auger inside a coaxial outer tube, fused as one single closed solid body. Outer tube diameter 24 mm, wall 2 mm, total height 100 mm. Internal helical flight: outer radius 9.7 mm, central shaft diameter 6 mm, single-start helix, 10 mm pitch, flight thickness 1.6 mm. M3 threaded mounting hole through the top spindle face on the central axis, and a 2.5 mm diameter exit hole through the bottom face on the central axis. The auger and tube must be one watertight body. Do NOT add a side hopper. Do NOT cut an axial slab or window in the tube wall. Do NOT model a separate inner channel; the auger flight occupies the bore directly.",
+  "output_format": "step",
+  "model_version": "",
+  "model": "kcl",
+  "feedback": null
+}
