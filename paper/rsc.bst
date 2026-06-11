@@ -502,8 +502,8 @@ FUNCTION {format.editors}
 FUNCTION {format.doi}
 { use.doi.all
     { doi empty$
-        'skip$
         { bbl.doi doi tie.or.space.connect output }
+        'skip$
       if$
     }
     'skip$
