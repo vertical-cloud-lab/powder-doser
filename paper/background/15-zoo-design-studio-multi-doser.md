@@ -13,7 +13,9 @@ Related xrefs:
 - Zoo Design Studio docs (feature subtree): https://zoo.dev/docs/zoo-design-studio
 - Zoo Design Studio trial + exported transcript: https://github.com/vertical-cloud-lab/powder-doser/pull/7#issuecomment-4482605596
 - Team trial observations (editing/interaction feedback): issue #92 (https://github.com/vertical-cloud-lab/powder-doser/issues/92#issuecomment-4672557336)
+- Cleaned editing-session transcript (this PR): `paper/background/23-zds-transcript-editing-session.md`
 - Zoo community thread on editing AI-designed parts (manual-dimension bug fixed in 1.2.16; sketch-on-face issue): https://community.zoo.dev/t/editing-ai-designed-parts/560
+- Zoo community thread on iterating a custom STEP file (imported geometry is reference-only; recreate in KCL): https://community.zoo.dev/t/support-iterating-design-of-custom-stp-file/435
 - Multi-doser brainstorming (architecture options, no shared wetted path before the cup): issue #30
 - Synthesized dispenser-architecture write-up (per-channel auger, gravimetric weighing, A&D balance): PR #31
 
@@ -68,6 +70,14 @@ any ZDS work.
 - **Let the agent scope first.** Zookeeper can act as a domain expert, propose constraints
   and parameters, and produce a design plan *before* geometry; use that planning step and
   answer its clarifying questions precisely.
+- **Pick the right agent mode for the job.** Zookeeper offers **Auto, Thoughtful, and
+  Standard** modes (availability depends on plan). Zoo's own guidance is that **Thoughtful
+  mode "is generally the best default for CAD work"** — slower, but consistently higher
+  quality on complex, multi-step models — while Standard trades depth for speed on simple
+  edits and Auto balances automatically. For a part as involved as the multi-doser, prefer
+  Thoughtful and budget the extra reasoning time.
+  ([ml-ai](https://zoo.dev/docs/zoo-design-studio/features/ml-ai),
+  [Zookeeper](https://zoo.dev/docs/zoo-design-studio/zookeeper))
 - **Use selection awareness.** Point at a face/edge/feature and let the agent act on the
   selection instead of describing the location in words.
 - **Use its model-aware tools** (mass, volume, surface area, center of mass) to check a model
@@ -160,7 +170,65 @@ for each:
     to redirect it mid-flight, or *cancel* to interrupt without losing the conversation.
     ([queue and steer](https://zoo.dev/docs/zoo-design-studio/features/ml-ai/queue-and-steer))
 
-## How this maps to the multi-doser (what we saw in our run)
+## Additional best practices surfaced by the hands-on editing session (issue #92 transcript)
+
+The team's second, recorded ZDS trial (cleaned transcript in
+`paper/background/23-zds-transcript-editing-session.md`) exposed a few interaction patterns
+that the official docs and forum answer directly but that aren't obvious going in. These are
+worth codifying because each one bit us during the run.
+
+- **Imported non-native geometry (STEP/STL/GLB/FBX) is *reference-only* — to edit or iterate
+  on it, have Zookeeper recreate it in KCL.** The session opened with "non-KCL files aren't
+  editable" and later "we can't actually edit it" after importing the auger. That is by
+  design: per Zoo's import docs, imported CAD appears as reference geometry that can be
+  **measured, used as a boolean tool (subtract/intersect/union), and used as an extrude
+  target**, but it has **no feature history and is not directly editable** — and, as Zoo staff
+  confirm on the forum, **it therefore can't be modified by Zookeeper either**. The official
+  route to iterate on an existing part is to **ask Zookeeper to recreate the file in KCL**,
+  then edit the KCL. Validate the recreation against the original by visual inspection *and*
+  by checking that the model-aware **volume / surface-area** match. Only the native **KCL**
+  import comes in fully parametric and editable.
+  ([import](https://zoo.dev/docs/zoo-design-studio/features/data-management/import),
+  [forum: iterating a custom STEP](https://community.zoo.dev/t/support-iterating-design-of-custom-stp-file/435))
+- **Prefer STEP over STL when handing the agent reference geometry.** In the run, the agent
+  read dimensions off the imported STL, but once it was given "the full STEP of the assembly"
+  it visibly "understands what I'm talking about more" and the team could "refer to what it
+  names things." STEP is a B-rep format that **preserves solids, assembly/product structure,
+  feature names, and unit metadata**; STL is a triangle mesh that throws all of that away.
+  Export reference parts from our CadQuery pipeline as **STEP**, not STL, so selections and
+  named features survive and Zookeeper's selection awareness has something to grab.
+  ([import](https://zoo.dev/docs/zoo-design-studio/features/data-management/import),
+  [Zookeeper](https://zoo.dev/docs/zoo-design-studio/zookeeper))
+- **Import straight from the repo URL.** Because our parts live on GitHub, the
+  **Import file from URL** workflow accepts GitHub/GitLab raw links and cloud-storage shares
+  (Drive/Dropbox/OneDrive) — no manual download needed to pull a committed `.step` into a
+  session. ([import](https://zoo.dev/docs/zoo-design-studio/features/data-management/import))
+- **Mind the 64 MB upload ceiling and simplify large STEP imports.** Zookeeper's upload limit
+  is **64 MB**, and Zoo has acknowledged that certain/large STEP files can fail to load. Their
+  import guidance is to **import only the components you need** (not a whole assembly) and use
+  simplified/LOD representations for big parts. Relevant when feeding the full doser assembly.
+  ([forum: 64 MB limit](https://community.zoo.dev/t/not-able-to-import-a-step-file-of-size-over-90mb/553),
+  [import](https://zoo.dev/docs/zoo-design-studio/features/data-management/import))
+- **Use the Body Pane + Union to resolve "floating bodies."** The agent's own self-check
+  ("these bodies have no overlap"; "how many bodies are in this file?") maps to two official
+  tools: the **Body Pane** lists every solid/surface body and lets you track what exists after
+  each operation, and **Union** combines bodies "into a single continuous, manifold solid."
+  Note Zoo's caveat — "bodies don't need to touch to be unioned, but if they don't overlap
+  you'll get a multi-piece result" — which is exactly the disconnected-parts symptom we saw.
+  For the 16-channel doser, union (or deliberately keep-as-separate-bodies) the channels on
+  purpose rather than leaving the agent's cloned bodies floating.
+  ([body pane](https://zoo.dev/docs/zoo-design-studio/features/workspace/body-pane),
+  [union](https://zoo.dev/docs/zoo-design-studio/features/3d-design/parametric-modeling/solid-modeling/boolean-operations/union))
+- **Assemblies are single-body-Insert only today — don't expect mates/subassemblies.** The
+  team mused about giving Zoo "an assembly file where it's one body … keeps them separate …
+  and knows how they mate." That workflow isn't supported yet: ZDS assemblies are currently
+  limited to **inserting single-body parts** into a main assembly, with **no nested
+  subassemblies, multi-body insertion, or mate constraints**. Plan to assemble/position parts
+  yourself (or in our CadQuery pipeline) rather than relying on Zoo to solve mates.
+  ([assemblies](https://zoo.dev/docs/zoo-design-studio/features/3d-design/assemblies),
+  [insert](https://zoo.dev/docs/zoo-design-studio/features/3d-design/assemblies/insert))
+
+
 
 Our first real ZDS run on the doser prompt ("16 unique powders, 50–250 mL per powder, no
 cross-contamination, A&D balance, ±0.1 mg") is in the PR #7 thread. Aligning it with the
@@ -203,7 +271,12 @@ These tripped the agent mid-run and are worth knowing:
 2. **Frame the prompt as a spec sheet** following Zoo's "be specific" guidance: dispenser
    count, per-channel capacity, dose tolerance (±mg/±%), balance model, "no shared wetted path
    before the cup", inert-gas requirement, and overall envelope. Reuse the issue #30 / PR #31
-   language verbatim.
+   language verbatim. For a part this involved, run **Thoughtful mode** (Zoo's recommended
+   default for complex CAD) and budget the extra reasoning time. When you have an existing
+   part, feed it as a **STEP reference** (from our CadQuery `.step` exports — STEP preserves
+   solids, structure, names, and units; STL does not) or **import its URL straight from the
+   repo**; then, to edit it, ask Zookeeper to **recreate it in KCL** and confirm the volume /
+   surface area match the original (imported geometry itself is reference-only).
 3. **Iterate incrementally** — answer clarifying questions, then change one detail per turn
    (e.g. correct the two-station framing) rather than restarting. When the agent stalls or
    misplaces a feature, **steer it** rather than re-prompt: select the geometry, use **Zoodle**
@@ -230,6 +303,11 @@ These tripped the agent mid-run and are worth knowing:
 
 - Outputs are concept-grade geometry: placeholder dimensions, no assembly booleans, no real
   fastener/interface modeling, no DFM.
+- **Imported CAD is reference-only.** STEP/STL/GLB/FBX imports can be measured and used as
+  boolean tools / extrude targets but are not editable and can't be modified by Zookeeper;
+  iterating requires recreating them in KCL. Assemblies are limited to single-body Insert —
+  no nested subassemblies, multi-body insertion, or mate constraints yet — and the Zookeeper
+  upload limit is 64 MB.
 - Non-deterministic: the same prompt can yield different layouts; pin a run by committing its
   KCL + transcript.
 - Reasoning-time metering and the desktop-first / cloud-dependent model can gate a session.
