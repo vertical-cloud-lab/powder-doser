@@ -1,0 +1,22 @@
+{
+  "board": {
+    "design_settings": {}
+  },
+  "meta": {
+    "filename": "powder_doser_actuators.kicad_pro",
+    "version": 1
+  },
+  "schematic": {
+    "annotate_start_num": 0,
+    "drawing": {},
+    "legacy_lib_dir": "",
+    "legacy_lib_list": []
+  },
+  "sheets": [
+    [
+      "96066228-e909-400a-8481-5e0d903136b5",
+      "Root"
+    ]
+  ],
+  "text_variables": {}
+}

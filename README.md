@@ -4,6 +4,13 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Hardware
+
+Candidate parts for the auger drive motor, vibration motor, external
+solenoid, and the Raspberry Pi Zero 2 W driver boards needed to
+control them are documented in
+[`hardware/vibration-motor-and-solenoid.md`](hardware/vibration-motor-and-solenoid.md).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
