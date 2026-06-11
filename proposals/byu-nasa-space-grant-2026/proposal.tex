@@ -1,0 +1,330 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BYU / Utah NASA Space Grant Consortium Fellowship -- Proposal Narrative
+% Applicant:       Sam Charles (undergraduate, Brigham Young University)
+% Faculty advisor: Sterling Baird (BYU Vertical Cloud Lab)
+% Cycle:           2026 (deadline: 8 May 2026)
+% Length target:   up to 5 pages, per program guidelines (3-5 page cap).
+%                  Layout intentionally relaxed for readability rather than
+%                  compressed -- per applicant feedback the proposal reads
+%                  better when given room to breathe.
+%
+% Build (MiKTeX or TeX Live):
+%   cd proposals/byu-nasa-space-grant-2026
+%   latexmk -pdf proposal.tex
+%
+% Required LaTeX packages (auto-installed by MiKTeX with [MPM]AutoInstall=1) --
+% keep this list in sync with the \usepackage lines below:
+%   geometry, times, microtype, graphicx, caption, titlesec, fancyhdr,
+%   lastpage, enumitem, multicol, natbib, hyperref
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[round,authoryear]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+% Section headings: bold, with comfortable space above.  We deliberately
+% leave the layout loose -- the program allows up to 5 pages and the
+% narrative is much easier to read when it has room to breathe.
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{0.9\baselineskip}{0.3\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.55\baselineskip}{0.15\baselineskip}
+
+\setlength{\parskip}{0.35\baselineskip}
+\setlength{\parindent}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sam Charles --- NASA Space Grant Fellowship Proposal}
+\fancyhead[R]{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Agentic Generative CAD for an Open-Source Multi-Powder Doser:\\
+   A Tooling Step Toward Autonomous Discovery of Additively Manufactured
+   Aerospace Alloys}\\[3pt]
+  {\large Sam Charles, Undergraduate Applicant, Brigham Young University}\\[1pt]
+  {\small Faculty advisor: Sterling Baird, BYU Vertical Cloud Lab \quad\textbar\quad
+   Utah NASA Space Grant Consortium Fellowship --- 2026 Cycle}
+\end{center}
+\vspace{0.2\baselineskip}
+
+\section{Introduction and Motivation}
+
+Additively manufactured (AM) structural alloys are an increasingly
+important class of materials for space applications.  Launch-mass
+reduction, topology-optimized geometries, and rapid iteration on bespoke
+parts all favor laser powder-bed fusion (L-PBF, the dominant
+metal-3D-printing process for aerospace structural parts) over
+conventional subtractive machining \citep{wei2021multimaterial}.  The bottleneck for discovering
+and qualifying \emph{new} aerospace alloys for these processes -- as
+opposed to printing established compositions -- is not the printers
+themselves.  It is the upstream workflow that prepares the metal powder
+feedstock from which each candidate composition is built
+\citep{vecchio2024htread,liu2024htprep}.
+
+That upstream workflow is the focus of the BYU Vertical Cloud Lab, a
+self-driving-laboratory group that uses Bayesian optimization (a
+machine-learning method that picks the next experiment most likely to
+improve a target property) to choose and run the next-best alloy
+experiment \citep{tom2024sdl,lo2024frugal}.  This style of closed-loop
+discovery is gated by how quickly and reproducibly the lab can prepare
+new compositions.  Accurate, scriptable powder dosing is therefore the
+front-end on which every downstream measurement depends.
+
+The central, repetitive step that dominates that front-end is
+\emph{powder dosing}: weighing out and combining individual elemental or
+pre-alloyed powders into a target blend before each downstream alloy
+experiment (Fig.~\ref{fig:workflow}a).  In a research lab this is
+almost always done by hand, one powder at a time, with a balance and a
+spatula.  This is slow, error-prone, exposes researchers to fine
+reactive metal powders, and -- critically -- caps the
+\emph{compositional throughput} of any downstream alloy-discovery
+campaign \citep{vecchio2021htread}.
+
+Powder dispensing is therefore an unmet need in the research-lab
+setting.  The few automated dispensers that do exist are designed for
+pharmaceutical powders and aimed at industrial high-throughput
+experimentation.  Commercial systems -- Mettler Toledo
+Quantos/CHRONECT, Chemspeed SWING/FLEX, and Unchained Labs platforms --
+all run roughly \$50\,k--\$150\,k+ when fully integrated.  Even at
+those price points, their precision degrades sharply below 10~mg per
+dose and varies strongly with powder properties
+\citep{bahr2018collaborative,bahr2020recent}.
+
+Lower-cost gravimetric trickler dispensers do exist -- our group has
+benchtested an Autotrickler unit -- but they are designed for the
+coarse, free-flowing grain sizes of reloading powders and are simply
+unusable for fine, cohesive metal powders such as silicon.  At the
+research-AM end of the spectrum, the most complete published
+integration of automated dosing with metal AM is the HT-READ platform
+from Vecchio at UC San Diego.  HT-READ relies on a ChemSpeed-class
+dispenser, a custom 16-hopper feeder, and a directed-energy-deposition
+(DED) print head -- a powder-blown alternative to L-PBF that is more
+forgiving of feedstock variability but produces parts with very
+different microstructures \citep{vecchio2024htread,vecchio2021htread}.
+
+We have not identified any sub-\$10\,k multi-powder doser validated
+for L-PBF aerospace-alloy feedstocks in either the commercial or the
+open-hardware landscape.  DIY designs in the self-driving-lab
+community have not been rigorously tested for the volumes, clumping
+behavior (``cohesive flow''), and cross-contamination constraints
+required for L-PBF
+\citep{tom2024sdl,lo2024frugal,pelkie2025democratizing}.
+
+This project will close that gap with two interlocking contributions:
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.25em,topsep=0.15em,label=(\arabic*)]
+  \item An \textbf{open-source, accurate, low-cost, reliable
+        multi-powder dispenser} purpose-built for L-PBF research
+        workflows.  It will handle up to \textbf{30 unique powders}
+        with total per-blend dispense volumes up to \textbf{250~mL},
+        and is designed to slot in as the front-end of an autonomous
+        AM aerospace-alloy discovery loop.
+  \item An \textbf{honest study of the capabilities and current
+        limitations of agentic AI} applied to electromechanical and
+        generative CAD design, using the dispenser as a real,
+        non-trivial test article.  Existing peer-reviewed work on
+        AI-driven CAD restricts itself either to single-component
+        generation or to short ``can the model produce a bracket?''
+        demonstrations
+        \citep{wu2021deepcad,xie2025text2cadquery,rukhovich2025cadrecode}.
+        Whether a tightly-supervised agentic loop can deliver an
+        integrated mechanical, electrical, and firmware design for a
+        real research instrument is an open question -- and that is
+        the question this project is built to answer.
+\end{enumerate}
+
+We are not testing whether AI can build a product on its own; we
+expect to guide it heavily.  We are testing how much further the
+human--AI partnership can push that boundary on a problem that
+actually matters for NASA-relevant materials research.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.62\linewidth]{../../nasa-space-grant-am-alloy-workflow.png}
+  \caption{The autonomous AM aerospace-alloy discovery loop the proposed
+    dispenser slots into:
+    (\textbf{a})~powder dosing -- the manual bottleneck this project replaces;
+    (\textbf{b})~ultrasonic atomization of the dosed elemental blend
+    into spherical, L-PBF-grade feedstock;
+    (\textbf{c})~laser powder-bed fusion of the atomized powder into
+    test coupons; and
+    (\textbf{d})~the resulting AM aerospace structural part.  The
+    Vertical Cloud Lab's Bayesian-optimization loop chooses the next
+    composition to feed back into~(a).}
+  \label{fig:workflow}
+\end{figure}
+
+\section{Project Objectives}
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.25em,topsep=0.2em]
+  \item \textbf{Open-source multi-powder doser.}  A working hardware
+        prototype handling up to 30 distinct powders with per-blend
+        total volumes up to 250~mL.  We will document dispense
+        accuracy, repeatability, and cross-contamination behaviour on
+        five to seven representative L-PBF feedstock powders.  CAD
+        sources, firmware, bill of materials (BOM), assembly
+        instructions, characterization data, and the AI prompts and
+        transcripts that produced each design revision will all be
+        released openly so other groups can adopt and extend the
+        design.
+  \item \textbf{Generative-CAD-first design process.}  As little
+        traditional, hand-driven CAD as we can manage: ideally the
+        engineer never opens a CAD GUI to author or edit geometry,
+        only to inspect what the agentic loop produced.  Realistically
+        -- and as a deliberate part of the experiment -- the engineer
+        will be guiding the agent significantly, given the current
+        state of the technology.  The goal is to characterize where
+        that human steering is essential, where it is optional, and
+        where the agent can run unaided.
+  \item \textbf{Documented capability/limitation study and follow-on
+        paper.}  A reproducible record of where agentic AI succeeded,
+        where it failed, where engineer intervention was required, and
+        what tooling unlocked each capability.  This serves as a
+        litmus test for the current state of generative CAD applied to
+        a real electromechanical instrument, and as the basis of a
+        peer-reviewed paper released with the open-source design as
+        supplemental material.
+\end{enumerate}
+
+\section{Approach and Methods}
+
+\subsection{Generative CAD pipeline and AI--engineer roles}
+
+The design loop is anchored on GitHub Copilot in agent mode, free to
+invoke multiple underlying language models and to call out to
+auxiliary tooling -- writing code-based 3D models (``code-CAD''),
+preparing print files, and controlling the printer.  Each iteration
+follows a build--test--feedback cycle.  The engineer (Sam) describes a
+requirement or failure mode in natural language plus reference data;
+the agent edits CAD sources, electrical layouts, and firmware in
+scriptable, version-controlled formats; and prototypes are printed
+in-house on a Bambu Lab~H2D used as the dispenser-prototyping
+printer.  The near-term workflow has the engineer triggering prints
+manually; a longer-term goal is for the agent to drive the printer
+directly.
+
+Every prompt, model output, and engineer correction is committed
+alongside the design so the history is fully auditable -- it is the
+dataset for the capability/limitation study, not an afterthought.  A
+first iteration of this loop has already produced the rotating powder
+tube shown in Fig.~\ref{fig:posetube}, prototyped in 24~hours during
+the 2026 POSE workshop using the same agentic pipeline this proposal
+will scale up.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\linewidth]{../../POSE_tube_xanthan_gum.png}
+  \caption{Early proof-of-concept rotating-tube dispenser, designed in
+    one day at the 2026 POSE workshop using an agentic
+    code-CAD~+~3D-print loop on the Bambu H2D.  The internal-vane
+    cross-section is shown at left; (\textbf{a})~during rotation,
+    xanthan gum (a cohesive powder analogue) is clearly being
+    dispensed; (\textbf{b})~at rest, the geometry holds the powder back
+    with no flow.  This proof-of-concept validates the core dosing
+    geometry the multi-powder system will scale up to 30 reservoirs.}
+  \label{fig:posetube}
+\end{figure}
+
+\subsection{Hardware design targets}
+
+Initial functional targets, to be refined as bench data accumulate:
+\begin{itemize}[leftmargin=1.5em,itemsep=0.05em,topsep=0.1em]
+  \item up to 30 individually-addressable powder reservoirs;
+  \item per-blend total volume up to 250~mL;
+  \item per-powder dispense accuracy of approximately $\pm 1$~mg, with
+        a stretch goal of $\pm 0.1$~mg for the smaller component
+        powders that drive minor-alloying-element studies;
+  \item negligible cross-contamination between adjacent reservoirs;
+  \item compatibility with reactive aerospace-alloy powders.
+\end{itemize}
+An inert-atmosphere enclosure (needed for the most reactive powders
+and for runs that must avoid oxidation) is treated as a v2
+deliverable.  The v1 prototype is designed to accept such an enclosure
+but will be characterized in ambient conditions.
+
+\subsection{Validation and integration with the discovery loop}
+
+Validation has two layers.  The first is a bench-level test of the
+dispenser in isolation: gravimetric repeatability over hundreds of
+doses, plus cross-contamination checks on five to seven representative
+L-PBF feedstock powders.  The second is an integration test in which
+the dosed elemental blends are fed into the BYU Vertical Cloud Lab's
+in-house ultrasonic atomizer to produce spherical, L-PBF-grade
+feedstock, which is then printed and characterized
+(Fig.~\ref{fig:workflow}b--c).  This places the dispenser directly on
+the critical path of the autonomous AM aerospace-alloy discovery loop
+and ensures the validation regime matches the real downstream use
+case.
+
+\section{Timeline and Deliverables}
+
+Engineering and writing are concentrated in summer 2026, when the
+applicant has the most concentrated availability; light follow-on work
+is reserved for the rest of the year.
+
+\begin{itemize}[leftmargin=1.5em,itemsep=0.1em,topsep=0.1em]
+  \item \textbf{May 2026 (M0--1).} Finalize requirements, stand up the
+        agentic CAD loop end-to-end, procure components.
+  \item \textbf{June 2026 (M2).} First full-system prototype with a
+        $\le\,$4-reservoir subset, printed on the H2D; basic
+        dispense-accuracy bench tests.
+  \item \textbf{July 2026 (M3).} Scale up to the full 30-reservoir
+        envelope; close the loop on direct printer control; run
+        cross-contamination tests on the five to seven representative
+        powders.
+  \item \textbf{August 2026 (M4) -- soft completion.} Integrated
+        dispenser delivered, open-source release ready, and the
+        capability/limitation paper drafted and submitted at the end
+        of the summer block so it is in peer review during the fall.
+  \item \textbf{Fall 2026 / Winter 2027 (M5--9).} Integration test
+        with the ultrasonic-atomization $\rightarrow$ L-PBF pipeline;
+        respond to paper reviews; community release of v1.0 of the
+        open-source design.
+\end{itemize}
+
+\section{Broader Impact and Relevance to NASA}
+
+The most direct line to NASA is through aerospace structural alloys.
+A research-grade, low-cost, open-source multi-powder dispenser
+shortens the compositional-discovery loop for the L-PBF alloys that go
+into launch vehicles, in-space structures, and propulsion components.
+The same dispensing problem appears, with different chemistries, in
+solid and hybrid rocket propellant formulation, and in handling of
+\emph{regolith} (the loose, fragmented surface material of the Moon
+and Mars) and regolith simulants for in-situ resource utilization
+(ISRU) and lunar/Martian regolith additive manufacturing.
+
+The agentic-AI portion of the work also speaks to NASA's interest in
+AI-assisted engineering for cost- and schedule-constrained missions:
+a documented, honest assessment of where generative CAD currently
+helps and where it currently fails is exactly the kind of evidence
+mission engineering teams need before adopting these tools.  Releasing
+the dispenser openly lowers the barrier of entry for other Utah and
+NASA-affiliated labs that want to run AM alloy-discovery campaigns
+without committing to industrial-scale capital equipment.
+
+\section*{References}
+\vspace{-0.6\baselineskip}
+\renewcommand{\bibsection}{}
+\setlength{\bibsep}{1.5pt plus 1pt}
+\bibliographystyle{plainnat}
+\begin{multicols}{2}
+{\scriptsize\bibliography{refs}}
+\end{multicols}
+
+\end{document}

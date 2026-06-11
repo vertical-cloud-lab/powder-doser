@@ -1,0 +1,11 @@
+# LaTeX build artifacts (regenerate locally)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+# Note: proposal.pdf IS committed so reviewers can see the rendered output.
