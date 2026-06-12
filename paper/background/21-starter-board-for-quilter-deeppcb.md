@@ -21,7 +21,7 @@ DeepPCB")._
 > the real vendor design files committed under
 > [`hardware/vendor-files/`](https://github.com/vertical-cloud-lab/powder-doser/tree/copilot/identify-vibration-motor-solenoid-parts/hardware/vendor-files)
 > (PR [#25](https://github.com/vertical-cloud-lab/powder-doser/pull/25)).
-> The netlist (66 pads / 20 nets) is unchanged; only the geometry is now real.
+> The netlist (20 nets) is unchanged; only the geometry is now real.
 
 ![Generated starter board (real component bodies + nets + Edge.Cuts outline, unrouted)](starter_board/test_module_starter.png)
 
@@ -43,8 +43,8 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 66 pads (59 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~82 × 113 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 59 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~77 × 116 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 69 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
@@ -58,7 +58,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~82 × 113 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~77 × 116 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
@@ -70,17 +70,23 @@ to its right, so the board area is empty and the router must place the parts.
 
 ## How it was built (note `20` Rank 1)
 
-1. **Netlist provenance.** The `NETLIST` and `PINOUTS` tables in the script are
-   transcribed verbatim from the `PLACEMENTS` / `SYMBOL_PINS` structures in PR
-   #61's `hardware/test-module/kicad/generate.py` (commit `147e505`), so the
-   component set, pin names, and net connectivity match the schematic exactly.
-   Keeping them inline makes the build reproducible on *this* branch without
-   needing the PR #61 hardware tree present.
-2. **Real component packages (from the committed vendor files).** Each schematic
-   pin still becomes one through-hole **0.1″ pad** (so the 20-net ratsnest is
-   preserved exactly), but the body **outline, courtyard, and 3-D model** now
-   come from the real vendor design files committed under
-   `hardware/vendor-files/` (PR #25), via the `PACKAGES` table:
+1. **Netlist provenance.** The `NETLIST` and `PINOUTS` tables in the script
+   started from the `PLACEMENTS` / `SYMBOL_PINS` structures in PR #61's
+   `hardware/test-module/kicad/generate.py` (commit `147e505`), so the component
+   set and net connectivity match the bench-rig schematic. The **physical pin
+   counts** were then corrected part-by-part against the manufacturers' pinouts
+   and the `hardware/vendor-files/` datasheets/Eagle files (PR #25) — PR #61's
+   symbols were simplified placeholders (e.g. the Pico W had only 15 pins). See
+   **[Pin-count verification](#pin-count-verification)** below for the audit and
+   every change. Keeping the tables inline makes the build reproducible on *this*
+   branch without needing the PR #61 hardware tree present.
+2. **Real component packages (from the committed vendor files).** Each
+   *physical* pin of the real part becomes one through-hole **0.1″ pad** (so a
+   Pico W footprint has all 40 pads, a Tic T500 all 14, etc.; pins sharing a
+   name, such as the Pico's eight GND, are all tied to the same net), but the
+   body **outline, courtyard, and 3-D model** now come from the real vendor
+   design files committed under `hardware/vendor-files/` (PR #25), via the
+   `PACKAGES` table:
    - **Adafruit breakouts** (DRV2605L #2305 → 17.78 × 16.51 mm, DRV8871 #3190 →
      20.32 × 24.13 mm): outline read from the vendor **Eagle `.brd`** (layer 20 /
      Dimension); their `.step` is attached as the footprint 3-D model.
@@ -92,7 +98,8 @@ to its right, so the board area is empty and the router must place the parts.
      **connector** (header auto-sized to the pins); the actuator body / STEP is
      recorded in the BOM `source` for reference, not drawn as a board courtyard.
    - **Raspberry Pi Pico W** (PR #61's MCU, not in the PR #25 vendor set):
-     standard 51 × 21 mm / 2×20 0.1″ outline.
+     the full **40-pin** 2×20 0.1″ castellated module, 21 × 51 mm (the long
+     51 mm edge runs along the pin columns).
 
    3-D model paths point at `hardware/vendor-files/…` so they resolve once PR #25
    merges; KiCad simply omits a missing model and the `.kicad_pcb` stays
@@ -118,21 +125,18 @@ to its right, so the board area is empty and the router must place the parts.
 
 ## Verification
 
-The **netlist topology is unchanged** from the earlier proxy build that was
-loaded in KiCad 7.0.11 (`pcbnew` / `WriteDRCReport`): same 14 footprints, 66
-pads, 59 net-assigned pads, and 20 nets, so the 39 `unconnected_items`
-(= the ratsnest to be routed, the *intended* unrouted starter state) carry over.
+The build is verified structurally and headlessly with `kiutils`, the builder's
+own geometry guard, and `kicad-cli`'s netlist exporter:
 
-This real-component revision is verified structurally, headlessly, with
-`kiutils` plus the builder's own geometry guard:
-
-- **14 footprints / 66 pads / 59 net-assigned / 20 nets** — re-parsed from the
-  written `.kicad_pcb` (identical to the KiCad-checked proxy version).
+- **14 footprints / 97 pads / 69 net-assigned / 20 nets** — re-parsed from the
+  written `.kicad_pcb`. Every physical pin of each real part is now a pad (the
+  Pico W's full 40, the Tic T500's 14, etc.), with every same-named pin (e.g. the
+  eight Pico GND pins) tied to its net.
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
   compact placement stays clearance-clean.
 - **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
-  **84 F.Fab** body-outline + **56 F.CrtYd** courtyard segments emitted.
+  **85 F.Fab** body-outline + **57 F.CrtYd** courtyard segments emitted.
 
 **Compact placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
 The first DeepPCB run flagged the board as *"still very spaced out"*: the earlier
@@ -141,9 +145,12 @@ left 14 small breakouts strewn across a **279 × 199 mm** board (routers keep th
 excess area). The board now ignores those coordinates and **compact-packs** the
 real component bodies into a near-square grid (`_pack_positions()` — left-to-right
 rows wrapping at a `sqrt(total-area)`-derived width, `PLACE_GAP = 1.5 mm` between
-courtyards), shrinking the outline to **~82 × 113 mm** (≈6× less area) while
+courtyards), shrinking the outline to **~77 × 116 mm** (≈6× less area) while
 `_assert_no_overlap()` keeps it DRC-clean. The schematic-sheet layout is
-unchanged (its spacing doesn't affect connectivity or routing).
+unchanged (its spacing doesn't affect connectivity or routing). _(The earlier
+build measured ~82 × 113 mm; correcting the proxy pin counts — see
+[Pin-count verification](#pin-count-verification) — re-proportioned a few bodies,
+most notably the now-40-pin Pico W, nudging the packed outline to ~77 × 116 mm.)_
 
 **Placement review (Edison `ANALYSIS`).** The compact board, generator, and both
 trios were fed back through an Edison data-analysis pass
@@ -185,7 +192,7 @@ upload trio is accepted.
 
 The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
 own connectivity engine sees it: the build exports its netlist with
-`kicad-cli sch export netlist` and asserts every one of the **59 connected pins
+`kicad-cli sch export netlist` and asserts every one of the **69 connected pins
 lands on its intended net across all 20 named nets**, with no stray
 `unconnected-(…)` entries (`validate_schematic_netlist()`; runs automatically
 when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
@@ -198,6 +205,41 @@ A KiCad GUI/`kicad-cli` DRC pass is still recommended before routing (it
 couldn't be run in this headless sandbox), but the board opens as a
 fully-netted, outlined, unrouted board — the precise hand-off artifact Quilter
 and DeepPCB ask for.
+
+## Pin-count verification
+
+@lbwinters flagged on PR
+[#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4695926604)
+that the **Pi Pico W symbol had too few pins** (12 + 3 = 15 instead of 40). PR
+#61's `SYMBOL_PINS` were simplified placeholders that listed only the *netted*
+pins, so several parts were physically incomplete. Every part was re-audited
+one-by-one against the manufacturer pinout and the `hardware/vendor-files/`
+datasheets / Eagle files (PR #25), and the `PINOUTS` table (and a couple of
+`NETLIST` ground entries) corrected so each footprint now carries **one pad per
+real physical pin**, with pins that share a name (e.g. the Pico's eight GND) all
+tied to the same net on both the board and the schematic:
+
+| Part (source) | Real pins | Was | Now | Change |
+| --- | --- | --- | --- | --- |
+| `Barrel_Jack_12V` — Adafruit #373 2.1 mm jack | 3 | 2 | **3** | added the switch lug (`SW`, left no-connect) |
+| `D24V22F5_Buck` — Pololu #2858 | 4 | 5 | **4** | merged the placeholder `GND_IN`/`GND_OUT` into the regulator's single `GND` pin |
+| `Cap_Polar` — radial electrolytic | 2 | 2 | 2 | — |
+| `Shunt_Regulator` — Pololu #3776 | 4 | 2 | **4** | added the board's duplicate access holes (`A`/`+` on one node, `B`/`−` on the other) |
+| `Pi_Pico_W` — Raspberry Pi Pico W | 40 | 15 | **40** | rebuilt to the full official 2×20 castellated pinout (GP0–GP28, RUN, ADC_VREF, 3V3_EN, VBUS, VSYS, 8×GND, …); unused GPIO are no-connect |
+| `DRV2605L_Breakout` — Adafruit #2305 | 8 | 8 | 8 | — (VIN, GND, SDA, SCL, EN, IN/TRIG, OUT+, OUT−) |
+| `DRV8871_Breakout` — Adafruit #3190 | 7 | 6 | **7** | added the logic-header `GND` (power/motor terminal `VM`,`GND`,`OUT1`,`OUT2` + logic `IN1`,`IN2`,`GND`) |
+| `Tic_T500` — Pololu #3135 | 14 | 11 | **14** | added the missing control pins `RC`, logic `GND`, and `5V` out |
+| `Stepper_4wire` — NEMA-11 bipolar | 4 | 4 | 4 | — |
+| `Servo_3pin` — hobby servo | 3 | 3 | 3 | — |
+| `ERM_Motor` — Adafruit #1201 | 2 | 2 | 2 | — |
+| `Solenoid` — Adafruit #412 | 2 | 2 | 2 | — |
+
+The board therefore grew from **66 → 97 pads** (69 net-assigned across the same
+20 nets), and the Pico W body was re-proportioned to 21 × 51 mm so its long edge
+runs along the 40-pin columns. `validate_schematic_netlist()` re-confirms all 69
+connected pins land on their intended nets with zero unconnected stragglers, and
+`_assert_no_overlap()` keeps the (now slightly larger) compact placement
+DRC-clean.
 
 ## Uploading it
 

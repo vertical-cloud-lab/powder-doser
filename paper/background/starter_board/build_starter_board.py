@@ -102,9 +102,8 @@ KICAD7_PCB_VERSION = "20221018"
 # Each entry: ref, lib_id (proxy type), x, y, [(pin_name, net), ...]
 NETLIST = [
     ("J1", "Barrel_Jack_12V", 30, 40, [("+12V", "+12V"), ("GND", "GND")]),
-    ("U1", "D24V22F5_Buck", 30, 70, [("VIN", "+12V"), ("GND_IN", "GND"),
-                                     ("SHDN", "+12V"), ("VOUT", "+5V"),
-                                     ("GND_OUT", "GND")]),
+    ("U1", "D24V22F5_Buck", 30, 70, [("VIN", "+12V"), ("GND", "GND"),
+                                     ("SHDN", "+12V"), ("VOUT", "+5V")]),
     ("C1", "Cap_Polar", 30, 100, [("+", "+12V"), ("-", "GND")]),
     ("C2", "Cap_Polar", 30, 120, [("+", "+5V"), ("-", "GND")]),
     ("U2", "Pi_Pico_W", 110, 50, [("VSYS", "+5V"), ("GND", "GND"),
@@ -127,7 +126,8 @@ NETLIST = [
                                   ("A1", "STP_A1"), ("A2", "STP_A2"),
                                   ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("C3", "Cap_Polar", 210, 195, [("+", "+12V"), ("-", "GND")]),
-    ("SR1", "Shunt_Regulator", 175, 195, [("+", "+12V"), ("-", "GND")]),
+    ("SR1", "Shunt_Regulator", 175, 195, [("A", "+12V"), ("+", "+12V"),
+                                          ("B", "GND"), ("-", "GND")]),
     ("M2", "Stepper_4wire", 285, 145, [("A1", "STP_A1"), ("A2", "STP_A2"),
                                        ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("M3", "Servo_3pin", 210, 215, [("+5V", "+5V"), ("GND", "GND"),
@@ -135,20 +135,41 @@ NETLIST = [
 ]
 
 # Full recorded pinout per proxy type (left/right header columns), so the
-# proxy footprint has one pad per physical pin even when the schematic only
-# wires a subset. Transcribed from generate.py SYMBOL_PINS.
+# proxy footprint has one pad per physical pin of the real part even when the
+# schematic only wires a subset. Pin *names* may repeat (e.g. the Raspberry Pi
+# Pico W has eight GND pins); every pad/pin sharing a name is tied to the same
+# net. Counts were verified pin-by-pin against the vendor datasheets / Eagle
+# files under hardware/vendor-files/ (PR #25) and the manufacturers' pinout
+# diagrams (see note 21 "Pin-count verification").
 PINOUTS = {
-    "Barrel_Jack_12V": {"left": ["+12V", "GND"], "right": []},
-    "D24V22F5_Buck": {"left": ["VIN", "GND_IN", "SHDN"], "right": ["VOUT", "GND_OUT"]},
+    # Adafruit #373: a 2.1 mm DC barrel jack has three solder lugs - centre
+    # (tip, +), sleeve (-) and the normally-closed switch lug (left unused here).
+    "Barrel_Jack_12V": {"left": ["+12V", "GND", "SW"], "right": []},
+    # Pololu D24V22Fx: four pins in one row - VIN, GND, VOUT, SHDN (single GND).
+    "D24V22F5_Buck": {"left": ["VIN", "GND", "VOUT", "SHDN"], "right": []},
     "Cap_Polar": {"left": ["+"], "right": ["-"]},
-    "Shunt_Regulator": {"left": ["+"], "right": ["-"]},
-    "Pi_Pico_W": {"left": ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP6", "GP7",
-                           "GP10", "GP11", "GP14", "GP15"],
-                  "right": ["VSYS", "GND", "3V3"]},
+    # Pololu #3776 shunt regulator: four large holes - A/+ on one node and
+    # B/- on the other (A is tied to +, B to -) - connected across the rail.
+    "Shunt_Regulator": {"left": ["A", "+"], "right": ["B", "-"]},
+    # Raspberry Pi Pico W: the full 40-pin (2x20, 0.1") castellated module.
+    # Physical order (left col top->bottom = pins 1-20, right col = pins 21-40)
+    # per the official Pico-R3-A4 pinout; unused GPIO are NC in this design.
+    "Pi_Pico_W": {
+        "left": ["GP0", "GP1", "GND", "GP2", "GP3", "GP4", "GP5", "GND",
+                 "GP6", "GP7", "GP8", "GP9", "GND", "GP10", "GP11", "GP12",
+                 "GP13", "GND", "GP14", "GP15"],
+        "right": ["VBUS", "VSYS", "GND", "3V3_EN", "3V3", "ADC_VREF", "GP28",
+                  "GND", "GP27", "GP26", "RUN", "GP22", "GND", "GP21", "GP20",
+                  "GP19", "GP18", "GND", "GP17", "GP16"]},
     "DRV2605L_Breakout": {"left": ["VIN", "GND", "SDA", "SCL", "IN_TRIG", "EN"],
                           "right": ["OUT+", "OUT-"]},
-    "DRV8871_Breakout": {"left": ["VM", "GND", "IN1", "IN2"], "right": ["OUT1", "OUT2"]},
-    "Tic_T500": {"left": ["SCL", "SDA", "TX", "RX", "ERR"],
+    # Adafruit #3190 DRV8871: 4-pos power/motor terminal block (VM, GND, OUT1,
+    # OUT2) + 3-pin logic header (IN1, IN2, GND) = 7 connections, two of them GND.
+    "DRV8871_Breakout": {"left": ["VM", "GND", "OUT1", "OUT2"],
+                         "right": ["IN1", "IN2", "GND"]},
+    # Pololu Tic T500: control row (SCL, SDA/AN, TX, RX, RC, ERR, GND, 5V) +
+    # power/motor row (VIN, GND, A1, A2, B1, B2) = 14 pins, two of them GND.
+    "Tic_T500": {"left": ["SCL", "SDA", "TX", "RX", "RC", "ERR", "GND", "5V"],
                  "right": ["VIN", "GND", "A1", "A2", "B1", "B2"]},
     "Stepper_4wire": {"left": ["A1", "A2"], "right": ["B1", "B2"]},
     "Servo_3pin": {"left": ["+5V", "GND", "SIG"], "right": []},
@@ -190,8 +211,9 @@ PACKAGES = {
         model=f"{VENDOR}/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
         source="Pololu #3776 0.95x0.4 in PCB; STEP envelope 28.6x21.2x13.8 mm"),
     "Pi_Pico_W": dict(
-        kind="module", body=(51.0, 21.0), model=None,
-        source="Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in (PR #61 MCU)"),
+        kind="module", body=(21.0, 51.0), model=None,
+        source="Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in "
+               "castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"),
     "DRV2605L_Breakout": dict(
         kind="module", body=(17.78, 16.51),
         model=f"{VENDOR}/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
@@ -529,16 +551,17 @@ def write_project(net_names_by_class: dict[str, list[str]],
 # ---------------------------------------------------------------------------
 # Schematic (.kicad_sch) generation, from the same NETLIST / PINOUTS data.
 # ---------------------------------------------------------------------------
-def _symbol_pin_layout(lib_id: str) -> tuple[list[str], list[str],
-                                             dict[str, tuple[float, float, int, int]], float]:
+def _symbol_pin_layout(lib_id: str) -> tuple[list[tuple[str, float, float, int, int]], float]:
     """Pin geometry for one symbol, derived from PINOUTS.
 
-    Returns ``(left, right, geom, half_h)`` where ``geom[pin] = (px, py,
-    angle, number)`` is the pin's symbol-local connection point (Y up),
-    its KiCad orientation, and its pin number. Pins are numbered left
-    column first then right column — identical to the board pad numbering
-    in ``_make_footprint`` — and laid out on the same 0.1" pitch / column
-    centring as the board pads, so the schematic mirrors the board exactly.
+    Returns ``(records, half_h)`` where each record is ``(name, px, py, angle,
+    number)``: the pin's symbol-local connection point (Y up), its KiCad
+    orientation, and its pin number. Pins are numbered left column first then
+    right column - identical to the board pad numbering in ``_make_footprint``
+    - and laid out on the same 0.1" pitch / column centring as the board pads,
+    so the schematic mirrors the board exactly. Pin *names* may repeat (e.g.
+    the Pico's eight GND pins); the numbers are always unique, so the records
+    are returned as an ordered list rather than a name-keyed dict.
     """
     cols = PINOUTS[lib_id]
     left, right = cols["left"], cols["right"]
@@ -546,17 +569,17 @@ def _symbol_pin_layout(lib_id: str) -> tuple[list[str], list[str],
     def col_y(i: int, n: int) -> float:  # board/page convention (Y down)
         return (i - (n - 1) / 2.0) * PITCH
 
-    geom: dict[str, tuple[float, float, int, int]] = {}
+    records: list[tuple[str, float, float, int, int]] = []
     num = 1
     for i, pin in enumerate(left):
-        geom[pin] = (-SCH_STUB, -col_y(i, len(left)), 0, num)  # Y up = -page Y
+        records.append((pin, -SCH_STUB, -col_y(i, len(left)), 0, num))  # Y up = -page Y
         num += 1
     for j, pin in enumerate(right):
-        geom[pin] = (SCH_STUB, -col_y(j, len(right)), 180, num)
+        records.append((pin, SCH_STUB, -col_y(j, len(right)), 180, num))
         num += 1
     n_rows = max(len(left), len(right)) or 1
     half_h = (n_rows - 1) / 2.0 * PITCH + PITCH
-    return left, right, geom, half_h
+    return records, half_h
 
 
 def _sym_pin(name: str, number: int, x: float, y: float, angle: int) -> str:
@@ -567,11 +590,9 @@ def _sym_pin(name: str, number: int, x: float, y: float, angle: int) -> str:
 
 
 def _lib_symbol(lib_id: str) -> str:
-    left, right, geom, half_h = _symbol_pin_layout(lib_id)
-    pins = []
-    for pin in left + right:
-        px, py, angle, number = geom[pin]
-        pins.append(_sym_pin(pin, number, px, py, angle))
+    records, half_h = _symbol_pin_layout(lib_id)
+    pins = [_sym_pin(name, number, px, py, angle)
+            for name, px, py, angle, number in records]
     body = (f'(rectangle (start {-SCH_BODY_HW:g} {half_h:g}) (end {SCH_BODY_HW:g} {-half_h:g})\n'
             f'        (stroke (width 0.254) (type default)) (fill (type background)))')
     name = f"{SYMBOL_LIB_NICK}:{lib_id}"
@@ -641,12 +662,20 @@ def build_schematic() -> str:
     placed: dict[tuple[float, float], str] = {}
     for ref, lib_id, x, y, pins in NETLIST:
         px, py = float(x) * FLOORPLAN_SCALE, float(y) * FLOORPLAN_SCALE
-        _, _, geom, half_h = _symbol_pin_layout(lib_id)
+        records, half_h = _symbol_pin_layout(lib_id)
         body.append(_sym_instance(lib_id, ref, px, py, half_h))
-        for pin_name, net in pins:
-            if pin_name not in geom:
+        pin_nets = {pin_name: net for pin_name, net in pins}
+        pin_names = {name for name, *_ in records}
+        for pin_name in pin_nets:
+            if pin_name not in pin_names:
                 raise KeyError(f"{lib_id!r} has no pin {pin_name!r}; check PINOUTS")
-            ppx, ppy, angle, _ = geom[pin_name]
+        # Wire every *physical* pin whose name is netted (so e.g. all eight Pico
+        # GND pins land on GND, matching the board's pad nets). Unnetted pins
+        # (unused GPIO, the barrel-jack switch lug) stay no-connect.
+        for pin_name, ppx, ppy, angle, _ in records:
+            if pin_name not in pin_nets:
+                continue
+            net = pin_nets[pin_name]
             tip_x, tip_y = round(px + ppx, 4), round(py - ppy, 4)  # sheet pin endpoint
             # Push the label outward (left pins to -x, right pins to +x) along a
             # short stub wire so the label text doesn't sit on the pin name.
@@ -708,15 +737,19 @@ def validate_schematic_netlist(sch_path: Path) -> None:
                 r'\(node \(ref "([^"]+)"\) \(pin "([^"]+)"\)', m.group(2)))
             net_nodes[name] = nodes
         errors = []
+        n_conn = 0
         for ref, lib_id, _x, _y, pins in NETLIST:
-            _, _, geom, _ = _symbol_pin_layout(lib_id)
-            for pin_name, net in pins:
-                number = str(geom[pin_name][3])
-                if (ref, number) not in net_nodes.get(net, set()):
+            records, _ = _symbol_pin_layout(lib_id)
+            pin_nets = {pin_name: net for pin_name, net in pins}
+            for pin_name, _ppx, _ppy, _angle, number in records:
+                if pin_name not in pin_nets:
+                    continue
+                n_conn += 1
+                net = pin_nets[pin_name]
+                if (ref, str(number)) not in net_nodes.get(net, set()):
                     errors.append(f"{ref}.{pin_name} (#{number}) not on net {net}")
         if errors:
             raise ValueError("schematic connectivity check failed:\n  " + "\n  ".join(errors))
-        n_conn = sum(len(p) for *_, p in NETLIST)
         print(f"verified schematic netlist: {n_conn} pins connected across "
               f"{len([n for n in net_nodes if not n.startswith('unconnected-')])} named nets")
     finally:
@@ -742,6 +775,14 @@ def render_schematic_preview(sch_path: Path) -> None:
             dest = sch_path.with_name(f"{sch_path.stem}_schematic.svg")
             shutil.copyfile(produced, dest)
             print(f"wrote {dest.name}")
+            try:
+                import cairosvg  # type: ignore
+            except ImportError:
+                print("note: cairosvg not installed; skipping schematic PNG", flush=True)
+                return
+            png = dest.with_suffix(".png")
+            cairosvg.svg2png(url=str(dest), write_to=str(png), output_width=1100)
+            print(f"wrote {png.name}")
 
 
 def _render_svg_fallback(pcb_path: Path) -> Path:
@@ -916,7 +957,8 @@ def main() -> None:
             "ref": r,
             "part": lib,
             "kind": PACKAGES[lib]["kind"],
-            "pins": len(p),
+            "pins": len(PINOUTS[lib]["left"]) + len(PINOUTS[lib]["right"]),
+            "pins_netted": len(p),
             "body_mm": list(PACKAGES[lib]["body"]) if PACKAGES[lib]["body"] else None,
             "model": PACKAGES[lib]["model"],
             "source": PACKAGES[lib]["source"],

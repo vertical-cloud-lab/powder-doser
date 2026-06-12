@@ -5,8 +5,8 @@
   "components": 14,
   "nets": 20,
   "outline_mm": [
-    82.28,
-    112.95
+    76.59,
+    116.07
   ],
   "power_nets": [
     "+12V",
@@ -19,8 +19,8 @@
     "schematic": "test_module_unplaced.kicad_sch",
     "project": "test_module_unplaced.kicad_pro",
     "outline_mm": [
-      82.28,
-      112.95
+      76.59,
+      116.07
     ],
     "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
   },
@@ -29,7 +29,8 @@
       "ref": "J1",
       "part": "Barrel_Jack_12V",
       "kind": "module",
-      "pins": 2,
+      "pins": 3,
+      "pins_netted": 2,
       "body_mm": [
         14.0,
         11.0
@@ -41,7 +42,8 @@
       "ref": "U1",
       "part": "D24V22F5_Buck",
       "kind": "module",
-      "pins": 5,
+      "pins": 4,
+      "pins_netted": 4,
       "body_mm": [
         12.7,
         10.16
@@ -54,6 +56,7 @@
       "part": "Cap_Polar",
       "kind": "passive",
       "pins": 2,
+      "pins_netted": 2,
       "body_mm": [
         8.5,
         8.5
@@ -66,6 +69,7 @@
       "part": "Cap_Polar",
       "kind": "passive",
       "pins": 2,
+      "pins_netted": 2,
       "body_mm": [
         8.5,
         8.5
@@ -77,19 +81,21 @@
       "ref": "U2",
       "part": "Pi_Pico_W",
       "kind": "module",
-      "pins": 11,
+      "pins": 40,
+      "pins_netted": 11,
       "body_mm": [
-        51.0,
-        21.0
+        21.0,
+        51.0
       ],
       "model": null,
-      "source": "Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in (PR #61 MCU)"
+      "source": "Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"
     },
     {
       "ref": "U3",
       "part": "DRV2605L_Breakout",
       "kind": "module",
       "pins": 8,
+      "pins_netted": 8,
       "body_mm": [
         17.78,
         16.51
@@ -102,6 +108,7 @@
       "part": "ERM_Motor",
       "kind": "connector",
       "pins": 2,
+      "pins_netted": 2,
       "body_mm": null,
       "model": null,
       "source": "off-board Adafruit #1201 ERM coin, \u00d810 x 2.7 mm"
@@ -110,7 +117,8 @@
       "ref": "U4",
       "part": "DRV8871_Breakout",
       "kind": "module",
-      "pins": 6,
+      "pins": 7,
+      "pins_netted": 6,
       "body_mm": [
         20.32,
         24.13
@@ -123,6 +131,7 @@
       "part": "Solenoid",
       "kind": "connector",
       "pins": 2,
+      "pins_netted": 2,
       "body_mm": null,
       "model": null,
       "source": "off-board Adafruit #412 JF-0530B 5 V push-pull solenoid"
@@ -131,7 +140,8 @@
       "ref": "U5",
       "part": "Tic_T500",
       "kind": "module",
-      "pins": 8,
+      "pins": 14,
+      "pins_netted": 8,
       "body_mm": [
         25.4,
         15.24
@@ -144,6 +154,7 @@
       "part": "Cap_Polar",
       "kind": "passive",
       "pins": 2,
+      "pins_netted": 2,
       "body_mm": [
         8.5,
         8.5
@@ -155,7 +166,8 @@
       "ref": "SR1",
       "part": "Shunt_Regulator",
       "kind": "module",
-      "pins": 2,
+      "pins": 4,
+      "pins_netted": 4,
       "body_mm": [
         24.13,
         10.16
@@ -168,6 +180,7 @@
       "part": "Stepper_4wire",
       "kind": "connector",
       "pins": 4,
+      "pins_netted": 4,
       "body_mm": null,
       "model": null,
       "source": "off-board StepperOnline 11HS18-0674S NEMA-11 28x28x45 mm; STEP in hardware/vendor-files/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP"
@@ -177,6 +190,7 @@
       "part": "Servo_3pin",
       "kind": "connector",
       "pins": 3,
+      "pins_netted": 3,
       "body_mm": null,
       "model": null,
       "source": "off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"
