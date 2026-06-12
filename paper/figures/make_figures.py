@@ -177,7 +177,7 @@ def fig1() -> None:
     boxes = [
         (1.0, 7.2, "Dose request\n(target mass)"),
         (1.0, 4.2, "Auger + tap +\nvibration actuation"),
-        (1.0, 1.2, "Balance reading\n(HX711 load cell)"),
+        (1.0, 1.2, "Balance reading\n(A&D HR-100A, RS-232)"),
         (6.1, 4.2, "Controller\n(coarse \u2192 trickle)"),
     ]
     for x, y, label in boxes:
@@ -237,12 +237,12 @@ def fig2() -> None:
     ax = fig.add_subplot(gs[0, 0])
     show(ax, "tap_collar_v1_iso.png")
     panel_label(ax, "a")
-    ax.set_title("Tap collar, first AI proposal:\nbody detached from mounts", fontsize=5.5)
+    ax.set_title("Tap collar, first AI proposal:\ninterferences, bad tolerancing,\nno component clearance", fontsize=5.5)
 
     ax = fig.add_subplot(gs[0, 1])
     show(ax, "tap_collar_final_iso.png")
     panel_label(ax, "b")
-    ax.set_title("Tap collar after review\niterations", fontsize=5.5)
+    ax.set_title("Tap collar after review iterations\n(final part redesigned in Zoo)", fontsize=5.5)
 
     ax = fig.add_subplot(gs[0, 2])
     show(ax, "auger_assembly_iso.png")
