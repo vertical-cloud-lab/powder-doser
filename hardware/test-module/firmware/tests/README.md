@@ -17,6 +17,7 @@ Tic T500 / DRV2605L / DRV8871 / servo wiring.
 | [`test_haptic.py`](test_haptic.py)     | Vibration / haptic motor  | DRV2605L |
 | [`test_solenoid.py`](test_solenoid.py) | Tap solenoid              | DRV8871 |
 | [`test_servo.py`](test_servo.py)       | Dispensing-angle servo    | (direct PWM) |
+| [`test_scale.py`](test_scale.py)       | A&D HR-100A balance link  | MAX3232 (RS-232) |
 
 ## Running a single script from VS Code + MicroPico
 

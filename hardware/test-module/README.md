@@ -18,6 +18,10 @@ wirelessly) without bringing up a Linux stack.
 ```
 hardware/test-module/
 ├── README.md                  (this file)
+├── analysis/
+│   ├── rs232_analysis.py      # ngspice checks of the scale RS-232 interface
+│   ├── rs232_analysis_results.md
+│   └── *.log                  # raw ngspice output
 ├── kicad/
 │   ├── generate.py            # regenerates the .kicad_* files + renders
 │   ├── test_module.kicad_pro
@@ -26,13 +30,17 @@ hardware/test-module/
 │   ├── sym-lib-table
 │   ├── test_module.svg
 │   ├── test_module.pdf
-│   └── test_module.png
+│   ├── test_module.png
+│   └── test_module_review.png # exaggerated-stroke render for visual review
 └── firmware/
     ├── README.md
     ├── main.py                # MicroPython main loop + driver classes
     ├── config.py              # easily adjustable parameters
     ├── drv2605.py             # in-tree MicroPython driver for the haptic chip
     ├── tic.py                 # in-tree MicroPython driver for the Tic T500
+    ├── scale.py               # in-tree driver for the A&D HR-100A balance
+    ├── dosing.py              # closed-loop dose controller (issue #99)
+    ├── sim/                   # CPython simulation + unit tests for dosing
     └── tests/                 # per-component keyboard-driven bench scripts
 ```
 
@@ -71,6 +79,10 @@ hosting all the wiring on a half-size breadboard.
 | C2  | 100 µF / 10 V electrolytic, 5 V bulk | 9 | 1 | Tames the servo + solenoid transients on the 5 V rail. |
 | C3  | 100 µF / 25 V electrolytic, second bulk | 14 | 1 | Sits directly on the Tic T500's `VIN` screw terminals. |
 | —   | Half-size breadboard, jumper wires, 0.1" headers | 9 | — | Bench wiring substrate (replaces item 6 bonnet for tests). |
+| U6  | MAX3232 RS-232 ↔ 3.3 V transceiver breakout (SparkFun BOB-11189 or equiv.) | — *(new, issue #99)* | 1 | Level-shifts the HR-100A's ±5..9 V RS-232 to Pico-safe 3.3 V logic; runs from `+3V3`. |
+| J2  | Molex Micro-Fit 3.0 receptacle, 4-pos (43645-0400) + 43030 crimp sockets | — *(new, issue #99)* | 1 | Mates the scale-side 4-pin Molex 43645 pigtail. A pre-crimped pigtail (e.g. Molex 2174651104) avoids hand-crimping. |
+| —   | RS-232 cable to the HR-100A's RS-232C port (DIN-7/D-sub per scale option installed; AutoTrickler-style harness terminates in the 4-pin Molex) | — *(new, issue #99)* | 1 | **Buzz out the pin order with a meter before first power-on** — harnesses are not all wired identically. |
+| —   | A&D HR-100A analytical balance (102 g × 0.1 mg) | — *(lab equipment)* | 1 | The closed-loop mass feedback sensor; sits under the dispense cup. |
 
 ### Why the shunt regulator (SR1) is on the bench rig
 
@@ -163,6 +175,10 @@ These nets are the contract between
 | `SOL_IN2`    | U4.IN2            | GP11  | DRV8871 IN2 — held low. |
 | `HAPT_EN`    | U3.EN , U3.IN_TRIG| GP14  | Hard-mute / wake for DRV2605L. |
 | `SERVO_SIG`  | M3.SIG            | GP15  | 50 Hz PWM to the hobby servo. |
+| `SCALE_TX`   | U6.T1IN           | GP12  | Pico UART0 TX → MAX3232 logic-side input (commands to the scale). |
+| `SCALE_RX`   | U6.R1OUT          | GP13  | Pico UART0 RX ← MAX3232 logic-side output (weight frames from the scale). |
+| `SCALE_232_TX` | U6.T1OUT ↔ J2.RXD | —   | RS-232-level data to the scale. |
+| `SCALE_232_RX` | U6.R1IN ↔ J2.TXD  | —   | RS-232-level data from the scale.  J2.GND ties to the common `GND`. |
 | `STP_A1/A2`  | U5.A1/A2 ↔ M2.A1/A2 | —   | Stepper coil A. |
 | `STP_B1/B2`  | U5.B1/B2 ↔ M2.B1/B2 | —   | Stepper coil B. |
 | `VIB_A/B`    | U3.OUT± ↔ M1.±    | —     | ERM coin motor leads. |
@@ -239,24 +255,73 @@ Build order, top to bottom:
      `SERVO_SPEED_DEG_PER_S` deg/s so the servo never slams to the new
      setpoint.
 
-8. **Sanity check before powering.** With the brick **unplugged**:
+8. **Scale (A&D HR-100A via MAX3232).**  The balance's RS-232C port
+   swings **±5..9 V** — never wire it straight to a Pico GPIO
+   (RP2040 absolute max is −0.3 / +3.6 V; see
+   [`analysis/rs232_analysis_results.md`](analysis/rs232_analysis_results.md)
+   for the ngspice numbers).  All scale traffic goes through U6:
+   * `U6 VCC → +3V3`, `U6 GND → GND` (3.3 V supply makes the logic side
+     exactly Pico-level; the chip's charge pump makes the ±RS-232 rails).
+   * Logic side: `Pico W GP12 (pin 16) → U6 T1IN`,
+     `Pico W GP13 (pin 17) ← U6 R1OUT` (UART0).
+   * RS-232 side: `U6 T1OUT → J2 RXD`, `U6 R1IN ← J2 TXD`,
+     `J2 GND → GND`.  J2 pin 4 is unconnected.
+   * Plug the scale's Molex 43645 pigtail / RS-232 cable into J2.
+     **Verify the harness pinout with a multimeter first** (idle RS-232
+     TXD sits at about −5..−9 V relative to GND — that's how you find
+     the scale's TX pin); not all harnesses are wired alike.
+   * On the balance, check the communication function settings match
+     `config.py` (`SCALE_BAUD` etc.; the HR-A factory default is
+     2400 baud, 7 data bits, even parity, 1 stop, A&D standard format).
+
+9. **Sanity check before powering.** With the brick **unplugged**:
    * Confirm no continuity between `+12V` and `GND`, or between `+5V`
      and `GND`.
    * Confirm the Tic T500 current limit / control mode are set (step 1).
    * Confirm the UART cross-over is right: `Pico GP4 → U5 RX` and
      `Pico GP5 → U5 TX` (TX-to-RX, not TX-to-TX).
+   * Confirm the scale cross-over the same way: scale `TXD → U6 R1IN`
+     and scale `RXD ← U6 T1OUT`.
    * Confirm SR1's `+` is on `+12V` and `-` is on `GND` (it is a
      polarised part and reversing it kills the regulator instantly).
 
-9. **First power-on.** Plug the Pico W into USB *first* (so the firmware
-   starts with the rails de-energised), then plug in the 12 V brick.
-   Open the USB-serial port — you should see the rig print its state
-   and a `[rig] ready` line.  Run `s` to dump the configuration, then
-   exercise one channel at a time:
-   * `a 0` then `a 180` — servo sweeps end-to-end.
-   * `t` — solenoid clicks `TAP_COUNT` times.
-   * `v` — ERM buzzes for `VIBRATION_DURATION_S` seconds.
-   * `r 90` — auger rotates 90 °.
+10. **First power-on.** Plug the Pico W into USB *first* (so the firmware
+    starts with the rails de-energised), then plug in the 12 V brick.
+    Open the USB-serial port — you should see the rig print its state
+    and a `[rig] ready` line.  Run `s` to dump the configuration, then
+    exercise one channel at a time:
+    * `a 0` then `a 180` — servo sweeps end-to-end.
+    * `t` — solenoid clicks `TAP_COUNT` times.
+    * `v` — ERM buzzes for `VIBRATION_DURATION_S` seconds.
+    * `r 90` — auger rotates 90 °.
+    * `w` — scale replies with one weighing datum (`ST …` when stable).
+    * `z` — re-zero (tare) the balance.
+    * `g 0.5` — **closed-loop dose**: auger to ~90 % of 0.5 g, then
+      solenoid taps until the scale reads 0.5 g ± `DOSE_TOLERANCE_G`.
+
+## Closed-loop dosing (issue #99)
+
+`g <grams>` runs the two-phase controller in
+[`firmware/dosing.py`](firmware/dosing.py):
+
+1. **Coarse** — the auger advances in scale-checked increments while the
+   firmware *learns* the powder's grams-per-revolution online, stopping
+   at ~90 % of the target (capped to `DOSE_COARSE_HEADROOM_G` on big
+   doses) so trailing powder can't overshoot.
+2. **Fine** — the tap solenoid fires `DOSE_TAPS_PER_BURST`-tap bursts,
+   waiting for a stable (`ST`) reading between bursts, until the target
+   mass is reached within `DOSE_TOLERANCE_G`.  If a few bursts move
+   nothing, the auger nudges a few degrees to re-feed the tube lip.
+
+All knobs live in `config.py` under "Closed-loop dosing".  The control
+loop is hardware-agnostic and is unit-tested under CPython against a
+simulated rig — see [`firmware/sim/`](firmware/sim/):
+
+```sh
+cd hardware/test-module/firmware
+python3 sim/test_dosing_sim.py     # or: python3 -m pytest sim/ -q
+```
+
 
 ## Reproducing the schematic files
 

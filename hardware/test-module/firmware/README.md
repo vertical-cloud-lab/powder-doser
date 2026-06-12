@@ -27,7 +27,10 @@ the same terminal the keyboard-controlled test scripts in
 | `config.py` | Pin map + every adjustable parameter.  Edit, re-upload via MicroPico, the Pico reboots and picks up the changes. |
 | `drv2605.py`| Tiny in-tree MicroPython driver for the DRV2605L haptic chip (Adafruit's library is CircuitPython-only). |
 | `tic.py`    | Tiny in-tree MicroPython driver for the Pololu Tic T500 stepper controller (TTL-serial command protocol). |
-| `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`) — keyboard-driven, one channel at a time.  See [`tests/README.md`](tests/README.md). |
+| `scale.py`  | Tiny in-tree driver for the A&D HR-100A balance (A&D standard RS-232 protocol: `Q`/`S`/`Z` commands, `ST,`/`US,`/`OL,` frames).  Import-safe under CPython for the simulation tests. |
+| `dosing.py` | Closed-loop dose controller (issue #99): coarse auger fill with online grams-per-rev learning, fine solenoid-tap trim against the scale.  Hardware-agnostic; unit-tested in `sim/`. |
+| `sim/`      | CPython simulation of the rig + unit tests for the dose loop — run `python3 sim/test_dosing_sim.py` from this folder, no hardware needed. |
+| `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`, `test_scale.py`) — keyboard-driven, one channel at a time.  See [`tests/README.md`](tests/README.md). |
 
 ## One-time setup
 
@@ -76,6 +79,9 @@ v            vibrate (single canned effect)
 t            tap (TAP_COUNT solenoid pulses)
 a <deg>      servo to <deg>
 p <preset>   servo to named preset (horizontal/tilt/vertical/tip)
+w            weigh (read the scale once)
+z            re-zero (tare) the scale
+g <grams>    closed-loop dose to <grams> (auger + tap trim)
 !            emergency stop -- de-energise everything
 ```
 
@@ -89,6 +95,9 @@ Examples:
 > t               # fire TAP_COUNT solenoid pulses
 > v               # single haptic buzz
 > d               # one full dispense cycle
+> w               # one weighing datum from the HR-100A
+> z               # tare the balance (with the empty cup on the pan)
+> g 0.5           # dispense 0.500 g closed-loop against the scale
 > !               # de-energise everything (stepper, solenoid, haptic)
 ```
 
@@ -118,6 +127,11 @@ Common knobs:
 | Servo    | `SERVO_SPEED_DEG_PER_S`  | Smoothness of `a`/`p` moves -- the firmware interpolates from the current angle to the target at this rate (deg/s) so the servo never slams.  Set to 0 to revert to instantaneous "snap" moves. |
 | Servo    | `SERVO_UPDATE_HZ`        | Interpolation update rate; default 50 Hz matches the servo PWM frame. |
 | Servo    | `SERVO_PRESETS`          | Add/rename `p <preset>` shortcuts. |
+| Scale    | `SCALE_BAUD` / `SCALE_BITS` / `SCALE_PARITY` / `SCALE_STOP` | Must mirror the balance's RS-232 function settings (HR-A default: 2400 7E1). |
+| Dosing   | `DOSE_TOLERANCE_G`       | Stop band around the target mass (default ±5 mg). |
+| Dosing   | `DOSE_COARSE_FRACTION` / `DOSE_COARSE_HEADROOM_G` | How much of the dose the auger handles before the tap trim takes over. |
+| Dosing   | `DOSE_GRAMS_PER_REV`     | First-guess auger throughput; the loop learns the real value from the scale during each dose. |
+| Dosing   | `DOSE_SETTLE_MS`         | Wait after each actuation before trusting the scale (HR-A needs ~1.5 s). |
 
 After editing `config.py`, re-run `MicroPico: Upload project to Pico`
 (or just **right-click → "Upload file to Pico"** on the changed file)
