@@ -33,6 +33,12 @@ TIC_READ_TIMEOUT_MS = 50   # how long to wait for a get-variable reply
 PIN_SOL_IN1   = 10         # DRV8871 IN1
 PIN_SOL_IN2   = 11         # DRV8871 IN2
 
+# A&D HR-100A balance via MAX3232 RS-232 transceiver on UART0.
+# (UART0's second pin-mux site; GP0/GP1 are taken by I2C0.)
+PIN_SCALE_TX  = 12         # Pico UART0 TX -> MAX3232 T1IN -> scale RXD
+PIN_SCALE_RX  = 13         # Pico UART0 RX <- MAX3232 R1OUT <- scale TXD
+SCALE_UART_ID = 0          # RP2040 UART0 (TX=GP12, RX=GP13)
+
 PIN_HAPT_EN   = 14         # DRV2605L EN / IN_TRIG (tie high to enable)
 PIN_SERVO_SIG = 15         # Servo PWM signal
 
@@ -106,3 +112,65 @@ SERVO_PRESETS = {
     "vertical":   90,
     "tip":        135,
 }
+
+
+# -----------------------------------------------------------------------
+# Scale (A&D HR-100A over RS-232C) configuration.
+#
+# The HR-A series factory default is 2400 baud / 7 data bits / even
+# parity / 1 stop bit, A&D standard data format, terminator CR LF.
+# If the balance's function settings (bASFnc) have been changed, mirror
+# them here.  Parity: 0 = none, 1 = odd, 2 = even (machine.UART values).
+# -----------------------------------------------------------------------
+SCALE_BAUD            = 2400
+SCALE_BITS            = 7
+SCALE_PARITY          = 2             # even
+SCALE_STOP            = 1
+SCALE_RESPONSE_TIMEOUT_MS = 1000      # max wait for one reply frame
+SCALE_STABLE_TIMEOUT_MS   = 10000     # max wait for an ST (stable) frame
+
+
+# -----------------------------------------------------------------------
+# Closed-loop dosing (issue #99): coarse auger fill, fine tap trim.
+# -----------------------------------------------------------------------
+# Stop the auger at this fraction of the target mass and switch to
+# solenoid taps.  0.90 leaves a 10 % band for the fine phase; lower it
+# for free-flowing powders that keep streaming after the auger stops.
+DOSE_COARSE_FRACTION  = 0.90
+# ...but on multi-gram doses never leave more than this much (g) for
+# the (slow) tap phase; whichever coarse stop is closer to the target
+# wins.
+DOSE_COARSE_HEADROOM_G = 0.05
+# Largest single auger increment between scale readings (deg).
+DOSE_COARSE_STEP_DEG  = 360.0
+# Initial guess for auger throughput (grams per auger revolution).
+# The dose loop measures the actual throughput from the scale after
+# every increment and refines this online, so it only needs to be
+# order-of-magnitude right; 0 disables the estimator (fixed steps).
+DOSE_GRAMS_PER_REV    = 0.5
+# Derating applied to DOSE_GRAMS_PER_REV for the *first* increment of a
+# dose (before any scale feedback exists), in case the real powder runs
+# denser than the configured guess.
+DOSE_GPR_SAFETY       = 3.0
+# Stop when |measured - target| <= tolerance (g).  The HR-100A resolves
+# 0.1 mg, so the loop -- not the scale -- limits repeatability.
+DOSE_TOLERANCE_G      = 0.005
+# Solenoid taps fired per fine-phase burst (re-uses TAP_ON_MS/TAP_OFF_MS).
+DOSE_TAPS_PER_BURST   = 2
+# Give up if the fine phase needs more than this many taps in total.
+DOSE_MAX_TAPS         = 200
+# Wait after each actuation before trusting the scale (powder settles,
+# draft shield stops swinging).  The HR-A needs ~1.5 s to stabilise.
+DOSE_SETTLE_MS        = 1500
+# If a coarse increment adds less than this (g), count it as a stall
+# (empty hopper / jam); abort after DOSE_MAX_STALLS in a row.
+DOSE_MIN_FLOW_G       = 0.001
+DOSE_MAX_STALLS       = 5
+# Hard wall-clock limit for one dose (s).
+DOSE_TIMEOUT_S        = 600
+# Fine-phase stall recovery: if this many tap bursts in a row each add
+# less than DOSE_FINE_MIN_GAIN_G, the tube lip is empty -- nudge the
+# auger DOSE_FINE_NUDGE_DEG to re-feed it, then resume tapping.
+DOSE_FINE_STALL_BURSTS = 3
+DOSE_FINE_MIN_GAIN_G   = 0.0002
+DOSE_FINE_NUDGE_DEG    = 15.0

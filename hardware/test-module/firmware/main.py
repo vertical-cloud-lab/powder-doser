@@ -28,6 +28,8 @@ Required modules on the Pico (upload alongside this file):
   - ``config.py``   (next to this file)
   - ``drv2605.py``  (next to this file)
   - ``tic.py``      (next to this file -- Tic T500 serial driver)
+  - ``scale.py``    (next to this file -- A&D HR-100A RS-232 driver)
+  - ``dosing.py``   (next to this file -- closed-loop dose controller)
 
 Wire-on commands (one per line over USB-serial):
     h            help
@@ -38,6 +40,9 @@ Wire-on commands (one per line over USB-serial):
     t            tap (run TAP_COUNT solenoid pulses)
     a <deg>      smoothly move dispensing-angle servo to <deg>
     p <name>     smoothly move servo to a preset (horizontal/tilt/vertical/tip)
+    w            read the scale (one weighing datum)
+    z            re-zero (tare) the scale
+    g <grams>    closed-loop dose: auger to ~90 %, tap to the target mass
     !            emergency stop -- de-energise everything
 """
 
@@ -47,6 +52,8 @@ import time
 from machine import I2C, Pin, PWM, UART
 
 import config
+import dosing
+import scale as scale_mod
 import tic
 
 
@@ -277,6 +284,27 @@ class Servo:
 
 
 # ---------------------------------------------------------------------------
+# Scale (A&D HR-100A over RS-232C via MAX3232 on UART0)
+#
+# The balance idles silently; the firmware polls it with `Q` requests and
+# parses the A&D standard-format replies (`ST,+00012.345  g`).  All the
+# protocol logic lives in ``scale.py``; this class just owns the UART.
+# ---------------------------------------------------------------------------
+
+class Scale(scale_mod.AndScale):
+    def __init__(self):
+        uart = UART(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
+                    bits=config.SCALE_BITS,
+                    parity=(None if config.SCALE_PARITY == 0
+                            else config.SCALE_PARITY - 1),
+                    stop=config.SCALE_STOP,
+                    tx=Pin(config.PIN_SCALE_TX), rx=Pin(config.PIN_SCALE_RX),
+                    timeout=config.SCALE_RESPONSE_TIMEOUT_MS)
+        super().__init__(uart,
+                         response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS)
+
+
+# ---------------------------------------------------------------------------
 # Top-level test rig
 # ---------------------------------------------------------------------------
 
@@ -290,6 +318,9 @@ HELP = (
     "  t            tap (TAP_COUNT solenoid pulses)\n"
     "  a <deg>      servo to <deg>\n"
     "  p <preset>   servo to named preset\n"
+    "  w            weigh (read the scale once)\n"
+    "  z            re-zero (tare) the scale\n"
+    "  g <grams>    closed-loop dose to <grams> (auger + tap trim)\n"
     "  !            emergency stop\n"
 )
 
@@ -301,6 +332,9 @@ class Rig:
         self.vib = Vibration()
         self.tap = Tap()
         self.servo = Servo()
+        self.scale = Scale()
+        self.doser = dosing.Doser(self.stepper, self.tap, self.scale,
+                                  config)
         print("[rig] ready -- type 'h' for help")
 
     def state(self):
@@ -333,6 +367,21 @@ class Rig:
                 hi=config.SERVO_MAX_ANGLE_DEG,
                 s=config.SERVO_SPEED_DEG_PER_S,
                 p=list(config.SERVO_PRESETS),
+            ))
+        print(
+            "scale: UART{u} @ {baud} {bits}{par}{stop} (GP{tx}/GP{rx}), "
+            "dose: coarse to {cf:.0%}, tol +/-{tol} g, "
+            "{tpb} taps/burst".format(
+                u=config.SCALE_UART_ID,
+                baud=config.SCALE_BAUD,
+                bits=config.SCALE_BITS,
+                par={0: "N", 1: "O", 2: "E"}[config.SCALE_PARITY],
+                stop=config.SCALE_STOP,
+                tx=config.PIN_SCALE_TX,
+                rx=config.PIN_SCALE_RX,
+                cf=config.DOSE_COARSE_FRACTION,
+                tol=config.DOSE_TOLERANCE_G,
+                tpb=config.DOSE_TAPS_PER_BURST,
             ))
 
     def emergency_stop(self):
@@ -373,6 +422,21 @@ class Rig:
                         arg, list(config.SERVO_PRESETS)))
                     return
                 self.servo.move_to(config.SERVO_PRESETS[arg])
+            elif cmd == "w":
+                reading = self.scale.read()
+                if reading is None:
+                    print("[scale] no response -- check wiring / baud "
+                          "(see README scale section)")
+                else:
+                    print("[scale] {} {} {}".format(
+                        reading.status, reading.grams, reading.unit))
+            elif cmd == "z":
+                self.scale.zero()
+                print("[scale] re-zeroed")
+            elif cmd in ("g", "dose"):
+                target = float(arg)
+                result = self.doser.dose(target)
+                print("[rig] dose finished: {!r}".format(result))
             elif cmd in ("!", "stop"):
                 self.emergency_stop()
             else:
