@@ -331,6 +331,62 @@ def build_symbol_lib() -> str:
           )
         )"""))
 
+    # ------------------------------------------------------------------
+    # MAX3232 RS-232 <-> 3.3 V logic transceiver breakout (SparkFun
+    # BOB-11189 or equivalent).  The A&D HR-100A balance talks true
+    # RS-232 levels (about ±5..9 V); those must NEVER touch a Pico GPIO
+    # (absolute max -0.3 / +3.6 V), so this transceiver sits between
+    # the scale cable and UART0.  Powered from the Pico's 3V3 rail so
+    # its logic-side swing matches RP2040 levels exactly; the on-chip
+    # charge pump generates the ±RS-232 rails from the 3.3 V input.
+    # Left: 3.3 V logic side (to the Pico).  Right: RS-232 side (to
+    # the scale via the Molex/RS-232 cable).
+    # ------------------------------------------------------------------
+    max3232_left = [("VCC", "1", "power_in"), ("GND", "2", "power_in"),
+                    ("T1IN", "3", "input"), ("R1OUT", "4", "output")]
+    max3232_right = [("T1OUT", "5", "output"), ("R1IN", "6", "input")]
+    w = 17.78
+    top = 0
+    bot = top - row_pitch * (max(len(max3232_left), len(max3232_right)) + 1)
+    pins = []
+    for i, (n, num, et) in enumerate(max3232_left):
+        pins.append(_pin(n, num, -w / 2 - 2.54, top - row_pitch * (i + 1), 0, etype=et))
+    for i, (n, num, et) in enumerate(max3232_right):
+        pins.append(_pin(n, num, w / 2 + 2.54, top - row_pitch * (i + 1), 180, etype=et))
+    body = _rectangle(-w / 2, top, w / 2, bot)
+    symbols.append(dedent(f"""\
+        (symbol "MAX3232_Breakout" (in_bom yes) (on_board yes)
+          {_props("U", -w / 2, top + 2.54, "MAX3232_Breakout", -w / 2, top + 0.8)}
+          (symbol "MAX3232_Breakout_0_1" {body})
+          (symbol "MAX3232_Breakout_1_1"
+            {chr(10).join(pins)}
+          )
+        )"""))
+
+    # ------------------------------------------------------------------
+    # Scale cable connector: 4-pin Molex Micro-Fit 3.0 (43645) pigtail
+    # to the A&D HR-100A's RS-232C port (issue #99).  Pin naming follows
+    # the scale's point of view: TXD = data out of the scale.  Verify
+    # the cable's pin order against the actual harness with a meter
+    # before first power-on -- AutoTrickler-style harnesses are not all
+    # wired identically.
+    # ------------------------------------------------------------------
+    pins = [
+        _pin("TXD", "1", -7.62, 0, 0, etype="output"),
+        _pin("RXD", "2", -7.62, -2.54, 0, etype="input"),
+        _pin("GND", "3", -7.62, -5.08, 0, etype="power_in"),
+        _pin("NC", "4", -7.62, -7.62, 0, etype="no_connect"),
+    ]
+    body = _rectangle(-5.08, 1.27, 5.08, -8.89)
+    symbols.append(dedent(f"""\
+        (symbol "Scale_Molex_43645" (in_bom yes) (on_board yes)
+          {_props("J", -5.08, 3.81, "HR-100A RS232 (Molex 43645)", -5.08, 2.54)}
+          (symbol "Scale_Molex_43645_0_1" {body})
+          (symbol "Scale_Molex_43645_1_1"
+            {chr(10).join(pins)}
+          )
+        )"""))
+
     header = '(kicad_symbol_lib (version 20211014) (generator powder_doser_test_module)\n'
     return header + "\n".join(symbols) + "\n)\n"
 
@@ -375,6 +431,8 @@ PLACEMENTS = [
          ("GP10", "SOL_IN1"), ("GP11", "SOL_IN2"),
          # Servo PWM (dispensing angle)
          ("GP15", "SERVO_SIG"),
+         # A&D HR-100A scale via MAX3232 on UART0 (issue #99)
+         ("GP12", "SCALE_TX"), ("GP13", "SCALE_RX"),
          # DRV2605L enable + trigger (optional; we drive in I2C mode but
          # expose EN so the firmware can hard-mute the haptic driver).
          ("GP14", "HAPT_EN")]),
@@ -419,6 +477,21 @@ PLACEMENTS = [
     # ---- Dispensing-angle servo channel ----
     ("Servo_3pin", "M3", 210, 215,
         [("+5V", "+5V"), ("GND", "GND"), ("SIG", "SERVO_SIG")]),
+
+    # ---- Scale feedback channel (issue #99) ----
+    # A&D HR-100A balance over RS-232C.  The balance's ±5..9 V RS-232
+    # swing must never reach a Pico GPIO, so a MAX3232 transceiver
+    # (powered from the Pico's 3V3 rail, charge pump makes the RS-232
+    # rails) translates both directions:
+    #   Pico GP12 (UART0 TX) -> U6 T1IN  -> (T1OUT, RS-232) -> scale RXD
+    #   Pico GP13 (UART0 RX) <- U6 R1OUT <- (R1IN,  RS-232) <- scale TXD
+    ("MAX3232_Breakout", "U6", 210, 245,
+        [("VCC", "+3V3"), ("GND", "GND"),
+         ("T1IN", "SCALE_TX"), ("R1OUT", "SCALE_RX"),
+         ("T1OUT", "SCALE_232_TX"), ("R1IN", "SCALE_232_RX")]),
+    ("Scale_Molex_43645", "J2", 285, 250,
+        [("TXD", "SCALE_232_RX"), ("RXD", "SCALE_232_TX"),
+         ("GND", "GND")]),
 ]
 
 
@@ -501,6 +574,7 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "GP4": (-13.97, 15.24, 180),  "GP5": (-13.97, 17.78, 180),
         "GP6": (-13.97, 22.86, 180),  "GP7": (-13.97, 25.4, 180),
         "GP10": (-13.97, 35.56, 180), "GP11": (-13.97, 38.1, 180),
+        "GP12": (-13.97, 40.64, 180), "GP13": (-13.97, 43.18, 180),
         "GP14": (-13.97, 48.26, 180), "GP15": (-13.97, 50.8, 180),
         # Right column power
         "VSYS": (13.97, 5.08, 0),     "GND":  (13.97, 7.62, 0),
@@ -536,6 +610,15 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
     "Servo_3pin": {
         "+5V": (-10.16, -2.54, 180), "GND": (-10.16, 0, 180),
         "SIG": (-10.16, 2.54, 180),
+    },
+    "MAX3232_Breakout": {
+        "VCC":   (-11.43, 2.54, 180), "GND":   (-11.43, 5.08, 180),
+        "T1IN":  (-11.43, 7.62, 180), "R1OUT": (-11.43, 10.16, 180),
+        "T1OUT": (11.43, 2.54, 0),    "R1IN":  (11.43, 5.08, 0),
+    },
+    "Scale_Molex_43645": {
+        "TXD": (-7.62, 0, 180), "RXD": (-7.62, 2.54, 180),
+        "GND": (-7.62, 5.08, 180),  "NC":  (-7.62, 7.62, 180),
     },
     "ERM_Motor": {
         "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
@@ -577,12 +660,12 @@ def build_schematic() -> str:
         (paper "A3")
         (title_block
           (title "Powder-doser test module — single-Pico bench rig")
-          (date "2026-05-18")
-          (rev "A")
+          (date "2026-06-12")
+          (rev "B")
           (company "Vertical Cloud Lab")
           (comment 1 "Exercises auger stepper + ERM vibration + tap solenoid + dispense-angle servo")
           (comment 2 "Resolves issue #50; parts from PR #25")
-          (comment 3 "")
+          (comment 3 "Rev B: A&D HR-100A scale feedback via MAX3232 RS-232 on UART0 (issue #99)")
           (comment 4 "")
         )
     """)
@@ -697,7 +780,26 @@ def main() -> int:
         subprocess.run([rsvg, "-w", "1800", "-o",
                         str(HERE / f"{PROJECT}.png"), str(out_svg)],
                        check=True)
+        # Also emit a "review" PNG with exaggerated stroke widths so a
+        # vision model (or a tired human) can trace connections easily.
+        review_svg = HERE / f"{PROJECT}_review.svg"
+        review_svg.write_text(_fatten_strokes(out_svg.read_text()))
+        subprocess.run([rsvg, "-w", "3000", "-o",
+                        str(HERE / f"{PROJECT}_review.png"),
+                        str(review_svg)],
+                       check=True)
+        review_svg.unlink()
     return 0
+
+
+def _fatten_strokes(svg_text: str, factor: float = 4.0) -> str:
+    """Multiply every stroke-width in an SVG for visual-review renders."""
+    import re
+
+    def _scale(match: "re.Match[str]") -> str:
+        return f"stroke-width:{float(match.group(1)) * factor:g}"
+
+    return re.sub(r"stroke-width:([0-9.]+)", _scale, svg_text)
 
 
 if __name__ == "__main__":
