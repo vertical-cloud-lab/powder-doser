@@ -12,7 +12,9 @@ Note ``20`` (the Edison ``ANALYSIS`` pass over this repo's actual
 has the full 14-component / 20-net topology but **no footprints, no
 ``.kicad_pcb``, no outline**, and recommended (Rank 1) a code-first
 "design-as-code → KiCad" build that emits the starter board headlessly in
-CI. Component pads are 0.1" headers (one per schematic pin), while each part's
+CI. Every component land pattern is now copied verbatim from a **real KiCad
+library footprint** (vendored under ``kicad_footprints/``; see
+``_part_groups``) instead of a synthesized 0.1" placeholder, while each part's
 body outline / courtyard / 3-D model is taken from the real vendor design
 files committed under ``hardware/vendor-files/`` (PR #25).
 
@@ -30,11 +32,13 @@ Provenance of the netlist
 ``PLACEMENTS`` / ``SYMBOL_PINS`` data structures in PR #61's
 ``hardware/test-module/kicad/generate.py`` (commit ``147e505``), so the
 component set, pin names, and net connectivity match the bench-rig
-schematic exactly. Each schematic pin still becomes one through-hole
-0.1" pad (so the 20-net ratsnest is preserved exactly), but the body
-**outline, courtyard, and 3-D model** are now taken from the real
-vendor design files committed to the repo under
-``hardware/vendor-files/`` (PR #25), instead of a generic header box.
+schematic exactly. Each schematic pin becomes one real through-hole pad,
+copied from the matching **KiCad library footprint** (real pad size, drill,
+shape, pad-1 marker and 3-D model — see ``kicad_footprints/`` and
+``_part_groups``), so the 20-net ratsnest is preserved exactly while the land
+patterns are genuine manufacturer-grade KiCad footprints. The body
+**outline, courtyard, and 3-D model** are taken from the real vendor design
+files committed to the repo under ``hardware/vendor-files/`` (PR #25).
 
 Provenance of the component packages (``PACKAGES``)
 ---------------------------------------------------
@@ -62,6 +66,7 @@ Run:  python3 build_starter_board.py
 
 from __future__ import annotations
 
+import copy
 import json
 import math
 import re
@@ -72,7 +77,7 @@ from hashlib import sha256
 from pathlib import Path
 
 from kiutils.board import Board
-from kiutils.footprint import DrillDefinition, Footprint, FpLine, FpText, Model, Pad
+from kiutils.footprint import Footprint, FpLine, FpText, Model, Pad
 from kiutils.items.common import Effects, Font, Net, Position
 from kiutils.items.gritems import GrLine
 
@@ -93,6 +98,70 @@ UNPLACED_NAME = "test_module_unplaced"
 # schematic version).
 KICAD7_PCB_VERSION = "20221018"
 
+# ---------------------------------------------------------------------------
+# Real KiCad library footprints. Every component land pattern is copied from a
+# genuine KiCad footprint (vendored verbatim under ``kicad_footprints/`` from
+# the official ``kicad-footprints`` 7.0.11 library, CC-BY-SA-4.0-with-exception
+# — see kicad_footprints/README.md) instead of a synthesized 0.1" header, so
+# the board carries real manufacturer-grade pads / pad-1 markers / 3-D models.
+# Vendoring the handful of needed ``.kicad_mod`` files keeps the build
+# self-contained and byte-for-byte reproducible (no system KiCad required); a
+# system install under /usr/share/kicad/footprints is used as a fallback.
+# ---------------------------------------------------------------------------
+LIB_DIRS = [
+    Path(__file__).resolve().parent / "kicad_footprints",
+    Path("/usr/share/kicad/footprints"),
+    Path("/usr/share/kicad/modules"),
+]
+_FP_CACHE: dict[tuple[str, str], Footprint] = {}
+
+
+def _lib_fp_path(lib: str, name: str) -> Path | None:
+    for base in LIB_DIRS:
+        p = base / f"{lib}.pretty" / f"{name}.kicad_mod"
+        if p.exists():
+            return p
+    return None
+
+
+def _load_lib_fp(lib: str, name: str) -> Footprint:
+    """Load (and cache) a real KiCad library footprint by ``lib:name``."""
+    key = (lib, name)
+    if key not in _FP_CACHE:
+        path = _lib_fp_path(lib, name)
+        if path is None:
+            raise FileNotFoundError(
+                f"KiCad library footprint {lib}:{name} not found under "
+                f"{[str(d) for d in LIB_DIRS]}; expected it vendored in "
+                f"kicad_footprints/ (see kicad_footprints/README.md)")
+        _FP_CACHE[key] = Footprint.from_file(str(path))
+    return _FP_CACHE[key]
+
+
+def _lib_pads(lib: str, name: str) -> dict[str, Pad]:
+    """Real pads of one library footprint, keyed by their pad number."""
+    return {p.number: p for p in _load_lib_fp(lib, name).pads}
+
+
+def _lib_model(lib: str, name: str) -> Model | None:
+    """First 3-D model of a library footprint (real ``${KICAD6_3DMODEL_DIR}`` ref)."""
+    models = _load_lib_fp(lib, name).models
+    return models[0] if models else None
+
+
+# Standard 0.1" single-row pin header (the real land pattern that each
+# through-hole breakout / connector mates to on the host PCB).
+def _header(n: int) -> tuple[str, str]:
+    return ("Connector_PinHeader_2.54mm", f"PinHeader_1x{n:02d}_P2.54mm_Vertical")
+
+
+# A "group" is one real library footprint whose real pads supply the geometry
+# for a run of this part's physical pins. ``pins`` is an ordered list of
+# ``(pin_name, source_pad_number)`` and ``anchor`` is "left" / "right" /
+# "center" (left/right columns are placed on opposite body edges). The board's
+# sequential pad numbering follows the group order, which is kept identical to
+# the left-then-right ``PINOUTS`` order so the board pad numbers line up with
+# the schematic pin numbers (verified by ``validate_schematic_netlist``).
 # ---------------------------------------------------------------------------
 # Netlist, transcribed from PR #61 hardware/test-module/kicad/generate.py
 # (PLACEMENTS). (x, y) are the schematic-sheet anchor coordinates; we reuse
@@ -264,6 +333,74 @@ TARGET_ASPECT = 1.15   # row-width target = sqrt(total courtyard area) x this
 STAGE_GAP = 12.0       # gap (mm) between the empty board outline and the parts
 #                        staged beside it in the unplaced (auto-place) variant
 
+# Real Raspberry Pi Pico W castellated row spacing (centre-to-centre between
+# the two 1x20 edges); 17.78 mm = 7 x 0.1" per the official mechanical drawing.
+PICO_ROW_SPACING = 17.78
+
+# ---------------------------------------------------------------------------
+# Per-part real-footprint plan. ``_part_groups`` returns, for one part, the
+# ordered list of groups ``(lib, fp_name, [(pin_name, src_pad_number), ...],
+# anchor)`` whose real KiCad pads supply that part's land pattern. Most parts
+# fall through to the generic rule (each PINOUTS column -> a 1xN pin header on
+# the matching body edge, the real land pattern a through-hole module mates to).
+# A few have an exact dedicated library footprint and are overridden here.
+# ---------------------------------------------------------------------------
+# Pure-connector parts (no on-board breakout body) whose real land pattern is a
+# single inline 0.1" pin header rather than two opposed columns. Listed in the
+# left-then-right PINOUTS order so the single header's pad numbers still match
+# the schematic pin numbering. Keeps every header within the vendored set.
+SINGLE_HEADER_ORDER = {
+    "ERM_Motor": ["+", "-"],
+    "Solenoid": ["+", "-"],
+    "Stepper_4wire": ["A1", "A2", "B1", "B2"],
+    "Shunt_Regulator": ["A", "+", "B", "-"],
+}
+
+
+def _part_groups(lib_id: str) -> list[tuple[str, str, list[tuple[str, str]], str]]:
+    cols = PINOUTS[lib_id]
+    left, right = cols["left"], cols["right"]
+
+    if lib_id == "Cap_Polar":
+        # Real radial electrolytic: pad 1 (+, square) and pad 2 (-) 3.5 mm apart.
+        return [("Capacitor_THT", "CP_Radial_D8.0mm_P3.50mm",
+                 [("+", "1"), ("-", "2")], "center")]
+    if lib_id == "Barrel_Jack_12V":
+        # Real 2.1 mm DC jack: tip lug (pad 1, +), sleeve lug (pad 3, -) and the
+        # switch lug (pad 2). Renumbered 1/2/3 in the schematic's +12V/GND/SW
+        # order while keeping each lug's real geometry.
+        return [("Connector_BarrelJack", "BarrelJack_Horizontal",
+                 [("+12V", "1"), ("GND", "3"), ("SW", "2")], "center")]
+    if lib_id in SINGLE_HEADER_ORDER:
+        order = SINGLE_HEADER_ORDER[lib_id]
+        lib, name = _header(len(order))
+        return [(lib, name, [(p, str(i + 1)) for i, p in enumerate(order)], "center")]
+
+    groups: list[tuple[str, str, list[tuple[str, str]], str]] = []
+    if left:
+        lib, name = _header(len(left))
+        groups.append((lib, name, [(p, str(i + 1)) for i, p in enumerate(left)],
+                       "left" if right else "center"))
+    if right:
+        lib, name = _header(len(right))
+        groups.append((lib, name, [(p, str(i + 1)) for i, p in enumerate(right)],
+                       "right"))
+    return groups
+
+
+def _row_spacing(lib_id: str) -> float:
+    """Centre-to-centre distance between the left and right column groups."""
+    cols = PINOUTS[lib_id]
+    if not cols["right"]:
+        return 0.0
+    if lib_id == "Pi_Pico_W":
+        return PICO_ROW_SPACING
+    body = PACKAGES[lib_id]["body"]
+    if body is not None:                       # place columns near the body edges
+        return max(ROW_GAP, body[0] - 2.0)
+    return ROW_GAP                             # body-less connector (e.g. stepper)
+
+
 # ---------------------------------------------------------------------------
 # Schematic (.kicad_sch) geometry. Quilter / DeepPCB also ask for the
 # schematic alongside the .kicad_pcb / .kicad_pro, so we emit a matching
@@ -295,32 +432,82 @@ def _effects(size: float = 1.0) -> Effects:
     return Effects(font=Font(width=size, height=size, thickness=0.15))
 
 
-def _pad(number: str, lx: float, ly: float, net: Net | None, pin1: bool) -> Pad:
-    """A through-hole pad. Pad 1 is rectangular as a pin-1 marker."""
-    return Pad(
-        number=number,
-        type="thru_hole",
-        shape="rect" if pin1 else "oval",
-        position=Position(lx, ly, 0),
-        size=Position(PAD_SIZE, PAD_SIZE),
-        drill=DrillDefinition(diameter=PAD_DRILL),
-        layers=["*.Cu", "*.Mask"],
-        net=net,
-    )
+def _pad_half(pad: Pad) -> tuple[float, float]:
+    """Half width/height of a real library pad's copper (for body sizing)."""
+    return pad.size.X / 2.0, pad.size.Y / 2.0
+
+
+def _pad_layout(lib_id: str) -> list[tuple[str, str, float, float, str, str, Pad]]:
+    """Local pad geometry for every physical pin, from real library footprints.
+
+    Returns an ordered list of ``(number, pin_name, lx, ly, src_lib, src_name,
+    src_pad)`` numbered ``1..`` in the left-then-right ``PINOUTS`` order (so the
+    board pad numbers line up with the schematic pin numbers). Each record's
+    ``(lx, ly)`` and ``src_pad`` come straight from the chosen real KiCad
+    library footprint (``_part_groups``): the group's source pads are recentred
+    about their own centroid and shifted to the body edge (left/right columns)
+    or kept centred, preserving the real intra-group geometry (header pitch,
+    radial-cap spacing, barrel-jack lug layout, Pico castellation spacing).
+    """
+    row = _row_spacing(lib_id)
+    records: list[tuple[str, str, float, float, str, str, Pad]] = []
+    num = 1
+    for lib, name, pins, anchor in _part_groups(lib_id):
+        pads = _lib_pads(lib, name)
+        pts = [(pads[src].position.X, pads[src].position.Y) for _, src in pins]
+        cx = sum(p[0] for p in pts) / len(pts)
+        cy = sum(p[1] for p in pts) / len(pts)
+        gx = -row / 2 if anchor == "left" else (row / 2 if anchor == "right" else 0.0)
+        for (pin_name, src), (sx, sy) in zip(pins, pts):
+            records.append((str(num), pin_name, sx - cx + gx, sy - cy,
+                            lib, name, pads[src]))
+            num += 1
+    return records
+
+
+def _footprint_id(lib_id: str) -> str:
+    """The footprint library id used on the board (and in the schematic).
+
+    A part carries the *real* library footprint id (e.g.
+    ``Capacitor_THT:CP_Radial_D8.0mm_P3.50mm``) when that single library land
+    pattern fully represents it on the board: passive discretes, the off-board
+    actuators' mating connector, and the barrel jack (whose own library
+    footprint is the body). Parts whose real land pattern is a generic 0.1"
+    header overlaid with a separate vendor carrier body (the Pololu modules), or
+    that are composed from two real connectors on opposite body edges (the
+    breakouts), get a ``powder_doser_parts:`` project id so the id reflects the
+    drawn part rather than the bare header.
+    """
+    groups = _part_groups(lib_id)
+    if len(groups) == 1:
+        lib, name, *_ = groups[0]
+        body = PACKAGES[lib_id]["body"]
+        # A module-kind carrier mounted via a *generic* 0.1" pin header overlays
+        # its real vendor body on that header land pattern, so its id should not
+        # masquerade as a bare header. Parts whose own library footprint is the
+        # body (barrel jack, caps) keep the real id.
+        generic_header = lib == "Connector_PinHeader_2.54mm"
+        if not (generic_header and body is not None
+                and PACKAGES[lib_id]["kind"] == "module"):
+            return f"{lib}:{name}"
+    return f"powder_doser_parts:{lib_id}"
 
 
 def _body_extents(lib_id: str) -> tuple[float, float]:
     """Half-width/height of one part's drawn body (F.Fab), no courtyard gap.
 
     Factored out of ``_make_footprint`` so the compact placer (``_pack_positions``)
-    can size every part *before* the footprints are built.
+    can size every part *before* the footprints are built. Sized to enclose the
+    real library pads (their actual copper extents) and never below the real
+    vendor body from ``PACKAGES``.
     """
-    cols = PINOUTS[lib_id]
-    left, right = cols["left"], cols["right"]
-    n_rows = max(len(left), len(right)) or 1
-    half_x = ROW_GAP / 2.0
-    pad_hw = half_x + PAD_SIZE / 2 + SILK_MARGIN
-    pad_hh = (n_rows - 1) / 2.0 * PITCH + PAD_SIZE / 2 + SILK_MARGIN
+    recs = _pad_layout(lib_id)
+    x_lo = min(lx - _pad_half(pad)[0] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
+    x_hi = max(lx + _pad_half(pad)[0] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
+    y_lo = min(ly - _pad_half(pad)[1] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
+    y_hi = max(ly + _pad_half(pad)[1] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
+    pad_hw = max(abs(x_lo), abs(x_hi)) + SILK_MARGIN
+    pad_hh = max(abs(y_lo), abs(y_hi)) + SILK_MARGIN
     pkg = PACKAGES[lib_id]
     if pkg["body"] is not None:
         return max(pad_hw, pkg["body"][0] / 2.0), max(pad_hh, pkg["body"][1] / 2.0)
@@ -366,13 +553,15 @@ def _pack_positions() -> dict[str, tuple[float, float]]:
 
 def _make_footprint(ref: str, lib_id: str, x: float, y: float,
                     pin_nets: dict[str, str], nets: dict[str, Net]) -> tuple[Footprint, list[tuple[float, float]], tuple[float, float]]:
-    """Build one footprint (real body from PACKAGES); return it, the world (x, y) of every pad, and (hw, hh)."""
-    cols = PINOUTS[lib_id]
-    left, right = cols["left"], cols["right"]
-    n_rows = max(len(left), len(right)) or 1
+    """Build one footprint from real KiCad library pads + the vendor body.
 
+    Returns the footprint, the world (x, y) of every pad, and its courtyard
+    half-extents (hw, hh). Each pad is a deep copy of the matching real library
+    pad (``_pad_layout``) with the net / number / pin function applied, so the
+    land pattern is a genuine KiCad footprint rather than a synthesized header.
+    """
     fp = Footprint.create_new(
-        library_id=f"powder_doser_parts:{lib_id}",
+        library_id=_footprint_id(lib_id),
         value=lib_id,
         reference=ref,
     )
@@ -381,33 +570,25 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
     fp.layer = "F.Cu"
     fp.tedit = "00000000"  # fixed so regeneration is byte-for-byte reproducible
 
+    records = _pad_layout(lib_id)
+    sources = sorted({f"{lib}:{name}" for _n, _pn, _lx, _ly, lib, name, _p in records})
+    fp.description = ("Powder-doser starter-board part; real land pattern(s): "
+                      + ", ".join(sources))
+
     pad_world: list[tuple[float, float]] = []
-    pad_num = 1
-    half_x = ROW_GAP / 2.0
-
-    def col_y(i: int, n: int) -> float:
-        return (i - (n - 1) / 2.0) * PITCH
-
-    for i, pin in enumerate(left):
-        lx, ly = -half_x, col_y(i, len(left))
-        net = nets.get(pin_nets.get(pin, ""))
-        pad = _pad(str(pad_num), lx, ly, net, pin1=(pad_num == 1))
-        pad.pinFunction = pin
+    for number, pin_name, lx, ly, _lib, _name, src_pad in records:
+        pad = copy.deepcopy(src_pad)
+        pad.number = number
+        pad.position = Position(round(lx, 4), round(ly, 4), 0)
+        pad.net = nets.get(pin_nets.get(pin_name, ""))
+        pad.pinFunction = pin_name
+        pad.tstamp = _uid("00aa", lib_id, ref, number)
         fp.pads.append(pad)
         pad_world.append((x + lx, y + ly))
-        pad_num += 1
-    for i, pin in enumerate(right):
-        lx, ly = half_x, col_y(i, len(right))
-        net = nets.get(pin_nets.get(pin, ""))
-        pad = _pad(str(pad_num), lx, ly, net, pin1=(pad_num == 1))
-        pad.pinFunction = pin
-        fp.pads.append(pad)
-        pad_world.append((x + lx, y + ly))
-        pad_num += 1
 
     # Real component body outline (F.Fab) + courtyard (F.CrtYd) + silk, sized
     # from the committed vendor files (PACKAGES). The outline never shrinks
-    # below the pad cluster, so the pads always stay inside the body.
+    # below the real library pad cluster, so the pads always stay inside.
     pkg = PACKAGES[lib_id]
     body_hw, body_hh = _body_extents(lib_id)
 
@@ -427,10 +608,17 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
             item.layer = "F.SilkS"
             item.effects = _effects()
 
-    # Attach the vendor 3-D model (resolves once PR #25 is merged; KiCad just
-    # omits it if absent, so the .kicad_pcb stays self-contained).
+    # Attach a real 3-D model: the vendor STEP from PACKAGES (resolves once
+    # PR #25 is merged) when one is recorded, else the library footprint's own
+    # KiCad 3-D model. KiCad simply omits a missing model, so the .kicad_pcb
+    # stays self-contained.
     if pkg["model"]:
         fp.models.append(Model(path=pkg["model"]))
+    else:
+        lib, name, *_ = _part_groups(lib_id)[0]
+        model = _lib_model(lib, name)
+        if model is not None:
+            fp.models.append(copy.deepcopy(model))
 
     hw = body_hw + CRTYD_CLEARANCE
     hh = body_hh + CRTYD_CLEARANCE
@@ -596,12 +784,13 @@ def _lib_symbol(lib_id: str) -> str:
     body = (f'(rectangle (start {-SCH_BODY_HW:g} {half_h:g}) (end {SCH_BODY_HW:g} {-half_h:g})\n'
             f'        (stroke (width 0.254) (type default)) (fill (type background)))')
     name = f"{SYMBOL_LIB_NICK}:{lib_id}"
+    fp_id = _footprint_id(lib_id)
     return (f'    (symbol "{name}" (in_bom yes) (on_board yes)\n'
             f'      (property "Reference" "U" (id 0) (at {-SCH_BODY_HW:g} {half_h + 2.54:g} 0)\n'
             f'        (effects (font (size 1.27 1.27))))\n'
             f'      (property "Value" "{lib_id}" (id 1) (at {-SCH_BODY_HW:g} {half_h + 0.8:g} 0)\n'
             f'        (effects (font (size 1.27 1.27))))\n'
-            f'      (property "Footprint" "" (id 2) (at 0 0 0) (effects (font (size 1.27 1.27)) hide))\n'
+            f'      (property "Footprint" "{fp_id}" (id 2) (at 0 0 0) (effects (font (size 1.27 1.27)) hide))\n'
             f'      (property "Datasheet" "" (id 3) (at 0 0 0) (effects (font (size 1.27 1.27)) hide))\n'
             f'      (symbol "{lib_id}_0_1" {body})\n'
             f'      (symbol "{lib_id}_1_1"\n' + "\n".join(pins) + "\n      )\n    )")
@@ -610,6 +799,7 @@ def _lib_symbol(lib_id: str) -> str:
 def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float) -> str:
     uid = _uid("0001", lib_id, ref, x, y)
     rx, ry = x - SCH_BODY_HW, y - half_h
+    fp_id = _footprint_id(lib_id)
     return (f'  (symbol (lib_id "{SYMBOL_LIB_NICK}:{lib_id}") (at {x:g} {y:g} 0) (unit 1)\n'
             f'    (in_bom yes) (on_board yes) (dnp no)\n'
             f'    (uuid "{uid}")\n'
@@ -617,7 +807,7 @@ def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float) -> s
             f'      (effects (font (size 1.27 1.27)) (justify left)))\n'
             f'    (property "Value" "{lib_id}" (id 1) (at {rx:g} {ry - 1.27:g} 0)\n'
             f'      (effects (font (size 1.27 1.27)) (justify left)))\n'
-            f'    (property "Footprint" "" (id 2) (at {x:g} {y:g} 0)\n'
+            f'    (property "Footprint" "{fp_id}" (id 2) (at {x:g} {y:g} 0)\n'
             f'      (effects (font (size 1.27 1.27)) hide))\n'
             f'    (property "Datasheet" "" (id 3) (at {x:g} {y:g} 0)\n'
             f'      (effects (font (size 1.27 1.27)) hide))\n'

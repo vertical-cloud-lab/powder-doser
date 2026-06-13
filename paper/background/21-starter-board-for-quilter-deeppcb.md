@@ -23,6 +23,28 @@ DeepPCB")._
 > (PR [#25](https://github.com/vertical-cloud-lab/powder-doser/pull/25)).
 > The netlist (20 nets) is unchanged; only the geometry is now real.
 
+> **Update (real KiCad land patterns).** Following @lbwinters' request on
+> PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4696547112)
+> ("swap those placeholders for the exact kicad footprints, so that we're
+> working with the real parts and not ai-generated placeholders … just do that
+> now instead of waiting for when we're finalizing the design"), the **pads
+> themselves are no longer synthesized.** Every part's land pattern is now copied
+> from a genuine KiCad 7 library footprint
+> ([`starter_board/kicad_footprints/`](starter_board/kicad_footprints/) —
+> vendored verbatim from the upstream `kicad-footprints` library so the build
+> stays self-contained), remapped pin-by-pin onto this board's netlist:
+>
+> - **Caps** → `Capacitor_THT:CP_Radial_D8.0mm_P3.50mm` (square pin-1 `+`, round `−`, 3.5 mm pitch).
+> - **Barrel jack** → `Connector_BarrelJack:BarrelJack_Horizontal` (real tip / sleeve / switch lugs).
+> - **Off-board actuators + Pololu carriers** → real `Connector_PinHeader_2.54mm:PinHeader_1x0N` land patterns (the genuine 0.1″ headers these parts plug into), with the carriers' real vendor body overlaid on top.
+> - **Raspberry Pi Pico W** → two real `PinHeader_1x20` columns at the documented **17.78 mm** castellation spacing (KiCad 7.0.11 ships no dedicated Pico footprint).
+>
+> Pad counts / nets are unchanged (14 footprints, 97 pads, 69 net-assigned,
+> 20 nets); only the geometry under each pad is now a manufacturer-grade land
+> pattern. Output stays byte-for-byte reproducible and Quilter-compatible
+> (KiCad 7 format `20221018`); `pcbnew`'s DRC reports **0 footprint errors**
+> (no courtyard overlaps) on both trios.
+
 ![Generated starter board (real component bodies + nets + Edge.Cuts outline, unrouted)](starter_board/test_module_starter.png)
 
 ## What this is
@@ -43,7 +65,7 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~77 × 116 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~80 × 118 mm Edge.Cuts outline. **This is the file you upload.** |
 | [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 69 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
@@ -58,7 +80,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~77 × 116 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~80 × 118 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
@@ -145,12 +167,12 @@ left 14 small breakouts strewn across a **279 × 199 mm** board (routers keep th
 excess area). The board now ignores those coordinates and **compact-packs** the
 real component bodies into a near-square grid (`_pack_positions()` — left-to-right
 rows wrapping at a `sqrt(total-area)`-derived width, `PLACE_GAP = 1.5 mm` between
-courtyards), shrinking the outline to **~77 × 116 mm** (≈6× less area) while
+courtyards), shrinking the outline to **~80 × 118 mm** (≈6× less area) while
 `_assert_no_overlap()` keeps it DRC-clean. The schematic-sheet layout is
 unchanged (its spacing doesn't affect connectivity or routing). _(The earlier
 build measured ~82 × 113 mm; correcting the proxy pin counts — see
 [Pin-count verification](#pin-count-verification) — re-proportioned a few bodies,
-most notably the now-40-pin Pico W, nudging the packed outline to ~77 × 116 mm.)_
+most notably the now-40-pin Pico W, nudging the packed outline to ~80 × 118 mm.)_
 
 **Placement review (Edison `ANALYSIS`).** The compact board, generator, and both
 trios were fed back through an Edison data-analysis pass
@@ -261,15 +283,19 @@ so upload the trio together: `test_module_starter.kicad_pcb` +
 
 ## Honest limitations
 
-- **Real bodies, simplified pad geometry.** Body **outlines, courtyards, and
-  3-D models** are now the real vendor parts (sourced from the PR #25
-  `hardware/vendor-files/` Eagle `.brd` outlines + STEP envelopes + spec
-  sheets), and pad *counts/nets* are correct — but each part's pads are still a
-  generic 0.1″ two-column header inside the real body, not the part's exact pad
-  pattern. Before fabrication, swap each for its full KiCad footprint (e.g.
-  `Module:RPi_Pico_SMD_TH`, the Adafruit/Pololu/SnapEDA libraries, or footprints
-  derived from the committed vendor `.brd`/STEP). The router output is therefore
-  a **layout study**, not a manufacturing release.
+- **Real land patterns, generic where no exact part exists.** Pads are now
+  copied from genuine KiCad 7 library footprints (vendored under
+  [`starter_board/kicad_footprints/`](starter_board/kicad_footprints/)) rather
+  than synthesized, and body **outlines, courtyards, and 3-D models** are the
+  real vendor parts (PR #25 `hardware/vendor-files/` Eagle `.brd` outlines +
+  STEP envelopes + spec sheets). The Pololu/Adafruit *carriers* (D24V22F5,
+  shunt regulator, Tic T500, DRV2605L/DRV8871, Pico W) are represented by the
+  genuine 0.1″ **pin-header land pattern they plug into**, with the carrier's
+  real body overlaid — which is the correct footprint for a through-hole module
+  on a 0.1″ grid. Before fabrication, a designer may still prefer a single
+  combined module footprint (e.g. `Module:RPi_Pico_SMD_TH`, or SnapEDA parts)
+  in place of the two header columns; the router output is a **layout study**,
+  not a manufacturing release.
 - **3-D models resolve after PR #25 merges.** The `model` paths point into
   `hardware/vendor-files/` (PR #25); until that branch lands they won't render,
   which is harmless (KiCad just skips a missing model).
@@ -289,4 +315,9 @@ python paper/background/starter_board/build_starter_board.py
 `kicad-cli` (KiCad ≥ 7) is optional; when it is absent the script falls back to
 a built-in, dependency-free SVG renderer (bodies, pads, ratsnest, outline), and
 `cairosvg` (if installed) converts that to PNG. The `.kicad_pcb`, `.kicad_pro`,
-and summary are produced regardless.
+and summary are produced regardless. The real library land patterns are read
+from the vendored
+[`starter_board/kicad_footprints/`](starter_board/kicad_footprints/) directory
+(copied verbatim from the upstream `kicad-footprints` library, so no KiCad
+install is required); if a system KiCad is present, its
+`/usr/share/kicad/footprints` is used as a fallback library path.
