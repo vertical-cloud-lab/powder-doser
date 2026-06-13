@@ -330,8 +330,7 @@ FLOORPLAN_SCALE = 1.0
 PLACE_GAP = 1.5        # extra gap (mm) between courtyards in the compact pack
 STAGE_GAP = 12.0       # gap (mm) between the empty board outline and the parts
 #                        staged beside it in the unplaced (auto-place) variant
-DOMAIN_GAP = 6.0       # aisle (mm) between the power and logic domains and
-#                        between the interior and the bottom connector band
+DOMAIN_GAP = 6.0       # aisle (mm) between the power and logic domains
 
 # ---------------------------------------------------------------------------
 # Placement strategy (Edison board-placement review,
@@ -579,6 +578,19 @@ def _pack_positions() -> dict[str, tuple[float, float]]:
     """
     ext = {ref: _courtyard_extents(lib_id) for ref, lib_id, *_ in NETLIST}
 
+    # Guard the PLACEMENT_CLUSTERS <-> NETLIST invariant: every part must be
+    # packed exactly once. Catches a NETLIST edit that forgets to update the
+    # clusters (the unplaced ref would otherwise silently land at the origin).
+    netlist_refs = {ref for ref, *_ in NETLIST}
+    clustered: list[str] = [r for _dom, _name, refs in PLACEMENT_CLUSTERS for r in refs]
+    missing = netlist_refs - set(clustered)
+    extra = set(clustered) - netlist_refs
+    dupes = sorted({r for r in clustered if clustered.count(r) > 1})
+    if missing or extra or dupes:
+        raise ValueError(
+            "PLACEMENT_CLUSTERS must cover every NETLIST ref exactly once: "
+            f"missing={sorted(missing)} unknown={sorted(extra)} duplicated={dupes}")
+
     def w(ref: str) -> float:
         return 2 * ext[ref][0]
 
@@ -702,7 +714,8 @@ def _assert_no_overlap(courtyards: list[tuple[str, float, float, float, float]])
             rb, bx0, by0, bx1, by1 = courtyards[j]
             if ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1:
                 raise ValueError(
-                    f"footprints {ra} and {rb} overlap; check PLACEMENT_CLUSTERS / PLACE_GAP")
+                    f"footprints {ra} and {rb} overlap; increase PLACE_GAP or "
+                    "adjust their cluster order in PLACEMENT_CLUSTERS")
 
 
 def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[str, Net]]:
