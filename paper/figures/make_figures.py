@@ -306,7 +306,7 @@ def fig2() -> None:
     ax = fig.add_subplot(gs[0, 3])
     show(ax, "single_channel_module_iso.png")
     panel_label(ax, "d")
-    ax.set_title("Whole-assembly attempt\n(single prompt, v1 module)", fontsize=5.5)
+    ax.set_title("Whole-assembly attempt\n(single prompt)", fontsize=5.5)
 
     iters = [
         ("plate_iter1_hole_top.png", "Iter. 1: unexplained\nhole under gear"),
@@ -406,7 +406,7 @@ def fig4() -> None:
     ax = fig.add_subplot(gs[0, 1])
     show(ax, "tap_collar_final_iso.png")
     panel_label(ax, "b")
-    ax.set_title("Tap collar + solenoid\nmount (split clamp)", fontsize=6)
+    ax.set_title("Tap collar split clamp\n(actuator mount)", fontsize=6)
 
     fig.savefig(HERE / "fig4_design.pdf", bbox_inches="tight")
     plt.close(fig)
