@@ -1,0 +1,199 @@
+{
+  "board": "test_module_starter.kicad_pcb",
+  "schematic": "test_module_starter.kicad_sch",
+  "project": "test_module_starter.kicad_pro",
+  "components": 14,
+  "nets": 20,
+  "outline_mm": [
+    116.61,
+    81.97
+  ],
+  "power_nets": [
+    "+12V",
+    "+3V3",
+    "+5V",
+    "GND"
+  ],
+  "unplaced_variant": {
+    "board": "test_module_unplaced.kicad_pcb",
+    "schematic": "test_module_unplaced.kicad_sch",
+    "project": "test_module_unplaced.kicad_pro",
+    "outline_mm": [
+      116.61,
+      81.97
+    ],
+    "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
+  },
+  "bom": [
+    {
+      "ref": "J1",
+      "part": "Barrel_Jack_12V",
+      "kind": "module",
+      "pins": 3,
+      "pins_netted": 2,
+      "body_mm": [
+        14.0,
+        11.0
+      ],
+      "model": null,
+      "source": "Adafruit #373 2.1 mm DC barrel-jack breakout (datasheet)"
+    },
+    {
+      "ref": "U1",
+      "part": "D24V22F5_Buck",
+      "kind": "module",
+      "pins": 4,
+      "pins_netted": 4,
+      "body_mm": [
+        12.7,
+        10.16
+      ],
+      "model": "hardware/vendor-files/pololu-2858-d24v22f5/cad/d24v22fx-step-down-voltage-regulator.step",
+      "source": "Pololu #2858 0.5x0.4 in PCB; STEP envelope 19.5x20.7x13.8 mm"
+    },
+    {
+      "ref": "C1",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "C2",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "U2",
+      "part": "Pi_Pico_W",
+      "kind": "module",
+      "pins": 40,
+      "pins_netted": 11,
+      "body_mm": [
+        21.0,
+        51.0
+      ],
+      "model": null,
+      "source": "Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"
+    },
+    {
+      "ref": "U3",
+      "part": "DRV2605L_Breakout",
+      "kind": "module",
+      "pins": 8,
+      "pins_netted": 8,
+      "body_mm": [
+        17.78,
+        16.51
+      ],
+      "model": "hardware/vendor-files/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
+      "source": "Adafruit #2305 Eagle .brd outline (layer 20) 17.78x16.51 mm"
+    },
+    {
+      "ref": "M1",
+      "part": "ERM_Motor",
+      "kind": "connector",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board Adafruit #1201 ERM coin, \u00d810 x 2.7 mm"
+    },
+    {
+      "ref": "U4",
+      "part": "DRV8871_Breakout",
+      "kind": "module",
+      "pins": 7,
+      "pins_netted": 6,
+      "body_mm": [
+        20.32,
+        24.13
+      ],
+      "model": "hardware/vendor-files/adafruit-3190-drv8871/cad/3190 DRV8871 Breakout.step",
+      "source": "Adafruit #3190 Eagle .brd outline (layer 20) 20.32x24.13 mm"
+    },
+    {
+      "ref": "SOL1",
+      "part": "Solenoid",
+      "kind": "connector",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board Adafruit #412 JF-0530B 5 V push-pull solenoid"
+    },
+    {
+      "ref": "U5",
+      "part": "Tic_T500",
+      "kind": "module",
+      "pins": 14,
+      "pins_netted": 8,
+      "body_mm": [
+        25.4,
+        15.24
+      ],
+      "model": null,
+      "source": "Pololu #3135 1.0x0.6 in PCB; STEP/STL in hardware/vendor-files/pololu-3135-tic-t500/cad/tic-stepper-motor-controller-models.zip"
+    },
+    {
+      "ref": "C3",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "SR1",
+      "part": "Shunt_Regulator",
+      "kind": "module",
+      "pins": 4,
+      "pins_netted": 4,
+      "body_mm": [
+        24.13,
+        10.16
+      ],
+      "model": "hardware/vendor-files/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
+      "source": "Pololu #3776 0.95x0.4 in PCB; STEP envelope 28.6x21.2x13.8 mm"
+    },
+    {
+      "ref": "M2",
+      "part": "Stepper_4wire",
+      "kind": "connector",
+      "pins": 4,
+      "pins_netted": 4,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board StepperOnline 11HS18-0674S NEMA-11 28x28x45 mm; STEP in hardware/vendor-files/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP"
+    },
+    {
+      "ref": "M3",
+      "part": "Servo_3pin",
+      "kind": "connector",
+      "pins": 3,
+      "pins_netted": 3,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"
+    }
+  ]
+}
