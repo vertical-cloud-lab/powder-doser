@@ -58,7 +58,6 @@ FIGURES = {
         "si": False,
         "assets": [
             "assembly_iso_final.png",
-            "single_channel_module_powder_flow.png",
             "rotation_0_45_90.png",
         ],
         "label": "fgr:overview",
