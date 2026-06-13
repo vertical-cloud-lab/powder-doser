@@ -65,7 +65,7 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact ~80 × 118 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~117 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
 | [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 69 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
@@ -80,7 +80,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Compact-packed **inside** the ~80 × 118 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~117 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
@@ -128,12 +128,17 @@ to its right, so the board area is empty and the router must place the parts.
    self-contained.
 3. **Net assignment.** A board net table is built and every connected pad is
    tagged with its net, so the board carries the full 20-net ratsnest.
-4. **Floorplan + outline.** The schematic-sheet anchor coordinates are reused
-   (scaled ×1.0 so the now-real, larger bodies don't collide) as a rough,
-   non-overlapping starting placement; a `_assert_no_overlap()` courtyard check
-   guarantees the result stays DRC-clean, and an Edge.Cuts rectangle is drawn
-   around all component courtyards + 5 mm. Absolute placement is unimportant —
-   Quilter/DeepPCB re-place everything.
+4. **Floorplan + outline.** The schematic-sheet anchor coordinates are *ignored*
+   for the board; instead `_pack_positions()` lays the real component bodies out
+   with a **domain- and cluster-aware compact packer** (see *Compact placement*
+   below): each regulator/driver is packed in one contiguous row with its caps
+   and load connector, the power/mechanics domain sits on the left and the
+   logic/control domain on the right (separated by a `DOMAIN_GAP` aisle), and
+   each cluster's off-board connector is biased to the outward board edge. A
+   `_assert_no_overlap()` courtyard check guarantees the result stays DRC-clean,
+   and an Edge.Cuts rectangle is drawn around all component courtyards + 5 mm.
+   Absolute placement is unimportant — Quilter/DeepPCB re-place everything — but a
+   domain-grouped start hands them short local nets.
 5. **Schematic companion.** From the same `NETLIST` / `PINOUTS`, the script also
    emits `test_module_starter.kicad_sch`: each part becomes a labelled rectangle
    symbol with one pin per physical pin (numbered exactly like the board pads),
@@ -160,46 +165,59 @@ own geometry guard, and `kicad-cli`'s netlist exporter:
 - **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
   **85 F.Fab** body-outline + **57 F.CrtYd** courtyard segments emitted.
 
-**Compact placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
-The first DeepPCB run flagged the board as *"still very spaced out"*: the earlier
+**Compact, domain-aware placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
+The first DeepPCB run flagged the board as *"still very spaced out"*: the earliest
 build reused the schematic-sheet anchor coordinates as the board floorplan, which
 left 14 small breakouts strewn across a **279 × 199 mm** board (routers keep that
-excess area). The board now ignores those coordinates and **compact-packs** the
-real component bodies into a near-square grid (`_pack_positions()` — left-to-right
-rows wrapping at a `sqrt(total-area)`-derived width, `PLACE_GAP = 1.5 mm` between
-courtyards), shrinking the outline to **~80 × 118 mm** (≈6× less area) while
-`_assert_no_overlap()` keeps it DRC-clean. The schematic-sheet layout is
-unchanged (its spacing doesn't affect connectivity or routing). _(The earlier
-build measured ~82 × 113 mm; correcting the proxy pin counts — see
-[Pin-count verification](#pin-count-verification) — re-proportioned a few bodies,
-most notably the now-40-pin Pico W, nudging the packed outline to ~80 × 118 mm.)_
+excess area). The board now ignores those coordinates and `_pack_positions()`
+**domain- and cluster-packs** the real component bodies. The first fix was a pure
+area shelf-pack (~80 × 118 mm); the Edison review below then asked for placement
+*intelligence*, so the packer now:
+
+- packs each **cluster** (a regulator/driver with its decoupling caps and its
+  off-board load connector) as one rigid contiguous row, keeping the high-value
+  local nets — driver→load, regulator→cap — short;
+- lays the **power/mechanics domain** (barrel jack, buck, DRV8871+solenoid,
+  shunt+Tic+stepper) on the **left** and the **logic/control domain** (Pico,
+  DRV2605L+ERM, servo) on the **right**, separated by a `DOMAIN_GAP = 6 mm`
+  aisle, partitioning the noisy +12 V switching from the quiet 3V3/I2C nets;
+- biases each cluster's **off-board connector** (`J1`, `SOL1`, `M1`–`M3`) to the
+  outward end of its row (left edge of the left domain, right edge of the right
+  domain) for cable exit, without divorcing it from the driver it serves.
+
+The result is a wider, less-tall **~117 × 82 mm** board (Edison's preferred
+aspect) that `_assert_no_overlap()` keeps DRC-clean. Crucially, keeping clusters
+intact *reduced* the estimated ratsnest (part-centre HPWL ≈1150 → ≈1051 mm)
+rather than inflating it — the failure mode of a naive input reorder. The
+schematic-sheet layout is unchanged (its spacing doesn't affect connectivity or
+routing).
 
 **Placement review (Edison `ANALYSIS`).** The compact board, generator, and both
 trios were fed back through an Edison data-analysis pass
 ([`edison_artifacts/board_placement_review_for_powder_doser.*`](edison_artifacts/board_placement_review_for_powder_doser.answer.md);
 runner [`edison_run_board_placement_analysis.py`](edison_run_board_placement_analysis.py))
-to sanity-check the layout. It confirmed the ~82 × 113 mm board is well-sized
-(~46 % courtyard fill, ample 2-layer routing room) and surfaced concrete
-follow-ups, of which one is applied here and the rest are recorded as future work:
+to sanity-check the layout. It confirmed the compact board is well-sized and that
+its **main remaining issue was placement intelligence, not density** — a pure
+area shelf-pack mixes power and logic domains and leaves connectors inboard.
+Acting on that feedback:
 
+- **Applied — domain/cluster/edge-aware placement.** `_pack_positions()` was
+  rewritten from the area shelf-pack into the domain-partitioned, cluster-rigid,
+  connector-edge-biased packer described above (review recommendations #1, #3,
+  #5, #6). `PLACEMENT_CLUSTERS` / `EDGE_REFS` encode the metadata.
 - **Applied — power breakout clearance.** A 0.6 mm `Power` trace plus the old
   0.3 mm clearance (1.2 mm) could not fit between adjacent 0.1″ header pads (the
   copper-to-copper gap is only `PITCH − PAD_SIZE = 0.84 mm`). The `Power` class
   clearance is now held at the board minimum (0.2 mm) so power can break out of
   the headers and neck down through them — the routing behaviour the
   DeepPCB/Quilter test is meant to exercise.
-- **Tested, not adopted — domain-grouped input order.** The review suggested
-  reordering `NETLIST` into power/logic/motor domains to shorten the ratsnest.
-  Measured against the actual left-to-right shelf-packer this *increased* the
-  MST ratsnest (≈1087 → ≈1104 mm); connectivity-greedy orderings were worse
-  still, so the existing order is kept. A connectivity-aware *packer* (not just
-  input reordering) would be the real win.
-- **Future work.** Edge-pin the off-board connectors (`J1`, `M1`–`M3`, `SOL1`),
-  pre-place decoupling caps (`C1`–`C3`) rigidly beside their targets, add four
-  M3 mounting-hole keep-outs, and give the barrel jack (`J1`) its real
-  oversized/slotted pads instead of the 0.1″ proxy. These need per-part
-  placement/footprint overrides and are deliberately left for the
-  footprint-swap pass below.
+- **Future work.** A literal **bottom-edge connector band** was prototyped but
+  *lengthened* every driver→connector net (HPWL ≈1402 mm), so connectors are kept
+  in their clusters and only biased outward; full edge pinning, rigid decoupling-cap
+  pre-placement, four M3 mounting-hole keep-outs, the barrel jack's real
+  oversized/slotted pads, and a board-level GND pour need per-part placement /
+  footprint overrides and a human-in-the-loop pass, and are deliberately left for
+  a later revision.
 
 
 **File-format version (KiCad 7+).** The board is written with the **KiCad 7.0

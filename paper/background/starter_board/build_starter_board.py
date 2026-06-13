@@ -68,7 +68,6 @@ from __future__ import annotations
 
 import copy
 import json
-import math
 import re
 import shutil
 import subprocess
@@ -318,20 +317,49 @@ PAD_DRILL = 1.0
 EDGE_MARGIN = 5.0     # board-outline clearance around the outermost pads
 SILK_MARGIN = 1.0
 CRTYD_CLEARANCE = 0.5  # F.CrtYd gap around the real body outline
-# Board placement. The earlier build reused the schematic-sheet anchor
+# Board placement. The earliest build reused the schematic-sheet anchor
 # coordinates (NETLIST x/y) as the board floorplan, scaled by FLOORPLAN_SCALE,
 # which left the parts ridiculously spread out (~279x199 mm board; issue #94).
-# The board now ignores those coordinates and compact-packs the real component
-# bodies into a near-square grid (_pack_positions); PLACE_GAP is the clearance
-# left between adjacent courtyards and TARGET_ASPECT tunes the row width toward
-# a square. The exact placement is unimportant (Quilter/DeepPCB re-place
-# everything) but a *tight* start avoids handing the routers an oversized board.
-# FLOORPLAN_SCALE is retained only for the schematic-sheet layout below.
+# The board now ignores those coordinates and lays the real component bodies out
+# with a domain- and edge-aware compact packer (_pack_positions, below);
+# PLACE_GAP is the clearance left between adjacent courtyards. The exact
+# placement is unimportant (Quilter/DeepPCB re-place everything) but a *tight,
+# domain-grouped* start hands the routers short local nets on a right-sized
+# board. FLOORPLAN_SCALE is retained only for the schematic-sheet layout below.
 FLOORPLAN_SCALE = 1.0
 PLACE_GAP = 1.5        # extra gap (mm) between courtyards in the compact pack
-TARGET_ASPECT = 1.15   # row-width target = sqrt(total courtyard area) x this
 STAGE_GAP = 12.0       # gap (mm) between the empty board outline and the parts
 #                        staged beside it in the unplaced (auto-place) variant
+DOMAIN_GAP = 6.0       # aisle (mm) between the power and logic domains and
+#                        between the interior and the bottom connector band
+
+# ---------------------------------------------------------------------------
+# Placement strategy (Edison board-placement review,
+# edison_artifacts/board_placement_review_for_powder_doser.answer.md). The pure
+# area shelf-pack was compact but domain-blind; the review's #1 recommendation
+# was to make placement domain-aware and cluster-aware so an autonomous router
+# (DeepPCB/Quilter) starts from short, local nets and a clean noisy/quiet
+# partition instead of an arbitrary grid. The compact placement now:
+#   * packs each cluster (a regulator/driver with its decoupling caps and its
+#     load connector) as a rigid contiguous row, keeping those local nets short;
+#   * orders clusters by domain - the +12 V/+5 V power + motor/solenoid section
+#     on the left, then a DOMAIN_GAP aisle, then the 3V3/I2C logic section (Pico
+#     + haptics + servo) on the right - separating noisy switching from quiet
+#     control nets;
+#   * biases each cluster's off-board connector (EDGE_REFS) to the outward end
+#     of its row (left edge of the left domain, right edge of the right domain)
+#     for cable exit, without divorcing it from the driver it serves.
+# Each entry: (domain, cluster-name, [refs, in packing order]). Every ref in
+# NETLIST appears in exactly one cluster.
+PLACEMENT_CLUSTERS = [
+    ("power", "input_12v", ["J1", "C1", "U1", "C2"]),   # jack -> bulk -> buck -> 5V cap
+    ("power", "solenoid",  ["U4", "SOL1"]),             # DRV8871 + solenoid load
+    ("power", "stepper",   ["SR1", "C3", "U5", "M2"]),  # shunt + cap + Tic + stepper
+    ("logic", "haptic",    ["U3", "M1"]),               # DRV2605L + ERM
+    ("logic", "mcu",       ["U2", "M3"]),               # Pico + servo header
+]
+# Off-board connectors (cables leaving the PCB); edge-placed for harnessing.
+EDGE_REFS = {"J1", "SOL1", "M2", "M1", "M3"}
 
 # Real Raspberry Pi Pico W castellated row spacing (centre-to-centre between
 # the two 1x20 edges); 17.78 mm = 7 x 0.1" per the official mechanical drawing.
@@ -521,33 +549,74 @@ def _courtyard_extents(lib_id: str) -> tuple[float, float]:
 
 
 def _pack_positions() -> dict[str, tuple[float, float]]:
-    """Compact shelf-pack every part into a tight grid of centre coordinates.
+    """Domain- and cluster-aware compact placement (centre coordinates).
 
-    The earlier build reused the schematic-sheet anchor coordinates as the board
-    floorplan, which left the components *ridiculously spaced out* (a ~279x199 mm
-    board for 14 small breakouts; see issue #94). Routers (DeepPCB/Quilter) keep
-    that excess area, so the board must start compact. This lays the parts out in
-    left-to-right rows whose width targets a near-square board, wrapping to a new
-    row when the next part would overflow, with a fixed ``PLACE_GAP`` between
-    courtyards. Order follows ``NETLIST`` so the result is deterministic and
+    The first compact build replaced the *ridiculously spaced out* schematic
+    floorplan (a ~279x199 mm board for 14 small breakouts; issue #94) with a
+    pure area shelf-pack. That was tight but domain-blind, so the Edison
+    placement review (``edison_artifacts/board_placement_review_for_powder_doser``)
+    asked for a placement that gives the router short, local nets and a clean
+    power/logic partition. This packer therefore:
+
+      * packs each cluster in ``PLACEMENT_CLUSTERS`` (a regulator/driver with its
+        caps and its off-board load connector) as one rigid contiguous row, so
+        the high-value local nets (driver->load, regulator->cap) stay short;
+      * stacks the power/mechanics domain on the left and the logic/control
+        domain on the right, separated by a ``DOMAIN_GAP`` aisle, so the noisy
+        +12 V switching is partitioned from the quiet 3V3/I2C control nets;
+      * orders each cluster row so its off-board connector (``EDGE_REFS``) sits
+        at the outward end of the row (left edge of the left domain, right edge
+        of the right domain), biasing cables toward the board perimeter while
+        keeping the connector adjacent to the driver it serves.
+
+    Keeping clusters intact (rather than pulling every connector into a separate
+    bottom edge band) was the variant that did *not* inflate the ratsnest: a
+    literal edge band shortens cable exit but lengthens every driver->connector
+    net, so full edge pinning is left as documented future work (note 21).
+
+    The layout is fully deterministic (fixed cluster order) and
     ``_assert_no_overlap`` still guarantees it is DRC-clean.
     """
-    sizes = [(ref, *_courtyard_extents(lib_id)) for ref, lib_id, *_ in NETLIST]
-    total_area = sum((2 * hw) * (2 * hh) for _, hw, hh in sizes)
-    widest = max(2 * hw for _, hw, _ in sizes)
-    # Aim for a roughly square board, but never narrower than the widest part.
-    target_w = max(widest, math.sqrt(total_area) * TARGET_ASPECT)
+    ext = {ref: _courtyard_extents(lib_id) for ref, lib_id, *_ in NETLIST}
+
+    def w(ref: str) -> float:
+        return 2 * ext[ref][0]
+
+    def h(ref: str) -> float:
+        return 2 * ext[ref][1]
+
+    def order_row(refs: list[str], connector_first: bool) -> list[str]:
+        """Move the cluster's off-board connector to the row's outward end."""
+        conns = [r for r in refs if r in EDGE_REFS]
+        rest = [r for r in refs if r not in EDGE_REFS]
+        return (conns + rest) if connector_first else (rest + conns)
 
     positions: dict[str, tuple[float, float]] = {}
-    cursor_x = cursor_y = row_h = 0.0
-    for ref, hw, hh in sizes:
-        w, h = 2 * hw, 2 * hh
-        if cursor_x > 0 and cursor_x + w > target_w:
-            cursor_y += row_h + PLACE_GAP
-            cursor_x = row_h = 0.0
-        positions[ref] = (cursor_x + hw, cursor_y + hh)
-        cursor_x += w + PLACE_GAP
-        row_h = max(row_h, h)
+
+    def pack_domain(rows: list[list[str]], x_left: float, connector_first: bool
+                    ) -> tuple[float, float]:
+        """Stack each cluster as a left-to-right row; return (width, height)."""
+        cy = 0.0
+        max_w = 0.0
+        for refs in rows:
+            refs = order_row(refs, connector_first)
+            row_h = max(h(r) for r in refs)
+            cx = x_left
+            for r in refs:
+                positions[r] = (cx + ext[r][0], cy + row_h / 2.0)
+                cx += w(r) + PLACE_GAP
+            max_w = max(max_w, cx - PLACE_GAP - x_left)
+            cy += row_h + PLACE_GAP
+        return max_w, (cy - PLACE_GAP if rows else 0.0)
+
+    rows_by_domain: dict[str, list[list[str]]] = {"power": [], "logic": []}
+    for domain, _name, refs in PLACEMENT_CLUSTERS:
+        rows_by_domain[domain].append(list(refs))
+
+    # Power/mechanics domain on the left (connectors biased to the left edge),
+    # logic/control domain on the right (connectors biased to the right edge).
+    power_w, _ = pack_domain(rows_by_domain["power"], 0.0, connector_first=True)
+    pack_domain(rows_by_domain["logic"], power_w + DOMAIN_GAP, connector_first=False)
     return positions
 
 
@@ -633,7 +702,7 @@ def _assert_no_overlap(courtyards: list[tuple[str, float, float, float, float]])
             rb, bx0, by0, bx1, by1 = courtyards[j]
             if ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1:
                 raise ValueError(
-                    f"footprints {ra} and {rb} overlap; increase FLOORPLAN_SCALE")
+                    f"footprints {ra} and {rb} overlap; check PLACEMENT_CLUSTERS / PLACE_GAP")
 
 
 def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[str, Net]]:
