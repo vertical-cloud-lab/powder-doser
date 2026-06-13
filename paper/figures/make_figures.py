@@ -133,7 +133,7 @@ def fig1() -> None:
     callouts = [
         ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.12)),
         ("Auger bracket +\ntap collar", (0.55, 0.38), (0.48, 0.08)),
-        ("NEMA-11 stepper\n+ GT2/gear drive", (0.66, 0.36), (0.72, 0.10)),
+        ("NEMA-11 stepper +\nprinted spur-gear drive", (0.66, 0.36), (0.72, 0.10)),
         ("Hinged mounting plate\n(servo tilt)", (0.62, 0.62), (0.93, 0.42)),
         ("Baseplate", (0.46, 0.72), (0.16, 0.88)),
     ]
@@ -149,14 +149,62 @@ def fig1() -> None:
         )
     placeholder_note(ax, "CAD render; photograph of the printed platform to be added")
 
-    # (b) powder-flow path through the module (tall panel)
+    # (b) powder-flow path through the module (tall panel), drawn to match the
+    #     final no-hopper design: the auger tube itself is the reservoir, loaded
+    #     through slots; dispensed mass lands in a cup on the analytical balance.
     ax = fig.add_subplot(gs[0, 2])
-    img = load("single_channel_module_powder_flow.png")
-    img = img[int(img.shape[0] * 0.16):, :]  # trim internal title text
-    ax.imshow(img)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
+    ax.set_aspect("auto")
     ax.set_axis_off()
     panel_label(ax, "b")
-    ax.set_title("Powder-flow path (cross-section)", fontsize=6)
+    ax.set_title("Powder-flow path (schematic)", fontsize=6)
+
+    tube_x0, tube_x1 = 4.0, 6.0
+    tube_y0, tube_y1 = 2.6, 9.0
+    # auger tube body = powder reservoir
+    ax.add_patch(
+        patches.Rectangle(
+            (tube_x0, tube_y0),
+            tube_x1 - tube_x0,
+            tube_y1 - tube_y0,
+            fc="#f3e6c8",
+            ec="0.3",
+            lw=0.8,
+        )
+    )
+    # helical auger flight inside the tube
+    ty = np.linspace(tube_y0 + 0.3, tube_y1 - 0.3, 240)
+    tx = 5.0 + 0.7 * np.sin((ty - tube_y0) * 3.0)
+    ax.plot(tx, ty, color="#b6862c", lw=0.9)
+    # loading slots near the top of the tube wall
+    for sy in (tube_y1 - 0.6, tube_y1 - 1.2):
+        ax.add_patch(patches.Rectangle((tube_x0 - 0.02, sy), 0.5, 0.18, fc="white", ec="0.3", lw=0.6))
+        ax.add_patch(patches.Rectangle((tube_x1 - 0.48, sy), 0.5, 0.18, fc="white", ec="0.3", lw=0.6))
+    # exit nozzle protruding below the tube
+    ax.add_patch(patches.Polygon([(4.55, tube_y0), (5.45, tube_y0), (5.2, tube_y0 - 0.7), (4.8, tube_y0 - 0.7)], closed=True, fc="#f3e6c8", ec="0.3", lw=0.7))
+    # falling dose
+    for k, dy in enumerate(np.linspace(tube_y0 - 0.9, 1.4, 6)):
+        ax.plot(5.0, dy, ".", ms=2.0, color="#b6862c")
+    # collection cup on the balance
+    ax.add_patch(patches.Polygon([(3.9, 1.3), (6.1, 1.3), (5.8, 0.4), (4.2, 0.4)], closed=True, fc="#fbf3df", ec="0.3", lw=0.7))
+    ax.add_patch(patches.Rectangle((3.2, 0.05), 3.6, 0.3, fc="#dfe6ef", ec="0.3", lw=0.7))
+    callouts_b = [
+        ("auger tube = reservoir\n(loaded through slots,\nno separate hopper)", (5.4, tube_y1 - 0.9), (6.3, tube_y1 - 0.4)),
+        ("step-counted\nArchimedes auger", (5.4, 6.0), (6.4, 6.0)),
+        ("exit nozzle", (5.2, tube_y0 - 0.45), (6.4, tube_y0 - 0.2)),
+        ("cup on balance\n(A&D HR-100A)", (5.6, 0.7), (6.4, 1.0)),
+    ]
+    for text, (xt, yt), (xl, yl) in callouts_b:
+        ax.annotate(
+            text,
+            xy=(xt, yt),
+            xytext=(xl, yl),
+            fontsize=4.6,
+            ha="left",
+            va="center",
+            arrowprops=dict(arrowstyle="-", lw=0.5, color="0.35"),
+        )
 
     # (c) tilt sweep about the fixed dispense point
     ax = fig.add_subplot(gs[1, 0])
@@ -167,7 +215,9 @@ def fig1() -> None:
     panel_label(ax, "c")
     ax.set_title("Tilt sweep about fixed dispense point", fontsize=6)
 
-    # (d) closed-loop dosing concept diagram
+    # (d) closed-loop dosing concept diagram: the target mass enters the
+    #     controller, which drives the actuation; the balance feeds measured
+    #     mass back to the controller.
     ax = fig.add_subplot(gs[1, 1])
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 10)
@@ -175,10 +225,10 @@ def fig1() -> None:
     panel_label(ax, "d")
     ax.set_title("Closed-loop gravimetric dosing", fontsize=6)
     boxes = [
-        (1.0, 7.2, "Dose request\n(target mass)"),
-        (1.0, 4.2, "Auger + tap +\nvibration actuation"),
-        (1.0, 1.2, "Balance reading\n(A&D HR-100A, RS-232)"),
-        (6.1, 4.2, "Controller\n(coarse \u2192 trickle)"),
+        (0.7, 7.7, "Dose request\n(target mass)"),
+        (0.7, 4.2, "Controller\n(coarse \u2192 trickle)"),
+        (5.9, 4.2, "Auger + tap +\nvibration actuation"),
+        (5.9, 0.9, "Balance reading\n(A&D HR-100A, RS-232)"),
     ]
     for x, y, label in boxes:
         ax.add_patch(
@@ -192,12 +242,16 @@ def fig1() -> None:
                 lw=0.7,
             )
         )
-        ax.text(x + 1.6, y + 0.95, label, ha="center", va="center", fontsize=5.5)
+        ax.text(x + 1.6, y + 0.95, label, ha="center", va="center", fontsize=5.2)
     arrow = dict(arrowstyle="->", lw=0.8, color="0.2")
-    ax.annotate("", xy=(2.6, 6.1), xytext=(2.6, 7.2), arrowprops=arrow)
-    ax.annotate("", xy=(2.6, 3.1), xytext=(2.6, 4.2), arrowprops=arrow)
-    ax.annotate("", xy=(6.1, 5.15), xytext=(4.2, 2.2), arrowprops=arrow)
-    ax.annotate("", xy=(4.2, 5.15), xytext=(6.1, 5.15), arrowprops=arrow)
+    # target mass into the controller
+    ax.annotate("", xy=(2.3, 6.1), xytext=(2.3, 7.7), arrowprops=arrow)
+    # controller commands the actuation
+    ax.annotate("", xy=(5.9, 5.15), xytext=(3.9, 5.15), arrowprops=arrow)
+    # actuation dispenses onto the balance
+    ax.annotate("", xy=(7.5, 2.8), xytext=(7.5, 4.2), arrowprops=arrow)
+    # measured mass fed back to the controller
+    ax.annotate("", xy=(3.9, 4.3), xytext=(5.9, 1.85), arrowprops=arrow)
 
     # (e) project timeline
     ax = fig.add_subplot(gs[1, 2])
