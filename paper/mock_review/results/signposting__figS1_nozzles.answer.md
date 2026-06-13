@@ -1,0 +1,51 @@
+## Verdict on Fig. S1 (figS1_nozzles): AI/human signposting is missing
+
+The figure as it stands does not signpost human vs. AI contributions, and the PR explicitly demands that it should. Concrete state of the deliverable:
+
+**Figure content (`figS1_nozzles.pdf`, source `make_figures.py:409-415`, `figs1()`).** Four side-by-side cross-section CAD renders, titled only "Type 1", "Type 2", "Type 3", "Type 4". No dimensions, no callouts, no labels, no scale bar. The renders are the OpenSCAD outputs `paper/figures/assets/nozzle_type{1..4}_cross_section.png`, copied from `cad/auger-geared/archimedes-auger-test-nozzle{1..4}-cross-section.png` on branch `origin/copilot/add-new-auger-design` — i.e. the AI-authored parametric CAD outputs.
+
+**Caption (`caption_figS1_nozzles.md`).** Two lines, purely descriptive: *"Cross-sections of the four printed exit-nozzle variants (Types 1–4) of the test auger, differing in exit constriction and chamfer geometry."* It does not say who decided the variant geometries, who wrote the SCAD code, who reviewed the renders, who printed the parts, or who will test them.
+
+**What PR #97 demands (`pr97_comments.md`).** @swcharles at `paper/main.tex` line 189: *"clarify where ai was used. We should be signposting the design contributions of ai versus engineers throughout the manuscript — it should always be clear who did what."* And at line 193: *"Mention the specific drawings given, including that some of them had dimensions and relations … eventually, ai was only being used to model the parts, not to make design decisions beyond calculating relevant dimensions and tolerancing."* @sgbaird at line 189: *"don't separate Sterling vs. Sam vs. Will vs. Luke. Only distinguish what was human vs. what was AI (and emphasizing that no CAD UI such as Fusion 360 or Solidworks was used at all from project start to end, except for the introduction of Zoo Design Studio."*
+
+**What the rest of the manuscript already says about these nozzles, and which the caption fails to inherit.** Main.pdf p. 4 (§2.2): *"Exit-nozzle geometry strongly affects flow initiation and dribble; four printed nozzle variants are compared in SI Fig. S1."* Main.pdf p. 4 (§2.3.0.2, the trust/verification paragraph): *"in one documented case the agent produced four miniature test nozzles with two of the four silently swapped relative to their documentation, which would have invalidated a dispensing comparison had it not been caught."* That is literally this figure's set, and it is the strongest piece of provenance evidence available — yet the figure caption omits it. SI §S3 says *"Four printed exit-nozzle geometries were produced for dispense testing (Fig. S1); the dispensing campaign will report flow-initiation and dribble behaviour per nozzle and per powder."* Past tense ("were produced") + future tense ("will report") needs to be reflected in the caption so a reader doesn't read the figure as showing measurements.
+
+**Provenance from the branch tree** (`all_branches_file_tree.txt`):
+- AI-authored parametric CAD: `cad/auger-geared/archimedes-auger-test-nozzle{1..4}.scad`, `nozzle-variants.scad`, and the `.stl` exports — all on `origin/copilot/add-new-auger-design` (a Copilot agent branch).
+- AI-authored background research used to scope the variant set: `cad/auger-geared/edison_artifacts/nozzle-selection.answer.md`, `nozzle-selection.references.md`, `nozzle-selection.task.json`, driven by `edison_run_nozzles.py`.
+- Human-printed hardware: `docs/assets/printed/nozzle-augers-issue48-printed-set.jpg` on `origin/copilot/record-of-designs` (Issue #48 = printed set), evidencing that the human team did the printing.
+- Human review/repair pass: implied by the "two silently swapped" anecdote in main.pdf §2.3.0.2 — the swap was caught by human review of the AI outputs, not by the AI.
+- Figure assets and `make_figures.py` themselves live on `origin/copilot/draft-base-manuscript`.
+
+So the per-part role breakdown for this figure is unambiguous: **HUMAN** chose to enumerate four nozzle variants, set the exit-constriction/chamfer axes of variation, reviewed and corrected the AI's swap error, printed the four parts (Issue #48), and will run the dispensing campaign; **AI** wrote the parametric OpenSCAD code (`archimedes-auger-test-nozzle{1..4}.scad`, `nozzle-variants.scad`) and rendered the cross-sections under human review; no GUI CAD (Fusion 360/SolidWorks) was used, and Zoo Design Studio was not used for these test nozzles. None of this is visible in the current figure or caption.
+
+The figure itself is also under-annotated for an SI figure that is meant to support a flow-initiation/dribble comparison: there are no dimensions on the exit orifice or chamfer (the very features that distinguish the four variants per the caption), no scale bar, and no panel labels (a–d) — only the inset titles. @swcharles' line-193 comment specifically values "drawings … with dimensions and relations". The natural place to put that is in this very figure.
+
+---
+
+## Rewritten caption (no individuals named; HUMAN / AI labour explicit)
+
+**Figure S1. Four exit-nozzle variants of the test auger.** Cross-sections of the four printed exit-nozzle geometries (a) Type 1, (b) Type 2, (c) Type 3, (d) Type 4, differing in exit-orifice constriction and chamfer geometry. The variant set, the axes of variation (exit constriction, chamfer angle), and the dimensional targets were specified by the human team; the parametric OpenSCAD source (`cad/auger-geared/archimedes-auger-test-nozzle{1..4}.scad` and `nozzle-variants.scad`) was authored by an LLM coding agent (GitHub Copilot, Claude-family models) from those specifications, with no interactive CAD package used. The renders shown here are the agent's CI outputs; the human team reviewed them, corrected one documented instance in which two of the four nozzles were silently swapped relative to their documentation (see §2.3 in the main text), printed the four parts in PLA (Issue #48), and will report flow-initiation and dribble behaviour per nozzle and per powder in a follow-up dispensing campaign. STLs, SCAD sources, and renders for every iteration are in the repository.
+
+(Replaces the current two-line caption verbatim. If a shorter version is preferred for an SI page-budget, a one-sentence form is: *"Cross-sections of four printed exit-nozzle variants (Types 1–4) of the test auger, differing in exit constriction and chamfer geometry; variant set and dimensional targets specified by the human team, parametric OpenSCAD source authored by an LLM coding agent under human review, parts printed and to be tested by the human team."*)
+
+---
+
+## Prioritized action list for figS1_nozzles
+
+1. **Replace the caption** with the version above so HUMAN-decided / AI-modelled / HUMAN-reviewed-printed-tested is explicit, per @swcharles `main.tex:189` and @sgbaird `main.tex:189`. *(highest priority — directly addresses the open PR comment.)*
+2. **Add panel letters (a)–(d)** to the four renders in `make_figures.py:figs1()` using the existing `panel_label()` helper (already used in `fig1`/`fig2`); the caption above already refers to them.
+3. **Add dimensioned annotations** to at least the exit-orifice diameter and chamfer angle for each variant — these are the parameters the caption claims distinguish the four, and @swcharles `main.tex:193` explicitly calls for dimensioned drawings as part of the AI-vs-human story. Source the numbers from `archimedes-auger-test-nozzle{1..4}.scad` and `nozzle-variants.scad` rather than re-deriving.
+4. **Add a scale bar** (millimetres). The figure currently gives a reader no way to judge size; the auger tube OD is stated as 25 mm in main.pdf §3.1, so a 5 mm bar is appropriate.
+5. **Cross-link to the "silently swapped" anecdote.** The caption above does this in prose; alternatively, add a one-line footnote on the figure: *"Variant labelling verified against SCAD source after a documented swap error; see §2.3."* This is the single most concrete human-review datum tied to this exact figure.
+6. **Cite the branch/file provenance in the caption** (as above) so a reader can audit who-did-what without hunting through the design log — this matches the SI §S4 promise that *"all AI interactions are preserved verbatim and publicly"*.
+7. **(Optional, low priority)** Add a small adjacent panel or SI inset showing the printed set photograph (`docs/assets/printed/nozzle-augers-issue48-printed-set.jpg`, branch `origin/copilot/record-of-designs`) to make the printing/testing-by-humans half of the labour visible, not just inferred.
+
+---
+
+### Discretionary decisions
+- Treated the four nozzle renders as fully AI-authored parametric CAD on the basis that the `.scad` source files live on a `copilot/` agent branch (`origin/copilot/add-new-auger-design`) and the manuscript identifies the agent as the producer of these nozzles (main.pdf §2.3.0.2). I did not open the SCAD files to verify line-by-line authorship; if some hand-edits exist, the caption phrase "authored by an LLM coding agent" should be softened to "authored by an LLM coding agent and human-edited where noted in the design log".
+- Chose to put the AI/human attribution inside the caption rather than on the figure (e.g. as small AI/HUMAN tags above each panel). Tags on the figure are more visible but visually noisy for a four-panel SI figure where the entire set has the same provenance; a captioned attribution is sufficient when the split is uniform across panels.
+- Used "LLM coding agent (GitHub Copilot, Claude-family models)" rather than naming a single model version, matching the manuscript's existing phrasing on pp. 4 and 6 of main.pdf and §S4 of si.pdf.
+- Recommended dimensioning only the two features the caption already names (exit constriction, chamfer) rather than a full GD&T treatment; full dimensioning is overkill for an SI variant-comparison figure.
+- Did not propose renaming "Type 1–4" to descriptive labels (e.g. "straight", "stepped", "chamfered-out", "chamfered-in"), since the SCAD source names use the Type 1–4 convention and renaming would break traceability to the design log and Issue #48.
