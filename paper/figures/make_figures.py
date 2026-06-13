@@ -134,7 +134,7 @@ def fig1() -> None:
         ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.12)),
         ("Auger bracket +\ntap collar", (0.55, 0.38), (0.48, 0.08)),
         ("NEMA-11 stepper +\nprinted spur-gear drive", (0.66, 0.36), (0.72, 0.10)),
-        ("Hinged mounting plate\n(servo tilt)", (0.62, 0.62), (0.93, 0.42)),
+        ("Hinged plate\n(servo tilt)", (0.62, 0.62), (0.82, 0.66)),
         ("Baseplate", (0.46, 0.72), (0.16, 0.88)),
     ]
     for text, (xt, yt), (xl, yl) in callouts:
@@ -220,7 +220,7 @@ def fig1() -> None:
     #     mass back to the controller.
     ax = fig.add_subplot(gs[1, 1])
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 10)
+    ax.set_ylim(0, 11.2)
     ax.set_axis_off()
     panel_label(ax, "d")
     ax.set_title("Closed-loop gravimetric dosing", fontsize=6)
@@ -445,13 +445,13 @@ def fig5() -> None:
     ax.text(0, 0, "shared\ncup", ha="center", va="center", fontsize=5.5)
     ax.set_xlim(-3.6, 3.6)
     ax.set_ylim(-3.6, 3.6)
-    ax.set_title("N-channel radial array\n(concept)", fontsize=6)
+    ax.set_title("8-channel radial array\n(concept)", fontsize=6)
 
     # (b) inward-tilting collection-cup render
     ax = fig.add_subplot(gs[0, 1])
     show(ax, "inward_collection_cup_iso.png")
     panel_label(ax, "b")
-    ax.set_title("Inward-tilting channels\nover shared cup (CAD)", fontsize=6)
+    ax.set_title("Inward-tilting channels\nover shared cup\n(preliminary CAD)", fontsize=6)
 
     fig.savefig(HERE / "fig5_future.pdf", bbox_inches="tight")
     plt.close(fig)
@@ -464,6 +464,7 @@ def figs1() -> None:
     fig, axs = plt.subplots(1, 4, figsize=(DOUBLE_COL_IN, 2.4))
     for k, ax in enumerate(axs, start=1):
         show(ax, f"nozzle_type{k}_cross_section.png")
+        panel_label(ax, "abcd"[k - 1])
         ax.set_title(f"Type {k}", fontsize=7)
     fig.savefig(HERE / "figS1_nozzles.pdf", bbox_inches="tight")
     plt.close(fig)

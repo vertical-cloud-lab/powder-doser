@@ -180,7 +180,7 @@ Fig.~\ref{fgr:overview} shows the single-channel module. There is no separate ho
 \begin{figure*}
  \centering
  \includegraphics[width=17.1cm]{figures/fig1_overview}
- \caption{Platform overview. (a) Single-channel powder-doser module (CAD render; photograph of the printed platform will replace this render): printed Archimedes auger, printed spur-gear drive from a NEMA-11 stepper, tap collar carrying the solenoid striker and ERM vibration motor, and servo-tilted hinged mounting plate on the baseplate. (b) Schematic of the powder-flow path through the module: powder is loaded through slots into the auger tube, which is itself the reservoir (no separate hopper), and is conveyed down the helical channel $\rightarrow$ exit nozzle $\rightarrow$ collection cup on the analytical balance. (c) Tilt sweep about the fixed dispense point: the hinge axis passes through the exit-nozzle tip so the dispense point does not translate as the channel tilts from 0$^\circ$ (horizontal park) to 90$^\circ$ (vertical dispense). (d) Closed-loop gravimetric dosing concept: the target mass enters the controller, which drives the actuation while the balance feeds the measured mass back. (e) Compressed design timeline; the complete 97-entry design log is available in the repository.}
+ \caption{Platform overview. (a) Single-channel powder-doser module (CAD render; photograph of the printed platform will replace this render): printed Archimedes auger (25~mm OD), printed spur-gear drive from a NEMA-11 stepper, tap collar (which mounts the tap solenoid and ERM vibration motor, not individually resolved at this scale), and servo-tilted hinged mounting plate on the baseplate. (b) Schematic of the powder-flow path through the module: powder is loaded through slots into the auger tube, which is itself the reservoir (no separate hopper), and is conveyed down the helical channel $\rightarrow$ exit nozzle $\rightarrow$ collection cup on the analytical balance. (c) Tilt sweep about the fixed dispense point (red marker): the hinge axis passes through the exit-nozzle tip so the dispense point does not translate as the channel tilts from 0$^\circ$ (horizontal park) to 90$^\circ$ (vertical dispense). (d) Closed-loop gravimetric dosing concept: the target mass enters the controller, which drives the actuation while the balance feeds the measured mass back. (e) Compressed design timeline; the complete 97-entry design log (\texttt{DESIGN-LOG.md}) is available in the repository. Throughout, humans selected the architecture and reviewed, printed, and tested every part, while AI coding agents generated the parametric CAD models and renders; no GUI CAD package (e.g.\ Fusion~360, SolidWorks) was used.}
  \label{fgr:overview}
 \end{figure*}
 
@@ -195,7 +195,7 @@ The second generation embedded the auger in a self-contained single-channel modu
 \begin{figure}[h]
 \centering
   \includegraphics[width=8.3cm]{figures/fig4_design}
-  \caption{Design specifics. (a) Cross-section of the printed auger tube showing the helical channel and flight clearances. (b) Split-clamp tap collar carrying the solenoid striker and ERM vibration motor; the clamp couples impacts into the powder column without transmitting load to the auger drive.}
+  \caption{Design specifics. (a) Cross-section of the printed auger tube showing the helical channel and flight clearances. (b) Split-clamp tap collar designed to carry the solenoid striker and ERM vibration motor; the clamp couples impacts into the powder column without loading the auger bearing.}
   \label{fgr:design}
 \end{figure}
 
@@ -207,7 +207,7 @@ Our AI workflow used LLM coding agents (GitHub Copilot coding agent, primarily C
 \begin{figure*}
  \centering
  \includegraphics[width=17.1cm]{figures/fig2_genai}
- \caption{Generative-AI CAD outcomes, good and bad. (a) First AI-generated tap collar: an amalgamation of separate functions with part-to-part interferences, incorrect tolerancing, no clearance for the solenoid and vibration motor it must carry, and a general lack of spatial reasoning---impossible to implement as drawn. (b) The same part after iterative review in the programmatic workflow; the production tap collar was subsequently redesigned in Zoo Design Studio (three iterations to a usable part). (c) Geared auger and stepper pinion produced by the part-by-part workflow. (d) A whole-assembly generation attempt (single prompt): plausible at a glance, but with interferences and floating components that took longer to diagnose than the part-by-part route took to build. (e--h) Four review iterations of the mounting plate: the agent inserted an unexplained hole (e), then raised platforms (f), then a gap that left the motor plate floating (g); only when the correct upstream part files were supplied did it produce a clean plate (h). The root cause was stale input files---a human-side error the agent silently designed around.}
+ \caption{Generative-AI CAD outcomes, good and bad. (a) First AI-generated tap collar: an amalgamation of separate functions with part-to-part interferences, incorrect tolerancing, no clearance for the solenoid and vibration motor it must carry, and a general lack of spatial reasoning---impossible to implement as drawn. (b) The same part after iterative review in the programmatic workflow; the production tap collar was subsequently redesigned in Zoo Design Studio (three iterations to a usable part). (c) Geared auger and stepper pinion produced by the part-by-part workflow. (d) A whole-assembly generation attempt (single prompt): plausible at a glance, but with interferences and floating components that took longer to diagnose than the part-by-part route took to build. (e--h) Four review iterations of the mounting plate: the agent inserted an unexplained hole (e), then raised platforms (f), then a gap that left the motor plate floating (g); only when the correct upstream part files were supplied did it produce a clean plate (h). The root cause was stale input files---a human-side error the agent silently designed around. All parts here were modelled by AI coding agents (programmatic CAD) and, for the production tap collar, the chat-driven Zoo Design Studio (Zookeeper agent); humans set the requirements and reviewed each iteration. No GUI CAD package was used.}
  \label{fgr:genai}
 \end{figure*}
 
@@ -260,7 +260,7 @@ This base module is the first of five planned stages. Ongoing work extends the p
 \begin{figure}[h]
 \centering
   \includegraphics[width=8.3cm]{figures/fig5_future}
-  \caption{Future work: multi-powder doser. (a) $N$-channel radial array concept around a shared collection cup on a single balance. (b) CAD study of inward-tilting channels over the shared cup.}
+  \caption{Future work: multi-powder doser. (a) Eight-channel radial array concept around a shared collection cup. (b) Preliminary CAD study of inward-tilting channels over the shared cup.}
   \label{fgr:future}
 \end{figure}
 
