@@ -1,0 +1,234 @@
+name: Agentic testing (issue #87 only)
+
+on:
+  workflow_dispatch: 
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+env:
+  ISSUE_ONLY: 87
+
+jobs:
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+      reason: ${{ steps.decide.outputs.reason }}
+    steps:
+      - name: Decide whether to run agents
+        id: decide
+        run: |
+          set -euo pipefail
+          jq --version >/dev/null 2>&1 || sudo apt-get update -y && sudo apt-get install -y jq >/dev/null 2>&1 || true
+          ISSUE_NUMBER="$(jq -r '.issue.number // ""' "$GITHUB_EVENT_PATH")"
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "::set-output name=run::false"
+            echo "::set-output name=reason::no_issue_number"
+            exit 0
+          fi
+          if [ "$ISSUE_NUMBER" != "$ISSUE_ONLY" ]; then
+            echo "::set-output name=run::false"
+            echo "::set-output name=reason::wrong_issue"
+            exit 0
+          fi
+          TRIGGER=false
+          REASON=""
+          if [ "$GITHUB_EVENT_NAME" = "issues" ]; then
+            LABEL="$(jq -r '.label.name // ""' "$GITHUB_EVENT_PATH")"
+            if [ "$LABEL" = "agentic-testing/run" ]; then
+              TRIGGER=true
+              REASON="label:agentic-testing/run"
+            fi
+          fi
+          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+            BODY="$(jq -r '.comment.body // ""' "$GITHUB_EVENT_PATH")"
+            if echo "$BODY" | grep -Eiq '^\/run-?agents\b'; then
+              TRIGGER=true
+              REASON="comment:/run-agents"
+            fi
+          fi
+          if [ "$TRIGGER" = "true" ]; then
+            echo "::set-output name=run::true"
+            echo "::set-output name=reason::$REASON"
+          else
+            echo "::set-output name=run::false"
+            echo "::set-output name=reason::no_trigger"
+          fi
+
+  schematic-verifier:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/61/head
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Run schematic verifier
+        run: |
+          python3 .github/agent-scripts/run_schematic_checks.py --issue ${{ env.ISSUE_ONLY }} --pr 61 || true
+      - name: Upload schematic report
+        uses: actions/upload-artifact@v4
+        with:
+          name: schematic-report
+          path: reports/schematic-report.json
+
+  pinmap-consistency:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/61/head
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Run pinmap check
+        run: |
+          python3 .github/agent-scripts/run_pinmap_check.py --issue ${{ env.ISSUE_ONLY }} --pr 61 || true
+      - name: Upload pinmap report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pinmap-report
+          path: reports/pinmap-report.json
+
+  bom-checker:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/61/head
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Run BOM / parts checks
+        run: |
+          python3 .github/agent-scripts/run_bom_checks.py --issue ${{ env.ISSUE_ONLY }} --pr 61 || true
+      - name: Upload bom report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bom-report
+          path: reports/bom-report.json
+
+  firmware-lint:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/61/head
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install ruff
+        run: python -m pip install ruff
+      - name: Run lint
+        run: |
+          python3 .github/agent-scripts/run_firmware_lint.py --issue ${{ env.ISSUE_ONLY }} --pr 61 || true
+      - name: Upload firmware lint report
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-lint
+          path: reports/firmware-lint.json
+
+  firmware-unit-smoke:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/61/head
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Run firmware smoke tests (host-side mocks)
+        run: |
+          python3 .github/agent-scripts/run_firmware_smoke.py --issue ${{ env.ISSUE_ONLY }} --pr 61 || true
+      - name: Upload firmware-smoke report
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-smoke
+          path: reports/firmware-smoke.json
+
+  post-results:
+    needs: [schematic-verifier, pinmap-consistency, bom-checker, firmware-lint, firmware-unit-smoke]
+    if: needs.check-trigger.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: schematic-report
+          path: reports
+      - name: Download pinmap artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pinmap-report
+          path: reports
+      - name: Download bom artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bom-report
+          path: reports
+      - name: Download firmware lint artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: firmware-lint
+          path: reports
+      - name: Download firmware smoke artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: firmware-smoke
+          path: reports
+      - name: Assemble comment body
+        id: comment
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          r=pathlib.Path('reports')
+          def load(name):
+            p=r/(name+'.json')
+            if p.exists():
+              try:
+                return json.loads(p.read_text())
+              except Exception as e:
+                return {"error":"cannot parse "+str(e)}
+            return {"missing":"no-report"}
+          data={
+            "schematic": load("schematic-report"),
+            "pinmap": load("pinmap-report"),
+            "bom": load("bom-report"),
+            "firmware_lint": load("firmware-lint"),
+            "firmware_smoke": load("firmware-smoke"),
+          }
+          body = "## Agentic test run (triggered from issue #87)\\n\\n**Summary:**\\n"
+          for k,v in data.items():
+            status = 'OK'
+            if isinstance(v, dict) and v.get("errors"):
+              status = f\"{len(v['errors'])} errors\"
+            elif isinstance(v, dict) and v.get("warnings"):
+              status = f\"{len(v['warnings'])} warnings\"
+            body += f\"- **{k}**: {status}\\n\"
+          body += "\\n**Full JSON reports attached as artifacts.**"
+          print(body)
+          PY
+      - name: Post comment on issue #87
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ env.ISSUE_ONLY }}
+          body: ${{ steps.comment.outputs.result || steps.comment.outputs.body || fromJson('\"\"').body }}
