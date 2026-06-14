@@ -36,6 +36,7 @@ Run:  python3 generate.py
 
 from __future__ import annotations
 
+import hashlib
 import shutil
 import subprocess
 import sys
@@ -499,28 +500,28 @@ def _label(net: str, x: float, y: float, rot: int = 0) -> str:
     return dedent(f"""\
         (global_label "{net}" (shape input) (at {x} {y} {rot}) (fields_autoplaced)
           (effects (font (size 1.27 1.27)) (justify left))
-          (uuid "00000000-0000-0000-0000-{abs(hash((net, x, y))) % 10**12:012d}")
+          (uuid "{_stable_uuid('label', net, x, y, rot)}")
         )""")
 
 
 def _wire(x1: float, y1: float, x2: float, y2: float) -> str:
     return dedent(f"""\
         (wire (pts (xy {x1} {y1}) (xy {x2} {y2}))
-          (stroke (width 0) (type default)) (stroke (width 0) (type default))
-          (uuid "00000000-0000-0000-0004-{abs(hash((x1, y1, x2, y2))) % 10**12:012d}")
+          (stroke (width 0) (type default))
+          (uuid "{_stable_uuid('wire', x1, y1, x2, y2)}")
         )""")
 
 
 # Per-symbol stub length: pin tip -> label.  Pico needs a longer stub
 # because each side has 20 closely-spaced pins; everything else fits at 5 mm.
-STUB_LEN: dict[str, float] = {"Pi_Pico": 12.7}
+STUB_LEN: dict[str, float] = {"Pi_Pico_W": 12.7}
 
 
 def _symbol_instance(lib_id: str, ref: str, x: float, y: float, unit: int = 1) -> str:
     return dedent(f"""\
         (symbol (lib_id "test_module:{lib_id}") (at {x} {y} 0) (unit {unit})
           (in_bom yes) (on_board yes) (dnp no)
-          (uuid "00000000-0000-0000-0001-{abs(hash((lib_id, ref, x, y))) % 10**12:012d}")
+          (uuid "{_stable_uuid('symbol', lib_id, ref, x, y, unit)}")
           (property "Reference" "{ref}" (id 0) (at {x - 12} {y - 5} 0)
             (effects (font (size 1.27 1.27)) (justify left)))
           (property "Value" "{lib_id}" (id 1) (at {x - 12} {y - 2.5} 0)
@@ -629,6 +630,16 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
 }
 
 
+def _stable_uuid(kind: str, *parts: object) -> str:
+    digest = hashlib.sha1(
+        repr((kind,) + parts).encode("utf-8")
+    ).hexdigest()
+    return (
+        f"{digest[:8]}-{digest[8:12]}-{digest[12:16]}-"
+        f"{digest[16:20]}-{digest[20:32]}"
+    )
+
+
 def build_schematic() -> str:
     body_parts: list[str] = []
     for lib_id, ref, x, y, nets in PLACEMENTS:
@@ -692,10 +703,6 @@ def build_schematic() -> str:
 def build_symbol_lib_block() -> str:
     """Embed the symbol library inside the schematic for self-contained rendering."""
     lib = build_symbol_lib()
-    # Drop the outer (kicad_symbol_lib ...) wrapper and re-emit as (lib_symbols ...)
-    # with each symbol renamed to test_module:NAME.
-    inner = lib.split("\n", 1)[1].rsplit(")\n", 1)[0]
-    inner = inner.replace('(symbol "', '(symbol "test_module:', 1)
     # The first replace is for the lib top; do per-line for top-level symbols.
     out = []
     depth = 0

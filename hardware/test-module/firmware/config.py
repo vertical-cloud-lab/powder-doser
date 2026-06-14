@@ -120,7 +120,8 @@ SERVO_PRESETS = {
 # The HR-A series factory default is 2400 baud / 7 data bits / even
 # parity / 1 stop bit, A&D standard data format, terminator CR LF.
 # If the balance's function settings (bASFnc) have been changed, mirror
-# them here.  Parity: 0 = none, 1 = odd, 2 = even (machine.UART values).
+# them here.  Parity: 0 = none, 1 = odd, 2 = even (config encoding; the
+# UART constructors translate this to machine.UART's parity argument).
 # -----------------------------------------------------------------------
 SCALE_BAUD            = 2400
 SCALE_BITS            = 7

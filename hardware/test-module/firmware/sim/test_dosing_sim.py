@@ -123,6 +123,13 @@ class DoseLoopTests(unittest.TestCase):
         result = doser.dose(1.000)
         self.assertEqual(result.status, DoseResult.SCALE_ERROR)
 
+    def test_unstable_timeout_reports_scale_error(self):
+        doser, _, _ = make_rig()
+        doser.scale.read_stable = lambda timeout_ms: scale_mod.ScaleReading(
+            scale_mod.UNSTABLE, 0.0, "g")
+        result = doser.dose(1.000)
+        self.assertEqual(result.status, DoseResult.SCALE_ERROR)
+
     def test_zero_target_is_noop(self):
         doser, column, _ = make_rig()
         result = doser.dose(0.0)

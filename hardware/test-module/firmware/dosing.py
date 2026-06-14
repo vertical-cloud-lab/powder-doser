@@ -78,7 +78,8 @@ class Doser:
         """Stable reading relative to the tare, or None on scale trouble."""
         reading = self.scale.read_stable(
             timeout_ms=self.cfg.SCALE_STABLE_TIMEOUT_MS)
-        if reading is None or reading.overload or reading.grams is None:
+        if (reading is None or not reading.stable or reading.overload or
+                reading.grams is None):
             return None
         return reading.grams
 
