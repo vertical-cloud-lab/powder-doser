@@ -43,7 +43,10 @@ generates.
 | `assembly-preview.scad`, `assembly-preview.stl`, `assembly-preview-{iso,top,front}.png` | Non-printable assembly visualisation: full-length auger + pinion + a NEMA 11 dummy body block (28.2 × 28.2 × 32 mm) in their final relative positions, so the radial air gap between the motor body and the auger OD can be confirmed at a glance. |
 | `assembly-preview-short.scad`, `assembly-preview-short-{iso,front}.png` | **(v3, NEW)** Same view but with the short alternate auger, for side-by-side stack-height comparison. |
 | `cross-section-full.scad`, `cross-section-short.scad`, `archimedes-auger-geared-cross-section.png`, `archimedes-auger-geared-short-cross-section.png` | **(v3, NEW)** Half-cut renders of each variant that show the central shaft + helical fin running continuously from the funnel mouth, through the gear band z-range, up to the underside of the top cap — the visual evidence requested in the v2 review that "the auger core is present". |
-| `archimedes-auger-geared.stl`, `archimedes-auger-geared-short.stl`, `stepper-pinion.stl` | Pre-rendered, manifold STLs ready to slice. All pass OpenSCAD's `Simple: yes` manifold check. |
+| `storage-auger-core.scad` | **(NEW)** Parametric core for the high-capacity **storage auger**: `archimedes_auger_storage(total_h, gear_center_z, with_gear)`. Reuses the unchanged outer cylinder / bore / top cap / exit funnel / gear band from `auger-core.scad` and the v4 nozzle screw geometry from `nozzle-variants.scad`, but truncates the internal screw to the **bottom third** of the bore so the top two thirds is an open loose-powder store. |
+| `archimedes-auger-storage.scad` | **(NEW)** Full-length storage auger (`total_h = 250 mm`, with gear band). Identical outer cylinder to `archimedes-auger-geared.scad`; the only change is that the screw occupies the bottom third (≈ 83 mm) and the top two thirds is open storage volume. |
+| `archimedes-auger-storage-test.scad` | **(NEW)** Smaller gearless bench-test version of the storage auger (`total_h = 90 mm`, ≈ 3.54 in). Same 1/3-screw / 2/3-open-storage stipulation, same inlets/outlets, no gear band — matching the short nozzle test pieces. |
+| `archimedes-auger-geared.stl`, `archimedes-auger-geared-short.stl`, `archimedes-auger-storage.stl`, `archimedes-auger-storage-test.stl`, `stepper-pinion.stl` | Pre-rendered, manifold STLs ready to slice. All pass OpenSCAD's `Simple: yes` manifold check. |
 | `*.png` | Iso + top renders for documentation. |
 
 ## v3 — what changed vs v2
@@ -224,6 +227,28 @@ Geometry is shared in `nozzle-variants.scad`, which adds variant-aware bottom-fu
 
 The cross-section PNGs above are the same kind of half-cut render that confirmed the helix presence in v3 of the geared body — they make the difference between the four variants obvious at a glance and confirm that all four have the full inner Archimedean screw across the bench-test length.
 
+## Storage auger — high powder capacity (issue #48 v4 nozzle, 1/3 screw)
+
+@swcharles ([PR #49 comment 4712371378][pr49-c4712371378]) asked for a new auger version, the **storage auger**, that trades internal screw length for loose-powder storage volume:
+
+> We're adjusting the design for more powder storage capacity. Make a new auger version (leaving the old auger version in the file system) called "storage auger" utilizing the same (and now standard) v4 auger nozzle type … remove the top two thirds of the internal screw, allowing for a large internal open area to store loose powder. To be clear, the outer cylinder should be unchanged — all that changes in this design is where the screw starts. Also create a smaller scale auger with the same stipulations (1/3 auger, 2/3 open space inside the cylinder) for testing …
+
+| Part | File | STL | Outer cylinder | Gear band | Screw zone | Open store |
+|------|------|-----|---------------|-----------|-----------|-----------|
+| **Storage auger** (full) | `archimedes-auger-storage.scad` | `archimedes-auger-storage.stl` | 250 mm, **unchanged** vs geared | yes (at 83.33 mm) | bottom 0 → 83.33 mm | top 83.33 → 250 mm |
+| **Storage auger** (bench test) | `archimedes-auger-storage-test.scad` | `archimedes-auger-storage-test.stl` | 90 mm (≈ 3.54 in) | no | bottom 0 → 30 mm | top 30 → 90 mm |
+
+What is **unchanged** from the existing parts (so "the outer cylinder should be unchanged" holds by construction — these modules are reused verbatim from `auger-core.scad`):
+
+- Tube OD 25 mm, ID 21 mm, 2 mm wall.
+- Top cap: 4 radial loading slots + M3 spindle pilot.
+- Bottom: Ø3 mm exit hole with the standard **v4** nozzle funnel + tapered screw tip.
+- Full part: the same 48-tooth annular gear band at `total_h / 3` that meshes with `stepper-pinion.scad`.
+
+What **changes**: the internal Archimedean screw (central shaft + helical fin) now occupies only the **bottom third** of the bore (`screw_top_z = total_h / 3` — verified 0 → 83.33 mm on the full part, 0 → 30 mm on the test part). The top two thirds of the bore is left completely open as a loose-powder reservoir that feeds down into the screw. The screw itself uses the standard v4 nozzle geometry (tapered tip + helix following the shaft down to just above the exit), so the dispensing end is identical to nozzle test piece 4.
+
+Shared geometry lives in `storage-auger-core.scad` (`archimedes_auger_storage(total_h, gear_center_z, with_gear)`); each top-level `.scad` just sets the length and whether the gear band is present, so the two storage variants cannot drift apart. The half-cut cross-sections (`archimedes-auger-storage-cross-section.png`, `archimedes-auger-storage-test-cross-section.png`) show the screw confined to the bottom third with the open store above.
+
 ## Print notes
 
 Both parts are sized for the same stack as PR #16:
@@ -312,6 +337,41 @@ EOF
     "_cs_tmp${N}.scad"
   rm "_cs_tmp${N}.scad"
 done
+
+# Storage auger (full + bench test)
+openscad -o archimedes-auger-storage.stl      archimedes-auger-storage.scad
+openscad -o archimedes-auger-storage-test.stl archimedes-auger-storage-test.scad
+xvfb-run -a openscad -o archimedes-auger-storage-iso.png \
+    --imgsize=900,900 --camera=0,0,125,55,0,25,500 \
+    --colorscheme=Tomorrow archimedes-auger-storage.scad
+xvfb-run -a openscad -o archimedes-auger-storage-test-iso.png \
+    --imgsize=700,800 --camera=0,0,45,55,0,25,200 \
+    --colorscheme=Tomorrow archimedes-auger-storage-test.scad
+cat > _cs_storage.scad <<EOF
+include <storage-auger-core.scad>;
+total_h = 250; gz = total_h/3;
+difference() {
+    archimedes_auger_storage(total_h, gz, true);
+    translate([-gear_tip_r-1, -gear_tip_r-1, -1])
+        cube([2*gear_tip_r+2, gear_tip_r+1, total_h+2]);
+}
+EOF
+xvfb-run -a openscad --render -o archimedes-auger-storage-cross-section.png \
+    --imgsize=700,1100 --camera=0,-80,125,90,0,0,300 --projection=ortho \
+    --colorscheme=Tomorrow _cs_storage.scad
+rm _cs_storage.scad
+cat > _cs_storage_test.scad <<EOF
+include <storage-auger-core.scad>;
+total_h = 90;
+difference() {
+    archimedes_auger_storage(total_h, 0, false);
+    translate([-30, -30, -1]) cube([60, 30, total_h+2]);
+}
+EOF
+xvfb-run -a openscad --render -o archimedes-auger-storage-test-cross-section.png \
+    --imgsize=500,900 --camera=0,-80,45,90,0,0,140 --projection=ortho \
+    --colorscheme=Tomorrow _cs_storage_test.scad
+rm _cs_storage_test.scad
 ```
 
 Or paste either `.scad` into <https://openscad.org/demo/> → **F6**
@@ -331,3 +391,4 @@ Or paste either `.scad` into <https://openscad.org/demo/> → **F6**
 [pr25]: https://github.com/vertical-cloud-lab/powder-doser/pull/25
 [i48-c4513155870]:    https://github.com/vertical-cloud-lab/powder-doser/issues/48#issuecomment-4513155870
 [pr49-c4566308356]:   https://github.com/vertical-cloud-lab/powder-doser/pull/49#issuecomment-4566308356
+[pr49-c4712371378]:   https://github.com/vertical-cloud-lab/powder-doser/pull/49#issuecomment-4712371378
