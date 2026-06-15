@@ -1,0 +1,16 @@
+{
+  "type": "text_to_cad",
+  "id": "87e812e2-9b6e-4f86-8601-8239e9f748d2",
+  "created_at": "2026-05-12T21:54:01.023Z",
+  "started_at": "2026-05-12T21:54:01.682Z",
+  "completed_at": "2026-05-12T22:07:51.598Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "completed",
+  "updated_at": "2026-05-12T22:07:41.903Z",
+  "conversation_id": "57da19c5-dc21-47ed-8e58-00e33065cdcc",
+  "prompt": "An Archimedes auger / helical screw dispenser, 20 mm outside diameter, 100 mm tall, with an M3 threaded mounting hole on the top spindle and a 2.5 mm exit hole at the bottom. Single-start helix, ~10 mm pitch, central shaft ~6 mm diameter.",
+  "output_format": "step",
+  "model_version": "0.1.0",
+  "model": "kcl",
+  "feedback": null
+}

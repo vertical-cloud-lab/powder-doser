@@ -1,0 +1,13 @@
+{
+  "id": "38df38c1-05f1-413a-a2b7-079363d13214",
+  "created_at": "2026-05-15T21:13:23.747088603Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "queued",
+  "updated_at": "2026-05-15T21:13:23.747088603Z",
+  "conversation_id": "bb4503a6-76a1-4292-bc1e-b842b14b0d67",
+  "prompt": "A 3D-printable powder dispenser housing in mm. Vertical hollow tube, 24 outside diameter, 20 inside bore, 110 long. Top: 50x50x6 square flange with four M3 holes on a 42 mm square pattern, for mounting a NEMA 17 stepper (42x42 footprint). The auger spindle (5 mm) couples directly to the stepper shaft via a 5x5 set-screw coupling. Side inlet hopper neck, 12 mm diameter, just below the flange. Near the bottom (within 25 mm of dispense exit): a 12x4 deep circular pocket on +X for a 10 mm ERM vibration disc, and a 16x16x12 deep rectangular pocket on -X for a small solenoid. Each pocket has a 4 mm wire-exit channel. Dispense exit: chamfered 4 mm hole at the bottom. Below the exit, a yoke that holds an SG90 servo (23x12x27) so the servo pivots a 20x12x1.2 deflector blade about the dispense axis. Back face: a 60x30 mounting boss for a Raspberry Pi Zero 2 W with four M2.5 holes on a 58x23 grid.",
+  "output_format": "step",
+  "model_version": "",
+  "model": "kcl",
+  "feedback": null
+}
