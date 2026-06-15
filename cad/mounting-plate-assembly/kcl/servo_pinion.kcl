@@ -1,0 +1,23 @@
+// Servo pinion — 20-tooth m ≈ 0.908 spur pinion for the MG996R.
+//
+// Drives the +X mounting-plate hinge gear band (40 teeth, same module)
+// at a 2 : 1 reduction, centre distance C = 27.25 mm.  The pinion sits
+// at PINION_X_LO/Y/Z and is built in the YZ plane (axis along +X),
+// matching how the hinge gear band is oriented on the mounting plate.
+//
+// KCL approximates the pinion as a cylinder at the pinion tip diameter
+// — true involute teeth are generated in the CadQuery mirror
+// (cad_model.py, source of truth — see README "zoo.dev experience").
+// A Ø6 set-screw bore through the part matches the printed pinion's
+// chordal-flat bore for the MG996R 25-T spline.
+import "params.kcl" as p
+
+pinionBoreDia = 6.0
+
+pinion = startSketchOn(YZ)
+  |> circle(center = [p.pinionY, p.pinionZ], radius = p.gearPinionTipD / 2)
+  |> subtract2d(
+       tool = circle(center = [p.pinionY, p.pinionZ], radius = pinionBoreDia / 2),
+     )
+  |> extrude(length = p.gearFaceW)
+  |> translate(x = p.pinionXLo)

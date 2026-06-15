@@ -1,12 +1,21 @@
 // Baseplate — bench side of the rotating sub-assembly.
 //
-// Per the issue #62 follow-up review:
-//   * front edge sits 10 mm BEHIND the hinge axis (i.e. the hinge axis
-//     is 10 mm in front of the baseplate's front edge)
-//   * two complementary forward-and-up hinge arms (one each side of the
-//     auger) with a central gap between them, mirroring the mounting
-//     plate's two side hinges
-//   * NO powder window — powder falls in front of the baseplate
+// Per Will's PR #66 reviews:
+//   * tabletop is a TRAPEZOID — full width (±100) at the front edge
+//     (near the hinge), tapering back to a narrow rear edge (±32)
+//   * standing on a TRIPOD: two front-corner legs + one rear-centre
+//     leg (the two rear-corner legs are gone)
+//   * two complementary forward-and-up hinge arms (one each side of
+//     the auger) with a central gap between them, mirroring the
+//     mounting plate's two side hinges; the arm BACK (motor-facing)
+//     face is sloped so the mounting plate's underside has clearance
+//     to sweep through 45° and beyond without colliding with the arm
+//   * MG996R servo mounted to TWO square posts (one under each flange
+//     ear); the servo body + output boss protrude through the open
+//     gap between the posts
+//   * a baseplate-thickness "porch" extends forward under the servo
+//     footprint, tied down to the adjacent +X front leg by an
+//     underside triangular flange (Will's "green" location)
 //
 // Local coordinates: base bottom on Z=0, base top at Z=baseT.  Final
 // translate moves the assembly so the bottom lands at zBaseTop.
@@ -15,46 +24,38 @@
 // source of truth (see README "zoo.dev experience").
 import "params.kcl" as p
 
-// ---- baseplate body ----
+// ---- trapezoidal baseplate body ----
 base = startSketchOn(XY)
-  |> startProfile(at = [-p.baseW/2, p.baseYBack])
-  |> line(end = [p.baseW, 0])
-  |> line(end = [0, p.baseL])
-  |> line(end = [-p.baseW, 0])
+  |> startProfile(at = [-p.baseFrontHalfW, p.baseYFront])
+  |> line(end = [2 * p.baseFrontHalfW, 0])
+  |> line(end = [p.baseRearHalfW - p.baseFrontHalfW, p.baseYRear - p.baseYFront])
+  |> line(end = [-2 * p.baseRearHalfW, 0])
   |> close()
   |> extrude(length = p.baseT)
 
-// ---- four corner legs ----
-legX = p.baseW/2 - p.baseLegInset - p.baseLegW/2
-legYF = p.baseYFront - p.baseLegInset - p.baseLegW/2
-legYB = p.baseYBack  + p.baseLegInset + p.baseLegW/2
+// ---- tripod legs (2 front-corner + 1 rear-centre) ----
+frontLegX = p.baseFrontHalfW - p.baseLegInset - p.baseLegW/2
+frontLegY = p.baseYFront - p.baseLegInset - p.baseLegW/2
+rearLegY  = p.baseYRear  + p.baseLegInset + p.baseLegW/2
 
-legFR = startSketchOn(XY)
-  |> startProfile(at = [legX - p.baseLegW/2, legYF - p.baseLegW/2])
+frontRightLeg = startSketchOn(XY)
+  |> startProfile(at = [ frontLegX - p.baseLegW/2, frontLegY - p.baseLegW/2])
   |> line(end = [p.baseLegW, 0])
   |> line(end = [0, p.baseLegW])
   |> line(end = [-p.baseLegW, 0])
   |> close()
   |> extrude(length = -p.baseLegH)
 
-legFL = startSketchOn(XY)
-  |> startProfile(at = [-legX - p.baseLegW/2, legYF - p.baseLegW/2])
+frontLeftLeg = startSketchOn(XY)
+  |> startProfile(at = [-frontLegX - p.baseLegW/2, frontLegY - p.baseLegW/2])
   |> line(end = [p.baseLegW, 0])
   |> line(end = [0, p.baseLegW])
   |> line(end = [-p.baseLegW, 0])
   |> close()
   |> extrude(length = -p.baseLegH)
 
-legBR = startSketchOn(XY)
-  |> startProfile(at = [legX - p.baseLegW/2, legYB - p.baseLegW/2])
-  |> line(end = [p.baseLegW, 0])
-  |> line(end = [0, p.baseLegW])
-  |> line(end = [-p.baseLegW, 0])
-  |> close()
-  |> extrude(length = -p.baseLegH)
-
-legBL = startSketchOn(XY)
-  |> startProfile(at = [-legX - p.baseLegW/2, legYB - p.baseLegW/2])
+rearCentreLeg = startSketchOn(XY)
+  |> startProfile(at = [-p.baseLegW/2, rearLegY - p.baseLegW/2])
   |> line(end = [p.baseLegW, 0])
   |> line(end = [0, p.baseLegW])
   |> line(end = [-p.baseLegW, 0])
@@ -63,33 +64,94 @@ legBL = startSketchOn(XY)
 
 // ---- baseplate hinge arms (middle layer of the 3-layer sandwich) ----
 // In local frame, base top is at z=baseT; the hinge axis is at
-// z = hingeAxisZLocal.  Each arm fills the rectangle
-// (armBackY..yDisp, baseT..hingeAxisZLocal+eyeOd/2) and is extruded
-// armThk along X — armThk = hingeLobeW - hingeLayerGap so the arm fits
-// snugly in the middle third of the ramp half-span between the
-// mounting plate's inner and outer hinge lobes (per the fifth review).
-// The arm bottom extends BACK onto the baseplate top (armBaseSupportLen)
-// so it is in full contact with the baseplate (per Will's review).
+// z = hingeAxisZLocal.  Each arm fills a trapezoid in YZ — bottom is
+// the flat baseplate top from arm_back_y forward to yDisp, top is the
+// hinge-axis-level run from slope_top_y forward to yDisp, and the
+// back face is the sloped run rising from (arm_back_y, baseT) up to
+// (slope_top_y, arm_top_local).  The arm is extruded armThk along X.
 armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
 armBackY = p.baseYFront - p.armBaseSupportLen
+slopeTopY = armBackY + p.armSlopeRun
 armFrontY = p.yDisp
-armLen = armFrontY - armBackY
-armHeight = armTopLocal - p.baseT
 
 rightArm = startSketchOn(YZ)
   |> startProfile(at = [armBackY, p.baseT])
-  |> line(end = [armLen, 0])
-  |> line(end = [0, armHeight])
-  |> line(end = [-armLen, 0])
+  |> line(end = [armFrontY - armBackY, 0])
+  |> line(end = [0, armTopLocal - p.baseT])
+  |> line(end = [slopeTopY - armFrontY, 0])
   |> close()
   |> extrude(length = p.armThk)
 
 leftArm = startSketchOn(YZ)
   |> startProfile(at = [armBackY, p.baseT])
-  |> line(end = [armLen, 0])
-  |> line(end = [0, armHeight])
-  |> line(end = [-armLen, 0])
+  |> line(end = [armFrontY - armBackY, 0])
+  |> line(end = [0, armTopLocal - p.baseT])
+  |> line(end = [slopeTopY - armFrontY, 0])
   |> close()
   |> extrude(length = -p.armThk)
+
+// ---- MG996R servo mount — porch + two square posts + underside flange ----
+// Per Will's PR #66 reviews (comments 4615931709 / 4624739034 /
+// 4625212895 / 4633722007):
+//   * the porch is a slab of baseplate-thickness material extending
+//     forward under the servo footprint
+//   * TWO separate square posts, one under each flange ear, with the
+//     gap between them = the 40 mm body length + clearance so the
+//     body + output boss protrude through the gap
+//   * posts sit BEHIND the mounting holes; the servo is placed so the
+//     tip of its driving head hangs 5 mm past the baseplate front edge
+//   * underside triangular flange ties the cantilevered porch down to
+//     the adjacent +X front leg
+
+pinionZLocal = p.pinionZ - p.zBaseTop
+postZLo = p.servoWallZLo
+postZHi = pinionZLocal + p.mg996rHoleZSpread / 2 + 5.0
+
+// (a) the porch — a slab of baseplate-thickness material under the
+// servo footprint, fused to the baseplate front edge.
+porchXLo = p.servoWallX
+porchXHi = p.servoBodyXHi + 1.0
+porchYLo = p.baseYFront - 2.0
+porchYHi = p.farPostYHi + 1.0
+porch = startSketchOn(XY)
+  |> startProfile(at = [porchXLo, porchYLo])
+  |> line(end = [porchXHi - porchXLo, 0])
+  |> line(end = [0, porchYHi - porchYLo])
+  |> line(end = [-(porchXHi - porchXLo), 0])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// (b) the two square posts.  Each carries its ear's two Ø5 holes
+// drilled through along X (true bore lives in cad_model.py).
+nearPost = startSketchOn(XY)
+  |> startProfile(at = [p.servoWallX, p.nearPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.nearPostYHi - p.nearPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+farPost = startSketchOn(XY)
+  |> startProfile(at = [p.servoWallX, p.farPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.farPostYHi - p.farPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+// (c) underside triangular flange — stiffens the cantilevered porch
+// against the servo's weight + lifting reaction torque by tying it
+// down to the adjacent +X front leg.  A YZ-plane downstand rib at
+// the leg's X, deepest over the leg and tapering to nothing at the
+// porch front edge.
+flange = startSketchOn(YZ)
+  |> startProfile(at = [frontLegY, p.baseT])
+  |> line(end = [porchYHi - frontLegY, 0])
+  |> line(end = [frontLegY - porchYHi, -p.flangeDepth])
+  |> close()
+  |> extrude(length = p.flangeThk)
+  |> translate(x = frontLegX - p.flangeThk / 2)
 
 // (Linear-actuator base clevis removed — no longer using a linear actuator.)

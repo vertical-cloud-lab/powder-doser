@@ -130,4 +130,45 @@ leftOuterLobe = startSketchOn(YZ)
   |> close()
   |> extrude(length = -lobeLen)
 
+// ---- Hinge gear band on the +X OUTER lobe (issue #63) -------------
+// The outermost +X mounting-plate hinge lobe carries a 40-tooth spur
+// gear band that meshes with the servo pinion on the baseplate at
+// C = 27.25 mm, 2 : 1 reduction.  The gear band is integrated into
+// the mounting plate as a single solid.  KCL approximates the tooth
+// band as a cylinder at the gear's tip diameter (true involute teeth
+// are generated in the CadQuery mirror, cad_model.py, which is the
+// source of truth for the printed STEP/STL — see README "zoo.dev
+// experience").
+gearBandHalfThk = p.gearFaceW / 2
+hingeGearBand = startSketchOn(YZ)
+  |> circle(center = [p.yDisp, p.zAug], radius = p.gearHingeTipD / 2)
+  |> extrude(length = p.gearFaceW)
+  // Translate so the band's near face lands at gearXLo.
+  |> translate(x = p.gearXLo)
+
+// ---- Arm-clearance slots through the plate body (interference fix) -
+// The two baseplate hinge arms (one each side of the auger gap) pass
+// through the plate body when the plate folds flush at 0° tilt.  Cut
+// a vertical slot through the plate at each arm's X band, from the
+// +Y edge back to just behind the arm's back face.
+slotYBack = p.armSlotYBack
+slotYFront = p.plateYFront + 2
+slotL = slotYFront - slotYBack
+
+rightArmSlot = startSketchOn(plate, face = START)
+  |> startProfile(at = [ p.hingeX1 - p.armSlotClearance, slotYBack])
+  |> line(end = [(p.hingeX2 + p.armSlotClearance) - (p.hingeX1 - p.armSlotClearance), 0])
+  |> line(end = [0, slotL])
+  |> line(end = [-((p.hingeX2 + p.armSlotClearance) - (p.hingeX1 - p.armSlotClearance)), 0])
+  |> close()
+  |> extrude(length = -(p.plateT + 2))
+
+leftArmSlot = startSketchOn(plate, face = START)
+  |> startProfile(at = [-(p.hingeX2 + p.armSlotClearance), slotYBack])
+  |> line(end = [(p.hingeX2 + p.armSlotClearance) - (p.hingeX1 - p.armSlotClearance), 0])
+  |> line(end = [0, slotL])
+  |> line(end = [-((p.hingeX2 + p.armSlotClearance) - (p.hingeX1 - p.armSlotClearance)), 0])
+  |> close()
+  |> extrude(length = -(p.plateT + 2))
+
 // (No actuator rod-end lug — no underside features per the third review.)
