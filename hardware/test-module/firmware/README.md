@@ -4,7 +4,7 @@ This is the single-MCU firmware for the bench rig described in
 [`hardware/test-module/README.md`](../README.md).  It runs on
 **MicroPython** on a Pico W and exposes a tiny serial REPL so a bench
 operator can fire any one of the four channels (auger, vibration, tap,
-dispense-angle servo) independently, with every runtime parameter
+dual dispense-angle servos) independently, with every runtime parameter
 exposed in a top-level `config.py`.
 
 The firmware targets the **Raspberry Pi Pico W** (RP2040 + CYW43439).
@@ -118,6 +118,7 @@ Common knobs:
 | Servo    | `SERVO_SPEED_DEG_PER_S`  | Smoothness of `a`/`p` moves -- the firmware interpolates from the current angle to the target at this rate (deg/s) so the servo never slams.  Set to 0 to revert to instantaneous "snap" moves. |
 | Servo    | `SERVO_UPDATE_HZ`        | Interpolation update rate; default 50 Hz matches the servo PWM frame. |
 | Servo    | `SERVO_PRESETS`          | Add/rename `p <preset>` shortcuts. |
+| Servo    | `SERVO2_INVERT`          | Two servos drive the dispensing axis in unison (M3 on `PIN_SERVO_SIG`/GP15, M4 on `PIN_SERVO_SIG2`/GP2).  `True` mirrors servo 2's angle about the range midpoint (servos on opposite sides of the baseplate); set `False` if both face the same way. |
 
 After editing `config.py`, re-run `MicroPico: Upload project to Pico`
 (or just **right-click → "Upload file to Pico"** on the changed file)

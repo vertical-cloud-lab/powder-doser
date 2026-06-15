@@ -1,6 +1,12 @@
-"""Hobby-servo (dispensing-angle axis) standalone test (MicroPython).
+"""Dual hobby-servo (dispensing-angle axis) standalone test (MicroPython).
 
-Pin map from ``config.py``.  Only the servo PWM pin is touched.
+Pin map from ``config.py``.  Two servos drive the dispensing-angle axis
+together (one on each side of the baseplate); only their two PWM pins are
+touched.  The servos always move in unison off a single logical angle --
+there is no independent control.  Because they face opposite directions,
+servo 2 is driven with the mirror-image angle of servo 1 (reflected about
+the midpoint of the range) when ``TEST_INVERT`` is True.
+
 Smoothing is on by default (interpolated motion at
 ``TEST_SPEED_DEG_PER_S`` deg/s) so the test mirrors what the powder
 actually sees on the production rig.  Set ``TEST_SPEED_DEG_PER_S = 0``
@@ -16,6 +22,7 @@ Keyboard controls (single keystroke; no Enter needed):
     c       go to centre (midpoint of the configured range)
     j       nudge by -TEST_STEP_DEG
     k       nudge by +TEST_STEP_DEG
+    i       toggle servo-2 inversion (to check mounting orientation)
     +/-     adjust the smoothing speed by 10 deg/s
     s       print state
     q       quit
@@ -42,26 +49,42 @@ TEST_STEP_DEG        = 5.0
 TEST_SPEED_DEG_PER_S = config.SERVO_SPEED_DEG_PER_S
 TEST_UPDATE_HZ       = config.SERVO_UPDATE_HZ
 TEST_START_ANGLE     = float(config.SERVO_DEFAULT_DEG)
+TEST_INVERT          = config.SERVO2_INVERT  # servo 2 mirrors servo 1
 
 PERIOD_US = 20_000  # 50 Hz servo frame
 
 
 class ServoTest:
     def __init__(self):
-        self.pwm = PWM(Pin(config.PIN_SERVO_SIG))
-        self.pwm.freq(50)
-        self.pwm.duty_u16(0)
+        self.pwm1 = PWM(Pin(config.PIN_SERVO_SIG))
+        self.pwm1.freq(50)
+        self.pwm1.duty_u16(0)
+        self.pwm2 = PWM(Pin(config.PIN_SERVO_SIG2))
+        self.pwm2.freq(50)
+        self.pwm2.duty_u16(0)
         self.angle = TEST_START_ANGLE
         self.speed = float(TEST_SPEED_DEG_PER_S)
+        self.invert = bool(TEST_INVERT)
         self._write(self.angle)
 
-    def _write(self, angle):
+    def _mirror(self, angle):
+        if self.invert:
+            return ((config.SERVO_MIN_ANGLE_DEG + config.SERVO_MAX_ANGLE_DEG)
+                    - angle)
+        return angle
+
+    def _duty(self, angle):
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
         frac = ((angle - config.SERVO_MIN_ANGLE_DEG) / span) if span else 0
         pulse_us = (config.SERVO_MIN_PULSE_US
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
-        self.pwm.duty_u16(int((pulse_us / PERIOD_US) * 65535))
+        return int((pulse_us / PERIOD_US) * 65535)
+
+    def _write(self, angle):
+        # Both servos move in unison; servo 2 takes the mirrored angle.
+        self.pwm1.duty_u16(self._duty(angle))
+        self.pwm2.duty_u16(self._duty(self._mirror(angle)))
 
     def move_to(self, target):
         target = max(config.SERVO_MIN_ANGLE_DEG,
@@ -96,16 +119,21 @@ def main():
 
     def show():
         return ("servo: angle={a:.1f}, range=[{lo}..{hi}], "
-                "speed={s} deg/s, smoothing={on}").format(
+                "speed={s} deg/s, smoothing={on}, "
+                "dual(GP{p1}+GP{p2}) invert={inv}").format(
                     a=servo.angle,
                     lo=config.SERVO_MIN_ANGLE_DEG,
                     hi=config.SERVO_MAX_ANGLE_DEG,
                     s=servo.speed,
-                    on="on" if servo.speed > 0 else "off (instant)")
+                    on="on" if servo.speed > 0 else "off (instant)",
+                    p1=config.PIN_SERVO_SIG,
+                    p2=config.PIN_SERVO_SIG2,
+                    inv=servo.invert)
 
-    print("[servo-test] ready on GP{sig}".format(sig=config.PIN_SERVO_SIG))
-    print("space=toggle A/B  a/b=goto  c=centre  j/k=nudge  +/-=speed  "
-          "s=state  q=quit")
+    print("[servo-test] ready on GP{s1}+GP{s2} (dual, invert={inv})".format(
+        s1=config.PIN_SERVO_SIG, s2=config.PIN_SERVO_SIG2, inv=TEST_INVERT))
+    print("space=toggle A/B  a/b=goto  c=centre  j/k=nudge  i=invert  "
+          "+/-=speed  s=state  q=quit")
     print(show())
 
     centre = 0.5 * (config.SERVO_MIN_ANGLE_DEG + config.SERVO_MAX_ANGLE_DEG)
@@ -131,6 +159,10 @@ def main():
                 servo.nudge(-TEST_STEP_DEG)
             elif key == "k":
                 servo.nudge(+TEST_STEP_DEG)
+            elif key == "i":
+                servo.invert = not servo.invert
+                servo._write(servo.angle)
+                print(show())
             elif key == "+":
                 servo.speed += 10
                 print(show())
@@ -144,7 +176,7 @@ def main():
                 return
             elif key in ("h", "?"):
                 print("space=toggle A/B  a/b=goto  c=centre  j/k=nudge  "
-                      "+/-=speed  s=state  q=quit")
+                      "i=invert  +/-=speed  s=state  q=quit")
     except KeyboardInterrupt:
         print("[servo-test] interrupted")
 

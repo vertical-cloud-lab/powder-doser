@@ -65,7 +65,7 @@ hosting all the wiring on a half-size breadboard.
 | U5  | Pololu Tic T500 USB stepper motor controller (#3134, MP6500) | 11 | 1 | Drives the auger over TTL serial from the Pico W; on-board motion planner + software-set current limit. |
 | SR1 | Pololu #3776 33 V / 9 W shunt regulator | 18 | 1 | Across `+12V` / `GND` next to U5's `VIN` to clamp stepper back-EMF — see notes below. |
 | M2  | NEMA-11 11HS18-0674S bipolar stepper | 10 | 1 | Direct-coupled to the auger. |
-| M3  | HD-1810MG metal-gear digital servo (#1142) | 16 | 1 | Dispensing-angle / wiper axis. |
+| M3  | HD-1810MG metal-gear digital servo (#1142) | 16 | 2 | Dispensing-angle / wiper axis — **two** servos (M3 + M4) on opposite sides of the baseplate, moving in unison for steadier tilt control. |
 | J1  | Mean Well GST60A12-P1J 12 V / 5 A barrel-jack PSU | 13 + 13a/13b | 1 | System power. |
 | C1  | 100 µF / 25 V electrolytic, 12 V bulk | 14 | 1 | 12 V rail bulk decoupling. |
 | C2  | 100 µF / 10 V electrolytic, 5 V bulk | 9 | 1 | Tames the servo + solenoid transients on the 5 V rail. |
@@ -152,7 +152,7 @@ These nets are the contract between
 | Net | DRV / actuator pin | Pico W pin | Notes |
 |---|---|---|---|
 | `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VIN , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
-| `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , C2.+              | —     | Buck output; powers Pico W + servo. |
+| `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , M4.+5V , C2.+    | —     | Buck output; powers Pico W + both servos. |
 | `+3V3`       | U2.3V3 , U3.VIN                                | —     | Pico W on-board LDO; powers the DRV2605L logic.  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
 | `GND`        | (all, incl. SR1.- , U5.GND) | —     | Common ground. |
 | `I2C_SDA`    | U3.SDA            | GP0   | I2C0 SDA to DRV2605L. |
@@ -162,7 +162,8 @@ These nets are the contract between
 | `SOL_IN1`    | U4.IN1            | GP10  | DRV8871 IN1 — PWM, drives the solenoid forward. |
 | `SOL_IN2`    | U4.IN2            | GP11  | DRV8871 IN2 — held low. |
 | `HAPT_EN`    | U3.EN , U3.IN_TRIG| GP14  | Hard-mute / wake for DRV2605L. |
-| `SERVO_SIG`  | M3.SIG            | GP15  | 50 Hz PWM to the hobby servo. |
+| `SERVO_SIG`  | M3.SIG            | GP15  | 50 Hz PWM to servo 1 (dispensing-angle axis). |
+| `SERVO_SIG2` | M4.SIG            | GP2   | 50 Hz PWM to servo 2 (opposite side); firmware mirrors servo 1. |
 | `STP_A1/A2`  | U5.A1/A2 ↔ M2.A1/A2 | —   | Stepper coil A. |
 | `STP_B1/B2`  | U5.B1/B2 ↔ M2.B1/B2 | —   | Stepper coil B. |
 | `VIB_A/B`    | U3.OUT± ↔ M1.±    | —     | ERM coin motor leads. |
@@ -232,12 +233,17 @@ Build order, top to bottom:
      stepper while `VIN` is powered** — doing so can destroy the Tic's
      driver.
 
-7. **Dispense-angle servo.**
-   * `M3 +5V → +5V`, `M3 GND → GND`
-   * `Pico W GP15 (pin 20) → M3 SIG`.
-     The firmware ramps every angle command at
-     `SERVO_SPEED_DEG_PER_S` deg/s so the servo never slams to the new
-     setpoint.
+7. **Dispense-angle servos (two, opposite sides).**
+   * `M3 +5V → +5V`, `M3 GND → GND`, `Pico W GP15 (pin 20) → M3 SIG`.
+   * `M4 +5V → +5V`, `M4 GND → GND`, `Pico W GP2 (pin 4) → M4 SIG`.
+   * Both servos move in unison off a single angle command — there is no
+     independent control.  Because they sit on opposite sides of the
+     baseplate facing opposite ways, the firmware drives M4 with the
+     mirror-image angle (`config.SERVO2_INVERT = True`) so they tilt the
+     auger the same physical way.  Set `SERVO2_INVERT = False` if both
+     servos are mounted facing the same direction.
+   * The firmware ramps every angle command at `SERVO_SPEED_DEG_PER_S`
+     deg/s so the servos never slam to the new setpoint.
 
 8. **Sanity check before powering.** With the brick **unplugged**:
    * Confirm no continuity between `+12V` and `GND`, or between `+5V`

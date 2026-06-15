@@ -373,8 +373,9 @@ PLACEMENTS = [
          ("GP4", "STP_TX"), ("GP5", "STP_RX"),
          # DRV8871 (solenoid)
          ("GP10", "SOL_IN1"), ("GP11", "SOL_IN2"),
-         # Servo PWM (dispensing angle)
-         ("GP15", "SERVO_SIG"),
+         # Servo PWM (dispensing angle); two servos move in unison, M4
+         # mirrored via firmware on the opposite side of the baseplate.
+         ("GP15", "SERVO_SIG"), ("GP2", "SERVO_SIG2"),
          # DRV2605L enable + trigger (optional; we drive in I2C mode but
          # expose EN so the firmware can hard-mute the haptic driver).
          ("GP14", "HAPT_EN")]),
@@ -416,9 +417,14 @@ PLACEMENTS = [
         [("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
 
-    # ---- Dispensing-angle servo channel ----
+    # ---- Dispensing-angle servo channel (two servos, opposite sides) ----
+    # Both servos rotate the auger together; the firmware drives M4 with the
+    # mirror-image angle (config.SERVO2_INVERT) so they tilt the doser the
+    # same physical way from each side of the baseplate.
     ("Servo_3pin", "M3", 210, 215,
         [("+5V", "+5V"), ("GND", "GND"), ("SIG", "SERVO_SIG")]),
+    ("Servo_3pin", "M4", 285, 215,
+        [("+5V", "+5V"), ("GND", "GND"), ("SIG", "SERVO_SIG2")]),
 ]
 
 
