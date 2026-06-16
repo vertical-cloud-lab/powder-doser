@@ -102,7 +102,7 @@ yGearBand              = yDisp - gearBandFromDispEnd       // +41.67 mm
 packGap                = 1.0
 yTap                   = yGearBand + (gearBandFaceW / 2.0) + packGap + (tapPlateD / 2.0)   // +56.67
 yBrkFront              = yTap + (tapPlateD / 2.0) + packGap + (brkFlangeD / 2.0)           // +72.67
-yBrkRear               = -95.0
+yBrkRear               = -2.0
 
 // SYMMETRIC plate X envelope (auger centred at X=0, plate mirrored).
 plateXHalf             = +gearCentreDistance + (nema11BodyW / 2.0) + 8.0   // 54.1
@@ -176,9 +176,11 @@ baseRearHalfW          = 100.0                             // ±100 at rear (rec
 // Baseplate position — front edge 10 mm BEHIND the hinge axis, so the
 // hinge axis sits 10 mm in front of the baseplate's front edge.
 baseYFront             = yDisp - 10.0                      // +115
-// Rear edge pulled forward to +30 — the back part of the baseplate is
-// removed (per Will's comment 4721011696).
-baseYRear              = +30.0
+// Rear edge pulled forward to +55 — the tab is shortened further per
+// Will's review (pullrequestreview-4509355231); the two rear corners
+// are chamfered 25 mm × 45°.
+baseYRear              = +55.0
+baseRearChamfer        = 25.0
 baseYBack              = baseYRear                          // back-compat alias
 baseYCentre            = (baseYFront + baseYRear) / 2.0
 baseW                  = 2.0 * baseFrontHalfW              // front-edge width
@@ -187,14 +189,12 @@ baseL                  = baseYFront - baseYRear
 // zBaseTop is the BOTTOM of the baseplate body; base top = zBaseTop + baseT.
 zBaseTop               = -plateT - 8.0                     // -14
 
-// Four M5 mounting holes through the baseplate at the rear corners,
-// arranged like the corners of a 60 × 60 mm square so we can bolt
-// the part down onto a separate frame.
+// Four M5 mounting holes near the four tab corners (per Will's review
+// pullrequestreview-4509355231 — "match the green holes in the drawing").
 baseMountHoleDia       = 5.4
-baseMountHolePitch     = 60.0
-baseMountHoleX         = baseMountHolePitch / 2.0          // ±30
-baseMountHoleYRear     = baseYRear + 10.0                  // +40
-baseMountHoleYFront    = baseMountHoleYRear + baseMountHolePitch   // +100
+baseMountHoleX         = 80.0                             // ±80 (near corners)
+baseMountHoleYRear     = baseYRear + 13.0                 // +68 (clear of chamfer)
+baseMountHoleYFront    = baseYFront - 10.0                // +105 (front corners)
 
 // Baseplate hinge arms — middle layer of the 3-layer sandwich, one each
 // side of the auger gap.  Each arm occupies the centre third of its
@@ -311,16 +311,18 @@ armSlotYBack           = (baseYFront - armBaseSupportLen) - 2.0   // +78
 armSlotClearance       = 0.5                                       // per side along X
 
 // Cantilever-stiffening flange under the tabletop — mirrored on +X
-// and -X (one per servo) per Will's comment 4721011696.  The flange
-// is taller / deeper than before, with a supportive triangle (gusset)
-// and an M5 mounting hole drilled through its outboard face for
-// bolting the assembly down onto an external frame.
+// and -X (one per servo).  Per Will's review (pullrequestreview-4509355231)
+// the supportive triangle (gusset) sits right under the servo mount so it
+// intersects both the flange and the baseplate, and the M5 mounting hole
+// is drilled HORIZONTALLY (axis parallel to Y, at the 0° datum) through
+// the gusset rather than through the flange face.
 flangeThk              = 6.0                          // flange rib thickness along X
 flangeDepth            = 40.0                         // drop below the baseplate bottom
 flangeX                = 79.0                         // ±79 in X
-flangeGussetThk        = 6.0                          // gusset thickness along Y
-flangeGussetRun        = 26.0                         // gusset X-run inboard from flange
-flangeHoleDia          = 5.4                          // M5 clearance through the flange
-flangeHoleZBelowBase   = 22.0                         // hole centre Z below baseplate bottom
+flangeGussetThk        = 10.0                         // gusset thickness along Y
+flangeGussetRun        = 20.0                         // gusset X-run inboard from flange
+flangeHoleDia          = 5.4                          // M5 clearance through the gusset
+flangeHoleZBelowBase   = 15.0                         // hole centre Z below baseplate bottom
+flangeHoleXInboard     = 7.0                          // hole X inboard of the flange face
 
 // (Linear-actuator base clevis removed — no longer using a linear actuator.)

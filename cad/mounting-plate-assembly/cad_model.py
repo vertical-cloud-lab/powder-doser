@@ -141,7 +141,13 @@ Y_TAP       = (Y_GEAR_BAND + GEAR_BAND_FACE_W / 2.0
                + PACK_GAP + TAP_PLATE_D / 2.0)                # +56.67
 Y_BRK_FRONT = (Y_TAP + TAP_PLATE_D / 2.0
                + PACK_GAP + BRK_FLANGE_D / 2.0)               # +72.67
-Y_BRK_REAR  = -95.0
+# Rear auger bracket — moved forward to just BEHIND the front drive
+# cluster (motor/gears/servo mount) so the mounting plate can be cut
+# down to a little more than half its former length (per Will's review
+# pullrequestreview-4509355231: "move the back bracket up until it's
+# just behind the servo mount and cut off the excess behind it").  Was
+# -95 (plate ≈ 223 mm long); now -2 (plate ≈ 130 mm — ~58 %).
+Y_BRK_REAR  = -2.0
 
 # --- Plate X envelope (SYMMETRIC about X=0 — auger in the middle) ------
 PLATE_X_HALF = GEAR_CENTRE_DISTANCE + NEMA11_BODY_W / 2.0 + 8.0  # 54.1
@@ -154,7 +160,7 @@ PLATE_X_CENTRE = 0.0
 # Plate front edge sits 10 mm short of the hinge axis (the hinge axis
 # is overhung forward by the eye + ramp top).
 PLATE_Y_FRONT = Y_DISP - 10.0                                # +115
-PLATE_Y_BACK  = Y_BRK_REAR - BRK_FLANGE_D / 2.0 - 7.0        # -114.5
+PLATE_Y_BACK  = Y_BRK_REAR - BRK_FLANGE_D / 2.0 - 7.0        # -15 (was -114.5)
 PLATE_L = PLATE_Y_FRONT - PLATE_Y_BACK
 PLATE_Y_CENTRE = (PLATE_Y_FRONT + PLATE_Y_BACK) / 2.0
 
@@ -228,28 +234,35 @@ BASE_REAR_HALF_W = 100.0                                   # ±100 at rear (rect
 
 # Baseplate position — front edge 10 mm BEHIND the hinge axis
 # (= the hinge axis is 10 mm forward of the baseplate's front edge,
-# per the issue #62 follow-up drawing).  Rear edge pulled forward to
-# just past the hinge-arm base + room for the rear M5 mounting holes.
+# per the issue #62 follow-up drawing).  Per Will's review
+# (pullrequestreview-4509355231: "shorten the length even more") the
+# rear edge is pulled further forward — the tab is now only ~60 mm deep
+# (was 85), just enough to carry the hinge-arm bases, the servo porches
+# and the four corner mounting holes.
 BASE_Y_FRONT = Y_DISP - 10.0                               # +115
-BASE_Y_REAR  = +30.0                                       # was -75; small forward-only tab
+BASE_Y_REAR  = +55.0                                       # was +30; tab shortened
 # Back-compat aliases used by the side-view render diagrams.
 BASE_Y_BACK  = BASE_Y_REAR
 BASE_Y_CENTRE = (BASE_Y_FRONT + BASE_Y_REAR) / 2.0
 BASE_W = 2.0 * BASE_FRONT_HALF_W                           # front-edge width
 BASE_L = BASE_Y_FRONT - BASE_Y_REAR
 
+# Chamfered rear corners — per Will's review (pullrequestreview-4509355231:
+# "chamfer the back corners (like in the drawing)").  A 45° chamfer cuts
+# CHAMFER mm off each rear corner (the two corners on the −Y / rear edge,
+# away from the servo mounts).
+BASE_REAR_CHAMFER = 25.0
+
 # --- M5 mounting holes (bolt baseplate to separate leg/frame assembly) ----
-# Per Will's review (comment 4721011696) — "On the back corners, now add
-# mounting holes we can use to mount them to each other. These holes
-# should be for M5 screws and uniform, oriented and spaced evenly like
-# the corners of a square."  Four Ø5.4 (M5 clearance) through-holes
-# arranged at the corners of a 60 × 60 mm square at the rear of the
-# tabletop, centred on X = 0.
+# Per Will's reviews (comment 4721011696 + pullrequestreview-4509355231:
+# "move the mounting holes to match the placements of the green holes in
+# the drawing").  Four Ø5.4 (M5 clearance) through-holes near the four
+# corners of the tab — two near the chamfered rear corners and two near
+# the front corners — clear of the hinge arms, servo posts and porches.
 BASE_MOUNT_HOLE_DIA = 5.4                  # M5 clearance
-BASE_MOUNT_HOLE_PITCH = 60.0               # side of the square (X-pitch = Y-pitch)
-BASE_MOUNT_HOLE_X = BASE_MOUNT_HOLE_PITCH / 2.0             # ±30 from centreline
-BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 10.0                 # +40 (10 mm in from rear edge)
-BASE_MOUNT_HOLE_Y_FRONT = BASE_MOUNT_HOLE_Y_REAR + BASE_MOUNT_HOLE_PITCH  # +100
+BASE_MOUNT_HOLE_X = 80.0                    # ±80 from centreline (near corners)
+BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 13.0                 # +68 (clear of the chamfer)
+BASE_MOUNT_HOLE_Y_FRONT = BASE_Y_FRONT - 10.0              # +105 (front corners)
 
 # Z_BASE_TOP is the BOTTOM of the baseplate body in absolute frame.
 # Baseplate top face is at z = Z_BASE_TOP + BASE_T.  Choose so there's
@@ -444,32 +457,35 @@ M5_CLEAR = 5.4
 ARM_SLOT_Y_BACK = (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN) - 2.0   # +78 (2 mm clear)
 ARM_SLOT_CLEARANCE = 0.5                # per side along X
 
-# --- Underside hanging flange (×2, one per side) ---------------------
-# Per Will's review (comment 4721011696) the original cantilever-stiff
-# flange is RETAINED — made "a bit taller / lower", braced by a
-# supportive triangle, and given an M5 mounting hole through its new
-# face — so the baseplate can be bolted down to the external leg/frame
-# assembly.  The flange is mirrored onto BOTH porches (one per servo
-# mount).  Geometry:
-#   * The flange itself is a YZ-plane rib of thickness FLANGE_THK along
-#     X, hanging below the baseplate from the porch underside; it runs
-#     from the front of the porch back to the baseplate front edge,
-#     and drops FLANGE_DEPTH below the baseplate bottom.
-#   * The supportive triangle is an XZ-plane gusset of thickness
-#     FLANGE_GUSSET_THK along Y, attached at the inboard end of the
-#     flange; it tapers from the baseplate-bottom plane down to the
-#     bottom of the flange, supporting the flange against the lifting
-#     reaction torque transmitted from the porch above.
-#   * The mounting hole is an M5 clearance through the flange face
-#     (drilled along X), centred FLANGE_HOLE_Z below the baseplate
-#     bottom and FLANGE_HOLE_Y back from the porch front edge.
-FLANGE_THK = 6.0                          # rib thickness along X
+# --- Underside hanging flange + supportive triangle (×2, one per side) ---
+# Per Will's reviews (comment 4721011696 + pullrequestreview-4509355231)
+# each servo mount has an underside hanging FLANGE braced by a
+# supportive TRIANGLE.  The latest review corrects two things:
+#   * The triangle previously floated far BEHIND the part (an XZ-plane
+#     workplane-offset sign bug placed it at Y ≈ −118).  It must sit
+#     RIGHT UNDER the servo mount, INTERSECTING both the flange and the
+#     baseplate (porch).
+#   * The M5 mounting hole moves OFF the flange and ONTO the triangle,
+#     drilled HORIZONTALLY — parallel to the auger (along Y) at the 0°
+#     position — so the tab can be bolted to a frame wall that faces
+#     fore/aft.
+# Geometry (per side, mirrored across X = 0):
+#   * Flange — a vertical YZ-plane plate (thickness FLANGE_THK along X)
+#     at X = ±FLANGE_X, hanging FLANGE_DEPTH below the porch underside,
+#     spanning the servo body in Y.
+#   * Triangle (gusset) — an XZ-plane rib of thickness FLANGE_GUSSET_THK
+#     along Y, centred under the servo body, sharing the flange's outer
+#     vertical edge (X = ±FLANGE_X) and its top edge with the porch
+#     bottom (Z = 0), bracing inboard over FLANGE_GUSSET_RUN.
+#   * Mounting hole — Ø5.4 (M5) drilled along Y through the triangle.
+FLANGE_THK = 6.0                          # flange plate thickness along X
 FLANGE_DEPTH = 40.0                       # how far the flange drops below the baseplate
-FLANGE_X = 79.0                           # ±79 in X — same X as the former front leg
-FLANGE_GUSSET_THK = 6.0                   # gusset thickness along Y
-FLANGE_GUSSET_RUN = 26.0                  # gusset X-run inboard from the flange
-FLANGE_HOLE_DIA = 5.4                     # M5 clearance through the flange face
-FLANGE_HOLE_Z_BELOW_BASE = 22.0           # hole centre Z below the baseplate bottom
+FLANGE_X = 79.0                           # ±79 in X — under the servo body
+FLANGE_GUSSET_THK = 10.0                  # triangle thickness along Y (room for the Y-hole)
+FLANGE_GUSSET_RUN = 20.0                  # triangle X-run inboard from the flange (stays on the porch)
+FLANGE_HOLE_DIA = 5.4                     # M5 clearance, drilled through the triangle along Y
+FLANGE_HOLE_Z_BELOW_BASE = 15.0           # hole centre Z below the baseplate bottom
+FLANGE_HOLE_X_INBOARD = 7.0               # hole centre X inboard of the flange face
 
 
 # --------------------------------------------------------------------- #
@@ -829,6 +845,26 @@ def build_baseplate() -> cq.Workplane:
         .translate((-BASE_FRONT_HALF_W, BASE_Y_REAR, 0))
     )
 
+    # Chamfer the two REAR corners (−Y edge, away from the servos) at 45°
+    # — per Will's review (pullrequestreview-4509355231 "chamfer the back
+    # corners").  Cut a triangular prism from each rear corner.
+    c = BASE_REAR_CHAMFER
+    for sx in (+1, -1):
+        x_corner = sx * BASE_FRONT_HALF_W
+        x_inner = sx * (BASE_FRONT_HALF_W - c)
+        wedge = (
+            cq.Workplane("XY")
+            .workplane(offset=-1.0)
+            .polyline([
+                (x_corner, BASE_Y_REAR - 1.0),
+                (x_corner + sx * 1.0, BASE_Y_REAR + c),
+                (x_inner, BASE_Y_REAR - 1.0),
+            ])
+            .close()
+            .extrude(BASE_T + 2.0)
+        )
+        base = base.cut(wedge)
+
     # Forward-and-up hinge arms — middle layer of the 3-layer sandwich.
     # Each arm occupies the centre third of its ramp half-span so it
     # slips between the mounting plate's inner and outer hinge lobes.
@@ -939,67 +975,62 @@ def build_baseplate() -> cq.Workplane:
                 )
                 base = base.cut(hole)
 
-        # ---- Underside hanging flange + gusset + M5 mounting hole ------
-        # Per Will's review (comment 4721011696) — the only new material
-        # added to the baseplate (other than the mirrored servo mount):
-        # the cantilever flange is kept, made a bit deeper, supported
-        # by a triangular gusset, and given an M5 mounting hole through
-        # its face.  Mirrored onto both sides (one per servo mount).
-        flange_x = side * FLANGE_X        # ±79
-        flange_y_back = BASE_Y_FRONT      # baseplate front edge
-        flange_y_front = SERVO_POST_Y_SPANS[1][1]   # to far post (matches porch_y_hi - 1)
-        # Flange itself — YZ-plane rib of thickness FLANGE_THK along X,
-        # dropping FLANGE_DEPTH below the baseplate bottom (Z = 0 in
-        # baseplate-local frame).  Triangular profile: top edge runs
-        # along the baseplate bottom from y_back to y_front, then the
-        # hypotenuse drops back to the deepest point at y_back.
+        # ---- Underside hanging flange + supportive triangle + M5 hole ---
+        # Per Will's review (pullrequestreview-4509355231): the triangle
+        # must sit RIGHT UNDER the servo mount, INTERSECTING the flange
+        # and the baseplate (porch) — previously it floated far behind
+        # the part.  The M5 mounting hole is now drilled HORIZONTALLY
+        # (along Y, parallel to the auger at 0°) through the TRIANGLE,
+        # not the flange.  Mirrored onto both sides (one per servo).
+        flange_x = side * FLANGE_X                  # ±79 — under the servo body
+        flange_y_lo = SERVO_BODY_Y_LO               # span the servo body in Y
+        flange_y_hi = SERVO_BODY_Y_HI
+        # Flange — vertical YZ-plane plate (thickness FLANGE_THK along X),
+        # hanging FLANGE_DEPTH below the porch underside (Z = 0 local).
         flange = (
             cq.Workplane("YZ")
             .workplane(offset=flange_x - FLANGE_THK / 2.0)
-            .moveTo(flange_y_back, 0)
-            .lineTo(flange_y_front, 0)
-            .lineTo(flange_y_back, -FLANGE_DEPTH)
+            .moveTo(flange_y_lo, 0)
+            .lineTo(flange_y_hi, 0)
+            .lineTo(flange_y_hi, -FLANGE_DEPTH)
+            .lineTo(flange_y_lo, -FLANGE_DEPTH)
             .close()
             .extrude(FLANGE_THK)
         )
         base = base.union(flange)
-        # Supportive triangular gusset — XZ-plane rib of thickness
-        # FLANGE_GUSSET_THK along Y, attached at the flange's back face
-        # (Y = flange_y_back), tapering inboard (toward X = 0) over
-        # FLANGE_GUSSET_RUN from the baseplate bottom down to the
-        # deepest point of the flange.  This is the supportive triangle
-        # Will called for; the M5 mounting hole is in the flange itself
-        # (the new flange face).
-        gusset_x_inboard = flange_x - side * FLANGE_GUSSET_RUN
-        gusset_x_outboard = flange_x
-        g_lo = min(gusset_x_inboard, gusset_x_outboard)
-        g_hi = max(gusset_x_inboard, gusset_x_outboard)
+        # Supportive triangle — XZ-plane rib of thickness FLANGE_GUSSET_THK
+        # along Y, centred under the servo body.  Its top edge (Z = 0)
+        # sits against the porch bottom and its outer vertical edge
+        # (X = ±FLANGE_X) coincides with the flange, so it intersects
+        # BOTH; it braces inboard over FLANGE_GUSSET_RUN.
+        gusset_y_centre = (flange_y_lo + flange_y_hi) / 2.0
+        g_x_out = flange_x
+        g_x_in = flange_x - side * FLANGE_GUSSET_RUN
         gusset = (
             cq.Workplane("XZ")
-            .workplane(offset=flange_y_back + FLANGE_GUSSET_THK / 2.0)
-            .moveTo(g_lo, 0)
-            .lineTo(g_hi, 0)
-            .lineTo(g_hi, -FLANGE_DEPTH)
+            .polyline([(g_x_out, 0), (g_x_in, 0), (g_x_out, -FLANGE_DEPTH)])
             .close()
-            .extrude(-FLANGE_GUSSET_THK)
+            .extrude(FLANGE_GUSSET_THK)
+            .translate((0, gusset_y_centre + FLANGE_GUSSET_THK / 2.0, 0))
         )
         base = base.union(gusset)
-        # M5 mounting hole through the flange face (along X).
-        flange_hole_y = (flange_y_back + flange_y_front) * 0.5 - 5.0
-        flange_hole_z = -FLANGE_HOLE_Z_BELOW_BASE
+        # M5 mounting hole — drilled along Y through the triangle.
+        hole_x = flange_x - side * FLANGE_HOLE_X_INBOARD
+        hole_z = -FLANGE_HOLE_Z_BELOW_BASE
         hole = (
-            cq.Workplane("YZ")
-            .workplane(offset=flange_x - FLANGE_THK / 2.0 - 1.0)
-            .center(flange_hole_y, flange_hole_z)
+            cq.Workplane("XZ")
+            .center(hole_x, hole_z)
             .circle(FLANGE_HOLE_DIA / 2.0)
-            .extrude(FLANGE_THK + 2.0)
+            .extrude(FLANGE_GUSSET_THK + 2.0)
+            .translate((0, gusset_y_centre + (FLANGE_GUSSET_THK + 2.0) / 2.0, 0))
         )
         base = base.cut(hole)
 
-    # ---- M5 mounting holes (rear, 4 holes at corners of a 60×60 square) ----
-    # Per Will's review (comment 4721011696) — used to bolt this part
-    # onto a separate leg/frame assembly.  Uniform, oriented and spaced
-    # evenly like the corners of a square.
+    # ---- M5 mounting holes (4 holes near the four tab corners) --------
+    # Per Will's reviews (comment 4721011696 + pullrequestreview-4509355231:
+    # "move the mounting holes to match the placements of the green holes
+    # in the drawing") — used to bolt this part onto a separate leg/frame
+    # assembly.  Two near the chamfered rear corners, two near the front.
     for sx in (-BASE_MOUNT_HOLE_X, +BASE_MOUNT_HOLE_X):
         for sy in (BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT):
             hole = (

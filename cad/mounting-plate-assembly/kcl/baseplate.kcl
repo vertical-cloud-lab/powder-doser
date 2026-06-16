@@ -7,12 +7,12 @@
 //   * DUAL servos (one per side, +X and -X mirror) — the +X mount
 //     setup is mirrored across X=0 onto the -X side, so the
 //     mounting plate is lifted by two gears working together
-//   * four M5 mounting holes at the rear corners, arranged like the
-//     corners of a 60 × 60 mm square, for bolting the part to the
-//     separate frame
-//   * the underside flange (per servo, also mirrored) is taller than
-//     before, has a supportive triangular gusset and an M5 mounting
-//     hole drilled through its outboard face
+//   * four M5 mounting holes near the four tab corners, for bolting the
+//     part to the separate frame
+//   * the underside flange (per servo, also mirrored) is a rectangular
+//     rib under the servo body, with a supportive triangular gusset
+//     right under the servo mount and a HORIZONTAL M5 mounting hole
+//     (axis parallel to Y) drilled through the gusset
 //   * the two hinge arms (one each side of the auger) keep their
 //     sloped back face, with the arm depth slightly reduced so the
 //     arms no longer interfere with the front bracket
@@ -24,12 +24,16 @@
 // source of truth (see README "zoo.dev experience").
 import "params.kcl" as p
 
-// ---- rectangular forward-only baseplate body ----
+// ---- rectangular forward-only baseplate body (chamfered rear corners) ----
+// Per Will's review (pullrequestreview-4509355231) the two REAR corners
+// are chamfered 25 mm × 45°.
 base = startSketchOn(XY)
-  |> startProfile(at = [-p.baseFrontHalfW, p.baseYRear])
+  |> startProfile(at = [-p.baseFrontHalfW, p.baseYFront])
   |> line(end = [2 * p.baseFrontHalfW, 0])
-  |> line(end = [0, p.baseYFront - p.baseYRear])
-  |> line(end = [-2 * p.baseFrontHalfW, 0])
+  |> line(end = [0, -(p.baseYFront - p.baseYRear - p.baseRearChamfer)])
+  |> line(end = [-p.baseRearChamfer, -p.baseRearChamfer])
+  |> line(end = [-(2 * p.baseFrontHalfW - 2 * p.baseRearChamfer), 0])
+  |> line(end = [-p.baseRearChamfer, p.baseRearChamfer])
   |> close()
   |> extrude(length = p.baseT)
 
@@ -105,24 +109,29 @@ farPostPos = startSketchOn(XY)
   |> extrude(length = postZHi - postZLo)
   |> translate(z = postZLo)
 
-// (c) underside triangular flange (YZ plane, downstand from the
-// baseplate bottom) — taller than before, with a supportive gusset.
+// (c) underside flange (YZ plane, downstand from the baseplate bottom)
+// — now a rectangular rib spanning the servo body in Y, sitting right
+// under the servo mount (per pullrequestreview-4509355231).
 flangePos = startSketchOn(YZ)
-  |> startProfile(at = [p.baseYRear, 0])
-  |> line(end = [porchYHi - p.baseYRear, 0])
-  |> line(end = [p.baseYRear - porchYHi, -p.flangeDepth])
+  |> startProfile(at = [p.servoBodyYLo, 0])
+  |> line(end = [p.servoBodyYHi - p.servoBodyYLo, 0])
+  |> line(end = [0, -p.flangeDepth])
+  |> line(end = [-(p.servoBodyYHi - p.servoBodyYLo), 0])
   |> close()
   |> extrude(length = p.flangeThk)
   |> translate(x = p.flangeX - p.flangeThk / 2)
 
-// (d) supportive gusset (XZ plane) tying the flange inboard.
+// (d) supportive gusset (XZ plane) right under the servo mount, tying
+// the flange into the baseplate; the horizontal M5 hole (axis ‖ Y) is
+// drilled through this gusset at the 0° datum.
+gussetYMid = (p.servoBodyYLo + p.servoBodyYHi) / 2
 gussetPos = startSketchOn(XZ)
   |> startProfile(at = [p.flangeX, 0])
   |> line(end = [-p.flangeGussetRun, 0])
   |> line(end = [p.flangeGussetRun, -p.flangeDepth])
   |> close()
   |> extrude(length = p.flangeGussetThk)
-  |> translate(y = porchYHi - p.flangeGussetThk)
+  |> translate(y = gussetYMid - p.flangeGussetThk / 2)
 
 // ---------------- -X servo mount (mirror) ----------------
 // (a) porch
@@ -155,24 +164,26 @@ farPostNeg = startSketchOn(XY)
   |> extrude(length = postZHi - postZLo)
   |> translate(z = postZLo)
 
-// (c) flange
+// (c) flange (rectangular, under the servo body)
 flangeNeg = startSketchOn(YZ)
-  |> startProfile(at = [p.baseYRear, 0])
-  |> line(end = [porchYHi - p.baseYRear, 0])
-  |> line(end = [p.baseYRear - porchYHi, -p.flangeDepth])
+  |> startProfile(at = [p.servoBodyYLo, 0])
+  |> line(end = [p.servoBodyYHi - p.servoBodyYLo, 0])
+  |> line(end = [0, -p.flangeDepth])
+  |> line(end = [-(p.servoBodyYHi - p.servoBodyYLo), 0])
   |> close()
   |> extrude(length = p.flangeThk)
   |> translate(x = -p.flangeX - p.flangeThk / 2)
 
-// (d) gusset
+// (d) gusset (under the servo mount)
 gussetNeg = startSketchOn(XZ)
   |> startProfile(at = [-p.flangeX, 0])
   |> line(end = [p.flangeGussetRun, 0])
   |> line(end = [-p.flangeGussetRun, -p.flangeDepth])
   |> close()
   |> extrude(length = p.flangeGussetThk)
-  |> translate(y = porchYHi - p.flangeGussetThk)
+  |> translate(y = gussetYMid - p.flangeGussetThk / 2)
 
-// ---- four M5 rear-corner mounting holes ----
+// ---- four M5 corner mounting holes ----
 // (true bores live in cad_model.py; the KCL mirror leaves the hole
-// pattern documented via params and approximates the geometry above)
+// pattern documented via params: X = ±baseMountHoleX, Y =
+// baseMountHoleYRear / baseMountHoleYFront)

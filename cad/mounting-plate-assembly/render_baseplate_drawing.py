@@ -24,8 +24,9 @@ from matplotlib.patches import Circle, FancyArrowPatch, Polygon, Rectangle
 BASE_FRONT_HALF_W = 100.0           # ±100 mm at the front edge
 BASE_REAR_HALF_W = 100.0            # ±100 mm at the rear edge (rectangular)
 BASE_Y_FRONT = 115.0                # front edge Y (toward dispense)
-BASE_Y_REAR = +30.0                 # rear  edge Y
+BASE_Y_REAR = +55.0                 # rear  edge Y (tab shortened per review)
 BASE_T = 6.0                        # tabletop thickness
+BASE_REAR_CHAMFER = 25.0            # 45° chamfer on the two rear corners
 
 # Legs removed.
 BASE_LEG_W = 0.0
@@ -36,12 +37,12 @@ FRONT_LEG_Y = BASE_Y_FRONT - 21.0   # legacy reference (not drawn)
 REAR_LEG_X = 0.0
 REAR_LEG_Y = BASE_Y_REAR + 21.0     # legacy reference (not drawn)
 
-# Four M5 rear-corner mounting holes (corners of a 60 × 60 mm square).
+# Four M5 mounting holes near the four tab corners (per Will's review
+# pullrequestreview-4509355231 — "match the green holes in the drawing").
 BASE_MOUNT_HOLE_DIA = 5.4
-BASE_MOUNT_HOLE_PITCH = 60.0
-BASE_MOUNT_HOLE_X = BASE_MOUNT_HOLE_PITCH / 2.0          # ±30
-BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 10.0              # +40
-BASE_MOUNT_HOLE_Y_FRONT = BASE_MOUNT_HOLE_Y_REAR + BASE_MOUNT_HOLE_PITCH  # +100
+BASE_MOUNT_HOLE_X = 80.0                                 # ±80 (near corners)
+BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 13.0             # +68 (clear of chamfer)
+BASE_MOUNT_HOLE_Y_FRONT = BASE_Y_FRONT - 10.0          # +105 (front corners)
 
 # Hinge arms (forward-and-up, one each side of the auger).
 HINGE_EYE_OD = 18.0
@@ -101,14 +102,17 @@ PORCH_X_HI = min(SERVO_BODY_X_HI + 1.0, BASE_FRONT_HALF_W)             # 96.8
 PORCH_Y_LO = BASE_Y_FRONT - 2.0                                        # 113.0
 PORCH_Y_HI = FAR_POST_Y_HI + 1.0                                       # 170.4
 
-# Underside triangular flange (taller + gusset + M5 mounting hole).
+# Underside hanging flange + supportive triangle (per review
+# pullrequestreview-4509355231): the triangle sits right under the servo
+# mount, the M5 hole is drilled HORIZONTALLY (along Y) through it.
 FLANGE_THK = 6.0
 FLANGE_DEPTH = 40.0
 FLANGE_X = 79.0                     # ±79 (one flange per side, mirrored)
-FLANGE_GUSSET_THK = 6.0
-FLANGE_GUSSET_RUN = 26.0
+FLANGE_GUSSET_THK = 10.0
+FLANGE_GUSSET_RUN = 20.0
 FLANGE_HOLE_DIA = 5.4
-FLANGE_HOLE_Z_BELOW_BASE = 22.0
+FLANGE_HOLE_Z_BELOW_BASE = 15.0
+FLANGE_HOLE_X_INBOARD = 7.0
 
 # Arm-clearance slots through the mounting plate (informational — slot is
 # in the plate, not the baseplate, but the slot Y bound depends on the
@@ -212,12 +216,15 @@ def draw_top_view(ax):
     ax.set_title("TOP VIEW   (looking down −Z)", fontsize=10, loc="left",
                  pad=6)
 
-    # Rectangular forward-only tabletop.
+    # Rectangular forward-only tabletop with chamfered REAR corners.
+    c = BASE_REAR_CHAMFER
     polygon(ax, [
         (-BASE_FRONT_HALF_W, BASE_Y_FRONT),
         (+BASE_FRONT_HALF_W, BASE_Y_FRONT),
-        (+BASE_REAR_HALF_W,  BASE_Y_REAR),
-        (-BASE_REAR_HALF_W,  BASE_Y_REAR),
+        (+BASE_FRONT_HALF_W, BASE_Y_REAR + c),
+        (+BASE_REAR_HALF_W - c, BASE_Y_REAR),
+        (-BASE_REAR_HALF_W + c, BASE_Y_REAR),
+        (-BASE_FRONT_HALF_W, BASE_Y_REAR + c),
     ])
 
     # Mirrored porches (one each side, fused to the front edge under the
@@ -259,48 +266,70 @@ def draw_top_view(ax):
     for sx in (+SERVO_WALL_X, -SERVO_WALL_X):
         circle(ax, sx, PINION_Y, 0.7, edge=DIM_COLOR, face=DIM_COLOR, lw=0)
 
-    # Flange footprints (downstand, shown dashed since they hang below).
+    # Flange + triangle footprints (downstand, shown dashed since they
+    # hang below; now positioned UNDER the servo body per the review).
     for sx in (-FLANGE_X, +FLANGE_X):
-        rect(ax, sx - FLANGE_THK / 2, BASE_Y_REAR, FLANGE_THK,
-             PORCH_Y_HI - BASE_Y_REAR,
+        rect(ax, sx - FLANGE_THK / 2, SERVO_BODY_Y_LO, FLANGE_THK,
+             SERVO_BODY_Y_HI - SERVO_BODY_Y_LO,
              face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (4, 2)))
+        # triangle (gusset) footprint — thickness FLANGE_GUSSET_THK in Y,
+        # centred under the servo body, running inboard from the flange.
+        g_yc = (SERVO_BODY_Y_LO + SERVO_BODY_Y_HI) / 2.0
+        g_x_in = sx - (FLANGE_GUSSET_RUN if sx > 0 else -FLANGE_GUSSET_RUN)
+        rect(ax, min(sx, g_x_in), g_yc - FLANGE_GUSSET_THK / 2,
+             abs(sx - g_x_in), FLANGE_GUSSET_THK,
+             face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (2, 2)))
+        # horizontal M5 mounting hole (axis along Y) through the triangle.
+        hx = sx - (FLANGE_HOLE_X_INBOARD if sx > 0 else -FLANGE_HOLE_X_INBOARD)
+        circle(ax, hx, g_yc, FLANGE_HOLE_DIA / 2.0, lw=0.7,
+               edge=HIDDEN_COLOR, ls=(0, (2, 2)))
 
     # ---------------- Overall + tabletop dimensions (LEFT/BOTTOM stack) -
     # Overall front-edge width (200) — well above the front edge.
     hdim(ax, -BASE_FRONT_HALF_W, +BASE_FRONT_HALF_W, BASE_Y_FRONT + 32,
          "200.0   (front edge, = 2 × 100)",
          ext_from=BASE_Y_FRONT + 1)
-    # Rear-edge width (200, rectangular).
-    hdim(ax, -BASE_REAR_HALF_W, +BASE_REAR_HALF_W, BASE_Y_REAR - 18,
-         "200.0   (rear edge, rectangular)",
+    # Rear-edge width between chamfer corners (150 = 200 − 2 × 25).
+    rear_half = BASE_REAR_HALF_W - BASE_REAR_CHAMFER
+    hdim(ax, -rear_half, +rear_half, BASE_Y_REAR - 18,
+         f"{2 * rear_half:.0f}   (rear edge, between chamfers)",
          ext_from=BASE_Y_REAR, text_above=False)
-    # Front-to-rear depth (85) — far LEFT.
+    # Front-to-rear depth (60) — far LEFT.
     vdim(ax, BASE_Y_REAR, BASE_Y_FRONT, -BASE_FRONT_HALF_W - 28,
-         "85.0", ext_from=-BASE_FRONT_HALF_W - 2)
+         f"{BASE_Y_FRONT - BASE_Y_REAR:.1f}", ext_from=-BASE_FRONT_HALF_W - 2)
     # Y-coords of front / rear edges — far LEFT, outboard of the depth dim.
     vdim(ax, 0, BASE_Y_FRONT, -BASE_FRONT_HALF_W - 55, "Y = +115",
          ext_from=-BASE_FRONT_HALF_W - 38, text_right=False)
-    vdim(ax, 0, BASE_Y_REAR, -BASE_FRONT_HALF_W - 55, "Y = +30",
+    vdim(ax, 0, BASE_Y_REAR, -BASE_FRONT_HALF_W - 55, f"Y = +{BASE_Y_REAR:.0f}",
          ext_from=-BASE_FRONT_HALF_W - 38, text_right=False)
+    # 45° chamfer on the rear corners.
+    leader(ax, (BASE_REAR_HALF_W - BASE_REAR_CHAMFER / 2,
+                BASE_Y_REAR + BASE_REAR_CHAMFER / 2),
+           (150, -25),
+           f"2 × {BASE_REAR_CHAMFER:.0f} × 45°\n  rear-corner chamfer",
+           ha="left", fontsize=7)
 
-    # ---------------- M5 rear mounting holes ----------------------------
-    # 60 mm hole pitch in X (between the two columns of holes).
+    # ---------------- M5 corner mounting holes --------------------------
+    # X-pitch between the two columns of holes.
     hdim(ax, -BASE_MOUNT_HOLE_X, +BASE_MOUNT_HOLE_X,
          BASE_MOUNT_HOLE_Y_REAR - 12,
-         "60.0   (M5 hole X-pitch)",
+         f"{2 * BASE_MOUNT_HOLE_X:.0f}   (M5 hole X-pitch)",
          ext_from=BASE_MOUNT_HOLE_Y_REAR - 6, text_above=False,
          fontsize=7)
-    # 60 mm hole pitch in Y (between front and rear row).
+    # Y-pitch between front and rear row.
     vdim(ax, BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT,
          BASE_MOUNT_HOLE_X + 14,
-         "60.0   (M5 hole Y-pitch)",
+         f"{BASE_MOUNT_HOLE_Y_FRONT - BASE_MOUNT_HOLE_Y_REAR:.0f}"
+         "   (M5 hole Y-pitch)",
          ext_from=BASE_MOUNT_HOLE_X + 6, fontsize=7)
     # Callout for the M5 mount holes.
     leader(ax, (-BASE_MOUNT_HOLE_X, BASE_MOUNT_HOLE_Y_REAR),
            (-150, -30),
            "4 × Ø5 THRU  (M5 clearance)\n"
-           "  rear-corner mount holes,\n"
-           "  on a 60 × 60 mm square\n"
+           "  near-corner mount holes\n"
+           f"  at X = ±{BASE_MOUNT_HOLE_X:.0f},"
+           f" Y = +{BASE_MOUNT_HOLE_Y_REAR:.0f} / +"
+           f"{BASE_MOUNT_HOLE_Y_FRONT:.0f}\n"
            "  for bolting to a separate frame",
            ha="left", fontsize=7)
 
@@ -344,14 +373,16 @@ def draw_top_view(ax):
            "  DUAL-SERVO LIFT (per comment 4721011696)",
            ha="left", fontsize=7)
 
-    # Flange callout (downstand, hidden in plan view).
-    leader(ax, (-FLANGE_X, PORCH_Y_HI - 10),
+    # Flange + triangle callout (downstand, hidden in plan view).
+    leader(ax, (-FLANGE_X, (SERVO_BODY_Y_LO + SERVO_BODY_Y_HI) / 2),
            (-200, -60),
            "Flanges ×2  (hidden, hang below baseplate)\n"
            "  YZ-plane rib at X = ±79, thk 6\n"
            "  drops 40 below baseplate bottom\n"
-           "  + XZ-plane gusset (6 thk × 26 run)\n"
-           "  + Ø5 M5 mounting hole through face",
+           "  + XZ-plane gusset (10 thk × 20 run)\n"
+           "    right under the servo mount\n"
+           "  + horizontal Ø5 M5 hole (axis ‖ Y)\n"
+           "    through the gusset at the 0° datum",
            ha="left", fontsize=7)
 
     # Origin & axes — bottom-LEFT corner.
@@ -412,12 +443,20 @@ def draw_front_view(ax):
                    PINION_Z_LOCAL + dz, MG996R_HOLE_DIA / 2.0, lw=0.8)
 
     # Mirrored underside flanges (downstand, in front view they project
-    # as rectangles below the tabletop at X = ±FLANGE_X).
+    # as rectangles below the tabletop at X = ±FLANGE_X) + the supportive
+    # triangle (gusset) that runs inboard right under the servo mount.
     for sx in (-FLANGE_X, +FLANGE_X):
         rect(ax, sx - FLANGE_THK / 2, -FLANGE_DEPTH,
              FLANGE_THK, FLANGE_DEPTH, face="#efe6ff", lw=1.0)
-        # M5 mounting hole through the flange face.
-        circle(ax, sx, -FLANGE_HOLE_Z_BELOW_BASE,
+        # gusset triangle (XZ-plane) — top edge along baseplate bottom,
+        # vertical edge down the flange, hypotenuse back up to the inboard
+        # run; drawn as a silhouette polygon.
+        g_in = sx - (FLANGE_GUSSET_RUN if sx > 0 else -FLANGE_GUSSET_RUN)
+        polygon(ax, [(sx, 0.0), (g_in, 0.0), (sx, -FLANGE_DEPTH)],
+                face="#e2d4ff", lw=0.9)
+        # horizontal M5 mounting hole (axis ‖ Y) through the gusset.
+        hx = sx - (FLANGE_HOLE_X_INBOARD if sx > 0 else -FLANGE_HOLE_X_INBOARD)
+        circle(ax, hx, -FLANGE_HOLE_Z_BELOW_BASE,
                FLANGE_HOLE_DIA / 2.0, lw=0.8)
 
     # ---------------- Dimensions ----------------
@@ -473,9 +512,9 @@ def draw_front_view(ax):
            (-148, -FLANGE_DEPTH - 8),
            "Flanges  (×2, mirrored ±X)\n"
            "  6 thk × 40 deep YZ-rib\n"
-           "  + 6 × 26 XZ gusset (hidden behind in this view)\n"
-           "  Ø5 M5 mounting hole through face\n"
-           "  hole centre Z = baseplate − 22",
+           "  + 10 × 20 XZ gusset under the servo mount\n"
+           "  horizontal Ø5 M5 hole (axis ‖ Y) thru gusset\n"
+           f"  hole centre Z = baseplate − {FLANGE_HOLE_Z_BELOW_BASE:.0f}",
            fontsize=7, ha="left")
 
     ax.set_aspect("equal")
@@ -528,17 +567,24 @@ def draw_side_view(ax):
     ax.plot([PINION_Y], [PINION_Z_LOCAL], marker="+", color=DIM_COLOR,
             markersize=10, markeredgewidth=1.2)
 
-    # Underside triangular flange (in side view: a downstand rectangle
-    # below the baseplate, with the gusset attached at its inboard end).
+    # Underside flange (in side view: a downstand rectangle below the
+    # baseplate, spanning the servo body in Y, with the gusset + horizontal
+    # M5 hole at its mid-length).
+    flange_y_mid = (SERVO_BODY_Y_LO + SERVO_BODY_Y_HI) / 2.0
     polygon(ax, [
-        (BASE_Y_REAR, 0),
-        (PORCH_Y_HI, 0),
-        (BASE_Y_REAR, -FLANGE_DEPTH),
+        (SERVO_BODY_Y_LO, 0),
+        (SERVO_BODY_Y_HI, 0),
+        (SERVO_BODY_Y_HI, -FLANGE_DEPTH),
+        (SERVO_BODY_Y_LO, -FLANGE_DEPTH),
     ], face="#efe6ff", lw=1.0)
-    # M5 mounting hole through the flange face.
-    circle(ax, (BASE_Y_REAR + PORCH_Y_HI) / 2 - 20,
-           -FLANGE_HOLE_Z_BELOW_BASE,
-           FLANGE_HOLE_DIA / 2.0, lw=0.8, edge=LINE_COLOR)
+    # gusset is edge-on here (XZ-plane triangle) — mark its Y location.
+    ax.plot([flange_y_mid, flange_y_mid], [0, -FLANGE_DEPTH],
+            color=HIDDEN_COLOR, lw=0.8, ls=(0, (3, 2)))
+    # horizontal M5 mounting hole (axis ‖ Y) — appears edge-on as a short
+    # bore line at the hole Z.
+    ax.plot([SERVO_BODY_Y_LO, SERVO_BODY_Y_HI],
+            [-FLANGE_HOLE_Z_BELOW_BASE, -FLANGE_HOLE_Z_BELOW_BASE],
+            color=HIDDEN_COLOR, lw=0.8, ls=(0, (2, 2)))
 
     # ---------------- Dimensions ----------------
     # Overall Y depth (front to rear of mounting tab) — placed HIGH.
@@ -585,13 +631,13 @@ def draw_side_view(ax):
          ext_from=BASE_T, text_above=False, fontsize=7)
 
     # Flange + gusset + M5 hole callout.
-    leader(ax, ((BASE_Y_REAR + PORCH_Y_HI) / 2 - 20,
-                -FLANGE_HOLE_Z_BELOW_BASE),
-           (BASE_Y_REAR - 5, -FLANGE_DEPTH - 8),
+    leader(ax, (flange_y_mid, -FLANGE_HOLE_Z_BELOW_BASE),
+           (SERVO_BODY_Y_LO - 30, -FLANGE_DEPTH - 8),
            "Underside flange  (×2, mirrored ±X — see front view)\n"
-           "  YZ-plane rib: 6 thk × 40 deep × ~140 long\n"
-           "  + 6 × 26 XZ-plane gusset at inboard end\n"
-           "  + Ø5 M5 mounting hole through face (Z = −22)",
+           "  YZ-plane rib: 6 thk × 40 deep, under servo body\n"
+           "  + 10 × 20 XZ-plane gusset right under the mount\n"
+           f"  + horizontal Ø5 M5 hole (‖ Y) at Z = "
+           f"−{FLANGE_HOLE_Z_BELOW_BASE:.0f}",
            fontsize=7, ha="left")
 
     # Rear M5 mounting hole indicator on the tabletop (shown by Y position).
@@ -600,9 +646,9 @@ def draw_side_view(ax):
                 markersize=4, markeredgewidth=0.8, markerfacecolor="white")
     leader(ax, (BASE_MOUNT_HOLE_Y_REAR, BASE_T),
            (BASE_MOUNT_HOLE_Y_REAR - 30, BASE_T + 12),
-           "4 × Ø5 M5 rear mount holes\n"
-           "  on a 60 × 60 mm square\n"
-           "  (Y = +40 and +100)",
+           "4 × Ø5 M5 corner mount holes\n"
+           f"  (Y = +{BASE_MOUNT_HOLE_Y_REAR:.0f} and "
+           f"+{BASE_MOUNT_HOLE_Y_FRONT:.0f},  X = ±{BASE_MOUNT_HOLE_X:.0f})",
            fontsize=7, ha="right")
 
     ax.set_aspect("equal")
@@ -663,13 +709,15 @@ def draw_title_block(ax):
         "        Baseplate-LOCAL Z origin = baseplate BOTTOM face;\n"
         "        baseplate TOP face = Z = +6.\n"
         "\n"
-        "4.  Tabletop is a small forward-only RECTANGULAR mounting tab:\n"
-        "        ±100 wide × Y ∈ [+30, +115] (85 mm Y-depth).\n"
+        "4.  Tabletop is a small forward-only RECTANGULAR mounting tab\n"
+        "        with chamfered rear corners:\n"
+        "        ±100 wide × Y ∈ [+55, +115] (60 mm Y-depth),\n"
+        "        2 × 25 × 45° chamfer on the two rear corners.\n"
         "        Legs + most of the rear are GONE; the part bolts to\n"
-        "        a separate frame via the rear M5 holes.\n"
+        "        a separate frame via the corner M5 holes.\n"
         "\n"
-        "5.  4 × Ø5 M5 mounting holes at the rear corners on a\n"
-        "        60 × 60 mm square pattern (X = ±30, Y = +40 and +100).\n"
+        "5.  4 × Ø5 M5 mounting holes near the four tab corners\n"
+        "        (X = ±80, Y = +68 and +105).\n"
         "\n"
         "6.  Hinge arms (×2) carry the shared M5 hinge pin.\n"
         "        Arm back face is sloped 16 mm run, ≈58° from horiz.\n"
@@ -683,10 +731,12 @@ def draw_title_block(ax):
         "        Pinion / hinge-gear mesh:  2 : 1, m ≈ 0.908,\n"
         "        C = 27.25 mm — gears NOT on this part (see assembly).\n"
         "\n"
-        "8.  Underside flange (×2, mirrored ±X) at X = ±79:\n"
-        "        YZ rib 6 thk × 40 deep × ~140 long,\n"
-        "        + XZ gusset 6 thk × 26 run,\n"
-        "        + Ø5 M5 mounting hole through face at Z = −22.\n"
+        "8.  Underside flange (×2, mirrored ±X) at X = ±79, under the\n"
+        "        servo mount:\n"
+        "        YZ rib 6 thk × 40 deep (spans the servo body),\n"
+        "        + XZ gusset 10 thk × 20 run right under the mount,\n"
+        "        + horizontal Ø5 M5 hole (axis ‖ Y, 0° datum)\n"
+        "        through the gusset at Z = −15.\n"
         "\n"
         "9.  All printed values traceable to cad_model.py."
     )

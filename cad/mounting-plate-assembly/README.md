@@ -108,16 +108,18 @@ a **2:1 spur-gear reduction**:
   flange are duplicated on the −X side with identical geometry.  At
   the same time the **legs and most of the rear of the baseplate are
   gone** — the part is now a small forward-only **rectangular
-  mounting tab** (200 mm wide × 85 mm deep, `Y ∈ [+30, +115]`) that
-  bolts onto a separate frame via **four Ø5 M5 mounting holes** at
-  the rear, arranged like the corners of a **60 × 60 mm square**
-  (X = ±30, Y = +40 and +100).  The underside flange is **kept and
-  enhanced**: it's now 40 mm deep (taller than the previous 30 mm)
-  with a **supportive triangular gusset** (XZ-plane rib, 6 × 26 mm)
-  and an **M5 mounting hole through the flange face** (Z = baseplate
-  bottom − 22 mm), so each flange now also acts as a side-bolting
-  feature.  The hinge-arm depth is also reduced slightly (40 → 35
-  mm) to clear the front bracket.
+  mounting tab** (200 mm wide × 60 mm deep, `Y ∈ [+55, +115]`) with
+  the two **rear corners chamfered 25 × 45°**, that bolts onto a
+  separate frame via **four Ø5 M5 mounting holes** near the four tab
+  corners (X = ±80, Y = +68 and +105).  The underside flange is **kept
+  and enhanced**: it's a 40 mm-deep rectangular rib under the servo
+  body with a **supportive triangular gusset** (XZ-plane rib,
+  10 × 20 mm) sitting **right under the servo mount** so it intersects
+  both the flange and the baseplate, and a **horizontal M5 mounting
+  hole** (axis parallel to the auger / Y, at the 0° datum) drilled
+  **through the gusset** (Z = baseplate bottom − 15 mm), so each
+  flange also acts as a side-bolting feature.  The hinge-arm depth is
+  also reduced slightly (40 → 35 mm) to clear the front bracket.
 * **Trapezoidal tabletop on a tripod** *(superseded — see "DUAL servo
   lift" above; the trapezoidal tripod has been replaced with a
   rectangular forward-only mounting tab)*.  The previous baseplate
@@ -263,7 +265,7 @@ upstream parts' own bolt patterns:
 | Front bracket         | #47       | 2 × M3 at X = ±24 (flush — lifted flange)            | Ø3.4 (M3)  | +72.67        |
 | Tap-collar mount      | #51       | 2 × M3 at X = ±24 (flush)                            | Ø3.4 (M3)  | +56.67        |
 | NEMA 11 motor mount   | #49       | 4 × M3 at 23 mm pitch + Ø22 pilot **on the vertical front face of the wall** | Ø3.4 (M3) | motor face at +31.67 |
-| Rear bracket          | #47       | 2 × M3 at X = ±24 (flush — lifted flange)            | Ø3.4 (M3)  | −95           |
+| Rear bracket          | #47       | 2 × M3 at X = ±24 (flush — lifted flange)            | Ø3.4 (M3)  | −2            |
 | Side hinge sandwich   | this PR   | 4 plate eye-lobes (Ø18 × ≈12.7 mm) at X = inner+outer thirds of each ramp half-span | Ø5.4 (M5)  | +125         |
 
 ### Rotation kinematics
