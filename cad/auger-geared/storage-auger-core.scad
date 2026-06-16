@@ -94,13 +94,19 @@ module storage_helical_fin(screw_top_z) {
 //                  short bench-test piece (matching the gearless
 //                  nozzle test pieces from PR #49).
 
-module archimedes_auger_storage(total_h, gear_center_z = 0, with_gear = true) {
+//   with_top_cap   true on the open-but-capped storage parts; false on
+//                  the threaded variants, which drop the 4-loading-slot
+//                  top cover so the bore is a smooth open cylinder that
+//                  the screw-on cap seals instead.
+
+module archimedes_auger_storage(total_h, gear_center_z = 0, with_gear = true, with_top_cap = true) {
     screw_top_z = total_h * screw_fraction;
     color("#5B9BD5", 0.9)
     union() {
         tube_walls(total_h);
         nozzle_bottom_funnel(4);          // v4 standard nozzle outlet
-        top_cap(total_h);
+        if (with_top_cap)
+            top_cap(total_h);
         storage_central_shaft(screw_top_z);
         storage_helical_fin(screw_top_z);
         if (with_gear)

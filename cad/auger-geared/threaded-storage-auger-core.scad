@@ -75,15 +75,33 @@ thread_minor_r  = outer_r - thread_depth;  // 11.5 mm
 thread_half_ang = 58;              // deg
 thread_clear    = 0.35;            // mm  printed-thread hand fit
 
-// 2D tooth cross-section at angle 0 (a triangle from the core out to
-// the crest), optionally grown outward by `extra` for clearance.
+// 2D tooth cross-section at angle 0 (a single thread tooth in plan
+// view), optionally grown by `extra` for cap clearance.
+//
+// The tooth is an ANGULAR SECTOR of the annular band
+// [thread_minor_r, thread_crest_r], spanning +/- thread_half_ang about
+// the +x axis.  Bounding it to that radial band is what keeps the
+// thread STRICTLY EXTERNAL: every point of the ridge lies between the
+// recessed root (minor) radius and the crest (= auger OD), so the
+// helix can never poke inward into the bore.  (The previous version
+// used a bare triangle whose inner edge dipped all the way down to
+// ~r=6 mm, which pushed the ridge into the bore -- making the auger
+// look internally threaded.)
 module thread_tooth_2d(extra = 0) {
     offset(r = extra)
+    intersection() {
+        // Pie wedge of half-angle thread_half_ang, reaching past the crest.
         polygon(points = [
-            [thread_minor_r * cos(thread_half_ang),  thread_minor_r * sin(thread_half_ang)],
-            [thread_crest_r, 0],
-            [thread_minor_r * cos(thread_half_ang), -thread_minor_r * sin(thread_half_ang)]
+            [0, 0],
+            [(thread_crest_r + 1) * cos(thread_half_ang),  (thread_crest_r + 1) * sin(thread_half_ang)],
+            [(thread_crest_r + 1) * cos(thread_half_ang), -(thread_crest_r + 1) * sin(thread_half_ang)]
         ]);
+        // Radial band root..crest: clamps the tooth so it points OUTWARD only.
+        difference() {
+            circle(r = thread_crest_r);
+            circle(r = thread_minor_r);
+        }
+    }
 }
 
 // Single-start helical thread ridge, swept from z0 over `len`.
@@ -113,8 +131,12 @@ module threaded_archimedes_auger_storage(total_h, gear_center_z = 0, with_gear =
         // Storage auger with the outer shell removed over the thread
         // region (down to the thread minor radius), so the added ridge
         // crest sits flush with -- and never exceeds -- the auger OD.
+        // The 4-slot top cover is dropped (with_top_cap = false): the
+        // threaded end is a smooth open cylinder that the screw-on cap
+        // seals instead.
         difference() {
-            archimedes_auger_storage(total_h, gear_center_z, with_gear);
+            archimedes_auger_storage(total_h, gear_center_z, with_gear,
+                                     with_top_cap = false);
             translate([0, 0, z0 - 0.01])
                 difference() {
                     cylinder(r = outer_r + 5, h = thread_len + 0.02);

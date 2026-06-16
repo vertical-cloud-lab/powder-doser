@@ -262,13 +262,15 @@ Shared geometry lives in `storage-auger-core.scad` (`archimedes_auger_storage(to
 
 | Part | File | STL | Notes |
 |------|------|-----|-------|
-| **Threaded storage auger** (full) | `threaded_archimedes-auger-storage.scad` | `threaded_archimedes-auger-storage.stl` | 250 mm; identical to `archimedes-auger-storage.scad` + 1-inch top thread |
-| **Threaded storage auger** (bench test) | `threaded_archimedes-auger-storage-test.scad` | `threaded_archimedes-auger-storage-test.stl` | 90 mm, gearless; the piece to test with the cap |
-| **Cap** | `threaded-storage-cap.scad` | `threaded-storage-cap.stl` | Matching internal thread, chamfered top edge, larger Ø than the auger; one cap fits both augers |
+| **Threaded storage auger** (full) | `threaded_archimedes-auger-storage.scad` | `threaded_archimedes-auger-storage.stl` | 250 mm; same as `archimedes-auger-storage.scad` + 1-inch top **external** thread, and with the 4-slot top cover removed (smooth open bore that the cap seals) |
+| **Threaded storage auger** (bench test) | `threaded_archimedes-auger-storage-test.scad` | `threaded_archimedes-auger-storage-test.stl` | 90 mm, gearless; the piece to test with the cap (also has the open top + external thread) |
+| **Cap** | `threaded-storage-cap.scad` | `threaded-storage-cap.stl` | Matching **internal** thread cut into the cap bore, chamfered top edge, larger Ø than the auger; one cap fits both augers |
 
-Thread geometry (in `threaded-storage-auger-core.scad`): single-start, **25.4 mm (≈ 1 in)** long, 4 mm pitch, 1 mm deep. The external thread is formed by reducing the outer wall to the thread minor radius (11.5 mm) over the top inch and adding a helical ridge whose **crest is flush with the 12.5 mm auger OD radius** — so the threaded section's maximum diameter equals the auger OD and **never exceeds it** (numerically verified: max radius in the thread region = 12.5 mm), keeping bracket slide-on possible. The cap is the matching nut: a solid cup with the same screw (grown radially by a 0.35 mm hand-fit clearance) subtracted from it, so the fit is correct by construction (the male thread is strictly contained in the cap's internal void) regardless of rotational phase. The cap top outer edge has a 1.5 mm chamfer.
+Thread geometry (in `threaded-storage-auger-core.scad`): single-start, **25.4 mm (≈ 1 in)** long, 4 mm pitch, 1 mm deep. The auger thread is **external** — the outer wall is reduced to the thread minor radius (11.5 mm) over the top inch and a helical ridge is added whose **crest is flush with the 12.5 mm auger OD radius**. The ridge profile (`thread_tooth_2d`) is an angular sector clamped to the `[11.5 mm, 12.5 mm]` band, so it points **strictly outward** and never intrudes into the bore — the threaded section's maximum diameter equals the auger OD and **never exceeds it** (numerically verified: max radius in the thread region = 12.5 mm), keeping bracket slide-on possible. The cap is the matching nut: a solid cup with the same screw (grown radially by a 0.35 mm hand-fit clearance) subtracted from its **internal void**, so the cap's female thread mates onto the auger's male thread, correct by construction regardless of rotational phase. The cap top outer edge has a 1.5 mm chamfer.
 
-Both threaded augers and the cap pass OpenSCAD's `Simple: yes` manifold check. `threaded-storage-cap-assembly-cross-section.png` is a half-cut of the cap seated on the test auger showing the external thread nesting inside the cap's internal thread with clearance, over the open store and bottom-third screw.
+On the threaded augers only, the 4-loading-slot top cover (and its M3 spindle pilot) is dropped (`with_top_cap = false`): the filling end is a **smooth open cylinder** that the screw-on cap seals instead.
+
+Both threaded augers and the cap pass OpenSCAD's `Simple: yes` manifold check. `threaded-storage-cap-assembly-cross-section.png` is a half-cut of the cap seated on the test auger showing the auger's external thread nesting inside the cap's internal thread with clearance, over the open store and bottom-third screw.
 
 ## Print notes
 
