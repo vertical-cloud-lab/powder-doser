@@ -13,6 +13,28 @@ PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment
 ("try to make an actual starter board that we could upload to quilter or
 DeepPCB")._
 
+> **Update (RS-232 scale-interface module).** Following @lbwinters' and
+> @sgbaird's requests on PR
+> [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4721881856)
+> ([and](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4723451001))
+> to add the footprints needed to integrate the **A&D balance** for gravimetric
+> dosing, the board now carries a **Waveshare Pico-2CH-RS232** module
+> (`SP3232EEN`, 2 channels). It mounts on a **side 2×20 header** next to the
+> Pico W — in the spirit of Adafruit's [Proto Doubler PiCowbell #5906](https://www.adafruit.com/product/5906) —
+> so its **own embedded RS-232 charge-pump capacitors** stand in for a discrete
+> `MAX3232` + ~5 caps on our board. Because the module hard-wires its channels to
+> `GP0/GP1` and `GP4/GP5` (already used here for I²C and the Tic UART), board
+> copper re-routes the four UART lines to *free* Pico UART pins: **UART0
+> `GP12/GP13` = channel 0 (scale)** and **UART1 `GP8/GP9` = channel 1 (spare)**.
+> The board therefore grows to **15 footprints / 137 pads / 86 net-assigned /
+> 24 nets** (the new `J2` receptacle plus 4 new RS-232 nets); `kicad-cli sch
+> export netlist` confirms 86 pins across 24 named nets with zero unconnected,
+> `pcbnew` reports **0 courtyard overlaps** on both trios, output stays
+> byte-for-byte reproducible and Quilter-compatible (KiCad 7 `20221018`), and
+> the wider logic domain pushes the outline to ~141 × 82 mm. The module
+> datasheets are committed under
+> `hardware/vendor-files/waveshare-pico-2ch-rs232/datasheets/`.
+
 > **Update (real component packages).** Following @sgbaird's follow-up on
 > PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654591085)
 > ("I committed a bunch of files related to the components already … run
@@ -65,8 +87,8 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 14 footprints, 97 pads (69 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~117 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (14 symbols, 20 nets, 69 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 137 pads (86 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~141 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 24 nets, 86 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
@@ -80,7 +102,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~117 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~141 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
@@ -88,7 +110,7 @@ placement); only the `.kicad_pcb` differs — the unplaced board has the same em
 Edge.Cuts target rectangle with every footprint shifted one board-width + 12 mm
 to its right, so the board area is empty and the router must place the parts.
 
-![Generated starter-board schematic (14 symbols, 20 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
+![Generated starter-board schematic (15 symbols, 24 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
 ## How it was built (note `20` Rank 1)
 
@@ -155,15 +177,16 @@ to its right, so the board area is empty and the router must place the parts.
 The build is verified structurally and headlessly with `kiutils`, the builder's
 own geometry guard, and `kicad-cli`'s netlist exporter:
 
-- **14 footprints / 97 pads / 69 net-assigned / 20 nets** — re-parsed from the
+- **15 footprints / 137 pads / 86 net-assigned / 24 nets** — re-parsed from the
   written `.kicad_pcb`. Every physical pin of each real part is now a pad (the
-  Pico W's full 40, the Tic T500's 14, etc.), with every same-named pin (e.g. the
-  eight Pico GND pins) tied to its net.
+  Pico W's full 40, the RS-232 module receptacle's 40, the Tic T500's 14, etc.),
+  with every same-named pin (e.g. the eight Pico GND pins) tied to its net.
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
   compact placement stays clearance-clean.
-- **4 vendor 3-D models attached** (DRV2605L, DRV8871, D24V22F5, shunt regulator),
-  **85 F.Fab** body-outline + **57 F.CrtYd** courtyard segments emitted.
+- **15 3-D models attached** — 4 from vendor STEP files (DRV2605L, DRV8871,
+  D24V22F5, shunt regulator), the rest from the parts' own KiCad library
+  footprints — plus **60 F.Fab** body-outline + **60 F.CrtYd** courtyard segments.
 
 **Compact, domain-aware placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
 The first DeepPCB run flagged the board as *"still very spaced out"*: the earliest
@@ -186,7 +209,9 @@ area shelf-pack (~80 × 118 mm); the Edison review below then asked for placemen
   domain) for cable exit, without divorcing it from the driver it serves.
 
 The result is a wider, less-tall **~117 × 82 mm** board (Edison's preferred
-aspect) that `_assert_no_overlap()` keeps DRC-clean. Crucially, keeping clusters
+aspect; later widened to ~141 × 82 mm when the RS-232 module joined the logic
+domain — see the top update block) that `_assert_no_overlap()` keeps DRC-clean.
+Crucially, keeping clusters
 intact *reduced* the estimated ratsnest (part-centre HPWL ≈1150 → ≈1051 mm)
 rather than inflating it — the failure mode of a naive input reorder. The
 schematic-sheet layout is unchanged (its spacing doesn't affect connectivity or
@@ -232,8 +257,8 @@ upload trio is accepted.
 
 The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
 own connectivity engine sees it: the build exports its netlist with
-`kicad-cli sch export netlist` and asserts every one of the **69 connected pins
-lands on its intended net across all 20 named nets**, with no stray
+`kicad-cli sch export netlist` and asserts every one of the **86 connected pins
+lands on its intended net across all 24 named nets**, with no stray
 `unconnected-(…)` entries (`validate_schematic_netlist()`; runs automatically
 when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
 board and the schematic are emitted from the same `NETLIST` / `PINOUTS` tables —
@@ -273,13 +298,15 @@ tied to the same net on both the board and the schematic:
 | `Servo_3pin` — hobby servo | 3 | 3 | 3 | — |
 | `ERM_Motor` — Adafruit #1201 | 2 | 2 | 2 | — |
 | `Solenoid` — Adafruit #412 | 2 | 2 | 2 | — |
+| `RS232_2CH_Module` — Waveshare Pico-2CH-RS232 | 40 | — | **40** | new part: the Pico-form-factor receptacle the module plugs onto (nets `VSYS`, 8×`GND`, and the `GP0/GP1/GP4/GP5` channel positions; rest no-connect) |
 
-The board therefore grew from **66 → 97 pads** (69 net-assigned across the same
-20 nets), and the Pico W body was re-proportioned to 21 × 51 mm so its long edge
-runs along the 40-pin columns. `validate_schematic_netlist()` re-confirms all 69
-connected pins land on their intended nets with zero unconnected stragglers, and
-`_assert_no_overlap()` keeps the (now slightly larger) compact placement
-DRC-clean.
+The board therefore grew from **66 → 97 pads** (69 net-assigned across 20 nets),
+and the Pico W body was re-proportioned to 21 × 51 mm so its long edge runs along
+the 40-pin columns. The later **RS-232 module** (above) added a 15th part and
+its 40-pad receptacle, bringing the board to **137 pads / 86 net-assigned /
+24 nets**. `validate_schematic_netlist()` re-confirms all connected pins land on
+their intended nets with zero unconnected stragglers, and `_assert_no_overlap()`
+keeps the compact placement DRC-clean.
 
 ## Uploading it
 

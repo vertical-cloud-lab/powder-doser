@@ -163,9 +163,10 @@ def _header(n: int) -> tuple[str, str]:
 # the schematic pin numbers (verified by ``validate_schematic_netlist``).
 # ---------------------------------------------------------------------------
 # Netlist, transcribed from PR #61 hardware/test-module/kicad/generate.py
-# (PLACEMENTS). (x, y) are the schematic-sheet anchor coordinates; we reuse
-# them as a rough, non-overlapping starting *floorplan* on the board (note 20
-# §4: "arranges them in a rough grid ... relies on Quilter to untangle it").
+# (PLACEMENTS), plus the J2 RS-232 scale-interface module added on PR #76
+# (issue: integrate the A&D balance for gravimetric dosing). (x, y) are the
+# schematic-sheet anchor coordinates; the board ignores them (see
+# _pack_positions) and only the schematic sheet uses them for symbol layout.
 # ---------------------------------------------------------------------------
 # Each entry: ref, lib_id (proxy type), x, y, [(pin_name, net), ...]
 NETLIST = [
@@ -179,7 +180,17 @@ NETLIST = [
                                   ("GP1", "I2C_SCL"), ("GP4", "STP_TX"),
                                   ("GP5", "STP_RX"), ("GP10", "SOL_IN1"),
                                   ("GP11", "SOL_IN2"), ("GP15", "SERVO_SIG"),
-                                  ("GP14", "HAPT_EN")]),
+                                  ("GP14", "HAPT_EN"),
+                                  # RS-232 module (scale + spare channel). The
+                                  # Waveshare board hard-wires its channels to
+                                  # GP0/GP1 and GP4/GP5, but those are taken here
+                                  # by I2C and the Tic UART, so the side-header
+                                  # mount (see J2) re-routes the four UART lines
+                                  # to free Pico UART pins: UART0 alt GP12/GP13
+                                  # (channel 0 = A&D HR-100A scale) and UART1 alt
+                                  # GP8/GP9 (channel 1 = spare).
+                                  ("GP12", "RS232_0_TXD"), ("GP13", "RS232_0_RXD"),
+                                  ("GP8", "RS232_1_TXD"), ("GP9", "RS232_1_RXD")]),
     ("U3", "DRV2605L_Breakout", 210, 40, [("VIN", "+3V3"), ("GND", "GND"),
                                           ("SDA", "I2C_SDA"), ("SCL", "I2C_SCL"),
                                           ("EN", "HAPT_EN"), ("IN_TRIG", "HAPT_EN"),
@@ -200,6 +211,17 @@ NETLIST = [
                                        ("B1", "STP_B1"), ("B2", "STP_B2")]),
     ("M3", "Servo_3pin", 210, 215, [("+5V", "+5V"), ("GND", "GND"),
                                     ("SIG", "SERVO_SIG")]),
+    # Waveshare Pico-2CH-RS232: a Pico-form-factor HAT (SP3232EEN, 2 channels)
+    # that mounts on a side 2x20 header (Proto-Doubler spirit) beside the Pico,
+    # so its own embedded RS-232 charge-pump caps replace a discrete MAX3232 +
+    # ~5 caps on this board. Modelled as the 2x20 receptacle it plugs onto; the
+    # module taps VCC/GND plus its four UART lines at the GP0/GP1/GP4/GP5
+    # positions (datasheets under hardware/vendor-files/waveshare-pico-2ch-rs232).
+    ("J2", "RS232_2CH_Module", 110, 200, [("VSYS", "+5V"), ("GND", "GND"),
+                                         ("GP0", "RS232_0_TXD"),
+                                         ("GP1", "RS232_0_RXD"),
+                                         ("GP4", "RS232_1_TXD"),
+                                         ("GP5", "RS232_1_RXD")]),
 ]
 
 # Full recorded pinout per proxy type (left/right header columns), so the
@@ -229,6 +251,13 @@ PINOUTS = {
         "right": ["VBUS", "VSYS", "GND", "3V3_EN", "3V3", "ADC_VREF", "GP28",
                   "GND", "GP27", "GP26", "RUN", "GP22", "GND", "GP21", "GP20",
                   "GP19", "GP18", "GND", "GP17", "GP16"]},
+    # Waveshare Pico-2CH-RS232 module: a Pico-form-factor HAT, so the side
+    # header it plugs onto mirrors the Pico's 2x20 castellated pinout exactly
+    # (one pad per position). Only the positions the module actually uses
+    # (VSYS, GND, GP0/GP1 = channel 0, GP4/GP5 = channel 1) are netted in
+    # NETLIST; the rest are pass-through no-connects. Re-uses the Pico pinout
+    # by reference so the two land patterns can never drift apart.
+    "RS232_2CH_Module": None,  # set to the Pico pinout just below
     "DRV2605L_Breakout": {"left": ["VIN", "GND", "SDA", "SCL", "IN_TRIG", "EN"],
                           "right": ["OUT+", "OUT-"]},
     # Adafruit #3190 DRV8871: 4-pos power/motor terminal block (VM, GND, OUT1,
@@ -244,6 +273,9 @@ PINOUTS = {
     "ERM_Motor": {"left": ["+"], "right": ["-"]},
     "Solenoid": {"left": ["+"], "right": ["-"]},
 }
+# The RS-232 module receptacle is the Pico's land pattern (the HAT plugs onto
+# it), so bind it to the same pinout rather than duplicating the 40-pin lists.
+PINOUTS["RS232_2CH_Module"] = PINOUTS["Pi_Pico_W"]
 
 # Nets carrying power; routed wider / with more clearance. The rest are signals.
 POWER_NETS = {"+12V", "+5V", "+3V3", "GND"}
@@ -282,6 +314,13 @@ PACKAGES = {
         kind="module", body=(21.0, 51.0), model=None,
         source="Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in "
                "castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"),
+    "RS232_2CH_Module": dict(
+        kind="module", body=(21.0, 52.0), model=None,
+        source="Waveshare Pico-2CH-RS232 (SP3232EEN, 2 channels) 21x52 mm; "
+               "mounts on a side 2x20 header (Proto-Doubler PiCowbell spirit); "
+               "embeds its own RS-232 charge-pump caps so no discrete MAX3232 is "
+               "needed; datasheets in "
+               f"{VENDOR}/waveshare-pico-2ch-rs232/datasheets/"),
     "DRV2605L_Breakout": dict(
         kind="module", body=(17.78, 16.51),
         model=f"{VENDOR}/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
@@ -355,7 +394,7 @@ PLACEMENT_CLUSTERS = [
     ("power", "solenoid",  ["U4", "SOL1"]),             # DRV8871 + solenoid load
     ("power", "stepper",   ["SR1", "C3", "U5", "M2"]),  # shunt + cap + Tic + stepper
     ("logic", "haptic",    ["U3", "M1"]),               # DRV2605L + ERM
-    ("logic", "mcu",       ["U2", "M3"]),               # Pico + servo header
+    ("logic", "mcu",       ["U2", "J2", "M3"]),       # Pico + RS-232 module + servo header
 ]
 # Off-board connectors (cables leaving the PCB); edge-placed for harnessing.
 EDGE_REFS = {"J1", "SOL1", "M2", "M1", "M3"}
@@ -421,6 +460,10 @@ def _row_spacing(lib_id: str) -> float:
     if not cols["right"]:
         return 0.0
     if lib_id == "Pi_Pico_W":
+        return PICO_ROW_SPACING
+    if lib_id == "RS232_2CH_Module":
+        # Pico-form-factor HAT receptacle: same castellation row spacing so the
+        # module mates pin-for-pin with the side header.
         return PICO_ROW_SPACING
     body = PACKAGES[lib_id]["body"]
     if body is not None:                       # place columns near the body edges

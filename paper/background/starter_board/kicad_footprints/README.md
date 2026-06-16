@@ -16,7 +16,7 @@ Only the handful of footprints actually used by the generator are vendored:
 | `Connector_PinHeader_2.54mm.pretty/PinHeader_1x04_P2.54mm_Vertical` | Pololu D24V22F5 header, DRV8871 power/motor header |
 | `Connector_PinHeader_2.54mm.pretty/PinHeader_1x06_P2.54mm_Vertical` | DRV2605L control header, Tic T500 power/motor row |
 | `Connector_PinHeader_2.54mm.pretty/PinHeader_1x08_P2.54mm_Vertical` | Tic T500 control row |
-| `Connector_PinHeader_2.54mm.pretty/PinHeader_1x20_P2.54mm_Vertical` | Raspberry Pi Pico W (one per castellated edge) |
+| `Connector_PinHeader_2.54mm.pretty/PinHeader_1x20_P2.54mm_Vertical` | Raspberry Pi Pico W and the Waveshare Pico-2CH-RS232 side header (one per castellated edge) |
 | `Capacitor_THT.pretty/CP_Radial_D8.0mm_P3.50mm` | Electrolytic decoupling caps C1/C2/C3 |
 | `Connector_BarrelJack.pretty/BarrelJack_Horizontal` | 2.1 mm DC barrel jack (Adafruit #373) |
 
