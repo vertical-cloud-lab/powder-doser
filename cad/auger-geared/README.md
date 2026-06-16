@@ -46,7 +46,12 @@ generates.
 | `storage-auger-core.scad` | **(NEW)** Parametric core for the high-capacity **storage auger**: `archimedes_auger_storage(total_h, gear_center_z, with_gear)`. Reuses the unchanged outer cylinder / bore / top cap / exit funnel / gear band from `auger-core.scad` and the v4 nozzle screw geometry from `nozzle-variants.scad`, but truncates the internal screw to the **bottom third** of the bore so the top two thirds is an open loose-powder store. |
 | `archimedes-auger-storage.scad` | **(NEW)** Full-length storage auger (`total_h = 250 mm`, with gear band). Identical outer cylinder to `archimedes-auger-geared.scad`; the only change is that the screw occupies the bottom third (≈ 83 mm) and the top two thirds is open storage volume. |
 | `archimedes-auger-storage-test.scad` | **(NEW)** Smaller gearless bench-test version of the storage auger (`total_h = 90 mm`, ≈ 3.54 in). Same 1/3-screw / 2/3-open-storage stipulation, same inlets/outlets, no gear band — matching the short nozzle test pieces. |
-| `archimedes-auger-geared.stl`, `archimedes-auger-geared-short.stl`, `archimedes-auger-storage.stl`, `archimedes-auger-storage-test.stl`, `stepper-pinion.stl` | Pre-rendered, manifold STLs ready to slice. All pass OpenSCAD's `Simple: yes` manifold check. |
+| `threaded-storage-auger-core.scad` | **(NEW)** Parametric core for the **threaded** storage augers: `threaded_archimedes_auger_storage(...)` + `threaded_storage_cap()`. Cuts an external thread into the top inch of the storage auger's outer wall (crest flush with the auger OD, never wider) and provides the matching screw-on cap. |
+| `threaded_archimedes-auger-storage.scad` | **(NEW)** Threaded version of `archimedes-auger-storage.scad` (full, 250 mm). Identical to the storage auger plus a 1-inch external thread on the filling (top "+") end so the cap can seal it. |
+| `threaded_archimedes-auger-storage-test.scad` | **(NEW)** Threaded version of `archimedes-auger-storage-test.scad` (bench test, 90 mm). The piece to test with the cap. |
+| `threaded-storage-cap.scad` | **(NEW)** Hand-operated screw-on cap with a matching internal thread, chamfered top edge, and a body larger in diameter than the auger. One cap fits both threaded storage augers. |
+| `threaded-storage-preview.scad` | **(NEW)** Non-printable visualisation: half-cut cross-sections of the threaded augers and a cap-on-auger fit preview (`-Dpart="assembly"`). |
+| `archimedes-auger-geared.stl`, `archimedes-auger-geared-short.stl`, `archimedes-auger-storage.stl`, `archimedes-auger-storage-test.stl`, `threaded_archimedes-auger-storage.stl`, `threaded_archimedes-auger-storage-test.stl`, `threaded-storage-cap.stl`, `stepper-pinion.stl` | Pre-rendered, manifold STLs ready to slice. All pass OpenSCAD's `Simple: yes` manifold check. |
 | `*.png` | Iso + top renders for documentation. |
 
 ## v3 — what changed vs v2
@@ -249,6 +254,22 @@ What **changes**: the internal Archimedean screw (central shaft + helical fin) n
 
 Shared geometry lives in `storage-auger-core.scad` (`archimedes_auger_storage(total_h, gear_center_z, with_gear)`); each top-level `.scad` just sets the length and whether the gear band is present, so the two storage variants cannot drift apart. The half-cut cross-sections (`archimedes-auger-storage-cross-section.png`, `archimedes-auger-storage-test-cross-section.png`) show the screw confined to the bottom third with the open store above.
 
+## Threaded storage auger + hand cap (PR #49 comment 4720626775)
+
+@swcharles asked for a way to **seal the filling (non-dispensing, top "+") end** of the storage auger by hand:
+
+> For both the storage auger and the test storage auger, make a new version called `threaded_[previous name]` … Add an external thread on the top inch of the auger and create a simple cap with an internal thread. This will act like a long bottle cap. … the threads should not have a wider maximum diameter than the auger's outer diameter, allowing for us to continue to slide brackets on … The threaded portion of each should be about an inch. And chamfer the cap's top edge a little bit … it is anticipated that the cap will be larger in diameter than the auger. We will then test the smaller test storage auger with the cap.
+
+| Part | File | STL | Notes |
+|------|------|-----|-------|
+| **Threaded storage auger** (full) | `threaded_archimedes-auger-storage.scad` | `threaded_archimedes-auger-storage.stl` | 250 mm; identical to `archimedes-auger-storage.scad` + 1-inch top thread |
+| **Threaded storage auger** (bench test) | `threaded_archimedes-auger-storage-test.scad` | `threaded_archimedes-auger-storage-test.stl` | 90 mm, gearless; the piece to test with the cap |
+| **Cap** | `threaded-storage-cap.scad` | `threaded-storage-cap.stl` | Matching internal thread, chamfered top edge, larger Ø than the auger; one cap fits both augers |
+
+Thread geometry (in `threaded-storage-auger-core.scad`): single-start, **25.4 mm (≈ 1 in)** long, 4 mm pitch, 1 mm deep. The external thread is formed by reducing the outer wall to the thread minor radius (11.5 mm) over the top inch and adding a helical ridge whose **crest is flush with the 12.5 mm auger OD radius** — so the threaded section's maximum diameter equals the auger OD and **never exceeds it** (numerically verified: max radius in the thread region = 12.5 mm), keeping bracket slide-on possible. The cap is the matching nut: a solid cup with the same screw (grown radially by a 0.35 mm hand-fit clearance) subtracted from it, so the fit is correct by construction (the male thread is strictly contained in the cap's internal void) regardless of rotational phase. The cap top outer edge has a 1.5 mm chamfer.
+
+Both threaded augers and the cap pass OpenSCAD's `Simple: yes` manifold check. `threaded-storage-cap-assembly-cross-section.png` is a half-cut of the cap seated on the test auger showing the external thread nesting inside the cap's internal thread with clearance, over the open store and bottom-third screw.
+
 ## Print notes
 
 Both parts are sized for the same stack as PR #16:
@@ -372,6 +393,26 @@ xvfb-run -a openscad --render -o archimedes-auger-storage-test-cross-section.png
     --imgsize=500,900 --camera=0,-80,45,90,0,0,140 --projection=ortho \
     --colorscheme=Tomorrow _cs_storage_test.scad
 rm _cs_storage_test.scad
+
+# Threaded storage augers + screw-on cap
+openscad -o threaded_archimedes-auger-storage.stl      threaded_archimedes-auger-storage.scad
+openscad -o threaded_archimedes-auger-storage-test.stl threaded_archimedes-auger-storage-test.scad
+openscad -o threaded-storage-cap.stl                   threaded-storage-cap.scad
+xvfb-run -a openscad -o threaded_archimedes-auger-storage-test-iso.png \
+    --imgsize=800,900 --camera=0,0,45,55,0,25,230 \
+    --colorscheme=Tomorrow threaded_archimedes-auger-storage-test.scad
+xvfb-run -a openscad -o threaded-storage-cap-iso.png \
+    --imgsize=700,600 --camera=0,0,17,55,0,25,110 \
+    --colorscheme=Tomorrow threaded-storage-cap.scad
+xvfb-run -a openscad --render -o threaded_archimedes-auger-storage-test-cross-section.png \
+    --imgsize=600,1000 -Dpart='"test-cs"' --camera=0,120,45,0,0,45 \
+    --projection=ortho --viewall --colorscheme=Tomorrow threaded-storage-preview.scad
+xvfb-run -a openscad --render -o threaded_archimedes-auger-storage-cross-section.png \
+    --imgsize=600,1100 -Dpart='"full-cs"' --camera=0,300,125,0,0,125 \
+    --projection=ortho --viewall --colorscheme=Tomorrow threaded-storage-preview.scad
+xvfb-run -a openscad --render -o threaded-storage-cap-assembly-cross-section.png \
+    --imgsize=700,1100 -Dpart='"assembly"' --camera=0,120,70,0,0,70 \
+    --projection=ortho --viewall --colorscheme=Tomorrow threaded-storage-preview.scad
 ```
 
 Or paste either `.scad` into <https://openscad.org/demo/> → **F6**
