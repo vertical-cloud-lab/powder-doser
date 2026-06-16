@@ -99,18 +99,30 @@ a **2:1 spur-gear reduction**:
   down to the adjacent (+X) front leg, resisting the bending the servo's
   weight + lifting reaction torque would otherwise put into the
   cantilever.
-* **Trapezoidal tabletop on a tripod** (per Will's PR #66 review).  The
-  baseplate is trimmed from a 200 × 250 mm rectangle on four legs to a
-  **trapezoidal tabletop** — full width (±100 mm) at the front edge
-  (`Y = +115`, near the hinge), tapering to a narrow rear edge
-  (±32 mm) — standing on a **tripod**: the two rear-corner legs are
-  replaced by a **single rear-centre leg**.  The rear edge is pulled in
-  from `Y = −135` to `Y = −75` (rear foot at `Y ≈ −54`): per
-  @swcharles' note the rear leg only has to sit a small distance behind
-  the worst-case (fully-loaded) centre of mass — which the dominant
-  auger mass (loaded COM ≈ 0) and the front-biased stepper/gear cluster
-  put at roughly `Y ≈ +15` — so a foot ~70 mm behind it gives a
-  generous stability margin while removing ~60 mm of unused baseplate.
+* **DUAL servo lift + stripped-down baseplate** (per Will's comment
+  4721011696).  The single +X servo mount is now **mirrored onto the
+  −X side** so the mounting plate is driven by **two servos +
+  two hinge-gear bands** working together — a second 40-tooth gear
+  band is added to the −X outer mounting-plate hinge lobe (mirror of
+  the +X gear band), and the porch + two square posts + underside
+  flange are duplicated on the −X side with identical geometry.  At
+  the same time the **legs and most of the rear of the baseplate are
+  gone** — the part is now a small forward-only **rectangular
+  mounting tab** (200 mm wide × 85 mm deep, `Y ∈ [+30, +115]`) that
+  bolts onto a separate frame via **four Ø5 M5 mounting holes** at
+  the rear, arranged like the corners of a **60 × 60 mm square**
+  (X = ±30, Y = +40 and +100).  The underside flange is **kept and
+  enhanced**: it's now 40 mm deep (taller than the previous 30 mm)
+  with a **supportive triangular gusset** (XZ-plane rib, 6 × 26 mm)
+  and an **M5 mounting hole through the flange face** (Z = baseplate
+  bottom − 22 mm), so each flange now also acts as a side-bolting
+  feature.  The hinge-arm depth is also reduced slightly (40 → 35
+  mm) to clear the front bracket.
+* **Trapezoidal tabletop on a tripod** *(superseded — see "DUAL servo
+  lift" above; the trapezoidal tripod has been replaced with a
+  rectangular forward-only mounting tab)*.  The previous baseplate
+  was a trapezoidal tabletop standing on a tripod (two front-corner
+  legs + one rear-centre leg).
 * **Gear tooth profile** — both the hinge gear band and the servo
   pinion use **true involute** tooth flanks (base-circle involute
   sampled at 12 points per flank + a 3-point tip arc), matching the

@@ -130,21 +130,27 @@ leftOuterLobe = startSketchOn(YZ)
   |> close()
   |> extrude(length = -lobeLen)
 
-// ---- Hinge gear band on the +X OUTER lobe (issue #63) -------------
-// The outermost +X mounting-plate hinge lobe carries a 40-tooth spur
-// gear band that meshes with the servo pinion on the baseplate at
-// C = 27.25 mm, 2 : 1 reduction.  The gear band is integrated into
-// the mounting plate as a single solid.  KCL approximates the tooth
-// band as a cylinder at the gear's tip diameter (true involute teeth
-// are generated in the CadQuery mirror, cad_model.py, which is the
-// source of truth for the printed STEP/STL — see README "zoo.dev
-// experience").
+// ---- Hinge gear bands on BOTH outer lobes (issue #63 + comment 4721011696)
+// Both outermost mounting-plate hinge lobes (+X and -X) carry a 40-tooth
+// spur gear band that meshes with the servo pinion on its side of the
+// baseplate at C = 27.25 mm, 2 : 1 reduction.  Dual-servo lift per Will's
+// comment 4721011696.  The gear bands are integrated into the mounting
+// plate as a single solid.  KCL approximates the tooth band as a cylinder
+// at the gear's tip diameter (true involute teeth are generated in the
+// CadQuery mirror, cad_model.py, which is the source of truth for the
+// printed STEP/STL — see README "zoo.dev experience").
 gearBandHalfThk = p.gearFaceW / 2
-hingeGearBand = startSketchOn(YZ)
+hingeGearBandPos = startSketchOn(YZ)
   |> circle(center = [p.yDisp, p.zAug], radius = p.gearHingeTipD / 2)
   |> extrude(length = p.gearFaceW)
-  // Translate so the band's near face lands at gearXLo.
+  // Translate so the band's near face lands at gearXLo (+X side).
   |> translate(x = p.gearXLo)
+
+hingeGearBandNeg = startSketchOn(YZ)
+  |> circle(center = [p.yDisp, p.zAug], radius = p.gearHingeTipD / 2)
+  |> extrude(length = p.gearFaceW)
+  // Translate so the band's near face lands at gearXLoNeg (-X side).
+  |> translate(x = p.gearXLoNeg)
 
 // ---- Arm-clearance slots through the plate body (interference fix) -
 // The two baseplate hinge arms (one each side of the auger gap) pass

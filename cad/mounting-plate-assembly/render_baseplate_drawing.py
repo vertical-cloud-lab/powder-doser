@@ -19,21 +19,29 @@ from matplotlib.patches import Circle, FancyArrowPatch, Polygon, Rectangle
 # --------------------------------------------------------------------- #
 # Dimensions (mirrors cad_model.py — single source of truth).           #
 # --------------------------------------------------------------------- #
-# Tabletop trapezoid.
+# Rectangular forward-only mounting tab (legs + most of the rear are
+# gone per Will's comment 4721011696).
 BASE_FRONT_HALF_W = 100.0           # ±100 mm at the front edge
-BASE_REAR_HALF_W = 32.0             # ±32 mm at the rear edge
+BASE_REAR_HALF_W = 100.0            # ±100 mm at the rear edge (rectangular)
 BASE_Y_FRONT = 115.0                # front edge Y (toward dispense)
-BASE_Y_REAR = -75.0                 # rear  edge Y
+BASE_Y_REAR = +30.0                 # rear  edge Y
 BASE_T = 6.0                        # tabletop thickness
 
-# Tripod legs.
-BASE_LEG_W = 18.0                   # leg cross-section (square)
-BASE_LEG_H = 95.0                   # leg height below the tabletop
-BASE_LEG_INSET = 12.0               # inset from the local edge to leg face
-FRONT_LEG_X = BASE_FRONT_HALF_W - BASE_LEG_INSET - BASE_LEG_W / 2.0   # ±79
-FRONT_LEG_Y = BASE_Y_FRONT - BASE_LEG_INSET - BASE_LEG_W / 2.0        # +94
+# Legs removed.
+BASE_LEG_W = 0.0
+BASE_LEG_H = 0.0
+BASE_LEG_INSET = 0.0
+FRONT_LEG_X = 79.0                  # historical X used by the flange
+FRONT_LEG_Y = BASE_Y_FRONT - 21.0   # legacy reference (not drawn)
 REAR_LEG_X = 0.0
-REAR_LEG_Y = BASE_Y_REAR + BASE_LEG_INSET + BASE_LEG_W / 2.0          # -54
+REAR_LEG_Y = BASE_Y_REAR + 21.0     # legacy reference (not drawn)
+
+# Four M5 rear-corner mounting holes (corners of a 60 × 60 mm square).
+BASE_MOUNT_HOLE_DIA = 5.4
+BASE_MOUNT_HOLE_PITCH = 60.0
+BASE_MOUNT_HOLE_X = BASE_MOUNT_HOLE_PITCH / 2.0          # ±30
+BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 10.0              # +40
+BASE_MOUNT_HOLE_Y_FRONT = BASE_MOUNT_HOLE_Y_REAR + BASE_MOUNT_HOLE_PITCH  # +100
 
 # Hinge arms (forward-and-up, one each side of the auger).
 HINGE_EYE_OD = 18.0
@@ -47,16 +55,17 @@ HINGE_X1 = HINGE_X0 + HINGE_LOBE_W                                     # ≈24.6
 HINGE_X2 = HINGE_X0 + 2.0 * HINGE_LOBE_W                               # ≈37.37
 ARM_X_LO_POS = HINGE_X1 + HINGE_LAYER_GAP / 2.0                        # ≈24.88
 ARM_X_HI_POS = HINGE_X2 - HINGE_LAYER_GAP / 2.0                        # ≈37.17
-ARM_BASE_SUPPORT_LEN = 40.0
+ARM_BASE_SUPPORT_LEN = 35.0       # reduced from 40 per comment 4721011696
 ARM_SLOPE_RUN = 16.0
 Y_DISP = 125.0                      # hinge axis Y (= dispense end)
 Z_AUG = 29.25                       # hinge axis Z (absolute)
 Z_BASE_TOP = -14.0                  # baseplate-body BOTTOM in absolute Z
 HINGE_AXIS_Z_LOCAL = Z_AUG - Z_BASE_TOP                                # 43.25
-ARM_BACK_Y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN                       # +75
-SLOPE_TOP_Y = ARM_BACK_Y + ARM_SLOPE_RUN                               # +91
+ARM_BACK_Y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN                       # +80
+SLOPE_TOP_Y = ARM_BACK_Y + ARM_SLOPE_RUN                               # +96
 
-# MG996R servo mount (two square posts + cantilevered porch).
+# DUAL MG996R servo mounts — +X side and mirrored -X side (per Will's
+# comment 4721011696).
 DRIVE_HEAD_OVERHANG = 5.0
 GEAR_HINGE_TIP_D = 38.17            # ≈ 38.2 mm
 GEAR_X_HI = (HINGE_X2 + HINGE_LAYER_GAP / 2.0 + PLATE_X_MAX) / 2.0 \
@@ -86,20 +95,25 @@ PINION_Z_ABOVE_BASE_TOP = 10.0
 PINION_Z_LOCAL = BASE_T + PINION_Z_ABOVE_BASE_TOP                      # 16.0
 POST_Z_HI = PINION_Z_LOCAL + MG996R_HOLE_Z_SPREAD / 2.0 + 5.0          # 26.0
 
-# Porch.
+# Porch (one each side).
 PORCH_X_LO = SERVO_WALL_X                                              # 59.0
 PORCH_X_HI = min(SERVO_BODY_X_HI + 1.0, BASE_FRONT_HALF_W)             # 96.8
 PORCH_Y_LO = BASE_Y_FRONT - 2.0                                        # 113.0
 PORCH_Y_HI = FAR_POST_Y_HI + 1.0                                       # 170.4
 
-# Underside triangular flange.
+# Underside triangular flange (taller + gusset + M5 mounting hole).
 FLANGE_THK = 6.0
-FLANGE_DEPTH = 30.0
+FLANGE_DEPTH = 40.0
+FLANGE_X = 79.0                     # ±79 (one flange per side, mirrored)
+FLANGE_GUSSET_THK = 6.0
+FLANGE_GUSSET_RUN = 26.0
+FLANGE_HOLE_DIA = 5.4
+FLANGE_HOLE_Z_BELOW_BASE = 22.0
 
 # Arm-clearance slots through the mounting plate (informational — slot is
 # in the plate, not the baseplate, but the slot Y bound depends on the
 # baseplate's arm geometry).
-ARM_SLOT_Y_BACK = ARM_BACK_Y - 2.0                                     # +73
+ARM_SLOT_Y_BACK = ARM_BACK_Y - 2.0                                     # +78
 
 
 # --------------------------------------------------------------------- #
@@ -198,7 +212,7 @@ def draw_top_view(ax):
     ax.set_title("TOP VIEW   (looking down −Z)", fontsize=10, loc="left",
                  pad=6)
 
-    # Tabletop trapezoid.
+    # Rectangular forward-only tabletop.
     polygon(ax, [
         (-BASE_FRONT_HALF_W, BASE_Y_FRONT),
         (+BASE_FRONT_HALF_W, BASE_Y_FRONT),
@@ -206,19 +220,19 @@ def draw_top_view(ax):
         (-BASE_REAR_HALF_W,  BASE_Y_REAR),
     ])
 
-    # Porch (fused to the front edge, projecting +X past the front leg).
-    rect(ax, PORCH_X_LO, PORCH_Y_LO,
-         PORCH_X_HI - PORCH_X_LO, PORCH_Y_HI - PORCH_Y_LO,
-         face="#eaf2ff")
+    # Mirrored porches (one each side, fused to the front edge under the
+    # servo footprint).
+    for sx in (+1, -1):
+        rect(ax, sx * PORCH_X_LO if sx > 0 else -PORCH_X_HI,
+             PORCH_Y_LO,
+             PORCH_X_HI - PORCH_X_LO, PORCH_Y_HI - PORCH_Y_LO,
+             face="#eaf2ff")
 
-    # Two front-corner legs (footprint shown dashed since they're below).
-    for sx in (-FRONT_LEG_X, +FRONT_LEG_X):
-        rect(ax, sx - BASE_LEG_W / 2, FRONT_LEG_Y - BASE_LEG_W / 2,
-             BASE_LEG_W, BASE_LEG_W,
-             face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (4, 2)))
-    rect(ax, REAR_LEG_X - BASE_LEG_W / 2, REAR_LEG_Y - BASE_LEG_W / 2,
-         BASE_LEG_W, BASE_LEG_W,
-         face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (4, 2)))
+    # Four M5 rear-corner mounting holes (corners of a 60 × 60 mm square).
+    for hx in (-BASE_MOUNT_HOLE_X, +BASE_MOUNT_HOLE_X):
+        for hy in (BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT):
+            circle(ax, hx, hy, BASE_MOUNT_HOLE_DIA / 2.0, lw=0.8)
+            centerlines(ax, hx, hy, BASE_MOUNT_HOLE_DIA, lw=0.4)
 
     # Two hinge arms (footprint on the tabletop).
     for sign in (-1, +1):
@@ -229,64 +243,65 @@ def draw_top_view(ax):
         rect(ax, x_lo, ARM_BACK_Y, x_hi - x_lo, Y_DISP - ARM_BACK_Y,
              face="#fff5e6", lw=1.0)
 
-    # Two square servo posts.
-    for y_lo, y_hi in [(NEAR_POST_Y_LO, NEAR_POST_Y_HI),
-                       (FAR_POST_Y_LO, FAR_POST_Y_HI)]:
-        rect(ax, SERVO_WALL_X, y_lo, SERVO_WALL_T, y_hi - y_lo,
-             face="#dbe9ff", lw=1.0)
-        # Two Ø5 ear holes per post (centred on the post midline along Y).
-        ym = (y_lo + y_hi) / 2.0
-        circle(ax, SERVO_WALL_X + SERVO_WALL_T / 2.0, ym,
-               MG996R_HOLE_DIA / 2.0, lw=0.8)
+    # Mirrored servo posts (two per side, four total).
+    for sx in (+1, -1):
+        for y_lo, y_hi in [(NEAR_POST_Y_LO, NEAR_POST_Y_HI),
+                           (FAR_POST_Y_LO, FAR_POST_Y_HI)]:
+            post_x_lo = sx * SERVO_WALL_X if sx > 0 else -(SERVO_WALL_X + SERVO_WALL_T)
+            rect(ax, post_x_lo, y_lo, SERVO_WALL_T, y_hi - y_lo,
+                 face="#dbe9ff", lw=1.0)
+            ym = (y_lo + y_hi) / 2.0
+            cx = post_x_lo + SERVO_WALL_T / 2.0
+            circle(ax, cx, ym,
+                   MG996R_HOLE_DIA / 2.0, lw=0.8)
 
-    # Pinion centreline mark.
-    circle(ax, SERVO_WALL_X, PINION_Y, 0.7, edge=DIM_COLOR, face=DIM_COLOR,
-           lw=0)
+    # Pinion centreline marks (one each side).
+    for sx in (+SERVO_WALL_X, -SERVO_WALL_X):
+        circle(ax, sx, PINION_Y, 0.7, edge=DIM_COLOR, face=DIM_COLOR, lw=0)
+
+    # Flange footprints (downstand, shown dashed since they hang below).
+    for sx in (-FLANGE_X, +FLANGE_X):
+        rect(ax, sx - FLANGE_THK / 2, BASE_Y_REAR, FLANGE_THK,
+             PORCH_Y_HI - BASE_Y_REAR,
+             face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (4, 2)))
 
     # ---------------- Overall + tabletop dimensions (LEFT/BOTTOM stack) -
     # Overall front-edge width (200) — well above the front edge.
     hdim(ax, -BASE_FRONT_HALF_W, +BASE_FRONT_HALF_W, BASE_Y_FRONT + 32,
          "200.0   (front edge, = 2 × 100)",
          ext_from=BASE_Y_FRONT + 1)
-    # Rear-edge width (64).
+    # Rear-edge width (200, rectangular).
     hdim(ax, -BASE_REAR_HALF_W, +BASE_REAR_HALF_W, BASE_Y_REAR - 18,
-         "64.0   (rear edge, = 2 × 32)",
+         "200.0   (rear edge, rectangular)",
          ext_from=BASE_Y_REAR, text_above=False)
-    # Front-to-rear depth (190) — far LEFT.
+    # Front-to-rear depth (85) — far LEFT.
     vdim(ax, BASE_Y_REAR, BASE_Y_FRONT, -BASE_FRONT_HALF_W - 28,
-         "190.0", ext_from=-BASE_FRONT_HALF_W - 2)
-    # Y-coords of front / rear edges — far LEFT, outboard of the 190 dim.
+         "85.0", ext_from=-BASE_FRONT_HALF_W - 2)
+    # Y-coords of front / rear edges — far LEFT, outboard of the depth dim.
     vdim(ax, 0, BASE_Y_FRONT, -BASE_FRONT_HALF_W - 55, "Y = +115",
          ext_from=-BASE_FRONT_HALF_W - 38, text_right=False)
-    vdim(ax, BASE_Y_REAR, 0, -BASE_FRONT_HALF_W - 55, "Y = −75",
+    vdim(ax, 0, BASE_Y_REAR, -BASE_FRONT_HALF_W - 55, "Y = +30",
          ext_from=-BASE_FRONT_HALF_W - 38, text_right=False)
 
-    # ---------------- Legs (BELOW, inside trapezoid) --------------------
-    # Front-leg pitch 158 — placed just BELOW the leg footprints.
-    hdim(ax, -FRONT_LEG_X, +FRONT_LEG_X, FRONT_LEG_Y - 26,
-         "158.0   (front-leg C/L pitch)",
-         ext_from=FRONT_LEG_Y - BASE_LEG_W / 2, text_above=False,
+    # ---------------- M5 rear mounting holes ----------------------------
+    # 60 mm hole pitch in X (between the two columns of holes).
+    hdim(ax, -BASE_MOUNT_HOLE_X, +BASE_MOUNT_HOLE_X,
+         BASE_MOUNT_HOLE_Y_REAR - 12,
+         "60.0   (M5 hole X-pitch)",
+         ext_from=BASE_MOUNT_HOLE_Y_REAR - 6, text_above=False,
          fontsize=7)
-    # Front-leg Y inset (21 from front edge to leg C/L) — to the LEFT
-    # between the −X leg and the trapezoid edge.
-    vdim(ax, FRONT_LEG_Y, BASE_Y_FRONT, -FRONT_LEG_X - 18,
-         "21.0", ext_from=-FRONT_LEG_X - BASE_LEG_W / 2 - 1,
-         text_right=False, fontsize=7)
-    # Rear-leg Y inset.
-    vdim(ax, BASE_Y_REAR, REAR_LEG_Y, -28,
-         "21.0", ext_from=-BASE_LEG_W / 2 - 1, text_right=False,
-         fontsize=7)
-    # Leg footprint callout — single short leader, well away from text.
-    leader(ax, (-FRONT_LEG_X + BASE_LEG_W / 2,
-                FRONT_LEG_Y + BASE_LEG_W / 2),
-           (-145, 70),
-           "Legs ×3  (square)\n"
-           "  18 × 18 footprint\n"
-           "  centred at\n"
-           "  (±79, +94)\n"
-           "  (0, −54)\n"
-           "  hang 95 below\n"
-           "  (Z-shown dashed)",
+    # 60 mm hole pitch in Y (between front and rear row).
+    vdim(ax, BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT,
+         BASE_MOUNT_HOLE_X + 14,
+         "60.0   (M5 hole Y-pitch)",
+         ext_from=BASE_MOUNT_HOLE_X + 6, fontsize=7)
+    # Callout for the M5 mount holes.
+    leader(ax, (-BASE_MOUNT_HOLE_X, BASE_MOUNT_HOLE_Y_REAR),
+           (-150, -30),
+           "4 × Ø5 THRU  (M5 clearance)\n"
+           "  rear-corner mount holes,\n"
+           "  on a 60 × 60 mm square\n"
+           "  for bolting to a separate frame",
            ha="left", fontsize=7)
 
     # ---------------- Hinge arms (single leader to the LEFT) ------------
@@ -294,14 +309,13 @@ def draw_top_view(ax):
            (-140, 145),
            "Hinge arms ×2\n"
            "  X-span:  ±[24.88 → 37.17]  (width 12.28)\n"
-           "  Y-span:  +75 → +125\n"
-           "  (carries M5 hinge pin; see side/front views)",
+           "  Y-span:  +80 → +125\n"
+           "  (arm depth reduced from 40 → 35;\n"
+           "   carries M5 hinge pin; see side/front views)",
            ha="left", fontsize=7)
 
-    # ---------------- Servo cluster (RIGHT-SIDE stack) ------------------
-    # 5 mm drive-head overhang past front edge — INSIDE the trapezoid
-    # gap between front edge and the post (along Y between front leg and
-    # near post, where there is empty space).
+    # ---------------- Servo cluster (DUAL — RIGHT-SIDE stack) -----------
+    # 5 mm drive-head overhang past front edge.
     hdim(ax, BASE_FRONT_HALF_W, SERVO_WALL_X - DRIVE_HEAD_OVERHANG,
          BASE_Y_FRONT - 18,
          "5.0  (drive-head overhang)",
@@ -319,15 +333,25 @@ def draw_top_view(ax):
          "  41.0  (post gap)",
          ext_from=SERVO_WALL_X + SERVO_WALL_T,
          text_above=False, fontsize=7, off=2)
-    # Single combined leader for the servo posts — placed FAR RIGHT.
+    # Single combined leader for the servo posts (note: DUAL — mirrored).
     leader(ax, (SERVO_WALL_X + SERVO_WALL_T, NEAR_POST_Y_LO + 2),
            (170, 50),
-           "Servo posts ×2\n"
+           "Servo posts ×4  (2 per side, mirrored ±X)\n"
            "  6.0 (X) × 14.0 (Y) × 20.0 (Z high)\n"
            "  2 × Ø5 thru per post\n"
            "  on 49.5 × 10 mm pattern\n"
-           "  (see front view for hole Z)\n"
-           "  inboard face at X = 59.0",
+           "  inboard face at X = ±59.0\n"
+           "  DUAL-SERVO LIFT (per comment 4721011696)",
+           ha="left", fontsize=7)
+
+    # Flange callout (downstand, hidden in plan view).
+    leader(ax, (-FLANGE_X, PORCH_Y_HI - 10),
+           (-200, -60),
+           "Flanges ×2  (hidden, hang below baseplate)\n"
+           "  YZ-plane rib at X = ±79, thk 6\n"
+           "  drops 40 below baseplate bottom\n"
+           "  + XZ-plane gusset (6 thk × 26 run)\n"
+           "  + Ø5 M5 mounting hole through face",
            ha="left", fontsize=7)
 
     # Origin & axes — bottom-LEFT corner.
@@ -360,14 +384,7 @@ def draw_front_view(ax):
     # Tabletop edge (front face is full width 200 mm).
     rect(ax, -BASE_FRONT_HALF_W, 0, 2 * BASE_FRONT_HALF_W, BASE_T,
          face=FILL_FACE)
-    # Two front-corner legs.
-    for sx in (-FRONT_LEG_X, +FRONT_LEG_X):
-        rect(ax, sx - BASE_LEG_W / 2, -BASE_LEG_H,
-             BASE_LEG_W, BASE_LEG_H, face="#efefef")
-    # Rear leg (hidden behind tabletop in front view — show dashed).
-    rect(ax, REAR_LEG_X - BASE_LEG_W / 2, -BASE_LEG_H,
-         BASE_LEG_W, BASE_LEG_H,
-         face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (4, 2)))
+    # Legs removed — none drawn in this iteration.
 
     # Hinge arms (silhouette: arm extruded along X; in front view we see
     # its tip — disc cap of Ø HINGE_EYE_OD around the hinge axis).
@@ -385,17 +402,23 @@ def draw_front_view(ax):
         circle(ax, (x_lo + x_hi) / 2.0, HINGE_AXIS_Z_LOCAL,
                HINGE_EYE_ID / 2.0, edge=LINE_COLOR, face="white", lw=0.8)
 
-    # Two servo posts (silhouette in front view: rectangles at SERVO_WALL_X).
-    # In a strict orthographic projection both posts project to the same
-    # silhouette — draw the one at +X, since the gear/posts only exist on
-    # the +X side.
-    rect(ax, SERVO_WALL_X, BASE_T, SERVO_WALL_T,
-         POST_Z_HI - BASE_T, face="#dbe9ff", lw=1.0)
-    # Ø5 hole pattern on the post (4 holes, but front view shows only 2
-    # along Z since the other two are behind in Y).
-    for dz in (-MG996R_HOLE_Z_SPREAD / 2.0, +MG996R_HOLE_Z_SPREAD / 2.0):
-        circle(ax, SERVO_WALL_X + SERVO_WALL_T / 2.0,
-               PINION_Z_LOCAL + dz, MG996R_HOLE_DIA / 2.0, lw=0.8)
+    # Servo posts (silhouette in front view: rectangles at ±SERVO_WALL_X).
+    for sx in (+1, -1):
+        post_x_lo = sx * SERVO_WALL_X if sx > 0 else -(SERVO_WALL_X + SERVO_WALL_T)
+        rect(ax, post_x_lo, BASE_T, SERVO_WALL_T,
+             POST_Z_HI - BASE_T, face="#dbe9ff", lw=1.0)
+        for dz in (-MG996R_HOLE_Z_SPREAD / 2.0, +MG996R_HOLE_Z_SPREAD / 2.0):
+            circle(ax, post_x_lo + SERVO_WALL_T / 2.0,
+                   PINION_Z_LOCAL + dz, MG996R_HOLE_DIA / 2.0, lw=0.8)
+
+    # Mirrored underside flanges (downstand, in front view they project
+    # as rectangles below the tabletop at X = ±FLANGE_X).
+    for sx in (-FLANGE_X, +FLANGE_X):
+        rect(ax, sx - FLANGE_THK / 2, -FLANGE_DEPTH,
+             FLANGE_THK, FLANGE_DEPTH, face="#efe6ff", lw=1.0)
+        # M5 mounting hole through the flange face.
+        circle(ax, sx, -FLANGE_HOLE_Z_BELOW_BASE,
+               FLANGE_HOLE_DIA / 2.0, lw=0.8)
 
     # ---------------- Dimensions ----------------
     # Overall width 200 — placed HIGH so it clears the hinge caps.
@@ -410,17 +433,10 @@ def draw_front_view(ax):
     # Tabletop thickness 6 — far LEFT.
     vdim(ax, 0, BASE_T, -BASE_FRONT_HALF_W - 18, "6.0",
          ext_from=-BASE_FRONT_HALF_W - 1, fontsize=7)
-    # Leg height 95 — far LEFT, outboard of the 6 dim.
-    vdim(ax, -BASE_LEG_H, 0, -BASE_FRONT_HALF_W - 38, "95.0",
-         ext_from=-BASE_FRONT_HALF_W - 22)
-    # Leg width 18.
-    hdim(ax, -FRONT_LEG_X - BASE_LEG_W / 2, -FRONT_LEG_X + BASE_LEG_W / 2,
-         -BASE_LEG_H - 6, "18.0",
-         ext_from=-BASE_LEG_H, text_above=False, fontsize=7)
-    # Front-leg pitch 158 — placed BELOW so it clears the rear-leg footprint.
-    hdim(ax, -FRONT_LEG_X, +FRONT_LEG_X, -BASE_LEG_H - 18,
-         "158.0  (front-leg pitch)",
-         ext_from=-BASE_LEG_H - 8, text_above=False)
+    # Flange X position ±79 — placed BELOW so it clears tabletop dims.
+    hdim(ax, -FLANGE_X, +FLANGE_X, -FLANGE_DEPTH - 12,
+         "158.0  (flange C/L pitch, X = ±79)",
+         ext_from=-FLANGE_DEPTH - 2, text_above=False)
 
     # Hinge axis Z — far RIGHT.
     vdim(ax, 0, HINGE_AXIS_Z_LOCAL, +BASE_FRONT_HALF_W + 22,
@@ -432,7 +448,7 @@ def draw_front_view(ax):
            "Hinge eye\n  Ø18 OD / Ø5.4 ID  (M5 pin)",
            fontsize=7, ha="left")
 
-    # ---- Servo post block (RIGHT side, well clear of legs) -------------
+    # ---- Servo post block (RIGHT side) -------------
     # Pinion spline Z above tabletop top (10) — INSIDE post on the LEFT,
     # short text only.
     vdim(ax, BASE_T, PINION_Z_LOCAL, SERVO_WALL_X - 3,
@@ -443,14 +459,23 @@ def draw_front_view(ax):
          SERVO_WALL_X + SERVO_WALL_T + 8,
          "10  (hole Z-pitch)",
          ext_from=SERVO_WALL_X + SERVO_WALL_T + 1, fontsize=7)
-    # Post height + position composite leader — placed in the empty
-    # space ABOVE the rightmost area, not overlapping legs.
+    # Post height + position composite leader.
     leader(ax, (SERVO_WALL_X + SERVO_WALL_T, POST_Z_HI - 4),
            (SERVO_WALL_X + 70, -42),
-           "Servo post  (×2)\n"
+           "Servo posts  (×4 — 2 per side, mirrored ±X)\n"
            "  6.0 thick (X)  ×  20.0 high above tabletop\n"
-           "  inboard face at X = +59.0\n"
-           "  4 × Ø5 thru on 49.5 × 10 mm pattern",
+           "  inboard face at X = ±59.0\n"
+           "  4 × Ø5 thru per side on 49.5 × 10 mm pattern",
+           fontsize=7, ha="left")
+
+    # Flange callout (leader to LEFT-DOWN into open space below tabletop).
+    leader(ax, (-FLANGE_X - FLANGE_THK / 2, -FLANGE_DEPTH / 2),
+           (-148, -FLANGE_DEPTH - 8),
+           "Flanges  (×2, mirrored ±X)\n"
+           "  6 thk × 40 deep YZ-rib\n"
+           "  + 6 × 26 XZ gusset (hidden behind in this view)\n"
+           "  Ø5 M5 mounting hole through face\n"
+           "  hole centre Z = baseplate − 22",
            fontsize=7, ha="left")
 
     ax.set_aspect("equal")
@@ -474,12 +499,7 @@ def draw_side_view(ax):
     # Porch (projects past front edge — shown as a forward extension).
     rect(ax, PORCH_Y_LO, 0, PORCH_Y_HI - PORCH_Y_LO, BASE_T,
          face="#eaf2ff")
-
-    # Legs (front + rear). In side view both front legs overlap.
-    rect(ax, FRONT_LEG_Y - BASE_LEG_W / 2, -BASE_LEG_H,
-         BASE_LEG_W, BASE_LEG_H, face="#efefef")
-    rect(ax, REAR_LEG_Y - BASE_LEG_W / 2, -BASE_LEG_H,
-         BASE_LEG_W, BASE_LEG_H, face="#efefef")
+    # Legs removed.
 
     # Hinge arm silhouette (sloped back face).
     polygon(ax, [
@@ -508,42 +528,40 @@ def draw_side_view(ax):
     ax.plot([PINION_Y], [PINION_Z_LOCAL], marker="+", color=DIM_COLOR,
             markersize=10, markeredgewidth=1.2)
 
-    # Underside triangular flange (hidden behind front leg in this view —
-    # show as outline only).
+    # Underside triangular flange (in side view: a downstand rectangle
+    # below the baseplate, with the gusset attached at its inboard end).
     polygon(ax, [
-        (FRONT_LEG_Y, BASE_T),
-        (PORCH_Y_HI, BASE_T),
-        (FRONT_LEG_Y, BASE_T - FLANGE_DEPTH),
-    ], face="none", edge=HIDDEN_COLOR, lw=0.8, ls=(0, (3, 2)))
+        (BASE_Y_REAR, 0),
+        (PORCH_Y_HI, 0),
+        (BASE_Y_REAR, -FLANGE_DEPTH),
+    ], face="#efe6ff", lw=1.0)
+    # M5 mounting hole through the flange face.
+    circle(ax, (BASE_Y_REAR + PORCH_Y_HI) / 2 - 20,
+           -FLANGE_HOLE_Z_BELOW_BASE,
+           FLANGE_HOLE_DIA / 2.0, lw=0.8, edge=LINE_COLOR)
 
     # ---------------- Dimensions ----------------
-    # Overall Y depth 190 — placed HIGH, well above the hinge cap.
+    # Overall Y depth (front to rear of mounting tab) — placed HIGH.
     hdim(ax, BASE_Y_REAR, BASE_Y_FRONT, HINGE_AXIS_Z_LOCAL + 28,
-         "190.0   (tabletop Y-depth)",
+         f"{BASE_Y_FRONT - BASE_Y_REAR:.1f}   (tab Y-depth)",
          ext_from=HINGE_AXIS_Z_LOCAL + 12)
     # Tabletop thickness 6 — far LEFT.
     vdim(ax, 0, BASE_T, BASE_Y_REAR - 14, "6.0",
          ext_from=BASE_Y_REAR - 1, fontsize=7)
-    # Leg height 95.
-    vdim(ax, -BASE_LEG_H, 0, BASE_Y_REAR - 30, "95.0",
-         ext_from=BASE_Y_REAR - 16)
-    # Front-leg Y position (21 from front edge).
-    hdim(ax, FRONT_LEG_Y, BASE_Y_FRONT, -BASE_LEG_H - 10, "21.0",
-         ext_from=-BASE_LEG_H, text_above=False, fontsize=7)
-    # Rear-leg Y position (21 from rear edge).
-    hdim(ax, BASE_Y_REAR, REAR_LEG_Y, -BASE_LEG_H - 10, "21.0",
-         ext_from=-BASE_LEG_H, text_above=False, fontsize=7)
+    # Flange depth — far LEFT below.
+    vdim(ax, -FLANGE_DEPTH, 0, BASE_Y_REAR - 14, "40.0  (flange depth)",
+         ext_from=BASE_Y_REAR - 1, fontsize=7, text_right=False)
 
-    # Arm base support length 40 — placed BELOW the tabletop, far enough
-    # to clear the porch dim.
+    # Arm base support length (35) — placed BELOW the tabletop.
     hdim(ax, ARM_BACK_Y, Y_DISP, BASE_T - 12,
-         "40.0  (arm base support)", ext_from=BASE_T,
+         f"{ARM_BASE_SUPPORT_LEN:.0f}  (arm base support; reduced from 40)",
+         ext_from=BASE_T,
          text_above=False, fontsize=7)
-    # Slope run 16 — placed ABOVE the slope-top point, well clear of the eye.
+    # Slope run 16 — placed ABOVE the slope-top point.
     hdim(ax, ARM_BACK_Y, SLOPE_TOP_Y, HINGE_AXIS_Z_LOCAL + 8,
          "16  (slope run, ≈58°)",
          ext_from=HINGE_AXIS_Z_LOCAL + 1, fontsize=7)
-    # Hinge axis Y/Z — leader UP-LEFT, well clear of slope dim.
+    # Hinge axis Y/Z — leader UP-LEFT.
     leader(ax, (Y_DISP, HINGE_AXIS_Z_LOCAL),
            (Y_DISP + 30, HINGE_AXIS_Z_LOCAL + 26),
            "Hinge axis\n  Y = +125,  Z = +43.25  (local)\n"
@@ -553,25 +571,38 @@ def draw_side_view(ax):
     # Post Z height (20) — RIGHT of far post.
     vdim(ax, BASE_T, POST_Z_HI, FAR_POST_Y_HI + 8,
          "20.0  (post H)", ext_from=FAR_POST_Y_HI + 1, fontsize=7)
-    # Post gap 41 — placed HIGHER, well above post tops.
+    # Post gap 41 — placed HIGHER.
     hdim(ax, NEAR_POST_Y_HI, FAR_POST_Y_LO,
          POST_Z_HI + 22, "41.0  (post gap)",
          ext_from=POST_Z_HI + 1, fontsize=7)
-    # Pinion / spline cross-mark callout — leader UP-LEFT into open space
-    # above the arm silhouette.
+    # Pinion spline callout.
     leader(ax, (PINION_Y, PINION_Z_LOCAL),
            (PINION_Y - 55, HINGE_AXIS_Z_LOCAL - 18),
            "spline  (Z = +10)", fontsize=7, ha="right")
-    # Porch fwd-of-front-edge — well BELOW tabletop, clear of arm support dim.
+    # Porch fwd-of-front-edge.
     hdim(ax, BASE_Y_FRONT, PORCH_Y_HI, BASE_T - 24,
          f"{PORCH_Y_HI - BASE_Y_FRONT:.1f}  (porch fwd of front edge)",
          ext_from=BASE_T, text_above=False, fontsize=7)
 
-    # Flange depth — leader to LEFT-BELOW.
-    leader(ax, (FRONT_LEG_Y + 4, BASE_T - FLANGE_DEPTH / 2.0),
-           (FRONT_LEG_Y - 40, BASE_T - FLANGE_DEPTH - 4),
-           "Underside flange (hidden)\n"
-           "  6 thk × 30 deep × ~21 long",
+    # Flange + gusset + M5 hole callout.
+    leader(ax, ((BASE_Y_REAR + PORCH_Y_HI) / 2 - 20,
+                -FLANGE_HOLE_Z_BELOW_BASE),
+           (BASE_Y_REAR - 5, -FLANGE_DEPTH - 8),
+           "Underside flange  (×2, mirrored ±X — see front view)\n"
+           "  YZ-plane rib: 6 thk × 40 deep × ~140 long\n"
+           "  + 6 × 26 XZ-plane gusset at inboard end\n"
+           "  + Ø5 M5 mounting hole through face (Z = −22)",
+           fontsize=7, ha="left")
+
+    # Rear M5 mounting hole indicator on the tabletop (shown by Y position).
+    for hy in (BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT):
+        ax.plot([hy], [BASE_T / 2], marker="o", color=DIM_COLOR,
+                markersize=4, markeredgewidth=0.8, markerfacecolor="white")
+    leader(ax, (BASE_MOUNT_HOLE_Y_REAR, BASE_T),
+           (BASE_MOUNT_HOLE_Y_REAR - 30, BASE_T + 12),
+           "4 × Ø5 M5 rear mount holes\n"
+           "  on a 60 × 60 mm square\n"
+           "  (Y = +40 and +100)",
            fontsize=7, ha="right")
 
     ax.set_aspect("equal")
@@ -632,26 +663,30 @@ def draw_title_block(ax):
         "        Baseplate-LOCAL Z origin = baseplate BOTTOM face;\n"
         "        baseplate TOP face = Z = +6.\n"
         "\n"
-        "4.  Tabletop is a TRAPEZOID:\n"
-        "        ±100 at Y = +115 (front)   →   ±32 at Y = −75 (rear).\n"
+        "4.  Tabletop is a small forward-only RECTANGULAR mounting tab:\n"
+        "        ±100 wide × Y ∈ [+30, +115] (85 mm Y-depth).\n"
+        "        Legs + most of the rear are GONE; the part bolts to\n"
+        "        a separate frame via the rear M5 holes.\n"
         "\n"
-        "5.  TRIPOD legs (all 18 × 18 × 95 mm):\n"
-        "        (+79, +94),  (−79, +94),  (0, −54).\n"
+        "5.  4 × Ø5 M5 mounting holes at the rear corners on a\n"
+        "        60 × 60 mm square pattern (X = ±30, Y = +40 and +100).\n"
         "\n"
         "6.  Hinge arms (×2) carry the shared M5 hinge pin.\n"
-        "        Arm back face is sloped 16 mm run, ≈58° from horiz.,\n"
-        "        so the plate sweeps 0°–90° without collision\n"
-        "        (validated: 0.00 mm³ at 0° / 45° / 90°).\n"
+        "        Arm back face is sloped 16 mm run, ≈58° from horiz.\n"
+        "        Arm base support shortened 40 → 35 (clears front bkt).\n"
+        "        Validated 0.00 mm³ at 0° / 45° / 90°.\n"
         "\n"
-        "7.  Servo posts (×2) seat the MG996R flange ears.\n"
+        "7.  Servo posts (×2 per side, mirrored ±X — DUAL servo lift).\n"
         "        Holes are Ø5 thru on a 49.5 × 10 mm pattern\n"
-        "        (clearance for M3 flange screws).\n"
+        "        per side (clearance for M3 flange screws).\n"
         "        Driving-head tip hangs 5.0 mm past the front edge.\n"
         "        Pinion / hinge-gear mesh:  2 : 1, m ≈ 0.908,\n"
         "        C = 27.25 mm — gears NOT on this part (see assembly).\n"
         "\n"
-        "8.  Underside triangular flange (6 × 30 × ~21 mm) ties the\n"
-        "        cantilevered porch to the +X front leg.\n"
+        "8.  Underside flange (×2, mirrored ±X) at X = ±79:\n"
+        "        YZ rib 6 thk × 40 deep × ~140 long,\n"
+        "        + XZ gusset 6 thk × 26 run,\n"
+        "        + Ø5 M5 mounting hole through face at Z = −22.\n"
         "\n"
         "9.  All printed values traceable to cad_model.py."
     )

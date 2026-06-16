@@ -208,41 +208,48 @@ Z_MOTOR = Z_AUG
 
 # --- Linear-actuator rod-end pivot lug — REMOVED (no underside features).
 
-# --- Baseplate (trapezoidal tripod) -----------------------------------
-# Per Will's PR #66 review (comment 4615931709) the baseplate is
-# trimmed from a 200 × 250 mm rectangle on four corner legs to a
-# trapezoidal tabletop on a TRIPOD: the two rear corner legs are
-# replaced by a single rear-centre leg and the tabletop tapers from
-# the full-width front edge back to a narrow rear edge over that leg.
-#
-# Rear-leg placement.  @swcharles' note: the rear leg need not reach the
-# auger's rear end (Y = -125); it only has to sit a small distance
-# behind the worst-case (fully-loaded) centre of mass.  The dominant
-# masses are the auger (Y ∈ [-125, +125], loaded COM ≈ 0) and the
-# front-mounted stepper + gear/tap/bracket cluster (Y ≈ +30…+70), which
-# bias the assembly COM FORWARD to roughly Y ≈ +15.  A rear foot at
-# Y ≈ -54 therefore sits ~70 mm behind the COM — a generous stability
-# margin — while removing ~60 mm of unused rear baseplate.
+# --- Baseplate (forward-only mounting tab — legs/back removed) --------
+# Per Will's review (comment 4721011696) the baseplate is trimmed down
+# to "basically only the small section in front that interfaces with
+# anything": the hinge arms, the (mirrored) servo porches, and a small
+# strip of rear material carrying four M5 mounting holes used to bolt
+# this part onto a separate leg/frame assembly.  ALL legs are removed
+# (was a tripod) and the trapezoidal taper is gone (now rectangular).
 BASE_T = 6.0
-BASE_LEG_H = 95.0
-BASE_LEG_W = 18.0
-BASE_LEG_INSET = 12.0
+# Legs removed entirely; kept as zeros so back-compat constants exist
+# for any importer that still references them (render_assembly.py etc).
+BASE_LEG_H = 0.0
+BASE_LEG_W = 0.0
+BASE_LEG_INSET = 0.0
 
-# Tabletop trapezoid — full width at the front edge (near the hinge),
-# tapering to a narrow rear edge centred over the single rear leg.
+# Rectangular tabletop — full width at both edges (was trapezoidal).
 BASE_FRONT_HALF_W = 100.0                                  # ±100 at front
-BASE_REAR_HALF_W = 32.0                                    # ±32 at rear
+BASE_REAR_HALF_W = 100.0                                   # ±100 at rear (rectangular)
 
 # Baseplate position — front edge 10 mm BEHIND the hinge axis
 # (= the hinge axis is 10 mm forward of the baseplate's front edge,
-# per the issue #62 follow-up drawing).
+# per the issue #62 follow-up drawing).  Rear edge pulled forward to
+# just past the hinge-arm base + room for the rear M5 mounting holes.
 BASE_Y_FRONT = Y_DISP - 10.0                               # +115
-BASE_Y_REAR  = -75.0                                       # was -135 (rect)
+BASE_Y_REAR  = +30.0                                       # was -75; small forward-only tab
 # Back-compat aliases used by the side-view render diagrams.
 BASE_Y_BACK  = BASE_Y_REAR
 BASE_Y_CENTRE = (BASE_Y_FRONT + BASE_Y_REAR) / 2.0
 BASE_W = 2.0 * BASE_FRONT_HALF_W                           # front-edge width
 BASE_L = BASE_Y_FRONT - BASE_Y_REAR
+
+# --- M5 mounting holes (bolt baseplate to separate leg/frame assembly) ----
+# Per Will's review (comment 4721011696) — "On the back corners, now add
+# mounting holes we can use to mount them to each other. These holes
+# should be for M5 screws and uniform, oriented and spaced evenly like
+# the corners of a square."  Four Ø5.4 (M5 clearance) through-holes
+# arranged at the corners of a 60 × 60 mm square at the rear of the
+# tabletop, centred on X = 0.
+BASE_MOUNT_HOLE_DIA = 5.4                  # M5 clearance
+BASE_MOUNT_HOLE_PITCH = 60.0               # side of the square (X-pitch = Y-pitch)
+BASE_MOUNT_HOLE_X = BASE_MOUNT_HOLE_PITCH / 2.0             # ±30 from centreline
+BASE_MOUNT_HOLE_Y_REAR = BASE_Y_REAR + 10.0                 # +40 (10 mm in from rear edge)
+BASE_MOUNT_HOLE_Y_FRONT = BASE_MOUNT_HOLE_Y_REAR + BASE_MOUNT_HOLE_PITCH  # +100
 
 # Z_BASE_TOP is the BOTTOM of the baseplate body in absolute frame.
 # Baseplate top face is at z = Z_BASE_TOP + BASE_T.  Choose so there's
@@ -262,16 +269,20 @@ HINGE_AXIS_Z_LOCAL = Z_AUG - Z_BASE_TOP                    # +43.25
 # on the baseplate top.  Per Will's review the arm bottom face must be
 # in COMPLETE contact with the baseplate — so extend the arm back into
 # the baseplate area for solid support (no cantilever).
-ARM_BASE_SUPPORT_LEN = 40.0
+ARM_BASE_SUPPORT_LEN = 35.0    # was 40 — reduced slightly so the arm depth
+                               # no longer encroaches on the front bracket
+                               # (Will's review comment 4721011696)
 
 # (Linear-actuator base clevis removed — the linear actuator is no
 # longer part of the design.)
 
 # --- Hinge gear band + servo pinion (issue #63) ----------------------
-# A spur gear is added to the +X OUTER mounting-plate hinge lobe so a
-# servo on the baseplate can drive the tilt of the mounting plate.
-# A 2:1 reduction between hinge gear and pinion keeps the torque load
-# on the MG996R within its 9.4 kgf·cm rating.
+# A spur gear is added to BOTH outer mounting-plate hinge lobes (+X and
+# -X) so TWO servos on the baseplate can drive the tilt of the mounting
+# plate together — per Will's review (comment 4721011696) the plate is
+# now supported by two servos / gears instead of one.  Each servo / gear
+# pair is identical (same module, same 2 : 1 reduction, same MG996R
+# mount); the -X side is a pure mirror of the +X side across X = 0.
 GEAR_PA_DEG = 20.0                        # pressure angle (standard 20°)
 GEAR_HINGE_TEETH = 40                     # 2 : 1 reduction with the 20-T pinion
 GEAR_PINION_TEETH = 20
@@ -294,12 +305,17 @@ GEAR_HINGE_TIP_D = GEAR_HINGE_PCD + 2 * GEAR_MODULE
 GEAR_HINGE_ROOT_D = GEAR_HINGE_PCD - 2.5 * GEAR_MODULE
 GEAR_PINION_TIP_D = GEAR_PINION_PCD + 2 * GEAR_MODULE
 GEAR_PINION_ROOT_D = GEAR_PINION_PCD - 2.5 * GEAR_MODULE
-# The hinge gear band sits just outboard of the existing +X outer hinge
-# lobe (replacing the cylindrical 18 mm-OD eye on that side with a
-# Ø42 gear).  X centre: midpoint of the +X outer-lobe span.
+# The hinge gear band sits just outboard of the existing outer hinge
+# lobes (replacing the cylindrical 18 mm-OD eye on those sides with a
+# Ø38 gear).  +X side: X centre at the midpoint of the +X outer-lobe span.
+# -X side is the pure mirror.
 GEAR_X_CENTRE = (HINGE_X2 + HINGE_LAYER_GAP / 2 + HINGE_X3) / 2.0
 GEAR_X_LO = GEAR_X_CENTRE - GEAR_FACE_W / 2.0
 GEAR_X_HI = GEAR_X_CENTRE + GEAR_FACE_W / 2.0
+# Mirrored gear band on the -X outer lobe.
+GEAR_X_CENTRE_NEG = -GEAR_X_CENTRE
+GEAR_X_LO_NEG = -GEAR_X_HI                 # near face (toward origin) on -X side
+GEAR_X_HI_NEG = -GEAR_X_LO                 # far  face (away from origin) on -X side
 
 # --- MG996R servo + mount (per Will's annotated datasheet, PR #66) ----
 # Dimensions sourced from the dimensioned drawing posted by @williamulbz
@@ -334,11 +350,15 @@ MG996R_SPLINE_LEN = 4.0                  # spline protrusion past flange face
 # through and the collar tucks into a shallow counter-bore.
 MG996R_SPLINE_COLLAR_DIA = 14.0
 MG996R_SPLINE_CLEAR_DIA = 10.0
-# Pinion lies at the same X centre as the gear, offset in -Z by the
-# centre distance C so the spline sits just above the baseplate top.
+# +X pinion lies at the same X centre as the +X gear, offset in -Z by
+# the centre distance C so the spline sits just above the baseplate top.
 PINION_X_CENTRE = GEAR_X_CENTRE
 PINION_X_LO = GEAR_X_LO
 PINION_X_HI = GEAR_X_HI
+# Mirrored -X pinion — same Z, same Y, mirrored X.
+PINION_X_CENTRE_NEG = GEAR_X_CENTRE_NEG
+PINION_X_LO_NEG = GEAR_X_LO_NEG
+PINION_X_HI_NEG = GEAR_X_HI_NEG
 PINION_Y = Y_DISP                       # parallel to hinge axis
 PINION_Z = Z_AUG - GEAR_CENTRE_C        # = +2.0 mm — 10 mm above baseplate top
 # Servo mount — TWO separate SQUARE posts (per Will's PR #66 reviews,
@@ -370,6 +390,12 @@ SERVO_WALL_X = GEAR_X_HI + DRIVE_HEAD_OVERHANG          # = 59.0 (flange/edge pl
 # the body's -X end, flanking it in ±Y).
 SERVO_BODY_X_LO = SERVO_WALL_X
 SERVO_BODY_X_HI = SERVO_BODY_X_LO + MG996R_BODY_H
+# Mirrored servo on the -X side (per Will's comment 4721011696 — second
+# servo to support the mounting plate from the opposite side).  Posts
+# inboard (+X) face at X = -SERVO_WALL_X; body extends further -X.
+SERVO_WALL_X_NEG = -SERVO_WALL_X                         # = -59.0
+SERVO_BODY_X_LO_NEG = -SERVO_BODY_X_HI                   # ≈ -95.8 (far end of -X body)
+SERVO_BODY_X_HI_NEG = -SERVO_BODY_X_LO                   # = -59.0 (flange face, inboard)
 # Posts run from the porch/baseplate top up to a little above the upper
 # flange hole so the ear is fully backed by post material.
 SERVO_WALL_Z_LO = BASE_T                # baseplate top in baseplate-local frame
@@ -410,13 +436,40 @@ M5_CLEAR = 5.4
 # ``arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN`` along the
 # baseplate top.  When the mounting plate folds flush to 0° the
 # baseplate arms would pierce the solid mounting-plate body wherever
-# their Y/X envelopes overlap (Y∈[75, 115], X∈[±28.7, ±41.4] — total
-# interference volume ≈ 5900 mm³).  Cut a clearance slot through the
+# their Y/X envelopes overlap (Y∈[80, 115], X∈[±28.7, ±41.4] — total
+# interference volume ≈ 5000 mm³).  Cut a clearance slot through the
 # mounting plate at each arm's middle-third X band, from the front
 # (+Y) edge back to just behind the arm's back face, so the arm passes
 # cleanly through the plate when folded.
-ARM_SLOT_Y_BACK = (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN) - 2.0   # +73 (2 mm clear)
+ARM_SLOT_Y_BACK = (BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN) - 2.0   # +78 (2 mm clear)
 ARM_SLOT_CLEARANCE = 0.5                # per side along X
+
+# --- Underside hanging flange (×2, one per side) ---------------------
+# Per Will's review (comment 4721011696) the original cantilever-stiff
+# flange is RETAINED — made "a bit taller / lower", braced by a
+# supportive triangle, and given an M5 mounting hole through its new
+# face — so the baseplate can be bolted down to the external leg/frame
+# assembly.  The flange is mirrored onto BOTH porches (one per servo
+# mount).  Geometry:
+#   * The flange itself is a YZ-plane rib of thickness FLANGE_THK along
+#     X, hanging below the baseplate from the porch underside; it runs
+#     from the front of the porch back to the baseplate front edge,
+#     and drops FLANGE_DEPTH below the baseplate bottom.
+#   * The supportive triangle is an XZ-plane gusset of thickness
+#     FLANGE_GUSSET_THK along Y, attached at the inboard end of the
+#     flange; it tapers from the baseplate-bottom plane down to the
+#     bottom of the flange, supporting the flange against the lifting
+#     reaction torque transmitted from the porch above.
+#   * The mounting hole is an M5 clearance through the flange face
+#     (drilled along X), centred FLANGE_HOLE_Z below the baseplate
+#     bottom and FLANGE_HOLE_Y back from the porch front edge.
+FLANGE_THK = 6.0                          # rib thickness along X
+FLANGE_DEPTH = 40.0                       # how far the flange drops below the baseplate
+FLANGE_X = 79.0                           # ±79 in X — same X as the former front leg
+FLANGE_GUSSET_THK = 6.0                   # gusset thickness along Y
+FLANGE_GUSSET_RUN = 26.0                  # gusset X-run inboard from the flange
+FLANGE_HOLE_DIA = 5.4                     # M5 clearance through the flange face
+FLANGE_HOLE_Z_BELOW_BASE = 22.0           # hole centre Z below the baseplate bottom
 
 
 # --------------------------------------------------------------------- #
@@ -697,23 +750,33 @@ def build_mounting_plate() -> cq.Workplane:
             )
             plate = plate.cut(bore)
 
-    # ---- Hinge gear band on the +X OUTER lobe (issue #63) --------------
-    # The outermost +X mounting-plate hinge lobe carries a 40-tooth
-    # spur gear band that meshes with the servo pinion at C = 30 mm,
-    # 2:1 reduction.  The gear band is integrated into the mounting
-    # plate as a single solid (not a separate STL part) per the issue.
+    # ---- Hinge gear bands on BOTH outer lobes (issue #63) --------------
+    # Both the +X and -X outermost mounting-plate hinge lobes carry a
+    # 40-tooth spur gear band that meshes with its servo pinion at
+    # C = 27.25 mm, 2:1 reduction.  The gear bands are integrated into
+    # the mounting plate as a single solid (not separate STL parts).
     # The gear is built in the XY plane (axis along Z), then rotated to
-    # align its axis with the X-axis at (Y_DISP, Z_AUG).
+    # align its axis with the X-axis at (Y_DISP, Z_AUG).  Per Will's
+    # review (comment 4721011696) the plate is now supported by TWO
+    # servos / gears instead of one — the -X side is a pure mirror of
+    # the +X side across X = 0.
     gear = _build_spur_gear(GEAR_HINGE_TEETH, GEAR_MODULE,
                             GEAR_FACE_W, HINGE_EYE_ID)
     # Rotate so the gear axis (was +Z) becomes +X (extrusion goes from
     # X=0 to X=+face_w in the rotated frame), then translate to the
-    # hinge axis at the +X outer-lobe X centre.
-    gear = (
+    # hinge axis at each outer-lobe X centre.
+    gear_pos = (
         gear.rotate((0, 0, 0), (0, 1, 0), 90)
             .translate((GEAR_X_LO, Y_DISP, Z_AUG))
     )
-    plate = plate.union(gear)
+    plate = plate.union(gear_pos)
+    # Mirrored -X gear band — built the same way and placed at the -X
+    # outer lobe (near face of the band sits at GEAR_X_LO_NEG = -GEAR_X_HI).
+    gear_neg = (
+        gear.rotate((0, 0, 0), (0, 1, 0), 90)
+            .translate((GEAR_X_LO_NEG, Y_DISP, Z_AUG))
+    )
+    plate = plate.union(gear_neg)
 
     # ---- Arm-clearance slots through the plate body (interference fix) --
     # The two baseplate hinge arms (one each side of the auger gap)
@@ -746,65 +809,38 @@ def build_mounting_plate() -> cq.Workplane:
 
 def build_baseplate() -> cq.Workplane:
     """Bench-side plate with two forward-and-up hinge arms (one each
-    side of the auger).  No powder window — powder falls in front of
-    the baseplate (the dispense point sits 10 mm forward of the base
-    front edge).
+    side of the auger), TWO mirrored MG996R servo mounts (one each
+    side), and four M5 mounting holes at the rear for bolting to a
+    separate leg/frame assembly.
 
-    The tabletop is a TRAPEZOID — full width at the front edge (near the
-    hinge), tapering back to a narrow rear edge — standing on a TRIPOD:
-    two front-corner legs plus a single rear-centre leg (per Will's
-    PR #66 review)."""
+    Per Will's review (comment 4721011696) this part is now just the
+    "small section in front that interfaces with anything": the hinge
+    arms, the two servo porches with their square posts, the underside
+    hanging flanges with supportive gussets + M5 mounting holes, and a
+    short stub of rear material carrying the four M5 mounting holes
+    (arranged at the corners of a 60 × 60 square).  All four tripod
+    legs and the trapezoidal taper are removed; the part bolts onto a
+    separate leg assembly via the rear M5 holes.
+    """
+    # Rectangular tabletop (front-edge to rear-edge, full width).
     base = (
         cq.Workplane("XY")
-        .polyline([
-            (-BASE_FRONT_HALF_W, BASE_Y_FRONT),
-            (+BASE_FRONT_HALF_W, BASE_Y_FRONT),
-            (+BASE_REAR_HALF_W,  BASE_Y_REAR),
-            (-BASE_REAR_HALF_W,  BASE_Y_REAR),
-        ]).close()
-        .extrude(BASE_T)
+        .box(BASE_W, BASE_L, BASE_T, centered=(False, False, False))
+        .translate((-BASE_FRONT_HALF_W, BASE_Y_REAR, 0))
     )
-
-    # Tripod legs.  Two at the front corners (just inboard of the wide
-    # front edge) and ONE at the rear centre (replacing the old pair of
-    # rear-corner legs).  Each leg drops the tabletop to give cup +
-    # scale clearance in front of the baseplate.
-    front_leg_x = BASE_FRONT_HALF_W - BASE_LEG_INSET - BASE_LEG_W / 2
-    front_leg_y = BASE_Y_FRONT - BASE_LEG_INSET - BASE_LEG_W / 2
-    rear_leg_y  = BASE_Y_REAR  + BASE_LEG_INSET + BASE_LEG_W / 2
-    leg_positions = [
-        (+front_leg_x, front_leg_y),
-        (-front_leg_x, front_leg_y),
-        (0.0,          rear_leg_y),
-    ]
-    for sx, sy in leg_positions:
-        leg = (
-            cq.Workplane("XY")
-            .box(BASE_LEG_W, BASE_LEG_W, BASE_LEG_H,
-                 centered=(True, True, False))
-            .translate((sx, sy, -BASE_LEG_H))
-        )
-        base = base.union(leg)
 
     # Forward-and-up hinge arms — middle layer of the 3-layer sandwich.
     # Each arm occupies the centre third of its ramp half-span so it
     # slips between the mounting plate's inner and outer hinge lobes.
     # The arm rises from the base top to the hinge axis level and ends
     # in a disc-cap eye that shares the M5 pin with the plate lobes.
-    # The arm bottom face extends BACK onto the baseplate top so it is
-    # in full contact with the baseplate (per Will's review).
-    #
     # The BACK (toward −Y, motor) edge is sloped from arm_back_y at the
     # baseplate top down to a point near the hinge axis, so the mounting
     # plate's underside has clearance to sweep through 45° and beyond
-    # without colliding with the arm (also per Will's review).
+    # without colliding with the arm.
     HINGE_R = HINGE_EYE_OD / 2.0
     arm_top_local = HINGE_AXIS_Z_LOCAL + HINGE_R
     arm_back_y = BASE_Y_FRONT - ARM_BASE_SUPPORT_LEN
-    # The sloped back face runs from (arm_back_y, BASE_T) up to
-    # (slope_top_y, arm_top_local); ARM_SLOPE_RUN = 16 mm gives ~58°
-    # from horizontal (steeper than 45° so the arm clears the plate
-    # underside throughout the 0-90° tilt range).
     ARM_SLOPE_RUN = 16.0
     slope_top_y = arm_back_y + ARM_SLOPE_RUN
     arm_spans = (
@@ -840,90 +876,140 @@ def build_baseplate() -> cq.Workplane:
         )
         base = base.cut(bore)
 
-    # (Linear-actuator base clevis removed — no longer using a linear
-    # actuator.)
-
-    # ---- MG996R servo mount — TWO SQUARE posts (issue #63, PR #66) ------
-    # Per Will's reviews (comments 4615931709 + 4624739034) the full-face
-    # mounting wall is replaced by TWO separate square posts, one under
-    # each MG996R flange ear, so the servo body + output boss protrude
-    # PAST the posts through the open gap between them.  Each post is a
-    # clean rectangular pillar (no back brace / wedge — the brace was the
-    # "red" shape Will flagged as blocking proper seating of the servo's
-    # mounting holes).  The gap between the posts' inner faces equals the
-    # 40 mm body length (+ clearance) so the body fits between them; the
-    # posts' inboard (-X) face is the flange seating plane at
-    # X = SERVO_WALL_X.  Per Will's review (comment 4625212895) the posts
-    # sit BEHIND the mounting holes and the servo is placed so the very
-    # tip of its driving head hangs 5 mm past the baseplate front edge —
-    # i.e. the flange plane (= the body top = the porch's -X edge) is
-    # 5 mm outboard of the gear's near face, so only the outermost 5 mm
-    # of the 8 mm driving head overhangs the edge (gears untouched →
-    # centre distance and the 2:1 ratio are preserved).
-    #
-    # The far post sits well forward of the baseplate front edge, so we
-    # (a) extend the baseplate top forward as a "porch" under the servo
-    # footprint, and (b) tie the cantilevered porch down to the adjacent
-    # front leg with a triangular flange under the tabletop (Will's
-    # earlier 2nd bullet — kept).
+    # ---- MG996R servo mounts — TWO mirrored (±X) per Will's review -----
+    # (comment 4721011696 — second servo + gear, mirrored from the +X
+    # side).  Each side is identical: a baseplate-thickness PORCH under
+    # the servo footprint extending forward past the baseplate front
+    # edge, TWO SQUARE POSTS flanking each MG996R body (one under each
+    # flange ear, carrying that ear's two Ø5 holes), and one underside
+    # hanging FLANGE with a supportive triangular gusset and an M5
+    # mounting hole through the flange face.  The gap between each
+    # pair of posts equals the 40 mm body length (+ clearance) so the
+    # body + output boss protrude through the open gap.
     pinion_z_local = PINION_Z - Z_BASE_TOP
     post_z_lo = SERVO_WALL_Z_LO
     post_z_hi = pinion_z_local + MG996R_HOLE_Z_SPREAD / 2.0 + 5.0
 
-    # (a) baseplate porch — a slab of baseplate-thickness material under
-    # the servo footprint, fused to the baseplate front edge.
-    PORCH_X_LO = SERVO_WALL_X             # flush with the posts' inboard face
-    PORCH_X_HI = min(SERVO_BODY_X_HI + 1.0, BASE_FRONT_HALF_W)
-    PORCH_Y_LO = BASE_Y_FRONT - 2.0       # 2 mm overlap into baseplate
-    PORCH_Y_HI = SERVO_POST_Y_SPANS[1][1] + 1.0   # just past the far post
-    porch = (
-        cq.Workplane("XY")
-        .box(PORCH_X_HI - PORCH_X_LO,
-             PORCH_Y_HI - PORCH_Y_LO,
-             BASE_T,
-             centered=(False, False, False))
-        .translate((PORCH_X_LO, PORCH_Y_LO, 0))
-    )
-    base = base.union(porch)
-
-    # (b) the two square posts, each carrying its ear's two Ø5 holes.
-    for (y_lo, y_hi), hole_y in zip(SERVO_POST_Y_SPANS, MG996R_HOLE_Y_OFFSETS):
-        post = (
+    for side in (+1, -1):
+        wall_x = +SERVO_WALL_X if side > 0 else SERVO_WALL_X_NEG
+        body_x_hi = (SERVO_BODY_X_HI if side > 0
+                     else SERVO_BODY_X_LO_NEG)
+        # post inboard face (toward auger) = wall_x; post body extends
+        # OUTBOARD (away from auger) by SERVO_WALL_T.
+        post_x_lo = min(wall_x, wall_x + side * SERVO_WALL_T)
+        post_x_hi = max(wall_x, wall_x + side * SERVO_WALL_T)
+        # porch X span — from the post inboard face out to the body far end.
+        porch_x_lo = min(wall_x, body_x_hi)
+        porch_x_hi = max(wall_x, body_x_hi)
+        # clamp to baseplate envelope
+        porch_x_lo = max(porch_x_lo, -BASE_FRONT_HALF_W)
+        porch_x_hi = min(porch_x_hi, +BASE_FRONT_HALF_W)
+        porch_y_lo = BASE_Y_FRONT - 2.0
+        porch_y_hi = SERVO_POST_Y_SPANS[1][1] + 1.0
+        porch = (
             cq.Workplane("XY")
-            .box(SERVO_WALL_T, y_hi - y_lo, post_z_hi - post_z_lo,
+            .box(porch_x_hi - porch_x_lo,
+                 porch_y_hi - porch_y_lo,
+                 BASE_T,
                  centered=(False, False, False))
-            .translate((SERVO_WALL_X, y_lo, post_z_lo))
+            .translate((porch_x_lo, porch_y_lo, 0))
         )
-        base = base.union(post)
-        # this ear's two Ø5 mounting holes through the post (along X).
-        for dz in SERVO_POST_HOLE_Z:
+        base = base.union(porch)
+
+        # The two square posts, each carrying its ear's two Ø5 holes.
+        for (y_lo, y_hi), hole_y in zip(SERVO_POST_Y_SPANS,
+                                        MG996R_HOLE_Y_OFFSETS):
+            post = (
+                cq.Workplane("XY")
+                .box(post_x_hi - post_x_lo,
+                     y_hi - y_lo,
+                     post_z_hi - post_z_lo,
+                     centered=(False, False, False))
+                .translate((post_x_lo, y_lo, post_z_lo))
+            )
+            base = base.union(post)
+            # ear's two Ø5 mounting holes through the post (along X).
+            for dz in SERVO_POST_HOLE_Z:
+                hole = (
+                    cq.Workplane("YZ")
+                    .workplane(offset=post_x_lo - 1.0)
+                    .center(PINION_Y + hole_y, pinion_z_local + dz)
+                    .circle(MG996R_HOLE_DIA / 2.0)
+                    .extrude((post_x_hi - post_x_lo) + 2.0)
+                )
+                base = base.cut(hole)
+
+        # ---- Underside hanging flange + gusset + M5 mounting hole ------
+        # Per Will's review (comment 4721011696) — the only new material
+        # added to the baseplate (other than the mirrored servo mount):
+        # the cantilever flange is kept, made a bit deeper, supported
+        # by a triangular gusset, and given an M5 mounting hole through
+        # its face.  Mirrored onto both sides (one per servo mount).
+        flange_x = side * FLANGE_X        # ±79
+        flange_y_back = BASE_Y_FRONT      # baseplate front edge
+        flange_y_front = SERVO_POST_Y_SPANS[1][1]   # to far post (matches porch_y_hi - 1)
+        # Flange itself — YZ-plane rib of thickness FLANGE_THK along X,
+        # dropping FLANGE_DEPTH below the baseplate bottom (Z = 0 in
+        # baseplate-local frame).  Triangular profile: top edge runs
+        # along the baseplate bottom from y_back to y_front, then the
+        # hypotenuse drops back to the deepest point at y_back.
+        flange = (
+            cq.Workplane("YZ")
+            .workplane(offset=flange_x - FLANGE_THK / 2.0)
+            .moveTo(flange_y_back, 0)
+            .lineTo(flange_y_front, 0)
+            .lineTo(flange_y_back, -FLANGE_DEPTH)
+            .close()
+            .extrude(FLANGE_THK)
+        )
+        base = base.union(flange)
+        # Supportive triangular gusset — XZ-plane rib of thickness
+        # FLANGE_GUSSET_THK along Y, attached at the flange's back face
+        # (Y = flange_y_back), tapering inboard (toward X = 0) over
+        # FLANGE_GUSSET_RUN from the baseplate bottom down to the
+        # deepest point of the flange.  This is the supportive triangle
+        # Will called for; the M5 mounting hole is in the flange itself
+        # (the new flange face).
+        gusset_x_inboard = flange_x - side * FLANGE_GUSSET_RUN
+        gusset_x_outboard = flange_x
+        g_lo = min(gusset_x_inboard, gusset_x_outboard)
+        g_hi = max(gusset_x_inboard, gusset_x_outboard)
+        gusset = (
+            cq.Workplane("XZ")
+            .workplane(offset=flange_y_back + FLANGE_GUSSET_THK / 2.0)
+            .moveTo(g_lo, 0)
+            .lineTo(g_hi, 0)
+            .lineTo(g_hi, -FLANGE_DEPTH)
+            .close()
+            .extrude(-FLANGE_GUSSET_THK)
+        )
+        base = base.union(gusset)
+        # M5 mounting hole through the flange face (along X).
+        flange_hole_y = (flange_y_back + flange_y_front) * 0.5 - 5.0
+        flange_hole_z = -FLANGE_HOLE_Z_BELOW_BASE
+        hole = (
+            cq.Workplane("YZ")
+            .workplane(offset=flange_x - FLANGE_THK / 2.0 - 1.0)
+            .center(flange_hole_y, flange_hole_z)
+            .circle(FLANGE_HOLE_DIA / 2.0)
+            .extrude(FLANGE_THK + 2.0)
+        )
+        base = base.cut(hole)
+
+    # ---- M5 mounting holes (rear, 4 holes at corners of a 60×60 square) ----
+    # Per Will's review (comment 4721011696) — used to bolt this part
+    # onto a separate leg/frame assembly.  Uniform, oriented and spaced
+    # evenly like the corners of a square.
+    for sx in (-BASE_MOUNT_HOLE_X, +BASE_MOUNT_HOLE_X):
+        for sy in (BASE_MOUNT_HOLE_Y_REAR, BASE_MOUNT_HOLE_Y_FRONT):
             hole = (
-                cq.Workplane("YZ")
-                .workplane(offset=SERVO_WALL_X - 1.0)
-                .center(PINION_Y + hole_y, pinion_z_local + dz)
-                .circle(MG996R_HOLE_DIA / 2.0)
-                .extrude(SERVO_WALL_T + 2.0)
+                cq.Workplane("XY")
+                .workplane(offset=BASE_T + 1.0)
+                .center(sx, sy)
+                .circle(BASE_MOUNT_HOLE_DIA / 2.0)
+                .extrude(-(BASE_T + 2.0))
             )
             base = base.cut(hole)
-
-    # (c) underside triangular flange — stiffens the cantilevered porch
-    # against the servo's weight + lifting reaction torque by tying it
-    # down to the adjacent (+X) front leg.  A downstand rib hanging
-    # below the tabletop in the Y-Z plane at the leg's X, deepest over
-    # the leg and tapering to nothing at the porch front edge.
-    FLANGE_THK = 6.0                      # rib thickness along X
-    FLANGE_DEPTH = 30.0                   # how far it hangs below the tabletop
-    flange_x = front_leg_x                # align with the +X front leg
-    flange = (
-        cq.Workplane("YZ")
-        .workplane(offset=flange_x - FLANGE_THK / 2.0)
-        .moveTo(front_leg_y, BASE_T)                 # over the leg, at tabletop
-        .lineTo(PORCH_Y_HI, BASE_T)                  # forward to porch front
-        .lineTo(front_leg_y, BASE_T - FLANGE_DEPTH)  # down into the leg
-        .close()
-        .extrude(FLANGE_THK)
-    )
-    base = base.union(flange)
 
     # Translate the whole baseplate so its bottom face sits at Z_BASE_TOP.
     return base.translate((0, 0, Z_BASE_TOP))
@@ -1006,11 +1092,13 @@ def validate_no_interference(verbose: bool = True) -> dict[str, float]:
         vol = inter.Volume() if inter is not None else 0.0
         results[f"plate∩base @ {tilt:.0f}°"] = vol
 
-    # Pinion sits on the baseplate; should not interfere with the base.
-    pinion = build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z))
-    inter = pinion.val().intersect(bp.val())
-    vol = inter.Volume() if inter is not None else 0.0
-    results["pinion∩base (servo install)"] = vol
+    # Pinions (both sides) sit on the baseplate; neither should interfere.
+    for tag, x_lo in (("pinion+X∩base (servo install)", PINION_X_LO),
+                      ("pinion-X∩base (servo install)", PINION_X_LO_NEG)):
+        pinion = build_servo_pinion().translate((x_lo, PINION_Y, PINION_Z))
+        inter = pinion.val().intersect(bp.val())
+        vol = inter.Volume() if inter is not None else 0.0
+        results[tag] = vol
 
     if verbose:
         print()

@@ -45,11 +45,11 @@ from cad_model import (
     MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T, MG996R_SPLINE_Y_OFFSET,
     MOTOR_FACE_Y, NEMA11_BODY_L, NEMA11_BODY_W,
     NEMA11_FACE_HOLE_PITCH, NEMA11_PILOT_DIA, PINION_LEN, PINION_TIP_DIA,
-    PINION_X_LO, PINION_X_HI, PINION_Y, PINION_Z,
+    PINION_X_LO, PINION_X_HI, PINION_X_LO_NEG, PINION_Y, PINION_Z,
     PLATE_L, PLATE_T, PLATE_W, PLATE_X_CENTRE, PLATE_X_MAX, PLATE_X_MIN,
     PLATE_Y_BACK, PLATE_Y_CENTRE, PLATE_Y_FRONT,
     RAMP_TOP_Z, RAMP_Y_BACK,
-    SERVO_BODY_X_LO, SERVO_BODY_X_HI, SERVO_WALL_X, SERVO_WALL_T,
+    SERVO_BODY_X_LO, SERVO_BODY_X_HI, SERVO_BODY_X_LO_NEG, SERVO_WALL_X, SERVO_WALL_T,
     TAP_COLLAR_BORE_LOCAL_Z,
     TAP_PLATE_D, TAP_PLATE_T, TAP_PLATE_W,
     TAP_MOUNT_HOLE_INSET_X, X_MOTOR, Y_BRK_FRONT, Y_BRK_REAR, Y_DISP,
@@ -214,26 +214,30 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
     # ---- SERVO PINION (this package; build_servo_pinion is at origin in
     # its own frame, axis along +X).  Bolted to the MG996R spline on the
     # baseplate, so it does NOT tilt — only spins about its own +X axis.
-    pinion_shape = build_servo_pinion().translate(
-        (PINION_X_LO, PINION_Y, PINION_Z)
-    ).val()
-    actors.append(_shape_actor(pinion_shape, COL_SERVO_PINION))
+    # Two pinions — one on each side (+X and -X), each driven by its
+    # own MG996R per the dual-servo lift.  The mirror is symmetric in X
+    # about the assembly centreline.
+    for pin_x_lo in (PINION_X_LO, PINION_X_LO_NEG):
+        pinion_shape = build_servo_pinion().translate(
+            (pin_x_lo, PINION_Y, PINION_Z)
+        ).val()
+        actors.append(_shape_actor(pinion_shape, COL_SERVO_PINION))
 
-    # ---- MG996R BODY (simplified box for visualisation only — the
+    # ---- MG996R BODIES (simplified boxes for visualisation only — the
     # actual servo is a black plastic body 40 × 20 × 36.8 mm with
-    # flange ears, per Will's dimensioned drawing on PR #66).  Body
-    # sits outboard of the servo wall in +X; spline pokes -X through
-    # the wall onto the pinion.
-    body = (
-        cq.Workplane("XY")
-        .box(MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
-             centered=(False, False, True))
-        .translate((SERVO_BODY_X_LO,
-                    PINION_Y - MG996R_SPLINE_Y_OFFSET,
-                    PINION_Z))
-        .val()
-    )
-    actors.append(_shape_actor(body, COL_SERVO_BODY))
+    # flange ears, per Will's dimensioned drawing on PR #66).  Two
+    # bodies, one outboard of each servo wall (+X and -X mirrors).
+    for body_x_lo in (SERVO_BODY_X_LO, SERVO_BODY_X_LO_NEG):
+        body = (
+            cq.Workplane("XY")
+            .box(MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
+                 centered=(False, False, True))
+            .translate((body_x_lo,
+                        PINION_Y - MG996R_SPLINE_Y_OFFSET,
+                        PINION_Z))
+            .val()
+        )
+        actors.append(_shape_actor(body, COL_SERVO_BODY))
 
     return actors
 
@@ -626,7 +630,9 @@ def main() -> None:
     a.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pins",
           color=cq.Color(*COL_PIN))
     a.add(build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z)),
-          name="servo_pinion", color=cq.Color(*COL_SERVO_PINION))
+          name="servo_pinion_pos_x", color=cq.Color(*COL_SERVO_PINION))
+    a.add(build_servo_pinion().translate((PINION_X_LO_NEG, PINION_Y, PINION_Z)),
+          name="servo_pinion_neg_x", color=cq.Color(*COL_SERVO_PINION))
     a.save(str(asm_step))
     print(f"  → {asm_step.relative_to(HERE)}")
 

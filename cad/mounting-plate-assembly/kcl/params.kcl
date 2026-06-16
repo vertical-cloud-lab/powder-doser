@@ -158,27 +158,27 @@ rampTopZ               = zAug + hingeEyeOd / 2.0           // +36.25
 // (No linear-actuator rod-end pivot lug — no underside features.)
 
 // ---- Baseplate (sits on the bench) ----
-// Per Will's PR #66 review (comment 4615931709) the baseplate is now a
-// trapezoidal tabletop on a TRIPOD: two front-corner legs + one
-// rear-centre leg, with the tabletop tapering from the full-width
-// front edge back to a narrow rear edge.
+// Per Will's review (comment 4721011696) the baseplate is now a
+// small forward-only RECTANGULAR mounting tab — the legs and most of
+// the rear are gone; the part bolts onto a separate frame via four
+// M5 holes in a square pattern at its rear corners.
 baseT                  = 6.0
-baseLegH               = 95.0
-baseLegW               = 18.0
-baseLegInset           = 12.0
 
-// Tabletop trapezoid — full width at the front edge (near the hinge),
-// tapering to a narrow rear edge centred over the single rear leg.
+// Legs removed — kept as 0 for any legacy references.
+baseLegH               = 0.0
+baseLegW               = 0.0
+baseLegInset           = 0.0
+
+// Rectangular forward-only tab (no taper).
 baseFrontHalfW         = 100.0                             // ±100 at front
-baseRearHalfW          = 32.0                              // ±32 at rear
+baseRearHalfW          = 100.0                             // ±100 at rear (rectangular)
 
 // Baseplate position — front edge 10 mm BEHIND the hinge axis, so the
 // hinge axis sits 10 mm in front of the baseplate's front edge.
 baseYFront             = yDisp - 10.0                      // +115
-// Rear edge pulled forward from -135 to -75 per @swcharles' note (the
-// rear leg only has to sit a small distance behind the worst-case
-// fully-loaded COM ≈ Y +15); rear foot ends up ≈ Y -54.
-baseYRear              = -75.0
+// Rear edge pulled forward to +30 — the back part of the baseplate is
+// removed (per Will's comment 4721011696).
+baseYRear              = +30.0
 baseYBack              = baseYRear                          // back-compat alias
 baseYCentre            = (baseYFront + baseYRear) / 2.0
 baseW                  = 2.0 * baseFrontHalfW              // front-edge width
@@ -187,6 +187,15 @@ baseL                  = baseYFront - baseYRear
 // zBaseTop is the BOTTOM of the baseplate body; base top = zBaseTop + baseT.
 zBaseTop               = -plateT - 8.0                     // -14
 
+// Four M5 mounting holes through the baseplate at the rear corners,
+// arranged like the corners of a 60 × 60 mm square so we can bolt
+// the part down onto a separate frame.
+baseMountHoleDia       = 5.4
+baseMountHolePitch     = 60.0
+baseMountHoleX         = baseMountHolePitch / 2.0          // ±30
+baseMountHoleYRear     = baseYRear + 10.0                  // +40
+baseMountHoleYFront    = baseMountHoleYRear + baseMountHolePitch   // +100
+
 // Baseplate hinge arms — middle layer of the 3-layer sandwich, one each
 // side of the auger gap.  Each arm occupies the centre third of its
 // ramp half-span between the mounting plate's inner and outer lobes.
@@ -194,7 +203,9 @@ zBaseTop               = -plateT - 8.0                     // -14
 // contact with the baseplate (per Will's review).
 armThk                 = hingeLobeW - hingeLayerGap
 hingeAxisZLocal        = zAug - zBaseTop
-armBaseSupportLen      = 40.0
+// Reduced from 40 → 35 per Will's comment 4721011696 (the post depth
+// was interfering with the front bracket).
+armBaseSupportLen      = 35.0
 
 // The arm's BACK (toward -Y, motor) face is sloped from arm_back_y at
 // the baseplate top up to a point near the hinge axis level, giving
@@ -204,13 +215,15 @@ armSlopeRun            = 16.0                              // ~58° from horizon
 
 // ============================ HINGE GEAR + SERVO (issue #63) ========== //
 //
-// A spur gear is added to the +X OUTER mounting-plate hinge lobe so a
-// servo on the baseplate can drive the tilt of the mounting plate.  A
-// 2:1 reduction between hinge gear and pinion keeps the torque load on
-// the MG996R within its 9.4 kgf·cm rating.  Module is back-solved from
-// the centre distance so the 40-T hinge gear at Z = zAug meshes with
-// the 20-T pinion at the required Z (= 10 mm above the baseplate top,
-// the centreline of the MG996R's 20 mm-thick body).
+// Spur gear bands are added to BOTH outer mounting-plate hinge lobes
+// (+X and -X) so a servo on each side of the baseplate can drive the
+// tilt of the mounting plate — dual-servo lift per Will's comment
+// 4721011696.  A 2:1 reduction between hinge gear and pinion keeps
+// the torque load on each MG996R within its 9.4 kgf·cm rating.
+// Module is back-solved from the centre distance so the 40-T hinge
+// gear at Z = zAug meshes with the 20-T pinion at the required Z
+// (= 10 mm above the baseplate top, the centreline of the MG996R's
+// 20 mm-thick body).
 gearHingeTeeth         = 40
 gearPinionTeeth        = 20
 gearFaceW              = hingeLobeW - hingeLayerGap        // match outer lobe
@@ -221,12 +234,15 @@ gearHingePcd           = gearHingeTeeth * gearModule
 gearPinionPcd          = gearPinionTeeth * gearModule
 gearHingeTipD          = gearHingePcd + 2 * gearModule
 gearPinionTipD         = gearPinionPcd + 2 * gearModule
-// The hinge gear band replaces the cylindrical eye on the +X outer
-// mounting-plate hinge lobe.  X centre is the midpoint of that lobe's
-// X span.
+// +X side hinge-gear band (replaces the cylindrical eye on the +X
+// outer mounting-plate hinge lobe).
 gearXCentre            = (hingeX2 + hingeLayerGap / 2 + hingeX3) / 2.0
 gearXLo                = gearXCentre - gearFaceW / 2.0
 gearXHi                = gearXCentre + gearFaceW / 2.0
+// -X side hinge-gear band (mirror across X = 0).
+gearXCentreNeg         = -gearXCentre
+gearXLoNeg             = -gearXHi          // near face (toward origin) on -X side
+gearXHiNeg             = -gearXLo          // far  face (away from origin) on -X side
 
 // ---- MG996R servo (per the dimensioned drawing on PR #66) ----
 mg996rBodyL            = 40.0     // along spline-perpendicular long axis (Y)
@@ -239,7 +255,7 @@ mg996rHoleYSpread      = 49.5     // hole pair spread along body length (Y)
 mg996rHoleZSpread      = 10.0     // hole pair spread along body thickness (Z)
 mg996rSplineYOffset    = 10.1     // spline offset from near body-end along Y
 
-// ---- Servo mount — TWO SQUARE posts (PR #66 reviews) ----
+// ---- Servo mount — TWO SQUARE posts, mirrored on +X and -X ----
 // Per Will's review (comment 4633722007, revising the earlier 8 mm
 // rule down to 5 mm) the posts sit BEHIND the MG996R mounting holes
 // and the servo is placed so the very TIP of the driving head hangs
@@ -249,17 +265,24 @@ mg996rSplineYOffset    = 10.1     // spline offset from near body-end along Y
 // untouched (centre distance + 2:1 ratio live in Z).
 driveHeadOverhang      = 5.0
 servoWallT             = 6.0                               // post thickness along X
-servoWallX             = gearXHi + driveHeadOverhang       // = 59.0 (flange/edge plane)
+servoWallX             = gearXHi + driveHeadOverhang       // = +59.0 (+X flange/edge plane)
 servoBodyXLo           = servoWallX
 servoBodyXHi           = servoBodyXLo + mg996rBodyH
 servoWallZLo           = baseT                             // baseplate top in local frame
+// -X mirrored servo wall + body extents.
+servoWallXNeg          = -servoWallX                       // = -59.0
+servoBodyXLoNeg        = -servoBodyXHi                     // ≈ -95.8 (far end of -X body)
+servoBodyXHiNeg        = -servoBodyXLo                     // = -59.0 (flange face, inboard)
 
-// Pinion sits at the same X centre as the gear, offset in -Z by the
-// centre distance C so the spline sits exactly 10 mm above the base
+// Pinions sit at the same X centre as each gear, offset in -Z by the
+// centre distance C so each spline sits exactly 10 mm above the base
 // top (midline of the MG996R's 20 mm-thick body).
 pinionXCentre          = gearXCentre
 pinionXLo              = gearXLo
 pinionXHi              = gearXHi
+pinionXCentreNeg       = gearXCentreNeg
+pinionXLoNeg           = gearXLoNeg
+pinionXHiNeg           = gearXHiNeg
 pinionY                = yDisp                             // parallel to hinge axis
 pinionZ                = zAug - gearCentreC                // = +2.0 mm
 
@@ -284,14 +307,20 @@ farPostYHi             = servoBodyYHi + servoGapClear + servoPostWY
 
 // Arm-clearance slot through the mounting plate — cut so the baseplate
 // arms pass cleanly through the plate when it folds flush to 0° tilt.
-armSlotYBack           = (baseYFront - armBaseSupportLen) - 2.0   // +73
+armSlotYBack           = (baseYFront - armBaseSupportLen) - 2.0   // +78
 armSlotClearance       = 0.5                                       // per side along X
 
-// Cantilever-stiffening flange under the tabletop (per Will's PR #66
-// review — green-circled location).  A downstand rib in the YZ plane
-// at the +X front leg X, tying the cantilevered servo porch down into
-// the adjacent front leg.
-flangeThk              = 6.0
-flangeDepth            = 30.0
+// Cantilever-stiffening flange under the tabletop — mirrored on +X
+// and -X (one per servo) per Will's comment 4721011696.  The flange
+// is taller / deeper than before, with a supportive triangle (gusset)
+// and an M5 mounting hole drilled through its outboard face for
+// bolting the assembly down onto an external frame.
+flangeThk              = 6.0                          // flange rib thickness along X
+flangeDepth            = 40.0                         // drop below the baseplate bottom
+flangeX                = 79.0                         // ±79 in X
+flangeGussetThk        = 6.0                          // gusset thickness along Y
+flangeGussetRun        = 26.0                         // gusset X-run inboard from flange
+flangeHoleDia          = 5.4                          // M5 clearance through the flange
+flangeHoleZBelowBase   = 22.0                         // hole centre Z below baseplate bottom
 
 // (Linear-actuator base clevis removed — no longer using a linear actuator.)
