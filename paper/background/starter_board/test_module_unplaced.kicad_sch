@@ -5,7 +5,7 @@
     (title "Powder-doser test-module starter board")
     (rev "A")
     (company "Vertical Cloud Lab")
-    (comment 1 "Schematic companion to test_module_starter.kicad_pcb")
+    (comment 1 "Schematic companion to test_module_unplaced.kicad_pcb")
     (comment 2 "Netlist transcribed from PR #61 generate.py; upload trio for Quilter/DeepPCB")
   )
   (lib_symbols
@@ -710,7 +710,7 @@
     (property "Datasheet" "" (id 3) (at 30 40 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "J1") (unit 1))
       )
     )
@@ -741,7 +741,7 @@
     (property "Datasheet" "" (id 3) (at 30 70 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "U1") (unit 1))
       )
     )
@@ -786,7 +786,7 @@
     (property "Datasheet" "" (id 3) (at 30 100 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "C1") (unit 1))
       )
     )
@@ -817,7 +817,7 @@
     (property "Datasheet" "" (id 3) (at 30 120 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "C2") (unit 1))
       )
     )
@@ -848,7 +848,7 @@
     (property "Datasheet" "" (id 3) (at 110 50 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "U2") (unit 1))
       )
     )
@@ -1019,7 +1019,7 @@
     (property "Datasheet" "" (id 3) (at 210 40 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "U3") (unit 1))
       )
     )
@@ -1092,7 +1092,7 @@
     (property "Datasheet" "" (id 3) (at 275 50 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "M1") (unit 1))
       )
     )
@@ -1123,7 +1123,7 @@
     (property "Datasheet" "" (id 3) (at 210 90 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "U4") (unit 1))
       )
     )
@@ -1189,7 +1189,7 @@
     (property "Datasheet" "" (id 3) (at 275 100 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "SOL1") (unit 1))
       )
     )
@@ -1220,7 +1220,7 @@
     (property "Datasheet" "" (id 3) (at 210 140 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "U5") (unit 1))
       )
     )
@@ -1300,7 +1300,7 @@
     (property "Datasheet" "" (id 3) (at 210 195 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "C3") (unit 1))
       )
     )
@@ -1331,7 +1331,7 @@
     (property "Datasheet" "" (id 3) (at 175 195 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "SR1") (unit 1))
       )
     )
@@ -1376,7 +1376,7 @@
     (property "Datasheet" "" (id 3) (at 285 145 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "M2") (unit 1))
       )
     )
@@ -1421,7 +1421,7 @@
     (property "Datasheet" "" (id 3) (at 210 215 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "M3") (unit 1))
       )
     )
@@ -1459,7 +1459,7 @@
     (property "Datasheet" "" (id 3) (at 110 200 0)
       (effects (font (size 1.27 1.27)) hide))
     (instances
-      (project "test_module_starter"
+      (project "test_module_unplaced"
         (path "/00000000-0000-0000-0003-000000000001" (reference "J2") (unit 1))
       )
     )

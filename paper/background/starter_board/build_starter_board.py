@@ -676,13 +676,21 @@ def _pack_positions() -> dict[str, tuple[float, float]]:
 
 
 def _make_footprint(ref: str, lib_id: str, x: float, y: float,
-                    pin_nets: dict[str, str], nets: dict[str, Net]) -> tuple[Footprint, list[tuple[float, float]], tuple[float, float]]:
+                    pin_nets: dict[str, str], nets: dict[str, Net],
+                    sym_uuid: str | None = None) -> tuple[Footprint, list[tuple[float, float]], tuple[float, float]]:
     """Build one footprint from real KiCad library pads + the vendor body.
 
     Returns the footprint, the world (x, y) of every pad, and its courtyard
     half-extents (hw, hh). Each pad is a deep copy of the matching real library
     pad (``_pad_layout``) with the net / number / pin function applied, so the
     land pattern is a genuine KiCad footprint rather than a synthesized header.
+
+    ``sym_uuid`` is the UUID of this part's schematic symbol instance
+    (``_symbol_uuid``); when given, the footprint records ``(path "/<uuid>")``
+    so KiCad / Quilter link it back to that symbol. Every part on this board is
+    through-hole, so ``(attr through_hole)`` is always emitted — without these
+    two fields Quilter reports a *"component mismatch ... pin count mismatch"*
+    because it cannot pair the footprint with its schematic symbol.
     """
     fp = Footprint.create_new(
         library_id=_footprint_id(lib_id),
@@ -693,6 +701,11 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
     fp.position = Position(x, y, 0)
     fp.layer = "F.Cu"
     fp.tedit = "00000000"  # fixed so regeneration is byte-for-byte reproducible
+    # Link the footprint to its schematic symbol (the pairing Quilter/KiCad use
+    # to match pin counts). All parts here are through-hole.
+    fp.attributes.type = "through_hole"
+    if sym_uuid is not None:
+        fp.path = f"/{sym_uuid}"
 
     records = _pad_layout(lib_id)
     sources = sorted({f"{lib}:{name}" for _n, _pn, _lx, _ly, lib, name, _p in records})
@@ -807,7 +820,12 @@ def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[
     for ref, lib_id, x, y, pins in NETLIST:
         px, py = positions[ref][0] + dx, positions[ref][1]
         pin_nets = {pin: net for pin, net in pins}
-        fp, pad_world, (hw, hh) = _make_footprint(ref, lib_id, px, py, pin_nets, nets)
+        # Schematic-symbol anchor (build_schematic uses the same coords) → the
+        # UUID the footprint's (path ...) must reference so Quilter pairs them.
+        sym_uuid = _symbol_uuid(lib_id, ref, float(x) * FLOORPLAN_SCALE,
+                                float(y) * FLOORPLAN_SCALE)
+        fp, pad_world, (hw, hh) = _make_footprint(ref, lib_id, px, py, pin_nets,
+                                                  nets, sym_uuid)
         board.footprints.append(fp)
         courtyards.append((ref, px - hw, py - hh, px + hw, py + hh))
 
@@ -921,8 +939,21 @@ def _lib_symbol(lib_id: str) -> str:
             f'      (symbol "{lib_id}_1_1"\n' + "\n".join(pins) + "\n      )\n    )")
 
 
-def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float) -> str:
-    uid = _uid("0001", lib_id, ref, x, y)
+def _symbol_uuid(lib_id: str, ref: str, x: float, y: float) -> str:
+    """Deterministic UUID of a schematic symbol instance.
+
+    Shared by the schematic writer (``_sym_instance``) and the board writer
+    (``build_board``) so each board footprint can carry a ``(path "/<uuid>")``
+    back to *its* schematic symbol — the link KiCad (and Quilter) use to match
+    a footprint to its symbol. Keeping the two in one place guarantees they can
+    never drift apart.
+    """
+    return _uid("0001", lib_id, ref, x, y)
+
+
+def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float,
+                  project: str = BOARD_NAME) -> str:
+    uid = _symbol_uuid(lib_id, ref, x, y)
     rx, ry = x - SCH_BODY_HW, y - half_h
     fp_id = _footprint_id(lib_id)
     return (f'  (symbol (lib_id "{SYMBOL_LIB_NICK}:{lib_id}") (at {x:g} {y:g} 0) (unit 1)\n'
@@ -937,7 +968,7 @@ def _sym_instance(lib_id: str, ref: str, x: float, y: float, half_h: float) -> s
             f'    (property "Datasheet" "" (id 3) (at {x:g} {y:g} 0)\n'
             f'      (effects (font (size 1.27 1.27)) hide))\n'
             f'    (instances\n'
-            f'      (project "{BOARD_NAME}"\n'
+            f'      (project "{project}"\n'
             f'        (path "/{SCH_ROOT_UUID}" (reference "{ref}") (unit 1))\n'
             f'      )\n'
             f'    )\n'
@@ -965,8 +996,14 @@ def _wire(x1: float, y1: float, x2: float, y2: float) -> str:
 SCH_STUB_OUT = 5.08
 
 
-def build_schematic() -> str:
-    """Compose a self-contained KiCad 7 schematic for the starter board."""
+def build_schematic(project: str = BOARD_NAME) -> str:
+    """Compose a self-contained KiCad 7 schematic for the starter board.
+
+    ``project`` names the owning KiCad project in each symbol instance; it must
+    match the trio's ``.kicad_pcb`` / ``.kicad_pro`` base name (Quilter and
+    KiCad use the project name + symbol UUID to tie a schematic symbol to its
+    board footprint), so the placed and unplaced variants pass their own name.
+    """
     lib_ids: list[str] = []
     for _, lib_id, *_ in NETLIST:
         if lib_id not in lib_ids:
@@ -978,7 +1015,7 @@ def build_schematic() -> str:
     for ref, lib_id, x, y, pins in NETLIST:
         px, py = float(x) * FLOORPLAN_SCALE, float(y) * FLOORPLAN_SCALE
         records, half_h = _symbol_pin_layout(lib_id)
-        body.append(_sym_instance(lib_id, ref, px, py, half_h))
+        body.append(_sym_instance(lib_id, ref, px, py, half_h, project))
         pin_nets = {pin_name: net for pin_name, net in pins}
         pin_names = {name for name, *_ in records}
         for pin_name in pin_nets:
@@ -1010,7 +1047,7 @@ def build_schematic() -> str:
         '    (title "Powder-doser test-module starter board")\n'
         '    (rev "A")\n'
         '    (company "Vertical Cloud Lab")\n'
-        '    (comment 1 "Schematic companion to test_module_starter.kicad_pcb")\n'
+        f'    (comment 1 "Schematic companion to {project}.kicad_pcb")\n'
         '    (comment 2 "Netlist transcribed from PR #61 generate.py; upload trio for Quilter/DeepPCB")\n'
         '  )')
     header = (f'(kicad_sch (version 20230121) (generator powder_doser_build_starter_board)\n'
@@ -1210,7 +1247,7 @@ def render_preview(pcb_path: Path) -> None:
     print(f"wrote {png.name}")
 
 
-def write_variant(name: str, mode: str, schematic_text: str) -> dict:
+def write_variant(name: str, mode: str) -> dict:
     """Write one .kicad_pcb/.kicad_sch/.kicad_pro trio + previews; return summary."""
     board, (bw, bh), nets = build_board(mode)
     pcb_path = HERE / f"{name}.kicad_pcb"
@@ -1219,8 +1256,10 @@ def write_variant(name: str, mode: str, schematic_text: str) -> dict:
     power = sorted(n for n in nets if n in POWER_NETS and n)
     write_project({"Power": power}, name)
 
-    # The schematic is identical for both variants (same netlist); only the
-    # board placement differs, which is exactly what the auto-place test probes.
+    # Schematic uses the same netlist for both variants; only the owning project
+    # name differs so each trio (sch/pcb/pro) shares one project name — the link
+    # Quilter/KiCad use (project name + symbol UUID) to pair symbol↔footprint.
+    schematic_text = build_schematic(name)
     sch_path = HERE / f"{name}.kicad_sch"
     sch_path.write_text(schematic_text)
 
@@ -1241,13 +1280,11 @@ def write_variant(name: str, mode: str, schematic_text: str) -> dict:
 
 
 def main() -> None:
-    schematic_text = build_schematic()
-
     # Variant 1: compact, pre-placed board (this generator's placement).
-    placed = write_variant(BOARD_NAME, "placed", schematic_text)
+    placed = write_variant(BOARD_NAME, "placed")
     # Variant 2: same parts staged outside an empty outline, for testing the
     # routers' auto-placement (compare against the placed variant).
-    unplaced = write_variant(UNPLACED_NAME, "unplaced", schematic_text)
+    unplaced = write_variant(UNPLACED_NAME, "unplaced")
 
     # Human-readable BOM / net summary for review and provenance.
     summary = {
