@@ -1,0 +1,29 @@
+Pololu D24V22F5 5 V / 2.5 A step-down regulator (#2858)
+=======================================================
+
+BOM item 15 in ../../vibration-motor-and-solenoid.md
+
+Product page Resources tab (source for everything in this folder):
+  https://www.pololu.com/product/2858/resources
+
+Files
+-----
+cad/d24v22fx-step-down-voltage-regulator.step
+    Vendor STEP solid model of the regulator board (D24V22Fx family,
+    same PCB outline across all output voltages).
+
+dimensions/d24v22f5-drill-guide.dxf
+    Original Pololu drill-guide DXF (already in this folder before the
+    manual-download batch).
+
+dimensions/d24v22fx-step-down-voltage-regulator-dimension-diagram.pdf
+    Full mechanical dimension diagram from the product page.
+
+dimensions/reg19a-drill.dxf
+    DXF drill template ("reg19a" is Pololu's drill-guide family code
+    for the D24V22Fx PCB outline).
+
+License: Pololu reproduces these from the product-page Resources tab;
+redistribution rights follow Pololu's posted terms of use
+(https://www.pololu.com/about/copyright). Included here as engineering
+reference, not as design originals.
