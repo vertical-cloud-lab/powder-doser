@@ -103,12 +103,15 @@ can be compared against this generator's:
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
 | **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~141 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
-| **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** an identical empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
+| **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** a right-sized **100 × 100 mm** empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
-The two `.kicad_sch` files are byte-identical (the schematic doesn't encode board
-placement); only the `.kicad_pcb` differs — the unplaced board has the same empty
-Edge.Cuts target rectangle with every footprint shifted one board-width + 12 mm
-to its right, so the board area is empty and the router must place the parts.
+The two variants share the same netlist and symbols; the schematics differ only
+in the owning project name (each `.kicad_sch` names *its own* project so the
+trio is internally consistent — see [Quilter review fixes](#quilter-review-fixes-pr-76-comment-4723827215)).
+The unplaced board's Edge.Cuts target is a **right-sized 100 × 100 mm square**
+(independent of the wider placed floorplan) with every footprint shifted one
+outline-width + 12 mm to its right, so the board area is empty and the router
+must place the parts onto a sensibly-sized board.
 
 ![Generated starter-board schematic (15 symbols, 24 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
@@ -325,6 +328,88 @@ so upload the trio together: `test_module_starter.kicad_pcb` +
   sandbox, but a real route is **credit-metered** (free tier = 1 board /
   ~30 min), so the actual `POST /boards` + `PATCH /boards/{id}/confirm` calls
   are left for a deliberate, budgeted run rather than every CI commit.
+
+## Quilter review fixes (PR #76 comment 4723827215)
+
+@lbwinters uploaded the trios to **Quilter.ai** and raised four points. Each was
+investigated against the [Quilter documentation](https://docs.quilter.ai) (an
+Edison `ANALYSIS` pass over the files + docs is archived at
+[`edison_artifacts/quilter_review_for_powder_doser.*`](edison_artifacts/);
+runner [`edison_run_quilter_review_analysis.py`](edison_run_quilter_review_analysis.py)).
+
+### 1. "Pin count mismatch between schematics and board" (fixed)
+
+Quilter's *schematic-informed placement* pairs each board footprint with its
+schematic symbol; if it can't pair them it falls back and warns *"There are
+component mismatches between schematics and board: Pin count mismatch detected."*
+Every actual pin/pad count already matched perfectly (verified part-by-part with
+`kiutils`), so the warning was **not** a literal count difference. The real cause:
+the generated `.kicad_pcb` footprints carried **no link back to their schematic
+symbols** — no `(path "/<symbol-uuid>")` and no `(attr …)` (the fields KiCad's
+*Update PCB from Schematic* normally writes). With nothing to pair on, Quilter
+compared by reference/heuristics and reported a mismatch.
+
+**Fix.** A shared `_symbol_uuid(lib_id, ref, x, y)` helper now generates each
+symbol-instance UUID once; the schematic writer (`_sym_instance`) and the board
+writer (`build_board`) both use it, so every footprint emits
+`(path "/<symbol-uuid>")` + `(attr through_hole)` (all parts are through-hole)
+linking it to *its* schematic symbol. The placed/unplaced schematics were also
+made to name *their own* project (`test_module_starter` / `test_module_unplaced`)
+so each trio is internally consistent. The build verifies a 1:1 footprint↔symbol
+UUID bijection (15 ↔ 15) and stays byte-for-byte reproducible.
+
+### 2. Right-sized board for auto-placement (fixed)
+
+Quilter places onto whatever outline is uploaded and **can't resize the outline
+itself**, so the unplaced board's outline matters. It previously mirrored the
+wider *placed* floorplan (≈141 × 82 mm, only ~37–44 % utilised — the "wasted
+space" the review flagged). A utilisation analysis (component courtyards ≈
+5060 mm² / bodies ≈ 4220 mm²; tallest parts the two 52 mm Pico/RS-232 modules,
+so the board must be ≥ ~63 mm in one dimension) puts the sensible band for
+through-hole mixed-signal auto-place/route at ~35–55 % utilisation. The unplaced
+outline is now an independent **100 × 100 mm** square (`UNPLACED_OUTLINE_MM`):
+~51 % courtyard / ~42 % body utilisation, comfortably fits the 52 mm modules with
+`EDGE_MARGIN` to spare, leaves copper room for the 2-layer routes, and lands on
+JLCPCB's 100 × 100 mm prototype price break. The placed variant is left at its
+domain-packed size (it is *our* placement, not a Quilter auto-place target).
+
+### 3. Stackup & the "no ground layer" warning (recommendation)
+
+Quilter asks for a stackup and warns *"No ground layer is defined in this
+stackup. Signal integrity may be reduced without a dedicated ground plane"* for a
+2-layer board, because a 2-layer stack has no dedicated internal ground plane.
+Quilter only auto-detects power/ground layers whose **names** are `gnd`/`ground`
+and `pwr`/`power`.
+
+- **JLCPCB 2-layer 6 mil/6 mil (current choice) — adequate for a prototype.**
+  The 6 mil (0.152 mm) min trace/space easily clears this design's net classes
+  (0.25 mm track / 0.2 mm clearance, 0.6 mm power). To answer the warning on a
+  2-layer board, **flood the bottom copper with a `GND` pour** so signals have a
+  ground reference (name it `GND` so Quilter detects it). This is acceptable here
+  because every net is low-speed: I²C ≤ 400 kHz, UART/RS-232, and essentially-DC
+  stepper/solenoid/servo drive — no controlled-impedance or high-edge-rate nets.
+- **Recommended optimum: JLCPCB 4-layer (e.g. `JLC04161H-7628`),
+  Signal / GND / Power / Signal.** A dedicated internal **ground plane on L2**
+  directly resolves the warning and gives a clean, uninterrupted return path
+  under the noisy +12 V switching buck and the DRV8871/Tic motor currents that
+  sit next to the quieter 3V3/I²C and load-cell-interface nets — exactly the
+  mixed-signal partitioning this board needs. JLCPCB 4-layer is only a few
+  dollars more for prototypes. Name L2 `GND` and L3 `PWR` for Quilter detection.
+
+**Recommendation:** use the **4-layer Sig/GND/Pwr/Sig** stackup for the real run
+(best signal integrity for a motor + load-cell mixed-signal board); if cost or
+simplicity forces 2-layer, keep JLCPCB 2-layer 6/6 **plus a bottom-side `GND`
+pour**. Either way the warning is addressed by providing a named ground.
+
+### 4. Stackup datasheet verification (ready)
+
+After a stackup is chosen, Quilter presents a datasheet of values to confirm
+before a run. We're ready to verify it when @lbwinters sends it; the values to
+check against this design are: copper weight (1 oz default), finished thickness
+(1.6 mm), min trace/space (must be ≤ our 0.25 mm track / 0.2 mm clearance — both
+clear 6 mil), min drill/annular ring (vs our 1.0 mm THT drills / 1.7 mm pads),
+the layer→`GND`/`PWR` name mapping (point 3), and — for 4-layer — the dielectric
+heights (e.g. `JLC04161H-7628`). Send the datasheet and we'll check each row.
 
 ## Honest limitations
 

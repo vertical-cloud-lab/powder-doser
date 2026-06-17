@@ -69,7 +69,7 @@
 
   (footprint "Connector_BarrelJack:BarrelJack_Horizontal" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 160.09 6.383333333333334 0)
+    (at 119.5 6.383333333333334 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_BarrelJack:BarrelJack_Horizontal")
     (path "/00000000-0000-0000-0001-29d55efcbf2e")
     (attr through_hole)
@@ -109,7 +109,7 @@
 
   (footprint "powder_doser_parts:D24V22F5_Buck" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 186.94 6.383333333333334 0)
+    (at 146.35 6.383333333333334 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-70fa29b10329")
     (attr through_hole)
@@ -151,7 +151,7 @@
 
   (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 173.84 6.383333333333334 0)
+    (at 133.25 6.383333333333334 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Capacitor_THT:CP_Radial_D8.0mm_P3.50mm")
     (path "/00000000-0000-0000-0001-f7c003c960ad")
     (attr through_hole)
@@ -189,7 +189,7 @@
 
   (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 200.04000000000002 6.383333333333334 0)
+    (at 159.45 6.383333333333334 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Capacitor_THT:CP_Radial_D8.0mm_P3.50mm")
     (path "/00000000-0000-0000-0001-52c13245af12")
     (attr through_hole)
@@ -227,7 +227,7 @@
 
   (footprint "powder_doser_parts:Pi_Pico_W" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 241.76 45.510000000000005 0)
+    (at 201.17 45.510000000000005 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-9c24102e6421")
     (attr through_hole)
@@ -341,7 +341,7 @@
 
   (footprint "powder_doser_parts:DRV2605L_Breakout" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 240.76 8.755 0)
+    (at 200.17 8.755 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical, Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-1525e644ec92")
     (attr through_hole)
@@ -391,7 +391,7 @@
 
   (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 254.85 8.755 0)
+    (at 214.26 8.755 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-d21e815f399b")
     (attr through_hole)
@@ -429,7 +429,7 @@
 
   (footprint "powder_doser_parts:DRV8871_Breakout" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 170.3 26.831666666666667 0)
+    (at 129.71 26.831666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical, Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-20c85e97cace")
     (attr through_hole)
@@ -477,7 +477,7 @@
 
   (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 154.94 26.831666666666667 0)
+    (at 114.35 26.831666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-81b41ad5d431")
     (attr through_hole)
@@ -515,7 +515,7 @@
 
   (footprint "powder_doser_parts:Tic_T500" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 210.47 52.13666666666667 0)
+    (at 169.88 52.13666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical, Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-34bedbcb497f")
     (attr through_hole)
@@ -577,7 +577,7 @@
 
   (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 190.17000000000002 52.13666666666667 0)
+    (at 149.57999999999998 52.13666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Capacitor_THT:CP_Radial_D8.0mm_P3.50mm")
     (path "/00000000-0000-0000-0001-0d073b7df79b")
     (attr through_hole)
@@ -615,7 +615,7 @@
 
   (footprint "powder_doser_parts:Shunt_Regulator" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 171.35500000000002 52.13666666666667 0)
+    (at 130.765 52.13666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-d16282caa442")
     (attr through_hole)
@@ -657,7 +657,7 @@
 
   (footprint "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 154.94 52.13666666666667 0)
+    (at 114.35 52.13666666666667 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-c9c09ae71330")
     (attr through_hole)
@@ -699,7 +699,7 @@
 
   (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 280.83000000000004 45.510000000000005 0)
+    (at 240.24 45.510000000000005 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-cc6b4004ca85")
     (attr through_hole)
@@ -739,7 +739,7 @@
 
   (footprint "powder_doser_parts:RS232_2CH_Module" (version 20221018) (generator kiutils) (layer "F.Cu")
     (tedit 00000000)
-    (at 265.74 45.510000000000005 0)
+    (at 225.14999999999998 45.510000000000005 0)
     (descr "Powder-doser starter-board part; real land pattern(s): Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical")
     (path "/00000000-0000-0000-0001-730844f9af4d")
     (attr through_hole)
@@ -851,9 +851,9 @@
     )
   )
 
-  (gr_line (start -5.0 -5.0) (end 135.59 -5.0) (layer "Edge.Cuts") (width 0.1))
-  (gr_line (start 135.59 -5.0) (end 135.59 77.01) (layer "Edge.Cuts") (width 0.1))
-  (gr_line (start 135.59 77.01) (end -5.0 77.01) (layer "Edge.Cuts") (width 0.1))
-  (gr_line (start -5.0 77.01) (end -5.0 -5.0) (layer "Edge.Cuts") (width 0.1))
+  (gr_line (start -5.0 -5.0) (end 95.0 -5.0) (layer "Edge.Cuts") (width 0.1))
+  (gr_line (start 95.0 -5.0) (end 95.0 95.0) (layer "Edge.Cuts") (width 0.1))
+  (gr_line (start 95.0 95.0) (end -5.0 95.0) (layer "Edge.Cuts") (width 0.1))
+  (gr_line (start -5.0 95.0) (end -5.0 -5.0) (layer "Edge.Cuts") (width 0.1))
 
 )

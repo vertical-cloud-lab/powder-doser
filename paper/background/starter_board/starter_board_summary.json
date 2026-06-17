@@ -19,8 +19,8 @@
     "schematic": "test_module_unplaced.kicad_sch",
     "project": "test_module_unplaced.kicad_pro",
     "outline_mm": [
-      140.59,
-      82.01
+      100.0,
+      100.0
     ],
     "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
   },

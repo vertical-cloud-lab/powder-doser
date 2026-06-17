@@ -371,6 +371,18 @@ STAGE_GAP = 12.0       # gap (mm) between the empty board outline and the parts
 #                        staged beside it in the unplaced (auto-place) variant
 DOMAIN_GAP = 6.0       # aisle (mm) between the power and logic domains
 
+# Right-sized outline for the *unplaced* (auto-placement) variant. Quilter/DeepPCB
+# place components onto whatever outline is uploaded and *cannot resize it
+# themselves* (https://docs.quilter.ai — "Quilter can't define or resize the
+# board outline for you"), so the unplaced board no longer mirrors the wider
+# pre-placed outline (which spread parts into domain rows). 100 x 100 mm gives
+# ~51% courtyard / ~42% body utilisation — inside the 35-55% band recommended
+# for through-hole mixed-signal auto-placement/routing (enough copper room for
+# the 2-layer routes while cutting the wasted area) — comfortably fits the two
+# tallest parts (the 52 mm Pico/RS-232 modules) with EDGE_MARGIN to spare, and
+# lands on JLCPCB's 100 x 100 mm prototype price break.
+UNPLACED_OUTLINE_MM = (100.0, 100.0)
+
 # ---------------------------------------------------------------------------
 # Placement strategy (Edison board-placement review,
 # edison_artifacts/board_placement_review_for_powder_doser.answer.md). The pure
@@ -803,8 +815,7 @@ def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[
         nets[name] = Net(i, name)
         board.nets.append(nets[name])
 
-    # Compact placement (centre coords) and the resulting board outline. The
-    # outline is computed from the *placed* positions so both variants share it.
+    # Compact placement (centre coords) and the resulting *placed* board outline.
     positions = _pack_positions()
     ext = {ref: _courtyard_extents(lib_id) for ref, lib_id, *_ in NETLIST}
     x0 = min(positions[r][0] - ext[r][0] for r in positions) - EDGE_MARGIN
@@ -812,9 +823,19 @@ def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[
     y0 = min(positions[r][1] - ext[r][1] for r in positions) - EDGE_MARGIN
     y1 = max(positions[r][1] + ext[r][1] for r in positions) + EDGE_MARGIN
 
-    # In the unplaced variant, shift every part one board-width + gap to the
+    # The "placed" outline encloses this generator's own placement. The
+    # "unplaced" outline is an independent, right-sized empty rectangle for
+    # Quilter/DeepPCB to auto-place into (Quilter can't resize it itself), so it
+    # is *not* tied to the wider placed floorplan — that's the wasted space the
+    # review flagged. Keep the same lower-left origin (x0, y0).
+    if mode == "unplaced":
+        ow, oh = UNPLACED_OUTLINE_MM
+        x1, y1 = x0 + ow, y0 + oh
+    bw, bh = x1 - x0, y1 - y0
+
+    # In the unplaced variant, shift every part one outline-width + gap to the
     # right so it sits wholly outside the (now empty) outline.
-    dx = (x1 - x0) + STAGE_GAP if mode == "unplaced" else 0.0
+    dx = bw + STAGE_GAP if mode == "unplaced" else 0.0
 
     courtyards: list[tuple[str, float, float, float, float]] = []
     for ref, lib_id, x, y, pins in NETLIST:
@@ -832,13 +853,13 @@ def build_board(mode: str = "placed") -> tuple[Board, tuple[float, float], dict[
     _assert_no_overlap(courtyards)
 
     # Board outline (Edge.Cuts rectangle): in "placed" mode it encloses every
-    # courtyard; in "unplaced" mode it is the same empty target rectangle while
-    # the parts sit to its right.
+    # courtyard; in "unplaced" mode it is the right-sized empty target rectangle
+    # while the parts sit staged to its right.
     rect = [(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
     for (ax, ay), (bx, by) in zip(rect, rect[1:]):
         board.graphicItems.append(GrLine(start=Position(ax, ay), end=Position(bx, by),
                                          layer="Edge.Cuts", width=0.1))
-    return board, (x1 - x0, y1 - y0), nets
+    return board, (bw, bh), nets
 
 
 def write_project(net_names_by_class: dict[str, list[str]],
