@@ -218,8 +218,13 @@ def iterate(name, instruction):
         source = f.read()
     op = _req(
         "POST",
-        "/ai/text-to-cad/iteration",
-        {"original_source_code": source, "prompt": instruction, "kcl": True},
+        "/ml/text-to-cad/iteration",
+        {
+            "original_source_code": source,
+            "prompt": instruction,
+            "source_ranges": [],
+            "kcl": True,
+        },
     )
     op = _poll(op["id"], label=name + " (iterate)")
     if op.get("status") == "completed":
