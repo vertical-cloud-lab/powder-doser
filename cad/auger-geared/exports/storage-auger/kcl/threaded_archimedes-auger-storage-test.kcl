@@ -1,0 +1,8 @@
+// Threaded storage auger - bench-test piece (total_h = 90 mm).
+// Mirrors threaded_archimedes-auger-storage-test.scad.  The piece to
+// test with the screw-on cap.
+import "auger-common.kcl" as auger
+
+totalHeight = 90
+
+part = auger::threadedStorageAuger(totalHeight)

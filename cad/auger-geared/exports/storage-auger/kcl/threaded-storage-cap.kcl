@@ -1,0 +1,6 @@
+// Hand-operated screw-on cap with a matching internal thread and a
+// chamfered top edge.  Mirrors threaded-storage-cap.scad.  One cap fits
+// both threaded storage augers (full and bench-test).
+import "auger-common.kcl" as auger
+
+part = auger::storageCap()

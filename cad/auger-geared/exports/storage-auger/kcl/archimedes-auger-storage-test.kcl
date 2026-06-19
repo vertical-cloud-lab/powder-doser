@@ -1,0 +1,8 @@
+// Storage auger - gearless bench-test piece (total_h = 90 mm ~ 3.54 in).
+// Mirrors archimedes-auger-storage-test.scad.  Same 1/3-screw /
+// 2/3-open-store rule; no gear band (spin by hand or with a drill).
+import "auger-common.kcl" as auger
+
+totalHeight = 90
+
+part = auger::storageAuger(totalHeight, withTopCap = true)

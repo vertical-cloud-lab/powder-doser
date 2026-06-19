@@ -1,0 +1,16 @@
+// Storage auger - full production part (total_h = 250 mm, with gear).
+// Mirrors archimedes-auger-storage.scad.  Outer cylinder identical to
+// the geared auger; the internal screw occupies only the bottom third
+// (0 -> 83.33 mm), leaving the top two thirds as a loose-powder store.
+//
+// The body and the external gear band are exported as two coincident
+// solids: the Zoo boolean engine cannot union the 48-tooth gear onto
+// the body, so the STEP carries the gear as a separate fused body that
+// a downstream CAD union (or the FDM print) merges into the one part.
+import "auger-common.kcl" as auger
+
+totalHeight = 250
+gearCenterZ = 250 / 3      // 83.33 mm from the dispensing end
+
+body = auger::storageAuger(totalHeight, withTopCap = true)
+gear = auger::gearBand(gearCenterZ)

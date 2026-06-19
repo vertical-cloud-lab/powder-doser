@@ -1,0 +1,14 @@
+// Threaded storage auger - full part (total_h = 250 mm, with gear).
+// Mirrors threaded_archimedes-auger-storage.scad.  Storage auger with a
+// 1-inch external thread on the filling end (crest flush with the OD)
+// and the 4-slot top cap dropped so the screw-on cap seals it.
+//
+// Body and external gear band are exported as two coincident fused
+// solids (see archimedes-auger-storage.kcl for why).
+import "auger-common.kcl" as auger
+
+totalHeight = 250
+gearCenterZ = 250 / 3
+
+body = auger::threadedStorageAuger(totalHeight)
+gear = auger::gearBand(gearCenterZ)
