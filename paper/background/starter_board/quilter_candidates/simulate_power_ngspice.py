@@ -55,13 +55,13 @@ BOARD_NAME = "test_module_unplaced.kicad_pcb"
 # --- physical constants -----------------------------------------------------
 RHO_CU = 1.724e-8           # copper resistivity, ohm*m (20 C)
 T_CU = 35e-6                # 1 oz finished copper thickness, m
-VIA_R = 1.0e-3             # modelled barrel resistance of one via, ohm
+VIA_R = 1.0e-3              # modelled barrel resistance of one via, ohm
 NODE_TOL = 0.06             # endpoint-clustering tolerance, mm
 
 # Transient decoupling model (board-level, +12V solenoid rail).
-C_BULK = 100e-6            # bulk electrolytic on +12V (C3, assumed 100 uF)
-ESR_BULK = 0.5            # bulk-cap equivalent series resistance, ohm
-SOL_PULSE_A = 0.65        # solenoid current pulse amplitude, A
+C_BULK = 100e-6             # bulk electrolytic on +12V (C3, assumed 100 uF)
+ESR_BULK = 0.5              # bulk-cap equivalent series resistance, ohm
+SOL_PULSE_A = 0.65         # solenoid current pulse amplitude, A
 SOL_FREQ = 1000.0         # solenoid PWM frequency, Hz (DRV8871 drive)
 
 # Supply pad for each power net: (reference designator, pad number).
