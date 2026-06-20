@@ -34,3 +34,10 @@ read-only, re-runnable analysis (outline, copper layers, track length, vias,
 no-net copper, KiCad DRC, connectivity) that backs the evaluation note
 [`../../22-quilter-routed-candidate-evaluation.md`](../../22-quilter-routed-candidate-evaluation.md);
 `analysis_summary.json` is its captured output.
+
+[`simulate_power_ngspice.py`](simulate_power_ngspice.py) is the read-only,
+re-runnable **ngspice** power-integrity simulation (per-candidate resistor-mesh
+IR-drop `.op` solve of the routed +12 V / +5 V copper, a transient decoupling
+`.tran`, and the IPC-2221 trace temperature rise) that backs note
+[`../../23-ngspice-power-integrity-simulation.md`](../../23-ngspice-power-integrity-simulation.md);
+`analysis_power_ngspice.json` is its captured output.

@@ -33,12 +33,17 @@ All numbers are reproducible with
   → the montage
   [`candidates_top+bottom_copper.png`](starter_board/quilter_candidates/candidates_top+bottom_copper.png).
 
-> "Electrical simulation" in the SPICE sense is not meaningful here — the board
-> is a digital control + motor-driver carrier (no analog signal chain to
-> solve), and the active parts are pre-built modules. The electrically relevant
-> checks are therefore **connectivity, clearance/short DRC, current-carrying
-> capacity of the power traces, and ground/return integrity**, all of which are
-> covered above.
+> "Electrical simulation" in the SPICE sense is not meaningful here in the
+> *small-signal / analog* reading — the board is a digital control + motor-driver
+> carrier (no analog signal chain to solve), and the active parts are pre-built
+> modules. The electrically relevant checks are therefore **connectivity,
+> clearance/short DRC, current-carrying capacity of the power traces, and
+> ground/return integrity**, all of which are covered above. The *power*-delivery
+> side **is** worth simulating, and note
+> [`23`](23-ngspice-power-integrity-simulation.md) does exactly that with
+> **ngspice** (a resistor-mesh IR-drop `.op` solve of each candidate's routed
+> +12 V / +5 V copper, plus a transient decoupling `.tran`), quantifying the thin
+> 6 mil power-trace warning below.
 
 ## What every candidate has in common (the design Quilter received)
 
