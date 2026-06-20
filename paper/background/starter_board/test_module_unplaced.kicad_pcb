@@ -332,11 +332,6 @@
       (net 0 "") (pinfunction "GP17") (tstamp 00000000-0000-0000-00aa-b8cfdcad632a))
     (pad "40" thru_hole oval (at 8.89 24.13 0) (size 1.7 1.7) (drill 1) (layers *.Cu *.Mask)
       (net 0 "") (pinfunction "GP16") (tstamp 00000000-0000-0000-00aa-5e218863d32f))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x20_P2.54mm_Vertical.wrl"
-      (offset (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
   )
 
   (footprint "powder_doser_parts:DRV2605L_Breakout" (version 20221018) (generator kiutils) (layer "F.Cu")
@@ -568,11 +563,6 @@
       (net 19 "STP_B1") (pinfunction "B1") (tstamp 00000000-0000-0000-00aa-46cfc8bbab98))
     (pad "14" thru_hole oval (at 11.7 6.35 0) (size 1.7 1.7) (drill 1) (layers *.Cu *.Mask)
       (net 20 "STP_B2") (pinfunction "B2") (tstamp 00000000-0000-0000-00aa-f4b2483fd9c5))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x08_P2.54mm_Vertical.wrl"
-      (offset (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
   )
 
   (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" (version 20221018) (generator kiutils) (layer "F.Cu")
@@ -844,11 +834,6 @@
       (net 0 "") (pinfunction "GP17") (tstamp 00000000-0000-0000-00aa-1fa00762fa5d))
     (pad "40" thru_hole oval (at 8.89 24.13 0) (size 1.7 1.7) (drill 1) (layers *.Cu *.Mask)
       (net 0 "") (pinfunction "GP16") (tstamp 00000000-0000-0000-00aa-df6b0898a2ec))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x20_P2.54mm_Vertical.wrl"
-      (offset (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
   )
 
   (gr_line (start -5.0 -5.0) (end 95.0 -5.0) (layer "Edge.Cuts") (width 0.1))

@@ -575,6 +575,23 @@ def _footprint_id(lib_id: str) -> str:
     return f"powder_doser_parts:{lib_id}"
 
 
+def _is_header_carrier(lib_id: str) -> bool:
+    """True for a module that mounts on a *generic* 0.1" pin header.
+
+    These parts (Pi Pico W, the Waveshare RS-232 module, the Tic carrier) use a
+    real ``Connector_PinHeader_2.54mm`` land pattern with a vendor body overlaid
+    rather than their own dedicated library footprint, and they have no vendor
+    STEP. The header library's own 3-D model is a bare vertical pin header,
+    which renders as phantom pins sticking up where the module body sits, so it
+    must not be attached as the part's 3-D model. The barrel jack and passive
+    discretes (whose own library footprint *is* the body) are excluded.
+    """
+    return (PACKAGES[lib_id]["kind"] == "module"
+            and PACKAGES[lib_id]["body"] is not None
+            and all(lib == "Connector_PinHeader_2.54mm"
+                    for lib, _name, *_ in _part_groups(lib_id)))
+
+
 def _body_extents(lib_id: str) -> tuple[float, float]:
     """Half-width/height of one part's drawn body (F.Fab), no courtyard gap.
 
@@ -761,9 +778,18 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
     # PR #25 is merged) when one is recorded, else the library footprint's own
     # KiCad 3-D model. KiCad simply omits a missing model, so the .kicad_pcb
     # stays self-contained.
+    #
+    # Exception: a module that mounts on a *generic* 0.1" pin header (Pico W,
+    # the RS-232 module, the Tic carrier) has no vendor STEP, and the library
+    # footprint's own model is a bare vertical pin header. Attaching it renders
+    # as a column of pins sticking straight up exactly where the module body
+    # sits on top of the header — misleading in the 3-D view (reported on the
+    # Pico/RS-232 positions). For these the model is omitted: KiCad then shows
+    # the real F.Fab body outline with no phantom pins. A proper module STEP
+    # (e.g. RPi_Pico, the Waveshare module) can be dropped into PACKAGES later.
     if pkg["model"]:
         fp.models.append(Model(path=pkg["model"]))
-    else:
+    elif not _is_header_carrier(lib_id):
         lib, name, *_ = _part_groups(lib_id)[0]
         model = _lib_model(lib, name)
         if model is not None:
