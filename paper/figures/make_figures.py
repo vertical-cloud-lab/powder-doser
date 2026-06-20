@@ -2,10 +2,8 @@
 """Generate all manuscript figures for the powder-doser base paper.
 
 Real CAD renders are pulled from paper/figures/assets/ (extracted from the
-design branches of this repository).  Panels that contain synthetic
-(placeholder) data are watermarked with a diagonal "SYNTHETIC DATA" label so
-they cannot be mistaken for measurements; they will be replaced with real
-bench data before submission.
+design branches of this repository).  Every panel reflects work already
+completed; the manuscript reports no synthetic or placeholder data.
 
 Usage:  python3 make_figures.py        (writes PDFs next to this script)
 """
@@ -28,8 +26,6 @@ ASSETS = HERE / "assets"
 # RSC column geometry (cm -> inch)
 SINGLE_COL_IN = 8.3 / 2.54
 DOUBLE_COL_IN = 17.1 / 2.54
-
-RNG = np.random.default_rng(42)
 
 plt.rcParams.update(
     {
@@ -61,39 +57,6 @@ def load(name: str, crop_white: bool = True) -> np.ndarray:
             c0, c1 = max(cols[0] - pad, 0), min(cols[-1] + pad, arr.shape[1])
             arr = arr[r0:r1, c0:c1]
     return arr
-
-
-def synthetic_watermark(ax, text: str = "SYNTHETIC DATA") -> None:
-    """Non-invasive diagonal watermark marking placeholder data."""
-    ax.text(
-        0.5,
-        0.5,
-        text,
-        transform=ax.transAxes,
-        rotation=30,
-        fontsize=11,
-        color="0.55",
-        alpha=0.38,
-        ha="center",
-        va="center",
-        fontweight="bold",
-        zorder=10,
-    )
-
-
-def placeholder_note(ax, text: str) -> None:
-    ax.text(
-        0.5,
-        0.02,
-        text,
-        transform=ax.transAxes,
-        fontsize=4.5,
-        color="0.45",
-        ha="center",
-        va="bottom",
-        style="italic",
-        zorder=10,
-    )
 
 
 def panel_label(ax, letter: str) -> None:
@@ -147,7 +110,6 @@ def fig1() -> None:
             va="center",
             arrowprops=dict(arrowstyle="-", lw=0.6, color="0.25"),
         )
-    placeholder_note(ax, "CAD render; photograph of the printed platform to be added")
 
     # (b) powder-flow path through the module (tall panel), drawn to match the
     #     final no-hopper design: the auger tube itself is the reservoir, loaded
@@ -329,69 +291,6 @@ def fig2() -> None:
 
 
 # ----------------------------------------------------------------------------
-# Figure 3 — dispensing characterization (synthetic placeholder data)
-# ----------------------------------------------------------------------------
-POWDERS = [
-    ("Glass beads (70\u2013110 \u00b5m)", "#2a6db5", 1.6),
-    ("Al\u2082O\u2083 (50 \u00b5m)", "#c44e52", 1.1),
-    ("316L steel (15\u201345 \u00b5m)", "#55a868", 2.3),
-    ("Xanthan gum", "#8172b3", 0.45),
-]
-
-
-def fig3() -> None:
-    fig, axs = plt.subplots(
-        1, 3, figsize=(DOUBLE_COL_IN, 2.1), gridspec_kw=dict(wspace=0.42)
-    )
-
-    # (a) cumulative dispensed mass vs time
-    ax = axs[0]
-    t = np.linspace(0, 30, 200)
-    for name, color, rate in POWDERS:
-        m = rate * t * (1 + 0.04 * np.sin(2.2 * t) * np.exp(-t / 18))
-        m += RNG.normal(0, 0.02 * rate, t.size).cumsum() * 0.15
-        ax.plot(t, m, color=color, label=name, lw=0.9)
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Dispensed mass (g)")
-    ax.legend(fontsize=4.2, frameon=False, loc="upper left")
-    panel_label(ax, "a")
-    synthetic_watermark(ax)
-
-    # (b) requested vs measured parity
-    ax = axs[1]
-    req = np.logspace(np.log10(0.02), np.log10(5), 14)
-    for name, color, _ in POWDERS:
-        meas = req * (1 + RNG.normal(0, 0.035, req.size)) + RNG.normal(
-            0, 0.004, req.size
-        )
-        ax.loglog(req, np.clip(meas, 1e-3, None), "o", ms=2.2, color=color, alpha=0.8)
-    lims = [0.01, 8]
-    ax.loglog(lims, lims, "-", color="0.4", lw=0.7)
-    ax.fill_between(
-        lims, [l * 0.9 for l in lims], [l * 1.1 for l in lims], color="0.8", alpha=0.4
-    )
-    ax.set_xlabel("Requested mass (g)")
-    ax.set_ylabel("Measured mass (g)")
-    panel_label(ax, "b")
-    synthetic_watermark(ax)
-
-    # (c) speed vs accuracy trade-off
-    ax = axs[2]
-    rpm = np.linspace(5, 120, 40)
-    for name, color, rate in POWDERS:
-        cv = 0.6 + 0.035 * rpm + RNG.normal(0, 0.12, rpm.size)
-        cv = np.convolve(np.clip(cv, 0.3, None), np.ones(5) / 5, mode="same")
-        ax.plot(rpm[2:-2], cv[2:-2], color=color, lw=0.9)
-    ax.set_xlabel("Auger speed (rpm)")
-    ax.set_ylabel("Dose CV (%)")
-    panel_label(ax, "c")
-    synthetic_watermark(ax)
-
-    fig.savefig(HERE / "fig3_dispense.pdf", bbox_inches="tight")
-    plt.close(fig)
-
-
-# ----------------------------------------------------------------------------
 # Figure 4 — design specifics / cross-sections
 # ----------------------------------------------------------------------------
 def fig4() -> None:
@@ -471,6 +370,6 @@ def figs1() -> None:
 
 
 if __name__ == "__main__":
-    for fn in (fig1, fig2, fig3, fig4, fig5, figs1):
+    for fn in (fig1, fig2, fig4, fig5, figs1):
         fn()
         print(f"wrote {fn.__name__}")
