@@ -80,17 +80,19 @@ def show(ax, name: str, **kw) -> None:
 
 
 def check_text_overlaps(fig, name: str, pad: float = 1.0) -> list:
-    """Report overlapping text/annotation/title bounding boxes in a figure.
+    """Report text that is overlapped or crossed by another artist.
 
     Computes the rendered window extent (display-pixel bounding box) of every
     visible text artist---panel labels, annotation callouts, axis titles---and
-    flags any pair whose boxes intersect.  Used to guarantee that no label
-    overlaps another label or crowds a neighbour.  Returns the list of
-    offending text pairs (empty when the figure is clean).
+    flags (a) any pair of labels whose boxes intersect and (b) any annotation
+    *leader line* that passes through a label other than its own anchor.  The
+    second check guarantees that no callout text is obscured by a line running
+    through it.  Returns the list of offending pairs (empty when clean).
     """
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
     items = []
+    annotations = []  # (owner_text, (x0,y0), (x1,y1)) leader segments in display px
     for ax in fig.axes:
         artists = list(ax.texts)
         if ax.get_title():
@@ -103,12 +105,35 @@ def check_text_overlaps(fig, name: str, pad: float = 1.0) -> list:
             except Exception:
                 continue
             bb = bb.expanded(1.0 + pad / max(bb.width, 1.0), 1.0 + pad / max(bb.height, 1.0))
-            items.append((t.get_text().replace("\n", " "), bb))
+            label = t.get_text().replace("\n", " ")
+            items.append((label, bb))
+            # capture the leader line of annotations (text -> target)
+            arrow = getattr(t, "arrow_patch", None)
+            if arrow is not None and getattr(t, "xy", None) is not None:
+                try:
+                    target = ax.transData.transform(t.xy)
+                    src = ((bb.x0 + bb.x1) / 2.0, (bb.y0 + bb.y1) / 2.0)
+                    annotations.append((label, bb, src, tuple(target)))
+                except Exception:
+                    pass
     bad = []
     for i in range(len(items)):
         for j in range(i + 1, len(items)):
             if items[i][1].overlaps(items[j][1]):
                 bad.append((items[i][0], items[j][0]))
+    # leader-line-through-text check: sample each leader and test every other
+    # label's box; the segment naturally touches its own box, which is excluded.
+    for owner, owner_bb, (x0, y0), (x1, y1) in annotations:
+        for steps in range(1, 24):
+            s = steps / 24.0
+            px, py = x0 + (x1 - x0) * s, y0 + (y1 - y0) * s
+            for label, bb in items:
+                if label == owner:
+                    continue
+                if bb.x0 <= px <= bb.x1 and bb.y0 <= py <= bb.y1:
+                    pair = (owner, f"leader through {label!r}")
+                    if pair not in bad:
+                        bad.append(pair)
     for a, b in bad:
         print(f"  [overlap] {name}: {a!r} <-> {b!r}")
     return bad
@@ -126,31 +151,45 @@ def save(fig, name: str) -> None:
 # Figure 1 — platform overview
 # ----------------------------------------------------------------------------
 def fig1() -> None:
-    fig = plt.figure(figsize=(DOUBLE_COL_IN, 4.6))
-    gs = fig.add_gridspec(2, 3, height_ratios=[1.25, 1.0], hspace=0.32, wspace=0.18)
+    fig = plt.figure(figsize=(DOUBLE_COL_IN, 4.8))
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.4, 1.0], hspace=0.32, wspace=0.18)
 
-    # (a) annotated final single-channel assembly render
+    # (a) annotated final single-channel assembly render.  The render fills the
+    #     whole frame, so a band of white headroom is added above (and a margin
+    #     below) the image and every callout label is placed in that clear space
+    #     with a leader line pointing into the part---no text sits on top of the
+    #     busy render or has a leader line running through it.
     ax = fig.add_subplot(gs[0, :2])
     img = load("assembly_iso_final.png")
     ax.imshow(img)
     ax.set_axis_off()
-    panel_label(ax, "a")
     h, w = img.shape[:2]
+    left = 0.30 * w  # white margin left of the render (for left-hand labels)
+    right = 0.46 * w  # white margin right of the render (for right-hand labels)
+    ax.set_xlim(-0.5 - left, w - 0.5 + right)
+    ax.set_ylim(h - 0.5, -0.5)
+    panel_label(ax, "a")
+    # Labels live in the white side margins (never on top of the render) and
+    # their leader lines run horizontally into the part, so no text is crossed by
+    # a leader line or obscured by the model.  Left-hand labels are right-aligned
+    # against the render; right-hand labels are left-aligned; they are spread
+    # vertically so none collide.
+    # (text, part target frac, label anchor frac, ha, va)
     callouts = [
-        ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.10)),
-        ("Auger bracket +\ntap collar", (0.52, 0.40), (0.40, 0.02)),
-        ("NEMA-11 stepper +\nprinted spur-gear\ndrive", (0.66, 0.34), (0.66, 0.02)),
-        ("Hinged plate\n(servo tilt)", (0.62, 0.62), (0.82, 0.66)),
-        ("Baseplate", (0.46, 0.72), (0.16, 0.88)),
+        ("Archimedes auger\n(printed, geared)", (0.16, 0.50), (-0.03, 0.30), "right", "center"),
+        ("Baseplate", (0.22, 0.82), (-0.03, 0.86), "right", "center"),
+        ("NEMA-11 stepper +\nprinted spur-gear drive", (0.70, 0.42), (1.03, 0.20), "left", "center"),
+        ("Auger bracket +\ntap collar", (0.50, 0.50), (1.03, 0.54), "left", "center"),
+        ("Hinged plate (servo tilt)", (0.64, 0.64), (1.03, 0.86), "left", "center"),
     ]
-    for text, (xt, yt), (xl, yl) in callouts:
+    for text, (xt, yt), (xl, yl), ha, va in callouts:
         ax.annotate(
             text,
             xy=(xt * w, yt * h),
             xytext=(xl * w, yl * h),
             fontsize=5.5,
-            ha="left",
-            va="center",
+            ha=ha,
+            va=va,
             arrowprops=dict(arrowstyle="-", lw=0.6, color="0.25"),
         )
 
