@@ -79,6 +79,49 @@ def show(ax, name: str, **kw) -> None:
     ax.set_axis_off()
 
 
+def check_text_overlaps(fig, name: str, pad: float = 1.0) -> list:
+    """Report overlapping text/annotation/title bounding boxes in a figure.
+
+    Computes the rendered window extent (display-pixel bounding box) of every
+    visible text artist---panel labels, annotation callouts, axis titles---and
+    flags any pair whose boxes intersect.  Used to guarantee that no label
+    overlaps another label or crowds a neighbour.  Returns the list of
+    offending text pairs (empty when the figure is clean).
+    """
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    items = []
+    for ax in fig.axes:
+        artists = list(ax.texts)
+        if ax.get_title():
+            artists.append(ax.title)
+        for t in artists:
+            if not t.get_text().strip():
+                continue
+            try:
+                bb = t.get_window_extent(renderer=renderer)
+            except Exception:
+                continue
+            bb = bb.expanded(1.0 + pad / max(bb.width, 1.0), 1.0 + pad / max(bb.height, 1.0))
+            items.append((t.get_text().replace("\n", " "), bb))
+    bad = []
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i][1].overlaps(items[j][1]):
+                bad.append((items[i][0], items[j][0]))
+    for a, b in bad:
+        print(f"  [overlap] {name}: {a!r} <-> {b!r}")
+    return bad
+
+
+def save(fig, name: str) -> None:
+    overlaps = check_text_overlaps(fig, name)
+    fig.savefig(HERE / f"{name}.pdf", bbox_inches="tight")
+    plt.close(fig)
+    if overlaps:
+        raise SystemExit(f"text overlaps detected in {name}; fix label placement")
+
+
 # ----------------------------------------------------------------------------
 # Figure 1 — platform overview
 # ----------------------------------------------------------------------------
@@ -94,9 +137,9 @@ def fig1() -> None:
     panel_label(ax, "a")
     h, w = img.shape[:2]
     callouts = [
-        ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.12)),
-        ("Auger bracket +\ntap collar", (0.55, 0.38), (0.48, 0.08)),
-        ("NEMA-11 stepper +\nprinted spur-gear drive", (0.66, 0.36), (0.72, 0.10)),
+        ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.10)),
+        ("Auger bracket +\ntap collar", (0.52, 0.40), (0.40, 0.02)),
+        ("NEMA-11 stepper +\nprinted spur-gear\ndrive", (0.66, 0.34), (0.66, 0.02)),
         ("Hinged plate\n(servo tilt)", (0.62, 0.62), (0.82, 0.66)),
         ("Baseplate", (0.46, 0.72), (0.16, 0.88)),
     ]
@@ -239,8 +282,7 @@ def fig1() -> None:
         ax.text(0.85, i, date, ha="right", va="center", fontsize=5)
         ax.text(1.3, i, label, ha="left", va="center", fontsize=5.2)
 
-    fig.savefig(HERE / "fig1_overview.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig1_overview")
 
 
 # ----------------------------------------------------------------------------
@@ -286,8 +328,7 @@ def fig2() -> None:
         "",
         fontsize=1,
     )
-    fig.savefig(HERE / "fig2_genai.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig2_genai")
 
 
 # ----------------------------------------------------------------------------
@@ -307,8 +348,7 @@ def fig4() -> None:
     panel_label(ax, "b")
     ax.set_title("Tap collar split clamp\n(actuator mount)", fontsize=6)
 
-    fig.savefig(HERE / "fig4_design.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig4_design")
 
 
 # ----------------------------------------------------------------------------
@@ -352,8 +392,7 @@ def fig5() -> None:
     panel_label(ax, "b")
     ax.set_title("Inward-tilting channels\nover shared cup\n(preliminary CAD)", fontsize=6)
 
-    fig.savefig(HERE / "fig5_future.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig5_future")
 
 
 # ----------------------------------------------------------------------------
@@ -365,8 +404,7 @@ def figs1() -> None:
         show(ax, f"nozzle_type{k}_cross_section.png")
         panel_label(ax, "abcd"[k - 1])
         ax.set_title(f"Type {k}", fontsize=7)
-    fig.savefig(HERE / "figS1_nozzles.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "figS1_nozzles")
 
 
 if __name__ == "__main__":
