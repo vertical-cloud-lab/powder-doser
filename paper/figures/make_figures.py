@@ -2,10 +2,8 @@
 """Generate all manuscript figures for the powder-doser base paper.
 
 Real CAD renders are pulled from paper/figures/assets/ (extracted from the
-design branches of this repository).  Panels that contain synthetic
-(placeholder) data are watermarked with a diagonal "SYNTHETIC DATA" label so
-they cannot be mistaken for measurements; they will be replaced with real
-bench data before submission.
+design branches of this repository).  Every panel reflects work already
+completed; the manuscript reports no synthetic or placeholder data.
 
 Usage:  python3 make_figures.py        (writes PDFs next to this script)
 """
@@ -28,8 +26,6 @@ ASSETS = HERE / "assets"
 # RSC column geometry (cm -> inch)
 SINGLE_COL_IN = 8.3 / 2.54
 DOUBLE_COL_IN = 17.1 / 2.54
-
-RNG = np.random.default_rng(42)
 
 plt.rcParams.update(
     {
@@ -63,39 +59,6 @@ def load(name: str, crop_white: bool = True) -> np.ndarray:
     return arr
 
 
-def synthetic_watermark(ax, text: str = "SYNTHETIC DATA") -> None:
-    """Non-invasive diagonal watermark marking placeholder data."""
-    ax.text(
-        0.5,
-        0.5,
-        text,
-        transform=ax.transAxes,
-        rotation=30,
-        fontsize=11,
-        color="0.55",
-        alpha=0.38,
-        ha="center",
-        va="center",
-        fontweight="bold",
-        zorder=10,
-    )
-
-
-def placeholder_note(ax, text: str) -> None:
-    ax.text(
-        0.5,
-        0.02,
-        text,
-        transform=ax.transAxes,
-        fontsize=4.5,
-        color="0.45",
-        ha="center",
-        va="bottom",
-        style="italic",
-        zorder=10,
-    )
-
-
 def panel_label(ax, letter: str) -> None:
     ax.text(
         0.02,
@@ -116,38 +79,122 @@ def show(ax, name: str, **kw) -> None:
     ax.set_axis_off()
 
 
+def check_text_overlaps(fig, name: str, pad: float = 1.0) -> list:
+    """Report text that is overlapped or crossed by another artist.
+
+    Computes the rendered window extent (display-pixel bounding box) of every
+    visible text artist---panel labels, annotation callouts, axis titles---and
+    flags (a) any pair of labels whose boxes intersect and (b) any annotation
+    *leader line* that passes through a label other than its own anchor.  The
+    second check guarantees that no callout text is obscured by a line running
+    through it.  Returns the list of offending pairs (empty when clean).
+    """
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    items = []
+    annotations = []  # (owner_text, (x0,y0), (x1,y1)) leader segments in display px
+    for ax in fig.axes:
+        artists = list(ax.texts)
+        if ax.get_title():
+            artists.append(ax.title)
+        for t in artists:
+            if not t.get_text().strip():
+                continue
+            try:
+                bb = t.get_window_extent(renderer=renderer)
+            except Exception:
+                continue
+            bb = bb.expanded(1.0 + pad / max(bb.width, 1.0), 1.0 + pad / max(bb.height, 1.0))
+            label = t.get_text().replace("\n", " ")
+            items.append((label, bb))
+            # capture the leader line of annotations (text -> target)
+            arrow = getattr(t, "arrow_patch", None)
+            if arrow is not None and getattr(t, "xy", None) is not None:
+                try:
+                    target = ax.transData.transform(t.xy)
+                    src = ((bb.x0 + bb.x1) / 2.0, (bb.y0 + bb.y1) / 2.0)
+                    annotations.append((label, bb, src, tuple(target)))
+                except Exception:
+                    pass
+    bad = []
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i][1].overlaps(items[j][1]):
+                bad.append((items[i][0], items[j][0]))
+    # leader-line-through-text check: sample each leader and test every other
+    # label's box; the segment naturally touches its own box, which is excluded.
+    samples = 24  # number of points sampled along each leader line
+    for owner, owner_bb, (x0, y0), (x1, y1) in annotations:
+        for steps in range(1, samples):
+            s = steps / float(samples)
+            px, py = x0 + (x1 - x0) * s, y0 + (y1 - y0) * s
+            for label, bb in items:
+                if label == owner:
+                    continue
+                if bb.x0 <= px <= bb.x1 and bb.y0 <= py <= bb.y1:
+                    pair = (owner, f"leader through {label!r}")
+                    if pair not in bad:
+                        bad.append(pair)
+    for a, b in bad:
+        print(f"  [overlap] {name}: {a!r} <-> {b!r}")
+    return bad
+
+
+def save(fig, name: str) -> None:
+    overlaps = check_text_overlaps(fig, name)
+    fig.savefig(HERE / f"{name}.pdf", bbox_inches="tight")
+    plt.close(fig)
+    if overlaps:
+        raise SystemExit(f"text overlaps detected in {name}; fix label placement")
+
+
 # ----------------------------------------------------------------------------
 # Figure 1 — platform overview
 # ----------------------------------------------------------------------------
 def fig1() -> None:
-    fig = plt.figure(figsize=(DOUBLE_COL_IN, 4.6))
-    gs = fig.add_gridspec(2, 3, height_ratios=[1.25, 1.0], hspace=0.32, wspace=0.18)
+    fig = plt.figure(figsize=(DOUBLE_COL_IN, 4.8))
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.4, 1.0], hspace=0.32, wspace=0.18)
 
-    # (a) annotated final single-channel assembly render
+    # (a) annotated final single-channel assembly render.  The render fills the
+    #     whole frame, so a band of white headroom is added above (and a margin
+    #     below) the image and every callout label is placed in that clear space
+    #     with a leader line pointing into the part---no text sits on top of the
+    #     busy render or has a leader line running through it.
     ax = fig.add_subplot(gs[0, :2])
     img = load("assembly_iso_final.png")
     ax.imshow(img)
     ax.set_axis_off()
-    panel_label(ax, "a")
     h, w = img.shape[:2]
+    # Margins are sized to fit the longest label (the two-line stepper callout)
+    # in clear space beside the render without overlapping it.
+    left = 0.30 * w  # white margin left of the render (for left-hand labels)
+    right = 0.46 * w  # white margin right of the render (for right-hand labels)
+    ax.set_xlim(-0.5 - left, w - 0.5 + right)
+    ax.set_ylim(h - 0.5, -0.5)
+    panel_label(ax, "a")
+    # Labels live in the white side margins (never on top of the render) and
+    # their leader lines run horizontally into the part, so no text is crossed by
+    # a leader line or obscured by the model.  Left-hand labels are right-aligned
+    # against the render; right-hand labels are left-aligned; they are spread
+    # vertically so none collide.
+    # (text, part target frac, label anchor frac, ha, va)
     callouts = [
-        ("Archimedes auger\n(printed, geared)", (0.30, 0.42), (0.10, 0.12)),
-        ("Auger bracket +\ntap collar", (0.55, 0.38), (0.48, 0.08)),
-        ("NEMA-11 stepper +\nprinted spur-gear drive", (0.66, 0.36), (0.72, 0.10)),
-        ("Hinged plate\n(servo tilt)", (0.62, 0.62), (0.82, 0.66)),
-        ("Baseplate", (0.46, 0.72), (0.16, 0.88)),
+        ("Archimedes auger\n(printed, geared)", (0.16, 0.50), (-0.03, 0.30), "right", "center"),
+        ("Baseplate", (0.22, 0.82), (-0.03, 0.86), "right", "center"),
+        ("NEMA-11 stepper +\nprinted spur-gear drive", (0.70, 0.42), (1.03, 0.20), "left", "center"),
+        ("Auger bracket +\ntap collar", (0.50, 0.50), (1.03, 0.54), "left", "center"),
+        ("Hinged plate (servo tilt)", (0.64, 0.64), (1.03, 0.86), "left", "center"),
     ]
-    for text, (xt, yt), (xl, yl) in callouts:
+    for text, (xt, yt), (xl, yl), ha, va in callouts:
         ax.annotate(
             text,
             xy=(xt * w, yt * h),
             xytext=(xl * w, yl * h),
             fontsize=5.5,
-            ha="left",
-            va="center",
+            ha=ha,
+            va=va,
             arrowprops=dict(arrowstyle="-", lw=0.6, color="0.25"),
         )
-    placeholder_note(ax, "CAD render; photograph of the printed platform to be added")
 
     # (b) powder-flow path through the module (tall panel), drawn to match the
     #     final no-hopper design: the auger tube itself is the reservoir, loaded
@@ -277,8 +324,7 @@ def fig1() -> None:
         ax.text(0.85, i, date, ha="right", va="center", fontsize=5)
         ax.text(1.3, i, label, ha="left", va="center", fontsize=5.2)
 
-    fig.savefig(HERE / "fig1_overview.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig1_overview")
 
 
 # ----------------------------------------------------------------------------
@@ -324,71 +370,7 @@ def fig2() -> None:
         "",
         fontsize=1,
     )
-    fig.savefig(HERE / "fig2_genai.pdf", bbox_inches="tight")
-    plt.close(fig)
-
-
-# ----------------------------------------------------------------------------
-# Figure 3 — dispensing characterization (synthetic placeholder data)
-# ----------------------------------------------------------------------------
-POWDERS = [
-    ("Glass beads (70\u2013110 \u00b5m)", "#2a6db5", 1.6),
-    ("Al\u2082O\u2083 (50 \u00b5m)", "#c44e52", 1.1),
-    ("316L steel (15\u201345 \u00b5m)", "#55a868", 2.3),
-    ("Xanthan gum", "#8172b3", 0.45),
-]
-
-
-def fig3() -> None:
-    fig, axs = plt.subplots(
-        1, 3, figsize=(DOUBLE_COL_IN, 2.1), gridspec_kw=dict(wspace=0.42)
-    )
-
-    # (a) cumulative dispensed mass vs time
-    ax = axs[0]
-    t = np.linspace(0, 30, 200)
-    for name, color, rate in POWDERS:
-        m = rate * t * (1 + 0.04 * np.sin(2.2 * t) * np.exp(-t / 18))
-        m += RNG.normal(0, 0.02 * rate, t.size).cumsum() * 0.15
-        ax.plot(t, m, color=color, label=name, lw=0.9)
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Dispensed mass (g)")
-    ax.legend(fontsize=4.2, frameon=False, loc="upper left")
-    panel_label(ax, "a")
-    synthetic_watermark(ax)
-
-    # (b) requested vs measured parity
-    ax = axs[1]
-    req = np.logspace(np.log10(0.02), np.log10(5), 14)
-    for name, color, _ in POWDERS:
-        meas = req * (1 + RNG.normal(0, 0.035, req.size)) + RNG.normal(
-            0, 0.004, req.size
-        )
-        ax.loglog(req, np.clip(meas, 1e-3, None), "o", ms=2.2, color=color, alpha=0.8)
-    lims = [0.01, 8]
-    ax.loglog(lims, lims, "-", color="0.4", lw=0.7)
-    ax.fill_between(
-        lims, [l * 0.9 for l in lims], [l * 1.1 for l in lims], color="0.8", alpha=0.4
-    )
-    ax.set_xlabel("Requested mass (g)")
-    ax.set_ylabel("Measured mass (g)")
-    panel_label(ax, "b")
-    synthetic_watermark(ax)
-
-    # (c) speed vs accuracy trade-off
-    ax = axs[2]
-    rpm = np.linspace(5, 120, 40)
-    for name, color, rate in POWDERS:
-        cv = 0.6 + 0.035 * rpm + RNG.normal(0, 0.12, rpm.size)
-        cv = np.convolve(np.clip(cv, 0.3, None), np.ones(5) / 5, mode="same")
-        ax.plot(rpm[2:-2], cv[2:-2], color=color, lw=0.9)
-    ax.set_xlabel("Auger speed (rpm)")
-    ax.set_ylabel("Dose CV (%)")
-    panel_label(ax, "c")
-    synthetic_watermark(ax)
-
-    fig.savefig(HERE / "fig3_dispense.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig2_genai")
 
 
 # ----------------------------------------------------------------------------
@@ -408,8 +390,7 @@ def fig4() -> None:
     panel_label(ax, "b")
     ax.set_title("Tap collar split clamp\n(actuator mount)", fontsize=6)
 
-    fig.savefig(HERE / "fig4_design.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig4_design")
 
 
 # ----------------------------------------------------------------------------
@@ -453,8 +434,7 @@ def fig5() -> None:
     panel_label(ax, "b")
     ax.set_title("Inward-tilting channels\nover shared cup\n(preliminary CAD)", fontsize=6)
 
-    fig.savefig(HERE / "fig5_future.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "fig5_future")
 
 
 # ----------------------------------------------------------------------------
@@ -466,11 +446,10 @@ def figs1() -> None:
         show(ax, f"nozzle_type{k}_cross_section.png")
         panel_label(ax, "abcd"[k - 1])
         ax.set_title(f"Type {k}", fontsize=7)
-    fig.savefig(HERE / "figS1_nozzles.pdf", bbox_inches="tight")
-    plt.close(fig)
+    save(fig, "figS1_nozzles")
 
 
 if __name__ == "__main__":
-    for fn in (fig1, fig2, fig3, fig4, fig5, figs1):
+    for fn in (fig1, fig2, fig4, fig5, figs1):
         fn()
         print(f"wrote {fn.__name__}")

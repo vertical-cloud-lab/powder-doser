@@ -227,6 +227,9 @@ paper/*.out
 paper/*.toc
 paper/mock_review/inputs/main.pdf
 paper/mock_review/inputs/si.pdf
+paper/mock_review/revision_review/inputs/main.pdf
+paper/mock_review/revision_review/inputs/si.pdf
 
 # Per-figure Edison ANALYSIS review notebooks (large, embedded data; answers kept as .md)
 paper/mock_review/results/*.notebook.ipynb
+paper/mock_review/revision_review/revision_review.notebook.ipynb
