@@ -123,9 +123,10 @@ def check_text_overlaps(fig, name: str, pad: float = 1.0) -> list:
                 bad.append((items[i][0], items[j][0]))
     # leader-line-through-text check: sample each leader and test every other
     # label's box; the segment naturally touches its own box, which is excluded.
+    samples = 24  # number of points sampled along each leader line
     for owner, owner_bb, (x0, y0), (x1, y1) in annotations:
-        for steps in range(1, 24):
-            s = steps / 24.0
+        for steps in range(1, samples):
+            s = steps / float(samples)
             px, py = x0 + (x1 - x0) * s, y0 + (y1 - y0) * s
             for label, bb in items:
                 if label == owner:
@@ -164,6 +165,8 @@ def fig1() -> None:
     ax.imshow(img)
     ax.set_axis_off()
     h, w = img.shape[:2]
+    # Margins are sized to fit the longest label (the two-line stepper callout)
+    # in clear space beside the render without overlapping it.
     left = 0.30 * w  # white margin left of the render (for left-hand labels)
     right = 0.46 * w  # white margin right of the render (for right-hand labels)
     ax.set_xlim(-0.5 - left, w - 0.5 + right)
