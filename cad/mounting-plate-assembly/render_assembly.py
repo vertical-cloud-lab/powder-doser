@@ -244,13 +244,16 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
 
 def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0,
                          azimuth_deg: float = 0.0,
-                         elevation_frac: float = 0.6) -> None:
+                         elevation_frac: float = 0.6,
+                         scale: int = 1) -> None:
     """Render the full assembly (all parts) to ``out_path``.
 
     ``azimuth_deg`` orbits the *iso* camera about the vertical (Z) axis
     through the focal point so several viewpoints can be generated for
     picking the best-looking perspective; ``elevation_frac`` scales the
-    camera height (Z offset as a fraction of the orbit radius).
+    camera height (Z offset as a fraction of the orbit radius).  ``scale``
+    is an integer super-sampling factor on the base ``IMG_W × IMG_H`` window
+    (e.g. ``scale=4`` gives a 5600 × 4000 px image for print/poster use).
     """
     ren = vtk.vtkRenderer()
     ren.SetBackground(0.97, 0.97, 0.98)
@@ -288,6 +291,8 @@ def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0,
     win.Render()
     w2i = vtk.vtkWindowToImageFilter()
     w2i.SetInput(win)
+    if scale > 1:
+        w2i.SetScale(scale)
     w2i.SetInputBufferTypeToRGBA()
     w2i.ReadFrontBufferOff()
     w2i.Update()
@@ -763,6 +768,11 @@ def main() -> None:
                          tilt_deg=0.0, azimuth_deg=0.0, elevation_frac=1.1)
     render_assembly_view(ASM / "assembly_iso_low.png", "iso",
                          tilt_deg=0.0, azimuth_deg=0.0, elevation_frac=0.25)
+
+    # High-resolution (poster) version of the preferred az=90° iso view
+    # (requested on PR #66).  4× super-sampling -> 5600 × 4000 px.
+    render_assembly_view(ASM / "assembly_iso_az090_hires.png", "iso",
+                         tilt_deg=0.0, azimuth_deg=90.0, scale=4)
 
     # Diagrams
     installation_diagram(ASM / "installation_diagram.png")

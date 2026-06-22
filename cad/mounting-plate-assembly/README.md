@@ -15,7 +15,9 @@
 > Onshape document so you can orbit/zoom to any angle instead of the fixed
 > PNG perspectives. Several pre-rendered iso angles also live in
 > `assembly/assembly_iso_az###.png` (orbited every 45° about the vertical
-> axis) plus `assembly_iso_high.png` / `assembly_iso_low.png`.
+> axis) plus `assembly_iso_high.png` / `assembly_iso_low.png`. A
+> poster-resolution (5600 × 4000 px) render of the preferred az = 90° view
+> is at `assembly/assembly_iso_az090_hires.png`.
 
 This package designs the **foundation** of the powder-doser machine: a
 mounting plate that carries the auger brackets (PR #47 ×2), the tap-collar
