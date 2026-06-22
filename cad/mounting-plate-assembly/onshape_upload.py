@@ -14,8 +14,10 @@ import urllib.request
 import urllib.error
 
 BASE = "https://cad.onshape.com"
-AK = os.environ["ONSHAPE_ACCESS_KEY"].strip()
-SK = os.environ["ONSHAPE_SECRET_KEY"].strip()
+AK = os.environ.get("ONSHAPE_ACCESS_KEY", "").strip()
+SK = os.environ.get("ONSHAPE_SECRET_KEY", "").strip()
+if not AK or not SK:
+    sys.exit("ONSHAPE_ACCESS_KEY and ONSHAPE_SECRET_KEY must both be set.")
 AUTH = "Basic " + base64.b64encode(f"{AK}:{SK}".encode()).decode()
 
 STEP = sys.argv[1] if len(sys.argv) > 1 else (
@@ -39,6 +41,8 @@ def req(method, path, headers=None, data=None, raw=False):
 
 
 def main():
+    if not os.path.isfile(STEP):
+        sys.exit(f"STEP file not found: {STEP}")
     # 1. Create a public document.
     status, doc = req(
         "POST", "/api/v6/documents",
