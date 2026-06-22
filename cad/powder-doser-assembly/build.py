@@ -883,7 +883,11 @@ def _render_assembly_color_png(parts, png_path, azimuth_deg=90.0,
         bounds = [1e9, -1e9, 1e9, -1e9, 1e9, -1e9]
         for name, wp in parts.items():
             try:
-                pd = wp.val().toVtkPolyData(0.1, 0.5)
+                # Fine linear (0.02 mm) + angular (0.05 rad ~= 2.9 deg)
+                # tolerances so curved surfaces -- notably the auger helix and
+                # shaft -- tessellate smoothly instead of reading as low-poly
+                # facets (an octagonal-looking auger at the coarse default).
+                pd = wp.val().toVtkPolyData(0.02, 0.05)
             except Exception:
                 continue
             mapper = vtk.vtkPolyDataMapper()
