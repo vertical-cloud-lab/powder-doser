@@ -1,0 +1,133 @@
+// Mounting plate — top half of the rotating sub-assembly.
+//
+// Layout per the issue #62 third review:
+//   * every component (brackets, tap-collar mount, motor block, ramps,
+//     hinge eyes) sits on the TOP of the plate
+//   * auger in the MIDDLE — plate symmetric about X=0
+//   * brackets bolt DIRECTLY to the plate top (no plinths)
+//   * NO features hang from the plate underside
+//   * NO holes/gaps other than mounting holes, a single open U-notch
+//     in the +Y edge (the auger overhangs through it), and a minimum
+//     gear-band+pinion clearance cutout under the band
+//   * two EQUAL-sized side hinges (mirror-symmetric about X=0)
+//   * two full-width front ramps split by the auger gap, rising up to
+//     the hinge eyes
+//
+// Top surface at Z=0, bottom at Z=-plateT.
+// Issue: vertical-cloud-lab/powder-doser#56  (drawing in #62)
+//
+// NOTE: this file is the KCL mirror of cad_model.py.  cad_model.py is
+// the source of truth for geometry (it is what generates the STEP/STL
+// shipped in this PR — see README "zoo.dev experience").
+import "params.kcl" as p
+
+// ---- main plate body (top at Z=0, bottom at Z=-plateT) ----
+plate = startSketchOn(XY)
+  |> startProfile(at = [p.plateXMin, p.plateYBack])
+  |> line(end = [p.plateW, 0])
+  |> line(end = [0, p.plateL])
+  |> line(end = [-p.plateW, 0])
+  |> close()
+  |> extrude(length = -p.plateT)
+
+// ---- open U-notch in the +Y plate edge (auger gap) ----
+notchL = p.plateYFront - p.augerGapYBack + 4
+notch = startSketchOn(plate, face = START)
+  |> startProfile(at = [-p.augerGapW/2, p.augerGapYBack - 2])
+  |> line(end = [p.augerGapW, 0])
+  |> line(end = [0, notchL])
+  |> line(end = [-p.augerGapW, 0])
+  |> close()
+  |> extrude(length = -(p.plateT + 2))
+
+// ---- gear-band + pinion clearance cutout ----
+// Minimum-area through-cutout under the Ø50 gear band + Ø18 pinion so
+// they don't interfere with the plate (the auger sits at bracket-native
+// height with no plinths).
+gearSlotXMin = -p.gearBandTipDia/2 - 3
+gearSlotXMax = +p.gearBandTipDia/2 + p.gearCentreDistance + 3
+gearSlotYHalf = (p.gearBandFaceW + p.pinionLen)/2 + 3
+gearSlot = startSketchOn(plate, face = START)
+  |> startProfile(at = [gearSlotXMin, p.yGearBand - gearSlotYHalf])
+  |> line(end = [gearSlotXMax - gearSlotXMin, 0])
+  |> line(end = [0, gearSlotYHalf * 2])
+  |> line(end = [-(gearSlotXMax - gearSlotXMin), 0])
+  |> close()
+  |> extrude(length = -(p.plateT + 2))
+
+// ---- NEMA-11 motor mount block (vertical wall on plate TOP) ----
+// Wall stands at MotorFaceY; its +Y face carries the NEMA-11 face
+// holes; motor body extends in -Y.
+bossTopZ   = p.zMotor + p.bossH/2
+motorBoss = startSketchOn(plate, face = START)
+  |> startProfile(at = [p.xMotor - p.bossW/2, p.motorFaceY - p.bossT])
+  |> line(end = [p.bossW, 0])
+  |> line(end = [0, p.bossT])
+  |> line(end = [-p.bossW, 0])
+  |> close()
+  |> extrude(length = bossTopZ)
+
+// ---- front ramps (two YZ-prism triangles, extruded along X) ----
+rampRunY = p.plateYFront - p.rampYBack
+rightRamp = startSketchOn(YZ)
+  |> startProfile(at = [p.rampYBack, 0])
+  |> line(end = [rampRunY, 0])
+  |> line(end = [0, p.rampTopZ])
+  |> close()
+  |> extrude(length = (p.plateXMax - p.augerGapW/2))
+
+leftRamp = startSketchOn(YZ)
+  |> startProfile(at = [p.rampYBack, 0])
+  |> line(end = [rampRunY, 0])
+  |> line(end = [0, p.rampTopZ])
+  |> close()
+  |> extrude(length = -(p.plateXMin*-1 + p.augerGapW/2))
+
+// ---- hinge sandwich lobes (inner + outer thirds, each side) ----
+// Per the fifth review each side of the auger gap is split along X
+// into thirds: inner and outer thirds belong to the mounting plate
+// (this file); middle third belongs to the baseplate.  Tabs span from
+// the ramp front face out to the eye centre at Y = yDisp.
+tabBackY = p.plateYFront - 1
+tabFrontY = p.yDisp + p.hingeEyeOd/2
+tabLen = tabFrontY - tabBackY
+lobeLen = p.hingeLobeW - p.hingeLayerGap
+
+// +X side, inner lobe
+rightInnerLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = lobeLen)
+
+// +X side, outer lobe
+rightOuterLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = lobeLen)
+// (rightOuterLobe is positioned at p.hingeX2 in cad_model.py.)
+
+// -X side, inner lobe (mirror)
+leftInnerLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = -lobeLen)
+
+// -X side, outer lobe (mirror)
+leftOuterLobe = startSketchOn(YZ)
+  |> startProfile(at = [tabBackY, p.zAug - p.hingeEyeOd/2])
+  |> line(end = [tabLen, 0])
+  |> line(end = [0, p.hingeEyeOd])
+  |> line(end = [-tabLen, 0])
+  |> close()
+  |> extrude(length = -lobeLen)
+
+// (No actuator rod-end lug — no underside features per the third review.)
