@@ -42,8 +42,8 @@ Subsystems:
 
 * Tube OD 25.0, wall 2.0 → bore Ø21.0.  Lengths: 250 (full), 180, 90 (bench
   test, no gear band).
-* Top loading cap 6.0 tall with four Ø? loading slots on a 6.5 bolt-circle and
-  a central M3 self-tap pilot (Ø2.7).
+* Top loading cap 6.0 tall with four 4.0 × 7.0 loading slots on a 6.5
+  bolt-circle and a central M3 self-tap pilot (Ø2.7).
 * Bottom **v4 nozzle**: tapered tip, single axial exit hole Ø3.0, screw stops
   ~0.5 above the exit plane so it never extrudes through the hole.
 * Internal Archimedes screw: shaft Ø8, single-start pitch 10.0, fin thickness

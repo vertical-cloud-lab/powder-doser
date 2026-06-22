@@ -19,8 +19,6 @@ def _involute_points(base_r, start_r, end_r, n=12):
     r0 = max(start_r, base_r)
     for i in range(n + 1):
         r = r0 + (end_r - r0) * i / n
-        if r < base_r:
-            r = base_r
         # involute parameter
         a = math.sqrt(max(r * r - base_r * base_r, 0.0)) / base_r
         # involute of a circle, parameterised by roll angle a
