@@ -20,5 +20,11 @@ The dimensions were scraped from the live design history in this repo:
 - Issue #48 (comment 4513155870) — the four nozzle variants (v4 is standard)
 - zoo.dev attachment `tap collar 3.zip` — most recent tap-collar geometry
 
+Off-the-shelf part dimensions (§5) are transcribed from the component
+datasheets (NEMA 11 11HS18-0674S, Tic T500, MG996R, Adafruit 412 /
+TAU0730TM solenoid, Ø10 coin ERM, DRV2605L, DRV8871, RP2040 Pico, HX711) so
+the prompt is self-contained — no internet lookup is needed, which also
+sidesteps vendors that block automated searches.
+
 Paste the whole file, or just the block between `=== BEGIN PROMPT ===` and
 `=== END PROMPT ===` for the cleanest, tool-agnostic test.

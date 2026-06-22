@@ -239,18 +239,121 @@ on the top ~1 inch** of the tube and a matching screw-on cap:
 
 ## 5. Off-the-shelf parts to accommodate (don't redesign)
 
-| Item | Part | Key envelope / mounting |
-|------|------|--------------------------|
-| Stepper | **NEMA 11, 11HS18-0674S** | 28.2 mm sq body × 32 mm long; Ø5 × 18 round shaft (no D-cut); Ø22 pilot; 23 mm face-hole pitch (M2.5, we use M3 boss); 200 full-steps/rev |
-| Stepper driver | **Pololu Tic T500** | USB/UART stepper controller (runs the motion ramps; firmware talks to it over UART) |
-| Tilt servos | **2 × MG996R** | metal-gear, ~9.4 kgf·cm; dims in §4.5 |
-| Tap solenoid | **Adafruit 412 / Chaocheng TAU0730TM, 12 V** push/pull | flange: 2 × M3 holes diagonally opposite, 18.2 across × 16.0 along; Ø6.9 plunger bushing |
-| Vibration motor | **Ø10 mm coin (ERM) haptic motor** | adhesive recess Ø10 × 1.0 |
-| Haptic driver | **DRV2605L** | I²C LRA/ERM haptic driver |
-| Solenoid driver | **DRV8871** | brushed-DC/solenoid H-bridge driver |
-| Controller | **RP2040 (Raspberry Pi Pico / Pico W)** | runs MicroPython firmware |
-| (Optional) feedback | **HX711 + load cell**, or A&D serial scale | closed-loop dose-by-weight |
-| Fasteners | **M3 & M5** machine screws; **M3 setscrew** for the pinion | M3 clear Ø3.4 / M5 clear Ø5.4 |
+Model these as solid envelopes plus the mounting/interface features printed
+parts must mate to. The dimensions below are transcribed from the part
+datasheets so you do **not** need to look anything up — treat the explicit
+numbers here as authoritative (several of these vendors block automated
+lookups). All dimensions mm unless noted; they are nominal datasheet values,
+so add the printed-part clearances from §7 on top.
+
+**Quick reference**
+
+| Item | Part | Envelope (L×W×H) | Mass |
+|------|------|------------------|------|
+| Stepper | NEMA 11 **11HS18-0674S** | 28.0 × 28.0 × 32.0 | ~100 g |
+| Stepper driver | Pololu **Tic T500** | 25.4 × 15.2 × ~6 | ~3 g |
+| Tilt servos (×2) | **MG996R** | 40.0 × 19.0 × 43.0 (incl. ears) | ~55 g ea |
+| Tap solenoid | Adafruit 412 / **TAU0730TM** 12 V | 30.0 × 15.5 × 16.0 (body) | ~36 g |
+| Vibration motor | **Ø10 coin ERM** | Ø10 × 3.4 | ~1 g |
+| Haptic driver | **DRV2605L** breakout | 20.3 × 17.8 × ~3 | ~2 g |
+| Solenoid driver | **DRV8871** breakout | 22.9 × 17.8 × ~3 | ~2 g |
+| Controller | **RP2040 Pico / Pico W** | 51.0 × 21.0 × ~1 (PCB) | ~3 g |
+| (Opt.) feedback | **HX711** + load cell | ~34 × 21 × ~3 (board) | ~3 g |
+| Fasteners | **M3 / M5** screws + M3 setscrew | — | — |
+
+Detailed dimensions and mounting instructions follow.
+
+### 5.1 Stepper — NEMA 11, StepperOnline 11HS18-0674S
+- **Body**: 28.0 × 28.0 mm square frame (corners chamfered ~1 mm), **length
+  32.0 mm** (excluding shaft/wires). Frame is the standard NEMA 11 envelope.
+- **Shaft**: **Ø5.0 mm round** (no D-flat / no keyway), protruding **18.0 mm**
+  from the front face.
+- **Front pilot**: raised **Ø22.0 mm × ~2.0 mm** boss centred on the shaft —
+  the motor block's +Y face must clear/recess this so the body seats flat.
+- **Face mounting holes**: 4 × tapped **M2.5**, on a **23.0 × 23.0 mm** square
+  pattern (16.26 mm from the shaft axis on the diagonal), one per corner. (Our
+  motor block uses an M3 boss pattern that overlaps these; clearance Ø3.4.)
+- **Electrical (envelope only)**: bipolar **4-wire**, **1.8°/step**
+  (200 full-steps/rev), **0.67 A/phase**, holding torque ≈ **6.5 N·cm**.
+- Driven through the **16T pinion (§4.1)**; body must clear the auger OD by
+  ≈5.4 mm at C = 32.
+
+### 5.2 Stepper driver — Pololu Tic T500
+- **PCB**: **25.4 × 15.2 mm** (1.0" × 0.6"), ~6 mm tall over components.
+- **Mounting**: 2 × **Ø2.2 mm** holes (for #2 / M2 screws) on the 1.0" axis,
+  set in 0.1" from the short edges along the board centreline.
+- Headers on **2.54 mm (0.1") pitch**; USB micro-B on one short edge.
+- Function only: USB/UART stepper controller that generates the motion ramps;
+  firmware talks to it over UART (no mechanical interface to printed parts —
+  mounts to the separate control board, **not** the dosing chassis).
+
+### 5.3 Tilt servos — 2 × MG996R (see also §4.5)
+- **Body** (gearbox case, excluding ears): **40.0 (L) × 19.0 (W) × 36.8 (H to
+  top of case)**; **overall height ≈ 43.0** to the top of the spline boss.
+- **Mounting ears**: two tabs extending the length to **tip-to-tip 54.5 mm**,
+  **2.0 mm thick**, top of ears **~28.8 mm** above the case bottom; each ear
+  has 2 holes → **4 × Ø4.8–5.0 mm** holes on a **49.5 (L) × 10.0 (W)** pattern.
+- **Output spline**: **25-tooth (25T) Futaba-type spline**, pitch Ø ≈ 5.92,
+  major Ø ≈ 6.0; centre **offset 10.1 mm** from the near (driving) body end and
+  on the body centreline. Retained by a central **M3** (or self-tapping) horn
+  screw → model an **M3 countersink** in the servo pinion.
+- **Cable** exits the −L end. Operating **4.8–7.2 V**, stall ≈ **9.4 kgf·cm @
+  4.8 V**. Mounting/clearance detail and post placement are in §4.5.
+
+### 5.4 Tap solenoid — Adafruit 412 / Shanghai Chaocheng TAU0730TM (12 V push/pull)
+- **Body**: roughly **30.0 (along plunger) × 15.5 × 16.0 mm** rectangular
+  coil/frame. Treat as a box envelope around the plunger axis.
+- **Mounting flange**: **2 × M3 clearance holes, diagonally opposite**, pitch
+  **18.2 mm across the body × 16.0 mm along it** (the two used corners of the
+  frame face). Model M3 clear Ø3.4 to match the tap-collar solenoid boss.
+- **Plunger**: steel rod through a **Ø6.9 mm front bushing**; model the
+  clearance bore as **Ø7.5 mm**. Stroke ≈ 10 mm; spring-return push/pull.
+- **Interface (critical)**: the **extended plunger tip reaches 3.0 mm inside
+  the auger OD** to tap the auger wall — this is the one deliberate
+  interference (§6). Plunger axis is **perpendicular to the auger (along X)**.
+- Driven by the DRV8871 (§5.7); 12 V coil.
+
+### 5.5 Vibration motor — Ø10 mm coin (ERM) haptic motor
+- **Disc**: **Ø10.0 mm × 3.4 mm** thick (common "1034"; a 2.7 mm "1027" also
+  fits). Flat adhesive (3M) back face; two flying lead wires off one side.
+- **Mounting**: bond into a shallow **Ø10.0 × ~1.0 mm adhesive recess** on the
+  −X face of the tap collar (the 1.0 mm is just the glue pocket; the disc body
+  stands proud by the remaining ~2.4–3.4 mm — leave that clearance).
+- Driven by the DRV2605L (§5.6).
+
+### 5.6 Haptic driver — DRV2605L (Adafruit-style breakout)
+- **PCB**: **20.3 × 17.8 mm** (0.8" × 0.7"), ~3 mm over components.
+- **Mounting**: 2 × **Ø2.5 mm** holes (0.1" in from corners). Headers on
+  **2.54 mm** pitch. I²C LRA/ERM haptic driver; mounts to the control board,
+  not the chassis (envelope only).
+
+### 5.7 Solenoid driver — DRV8871 (Adafruit-style breakout)
+- **PCB**: **22.9 × 17.8 mm** (0.9" × 0.7"), ~3 mm over components.
+- **Mounting**: 2 × **Ø2.5 mm** holes (0.1" in from corners). Headers on
+  **2.54 mm** pitch. Brushed-DC / solenoid H-bridge (drives the 12 V tap
+  solenoid); control-board mount only.
+
+### 5.8 Controller — RP2040 (Raspberry Pi Pico / Pico W)
+- **PCB**: **51.0 × 21.0 × ~1.0 mm**, castellated edges + **2 × 20-pin 0.1"
+  (2.54 mm) headers** down the long edges (pins extend ~3 mm below).
+- **Mounting**: **4 × Ø2.1 mm** holes on a **47.0 × 11.4 mm** rectangular
+  pattern (2.0 mm in from each long edge, 2.0 mm from the ends). Micro-USB (or
+  USB-C on some clones) on one short edge. Control-board mount only.
+
+### 5.9 (Optional) feedback — HX711 + load cell, or A&D serial scale
+- **HX711 breakout**: generic green board **~34 × 21 × ~3 mm**; SparkFun
+  variant ~25.4 × 16.5 mm. 2 × Ø2.5 mounting holes, 0.1" headers. Pairs with a
+  strain-gauge **load cell** (e.g. bar/single-point, M4/M5 bolt mounts) for
+  closed-loop dose-by-weight. Envelope only.
+- Alternatively an **A&D serial scale** over RS-232/MAX3232 (no chassis
+  mounting). Either path is optional and does not change the printed parts.
+
+### 5.10 Fasteners
+- **M3** machine screws: clearance **Ø3.4**, self-tap pilot **Ø2.7**.
+- **M5** machine screws (hinge pins, mount bolts): clearance **Ø5.4**.
+- **M3 setscrew** (grub) for the stepper pinion: pilot **Ø2.5**.
+- **M2 / M2.5** small screws for the breakout/driver boards (control board
+  only). Use heat-set inserts or self-tapping into printed bosses as preferred.
 
 ## 6. Part-to-part interaction rules (read carefully)
 
