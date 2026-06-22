@@ -105,7 +105,7 @@ Internal Archimedean screw:
   at the gear band).
 
 **Standard nozzle = v4** (from issue #48): the central shaft ends in a
-**conical tip** that tapers from ~0.4 radius at the bottom up to the full
+**conical tip** that tapers from 0.4 radius at the bottom up to the full
 4.0 shaft radius over the 12 mm bottom-cap height, and the helix follows
 that taper down to ~0.5 mm above the exit plane, while the bottom funnel
 opens from the Ø3.0 exit hole out to the inner wall. (Context: v4 meters
@@ -134,7 +134,7 @@ rule.
 on the top ~1 inch** of the tube and a matching screw-on cap:
 - Thread length **25.4** (1 in), **pitch 4.0 mm/turn**, **depth 1.0**,
   **crest (major) radius = 12.5 (flush with the tube OD)**, **root (minor)
-  radius = 11.5**, tooth half-angle ≈ 58°, right-handed.
+  radius = 11.5**, tooth half-angle 58°, right-handed.
 - The thread must be **strictly external**: crests never exceed the 25 mm
   OD and roots cut inward only (so a Ø25 ring slides over the crests). Do
   **not** put the thread on the inside of the tube.
@@ -195,8 +195,9 @@ on the top ~1 inch** of the tube and a matching screw-on cap:
   **Z = +29.25** (same height as the auger axis). Hinge eye **OD 18.0**,
   bore = M5 (Ø5.4).
 - Hinge-post / arm depth reduced to **35 mm** so it clears the front
-  bracket. The arm's −Y (motor-side) face is sloped (~58° from horizontal,
-  16 mm run) so the plate underside can sweep through 45° and beyond without
+  bracket. The arm's −Y (motor-side) face is sloped (~58° from horizontal —
+  the angle produced by a 16 mm run at the arm height, not an independently
+  toleranced dimension) so the plate underside can sweep through 45° and beyond without
   hitting the arm.
 
 ### 4.5 Servos (dual MG996R) + servo pinions
