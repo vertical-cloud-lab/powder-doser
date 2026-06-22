@@ -10,8 +10,8 @@ interference) as boolean-overlap volumes.
 ## Quick start
 
 ```bash
-pip install cadquery trimesh matplotlib
-python3 build.py
+pip install cadquery trimesh matplotlib vtk
+xvfb-run -a python3 build.py
 ```
 
 This regenerates everything into `exports/`:
@@ -21,6 +21,12 @@ This regenerates everything into `exports/`:
 | `exports/step` | one `.step` per part + `00_assembly.step` (committed) |
 | `exports/stl`  | matching `.stl` meshes (git-ignored — regenerable)    |
 | `exports/img`  | shaded isometric `.png` per part + assembly           |
+
+`exports/img/00_assembly_iso_az090_hires.png` is a 5600 × 4000 px,
+per-part-coloured VTK render of the full assembly at the iso `az=90°`
+viewpoint, sharing the colour scheme of
+`cad/mounting-plate-assembly/render_assembly.py` (`vtk` + `xvfb-run`
+required for that view).
 
 Every solid is validated with OpenCascade's `BRepCheck_Analyzer` and reported
 with its volume; the §6 report prints `PASS`/`FAIL` per rule.

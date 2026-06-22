@@ -509,6 +509,21 @@ def build_hinge_pin():
 # axis along +Z (dispense end at z=0); they are rotated +90 deg about X so the
 # axis lies along +Y, then translated to their station along the auger.
 
+# Per-part colour palette, mirroring the mounting-plate-assembly render
+# (cad/mounting-plate-assembly/render_assembly.py) so the two packages share a
+# consistent colour scheme across their assembly views.
+COL_PLATE = (0.80, 0.82, 0.86)
+COL_BASE = (0.62, 0.66, 0.72)
+COL_AUGER = (0.90, 0.76, 0.45)
+COL_BRACKET = (0.55, 0.72, 0.85)
+COL_TAP_COLLAR = (0.70, 0.45, 0.85)
+COL_TAP_MOUNT = (0.55, 0.40, 0.70)
+COL_PINION = (0.45, 0.70, 0.55)
+COL_MOTOR = (0.30, 0.30, 0.35)
+COL_PIN = (0.85, 0.55, 0.20)
+COL_SERVO_PINION = (0.50, 0.85, 0.55)
+COL_SERVO_BODY = (0.20, 0.20, 0.22)
+
 # Station centres along the auger axis (world +Y), from hinge toward motor.
 _FRONT_BRK_Y = 45.0          # front bracket
 _COLLAR_Y = 13.5             # tap-collar centre
@@ -531,13 +546,13 @@ def build_assembly():
     asm = cq.Assembly()
 
     auger = build_auger(P.AUGER_LEN_FULL, True, True, False)
-    asm.add(_to_axis_y(auger, _AUG_DY), name="auger", color=cq.Color(0.6,0.6,0.6))
+    asm.add(_to_axis_y(auger, _AUG_DY), name="auger", color=cq.Color(*COL_AUGER))
 
     # stepper pinion: axis along +Y at X=+CENTRE_DIST_DRIVE, meshing the band
     pinion = build_stepper_pinion().rotate((0, 0, 0), (1, 0, 0), 90)
     pinion = pinion.translate((P.CENTRE_DIST_DRIVE, _BAND_Y + P.PINION_FACE / 2,
                                P.AUGER_AXIS_Z))
-    asm.add(pinion, name="stepper_pinion", color=cq.Color(1.0,0.55,0.0))
+    asm.add(pinion, name="stepper_pinion", color=cq.Color(*COL_PINION))
 
     # NEMA 11 body envelope, behind the pinion, clearing the auger OD
     nema = (cq.Workplane("XY")
@@ -545,24 +560,24 @@ def build_assembly():
             .translate((P.CENTRE_DIST_DRIVE,
                         _BAND_Y + P.PINION_FACE + P.NEMA11_LEN / 2 + 2,
                         P.AUGER_AXIS_Z)))
-    asm.add(nema, name="nema11", color=cq.Color(0.1,0.1,0.1))
+    asm.add(nema, name="nema11", color=cq.Color(*COL_MOTOR))
 
     # front + rear auger brackets (bore already along +Y at AUGER_AXIS_Z)
     asm.add(build_bracket().translate((0, _FRONT_BRK_Y, 0)),
-            name="front_bracket", color=cq.Color(0.27,0.51,0.71))
+            name="front_bracket", color=cq.Color(*COL_BRACKET))
     asm.add(build_bracket().translate((0, _REAR_BRK_Y, 0)),
-            name="rear_bracket", color=cq.Color(0.27,0.51,0.71))
+            name="rear_bracket", color=cq.Color(*COL_BRACKET))
 
     # tap collar (authored depth along +Z -> -Y); centre at _COLLAR_Y
     collar = _to_axis_y(build_tap_collar(), _COLLAR_Y + P.COLLAR_DEPTH / 2)
-    asm.add(collar, name="tap_collar", color=cq.Color(0.18,0.55,0.34))
+    asm.add(collar, name="tap_collar", color=cq.Color(*COL_TAP_COLLAR))
     asm.add(build_tap_mount().translate((0, _COLLAR_Y, 0)),
-            name="tap_mount", color=cq.Color(0.56,0.74,0.56))
+            name="tap_mount", color=cq.Color(*COL_TAP_MOUNT))
 
     # mounting plate ("table") + baseplate (authored directly in world frame)
     asm.add(build_mounting_plate(), name="mounting_plate",
-            color=cq.Color(0.83,0.83,0.83))
-    asm.add(build_baseplate(), name="baseplate", color=cq.Color(0.41,0.41,0.41))
+            color=cq.Color(*COL_PLATE))
+    asm.add(build_baseplate(), name="baseplate", color=cq.Color(*COL_BASE))
 
     # two servo pinions (2:1 below the 40T plate hinge gears, C = 27.25 in Z)
     for sx in (-1, 1):
@@ -571,20 +586,20 @@ def build_assembly():
         sp = sp.translate((gx, P.HINGE_Y - P.SERVO_PINION_TEETH * 0,
                            P.AUGER_AXIS_Z - P.SERVO_CENTRE_DIST))
         sp = sp.translate((0, -P.PINION_FACE / 2, 0))
-        asm.add(sp, name=f"servo_pinion_{sx}", color=cq.Color(1.0,0.55,0.0))
+        asm.add(sp, name=f"servo_pinion_{sx}", color=cq.Color(*COL_SERVO_PINION))
         # MG996R body envelope hanging on the baseplate underside flange
         servo = (cq.Workplane("XY")
                  .box(P.MG_BODY_X, P.MG_BODY_Y, P.MG_BODY_Z)
                  .translate((sx * P.FLANGE_X, P.HINGE_Y - 8,
                              P.AUGER_AXIS_Z - P.SERVO_CENTRE_DIST)))
-        asm.add(servo, name=f"servo_{sx}", color=cq.Color(0.1,0.1,0.1))
+        asm.add(servo, name=f"servo_{sx}", color=cq.Color(*COL_SERVO_BODY))
 
     # two M5 hinge pins along X through each hinge eye stack
     for sx in (-1, 1):
         x0 = _lobe_x(sx, "inner") - _WL
         pin = xcyl(P.HINGE_PIN_D / 2, P.HINGE_PIN_LEN, x0, P.HINGE_Y,
                    P.AUGER_AXIS_Z)
-        asm.add(pin, name=f"hinge_pin_{sx}", color=cq.Color(1.0,0.9,0.1))
+        asm.add(pin, name=f"hinge_pin_{sx}", color=cq.Color(*COL_PIN))
 
     return asm
 
@@ -792,8 +807,76 @@ def render_images():
         print(f"rendered {name}.png")
 
 
+def render_assembly_iso(out_name="00_assembly_iso_az090_hires.png",
+                        azimuth_deg=90.0, elevation_frac=0.6, scale=4):
+    """High-resolution, per-part-coloured iso render of the full assembly.
+
+    Mirrors the camera framing and colour scheme of the mounting-plate
+    package (``cad/mounting-plate-assembly/render_assembly.py`` ->
+    ``assembly_iso_az090_hires.png``): an iso camera orbited about +Z by
+    ``azimuth_deg`` and super-sampled ``scale`` x for a poster-quality PNG.
+    Requires VTK; run headless under ``xvfb-run`` if no display is present.
+    """
+    import vtk
+
+    os.makedirs(IMG_DIR, exist_ok=True)
+    asm = build_assembly()
+
+    ren = vtk.vtkRenderer()
+    ren.SetBackground(0.97, 0.97, 0.98)
+    for child in asm.children:
+        shape = child.obj
+        if isinstance(shape, cq.Workplane):
+            shape = shape.val()
+        located = shape.located(child.loc)
+        pd = located.toVtkPolyData(0.1, 0.3)
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputData(pd)
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+        r, g, b, _ = child.color.toTuple()
+        actor.GetProperty().SetColor(r, g, b)
+        actor.GetProperty().SetSpecular(0.3)
+        actor.GetProperty().SetSpecularPower(15)
+        ren.AddActor(actor)
+
+    img_w, img_h = 1400, 1000
+    win = vtk.vtkRenderWindow()
+    win.SetOffScreenRendering(1)
+    win.SetSize(img_w, img_h)
+    win.AddRenderer(ren)
+
+    cam = ren.GetActiveCamera()
+    cam.SetFocalPoint(0.0, 0.0, P.AUGER_AXIS_Z)
+    diag = 380.0
+    ox, oy = diag, -diag
+    a = math.radians(azimuth_deg)
+    rx = ox * math.cos(a) - oy * math.sin(a)
+    ry = ox * math.sin(a) + oy * math.cos(a)
+    cam.SetPosition(rx, ry, P.AUGER_AXIS_Z + diag * elevation_frac)
+    cam.SetViewUp(0, 0, 1)
+    ren.ResetCamera()
+    cam.Zoom(1.35)
+
+    win.Render()
+    w2i = vtk.vtkWindowToImageFilter()
+    w2i.SetInput(win)
+    if scale > 1:
+        w2i.SetScale(scale)
+    w2i.SetInputBufferTypeToRGBA()
+    w2i.ReadFrontBufferOff()
+    w2i.Update()
+    writer = vtk.vtkPNGWriter()
+    out_path = os.path.join(IMG_DIR, out_name)
+    writer.SetFileName(out_path)
+    writer.SetInputConnection(w2i.GetOutputPort())
+    writer.Write()
+    print(f"rendered {out_name} ({img_w * scale}x{img_h * scale})")
+
+
 if __name__ == "__main__":
     export_all()
     export_assembly()
     interference_report()
     render_images()
+    render_assembly_iso()
