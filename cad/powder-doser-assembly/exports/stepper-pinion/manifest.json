@@ -1,0 +1,27 @@
+{
+  "name": "stepper-pinion",
+  "prompt_file": "05-stepper-pinion.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -8.974,
+      -8.974,
+      0.0
+    ],
+    "max": [
+      8.974,
+      8.974,
+      16.0
+    ],
+    "size": [
+      17.948,
+      17.948,
+      16.0
+    ]
+  }
+}
