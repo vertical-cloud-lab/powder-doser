@@ -6,6 +6,12 @@
 > [#51 split tap-collar + mount plate](https://github.com/vertical-cloud-lab/powder-doser/pull/51),
 > [#47 lifted split shaft-collar auger bracket](https://github.com/vertical-cloud-lab/powder-doser/pull/47)
 
+> **View in Onshape (interactive, public):**
+> <https://cad.onshape.com/documents/b30f8b6f6bd56a280c41fb23/w/5d52acb3c371f3de51cde6ad>
+> — the full assembly (`full_assembly.step`) imported as a public Onshape
+> document so you can orbit/zoom to any angle instead of the fixed PNG
+> perspectives in `assembly/`.
+
 This package designs the **foundation** of the powder-doser machine: a
 mounting plate that carries the auger brackets (PR #47 ×2), the tap-collar
 mount (PR #51) and the NEMA 11 stepper (PR #49), and a baseplate that
@@ -170,6 +176,7 @@ cad/mounting-plate-assembly/
 ├── cad_model.py                      ← CadQuery mirror (parametric)
 ├── render_views.py                   ← VTK iso/front/top/side PNG per part
 ├── render_assembly.py                ← full-assembly + diagrams (matplotlib)
+├── onshape_upload.py                 ← push full_assembly.step to a public Onshape doc
 ├── step/                             ← per-part .step (printer-ready)
 ├── stl/                              ← per-part .stl   (printer-ready)
 ├── views/                            ← per-part PNG renders (4 views each)
