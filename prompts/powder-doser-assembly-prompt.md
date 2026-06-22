@@ -307,18 +307,21 @@ Detailed dimensions and mounting instructions follow.
   **18.2 mm across the body × 16.0 mm along it** (the two used corners of the
   frame face). Model M3 clear Ø3.4 to match the tap-collar solenoid boss.
 - **Plunger**: steel rod through a **Ø6.9 mm front bushing**; model the
-  clearance bore as **Ø7.5 mm**. Stroke ≈ 10 mm; spring-return push/pull.
+  clearance bore as **Ø7.5 mm**. Stroke ≈ 10 mm; spring-returned push/pull.
 - **Interface (critical)**: the **extended plunger tip reaches 3.0 mm inside
   the auger OD** to tap the auger wall — this is the one deliberate
   interference (§6). Plunger axis is **perpendicular to the auger (along X)**.
 - Driven by the DRV8871 (§5.7); 12 V coil.
 
 ### 5.5 Vibration motor — Ø10 mm coin (ERM) haptic motor
-- **Disc**: **Ø10.0 mm × 3.4 mm** thick (common "1034"; a 2.7 mm "1027" also
-  fits). Flat adhesive (3M) back face; two flying lead wires off one side.
+- **Disc**: **Ø10.0 mm × 3.4 mm** thick (common "1034"; the thinner "1027" is
+  Ø10.0 × 2.7 mm and also fits). Flat adhesive (3M) back face; two flying lead
+  wires off one side.
 - **Mounting**: bond into a shallow **Ø10.0 × ~1.0 mm adhesive recess** on the
   −X face of the tap collar (the 1.0 mm is just the glue pocket; the disc body
-  stands proud by the remaining ~2.4–3.4 mm — leave that clearance).
+  then stands proud of the recess floor by its remaining thickness — **~2.4 mm
+  for the 1034, ~1.7 mm for the 1027** — so leave at least 2.4 mm radial
+  clearance to whatever sits outboard).
 - Driven by the DRV2605L (§5.6).
 
 ### 5.6 Haptic driver — DRV2605L (Adafruit-style breakout)
