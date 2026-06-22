@@ -1,0 +1,27 @@
+{
+  "name": "threaded-cap",
+  "prompt_file": "04-threaded-cap.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -15.85,
+      -15.85,
+      0.0
+    ],
+    "max": [
+      15.85,
+      15.85,
+      31.0
+    ],
+    "size": [
+      31.7,
+      31.7,
+      31.0
+    ]
+  }
+}
