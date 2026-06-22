@@ -1,0 +1,27 @@
+{
+  "name": "threaded-auger",
+  "prompt_file": "03-threaded-auger.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -24.987,
+      -24.987,
+      0.0
+    ],
+    "max": [
+      24.987,
+      24.987,
+      251.6
+    ],
+    "size": [
+      49.974,
+      49.974,
+      251.6
+    ]
+  }
+}
