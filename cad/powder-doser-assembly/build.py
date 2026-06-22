@@ -830,8 +830,12 @@ def render_assembly_iso(out_name="00_assembly_iso_az090_hires.png",
             shape = shape.val()
         located = shape.located(child.loc)
         # toVtkPolyData(linear_deflection_mm, angular_deflection_rad): tessellate
-        # the BREP into a triangle mesh fine enough for a smooth render.
-        pd = located.toVtkPolyData(0.1, 0.3)
+        # the BREP into a triangle mesh fine enough for a smooth render.  The
+        # angular deflection is the binding constraint on round parts: at 0.3 rad
+        # the Ø25 auger tube facets down to a visible hexagonal prism, so use a
+        # tight 0.02 rad (~315 facets/turn) plus a 0.02 mm chord tolerance to
+        # render the cylinders, threads and gears smoothly.
+        pd = located.toVtkPolyData(0.02, 0.02)
         mapper = vtk.vtkPolyDataMapper()
         mapper.SetInputData(pd)
         actor = vtk.vtkActor()
