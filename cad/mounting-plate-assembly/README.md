@@ -6,11 +6,16 @@
 > [#51 split tap-collar + mount plate](https://github.com/vertical-cloud-lab/powder-doser/pull/51),
 > [#47 lifted split shaft-collar auger bracket](https://github.com/vertical-cloud-lab/powder-doser/pull/47)
 
-> **View in Onshape (interactive, public):**
-> <https://cad.onshape.com/documents/b30f8b6f6bd56a280c41fb23/w/5d52acb3c371f3de51cde6ad>
-> — the full assembly (`full_assembly.step`) imported as a public Onshape
-> document so you can orbit/zoom to any angle instead of the fixed PNG
-> perspectives in `assembly/`.
+> **View in Onshape (interactive, public — ALL parts):**
+> <https://cad.onshape.com/documents/42e1229aea3e5aba791974aa/w/c69357274b0c92acaee7b9fd>
+> — the **complete** assembly (`full_assembly.step`: mounting plate,
+> baseplate, both hinge pins, both servo pinions, **plus** the imported
+> auger, both auger brackets, the tap-collar + mount plate, the stepper
+> pinion, and simplified NEMA-11 / MG996R bodies) imported as a public
+> Onshape document so you can orbit/zoom to any angle instead of the fixed
+> PNG perspectives. Several pre-rendered iso angles also live in
+> `assembly/assembly_iso_az###.png` (orbited every 45° about the vertical
+> axis) plus `assembly_iso_high.png` / `assembly_iso_low.png`.
 
 This package designs the **foundation** of the powder-doser machine: a
 mounting plate that carries the auger brackets (PR #47 ×2), the tap-collar
@@ -183,7 +188,9 @@ cad/mounting-plate-assembly/
 └── assembly/
     ├── assembly_iso.png  / _front / _top / _side  ← 3-D renders
     ├── assembly_45deg_iso.png / assembly_90deg_iso.png
-    ├── full_assembly.step
+    ├── assembly_iso_az000..315.png   ← iso orbited every 45° (pick best angle)
+    ├── assembly_iso_high.png / assembly_iso_low.png  ← higher/lower iso elevation
+    ├── full_assembly.step             ← ALL parts (new + imported), Onshape-ready
     ├── installation_diagram.png      ← top view, every mounting hole labelled
     ├── rotation_0_45_90.png          ← tilt sequence about the auger dispense point
     └── powder_flow.png               ← auger → dispense → cup

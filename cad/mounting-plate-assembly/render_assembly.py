@@ -242,7 +242,16 @@ def build_assembly_actors(tilt_deg: float = 0.0) -> list[vtk.vtkActor]:
     return actors
 
 
-def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0) -> None:
+def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0,
+                         azimuth_deg: float = 0.0,
+                         elevation_frac: float = 0.6) -> None:
+    """Render the full assembly (all parts) to ``out_path``.
+
+    ``azimuth_deg`` orbits the *iso* camera about the vertical (Z) axis
+    through the focal point so several viewpoints can be generated for
+    picking the best-looking perspective; ``elevation_frac`` scales the
+    camera height (Z offset as a fraction of the orbit radius).
+    """
     ren = vtk.vtkRenderer()
     ren.SetBackground(0.97, 0.97, 0.98)
     for a in build_assembly_actors(tilt_deg):
@@ -257,7 +266,13 @@ def render_assembly_view(out_path: Path, view: str, tilt_deg: float = 0.0) -> No
     cam.SetFocalPoint(PLATE_X_CENTRE, 0, Z_AUG)
     diag = 380.0
     if view == "iso":
-        cam.SetPosition(PLATE_X_CENTRE + diag, -diag * 1.0, Z_AUG + diag * 0.6)
+        # Base iso offset, then orbit it about Z by azimuth_deg so the
+        # viewer can compare several angles around the assembly.
+        ox, oy = diag, -diag
+        a = math.radians(azimuth_deg)
+        rx = ox * math.cos(a) - oy * math.sin(a)
+        ry = ox * math.sin(a) + oy * math.cos(a)
+        cam.SetPosition(PLATE_X_CENTRE + rx, ry, Z_AUG + diag * elevation_frac)
         cam.SetViewUp(0, 0, 1)
     elif view == "front":
         cam.SetPosition(PLATE_X_CENTRE, -diag, Z_AUG)
@@ -609,6 +624,124 @@ def powder_flow_diagram(out_path: Path) -> None:
     print(f"  → {out_path.relative_to(HERE)}")
 
 
+def _stl_shape(stl_path: Path, max_tris: int | None = None) -> cq.Shape:
+    """Load an STL mesh as a faceted CadQuery shell so it can be carried in
+    a STEP assembly (for Onshape upload).  Each triangle becomes a planar
+    face of a single shell — geometry is faceted but viewable.  ``max_tris``
+    decimates dense meshes (e.g. the auger) first so the STEP stays small."""
+    from OCP.BRep import BRep_Builder
+    from OCP.BRepBuilderAPI import (
+        BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakePolygon,
+    )
+    from OCP.TopoDS import TopoDS_Shell
+    from OCP.gp import gp_Pnt
+
+    reader = vtk.vtkSTLReader()
+    reader.SetFileName(str(stl_path))
+    reader.Update()
+    poly = reader.GetOutput()
+
+    if max_tris is not None and poly.GetNumberOfCells() > max_tris:
+        reduction = 1.0 - max_tris / float(poly.GetNumberOfCells())
+        deci = vtk.vtkQuadricDecimation()
+        deci.SetInputData(poly)
+        deci.SetTargetReduction(reduction)
+        deci.Update()
+        tri = vtk.vtkTriangleFilter()
+        tri.SetInputConnection(deci.GetOutputPort())
+        tri.Update()
+        poly = tri.GetOutput()
+
+    builder = BRep_Builder()
+    shell = TopoDS_Shell()
+    builder.MakeShell(shell)
+    pts = poly.GetPoints()
+    ids = vtk.vtkIdList()
+    for c in range(poly.GetNumberOfCells()):
+        poly.GetCellPoints(c, ids)
+        if ids.GetNumberOfIds() != 3:
+            continue
+        p1 = pts.GetPoint(ids.GetId(0))
+        p2 = pts.GetPoint(ids.GetId(1))
+        p3 = pts.GetPoint(ids.GetId(2))
+        polygon = BRepBuilderAPI_MakePolygon(
+            gp_Pnt(*p1), gp_Pnt(*p2), gp_Pnt(*p3), True)
+        face = BRepBuilderAPI_MakeFace(polygon.Wire())
+        if face.IsDone():
+            builder.Add(shell, face.Face())
+    return cq.Shape(shell)
+
+
+def build_full_assembly() -> cq.Assembly:
+    """Assemble EVERY part — the new mounting plate / baseplate / hinge pins /
+    servo pinions PLUS the imported auger, brackets, tap-collar, stepper
+    pinion and the simplified NEMA-11 + MG996R bodies — in the upright
+    (tilt = 0) pose, ready for STEP export / Onshape upload."""
+    asm = cq.Assembly()
+
+    # New parametric parts (true solids).
+    asm.add(build_mounting_plate(), name="mounting_plate",
+            color=cq.Color(*COL_PLATE))
+    asm.add(build_baseplate(), name="baseplate", color=cq.Color(*COL_BASE))
+    asm.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pins",
+            color=cq.Color(*COL_PIN))
+    asm.add(build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z)),
+            name="servo_pinion_pos_x", color=cq.Color(*COL_SERVO_PINION))
+    asm.add(build_servo_pinion().translate((PINION_X_LO_NEG, PINION_Y, PINION_Z)),
+            name="servo_pinion_neg_x", color=cq.Color(*COL_SERVO_PINION))
+
+    # Imported auger (mesh): native axis +Z, dispensing end at z=0 -> rotate
+    # to +Y and place the dispensing end at the hinge axis.
+    auger = (_stl_shape(HERE / "imported-parts/auger-geared/"
+                        "archimedes-auger-geared.stl", max_tris=800)
+             .rotate((0, 0, 0), (1, 0, 0), 90)
+             .translate((0, Y_DISP, Z_AUG)))
+    asm.add(auger, name="auger", color=cq.Color(*COL_AUGER))
+
+    # Imported brackets (mesh), one front + one rear.
+    bracket_stl = HERE / "imported-parts/auger-bracket/auger-bracket.stl"
+    for nm, cy in (("auger_bracket_front", Y_BRK_FRONT),
+                   ("auger_bracket_rear", Y_BRK_REAR)):
+        asm.add(_stl_shape(bracket_stl, max_tris=220).translate((0, cy, 0)),
+                name=nm, color=cq.Color(*COL_BRACKET))
+
+    # Imported tap-collar mount plate + collar (mesh).
+    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/mount_plate.stl",
+                       max_tris=160).translate((0, Y_TAP, 0)),
+            name="tap_mount_plate", color=cq.Color(*COL_TAP_MOUNT))
+    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/tap_collar.stl",
+                       max_tris=250)
+            .translate((0, Y_TAP, Z_AUG - TAP_COLLAR_BORE_LOCAL_Z)),
+            name="tap_collar", color=cq.Color(*COL_TAP_COLLAR))
+
+    # Imported stepper pinion (mesh): +Z native -> +Y, on the gear band.
+    asm.add(_stl_shape(HERE / "imported-parts/auger-geared/stepper-pinion.stl",
+                       max_tris=250)
+            .rotate((0, 0, 0), (1, 0, 0), 90)
+            .translate((X_MOTOR, Y_GEAR_BAND, Z_AUG)),
+            name="stepper_pinion", color=cq.Color(*COL_PINION))
+
+    # NEMA 11 motor body (simplified box).
+    motor_box = (cq.Workplane("XY")
+                 .box(NEMA11_BODY_W, NEMA11_BODY_L, NEMA11_BODY_W,
+                      centered=(True, True, True))
+                 .translate((X_MOTOR, MOTOR_FACE_Y - NEMA11_BODY_L / 2.0,
+                             Z_MOTOR)))
+    asm.add(motor_box, name="nema11_motor", color=cq.Color(*COL_MOTOR))
+
+    # MG996R servo bodies (simplified boxes), one per side.
+    for nm, body_x_lo in (("mg996r_pos_x", SERVO_BODY_X_LO),
+                          ("mg996r_neg_x", SERVO_BODY_X_LO_NEG)):
+        body = (cq.Workplane("XY")
+                .box(MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
+                     centered=(False, False, True))
+                .translate((body_x_lo, PINION_Y - MG996R_SPLINE_Y_OFFSET,
+                            PINION_Z)))
+        asm.add(body, name=nm, color=cq.Color(*COL_SERVO_BODY))
+
+    return asm
+
+
 def main() -> None:
     # Full-assembly renders at tilt = 0
     for v in ("iso", "front", "top", "side"):
@@ -617,23 +750,26 @@ def main() -> None:
     render_assembly_view(ASM / "assembly_45deg_iso.png", "iso", tilt_deg=45.0)
     render_assembly_view(ASM / "assembly_90deg_iso.png", "iso", tilt_deg=90.0)
 
+    # Extra ISO viewpoints orbiting the assembly so the best-looking
+    # perspective can be picked (requested on PR #66).  azimuth 0° is the
+    # default iso view; positive azimuth orbits anticlockwise about +Z.
+    for az in (0, 45, 90, 135, 180, 225, 270, 315):
+        render_assembly_view(ASM / f"assembly_iso_az{az:03d}.png", "iso",
+                             tilt_deg=0.0, azimuth_deg=float(az))
+    # A couple of higher- and lower-elevation iso angles too.
+    render_assembly_view(ASM / "assembly_iso_high.png", "iso",
+                         tilt_deg=0.0, azimuth_deg=0.0, elevation_frac=1.1)
+    render_assembly_view(ASM / "assembly_iso_low.png", "iso",
+                         tilt_deg=0.0, azimuth_deg=0.0, elevation_frac=0.25)
+
     # Diagrams
     installation_diagram(ASM / "installation_diagram.png")
     rotation_diagram(ASM / "rotation_0_45_90.png")
     powder_flow_diagram(ASM / "powder_flow.png")
 
-    # Combined-STEP export of the NEW parts only.
+    # Combined-STEP export of the WHOLE assembly (all parts).
     asm_step = ASM / "full_assembly.step"
-    a = cq.Assembly()
-    a.add(build_mounting_plate(), name="mounting_plate", color=cq.Color(*COL_PLATE))
-    a.add(build_baseplate(), name="baseplate", color=cq.Color(*COL_BASE))
-    a.add(build_hinge_pin().translate((0, Y_DISP, Z_AUG)), name="hinge_pins",
-          color=cq.Color(*COL_PIN))
-    a.add(build_servo_pinion().translate((PINION_X_LO, PINION_Y, PINION_Z)),
-          name="servo_pinion_pos_x", color=cq.Color(*COL_SERVO_PINION))
-    a.add(build_servo_pinion().translate((PINION_X_LO_NEG, PINION_Y, PINION_Z)),
-          name="servo_pinion_neg_x", color=cq.Color(*COL_SERVO_PINION))
-    a.save(str(asm_step))
+    build_full_assembly().save(str(asm_step))
     print(f"  → {asm_step.relative_to(HERE)}")
 
 
