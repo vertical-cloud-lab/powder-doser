@@ -829,6 +829,8 @@ def render_assembly_iso(out_name="00_assembly_iso_az090_hires.png",
         if isinstance(shape, cq.Workplane):
             shape = shape.val()
         located = shape.located(child.loc)
+        # toVtkPolyData(linear_deflection_mm, angular_deflection_rad): tessellate
+        # the BREP into a triangle mesh fine enough for a smooth render.
         pd = located.toVtkPolyData(0.1, 0.3)
         mapper = vtk.vtkPolyDataMapper()
         mapper.SetInputData(pd)
@@ -848,6 +850,8 @@ def render_assembly_iso(out_name="00_assembly_iso_az090_hires.png",
 
     cam = ren.GetActiveCamera()
     cam.SetFocalPoint(0.0, 0.0, P.AUGER_AXIS_Z)
+    # iso orbit radius (mm): comfortably larger than the ~260 mm assembly
+    # envelope so the whole model sits inside the view frustum after ResetCamera.
     diag = 380.0
     ox, oy = diag, -diag
     a = math.radians(azimuth_deg)
@@ -856,6 +860,8 @@ def render_assembly_iso(out_name="00_assembly_iso_az090_hires.png",
     cam.SetPosition(rx, ry, P.AUGER_AXIS_Z + diag * elevation_frac)
     cam.SetViewUp(0, 0, 1)
     ren.ResetCamera()
+    # ResetCamera fits the bounding sphere (leaves wide margins for this long,
+    # thin assembly); zoom in to fill the frame without changing the viewpoint.
     cam.Zoom(1.35)
 
     win.Render()
