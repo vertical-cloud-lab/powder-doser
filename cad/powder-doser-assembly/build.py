@@ -675,18 +675,50 @@ def placed_parts():
     return parts
 
 
+# Per-part colour scheme, mirroring cad/mounting-plate-assembly/render_assembly.py
+# (branch copilot/add-servo-angle-control) so the two assemblies read alike:
+#   auger gold, brackets light-blue, tap collar purple, tap mount darker purple,
+#   stepper pinion green, servo pinions bright green, motor/servo dark, hinge
+#   pins orange, mounting plate light grey, baseplate grey.
+COL_PLATE = (0.80, 0.82, 0.86)
+COL_BASE = (0.62, 0.66, 0.72)
+COL_AUGER = (0.90, 0.76, 0.45)
+COL_BRACKET = (0.55, 0.72, 0.85)
+COL_TAP_COLLAR = (0.70, 0.45, 0.85)
+COL_TAP_MOUNT = (0.55, 0.40, 0.70)
+COL_PINION = (0.45, 0.70, 0.55)
+COL_MOTOR = (0.30, 0.30, 0.35)
+COL_PIN = (0.85, 0.55, 0.20)
+COL_SERVO_PINION = (0.50, 0.85, 0.55)
+COL_SERVO_BODY = (0.20, 0.20, 0.22)
+COL_SOLENOID = (0.70, 0.13, 0.13)
+COL_DEFAULT = (0.24, 0.70, 0.44)
+
+ASSEMBLY_COLORS = {
+    "auger": COL_AUGER,
+    "stepper_pinion": COL_PINION,
+    "nema11": COL_MOTOR,
+    "tap_collar": COL_TAP_COLLAR,
+    "solenoid": COL_SOLENOID,
+    "tap_collar_mount": COL_TAP_MOUNT,
+    "front_bracket": COL_BRACKET,
+    "rear_bracket": COL_BRACKET,
+    "mounting_plate": COL_PLATE,
+    "baseplate": COL_BASE,
+    "servo_pinion_p": COL_SERVO_PINION,
+    "servo_pinion_m": COL_SERVO_PINION,
+    "servo_p": COL_SERVO_BODY,
+    "servo_m": COL_SERVO_BODY,
+    "hinge_pin_p": COL_PIN,
+    "hinge_pin_m": COL_PIN,
+}
+
+
 def build_assembly():
     parts = placed_parts()
-    colors = {
-        "auger": (0.82, 0.71, 0.55), "stepper_pinion": (0.44, 0.50, 0.56),
-        "nema11": (0.41, 0.41, 0.41), "tap_collar": (1.0, 0.65, 0.0),
-        "solenoid": (0.70, 0.13, 0.13), "tap_collar_mount": (0.94, 0.90, 0.55),
-        "front_bracket": (0.27, 0.51, 0.71), "rear_bracket": (0.27, 0.51, 0.71),
-        "mounting_plate": (0.83, 0.83, 0.83), "baseplate": (0.50, 0.50, 0.50),
-    }
     asm = cq.Assembly(name="powder_doser")
     for name, wp in parts.items():
-        r, g, b = colors.get(name, (0.24, 0.70, 0.44))
+        r, g, b = ASSEMBLY_COLORS.get(name, COL_DEFAULT)
         asm.add(wp, name=name, color=cq.Color(r, g, b))
     return asm, parts
 
@@ -822,6 +854,88 @@ def export_all(do_png=True):
     if do_png:
         _render_stl_png(asm_stl, os.path.join(EXPORT_DIR, "powder-doser-assembly.png"),
                         size=(1100, 825))
+        # Multi-colour, high-resolution iso preview (per-part colours), matching
+        # the iso perspective + colour scheme of cad/mounting-plate-assembly's
+        # assembly_iso_az090_hires.png (requested on PR review).
+        _render_assembly_color_png(
+            parts,
+            os.path.join(EXPORT_DIR, "powder-doser-assembly_iso_az090_hires.png"),
+            azimuth_deg=90.0, scale=4)
+
+
+def _render_assembly_color_png(parts, png_path, azimuth_deg=90.0,
+                               elevation_frac=0.6, size=(1400, 1000), scale=1):
+    """Offscreen-render the full assembly with per-part colours to a PNG.
+
+    Each placed part is tessellated to its own VTK actor and shaded with its
+    ``ASSEMBLY_COLORS`` colour, then viewed from an iso camera orbited about
+    +Z by ``azimuth_deg`` -- the same camera construction (and colour scheme)
+    used by cad/mounting-plate-assembly/render_assembly.py so the two
+    assemblies read alike.  ``scale`` super-samples the base ``size`` window
+    (e.g. ``scale=4`` -> 5600 x 4000 px) for a high-resolution preview.
+    """
+    try:
+        import math
+        import vtk
+
+        ren = vtk.vtkRenderer()
+        ren.SetBackground(0.97, 0.97, 0.98)
+        bounds = [1e9, -1e9, 1e9, -1e9, 1e9, -1e9]
+        for name, wp in parts.items():
+            try:
+                pd = wp.val().toVtkPolyData(0.1, 0.5)
+            except Exception:
+                continue
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputData(pd)
+            actor = vtk.vtkActor()
+            actor.SetMapper(mapper)
+            r, g, b = ASSEMBLY_COLORS.get(name, COL_DEFAULT)
+            actor.GetProperty().SetColor(r, g, b)
+            actor.GetProperty().SetSpecular(0.3)
+            actor.GetProperty().SetSpecularPower(15)
+            ren.AddActor(actor)
+            ab = actor.GetBounds()
+            for i in (0, 2, 4):
+                bounds[i] = min(bounds[i], ab[i])
+            for i in (1, 3, 5):
+                bounds[i] = max(bounds[i], ab[i])
+
+        cx = (bounds[0] + bounds[1]) / 2
+        cy = (bounds[2] + bounds[3]) / 2
+        cz = (bounds[4] + bounds[5]) / 2
+        diag = math.sqrt(sum((bounds[2 * i + 1] - bounds[2 * i]) ** 2
+                             for i in range(3))) or 380.0
+
+        cam = ren.GetActiveCamera()
+        cam.SetFocalPoint(cx, cy, cz)
+        a = math.radians(azimuth_deg)
+        ox, oy = diag, -diag
+        rx = ox * math.cos(a) - oy * math.sin(a)
+        ry = ox * math.sin(a) + oy * math.cos(a)
+        cam.SetPosition(cx + rx, cy + ry, cz + diag * elevation_frac)
+        cam.SetViewUp(0, 0, 1)
+        ren.ResetCamera()
+
+        win = vtk.vtkRenderWindow()
+        win.SetOffScreenRendering(1)
+        win.AddRenderer(ren)
+        win.SetSize(*size)
+        win.Render()
+
+        w2i = vtk.vtkWindowToImageFilter()
+        w2i.SetInput(win)
+        if scale > 1:
+            w2i.SetScale(scale)
+        w2i.SetInputBufferTypeToRGB()
+        w2i.ReadFrontBufferOff()
+        w2i.Update()
+        writer = vtk.vtkPNGWriter()
+        writer.SetFileName(png_path)
+        writer.SetInputConnection(w2i.GetOutputPort())
+        writer.Write()
+    except Exception as e:  # pragma: no cover - rendering is best-effort
+        print(f"    (colour png skipped for {png_path}: {e})")
 
 
 def _render_stl_png(stl_path, png_path, size=(900, 700)):

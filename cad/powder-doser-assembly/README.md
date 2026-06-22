@@ -8,7 +8,14 @@ auger-fed powder dispenser) from the text-only engineering-spec prompt in
 It emits a STEP + STL + PNG for every 3D-printed part, a tilt-0 assembly, and a
 §6 interference / clearance report that gates the build.
 
-![Powder Doser assembly](exports/powder-doser-assembly.png)
+![Powder Doser assembly](exports/powder-doser-assembly_iso_az090_hires.png)
+
+High-resolution (5600 × 4000) iso view with per-part colours — auger gold,
+brackets light-blue, tap collar/mount purple, stepper pinion green, servo
+pinions bright-green, motor/servo dark, hinge pins orange — mirroring the
+colour scheme and az = 90° iso perspective of
+[`cad/mounting-plate-assembly`](../mounting-plate-assembly)'s
+`assembly_iso_az090_hires.png`.
 
 ## Layout
 
