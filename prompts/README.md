@@ -18,7 +18,14 @@ The dimensions were scraped from the live design history in this repo:
 - PR #49 — geared / storage / threaded Archimedes auger + stepper pinion
 - PR #51 — split tap collar + mount plate
 - Issue #48 (comment 4513155870) — the four nozzle variants (v4 is standard)
-- zoo.dev attachment `tap collar 3.zip` — most recent tap-collar geometry
+- zoo.dev export `tapCollar3.step` — most recent tap-collar geometry (a STEP
+  export of the same model previously shared as `tap collar 3.zip`/STL;
+  PR #105 comment 4771809554). Measured to verify §8 numbers only — this is a
+  text-only prompt, so no file is pasted or attached.
+
+Every part description also carries a short "why it matters" note (and §0.1 is
+a how-it-works overview) so the generating tool understands the *function*
+each feature serves, not just its dimensions.
 
 Off-the-shelf part dimensions (§5) are transcribed from the component
 datasheets (NEMA 11 11HS18-0674S, Tic T500, MG996R, Adafruit 412 /

@@ -18,7 +18,17 @@ Primary sources scraped for the dimensions below:
               4745883012, 4747154534, 4747283303
   * PR #51  — split tap collar + mount plate (design/cad/tap-collar/)
   * Issue #48 comment 4513155870 — the four nozzle variants (v4 is standard)
-  * zoo.dev attachment "tap collar 3.zip" (most recent tap-collar geometry)
+  * zoo.dev attachment "tapCollar3.step" (most recent tap-collar geometry;
+    PR #105 comment 4771809554 — a STEP export of the same model previously
+    shared as "tap collar 3.zip"/STL. Measured bbox 48.70 × 17.00 × 70.10 mm;
+    its cylinders confirm the PR #51 dims: collar OD 33.5, bore Ø25.5,
+    coin-motor pad Ø10, solenoid bushing Ø6.9, M3 holes Ø3.4.)
+
+NOTE: this is a TEXT-ONLY prompt. The STEP/STL above are not pasted or
+attached — they were measured only to verify the numbers written here, so the
+prompt stays self-contained and tool-agnostic. Every part description below
+includes a short "why it matters" note so the generating tool understands the
+*function* each feature serves, not just its dimensions.
 
 You can paste the whole document (including this comment) or, for the
 cleanest test, paste everything below the "=== BEGIN PROMPT ===" line.
@@ -44,6 +54,38 @@ Hold the tolerances in §7. Respect the part-to-part interaction rules in
 §6 exactly: several clearances are deliberate running fits and one is a
 deliberate interference.
 
+## 0.1 How it works (design intent — read first)
+
+This explains *what each subsystem is for* so you can reason about the
+geometry, not just copy numbers. The device dispenses dry powder by turning
+an **Archimedes screw (auger)** inside a tube: rotating the screw walks powder
+along the helix and pushes a small, repeatable slug out the nozzle each
+revolution — so **dose ∝ revolutions**, which is what makes it meterable.
+Because the screw (not gravity) does the conveying, it keeps metering even
+when aimed horizontally or uphill, where a plain gravity hopper would stall or
+dump.
+
+- **Auger + nozzle** = the metering element. The screw geometry (pitch,
+  tapered v4 tip, 1/3-screw / 2/3-reservoir split) sets how much powder moves
+  per turn and prevents free-flow/clogging. This is the heart of the device.
+- **Stepper + pinion + auger gear (3:1 reduction)** = the actuator. A stepper
+  gives open-loop, countable rotation (dose-by-steps); the 3:1 reduction
+  trades speed for the torque needed to shear/convey packed powder.
+- **Tap collar (vibration motor + solenoid)** = anti-bridging. Powders arch
+  and stick; a buzz (coin ERM) plus a periodic hammer-tap (solenoid striking
+  the tube wall) break those bridges so flow stays consistent. The collar must
+  spin-float on the tube but be rotationally arrested so it can't wind up its
+  own wires.
+- **Tilting mounting plate + dual servos/hinge gears** = aiming. The whole
+  auger tilts from horizontal to vertical-down so powder can be delivered into
+  a target (vial, pan) at any angle; two servos share the lifting load and
+  keep the plate from racking.
+- **Baseplate, brackets, mounts** = structure. They locate every part on a
+  common datum (auger axis at Z = +29.25 above the plate) and bolt the
+  assembly to an external frame.
+- **Optional scale (HX711 / serial)** = closed-loop dosing: weigh the output
+  and stop at a target mass instead of trusting step-count alone.
+
 ## 1. Coordinate system & global layout
 
 - The **auger long axis is +Y**. The **dispense tip is at +Y**; the
@@ -62,22 +104,34 @@ deliberate interference.
 
 3D-printed parts:
 1. **Archimedes auger — storage variant** (primary), with the standard
-   **v4 nozzle**. Full length and a short bench-test length.
+   **v4 nozzle**. Full length and a short bench-test length. *Why: this is the
+   metering element — the rotating screw is what conveys and doses the powder.*
 2. **Threaded sealable auger** variant + **screw-on cap** (bottle-cap style).
-3. **Stepper pinion** (16-tooth) for the NEMA 11.
+   *Why: lets you pre-fill, seal, store and swap a charged auger like a
+   cartridge without spilling powder.*
+3. **Stepper pinion** (16-tooth) for the NEMA 11. *Why: couples the motor to
+   the auger gear at a 3:1 reduction for countable, high-torque dosing.*
 4. **Mounting plate** ("table") — tilts, carries the auger, brackets, tap
-   collar, stepper block, and the two gear-toothed hinge lobes.
+   collar, stepper block, and the two gear-toothed hinge lobes. *Why: the
+   moving "table" that aims the whole dispenser and keeps every part on one
+   datum.*
 5. **Baseplate** — fixed forward tab the mounting plate hinges on; carries
-   the two servos.
-6. **Hinge arms** (part of the baseplate) + shared **M5 hinge pins**.
+   the two servos. *Why: the ground reference that bolts to the frame and
+   reacts the tilt load.*
+6. **Hinge arms** (part of the baseplate) + shared **M5 hinge pins**. *Why:
+   define the tilt axis and carry the plate's weight.*
 7. **Servo pinion** (20-tooth) — one per servo, drives a mounting-plate
-   hinge gear.
+   hinge gear. *Why: 2:1 step-down from servo to plate for finer, stronger
+   tilt control.*
 8. **Auger bracket(s)** — split shaft-collar clamps that support the auger
-   on the plate (front + rear).
+   on the plate (front + rear). *Why: hold the spinning auger concentric and
+   set its height while letting it rotate freely.*
 9. **Tap collar** — independent split collar carrying a vibration motor and
-   a push/pull solenoid, with a hardstop.
+   a push/pull solenoid, with a hardstop. *Why: knocks/vibrates the tube to
+   stop powder bridging so dosing stays consistent.*
 10. **Tap-collar mount plate** — bracket-style plate with the rotation
-    hardstop.
+    hardstop. *Why: holds the collar's angular position so it can't spin with
+    the auger and tangle its wires.*
 
 Off-the-shelf parts to accommodate (model as envelopes / mounting features,
 do not redesign): see §5.
@@ -404,16 +458,29 @@ Detailed dimensions and mounting instructions follow.
   auger upright (helix vertical) and gears flat (teeth in the print plane).
 - All other mating faces are flush with only the 1.0 mm pack-gaps noted.
 
-## 8. Most-recent tap-collar geometry note (zoo.dev "tap collar 3")
+## 8. Most-recent tap-collar geometry note (zoo.dev "tapCollar3")
 
 The latest physical tap-collar iteration was developed in zoo.dev and is
-provided as `tap collar 3` (STL bounding box ≈ **48.7 (X) × 17.0 (Y) ×
-70.1 (Z) mm**). Use the functional spec in §4.7/§6 and the PR #51 dimensions
-(bore Ø25.5 = auger OD + 0.5; collar OD 33.5; 2 mm clamp slot; 24 mm collar
-depth; coin-motor pad Ø10 × 1 on −X; solenoid boss on +Z with the
-18.2 × 16.0 M3 pattern and Ø7.5 plunger path; +X hardstop ear) as the
-authoritative requirements, and treat the zoo.dev STL as the most recent
-geometric reference.
+provided as **`tapCollar3.step`** (a STEP export of the same model earlier
+shared as the `tap collar 3.zip`/STL — identical geometry, different file
+type; PR #105 comment 4771809554). Measured bounding box **48.70 (X) ×
+17.00 (Y) × 70.10 (Z) mm**. Its cylindrical faces confirm the PR #51
+parametric dimensions exactly: **collar OD Ø33.5** (r 16.75), **auger bore
+Ø25.5** (r 12.75 = auger OD 25 + 0.5 running fit), **coin-motor pad Ø10**
+(r 5.0), **solenoid bushing Ø6.9** (r 3.45), and **M3 holes Ø3.4** (r 1.7).
+So the STEP, the STL, and the PR #51 model all agree — the earlier 17-vs-24 mm
+collar-depth ambiguity resolves to a **17 mm collar depth** along the auger
+axis (the 24 mm figure was a superseded parametric value).
+
+Use the functional spec in §4.7/§6 and these dimensions (bore Ø25.5 = auger OD
++ 0.5; collar OD 33.5; 2 mm clamp slot; **17 mm collar depth**; coin-motor pad
+Ø10 on −X; solenoid boss on +Z with the 18.2 × 16.0 M3 pattern and Ø7.5
+plunger path; +X hardstop ear) as the authoritative requirements, and treat
+`tapCollar3.step` as the most recent geometric reference. *Remember why this
+part exists: it both vibrates and hammer-taps the tube to stop powder
+bridging, while its hardstop ear keeps it from rotating with the auger and
+winding up the motor/solenoid wires — so the bore must be a free-spinning fit,
+never a clamp, and the ear must positively engage the mount-plate stop.*
 
 ## 9. Deliverables
 
