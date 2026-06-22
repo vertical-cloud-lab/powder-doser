@@ -676,7 +676,7 @@ def placed_parts():
 
 
 # Per-part colour scheme, mirroring cad/mounting-plate-assembly/render_assembly.py
-# (branch copilot/add-servo-angle-control) so the two assemblies read alike:
+# so the two assemblies read alike:
 #   auger gold, brackets light-blue, tap collar purple, tap mount darker purple,
 #   stepper pinion green, servo pinions bright green, motor/servo dark, hinge
 #   pins orange, mounting plate light grey, baseplate grey.
@@ -904,6 +904,8 @@ def _render_assembly_color_png(parts, png_path, azimuth_deg=90.0,
         cx = (bounds[0] + bounds[1]) / 2
         cy = (bounds[2] + bounds[3]) / 2
         cz = (bounds[4] + bounds[5]) / 2
+        # Fit length: bounding-box diagonal of the placed parts; 380 mm is a
+        # safe fallback (~assembly envelope) only if the bounds collapse.
         diag = math.sqrt(sum((bounds[2 * i + 1] - bounds[2 * i]) ** 2
                              for i in range(3))) or 380.0
 
