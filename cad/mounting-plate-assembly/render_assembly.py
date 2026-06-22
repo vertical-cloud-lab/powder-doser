@@ -628,7 +628,10 @@ def _stl_shape(stl_path: Path, max_tris: int | None = None) -> cq.Shape:
     """Load an STL mesh as a faceted CadQuery shell so it can be carried in
     a STEP assembly (for Onshape upload).  Each triangle becomes a planar
     face of a single shell — geometry is faceted but viewable.  ``max_tris``
-    decimates dense meshes (e.g. the auger) first so the STEP stays small."""
+    optionally decimates very dense meshes (e.g. the auger) so the STEP stays
+    a manageable size while keeping enough facets to look smooth (no visible
+    polygonal cross-sections); leave it ``None`` to carry the mesh at full
+    source resolution."""
     from OCP.BRep import BRep_Builder
     from OCP.BRepBuilderAPI import (
         BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakePolygon,
@@ -693,30 +696,29 @@ def build_full_assembly() -> cq.Assembly:
     # Imported auger (mesh): native axis +Z, dispensing end at z=0 -> rotate
     # to +Y and place the dispensing end at the hinge axis.
     auger = (_stl_shape(HERE / "imported-parts/auger-geared/"
-                        "archimedes-auger-geared.stl", max_tris=800)
+                        "archimedes-auger-geared.stl", max_tris=10000)
              .rotate((0, 0, 0), (1, 0, 0), 90)
              .translate((0, Y_DISP, Z_AUG)))
     asm.add(auger, name="auger", color=cq.Color(*COL_AUGER))
 
-    # Imported brackets (mesh), one front + one rear.
+    # Imported brackets (mesh), one front + one rear.  Left at full mesh
+    # resolution (~2.1k tris) — small enough to carry undecimated.
     bracket_stl = HERE / "imported-parts/auger-bracket/auger-bracket.stl"
     for nm, cy in (("auger_bracket_front", Y_BRK_FRONT),
                    ("auger_bracket_rear", Y_BRK_REAR)):
-        asm.add(_stl_shape(bracket_stl, max_tris=220).translate((0, cy, 0)),
+        asm.add(_stl_shape(bracket_stl).translate((0, cy, 0)),
                 name=nm, color=cq.Color(*COL_BRACKET))
 
-    # Imported tap-collar mount plate + collar (mesh).
-    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/mount_plate.stl",
-                       max_tris=160).translate((0, Y_TAP, 0)),
+    # Imported tap-collar mount plate + collar (mesh), at full resolution.
+    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/mount_plate.stl")
+            .translate((0, Y_TAP, 0)),
             name="tap_mount_plate", color=cq.Color(*COL_TAP_MOUNT))
-    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/tap_collar.stl",
-                       max_tris=250)
+    asm.add(_stl_shape(HERE / "imported-parts/tap-collar/tap_collar.stl")
             .translate((0, Y_TAP, Z_AUG - TAP_COLLAR_BORE_LOCAL_Z)),
             name="tap_collar", color=cq.Color(*COL_TAP_COLLAR))
 
     # Imported stepper pinion (mesh): +Z native -> +Y, on the gear band.
-    asm.add(_stl_shape(HERE / "imported-parts/auger-geared/stepper-pinion.stl",
-                       max_tris=250)
+    asm.add(_stl_shape(HERE / "imported-parts/auger-geared/stepper-pinion.stl")
             .rotate((0, 0, 0), (1, 0, 0), 90)
             .translate((X_MOTOR, Y_GEAR_BAND, Z_AUG)),
             name="stepper_pinion", color=cq.Color(*COL_PINION))
