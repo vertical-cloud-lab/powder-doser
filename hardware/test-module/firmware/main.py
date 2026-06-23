@@ -489,12 +489,12 @@ class Rig:
                 print(HELP)
             elif cmd == "s":
                 self.state()
-            elif cmd in ("g", "go"):
+            elif cmd == "g":
                 rpm = float(arg) if arg.strip() else None
                 self.stepper.go(rpm)
                 print("[rig] auger running at {:.1f} rpm".format(
                     self.stepper._rpm))
-            elif cmd in ("x", "stop"):
+            elif cmd == "x":
                 self.stepper.stop()
                 print("[rig] auger stopping")
             elif cmd == "w":
