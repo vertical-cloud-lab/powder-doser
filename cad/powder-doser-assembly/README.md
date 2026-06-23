@@ -54,7 +54,7 @@ numbers. The 10 printed parts plus variants:
 
 ## Generated so far (`exports/`)
 
-10 of the 11 parts are generated and committed (KCL + STEP + GLB + OBJ +
+All 11 parts are generated and committed (KCL + STEP + GLB + OBJ +
 `manifest.json` each). Bounding boxes below are parsed from each part's OBJ.
 
 | Part | STEP | Bbox (mm) | Spec check |
@@ -62,6 +62,7 @@ numbers. The 10 printed parts plus variants:
 | `storage-auger-full` | ✅ | 49.97 × 49.97 × 254.0 | 250 mm tube + caps ✓; 48T gear band Ø50 sets the X/Y extent ✓ |
 | `storage-auger-bench` | ✅ | 25.0 × 25.0 × 94.0 | Ø25 tube ✓; 90 mm body + 12 mm funnel ✓ |
 | `threaded-auger` | ✅ | 49.97 × 49.97 × 251.6 | external thread crest flush to Ø25 (never exceeds OD) ✓; gear band Ø50 ✓ |
+| `threaded-cap` | ✅ | 31.7 × 31.7 × 31.0 | internal helical thread, ~Ø30 knurled grip + Ø25.5 thread bore ✓ |
 | `stepper-pinion` | ✅ | 17.95 × 17.95 × 16.0 | tip Ø18 ✓, height = 10 face + 6 hub = 16 ✓ |
 | `servo-pinion` | ✅ | 19.94 × 19.94 × 8.0 | 20T tip Ø20.2 ✓ |
 | `mounting-plate` | ✅ | 108.2 × 138.23 × 54.48 | slab width 108.2 ✓; front U-notch + motor boss + hinge bosses set Y/Z ✓ |
@@ -71,13 +72,11 @@ numbers. The 10 printed parts plus variants:
 | `tap-collar-mount` | ✅ | 40.0 × 20.0 × 31.0 | 40×20×6 base tab + ~25 mm hardstop post ✓ |
 
 **Note on generator limits:** Text-to-CAD reliably one-shots the prismatic,
-spur-gear and even the external-thread geometry above. The one remaining part,
-the **threaded cap** (`04-threaded-cap.md`, an *internal* helical thread),
-still times out at the 420 s job ceiling. To finish it, simplify the prompt to
-the printable envelope and add the internal thread as a follow-up modeling
-step, or iterate the prompt (the zoo.dev conversation API supports refining a
-previous design). Re-run with `python3 generate.py --only threaded-cap` to
-retry.
+spur-gear and external-thread geometry above. The *internal* helical thread of
+the **threaded cap** (`04-threaded-cap.md`) was the hardest: early attempts
+timed out at the 420 s job ceiling, so the prompt was pared back to the
+printable envelope (knurled grip + internal thread bore) before it compiled
+cleanly. Re-run any single part with `python3 generate.py --only <name>`.
 
 ## Coordinate system & assembly
 
@@ -92,3 +91,27 @@ and the cap thread internal (0.35 mm hand fit); the tap collar spins freely on
 the tube (running fit, never a clamp) but is arrested by its hardstop ear; and
 the solenoid plunger tip is the one deliberate interference (3.0 mm into the
 auger OD).
+
+## Full assembly (`assembly/`)
+
+`build_assembly.py` positions every generated part onto that single datum and
+emits the "everything put together" model:
+
+1. **Combined CAD** — each part's native `output.step` B-rep is imported with
+   CadQuery, rigid-body-placed per the table above, coloured, and written back
+   as `assembly/full_assembly.step` (+ `full_assembly.glb`).
+2. **Coloured render** — each part's high-resolution `output.obj` mesh is loaded
+   into VTK and rendered at the same `az = 90` iso perspective as
+   `cad/mounting-plate-assembly/assembly/assembly_iso_az090_hires.png`, with the
+   palette mirroring that reference. Using the OBJ mesh keeps curved surfaces
+   (the auger tube) smooth instead of faceting into a polygon. Two PNGs are
+   written: `assembly_iso_az090.png` (1400×1000) and the 4× super-sampled
+   `assembly_iso_az090_hires.png` (5600×4000).
+
+VTK needs an X server, so run it headless:
+
+```sh
+xvfb-run -a python3 build_assembly.py
+```
+
+![Powder Doser full assembly, iso az=90](assembly/assembly_iso_az090_hires.png)
