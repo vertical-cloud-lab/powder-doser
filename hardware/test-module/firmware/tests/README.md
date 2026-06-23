@@ -57,6 +57,16 @@ and in `test_servo.py` to flip both servos between two preset angles
 prints its full keymap on start; `h` re-prints it and `q` exits
 cleanly.
 
+Two channels also expose **continuous** control so you can prove the
+start/stop behaviour the full rig uses:
+
+* `test_stepper.py` — `g` starts continuous (non-blocking) rotation at
+  the current RPM and `x` decelerates it to a stop (`+`/`-` adjust the
+  speed live while it runs).
+* `test_haptic.py` — `c` toggles the haptic motor on/off continuously
+  (DRV2605L Real-Time Playback), separate from the fixed-length
+  spacebar pulse.
+
 ## Adjustable variables
 
 Each file exposes its tunables as `TEST_*` constants near the top
@@ -65,7 +75,7 @@ Edit any of them, save, and hit **"Run current file on Pico"** again —
 MicroPico re-uploads and re-runs in under a second.  Examples:
 
 * `test_stepper.py`  — `DEFAULT_MOVE_DEG`, `SPEED_STEP_RPM`, `START_DIRECTION`
-* `test_haptic.py`   — `TEST_EFFECT_ID`, `TEST_DURATION_S`, `TEST_EFFECT_SWEEP`
+* `test_haptic.py`   — `TEST_EFFECT_ID`, `TEST_DURATION_S`, `TEST_RTP_AMPLITUDE`, `TEST_EFFECT_SWEEP`
 * `test_solenoid.py` — `TEST_ON_MS`, `TEST_OFF_MS`, `TEST_BURST_COUNT`, `TEST_DUTY`
 * `test_servo.py`    — `TEST_ANGLE_A`, `TEST_ANGLE_B`, `TEST_STEP_DEG`, `TEST_SPEED_DEG_PER_S`, `TEST_INVERT`
 

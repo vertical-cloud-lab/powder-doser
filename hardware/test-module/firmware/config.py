@@ -73,6 +73,11 @@ STEPPER_DISPENSE_DEG  = 360.0
 VIBRATION_EFFECT_ID   = 14
 VIBRATION_LIBRARY     = 1             # 1 = ERM A, 6 = LRA
 VIBRATION_DURATION_S  = 0.6           # how long to hold the buzz
+# Amplitude (0..127) used for *continuous* vibration -- the `b` toggle in
+# the rig REPL (and `c` in test_haptic.py) turns the motor on at this
+# level via the DRV2605L's Real-Time Playback mode and off on command,
+# independent of the fixed-length ROM pulse above.
+VIBRATION_RTP_AMPLITUDE = 100
 
 
 # -----------------------------------------------------------------------

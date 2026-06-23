@@ -10,6 +10,7 @@ Pico" button -- stdout/stdin land in the built-in MicroPico terminal.
 
 Keyboard controls (single keystroke; no Enter needed):
     space   play the configured effect (TEST_EFFECT_ID) for TEST_DURATION_S
+    c       toggle continuous vibration on/off (Real-Time Playback)
     n       advance to the next effect ID in TEST_EFFECT_SWEEP
     p       go back one effect ID in TEST_EFFECT_SWEEP
     l       toggle library between ERM (1) and LRA (6)
@@ -36,6 +37,7 @@ from tests._keypress import read_key
 TEST_EFFECT_ID    = config.VIBRATION_EFFECT_ID   # 1..123 (DRV2605L ROM)
 TEST_DURATION_S   = config.VIBRATION_DURATION_S  # seconds
 TEST_LIBRARY      = config.VIBRATION_LIBRARY     # 1 = ERM, 6 = LRA
+TEST_RTP_AMPLITUDE = config.VIBRATION_RTP_AMPLITUDE  # 0..127 continuous level
 # Effects worth cycling through on the bench (good cross-section of the
 # ROM: clicks, buzzes, ramps, long alarms).  Pick from 1..123.
 TEST_EFFECT_SWEEP = [1, 14, 47, 70, 84, 118]
@@ -49,7 +51,8 @@ def main():
     drv = drv2605.DRV2605(i2c)
     state = {"effect": TEST_EFFECT_ID,
              "library": TEST_LIBRARY,
-             "duration": TEST_DURATION_S}
+             "duration": TEST_DURATION_S,
+             "continuous": False}
 
     def apply():
         drv.library = state["library"]
@@ -63,15 +66,26 @@ def main():
         time.sleep(state["duration"])
         drv.stop()
 
+    def toggle_continuous():
+        if state["continuous"]:
+            drv.stop()
+            state["continuous"] = False
+        else:
+            enable_pin.value(1)
+            drv.realtime(TEST_RTP_AMPLITUDE)
+            state["continuous"] = True
+        return state["continuous"]
+
     def show():
         return ("haptic: effect={effect} (library={library}), "
-                "duration={duration:.2f}s, enabled={en}").format(
-                    en=enable_pin.value(), **state)
+                "duration={duration:.2f}s, continuous={continuous}, "
+                "enabled={en}").format(en=enable_pin.value(), **state)
 
     print("[haptic-test] ready on I2C SCL=GP{scl}/SDA=GP{sda}, EN=GP{en}".format(
         scl=config.PIN_I2C_SCL, sda=config.PIN_I2C_SDA,
         en=config.PIN_HAPT_EN))
-    print("space=buzz  n=next effect  p=prev  l=toggle ERM/LRA  s=state  q=quit")
+    print("space=buzz  c=continuous on/off  n=next effect  p=prev  "
+          "l=toggle ERM/LRA  s=state  q=quit")
     print(show())
 
     idx = (TEST_EFFECT_SWEEP.index(TEST_EFFECT_ID)
@@ -84,6 +98,10 @@ def main():
                 continue
             if key == " ":
                 buzz()
+            elif key == "c":
+                on = toggle_continuous()
+                print("[haptic-test] continuous {}".format(
+                    "ON" if on else "OFF"))
             elif key == "n":
                 idx = (idx + 1) % len(TEST_EFFECT_SWEEP)
                 state["effect"] = TEST_EFFECT_SWEEP[idx]
@@ -106,7 +124,7 @@ def main():
                 print("[haptic-test] stopped; exiting")
                 return
             elif key in ("h", "?"):
-                print("space=buzz  n/p=cycle effect  "
+                print("space=buzz  c=continuous on/off  n/p=cycle effect  "
                       "l=toggle library  s=state  q=quit")
     except KeyboardInterrupt:
         drv.stop()

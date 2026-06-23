@@ -261,8 +261,12 @@ Build order, top to bottom:
    exercise one channel at a time:
    * `a 0` then `a 180` — servo sweeps end-to-end.
    * `t` — solenoid clicks `TAP_COUNT` times.
-   * `v` — ERM buzzes for `VIBRATION_DURATION_S` seconds.
-   * `r 90` — auger rotates 90 °.
+   * `v` — ERM buzzes once for `VIBRATION_DURATION_S` seconds; `b` toggles
+     it on/off continuously.
+   * `r 90` — auger rotates exactly 90 ° (blocking finite move).
+   * `g` then `x` — auger spins continuously, then stops; while it spins
+     you can still fire `t`, `b`/`v`, and `a`/`p` to run the whole doser
+     at once.
 
 ## Reproducing the schematic files
 

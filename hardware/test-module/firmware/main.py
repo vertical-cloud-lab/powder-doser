@@ -32,13 +32,23 @@ Required modules on the Pico (upload alongside this file):
 Wire-on commands (one per line over USB-serial):
     h            help
     s            print current state / config
-    d            dispense (run auger STEPPER_DISPENSE_DEG)
-    r <deg>      rotate auger by <deg> degrees (signed)
-    v            vibrate (single canned effect)
+    g [rpm]      auger GO: rotate continuously (optional signed rpm)
+    x            auger STOP: decelerate to a stop (stays energised)
+    w <rpm>      set auger speed in rpm (signed; live while running)
+    d            dispense (run auger STEPPER_DISPENSE_DEG, blocking)
+    r <deg>      rotate auger by <deg> degrees (signed, blocking)
+    v            vibrate once (single canned pulse)
+    b            toggle continuous vibration on/off
     t            tap (run TAP_COUNT solenoid pulses)
     a <deg>      smoothly move dispensing-angle servos to <deg>
     p <name>     smoothly move servos to a preset (horizontal/tilt/vertical/tip)
     !            emergency stop -- de-energise everything
+
+The auger's ``g``/``x`` continuous-rotation commands are non-blocking
+(the Tic T500 runs the rotation on its own motion planner), so the auger
+keeps spinning while you fire ``t`` taps, ``v``/``b`` vibration, and
+``a``/``p`` servo moves.  The main loop keeps the Tic's command-timeout
+watchdog fed while the auger is running.
 """
 
 import sys
@@ -70,10 +80,20 @@ def _pwm(pin_num, freq, duty=0.0):
 #
 # The Pico W no longer bit-bangs STEP/DIR; it sends serial commands to the
 # Tic T500, whose on-board MCU runs the motion planner (accel/decel ramps)
-# and current limiting.  We keep a local shadow of the target position in
-# microsteps so ``rotate_degrees`` can issue relative moves and estimate
-# move durations -- the Tic's position telemetry proved unreliable on the
-# bench rig, so the firmware does not read it back (see ``_wait_estimated_time``).
+# and current limiting.
+#
+# Two motion modes are exposed:
+#   * Continuous rotation -- ``go()``/``stop()`` use the Tic's *velocity*
+#     mode so the auger spins indefinitely at the current rpm.  These are
+#     non-blocking: they hand the move to the Tic and return immediately,
+#     so the rig can tap / vibrate / move the servos while the auger turns.
+#     ``Rig.main`` pings the Tic's command-timeout watchdog every loop so
+#     the rotation isn't cut short.
+#   * Finite move -- ``rotate_degrees()`` uses *position* mode for the
+#     ``d``/``r`` commands.  We keep a local shadow of the target position
+#     in microsteps and estimate the move duration (the Tic's position
+#     telemetry proved unreliable on the bench, so we don't read it back;
+#     see ``_wait_estimated_time``).
 # ---------------------------------------------------------------------------
 
 class Stepper:
@@ -89,6 +109,7 @@ class Stepper:
         self._position = 0
         self._rpm = float(config.STEPPER_SPEED_RPM)
         self._enabled = False
+        self._running = False   # True while continuously rotating (velocity mode)
         self._configure()
 
     def _accel_units(self):
@@ -111,20 +132,72 @@ class Stepper:
         self._position = 0
 
     def set_speed(self, rpm):
-        # Tic speed unit = 1/10000 microstep per second.
+        # Tic speed unit = 1/10000 microstep per second.  A signed rpm sets
+        # the continuous-rotation direction (negative = reverse).  The Tic
+        # clamps target velocity to ``max_speed``, so max_speed tracks the
+        # magnitude; ``go``/``rotate_degrees`` supply the sign.
         self._rpm = float(rpm)
-        usteps_per_s = rpm / 60.0 * self.steps_per_rev
+        usteps_per_s = abs(self._rpm) / 60.0 * self.steps_per_rev
         self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
+        if self._running:
+            # Update the live velocity so a speed change takes effect now.
+            self._apply_velocity()
+
+    def _velocity_units(self):
+        # Signed Tic velocity (1/10000 microstep/s); STEPPER_DIRECTION sets
+        # the base sense, the rpm sign lets the operator reverse on the fly.
+        base = 1 if config.STEPPER_DIRECTION >= 0 else -1
+        usteps_per_s = self._rpm / 60.0 * self.steps_per_rev
+        return int(usteps_per_s * 10000 * base)
+
+    def _apply_velocity(self):
+        self.tic.set_target_velocity(self._velocity_units())
 
     def enable(self, on=True):
         if on:
             self.tic.energize()
             self.tic.exit_safe_start()
         else:
+            self._running = False
             self.tic.deenergize()
         self._enabled = on
 
+    @property
+    def running(self):
+        return self._running
+
+    def go(self, rpm=None):
+        """Start (or update) continuous rotation -- non-blocking."""
+        if rpm is not None:
+            self.set_speed(rpm)
+        if not self._enabled:
+            self.enable(True)
+        self.tic.exit_safe_start()
+        self._running = True
+        self._apply_velocity()
+
+    def stop(self):
+        """Decelerate the auger to a stop; stays energised (holding torque)."""
+        self._running = False
+        self.tic.set_target_velocity(0)
+
+    def ping(self):
+        """Feed the Tic's command-timeout watchdog while rotating."""
+        if self._running:
+            try:
+                self.tic.reset_command_timeout()
+            except Exception:
+                pass
+
     def rotate_degrees(self, degrees):
+        # A finite, blocking move.  If the auger was rotating continuously,
+        # stop it and re-zero the local position so the relative move is
+        # measured from a known origin.
+        if self._running:
+            self.stop()
+            time.sleep_ms(50)
+        self.tic.halt_and_set_position(0)
+        self._position = 0
         signed = degrees * (1 if config.STEPPER_DIRECTION >= 0 else -1)
         delta = int(round(signed / 360.0 * self.steps_per_rev))
         if delta == 0:
@@ -144,7 +217,7 @@ class Stepper:
         # isn't cut short.  Position is tracked locally (``self._position``);
         # missed steps go undetected, which is acceptable for auger
         # rotation where exact position isn't critical.
-        usteps_per_s = max(1.0, self._rpm / 60.0 * self.steps_per_rev)
+        usteps_per_s = max(1.0, abs(self._rpm) / 60.0 * self.steps_per_rev)
         est_s = abs(delta) / usteps_per_s + 0.2
         deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
         while time.ticks_diff(deadline, time.ticks_ms()) > 0:
@@ -162,6 +235,7 @@ class Stepper:
 class Vibration:
     def __init__(self):
         self.enable_pin = _out(config.PIN_HAPT_EN, 1)
+        self._on = False
         try:
             import drv2605
             self.i2c = I2C(0, scl=Pin(config.PIN_I2C_SCL),
@@ -176,6 +250,7 @@ class Vibration:
             self._available = False
 
     def buzz(self, duration_s=None):
+        """Fire a single fixed-length ROM-library pulse (blocking)."""
         if not self._available:
             print("[vib] driver missing -- ignoring buzz")
             return
@@ -185,6 +260,31 @@ class Vibration:
         self.drv.play()
         time.sleep(seconds)
         self.drv.stop()
+
+    def on(self, amplitude=None):
+        """Turn continuous vibration on (non-blocking) until :meth:`off`."""
+        if not self._available:
+            print("[vib] driver missing -- ignoring on")
+            return
+        amp = (config.VIBRATION_RTP_AMPLITUDE
+               if amplitude is None else amplitude)
+        self.enable_pin.value(1)
+        self.drv.realtime(amp)
+        self._on = True
+
+    def off(self):
+        """Turn continuous vibration off."""
+        self._on = False
+        if self._available:
+            self.drv.stop()
+
+    def toggle(self):
+        """Flip continuous vibration on/off; return the new state."""
+        if self._on:
+            self.off()
+        else:
+            self.on()
+        return self._on
 
 
 # ---------------------------------------------------------------------------
@@ -305,9 +405,13 @@ HELP = (
     "Commands:\n"
     "  h            show this help\n"
     "  s            print rig state / config\n"
-    "  d            dispense (rotate auger STEPPER_DISPENSE_DEG)\n"
-    "  r <deg>      rotate auger by <deg> (signed)\n"
-    "  v            vibrate (single canned effect)\n"
+    "  g [rpm]      auger GO: rotate continuously (optional signed rpm)\n"
+    "  x            auger STOP: decelerate to a stop\n"
+    "  w <rpm>      set auger speed in rpm (signed; live while running)\n"
+    "  d            dispense (rotate auger STEPPER_DISPENSE_DEG, blocking)\n"
+    "  r <deg>      rotate auger by <deg> (signed, blocking)\n"
+    "  v            vibrate once (single canned pulse)\n"
+    "  b            toggle continuous vibration on/off\n"
     "  t            tap (TAP_COUNT solenoid pulses)\n"
     "  a <deg>      servo to <deg>\n"
     "  p <preset>   servo to named preset\n"
@@ -327,17 +431,20 @@ class Rig:
     def state(self):
         print(
             "stepper: rpm={rpm}, microsteps=1/{ms}, steps/rev={spr}, "
-            "dispense_deg={dd}".format(
-                rpm=config.STEPPER_SPEED_RPM,
+            "dispense_deg={dd}, running={run}".format(
+                rpm=self.stepper._rpm,
                 ms=config.STEPPER_MICROSTEPS,
                 spr=self.stepper.steps_per_rev,
                 dd=config.STEPPER_DISPENSE_DEG,
+                run=self.stepper.running,
             ))
         print(
-            "vib: effect={eff} (lib={lib}), duration={dur}s".format(
+            "vib: effect={eff} (lib={lib}), duration={dur}s, "
+            "continuous={on}".format(
                 eff=config.VIBRATION_EFFECT_ID,
                 lib=config.VIBRATION_LIBRARY,
                 dur=config.VIBRATION_DURATION_S,
+                on=self.vib._on,
             ))
         print(
             "tap: count={c}, on={on}ms, off={off}ms, duty={d}".format(
@@ -366,7 +473,7 @@ class Rig:
         self.tap._off()
         if self.vib._available:
             try:
-                self.vib.drv.stop()
+                self.vib.off()
             except Exception:
                 pass
             self.vib.enable_pin.value(0)
@@ -382,12 +489,27 @@ class Rig:
                 print(HELP)
             elif cmd == "s":
                 self.state()
+            elif cmd in ("g", "go"):
+                rpm = float(arg) if arg.strip() else None
+                self.stepper.go(rpm)
+                print("[rig] auger running at {:.1f} rpm".format(
+                    self.stepper._rpm))
+            elif cmd in ("x", "stop"):
+                self.stepper.stop()
+                print("[rig] auger stopping")
+            elif cmd == "w":
+                self.stepper.set_speed(float(arg))
+                print("[rig] auger speed = {:.1f} rpm".format(
+                    self.stepper._rpm))
             elif cmd == "d":
                 self.stepper.rotate_degrees(config.STEPPER_DISPENSE_DEG)
             elif cmd == "r":
                 self.stepper.rotate_degrees(float(arg))
             elif cmd == "v":
                 self.vib.buzz()
+            elif cmd == "b":
+                on = self.vib.toggle()
+                print("[rig] vibration {}".format("ON" if on else "OFF"))
             elif cmd == "t":
                 self.tap.tap()
             elif cmd == "a":
@@ -398,7 +520,7 @@ class Rig:
                         arg, list(config.SERVO_PRESETS)))
                     return
                 self.servo.move_to(config.SERVO_PRESETS[arg])
-            elif cmd in ("!", "stop"):
+            elif cmd == "!":
                 self.emergency_stop()
             else:
                 print("unknown command {!r}; 'h' for help".format(cmd))
@@ -438,6 +560,9 @@ def main():
         line = _readline_nonblocking()
         if line is not None:
             rig.handle(line)
+        # Keep the Tic's command-timeout watchdog fed so a continuous
+        # rotation ('g') keeps running between operator commands.
+        rig.stepper.ping()
         time.sleep_ms(10)
 
 

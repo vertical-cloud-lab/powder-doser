@@ -70,26 +70,42 @@ Type `h` for the list:
 ```
 h            show this help
 s            print rig state / config
-d            dispense (rotate auger STEPPER_DISPENSE_DEG)
-r <deg>      rotate auger by <deg> (signed)
-v            vibrate (single canned effect)
+g [rpm]      auger GO: rotate continuously (optional signed rpm)
+x            auger STOP: decelerate to a stop (stays energised)
+w <rpm>      set auger speed in rpm (signed; live while running)
+d            dispense (rotate auger STEPPER_DISPENSE_DEG, blocking)
+r <deg>      rotate auger by <deg> (signed, blocking)
+v            vibrate once (single canned pulse)
+b            toggle continuous vibration on/off
 t            tap (TAP_COUNT solenoid pulses)
 a <deg>      servo to <deg>
 p <preset>   servo to named preset (horizontal/tilt/vertical/tip)
 !            emergency stop -- de-energise everything
 ```
 
+The auger's `g`/`x` continuous-rotation commands are **non-blocking** —
+the Tic T500 runs the rotation on its own motion planner, so the auger
+keeps spinning while you fire taps, vibration, and servo moves.  This
+lets you exercise the whole doser at once: spin the auger continuously
+and, mid-rotation, tap the collar (`t`), pulse or hold the haptic motor
+(`v` / `b`), and tilt the dispense angle (`a` / `p`).
+
 Examples:
 
 ```
-> r 90            # auger rotates 90 deg in the configured direction
-> r -45           # ...and 45 deg the other way
-> a 30            # servo to 30 deg
-> p vertical      # servo to the "vertical" preset (default 90 deg)
-> t               # fire TAP_COUNT solenoid pulses
-> v               # single haptic buzz
-> d               # one full dispense cycle
-> !               # de-energise everything (stepper, solenoid, haptic)
+> g              # auger starts rotating continuously at STEPPER_SPEED_RPM
+> g 120          # ...or start it at 120 rpm
+> w 30           # slow the running auger to 30 rpm on the fly
+> w -60          # reverse: run it at 60 rpm the other way
+> t              # tap the collar while the auger keeps turning
+> b              # turn the haptic motor on (stays on); 'b' again = off
+> v              # one fixed-length haptic pulse
+> a 30           # tilt the dispense angle to 30 deg
+> x              # decelerate the auger to a stop
+> r 90           # finite move: rotate exactly 90 deg (blocking)
+> p vertical     # servo to the "vertical" preset (default 90 deg)
+> d              # one full dispense cycle (blocking finite move)
+> !              # de-energise everything (stepper, solenoid, haptic)
 ```
 
 To exercise just one channel, open the matching script under `tests/`
@@ -110,7 +126,8 @@ Common knobs:
 | Stepper  | `STEPPER_DISPENSE_DEG`   | How much auger rotation per `d` command. |
 | Vibration| `VIBRATION_EFFECT_ID`    | Pick from DRV2605L's 123-effect ROM. |
 | Vibration| `VIBRATION_LIBRARY`      | 1 = ERM, 6 = LRA. |
-| Vibration| `VIBRATION_DURATION_S`   | How long to hold the buzz. |
+| Vibration| `VIBRATION_DURATION_S`   | How long to hold the `v` buzz pulse. |
+| Vibration| `VIBRATION_RTP_AMPLITUDE`| Amplitude (0..127) for *continuous* vibration — the `b` toggle drives the DRV2605L's Real-Time Playback mode at this level until you turn it off. |
 | Tap      | `TAP_COUNT`              | Pulses per `t` command. |
 | Tap      | `TAP_ON_MS` / `TAP_OFF_MS` | Duty cycle of the solenoid. |
 | Tap      | `TAP_PWM_DUTY`           | Holding-force PWM (0..1). |

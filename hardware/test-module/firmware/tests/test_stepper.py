@@ -22,6 +22,8 @@ To run on the Pico W from VS Code + MicroPico:
 Keyboard controls (single keystroke; no Enter needed):
     space   step DEFAULT_MOVE_DEG in the current direction
     f       one full revolution (360 deg)
+    g       GO -- rotate continuously at the current RPM (non-blocking)
+    x       STOP -- decelerate the continuous rotation to a stop
     r       reverse the direction flag
     +       speed up by SPEED_STEP_RPM
     -       slow down by SPEED_STEP_RPM
@@ -64,6 +66,7 @@ class StepperTest:
         self.rpm = float(config.STEPPER_SPEED_RPM)
         self.direction = +1 if START_DIRECTION >= 0 else -1
         self.enabled = False
+        self.running = False
         self._position = 0
         # Bring the Tic up, push step mode / speed / accel, zero position.
         self.tic.exit_safe_start()
@@ -79,12 +82,19 @@ class StepperTest:
     def _apply_speed(self):
         usteps_per_s = self.rpm / 60.0 * self.steps_per_rev
         self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
+        if self.running:
+            self._apply_velocity()
+
+    def _apply_velocity(self):
+        usteps_per_s = self.rpm / 60.0 * self.steps_per_rev
+        self.tic.set_target_velocity(int(usteps_per_s * 10000 * self.direction))
 
     def enable(self, on=True):
         if on:
             self.tic.energize()
             self.tic.exit_safe_start()
         else:
+            self.running = False
             self.tic.deenergize()
         self.enabled = on
 
@@ -92,7 +102,25 @@ class StepperTest:
         self.rpm = max(1.0, rpm)
         self._apply_speed()
 
+    def go(self):
+        """Start continuous rotation at the current RPM (non-blocking)."""
+        if not self.enabled:
+            self.enable(True)
+        self.tic.exit_safe_start()
+        self.running = True
+        self._apply_velocity()
+
+    def stop(self):
+        """Decelerate the continuous rotation to a stop (stays energised)."""
+        self.running = False
+        self.tic.set_target_velocity(0)
+
     def rotate(self, degrees):
+        if self.running:
+            self.stop()
+            time.sleep_ms(50)
+        self.tic.halt_and_set_position(0)
+        self._position = 0
         signed = degrees * self.direction
         delta = int(round(signed / 360.0 * self.steps_per_rev))
         if delta == 0:
@@ -120,16 +148,18 @@ class StepperTest:
 
     def state(self):
         return ("stepper: rpm={:.1f}, dir={:+d}, microsteps=1/{}, "
-                "steps/rev={}, enabled={}").format(
+                "steps/rev={}, enabled={}, running={}").format(
                     self.rpm, self.direction,
                     config.STEPPER_MICROSTEPS,
-                    self.steps_per_rev, self.enabled)
+                    self.steps_per_rev, self.enabled, self.running)
 
 
 HELP = (
     "Stepper test (Tic T500) -- keyboard controls:\n"
     "  space  rotate {move} deg\n"
     "  f      one full revolution (360 deg)\n"
+    "  g      GO -- rotate continuously at the current RPM\n"
+    "  x      STOP -- decelerate the continuous rotation to a stop\n"
     "  r      reverse direction\n"
     "  +/-    adjust RPM by {step}\n"
     "  e      toggle energise (holding torque on/off)\n"
@@ -148,14 +178,25 @@ def main():
         while True:
             key = read_key()
             if key is None:
+                # Keep the Tic's watchdog fed during continuous rotation.
+                if rig.running:
+                    rig.tic.reset_command_timeout()
                 time.sleep_ms(10)
                 continue
             if key == " ":
                 rig.rotate(DEFAULT_MOVE_DEG)
             elif key == "f":
                 rig.rotate(360.0)
+            elif key == "g":
+                rig.go()
+                print(rig.state())
+            elif key == "x":
+                rig.stop()
+                print(rig.state())
             elif key == "r":
                 rig.direction = -rig.direction
+                if rig.running:
+                    rig._apply_velocity()
                 print(rig.state())
             elif key == "+":
                 rig.set_rpm(rig.rpm + SPEED_STEP_RPM)
