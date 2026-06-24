@@ -333,57 +333,29 @@ def build_symbol_lib() -> str:
         )"""))
 
     # ------------------------------------------------------------------
-    # MAX3232 RS-232 <-> 3.3 V logic transceiver breakout (SparkFun
-    # BOB-11189 or equivalent).  The A&D HR-100A balance talks true
-    # RS-232 levels (about ±5..9 V); those must NEVER touch a Pico GPIO
-    # (absolute max -0.3 / +3.6 V), so this transceiver sits between
-    # the scale cable and UART0.  Powered from the Pico's 3V3 rail so
-    # its logic-side swing matches RP2040 levels exactly; the on-chip
-    # charge pump generates the ±RS-232 rails from the 3.3 V input.
-    # Left: 3.3 V logic side (to the Pico).  Right: RS-232 side (to
-    # the scale via the Molex/RS-232 cable).
-    # ------------------------------------------------------------------
-    max3232_left = [("VCC", "1", "power_in"), ("GND", "2", "power_in"),
-                    ("T1IN", "3", "input"), ("R1OUT", "4", "output")]
-    max3232_right = [("T1OUT", "5", "output"), ("R1IN", "6", "input")]
-    w = 17.78
-    top = 0
-    bot = top - row_pitch * (max(len(max3232_left), len(max3232_right)) + 1)
-    pins = []
-    for i, (n, num, et) in enumerate(max3232_left):
-        pins.append(_pin(n, num, -w / 2 - 2.54, top - row_pitch * (i + 1), 0, etype=et))
-    for i, (n, num, et) in enumerate(max3232_right):
-        pins.append(_pin(n, num, w / 2 + 2.54, top - row_pitch * (i + 1), 180, etype=et))
-    body = _rectangle(-w / 2, top, w / 2, bot)
-    symbols.append(dedent(f"""\
-        (symbol "MAX3232_Breakout" (in_bom yes) (on_board yes)
-          {_props("U", -w / 2, top + 2.54, "MAX3232_Breakout", -w / 2, top + 0.8)}
-          (symbol "MAX3232_Breakout_0_1" {body})
-          (symbol "MAX3232_Breakout_1_1"
-            {chr(10).join(pins)}
-          )
-        )"""))
-
-    # ------------------------------------------------------------------
-    # Scale cable connector: 4-pin Molex Micro-Fit 3.0 (43645) pigtail
-    # to the A&D HR-100A's RS-232C port (issue #99).  Pin naming follows
-    # the scale's point of view: TXD = data out of the scale.  Verify
-    # the cable's pin order against the actual harness with a meter
-    # before first power-on -- AutoTrickler-style harnesses are not all
-    # wired identically.
+    # Waveshare Pico-2CH-RS232 module (SP3232EEN transceiver) on UART0.
+    # The A&D HR-100A balance talks true RS-232 levels (about ±5..9 V);
+    # those must NEVER touch a Pico GPIO (absolute max -0.3 / +3.6 V), so
+    # this off-the-shelf module level-shifts both directions and carries
+    # the DB9 to the scale -- only its 4-pin TTL header reaches the Pico.
+    # Powered from the Pico's +3V3 rail (NOT VSYS) so its TTL-side swing
+    # matches RP2040 levels exactly; the on-board charge pump makes the
+    # ±RS-232 rails from the 3.3 V input.  The header is labelled FROM THE
+    # PICO'S POINT OF VIEW, so wire straight across: TXD takes the Pico's
+    # TX (GP12) and RXD drives the Pico's RX (GP13).
     # ------------------------------------------------------------------
     pins = [
-        _pin("TXD", "1", -7.62, 0, 0, etype="output"),
-        _pin("RXD", "2", -7.62, -2.54, 0, etype="input"),
-        _pin("GND", "3", -7.62, -5.08, 0, etype="power_in"),
-        _pin("NC", "4", -7.62, -7.62, 0, etype="no_connect"),
+        _pin("VCC", "1", -7.62, 0, 0, etype="power_in"),
+        _pin("GND", "2", -7.62, -2.54, 0, etype="power_in"),
+        _pin("TXD", "3", -7.62, -5.08, 0, etype="input"),
+        _pin("RXD", "4", -7.62, -7.62, 0, etype="output"),
     ]
     body = _rectangle(-5.08, 1.27, 5.08, -8.89)
     symbols.append(dedent(f"""\
-        (symbol "Scale_Molex_43645" (in_bom yes) (on_board yes)
-          {_props("J", -5.08, 3.81, "HR-100A RS232 (Molex 43645)", -5.08, 2.54)}
-          (symbol "Scale_Molex_43645_0_1" {body})
-          (symbol "Scale_Molex_43645_1_1"
+        (symbol "Waveshare_2CH_RS232" (in_bom yes) (on_board yes)
+          {_props("U", -5.08, 3.81, "Waveshare Pico-2CH-RS232 (SP3232)", -5.08, 2.54)}
+          (symbol "Waveshare_2CH_RS232_0_1" {body})
+          (symbol "Waveshare_2CH_RS232_1_1"
             {chr(10).join(pins)}
           )
         )"""))
@@ -432,7 +404,7 @@ PLACEMENTS = [
          ("GP10", "SOL_IN1"), ("GP11", "SOL_IN2"),
          # Servo PWM (dispensing angle)
          ("GP15", "SERVO_SIG"),
-         # A&D HR-100A scale via MAX3232 on UART0 (issue #99)
+         # A&D HR-100A scale via the Waveshare Pico-2CH-RS232 on UART0 (issue #99)
          ("GP12", "SCALE_TX"), ("GP13", "SCALE_RX"),
          # DRV2605L enable + trigger (optional; we drive in I2C mode but
          # expose EN so the firmware can hard-mute the haptic driver).
@@ -481,18 +453,16 @@ PLACEMENTS = [
 
     # ---- Scale feedback channel (issue #99) ----
     # A&D HR-100A balance over RS-232C.  The balance's ±5..9 V RS-232
-    # swing must never reach a Pico GPIO, so a MAX3232 transceiver
-    # (powered from the Pico's 3V3 rail, charge pump makes the RS-232
-    # rails) translates both directions:
-    #   Pico GP12 (UART0 TX) -> U6 T1IN  -> (T1OUT, RS-232) -> scale RXD
-    #   Pico GP13 (UART0 RX) <- U6 R1OUT <- (R1IN,  RS-232) <- scale TXD
-    ("MAX3232_Breakout", "U6", 210, 245,
+    # swing must never reach a Pico GPIO, so the Waveshare Pico-2CH-RS232
+    # module (SP3232EEN transceiver, powered from +3V3 so its TTL output
+    # stays Pico-safe; the on-board charge pump makes the RS-232 rails)
+    # translates both directions.  Its TTL header is labelled from the
+    # Pico's point of view, so it wires straight across (no crossover):
+    #   Pico GP12 (UART0 TX) -> module TXD -> (DB9, RS-232) -> scale RXD
+    #   Pico GP13 (UART0 RX) <- module RXD <- (DB9, RS-232) <- scale TXD
+    ("Waveshare_2CH_RS232", "U6", 240, 245,
         [("VCC", "+3V3"), ("GND", "GND"),
-         ("T1IN", "SCALE_TX"), ("R1OUT", "SCALE_RX"),
-         ("T1OUT", "SCALE_232_TX"), ("R1IN", "SCALE_232_RX")]),
-    ("Scale_Molex_43645", "J2", 285, 250,
-        [("TXD", "SCALE_232_RX"), ("RXD", "SCALE_232_TX"),
-         ("GND", "GND")]),
+         ("TXD", "SCALE_TX"), ("RXD", "SCALE_RX")]),
 ]
 
 
@@ -612,14 +582,9 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "+5V": (-10.16, -2.54, 180), "GND": (-10.16, 0, 180),
         "SIG": (-10.16, 2.54, 180),
     },
-    "MAX3232_Breakout": {
-        "VCC":   (-11.43, 2.54, 180), "GND":   (-11.43, 5.08, 180),
-        "T1IN":  (-11.43, 7.62, 180), "R1OUT": (-11.43, 10.16, 180),
-        "T1OUT": (11.43, 2.54, 0),    "R1IN":  (11.43, 5.08, 0),
-    },
-    "Scale_Molex_43645": {
-        "TXD": (-7.62, 0, 180), "RXD": (-7.62, 2.54, 180),
-        "GND": (-7.62, 5.08, 180),  "NC":  (-7.62, 7.62, 180),
+    "Waveshare_2CH_RS232": {
+        "VCC": (-7.62, 0, 180), "GND": (-7.62, 2.54, 180),
+        "TXD": (-7.62, 5.08, 180), "RXD": (-7.62, 7.62, 180),
     },
     "ERM_Motor": {
         "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
@@ -676,7 +641,7 @@ def build_schematic() -> str:
           (company "Vertical Cloud Lab")
           (comment 1 "Exercises auger stepper + ERM vibration + tap solenoid + dispense-angle servo")
           (comment 2 "Resolves issue #50; parts from PR #25")
-          (comment 3 "Rev B: A&D HR-100A scale feedback via MAX3232 RS-232 on UART0 (issue #99)")
+          (comment 3 "Rev B: A&D HR-100A scale feedback via Waveshare Pico-2CH-RS232 on UART0 (issue #99)")
           (comment 4 "")
         )
     """)

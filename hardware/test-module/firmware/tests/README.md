@@ -17,8 +17,8 @@ Tic T500 / DRV2605L / DRV8871 / servo wiring.
 | [`test_haptic.py`](test_haptic.py)     | Vibration / haptic motor  | DRV2605L |
 | [`test_solenoid.py`](test_solenoid.py) | Tap solenoid              | DRV8871 |
 | [`test_servo.py`](test_servo.py)       | Dispensing-angle servo    | (direct PWM) |
-| [`test_scale.py`](test_scale.py)       | A&D HR-100A balance link  | MAX3232 (RS-232) |
-| [`test_scale_contact.py`](test_scale_contact.py) | *Is the scale talking at all?* (no keypress) | MAX3232 (RS-232) |
+| [`test_scale.py`](test_scale.py)       | A&D HR-100A balance link  | Waveshare 2CH-RS232 |
+| [`test_scale_contact.py`](test_scale_contact.py) | *Is the scale talking at all?* (no keypress) | Waveshare 2CH-RS232 |
 
 ## Scale won't respond? Run `test_scale_contact.py` first
 

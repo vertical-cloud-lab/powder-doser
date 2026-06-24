@@ -79,9 +79,8 @@ hosting all the wiring on a half-size breadboard.
 | C2  | 100 µF / 10 V electrolytic, 5 V bulk | 9 | 1 | Tames the servo + solenoid transients on the 5 V rail. |
 | C3  | 100 µF / 25 V electrolytic, second bulk | 14 | 1 | Sits directly on the Tic T500's `VIN` screw terminals. |
 | —   | Half-size breadboard, jumper wires, 0.1" headers | 9 | — | Bench wiring substrate (replaces item 6 bonnet for tests). |
-| U6  | MAX3232 RS-232 ↔ 3.3 V transceiver breakout (SparkFun BOB-11189 or equiv.) | — *(new, issue #99)* | 1 | Level-shifts the HR-100A's ±5..9 V RS-232 to Pico-safe 3.3 V logic; runs from `+3V3`. |
-| J2  | Molex Micro-Fit 3.0 receptacle, 4-pos (43645-0400) + 43030 crimp sockets | — *(new, issue #99)* | 1 | Mates the scale-side 4-pin Molex 43645 pigtail. A pre-crimped pigtail (e.g. Molex 2174651104) avoids hand-crimping. |
-| —   | RS-232 cable to the HR-100A's RS-232C port (DIN-7/D-sub per scale option installed; AutoTrickler-style harness terminates in the 4-pin Molex) | — *(new, issue #99)* | 1 | **Buzz out the pin order with a meter before first power-on** — harnesses are not all wired identically. |
+| U6  | Waveshare Pico-2CH-RS232 module (SP3232EEN, 2-channel RS-232 transceiver) | — *(new, issue #99)* | 1 | Level-shifts the HR-100A's ±5..9 V RS-232 to Pico-safe logic and carries the DB9 to the scale. **Power its `VCC` from `+3V3` (not VSYS/5 V)** so the TTL `RXD` output stays within the RP2040's 3.6 V max.  Its TTL header is labelled from the Pico's point of view (`TXD`/`RXD`), so it wires straight across to the Pico. |
+| —   | RS-232 cable (DB9 ↔ HR-100A RS-232C port; DIN-7/D-sub per scale option installed) | — *(new, issue #99)* | 1 | **Buzz out the pin order with a meter before first power-on** — harnesses are not all wired identically. |
 | —   | A&D HR-100A analytical balance (102 g × 0.1 mg) | — *(lab equipment)* | 1 | The closed-loop mass feedback sensor; sits under the dispense cup. |
 
 ### Why the shunt regulator (SR1) is on the bench rig
@@ -165,7 +164,7 @@ These nets are the contract between
 |---|---|---|---|
 | `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VIN , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
 | `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , C2.+              | —     | Buck output; powers Pico W + servo. |
-| `+3V3`       | U2.3V3 , U3.VIN                                | —     | Pico W on-board LDO; powers the DRV2605L logic.  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
+| `+3V3`       | U2.3V3 , U3.VIN , U6.VCC                       | —     | Pico W on-board LDO; powers the DRV2605L logic **and the Waveshare RS-232 module's `VCC`** (keep it off VSYS/5 V so the module's `RXD` output stays Pico-safe).  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
 | `GND`        | (all, incl. SR1.- , U5.GND) | —     | Common ground. |
 | `I2C_SDA`    | U3.SDA            | GP0   | I2C0 SDA to DRV2605L. |
 | `I2C_SCL`    | U3.SCL            | GP1   | I2C0 SCL to DRV2605L. |
@@ -175,10 +174,8 @@ These nets are the contract between
 | `SOL_IN2`    | U4.IN2            | GP11  | DRV8871 IN2 — held low. |
 | `HAPT_EN`    | U3.EN , U3.IN_TRIG| GP14  | Hard-mute / wake for DRV2605L. |
 | `SERVO_SIG`  | M3.SIG            | GP15  | 50 Hz PWM to the hobby servo. |
-| `SCALE_TX`   | U6.T1IN           | GP12  | Pico UART0 TX → MAX3232 logic-side input (commands to the scale). |
-| `SCALE_RX`   | U6.R1OUT          | GP13  | Pico UART0 RX ← MAX3232 logic-side output (weight frames from the scale). |
-| `SCALE_232_TX` | U6.T1OUT ↔ J2.RXD | —   | RS-232-level data to the scale. |
-| `SCALE_232_RX` | U6.R1IN ↔ J2.TXD  | —   | RS-232-level data from the scale.  J2.GND ties to the common `GND`. |
+| `SCALE_TX`   | U6.TXD            | GP12  | Pico UART0 TX → module `TXD` input (commands to the scale).  Wire straight across — the Waveshare header is labelled from the Pico's point of view. |
+| `SCALE_RX`   | U6.RXD            | GP13  | Pico UART0 RX ← module `RXD` output (weight frames from the scale). |
 | `STP_A1/A2`  | U5.A1/A2 ↔ M2.A1/A2 | —   | Stepper coil A. |
 | `STP_B1/B2`  | U5.B1/B2 ↔ M2.B1/B2 | —   | Stepper coil B. |
 | `VIB_A/B`    | U3.OUT± ↔ M1.±    | —     | ERM coin motor leads. |
@@ -255,21 +252,29 @@ Build order, top to bottom:
      `SERVO_SPEED_DEG_PER_S` deg/s so the servo never slams to the new
      setpoint.
 
-8. **Scale (A&D HR-100A via MAX3232).**  The balance's RS-232C port
-   swings **±5..9 V** — never wire it straight to a Pico GPIO
-   (RP2040 absolute max is −0.3 / +3.6 V; see
+8. **Scale (A&D HR-100A via the Waveshare Pico-2CH-RS232 module).**  The
+   balance's RS-232C port swings **±5..9 V** — never wire it straight to a
+   Pico GPIO (RP2040 absolute max is −0.3 / +3.6 V; see
    [`analysis/rs232_analysis_results.md`](analysis/rs232_analysis_results.md)
-   for the ngspice numbers).  All scale traffic goes through U6:
-   * `U6 VCC → +3V3`, `U6 GND → GND` (3.3 V supply makes the logic side
-     exactly Pico-level; the chip's charge pump makes the ±RS-232 rails).
-   * Logic side: `Pico W GP12 (pin 16) → U6 T1IN`,
-     `Pico W GP13 (pin 17) ← U6 R1OUT` (UART0).
-   * RS-232 side: `U6 T1OUT → J2 RXD`, `U6 R1IN ← J2 TXD`,
-     `J2 GND → GND`.  J2 pin 4 is unconnected.
-   * Plug the scale's Molex 43645 pigtail / RS-232 cable into J2.
-     **Verify the harness pinout with a multimeter first** (idle RS-232
-     TXD sits at about −5..−9 V relative to GND — that's how you find
-     the scale's TX pin); not all harnesses are wired alike.
+   for the ngspice numbers — those use a bare MAX3232, but the Waveshare
+   board's SP3232EEN is the same RS-232 ↔ logic transceiver class).  All
+   scale traffic goes through the module (U6):
+   * **Power:** `U6 VCC → +3V3`, `U6 GND → GND`.  Use **+3V3, not VSYS/5 V**
+     — the module's `RXD` output high level follows `VCC`, so 3.3 V keeps
+     it inside the RP2040's 3.6 V max; the on-board charge pump still makes
+     the ±RS-232 rails from 3.3 V.
+   * **TTL side (to the Pico):** the Waveshare header is labelled from the
+     **Pico's** point of view, so wire it *straight across* (no crossover
+     here): `Pico W GP12 (pin 16) → U6 TXD`, `Pico W GP13 (pin 17) ← U6 RXD`
+     (UART0).  Because the rig already uses the module's native channel
+     pins (`TXD0`/`RXD0` → GP0/GP1 = I2C0, `TXD1`/`RXD1` → GP4/GP5 = the
+     Tic's UART1), mount the module on its own breadboard and jumper the
+     chosen channel out to GP12/GP13.
+   * **RS-232 side (to the scale):** run the DB9/RS-232 cable from the
+     module to the balance's RS-232C port.  **Verify the harness pinout
+     with a multimeter first** (idle RS-232 TXD sits at about −5..−9 V
+     relative to GND — that's how you find the scale's TX pin); not all
+     harnesses are wired alike.
    * On the balance, check the communication function settings match
      `config.py` (`SCALE_BAUD` etc.; the HR-A factory default is
      2400 baud, 7 data bits, even parity, 1 stop, A&D standard format).
@@ -286,8 +291,10 @@ Build order, top to bottom:
    * Confirm the Tic T500 current limit / control mode are set (step 1).
    * Confirm the UART cross-over is right: `Pico GP4 → U5 RX` and
      `Pico GP5 → U5 TX` (TX-to-RX, not TX-to-TX).
-   * Confirm the scale cross-over the same way: scale `TXD → U6 R1IN`
-     and scale `RXD ← U6 T1OUT`.
+   * Confirm the scale link: on the TTL side `Pico GP12 → U6 TXD` and
+     `Pico GP13 ← U6 RXD` (straight across); the only crossover left is in
+     the DB9 cable, where the scale's `TXD` must reach the module's RS-232
+     receive pin.
    * Confirm SR1's `+` is on `+12V` and `-` is on `GND` (it is a
      polarised part and reversing it kills the regulator instantly).
 

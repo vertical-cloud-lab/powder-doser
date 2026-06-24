@@ -1,6 +1,7 @@
 """A&D HR-100A (HR-A series) balance driver over RS-232C (MicroPython).
 
-The bench rig reads the scale through a MAX3232 transceiver on UART0
+The bench rig reads the scale through a Waveshare Pico-2CH-RS232 module
+(SP3232EEN transceiver) on UART0
 (``config.PIN_SCALE_TX``/``PIN_SCALE_RX``) -- see
 ``hardware/test-module/README.md`` for the wiring.  The HR-A series
 talks A&D's standard ASCII protocol:

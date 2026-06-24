@@ -284,7 +284,7 @@ class Servo:
 
 
 # ---------------------------------------------------------------------------
-# Scale (A&D HR-100A over RS-232C via MAX3232 on UART0)
+# Scale (A&D HR-100A over RS-232C via the Waveshare Pico-2CH-RS232 on UART0)
 #
 # The balance idles silently; the firmware polls it with `Q` requests and
 # parses the A&D standard-format replies (`ST,+00012.345  g`).  All the

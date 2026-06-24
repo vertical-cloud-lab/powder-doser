@@ -33,10 +33,24 @@ TIC_READ_TIMEOUT_MS = 50   # how long to wait for a get-variable reply
 PIN_SOL_IN1   = 10         # DRV8871 IN1
 PIN_SOL_IN2   = 11         # DRV8871 IN2
 
-# A&D HR-100A balance via MAX3232 RS-232 transceiver on UART0.
-# (UART0's second pin-mux site; GP0/GP1 are taken by I2C0.)
-PIN_SCALE_TX  = 12         # Pico UART0 TX -> MAX3232 T1IN -> scale RXD
-PIN_SCALE_RX  = 13         # Pico UART0 RX <- MAX3232 R1OUT <- scale TXD
+# A&D HR-100A balance via a Waveshare Pico-2CH-RS232 module on UART0.
+# The Waveshare board (SP3232EEN transceiver, the same RS-232 <-> 3.3 V
+# class as a bare MAX3232) carries both the level-shifter and the DB9 to
+# the scale, so the bench wiring is just four jumpers to the Pico.
+#
+# Its TTL header is labelled FROM THE PICO'S POINT OF VIEW: the pin marked
+# `TXD` takes the Pico's *transmit* line and `RXD` drives the Pico's
+# *receive* line -- so wire straight across (no crossover on the TTL side):
+#   Pico GP12 (UART0 TX) -> module TXD   (commands out to the scale)
+#   Pico GP13 (UART0 RX) <- module RXD   (weight frames in from the scale)
+# Power the module's VCC from the Pico's *3V3* pin (NOT VSYS/5 V) so the
+# RXD logic-high stays at a Pico-safe 3.3 V; tie the module GND to GND.
+# UART0's GP0/GP1 mux site is taken by I2C0, so the scale lands on the
+# GP12/GP13 mux site instead.  The module's native channels (TXD0/RXD0 ->
+# GP0/GP1, TXD1/RXD1 -> GP4/GP5) both collide with rig peripherals, so
+# jumper the chosen channel out to GP12/GP13 (see hardware README step 8).
+PIN_SCALE_TX  = 12         # Pico UART0 TX -> module TXD -> scale RXD
+PIN_SCALE_RX  = 13         # Pico UART0 RX <- module RXD <- scale TXD
 SCALE_UART_ID = 0          # RP2040 UART0 (TX=GP12, RX=GP13)
 
 PIN_HAPT_EN   = 14         # DRV2605L EN / IN_TRIG (tie high to enable)

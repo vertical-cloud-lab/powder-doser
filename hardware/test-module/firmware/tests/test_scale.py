@@ -1,8 +1,8 @@
 """A&D HR-100A scale standalone bench test (MicroPython, keyboard-driven).
 
-Exercises only the scale channel: Pico UART0 (GP12/GP13) -> MAX3232 ->
-RS-232 -> balance.  Wiring and balance function settings are described
-in ``hardware/test-module/README.md`` (assembly step 8).
+Exercises only the scale channel: Pico UART0 (GP12/GP13) -> Waveshare
+Pico-2CH-RS232 module -> RS-232 -> balance.  Wiring and balance function
+settings are described in ``hardware/test-module/README.md`` (step 8).
 
 Run from VS Code + MicroPico like the other scripts in this folder
 (upload project, then "Run current file on Pico").
@@ -30,7 +30,7 @@ from tests._keypress import read_key
 
 
 HELP = (
-    "Scale test (A&D HR-100A over MAX3232/UART0) -- keyboard controls:\n"
+    "Scale test (A&D HR-100A over Waveshare 2CH-RS232/UART0) -- keyboard controls:\n"
     "  w   read one weighing datum\n"
     "  W   wait for a stable (ST) datum\n"
     "  z   re-zero (tare)\n"

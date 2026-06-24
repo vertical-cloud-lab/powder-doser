@@ -35,6 +35,26 @@ Molex 43645 receptacle) and two Pico pins; every PR #61 net is
 untouched.  The breadboard stays half-size — flagged previously as a
 concern — because U6 is a 10-pin breakout and J2 is a pigtail.
 
+> **Update (maintainer request):** the bench now standardises on the
+> off-the-shelf **Waveshare Pico-2CH-RS232 module** (U6) in place of the
+> discrete MAX3232 + Molex receptacle.  Its **SP3232EEN** is the same
+> RS-232 ↔ logic transceiver class analysed below, so the ngspice
+> findings carry over unchanged.  Two practical differences:
+> 1. **Power it from `+3V3`, not VSYS/5 V.**  The module's `RXD` (and the
+>    rest of the TTL side) follows `VCC`; 3.3 V keeps `RXD` inside the
+>    RP2040's 3.6 V max while the charge pump still makes the ±RS-232 rails.
+> 2. **The TTL header is labelled from the Pico's point of view**, so it
+>    wires *straight across* with no crossover: `GP12 → U6 TXD`,
+>    `GP13 ← U6 RXD`.  The module's native channel pins (`TXD0/RXD0` →
+>    GP0/GP1, `TXD1/RXD1` → GP4/GP5) both collide with rig peripherals, so
+>    mount it on its own breadboard and jumper the chosen channel out to
+>    GP12/GP13.  The remaining crossover is in the DB9 cable to the scale.
+>
+> `config.py`, `hardware/test-module/README.md`, the KiCad schematic
+> (`U6 = Waveshare_2CH_RS232`), and the `tests/` diagnostics were updated
+> accordingly; the `SCALE_232_TX`/`SCALE_232_RX` nets and the J2 Molex are
+> gone (now internal to the module).
+
 ## 3. Electrical analysis (ngspice)
 
 Following the PySpice/ngspice smoke-test approach recommended in
