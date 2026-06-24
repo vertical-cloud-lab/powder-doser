@@ -18,6 +18,24 @@ Tic T500 / DRV2605L / DRV8871 / servo wiring.
 | [`test_solenoid.py`](test_solenoid.py) | Tap solenoid              | DRV8871 |
 | [`test_servo.py`](test_servo.py)       | Dispensing-angle servo    | (direct PWM) |
 | [`test_scale.py`](test_scale.py)       | A&D HR-100A balance link  | MAX3232 (RS-232) |
+| [`test_scale_contact.py`](test_scale_contact.py) | *Is the scale talking at all?* (no keypress) | MAX3232 (RS-232) |
+
+## Scale won't respond? Run `test_scale_contact.py` first
+
+If `w` (weigh) or `g <grams>` (dose) get **no reaction**, the Pico and
+the balance are almost certainly not talking yet.  Run
+[`test_scale_contact.py`](test_scale_contact.py) before anything else:
+it needs **no keypresses**, opens the scale UART, listens, sends one
+`Q`, and prints a `PASS` / `PARTIAL` / `FAIL` verdict with a focused
+wiring/serial checklist.
+
+The most common silent-link cause is a **swapped TX/RX pair** — the
+scale's TX must reach the Pico's RX and vice-versa (this is exactly what
+stalled the AC training-lab RS-232 bring-up,
+[ac-dev-lab#20](https://github.com/AccelerationConsortium/ac-dev-lab/issues/20),
+for weeks).  Its `probe_contact()` core is unit-tested under CPython in
+[`../sim/test_dosing_sim.py`](../sim/test_dosing_sim.py).
+
 
 ## Running a single script from VS Code + MicroPico
 

@@ -15,9 +15,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tests"))
 
 import config                                            # noqa: E402
 import scale as scale_mod                                # noqa: E402
+import test_scale_contact as contact                     # noqa: E402
 from dosing import DoseResult                            # noqa: E402
 from sim_rig import VirtualClock, make_rig               # noqa: E402
 
@@ -142,6 +144,35 @@ class DoseLoopTests(unittest.TestCase):
         self.assertEqual(result.status, DoseResult.OK)
         self.assertAlmostEqual(result.dispensed_g, 0.300,
                                delta=config.DOSE_TOLERANCE_G)
+
+
+class ScaleContactTests(unittest.TestCase):
+    def _scale(self):
+        clock = VirtualClock()
+        from sim_rig import PowderColumn, SimScaleUart
+        column = PowderColumn(clock)
+        uart = SimScaleUart(column, clock)
+        sc = scale_mod.AndScale(uart, response_timeout_ms=200,
+                                sleep_ms=clock.sleep_ms)
+        return sc, column, clock
+
+    def test_contact_detects_live_balance(self):
+        sc, column, _ = self._scale()
+        column.pan_g = 3.21
+        result = contact.probe_contact(sc, listen_ms=200,
+                                       sleep_ms=sc._sleep_ms)
+        self.assertTrue(result["saw_bytes"])
+        self.assertIsNotNone(result["reading"])
+        self.assertAlmostEqual(result["reading"].grams, 3.21, places=2)
+
+    def test_contact_reports_silent_link(self):
+        sc, _, _ = self._scale()
+        sc.uart.write = lambda data: None      # nothing ever transmitted
+        result = contact.probe_contact(sc, listen_ms=200,
+                                       sleep_ms=sc._sleep_ms)
+        self.assertFalse(result["saw_bytes"])
+        self.assertIsNone(result["reading"])
+        self.assertEqual(result["frames"], [])
 
 
 if __name__ == "__main__":

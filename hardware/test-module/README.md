@@ -273,6 +273,12 @@ Build order, top to bottom:
    * On the balance, check the communication function settings match
      `config.py` (`SCALE_BAUD` etc.; the HR-A factory default is
      2400 baud, 7 data bits, even parity, 1 stop, A&D standard format).
+   * **Before** trying `w`/`g`, confirm the link with the no-keypress
+     [`firmware/tests/test_scale_contact.py`](firmware/tests/test_scale_contact.py)
+     diagnostic — it prints `PASS`/`PARTIAL`/`FAIL` and a checklist.  A
+     silent link is almost always a swapped TX/RX pair (the exact issue
+     that stalled
+     [ac-dev-lab#20](https://github.com/AccelerationConsortium/ac-dev-lab/issues/20)).
 
 9. **Sanity check before powering.** With the brick **unplugged**:
    * Confirm no continuity between `+12V` and `GND`, or between `+5V`
