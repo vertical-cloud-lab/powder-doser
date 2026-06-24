@@ -167,12 +167,17 @@ class ScaleContactTests(unittest.TestCase):
 
     def test_contact_reports_silent_link(self):
         sc, _, _ = self._scale()
-        sc.uart.write = lambda data: None      # nothing ever transmitted
+        sent = []
+        sc.uart.write = lambda data: sent.append(data)   # bytes leave, nothing echoes back
         result = contact.probe_contact(sc, listen_ms=200,
                                        sleep_ms=sc._sleep_ms)
         self.assertFalse(result["saw_bytes"])
         self.assertIsNone(result["reading"])
         self.assertEqual(result["frames"], [])
+        # the active-poll path must have actually tried to send "Q"
+        self.assertTrue(any(b"Q" in bytes(d) for d in sent))
+        # the active-poll path must have actually tried to send "Q"
+        self.assertTrue(any(b"Q" in bytes(d) for d in sent))
 
 
 if __name__ == "__main__":
