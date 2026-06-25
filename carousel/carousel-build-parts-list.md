@@ -2,8 +2,11 @@
 
 > **Status: exploratory / not incorporated into [`BILL-OF-MATERIALS.md`](../BILL-OF-MATERIALS.md).**
 > This is a "what would I actually buy to build one" parts list for the
-> vertical rotating magazine that stores and indexes **50 filled augers**,
-> requested on PR #114 (comment 4801823301, @sgbaird). It expands the drive
+> **vertically oriented** rotating magazine that stores and indexes **50 filled
+> augers**, requested on PR #114 (comment 4801823301, @sgbaird) and tightened to
+> the vertical design on comment 4802540746. Every part below is chosen for the
+> vertical (horizontal-axis, Ferris-wheel / paternoster) geometry — see §0. It
+> expands the drive
 > recommendation in BOM §5.1/§5.2 into a *complete* build BOM (structure,
 > bearing, indexing, sensing, control, safety) so it can be priced and
 > sanity-checked **before** anything is promoted into the main BOM.
@@ -24,10 +27,10 @@
 |---|---|---|
 | Augers stored | 50 | request |
 | Filled auger mass | ~0.2 kg each → **~10 kg** payload | BOM §5.1 / §6.3 (Ø25×250 mm "nozzle 4", ~66.8 mL) |
-| Wheel pitch radius | ~0.20 m (≈0.42 m wheel Ø) | 50 pockets at ~26 mm spacing on a single ring; *see note* |
-| Indexing | one pocket → dosing station at a time | request |
-| Worst-case shaft torque | **~5–12 N·m** (off-balance + index accel) | BOM §5.1 torque budget |
-| Hold requirement | must **not** back-drive on power loss | safety |
+| Wheel pitch radius | ~0.20 m (≈0.42 m wheel Ø) | 50 pockets at ~26 mm spacing on a single vertical ring; *see note* |
+| Indexing | one pocket → **bottom** dosing station at a time | request (servo + solenoid pulls the bottom auger straight down) |
+| Worst-case shaft torque | **~5–12 N·m** (gravity imbalance of a part-emptied wheel + index accel) | BOM §5.1 torque budget; *vertical-specific note* |
+| Hold requirement | must **not** back-drive on power loss (gravity will turn an unbalanced vertical wheel) | safety |
 
 > **Orientation — vertical, by design** (@sgbaird, comment 4801844718). The
 > magazine is a **vertically oriented carousel** (rotation axis horizontal;
@@ -43,10 +46,23 @@
 >
 > **Geometry note.** 50 Ø25 mm augers on one ring at a sane pitch needs a
 > ~0.42 m wheel; if that is too large, split into **two stacked rings of 25**
-> or a **double-helix paternoster** (carriers on a chain loop) to keep the
-> footprint down. The double-ring/paternoster option changes the drive from
-> a turntable to a sprocket+chain loop — both are captured below as Option A
-> (turntable) and Option B (paternoster).
+> on the same horizontal shaft, or a **double-helix paternoster** (carriers on a
+> chain loop) to keep the footprint down. Both options keep the **vertical**
+> orientation — they differ only in how the wheel is carried: **Option A**, a
+> rigid wheel on a **horizontal through-shaft** (Ferris-wheel axle, §3 default),
+> or **Option B**, a **paternoster chain loop** of carriers. A horizontal
+> turntable/drum is explicitly **not** an option here (see §11).
+>
+> **Vertical-specific torque note.** A *full* wheel is roughly balanced, so the
+> motor mostly fights inertia + bearing friction. The worst case is a
+> **part-emptied** wheel: once augers have been dispensed from one arc, the
+> remaining ~10 kg sits off-axis and gravity applies a standing moment about the
+> horizontal shaft (up to ~payload × pitch radius ≈ 10 kg × 0.2 m ≈ **20 N·m at
+> the rim** before reduction/counterweight). This is why the vertical build
+> leans on a **counterweight** (§6 F4) to cancel most of that moment *and* a
+> **self-locking worm reducer / power-off brake** (§2/§4/§5) so the wheel cannot
+> creep or back-drive when stopped — neither of which a horizontal turntable
+> would need.
 
 ---
 
@@ -89,14 +105,21 @@ bench prototype.
 
 ---
 
-## 3. Rotation support (the real axle/bearing) — **required**
+## 3. Rotation support — horizontal Ferris-wheel axle (**required**)
+
+Because the carousel is **vertical** (rotation axis horizontal), the wheel is
+carried like a **Ferris-wheel axle**: a horizontal through-shaft on **two
+pillow-block bearings**, one each side of the wheel. This is the structural
+load path — the motor only applies torque (its shaft is rated for just 75 N
+radial, §1). A horizontal slewing-ring *turntable* bearing is **not** used
+here (that suits a horizontal turntable, which we ruled out, §11).
 
 | # | Part | Representative type / P/N | Qty | ~USD | Notes |
 |---|---|---|---|---|---|
-| B1 | Main turntable bearing | **Slewing ring / large thin-section turntable bearing**, ~150–300 mm bore-to-OD (e.g. Kaydon/INA/iglidur-PRT class) **[confirm size]** | 1 | 60–250 | Carries the wheel's axial + moment load; the motor only torques it. |
-| B2 | *(Paternoster Option B instead of B1)* sprocket + chain loop | #25 or #35 ANSI roller chain + 2 sprockets + idlers **[confirm]** | 1 set | 60 | For a chain-loop carrier magazine. |
-| B3 | Main shaft | Ø14–20 mm precision shaft (keyed to D1/gearbox output) **[confirm]** | 1 | 15 | Keyway to match coupling/gearbox. |
-| B4 | Pillow-block / flange bearings (if using a through-shaft) | 2× UCF/KFL-type ball bearing units **[confirm bore]** | 2 | 20 | Support the shaft each side of the wheel. |
+| B1 | **Horizontal main shaft** (the axle) | Ø20–25 mm precision shaft, keyed to the worm-gearbox/coupling output **[confirm dia.]** | 1 | 20 | Spans the wheel; sized for the ~20 N·m gravity moment + ~10 kg load, not just torque. |
+| B2 | **Pillow-block bearings** (axle supports) | 2× UCP/UCF/SHF-type ball-bearing pillow blocks, bore = B1 **[confirm bore]** | 2 | 25 | One each side of the wheel; carry the wheel's weight + moment so the motor/gearbox sees torque only. |
+| B3 | Shaft collars / locating rings | 2–4× clamp collars, bore = B1 | 4 | 8 | Axially locate the wheel and shaft against the bearings. |
+| B4 | *(Paternoster Option B instead of B1–B3)* sprocket + chain loop | #25 or #35 ANSI roller chain + 2 sprockets + idlers on the same horizontal axle **[confirm]** | 1 set | 60 | For a vertical chain-loop carrier magazine instead of a rigid wheel. |
 
 ---
 
@@ -130,7 +153,7 @@ bench prototype.
 | F2 | Corner brackets / gussets, T-nuts, M5 bolts | extrusion hardware kit | 1 set | 25 | — |
 | F3 | Carousel wheel / pocket disc | 3D-printed (PLA/PETG) **or** laser-cut acrylic/Al, 50 pockets sized to Ø25 augers + retention | 1 | 20–60 | Fits the repo's FDM workflow; print in segments if >printer bed. |
 | F4 | **Counterweight / balancing** mass | adjustable weights opposite the loaded arc (paternoster principle) | 1 set | 10 | Lets the motor fight inertia/friction, not a standing gravity moment. |
-| F5 | Auger pocket retainers | printed clips / leaf-spring detents per pocket | 50 | 15 | Keep augers seated through the vertical sweep. |
+| F5 | Auger pocket retainers | printed clips / leaf-spring detents per pocket | 50 | 15 | **Critical for the vertical sweep:** augers ride upside-down over the top of the wheel, so each pocket must positively retain its auger against gravity yet release it for the bottom-station servo+solenoid pull. |
 
 ---
 
@@ -150,7 +173,7 @@ bench prototype.
 | Block | ~USD |
 |---|---|
 | Drive (D1–D5) | ~220 |
-| Bearing/axle (B1–B4) | ~120–300 |
+| Bearing/axle (B1–B4) | ~55–115 |
 | Coupling/reduction (C1–C3) | ~95–145 |
 | Sensing/detent/safety (S1–S5) | ~75–135 |
 | Frame (F1–F5) | ~130–230 |
@@ -167,9 +190,13 @@ bolt the auger pockets to it (see BOM §5.2 (B) for vendors):
 - **Industrial rotary indexing table** (Weiss TC, CAMCO/Destaco, Sankyo) —
   globoidal-cam index + dwell + lock built in; rugged but heavy/$$$.
 - **Used lab autosampler / fraction-collector carousel** (Gilson, Teledyne
-  ISCO, Agilent/Thermo) — gut for its turntable + home sensor + stepper.
+  ISCO, Agilent/Thermo) — gut for its indexed wheel + home sensor + stepper,
+  then **re-mount it on a horizontal axis** for the vertical magazine.
 - **Pharmacy canister carousel** (ScriptPro/Parata) — closest functional
   analog (index 1-of-N canister to a chute).
+- **Kardex/Hänel vertical lift module** (counterbalanced paternoster) — already
+  a vertically oriented, counterweighted carrier loop; the closest match to the
+  chosen orientation, worth studying for the retention + counterweight scheme.
 
 These trade a higher unit cost / less customisation for far less mechanical
 design and a proven hold/index mechanism.
@@ -179,15 +206,22 @@ design and a proven hold/index mechanism.
 ## 10. Open items before promoting to the BOM
 
 - **[confirm]** Final wheel diameter vs. single-ring/double-ring/paternoster
-  choice (drives the bearing size and frame).
-- **[confirm]** Slewing-bearing size & load rating for ~10 kg + moment.
+  choice (drives the axle length and frame).
+- **[confirm]** Main shaft diameter + pillow-block bore/load rating for the
+  ~10 kg payload **and the ~20 N·m gravity moment** of a part-emptied wheel.
+- **[confirm]** Counterweight mass/travel needed to cancel the worst-case
+  imbalance moment as augers are consumed.
 - **[confirm]** Worm-gearbox ratio (40:1 vs 60:1) and exact NEMA 34 input flange.
 - **[confirm]** Power-off brake torque/voltage and NEMA 34 rear-mount fit.
+- **[confirm]** Bottom-station auger **release** mechanism: clip stiffness vs.
+  the servo+solenoid pull force, so augers stay seated over the top yet release
+  cleanly at the bottom.
 - **[confirm]** Whether the CL86T's STEP/DIR can be driven straight from the
   Pico W 3.3 V via the opto input, or needs a level shifter.
-- Fold in findings from the Edison literature review (see [`edison/`](./edison/)).
+- Fold in findings from the Edison literature review (see [`edison/`](./edison/))
+  and the **vertical-design feedback** query (§12).
 
-> Many representative P/Ns above (slewing bearing, worm gearbox, brake) are
+> Many representative P/Ns above (pillow blocks, worm gearbox, brake) are
 > *category/representative* picks — the **browser tool was unavailable this
 > session** (persistent "browser already in use" even after restarting the
 > Playwright MCP server and clearing the profile lock), and
@@ -248,3 +282,23 @@ high-effort literature, task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`,
   for a functional prototype — consistent with §8's ~$680–1,070.
 
 *(Citations with DOIs are listed at the end of the full review.)*
+
+---
+
+## 12. Edison feedback query (vertical design — in flight)
+
+A **non-blocking** FutureHouse Edison high-effort literature query was
+dispatched this session (@sgbaird, comment 4802540746: "send a nonblocking
+Edison query with the latest plan for feedback") to critique the vertical
+build above and surface prior art / failure modes / improvements.
+
+- **Task ID:** `11ddf6db-5baa-4e5f-a789-3d2d1d3195be` (`LITERATURE_HIGH`)
+- **Status when dispatched:** queued / running — **fetch next session** and
+  fold the feedback into §2–§7 and the §10 open items.
+- **Asked specifically about the vertical geometry:** dominant torque/holding
+  requirement for a horizontal-axis loaded wheel; retaining/releasing hanging
+  augers at the bottom station; vertical-carousel / paternoster / vertical-lift
+  precedents to study or buy-and-modify; and failure modes unique to a
+  vertically oriented loaded carousel (imbalance as augers are consumed, shaft
+  deflection, back-drive on power loss).
+
