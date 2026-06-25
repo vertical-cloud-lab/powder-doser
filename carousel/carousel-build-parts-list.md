@@ -56,9 +56,9 @@
 > **Vertical-specific torque note.** A *full* wheel is roughly balanced, so the
 > motor mostly fights inertia + bearing friction. The worst case is a
 > **part-emptied** wheel: once augers have been dispensed from one arc, the
-> remaining ~10 kg sits off-axis and gravity applies a standing moment about the
-> horizontal shaft (up to ~payload × pitch radius ≈ 10 kg × 0.2 m ≈ **20 N·m at
-> the rim** before reduction/counterweight). This is why the vertical build
+> remaining ~10 kg sits off-axis and gravity applies a standing **torque about
+> the rotation axis** (up to ~payload × pitch radius ≈ 10 kg × 0.2 m ≈ **20 N·m**,
+> before reduction/counterweight). This is why the vertical build
 > leans on a **counterweight** (§6 F4) to cancel most of that moment *and* a
 > **self-locking worm reducer / power-off brake** (§2/§4/§5) so the wheel cannot
 > creep or back-drive when stopped — neither of which a horizontal turntable
@@ -116,7 +116,7 @@ here (that suits a horizontal turntable, which we ruled out, §11).
 
 | # | Part | Representative type / P/N | Qty | ~USD | Notes |
 |---|---|---|---|---|---|
-| B1 | **Horizontal main shaft** (the axle) | Ø20–25 mm precision shaft, keyed to the worm-gearbox/coupling output **[confirm dia.]** | 1 | 20 | Spans the wheel; sized for the ~20 N·m gravity moment + ~10 kg load, not just torque. |
+| B1 | **Horizontal main shaft** (the axle) | Ø20–25 mm precision shaft, keyed to the worm-gearbox/coupling output **[confirm dia.]** | 1 | 20 | Spans the wheel; sized for the ~10 kg load and the **shaft bending** it imposes between the two bearings, not just the drive torque. |
 | B2 | **Pillow-block bearings** (axle supports) | 2× UCP/UCF/SHF-type ball-bearing pillow blocks, bore = B1 **[confirm bore]** | 2 | 25 | One each side of the wheel; carry the wheel's weight + moment so the motor/gearbox sees torque only. |
 | B3 | Shaft collars / locating rings | 2–4× clamp collars, bore = B1 | 4 | 8 | Axially locate the wheel and shaft against the bearings. |
 | B4 | *(Paternoster Option B instead of B1–B3)* sprocket + chain loop | #25 or #35 ANSI roller chain + 2 sprockets + idlers on the same horizontal axle **[confirm]** | 1 set | 60 | For a vertical chain-loop carrier magazine instead of a rigid wheel. |
@@ -153,7 +153,7 @@ here (that suits a horizontal turntable, which we ruled out, §11).
 | F2 | Corner brackets / gussets, T-nuts, M5 bolts | extrusion hardware kit | 1 set | 25 | — |
 | F3 | Carousel wheel / pocket disc | 3D-printed (PLA/PETG) **or** laser-cut acrylic/Al, 50 pockets sized to Ø25 augers + retention | 1 | 20–60 | Fits the repo's FDM workflow; print in segments if >printer bed. |
 | F4 | **Counterweight / balancing** mass | adjustable weights opposite the loaded arc (paternoster principle) | 1 set | 10 | Lets the motor fight inertia/friction, not a standing gravity moment. |
-| F5 | Auger pocket retainers | printed clips / leaf-spring detents per pocket | 50 | 15 | **Critical for the vertical sweep:** augers ride upside-down over the top of the wheel, so each pocket must positively retain its auger against gravity yet release it for the bottom-station servo+solenoid pull. |
+| F5 | Auger pocket retainers | printed clips / leaf-spring detents per pocket | 50 | 15 | **Critical for the vertical sweep:** augers ride upside-down over the top of the wheel, so each pocket must positively retain its auger against gravity yet release it for the bottom-station servo+solenoid pull — balance retention force vs. that pull (see §10 confirmation item). |
 
 ---
 
@@ -208,7 +208,9 @@ design and a proven hold/index mechanism.
 - **[confirm]** Final wheel diameter vs. single-ring/double-ring/paternoster
   choice (drives the axle length and frame).
 - **[confirm]** Main shaft diameter + pillow-block bore/load rating for the
-  ~10 kg payload **and the ~20 N·m gravity moment** of a part-emptied wheel.
+  ~10 kg payload (shaft bending) **and** the holding torque to resist the
+  ~20 N·m worst-case gravity torque (about the rotation axis) of a part-emptied
+  wheel.
 - **[confirm]** Counterweight mass/travel needed to cancel the worst-case
   imbalance moment as augers are consumed.
 - **[confirm]** Worm-gearbox ratio (40:1 vs 60:1) and exact NEMA 34 input flange.
