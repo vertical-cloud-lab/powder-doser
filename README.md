@@ -4,6 +4,14 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Bill of materials
+
+A consolidated, current [bill of materials](BILL-OF-MATERIALS.md) —
+scraped from the project's issues, pull-request discussions, and feature
+branches — records the most recent design decision for each subsystem
+(host MCU, stepper driver, scale interface, tilt servo, power, augers,
+printed parts, fasteners, and filament) and notes what each superseded.
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
