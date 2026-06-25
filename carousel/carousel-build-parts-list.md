@@ -12,7 +12,9 @@
 > Where an exact part still needs a final click-through / sizing pass it is
 > marked **[confirm]**. The companion Edison high-effort literature review
 > of carousel/turret/paternoster prior art is in
-> [`edison/`](./edison/) (task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`).
+> [`edison/carousel-literature-review.md`](./edison/carousel-literature-review.md)
+> (task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`); its key takeaways are
+> summarised in §11 below.
 
 ---
 
@@ -180,3 +182,47 @@ design and a proven hold/index mechanism.
 > `omc-stepperonline.com` returns HTTP 403 to automated fetchers, so exact
 > SKUs for those items still need a final click-through before ordering. The
 > motor/driver (D1/D2) **are** verified against the datasheet @sgbaird attached.
+
+---
+
+## 11. Edison literature review — key takeaways
+
+Full report + raw task dump:
+[`edison/carousel-literature-review.md`](./edison/carousel-literature-review.md),
+[`edison/task_dump.json`](./edison/task_dump.json) (FutureHouse Edison
+high-effort literature, task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`,
+`has_successful_answer: true`).
+
+- **Re-orient the magazine: a horizontal-axis drum, not a vertical wheel.**
+  The review's headline recommendation is a **CNC-tool-changer-style drum
+  carousel** (rotation axis horizontal, augers parallel to the axis) — the
+  most directly analogous architecture for storing many *elongated
+  cylindrical* objects and indexing one to a pickup/dosing station. This
+  reduces the standing gravity moment vs. a Ferris-wheel and is worth
+  evaluating against Options A/B above.
+- **Drive/hold:** stepper through a **self-locking worm reducer** (matches
+  Option 2b) + a **spring-loaded shot pin** into a precision hole at the
+  dosing station for a positive mechanical lock, plus **ball-detent
+  plungers** around the periphery — corroborating §2/§5 here.
+- **Auger retention:** **compliant leaf-/wire-spring clips** per pocket
+  (as in the Holst et al. patch-clamp pipette carousel, which retained
+  glass pipettes with 100% reliability over 444 presentations) — refines
+  §6 F5.
+- **Homing/control:** photoreflective or inductive home sensor + stepper
+  step-counting; Arduino/Raspberry-Pi-class controller (validated by the
+  open-source **RotoMate**, ~$550 Arduino autosampler, and the ETH **COD
+  carousel**) — matches §5 S1/S2 and §7 E1.
+- **Open-source / academic precedents to study** (purchasable or
+  replicable): **RotoMate** (30-sample 3D-printed NMR autosampler, OSH),
+  **Holst et al. 2019** patch-clamp 40-pipette carousel (9°/pipette,
+  spring-clip retention), **COD carousel** (ETH, 1.8° bipolar stepper, PEEK
+  tube ring), GC/HPLC autosampler & fraction-collector trays (Agilent,
+  Teledyne ISCO, Gilson), and **CNC ATC drum magazines** (20–60+ tools).
+- **Commercial to buy/modify:** Mettler-Toledo Quantos/XPR & Chronect dosing
+  -head carousels, Chemspeed gantry-over-rack platforms, Kardex/Hänel
+  vertical lift modules (counterbalanced paternosters), Weiss/DESTACO/CAMCO
+  barrel-cam rotary index tables.
+- **Budget cross-check:** the review's independent estimate is **$500–1,100**
+  for a functional prototype — consistent with §8's ~$680–1,070.
+
+*(Citations with DOIs are listed at the end of the full review.)*
