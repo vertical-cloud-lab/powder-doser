@@ -217,7 +217,7 @@ factor this lands in the **~5–12 N·m at the carousel shaft** range.
 | Ref | Part | Vendor / P-N | Qty | ~USD | Notes |
 |---|---|---|---|---|---|
 | MC1 | **NEMA 34 closed-loop stepper, 12 N·m** | StepperOnline **34HS59-6004D-E1000** | 1 | ~110 | 86×86×175 mm, 6.0 A/phase, Ø14 shaft, 5.5 kg, **1000 PPR (4000 CPR) optical encoder**. 12 N·m holding covers the shaft budget directly. |
-| MD1 | **Closed-loop stepper driver (HSS/CL series)** | StepperOnline **CL86T** (or **CL86T-V41**) | 1 | ~55 | 0–8.2 A, 24–110 VDC; reads the motor encoder so a stall/overload is corrected, not silently dropped. STEP/DIR like the Tic alt path; pairs with the 34HS59 above. |
+| MD1 | **Closed-loop stepper driver (HSS/CL series)** | StepperOnline **CL86T** (or **CL86T-V41**) | 1 | ~55 | 0–8.2 A, 24–110 VDC; reads the motor encoder so a stall/overload is corrected, not silently dropped. STEP/DIR interface (like the DRV8825 cost-alt path, §5 item 11-alt); pairs with the 34HS59 above. |
 | MP1 | 48–60 VDC PSU for the closed-loop driver | e.g. Mean Well **LRS-350-48** | 1 | ~35 | Separate from the 12 V logic rail; size for ≥6 A motor current. |
 
 **Lighter / cheaper alternative — geared NEMA 23/24:** a **NEMA 23
