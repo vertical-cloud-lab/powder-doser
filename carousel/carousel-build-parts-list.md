@@ -29,6 +29,18 @@
 | Worst-case shaft torque | **~5–12 N·m** (off-balance + index accel) | BOM §5.1 torque budget |
 | Hold requirement | must **not** back-drive on power loss | safety |
 
+> **Orientation — vertical, by design** (@sgbaird, comment 4801844718). The
+> magazine is a **vertically oriented carousel** (rotation axis horizontal;
+> augers hang vertically, Ferris-wheel / paternoster style), **not** a
+> horizontal turntable or a horizontal-axis drum. The dispense mechanism pulls
+> one auger **in/out of the dispense position with a servo + solenoid**; a
+> horizontal layout would have to present that in/out stroke radially and so
+> would need a very large wheel diameter to fit 50 augers, whereas a vertical
+> loop keeps the footprint small and presents the indexed auger at the bottom
+> for a straight-down pull. See the schematic comparison in
+> [`mechanism-panel/`](./mechanism-panel/README.md). This supersedes the
+> Edison review's "horizontal drum" suggestion (see §11).
+>
 > **Geometry note.** 50 Ø25 mm augers on one ring at a sane pitch needs a
 > ~0.42 m wheel; if that is too large, split into **two stacked rings of 25**
 > or a **double-helix paternoster** (carriers on a chain loop) to keep the
@@ -193,13 +205,23 @@ Full report + raw task dump:
 high-effort literature, task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`,
 `has_successful_answer: true`).
 
-- **Re-orient the magazine: a horizontal-axis drum, not a vertical wheel.**
-  The review's headline recommendation is a **CNC-tool-changer-style drum
-  carousel** (rotation axis horizontal, augers parallel to the axis) — the
-  most directly analogous architecture for storing many *elongated
-  cylindrical* objects and indexing one to a pickup/dosing station. This
-  reduces the standing gravity moment vs. a Ferris-wheel and is worth
-  evaluating against Options A/B above.
+- **Edison suggested a horizontal-axis drum — but we are keeping the magazine
+  *vertically oriented* (decision, @sgbaird, comment 4801844718).**
+  The review's headline recommendation was a **CNC-tool-changer-style drum
+  carousel** (rotation axis horizontal, augers parallel to the axis), which is
+  mechanically tidy for storing many elongated cylinders. **We are not
+  adopting it**: the dispense mechanism pulls a single auger **in and out of
+  the dispense position with a servo + solenoid**, and on a horizontal
+  (turntable / drum-end) layout that radial in/out stroke forces a very large
+  wheel diameter to fit all 50 augers around the rim. A **vertical carousel**
+  (rotation axis horizontal, augers hanging vertically — a Ferris-wheel /
+  paternoster loop) keeps the footprint small, keeps every auger upright for
+  gravity feed, and presents the indexed auger at the bottom where the
+  servo + solenoid can pull it **straight down** into the dosing station. The
+  drum is retained here only as *prior art*, not as the chosen architecture.
+  See the schematic comparison in
+  [`mechanism-panel/`](./mechanism-panel/README.md) (the "Vertical carousel
+  (CHOSEN)" vs. "Horizontal carousel (rejected)" tiles).
 - **Drive/hold:** stepper through a **self-locking worm reducer** (matches
   Option 2b) + a **spring-loaded shot pin** into a precision hole at the
   dosing station for a positive mechanical lock, plus **ball-detent

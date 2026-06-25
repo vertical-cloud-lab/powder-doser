@@ -30,3 +30,11 @@ BOM **$500–1,100**.
 
 Key takeaways are folded into
 [`../carousel-build-parts-list.md`](../carousel-build-parts-list.md) §11.
+
+> **Note (design decision):** the review's "horizontal-axis drum"
+> recommendation is **not** being adopted — the magazine is kept **vertically
+> oriented** because the servo + solenoid dispense stroke would force a very
+> large diameter on a horizontal layout (@sgbaird, PR #114 comment
+> 4801844718). The drum is retained only as prior art; see
+> `../carousel-build-parts-list.md` §11 and the orientation comparison in
+> `../mechanism-panel/`.

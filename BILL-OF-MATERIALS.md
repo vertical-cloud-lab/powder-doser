@@ -243,6 +243,17 @@ or (c) **replicate from open-source designs**, plus the mechanical
 options for *indexing* one auger into the dosing position and *holding*
 it there against a heavy off-balance vertical load.
 
+> **Orientation:** the magazine is a **vertically oriented carousel**
+> (rotation axis horizontal; augers hang vertically) — *not* a horizontal
+> turntable/drum — because the dispense step pulls one auger in/out with a
+> **servo + solenoid**, and a horizontal layout would need a very large
+> diameter to fit 50 augers around a radial-pull station (@sgbaird, comment
+> 4801844718).
+>
+> **Visual panel:** schematic line drawings of every mechanism and reference
+> system named below are in
+> [`carousel/mechanism-panel/`](carousel/mechanism-panel/README.md).
+
 **(A) How to index & hold the wheel — mechanism options**
 
 | Option | How it indexes / holds | Fit for 50-auger vertical magazine |
