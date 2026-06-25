@@ -194,6 +194,46 @@ per-channel cost), DRV8871, and DRV2605L, all reporting to a **Pi Zero
 2 W host** over USB-CDC. A 50×50 mm 2-layer "satellite Rev A" board was
 sketched (~$15–25/board). A CAN-bus satellite variant is the v2 fallback.
 
+### 5.1 Vertical-carousel indexing drive (50-auger magazine)
+
+For a **vertical carousel** (Ferris-wheel / paternoster magazine) that
+stores and indexes **50 filled augers**, the per-channel NEMA-11
+(10 N·cm) used to spin a single auger is far too weak — the carousel
+drive has to accelerate the whole loaded wheel and hold position against
+a gravitational imbalance, so it needs a **high-torque closed-loop**
+(encoder-feedback) stepper that cannot lose steps under shock/overload.
+
+**Rough torque budget.** A full Ø25 × 250 mm "nozzle 4" auger holds
+~66.8 mL (§6.3); filled with fine powder plus the printed tube it is on
+the order of **~0.2 kg each**, so 50 of them ≈ **~10 kg** of payload
+(plus the carousel frame). On a vertical wheel of pitch radius
+r ≈ 0.2 m, an asymmetric (partially loaded) wheel produces a worst-case
+static imbalance on the order of **a few N·m**, and accelerating the
+loaded rotational inertia to index one pocket adds more; with a safety
+factor this lands in the **~5–12 N·m at the carousel shaft** range.
+
+**Recommended drive — direct (no gearbox):**
+
+| Ref | Part | Vendor / P-N | Qty | ~USD | Notes |
+|---|---|---|---|---|---|
+| MC1 | **NEMA 34 closed-loop stepper, 12 N·m** | StepperOnline **34HS59-6004D-E1000** | 1 | ~110 | 86×86×175 mm, 6.0 A/phase, Ø14 shaft, 5.5 kg, **1000 PPR (4000 CPR) optical encoder**. 12 N·m holding covers the shaft budget directly. |
+| MD1 | **Closed-loop stepper driver (HSS/CL series)** | StepperOnline **CL86T** (or **CL86T-V41**) | 1 | ~55 | 0–8.2 A, 24–110 VDC; reads the motor encoder so a stall/overload is corrected, not silently dropped. STEP/DIR like the Tic alt path; pairs with the 34HS59 above. |
+| MP1 | 48–60 VDC PSU for the closed-loop driver | e.g. Mean Well **LRS-350-48** | 1 | ~35 | Separate from the 12 V logic rail; size for ≥6 A motor current. |
+
+**Lighter / cheaper alternative — geared NEMA 23/24:** a **NEMA 23
+closed-loop** (StepperOnline **23HS45-4204D-E1000**, ~3 N·m, ~$60) or
+**NEMA 24** behind a **5:1 planetary gearbox** reaches ~15 N·m at the
+output while staying smaller and lower-current; the gearbox also resists
+back-driving so the wheel holds its index when powered down. Trade-offs:
+gear backlash (pick a low-backlash planetary) and a higher parts count.
+
+> The closed-loop encoder is the key requirement here (not just raw
+> torque): a 50-auger magazine is a high-inertia, potentially
+> jam-prone load, and an open-loop stepper that drops steps would
+> mis-index a pocket without any error. Both the 34HS59-6004D-E1000 and
+> 23HS45-4204D-E1000 ship with a 1000 PPR encoder and report position to
+> the CL-series driver. Vendor links are verified in [§10](#10-verified-part-links).
+
 ---
 
 ## 6. Mechanical / 3D-printed parts & fasteners
@@ -334,6 +374,9 @@ the remaining vendor links come from `hardware/vibration-motor-and-solenoid.md`
 | Pololu **DRV8825** carrier (#2133, cost alt) | https://www.pololu.com/product/2133 | Vendor (audited PR #25) |
 | **Pololu #3776** 33 V / 9 W shunt regulator | https://www.pololu.com/product/3776 | Vendor (audited PR #25) |
 | **NEMA-11 11HS18-0674S** stepper | https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s | Vendor (audited PR #25) |
+| **NEMA 34 closed-loop 12 N·m** (carousel drive) **34HS59-6004D-E1000** | https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000 | Vendor (closed-loop carousel drive, §5.1) |
+| **NEMA 23 closed-loop 3 N·m** (geared-carousel alt) **23HS45-4204D-E1000** | https://www.omc-stepperonline.com/nema-23-closed-loop-stepper-motor-3-0nm-424oz-in-encoder-1000ppr-4000cpr-23hs45-4204d-e1000 | Vendor (closed-loop carousel alt, §5.1) |
+| **CL86T** closed-loop stepper driver (NEMA 34) | https://www.omc-stepperonline.com/closed-loop-stepper-driver-0-8-2a-18-80vac-24-110vdc-for-nema-34-stepper-motor-cl86t | Vendor (closed-loop carousel driver, §5.1) |
 | **ST-FC01** 5 mm flexible shaft coupler | https://www.omc-stepperonline.com/5mm-5mm-flexible-shaft-coupling-18x25mm-cnc-stepper-motor-shaft-coupler-st-fc01 | Vendor (audited PR #25) |
 | Mean Well **GST60A12-P1J** 12 V / 5 A PSU | https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712 | Vendor (audited PR #25) |
 | **Barrel-jack** 2.1 mm DC adapter (Adafruit #368) | https://www.adafruit.com/product/368 | Vendor (audited PR #25) |
