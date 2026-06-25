@@ -234,6 +234,86 @@ gear backlash (pick a low-backlash planetary) and a higher parts count.
 > 23HS45-4204D-E1000 ship with a 1000 PPR encoder and report position to
 > the CL-series driver. Vendor links are verified in [§10](#10-verified-part-links).
 
+### 5.2 Carousel mechanism — prior art, buy/modify options & recommendations
+
+The §5.1 motor sizing assumes one particular indexing approach. This
+section surveys **existing rotating-carousel / tray / paternoster
+systems** we could (a) **buy and modify**, (b) **draw inspiration from**,
+or (c) **replicate from open-source designs**, plus the mechanical
+options for *indexing* one auger into the dosing position and *holding*
+it there against a heavy off-balance vertical load.
+
+**(A) How to index & hold the wheel — mechanism options**
+
+| Option | How it indexes / holds | Fit for 50-auger vertical magazine |
+|---|---|---|
+| **Direct closed-loop stepper** on a slewing-ring / lazy-Susan turntable (§5.1 NEMA 34 + CL86T) | Software-defined pocket spacing; encoder corrects a jam/overload; holding torque (or an added brake) resists the gravity imbalance | **Baseline** — simplest, fully re-programmable station count |
+| **Geneva drive (Maltese cross)** | Continuous motor → fixed intermittent index with a **positive geometric lock** between stations; the wheel is mechanically held when stopped, even unpowered | Excellent "hold position" behaviour; downside = **fixed** slot count (cut slots = # stations) and a large wheel |
+| **Barrel / roller-gear cam indexer** (Weiss, CAMCO/Destaco, Sankyo industrial rotary index tables) | Globoidal cam gives backlash-free index + built-in dwell/lock; very rugged | Strong **buy-and-modify** candidate, but heavy and expensive |
+| **Ratchet-and-pawl / spring detent + indexing plunger** | Single-direction index into a detent / a plunger dropping into an N-hole plate | Cheap positive lock for a **prototype**; pair with any motor |
+| **Worm-gear reducer + closed-loop stepper** | Worm is **self-locking** (resists back-drive) and multiplies torque | §5.1 geared alternative; good fail-safe hold |
+
+> **Balancing principle.** Whatever the drive, **counterweight / balance
+> the wheel (paternoster principle)** so the motor fights only inertia and
+> friction, not a standing gravitational moment — this is what lets a
+> modest closed-loop stepper index a 50-auger magazine reliably.
+
+**(B) Commercial systems to buy / modify / take inspiration from** *(comparison only — not priced or integration-verified here)*
+
+- **Mettler-Toledo Quantos / XPR automated dosing** — a carousel/magazine
+  of replaceable powder & liquid **dosing heads** indexed under a balance;
+  the closest commercial analog to "index 1 of N filled heads to a dosing
+  point" (also see §9).
+- **Labman dosing-head carousel** — 56-head carousel (§9).
+- **Lab autosamplers & fraction collectors** (Gilson, Agilent, Thermo
+  GC/LC, Teledyne ISCO) — rotary **vial carousels** with a home sensor +
+  stepper indexing; inexpensive used units can be gutted for the
+  turntable + index logic.
+- **Analytical sample changers** (Malvern Panalytical / Bruker XRD
+  carousels, NMR sample changers, Anton Paar) — automated sample
+  magazines with reliable rotary indexing.
+- **Pharmacy tablet/vial dispensing carousels** (ScriptPro, Parata Max,
+  Omnicell) — rotary **canister carousels** that index a selected canister
+  to a dispense chute: mechanically the same problem as ours.
+- **Industrial rotary indexing tables** (Weiss TC, CAMCO/Destaco, Sankyo,
+  Kitagawa) — buy the **indexing stage itself** and mount augers on it.
+- **Vertical paternoster / lift storage** (Kardex, Hänel) — inspiration
+  for a **vertical, counterweighted** magazine of many carriers.
+
+**(C) Open-source / DIY designs to replicate**
+
+- **Parametric Geneva-drive indexers** are a well-trodden open-hardware
+  pattern (OpenSCAD Geneva generators + rotary-table remixes on
+  Thingiverse / Printables) — a good starting point for our own
+  parametric carousel, and it fits the repo's existing CadQuery/OpenSCAD
+  workflow. *(Individual maker pages and GrabCAD often return HTTP 403 to
+  automated fetchers; use the search links in §10.)*
+- **Open-source lab automation** — Opentrons OT-2/Flex use deck slots +
+  tube racks rather than a carousel, but their open closed-loop motion is
+  a useful reference; **Jubilee** (open-hardware multi-tool motion
+  platform) and 3D-printer **tool-changers** demonstrate indexed/closed-
+  loop tool selection patterns we can borrow for pocket selection.
+
+**(D) Recommendation for our 50-auger vertical carousel**
+
+1. **Baseline:** a slewing-ring / lazy-Susan turntable driven by the §5.1
+   **closed-loop NEMA 34 + CL86T**, with the magazine **counterweighted /
+   balanced (paternoster)** and a **worm reducer or fail-safe brake** so a
+   power loss can't let the loaded wheel back-drive.
+2. **If a purely mechanical positive lock is wanted** (and a fixed
+   50-station geometry is acceptable): add a **Geneva/Maltese index** — or
+   a **spring-loaded detent plunger** dropping into a 50-hole index plate —
+   between motor and wheel so each station is held *geometrically*, not
+   only by the servo.
+3. **Prototype path:** scale a parametric open-source **Geneva indexer** to
+   our pitch radius, 3D-print it, and validate index **repeatability**
+   before committing to an industrial roller-cam table.
+4. An **Edison high-effort literature review** of carousel/turret/
+   paternoster indexing prior art was dispatched (task
+   `499c6c09-0970-47f9-a7b7-a54ac9bfc090`); its findings are to be folded
+   into this section **next session** (per the request to "fetch next
+   session"). Reference links are verified in [§10](#10-verified-part-links).
+
 ---
 
 ## 6. Mechanical / 3D-printed parts & fasteners
@@ -394,6 +474,28 @@ the remaining vendor links come from `hardware/vibration-motor-and-solenoid.md`
 > and were audited as the correct parts in PR #25. The **Tic T500** is Pololu
 > **#3135** (connectors soldered); the otherwise-identical **#3134** (no
 > connectors) is the bare-board variant referenced in some firmware notes.
+
+### Carousel / rotary-indexing reference links (§5.2)
+
+These are **inspiration / mechanism references** (not orderable parts);
+each was checked to return HTTP 200 this session.
+
+| Reference | Link | Source |
+|---|---|---|
+| Geneva drive (Maltese cross) — intermittent indexing + geometric lock | https://en.wikipedia.org/wiki/Geneva_drive | Reference (verified 200) |
+| Rotary (indexing) table | https://en.wikipedia.org/wiki/Rotary_table | Reference (verified 200) |
+| Indexing (intermittent motion) | https://en.wikipedia.org/wiki/Indexing_(motion) | Reference (verified 200) |
+| Paternoster (vertical counterweighted carousel) principle | https://en.wikipedia.org/wiki/Paternoster_lift | Reference (verified 200) |
+| Open-source Geneva mechanisms / rotary-table remixes (search) | https://www.thingiverse.com/search?q=geneva+mechanism | Maker search (verified 200; individual pages may 403) |
+| Open-source Geneva indexers (search) | https://www.printables.com/search/models?q=geneva%20indexer | Maker search (verified 200) |
+
+> Commercial carousel/turret vendors named in §5.2 (Mettler-Toledo
+> Quantos/XPR, Labman, Gilson/Agilent/Thermo autosamplers, ScriptPro/Parata,
+> Weiss/CAMCO-Destaco/Sankyo rotary index tables, Kardex/Hänel paternosters)
+> are comparison-only; deep product URLs are omitted to avoid stale/404 links —
+> search the vendor name + "rotary carousel / index table". An **Edison
+> high-effort literature review** (task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`)
+> was dispatched to deepen this survey; results to be incorporated next session.
 
 ---
 
