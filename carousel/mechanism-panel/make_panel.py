@@ -72,8 +72,6 @@ def tile_vertical(ax):
     # oblong chain loop (paternoster)
     cx, top, bot = 5, 8.0, 3.0
     rad = 1.6
-    th = np.linspace(-90, 90, 40)
-    ax.plot(cx + rad * np.cos(np.radians(th)) + 0, top + 0 * th, lw=0)  # noop
     # left/right straight runs
     ax.plot([cx - rad, cx - rad], [bot, top], color=INK, lw=1.5)
     ax.plot([cx + rad, cx + rad], [bot, top], color=INK, lw=1.5)
@@ -82,8 +80,6 @@ def tile_vertical(ax):
         ax.add_patch(Circle((cx, cy), rad, fill=False, edgecolor=INK, lw=1.5))
         ax.add_patch(Circle((cx, cy), 0.18, facecolor=INK))
     # hanging augers on the loop
-    for cy in (top + rad, top, bot, bot - rad):
-        pass
     ys = [9.0, 7.6, 6.2, 4.8, 3.6, 2.2]
     xs = [cx - rad, cx - rad, cx - rad, cx + rad, cx + rad, cx + rad]
     for x, y in zip(xs, ys):
@@ -220,8 +216,8 @@ def tile_detent(ax):
     ax.add_patch(Rectangle((cx - 0.18, cy + R - 0.1), 0.36, 1.6,
                            facecolor=FILL, edgecolor=ACCENT, lw=1.3))
     # spring squiggle
-    sx = np.linspace(cy + R + 1.5, cy + R + 2.6, 30)
-    ax.plot(cx + 0.18 * np.sin(np.linspace(0, 18, 30)), sx, color=ACCENT, lw=1.1)
+    spring_y = np.linspace(cy + R + 1.5, cy + R + 2.6, 30)
+    ax.plot(cx + 0.18 * np.sin(np.linspace(0, 18, 30)), spring_y, color=ACCENT, lw=1.1)
 
 
 def tile_worm(ax):
