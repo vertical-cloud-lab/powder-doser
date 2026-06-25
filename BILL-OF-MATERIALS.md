@@ -9,8 +9,9 @@ design decision** for each subsystem and notes what it superseded.
 > **Status:** Most of the detailed CAD and electronics work lives on open
 > (un-merged) feature branches/PRs, so part numbers here are the current
 > *design intent* and are subject to change until the branches land on
-> `main`. Each line cites the issue/PR it came from. Prices are
-> approximate single-unit USD from vendor pages at time of writing.
+> `main`. Each line cites the issue/PR it came from, and every off-the-shelf
+> part has a verified (non-404) vendor link in [§10](#10-verified-part-links).
+> Prices are approximate single-unit USD from vendor pages at time of writing.
 
 ## How this document is organized
 
@@ -23,7 +24,8 @@ design decision** for each subsystem and notes what it superseded.
 - [7. Filament & print settings](#7-filament--print-settings)
 - [8. Open questions / not-yet-specified](#8-open-questions--not-yet-specified)
 - [9. Commercial reference systems (comparison only)](#9-commercial-reference-systems-comparison-only)
-- [10. Source provenance](#10-source-provenance)
+- [10. Verified part links](#10-verified-part-links)
+- [11. Source provenance](#11-source-provenance)
 
 ---
 
@@ -31,16 +33,16 @@ design decision** for each subsystem and notes what it superseded.
 
 | Subsystem | Current choice | Superseded / rejected | Source |
 |---|---|---|---|
-| Bench-rig host MCU | **Raspberry Pi Pico W** (RP2040 + CYW43439) | Raspberry Pi Zero 2 W (kept for production orchestration) | #60, PR #61 |
-| Production host | **Pi Zero 2 W orchestrator** likely driving an array of Pico-W satellites | Single Pi-direct fan-out | #44/PR #45, #60 |
-| Stepper driver | **Pololu Tic T500** (USB/serial, MP6500, on-board planner) | bare Pololu DRV8825 carrier (kept as cost alt; Tic T825 as drop-in upgrade) | PR #61 |
-| Stepper motor | **NEMA 11 11HS18-0674S** (0.67 A/phase, 10 N·cm) | SparkFun ROB-10848 (was NEMA 17, under-rated) | PR #25 |
-| Scale RS-232 interface | **Waveshare Pico-2CH-RS232 module** (SP3232EEN) | discrete MAX3232 breakout (SparkFun BOB-11189) + Molex 43645 receptacle | #102, PR #100 |
-| Tilt / dispensing-angle servo | **MG996R** (×2, mirrored) — physically built & tested | HD-1810MG (#1142) was the original electronics-BOM pick; still referenced in firmware notes | #65, PR #66 vs PR #25/#61 |
-| Baseplate tilt actuation | **Dual MG996R servos + involute gear band** on the hinge | Glideforce GF01-121010-1-66 linear actuator (optional, still in production BOM) | PR #66 vs PR #25 |
-| System AC power | **Mean Well GST60A12-P1J** 12 V / 5 A brick | Adafruit #352 (out of stock 2026-Q2); adjustable #4880 avoided | PR #25 |
-| Back-up / conference power | **Eaton Tripp Lite SMART1500LCDT UPS** (ordered) | portable power station / LiFePO4 packs from the battery study | #85, PR #86 |
-| Back-EMF clamp | **Pololu #3776 33 V / 9 W shunt regulator** (now required) | (was optional) | PR #25, PR #61 |
+| Bench-rig host MCU | **[Raspberry Pi Pico W](https://www.raspberrypi.com/products/raspberry-pi-pico/)** (RP2040 + CYW43439) | Raspberry Pi Zero 2 W (kept for production orchestration) | #60, PR #61 |
+| Production host | **[Pi Zero 2 W](https://www.adafruit.com/product/5291) orchestrator** likely driving an array of Pico-W satellites | Single Pi-direct fan-out | #44/PR #45, #60 |
+| Stepper driver | **[Pololu Tic T500](https://www.pololu.com/product/3135)** (USB/serial, MP6500, on-board planner) | bare [Pololu DRV8825 carrier](https://www.pololu.com/product/2133) (kept as cost alt; Tic T825 as drop-in upgrade) | PR #61 |
+| Stepper motor | **[NEMA 11 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s)** (0.67 A/phase, 10 N·cm) | SparkFun ROB-10848 (was NEMA 17, under-rated) | PR #25 |
+| Scale RS-232 interface | **[Waveshare Pico-2CH-RS232 module](https://www.pishop.us/product/2-channel-rs232-module-for-raspberry-pi-pico-sp3232een-transceiver-uart-to-rs232)** (SP3232EEN) | discrete MAX3232 breakout (SparkFun BOB-11189) + Molex 43645 receptacle | #102, PR #100 |
+| Tilt / dispensing-angle servo | **[MG996R](https://towerpro.com.tw/product/mg996r/)** (×2, mirrored) — physically built & tested | [HD-1810MG](https://www.adafruit.com/product/1142) (#1142) was the original electronics-BOM pick; still referenced in firmware notes | #65, PR #66 vs PR #25/#61 |
+| Baseplate tilt actuation | **[MG996R](https://towerpro.com.tw/product/mg996r/) servos (×2) + involute gear band** on the hinge | [Glideforce GF01-121010-1-66](https://www.pololu.com/product/4467) linear actuator (optional, still in production BOM) | PR #66 vs PR #25 |
+| System AC power | **[Mean Well GST60A12-P1J](https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712)** 12 V / 5 A brick | Adafruit #352 (out of stock 2026-Q2); adjustable #4880 avoided | PR #25 |
+| Back-up / conference power | **[Eaton Tripp Lite SMART1500LCDT UPS](https://tripplite.eaton.com/smartpro-lcd-1500va-900w-line-interactive-ups-avr-tower-lcd-usb-10-outlets~SMART1500LCDT)** (ordered) | portable power station / LiFePO4 packs from the battery study | #85, PR #86 |
+| Back-EMF clamp | **[Pololu #3776](https://www.pololu.com/product/3776) 33 V / 9 W shunt regulator** (now required) | (was optional) | PR #25, PR #61 |
 | Auger | **Geared Archimedes auger v3, "nozzle 4"** (Ø25 tube, 48T band, Ø3 exit) | nozzles 1–3; empty-tube revisions | #48, PR #49, PR #68; `Auger4.stl` on `main` |
 
 ---
@@ -310,7 +312,49 @@ Surveyed for benchmarking (issue #32) — **not** part of the custom BOM:
 
 ---
 
-## 10. Source provenance
+## 10. Verified part links
+
+Direct vendor / manufacturer links for every off-the-shelf part above. Each
+URL was checked (non-404) and matched to the exact part number / model. The
+**Source** column flags links a maintainer posted directly in an issue/PR;
+the remaining vendor links come from `hardware/vibration-motor-and-solenoid.md`
+(PR #25), whose explicit task was *"Audit every URL"*.
+
+| Part (P-N) | Verified link | Source |
+|---|---|---|
+| Raspberry Pi **Pico W** (RP2040) | https://www.raspberrypi.com/products/raspberry-pi-pico/ | Official Raspberry Pi |
+| Raspberry **Pi Zero 2 W** (Adafruit #5291) — production host | https://www.adafruit.com/product/5291 | Vendor (audited PR #25) |
+| Pololu **D24V22F5** 5 V buck (#2858) | https://www.pololu.com/product/2858 | Vendor (audited PR #25) |
+| Adafruit **DRV2605L** haptic driver (#2305) | https://www.adafruit.com/product/2305 | Vendor (audited PR #25) |
+| Adafruit **ERM coin** vibration motor (#1201) | https://www.adafruit.com/product/1201 | Vendor (audited PR #25) |
+| **LRA** vibration motor (alt to ERM) | https://www.precisionmicrodrives.com/lra-linear-resonant-actuator-vibration-motors | Vendor (audited PR #25) |
+| Adafruit **DRV8871** DC motor driver (#3190) | https://www.adafruit.com/product/3190 | Vendor (audited PR #25) |
+| **JF-0530B** push-pull solenoid (Adafruit #412) | https://www.adafruit.com/product/412 | Vendor (audited PR #25) |
+| **Pololu Tic T500** stepper controller (#3135) | https://www.pololu.com/product/3135 | Vendor (audited PR #25) |
+| Pololu **DRV8825** carrier (#2133, cost alt) | https://www.pololu.com/product/2133 | Vendor (audited PR #25) |
+| **Pololu #3776** 33 V / 9 W shunt regulator | https://www.pololu.com/product/3776 | Vendor (audited PR #25) |
+| **NEMA-11 11HS18-0674S** stepper | https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s | Vendor (audited PR #25) |
+| **ST-FC01** 5 mm flexible shaft coupler | https://www.omc-stepperonline.com/5mm-5mm-flexible-shaft-coupling-18x25mm-cnc-stepper-motor-shaft-coupler-st-fc01 | Vendor (audited PR #25) |
+| Mean Well **GST60A12-P1J** 12 V / 5 A PSU | https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712 | Vendor (audited PR #25) |
+| **Barrel-jack** 2.1 mm DC adapter (Adafruit #368) | https://www.adafruit.com/product/368 | Vendor (audited PR #25) |
+| **Waveshare Pico-2CH-RS232** (SP3232EEN) | https://www.pishop.us/product/2-channel-rs232-module-for-raspberry-pi-pico-sp3232een-transceiver-uart-to-rs232 | **Posted by @sgbaird, issue #102** |
+| **MG996R** tilt/hinge servo | https://towerpro.com.tw/product/mg996r/ | **Posted by @williamulbz, issue #65** |
+| Adafruit **HD-1810MG** servo (#1142, alt tilt) | https://www.adafruit.com/product/1142 | Vendor (audited PR #25) |
+| Adafruit **SG-92R** micro servo (#169, alt tilt) | https://www.adafruit.com/product/169 | Vendor (audited PR #25) |
+| **Glideforce GF01-121010-1-66** linear actuator (Pololu #4467) | https://www.pololu.com/product/4467 | Vendor (audited PR #25) |
+| Adafruit **Perma-Proto Bonnet** (#2310) | https://www.adafruit.com/product/2310 | Vendor (audited PR #25) |
+| **A&D HR-100A** balance (Galaxy HR series) | https://andweighing.com/products/galaxy-hr-series-analytical-balances/ | Official A&D (lab equipment) |
+| **Eaton Tripp Lite SMART1500LCDT** UPS | https://tripplite.eaton.com/smartpro-lcd-1500va-900w-line-interactive-ups-avr-tower-lcd-usb-10-outlets~SMART1500LCDT | Official Eaton / Tripp Lite |
+
+> **Note:** `omc-stepperonline.com` and `digikey.com` may return HTTP 403 to
+> automated link-checkers (anti-bot), but the pages open normally in a browser
+> and were audited as the correct parts in PR #25. The **Tic T500** is Pololu
+> **#3135** (connectors soldered); the otherwise-identical **#3134** (no
+> connectors) is the bare-board variant referenced in some firmware notes.
+
+---
+
+## 11. Source provenance
 
 | Topic | Issues / PRs | Key files |
 |---|---|---|
