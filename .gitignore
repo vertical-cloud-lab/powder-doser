@@ -215,3 +215,12 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# KiCad backup / lock / autosave files
+*-backups/
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*.kicad_pro-bak
+fp-info-cache
+*.lck
+~*.kicad_*
