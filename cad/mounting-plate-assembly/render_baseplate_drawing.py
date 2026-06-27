@@ -68,7 +68,7 @@ SLOPE_TOP_Y = ARM_BACK_Y + ARM_SLOPE_RUN                               # +96
 # DUAL MG996R servo mounts — +X side and mirrored -X side (per Will's
 # comment 4721011696).
 DRIVE_HEAD_OVERHANG = 5.0
-GEAR_HINGE_TIP_D = 38.17            # ≈ 38.2 mm
+GEAR_HINGE_TIP_D = 38.92            # 28-T m≈1.298 (was 38.17 @ 40-T m≈0.908)
 GEAR_X_HI = (HINGE_X2 + HINGE_LAYER_GAP / 2.0 + PLATE_X_MAX) / 2.0 \
             + (HINGE_LOBE_W - HINGE_LAYER_GAP) / 2.0                   # ≈ 54.0
 SERVO_WALL_X = GEAR_X_HI + DRIVE_HEAD_OVERHANG                         # ≈ 59.0

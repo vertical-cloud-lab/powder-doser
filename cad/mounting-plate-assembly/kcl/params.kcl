@@ -220,16 +220,26 @@ armSlopeRun            = 16.0                              // ~58° from horizon
 // tilt of the mounting plate — dual-servo lift per Will's comment
 // 4721011696.  A 2:1 reduction between hinge gear and pinion keeps
 // the torque load on each MG996R within its 9.4 kgf·cm rating.
-// Module is back-solved from the centre distance so the 40-T hinge
-// gear at Z = zAug meshes with the 20-T pinion at the required Z
+// Module is back-solved from the centre distance so the 28-T hinge
+// gear at Z = zAug meshes with the 14-T pinion at the required Z
 // (= 10 mm above the baseplate top, the centreline of the MG996R's
 // 20 mm-thick body).
-gearHingeTeeth         = 40
-gearPinionTeeth        = 20
+// COARSER MODULE (issue #65, PR #66 comment 4815348177): the original
+// 40-T/20-T gears were m ≈ 0.908 mm — so fine the FDM pinion stripped
+// under repeated loaded cycling.  The centre distance C = 27.25 mm is
+// FIXED (auger/hinge axis vs MG996R spline), and m = 2C/(Nh+Np) with a
+// fixed 2:1 ratio, so coarsening the module means cutting the tooth
+// count.  14-T/28-T (m ≈ 1.298, 25° PA) is the digital-twin-validated
+// choice: +43 % module (≈30 % lower tooth-root stress) yet still meshes
+// cleaner than the old gears.  See cad_model.py + digital_twin.py.
+gearPressureAngle      = 25.0                             // 25° PA → 14-T pinion w/o undercut
+gearBacklash           = 0.40                             // circumferential backlash (mm)
+gearHingeTeeth         = 28
+gearPinionTeeth        = 14
 gearFaceW              = hingeLobeW - hingeLayerGap        // match outer lobe
 pinionZAboveBaseTop    = 10.0                              // MG996R body midline
 gearCentreC            = zAug - (zBaseTop + baseT + pinionZAboveBaseTop)   // 27.25
-gearModule             = (2.0 * gearCentreC) / (gearHingeTeeth + gearPinionTeeth)  // ≈ 0.9083
+gearModule             = (2.0 * gearCentreC) / (gearHingeTeeth + gearPinionTeeth)  // ≈ 1.298
 gearHingePcd           = gearHingeTeeth * gearModule
 gearPinionPcd          = gearPinionTeeth * gearModule
 gearHingeTipD          = gearHingePcd + 2 * gearModule

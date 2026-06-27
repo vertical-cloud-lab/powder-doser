@@ -1,6 +1,6 @@
-// Servo pinion — 20-tooth m ≈ 0.908 spur pinion for the MG996R.
+// Servo pinion — 14-tooth m ≈ 1.298, 25° PA spur pinion for the MG996R.
 //
-// Drives the +X mounting-plate hinge gear band (40 teeth, same module)
+// Drives the +X mounting-plate hinge gear band (28 teeth, same module)
 // at a 2 : 1 reduction, centre distance C = 27.25 mm.  The pinion sits
 // at PINION_X_LO/Y/Z and is built in the YZ plane (axis along +X),
 // matching how the hinge gear band is oriented on the mounting plate.

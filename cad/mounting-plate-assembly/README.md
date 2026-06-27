@@ -59,22 +59,41 @@ The mounting-plate tilt is now driven by an **MG996R servo** through
 a **2:1 spur-gear reduction**:
 
 * **Hinge gear** — the outermost +X mounting-plate hinge lobe carries
-  an integrated **40-tooth, m ≈ 0.908** spur-gear band (PCD 36.3,
-  tip Ø 38.2,
+  an integrated **28-tooth, m ≈ 1.298, 25° PA** spur-gear band
+  (PCD 36.3, tip Ø 38.9,
   face width = lobe thickness ≈ 12.30 mm).  The gear is part of the
   mounting plate's single solid — not a separate STL.
-* **Servo pinion** (new part `servo_pinion.{step,stl}`) — **20 teeth,
-  m ≈ 0.908** (PCD 18.2, tip Ø 20.2), giving a **2:1 reduction** at
-  `C = 27.25 mm` — the module is back-solved so that the 40-T hinge
-  gear at the auger axis still meshes with the 20-T pinion whose
+* **Servo pinion** (new part `servo_pinion.{step,stl}`) — **14 teeth,
+  m ≈ 1.298, 25° PA** (PCD 18.2, tip Ø 20.8), giving a **2:1 reduction** at
+  `C = 27.25 mm` — the module is back-solved so that the 28-T hinge
+  gear at the auger axis still meshes with the 14-T pinion whose
   spline axis sits exactly 10 mm above the baseplate top (= the
   centreline of the MG996R's 20 mm-thick body, per the dimensioned
   drawing).  Bore is Ø 6 with a 0.5 mm chordal flat for set-screw
   retention on the MG996R 25-T spline (the simplest printable
   interface — for production swap to a true 25-T spline socket).
+* **Coarse module to stop gear stripping** (issue #65, comment
+  4815348177) — the original gears were **40-T/20-T at m ≈ 0.908 mm**,
+  so fine (working depth < 1 mm) that the FDM pinion stripped under
+  repeated, loaded cycling at the Utah AI Convergence '26 poster
+  session.  The Edison literature review (`edison/`) traced this to
+  marginal tooth-root bending strength + a non-rigid taped mount, and
+  recommended **coarsening the module**.  The centre distance
+  `C = 27.25 mm` is fixed by the geometry (auger/hinge axis vs MG996R
+  spline) and `m = 2C/(N_hinge + N_pinion)` with a fixed 2:1 ratio, so
+  a coarser module means fewer teeth.  **14-T/28-T (m ≈ 1.298)** is the
+  digital-twin-validated balance: a **+43 % module** over the old
+  0.908 mm (≈ 30 % lower tooth-root bending stress, toward the Edison
+  m ≈ 1.5 target) that *still meshes cleaner* than the original gears
+  at a sane printed backlash.  A 0.40 mm circumferential backlash and a
+  25° pressure angle (so the 14-T pinion does not undercut) are baked
+  in; tooth count, PA and backlash are the knobs for fine-tuning (see
+  `digital_twin/collision_report.md`).  Pair this with a rigid
+  screw-down servo mount and a strong filament (PA6-CF) for the most
+  durable result.
 * **Gear tooth profile** — both the hinge gear band and the servo
   pinion use **true involute** tooth flanks (base-circle involute
-  sampled at 12 points per flank + a 3-point tip arc), matching the
+  sampled at 28 points per flank + a 6-point tip arc), matching the
   involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
   trapezoidal teeth.
 * **Servo mount — two square posts** (per Will's PR #66 reviews).
@@ -115,7 +134,7 @@ a **2:1 spur-gear reduction**:
 * **DUAL servo lift + stripped-down baseplate** (per Will's comment
   4721011696).  The single +X servo mount is now **mirrored onto the
   −X side** so the mounting plate is driven by **two servos +
-  two hinge-gear bands** working together — a second 40-tooth gear
+  two hinge-gear bands** working together — a second 28-tooth gear
   band is added to the −X outer mounting-plate hinge lobe (mirror of
   the +X gear band), and the porch + two square posts + underside
   flange are duplicated on the −X side with identical geometry.  At
@@ -140,7 +159,7 @@ a **2:1 spur-gear reduction**:
   legs + one rear-centre leg).
 * **Gear tooth profile** — both the hinge gear band and the servo
   pinion use **true involute** tooth flanks (base-circle involute
-  sampled at 12 points per flank + a 3-point tip arc), matching the
+  sampled at 28 points per flank + a 6-point tip arc), matching the
   involute teeth produced by PR #49's `spur_gear_2d` (`cad/auger-geared/gear-teeth.scad`).  No more straight-flank
   trapezoidal teeth.
 * **Hinge-arm back face is sloped**, not vertical — the back-top corner
@@ -163,6 +182,20 @@ a **2:1 spur-gear reduction**:
     * `mounting_plate ∩ baseplate` at 90° (vertical)      — **0.00 mm³**
     * `pinion ∩ baseplate` (installed servo)              — **0.00 mm³**
 
+For a more thorough physical-consistency check, **`digital_twin.py`**
+runs a *digital-twin simulation* of the full lift: it sweeps the
+mounting-plate tilt 0 → 90° and intersects the plate against every
+static structural part at each step (baseplate, both MG996R bodies,
+both installed pinions), and separately runs a **2:1 gear-mesh
+kinematic sweep** that counter-rotates each pinion against its hinge
+gear band through the lift to measure tooth interpenetration.  It
+writes `digital_twin/collision_report.md` (structural PASS/FAIL +
+advisory gear-mesh quality) and `digital_twin/mesh_profile.csv`.  This
+is the tool used to pick the 14-T/28-T tooth count over the literal
+m = 1.5 (12-T/24-T) option, which showed too much tip interference.
+Run `python3 digital_twin.py` (≈ a couple of minutes) or
+`python3 digital_twin.py --quick` for a coarse smoke test.
+
 The package was also requested as an **exploration of zoo.dev** for
 parametric CAD; see [§ zoo.dev experience](#zoodev-experience-pros--cons)
 below.
@@ -181,6 +214,7 @@ cad/mounting-plate-assembly/
 │   ├── baseplate.kcl
 │   └── hinge_pin.kcl
 ├── cad_model.py                      ← CadQuery mirror (parametric)
+├── digital_twin.py                   ← tilt/gear-mesh collision simulation
 ├── render_views.py                   ← VTK iso/front/top/side PNG per part
 ├── render_assembly.py                ← full-assembly + diagrams (matplotlib)
 ├── onshape_upload.py                 ← push full_assembly.step to a public Onshape doc

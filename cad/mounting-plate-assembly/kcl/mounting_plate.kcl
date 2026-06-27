@@ -131,7 +131,7 @@ leftOuterLobe = startSketchOn(YZ)
   |> extrude(length = -lobeLen)
 
 // ---- Hinge gear bands on BOTH outer lobes (issue #63 + comment 4721011696)
-// Both outermost mounting-plate hinge lobes (+X and -X) carry a 40-tooth
+// Both outermost mounting-plate hinge lobes (+X and -X) carry a 28-tooth
 // spur gear band that meshes with the servo pinion on its side of the
 // baseplate at C = 27.25 mm, 2 : 1 reduction.  Dual-servo lift per Will's
 // comment 4721011696.  The gear bands are integrated into the mounting
