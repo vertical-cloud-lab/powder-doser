@@ -15,11 +15,15 @@ every step.  Two motions are simulated:
   1. **Tilt sweep** — the mounting plate rotates about the hinge axis
      from 0° (folded flush) to 90° (vertical).  At each step the plate
      (and the hinge gear bands that are part of it) is boolean-checked
-     against every static part: baseplate, both servo pinions, both
-     MG996R bodies, both hinge pins.  Any non-zero overlap = a collision.
+     against every *static structural* part: baseplate and both MG996R
+     bodies.  Any non-zero overlap = a collision.  (The pinions are
+     handled by the gear-mesh sweep below, since the gear band is meant
+     to engage them, and the hinge pins intentionally pass through the
+     plate eyes; the pinion bodies are checked against the baseplate
+     separately.)
 
   2. **Gear-mesh sweep** — the real driver of the tilt is the 2 : 1
-     spur reduction (12-T servo pinion → 24-T hinge gear band).  We model
+     spur reduction (14-T servo pinion → 28-T hinge gear band).  We model
      the gear train kinematically: as the plate tilts by θ the hinge
      gear turns by θ and the pinion must counter-rotate by 2θ.  We first
      solve for the meshing phase (the pinion angle that meshes cleanly
