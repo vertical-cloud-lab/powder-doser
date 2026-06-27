@@ -7,7 +7,7 @@
 > [#47 lifted split shaft-collar auger bracket](https://github.com/vertical-cloud-lab/powder-doser/pull/47)
 
 > **View in Onshape (interactive, public — ALL parts):**
-> <https://cad.onshape.com/documents/1ef016b2b8f24272a968265d/w/0085fb652e7ecf313b560ada>
+> <https://cad.onshape.com/documents/ecf8ca6d0bd5040cb48b695e/w/f7136eb089ef839f6bde67fc>
 > — the **complete** assembly (`full_assembly.step`: mounting plate,
 > baseplate, both hinge pins, both servo pinions, **plus** the imported
 > auger, both auger brackets, the tap-collar + mount plate, the stepper
