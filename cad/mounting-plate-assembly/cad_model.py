@@ -296,9 +296,48 @@ ARM_BASE_SUPPORT_LEN = 35.0    # was 40 — reduced slightly so the arm depth
 # now supported by two servos / gears instead of one.  Each servo / gear
 # pair is identical (same module, same 2 : 1 reduction, same MG996R
 # mount); the -X side is a pure mirror of the +X side across X = 0.
-GEAR_PA_DEG = 20.0                        # pressure angle (standard 20°)
-GEAR_HINGE_TEETH = 40                     # 2 : 1 reduction with the 20-T pinion
-GEAR_PINION_TEETH = 20
+# --- COARSER MODULE (issue #65, PR #66 comment 4815348177) -----------
+# The original gears were 40-T / 20-T at m ≈ 0.908 mm — so fine that the
+# whole working depth of a tooth was < 1 mm and the FDM pinion stripped
+# under repeated, loaded cycling (Edison LITERATURE_HIGH task
+# 765aef1c…; see edison/servo_gear_stripping_answer.md).  The headline
+# fix is to **coarsen the module** so the teeth are physically bigger
+# and the tooth-root bending stress drops (Lewis stress ∝ 1/m).
+#
+# Geometry coupling — WHY the module and tooth count are linked here:
+#   * The centre distance is NOT free.  The hinge gear sits on the
+#     auger/hinge axis (Z_AUG = +29.25) and the pinion sits on the
+#     MG996R spline, whose midline is fixed 10 mm above the baseplate
+#     top by the 20 mm-thick servo body (PINION_Z_ABOVE_BASE_TOP).
+#     That pins the centre distance at C = 27.25 mm.
+#   * For a spur pair, C = m·(N_hinge + N_pinion)/2 and the ratio is
+#     N_hinge : N_pinion.  With the 2 : 1 reduction fixed and C fixed,
+#     module and tooth count trade off directly:  m = 2C/(N_h + N_p).
+#
+# Consequence: you CANNOT keep 40-T/20-T AND raise m to 1.5 — that would
+# need C = 45 mm, which drops the pinion axis to Z = -15.75 (below the
+# baseplate bottom at Z = -14), i.e. the servo would have to hang under
+# the plate.  Instead we keep C = 27.25 and the 2 : 1 ratio and cut the
+# tooth count, which raises the module while leaving the pitch diameters
+# (and the whole servo / auger packaging) unchanged — only the tip
+# circles grow a fraction of a mm.
+#
+# WHICH tooth count?  The digital-twin gear-mesh sweep (digital_twin.py)
+# was used to pick this: at the fixed centre distance the coarser you go
+# the fewer teeth the pinion has, and below ~16 teeth a plain analytic
+# involute develops tip interference (the gear tip fouls the pinion's
+# non-involute root) that needs ever more backlash to clear.  The literal
+# m = 1.5 target (12-T/24-T) showed ~7 mm³ of residual tip interference —
+# a loose, skip-prone mesh.  **14-T/28-T (m ≈ 1.30)** is the chosen
+# balance: a +43 % module over the old 0.908 (≈ 30 % lower tooth-root
+# bending stress, toward the Edison target) that still meshes CLEANER
+# than the original 20-T/40-T gears at a sane printed-gear backlash, and
+# at a 25° pressure angle the 14-T pinion does not undercut.  Tooth count,
+# pressure angle and backlash are the knobs for Sam/Will/Luke to fine-tune
+# (see digital_twin/collision_report.md for the full sweep).
+GEAR_PA_DEG = 25.0                        # pressure angle (25° → 14-T pinion w/o undercut)
+GEAR_HINGE_TEETH = 28                     # 2 : 1 reduction with the 14-T pinion
+GEAR_PINION_TEETH = 14
 GEAR_FACE_W = HINGE_LOBE_W - HINGE_LAYER_GAP  # match the outer lobe thickness
 # Pinion centreline placement is dictated by the MG996R geometry:
 # the spline sits on the midline of the 20 mm-thick body, so seating
@@ -306,18 +345,26 @@ GEAR_FACE_W = HINGE_LOBE_W - HINGE_LAYER_GAP  # match the outer lobe thickness
 # spline axis exactly 10 mm above the baseplate top (Will's
 # annotation on PR #66 image attachment to comment 4500836183).
 # We therefore drive the pinion Z from that spec and back-solve the
-# gear module so the 40-T hinge gear at Z = Z_AUG still meshes with
-# the 20-T pinion at the required Z, preserving the 2 : 1 ratio.
+# gear module so the 28-T hinge gear at Z = Z_AUG still meshes with
+# the 14-T pinion at the required Z, preserving the 2 : 1 ratio.
 PINION_Z_ABOVE_BASE_TOP = 10.0
 GEAR_CENTRE_C = (Z_AUG - (Z_BASE_TOP + BASE_T + PINION_Z_ABOVE_BASE_TOP))  # 27.25
 GEAR_MODULE = (2.0 * GEAR_CENTRE_C
-               / (GEAR_HINGE_TEETH + GEAR_PINION_TEETH))                   # ≈ 0.9083
+               / (GEAR_HINGE_TEETH + GEAR_PINION_TEETH))                   # ≈ 1.298
 GEAR_HINGE_PCD = GEAR_HINGE_TEETH * GEAR_MODULE
 GEAR_PINION_PCD = GEAR_PINION_TEETH * GEAR_MODULE
 GEAR_HINGE_TIP_D = GEAR_HINGE_PCD + 2 * GEAR_MODULE
 GEAR_HINGE_ROOT_D = GEAR_HINGE_PCD - 2.5 * GEAR_MODULE
 GEAR_PINION_TIP_D = GEAR_PINION_PCD + 2 * GEAR_MODULE
 GEAR_PINION_ROOT_D = GEAR_PINION_PCD - 2.5 * GEAR_MODULE
+# Circumferential backlash (mm).  At the theoretical centre distance two
+# standard full-thickness involute gears mesh with ZERO backlash, so the
+# FDM-printed pair binds (the digital-twin gear-mesh sweep, digital_twin.py,
+# flagged ~9 mm³ of tooth-on-tooth interpenetration at every phase).  Thin
+# each tooth by GEAR_BACKLASH/2 per flank so the printed teeth actually
+# roll freely — essential for a reliable printed drive and tunable per
+# filament/printer.
+GEAR_BACKLASH = 0.40
 # The hinge gear band sits just outboard of the existing outer hinge
 # lobes (replacing the cylindrical 18 mm-OD eye on those sides with a
 # Ø38 gear).  +X side: X centre at the midpoint of the +X outer-lobe span.
@@ -492,7 +539,8 @@ FLANGE_HOLE_X_INBOARD = 7.0               # hole centre X inboard of the flange 
 # Builders
 # --------------------------------------------------------------------- #
 def _gear_polygon(num_teeth: int, module: float,
-                  pa_deg: float = 20.0) -> list[tuple[float, float]]:
+                  pa_deg: float = 20.0,
+                  backlash: float = 0.0) -> list[tuple[float, float]]:
     """Return a closed 2D polygon (list of (x, y) points) describing a
     true-involute spur gear — matches the geometry used by the
     ``spur_gear_2d`` module in PR #49 (cad/auger-geared/gear-teeth.scad).
@@ -521,6 +569,12 @@ def _gear_polygon(num_teeth: int, module: float,
 
     inv_pa = math.tan(pa) - pa                       # involute(α)
     half_tooth = math.pi / (2.0 * num_teeth)         # angular ½-thickness at pitch
+    # Backlash: thin the tooth by backlash/2 of arc length per flank
+    # (angular setback = (backlash/2)/rp).  Applied to both meshing gears
+    # this opens roughly `backlash` of circumferential play so the printed
+    # teeth do not bind at the theoretical centre distance.
+    if backlash > 0.0:
+        half_tooth -= (backlash / 2.0) / rp
     # Angular position (relative to tooth centre) of the involute
     # at the base circle, chosen so the involute passes through the
     # pitch circle at ±half_tooth (i.e. correct pitch-line thickness).
@@ -530,7 +584,7 @@ def _gear_polygon(num_teeth: int, module: float,
     # where r = rb·√(1+t²) and the involute angle = t − atan(t).
     t_start = math.sqrt(max((rd / rb) ** 2 - 1.0, 0.0))
     t_end = math.sqrt((ra / rb) ** 2 - 1.0)
-    FLANK_STEPS = 12
+    FLANK_STEPS = 28
 
     # +θ-side flank samples (root → tip), as (r, θ_rel_to_tooth_centre).
     # On the +θ flank, θ_rel = +flank_base_theta − (t − atan(t)).
@@ -546,7 +600,7 @@ def _gear_polygon(num_teeth: int, module: float,
 
     # Tip arc — a few extra samples between the two flank tips so
     # the tooth crown is a true arc and not a chord.
-    TIP_ARC_STEPS = 3
+    TIP_ARC_STEPS = 6
     tip_theta_plus = plus_flank[-1][1]               # > 0
     tip_theta_minus = minus_flank[-1][1]             # < 0
     tip_arc: list[tuple[float, float]] = []
@@ -580,13 +634,15 @@ def _gear_polygon(num_teeth: int, module: float,
 
 def _build_spur_gear(num_teeth: int, module: float, face_w: float,
                      bore_dia: float, flat: bool = False,
-                     pa_deg: float = 20.0) -> cq.Workplane:
+                     pa_deg: float = 20.0,
+                     backlash: float = 0.0) -> cq.Workplane:
     """Build a spur gear extruded along +Z, centred on the origin.
 
     ``flat=True`` adds a 0.5 mm chordal flat to the bore — useful for
     set-screw bores (e.g. the MG996R 25-T spline workaround).
+    ``backlash`` (mm) thins each tooth so a meshing pair rolls freely.
     """
-    pts = _gear_polygon(num_teeth, module, pa_deg)
+    pts = _gear_polygon(num_teeth, module, pa_deg, backlash)
     gear = (
         cq.Workplane("XY")
         .polyline(pts).close()
@@ -777,7 +833,8 @@ def build_mounting_plate() -> cq.Workplane:
     # servos / gears instead of one — the -X side is a pure mirror of
     # the +X side across X = 0.
     gear = _build_spur_gear(GEAR_HINGE_TEETH, GEAR_MODULE,
-                            GEAR_FACE_W, HINGE_EYE_ID)
+                            GEAR_FACE_W, HINGE_EYE_ID, pa_deg=GEAR_PA_DEG,
+                            backlash=GEAR_BACKLASH)
     # Rotate so the gear axis (was +Z) becomes +X (extrusion goes from
     # X=0 to X=+face_w in the rotated frame), then translate to the
     # hinge axis at each outer-lobe X centre.
@@ -1047,7 +1104,11 @@ def build_baseplate() -> cq.Workplane:
 
 
 def build_servo_pinion() -> cq.Workplane:
-    """20-tooth m=1.0 spur pinion for the MG996R (PCD 20, tip Ø22).
+    """14-tooth m≈1.30, 25° PA spur pinion for the MG996R (PCD 18.2,
+    tip Ø20.8).  Coarsened from the original 20-T m≈0.91 pinion (issue
+    #65) so the FDM teeth are ~1.4× larger and far less prone to
+    stripping under repeated loaded cycling, while still meshing cleanly
+    at the fixed C = 27.25 mm centre distance (see digital_twin.py).
 
     Bore is Ø6 with a 0.5 mm chordal flat — the simplest printable
     interface to the MG996R's 25-T spline (set-screw retention).
@@ -1056,7 +1117,8 @@ def build_servo_pinion() -> cq.Workplane:
     PINION_Z) at assembly time.
     """
     pinion = _build_spur_gear(GEAR_PINION_TEETH, GEAR_MODULE,
-                              GEAR_FACE_W, 6.0, flat=True)
+                              GEAR_FACE_W, 6.0, flat=True, pa_deg=GEAR_PA_DEG,
+                              backlash=GEAR_BACKLASH)
     # Phase the pinion by half a tooth pitch about its own axis so its
     # teeth align with the hinge gear's gaps at the mesh point (avoids
     # static tooth-on-tooth interpenetration in CAD; in practice the
