@@ -291,6 +291,15 @@ class Servo:
 # protocol logic lives in ``scale.py``; this class just owns the UART.
 # ---------------------------------------------------------------------------
 
+# config attributes the scale/dosing channel needs; if any are absent the
+# Pico is almost certainly running a stale config.py that predates the
+# RS-232 work (the usual cause of `AttributeError: ... 'SCALE_UART_ID'`).
+_SCALE_CONFIG_KEYS = (
+    "SCALE_UART_ID", "PIN_SCALE_TX", "PIN_SCALE_RX",
+    "SCALE_BAUD", "SCALE_BITS", "SCALE_PARITY", "SCALE_STOP",
+)
+
+
 class Scale(scale_mod.AndScale):
     def __init__(self):
         uart = UART(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
@@ -332,10 +341,36 @@ class Rig:
         self.vib = Vibration()
         self.tap = Tap()
         self.servo = Servo()
-        self.scale = Scale()
-        self.doser = dosing.Doser(self.stepper, self.tap, self.scale,
-                                  config)
+        self.scale = self._bring_up_scale()
+        self.doser = (dosing.Doser(self.stepper, self.tap, self.scale, config)
+                      if self.scale is not None else None)
         print("[rig] ready -- type 'h' for help")
+
+    def _bring_up_scale(self):
+        """Bring up the scale, but never let it take down the whole REPL.
+
+        A missing scale -- whether from a stale ``config.py`` (no
+        ``SCALE_*`` keys) or an unresponsive/un-wired balance -- used to
+        raise out of ``Rig.__init__`` and block the rig entirely.  Mirror
+        the haptics channel instead: warn with a pointed message and run
+        with the scale (and dosing) disabled so the other channels and the
+        REPL stay usable.  Returns the ``Scale`` instance or ``None``.
+        """
+        missing = [k for k in _SCALE_CONFIG_KEYS if not hasattr(config, k)]
+        if missing:
+            print("[scale] config.py is missing {}; the Pico is likely "
+                  "running an OLD config.py.  Re-upload ALL firmware files "
+                  "(MicroPico: 'Upload project to Pico'), then soft-reset "
+                  "(Ctrl+D).  Scale + dosing disabled.".format(
+                      ", ".join(missing)))
+            return None
+        try:
+            return Scale()
+        except Exception as exc:
+            print("[scale] unavailable ({}); scale + dosing disabled.  "
+                  "Run tests/test_scale_contact.py to check the link."
+                  .format(exc))
+            return None
 
     def state(self):
         print(
@@ -368,21 +403,25 @@ class Rig:
                 s=config.SERVO_SPEED_DEG_PER_S,
                 p=list(config.SERVO_PRESETS),
             ))
-        print(
-            "scale: UART{u} @ {baud} {bits}{par}{stop} (GP{tx}/GP{rx}), "
-            "dose: coarse to {cf:.0%}, tol +/-{tol} g, "
-            "{tpb} taps/burst".format(
-                u=config.SCALE_UART_ID,
-                baud=config.SCALE_BAUD,
-                bits=config.SCALE_BITS,
-                par={0: "N", 1: "O", 2: "E"}[config.SCALE_PARITY],
-                stop=config.SCALE_STOP,
-                tx=config.PIN_SCALE_TX,
-                rx=config.PIN_SCALE_RX,
-                cf=config.DOSE_COARSE_FRACTION,
-                tol=config.DOSE_TOLERANCE_G,
-                tpb=config.DOSE_TAPS_PER_BURST,
-            ))
+        if self.scale is None:
+            print("scale: unavailable -- see boot message "
+                  "(re-upload config.py / check wiring)")
+        else:
+            print(
+                "scale: UART{u} @ {baud} {bits}{par}{stop} (GP{tx}/GP{rx}), "
+                "dose: coarse to {cf:.0%}, tol +/-{tol} g, "
+                "{tpb} taps/burst".format(
+                    u=config.SCALE_UART_ID,
+                    baud=config.SCALE_BAUD,
+                    bits=config.SCALE_BITS,
+                    par={0: "N", 1: "O", 2: "E"}[config.SCALE_PARITY],
+                    stop=config.SCALE_STOP,
+                    tx=config.PIN_SCALE_TX,
+                    rx=config.PIN_SCALE_RX,
+                    cf=config.DOSE_COARSE_FRACTION,
+                    tol=config.DOSE_TOLERANCE_G,
+                    tpb=config.DOSE_TAPS_PER_BURST,
+                ))
 
     def emergency_stop(self):
         print("[rig] EMERGENCY STOP")
@@ -394,6 +433,13 @@ class Rig:
             except Exception:
                 pass
             self.vib.enable_pin.value(0)
+
+    def _scale_ready(self):
+        if self.scale is None:
+            print("[scale] unavailable -- see boot message "
+                  "(re-upload config.py / check wiring)")
+            return False
+        return True
 
     def handle(self, line):
         line = line.strip()
@@ -423,6 +469,8 @@ class Rig:
                     return
                 self.servo.move_to(config.SERVO_PRESETS[arg])
             elif cmd == "w":
+                if not self._scale_ready():
+                    return
                 reading = self.scale.read()
                 if reading is None:
                     print("[scale] no response -- check wiring / baud "
@@ -431,9 +479,15 @@ class Rig:
                     print("[scale] {} {} {}".format(
                         reading.status, reading.grams, reading.unit))
             elif cmd == "z":
+                if not self._scale_ready():
+                    return
                 self.scale.zero()
                 print("[scale] re-zeroed")
             elif cmd in ("g", "dose"):
+                if self.doser is None:
+                    print("[scale] unavailable -- dosing needs the scale; "
+                          "see boot message")
+                    return
                 target = float(arg)
                 result = self.doser.dose(target)
                 print("[rig] dose finished: {!r}".format(result))

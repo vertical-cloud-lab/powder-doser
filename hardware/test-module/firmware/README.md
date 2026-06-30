@@ -50,11 +50,22 @@ the same terminal the keyboard-controlled test scripts in
    `.vscode/` config that points the extension at the right serial
    port.
 4. **Upload the project** with `MicroPico: Upload project to Pico`.
-   This copies `main.py`, `config.py`, `drv2605.py`, `tic.py`, and the
-   `tests/` folder onto the Pico's flash filesystem.  After the upload
-   finishes MicroPico opens its terminal automatically; press the
-   soft-reset button (`Ctrl+D` in the terminal) or unplug/replug to
-   start `main.py`.
+   This copies `main.py`, `config.py`, `drv2605.py`, `tic.py`,
+   `scale.py`, `dosing.py`, and the `tests/` folder onto the Pico's
+   flash filesystem.  After the upload finishes MicroPico opens its
+   terminal automatically; press the soft-reset button (`Ctrl+D` in the
+   terminal) or unplug/replug to start `main.py`.
+
+   > **Upload the *whole project*, not just `main.py`.**  MicroPico's
+   > green ▶ "Run" button only streams `main.py` into RAM; the `import
+   > config` / `import scale` / `import dosing` lines still load from
+   > whatever copies are on flash.  If you ran an older `config.py` you
+   > will see `AttributeError: 'module' object has no attribute
+   > 'SCALE_UART_ID'` at boot — re-run **Upload project to Pico** (which
+   > pushes every module) and soft-reset.  As of the latest firmware a
+   > stale/missing scale config no longer crashes the rig; it just
+   > disables the scale + dosing and prints how to fix it, so the other
+   > channels stay usable.
 
    > Before the first run, connect the **Tic T500** to your computer
    > over USB and use the **Tic Control Center** to set its *Control
