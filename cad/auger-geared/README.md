@@ -272,6 +272,25 @@ On the threaded augers only, the 4-loading-slot top cover (and its M3 spindle pi
 
 Both threaded augers and the cap pass OpenSCAD's `Simple: yes` manifold check. `threaded-storage-cap-assembly-cross-section.png` is a half-cut of the cap seated on the test auger showing the auger's external thread nesting inside the cap's internal thread with clearance, over the open store and bottom-third screw.
 
+### STEP / KCL exchange files
+
+Machine-readable CAD-exchange files for the storage-auger family live in
+[`exports/storage-auger/`](exports/storage-auger/) (`step/` and `kcl/`).
+For the three threaded parts the STEP files are **exact conversions of
+the OpenSCAD print masters** (the committed `.stl`), produced with Zoo's
+file-conversion API, so they faithfully reproduce the real external
+thread, internal screw and funnel rather than approximating them:
+
+| Part | STEP exchange file |
+|------|--------------------|
+| Threaded storage auger (full) | [`exports/storage-auger/step/threaded_archimedes-auger-storage.step`](exports/storage-auger/step/threaded_archimedes-auger-storage.step) |
+| Threaded storage auger (bench test) | [`exports/storage-auger/step/threaded_archimedes-auger-storage-test.step`](exports/storage-auger/step/threaded_archimedes-auger-storage-test.step) |
+| Cap | [`exports/storage-auger/step/threaded-storage-cap.step`](exports/storage-auger/step/threaded-storage-cap.step) |
+
+Regenerate with `python3 exports/storage-auger/stl_to_step.py`. See
+[`exports/storage-auger/README.md`](exports/storage-auger/README.md) for
+the full part list, bounding-box checks, and format notes.
+
 ## Print notes
 
 Both parts are sized for the same stack as PR #16:

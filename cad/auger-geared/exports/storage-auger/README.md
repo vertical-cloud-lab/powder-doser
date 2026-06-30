@@ -52,3 +52,47 @@ Zoo engine.
 `zoo_artifacts/*.op.json` holds the Zoo operation envelope (prompt,
 operation id, model version) for provenance; the bulky glTF previews are
 not committed (they reference external buffers).
+
+## Threaded STEP — exact print-master conversions
+
+Per @swcharles's follow-up on PR #49 (comment 4847597739) —
+
+> give step files for the threaded storage auger and test, as well as
+> for the cap. This is as opposed to the stl files currently available.
+
+the three threaded STEP files are no longer the Text-to-CAD model's
+*approximation* of the part. Text-to-CAD reinterprets a written prompt,
+so it only roughly reproduces fiddly features such as the multi-turn
+helical thread and the internal Archimedean screw. To give the reviewer
+a faithful exchange file, these three STEP files are now produced by
+converting the committed OpenSCAD **print master** (`<name>.stl` — the
+exact mesh we 3-D print) straight into STEP with Zoo's geometry engine:
+
+```bash
+export ZOO_API_TOKEN=...           # zoo.dev API key
+cd cad/auger-geared/exports/storage-auger
+python3 stl_to_step.py             # the 3 threaded parts (default)
+python3 stl_to_step.py threaded-storage-cap   # one part
+```
+
+`stl_to_step.py` POSTs each `.stl` master to Zoo's synchronous
+`POST /file/conversion/stl/step` endpoint and writes the returned STEP
+verbatim (a few degenerate-triangle `(NaN, NaN, NaN)` face normals are
+replaced with a unit +Z direction — the only edit; triangle vertices are
+untouched, so the geometry is bit-for-bit the STL). The result is an
+**exact, lossless** copy of the real external thread, internal screw and
+funnel — not an approximation. Provenance (Zoo operation id, NaN count,
+self-measured bounding box in mm) is saved to
+`zoo_artifacts/<name>.convert.json`.
+
+| Part | File stem | bbox (mm, from STEP) |
+|------|-----------|----------------------|
+| Threaded storage auger, full | `threaded_archimedes-auger-storage` | 50.0 × 50.0 × 250.0 |
+| Threaded storage auger, bench test | `threaded_archimedes-auger-storage-test` | 25.0 × 25.0 × 90.0 |
+| Hand screw-on cap | `threaded-storage-cap` | 31.7 × 31.7 × 31.4 |
+
+Format note: these conversions are AP242 **faceted B-rep** (tessellated)
+STEP, so they are larger (~14–20 MB) than the Text-to-CAD B-rep STEP and
+are best opened in Zoo's tools or mainstream CAD (Fusion 360, SolidWorks,
+Onshape, Rhino). The Text-to-CAD KCL in `kcl/` remains the editable,
+B-rep generative design source for these same parts.
