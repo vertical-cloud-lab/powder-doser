@@ -30,6 +30,18 @@ Symposium rankings below are drawn from the full TMS 2027 symposium list in
 [`tms2027_symposium_organizers.csv`](tms2027_symposium_organizers.csv)
 (106 symposia with organizers and CFA flyer links, provided in PR #78).
 
+## Full machine-readable symposium catalog
+
+All 106 official CFA flyer PDFs have been downloaded, text-extracted, and
+parsed into [`tms2027_symposia.yaml`](tms2027_symposia.yaml): per symposium —
+title, track, flyer URL, division/committee sponsors, full scope text, and the
+organizing committee with a brief researched background line per organizer.
+A scan of every scope for unexpected fits for this project is in
+[`hidden-gems.md`](hidden-gems.md) (pitch competition in the Accelerating
+Innovation symposium, the MMC symposium as a powder-blending audience, an
+organizer bridging the AI-ICME and Powder Materials Processing symposia, and
+more).
+
 ## Top-5 symposia per abstract
 
 ### 1. Generative AI / generative CAD / agentic workflow
