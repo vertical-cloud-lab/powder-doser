@@ -4,18 +4,23 @@ Dates: March 14–18, 2027 (Orlando World Center Marriott)
 Submission deadline: July 1, 2026
 Format: abstract body limited to 150 words; submitted via ProgramMaster
 (https://www.programmaster.org/TMS2027).
-Focus: L-PBF-oriented powder dosing hardware
-(split from the original combined abstract; see ../README.md).
-Target symposium (top-5 ranking from tms2027_symposium_organizers.csv;
-rationale in ../README.md):
+Presenter: Sam
+Presentation type: oral presentation
+Focus: the 30-reservoir programmable doser with cross-contamination
+characterization, framed as enabling instrumentation for AI-enabled,
+closed-loop processing workflows (refreshed per PR #78 comment assigning
+presenters and symposia; split from the original combined abstract, see
+../README.md).
+Assigned symposium: AI-Enabled Materials Processing: Integrating Accelerated
+Experimental Workflows and Processing-Aware Machine Learning (Data-Driven and
+Computational Materials Design track; flyer 021)
+Prior top-5 ranking (for reference; rationale in ../README.md):
   1. Atomization & Powder Metallurgy for Advanced Applications: An MPMD
-     Symposium Honoring Iver Anderson (Materials Synthesis and Processing
-     track) — primary
+     Symposium Honoring Iver Anderson (Materials Synthesis and Processing)
   2. Powder Materials Processing and Fundamental Understanding (Materials
      Synthesis and Processing)
-  3. AI-Enabled Materials Processing: Integrating Accelerated Experimental
-     Workflows and Processing-Aware Machine Learning (Data-Driven and
-     Computational Materials Design)
+  3. AI-Enabled Materials Processing (Data-Driven and Computational Materials
+     Design) — now the assigned target
   4. Accelerating Innovation in Materials and Manufacturing (Special Topics)
   5. Additive Manufacturing and Innovative Feedstock Processing for
      Multifunctional Materials (Additive Manufacturing) — see Edison review
@@ -23,6 +28,6 @@ rationale in ../README.md):
   Submit the abstract to only one symposium.
 ---
 
-Title: An Open-Source, Low-Cost Modular Powder Doser for Reproducible Metering and Blending of L-PBF Feedstocks
+Title: A 30-Reservoir Programmable Powder Doser with Cross-Contamination Characterization for AI-Enabled Alloy-Development Workflows
 
-Additive manufacturing of aerospace alloys requires rapid, reproducible exploration of powder feedstocks, yet accurately metering and blending dry metal powders remains a manual bottleneck. Commercial dispensers are costly and poorly suited to alloy-development workflows with many powders and frequent recipe changes, and existing open-source designs have not been rigorously tested for laser powder bed fusion (L-PBF). We present an open-source, low-cost, modular powder doser: a stepper-driven Archimedean auger with solenoid tapping, vibration-motor agitation, and servo-controlled tilt accommodates powders prone to bridging, clumping, air dispersion, and static charging. Proposal targets include up to 30 reservoirs, blends up to 250 mL, per-powder accuracy of ±1 mg (±0.1 mg stretch), and cross-contamination characterization. Testing progresses from non-hazardous surrogates to L-PBF feedstocks (AlSi10Mg, silicon, stainless steel). Open-source deliverables—parametric CAD, bill of materials, control code, and validation protocols—support integration into ultrasonic-atomization and L-PBF alloy-development pipelines.
+Autonomous, AI-enabled processing workflows are only as fast as their slowest manual step; for powder-based alloy development, that step is often feedstock metering and blending. We present an open-source, low-cost programmable powder doser designed as enabling instrumentation for closed-loop, Bayesian-optimization alloy-development campaigns, in which dosed powders will feed ultrasonic atomization and laser powder bed fusion (L-PBF). A stepper-driven Archimedean auger with solenoid tapping, vibration-motor agitation, and servo-controlled tilt accommodates powders prone to bridging, clumping, air dispersion, and static charging. Design targets include up to 30 independently addressable reservoirs, blends up to 250 mL, per-powder accuracy of ±1 mg (±0.1 mg stretch), and cross-contamination characterization across five to seven representative L-PBF feedstock powders. A machine-learning calibration layer maps commanded actuator parameters to dispensed mass per powder. We present the dosing mechanism, cross-contamination protocol, calibration approach, and open-source deliverables: parametric CAD, bill of materials, control code, and validation protocols.

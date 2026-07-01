@@ -15,16 +15,19 @@ evaluated) has been split into three targeted abstracts, each ≤150 words and
 each anchored to the proposal (PR #27) and to work recorded in this
 repository's issues, PRs, and discussions:
 
-1. [`generative-ai-cad/abstract.md`](generative-ai-cad/abstract.md) — the
-   agentic-AI / generative-CAD / engineer-led AI-modeled workflow assessment
-   (144 words).
-2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the L-PBF-oriented
-   powder-dosing hardware: auger + tap collar + vibration + tilt, proposal
-   targets (30 reservoirs, 250 mL, ±1 mg / ±0.1 mg stretch,
-   cross-contamination characterization), powder progression (140 words).
+1. [`generative-ai-cad/abstract.md`](generative-ai-cad/abstract.md) — agentic
+   systems design across the stack: CAD, PCB/electronics, firmware, and the
+   engineer-led AI-modeled workflow assessment (146 words; presenter: Luke).
+2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the 30-reservoir
+   programmable doser with cross-contamination characterization: auger + tap
+   collar + vibration + tilt, proposal targets (30 reservoirs, 250 mL,
+   ±1 mg / ±0.1 mg stretch), powder progression (147 words; presenter: Sam,
+   oral).
 3. [`calibration-optimization/abstract.md`](calibration-optimization/abstract.md)
    — doser calibration framed as multi-objective, multi-task optimization over
-   the dosing parameters across many powder types (148 words).
+   the dosing parameters across many powder types, with physics-based
+   simulation to infer powder physical properties (145 words; presenter:
+   Will).
 
 Symposium rankings below are drawn from the full TMS 2027 symposium list in
 [`tms2027_symposium_organizers.csv`](tms2027_symposium_organizers.csv)
@@ -93,16 +96,26 @@ perfect scope match ("processing-aware machine learning"), #2–#4 host the
 optimization/informatics methods audience, and #5 would value the powder
 flow-behavior insight the calibration data provides.
 
-## Suggested assignment (avoiding overlap)
+## Assigned symposia and presenters (current)
 
-Each abstract goes to exactly one symposium. Since "AI-Enabled Materials
-Processing" tops two lists, a non-overlapping assignment that spreads the work
-across audiences:
+Per the PR #78 comment assigning presenters, the three abstracts were
+refreshed and assigned as follows (each abstract goes to exactly one
+symposium; the assignment is non-overlapping):
 
-- **generative-ai-cad** → Accelerating Innovation in Materials and
-  Manufacturing (or AI-Enabled Materials Processing if preferred)
-- **powder-dosing** → Atomization & Powder Metallurgy (Iver Anderson honorary)
-- **calibration-optimization** → AI-Enabled Materials Processing
+| Abstract | Presenter | Symposium | Angle |
+|---|---|---|---|
+| [`powder-dosing`](powder-dosing/abstract.md) | Sam (oral) | AI-Enabled Materials Processing: Integrating Accelerated Experimental Workflows and Processing-Aware ML (flyer 021) | 30-reservoir programmable doser with cross-contamination characterization, as enabling instrumentation for closed-loop workflows |
+| [`calibration-optimization`](calibration-optimization/abstract.md) | Will | Powder Materials Processing and Fundamental Understanding (flyer 075) | Calibration optimization and powder properties, plus physics-based simulation (e.g., DEM) to infer physical properties from dosing response |
+| [`generative-ai-cad`](generative-ai-cad/abstract.md) | Luke | Accelerating Innovation in Materials and Manufacturing (flyer 105) | Agentic systems design: CAD, PCB/electronics (KiCad, firmware — PRs #25/#45/#61, issue #75/PR #76), and more |
+
+Caveat for the Luke/105 assignment: per [`hidden-gems.md`](hidden-gems.md),
+that symposium's technical sessions appear to be invited-talk + panel format
+with a midday pitch competition, which may be the practical entry point for a
+contributed submission.
+
+The earlier suggested assignment (kept for history): generative-ai-cad →
+Accelerating Innovation; powder-dosing → Atomization & Powder Metallurgy;
+calibration-optimization → AI-Enabled Materials Processing.
 
 No content was added that is not already grounded in this repository's issues,
 PRs, discussions, or proposal (PR #27). The calibration/optimization abstract
