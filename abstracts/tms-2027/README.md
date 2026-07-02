@@ -18,16 +18,17 @@ repository's issues, PRs, and discussions:
 1. [`generative-ai-cad/abstract.md`](generative-ai-cad/abstract.md) — agentic
    systems design across the stack: CAD, PCB/electronics, firmware, and the
    engineer-led AI-modeled workflow assessment (146 words; presenter: Luke).
-2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the 30-reservoir
-   programmable doser with cross-contamination characterization: auger + tap
-   collar + vibration + tilt, proposal targets (30 reservoirs, 250 mL,
-   ±1 mg / ±0.1 mg stretch), powder progression (147 words; presenter: Sam,
+2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the
+   multi-reservoir (15+) programmable doser with cross-contamination
+   characterization: auger + tap collar + vibration + tilt, proposal targets
+   (up to 30 reservoirs, 250 mL, ±1 mg / ±0.1 mg stretch, sub-$1,000
+   bill-of-materials target), powder progression (150 words; presenter: Sam,
    oral).
 3. [`calibration-optimization/abstract.md`](calibration-optimization/abstract.md)
-   — doser calibration framed as multi-objective, multi-task optimization over
-   the dosing parameters across many powder types, with physics-based
-   simulation to infer powder physical properties (145 words; presenter:
-   Will).
+   — doser calibration framed as AI-driven, multi-objective, multi-task
+   (Bayesian) optimization over the dosing parameters across many powder
+   types, with physics-based simulation to infer powder physical properties
+   (150 words; presenter: Will).
 
 Symposium rankings below are drawn from the full TMS 2027 symposium list in
 [`tms2027_symposium_organizers.csv`](tms2027_symposium_organizers.csv)
