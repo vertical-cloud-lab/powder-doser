@@ -79,7 +79,7 @@ hosting all the wiring on a half-size breadboard.
 | C2  | 100 µF / 10 V electrolytic, 5 V bulk | 9 | 1 | Tames the servo + solenoid transients on the 5 V rail. |
 | C3  | 100 µF / 25 V electrolytic, second bulk | 14 | 1 | Sits directly on the Tic T500's `VIN` screw terminals. |
 | —   | Half-size breadboard, jumper wires, 0.1" headers | 9 | — | Bench wiring substrate (replaces item 6 bonnet for tests). |
-| U6  | Waveshare Pico-2CH-RS232 module (SP3232EEN, 2-channel RS-232 transceiver) | — *(new, issue #99)* | 1 | Level-shifts the HR-100A's ±5..9 V RS-232 to Pico-safe logic and carries the DB9 to the scale. **Power its `VCC` from `+3V3` (not VSYS/5 V)** so the TTL `RXD` output stays within the RP2040's 3.6 V max.  Its TTL header is labelled from the Pico's point of view (`TXD`/`RXD`), so it wires straight across to the Pico. |
+| U6  | Waveshare Pico-2CH-RS232 module (SP3232EEN, 2-channel RS-232 transceiver) | — *(new, issue #99)* | 1 | Level-shifts the HR-100A's ±5..9 V RS-232 to Pico-safe logic and carries the DB9 to the scale. **Power it from `+3V3` (not 5 V)** — jumper `+3V3` to *both* its `VSYS` pin position (physical pin 39, which feeds the SP3232) *and* its `3V3` position (pin 36, which feeds only the status LEDs) — so the TTL `RXD` output stays within the RP2040's 3.6 V max.  Its TTL header is labelled from the Pico's point of view (`TXD`/`RXD`), so it wires straight across to the Pico. |
 | —   | RS-232 cable (DB9 ↔ HR-100A RS-232C port; DIN-7/D-sub per scale option installed) | — *(new, issue #99)* | 1 | **Buzz out the pin order with a meter before first power-on** — harnesses are not all wired identically. |
 | —   | A&D HR-100A analytical balance (102 g × 0.1 mg) | — *(lab equipment)* | 1 | The closed-loop mass feedback sensor; sits under the dispense cup. |
 
@@ -164,7 +164,7 @@ These nets are the contract between
 |---|---|---|---|
 | `+12V`       | J1.+ , U1.VIN , U4.VM , U5.VIN , SR1.+ , C1.+ , C3.+ | —     | 12 V from the wall brick; SR1 shunt regulator clamps back-EMF. |
 | `+5V`        | U1.VOUT , U2.VSYS , M3.+5V , C2.+              | —     | Buck output; powers Pico W + servo. |
-| `+3V3`       | U2.3V3 , U3.VIN , U6.VCC                       | —     | Pico W on-board LDO; powers the DRV2605L logic **and the Waveshare RS-232 module's `VCC`** (keep it off VSYS/5 V so the module's `RXD` output stays Pico-safe).  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
+| `+3V3`       | U2.3V3 , U3.VIN , U6.VCC                       | —     | Pico W on-board LDO; powers the DRV2605L logic **and the Waveshare RS-232 module** (land it on the module's `VSYS` pin position — physical pin 39, the SP3232 supply — *and* its `3V3` position, pin 36, the LED supply; keep 5 V off both so the module's `RXD` output stays Pico-safe).  The Tic T500 needs no logic rail from the Pico — it generates its own logic supply from `VIN`. |
 | `GND`        | (all, incl. SR1.- , U5.GND) | —     | Common ground. |
 | `I2C_SDA`    | U3.SDA            | GP0   | I2C0 SDA to DRV2605L. |
 | `I2C_SCL`    | U3.SCL            | GP1   | I2C0 SCL to DRV2605L. |
@@ -259,17 +259,25 @@ Build order, top to bottom:
    for the ngspice numbers — those use a bare MAX3232, but the Waveshare
    board's SP3232EEN is the same RS-232 ↔ logic transceiver class).  All
    scale traffic goes through the module (U6):
-   * **Power:** `U6 VCC → +3V3`, `U6 GND → GND`.  Use **+3V3, not VSYS/5 V**
-     — the module's `RXD` output high level follows `VCC`, so 3.3 V keeps
-     it inside the RP2040's 3.6 V max; the on-board charge pump still makes
-     the ±RS-232 rails from 3.3 V.
+   * **Power:** `+3V3 → U6 VSYS pin position` (physical pin 39 — per the
+     [Waveshare schematic](https://files.waveshare.com/upload/3/38/Pico_2CH_RS232_SchDoc.pdf)
+     this is what feeds the SP3232) **and** `+3V3 → U6 3V3 pin position`
+     (pin 36 — this feeds only the PWR/TXD/RXD status LEDs, so a lit PWR
+     LED alone does *not* prove the transceiver has power); `U6 GND → GND`.
+     Use **+3V3, not 5 V** — the module's `RXD` output high level follows
+     its supply, so 3.3 V keeps it inside the RP2040's 3.6 V max; the
+     on-board charge pump still makes the ±RS-232 rails from 3.3 V.
    * **TTL side (to the Pico):** the Waveshare header is labelled from the
      **Pico's** point of view, so wire it *straight across* (no crossover
      here): `Pico W GP12 (pin 16) → U6 TXD`, `Pico W GP13 (pin 17) ← U6 RXD`
      (UART0).  Because the rig already uses the module's native channel
      pins (`TXD0`/`RXD0` → GP0/GP1 = I2C0, `TXD1`/`RXD1` → GP4/GP5 = the
      Tic's UART1), mount the module on its own breadboard and jumper the
-     chosen channel out to GP12/GP13.
+     chosen channel out to GP12/GP13.  Count the module's pin positions
+     from the end with the USB marking (position 1 = `GP0`/`TXD0`), and
+     plug the scale into that **same channel's** RS-232 port — channel 0's
+     port pairs with `TXD0`/`RXD0`; a ch-0 ↔ ch-1 mismatch is the classic
+     silent link from ac-dev-lab#20.
    * **RS-232 side (to the scale):** run the DB9/RS-232 cable from the
      module to the balance's RS-232C port.  **Verify the harness pinout
      with a multimeter first** (idle RS-232 TXD sits at about −5..−9 V

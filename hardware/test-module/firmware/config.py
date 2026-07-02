@@ -43,8 +43,11 @@ PIN_SOL_IN2   = 11         # DRV8871 IN2
 # *receive* line -- so wire straight across (no crossover on the TTL side):
 #   Pico GP12 (UART0 TX) -> module TXD   (commands out to the scale)
 #   Pico GP13 (UART0 RX) <- module RXD   (weight frames in from the scale)
-# Power the module's VCC from the Pico's *3V3* pin (NOT VSYS/5 V) so the
-# RXD logic-high stays at a Pico-safe 3.3 V; tie the module GND to GND.
+# Power the module from the Pico's *3V3* pin (NOT 5 V) so the RXD
+# logic-high stays at a Pico-safe 3.3 V.  Per the Waveshare schematic the
+# SP3232 is fed from the module's VSYS pin position (physical pin 39)
+# while the status LEDs are fed from its 3V3 position (pin 36) -- jumper
+# +3V3 to BOTH, and tie the module GND to GND.
 # UART0's GP0/GP1 mux site is taken by I2C0, so the scale lands on the
 # GP12/GP13 mux site instead.  The module's native channels (TXD0/RXD0 ->
 # GP0/GP1, TXD1/RXD1 -> GP4/GP5) both collide with rig peripherals, so
