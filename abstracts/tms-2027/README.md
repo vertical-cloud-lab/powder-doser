@@ -19,8 +19,9 @@ repository's issues, PRs, and discussions:
    systems design across the stack: CAD, PCB/electronics, firmware, and the
    engineer-led AI-modeled workflow assessment (146 words; presenter: Luke).
 2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the
-   multi-reservoir (15+) programmable doser with cross-contamination
-   characterization: auger + tap collar + vibration + tilt, proposal targets
+   multi-reservoir (15+) programmable doser with automated auger swapping
+   (dedicated per-powder augers preventing cross-contamination by design):
+   auger + tap collar + vibration + tilt, proposal targets
    (up to 30 reservoirs, 250 mL, ±1 mg / ±0.1 mg stretch, sub-$1,000
    bill-of-materials target), powder progression (150 words; presenter: Sam,
    oral).
@@ -105,7 +106,7 @@ symposium; the assignment is non-overlapping):
 
 | Abstract | Presenter | Symposium | Angle |
 |---|---|---|---|
-| [`powder-dosing`](powder-dosing/abstract.md) | Sam (oral) | AI-Enabled Materials Processing: Integrating Accelerated Experimental Workflows and Processing-Aware ML (flyer 021) | 30-reservoir programmable doser with cross-contamination characterization, as enabling instrumentation for closed-loop workflows |
+| [`powder-dosing`](powder-dosing/abstract.md) | Sam (oral) | AI-Enabled Materials Processing: Integrating Accelerated Experimental Workflows and Processing-Aware ML (flyer 021) | 30-reservoir programmable doser with automated per-powder auger swapping (cross-contamination prevented by design), as enabling instrumentation for closed-loop workflows |
 | [`calibration-optimization`](calibration-optimization/abstract.md) | Will | Powder Materials Processing and Fundamental Understanding (flyer 075) | Calibration optimization and powder properties, plus physics-based simulation (e.g., DEM) to infer physical properties from dosing response |
 | [`generative-ai-cad`](generative-ai-cad/abstract.md) | Luke | Accelerating Innovation in Materials and Manufacturing (flyer 105) | Agentic systems design: CAD, PCB/electronics (KiCad, firmware — PRs #25/#45/#61, issue #75/PR #76), and more |
 

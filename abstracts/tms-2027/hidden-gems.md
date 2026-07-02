@@ -25,7 +25,7 @@ so the pitch competition is likely the practical entry point.
 Unexpectedly good audience for the **powder-dosing abstract**: MMC processing is fundamentally
 multi-powder blending (metallic matrix + ceramic/carbon reinforcement), and the scope explicitly calls out
 "tailored reinforcement distributions," powder-metallurgy routes, and AM approaches. A programmable
-30-reservoir doser that meters and blends dissimilar powders (with cross-contamination characterization) is
+30-reservoir doser that meters and blends dissimilar powders (with cross-contamination prevented by dedicated per-powder augers and automated auger swapping) is
 directly usable MMC feedstock-prep infrastructure. The scope also lists machine learning and
 high-throughput methods among its focus areas.
 
