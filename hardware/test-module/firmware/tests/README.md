@@ -41,6 +41,48 @@ stalled the AC training-lab RS-232 bring-up,
 for weeks).  Its `probe_contact()` core is unit-tested under CPython in
 [`../sim/test_dosing_sim.py`](../sim/test_dosing_sim.py).
 
+### `FAIL` with the wiring checked?  Check the balance's own serial settings
+
+There is **no RS-232 on/off switch** on the A&D HR-A series — the port
+is always live, and at factory settings (2400 baud / 7 data bits / even
+parity / 1 stop, A&D standard format) the balance answers the probe's
+`Q` with **no menu changes at all** (per the
+[HR-A/HR-AZ manual](https://weighing.andonline.com/wp-content/uploads/2024/01/HR-A_HR-AZ_Manual_02.pdf),
+§10/§17).  But those settings live in non-volatile memory, so a balance
+that was ever configured for another system keeps that configuration
+(the AutoTrickler, for instance, runs A&D balances at 19,200 baud).  A
+baud/parity mismatch makes the balance discard the Pico's `Q`
+**silently** — the factory `erCd 0` setting suppresses error replies —
+and in key mode (`prt 0`) it never transmits on its own, so the probe
+sees zero bytes: a `FAIL` indistinguishable from a cut wire.
+
+Checking takes ~30 seconds on the balance (looking changes nothing):
+
+1. Hold **SAMPLE** until `bASFnc` appears, then release.
+2. Tap **SAMPLE** repeatedly until `5if` (serial interface) shows, then
+   press **PRINT** to enter the class.
+3. **SAMPLE** steps through the items; confirm `bp5 2` (2400 baud) and
+   `btpr 0` (7 bits, even parity), plus `Crlf 0` (CR LF) and `type 0`
+   (A&D standard format) — these must match `config.py`'s
+   `SCALE_BAUD/BITS/PARITY/STOP`.
+4. To fix a value: **RE-ZERO** cycles the parameter, **PRINT** stores it
+   (and jumps to the next class); **CAL** exits back to weighing mode.
+5. If holding SAMPLE won't open the menu, the function-table lock is
+   set: turn the display off, hold **PRINT** + **SAMPLE** and press
+   **ON:OFF** (`p5` shows), press **PRINT**, select the first switch
+   with **SAMPLE**, set it to `1` with **RE-ZERO**, store with
+   **PRINT**.
+
+Two balance-side tests bypass the Pico's transmit direction entirely:
+pressing **PRINT** on a *stable* display transmits one frame (key mode
+is the factory default), and setting `dout` / `prt 3` (stream mode)
+transmits frames continuously.  If the probe still reports `FAIL` while
+the balance is streaming, the scale→Pico path is broken in hardware and
+no setting can explain it; garbled bytes (`PARTIAL`) instead prove a
+format mismatch — fix `5if` as above (and set `prt` back to `0`
+afterwards).  Do **not** initialize the balance (manual §9-2) just to
+reset the serial settings — initialization also wipes calibration.
+
 
 ## Running a single script from VS Code + MicroPico
 
