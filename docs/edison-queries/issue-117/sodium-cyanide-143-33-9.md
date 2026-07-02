@@ -1,0 +1,65 @@
+# Edison literature query: Sodium cyanide (CAS 143-33-9)
+
+- **Context:** [Issue #117](https://github.com/vertical-cloud-lab/powder-doser/issues/117) — powder-dosing feasibility for synthetic chemistry reagents
+- **Edison job:** `job-futurehouse-paperqa3` (low-effort literature query)
+- **Task ID:** `7c741fc6-f0ea-406c-a5f3-452d58e6148d`
+- **Completed:** 2026-07-02 21:17:02.312179+00:00
+
+## Question
+
+What are the physical and handling properties of sodium cyanide (CAS 143-33-9) powder that are relevant to automated powder dispensing of milligram quantities (0.1-10 mg), such as with an auger-based doser? Please cover: bulk density and true density, typical particle size distribution and morphology of commercial granular/powder forms, hygroscopicity and deliquescence, caking tendency, electrostatic charging tendency, powder flowability/cohesion, and containment/exposure considerations (dust generation, HCN release on contact with moisture/acid) relevant to enclosed automated handling.
+
+## Answer
+
+A comprehensive review of available chemical engineering, powder technology, and safety handbook sources does not locate direct, sodium-cyanide-specific quantitative data for powder bulk density, true density, commercial particle size distribution, particle morphology, or quantified powder flow/electrostatic indices. Nevertheless, the literature allows robust inferences and identifies critical engineering and safety imperatives for handling sodium cyanide powder or granules in an automated, auger-doser system for milligram-scale dispensing.
+
+> Direct, sodium-cyanide-specific numerical powder-property data requested here—especially bulk density, tapped density, true density, commercial particle-size distribution, and quantified electrostatic/flow indices for NaCN powder—could not be located in the reviewed handbook excerpts and retrieved evidence. The available sources were mainly general powder-characterization and bulk-solids references plus general safety material, rather than a sodium-cyanide product monograph. This absence should be treated as an evidence gap, not as evidence that the properties are unimportant. (stanley‐wood2009bulksolidshandling pages 16-18, stanley‐wood2009bulksolidshandling pages 1-5, neikov2019powdercharacterizationand pages 1-3, neikov2019powdercharacterizationand pages 3-4)
+>
+> From the powder-engineering sources, the properties that most strongly control dispenser performance are particle-size distribution, particle morphology, moisture content, bulk density/packing state, cohesion, wall friction, and flowability. These sources also note that fine particles below about 100 μm commonly become much more cohesive because interparticle forces begin to dominate gravity, while irregular crystal shapes flow worse than smoother or more equant particles. For any commercial NaCN lot, these variables would therefore be expected to dominate auger-dose reproducibility at 0.1–10 mg scale. (stanley‐wood2009bulksolidshandling pages 16-18, shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2, neikov2019powdercharacterizationand pages 1-3)
+>
+> On particle size and morphology: no commercial NaCN PSD or morphology data were found in the reviewed evidence. However, the general powder literature indicates that finer, irregular, and broader-distribution powders tend to show poorer flow, higher cohesion, more agglomeration, and greater lot-to-lot variability in small-dose dispensing. By contrast, coarser granular material generally flows more predictably but is harder to meter accurately at sub-milligram to low-milligram targets because of particle-count statistics and screw pulsing. Thus, if NaCN is supplied as a true fine powder, cohesion and dusting are likely dominant issues; if supplied as granules, metering resolution becomes the competing limitation. (shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2, neikov2019powdercharacterizationand pages 1-3, neikov2019powdercharacterizationand pages 3-4)
+>
+> On hygroscopicity, deliquescence, and caking: direct NaCN-specific humidity-response data were not located in the reviewed excerpts. Still, the reviewed powder-flow references consistently show that environmental moisture promotes liquid-bridge formation, increases cohesion, and can convert otherwise acceptable flow into arching, rat-holing, or intermittent discharge. For a highly water-soluble, hazardous inorganic salt such as sodium cyanide, the conservative engineering inference is that humidity control is critical and that even modest moisture pickup could worsen flow, promote caking, and compromise auger repeatability. (shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2)
+>
+> On electrostatic charging: no NaCN-specific chargeability data were found. The general powder literature identifies electrostatic forces as one of the important contributors to cohesion and poor flow, especially in dry fine powders; moisture can reduce pure electrostatic effects but may simultaneously worsen capillary cohesion. In practice, this means a dry NaCN fine powder could plausibly show adhesion to hopper walls, screws, or dose chutes, while a more humid environment could reduce static yet worsen caking and chemical hazard. (shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2)
+>
+> On flowability/cohesion for automated dosing: the reviewed bulk-solids references emphasize that bulk density is not a fixed single number but depends on packing state such as poured, aerated, and tapped condition, and that flow failures arise from cohesion, internal friction, wall friction, and densification history. For NaCN, even without direct test values, this means auger calibration based only on nominal density would be unreliable unless the exact lot condition, preconditioning, and humidity are controlled. Small-dose enclosed dispensing would therefore be expected to need stable refill level, vibration control, consistent consolidation state, and probably frequent recalibration. (stanley‐wood2009bulksolidshandling pages 16-18, stanley‐wood2009bulksolidshandling pages 1-5)
+>
+> On containment and exposure: although the retrieved safety excerpts were general rather than NaCN-specific, the user’s cited hazard concern is chemically well-founded—solid sodium cyanide is acutely toxic, cyanide dust is a severe exposure hazard, and contact with moisture or especially acids can generate hydrogen cyanide gas. Therefore, enclosed automated handling should be designed around zero-loss containment, negative-pressure enclosure or equivalent local capture, segregation from acids and water sources, controlled low humidity, contamination-resistant surfaces, and procedures that avoid manual intervention in contaminated powder zones. Dust generation is especially important because the same fine-particle characteristics that impair flow also increase inhalation and surface-contamination risk. (abueishah2021safetymanual pages 10-13, abueishah2021safetymanual pages 1-6, shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2)
+>
+> Bottom line: the reviewed evidence supports a cautious engineering conclusion rather than a data-complete specification. The key NaCN-relevant risks for milligram automated dispensing are likely to be moisture sensitivity, caking/cohesion, possible static-assisted adhesion of dry fines, variability of bulk packing state, and extreme toxicological consequences of dust escape or HCN formation. Because direct NaCN property numbers were not located here, any real implementation should require lot-specific characterization—at minimum true density, poured/tapped bulk density, PSD, moisture sorption behavior, flow/shear testing, and dustiness testing—before relying on an auger-based dosing approach. (stanley‐wood2009bulksolidshandling pages 16-18, stanley‐wood2009bulksolidshandling pages 1-5, shah2023aconcisesummary pages 2-4, shah2023aconcisesummary pages 1-2, neikov2019powdercharacterizationand pages 1-3, neikov2019powdercharacterizationand pages 3-4)
+
+
+*Blockquote: This blockquote summarizes what could and could not be established from the reviewed sources about sodium cyanide powder handling. It is useful because it distinguishes direct evidence gaps from robust powder-engineering inferences relevant to enclosed milligram-scale automated dispensing.*
+
+Summary of robust findings and best-practices inferences:
+
+- Bulk density and true density: These are essential parameters for dosing calibration but are not published for sodium cyanide powder in the reviewed handbooks; must be measured for each supplied lot. Density varies with packing, granule size, consolidation and moisture content.
+
+- Particle size distribution/morphology: Not documented for NaCN in reviewed sources. Fine, irregular, or broad PSD powders are more cohesive, tend to cake, and are harder to dose accurately at low masses due to sticking, arching, and agglomeration. Coarser granules flow better but are harder to meter precisely at milligram scale. Lot-specific PSD and morphology testing is required before process design.
+
+- Hygroscopicity/deliquescence/caking: No sodium cyanide-specific values found, but as a highly water-soluble inorganic salt, NaCN is expected to gain moisture, cake, and develop liquid bridges in the presence of humidity. Environmental humidity control is critical to dosing repeatability and safety.
+
+- Electrostatic charging/cohesion/flowability: No NaCN-specific charge data, but general powder technology shows that fine dry inorganic powders develop static and cohesive forces that limit flow and dosing accuracy. Both humidity control (to prevent capillary cohesion/caking) and electrostatic mitigation should be included, and empirical flow testing is recommended for each lot.
+
+- Containment/exposure/dust/HCN release: While no quantitative dust emission or HCN release rates are documented, sodium cyanide is universally accepted as extremely hazardous. Fine dust is a severe health risk, and moisture or acid contact generates highly toxic hydrogen cyanide gas. Engineering controls must include complete enclosure, strict dust capture (preferably local negative pressure), prevention of acid/moisture ingress, and fail-safe procedures to eliminate dust or HCN exposure during and after processing.
+
+In summary, because of evidence gaps, any design for automated auger dispensing of NaCN powder must rely on best-practice powder handling principles, and should require complete lot-specific characterization of all critical physical and flow properties before equipment design or deployment. Safety requirements are significant and should assume maximum hazard from dust and HCN release.
+
+## References
+
+1. (stanley‐wood2009bulksolidshandling pages 16-18): N Stanley‐Wood. Bulk solids handling. Chemical Engineering Progress, Apr 2009. URL: https://doi.org/10.1002/9781444305449, doi:10.1002/9781444305449. This article has 30 citations and is from a peer-reviewed journal.
+
+2. (stanley‐wood2009bulksolidshandling pages 1-5): N Stanley‐Wood. Bulk solids handling. Chemical Engineering Progress, Apr 2009. URL: https://doi.org/10.1002/9781444305449, doi:10.1002/9781444305449. This article has 30 citations and is from a peer-reviewed journal.
+
+3. (neikov2019powdercharacterizationand pages 1-3): Oleg D. Neikov and Nikolay A. Yefimov. Powder characterization and testing. Handbook of Non-Ferrous Metal Powders, pages 3-62, Jan 2019. URL: https://doi.org/10.1016/b978-0-08-100543-9.00001-4, doi:10.1016/b978-0-08-100543-9.00001-4. This article has 103 citations.
+
+4. (neikov2019powdercharacterizationand pages 3-4): Oleg D. Neikov and Nikolay A. Yefimov. Powder characterization and testing. Handbook of Non-Ferrous Metal Powders, pages 3-62, Jan 2019. URL: https://doi.org/10.1016/b978-0-08-100543-9.00001-4, doi:10.1016/b978-0-08-100543-9.00001-4. This article has 103 citations.
+
+5. (shah2023aconcisesummary pages 2-4): Devanshi S. Shah, Kailas K. Moravkar, Durgesh K. Jha, Vijay Lonkar, Purnima D. Amin, and Shailesh S. Chalikwar. A concise summary of powder processing methodologies for flow enhancement. Heliyon, 9:e16498, Jun 2023. URL: https://doi.org/10.1016/j.heliyon.2023.e16498, doi:10.1016/j.heliyon.2023.e16498. This article has 180 citations.
+
+6. (shah2023aconcisesummary pages 1-2): Devanshi S. Shah, Kailas K. Moravkar, Durgesh K. Jha, Vijay Lonkar, Purnima D. Amin, and Shailesh S. Chalikwar. A concise summary of powder processing methodologies for flow enhancement. Heliyon, 9:e16498, Jun 2023. URL: https://doi.org/10.1016/j.heliyon.2023.e16498, doi:10.1016/j.heliyon.2023.e16498. This article has 180 citations.
+
+7. (abueishah2021safetymanual pages 10-13): Samir I Abu-Eishah and Editor. Safety manual. Jan 2021. URL: https://doi.org/10.13140/rg.2.1.2146.2804, doi:10.13140/rg.2.1.2146.2804. This article has 0 citations.
+
+8. (abueishah2021safetymanual pages 1-6): Samir I Abu-Eishah and Editor. Safety manual. Jan 2021. URL: https://doi.org/10.13140/rg.2.1.2146.2804, doi:10.13140/rg.2.1.2146.2804. This article has 0 citations.
