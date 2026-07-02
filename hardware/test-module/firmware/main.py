@@ -499,6 +499,13 @@ class Rig:
             print("[rig] command failed: {!r}".format(exc))
 
 
+# Lazily-built uselect.poll() watching sys.stdin.  Kept at module level:
+# MicroPython function objects don't accept attribute assignment, so the
+# CPython idiom of caching this on the function itself raises
+# AttributeError on the Pico.
+_stdin_poll = None
+
+
 def _readline_nonblocking(buf=[""]):
     """Buffer characters from stdin until a newline arrives.
 
@@ -506,15 +513,16 @@ def _readline_nonblocking(buf=[""]):
     loop doesn't block while waiting for the operator to finish typing
     the next command.
     """
+    global _stdin_poll
     try:
         import uselect
     except ImportError:
         # CPython fallback (no non-blocking stdin): just read a line.
         return sys.stdin.readline().rstrip("\r\n")
-    if not hasattr(_readline_nonblocking, "_poll"):
-        _readline_nonblocking._poll = uselect.poll()
-        _readline_nonblocking._poll.register(sys.stdin, uselect.POLLIN)
-    if not _readline_nonblocking._poll.poll(0):
+    if _stdin_poll is None:
+        _stdin_poll = uselect.poll()
+        _stdin_poll.register(sys.stdin, uselect.POLLIN)
+    if not _stdin_poll.poll(0):
         return None
     ch = sys.stdin.read(1)
     if ch in ("\r", "\n"):

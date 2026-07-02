@@ -10,6 +10,7 @@ These exercise the exact modules that ship to the Pico W (``scale.py``,
 """
 
 import sys
+import types
 import unittest
 from pathlib import Path
 
@@ -176,8 +177,68 @@ class ScaleContactTests(unittest.TestCase):
         self.assertEqual(result["frames"], [])
         # the active-poll path must have actually tried to send "Q"
         self.assertTrue(any(b"Q" in bytes(d) for d in sent))
-        # the active-poll path must have actually tried to send "Q"
-        self.assertTrue(any(b"Q" in bytes(d) for d in sent))
+
+
+class ReadlineNonblockingTests(unittest.TestCase):
+    """Regression tests for main._readline_nonblocking.
+
+    Bench failure (PR #100): MicroPython function objects reject
+    attribute assignment, so caching the ``uselect.poll()`` object on
+    the function itself crashed the REPL loop on the Pico with
+    ``AttributeError: 'function' object has no attribute '_poll'``.
+    These tests import ``main`` with stub ``machine``/``uselect``
+    modules and pin down the MicroPython-safe behaviour.
+    """
+
+    def setUp(self):
+        self._saved = {name: sys.modules.get(name)
+                       for name in ("machine", "uselect", "main")}
+
+        machine = types.ModuleType("machine")
+        for name in ("I2C", "Pin", "PWM", "UART"):
+            setattr(machine, name, type(name, (), {}))
+
+        self.polls = []
+        created = self.polls
+
+        class _FakePoll:
+            def __init__(self):
+                self.registered = []
+                created.append(self)
+
+            def register(self, stream, mask):
+                self.registered.append((stream, mask))
+
+            def poll(self, timeout_ms):
+                return []          # no pending input
+
+        uselect = types.ModuleType("uselect")
+        uselect.POLLIN = 1
+        uselect.poll = _FakePoll
+
+        sys.modules["machine"] = machine
+        sys.modules["uselect"] = uselect
+        sys.modules.pop("main", None)
+        import main
+        self.main = main
+
+    def tearDown(self):
+        for name, module in self._saved.items():
+            if module is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = module
+
+    def test_no_state_stashed_on_the_function_object(self):
+        # Two idle polls: no input pending -> both return None, ...
+        self.assertIsNone(self.main._readline_nonblocking())
+        self.assertIsNone(self.main._readline_nonblocking())
+        # ... the poller is built once and registered on stdin once, ...
+        self.assertEqual(len(self.polls), 1)
+        self.assertEqual(len(self.polls[0].registered), 1)
+        # ... and nothing was assigned onto the function object itself
+        # (MicroPython raises AttributeError for that).
+        self.assertEqual(self.main._readline_nonblocking.__dict__, {})
 
 
 if __name__ == "__main__":
