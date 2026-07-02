@@ -41,13 +41,9 @@ HELP = (
 
 
 def make_scale():
-    uart = UART(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
-                bits=config.SCALE_BITS,
-                parity=(None if config.SCALE_PARITY == 0
-                        else config.SCALE_PARITY - 1),
-                stop=config.SCALE_STOP,
-                tx=Pin(config.PIN_SCALE_TX), rx=Pin(config.PIN_SCALE_RX),
-                timeout=config.SCALE_RESPONSE_TIMEOUT_MS)
+    # Non-blocking UART (timeout=0): the driver paces itself; a blocking
+    # hardware timeout multiplies every silent-link poll ~50x (PR #100).
+    uart = scale.open_uart(config, UART, Pin)
     return uart, scale.AndScale(
         uart, response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS)
 

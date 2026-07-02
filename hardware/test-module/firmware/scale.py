@@ -98,11 +98,40 @@ def parse_frame(line):
     return ScaleReading(header, grams, unit)
 
 
+def open_uart(config, uart_cls, pin_cls):
+    """Open the scale UART from ``config`` -- always **non-blocking**.
+
+    ``timeout=0`` is load-bearing: every wait loop in this driver (and
+    in ``tests/test_scale_contact.py``) paces itself with short sleeps
+    and assumes ``read()``/``readline()`` return immediately.  A
+    blocking hardware timeout multiplies each poll iteration by that
+    timeout, which turned the "2 s" contact probe into ~5 minutes of
+    apparent hang on the bench (PR #100).  Partial lines from the
+    non-blocking reads are reassembled by :meth:`AndScale._readline`.
+
+    Parity translation: config encodes 0/1/2 = none/odd/even, while
+    ``machine.UART`` wants ``None`` / 1 (odd) / 0 (**even** -- yes,
+    even is 0).  The previous ``SCALE_PARITY - 1`` translation mapped
+    the HR-A's default *even* to machine-odd, so the balance rejected
+    every command as a parity error even on a perfect harness.
+    """
+    parity = {0: None, 1: 1, 2: 0}[config.SCALE_PARITY]
+    return uart_cls(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
+                    bits=config.SCALE_BITS,
+                    parity=parity,
+                    stop=config.SCALE_STOP,
+                    tx=pin_cls(config.PIN_SCALE_TX),
+                    rx=pin_cls(config.PIN_SCALE_RX),
+                    timeout=0)
+
+
 class AndScale:
     """A&D HR-A series balance on a MicroPython UART.
 
-    ``uart`` only needs ``write``/``readline``/``any`` -- a fake with
-    the same surface drives the CPython simulation tests.
+    ``uart`` only needs ``write``/``readline``/``any`` (plus an
+    optional raw ``read``) -- a fake with the same surface drives the
+    CPython simulation tests.  The UART must be opened non-blocking
+    (see :func:`open_uart`); the driver does all its own pacing.
     """
 
     def __init__(self, uart, response_timeout_ms=1000, sleep_ms=None):
@@ -114,6 +143,7 @@ class AndScale:
             except AttributeError:
                 sleep_ms = lambda ms: time.sleep(ms / 1000.0)
         self._sleep_ms = sleep_ms
+        self._rxbuf = b""
 
     # -- low level ---------------------------------------------------
 
@@ -121,13 +151,40 @@ class AndScale:
         self.uart.write(cmd + b"\r\n" if isinstance(cmd, bytes)
                         else (cmd + "\r\n").encode())
 
+    def _readline(self):
+        """Return one complete ``\\n``-terminated line, or ``None``.
+
+        Never blocks.  With the UART non-blocking, ``uart.readline()``
+        can hand back a *partial* frame (a full A&D frame takes ~80 ms
+        on the wire at 2400 baud), so raw bytes are buffered here and
+        only whole lines reach the parser.  Falls back to plain
+        ``readline()`` for UARTs without a raw ``read`` (the CPython
+        sim fake, which already returns whole frames).
+        """
+        read = getattr(self.uart, "read", None)
+        if read is None:
+            return self.uart.readline()
+        chunk = read()
+        if chunk:
+            self._rxbuf += chunk
+        # The balance terminates frames CR LF; tolerate bare CR too.
+        buf = self._rxbuf.replace(b"\r", b"\n")
+        idx = buf.find(b"\n")
+        if idx < 0:
+            if len(self._rxbuf) > 256:      # garbage flood; keep the tail
+                self._rxbuf = self._rxbuf[-64:]
+            return None
+        line = buf[:idx + 1]
+        self._rxbuf = self._rxbuf[idx + 1:]
+        return line
+
     def _read_reading(self, timeout_ms=None):
         """Read frames until one parses, or until the timeout lapses."""
         if timeout_ms is None:
             timeout_ms = self.response_timeout_ms
         waited = 0
         while waited <= timeout_ms:
-            line = self.uart.readline()
+            line = self._readline()
             if line:
                 reading = parse_frame(line)
                 if reading is not None:
@@ -160,8 +217,14 @@ class AndScale:
                 last = reading
                 if reading.stable:
                     return reading
+                # A reply came back promptly; only charge a nominal
+                # frame time so a settling balance gets its full
+                # timeout_ms of polls (not timeout_ms/response_timeout).
+                waited += 100
+            else:
+                waited += self.response_timeout_ms  # read() waited it out
             self._sleep_ms(100)
-            waited += 100 + self.response_timeout_ms
+            waited += 100
         return last
 
     def zero(self):
@@ -173,9 +236,14 @@ class AndScale:
 
     def _drain(self):
         """Throw away any stale buffered frames before a fresh request."""
+        self._rxbuf = b""
+        read = getattr(self.uart, "read", None)
         try:
             while self.uart.any():
-                if not self.uart.readline():
+                if read is not None:
+                    if not read():
+                        break
+                elif not self.uart.readline():
                     break
         except AttributeError:
             pass

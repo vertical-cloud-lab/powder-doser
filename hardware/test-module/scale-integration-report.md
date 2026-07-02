@@ -112,7 +112,24 @@ bound every dose; `!` still e-stops everything.
   `SCALE_232_RX = U6.6(R1IN) ↔ J2.1(TXD)`, with U6 on `+3V3`/`GND` and
   J2.3 on `GND` — i.e. both cross-overs (logic and RS-232) are right.
 
-## 6. Exact next steps (bench)
+## 6. Bench bring-up fixes (PR #100 thread)
+
+Bugs found only once real hardware entered the loop, in the order the
+bench hit them:
+
+| # | bench symptom | root cause | fix |
+|---|---|---|---|
+| 1 | `AttributeError: 'module' object has no attribute 'SCALE_UART_ID'` at boot | Stale pre-RS-232 `config.py` on the Pico's flash (MicroPico ▶ Run streams only `main.py`). | `Rig._bring_up_scale()` degrades gracefully with a re-upload hint; scale/dosing disabled instead of crashing the REPL (`eab86f2`). |
+| 2 | `AttributeError: 'function' object has no attribute '_poll'` on the first REPL poll | CPython function-attribute caching idiom; MicroPython function objects reject attribute assignment. | Poll object moved to a module-level global; CPython regression test pins `__dict__` empty (`6fa6ae1`). |
+| 3 | `test_scale_contact.py` (and `w`/`g`) appear to **run forever** on a silent link | The scale UART was opened **blocking** (`timeout=1000 ms`) while every driver wait loop counts time via its own 20–50 ms sleeps — each silent `readline()` stalled ~1 s but the counter advanced 20 ms, stretching the "2 s + 5 polls" probe to ~5 minutes and a single `read_stable()` to ~8. | `scale.open_uart()` opens the UART **non-blocking** (`timeout=0`, single point of truth for `main.py` and both bench tests); `AndScale._readline()` buffers partial lines so non-blocking reads can't tear the ~80 ms A&D frames; `read_stable()` charges only the time actually waited.  CPython regression tests cover the `timeout=0` contract, torn-frame reassembly (driver + passive listen), and a bounded-probe-time assertion. |
+| 4 | (found by code inspection while fixing #3, before the balance ever answered) | **Parity translation inverted**: config encodes parity 0/1/2 = none/odd/even, but the `SCALE_PARITY - 1` translation handed `machine.UART` a `1` — which MicroPython defines as **odd** (`None`/0/1 = none/**even**/odd).  The UART therefore ran 7**O**1 against the balance's 7**E**1: the HR-A discards every `Q` as a parity error and every reply arrives corrupted, so the link stays dead on a perfect harness. | `scale.open_uart()` maps config → machine explicitly (`{0: None, 1: 1, 2: 0}`); unit-tested against the HR-A default (must land as machine-even = 0). |
+
+The common thread of #2–#4: the CPython simulation can't catch
+semantics where MicroPython's `machine` layer *behaves* differently
+(blocking reads, function attributes) — those contracts are now pinned
+by explicit unit tests instead of by assumption.
+
+## 7. Exact next steps (bench)
 
 1. Order the new BOM lines: MAX3232 breakout (SparkFun BOB-11189 or
    equivalent), Molex Micro-Fit 3.0 4-pos receptacle 43645-0400 +

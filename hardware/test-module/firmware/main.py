@@ -302,13 +302,10 @@ _SCALE_CONFIG_KEYS = (
 
 class Scale(scale_mod.AndScale):
     def __init__(self):
-        uart = UART(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
-                    bits=config.SCALE_BITS,
-                    parity=(None if config.SCALE_PARITY == 0
-                            else config.SCALE_PARITY - 1),
-                    stop=config.SCALE_STOP,
-                    tx=Pin(config.PIN_SCALE_TX), rx=Pin(config.PIN_SCALE_RX),
-                    timeout=config.SCALE_RESPONSE_TIMEOUT_MS)
+        # Non-blocking UART (timeout=0) is required: the driver's own
+        # poll loops do the pacing, and a blocking hardware timeout
+        # stretched every silent-link read ~50x (PR #100 "runs forever").
+        uart = scale_mod.open_uart(config, UART, Pin)
         super().__init__(uart,
                          response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS)
 

@@ -27,7 +27,12 @@ the balance are almost certainly not talking yet.  Run
 [`test_scale_contact.py`](test_scale_contact.py) before anything else:
 it needs **no keypresses**, opens the scale UART, listens, sends one
 `Q`, and prints a `PASS` / `PARTIAL` / `FAIL` verdict with a focused
-wiring/serial checklist.
+wiring/serial checklist.  Even on a completely dead link it finishes in
+about **8 seconds** (2 s listen + five 1 s polls) — if it seems to run
+much longer than that, the Pico is running a pre-fix copy of
+`scale.py`/`test_scale_contact.py` that opened the UART *blocking*
+(each silent read stalled ~1 s, stretching the probe to ~5 minutes);
+re-upload the project (**MicroPico: Upload project to Pico**).
 
 The most common silent-link cause is a **swapped TX/RX pair** — the
 scale's TX must reach the Pico's RX and vice-versa (this is exactly what

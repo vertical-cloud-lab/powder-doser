@@ -147,6 +147,85 @@ class DoseLoopTests(unittest.TestCase):
                                delta=config.DOSE_TOLERANCE_G)
 
 
+class _ChunkedScaleUart:
+    """Duck-typed *non-blocking* UART that dribbles bytes a few at a
+    time -- like a real 2400-baud link polled faster than characters
+    arrive (the frame is ~17 chars but a 50 ms poll sees ~12), so
+    frames land torn across successive ``read()`` calls.
+    """
+
+    def __init__(self, frame=b"ST,+00001.2345  g\r\n", chunk=4,
+                 respond_to_q=True, stream=b""):
+        self._frame = frame
+        self._chunk = chunk
+        self._respond_to_q = respond_to_q
+        self._pending = stream
+        self.writes = []
+
+    def write(self, data):
+        self.writes.append(bytes(data))
+        if self._respond_to_q and b"Q" in bytes(data):
+            self._pending += self._frame
+
+    def any(self):
+        return len(self._pending)
+
+    def read(self):
+        if not self._pending:
+            return None
+        out = self._pending[:self._chunk]
+        self._pending = self._pending[self._chunk:]
+        return out
+
+
+class NonblockingUartTests(unittest.TestCase):
+    """Regression tests for the PR #100 'contact test runs forever' bug.
+
+    The scale UART was opened with a *blocking* 1000 ms timeout while
+    every wait loop in the driver counts time via its own short sleeps:
+    on a silent link each ``readline()`` stalled ~1 s but the counters
+    advanced 20-50 ms, stretching the "2 s" probe to ~5 minutes.  The
+    fix opens the UART non-blocking (``scale.open_uart``) and buffers
+    partial lines in ``AndScale._readline``.
+    """
+
+    def test_open_uart_is_nonblocking(self):
+        captured = {}
+
+        class FakeUART:
+            def __init__(self, uart_id, **kwargs):
+                captured["id"] = uart_id
+                captured.update(kwargs)
+
+        class FakePin:
+            def __init__(self, n):
+                captured.setdefault("pins", []).append(n)
+
+        scale_mod.open_uart(config, FakeUART, FakePin)
+        self.assertEqual(captured["timeout"], 0)      # the load-bearing bit
+        self.assertEqual(captured["id"], config.SCALE_UART_ID)
+        self.assertEqual(captured["baudrate"], config.SCALE_BAUD)
+        self.assertEqual(captured["bits"], config.SCALE_BITS)
+        # config parity 0/1/2 (none/odd/even) -> machine.UART's
+        # None / 1 (odd) / 0 (even).  The old `SCALE_PARITY - 1`
+        # translation sent the HR-A default *even* as machine-odd,
+        # killing the link even on a perfect harness.
+        self.assertEqual(captured["parity"],
+                         {0: None, 1: 1, 2: 0}[config.SCALE_PARITY])
+        self.assertEqual(captured["parity"], 0)   # HR-A default: even
+        self.assertEqual(captured["pins"],
+                         [config.PIN_SCALE_TX, config.PIN_SCALE_RX])
+
+    def test_read_reassembles_torn_frames(self):
+        uart = _ChunkedScaleUart(chunk=4)
+        sc = scale_mod.AndScale(uart, response_timeout_ms=200,
+                                sleep_ms=lambda ms: None)
+        r = sc.read()
+        self.assertIsNotNone(r)
+        self.assertTrue(r.stable)
+        self.assertAlmostEqual(r.grams, 1.2345, places=4)
+
+
 class ScaleContactTests(unittest.TestCase):
     def _scale(self):
         clock = VirtualClock()
@@ -167,7 +246,7 @@ class ScaleContactTests(unittest.TestCase):
         self.assertAlmostEqual(result["reading"].grams, 3.21, places=2)
 
     def test_contact_reports_silent_link(self):
-        sc, _, _ = self._scale()
+        sc, _, clock = self._scale()
         sent = []
         sc.uart.write = lambda data: sent.append(data)   # bytes leave, nothing echoes back
         result = contact.probe_contact(sc, listen_ms=200,
@@ -177,6 +256,36 @@ class ScaleContactTests(unittest.TestCase):
         self.assertEqual(result["frames"], [])
         # the active-poll path must have actually tried to send "Q"
         self.assertTrue(any(b"Q" in bytes(d) for d in sent))
+        # ... and the whole probe must stay bounded near its nominal
+        # budget (listen + 5 polls), not balloon 50x (PR #100 hang)
+        self.assertLess(clock.time(), 5.0)
+
+    def test_contact_flags_garbled_bytes_as_partial_not_fail(self):
+        # Wrong baud/parity: the balance answers Q, but with junk that
+        # never parses (and may lack newlines entirely).  Those bytes
+        # land in the driver's line buffer -- the probe must still count
+        # them as "bytes arrived" (PARTIAL verdict), not a silent FAIL.
+        uart = _ChunkedScaleUart(frame=b"\x92\x0b\xe4junk", chunk=3)
+        sc = scale_mod.AndScale(uart, response_timeout_ms=200,
+                                sleep_ms=lambda ms: None)
+        result = contact.probe_contact(sc, listen_ms=200,
+                                       sleep_ms=sc._sleep_ms)
+        self.assertTrue(result["saw_bytes"])
+        self.assertIsNone(result["reading"])
+
+    def test_contact_parses_streamed_torn_frames(self):
+        # Balance in stream mode: passive listen must reassemble frames
+        # torn across the non-blocking 50 ms read polls.
+        frame = b"ST,+00002.5000  g\r\n"
+        uart = _ChunkedScaleUart(chunk=5, respond_to_q=False,
+                                 stream=frame * 3)
+        sc = scale_mod.AndScale(uart, response_timeout_ms=200,
+                                sleep_ms=lambda ms: None)
+        result = contact.probe_contact(sc, listen_ms=500,
+                                       sleep_ms=sc._sleep_ms)
+        self.assertTrue(result["saw_bytes"])
+        self.assertIsNotNone(result["reading"])
+        self.assertAlmostEqual(result["reading"].grams, 2.5, places=4)
 
 
 class ReadlineNonblockingTests(unittest.TestCase):

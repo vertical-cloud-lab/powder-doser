@@ -84,6 +84,10 @@ def probe_contact(sc, listen_ms=2000, attempts=5, sleep_ms=None):
     has_read = hasattr(uart, "read")
 
     # 1) Passive listen -- catch balances configured to stream readings.
+    # The UART is non-blocking, so 50 ms polls see ~12 chars each while
+    # a full frame is ~17 chars: buffer the bytes and only parse
+    # complete lines, or every streamed frame would look torn/garbled.
+    linebuf = b""
     waited = 0
     while waited < listen_ms:
         if has_read:
@@ -91,7 +95,10 @@ def probe_contact(sc, listen_ms=2000, attempts=5, sleep_ms=None):
             if chunk:
                 saw_bytes = True
                 raw += chunk
-                for piece in chunk.replace(b"\r", b"\n").split(b"\n"):
+                linebuf += chunk
+                pieces = linebuf.replace(b"\r", b"\n").split(b"\n")
+                linebuf = pieces.pop()      # keep the incomplete tail
+                for piece in pieces:
                     reading = scale.parse_frame(piece)
                     if reading is not None:
                         frames.append(reading)
@@ -112,7 +119,12 @@ def probe_contact(sc, listen_ms=2000, attempts=5, sleep_ms=None):
             saw_bytes = True
             frames.append(reading)
             break
+        # Garbled bytes may sit unread on the UART *or* already pulled
+        # into the driver's line buffer -- either way, bytes arrived
+        # (that's a PARTIAL, i.e. a serial-format problem, not FAIL).
         if hasattr(uart, "any") and uart.any():
+            saw_bytes = True
+        if getattr(sc, "_rxbuf", b""):
             saw_bytes = True
         sleep_ms(50)
 
@@ -149,13 +161,12 @@ def report(result):
 def main():
     from machine import Pin, UART
 
-    uart = UART(config.SCALE_UART_ID, baudrate=config.SCALE_BAUD,
-                bits=config.SCALE_BITS,
-                parity=(None if config.SCALE_PARITY == 0
-                        else config.SCALE_PARITY - 1),
-                stop=config.SCALE_STOP,
-                tx=Pin(config.PIN_SCALE_TX), rx=Pin(config.PIN_SCALE_RX),
-                timeout=config.SCALE_RESPONSE_TIMEOUT_MS)
+    # Non-blocking UART (timeout=0) is what keeps this probe honest:
+    # with a blocking hardware timeout every read on a silent link
+    # stalls ~1 s while the wait counters below only advance 20-50 ms,
+    # stretching the "2 s" probe to ~5 minutes of apparent hang
+    # (PR #100 "test_scale_contact runs forever").
+    uart = scale.open_uart(config, UART, Pin)
     sc = scale.AndScale(
         uart, response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS)
 
