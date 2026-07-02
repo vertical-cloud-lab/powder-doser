@@ -1,0 +1,14 @@
+{
+  "source": "zoo file conversion stl->step",
+  "operation_id": "81cc1582-e7a5-488d-90c1-8506a1a8f51c",
+  "src_file": "threaded_archimedes-auger-storage-test.stl",
+  "nan_normals_fixed": 6,
+  "bbox_mm": [
+    -12.5,
+    -12.5,
+    0.0,
+    12.5,
+    12.5,
+    90.0
+  ]
+}
