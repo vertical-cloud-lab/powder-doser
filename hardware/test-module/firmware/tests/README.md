@@ -79,6 +79,13 @@ A&D command protocol is identical at any baud, and 19200 is actually
 nicer for closed-loop dosing (a frame takes ~1 ms on the wire instead
 of ~80 ms).
 
+One more AutoTrickler leftover to watch once contact is up: it sets the
+balance's **primary unit to grains**, so the scale boots displaying
+`GN`.  Press **MODE** to switch the active unit to `g` before dosing —
+the dose loop refuses non-gram readings (`scale-error` with a "press
+MODE" hint) rather than silently treating grains as grams (a 15.4×
+under-dose).
+
 Checking takes ~30 seconds on the balance (looking changes nothing):
 
 1. Hold **SAMPLE** until `bASFnc` appears, then release.

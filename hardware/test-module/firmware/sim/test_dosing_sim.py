@@ -126,6 +126,16 @@ class DoseLoopTests(unittest.TestCase):
         result = doser.dose(1.000)
         self.assertEqual(result.status, DoseResult.SCALE_ERROR)
 
+    def test_grains_unit_refuses_to_dose(self):
+        # An AutoTrickler-configured balance boots with primary unit GN
+        # (grains); treating its numbers as grams would stop a "0.5 g"
+        # dose at 0.5 grain = 32 mg.  The loop must refuse, not dose.
+        doser, _, _ = make_rig()
+        doser.scale.read_stable = lambda timeout_ms: scale_mod.ScaleReading(
+            scale_mod.STABLE, 7.716, "GN")
+        result = doser.dose(1.000)
+        self.assertEqual(result.status, DoseResult.SCALE_ERROR)
+
     def test_unstable_timeout_reports_scale_error(self):
         doser, _, _ = make_rig()
         doser.scale.read_stable = lambda timeout_ms: scale_mod.ScaleReading(

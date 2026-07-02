@@ -81,6 +81,14 @@ class Doser:
         if (reading is None or not reading.stable or reading.overload or
                 reading.grams is None):
             return None
+        if reading.unit and reading.unit != "g":
+            # A balance set up for another system may not be reporting
+            # grams -- the AutoTrickler preset makes it boot in grains
+            # ("GN"), and silently treating grains as grams would
+            # mis-dose by 15.4x.  Refuse instead.
+            self.log("[dose] scale reports {!r}, not grams -- press MODE "
+                     "on the balance to select g".format(reading.unit))
+            return None
         return reading.grams
 
     def dose(self, target_g):
