@@ -27,9 +27,15 @@ the balance are almost certainly not talking yet.  Run
 [`test_scale_contact.py`](test_scale_contact.py) before anything else:
 it needs **no keypresses**, opens the scale UART, listens, sends one
 `Q`, and prints a `PASS` / `PARTIAL` / `FAIL` verdict with a focused
-wiring/serial checklist.  Even on a completely dead link it finishes in
-about **8 seconds** (2 s listen + five 1 s polls) — if it seems to run
-much longer than that, the Pico is running a pre-fix copy of
+wiring/serial checklist.  On anything but a clean `PASS` it then
+**re-opens the UART at each known serial preset** (HR-A factory
+2400 7E1, AutoTrickler 19200 8N1) and probes again, so a balance whose
+settings were changed for another system is identified — and the exact
+`config.py` values to use printed — in the same run.  Even on a
+completely dead link it finishes in about **8 seconds** (2 s listen +
+five 1 s polls), plus ~5 s per scanned preset (worst case ~15 s total)
+— if it seems to run much longer than that, the Pico is running a
+pre-fix copy of
 `scale.py`/`test_scale_contact.py` that opened the UART *blocking*
 (each silent read stalled ~1 s, stretching the probe to ~5 minutes);
 re-upload the project (**MicroPico: Upload project to Pico**).
@@ -49,12 +55,29 @@ parity / 1 stop, A&D standard format) the balance answers the probe's
 `Q` with **no menu changes at all** (per the
 [HR-A/HR-AZ manual](https://weighing.andonline.com/wp-content/uploads/2024/01/HR-A_HR-AZ_Manual_02.pdf),
 §10/§17).  But those settings live in non-volatile memory, so a balance
-that was ever configured for another system keeps that configuration
-(the AutoTrickler, for instance, runs A&D balances at 19,200 baud).  A
-baud/parity mismatch makes the balance discard the Pico's `Q`
-**silently** — the factory `erCd 0` setting suppresses error replies —
-and in key mode (`prt 0`) it never transmits on its own, so the probe
-sees zero bytes: a `FAIL` indistinguishable from a cut wire.
+that was ever configured for another system keeps that configuration.
+The concrete case for this bench: the **AutoTrickler**.  Its
+[official setup instructions](https://autotrickler.weebly.com/uploads/6/3/4/4/63444023/printable_a_d_trickler.pdf)
+change the A&D balance to **19200 baud, 8N1** (`Sif` → `bPS = 5`,
+`btPr = 2`), plus `dout Prt = 5`, display refresh `SPd = 2`,
+`RESPONSE = FAST`, and units GN/g — all stored in the scale, "and will
+never change unless you perform a factory reset".  A baud/parity
+mismatch makes the balance discard the Pico's `Q` **silently** — the
+factory `erCd 0` setting suppresses error replies — and in key mode it
+never transmits on its own, so the probe sees zero bytes: a `FAIL`
+indistinguishable from a cut wire.  (`RESPONSE = FAST` and `SPd` only
+affect filtering/refresh and are harmless to us; the serial items are
+the link-killers.)
+
+`test_scale_contact.py` now checks this automatically: after a `FAIL`
+or `PARTIAL` at `config.py`'s settings it re-probes at each known
+preset and, on an answer, prints the exact `SCALE_*` values to put in
+`config.py` (or the balance keys to press to restore factory).  For an
+AutoTrickler-configured balance you can simply keep its settings and
+set `SCALE_BAUD = 19200`, `SCALE_BITS = 8`, `SCALE_PARITY = 0` — the
+A&D command protocol is identical at any baud, and 19200 is actually
+nicer for closed-loop dosing (a frame takes ~1 ms on the wire instead
+of ~80 ms).
 
 Checking takes ~30 seconds on the balance (looking changes nothing):
 

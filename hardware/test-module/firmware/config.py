@@ -137,7 +137,13 @@ SERVO_PRESETS = {
 # The HR-A series factory default is 2400 baud / 7 data bits / even
 # parity / 1 stop bit, A&D standard data format, terminator CR LF.
 # If the balance's function settings (bASFnc) have been changed, mirror
-# them here.  Parity: 0 = none, 1 = odd, 2 = even (config encoding;
+# them here.  Known gotcha: a balance that was ever set up for an
+# AutoTrickler carries 19200 baud / 8 bits / no parity instead (the
+# official AutoTrickler setup guide sets Sif bPS=5 and btPr=2, stored
+# in non-volatile memory) -- for such a scale use SCALE_BAUD=19200,
+# SCALE_BITS=8, SCALE_PARITY=0.  tests/test_scale_contact.py auto-scans
+# these presets and tells you which side to change.
+# Parity: 0 = none, 1 = odd, 2 = even (config encoding;
 # scale.open_uart() translates this to machine.UART's argument, where
 # even is 0 and odd is 1).
 # -----------------------------------------------------------------------

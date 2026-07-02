@@ -6,8 +6,11 @@ swapped TX/RX pair, the wrong UART pins, or a serial-format mismatch.
 This script makes that the *first* thing you can rule out: it opens the
 scale UART, listens for traffic, asks the balance for one reading, and
 prints a ``PASS`` / ``PARTIAL`` / ``FAIL`` verdict plus a focused
-checklist.  No keypresses, no dosing, no other channels -- just run it
-and read the verdict.
+checklist.  On anything but a clean ``PASS`` it then re-opens the UART
+at each *known* serial preset (HR-A factory 2400 7E1, AutoTrickler
+19200 8N1) and probes again, so a balance whose settings were changed
+for another system is identified in the same run.  No keypresses, no
+dosing, no other channels -- just run it and read the verdict.
 
 The hard-won lessons in the checklists come from the AC training-lab
 RS-232 bring-up (AccelerationConsortium/ac-dev-lab#20), where the same
@@ -51,11 +54,13 @@ SILENT_CHECKLIST = (
     "     does not prove the transceiver has power). GND to GND.\n"
     "  4. Scale serial settings changed from factory. There is no RS-232\n"
     "     on/off switch on the HR-A -- factory settings (2400/7/E/1)\n"
-    "     answer 'Q' with no menu changes -- but a balance previously set\n"
-    "     to another baud/parity (e.g. 19200 for an AutoTrickler) discards\n"
-    "     our 'Q' SILENTLY (factory erCd 0 = no error replies) and key\n"
-    "     mode never transmits on its own: zero bytes, same as a cut\n"
-    "     wire. On the balance: hold SAMPLE until bASFnc, tap SAMPLE to\n"
+    "     answer 'Q' with no menu changes -- but a balance once set up\n"
+    "     for an AutoTrickler runs 19200/8/N/1 instead (its setup guide\n"
+    "     sets Sif bPS=5 + btPr=2) and discards our 'Q' SILENTLY\n"
+    "     (factory erCd 0 = no error replies); key mode never transmits\n"
+    "     on its own: zero bytes, same as a cut wire. This probe now\n"
+    "     auto-scans the known presets -- see the scan verdict below.\n"
+    "     On the balance: hold SAMPLE until bASFnc, tap SAMPLE to\n"
     "     5if, PRINT to enter, check bp5 2 (2400) + btpr 0 (7/even).\n"
     "     Tip: PRINT on a stable display (or dout prt 3 = stream mode)\n"
     "     makes the balance transmit WITHOUT our 'Q' -- if even that\n"
@@ -70,7 +75,21 @@ GARBLED_CHECKLIST = (
     "serial *format* is wrong. Match config.py to the balance settings:\n"
     "  baud={baud}, bits={bits}, parity={par}, stop={stop}\n"
     "  (A&D HR-A factory default is 2400 / 7 / even / 1, A&D standard\n"
-    "  format).  A garbled dump almost always means the baud rate is off.\n"
+    "  format).  A garbled dump almost always means the baud rate is off\n"
+    "  -- the preset scan below tries the known alternatives.\n"
+)
+
+# Serial presets this bench has actually encountered, tried in order by
+# the scan when config.py's own settings get nothing (or only garbage).
+# Each entry is (label, baud, bits, parity, stop) with parity in
+# config.py's encoding (0 = none, 1 = odd, 2 = even).  The settings live
+# in the balance's non-volatile memory, so a scale that was once set up
+# for an AutoTrickler keeps that preset (the official AutoTrickler
+# setup guide sets Sif bPS=5 = 19200 baud and btPr=2 = 8N1) and stays
+# silent at the HR-A factory 2400 7E1.
+KNOWN_SERIAL_PRESETS = (
+    ("A&D HR-A factory default", 2400, 7, 2, 1),
+    ("AutoTrickler (Sif bPS=5, btPr=2)", 19200, 8, 0, 1),
 )
 
 
@@ -144,6 +163,71 @@ def probe_contact(sc, listen_ms=2000, attempts=5, sleep_ms=None):
             "reading": frames[0] if frames else None}
 
 
+def scan_serial_settings(make_scale, presets=KNOWN_SERIAL_PRESETS,
+                         skip=None, listen_ms=1000, attempts=3):
+    """Probe each known serial preset until one yields bytes.
+
+    ``make_scale(baud, bits, parity, stop)`` must return a fresh scale
+    client whose UART was re-opened with those parameters.  ``skip`` is
+    the ``(baud, bits, parity, stop)`` tuple already probed (normally
+    config.py's), so it is not tried twice.  Returns
+    ``(preset, result)`` for the first preset whose probe saw bytes, or
+    ``None`` when every preset stayed silent.
+    """
+    for preset in presets:
+        _, baud, bits, parity, stop = preset
+        if skip == (baud, bits, parity, stop):
+            continue
+        sc = make_scale(baud, bits, parity, stop)
+        result = probe_contact(sc, listen_ms=listen_ms, attempts=attempts)
+        if result["saw_bytes"]:
+            return preset, result
+    return None
+
+
+def report_scan(hit):
+    """Print a human verdict for a :func:`scan_serial_settings` result."""
+    if hit is None:
+        print("[scale-contact] preset scan: silent at every known preset\n"
+              "  -> the balance is not reaching the Pico at ANY baud rate,\n"
+              "     so the fault is wiring/power (checklist items 1-3),\n"
+              "     not the balance's serial settings.")
+        return
+    preset, result = hit
+    label, baud, bits, parity, stop = preset
+    par = {0: "N", 1: "O", 2: "E"}.get(parity, str(parity))
+    print("[scale-contact] preset scan: the balance ANSWERED at "
+          "{} {}{}{} -- {}.".format(baud, bits, par, stop, label))
+    if result["reading"] is not None:
+        r = result["reading"]
+        print("  parsed: status={} grams={} unit={!r}".format(
+            r.status, r.grams, r.unit))
+    print("  The harness is GOOD (ignore the wiring checklist above);\n"
+          "  config.py and the balance just disagree on serial settings.\n"
+          "  Fix ONE side:\n"
+          "    a) config.py: SCALE_BAUD={}, SCALE_BITS={}, SCALE_PARITY={},\n"
+          "       SCALE_STOP={} -- then re-upload + soft-reset; or\n"
+          "    b) the balance: hold SAMPLE until bASFnc, tap SAMPLE to\n"
+          "       5if, PRINT to enter, set bp5 2 / btpr 0 to restore the\n"
+          "       HR-A factory 2400 7E1 (RE-ZERO cycles values, PRINT\n"
+          "       stores, CAL exits).".format(baud, bits, parity, stop))
+
+
+class _Override:
+    """Read-through view of ``config`` with a few attributes replaced,
+    so :func:`scale.open_uart` can be re-driven at scan settings without
+    mutating the real config module.
+    """
+
+    def __init__(self, base, **overrides):
+        self._base = base
+        for name, value in overrides.items():
+            setattr(self, name, value)
+
+    def __getattr__(self, name):
+        return getattr(self._base, name)
+
+
 def _fmt(template):
     par = {0: "N (none)", 1: "O (odd)", 2: "E (even)"}.get(
         config.SCALE_PARITY, str(config.SCALE_PARITY))
@@ -184,7 +268,28 @@ def main():
 
     print(_fmt("[scale-contact] UART{uart} GP{tx}/GP{rx} @ {baud} {bits}"
                "/{par}/{stop} -- probing (no keypress needed)..."))
-    report(probe_contact(sc))
+    result = probe_contact(sc)
+    report(result)
+
+    if result["reading"] is None:
+        # Nothing parseable at config.py's settings.  The balance may
+        # simply be talking at a different baud/parity -- e.g. a scale
+        # that was once set up for an AutoTrickler answers only at
+        # 19200 8N1.  Re-open the UART at each known preset and probe
+        # again (~5 s per preset).
+        print("[scale-contact] scanning other known serial presets...")
+
+        def make_scale(baud, bits, parity, stop):
+            u = scale.open_uart(
+                _Override(config, SCALE_BAUD=baud, SCALE_BITS=bits,
+                          SCALE_PARITY=parity, SCALE_STOP=stop),
+                UART, Pin)
+            return scale.AndScale(
+                u, response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS)
+
+        skip = (config.SCALE_BAUD, config.SCALE_BITS,
+                config.SCALE_PARITY, config.SCALE_STOP)
+        report_scan(scan_serial_settings(make_scale, skip=skip))
 
 
 if __name__ == "__main__":

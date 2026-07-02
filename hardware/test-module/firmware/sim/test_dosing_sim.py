@@ -273,6 +273,41 @@ class ScaleContactTests(unittest.TestCase):
         self.assertTrue(result["saw_bytes"])
         self.assertIsNone(result["reading"])
 
+    def _preset_scale_factory(self, alive_at, tried):
+        """make_scale() stand-in: the balance only answers when the
+        UART is opened at ``alive_at`` = (baud, bits, parity, stop)."""
+        def make_scale(baud, bits, parity, stop):
+            tried.append((baud, bits, parity, stop))
+            alive = (baud, bits, parity, stop) == alive_at
+            uart = _ChunkedScaleUart(respond_to_q=alive)
+            return scale_mod.AndScale(uart, response_timeout_ms=100,
+                                      sleep_ms=lambda ms: None)
+        return make_scale
+
+    def test_scan_finds_autotrickler_preset(self):
+        # PR #100 bench case: the balance came off an AutoTrickler, so
+        # it answers only at 19200 8N1 -- silent at config.py's
+        # factory-default 2400 7E1.  The scan must find it and must not
+        # re-try the already-probed config.py settings.
+        tried = []
+        make_scale = self._preset_scale_factory((19200, 8, 0, 1), tried)
+        hit = contact.scan_serial_settings(
+            make_scale, skip=(2400, 7, 2, 1), listen_ms=100, attempts=2)
+        self.assertIsNotNone(hit)
+        preset, result = hit
+        self.assertEqual(preset[1:], (19200, 8, 0, 1))
+        self.assertIsNotNone(result["reading"])
+        self.assertNotIn((2400, 7, 2, 1), tried)
+
+    def test_scan_all_silent_returns_none(self):
+        tried = []
+        make_scale = self._preset_scale_factory(None, tried)
+        hit = contact.scan_serial_settings(
+            make_scale, listen_ms=100, attempts=1)
+        self.assertIsNone(hit)
+        # every preset was actually attempted (nothing skipped)
+        self.assertEqual(len(tried), len(contact.KNOWN_SERIAL_PRESETS))
+
     def test_contact_parses_streamed_torn_frames(self):
         # Balance in stream mode: passive listen must reassemble frames
         # torn across the non-blocking 50 ms read polls.
