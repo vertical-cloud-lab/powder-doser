@@ -9,6 +9,22 @@ Focus: calibration optimization and powder properties, with physics-based
 simulations to infer physical properties (refreshed per PR #78 comment
 assigning presenters and symposia; split from the original combined
 abstract, see ../README.md).
+Edison organizer-persona review applied (PR #78,
+../edison/persona_reviews_out/calibration-optimization.answer.md): title and
+framing reoriented to dosing-as-mechanistic-probe (the doser is the means,
+not the end); the actuator inventory was cut; the inferred properties are
+now named (effective cohesion, friction) with an independent validation path
+(shear-cell and Hall-flow measurements); the DEM sentence gained concrete
+modeling detail (cohesive-frictional contact laws, measured particle-size
+distributions); and a closing bridge to downstream powder behavior
+(spreadability, packing uniformity) was added. "We are exploring" was KEPT
+for the DEM thread — no simulation work exists in the repo yet, so a firmer
+verb would overclaim. "AI-driven" and Bayesian-optimization wording KEPT per
+swcharles's request (PR #78) despite the panel's note that generic AI
+language reads weakly here. Per sgbaird (PR #78), "non-hazardous surrogates"
+was replaced: powders are primarily alloy precursors, in raw elemental or
+master-alloy form depending on handling constraints and hazards, dosed under
+inert atmosphere.
 Assigned symposium: Powder Materials Processing and Fundamental Understanding
 (Materials Synthesis and Processing track; flyer 075) — its scope explicitly
 welcomes computational modeling and simulation of powder systems and
@@ -29,6 +45,6 @@ Prior top-5 ranking (for reference; rationale in ../README.md):
   Submit the abstract to only one symposium.
 ---
 
-Title: Calibration Optimization of an Auger-Based Powder Doser as a Probe of Powder Flow Behavior, with Physics-Based Simulation to Infer Physical Properties
+Title: Auger-Based Powder Dosing as a Mechanistic Probe of Powder Flow Behavior: Multi-Task Bayesian Calibration and Physics-Based Property Inference
 
-Dispensed mass from an auger-based powder doser depends on actuator settings and powder properties, so every calibration curve doubles as an indirect probe of powder flow behavior. We frame calibration of an open-source doser—combining stepper-driven auger rotation, solenoid tapping, vibration-motor agitation, and servo-controlled tilt—as an AI-driven, multi-objective, multi-task optimization problem suited to multi-task Bayesian optimization. The competing objectives are dose accuracy, repeatability, dispensing time, and minimum and maximum deliverable dose. Each powder—progressing from non-hazardous surrogates to laser powder bed fusion feedstocks such as AlSi10Mg, silicon, and stainless steel—is a related task, and multi-task models share information across powders to cut per-powder calibration effort. Alongside gravimetric parameter sweeps, we are exploring physics-based simulations of powder conveying and agitation (e.g., discrete element modeling) that connect dosing response to cohesion, friction, and particle size distribution, enabling inference of powder properties from calibration data and simulation-seeded calibration of new powders.
+Dispensed mass from an auger-based powder doser depends on actuator settings and powder properties, so every calibration curve doubles as a compact probe of cohesion, friction, and packing behavior. We frame calibration of an open-source doser as AI-driven, multi-objective, multi-task Bayesian optimization, with objectives of dose accuracy, repeatability, dispensing time, and accessible dose range. Each powder is a related task—primarily alloy precursors, in elemental or master-alloy form depending on handling constraints and hazards, dosed under inert atmosphere, alongside feedstocks such as AlSi10Mg and stainless steel—and multi-task models share information across powders to cut per-powder calibration effort. Alongside gravimetric parameter sweeps, we are exploring discrete element modeling with cohesive-frictional contact laws and measured particle-size distributions, enabling inference of effective cohesion and friction from dosing data, to be checked against shear-cell and Hall-flow measurements. Linking dosing response to these properties may anticipate downstream behavior such as spreadability and packing uniformity.

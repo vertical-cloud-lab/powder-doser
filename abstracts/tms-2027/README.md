@@ -20,16 +20,29 @@ repository's issues, PRs, and discussions:
    engineer-led AI-modeled workflow assessment (146 words; presenter: Luke).
 2. [`powder-dosing/abstract.md`](powder-dosing/abstract.md) — the
    multi-reservoir (15+) programmable doser with automated auger swapping
-   (dedicated per-powder augers preventing cross-contamination by design):
-   auger + tap collar + vibration + tilt, proposal targets
-   (up to 30 reservoirs, 250 mL, ±1 mg / ±0.1 mg stretch, sub-$1,000
-   bill-of-materials target), powder progression (150 words; presenter: Sam,
-   oral).
+   (dedicated per-powder augers preventing cross-contamination by design),
+   framed as the feedstock-preparation node of a closed-loop BO pipeline:
+   design targets (15+ reservoirs, 250 mL, ±1 mg, sub-$1,000
+   bill-of-materials target), alloy-precursor feedstocks (elemental /
+   master-alloy form) dosed under inert atmosphere (150 words; presenter:
+   Sam, oral).
 3. [`calibration-optimization/abstract.md`](calibration-optimization/abstract.md)
-   — doser calibration framed as AI-driven, multi-objective, multi-task
-   (Bayesian) optimization over the dosing parameters across many powder
-   types, with physics-based simulation to infer powder physical properties
-   (150 words; presenter: Will).
+   — auger dosing as a mechanistic probe of powder flow behavior: AI-driven,
+   multi-objective, multi-task Bayesian calibration across many powder types
+   (primarily alloy precursors under inert atmosphere), with DEM-based
+   inference of effective cohesion and friction validated against shear-cell
+   and Hall-flow measurements (150 words; presenter: Will).
+
+The three Edison organizer-persona mock reviews
+([`edison/persona_reviews_out/`](edison/persona_reviews_out/)) have been
+applied to all three abstracts (PR #78); each abstract's metadata header
+records exactly which suggestions were applied, kept-despite-feedback
+(sub-$1,000 target, "AI-driven" wording), or rejected (no fabricated
+demonstrated metrics or correction-cycle counts — none are recorded in the
+repo). Per sgbaird (PR #78), "non-hazardous surrogates" was replaced
+throughout: powders are primarily alloy precursors, in raw elemental or
+master-alloy form depending on handling constraints and hazards, dosed under
+inert atmosphere.
 
 Symposium rankings below are drawn from the full TMS 2027 symposium list in
 [`tms2027_symposium_organizers.csv`](tms2027_symposium_organizers.csv)
@@ -106,8 +119,8 @@ symposium; the assignment is non-overlapping):
 
 | Abstract | Presenter | Symposium | Angle |
 |---|---|---|---|
-| [`powder-dosing`](powder-dosing/abstract.md) | Sam (oral) | AI-Enabled Materials Processing: Integrating Accelerated Experimental Workflows and Processing-Aware ML (flyer 021) | 30-reservoir programmable doser with automated per-powder auger swapping (cross-contamination prevented by design), as enabling instrumentation for closed-loop workflows |
-| [`calibration-optimization`](calibration-optimization/abstract.md) | Will | Powder Materials Processing and Fundamental Understanding (flyer 075) | Calibration optimization and powder properties, plus physics-based simulation (e.g., DEM) to infer physical properties from dosing response |
+| [`powder-dosing`](powder-dosing/abstract.md) | Sam (oral) | AI-Enabled Materials Processing: Integrating Accelerated Experimental Workflows and Processing-Aware ML (flyer 021) | 15+-reservoir programmable doser with automated per-powder auger swapping (cross-contamination prevented by design), framed as the feedstock-preparation node of a closed-loop BO pipeline |
+| [`calibration-optimization`](calibration-optimization/abstract.md) | Will | Powder Materials Processing and Fundamental Understanding (flyer 075) | Auger dosing as a mechanistic probe of powder flow behavior: multi-task Bayesian calibration plus DEM to infer effective cohesion/friction, validated against shear-cell/Hall-flow tests |
 | [`generative-ai-cad`](generative-ai-cad/abstract.md) | Luke | Accelerating Innovation in Materials and Manufacturing (flyer 105) | Agentic systems design: CAD, PCB/electronics (KiCad, firmware — PRs #25/#45/#61, issue #75/PR #76), and more |
 
 Caveat for the Luke/105 assignment: per [`hidden-gems.md`](hidden-gems.md),
