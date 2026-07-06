@@ -31,6 +31,7 @@ the same terminal the keyboard-controlled test scripts in
 | `dosing.py` | Closed-loop dose controller (issue #99): coarse auger fill with online grams-per-rev learning, fine solenoid-tap trim against the scale.  Hardware-agnostic; unit-tested in `sim/`. |
 | `sim/`      | CPython simulation of the rig + unit tests for the dose loop — run `python3 sim/test_dosing_sim.py` from this folder, no hardware needed. |
 | `tests/`    | Per-component bench scripts (`test_stepper.py`, `test_haptic.py`, `test_solenoid.py`, `test_servo.py`, `test_scale.py`, plus the no-keypress `test_scale_contact.py` scale-link diagnostic) — one channel at a time.  See [`tests/README.md`](tests/README.md). |
+| `BENCH_DEBUG.md` | Debugging the rig with a local agent: `mpremote` command loop for Claude Code, the stacked RS-232 isolation test, and the Tailscale-SSH remote-bench setup. |
 
 ## One-time setup
 

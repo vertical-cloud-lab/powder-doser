@@ -130,6 +130,15 @@ semantics where MicroPython's `machine` layer *behaves* differently
 (blocking reads, function attributes) — those contracts are now pinned
 by explicit unit tests instead of by assumption.
 
+Status 2026-07-06: the bench reports the preset scan silent at *every*
+baud, which exonerates the balance's serial settings and pins the fault
+in hardware.  `test_scale_contact.py` gained a `STACKED` isolation mode
+(module plugged directly onto the Pico, zero jumpers; probes both
+Waveshare channels × both presets in one run), and
+`firmware/BENCH_DEBUG.md` documents the on-bench agent loop
+(Claude Code + `mpremote`) plus the Tailscale-SSH remote-bench setup for
+iterating without the comment-thread round-trip.
+
 ## 7. Exact next steps (bench)
 
 1. Order the new BOM lines: MAX3232 breakout (SparkFun BOB-11189 or

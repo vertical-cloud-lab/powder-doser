@@ -318,6 +318,27 @@ class ScaleContactTests(unittest.TestCase):
         # every preset was actually attempted (nothing skipped)
         self.assertEqual(len(tried), len(contact.KNOWN_SERIAL_PRESETS))
 
+    def test_iter_setups_normal_uses_config_wiring(self):
+        setups = list(contact.iter_setups(stacked=False))
+        self.assertEqual(len(setups), 1)
+        _, cfg = setups[0]
+        self.assertEqual(cfg.SCALE_UART_ID, config.SCALE_UART_ID)
+        self.assertEqual(cfg.PIN_SCALE_TX, config.PIN_SCALE_TX)
+        self.assertEqual(cfg.PIN_SCALE_RX, config.PIN_SCALE_RX)
+
+    def test_iter_setups_stacked_probes_both_channels(self):
+        # Isolation mode (PR #100): module stacked directly on the Pico
+        # puts channel 0 on UART0 GP0/GP1 and channel 1 on UART1 GP4/GP5
+        # (the module's native mux sites).  Both must be probed, and the
+        # serial settings must still come from config.py.
+        setups = list(contact.iter_setups(stacked=True))
+        wiring = [(cfg.SCALE_UART_ID, cfg.PIN_SCALE_TX, cfg.PIN_SCALE_RX)
+                  for _, cfg in setups]
+        self.assertEqual(wiring, [(0, 0, 1), (1, 4, 5)])
+        for _, cfg in setups:
+            self.assertEqual(cfg.SCALE_BAUD, config.SCALE_BAUD)
+            self.assertEqual(cfg.SCALE_PARITY, config.SCALE_PARITY)
+
     def test_contact_parses_streamed_torn_frames(self):
         # Balance in stream mode: passive listen must reassemble frames
         # torn across the non-blocking 50 ms read polls.

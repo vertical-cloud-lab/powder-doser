@@ -103,6 +103,26 @@ Checking takes ~30 seconds on the balance (looking changes nothing):
    with **SAMPLE**, set it to `1` with **RE-ZERO**, store with
    **PRINT**.
 
+### Still `FAIL` at every preset?  Run the stacked isolation test
+
+When the preset scan is silent at **every** baud rate, the balance's
+settings are exonerated and the fault is physical.  The fastest way to
+localize it is to remove the breadboard and every jumper from the fault
+list in one move: unplug the Waveshare module from its breadboard and
+plug it **directly onto the Pico** (USB-end markings aligned), then set
+`STACKED = True` at the top of
+[`test_scale_contact.py`](test_scale_contact.py) and re-run.  Stacked,
+the module's channels sit on real hardware UARTs (ch0 = UART0 GP0/GP1,
+ch1 = UART1 GP4/GP5) and the probe tries **both channels × both serial
+presets** automatically — an answer on either channel means the module,
+DB9 cable, scale, and settings are all good and the jumper harness was
+the fault; silence on both narrows it to the module↔scale segment (see
+the PRINT-key and voltage checks below).  Set `STACKED = False` again
+afterwards — the full rig needs those pins for I2C and the Tic.  The
+step-by-step (and how to drive this loop with `mpremote`/Claude Code
+instead of MicroPico clicks) is in
+[`../BENCH_DEBUG.md`](../BENCH_DEBUG.md).
+
 Two balance-side tests bypass the Pico's transmit direction entirely:
 pressing **PRINT** on a *stable* display transmits one frame (key mode
 is the factory default), and setting `dout` / `prt 3` (stream mode)
