@@ -147,9 +147,14 @@ SERVO_PRESETS = {
 # scale.open_uart() translates this to machine.UART's argument, where
 # even is 0 and odd is 1).
 # -----------------------------------------------------------------------
-SCALE_BAUD            = 2400
-SCALE_BITS            = 7
-SCALE_PARITY          = 2             # even
+# Bench balance (serial no. on the AutoTrickler rig) confirmed at 19200
+# 8N1 on 2026-07-07 -- the AutoTrickler preset (Sif bPS=5, btPr=2), not
+# the HR-A 2400 7E1 factory default.  Verified by decoding live PRINT
+# frames on channel 0 (e.g. "ST,+008.0625  g").  Restore 2400/7/2 only
+# if the balance is reset to A&D factory serial settings.
+SCALE_BAUD            = 19200
+SCALE_BITS            = 8
+SCALE_PARITY          = 0             # none
 SCALE_STOP            = 1
 SCALE_RESPONSE_TIMEOUT_MS = 1000      # max wait for one reply frame
 SCALE_STABLE_TIMEOUT_MS   = 10000     # max wait for an ST (stable) frame
