@@ -3,9 +3,9 @@
   "schematic": "test_module_starter.kicad_sch",
   "project": "test_module_starter.kicad_pro",
   "components": 15,
-  "nets": 24,
+  "nets": 22,
   "outline_mm": [
-    140.59,
+    140.11,
     82.01
   ],
   "power_nets": [
@@ -82,7 +82,7 @@
       "part": "Pi_Pico_W",
       "kind": "module",
       "pins": 40,
-      "pins_netted": 15,
+      "pins_netted": 13,
       "body_mm": [
         21.0,
         51.0
@@ -196,17 +196,17 @@
       "source": "off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"
     },
     {
-      "ref": "J2",
-      "part": "RS232_2CH_Module",
+      "ref": "U6",
+      "part": "Waveshare_2CH_RS232",
       "kind": "module",
-      "pins": 40,
-      "pins_netted": 6,
+      "pins": 4,
+      "pins_netted": 4,
       "body_mm": [
         21.0,
         52.0
       ],
       "model": null,
-      "source": "Waveshare Pico-2CH-RS232 (SP3232EEN, 2 channels) 21x52 mm; mounts on a side 2x20 header (Proto-Doubler PiCowbell spirit); embeds its own RS-232 charge-pump caps so no discrete MAX3232 is needed; datasheets in hardware/vendor-files/waveshare-pico-2ch-rs232/datasheets/"
+      "source": "Waveshare Pico-2CH-RS232 (SP3232EEN) 21x52 mm; interfaced via its channel-0 4-pin TTL header (VCC/GND/TXD/RXD) per PR #100, powered from +3V3 so the TTL swing stays Pico-safe; embeds its own RS-232 charge-pump caps so no discrete MAX3232 is needed; datasheets in hardware/vendor-files/waveshare-pico-2ch-rs232/datasheets/"
     }
   ]
 }

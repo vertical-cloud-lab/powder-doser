@@ -13,6 +13,47 @@ PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment
 ("try to make an actual starter board that we could upload to quilter or
 DeepPCB")._
 
+> **Update (PR #100 scale-integration alignment, rev B).** Following
+> @lbwinters' request on PR
+> [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4918742223)
+> to regenerate the KiCad files against the changes in PR
+> [#100](https://github.com/vertical-cloud-lab/powder-doser/pull/100)
+> (closed-loop dosing with the A&D HR-100A balance, issue #99), the netlist now
+> matches PR #100's `hardware/test-module/kicad/generate.py` rev B exactly:
+>
+> - The scale interface is the **Waveshare Pico-2CH-RS232 module as `U6`**
+>   (`Waveshare_2CH_RS232`), reached through its **channel-0 4-pin TTL header**
+>   (`VCC`/`GND`/`TXD`/`RXD`) — PR #100: *"only its 4-pin TTL header reaches
+>   the Pico"*. The previous model (a 40-pin Pico-form-factor receptacle `J2`
+>   with board copper re-routing four UART lines) is replaced.
+> - **`VCC` is on `+3V3`, not VSYS/+5 V**, so the module's TTL-side swing stays
+>   inside the RP2040's −0.3/+3.6 V absolute maximum (the on-board charge pump
+>   makes the ±RS-232 rails from 3.3 V). This is the safety conclusion of
+>   PR #100's ngspice analysis (`rs232_analysis.py`, 9/9 checks — re-run and
+>   re-confirmed during this regeneration).
+> - Nets renamed to PR #100's **`SCALE_TX`** (`GP12` → `U6.TXD`) and
+>   **`SCALE_RX`** (`GP13` ← `U6.RXD`) — the module's TTL header is labelled
+>   from the Pico's point of view, so the link wires **straight across** with
+>   no crossover and no copper re-map. The spare channel-1 nets
+>   (`RS232_1_TXD`/`RS232_1_RXD` on `GP8`/`GP9`) are dropped: PR #100 doesn't
+>   use them, and channel 1 stays available on the module itself.
+>
+> Board counts become **15 footprints / 101 pads / 75 net-assigned / 22
+> nets** (placed outline ~140 × 82 mm; unplaced target stays 100 × 100 mm).
+> A source-level cross-check of `NETLIST` against PR #100's `PLACEMENTS`
+> confirms identical refs (`J1`,`C1`–`C3`,`U1`–`U6`,`SR1`,`SOL1`,`M1`–`M3`),
+> identical 22-net set, and identical pin→net maps — the only deltas are this
+> board's two physical-pin corrections (Pololu #3776's duplicate `A`/`B`
+> access holes; the D24V22F5's real single `GND`), both electrically
+> equivalent. A `kicad-cli` netlist comparison against PR #100's committed
+> `test_module.kicad_sch` confirms the scale nets connect identically
+> (`SCALE_TX`/`SCALE_RX`: `U2`↔`U6`); it also revealed that PR #100's
+> schematic still carries PR #61's off-by-2.54 mm label bug on its small
+> symbols (its exported netlist leaves `C1`–`C3`, `J1`, `SR1`, `M1`–`M3`,
+> `SOL1` floating) — this generator computes label positions from the pin
+> endpoints, so all 22 nets here are fully populated (75 pins, zero
+> unconnected).
+
 > **Update (RS-232 scale-interface module).** Following @lbwinters' and
 > @sgbaird's requests on PR
 > [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4721881856)
@@ -34,6 +75,8 @@ DeepPCB")._
 > the wider logic domain pushes the outline to ~141 × 82 mm. The module
 > datasheets are committed under
 > `hardware/vendor-files/waveshare-pico-2ch-rs232/datasheets/`.
+> *(Superseded by the PR #100 alignment update above: the module is now `U6`
+> on its 4-pin TTL header, powered from `+3V3`, nets `SCALE_TX`/`SCALE_RX`.)*
 
 > **Update (real component packages).** Following @sgbaird's follow-up on
 > PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4654591085)
@@ -87,8 +130,8 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 137 pads (86 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~141 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 24 nets, 86 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 101 pads (75 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~140 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 22 nets, 75 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
@@ -102,7 +145,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~141 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~140 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** a right-sized **100 × 100 mm** empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two variants share the same netlist and symbols; the schematics differ only
@@ -113,7 +156,7 @@ The unplaced board's Edge.Cuts target is a **right-sized 100 × 100 mm square**
 outline-width + 12 mm to its right, so the board area is empty and the router
 must place the parts onto a sensibly-sized board.
 
-![Generated starter-board schematic (15 symbols, 24 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
+![Generated starter-board schematic (15 symbols, 22 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
 ## How it was built (note `20` Rank 1)
 
@@ -180,16 +223,19 @@ must place the parts onto a sensibly-sized board.
 The build is verified structurally and headlessly with `kiutils`, the builder's
 own geometry guard, and `kicad-cli`'s netlist exporter:
 
-- **15 footprints / 137 pads / 86 net-assigned / 24 nets** — re-parsed from the
+- **15 footprints / 101 pads / 75 net-assigned / 22 nets** — re-parsed from the
   written `.kicad_pcb`. Every physical pin of each real part is now a pad (the
-  Pico W's full 40, the RS-232 module receptacle's 40, the Tic T500's 14, etc.),
-  with every same-named pin (e.g. the eight Pico GND pins) tied to its net.
+  Pico W's full 40, the Waveshare RS-232 module's 4-pin TTL header, the Tic
+  T500's 14, etc.), with every same-named pin (e.g. the eight Pico GND pins)
+  tied to its net.
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
   compact placement stays clearance-clean.
-- **15 3-D models attached** — 4 from vendor STEP files (DRV2605L, DRV8871,
+- **12 3-D models attached** — 4 from vendor STEP files (DRV2605L, DRV8871,
   D24V22F5, shunt regulator), the rest from the parts' own KiCad library
-  footprints — plus **60 F.Fab** body-outline + **60 F.CrtYd** courtyard segments.
+  footprints (the Pico / RS-232 / Tic header-carriers deliberately omit the
+  misleading bare-header model — see note `22`) — plus **60 F.Fab**
+  body-outline + **60 F.CrtYd** courtyard segments.
 
 **Compact, domain-aware placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
 The first DeepPCB run flagged the board as *"still very spaced out"*: the earliest
@@ -260,8 +306,8 @@ upload trio is accepted.
 
 The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
 own connectivity engine sees it: the build exports its netlist with
-`kicad-cli sch export netlist` and asserts every one of the **86 connected pins
-lands on its intended net across all 24 named nets**, with no stray
+`kicad-cli sch export netlist` and asserts every one of the **75 connected pins
+lands on its intended net across all 22 named nets**, with no stray
 `unconnected-(…)` entries (`validate_schematic_netlist()`; runs automatically
 when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
 board and the schematic are emitted from the same `NETLIST` / `PINOUTS` tables —
@@ -301,13 +347,14 @@ tied to the same net on both the board and the schematic:
 | `Servo_3pin` — hobby servo | 3 | 3 | 3 | — |
 | `ERM_Motor` — Adafruit #1201 | 2 | 2 | 2 | — |
 | `Solenoid` — Adafruit #412 | 2 | 2 | 2 | — |
-| `RS232_2CH_Module` — Waveshare Pico-2CH-RS232 | 40 | — | **40** | new part: the Pico-form-factor receptacle the module plugs onto (nets `VSYS`, 8×`GND`, and the `GP0/GP1/GP4/GP5` channel positions; rest no-connect) |
+| `Waveshare_2CH_RS232` — Waveshare Pico-2CH-RS232 | 4 | — | **4** | new part `U6`: the module's channel-0 4-pin TTL header (`VCC`→`+3V3`, `GND`, `TXD`, `RXD`), per PR #100 — only that header reaches this board; the module carries its own DB9 to the scale |
 
 The board therefore grew from **66 → 97 pads** (69 net-assigned across 20 nets),
 and the Pico W body was re-proportioned to 21 × 51 mm so its long edge runs along
-the 40-pin columns. The later **RS-232 module** (above) added a 15th part and
-its 40-pad receptacle, bringing the board to **137 pads / 86 net-assigned /
-24 nets**. `validate_schematic_netlist()` re-confirms all connected pins land on
+the 40-pin columns. The **RS-232 module** was first added as a 40-pad
+Pico-form-factor receptacle (`J2`), then re-modelled per PR #100 as `U6`'s
+4-pin TTL header (see the top update block), bringing the board to **101 pads /
+75 net-assigned / 22 nets**. `validate_schematic_netlist()` re-confirms all connected pins land on
 their intended nets with zero unconnected stragglers, and `_assert_no_overlap()`
 keeps the compact placement DRC-clean.
 
