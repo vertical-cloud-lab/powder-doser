@@ -20,11 +20,20 @@ embedded on this module (see the schematic datasheet below).
 | TXD1 | GP4  | Channel 1 UART transmit (Pico TX) |
 | RXD1 | GP5  | Channel 1 UART receive (Pico RX) |
 
-On the powder-doser starter board the module mounts on a **side 2×20 header**
-(in the spirit of Adafruit's Proto Doubler PiCowbell, #5906) next to the Pico W,
-and the four UART lines are routed by board copper to *free* Pico UART pins
-(GP12/GP13 for channel 0 = scale, GP8/GP9 for channel 1 = spare) so they do not
-collide with the I²C (GP0/GP1) and Tic stepper UART (GP4/GP5) already in use.
+The table above is the module's *internal* hard-wiring: this 2×20
+Pico-form-factor header is the module's **only** TTL/board-side connection
+(the schematic shows no separate TTL header; its 3-pin H2–H5 headers are the
+RS-232 *line* side that cables to the scale).
+
+On the powder-doser starter board (PR #76, `U6`) the module mounts on a
+**side 2×20 receptacle** (in the spirit of Adafruit's Proto Doubler PiCowbell,
+#5906) next to the Pico W. Channel 0 (the TXD0/RXD0 positions) is routed by
+board copper to *free* Pico UART0 pins GP12/GP13 (nets `SCALE_TX`/`SCALE_RX`,
+per PR #100 rev B) so it does not collide with the I²C (GP0/GP1) and Tic
+stepper UART (GP4/GP5) already in use; channel 1 is left unconnected (spare).
+The VSYS-position power input and the 3V3-position LED rail are both fed
+**+3V3** (not 5 V) so the SP3232's TTL swing stays inside the RP2040's
+−0.3/+3.6 V absolute maximum (PR #100's ngspice analysis).
 
 ## Datasheets
 

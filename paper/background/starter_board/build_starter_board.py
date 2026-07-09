@@ -33,7 +33,12 @@ Provenance of the netlist
 ``hardware/test-module/kicad/generate.py`` — the PR #61 baseline plus
 PR #100's scale-integration rev B (Waveshare Pico-2CH-RS232 module ``U6``
 on UART0 GP12/GP13, powered from +3V3; issue #99) — so the component set,
-pin names, and net connectivity match the bench-rig schematic exactly. Each schematic pin becomes one real through-hole pad,
+pin names, and net connectivity match the bench-rig schematic exactly,
+with one physical correction: PR #100 abstracts the module as a 4-pin
+"TTL header", but the module's own schematic shows no such header exists
+(its TTL signals live only on its 2x20 Pico-form-factor header), so ``U6``
+is modelled here as the 2x20 side receptacle the module actually plugs
+onto — same nets, real mounting. Each schematic pin becomes one real through-hole pad,
 copied from the matching **KiCad library footprint** (real pad size, drill,
 shape, pad-1 marker and 3-D model — see ``kicad_footprints/`` and
 ``_part_groups``), so the 22-net ratsnest is preserved exactly while the land
@@ -187,10 +192,10 @@ NETLIST = [
                                   # A&D HR-100A scale via the Waveshare
                                   # Pico-2CH-RS232 module (U6) on UART0
                                   # GP12/GP13, per PR #100 (issue #99). The
-                                  # module's TTL header is labelled from the
-                                  # Pico's point of view, so it wires straight
-                                  # across: GP12 (UART0 TX) -> U6.TXD and
-                                  # GP13 (UART0 RX) <- U6.RXD.
+                                  # module labels its TTL side from the Pico's
+                                  # point of view, so it wires straight
+                                  # across: GP12 (UART0 TX) -> U6.TXD0 and
+                                  # GP13 (UART0 RX) <- U6.RXD0.
                                   ("GP12", "SCALE_TX"), ("GP13", "SCALE_RX")]),
     ("U3", "DRV2605L_Breakout", 210, 40, [("VIN", "+3V3"), ("GND", "GND"),
                                           ("SDA", "I2C_SDA"), ("SCL", "I2C_SCL"),
@@ -215,18 +220,28 @@ NETLIST = [
     # Waveshare Pico-2CH-RS232 module (SP3232EEN transceiver), PR #100 rev B:
     # the A&D HR-100A balance talks true RS-232 levels (about +/-5..9 V) that
     # must never touch a Pico GPIO (abs max -0.3/+3.6 V), so this off-the-shelf
-    # module level-shifts both directions and carries the DB9 to the scale --
-    # only its channel-0 4-pin TTL header reaches this board. Powered from
-    # +3V3 (NOT VSYS/5 V) so its TTL-side swing matches RP2040 levels exactly;
-    # the on-board charge pump makes the +/-RS-232 rails from the 3.3 V input.
-    # The TTL header is labelled FROM THE PICO'S POINT OF VIEW, so it wires
-    # straight across (no crossover): TXD takes the Pico's TX (GP12) and RXD
-    # drives the Pico's RX (GP13). Its own embedded charge-pump caps replace a
-    # discrete MAX3232 + ~5 caps on this board (datasheets under
-    # hardware/vendor-files/waveshare-pico-2ch-rs232).
-    ("U6", "Waveshare_2CH_RS232", 240, 245, [("VCC", "+3V3"), ("GND", "GND"),
-                                             ("TXD", "SCALE_TX"),
-                                             ("RXD", "SCALE_RX")]),
+    # module level-shifts both directions and carries the line-side headers
+    # that cable to the scale. PR #100's bench symbol abstracts the interface
+    # as a 4-pin "TTL header", but the module's own schematic
+    # (hardware/vendor-files/waveshare-pico-2ch-rs232) shows no such header
+    # exists: the TTL signals live ONLY on its 2x20 Pico-form-factor header
+    # (PR #76 review — pads placed mid-body would make the module unpluggable).
+    # So U6 is the 2x20 receptacle the module plugs onto, mounted as a side
+    # header beside the Pico (Proto-Doubler spirit), and board copper carries
+    # channel 0 to the Pico's free UART0 pins. The module labels its TTL side
+    # from the Pico's point of view, so it wires straight across (no
+    # crossover): TXD0 takes the Pico's TX (GP12) and RXD0 drives the Pico's
+    # RX (GP13). VCC (the module's VSYS-position power input, feeding the
+    # SP3232 and its charge pump) gets +3V3 (NOT VSYS/5 V) so its TTL-side
+    # swing matches RP2040 levels exactly; the 3V3 position (the module's
+    # status-LED rail, driven by the Pico when stacked directly) is fed +3V3
+    # too so the channel LEDs work. Channel 1 (TXD1/RXD1) stays unconnected
+    # (spare), matching PR #100. Its own embedded charge-pump caps replace a
+    # discrete MAX3232 + ~5 caps on this board.
+    ("U6", "Waveshare_2CH_RS232", 240, 245, [("VCC", "+3V3"), ("3V3", "+3V3"),
+                                             ("GND", "GND"),
+                                             ("TXD0", "SCALE_TX"),
+                                             ("RXD0", "SCALE_RX")]),
 ]
 
 # Full recorded pinout per proxy type (left/right header columns), so the
@@ -256,11 +271,23 @@ PINOUTS = {
         "right": ["VBUS", "VSYS", "GND", "3V3_EN", "3V3", "ADC_VREF", "GP28",
                   "GND", "GP27", "GP26", "RUN", "GP22", "GND", "GP21", "GP20",
                   "GP19", "GP18", "GND", "GP17", "GP16"]},
-    # Waveshare Pico-2CH-RS232 module: interfaced through its channel-0 4-pin
-    # TTL header (VCC, GND, TXD, RXD), exactly as in PR #100's bench schematic
-    # (only that header reaches the Pico; the module carries its own DB9 to
-    # the scale). Header order matches PR #100's Waveshare_2CH_RS232 symbol.
-    "Waveshare_2CH_RS232": {"left": ["VCC", "GND", "TXD", "RXD"], "right": []},
+    # Waveshare Pico-2CH-RS232 module: a Pico-form-factor HAT whose ONLY
+    # TTL/board-side connection is its 2x20 header — the module's own schematic
+    # (hardware/vendor-files/waveshare-pico-2ch-rs232) shows no separate TTL
+    # header; its 3-pin H2-H5 headers are the RS-232 *line* side that cables to
+    # the scale. This is the receptacle the module plugs onto, mirroring the
+    # Pico's 2x20 physical order position-for-position (same pitch and
+    # PICO_ROW_SPACING) with the module's own labels: TXD0/RXD0 (channel 0) at
+    # the GP0/GP1 positions, TXD1/RXD1 (channel 1) at GP4/GP5, VCC at the VSYS
+    # position, the status-LED rail at the 3V3 position. The pass-through
+    # positions keep their Pico pin names and stay no-connect on this board.
+    "Waveshare_2CH_RS232": {
+        "left": ["TXD0", "RXD0", "GND", "GP2", "GP3", "TXD1", "RXD1", "GND",
+                 "GP6", "GP7", "GP8", "GP9", "GND", "GP10", "GP11", "GP12",
+                 "GP13", "GND", "GP14", "GP15"],
+        "right": ["VBUS", "VCC", "GND", "3V3_EN", "3V3", "ADC_VREF", "GP28",
+                  "GND", "GP27", "GP26", "RUN", "GP22", "GND", "GP21", "GP20",
+                  "GP19", "GP18", "GND", "GP17", "GP16"]},
     "DRV2605L_Breakout": {"left": ["VIN", "GND", "SDA", "SCL", "IN_TRIG", "EN"],
                           "right": ["OUT+", "OUT-"]},
     # Adafruit #3190 DRV8871: 4-pos power/motor terminal block (VM, GND, OUT1,
@@ -316,11 +343,12 @@ PACKAGES = {
                "castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"),
     "Waveshare_2CH_RS232": dict(
         kind="module", body=(21.0, 52.0), model=None,
-        source="Waveshare Pico-2CH-RS232 (SP3232EEN) 21x52 mm; interfaced via "
-               "its channel-0 4-pin TTL header (VCC/GND/TXD/RXD) per PR #100, "
-               "powered from +3V3 so the TTL swing stays Pico-safe; embeds its "
-               "own RS-232 charge-pump caps so no discrete MAX3232 is needed; "
-               "datasheets in "
+        source="Waveshare Pico-2CH-RS232 (SP3232EEN) 21x52 mm; mounts on this "
+               "2x20 side receptacle (its only TTL connection — the module has "
+               "no separate TTL header), channel 0 routed to GP12/GP13 per "
+               "PR #100, powered from +3V3 so the TTL swing stays Pico-safe; "
+               "embeds its own RS-232 charge-pump caps so no discrete MAX3232 "
+               "is needed; datasheets in "
                f"{VENDOR}/waveshare-pico-2ch-rs232/datasheets/"),
     "DRV2605L_Breakout": dict(
         kind="module", body=(17.78, 16.51),
@@ -472,7 +500,9 @@ def _row_spacing(lib_id: str) -> float:
     cols = PINOUTS[lib_id]
     if not cols["right"]:
         return 0.0
-    if lib_id == "Pi_Pico_W":
+    if lib_id in ("Pi_Pico_W", "Waveshare_2CH_RS232"):
+        # The RS-232 module is a Pico-form-factor HAT: its receptacle uses the
+        # same castellation row spacing so the module mates pin-for-pin.
         return PICO_ROW_SPACING
     body = PACKAGES[lib_id]["body"]
     if body is not None:                       # place columns near the body edges
