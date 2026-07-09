@@ -5,8 +5,8 @@
   "components": 15,
   "nets": 22,
   "outline_mm": [
-    140.59,
-    82.01
+    156.06,
+    84.63
   ],
   "power_nets": [
     "+12V",
@@ -19,8 +19,8 @@
     "schematic": "test_module_unplaced.kicad_sch",
     "project": "test_module_unplaced.kicad_pro",
     "outline_mm": [
-      100.0,
-      100.0
+      110.0,
+      110.0
     ],
     "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
   },
@@ -32,24 +32,24 @@
       "pins": 3,
       "pins_netted": 2,
       "body_mm": [
-        14.0,
-        11.0
+        14.4,
+        9.0
       ],
       "model": null,
-      "source": "Adafruit #373 2.1 mm DC barrel-jack breakout (datasheet)"
+      "source": "Adafruit #373 = CUI PJ-102AH (committed datasheet): housing 14.4x9.0 mm in the board plane (11.0 mm tall)"
     },
     {
       "ref": "U1",
       "part": "D24V22F5_Buck",
       "kind": "module",
-      "pins": 4,
+      "pins": 8,
       "pins_netted": 4,
       "body_mm": [
-        12.7,
-        10.16
+        17.8,
+        17.8
       ],
       "model": "hardware/vendor-files/pololu-2858-d24v22f5/cad/d24v22fx-step-down-voltage-regulator.step",
-      "source": "Pololu #2858 0.5x0.4 in PCB; STEP envelope 19.5x20.7x13.8 mm"
+      "source": "Pololu #2858 D24V22F5: 0.7x0.7 in (17.8x17.8 mm) PCB per the reg19a dimension diagram (PR #25)"
     },
     {
       "ref": "C1",
@@ -94,14 +94,14 @@
       "ref": "U3",
       "part": "DRV2605L_Breakout",
       "kind": "module",
-      "pins": 8,
-      "pins_netted": 8,
+      "pins": 11,
+      "pins_netted": 7,
       "body_mm": [
-        17.78,
-        16.51
+        25.4,
+        17.78
       ],
-      "model": "hardware/vendor-files/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
-      "source": "Adafruit #2305 Eagle .brd outline (layer 20) 17.78x16.51 mm"
+      "model": null,
+      "source": "Adafruit #2305, STEMMA QT revision: Eagle .brd outline (layer 20) 25.40x17.78 mm (PR #25). The committed STEP is the older 17.78x16.51 mm revision, so no 3-D model is attached. NOTE: if the team's physical unit is the pre-2021 revision, it has no OUT+/OUT- through-holes at all (SMD pads only)"
     },
     {
       "ref": "M1",
@@ -117,7 +117,7 @@
       "ref": "U4",
       "part": "DRV8871_Breakout",
       "kind": "module",
-      "pins": 7,
+      "pins": 10,
       "pins_netted": 6,
       "body_mm": [
         20.32,
@@ -140,14 +140,14 @@
       "ref": "U5",
       "part": "Tic_T500",
       "kind": "module",
-      "pins": 14,
+      "pins": 29,
       "pins_netted": 8,
       "body_mm": [
-        25.4,
-        15.24
+        38.1,
+        26.7
       ],
       "model": null,
-      "source": "Pololu #3135 1.0x0.6 in PCB; STEP/STL in hardware/vendor-files/pololu-3135-tic-t500/cad/tic-stepper-motor-controller-models.zip"
+      "source": "Pololu #3135 Tic T500: 1.5 in x 26.7 mm PCB per the tic03b dimension diagram + drill-guide DXF (pololu.com tic-drill.zip; the PR #25 copy of that DXF is a mislabeled STEP file). The USB-B connector overhangs the top edge by a further ~1.4 mm"
     },
     {
       "ref": "C3",
@@ -166,14 +166,14 @@
       "ref": "SR1",
       "part": "Shunt_Regulator",
       "kind": "module",
-      "pins": 4,
+      "pins": 14,
       "pins_netted": 4,
       "body_mm": [
-        24.13,
-        10.16
+        28.6,
+        20.3
       ],
       "model": "hardware/vendor-files/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
-      "source": "Pololu #3776 0.95x0.4 in PCB; STEP envelope 28.6x21.2x13.8 mm"
+      "source": "Pololu #3776 9W shunt regulator: 1.125x0.8 in (28.6x20.3 mm) PCB per the tvs01a dimension diagram (PR #25), drawn landscape with the VIN/GND wire terminals on the left edge"
     },
     {
       "ref": "M2",

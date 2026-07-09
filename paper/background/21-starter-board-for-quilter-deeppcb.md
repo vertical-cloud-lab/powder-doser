@@ -13,6 +13,45 @@ PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment
 ("try to make an actual starter board that we could upload to quilter or
 DeepPCB")._
 
+> **Update (full physical-footprint audit — every component re-verified against
+> its manufacturer design files).** After the Waveshare mid-body-header bug,
+> @lbwinters asked on PR
+> [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4929190803)
+> to *"go back and verify the correct physical footprints of every single
+> component"*. Every part was re-checked against primary vendor geometry — the
+> PR #25 Adafruit **Eagle `.brd`** files (exact hole coordinates + net names),
+> the Pololu **dimension diagrams** (`reg19a`, `tvs01a`, `tic03b`) and the
+> official **`tic03b` drill-guide DXF** (fetched from pololu.com; the PR #25
+> copy of that file is a mislabeled STEP), Pololu's labeled pinout photos, the
+> committed **CUI PJ-102AH** barrel-jack datasheet, the Waveshare module
+> schematic, and the official Pico mechanical drawing. Five parts failed the
+> audit in the same class as the Waveshare error (land patterns the real
+> module could not plug into) and one had a wiring fault:
+>
+> | Part | What was wrong | Now |
+> | --- | --- | --- |
+> | `Tic_T500` (Pololu #3135) | Body modeled 25.4 × 15.24 mm with two invented 8+6-pin 0.1″ columns 23.4 mm apart; **motor order had A1/A2 swapped** | Real **38.1 × 26.7 mm** board; all 21 signal holes (10-hole control column `ERR RST SCL SDA/AN GND TX RX RC 5V GND`, top row `STEP DIR GND GND VM`, motor column `VIN GND A2 A1 B1 B2` — A2 *above* A1 on the T500, with the real skipped grid position), the 6-hole 3.5 mm terminal-block column, and both M2 mounting holes, at drill-guide-exact positions |
+> | `D24V22F5_Buck` (Pololu #2858) | Body 12.7 × 10.16 mm with a 4-pin row in the wrong order (`VIN GND VOUT SHDN`) | Real **17.8 × 17.8 mm** board; the real 5-hole row **`PG EN(SHDN) VIN GND VOUT`**, the offset second GND hole, and both M2 mounting holes |
+> | `Shunt_Regulator` (Pololu #3776) | Modeled as a 24.13 × 10.16 mm 1×4 0.1″ header — no such header exists on the part | Real **28.6 × 20.3 mm** board; the two large VIN/GND wire-terminal holes (5.00 mm apart), the two small 0.1″-grid duplicates beside each, the unpopulated option holes (external shunt resistor, trimmer), and all 3 mounting holes |
+> | `DRV8871_Breakout` (Adafruit #3190) | Generic 4+3-pin 0.1″ columns | Eagle-exact: two 2-pos **3.5 mm terminal blocks** (`OUT2 OUT1` \| `VM GND`) on the power edge, the real **1×4** logic header (`IN2 IN1 VM GND` — the audit found the 4th pin, a second VM), both mounting holes |
+> | `DRV2605L_Breakout` (Adafruit #2305) | 6+2 columns with **SDA/SCL in swapped order** and an **`EN` pin that does not exist** on any revision of the breakout | Eagle-exact **STEMMA QT revision** (25.4 × 17.78 mm): 1×5 row `VIN GND SCL SDA IN/TRIG`, the two OUT+/OUT− holes on the opposite edge, 4 mounting holes. `EN` dropped from the netlist (`HAPT_EN` stays on IN/TRIG; the DRV2605L is enabled over I²C). ⚠️ *Variant note:* only the STEMMA QT revision (shipping since ~2021) has OUT± through-holes — if the team's unit is the older 17.78 × 16.51 mm revision, the motor wires must solder to its top-side pads instead |
+> | `Barrel_Jack_12V` (Adafruit #373 = CUI PJ-102AH) | Footprint geometry was actually correct, but **GND was mapped to the switch lug (pad 3) instead of the sleeve (pad 2)** — the switch contact floats when a plug is inserted, so the board would have lost its ground return exactly when powered | `+12V`→tip (1), `GND`→sleeve (2), `SW`→switch (3, no-connect); body corrected to the real 14.4 × 9.0 mm housing |
+>
+> Verified correct as-is: Pi Pico W (2×20 @ 17.78 mm row spacing, 51 × 21 mm),
+> Waveshare Pico-2CH-RS232 receptacle (re-checked pin-for-pin against its
+> schematic: `TXD0/RXD0` at GP0/GP1, `TXD1/RXD1` at GP4/GP5, VCC at the VSYS
+> position, LED rail at 3V3, 8× GND), the radial-cap footprint, and the four
+> off-board connector headers (M1–M3, SOL1). The five corrected carriers now
+> use a new **`EXPLICIT_LAYOUTS`** table in the generator (every real hole at
+> its measured vendor coordinate, incl. plated mounting holes as no-connect
+> pads), so the counts become **15 footprints / 172 pads / 95 net-assigned /
+> 22 nets** (placed outline ~156 × 85 mm). Because the real bodies are larger,
+> the unplaced auto-place outline was re-sized **100 × 100 → 110 × 110 mm** to
+> stay in the ~35–55 % utilisation band (~51 % courtyard). `kicad-cli`
+> re-verifies 95 pins / 22 nets / zero unconnected on both trios, `pcbnew` DRC
+> reports no courtyard/clearance/short errors, the 15↔15 footprint↔symbol UUID
+> bijection holds, and the build stays byte-for-byte reproducible.
+
 > **Update (U6 physical-mount correction — 2×20 receptacle restored).**
 > @lbwinters spotted on PR
 > [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4928879264)
@@ -170,8 +209,8 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 137 pads (83 net-assigned), real component body outlines (F.Fab) + courtyards (F.CrtYd), 4 vendor 3-D models, and a compact, domain-grouped ~140 × 82 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 22 nets, 83 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 172 pads (95 net-assigned; vendor-exact hole maps for the five Pololu/Adafruit carriers, incl. mounting holes), real component body outlines (F.Fab) + courtyards (F.CrtYd), 3 vendor 3-D models, and a compact, domain-grouped ~156 × 85 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 22 nets, 95 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
@@ -185,13 +224,13 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~140 × 82 mm outline | Upload to test **routing** of a board this generator already placed. |
-| **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** a right-sized **100 × 100 mm** empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~156 × 85 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** a right-sized **110 × 110 mm** empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two variants share the same netlist and symbols; the schematics differ only
 in the owning project name (each `.kicad_sch` names *its own* project so the
 trio is internally consistent — see [Quilter review fixes](#quilter-review-fixes-pr-76-comment-4723827215)).
-The unplaced board's Edge.Cuts target is a **right-sized 100 × 100 mm square**
+The unplaced board's Edge.Cuts target is a **right-sized 110 × 110 mm square**
 (independent of the wider placed floorplan) with every footprint shifted one
 outline-width + 12 mm to its right, so the board area is empty and the router
 must place the parts onto a sensibly-sized board.
@@ -263,19 +302,20 @@ must place the parts onto a sensibly-sized board.
 The build is verified structurally and headlessly with `kiutils`, the builder's
 own geometry guard, and `kicad-cli`'s netlist exporter:
 
-- **15 footprints / 137 pads / 83 net-assigned / 22 nets** — re-parsed from the
+- **15 footprints / 172 pads / 95 net-assigned / 22 nets** — re-parsed from the
   written `.kicad_pcb`. Every physical pin of each real part is now a pad (the
   Pico W's full 40, the Waveshare RS-232 module's full 2×20 receptacle, the Tic
-  T500's 14, etc.), with every same-named pin (e.g. the eight Pico GND pins)
-  tied to its net.
+  T500's 21 signal + 6 terminal-block + 2 mounting holes, etc.), with every
+  same-named pin (e.g. the eight Pico GND pins) tied to its net.
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
   compact placement stays clearance-clean.
-- **12 3-D models attached** — 4 from vendor STEP files (DRV2605L, DRV8871,
-  D24V22F5, shunt regulator), the rest from the parts' own KiCad library
+- **11 3-D models attached** — 3 from vendor STEP files (DRV8871, D24V22F5,
+  shunt regulator; the DRV2605L STEP is the older board revision so it is no
+  longer attached), the rest from the parts' own KiCad library
   footprints (the Pico / RS-232 / Tic header-carriers deliberately omit the
-  misleading bare-header model — see note `22`) — plus **60 F.Fab**
-  body-outline + **60 F.CrtYd** courtyard segments.
+  misleading bare-header model — see note `22`) — plus 60 F.Fab
+  body-outline + 60 F.CrtYd courtyard segments.
 
 **Compact, domain-aware placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
 The first DeepPCB run flagged the board as *"still very spaced out"*: the earliest
@@ -395,7 +435,9 @@ the 40-pin columns. The **RS-232 module** was first added as a 40-pad
 Pico-form-factor receptacle (`J2`), briefly re-modelled per PR #100 as a 4-pin
 "TTL header" `U6`, then restored to the 2×20 receptacle when that header proved
 physically non-existent (see the top update block), bringing the board to
-**137 pads / 83 net-assigned / 22 nets**. `validate_schematic_netlist()` re-confirms all connected pins land on
+137 pads / 83 net-assigned / 22 nets; the subsequent full physical-footprint
+audit (top update block) then took it to **172 pads / 95 net-assigned / 22
+nets** with vendor-exact hole maps. `validate_schematic_netlist()` re-confirms all connected pins land on
 their intended nets with zero unconnected stragglers, and `_assert_no_overlap()`
 keeps the compact placement DRC-clean.
 
@@ -460,6 +502,14 @@ outline is now an independent **100 × 100 mm** square (`UNPLACED_OUTLINE_MM`):
 `EDGE_MARGIN` to spare, leaves copper room for the 2-layer routes, and lands on
 JLCPCB's 100 × 100 mm prototype price break. The placed variant is left at its
 domain-packed size (it is *our* placement, not a Quilter auto-place target).
+
+> **Post-audit re-size:** the full physical-footprint audit (top update block)
+> replaced several undersized placeholder bodies with the real vendor
+> dimensions (the Tic T500 alone is 38.1 × 26.7 mm, not 25.4 × 15.24 mm),
+> growing the true courtyard area to ≈ 6120 mm² — ~61 % of a 100 × 100 mm
+> board, above the recommended band. `UNPLACED_OUTLINE_MM` is therefore now
+> **110 × 110 mm** (~51 % courtyard / ~46 % body utilisation), trading the
+> JLCPCB 100 × 100 mm price break for realistic routing room.
 
 ### 3. Stackup & the "no ground layer" warning (recommendation)
 

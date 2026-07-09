@@ -82,7 +82,7 @@ from hashlib import sha256
 from pathlib import Path
 
 from kiutils.board import Board
-from kiutils.footprint import Footprint, FpLine, FpText, Model, Pad
+from kiutils.footprint import DrillDefinition, Footprint, FpLine, FpText, Model, Pad
 from kiutils.items.common import Effects, Font, Net, Position
 from kiutils.items.gritems import GrLine
 
@@ -197,9 +197,12 @@ NETLIST = [
                                   # across: GP12 (UART0 TX) -> U6.TXD0 and
                                   # GP13 (UART0 RX) <- U6.RXD0.
                                   ("GP12", "SCALE_TX"), ("GP13", "SCALE_RX")]),
+    # PR #61/#100 wired an "EN" pin to HAPT_EN, but the physical Adafruit #2305
+    # breakout exposes no EN hole (either revision; the DRV2605L is enabled via
+    # I2C) - so only IN/TRIG carries HAPT_EN and the EN entry is dropped here.
     ("U3", "DRV2605L_Breakout", 210, 40, [("VIN", "+3V3"), ("GND", "GND"),
                                           ("SDA", "I2C_SDA"), ("SCL", "I2C_SCL"),
-                                          ("EN", "HAPT_EN"), ("IN_TRIG", "HAPT_EN"),
+                                          ("IN_TRIG", "HAPT_EN"),
                                           ("OUT+", "VIB_A"), ("OUT-", "VIB_B")]),
     ("M1", "ERM_Motor", 275, 50, [("+", "VIB_A"), ("-", "VIB_B")]),
     ("U4", "DRV8871_Breakout", 210, 90, [("VM", "+12V"), ("GND", "GND"),
@@ -252,15 +255,25 @@ NETLIST = [
 # files under hardware/vendor-files/ (PR #25) and the manufacturers' pinout
 # diagrams (see note 21 "Pin-count verification").
 PINOUTS = {
-    # Adafruit #373: a 2.1 mm DC barrel jack has three solder lugs - centre
-    # (tip, +), sleeve (-) and the normally-closed switch lug (left unused here).
+    # Adafruit #373: a 2.1 mm DC barrel jack (CUI PJ-102AH per the committed
+    # datasheet) has three solder lugs - centre (tip, +), sleeve (-) and the
+    # normally-closed switch lug (left unused here).
     "Barrel_Jack_12V": {"left": ["+12V", "GND", "SW"], "right": []},
-    # Pololu D24V22Fx: four pins in one row - VIN, GND, VOUT, SHDN (single GND).
-    "D24V22F5_Buck": {"left": ["VIN", "GND", "VOUT", "SHDN"], "right": []},
+    # Pololu D24V22Fx (reg19a dimension drawing + labeled pinout photo): one
+    # 0.1" row of FIVE holes - PG, EN (silk "EN"; PR #61/#100 call the net-name
+    # SHDN, kept here), VIN, GND, VOUT - plus an offset second GND hole and two
+    # M2 mounting holes. Physical layout in EXPLICIT_LAYOUTS.
+    "D24V22F5_Buck": {"left": ["PG", "SHDN", "VIN", "GND", "VOUT"],
+                      "right": ["GND", "MNT", "MNT"]},
     "Cap_Polar": {"left": ["+"], "right": ["-"]},
-    # Pololu #3776 shunt regulator: four large holes - A/+ on one node and
-    # B/- on the other (A is tied to +, B to -) - connected across the rail.
-    "Shunt_Regulator": {"left": ["A", "+"], "right": ["B", "-"]},
+    # Pololu #3776 shunt regulator (tvs01a dimension drawing + pinout photo):
+    # one large wire/terminal hole per node ("+" = VIN, "-" = GND), two small
+    # 0.1"-grid access holes per node ("A" duplicates +, "B" duplicates -),
+    # plus unpopulated option holes (external shunt resistor SRX, trimmer POT)
+    # and three M2 mounting holes. Physical layout in EXPLICIT_LAYOUTS.
+    "Shunt_Regulator": {"left": ["+", "A", "A", "-", "B", "B"],
+                        "right": ["SRX", "SRX", "POT", "POT", "POT",
+                                  "MNT", "MNT", "MNT"]},
     # Raspberry Pi Pico W: the full 40-pin (2x20, 0.1") castellated module.
     # Physical order (left col top->bottom = pins 1-20, right col = pins 21-40)
     # per the official Pico-R3-A4 pinout; unused GPIO are NC in this design.
@@ -288,16 +301,33 @@ PINOUTS = {
         "right": ["VBUS", "VCC", "GND", "3V3_EN", "3V3", "ADC_VREF", "GP28",
                   "GND", "GP27", "GP26", "RUN", "GP22", "GND", "GP21", "GP20",
                   "GP19", "GP18", "GND", "GP17", "GP16"]},
-    "DRV2605L_Breakout": {"left": ["VIN", "GND", "SDA", "SCL", "IN_TRIG", "EN"],
-                          "right": ["OUT+", "OUT-"]},
-    # Adafruit #3190 DRV8871: 4-pos power/motor terminal block (VM, GND, OUT1,
-    # OUT2) + 3-pin logic header (IN1, IN2, GND) = 7 connections, two of them GND.
-    "DRV8871_Breakout": {"left": ["VM", "GND", "OUT1", "OUT2"],
-                         "right": ["IN1", "IN2", "GND"]},
-    # Pololu Tic T500: control row (SCL, SDA/AN, TX, RX, RC, ERR, GND, 5V) +
-    # power/motor row (VIN, GND, A1, A2, B1, B2) = 14 pins, two of them GND.
-    "Tic_T500": {"left": ["SCL", "SDA", "TX", "RX", "RC", "ERR", "GND", "5V"],
-                 "right": ["VIN", "GND", "A1", "A2", "B1", "B2"]},
+    # Adafruit #2305 DRV2605L, STEMMA QT revision (the one Adafruit has shipped
+    # under PID 2305 since ~2021, and the only revision with OUT+/OUT- through-
+    # holes): per the vendor Eagle .brd ("Adafruit DRV2605L STEMMA QT.brd",
+    # PR #25) the breakout row is VIN(VCC), GND, SCL, SDA, IN/TRIG - note SCL
+    # *before* SDA - there is NO EN hole on either board revision, and OUT+/
+    # OUT- are two separate holes on the opposite edge. Physical layout in
+    # EXPLICIT_LAYOUTS.
+    "DRV2605L_Breakout": {"left": ["VIN", "GND", "SCL", "SDA", "IN_TRIG"],
+                          "right": ["OUT+", "OUT-", "MNT", "MNT", "MNT", "MNT"]},
+    # Adafruit #3190 DRV8871, from the vendor Eagle .brd (PR #25): power/motor
+    # edge = two 2-pos 3.5 mm terminal blocks (OUT2, OUT1 | VM, GND) and the
+    # logic edge = a 1x4 0.1" header (IN2, IN1, VM, GND) - VM and GND each
+    # appear on both edges. Physical layout in EXPLICIT_LAYOUTS.
+    "DRV8871_Breakout": {"left": ["OUT2", "OUT1", "VM", "GND"],
+                         "right": ["IN2", "IN1", "VM", "GND", "MNT", "MNT"]},
+    # Pololu Tic T500 (tic03b drill-guide DXF + labeled pinout photo): control
+    # column (ERR, RST, SCL, SDA/AN, GND, TX, RX, RC, 5V, GND), top row (STEP,
+    # DIR, GND, GND, VM - direct-driver / reverse-protected-VIN access, left
+    # no-connect here), motor/power column (VIN, GND, A2, A1, B1, B2 - note A2
+    # *above* A1 on the T500), a parallel 3.5 mm terminal-block column
+    # duplicating the motor/power column, and two M2 mounting holes.
+    # Physical layout in EXPLICIT_LAYOUTS.
+    "Tic_T500": {"left": ["ERR", "RST", "SCL", "SDA", "GND", "TX", "RX", "RC",
+                          "5V", "GND", "STEP", "DIR", "GND", "GND", "VM"],
+                 "right": ["VIN", "GND", "A2", "A1", "B1", "B2",
+                           "VIN", "GND", "A2", "A1", "B1", "B2",
+                           "MNT", "MNT"]},
     "Stepper_4wire": {"left": ["A1", "A2"], "right": ["B1", "B2"]},
     "Servo_3pin": {"left": ["+5V", "GND", "SIG"], "right": []},
     "ERM_Motor": {"left": ["+"], "right": ["-"]},
@@ -324,19 +354,23 @@ POWER_NETS = {"+12V", "+5V", "+3V3", "GND"}
 VENDOR = "hardware/vendor-files"
 PACKAGES = {
     "Barrel_Jack_12V": dict(
-        kind="module", body=(14.0, 11.0), model=None,
-        source="Adafruit #373 2.1 mm DC barrel-jack breakout (datasheet)"),
+        kind="module", body=(14.4, 9.0), model=None,
+        source="Adafruit #373 = CUI PJ-102AH (committed datasheet): housing "
+               "14.4x9.0 mm in the board plane (11.0 mm tall)"),
     "D24V22F5_Buck": dict(
-        kind="module", body=(12.70, 10.16),
+        kind="module", body=(17.8, 17.8),
         model=f"{VENDOR}/pololu-2858-d24v22f5/cad/d24v22fx-step-down-voltage-regulator.step",
-        source="Pololu #2858 0.5x0.4 in PCB; STEP envelope 19.5x20.7x13.8 mm"),
+        source="Pololu #2858 D24V22F5: 0.7x0.7 in (17.8x17.8 mm) PCB per the "
+               "reg19a dimension diagram (PR #25)"),
     "Cap_Polar": dict(
         kind="passive", body=(8.5, 8.5), model=None,
         source="generic radial electrolytic, Ø8 mm body"),
     "Shunt_Regulator": dict(
-        kind="module", body=(24.13, 10.16),
+        kind="module", body=(28.6, 20.3),
         model=f"{VENDOR}/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
-        source="Pololu #3776 0.95x0.4 in PCB; STEP envelope 28.6x21.2x13.8 mm"),
+        source="Pololu #3776 9W shunt regulator: 1.125x0.8 in (28.6x20.3 mm) "
+               "PCB per the tvs01a dimension diagram (PR #25), drawn landscape "
+               "with the VIN/GND wire terminals on the left edge"),
     "Pi_Pico_W": dict(
         kind="module", body=(21.0, 51.0), model=None,
         source="Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in "
@@ -351,17 +385,22 @@ PACKAGES = {
                "is needed; datasheets in "
                f"{VENDOR}/waveshare-pico-2ch-rs232/datasheets/"),
     "DRV2605L_Breakout": dict(
-        kind="module", body=(17.78, 16.51),
-        model=f"{VENDOR}/adafruit-2305-drv2605l/cad/2305 DRV2605L.step",
-        source="Adafruit #2305 Eagle .brd outline (layer 20) 17.78x16.51 mm"),
+        kind="module", body=(25.40, 17.78), model=None,
+        source="Adafruit #2305, STEMMA QT revision: Eagle .brd outline "
+               "(layer 20) 25.40x17.78 mm (PR #25). The committed STEP is the "
+               "older 17.78x16.51 mm revision, so no 3-D model is attached. "
+               "NOTE: if the team's physical unit is the pre-2021 revision, "
+               "it has no OUT+/OUT- through-holes at all (SMD pads only)"),
     "DRV8871_Breakout": dict(
         kind="module", body=(20.32, 24.13),
         model=f"{VENDOR}/adafruit-3190-drv8871/cad/3190 DRV8871 Breakout.step",
         source="Adafruit #3190 Eagle .brd outline (layer 20) 20.32x24.13 mm"),
     "Tic_T500": dict(
-        kind="module", body=(25.40, 15.24), model=None,
-        source="Pololu #3135 1.0x0.6 in PCB; STEP/STL in "
-               f"{VENDOR}/pololu-3135-tic-t500/cad/tic-stepper-motor-controller-models.zip"),
+        kind="module", body=(38.1, 26.7), model=None,
+        source="Pololu #3135 Tic T500: 1.5 in x 26.7 mm PCB per the tic03b "
+               "dimension diagram + drill-guide DXF (pololu.com tic-drill.zip; "
+               "the PR #25 copy of that DXF is a mislabeled STEP file). The "
+               "USB-B connector overhangs the top edge by a further ~1.4 mm"),
     "Stepper_4wire": dict(
         kind="connector", body=None, model=None,
         source="off-board StepperOnline 11HS18-0674S NEMA-11 28x28x45 mm; STEP in "
@@ -404,13 +443,17 @@ DOMAIN_GAP = 6.0       # aisle (mm) between the power and logic domains
 # place components onto whatever outline is uploaded and *cannot resize it
 # themselves* (https://docs.quilter.ai — "Quilter can't define or resize the
 # board outline for you"), so the unplaced board no longer mirrors the wider
-# pre-placed outline (which spread parts into domain rows). 100 x 100 mm gives
-# ~51% courtyard / ~42% body utilisation — inside the 35-55% band recommended
-# for through-hole mixed-signal auto-placement/routing (enough copper room for
-# the 2-layer routes while cutting the wasted area) — comfortably fits the two
-# tallest parts (the 52 mm Pico/RS-232 modules) with EDGE_MARGIN to spare, and
-# lands on JLCPCB's 100 x 100 mm prototype price break.
-UNPLACED_OUTLINE_MM = (100.0, 100.0)
+# pre-placed outline (which spread parts into domain rows). The earlier
+# 100 x 100 mm outline was sized for the placeholder bodies; the vendor-exact
+# footprint audit grew the real courtyard area to ~6120 mm² (the Tic T500
+# alone is really 38.1 x 26.7 mm, not 25.4 x 15.24), which would have pushed
+# 100 x 100 mm to ~61% courtyard utilisation — above the 35-55% band
+# recommended for through-hole mixed-signal auto-placement/routing. 110 x
+# 110 mm restores ~51% courtyard / ~46% body utilisation, still comfortably
+# fits the two 52 mm Pico/RS-232 modules with EDGE_MARGIN to spare. (This
+# gives up JLCPCB's 100 x 100 mm prototype price break; shrink back only by
+# dropping parts or accepting a tighter route.)
+UNPLACED_OUTLINE_MM = (110.0, 110.0)
 
 # ---------------------------------------------------------------------------
 # Placement strategy (Edison board-placement review,
@@ -460,8 +503,157 @@ SINGLE_HEADER_ORDER = {
     "ERM_Motor": ["+", "-"],
     "Solenoid": ["+", "-"],
     "Stepper_4wire": ["A1", "A2", "B1", "B2"],
-    "Shunt_Regulator": ["A", "+", "B", "-"],
 }
+
+
+# ---------------------------------------------------------------------------
+# Vendor-exact explicit pad layouts (PR #76 full physical-footprint audit).
+#
+# The generic column model above cannot represent boards whose holes are not
+# two uniform 0.1" columns, and the audit found five parts where that
+# abstraction produced land patterns the real module could not plug into
+# (the same failure class as the Waveshare mid-body header). These parts now
+# carry every real hole at its measured vendor position instead:
+#
+#   * DRV2605L / DRV8871 - hole coordinates read directly from the Adafruit
+#     Eagle ``.brd`` files committed in PR #25 (element + package pad
+#     positions, y-flipped into KiCad's y-down footprint frame).
+#   * Tic T500 - hole coordinates from Pololu's official tic03b drill-guide
+#     DXF (tic-drill.zip; the PR #25 copy of that file is a mislabeled STEP)
+#     cross-checked against the tic03b dimension PDF, hole names from
+#     Pololu's labeled pinout photo and the Tic user's guide.
+#   * D24V22F5 - reg19a dimension diagram (6x Ø1.02 signal holes, 2x Ø2.18
+#     mounting) + Pololu's labeled pinout photo (PG, EN, VIN, GND, VOUT).
+#   * Shunt regulator - tvs01a dimension diagram + pinout/bottom photos.
+#     The netted VIN/GND terminals are drawing-anchored; the unpopulated
+#     option holes (SRX/POT, no-connect) are photo-derived (about +/-0.3 mm).
+#
+# Each entry is an ordered list of ``(pin_name, x, y, pad_dia, drill_dia)``
+# in mm, KiCad footprint-local coordinates (y down), origin at the module
+# PCB centre. The order defines the pad numbering and MUST equal the
+# left-then-right PINOUTS order (asserted in ``_pad_layout``) so board pad
+# numbers keep matching the schematic pin numbers. "MNT" = plated mounting
+# hole, "SRX"/"POT" = unpopulated option holes; all three stay no-connect.
+# ---------------------------------------------------------------------------
+EXPLICIT_LAYOUTS = {
+    # Pololu #2858 D24V22F5 (17.8 x 17.8 mm). 0.1" row of 5 along the left
+    # edge (PG top), second GND hole 1.27 mm off the right edge / 5.84 mm from
+    # the top edge, M2 mounting holes 2.3 mm in from two opposite corners.
+    "D24V22F5_Buck": [
+        ("PG",   -7.63, -7.63, 1.93, 1.02),
+        ("SHDN", -7.63, -5.09, 1.93, 1.02),   # silkscreened "EN" on the board
+        ("VIN",  -7.63, -2.55, 1.93, 1.02),
+        ("GND",  -7.63, -0.01, 1.93, 1.02),
+        ("VOUT", -7.63,  2.53, 1.93, 1.02),
+        ("GND",   7.63, -3.06, 1.93, 1.02),   # offset second GND access hole
+        ("MNT",   6.60, -6.60, 3.20, 2.18),
+        ("MNT",  -6.60,  6.60, 3.20, 2.18),
+    ],
+    # Pololu #3776 9W shunt regulator (28.6 x 20.3 mm, landscape). Big wire /
+    # terminal-block holes for VIN ("+") and GND ("-") on the left edge 5.00 mm
+    # apart, two small 0.1"-grid duplicates beside each, external-shunt-
+    # resistor (SRX) and trimmer (POT) option holes unpopulated on this fixed
+    # version, three M2 mounting holes 2.2 mm in from the corners.
+    "Shunt_Regulator": [
+        ("+",   -11.94, -2.50, 3.60, 2.18),
+        ("A",    -9.74, -3.75, 1.93, 1.02),
+        ("A",    -9.74, -1.25, 1.93, 1.02),
+        ("-",   -11.94,  2.50, 3.60, 2.18),
+        ("B",    -9.74,  1.25, 1.93, 1.02),
+        ("B",    -9.74,  3.75, 1.93, 1.02),
+        ("SRX",  -8.20, -8.88, 1.93, 1.02),
+        ("SRX",  -1.47, -3.38, 1.93, 1.02),
+        ("POT",   2.54,  7.15, 1.93, 1.02),
+        ("POT",   5.08,  7.15, 1.93, 1.02),
+        ("POT",   7.62,  7.15, 1.93, 1.02),
+        ("MNT",  12.10, -7.95, 3.20, 2.18),
+        ("MNT",  12.10,  7.95, 3.20, 2.18),
+        ("MNT", -12.10,  7.95, 3.20, 2.18),
+    ],
+    # Adafruit #2305 DRV2605L, STEMMA QT revision (25.4 x 17.78 mm). One 1x5
+    # 0.1" breakout row (VIN, GND, SCL, SDA, IN/TRIG) on the bottom edge and
+    # the two motor output holes on the top edge, from the vendor Eagle .brd:
+    # JP2 pads at (7.62..17.78, 2.54), OUT+ at (17.78, 15.24), OUT- at
+    # (7.62, 15.24), 4x M2.5 mounting holes at (2.54/22.86, 2.54/15.24).
+    "DRV2605L_Breakout": [
+        ("VIN",     -5.08,  6.35, 1.93, 1.02),
+        ("GND",     -2.54,  6.35, 1.93, 1.02),
+        ("SCL",      0.00,  6.35, 1.93, 1.02),
+        ("SDA",      2.54,  6.35, 1.93, 1.02),
+        ("IN_TRIG",  5.08,  6.35, 1.93, 1.02),
+        ("OUT+",     5.08, -6.35, 1.93, 1.02),
+        ("OUT-",    -5.08, -6.35, 1.93, 1.02),
+        ("MNT",    -10.16,  6.35, 3.20, 2.50),
+        ("MNT",     10.16,  6.35, 3.20, 2.50),
+        ("MNT",    -10.16, -6.35, 3.20, 2.50),
+        ("MNT",     10.16, -6.35, 3.20, 2.50),
+    ],
+    # Adafruit #3190 DRV8871 (20.32 x 24.13 mm), from the vendor Eagle .brd:
+    # two 2-pos 3.5 mm terminal blocks on the top edge (X1 = OUT2, OUT1 at
+    # x 4.042/7.542; X2 = VM, GND at x 12.678/16.178; y 20.32) and a 1x4 0.1"
+    # logic header on the bottom edge (JP2 = IN2, IN1, VM, GND at x
+    # 6.35..13.97, y 2.54), plus 2x M2.5 mounting holes at (2.54/17.78, 2.54).
+    "DRV8871_Breakout": [
+        ("OUT2", -6.118, -8.255, 2.18, 1.02),
+        ("OUT1", -2.618, -8.255, 2.18, 1.02),
+        ("VM",    2.518, -8.255, 2.18, 1.02),
+        ("GND",   6.018, -8.255, 2.18, 1.02),
+        ("IN2",  -3.810,  9.525, 1.93, 1.02),
+        ("IN1",  -1.270,  9.525, 1.93, 1.02),
+        ("VM",    1.270,  9.525, 1.93, 1.02),
+        ("GND",   3.810,  9.525, 1.93, 1.02),
+        ("MNT",  -7.620,  9.525, 3.20, 2.50),
+        ("MNT",   7.620,  9.525, 3.20, 2.50),
+    ],
+    # Pololu #3135 Tic T500 (38.1 x 26.7 mm PCB), from the official tic03b
+    # drill-guide DXF: control column x=1.27 (10 holes, 0.1" pitch, ERR top),
+    # top row y=25.4 (STEP, DIR, GND, GND, VM at x 13.97..24.13), motor/power
+    # column x=36.83 (VIN, GND, [skipped grid position], A2, A1, B1, B2 - the
+    # T500 order, A2 above A1), a parallel Ø1.52 terminal-block column
+    # x=34.29 at 3.5 mm pitch duplicating the motor/power signals, and 2x M2
+    # mounting holes. DXF origin (0,0) = board lower-left; local = centred.
+    "Tic_T500": [
+        ("ERR",  -17.78, -12.05, 1.93, 1.02),
+        ("RST",  -17.78,  -9.51, 1.93, 1.02),
+        ("SCL",  -17.78,  -6.97, 1.93, 1.02),
+        ("SDA",  -17.78,  -4.43, 1.93, 1.02),
+        ("GND",  -17.78,  -1.89, 1.93, 1.02),
+        ("TX",   -17.78,   0.65, 1.93, 1.02),
+        ("RX",   -17.78,   3.19, 1.93, 1.02),
+        ("RC",   -17.78,   5.73, 1.93, 1.02),
+        ("5V",   -17.78,   8.27, 1.93, 1.02),
+        ("GND",  -17.78,  10.81, 1.93, 1.02),
+        ("STEP",  -5.08, -12.05, 1.93, 1.02),
+        ("DIR",   -2.54, -12.05, 1.93, 1.02),
+        ("GND",    0.00, -12.05, 1.93, 1.02),
+        ("GND",    2.54, -12.05, 1.93, 1.02),
+        ("VM",     5.08, -12.05, 1.93, 1.02),  # post-reverse-protection VIN
+        ("VIN",   17.78,  -4.43, 1.93, 1.02),
+        ("GND",   17.78,  -1.89, 1.93, 1.02),
+        ("A2",    17.78,   3.19, 1.93, 1.02),
+        ("A1",    17.78,   5.73, 1.93, 1.02),
+        ("B1",    17.78,   8.27, 1.93, 1.02),
+        ("B2",    17.78,  10.81, 1.93, 1.02),
+        ("VIN",   15.24,  -5.90, 2.60, 1.52),  # 3.5 mm terminal-block column
+        ("GND",   15.24,  -2.40, 2.60, 1.52),
+        ("A2",    15.24,   1.10, 2.60, 1.52),
+        ("A1",    15.24,   4.60, 2.60, 1.52),
+        ("B1",    15.24,   8.10, 2.60, 1.52),
+        ("B2",    15.24,  11.60, 2.60, 1.52),
+        ("MNT",   16.51, -10.78, 3.20, 2.18),
+        ("MNT",  -13.97,  10.81, 3.20, 2.18),
+    ],
+}
+
+
+def _explicit_pad(dia: float, drill: float) -> Pad:
+    """A plated through-hole pad template for the vendor-exact layouts."""
+    return Pad(
+        number="", type="thru_hole", shape="circle",
+        position=Position(0, 0, 0), size=Position(dia, dia),
+        drill=DrillDefinition(diameter=drill),
+        layers=["*.Cu", "*.Mask"],
+    )
 
 
 def _part_groups(lib_id: str) -> list[tuple[str, str, list[tuple[str, str]], str]]:
@@ -473,11 +665,16 @@ def _part_groups(lib_id: str) -> list[tuple[str, str, list[tuple[str, str]], str
         return [("Capacitor_THT", "CP_Radial_D8.0mm_P3.50mm",
                  [("+", "1"), ("-", "2")], "center")]
     if lib_id == "Barrel_Jack_12V":
-        # Real 2.1 mm DC jack: tip lug (pad 1, +), sleeve lug (pad 3, -) and the
-        # switch lug (pad 2). Renumbered 1/2/3 in the schematic's +12V/GND/SW
-        # order while keeping each lug's real geometry.
+        # Real 2.1 mm DC jack (CUI PJ-102AH): the library footprint's inline
+        # pads are pad 1 = tip (+) and pad 2 = sleeve (-); the laterally
+        # offset pad 3 is the insertion-detect switch lug (which floats when a
+        # plug is inserted, so it must NOT carry GND - the earlier build had
+        # GND on pad 3, which would have opened the ground return whenever a
+        # plug was in). Verified against the committed PJ-102AH datasheet:
+        # pins 3.0+3.0 mm apart inline, switch lug 4.7 mm lateral - matching
+        # this footprint's (0,0) / (-6,0) / (-3,4.7) pads.
         return [("Connector_BarrelJack", "BarrelJack_Horizontal",
-                 [("+12V", "1"), ("GND", "3"), ("SW", "2")], "center")]
+                 [("+12V", "1"), ("GND", "2"), ("SW", "3")], "center")]
     if lib_id in SINGLE_HEADER_ORDER:
         order = SINGLE_HEADER_ORDER[lib_id]
         lib, name = _header(len(order))
@@ -558,6 +755,22 @@ def _pad_layout(lib_id: str) -> list[tuple[str, str, float, float, str, str, Pad
     or kept centred, preserving the real intra-group geometry (header pitch,
     radial-cap spacing, barrel-jack lug layout, Pico castellation spacing).
     """
+    if lib_id in EXPLICIT_LAYOUTS:
+        # Vendor-exact layout: every real hole at its measured position. The
+        # entry order must match the left-then-right PINOUTS order so the pad
+        # numbers line up with the schematic pin numbers.
+        cols = PINOUTS[lib_id]
+        expected = cols["left"] + cols["right"]
+        names = [name for name, *_ in EXPLICIT_LAYOUTS[lib_id]]
+        if names != expected:
+            raise ValueError(
+                f"EXPLICIT_LAYOUTS[{lib_id!r}] pin order {names} does not match "
+                f"the PINOUTS left+right order {expected}")
+        return [(str(i + 1), name, x, y, "powder_doser_parts", lib_id,
+                 _explicit_pad(dia, drill))
+                for i, (name, x, y, dia, drill)
+                in enumerate(EXPLICIT_LAYOUTS[lib_id])]
+
     row = _row_spacing(lib_id)
     records: list[tuple[str, str, float, float, str, str, Pad]] = []
     num = 1
@@ -585,8 +798,12 @@ def _footprint_id(lib_id: str) -> str:
     header overlaid with a separate vendor carrier body (the Pololu modules), or
     that are composed from two real connectors on opposite body edges (the
     breakouts), get a ``powder_doser_parts:`` project id so the id reflects the
-    drawn part rather than the bare header.
+    drawn part rather than the bare header. Vendor-exact ``EXPLICIT_LAYOUTS``
+    parts always carry the project id (their hole map is the vendor's, not a
+    library footprint's).
     """
+    if lib_id in EXPLICIT_LAYOUTS:
+        return f"powder_doser_parts:{lib_id}"
     groups = _part_groups(lib_id)
     if len(groups) == 1:
         lib, name, *_ = groups[0]
@@ -613,6 +830,8 @@ def _is_header_carrier(lib_id: str) -> bool:
     must not be attached as the part's 3-D model. The barrel jack and passive
     discretes (whose own library footprint *is* the body) are excluded.
     """
+    if lib_id in EXPLICIT_LAYOUTS:
+        return False
     return (PACKAGES[lib_id]["kind"] == "module"
             and PACKAGES[lib_id]["body"] is not None
             and all(lib == "Connector_PinHeader_2.54mm"
@@ -632,8 +851,12 @@ def _body_extents(lib_id: str) -> tuple[float, float]:
     x_hi = max(lx + _pad_half(pad)[0] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
     y_lo = min(ly - _pad_half(pad)[1] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
     y_hi = max(ly + _pad_half(pad)[1] for _n0, _pn, lx, ly, _l, _nm, pad in recs)
-    pad_hw = max(abs(x_lo), abs(x_hi)) + SILK_MARGIN
-    pad_hh = max(abs(y_lo), abs(y_hi)) + SILK_MARGIN
+    # Vendor-exact layouts already carry the real board outline; padding their
+    # pad extents with SILK_MARGIN would inflate the drawn body past the
+    # vendor dimensions (every real pad sits inside the real outline).
+    margin = 0.0 if lib_id in EXPLICIT_LAYOUTS else SILK_MARGIN
+    pad_hw = max(abs(x_lo), abs(x_hi)) + margin
+    pad_hh = max(abs(y_lo), abs(y_hi)) + margin
     pkg = PACKAGES[lib_id]
     if pkg["body"] is not None:
         return max(pad_hw, pkg["body"][0] / 2.0), max(pad_hh, pkg["body"][1] / 2.0)
@@ -764,9 +987,15 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
         fp.path = f"/{sym_uuid}"
 
     records = _pad_layout(lib_id)
-    sources = sorted({f"{lib}:{name}" for _n, _pn, _lx, _ly, lib, name, _p in records})
-    fp.description = ("Powder-doser starter-board part; real land pattern(s): "
-                      + ", ".join(sources))
+    if lib_id in EXPLICIT_LAYOUTS:
+        fp.description = ("Powder-doser starter-board part; vendor-exact hole "
+                          "map from the manufacturer design files - "
+                          + PACKAGES[lib_id]["source"])
+    else:
+        sources = sorted({f"{lib}:{name}"
+                          for _n, _pn, _lx, _ly, lib, name, _p in records})
+        fp.description = ("Powder-doser starter-board part; real land "
+                          "pattern(s): " + ", ".join(sources))
 
     pad_world: list[tuple[float, float]] = []
     for number, pin_name, lx, ly, _lib, _name, src_pad in records:
@@ -816,7 +1045,7 @@ def _make_footprint(ref: str, lib_id: str, x: float, y: float,
     # (e.g. RPi_Pico, the Waveshare module) can be dropped into PACKAGES later.
     if pkg["model"]:
         fp.models.append(Model(path=pkg["model"]))
-    elif not _is_header_carrier(lib_id):
+    elif lib_id not in EXPLICIT_LAYOUTS and not _is_header_carrier(lib_id):
         lib, name, *_ = _part_groups(lib_id)[0]
         model = _lib_model(lib, name)
         if model is not None:
