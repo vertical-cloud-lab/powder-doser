@@ -16,7 +16,7 @@ Tic T500 / DRV2605L / DRV8871 / servo wiring.
 | [`test_stepper.py`](test_stepper.py)   | Auger stepper motor       | Tic T500 (MP6500) |
 | [`test_haptic.py`](test_haptic.py)     | Vibration / haptic motor  | DRV2605L |
 | [`test_solenoid.py`](test_solenoid.py) | Tap solenoid              | DRV8871 |
-| [`test_servo.py`](test_servo.py)       | Dispensing-angle servo    | (direct PWM) |
+| [`test_servo.py`](test_servo.py)       | Dispensing-angle servos (both, in unison) | (direct PWM) |
 | [`test_scale.py`](test_scale.py)       | A&D HR-100A balance link  | Waveshare 2CH-RS232 |
 | [`test_scale_contact.py`](test_scale_contact.py) | *Is the scale talking at all?* (no keypress) | Waveshare 2CH-RS232 |
 
@@ -168,9 +168,10 @@ polls `sys.stdin` non-blockingly via `uselect.poll()`.  The primary
 action on each rig is always **spacebar** — press space in
 `test_haptic.py` to fire the vibration motor, in `test_solenoid.py` to
 click the solenoid once, in `test_stepper.py` to advance the auger,
-and in `test_servo.py` to flip between two preset angles.  Each script
-prints its full keymap on start; `h` re-prints it and `q` exits
-cleanly.
+and in `test_servo.py` to flip both servos between two preset angles
+(`i` toggles servo-2 mirroring live to check mounting orientation).
+Each script prints its full keymap on start; `h` re-prints it and `q`
+exits cleanly.
 
 ## Adjustable variables
 
@@ -182,7 +183,7 @@ MicroPico re-uploads and re-runs in under a second.  Examples:
 * `test_stepper.py`  — `DEFAULT_MOVE_DEG`, `SPEED_STEP_RPM`, `START_DIRECTION`
 * `test_haptic.py`   — `TEST_EFFECT_ID`, `TEST_DURATION_S`, `TEST_EFFECT_SWEEP`
 * `test_solenoid.py` — `TEST_ON_MS`, `TEST_OFF_MS`, `TEST_BURST_COUNT`, `TEST_DUTY`
-* `test_servo.py`    — `TEST_ANGLE_A`, `TEST_ANGLE_B`, `TEST_STEP_DEG`, `TEST_SPEED_DEG_PER_S`
+* `test_servo.py`    — `TEST_ANGLE_A`, `TEST_ANGLE_B`, `TEST_STEP_DEG`, `TEST_SPEED_DEG_PER_S`, `TEST_INVERT`
 
 Pin numbers are intentionally **not** duplicated here — change them in
 `config.py` and both the main firmware and every test script pick them

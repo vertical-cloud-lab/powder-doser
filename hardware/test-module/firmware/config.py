@@ -7,7 +7,7 @@ new values.
 
 The default values match the hardware in `hardware/test-module/README.md`:
 NEMA-11 11HS18-0674S stepper + Pololu Tic T500, JF-0530B 5 V solenoid +
-DRV8871, 10 mm ERM coin + DRV2605L, and an HD-1810MG servo on the
+DRV8871, 10 mm ERM coin + DRV2605L, and two HD-1810MG servos on the
 dispensing axis, all driven from a single Raspberry Pi Pico W.
 """
 
@@ -57,7 +57,8 @@ PIN_SCALE_RX  = 13         # Pico UART0 RX <- module RXD <- scale TXD
 SCALE_UART_ID = 0          # RP2040 UART0 (TX=GP12, RX=GP13)
 
 PIN_HAPT_EN   = 14         # DRV2605L EN / IN_TRIG (tie high to enable)
-PIN_SERVO_SIG = 15         # Servo PWM signal
+PIN_SERVO_SIG  = 15        # Servo 1 PWM signal (dispensing-angle axis)
+PIN_SERVO_SIG2 = 2         # Servo 2 PWM signal (opposite side of baseplate)
 
 
 # -----------------------------------------------------------------------
@@ -108,7 +109,16 @@ TAP_PWM_DUTY          = 1.0           # 0.0 .. 1.0 -- holding force (PWM)
 
 # -----------------------------------------------------------------------
 # Dispensing-angle (servo) configuration.
+#
+# Two servos drive the dispensing-angle axis.  They sit on opposite sides
+# of the baseplate and rotate the auger together, so they always move in
+# unison off a single logical angle command -- there is no independent
+# control.  Because the two servos face opposite directions, servo 2 is
+# driven with the mirror-image angle of servo 1 (reflected about the
+# midpoint of the range below) when SERVO2_INVERT is True; set it False if
+# both servos are mounted facing the same way and should track directly.
 # -----------------------------------------------------------------------
+SERVO2_INVERT         = True          # servo 2 mirrors servo 1 (opposite sides)
 SERVO_MIN_PULSE_US    = 500           # HD-1810MG: 500..2400 us
 SERVO_MAX_PULSE_US    = 2400
 SERVO_MIN_ANGLE_DEG   = 0             # mechanical min

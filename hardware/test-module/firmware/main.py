@@ -2,8 +2,9 @@
 
 This is the multi-channel REPL ``main.py`` for the bench rig described
 in ``hardware/test-module/README.md``.  It brings up the four actuators
-(stepper, ERM coin via DRV2605L, solenoid via DRV8871, dispensing-angle
-servo) and exposes a one-line-per-command serial REPL so the bench
+(stepper, ERM coin via DRV2605L, solenoid via DRV8871, and the dual
+dispensing-angle servos) and exposes a one-line-per-command serial REPL
+so the bench
 operator can exercise any single channel while the others stay idle.
 
 Target stack
@@ -222,11 +223,19 @@ class Tap:
 
 
 # ---------------------------------------------------------------------------
-# Dispensing-angle servo (hobby servo on Pico GPIO via 50 Hz PWM).
+# Dispensing-angle servos (two hobby servos on Pico GPIOs via 50 Hz PWM).
 # ---------------------------------------------------------------------------
 
 class Servo:
-    """Hobby servo with smooth interpolated motion.
+    """Two hobby servos on the dispensing-angle axis, moving in unison.
+
+    Two servos sit on opposite sides of the baseplate and rotate the
+    auger together off a single logical angle command (there is no
+    independent control).  Because they face opposite directions, servo 2
+    is driven with the mirror-image angle of servo 1 -- reflected about
+    the midpoint of the configured range -- whenever
+    ``config.SERVO2_INVERT`` is True, so both servos tilt the doser the
+    same physical way.
 
     Every angle command is ramped from the current position to the
     target at ``config.SERVO_SPEED_DEG_PER_S`` deg/s, updated at
@@ -239,16 +248,24 @@ class Servo:
     PERIOD_US = 20_000  # 50 Hz
 
     def __init__(self):
-        self.pwm = _pwm(config.PIN_SERVO_SIG, freq=50, duty=0.0)
+        self.pwm1 = _pwm(config.PIN_SERVO_SIG, freq=50, duty=0.0)
+        self.pwm2 = _pwm(config.PIN_SERVO_SIG2, freq=50, duty=0.0)
         self.angle = float(config.SERVO_DEFAULT_DEG)
-        # Seed the PWM at the default angle so the servo doesn't jump
-        # from 0 on its first interpolated move.
+        # Seed both PWMs at the default angle so the servos don't jump
+        # from 0 on their first interpolated move.
         self._write_angle(self.angle)
         # Re-issue through the smooth path so a freshly powered (but
-        # already-centred) servo still ramps gently into position.
+        # already-centred) pair still ramps gently into position.
         self.move_to(config.SERVO_DEFAULT_DEG)
 
-    def _write_angle(self, angle_deg):
+    def _mirror(self, angle_deg):
+        """Angle for servo 2: mirror of servo 1 when inverted."""
+        if config.SERVO2_INVERT:
+            return ((config.SERVO_MIN_ANGLE_DEG + config.SERVO_MAX_ANGLE_DEG)
+                    - angle_deg)
+        return angle_deg
+
+    def _angle_to_duty(self, angle_deg):
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
         frac = ((angle_deg - config.SERVO_MIN_ANGLE_DEG) / span
                 if span else 0)
@@ -256,7 +273,12 @@ class Servo:
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
         duty = pulse_us / self.PERIOD_US
-        self.pwm.duty_u16(int(duty * 65535))
+        return int(duty * 65535)
+
+    def _write_angle(self, angle_deg):
+        # Both servos move in unison; servo 2 takes the mirrored angle.
+        self.pwm1.duty_u16(self._angle_to_duty(angle_deg))
+        self.pwm2.duty_u16(self._angle_to_duty(self._mirror(angle_deg)))
 
     def move_to(self, angle_deg):
         target = max(config.SERVO_MIN_ANGLE_DEG,
@@ -393,11 +415,15 @@ class Rig:
             ))
         print(
             "servo: angle={a:.1f}, range=[{lo}..{hi}], "
-            "speed={s} deg/s, presets={p}".format(
+            "speed={s} deg/s, dual (GP{p1}+GP{p2}, invert={inv}), "
+            "presets={p}".format(
                 a=self.servo.angle,
                 lo=config.SERVO_MIN_ANGLE_DEG,
                 hi=config.SERVO_MAX_ANGLE_DEG,
                 s=config.SERVO_SPEED_DEG_PER_S,
+                p1=config.PIN_SERVO_SIG,
+                p2=config.PIN_SERVO_SIG2,
+                inv=config.SERVO2_INVERT,
                 p=list(config.SERVO_PRESETS),
             ))
         if self.scale is None:

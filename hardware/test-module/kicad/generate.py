@@ -402,8 +402,9 @@ PLACEMENTS = [
          ("GP4", "STP_TX"), ("GP5", "STP_RX"),
          # DRV8871 (solenoid)
          ("GP10", "SOL_IN1"), ("GP11", "SOL_IN2"),
-         # Servo PWM (dispensing angle)
-         ("GP15", "SERVO_SIG"),
+         # Servo PWM (dispensing angle); two servos move in unison, M4
+         # mirrored via firmware on the opposite side of the baseplate.
+         ("GP15", "SERVO_SIG"), ("GP2", "SERVO_SIG2"),
          # A&D HR-100A scale via the Waveshare Pico-2CH-RS232 on UART0 (issue #99)
          ("GP12", "SCALE_TX"), ("GP13", "SCALE_RX"),
          # DRV2605L enable + trigger (optional; we drive in I2C mode but
@@ -447,9 +448,14 @@ PLACEMENTS = [
         [("A1", "STP_A1"), ("A2", "STP_A2"),
          ("B1", "STP_B1"), ("B2", "STP_B2")]),
 
-    # ---- Dispensing-angle servo channel ----
+    # ---- Dispensing-angle servo channel (two servos, opposite sides) ----
+    # Both servos rotate the auger together; the firmware drives M4 with the
+    # mirror-image angle (config.SERVO2_INVERT) so they tilt the doser the
+    # same physical way from each side of the baseplate.
     ("Servo_3pin", "M3", 210, 215,
         [("+5V", "+5V"), ("GND", "GND"), ("SIG", "SERVO_SIG")]),
+    ("Servo_3pin", "M4", 285, 215,
+        [("+5V", "+5V"), ("GND", "GND"), ("SIG", "SERVO_SIG2")]),
 
     # ---- Scale feedback channel (issue #99) ----
     # A&D HR-100A balance over RS-232C.  The balance's ±5..9 V RS-232
@@ -525,7 +531,7 @@ def _symbol_instance(lib_id: str, ref: str, x: float, y: float, unit: int = 1) -
 # flagged in PR review.
 SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
     "Barrel_Jack_12V": {
-        "+12V": (-7.62, -1.27, 180), "GND": (-7.62, 1.27, 180),
+        "+12V": (-5.08, -1.27, 180), "GND": (-5.08, 1.27, 180),
     },
     "D24V22F5_Buck": {
         "VIN":     (-10.16, 2.54, 180), "GND_IN":  (-10.16, 5.08, 180),
@@ -533,10 +539,10 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "VOUT":    (10.16,  2.54, 0),   "GND_OUT": (10.16,  5.08, 0),
     },
     "Cap_Polar": {
-        "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
+        "+": (-5.08, 0, 180), "-": (5.08, 0, 0),
     },
     "Shunt_Regulator": {
-        "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
+        "+": (-5.08, 0, 180), "-": (5.08, 0, 0),
     },
     "Pi_Pico_W": {
         # Left column GP0..GP15 + GNDs (we only need ones we actually wire)
@@ -575,22 +581,22 @@ SYMBOL_PINS: dict[str, dict[str, tuple[float, float, int]]] = {
         "B1":   (11.43, 12.7, 0),    "B2":   (11.43, 15.24, 0),
     },
     "Stepper_4wire": {
-        "A1": (-10.16, 0, 180), "A2": (-10.16, 2.54, 180),
-        "B1": (10.16,  0, 0),   "B2": (10.16,  2.54, 0),
+        "A1": (-7.62, 0, 180), "A2": (-7.62, 2.54, 180),
+        "B1": (7.62,  0, 0),   "B2": (7.62,  2.54, 0),
     },
     "Servo_3pin": {
-        "+5V": (-10.16, -2.54, 180), "GND": (-10.16, 0, 180),
-        "SIG": (-10.16, 2.54, 180),
+        "+5V": (-7.62, -2.54, 180), "GND": (-7.62, 0, 180),
+        "SIG": (-7.62, 2.54, 180),
     },
     "Waveshare_2CH_RS232": {
         "VCC": (-7.62, 0, 180), "GND": (-7.62, 2.54, 180),
         "TXD": (-7.62, 5.08, 180), "RXD": (-7.62, 7.62, 180),
     },
     "ERM_Motor": {
-        "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
+        "+": (-5.08, 0, 180), "-": (5.08, 0, 0),
     },
     "Solenoid": {
-        "+": (-7.62, 0, 180), "-": (7.62, 0, 0),
+        "+": (-5.08, 0, 180), "-": (5.08, 0, 0),
     },
 }
 
@@ -636,13 +642,13 @@ def build_schematic() -> str:
         (paper "A3")
         (title_block
           (title "Powder-doser test module — single-Pico bench rig")
-          (date "2026-06-12")
-          (rev "B")
+          (date "2026-07-09")
+          (rev "C")
           (company "Vertical Cloud Lab")
-          (comment 1 "Exercises auger stepper + ERM vibration + tap solenoid + dispense-angle servo")
+          (comment 1 "Exercises auger stepper + ERM vibration + tap solenoid + dispense-angle servos")
           (comment 2 "Resolves issue #50; parts from PR #25")
           (comment 3 "Rev B: A&D HR-100A scale feedback via Waveshare Pico-2CH-RS232 on UART0 (issue #99)")
-          (comment 4 "")
+          (comment 4 "Rev C: second dispense-angle servo (M4 on GP2), mirrored in firmware (PR #61)")
         )
     """)
 

@@ -222,9 +222,35 @@ class NonblockingUartTests(unittest.TestCase):
         # killing the link even on a perfect harness.
         self.assertEqual(captured["parity"],
                          {0: None, 1: 1, 2: 0}[config.SCALE_PARITY])
-        self.assertEqual(captured["parity"], 0)   # HR-A default: even
         self.assertEqual(captured["pins"],
                          [config.PIN_SCALE_TX, config.PIN_SCALE_RX])
+
+    def test_open_uart_parity_map(self):
+        # Pin the full translation for every config value, independent of
+        # what the live config.py currently ships (it moved from the HR-A
+        # factory 7E1 to the bench balance's AutoTrickler 8N1 preset).
+        class FakeUART:
+            def __init__(self, uart_id, **kwargs):
+                self.kwargs = kwargs
+                FakeUART.last = self
+
+        class FakePin:
+            def __init__(self, n):
+                pass
+
+        class Cfg:
+            SCALE_UART_ID = 0
+            PIN_SCALE_TX = 12
+            PIN_SCALE_RX = 13
+            SCALE_BAUD = 2400
+            SCALE_BITS = 7
+            SCALE_STOP = 1
+
+        for cfg_parity, machine_parity in ((0, None), (1, 1), (2, 0)):
+            Cfg.SCALE_PARITY = cfg_parity
+            scale_mod.open_uart(Cfg, FakeUART, FakePin)
+            self.assertEqual(FakeUART.last.kwargs["parity"], machine_parity,
+                             "config parity {}".format(cfg_parity))
 
     def test_read_reassembles_torn_frames(self):
         uart = _ChunkedScaleUart(chunk=4)
@@ -414,6 +440,84 @@ class ReadlineNonblockingTests(unittest.TestCase):
         # ... and nothing was assigned onto the function object itself
         # (MicroPython raises AttributeError for that).
         self.assertEqual(self.main._readline_nonblocking.__dict__, {})
+
+
+class DualServoTests(unittest.TestCase):
+    """The dispensing-angle axis runs two servos in unison (PR #61).
+
+    M3 (``PIN_SERVO_SIG``) and M4 (``PIN_SERVO_SIG2``) sit on opposite
+    sides of the baseplate, so every logical angle command must reach
+    both PWMs, with servo 2 mirrored about the range midpoint when
+    ``SERVO2_INVERT`` is set.  Imports ``main`` with a functional stub
+    ``machine`` and drives ``main.Servo`` directly.
+    """
+
+    def setUp(self):
+        self._saved = {name: sys.modules.get(name)
+                       for name in ("machine", "main")}
+        self.pwms = {}
+        pwms = self.pwms
+
+        class _FakePin:
+            OUT = 1
+
+            def __init__(self, num, *args, **kwargs):
+                self.num = num
+
+            def value(self, *args):
+                return 0
+
+        class _FakePWM:
+            def __init__(self, pin):
+                self.pin = pin
+                self.duties = []
+                pwms[pin.num] = self
+
+            def freq(self, hz):
+                self.hz = hz
+
+            def duty_u16(self, duty):
+                self.duties.append(duty)
+
+        machine = types.ModuleType("machine")
+        machine.Pin = _FakePin
+        machine.PWM = _FakePWM
+        machine.I2C = type("I2C", (), {})
+        machine.UART = type("UART", (), {})
+        sys.modules["machine"] = machine
+        sys.modules.pop("main", None)
+        import main
+        self.main = main
+        # Instantaneous moves keep the test fast (no interpolation sleeps).
+        self._saved_cfg = (config.SERVO_SPEED_DEG_PER_S, config.SERVO2_INVERT)
+        config.SERVO_SPEED_DEG_PER_S = 0
+
+    def tearDown(self):
+        config.SERVO_SPEED_DEG_PER_S, config.SERVO2_INVERT = self._saved_cfg
+        for name, module in self._saved.items():
+            if module is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = module
+
+    def test_both_servos_driven_servo2_mirrored(self):
+        config.SERVO2_INVERT = True
+        servo = self.main.Servo()
+        self.assertIn(config.PIN_SERVO_SIG, self.pwms)
+        self.assertIn(config.PIN_SERVO_SIG2, self.pwms)
+        servo.move_to(30.0)
+        mid = config.SERVO_MIN_ANGLE_DEG + config.SERVO_MAX_ANGLE_DEG
+        self.assertEqual(self.pwms[config.PIN_SERVO_SIG].duties[-1],
+                         servo._angle_to_duty(30.0))
+        self.assertEqual(self.pwms[config.PIN_SERVO_SIG2].duties[-1],
+                         servo._angle_to_duty(mid - 30.0))
+
+    def test_servo2_tracks_directly_when_not_inverted(self):
+        config.SERVO2_INVERT = False
+        servo = self.main.Servo()
+        servo.move_to(30.0)
+        self.assertEqual(self.pwms[config.PIN_SERVO_SIG].duties[-1],
+                         self.pwms[config.PIN_SERVO_SIG2].duties[-1])
 
 
 if __name__ == "__main__":
