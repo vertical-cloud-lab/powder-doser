@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supplementary Information for:
+% "An open-source, 3D-printed auger powder doser designed with generative
+%  artificial intelligence" (Digital Discovery submission)
+% Build: latexmk -pdf si.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{mathptmx}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+\title{Supplementary Information\\[2mm]
+\large An open-source, 3D-printed auger powder doser designed with generative
+artificial intelligence}
+\author{Sam Charles, Will Mulberry, Luke Winters, Carl Robinson,\\
+Gage Erickson, and Sterling G. Baird}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Bill of materials}
+
+Table~\ref{tbl:bom} lists the complete per-channel bill of materials for the
+single-channel module, plus system-shared items (one per platform regardless
+of channel count).  Prices are single-unit USD as of 2026-Q2 and should be
+reconfirmed at order time; vendor links and mirrored vendor design files are
+maintained in \texttt{hardware/} in the repository.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Bill of materials. Printed parts are excluded (about 350~g PLA per
+channel, $<$\$10), as is the gravimetric-feedback instrument (A\&D HR-100A
+analytical balance, 0.1~mg readability), shared laboratory equipment that most
+labs already own.}
+\label{tbl:bom}
+\begin{tabular}{p{6.8cm}cp{1.4cm}p{4.2cm}}
+\toprule
+Part & Qty & Price (USD) & Source \\
+\midrule
+\multicolumn{4}{l}{\emph{Per channel}}\\
+NEMA-11 bipolar stepper, 0.67~A, 10~N$\cdot$cm (11HS18-0674S) & 1 & 14 & StepperOnline \\
+Pololu Tic T500 stepper controller & 1 & 33 & Pololu \#3135 \\
+JF-0530B 5~V push--pull solenoid (tap actuator) & 1 & 7.50 & Adafruit \#412 \\
+DRV8871 H-bridge breakout (solenoid drive) & 1 & 7.50 & Adafruit \#3190 \\
+ERM coin vibration motor, 10~mm & 1 & 1.95 & Adafruit \#1201 \\
+DRV2605L haptic driver breakout (I$^2$C) & 1 & 7.95 & Adafruit \#2305 \\
+MG996R-class metal-gear servo (tilt) & 1 & 12 & generic \\
+6805ZZ bearing (auger support) & 1 & 3 & generic \\
+5~mm shaft coupler, fasteners (M3/M5), bulk capacitors & --- & 10 & generic \\
+\midrule
+\multicolumn{4}{l}{\emph{System-shared (one per platform)}}\\
+Raspberry Pi Pico~W & 1 & 6 & Raspberry Pi \\
+MAX3232 RS-232 transceiver breakout (balance interface) & 1 & 3 & generic \\
+Mean Well GST60A12-P1J 12~V/5~A supply + cord + pigtail & 1 & 26 & Digi-Key \\
+Pololu D24V22F5 5~V buck regulator & 1 & 19 & Pololu \#2858 \\
+Pololu 33~V shunt regulator (back-EMF clamp) & 1 & 15 & Pololu \#3776 \\
+Breadboard/protoboard, headers, wiring & --- & 10 & generic \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total, single-channel platform}} & \textbf{$\approx$175} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Construction guide}
+
+A step-by-step illustrated build guide is maintained in the repository
+(\url{https://github.com/vertical-cloud-lab/powder-doser}) alongside the
+parametric CAD sources and STLs for every part.  In outline:
+
+\begin{enumerate}
+\item \textbf{Print} the auger, gear pair, bracket, tap collar (two clamp
+halves), mounting plate, hinged baseplate, and servo sector in PLA
+(0.2~mm layers, 4 perimeters, 25\% infill, no supports; print the auger
+vertically, helix up).
+\item \textbf{Auger drive:} press the 6805ZZ bearing into the bracket, seat
+the auger, mesh the printed gear pair, and bolt the NEMA-11 stepper to the
+front face of the mounting plate.
+\item \textbf{Tap collar:} clamp the two collar halves around the auger tube;
+mount the solenoid to the collar flange (2$\times$M3) so the plunger strikes
+the anvil pad, and adhere the ERM motor to the opposite pad.
+\item \textbf{Tilt stage:} join the mounting plate to the baseplate through
+the side hinges (printed pins), engage the servo sector, and confirm the
+exit nozzle lies on the hinge axis.
+\item \textbf{Electronics:} wire the Pico~W, Tic T500 (UART), DRV8871,
+DRV2605L (I$^2$C), MAX3232 (RS-232 to the HR-100A balance), and servo per
+the KiCad schematic in
+\texttt{hardware/test-module/}; flash the MicroPython firmware.
+\item \textbf{Checkout:} run the firmware self-test (rotate, tap, vibrate,
+tilt, tare/read), then a per-powder calibration sweep.
+\end{enumerate}
+
+\section{Exit-nozzle variants}
+
+Four printed exit-nozzle geometries were produced for dispense testing
+(Fig.~\ref{fgr:nozzles}); the dispensing campaign will report flow-initiation
+and dribble behaviour per nozzle and per powder.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS1_nozzles}
+\caption{Cross-sections of the four exit-nozzle variant CAD models (Types 1--4, panels (a)--(d))
+of the test auger, differing in exit constriction and chamfer geometry. The variants are
+parametric OpenSCAD models (\texttt{cad/auger-geared/nozzle-variants.scad}) authored by AI
+coding agents under human review; no GUI CAD package was used.}
+\label{fgr:nozzles}
+\end{figure}
+
+\section{AI usage log}
+
+In line with Digital Discovery's guidance on LLM use, all AI interactions are
+preserved verbatim and publicly:
+
+\begin{itemize}
+\item \textbf{CAD/code generation:} every agent session (GitHub Copilot coding
+agent; Claude-family models, April--June 2026) is recorded as a pull request
+containing the prompt (issue text and review comments), the generated CAD
+code, rendered views, and the human review thread.
+\item \textbf{Design reviews and literature queries:} Edison Scientific query
+scripts, task identifiers, raw answers, and extracted references are archived
+under \texttt{paper/background/} on the corresponding branches; the
+consolidated, validated bibliography with per-entry verification status is at
+\texttt{paper/references\_validation.md}.
+\item \textbf{Text-to-CAD evaluations:} CADSmith run artifacts and the Zoo
+Design Studio (Zookeeper agent) session transcripts and best-practice notes
+are preserved on their respective branches.
+\item \textbf{Qualitative observations:} the running team journal of AI
+behaviour (good and bad) is public in the repository's discussion \#39.
+\end{itemize}
+
+\end{document}
