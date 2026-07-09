@@ -117,6 +117,18 @@ class Stepper:
         t.set_max_decel(accel)
         t.halt_and_set_position(0)
         self._position = 0
+        if self._idle_deenergize():
+            # A Pico soft-reset doesn't power-cycle the Tic, so the motor
+            # may still be energised (and heating) from the previous
+            # session -- start every boot with the coils off.
+            t.deenergize()
+
+    @staticmethod
+    def _idle_deenergize():
+        # getattr so a stale config.py on flash degrades to the default
+        # (cool-running) behaviour instead of crashing the rig -- same
+        # rationale as the scale bring-up guard.
+        return getattr(config, "STEPPER_IDLE_DEENERGIZE", True)
 
     def set_speed(self, rpm):
         # Tic speed unit = 1/10000 microstep per second.
@@ -142,6 +154,10 @@ class Stepper:
         self._position += delta
         self.tic.set_target_position(self._position)
         self._wait_estimated_time(delta)
+        if self._idle_deenergize():
+            # No holding torque needed between moves; the Tic keeps its
+            # settings and position, and the next move re-energises.
+            self.enable(False)
 
     def _wait_estimated_time(self, delta):
         # The Tic T500's TX line proved unreliable at reporting position

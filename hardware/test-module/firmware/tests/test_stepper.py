@@ -28,6 +28,12 @@ Keyboard controls (single keystroke; no Enter needed):
     e       toggle energise (drive de-energised vs. holding torque)
     s       print state
     q       quit (de-energise and exit the loop)
+
+With ``config.STEPPER_IDLE_DEENERGIZE`` set (the default), every move
+ends by cutting motor power -- holding current at the Tic's limit makes
+the motor run hot and the auger needs no holding torque at rest.  The
+``e`` key still energises manually if you want to feel the holding
+torque, but the next move will de-energise again afterwards.
 """
 
 import sys
@@ -51,6 +57,8 @@ from tests._keypress import read_key
 DEFAULT_MOVE_DEG = 90.0      # how far each spacebar press rotates
 SPEED_STEP_RPM   = 10        # +/- adjustment granularity
 START_DIRECTION  = +1        # +1 = CW from motor face, -1 = CCW
+# Cut motor power after every move (getattr: tolerate a stale config.py).
+IDLE_DEENERGIZE  = getattr(config, "STEPPER_IDLE_DEENERGIZE", True)
 
 
 class StepperTest:
@@ -105,6 +113,8 @@ class StepperTest:
         self.tic.set_target_position(self._position)
         # wait an estimated time for the move to complete (no telemetry required)
         self._wait_estimated_time(delta)
+        if IDLE_DEENERGIZE:
+            self.enable(False)
 
     def _wait_estimated_time(self, delta):
         """Wait based on commanded microstep delta and current RPM.

@@ -129,6 +129,7 @@ Common knobs:
 | Stepper  | `STEPPER_ACCEL_REV_PER_S2` | Acceleration/deceleration ramp the Tic's motion planner uses. |
 | Stepper  | `STEPPER_DIRECTION`      | Flip auger sense without re-wiring. |
 | Stepper  | `STEPPER_DISPENSE_DEG`   | How much auger rotation per `d` command. |
+| Stepper  | `STEPPER_IDLE_DEENERGIZE` | `True` (default) powers the motor only while it moves: energise just before each move, de-energise as soon as it completes.  Holding current at the Tic's limit makes the motor run hot and the auger needs no holding torque at rest.  Set `False` to keep always-on holding torque.  Software-only (a Tic serial command) — no wiring change. |
 | Vibration| `VIBRATION_EFFECT_ID`    | Pick from DRV2605L's 123-effect ROM. |
 | Vibration| `VIBRATION_LIBRARY`      | 1 = ERM, 6 = LRA. |
 | Vibration| `VIBRATION_DURATION_S`   | How long to hold the buzz. |
@@ -168,5 +169,10 @@ of truth on the schematic side; keep them in sync.
   **before** the first `d` command, or the stepper will overheat.  The
   Tic has no `V_REF` pot — the limit is a software setting (and is
   enforced by the driver's on-chip current sensing).
+* Between moves the firmware de-energises the motor entirely
+  (`STEPPER_IDLE_DEENERGIZE`), so an idle rig no longer holds the coils
+  at the current limit — the main reason the motor used to get hot.
+  The trade-off is zero holding torque at rest: the auger shaft is free
+  to be back-driven while stationary, which is fine for this rig.
 * The 100 µF capacitor across the Tic's `VIN` is recommended for the
   12 V motor rail; it's shown as C3 on the schematic.

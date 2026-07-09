@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tests"))
 import config                                            # noqa: E402
 import scale as scale_mod                                # noqa: E402
 import test_scale_contact as contact                     # noqa: E402
+import tic                                               # noqa: E402
 from dosing import DoseResult                            # noqa: E402
 from sim_rig import VirtualClock, make_rig               # noqa: E402
 
@@ -440,6 +441,105 @@ class ReadlineNonblockingTests(unittest.TestCase):
         # ... and nothing was assigned onto the function object itself
         # (MicroPython raises AttributeError for that).
         self.assertEqual(self.main._readline_nonblocking.__dict__, {})
+
+
+class StepperIdleTests(unittest.TestCase):
+    """The auger motor is powered only while it moves (PR #100).
+
+    Holding the coils at the Tic's current limit between moves made the
+    motor run hot at the bench, and the auger needs no holding torque at
+    rest.  With ``STEPPER_IDLE_DEENERGIZE`` (default True) every move
+    ends with a Tic de-energize command, and boot sends one too -- a
+    Pico soft-reset doesn't power-cycle an energised Tic.  Imports
+    ``main`` with a stub ``machine`` whose UART records the Tic command
+    bytes.
+    """
+
+    def setUp(self):
+        self._saved = {name: sys.modules.get(name)
+                       for name in ("machine", "main")}
+
+        class _FakePin:
+            OUT = 1
+
+            def __init__(self, num, *args, **kwargs):
+                self.num = num
+
+            def value(self, *args):
+                return 0
+
+        class _FakeTicUart:
+            def __init__(self, uart_id, **kwargs):
+                self.writes = []
+
+            def write(self, data):
+                self.writes.append(bytes(data))
+
+            def read(self, n=None):
+                return None
+
+        machine = types.ModuleType("machine")
+        machine.Pin = _FakePin
+        machine.UART = _FakeTicUart
+        machine.PWM = type("PWM", (), {})
+        machine.I2C = type("I2C", (), {})
+        sys.modules["machine"] = machine
+        sys.modules.pop("main", None)
+        import main
+        self.main = main
+        self._saved_flag = config.STEPPER_IDLE_DEENERGIZE
+
+    def tearDown(self):
+        config.STEPPER_IDLE_DEENERGIZE = self._saved_flag
+        for name, module in self._saved.items():
+            if module is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = module
+
+    def _stepper(self):
+        stepper = self.main.Stepper()
+        # The estimated-duration wait uses MicroPython-only time.ticks_*
+        # helpers and is irrelevant to the power sequencing under test.
+        stepper._wait_estimated_time = lambda delta: None
+        return stepper
+
+    def test_boot_leaves_motor_deenergized(self):
+        config.STEPPER_IDLE_DEENERGIZE = True
+        stepper = self._stepper()
+        self.assertEqual(stepper.uart.writes[-1],
+                         bytes([tic._CMD_DEENERGIZE]))
+        self.assertFalse(stepper._enabled)
+
+    def test_move_energizes_then_deenergizes(self):
+        config.STEPPER_IDLE_DEENERGIZE = True
+        stepper = self._stepper()
+        boot_writes = len(stepper.uart.writes)
+        stepper.rotate_degrees(90.0)
+        writes = stepper.uart.writes[boot_writes:]
+        # energize + exit-safe-start, then the move, then power off.
+        self.assertEqual(writes[0], bytes([tic._CMD_ENERGIZE]))
+        self.assertEqual(writes[1], bytes([tic._CMD_EXIT_SAFE_START]))
+        self.assertEqual(writes[2][0], tic._CMD_SET_TARGET_POSITION)
+        self.assertEqual(writes[-1], bytes([tic._CMD_DEENERGIZE]))
+        self.assertFalse(stepper._enabled)
+
+    def test_consecutive_moves_reenergize_each_time(self):
+        config.STEPPER_IDLE_DEENERGIZE = True
+        stepper = self._stepper()
+        stepper.rotate_degrees(90.0)
+        boot_writes = len(stepper.uart.writes)
+        stepper.rotate_degrees(90.0)
+        writes = stepper.uart.writes[boot_writes:]
+        self.assertEqual(writes[0], bytes([tic._CMD_ENERGIZE]))
+        self.assertEqual(writes[-1], bytes([tic._CMD_DEENERGIZE]))
+
+    def test_holding_torque_mode_stays_energized(self):
+        config.STEPPER_IDLE_DEENERGIZE = False
+        stepper = self._stepper()
+        stepper.rotate_degrees(90.0)
+        self.assertTrue(stepper._enabled)
+        self.assertNotIn(bytes([tic._CMD_DEENERGIZE]), stepper.uart.writes)
 
 
 class DualServoTests(unittest.TestCase):

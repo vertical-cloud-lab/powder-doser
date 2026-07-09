@@ -82,6 +82,12 @@ STEPPER_DIRECTION     = 1             # +1 = CW from motor face, -1 = CCW
 # Per-shot dispense in degrees of auger rotation; the test CLI will run
 # this on the "dispense" command.  Keep small for incremental dosing.
 STEPPER_DISPENSE_DEG  = 360.0
+# Cut motor power whenever the auger is not actively moving.  Holding
+# the coils at the Tic's current limit between moves makes the motor
+# run hot, and the auger needs no holding torque while stationary --
+# the firmware energises just before each move and de-energises as soon
+# as it completes.  Set False to restore always-on holding torque.
+STEPPER_IDLE_DEENERGIZE = True
 
 
 # -----------------------------------------------------------------------
