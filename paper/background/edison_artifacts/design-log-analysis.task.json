@@ -1,0 +1,9 @@
+{
+  "job_name": "job-futurehouse-data-analysis-crow-high",
+  "job_type": "ANALYSIS",
+  "task_id": "b830019f-a3b8-40c2-ad62-1bcf2348efc8",
+  "data_entry_uri": "data_entry:8b62ae25-1b0e-4b26-91cb-eb1352ae0b9a",
+  "input_file": "DESIGN-LOG.md",
+  "status": "success",
+  "query": "The attached DESIGN-LOG.md is a single, chronological 'Record of Designs' for an open-hardware automated powder-dosing instrument (the powder-doser repository). It documents every design and every iteration of every design in commit-date order, each entry carrying a Trigger (the issue/PR/review that prompted it), a 1-2 sentence Design note on what changed and why, and embedded visual artifacts (CAD render PNGs/SVGs, animated GIFs, printed-part photos, and bench-test video links).\n\nPlease act as an expert reviewer of engineering design documentation and knowledge management. Analyze the document and report back:\n1. Structural and content analysis: quantify the log (entries, iteration chains, artifact types, coverage gaps, date span, balance across subsystems).\n2. Strengths: what makes this a good design record.\n3. Weaknesses and risks: e.g. link rot from commit-pinned raw URLs, missing rationale/decision context, lack of cross-references, no searchable metadata, no failure capture.\n4. Concrete, prioritized recommendations for how to make this resource MORE VALUABLE to (a) new contributors onboarding, (b) researchers citing the work, and (c) future maintainers. Consider: decision/rationale capture (ADR-style), traceability to requirements, machine-readable front-matter, a summary/index table, tagging by subsystem, capturing dead-ends/failures, dimensions/specs per iteration, and archival of artifacts to avoid link rot.\nBe specific and actionable; cite concrete observations from the document."
+}
