@@ -34,10 +34,10 @@ except ImportError as exc:
 
 
 class SimServo:
-    """Records every commanded dispensing angle."""
+    """Records every commanded dispensing angle (plate degrees)."""
 
     def __init__(self):
-        self.angle = float(config.SERVO_DEFAULT_DEG)
+        self.angle = float(config.SERVO_DEFAULT_DEG) / m3p.PLATE_GEAR_RATIO
         self.history = []
 
     def move_to(self, angle_deg):
@@ -46,12 +46,55 @@ class SimServo:
 
 
 class SimStepper3(SimStepper):
-    def __init__(self, column):
+    """PR #100's position-move sim stepper plus the velocity mode the
+    continuous phase drives (run_at_rpm / keep_alive / stop).
+
+    While spinning, powder flow is advanced on every keep_alive()/stop()
+    from the elapsed virtual-clock time.  PowderColumn.auger_rotate()
+    also models motion time with a clock sleep, so the flow is fed to
+    the column's mass bookkeeping directly here instead of through it.
+    """
+
+    def __init__(self, column, clock):
         SimStepper.__init__(self, column)
+        self.clock = clock
         self.rpm_history = []
+        self.run_rpm = 0.0
+        self.stop_calls = 0
+        self._last_advance = 0.0
 
     def set_speed(self, rpm):
         self.rpm_history.append(rpm)
+
+    def run_at_rpm(self, rpm):
+        self.rpm_history.append(rpm)
+        self.run_rpm = float(rpm)
+        self._last_advance = self.clock.time()
+
+    def keep_alive(self):
+        self._advance_flow()
+
+    def stop(self):
+        self._advance_flow()
+        self.run_rpm = 0.0
+        self.stop_calls += 1
+
+    def _advance_flow(self):
+        if self.run_rpm <= 0:
+            return
+        now = self.clock.time()
+        degrees = self.run_rpm / 60.0 * 360.0 * (now - self._last_advance)
+        self._last_advance = now
+        if degrees <= 0:
+            return
+        self.total_deg += degrees
+        col = self.column
+        committed = min(col.hopper_g, degrees / 360.0 * col.grams_per_rev)
+        col.hopper_g -= committed
+        landed = committed * (1.0 - col.inflight_fraction)
+        col.pan_g += landed
+        col.inflight_g += committed - landed
+        col._disturb()
 
 
 class SimTap3(SimTap):
@@ -65,7 +108,7 @@ def make_doser(log=lambda *_: None, **column_kwargs):
     sc = scale_mod.AndScale(SimScaleUart(column, clock),
                             response_timeout_ms=config.SCALE_RESPONSE_TIMEOUT_MS,
                             sleep_ms=clock.sleep_ms)
-    stepper = SimStepper3(column)
+    stepper = SimStepper3(column, clock)
     tap = SimTap3(column)
     servo = SimServo()
     doser = m3p.ThreePhaseDoser(stepper, tap, servo, sc, config,
@@ -152,6 +195,40 @@ def main(argv):
     result, _, _, _, _ = run_case("empty hopper aborts", 2.0, hopper_g=0.05)
     check("status stalled", result.status == m3p.DoseResult.STALLED,
           result.status)
+
+    # 6. Velocity mode: phase 1 continuous with an anticipation margin
+    #    must converge through all three phases with no overshoot and
+    #    must halt the auger exactly once (before the fine phase).
+    print("== 2 g dose, continuous (velocity-mode) bulk ==")
+    doser, servo, stepper, tap = make_doser()
+    doser.phases[0]["continuous"] = 1
+    doser.phases[0]["anticipation_g"] = 0.1
+    result = doser.dose(2.0)
+    print("  {!r}".format(result))
+    check("status ok", result.ok, result.status)
+    check("within tolerance", abs(result.dispensed_g - 2.0) <= tol,
+          "{:.4f} g".format(result.dispensed_g))
+    check("no overshoot", result.dispensed_g <= 2.0 + tol)
+    check("all phases cycled", all(c > 0 for _, c in result.phase_cycles),
+          str(result.phase_cycles))
+    check("auger halted once and stayed halted",
+          stepper.stop_calls == 1 and stepper.run_rpm == 0.0,
+          "stops={} rpm={}".format(stepper.stop_calls, stepper.run_rpm))
+    check("velocity rpm commanded",
+          stepper.rpm_history[0] == m3p.PHASE1_BULK["rotation_rpm"],
+          str(stepper.rpm_history))
+
+    # 7. Velocity mode with an (almost) empty hopper must stop spinning
+    #    and abort as 'stalled' instead of rotating forever.
+    print("== continuous bulk, empty hopper aborts ==")
+    doser, _, stepper, _ = make_doser(hopper_g=0.05)
+    doser.phases[0]["continuous"] = 1
+    result = doser.dose(2.0)
+    print("  {!r}".format(result))
+    check("status stalled (continuous)",
+          result.status == m3p.DoseResult.STALLED, result.status)
+    check("auger not left spinning", stepper.run_rpm == 0.0,
+          str(stepper.run_rpm))
 
     print()
     if FAILURES:

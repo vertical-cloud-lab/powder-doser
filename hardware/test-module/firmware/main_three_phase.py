@@ -25,6 +25,24 @@ set ``taps_per_cycle`` on phase 1).  Objective values (mass so far,
 grams to go, gain this cycle, elapsed time) are printed at every cycle
 pause and a summary is printed between phases.
 
+Units (PR #124 review): every rotation value in this file is TRUE AUGER
+degrees / RPM and every angle is TRUE MOUNTING-PLATE degrees -- the
+44:20 stepper->auger and 2:1 servo->plate gear ratios are folded in at
+the driver layer (``AUGER_GEAR_RATIO`` / ``PLATE_GEAR_RATIO`` below).
+config.py's servo values stay servo-horn degrees and are converted
+where used: horn 90 = plate 45 = the "vertical" preset, the confirmed
+bench mapping.
+
+Any rotation phase can optionally run in CONTINUOUS (velocity) mode
+instead of the default incremental rotate-settle-measure cycles --
+meant for phase 1 (``set 1 continuous 1``): the auger spins steadily at
+``rotation_rpm`` while the scale is polled every ``poll_ms`` with
+instantaneous (possibly unstable) readings, and the auger halts once
+the mass is within ``anticipation_g`` of the phase-exit threshold (an
+in-flight/settling margin).  The Tic's TX line is not wired back to the
+Pico on this rig, so after each continuous run the stepper position is
+simply re-zeroed (halt and set position 0) rather than read back.
+
 The vibrating haptic motor (DRV2605L) is intentionally NOT used or
 initialised here -- per the bench plan it stays out of the control code
 for now.
@@ -38,9 +56,11 @@ config -- pins, servo range, scale serial -- still comes from
 * Edit this file and re-run via MicroPico (edit-save-run, seconds), or
 * live at the REPL without re-uploading::
 
-      set 1 angle_deg 60        # phase 1 dispensing angle -> 60 deg
-      set 2 rotation_deg 20     # phase 2 rotation per cycle -> 20 deg
-      set 2 rotation_rpm 20     # phase 2 rotation speed -> 20 RPM
+      set 1 angle_deg 40        # phase 1 dispensing angle -> 40 plate deg
+      set 2 rotation_deg 20     # phase 2 rotation per cycle -> 20 auger deg
+      set 2 rotation_rpm 20     # phase 2 rotation speed -> 20 auger RPM
+      set 1 continuous 1        # phase 1: velocity mode (0 = incremental)
+      set 1 anticipation_g 0.05 # velocity mode: halt 50 mg early
       set t1 0.4                # bulk -> fine at 0.4 g until goal
       set t3 0.002              # finish tolerance +/- 2 mg
 
@@ -55,11 +75,11 @@ directly; to make it the power-on program instead of the two-phase
 Wire-on commands (one per line over USB-serial):
     h            help
     s            print rig state, thresholds and per-phase parameters
-    d            dispense (rotate auger STEPPER_DISPENSE_DEG)
-    r <deg>      rotate auger by <deg> degrees (signed)
+    d            dispense (rotate auger STEPPER_DISPENSE_DEG, auger deg)
+    r <deg>      rotate auger by <deg> auger degrees (signed)
     t            tap (TAP_COUNT solenoid pulses)
-    a <deg>      smoothly move dispensing-angle servos to <deg>
-    p <name>     servos to a preset (horizontal/tilt/vertical/tip)
+    a <deg>      smoothly move mounting plate to <deg> plate degrees
+    p <name>     plate to a preset (horizontal/tilt/vertical/tip)
     w            read the scale (one weighing datum)
     z            re-zero (tare) the scale
     g <grams>    three-phase closed-loop dose to <grams>
@@ -84,6 +104,24 @@ except ImportError:
 
 
 # =========================================================================
+# GEAR RATIOS (PR #124 review) -- every user-facing value in this file
+# is a true MECHANISM value: auger degrees / auger RPM for rotations,
+# mounting-plate degrees for the dispensing angle.  The ratios below
+# convert to the actuator shafts at the driver layer:
+#   * stepper pinion 20 T -> auger gear 44 T: the stepper turns
+#     44/20 = 2.2x per auger turn;
+#   * servo pinion -> mounting plate 2:1: the servo horn turns 2 deg
+#     per plate degree (horn 90 = plate 45 = "vertical", confirmed).
+# =========================================================================
+AUGER_GEAR_RATIO = 44.0 / 20.0    # stepper-shaft rev per auger rev
+PLATE_GEAR_RATIO = 2.0            # servo-horn deg per plate deg
+
+# config.py's stepper safety range (5..240 RPM) is MOTOR-shaft RPM; the
+# same ceiling expressed at the auger:
+MAX_AUGER_RPM = 240.0 / AUGER_GEAR_RATIO   # ~109 auger RPM
+
+
+# =========================================================================
 # THREE-PHASE DOSE PARAMETERS -- the knobs this file exists for.
 #
 # All mass thresholds are "grams remaining until the goal mass": phase N
@@ -93,9 +131,10 @@ except ImportError:
 # below never runs the bulk phase).
 #
 # NOTE: keep each rotation phase's per-cycle throughput (rotation_deg
-# x powder g/rev) comfortably below the gap between its exit threshold
-# and the goal, or a single cycle can blow straight past the target --
-# this rough draft has no online g/rev estimator (unlike dosing.py).
+# x powder g per auger rev) comfortably below the gap between its exit
+# threshold and the goal, or a single cycle can blow straight past the
+# target -- this rough draft has no online g/rev estimator (unlike
+# dosing.py).  Velocity mode has its own margin knob (anticipation_g).
 # =========================================================================
 
 # --- Phase-shift thresholds (grams until goal mass) ----------------------
@@ -108,13 +147,24 @@ DOSE_TIMEOUT_S = 600              # hard wall-clock limit for one dose
 
 # --- Per-phase parameters ------------------------------------------------
 # Every phase understands the same keys:
-#   angle_deg        dispensing angle (servo) held for the whole phase
-#   rotation_deg     auger rotation per cycle (0 = no rotation)
-#   rotation_rpm     auger speed while this phase rotates
+#   angle_deg        dispensing angle (mounting-plate degrees) for the phase
+#   rotation_deg     auger rotation per cycle (auger deg; 0 = no rotation)
+#   rotation_rpm     auger speed (auger RPM) while this phase rotates
+#   continuous       1 = velocity mode: spin the auger steadily at
+#                    rotation_rpm while polling the scale, halt at
+#                    exit threshold + anticipation_g.  Ignores
+#                    rotation_deg and taps_per_cycle.  0 = incremental
+#                    rotate-settle-measure cycles (the default).
+#   poll_ms          velocity mode: scale polling interval
+#   anticipation_g   velocity mode: halt this many grams BEFORE the
+#                    phase-exit threshold (margin for in-flight powder
+#                    and post-halt settling)
 #   taps_per_cycle   solenoid taps per cycle (0 = no tapping)
 #   tap_on_ms/off_ms solenoid timing for this phase's taps
 #   settle_ms        wait after actuating before trusting the scale
 #   min_gain_g       a cycle gaining less than this counts as a stall
+#                    (velocity mode: no min_gain_g of flow within
+#                    max_stall_cycles x settle_ms while spinning = stall)
 #   max_stall_cycles consecutive stalls before nudging/aborting
 #   stall_nudge_deg  auger nudge to re-feed the tube lip on a stall
 #                    (0 = don't nudge, abort instead; mainly for phase 3,
@@ -122,17 +172,21 @@ DOSE_TIMEOUT_S = 600              # hard wall-clock limit for one dose
 #   max_nudges       stall-nudge budget for the phase
 #   max_cycles       safety budget: abort the dose if exceeded
 #
-# Angles are servo degrees; per config.SERVO_PRESETS the bench mapping is
-# horizontal=0, tilt=45, vertical=90, tip=135.  Bench observation
-# (PR #124): steeper/more-vertical angles dispense a lot more per action,
+# Angles are mounting-plate degrees; config.SERVO_PRESETS (servo-horn
+# degrees) map to horizontal=0, tilt=22.5, vertical=45, tip=67.5 plate
+# deg through the 2:1 gearing.  Bench observation (PR #124):
+# steeper/more-vertical angles dispense a lot more per action,
 # horizontal is the most precise -- hence steep bulk, horizontal taps.
 # All defaults are UNTUNED starting guesses from the salt demos.
 
 PHASE1_BULK = {
     "name": "bulk",
-    "angle_deg": 90.0,        # vertical -- fast flow
-    "rotation_deg": 360.0,    # full turn per cycle
-    "rotation_rpm": 120.0,
+    "angle_deg": 45.0,        # "vertical" plate angle -- fast flow
+    "rotation_deg": 360.0,    # full auger turn per cycle
+    "rotation_rpm": 55.0,     # ~120 motor RPM; auger ceiling is ~109
+    "continuous": 0,          # set 1 for velocity mode (phase 1's option)
+    "poll_ms": 250,
+    "anticipation_g": 0.0,
     "taps_per_cycle": 0,      # some powders may want taps here too
     "tap_on_ms": 60,
     "tap_off_ms": 150,
@@ -146,9 +200,12 @@ PHASE1_BULK = {
 
 PHASE2_FINE = {
     "name": "fine",
-    "angle_deg": 45.0,        # tilt -- moderate flow
-    "rotation_deg": 30.0,     # small increment, measure every pause
+    "angle_deg": 22.5,        # "tilt" plate angle -- moderate flow
+    "rotation_deg": 30.0,     # small auger increment, measure every pause
     "rotation_rpm": 30.0,
+    "continuous": 0,
+    "poll_ms": 250,
+    "anticipation_g": 0.0,
     "taps_per_cycle": 0,
     "tap_on_ms": 60,
     "tap_off_ms": 150,
@@ -165,6 +222,9 @@ PHASE3_TAP = {
     "angle_deg": 0.0,         # horizontal -- most precise
     "rotation_deg": 0.0,      # no auger; taps only
     "rotation_rpm": 0.0,
+    "continuous": 0,
+    "poll_ms": 250,
+    "anticipation_g": 0.0,
     "taps_per_cycle": 2,
     "tap_on_ms": 60,
     "tap_off_ms": 150,
@@ -197,9 +257,14 @@ def _pwm(pin_num, freq, duty=0.0):
 
 
 # ---------------------------------------------------------------------------
-# Stepper (Pololu Tic T500 over TTL serial -> NEMA-11).  Identical to the
-# PR #100 main.py class; see there for the design notes (shadow position,
-# estimated-time waits, idle de-energise).
+# Stepper (Pololu Tic T500 over TTL serial -> NEMA-11).  The PR #100
+# main.py class (shadow position, estimated-time waits, idle de-energise;
+# see there for the design notes) with two additions for PR #124:
+#   * the 44:20 stepper->auger gearing is folded into steps_per_rev, so
+#     the whole API -- rotate_degrees, set_speed, run_at_rpm -- speaks
+#     TRUE AUGER degrees and RPM;
+#   * velocity mode (run_at_rpm / keep_alive / stop) for the continuous
+#     bulk phase.
 # ---------------------------------------------------------------------------
 
 class Stepper:
@@ -208,8 +273,11 @@ class Stepper:
                          tx=Pin(config.PIN_TIC_TX), rx=Pin(config.PIN_TIC_RX),
                          timeout=config.TIC_READ_TIMEOUT_MS)
         self.tic = tic.TicSerial(self.uart)
+        # Microsteps per AUGER revolution (gearing folded in): every
+        # degree/RPM at this API is true auger motion.
         self.steps_per_rev = (config.STEPPER_FULL_STEPS_REV
-                              * config.STEPPER_MICROSTEPS)
+                              * config.STEPPER_MICROSTEPS
+                              * AUGER_GEAR_RATIO)
         self._position = 0
         self._rpm = float(config.STEPPER_SPEED_RPM)
         self._enabled = False
@@ -238,7 +306,13 @@ class Stepper:
         return getattr(config, "STEPPER_IDLE_DEENERGIZE", True)
 
     def set_speed(self, rpm):
-        self._rpm = float(rpm)
+        rpm = float(rpm)
+        if rpm > MAX_AUGER_RPM:
+            print("[stepper] {:.0f} auger RPM exceeds the ~{:.0f} auger-RPM "
+                  "ceiling (240 RPM at the motor); clamping".format(
+                      rpm, MAX_AUGER_RPM))
+            rpm = MAX_AUGER_RPM
+        self._rpm = rpm
         usteps_per_s = rpm / 60.0 * self.steps_per_rev
         self.tic.set_max_speed(max(1, int(usteps_per_s * 10000)))
 
@@ -268,11 +342,42 @@ class Stepper:
         est_s = abs(delta) / usteps_per_s + 0.2
         deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
         while time.ticks_diff(deadline, time.ticks_ms()) > 0:
-            try:
-                self.tic.reset_command_timeout()
-            except Exception:
-                pass
+            self.keep_alive()
             time.sleep_ms(50)
+
+    # -- velocity mode (continuous rotation) --------------------------
+    # The Tic's "Set target velocity" spins the motor until halted while
+    # the dose loop polls the scale.  TX from the Tic is not wired back
+    # to the Pico on this rig, so stop() cannot read the true position --
+    # it halts and (re)defines the current position as ZERO, which also
+    # re-syncs the shadow position the position moves rely on.
+
+    def run_at_rpm(self, rpm):
+        """Spin continuously at ``rpm`` (auger RPM) until stop().
+
+        The caller must invoke keep_alive() at least every ~1 s while
+        spinning, or a Tic with its serial command timeout enabled
+        halts the motor mid-phase.
+        """
+        self.set_speed(rpm)          # velocity is capped by max speed
+        if not self._enabled:
+            self.enable(True)
+        sign = 1 if config.STEPPER_DIRECTION >= 0 else -1
+        usteps_per_s = self._rpm / 60.0 * self.steps_per_rev
+        self.tic.set_target_velocity(sign * max(1, int(usteps_per_s * 10000)))
+
+    def keep_alive(self):
+        try:
+            self.tic.reset_command_timeout()
+        except Exception:
+            pass
+
+    def stop(self):
+        """Halt continuous rotation and re-zero the position (no TX)."""
+        self.tic.halt_and_set_position(0)
+        self._position = 0
+        if self._idle_deenergize():
+            self.enable(False)
 
 
 # ---------------------------------------------------------------------------
@@ -304,8 +409,14 @@ class Tap:
 
 
 # ---------------------------------------------------------------------------
-# Dispensing-angle servos (dual, mirrored, smooth-ramped).  Identical to
-# the PR #100 main.py class; see there for the design notes.
+# Dispensing-angle servos (dual, mirrored, smooth-ramped).  The PR #100
+# main.py class, except the public API -- move_to() and .angle -- speaks
+# TRUE MOUNTING-PLATE degrees: the 2:1 servo->plate gearing is applied
+# at the horn-degree boundary (_write_angle).  config.py's servo values
+# (SERVO_DEFAULT_DEG, SERVO_MIN/MAX_ANGLE_DEG, SERVO_SPEED_DEG_PER_S,
+# SERVO_PRESETS) remain servo-horn degrees and are divided by
+# PLATE_GEAR_RATIO where used, so the unmodified PR #100 config.py keeps
+# working (horn 90 = plate 45 = "vertical", the confirmed mapping).
 # ---------------------------------------------------------------------------
 
 class Servo:
@@ -314,33 +425,38 @@ class Servo:
     def __init__(self):
         self.pwm1 = _pwm(config.PIN_SERVO_SIG, freq=50, duty=0.0)
         self.pwm2 = _pwm(config.PIN_SERVO_SIG2, freq=50, duty=0.0)
-        self.angle = float(config.SERVO_DEFAULT_DEG)
+        self.min_plate_deg = config.SERVO_MIN_ANGLE_DEG / PLATE_GEAR_RATIO
+        self.max_plate_deg = config.SERVO_MAX_ANGLE_DEG / PLATE_GEAR_RATIO
+        self.angle = float(config.SERVO_DEFAULT_DEG) / PLATE_GEAR_RATIO
         self._write_angle(self.angle)
-        self.move_to(config.SERVO_DEFAULT_DEG)
+        self.move_to(self.angle)
 
-    def _mirror(self, angle_deg):
+    def _mirror(self, horn_deg):
         if config.SERVO2_INVERT:
             return ((config.SERVO_MIN_ANGLE_DEG + config.SERVO_MAX_ANGLE_DEG)
-                    - angle_deg)
-        return angle_deg
+                    - horn_deg)
+        return horn_deg
 
-    def _angle_to_duty(self, angle_deg):
+    def _angle_to_duty(self, horn_deg):
         span = config.SERVO_MAX_ANGLE_DEG - config.SERVO_MIN_ANGLE_DEG
-        frac = ((angle_deg - config.SERVO_MIN_ANGLE_DEG) / span
+        frac = ((horn_deg - config.SERVO_MIN_ANGLE_DEG) / span
                 if span else 0)
         pulse_us = (config.SERVO_MIN_PULSE_US
                     + frac * (config.SERVO_MAX_PULSE_US
                               - config.SERVO_MIN_PULSE_US))
         return int(pulse_us / self.PERIOD_US * 65535)
 
-    def _write_angle(self, angle_deg):
-        self.pwm1.duty_u16(self._angle_to_duty(angle_deg))
-        self.pwm2.duty_u16(self._angle_to_duty(self._mirror(angle_deg)))
+    def _write_angle(self, plate_deg):
+        horn_deg = plate_deg * PLATE_GEAR_RATIO
+        self.pwm1.duty_u16(self._angle_to_duty(horn_deg))
+        self.pwm2.duty_u16(self._angle_to_duty(self._mirror(horn_deg)))
 
     def move_to(self, angle_deg):
-        target = max(config.SERVO_MIN_ANGLE_DEG,
-                     min(config.SERVO_MAX_ANGLE_DEG, angle_deg))
-        speed = float(config.SERVO_SPEED_DEG_PER_S)
+        """Smooth-move the mounting plate to ``angle_deg`` plate degrees."""
+        target = max(self.min_plate_deg,
+                     min(self.max_plate_deg, angle_deg))
+        # config speed is horn deg/s; the plate moves half as fast.
+        speed = float(config.SERVO_SPEED_DEG_PER_S) / PLATE_GEAR_RATIO
         if speed <= 0:
             self._write_angle(target)
             self.angle = target
@@ -383,8 +499,9 @@ class Scale(scale_mod.AndScale):
 # Three-phase dose controller.
 #
 # Hardware-agnostic like dosing.Doser: talks to duck-typed ``stepper``
-# (rotate_degrees / set_speed), ``tap`` (tap(count, on_ms, off_ms)),
-# ``servo`` (move_to) and ``scale`` (read_stable / zero), so the same
+# (rotate_degrees / set_speed, plus run_at_rpm / keep_alive / stop for
+# velocity mode), ``tap`` (tap(count, on_ms, off_ms)), ``servo``
+# (move_to) and ``scale`` (read / read_stable / zero), so the same
 # loop runs on the Pico and against sim/sim_rig.py under CPython.
 # ---------------------------------------------------------------------------
 
@@ -504,13 +621,20 @@ class ThreePhaseDoser:
                              remaining, exit_g))
                 phase_cycles.append((p["name"], 0))
                 continue
+            if int(p["continuous"]):
+                actu = ("CONTINUOUS @ {:.0f} auger rpm (poll {} ms, "
+                        "anticipation {:.4f} g)".format(
+                            p["rotation_rpm"], int(p["poll_ms"]),
+                            max(0.0, p["anticipation_g"])))
+            else:
+                actu = ("{:.0f} auger deg/cycle @ {:.0f} rpm, {} taps/cycle"
+                        .format(p["rotation_deg"], p["rotation_rpm"],
+                                p["taps_per_cycle"]))
             self.log("=== phase {}/{} '{}' start: {:.4f} g to go, exit at "
-                     "{:.4f} g to go; angle {:.0f} deg, {:.0f} deg/cycle @ "
-                     "{:.0f} rpm, {} taps/cycle, settle {} ms".format(
+                     "{:.4f} g to go; angle {:.1f} plate deg, {}, "
+                     "settle {} ms".format(
                          idx + 1, len(self.phases), p["name"], remaining,
-                         exit_g, p["angle_deg"], p["rotation_deg"],
-                         p["rotation_rpm"], p["taps_per_cycle"],
-                         p["settle_ms"]))
+                         exit_g, p["angle_deg"], actu, p["settle_ms"]))
             before_phase = grams
             grams, status, cycles = self._run_phase(
                 idx + 1, p, exit_g, target_g, grams, t0, state)
@@ -539,6 +663,9 @@ class ThreePhaseDoser:
     def _run_phase(self, num, p, exit_g, target_g, grams, t0, state):
         """Run one phase; returns (grams, abort_status_or_None, cycles)."""
         self.servo.move_to(p["angle_deg"])
+        if int(p["continuous"]):
+            return self._run_phase_continuous(num, p, exit_g, target_g,
+                                              grams, t0, state)
         rot = float(p["rotation_deg"])
         taps_n = int(p["taps_per_cycle"])
         if rot > 0 and p["rotation_rpm"] > 0:
@@ -594,26 +721,123 @@ class ThreePhaseDoser:
                 stalls = 0
         return grams, None, cycles
 
+    def _run_phase_continuous(self, num, p, exit_g, target_g, grams, t0,
+                              state):
+        """Velocity-mode phase: spin the auger steadily, halt on threshold.
+
+        The auger runs continuously at ``rotation_rpm`` while the scale
+        is polled every ``poll_ms`` with INSTANTANEOUS readings -- the
+        balance rarely asserts ST while mass is rising and the pan
+        vibrates, so waiting for stable frames here would hang.  The
+        auger halts once remaining <= exit threshold + ``anticipation_g``
+        (margin for in-flight powder and the halt itself), then one
+        settled stable reading closes the phase.  ``rotation_deg`` and
+        ``taps_per_cycle`` are ignored in this mode.
+
+        Stall rule: less than ``min_gain_g`` of flow within
+        ``max_stall_cycles`` x ``settle_ms`` of spinning aborts as
+        stalled (empty hopper / jam) instead of spinning forever.
+
+        Returns (grams, abort_status_or_None, polls) -- the cycle count
+        in the dose summary is the number of scale polls.
+        """
+        tag = "[phase {} {}]".format(num, p["name"])
+        rpm = float(p["rotation_rpm"])
+        if rpm <= 0:
+            self.log(tag + " continuous mode needs rotation_rpm > 0 -- "
+                     "phase does nothing, skipping")
+            return grams, None, 0
+        halt_at_g = exit_g + max(0.0, p["anticipation_g"])
+        poll_ms = max(50, int(p["poll_ms"]))
+        stall_limit_s = (p["max_stall_cycles"] * p["settle_ms"]) / 1000.0
+        polls = 0
+        misses = 0
+        prev = grams
+        gain_ref = grams            # last mass that counted as flow ...
+        gain_ref_t = self._now()    # ... and when it was seen
+        spin_started = self._now()
+        status = None
+        self.stepper.run_at_rpm(rpm)
+        try:
+            while True:
+                if self._now() - t0 > self.timeout_s:
+                    self.log(tag + " dose timeout ({} s)".format(
+                        self.timeout_s))
+                    status = DoseResult.TIMEOUT
+                    break
+                self._sleep_ms(poll_ms)
+                self.stepper.keep_alive()
+                reading = self.scale.read()
+                polls += 1
+                if (reading is None or reading.overload
+                        or reading.grams is None):
+                    misses += 1
+                    if misses >= 10:
+                        self.log(tag + " scale went quiet mid-rotation")
+                        status = DoseResult.SCALE_ERROR
+                        break
+                    continue
+                misses = 0
+                grams = reading.grams
+                self._objectives(
+                    tag + " poll {}{}:".format(
+                        polls, "" if reading.stable else " (unstable)"),
+                    grams, target_g, grams - prev, t0,
+                    gain_label="this poll")
+                prev = grams
+                if target_g - grams <= halt_at_g:
+                    break
+                if grams - gain_ref >= p["min_gain_g"]:
+                    gain_ref = grams
+                    gain_ref_t = self._now()
+                elif self._now() - gain_ref_t > stall_limit_s:
+                    self.log(tag + " no powder flow for {:.1f} s while "
+                             "spinning -- hopper empty or jam".format(
+                                 stall_limit_s))
+                    status = DoseResult.STALLED
+                    break
+        finally:
+            # Always halt, even on a scale exception; no TX from the
+            # Tic, so the position is re-zeroed rather than read back.
+            self.stepper.stop()
+        state["deg"] += rpm / 60.0 * 360.0 * (self._now() - spin_started)
+        if status is not None:
+            return grams, status, polls
+        self.log(tag + " auger halted at {:.4f} g to go (halt threshold "
+                 "{:.4f} g); settling {} ms".format(
+                     max(0.0, target_g - grams), halt_at_g,
+                     int(p["settle_ms"])))
+        self._sleep_ms(int(p["settle_ms"]))
+        settled = self._stable_grams()
+        if settled is None:
+            return grams, DoseResult.SCALE_ERROR, polls
+        self._objectives(tag + " settled:", settled, target_g,
+                         settled - grams, t0, gain_label="while settling")
+        return settled, None, polls
+
 
 # ---------------------------------------------------------------------------
 # Top-level rig + REPL
 # ---------------------------------------------------------------------------
 
 HELP = (
-    "Three-phase doser commands:\n"
+    "Three-phase doser commands (auger deg/RPM and plate deg -- gear\n"
+    "ratios 44:20 and 2:1 are already folded in):\n"
     "  h                    show this help\n"
     "  s                    print rig state, thresholds, phase parameters\n"
-    "  d                    dispense (rotate auger STEPPER_DISPENSE_DEG)\n"
-    "  r <deg>              rotate auger by <deg> (signed)\n"
+    "  d                    dispense (STEPPER_DISPENSE_DEG of auger)\n"
+    "  r <deg>              rotate auger by <deg> auger degrees (signed)\n"
     "  t                    tap (TAP_COUNT solenoid pulses)\n"
-    "  a <deg>              servos to <deg>\n"
-    "  p <preset>           servos to named preset\n"
+    "  a <deg>              mounting plate to <deg> plate degrees\n"
+    "  p <preset>           plate to named preset (vertical = 45 plate deg)\n"
     "  w                    weigh (read the scale once)\n"
     "  z                    re-zero (tare) the scale\n"
     "  g <grams>            three-phase dose to <grams>\n"
     "  set t<N> <grams>     phase-shift threshold N (g until goal);\n"
     "                       t1 bulk->fine, t2 fine->tap, t3 tolerance\n"
-    "  set <N> <key> <val>  phase-N parameter, e.g. set 1 angle_deg 60\n"
+    "  set <N> <key> <val>  phase-N parameter, e.g. set 1 angle_deg 40;\n"
+    "                       set 1 continuous 1 spins phase 1 steadily\n"
+    "                       until t1 + anticipation_g (velocity mode)\n"
     "  !                    emergency stop\n"
 )
 
@@ -650,9 +874,12 @@ class Rig:
 
     def state(self):
         print(
-            "stepper: rpm={rpm}, microsteps=1/{ms}, steps/rev={spr}, "
-            "dispense_deg={dd}".format(
+            "stepper: {rpm} auger rpm (gear {gr:.2f}:1, max {mx:.0f}), "
+            "microsteps=1/{ms}, usteps/auger-rev={spr:.0f}, "
+            "dispense_deg={dd} auger deg".format(
                 rpm=config.STEPPER_SPEED_RPM,
+                gr=AUGER_GEAR_RATIO,
+                mx=MAX_AUGER_RPM,
                 ms=config.STEPPER_MICROSTEPS,
                 spr=self.stepper.steps_per_rev,
                 dd=config.STEPPER_DISPENSE_DEG,
@@ -665,13 +892,14 @@ class Rig:
                 d=config.TAP_PWM_DUTY,
             ))
         print(
-            "servo: angle={a:.1f}, range=[{lo}..{hi}], speed={s} deg/s, "
-            "presets={p}".format(
+            "plate: angle={a:.1f} plate deg (gear {gr:.0f}:1), "
+            "range=[{lo:.0f}..{hi:.0f}], presets={p}".format(
                 a=self.servo.angle,
-                lo=config.SERVO_MIN_ANGLE_DEG,
-                hi=config.SERVO_MAX_ANGLE_DEG,
-                s=config.SERVO_SPEED_DEG_PER_S,
-                p=list(config.SERVO_PRESETS),
+                gr=PLATE_GEAR_RATIO,
+                lo=self.servo.min_plate_deg,
+                hi=self.servo.max_plate_deg,
+                p={k: v / PLATE_GEAR_RATIO
+                   for k, v in config.SERVO_PRESETS.items()},
             ))
         if self.doser is None:
             print("scale: unavailable -- see boot message "
@@ -688,15 +916,18 @@ class Rig:
                 self.doser.thresholds[i])
             for i in range(len(self.doser.thresholds))))
         for i, p in enumerate(self.doser.phases):
-            print("phase {} '{}': angle {:.0f} deg, rot {:.0f} deg @ "
-                  "{:.0f} rpm, taps {} ({}on/{}off ms), settle {} ms, "
-                  "min_gain {:.4f} g, nudge {:.0f} deg x{}, "
+            mode = (" CONTINUOUS (poll {} ms, anticipation {:.4f} g)"
+                    .format(int(p["poll_ms"]), p["anticipation_g"])
+                    if int(p["continuous"]) else "")
+            print("phase {} '{}': angle {:.1f} plate deg, rot {:.0f} auger "
+                  "deg @ {:.0f} rpm{}, taps {} ({}on/{}off ms), settle "
+                  "{} ms, min_gain {:.4f} g, nudge {:.0f} deg x{}, "
                   "max {} cycles".format(
                       i + 1, p["name"], p["angle_deg"], p["rotation_deg"],
-                      p["rotation_rpm"], p["taps_per_cycle"], p["tap_on_ms"],
-                      p["tap_off_ms"], p["settle_ms"], p["min_gain_g"],
-                      p["stall_nudge_deg"], p["max_nudges"],
-                      p["max_cycles"]))
+                      p["rotation_rpm"], mode, p["taps_per_cycle"],
+                      p["tap_on_ms"], p["tap_off_ms"], p["settle_ms"],
+                      p["min_gain_g"], p["stall_nudge_deg"],
+                      p["max_nudges"], p["max_cycles"]))
 
     def set_param(self, arg):
         if self.doser is None:
@@ -724,6 +955,12 @@ class Rig:
 
     def emergency_stop(self):
         print("[rig] EMERGENCY STOP")
+        try:
+            # Halt any continuous rotation and re-zero the Tic position
+            # so the shadow position stays in sync (no TX read-back).
+            self.stepper.stop()
+        except Exception:
+            pass
         self.stepper.enable(False)
         self.tap._off()
 
@@ -758,7 +995,10 @@ class Rig:
                     print("unknown preset {!r}; choose from {}".format(
                         arg, list(config.SERVO_PRESETS)))
                     return
-                self.servo.move_to(config.SERVO_PRESETS[arg])
+                # config presets are servo-horn degrees (PR #100);
+                # convert to true plate degrees through the 2:1 gearing.
+                self.servo.move_to(
+                    config.SERVO_PRESETS[arg] / PLATE_GEAR_RATIO)
             elif cmd == "w":
                 if not self._scale_ready():
                     return
