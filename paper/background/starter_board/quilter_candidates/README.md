@@ -41,3 +41,9 @@ IR-drop `.op` solve of the routed +12 V / +5 V copper, a transient decoupling
 `.tran`, and the IPC-2221 trace temperature rise) that backs note
 [`../../23-ngspice-power-integrity-simulation.md`](../../23-ngspice-power-integrity-simulation.md);
 `analysis_power_ngspice.json` is its captured output.
+
+**Superseded by run 2 (2026-07-14):** these candidates predate the
+physical-footprint audit and the reviewed Quilter settings. The re-run's
+boards and evaluation live in
+[`../quilter_candidates_run2/`](../quilter_candidates_run2/) (note
+[`24`](../../24-quilter-run2-candidate-evaluation.md)).

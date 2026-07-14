@@ -1,0 +1,316 @@
+{
+  "candidate_1": {
+    "bottom_side_parts": [],
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 77,
+      "hole_clearance": 77,
+      "lib_footprint_issues": 15,
+      "silk_overlap": 2
+    },
+    "drc_items_vs_no_net_zone": 154,
+    "n_tracks": 317,
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "track_len_mm": 1087,
+    "unconnected": 0,
+    "vias": 20,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.254
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_2": {
+    "bottom_side_parts": [
+      "C1",
+      "C2",
+      "C3",
+      "M2",
+      "M3",
+      "SOL1",
+      "U3",
+      "U4",
+      "U6"
+    ],
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 77,
+      "hole_clearance": 77,
+      "lib_footprint_issues": 15
+    },
+    "drc_items_vs_no_net_zone": 154,
+    "n_tracks": 340,
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "track_len_mm": 1203,
+    "unconnected": 0,
+    "vias": 19,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.254
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_3": {
+    "bottom_side_parts": [],
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 77,
+      "hole_clearance": 77,
+      "lib_footprint_issues": 15,
+      "silk_overlap": 7
+    },
+    "drc_items_vs_no_net_zone": 154,
+    "n_tracks": 375,
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "track_len_mm": 1603,
+    "unconnected": 0,
+    "vias": 20,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.254
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_5": {
+    "bottom_side_parts": [
+      "C2",
+      "J1",
+      "M1",
+      "M2",
+      "M3",
+      "SOL1",
+      "U1",
+      "U3",
+      "U4",
+      "U6"
+    ],
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 77,
+      "hole_clearance": 77,
+      "lib_footprint_issues": 15
+    },
+    "drc_items_vs_no_net_zone": 154,
+    "n_tracks": 315,
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "track_len_mm": 874,
+    "unconnected": 0,
+    "vias": 18,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.254
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_6": {
+    "bottom_side_parts": [],
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 77,
+      "hole_clearance": 77,
+      "lib_footprint_issues": 15,
+      "silk_overlap": 3
+    },
+    "drc_items_vs_no_net_zone": 154,
+    "n_tracks": 355,
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "track_len_mm": 1363,
+    "unconnected": 0,
+    "vias": 25,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.254
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  }
+}
