@@ -4,6 +4,12 @@
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Remote access
+
+Instructions for reaching the powder doser remotely — a Raspberry Pi Zero 2 W
+running Tailscale SSH acts as a gateway to the Pico W's serial REPL — are in
+[`docs/tailscale-remote-access.md`](docs/tailscale-remote-access.md).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
