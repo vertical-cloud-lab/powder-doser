@@ -13,6 +13,32 @@ PR [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment
 ("try to make an actual starter board that we could upload to quilter or
 DeepPCB")._
 
+> **Update (second dispensing-angle servo `M4` — 2-servo design alignment).**
+> @williamulbz reviewed the Quilter run-2 boards on PR
+> [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4983618810)
+> and flagged that the design predates the move to the **2-servo design**: the
+> mounting-plate hinge is lifted by **two mirrored servos** (PR
+> [#66](https://github.com/vertical-cloud-lab/powder-doser/pull/66) dual-servo
+> hinge; PR #100's `generate.py` rev C + firmware already carry it), but the
+> board had only one servo header. The generator now emits a second 3-pin
+> servo header **`M4`** (`+5V` / `GND` / `SIG`), wired exactly as PR #100
+> rev C: signal net **`SERVO_SIG2` on Pico `GP2`** (a free pin — GP0/GP1 are
+> I²C, GP4/GP5 the Tic UART), with the firmware driving M4 at the mirror-image
+> angle of M3 (`config.SERVO2_INVERT`) so the opposite-facing servos tilt the
+> doser together. `M4` joins the logic/mcu placement cluster beside `M3`
+> (edge-biased for cable exit). Counts become **16 footprints / 175 pads /
+> 99 net-assigned / 23 nets** (placed outline ~162 × 85 mm; the unplaced
+> outline stays 110 × 110 mm at ~51 % courtyard utilisation). `kicad-cli sch
+> export netlist` verifies 99 pins / 23 nets / zero unconnected on both trios
+> (`SERVO_SIG2` = `M4.3` ↔ `U2.4`/GP2), `pcbnew` DRC reports no
+> courtyard/clearance/short errors, the 16↔16 footprint↔symbol UUID bijection
+> holds, and the build stays byte-for-byte reproducible (KiCad 7 `20221018`).
+> ⚠️ Two knock-ons for the next Quilter run: the previously evaluated run-2
+> candidates (note `24`) were routed **without** `M4`, so a fresh upload of
+> both trios is needed; and the `+5V` power-net current in Quilter's rules UI
+> should now be **2000 mA** (two servos ≈ 2 × 0.75 A near-stall + Pico VSYS
+> ≈ 0.15 A), superseding the earlier 1000 mA single-servo figure.
+
 > **Update (full physical-footprint audit — every component re-verified against
 > its manufacturer design files).** After the Waveshare mid-body-header bug,
 > @lbwinters asked on PR
@@ -209,8 +235,8 @@ sandbox and in CI — and emits, under
 
 | File | What it is |
 | --- | --- |
-| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 15 footprints, 172 pads (95 net-assigned; vendor-exact hole maps for the five Pololu/Adafruit carriers, incl. mounting holes), real component body outlines (F.Fab) + courtyards (F.CrtYd), 3 vendor 3-D models, and a compact, domain-grouped ~156 × 85 mm Edge.Cuts outline. **This is the file you upload.** |
-| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (15 symbols, 22 nets, 95 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
+| [`test_module_starter.kicad_pcb`](starter_board/test_module_starter.kicad_pcb) | The starter board: 16 footprints, 175 pads (99 net-assigned; vendor-exact hole maps for the five Pololu/Adafruit carriers, incl. mounting holes), real component body outlines (F.Fab) + courtyards (F.CrtYd), 3 vendor 3-D models, and a compact, domain-grouped ~162 × 85 mm Edge.Cuts outline. **This is the file you upload.** |
+| [`test_module_starter.kicad_sch`](starter_board/test_module_starter.kicad_sch) | The matching **schematic** (16 symbols, 23 nets, 99 connected pins) — DeepPCB / Quilter ask for this alongside the board. Built from the *same* `NETLIST` / `PINOUTS`, so its netlist is identical to the board's; connectivity is global-label-only (no wires beyond short label stubs), verified pin-by-pin with `kicad-cli`'s netlist exporter. |
 | [`test_module_starter.kicad_pro`](starter_board/test_module_starter.kicad_pro) | Project / DRC rules: `Default` (0.25 mm track / 0.2 mm clearance) and a wider `Power` net class (0.6 mm track / 0.3 mm clearance) assigned to `+12V`, `+5V`, `+3V3`, `GND`. Registers the schematic root sheet so the `.kicad_pcb` / `.kicad_sch` / `.kicad_pro` open together as one project. |
 | [`test_module_starter.svg`](starter_board/test_module_starter.svg) / `.png` | Board preview — bodies, pads, ratsnest, outline (rendered by `kicad-cli` when present, otherwise by the script's built-in dependency-free SVG fallback). |
 | [`test_module_starter_schematic.svg`](starter_board/test_module_starter_schematic.svg) / `.png` | Schematic preview (rendered by `kicad-cli` when present). |
@@ -224,7 +250,7 @@ can be compared against this generator's:
 
 | Variant | Files | Components | Use |
 | --- | --- | --- | --- |
-| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~156 × 85 mm outline | Upload to test **routing** of a board this generator already placed. |
+| **Placed** (default) | `test_module_starter.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Domain/cluster-packed **inside** the ~162 × 85 mm outline | Upload to test **routing** of a board this generator already placed. |
 | **Unplaced** | `test_module_unplaced.kicad_pcb` / `.kicad_sch` / `.kicad_pro` | Same parts/nets, staged **outside** a right-sized **110 × 110 mm** empty outline | Upload to test the tool's **auto-placement** (then routing); compare its placement against the placed variant. |
 
 The two variants share the same netlist and symbols; the schematics differ only
@@ -235,7 +261,7 @@ The unplaced board's Edge.Cuts target is a **right-sized 110 × 110 mm square**
 outline-width + 12 mm to its right, so the board area is empty and the router
 must place the parts onto a sensibly-sized board.
 
-![Generated starter-board schematic (15 symbols, 22 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
+![Generated starter-board schematic (16 symbols, 23 nets, global-label connectivity)](starter_board/test_module_starter_schematic.png)
 
 ## How it was built (note `20` Rank 1)
 
@@ -302,7 +328,7 @@ must place the parts onto a sensibly-sized board.
 The build is verified structurally and headlessly with `kiutils`, the builder's
 own geometry guard, and `kicad-cli`'s netlist exporter:
 
-- **15 footprints / 172 pads / 95 net-assigned / 22 nets** — re-parsed from the
+- **16 footprints / 175 pads / 99 net-assigned / 23 nets** — re-parsed from the
   written `.kicad_pcb`. Every physical pin of each real part is now a pad (the
   Pico W's full 40, the Waveshare RS-232 module's full 2×20 receptacle, the Tic
   T500's 21 signal + 6 terminal-block + 2 mounting holes, etc.), with every
@@ -310,12 +336,12 @@ own geometry guard, and `kicad-cli`'s netlist exporter:
 - **No courtyard overlaps** — `_assert_no_overlap()` checks every pair of real
   F.CrtYd extents before writing the board and raises if any two collide, so the
   compact placement stays clearance-clean.
-- **11 3-D models attached** — 3 from vendor STEP files (DRV8871, D24V22F5,
+- **12 3-D models attached** — 3 from vendor STEP files (DRV8871, D24V22F5,
   shunt regulator; the DRV2605L STEP is the older board revision so it is no
   longer attached), the rest from the parts' own KiCad library
   footprints (the Pico / RS-232 / Tic header-carriers deliberately omit the
-  misleading bare-header model — see note `22`) — plus 60 F.Fab
-  body-outline + 60 F.CrtYd courtyard segments.
+  misleading bare-header model — see note `22`) — plus 64 F.Fab
+  body-outline + 64 F.CrtYd courtyard segments.
 
 **Compact, domain-aware placement (issue [#94](https://github.com/vertical-cloud-lab/powder-doser/issues/94)).**
 The first DeepPCB run flagged the board as *"still very spaced out"*: the earliest
@@ -387,7 +413,7 @@ upload trio is accepted.
 The **schematic** (`test_module_starter.kicad_sch`) is verified the way KiCad's
 own connectivity engine sees it: the build exports its netlist with
 `kicad-cli sch export netlist` and asserts every one of the **83 connected pins
-lands on its intended net across all 22 named nets**, with no stray
+lands on its intended net across all 23 named nets**, with no stray
 `unconnected-(…)` entries (`validate_schematic_netlist()`; runs automatically
 when `kicad-cli` is on `PATH`, skipped gracefully otherwise). Because both the
 board and the schematic are emitted from the same `NETLIST` / `PINOUTS` tables —
@@ -437,7 +463,8 @@ Pico-form-factor receptacle (`J2`), briefly re-modelled per PR #100 as a 4-pin
 physically non-existent (see the top update block), bringing the board to
 137 pads / 83 net-assigned / 22 nets; the subsequent full physical-footprint
 audit (top update block) then took it to **172 pads / 95 net-assigned / 22
-nets** with vendor-exact hole maps. `validate_schematic_netlist()` re-confirms all connected pins land on
+nets** with vendor-exact hole maps, and the second-servo alignment (`M4` on
+GP2, top update block) to **175 pads / 99 net-assigned / 23 nets**. `validate_schematic_netlist()` re-confirms all connected pins land on
 their intended nets with zero unconnected stragglers, and `_assert_no_overlap()`
 keeps the compact placement DRC-clean.
 

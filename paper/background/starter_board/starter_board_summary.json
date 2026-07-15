@@ -2,10 +2,10 @@
   "board": "test_module_starter.kicad_pcb",
   "schematic": "test_module_starter.kicad_sch",
   "project": "test_module_starter.kicad_pro",
-  "components": 15,
-  "nets": 22,
+  "components": 16,
+  "nets": 23,
   "outline_mm": [
-    156.06,
+    162.26,
     84.63
   ],
   "power_nets": [
@@ -82,7 +82,7 @@
       "part": "Pi_Pico_W",
       "kind": "module",
       "pins": 40,
-      "pins_netted": 13,
+      "pins_netted": 14,
       "body_mm": [
         21.0,
         51.0
@@ -193,7 +193,17 @@
       "pins_netted": 3,
       "body_mm": null,
       "model": null,
-      "source": "off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"
+      "source": "off-board hobby servo (Adafruit #1142 metal-gear bench part 40.7x19.7x42.9 mm; the dual-servo hinge of PR #66 uses two mirrored MG996R) - one 3-pin header per servo (M3, M4)"
+    },
+    {
+      "ref": "M4",
+      "part": "Servo_3pin",
+      "kind": "connector",
+      "pins": 3,
+      "pins_netted": 3,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board hobby servo (Adafruit #1142 metal-gear bench part 40.7x19.7x42.9 mm; the dual-servo hinge of PR #66 uses two mirrored MG996R) - one 3-pin header per servo (M3, M4)"
     },
     {
       "ref": "U6",

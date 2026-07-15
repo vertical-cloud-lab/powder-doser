@@ -32,7 +32,9 @@ Provenance of the netlist
 ``PLACEMENTS`` / ``SYMBOL_PINS`` data structures in
 ``hardware/test-module/kicad/generate.py`` — the PR #61 baseline plus
 PR #100's scale-integration rev B (Waveshare Pico-2CH-RS232 module ``U6``
-on UART0 GP12/GP13, powered from +3V3; issue #99) — so the component set,
+on UART0 GP12/GP13, powered from +3V3; issue #99) and rev C (second
+dispensing-angle servo ``M4`` on GP2, net ``SERVO_SIG2``, mirrored in
+firmware; PR #66 dual-servo hinge) — so the component set,
 pin names, and net connectivity match the bench-rig schematic exactly,
 with one physical correction: PR #100 abstracts the module as a 4-pin
 "TTL header", but the module's own schematic shows no such header exists
@@ -41,7 +43,7 @@ is modelled here as the 2x20 side receptacle the module actually plugs
 onto — same nets, real mounting. Each schematic pin becomes one real through-hole pad,
 copied from the matching **KiCad library footprint** (real pad size, drill,
 shape, pad-1 marker and 3-D model — see ``kicad_footprints/`` and
-``_part_groups``), so the 22-net ratsnest is preserved exactly while the land
+``_part_groups``), so the 23-net ratsnest is preserved exactly while the land
 patterns are genuine manufacturer-grade KiCad footprints. The body
 **outline, courtyard, and 3-D model** are taken from the real vendor design
 files committed to the repo under ``hardware/vendor-files/`` (PR #25).
@@ -172,7 +174,9 @@ def _header(n: int) -> tuple[str, str]:
 # (PLACEMENTS): the PR #61 baseline plus PR #100's scale-integration rev B
 # (closed-loop dosing with the A&D HR-100A balance, issue #99) — the
 # Waveshare Pico-2CH-RS232 module U6 on UART0 GP12/GP13 (nets SCALE_TX /
-# SCALE_RX), powered from +3V3. (x, y) are the schematic-sheet anchor
+# SCALE_RX), powered from +3V3 — and rev C (second dispensing-angle servo
+# M4 on GP2, net SERVO_SIG2; PR #66 dual-servo hinge, mirrored in firmware
+# via config.SERVO2_INVERT). (x, y) are the schematic-sheet anchor
 # coordinates; the board ignores them (see _pack_positions) and only the
 # schematic sheet uses them for symbol layout.
 # ---------------------------------------------------------------------------
@@ -188,6 +192,13 @@ NETLIST = [
                                   ("GP1", "I2C_SCL"), ("GP4", "STP_TX"),
                                   ("GP5", "STP_RX"), ("GP10", "SOL_IN1"),
                                   ("GP11", "SOL_IN2"), ("GP15", "SERVO_SIG"),
+                                  # Second dispensing-angle servo (PR #100
+                                  # rev C / PR #66 dual-servo hinge): the two
+                                  # servos sit on opposite sides of the
+                                  # baseplate, so the firmware drives M4 with
+                                  # the mirror-image angle of M3
+                                  # (config.SERVO2_INVERT) on its own PWM pin.
+                                  ("GP2", "SERVO_SIG2"),
                                   ("GP14", "HAPT_EN"),
                                   # A&D HR-100A scale via the Waveshare
                                   # Pico-2CH-RS232 module (U6) on UART0
@@ -218,8 +229,13 @@ NETLIST = [
                                           ("B", "GND"), ("-", "GND")]),
     ("M2", "Stepper_4wire", 285, 145, [("A1", "STP_A1"), ("A2", "STP_A2"),
                                        ("B1", "STP_B1"), ("B2", "STP_B2")]),
+    # Dispensing-angle servo channel (two servos, opposite sides; PR #100
+    # rev C / PR #66 dual-servo hinge): both servos rotate the doser together,
+    # M3 on GP15 (SERVO_SIG) and M4 on GP2 (SERVO_SIG2, mirrored in firmware).
     ("M3", "Servo_3pin", 210, 215, [("+5V", "+5V"), ("GND", "GND"),
                                     ("SIG", "SERVO_SIG")]),
+    ("M4", "Servo_3pin", 285, 215, [("+5V", "+5V"), ("GND", "GND"),
+                                    ("SIG", "SERVO_SIG2")]),
     # Waveshare Pico-2CH-RS232 module (SP3232EEN transceiver), PR #100 rev B:
     # the A&D HR-100A balance talks true RS-232 levels (about +/-5..9 V) that
     # must never touch a Pico GPIO (abs max -0.3/+3.6 V), so this off-the-shelf
@@ -407,7 +423,9 @@ PACKAGES = {
                f"{VENDOR}/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP"),
     "Servo_3pin": dict(
         kind="connector", body=None, model=None,
-        source="off-board Adafruit #1142 metal-gear servo 40.7x19.7x42.9 mm"),
+        source="off-board hobby servo (Adafruit #1142 metal-gear bench part "
+               "40.7x19.7x42.9 mm; the dual-servo hinge of PR #66 uses two "
+               "mirrored MG996R) - one 3-pin header per servo (M3, M4)"),
     "ERM_Motor": dict(
         kind="connector", body=None, model=None,
         source="off-board Adafruit #1201 ERM coin, Ø10 x 2.7 mm"),
@@ -478,10 +496,10 @@ PLACEMENT_CLUSTERS = [
     ("power", "solenoid",  ["U4", "SOL1"]),             # DRV8871 + solenoid load
     ("power", "stepper",   ["SR1", "C3", "U5", "M2"]),  # shunt + cap + Tic + stepper
     ("logic", "haptic",    ["U3", "M1"]),               # DRV2605L + ERM
-    ("logic", "mcu",       ["U2", "U6", "M3"]),       # Pico + RS-232 module + servo header
+    ("logic", "mcu",       ["U2", "U6", "M3", "M4"]),  # Pico + RS-232 module + both servo headers
 ]
 # Off-board connectors (cables leaving the PCB); edge-placed for harnessing.
-EDGE_REFS = {"J1", "SOL1", "M2", "M1", "M3"}
+EDGE_REFS = {"J1", "SOL1", "M2", "M1", "M3", "M4"}
 
 # Real Raspberry Pi Pico W castellated row spacing (centre-to-centre between
 # the two 1x20 edges); 17.78 mm = 7 x 0.1" per the official mechanical drawing.

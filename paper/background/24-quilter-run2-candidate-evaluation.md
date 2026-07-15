@@ -15,6 +15,17 @@ reproducible via `analyze_quilter_candidates_run2.py` and
 malformed (`…/powder-doser/files//…`, returns *Not Found*), so five of the six
 candidates are evaluated. It can be added to the comparison if re-uploaded.
 
+> **⚠️ Superseded by the 2-servo design (2026-07-15).** @williamulbz's review
+> ([PR #76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-4983618810))
+> flagged that these candidates predate the move to the **2-servo design**:
+> they carry only one servo header. The generator now emits the second
+> dispensing-angle servo `M4` (`SERVO_SIG2` on Pico GP2; note `21` top update
+> block), so **do not fabricate these candidates** — re-upload the regenerated
+> `test_module_unplaced` trio to Quilter (16 footprints / 23 nets) and set the
+> `+5V` power-net current to **2000 mA** (two servos) in Quilter's rules UI.
+> The evaluation methodology and per-candidate findings below remain valid for
+> the boards as routed.
+
 ## What the reviewed settings fixed (vs. the run-1 boards of notes 22/23)
 
 | run-1 finding (notes 22/23) | run 2 |
