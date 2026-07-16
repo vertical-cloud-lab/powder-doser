@@ -1,0 +1,6 @@
+# Regenerable CAD artifacts.  STL meshes + PNG previews are committed as the
+# §9 deliverables; the (large) per-part STEP solids are reproducible from the
+# parametric source with `python3 build.py` and are kept out of git.
+exports/*.step
+__pycache__/
+*.pyc
