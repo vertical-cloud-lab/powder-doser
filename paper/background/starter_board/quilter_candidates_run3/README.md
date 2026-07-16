@@ -73,4 +73,19 @@ under `candidate_2_fixed/jlcpcb_gerbers/`; captured gate results in
 `candidate_2_fixed/jlcpcb_order_report.json`. Wall-clock date stamps are
 stripped from the plots, so re-runs are byte-identical.
 
+[`make_print_pdf.py`](make_print_pdf.py) builds
+**`candidate_2_fixed/powder_doser_run3_candidate2_print.pdf`** — an
+8-page color print kit for a physical parts spot-check on an office
+printer: cover page with print instructions, 100 mm / 4 in calibration
+rulers and a ref→part legend, then five **exact 1:1** US-Letter board
+pages (top assembly overlay with real body outlines + pad openings,
+top/bottom copper, both inner GND planes — bottom/inner as X-ray views so
+they align with the top page), plus the drill map and schematic as
+reference pages. Every board page carries its own 100 mm scale bar; print
+at 100 % / "Actual size" (no fit-to-page). A print-friendly white-paper
+color theme is installed on the fly, and the plotted A4 sheets are
+re-centered onto Letter with a pure translation so scale is never touched
+(1:1 verified by rasterizing the output at 200 dpi and measuring the
+110 mm Edge.Cuts square: 109.98 × 110.11 mm).
+
 Full write-up: [`../../25-quilter-run3-candidate-evaluation.md`](../../25-quilter-run3-candidate-evaluation.md).
