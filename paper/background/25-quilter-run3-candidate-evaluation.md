@@ -61,6 +61,17 @@ Still present (systemic, same two pre-fab fixes as run 2):
   152 clearance + hole_clearance DRC errors on every candidate**; nothing
   electrical depends on it. Fix in KiCad before fab: select the In2 zone →
   assign net `GND` (or `PWR`) → refill, or delete it.
+  **Applied for the recommended candidate 2 (2026-07-16):**
+  [`fix_candidate2_in2_zone.py`](starter_board/quilter_candidates_run3/fix_candidate2_in2_zone.py)
+  reassigns the zone to `GND` and refills it with `pcbnew`, writing the
+  fixed board to
+  [`candidate_2_fixed/`](starter_board/quilter_candidates_run3/candidate_2_fixed/)
+  (the verbatim Quilter output in `candidate_2/` is untouched). Result
+  (captured in `candidate_2_fixed/fix_report.json`): clearance +
+  hole_clearance errors **152 → 0** (only the pre-existing 16 harmless
+  lib-table notices and 4 cosmetic silk overlaps remain), unconnected
+  ratsnest stays **0**, and `In2.Cu` becomes a second solid **GND plane**
+  (~11,153 mm² fill, matching `In1.Cu`).
 * the **drive nets (`STP_A1/A2/B1/B2`, `SOL_A/B`) and `+3V3` stayed at
   0.254 mm** — the added drive-net current rows didn't take effect this run
   either. At a *continuous* 1 A a 0.254 mm stepper-phase trace runs
@@ -135,8 +146,10 @@ C1/U1 cluster would fix it — but that's hand-editing Quilter output).
 **Avoid 3** (stranded C2, worst +5 V drops); **4/5/6 are not buildable** as
 returned (bottom-side THT modules).
 
-Before ordering candidate 2: assign the `In2.Cu` zone to `GND` and refill
-(clears all 152 DRC errors and yields a second plane), optionally widen the
-six drive nets to ≥ 0.5 mm, run *Update PCB from Schematic* against the
+Before ordering candidate 2: ~~assign the `In2.Cu` zone to `GND` and refill
+(clears all 152 DRC errors and yields a second plane)~~ — **done**, use
+[`candidate_2_fixed/test_module_unplaced.kicad_pcb`](starter_board/quilter_candidates_run3/candidate_2_fixed/test_module_unplaced.kicad_pcb)
+(see the zone-fix block above). Remaining optional steps: widen the six
+drive nets to ≥ 0.5 mm, run *Update PCB from Schematic* against the
 generator's `.kicad_sch` (commit `0683525`), and re-run DRC + this folder's
 two scripts as a final gate.

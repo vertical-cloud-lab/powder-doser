@@ -28,6 +28,18 @@ Each folder holds Quilter's `test_module_unplaced.kicad_pcb` (placed + routed,
 `test_module_unplaced.kicad_pro`, committed **verbatim** as Quilter emitted
 them.
 
+`candidate_2_fixed/` is the **one exception to verbatim** — it is the
+recommended candidate 2 with note 25's pre-fab **In2 zone fix applied**:
+[`fix_candidate2_in2_zone.py`](fix_candidate2_in2_zone.py) (re-runnable,
+KiCad 7 `pcbnew`) reassigns the exported `<no net>` zone on `In2.Cu` to
+`GND` and refills it, turning the dead copper into a second solid GND plane
+and clearing all 152 clearance/hole_clearance DRC errors (unconnected
+ratsnest stays 0). `candidate_2_fixed/fix_report.json` is the captured
+before/after report and `candidate_2_fixed/in2_gnd_plane.{svg,png}` the
+rendered In2 plane. **This is the board file to fabricate.** (Re-runs of
+the fix script yield an electrically identical board, but `pcbnew`'s save
+order isn't byte-stable — verify via `fix_report.json`, not file hashes.)
+
 `candidates_run3_copper.png` is a labeled montage of the six candidates
 (top + bottom copper, outline, silk), rendered with
 `kicad-cli pcb export svg`.
