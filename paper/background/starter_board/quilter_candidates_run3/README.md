@@ -60,4 +60,17 @@ decoupling `.tran` of the +12 V solenoid rail), with the run-2 mesh upgrades
 detection) and the +5 V worst-case load updated for **two** servo headers
 (M3 + M4). `analysis_power_ngspice_run3.json` is its captured output.
 
+[`prepare_jlcpcb_order.py`](prepare_jlcpcb_order.py) is the **final
+pre-order gate + JLCPCB fabrication-kit export** for the chosen
+`candidate_2_fixed/` board: a headless schematic→board sync pass (the
+*Update PCB from Schematic* equivalent — every schematic netlist node
+verified against its board pad, symbol links + no-net copper checked), the
+final DRC / JLCPCB-capability gate, and `kicad-cli` Gerber (Protel
+extensions) + Excellon drill export, zipped to
+**`candidate_2_fixed/powder_doser_run3_candidate2_jlcpcb.zip`** — the one
+file to upload at <https://cart.jlcpcb.com/quote>. Loose files are kept
+under `candidate_2_fixed/jlcpcb_gerbers/`; captured gate results in
+`candidate_2_fixed/jlcpcb_order_report.json`. Wall-clock date stamps are
+stripped from the plots, so re-runs are byte-identical.
+
 Full write-up: [`../../25-quilter-run3-candidate-evaluation.md`](../../25-quilter-run3-candidate-evaluation.md).

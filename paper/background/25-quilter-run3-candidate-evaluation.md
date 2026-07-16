@@ -149,7 +149,48 @@ returned (bottom-side THT modules).
 Before ordering candidate 2: ~~assign the `In2.Cu` zone to `GND` and refill
 (clears all 152 DRC errors and yields a second plane)~~ — **done**, use
 [`candidate_2_fixed/test_module_unplaced.kicad_pcb`](starter_board/quilter_candidates_run3/candidate_2_fixed/test_module_unplaced.kicad_pcb)
-(see the zone-fix block above). Remaining optional steps: widen the six
+(see the zone-fix block above). ~~Remaining optional steps: widen the six
 drive nets to ≥ 0.5 mm, run *Update PCB from Schematic* against the
 generator's `.kicad_sch` (commit `0683525`), and re-run DRC + this folder's
-two scripts as a final gate.
+two scripts as a final gate.~~ — the final gate + JLCPCB kit are **done**
+(below); the drive-net widening stays an accepted prototype trade-off
+(~13 °C IPC-2221 rise at a *continuous* 1 A; real chopped drive is lower).
+
+## JLCPCB ordering kit (2026-07-16)
+
+[`starter_board/quilter_candidates_run3/prepare_jlcpcb_order.py`](starter_board/quilter_candidates_run3/prepare_jlcpcb_order.py)
+runs the full pre-order gate on `candidate_2_fixed/` and exports the
+fabrication files JLCPCB's quote page (<https://cart.jlcpcb.com/quote>,
+"Only accept zip or rar", ≤ 100 MB) needs. Captured results in
+[`candidate_2_fixed/jlcpcb_order_report.json`](starter_board/quilter_candidates_run3/candidate_2_fixed/jlcpcb_order_report.json):
+
+* **Schematic→board sync pass** (the headless equivalent of *Update PCB
+  from Schematic*, which has no kicad-cli entry point in 7.0): every one of
+  the **175 schematic netlist nodes** matches its board pad's net, no
+  net-assigned board pad is missing from the schematic, all 16 footprints
+  keep their symbol `(path ...)` links, and there is **zero no-net copper**
+  (tracks/vias/zones). The board was already in sync — nothing needed
+  rewriting, so the ordering `.kicad_pcb` is byte-identical to the
+  note-25 zone-fixed board.
+* **Final DRC gate**: unconnected ratsnest **0**, zero clearance /
+  hole-clearance / short / courtyard errors (only the 16 harmless lib-table
+  notices + 4 cosmetic silk overlaps), and every geometry clears JLCPCB's
+  4-layer capabilities — min trace 0.254 mm (≥ 0.09), via 0.61/0.305 mm
+  (≥ 0.45/0.2 standard, annular 0.153 ≥ 0.05), outline 110 × 110 mm.
+* **Fabrication kit**: `kicad-cli` Gerbers (Protel extensions — JLCPCB's
+  preference — soldermask subtracted from silk) for the 4 copper layers +
+  masks + silks + Edge.Cuts, plus a merged-PTH Excellon drill file
+  (absolute origin, mm, decimal; **194 holes** = 175 THT pads + 19 vias,
+  smallest 0.305 mm) and a Gerber-X2 drill map. The Edge.Cuts plot is
+  re-parsed to confirm the 110.00 × 110.00 mm extents. Everything is zipped
+  (with wall-clock date stamps stripped so re-runs are byte-identical) to
+  **[`candidate_2_fixed/powder_doser_run3_candidate2_jlcpcb.zip`](starter_board/quilter_candidates_run3/candidate_2_fixed/powder_doser_run3_candidate2_jlcpcb.zip)**
+  — the one file to upload at <https://cart.jlcpcb.com/quote>; the loose
+  files sit beside it under `candidate_2_fixed/jlcpcb_gerbers/` for review.
+
+Order-form settings (from the PR #76 stackup review): **4 layers**,
+110 × 110 mm, FR-4 **1.6 mm**, standard stackup **JLC04161H-7628**
+(impedance control not required — leaving it off yields this stackup),
+1 oz outer / 0.5 oz inner copper, lead-free HASL, 2 designs = 1, delivery
+format single PCB. The In1/In2 planes are both GND on this board, so no
+layer-name mapping is needed at order time.
