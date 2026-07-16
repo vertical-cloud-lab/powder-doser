@@ -24,7 +24,9 @@ candidates are evaluated. It can be added to the comparison if re-uploaded.
 > `test_module_unplaced` trio to Quilter (16 footprints / 23 nets) and set the
 > `+5V` power-net current to **2000 mA** (two servos) in Quilter's rules UI.
 > The evaluation methodology and per-candidate findings below remain valid for
-> the boards as routed.
+> the boards as routed. **Update 2026-07-15:** the re-run happened — the
+> 2-servo candidates are evaluated in note
+> [`25`](25-quilter-run3-candidate-evaluation.md) (candidate 2 recommended).
 
 ## What the reviewed settings fixed (vs. the run-1 boards of notes 22/23)
 

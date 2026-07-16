@@ -1,0 +1,520 @@
+{
+  "candidate_1": {
+    "bottom_side_parts": [],
+    "cap_dist_mm": {
+      "C1->U1": 5.3,
+      "C2->U2": 5.6,
+      "C3->U5": 5.2
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16,
+      "silk_overlap": 5
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 357,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "F.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 11
+    },
+    "track_len_mm": 1315,
+    "unconnected": 0,
+    "vias": 21,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_2": {
+    "bottom_side_parts": [],
+    "cap_dist_mm": {
+      "C1->U1": 5.2,
+      "C2->U2": 8.2,
+      "C3->U5": 5.2
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16,
+      "silk_overlap": 4
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 308,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "F.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 6
+    },
+    "track_len_mm": 939,
+    "unconnected": 0,
+    "vias": 19,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_3": {
+    "bottom_side_parts": [],
+    "cap_dist_mm": {
+      "C1->U1": 5.3,
+      "C2->U2": 25.8,
+      "C3->U5": 11.5
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16,
+      "silk_overlap": 5
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 368,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "F.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 9
+    },
+    "track_len_mm": 1407,
+    "unconnected": 0,
+    "vias": 20,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_4": {
+    "bottom_side_parts": [
+      "M3",
+      "M4",
+      "SOL1",
+      "U2",
+      "U3",
+      "U4",
+      "U5"
+    ],
+    "cap_dist_mm": {
+      "C1->U1": 5.2,
+      "C2->U2": 4.4,
+      "C3->U5": 4.8
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16,
+      "silk_over_copper": 1,
+      "silk_overlap": 1
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 329,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "B.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 11
+    },
+    "track_len_mm": 941,
+    "unconnected": 0,
+    "vias": 20,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_5": {
+    "bottom_side_parts": [
+      "J1",
+      "M2",
+      "M4",
+      "U1",
+      "U2",
+      "U3",
+      "U4",
+      "U5"
+    ],
+    "cap_dist_mm": {
+      "C1->U1": 4.7,
+      "C2->U2": 4.4,
+      "C3->U5": 4.7
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 333,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "B.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 9
+    },
+    "track_len_mm": 1285,
+    "unconnected": 0,
+    "vias": 24,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  },
+  "candidate_6": {
+    "bottom_side_parts": [
+      "M2",
+      "M3",
+      "SOL1",
+      "U1",
+      "U2",
+      "U3",
+      "U5"
+    ],
+    "cap_dist_mm": {
+      "C1->U1": 7.0,
+      "C2->U2": 5.9,
+      "C3->U5": 4.8
+    },
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "clearance": 76,
+      "hole_clearance": 76,
+      "lib_footprint_issues": 16,
+      "silk_over_copper": 1,
+      "silk_overlap": 8
+    },
+    "drc_items_vs_no_net_zone": 152,
+    "n_tracks": 356,
+    "netlist_audit": {
+      "extra_refs": [],
+      "mismatched_refs": {},
+      "missing_refs": [],
+      "ok": true
+    },
+    "no_net_tracks": 0,
+    "outline": [
+      110,
+      110
+    ],
+    "servo2": {
+      "m4_layer": "F.Cu",
+      "m4_nets": [
+        "+5V",
+        "GND",
+        "SERVO_SIG2"
+      ],
+      "m4_pads": 3,
+      "m4_present": true,
+      "routed_m4_to_gp2": true,
+      "sig2_segments": 9
+    },
+    "track_len_mm": 902,
+    "unconnected": 0,
+    "vias": 23,
+    "widths_mm": {
+      "drive": [
+        0.254
+      ],
+      "power:+12V": [
+        0.514
+      ],
+      "power:+3V3": [
+        0.254
+      ],
+      "power:+5V": [
+        0.514
+      ],
+      "power:GND": [
+        0.514
+      ],
+      "signal": [
+        0.254
+      ]
+    },
+    "zones": [
+      [
+        "<no net>",
+        [
+          "In2.Cu"
+        ]
+      ],
+      [
+        "GND",
+        [
+          "In1.Cu"
+        ]
+      ]
+    ]
+  }
+}
