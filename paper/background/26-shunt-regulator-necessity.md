@@ -21,8 +21,22 @@
 > Pololu #3776 price is **$11.49** (1 pc; $10.57 at 5+, checked
 > 2026-07-17), and the repo BOM (PR #25,
 > `hardware/vibration-motor-and-solenoid.md` item 18) recorded $14.95
-> when it was written. Everything below is Edison's answer, kept
-> verbatim.
+> when it was written.
+>
+> **Team decision (2026-07-17, @swcharles on PR
+> [#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-5005712174)):
+> SR1 stays on the PCB.** The team already owns the Pololu #3776
+> ($11.49, the part originally ordered) and is keeping it populated as
+> near-free insurance — consistent with this note's "cheap insurance
+> worth keeping" verdict. No board change was needed: SR1 has been in
+> the generator netlist, both upload trios, every Quilter run-1/2/3
+> candidate, and the fab-ready run-3 `candidate_2_fixed` JLCPCB kit all
+> along. The alternatives below (470–1000 µF bulk + SMBJ15A-class TVS
+> as the leaner *replacement*, a 5.6 V TVS on the unprotected +5 V
+> servo rail, and the 13.2 V #3775 as the same-carrier tight-clamp
+> swap-in) therefore remain documented options, not action items.
+>
+> Everything below is Edison's answer, kept verbatim.
 
 Question: Assess, with quantitative evidence from vendor application notes and peer-reviewed / arXiv literature, whether a SHUNT REGULATOR (overvoltage clamp) is necessary on the 12 V supply rail of the following small lab-automation motor-control board, or whether bulk capacitance alone (or a TVS diode) suffices.
 
