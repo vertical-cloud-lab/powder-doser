@@ -69,6 +69,18 @@ board** question on PR
 
 Both runs returned `status=success`.
 
+## Shunt-regulator necessity run (`shunt_regulator_necessity`)
+
+A `LITERATURE_HIGH` run
+([`../edison_run_shunt_regulator_necessity.py`](../edison_run_shunt_regulator_necessity.py))
+asking whether the Pololu #3776 shunt regulator (SR1) on the +12 V rail is
+necessary, given the board's stepper/solenoid/servo transient sources and a
+non-sinking wall adapter (PR
+[#76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-5005495385)).
+Dispatched with `--dispatch` (task id kept in `<key>.task_id`) and fetched in a
+follow-up session with `--fetch-once`. Files:
+`<key>.{task.json,answer.md,references.md}`; returned `status=success`.
+
 These artifacts are committed for reproducibility and traceability of every
 claim in the background notes — see issues
 [#26](https://github.com/vertical-cloud-lab/powder-doser/issues/26) and
