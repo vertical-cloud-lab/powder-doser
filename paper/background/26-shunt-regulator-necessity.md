@@ -16,8 +16,13 @@
 > built (Pololu's matched tight-clamp part for a 12 V rail is the 13.2 V
 > #3775). This makes the note's headline verdict — *not strictly
 > necessary; cheap insurance; bulk capacitance + TVS is the leaner
-> replacement* — hold a fortiori. Everything below is Edison's answer,
-> kept verbatim.
+> replacement* — hold a fortiori. **One cost correction:** the "~$5"
+> figure in the recommendation section is Edison's estimate; the real
+> Pololu #3776 price is **$11.49** (1 pc; $10.57 at 5+, checked
+> 2026-07-17), and the repo BOM (PR #25,
+> `hardware/vibration-motor-and-solenoid.md` item 18) recorded $14.95
+> when it was written. Everything below is Edison's answer, kept
+> verbatim.
 
 Question: Assess, with quantitative evidence from vendor application notes and peer-reviewed / arXiv literature, whether a SHUNT REGULATOR (overvoltage clamp) is necessary on the 12 V supply rail of the following small lab-automation motor-control board, or whether bulk capacitance alone (or a TVS diode) suffices.
 
