@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#dfe4ea"/>
+      <stop offset="0.5" stop-color="#aab2bd"/>
+      <stop offset="1"   stop-color="#7e8794"/>
+    </linearGradient>
+    <linearGradient id="metalH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#dfe4ea"/>
+      <stop offset="0.5" stop-color="#aab2bd"/>
+      <stop offset="1"   stop-color="#7e8794"/>
+    </linearGradient>
+    <pattern id="powder" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="#e8d9a8"/>
+      <circle cx="1.5" cy="1.5" r="0.6" fill="#b89a55"/>
+      <circle cx="4"   cy="3.5" r="0.6" fill="#b89a55"/>
+      <circle cx="2"   cy="5"   r="0.5" fill="#b89a55"/>
+    </pattern>
+    <marker id="arrowK" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#222"/>
+    </marker>
+    <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f5fbf"/>
+    </marker>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+<text x="450" y="34" text-anchor="middle" font-size="22" font-weight="700">Subpanel B — Pivot pin / end-cap detail (longitudinal axis)</text><text x="450" y="56" text-anchor="middle" font-size="13" fill="#555" font-style="italic">single horizontal pin runs ALONG L, through both end caps and both arms; quick-release to swap troughs</text><path d="M 220 320 L 480 320 A 130 130 0 0 1 220 320 Z" fill="url(#metal)" stroke="#222" stroke-width="2.5"/><text x="350" y="480" text-anchor="middle" font-size="12" fill="#444">trough end cap (cross-section, looking down L)</text><circle cx="350" cy="320" r="20" fill="#7e8794" stroke="#222" stroke-width="2"/><text x="378" y="296" font-size="11" fill="#444">pivot boss (printed</text><text x="378" y="308" font-size="11" fill="#444">into end cap)</text><rect x="342" y="120" width="16" height="180" fill="url(#metal)" stroke="#333"/><text x="368" y="160" font-size="12" fill="#444">arm (one of two; bolted to gantry carriage)</text><line x1="270" y1="320" x2="440" y2="320" stroke="#c0392b" stroke-width="6"/><circle cx="445" cy="320" r="6" fill="#c0392b" stroke="#7a1f15" stroke-width="1.5"/><text x="455" y="325" font-size="12" fill="#c0392b">pin (along L)</text><path d="M 450 302 q 14 18 0 36" fill="none" stroke="#c0392b" stroke-width="2"/><text x="460" y="350" font-size="11" fill="#c0392b">e-clip / retaining ring</text><line x1="343" y1="358" x2="357" y2="358" stroke="#222" stroke-width="1.6"/><line x1="350" y1="351" x2="350" y2="365" stroke="#222" stroke-width="1.6"/><circle cx="350" cy="358" r="9" fill="none" stroke="#222" stroke-width="1.2"/><text x="366" y="363" font-size="11" fill="#222">centre of mass (loaded)</text><text x="110" y="420" font-size="12" fill="#222">pivot pin sits ~3 mm above loaded COM</text><text x="110" y="436" font-size="12" fill="#222">→ gravity returns trough to "open-up" (stable pendulum)</text><text x="110" y="472" font-size="11" fill="#5a3a8a">metal pivot pin doubles as ground path for an</text><text x="110" y="488" font-size="11" fill="#5a3a8a">optional conductive (e.g. copper-tape) trough lining,</text><text x="110" y="504" font-size="11" fill="#5a3a8a">mitigating triboelectric charging on fine inorganic powders.</text></svg>

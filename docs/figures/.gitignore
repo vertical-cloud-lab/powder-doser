@@ -1,0 +1,4 @@
+# Per-panel PDF copies that ``docs/manuscript/Makefile`` auto-generates from
+# the SVG sources via cairosvg. The SVGs are the source of truth; the PDFs
+# are build artefacts that pdflatex needs.
+panel-*.pdf
