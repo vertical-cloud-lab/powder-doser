@@ -137,8 +137,11 @@ case anywhere: 138 mV on 12 V (1.1 %); the solenoid rail never leaves
 ## Recommendation
 
 **Use candidate 2.** It is the best routed of the three buildable (all
-top-side) boards — shortest copper, fewest vias, honest +12 V distribution
-that survives SR1 removal, good decoupling proximity, and comfortable margins
+top-side) boards — shortest copper, fewest vias, a +12 V rail that is fully
+continuous in the board's own copper (SR1 hangs off it as a parallel dead-end
+stub, as a clamp should, so the board works whether SR1 is populated or left
+off — unlike candidate 1, which used SR1's carrier as a *series* jumper;
+finding 2), good decoupling proximity, and comfortable margins
 everywhere in the ngspice pass (worst rail drop 107 mV at the M4 servo header
 = 2.1 % of 5 V). Runner-up: **candidate 1** *only if* its SR1 dependency is
 manually rerouted in KiCad (a short 0.514 mm jumper from the J1 spur to the
