@@ -173,6 +173,58 @@ MongoDB over its own internet connection.  What the Zero needs:
    check `timedatectl` shows `System clock synchronized: yes` (RPi OS
    NTP default) so `started_utc` is trustworthy.
 
+### As-built state of the lab Zero (installed 2026-07-21)
+
+The lab's bench host is a **Pi Zero 2 W** (aarch64, Debian 13), so the
+armv6/piwheels caveat above doesn't apply to it.  The setup that is
+actually on the device deviates slightly from the generic instructions
+above — recorded here so it can be reproduced:
+
+- **No git clone.**  The repo tip is ~135 MB (CAD/hardware assets),
+  which is a lot to pull over the Zero's residential Wi-Fi for two
+  Python files.  Instead the needed files were copied over SSH and live
+  at `~/powder-doser/scripts/characterize_capture.py` (host capture)
+  and `~/powder-doser/hardware/test-module/firmware/characterize.py`
+  (to be copied onto the Pico with `mpremote cp`).  If the full repo is
+  ever wanted on the Zero, prefer a blob-filtered sparse clone
+  (`git clone --filter=blob:none --sparse ...`) over a plain clone.
+- **Venv** at `~/powder-doser-venv` (not `~/.venvs/doser`), with
+  `pymongo` 4.17, `pyserial` 3.5, and `mpremote` 1.28 installed.
+- **Credentials** at `~/.config/powder-doser/env` (mode 600), in
+  `export MONGODB_URI='...'` form, holding a **scoped Atlas user**
+  (`readWrite` on `powder_doser` only — not the admin user).
+- **Verified end-to-end**: a smoke `--upload-file` run executed on the
+  Zero itself inserted into `powder_doser.characterization_runs`, which
+  also confirms the Atlas network allowlist admits the Zero's egress
+  IP.  NTP sync was confirmed at the same time.
+
+So a real sweep on this device is:
+
+```bash
+tmux new -s sweep
+source ~/.config/powder-doser/env
+~/powder-doser-venv/bin/python ~/powder-doser/scripts/characterize_capture.py \
+    --port /dev/ttyACM0 --powder-id salt --operator wm --upload
+```
+
+### Atlas users and multiple clusters
+
+Atlas database users live at the **project** level, not the cluster
+level: a user created without the "restrict to specific clusters"
+option works on every cluster in the project, including ones created
+later.  Two consequences for growth past the free tier's 512 MB:
+
+- **Same project, new (Flex/paid) cluster**: the existing user and
+  password just work — only the host part of the connection string
+  changes, since URIs are always per-cluster.
+- **Second free (M0) cluster**: Atlas allows only one M0 per project,
+  so a second free cluster means a **new project**, and users do *not*
+  carry across projects — the scoped user would need to be recreated
+  there and the Zero's env file updated.
+
+At ~40 KB per run document, 512 MB is >10,000 runs, so this is not a
+near-term concern.
+
 ## Where the data goes (issue #126) and what you need to do
 
 Issue #126 settled on the **one-document-per-event** model: each
