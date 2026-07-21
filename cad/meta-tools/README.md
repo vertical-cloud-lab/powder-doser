@@ -32,6 +32,7 @@ small working examples checked in beside this file.
 | **Onshape FeatureScript** | ✅ author `.fs` as text | ⚠️ validation/exec is server-side | `ONSHAPE_ACCESS_KEY` + `ONSHAPE_SECRET_KEY` GitHub secrets + a free Onshape account |
 | **nTop Automate** (Linux headless) | ⚠️ tarball gated by login at app.ntop.com | ⚠️ ditto + paid license | Vendor-issued tarball + license file uploaded as encrypted GitHub secrets; commercial subscription |
 | **Fusion 360 / Generative Design** | ❌ 1.4 GB Win-only PE32 GUI installer; no Linux build, no headless mode | ❌ Generative Design is paid cloud, no public REST | Effectively impossible to bolt onto this repo's CI |
+| **Leo AI** (getleo.ai copilot) | ❌ web app + Windows-only desktop/CAD add-ins; no Linux anything | ❌ no self-serve API (gated request form, business tier only); ToS bars automation | Negotiated business-tier API access from the vendor — see [`leo-ai-evaluation.md`](leo-ai-evaluation.md) |
 
 Two of those rows — Onshape FeatureScript and nTop Automate — are clearly
 **not** "doesn't survive a fresh CI runner". They survive perfectly well if the
@@ -746,6 +747,36 @@ generative/lattice work but the price is opaque and almost certainly not
 justified at the v1 trough-design scale; revisit only if/when geometry pushes
 past CadQuery's BREP kernel.
 
+### Leo AI (getleo.ai) — evaluated July 2026, not adoptable for CI
+
+Researched after sgbaird surfaced it via the "shigley LLM" search trail
+(full writeup with sources: [`leo-ai-evaluation.md`](leo-ai-evaluation.md)).
+Leo AI is a well-funded ($9.7M seed, ex-SolidWorks-CEO angel) interactive
+copilot for mechanical engineers — cited Q&A grounded in handbooks
+(Shigley's, Machinery's), calculations, PDM-aware part search, a SolidWorks
+add-in. Three findings decide it for this repo:
+
+1. **No programmatic path.** No self-serve API, docs site, SDK, or packages;
+   `getleo.ai/api` is a request form for business customers, and the ToS
+   prohibits automation. Delivery is a web app plus Windows-only desktop app
+   and CAD add-ins — nothing headless, nothing on Linux.
+2. **No independent evaluation.** Zero academic/benchmark appearances
+   (checked Text2CAD-Bench, CADBench, MUSE, BenchCAD, CADSmith); the "96%
+   accuracy vs GPT's 46%" claim is vendor-internal. The one independent
+   hands-on test (Xometry's 7-tool text-to-CAD comparison) found Leo output
+   2D images, not engineering-ready CAD — Zoo delivered usable STEP/STL in
+   the same test.
+3. **Pricing folklore.** No public pricing page; third-party listings show
+   $15/user/mo Pro + quote-based tiers. The "$99/month" figure appears to be
+   a conflation with an unrelated video-marketing product also named
+   "Leo AI" (Dassault's SOLIDWORKS "LEO" companion is a third name-collision
+   hazard).
+
+Net: Leo competes with the engineer's browser tab (where Zoo Design Studio /
+Onshape UI sit), not with the CadQuery → Zoo → Onshape CI lanes in this PR.
+Revisit only if their API program grants real access or an independent
+benchmark of the knowledge-QA claims appears.
+
 ---
 
 ## Revised recommendation
@@ -796,4 +827,5 @@ say which one(s) and I'll do the secrets wiring + workflow in a follow-up PR.
 | [`onshape_rest_probe_auth.py`](onshape_rest_probe_auth.py) | HMAC-signed Onshape probe driven by `ONSHAPE_ACCESS_KEY` / `ONSHAPE_SECRET_KEY` env / repo secrets |
 | [`excavator_trough.scad`](excavator_trough.scad) | OpenSCAD model that builds an STL on this runner |
 | [`edison-c0f412d3-literature-synthesis.md`](edison-c0f412d3-literature-synthesis.md) | Verbatim Edison/PaperQA3 high-effort lit synthesis used in §"Independent corroboration" |
+| [`leo-ai-evaluation.md`](leo-ai-evaluation.md) | Leo AI (getleo.ai) evaluation — product, sentiment, evaluations, API access (July 2026) |
 | [`logs/`](logs/) | Captured install / build / runtime output for every claim above |
