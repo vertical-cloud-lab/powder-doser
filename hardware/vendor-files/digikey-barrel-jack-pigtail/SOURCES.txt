@@ -1,0 +1,19 @@
+Digi-Key 2.1 mm × 5.5 mm DC barrel-jack-to-screw-terminal pigtail
+=================================================================
+
+BOM item 13b in ../../vibration-motor-and-solenoid.md — used to convert
+the Mean Well GST60A12-P1J brick's barrel-plug output into bare wires
+that can land on the Tic / DRV8825 / shunt-regulator screw terminals.
+
+Source: Digi-Key product family for CUI / Switchcraft / LZR
+2.1 × 5.5 mm DC plug pigtails.
+
+Files
+-----
+datasheets/P1012_datasheet.pdf
+    CUI P1012-family datasheet — 2.1 × 5.5 mm right-angle DC plug with
+    pre-attached cable (the typical "barrel-plug pigtail" SKU on
+    Digi-Key for this slot in the BOM).
+
+License: CUI-redistributed manufacturer datasheet — engineering
+reference only.

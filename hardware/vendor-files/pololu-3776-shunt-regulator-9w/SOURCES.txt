@@ -1,0 +1,28 @@
+Pololu 33 V / 9 W shunt regulator (#3776)
+=========================================
+
+BOM item 18 in ../../vibration-motor-and-solenoid.md
+
+Product page Resources tab (source for everything in this folder):
+  https://www.pololu.com/product/3776/resources
+
+Files
+-----
+cad/shunt-regulator.step
+    Vendor STEP solid model of the assembled shunt regulator board.
+
+dimensions/shunt-regulator-9w-drill-guide.dxf
+    Original Pololu drill-guide DXF (already in this folder before the
+    manual-download batch).
+
+dimensions/shunt-regulator-dimensions.pdf
+    Full mechanical dimension diagram from the product page.
+
+dimensions/tvs01a-drill.dxf
+    DXF drill template ("tvs01a" is Pololu's drill-guide family code
+    for the 9 W shunt-regulator PCB outline).
+
+License: Pololu reproduces these from the product-page Resources tab;
+redistribution rights follow Pololu's posted terms of use
+(https://www.pololu.com/about/copyright). Included here as engineering
+reference, not as design originals.

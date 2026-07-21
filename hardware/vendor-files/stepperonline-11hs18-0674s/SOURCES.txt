@@ -1,0 +1,26 @@
+StepperOnline NEMA 11 bipolar stepper, 11HS18-0674S
+====================================================
+
+BOM item 10 in ../../vibration-motor-and-solenoid.md
+
+Product page (and original download links for everything in this folder):
+  https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s
+
+StepperOnline serves these resources behind a JS-rendered "3D Models" /
+"Drawing" / "Datasheet" tab on the product page; direct curl is blocked,
+so the files in this folder were downloaded manually from that page.
+
+Files
+-----
+cad/11HS18-0674S.STEP                    # vendor STEP solid model of the motor body + shaft
+dimensions/11HS18-0674S_Dimension.svg    # 2-D dimensioned outline / mounting-bolt pattern
+datasheets/11HS18-0674S_Full_Datasheet.pdf  # full electrical + mechanical datasheet
+datasheets/11HS18-0674S_Torque_Curve.pdf    # measured torque-vs-speed curve
+
+License: not explicitly published by StepperOnline on the product page;
+treat as vendor reference material reproduced here under fair-use for
+engineering integration of a part the project actually purchased.
+
+See also SPECS.md in this folder for the headline electrical / mechanical
+spec table copied verbatim from the StepperOnline product page (cached
+here so we can use it for our own rough CAD without re-fetching the page).

@@ -1,0 +1,28 @@
+Adafruit Perma-Proto Bonnet Mini Kit for Pi (#2310) — supplemental files
+========================================================================
+
+BOM item 6 in ../../vibration-motor-and-solenoid.md
+
+This folder collects extra design files manually downloaded from the
+Adafruit "Downloads" pages around the Perma-Proto Bonnet family. The
+canonical Eagle PCB files for the #2310 Bonnet itself live in `pcb/`
+(mirrored from github.com/adafruit/Adafruit-Perma-Proto-Bonnet-PCB);
+the additional files here are:
+
+pcb-hat-variant/
+  "Adafruit HaD Proto HAT rev A.sch"   # Eagle schematic of the Adafruit HaD Proto HAT (full-size HAT
+  "Adafruit HaD Proto HAT rev A.brd"   # PCB variant of the same Perma-Proto idea — useful as a Pi-HAT
+  LICENSE.txt                          # mechanical envelope reference). CC BY-SA 3.0.
+                                       # Source: github.com/adafruit/Adafruit-HaD-Proto-HAT-PCB
+                                       # (linked from the #2310 product Downloads section).
+fritzing/
+  "Adafruit Perma-Proto HAT.fzpz"      # Fritzing part for the Perma-Proto HAT family — drop-in for
+                                       # quick wiring sketches in Fritzing.
+                                       # Source: linked from the Adafruit "Fritzing parts" library.
+
+License: CC BY-SA 3.0 (per pcb-hat-variant/LICENSE.txt for the Eagle
+files). The Fritzing `.fzpz` is published by Adafruit under the same
+CC BY-SA 3.0 terms as the rest of their Fritzing parts library.
+
+See also SPECS.md in this folder for the headline mechanical dimensions
+copied verbatim from the Adafruit #2310 product page.

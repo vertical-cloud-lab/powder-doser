@@ -1,0 +1,31 @@
+Pololu DRV8825 Stepper Motor Driver Carrier, High Current (#2133)
+=================================================================
+
+BOM item 11-alt in ../../vibration-motor-and-solenoid.md
+
+Product page Resources tab (source for everything in this folder):
+  https://www.pololu.com/product/2133/resources
+
+Files
+-----
+cad/drv8825-stepper-motor-driver-carrier-high-current.step
+    Vendor STEP solid model of the assembled carrier (PCB + headers + heat-sink pad).
+
+dimensions/drv8825-dimensions.pdf
+    Original Pololu drill-guide PDF (already in this folder before the
+    manual-download batch).
+
+dimensions/drv8825-stepper-motor-driver-carrier-high-current-dimension-diagram.pdf
+    Full mechanical dimension diagram from the product page.
+
+dimensions/stepper-motor-driver-carrier-md20b-drill.dxf
+    DXF drill template for the carrier ("md20b" is Pololu's drill-guide
+    family code for the 20-pin stepper-driver carrier outline).
+
+datasheets/drv8824-drv8825-stepper-motor-driver-carrier-schematic-diagram.pdf
+    Pololu carrier schematic (DRV8824 / DRV8825 share the same carrier).
+
+License: Pololu reproduces these from the product-page Resources tab;
+redistribution rights follow Pololu's posted terms of use
+(https://www.pololu.com/about/copyright). Included here as engineering
+reference, not as design originals.
