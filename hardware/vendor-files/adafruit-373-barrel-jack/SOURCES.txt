@@ -1,0 +1,16 @@
+Adafruit 2.1 mm DC barrel-jack breakout (#373)
+==============================================
+
+BOM item 8 in ../../vibration-motor-and-solenoid.md
+
+Product page (source for everything in this folder):
+  https://www.adafruit.com/product/373
+
+Files
+-----
+datasheets/21mmdcjackDatasheet.pdf
+    Manufacturer datasheet for the 2.1 mm × 5.5 mm DC barrel jack on
+    the breakout (covers pinout, current rating, plug compatibility).
+
+License: Adafruit-redistributed manufacturer datasheet — included as
+engineering reference.

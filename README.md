@@ -37,6 +37,12 @@ inclined cam ramp** does all the work.
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Hardware
+
+Candidate parts for the auger drive motor, vibration motor, external
+solenoid, and the Raspberry Pi Zero 2 W driver boards needed to
+control them are documented in
+[`hardware/vibration-motor-and-solenoid.md`](hardware/vibration-motor-and-solenoid.md).
 ## Cleaned-up design diagram
 
 The sketch above has been recreated as four labelled subpanels. Each is a

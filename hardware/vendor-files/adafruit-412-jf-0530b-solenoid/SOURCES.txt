@@ -1,0 +1,21 @@
+Adafruit JF-0530B 5 V mini push–pull solenoid (#412)
+====================================================
+
+BOM item 4 in ../../vibration-motor-and-solenoid.md
+
+Product page (and download links for everything in this folder):
+  https://www.adafruit.com/product/412
+
+The "Resources" section of the product page links to the manufacturer
+mechanical drawing and the related coil datasheets; download those
+manually since they're served as plain PDFs but not from a single
+predictable URL.
+
+Files
+-----
+datasheets/412_C514-B_diagram.pdf  # JF-0530B mechanical / electrical drawing (Adafruit-hosted PDF)
+datasheets/C514-datasheet.pdf      # related C514 series datasheet (covers JF-0530B family)
+datasheets/solenoid_driver.pdf     # application note on driving small DC solenoids (flyback diode, etc.)
+
+License: Adafruit-redistributed manufacturer datasheets — included as
+engineering reference, not as design originals.
