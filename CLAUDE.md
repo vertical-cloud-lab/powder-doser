@@ -1,6 +1,26 @@
 ## Edison Scientific
 
-When waiting on an Edison task in GitHub Actions, NEVER run the polling script in the background (run_in_background, nohup, &) — the runner is destroyed the moment you post your final comment, killing background processes. Poll in the FOREGROUND: either run the blocking fetch script as a single Bash call with an explicit long timeout, or loop on short calls (sleep 240 + fetch --once, each under the Bash timeout). If you loop on short calls, you can take of intermediate tasks while you wait. Do not post your final comment until results are fetched and committed, or ~45 minutes of wall-clock have elapsed — in which case commit the task-id file and state that a follow-up @claude comment is needed to fetch. If you need to upload files, use analysis query type. See the docs: https://edisonscientific.gitbook.io/edison-cookbook/edison-client. Here is the endpoint you should use: https://api.platform.edisonscientific.com. The API key is `EDISON_PLATFORM_API_KEY`. Don't expose this secret, e.g., by echoing or grepping it. Pass the API key in explicitly:
+When waiting on an Edison task in GitHub Actions, NEVER run the polling script in the background (run_in_background, nohup, &, or the Monitor tool) — the runner is destroyed the moment you post your final comment, killing background processes; Monitor counts as background and dies the same way. Also be aware that the agent harness BLOCKS the shell `sleep` builtin in foreground Bash calls (the error message suggests Monitor — do NOT follow that suggestion, it recreates the background-death failure; this killed several past sessions). The pattern that works: put the wait INSIDE a single blocking Python call — Python-side `time.sleep` is not blocked — and run it as ONE foreground Bash call with an explicit long timeout (max 3600000 ms). Run exactly this (adjust only the task-id path):
+
+```bash
+# ONE foreground Bash tool call with timeout: 3600000
+python - <<'EOF'
+import json, os, time
+from edison_client import EdisonClient
+
+client = EdisonClient(api_key=os.environ["EDISON_PLATFORM_API_KEY"])
+task_id = json.load(open("outputs/<...>/_task_id.json"))["task_id"]
+while True:
+    task = client.get_task(task_id=task_id, verbose=True)
+    status = str(task.status)
+    print("status:", status, flush=True)
+    if status in {"success", "fail", "failed", "cancelled", "error"}:
+        break
+    time.sleep(240)
+EOF
+```
+
+Equivalently, run a repo script whose own `while ... time.sleep(...)` loop does the waiting (e.g. `python scripts/explore_case_studies.py stage8-wait`) as a single long-timeout Bash call. Do not post your final comment until results are fetched and committed, or ~45 minutes of wall-clock have elapsed — in which case commit the task-id file and state that a follow-up @claude comment is needed to fetch. If you need to upload files, use analysis query type. See the docs: https://edisonscientific.gitbook.io/edison-cookbook/edison-client. Here is the endpoint you should use: https://api.platform.edisonscientific.com. The API key is `EDISON_PLATFORM_API_KEY`. Don't expose this secret, e.g., by echoing or grepping it. Pass the API key in explicitly:
 
 ```
 from edison_client import EdisonClient, JobNames
