@@ -1,0 +1,194 @@
+{
+  "candidate_1": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "silk_over_copper": 1,
+      "silk_overlap": 1,
+      "solder_mask_bridge": 199
+    },
+    "n_tracks": 548,
+    "no_net_tracks": 266,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1470,
+    "unconnected": 0,
+    "vias": 85
+  },
+  "candidate_2": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "solder_mask_bridge": 199
+    },
+    "n_tracks": 552,
+    "no_net_tracks": 302,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1187,
+    "unconnected": 0,
+    "vias": 78
+  },
+  "candidate_3": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "solder_mask_bridge": 199
+    },
+    "n_tracks": 543,
+    "no_net_tracks": 295,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1191,
+    "unconnected": 0,
+    "vias": 76
+  },
+  "candidate_4": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "silk_over_copper": 3,
+      "solder_mask_bridge": 199
+    },
+    "n_tracks": 539,
+    "no_net_tracks": 295,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1077,
+    "unconnected": 0,
+    "vias": 76
+  },
+  "candidate_5": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "silk_overlap": 2,
+      "solder_mask_bridge": 198
+    },
+    "n_tracks": 569,
+    "no_net_tracks": 292,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1249,
+    "unconnected": 0,
+    "vias": 80
+  },
+  "candidate_6": {
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "drc": {
+      "lib_footprint_issues": 15,
+      "silk_over_copper": 1,
+      "silk_overlap": 3,
+      "solder_mask_bridge": 199
+    },
+    "n_tracks": 529,
+    "no_net_tracks": 306,
+    "outline": [
+      100,
+      100
+    ],
+    "plane_nets": [
+      "GND"
+    ],
+    "power_width_mm": [
+      0.16
+    ],
+    "signal_width_mm": [
+      0.153,
+      0.16
+    ],
+    "track_len_mm": 1069,
+    "unconnected": 0,
+    "vias": 79
+  }
+}

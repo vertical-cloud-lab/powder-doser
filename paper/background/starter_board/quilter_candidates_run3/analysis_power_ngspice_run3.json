@@ -1,0 +1,482 @@
+{
+  "candidate_1": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 57.63,
+        "U4": 17.42,
+        "U5": 49.58
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 41,
+      "n_segments": 43,
+      "solenoid_feed_ohm": 0.0268,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 17.42,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9826
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 0.3,
+      "worst_drop_mv": 57.63,
+      "worst_load": "U1",
+      "worst_temp_rise_c": 0.3
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 13.95,
+        "U6": 18.7
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 22,
+      "n_segments": 22,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.05,
+      "worst_drop_mv": 18.7,
+      "worst_load": "U6",
+      "worst_temp_rise_c": 0.0
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 32.2,
+        "M4": 64.7,
+        "U2": 71.32
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 23,
+      "n_segments": 23,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.15,
+      "worst_drop_mv": 71.32,
+      "worst_load": "U2",
+      "worst_temp_rise_c": 0.1
+    }
+  },
+  "candidate_2": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 28.14,
+        "U4": 42.56,
+        "U5": 72.64
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 39,
+      "n_segments": 41,
+      "solenoid_feed_ohm": 0.0655,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 42.56,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9574
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 1.0,
+      "worst_drop_mv": 72.64,
+      "worst_load": "U5",
+      "worst_temp_rise_c": 4.1
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 13.28,
+        "U6": 2.51
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 22,
+      "n_segments": 22,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.25,
+      "worst_drop_mv": 13.28,
+      "worst_load": "U3",
+      "worst_temp_rise_c": 0.6
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 48.35,
+        "M4": 107.01,
+        "U2": 93.55
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 26,
+      "n_segments": 25,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.75,
+      "worst_drop_mv": 107.01,
+      "worst_load": "M4",
+      "worst_temp_rise_c": 2.1
+    }
+  },
+  "candidate_3": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 45.27,
+        "U4": 36.32,
+        "U5": 75.39
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 44,
+      "n_segments": 46,
+      "solenoid_feed_ohm": 0.0559,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 36.32,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9637
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 1.0,
+      "worst_drop_mv": 75.39,
+      "worst_load": "U5",
+      "worst_temp_rise_c": 4.1
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 58.76,
+        "U6": 37.43
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 25,
+      "n_segments": 25,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.25,
+      "worst_drop_mv": 58.76,
+      "worst_load": "U3",
+      "worst_temp_rise_c": 0.6
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 121.0,
+        "M4": 134.49,
+        "U2": 37.32
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 31,
+      "n_segments": 30,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.75,
+      "worst_drop_mv": 134.49,
+      "worst_load": "M4",
+      "worst_temp_rise_c": 2.1
+    }
+  },
+  "candidate_4": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 25.5,
+        "U4": 23.9,
+        "U5": 44.8
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 38,
+      "n_segments": 40,
+      "solenoid_feed_ohm": 0.0368,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 23.9,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9761
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 1.0,
+      "worst_drop_mv": 44.8,
+      "worst_load": "U5",
+      "worst_temp_rise_c": 4.1
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 17.34,
+        "U6": 3.08
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 22,
+      "n_segments": 22,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.25,
+      "worst_drop_mv": 17.34,
+      "worst_load": "U3",
+      "worst_temp_rise_c": 0.6
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 30.99,
+        "M4": 8.36,
+        "U2": 4.31
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 25,
+      "n_segments": 25,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.75,
+      "worst_drop_mv": 30.99,
+      "worst_load": "M3",
+      "worst_temp_rise_c": 2.1
+    }
+  },
+  "candidate_5": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 111.65,
+        "U4": 38.33,
+        "U5": 137.8
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 42,
+      "n_segments": 44,
+      "solenoid_feed_ohm": 0.059,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 38.33,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9617
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 1.0,
+      "worst_drop_mv": 137.8,
+      "worst_load": "U5",
+      "worst_temp_rise_c": 4.1
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 17.34,
+        "U6": 3.08
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 23,
+      "n_segments": 23,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.25,
+      "worst_drop_mv": 17.34,
+      "worst_load": "U3",
+      "worst_temp_rise_c": 0.6
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 21.56,
+        "M4": 43.54,
+        "U2": 23.97
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 24,
+      "n_segments": 24,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.75,
+      "worst_drop_mv": 43.54,
+      "worst_load": "M4",
+      "worst_temp_rise_c": 2.1
+    }
+  },
+  "candidate_6": {
+    "+12V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U1": 27.42,
+        "U4": 38.61,
+        "U5": 16.64
+      },
+      "loads_a": {
+        "U1": 0.3,
+        "U4": 0.65,
+        "U5": 1.0
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [
+        "SR1"
+      ],
+      "n_nodes": 45,
+      "n_segments": 47,
+      "solenoid_feed_ohm": 0.0594,
+      "supply_v": 12.0,
+      "transient": {
+        "droop_mv": 38.61,
+        "rail_max_v": 12.0,
+        "rail_min_v": 11.9614
+      },
+      "unreached_loads": [],
+      "v_supply_pad": 12.0,
+      "worst_current_a": 0.65,
+      "worst_drop_mv": 38.61,
+      "worst_load": "U4",
+      "worst_temp_rise_c": 1.6
+    },
+    "+3V3": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "U3": 10.87,
+        "U6": 3.26
+      },
+      "loads_a": {
+        "U3": 0.25,
+        "U6": 0.05
+      },
+      "min_trace_width_mm": 0.254,
+      "module_internal_bridges": [],
+      "n_nodes": 22,
+      "n_segments": 22,
+      "supply_v": 3.3,
+      "unreached_loads": [],
+      "v_supply_pad": 3.3,
+      "worst_current_a": 0.25,
+      "worst_drop_mv": 10.87,
+      "worst_load": "U3",
+      "worst_temp_rise_c": 0.6
+    },
+    "+5V": {
+      "foreign_nets_on_copper": [],
+      "ir_drop_mv": {
+        "M3": 24.82,
+        "M4": 14.47,
+        "U2": 17.98
+      },
+      "loads_a": {
+        "M3": 0.75,
+        "M4": 0.75,
+        "U2": 0.15
+      },
+      "min_trace_width_mm": 0.514,
+      "module_internal_bridges": [],
+      "n_nodes": 30,
+      "n_segments": 29,
+      "supply_v": 5.0,
+      "unreached_loads": [],
+      "v_supply_pad": 5.0,
+      "worst_current_a": 0.75,
+      "worst_drop_mv": 24.82,
+      "worst_load": "M3",
+      "worst_temp_rise_c": 2.1
+    }
+  }
+}

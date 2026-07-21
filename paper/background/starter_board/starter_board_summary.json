@@ -1,0 +1,222 @@
+{
+  "board": "test_module_starter.kicad_pcb",
+  "schematic": "test_module_starter.kicad_sch",
+  "project": "test_module_starter.kicad_pro",
+  "components": 16,
+  "nets": 23,
+  "outline_mm": [
+    162.26,
+    84.63
+  ],
+  "power_nets": [
+    "+12V",
+    "+3V3",
+    "+5V",
+    "GND"
+  ],
+  "unplaced_variant": {
+    "board": "test_module_unplaced.kicad_pcb",
+    "schematic": "test_module_unplaced.kicad_sch",
+    "project": "test_module_unplaced.kicad_pro",
+    "outline_mm": [
+      110.0,
+      110.0
+    ],
+    "note": "Same netlist/parts as the placed board, but every footprint is staged outside the (empty) board outline so DeepPCB/Quilter can be tested on auto-placement, not just routing."
+  },
+  "bom": [
+    {
+      "ref": "J1",
+      "part": "Barrel_Jack_12V",
+      "kind": "module",
+      "pins": 3,
+      "pins_netted": 2,
+      "body_mm": [
+        14.4,
+        9.0
+      ],
+      "model": null,
+      "source": "Adafruit #373 = CUI PJ-102AH (committed datasheet): housing 14.4x9.0 mm in the board plane (11.0 mm tall)"
+    },
+    {
+      "ref": "U1",
+      "part": "D24V22F5_Buck",
+      "kind": "module",
+      "pins": 8,
+      "pins_netted": 4,
+      "body_mm": [
+        17.8,
+        17.8
+      ],
+      "model": "hardware/vendor-files/pololu-2858-d24v22f5/cad/d24v22fx-step-down-voltage-regulator.step",
+      "source": "Pololu #2858 D24V22F5: 0.7x0.7 in (17.8x17.8 mm) PCB per the reg19a dimension diagram (PR #25)"
+    },
+    {
+      "ref": "C1",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "C2",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "U2",
+      "part": "Pi_Pico_W",
+      "kind": "module",
+      "pins": 40,
+      "pins_netted": 14,
+      "body_mm": [
+        21.0,
+        51.0
+      ],
+      "model": null,
+      "source": "Raspberry Pi Pico W mechanical 51x21 mm, 2x20 0.1 in castellated (long 51 mm edge runs along the pin columns; PR #61 MCU)"
+    },
+    {
+      "ref": "U3",
+      "part": "DRV2605L_Breakout",
+      "kind": "module",
+      "pins": 11,
+      "pins_netted": 7,
+      "body_mm": [
+        25.4,
+        17.78
+      ],
+      "model": null,
+      "source": "Adafruit #2305, STEMMA QT revision: Eagle .brd outline (layer 20) 25.40x17.78 mm (PR #25). The committed STEP is the older 17.78x16.51 mm revision, so no 3-D model is attached. NOTE: if the team's physical unit is the pre-2021 revision, it has no OUT+/OUT- through-holes at all (SMD pads only)"
+    },
+    {
+      "ref": "M1",
+      "part": "ERM_Motor",
+      "kind": "connector",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board Adafruit #1201 ERM coin, \u00d810 x 2.7 mm"
+    },
+    {
+      "ref": "U4",
+      "part": "DRV8871_Breakout",
+      "kind": "module",
+      "pins": 10,
+      "pins_netted": 6,
+      "body_mm": [
+        20.32,
+        24.13
+      ],
+      "model": "hardware/vendor-files/adafruit-3190-drv8871/cad/3190 DRV8871 Breakout.step",
+      "source": "Adafruit #3190 Eagle .brd outline (layer 20) 20.32x24.13 mm"
+    },
+    {
+      "ref": "SOL1",
+      "part": "Solenoid",
+      "kind": "connector",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board Adafruit #412 JF-0530B 5 V push-pull solenoid"
+    },
+    {
+      "ref": "U5",
+      "part": "Tic_T500",
+      "kind": "module",
+      "pins": 29,
+      "pins_netted": 8,
+      "body_mm": [
+        38.1,
+        26.7
+      ],
+      "model": null,
+      "source": "Pololu #3135 Tic T500: 1.5 in x 26.7 mm PCB per the tic03b dimension diagram + drill-guide DXF (pololu.com tic-drill.zip; the PR #25 copy of that DXF is a mislabeled STEP file). The USB-B connector overhangs the top edge by a further ~1.4 mm"
+    },
+    {
+      "ref": "C3",
+      "part": "Cap_Polar",
+      "kind": "passive",
+      "pins": 2,
+      "pins_netted": 2,
+      "body_mm": [
+        8.5,
+        8.5
+      ],
+      "model": null,
+      "source": "generic radial electrolytic, \u00d88 mm body"
+    },
+    {
+      "ref": "SR1",
+      "part": "Shunt_Regulator",
+      "kind": "module",
+      "pins": 14,
+      "pins_netted": 4,
+      "body_mm": [
+        28.6,
+        20.3
+      ],
+      "model": "hardware/vendor-files/pololu-3776-shunt-regulator-9w/cad/shunt-regulator.step",
+      "source": "Pololu #3776 9W shunt regulator: 1.125x0.8 in (28.6x20.3 mm) PCB per the tvs01a dimension diagram (PR #25), drawn landscape with the VIN/GND wire terminals on the left edge"
+    },
+    {
+      "ref": "M2",
+      "part": "Stepper_4wire",
+      "kind": "connector",
+      "pins": 4,
+      "pins_netted": 4,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board StepperOnline 11HS18-0674S NEMA-11 28x28x45 mm; STEP in hardware/vendor-files/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP"
+    },
+    {
+      "ref": "M3",
+      "part": "Servo_3pin",
+      "kind": "connector",
+      "pins": 3,
+      "pins_netted": 3,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board hobby servo (Adafruit #1142 metal-gear bench part 40.7x19.7x42.9 mm; the dual-servo hinge of PR #66 uses two mirrored MG996R) - one 3-pin header per servo (M3, M4)"
+    },
+    {
+      "ref": "M4",
+      "part": "Servo_3pin",
+      "kind": "connector",
+      "pins": 3,
+      "pins_netted": 3,
+      "body_mm": null,
+      "model": null,
+      "source": "off-board hobby servo (Adafruit #1142 metal-gear bench part 40.7x19.7x42.9 mm; the dual-servo hinge of PR #66 uses two mirrored MG996R) - one 3-pin header per servo (M3, M4)"
+    },
+    {
+      "ref": "U6",
+      "part": "Waveshare_2CH_RS232",
+      "kind": "module",
+      "pins": 40,
+      "pins_netted": 5,
+      "body_mm": [
+        21.0,
+        52.0
+      ],
+      "model": null,
+      "source": "Waveshare Pico-2CH-RS232 (SP3232EEN) 21x52 mm; mounts on this 2x20 side receptacle (its only TTL connection \u2014 the module has no separate TTL header), channel 0 routed to GP12/GP13 per PR #100, powered from +3V3 so the TTL swing stays Pico-safe; embeds its own RS-232 charge-pump caps so no discrete MAX3232 is needed; datasheets in hardware/vendor-files/waveshare-pico-2ch-rs232/datasheets/"
+    }
+  ]
+}

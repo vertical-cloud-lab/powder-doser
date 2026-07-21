@@ -1,0 +1,60 @@
+{
+  "board": {
+    "design_settings": {
+      "rules": {
+        "min_clearance": 0.2,
+        "min_track_width": 0.25
+      }
+    }
+  },
+  "libraries": {
+    "pinned_footprint_libs": [],
+    "pinned_symbol_libs": []
+  },
+  "net_settings": {
+    "classes": [
+      {
+        "name": "Default",
+        "clearance": 0.2,
+        "track_width": 0.25,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2
+      },
+      {
+        "name": "Power",
+        "clearance": 0.2,
+        "track_width": 0.6,
+        "via_diameter": 1.0,
+        "via_drill": 0.5,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2
+      }
+    ],
+    "netclass_assignments": {
+      "+12V": "Power",
+      "+3V3": "Power",
+      "+5V": "Power",
+      "GND": "Power"
+    }
+  },
+  "schematic": {
+    "legacy_lib_dir": "",
+    "legacy_lib_list": []
+  },
+  "sheets": [
+    [
+      "00000000-0000-0000-0003-000000000001",
+      ""
+    ]
+  ],
+  "meta": {
+    "filename": "test_module_unplaced.kicad_pro",
+    "version": 1
+  }
+}

@@ -1,0 +1,57 @@
+{
+ "board": "candidate_2_fixed/test_module_unplaced.kicad_pcb",
+ "drc_gate": {
+  "board_size_mm": [
+   110.1,
+   110.1
+  ],
+  "copper_layers": 4,
+  "drc": {
+   "lib_footprint_issues": 16,
+   "silk_overlap": 4
+  },
+  "hard_errors": {},
+  "jlcpcb_capabilities_ok": true,
+  "min_clearance_rule_mm": 0.1524,
+  "min_track_mm": 0.2543,
+  "min_via_annular_mm": 0.1526,
+  "min_via_drill_mm": 0.3051,
+  "pass": true,
+  "unconnected": 0
+ },
+ "fab_kit": {
+  "edge_cuts_extents_mm": [
+   110.0,
+   110.0
+  ],
+  "empty_files": [],
+  "files": [
+   "powder_doser_run3_cand2-drl_map.gbr",
+   "powder_doser_run3_cand2.drl",
+   "powder_doser_run3_cand2.g2",
+   "powder_doser_run3_cand2.g3",
+   "powder_doser_run3_cand2.gbl",
+   "powder_doser_run3_cand2.gbo",
+   "powder_doser_run3_cand2.gbs",
+   "powder_doser_run3_cand2.gm1",
+   "powder_doser_run3_cand2.gtl",
+   "powder_doser_run3_cand2.gto",
+   "powder_doser_run3_cand2.gts"
+  ],
+  "zip": "candidate_2_fixed/powder_doser_run3_candidate2_jlcpcb.zip",
+  "zip_bytes": 219675
+ },
+ "kicad_version": "7.0.11",
+ "ready_to_order": true,
+ "schematic": "../test_module_unplaced.kicad_sch (commit 0683525 generator output)",
+ "sync_pass": {
+  "board_saved": false,
+  "footprints_missing_symbol_path": [],
+  "in_sync": true,
+  "no_net_copper": [],
+  "pads_in_schematic_but_not_on_board": [],
+  "pads_reassigned": [],
+  "schematic_nets": 23,
+  "schematic_nodes_checked": 175
+ }
+}
