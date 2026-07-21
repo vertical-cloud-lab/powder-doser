@@ -31,6 +31,14 @@ Powdernium product lines, and academic / open-source robotic dispensers.
 A short summary of what those second-batch queries actually returned is in
 [§ 6 below](#6-second-batch-findings-mti-bulk-vendors-liquid-handler-powder-modules-acousticpiezo-academicopen-source).
 
+A **third pass** (July 2026) then web-searched for commercial solutions the
+first two Edison batches missed and found eleven additional offerings — Sirius
+Automation, GiroNEX, Unchained Labs Stuntman, Trajan/Axel Semrau CHRONECT XPR,
+Labman Automation, XQ Instruments, Lambda Instruments, Mettler-Toledo XPR
+auto-dosing, Harro Höfliger and Syntegon — plus two corrections to earlier
+negative conclusions. See
+[§ 7 below](#7-third-pass-additions--commercial-solutions-missed-in-batches-12).
+
 | Tag (file) | Focus | Batch |
 | --- | --- | --- |
 | [`commercial-powder-dispensers-overview`](./edison_results/commercial-powder-dispensers-overview.md) | Cross-cutting landscape (lab + industrial) | 1 |
@@ -99,10 +107,12 @@ dispensing are **Mettler Toledo Quantos** and **Chemspeed**:
   dispensing below ~10 mg is broadly difficult** for any commercial
   gravimetric / hopper system; SWILE-style positive-displacement and
   acoustic / piezo approaches are the main paths beyond that limit.
-- Specific user-named products **Quantos QX1 / QX2**, **Chemspeed
-  "Powdernium"**, and a **"Hamilton STAR powder head"** were *not*
-  substantiated in the retrieved evidence — they may be marketing-only
-  names or otherwise underdocumented in the literature.
+- Specific user-named products **Quantos QX1 / QX2** and a **"Hamilton STAR
+  powder head"** were *not* substantiated in the retrieved Edison evidence —
+  they may be marketing-only names or otherwise underdocumented in the
+  literature. (**Chemspeed "Powdernium"** was originally in this list but the
+  third pass confirmed it is a real gravimetric workstation — 0.05 mg–gram; see
+  [§ 7](#7-third-pass-additions--commercial-solutions-missed-in-batches-12).)
 - True acoustic / piezo dry-powder micro-dispensers were not found with
   vendor specs in the Edison evidence set (Labcyte Echo / Scienion
   systems are predominantly liquid-only); EDC Biosystems is the only
@@ -256,12 +266,15 @@ corpus and would have to be obtained from vendor PDFs or direct contact.
   EDC Biosystems ATS Gen5/Gen6, Scienion sciDROP-PICO, or Labcyte/
   Beckman Echo — the available literature on these instruments is
   liquid-only (assays, compound dispensing). Likewise, **no vendor-
-  datasheet specs** were retrievable for Quantos QX1 / QX2 or for
+  datasheet specs** were retrievable *via Edison* for Quantos QX1 / QX2 or for
   Chemspeed *Powdernium* / GDU-V/Pfd/S/P variants beyond what is
-  already summarised in § 1. Confirms our earlier suspicion that
-  "Powdernium", "Quantos QX1/QX2", and "Hamilton STAR powder head"
-  appear to be marketing- or configuration-level names rather than
-  separately documented product datasheets.
+  already summarised in § 1. At the time this suggested "Powdernium",
+  "Quantos QX1/QX2", and "Hamilton STAR powder head" were marketing- or
+  configuration-level names. **Update (batch 3):** vendor/trade-press
+  sources subsequently confirmed **Powdernium** as a real gravimetric
+  workstation (0.05 mg–gram) — see
+  [§ 7](#7-third-pass-additions--commercial-solutions-missed-in-batches-12);
+  Quantos QX1/QX2 and the Hamilton powder head remain unsubstantiated.
 - **Academic / open-source robotic powder dispensing**
   ([`academic-and-open-source-powder-dispensing-robots`](./edison_results/academic-and-open-source-powder-dispensing-robots.md)) —
   The richest of the second-batch answers. Concrete systems include:
@@ -309,6 +322,137 @@ closing it:
   Quantos / Chemspeed on per-dispense speed at ≤10 mg — the natural
   benchmark for `powder-excavator`.
 
+
+### 7. Third-pass additions — commercial solutions missed in batches 1–2
+
+A third pass (July 2026, web/vendor-sourced rather than Edison, because the
+"vendor publication gap" identified in § 6 means these systems are documented
+on vendor and trade-press pages rather than in the peer-reviewed corpus)
+surfaced eleven commercial powder-dispensing offerings that the first two
+passes did not capture. Several come with hard, first-party specs, and two of
+them **correct earlier negative conclusions** in this document.
+
+**Bench-top / lab gravimetric dispensers (new):**
+
+- **Sirius Automation** (siriusautomation.com) — a whole family of gravimetric
+  powder-dispensing robots that the prior passes missed entirely:
+  **LibraryDoser** (0.1 / 0.01 mg weighing on Mettler-Toledo analytical
+  balances; up to 20 powder sources → 96 target vials/minitubes; ~20″ cube
+  footprint, glovebox/hood-compatible; CSV in/out; 21 CFR Part 11-capable),
+  plus **GraviTracPlus**, **EveriDoser**, **MultiTasker II**, and
+  **MicroTasker**. Directly relevant open-vs-proprietary comparators.
+  Sources: [LibraryDoser](https://siriusautomation.com/librarydoser/),
+  [product line](https://siriusautomation.com/lab-automation-systems/).
+- **GiroNEX Cube / Cube Plus** (gironex.com) — micro-gravimetric dispenser,
+  **1 mg – 1 g** per capsule/vial at **> ±2 %** accuracy, **Sartorius** 5–6
+  decimal-place weigh cells, interchangeable heads per powder behaviour,
+  24-well dial plate, full **FDA 21 CFR Part 11** compliance; aimed at
+  early-phase clinical-trial capsule/vial/syringe filling. Sources:
+  [Cube](https://www.gironex.com/cube-range/gironexcube/),
+  [Cube Plus](https://www.pharmtech.com/view/cube-plus-pharmaceutical-manufacturing).
+- **Unchained Labs Stuntman + Solid Dispense Station** (unchainedlabs.com) —
+  Unchained Labs appears in § 1 only as the *Freeslate* legacy platform; their
+  **current** solid-dispensing product is the AI-driven **Stuntman** with a
+  dedicated solid-dispense station: **sub-mg to gram** range, **±0.2 mg
+  repeatability for dispenses under 1 mg**, adaptive per-powder flow-learning,
+  classic hoppers (10/25/50/100 mL) and SV 4 mL-vial hoppers, handles
+  free-flowing through chunky solids. Sources:
+  [Powder dispense](https://www.unchainedlabs.com/powder-dispense/),
+  [solid-dispense spec sheet (PDF)](https://www.unchainedlabs.com/wp-content/uploads/2021/12/10_solid_dispense_station_spec_sheet.pdf).
+- **Trajan / Axel Semrau CHRONECT XPR powder-liquid workstation**
+  (trajanscimed.com) — § 1 mentions "CHRONECT" only as a Quantos integration;
+  the distinct commercial workstation is the **CHRONECT XPR**, built on a
+  Mettler-Toledo **XPR** balance: **1 mg – several grams** powder,
+  **10–60 s/component**, up to **32 dosing heads / powders + 6 liquids**, up to
+  **288 samples** per run, with an optional liquid module (100 mg – 10 g
+  solvent). Sources:
+  [XPR powder-liquid workstation](https://chronect.trajanscimed.com/xpr-powder-liquid-workstation),
+  [Mettler-Toledo datasheet](https://www.mt.com/us/en/home/library/datasheets/laboratory-weighing/ds-chronect-xpr-powder.html).
+- **Mettler-Toledo XPR automatic dosing** (mt.com) — the current **XPR** balance
+  + automatic-dosing-head line (distinct from the older Quantos branding) is the
+  common engine under CHRONECT XPR, Labman MultiDose, Sirius, and GiroNEX
+  integrations; worth listing as a first-party building block. Source:
+  [Automated powder dispensing](https://www.mt.com/us/en/home/applications/Laboratory_weighing/automated-powder-dispensing.html).
+- **XQ Instruments (Singapore)** — low-cost **volumetric** benchtop dispensers:
+  **SDB-1** (5–250 mg/shot), **SDB-2** (20 mg – 50 g), **SDB-1A**
+  (automation-ready), **SDH-1** handheld, and **PCD-1** crusher-dispenser;
+  fast at **2.5–3.5 s/dose** (volumetric, so accuracy is bulk-density-dependent).
+  Sources:
+  [dispensing solutions](https://xqinstruments.com/dispensing-solutions/),
+  [SDB-1 via MSE Supplies](https://www.msesupplies.com/products/xq-automated-sdb-1-benchtop-powder-dispenser-dosing-machine).
+- **Lambda Instruments LAMBDA DOSER / Hi-DOSER** (lambda-instruments.com) — the
+  system linked in this thread. A microprocessor-controlled **volumetric
+  powder-pump** driven by a quartz-timed stepping motor (DOSER) or BLDC motor
+  (Hi-DOSER): **50 mg/min – 250 g/min** (NaCl), interchangeable 0.2/1/3 L glass
+  vessels, up to 27/99 programmable speed-time steps, **RS-232/485 + 0–10 V**
+  remote control and PNet PC logging, handles free-flowing solids/granules up to
+  ~4 mm, from **€2,199**. A rare openly-priced, integration-friendly continuous
+  feeder in the lab-to-kilolab band called out as under-served in § 5.4.
+  Source: [LAMBDA Powder Doser](https://www.lambda-instruments.com/powder-doser/).
+
+**Custom / integrator and pharma (new):**
+
+- **Labman Automation** (labmanautomation.com) — UK integrator building custom
+  HTE powder-dispensing robots, entirely absent from prior passes despite being
+  a major player: **MultiDose** (a cobot — Universal Robots UR3e — loading/
+  unloading two Mettler-Toledo **XPR226DRQ** automatic balances), **ZPOW**
+  (controlled-vibration dispensing to **±2 mg** into deep-well plates with a
+  5-decimal weigh cell), a high-throughput **flux-weighing** system (~2000 cups /
+  24 h, two-powder blends to ±0.5 g), and an **Automated XPR** cell with HEPA
+  extraction. Sources:
+  [MultiDose](https://labmanautomation.com/portfolio/custom-system/dual-multidose-powder-dispenser/),
+  [ZPOW](https://labmanautomation.com/portfolio/custom-system/zpow-powder-dispensing/),
+  [flux weighing](https://labmanautomation.com/portfolio/custom-system/high-throughput-powder-dispensing-flux-weighing-system/).
+- **Harro Höfliger** (hoefliger.com) — pharma micro-to-macro dosing
+  (vacuum-drum and membrane filling), verifies fill quantities **down to 5 mg**
+  without changing machine speed, with integrated X-ray fill-quantity control;
+  relevant industrial micro-dosing prior art alongside the § 3 bulk vendors.
+  Source: [Dosing and filling](https://hoefliger.com/en/technologies/know-how/dosing-and-filling).
+- **Syntegon** (ex-Bosch Packaging, syntegon.com) — capsule filling and
+  **vacuum-wheel dosing** specialised for dry-powder inhalation (DPI) and API
+  micro-doses; another industrial micro-dosing reference.
+  Source: [Capsule filling](https://www.syntegon.com/solutions/pharma/capsule-filling-machine/).
+
+**Two corrections to earlier conclusions:**
+
+1. **Chemspeed "Powdernium" is a real product, not a marketing-only name.**
+   §§ 2 and 6 concluded that "Powdernium" was likely a marketing/configuration
+   label with no separate datasheet. Vendor and trade-press material now
+   documents the **Powdernium workstation** performing **traceable gravimetric
+   dispensing from 0.05 mg to gram quantities** (alongside the **SWING
+   POWDERDOSE** GDU configuration). The earlier "marketing-only" characterisation
+   should be treated as superseded for Powdernium (the **Quantos QX1/QX2** and
+   **"Hamilton STAR powder head"** names remain unsubstantiated). Sources:
+   [Chemspeed solid dispensing](https://www.chemspeed.com/example-solutions/automated-precision-solid-dispensing/),
+   [Powdernium via trade press](https://scientistlive.com/content/20901).
+2. **Unchained Labs is an active solid-dispensing vendor, not just a legacy
+   Freeslate reference** — see the Stuntman entry above.
+
+#### Updated gaps after batch 3
+
+The third pass does not overturn the § 5 gap analysis, but it sharpens the
+competitive picture:
+
+- **The lab HTE market is more crowded than batches 1–2 implied.** Beyond
+  Quantos and Chemspeed, at least Sirius Automation, GiroNEX, Unchained Labs
+  (Stuntman), Trajan CHRONECT XPR, Labman, and XQ Instruments ship
+  solid-dispensing products. Any `powder-excavator` positioning should
+  benchmark against this fuller set, not just the two headline vendors.
+- **Almost everyone converges on the same building block.** Sirius, GiroNEX
+  (Sartorius), Trajan, and Labman all wrap a *third-party analytical balance +
+  automatic dosing head* (predominantly Mettler-Toledo **XPR** / Quantos, or
+  Sartorius) rather than shipping a first-party powder mechanism — reinforcing
+  the § 6 "no on-deck powder head from the OEMs" observation and the opening for
+  an **open, balance-agnostic powder head**.
+- **The ≤ 1 mg frontier still isn't closed, but claims are creeping down.**
+  Unchained Stuntman advertises ±0.2 mg repeatability under 1 mg and Chemspeed
+  Powdernium claims 0.05 mg; these are vendor claims, not independent
+  benchmarks, so the § 2 "single-shot < 10 mg is hard" caveat stands pending
+  third-party validation.
+- **Openly-priced, integration-friendly continuous feeders exist** (Lambda
+  DOSER, €2,199; XQ volumetric heads) but are **volumetric** — accuracy is
+  bulk-density/flow-dependent, which is exactly the closed-loop-gravimetric gap
+  `powder-excavator` targets.
 
 ## Submitted Edison queries
 
