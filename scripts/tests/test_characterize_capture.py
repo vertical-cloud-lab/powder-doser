@@ -13,9 +13,13 @@ Run from the repo root (stdlib only)::
 or via pytest.
 """
 
+import argparse
+import csv
+import json
 import math
 import os
 import sys
+import tempfile
 
 _ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.insert(0, os.path.join(_ROOT, "scripts"))
@@ -116,6 +120,42 @@ def test_sample_stats():
     assert abs(sem - std / 2.0) < 1e-12
     assert cap.sample_stats([7.0])[2] is None      # std undefined at n=1
     assert cap.sample_stats([])[0] == 0
+
+
+def test_normalize_powder_id():
+    assert cap.normalize_powder_id("Salt") == "salt"
+    assert cap.normalize_powder_id("xanthan gum") == "xanthan-gum"
+    assert cap.normalize_powder_id(" flour_00 ") == "flour_00"
+    for bad in ("", "   ", "a/b", "-lead", "salt!", None):
+        try:
+            cap.normalize_powder_id(bad)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("accepted {!r}".format(bad))
+
+
+def test_powder_id_on_document_and_files():
+    """The powder ID lands in the run doc, the file names, and every
+    CSV row -- the data stays attributable out of context."""
+    trials, device, meta, _, _ = _captured(angles=(45,), points=2)
+    host = cap.summarize(trials)
+    args = argparse.Namespace(powder_id="salt", powder="table salt",
+                              operator="wm", notes=None)
+    doc = cap.build_run_document(meta, trials, device, host, "ok", args,
+                                 "2026-07-21T00:00:00", "2026-07-21T00:20:00")
+    assert doc["powder_id"] == "salt"
+    with tempfile.TemporaryDirectory() as tmp:
+        cap.write_outputs(tmp, "salt", trials, host, doc)
+        with open(os.path.join(tmp, "trials_salt.csv")) as fh:
+            rows = list(csv.DictReader(fh))
+        assert rows and all(r["powder_id"] == "salt" for r in rows)
+        assert set(rows[0]) == set(cap.OUT_TRIAL_FIELDS)
+        with open(os.path.join(tmp, "summary_salt.csv")) as fh:
+            srows = list(csv.DictReader(fh))
+        assert srows and all(r["powder_id"] == "salt" for r in srows)
+        with open(os.path.join(tmp, "run_salt.json")) as fh:
+            assert json.load(fh)["powder_id"] == "salt"
 
 
 def test_parse_line_rejects_garbage():

@@ -59,8 +59,21 @@ On the bench host (`pip install pyserial`):
 
 ```bash
 python scripts/characterize_capture.py --port /dev/ttyACM0 \
-    --powder "xanthan gum" --operator wm --notes "auger 4, cup v2"
+    --powder-id xanthan --powder "xanthan gum, batch 3" \
+    --operator wm --notes "auger 4, cup v2"
 ```
+
+`--powder-id` is **required**: a short identifier for the powder in
+the hopper (`salt`, `xanthan`, `flour`, ...) that is stamped on every
+file name, on every CSV row, into the device's own serial stream (a
+`META,powder_id` row, so even `raw_serial_*.log` is self-describing),
+and as a top-level field of the run document — every artifact says
+which powder it belongs to even after it is copied out of its run
+directory.  It is normalized to a slug (lowercase,
+letters/digits/dash/underscore/dot), so pick consistent IDs and reuse
+them across runs; Mongo queries like `{powder_id: "salt"}` then pull a
+powder's whole history.  `--powder` stays free-form for the longer
+description (brand, batch, lot number).
 
 The script interrupts the rig REPL, starts `characterize.run()`,
 streams everything to your terminal, and relays your keyboard to the
@@ -68,13 +81,15 @@ Pico's prompts (`Enter` to continue, `keep` / `skip` / `abort`).  A run
 of 7 angles × 5 points is ~20–25 min, dominated by settle waits; empty
 the cup at the angle prompts so the pan never overloads.
 
-Each run lands in `data/characterization/<UTC-stamp>_<powder>/`:
+Each run lands in `data/characterization/<UTC-stamp>_<powder-id>/`:
 
-- `raw_serial.log` — every serial line, verbatim
-- `trials.csv` — one row per measured action (all phases, flags kept)
-- `summary.csv` — host-recomputed per-angle statistics (`n`, mean,
-  std, SEM, min, max, RSD%), including the pooled `rotation+refeed` set
-- `run.json` — the complete run document (below)
+- `raw_serial_<powder-id>.log` — every serial line, verbatim
+- `trials_<powder-id>.csv` — one row per measured action (all phases,
+  flags kept), each row leading with the powder ID
+- `summary_<powder-id>.csv` — host-recomputed per-angle statistics
+  (`n`, mean, std, SEM, min, max, RSD%), including the pooled
+  `rotation+refeed` set
+- `run_<powder-id>.json` — the complete run document (below)
 
 The on-device `SUM` rows and the host statistics are computed
 independently and cross-checked in tests, so a corrupted capture is
@@ -84,6 +99,79 @@ detectable.  Simulation tests you can run without hardware:
 python hardware/test-module/firmware/sim/test_characterize.py
 python scripts/tests/test_characterize_capture.py
 ```
+
+## Running remotely: Pi Zero + Tailscale SSH
+
+The Pico plugs into a Raspberry Pi Zero (RPi OS) that sits on the
+tailnet; the Zero **is** the "bench host" above — you SSH into it over
+Tailscale and run the capture script there, and it uploads straight to
+MongoDB over its own internet connection.  What the Zero needs:
+
+1. **One-time setup** (SSH in: `ssh <user>@<zero-hostname>` using the
+   machine name from the Tailscale admin console):
+
+   ```bash
+   sudo apt update && sudo apt install -y git python3-pip python3-venv tmux
+   git clone https://github.com/vertical-cloud-lab/powder-doser.git
+   cd powder-doser
+   python3 -m venv ~/.venvs/doser
+   ~/.venvs/doser/bin/pip install pyserial "pymongo[srv]"
+   sudo usermod -aG dialout $USER    # serial-port access; re-login after
+   ```
+
+   RPi OS's pip pulls prebuilt wheels from piwheels, so `pymongo`
+   installs without compiling even on the Zero 1's armv6.  The
+   `[srv]` extra (dnspython) is required for Atlas's
+   `mongodb+srv://` connection strings — plain `pip install pymongo`
+   will fail to resolve them.
+
+2. **Check the Pico enumerates**: with the Pico in the Zero's USB
+   *data* port (the middle micro-USB on a Zero, not PWR — via an OTG
+   adapter/shim), `ls /dev/ttyACM*` should show `/dev/ttyACM0`.
+
+3. **`MONGODB_URI` on the Zero** — in an env file, never in the repo:
+
+   ```bash
+   mkdir -p ~/.config/powder-doser
+   printf 'export MONGODB_URI="mongodb+srv://<user>:<pw>@<cluster>.mongodb.net/"\n' \
+       > ~/.config/powder-doser/env
+   chmod 600 ~/.config/powder-doser/env
+   ```
+
+4. **Atlas must allow the Zero's egress IP.**  Uploads do *not* go
+   through Tailscale — that only carries your SSH session; pymongo
+   goes out the Zero's normal internet connection.  So the IP to
+   allowlist (Atlas → Security → Network Access) is what `curl -s
+   ifconfig.me` prints *on the Zero* (the lab/home router's public
+   IP), not any `100.x` Tailscale address.  If that IP is dynamic,
+   allow the ISP range or temporarily `0.0.0.0/0` with a strong
+   database password.
+
+5. **Run the sweep inside `tmux`** so a dropped SSH session (laptop
+   sleep, Wi-Fi blip) doesn't kill a 25-minute interactive run:
+
+   ```bash
+   tmux new -s sweep
+   source ~/.venvs/doser/bin/activate
+   source ~/.config/powder-doser/env
+   python scripts/characterize_capture.py --port /dev/ttyACM0 \
+       --powder-id salt --operator wm --upload
+   ```
+
+   Detach with `Ctrl+B` `D`; reattach any time (from any tailnet
+   machine) with `tmux attach -t sweep`.  The operator prompts (empty
+   the cup, refill the hopper) still need someone physically at the
+   rig; whoever is SSH'd in answers them in the tmux session.
+
+6. **Nothing is lost offline.**  Every run is written to the Zero's SD
+   card first (`data/characterization/...`); if the upload fails or
+   `--upload` was forgotten, backfill later with
+   `--upload-file .../run_<powder-id>.json`, and copy files off over
+   the tailnet with `scp`/`rsync` if wanted.
+
+7. **Clock**: run timestamps come from the Zero, which has no RTC —
+   check `timedatectl` shows `System clock synchronized: yes` (RPi OS
+   NTP default) so `started_utc` is trustworthy.
 
 ## Where the data goes (issue #126) and what you need to do
 
@@ -111,7 +199,7 @@ One-time checklist on your end:
    or on the command line:
 
    ```bash
-   pip install pymongo
+   pip install "pymongo[srv]"
    export MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>.mongodb.net/"
    ```
 
@@ -121,15 +209,19 @@ One-time checklist on your end:
 
    ```bash
    python scripts/characterize_capture.py --port /dev/ttyACM0 \
-       --powder "xanthan gum" --operator wm --upload
+       --powder-id xanthan --operator wm --upload
    ```
 
    Offline or forgotten runs backfill later:
 
    ```bash
    python scripts/characterize_capture.py --upload-file \
-       data/characterization/20260721T190000Z_xanthan-gum/run.json
+       data/characterization/20260721T190000Z_xanthan/run_xanthan.json
    ```
+
+   (A `run.json` from before the powder-ID change backfills with
+   `--upload-file ... --powder-id <id>`, which stamps the ID into the
+   document on the way up.)
 
 6. **Commit the CSVs** (or at least `run.json`) for small campaigns —
    git is a perfectly good secondary store at these sizes, and it keeps
@@ -150,7 +242,9 @@ doc on the issue #126 branch:
   "schema_version": 1,
   "status": "ok",                       // ok | aborted | capture-interrupted
   "started_utc": "...", "ended_utc": "...",
-  "powder": "xanthan gum", "operator": "wm", "notes": "...",
+  "powder_id": "xanthan",               // required slug; query key across runs
+  "powder": "xanthan gum, batch 3",     // free-form description
+  "operator": "wm", "notes": "...",
   "git_commit": "<hash of the host repo at capture time>",
   "parameters": {                        // META rows from the device
     "points_per_angle": "5", "angles_deg": "0;15;30;45;60;75;90",

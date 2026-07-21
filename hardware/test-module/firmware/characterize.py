@@ -61,7 +61,12 @@ interrupt the main REPL loop with Ctrl+C, then::
 
 Any tunable below can be overridden per-run without editing the file::
 
-    >>> characterize.run(points_per_angle=10, angles_deg=[30, 60, 90])
+    >>> characterize.run(powder_id="salt", points_per_angle=10,
+    ...                  angles_deg=[30, 60, 90])
+
+``powder_id`` identifies the powder in the hopper (salt / xanthan /
+flour / ...); when set it is the first META row emitted, so the raw
+stream itself records which powder the data belongs to.
 
 This module is import-safe under CPython; ``sim/test_characterize.py``
 drives the same ``Characterizer`` against a simulated rig.
@@ -74,6 +79,12 @@ import time
 # -----------------------------------------------------------------------
 # Tunables -- edit here (or pass as keyword overrides to ``run()``).
 # -----------------------------------------------------------------------
+# Short identifier of the powder in the hopper (e.g. "salt", "xanthan",
+# "flour").  Echoed as a META row so the raw stream itself records what
+# was being dispensed.  Usually passed per run instead of edited here:
+# ``characterize.run(powder_id="salt")`` (the capture script does this
+# from its ``--powder-id`` argument).
+POWDER_ID         = None
 # Number of data points collected per angle, for BOTH the rotation
 # phase and the tap phase.  The single most-edited knob.
 POINTS_PER_ANGLE  = 5
@@ -182,7 +193,7 @@ class Characterizer:
                  refeed_deg=None, baseline_reads=None, settle_ms=None,
                  angle_settle_ms=None, zero_each_angle=None,
                  prompt_each_angle=None, min_flow_g=None,
-                 max_stalls=None, max_read_retries=None):
+                 max_stalls=None, max_read_retries=None, powder_id=None):
         self.stepper = stepper
         self.tap = tap
         self.servo = servo
@@ -218,6 +229,7 @@ class Characterizer:
         self.min_flow_g = _default(min_flow_g, MIN_FLOW_G)
         self.max_stalls = _default(max_stalls, MAX_STALLS)
         self.max_read_retries = _default(max_read_retries, MAX_READ_RETRIES)
+        self.powder_id = _default(powder_id, POWDER_ID)
 
         self._t0 = _ticks_ms()
 
@@ -421,6 +433,8 @@ class Characterizer:
     def run_all(self):
         self._t0 = _ticks_ms()
         self._emit("RUN", "BEGIN")
+        if self.powder_id:
+            self._emit("META", "powder_id", self.powder_id)
         for key, value in (
                 ("points_per_angle", self.points_per_angle),
                 ("angles_deg", ";".join(str(a) for a in self.angles_deg)),

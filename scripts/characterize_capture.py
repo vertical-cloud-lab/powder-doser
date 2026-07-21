@@ -5,21 +5,28 @@ Companion to ``hardware/test-module/firmware/characterize.py`` (issue
 #130).  Connects to the Pico W over USB serial, starts the sweep,
 relays the operator's keyboard to the Pico's prompts (empty the cup /
 refill the hopper), and records every line the sweep emits.  When the
-run ends it writes, under ``--out``:
+run ends it writes, under ``--out`` (``<id>`` is the required
+``--powder-id``, e.g. ``salt`` / ``xanthan`` / ``flour``, so every
+file names the powder it belongs to):
 
-    raw_serial.log   every serial line, verbatim
-    trials.csv       one row per measured action (all phases, flags kept)
-    summary.csv      per-angle statistics recomputed on the host
-    run.json         the complete run document (issue #126 shape)
+    raw_serial_<id>.log   every serial line, verbatim
+    trials_<id>.csv       one row per measured action (all phases, flags)
+    summary_<id>.csv      per-angle statistics recomputed on the host
+    run_<id>.json         the complete run document (issue #126 shape)
 
-and, with ``--upload``, inserts ``run.json`` into MongoDB (Atlas), the
-storage plan from issue #126.  Runs recorded offline can be backfilled
-later with ``--upload-file path/to/run.json``.
+The powder ID is also a column on every CSV row, a META row in the
+device stream, and a top-level field of the run document, so the data
+stays attributable even when a file is copied out of its directory.
+
+With ``--upload`` the run document is inserted into MongoDB (Atlas),
+the storage plan from issue #126.  Runs recorded offline can be
+backfilled later with ``--upload-file path/to/run_<id>.json``.
 
 Usage::
 
     python scripts/characterize_capture.py --port /dev/ttyACM0 \
-        --powder "xanthan gum" --operator wm [--upload]
+        --powder-id xanthan --powder "xanthan gum, batch 3" \
+        --operator wm [--upload]
 
 Host statistics: for every (angle, phase) the mean, sample standard
 deviation (n-1), standard error of the mean, min, max, and n are
@@ -40,16 +47,38 @@ import datetime
 import json
 import math
 import os
+import re
 import subprocess
 import sys
 import threading
 import time
 
+# Serial-stream contract (what the Pico emits) -- no powder_id here.
 TRIAL_FIELDS = ["angle_deg", "phase", "trial", "action",
                 "before_g", "after_g", "delta_g", "flag", "t_ms"]
 SUMMARY_FIELDS = ["angle_deg", "phase", "n", "mean_g", "std_g", "sem_g",
                   "min_g", "max_g", "rsd_pct"]
+# CSV files on disk lead every row with the powder ID so a file stays
+# attributable after it is copied out of its run directory.
+OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS
+OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
 SCHEMA_VERSION = 1
+
+
+def normalize_powder_id(value):
+    """Validate/normalize a powder ID into a filesystem-safe slug.
+
+    Lowercases, turns inner spaces into dashes, and accepts only
+    ``[a-z0-9._-]`` (leading alphanumeric), so the ID can sit in file
+    names, CSV cells, and Mongo queries unquoted.  Raises
+    ``ValueError`` for anything else.
+    """
+    slug = (value or "").strip().lower().replace(" ", "-")
+    if not re.match(r"^[a-z0-9][a-z0-9._-]*$", slug):
+        raise ValueError(
+            "invalid powder id {!r}: use letters/digits/dash/underscore/"
+            "dot, e.g. salt, xanthan, flour".format(value))
+    return slug
 
 
 # ---------------------------------------------------------------------------
@@ -156,6 +185,7 @@ def build_run_document(meta, trials, device_summaries, host_summary,
         "status": status,
         "started_utc": started_utc,
         "ended_utc": ended_utc,
+        "powder_id": args.powder_id,
         "powder": args.powder,
         "operator": args.operator,
         "notes": args.notes,
@@ -197,7 +227,7 @@ def capture(args):
         args.out, "{}_{}".format(
             datetime.datetime.now(datetime.timezone.utc)
             .strftime("%Y%m%dT%H%M%SZ"),
-            (args.powder or "powder").replace(" ", "-")))
+            args.powder_id))
     os.makedirs(out_dir, exist_ok=True)
     started_utc = datetime.datetime.now(
         datetime.timezone.utc).isoformat()
@@ -210,14 +240,20 @@ def capture(args):
 
     meta, trials, device_summaries = {}, [], []
     status = "incomplete"
-    raw_path = os.path.join(out_dir, "raw_serial.log")
+    raw_path = os.path.join(
+        out_dir, "raw_serial_{}.log".format(args.powder_id))
     print("[capture] writing to {}".format(out_dir))
     print("[capture] answer Pico prompts here (Enter / keep / skip / "
           "abort); Ctrl+C stops the capture")
     try:
         with open(raw_path, "w") as raw:
             if not args.no_start:
-                start_sweep(port, args.run_args)
+                # The powder ID rides into characterize.run() so the
+                # device stream itself carries a META,powder_id row.
+                run_args = "powder_id={!r}".format(args.powder_id)
+                if args.run_args:
+                    run_args += ", " + args.run_args
+                start_sweep(port, run_args)
             while True:
                 line = port.readline().decode(errors="replace")
                 if not line:
@@ -250,25 +286,30 @@ def capture(args):
     doc = build_run_document(meta, trials, device_summaries, host_summary,
                              status, args, started_utc, ended_utc)
 
-    write_outputs(out_dir, trials, host_summary, doc)
+    write_outputs(out_dir, args.powder_id, trials, host_summary, doc)
     print_summary(host_summary)
     if args.upload:
         upload(doc, args)
     return doc
 
 
-def write_outputs(out_dir, trials, host_summary, doc):
-    with open(os.path.join(out_dir, "trials.csv"), "w", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=TRIAL_FIELDS)
+def write_outputs(out_dir, powder_id, trials, host_summary, doc):
+    def path(stem, ext):
+        return os.path.join(out_dir, "{}_{}.{}".format(stem, powder_id, ext))
+
+    with open(path("trials", "csv"), "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=OUT_TRIAL_FIELDS)
         writer.writeheader()
-        writer.writerows(trials)
-    with open(os.path.join(out_dir, "summary.csv"), "w", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=SUMMARY_FIELDS)
+        writer.writerows(dict(row, powder_id=powder_id) for row in trials)
+    with open(path("summary", "csv"), "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=OUT_SUMMARY_FIELDS)
         writer.writeheader()
-        writer.writerows(host_summary)
-    with open(os.path.join(out_dir, "run.json"), "w") as fh:
+        writer.writerows(dict(row, powder_id=powder_id)
+                         for row in host_summary)
+    with open(path("run", "json"), "w") as fh:
         json.dump(doc, fh, indent=2)
-    print("[capture] wrote trials.csv, summary.csv, run.json")
+    print("[capture] wrote trials_{0}.csv, summary_{0}.csv, run_{0}.json"
+          .format(powder_id))
 
 
 def print_summary(host_summary):
@@ -318,8 +359,14 @@ def main(argv=None):
                         help="ignored by USB-CDC but required by pyserial")
     parser.add_argument("--out", default="data/characterization",
                         help="output directory root")
+    parser.add_argument("--powder-id", default=None,
+                        help="short powder identifier stamped on every "
+                        "file name, CSV row, and the run document "
+                        "(e.g. salt, xanthan, flour); required unless "
+                        "--upload-file")
     parser.add_argument("--powder", default=None,
-                        help="powder name (provenance, e.g. 'xanthan gum')")
+                        help="free-form powder description (provenance, "
+                        "e.g. 'xanthan gum, Modernist Pantry batch 3')")
     parser.add_argument("--operator", default=None,
                         help="operator initials (provenance)")
     parser.add_argument("--notes", default=None,
@@ -340,11 +387,25 @@ def main(argv=None):
                         help="env var holding the MongoDB connection string")
     args = parser.parse_args(argv)
 
+    if args.powder_id is not None:
+        try:
+            args.powder_id = normalize_powder_id(args.powder_id)
+        except ValueError as exc:
+            parser.error(str(exc))
+
     if args.upload_file:
         with open(args.upload_file) as fh:
             doc = json.load(fh)
+        # Older run.json files predate the powder ID; stamp on backfill.
+        if not doc.get("powder_id"):
+            if not args.powder_id:
+                parser.error("{} has no powder_id -- re-run with "
+                             "--powder-id <id>".format(args.upload_file))
+            doc["powder_id"] = args.powder_id
         return 0 if upload(doc, args) else 1
 
+    if not args.powder_id:
+        parser.error("--powder-id is required (e.g. --powder-id salt)")
     capture(args)
     return 0
 

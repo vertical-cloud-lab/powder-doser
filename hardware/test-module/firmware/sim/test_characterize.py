@@ -147,6 +147,16 @@ def test_counts_and_structure():
     assert meta["points_per_angle"] == str(points)
 
 
+def test_powder_id_meta_row():
+    """When set, the powder ID is on the stream; when unset, absent."""
+    _, lines, _ = _run_sweep(angles=(0,), points=1, powder_id="salt")
+    meta = {r[1]: r[2] for r in _rows(lines, "META")}
+    assert meta["powder_id"] == "salt"
+    _, lines, _ = _run_sweep(angles=(0,), points=1)
+    meta = {r[1]: r[2] for r in _rows(lines, "META")}
+    assert "powder_id" not in meta
+
+
 def test_rotation_yield_tracks_angle():
     angles, points = (0, 45, 90), 4
     sim, lines, status = _run_sweep(angles, points)
