@@ -5,21 +5,30 @@ Companion to ``hardware/test-module/firmware/characterize.py`` (issue
 #130).  Connects to the Pico W over USB serial, starts the sweep,
 relays the operator's keyboard to the Pico's prompts (empty the cup /
 refill the hopper), and records every line the sweep emits.  When the
-run ends it writes, under ``--out``:
+run ends it writes, under ``--out/<powder-id>_<UTC-stamp>/``:
 
-    raw_serial.log   every serial line, verbatim
-    trials.csv       one row per measured action (all phases, flags kept)
-    summary.csv      per-angle statistics recomputed on the host
-    run.json         the complete run document (issue #126 shape)
+    <powder-id>_<stamp>_raw_serial.log  every serial line, verbatim
+    <powder-id>_<stamp>_trials.csv      one row per measured action
+    <powder-id>_<stamp>_summary.csv     per-angle host statistics
+    <powder-id>_<stamp>_run.json        the run document (issue #126)
 
 and, with ``--upload``, inserts ``run.json`` into MongoDB (Atlas), the
-storage plan from issue #126.  Runs recorded offline can be backfilled
-later with ``--upload-file path/to/run.json``.
+storage plan from issue #126.  Successful uploads leave a
+``.uploaded`` marker beside the run.json; runs recorded offline (or
+whose upload failed) are backfilled idempotently with
+``--upload-missing`` -- safe to run from cron on the Pi Zero.
+
+Every output carries the **powder ID** (``--powder-id``, e.g. ``salt``,
+``xanthan``, ``flour``): it is the first token of the run directory and
+of every filename, a ``powder_id`` column in both CSVs, and a
+``powder_id`` field in the run document -- so a file identifies its
+powder even after being copied out of its directory.
 
 Usage::
 
     python scripts/characterize_capture.py --port /dev/ttyACM0 \
-        --powder "xanthan gum" --operator wm [--upload]
+        --powder-id xanthan --powder "xanthan gum, lot 240515" \
+        --operator wm [--upload]
 
 Host statistics: for every (angle, phase) the mean, sample standard
 deviation (n-1), standard error of the mean, min, max, and n are
@@ -49,7 +58,24 @@ TRIAL_FIELDS = ["angle_deg", "phase", "trial", "action",
                 "before_g", "after_g", "delta_g", "flag", "t_ms"]
 SUMMARY_FIELDS = ["angle_deg", "phase", "n", "mean_g", "std_g", "sem_g",
                   "min_g", "max_g", "rsd_pct"]
-SCHEMA_VERSION = 1
+# CSVs on disk carry the powder ID in every row, so a file stays
+# self-describing after being copied off the capture host.
+OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS
+OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
+SCHEMA_VERSION = 2                   # v2: adds powder_id
+
+
+def normalize_powder_id(raw):
+    """Slugify a powder ID: 'Xanthan Gum' -> 'xanthan-gum'.
+
+    Raises ValueError when nothing usable remains, so a typo'd ID
+    fails the run up front instead of producing anonymous files.
+    """
+    slug = "-".join((raw or "").strip().lower().split())
+    slug = "".join(c for c in slug if c.isalnum() or c in "-_")
+    if not slug or not slug.strip("-_"):
+        raise ValueError("unusable powder id: {!r}".format(raw))
+    return slug
 
 
 # ---------------------------------------------------------------------------
@@ -156,6 +182,7 @@ def build_run_document(meta, trials, device_summaries, host_summary,
         "status": status,
         "started_utc": started_utc,
         "ended_utc": ended_utc,
+        "powder_id": args.powder_id,
         "powder": args.powder,
         "operator": args.operator,
         "notes": args.notes,
@@ -193,11 +220,11 @@ def stdin_relay(port, stop):
 def capture(args):
     import serial                    # pip install pyserial
 
-    out_dir = os.path.join(
-        args.out, "{}_{}".format(
-            datetime.datetime.now(datetime.timezone.utc)
-            .strftime("%Y%m%dT%H%M%SZ"),
-            (args.powder or "powder").replace(" ", "-")))
+    base = "{}_{}".format(
+        args.powder_id,
+        datetime.datetime.now(datetime.timezone.utc)
+        .strftime("%Y%m%dT%H%M%SZ"))
+    out_dir = os.path.join(args.out, base)
     os.makedirs(out_dir, exist_ok=True)
     started_utc = datetime.datetime.now(
         datetime.timezone.utc).isoformat()
@@ -210,7 +237,7 @@ def capture(args):
 
     meta, trials, device_summaries = {}, [], []
     status = "incomplete"
-    raw_path = os.path.join(out_dir, "raw_serial.log")
+    raw_path = os.path.join(out_dir, base + "_raw_serial.log")
     print("[capture] writing to {}".format(out_dir))
     print("[capture] answer Pico prompts here (Enter / keep / skip / "
           "abort); Ctrl+C stops the capture")
@@ -250,25 +277,34 @@ def capture(args):
     doc = build_run_document(meta, trials, device_summaries, host_summary,
                              status, args, started_utc, ended_utc)
 
-    write_outputs(out_dir, trials, host_summary, doc)
+    run_path = write_outputs(out_dir, base, args.powder_id,
+                             trials, host_summary, doc)
     print_summary(host_summary)
     if args.upload:
-        upload(doc, args)
+        upload(doc, args, marker_for=run_path)
     return doc
 
 
-def write_outputs(out_dir, trials, host_summary, doc):
-    with open(os.path.join(out_dir, "trials.csv"), "w", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=TRIAL_FIELDS)
+def write_outputs(out_dir, base, powder_id, trials, host_summary, doc):
+    """Write the three data files, each named and stamped with the
+    powder ID; returns the run.json path (for the upload marker)."""
+    trials_path = os.path.join(out_dir, base + "_trials.csv")
+    with open(trials_path, "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=OUT_TRIAL_FIELDS)
         writer.writeheader()
-        writer.writerows(trials)
-    with open(os.path.join(out_dir, "summary.csv"), "w", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=SUMMARY_FIELDS)
+        writer.writerows(dict(row, powder_id=powder_id) for row in trials)
+    with open(os.path.join(out_dir, base + "_summary.csv"),
+              "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=OUT_SUMMARY_FIELDS)
         writer.writeheader()
-        writer.writerows(host_summary)
-    with open(os.path.join(out_dir, "run.json"), "w") as fh:
+        writer.writerows(dict(row, powder_id=powder_id)
+                         for row in host_summary)
+    run_path = os.path.join(out_dir, base + "_run.json")
+    with open(run_path, "w") as fh:
         json.dump(doc, fh, indent=2)
-    print("[capture] wrote trials.csv, summary.csv, run.json")
+    print("[capture] wrote {}_{{trials.csv,summary.csv,run.json}}"
+          .format(os.path.join(out_dir, base)))
+    return run_path
 
 
 def print_summary(host_summary):
@@ -288,24 +324,64 @@ def print_summary(host_summary):
 # Upload (issue #126: MongoDB Atlas, one document per run)
 # ---------------------------------------------------------------------------
 
-def upload(doc, args):
+def upload(doc, args, marker_for=None):
+    """Insert one run document; on success drop a ``.uploaded`` marker
+    next to the run.json so backfill sweeps never double-insert."""
     uri = os.environ.get(args.uri_env)
     if not uri:
         print("[upload] {} is not set -- skipping upload.  The run is "
-              "saved locally; backfill later with --upload-file"
+              "saved locally; backfill later with --upload-missing"
               .format(args.uri_env))
         return False
     try:
         from pymongo import MongoClient   # pip install pymongo
     except ImportError:
         print("[upload] pymongo not installed (pip install pymongo) -- "
-              "skipping upload; backfill later with --upload-file")
+              "skipping upload; backfill later with --upload-missing")
         return False
-    client = MongoClient(uri, serverSelectionTimeoutMS=15000)
-    result = client[args.db][args.collection].insert_one(doc)
+    try:
+        client = MongoClient(uri, serverSelectionTimeoutMS=15000)
+        result = client[args.db][args.collection].insert_one(doc)
+    except Exception as exc:
+        print("[upload] failed ({}) -- the run is saved locally; "
+              "backfill later with --upload-missing".format(exc))
+        return False
     print("[upload] inserted into {}.{} as {}".format(
         args.db, args.collection, result.inserted_id))
+    if marker_for:
+        with open(marker_for + ".uploaded", "w") as fh:
+            json.dump({"inserted_id": str(result.inserted_id),
+                       "db": args.db, "collection": args.collection,
+                       "uploaded_utc": datetime.datetime.now(
+                           datetime.timezone.utc).isoformat()}, fh)
     return True
+
+
+def find_unuploaded(root):
+    """All ``*run.json`` under ``root`` without an ``.uploaded`` marker."""
+    missing = []
+    for dirpath, _, filenames in os.walk(root):
+        for name in sorted(filenames):
+            if (name.endswith("run.json")
+                    and name + ".uploaded" not in filenames):
+                missing.append(os.path.join(dirpath, name))
+    return sorted(missing)
+
+
+def upload_missing(args):
+    """Sweep ``--out`` for runs never uploaded (offline captures,
+    upload failures) and push them.  Idempotent -- safe from cron."""
+    pending = find_unuploaded(args.out)
+    if not pending:
+        print("[upload] nothing pending under {}".format(args.out))
+        return True
+    ok = True
+    for path in pending:
+        print("[upload] backfilling {}".format(path))
+        with open(path) as fh:
+            doc = json.load(fh)
+        ok = upload(doc, args, marker_for=path) and ok
+    return ok
 
 
 def main(argv=None):
@@ -318,8 +394,14 @@ def main(argv=None):
                         help="ignored by USB-CDC but required by pyserial")
     parser.add_argument("--out", default="data/characterization",
                         help="output directory root")
+    parser.add_argument("--powder-id", default=None,
+                        help="short powder identifier stamped into the run "
+                        "directory, every filename, both CSVs, and the run "
+                        "document (e.g. salt, xanthan, flour); required "
+                        "for capture")
     parser.add_argument("--powder", default=None,
-                        help="powder name (provenance, e.g. 'xanthan gum')")
+                        help="free-form powder description (provenance, "
+                        "e.g. 'xanthan gum, lot 240515')")
     parser.add_argument("--operator", default=None,
                         help="operator initials (provenance)")
     parser.add_argument("--notes", default=None,
@@ -334,6 +416,10 @@ def main(argv=None):
                         help="insert run.json into MongoDB after capture")
     parser.add_argument("--upload-file", default=None, metavar="RUN_JSON",
                         help="upload an existing run.json and exit")
+    parser.add_argument("--upload-missing", action="store_true",
+                        help="upload every run.json under --out that has "
+                        "no .uploaded marker, then exit (idempotent; "
+                        "cron-friendly)")
     parser.add_argument("--db", default="powder_doser")
     parser.add_argument("--collection", default="characterization_runs")
     parser.add_argument("--uri-env", default="MONGODB_URI",
@@ -343,8 +429,17 @@ def main(argv=None):
     if args.upload_file:
         with open(args.upload_file) as fh:
             doc = json.load(fh)
-        return 0 if upload(doc, args) else 1
+        return 0 if upload(doc, args, marker_for=args.upload_file) else 1
+    if args.upload_missing:
+        return 0 if upload_missing(args) else 1
 
+    if not args.powder_id:
+        parser.error("--powder-id is required for capture "
+                     "(e.g. --powder-id salt)")
+    try:
+        args.powder_id = normalize_powder_id(args.powder_id)
+    except ValueError as exc:
+        parser.error(str(exc))
     capture(args)
     return 0
 

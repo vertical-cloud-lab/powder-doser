@@ -13,9 +13,12 @@ Run from the repo root (stdlib only)::
 or via pytest.
 """
 
+import csv
+import json
 import math
 import os
 import sys
+import tempfile
 
 _ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.insert(0, os.path.join(_ROOT, "scripts"))
@@ -116,6 +119,55 @@ def test_sample_stats():
     assert abs(sem - std / 2.0) < 1e-12
     assert cap.sample_stats([7.0])[2] is None      # std undefined at n=1
     assert cap.sample_stats([])[0] == 0
+
+
+def test_normalize_powder_id():
+    assert cap.normalize_powder_id("salt") == "salt"
+    assert cap.normalize_powder_id("  Xanthan Gum ") == "xanthan-gum"
+    assert cap.normalize_powder_id("flour (AP)") == "flour-ap"
+    for bad in ("", "   ", "((", None):
+        try:
+            cap.normalize_powder_id(bad)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("accepted {!r}".format(bad))
+
+
+def test_outputs_carry_powder_id():
+    trials, _, _, _, _ = _captured(angles=(45,), points=2)
+    summary = cap.summarize(trials)
+    doc = {"kind": "characterization_run", "powder_id": "salt"}
+    with tempfile.TemporaryDirectory() as tmp:
+        base = "salt_20260721T190000Z"
+        run_path = cap.write_outputs(tmp, base, "salt",
+                                     trials, summary, doc)
+        names = sorted(os.listdir(tmp))
+        assert names == [base + "_run.json", base + "_summary.csv",
+                         base + "_trials.csv"]
+        assert os.path.basename(run_path) == base + "_run.json"
+        for name in (base + "_trials.csv", base + "_summary.csv"):
+            with open(os.path.join(tmp, name)) as fh:
+                rows = list(csv.DictReader(fh))
+            assert rows and all(r["powder_id"] == "salt" for r in rows)
+        with open(run_path) as fh:
+            assert json.load(fh)["powder_id"] == "salt"
+
+
+def test_find_unuploaded_respects_markers():
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = []
+        for base in ("salt_1", "flour_2"):
+            d = os.path.join(tmp, base)
+            os.makedirs(d)
+            p = os.path.join(d, base + "_run.json")
+            with open(p, "w") as fh:
+                json.dump({}, fh)
+            paths.append(p)
+        assert cap.find_unuploaded(tmp) == sorted(paths)
+        with open(paths[0] + ".uploaded", "w") as fh:
+            fh.write("{}")
+        assert cap.find_unuploaded(tmp) == [paths[1]]
 
 
 def test_parse_line_rejects_garbage():

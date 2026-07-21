@@ -55,12 +55,33 @@ collection cup on the pan.  The Pico needs the PR #100 firmware stack
 uploaded (`config.py`, `tic.py`, `scale.py`, `dosing.py`, `main.py`)
 plus `characterize.py`.
 
-On the bench host (`pip install pyserial`):
+On the capture host (`pip install pyserial`):
 
 ```bash
 python scripts/characterize_capture.py --port /dev/ttyACM0 \
-    --powder "xanthan gum" --operator wm --notes "auger 4, cup v2"
+    --powder-id xanthan \
+    --powder "xanthan gum, lot 240515" --operator wm \
+    --notes "auger 4, cup v2"
 ```
+
+`--powder-id` is **required**: a short identifier for the powder
+(`salt`, `xanthan`, `flour`, …).  It is normalized to a slug
+(`"Xanthan Gum"` → `xanthan-gum`) and stamped everywhere the data
+lives, so any file identifies its powder even after being copied off
+the capture host:
+
+- the run directory: `data/characterization/salt_20260721T190312Z/`
+- **every filename** inside it: `salt_20260721T190312Z_trials.csv`,
+  `…_summary.csv`, `…_run.json`, `…_raw_serial.log`
+- a `powder_id` column on **every row** of both CSVs
+- the `powder_id` field of the run document (schema v2), so MongoDB
+  queries filter by powder directly:
+  `db.characterization_runs.find({powder_id: "salt"})`
+
+Keep `--powder` for the free-form description (lot number, grade);
+`--powder-id` is the machine-readable key that ties runs of the same
+material together across days and operators — reuse the exact same ID
+for the same material.
 
 The script interrupts the rig REPL, starts `characterize.run()`,
 streams everything to your terminal, and relays your keyboard to the
@@ -68,13 +89,13 @@ Pico's prompts (`Enter` to continue, `keep` / `skip` / `abort`).  A run
 of 7 angles × 5 points is ~20–25 min, dominated by settle waits; empty
 the cup at the angle prompts so the pan never overloads.
 
-Each run lands in `data/characterization/<UTC-stamp>_<powder>/`:
+Each run lands in `data/characterization/<powder-id>_<UTC-stamp>/`:
 
-- `raw_serial.log` — every serial line, verbatim
-- `trials.csv` — one row per measured action (all phases, flags kept)
-- `summary.csv` — host-recomputed per-angle statistics (`n`, mean,
+- `*_raw_serial.log` — every serial line, verbatim
+- `*_trials.csv` — one row per measured action (all phases, flags kept)
+- `*_summary.csv` — host-recomputed per-angle statistics (`n`, mean,
   std, SEM, min, max, RSD%), including the pooled `rotation+refeed` set
-- `run.json` — the complete run document (below)
+- `*_run.json` — the complete run document (below)
 
 The on-device `SUM` rows and the host statistics are computed
 independently and cross-checked in tests, so a corrupted capture is
@@ -84,6 +105,59 @@ detectable.  Simulation tests you can run without hardware:
 python hardware/test-module/firmware/sim/test_characterize.py
 python scripts/tests/test_characterize_capture.py
 ```
+
+## Running remotely: Raspberry Pi Zero over Tailscale SSH
+
+The Pico stays plugged into the Pi Zero (RPi OS) on the bench; you
+drive the whole sweep from anywhere with `tailscale ssh pi@<zero>`.
+The capture script needs no changes for this — the Zero *is* the
+capture host.  One-time setup on the Zero:
+
+1. **Serial**: the Pico enumerates on the Zero's USB OTG port as
+   `/dev/ttyACM0` (use a data-capable micro-USB OTG cable, not
+   charge-only).  Let your user open it without sudo:
+
+   ```bash
+   sudo usermod -aG dialout $USER   # then log out/in once
+   ```
+
+2. **Python environment**: RPi OS Bookworm blocks bare `pip install`
+   (PEP 668), so use a venv; [piwheels](https://www.piwheels.org) is
+   preconfigured on RPi OS and serves prebuilt ARM wheels, which
+   matters on the Zero's slow CPU:
+
+   ```bash
+   sudo apt update && sudo apt install -y git python3-venv tmux
+   git clone https://github.com/vertical-cloud-lab/powder-doser.git
+   python3 -m venv ~/doser-venv
+   ~/doser-venv/bin/pip install pyserial pymongo
+   ```
+
+   Note the original Pi Zero / Zero W is armv6 and slow, but the
+   capture loop is I/O-bound (settle waits dominate), so it's plenty.
+
+3. **Always capture inside `tmux`** — a dropped Tailscale session must
+   not kill a 25-minute interactive run:
+
+   ```bash
+   tmux new -s doser     # reattach after a drop: tmux attach -t doser
+   ~/doser-venv/bin/python scripts/characterize_capture.py \
+       --port /dev/ttyACM0 --powder-id salt --operator wm --upload
+   ```
+
+   The operator prompts (empty the cup, refill the hopper) still need
+   someone physically at the rig — coordinate over whatever channel
+   you use, or run sweeps while you're in the room and only *retrieve*
+   data remotely.
+
+4. **Clock**: the Zero has no RTC, and every trial/document is
+   timestamped.  Check `timedatectl` says `System clock synchronized:
+   yes` before a run (automatic once the Zero has internet).
+
+5. **Getting files off the Zero**: over the tailnet with
+   `rsync -av pi@<zero>:powder-doser/data/characterization/ ./data/characterization/`
+   — or skip copying entirely and let the Zero upload to MongoDB
+   (next section), with the local files as the on-bench backup.
 
 ## Where the data goes (issue #126) and what you need to do
 
@@ -96,7 +170,7 @@ run is ~40 KB — an Atlas free-tier cluster (512 MB) holds >10,000 runs,
 and the local `run.json` is always written first, so nothing is lost if
 the upload path is down.
 
-One-time checklist on your end:
+One-time checklist to get the **Pi Zero uploading to MongoDB**:
 
 1. **Create the Atlas cluster** — a free M0 at
    [cloud.mongodb.com](https://cloud.mongodb.com) (name suggestion:
@@ -104,36 +178,46 @@ One-time checklist on your end:
    documents; a plain collection is right.
 2. **Create a database user** with `readWrite` on the `powder_doser`
    database (Security → Database Access).
-3. **Allow the bench host's IP** (Security → Network Access).  For a
-   lab machine on dynamic IP, allow the campus range or 0.0.0.0/0
-   temporarily — revisit before storing anything sensitive.
-4. **Put the connection string in the environment**, never in the repo
-   or on the command line:
+3. **Network Access: allowlist the Zero's *public* egress IP.**
+   Tailscale only routes tailnet traffic — the Zero reaches Atlas
+   through the lab network's ordinary internet connection, so the IP
+   to allow is what `curl -s ifconfig.me` prints *on the Zero* (not
+   its 100.x tailscale address).  If the lab IP is dynamic, allow the
+   institution's range, or 0.0.0.0/0 temporarily — revisit before
+   storing anything sensitive.
+4. **Put the connection string in the Zero's environment**, never in
+   the repo or on the command line.  On the Zero:
 
    ```bash
-   pip install pymongo
-   export MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>.mongodb.net/"
+   install -m 600 /dev/null ~/.doser_env
+   echo 'export MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>.mongodb.net/"' >> ~/.doser_env
+   echo '[ -f ~/.doser_env ] && . ~/.doser_env' >> ~/.bashrc
    ```
 
-   (On the shared bench machine, put it in `~/.bashrc` or a
-   `direnv`-style `.envrc` that is gitignored.)
-5. **Capture with `--upload`**:
+   (chmod-600 file kept out of git; sourced on every SSH login.)
+5. **Verify once end-to-end**: `~/doser-venv/bin/python -c
+   "import os, pymongo;
+   pymongo.MongoClient(os.environ['MONGODB_URI'],
+   serverSelectionTimeoutMS=15000).admin.command('ping');
+   print('atlas ok')"` — if this hangs, it's step 3 (IP allowlist)
+   ~95% of the time.
+6. **Capture with `--upload`** (see the tmux invocation above).  A
+   successful upload drops a `.uploaded` marker beside the run.json.
+7. **Backfill safety net** — uploads that failed (Atlas down, Wi-Fi
+   blip, `MONGODB_URI` unset) leave no marker, so a nightly cron on
+   the Zero sweeps them up idempotently (`crontab -e`):
 
-   ```bash
-   python scripts/characterize_capture.py --port /dev/ttyACM0 \
-       --powder "xanthan gum" --operator wm --upload
+   ```cron
+   0 3 * * * . $HOME/.doser_env && cd $HOME/powder-doser && $HOME/doser-venv/bin/python scripts/characterize_capture.py --upload-missing >> $HOME/doser-upload.log 2>&1
    ```
 
-   Offline or forgotten runs backfill later:
-
-   ```bash
-   python scripts/characterize_capture.py --upload-file \
-       data/characterization/20260721T190000Z_xanthan-gum/run.json
-   ```
-
-6. **Commit the CSVs** (or at least `run.json`) for small campaigns —
-   git is a perfectly good secondary store at these sizes, and it keeps
-   the data reviewable in PRs.
+   The same command run by hand uploads all pending runs and exits;
+   already-uploaded runs are never re-inserted.  A single old
+   `run.json` can also be pushed with `--upload-file <path>`.
+8. **Commit the CSVs** (or at least `run.json`) for small campaigns —
+   git is a perfectly good secondary store at these sizes, and it
+   keeps the data reviewable in PRs.  (`git` on the Zero, or `rsync`
+   to a laptop first.)
 
 Later steps from the #126 design (not needed to start collecting):
 per-minute idle aggregates and a TTL'd raw stream, an AWS Lambda ingest
@@ -142,15 +226,18 @@ periodic offload to Hugging Face Datasets / Zenodo.  See the design
 doc on the issue #126 branch:
 [`docs/data-streaming-design.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/claude/issue-126-20260709-1827/docs/data-streaming-design.md).
 
-## Run document schema (v1)
+## Run document schema (v2)
+
+v2 adds `powder_id` (v1 documents predate the field).
 
 ```jsonc
 {
   "kind": "characterization_run",
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "ok",                       // ok | aborted | capture-interrupted
   "started_utc": "...", "ended_utc": "...",
-  "powder": "xanthan gum", "operator": "wm", "notes": "...",
+  "powder_id": "xanthan",               // the key to query/group runs by
+  "powder": "xanthan gum, lot 240515", "operator": "wm", "notes": "...",
   "git_commit": "<hash of the host repo at capture time>",
   "parameters": {                        // META rows from the device
     "points_per_angle": "5", "angles_deg": "0;15;30;45;60;75;90",
