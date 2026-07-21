@@ -215,6 +215,10 @@ ftps.login("bblp", ACCESS_CODE); ftps.prot_p()
 print("FTPS /cache:", ftps.nlst("/cache")); ftps.quit()
 ```
 
+A ready-to-run copy of this script (same code plus `--ip/--access-code/
+--serial` flags and `H2D_*` env-var support) is checked in at
+[`scripts/h2d_smoketest.py`](../scripts/h2d_smoketest.py).
+
 If both blocks above succeed (you see a JSON `report` message + a
 listing of `/cache`, possibly empty), you have proven the same `(IP,
 code, serial)` triple that the rest of the doc — and every library in
@@ -310,6 +314,18 @@ as the test payload — it is small (36 KB), already carries the IDEX
 header the firmware expects, and has a known-good `Metadata/plate_1.gcode`
 inside.
 
+> [!TIP]
+> All of 3a–3c below is packaged as one cross-platform script:
+> [`scripts/h2d_step3_send_print.py`](../scripts/h2d_step3_send_print.py)
+> (`pip install paho-mqtt`, then
+> `python h2d_step3_send_print.py cube_h2d.gcode.3mf --ip <IP>
+> --access-code <CODE> --serial <SERIAL>`). It uploads over the same
+> verified implicit-FTPS stack as the Step 2 smoke test, asks for
+> confirmation before publishing (`--yes` to skip, `--upload-only` for
+> just 3a), and watches `gcode_state` until `RUNNING`. The shell
+> commands below remain useful when you want to see each leg
+> individually.
+
 ```bash
 # 3a. Upload the 3MF to the printer's /cache
 lftp -u "bblp,<ACCESS_CODE>" -e \
@@ -365,6 +381,17 @@ table for the H2D-readiness status of each option, and the
 section for a concrete `manual_print.py` template that already wires
 this up for the A1 mini and ports almost verbatim to H2D once you
 have a known-good `.gcode.3mf`.)
+
+A ready-to-run version is checked in at
+[`scripts/h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py)
+(`pip install bambulabs_api`, then the same
+`file --ip/--access-code/--serial` CLI as the Step 3 script): it
+connects, uploads, checks for the FTPS `226 Transfer complete`
+response, asks for bed-clear confirmation, calls `start_print`, and
+polls `get_state()` until `RUNNING`. Because `bambulabs_api` is
+community-maintained and H2D-untested (see the library table), the
+script prints the installed library version up front and fails loudly
+rather than guessing if a signature has drifted.
 
 Only *after* Step 4 is green for a static, hand-sliced cube does it
 make sense to plug in the headless slicer worker from the

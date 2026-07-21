@@ -7,7 +7,10 @@
 - [Programmatic and remote printing on the Bambu Lab H2D](docs/h2d-programmatic-access.md)
   — research notes on the cloud, LAN/Developer-Mode and Bambu Connect
   paths for sending sliced jobs to an H2D from code, with citations to
-  the primary community and vendor sources.
+  the primary community and vendor sources. Runnable companions to the
+  bringup checklist live in [`scripts/`](scripts): the Step 2
+  reachability smoke test, the Step 3 upload-and-start dry run, and the
+  Step 4 `bambulabs_api` wrapper.
 
 ## Paper
 
