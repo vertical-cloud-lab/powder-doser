@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1860 600" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#dfe4ea"/>
+      <stop offset="0.5" stop-color="#aab2bd"/>
+      <stop offset="1"   stop-color="#7e8794"/>
+    </linearGradient>
+    <linearGradient id="metalH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#dfe4ea"/>
+      <stop offset="0.5" stop-color="#aab2bd"/>
+      <stop offset="1"   stop-color="#7e8794"/>
+    </linearGradient>
+    <pattern id="powder" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="#e8d9a8"/>
+      <circle cx="1.5" cy="1.5" r="0.6" fill="#b89a55"/>
+      <circle cx="4"   cy="3.5" r="0.6" fill="#b89a55"/>
+      <circle cx="2"   cy="5"   r="0.5" fill="#b89a55"/>
+    </pattern>
+    <marker id="arrowK" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#222"/>
+    </marker>
+    <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f5fbf"/>
+    </marker>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+<text x="930" y="34" text-anchor="middle" font-size="22" font-weight="700">Subpanel D — Mechanism of action (side view, 4 steps)</text><text x="930" y="56" text-anchor="middle" font-size="13" fill="#555" font-style="italic">all four frames share the same powder-bed line, pivot height and arm length so motion is comparable</text><g transform="translate(40,80)"><text x="200" y="0" text-anchor="middle" font-size="17" font-weight="600">1. J-curve plunge</text>
+<line x1="0" y1="360" x2="400" y2="360" stroke="#bdb085" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="0" y="360" width="400" height="50" fill="url(#powder)" stroke="#7a5a1a"/>
+<text x="200" y="424" text-anchor="middle" font-size="11" fill="#7a5a1a">powder bed</text>
+<rect x="192" y="40" width="16" height="230" fill="url(#metal)" stroke="#333"/>
+<circle cx="200" cy="270" r="7" fill="#c0392b" stroke="#7a1f15" stroke-width="1.5"/>
+<g transform="translate(200,270) rotate(0)">
+  <path d="M -38 0 L 38 0 A 38 38 0 0 1 -38 0 Z" fill="url(#metal)" stroke="#222" stroke-width="2"/>
+  <path d="M -37.43 0.0 L 37.43 0.0 A 37.43 37.43 0 0 1 -37.43 0.0 Z" fill="url(#powder)" opacity="0.95"/>
+  <path d="M 38 0 L 44 -2 L 44 4 L 38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+  <path d="M -38 0 L -44 -2 L -44 4 L -38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+</g>
+<path d="M 60 60 L 60 210 Q 60 260 152 266" fill="none" stroke="#1f5fbf" stroke-width="3" marker-end="url(#arrowB)"/><text x="48" y="160" font-size="11" fill="#1f5fbf" transform="rotate(-90 48 160)" text-anchor="middle">Z ↓</text><text x="120" y="274" font-size="11" fill="#1f5fbf">then X →</text><text x="20" y="20" font-size="10" fill="#1f5fbf">J-curve avoids flat-blunt compaction</text></g><g transform="translate(500,80)"><text x="200" y="0" text-anchor="middle" font-size="17" font-weight="600">2. Lift past strike-off bar</text>
+<line x1="0" y1="360" x2="400" y2="360" stroke="#bdb085" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="0" y="360" width="400" height="50" fill="url(#powder)" stroke="#7a5a1a"/>
+<text x="200" y="424" text-anchor="middle" font-size="11" fill="#7a5a1a">powder bed</text>
+<rect x="234" y="263" width="114" height="6" fill="#5a4a30" stroke="#222"/>
+<text x="291" y="258" text-anchor="middle" font-size="10" fill="#5a4a30">strike-off bar</text>
+<rect x="192" y="40" width="16" height="230" fill="url(#metal)" stroke="#333"/>
+<circle cx="200" cy="270" r="7" fill="#c0392b" stroke="#7a1f15" stroke-width="1.5"/>
+<g transform="translate(200,270) rotate(0)">
+  <path d="M -38 0 L 38 0 A 38 38 0 0 1 -38 0 Z" fill="url(#metal)" stroke="#222" stroke-width="2"/>
+  <path d="M -37.43 0.0 L 37.43 0.0 A 37.43 37.43 0 0 1 -37.43 0.0 Z" fill="url(#powder)" opacity="0.95"/>
+  <path d="M 38 0 L 44 -2 L 44 4 L 38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+  <path d="M -38 0 L -44 -2 L -44 4 L -38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+</g>
+<line x1="40" y1="300" x2="40" y2="80" stroke="#1f5fbf" stroke-width="3" marker-end="url(#arrowB)"/><text x="26" y="200" font-size="11" fill="#1f5fbf" transform="rotate(-90 26 200)" text-anchor="middle">Z ↑</text><text x="298" y="294" text-anchor="middle" font-size="10" fill="#5a4a30">rim wipes past bar → defines fill volume</text></g><g transform="translate(960,80)"><text x="200" y="0" text-anchor="middle" font-size="17" font-weight="600">3. Transport (X →)</text>
+<line x1="0" y1="360" x2="400" y2="360" stroke="#bdb085" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="192" y="40" width="16" height="230" fill="url(#metal)" stroke="#333"/>
+<circle cx="200" cy="270" r="7" fill="#c0392b" stroke="#7a1f15" stroke-width="1.5"/>
+<g transform="translate(200,270) rotate(0)">
+  <path d="M -38 0 L 38 0 A 38 38 0 0 1 -38 0 Z" fill="url(#metal)" stroke="#222" stroke-width="2"/>
+  <path d="M -37.43 0.0 L 37.43 0.0 A 37.43 37.43 0 0 1 -37.43 0.0 Z" fill="url(#powder)" opacity="0.95"/>
+  <path d="M 38 0 L 44 -2 L 44 4 L 38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+  <path d="M -38 0 L -44 -2 L -44 4 L -38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+</g>
+<line x1="120" y1="120" x2="280" y2="120" stroke="#1f5fbf" stroke-width="3" marker-end="url(#arrowB)"/><text x="200" y="110" font-size="12" fill="#1f5fbf" text-anchor="middle">X →</text><text x="200" y="338" font-size="10" fill="#444" text-anchor="middle">trough hangs level under gravity</text></g><g transform="translate(1420,80)"><text x="200" y="0" text-anchor="middle" font-size="17" font-weight="600">4. Sideways tilt → deposit</text>
+<line x1="0" y1="360" x2="400" y2="360" stroke="#bdb085" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="297.8" y="293.1" width="14" height="66.9" fill="#8a7a5e" stroke="#444"/>
+<polygon points="221.8,301.1 291.8,360 297.8,360 297.8,293.1" fill="#8a7a5e" stroke="#444" stroke-width="1.5"/>
+<text x="256.8" y="374" text-anchor="middle" font-size="10" fill="#5a4a30">smooth cam ramp</text>
+<circle cx="221.8" cy="301.1" r="4" fill="#c0392b" stroke="#7a1f15" stroke-width="1.2"/>
+<rect x="192" y="40" width="16" height="230" fill="url(#metal)" stroke="#333"/>
+<circle cx="200" cy="270" r="7" fill="#c0392b" stroke="#7a1f15" stroke-width="1.5"/>
+<g transform="translate(200,270) rotate(55)">
+  <path d="M -38 0 L 38 0 A 38 38 0 0 1 -38 0 Z" fill="url(#metal)" stroke="#222" stroke-width="2"/>
+  <path d="M -37.43 0.0 L 37.43 0.0 A 37.43 37.43 0 0 1 -37.43 0.0 Z" fill="url(#powder)" opacity="0.95"/>
+  <path d="M 38 0 L 44 -2 L 44 4 L 38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+  <path d="M -38 0 L -44 -2 L -44 4 L -38 6 Z" fill="#7e8794" stroke="#222" stroke-width="1.2"/>
+</g>
+<g fill="url(#powder)" opacity="0.95"><path d="M 215.79590458133976 301.1277776829817 Q 225.79590458133976 329.56388884149084 235.79590458133976 358 L 251.79590458133976 358 Q 247.79590458133976 329.56388884149084 235.79590458133976 297.1277776829817 Z"/></g>
+<text x="233.79590458133976" y="374" text-anchor="middle" font-size="11" fill="#7a5a1a">powder pours over FULL long edge</text>
+<line x1="20" y1="60" x2="80" y2="60" stroke="#1f5fbf" stroke-width="3" marker-end="url(#arrowB)"/><text x="50" y="52" text-anchor="middle" font-size="11" fill="#1f5fbf">gantry pushes X →</text><path d="M 140 280 a 36 36 0 0 1 38 -42" fill="none" stroke="#1f5fbf" stroke-width="2.5" marker-end="url(#arrowB)"/><text x="150" y="302" font-size="10" fill="#1f5fbf">trough rolls sideways</text><text x="150" y="316" font-size="10" fill="#1f5fbf">about its long axis</text><text x="242" y="226" font-size="10" fill="#c0392b">rim lip rides up cam</text></g><line x1="448" y1="350" x2="492" y2="350" stroke="#222" stroke-width="2.5" marker-end="url(#arrowK)"/><line x1="908" y1="350" x2="952" y2="350" stroke="#222" stroke-width="2.5" marker-end="url(#arrowK)"/><line x1="1368" y1="350" x2="1412" y2="350" stroke="#222" stroke-width="2.5" marker-end="url(#arrowK)"/><text x="930" y="550" text-anchor="middle" font-size="13" fill="#444" font-style="italic">Pure-X gantry travel works because the smooth cam ramp gives a continuously varying engagement point</text><text x="930" y="570" text-anchor="middle" font-size="13" fill="#444" font-style="italic">(unlike a fixed sawtooth tooth, which is kinematically incompatible with a horizontally-translating pivot — Edison v2 §1).</text></svg>
