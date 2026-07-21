@@ -295,6 +295,14 @@ archived under [`docs/edison/`](docs/edison/) for traceability.
 
 ![Design sketch](powder-excavator-sketch.jpg)
 
+## Candidate powders
+
+The set of metal powders we intend to dispense (high-purity Si,
+AlSi10Mg, and the broader BYU VCL digital-alloy-lab element
+palette), together with handling/storage constraints and the
+custom-Al-crucible dispensing targets, is documented in
+[`docs/candidate-powders.md`](docs/candidate-powders.md).
+
 ## Paper
 
 A bare-bones LaTeX template in the Digital Discovery (Royal Society of
