@@ -1,0 +1,31 @@
+RSC LaTeX template files
+========================
+
+The following files in this directory are part of the Royal Society of
+Chemistry article ("Paper") LaTeX template, distributed by the RSC for
+authors preparing journal submissions, and are vendored unchanged so that
+authors can build a Digital Discovery (RSC) style submission without
+downloading the template separately:
+
+    rsc.bst
+    rsc.bib
+    headers/CH.{eps,pdf}
+    headers/LH.{eps,pdf}
+    headers/RH.{eps,pdf}
+    headers/LF.{eps,pdf}
+    headers/RF.{eps,pdf}
+
+Copyright (c) The Royal Society of Chemistry. These files are not
+relicensed by this repository; they remain subject to the terms under
+which the RSC distributes its journal template.
+
+The manuscript source (`main.tex`) is original to this project.
+
+Other LaTeX packages required by `main.tex` (e.g. `mhchem`, `balance`,
+`caption`, `fancyhdr`, `lipsum`, `natbib`, `lastpage`, `times`,
+`mathptmx`, `url`, `extsizes`) are expected to be supplied by the local TeX
+distribution (e.g. TeX Live's `texlive-latex-recommended`,
+`texlive-latex-extra`, `texlive-science`, `texlive-fonts-recommended`).
+They are deliberately NOT vendored here so that this repository does not
+redistribute third-party packages outside the terms of their upstream
+licenses.
