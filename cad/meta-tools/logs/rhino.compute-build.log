@@ -1,0 +1,16 @@
+$ git clone --depth=1 https://github.com/mcneel/compute.rhino3d.git
+$ cd compute.rhino3d/src/rhino.compute
+$ dotnet build -c Release
+  Determining projects to restore...
+  Restored .../rhino.compute.csproj (in 3.52 sec).
+  rhino.compute -> .../bin/Release/rhino.compute/rhino.compute.dll
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:14.03
+
+$ dotnet rhino.compute.dll --urls=http://127.0.0.1:8081
+RC  [INF] Rhino compute started at 4/24/2026 12:31:36 AM
+RC  [INF] Now listening on: http://127.0.0.1:8081
+RC  [INF] Application started. Press Ctrl+C to shut down.
+RC  [INF] Hosting environment: Production

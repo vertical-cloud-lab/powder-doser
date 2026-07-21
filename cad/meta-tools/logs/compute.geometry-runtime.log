@@ -1,0 +1,14 @@
+$ cd compute.rhino3d/src/compute.geometry
+$ dotnet build -c Release
+  compute.geometry -> .../bin/Release/compute.geometry/compute.geometry.dll
+Build succeeded.    5 Warning(s)    0 Error(s)
+Time Elapsed 00:00:05.03
+
+$ dotnet compute.geometry.dll --urls=http://127.0.0.1:8082
+Unhandled exception. System.DllNotFoundException: Unable to load shared library
+'/usr/lib/rhino3d/libRhinoLibrary.so' or one of its dependencies.
+   at System.Runtime.InteropServices.NativeLibrary.Load(String libraryPath)
+   at RhinoInside.Resolver.PrepareRhinoEnv()
+   at RhinoInside.Resolver.Initialize(String rhinoPath)
+   at RhinoInside.Resolver.Initialize(Boolean useLatest)
+   at compute.geometry.Program.Main(String[] args)
