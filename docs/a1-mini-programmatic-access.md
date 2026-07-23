@@ -309,6 +309,83 @@ The third gotcha (manual filament mapping gated on
 `plate_to_slice != 0`) does not apply — a single-extruder printer
 never enters that codepath, so `--slice 0` works.
 
+### One command from STL to print: `a1_mini_slice_and_send.py`
+
+The checked-in
+[`scripts/a1_mini_slice_and_send.py`](../scripts/a1_mini_slice_and_send.py)
+packages this recipe as the slice-and-send alternative to
+`a1_mini_send_print.py`: it takes a raw `.stl` (or an *unsliced* Bambu
+Studio project `.3mf`), runs the CLI command above headlessly, prints
+a G-code-header summary (printer profile, estimated time, filament
+grams, temperatures), then feeds the result through the same verified
+FTPS-upload + `print.project_file` + `gcode_state`-watch pipeline.
+Same fill-in-the-placeholders pattern as the send script, plus fields
+for the slicer binary and the three flattened profile JSONs:
+
+```bash
+pip install paho-mqtt
+python scripts/a1_mini_slice_and_send.py                  # slice + upload + print
+python scripts/a1_mini_slice_and_send.py --slice-only --keep-output   # dry-run the slicer alone
+python scripts/a1_mini_slice_and_send.py --upload-only    # stop before starting the print
+```
+
+Notes: for `.stl` input the three profile JSONs are required; for a
+project `.3mf` they are optional but **override** the settings
+embedded in the file if given (CLI precedence). `--no-arrange` keeps a
+project 3MF's existing plate layout. Already-sliced `.gcode.3mf` files
+are refused — send those with `a1_mini_send_print.py`.
+
+### Risks of headless slicing (read before unattended use)
+
+Slicing without a human in front of the preview removes the last
+visual checkpoint before plastic moves. Concretely:
+
+1. **No preview means no sanity check on geometry.** Wrong STL
+   units/scale, an orientation that needs supports but gets none,
+   overhangs the auto-`--orient` heuristic handles badly, or a part
+   auto-`--arrange`d differently than you expected all slice
+   *successfully* — and waste filament, fail mid-air, or (worst case)
+   drag a hot nozzle through detached spaghetti for hours. The
+   script's header summary + confirmation prompt is a deliberately
+   thin substitute: it shows time/filament/temperatures, not geometry.
+   Don't pass `--yes` until the model + profile combination has
+   printed successfully at least once.
+2. **A "successful" slice can still carry wrong settings.** The CLI
+   does not resolve profile `inherits` chains, so a half-flattened
+   profile can slice cleanly with missing/default temperatures,
+   speeds, or cooling. The script hard-rejects jobs exceeding A1-mini
+   hardware maxima (bed > 80 °C, nozzle > 300 °C — a wrong-printer
+   profile symptom) and refuses H2D/IDEX-flavoured output, but it
+   cannot detect a *subtly* wrong profile (e.g. PETG temps applied to
+   PLA).
+3. **Settings-precedence surprises with project 3MFs.** CLI-loaded
+   profiles silently override whatever the project file embeds
+   (flags > `--load-*` > 3MF). Loading a stale profile bundle against
+   a carefully-tuned project 3MF re-slices it with the stale settings
+   and no warning beyond the script's NOTE line.
+4. **Slicer-version drift.** Profile keys get renamed and slicing
+   behaviour changes between BambuStudio releases. Pin the AppImage/
+   binary version (the recipe here was developed against
+   v02.06.00.51) and re-validate after any upgrade — same advice as
+   pinning printer firmware.
+5. **This exact A1-mini invocation is still not empirically
+   verified** (see the NOTE above) — the P2S and H2D flows were run
+   for real in PR #23; the A1-mini variant is the same AppImage on a
+   simpler codepath, but treat the first failure as a profile
+   flattening/patching problem, not a script bug.
+6. **Compute cost lands wherever the script runs.** A slice is
+   CPU-heavy and can take minutes on a Pi; the script bounds it with
+   `--slice-timeout` (default 900 s) and cleans its temp dir, but
+   don't point a tight automation loop at it without queueing —
+   that's what the relay's `/print_stl` route (Steps 5–6) is for.
+7. **One command now goes from file to moving hardware.** Combining
+   slice + upload + start collapses the natural pause where someone
+   used to look at the G-code. Keep the confirmation prompt for
+   interactive use, and for automation route through the relay's
+   safety envelope (`LIMITS`, allow-listed filaments) rather than
+   `--yes` on this script — the script's checks are a subset of the
+   relay's, and there is no hardware interlock in either.
+
 > [!NOTE]
 > Unlike the P2S and H2D runs in the H2D doc, this exact A1-mini
 > invocation has **not** been empirically executed as part of PR #23

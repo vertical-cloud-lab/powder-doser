@@ -16,9 +16,13 @@
   parameters adjusted for the single-extruder, Wi-Fi-only A1 mini
   (profiles, simplified CLI slicing recipe, AMS-lite payload note,
   scaled safety-envelope limits). Reuses the Step 2/4 `scripts/` files
-  verbatim, plus a dedicated fill-in-the-placeholders send script,
-  [`scripts/a1_mini_send_print.py`](scripts/a1_mini_send_print.py),
-  for starting a print.
+  verbatim, plus two dedicated fill-in-the-placeholders scripts:
+  [`scripts/a1_mini_send_print.py`](scripts/a1_mini_send_print.py) for
+  sending an already-sliced `.gcode.3mf`, and
+  [`scripts/a1_mini_slice_and_send.py`](scripts/a1_mini_slice_and_send.py)
+  which first slices an STL/project-3MF headlessly with the
+  BambuStudio CLI (risks of the no-preview flow are documented in the
+  A1-mini doc).
 
 ## Paper
 
