@@ -27,6 +27,28 @@ feedback is incorporated below.
   [CadQuery/cadquery](https://github.com/CadQuery/cadquery) instead, drop the
   call request and ask the technical question asynchronously so community
   members can weigh in too.
+  - **Discord server:** the CadQuery community lives on a server named
+    **"Python OCP CAD"** (not "CadQuery", which is why it's hard to find).
+    Permanent invite, verified valid 23 Jul 2026 via Discord's public invite
+    API (~1,580 members, lands in the `#cadquery` channel):
+    <https://discord.com/invite/Bj9AQPsCfx> (posted by maintainer Jeremy
+    Wright in [CadQuery/cadquery#1680](https://github.com/CadQuery/cadquery/issues/1680)).
+    Adam's exact Discord username is not published anywhere; after joining,
+    search the member list for "adam". If he isn't findable there, don't wait —
+    use GitHub instead.
+  - **GitHub (reliable):** he is active as
+    [@adam-urbanczyk](https://github.com/adam-urbanczyk) (reviewing CadQuery
+    PRs as recently as 19 Jul 2026). Best public channel: open a
+    [GitHub Discussion](https://github.com/CadQuery/cadquery/discussions) with
+    the async version of the draft. `info@cadquery.org` (from the CadQuery
+    README) reaches the core maintainers by email, though it's framed for
+    consulting inquiries.
+  - **LinkedIn:** profile at
+    <https://www.linkedin.com/in/adam-urba%C5%84czyk-82511251> (Adam
+    Urbańczyk, ASML, Netherlands) matches his FOSDEM bio (applied physicist,
+    PhD TU Eindhoven, algorithms engineer at a Dutch semiconductor equipment
+    vendor). Fine as a fallback connect-with-note, but he's far more active on
+    GitHub.
 
 ---
 
