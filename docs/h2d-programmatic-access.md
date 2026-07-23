@@ -8,6 +8,14 @@ finished integration: H2D-specific support in the open-source ecosystem
 is still maturing and several of the protocol details below are
 documented by the community rather than by Bambu Lab.
 
+> [!TIP]
+> Driving the lab's **A1 mini ("Thumbelina")** instead? See the
+> companion instruction list at
+> [a1-mini-programmatic-access.md](a1-mini-programmatic-access.md) —
+> same transports and the same `scripts/` files, with the printer
+> parameters, slicing recipe, and safety-envelope limits adjusted for
+> the single-extruder, Wi-Fi-only A1 mini.
+
 > [!IMPORTANT]
 > Bambu Lab rolled out a "printer control authorization" system starting
 > with X-series firmware and is extending it to the P-series and

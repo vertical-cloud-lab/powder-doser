@@ -11,6 +11,12 @@
   bringup checklist live in [`scripts/`](scripts): the Step 2
   reachability smoke test, the Step 3 upload-and-start dry run, and the
   Step 4 `bambulabs_api` wrapper.
+- [Programmatic printing on the Bambu Lab A1 mini ("Thumbelina")](docs/a1-mini-programmatic-access.md)
+  — the A1-mini instruction list: same bringup Steps 0–6 with the
+  parameters adjusted for the single-extruder, Wi-Fi-only A1 mini
+  (profiles, simplified CLI slicing recipe, AMS-lite payload note,
+  scaled safety-envelope limits). Reuses the same `scripts/` files
+  verbatim.
 
 ## Paper
 
