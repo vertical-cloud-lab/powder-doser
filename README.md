@@ -15,8 +15,10 @@
   — the A1-mini instruction list: same bringup Steps 0–6 with the
   parameters adjusted for the single-extruder, Wi-Fi-only A1 mini
   (profiles, simplified CLI slicing recipe, AMS-lite payload note,
-  scaled safety-envelope limits). Reuses the same `scripts/` files
-  verbatim.
+  scaled safety-envelope limits). Reuses the Step 2/4 `scripts/` files
+  verbatim, plus a dedicated fill-in-the-placeholders send script,
+  [`scripts/a1_mini_send_print.py`](scripts/a1_mini_send_print.py),
+  for starting a print.
 
 ## Paper
 

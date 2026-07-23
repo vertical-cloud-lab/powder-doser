@@ -113,18 +113,31 @@ from the Pi before touching printer settings.
 
 ## Step 3 — First programmatic print
 
-Use the checked-in
-[`scripts/h2d_step3_send_print.py`](../scripts/h2d_step3_send_print.py)
-unchanged — the FTPS upload, the `print.project_file` MQTT payload,
-and the `gcode_state` watch are all model-agnostic:
+Use the checked-in, A1-mini-specific
+[`scripts/a1_mini_send_print.py`](../scripts/a1_mini_send_print.py).
+It is the same verified FTPS-upload + `print.project_file` +
+`gcode_state`-watch flow as the H2D Step 3 script, packaged for the
+lab: open the file, fill in the **FILL THESE IN** block at the top
+(the `PUT_..._HERE` placeholders for the printer IP, 8-digit access
+code, 15-character serial, and the path to the `.gcode.3mf` you want
+to print), then run it with no arguments:
 
 ```bash
-python scripts/h2d_step3_send_print.py <file>.gcode.3mf \
-    --ip <IP> --access-code <CODE> --serial <SERIAL>
-# --upload-only first if you want to verify the FTPS leg alone
+pip install paho-mqtt
+python scripts/a1_mini_send_print.py
+# add --upload-only first if you want to verify the FTPS leg alone
 ```
 
-Two A1-mini-specific rules for the payload file:
+If you prefer not to edit the file, everything can instead be passed
+on the command line (`--ip/--access-code/--serial` plus the file path
+as an argument) or via `A1_MINI_IP` / `A1_MINI_ACCESS_CODE` /
+`A1_MINI_SERIAL` env vars — command line beats env vars beats the
+constants in the file. (The generic
+[`scripts/h2d_step3_send_print.py`](../scripts/h2d_step3_send_print.py)
+also still works here; the A1-mini script just adds the checks below.)
+
+Two A1-mini-specific rules for the payload file — both of which the
+script now enforces or exposes:
 
 1. **Do not reuse the H2D `cube_h2d.gcode.3mf` test payload.** A job
    sliced for the wrong printer is triage item #2 in the H2D Step 3
@@ -133,11 +146,15 @@ Two A1-mini-specific rules for the payload file:
    what a single-extruder A1 mini will choke on. Slice a small test
    cube with an **A1 mini profile** instead — export from desktop
    Bambu Studio is fine, or use the CLI recipe below.
-2. **AMS lite:** the script's payload sends `"use_ams": false` /
+   `a1_mini_send_print.py` inspects the file's G-code header before
+   uploading and refuses anything that looks H2D/IDEX-sliced (or that
+   is a project 3MF with no `Metadata/plate_1.gcode`); `--force`
+   overrides.
+2. **AMS lite:** the default payload sends `"use_ams": false` /
    `"ams_mapping": ""`, which prints from the external spool holder.
-   If Thumbelina feeds from an AMS lite, set `use_ams: true` and an
-   `ams_mapping` (edit `project_file_payload()` in the script). The
-   `ac-dev-lab` A1-mini issues
+   If Thumbelina feeds from an AMS lite, set `USE_AMS = True` (and an
+   `AMS_MAPPING`) in the FILL THESE IN block, or pass
+   `--use-ams`/`--ams-mapping`. The `ac-dev-lab` A1-mini issues
    ([#147](https://github.com/AccelerationConsortium/ac-dev-lab/issues/147),
    [#149](https://github.com/AccelerationConsortium/ac-dev-lab/issues/149))
    are the working reference for what mapped correctly there.
@@ -260,10 +277,11 @@ Thumbelina:
    version. (~15 min)
 2. **Step 2** from a machine on the printer's VLAN (likely the Pi):
    `scripts/h2d_smoketest.py` with Thumbelina's values. (~5 min)
-3. **Step 3**: slice a small cube with an **A1 mini** profile, then
-   `scripts/h2d_step3_send_print.py cube_a1m.gcode.3mf --upload-only`
+3. **Step 3**: slice a small cube with an **A1 mini** profile, fill
+   in the placeholders at the top of
+   `scripts/a1_mini_send_print.py`, run it with `--upload-only`
    first, then the full run with the bed clear. Do **not** reuse the
-   H2D cube file. (~15 min)
+   H2D cube file — the script refuses it anyway. (~15 min)
 4. **Step 4**: same print via `scripts/h2d_step4_bambulabs_api.py`.
    (~15 min)
 5. **Steps 5–6**, only after 1–4 are green: relay on the Pi with the
