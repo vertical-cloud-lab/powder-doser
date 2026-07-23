@@ -64,12 +64,27 @@ advice does not apply.
    (Settings → WLAN). Pin the IP with a DHCP reservation as usual —
    the LAN flow has no discovery/mDNS broker.
 2. On a BYU-IoT-style network with client isolation, **assume a
-   roaming laptop cannot reach the printer directly.** Plan for the
-   Step 2 smoke test to run from a machine that shares the printer's
-   VLAN — in practice the Pi (or lab NUC) that will eventually host
-   the relay. This makes the Pi relay *more* important for the A1
-   mini, not less: it may be the only box that can talk to the
-   printer at all.
+   roaming laptop cannot reach the printer directly.** On
+   `byu-devices` specifically, devices are typically not allowed to
+   talk to each other at all, so the Step 2 smoke test may fail from
+   *any* second device on that network — not just roaming laptops.
+   Two workarounds:
+   - **Interim: phone hotspot.** Put both the printer and the test
+     laptop on the same phone hotspot so they share an isolated
+     private network. The A1 mini is **2.4 GHz only** — on an iPhone
+     you must enable *Maximise Compatibility*, and in `ac-dev-lab`
+     testing ([#147](https://github.com/AccelerationConsortium/ac-dev-lab/issues/147))
+     the printer *still* failed to see an iPhone hotspot even with
+     that enabled, so have an Android hotspot or a cheap travel
+     router as plan B.
+   - **Longer term:** a network exemption / dedicated lab AP so the
+     relay Pi and the printer share a VLAN without isolation (campus
+     IT conversation — per @sgbaird, Shawn is the contact for this).
+   Plan for the Step 2 smoke test to run from a machine that shares
+   the printer's network — in practice the Pi (or lab NUC) that will
+   eventually host the relay. This makes the Pi relay *more*
+   important for the A1 mini, not less: it may be the only box that
+   can talk to the printer at all.
 3. Ports are the same as the H2D: `8883/tcp` (MQTT-over-TLS) and
    `990/tcp` (implicit FTPS) must be reachable from the worker.
 
@@ -179,6 +194,79 @@ single-extruder G-code setpoint rewriting in
 (`M104`/`M109`/`M140`/`M190` replacement), which the H2D doc flags as
 **not** portable to IDEX, is fine here — Thumbelina is the printer it
 was written for.
+
+## Field notes from `ac-dev-lab` (hard-won A1-mini lessons)
+
+The AC team ran a full A1-mini automation campaign (remote Python
+control, a Pi 4B relay, a Hugging Face/Colab front-end, and a
+self-driving-lab practical) and left a detailed paper trail. These are
+the operational lessons from
+[#147](https://github.com/AccelerationConsortium/ac-dev-lab/issues/147),
+[#149](https://github.com/AccelerationConsortium/ac-dev-lab/issues/149),
+[#160](https://github.com/AccelerationConsortium/ac-dev-lab/issues/160), and
+[#168](https://github.com/AccelerationConsortium/ac-dev-lab/issues/168)
+that are worth knowing *before* they bite:
+
+1. **The `0500-4003` "unable to parse file" saga — don't change the
+   printer-side storage path.** For weeks, `upload_file` +
+   `start_print` via `bambulabs_api` produced *"Printing stopped
+   because the printer was unable to parse the file"*
+   (`0500-4003 115012` / `108000`) even though the same file printed
+   fine when started from the touchscreen, and factory reset / SD-card
+   swaps / reformatting didn't help. The root cause (found with the
+   `bambulabs_api` maintainer in
+   [mchrisgm/bambulabs_api#99](https://github.com/mchrisgm/bambulabs_api/issues/99))
+   was that the upload path on the printer had been changed from the
+   location `start_print` expects. Leave the printer's file layout
+   alone and upload to the default location the library (or our
+   scripts' `/cache`) uses. If you ever hit `0500-4003`, check the
+   path *first*, before the SD-card/firmware rabbit holes.
+2. **`set_bed_temperature()` is a silent no-op — send G-code
+   instead.** Confirmed on the real A1 mini: the API call neither
+   changes the UI setpoint nor the actual bed temperature. What works
+   is sending raw G-code via
+   [`printer.gcode()`](https://mchrisgm.github.io/bambulabs_api/api/printer.html#bambulabs_api.Printer.gcode)
+   — e.g. `M190 S65` (bed) / `M109 S220` (nozzle) — or pre-baking the
+   setpoints into the `.gcode` file, which is exactly what
+   `ac-dev-lab`'s `device.py` does with its `M104`/`M109`/`M140`/`M190`
+   rewriting. `set_print_speed` and the light/pause/resume/status
+   calls worked as advertised.
+3. **The access code may display as an IP address on a fresh
+   printer.** Until the printer has been linked once via the Bambu
+   Handy app + Bambu Studio login, Settings → WLAN can show an IP
+   where the 8-digit access code should be
+   ([forum thread](https://forum.bambulab.com/t/a1-mini-where-do-i-find-the-access-code/56991/5)).
+   One-time account linking fixes it; after that Step 1 proceeds
+   normally.
+4. **The printer's MQTT broker is LAN-local only.** It cannot be
+   reached from outside its own network
+   ([mchrisgm/bambulabs_api#110](https://github.com/mchrisgm/bambulabs_api/issues/110))
+   — which is precisely why `ac-dev-lab` converged on the same
+   architecture as our Steps 5–6: a Pi 4B beside the printer speaking
+   LAN-MQTT/FTPS locally, bridged to the outside world via an
+   external broker (HiveMQ/HF Spaces there, the FastAPI relay +
+   Tailscale here).
+5. **Status can read `UNKNOWN` immediately after `connect()`.** The
+   working `ac-dev-lab` script sleeps ~2 s after `printer.connect()`
+   and tolerates an `UNKNOWN` first read; don't gate your upload on a
+   perfect first status poll.
+6. **One G-code file per iteration beats live parameter twiddling.**
+   For parameter-sweep/BO work (relevant to the tensegrity loop),
+   `ac-dev-lab` settled on generating a separate small G-code file
+   per iteration (or a grid of squares with per-square presets in one
+   file) with setpoints baked in, plus purge/reset moves between
+   iterations — rather than mutating temperatures mid-print through
+   the API.
+
+Reusable artifacts beyond the already-linked
+[`bambu_a1_mini`](https://github.com/AccelerationConsortium/ac-dev-lab/tree/main/src/ac_training_lab/bambu_a1_mini)
+directory: the Pi-relay control repo
+[SissiFeng/bambu-printer-control](https://github.com/SissiFeng/bambu-printer-control)
+(Pi 4B: printer control, MQTT bridge to HF, G-code generation), the
+[A1-mini Hugging Face Space](https://huggingface.co/spaces/AccelerationConsortium/Bambu_A1mini),
+and [PR #529](https://github.com/AccelerationConsortium/ac-dev-lab/pull/529)
+(A1-mini toolhead-camera → AWS S3 + MQTT setup, useful when we add
+print monitoring).
 
 ## Headless slicing (STL → 3MF) — the biggest simplification
 
@@ -301,5 +389,14 @@ Thumbelina:
   older A1-mini firmware has a single LAN Only toggle; the Step 2
   smoke test is the ground truth for whether `:8883`/`:990` are open.
 - **Don't debug reachability from a roaming laptop on an
-  isolated-client Wi-Fi VLAN** — run the smoke test from the Pi
-  before concluding anything is wrong with the printer.
+  isolated-client Wi-Fi VLAN** (or between two devices on
+  `byu-devices`, which blocks client-to-client traffic) — run the
+  smoke test from the Pi, or put printer + laptop on a shared phone
+  hotspot, before concluding anything is wrong with the printer.
+- **Don't change the printer-side file/storage layout** — uploading
+  to a non-default path is the confirmed root cause of the
+  `0500-4003` "unable to parse file" failure that cost `ac-dev-lab`
+  weeks (see field notes above).
+- **Don't rely on `set_bed_temperature()`** — it is a confirmed no-op
+  on the A1 mini; bake setpoints into the G-code or send
+  `M190`/`M109` via `printer.gcode()`.

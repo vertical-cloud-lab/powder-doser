@@ -1036,6 +1036,11 @@ prior art when porting to the H2D:
   [#160 *Integration of Bambu 3D Printer with colab & hugging face*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/160),
   [#168 *A1 Mini 3D printer — Self-driving Lab for MSE403H1*](https://github.com/AccelerationConsortium/ac-dev-lab/issues/168),
   and [PR #182 *MQTT client … for controlling a Bambu 3D printer*](https://github.com/AccelerationConsortium/ac-dev-lab/pull/182).
+  The operational lessons distilled from those threads (the
+  `0500-4003` upload-path root cause, the `set_bed_temperature`
+  no-op, access-code display quirk, LAN-local-only MQTT broker,
+  phone-hotspot caveats) are summarized in the
+  [A1 mini doc's field-notes section](a1-mini-programmatic-access.md#field-notes-from-ac-dev-lab-hard-won-a1-mini-lessons).
 
 Things from that prior art that should carry over to the H2D unchanged:
 
