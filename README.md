@@ -340,3 +340,36 @@ RSC-specific assets (`rsc.bst`, `rsc.bib`, `headers/`) are vendored in
 cd paper
 latexmk -pdf main.tex
 ```
+
+## Outreach
+
+A running list of individuals, academic groups, commercial vendors, and
+open-source projects we could reach out to for help with accurate, automated
+powder dispensing is kept in
+[`paper/background/07-powder-dispensing-outreach-contacts.md`](paper/background/07-powder-dispensing-outreach-contacts.md)
+(Edison-backed; per-entry `### Name` anchors and verifiable `(source: <URL>)`
+tags). The synthesis is produced by
+[`paper/background/edison_run_powder_dispensing_outreach_contacts.py`](paper/background/edison_run_powder_dispensing_outreach_contacts.py),
+with raw artifacts under
+[`paper/background/edison_artifacts/`](paper/background/edison_artifacts/),
+and is compiled from the accelerated-discovery forum thread on [accurate
+powder dispensing for chemistry and
+materials-science applications](https://accelerated-discovery.org/t/accurate-powder-dispensing-for-chemistry-and-materials-science-applications/177),
+the background notes in
+[#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29), and other
+references throughout this repository. Same workflow as the generative-CAD
+outreach note in [#43](https://github.com/vertical-cloud-lab/powder-doser/pull/43).
+
+A companion list of **powder-properties** experts (flowability and
+cohesion/friction measurement, DEM modeling and Bayesian calibration, AM
+spreadability and powder-bed metrology) — anchored to the TMS 2027
+calibration-optimization abstract from
+[#78](https://github.com/vertical-cloud-lab/powder-doser/pull/78) — is kept
+in
+[`paper/background/08-powder-properties-experts.md`](paper/background/08-powder-properties-experts.md),
+produced by
+[`paper/background/edison_run_powder_properties_experts.py`](paper/background/edison_run_powder_properties_experts.py)
+(three Edison `LITERATURE_HIGH` tasks plus direct web searching; raw
+artifacts under the same
+[`paper/background/edison_artifacts/`](paper/background/edison_artifacts/)
+directory).
