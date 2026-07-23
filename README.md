@@ -45,3 +45,17 @@ the background notes in
 [#29](https://github.com/vertical-cloud-lab/powder-doser/pull/29), and other
 references throughout this repository. Same workflow as the generative-CAD
 outreach note in [#43](https://github.com/vertical-cloud-lab/powder-doser/pull/43).
+
+A companion list of **powder-properties** experts (flowability and
+cohesion/friction measurement, DEM modeling and Bayesian calibration, AM
+spreadability and powder-bed metrology) — anchored to the TMS 2027
+calibration-optimization abstract from
+[#78](https://github.com/vertical-cloud-lab/powder-doser/pull/78) — is kept
+in
+[`paper/background/08-powder-properties-experts.md`](paper/background/08-powder-properties-experts.md),
+produced by
+[`paper/background/edison_run_powder_properties_experts.py`](paper/background/edison_run_powder_properties_experts.py)
+(three Edison `LITERATURE_HIGH` tasks plus direct web searching; raw
+artifacts under the same
+[`paper/background/edison_artifacts/`](paper/background/edison_artifacts/)
+directory).
