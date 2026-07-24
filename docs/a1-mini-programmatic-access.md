@@ -64,11 +64,20 @@ advice does not apply.
    (Settings → WLAN). Pin the IP with a DHCP reservation as usual —
    the LAN flow has no discovery/mDNS broker.
 2. On a BYU-IoT-style network with client isolation, **assume a
-   roaming laptop cannot reach the printer directly.** On
-   `byu-devices` specifically, devices are typically not allowed to
-   talk to each other at all, so the Step 2 smoke test may fail from
-   *any* second device on that network — not just roaming laptops.
-   Two workarounds:
+   roaming laptop cannot reach the printer directly — but verify
+   empirically before working around it.** `byu-devices` is
+   nominally a no-client-to-client network, yet in the July 2026
+   Thumbelina bringup the Step 2 smoke test *and* FTPS uploads
+   succeeded between a lab laptop and the printer with both reported
+   on `byu-devices`. Plausible reasons (unconfirmed — campus IT can
+   say which): isolation that blocks discovery/broadcast (mDNS/SSDP)
+   but permits direct unicast to a known IP — our workflow hard-codes
+   the IP, so it never trips discovery filtering — or per-owner
+   device grouping that allows traffic between devices registered to
+   the same account. Treat this as an observed, undocumented
+   allowance, not a guarantee; it can change without notice, so the
+   Pi-relay plan below still stands. If the smoke test *does* fail
+   from a second device, two workarounds:
    - **Interim: phone hotspot.** Put both the printer and the test
      laptop on the same phone hotspot so they share an isolated
      private network. The A1 mini is **2.4 GHz only** — on an iPhone
@@ -574,10 +583,12 @@ Thumbelina:
   older A1-mini firmware has a single LAN Only toggle; the Step 2
   smoke test is the ground truth for whether `:8883`/`:990` are open.
 - **Don't debug reachability from a roaming laptop on an
-  isolated-client Wi-Fi VLAN** (or between two devices on
-  `byu-devices`, which blocks client-to-client traffic) — run the
-  smoke test from the Pi, or put printer + laptop on a shared phone
-  hotspot, before concluding anything is wrong with the printer.
+  isolated-client Wi-Fi VLAN** (`byu-devices` nominally blocks
+  client-to-client traffic, though the 2026-07 Thumbelina bringup
+  reached the printer from a laptop on it — see Step 0) — if the
+  smoke test fails from a laptop, re-run it from the Pi, or put
+  printer + laptop on a shared phone hotspot, before concluding
+  anything is wrong with the printer.
 - **Don't change the printer-side file/storage layout** — uploading
   to a non-default path is the confirmed root cause of the
   `0500-4003` "unable to parse file" failure that cost `ac-dev-lab`
