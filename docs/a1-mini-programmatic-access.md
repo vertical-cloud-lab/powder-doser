@@ -161,15 +161,22 @@ script now enforces or exposes:
    what a single-extruder A1 mini will choke on. Slice a small test
    cube with an **A1 mini profile** instead — export from desktop
    Bambu Studio is fine, or use the CLI recipe below.
-   `a1_mini_send_print.py` inspects the file's G-code header before
-   uploading and refuses anything that looks H2D/IDEX-sliced (or that
-   is a project 3MF with no `Metadata/plate_1.gcode`); `--force`
-   overrides.
+   `a1_mini_send_print.py` reads `printer_model` /
+   `printer_settings_id` / `filament_map` from the file's G-code
+   CONFIG_BLOCK before uploading and refuses files sliced for another
+   printer or mapping filaments to a second extruder (or project 3MFs
+   with no `Metadata/plate_1.gcode`); `--force` overrides. It reports
+   the actual profile name the file carries, so a rejection tells you
+   *which* printer the file was really sliced for.
 2. **AMS lite:** the default payload sends `"use_ams": false` /
    `"ams_mapping": ""`, which prints from the external spool holder.
    If Thumbelina feeds from an AMS lite, set `USE_AMS = True` (and an
    `AMS_MAPPING`) in the FILL THESE IN block, or pass
-   `--use-ams`/`--ams-mapping`. The `ac-dev-lab` A1-mini issues
+   `--use-ams`/`--ams-mapping` (`--no-ams` forces the external spool
+   even if the file's constant says otherwise). The mapping takes one
+   entry per filament used by the job, and **tray numbers are
+   0-indexed** — `[0]` (or `--ams-mapping "0"`) is the first AMS lite
+   slot. The `ac-dev-lab` A1-mini issues
    ([#147](https://github.com/AccelerationConsortium/ac-dev-lab/issues/147),
    [#149](https://github.com/AccelerationConsortium/ac-dev-lab/issues/149))
    are the working reference for what mapped correctly there.
@@ -268,6 +275,46 @@ and [PR #529](https://github.com/AccelerationConsortium/ac-dev-lab/pull/529)
 (A1-mini toolhead-camera → AWS S3 + MQTT setup, useful when we add
 print monitoring).
 
+## Field notes from Thumbelina bringup (2026-07)
+
+Lessons from actually running the scripts against the lab's A1 mini
+(@me-madsen's field testing in PR #23). All three are fixed in the
+checked-in scripts — listed here so nobody re-debugs them from a stale
+copy:
+
+1. **"looks sliced for an H2D/IDEX printer" on a genuine A1-mini file
+   was a script bug (now fixed).** BambuStudio ≥ 2.x writes its *full*
+   config key set — including the multi-extruder keys
+   `filament_map_mode` / `filament_map` / `master_extruder_id` — into
+   **every** printer's G-code CONFIG_BLOCK, A1 mini included
+   (empirically confirmed against a real v02.06.00.51 CLI slice: a
+   clean A1-mini cube carries `filament_map_mode = Auto For Flush`).
+   The original wrong-printer check grepped the header for those
+   substrings and therefore rejected every legitimate A1-mini file.
+   The scripts now parse `printer_model` / `printer_settings_id` from
+   the CONFIG_BLOCK and check `filament_map` *values* (any entry ≥ 2
+   means a second extruder) — so a rejection now names the actual
+   printer the file was sliced for. If you have an old copy of
+   `a1_mini_send_print.py` / `a1_mini_slice_and_send.py` on a lab
+   laptop, replace it; do **not** work around the old check with
+   `--force`, which would also wave through genuinely wrong files.
+2. **The FTPS upload can "fail" after every byte has landed.** On the
+   real A1 mini, `STOR` sometimes completes but the printer never
+   finishes the TLS shutdown on the data channel, so the client times
+   out (or raises `SSLError`) waiting for the `226`. Worse, the
+   control channel is then desynced — the late `226` surfaces as a
+   bogus reply to the *next* command, so a follow-up `NLST` fails too.
+   The scripts now catch this, **reconnect, and verify the file is
+   actually in `/cache`** before proceeding (and abort if it isn't —
+   don't blind-trust an interrupted transfer, and don't hand-patch the
+   exception away as "transferred successfully").
+3. **AMS lite trays are 0-indexed.** `ams_mapping` wants one entry per
+   filament in the job, with tray numbers starting at `0` for the
+   first slot — `[1]` is the *second* slot. A wrong mapping is a
+   plausible cause of a print that uploads fine but never starts; when
+   in doubt, `--no-ams` prints from the external spool holder and
+   takes the AMS out of the equation.
+
 ## Headless slicing (STL → 3MF) — the biggest simplification
 
 The entire IDEX dance from the
@@ -308,6 +355,22 @@ CLI-general, not IDEX-specific:
 The third gotcha (manual filament mapping gated on
 `plate_to_slice != 0`) does not apply — a single-extruder printer
 never enters that codepath, so `--slice 0` works.
+
+**Empirically verified (2026-07-23, PR #23 CI sandbox):** this exact
+command — the v02.06.00.51 AppImage, the three profiles above
+flattened and patched per the two gotchas, a 12-triangle 20 mm cube
+STL — returned `"return_code": 0, "error_string": "Success."` and a
+34 KB `cube_a1m.gcode.3mf` (100 layers @ 0.20 mm, 3.72 g PLA,
+estimated 12 m 27 s) whose header carries
+`printer_model = Bambu Lab A1 mini` and single-extruder
+`filament_map = 1`. Notably the same header **also** contains
+`filament_map_mode = Auto For Flush` — that key is universal in
+BambuStudio ≥ 2.x output, which is exactly why the scripts' original
+substring-based wrong-printer check false-positived (see the
+Thumbelina field notes above). One CLI-output quirk: `printer_model_id`
+in `Metadata/slice_info.config` is left **empty** by CLI slicing
+(desktop exports populate it), so scripts should identify the target
+printer from the G-code CONFIG_BLOCK, not `slice_info.config`.
 
 ### One command from STL to print: `a1_mini_slice_and_send.py`
 
@@ -368,11 +431,12 @@ visual checkpoint before plastic moves. Concretely:
    binary version (the recipe here was developed against
    v02.06.00.51) and re-validate after any upgrade — same advice as
    pinning printer firmware.
-5. **This exact A1-mini invocation is still not empirically
-   verified** (see the NOTE above) — the P2S and H2D flows were run
-   for real in PR #23; the A1-mini variant is the same AppImage on a
-   simpler codepath, but treat the first failure as a profile
-   flattening/patching problem, not a script bug.
+5. **The verified run covers one happy path.** The A1-mini invocation
+   was empirically executed in PR #23 (see above), but only for a PLA
+   cube with the three stock profiles — a different filament/process
+   bundle still fails first on profile flattening/patching, so treat
+   the first failure with *new* profiles as a profile problem, not a
+   script bug.
 6. **Compute cost lands wherever the script runs.** A slice is
    CPU-heavy and can take minutes on a Pi; the script bounds it with
    `--slice-timeout` (default 900 s) and cleans its temp dir, but
@@ -387,11 +451,10 @@ visual checkpoint before plastic moves. Concretely:
    relay's, and there is no hardware interlock in either.
 
 > [!NOTE]
-> Unlike the P2S and H2D runs in the H2D doc, this exact A1-mini
-> invocation has **not** been empirically executed as part of PR #23
-> — but it exercises the *less* exotic (single-extruder) codepath of
-> the same verified AppImage, so treat any failure as a profile
-> flattening/patching problem first.
+> The A1-mini invocation is now empirically verified alongside the
+> P2S and H2D runs (see "Empirically verified" above) — for the stock
+> PLA-cube happy path. Failures with other profile bundles are still
+> most likely flattening/patching problems.
 
 ## Steps 5–6 — Relay, Tailscale, and the safety envelope
 

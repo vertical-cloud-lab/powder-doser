@@ -78,21 +78,71 @@ def make_ftps_context():
 
 
 # --- Step 3a: FTPS upload ---------------------------------------------------
-def upload(ip, code, local_path, remote_name):
+# Kept in sync with a1_mini_send_print.py and a1_mini_slice_and_send.py.
+def _ftps_connect(ip, code):
     ftps = ImplicitFTP_TLS(context=make_ftps_context())
     ftps.connect(ip, 990, 30)
     ftps.login("bblp", code)
     ftps.prot_p()
+    return ftps
+
+
+def upload(ip, code, local_path, remote_name):
+    ftps = _ftps_connect(ip, code)
+    interrupted = None
     with open(local_path, "rb") as f:
-        resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
-    listing = ftps.nlst("/cache")
-    ftps.quit()
-    print(f"FTPS upload: {resp}")
-    print(f"FTPS /cache now: {listing}")
-    if remote_name not in " ".join(listing):
+        try:
+            resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
+            print(f"FTPS upload: {resp}")
+        except (OSError, ftplib.Error) as e:
+            # Field-tested on the real A1 mini (Thumbelina, PR #23), and
+            # plausibly fleet-wide: after a successful STOR the printer
+            # sometimes never completes the TLS shutdown on the data
+            # channel, so the client times out (or sees an SSL error)
+            # waiting for the 226 even though every byte landed. The
+            # control channel is then out of sync - the late 226 surfaces
+            # as a bogus reply to the next command - so don't trust this
+            # session: reconnect and check whether the file arrived.
+            interrupted = e
+            print(f"FTPS: transfer ended with {type(e).__name__}: {e}")
+            print("FTPS: reconnecting to verify whether the upload landed...")
+    if interrupted is not None:
+        try:
+            ftps.close()
+        except Exception:
+            pass
+        ftps = _ftps_connect(ip, code)
+
+    listing = []
+    try:
+        listing = ftps.nlst("/cache")
+        print(f"FTPS /cache now: {listing}")
+    except (OSError, ftplib.Error) as e:
+        print(f"WARN: could not list /cache to verify the upload ({e}).")
+
+    uploaded = remote_name in " ".join(listing)
+    if interrupted is not None:
+        if uploaded:
+            print("FTPS upload verified: file is present in /cache despite "
+                  "the interrupted TLS shutdown.")
+        elif listing:
+            sys.exit("ERROR: the FTPS transfer was interrupted and "
+                     f"{remote_name} is NOT in /cache - re-run the upload.")
+        else:
+            sys.exit("ERROR: the FTPS transfer was interrupted and the "
+                     "upload could not be verified (listing /cache failed "
+                     "too) - re-run with --upload-only and check /cache.")
+    elif listing and not uploaded:
         print("WARN: uploaded file not visible in /cache listing - "
               "check the url path before blaming the printer.")
-    return resp
+
+    try:
+        ftps.quit()
+    except Exception:
+        try:
+            ftps.close()
+        except Exception:
+            pass
 
 
 # --- Step 3c payload (matches the doc's verified minimal command) -----------

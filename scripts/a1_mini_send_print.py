@@ -15,11 +15,20 @@ model-specific), publishes the `print.project_file` MQTT command, and
 watches device/<SERIAL>/report until `gcode_state` reaches RUNNING.
 
 A1-mini extras over the H2D script:
-  - Refuses files that look sliced for another printer (the IDEX
-    header in an H2D .gcode.3mf is exactly what single-extruder
+  - Reads the printer identity (`printer_model`) from the G-code
+    CONFIG_BLOCK and refuses files sliced for another printer (the
+    IDEX header in an H2D .gcode.3mf is exactly what single-extruder
     firmware chokes on). Override with --force if you know better.
+    Note it does NOT grep for substrings like "filament_map_mode" -
+    BambuStudio >= 2.x writes those keys into every printer's G-code,
+    A1 mini included (field-tested on Thumbelina, PR #23).
   - USE_AMS / AMS_MAPPING knobs for an AMS lite (defaults print from
-    the external spool holder).
+    the external spool holder). Tray numbers are 0-indexed: [0] is
+    the first AMS lite slot. --no-ams forces the external spool.
+  - Survives the printer's FTPS quirk where the TLS shutdown after a
+    successful upload times out: it reconnects and verifies the file
+    actually landed in /cache instead of failing (or blindly
+    trusting). Also field-tested on Thumbelina.
 
 Everything in the FILL THESE IN block can also be given on the command
 line (--ip/--access-code/--serial and the file as a positional
@@ -44,7 +53,9 @@ FILE_TO_PRINT = r"PUT_PATH_TO_YOUR_FILE_HERE.gcode.3mf"  # e.g. r"C:\Users\me\cu
 
 # AMS lite: leave as-is to print from the external spool holder. To
 # feed from an AMS lite set USE_AMS = True and AMS_MAPPING to the tray
-# mapping (see ac-dev-lab issues #147/#149 for working examples).
+# mapping - one entry per filament used by the job, tray numbers
+# 0-indexed, e.g. [0] for a single-filament job feeding from the first
+# slot (see ac-dev-lab issues #147/#149 for working examples).
 USE_AMS = False
 AMS_MAPPING = ""
 # =============================================================
@@ -53,6 +64,7 @@ import argparse
 import ftplib
 import json
 import os
+import re
 import socket
 import ssl
 import sys
@@ -105,13 +117,44 @@ def make_ftps_context():
     return ctx
 
 
+# --- G-code metadata parsing --------------------------------------------------
+# Kept in sync with a1_mini_slice_and_send.py.
+def read_gcode_metadata(zf):
+    """Parse `; key = value` / `; key: value` comment lines from the
+    HEADER_BLOCK and CONFIG_BLOCK at the top of Metadata/plate_1.gcode.
+    First occurrence wins; stops at the end of the config block."""
+    fields = {}
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 5000:
+                break
+            line = raw.decode("utf-8", "replace")
+            if ("CONFIG_BLOCK_END" in line
+                    or "EXECUTABLE_BLOCK_START" in line):
+                break
+            m = re.match(r";\s*([^=:]+?)\s*[=:]\s*(.*)", line)
+            if m:
+                fields.setdefault(m.group(1).strip(), m.group(2).strip())
+    return fields
+
+
 # --- A1-mini payload sanity check -------------------------------------------
+# Kept in sync with a1_mini_slice_and_send.py.
 def check_payload(path, force):
     """Best-effort check that `path` is a sliced job for an A1 mini.
 
     Returns a list of warnings; raises SystemExit on hard failures
     (not a sliced 3mf, or sliced for a different printer without
     --force).
+
+    The check reads the CONFIG_BLOCK's own identity fields. It must
+    NOT grep the header for substrings like "filament_map_mode":
+    BambuStudio >= 2.x writes the full config key set - including the
+    multi-extruder keys - into EVERY printer's G-code, so a genuine
+    A1-mini slice contains `filament_map_mode = Auto For Flush` too.
+    The old substring check false-positived on every legitimate
+    A1-mini file (found in Thumbelina field testing, PR #23, and
+    reproduced against a real v02.06.00.51 CLI slice).
     """
     warnings = []
     try:
@@ -126,50 +169,117 @@ def check_payload(path, force):
                  "Studio export, or the CLI recipe in "
                  "docs/a1-mini-programmatic-access.md) and retry.")
 
-    # The BambuStudio G-code header names the target printer and, on
-    # IDEX machines, carries filament_map lines. Scan the first ~200
-    # header lines only.
-    with zf.open("Metadata/plate_1.gcode") as f:
-        header = []
-        for _ in range(200):
-            line = f.readline().decode("utf-8", "replace")
-            if not line:
-                break
-            header.append(line)
-    header_text = "".join(header)
+    meta = read_gcode_metadata(zf)
+    model = meta.get("printer_model") or meta.get("printer_settings_id") or ""
+    # filament_map assigns each filament to an extruder; any value >= 2
+    # means the job uses a second extruder, which the A1 mini lacks.
+    map_values = [int(v) for v in
+                  re.findall(r"\d+", meta.get("filament_map", ""))]
 
-    wrong_printer = "H2D" in header_text or "filament_map_mode" in header_text
-    if wrong_printer:
-        msg = (f"{path} looks sliced for an H2D/IDEX printer (its header "
-               "carries the dual-extruder metadata a single-extruder A1 "
-               "mini will choke on). Re-slice with an A1 mini profile.")
+    problem = None
+    if model and "A1 mini" not in model:
+        problem = f'{path} is sliced for "{model}", not an A1 mini'
+    elif any(v >= 2 for v in map_values):
+        problem = (f"{path} maps filaments to a second extruder "
+                   f"(filament_map = {meta.get('filament_map')}) - a "
+                   "dual-extruder (H2D/IDEX) slice")
+    if problem:
+        msg = problem + ". Re-slice with an A1 mini profile."
         if force:
             warnings.append("WARN (--force): " + msg)
         else:
             sys.exit("ERROR: " + msg + " Pass --force to send it anyway.")
-    elif "A1" not in header_text:
-        warnings.append("WARN: could not confirm an A1 mini profile in the "
-                        "G-code header - make sure this file was sliced "
-                        "for the A1 mini.")
+    elif not model:
+        warnings.append("WARN: no printer_model/printer_settings_id in the "
+                        "G-code header - could not confirm this file was "
+                        "sliced for the A1 mini.")
     return warnings
 
 
+# --- AMS mapping normalization ------------------------------------------------
+# Kept in sync with a1_mini_slice_and_send.py.
+def normalize_ams_mapping(value):
+    """Accept [0], "0", "0,1", or "" and return what the payload expects:
+    a list of ints (one entry per filament in the job, AMS lite tray
+    numbers 0-indexed), or "" for no mapping."""
+    if value in ("", None) or value == []:
+        return ""
+    if isinstance(value, str):
+        parts = [p for p in re.split(r"[\s,;]+", value.strip()) if p]
+        try:
+            return [int(p) for p in parts]
+        except ValueError:
+            sys.exit('ERROR: --ams-mapping must be comma-separated tray '
+                     f'numbers (e.g. "0" or "0,1"), got: {value!r}')
+    return [int(v) for v in value]
+
+
 # --- FTPS upload -------------------------------------------------------------
-def upload(ip, code, local_path, remote_name):
+# Kept in sync with a1_mini_slice_and_send.py and h2d_step3_send_print.py.
+def _ftps_connect(ip, code):
     ftps = ImplicitFTP_TLS(context=make_ftps_context())
     ftps.connect(ip, 990, 30)
     ftps.login("bblp", code)
     ftps.prot_p()
+    return ftps
+
+
+def upload(ip, code, local_path, remote_name):
+    ftps = _ftps_connect(ip, code)
+    interrupted = None
     with open(local_path, "rb") as f:
-        resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
-    listing = ftps.nlst("/cache")
-    ftps.quit()
-    print(f"FTPS upload: {resp}")
-    print(f"FTPS /cache now: {listing}")
-    if remote_name not in " ".join(listing):
+        try:
+            resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
+            print(f"FTPS upload: {resp}")
+        except (OSError, ftplib.Error) as e:
+            # Field-tested on the real A1 mini (Thumbelina, PR #23):
+            # after a successful STOR the printer sometimes never
+            # completes the TLS shutdown on the data channel, so the
+            # client times out (or sees an SSL error) waiting for the
+            # 226 even though every byte landed. The control channel is
+            # then out of sync - the late 226 surfaces as a bogus reply
+            # to the next command - so don't trust this session:
+            # reconnect and check whether the file actually arrived.
+            interrupted = e
+            print(f"FTPS: transfer ended with {type(e).__name__}: {e}")
+            print("FTPS: reconnecting to verify whether the upload landed...")
+    if interrupted is not None:
+        try:
+            ftps.close()
+        except Exception:
+            pass
+        ftps = _ftps_connect(ip, code)
+
+    listing = []
+    try:
+        listing = ftps.nlst("/cache")
+        print(f"FTPS /cache now: {listing}")
+    except (OSError, ftplib.Error) as e:
+        print(f"WARN: could not list /cache to verify the upload ({e}).")
+
+    uploaded = remote_name in " ".join(listing)
+    if interrupted is not None:
+        if uploaded:
+            print("FTPS upload verified: file is present in /cache despite "
+                  "the interrupted TLS shutdown.")
+        elif listing:
+            sys.exit("ERROR: the FTPS transfer was interrupted and "
+                     f"{remote_name} is NOT in /cache - re-run the upload.")
+        else:
+            sys.exit("ERROR: the FTPS transfer was interrupted and the "
+                     "upload could not be verified (listing /cache failed "
+                     "too) - re-run with --upload-only and check /cache.")
+    elif listing and not uploaded:
         print("WARN: uploaded file not visible in /cache listing - "
               "check the url path before blaming the printer.")
-    return resp
+
+    try:
+        ftps.quit()
+    except Exception:
+        try:
+            ftps.close()
+        except Exception:
+            pass
 
 
 # --- print.project_file payload ---------------------------------------------
@@ -274,11 +384,17 @@ def main():
     parser.add_argument("--ip", default=os.environ.get("A1_MINI_IP"))
     parser.add_argument("--access-code", default=os.environ.get("A1_MINI_ACCESS_CODE"))
     parser.add_argument("--serial", default=os.environ.get("A1_MINI_SERIAL"))
-    parser.add_argument("--use-ams", action="store_true", default=USE_AMS,
+    parser.add_argument("--use-ams", dest="use_ams", action="store_true",
+                        default=None,
                         help="feed from the AMS lite instead of the "
                         "external spool holder")
-    parser.add_argument("--ams-mapping", default=AMS_MAPPING,
-                        help="AMS tray mapping (only with --use-ams)")
+    parser.add_argument("--no-ams", dest="use_ams", action="store_false",
+                        help="print from the external spool holder even if "
+                        "USE_AMS = True in this file")
+    parser.add_argument("--ams-mapping", default=None,
+                        help='AMS tray mapping, one 0-indexed tray number '
+                        'per filament in the job, e.g. "0" (only with '
+                        '--use-ams)')
     parser.add_argument("--upload-only", action="store_true",
                         help="run the FTPS upload only; don't start a print")
     parser.add_argument("--force", action="store_true",
@@ -308,6 +424,16 @@ def main():
     if not os.path.isfile(path):
         parser.error(f"no such file: {path}")
 
+    use_ams = USE_AMS if args.use_ams is None else args.use_ams
+    ams_mapping = normalize_ams_mapping(
+        args.ams_mapping if args.ams_mapping is not None else AMS_MAPPING)
+    if not use_ams:
+        ams_mapping = ""  # external spool holder: no mapping in the payload
+    elif ams_mapping == "":
+        print("WARN: --use-ams without an AMS mapping - the printer will "
+              'try its default tray; pass --ams-mapping "0" (etc.) to be '
+              "explicit.")
+
     for warning in check_payload(path, args.force):
         print(warning)
 
@@ -325,7 +451,7 @@ def main():
             return 1
 
     return start_and_watch(ip, code, serial, remote_name,
-                           args.use_ams, args.ams_mapping, args.watch)
+                           use_ams, ams_mapping, args.watch)
 
 
 if __name__ == "__main__":

@@ -312,6 +312,19 @@ does implicit FTPS + TLS-1.2 session reuse by default, so a
 successful `ls /cache` here while the Python script returns `522`
 confirms the resumption / TLS-version mismatch above.
 
+**Troubleshooting — `STOR` "times out" (or raises `SSLError`) after
+the transfer completed.** The *third* FTPS quirk, hit on the A1 mini
+during Thumbelina field testing (PR #23, 2026-07) and plausibly
+fleet-wide: the upload finishes, but the printer never completes the
+TLS shutdown on the data channel, so `storbinary` times out waiting
+for the `226` even though every byte landed — and the control channel
+is left desynced (the late `226` shows up as a bogus reply to the next
+command, so a follow-up `NLST` fails too). The checked-in upload
+scripts handle this by catching the exception, **reconnecting on a
+fresh control connection, and verifying the file is present in
+`/cache`** before proceeding. If you write your own uploader, do the
+same — don't swallow the exception and assume success.
+
 [bbl-upload]: https://github.com/mattcar15/bambu-printer-api/blob/main/bambulabs_api/printer.py
 
 ### Step 3 — End-to-end dry run with a real `.gcode.3mf`
