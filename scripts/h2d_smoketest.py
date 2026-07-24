@@ -113,7 +113,12 @@ def main():
         print("MQTT OK:", m.topic, m.payload[:120], "...")
         got.set()
 
-    c = mqtt.Client()
+    # paho-mqtt 2.x deprecates the bare Client() constructor; on_message
+    # is signature-compatible under VERSION2. Fall back for paho-mqtt 1.x.
+    try:
+        c = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    except AttributeError:
+        c = mqtt.Client()
     c.username_pw_set("bblp", code)
     c.tls_set(cert_reqs=ssl.CERT_NONE)
     c.tls_insecure_set(True)

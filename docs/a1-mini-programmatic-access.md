@@ -278,9 +278,10 @@ print monitoring).
 ## Field notes from Thumbelina bringup (2026-07)
 
 Lessons from actually running the scripts against the lab's A1 mini
-(@me-madsen's field testing in PR #23). All three are fixed in the
-checked-in scripts — listed here so nobody re-debugs them from a stale
-copy:
+(@me-madsen's field testing in PR #23, including the full
+Gemini-assisted troubleshooting session whose transcript is attached
+to the PR). All are fixed or diagnosable in the checked-in scripts —
+listed here so nobody re-debugs them from a stale copy:
 
 1. **"looks sliced for an H2D/IDEX printer" on a genuine A1-mini file
    was a script bug (now fixed).** BambuStudio ≥ 2.x writes its *full*
@@ -313,7 +314,51 @@ copy:
    first slot — `[1]` is the *second* slot. A wrong mapping is a
    plausible cause of a print that uploads fine but never starts; when
    in doubt, `--no-ams` prints from the external spool holder and
-   takes the AMS out of the equation.
+   takes the AMS out of the equation. (The scripts accept
+   `--ams-mapping "0"`, `"0,1"`, or the bracketed `"[1]"` form
+   interchangeably.)
+4. **Printer error `83935248` (hex `0500-C010`) at print start is a
+   file-path/parse rejection — check the filename before the SD
+   card.** Seen on Thumbelina after uploading
+   `Second Generation Knife - Top Handle.gcode.3mf`: the FTPS upload
+   succeeded, but the `print.project_file` command was rejected. Two
+   causes to rule out, in order: (a) **spaces/special characters in
+   the remote filename** — the name lands verbatim inside the MQTT
+   `url` (`ftp:///cache/<name>`) and breaks the printer's path
+   parsing; the scripts now sanitize the remote name to
+   `A-Za-z0-9._-` automatically. (b) **the file genuinely wasn't
+   sliced for an A1 mini** — `--force` only bypasses the *local*
+   check; the firmware still refuses wrong-printer jobs. Same triage
+   philosophy as `ac-dev-lab`'s `0500-4003` saga above: it's a
+   path/file problem, not an SD-card problem — don't reformat first.
+5. **Windows headless slicing: two traps.** (a) Point
+   `SLICER_CMD` at the real `bambu-studio.exe` (usually
+   `C:\Program Files\Bambu Studio\bambu-studio.exe`), **not** the
+   Start-Menu entry — that is a `.lnk` shortcut `subprocess` cannot
+   execute, and the script now refuses it with an explanation.
+   (b) Slicer exit code `3221225477` is `0xC0000005`, a Windows
+   access violation inside `bambu-studio.exe`; field-seen causes are
+   an STL input without the three flattened profile JSONs (or with
+   unflattened ones), `--orient`/`--arrange` applied to a project 3MF
+   (retry with `--no-arrange`), or a GUI Bambu Studio instance still
+   running/hung in the background holding file locks. The script now
+   prints this triage when it sees that exit code.
+6. **Windows + `uv`-managed Python.** On a laptop where Python was
+   installed via [`uv`](https://docs.astral.sh/uv/), global
+   `pip install` is blocked (PEP 668 "externally managed") and VS
+   Code may silently pick the bare `~\.local\bin\python3.14.exe`
+   interpreter, producing `ModuleNotFoundError: No module named
+   'paho'` even after a "successful" install elsewhere. The clean
+   pattern: `uv venv` in the project folder, `uv pip install
+   paho-mqtt`, then `uv run a1_mini_send_print.py …` (or select the
+   `.venv` interpreter in VS Code so plain `python` works). This cost
+   most of a debugging session on Thumbelina bringup.
+7. **The paho-mqtt `Callback API version 1 is deprecated` warning is
+   gone.** The scripts now construct the client with
+   `mqtt.CallbackAPIVersion.VERSION2` (falling back to the old
+   constructor on paho-mqtt 1.x). The warning was always harmless —
+   if a stale copy still prints it, that's your cue to pull fresh
+   scripts, not a connectivity problem.
 
 ## Headless slicing (STL → 3MF) — the biggest simplification
 

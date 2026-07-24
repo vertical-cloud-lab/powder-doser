@@ -165,7 +165,10 @@ IP, ACCESS_CODE, SERIAL = "<IP>", "<ACCESS_CODE>", "<SERIAL>"
 got = threading.Event()
 def on_msg(c, u, m):
     print("MQTT OK:", m.topic, m.payload[:120], "…"); got.set()
-c = mqtt.Client()
+try:                       # paho-mqtt 2.x (silences the v1 deprecation)
+    c = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+except AttributeError:     # paho-mqtt 1.x
+    c = mqtt.Client()
 c.username_pw_set("bblp", ACCESS_CODE)
 c.tls_set(cert_reqs=ssl.CERT_NONE); c.tls_insecure_set(True)
 c.on_message = on_msg

@@ -117,6 +117,28 @@ def make_ftps_context():
     return ctx
 
 
+def make_mqtt_client():
+    # paho-mqtt 2.x deprecates the bare Client() constructor (both lab
+    # laptops printed "Callback API version 1 is deprecated" during
+    # Thumbelina field testing). on_message has the same signature under
+    # VERSION2, so use it when available; paho-mqtt 1.x has no
+    # CallbackAPIVersion and takes the old constructor.
+    try:
+        return mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    except AttributeError:
+        return mqtt.Client()
+
+
+def sanitize_remote_name(name):
+    """Restrict the remote filename to A-Za-z0-9._- .
+
+    The name is embedded verbatim in the MQTT `url`
+    (`ftp:///cache/<name>`); on Thumbelina a filename with spaces was
+    rejected printer-side with error 83935248 (hex 0500-C010, a
+    file-path/parse failure) even though the FTPS upload succeeded."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
+
 # --- G-code metadata parsing --------------------------------------------------
 # Kept in sync with a1_mini_slice_and_send.py.
 def read_gcode_metadata(zf):
@@ -199,13 +221,14 @@ def check_payload(path, force):
 # --- AMS mapping normalization ------------------------------------------------
 # Kept in sync with a1_mini_slice_and_send.py.
 def normalize_ams_mapping(value):
-    """Accept [0], "0", "0,1", or "" and return what the payload expects:
-    a list of ints (one entry per filament in the job, AMS lite tray
-    numbers 0-indexed), or "" for no mapping."""
+    """Accept [0], "0", "0,1", or "[1]" (bracketed strings included -
+    that's the form LLM-suggested commands tend to produce) and return
+    what the payload expects: a list of ints (one entry per filament in
+    the job, AMS lite tray numbers 0-indexed), or "" for no mapping."""
     if value in ("", None) or value == []:
         return ""
     if isinstance(value, str):
-        parts = [p for p in re.split(r"[\s,;]+", value.strip()) if p]
+        parts = [p for p in re.split(r"[\s,;\[\]]+", value.strip()) if p]
         try:
             return [int(p) for p in parts]
         except ValueError:
@@ -335,7 +358,7 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
             print(f"print_error: {err}")
             failed.set()
 
-    c = mqtt.Client()
+    c = make_mqtt_client()
     c.username_pw_set("bblp", code)
     c.tls_set(cert_reqs=ssl.CERT_NONE)
     c.tls_insecure_set(True)
@@ -437,7 +460,11 @@ def main():
     for warning in check_payload(path, args.force):
         print(warning)
 
-    remote_name = os.path.basename(path)
+    remote_name = sanitize_remote_name(os.path.basename(path))
+    if remote_name != os.path.basename(path):
+        print(f"NOTE: uploading as {remote_name!r} - spaces/special "
+              "characters in the filename break the printer's file-path "
+              "parsing (error 83935248 / 0500-C010).")
     upload(ip, code, path, remote_name)
     if args.upload_only:
         print("Upload-only mode: not starting a print.")

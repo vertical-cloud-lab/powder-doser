@@ -30,6 +30,7 @@ import argparse
 import ftplib
 import json
 import os
+import re
 import socket
 import ssl
 import sys
@@ -75,6 +76,28 @@ def make_ftps_context():
     ctx.minimum_version = ssl.TLSVersion.TLSv1_2
     ctx.maximum_version = ssl.TLSVersion.TLSv1_2
     return ctx
+
+
+def make_mqtt_client():
+    # paho-mqtt 2.x deprecates the bare Client() constructor (the lab
+    # laptops printed "Callback API version 1 is deprecated"). on_message
+    # has the same signature under VERSION2, so use it when available;
+    # paho-mqtt 1.x has no CallbackAPIVersion and takes the old form.
+    try:
+        return mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    except AttributeError:
+        return mqtt.Client()
+
+
+def sanitize_remote_name(name):
+    """Restrict the remote filename to A-Za-z0-9._- .
+
+    The name is embedded verbatim in the MQTT `url`
+    (`ftp:///cache/<name>`); on the lab's A1 mini a filename with spaces
+    was rejected printer-side with error 83935248 (hex 0500-C010, a
+    file-path/parse failure) even though the FTPS upload succeeded, and
+    the same URL parsing applies fleet-wide."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
 
 
 # --- Step 3a: FTPS upload ---------------------------------------------------
@@ -197,7 +220,7 @@ def start_and_watch(ip, code, serial, remote_name, watch_seconds):
             print(f"print_error: {err}")
             failed.set()
 
-    c = mqtt.Client()
+    c = make_mqtt_client()
     c.username_pw_set("bblp", code)
     c.tls_set(cert_reqs=ssl.CERT_NONE)
     c.tls_insecure_set(True)
@@ -263,7 +286,11 @@ def main():
         print("WARN: file doesn't end in .gcode.3mf - project 3MFs without "
               "Metadata/plate_1.gcode inside will not start.")
 
-    remote_name = os.path.basename(args.file)
+    remote_name = sanitize_remote_name(os.path.basename(args.file))
+    if remote_name != os.path.basename(args.file):
+        print(f"NOTE: uploading as {remote_name!r} - spaces/special "
+              "characters in the filename break the printer's file-path "
+              "parsing (error 83935248 / 0500-C010).")
     upload(args.ip, args.access_code, args.file, remote_name)
     if args.upload_only:
         print("Upload-only mode: not starting a print.")

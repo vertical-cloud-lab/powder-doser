@@ -147,6 +147,28 @@ def make_ftps_context():
     return ctx
 
 
+def make_mqtt_client():
+    # paho-mqtt 2.x deprecates the bare Client() constructor (both lab
+    # laptops printed "Callback API version 1 is deprecated" during
+    # Thumbelina field testing). on_message has the same signature under
+    # VERSION2, so use it when available; paho-mqtt 1.x has no
+    # CallbackAPIVersion and takes the old constructor.
+    try:
+        return mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    except AttributeError:
+        return mqtt.Client()
+
+
+def sanitize_remote_name(name):
+    """Restrict the remote filename to A-Za-z0-9._- .
+
+    The name is embedded verbatim in the MQTT `url`
+    (`ftp:///cache/<name>`); on Thumbelina a filename with spaces was
+    rejected printer-side with error 83935248 (hex 0500-C010, a
+    file-path/parse failure) even though the FTPS upload succeeded."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
+
 # --- headless slicing --------------------------------------------------------
 def classify_input(path):
     """Return 'stl', 'project_3mf', or exit for inputs we refuse."""
@@ -181,8 +203,8 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
             sys.exit(f"ERROR: {label} not found: {p}")
 
     out_dir = tempfile.mkdtemp(prefix="a1m_slice_")
-    export_name = (os.path.splitext(os.path.basename(input_path))[0]
-                   .replace(" ", "_") + ".gcode.3mf")
+    export_name = sanitize_remote_name(
+        os.path.splitext(os.path.basename(input_path))[0]) + ".gcode.3mf"
     if export_name.endswith(".3mf.gcode.3mf"):
         export_name = export_name[:-len(".3mf.gcode.3mf")] + ".gcode.3mf"
 
@@ -235,12 +257,24 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
         tail = "\n".join((proc.stdout or "").splitlines()[-15:])
         if not keep_dir:
             shutil.rmtree(out_dir, ignore_errors=True)
+        if proc.returncode in (3221225477, -1073741819):
+            # 0xC0000005: bambu-studio.exe crashed with a Windows access
+            # violation (field-seen on Thumbelina bringup, PR #23).
+            hint = ("Exit code 3221225477 is 0xC0000005, a Windows access "
+                    "violation inside bambu-studio.exe. Field-seen causes, "
+                    "in order of likelihood: (a) STL input without the "
+                    "three flattened profile JSONs (or with unflattened "
+                    "ones), (b) --orient/--arrange applied to a project "
+                    "3MF - retry with --no-arrange, (c) a GUI Bambu Studio "
+                    "instance still running or hung in the background - "
+                    "close it (check Task Manager) and retry.")
+        else:
+            hint = ("First suspects (doc: 'Headless slicing'): unflattened "
+                    "`inherits` chains in the profile JSONs, or missing "
+                    "from/inherits/printer_settings_id patches on the "
+                    "machine config.")
         sys.exit("ERROR: slicing failed (exit code "
-                 f"{proc.returncode}).\nLast slicer output:\n{tail}\n"
-                 "First suspects (doc: 'Headless slicing'): unflattened "
-                 "`inherits` chains in the profile JSONs, or missing "
-                 "from/inherits/printer_settings_id patches on the "
-                 "machine config.")
+                 f"{proc.returncode}).\nLast slicer output:\n{tail}\n{hint}")
 
     size_kb = os.path.getsize(export_path) // 1024
     print(f"Sliced OK: {export_path} ({size_kb} KB)")
@@ -383,13 +417,14 @@ def check_payload(path, force):
 # --- AMS mapping normalization ------------------------------------------------
 # Kept in sync with a1_mini_send_print.py.
 def normalize_ams_mapping(value):
-    """Accept [0], "0", "0,1", or "" and return what the payload expects:
-    a list of ints (one entry per filament in the job, AMS lite tray
-    numbers 0-indexed), or "" for no mapping."""
+    """Accept [0], "0", "0,1", or "[1]" (bracketed strings included -
+    that's the form LLM-suggested commands tend to produce) and return
+    what the payload expects: a list of ints (one entry per filament in
+    the job, AMS lite tray numbers 0-indexed), or "" for no mapping."""
     if value in ("", None) or value == []:
         return ""
     if isinstance(value, str):
-        parts = [p for p in re.split(r"[\s,;]+", value.strip()) if p]
+        parts = [p for p in re.split(r"[\s,;\[\]]+", value.strip()) if p]
         try:
             return [int(p) for p in parts]
         except ValueError:
@@ -519,7 +554,7 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
             print(f"print_error: {err}")
             failed.set()
 
-    c = mqtt.Client()
+    c = make_mqtt_client()
     c.username_pw_set("bblp", code)
     c.tls_set(cert_reqs=ssl.CERT_NONE)
     c.tls_insecure_set(True)
@@ -632,6 +667,12 @@ def main():
             "placeholders), or pass the corresponding flags.")
     if not os.path.isfile(path):
         parser.error(f"no such file: {path}")
+    if slicer.lower().endswith(".lnk"):
+        parser.error(
+            f"{slicer} is a Windows Start-Menu shortcut (.lnk), not the "
+            "program itself - subprocess cannot execute it. Point "
+            "SLICER_CMD/--slicer at the real bambu-studio.exe (usually "
+            r"C:\Program Files\Bambu Studio\bambu-studio.exe" ").")
     if not os.path.isfile(slicer):
         parser.error(f"no such slicer binary: {slicer}")
 
