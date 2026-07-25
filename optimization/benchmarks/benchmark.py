@@ -83,7 +83,8 @@ def main() -> None:
     bo_path = Path(args.bo_params)
     if bo_path.exists() and not args.quick:
         bo_params = json.loads(bo_path.read_text())
-        methods = methods + ["bo_three_phase"]
+        if "bo_three_phase" not in methods:
+            methods = methods + ["bo_three_phase"]
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
