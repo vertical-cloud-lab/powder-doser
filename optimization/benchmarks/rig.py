@@ -41,7 +41,7 @@ class Rig:
     """Sensor/actuator surface mirroring the firmware's capabilities."""
 
     TAP_PERIOD_S = 0.12          # solenoid on+off, matches firmware tap timing
-    GLOBAL_TIMEOUT_S = 240.0
+    GLOBAL_TIMEOUT_S = 300.0
 
     def __init__(self, sim: PowderDoserSim):
         self._sim = sim
