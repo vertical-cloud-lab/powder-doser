@@ -33,6 +33,8 @@ small working examples checked in beside this file.
 | **nTop Automate** (Linux headless) | ⚠️ tarball gated by login at app.ntop.com | ⚠️ ditto + paid license | Vendor-issued tarball + license file uploaded as encrypted GitHub secrets; commercial subscription |
 | **Fusion 360 / Generative Design** | ❌ 1.4 GB Win-only PE32 GUI installer; no Linux build, no headless mode | ❌ Generative Design is paid cloud, no public REST | Effectively impossible to bolt onto this repo's CI |
 | **Leo AI** (getleo.ai copilot) | ❌ web app + Windows-only desktop/CAD add-ins; no Linux anything | ❌ no self-serve API (gated request form, business tier only); ToS bars automation | Negotiated business-tier API access from the vendor — see [`leo-ai-evaluation.md`](leo-ai-evaluation.md) |
+| **AdamCAD / Adam** (adam.new, YC W25) | ❌ browser web app + Onshape/Fusion copilot extensions; open-source CADAM is OpenSCAD-WASM *in the browser* | ❌ no API/SDK/CLI/MCP at all; CADAM exports STL/SCAD/DXF only (no STEP) | Vendor would have to ship an API (none announced) — see [`adamcad-evaluation.md`](adamcad-evaluation.md) |
+| **CADScribe** (cadscribelabs.com) | ❌ login-gated browser chatbot only | ❌ API "on the roadmap" since Apr 2024, never shipped; private backend is browser-session-authed | Wait for the long-promised API — see [`cadscribe-evaluation.md`](cadscribe-evaluation.md) |
 
 Two of those rows — Onshape FeatureScript and nTop Automate — are clearly
 **not** "doesn't survive a fresh CI runner". They survive perfectly well if the
@@ -777,6 +779,49 @@ Onshape UI sit), not with the CadQuery → Zoo → Onshape CI lanes in this PR.
 Revisit only if their API program grants real access or an independent
 benchmark of the knowledge-QA claims appears.
 
+### AdamCAD & CADScribe — evaluated July 2026, neither adoptable for CI
+
+Researched after sgbaird asked whether we'd ever actually tried the other
+two tools that "delivered usable STL/STEP" in Xometry's 7-tool test (full
+writeups with sources: [`adamcad-evaluation.md`](adamcad-evaluation.md),
+[`cadscribe-evaluation.md`](cadscribe-evaluation.md)). Neither had been
+evaluated before; both fail the same gate as Leo AI — no public API — but
+for different reasons and with very different credibility:
+
+1. **AdamCAD → "Adam" (adam.new, YC W25, $4.1M seed)** is the most
+   organically-discussed AI CAD tool we've evaluated (five substantive HN
+   threads at 100–215 points; Leo had zero). It has pivoted from a viral
+   text-to-CAD app to an **interactive copilot inside Onshape/Fusion**
+   that writes FeatureScript against the same Onshape API we already call
+   directly. The open-sourced original (CADAM, GPL-3.0, ~4.9k stars) is
+   LLM→OpenSCAD compiled to WASM in the browser: **mesh-only (STL/SCAD/
+   DXF), no STEP, no CLI, no headless mode**, and self-hosting it for CI
+   would reduce to "OpenSCAD + an LLM" — which our existing lanes already
+   beat with a real BREP kernel. No API, no packages, no MCP server, no
+   docs site. Xometry rated it the best of the 7 on accuracy (4/5) but
+   delivered only STL/SCAD.
+2. **CADScribe (cadscribelabs.com)** is a 3-person, unfunded, HEC-Paris
+   student startup: a €4.99/mo browser chatbot that *does* emit real STEP
+   (BREP behind an undisclosed kernel/query language). Its API has been
+   "on the roadmap" since April 2024 and still was in the CEO's Feb 2026
+   interview; the backend is browser-session-authed with no key issuance.
+   Quality is simple-parts-only by every independent account *and* the
+   CEO's own admission ("the quality of output is still not great");
+   there's no parametric continuity between chat iterations. Community
+   footprint is near zero and the Reddit launch was founder-seeded.
+3. **One scoreboard caveat worth keeping**: in Xometry's specific prompt
+   set, CADScribe scored **3/5 accuracy vs Zoo's 2/5** (AdamCAD 4/5). That
+   doesn't change the lane choice — Zoo is the only one of the three with
+   a documented REST API, KCL parametric source, and iteration endpoints,
+   which is what this PR actually exercises — but it's a fair reminder
+   that Zoo's one-shot accuracy is not best-in-class and our
+   Judge-loop/iteration scaffolding is doing real work.
+
+Net: both are watch-list items, not adoption candidates. Adam is the one
+to re-check periodically — if they ever expose their Onshape-copilot agent
+as an API it would slot straight into our Onshape lane. Neither appears in
+any academic benchmark (same absence as Leo).
+
 ---
 
 ## Revised recommendation
@@ -828,4 +873,6 @@ say which one(s) and I'll do the secrets wiring + workflow in a follow-up PR.
 | [`excavator_trough.scad`](excavator_trough.scad) | OpenSCAD model that builds an STL on this runner |
 | [`edison-c0f412d3-literature-synthesis.md`](edison-c0f412d3-literature-synthesis.md) | Verbatim Edison/PaperQA3 high-effort lit synthesis used in §"Independent corroboration" |
 | [`leo-ai-evaluation.md`](leo-ai-evaluation.md) | Leo AI (getleo.ai) evaluation — product, sentiment, evaluations, API access (July 2026) |
+| [`adamcad-evaluation.md`](adamcad-evaluation.md) | AdamCAD / Adam (adam.new) evaluation — product, sentiment, evaluations, API access (July 2026) |
+| [`cadscribe-evaluation.md`](cadscribe-evaluation.md) | CADScribe (cadscribelabs.com) evaluation — product, sentiment, evaluations, API access (July 2026) |
 | [`logs/`](logs/) | Captured install / build / runtime output for every claim above |
