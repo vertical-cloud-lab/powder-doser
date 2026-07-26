@@ -193,9 +193,12 @@ class MassRateKF:
         self.dt = dt
 
     def update(self, z: float, noisy: bool, u_rev_s: float = None,
-               ff: float = None) -> tuple[float, float]:
+               ff: float = None, fresh: bool = True) -> tuple[float, float]:
         """u_rev_s + ff: optional control-input model so the estimate does not
-        lag a commanded ramp (input-blind KF is badly biased during spin-up)."""
+        lag a commanded ramp (input-blind KF is badly biased during spin-up).
+        fresh=False (a held balance sample) runs predict only: repeating the
+        measurement update on a held frame would treat one observation as
+        independent replicated evidence (methods-check A)."""
         self.kf.R = np.array([[(NOISY_SD if noisy else QUIET_SD) ** 2]])
         if u_rev_s is None:
             self.kf.F[1, 1] = 1.0   # input-blind: constant-rate model
@@ -204,7 +207,8 @@ class MassRateKF:
             self.kf.F[1, 1] = 1.0 - self.a
             self.kf.predict(u=np.array([[u_rev_s]]),
                             B=np.array([[0.0], [self.a * (ff or 0.3)]]))
-        self.kf.update(np.array([[z]]))
+        if fresh:
+            self.kf.update(np.array([[z]]))
         # powder only accumulates; clamp a negative rate estimate
         self.kf.x[1, 0] = max(0.0, self.kf.x[1, 0])
         return float(self.kf.x[0, 0]), float(self.kf.x[1, 0])
@@ -229,6 +233,7 @@ class RatePIKF:
         rig.set_tilt(tilt)
         rig.wait(0.8)
         integ, rpm, ff, revs = 0.0, 0.0, 0.35, 0.0
+        last_tick = -1
         L_tr = committed_lookahead_s(self.trickle_tilt)
         while True:
             if rig.timed_out():
@@ -236,8 +241,10 @@ class RatePIKF:
                 return "timeout"
             rig.wait(self.dt)
             revs += (rpm / 60.0) * self.dt
-            z, _ = rig.read()
-            m, r = kf.update(z, rig.actuating(), u_rev_s=rpm / 60.0, ff=ff)
+            z, _, tick = rig.read_frame()
+            m, r = kf.update(z, rig.actuating(), u_rev_s=rpm / 60.0, ff=ff,
+                             fresh=tick != last_tick)
+            last_tick = tick
             if revs > 0.3 and m > 1e-3:
                 ff = 0.9 * ff + 0.1 * (m / revs)
             remaining = target_g - m
@@ -304,15 +311,18 @@ class DualUKF:
         rig.set_tilt(tilt)
         rig.wait(0.8)
         L_tr = committed_lookahead_s(self.trickle_tilt)
+        last_tick = -1
         while True:
             if rig.timed_out():
                 rig.set_rpm(0.0)
                 return "timeout"
             rig.wait(dt)
-            z, _ = rig.read()
+            z, _, tick = rig.read_frame()
             ukf.R = np.array([[(NOISY_SD if rig.actuating() else QUIET_SD) ** 2]])
             ukf.predict()
-            ukf.update(np.array([z]))
+            if tick != last_tick:   # held frame -> no measurement update
+                ukf.update(np.array([z]))
+            last_tick = tick
             m, r, ff = ukf.x
             ff = float(np.clip(ff, 0.10, 1.5))
             ukf.x[2] = ff
@@ -341,9 +351,14 @@ class DualUKF:
 
 class MPCController:
     """Linear MPC on the grey-box model  m+ = m + r*dt ;  r+ = r + a(ff*u - r)
-    with hard  m_k <= target - margin  at every predicted step (the asymmetric
-    no-overshoot constraint LQG cannot express). Feed factor via EWMA of
-    (measured rate)/(commanded rev rate); state from the switching-R KF."""
+    with the committed-mass CUTOFF HEURISTIC  m_k + L*r_k <= target - margin
+    at every predicted step. Per the methods-check review this is not a hard
+    no-overshoot guarantee (hidden screw/lip inventory is unmodelled), so it
+    is a soft constraint with an exact L1 slack penalty - a hard version goes
+    infeasible whenever the estimate already violates the bound, which made
+    solver failures indistinguishable from deliberate zero commands.  Slack
+    activations and failed solves are counted (slack_uses / bad_solves).
+    Feed factor via EWMA; state from the switching-R KF."""
 
     name = "mpc"
 
@@ -373,25 +388,31 @@ class MPCController:
                      r[k + 1] == r[k] + a * (self._ff * u[k] - r[k])]
             if k:
                 cons += [cp.abs(u[k] - u[k - 1]) <= du_max]
-        # hard no-overshoot, two ways: (a) predicted committed mass, (b) the
-        # volume the screw is about to convey (at a conservative upper-bound
-        # feed factor) cannot exceed the estimated remaining mass - this guards
-        # against feeding blind while the balance signal stalls (arching)
-        cons += [m + cp.multiply(self._L, r) <= self._tgt]
+        # committed-mass cutoff heuristic, SOFT with an exact/L1 slack penalty
+        # (actuator + slew bounds stay hard); plus a volumetric future-input
+        # budget: what the screw may convey at an upper-bound feed factor
+        # cannot exceed the estimated remaining mass (guards blind feeding
+        # while the balance signal stalls, e.g. arching)
+        slack = cp.Variable(self.N + 1, nonneg=True)
+        cons += [m + cp.multiply(self._L, r) <= self._tgt + slack]
         self._ffhi = cp.Parameter(nonneg=True)
         cons += [self._ffhi * dt * cp.cumsum(u) <= self._budget]
         cost = (w_track * cp.sum_squares(self._tgt - m[1:])
                 + w_u * cp.sum_squares(u)
-                + w_du * cp.sum_squares(cp.diff(u)))
+                + w_du * cp.sum_squares(cp.diff(u))
+                + 1e3 * cp.sum(slack))          # exact penalty weight
         self._prob = cp.Problem(cp.Minimize(cost), cons)
         self._uvar = u
+        self._slack = slack
+        self.slack_uses = 0     # solves where the soft constraint was active
+        self.bad_solves = 0     # solver exceptions / no solution returned
 
     def run(self, rig: Rig, target_g: float) -> str:
         kf = MassRateKF(self.dt)
         ff, ff_n = self.ff_prior, 1.0
         rig.set_tilt(self.bulk_tilt if target_g > 0.5 else self.trickle_tilt)
         rig.wait(0.8)
-        u_cmd, revs = 0.0, 0.0
+        u_cmd, revs, last_tick = 0.0, 0.0, -1
         tilt = self.bulk_tilt if target_g > 0.5 else self.trickle_tilt
         while True:
             if rig.timed_out():
@@ -399,8 +420,10 @@ class MPCController:
                 return "timeout"
             rig.wait(self.dt)
             revs += u_cmd * self.dt
-            z, _ = rig.read()
-            m, r = kf.update(z, rig.actuating(), u_rev_s=u_cmd, ff=ff)
+            z, _, tick = rig.read_frame()
+            m, r = kf.update(z, rig.actuating(), u_rev_s=u_cmd, ff=ff,
+                             fresh=tick != last_tick)
+            last_tick = tick
             L = committed_lookahead_s(tilt)
             if revs > 0.4 and m > 0.03:              # EWMA feed-factor update,
                 corr = min(r * L, 0.6 * m)           # committed-mass correction,
@@ -433,7 +456,11 @@ class MPCController:
                 if self._uvar.value is None:
                     raise RuntimeError(self._prob.status)
                 u_cmd = float(max(0.0, self._uvar.value[0]))
+                if self._slack.value is not None and \
+                        float(np.max(self._slack.value)) > 1e-6:
+                    self.slack_uses += 1
             except Exception:
+                self.bad_solves += 1
                 u_cmd = 0.0                           # fail safe: stop feeding
             rig.set_rpm(u_cmd * 60.0)
         rig.set_rpm(0.0)

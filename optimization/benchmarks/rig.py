@@ -92,6 +92,12 @@ class Rig:
         """One balance frame (grams, stable) - what RS-232 would deliver."""
         return self._sim.read_balance()
 
+    def read_frame(self) -> tuple[float, bool, int]:
+        """(grams, stable, tick): tick increments once per acquired balance
+        frame, so estimators can skip measurement updates on held samples
+        (a frame counter is available from real serial framing too)."""
+        return self._sim.read_balance_frame()
+
     def actuating(self) -> bool:
         """Whether the controller's own actuators are (or were very recently)
         moving - the controller legitimately knows this about itself."""

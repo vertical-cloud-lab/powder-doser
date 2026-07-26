@@ -54,7 +54,16 @@ def main():
              f"{len({r['seed'] for r in rows})} seeds/cell. Tolerance ±5 mg; "
              "overshoot = true mass > target (strict). All numbers are true "
              "post-settle vial mass; controllers saw only the simulated "
-             "balance.\n"]
+             "balance.\n\n"
+             "**Descriptive only** (methods-check review): pooled medians mix "
+             "powders/contexts/targets and include timeout-censored 300 s "
+             "doses, so they must not be used to rank methods - see "
+             "`paired_stats.md` for cell-level paired differences with "
+             "seed-cluster bootstrap CIs. `time_s` ends at controller "
+             "declaration and excludes the 1 s scoring settle; `not-ok` "
+             "counts controller status (timeout/stall/error/overshoot-abort), "
+             "which is distinct from being outside tolerance. p95 is the "
+             "0.95 order statistic of the pooled sample.\n"]
     parts.append(table(rows, lambda r: "all", ["all"], "Pooled"))
     parts.append(table(rows, lambda r: r["powder"],
                        sorted({r["powder"] for r in rows}), "By powder"))

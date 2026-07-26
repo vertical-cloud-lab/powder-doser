@@ -33,7 +33,7 @@ CONTEXTS = {
 
 POWDER_SET = ["salt", "lactose", "AlSi10Mg"]
 TARGETS_G = [2.0, 0.3]
-N_SEEDS = 10
+N_SEEDS = 30    # >= ~30 independent seed clusters per the methods-check review
 
 
 def run_dose(method: str, ctrl, powder: str, ctx_name: str,

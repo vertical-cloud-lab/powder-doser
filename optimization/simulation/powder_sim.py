@@ -201,8 +201,16 @@ class PowderDoserSim:
         # pattern must not perturb the physical trajectory ---
         root = random.Random(seed)
         self.process_rng = random.Random(root.getrandbits(64))
-        self.event_rng = random.Random(root.getrandbits(64))
+        # per-mechanism event streams (methods-check critique D): one shared
+        # event stream let one controller's tap consume a draw another
+        # controller's avalanche would have used, corrupting the paired design
+        self.tap_rng = random.Random(root.getrandbits(64))
+        self.avalanche_rng = random.Random(root.getrandbits(64))
+        self.flight_rng = random.Random(root.getrandbits(64))
         self.balance_rng = random.Random(root.getrandbits(64))
+        # time-indexed hazard draws: exogenous shocks (blockage transitions,
+        # avalanche onsets) align by simulated time, not by call order
+        self._hazard_seed = root.getrandbits(64)
         run_rng = random.Random(root.getrandbits(64))
         self.t_s = 0.0
 
@@ -253,6 +261,7 @@ class PowderDoserSim:
         self._vib_phase = run_rng.uniform(0.0, 2.0 * math.pi)
         self._next_sample_s = 0.0
         self._sample_hold: tuple[float, bool] = (0.0, True)
+        self.balance_tick = 0                          # increments per frame
         self._recent: list[float] = []                 # last few raw samples
         self._disturb_level_target = 0.0
 
@@ -296,7 +305,7 @@ class PowderDoserSim:
         self.total_taps += 1
         s = self._steepness()
         coh = self.effective_cohesion()
-        rng = self.event_rng
+        rng = self.tap_rng
         # release probability: near-certain for a loaded lip at steep tilt,
         # drops for empty lips and cohesive powder
         x = (-0.2 + 2.6 * s - 2.0 * coh - 1.0 * self.lip_consolidation
@@ -334,6 +343,13 @@ class PowderDoserSim:
         polling faster than the balance yields no extra information and
         cannot perturb the simulation (fairness critique)."""
         return self._sample_hold
+
+    def read_balance_frame(self) -> tuple[float, bool, int]:
+        """(grams, stable, tick): the tick increments once per acquired frame,
+        so estimators can update only on fresh frames instead of treating a
+        held sample as independent replicated evidence (methods-check A)."""
+        grams, stable = self._sample_hold
+        return grams, stable, self.balance_tick
 
     def effective_cohesion(self) -> float:
         """Dry cohesion + capillary term from absorbed moisture only (no
@@ -447,10 +463,10 @@ class PowderDoserSim:
         out = self.lip_g * min(1.0, smooth * h)
         excess = max(0.0, self.lip_g - out - cap)
         lam = math.exp(-1.5 + 60.0 * excess + 2.0 * s - 2.5 * coh)  # events/s
-        if self.event_rng.random() < 1.0 - math.exp(-lam * h):
+        if self._hazard_u(1) < 1.0 - math.exp(-lam * h):
             med = max(2e-4, 0.3 * excess + 0.01 * cap) \
                 * (self.powder.particle_size_um / 100.0) ** 0.25
-            mass = self.event_rng.lognormvariate(math.log(med), 0.7)
+            mass = self.avalanche_rng.lognormvariate(math.log(med), 0.7)
             out += min(mass, self.lip_g - out)
         if self.vibration_duty > 0.0:
             out += self.lip_g * min(1.0, 1.5 * self.vibration_duty
@@ -480,30 +496,29 @@ class PowderDoserSim:
         """flowing <-> starved (rat-hole) <-> blocked, hazards per revolution.
         Cohesion, hopper compaction and low fill promote formation; rotation
         slowly clears; taps clear quickly (see tap())."""
-        rng = self.event_rng
         coh = self.effective_cohesion()
         h_fill = self.hopper_fill_frac()
         if self.flow_state == "flowing":
             lam = 0.10 * max(0.0, coh - 0.30) * (1.0 + self.hopper_compaction) \
                 * (1.0 + max(0.0, 0.3 - h_fill) * 3.0)
-            if rng.random() < 1.0 - math.exp(-lam * rev):
+            if self._hazard_u(2) < 1.0 - math.exp(-lam * rev):
                 self.flow_state = "starved"
         elif self.flow_state == "starved":
             lam_block = 0.15 * max(0.0, coh - 0.45)
             lam_clear = 0.08
-            u = rng.random()
+            u = self._hazard_u(3)
             if u < 1.0 - math.exp(-lam_block * rev):
                 self.flow_state = "blocked"
             elif u > math.exp(-lam_clear * rev):
                 self.flow_state = "flowing"
         else:  # blocked: rotation alone rarely clears it
-            if rng.random() < 1.0 - math.exp(-0.02 * rev):
+            if self._hazard_u(4) < 1.0 - math.exp(-0.02 * rev):
                 self.flow_state = "starved"
 
     def _launch(self, grams: float) -> None:
         if grams > 1e-7:
             fall = max(0.05, self.FALL_TIME_S
-                       + self.event_rng.gauss(0.0, 0.03))
+                       + self.flight_rng.gauss(0.0, 0.03))
             self.in_flight.append([self.t_s + fall, grams])
 
     def _update_flight(self) -> float:
@@ -587,10 +602,20 @@ class PowderDoserSim:
             stable = (len(self._recent) == 5
                       and max(self._recent) - min(self._recent) < 1e-3)
             self._sample_hold = (grams, stable)
+            self.balance_tick += 1
 
     def _steepness(self) -> float:
         """0 at horizontal ... 1 at plate 45 deg (rig 'vertical')."""
         return math.sin(math.radians(self.tilt_deg)) / math.sin(math.radians(45.0))
+
+    def _hazard_u(self, channel: int) -> float:
+        """Uniform draw keyed to (run, mechanism, substep index): exogenous
+        hazard shocks land at the same simulated times for every controller
+        sharing a seed, which is what makes the paired design meaningful."""
+        tick = int(round(self.t_s / self.SUBSTEP_S))
+        # deterministic integer key, unique per (channel, tick) within a run
+        key = self._hazard_seed + 1_000_003 * channel + 2_654_435_761 * tick
+        return random.Random(key).random()
 
 
 __all__ = ["Powder", "Context", "PowderDoserSim", "POWDERS"]
