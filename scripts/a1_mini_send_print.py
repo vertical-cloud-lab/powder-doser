@@ -8,11 +8,19 @@ The A1-mini-specific version of scripts/h2d_step3_send_print.py:
   2. pip install paho-mqtt
   3. python a1_mini_send_print.py
 
-It uploads the file to the printer's /cache over implicit FTPS
+It uploads the file to the printer's FTP root over implicit FTPS
 (TLS 1.2 session reuse - the same stack verified against the H2D in
 PR #23; the FTPS quirks are fleet-wide Bambu behaviour, not
 model-specific), publishes the `print.project_file` MQTT command, and
 watches device/<SERIAL>/report until `gcode_state` reaches RUNNING.
+
+Upload goes to the FTP ROOT and the url is `ftp:///<name>` - that is
+what bambulabs_api and the ac-dev-lab A1-mini scripts (the only stack
+proven to actually start prints on a real A1 mini) use. The first
+Thumbelina attempts used `/cache/` + `ftp:///cache/<name>` and the
+printer answered with error 0500-4003 ("unable to parse file" - the
+ac-dev-lab wrong-storage-path classic). --remote-dir cache restores
+the old behaviour if you need it.
 
 A1-mini extras over the H2D script:
   - Reads the printer identity (`printer_model`) from the G-code
@@ -27,8 +35,12 @@ A1-mini extras over the H2D script:
     the first AMS lite slot. --no-ams forces the external spool.
   - Survives the printer's FTPS quirk where the TLS shutdown after a
     successful upload times out: it reconnects and verifies the file
-    actually landed in /cache instead of failing (or blindly
-    trusting). Also field-tested on Thumbelina.
+    actually landed instead of failing (or blindly trusting). Also
+    field-tested on Thumbelina.
+  - Ignores print_error codes latched from EARLIER jobs (the printer
+    re-reports the last error to every fresh subscriber) and fails
+    only on a new error appearing after our start command - with the
+    code decoded to Bambu's hex form and a hint for the known ones.
 
 Everything in the FILL THESE IN block can also be given on the command
 line (--ip/--access-code/--serial and the file as a positional
@@ -133,10 +145,49 @@ def sanitize_remote_name(name):
     """Restrict the remote filename to A-Za-z0-9._- .
 
     The name is embedded verbatim in the MQTT `url`
-    (`ftp:///cache/<name>`); on Thumbelina a filename with spaces was
+    (`ftp:///<name>`); on Thumbelina a filename with spaces was
     rejected printer-side with error 83935248 (hex 0500-C010, a
     file-path/parse failure) even though the FTPS upload succeeded."""
     return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
+
+def remote_path(remote_dir, remote_name):
+    return f"/{remote_dir}/{remote_name}" if remote_dir else f"/{remote_name}"
+
+
+def remote_url(remote_dir, remote_name):
+    # Three slashes are intentional: ftp:// + absolute path.
+    return "ftp://" + remote_path(remote_dir, remote_name)
+
+
+# --- print_error decoding ----------------------------------------------------
+# Kept in sync across the three send scripts. Bambu reports print_error
+# as a decimal int; the community error tables use the hex form
+# AAAA-BBBB (e.g. 83902467 == 0500-4003).
+def fmt_print_error(err):
+    try:
+        n = int(err)
+    except (TypeError, ValueError):
+        return str(err)
+    return f"{err} (hex {(n >> 16) & 0xFFFF:04X}-{n & 0xFFFF:04X})"
+
+
+KNOWN_PRINT_ERRORS = {
+    0x0500C010: "file-path/parse failure - bad characters in the url, or "
+                "the url does not point at the uploaded file",
+    0x05004003: "printer could not parse/find the print file - the classic "
+                "wrong-upload-path error (ac-dev-lab / bambulabs_api#99). "
+                "Make sure the upload dir and the url agree; the "
+                "A1-mini-proven combination is FTP root + ftp:///<name> "
+                "(this script's default).",
+}
+
+
+def print_error_hint(err):
+    try:
+        return KNOWN_PRINT_ERRORS.get(int(err))
+    except (TypeError, ValueError):
+        return None
 
 
 # --- G-code metadata parsing --------------------------------------------------
@@ -247,12 +298,14 @@ def _ftps_connect(ip, code):
     return ftps
 
 
-def upload(ip, code, local_path, remote_name):
+def upload(ip, code, local_path, remote_name, remote_dir=""):
+    dest = remote_path(remote_dir, remote_name)
+    list_dir = "/" + remote_dir if remote_dir else "/"
     ftps = _ftps_connect(ip, code)
     interrupted = None
     with open(local_path, "rb") as f:
         try:
-            resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
+            resp = ftps.storbinary(f"STOR {dest}", f)
             print(f"FTPS upload: {resp}")
         except (OSError, ftplib.Error) as e:
             # Field-tested on the real A1 mini (Thumbelina, PR #23):
@@ -275,25 +328,25 @@ def upload(ip, code, local_path, remote_name):
 
     listing = []
     try:
-        listing = ftps.nlst("/cache")
-        print(f"FTPS /cache now: {listing}")
+        listing = ftps.nlst(list_dir)
+        print(f"FTPS {list_dir} now: {listing}")
     except (OSError, ftplib.Error) as e:
-        print(f"WARN: could not list /cache to verify the upload ({e}).")
+        print(f"WARN: could not list {list_dir} to verify the upload ({e}).")
 
     uploaded = remote_name in " ".join(listing)
     if interrupted is not None:
         if uploaded:
-            print("FTPS upload verified: file is present in /cache despite "
-                  "the interrupted TLS shutdown.")
+            print(f"FTPS upload verified: file is present in {list_dir} "
+                  "despite the interrupted TLS shutdown.")
         elif listing:
             sys.exit("ERROR: the FTPS transfer was interrupted and "
-                     f"{remote_name} is NOT in /cache - re-run the upload.")
+                     f"{remote_name} is NOT in {list_dir} - re-run the upload.")
         else:
             sys.exit("ERROR: the FTPS transfer was interrupted and the "
-                     "upload could not be verified (listing /cache failed "
-                     "too) - re-run with --upload-only and check /cache.")
+                     "upload could not be verified (listing failed too) - "
+                     "re-run with --upload-only and check the printer.")
     elif listing and not uploaded:
-        print("WARN: uploaded file not visible in /cache listing - "
+        print("WARN: uploaded file not visible in the listing - "
               "check the url path before blaming the printer.")
 
     try:
@@ -306,7 +359,7 @@ def upload(ip, code, local_path, remote_name):
 
 
 # --- print.project_file payload ---------------------------------------------
-def project_file_payload(remote_name, use_ams, ams_mapping):
+def project_file_payload(remote_name, remote_dir, use_ams, ams_mapping):
     return {
         "print": {
             "sequence_id": "0",
@@ -317,8 +370,10 @@ def project_file_payload(remote_name, use_ams, ams_mapping):
             "task_id": "0",
             "subtask_id": "0",
             "subtask_name": "",
-            # Three slashes are intentional: ftp:// + absolute path /cache/...
-            "url": f"ftp:///cache/{remote_name}",
+            "url": remote_url(remote_dir, remote_name),
+            # bambulabs_api's A1-mini-proven payload also names the file
+            # directly; harmless where unused.
+            "file": remote_name,
             "md5": "",
             "timelapse": False,
             "bed_type": "auto",
@@ -333,11 +388,15 @@ def project_file_payload(remote_name, use_ams, ams_mapping):
 
 
 # --- publish start command, watch gcode_state --------------------------------
-def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
-                    watch_seconds):
+# Kept in sync across the three send scripts.
+def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
+                    ams_mapping, watch_seconds):
     states = []          # ordered gcode_state transitions seen
     running = threading.Event()
     failed = threading.Event()
+    armed = threading.Event()    # set once OUR start command is published
+    baseline_errors = set()      # nonzero print_error codes seen pre-publish
+    new_errors = []              # codes that first appeared after publish
 
     def on_msg(c, u, m):
         try:
@@ -349,13 +408,33 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
         if state and (not states or states[-1] != state):
             states.append(state)
             print(f"gcode_state: {' -> '.join(states)}")
-            if state == "RUNNING":
-                running.set()
-            if state in ("FAILED", "OFFLINE"):
-                failed.set()
+            if armed.is_set():
+                if state == "RUNNING":
+                    running.set()
+                if state in ("FAILED", "OFFLINE"):
+                    failed.set()
         err = p.get("print_error")
-        if err not in (None, 0, "0"):
-            print(f"print_error: {err}")
+        if err in (None, 0, "0"):
+            return
+        if not armed.is_set():
+            # The printer LATCHES the last print_error in its status until
+            # it is cleared or overwritten, and the pushall snapshot
+            # re-delivers it to every fresh subscriber. It is history from
+            # an earlier job, not a verdict on the one we have not started
+            # yet. (Field-seen on Thumbelina: a 0500-C010 from a May
+            # attempt was still being reported in July, and the old
+            # version of this script aborted on it before publishing.)
+            if err not in baseline_errors:
+                baseline_errors.add(err)
+                print(f"NOTE: pre-existing print_error "
+                      f"{fmt_print_error(err)} latched from an EARLIER "
+                      "job - ignoring it for this run. Dismiss any error "
+                      "dialog on the touchscreen.")
+        elif err not in baseline_errors and err not in new_errors:
+            # A repeat of the latched code would be invisible here; the
+            # FAILED state / timeout paths still catch that job.
+            new_errors.append(err)
+            print(f"print_error: {fmt_print_error(err)}")
             failed.set()
 
     c = make_mqtt_client()
@@ -374,8 +453,18 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
               json.dumps({"pushing": {"sequence_id": "0", "command": "pushall"}}))
     time.sleep(2)
 
-    payload = project_file_payload(remote_name, use_ams, ams_mapping)
-    print(f"Publishing print.project_file for ftp:///cache/{remote_name} ...")
+    if states and states[-1] in ("RUNNING", "PREPARE", "PAUSE"):
+        c.loop_stop()
+        c.disconnect()
+        print(f"ABORT: printer is already busy (gcode_state "
+              f"{states[-1]}) - not publishing a second job.")
+        return 4
+
+    payload = project_file_payload(remote_name, remote_dir, use_ams,
+                                   ams_mapping)
+    print("Publishing print.project_file for "
+          f"{remote_url(remote_dir, remote_name)} ...")
+    armed.set()
     c.publish(request_topic, json.dumps(payload))
 
     deadline = time.monotonic() + watch_seconds
@@ -389,8 +478,12 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
         print("SUCCESS: printer reached RUNNING.")
         return 0
     if failed.is_set():
-        print("FAILED: printer reported an error - see the Step 3 triage "
-              "list in docs/a1-mini-programmatic-access.md.")
+        for err in new_errors:
+            hint = print_error_hint(err)
+            if hint:
+                print(f"  {fmt_print_error(err)}: {hint}")
+        print("FAILED: printer rejected or aborted the job - see the Step 3 "
+              "triage list in docs/a1-mini-programmatic-access.md.")
         return 2
     print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
           f"(states seen: {' -> '.join(states) or 'none'}). "
@@ -418,6 +511,11 @@ def main():
                         help='AMS tray mapping, one 0-indexed tray number '
                         'per filament in the job, e.g. "0" (only with '
                         '--use-ams)')
+    parser.add_argument("--remote-dir", default="", metavar="DIR",
+                        help="printer-side directory to upload to and "
+                        "reference in the url (default: FTP root, the "
+                        "A1-mini-proven path; 'cache' restores the old "
+                        "/cache behaviour)")
     parser.add_argument("--upload-only", action="store_true",
                         help="run the FTPS upload only; don't start a print")
     parser.add_argument("--force", action="store_true",
@@ -460,12 +558,13 @@ def main():
     for warning in check_payload(path, args.force):
         print(warning)
 
+    remote_dir = args.remote_dir.strip("/")
     remote_name = sanitize_remote_name(os.path.basename(path))
     if remote_name != os.path.basename(path):
         print(f"NOTE: uploading as {remote_name!r} - spaces/special "
               "characters in the filename break the printer's file-path "
               "parsing (error 83935248 / 0500-C010).")
-    upload(ip, code, path, remote_name)
+    upload(ip, code, path, remote_name, remote_dir)
     if args.upload_only:
         print("Upload-only mode: not starting a print.")
         return 0
@@ -474,10 +573,10 @@ def main():
         answer = input(f"About to start a REAL print of {remote_name} on "
                        f"{serial}. Is the bed clear? [y/N] ")
         if answer.strip().lower() not in ("y", "yes"):
-            print("Aborted before publishing. File remains in /cache.")
+            print("Aborted before publishing. File remains on the printer.")
             return 1
 
-    return start_and_watch(ip, code, serial, remote_name,
+    return start_and_watch(ip, code, serial, remote_name, remote_dir,
                            use_ams, ams_mapping, args.watch)
 
 

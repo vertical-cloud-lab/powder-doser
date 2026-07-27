@@ -100,6 +100,45 @@ def sanitize_remote_name(name):
     return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
 
 
+def remote_path(remote_dir, remote_name):
+    return f"/{remote_dir}/{remote_name}" if remote_dir else f"/{remote_name}"
+
+
+def remote_url(remote_dir, remote_name):
+    # Three slashes are intentional: ftp:// + absolute path.
+    return "ftp://" + remote_path(remote_dir, remote_name)
+
+
+# --- print_error decoding ----------------------------------------------------
+# Kept in sync across the three send scripts. Bambu reports print_error
+# as a decimal int; the community error tables use the hex form
+# AAAA-BBBB (e.g. 83902467 == 0500-4003).
+def fmt_print_error(err):
+    try:
+        n = int(err)
+    except (TypeError, ValueError):
+        return str(err)
+    return f"{err} (hex {(n >> 16) & 0xFFFF:04X}-{n & 0xFFFF:04X})"
+
+
+KNOWN_PRINT_ERRORS = {
+    0x0500C010: "file-path/parse failure - bad characters in the url, or "
+                "the url does not point at the uploaded file",
+    0x05004003: "printer could not parse/find the print file - the classic "
+                "wrong-upload-path error (ac-dev-lab / bambulabs_api#99). "
+                "Make sure the upload dir and the url agree; on the lab's "
+                "A1 mini the fix was --remote-dir '' (FTP root + "
+                "ftp:///<name>), and the same is worth trying here.",
+}
+
+
+def print_error_hint(err):
+    try:
+        return KNOWN_PRINT_ERRORS.get(int(err))
+    except (TypeError, ValueError):
+        return None
+
+
 # --- Step 3a: FTPS upload ---------------------------------------------------
 # Kept in sync with a1_mini_send_print.py and a1_mini_slice_and_send.py.
 def _ftps_connect(ip, code):
@@ -110,12 +149,14 @@ def _ftps_connect(ip, code):
     return ftps
 
 
-def upload(ip, code, local_path, remote_name):
+def upload(ip, code, local_path, remote_name, remote_dir="cache"):
+    dest = remote_path(remote_dir, remote_name)
+    list_dir = "/" + remote_dir if remote_dir else "/"
     ftps = _ftps_connect(ip, code)
     interrupted = None
     with open(local_path, "rb") as f:
         try:
-            resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
+            resp = ftps.storbinary(f"STOR {dest}", f)
             print(f"FTPS upload: {resp}")
         except (OSError, ftplib.Error) as e:
             # Field-tested on the real A1 mini (Thumbelina, PR #23), and
@@ -138,25 +179,25 @@ def upload(ip, code, local_path, remote_name):
 
     listing = []
     try:
-        listing = ftps.nlst("/cache")
-        print(f"FTPS /cache now: {listing}")
+        listing = ftps.nlst(list_dir)
+        print(f"FTPS {list_dir} now: {listing}")
     except (OSError, ftplib.Error) as e:
-        print(f"WARN: could not list /cache to verify the upload ({e}).")
+        print(f"WARN: could not list {list_dir} to verify the upload ({e}).")
 
     uploaded = remote_name in " ".join(listing)
     if interrupted is not None:
         if uploaded:
-            print("FTPS upload verified: file is present in /cache despite "
-                  "the interrupted TLS shutdown.")
+            print(f"FTPS upload verified: file is present in {list_dir} "
+                  "despite the interrupted TLS shutdown.")
         elif listing:
             sys.exit("ERROR: the FTPS transfer was interrupted and "
-                     f"{remote_name} is NOT in /cache - re-run the upload.")
+                     f"{remote_name} is NOT in {list_dir} - re-run the upload.")
         else:
             sys.exit("ERROR: the FTPS transfer was interrupted and the "
-                     "upload could not be verified (listing /cache failed "
-                     "too) - re-run with --upload-only and check /cache.")
+                     "upload could not be verified (listing failed too) - "
+                     "re-run with --upload-only and check the printer.")
     elif listing and not uploaded:
-        print("WARN: uploaded file not visible in /cache listing - "
+        print("WARN: uploaded file not visible in the listing - "
               "check the url path before blaming the printer.")
 
     try:
@@ -169,7 +210,7 @@ def upload(ip, code, local_path, remote_name):
 
 
 # --- Step 3c payload (matches the doc's verified minimal command) -----------
-def project_file_payload(remote_name):
+def project_file_payload(remote_name, remote_dir):
     return {
         "print": {
             "sequence_id": "0",
@@ -180,8 +221,10 @@ def project_file_payload(remote_name):
             "task_id": "0",
             "subtask_id": "0",
             "subtask_name": "",
-            # Three slashes are intentional: ftp:// + absolute path /cache/...
-            "url": f"ftp:///cache/{remote_name}",
+            "url": remote_url(remote_dir, remote_name),
+            # bambulabs_api's payload also names the file directly;
+            # harmless where unused.
+            "file": remote_name,
             "md5": "",
             "timelapse": False,
             "bed_type": "auto",
@@ -196,10 +239,14 @@ def project_file_payload(remote_name):
 
 
 # --- Step 3b+3c: publish start command, watch gcode_state -------------------
-def start_and_watch(ip, code, serial, remote_name, watch_seconds):
+# Kept in sync across the three send scripts.
+def start_and_watch(ip, code, serial, remote_name, remote_dir, watch_seconds):
     states = []          # ordered gcode_state transitions seen
     running = threading.Event()
     failed = threading.Event()
+    armed = threading.Event()    # set once OUR start command is published
+    baseline_errors = set()      # nonzero print_error codes seen pre-publish
+    new_errors = []              # codes that first appeared after publish
 
     def on_msg(c, u, m):
         try:
@@ -211,13 +258,32 @@ def start_and_watch(ip, code, serial, remote_name, watch_seconds):
         if state and (not states or states[-1] != state):
             states.append(state)
             print(f"gcode_state: {' -> '.join(states)}")
-            if state == "RUNNING":
-                running.set()
-            if state in ("FAILED", "OFFLINE"):
-                failed.set()
+            if armed.is_set():
+                if state == "RUNNING":
+                    running.set()
+                if state in ("FAILED", "OFFLINE"):
+                    failed.set()
         err = p.get("print_error")
-        if err not in (None, 0, "0"):
-            print(f"print_error: {err}")
+        if err in (None, 0, "0"):
+            return
+        if not armed.is_set():
+            # The printer LATCHES the last print_error in its status until
+            # it is cleared or overwritten, and the pushall snapshot
+            # re-delivers it to every fresh subscriber. It is history from
+            # an earlier job, not a verdict on the one we have not started
+            # yet. (Field-seen on the lab's A1 mini: a 0500-C010 from a
+            # May attempt was still being reported in July.)
+            if err not in baseline_errors:
+                baseline_errors.add(err)
+                print(f"NOTE: pre-existing print_error "
+                      f"{fmt_print_error(err)} latched from an EARLIER "
+                      "job - ignoring it for this run. Dismiss any error "
+                      "dialog on the touchscreen.")
+        elif err not in baseline_errors and err not in new_errors:
+            # A repeat of the latched code would be invisible here; the
+            # FAILED state / timeout paths still catch that job.
+            new_errors.append(err)
+            print(f"print_error: {fmt_print_error(err)}")
             failed.set()
 
     c = make_mqtt_client()
@@ -236,8 +302,17 @@ def start_and_watch(ip, code, serial, remote_name, watch_seconds):
               json.dumps({"pushing": {"sequence_id": "0", "command": "pushall"}}))
     time.sleep(2)
 
-    payload = project_file_payload(remote_name)
-    print(f"Publishing print.project_file for ftp:///cache/{remote_name} ...")
+    if states and states[-1] in ("RUNNING", "PREPARE", "PAUSE"):
+        c.loop_stop()
+        c.disconnect()
+        print(f"ABORT: printer is already busy (gcode_state "
+              f"{states[-1]}) - not publishing a second job.")
+        return 4
+
+    payload = project_file_payload(remote_name, remote_dir)
+    print("Publishing print.project_file for "
+          f"{remote_url(remote_dir, remote_name)} ...")
+    armed.set()
     c.publish(request_topic, json.dumps(payload))
 
     deadline = time.monotonic() + watch_seconds
@@ -251,8 +326,12 @@ def start_and_watch(ip, code, serial, remote_name, watch_seconds):
         print("SUCCESS: printer reached RUNNING.")
         return 0
     if failed.is_set():
-        print("FAILED: printer reported an error - see triage list in the doc "
-              "(Step 3).")
+        for err in new_errors:
+            hint = print_error_hint(err)
+            if hint:
+                print(f"  {fmt_print_error(err)}: {hint}")
+        print("FAILED: printer rejected or aborted the job - see triage "
+              "list in the doc (Step 3).")
         return 2
     print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
           f"(states seen: {' -> '.join(states) or 'none'}). "
@@ -267,6 +346,12 @@ def main():
     parser.add_argument("--ip", default=os.environ.get("H2D_IP"))
     parser.add_argument("--access-code", default=os.environ.get("H2D_ACCESS_CODE"))
     parser.add_argument("--serial", default=os.environ.get("H2D_SERIAL"))
+    parser.add_argument("--remote-dir", default="cache", metavar="DIR",
+                        help="printer-side directory to upload to and "
+                        "reference in the url (default: cache, the "
+                        "community H2D flow; pass '' for the FTP root, "
+                        "which is what fixed error 0500-4003 on the "
+                        "lab's A1 mini)")
     parser.add_argument("--upload-only", action="store_true",
                         help="run 3a (FTPS upload) only; don't start a print")
     parser.add_argument("--yes", action="store_true",
@@ -286,12 +371,13 @@ def main():
         print("WARN: file doesn't end in .gcode.3mf - project 3MFs without "
               "Metadata/plate_1.gcode inside will not start.")
 
+    remote_dir = args.remote_dir.strip("/")
     remote_name = sanitize_remote_name(os.path.basename(args.file))
     if remote_name != os.path.basename(args.file):
         print(f"NOTE: uploading as {remote_name!r} - spaces/special "
               "characters in the filename break the printer's file-path "
               "parsing (error 83935248 / 0500-C010).")
-    upload(args.ip, args.access_code, args.file, remote_name)
+    upload(args.ip, args.access_code, args.file, remote_name, remote_dir)
     if args.upload_only:
         print("Upload-only mode: not starting a print.")
         return 0
@@ -300,11 +386,11 @@ def main():
         answer = input(f"About to start a REAL print of {remote_name} on "
                        f"{args.serial}. Is the bed clear? [y/N] ")
         if answer.strip().lower() not in ("y", "yes"):
-            print("Aborted before publishing. File remains in /cache.")
+            print("Aborted before publishing. File remains on the printer.")
             return 1
 
     return start_and_watch(args.ip, args.access_code, args.serial,
-                           remote_name, args.watch)
+                           remote_name, remote_dir, args.watch)
 
 
 if __name__ == "__main__":

@@ -64,10 +64,14 @@ SLICER_CMD = r"PUT_PATH_TO_BAMBU_STUDIO_HERE"
 
 # Flattened A1-mini profile JSONs (REQUIRED for .stl input; optional
 # for a project .3mf that already embeds A1-mini settings - but if set,
-# they override what's in the 3MF). Build them per the doc: flatten the
-# `inherits` chain of the bundled `Bambu Lab A1 mini 0.4 nozzle` /
-# `0.20mm Standard @BBL A1M` / `Bambu PLA Basic @BBL A1M` presets and
-# patch from/inherits/printer_settings_id on the machine config.
+# they override what's in the 3MF). Generate them with
+#   python scripts/flatten_bambu_profiles.py --studio-dir "C:\Program Files\Bambu Studio"
+# (walks the `inherits` chain of the bundled `Bambu Lab A1 mini 0.4
+# nozzle` / `0.20mm Standard @BBL A1M` / `Bambu PLA Basic @BBL A1M`
+# presets and applies the required patches). Do NOT point these at the
+# per-user presets under AppData\Roaming\BambuStudio\user\... - those
+# are diff-only files the CLI refuses ("unknown config type",
+# return_code -5; field-seen on Thumbelina).
 MACHINE_JSON = r""                          # e.g. r"a1mini_machine_flat.json"
 PROCESS_JSON = r""                          # e.g. r"a1mini_process_flat.json"
 FILAMENT_JSON = r""                         # e.g. r"a1mini_filament_flat.json"
@@ -163,10 +167,133 @@ def sanitize_remote_name(name):
     """Restrict the remote filename to A-Za-z0-9._- .
 
     The name is embedded verbatim in the MQTT `url`
-    (`ftp:///cache/<name>`); on Thumbelina a filename with spaces was
+    (`ftp:///<name>`); on Thumbelina a filename with spaces was
     rejected printer-side with error 83935248 (hex 0500-C010, a
     file-path/parse failure) even though the FTPS upload succeeded."""
     return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
+
+def remote_path(remote_dir, remote_name):
+    return f"/{remote_dir}/{remote_name}" if remote_dir else f"/{remote_name}"
+
+
+def remote_url(remote_dir, remote_name):
+    # Three slashes are intentional: ftp:// + absolute path.
+    return "ftp://" + remote_path(remote_dir, remote_name)
+
+
+# --- print_error decoding ----------------------------------------------------
+# Kept in sync across the three send scripts. Bambu reports print_error
+# as a decimal int; the community error tables use the hex form
+# AAAA-BBBB (e.g. 83902467 == 0500-4003).
+def fmt_print_error(err):
+    try:
+        n = int(err)
+    except (TypeError, ValueError):
+        return str(err)
+    return f"{err} (hex {(n >> 16) & 0xFFFF:04X}-{n & 0xFFFF:04X})"
+
+
+KNOWN_PRINT_ERRORS = {
+    0x0500C010: "file-path/parse failure - bad characters in the url, or "
+                "the url does not point at the uploaded file",
+    0x05004003: "printer could not parse/find the print file - the classic "
+                "wrong-upload-path error (ac-dev-lab / bambulabs_api#99). "
+                "Make sure the upload dir and the url agree; the "
+                "A1-mini-proven combination is FTP root + ftp:///<name> "
+                "(this script's default).",
+}
+
+
+def print_error_hint(err):
+    try:
+        return KNOWN_PRINT_ERRORS.get(int(err))
+    except (TypeError, ValueError):
+        return None
+
+
+# --- STL sanity: unit / size check -------------------------------------------
+def stl_bbox_mm(path):
+    """Return (dx, dy, dz) of the STL's bounding box in file units, or
+    None if the file can't be parsed as STL. Handles binary and ASCII."""
+    import struct
+    try:
+        size = os.path.getsize(path)
+        with open(path, "rb") as f:
+            head = f.read(84)
+            if len(head) < 84:
+                return None
+            (n_tri,) = struct.unpack("<I", head[80:84])
+            if 84 + n_tri * 50 == size and n_tri > 0:
+                mins = [float("inf")] * 3
+                maxs = [float("-inf")] * 3
+                for _ in range(n_tri):
+                    rec = f.read(50)
+                    if len(rec) < 50:
+                        break
+                    vals = struct.unpack("<12fH", rec)
+                    for v in range(3):
+                        for c in range(3):
+                            x = vals[3 + v * 3 + c]
+                            if x < mins[c]:
+                                mins[c] = x
+                            if x > maxs[c]:
+                                maxs[c] = x
+                return tuple(maxs[c] - mins[c] for c in range(3))
+        # ASCII STL
+        mins = [float("inf")] * 3
+        maxs = [float("-inf")] * 3
+        seen = False
+        with open(path, "r", errors="replace") as f:
+            for line in f:
+                parts = line.split()
+                if len(parts) == 4 and parts[0] == "vertex":
+                    try:
+                        xyz = [float(p) for p in parts[1:]]
+                    except ValueError:
+                        continue
+                    seen = True
+                    for c in range(3):
+                        if xyz[c] < mins[c]:
+                            mins[c] = xyz[c]
+                        if xyz[c] > maxs[c]:
+                            maxs[c] = xyz[c]
+        return tuple(maxs[c] - mins[c] for c in range(3)) if seen else None
+    except OSError:
+        return None
+
+
+def check_stl_units(path, scale, force):
+    """Catch the meters-unit export before the slicer does.
+
+    Field-seen on Thumbelina (2026-07): an STL exported in meters (a
+    38 mm part whose coordinates span 0.038 units - the Fusion 360 /
+    OnShape default) slices fine in DESKTOP Bambu Studio because it
+    pops an "object too small, scale it up?" dialog, but the headless
+    CLI has no dialog and dies with "No layers were detected". The
+    empirically verified fix is --scale 1000."""
+    dims = stl_bbox_mm(path)
+    if dims is None:
+        print("WARN: could not parse the STL to check its size - "
+              "proceeding.")
+        return
+    eff = [d * scale for d in dims]
+    dims_s = " x ".join(f"{d:.3g}" for d in dims)
+    if max(eff) < 1.0:
+        msg = (f"{path} spans only {dims_s} units - effectively zero "
+               "size once read as millimetres. This is the classic "
+               "meters-unit export (Fusion 360 / OnShape default): the "
+               "desktop slicer offers to scale it, the headless CLI "
+               'fails with "No layers were detected". Re-export the STL '
+               "in millimetres, or re-run with --scale 1000 (verified "
+               "fix, PR #23). Inch-unit exports need --scale 25.4.")
+        if force:
+            print("WARN (--force): " + msg)
+        else:
+            sys.exit("ERROR: " + msg + " Pass --force to try anyway.")
+    elif max(eff) < 10.0:
+        print(f"NOTE: model is small ({dims_s} units x scale {scale:g}) "
+              "- if this was exported in inches, add --scale 25.4.")
 
 
 # --- headless slicing --------------------------------------------------------
@@ -190,7 +317,7 @@ def classify_input(path):
 
 
 def slice_headless(slicer, input_path, kind, machine, process, filament,
-                   arrange, timeout_s, keep_dir):
+                   arrange, timeout_s, keep_dir, scale=1.0):
     """Run the BambuStudio CLI on input_path; return path to the
     exported .gcode.3mf (inside a temp dir the caller may keep)."""
     for label, p in [("slicer", slicer)] + (
@@ -209,6 +336,8 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
         export_name = export_name[:-len(".3mf.gcode.3mf")] + ".gcode.3mf"
 
     cmd = [slicer]
+    if scale and scale != 1.0:
+        cmd += ["--scale", f"{scale:g}"]
     if arrange:
         cmd += ["--orient", "1", "--arrange", "1"]
     if machine and process:
@@ -257,6 +386,8 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
         tail = "\n".join((proc.stdout or "").splitlines()[-15:])
         if not keep_dir:
             shutil.rmtree(out_dir, ignore_errors=True)
+        combined = (proc.stdout or "") + (proc.stderr or "")
+        profile_paths = " ".join(p for p in (machine, process, filament) if p)
         if proc.returncode in (3221225477, -1073741819):
             # 0xC0000005: bambu-studio.exe crashed with a Windows access
             # violation (field-seen on Thumbelina bringup, PR #23).
@@ -268,11 +399,34 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
                     "3MF - retry with --no-arrange, (c) a GUI Bambu Studio "
                     "instance still running or hung in the background - "
                     "close it (check Task Manager) and retry.")
+        elif ("unknown config type" in combined
+                or "input preset file is invalid" in combined
+                or re.search(r"[\\/]BambuStudio[\\/]user[\\/]",
+                             profile_paths)):
+            # Field-seen on Thumbelina (2026-07): pointing --load-settings
+            # at Bambu Studio USER presets (AppData\Roaming\BambuStudio\
+            # user\<id>\machine\*.json). Those are diff-only files, not
+            # full configs, and the CLI refuses them with return_code -5
+            # ("The input preset file is invalid and can not be parsed").
+            hint = ("The profile JSONs look like Bambu Studio *user "
+                    "presets* (AppData\\Roaming\\BambuStudio\\user\\...). "
+                    "Those store only the diff from a parent preset, so "
+                    "the CLI cannot parse them. Generate proper flattened "
+                    "profiles with scripts/flatten_bambu_profiles.py "
+                    "(point it at your installed Bambu Studio) and load "
+                    "those instead.")
+        elif "No layers were detected" in combined:
+            hint = ("'No layers were detected' means the model has ~zero "
+                    "printable height - usually an STL exported in meters "
+                    "(re-run with --scale 1000) or inches (--scale 25.4), "
+                    "or a degenerate mesh. Field-seen on Thumbelina with a "
+                    "Fusion-style meters export, PR #23.")
         else:
             hint = ("First suspects (doc: 'Headless slicing'): unflattened "
                     "`inherits` chains in the profile JSONs, or missing "
                     "from/inherits/printer_settings_id patches on the "
-                    "machine config.")
+                    "machine config. scripts/flatten_bambu_profiles.py "
+                    "generates known-good flattened profiles.")
         sys.exit("ERROR: slicing failed (exit code "
                  f"{proc.returncode}).\nLast slicer output:\n{tail}\n{hint}")
 
@@ -443,12 +597,14 @@ def _ftps_connect(ip, code):
     return ftps
 
 
-def upload(ip, code, local_path, remote_name):
+def upload(ip, code, local_path, remote_name, remote_dir=""):
+    dest = remote_path(remote_dir, remote_name)
+    list_dir = "/" + remote_dir if remote_dir else "/"
     ftps = _ftps_connect(ip, code)
     interrupted = None
     with open(local_path, "rb") as f:
         try:
-            resp = ftps.storbinary(f"STOR /cache/{remote_name}", f)
+            resp = ftps.storbinary(f"STOR {dest}", f)
             print(f"FTPS upload: {resp}")
         except (OSError, ftplib.Error) as e:
             # Field-tested on the real A1 mini (Thumbelina, PR #23):
@@ -471,25 +627,25 @@ def upload(ip, code, local_path, remote_name):
 
     listing = []
     try:
-        listing = ftps.nlst("/cache")
-        print(f"FTPS /cache now: {listing}")
+        listing = ftps.nlst(list_dir)
+        print(f"FTPS {list_dir} now: {listing}")
     except (OSError, ftplib.Error) as e:
-        print(f"WARN: could not list /cache to verify the upload ({e}).")
+        print(f"WARN: could not list {list_dir} to verify the upload ({e}).")
 
     uploaded = remote_name in " ".join(listing)
     if interrupted is not None:
         if uploaded:
-            print("FTPS upload verified: file is present in /cache despite "
-                  "the interrupted TLS shutdown.")
+            print(f"FTPS upload verified: file is present in {list_dir} "
+                  "despite the interrupted TLS shutdown.")
         elif listing:
             sys.exit("ERROR: the FTPS transfer was interrupted and "
-                     f"{remote_name} is NOT in /cache - re-run the upload.")
+                     f"{remote_name} is NOT in {list_dir} - re-run the upload.")
         else:
             sys.exit("ERROR: the FTPS transfer was interrupted and the "
-                     "upload could not be verified (listing /cache failed "
-                     "too) - re-run with --upload-only and check /cache.")
+                     "upload could not be verified (listing failed too) - "
+                     "re-run with --upload-only and check the printer.")
     elif listing and not uploaded:
-        print("WARN: uploaded file not visible in /cache listing - "
+        print("WARN: uploaded file not visible in the listing - "
               "check the url path before blaming the printer.")
 
     try:
@@ -502,7 +658,7 @@ def upload(ip, code, local_path, remote_name):
 
 
 # --- print.project_file payload -----------------------------------------------
-def project_file_payload(remote_name, use_ams, ams_mapping):
+def project_file_payload(remote_name, remote_dir, use_ams, ams_mapping):
     return {
         "print": {
             "sequence_id": "0",
@@ -513,8 +669,10 @@ def project_file_payload(remote_name, use_ams, ams_mapping):
             "task_id": "0",
             "subtask_id": "0",
             "subtask_name": "",
-            # Three slashes are intentional: ftp:// + absolute path /cache/...
-            "url": f"ftp:///cache/{remote_name}",
+            "url": remote_url(remote_dir, remote_name),
+            # bambulabs_api's A1-mini-proven payload also names the file
+            # directly; harmless where unused.
+            "file": remote_name,
             "md5": "",
             "timelapse": False,
             "bed_type": "auto",
@@ -529,11 +687,15 @@ def project_file_payload(remote_name, use_ams, ams_mapping):
 
 
 # --- publish start command, watch gcode_state ----------------------------------
-def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
-                    watch_seconds):
+# Kept in sync across the three send scripts.
+def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
+                    ams_mapping, watch_seconds):
     states = []
     running = threading.Event()
     failed = threading.Event()
+    armed = threading.Event()    # set once OUR start command is published
+    baseline_errors = set()      # nonzero print_error codes seen pre-publish
+    new_errors = []              # codes that first appeared after publish
 
     def on_msg(c, u, m):
         try:
@@ -545,13 +707,31 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
         if state and (not states or states[-1] != state):
             states.append(state)
             print(f"gcode_state: {' -> '.join(states)}")
-            if state == "RUNNING":
-                running.set()
-            if state in ("FAILED", "OFFLINE"):
-                failed.set()
+            if armed.is_set():
+                if state == "RUNNING":
+                    running.set()
+                if state in ("FAILED", "OFFLINE"):
+                    failed.set()
         err = p.get("print_error")
-        if err not in (None, 0, "0"):
-            print(f"print_error: {err}")
+        if err in (None, 0, "0"):
+            return
+        if not armed.is_set():
+            # The printer LATCHES the last print_error in its status until
+            # it is cleared or overwritten, and the pushall snapshot
+            # re-delivers it to every fresh subscriber. It is history from
+            # an earlier job, not a verdict on the one we have not started
+            # yet. (Field-seen on Thumbelina.)
+            if err not in baseline_errors:
+                baseline_errors.add(err)
+                print(f"NOTE: pre-existing print_error "
+                      f"{fmt_print_error(err)} latched from an EARLIER "
+                      "job - ignoring it for this run. Dismiss any error "
+                      "dialog on the touchscreen.")
+        elif err not in baseline_errors and err not in new_errors:
+            # A repeat of the latched code would be invisible here; the
+            # FAILED state / timeout paths still catch that job.
+            new_errors.append(err)
+            print(f"print_error: {fmt_print_error(err)}")
             failed.set()
 
     c = make_mqtt_client()
@@ -568,8 +748,18 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
               json.dumps({"pushing": {"sequence_id": "0", "command": "pushall"}}))
     time.sleep(2)
 
-    payload = project_file_payload(remote_name, use_ams, ams_mapping)
-    print(f"Publishing print.project_file for ftp:///cache/{remote_name} ...")
+    if states and states[-1] in ("RUNNING", "PREPARE", "PAUSE"):
+        c.loop_stop()
+        c.disconnect()
+        print(f"ABORT: printer is already busy (gcode_state "
+              f"{states[-1]}) - not publishing a second job.")
+        return 4
+
+    payload = project_file_payload(remote_name, remote_dir, use_ams,
+                                   ams_mapping)
+    print("Publishing print.project_file for "
+          f"{remote_url(remote_dir, remote_name)} ...")
+    armed.set()
     c.publish(request_topic, json.dumps(payload))
 
     deadline = time.monotonic() + watch_seconds
@@ -583,8 +773,12 @@ def start_and_watch(ip, code, serial, remote_name, use_ams, ams_mapping,
         print("SUCCESS: printer reached RUNNING.")
         return 0
     if failed.is_set():
-        print("FAILED: printer reported an error - see the Step 3 triage "
-              "list in docs/a1-mini-programmatic-access.md.")
+        for err in new_errors:
+            hint = print_error_hint(err)
+            if hint:
+                print(f"  {fmt_print_error(err)}: {hint}")
+        print("FAILED: printer rejected or aborted the job - see the Step 3 "
+              "triage list in docs/a1-mini-programmatic-access.md.")
         return 2
     print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
           f"(states seen: {' -> '.join(states) or 'none'}). "
@@ -615,6 +809,10 @@ def main():
     parser.add_argument("--no-arrange", action="store_true",
                         help="skip --orient/--arrange (use for project "
                         "3MFs whose plate layout you want kept)")
+    parser.add_argument("--scale", type=float, default=1.0,
+                        help="uniform scale factor passed to the slicer "
+                        "(1000 for a meters-unit STL, 25.4 for inches; "
+                        "default 1.0)")
     parser.add_argument("--slice-timeout", type=int, default=900,
                         metavar="SECONDS",
                         help="kill the slicer after this long (default 900)")
@@ -625,6 +823,11 @@ def main():
                         help="slice and summarize, but don't upload or print")
     parser.add_argument("--upload-only", action="store_true",
                         help="slice + FTPS upload only; don't start a print")
+    parser.add_argument("--remote-dir", default="", metavar="DIR",
+                        help="printer-side directory to upload to and "
+                        "reference in the url (default: FTP root, the "
+                        "A1-mini-proven path; 'cache' restores the old "
+                        "/cache behaviour)")
     parser.add_argument("--use-ams", dest="use_ams", action="store_true",
                         default=None,
                         help="feed from the AMS lite instead of the "
@@ -687,6 +890,8 @@ def main():
               "explicit.")
 
     kind = classify_input(path)
+    if kind == "stl":
+        check_stl_units(path, args.scale, args.force)
     if kind == "project_3mf" and (machine or process or filament):
         print("NOTE: --load-settings/--load-filaments OVERRIDE the "
               "settings embedded in the project 3MF (CLI precedence). "
@@ -696,7 +901,7 @@ def main():
     sliced, out_dir = slice_headless(
         slicer, path, kind, machine, process, filament,
         arrange=not args.no_arrange, timeout_s=args.slice_timeout,
-        keep_dir=args.keep_output)
+        keep_dir=args.keep_output, scale=args.scale)
     try:
         summarize_and_check(sliced, args.force)
         for warning in check_payload(sliced, args.force):
@@ -711,8 +916,9 @@ def main():
                 print(f"Slice-only mode: sliced file kept at {sliced}")
             return 0
 
+        remote_dir = args.remote_dir.strip("/")
         remote_name = os.path.basename(sliced)
-        upload(ip, code, sliced, remote_name)
+        upload(ip, code, sliced, remote_name, remote_dir)
         if args.upload_only:
             print("Upload-only mode: not starting a print.")
             return 0
@@ -723,10 +929,11 @@ def main():
                            "(summary above). Is the bed clear and the "
                            "summary sane? [y/N] ")
             if answer.strip().lower() not in ("y", "yes"):
-                print("Aborted before publishing. File remains in /cache.")
+                print("Aborted before publishing. File remains on the "
+                      "printer.")
                 return 1
 
-        return start_and_watch(ip, code, serial, remote_name,
+        return start_and_watch(ip, code, serial, remote_name, remote_dir,
                                use_ams, ams_mapping, args.watch)
     finally:
         if not args.keep_output:

@@ -234,9 +234,14 @@ that are worth knowing *before* they bite:
    [mchrisgm/bambulabs_api#99](https://github.com/mchrisgm/bambulabs_api/issues/99))
    was that the upload path on the printer had been changed from the
    location `start_print` expects. Leave the printer's file layout
-   alone and upload to the default location the library (or our
-   scripts' `/cache`) uses. If you ever hit `0500-4003`, check the
-   path *first*, before the SD-card/firmware rabbit holes.
+   alone and upload to the location the working stack uses — for the
+   A1 mini that is the **FTP root** with `url: ftp:///<name>`, which
+   is what `bambulabs_api` does (`STOR <name>` + `ftp:///{filename}`)
+   and what our scripts now default to. If you ever hit `0500-4003`,
+   check the path *first*, before the SD-card/firmware rabbit holes.
+   (We re-learned this the hard way in 2026-07 — see Thumbelina field
+   note 9 below: our own scripts' original `/cache` +
+   `ftp:///cache/<name>` combination drew exactly this error.)
 2. **`set_bed_temperature()` is a silent no-op — send G-code
    instead.** Confirmed on the real A1 mini: the API call neither
    changes the UI setpoint nor the actual bed temperature. What works
@@ -368,6 +373,60 @@ listed here so nobody re-debugs them from a stale copy:
    constructor on paho-mqtt 1.x). The warning was always harmless —
    if a stale copy still prints it, that's your cue to pull fresh
    scripts, not a connectivity problem.
+8. **The printer LATCHES the last `print_error` — a fresh subscriber
+   sees an *old* error and must not treat it as a verdict on a job it
+   hasn't started yet.** Bambu keeps the last nonzero `print_error`
+   in the status report until it is cleared or overwritten, and the
+   `pushall` snapshot re-delivers it on every fresh MQTT subscribe.
+   Field-seen 2026-07-27: a `0500-C010` latched from the May knife
+   attempt was still being reported in July, and the old scripts
+   declared `FAILED` on it *before even publishing* the new job. The
+   scripts now record any pre-publish `print_error` as baseline
+   (printing a NOTE that it is history), fail only on a **new** code
+   appearing after the start command, decode codes to the community
+   hex form (`83902467` → `0500-4003`) with a hint for the known
+   ones, and refuse to publish at all if the printer is already
+   `RUNNING`/`PREPARE`/`PAUSE`.
+9. **`0500-4003` on our own scripts: `/cache` + `ftp:///cache/<name>`
+   is the wrong path for the A1 mini — upload to the FTP root.**
+   With the latched-error noise stripped away, the 2026-07-27 run
+   showed a valid A1-mini `.gcode.3mf` (verified `printer_model =
+   Bambu Lab A1 mini`, sane 16-layer job) uploaded to `/cache` and
+   started via `ftp:///cache/<name>` being answered with `83902467`
+   (hex `0500-4003`, "unable to parse file" — the `ac-dev-lab` saga
+   above, note 1). The only stack proven to *start* prints on a real
+   A1 mini (`bambulabs_api` / `ac-dev-lab`'s `manual_print.py`)
+   uploads to the FTP **root** and uses `url: ftp:///<name>`; the
+   `/cache` form came from H2D community examples and was never
+   print-verified on any printer in this project. The A1-mini scripts
+   now default to the root path (`--remote-dir cache` restores the
+   old behaviour; the H2D script keeps `cache` as its default but
+   gained the same flag).
+10. **An STL exported in meters slices fine on desktop and dies
+    headlessly ("No layers were detected").** Fusion 360 / OnShape
+    default to meter units, so a 38 mm part spans 0.038 STL units.
+    Desktop Bambu Studio pops an "object too small — scale?" dialog
+    (which is why the same STL sliced fine interactively); the CLI
+    has no dialog and exits with `return -100`, "No layers were
+    detected". `a1_mini_slice_and_send.py` now measures the STL's
+    bounding box before slicing and refuses effectively-zero-size
+    input with a pointer to the fix: `--scale 1000` (meters) or
+    `--scale 25.4` (inches), passed through to the slicer. Verified
+    2026-07-27 in CI against the actual field STL: unscaled →
+    `-100`; `--scale 1000` → `return_code 0` and a sane 10-minute
+    job.
+11. **Bambu Studio *user presets* cannot be fed to the CLI — use
+    `flatten_bambu_profiles.py`.** Pointing `--load-settings` at the
+    per-user preset JSONs Studio saves under
+    `AppData\Roaming\BambuStudio\user\<id>\machine\...` fails with
+    `unknown config type ... The input preset file is invalid and can
+    not be parsed` (`return_code -5`): those files store only the
+    *diff* from a parent preset. The new
+    [`scripts/flatten_bambu_profiles.py`](../scripts/flatten_bambu_profiles.py)
+    generates proper flattened profiles from the system presets
+    bundled with any installed Bambu Studio (Windows install dir,
+    extracted AppImage, or macOS .app) — see the headless-slicing
+    section below.
 
 ## Headless slicing (STL → 3MF) — the biggest simplification
 
@@ -406,6 +465,26 @@ CLI-general, not IDEX-specific:
    `printer_settings_id = "Bambu Lab A1 mini 0.4 nozzle"` (matching
    the `compatible_printers` list on the A1M process profile).
 
+Both gotchas are automated by
+[`scripts/flatten_bambu_profiles.py`](../scripts/flatten_bambu_profiles.py):
+
+```bash
+# Windows (default install):
+python scripts/flatten_bambu_profiles.py --studio-dir "C:\Program Files\Bambu Studio"
+# Linux AppImage (extract once, no FUSE needed):
+./bambu.AppImage --appimage-extract
+python scripts/flatten_bambu_profiles.py --studio-dir squashfs-root
+```
+
+writes `a1mini_machine_flat.json` / `a1mini_process_flat.json` /
+`a1mini_filament_flat.json` ready for `--load-settings` /
+`--load-filaments` (or the `MACHINE_JSON`/`PROCESS_JSON`/
+`FILAMENT_JSON` fields in `a1_mini_slice_and_send.py`). Do **not**
+point the CLI at the per-user presets under
+`AppData\Roaming\BambuStudio\user\...` — those are diff-only files
+the CLI refuses (`unknown config type`, `return_code -5`; Thumbelina
+field note 11).
+
 The third gotcha (manual filament mapping gated on
 `plate_to_slice != 0`) does not apply — a single-extruder printer
 never enters that codepath, so `--slice 0` works.
@@ -425,6 +504,16 @@ Thumbelina field notes above). One CLI-output quirk: `printer_model_id`
 in `Metadata/slice_info.config` is left **empty** by CLI slicing
 (desktop exports populate it), so scripts should identify the target
 printer from the G-code CONFIG_BLOCK, not `slice_info.config`.
+
+**Re-verified 2026-07-27 with `flatten_bambu_profiles.py` output:**
+the same v02.06.00.51 AppImage, profiles generated entirely by the
+helper script (no hand-editing), and the actual meters-unit field STL
+from the Thumbelina bringup — with `--scale 1000` the run returned
+`return_code 0`, and the resulting `.gcode.3mf` carries
+`printer_model = Bambu Lab A1 mini` /
+`printer_settings_id = Bambu Lab A1 mini 0.4 nozzle`, passes the
+scripts' payload check, and summarizes to a sane 10 m 14 s / 3.94 g /
+bed 65 °C / nozzle 220 °C job.
 
 ### One command from STL to print: `a1_mini_slice_and_send.py`
 
@@ -446,11 +535,15 @@ python scripts/a1_mini_slice_and_send.py --slice-only --keep-output   # dry-run 
 python scripts/a1_mini_slice_and_send.py --upload-only    # stop before starting the print
 ```
 
-Notes: for `.stl` input the three profile JSONs are required; for a
+Notes: for `.stl` input the three profile JSONs are required
+(generate them with `flatten_bambu_profiles.py`, above); for a
 project `.3mf` they are optional but **override** the settings
 embedded in the file if given (CLI precedence). `--no-arrange` keeps a
 project 3MF's existing plate layout. Already-sliced `.gcode.3mf` files
-are refused — send those with `a1_mini_send_print.py`.
+are refused — send those with `a1_mini_send_print.py`. The script
+measures the STL's bounding box first and refuses meters-unit exports
+(effectively zero size in mm) with a pointer to `--scale 1000`
+(`--scale 25.4` for inches) — Thumbelina field note 10.
 
 ### Risks of headless slicing (read before unattended use)
 

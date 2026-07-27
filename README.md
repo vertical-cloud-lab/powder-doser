@@ -23,6 +23,9 @@
   which first slices an STL/project-3MF headlessly with the
   BambuStudio CLI (risks of the no-preview flow are documented in the
   A1-mini doc).
+  [`scripts/flatten_bambu_profiles.py`](scripts/flatten_bambu_profiles.py)
+  generates the flattened profile JSONs the CLI slicing flow needs
+  from any installed Bambu Studio.
 
 ## Paper
 

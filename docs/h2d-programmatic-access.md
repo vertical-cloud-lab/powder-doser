@@ -384,13 +384,26 @@ common causes — in roughly the order I'd check them — are:
 
 1. The `url` path doesn't match where the file actually landed (the
    `ls` in step 3a tells you the truth; note the **three** slashes in
-   `ftp:///cache/cube_h2d.gcode.3mf`).
+   `ftp:///cache/cube_h2d.gcode.3mf`). If the paths *do* agree and the
+   error is `83902467` (hex `0500-4003`, "unable to parse file"), try
+   the FTP root instead: on the lab's A1 mini the `/cache` +
+   `ftp:///cache/<name>` combination drew exactly that error, and
+   uploading to the root with `url: ftp:///<name>` (what
+   `bambulabs_api` does) is the print-verified form —
+   `h2d_step3_send_print.py --remote-dir ''` switches both sides at
+   once.
 2. The `.gcode.3mf` was sliced for a different printer (e.g. a P2S
    profile pointed at an H2D) and the firmware rejects it for missing
    IDEX metadata — re-slice with the verified H2D recipe.
 3. The new authorization gate is engaged because LAN-only / Developer
    Mode silently came back off after a firmware update; re-check
    Step 1.
+4. A **stale** non-zero `print_error` was latched from an *earlier*
+   failed job: the printer keeps the last error in its status until
+   cleared, and the `pushall` snapshot re-delivers it to every fresh
+   subscriber. The checked-in scripts now separate pre-existing codes
+   from new ones (and decode them to the hex `AAAA-BBBB` form) —
+   trust only an error that first appears *after* the start command.
 
 ### Step 4 — Wrap mode B in code
 
