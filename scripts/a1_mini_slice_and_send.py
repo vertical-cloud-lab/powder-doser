@@ -7,7 +7,8 @@ Bambu Studio *project* .3mf, slices it headlessly with the BambuStudio
 CLI (the flow verified in PR #23 and documented in
 docs/a1-mini-programmatic-access.md "Headless slicing"), then runs the
 exact same verified upload + print.project_file + gcode_state-watch
-pipeline as a1_mini_send_print.py.
+pipeline as a1_mini_send_print.py (including the watch-until-FINISH
+"PRINT COMPLETE" notice; --no-wait exits at RUNNING instead).
 
   1. Edit the FILL THESE IN block below (IP, access code, serial, the
      STL/3MF to slice, the slicer binary, and - for STL input - the
@@ -210,6 +211,15 @@ def print_error_hint(err):
         return KNOWN_PRINT_ERRORS.get(int(err))
     except (TypeError, ValueError):
         return None
+
+
+def fmt_remaining(minutes):
+    """mc_remaining_time is reported in minutes; render as 3h05m / 42m."""
+    try:
+        m = int(minutes)
+    except (TypeError, ValueError):
+        return None
+    return f"{m // 60}h{m % 60:02d}m" if m >= 60 else f"{m}m"
 
 
 # --- STL sanity: unit / size check -------------------------------------------
@@ -689,13 +699,15 @@ def project_file_payload(remote_name, remote_dir, use_ams, ams_mapping):
 # --- publish start command, watch gcode_state ----------------------------------
 # Kept in sync across the three send scripts.
 def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
-                    ams_mapping, watch_seconds):
+                    ams_mapping, watch_seconds, wait_done=True):
     states = []
     running = threading.Event()
+    finished = threading.Event()
     failed = threading.Event()
     armed = threading.Event()    # set once OUR start command is published
     baseline_errors = set()      # nonzero print_error codes seen pre-publish
     new_errors = []              # codes that first appeared after publish
+    progress = {}                # latest mc_percent / remaining / layer info
 
     def on_msg(c, u, m):
         try:
@@ -710,8 +722,31 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
             if armed.is_set():
                 if state == "RUNNING":
                     running.set()
+                # Gate FINISH on running: an idle printer whose LAST job
+                # completed still reports gcode_state FINISH, and the
+                # pushall snapshot re-delivers that before our job starts.
+                if state == "FINISH" and running.is_set():
+                    finished.set()
                 if state in ("FAILED", "OFFLINE"):
                     failed.set()
+        # Progress fields arrive incrementally and in separate messages;
+        # remember the latest of each, print a line when the percent moves.
+        for key, field in (("rem", "mc_remaining_time"),
+                           ("layer", "layer_num"),
+                           ("total", "total_layer_num")):
+            if p.get(field) is not None:
+                progress[key] = p[field]
+        pct = p.get("mc_percent")
+        if (wait_done and running.is_set() and not finished.is_set()
+                and pct is not None and pct != progress.get("pct")):
+            progress["pct"] = pct
+            line = f"progress: {pct}%"
+            rem = fmt_remaining(progress.get("rem"))
+            if rem:
+                line += f", ~{rem} left"
+            if progress.get("layer") is not None and progress.get("total"):
+                line += f", layer {progress['layer']}/{progress['total']}"
+            print(line)
         err = p.get("print_error")
         if err in (None, 0, "0"):
             return
@@ -734,13 +769,19 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
             print(f"print_error: {fmt_print_error(err)}")
             failed.set()
 
+    def on_connect(c, u, flags, rc, properties=None):
+        # Subscribing here (not once after connect()) means paho's
+        # automatic reconnect re-subscribes too - a print watched to
+        # completion can outlive the odd Wi-Fi hiccup.
+        c.subscribe(f"device/{serial}/report")
+
     c = make_mqtt_client()
     c.username_pw_set("bblp", code)
     c.tls_set(cert_reqs=ssl.CERT_NONE)
     c.tls_insecure_set(True)
+    c.on_connect = on_connect
     c.on_message = on_msg
     c.connect(ip, 8883, 30)
-    c.subscribe(f"device/{serial}/report")
     c.loop_start()
 
     request_topic = f"device/{serial}/request"
@@ -766,20 +807,46 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
     while time.monotonic() < deadline and not running.is_set() and not failed.is_set():
         time.sleep(1)
 
+    detached = False
+    if wait_done and running.is_set() and not failed.is_set():
+        print("Print started. Watching until it finishes - Ctrl-C detaches "
+              "WITHOUT stopping the print (--no-wait skips this next time).")
+        try:
+            while not finished.is_set() and not failed.is_set():
+                time.sleep(5)
+        except KeyboardInterrupt:
+            print("\nDetached; the print carries on at the printer. This "
+                  "script only observes and cannot re-attach - check the "
+                  "touchscreen or Bambu Handy for completion.")
+            detached = True
+
     c.loop_stop()
     c.disconnect()
 
-    if running.is_set():
-        print("SUCCESS: printer reached RUNNING.")
+    if detached:
+        return 0
+    if finished.is_set():
+        print("\a" + "=" * 62)
+        print("PRINT COMPLETE: the printer reported gcode_state FINISH.")
+        print("Remove the part from the bed before starting the next job.")
+        print("=" * 62)
         return 0
     if failed.is_set():
         for err in new_errors:
             hint = print_error_hint(err)
             if hint:
                 print(f"  {fmt_print_error(err)}: {hint}")
-        print("FAILED: printer rejected or aborted the job - see the Step 3 "
-              "triage list in docs/a1-mini-programmatic-access.md.")
+        if running.is_set():
+            print("FAILED: the print started but the printer reported an "
+                  "error or abort before finishing - check the touchscreen.")
+        else:
+            print("FAILED: printer rejected or aborted the job - see the "
+                  "Step 3 triage list in docs/a1-mini-programmatic-access.md.")
         return 2
+    if running.is_set():
+        print("SUCCESS: printer reached RUNNING. Not waiting for completion "
+              "(--no-wait); watch the printer or Bambu Handy instead.")
+        return 0
     print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
           f"(states seen: {' -> '.join(states) or 'none'}). "
           "See the Step 3 triage list in docs/a1-mini-programmatic-access.md.")
@@ -846,6 +913,10 @@ def main():
                         help="skip the summary confirmation prompt "
                         "(read the RISKS note in this file first)")
     parser.add_argument("--watch", type=int, default=180, metavar="SECONDS")
+    parser.add_argument("--no-wait", dest="wait_done", action="store_false",
+                        default=True,
+                        help="exit as soon as the printer reaches RUNNING "
+                        "instead of watching until the print finishes")
     args = parser.parse_args()
 
     # CLI/env beats the FILL THESE IN constants; placeholders count as unset.
@@ -934,7 +1005,8 @@ def main():
                 return 1
 
         return start_and_watch(ip, code, serial, remote_name, remote_dir,
-                               use_ams, ams_mapping, args.watch)
+                               use_ams, ams_mapping, args.watch,
+                               args.wait_done)
     finally:
         if not args.keep_output:
             shutil.rmtree(out_dir, ignore_errors=True)

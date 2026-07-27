@@ -190,8 +190,31 @@ script now enforces or exposes:
    [#149](https://github.com/AccelerationConsortium/ac-dev-lab/issues/149))
    are the working reference for what mapped correctly there.
 
+**Exporting the payload from desktop Bambu Studio:** after slicing,
+use **File → Export → Export plate sliced file** for the plate you
+want, or **Export all sliced file** if the project has a single plate
+— for a one-plate project the two produce equivalent `.gcode.3mf`
+files (field-verified on Thumbelina with "Export all sliced file",
+2026-07). The difference only matters for multi-plate projects:
+"all" bundles every plate's G-code (`Metadata/plate_1.gcode`,
+`plate_2.gcode`, …) into one file, and the send scripts' payload
+hard-codes `"param": "Metadata/plate_1.gcode"`, so **only plate 1
+would print**. For multi-plate projects, select the plate you want
+and use "Export plate sliced file" (or keep one plate per project —
+the simplest rule for programmatic sends).
+
 Success looks identical to the H2D: `gcode_state` walks
-`IDLE → PREPARE → RUNNING` within ~30 s.
+`IDLE → PREPARE → RUNNING` within ~30 s. The script then **stays
+attached until the job finishes** (new since the first Thumbelina
+print): it prints a progress line whenever the reported percentage
+moves (`progress: 50%, ~30m left, layer 25/50`) and ends with a
+terminal bell and a `PRINT COMPLETE` banner when `gcode_state`
+reaches `FINISH` — or a `FAILED` diagnosis with the decoded
+`print_error` if the job dies mid-print. Ctrl-C during the wait
+**detaches without stopping the print** (the script only observes;
+it cannot re-attach — check the touchscreen or Bambu Handy after
+detaching), and `--no-wait` restores the old exit-at-`RUNNING`
+behaviour for automation that polls separately.
 
 ## Step 4 — Wrap it in Python
 

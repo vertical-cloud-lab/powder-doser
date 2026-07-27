@@ -346,9 +346,11 @@ inside.
 > --access-code <CODE> --serial <SERIAL>`). It uploads over the same
 > verified implicit-FTPS stack as the Step 2 smoke test, asks for
 > confirmation before publishing (`--yes` to skip, `--upload-only` for
-> just 3a), and watches `gcode_state` until `RUNNING`. The shell
-> commands below remain useful when you want to see each leg
-> individually.
+> just 3a), and watches `gcode_state` until `RUNNING` — then keeps
+> watching, with progress lines, until the print reaches `FINISH` and
+> announces `PRINT COMPLETE` (Ctrl-C detaches without stopping the
+> print; `--no-wait` exits at `RUNNING` instead). The shell commands
+> below remain useful when you want to see each leg individually.
 
 ```bash
 # 3a. Upload the 3MF to the printer's /cache
