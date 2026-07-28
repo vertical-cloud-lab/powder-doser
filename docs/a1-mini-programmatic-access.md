@@ -450,6 +450,24 @@ listed here so nobody re-debugs them from a stale copy:
     bundled with any installed Bambu Studio (Windows install dir,
     extracted AppImage, or macOS .app) — see the headless-slicing
     section below.
+12. **The headless CLI defaults to the *Cool Plate* (35 °C bed) — the
+    cause of the 2026-07-27 "ghost print".** The CLI has no plate
+    picker, so a CLI slice carries `curr_bed_type = Cool Plate` and
+    commands `M190 S35`. On the textured PEI sheet the A1 mini
+    actually ships with, PLA does not adhere at 35 °C: the printer
+    runs the entire job — filament visibly feeding and oozing at the
+    nozzle — while nothing stays on the bed. Field video confirmed
+    the touchscreen at 205 °C nozzle / 35 °C bed, exactly matching a
+    CI re-slice of the same STL with the same flattened profiles
+    (healthy G-code otherwise: 2,271 extrusion moves, 1.08 g). The
+    empirically verified fix is injecting
+    `"curr_bed_type": "Textured PEI Plate"` into the *process*
+    config, which flips the slice to `M190 S65`.
+    `a1_mini_slice_and_send.py` now does this by default (`BED_TYPE`
+    constant / `--bed-type` flag, patched into a copy of the process
+    JSON), and both A1-mini send scripts display the build plate +
+    commanded first-layer bed temperature and refuse (without
+    `--force`) any job commanding under 45 °C.
 
 ## Headless slicing (STL → 3MF) — the biggest simplification
 
@@ -511,6 +529,16 @@ field note 11).
 The third gotcha (manual filament mapping gated on
 `plate_to_slice != 0`) does not apply — a single-extruder printer
 never enters that codepath, so `--slice 0` works.
+
+**One A1-mini-specific addition: select the build plate.** The CLI
+has no plate-selection flag and silently defaults to
+`curr_bed_type = Cool Plate`, i.e. a **35 °C bed** — on the textured
+PEI sheet the A1 mini ships with, nothing adheres at 35 °C and the
+job ghost-prints (Thumbelina field note 12). Add
+`"curr_bed_type": "Textured PEI Plate"` to the flattened *process*
+JSON before slicing (verified: the slice then commands `M190 S65`).
+`a1_mini_slice_and_send.py` automates this via its `BED_TYPE`
+constant / `--bed-type` flag.
 
 **Empirically verified (2026-07-23, PR #23 CI sandbox):** this exact
 command — the v02.06.00.51 AppImage, the three profiles above
@@ -586,11 +614,14 @@ visual checkpoint before plastic moves. Concretely:
 2. **A "successful" slice can still carry wrong settings.** The CLI
    does not resolve profile `inherits` chains, so a half-flattened
    profile can slice cleanly with missing/default temperatures,
-   speeds, or cooling. The script hard-rejects jobs exceeding A1-mini
-   hardware maxima (bed > 80 °C, nozzle > 300 °C — a wrong-printer
-   profile symptom) and refuses H2D/IDEX-flavoured output, but it
-   cannot detect a *subtly* wrong profile (e.g. PETG temps applied to
-   PLA).
+   speeds, or cooling — and it silently defaults the build plate to
+   Cool Plate / 35 °C bed, the confirmed cause of the 2026-07-27
+   ghost print (field note 12). The script hard-rejects jobs
+   exceeding A1-mini hardware maxima (bed > 80 °C, nozzle > 300 °C —
+   a wrong-printer profile symptom), jobs commanding a first-layer
+   bed temp under 45 °C (the ghost-print signature), and
+   H2D/IDEX-flavoured output, but it cannot detect a *subtly* wrong
+   profile (e.g. PETG temps applied to PLA).
 3. **Settings-precedence surprises with project 3MFs.** CLI-loaded
    profiles silently override whatever the project file embeds
    (flags > `--load-*` > 3MF). Loading a stale profile bundle against

@@ -84,6 +84,15 @@ FILAMENT_JSON = r""                         # e.g. r"a1mini_filament_flat.json"
 # slot (see a1_mini_send_print.py and ac-dev-lab issues #147/#149).
 USE_AMS = False
 AMS_MAPPING = ""
+
+# Build plate the job is sliced FOR. The headless CLI has no plate
+# picker and silently defaults to "Cool Plate" (35 C bed) - on the
+# textured PEI sheet the A1 mini actually ships with, PLA will not
+# stick at 35 C, and the result is a "ghost print": the toolhead runs
+# the whole job while nothing stays on the bed (field-seen on
+# Thumbelina 2026-07-27; the fix below is empirically verified to
+# produce M190 S65). Match this to the plate physically installed.
+BED_TYPE = "Textured PEI Plate"
 # =============================================================
 
 import argparse
@@ -108,6 +117,36 @@ import paho.mqtt.client as mqtt
 # sliced with a wrong (bigger-printer) profile, not a hot A1 mini.
 A1_MINI_MAX_BED_C = 80
 A1_MINI_MAX_NOZZLE_C = 300
+
+# Below this commanded first-layer bed temperature nothing adheres to
+# the textured PEI sheet and the job "prints" air (the 2026-07-27
+# Thumbelina ghost print ran M190 S35 from the CLI's Cool Plate
+# default). PLA on the stock plate needs 55-65 C.
+MIN_SANE_BED_C = 45
+
+# curr_bed_type values BambuStudio understands, with friendly aliases.
+# "Textured PEI Plate" -> M190 S65 was verified against the real
+# v02.06.00.51 CLI (PR #23, 2026-07-27).
+BED_TYPE_ALIASES = {
+    "textured": "Textured PEI Plate",
+    "texturedpei": "Textured PEI Plate",
+    "texturedpeiplate": "Textured PEI Plate",
+    "cool": "Cool Plate",
+    "coolplate": "Cool Plate",
+    "eng": "Engineering Plate",
+    "engineering": "Engineering Plate",
+    "engineeringplate": "Engineering Plate",
+    "hot": "High Temp Plate",
+    "hightemp": "High Temp Plate",
+    "hightempplate": "High Temp Plate",
+}
+
+
+def normalize_bed_type(value):
+    if not value:
+        return ""
+    key = re.sub(r"[^a-z0-9]", "", value.lower())
+    return BED_TYPE_ALIASES.get(key, value)
 
 
 def _is_placeholder(value):
@@ -327,7 +366,7 @@ def classify_input(path):
 
 
 def slice_headless(slicer, input_path, kind, machine, process, filament,
-                   arrange, timeout_s, keep_dir, scale=1.0):
+                   arrange, timeout_s, keep_dir, scale=1.0, bed_type=""):
     """Run the BambuStudio CLI on input_path; return path to the
     exported .gcode.3mf (inside a temp dir the caller may keep)."""
     for label, p in [("slicer", slicer)] + (
@@ -344,6 +383,30 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
         os.path.splitext(os.path.basename(input_path))[0]) + ".gcode.3mf"
     if export_name.endswith(".3mf.gcode.3mf"):
         export_name = export_name[:-len(".3mf.gcode.3mf")] + ".gcode.3mf"
+
+    # The CLI has no plate-selection flag and defaults curr_bed_type to
+    # "Cool Plate" (35 C bed on the A1 mini -> nothing sticks -> ghost
+    # print, field-seen on Thumbelina 2026-07-27). Injecting
+    # curr_bed_type into the process config is the empirically verified
+    # way to select the plate headlessly (M190 S65 with "Textured PEI
+    # Plate", PR #23). Patch a copy - never the user's file.
+    if bed_type and process:
+        with open(process, encoding="utf-8") as f:
+            proc_cfg = json.load(f)
+        if proc_cfg.get("curr_bed_type") != bed_type:
+            proc_cfg["curr_bed_type"] = bed_type
+            patched = os.path.join(out_dir, "process_bed_patched.json")
+            with open(patched, "w", encoding="utf-8") as f:
+                json.dump(proc_cfg, f, indent=2)
+            print(f"Bed type: slicing for {bed_type!r} "
+                  "(injected curr_bed_type into a copy of the process "
+                  "profile; --bed-type changes it).")
+            process = patched
+    elif bed_type and not process:
+        print(f"NOTE: cannot set bed type {bed_type!r} without a process "
+              "profile - the project 3MF's own plate setting applies. The "
+              "post-slice summary below shows the commanded bed "
+              "temperature; verify it before printing.")
 
     cmd = [slicer]
     if scale and scale != 1.0:
@@ -483,6 +546,22 @@ _BED_TEMP_KEYS = (
 )
 
 
+def commanded_bed_temp(zf):
+    """First executable M190/M140 with S > 0 - the bed temperature the
+    printer will actually run, regardless of what the header tables
+    say. (Comment lines start with ';' so startswith() skips them.)"""
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 200000:
+                break
+            line = raw.decode("utf-8", "replace")
+            if line.startswith(("M190", "M140")):
+                m = re.search(r"S(\d+)", line)
+                if m and int(m.group(1)) > 0:
+                    return int(m.group(1))
+    return None
+
+
 def summarize_and_check(path, force):
     """Print what is about to be printed; exit if the sliced job exceeds
     A1-mini hardware maxima (a wrong-profile symptom, not a preference)."""
@@ -503,13 +582,16 @@ def summarize_and_check(path, force):
     bed = max(bed_temps) if bed_temps else None
     nozzle = _max_temp(fields.get("nozzle_temperature", "") + " "
                        + fields.get("nozzle_temperature_initial_layer", ""))
+    plate = fields.get("curr_bed_type", "?")
+    bed_cmd = commanded_bed_temp(zipfile.ZipFile(path))
 
     print("--- Sliced job summary ------------------------------------")
     print(f"  printer profile : {printer}")
     print(f"  estimated time  : {est_time}")
     print(f"  filament [g]    : {weight}")
-    print(f"  bed temp (max over plate types) : "
-          f"{bed if bed is not None else '?'} C "
+    print(f"  build plate     : {plate}")
+    print(f"  bed temp commanded (first M190/M140) : "
+          f"{bed_cmd if bed_cmd is not None else '?'} C "
           f"(A1 mini max {A1_MINI_MAX_BED_C})")
     print(f"  nozzle temp     : {nozzle if nozzle is not None else '?'} C "
           f"(A1 mini max {A1_MINI_MAX_NOZZLE_C})")
@@ -524,10 +606,18 @@ def summarize_and_check(path, force):
     if bed is None or nozzle is None:
         print("WARN: could not read temperature setpoints from the G-code "
               "header - unusual for a BambuStudio slice; inspect the file.")
+    if bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
+        problems.append(
+            f"commanded first-layer bed temp is only {bed_cmd} C (plate "
+            f"type {plate!r}) - nothing adheres to the textured PEI sheet "
+            "below ~45 C and the job GHOST-PRINTS (runs the motions with "
+            "nothing staying on the bed; field-seen on Thumbelina "
+            "2026-07-27 with the CLI's Cool Plate 35 C default). Re-slice "
+            'with --bed-type "Textured PEI Plate" (the default) or fix '
+            "the plate selection in the project 3MF")
     if problems:
-        msg = ("sliced job exceeds A1-mini hardware limits ("
-               + "; ".join(problems) + ") - almost certainly sliced with a "
-               "wrong-printer profile.")
+        msg = ("sliced job failed the sanity checks ("
+               + "; ".join(problems) + ").")
         if force:
             print("WARN (--force): " + msg)
         else:
@@ -876,6 +966,13 @@ def main():
     parser.add_argument("--no-arrange", action="store_true",
                         help="skip --orient/--arrange (use for project "
                         "3MFs whose plate layout you want kept)")
+    parser.add_argument("--bed-type", default=None,
+                        help="build plate to slice for (default from "
+                        f"BED_TYPE, currently {BED_TYPE!r}; the CLI's own "
+                        "default is Cool Plate / 35 C bed, which "
+                        "ghost-prints on the stock textured sheet). "
+                        'Aliases: textured, cool, eng, hot. Pass "" to '
+                        "leave the profile/3MF value untouched")
     parser.add_argument("--scale", type=float, default=1.0,
                         help="uniform scale factor passed to the slicer "
                         "(1000 for a meters-unit STL, 25.4 for inches; "
@@ -960,6 +1057,9 @@ def main():
               'try its default tray; pass --ams-mapping "0" (etc.) to be '
               "explicit.")
 
+    bed_type = normalize_bed_type(
+        args.bed_type if args.bed_type is not None else BED_TYPE)
+
     kind = classify_input(path)
     if kind == "stl":
         check_stl_units(path, args.scale, args.force)
@@ -972,7 +1072,7 @@ def main():
     sliced, out_dir = slice_headless(
         slicer, path, kind, machine, process, filament,
         arrange=not args.no_arrange, timeout_s=args.slice_timeout,
-        keep_dir=args.keep_output, scale=args.scale)
+        keep_dir=args.keep_output, scale=args.scale, bed_type=bed_type)
     try:
         summarize_and_check(sliced, args.force)
         for warning in check_payload(sliced, args.force):
@@ -994,6 +1094,14 @@ def main():
             print("Upload-only mode: not starting a print.")
             return 0
 
+        if use_ams:
+            print(f"Filament source: AMS lite, tray mapping "
+                  f"{ams_mapping or '(printer default)'} (0-indexed).")
+        else:
+            print("Filament source: EXTERNAL spool holder (use_ams "
+                  "false). If your filament is actually loaded in the "
+                  "AMS lite, pass --use-ams --ams-mapping <tray> or the "
+                  "printer may run the job without feeding filament.")
         if not args.yes:
             answer = input(f"About to start a REAL print of {remote_name} "
                            f"on {serial} - G-code NO HUMAN HAS PREVIEWED "

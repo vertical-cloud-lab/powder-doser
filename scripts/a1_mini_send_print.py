@@ -224,6 +224,30 @@ def read_gcode_metadata(zf):
     return fields
 
 
+# Below this commanded first-layer bed temperature nothing adheres to
+# the textured PEI sheet and the job "prints" air (the 2026-07-27
+# Thumbelina ghost print ran M190 S35 from the headless CLI's Cool
+# Plate default). PLA on the stock plate needs 55-65 C.
+MIN_SANE_BED_C = 45
+
+
+def commanded_bed_temp(zf):
+    """First executable M190/M140 with S > 0 - the bed temperature the
+    printer will actually run, regardless of what the header tables
+    say. (Comment lines start with ';' so startswith() skips them.)
+    Kept in sync with a1_mini_slice_and_send.py."""
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 200000:
+                break
+            line = raw.decode("utf-8", "replace")
+            if line.startswith(("M190", "M140")):
+                m = re.search(r"S(\d+)", line)
+                if m and int(m.group(1)) > 0:
+                    return int(m.group(1))
+    return None
+
+
 # --- A1-mini payload sanity check -------------------------------------------
 # Kept in sync with a1_mini_slice_and_send.py.
 def check_payload(path, force):
@@ -264,17 +288,37 @@ def check_payload(path, force):
 
     problem = None
     if model and "A1 mini" not in model:
-        problem = f'{path} is sliced for "{model}", not an A1 mini'
+        problem = (f'{path} is sliced for "{model}", not an A1 mini. '
+                   "Re-slice with an A1 mini profile")
     elif any(v >= 2 for v in map_values):
         problem = (f"{path} maps filaments to a second extruder "
                    f"(filament_map = {meta.get('filament_map')}) - a "
-                   "dual-extruder (H2D/IDEX) slice")
+                   "dual-extruder (H2D/IDEX) slice. Re-slice with an "
+                   "A1 mini profile")
+    if problem is None:
+        # Ghost-print guard: a job sliced for the wrong build plate runs
+        # the motions with nothing sticking to the bed (Thumbelina
+        # 2026-07-27: the headless CLI's Cool Plate default -> M190 S35
+        # on the textured PEI sheet).
+        plate = meta.get("curr_bed_type", "?")
+        bed_cmd = commanded_bed_temp(zf)
+        print(f"Build plate: {plate}; commanded first-layer bed temp: "
+              f"{bed_cmd if bed_cmd is not None else '?'} C")
+        if bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
+            problem = (
+                f"{path} commands a first-layer bed temp of only "
+                f"{bed_cmd} C (plate type {plate!r}) - nothing adheres "
+                "to the textured PEI sheet below ~45 C and the job "
+                "GHOST-PRINTS (runs the motions with nothing staying on "
+                "the bed). Re-export from Bambu Studio with the "
+                "Textured PEI Plate selected, or re-slice with "
+                'a1_mini_slice_and_send.py (defaults to --bed-type '
+                '"Textured PEI Plate")')
     if problem:
-        msg = problem + ". Re-slice with an A1 mini profile."
         if force:
-            warnings.append("WARN (--force): " + msg)
+            warnings.append("WARN (--force): " + problem + ".")
         else:
-            sys.exit("ERROR: " + msg + " Pass --force to send it anyway.")
+            sys.exit("ERROR: " + problem + ". Pass --force to send it anyway.")
     elif not model:
         warnings.append("WARN: no printer_model/printer_settings_id in the "
                         "G-code header - could not confirm this file was "
@@ -643,6 +687,14 @@ def main():
         print("Upload-only mode: not starting a print.")
         return 0
 
+    if use_ams:
+        print(f"Filament source: AMS lite, tray mapping "
+              f"{ams_mapping or '(printer default)'} (0-indexed).")
+    else:
+        print("Filament source: EXTERNAL spool holder (use_ams false). "
+              "If your filament is actually loaded in the AMS lite, pass "
+              "--use-ams --ams-mapping <tray> or the printer may run the "
+              "job without feeding filament.")
     if not args.yes:
         answer = input(f"About to start a REAL print of {remote_name} on "
                        f"{serial}. Is the bed clear? [y/N] ")
