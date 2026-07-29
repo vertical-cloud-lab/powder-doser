@@ -331,11 +331,15 @@ def fig2() -> None:
 # ----------------------------------------------------------------------------
 # Figure 3 — dispensing characterization (synthetic placeholder data)
 # ----------------------------------------------------------------------------
+# Four representatives of the ten-powder validation set (Table 1 in main.tex),
+# spanning the observed flowability range: NaCl (free-flowing baseline),
+# AlSi10Mg (dense, fluid-like), xanthan gum (cohesive, bridging), and brown
+# rice flour (most cohesive of the set).
 POWDERS = [
-    ("Glass beads (70\u2013110 \u00b5m)", "#2a6db5", 1.6),
-    ("Al\u2082O\u2083 (50 \u00b5m)", "#c44e52", 1.1),
-    ("316L steel (15\u201345 \u00b5m)", "#55a868", 2.3),
+    ("NaCl (table salt)", "#2a6db5", 1.6),
+    ("AlSi10Mg (gas-atomized)", "#c44e52", 2.3),
     ("Xanthan gum", "#8172b3", 0.45),
+    ("Brown rice flour", "#55a868", 0.18),
 ]
 
 
