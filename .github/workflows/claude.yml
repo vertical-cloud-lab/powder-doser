@@ -62,11 +62,11 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-          # # Optional (riskier): Print the full turn-by-turn JSON execution log in the step output
-          # show_full_output: true
+          # Optional (riskier): Print the full turn-by-turn JSON execution log in the step output
+          show_full_output: true
 
-          # # Optional (riskier): Render a human-readable "Claude Code Report" in the job's Step Summary
-          # display_report: true
+          # Optional (riskier): Render a human-readable "Claude Code Report" in the job's Step Summary
+          display_report: true
 
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
@@ -83,10 +83,10 @@ jobs:
             --model claude-fable-5
             --permission-mode bypassPermissions
 
-      # # Optional, recommended if you set show_full_output=True
-      # - name: Upload Claude execution log
-      #   if: always() && steps.claude.outputs.execution_file != ''
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: claude-execution-log
-      #     path: ${{ steps.claude.outputs.execution_file }}
+      # Optional, recommended if you set show_full_output=True
+      - name: Upload Claude execution log
+        if: always() && steps.claude.outputs.execution_file != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-execution-log
+          path: ${{ steps.claude.outputs.execution_file }}
