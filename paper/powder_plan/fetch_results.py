@@ -28,22 +28,43 @@ def task_ids() -> dict[str, str]:
     return ids
 
 
+def _dump(result) -> dict:
+    return result.model_dump() if hasattr(result, "model_dump") else dict(result)
+
+
 def archive(client: EdisonClient, name: str, tid: str) -> str:
     task = client.get_task(task_id=tid, verbose=True)
     status = str(task.status)
     if status != "success":
         return status
-    env = task.environment_frame or {}
-    state = env.get("state", {}) if isinstance(env, dict) else {}
-    answer = getattr(task, "answer", None) or state.get("answer")
-    if isinstance(answer, dict):
-        answer = answer.get("answer") or json.dumps(answer, indent=2)
+    data = _dump(task)
+    answer = ""
+    # ANALYSIS tasks: environment_frame.state.state.answer
+    try:
+        answer = data["environment_frame"]["state"]["state"]["answer"] or ""
+    except (KeyError, TypeError):
+        pass
+    # LITERATURE tasks: environment_frame.state.state.response.answer.formatted_answer
+    if not answer:
+        try:
+            pqa = data["environment_frame"]["state"]["state"]["response"]["answer"]
+            answer = pqa.get("formatted_answer") or pqa.get("answer") or ""
+        except (KeyError, TypeError, AttributeError):
+            pass
+    if not answer:
+        answer = data.get("answer") or data.get("formatted_answer") or ""
     if answer:
         (HERE / f"{name}.answer.md").write_text(str(answer))
         print(f"  wrote {name}.answer.md ({len(str(answer))} chars)", flush=True)
-    nb = state.get("notebook") if isinstance(state, dict) else None
+    nb = None
+    try:
+        nb = data["environment_frame"]["state"]["state"]["nb_state"]
+    except (KeyError, TypeError):
+        pass
     if nb:
-        (HERE / f"{name}.notebook.ipynb").write_text(json.dumps(nb, indent=2))
+        (HERE / f"{name}.notebook.ipynb").write_text(
+            json.dumps(nb, indent=2, default=str)
+        )
         print(f"  wrote {name}.notebook.ipynb", flush=True)
     return status
 
