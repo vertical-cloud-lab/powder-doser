@@ -1308,6 +1308,75 @@ integrating, plan to:
    stored as secrets (not in the repo). LAN access codes rotate when
    the user changes them on the screen; cloud refresh tokens expire.
 
+## Future work — scheduled AMS drying cycles (AMS HT / AMS 2 Pro)
+
+> Motivation: the lab's TPU stock needs to stay at a usable dryness
+> level (target RH% inside the AMS well under 20 %, recently aiming for
+> < 8 %), and the current practice is manually re-starting drying
+> cycles on the AMS HT / AMS 2 Pro units. The reasoning — TPU
+> hygroscopy, why RH% is *not* a measurement of filament moisture, and
+> why cycles need to repeat — is written up in
+> [byu-vcl#82 (comment)](https://github.com/vertical-cloud-lab/byu-vcl/issues/82#issuecomment-5122007610).
+> Automating "run a drying cycle every N hours" is therefore a wanted
+> follow-on once programmatic H2D control is live.
+
+**This is feasible with the exact mode-B stack this doc already
+builds.** Bambu's official apps cannot start AMS drying remotely (the
+touchscreen or the local Studio/Handy device page is required), but the
+community has confirmed that drying on the AMS 2 Pro and AMS HT can be
+started and stopped over the printer's local MQTT broker with a
+`print`-class command:[^ha-drying-mqtt]
+
+```jsonc
+// device/<SERIAL>/request — start a drying cycle
+{"print": {"sequence_id": "0",
+           "command":     "ams_filament_drying",
+           "ams_id":      131,        // the unit's id from pushall telemetry — see below
+           "mode":        1,          // 1 = start, 0 = stop
+           "temp":        45,         // °C; AMS 2 Pro max 65, AMS HT max 85
+           "cooling_temp": 45,
+           "duration":    12,         // integer HOURS, not minutes
+           "humidity":    0,          // target RH%; 0 observed in the field, non-zero appears ineffective
+           "rotate_tray": false}}
+
+// stop: same command with "mode": 0, "duration": 0, "temp": 0
+```
+
+Practical notes for whoever picks this up:
+
+1. **Same gate as `print.project_file`.** Because it is a
+   `print`-class command it goes through the same authorization gate
+   as starting a print — Developer Mode (which Step 1 already enables)
+   is what makes it work from our own code. No new credentials: the
+   verified `(IP, ACCESS_CODE, SERIAL)` triple and the Step-2 MQTT
+   stack are sufficient.
+2. **Discover `ams_id` from telemetry, don't guess it.** Regular
+   4-slot AMS units report ids `0–3`; AMS HT / AMS 2 Pro units show up
+   with ids in the 100+ range (`101`, `131`, … in field reports).
+   Read the `ams.ams[].id` values out of a `pushall` report for our
+   actual units and hard-code them in config.
+3. **Closing the loop is possible.** The same `report` topic carries
+   per-unit humidity (`ams.ams[].humidity` / the
+   `amsX temp:…;humidity:…%` push lines),[^openbambu-mqtt] so a
+   scheduler can log RH% before/after each cycle and alert when a unit
+   stops recovering — with the caveat from byu-vcl#82 that RH% tracks
+   the air in the box, not the moisture in the filament.
+4. **Where it should live: the Step-5/6 Pi relay.** A systemd timer
+   (or APScheduler inside the relay) publishing the start command on a
+   fixed schedule, plus a `/dry` route for on-demand cycles, is a
+   ~30-line addition to `relay.py`. Guard rails: refuse `temp` above
+   the unit's max (65 °C AMS 2 Pro / 85 °C AMS HT[^ha-drying-action]),
+   and skip the cycle when `gcode_state` is `RUNNING`/`PREPARE` —
+   drying while printing is untested in the community record and the
+   filament path is in use.
+5. **It's undocumented surface.** The command is absent from
+   OpenBambuAPI's `mqtt.md` and was reverse-engineered in
+   ha-bambulab#1448; parameters may shift with firmware updates, so
+   pin firmware and re-verify after upgrades (same drill as
+   everything else in this doc). If the lab ever runs Home Assistant,
+   `ha-bambulab`'s `start_filament_drying` / `stop_filament_drying`
+   actions are a maintained reference implementation.[^ha-drying-action]
+
 ## Security considerations
 
 - The LAN MQTT broker uses a self-signed certificate; pin it or trust
@@ -1362,6 +1431,25 @@ integrating, plan to:
     been tested yet."* Source for the install command, basic `Printer`
     usage example, and the `(IP, access_code, serial)` constructor
     signature shown above.
+
+[^ha-drying-mqtt]: greghesp/ha-bambulab, issue #1448 — *[Feature]
+    REMOTELY (!) activating or deactivating AMS HT / AMS 2 Pro drying*.
+    <https://github.com/greghesp/ha-bambulab/issues/1448>. Community
+    reverse-engineering of the `ams_filament_drying` MQTT command:
+    start/stop JSON quoted above, duration in integer hours,
+    parameters changeable mid-cycle, and the finding that it is a
+    `print`-class command gated by the same authorization system as
+    `start_print` (Developer Mode / pre-authorization firmware).
+    Bambu's own manual for the on-device flow: *Filament drying guide
+    for AMS 2 Pro and AMS HT*,
+    <https://wiki.bambulab.com/en/ams-2-pro/manual/drying-function>.
+
+[^ha-drying-action]: greghesp/ha-bambulab — *Actions* documentation,
+    `bambu_lab.start_filament_drying` / `stop_filament_drying`.
+    <https://docs.page/greghesp/ha-bambulab/actions>. Parameters
+    (temperature, duration in hours, rotate_tray) and the per-unit
+    temperature ceilings quoted above: "AMS 2 max is 65C. AMS HT max
+    is 85C."
 
 [^acdevlab-manual-print]: AccelerationConsortium, *ac-dev-lab* —
     `src/ac_training_lab/bambu_a1_mini/_scripts/manual_print.py`.
