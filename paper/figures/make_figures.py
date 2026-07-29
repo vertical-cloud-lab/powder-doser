@@ -226,7 +226,7 @@ def fig1() -> None:
     ax.set_title("Closed-loop gravimetric dosing", fontsize=6)
     boxes = [
         (0.7, 7.7, "Dose request\n(target mass)"),
-        (0.7, 4.2, "Controller\n(coarse \u2192 trickle)"),
+        (0.7, 4.2, "Three-phase controller\n(bulk \u2192 fine \u2192 tap)"),
         (5.9, 4.2, "Auger + tap +\nvibration actuation"),
         (5.9, 0.9, "Balance reading\n(A&D HR-100A, RS-232)"),
     ]
@@ -371,9 +371,11 @@ def fig3() -> None:
         ax.loglog(req, np.clip(meas, 1e-3, None), "o", ms=2.2, color=color, alpha=0.8)
     lims = [0.01, 8]
     ax.loglog(lims, lims, "-", color="0.4", lw=0.7)
-    ax.fill_between(
-        lims, [l * 0.9 for l in lims], [l * 1.1 for l in lims], color="0.8", alpha=0.4
-    )
+    # piecewise acceptance band: +/-10% below 100 mg, +/-5% at/above 100 mg
+    lo = np.array([0.01, 0.1])
+    hi = np.array([0.1, 8.0])
+    ax.fill_between(lo, lo * 0.9, lo * 1.1, color="0.8", alpha=0.4)
+    ax.fill_between(hi, hi * 0.95, hi * 1.05, color="0.8", alpha=0.4)
     ax.set_xlabel("Requested mass (g)")
     ax.set_ylabel("Measured mass (g)")
     panel_label(ax, "b")
