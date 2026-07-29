@@ -336,7 +336,13 @@ Use the H2D `cube_h2d.gcode.3mf` from the empirical CLI walkthrough
 ([Remote slicing → Bambu Studio CLI](#1-bambu-studio-cli-bambu-studio---slice))
 as the test payload — it is small (36 KB), already carries the IDEX
 header the firmware expects, and has a known-good `Metadata/plate_1.gcode`
-inside.
+inside. A ready-made copy is checked in at
+[`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf)
+(regenerated 2026-07-29 with the exact recipe below, plus
+`curr_bed_type = "Textured PEI Plate"` injected so it commands a
+55 °C bed rather than the CLI's ghost-print-prone 35 °C Cool Plate
+default — see [`payloads/README.md`](../payloads/README.md) for full
+provenance). **H2D only** — never send it to the A1 mini.
 
 > [!TIP]
 > All of 3a–3c below is packaged as one cross-platform script:
@@ -1227,7 +1233,9 @@ xvfb-run -a -s "-screen 0 1280x1024x24" ./bambu.AppImage \
 
 This run completes with `result.json` reporting `"return_code": 0`,
 `"error_string": "Success."`, and produces a valid 36 KB
-`cube_h2d.gcode.3mf`. The `Metadata/plate_1.gcode` inside the archive
+`cube_h2d.gcode.3mf` (a copy produced by this exact recipe is checked
+in at [`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf)).
+The `Metadata/plate_1.gcode` inside the archive
 carries the IDEX header the printer actually expects:
 
 ```
