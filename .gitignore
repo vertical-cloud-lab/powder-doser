@@ -230,3 +230,7 @@ paper/mock_review/inputs/si.pdf
 
 # Per-figure Edison ANALYSIS review notebooks (large, embedded data; answers kept as .md)
 paper/mock_review/results/*.notebook.ipynb
+
+# Powder-plan Edison ANALYSIS inputs (copies of built PDFs + attached articles)
+paper/powder_plan/inputs/*.pdf
+paper/powder_plan/*.notebook.ipynb
