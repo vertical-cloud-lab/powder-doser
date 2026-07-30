@@ -34,6 +34,8 @@ coarse/free-flowing (measured feed factor ~0.17 g/rev @ 25° tilt,
 |---|---|---|
 | 2026-07-29 ~23:00 | Refilled with salt to ~1 cm below the brim (@swcharles). Fill ≈ 22–23 cm of bore + funnel ≈ **78 cm³** → **≈ 93 g** (range 85–105 g given density/fill-level uncertainty) | ≈ 93 g |
 | 2026-07-29 23:20 | PID dose 0.5 g → 0.4925 g + trim to **0.5014 g** dispensed ([logs](../data/pid-dose/2026-07-29_salt/pid_dose_run3_0p5_salt.log)) | ≈ 92.5 g |
+| 2026-07-30 17:25 | Three-phase dose 0.5 g, attempt 1: **0.5237 g** dispensed (+23.7 mg overshoot — phase 3's 15° rotation dumped a 25 mg clump; [log](../data/three-phase/2026-07-30_salt/three_phase_0p5_0730.log)) | ≈ 92.0 g |
+| 2026-07-30 17:28 | Three-phase dose 0.5 g, attempt 2: **0.4973 g** dispensed (−2.7 mg; bulk+fine hit 0.497 in 19 s, phase 3 added nothing in 98 s; [log](../data/three-phase/2026-07-30_salt/three_phase_0p5_0730_r2.log)) | ≈ 91.5 g |
 
 At salt's measured ~0.17 g/rev (25° tilt), ~93 g is roughly **90×
 1 g doses** — the tube will not run dry for a long time. Any "hopper
