@@ -36,6 +36,9 @@ coarse/free-flowing (measured feed factor ~0.17 g/rev @ 25° tilt,
 | 2026-07-29 23:20 | PID dose 0.5 g → 0.4925 g + trim to **0.5014 g** dispensed ([logs](../data/pid-dose/2026-07-29_salt/pid_dose_run3_0p5_salt.log)) | ≈ 92.5 g |
 | 2026-07-30 17:25 | Three-phase dose 0.5 g, attempt 1: **0.5237 g** dispensed (+23.7 mg overshoot — phase 3's 15° rotation dumped a 25 mg clump; [log](../data/three-phase/2026-07-30_salt/three_phase_0p5_0730.log)) | ≈ 92.0 g |
 | 2026-07-30 17:28 | Three-phase dose 0.5 g, attempt 2: **0.4973 g** dispensed (−2.7 mg; bulk+fine hit 0.497 in 19 s, phase 3 added nothing in 98 s; [log](../data/three-phase/2026-07-30_salt/three_phase_0p5_0730_r2.log)) | ≈ 91.5 g |
+| 2026-07-30 20:44 | Tap-efficacy check after the electronics repair: 5 bursts × 3 pulses, auger stationary → **0.0034 g** ([log](../data/pid-dose/2026-07-30_salt/tap_efficacy_check.log)) | ≈ 91.5 g |
+| 2026-07-30 20:45 | "Normal conditions" experiment, stock PID @ defaults, 1 g × 3 replicates: **1.0631 + 1.0715 + 1.0358 g** dispensed (all overshoot; [rep 1](../data/pid-dose/2026-07-30_salt/pid_normal_run1_salt.log)) | ≈ 88.3 g |
+| 2026-07-30 20:53 | Slow-tail diagnostic run (5 rpm cap below 0.2 g to go): **1.0355 g** dispensed ([log](../data/pid-dose/2026-07-30_salt/pid_slowtail_run4_salt.log)) | ≈ 87.3 g |
 
 At salt's measured ~0.17 g/rev (25° tilt), ~93 g is roughly **90×
 1 g doses** — the tube will not run dry for a long time. Any "hopper
