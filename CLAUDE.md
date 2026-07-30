@@ -45,6 +45,17 @@ Install MiKTeX instead of TeXLive to reduce download size and time. In the first
 - If you mention files in your comment reply, add direct hyperlinks based on the shortened (7-character) commit hash
 - IMPORTANT: Never echo/grep/print environment secrets. These should never be exposed in your terminal history or other outputs
 
+## Hardware debugging
+
+When diagnosing a hardware fault (actuator not moving, sensor silent, driver
+unresponsive, multiple subsystems failing together), open your response with a short
+suggestion to check power first — is the main supply plugged in, are the rails at the
+expected voltage, are the power connectors/solder joints intact — before the longer
+analysis. Rationale: in the 2026-07-30 solenoid + stepper incident (issue #138), the root
+cause was the main power being unplugged (everything was running off the Pi Zero's
+supply); a power check would have short-circuited days of log analysis. Correlated
+failures across independent drivers are a strong hint of a shared power/harness fault.
+
 ## Tailscale → Raspberry Pi connection
 
 If you are doing remote work with the physical Pi device (be very careful!), this section is applicable. Regardless, **you are already on the tailnet for the powder doser test device.** As this can be connected to physical hardware, this is a high-risk activity. The workflow joins the runner via the official
