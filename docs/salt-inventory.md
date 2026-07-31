@@ -7,6 +7,10 @@ stalls with "no flow", check the estimated remaining mass here first:
 if plenty remains, the powder has **bridged** above the funnel (stir or
 tap the tube) — the hopper is *not* empty.
 
+The ledger's running total is an *estimate* accumulated from doses. The
+ground truth is to put the tube on a scale and subtract the empty-auger
+tare (see below).
+
 ## Container geometry (basis for estimates)
 
 The powder container is the rotating auger tube itself
@@ -20,6 +24,34 @@ v5/v6 hollow design — no internal helix):
 - **Full usable capacity ≈ 82 cm³** (matches the SCAD header's
   "Capacity ≈ 80 cm³ usable")
 - Rule of thumb: **1 cm of bore height ≈ 3.5 cm³ ≈ 4.2 g of salt**
+
+## Empty-auger tare mass: **56.716 g**
+
+Reported by @williamulbz, 2026-07-31. Whenever the auger tube is weighed
+with powder inside, subtract this to get the powder mass:
+
+```
+powder mass (g) = total weighed mass (g) − 56.716 g
+```
+
+This is the **authoritative** way to know how much powder is on board —
+it beats the geometric estimate below, which carries ±10 % uncertainty
+from bulk density and fill height. If a weighed value is ever available,
+prefer it and add a ledger row recording both the total and the derived
+powder mass.
+
+Handy anchors (using the 1.2 g/cm³ / 4.2 g-per-cm-of-bore rules below):
+
+| Tube state | Powder | Expected total on the scale |
+|---|---|---|
+| Empty | 0 g | **56.7 g** |
+| Full to ~1 cm below brim (as refilled 2026-07-29) | ≈ 93 g | ≈ 150 g |
+| Current ledger estimate (2026-07-31) | ≈ 85.7 g | ≈ 142.4 g |
+| Full capacity (≈ 82 cm³) | ≈ 98 g | ≈ 155 g |
+
+So a weighing that comes back near 142 g would confirm the ledger; a
+much lower number means the ledger has drifted (e.g. an unlogged dose or
+spillage) and should be reset from the weighed value.
 
 ## Salt bulk-density assumption
 
