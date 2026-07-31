@@ -1,0 +1,13 @@
+samples=6000  span=1199.9s  rate=5.00 Hz
+
+layout                                               docs      BSON in      stored   MB/day  days->512MB
+A: plain collection, every sample, verbose fields    6000   1,242,000B  1,344,000B    96.78            6
+B: time-series, every sample, short fields           6000     930,000B     11,772B     0.85          633
+C: time-series, dead-band + heartbeat                 138      23,736B      1,265B     0.09        5,894
+D: 1-minute aggregates only                            21       5,754B      1,056B     0.08        7,060
+  A  index=4,096B
+  B  index=4,096B buckets=6 avg=1,962B
+  C  index=4,096B buckets=1 avg=1,265B
+  D  index=4,096B buckets=1 avg=1,056B
+
+'stored' is server-side collStats.size (bucket documents for time-series), which is what dbstats.dataSize -- and the 512 MB free-tier quota -- counts.

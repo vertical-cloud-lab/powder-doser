@@ -1,0 +1,72 @@
+{
+  "n_samples": 6000,
+  "span_s": 1199.881,
+  "rate_hz": 4.99966246652793,
+  "layouts": [
+    {
+      "layout": "A: plain collection, every sample, verbose fields",
+      "docs": 6000,
+      "bson_bytes": 1242000,
+      "server": {
+        "size": 1344000,
+        "storageSize": 4096,
+        "totalIndexSize": 4096,
+        "count": 6000
+      },
+      "stored_bytes": 1344000,
+      "bytes_per_day": 96777597.11171357,
+      "days_to_512mb": 5.547470985255732
+    },
+    {
+      "layout": "B: time-series, every sample, short fields",
+      "docs": 6000,
+      "bson_bytes": 930000,
+      "server": {
+        "size": 11772,
+        "storageSize": 4096,
+        "totalIndexSize": 4096,
+        "count": 0,
+        "buckets": 6,
+        "avgBucketSize": 1962,
+        "measurements": 6000
+      },
+      "stored_bytes": 11772,
+      "bytes_per_day": 847668.0604159912,
+      "days_to_512mb": 633.3504081025912
+    },
+    {
+      "layout": "C: time-series, dead-band + heartbeat",
+      "docs": 138,
+      "bson_bytes": 23736,
+      "server": {
+        "size": 1265,
+        "storageSize": 4096,
+        "totalIndexSize": 4096,
+        "count": 0,
+        "buckets": 1,
+        "avgBucketSize": 1265,
+        "measurements": 138
+      },
+      "stored_bytes": 1265,
+      "bytes_per_day": 91089.03299577207,
+      "days_to_512mb": 5893.913837299371
+    },
+    {
+      "layout": "D: 1-minute aggregates only",
+      "docs": 21,
+      "bson_bytes": 5754,
+      "server": {
+        "size": 1056,
+        "storageSize": 4096,
+        "totalIndexSize": 4096,
+        "count": 0,
+        "buckets": 1,
+        "avgBucketSize": 1056,
+        "measurements": 21
+      },
+      "stored_bytes": 1056,
+      "bytes_per_day": 76039.54058777494,
+      "days_to_512mb": 7060.417617598206
+    }
+  ]
+}

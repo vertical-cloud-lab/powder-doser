@@ -1,0 +1,23 @@
+[Unit]
+Description=Powder doser idle scale poller (issue #126 tiers 2/3)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=vcl
+# MONGODB_URI lives here, mode 600, root-owned -- never in the repo.
+EnvironmentFile=/etc/powder-doser.env
+ExecStart=/home/vcl/powder-doser/scripts/deploy/scale_idle_poller.sh
+# The device script runs in bounded chunks, so a normal exit is expected
+# every CHUNK_S; restart quietly rather than treating it as a failure.
+Restart=always
+RestartSec=5
+# Do not fight a dose run for /dev/ttyACM0: whoever starts a dose stops
+# this unit first (systemctl stop scale-idle-poller), and this unit
+# comes back on its own afterwards.
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -215,3 +215,6 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# Bench captures are data, not build noise (data/pid-dose, data/scale-idle, ...)
+!data/**/*.log
