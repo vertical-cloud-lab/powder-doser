@@ -215,3 +215,7 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# Blank-auger sweep output (characterization/): raw balance traces are
+# large and per-bench. Keep the derived calibration/*.json, not the runs.
+runs/

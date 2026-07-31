@@ -43,6 +43,27 @@ Candidate parts for the auger drive motor, vibration motor, external
 solenoid, and the Raspberry Pi Zero 2 W driver boards needed to
 control them are documented in
 [`hardware/vibration-motor-and-solenoid.md`](hardware/vibration-motor-and-solenoid.md).
+
+## Blank-auger characterization ([`characterization/`](characterization/))
+
+The stepper, ERM motor, solenoid and servo all vibrate the balance they
+are weighing into. Running a dispense with an **empty auger** is the only
+experiment on the rig with a known ground truth — true Δm is exactly
+0 mg — so everything the balance reports is artefact, and it is
+attributable to the dispense parameters rather than confounded with
+powder flow. [`characterization/`](characterization/) is the harness for
+that sweep: randomised, control-interleaved parameter grids; raw *and*
+stable balance channels logged at full rate; robust statistics that
+yield σ₀, LOD/LOQ, a settle-delay curve and forbidden RPM bands; and a
+per-environment calibration artefact plus a self-check that refuses to
+dispense when the environment no longer reproduces it. It runs offline
+against a simulator (`--mock`), so the run plan can be debugged before
+anyone walks to the bench. See
+[`characterization/README.md`](characterization/README.md) for the run
+book and [`calibration/`](calibration/) for the artefacts.
+
+![σ vs RPM](docs/figures/characterization/rpm-bands.png)
+
 ## Cleaned-up design diagram
 
 The sketch above has been recreated as four labelled subpanels. Each is a

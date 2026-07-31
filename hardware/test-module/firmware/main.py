@@ -26,19 +26,38 @@ and re-runs in a second, so edit-save-run stays quick.
 
 Required modules on the Pico (upload alongside this file):
   - ``config.py``   (next to this file)
+  - ``params.py``   (next to this file -- runtime parameter overlay)
   - ``drv2605.py``  (next to this file)
   - ``tic.py``      (next to this file -- Tic T500 serial driver)
 
 Wire-on commands (one per line over USB-serial):
     h            help
     s            print current state / config
-    d            dispense (run auger STEPPER_DISPENSE_DEG)
+    d            dispense (rotate auger by the active dispense_deg)
     r <deg>      rotate auger by <deg> degrees (signed)
     v            vibrate (single canned effect)
-    t            tap (run TAP_COUNT solenoid pulses)
+    t            tap (run tap_count solenoid pulses)
     a <deg>      smoothly move dispensing-angle servo to <deg>
     p <name>     smoothly move servo to a preset (horizontal/tilt/vertical/tip)
+    e <0|1>      de-energise / energise the stepper
+    set <k> <v>  set a runtime parameter (see ``params.py``)
+    get <k>      print one runtime parameter
+    params       print the full active parameter set as one JSON line
+    reset [<k>]  drop one runtime override, or all of them
     !            emergency stop -- de-energise everything
+
+Host protocol
+-------------
+Every command is acknowledged with a single machine-parseable line --
+``ok <cmd> t0=<ms> t1=<ms> [est=<ms>]`` on success, ``err <cmd> <msg>``
+on failure -- so an automated sweep can block until the rig is idle and
+learn the device-side motion window.  Free-form ``print`` output stays
+human-readable and is prefixed, never bare, so the host can ignore it.
+
+The timestamps are the Pico's ``time.ticks_ms`` clock, which is *not*
+the host clock and does not resolve when motion actually stopped (see
+``_wait_estimated_time``): treat them as a coarse window and timestamp
+settle behaviour against the balance stream instead.
 """
 
 import sys
@@ -47,6 +66,7 @@ import time
 from machine import I2C, Pin, PWM, UART
 
 import config
+import params as params_mod
 import tic
 
 # Module-level poll object for MicroPython (functions can't have new
@@ -81,23 +101,26 @@ def _pwm(pin_num, freq, duty=0.0):
 # ---------------------------------------------------------------------------
 
 class Stepper:
-    def __init__(self):
+    def __init__(self, params):
+        self.params = params
         self.uart = UART(config.TIC_UART_ID, baudrate=config.TIC_BAUD,
                          tx=Pin(config.PIN_TIC_TX), rx=Pin(config.PIN_TIC_RX),
                          timeout=config.TIC_READ_TIMEOUT_MS)
         self.tic = tic.TicSerial(self.uart)
-        self.steps_per_rev = (config.STEPPER_FULL_STEPS_REV
-                              * config.STEPPER_MICROSTEPS)
+        self.steps_per_rev = 0
         # Shadow target position (microsteps); the Tic starts at 0 once we
         # call halt_and_set_position below.
         self._position = 0
-        self._rpm = float(config.STEPPER_SPEED_RPM)
+        self._rpm = float(params["stepper_rpm"])
         self._enabled = False
+        # Duration of the most recent move, excluding the settle pad, so
+        # the host can bound the actual motion window.
+        self.last_move_est_ms = 0
         self._configure()
 
     def _accel_units(self):
         # Tic acceleration unit = 1/100 microstep per second per second.
-        usteps_per_s2 = config.STEPPER_ACCEL_REV_PER_S2 * self.steps_per_rev
+        usteps_per_s2 = self.params["stepper_accel"] * self.steps_per_rev
         return max(1, int(usteps_per_s2 * 100))
 
     def _configure(self):
@@ -106,13 +129,33 @@ class Stepper:
         # the motion settings the firmware owns, and zero the position.
         t.exit_safe_start()
         t.clear_driver_error()
-        t.set_step_mode(config.STEPPER_MICROSTEPS)
-        self.set_speed(config.STEPPER_SPEED_RPM)
-        accel = self._accel_units()
-        t.set_max_accel(accel)
-        t.set_max_decel(accel)
+        self.apply_params()
         t.halt_and_set_position(0)
         self._position = 0
+
+    def apply_params(self):
+        """Re-push the runtime motion settings to the Tic.
+
+        Called at bring-up and after any ``set`` that touches a stepper
+        knob.  Microstepping changes ``steps_per_rev``, which the speed
+        and acceleration conversions both depend on, so the order here
+        matters: step mode first, then speed and accel.
+        """
+        microsteps = self.params["stepper_microsteps"]
+        changed = (config.STEPPER_FULL_STEPS_REV * microsteps
+                   != self.steps_per_rev)
+        self.steps_per_rev = config.STEPPER_FULL_STEPS_REV * microsteps
+        self.tic.set_step_mode(microsteps)
+        if changed:
+            # Target position is counted in microsteps, so re-scaling the
+            # step mode would otherwise reinterpret the existing target
+            # and fling the auger to a new absolute position.  Re-zero.
+            self.tic.halt_and_set_position(0)
+            self._position = 0
+        self.set_speed(self.params["stepper_rpm"])
+        accel = self._accel_units()
+        self.tic.set_max_accel(accel)
+        self.tic.set_max_decel(accel)
 
     def set_speed(self, rpm):
         # Tic speed unit = 1/10000 microstep per second.
@@ -138,6 +181,11 @@ class Stepper:
         self._position += delta
         self.tic.set_target_position(self._position)
         self._wait_estimated_time(delta)
+        if self.params["deenergize_after"]:
+            # Holding current means coil hum and heat right next to the
+            # load cell; the sweep treats "energised during the read" as
+            # a factor rather than an accident of the firmware.
+            self.enable(False)
 
     def _wait_estimated_time(self, delta):
         # The Tic T500's TX line proved unreliable at reporting position
@@ -150,7 +198,10 @@ class Stepper:
         # rotation where exact position isn't critical.
         usteps_per_s = max(1.0, self._rpm / 60.0 * self.steps_per_rev)
         est_s = abs(delta) / usteps_per_s + 0.2
-        deadline = time.ticks_add(time.ticks_ms(), int(est_s * 1000) + 2000)
+        self.last_move_est_ms = int(est_s * 1000)
+        pad_ms = self.params["move_pad_ms"]
+        deadline = time.ticks_add(time.ticks_ms(),
+                                  self.last_move_est_ms + pad_ms)
         while time.ticks_diff(deadline, time.ticks_ms()) > 0:
             try:
                 self.tic.reset_command_timeout()
@@ -164,7 +215,8 @@ class Stepper:
 # ---------------------------------------------------------------------------
 
 class Vibration:
-    def __init__(self):
+    def __init__(self, params):
+        self.params = params
         self.enable_pin = _out(config.PIN_HAPT_EN, 1)
         try:
             import drv2605
@@ -172,18 +224,23 @@ class Vibration:
                               sda=Pin(config.PIN_I2C_SDA),
                               freq=400_000)
             self.drv = drv2605.DRV2605(self.i2c)
-            self.drv.library = config.VIBRATION_LIBRARY
-            self.drv.effect = config.VIBRATION_EFFECT_ID
             self._available = True
+            self.apply_params()
         except Exception as exc:
             print("[vib] DRV2605L unavailable ({}); skipping init".format(exc))
             self._available = False
+
+    def apply_params(self):
+        if not self._available:
+            return
+        self.drv.library = self.params["vib_library"]
+        self.drv.effect = self.params["vib_effect"]
 
     def buzz(self, duration_s=None):
         if not self._available:
             print("[vib] driver missing -- ignoring buzz")
             return
-        seconds = (config.VIBRATION_DURATION_S
+        seconds = (self.params["vib_duration_s"]
                    if duration_s is None else duration_s)
         self.enable_pin.value(1)
         self.drv.play()
@@ -197,7 +254,8 @@ class Vibration:
 # ---------------------------------------------------------------------------
 
 class Tap:
-    def __init__(self):
+    def __init__(self, params):
+        self.params = params
         # 20 kHz PWM is above audible, well within DRV8871's input filter.
         self.in1 = _pwm(config.PIN_SOL_IN1, freq=20_000, duty=0.0)
         self.in2 = _out(config.PIN_SOL_IN2, 0)
@@ -210,12 +268,12 @@ class Tap:
         self.in1.duty_u16(0)
 
     def tap(self, count=None):
-        n = config.TAP_COUNT if count is None else count
+        n = self.params["tap_count"] if count is None else count
         for _ in range(n):
-            self._on(config.TAP_PWM_DUTY)
-            time.sleep_ms(config.TAP_ON_MS)
+            self._on(self.params["tap_duty"])
+            time.sleep_ms(self.params["tap_on_ms"])
             self._off()
-            time.sleep_ms(config.TAP_OFF_MS)
+            time.sleep_ms(self.params["tap_off_ms"])
 
 
 # ---------------------------------------------------------------------------
@@ -235,7 +293,8 @@ class Servo:
 
     PERIOD_US = 20_000  # 50 Hz
 
-    def __init__(self):
+    def __init__(self, params):
+        self.params = params
         self.pwm = _pwm(config.PIN_SERVO_SIG, freq=50, duty=0.0)
         self.angle = float(config.SERVO_DEFAULT_DEG)
         # Seed the PWM at the default angle so the servo doesn't jump
@@ -255,13 +314,26 @@ class Servo:
         duty = pulse_us / self.PERIOD_US
         self.pwm.duty_u16(int(duty * 65535))
 
+    def _settle(self):
+        """Optionally stop driving the PWM once the move has finished.
+
+        A digital servo *holding* a setpoint hunts around it, which puts
+        continuous broadband noise into the frame for as long as the
+        signal is live.  ``servo_hold=0`` drops the pulse train so the
+        servo goes limp -- swept as a factor because whether it matters
+        is exactly the question.
+        """
+        if not self.params["servo_hold"]:
+            self.pwm.duty_u16(0)
+
     def move_to(self, angle_deg):
         target = max(config.SERVO_MIN_ANGLE_DEG,
                      min(config.SERVO_MAX_ANGLE_DEG, angle_deg))
-        speed = float(config.SERVO_SPEED_DEG_PER_S)
+        speed = float(self.params["servo_speed_dps"])
         if speed <= 0:
             self._write_angle(target)
             self.angle = target
+            self._settle()
             return
         update_hz = max(1, config.SERVO_UPDATE_HZ)
         step_deg = speed / update_hz
@@ -270,6 +342,7 @@ class Servo:
         if abs(delta) <= step_deg:
             self._write_angle(target)
             self.angle = target
+            self._settle()
             return
         step = step_deg if delta > 0 else -step_deg
         while abs(target - self.angle) > step_deg:
@@ -278,6 +351,7 @@ class Servo:
             time.sleep(dt)
         self._write_angle(target)
         self.angle = target
+        self._settle()
 
 
 # ---------------------------------------------------------------------------
@@ -288,56 +362,83 @@ HELP = (
     "Commands:\n"
     "  h            show this help\n"
     "  s            print rig state / config\n"
-    "  d            dispense (rotate auger STEPPER_DISPENSE_DEG)\n"
+    "  d            dispense (rotate auger by dispense_deg)\n"
     "  r <deg>      rotate auger by <deg> (signed)\n"
     "  v            vibrate (single canned effect)\n"
-    "  t            tap (TAP_COUNT solenoid pulses)\n"
+    "  t            tap (tap_count solenoid pulses)\n"
     "  a <deg>      servo to <deg>\n"
     "  p <preset>   servo to named preset\n"
+    "  e <0|1>      de-energise / energise the stepper\n"
+    "  set <k> <v>  set a runtime parameter\n"
+    "  get <k>      print one runtime parameter\n"
+    "  params       print the active parameter set (one JSON line)\n"
+    "  reset [<k>]  drop one runtime override, or all of them\n"
     "  !            emergency stop\n"
 )
+
+# Runtime knobs that need re-pushing to a driver after a ``set``.
+_APPLY_STEPPER = ("stepper_rpm", "stepper_microsteps", "stepper_accel")
+_APPLY_VIB = ("vib_effect", "vib_library")
 
 
 class Rig:
     def __init__(self):
         print("[rig] bringing up powder-doser test module")
-        self.stepper = Stepper()
-        self.vib = Vibration()
-        self.tap = Tap()
-        self.servo = Servo()
+        self.params = params_mod.Params(config)
+        self.stepper = Stepper(self.params)
+        self.vib = Vibration(self.params)
+        self.tap = Tap(self.params)
+        self.servo = Servo(self.params)
         print("[rig] ready -- type 'h' for help")
 
     def state(self):
+        p = self.params
         print(
             "stepper: rpm={rpm}, microsteps=1/{ms}, steps/rev={spr}, "
-            "dispense_deg={dd}".format(
-                rpm=config.STEPPER_SPEED_RPM,
-                ms=config.STEPPER_MICROSTEPS,
+            "dispense_deg={dd}, energised={en}, deenergize_after={da}".format(
+                rpm=p["stepper_rpm"],
+                ms=p["stepper_microsteps"],
                 spr=self.stepper.steps_per_rev,
-                dd=config.STEPPER_DISPENSE_DEG,
+                dd=p["dispense_deg"],
+                en=self.stepper._enabled,
+                da=p["deenergize_after"],
             ))
         print(
             "vib: effect={eff} (lib={lib}), duration={dur}s".format(
-                eff=config.VIBRATION_EFFECT_ID,
-                lib=config.VIBRATION_LIBRARY,
-                dur=config.VIBRATION_DURATION_S,
+                eff=p["vib_effect"],
+                lib=p["vib_library"],
+                dur=p["vib_duration_s"],
             ))
         print(
             "tap: count={c}, on={on}ms, off={off}ms, duty={d}".format(
-                c=config.TAP_COUNT,
-                on=config.TAP_ON_MS,
-                off=config.TAP_OFF_MS,
-                d=config.TAP_PWM_DUTY,
+                c=p["tap_count"],
+                on=p["tap_on_ms"],
+                off=p["tap_off_ms"],
+                d=p["tap_duty"],
             ))
         print(
             "servo: angle={a:.1f}, range=[{lo}..{hi}], "
-            "speed={s} deg/s, presets={p}".format(
+            "speed={s} deg/s, hold={hold}, presets={pr}".format(
                 a=self.servo.angle,
                 lo=config.SERVO_MIN_ANGLE_DEG,
                 hi=config.SERVO_MAX_ANGLE_DEG,
-                s=config.SERVO_SPEED_DEG_PER_S,
-                p=list(config.SERVO_PRESETS),
+                s=p["servo_speed_dps"],
+                hold=p["servo_hold"],
+                pr=list(config.SERVO_PRESETS),
             ))
+        print("overrides: {}".format(
+            sorted(n for n in p.names() if p.is_overridden(n))))
+
+    def set_param(self, arg):
+        name, _, raw = arg.strip().partition(" ")
+        if not name or not raw.strip():
+            raise params_mod.ParamError("usage: set <name> <value>")
+        value = self.params.set(name, raw.strip())
+        if name in _APPLY_STEPPER:
+            self.stepper.apply_params()
+        elif name in _APPLY_VIB:
+            self.vib.apply_params()
+        print("[set] {}={}".format(name, value))
 
     def emergency_stop(self):
         print("[rig] EMERGENCY STOP")
@@ -350,39 +451,70 @@ class Rig:
                 pass
             self.vib.enable_pin.value(0)
 
+    def _dispatch(self, cmd, arg):
+        if cmd in ("h", "?", "help"):
+            print(HELP)
+        elif cmd == "s":
+            self.state()
+        elif cmd == "d":
+            self.stepper.rotate_degrees(self.params["dispense_deg"])
+        elif cmd == "r":
+            self.stepper.rotate_degrees(float(arg))
+        elif cmd == "v":
+            self.vib.buzz()
+        elif cmd == "t":
+            self.tap.tap()
+        elif cmd == "a":
+            self.servo.move_to(float(arg))
+        elif cmd == "p":
+            if arg not in config.SERVO_PRESETS:
+                raise ValueError("unknown preset {!r}; choose from {}".format(
+                    arg, list(config.SERVO_PRESETS)))
+            self.servo.move_to(config.SERVO_PRESETS[arg])
+        elif cmd == "e":
+            self.stepper.enable(arg.strip() not in ("0", "off", "false"))
+        elif cmd == "set":
+            self.set_param(arg)
+        elif cmd == "get":
+            name = arg.strip()
+            print("[get] {}={}".format(name, self.params.get(name)))
+        elif cmd == "params":
+            # One line, no prefix: this is the machine-readable snapshot
+            # the host copies verbatim into the run log.
+            print(self.params.snapshot())
+        elif cmd == "reset":
+            name = arg.strip() or None
+            self.params.reset(name)
+            self.stepper.apply_params()
+            self.vib.apply_params()
+            print("[reset] {}".format(name or "all overrides"))
+        elif cmd in ("!", "stop"):
+            self.emergency_stop()
+        else:
+            raise ValueError("unknown command {!r}; 'h' for help".format(cmd))
+
     def handle(self, line):
         line = line.strip()
         if not line:
             return
         cmd, _, arg = line.partition(" ")
         cmd = cmd.lower()
+        if cmd not in ("d", "r"):
+            # ``est`` is only meaningful for a move; don't let the last
+            # move's estimate leak into an unrelated command's ack.
+            self.stepper.last_move_est_ms = 0
+        t0 = time.ticks_ms()
         try:
-            if cmd in ("h", "?", "help"):
-                print(HELP)
-            elif cmd == "s":
-                self.state()
-            elif cmd == "d":
-                self.stepper.rotate_degrees(config.STEPPER_DISPENSE_DEG)
-            elif cmd == "r":
-                self.stepper.rotate_degrees(float(arg))
-            elif cmd == "v":
-                self.vib.buzz()
-            elif cmd == "t":
-                self.tap.tap()
-            elif cmd == "a":
-                self.servo.move_to(float(arg))
-            elif cmd == "p":
-                if arg not in config.SERVO_PRESETS:
-                    print("unknown preset {!r}; choose from {}".format(
-                        arg, list(config.SERVO_PRESETS)))
-                    return
-                self.servo.move_to(config.SERVO_PRESETS[arg])
-            elif cmd in ("!", "stop"):
-                self.emergency_stop()
-            else:
-                print("unknown command {!r}; 'h' for help".format(cmd))
+            self._dispatch(cmd, arg)
         except Exception as exc:
-            print("[rig] command failed: {!r}".format(exc))
+            # Keep the rig alive but make the failure unmistakable to an
+            # unattended host: a sweep that silently skips a condition is
+            # worse than one that stops.
+            print("err {} {!r}".format(cmd, exc))
+            return
+        print("ok {c} t0={t0} t1={t1} est={est}".format(
+            c=cmd, t0=t0, t1=time.ticks_ms(),
+            est=self.stepper.last_move_est_ms))
 
 
 def _readline_nonblocking(buf=[""]):
