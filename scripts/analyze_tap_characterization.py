@@ -11,6 +11,8 @@ serial) and produces:
   * ``tap_depletion.png``  -- marginal yield vs tap index, per tilt angle
   * ``tap_model.png``      -- cumulative yield + fitted lip-inventory model,
                              tap gain vs tilt, refill per revolution vs tilt
+  * ``tap_regimes.png``    -- tap gain + variability vs tilt and the
+                             depletion/replenishment regime boundary
 
 Model fitted per (angle, rep):  y_i = y_inf + A * r^(i-1)
   A       first-tap yield above the floor   (mg)
@@ -38,12 +40,31 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 # Tilt is an ORDERED quantity -> ordinal blue ramp (validated light-mode
 # steps 250/400/500/650; nothing lighter than 250 on the light surface).
-ANGLE_COLORS = ["#86b6ef", "#3987e5", "#256abf", "#104281"]
+# The ramp is interpolated so any number of tilt levels stays legible.
+ANGLE_RAMP = ["#86b6ef", "#3987e5", "#256abf", "#104281"]
 ACCENT = "#eb6834"          # categorical slot 2, for the non-tilt series
 INK = "#0b0b0b"
 INK_2 = "#52514e"
 MUTED = "#b8b7b1"
 SURFACE = "#fcfcfb"
+
+
+def angle_colors(n):
+    """n colors sampled along the ordinal blue ramp (n may exceed the ramp)."""
+    if n <= len(ANGLE_RAMP):
+        idx = [round(i * (len(ANGLE_RAMP) - 1) / max(1, n - 1))
+               for i in range(n)]
+        return [ANGLE_RAMP[i] for i in idx]
+    rgb = [tuple(int(c[k:k + 2], 16) for k in (1, 3, 5)) for c in ANGLE_RAMP]
+    out = []
+    for i in range(n):
+        x = i * (len(rgb) - 1) / (n - 1)
+        lo = min(int(x), len(rgb) - 2)
+        f = x - lo
+        out.append("#%02x%02x%02x" % tuple(
+            round(rgb[lo][k] + f * (rgb[lo + 1][k] - rgb[lo][k]))
+            for k in range(3)))
+    return out
 
 
 def parse(log_path: Path):
@@ -153,10 +174,11 @@ def style(ax):
 
 
 def plot_depletion(by_angle, angles, n_taps, ctrl_mg, out):
+    colors = angle_colors(len(angles))
     fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.0), facecolor=SURFACE)
     ax, ax2 = axes
     xs = list(range(1, n_taps + 1))
-    for c, a in zip(ANGLE_COLORS, angles):
+    for c, a in zip(colors, angles):
         ts = by_angle[a]
         for t in ts:                                    # individual replicates
             ax.plot(xs, t["marginal_mg"], color=c, linewidth=0.9, alpha=0.35,
@@ -176,11 +198,11 @@ def plot_depletion(by_angle, angles, n_taps, ctrl_mg, out):
     ax.set_xticks(xs)
     ax.set_xlabel("tap index since the priming rotation", color=INK_2)
     ax.set_ylabel("marginal yield of that single tap (mg)", color=INK_2)
-    ax.set_title("Successive single taps deplete the tube lip",
+    ax.set_title("Marginal yield of each successive single tap",
                  color=INK, fontsize=12, loc="left", fontweight="bold")
 
     # cumulative, with the fitted saturation
-    for c, a in zip(ANGLE_COLORS, angles):
+    for c, a in zip(colors, angles):
         ts = by_angle[a]
         cums = []
         for t in ts:
@@ -204,7 +226,7 @@ def plot_depletion(by_angle, angles, n_taps, ctrl_mg, out):
     ax2.set_xticks(xs)
     ax2.set_xlabel("tap index since the priming rotation", color=INK_2)
     ax2.set_ylabel("cumulative mass delivered by taps (mg)", color=INK_2)
-    ax2.set_title("Cumulative delivery saturates — a finite lip inventory",
+    ax2.set_title("Cumulative mass taps can extract after one re-feed",
                   color=INK, fontsize=12, loc="left", fontweight="bold")
     leg = ax2.legend(frameon=False, fontsize=9, loc="upper left")
     for txt in leg.get_texts():
@@ -213,7 +235,7 @@ def plot_depletion(by_angle, angles, n_taps, ctrl_mg, out):
                  (0.98, 0.06), xycoords="axes fraction", ha="right",
                  color=INK_2, fontsize=9)
     fig.suptitle("Single-tap characterization — salt, one auger "
-                 "revolution as the lip re-feed (3 replicates per tilt)",
+                 "revolution as the lip re-feed",
                  color=INK, fontsize=13, fontweight="bold", x=0.005, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.95))
     fig.savefig(out, dpi=150, facecolor=SURFACE)
@@ -221,6 +243,7 @@ def plot_depletion(by_angle, angles, n_taps, ctrl_mg, out):
 
 
 def plot_model(by_angle, angles, fits, out):
+    colors = angle_colors(len(angles))
     fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.6), facecolor=SURFACE)
     ax1, ax2, ax3 = axes
 
@@ -229,7 +252,7 @@ def plot_model(by_angle, angles, fits, out):
     first_sd = [sd([t["marginal_mg"][0] for t in by_angle[a]]) for a in angles]
     late = [mean([mean(t["marginal_mg"][7:]) for t in by_angle[a]])
             for a in angles]
-    ax1.errorbar(angles, first, yerr=first_sd, color=ANGLE_COLORS[3],
+    ax1.errorbar(angles, first, yerr=first_sd, color=colors[-1],
                  linewidth=2.0, marker="o", markersize=7,
                  markeredgecolor=SURFACE, markeredgewidth=1.2, capsize=3,
                  label="first tap after re-feed")
@@ -239,8 +262,10 @@ def plot_model(by_angle, angles, fits, out):
     style(ax1)
     ax1.set_xlabel("plate tilt (deg)", color=INK_2)
     ax1.set_ylabel("yield per single tap (mg)", color=INK_2)
-    ax1.set_title("Tap gain rises ~7× with tilt", color=INK, fontsize=11,
-                  loc="left", fontweight="bold")
+    lo = min(v for v in first if v == v and v > 0)
+    ax1.set_title("Tap gain rises ~{:.0f}× over the tilt range".format(
+        max(first) / lo), color=INK, fontsize=11, loc="left",
+        fontweight="bold")
     leg = ax1.legend(frameon=False, fontsize=9, loc="upper left")
     for txt in leg.get_texts():
         txt.set_color(INK_2)
@@ -248,7 +273,7 @@ def plot_model(by_angle, angles, fits, out):
     # (2) extractable lip inventory + refill per revolution
     m_lip = [fits[a]["m_lip"] for a in angles]
     prime = [mean([t["prime_mg"] for t in by_angle[a]]) for a in angles]
-    ax2.plot(angles, prime, color=ANGLE_COLORS[1], linewidth=2.0, marker="o",
+    ax2.plot(angles, prime, color=colors[1], linewidth=2.0, marker="o",
              markersize=7, markeredgecolor=SURFACE, markeredgewidth=1.2,
              label="delivered by the priming revolution")
     ax2.plot(angles, m_lip, color=ACCENT, linewidth=2.0, marker="s",
@@ -266,18 +291,149 @@ def plot_model(by_angle, angles, fits, out):
     # (3) depletion ratio r per angle
     rs = [fits[a]["r"] for a in angles]
     bars = ax3.bar([str(int(a)) for a in angles], rs, width=0.55,
-                   color=ANGLE_COLORS, edgecolor=SURFACE, linewidth=2.0)
+                   color=colors, edgecolor=SURFACE, linewidth=2.0)
     for b, r in zip(bars, rs):
-        ax3.annotate("{:.2f}".format(r),
-                     (b.get_x() + b.get_width() / 2, b.get_height()),
+        ax3.annotate("n/a" if r != r else "{:.2f}".format(r),
+                     (b.get_x() + b.get_width() / 2,
+                      0.0 if r != r else b.get_height()),
                      xytext=(0, 4), textcoords="offset points", ha="center",
                      color=INK_2, fontsize=9.5)
     style(ax3)
+    ax3.set_xticks(range(len(angles)))
+    ax3.set_xticklabels([str(int(a)) for a in angles])
     ax3.set_ylim(0, 1.0)
     ax3.set_xlabel("plate tilt (deg)", color=INK_2)
     ax3.set_ylabel("per-tap depletion ratio r", color=INK_2)
     ax3.set_title("Each tap leaves a fraction r behind", color=INK,
                   fontsize=11, loc="left", fontweight="bold")
+    fig.tight_layout()
+    fig.savefig(out, dpi=150, facecolor=SURFACE)
+    plt.close(fig)
+
+
+def plot_regimes(by_angle, angles, n_taps, out):
+    """Where the depleting-lip model holds, and where it breaks down."""
+    colors = angle_colors(len(angles))
+    fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.6), facecolor=SURFACE)
+    ax1, ax2, ax3 = axes
+
+    # (1) every single tap, per tilt -- gain AND spread
+    for c, a in zip(colors, angles):
+        vals = [v for t in by_angle[a] for v in t["marginal_mg"]]
+        ax1.scatter([a] * len(vals), vals, s=16, color=c, alpha=0.55,
+                    edgecolors="none", zorder=2)
+        ax1.plot([a - 2.2, a + 2.2], [mean(vals)] * 2, color=c, linewidth=2.6,
+                 zorder=3)
+    ax1.set_yscale("symlog", linthresh=1.0)
+    ax1.set_yticks([0, 1, 10, 100])
+    ax1.get_yaxis().set_major_formatter(
+        plt.FuncFormatter(lambda v, _: "{:g}".format(v)))
+    style(ax1)
+    ax1.set_xlabel("plate tilt (deg)", color=INK_2)
+    ax1.set_ylabel("yield of one single tap (mg, symlog)", color=INK_2)
+    ax1.set_title("Tap gain spans 3 orders of magnitude over tilt",
+                  color=INK, fontsize=11, loc="left", fontweight="bold")
+    ax1.annotate("bars = mean of all {} taps at that tilt".format(
+        n_taps * len(by_angle[angles[0]])), (0.98, 0.04),
+        xycoords="axes fraction", ha="right", color=INK_2, fontsize=8.5)
+
+    # (2) is the lip actually draining?  normalised profile vs tap index
+    xs = list(range(1, n_taps + 1))
+    profs = []
+    for c, a_ in zip(colors, angles):
+        prof = [mean([t["marginal_mg"][i] for t in by_angle[a_]])
+                for i in range(n_taps)]
+        m = mean(prof)
+        if not m:
+            continue
+        prof = [v / m for v in prof]
+        profs.append(prof)
+        ax2.plot(xs, prof, color=c, linewidth=1.0, alpha=0.4, zorder=2)
+    pooled = [mean([pr[i] for pr in profs]) for i in range(n_taps)]
+    ax2.plot(xs, pooled, color=colors[-1], linewidth=2.6, marker="o",
+             markersize=6, markeredgecolor=SURFACE, markeredgewidth=1.2,
+             zorder=4, label="mean over all tilts")
+    xm, ym = mean(xs), mean(pooled)
+    den = sum((x - xm) ** 2 for x in xs)
+    slope = sum((x - xm) * (y - ym) for x, y in zip(xs, pooled)) / den
+    ax2.plot(xs, [ym + slope * (x - xm) for x in xs], color=ACCENT,
+             linewidth=1.6, linestyle="--", zorder=3,
+             label="trend: {:+.1f} %/tap".format(100 * slope))
+    style(ax2)
+    ax2.set_xticks(xs)
+    ax2.set_ylim(0, 2.6)
+    ax2.set_xlabel("tap index since the priming rotation", color=INK_2)
+    ax2.set_ylabel("yield ÷ that tilt's mean yield", color=INK_2)
+    ax2.set_title("Flat, not decaying: the lip re-fills between taps",
+                  color=INK, fontsize=11, loc="left", fontweight="bold")
+    leg = ax2.legend(frameon=False, fontsize=9, loc="upper left")
+    for txt in leg.get_texts():
+        txt.set_color(INK_2)
+    ax2.annotate("faint lines: individual tilts", (0.98, 0.05),
+                 xycoords="axes fraction", ha="right", color=INK_2,
+                 fontsize=8.5)
+
+    cv = []
+    for a_ in angles:
+        vals = [v for t in by_angle[a_] for v in t["marginal_mg"]]
+        cv.append(sd(vals) / mean(vals) if mean(vals) else float("nan"))
+
+    # (3) relative spread -- how usable the actuator is for trim
+    bars = ax3.bar([str(int(a)) for a in angles], cv, width=0.55,
+                   color=colors, edgecolor=SURFACE, linewidth=2.0)
+    for b, v in zip(bars, cv):
+        ax3.annotate("{:.0f}%".format(100 * v),
+                     (b.get_x() + b.get_width() / 2, b.get_height()),
+                     xytext=(0, 4), textcoords="offset points", ha="center",
+                     color=INK_2, fontsize=9)
+    style(ax3)
+    ax3.set_xlabel("plate tilt (deg)", color=INK_2)
+    ax3.set_ylabel("coefficient of variation of a single tap", color=INK_2)
+    ax3.set_title("Steep tilt buys yield and pays in variance", color=INK,
+                  fontsize=11, loc="left", fontweight="bold")
+    fig.tight_layout()
+    fig.savefig(out, dpi=150, facecolor=SURFACE)
+    plt.close(fig)
+
+
+def plot_fill_comparison(new_by_angle, old_by_angle, out, new_label,
+                         old_label):
+    """Same rig, same powder, different hopper fill -> different tap regime."""
+    fig, axes = plt.subplots(1, 2, figsize=(12.0, 4.6), facecolor=SURFACE)
+    ax1, ax2 = axes
+    for by_angle, color, label, marker in (
+            (old_by_angle, ACCENT, old_label, "s"),
+            (new_by_angle, ANGLE_RAMP[-1], new_label, "o")):
+        angs = sorted(by_angle)
+        ax1.plot(angs, [mean([t["marginal_mg"][0] for t in by_angle[a]])
+                        for a in angs],
+                 color=color, linewidth=2.0, marker=marker, markersize=6.5,
+                 markeredgecolor=SURFACE, markeredgewidth=1.2, label=label)
+        n = min(len(t["marginal_mg"]) for a in angs for t in by_angle[a])
+        prof = []
+        for i in range(n):
+            vals = [t["marginal_mg"][i] for a in angs if a <= 30
+                    for t in by_angle[a]]
+            prof.append(mean(vals))
+        m = mean(prof)
+        ax2.plot(range(1, n + 1), [v / m for v in prof], color=color,
+                 linewidth=2.0, marker=marker, markersize=6.5,
+                 markeredgecolor=SURFACE, markeredgewidth=1.2, label=label)
+    for ax, xl, yl, ttl in (
+            (ax1, "plate tilt (deg)", "first tap after the re-feed (mg)",
+             "Fill level rescales the tap actuator"),
+            (ax2, "tap index since the priming rotation",
+             "yield ÷ mean yield (tilts ≤ 30°)",
+             "…and decides whether taps deplete the lip")):
+        style(ax)
+        ax.set_xlabel(xl, color=INK_2)
+        ax.set_ylabel(yl, color=INK_2)
+        ax.set_title(ttl, color=INK, fontsize=11, loc="left",
+                     fontweight="bold")
+        leg = ax.legend(frameon=False, fontsize=9)
+        for txt in leg.get_texts():
+            txt.set_color(INK_2)
+    ax2.axhline(1.0, color=MUTED, linewidth=1.2, linestyle="--", zorder=1)
     fig.tight_layout()
     fig.savefig(out, dpi=150, facecolor=SURFACE)
     plt.close(fig)
@@ -330,6 +486,23 @@ def main(argv):
 
     plot_depletion(by_angle, angles, n_taps, ctrl_mg, d / "tap_depletion.png")
     plot_model(by_angle, angles, fits, d / "tap_model.png")
+    plot_regimes(by_angle, angles, n_taps, d / "tap_regimes.png")
+
+    # optional: contrast against an earlier session (e.g. a different fill)
+    if len(argv) > 2:
+        prev = Path(argv[2])
+        p_meta, p_pts, _ = parse(
+            next(iter(sorted(prev.glob("tap_characterize*.log")))))
+        p_tr = build_trials(p_pts, int(p_meta.get("n_ctrl", 3)),
+                            int(p_meta.get("n_taps", 10)),
+                            int(p_meta.get("n_post", 2)))
+        p_by = defaultdict(list)
+        for t in p_tr:
+            p_by[t["angle"]].append(t)
+        plot_fill_comparison(
+            by_angle, p_by, d / "fill_level_comparison.png",
+            new_label=argv[3] if len(argv) > 3 else d.name,
+            old_label=argv[4] if len(argv) > 4 else prev.name)
 
     print("angle  prime_mg  tap1_mg  taps8-10  total10  A_mg     r     "
           "y_inf   M_lip_mg")

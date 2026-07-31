@@ -47,7 +47,12 @@ import time
 import main_three_phase as m3
 
 POWDER_ID = "salt"
-ANGLES = (0.0, 10.0, 18.0, 25.0)   # true mounting-plate degrees
+# True mounting-plate degrees.  The servo's mechanical ceiling is 90 plate
+# deg (config.SERVO_MAX_ANGLE_DEG 180 / PLATE_GEAR_RATIO 2).  Steep tilts
+# were cleared by a no-actuator safety probe on 2026-07-31: holding the
+# plate at 25..72 deg produced 0.0 mg of spontaneous flow, so the tube
+# does not free-pour and the auger/tap remain the only mass sources.
+ANGLES = (0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0)
 REPS = 3
 PRIME_DEG = 360.0                  # one auger revolution re-feeds the lip
 PRIME_RPM = 30.0
@@ -55,11 +60,14 @@ N_CTRL = 3                         # no-tap control intervals before taps
 N_TAPS = 10                        # SINGLE taps, one at a time
 N_POST = 2                         # no-tap intervals after the taps
 TAP_ON_MS = 60                     # config.TAP_ON_MS -- one pulse only
-TAIL_MS = 1500                     # raw-stream window after each tap
+TAIL_MS = 1000                     # raw-stream window after each tap
 TAIL_DT_MS = 60
-SETTLE_MS = 600                    # extra quiet before asking for stable
+SETTLE_MS = 400                    # extra quiet before asking for stable
 PRIME_SETTLE_MS = 3000             # in-flight powder after a rotation
 STABLE_TIMEOUT_MS = 6000
+MAX_CUP_G = 25.0                   # abort if the collection cup fills up
+                                   # (single tare, so settled mass is the
+                                   # session-cumulative delivered mass)
 
 _t0 = time.ticks_ms()
 
@@ -138,7 +146,11 @@ class Rig:
         self.servo.move_to(angle)
         time.sleep_ms(1200)
 
-        self.settled(0, "base")
+        base = self.settled(0, "base")
+        if base is not None and base > MAX_CUP_G:
+            ev("cup at {:.2f} g > {:.1f} g limit -- stopping".format(
+                base, MAX_CUP_G))
+            raise KeyboardInterrupt
         self.prime()
         self.stream(PRIME_SETTLE_MS, 0, "prime")
         self.settled(0, "prime")

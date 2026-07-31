@@ -46,12 +46,15 @@ Handy anchors (using the 1.2 g/cm³ / 4.2 g-per-cm-of-bore rules below):
 |---|---|---|
 | Empty | 0 g | **56.7 g** |
 | Full to ~1 cm below brim (as refilled 2026-07-29) | ≈ 93 g | ≈ 150 g |
-| Current ledger estimate (2026-07-31) | ≈ 85.7 g | ≈ 142.4 g |
+| Refilled 2026-07-31 | ≈ 53.3 g | **110 g (weighed)** |
+| **Weighed 2026-07-31 after refill** | **≈ 53.3 g** | **110 g (measured)** |
 | Full capacity (≈ 82 cm³) | ≈ 98 g | ≈ 155 g |
 
-So a weighing that comes back near 142 g would confirm the ledger; a
-much lower number means the ledger has drifted (e.g. an unlogged dose or
-spillage) and should be reset from the weighed value.
+This is not hypothetical: the first weighing (2026-07-31, 110 g total →
+53.3 g salt) came back **32 g below** the running estimate of 85.7 g, so
+the ledger was reset from it. Weigh the tube on every refill — a
+one-second measurement removes an error the running total cannot detect
+on its own.
 
 ## Salt bulk-density assumption
 
@@ -71,7 +74,10 @@ coarse/free-flowing (measured feed factor ~0.17 g/rev @ 25° tilt,
 | 2026-07-30 20:44 | Tap-efficacy check after the electronics repair: 5 bursts × 3 pulses, auger stationary → **0.0034 g** ([log](../data/pid-dose/2026-07-30_salt/tap_efficacy_check.log)) | ≈ 91.5 g |
 | 2026-07-30 20:45 | "Normal conditions" experiment, stock PID @ defaults, 1 g × 3 replicates: **1.0631 + 1.0715 + 1.0358 g** dispensed (all overshoot; [rep 1](../data/pid-dose/2026-07-30_salt/pid_normal_run1_salt.log)) | ≈ 88.3 g |
 | 2026-07-30 20:53 | Slow-tail diagnostic run (5 rpm cap below 0.2 g to go): **1.0355 g** dispensed ([log](../data/pid-dose/2026-07-30_salt/pid_slowtail_run4_salt.log)) | ≈ 87.3 g |
-| 2026-07-31 16:06 | Single-tap characterization: 12 trials (4 tilts × 3 reps), each 1 priming revolution + 10 single taps → **1.575 g** dispensed total ([data](../data/tap-characterization/2026-07-31_salt/)) | ≈ 85.7 g |
+| 2026-07-31 16:06 | Single-tap characterization: 12 trials (4 tilts × 3 reps), each 1 priming revolution + 10 single taps → **1.575 g** dispensed total ([data](../data/tap-characterization/2026-07-31_salt/)) | ≈ 85.7 g (est.) |
+| 2026-07-31 ~16:50 | **Refilled and weighed** by @williamulbz: tube + salt = **110 g** → 110 − 56.716 = **53.3 g of salt**. This *weighing* replaces the running estimate, which had drifted high (85.7 g estimated vs 53.3 g actual — the 2026-07-29 geometric fill estimate of ≈ 93 g was the optimistic end of its 85–105 g band, and the pre-refill contents were correspondingly lower than booked). | **53.3 g (weighed)** |
+| 2026-07-31 17:03 | Steep-angle safety probe (plate held 5 s at 25–72°, no auger/taps): **0.0 g** — no free-pour at any tilt ([log](../data/tap-characterization/2026-07-31_salt_angles/steep_angle_safety_probe.log)) | ≈ 53.3 g |
+| 2026-07-31 17:05 | Wide-angle single-tap characterization: 24 trials (8 tilts 0–70° × 3 reps), each 1 priming revolution + 10 single taps → **3.634 g** dispensed total ([data](../data/tap-characterization/2026-07-31_salt_angles/)) | ≈ 49.7 g |
 
 At salt's measured ~0.17 g/rev (25° tilt), ~93 g is roughly **90×
 1 g doses** — the tube will not run dry for a long time. Any "hopper
