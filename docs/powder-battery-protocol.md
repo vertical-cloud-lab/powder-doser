@@ -93,6 +93,14 @@ loads the powder confirms these **before** commenting:
 3. **Powder present in the delivery flights**, not only at the rear.
 4. **Outlet aimed into the collection dish**, and the **dish emptied**.
 
+Since the 2026-08-04 brown-rice-flour failure, the remote workflow runs a
+**pre-flight feed check** before committing to a 45-minute battery: tare,
+tilt 90 deg, five 360 deg revolutions at 30 RPM. Tens of mg per revolution
+means the path is clear; a flat 0.0000 g means stop and check the list
+above. See the white-rice-flour run
+([notes](battery-runs/2026-08-04-white-rice-flour.md)) for both sides of
+that comparison.
+
 The 2026-08-04 brown-rice-flour run
 ([notes](battery-runs/2026-08-04-brown-rice-flour.md)) failed on one of
 these: 20 continuous auger revolutions at tilt 90° delivered exactly
@@ -131,6 +139,11 @@ Per run, under `data/battery/<UTC-stamp>_<powder-id>/`:
 | `doses_<id>.csv` | one row per Block G dose: target, dispensed, error, status, elapsed, revolutions, taps, per-phase cycles |
 | `summary_<id>.csv` | per-(block, tilt, phase) n/mean/std/sem/min/max/RSD |
 | `run_<id>.json` | the complete self-contained run document |
+
+Plots: `scripts/plot_battery_run.py` is the *did it feed at all?* diagnostic
+(used on the no-feed brown-rice-flour run); `scripts/plot_battery_results.py`
+is the four-panel per-powder result figure (blocks C, D, E, G) for runs that
+did feed.
 
 With `--upload`, `run_<id>.json` is inserted into MongoDB Atlas as one
 document in **`powder_doser.battery_runs`** — the same database as the
