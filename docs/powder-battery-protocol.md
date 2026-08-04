@@ -203,3 +203,20 @@ Slugs, normalized by the capture script (`Brown Rice Flour` →
 `brown-rice-flour`). Suggested IDs for the current set: `salt`,
 `white-rice-flour`, `brown-rice-flour`, `cmc`, `calcium-lactate`,
 `sodium-alginate`, `xanthan-gum`, `alsi10mg`, `si`.
+
+## Video record
+
+The `picam-d1pr` bench camera streams continuously to
+[@byu-vcl-hardware-streams](https://youtube.com/@byu-vcl-hardware-streams), so
+every run is already on video and nothing extra needs recording. After a run,
+
+```bash
+python scripts/battery_stream_links.py data/battery/*/run_*.json
+```
+
+turns `started_utc` plus the per-trial `t_ms` into `https://youtu.be/<id>?t=<s>`
+share links per block, per tilt and per dose. It needs the broadcast's content
+`t=0` in [`battery-runs/stream-registry.json`](battery-runs/stream-timestamps.md);
+add a new broadcast with `--calibrate`, which reads the anchor off the burned-in
+timestamp overlay rather than the watch page (they differ by several seconds —
+enough to miss a trial). Current links: [`battery-runs/stream-timestamps.md`](battery-runs/stream-timestamps.md).
