@@ -310,6 +310,17 @@ under the autonomous-loop / 30-powder requirements is in
 [`design/brainstorming.md`](design/brainstorming.md). No CAD or sketches
 are produced at this stage; that document is the output of the
 brainstorming session called for in the corresponding tracking issue.
+## State-space model of the doser flow
+
+A state-space representation of how powder actually moves through the doser —
+hopper → screw hold-up → tube lip → free fall → cup — with every state, input
+and gain identified from the salt runs on the hardware, is in
+[`docs/state-space-model.md`](docs/state-space-model.md). The executable model,
+the identification pipeline and its validation against recorded doses live in
+[`optimization/state_space/`](optimization/state_space). The parameters are
+**salt-specific**; the structure and the pipeline are what transfer to other
+powders.
+
 ## Candidate powders
 
 The set of metal powders we intend to dispense (high-purity Si,

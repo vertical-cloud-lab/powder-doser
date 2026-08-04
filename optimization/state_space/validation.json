@@ -1,0 +1,30 @@
+{
+  "params": "salt_params.json (full tube)",
+  "runs": {
+    "run2": {
+      "phi_fitted": 1.830359514588947,
+      "rms_error_fitted_mg": 22.255174170131625,
+      "rms_error_nominal_mg": 365.89381889274966,
+      "final_measured_g": 1.0012,
+      "final_simulated_g": 1.0075400426897212,
+      "implied_ff_at_25deg_mg_per_rev": 222.339415357575,
+      "nominal_ff_at_25deg_mg_per_rev": 121.4730841593745,
+      "n_frames": 252,
+      "post_halt_landed_measured_mg": 38.90000000000005,
+      "post_halt_landed_simulated_mg": 36.650311115143495
+    },
+    "run1": {
+      "phi_fitted": 1.6496909632859063,
+      "rms_error_fitted_mg": 36.92803756076486,
+      "rms_error_nominal_mg": 226.1033034480891,
+      "final_measured_g": 0.9372,
+      "final_simulated_g": 0.9804767199154142,
+      "implied_ff_at_25deg_mg_per_rev": 200.39304922018846,
+      "nominal_ff_at_25deg_mg_per_rev": 121.4730841593745,
+      "n_frames": 123,
+      "bridged_at_s": 11.663,
+      "note": "mass flat from here while the auger kept turning and 80 taps fired: a discrete mode change (starved/bridged), not a gain error",
+      "flowing_mode_error_30s_after_bridge_mg": 1465.7647092453137
+    }
+  }
+}
