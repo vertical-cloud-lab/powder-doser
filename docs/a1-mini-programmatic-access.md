@@ -219,10 +219,32 @@ behaviour for automation that polls separately.
 ## Step 4 — Wrap it in Python
 
 Use [`scripts/h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py)
-unchanged. Better still than on the H2D: **`bambulabs_api` is tested
+unchanged — **verified on Thumbelina 2026-08-04**, printing
+[`payloads/Testpart2.gcode.3mf`](../payloads/Testpart2.gcode.3mf)
+end-to-end. Better still than on the H2D: **`bambulabs_api` is tested
 on the A1 mini** (it is the H2D that the library's README flags as
 untested), so the defensive version-printing in the script is less
-likely to matter. The most directly reusable prior art is
+likely to matter.
+
+```bash
+# external spool holder (default)
+python h2d_step4_bambulabs_api.py part.gcode.3mf \
+    --ip <IP> --access-code <CODE> --serial <SERIAL>
+
+# AMS lite, tray 2 (trays are 0-indexed, so tray 2 == mapping 1)
+python h2d_step4_bambulabs_api.py part.gcode.3mf --use-ams --ams-mapping 1
+```
+
+Credentials also come from `H2D_IP`/`H2D_ACCESS_CODE`/`H2D_SERIAL` or
+the `A1_MINI_*` equivalents. Like the raw-MQTT scripts, it sanitizes
+the remote filename, prints the filament source before the
+confirmation prompt, and **watches the job through to `FINISH`** with
+a `PRINT COMPLETE` banner (`--no-wait` restores exit-at-`RUNNING`).
+What it does *not* carry is the wrong-printer payload check and the
+ghost-print bed-temperature check — see the comparison table in
+["After Step 4"](#after-step-4--whats-next-for-the-a1-mini).
+
+The most directly reusable prior art is
 `ac-dev-lab`'s
 [`_scripts/manual_print.py`](https://github.com/AccelerationConsortium/ac-dev-lab/blob/main/src/ac_training_lab/bambu_a1_mini/_scripts/manual_print.py),
 which was written against an A1 mini and demonstrates the
@@ -468,6 +490,83 @@ listed here so nobody re-debugs them from a stale copy:
     JSON), and both A1-mini send scripts display the build plate +
     commanded first-layer bed temperature and refuse (without
     `--force`) any job commanding under 45 °C.
+13. **Step 4 is green (2026-08-04) — `bambulabs_api` prints on the A1
+    mini.** `scripts/h2d_step4_bambulabs_api.py` uploaded and printed
+    [`payloads/Testpart2.gcode.3mf`](../payloads/Testpart2.gcode.3mf)
+    on Thumbelina end-to-end, confirming that the library path works
+    on the same `(IP, ACCESS_CODE, SERIAL)` triple as the raw
+    FTPS/MQTT scripts — no path, filename, or profile surprises left
+    on the A1 mini. This closes bringup Steps 0–4. Note the library
+    handles its own upload path internally, which is a second,
+    independent confirmation that the FTP-root default (field note 9)
+    is the correct one. **Still unverified on the H2D itself** — the
+    printer has not been free to test.
+
+## After Step 4 — what's next for the A1 mini
+
+Steps 0–4 are done: the transport is proven, a real part came off the
+bed, and both the raw-MQTT and `bambulabs_api` paths work. Everything
+from here is about turning "a person runs a script next to the
+printer" into "an automated workflow submits a job." In dependency
+order:
+
+1. **Pick the one script to build on, and use it consistently.**
+   There are now two working send paths with different feature sets:
+
+   | | `a1_mini_send_print.py` (raw FTPS+MQTT) | `h2d_step4_bambulabs_api.py` (library) |
+   |---|---|---|
+   | Dependencies | `paho-mqtt` only | `bambulabs_api` (+ its deps) |
+   | Wrong-printer / unsliced payload check | yes | no |
+   | Ghost-print bed-temp check (< 45 °C) | yes | no |
+   | Filament source shown before the prompt | yes | yes |
+   | AMS mapping | yes | yes (added 2026-08-04) |
+   | Print-completion notice | yes | yes (added 2026-08-04) |
+   | Latched-`print_error` handling, hex decoding | yes | no (library-reported state only) |
+
+   For **hands-on lab use**, prefer `a1_mini_send_print.py` — the
+   payload and bed-temperature checks are exactly the guards that
+   caught the two failures that cost the most time so far. For the
+   **relay**, `bambulabs_api` is the more natural thing to wrap
+   (persistent connection, status polling); port the two checks over
+   rather than dropping them.
+
+2. **Repeat-print reliability soak (~1 h, no new code).** Send the
+   same job 5–10 times back-to-back with `--yes`, confirming each
+   reaches `FINISH`. This is what surfaces the failure modes that
+   only appear in automation: a stale `print_error` from job *n*
+   blocking job *n+1*, the printer still in `FINISH`/`PREPARE` when
+   the next command lands, and whether a bed-clear check is needed
+   between jobs. Nothing downstream is trustworthy until a job can be
+   sent twice without a human in the loop.
+
+3. **Close the loop on the AMS.** All prints so far picked a tray by
+   hand (`AMS_MAPPING = [1]`). Read the AMS tray table out of the
+   `report` telemetry (`ams.ams[].tray[]` — material, colour, remaining)
+   so a job can *ask for* "PLA" and the code resolves the tray, and
+   fail fast when the requested material is not loaded. Same telemetry
+   also gives the humidity readings the AMS-drying work needs.
+
+4. **Steps 5–6: the Pi relay** (below) — the first genuinely new
+   infrastructure. Order within it: Pi on the printer's VLAN and on
+   Tailscale → run the verified send script by hand *from the Pi* →
+   wrap in FastAPI with the `LIMITS` envelope → systemd unit →
+   smoke-test from a laptop on the tailnet → Funnel/Colab last.
+
+5. **Hardware interlock before anything unattended.** The
+   [three options](h2d-programmatic-access.md#hardware-interlock--concrete-options)
+   are unchanged; the gate is that it is installed *and tested
+   mid-print* before the first submission that no one is watching.
+
+6. **Then the real payloads.** Wire the relay to the actual job
+   sources — the `tensegrity-optimization` sliced artifacts, and the
+   powder-doser parts — so a design iteration can dispatch its own
+   print. That is the point of all of the above.
+
+Worth doing opportunistically, not blocking: repeat the Step 2–4
+sequence on the **H2D** whenever the printer frees up (the only
+untested link there is the IDEX payload — the transport is identical),
+and the [scheduled AMS drying cycles](h2d-programmatic-access.md#future-work--scheduled-ams-drying-cycles-ams-ht--ams-2-pro)
+for TPU.
 
 ## Headless slicing (STL → 3MF) — the biggest simplification
 
@@ -713,6 +812,10 @@ Thumbelina:
    H2D cube file — the script refuses it anyway. (~15 min)
 4. **Step 4**: same print via `scripts/h2d_step4_bambulabs_api.py`.
    (~15 min)
+
+   *Steps 0–4 are complete on Thumbelina as of 2026-08-04 — see
+   ["After Step 4"](#after-step-4--whats-next-for-the-a1-mini) for
+   what comes next.*
 5. **Steps 5–6**, only after 1–4 are green: relay on the Pi with the
    A1-mini `_safe_slice` / `LIMITS` adjustments above, Tailscale (or
    Funnel) in front, hardware interlock installed and tested
