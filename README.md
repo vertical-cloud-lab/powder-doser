@@ -30,7 +30,10 @@
   the A1-mini doc).
   [`scripts/flatten_bambu_profiles.py`](scripts/flatten_bambu_profiles.py)
   generates the flattened profile JSONs the CLI slicing flow needs
-  from any installed Bambu Studio.
+  from any installed Bambu Studio, and
+  [`scripts/bambu_camera_check.py`](scripts/bambu_camera_check.py)
+  grabs a still from the printer's own camera to check the plate is
+  clear before a job (also available inline as `--camera-check`).
 
 ## Paper
 

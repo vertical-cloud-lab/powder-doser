@@ -571,6 +571,92 @@ listed here so nobody re-debugs them from a stale copy:
       explicitly (probing the signature first, since these kwargs
       have moved between releases).
 
+## Automatic bed-clear check with the printer's own camera
+
+The A1 mini already has a camera pointed at the plate, and it is
+reachable over the same LAN with the same `(IP, ACCESS_CODE)` — no
+extra hardware. [`scripts/bambu_camera_check.py`](../scripts/bambu_camera_check.py)
+grabs a still from it and, given a reference photo of an empty plate,
+says whether the bed looks clear.
+
+**One toggle first: LAN Mode Liveview** (touchscreen → Settings →
+General). It is *separate* from Developer Mode and LAN Only Mode — with
+it off, the camera port is simply closed and every capture below times
+out while MQTT and FTPS keep working normally. Restart the printer
+after enabling it; the P1/A1 firmware notes report the toggle not
+taking effect until the next boot.[^liveview]
+
+Two protocols, one script:
+
+| Printer | Camera transport | How this script reaches it |
+|---|---|---|
+| **A1 / A1 mini / P1** | proprietary "chamber image" on **TCP 6000**, TLS, user `bblp` + access code | speaks it directly, standard library only |
+| **X1 / H2D** | **RTSPS on TCP 322**, `rtsps://bblp:<code>@<ip>:322/streaming/live/1` | shells out to `ffmpeg` (`--transport rtsp`) |
+
+Usage — take the reference once, with the plate clean and the lighting
+the way it will be at print time:
+
+```bash
+python bambu_camera_check.py reference --ip <IP> --access-code <CODE>
+# ... later, before a job:
+python bambu_camera_check.py check --ip <IP> --access-code <CODE>
+# CLEAR: bed looks CLEAR - 0.31% of the frame differs from the reference (limit 2.00%)
+```
+
+Exit codes are `0` clear / `1` not clear / `2` no verdict, so it drops
+straight into a shell script. Or let the send script do it inline:
+
+```bash
+python h2d_step4_bambulabs_api.py part.gcode.3mf --camera-check --yes
+```
+
+which grabs a frame (reusing the connection `bambulabs_api` already
+holds open, rather than opening a second socket to port 6000), saves it
+as `bed_before_print.jpg` for the record, and **refuses to start** if
+the plate is not clear. Requires `bambu_camera_check.py` in the same
+folder.
+
+### How it decides, and where it will be wrong
+
+Each frame is greyscaled, optionally cropped to `--roi`, downscaled,
+blurred, and differenced against the reference. The comparison is
+against the *median* difference, so a change in room lighting — which
+shifts every pixel by about the same amount — cancels out, while a part
+on the plate survives as a residual. More than `--area-fraction` (2% by
+default) of pixels differing by more than `--pixel-delta` (28/255) reads
+as **NOT CLEAR**. On synthetic frames a part covering ~20% of the plate
+scores 21.6%, an identical frame and a uniform 35-level lighting change
+both score 0.00%.
+
+This is a whole-image difference, not a model that understands 3D
+prints. Expect it to:
+
+- **false-positive** on a moved camera, a changed light, an AMS/toolhead
+  parked in frame, or a stale reference — all read as "not clear";
+- **false-negative** on a low, transparent, or plate-coloured part —
+  which is the dangerous direction.
+
+So treat `CLEAR` as *evidence*, not as an interlock. `--camera-check`
+paired with `--yes` fails **closed**: if the camera gives no verdict
+(port closed, no reference image, Pillow missing) the script aborts
+rather than printing blind, because `--yes` means nobody is watching.
+`--force` overrides a `NOT CLEAR` verdict for the case where the
+reference is genuinely the stale thing. None of this replaces the
+[hardware interlock](h2d-programmatic-access.md#hardware-interlock--concrete-options).
+
+Verified against a fake camera server that speaks the port-6000
+protocol — [`scripts/test_bambu_camera_check.py`](../scripts/test_bambu_camera_check.py),
+26 checks, no printer needed. What is *not* yet verified is a capture
+from Thumbelina herself: the protocol implementation matches
+`bambulabs_api`'s (and this repo's, byte for byte, on the auth packet),
+but the first real run should be `capture` alone, eyeballing the JPEG,
+before anything is gated on it.
+
+[^liveview]: Bambu Lab wiki, [P1 series WIFI/BT/LIVEVIEW troubleshooting](https://wiki.bambulab.com/en/p1/troubleshooting/wifi-bt-liveview);
+    Bambuddy docs, [Camera Streaming](https://wiki.bambuddy.cool/features/camera/)
+    (ports 6000 for A1/P1 vs 322 for X1/H2D, `bblp` + access code, and
+    the LAN-Mode-Liveview requirement).
+
 ## After Step 4 — what's next for the A1 mini
 
 Steps 0–4 are done: the transport is proven, a real part came off the
@@ -608,10 +694,13 @@ order:
    with `--yes`, no human in the loop. That closes the risk that
    everything downstream rested on (a stale `print_error` from job *n*
    blocking job *n+1*, or the printer still being in `FINISH`/
-   `PREPARE` when the next command lands). Note the scripts *don't*
-   check whether the bed is clear — that is what the confirmation
-   prompt was for, so an unattended queue still needs either a human,
-   an auto-eject/clearing mechanism, or a camera check.
+   `PREPARE` when the next command lands). The remaining gap was that
+   nothing checked whether the *bed* was clear — that is what the
+   confirmation prompt was for. `--camera-check`
+   ([above](#automatic-bed-clear-check-with-the-printers-own-camera))
+   now covers the common case from the printer's own camera; an
+   unattended queue still wants either an auto-eject/clearing
+   mechanism or a human for the cases the image check cannot see.
 
 3. **Close the loop on the AMS.** The tray now comes from the sliced
    file (field note 14), which removes the hand-editing but still

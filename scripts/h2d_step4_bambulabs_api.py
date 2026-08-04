@@ -20,6 +20,8 @@ every guard the raw-MQTT scripts grew during Thumbelina bringup:
   - ignores print_error codes LATCHED from earlier jobs and fails only
     on a new one, decoded to Bambu's hex form with a hint;
   - refuses to publish while another job is RUNNING/PREPARE;
+  - optionally checks the printer's own camera for a clear plate
+    (--camera-check, needs bambu_camera_check.py alongside this file);
   - watches the job through to FINISH and announces PRINT COMPLETE.
 
 Usage - either fill in the block below and run with no arguments, or
@@ -64,6 +66,7 @@ AMS_MAPPING = ""
 # =============================================================
 
 import argparse
+import base64
 import ftplib
 import inspect
 import os
@@ -531,6 +534,96 @@ def read_print_error(printer):
     return err if err not in (None, 0, "0") else None
 
 
+def load_camera_module():
+    """Import bambu_camera_check.py from this script's own directory.
+
+    Kept optional on purpose: these scripts get copied to lab laptops one
+    file at a time, so a missing sibling must produce an instruction, not
+    a traceback.
+    """
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    try:
+        import bambu_camera_check
+    except ImportError:
+        return None
+    return bambu_camera_check
+
+
+def grab_frame(printer, cam, ip, code, transport, timeout):
+    """One JPEG frame, preferring the connection bambulabs_api already has.
+
+    `Printer.connect()` starts the library's own camera thread on TCP
+    6000, so opening a second socket to the same port risks the printer
+    dropping one of them. Read the library's latest frame instead, and
+    only fall back to our own capture when it never produced one (an
+    H2D, where the camera is RTSPS on 322 and the library's thread never
+    gets anything).
+    """
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            # get_camera_frame() raises a bare Exception until the first
+            # frame lands - the camera runs at roughly 1 fps.
+            return base64.b64decode(printer.get_camera_frame())
+        except Exception:
+            time.sleep(1)
+    if transport in ("auto", "rtsp"):
+        try:
+            return cam.capture(ip, code, transport="rtsp", timeout=timeout)
+        except Exception as exc:
+            print(f"NOTE: RTSPS fallback failed: {exc}")
+    return None
+
+
+def camera_bed_check(printer, ip, code, args):
+    """Return True (clear), False (occupied) or None (no verdict)."""
+    cam = load_camera_module()
+    if cam is None:
+        print("ERROR: --camera-check needs bambu_camera_check.py next to "
+              "this script (same folder). Copy it from scripts/ in the "
+              "repo.")
+        return None
+    if not os.path.isfile(args.bed_reference):
+        print(f"NOTE: no empty-bed reference at {args.bed_reference}. "
+              "Create one with the plate clean:\n    python "
+              "bambu_camera_check.py reference --ip <IP> --access-code "
+              "<CODE>")
+        return None
+    frame = grab_frame(printer, cam, ip, code, args.camera_transport,
+                       args.camera_timeout)
+    if frame is None:
+        print("NOTE: no camera frame. LAN Mode Liveview (Settings -> "
+              "General) is a separate toggle from Developer Mode; with it "
+              "off the camera port stays closed.")
+        return None
+    save_to = args.camera_save or "bed_before_print.jpg"
+    try:
+        with open(save_to, "wb") as fh:
+            fh.write(frame)
+        print(f"Camera frame saved to {save_to}")
+    except OSError as exc:
+        print(f"NOTE: could not save the camera frame: {exc}")
+    try:
+        with open(args.bed_reference, "rb") as fh:
+            reference = fh.read()
+        roi = cam.parse_roi(args.camera_roi)
+    except (OSError, ValueError) as exc:
+        print(f"NOTE: camera check skipped: {exc}")
+        return None
+    verdict, _fraction, detail = cam.compare_frames(
+        frame, reference, roi=roi, pixel_delta=args.camera_pixel_delta,
+        area_fraction=args.camera_area_fraction)
+    if verdict is None:
+        print(f"NOTE: camera check inconclusive: {detail}")
+    elif verdict:
+        print(f"Camera: bed looks CLEAR - {detail}")
+    else:
+        print(f"Camera: bed does NOT look clear - {detail}")
+    return verdict
+
+
 def _progress_line(printer):
     bits = []
     for attr, fmt in (("get_percentage", "{}%"),):
@@ -655,6 +748,27 @@ def build_parser():
     parser.add_argument("--ams-mapping", default=None,
                         help='AMS tray indices, 0-indexed, e.g. "0" or "0,1" '
                              "(default: derived from the file)")
+    parser.add_argument("--camera-check", action="store_true",
+                        help="before starting, grab a camera frame and "
+                             "compare it against --bed-reference to see "
+                             "whether the plate is clear. Needs "
+                             "bambu_camera_check.py alongside this script "
+                             "and LAN Mode Liveview on at the printer.")
+    parser.add_argument("--bed-reference", default="bed_reference.jpg",
+                        metavar="JPEG",
+                        help="empty-bed baseline image (make one with "
+                             "`bambu_camera_check.py reference`)")
+    parser.add_argument("--camera-transport", default="auto",
+                        choices=("auto", "chamber", "rtsp"))
+    parser.add_argument("--camera-roi", default=None, metavar="x0,y0,x1,y1",
+                        help="limit the comparison to this fraction of the "
+                             "frame, e.g. 0.2,0.3,0.8,0.9")
+    parser.add_argument("--camera-save", default=None, metavar="JPEG",
+                        help="where to keep the frame that was checked "
+                             "(default bed_before_print.jpg)")
+    parser.add_argument("--camera-timeout", type=float, default=20.0)
+    parser.add_argument("--camera-pixel-delta", type=float, default=28.0)
+    parser.add_argument("--camera-area-fraction", type=float, default=0.02)
     parser.add_argument("--upload-only", action="store_true",
                         help="upload and verify only; don't start a print")
     parser.add_argument("--yes", action="store_true",
@@ -744,9 +858,31 @@ def main():
             print("Upload-only mode: not starting a print.")
             return 0
 
+        bed_clear = None
+        if args.camera_check:
+            bed_clear = camera_bed_check(printer, ip, code, args)
+            if bed_clear is False and not args.force:
+                print("ABORT: the camera says something is still on the "
+                      "plate. Clear it, or pass --force if you believe "
+                      "the check is wrong (a stale reference image and a "
+                      "moved camera both read as 'not clear').")
+                return 5
+            if bed_clear is None and args.yes and not args.force:
+                # --yes means nobody is watching, so "no verdict" has to
+                # fail closed - otherwise a camera fault silently turns
+                # an automated queue back into an unchecked one.
+                print("ABORT: --camera-check with --yes, but the camera "
+                      "gave no verdict (see the note above). Fix the "
+                      "camera, drop --yes so a human can confirm, or pass "
+                      "--force.")
+                return 5
+
         if not args.yes:
-            answer = input(f"About to start a REAL print of {remote_name} on "
-                           f"{serial}. Is the bed clear? [y/N] ")
+            gate = ("The camera says the bed looks clear. "
+                    if bed_clear else "")
+            answer = input(f"{gate}About to start a REAL print of "
+                           f"{remote_name} on {serial}. Is the bed clear? "
+                           "[y/N] ")
             if answer.strip().lower() not in ("y", "yes"):
                 print("Aborted before start_print. File remains on the printer.")
                 return 1

@@ -865,6 +865,29 @@ Key safety properties of this shape (worth defending in code review):
   three off-the-shelf parts that satisfy this without modifying the
   printer.
 
+### Camera-based bed-clear check (H2D uses RTSPS, not port 6000)
+
+[`scripts/bambu_camera_check.py`](../scripts/bambu_camera_check.py)
+grabs a still from the printer's own camera and compares it against a
+reference photo of an empty plate, so `--camera-check` on the send
+script can refuse a job when the last part is still sitting there. The
+design, tuning knobs, and — importantly — its false-negative modes are
+documented under
+[the A1-mini doc](a1-mini-programmatic-access.md#automatic-bed-clear-check-with-the-printers-own-camera);
+it is *evidence*, not an interlock, and does not replace the options
+below.
+
+Two H2D-specific differences from the A1 mini:
+
+- The H2D streams **RTSPS on TCP 322**
+  (`rtsps://bblp:<code>@<ip>:322/streaming/live/1`), not the A1/P1
+  chamber-image protocol on 6000 — so it needs `--transport rtsp` and
+  `ffmpeg` on `PATH`. (`--transport auto` tries 6000 first and falls
+  back, which just costs a timeout on an H2D.)
+- **LAN Mode Liveview** (touchscreen → Settings → General) must be on,
+  and it is a separate toggle from Developer Mode. With it off, port
+  322 stays closed while MQTT and FTPS work fine.
+
 ### Hardware interlock — concrete options
 
 The "hardware e-stop / mains key switch" referenced above is a
