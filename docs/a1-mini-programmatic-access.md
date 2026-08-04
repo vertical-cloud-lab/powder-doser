@@ -227,22 +227,27 @@ untested), so the defensive version-printing in the script is less
 likely to matter.
 
 ```bash
-# external spool holder (default)
+# filament source read from the file - no AMS flags needed
 python h2d_step4_bambulabs_api.py part.gcode.3mf \
     --ip <IP> --access-code <CODE> --serial <SERIAL>
 
-# AMS lite, tray 2 (trays are 0-indexed, so tray 2 == mapping 1)
+# override the detection (trays are 0-indexed, so AMS tray 2 == mapping 1)
 python h2d_step4_bambulabs_api.py part.gcode.3mf --use-ams --ams-mapping 1
+python h2d_step4_bambulabs_api.py part.gcode.3mf --no-ams
 ```
 
 Credentials also come from `H2D_IP`/`H2D_ACCESS_CODE`/`H2D_SERIAL` or
-the `A1_MINI_*` equivalents. Like the raw-MQTT scripts, it sanitizes
-the remote filename, prints the filament source before the
-confirmation prompt, and **watches the job through to `FINISH`** with
-a `PRINT COMPLETE` banner (`--no-wait` restores exit-at-`RUNNING`).
-What it does *not* carry is the wrong-printer payload check and the
-ghost-print bed-temperature check — see the comparison table in
-["After Step 4"](#after-step-4--whats-next-for-the-a1-mini).
+the `A1_MINI_*`/`BAMBU_*` equivalents. The **filament source is read
+out of the sliced file** (field note 14), so an AMS-fed job needs
+neither a flag nor a source edit. Like the raw-MQTT scripts it also
+refuses a project (unsliced) or wrong-printer 3MF, refuses a job
+commanding a ghost-print bed temperature, sanitizes the remote
+filename, declines to publish while another job is `RUNNING`, prints
+the filament source before the confirmation prompt, and **watches the
+job through to `FINISH`** with a `PRINT COMPLETE` banner (`--no-wait`
+restores exit-at-`RUNNING`). What it still does *not* carry is the
+raw-MQTT scripts' latched-`print_error` decoding — see the comparison
+table in ["After Step 4"](#after-step-4--whats-next-for-the-a1-mini).
 
 The most directly reusable prior art is
 `ac-dev-lab`'s
@@ -501,6 +506,32 @@ listed here so nobody re-debugs them from a stale copy:
     independent confirmation that the FTP-root default (field note 9)
     is the correct one. **Still unverified on the H2D itself** — the
     printer has not been free to test.
+14. **The AMS setting is now read out of the sliced file — no more
+    hand-editing `use_ams`.** That first Step 4 print only worked
+    because `use_ams=False` was hand-edited to `True` in the script;
+    the AMS lite would not feed otherwise. The sliced `.3mf` already
+    knows: `Metadata/slice_info.config` lists one
+    `<filament id="N" .../>` per project filament slot the plate
+    consumes, and **the external spool holder is always slot 1** — so
+    a job using slot N > 1 can only be AMS-fed, on tray index N−1.
+    Thumbelina's `Testpart2.gcode.3mf` reports `id="2"` → tray 1,
+    exactly the `AMS_MAPPING = [1]` that worked by hand. All four send
+    scripts now derive `use_ams` / `ams_mapping` from the payload
+    (falling back to the executable G-code's `M620 S<n>A` tool-load
+    when `slice_info.config` is absent), print what they detected,
+    and:
+    - **refuse** an explicit `--no-ams` that contradicts the file —
+      that combination runs the whole job without ever loading the
+      tray — overridable with `--force`;
+    - **auto-fill** the mapping when AMS use is requested without one;
+    - **flag** (but honour) a manual `--ams-mapping` pointing at a
+      different tray than the slice implies, which is legitimate if
+      you moved the spool.
+
+    A job using **slot 1 only is genuinely ambiguous** — external
+    spool and AMS tray 1 look identical in the slice — so that case
+    keeps the configured default and says so; pass `--use-ams` when
+    the filament is in the AMS.
 
 ## After Step 4 — what's next for the A1 mini
 
@@ -516,19 +547,20 @@ order:
    | | `a1_mini_send_print.py` (raw FTPS+MQTT) | `h2d_step4_bambulabs_api.py` (library) |
    |---|---|---|
    | Dependencies | `paho-mqtt` only | `bambulabs_api` (+ its deps) |
-   | Wrong-printer / unsliced payload check | yes | no |
-   | Ghost-print bed-temp check (< 45 °C) | yes | no |
+   | Wrong-printer / unsliced payload check | yes | yes (added 2026-08-04) |
+   | Ghost-print bed-temp check (< 45 °C) | yes | yes (added 2026-08-04) |
    | Filament source shown before the prompt | yes | yes |
    | AMS mapping | yes | yes (added 2026-08-04) |
+   | AMS source auto-detected from the file | yes | yes (added 2026-08-04) |
    | Print-completion notice | yes | yes (added 2026-08-04) |
    | Latched-`print_error` handling, hex decoding | yes | no (library-reported state only) |
 
-   For **hands-on lab use**, prefer `a1_mini_send_print.py` — the
-   payload and bed-temperature checks are exactly the guards that
-   caught the two failures that cost the most time so far. For the
-   **relay**, `bambulabs_api` is the more natural thing to wrap
-   (persistent connection, status polling); port the two checks over
-   rather than dropping them.
+   For **hands-on lab use**, either works; `a1_mini_send_print.py`
+   still has the better failure diagnostics (it decodes
+   `print_error` codes to hex and distinguishes a latched error from
+   a new one). For the **relay**, `bambulabs_api` is the more natural
+   thing to wrap (persistent connection, status polling), and it now
+   carries the same payload guards.
 
 2. **Repeat-print reliability soak (~1 h, no new code).** Send the
    same job 5–10 times back-to-back with `--yes`, confirming each
@@ -539,8 +571,10 @@ order:
    between jobs. Nothing downstream is trustworthy until a job can be
    sent twice without a human in the loop.
 
-3. **Close the loop on the AMS.** All prints so far picked a tray by
-   hand (`AMS_MAPPING = [1]`). Read the AMS tray table out of the
+3. **Close the loop on the AMS.** The tray now comes from the sliced
+   file (field note 14), which removes the hand-editing but still
+   trusts whatever tray the slice was made against. Read the AMS tray
+   table out of the
    `report` telemetry (`ams.ams[].tray[]` — material, colour, remaining)
    so a job can *ask for* "PLA" and the code resolves the tray, and
    fail fast when the requested material is not loaded. Same telemetry

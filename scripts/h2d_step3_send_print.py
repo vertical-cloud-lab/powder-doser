@@ -23,6 +23,10 @@ for confirmation before publishing; pass --yes to skip (for automation).
 Credentials may also come from H2D_IP / H2D_ACCESS_CODE / H2D_SERIAL.
 Use --upload-only to run just the FTPS leg (3a) without starting a print.
 
+The filament source (external spool vs. AMS tray) is read out of the
+sliced file - see apply_payload_ams() - so an AMS-fed job needs no
+flags; --use-ams / --no-ams / --ams-mapping override the detection.
+
 If gcode_state never leaves IDLE, see the triage list under Step 3 in
 docs/h2d-programmatic-access.md (url path mismatch - note the THREE
 slashes in ftp:///cache/..., wrong-printer slicer profile, or Developer
@@ -39,6 +43,7 @@ import ssl
 import sys
 import threading
 import time
+import zipfile
 
 import paho.mqtt.client as mqtt
 
@@ -222,7 +227,118 @@ def upload(ip, code, local_path, remote_name, remote_dir="cache"):
 
 
 # --- Step 3c payload (matches the doc's verified minimal command) -----------
-def project_file_payload(remote_name, remote_dir):
+# --- AMS auto-detection from the sliced file ---------------------------------
+# Kept in sync with the other send scripts.
+def filament_slots_used(zf, plate=1):
+    """Which project filament slots (1-indexed, as Bambu Studio numbers
+    them in the filament dropdown) this plate actually prints with.
+
+    Metadata/slice_info.config lists one `<filament id="N" .../>` per
+    slot the plate consumes. On Thumbelina's Testpart2.gcode.3mf that
+    is `id="2"` - the job feeds from project slot 2, i.e. AMS lite tray
+    index 1, which is exactly the AMS_MAPPING = [1] that worked in the
+    field. Falls back to the executable G-code's own `M620 S<n>A`
+    tool-load commands (0-indexed). Returns a sorted list, or None."""
+    try:
+        xml = zf.read("Metadata/slice_info.config").decode("utf-8", "replace")
+    except KeyError:
+        xml = ""
+    blocks = re.findall(r"<plate>(.*?)</plate>", xml, re.S)
+    chosen = None
+    for block in blocks:
+        m = re.search(r'<metadata\s+key="index"\s+value="(\d+)"', block)
+        if m and int(m.group(1)) == plate:
+            chosen = block
+            break
+    if chosen is None and blocks:
+        chosen = blocks[0]
+    if chosen:
+        ids = [int(i) for i in re.findall(r'<filament\s+id="(\d+)"', chosen)]
+        if ids:
+            return sorted(set(ids))
+
+    tools = set()
+    try:
+        with zf.open("Metadata/plate_1.gcode") as f:
+            for i, raw in enumerate(f):
+                if i > 200000:
+                    break
+                m = re.match(r"M620\s+S(\d+)A", raw.decode("utf-8", "replace"))
+                if m and int(m.group(1)) < 250:
+                    tools.add(int(m.group(1)) + 1)
+    except KeyError:
+        return None
+    return sorted(tools) or None
+
+
+def apply_payload_ams(path, use_ams, ams_mapping, explicit_no_ams, force):
+    """Reconcile the AMS knobs with what the sliced file actually needs.
+
+    The file knows: a job that consumes project filament slot N > 1 can
+    only come from an AMS - the external spool holder is always slot 1 -
+    so slot > 1 implies use_ams with tray N-1. Before this existed,
+    an AMS-fed job printed with use_ams false ran the motions without
+    ever loading the tray (Thumbelina, 2026-08-04).
+
+    Slot 1 alone is ambiguous (external spool and AMS tray 1 look
+    identical in the slice), so it leaves the configured setting alone.
+    Returns the (possibly corrected) (use_ams, ams_mapping)."""
+    try:
+        slots = filament_slots_used(zipfile.ZipFile(path))
+    except (OSError, zipfile.BadZipFile, KeyError):
+        return use_ams, ams_mapping
+    if not slots:
+        return use_ams, ams_mapping
+    expected = [s - 1 for s in slots]
+    print(f"Payload filament slots in use: {slots} (-> AMS tray indices "
+          f"{expected}, 0-indexed)")
+    if max(expected) == 0:
+        return use_ams, ams_mapping  # slot 1 only: can't tell, leave as set
+
+    if not use_ams:
+        msg = (f"this job prints from filament slot(s) {slots} (AMS tray "
+               f"{expected}), which only an AMS can feed - with use_ams "
+               "false the printer never loads that tray and the job runs dry")
+        if explicit_no_ams and not force:
+            sys.exit("ERROR: --no-ams was passed but " + msg + ". Drop "
+                     "--no-ams, or re-slice the part onto filament slot 1 "
+                     "for the external spool.")
+        if force:
+            print("WARN (--force): " + msg + ".")
+            return use_ams, ams_mapping
+        print("NOTE: enabling the AMS automatically - " + msg + ".")
+        use_ams = True
+    if ams_mapping == "":
+        print(f"AMS mapping auto-filled from the payload: {expected}.")
+        return use_ams, expected
+    if len(ams_mapping) != len(expected):
+        print(f"WARN: AMS mapping {ams_mapping} has {len(ams_mapping)} "
+              f"entry/entries but the job uses {len(expected)} filament "
+              f"slot(s) (the payload implies {expected}).")
+    elif ams_mapping != expected:
+        print(f"NOTE: AMS mapping {ams_mapping} overrides the tray the slice "
+              f"implies ({expected}) - fine if you deliberately moved the "
+              "spool to another tray.")
+    return use_ams, ams_mapping
+
+
+def normalize_ams_mapping(value):
+    """Accept [0], "0", "0,1" or "[1]" and return a list of ints (AMS
+    tray indices, 0-indexed), or "" for no mapping. Kept in sync with
+    the other send scripts."""
+    if value in ("", None) or value == []:
+        return ""
+    if isinstance(value, str):
+        parts = [p for p in re.split(r"[\s,;\[\]]+", value.strip()) if p]
+        try:
+            return [int(p) for p in parts]
+        except ValueError:
+            sys.exit('ERROR: --ams-mapping must be comma-separated tray '
+                     f'numbers (e.g. "0" or "0,1"), got: {value!r}')
+    return [int(v) for v in value]
+
+
+def project_file_payload(remote_name, remote_dir, use_ams, ams_mapping):
     return {
         "print": {
             "sequence_id": "0",
@@ -244,16 +360,16 @@ def project_file_payload(remote_name, remote_dir):
             "flow_cali": True,
             "vibration_cali": True,
             "layer_inspect": True,
-            "ams_mapping": "",
-            "use_ams": False,
+            "ams_mapping": ams_mapping,
+            "use_ams": use_ams,
         }
     }
 
 
 # --- Step 3b+3c: publish start command, watch gcode_state -------------------
 # Kept in sync across the three send scripts.
-def start_and_watch(ip, code, serial, remote_name, remote_dir, watch_seconds,
-                    wait_done=True):
+def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
+                    ams_mapping, watch_seconds, wait_done=True):
     states = []          # ordered gcode_state transitions seen
     running = threading.Event()
     finished = threading.Event()
@@ -353,7 +469,8 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, watch_seconds,
               f"{states[-1]}) - not publishing a second job.")
         return 4
 
-    payload = project_file_payload(remote_name, remote_dir)
+    payload = project_file_payload(remote_name, remote_dir, use_ams,
+                                   ams_mapping)
     print("Publishing print.project_file for "
           f"{remote_url(remote_dir, remote_name)} ...")
     armed.set()
@@ -422,6 +539,18 @@ def main():
                         "community H2D flow; pass '' for the FTP root, "
                         "which is what fixed error 0500-4003 on the "
                         "lab's A1 mini)")
+    parser.add_argument("--use-ams", dest="use_ams", action="store_true",
+                        default=None,
+                        help="feed from an AMS instead of the external spool "
+                        "(default: read from the sliced file)")
+    parser.add_argument("--no-ams", dest="use_ams", action="store_false",
+                        help="force the external spool holder (refused if the "
+                        "file needs an AMS tray, unless --force)")
+    parser.add_argument("--ams-mapping", default=None,
+                        help='AMS tray indices, 0-indexed, e.g. "0" or "0,1" '
+                        "(default: derived from the sliced file)")
+    parser.add_argument("--force", action="store_true",
+                        help="send even if the AMS check objects")
     parser.add_argument("--upload-only", action="store_true",
                         help="run 3a (FTPS upload) only; don't start a print")
     parser.add_argument("--yes", action="store_true",
@@ -445,6 +574,18 @@ def main():
         print("WARN: file doesn't end in .gcode.3mf - project 3MFs without "
               "Metadata/plate_1.gcode inside will not start.")
 
+    # The sliced file, not a hard-coded default, decides whether an AMS
+    # tray has to be loaded (see apply_payload_ams).
+    use_ams = bool(args.use_ams)
+    ams_mapping = normalize_ams_mapping(args.ams_mapping)
+    use_ams, ams_mapping = apply_payload_ams(
+        args.file, use_ams, ams_mapping, args.use_ams is False, args.force)
+    if not use_ams:
+        ams_mapping = ""
+    print("Filament source: "
+          + (f"AMS, tray mapping {ams_mapping or '(printer default)'} "
+             "(0-indexed)" if use_ams else "EXTERNAL spool holder"))
+
     remote_dir = args.remote_dir.strip("/")
     remote_name = sanitize_remote_name(os.path.basename(args.file))
     if remote_name != os.path.basename(args.file):
@@ -464,8 +605,8 @@ def main():
             return 1
 
     return start_and_watch(args.ip, args.access_code, args.serial,
-                           remote_name, remote_dir, args.watch,
-                           args.wait_done)
+                           remote_name, remote_dir, use_ams, ams_mapping,
+                           args.watch, args.wait_done)
 
 
 if __name__ == "__main__":

@@ -433,10 +433,26 @@ A ready-to-run version is checked in at
 `file --ip/--access-code/--serial` CLI as the Step 3 script): it
 connects, uploads, checks for the FTPS `226 Transfer complete`
 response, asks for bed-clear confirmation, calls `start_print`, and
-polls `get_state()` until `RUNNING`. Because `bambulabs_api` is
-community-maintained and H2D-untested (see the library table), the
-script prints the installed library version up front and fails loudly
-rather than guessing if a signature has drifted.
+follows `get_state()` to `RUNNING` and on to `FINISH` (`--no-wait`
+stops at `RUNNING`). Because `bambulabs_api` is community-maintained
+and H2D-untested (see the library table), the script prints the
+installed library version up front, probes `start_print` for the
+kwargs the installed release actually accepts, and fails loudly rather
+than guessing if a signature has drifted. **This script has run a real
+print on the lab's A1 mini (2026-08-04) but not yet on an H2D.**
+
+**AMS / filament source.** The script no longer assumes the external
+spool holder: it reads `Metadata/slice_info.config` out of the
+`.gcode.3mf` and uses the filament slots the plate actually consumes
+(slot N > 1 ⇒ AMS tray N−1, since the external spool is always slot 1)
+to set `use_ams` / `ams_mapping`. `--use-ams` / `--no-ams` /
+`--ams-mapping "0,1"` override it, and a `--no-ams` that contradicts
+the file is refused rather than silently obeyed — that combination
+makes the printer run the whole job without ever loading the tray.
+The same detection is in `h2d_step3_send_print.py` and both A1-mini
+scripts. For the H2D's multi-material AMS units, note this maps
+*project filament slots* to trays; a manual `--ams-mapping` still wins
+if you have moved spools between trays.
 
 Only *after* Step 4 is green for a static, hand-sliced cube does it
 make sense to plug in the headless slicer worker from the

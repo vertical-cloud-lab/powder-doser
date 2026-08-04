@@ -10,7 +10,8 @@
   the primary community and vendor sources. Runnable companions to the
   bringup checklist live in [`scripts/`](scripts): the Step 2
   reachability smoke test, the Step 3 upload-and-start dry run, and the
-  Step 4 `bambulabs_api` wrapper. The Step 3 test payload
+  Step 4 `bambulabs_api` wrapper (all of which derive the AMS tray vs.
+  external-spool setting from the sliced file). The Step 3 test payload
   (`cube_h2d.gcode.3mf`, H2D-only) is checked in under
   [`payloads/`](payloads).
 - [Programmatic printing on the Bambu Lab A1 mini ("Thumbelina")](docs/a1-mini-programmatic-access.md)
