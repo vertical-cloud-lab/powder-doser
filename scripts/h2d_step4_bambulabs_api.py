@@ -1,49 +1,84 @@
 #!/usr/bin/env python3
-"""Step 4 - the same print as Step 3, driven through `bambulabs_api`.
+"""Send a print to a LAN-mode Bambu printer through `bambulabs_api`.
 
-Once Step 3 is green from the raw FTPS/MQTT script, this is the
-library-backed version you'd actually build on (it is also what the
-Step 5/6 Pi relay in the doc wraps in FastAPI). Internally
-`bambulabs_api` does the identical implicit-FTPS upload + MQTT
-`print.project_file` publish that h2d_step3_send_print.py does by hand.
+This is the RECOMMENDED script for day-to-day use on the A1 mini
+("Thumbelina") and the one the Step 5/6 Pi relay should wrap: the
+library keeps a persistent MQTT connection and exposes status, so it is
+a better base for automation than the raw-socket scripts. It carries
+every guard the raw-MQTT scripts grew during Thumbelina bringup:
 
-Works on any LAN-mode Bambu printer, not just the H2D: verified on the
-A1 mini ("Thumbelina") 2026-08-04 with payloads/Testpart2.gcode.3mf -
-print started and completed. Still unexercised on the H2D itself.
+  - refuses a file that is not a sliced .gcode.3mf, or is sliced for a
+    different printer (--expect-printer, default "A1 mini");
+  - refuses a ghost-print bed temperature (< 45 C - the headless CLI's
+    Cool Plate default, 2026-07-27);
+  - reads the AMS filament source OUT OF THE SLICED FILE, so an AMS-fed
+    job no longer needs `use_ams` hand-edited (2026-08-04);
+  - sanitizes the remote filename (spaces caused printer-side error
+    83935248 / hex 0500-C010);
+  - verifies the upload actually landed instead of trusting the return
+    value (the printer's FTPS TLS shutdown sometimes never completes);
+  - ignores print_error codes LATCHED from earlier jobs and fails only
+    on a new one, decoded to Bambu's hex form with a hint;
+  - refuses to publish while another job is RUNNING/PREPARE;
+  - watches the job through to FINISH and announces PRINT COMPLETE.
 
-CAUTION: this starts a REAL print. Clear the bed first. The script asks
-for confirmation; pass --yes to skip (for automation).
+Usage - either fill in the block below and run with no arguments, or
+pass everything on the command line:
 
     pip install bambulabs_api
-    python h2d_step4_bambulabs_api.py cube_h2d.gcode.3mf \
+    python h2d_step4_bambulabs_api.py part.gcode.3mf \
         --ip <IP> --access-code <CODE> --serial <SERIAL>
 
-Credentials may also come from H2D_IP / H2D_ACCESS_CODE / H2D_SERIAL
-(BAMBU_* and A1_MINI_* names are accepted too).
+Credentials may also come from A1_MINI_IP / A1_MINI_ACCESS_CODE /
+A1_MINI_SERIAL (H2D_* and BAMBU_* names work too). CLI beats env vars
+beats the constants below.
 
-AMS: the filament source is read OUT OF THE SLICED FILE by default -
-see resolve_ams() below - so an AMS-fed job no longer needs the
-`use_ams=False` in this file to be hand-edited (Thumbelina, 2026-08-04).
-Override with --use-ams / --no-ams / --ams-mapping.
+For the H2D, add --expect-printer "H2D" (or edit EXPECT_PRINTER); the
+transport is identical, only the payload check differs.
 
-Note: `bambulabs_api` is community-maintained and its signatures have
-shifted between releases (see the H2D-untested caveat in the doc's
-library table). This script targets the shape used in the project's own
-examples - `Printer(ip, code, serial)`, `upload_file(fileobj, name)`
-returning an FTP status string, `start_print(name, plate)` - probes
-`start_print` for the kwargs it actually accepts, and prints the
-library version up front so a mismatch is easy to spot.
+CAUTION: this starts a REAL print. Clear the bed first. The script asks
+for confirmation; pass --yes to skip (proven for repeat runs on
+Thumbelina, 2026-08-04).
 """
 
+# ======================= FILL THESE IN =======================
+# From the printer's touchscreen - see Step 1 of
+# docs/a1-mini-programmatic-access.md:
+PRINTER_IP = "PUT_PRINTER_IP_HERE"        # e.g. "192.168.1.42"  (Settings -> WLAN)
+ACCESS_CODE = "PUT_ACCESS_CODE_HERE"      # 8-digit code         (Settings -> WLAN)
+SERIAL = "PUT_SERIAL_HERE"                # 15 characters        (Settings -> Device)
+
+# The sliced file to print. MUST be a .gcode.3mf sliced for this
+# printer. Windows users: keep the r"" prefix.
+FILE_TO_PRINT = r"PUT_PATH_TO_YOUR_FILE_HERE.gcode.3mf"
+
+# Which printer the payload must be sliced for. "" disables the check.
+EXPECT_PRINTER = "A1 mini"                # "H2D" for the H2D, "" for none
+
+# AMS: leave USE_AMS = None to read the filament source out of the
+# sliced file (recommended - see resolve_ams below). True/False forces
+# it. AMS_MAPPING is one 0-indexed tray number per filament, e.g. [1]
+# for AMS lite slot 2; "" derives it from the file.
+USE_AMS = None
+AMS_MAPPING = ""
+# =============================================================
+
 import argparse
+import ftplib
 import inspect
 import os
 import re
+import socket
+import ssl
 import sys
 import time
 import zipfile
 
 import bambulabs_api as bl
+
+
+def _is_placeholder(value):
+    return not value or "PUT_" in value or "_HERE" in value
 
 
 # --- remote filename ---------------------------------------------------------
@@ -55,6 +90,45 @@ def sanitize_remote_name(name):
     (hex 0500-C010, a file-path/parse failure) even though the FTPS
     upload succeeded. Kept in sync with the other send scripts."""
     return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
+
+# --- print_error decoding ----------------------------------------------------
+# Kept in sync across the send scripts. Bambu reports print_error as a
+# decimal int; the community error tables use the hex form AAAA-BBBB
+# (e.g. 83902467 == 0500-4003).
+def fmt_print_error(err):
+    try:
+        n = int(err)
+    except (TypeError, ValueError):
+        return str(err)
+    return f"{err} (hex {(n >> 16) & 0xFFFF:04X}-{n & 0xFFFF:04X})"
+
+
+KNOWN_PRINT_ERRORS = {
+    0x0500C010: "file-path/parse failure - bad characters in the url, or "
+                "the url does not point at the uploaded file. This script "
+                "sanitizes the filename, so suspect the upload path next.",
+    0x05004003: "printer could not parse/find the print file - the classic "
+                "wrong-upload-path error (ac-dev-lab / bambulabs_api#99). "
+                "bambulabs_api uploads to the FTP root and starts with "
+                "ftp:///<name>, which is the A1-mini-proven combination.",
+}
+
+
+def print_error_hint(err):
+    try:
+        return KNOWN_PRINT_ERRORS.get(int(err))
+    except (TypeError, ValueError):
+        return None
+
+
+def fmt_remaining(minutes):
+    """get_time() reports minutes remaining; render as 3h05m / 42m."""
+    try:
+        m = int(minutes)
+    except (TypeError, ValueError):
+        return None
+    return f"{m // 60}h{m % 60:02d}m" if m >= 60 else f"{m}m"
 
 
 # --- sliced-file inspection ---------------------------------------------------
@@ -129,7 +203,7 @@ def filament_slots_used(zf, plate=1):
             return sorted(set(ids))
 
     # Fallback: the resolved start G-code carries `M620 S<n>A` with the
-    # 0-indexed tool the job loads (255 = unload//no AMS sentinel).
+    # 0-indexed tool the job loads (255 = unload/no AMS sentinel).
     tools = set()
     try:
         with zf.open("Metadata/plate_1.gcode") as f:
@@ -145,9 +219,17 @@ def filament_slots_used(zf, plate=1):
     return sorted(tools) or None
 
 
-def inspect_payload(path, plate, force):
+def inspect_payload(path, plate, expect_printer, force):
     """Print what the file is and hard-stop on the known-bad shapes.
-    Returns the filament slots the job uses (see filament_slots_used)."""
+    Returns the filament slots the job uses (see filament_slots_used).
+
+    The printer-identity check reads the CONFIG_BLOCK's own fields. It
+    must NOT grep the header for substrings like "filament_map_mode":
+    BambuStudio >= 2.x writes the full config key set - including the
+    multi-extruder keys - into EVERY printer's G-code, so a genuine
+    A1-mini slice contains `filament_map_mode = Auto For Flush` too.
+    The old substring check false-positived on every legitimate
+    A1-mini file (Thumbelina field testing, PR #23)."""
     try:
         zf = zipfile.ZipFile(path)
     except zipfile.BadZipFile:
@@ -155,26 +237,48 @@ def inspect_payload(path, plate, force):
                  "this at an STL? Slice it first.")
     if "Metadata/plate_1.gcode" not in zf.namelist():
         sys.exit(f"ERROR: {path} has no Metadata/plate_1.gcode - this is a "
-                 "project 3MF, not a sliced .gcode.3mf. Slice it and retry.")
+                 "project 3MF, not a sliced .gcode.3mf. Slice it (Bambu "
+                 "Studio export, or the CLI recipe in the doc) and retry.")
 
     meta = read_gcode_metadata(zf)
-    model = meta.get("printer_model") or meta.get("printer_settings_id") or "?"
+    model = meta.get("printer_model") or meta.get("printer_settings_id") or ""
     bed_type = meta.get("curr_bed_type", "?")
     bed_cmd = commanded_bed_temp(zf)
-    print(f"Payload: sliced for {model!r}; build plate {bed_type!r}; "
+    print(f"Payload: sliced for {model or '?'!r}; build plate {bed_type!r}; "
           f"commanded first-layer bed temp "
           f"{bed_cmd if bed_cmd is not None else '?'} C")
 
-    if bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
-        msg = (f"{path} commands a first-layer bed temp of only {bed_cmd} C "
-               f"(plate type {bed_type!r}) - nothing adheres to the textured "
-               "PEI sheet below ~45 C and the job GHOST-PRINTS (runs the "
-               "motions with nothing staying on the bed). Re-export with the "
-               "correct build plate selected")
+    # filament_map assigns each filament to an extruder; any value >= 2
+    # means a second extruder, which only the IDEX machines have.
+    map_values = [int(v) for v in
+                  re.findall(r"\d+", meta.get("filament_map", ""))]
+
+    problem = None
+    if expect_printer and model and expect_printer.lower() not in model.lower():
+        problem = (f'{path} is sliced for "{model}", not a {expect_printer}. '
+                   f"Re-slice with a {expect_printer} profile")
+    elif (expect_printer and "h2d" not in expect_printer.lower()
+            and any(v >= 2 for v in map_values)):
+        problem = (f"{path} maps filaments to a second extruder "
+                   f"(filament_map = {meta.get('filament_map')}) - a "
+                   f"dual-extruder (H2D/IDEX) slice, which single-extruder "
+                   f"firmware chokes on. Re-slice with a {expect_printer} "
+                   "profile")
+    elif bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
+        problem = (f"{path} commands a first-layer bed temp of only {bed_cmd} C "
+                   f"(plate type {bed_type!r}) - nothing adheres to the textured "
+                   "PEI sheet below ~45 C and the job GHOST-PRINTS (runs the "
+                   "motions with nothing staying on the bed). Re-export with the "
+                   "correct build plate selected")
+    if problem:
         if force:
-            print("WARN (--force): " + msg + ".")
+            print("WARN (--force): " + problem + ".")
         else:
-            sys.exit("ERROR: " + msg + ". Pass --force to send it anyway.")
+            sys.exit("ERROR: " + problem + ". Pass --force to send it anyway.")
+    elif expect_printer and not model:
+        print("WARN: no printer_model/printer_settings_id in the G-code "
+              f"header - could not confirm this file is a {expect_printer} "
+              "slice.")
 
     slots = filament_slots_used(zf, plate)
     if slots:
@@ -270,6 +374,110 @@ def resolve_ams(slots, cli_use_ams, cli_mapping, force):
     return True, mapping
 
 
+# --- upload verification ------------------------------------------------------
+# bambulabs_api's FTP helper swallows exceptions and returns None on
+# failure, and the printer's FTPS server sometimes never completes the
+# TLS shutdown after a successful STOR - so a non-226 return does NOT
+# prove the file is missing (field-tested on Thumbelina, PR #23). Check
+# the directory listing before deciding either way.
+class ImplicitFTP_TLS(ftplib.FTP_TLS):
+    """Implicit FTPS (TLS on connect) with control-session reuse on the
+    data channel - copied from h2d_smoketest.py so the fallback works
+    on any bambulabs_api release. Keep the copies in sync."""
+
+    def connect(self, host="", port=0, timeout=-999, source_address=None):
+        if host:
+            self.host = host
+        if port:
+            self.port = port
+        if timeout != -999:
+            self.timeout = timeout
+        if source_address is not None:
+            self.source_address = source_address
+        self.sock = socket.create_connection((self.host, self.port), self.timeout)
+        self.af = self.sock.family
+        self.sock = self.context.wrap_socket(self.sock, server_hostname=self.host)
+        self.file = self.sock.makefile("r", encoding=self.encoding)
+        self.welcome = self.getresp()
+        return self.welcome
+
+    def ntransfercmd(self, cmd, rest=None):
+        conn, size = ftplib.FTP.ntransfercmd(self, cmd, rest)
+        if self._prot_p:
+            conn = self.context.wrap_socket(
+                conn, server_hostname=self.host, session=self.sock.session)
+        return conn, size
+
+
+def list_ftp_root(printer, ip, code):
+    """Best-effort listing of the printer's FTP root. Tries the
+    library's own client first, then a stdlib implicit-FTPS session.
+    Returns a list of names, or None if both routes failed."""
+    try:
+        listing = printer.ftp_client.list_directory("/")
+        if listing:
+            return [str(x) for x in listing]
+    except Exception:
+        pass
+    try:
+        ctx = ssl._create_unverified_context()
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.maximum_version = ssl.TLSVersion.TLSv1_2
+        ftps = ImplicitFTP_TLS(context=ctx)
+        ftps.connect(ip, 990, 30)
+        ftps.login("bblp", code)
+        ftps.prot_p()
+        try:
+            return ftps.nlst("/")
+        finally:
+            try:
+                ftps.quit()
+            except Exception:
+                ftps.close()
+    except Exception as exc:
+        print(f"WARN: could not list the printer's FTP root to verify the "
+              f"upload ({type(exc).__name__}: {exc}).")
+        return None
+
+
+def upload_and_verify(printer, path, remote_name, ip, code):
+    """Upload via the library, then confirm the file is really there.
+
+    Returns True if the file is on the printer. A missing 226 is not
+    fatal on its own: the printer's interrupted TLS shutdown produces
+    exactly that while every byte lands."""
+    try:
+        with open(path, "rb") as f:
+            result = printer.upload_file(f, remote_name)
+    except Exception as exc:                      # library re-raises as Exception
+        result = None
+        print(f"FTPS upload raised {type(exc).__name__}: {exc}")
+    print(f"Upload result: {result}")
+
+    listing = list_ftp_root(printer, ip, code)
+    if listing is not None:
+        present = any(remote_name in str(entry) for entry in listing)
+        print(f"FTP root now: {listing}")
+        if present:
+            if "226" not in str(result):
+                print("Upload verified: the file is present despite the "
+                      "interrupted/odd FTPS response.")
+            return True
+        print(f"ERROR: {remote_name} is NOT in the printer's FTP root after "
+              "the upload - re-run, or use --upload-only to retry the "
+              "transfer on its own.")
+        return False
+
+    # No listing available: fall back to trusting the transfer response.
+    if "226" in str(result):
+        print("NOTE: could not list the FTP root; the 226 Transfer complete "
+              "response is the only evidence the file landed.")
+        return True
+    print("ERROR: FTPS upload did not return '226 Transfer complete' and the "
+          "file could not be verified - not starting a print.")
+    return False
+
+
 # --- start_print kwarg probing ------------------------------------------------
 def call_start_print(printer, remote_name, plate, use_ams, ams_mapping):
     """`bambulabs_api` releases differ in what start_print accepts, so
@@ -289,7 +497,7 @@ def call_start_print(printer, remote_name, plate, use_ams, ams_mapping):
         print("WARN: this bambulabs_api release's start_print() takes no "
               "use_ams argument - the AMS setting is whatever the library "
               "defaults to. Upgrade the library, or use "
-              "h2d_step3_send_print.py, which builds the payload directly.")
+              "a1_mini_send_print.py, which builds the payload directly.")
     if ams_mapping != "" and "ams_mapping" not in kwargs:
         print(f"WARN: start_print() takes no ams_mapping argument - tray "
               f"{ams_mapping} cannot be requested through this release.")
@@ -308,11 +516,24 @@ def call_start_print(printer, remote_name, plate, use_ams, ams_mapping):
         return printer.start_print(remote_name, plate)
 
 
-# --- state watch --------------------------------------------------------------
+# --- state / error watch ------------------------------------------------------
+def read_print_error(printer):
+    """Current print_error code, or None if this release doesn't expose
+    one. The printer LATCHES the last error until it is cleared, so the
+    caller must compare against a pre-publish baseline."""
+    getter = getattr(printer, "print_error_code", None)
+    if getter is None:
+        return None
+    try:
+        err = getter()
+    except Exception:
+        return None
+    return err if err not in (None, 0, "0") else None
+
+
 def _progress_line(printer):
     bits = []
-    for attr, fmt in (("get_percentage", "{}%"),
-                      ("get_time", "~{} min left")):
+    for attr, fmt in (("get_percentage", "{}%"),):
         getter = getattr(printer, attr, None)
         if getter is None:
             continue
@@ -322,40 +543,67 @@ def _progress_line(printer):
             continue
         if value not in (None, "", "Unknown"):
             bits.append(fmt.format(value))
+    try:
+        rem = fmt_remaining(printer.get_time())
+        if rem:
+            bits.append(f"~{rem} left")
+    except Exception:
+        pass
+    try:
+        layer, total = printer.current_layer_num(), printer.total_layer_num()
+        if layer is not None and total:
+            bits.append(f"layer {layer}/{total}")
+    except Exception:
+        pass
     return ", ".join(bits)
 
 
-def watch(printer, watch_seconds, wait_done):
+def watch(printer, watch_seconds, wait_done, baseline_errors):
     """Follow gcode_state to RUNNING, then (unless --no-wait) stay
     attached until the printer reports FINISH.
 
     FINISH only counts once RUNNING has been seen: an idle Bambu keeps
     re-reporting the PREVIOUS job's FINISH, which would otherwise fire
-    a false 'print complete' the moment we connect."""
+    a false 'print complete' the moment we connect. Likewise a
+    print_error already latched before we published belongs to an
+    earlier job and must not fail this one."""
     last = None
     running = False
     deadline = time.monotonic() + watch_seconds
     last_progress = 0.0
+    seen_errors = set(baseline_errors)
     while True:
         state = str(printer.get_state())
         if state != last:
             print(f"gcode_state: {state}")
             last = state
+
+        err = read_print_error(printer)
+        if err is not None and err not in seen_errors:
+            seen_errors.add(err)
+            print(f"print_error: {fmt_print_error(err)}")
+            hint = print_error_hint(err)
+            if hint:
+                print(f"  {hint}")
+            print("FAILED: the printer reported a NEW error after our start "
+                  "command - see the Step 3 triage list in "
+                  "docs/a1-mini-programmatic-access.md.")
+            return 2
+
         if state == "RUNNING" and not running:
             running = True
             print("SUCCESS: printer reached RUNNING.")
             if not wait_done:
                 return 0
             print("Watching until it finishes - Ctrl-C detaches WITHOUT "
-                  "stopping the print ...")
+                  "stopping the print (--no-wait skips this next time) ...")
         if state in ("FAILED", "OFFLINE"):
             print("FAILED: see the Step 3 triage list in "
-                  "docs/h2d-programmatic-access.md.")
+                  "docs/a1-mini-programmatic-access.md.")
             return 2
         if running and state in ("FINISH", "FINISHED"):
             print("\a" + "=" * 62)
-            print("PRINT COMPLETE: the printer reported gcode_state "
-                  f"{state}.")
+            print(f"PRINT COMPLETE: the printer reported gcode_state {state}.")
             print("Remove the part from the bed before starting the next job.")
             print("=" * 62)
             return 0
@@ -367,7 +615,9 @@ def watch(printer, watch_seconds, wait_done):
             return 2
         if not running and time.monotonic() > deadline:
             print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
-                  f"(last state: {last}).")
+                  f"(last state: {last}). A wrong-printer or unparseable "
+                  "file shows up exactly like this - see the Step 3 triage "
+                  "list in docs/a1-mini-programmatic-access.md.")
             return 3
         if running and time.monotonic() - last_progress > 60:
             last_progress = time.monotonic()
@@ -377,19 +627,25 @@ def watch(printer, watch_seconds, wait_done):
         time.sleep(3)
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("file", help="path to a sliced .gcode.3mf")
+    parser.add_argument("file", nargs="?", default=None,
+                        help="path to a sliced .gcode.3mf (overrides "
+                             "FILE_TO_PRINT at the top of this script)")
     parser.add_argument("--ip", default=os.environ.get(
-        "H2D_IP", os.environ.get("BAMBU_IP", os.environ.get("A1_MINI_IP"))))
+        "A1_MINI_IP", os.environ.get("H2D_IP", os.environ.get("BAMBU_IP"))))
     parser.add_argument("--access-code", default=os.environ.get(
-        "H2D_ACCESS_CODE", os.environ.get(
-            "BAMBU_ACCESS_CODE", os.environ.get("A1_MINI_ACCESS_CODE"))))
+        "A1_MINI_ACCESS_CODE", os.environ.get(
+            "H2D_ACCESS_CODE", os.environ.get("BAMBU_ACCESS_CODE"))))
     parser.add_argument("--serial", default=os.environ.get(
-        "H2D_SERIAL", os.environ.get(
-            "BAMBU_SERIAL", os.environ.get("A1_MINI_SERIAL"))))
+        "A1_MINI_SERIAL", os.environ.get(
+            "H2D_SERIAL", os.environ.get("BAMBU_SERIAL"))))
     parser.add_argument("--plate", type=int, default=1,
                         help="plate number inside the 3MF (default 1)")
+    parser.add_argument("--expect-printer", default=None, metavar="MODEL",
+                        help='printer the payload must be sliced for '
+                             '(default "%s"; "any" disables the check)'
+                             % EXPECT_PRINTER)
     parser.add_argument("--use-ams", dest="use_ams", action="store_true",
                         default=None,
                         help="force AMS feed (default: read from the file)")
@@ -399,59 +655,98 @@ def main():
     parser.add_argument("--ams-mapping", default=None,
                         help='AMS tray indices, 0-indexed, e.g. "0" or "0,1" '
                              "(default: derived from the file)")
+    parser.add_argument("--upload-only", action="store_true",
+                        help="upload and verify only; don't start a print")
     parser.add_argument("--yes", action="store_true",
                         help="skip the clear-the-bed confirmation prompt")
     parser.add_argument("--force", action="store_true",
                         help="send even if the payload checks object")
     parser.add_argument("--no-wait", dest="wait_done", action="store_false",
+                        default=True,
                         help="exit once RUNNING instead of waiting for FINISH")
     parser.add_argument("--watch", type=int, default=180, metavar="SECONDS",
                         help="how long to wait for RUNNING (default 180)")
+    return parser
+
+
+def main():
+    parser = build_parser()
     args = parser.parse_args()
-    missing = [n for n, v in
-               [("--ip", args.ip), ("--access-code", args.access_code),
-                ("--serial", args.serial)] if not v]
+
+    # CLI/env beats the FILL THESE IN constants; placeholders count as unset.
+    ip = args.ip or (None if _is_placeholder(PRINTER_IP) else PRINTER_IP)
+    code = args.access_code or (None if _is_placeholder(ACCESS_CODE) else ACCESS_CODE)
+    serial = args.serial or (None if _is_placeholder(SERIAL) else SERIAL)
+    path = args.file or (None if _is_placeholder(FILE_TO_PRINT) else FILE_TO_PRINT)
+    missing = [n for n, v in [("printer IP", ip), ("access code", code),
+                              ("serial", serial), ("file to print", path)]
+               if not v]
     if missing:
-        parser.error("missing " + ", ".join(missing) +
-                     " (flags or H2D_IP/H2D_ACCESS_CODE/H2D_SERIAL env vars)")
-    if not os.path.isfile(args.file):
-        parser.error(f"no such file: {args.file}")
+        parser.error(
+            "missing " + ", ".join(missing) + ". Edit the FILL THESE IN "
+            "block at the top of this script (replace the PUT_..._HERE "
+            "placeholders), or pass --ip/--access-code/--serial and the "
+            "file path on the command line.")
+    if not os.path.isfile(path):
+        parser.error(f"no such file: {path}")
+
+    expect = EXPECT_PRINTER if args.expect_printer is None else args.expect_printer
+    if expect.strip().lower() in ("any", "none"):
+        expect = ""
 
     print(f"bambulabs_api version: {getattr(bl, '__version__', 'unknown')}")
-    slots = inspect_payload(args.file, args.plate, args.force)
-    use_ams, ams_mapping = resolve_ams(slots, args.use_ams, args.ams_mapping,
-                                       args.force)
+    slots = inspect_payload(path, args.plate, expect, args.force)
+    use_ams, ams_mapping = resolve_ams(
+        slots,
+        USE_AMS if args.use_ams is None else args.use_ams,
+        args.ams_mapping if args.ams_mapping is not None else AMS_MAPPING,
+        args.force)
     print("Filament source: "
           + (f"AMS, tray mapping {ams_mapping or '(printer default)'} "
              "(0-indexed)" if use_ams else "EXTERNAL spool holder"))
 
-    remote_name = sanitize_remote_name(os.path.basename(args.file))
-    if remote_name != os.path.basename(args.file):
-        print(f"NOTE: uploading as {remote_name} (the printer rejects paths "
-              "with spaces and other punctuation).")
+    remote_name = sanitize_remote_name(os.path.basename(path))
+    if remote_name != os.path.basename(path):
+        print(f"NOTE: uploading as {remote_name} - spaces and other "
+              "punctuation break the printer's file-path parsing "
+              "(error 83935248 / 0500-C010).")
 
-    printer = bl.Printer(args.ip, args.access_code, args.serial)
+    printer = bl.Printer(ip, code, serial)
     printer.connect()
     time.sleep(2)  # give the MQTT client a moment to receive first status
     try:
         state = str(printer.get_state())
         print(f"Printer state before print: {state}")
         if state in ("RUNNING", "PREPARE") and not args.force:
-            print("ERROR: the printer is already printing - not sending "
+            print("ABORT: the printer is already printing - not sending "
                   "another job. Pass --force to override.")
-            return 2
+            return 4
 
-        with open(args.file, "rb") as f:
-            result = printer.upload_file(f, remote_name)
-        print(f"Upload result: {result}")
-        if "226" not in str(result):
-            print("ERROR: FTPS upload did not return '226 Transfer complete' - "
-                  "not starting a print.")
+        # Snapshot any error the printer has LATCHED from an earlier job:
+        # the status carries the last error until it is cleared, and it
+        # would otherwise read as a verdict on the job we haven't started
+        # yet (field-seen on Thumbelina: a 0500-C010 from May was still
+        # being reported in July).
+        baseline_errors = set()
+        latched = read_print_error(printer)
+        if latched is not None:
+            baseline_errors.add(latched)
+            print(f"NOTE: pre-existing print_error {fmt_print_error(latched)} "
+                  "latched from an EARLIER job - ignoring it for this run. "
+                  "Dismiss any error dialog on the touchscreen.")
+            hint = print_error_hint(latched)
+            if hint:
+                print(f"  (that code means: {hint})")
+
+        if not upload_and_verify(printer, path, remote_name, ip, code):
             return 2
+        if args.upload_only:
+            print("Upload-only mode: not starting a print.")
+            return 0
 
         if not args.yes:
             answer = input(f"About to start a REAL print of {remote_name} on "
-                           f"{args.serial}. Is the bed clear? [y/N] ")
+                           f"{serial}. Is the bed clear? [y/N] ")
             if answer.strip().lower() not in ("y", "yes"):
                 print("Aborted before start_print. File remains on the printer.")
                 return 1
@@ -459,9 +754,10 @@ def main():
         call_start_print(printer, remote_name, args.plate, use_ams, ams_mapping)
         print("start_print sent; watching gcode_state ...")
         try:
-            return watch(printer, args.watch, args.wait_done)
+            return watch(printer, args.watch, args.wait_done, baseline_errors)
         except KeyboardInterrupt:
-            print("\nDetached. The print continues on the printer.")
+            print("\nDetached; the print carries on at the printer. This "
+                  "script only observes and cannot stop it.")
             return 0
     finally:
         printer.disconnect()

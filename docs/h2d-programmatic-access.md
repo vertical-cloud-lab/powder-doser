@@ -430,9 +430,23 @@ have a known-good `.gcode.3mf`.)
 A ready-to-run version is checked in at
 [`scripts/h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py)
 (`pip install bambulabs_api`, then the same
-`file --ip/--access-code/--serial` CLI as the Step 3 script): it
-connects, uploads, checks for the FTPS `226 Transfer complete`
-response, asks for bed-clear confirmation, calls `start_print`, and
+`file --ip/--access-code/--serial` CLI as the Step 3 script). **On the
+H2D, add `--expect-printer "H2D"`** — the payload check defaults to
+`A1 mini` (the printer the script is used on daily) and would
+otherwise refuse an IDEX slice such as
+[`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf);
+`--expect-printer any` disables the check entirely:
+
+```bash
+python h2d_step4_bambulabs_api.py payloads/cube_h2d.gcode.3mf \
+    --expect-printer "H2D" --ip <IP> --access-code <CODE> --serial <SERIAL>
+```
+
+It connects, uploads, verifies the file really landed by listing the
+printer's FTP root (a missing `226` is not proof of failure — the
+printer's TLS shutdown sometimes never completes), asks for bed-clear
+confirmation, calls `start_print`, ignores `print_error` codes latched
+from earlier jobs while decoding a new one to Bambu's hex form, and
 follows `get_state()` to `RUNNING` and on to `FINISH` (`--no-wait`
 stops at `RUNNING`). Because `bambulabs_api` is community-maintained
 and H2D-untested (see the library table), the script prints the

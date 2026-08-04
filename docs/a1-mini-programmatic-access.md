@@ -218,13 +218,23 @@ behaviour for automation that polls separately.
 
 ## Step 4 — Wrap it in Python
 
-Use [`scripts/h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py)
-unchanged — **verified on Thumbelina 2026-08-04**, printing
+[`scripts/h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py)
+is **the recommended script for day-to-day A1-mini use and the one to
+build the relay on** — verified on Thumbelina 2026-08-04, printing
 [`payloads/Testpart2.gcode.3mf`](../payloads/Testpart2.gcode.3mf)
-end-to-end. Better still than on the H2D: **`bambulabs_api` is tested
-on the A1 mini** (it is the H2D that the library's README flags as
-untested), so the defensive version-printing in the script is less
-likely to matter.
+end-to-end, and as of 2026-08-04 it carries every guard the raw-MQTT
+scripts grew during bringup (see the table in
+["After Step 4"](#after-step-4--whats-next-for-the-a1-mini)). Better
+still than on the H2D: **`bambulabs_api` is tested on the A1 mini** (it
+is the H2D that the library's README flags as untested), so the
+defensive version-printing in the script is less likely to matter.
+(The `h2d_` filename prefix is historical — the script is
+printer-agnostic; for the H2D pass `--expect-printer "H2D"`.)
+
+Two ways to run it — edit the `FILL THESE IN` block at the top
+(`PRINTER_IP` / `ACCESS_CODE` / `SERIAL` / `FILE_TO_PRINT`, plus
+optional `USE_AMS` / `AMS_MAPPING` / `EXPECT_PRINTER`) and run it with
+no arguments, or pass everything on the command line:
 
 ```bash
 # filament source read from the file - no AMS flags needed
@@ -234,20 +244,26 @@ python h2d_step4_bambulabs_api.py part.gcode.3mf \
 # override the detection (trays are 0-indexed, so AMS tray 2 == mapping 1)
 python h2d_step4_bambulabs_api.py part.gcode.3mf --use-ams --ams-mapping 1
 python h2d_step4_bambulabs_api.py part.gcode.3mf --no-ams
+
+# transfer only, no print - the safe first run with a new file
+python h2d_step4_bambulabs_api.py part.gcode.3mf --upload-only
 ```
 
-Credentials also come from `H2D_IP`/`H2D_ACCESS_CODE`/`H2D_SERIAL` or
-the `A1_MINI_*`/`BAMBU_*` equivalents. The **filament source is read
+Credentials also come from `A1_MINI_IP`/`A1_MINI_ACCESS_CODE`/
+`A1_MINI_SERIAL` or the `H2D_*`/`BAMBU_*` equivalents; CLI beats env
+vars beats the constants in the file. The **filament source is read
 out of the sliced file** (field note 14), so an AMS-fed job needs
-neither a flag nor a source edit. Like the raw-MQTT scripts it also
-refuses a project (unsliced) or wrong-printer 3MF, refuses a job
-commanding a ghost-print bed temperature, sanitizes the remote
-filename, declines to publish while another job is `RUNNING`, prints
-the filament source before the confirmation prompt, and **watches the
-job through to `FINISH`** with a `PRINT COMPLETE` banner (`--no-wait`
-restores exit-at-`RUNNING`). What it still does *not* carry is the
-raw-MQTT scripts' latched-`print_error` decoding — see the comparison
-table in ["After Step 4"](#after-step-4--whats-next-for-the-a1-mini).
+neither a flag nor a source edit. It also refuses a project (unsliced)
+or wrong-printer 3MF (`--expect-printer`, default `A1 mini`; `any`
+disables the check), refuses a job commanding a ghost-print bed
+temperature, sanitizes the remote filename, **verifies the upload
+actually landed** rather than trusting the return value (the printer's
+FTPS TLS shutdown sometimes never completes — field note 6), declines
+to publish while another job is `RUNNING`, ignores `print_error` codes
+**latched from earlier jobs** while failing on a new one *decoded to
+Bambu's hex form with a hint* (field note 8), and **watches the job
+through to `FINISH`** with a `PRINT COMPLETE` banner (`--no-wait`
+restores exit-at-`RUNNING`). `--force` overrides the payload checks.
 
 The most directly reusable prior art is
 `ac-dev-lab`'s
@@ -532,6 +548,28 @@ listed here so nobody re-debugs them from a stale copy:
     spool and AMS tray 1 look identical in the slice — so that case
     keeps the configured default and says so; pass `--use-ams` when
     the filament is in the AMS.
+15. **Repeat sends are reliable, and the library path is now the
+    single script (2026-08-04).** The `--yes` soak passed on
+    Thumbelina — jobs send and start back-to-back with no human in the
+    loop — so `scripts/h2d_step4_bambulabs_api.py` was brought to full
+    parity with the raw-MQTT scripts and is now *the* script to use
+    and to build the relay on. Ported in: the `FILL THESE IN` block
+    (no CLI flags needed), `--expect-printer` wrong-printer refusal,
+    `--upload-only`, upload verification against a directory listing,
+    and latched-vs-new `print_error` handling with hex decoding.
+
+    Two library details worth knowing, both found by reading
+    `bambulabs_api` 2.6.6 rather than by guessing:
+    - its FTP helper **swallows exceptions and returns `None`** on
+      failure, so a non-`226` result proves nothing either way — the
+      script lists the FTP root and decides from that (it falls back
+      to its own stdlib implicit-FTPS session if the library's
+      listing helper is unavailable);
+    - `start_print()` defaults to **`use_ams=True, ams_mapping=[0]`**,
+      so *omitting* the AMS arguments is not the same as printing
+      from the external spool. The script always passes both
+      explicitly (probing the signature first, since these kwargs
+      have moved between releases).
 
 ## After Step 4 — what's next for the A1 mini
 
@@ -541,35 +579,39 @@ from here is about turning "a person runs a script next to the
 printer" into "an automated workflow submits a job." In dependency
 order:
 
-1. **Pick the one script to build on, and use it consistently.**
-   There are now two working send paths with different feature sets:
+1. **✅ Settled: build on
+   [`h2d_step4_bambulabs_api.py`](../scripts/h2d_step4_bambulabs_api.py).**
+   As of 2026-08-04 the two send paths have the same guards, so the
+   library path — the better base for the relay, since it holds a
+   persistent connection and exposes status — is the one to use:
 
-   | | `a1_mini_send_print.py` (raw FTPS+MQTT) | `h2d_step4_bambulabs_api.py` (library) |
+   | | `h2d_step4_bambulabs_api.py` (library, **recommended**) | `a1_mini_send_print.py` (raw FTPS+MQTT) |
    |---|---|---|
-   | Dependencies | `paho-mqtt` only | `bambulabs_api` (+ its deps) |
-   | Wrong-printer / unsliced payload check | yes | yes (added 2026-08-04) |
-   | Ghost-print bed-temp check (< 45 °C) | yes | yes (added 2026-08-04) |
+   | Dependencies | `bambulabs_api` (+ its deps) | `paho-mqtt` only |
+   | Wrong-printer / unsliced payload check | yes (`--expect-printer`) | yes (A1 mini only) |
+   | Ghost-print bed-temp check (< 45 °C) | yes | yes |
    | Filament source shown before the prompt | yes | yes |
-   | AMS mapping | yes | yes (added 2026-08-04) |
-   | AMS source auto-detected from the file | yes | yes (added 2026-08-04) |
-   | Print-completion notice | yes | yes (added 2026-08-04) |
-   | Latched-`print_error` handling, hex decoding | yes | no (library-reported state only) |
+   | AMS mapping, auto-detected from the file | yes | yes |
+   | Print-completion notice | yes | yes |
+   | Latched-`print_error` handling, hex decoding | yes | yes |
+   | Upload verified against a directory listing | yes | yes |
+   | Busy-printer guard, `--upload-only`, `--force` | yes | yes |
 
-   For **hands-on lab use**, either works; `a1_mini_send_print.py`
-   still has the better failure diagnostics (it decodes
-   `print_error` codes to hex and distinguishes a latched error from
-   a new one). For the **relay**, `bambulabs_api` is the more natural
-   thing to wrap (persistent connection, status polling), and it now
-   carries the same payload guards.
+   Keep `a1_mini_send_print.py` as the **fallback**, not the daily
+   driver: it needs only `paho-mqtt`, builds the MQTT payload by hand,
+   and is therefore the thing to reach for when a `bambulabs_api`
+   release changes a signature or you need to see the exact bytes on
+   the wire. `a1_mini_slice_and_send.py` remains the STL-input path.
 
-2. **Repeat-print reliability soak (~1 h, no new code).** Send the
-   same job 5–10 times back-to-back with `--yes`, confirming each
-   reaches `FINISH`. This is what surfaces the failure modes that
-   only appear in automation: a stale `print_error` from job *n*
-   blocking job *n+1*, the printer still in `FINISH`/`PREPARE` when
-   the next command lands, and whether a bed-clear check is needed
-   between jobs. Nothing downstream is trustworthy until a job can be
-   sent twice without a human in the loop.
+2. **✅ Done — repeat-print reliability soak.** Confirmed on
+   Thumbelina 2026-08-04: the same job sends and starts consistently
+   with `--yes`, no human in the loop. That closes the risk that
+   everything downstream rested on (a stale `print_error` from job *n*
+   blocking job *n+1*, or the printer still being in `FINISH`/
+   `PREPARE` when the next command lands). Note the scripts *don't*
+   check whether the bed is clear — that is what the confirmation
+   prompt was for, so an unattended queue still needs either a human,
+   an auto-eject/clearing mechanism, or a camera check.
 
 3. **Close the loop on the AMS.** The tray now comes from the sliced
    file (field note 14), which removes the hand-editing but still
@@ -844,8 +886,9 @@ Thumbelina:
    `scripts/a1_mini_send_print.py`, run it with `--upload-only`
    first, then the full run with the bed clear. Do **not** reuse the
    H2D cube file — the script refuses it anyway. (~15 min)
-4. **Step 4**: same print via `scripts/h2d_step4_bambulabs_api.py`.
-   (~15 min)
+4. **Step 4**: same print via `scripts/h2d_step4_bambulabs_api.py`
+   — **the script to standardise on** once Step 3 has proven the
+   credentials. (~15 min)
 
    *Steps 0–4 are complete on Thumbelina as of 2026-08-04 — see
    ["After Step 4"](#after-step-4--whats-next-for-the-a1-mini) for

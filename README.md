@@ -18,14 +18,16 @@
   — the A1-mini instruction list: same bringup Steps 0–6 with the
   parameters adjusted for the single-extruder, Wi-Fi-only A1 mini
   (profiles, simplified CLI slicing recipe, AMS-lite payload note,
-  scaled safety-envelope limits). Reuses the Step 2/4 `scripts/` files
-  verbatim, plus two dedicated fill-in-the-placeholders scripts:
-  [`scripts/a1_mini_send_print.py`](scripts/a1_mini_send_print.py) for
-  sending an already-sliced `.gcode.3mf`, and
+  scaled safety-envelope limits). The recommended day-to-day script is
+  [`scripts/h2d_step4_bambulabs_api.py`](scripts/h2d_step4_bambulabs_api.py)
+  (verified on the lab's A1 mini; fill in the placeholders at the top
+  or pass `--ip/--access-code/--serial`), with
+  [`scripts/a1_mini_send_print.py`](scripts/a1_mini_send_print.py) as
+  the dependency-light raw FTPS+MQTT fallback and
   [`scripts/a1_mini_slice_and_send.py`](scripts/a1_mini_slice_and_send.py)
-  which first slices an STL/project-3MF headlessly with the
-  BambuStudio CLI (risks of the no-preview flow are documented in the
-  A1-mini doc).
+  for STL input — it first slices an STL/project-3MF headlessly with
+  the BambuStudio CLI (risks of the no-preview flow are documented in
+  the A1-mini doc).
   [`scripts/flatten_bambu_profiles.py`](scripts/flatten_bambu_profiles.py)
   generates the flattened profile JSONs the CLI slicing flow needs
   from any installed Bambu Studio.
