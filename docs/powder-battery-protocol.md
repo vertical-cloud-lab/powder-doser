@@ -101,6 +101,49 @@ above. See the white-rice-flour run
 ([notes](battery-runs/2026-08-04-white-rice-flour.md)) for both sides of
 that comparison.
 
+That check is
+[`hardware/test-module/firmware/battery_preflight.py`](../hardware/test-module/firmware/battery_preflight.py)
+(~1 minute):
+
+```bash
+mpremote connect /dev/ttyACM0 exec "import battery_preflight; battery_preflight.run()"
+```
+
+It prints `PRE,...` rows and one of `feed confirmed` /
+`suspect-no-feed` / `empty-or-blocked` / `scale-unreadable`.
+
+When the pre-flight does *not* confirm feed, escalate with
+[`battery_feed_diagnostic.py`](../hardware/test-module/firmware/battery_feed_diagnostic.py)
+(~3 minutes), which separates a **cohesive powder arching over the
+auger** from a **mechanically blocked delivery path** — the two look
+identical over a single short rotation:
+
+```bash
+mpremote connect /dev/ttyACM0 exec "import battery_feed_diagnostic as d; d.run()"
+```
+
+| Observation | Verdict |
+|---|---|
+| long/fast continuous rotation conveys | `conveying-slowly` — run the battery |
+| rotation dead, but rotation *after* tapping conveys | `arching-responds-to-agitation` |
+| rotation dead before and after agitation, taps alive | `mechanical-no-feed` — check the list above |
+| nothing moves at all | `empty-or-fully-blocked` |
+
+Both modules are covered by simulation tests
+([`sim/test_battery_preflight.py`](../hardware/test-module/firmware/sim/test_battery_preflight.py)).
+
+### Recording the QC decision
+
+The capture script takes the verdict as arguments rather than having it
+hand-patched into `run.json` afterwards:
+
+- `--preflight-json FILE` embeds the feed-check result under `preflight`
+- `--qc-verdict STR` sets `qc.verdict`
+- `--qc-valid` sets `qc.valid_for_cross_powder_comparison` — **runs are
+  excluded by default**, so a battery only joins the cross-powder
+  dataset when someone has confirmed the rig actually fed
+- `--batch STR` labels runs that came out of the same fill container
+
 The 2026-08-04 brown-rice-flour run
 ([notes](battery-runs/2026-08-04-brown-rice-flour.md)) failed on one of
 these: 20 continuous auger revolutions at tilt 90° delivered exactly

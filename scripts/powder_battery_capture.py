@@ -218,6 +218,19 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
             stderr=subprocess.DEVNULL).decode().strip()
     except Exception:
         git_commit = None
+    preflight = None
+    if getattr(args, "preflight_json", None):
+        with open(args.preflight_json) as handle:
+            preflight = json.load(handle)
+    qc = {
+        # Default to excluding a run: a battery is only comparable across
+        # powders once someone has confirmed the rig actually fed.
+        "valid_for_cross_powder_comparison": bool(
+            getattr(args, "qc_valid", False)),
+        "verdict": getattr(args, "qc_verdict", None) or "unreviewed",
+    }
+    if preflight is not None:
+        qc["preflight_verdict"] = preflight.get("verdict")
     return {
         "kind": "battery_run",
         "schema_version": SCHEMA_VERSION,
@@ -226,8 +239,11 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "ended_utc": ended_utc,
         "powder_id": args.powder_id,
         "powder": args.powder,
+        "batch": getattr(args, "batch", None),
         "operator": args.operator,
         "notes": args.notes,
+        "qc": qc,
+        "preflight": preflight,
         "git_commit": git_commit,
         "parameters": meta,
         "trials": trials,
@@ -432,6 +448,19 @@ def main(argv=None):
                         help="operator initials (provenance)")
     parser.add_argument("--notes", default=None,
                         help="free-form run notes (provenance)")
+    parser.add_argument("--batch", default=None,
+                        help="powder batch label shared by runs that came "
+                        "out of the same fill container "
+                        "(e.g. food-safe-2026-08)")
+    parser.add_argument("--preflight-json", default=None, metavar="JSON",
+                        help="pre-flight feed check result to embed "
+                        "(from battery_preflight / battery_feed_diagnostic)")
+    parser.add_argument("--qc-valid", action="store_true",
+                        help="mark the run valid for cross-powder "
+                        "comparison; runs are excluded by default")
+    parser.add_argument("--qc-verdict", default=None,
+                        help="short QC verdict string, e.g. ok, "
+                        "suspect-no-feed, cohesive-no-flow")
     parser.add_argument("--unattended", action="store_true",
                         help="run without an operator: device prompts "
                         "auto-continue (stall prompts answer 'keep')")
