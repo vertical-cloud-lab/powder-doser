@@ -178,6 +178,29 @@ mpremote connect /dev/ttyACM0 exec "import battery_feed_diagnostic as d; d.run()
 Both modules are covered by simulation tests
 ([`sim/test_battery_preflight.py`](../hardware/test-module/firmware/sim/test_battery_preflight.py)).
 
+**Never stop on `suspect-no-feed` alone — escalate.** Five revolutions
+is not enough to charge a slow-cohesive powder's delivery section, so
+the pre-flight can badly under-report a perfectly good column. The
+2026-08-05 carboxymethyl cellulose run
+([notes](battery-runs/2026-08-05-carboxymethyl-cellulose.md)) pre-flighted
+at **0.36 mg/rev** and block C then measured **26.3 mg/rev** at tilt 45°
+— a 73× under-report — because the diagnostic's 35 revolutions were what
+it took to fill the flights (1.14 → 22.82 mg/rev, monotonic). White rice
+flour charges in ~3 revolutions; this one needed ~30.
+
+The discriminator is whether the reading is *exactly* zero:
+
+| Pre-flight reading | Read it as | Do |
+|---|---|---|
+| tens of mg/rev | feed confirmed | run the battery |
+| non-zero but low | possibly still charging | **escalate to the diagnostic** — do not abort |
+| exactly `0.0000` everywhere | blocked path (tape, cap) | grab a camera frame, then check the bench list |
+
+A powder that is genuinely too cohesive to convey still shakes *some*
+fines through: brown rice flour delivered 5.1 mg from 30 taps. Exactly
+zero across dozens of revolutions and taps is a mechanical block, not a
+powder property.
+
 ### Then look at the rig: `scripts/bench_frame.py`
 
 The two modules above can tell you *that* nothing is being conveyed, but
@@ -290,8 +313,21 @@ two and are otherwise identical).
 Plots: `scripts/plot_battery_run.py` is the *did it feed at all?* diagnostic
 (used on the no-feed brown-rice-flour run); `scripts/plot_battery_results.py`
 is the four-panel per-powder result figure (blocks C, D, E, G) for runs that
-did feed; `scripts/plot_battery_compare.py out.png run_a.json run_b.json ...`
-puts several powders side by side.
+did feed; `scripts/plot_battery_compare.py [--valid-only] out.png run_a.json
+run_b.json ...` puts several powders side by side (pass `--valid-only` when
+globbing `data/battery/*/run_*.json`, or the retracted no-feed runs are
+plotted as if they were measurements).
+
+`scripts/plot_battery_sequence.py` plots block C **revolution by
+revolution** rather than as a mean, and is worth generating for every run:
+several powders' block C is not six draws from one distribution, so the
+mean and RSD in the results figure can describe a process that never
+happened. It labels each tilt `charging` / `steady` / `decaying` /
+`intermittent` / `below resolution` — white rice flour charges, brown rice
+flour is intermittent clump releases, and carboxymethyl cellulose at 90°
+decays from 39 mg to 2 mg per revolution behind a 9.3 mg mean. It also
+overlays block D, which runs at tilt 45° right after block C ends at 90°
+and so separates a tilt effect from a depleted hopper.
 
 With `--upload`, `run_<id>.json` is inserted into MongoDB Atlas as one
 document in **`powder_doser.battery_runs`** — the same database as the

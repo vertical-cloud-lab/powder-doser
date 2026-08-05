@@ -16,6 +16,13 @@ silently plotted as a real small number.
 Usage::
 
     python scripts/plot_battery_compare.py out.png run_a.json run_b.json ...
+
+Pass ``--valid-only`` to drop runs whose
+``qc.valid_for_cross_powder_comparison`` is false, which is what you
+want when globbing the whole of ``data/battery/``::
+
+    python scripts/plot_battery_compare.py --valid-only \\
+        data/battery/battery_compare_all.png data/battery/*/run_*.json
 """
 
 import json
@@ -32,7 +39,14 @@ SURFACE = "#fcfcfb"
 TEXT_PRIMARY = "#0b0b0b"
 TEXT_SECONDARY = "#52514e"
 GRID = "#dcdbd6"
-SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0"]
+# Seven slots, because a fifth powder was silently repainted the same
+# blue as the first when this cycled at four.  Validated as an ordered
+# set for the adjacent pairlist a grouped bar chart uses (worst adjacent
+# CVD dE 9.2, normal-vision 18.5 on this surface); aqua and magenta sit
+# under 3:1 contrast, which the direct bar labels cover.  Red is left out
+# on purpose -- it is TARGET below, and a series must not wear it.
+SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0",
+          "#e87ba4", "#008300", "#4a3aa7"]
 NOISE = "#9d9c95"
 TARGET = "#e34948"
 
@@ -189,8 +203,34 @@ def panel_dose(ax, docs):
                  pad=10)
 
 
-def main(out_path, paths):
+def valid_for_comparison(doc):
+    """Whether a run document is cleared for the cross-powder dataset."""
+    return bool(doc.get("qc", {}).get("valid_for_cross_powder_comparison"))
+
+
+def main(out_path, paths, valid_only=False):
     docs = [json.load(open(p)) for p in paths]
+    if valid_only:
+        # Three of the runs so far are retracted no-feed attempts.  A
+        # glob over data/battery/*/run_*.json otherwise plots them beside
+        # real measurements with nothing marking them as withdrawn.
+        kept = [d for d in docs if valid_for_comparison(d)]
+        for doc in docs:
+            if doc not in kept:
+                print("skipping {} ({})".format(
+                    doc.get("powder_id"),
+                    doc.get("qc", {}).get("verdict", "unreviewed")))
+        docs = kept
+    if not docs:
+        raise SystemExit("no runs to plot")
+    if len(docs) > len(SERIES):
+        # Cycling is what put two powders in the same blue.  Say so
+        # rather than shipping a figure whose legend cannot be trusted.
+        print("WARNING: {} runs but {} distinct colours -- powders {} onward "
+              "repeat an earlier colour. Split this into facets instead."
+              .format(len(docs), len(SERIES),
+                      ", ".join(d.get("powder_id", "?")
+                                for d in docs[len(SERIES):])))
 
     fig, axes = plt.subplots(1, 2, figsize=(13.0, 5.2), facecolor=SURFACE)
     for ax in axes:
@@ -212,6 +252,7 @@ def main(out_path, paths):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    argv = [a for a in sys.argv[1:] if a != "--valid-only"]
+    if len(argv) < 2:
         raise SystemExit(__doc__)
-    main(sys.argv[1], sys.argv[2:])
+    main(argv[0], argv[1:], valid_only="--valid-only" in sys.argv)

@@ -63,8 +63,9 @@ def tilt_headline(rows):
     """Describe the block C trend, which is not always a rise.
 
     White rice flour climbs ~10x from tilt 0 to 90 deg, sodium alginate
-    saturates above 45 deg, and brown rice flour is flat within its own
-    scatter -- so state which of those this run is.
+    saturates above 45 deg, brown rice flour is flat within its own
+    scatter, and carboxymethyl cellulose peaks at 45 deg and falls again
+    -- so state which of those this run is.
     """
     values = [r["mean_g"] * 1000.0 for r in rows]
     if len(values) < 2 or max(values) <= 0:
@@ -72,7 +73,17 @@ def tilt_headline(rows):
     ratio = max(values) / max(min(values), 1e-9)
     if ratio < 2.0:
         return "feed factor is flat across tilt"
-    if len(values) >= 3 and values[-1] > 0 and values[-2] / values[-1] > 0.75:
+    peak = values.index(max(values))
+    if 0 < peak < len(values) - 1:
+        # Non-monotonic: an interior tilt beats both ends.  Saying
+        # "rises with tilt" here would invert the result.
+        return "feed factor peaks at {:.0f}° and falls above it".format(
+            rows[peak]["tilt_deg"])
+    if peak == 0:
+        return "feed factor falls with tilt"
+    # Rising.  Saturation means the last two are within ~33 % of each
+    # other; a one-sided test calls a *drop* saturation.
+    if len(values) >= 3 and values[-1] > 0 and 0.75 <= values[-2] / values[-1]:
         return "feed factor rises with tilt, saturating above 45°"
     return "feed factor rises with tilt"
 

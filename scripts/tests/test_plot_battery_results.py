@@ -57,6 +57,15 @@ def test_tilt_headline():
     # trend is slightly *downward*, so "rises" would be plain wrong.
     check("tilt flat", plot.tilt_headline(rows(0.30, 0.25, 0.20))
           == "feed factor is flat across tilt")
+    # Carboxymethyl cellulose: 2.6 -> 26.3 -> 9.3 mg/rev.  The peak is
+    # at 45 deg and 90 deg is nearly 3x worse, so neither "rises" nor
+    # "saturating" is true -- the one-sided saturation test used to call
+    # this one "saturating above 45 deg", inverting the result.
+    check("tilt peaks mid", plot.tilt_headline(rows(2.63, 26.32, 9.35))
+          == "feed factor peaks at 45° and falls above it")
+    # A genuine monotonic fall is its own case, not a peak.
+    check("tilt falls", plot.tilt_headline(rows(40.0, 12.0, 3.0))
+          == "feed factor falls with tilt")
     # Degenerate inputs must not raise or divide by zero.
     check("tilt all zero", plot.tilt_headline(rows(0.0, 0.0, 0.0))
           == "feed factor vs tilt")
