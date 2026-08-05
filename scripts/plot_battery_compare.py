@@ -20,6 +20,7 @@ Usage::
 
 import json
 import sys
+import textwrap
 
 import matplotlib
 matplotlib.use("Agg")
@@ -59,8 +60,21 @@ def rotation_rows(doc):
     return rows
 
 
-def label_of(doc):
-    return doc.get("powder_id") or "run"
+def label_of(doc, docs=None):
+    """Legend label; disambiguated when a powder appears more than once.
+
+    Repeat runs of the same powder (a second auger, a re-run after a rig
+    fix) share a ``powder_id``, so plotting two of them side by side
+    would draw two identically-labelled bar groups.  When ``docs`` is
+    given and the id repeats, the run date is appended.
+    """
+    name = doc.get("powder_id") or "run"
+    if docs is None:
+        return name
+    siblings = [d for d in docs if (d.get("powder_id") or "run") == name]
+    if len(siblings) < 2:
+        return name
+    return "{} ({})".format(name, (doc.get("started_utc") or "")[:10])
 
 
 def panel_feed_factor(ax, docs):
@@ -81,7 +95,7 @@ def panel_feed_factor(ax, docs):
             values.append(max(mg, DETECTION_MG))
             censored.append(mg <= DETECTION_MG)
         ax.bar(xs, values, width=width * 0.9, color=SERIES[i % len(SERIES)],
-               label=label_of(doc),
+               label=label_of(doc, docs),
                hatch=None)
         for x, value, is_censored in zip(xs, values, censored):
             ax.annotate(
@@ -134,7 +148,7 @@ def panel_dose(ax, docs):
         if position > start:
             unique = sorted(set(statuses))
             caption = "{}\n{}".format(
-                label_of(doc),
+                label_of(doc, docs),
                 unique[0] if len(unique) == 1 else "/".join(unique))
             groups.append(((start + position - 1) / 2.0, caption,
                            SERIES[i % len(SERIES)]))
@@ -149,9 +163,14 @@ def panel_dose(ax, docs):
         ax.annotate("{:.3f}".format(value), xy=(x, value), xytext=(0, 5),
                     textcoords="offset points", ha="center", fontsize=8.5,
                     color=TEXT_PRIMARY)
-    for x, name, color in groups:
-        ax.annotate(name, xy=(x, 0), xytext=(0, -34),
-                    textcoords="offset points", ha="center", fontsize=9.5,
+    # Repeat-run labels carry a date and get long; stagger alternate
+    # groups vertically so neighbouring captions cannot overlap.
+    longest = max((len(n.split("\n")[0]) for _, n, _ in groups), default=0)
+    size = 9.5 if longest <= 18 else 8.0
+    for k, (x, name, color) in enumerate(groups):
+        dy = -34 if (longest <= 18 or k % 2 == 0) else -58
+        ax.annotate(name, xy=(x, 0), xytext=(0, dy),
+                    textcoords="offset points", ha="center", fontsize=size,
                     color=color)
     ax.set_xticks(xs)
     ax.set_xticklabels(labels, fontsize=8)
@@ -172,11 +191,14 @@ def main(out_path, paths):
     panel_feed_factor(axes[0], docs)
     panel_dose(axes[1], docs)
 
-    fig.suptitle(
-        "Uniform powder battery — cross-powder comparison ({})".format(
-            ", ".join(label_of(d) for d in docs)),
-        fontsize=13, color=TEXT_PRIMARY, x=0.008, ha="left", y=0.98)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    # Four dated labels overrun the figure width on one line, so the run
+    # list wraps instead of being clipped at the right edge.
+    title = "Uniform powder battery — cross-powder comparison ({})".format(
+        ", ".join(label_of(d, docs) for d in docs))
+    fig.suptitle(textwrap.fill(title, 108), fontsize=13, color=TEXT_PRIMARY,
+                 x=0.008, ha="left", va="top", y=0.985)
+    top = 0.94 if len(title) <= 108 else 0.90
+    fig.tight_layout(rect=(0, 0, 1, top))
     fig.savefig(out_path, dpi=170, facecolor=SURFACE)
     print("wrote {}".format(out_path))
 

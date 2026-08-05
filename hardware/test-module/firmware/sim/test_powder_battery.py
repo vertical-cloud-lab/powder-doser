@@ -278,6 +278,40 @@ def test_full_run_protocol():
           rot[0.0]["mean_g"] < rot[45.0]["mean_g"] < rot[90.0]["mean_g"])
 
 
+def test_tilt_parked_at_zero_after_run():
+    """The rig is left horizontal so the next auger swap is predictable."""
+    battery, lines, _, _, _, servo = make_battery()
+    battery.run_all()
+    events = parsed(lines)
+    meta = dict(rows_of(events, "meta"))
+    check("park META emitted",
+          meta.get("park_tilt_deg") == "0.0", meta.get("park_tilt_deg"))
+    check("last servo move is plate 0", servo.history[-1] == 0.0,
+          servo.history[-3:])
+    # Park happens before RUN,END so the capture log records it in order.
+    markers = rows_of(events, "run")
+    check("park precedes RUN END", markers[-1][0] == "END")
+
+    # Block G leaves the servo with the doser; the park must still move.
+    battery2, lines2, _, _, _, servo2 = make_battery(blocks="G")
+    battery2.run_all()
+    check("park after block G", servo2.history[-1] == 0.0,
+          servo2.history[-3:])
+    check("park META after block G",
+          dict(rows_of(parsed(lines2), "meta")).get("park_tilt_deg") == "0.0")
+
+
+def test_tilt_parked_after_abort():
+    """An aborted run still leaves the tube horizontal."""
+    battery, lines, _, _, _, servo = make_battery(
+        attended_input=lambda: "abort")
+    status = battery.run_all()
+    check("abort still parks", servo.history[-1] == 0.0, servo.history[-3:])
+    check("abort park META",
+          dict(rows_of(parsed(lines), "meta")).get("park_tilt_deg") == "0.0")
+    check("abort status preserved", status == "aborted", status)
+
+
 def test_cohesive_lowflow_unattended():
     battery, lines, _, _, _, _ = make_battery(column=Column(cohesive=True))
     status = battery.run_all()
@@ -345,7 +379,9 @@ def test_host_summary_round_trip():
 
 
 def main():
-    for test in (test_full_run_protocol, test_cohesive_lowflow_unattended,
+    for test in (test_full_run_protocol, test_tilt_parked_at_zero_after_run,
+                 test_tilt_parked_after_abort,
+                 test_cohesive_lowflow_unattended,
                  test_missing_hardware_skips, test_block_selection,
                  test_operator_abort, test_host_summary_round_trip):
         print("--- {}".format(test.__name__))

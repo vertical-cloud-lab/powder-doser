@@ -204,6 +204,24 @@ reporting EIO, so F self-skips).
 doses: `--run-args 'blocks="G"'`, or a quick smoke:
 `--run-args 'blocks="ACG", rotation_trials=3, dose_repeats=1'`.
 
+### How the rig is left afterwards
+
+`Battery.run_all()` parks the rig in its `finally`, so this happens after
+a normal finish, an operator `abort`, or a scale failure alike:
+
+- **tilt returned to 0°** (tube horizontal, `PARK_TILT_DEG`), recorded as
+  a `META,park_tilt_deg,0.0` row immediately before `RUN,END` so the log
+  proves it happened;
+- stepper stopped and de-energised;
+- solenoid released.
+
+Block G hands the servo back with the cached tilt unknown, so the park
+forces the move rather than skipping on a stale value. Whoever swaps the
+next auger can therefore assume the tube is horizontal — grep the run's
+raw serial log for `park_tilt_deg` if in doubt. The pre-flight check
+([`battery_preflight.py`](../hardware/test-module/firmware/battery_preflight.py))
+parks at 0° the same way.
+
 ## Outputs
 
 Per run, under `data/battery/<UTC-stamp>_<powder-id>/`:

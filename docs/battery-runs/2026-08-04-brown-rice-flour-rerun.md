@@ -13,6 +13,13 @@ and confirmed the tape was off, reporting visible clumping in the powder.
 > `no-conveyance-auger-suspect` — the measurement is sound, but powder-vs-
 > auger-print is unresolved pending a re-test in a fresh auger. See
 > [2026-08-05-brown-rice-flour-amendment.md](2026-08-05-brown-rice-flour-amendment.md).
+>
+> **Resolved 2026-08-05** — the flour was moved to a **second, independently
+> printed auger** and the battery re-run. It behaves the same (0.20–0.30 mg per
+> revolution, versus < 0.1 mg here), so the auger-print hypothesis is not
+> supported and the near-zero feed factor is a property of the powder. That run
+> supersedes this one for cross-powder comparison:
+> [2026-08-05-brown-rice-flour-auger2.md](2026-08-05-brown-rice-flour-auger2.md).
 
 | | |
 |---|---|

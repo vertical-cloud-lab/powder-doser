@@ -90,6 +90,7 @@ POWDER_ID         = None
 
 TILTS_DEG         = [0.0, 45.0, 90.0]  # tube tilt; 0 horizontal, 90 vertical
 PLATE_PER_TILT    = 0.5                # plate deg per tilt deg (2:1 gearing)
+PARK_TILT_DEG     = 0.0                # tilt the rig is left at after a run
 
 BASELINE_READS    = 8       # Block A
 BASELINE_TILT     = 45.0
@@ -328,6 +329,24 @@ class Battery:
         self.servo.move_to(tilt_deg * PLATE_PER_TILT)
         self._tilt = tilt_deg
         self._sleep_ms(self.tilt_settle_ms)
+
+    def _park_tilt(self):
+        """Return the tube to the parked (horizontal) tilt.
+
+        Runs unconditionally at the end of ``run_all`` -- including
+        after an abort or a scale failure -- so the rig is always left
+        at a known angle for the operator swapping the next auger.
+        Block G hands the servo back with ``self._tilt`` unknown, so the
+        move is forced rather than skipped on the cached value.
+        """
+        self._tilt = None
+        try:
+            self._move_tilt(PARK_TILT_DEG)
+        except Exception as exc:                    # pragma: no cover
+            self.log("[battery] could not park tilt at {} deg: {}".format(
+                PARK_TILT_DEG, exc))
+            return
+        self._emit("META", "park_tilt_deg", "{:.1f}".format(PARK_TILT_DEG))
 
     def _tare(self):
         self.scale.zero()
@@ -623,6 +642,7 @@ class Battery:
             status = "interrupted"
             raise
         finally:
+            self._park_tilt()
             self._emit("RUN", "END", status)
         return status
 
