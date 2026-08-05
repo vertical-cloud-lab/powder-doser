@@ -11,8 +11,10 @@
   "notes": "Re-run of issue #116 battery for brown rice flour. Operator confirms delivery-end tape removed and reports visible clumping. Pre-flight: 5 rev at tilt 90 deg gave 0.0000 g; escalation to 60 rev at 90 RPM gave 1.5 mg.",
   "qc": {
     "valid_for_cross_powder_comparison": false,
-    "verdict": "cohesive-no-flow",
-    "preflight_verdict": "no-conveyance"
+    "verdict": "no-conveyance-auger-suspect",
+    "preflight_verdict": "no-conveyance",
+    "reason": "Near-zero conveyance confirmed off-rig: 20 hand rotations delivered 0.0019 g (0.095 mg/rev), reproducing the rig's 0.03-0.075 mg/rev with no coupler or cap in the loop. Drive train and outlet blockage are excluded. Held out of the cross-powder comparison only because powder-vs-auger-print is unresolved pending a re-test in a fresh auger.",
+    "last_amended_utc": "2026-08-05T14:59:38.477063+00:00"
   },
   "preflight": {
     "verdict": "no-conveyance",
@@ -1797,6 +1799,58 @@
       "min_g": -0.0001,
       "max_g": 0.0001,
       "rsd_pct": null
+    }
+  ],
+  "amendments": [
+    {
+      "amended_utc": "2026-08-05T14:59:38.477063+00:00",
+      "author": "swcharles",
+      "summary": "Coupler slip ruled out by operator observation; an off-rig hand test reproduces the near-zero conveyance, so the drive train is not the cause.",
+      "detail": "The re-run notes left the coupler as the one unverified link in the chain and declined to call the result cohesion because of it. The operator confirms the auger tube rotates with the coupler in all trials, and on 2026-08-05 turned the loaded auger 20 rotations by hand off the rig after zeroing the balance: 0.0019 g total, 0.095 mg/rev. That is the same order as the rig's 0.03-0.075 mg/rev, measured with no coupler, no cap and no drive train. The remaining hypotheses are the powder itself and a poor auger print; the operator will reload this flour into a freshly printed auger and re-run before the number is used.",
+      "evidence": {
+        "operator": "swcharles",
+        "reported_in": "https://github.com/vertical-cloud-lab/powder-doser/issues/116",
+        "delivery_end_tape": {
+          "state": "removed",
+          "source": "bench camera video of the run reviewed by the operator",
+          "supersedes": "the original assessment, which attributed the flat-zero result to a capped/taped outlet"
+        },
+        "auger_coupler": {
+          "state": "auger tube confirmed rotating with the drive coupler in all trials",
+          "source": "operator observation at the bench",
+          "supersedes": "the open coupler-slip hypothesis raised in the re-run notes"
+        },
+        "operator_hand_test": {
+          "date_utc": "2026-08-05",
+          "powder": "brown rice flour",
+          "method": "auger removed from the rig, balance zeroed, 20 full rotations turned by hand over the dish",
+          "rotations": 20,
+          "delivered_g": 0.0019,
+          "mg_per_rev": 0.095,
+          "interpretation": "off-rig control with no coupler, no cap and no drive train; the same near-zero conveyance the rig measured"
+        },
+        "reference_mg_per_rev_at_90deg": {
+          "white-rice-flour": 37.15,
+          "sodium-alginate": 3.52,
+          "brown-rice-flour-rig": 0.03,
+          "brown-rice-flour-hand": 0.095
+        },
+        "remaining_open_question": "whether the near-zero conveyance is the powder (cohesion/clumping) or this particular auger print; operator will reload the same flour into a freshly printed auger and re-run"
+      },
+      "qc_change": {
+        "verdict": {
+          "from": "cohesive-no-flow",
+          "to": "no-conveyance-auger-suspect"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": false
+        },
+        "reason": {
+          "from": null,
+          "to": "Near-zero conveyance confirmed off-rig: 20 hand rotations delivered 0.0019 g (0.095 mg/rev), reproducing the rig's 0.03-0.075 mg/rev with no coupler or cap in the loop. Drive train and outlet blockage are excluded. Held out of the cross-powder comparison only because powder-vs-auger-print is unresolved pending a re-test in a fresh auger."
+        }
+      }
     }
   ]
 }

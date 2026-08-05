@@ -3,6 +3,12 @@
 First run of the uniform powder test battery (issue #116) on the bench rig,
 driven remotely over Tailscale from a GitHub Actions runner.
 
+> **Amended 2026-08-05** — the `suspect-no-feed` attribution below (a taped
+> delivery end) is **withdrawn**: @swcharles confirmed from the bench video
+> that the tape was off for this run. The measured zeros stand; the cause
+> does not. See
+> [2026-08-05-brown-rice-flour-amendment.md](2026-08-05-brown-rice-flour-amendment.md).
+
 | | |
 |---|---|
 | Run directory | [`data/battery/20260804T204316Z_brown-rice-flour/`](../../data/battery/20260804T204316Z_brown-rice-flour) |

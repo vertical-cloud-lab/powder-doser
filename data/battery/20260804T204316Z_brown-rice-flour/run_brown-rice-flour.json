@@ -1754,8 +1754,8 @@
   "batch": "food-safe-2026-08",
   "qc": {
     "valid_for_cross_powder_comparison": false,
-    "verdict": "suspect-no-feed",
-    "reason": "Rotation conveyed essentially zero mass at every tilt. Total mass moved across the whole battery was ~5 mg over 64 measured trials plus ~14 auger revolutions in block G. A follow-up bench diagnostic run immediately after (20 continuous auger revolutions at tilt 90 deg, 60 RPM) delivered exactly 0.0000 g, while 30 solenoid taps at the same tilt delivered 5.1 mg (~0.17 mg/tap). Rotation contributing nothing while tapping shakes out fines is a no-feed signature (outlet capped/blocked, auger not coupled to the drive, or no powder in the delivery flights) rather than powder cohesion -- manual tests in issue #116 showed brown rice flour does move under tapping.",
+    "verdict": "no-conveyance-auger-suspect",
+    "reason": "Rotation conveyed essentially zero mass at every tilt (total ~5 mg over 64 trials). Outlet tape and coupler slip are both ruled out by operator video and bench observation; an off-rig hand test of the same flour delivered 0.0019 g over 20 rotations, reproducing the result with no rig involved. The measurement is sound; the open question is powder-vs-auger-print, so it stays out of the cross-powder comparison pending a re-test in a fresh auger.",
     "diagnostic": {
       "tilt_deg": 90.0,
       "rotation_rpm": 60,
@@ -1773,6 +1773,59 @@
     ],
     "known_unavailable": "DRV2605L vibration driver reports [Errno 5] EIO; block F self-skipped",
     "next_action": "bench check: outlet cap removed? auger seated in the drive coupler? powder reaching the delivery end? then re-run the battery",
-    "assessed_utc": "2026-08-04T20:56:04.704288+00:00"
-  }
+    "assessed_utc": "2026-08-04T20:56:04.704288+00:00",
+    "last_amended_utc": "2026-08-05T14:59:25.392985+00:00"
+  },
+  "amendments": [
+    {
+      "amended_utc": "2026-08-05T14:59:25.392985+00:00",
+      "author": "swcharles",
+      "summary": "Operator video confirms the delivery-end tape was OFF for this run, and the auger tube rotates with the coupler; the original suspect-no-feed (taped outlet) attribution is withdrawn.",
+      "detail": "The flat-zero result stands as measured, but its cause is not a capped outlet or a slipping coupler. An off-rig hand test on 2026-08-05 (20 rotations, balance zeroed) delivered 0.0019 g of the same flour -- 0.095 mg/rev with no rig in the loop -- which reproduces the rig's near-zero conveyance. What remains unresolved is whether the cause is the powder itself or this specific auger print; the operator will re-test the same flour in a newly printed auger before any cross-powder number is published.",
+      "evidence": {
+        "operator": "swcharles",
+        "reported_in": "https://github.com/vertical-cloud-lab/powder-doser/issues/116",
+        "delivery_end_tape": {
+          "state": "removed",
+          "source": "bench camera video of the run reviewed by the operator",
+          "supersedes": "the original assessment, which attributed the flat-zero result to a capped/taped outlet"
+        },
+        "auger_coupler": {
+          "state": "auger tube confirmed rotating with the drive coupler in all trials",
+          "source": "operator observation at the bench",
+          "supersedes": "the open coupler-slip hypothesis raised in the re-run notes"
+        },
+        "operator_hand_test": {
+          "date_utc": "2026-08-05",
+          "powder": "brown rice flour",
+          "method": "auger removed from the rig, balance zeroed, 20 full rotations turned by hand over the dish",
+          "rotations": 20,
+          "delivered_g": 0.0019,
+          "mg_per_rev": 0.095,
+          "interpretation": "off-rig control with no coupler, no cap and no drive train; the same near-zero conveyance the rig measured"
+        },
+        "reference_mg_per_rev_at_90deg": {
+          "white-rice-flour": 37.15,
+          "sodium-alginate": 3.52,
+          "brown-rice-flour-rig": 0.03,
+          "brown-rice-flour-hand": 0.095
+        },
+        "remaining_open_question": "whether the near-zero conveyance is the powder (cohesion/clumping) or this particular auger print; operator will reload the same flour into a freshly printed auger and re-run"
+      },
+      "qc_change": {
+        "verdict": {
+          "from": "suspect-no-feed",
+          "to": "no-conveyance-auger-suspect"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": false
+        },
+        "reason": {
+          "from": "Rotation conveyed essentially zero mass at every tilt. Total mass moved across the whole battery was ~5 mg over 64 measured trials plus ~14 auger revolutions in block G. A follow-up bench diagnostic run immediately after (20 continuous auger revolutions at tilt 90 deg, 60 RPM) delivered exactly 0.0000 g, while 30 solenoid taps at the same tilt delivered 5.1 mg (~0.17 mg/tap). Rotation contributing nothing while tapping shakes out fines is a no-feed signature (outlet capped/blocked, auger not coupled to the drive, or no powder in the delivery flights) rather than powder cohesion -- manual tests in issue #116 showed brown rice flour does move under tapping.",
+          "to": "Rotation conveyed essentially zero mass at every tilt (total ~5 mg over 64 trials). Outlet tape and coupler slip are both ruled out by operator video and bench observation; an off-rig hand test of the same flour delivered 0.0019 g over 20 rotations, reproducing the result with no rig involved. The measurement is sound; the open question is powder-vs-auger-print, so it stays out of the cross-powder comparison pending a re-test in a fresh auger."
+        }
+      }
+    }
+  ]
 }

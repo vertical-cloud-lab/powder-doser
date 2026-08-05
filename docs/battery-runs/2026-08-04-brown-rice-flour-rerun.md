@@ -2,9 +2,17 @@
 
 Third run of the uniform powder test battery (issue #116), and the second
 attempt at brown rice flour. The [first attempt](2026-08-04-brown-rice-flour.md)
-was condemned because the delivery end was taped, which is indistinguishable
-from cohesion on the balance. @swcharles reloaded the auger and confirmed the
-tape was off, reporting visible clumping in the powder.
+was condemned because the delivery end was believed to be taped, which is
+indistinguishable from cohesion on the balance. @swcharles reloaded the auger
+and confirmed the tape was off, reporting visible clumping in the powder.
+
+> **Amended 2026-08-05** — the coupler slip that this document calls "the
+> single unverified link in the chain" has been **ruled out**, and the hand
+> test it asks for has been done: 20 rotations by hand, off the rig, delivered
+> 0.0019 g. The verdict changed from `cohesive-no-flow` to
+> `no-conveyance-auger-suspect` — the measurement is sound, but powder-vs-
+> auger-print is unresolved pending a re-test in a fresh auger. See
+> [2026-08-05-brown-rice-flour-amendment.md](2026-08-05-brown-rice-flour-amendment.md).
 
 | | |
 |---|---|
