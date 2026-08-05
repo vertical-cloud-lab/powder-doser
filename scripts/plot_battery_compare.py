@@ -120,7 +120,15 @@ def panel_feed_factor(ax, docs):
                   color=TEXT_SECONDARY)
     ax.set_title("A  Block C — feed factor vs tilt (n=6 each, 30 RPM)",
                  fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
-    legend = ax.legend(frameon=False, fontsize=9, loc="upper left")
+    # Headroom above the tallest bar so the legend never lands on a bar
+    # label -- calcium lactate's 47.3 mg bar at tilt 0 deg sat under an
+    # "upper left" legend before this.
+    ncol = min(len(docs), 2)
+    rows = -(-len(docs) // ncol)
+    bottom, top = ax.get_ylim()
+    ax.set_ylim(bottom, top * (10.0 ** (0.75 * rows)))
+    legend = ax.legend(frameon=False, fontsize=9, loc="upper left",
+                       ncol=ncol, columnspacing=1.4)
     for text in legend.get_texts():
         text.set_color(TEXT_SECONDARY)
 

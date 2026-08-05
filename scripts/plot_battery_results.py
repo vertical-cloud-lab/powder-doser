@@ -59,6 +59,24 @@ def style(ax):
     ax.set_axisbelow(True)
 
 
+def tilt_headline(rows):
+    """Describe the block C trend, which is not always a rise.
+
+    White rice flour climbs ~10x from tilt 0 to 90 deg, sodium alginate
+    saturates above 45 deg, and brown rice flour is flat within its own
+    scatter -- so state which of those this run is.
+    """
+    values = [r["mean_g"] * 1000.0 for r in rows]
+    if len(values) < 2 or max(values) <= 0:
+        return "feed factor vs tilt"
+    ratio = max(values) / max(min(values), 1e-9)
+    if ratio < 2.0:
+        return "feed factor is flat across tilt"
+    if len(values) >= 3 and values[-1] > 0 and values[-2] / values[-1] > 0.75:
+        return "feed factor rises with tilt, saturating above 45°"
+    return "feed factor rises with tilt"
+
+
 def panel_rotation(ax, doc):
     """Block C: mg per revolution vs tilt."""
     rows = summary_rows(doc, "C")
@@ -83,9 +101,9 @@ def panel_rotation(ax, doc):
     ax.set_ylabel("mass per 360° revolution (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
     ax.set_ylim(0, max(values) * 1.45 if values else 1)
-    ax.set_title("A  Block C — feed factor rises with tilt (n=6 each, "
-                 "30 RPM)", fontsize=10.5, color=TEXT_PRIMARY, loc="left",
-                 pad=10)
+    ax.set_title("A  Block C — {} (n=6 each, 30 RPM)".format(
+                     tilt_headline(rows)),
+                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
 
 
 def panel_speed(ax, doc):
@@ -121,6 +139,44 @@ def panel_speed(ax, doc):
         text.set_color(TEXT_SECONDARY)
 
 
+def tap_headline(taps):
+    """Describe what tapping did, rather than assuming it did nothing.
+
+    Every powder through sodium alginate moved <0.3 mg per tap, but
+    calcium lactate moves ~20 mg, so the panel title has to follow the
+    data.  The 0.1 mg threshold is the balance's display resolution.
+    """
+    peak = max([r["mean_g"] * 1000.0 for r in taps] or [0.0])
+    if peak < 1.0:
+        return "tapping contributes almost nothing"
+    return "tapping moves up to {:.0f} mg per tap".format(peak)
+
+
+def dose_headline(doses):
+    """Describe how the closed-loop doses ended, from the doses.
+
+    A dose can converge, exhaust the fine-phase cycle budget, or stall;
+    when it stalls, the phase it stalled *in* is the useful detail, so
+    read it off the last entry of ``phase_cycles``.
+    """
+    if not doses:
+        return "no closed-loop doses"
+    statuses = {d["status"] for d in doses}
+    if statuses == {"ok"}:
+        return "three-phase doses converge within tolerance"
+    if statuses == {"cycle-budget"}:
+        return "three-phase doses run out of fine-phase budget"
+    if statuses == {"stalled"}:
+        phases = {d.get("phase_cycles", "").split(";")[-1].split(":")[0]
+                  for d in doses}
+        if len(phases) == 1:
+            phase = phases.pop()
+            if phase:
+                return "three-phase doses stall in the {} phase".format(phase)
+        return "three-phase doses stall short of the target"
+    return "three-phase doses vs the target"
+
+
 def panel_tap(ax, doc):
     """Block E: tap quantum against the re-feed rotation, per tilt."""
     taps = summary_rows(doc, "E", "tap")
@@ -146,9 +202,8 @@ def panel_tap(ax, doc):
     ax.set_xlabel("tube tilt", fontsize=9.5, color=TEXT_SECONDARY)
     ax.set_ylabel("mass per action (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
-    ax.set_title("C  Block E — tapping contributes almost nothing "
-                 "(n=8 each)", fontsize=10.5, color=TEXT_PRIMARY,
-                 loc="left", pad=10)
+    ax.set_title("C  Block E — {} (n=8 each)".format(tap_headline(taps)),
+                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
     legend = ax.legend(frameon=False, fontsize=9, loc="upper left")
     for text in legend.get_texts():
         text.set_color(TEXT_SECONDARY)
@@ -179,9 +234,8 @@ def panel_dose(ax, doc):
     ax.set_ylabel("delivered mass (g)", fontsize=9.5,
                   color=TEXT_SECONDARY)
     ax.set_ylim(0, max(values + [target]) * 1.2)
-    ax.set_title("D  Block G — three-phase doses run out of fine-phase "
-                 "budget", fontsize=10.5, color=TEXT_PRIMARY, loc="left",
-                 pad=10)
+    ax.set_title("D  Block G — {}".format(dose_headline(doses)),
+                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
 
 
 def main(path, out_path):

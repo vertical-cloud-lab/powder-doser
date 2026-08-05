@@ -67,6 +67,14 @@ that converges early takes less. Nothing else in the battery runs longer
 than ~3 minutes, so **any wait beyond ~10 minutes is block G** unless the
 run has genuinely died.
 
+Block G is also the only block whose duration depends strongly on the
+powder, so the whole-run estimate follows it. The 2026-08-05 calcium
+lactate run finished in **19 min 22 s** because each dose tripped the
+stall detector in ~4 min instead of grinding out the full fine-phase
+budget; a powder that conveys nothing at all (brown rice flour) stalls
+in seconds and finishes the battery in ~7 min. Plan for ~50 min, but do
+not read an early finish as a crash — check for `RUN,END,ok`.
+
 The capture script prints the run start timestamp up front, prefixes every
 device line with the UTC clock and elapsed time, and finishes with a
 per-block timeline; the same timeline is stored in the run document as
