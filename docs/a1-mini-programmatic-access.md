@@ -571,6 +571,61 @@ listed here so nobody re-debugs them from a stale copy:
       explicitly (probing the signature first, since these kwargs
       have moved between releases).
 
+16. **`gcode_state` is LATCHED too — a `FAILED` right after the start
+    command belongs to the PREVIOUS job (2026-08-05).** Field-reported
+    symptom: the script sends the file fine but then "doesn't always
+    latch on and report back on progress", printing
+
+    ```
+    start_print sent; watching gcode_state ...
+    gcode_state: FAILED
+    ```
+
+    …roughly a second after publishing, while the print itself carried
+    on at the printer. The tell is the *timing*: a real rejection
+    cannot be decided that fast, and `FAILED` was the very first state
+    printed — there was no `IDLE`/`PREPARE` before it.
+
+    Cause: the printer's status dict is sticky. Exactly like
+    `print_error` (field note 4), `gcode_state` keeps reporting the
+    **last job's outcome** until a new job overwrites it, and the
+    `pushall` snapshot re-delivers it to every fresh subscriber.
+    `bambulabs_api` compounds this — `get_state()` reads a cached dict
+    that incremental MQTT reports merge into, and those reports often
+    omit `gcode_state`, so the stale value can be served for several
+    seconds after the command. The scripts already ignored a latched
+    `FINISH` and a latched `print_error`; nothing ignored a latched
+    `FAILED`.
+
+    That asymmetry is also why it looked AMS-related. Nothing in the
+    AMS path is special — but an AMS job is the one more likely to have
+    *ended* in `FAILED` (tray mismatch, load failure, a cancel), and
+    that is what arms the latch. Once armed it is self-perpetuating:
+    every subsequent run in the session reads `FAILED` on its first
+    poll and quits, so the latch never gets overwritten. Jobs that had
+    previously finished cleanly left `FINISH` latched instead — already
+    guarded — so they looked fine.
+
+    Fix (all four send scripts): a terminal `FAILED`/`OFFLINE` counts
+    only once `gcode_state` has actually **moved** off whatever the
+    printer was already reporting when the command was published. A
+    baseline sampled as `UNKNOWN`, or missing from the pre-publish
+    `pushall` answer, adopts the first real value instead of reading it
+    as a transition. If the state never moves at all, the timeout now
+    says the *command* was ignored — check the touchscreen for an
+    undismissed error dialog — rather than blaming the job. The
+    `bambulabs_api` path additionally requests a fresh status snapshot
+    immediately after publishing, to shrink the stale window rather
+    than waiting out the library's 60 s `pushall_timeout`.
+
+    What this deliberately gives up: an *instant* rejection now
+    surfaces as a timeout rather than `FAILED`. Little is lost, because
+    a genuine rejection also sets a **new `print_error`**, which is
+    still caught within a poll and decoded to hex. Regression-tested in
+    [`scripts/test_send_print_watch.py`](../scripts/test_send_print_watch.py)
+    (45 checks, no printer needed), including that the pre-fix
+    behaviour reproduces the reported failure.
+
 ## Automatic bed-clear check with the printer's own camera
 
 The A1 mini already has a camera pointed at the plate, and it is

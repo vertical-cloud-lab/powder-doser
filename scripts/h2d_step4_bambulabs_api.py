@@ -19,6 +19,10 @@ every guard the raw-MQTT scripts grew during Thumbelina bringup:
     value (the printer's FTPS TLS shutdown sometimes never completes);
   - ignores print_error codes LATCHED from earlier jobs and fails only
     on a new one, decoded to Bambu's hex form with a hint;
+  - likewise ignores a LATCHED gcode_state: the printer keeps reporting
+    the previous job's FAILED/FINISH until a new job overwrites it, so
+    a verdict only counts once the state has actually moved
+    (2026-08-05);
   - refuses to publish while another job is RUNNING/PREPARE;
   - optionally checks the printer's own camera for a clear plate
     (--camera-check, needs bambu_camera_check.py alongside this file);
@@ -534,6 +538,31 @@ def read_print_error(printer):
     return err if err not in (None, 0, "0") else None
 
 
+def request_status_refresh(printer):
+    """Ask the printer for a full status snapshot right now.
+
+    bambulabs_api reads a dict that MQTT reports merge into, and the
+    incremental reports frequently omit gcode_state - so straight after
+    publishing we may still be reading the previous job's value for
+    several seconds. The library re-requests a snapshot on its own only
+    every `pushall_timeout` (60 s by default). Asking once, immediately,
+    shrinks that stale window; best-effort, since nothing here should
+    fail because a private helper moved between releases."""
+    for owner in (getattr(printer, "mqtt_client", None), printer):
+        pushall = getattr(owner, "pushall", None)
+        if callable(pushall):
+            try:
+                pushall()
+                # Let the library's own throttle re-fire on the next read
+                # rather than sitting on the value we just superseded.
+                if hasattr(owner, "_last_update"):
+                    owner._last_update = 0
+                return True
+            except Exception:
+                return False
+    return False
+
+
 def load_camera_module():
     """Import bambu_camera_check.py from this script's own directory.
 
@@ -651,17 +680,34 @@ def _progress_line(printer):
     return ", ".join(bits)
 
 
-def watch(printer, watch_seconds, wait_done, baseline_errors):
+def watch(printer, watch_seconds, wait_done, baseline_errors,
+          baseline_state=None):
     """Follow gcode_state to RUNNING, then (unless --no-wait) stay
     attached until the printer reports FINISH.
 
-    FINISH only counts once RUNNING has been seen: an idle Bambu keeps
-    re-reporting the PREVIOUS job's FINISH, which would otherwise fire
-    a false 'print complete' the moment we connect. Likewise a
-    print_error already latched before we published belongs to an
-    earlier job and must not fail this one."""
+    Every verdict here has to survive the same trap: the printer's
+    status is STICKY. `gcode_state` and `print_error` keep reporting the
+    last job's values until a new job overwrites them, and the library
+    reads a cached dict that is only refreshed when a report containing
+    that field arrives. So for a short window after our start command we
+    are still reading the PREVIOUS job's outcome.
+
+    Three guards, one per direction:
+      - FINISH only counts once RUNNING has been seen (an idle Bambu
+        re-reports the last job's FINISH to every fresh subscriber);
+      - a print_error latched before we published is history, not a
+        verdict (baseline_errors);
+      - FAILED/OFFLINE only counts once the state has MOVED off what the
+        printer was already reporting before we published
+        (baseline_state). Without this, one failed job poisons every
+        later run in that session: the latch stays FAILED, so the next
+        run reads FAILED on its first poll - about a second after
+        publishing - and quits while the print it just started carries
+        on. Field-reported on Thumbelina 2026-08-05.
+    """
     last = None
     running = False
+    moved = baseline_state is None
     deadline = time.monotonic() + watch_seconds
     last_progress = 0.0
     seen_errors = set(baseline_errors)
@@ -670,6 +716,15 @@ def watch(printer, watch_seconds, wait_done, baseline_errors):
         if state != last:
             print(f"gcode_state: {state}")
             last = state
+        if not moved and state != baseline_state:
+            if baseline_state == "UNKNOWN" and state != "UNKNOWN":
+                # No status had arrived when we sampled the baseline
+                # (ac-dev-lab saw this right after connect()), so the
+                # first real value IS the pre-publish state - adopt it
+                # rather than reading it as a transition.
+                baseline_state = state
+            else:
+                moved = True
 
         err = read_print_error(printer)
         if err is not None and err not in seen_errors:
@@ -690,7 +745,7 @@ def watch(printer, watch_seconds, wait_done, baseline_errors):
                 return 0
             print("Watching until it finishes - Ctrl-C detaches WITHOUT "
                   "stopping the print (--no-wait skips this next time) ...")
-        if state in ("FAILED", "OFFLINE"):
+        if state in ("FAILED", "OFFLINE") and moved:
             print("FAILED: see the Step 3 triage list in "
                   "docs/a1-mini-programmatic-access.md.")
             return 2
@@ -707,10 +762,19 @@ def watch(printer, watch_seconds, wait_done, baseline_errors):
                   "FINISH - the job was cancelled or aborted.")
             return 2
         if not running and time.monotonic() > deadline:
-            print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
-                  f"(last state: {last}). A wrong-printer or unparseable "
-                  "file shows up exactly like this - see the Step 3 triage "
-                  "list in docs/a1-mini-programmatic-access.md.")
+            if not moved:
+                print(f"TIMEOUT: the printer never moved off the "
+                      f"{baseline_state} it was ALREADY reporting before "
+                      f"the start command ({watch_seconds}s). That means "
+                      "the command was ignored, not that this job failed: "
+                      "check the touchscreen for an undismissed error "
+                      "dialog from the previous job, then re-run.")
+            else:
+                print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
+                      f"(last state: {last}). A wrong-printer or "
+                      "unparseable file shows up exactly like this - see "
+                      "the Step 3 triage list in "
+                      "docs/a1-mini-programmatic-access.md.")
             return 3
         if running and time.monotonic() - last_progress > 60:
             last_progress = time.monotonic()
@@ -829,12 +893,19 @@ def main():
     printer.connect()
     time.sleep(2)  # give the MQTT client a moment to receive first status
     try:
-        state = str(printer.get_state())
-        print(f"Printer state before print: {state}")
-        if state in ("RUNNING", "PREPARE") and not args.force:
+        baseline_state = str(printer.get_state())
+        print(f"Printer state before print: {baseline_state}")
+        if baseline_state in ("RUNNING", "PREPARE") and not args.force:
             print("ABORT: the printer is already printing - not sending "
                   "another job. Pass --force to override.")
             return 4
+        if baseline_state in ("FAILED", "OFFLINE"):
+            print(f"NOTE: gcode_state {baseline_state} is LATCHED from an "
+                  "EARLIER job - the printer reports the last outcome "
+                  "until a new job overwrites it. Ignoring it for this "
+                  "run, and only a FAILED that appears AFTER the state "
+                  "moves will count. Dismiss any error dialog on the "
+                  "touchscreen so the next job is not refused.")
 
         # Snapshot any error the printer has LATCHED from an earlier job:
         # the status carries the last error until it is cleared, and it
@@ -889,8 +960,10 @@ def main():
 
         call_start_print(printer, remote_name, args.plate, use_ams, ams_mapping)
         print("start_print sent; watching gcode_state ...")
+        request_status_refresh(printer)
         try:
-            return watch(printer, args.watch, args.wait_done, baseline_errors)
+            return watch(printer, args.watch, args.wait_done, baseline_errors,
+                         baseline_state)
         except KeyboardInterrupt:
             print("\nDetached; the print carries on at the printer. This "
                   "script only observes and cannot stop it.")

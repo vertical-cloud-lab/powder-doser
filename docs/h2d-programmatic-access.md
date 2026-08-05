@@ -412,6 +412,17 @@ common causes — in roughly the order I'd check them — are:
    subscriber. The checked-in scripts now separate pre-existing codes
    from new ones (and decode them to the hex `AAAA-BBBB` form) —
    trust only an error that first appears *after* the start command.
+5. **`gcode_state` is latched the same way.** A `FAILED` printed within
+   a second or two of the start command — with no `IDLE`/`PREPARE`
+   before it — is the *previous* job's outcome, not a verdict on this
+   one, and a script that quits there abandons a print that is
+   actually starting. The checked-in scripts now require the state to
+   **move** off its pre-publish value before treating `FAILED` as
+   terminal; if it never moves, the timeout message says the command
+   was ignored (usually an undismissed error dialog on the
+   touchscreen). Field-diagnosed on the A1 mini, 2026-08-05 — see
+   [field note 16](a1-mini-programmatic-access.md#field-notes-from-thumbelina-bringup-2026-07)
+   for the full mechanism.
 
 ### Step 4 — Wrap mode B in code
 

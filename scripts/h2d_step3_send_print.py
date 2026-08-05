@@ -375,6 +375,12 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
     finished = threading.Event()
     failed = threading.Event()
     armed = threading.Event()    # set once OUR start command is published
+    # gcode_state the printer was ALREADY reporting when we published.
+    # The status is sticky: the last job's FAILED/FINISH keeps being
+    # reported (and re-delivered to every fresh subscriber in the pushall
+    # snapshot) until a new job overwrites it, so a terminal state is only
+    # a verdict on OUR job once the state has moved off this baseline.
+    baseline = {"state": None, "moved": False}
     baseline_errors = set()      # nonzero print_error codes seen pre-publish
     new_errors = []              # codes that first appeared after publish
     progress = {}                # latest mc_percent / remaining / layer info
@@ -397,8 +403,28 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
                 # pushall snapshot re-delivers that before our job starts.
                 if state == "FINISH" and running.is_set():
                     finished.set()
+                if baseline["state"] is None:
+                    # The pre-publish pushall answer carried no
+                    # gcode_state, so the first report we see after
+                    # publishing IS the pre-publish state - adopt it as
+                    # the baseline rather than reading it as a transition.
+                    baseline["state"] = state
+                elif state != baseline["state"]:
+                    baseline["moved"] = True
                 if state in ("FAILED", "OFFLINE"):
-                    failed.set()
+                    if baseline["moved"]:
+                        failed.set()
+                    else:
+                        # Still the value the printer was reporting before
+                        # we published, so it is the PREVIOUS job's
+                        # outcome. A real rejection of THIS job still
+                        # surfaces immediately as a new print_error below,
+                        # and a start command that was ignored outright
+                        # falls out as the timeout.
+                        print(f"NOTE: gcode_state {state} is LATCHED from "
+                              "an earlier job, not a verdict on this one - "
+                              "waiting for the state to actually move. "
+                              "Dismiss any error dialog on the touchscreen.")
         # Progress fields arrive incrementally and in separate messages;
         # remember the latest of each, print a line when the percent moves.
         for key, field in (("rem", "mc_remaining_time"),
@@ -473,6 +499,7 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
                                    ams_mapping)
     print("Publishing print.project_file for "
           f"{remote_url(remote_dir, remote_name)} ...")
+    baseline["state"] = states[-1] if states else None
     armed.set()
     c.publish(request_topic, json.dumps(payload))
 
@@ -520,6 +547,14 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
         print("SUCCESS: printer reached RUNNING. Not waiting for completion "
               "(--no-wait); watch the printer or Bambu Handy instead.")
         return 0
+    if not baseline["moved"] and baseline["state"]:
+        print(f"TIMEOUT: the printer never moved off the "
+              f"{baseline['state']} it was ALREADY reporting before the "
+              f"start command ({watch_seconds}s). That means the command "
+              "was ignored, not that this job failed: check the "
+              "touchscreen for an undismissed error dialog from the "
+              "previous job, then re-run.")
+        return 3
     print(f"TIMEOUT: no RUNNING within {watch_seconds}s "
           f"(states seen: {' -> '.join(states) or 'none'}). "
           "See the Step 3 triage list in docs/h2d-programmatic-access.md.")
