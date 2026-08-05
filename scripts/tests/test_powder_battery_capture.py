@@ -141,8 +141,10 @@ def test_run_document_timeline():
         preflight_json = None
 
     timeline = [{"block": "A", "started_utc": "2026-08-05T14:57:32+00:00",
+                 "started_local": "2026-08-05 08:57:32 MDT",
                  "elapsed_s": 7.5},
                 {"block": "G", "started_utc": "2026-08-05T15:04:07+00:00",
+                 "started_local": "2026-08-05 09:04:07 MDT",
                  "elapsed_s": 402.0}]
     doc = cap.build_run_document(
         {}, [], [], [], [], [], "ok", Args(),
@@ -161,11 +163,58 @@ def test_run_document_timeline():
           bare["elapsed_s"] is None and bare["block_timeline"] == [])
 
 
+def test_lab_local_clock():
+    """The lab reads MDT; UTC stays canonical but must not be the only clock."""
+    stamp = cap.local_stamp()
+    check("local stamp looks like a wall clock",
+          len(stamp) >= 19 and stamp[4] == "-" and stamp[13] == ":", stamp)
+
+    class Args(object):
+        powder_id = "calcium-lactate"
+        powder = "calcium lactate"
+        operator = "swcharles"
+        notes = ""
+        batch = "food-safe-2026-08"
+        qc_valid = True
+        qc_verdict = "ok"
+        preflight_json = None
+        started_local = "2026-08-05 14:00:02 MDT"
+        ended_local = "2026-08-05 14:19:24 MDT"
+
+    doc = cap.build_run_document(
+        {}, [], [], [], [], [], "ok", Args(),
+        "2026-08-05T20:00:02+00:00", "2026-08-05T20:19:24+00:00",
+        elapsed_s=1162.0, timeline=[])
+    check("doc carries lab-local start",
+          doc["started_local"] == "2026-08-05 14:00:02 MDT")
+    check("doc carries lab-local end",
+          doc["ended_local"] == "2026-08-05 14:19:24 MDT")
+    check("doc names the lab timezone", bool(doc["lab_timezone"]))
+    # UTC must survive untouched -- it keys the run directory, the stream
+    # anchors and the MongoDB documents.
+    check("utc is unchanged",
+          doc["started_utc"] == "2026-08-05T20:00:02+00:00")
+    check("schema version bumped", doc["schema_version"] == 3)
+
+    # A partial capture that never reached the end still has to build a
+    # document; the local stamps are simply absent rather than fatal.
+    class Bare(Args):
+        started_local = None
+        ended_local = None
+
+    partial = cap.build_run_document(
+        {}, [], [], [], [], [], "capture-interrupted", Bare(),
+        "2026-08-05T20:00:02+00:00", "2026-08-05T20:05:00+00:00")
+    check("missing local stamps are tolerated",
+          partial["started_local"] is None and partial["ended_local"] is None)
+
+
 def main():
     for test in (test_parse_trial, test_parse_poll, test_parse_dose,
                  test_parse_other, test_normalize_powder_id,
                  test_summarize, test_dose_summary, test_block_marker,
-                 test_format_elapsed, test_run_document_timeline):
+                 test_format_elapsed, test_run_document_timeline,
+                 test_lab_local_clock):
         print("--- {}".format(test.__name__))
         test()
     print()

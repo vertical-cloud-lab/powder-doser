@@ -64,11 +64,26 @@ OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS
 OUT_POLL_FIELDS = ["powder_id"] + POLL_FIELDS
 OUT_DOSE_FIELDS = ["powder_id"] + DOSE_FIELDS
 OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
-TIMELINE_FIELDS = ["block", "started_utc", "elapsed_s"]
+TIMELINE_FIELDS = ["block", "started_utc", "started_local", "elapsed_s"]
 OUT_TIMELINE_FIELDS = ["powder_id"] + TIMELINE_FIELDS
-# 2 adds elapsed_s + block_timeline; every earlier field is unchanged,
-# so schema_version 1 documents stay readable by the same consumers.
-SCHEMA_VERSION = 2
+# 2 adds elapsed_s + block_timeline; 3 adds the lab-local clock alongside
+# every UTC stamp.  Every earlier field is unchanged and still populated,
+# so schema_version 1 and 2 documents stay readable by the same consumers.
+SCHEMA_VERSION = 3
+
+
+def local_stamp(when=None):
+    """Wall clock in the lab's own timezone, e.g. '2026-08-05 15:12:16 MDT'.
+
+    UTC stays the canonical clock -- it is what the run directories, the
+    stream anchors and MongoDB are keyed on -- but the people reading
+    these runs are in the lab, and cross-referencing a bench observation
+    against a UTC stamp is a needless subtraction every single time.  The
+    bench camera's burned-in overlay is lab-local too, so this is also the
+    clock that matches the video.
+    """
+    when = when or time.localtime()
+    return time.strftime("%Y-%m-%d %H:%M:%S %Z", when)
 
 
 def normalize_powder_id(value):
@@ -265,6 +280,9 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "status": status,
         "started_utc": started_utc,
         "ended_utc": ended_utc,
+        "started_local": getattr(args, "started_local", None),
+        "ended_local": getattr(args, "ended_local", None),
+        "lab_timezone": time.strftime("%Z"),
         "elapsed_s": elapsed_s,
         "block_timeline": timeline or [],
         "powder_id": args.powder_id,
@@ -333,8 +351,9 @@ def capture(args):
     raw_path = os.path.join(
         out_dir, "raw_serial_{}.log".format(args.powder_id))
     started_monotonic = time.monotonic()
+    args.started_local = local_stamp()
     print("[capture] run started {}  (local {})".format(
-        started_utc, time.strftime("%Y-%m-%d %H:%M:%S %Z")))
+        started_utc, args.started_local))
     print("[capture] a full battery takes ~50 min; blocks A-F are the "
           "first ~7 min and block G (3 closed-loop doses) is the rest")
     print("[capture] writing to {}".format(out_dir))
@@ -370,6 +389,7 @@ def capture(args):
                         "block": block,
                         "started_utc": datetime.datetime.now(
                             datetime.timezone.utc).isoformat(),
+                        "started_local": local_stamp(),
                         "elapsed_s": round(elapsed, 1),
                     })
                 parsed = parse_line(line)
@@ -397,6 +417,7 @@ def capture(args):
         port.close()
 
     ended_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    args.ended_local = local_stamp()
     elapsed_s = round(time.monotonic() - started_monotonic, 1)
     host_summary = summarize(trials)
     doc = build_run_document(meta, trials, polls, doses,
@@ -407,7 +428,9 @@ def capture(args):
     write_outputs(out_dir, args.powder_id, trials, polls, doses,
                   host_summary, doc)
     print_summary(host_summary, doses)
-    print_timeline(started_utc, ended_utc, elapsed_s, timeline)
+    print_timeline(started_utc, ended_utc, elapsed_s, timeline,
+                   started_local=args.started_local,
+                   ended_local=args.ended_local)
     if args.upload:
         upload(doc, args)
     return doc
@@ -437,30 +460,37 @@ def write_outputs(out_dir, powder_id, trials, polls, doses,
           .format(powder_id))
 
 
-def print_timeline(started_utc, ended_utc, elapsed_s, timeline):
+def print_timeline(started_utc, ended_utc, elapsed_s, timeline,
+                   started_local=None, ended_local=None):
     """Wall-clock account of the run: when it started, where time went.
 
     Printed last so it is the final thing in the tmux scrollback, and
     so a run that looks slow can be checked against the block it was
     actually in rather than the last block anyone happened to see.
+
+    Both clocks are shown: UTC because it keys the run directory and the
+    database, lab-local because that is what the people at the bench (and
+    the camera overlay) are reading.
     """
-    print("[capture] started {}".format(started_utc))
-    print("[capture] ended   {}".format(ended_utc))
+    print("[capture] started {}{}".format(
+        started_utc, "  ({})".format(started_local) if started_local else ""))
+    print("[capture] ended   {}{}".format(
+        ended_utc, "  ({})".format(ended_local) if ended_local else ""))
     if elapsed_s is not None:
         print("[capture] elapsed {} ({:.1f} s)".format(
             format_elapsed(elapsed_s), elapsed_s))
     if not timeline:
         return
-    print("{:>6} {:>10} {:>10}  {}".format(
-        "block", "at", "duration", "started_utc"))
+    print("{:>6} {:>10} {:>10}  {:<26} {}".format(
+        "block", "at", "duration", "started_utc", "started_local"))
     for i, row in enumerate(timeline):
         end = (timeline[i + 1]["elapsed_s"] if i + 1 < len(timeline)
                else elapsed_s)
         duration = (format_elapsed(end - row["elapsed_s"])
                     if end is not None else "-")
-        print("{:>6} {:>10} {:>10}  {}".format(
+        print("{:>6} {:>10} {:>10}  {:<26} {}".format(
             row["block"], format_elapsed(row["elapsed_s"]), duration,
-            row["started_utc"]))
+            row["started_utc"], row.get("started_local", "")))
 
 
 def print_summary(host_summary, doses):

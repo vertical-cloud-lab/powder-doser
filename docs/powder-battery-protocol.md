@@ -128,8 +128,12 @@ An unattended run cannot see the rig, and every item below produces the
 same "flat zero" data that a genuinely cohesive powder does. Whoever
 loads the powder confirms these **before** commenting:
 
-1. **Storage cap removed from the delivery end.** These augers are
-   printed with threaded caps; a capped outlet delivers nothing.
+1. **Storage cap _and tape_ removed from the delivery end.** These augers
+   are printed with threaded caps and are taped shut for storage; either
+   one delivers nothing. Both ends get sealed, so check the end that
+   points at the beaker, not just the end you filled. This is the single
+   most common cause of a wasted run — it has now cost three attempts
+   (2026-08-04 brown rice flour, 2026-08-05 carboxymethyl cellulose).
 2. **Auger seated in the drive coupler.** The firmware verifies the
    stepper turned, not that the tube turned with it.
 3. **Powder present in the delivery flights**, not only at the rear.
@@ -173,6 +177,41 @@ mpremote connect /dev/ttyACM0 exec "import battery_feed_diagnostic as d; d.run()
 
 Both modules are covered by simulation tests
 ([`sim/test_battery_preflight.py`](../hardware/test-module/firmware/sim/test_battery_preflight.py)).
+
+### Then look at the rig: `scripts/bench_frame.py`
+
+The two modules above can tell you *that* nothing is being conveyed, but
+not *why* — and the operator is usually not at the bench when a remote run
+starts. The rig is on camera continuously, so **grab a frame before
+reporting a flat-zero pre-flight**:
+
+```bash
+python scripts/bench_frame.py --out /tmp/now.png                 # live edge
+python scripts/bench_frame.py --seconds-ago 4000 --out /tmp/before.png
+```
+
+Pairing the current frame with one from a run that *did* convey is what
+makes it conclusive — same rig, same balance, same geometry, one
+difference. That is how the 2026-08-05 carboxymethyl cellulose attempt was
+diagnosed in three minutes instead of costing a 50-minute battery and a
+contaminated run document
+([notes](battery-runs/2026-08-05-carboxymethyl-cellulose-aborted.md)).
+
+The helper fetches the HLS segment over the Pi's residential connection
+(YouTube bot-blocks the CI runner) and decodes it locally, so it needs
+`ffmpeg` on the machine running it — `pip install imageio-ffmpeg`, or
+`--ffmpeg /path/to/ffmpeg`. Nothing is installed permanently on the Pi
+beyond `yt-dlp` in `/tmp`, and transfers are rate-capped.
+
+Read the **burned-in overlay clock** in the frame, not the YouTube
+watch-page timestamp — the overlay is the capture clock (lab-local MDT)
+and matches the balance readings; the watch-page value is several seconds
+off (see [stream-timestamps.md](battery-runs/stream-timestamps.md)).
+
+Total silence is itself diagnostic. A powder this rig genuinely cannot
+convey still lets fines through under tapping — brown rice flour gave
+5.1 mg from 30 taps. **Exactly 0.0000 g across tens of revolutions *and*
+tens of taps means the path is closed, not that the powder is cohesive.**
 
 ### Recording the QC decision
 
