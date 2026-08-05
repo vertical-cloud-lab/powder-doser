@@ -215,3 +215,9 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# Battery run artifacts (issue #116): the raw serial logs ARE the primary
+# record of a run and are committed alongside the CSVs, so they have to
+# survive the blanket *.log rule above.  Without this they only get in via
+# `git add -f`, which is easy to forget and silently loses the log.
+!data/battery/**/*.log
