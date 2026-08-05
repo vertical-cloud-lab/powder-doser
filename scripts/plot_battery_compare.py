@@ -119,15 +119,24 @@ def panel_dose(ax, docs):
     position = 0
     for i, doc in enumerate(docs):
         start = position
+        statuses = []
         for dose in doc["doses"]:
             xs.append(position)
             values.append(dose["dispensed_g"])
             colors.append(SERIES[i % len(SERIES)])
-            labels.append("{}\n{}".format(dose["n"] + 1, dose["status"]))
+            # Just the dose number per tick -- the exit status goes under
+            # the powder name, since printing it three times per powder
+            # collides with the neighbouring group.
+            labels.append(str(dose["n"] + 1))
+            statuses.append(dose["status"])
             target = dose["target_g"]
             position += 1
         if position > start:
-            groups.append(((start + position - 1) / 2.0, label_of(doc),
+            unique = sorted(set(statuses))
+            caption = "{}\n{}".format(
+                label_of(doc),
+                unique[0] if len(unique) == 1 else "/".join(unique))
+            groups.append(((start + position - 1) / 2.0, caption,
                            SERIES[i % len(SERIES)]))
         position += 0.6
 

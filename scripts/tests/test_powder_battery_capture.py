@@ -108,10 +108,64 @@ def test_dose_summary():
     check("empty dose summary", cap.dose_summary([]) is None)
 
 
+def test_block_marker():
+    check("block marker", cap.block_marker("[battery] block C") == "C")
+    check("block marker trailing text",
+          cap.block_marker("[battery] block G (three-phase doses)") == "G")
+    check("block marker ignores skip note",
+          cap.block_marker(
+              "[battery] vibration driver unavailable -- skipping "
+              "block F") is None)
+    check("block marker ignores csv",
+          cap.block_marker("CSV,C,45.0,rotation,2,360.0,30,0.1,0.13,"
+                           "0.03,,182345") is None)
+
+
+def test_format_elapsed():
+    check("format elapsed under a minute", cap.format_elapsed(7.5) == "0:00:07")
+    check("format elapsed minutes", cap.format_elapsed(119.4) == "0:01:59")
+    # The sodium-alginate run: 48 min 43 s, nearly all of it block G.
+    check("format elapsed run length", cap.format_elapsed(2923) == "0:48:43")
+    check("format elapsed hours", cap.format_elapsed(3661) == "1:01:01")
+
+
+def test_run_document_timeline():
+    class Args(object):
+        powder_id = "sodium-alginate"
+        powder = "sodium alginate"
+        operator = "swcharles"
+        notes = ""
+        batch = "food-safe-2026-08"
+        qc_valid = True
+        qc_verdict = "ok"
+        preflight_json = None
+
+    timeline = [{"block": "A", "started_utc": "2026-08-05T14:57:32+00:00",
+                 "elapsed_s": 7.5},
+                {"block": "G", "started_utc": "2026-08-05T15:04:07+00:00",
+                 "elapsed_s": 402.0}]
+    doc = cap.build_run_document(
+        {}, [], [], [], [], [], "ok", Args(),
+        "2026-08-05T14:57:25+00:00", "2026-08-05T15:46:08+00:00",
+        elapsed_s=2923.0, timeline=timeline)
+    check("doc carries elapsed", doc["elapsed_s"] == 2923.0)
+    check("doc carries timeline", doc["block_timeline"] == timeline)
+    check("timeline fields match csv header",
+          set(cap.TIMELINE_FIELDS) == set(timeline[0]))
+    # Older calls must keep working -- the run doc is written from a
+    # couple of places and a partial capture has no timeline yet.
+    bare = cap.build_run_document(
+        {}, [], [], [], [], [], "capture-interrupted", Args(),
+        "2026-08-05T14:57:25+00:00", "2026-08-05T15:00:00+00:00")
+    check("timeline optional",
+          bare["elapsed_s"] is None and bare["block_timeline"] == [])
+
+
 def main():
     for test in (test_parse_trial, test_parse_poll, test_parse_dose,
                  test_parse_other, test_normalize_powder_id,
-                 test_summarize, test_dose_summary):
+                 test_summarize, test_dose_summary, test_block_marker,
+                 test_format_elapsed, test_run_document_timeline):
         print("--- {}".format(test.__name__))
         test()
     print()

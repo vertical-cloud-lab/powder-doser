@@ -46,6 +46,40 @@ from the tuned salt demo that landed −0.7 mg):
 Budget per powder: roughly **4–10 g** (powder-dependent — free-flowing
 powders dispense more in blocks C/D) and **~40–50 min** wall clock.
 
+### How long each block should take
+
+Measured on the 2026-08-05 sodium alginate run (48 min 43 s end to end).
+Almost the entire battery is block G, so a run that *looks* stalled is
+usually a dose phase behaving exactly as designed.
+
+| Block | Typical duration | Notes |
+|---|---|---|
+| A baseline | ~15 s | |
+| B hold | ~40 s | fixed: 3 tilts × 15 s |
+| C rotation | ~2 min | 18 revolutions + settling |
+| D speed | ~10 s | |
+| E tap | ~2.5 min | 32 measured actions |
+| F vib | ~2.5 min | currently skipped in seconds |
+| **G dose** | **~14 min per dose** | ~42 min for the default 3 |
+
+A dose that exhausts the 200-cycle fine-phase budget takes ~14 min; one
+that converges early takes less. Nothing else in the battery runs longer
+than ~3 minutes, so **any wait beyond ~10 minutes is block G** unless the
+run has genuinely died.
+
+The capture script prints the run start timestamp up front, prefixes every
+device line with the UTC clock and elapsed time, and finishes with a
+per-block timeline; the same timeline is stored in the run document as
+`block_timeline` and in `timeline_<powder-id>.csv`. To check on a live run
+without touching it:
+
+```bash
+tmux capture-pane -p -t battery | tail -5
+```
+
+The `[HH:MM:SS +H:MM:SS]` prefix on the last line gives the elapsed time
+directly. Judge progress from that, not from the last block anyone saw.
+
 **Low flow is data here, not an error.** A cohesive powder moving
 nothing at tilt 0° is exactly the behaviour the battery exists to
 record, so low-flow trials are kept and flagged `lowflow` in the CSV.
@@ -181,12 +215,18 @@ Per run, under `data/battery/<UTC-stamp>_<powder-id>/`:
 | `polls_<id>.csv` | streamed scale polls from Block D (mass-vs-time traces) |
 | `doses_<id>.csv` | one row per Block G dose: target, dispensed, error, status, elapsed, revolutions, taps, per-phase cycles |
 | `summary_<id>.csv` | per-(block, tilt, phase) n/mean/std/sem/min/max/RSD |
+| `timeline_<id>.csv` | host wall clock at each block start: `powder_id, block, started_utc, elapsed_s` |
 | `run_<id>.json` | the complete self-contained run document |
+
+The run document carries `started_utc`, `ended_utc`, `elapsed_s` and
+`block_timeline` (schema version 2; version 1 documents predate the last
+two and are otherwise identical).
 
 Plots: `scripts/plot_battery_run.py` is the *did it feed at all?* diagnostic
 (used on the no-feed brown-rice-flour run); `scripts/plot_battery_results.py`
 is the four-panel per-powder result figure (blocks C, D, E, G) for runs that
-did feed.
+did feed; `scripts/plot_battery_compare.py out.png run_a.json run_b.json ...`
+puts several powders side by side.
 
 With `--upload`, `run_<id>.json` is inserted into MongoDB Atlas as one
 document in **`powder_doser.battery_runs`** — the same database as the

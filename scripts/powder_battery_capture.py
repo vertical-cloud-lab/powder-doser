@@ -64,7 +64,11 @@ OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS
 OUT_POLL_FIELDS = ["powder_id"] + POLL_FIELDS
 OUT_DOSE_FIELDS = ["powder_id"] + DOSE_FIELDS
 OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
-SCHEMA_VERSION = 1
+TIMELINE_FIELDS = ["block", "started_utc", "elapsed_s"]
+OUT_TIMELINE_FIELDS = ["powder_id"] + TIMELINE_FIELDS
+# 2 adds elapsed_s + block_timeline; every earlier field is unchanged,
+# so schema_version 1 documents stay readable by the same consumers.
+SCHEMA_VERSION = 2
 
 
 def normalize_powder_id(value):
@@ -152,6 +156,30 @@ def parse_line(line):
     return None
 
 
+def block_marker(line):
+    """Block letter for a ``[battery] block X`` line, else None.
+
+    The device announces each block in plain text rather than as a CSV
+    record, so this is how the host learns where a run has got to.  The
+    battery takes ~50 min and most of it is block G, so knowing which
+    block is live -- and for how long -- is the difference between "this
+    is stuck" and "this is the dose phase behaving normally".
+    """
+    line = line.strip()
+    prefix = "[battery] block "
+    if not line.startswith(prefix):
+        return None
+    rest = line[len(prefix):].strip()
+    return rest.split()[0] if rest else None
+
+
+def format_elapsed(seconds):
+    """Seconds -> ``H:MM:SS`` for console and timeline output."""
+    seconds = int(seconds)
+    return "{}:{:02d}:{:02d}".format(
+        seconds // 3600, (seconds % 3600) // 60, seconds % 60)
+
+
 def sample_stats(values):
     """(n, mean, std, sem, min, max); std/sem None for n < 2."""
     n = len(values)
@@ -209,7 +237,7 @@ def dose_summary(doses):
 
 def build_run_document(meta, trials, polls, doses, device_summaries,
                        host_summary, status, args, started_utc,
-                       ended_utc):
+                       ended_utc, elapsed_s=None, timeline=None):
     """One self-contained document per run (issue #126 shape)."""
     try:
         git_commit = subprocess.check_output(
@@ -237,6 +265,8 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "status": status,
         "started_utc": started_utc,
         "ended_utc": ended_utc,
+        "elapsed_s": elapsed_s,
+        "block_timeline": timeline or [],
         "powder_id": args.powder_id,
         "powder": args.powder,
         "batch": getattr(args, "batch", None),
@@ -298,9 +328,15 @@ def capture(args):
         relay.start()
 
     meta, trials, polls, doses, device_summaries = {}, [], [], [], []
+    timeline = []
     status = "incomplete"
     raw_path = os.path.join(
         out_dir, "raw_serial_{}.log".format(args.powder_id))
+    started_monotonic = time.monotonic()
+    print("[capture] run started {}  (local {})".format(
+        started_utc, time.strftime("%Y-%m-%d %H:%M:%S %Z")))
+    print("[capture] a full battery takes ~50 min; blocks A-F are the "
+          "first ~7 min and block G (3 closed-loop doses) is the rest")
     print("[capture] writing to {}".format(out_dir))
     if args.unattended:
         print("[capture] UNATTENDED run -- prompts auto-continue on the "
@@ -320,9 +356,22 @@ def capture(args):
                 line = port.readline().decode(errors="replace")
                 if not line:
                     continue
+                # The raw log stays byte-for-byte what the device sent;
+                # the clock is a console/timeline concern only.
                 raw.write(line)
                 raw.flush()
-                print(line.rstrip())
+                elapsed = time.monotonic() - started_monotonic
+                print("[{} +{}] {}".format(
+                    time.strftime("%H:%M:%S", time.gmtime()),
+                    format_elapsed(elapsed), line.rstrip()))
+                block = block_marker(line)
+                if block is not None:
+                    timeline.append({
+                        "block": block,
+                        "started_utc": datetime.datetime.now(
+                            datetime.timezone.utc).isoformat(),
+                        "elapsed_s": round(elapsed, 1),
+                    })
                 parsed = parse_line(line)
                 if parsed is None:
                     continue
@@ -348,14 +397,17 @@ def capture(args):
         port.close()
 
     ended_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    elapsed_s = round(time.monotonic() - started_monotonic, 1)
     host_summary = summarize(trials)
     doc = build_run_document(meta, trials, polls, doses,
                              device_summaries, host_summary, status,
-                             args, started_utc, ended_utc)
+                             args, started_utc, ended_utc,
+                             elapsed_s=elapsed_s, timeline=timeline)
 
     write_outputs(out_dir, args.powder_id, trials, polls, doses,
                   host_summary, doc)
     print_summary(host_summary, doses)
+    print_timeline(started_utc, ended_utc, elapsed_s, timeline)
     if args.upload:
         upload(doc, args)
     return doc
@@ -376,11 +428,39 @@ def write_outputs(out_dir, powder_id, trials, polls, doses,
     write_csv("polls", OUT_POLL_FIELDS, polls)
     write_csv("doses", OUT_DOSE_FIELDS, doses)
     write_csv("summary", OUT_SUMMARY_FIELDS, host_summary)
+    write_csv("timeline", OUT_TIMELINE_FIELDS, doc.get("block_timeline", []))
     with open(os.path.join(
             out_dir, "run_{}.json".format(powder_id)), "w") as fh:
         json.dump(doc, fh, indent=2)
     print("[capture] wrote trials_{0}.csv, polls_{0}.csv, doses_{0}.csv, "
-          "summary_{0}.csv, run_{0}.json".format(powder_id))
+          "summary_{0}.csv, timeline_{0}.csv, run_{0}.json"
+          .format(powder_id))
+
+
+def print_timeline(started_utc, ended_utc, elapsed_s, timeline):
+    """Wall-clock account of the run: when it started, where time went.
+
+    Printed last so it is the final thing in the tmux scrollback, and
+    so a run that looks slow can be checked against the block it was
+    actually in rather than the last block anyone happened to see.
+    """
+    print("[capture] started {}".format(started_utc))
+    print("[capture] ended   {}".format(ended_utc))
+    if elapsed_s is not None:
+        print("[capture] elapsed {} ({:.1f} s)".format(
+            format_elapsed(elapsed_s), elapsed_s))
+    if not timeline:
+        return
+    print("{:>6} {:>10} {:>10}  {}".format(
+        "block", "at", "duration", "started_utc"))
+    for i, row in enumerate(timeline):
+        end = (timeline[i + 1]["elapsed_s"] if i + 1 < len(timeline)
+               else elapsed_s)
+        duration = (format_elapsed(end - row["elapsed_s"])
+                    if end is not None else "-")
+        print("{:>6} {:>10} {:>10}  {}".format(
+            row["block"], format_elapsed(row["elapsed_s"]), duration,
+            row["started_utc"]))
 
 
 def print_summary(host_summary, doses):
