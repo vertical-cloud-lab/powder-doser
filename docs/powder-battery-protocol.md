@@ -69,11 +69,17 @@ run has genuinely died.
 
 Block G is also the only block whose duration depends strongly on the
 powder, so the whole-run estimate follows it. The 2026-08-05 calcium
-lactate run finished in **19 min 22 s** because each dose tripped the
-stall detector in ~4 min instead of grinding out the full fine-phase
-budget; a powder that conveys nothing at all (brown rice flour) stalls
-in seconds and finishes the battery in ~7 min. Plan for ~50 min, but do
-not read an early finish as a crash — check for `RUN,END,ok`.
+lactate run finished in **19 min 22 s** and the 2026-08-06 xanthan gum
+run in **16 min 12 s**, because each dose tripped the stall detector in
+~3–4 min instead of grinding out the full fine-phase budget; a powder
+that conveys nothing at all (brown rice flour) stalls in seconds and
+finishes the battery in ~7 min. Plan for ~50 min, but do not read an
+early finish as a crash — check for `RUN,END,ok`.
+
+Rule of thumb: the *better* a powder conveys, the *shorter* the run.
+Well-conveying powders reach phase 3 and stall there in minutes; poorly
+conveying ones exhaust the 200-cycle fine budget and take ~14 min per
+dose.
 
 The capture script prints the run start timestamp up front, prefixes every
 device line with the UTC clock and elapsed time, and finishes with a
