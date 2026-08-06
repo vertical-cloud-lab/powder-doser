@@ -73,13 +73,17 @@ lactate run finished in **19 min 22 s** and the 2026-08-06 xanthan gum
 run in **16 min 12 s**, because each dose tripped the stall detector in
 ~3–4 min instead of grinding out the full fine-phase budget; a powder
 that conveys nothing at all (brown rice flour) stalls in seconds and
-finishes the battery in ~7 min. Plan for ~50 min, but do not read an
-early finish as a crash — check for `RUN,END,ok`.
+finishes the battery in ~7 min. The 2026-08-06 salt run took
+**16 min 37 s** for the opposite reason — its doses *converged*, in
+113–265 s. Plan for ~50 min, but do not read an early finish as a crash
+— check for `RUN,END,ok`.
 
 Rule of thumb: the *better* a powder conveys, the *shorter* the run.
 Well-conveying powders reach phase 3 and stall there in minutes; poorly
 conveying ones exhaust the 200-cycle fine budget and take ~14 min per
-dose.
+dose. A run that finishes fast because block G *succeeded* looks
+identical in duration to one that finished fast because it stalled —
+read `doses_<powder>.csv`, not the clock.
 
 The capture script prints the run start timestamp up front, prefixes every
 device line with the UTC clock and elapsed time, and finishes with a
@@ -334,6 +338,31 @@ flour is intermittent clump releases, and carboxymethyl cellulose at 90°
 decays from 39 mg to 2 mg per revolution behind a 9.3 mg mean. It also
 overlays block D, which runs at tilt 45° right after block C ends at 90°
 and so separates a tilt effect from a depleted hopper.
+
+### The within-run drift check (block C vs block E)
+
+Blocks C and E measure the same quantity — mass per 360° revolution at
+30 RPM — at tilts 0° and 45°, about five minutes apart. That redundancy
+was not designed in, but it is the only check the battery has on whether
+a powder's feed factor is *stable across the run*, so compute the ratio
+before quoting block C as the feed factor:
+
+```
+E re-feed mean (block E, tilt t) / rotation mean (block C, tilt t)
+```
+
+Six of the seven 2026-08 runs land at **0.74–1.12** — flat, or drifting
+slightly down as the column depletes, which is what the fixed block order
+predicts. Salt at tilt 45° came in at **2.68**, and its block G doses
+drifted with it (errors −4.7 → −3.5 → +8.8 mg across three doses six
+minutes apart, the last an `overshoot`). See
+[the salt run notes](battery-runs/2026-08-06-salt.md).
+
+A ratio far from 1 means the block C mean is not a property of the
+powder, it is a property of the powder *at minute 2 of the run*. Quote it
+as a bound, say so, and consider a repeat run. Ratios computed on values
+at the balance resolution floor (brown rice flour) are meaningless —
+check the magnitudes first.
 
 With `--upload`, `run_<id>.json` is inserted into MongoDB Atlas as one
 document in **`powder_doser.battery_runs`** — the same database as the

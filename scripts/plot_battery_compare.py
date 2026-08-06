@@ -55,6 +55,12 @@ TARGET = "#e34948"
 RESOLUTION_MG = 0.1
 DETECTION_MG = RESOLUTION_MG / 2.0
 
+# Vertical offsets (points) cycled across the doses within one powder so
+# their value labels do not overlap.  The cycle length must not divide the
+# number of doses in a way that puts two adjacent bars on one baseline, so
+# it is a two-element alternation and adjacent entries always differ.
+DOSE_LABEL_DY = (5, 17)
+
 
 def style(ax):
     ax.set_facecolor(SURFACE)
@@ -150,13 +156,13 @@ def panel_feed_factor(ax, docs):
 def panel_dose(ax, docs):
     """Block G: delivered mass per closed-loop 1 g dose, per powder."""
     target = 1.0
-    xs, values, colors, labels = [], [], [], []
+    xs, values, colors, labels, label_dy = [], [], [], [], []
     groups = []
     position = 0
     for i, doc in enumerate(docs):
         start = position
         statuses = []
-        for dose in doc["doses"]:
+        for k, dose in enumerate(doc["doses"]):
             xs.append(position)
             values.append(dose["dispensed_g"])
             colors.append(SERIES[i % len(SERIES)])
@@ -164,6 +170,12 @@ def panel_dose(ax, docs):
             # the powder name, since printing it three times per powder
             # collides with the neighbouring group.
             labels.append(str(dose["n"] + 1))
+            # Three doses of the same powder land within a few mg of each
+            # other, so their "0.995" labels overlap into an unreadable
+            # run of digits (salt, calcium lactate, xanthan gum all did).
+            # Alternate the vertical offset so no two adjacent labels
+            # share a baseline.
+            label_dy.append(DOSE_LABEL_DY[k % len(DOSE_LABEL_DY)])
             statuses.append(dose["status"])
             target = dose["target_g"]
             position += 1
@@ -181,8 +193,8 @@ def panel_dose(ax, docs):
     ax.annotate("target {:.3f} g".format(target), xy=(min(xs, default=0), target),
                 xytext=(0, 6), textcoords="offset points", ha="left",
                 fontsize=8.5, color=TEXT_SECONDARY)
-    for x, value in zip(xs, values):
-        ax.annotate("{:.3f}".format(value), xy=(x, value), xytext=(0, 5),
+    for x, value, dy in zip(xs, values, label_dy):
+        ax.annotate("{:.3f}".format(value), xy=(x, value), xytext=(0, dy),
                     textcoords="offset points", ha="center", fontsize=8.5,
                     color=TEXT_PRIMARY)
     # Repeat-run labels carry a date and get long; stagger alternate
