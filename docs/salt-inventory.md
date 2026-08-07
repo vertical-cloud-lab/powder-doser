@@ -78,6 +78,8 @@ coarse/free-flowing (measured feed factor ~0.17 g/rev @ 25° tilt,
 | 2026-07-31 ~16:50 | **Refilled and weighed** by @williamulbz: tube + salt = **110 g** → 110 − 56.716 = **53.3 g of salt**. This *weighing* replaces the running estimate, which had drifted high (85.7 g estimated vs 53.3 g actual — the 2026-07-29 geometric fill estimate of ≈ 93 g was the optimistic end of its 85–105 g band, and the pre-refill contents were correspondingly lower than booked). | **53.3 g (weighed)** |
 | 2026-07-31 17:03 | Steep-angle safety probe (plate held 5 s at 25–72°, no auger/taps): **0.0 g** — no free-pour at any tilt ([log](../data/tap-characterization/2026-07-31_salt_angles/steep_angle_safety_probe.log)) | ≈ 53.3 g |
 | 2026-07-31 17:05 | Wide-angle single-tap characterization: 24 trials (8 tilts 0–70° × 3 reps), each 1 priming revolution + 10 single taps → **3.634 g** dispensed total ([data](../data/tap-characterization/2026-07-31_salt_angles/)) | ≈ 49.7 g |
+| 2026-08-07 (before 19:30) | **Refilled** by @williamulbz; total tube+salt mass estimated **≈ 120 g** — *not weighable*: it exceeds the scale's 102 g capacity, so this is an estimate, not a weighed anchor → 120 − 56.716 ≈ **63.3 g** (±10 g given the eyeball total) | ≈ 63.3 g (est.) |
+| 2026-08-07 19:30 | Rapid-dispense stop-response characterization: 10 trials (25–70° tilt × 2 reps), 55 rpm + tap-while-rotating to first 0.5 g reading then all-stop → **6.30 g** dispensed total incl. one 25 mg tilt-move release ([data](../data/stop-response/2026-08-07_salt/)) | ≈ 57.0 g (est.) |
 
 At salt's measured ~0.17 g/rev (25° tilt), ~93 g is roughly **90×
 1 g doses** — the tube will not run dry for a long time. Any "hopper
