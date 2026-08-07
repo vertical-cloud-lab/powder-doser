@@ -32,6 +32,11 @@ private repo before any procurement.
 
 ## Handling and storage
 
+Operator safety (PPE, combustible-dust precautions, loading/cleanup
+procedure) is covered in
+[`powder-handling-safety.md`](powder-handling-safety.md); this
+section covers keeping the powder itself in spec.
+
 The fine atomised feedstocks above are reactive and strongly
 hygroscopic:
 
