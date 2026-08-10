@@ -59,3 +59,11 @@ produced by
 artifacts under the same
 [`paper/background/edison_artifacts/`](paper/background/edison_artifacts/)
 directory).
+
+For actually reaching out, a narrowed **12-person shortlist** of the
+powder-properties contacts who can *truly* help characterize powder for the
+dynamic (DEM / cohesive-frictional) models — anchored to the on-device
+characterization sweeps and tap / rapid-dose tests in
+[#131](https://github.com/vertical-cloud-lab/powder-doser/pull/131), each with
+a ready-to-send **template email** — is kept in
+[`paper/background/09-powder-characterization-outreach-emails.md`](paper/background/09-powder-characterization-outreach-emails.md).

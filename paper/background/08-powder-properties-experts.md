@@ -699,6 +699,10 @@ independent of the symposium itself.
 
 ## See also
 
+- [`09-powder-characterization-outreach-emails.md`](09-powder-characterization-outreach-emails.md)
+  — a narrowed 12-person shortlist of the contacts here who can *truly* help
+  characterize powder for the dynamic (DEM) models, anchored to the #131
+  dosing tests, each with a ready-to-send template email.
 - [`07-powder-dispensing-outreach-contacts.md`](07-powder-dispensing-outreach-contacts.md)
   — dispensing-hardware outreach list (this PR).
 - [`06-generative-cad-outreach-contacts.md`](06-generative-cad-outreach-contacts.md)
