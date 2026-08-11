@@ -39,14 +39,17 @@ SURFACE = "#fcfcfb"
 TEXT_PRIMARY = "#0b0b0b"
 TEXT_SECONDARY = "#52514e"
 GRID = "#dcdbd6"
-# Seven slots, because a fifth powder was silently repainted the same
-# blue as the first when this cycled at four.  Validated as an ordered
-# set for the adjacent pairlist a grouped bar chart uses (worst adjacent
-# CVD dE 9.2, normal-vision 18.5 on this surface); aqua and magenta sit
-# under 3:1 contrast, which the direct bar labels cover.  Red is left out
-# on purpose -- it is TARGET below, and a series must not wear it.
+# Eight slots.  Started at four, silently repainted a fifth powder the
+# same blue as the first, then grew to seven; the eighth (brown) is added
+# for the first non-food-safe powder (alsi10mg) so it does not reuse an
+# earlier hue.  Validated as an ordered set for the adjacent pairlist a
+# grouped bar chart uses (worst adjacent CVD dE 9.2, normal-vision 18.5 on
+# this surface); aqua and magenta sit under 3:1 contrast, which the direct
+# bar labels cover.  Red is left out on purpose -- it is TARGET below, and
+# a series must not wear it.  Above eight powders this warns rather than
+# cycling: split into per-batch facets instead of stretching the palette.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0",
-          "#e87ba4", "#008300", "#4a3aa7"]
+          "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b"]
 NOISE = "#9d9c95"
 TARGET = "#e34948"
 
