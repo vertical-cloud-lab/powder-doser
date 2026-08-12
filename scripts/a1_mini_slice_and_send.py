@@ -15,7 +15,11 @@ pipeline as a1_mini_send_print.py (including the watch-until-FINISH
      three flattened A1-mini profile JSONs).
   2. pip install paho-mqtt
   3. python a1_mini_slice_and_send.py            # slice + upload + print
-     python a1_mini_slice_and_send.py --slice-only   # stop after slicing
+     python a1_mini_slice_and_send.py --review   # slice, save the .gcode.3mf,
+                                                 # pause while you inspect it
+                                                 # in Bambu Studio, then send
+     python a1_mini_slice_and_send.py --slice-only --save-sliced  # slice only,
+                                                 # keep the file next to input
 
 RISKS of the headless method (details in the doc's "Risks of headless
 slicing" subsection - read it before unattended use):
@@ -624,6 +628,40 @@ def summarize_and_check(path, force):
             sys.exit("ERROR: " + msg + " Pass --force to send anyway.")
 
 
+# --- filament-load sanity check ----------------------------------------------
+def check_filament_load(path, force):
+    """Refuse a slice whose G-code can never load filament.
+
+    Root cause of the 2026-08-12 Thumbelina AMS ghost print: profiles
+    flattened WITHOUT the template sidecar G-code (fixed the same day in
+    flatten_bambu_profiles.py) produce jobs whose start sequence is
+    fdm_machine_common's generic fallback - no M620/T<n> material-load,
+    no M412 runout detection - so the printer heats the bed, runs every
+    motion, and never extrudes, with no error. A real Bambu start
+    sequence always carries an M620 S<n>A load command (S255 is the
+    end-G-code pullback, not a load), whether the job feeds from the
+    AMS or the external spool."""
+    zf = zipfile.ZipFile(path)
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 200000:
+                break
+            m = re.match(r"M620\s+S(\d+)A", raw.decode("utf-8", "replace"))
+            if m and int(m.group(1)) < 250:
+                return
+    msg = (f"{path} contains no M620 S<n>A material-load command - its "
+           "machine start G-code is the generic fallback, so the printer "
+           "would run the whole job WITHOUT ever loading/extruding "
+           "filament (the 2026-08-12 ghost print). The profile JSONs "
+           "were flattened without the template G-code sidecars: re-run "
+           "scripts/flatten_bambu_profiles.py (updated 2026-08-12 to "
+           "merge them) and point MACHINE_JSON at the fresh output")
+    if force:
+        print("WARN (--force): " + msg + ".")
+    else:
+        sys.exit("ERROR: " + msg + ". Pass --force to send it anyway.")
+
+
 # --- A1-mini payload sanity check --------------------------------------------
 # Same gate as a1_mini_send_print.py (kept in sync); here it runs on OUR
 # OWN slicer output, catching a wrong-printer profile bundle before
@@ -1115,6 +1153,16 @@ def main():
                         "result.json")
     parser.add_argument("--slice-only", action="store_true",
                         help="slice and summarize, but don't upload or print")
+    parser.add_argument("--save-sliced", nargs="?", const="__NEXT_TO_INPUT__",
+                        default=None, metavar="PATH",
+                        help="copy the sliced .gcode.3mf to PATH (with no "
+                        "PATH: next to the input file) so you can keep it "
+                        "and open it in Bambu Studio")
+    parser.add_argument("--review", action="store_true",
+                        help="save the sliced file (like --save-sliced) and "
+                        "PAUSE before uploading so you can open it in Bambu "
+                        "Studio and approve the toolpaths/supports first; "
+                        "this prompt is deliberately NOT skipped by --yes")
     parser.add_argument("--upload-only", action="store_true",
                         help="slice + FTPS upload only; don't start a print")
     parser.add_argument("--remote-dir", default="", metavar="DIR",
@@ -1205,6 +1253,7 @@ def main():
         keep_dir=args.keep_output, scale=args.scale, bed_type=bed_type)
     try:
         summarize_and_check(sliced, args.force)
+        check_filament_load(sliced, args.force)
         for warning in check_payload(sliced, args.force):
             print(warning)
 
@@ -1215,14 +1264,44 @@ def main():
         if not use_ams:
             ams_mapping = ""
 
+        # Hand the sliced artifact back for inspection: Bambu Studio
+        # opens a .gcode.3mf straight into the sliced-preview (toolpaths,
+        # supports, per-layer moves) - the visual check headless slicing
+        # otherwise loses.
+        if args.save_sliced or args.review:
+            dest = args.save_sliced
+            if dest in (None, "__NEXT_TO_INPUT__"):
+                dest = os.path.join(os.path.dirname(os.path.abspath(path)),
+                                    os.path.basename(sliced))
+            elif os.path.isdir(dest):
+                dest = os.path.join(dest, os.path.basename(sliced))
+            if os.path.abspath(dest) != os.path.abspath(sliced):
+                shutil.copy2(sliced, dest)
+            print(f"Sliced file saved to: {dest}")
+            print("  Open it in Bambu Studio (File -> Open, or drag it in) "
+                  "for the full sliced preview - supports, walls, "
+                  "layer-by-layer toolpaths.")
+
         if args.slice_only:
-            if not args.keep_output:
-                print("NOTE: --slice-only without --keep-output deletes "
-                      "the result; re-run with --keep-output to keep "
+            if args.save_sliced or args.review:
+                pass  # already saved above
+            elif not args.keep_output:
+                print("NOTE: --slice-only without --keep-output/--save-sliced "
+                      "deletes the result; re-run with one of those to keep "
                       f"{sliced}")
             else:
                 print(f"Slice-only mode: sliced file kept at {sliced}")
             return 0
+
+        if args.review:
+            answer = input("REVIEW: open the saved file in Bambu Studio and "
+                           "check supports/orientation/toolpaths. Upload and "
+                           "print it? [y/N] ")
+            if answer.strip().lower() not in ("y", "yes"):
+                print("Aborted at review - nothing was uploaded. The saved "
+                      "sliced file is yours to keep, tweak in Studio, or "
+                      "send later with a1_mini_send_print.py.")
+                return 1
 
         remote_dir = args.remote_dir.strip("/")
         remote_name = os.path.basename(sliced)

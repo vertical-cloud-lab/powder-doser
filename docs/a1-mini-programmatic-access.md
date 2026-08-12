@@ -647,6 +647,28 @@ listed here so nobody re-debugs them from a stale copy:
     locations, not just PATH. Details in the
     [camera section](#automatic-bed-clear-check-with-the-printers-own-camera).
 
+18. **The second ghost-print class: CLI slices could never load
+    filament (2026-08-12).** Field symptom: `a1_mini_slice_and_send.py`
+    jobs heated the bed fine, ran every motion, and **never
+    extruded** — even with `USE_AMS = True` and a correct mapping.
+    Root cause (reproduced in CI): BambuStudio 2.x ships the real
+    per-printer machine G-code in sidecar "template" presets
+    (`Bambu Lab A1 mini 0.4 nozzle template machine_start_gcode.json`
+    etc.), **not** in the preset `inherits` chain —
+    `flatten_bambu_profiles.py` only walked the chain, so every
+    flattened machine profile fell back to `fdm_machine_common`'s
+    generic start G-code, which contains **no `M620 S<n>A`/`T<n>`
+    material-load and no `M412` runout detection**. The AMS is never
+    told to feed, and with runout detection off the printer doesn't
+    even complain — it just prints air. (This also explains why the
+    printer's own AMS mapping was irrelevant: the G-code never asks
+    for filament.) Fixes, all 2026-08-12: the flattener now merges the
+    template sidecars (re-run it — old flattened JSONs are all
+    affected), the slice script hard-refuses any slice without an
+    `M620 S<n>A` load, and the send scripts refuse such files too.
+    `payloads/cube_h2d.gcode.3mf` was regenerated — the 2026-07-29
+    copy had the same defect and would have ghost-printed on the H2D.
+
 ## Automatic bed-clear check with the printer's own camera
 
 The A1 mini already has a camera pointed at the plate, and it is
@@ -888,8 +910,23 @@ CLI-general, not IDEX-specific:
    `printer_settings_id = "Bambu Lab A1 mini 0.4 nozzle"` (matching
    the `compatible_printers` list on the A1M process profile).
 
-Both gotchas are automated by
-[`scripts/flatten_bambu_profiles.py`](../scripts/flatten_bambu_profiles.py):
+And one gotcha discovered the hard way on Thumbelina (field note 18):
+
+3. **Merge the template G-code sidecars.** BambuStudio 2.x keeps the
+   real per-printer machine G-code in sidecar presets
+   (`<machine preset> template machine_start_gcode.json`,
+   `... machine_end_gcode.json`, `... change_filament_gcode.json`, …)
+   rather than in the `inherits` chain — the chain only carries a
+   generic fallback start G-code with **no `M620`/`T<n>`
+   material-load**. A machine profile flattened without the sidecars
+   slices into jobs that heat up, run every motion, and never extrude
+   (the 2026-08-12 AMS ghost print).
+
+All three gotchas are automated by
+[`scripts/flatten_bambu_profiles.py`](../scripts/flatten_bambu_profiles.py)
+(sidecar merge added 2026-08-12 — **re-generate any flattened JSONs
+made before then**; the scripts now refuse the defective slices they
+produce):
 
 ```bash
 # Windows (default install):
@@ -964,9 +1001,25 @@ for the slicer binary and the three flattened profile JSONs:
 ```bash
 pip install paho-mqtt
 python scripts/a1_mini_slice_and_send.py                  # slice + upload + print
-python scripts/a1_mini_slice_and_send.py --slice-only --keep-output   # dry-run the slicer alone
+python scripts/a1_mini_slice_and_send.py --review         # slice, SAVE the .gcode.3mf, pause
+                                                          # while you inspect it in Bambu
+                                                          # Studio, then upload + print
+python scripts/a1_mini_slice_and_send.py --slice-only --save-sliced   # slice only, keep the
+                                                          # file next to the input
 python scripts/a1_mini_slice_and_send.py --upload-only    # stop before starting the print
 ```
+
+**Reviewing the slice before it prints:** `--review` copies the
+sliced `.gcode.3mf` next to your input file (or to
+`--save-sliced <path>`) and pauses. Open that file in Bambu Studio —
+a `.gcode.3mf` opens straight into the **sliced preview** (supports,
+walls, layer-by-layer toolpaths), so you can approve exactly what the
+headless slicer decided before anything is uploaded. Answering
+anything but `y` aborts with the file kept, so you can also tweak it
+in Studio and send the re-export with `a1_mini_send_print.py`
+instead. The review prompt is deliberately **not** skipped by
+`--yes`. `--save-sliced` alone keeps the artifact on every run
+without pausing.
 
 Notes: for `.stl` input the three profile JSONs are required
 (generate them with `flatten_bambu_profiles.py`, above); for a
@@ -991,8 +1044,12 @@ visual checkpoint before plastic moves. Concretely:
    drag a hot nozzle through detached spaghetti for hours. The
    script's header summary + confirmation prompt is a deliberately
    thin substitute: it shows time/filament/temperatures, not geometry.
-   Don't pass `--yes` until the model + profile combination has
-   printed successfully at least once.
+   **Mitigation (added 2026-08-12): run with `--review`** — the script
+   saves the sliced `.gcode.3mf` and pauses so you can open it in
+   Bambu Studio's sliced preview (supports, toolpaths, layer moves)
+   and approve it before anything is uploaded. Don't pass `--yes`
+   until the model + profile combination has printed successfully at
+   least once.
 2. **A "successful" slice can still carry wrong settings.** The CLI
    does not resolve profile `inherits` chains, so a half-flattened
    profile can slice cleanly with missing/default temperatures,
@@ -1001,7 +1058,9 @@ visual checkpoint before plastic moves. Concretely:
    ghost print (field note 12). The script hard-rejects jobs
    exceeding A1-mini hardware maxima (bed > 80 °C, nozzle > 300 °C —
    a wrong-printer profile symptom), jobs commanding a first-layer
-   bed temp under 45 °C (the ghost-print signature), and
+   bed temp under 45 °C (the ghost-print signature), jobs whose
+   G-code contains no `M620 S<n>A` material-load (the 2026-08-12
+   never-extrudes ghost print, field note 18), and
    H2D/IDEX-flavoured output, but it cannot detect a *subtly* wrong
    profile (e.g. PETG temps applied to PLA).
 3. **Settings-precedence surprises with project 3MFs.** CLI-loaded

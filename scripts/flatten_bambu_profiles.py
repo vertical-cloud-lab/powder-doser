@@ -36,6 +36,16 @@ the identity patches the CLI's compatibility check requires
 (`from = "system"`, `inherits = ""`, and on the machine config
 `printer_settings_id = <preset name>`) - the recipe empirically
 verified in PR #23 for P2S, H2D, and A1 mini.
+
+It also merges the sidecar "template" presets (`<preset name> template
+machine_start_gcode.json` etc.). BambuStudio 2.x ships the REAL
+per-printer machine G-code in those sidecars, not in the preset chain -
+the chain only carries fdm_machine_common's generic fallback start
+G-code, which never loads filament (no `M620`/`T<n>` material-load, no
+`M412` runout detection). A machine profile flattened without the
+sidecars slices into jobs where the printer heats the bed, runs every
+motion, and never extrudes - the AMS-flavoured ghost print field-seen
+on Thumbelina 2026-08-12.
 """
 
 import argparse
@@ -115,8 +125,44 @@ def flatten(name, by_name, _seen=None):
     return merged
 
 
+def chain_names(name, by_name):
+    """The preset's `inherits` chain, most-derived first."""
+    chain, cur, seen = [], name, set()
+    while cur and cur not in seen:
+        seen.add(cur)
+        chain.append(cur)
+        preset = by_name.get(cur)
+        cur = preset.get("inherits") if preset else None
+    return chain
+
+
+def merge_templates(flat, name, by_name):
+    """Merge the sidecar template presets into the flattened config.
+
+    BambuStudio 2.x keeps the real per-printer machine G-code in
+    presets named `<preset name> template <key>` (one G-code key each:
+    machine_start_gcode, machine_end_gcode, change_filament_gcode,
+    layer_change_gcode, time_lapse_gcode, ...) instead of in the
+    `inherits` chain. Without them the flat config carries only
+    fdm_machine_common's generic start G-code, which contains no
+    M620/T<n> material-load - the printer then runs the whole job
+    without ever feeding filament (Thumbelina ghost print, 2026-08-12).
+    Base templates first so a more-derived preset's sidecar wins."""
+    merged = []
+    for chain_name in reversed(chain_names(name, by_name)):
+        prefix = chain_name + " template "
+        for tname, tdata in by_name.items():
+            if tname.startswith(prefix):
+                for key, value in tdata.items():
+                    if key not in ("name", "instantiation"):
+                        flat[key] = value
+                        merged.append(key)
+    return merged
+
+
 def write_flat(role, name, by_name, out_path):
     flat = flatten(name, by_name)
+    merged = merge_templates(flat, name, by_name)
     # Identity patches so the CLI's compatibility check treats the file
     # as a system preset (verified recipe, PR #23).
     flat["from"] = "system"
@@ -124,9 +170,15 @@ def write_flat(role, name, by_name, out_path):
     flat["name"] = name
     if role == "machine":
         flat["printer_settings_id"] = name
+        if "M620" not in (flat.get("machine_start_gcode") or ""):
+            print(f"WARN: {name!r} machine_start_gcode has no M620 "
+                  "material-load command - no template sidecars found? "
+                  "Slices made with this profile will NOT load filament "
+                  "and will ghost-print (run the motions dry).")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(flat, f, indent=2)
-    print(f"wrote {out_path}  ({role}: {name!r}, {len(flat)} keys)")
+    extra = f", templates merged: {sorted(set(merged))}" if merged else ""
+    print(f"wrote {out_path}  ({role}: {name!r}, {len(flat)} keys{extra})")
     return out_path
 
 

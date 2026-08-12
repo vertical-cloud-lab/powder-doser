@@ -250,6 +250,22 @@ def commanded_bed_temp(zf):
 
 # --- A1-mini payload sanity check -------------------------------------------
 # Kept in sync with a1_mini_slice_and_send.py.
+def has_filament_load(zf):
+    """True if the executable G-code carries an M620 S<n>A material-load
+    (S255 is the end-G-code pullback, not a load). Every real Bambu
+    start sequence has one, AMS or external spool alike; a file without
+    one can only ghost-print. Kept in sync with
+    a1_mini_slice_and_send.py / h2d_step4_bambulabs_api.py."""
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 200000:
+                break
+            m = re.match(r"M620\s+S(\d+)A", raw.decode("utf-8", "replace"))
+            if m and int(m.group(1)) < 250:
+                return True
+    return False
+
+
 def check_payload(path, force):
     """Best-effort check that `path` is a sliced job for an A1 mini.
 
@@ -314,6 +330,19 @@ def check_payload(path, force):
                 "Textured PEI Plate selected, or re-slice with "
                 'a1_mini_slice_and_send.py (defaults to --bed-type '
                 '"Textured PEI Plate")')
+        if problem is None and not has_filament_load(zf):
+            # Second ghost-print class (Thumbelina 2026-08-12): a slice
+            # made with profiles missing the template-sidecar machine
+            # G-code has no M620/T<n> material-load at all - the printer
+            # heats up, runs every motion, and never extrudes.
+            problem = (
+                f"{path} contains no M620 S<n>A material-load command - "
+                "its machine start G-code is the generic fallback, so "
+                "the printer would run the whole job WITHOUT loading or "
+                "extruding filament. Re-slice with profiles from the "
+                "updated scripts/flatten_bambu_profiles.py (2026-08-12: "
+                "merges the template G-code sidecars), or re-export from "
+                "desktop Bambu Studio")
     if problem:
         if force:
             warnings.append("WARN (--force): " + problem + ".")

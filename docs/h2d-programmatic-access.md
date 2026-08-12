@@ -334,15 +334,19 @@ same — don't swallow the exception and assume success.
 
 Use the H2D `cube_h2d.gcode.3mf` from the empirical CLI walkthrough
 ([Remote slicing → Bambu Studio CLI](#1-bambu-studio-cli-bambu-studio---slice))
-as the test payload — it is small (36 KB), already carries the IDEX
+as the test payload — it is small (47 KB), already carries the IDEX
 header the firmware expects, and has a known-good `Metadata/plate_1.gcode`
 inside. A ready-made copy is checked in at
 [`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf)
-(regenerated 2026-07-29 with the exact recipe below, plus
+(regenerated 2026-08-12 with the exact recipe below, plus
 `curr_bed_type = "Textured PEI Plate"` injected so it commands a
 55 °C bed rather than the CLI's ghost-print-prone 35 °C Cool Plate
-default — see [`payloads/README.md`](../payloads/README.md) for full
-provenance). **H2D only** — never send it to the A1 mini.
+default, **and** with profiles that include the template G-code
+sidecars — the 2026-07-29 copy was missing the real H2D start G-code
+and would have run the whole job without loading filament; see
+A1-mini field note 18 and
+[`payloads/README.md`](../payloads/README.md) for full provenance).
+**H2D only** — never send it to the A1 mini.
 
 > [!TIP]
 > All of 3a–3c below is packaged as one cross-platform script:
@@ -1303,6 +1307,12 @@ as above:
 #   machine.inherits     = ""         (do not look up a missing parent)
 #   machine.printer_settings_id = "Bambu Lab H2D 0.4 nozzle"
 # (mirror from=system / inherits="" on the process and filament configs).
+# CRITICAL (2026-08-12): also merge the sidecar template presets
+# ("Bambu Lab H2D 0.4 nozzle template machine_start_gcode.json" etc.)
+# into the machine config - BambuStudio 2.x keeps the REAL start/end/
+# filament-change G-code there, and without it the slice has no
+# M620/T<n> material-load and ghost-prints (runs dry). All of this is
+# automated by scripts/flatten_bambu_profiles.py.
 
 xvfb-run -a -s "-screen 0 1280x1024x24" ./bambu.AppImage \
   --orient 1 --arrange 1 \

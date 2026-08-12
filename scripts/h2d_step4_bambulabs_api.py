@@ -226,6 +226,22 @@ def filament_slots_used(zf, plate=1):
     return sorted(tools) or None
 
 
+def has_filament_load(zf):
+    """True if the executable G-code carries an M620 S<n>A material-load
+    (S255 is the end-G-code pullback, not a load). Every real Bambu
+    start sequence has one, AMS or external spool alike; a file without
+    one can only ghost-print. Kept in sync with a1_mini_send_print.py /
+    a1_mini_slice_and_send.py."""
+    with zf.open("Metadata/plate_1.gcode") as f:
+        for i, raw in enumerate(f):
+            if i > 200000:
+                break
+            m = re.match(r"M620\s+S(\d+)A", raw.decode("utf-8", "replace"))
+            if m and int(m.group(1)) < 250:
+                return True
+    return False
+
+
 def inspect_payload(path, plate, expect_printer, force):
     """Print what the file is and hard-stop on the known-bad shapes.
     Returns the filament slots the job uses (see filament_slots_used).
@@ -277,6 +293,18 @@ def inspect_payload(path, plate, expect_printer, force):
                    "PEI sheet below ~45 C and the job GHOST-PRINTS (runs the "
                    "motions with nothing staying on the bed). Re-export with the "
                    "correct build plate selected")
+    elif not has_filament_load(zf):
+        # Second ghost-print class (Thumbelina 2026-08-12): profiles
+        # flattened without the template-sidecar machine G-code slice
+        # into jobs with no M620/T<n> material-load at all - the printer
+        # heats up, runs every motion, and never extrudes.
+        problem = (f"{path} contains no M620 S<n>A material-load command - "
+                   "its machine start G-code is the generic fallback, so the "
+                   "printer would run the whole job WITHOUT loading or "
+                   "extruding filament. Re-slice with profiles from the "
+                   "updated scripts/flatten_bambu_profiles.py (2026-08-12: "
+                   "merges the template G-code sidecars), or re-export from "
+                   "desktop Bambu Studio")
     if problem:
         if force:
             print("WARN (--force): " + problem + ".")
