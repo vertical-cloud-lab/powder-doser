@@ -1355,6 +1355,19 @@ exercise:
   which then trips the auto-mapping check; passing `Manual` is what
   switches the message from `under auto mode` to `under manual mode`
   and makes the explicit `--filament-map` array load.
+- **The CLI's exported `.gcode.3mf` is refused by Bambu Studio**
+  ("The file does not contain any geometry data." + "Loading of a
+  model file failed.") even though it prints fine — the exporter
+  writes unescaped quotes into `Metadata/model_settings.config`
+  (`value=""Bambu Lab H2D 0.4 nozzle""`, malformed XML), the importer
+  aborts, and the GUI mislabels the parse failure. Reproduced against
+  Studio 02.07.01.62 in CI (2026-08-12). The printer never parses
+  that file — it executes `Metadata/plate_1.gcode`.
+  `scripts/a1_mini_slice_and_send.py` repairs the XML after every
+  slice (`repair_model_settings_xml()`, printer-agnostic — reuse it
+  for H2D CLI output too), and the checked-in
+  [`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf) has
+  been repaired. A1-mini doc field note 19 has the full story.
 
 ### 2. OrcaSlicer CLI
 

@@ -369,6 +369,91 @@ def classify_input(path):
              "takes model files, not G-code.")
 
 
+# Matches one exporter-written metadata line; group 2 is the raw (possibly
+# quote-containing) attribute value.
+_METADATA_VALUE_RE = re.compile(r'(<metadata\s[^>]*?value=")(.*)("\s*/>\s*)$')
+
+
+def repair_model_settings_xml(path):
+    """Make a CLI-exported .gcode.3mf loadable by Bambu Studio.
+
+    The BambuStudio CLI exporter writes per-object config values into
+    Metadata/model_settings.config without XML-escaping them (bbs_3mf.cpp
+    passes obj->config.opt_serialize(key) straight into the value="..."
+    attribute, unlike the xml_escape() it applies to object names).
+    Quoted list-typed options - compatible_printers serializes to
+    "Bambu Lab A1 mini 0.4 nozzle", print_extruder_variant to
+    "Direct Drive Standard" - therefore produce value=""..."", which is
+    malformed XML. Desktop Studio exports don't hit this because their
+    sliced exports carry no per-object config block at all.
+
+    The printer never reads model_settings.config on this path (it
+    executes Metadata/plate_1.gcode), so such a file PRINTS fine - but
+    Bambu Studio's importer aborts on the bad XML and the GUI reports
+    the misleading "The file does not contain any geometry data." /
+    "Loading of a model file failed." (field-seen on Thumbelina,
+    2026-08-12; reproduced against Studio 02.07.01.62). Escaping the
+    stray quotes as &quot; makes the same file open cleanly in Studio.
+
+    Rewrites the archive in place; leaves every other entry, including
+    the G-code, byte-identical. Best-effort: on any surprise it warns
+    and leaves the file alone rather than endanger the print path.
+    """
+    member = "Metadata/model_settings.config"
+    try:
+        with zipfile.ZipFile(path) as zf:
+            if member not in zf.namelist():
+                return False
+            text = zf.read(member).decode("utf-8")
+    except (zipfile.BadZipFile, UnicodeDecodeError) as exc:
+        print(f"WARN: could not inspect {member} for XML repair: {exc}")
+        return False
+
+    fixed_lines = []
+    changed = False
+    for line in text.splitlines(keepends=True):
+        m = _METADATA_VALUE_RE.search(line)
+        if m and '"' in m.group(2):
+            line = (line[:m.start()] + m.group(1)
+                    + m.group(2).replace('"', "&quot;")
+                    + m.group(3) + line[m.end():])
+            changed = True
+        fixed_lines.append(line)
+    if not changed:
+        return False
+    fixed = "".join(fixed_lines)
+
+    try:
+        import xml.etree.ElementTree as ET
+        ET.fromstring(fixed)
+    except ET.ParseError as exc:
+        print(f"WARN: {member} still malformed after quote-escaping "
+              f"({exc}) - leaving the file untouched. It will print, but "
+              "Bambu Studio may refuse to open it.")
+        return False
+
+    tmp_path = path + ".xmlfix.tmp"
+    try:
+        with zipfile.ZipFile(path) as zin, \
+             zipfile.ZipFile(tmp_path, "w", zipfile.ZIP_DEFLATED) as zout:
+            for info in zin.infolist():
+                data = fixed.encode("utf-8") if info.filename == member \
+                    else zin.read(info.filename)
+                zout.writestr(info, data)
+        os.replace(tmp_path, path)
+    except OSError as exc:
+        print(f"WARN: could not rewrite {path} with repaired XML: {exc}")
+        try:
+            os.remove(tmp_path)
+        except OSError:
+            pass
+        return False
+    print("Repaired Metadata/model_settings.config (escaped unquoted "
+          "config values the BambuStudio CLI exports as malformed XML) - "
+          "the sliced file now opens in Bambu Studio.")
+    return True
+
+
 def slice_headless(slicer, input_path, kind, machine, process, filament,
                    arrange, timeout_s, keep_dir, scale=1.0, bed_type=""):
     """Run the BambuStudio CLI on input_path; return path to the
@@ -509,6 +594,7 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
 
     size_kb = os.path.getsize(export_path) // 1024
     print(f"Sliced OK: {export_path} ({size_kb} KB)")
+    repair_model_settings_xml(export_path)
     return export_path, out_dir
 
 
@@ -1264,10 +1350,15 @@ def main():
         if not use_ams:
             ams_mapping = ""
 
-        # Hand the sliced artifact back for inspection: Bambu Studio
-        # opens a .gcode.3mf straight into the sliced-preview (toolpaths,
-        # supports, per-layer moves) - the visual check headless slicing
-        # otherwise loses.
+        # Hand the sliced artifact back for inspection. Unlike a desktop
+        # "Export plate sliced file" (which strips the geometry, so
+        # Studio opens it straight into the G-code preview), the CLI
+        # keeps the model geometry in its export, so Studio opens it as
+        # a regular PROJECT in the Prepare view - model, plate, and all
+        # embedded settings, but no toolpaths until you press "Slice
+        # plate". Requires repair_model_settings_xml() to have run
+        # first, or Studio rejects the file outright with "The file
+        # does not contain any geometry data."
         if args.save_sliced or args.review:
             dest = args.save_sliced
             if dest in (None, "__NEXT_TO_INPUT__"):
@@ -1278,9 +1369,12 @@ def main():
             if os.path.abspath(dest) != os.path.abspath(sliced):
                 shutil.copy2(sliced, dest)
             print(f"Sliced file saved to: {dest}")
-            print("  Open it in Bambu Studio (File -> Open, or drag it in) "
-                  "for the full sliced preview - supports, walls, "
-                  "layer-by-layer toolpaths.")
+            print("  Open it in Bambu Studio (File -> Open, or drag it in): "
+                  "it loads as a project in the Prepare view with the "
+                  "model, plate, and all slicing settings this run used. "
+                  "Press 'Slice plate' there to inspect supports and "
+                  "toolpaths - what you see is what this file's embedded "
+                  "G-code was sliced with.")
 
         if args.slice_only:
             if args.save_sliced or args.review:

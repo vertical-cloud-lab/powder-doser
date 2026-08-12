@@ -33,3 +33,13 @@ Header facts (from `Metadata/plate_1.gcode` inside the archive):
 `printer_model = Bambu Lab H2D`, `filament_map = 1,2` /
 `filament_map_mode = Manual` (IDEX), bed `M190 S55`,
 ~14 min estimated, 3.66 g PLA.
+
+2026-08-12 (later the same day): `Metadata/model_settings.config` was
+repaired in place with
+`a1_mini_slice_and_send.py::repair_model_settings_xml()` — the
+BambuStudio CLI exporter writes unescaped quotes into that file's XML
+attributes (`value=""Bambu Lab H2D 0.4 nozzle""`), which made Bambu
+Studio refuse the file with a misleading "The file does not contain
+any geometry data." The G-code entry is byte-identical; only the
+config XML changed (quotes escaped to `&quot;`). See A1-mini doc
+field note 19.

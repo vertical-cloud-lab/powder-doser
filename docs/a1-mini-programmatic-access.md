@@ -669,6 +669,33 @@ listed here so nobody re-debugs them from a stale copy:
     `payloads/cube_h2d.gcode.3mf` was regenerated — the 2026-07-29
     copy had the same defect and would have ghost-printed on the H2D.
 
+19. **CLI-sliced `.gcode.3mf` files were rejected by Bambu Studio with
+    "The file does not contain any geometry data." (2026-08-12).**
+    Field symptom: the file `a1_mini_slice_and_send.py` saves (and
+    sends) prints fine, but opening it in Studio pops "no geometry
+    data" + "Loading of a model file failed." Reproduced in CI by
+    opening a CLI slice in the real Studio 02.07.01.62 GUI — same two
+    dialogs. Root cause: the **BambuStudio CLI exporter forgets
+    `xml_escape()` on per-object config values** in
+    `Metadata/model_settings.config`, so quoted list-typed options
+    come out as malformed XML, e.g. line 17:
+    `value=""Bambu Lab A1 mini 0.4 nozzle""`. Studio's importer aborts
+    on the first bad attribute and the GUI mislabels the parse failure
+    as "no geometry" (the geometry is actually all there — desktop
+    exports don't hit this only because they carry no per-object
+    config block). The printer never parses this file — it executes
+    `Metadata/plate_1.gcode` — which is why the same job printed
+    perfectly. Fix: `a1_mini_slice_and_send.py` now repairs the XML
+    (escapes the stray quotes) right after every slice; the G-code
+    entry stays byte-identical, and the repaired file was verified to
+    open cleanly in Studio 02.07.01.62. One expectation to reset: the
+    CLI keeps the model geometry in its export (desktop "Export plate
+    sliced file" strips it), so the repaired file opens as a
+    **project in the Prepare view** — model, plate, and the exact
+    settings the slice used — not straight into the G-code preview.
+    Press *Slice plate* there to inspect supports/toolpaths.
+    (`scripts/test_repair_3mf_xml.py` guards the repair.)
+
 ## Automatic bed-clear check with the printer's own camera
 
 The A1 mini already has a camera pointed at the plate, and it is
@@ -1012,14 +1039,19 @@ python scripts/a1_mini_slice_and_send.py --upload-only    # stop before starting
 **Reviewing the slice before it prints:** `--review` copies the
 sliced `.gcode.3mf` next to your input file (or to
 `--save-sliced <path>`) and pauses. Open that file in Bambu Studio —
-a `.gcode.3mf` opens straight into the **sliced preview** (supports,
-walls, layer-by-layer toolpaths), so you can approve exactly what the
-headless slicer decided before anything is uploaded. Answering
-anything but `y` aborts with the file kept, so you can also tweak it
-in Studio and send the re-export with `a1_mini_send_print.py`
-instead. The review prompt is deliberately **not** skipped by
-`--yes`. `--save-sliced` alone keeps the artifact on every run
-without pausing.
+it loads as a **project in the Prepare view**: the model, the plate,
+and the exact settings this slice used (the CLI keeps the geometry in
+its export, unlike desktop "Export plate sliced file" which strips it
+and therefore opens straight into the G-code preview). Press *Slice
+plate* in Studio to inspect the supports, walls, and layer-by-layer
+toolpaths the same settings produce. Answering anything but `y`
+aborts with the file kept, so you can also tweak it in Studio and
+send the re-export with `a1_mini_send_print.py` instead. The review
+prompt is deliberately **not** skipped by `--yes`. `--save-sliced`
+alone keeps the artifact on every run without pausing. (The script
+also repairs a malformed-XML defect in every CLI export on the way —
+without that, Studio refuses the file with a misleading "no geometry
+data" error; field note 19.)
 
 Notes: for `.stl` input the three profile JSONs are required
 (generate them with `flatten_bambu_profiles.py`, above); for a
