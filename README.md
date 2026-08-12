@@ -4,6 +4,9 @@
 
 ## Documentation
 
+- [Programmatic printing — objectives checklist](docs/printing-automation-checklist.md)
+  — the one-page tracker of what's verified, what needs a hardware run,
+  and what's still to build across both printers. Start here.
 - [Programmatic and remote printing on the Bambu Lab H2D](docs/h2d-programmatic-access.md)
   — research notes on the cloud, LAN/Developer-Mode and Bambu Connect
   paths for sending sliced jobs to an H2D from code, with citations to

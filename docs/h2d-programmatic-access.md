@@ -9,6 +9,11 @@ is still maturing and several of the protocol details below are
 documented by the community rather than by Bambu Lab.
 
 > [!TIP]
+> For a one-page view of what's verified, what needs a hardware run,
+> and what's still to build, see the
+> [objectives checklist](printing-automation-checklist.md).
+
+> [!TIP]
 > Driving the lab's **A1 mini ("Thumbelina")** instead? See the
 > companion instruction list at
 > [a1-mini-programmatic-access.md](a1-mini-programmatic-access.md) —

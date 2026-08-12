@@ -12,6 +12,11 @@ IDEX filament-mapping dance), `bambulabs_api` is actually tested on
 it, and the AC `ac-dev-lab` prior art referenced throughout the H2D
 doc was written *against this exact model*.
 
+> [!TIP]
+> For a one-page view of what's verified, what needs a hardware run,
+> and what's still to build, see the
+> [objectives checklist](printing-automation-checklist.md).
+
 > [!IMPORTANT]
 > Bambu Lab's "printer control authorization" system is being extended
 > to the A-series (see the IMPORTANT callout at the top of the H2D
