@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Headlessly slice, then print, on the Bambu Lab A1 mini ("Thumbelina").
+"""Headlessly slice, then print, on a Bambu Lab A1 mini OR H2D.
+
+(The filename keeps its original A1-mini name so existing lab commands
+and doc links stay valid - since 2026-08 the script drives both
+printers, picking the right slicer flags per machine.)
 
 The slice-and-send alternative to scripts/a1_mini_send_print.py: instead
 of requiring an already-sliced .gcode.3mf, this script takes an STL or a
@@ -9,6 +13,22 @@ docs/a1-mini-programmatic-access.md "Headless slicing"), then runs the
 exact same verified upload + print.project_file + gcode_state-watch
 pipeline as a1_mini_send_print.py (including the watch-until-FINISH
 "PRINT COMPLETE" notice; --no-wait exits at RUNNING instead).
+
+Which printer? Leave PRINTER = "auto" and the script works it out from
+the serial number's model prefix (030... = A1 mini, 094... = H2D -
+the community serial->model mapping, H2D field-confirmed in PR #23),
+falling back to the machine profile JSON's own name. Everything
+printer-specific follows from that choice:
+  - slicer flags: the H2D is IDEX, so its slices get the empirically
+    verified `--filament-map-mode Manual --filament-map "1,2"
+    --slice 1` recipe with the filament profile loaded once per tool;
+    the A1 mini gets the plain single-extruder `--slice 0` form
+  - profile discovery: missing MACHINE/PROCESS/FILAMENT_JSON paths are
+    auto-filled from `<prefix>_{machine,process,filament}_flat.json`
+    (a1mini_*/h2d_*, the flatten_bambu_profiles.py naming) found next
+    to the input file, the current directory, or this script
+  - sanity limits: bed/nozzle maxima and wrong-printer payload checks
+    use the selected printer's numbers
 
   1. Edit the FILL THESE IN block below (IP, access code, serial, the
      STL/3MF to slice, the slicer binary, and - for STL input - the
@@ -55,6 +75,12 @@ PRINTER_IP = "PUT_PRINTER_IP_HERE"          # e.g. "192.168.1.42"  (Settings -> 
 ACCESS_CODE = "PUT_ACCESS_CODE_HERE"        # 8-digit code         (Settings -> WLAN)
 SERIAL = "PUT_SERIAL_HERE"                  # 15 characters        (Settings -> Device)
 
+# Which printer model this is. "auto" detects it from the serial-number
+# prefix (030... = A1 mini, 094... = H2D) or, failing that, from the
+# machine profile JSON. Set "a1mini" or "h2d" to pin it explicitly
+# (--printer overrides).
+PRINTER = "auto"
+
 # The file to SLICE (not a sliced .gcode.3mf - use a1_mini_send_print.py
 # for those). Either a raw .stl or a Bambu Studio project .3mf saved
 # with A1-mini settings. Windows users: keep the r"" prefix.
@@ -67,16 +93,18 @@ FILE_TO_SLICE = r"PUT_PATH_TO_YOUR_FILE_HERE.stl"  # e.g. r"C:\Users\me\part.stl
 #   macOS:   r"/Applications/BambuStudio.app/Contents/MacOS/BambuStudio"
 SLICER_CMD = r"PUT_PATH_TO_BAMBU_STUDIO_HERE"
 
-# Flattened A1-mini profile JSONs (REQUIRED for .stl input; optional
-# for a project .3mf that already embeds A1-mini settings - but if set,
-# they override what's in the 3MF). Generate them with
+# Flattened profile JSONs for the TARGET printer (needed for .stl
+# input; optional for a project .3mf that already embeds settings - but
+# if set, they override what's in the 3MF). Generate them with
 #   python scripts/flatten_bambu_profiles.py --studio-dir "C:\Program Files\Bambu Studio"
-# (walks the `inherits` chain of the bundled `Bambu Lab A1 mini 0.4
-# nozzle` / `0.20mm Standard @BBL A1M` / `Bambu PLA Basic @BBL A1M`
-# presets and applies the required patches). Do NOT point these at the
-# per-user presets under AppData\Roaming\BambuStudio\user\... - those
-# are diff-only files the CLI refuses ("unknown config type",
-# return_code -5; field-seen on Thumbelina).
+#   python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...   # H2D set
+# Leave these EMPTY to auto-discover <prefix>_{machine,process,filament}
+# _flat.json (a1mini_*/h2d_*, matching the detected printer) next to
+# the input file, in the current directory, or next to this script. Do
+# NOT point these at the per-user presets under
+# AppData\Roaming\BambuStudio\user\... - those are diff-only files the
+# CLI refuses ("unknown config type", return_code -5; field-seen on
+# Thumbelina).
 MACHINE_JSON = r""                          # e.g. r"a1mini_machine_flat.json"
 PROCESS_JSON = r""                          # e.g. r"a1mini_process_flat.json"
 FILAMENT_JSON = r""                         # e.g. r"a1mini_filament_flat.json"
@@ -117,10 +145,148 @@ import zipfile
 
 import paho.mqtt.client as mqtt
 
-# A1-mini hardware maxima - a sliced job asking for more than this was
-# sliced with a wrong (bigger-printer) profile, not a hot A1 mini.
-A1_MINI_MAX_BED_C = 80
-A1_MINI_MAX_NOZZLE_C = 300
+# Per-printer registry: everything model-specific lives here so both
+# machines share one code path. Hardware maxima catch a sliced job made
+# with a wrong (different-printer) profile, not a hot printer.
+PRINTERS = {
+    "a1mini": {
+        "key": "a1mini",
+        "label": "Bambu Lab A1 mini",
+        # case-insensitive substrings matched against the G-code
+        # header's printer_model / printer_settings_id
+        "match": ("a1 mini",),
+        "max_bed_c": 80,
+        "max_nozzle_c": 300,
+        "idex": False,
+        # flatten_bambu_profiles.py output prefix used for profile
+        # auto-discovery (<prefix>_machine_flat.json etc.)
+        "profile_prefix": "a1mini",
+        "presets": ("Bambu Lab A1 mini 0.4 nozzle",
+                    "0.20mm Standard @BBL A1M",
+                    "Bambu PLA Basic @BBL A1M"),
+    },
+    "h2d": {
+        "key": "h2d",
+        "label": "Bambu Lab H2D",
+        "match": ("h2d",),
+        "max_bed_c": 110,
+        "max_nozzle_c": 350,
+        "idex": True,
+        "profile_prefix": "h2d",
+        "presets": ("Bambu Lab H2D 0.4 nozzle",
+                    "0.20mm Standard @BBL H2D",
+                    "Bambu PLA Basic @BBL H2D"),
+    },
+}
+
+# Bambu serial numbers start with a model prefix (community mapping;
+# "094..." was field-confirmed as the H2D in PR #23). Values are either
+# a PRINTERS key or, for models this script has no profile bundle /
+# verified recipe for, a display name used in the refusal message.
+SERIAL_PREFIX_MODELS = {
+    "030": "a1mini",
+    "094": "h2d",
+    "039": "A1",
+    "00M": "X1 Carbon",
+    "00W": "X1",
+    "03W": "X1E",
+    "01S": "P1P",
+    "01P": "P1S",
+}
+
+
+def normalize_printer_key(value):
+    """Map user spellings (a1-mini, A1 mini, Thumbelina, H2D...) to a
+    PRINTERS key, or None."""
+    if not value:
+        return None
+    key = re.sub(r"[^a-z0-9]", "", value.lower())
+    aliases = {"a1mini": "a1mini", "a1m": "a1mini", "mini": "a1mini",
+               "thumbelina": "a1mini", "bambulaba1mini": "a1mini",
+               "h2d": "h2d", "bambulabh2d": "h2d"}
+    return aliases.get(key)
+
+
+def printer_from_serial(serial):
+    """PRINTERS key, an unsupported model name, or None (unknown)."""
+    if not serial or len(serial) < 3:
+        return None
+    return SERIAL_PREFIX_MODELS.get(serial[:3].upper())
+
+
+def printer_from_machine_json(machine_json):
+    """Infer the printer from the machine profile's own identity keys."""
+    if not machine_json or not os.path.isfile(machine_json):
+        return None
+    try:
+        with open(machine_json, encoding="utf-8") as f:
+            cfg = json.load(f)
+    except (OSError, ValueError):
+        return None
+    text = " ".join(str(cfg.get(k, "")) for k in
+                    ("name", "printer_settings_id", "printer_model")).lower()
+    for key, p in PRINTERS.items():
+        if any(m in text for m in p["match"]):
+            return key
+    return None
+
+
+def select_printer(explicit, serial, machine_json, force):
+    """Pick the PRINTERS entry, cross-checking every identity source we
+    have. Detection order: explicit --printer/PRINTER > serial-number
+    model prefix > machine profile JSON. Conflicts are errors (not
+    warnings) because a mismatch here means slicing for one machine and
+    sending to another - exactly the wrong-printer failure class that
+    burned two field sessions in PR #23."""
+    from_serial = printer_from_serial(serial)
+    from_profile = printer_from_machine_json(machine_json)
+
+    if explicit and explicit != "auto":
+        key = normalize_printer_key(explicit)
+        if key is None:
+            sys.exit(f"ERROR: unknown printer {explicit!r} - supported: "
+                     f"{', '.join(sorted(PRINTERS))} (or 'auto').")
+        if from_serial in PRINTERS and from_serial != key:
+            msg = (f"serial {serial} has the "
+                   f"{PRINTERS[from_serial]['label']} model prefix "
+                   f"({serial[:3]}...), but --printer/PRINTER selects "
+                   f"{PRINTERS[key]['label']} - slicing for one machine "
+                   "and sending to another")
+            if force:
+                print("WARN (--force): " + msg + ".")
+            else:
+                sys.exit("ERROR: " + msg + ". Fix the serial or the "
+                         "--printer choice, or pass --force.")
+        return PRINTERS[key], "explicit"
+
+    if isinstance(from_serial, str) and from_serial not in PRINTERS:
+        sys.exit(f"ERROR: serial {serial} looks like a {from_serial} "
+                 f"(model prefix {serial[:3]}...), which this script has "
+                 "no verified slicing recipe for - supported printers: "
+                 f"{', '.join(sorted(PRINTERS))}. If the prefix mapping "
+                 "is wrong for your unit, pin the model with --printer "
+                 "(plus --force to skip this check).")
+    if (from_serial in PRINTERS and from_profile
+            and from_serial != from_profile):
+        msg = (f"serial {serial} identifies a "
+               f"{PRINTERS[from_serial]['label']} but the machine profile "
+               f"{machine_json} targets {PRINTERS[from_profile]['label']}")
+        if force:
+            print("WARN (--force): " + msg + " - trusting the serial.")
+        else:
+            sys.exit("ERROR: " + msg + " - the slice would be made for "
+                     "the wrong machine. Point the profile fields at the "
+                     f"{PRINTERS[from_serial]['profile_prefix']}_*_flat.json "
+                     "set (or pass --printer explicitly).")
+    key = from_serial if from_serial in PRINTERS else from_profile
+    if key:
+        source = ("serial prefix" if from_serial in PRINTERS
+                  else "machine profile")
+        return PRINTERS[key], source
+    sys.exit("ERROR: cannot tell which printer this is - the serial "
+             f"prefix {(serial or '???')[:3]!r} is not in the known model "
+             "table and no machine profile gave it away. Pass --printer "
+             "a1mini|h2d (or set PRINTER in the FILL THESE IN block).")
 
 # Below this commanded first-layer bed temperature nothing adheres to
 # the textured PEI sheet and the job "prints" air (the 2026-07-27
@@ -151,6 +317,49 @@ def normalize_bed_type(value):
         return ""
     key = re.sub(r"[^a-z0-9]", "", value.lower())
     return BED_TYPE_ALIASES.get(key, value)
+
+
+# Process-profile keys that may be overridden per run with --set (the
+# "dynamic profile" mechanism: one flattened base profile + a small
+# whitelisted patch, instead of a zoo of pre-generated profiles). Names
+# and value syntax are exactly Bambu Studio's own config keys - values
+# are passed through verbatim, e.g. --set sparse_infill_density=25%
+# --set support_type="tree(auto)". Anything not listed here should be a
+# deliberate edit to a copy of the process JSON, not a casual flag.
+SETTABLE_PROCESS_KEYS = {
+    "enable_support", "support_type", "support_threshold_angle",
+    "support_on_build_plate_only",
+    "sparse_infill_density", "sparse_infill_pattern",
+    "layer_height", "initial_layer_print_height",
+    "wall_loops", "top_shell_layers", "bottom_shell_layers",
+    "brim_type", "brim_width",
+}
+
+
+def parse_process_overrides(set_args, supports_choice):
+    """Fold --supports and --set KEY=VALUE flags into one patch dict."""
+    overrides = {}
+    if supports_choice:
+        # The slicer's "(auto)" support types only place supports where
+        # the overhang threshold demands them - so "detect where
+        # supports should be" is the slicer's job, not this script's.
+        overrides["enable_support"] = "0" if supports_choice == "off" else "1"
+        if supports_choice == "tree":
+            overrides["support_type"] = "tree(auto)"
+        elif supports_choice == "normal":
+            overrides["support_type"] = "normal(auto)"
+    for item in set_args or []:
+        key, sep, value = item.partition("=")
+        key = key.strip()
+        if not sep or not key:
+            sys.exit(f"ERROR: --set takes KEY=VALUE, got {item!r}.")
+        if key not in SETTABLE_PROCESS_KEYS:
+            sys.exit(f"ERROR: --set key {key!r} is not in the whitelist: "
+                     f"{', '.join(sorted(SETTABLE_PROCESS_KEYS))}. For "
+                     "anything else, edit a copy of the process JSON "
+                     "deliberately and pass it with --process.")
+        overrides[key] = value.strip()
+    return overrides
 
 
 def _is_placeholder(value):
@@ -455,15 +664,21 @@ def repair_model_settings_xml(path):
 
 
 def slice_headless(slicer, input_path, kind, machine, process, filament,
-                   arrange, timeout_s, keep_dir, scale=1.0, bed_type=""):
+                   arrange, timeout_s, keep_dir, scale=1.0, bed_type="",
+                   printer=None, overrides=None):
     """Run the BambuStudio CLI on input_path; return path to the
     exported .gcode.3mf (inside a temp dir the caller may keep)."""
+    printer = printer or PRINTERS["a1mini"]
     for label, p in [("slicer", slicer)] + (
             [("machine profile", machine), ("process profile", process),
              ("filament profile", filament)] if kind == "stl" else []):
         if not p:
             sys.exit(f"ERROR: {label} is required for {kind} input - fill "
-                     "it in the FILL THESE IN block or pass the flag.")
+                     "it in the FILL THESE IN block or pass the flag. "
+                     "Generate the flattened profile trio with:  python "
+                     "scripts/flatten_bambu_profiles.py --for "
+                     f"{printer['profile_prefix']} --studio-dir <Bambu "
+                     "Studio install>")
         if not os.path.isfile(p):
             sys.exit(f"ERROR: {label} not found: {p}")
 
@@ -478,22 +693,33 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
     # print, field-seen on Thumbelina 2026-07-27). Injecting
     # curr_bed_type into the process config is the empirically verified
     # way to select the plate headlessly (M190 S65 with "Textured PEI
-    # Plate", PR #23). Patch a copy - never the user's file.
-    if bed_type and process:
+    # Plate", PR #23). --set/--supports overrides ride the same patch.
+    # Patch a copy - never the user's file.
+    patch = dict(overrides or {})
+    if bed_type:
+        patch["curr_bed_type"] = bed_type
+    if patch and process:
         with open(process, encoding="utf-8") as f:
             proc_cfg = json.load(f)
-        if proc_cfg.get("curr_bed_type") != bed_type:
-            proc_cfg["curr_bed_type"] = bed_type
-            patched = os.path.join(out_dir, "process_bed_patched.json")
+        changed = {k: v for k, v in patch.items() if proc_cfg.get(k) != v}
+        if changed:
+            proc_cfg.update(changed)
+            patched = os.path.join(out_dir, "process_patched.json")
             with open(patched, "w", encoding="utf-8") as f:
                 json.dump(proc_cfg, f, indent=2)
-            print(f"Bed type: slicing for {bed_type!r} "
-                  "(injected curr_bed_type into a copy of the process "
-                  "profile; --bed-type changes it).")
+            if "curr_bed_type" in changed:
+                print(f"Bed type: slicing for {bed_type!r} "
+                      "(injected curr_bed_type into a copy of the process "
+                      "profile; --bed-type changes it).")
+            others = {k: v for k, v in changed.items()
+                      if k != "curr_bed_type"}
+            if others:
+                print("Process overrides (patched into a copy of the "
+                      f"process profile): {others}")
             process = patched
-    elif bed_type and not process:
-        print(f"NOTE: cannot set bed type {bed_type!r} without a process "
-              "profile - the project 3MF's own plate setting applies. The "
+    elif patch and not process:
+        print(f"NOTE: cannot apply {sorted(patch)} without a process "
+              "profile - the project 3MF's own settings apply. The "
               "post-slice summary below shows the commanded bed "
               "temperature; verify it before printing.")
 
@@ -505,11 +731,27 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
     if machine and process:
         cmd += ["--load-settings", f"{machine};{process}"]
     if filament:
-        # Single-extruder A1 mini: exactly one filament profile, and no
-        # --filament-map-mode/--filament-map (those are the H2D's IDEX
-        # flags - a wrong-printer smell here).
-        cmd += ["--load-filaments", filament]
-    cmd += ["--slice", "0", "--export-3mf", export_name,
+        if printer["idex"]:
+            # Dual-extruder H2D: the empirically verified recipe (PR
+            # #23, 2026-05-07) loads the filament profile once per tool
+            # and maps them explicitly - the CLI's default "Auto For
+            # Flush" mode cannot bind a single filament across both
+            # extruders and dies with "some filaments can not be
+            # mapped" (return -66).
+            cmd += ["--load-filaments", f"{filament};{filament}",
+                    "--filament-map-mode", "Manual",
+                    "--filament-map", "1,2"]
+        else:
+            # Single-extruder A1 mini: exactly one filament profile, and
+            # no --filament-map-mode/--filament-map (those are the H2D's
+            # IDEX flags - a wrong-printer smell here).
+            cmd += ["--load-filaments", filament]
+    # H2D gotcha: the CLI's Manual filament-map setup is gated on
+    # `plate_to_slice != 0` (BambuStudio.cpp ~6491-6700 @ v02.06.00.51),
+    # so --slice 0 fails with the manual-map error even when everything
+    # else is right - the H2D must slice plate 1 explicitly.
+    slice_plate = "1" if printer["idex"] else "0"
+    cmd += ["--slice", slice_plate, "--export-3mf", export_name,
             "--outputdir", out_dir, input_path]
 
     # The CLI links wxWidgets, so on a headless Linux box it needs a
@@ -652,12 +894,16 @@ def commanded_bed_temp(zf):
     return None
 
 
-def summarize_and_check(path, force):
+def summarize_and_check(path, force, printer=None):
     """Print what is about to be printed; exit if the sliced job exceeds
-    A1-mini hardware maxima (a wrong-profile symptom, not a preference)."""
+    the printer's hardware maxima (a wrong-profile symptom, not a
+    preference)."""
+    printer = printer or PRINTERS["a1mini"]
+    max_bed = printer["max_bed_c"]
+    max_nozzle = printer["max_nozzle_c"]
     fields = read_gcode_metadata(zipfile.ZipFile(path))
 
-    printer = fields.get("printer_settings_id") or fields.get("printer_model", "?")
+    profile_id = fields.get("printer_settings_id") or fields.get("printer_model", "?")
     # The header packs two durations into one line ("; model printing
     # time: ...; total estimated time: ..."), so key-parse misses it.
     est_time = fields.get("total estimated time")
@@ -676,30 +922,31 @@ def summarize_and_check(path, force):
     bed_cmd = commanded_bed_temp(zipfile.ZipFile(path))
 
     print("--- Sliced job summary ------------------------------------")
-    print(f"  printer profile : {printer}")
+    print(f"  target printer  : {printer['label']}")
+    print(f"  printer profile : {profile_id}")
     print(f"  estimated time  : {est_time}")
     print(f"  filament [g]    : {weight}")
     print(f"  build plate     : {plate}")
     print(f"  bed temp commanded (first M190/M140) : "
           f"{bed_cmd if bed_cmd is not None else '?'} C "
-          f"(A1 mini max {A1_MINI_MAX_BED_C})")
+          f"({printer['label']} max {max_bed})")
     print(f"  nozzle temp     : {nozzle if nozzle is not None else '?'} C "
-          f"(A1 mini max {A1_MINI_MAX_NOZZLE_C})")
+          f"({printer['label']} max {max_nozzle})")
     print("------------------------------------------------------------")
 
     problems = []
-    if bed is not None and bed > A1_MINI_MAX_BED_C:
-        problems.append(f"bed {bed} C > printer max {A1_MINI_MAX_BED_C} C")
-    if nozzle is not None and nozzle > A1_MINI_MAX_NOZZLE_C:
+    if bed is not None and bed > max_bed:
+        problems.append(f"bed {bed} C > printer max {max_bed} C")
+    if nozzle is not None and nozzle > max_nozzle:
         problems.append(f"nozzle {nozzle} C > printer max "
-                        f"{A1_MINI_MAX_NOZZLE_C} C")
+                        f"{max_nozzle} C")
     if bed is None or nozzle is None:
         print("WARN: could not read temperature setpoints from the G-code "
               "header - unusual for a BambuStudio slice; inspect the file.")
     if bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
         problems.append(
             f"commanded first-layer bed temp is only {bed_cmd} C (plate "
-            f"type {plate!r}) - nothing adheres to the textured PEI sheet "
+            f"type {plate!r}) - nothing adheres to the build plate "
             "below ~45 C and the job GHOST-PRINTS (runs the motions with "
             "nothing staying on the bed; field-seen on Thumbelina "
             "2026-07-27 with the CLI's Cool Plate 35 C default). Re-slice "
@@ -748,7 +995,7 @@ def check_filament_load(path, force):
         sys.exit("ERROR: " + msg + ". Pass --force to send it anyway.")
 
 
-# --- A1-mini payload sanity check --------------------------------------------
+# --- wrong-printer payload sanity check --------------------------------------
 # Same gate as a1_mini_send_print.py (kept in sync); here it runs on OUR
 # OWN slicer output, catching a wrong-printer profile bundle before
 # upload. It reads the CONFIG_BLOCK's identity fields - it must NOT grep
@@ -756,7 +1003,8 @@ def check_filament_load(path, force):
 # writes into EVERY printer's G-code, A1 mini included (the old
 # substring check false-positived on every legitimate A1-mini slice;
 # found in Thumbelina field testing, PR #23).
-def check_payload(path, force):
+def check_payload(path, force, printer=None):
+    printer = printer or PRINTERS["a1mini"]
     warnings = []
     try:
         zf = zipfile.ZipFile(path)
@@ -769,18 +1017,21 @@ def check_payload(path, force):
     meta = read_gcode_metadata(zf)
     model = meta.get("printer_model") or meta.get("printer_settings_id") or ""
     # filament_map assigns each filament to an extruder; any value >= 2
-    # means the job uses a second extruder, which the A1 mini lacks.
+    # means the job uses a second extruder, which only an IDEX printer
+    # (the H2D here) has.
     map_values = [int(v) for v in
                   re.findall(r"\d+", meta.get("filament_map", ""))]
 
     problem = None
-    if model and "A1 mini" not in model:
-        problem = (f'{path} is sliced for "{model}", not an A1 mini - the '
-                   "profile JSONs you loaded are not A1-mini profiles")
-    elif any(v >= 2 for v in map_values):
+    if model and not any(m in model.lower() for m in printer["match"]):
+        problem = (f'{path} is sliced for "{model}", not a '
+                   f"{printer['label']} - the profile JSONs you loaded "
+                   f"are not {printer['label']} profiles")
+    elif not printer["idex"] and any(v >= 2 for v in map_values):
         problem = (f"{path} maps filaments to a second extruder "
                    f"(filament_map = {meta.get('filament_map')}) - a "
-                   "dual-extruder (H2D/IDEX) slice")
+                   "dual-extruder (H2D/IDEX) slice sent at a "
+                   "single-extruder printer")
     if problem:
         if force:
             warnings.append("WARN (--force): " + problem + ".")
@@ -855,7 +1106,8 @@ def filament_slots_used(zf, plate=1):
     return sorted(tools) or None
 
 
-def apply_payload_ams(path, use_ams, ams_mapping, explicit_no_ams, force):
+def apply_payload_ams(path, use_ams, ams_mapping, explicit_no_ams, force,
+                      idex=False):
     """Reconcile the AMS knobs with what the sliced file actually needs.
 
     The file knows: a job that consumes project filament slot N > 1 can
@@ -872,6 +1124,17 @@ def apply_payload_ams(path, use_ams, ams_mapping, explicit_no_ams, force):
     except (OSError, zipfile.BadZipFile, KeyError):
         return use_ams, ams_mapping
     if not slots:
+        return use_ams, ams_mapping
+    if idex:
+        # The slot>1-implies-AMS inference is single-extruder logic: on
+        # the H2D "slot 2" normally means the SECOND EXTERNAL SPOOL /
+        # right tool (this script's IDEX recipe maps filaments 1,2 to
+        # the two tools), not an AMS tray. Report what the slice uses
+        # and honour the explicit --use-ams/--ams-mapping flags as
+        # given.
+        print(f"Payload filament slots in use: {slots} (IDEX job - "
+              "tools, not AMS trays; set --use-ams/--ams-mapping "
+              "explicitly if feeding from an AMS).")
         return use_ams, ams_mapping
     expected = [s - 1 for s in slots]
     print(f"Payload filament slots in use: {slots} (-> AMS tray indices "
@@ -1197,26 +1460,87 @@ def start_and_watch(ip, code, serial, remote_name, remote_dir, use_ams,
     return 3
 
 
+def env_first(*names):
+    """First non-empty of several env vars - the A1_MINI_* names came
+    first historically; H2D_*/BAMBU_* work too now the script drives
+    both printers."""
+    for n in names:
+        v = os.environ.get(n)
+        if v:
+            return v
+    return None
+
+
+def discover_profiles(printer, input_path, machine, process, filament):
+    """Fill in missing profile paths from flatten_bambu_profiles.py's
+    standard filenames (<prefix>_{machine,process,filament}_flat.json),
+    searched next to the input file, in the CWD, then next to this
+    script. Explicitly given paths always win."""
+    search_dirs = [os.path.dirname(os.path.abspath(input_path)),
+                   os.getcwd(),
+                   os.path.dirname(os.path.abspath(__file__))]
+    found = {}
+    for role, current in (("machine", machine), ("process", process),
+                          ("filament", filament)):
+        if current:
+            found[role] = current
+            continue
+        name = f"{printer['profile_prefix']}_{role}_flat.json"
+        for d in search_dirs:
+            candidate = os.path.join(d, name)
+            if os.path.isfile(candidate):
+                found[role] = candidate
+                print(f"Profile auto-discovered: {role} -> {candidate}")
+                break
+        else:
+            found[role] = current
+    return found["machine"], found["process"], found["filament"]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("file", nargs="?", default=None,
                         help="STL or project .3mf to slice (overrides "
                         "FILE_TO_SLICE at the top of this script)")
-    parser.add_argument("--ip", default=os.environ.get("A1_MINI_IP"))
-    parser.add_argument("--access-code", default=os.environ.get("A1_MINI_ACCESS_CODE"))
-    parser.add_argument("--serial", default=os.environ.get("A1_MINI_SERIAL"))
-    parser.add_argument("--slicer", default=os.environ.get("A1_MINI_SLICER"),
+    parser.add_argument("--ip", default=env_first(
+        "A1_MINI_IP", "H2D_IP", "BAMBU_IP"))
+    parser.add_argument("--access-code", default=env_first(
+        "A1_MINI_ACCESS_CODE", "H2D_ACCESS_CODE", "BAMBU_ACCESS_CODE"))
+    parser.add_argument("--serial", default=env_first(
+        "A1_MINI_SERIAL", "H2D_SERIAL", "BAMBU_SERIAL"))
+    parser.add_argument("--printer", default=None,
+                        help="a1mini | h2d | auto (default from PRINTER, "
+                        f"currently {PRINTER!r}). auto = detect from the "
+                        "serial-number model prefix, falling back to the "
+                        "machine profile JSON")
+    parser.add_argument("--slicer", default=env_first(
+        "A1_MINI_SLICER", "H2D_SLICER", "BAMBU_SLICER"),
                         help="BambuStudio binary/AppImage (overrides "
                         "SLICER_CMD)")
     parser.add_argument("--machine", default=None,
-                        help="flattened A1-mini machine JSON (overrides "
-                        "MACHINE_JSON)")
+                        help="flattened machine JSON for the target "
+                        "printer (overrides MACHINE_JSON; auto-discovered "
+                        "from <prefix>_machine_flat.json if unset)")
     parser.add_argument("--process", default=None,
-                        help="flattened A1-mini process JSON (overrides "
-                        "PROCESS_JSON)")
+                        help="flattened process JSON (overrides "
+                        "PROCESS_JSON; auto-discovered if unset)")
     parser.add_argument("--filament", default=None,
-                        help="flattened A1-mini filament JSON (overrides "
-                        "FILAMENT_JSON)")
+                        help="flattened filament JSON (overrides "
+                        "FILAMENT_JSON; auto-discovered if unset)")
+    parser.add_argument("--supports", choices=("off", "normal", "tree"),
+                        default=None,
+                        help="support generation for this run: off, or "
+                        "auto-placed normal/tree supports (the slicer "
+                        "itself decides WHERE from the overhang "
+                        "threshold). Default: whatever the process "
+                        "profile says (stock Bambu profiles: off)")
+    parser.add_argument("--set", action="append", default=[],
+                        metavar="KEY=VALUE", dest="set_overrides",
+                        help="override a whitelisted process setting for "
+                        "this run (repeatable), e.g. --set "
+                        "sparse_infill_density=25%% --set "
+                        "layer_height=0.28. Allowed keys: "
+                        + ", ".join(sorted(SETTABLE_PROCESS_KEYS)))
     parser.add_argument("--no-arrange", action="store_true",
                         help="skip --orient/--arrange (use for project "
                         "3MFs whose plate layout you want kept)")
@@ -1269,7 +1593,8 @@ def main():
                         '--use-ams)')
     parser.add_argument("--force", action="store_true",
                         help="proceed even if the sliced job looks wrong "
-                        "for an A1 mini")
+                        "for the selected printer, or the printer "
+                        "identity checks disagree")
     parser.add_argument("--yes", action="store_true",
                         help="skip the summary confirmation prompt "
                         "(read the RISKS note in this file first)")
@@ -1323,30 +1648,58 @@ def main():
 
     bed_type = normalize_bed_type(
         args.bed_type if args.bed_type is not None else BED_TYPE)
+    overrides = parse_process_overrides(args.set_overrides, args.supports)
 
     kind = classify_input(path)
+
+    printer, source = select_printer(args.printer or PRINTER, serial,
+                                     machine, args.force)
+    print(f"Printer: {printer['label']} (selected via {source})")
+
     if kind == "stl":
+        # Auto-discovery only for STL input: a project 3MF carries its
+        # own settings, and silently discovering profiles would override
+        # them (CLI precedence) behind the user's back.
+        machine, process, filament = discover_profiles(
+            printer, path, machine, process, filament)
         check_stl_units(path, args.scale, args.force)
     if kind == "project_3mf" and (machine or process or filament):
         print("NOTE: --load-settings/--load-filaments OVERRIDE the "
               "settings embedded in the project 3MF (CLI precedence). "
               "Clear the profile fields to slice with the 3MF's own "
               "settings.")
+    if machine:
+        from_profile = printer_from_machine_json(machine)
+        if from_profile and from_profile != printer["key"]:
+            msg = (f"machine profile {machine} targets "
+                   f"{PRINTERS[from_profile]['label']}, but the selected "
+                   f"printer is {printer['label']}")
+            if args.force:
+                print("WARN (--force): " + msg + ".")
+            else:
+                sys.exit("ERROR: " + msg + ". Point --machine/--process/"
+                         "--filament at the "
+                         f"{printer['profile_prefix']}_*_flat.json set "
+                         "(python scripts/flatten_bambu_profiles.py --for "
+                         f"{printer['profile_prefix']} ...), or pass "
+                         "--force.")
 
     sliced, out_dir = slice_headless(
         slicer, path, kind, machine, process, filament,
         arrange=not args.no_arrange, timeout_s=args.slice_timeout,
-        keep_dir=args.keep_output, scale=args.scale, bed_type=bed_type)
+        keep_dir=args.keep_output, scale=args.scale, bed_type=bed_type,
+        printer=printer, overrides=overrides)
     try:
-        summarize_and_check(sliced, args.force)
+        summarize_and_check(sliced, args.force, printer)
         check_filament_load(sliced, args.force)
-        for warning in check_payload(sliced, args.force):
+        for warning in check_payload(sliced, args.force, printer):
             print(warning)
 
         # The sliced file, not this script's constants, is the authority
         # on whether an AMS tray has to be loaded (see apply_payload_ams).
         use_ams, ams_mapping = apply_payload_ams(
-            sliced, use_ams, ams_mapping, args.use_ams is False, args.force)
+            sliced, use_ams, ams_mapping, args.use_ams is False, args.force,
+            idex=printer["idex"])
         if not use_ams:
             ams_mapping = ""
 
@@ -1405,12 +1758,12 @@ def main():
             return 0
 
         if use_ams:
-            print(f"Filament source: AMS lite, tray mapping "
+            print(f"Filament source: AMS, tray mapping "
                   f"{ams_mapping or '(printer default)'} (0-indexed).")
         else:
             print("Filament source: EXTERNAL spool holder (use_ams "
-                  "false). If your filament is actually loaded in the "
-                  "AMS lite, pass --use-ams --ams-mapping <tray> or the "
+                  "false). If your filament is actually loaded in an "
+                  "AMS, pass --use-ams --ams-mapping <tray> or the "
                   "printer may run the job without feeding filament.")
         if not args.yes:
             answer = input(f"About to start a REAL print of {remote_name} "

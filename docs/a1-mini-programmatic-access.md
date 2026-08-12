@@ -1012,7 +1012,7 @@ from the Thumbelina bringup — with `--scale 1000` the run returned
 scripts' payload check, and summarizes to a sane 10 m 14 s / 3.94 g /
 bed 65 °C / nozzle 220 °C job.
 
-### One command from STL to print: `a1_mini_slice_and_send.py`
+### One command from STL to print: `a1_mini_slice_and_send.py` (A1 mini **and** H2D)
 
 The checked-in
 [`scripts/a1_mini_slice_and_send.py`](../scripts/a1_mini_slice_and_send.py)
@@ -1023,7 +1023,52 @@ a G-code-header summary (printer profile, estimated time, filament
 grams, temperatures), then feeds the result through the same verified
 FTPS-upload + `print.project_file` + `gcode_state`-watch pipeline.
 Same fill-in-the-placeholders pattern as the send script, plus fields
-for the slicer binary and the three flattened profile JSONs:
+for the slicer binary and the three flattened profile JSONs.
+
+**Since 2026-08-12 the script drives both lab printers** (the filename
+keeps its A1-mini name so existing commands/links stay valid). Leave
+`PRINTER = "auto"` and it detects the model from the serial number's
+prefix (`030...` = A1 mini, `094...` = H2D — the community
+serial→model mapping, H2D-prefix field-confirmed in this PR), falling
+back to the machine profile JSON's own name; `--printer a1mini|h2d`
+pins it. Everything model-specific follows automatically:
+
+- **Slicer flags** — the H2D gets the verified IDEX recipe
+  (`--filament-map-mode Manual --filament-map "1,2" --slice 1`,
+  filament profile loaded once per tool); the A1 mini gets the plain
+  single-extruder `--slice 0` form.
+- **Profile discovery** — empty `MACHINE/PROCESS/FILAMENT_JSON` fields
+  are auto-filled from `a1mini_*_flat.json` / `h2d_*_flat.json` (the
+  `flatten_bambu_profiles.py` naming; generate the H2D trio with
+  `python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...`)
+  found next to the input file, in the current directory, or next to
+  the script.
+- **Sanity limits and wrong-printer checks** use the selected
+  printer's numbers (A1 mini: bed ≤ 80 °C / nozzle ≤ 300 °C; H2D:
+  110 / 350), and every identity source is cross-checked: a serial
+  that says A1 mini refuses H2D profiles (and vice versa), so you
+  can't slice for one machine and send to the other without `--force`.
+
+Per-run setting tweaks without editing any JSON — a base profile plus
+a small whitelisted patch, applied to a *copy* of the process profile
+at slice time:
+
+```bash
+python scripts/a1_mini_slice_and_send.py part.stl --supports tree     # auto-placed tree supports
+python scripts/a1_mini_slice_and_send.py part.stl --supports off      # force supports off
+python scripts/a1_mini_slice_and_send.py part.stl \
+    --set sparse_infill_density=25% --set layer_height=0.28           # whitelisted --set keys
+```
+
+Both slice paths were verified against the real BambuStudio
+v02.06.00.51 CLI in CI (2026-08-12): H2D auto-detected from a
+`0947...` serial → `return_code 0`, `filament_map = 1,2` Manual IDEX
+header, 55 °C Textured-PEI bed; A1 mini with `--supports tree --set
+sparse_infill_density=25%` → `return_code 0` with `enable_support =
+1` / `support_type = tree(auto)` / `sparse_infill_density = 25%` in
+the sliced G-code. (Not yet verified: printing a *dual-printer-script*
+slice on the physical machines — treat the first run as supervised,
+as usual.)
 
 ```bash
 pip install paho-mqtt

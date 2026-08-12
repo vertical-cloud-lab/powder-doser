@@ -26,11 +26,13 @@
   the dependency-light raw FTPS+MQTT fallback and
   [`scripts/a1_mini_slice_and_send.py`](scripts/a1_mini_slice_and_send.py)
   for STL input — it first slices an STL/project-3MF headlessly with
-  the BambuStudio CLI (risks of the no-preview flow are documented in
-  the A1-mini doc).
+  the BambuStudio CLI and since 2026-08 drives **both** the A1 mini
+  and the H2D, auto-detecting the target printer from the serial
+  number and switching profiles/IDEX flags/limits accordingly (risks
+  of the no-preview flow are documented in the A1-mini doc).
   [`scripts/flatten_bambu_profiles.py`](scripts/flatten_bambu_profiles.py)
   generates the flattened profile JSONs the CLI slicing flow needs
-  from any installed Bambu Studio, and
+  from any installed Bambu Studio (`--for h2d` for the H2D bundle), and
   [`scripts/bambu_camera_check.py`](scripts/bambu_camera_check.py)
   grabs a still from the printer's own camera to check the plate is
   clear before a job (also available inline as `--camera-check`).

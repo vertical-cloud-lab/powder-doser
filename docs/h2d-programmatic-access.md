@@ -1369,6 +1369,19 @@ exercise:
   [`payloads/cube_h2d.gcode.3mf`](../payloads/cube_h2d.gcode.3mf) has
   been repaired. A1-mini doc field note 19 has the full story.
 
+**This whole recipe is packaged in
+[`scripts/a1_mini_slice_and_send.py`](../scripts/a1_mini_slice_and_send.py)**
+(dual-printer since 2026-08-12 — the filename keeps its A1-mini name
+for continuity): give it an STL and the H2D's serial and it
+auto-detects the printer from the `094...` serial prefix, auto-loads
+`h2d_*_flat.json` profiles (generate them with
+`python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...`),
+applies the Manual filament-map / `--slice 1` flags above, checks the
+result against H2D hardware limits, and uploads/starts it over the
+verified FTPS + MQTT path. Verified against the real v02.06.00.51 CLI
+in CI (return_code 0, `filament_map = 1,2` Manual header); not yet
+exercised through to a physical H2D print.
+
 ### 2. OrcaSlicer CLI
 
 OrcaSlicer is a Bambu Studio fork and accepts the same general CLI

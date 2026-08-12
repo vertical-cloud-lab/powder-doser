@@ -22,13 +22,16 @@ system presets bundled with an installed Bambu Studio:
 
 Defaults produce the A1-mini trio used by a1_mini_slice_and_send.py
 (a1mini_machine_flat.json / a1mini_process_flat.json /
-a1mini_filament_flat.json in the current directory). Other printers
-work too, e.g. for the H2D:
+a1mini_filament_flat.json in the current directory). `--for h2d`
+switches the whole bundle to the H2D presets/prefix in one flag:
 
-    python flatten_bambu_profiles.py --studio-dir ... --prefix h2d \
-        --printer "Bambu Lab H2D 0.4 nozzle" \
-        --process "0.20mm Standard @BBL H2D" \
-        --filament "Bambu PLA Basic @BBL H2D"
+    python flatten_bambu_profiles.py --for h2d --studio-dir ...
+
+and any preset can still be swapped individually, e.g. a different
+material:
+
+    python flatten_bambu_profiles.py --filament "Bambu PETG Basic @BBL A1M" \
+        --prefix a1mini_petg --studio-dir ...
 
 It walks each preset's `inherits` chain upward through the bundled
 `resources/profiles/BBL/` tree, merges child-over-parent, and applies
@@ -55,12 +58,24 @@ import os
 import re
 import sys
 
-DEFAULTS = {
-    "printer": "Bambu Lab A1 mini 0.4 nozzle",
-    "process": "0.20mm Standard @BBL A1M",
-    "filament": "Bambu PLA Basic @BBL A1M",
-    "prefix": "a1mini",
+# Preset bundles selectable with --for; a1mini stays the default so
+# every existing command keeps working. Prefixes match the auto-
+# discovery in a1_mini_slice_and_send.py (<prefix>_machine_flat.json).
+BUNDLES = {
+    "a1mini": {
+        "printer": "Bambu Lab A1 mini 0.4 nozzle",
+        "process": "0.20mm Standard @BBL A1M",
+        "filament": "Bambu PLA Basic @BBL A1M",
+        "prefix": "a1mini",
+    },
+    "h2d": {
+        "printer": "Bambu Lab H2D 0.4 nozzle",
+        "process": "0.20mm Standard @BBL H2D",
+        "filament": "Bambu PLA Basic @BBL H2D",
+        "prefix": "h2d",
+    },
 }
+DEFAULTS = BUNDLES["a1mini"]
 
 
 def find_profiles_dir(studio_dir):
@@ -190,22 +205,31 @@ def main():
                         help="Bambu Studio install root / extracted "
                         "AppImage / .app bundle (or the resources/profiles "
                         "dir directly)")
-    parser.add_argument("--printer", default=DEFAULTS["printer"],
+    parser.add_argument("--for", dest="bundle", choices=sorted(BUNDLES),
+                        default="a1mini",
+                        help="preset bundle to flatten: a1mini (default) "
+                        "or h2d - sets --printer/--process/--filament/"
+                        "--prefix in one go; explicit flags still win")
+    parser.add_argument("--printer", default=None,
                         help=f'machine preset name (default: '
                         f'"{DEFAULTS["printer"]}")')
-    parser.add_argument("--process", default=DEFAULTS["process"],
+    parser.add_argument("--process", default=None,
                         help=f'process preset name (default: '
                         f'"{DEFAULTS["process"]}")')
-    parser.add_argument("--filament", default=DEFAULTS["filament"],
+    parser.add_argument("--filament", default=None,
                         help=f'filament preset name (default: '
                         f'"{DEFAULTS["filament"]}")')
-    parser.add_argument("--prefix", default=DEFAULTS["prefix"],
+    parser.add_argument("--prefix", default=None,
                         help='output filename prefix (default: '
                         f'"{DEFAULTS["prefix"]}")')
     parser.add_argument("--outdir", default=".",
                         help="where to write the flattened JSONs "
                         "(default: current directory)")
     args = parser.parse_args()
+    bundle = BUNDLES[args.bundle]
+    for field in ("printer", "process", "filament", "prefix"):
+        if getattr(args, field) is None:
+            setattr(args, field, bundle[field])
 
     profiles_dir = find_profiles_dir(args.studio_dir)
     print(f"using profiles from: {profiles_dir}")
