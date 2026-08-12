@@ -80,6 +80,8 @@ coarse/free-flowing (measured feed factor ~0.17 g/rev @ 25° tilt,
 | 2026-07-31 17:05 | Wide-angle single-tap characterization: 24 trials (8 tilts 0–70° × 3 reps), each 1 priming revolution + 10 single taps → **3.634 g** dispensed total ([data](../data/tap-characterization/2026-07-31_salt_angles/)) | ≈ 49.7 g |
 | 2026-08-07 (before 19:30) | **Refilled** by @williamulbz; total tube+salt mass estimated **≈ 120 g** — *not weighable*: it exceeds the scale's 102 g capacity, so this is an estimate, not a weighed anchor → 120 − 56.716 ≈ **63.3 g** (±10 g given the eyeball total) | ≈ 63.3 g (est.) |
 | 2026-08-07 19:30 | Rapid-dispense stop-response characterization: 10 trials (25–70° tilt × 2 reps), 55 rpm + tap-while-rotating to first 0.5 g reading then all-stop → **6.30 g** dispensed total incl. one 25 mg tilt-move release ([data](../data/stop-response/2026-08-07_salt/)) | ≈ 57.0 g (est.) |
+| 2026-08-12 23:16 | **Refilled and weighed** by @williamulbz: tube + salt = **127.98 g** → 127.98 − 56.716 = **71.26 g of salt**. Above the scale's 102 g capacity, so this is a bench-scale weighing, not from the doser's balance. | **71.26 g (weighed)** |
+| 2026-08-12 23:16 | Afterflow battery (C6–C8/B4), **interrupted at operator request** after 18 of 55 planned trials (all C6, tilt 40/55/70° × halt 0.3/0.6 g, tap-while-rotating) → **≈ 10.16 g** dispensed total (cum 9.42 g at trial 18 start + ~0.74 g into trial 18 when stopped); [partial log](../data/afterflow/2026-08-12_salt/afterflow_battery_partial_salt.log). Hardware then disconnected by @williamulbz for manual reset. | ≈ 61.1 g (est.) |
 
 At salt's measured ~0.17 g/rev (25° tilt), ~93 g is roughly **90×
 1 g doses** — the tube will not run dry for a long time. Any "hopper
