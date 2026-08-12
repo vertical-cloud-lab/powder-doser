@@ -23,15 +23,24 @@ system presets bundled with an installed Bambu Studio:
 Defaults produce the A1-mini trio used by a1_mini_slice_and_send.py
 (a1mini_machine_flat.json / a1mini_process_flat.json /
 a1mini_filament_flat.json in the current directory). `--for h2d`
-switches the whole bundle to the H2D presets/prefix in one flag:
+switches the whole bundle to the H2D presets/prefix in one flag, and
+`--for tensegrity` grabs the lab's "Tensegrity-inspired" H2D setup
+(0.6 mm nozzles both tools, PLA left / TPU 85A right via the TPU
+assist module - writes a fourth file, tensegrity_filament2_flat.json,
+for the right tool):
 
     python flatten_bambu_profiles.py --for h2d --studio-dir ...
+    python flatten_bambu_profiles.py --for tensegrity --studio-dir ...
 
 and any preset can still be swapped individually, e.g. a different
-material:
+material (repeat --filament for the two tools of the H2D; the first is
+the LEFT extruder, the second the RIGHT):
 
     python flatten_bambu_profiles.py --filament "Bambu PETG Basic @BBL A1M" \
         --prefix a1mini_petg --studio-dir ...
+    python flatten_bambu_profiles.py --for tensegrity \
+        --filament "Bambu PETG Basic @BBL H2D 0.6 nozzle" \
+        --filament "Bambu TPU 85A @BBL H2D" --studio-dir ...
 
 It walks each preset's `inherits` chain upward through the bundled
 `resources/profiles/BBL/` tree, merges child-over-parent, and applies
@@ -61,18 +70,39 @@ import sys
 # Preset bundles selectable with --for; a1mini stays the default so
 # every existing command keeps working. Prefixes match the auto-
 # discovery in a1_mini_slice_and_send.py (<prefix>_machine_flat.json).
+# "filaments" is ordered: with the verified IDEX recipe
+# (--filament-map "1,2") filament 1 feeds the LEFT extruder and
+# filament 2 the RIGHT one, so order here is a physical statement.
 BUNDLES = {
     "a1mini": {
         "printer": "Bambu Lab A1 mini 0.4 nozzle",
         "process": "0.20mm Standard @BBL A1M",
-        "filament": "Bambu PLA Basic @BBL A1M",
+        "filaments": ["Bambu PLA Basic @BBL A1M"],
         "prefix": "a1mini",
     },
     "h2d": {
         "printer": "Bambu Lab H2D 0.4 nozzle",
         "process": "0.20mm Standard @BBL H2D",
-        "filament": "Bambu PLA Basic @BBL H2D",
+        "filaments": ["Bambu PLA Basic @BBL H2D"],
         "prefix": "h2d",
+    },
+    # The lab's "Tensegrity-inspired" H2D setup (PR #23, 2026-08-12):
+    # 0.6 mm nozzles on both tools, PLA (sometimes PETG) on the left
+    # from an AMS 2 Pro, TPU 85A on the right fed via the TPU assist
+    # module. "Bambu TPU 85A @BBL H2D" is the correct preset for it:
+    # its compatible_printers is exactly the 0.6/0.8-nozzle H2D (there
+    # is no separate 0.6 variant), it lists "Direct Drive TPU High
+    # Flow" (the assist module) among its extruder variants, and
+    # filament_printable = ["2"] pins it to the RIGHT extruder - which
+    # is why it must stay the SECOND filament here. PETG swap:
+    #   --for tensegrity --filament "Bambu PETG Basic @BBL H2D 0.6 nozzle" \
+    #                    --filament "Bambu TPU 85A @BBL H2D"
+    "tensegrity": {
+        "printer": "Bambu Lab H2D 0.6 nozzle",
+        "process": "0.30mm Standard @BBL H2D 0.6 nozzle",
+        "filaments": ["Bambu PLA Basic @BBL H2D 0.6 nozzle",  # left tool
+                      "Bambu TPU 85A @BBL H2D"],              # right tool
+        "prefix": "tensegrity",
     },
 }
 DEFAULTS = BUNDLES["a1mini"]
@@ -175,7 +205,8 @@ def merge_templates(flat, name, by_name):
     return merged
 
 
-def write_flat(role, name, by_name, out_path):
+def write_flat(role, name, by_name, out_path, machine_name=None,
+               filament_index=None, n_filaments=1):
     flat = flatten(name, by_name)
     merged = merge_templates(flat, name, by_name)
     # Identity patches so the CLI's compatibility check treats the file
@@ -190,6 +221,37 @@ def write_flat(role, name, by_name, out_path):
                   "material-load command - no template sidecars found? "
                   "Slices made with this profile will NOT load filament "
                   "and will ghost-print (run the motions dry).")
+    # A process/filament preset carries its own list of printers it is
+    # willing to slice for; a mismatch here is exactly the "process not
+    # compatible with printer" (-17) / "cannot be mapped" (-66) CLI
+    # failure, so surface it at generation time instead.
+    compat = flat.get("compatible_printers")
+    if machine_name and compat and machine_name not in compat:
+        print(f"WARN: {role} preset {name!r} does not list the machine "
+              f"preset {machine_name!r} in compatible_printers {compat} - "
+              "the CLI will likely refuse this combination. Pick a "
+              f"matching preset (e.g. one named for the same nozzle).")
+    # filament_printable pins a filament to specific extruders (bitmask:
+    # 1 = left/extruder 1, 2 = right/extruder 2, 3 = both). With the
+    # verified IDEX recipe filament N feeds extruder N, so a restricted
+    # filament in the wrong list position can never slice.
+    printable = flat.get("filament_printable")
+    if role == "filament" and printable and filament_index:
+        try:
+            mask = int(printable[0])
+        except (TypeError, ValueError, IndexError):
+            mask = None
+        if mask is not None and mask in (1, 2):
+            sides = [s for bit, s in ((1, "left"), (2, "right")) if mask & bit]
+            print(f"NOTE: {name!r} is only printable on the "
+                  f"{' and '.join(sides)} extruder "
+                  f"(filament_printable = {printable}).")
+            if n_filaments > 1 and not mask & (1 << (filament_index - 1)):
+                print(f"WARN: as filament {filament_index} it would map to "
+                      f"extruder {filament_index} under --filament-map "
+                      "\"1,2\", which this preset forbids - reorder the "
+                      "--filament flags (restricted filaments like TPU 85A "
+                      "belong in the position of their required extruder).")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(flat, f, indent=2)
     extra = f", templates merged: {sorted(set(merged))}" if merged else ""
@@ -207,18 +269,23 @@ def main():
                         "dir directly)")
     parser.add_argument("--for", dest="bundle", choices=sorted(BUNDLES),
                         default="a1mini",
-                        help="preset bundle to flatten: a1mini (default) "
-                        "or h2d - sets --printer/--process/--filament/"
-                        "--prefix in one go; explicit flags still win")
+                        help="preset bundle to flatten: a1mini (default), "
+                        "h2d (0.4 nozzle), or tensegrity (the lab's H2D "
+                        "0.6-nozzle PLA-left/TPU-85A-right setup) - sets "
+                        "--printer/--process/--filament/--prefix in one "
+                        "go; explicit flags still win")
     parser.add_argument("--printer", default=None,
                         help=f'machine preset name (default: '
                         f'"{DEFAULTS["printer"]}")')
     parser.add_argument("--process", default=None,
                         help=f'process preset name (default: '
                         f'"{DEFAULTS["process"]}")')
-    parser.add_argument("--filament", default=None,
-                        help=f'filament preset name (default: '
-                        f'"{DEFAULTS["filament"]}")')
+    parser.add_argument("--filament", action="append", default=None,
+                        help="filament preset name; repeat the flag for a "
+                        "dual-extruder job - the first goes to the LEFT "
+                        "tool (written as <prefix>_filament_flat.json), "
+                        "the second to the RIGHT (<prefix>_filament2_"
+                        f'flat.json). Default: {DEFAULTS["filaments"]}')
     parser.add_argument("--prefix", default=None,
                         help='output filename prefix (default: '
                         f'"{DEFAULTS["prefix"]}")')
@@ -227,9 +294,13 @@ def main():
                         "(default: current directory)")
     args = parser.parse_args()
     bundle = BUNDLES[args.bundle]
-    for field in ("printer", "process", "filament", "prefix"):
+    for field in ("printer", "process", "prefix"):
         if getattr(args, field) is None:
             setattr(args, field, bundle[field])
+    filaments = args.filament or bundle["filaments"]
+    if len(filaments) > 2:
+        parser.error("at most two --filament presets are supported (one "
+                     "per extruder of the dual-tool H2D).")
 
     profiles_dir = find_profiles_dir(args.studio_dir)
     print(f"using profiles from: {profiles_dir}")
@@ -238,19 +309,36 @@ def main():
     os.makedirs(args.outdir, exist_ok=True)
     prefix = re.sub(r"[^A-Za-z0-9._-]+", "_", args.prefix)
     outputs = {}
-    for role, name in [("machine", args.printer),
-                       ("process", args.process),
-                       ("filament", args.filament)]:
+    for role, name in [("machine", args.printer), ("process", args.process)]:
         out_path = os.path.join(args.outdir, f"{prefix}_{role}_flat.json")
-        outputs[role] = write_flat(role, name, by_name, out_path)
+        outputs[role] = write_flat(role, name, by_name, out_path,
+                                   machine_name=args.printer)
+    for i, name in enumerate(filaments, start=1):
+        role = "filament" if i == 1 else f"filament{i}"
+        out_path = os.path.join(args.outdir, f"{prefix}_{role}_flat.json")
+        outputs[role] = write_flat("filament", name, by_name, out_path,
+                                   machine_name=args.printer,
+                                   filament_index=i,
+                                   n_filaments=len(filaments))
 
     print("\nReady to slice, e.g.:")
-    print(f'  bambu-studio --orient 1 --arrange 1 '
-          f'--load-settings "{outputs["machine"]};{outputs["process"]}" '
-          f'--load-filaments "{outputs["filament"]}" '
-          f'--slice 0 --export-3mf part.gcode.3mf --outputdir out part.stl')
-    print("or fill MACHINE_JSON/PROCESS_JSON/FILAMENT_JSON in "
-          "a1_mini_slice_and_send.py with the paths above.")
+    if len(filaments) > 1:
+        # Dual-extruder: the verified H2D recipe (Manual map, filament N
+        # -> extruder N, plate 1 explicitly - PR #23).
+        print(f'  bambu-studio --orient 1 --arrange 1 '
+              f'--load-settings "{outputs["machine"]};{outputs["process"]}" '
+              f'--load-filaments "{outputs["filament"]};{outputs["filament2"]}" '
+              f'--filament-map-mode Manual --filament-map "1,2" '
+              f'--slice 1 --export-3mf part.gcode.3mf --outputdir out part.stl')
+    else:
+        print(f'  bambu-studio --orient 1 --arrange 1 '
+              f'--load-settings "{outputs["machine"]};{outputs["process"]}" '
+              f'--load-filaments "{outputs["filament"]}" '
+              f'--slice 0 --export-3mf part.gcode.3mf --outputdir out part.stl')
+    print("or fill MACHINE_JSON/PROCESS_JSON/FILAMENT_JSON"
+          + ("/FILAMENT2_JSON" if len(filaments) > 1 else "")
+          + " in a1_mini_slice_and_send.py with the paths above (it "
+          "auto-discovers them by filename if left empty).")
     return 0
 
 

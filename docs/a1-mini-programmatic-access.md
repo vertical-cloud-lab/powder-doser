@@ -1034,15 +1034,23 @@ back to the machine profile JSON's own name; `--printer a1mini|h2d`
 pins it. Everything model-specific follows automatically:
 
 - **Slicer flags** — the H2D gets the verified IDEX recipe
-  (`--filament-map-mode Manual --filament-map "1,2" --slice 1`,
-  filament profile loaded once per tool); the A1 mini gets the plain
-  single-extruder `--slice 0` form.
-- **Profile discovery** — empty `MACHINE/PROCESS/FILAMENT_JSON` fields
-  are auto-filled from `a1mini_*_flat.json` / `h2d_*_flat.json` (the
-  `flatten_bambu_profiles.py` naming; generate the H2D trio with
-  `python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...`)
-  found next to the input file, in the current directory, or next to
-  the script.
+  (`--filament-map-mode Manual --filament-map "1,2" --slice 1`, one
+  filament profile per tool); the A1 mini gets the plain
+  single-extruder `--slice 0` form. Since 2026-08-12 the two tools can
+  run **different materials**: a second filament profile
+  (`FILAMENT2_JSON` / `--filament2`) feeds the RIGHT extruder — the
+  lab's "Tensegrity-inspired" H2D setup (0.6 mm nozzles, PLA/PETG
+  left, TPU 85A right via the TPU assist module; see the
+  [H2D doc](h2d-programmatic-access.md#the-tensegrity-inspired-bundle-06-nozzles-pla-left--tpu-85a-right)).
+  With no second profile the left one runs both tools, as before.
+- **Profile discovery** — empty `MACHINE/PROCESS/FILAMENT_JSON` (and
+  `FILAMENT2_JSON`) fields are auto-filled from `a1mini_*_flat.json`,
+  or for the H2D `tensegrity_*_flat.json` first then `h2d_*_flat.json`
+  as the fallback, never mixing bundles (the
+  `flatten_bambu_profiles.py` naming; generate with
+  `python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...`
+  or `--for tensegrity` for the lab H2D's real setup) found next to
+  the input file, in the current directory, or next to the script.
 - **Sanity limits and wrong-printer checks** use the selected
   printer's numbers (A1 mini: bed ≤ 80 °C / nozzle ≤ 300 °C; H2D:
   110 / 350), and every identity source is cross-checked: a serial
@@ -1066,7 +1074,10 @@ v02.06.00.51 CLI in CI (2026-08-12): H2D auto-detected from a
 header, 55 °C Textured-PEI bed; A1 mini with `--supports tree --set
 sparse_infill_density=25%` → `return_code 0` with `enable_support =
 1` / `support_type = tree(auto)` / `sparse_infill_density = 25%` in
-the sliced G-code. (Not yet verified: printing a *dual-printer-script*
+the sliced G-code. The per-tool tensegrity bundle (PLA left + TPU 85A
+right on the 0.6-nozzle H2D profile, and its PETG-left variant) was
+likewise CLI-verified end-to-end: header `filament_type = PLA;TPU` /
+`PETG;TPU`, `nozzle_diameter = 0.6,0.6`, real `M620` load G-code. (Not yet verified: printing a *dual-printer-script*
 slice on the physical machines — treat the first run as supervised,
 as usual.)
 

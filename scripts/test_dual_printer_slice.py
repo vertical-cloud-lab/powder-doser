@@ -53,11 +53,13 @@ def run_exit(fn, *a, **k):
         return None, str(e), buf.getvalue()
 
 
-def make_sliced(path, model, fmap="1", bed=65, nozzle=220, load=True):
+def make_sliced(path, model, fmap="1", bed=65, nozzle=220, load=True,
+                ftype="PLA"):
     gcode = "\n".join([
         "; HEADER_BLOCK_START",
         f"; printer_model = {model}",
         f"; filament_map = {fmap}",
+        f"; filament_type = {ftype}",
         "; total filament weight [g] : 3.94",
         f"; nozzle_temperature = {nozzle}",
         f"; textured_plate_temp_initial_layer = {bed}",
@@ -194,6 +196,22 @@ def main():
     check("100 C bed is refused for the A1 mini (max 80)",
           err is not None and "printer max 80" in err)
 
+    # Low-bed jobs: TPU legitimately runs a 35 C textured-PEI bed
+    # (Bambu's own TPU 85A setting) - allowed with a NOTE; the same
+    # temperature on PLA is still the Cool Plate ghost-print trap.
+    tpu_cold = make_sliced(os.path.join(tmp, "tpu_cold.gcode.3mf"),
+                           "Bambu Lab H2D", fmap="1,2", bed=35,
+                           nozzle=225, ftype="TPU")
+    _, err, out = run_exit(mod.summarize_and_check, tpu_cold, False, H2D)
+    check("35 C bed allowed for an all-TPU job",
+          err is None and "TPU" in out and "Allowing" in out)
+    pla_cold = make_sliced(os.path.join(tmp, "pla_cold.gcode.3mf"),
+                           "Bambu Lab H2D", fmap="1,2", bed=35,
+                           ftype="PLA;TPU")
+    _, err, _ = run_exit(mod.summarize_and_check, pla_cold, False, H2D)
+    check("35 C bed still refused when PLA is in the job",
+          err is not None and "GHOST-PRINTS" in err)
+
     # IDEX jobs: the slot>1-implies-AMS inference must NOT auto-enable.
     r, err, out = run_exit(mod.apply_payload_ams, h2d_file, False, "",
                            False, False, True)
@@ -217,15 +235,37 @@ def main():
             json.dump({"name": "x"}, f)
     stl = os.path.join(tmp, "part.stl")
     open(stl, "wb").close()
-    (m, pr, fl), err, out = run_exit(mod.discover_profiles, A1, stl,
-                                     None, None, None)
+    (m, pr, fl, f2), err, out = run_exit(mod.discover_profiles, A1, stl,
+                                         None, None, None)
     check("profiles auto-discovered next to the input file",
           err is None and all(x and os.path.isfile(x) for x in (m, pr, fl))
-          and "auto-discovered" in out)
+          and f2 is None and "auto-discovered" in out)
     explicit = os.path.join(tmp, "h2d_machine_flat.json")
-    (m2, _, _), err, _ = run_exit(mod.discover_profiles, A1, stl,
-                                  explicit, None, None)
+    (m2, _, _, _), err, _ = run_exit(mod.discover_profiles, A1, stl,
+                                     explicit, None, None)
     check("explicit profile path beats discovery", m2 == explicit)
+
+    # H2D with only the generic h2d_* bundle on disk: found, and no
+    # filament2 (left profile then runs both tools).
+    for role in ("process", "filament"):
+        with open(os.path.join(tmp, f"h2d_{role}_flat.json"), "w") as f:
+            json.dump({"name": "x"}, f)
+    (m, pr, fl, f2), err, out = run_exit(mod.discover_profiles, H2D, stl,
+                                         None, None, None)
+    check("H2D falls back to the h2d_* bundle when no tensegrity files",
+          err is None and m and "h2d_machine" in m and f2 is None)
+    # Add a full tensegrity bundle: it wins over h2d_* (it is what is
+    # physically installed on the lab H2D), including the right-tool
+    # filament2, and prefixes are never mixed.
+    for role in ("machine", "process", "filament", "filament2"):
+        with open(os.path.join(tmp, f"tensegrity_{role}_flat.json"), "w") as f:
+            json.dump({"name": "Bambu Lab H2D 0.6 nozzle"}, f)
+    (m, pr, fl, f2), err, out = run_exit(mod.discover_profiles, H2D, stl,
+                                         None, None, None)
+    check("tensegrity bundle wins for the H2D, filament2 included",
+          err is None
+          and all(x and "tensegrity_" in x for x in (m, pr, fl, f2)))
+    check("no prefix mixing in discovery", "h2d_" not in (m + pr + fl + f2))
 
     # --- slicer command construction (stub slicer) ------------------------
     stub = os.path.join(tmp, "stub_slicer.py")
@@ -241,14 +281,14 @@ def main():
     with open(fil_json, "w") as f:
         json.dump({"name": "PLA"}, f)
 
-    def slicer_args(printer, overrides=None):
+    def slicer_args(printer, overrides=None, filament2=None):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             export, out_dir = mod.slice_headless(
                 stub, stl, "stl", h2d_machine, proc_json, fil_json,
                 arrange=True, timeout_s=60, keep_dir=True,
                 bed_type="Textured PEI Plate", printer=printer,
-                overrides=overrides or {})
+                overrides=overrides or {}, filament2=filament2)
         with open(os.path.join(out_dir, "args.json")) as f:
             args = json.load(f)
         return args, buf.getvalue()
@@ -262,6 +302,22 @@ def main():
           and args[args.index("--filament-map") + 1] == "1,2")
     check("H2D: --slice 1 (manual-map gating)",
           args[args.index("--slice") + 1] == "1")
+
+    # Per-tool filaments (Tensegrity-inspired: PLA left, TPU 85A right).
+    fil2_json = os.path.join(tmp, "fil2.json")
+    with open(fil2_json, "w") as f:
+        json.dump({"name": "TPU 85A"}, f)
+    args, out = slicer_args(H2D, filament2=fil2_json)
+    check("H2D: --filament2 gives left;right filament pair",
+          args[args.index("--load-filaments") + 1]
+          == f"{fil_json};{fil2_json}" and "Per-tool filaments" in out)
+    check("H2D: per-tool pair keeps Manual map 1,2",
+          args[args.index("--filament-map") + 1] == "1,2")
+    _, err, _ = run_exit(mod.slice_headless, stub, stl, "stl", h2d_machine,
+                         proc_json, fil_json, arrange=True, timeout_s=60,
+                         keep_dir=True, printer=A1, filament2=fil2_json)
+    check("--filament2 on a single-extruder printer is refused",
+          err is not None and "dual-extruder" in err)
 
     args, _ = slicer_args(A1)
     check("A1 mini: single filament profile, no IDEX flags",
@@ -279,6 +335,93 @@ def main():
           and cfg.get("support_type") == "tree(auto)"
           and cfg.get("curr_bed_type") == "Textured PEI Plate"
           and "Process overrides" in out)
+
+    # --- flattener: the tensegrity bundle ---------------------------------
+    fpath = os.path.join(HERE, "flatten_bambu_profiles.py")
+    fspec = importlib.util.spec_from_file_location("_uut_flatten", fpath)
+    fmod = importlib.util.module_from_spec(fspec)
+    sys.modules["_uut_flatten"] = fmod
+    fspec.loader.exec_module(fmod)
+
+    check("tensegrity bundle targets the 0.6-nozzle H2D",
+          fmod.BUNDLES["tensegrity"]["printer"] == "Bambu Lab H2D 0.6 nozzle")
+    check("tensegrity bundle: TPU 85A is the SECOND (right-tool) filament",
+          fmod.BUNDLES["tensegrity"]["filaments"][1] == "Bambu TPU 85A @BBL H2D")
+
+    # Synthetic profiles tree mirroring the real preset relationships
+    # (0.6 machine inherits the 0.4 one, whose template sidecar carries
+    # the real start G-code; TPU 85A pinned to extruder 2).
+    tree = os.path.join(tmp, "studio", "resources", "profiles", "BBL")
+    os.makedirs(tree, exist_ok=True)
+    presets = [
+        {"name": "Bambu Lab H2D 0.4 nozzle"},
+        {"name": "Bambu Lab H2D 0.4 nozzle template machine_start_gcode",
+         "machine_start_gcode": "M620 S[initial_extruder]A\nT[initial_extruder]"},
+        {"name": "Bambu Lab H2D 0.6 nozzle",
+         "inherits": "Bambu Lab H2D 0.4 nozzle",
+         "nozzle_diameter": ["0.6", "0.6"]},
+        {"name": "0.30mm Standard @BBL H2D 0.6 nozzle",
+         "compatible_printers": ["Bambu Lab H2D 0.6 nozzle"]},
+        {"name": "0.20mm Standard @BBL H2D",
+         "compatible_printers": ["Bambu Lab H2D 0.4 nozzle"]},
+        {"name": "Bambu PLA Basic @BBL H2D 0.6 nozzle",
+         "compatible_printers": ["Bambu Lab H2D 0.6 nozzle"],
+         "filament_type": ["PLA"]},
+        {"name": "Bambu TPU 85A @BBL H2D",
+         "compatible_printers": ["Bambu Lab H2D 0.6 nozzle",
+                                 "Bambu Lab H2D 0.8 nozzle"],
+         "filament_printable": ["2"], "filament_type": ["TPU"]},
+    ]
+    for i, p in enumerate(presets):
+        with open(os.path.join(tree, f"p{i}.json"), "w") as f:
+            json.dump(p, f)
+
+    def run_flattener(*argv):
+        old = sys.argv
+        sys.argv = ["flatten_bambu_profiles.py",
+                    "--studio-dir", os.path.join(tmp, "studio"),
+                    "--outdir", os.path.join(tmp, "flat_out")] + list(argv)
+        try:
+            return run_exit(fmod.main)
+        finally:
+            sys.argv = old
+
+    _, err, out = run_flattener("--for", "tensegrity")
+    flat_dir = os.path.join(tmp, "flat_out")
+    files = {n: os.path.join(flat_dir, f"tensegrity_{n}_flat.json")
+             for n in ("machine", "process", "filament", "filament2")}
+    check("--for tensegrity writes all four flat files",
+          err is None and all(os.path.isfile(p) for p in files.values()),
+          out)
+    with open(files["machine"]) as f:
+        mflat = json.load(f)
+    check("tensegrity machine: template start G-code inherited from the "
+          "0.4-nozzle sidecar (ghost-print guard)",
+          "M620" in mflat.get("machine_start_gcode", "")
+          and mflat.get("printer_settings_id") == "Bambu Lab H2D 0.6 nozzle")
+    with open(files["filament2"]) as f:
+        f2flat = json.load(f)
+    check("tensegrity filament2 is the flattened TPU 85A",
+          f2flat.get("name") == "Bambu TPU 85A @BBL H2D")
+    check("TPU right-extruder restriction is surfaced",
+          "only printable on the right extruder" in out)
+    check("IDEX ready-to-slice hint uses the Manual-map recipe",
+          "--filament-map" in out and "--slice 1" in out)
+
+    # Reversed filament order (TPU first -> would map to the left
+    # extruder, which its preset forbids) must warn.
+    _, err, out = run_flattener("--for", "tensegrity",
+                                "--filament", "Bambu TPU 85A @BBL H2D",
+                                "--filament",
+                                "Bambu PLA Basic @BBL H2D 0.6 nozzle")
+    check("TPU in the left-tool position draws a reorder warning",
+          err is None and "reorder" in out)
+
+    # A 0.4-nozzle process preset with the 0.6-nozzle machine must warn.
+    _, err, out = run_flattener("--for", "tensegrity",
+                                "--process", "0.20mm Standard @BBL H2D")
+    check("incompatible process/machine pairing draws a warning",
+          err is None and "compatible_printers" in out and "WARN" in out)
 
     print(f"\n{len(PASSES)} passed, {len(FAILURES)} failed")
     for name in FAILURES:

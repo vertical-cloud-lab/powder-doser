@@ -97,10 +97,13 @@ SLICER_CMD = r"PUT_PATH_TO_BAMBU_STUDIO_HERE"
 # input; optional for a project .3mf that already embeds settings - but
 # if set, they override what's in the 3MF). Generate them with
 #   python scripts/flatten_bambu_profiles.py --studio-dir "C:\Program Files\Bambu Studio"
-#   python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...   # H2D set
+#   python scripts/flatten_bambu_profiles.py --for h2d --studio-dir ...   # H2D 0.4 set
+#   python scripts/flatten_bambu_profiles.py --for tensegrity --studio-dir ...
+#                       # lab H2D: 0.6 nozzles, PLA left / TPU 85A right
 # Leave these EMPTY to auto-discover <prefix>_{machine,process,filament}
-# _flat.json (a1mini_*/h2d_*, matching the detected printer) next to
-# the input file, in the current directory, or next to this script. Do
+# _flat.json (a1mini_*, or tensegrity_* then h2d_* for the H2D,
+# matching the detected printer) next to the input file, in the
+# current directory, or next to this script. Do
 # NOT point these at the per-user presets under
 # AppData\Roaming\BambuStudio\user\... - those are diff-only files the
 # CLI refuses ("unknown config type", return_code -5; field-seen on
@@ -108,6 +111,11 @@ SLICER_CMD = r"PUT_PATH_TO_BAMBU_STUDIO_HERE"
 MACHINE_JSON = r""                          # e.g. r"a1mini_machine_flat.json"
 PROCESS_JSON = r""                          # e.g. r"a1mini_process_flat.json"
 FILAMENT_JSON = r""                         # e.g. r"a1mini_filament_flat.json"
+# Second filament, H2D only: the RIGHT tool's profile (the "Tensegrity-
+# inspired" setup runs TPU 85A here via the TPU assist module while the
+# left tool prints PLA/PETG). Leave empty on a single-filament job -
+# the left profile is then used for both tools, the verified default.
+FILAMENT2_JSON = r""                        # e.g. r"tensegrity_filament2_flat.json"
 
 # AMS lite: leave as-is to print from the external spool holder. To
 # feed from an AMS lite set USE_AMS = True and AMS_MAPPING to the tray
@@ -161,6 +169,7 @@ PRINTERS = {
         # flatten_bambu_profiles.py output prefix used for profile
         # auto-discovery (<prefix>_machine_flat.json etc.)
         "profile_prefix": "a1mini",
+        "profile_prefixes": ("a1mini",),
         "presets": ("Bambu Lab A1 mini 0.4 nozzle",
                     "0.20mm Standard @BBL A1M",
                     "Bambu PLA Basic @BBL A1M"),
@@ -173,6 +182,14 @@ PRINTERS = {
         "max_nozzle_c": 350,
         "idex": True,
         "profile_prefix": "h2d",
+        # Auto-discovery tries the lab's "Tensegrity-inspired" bundle
+        # first (flatten_bambu_profiles.py --for tensegrity: 0.6 mm
+        # nozzles, PLA left / TPU 85A right) because that is what is
+        # physically installed on the lab H2D; the generic 0.4-nozzle
+        # h2d_* bundle stays as the fallback. Discovery never mixes
+        # prefixes - a 0.6 machine profile with a 0.4 process would
+        # slice wrong or not at all.
+        "profile_prefixes": ("tensegrity", "h2d"),
         "presets": ("Bambu Lab H2D 0.4 nozzle",
                     "0.20mm Standard @BBL H2D",
                     "Bambu PLA Basic @BBL H2D"),
@@ -665,13 +682,19 @@ def repair_model_settings_xml(path):
 
 def slice_headless(slicer, input_path, kind, machine, process, filament,
                    arrange, timeout_s, keep_dir, scale=1.0, bed_type="",
-                   printer=None, overrides=None):
+                   printer=None, overrides=None, filament2=None):
     """Run the BambuStudio CLI on input_path; return path to the
     exported .gcode.3mf (inside a temp dir the caller may keep)."""
     printer = printer or PRINTERS["a1mini"]
+    if filament2 and not printer["idex"]:
+        sys.exit(f"ERROR: a second filament profile ({filament2}) only "
+                 f"makes sense on a dual-extruder printer - "
+                 f"{printer['label']} has one tool. Clear FILAMENT2_JSON/"
+                 "--filament2, or select the H2D.")
     for label, p in [("slicer", slicer)] + (
             [("machine profile", machine), ("process profile", process),
-             ("filament profile", filament)] if kind == "stl" else []):
+             ("filament profile", filament)] if kind == "stl" else []) + (
+            [("second filament profile", filament2)] if filament2 else []):
         if not p:
             sys.exit(f"ERROR: {label} is required for {kind} input - fill "
                      "it in the FILL THESE IN block or pass the flag. "
@@ -733,12 +756,20 @@ def slice_headless(slicer, input_path, kind, machine, process, filament,
     if filament:
         if printer["idex"]:
             # Dual-extruder H2D: the empirically verified recipe (PR
-            # #23, 2026-05-07) loads the filament profile once per tool
-            # and maps them explicitly - the CLI's default "Auto For
+            # #23, 2026-05-07) loads one filament profile per tool and
+            # maps them explicitly - the CLI's default "Auto For
             # Flush" mode cannot bind a single filament across both
             # extruders and dies with "some filaments can not be
-            # mapped" (return -66).
-            cmd += ["--load-filaments", f"{filament};{filament}",
+            # mapped" (return -66). With a second profile (the
+            # Tensegrity-inspired PLA-left/TPU-right setup) filament 1
+            # feeds the LEFT extruder and filament 2 the RIGHT one;
+            # without one, the left profile is duplicated across both
+            # tools as before.
+            right = filament2 or filament
+            if filament2:
+                print(f"Per-tool filaments: left = {filament}, "
+                      f"right = {filament2}")
+            cmd += ["--load-filaments", f"{filament};{right}",
                     "--filament-map-mode", "Manual",
                     "--filament-map", "1,2"]
         else:
@@ -944,14 +975,33 @@ def summarize_and_check(path, force, printer=None):
         print("WARN: could not read temperature setpoints from the G-code "
               "header - unusual for a BambuStudio slice; inspect the file.")
     if bed_cmd is not None and bed_cmd < MIN_SANE_BED_C:
-        problems.append(
-            f"commanded first-layer bed temp is only {bed_cmd} C (plate "
-            f"type {plate!r}) - nothing adheres to the build plate "
-            "below ~45 C and the job GHOST-PRINTS (runs the motions with "
-            "nothing staying on the bed; field-seen on Thumbelina "
-            "2026-07-27 with the CLI's Cool Plate 35 C default). Re-slice "
-            'with --bed-type "Textured PEI Plate" (the default) or fix '
-            "the plate selection in the project 3MF")
+        # Exception: flexibles. Bambu's own textured-PEI bed setting for
+        # TPU 85A is 35 C (TPU grips PEI at low temperatures - the
+        # opposite failure mode, sticking too hard, is the usual TPU
+        # problem), so a job whose every used filament is TPU is not the
+        # Cool Plate ghost-print trap.
+        types = [t.strip().upper()
+                 for t in re.split(r"[;,]", fields.get("filament_type", ""))]
+        try:
+            slots = filament_slots_used(zipfile.ZipFile(path))
+        except Exception:
+            slots = []
+        used = ({types[s - 1] for s in slots if 0 < s <= len(types)}
+                or {t for t in types if t})
+        if used and all(t.startswith("TPU") for t in used):
+            print(f"NOTE: commanded first-layer bed temp is {bed_cmd} C - "
+                  "below the usual ghost-print threshold, but every "
+                  "filament this job uses is TPU, and Bambu's own "
+                  "textured-PEI setting for TPU 85A is 35 C. Allowing it.")
+        else:
+            problems.append(
+                f"commanded first-layer bed temp is only {bed_cmd} C (plate "
+                f"type {plate!r}) - nothing adheres to the build plate "
+                "below ~45 C and the job GHOST-PRINTS (runs the motions with "
+                "nothing staying on the bed; field-seen on Thumbelina "
+                "2026-07-27 with the CLI's Cool Plate 35 C default). Re-slice "
+                'with --bed-type "Textured PEI Plate" (the default) or fix '
+                "the plate selection in the project 3MF")
     if problems:
         msg = ("sliced job failed the sanity checks ("
                + "; ".join(problems) + ").")
@@ -1471,30 +1521,44 @@ def env_first(*names):
     return None
 
 
-def discover_profiles(printer, input_path, machine, process, filament):
+def discover_profiles(printer, input_path, machine, process, filament,
+                      filament2=None):
     """Fill in missing profile paths from flatten_bambu_profiles.py's
-    standard filenames (<prefix>_{machine,process,filament}_flat.json),
+    standard filenames (<prefix>_{machine,process,filament}_flat.json,
+    plus <prefix>_filament2_flat.json for the H2D's right tool),
     searched next to the input file, in the CWD, then next to this
-    script. Explicitly given paths always win."""
+    script. Explicitly given paths always win. Prefixes are tried in
+    the printer's profile_prefixes order and never mixed within one
+    run - a 0.6-nozzle machine profile paired with a 0.4-nozzle
+    process from another bundle would be exactly the wrong-profile
+    trap the discovery exists to avoid."""
     search_dirs = [os.path.dirname(os.path.abspath(input_path)),
                    os.getcwd(),
                    os.path.dirname(os.path.abspath(__file__))]
-    found = {}
-    for role, current in (("machine", machine), ("process", process),
-                          ("filament", filament)):
-        if current:
-            found[role] = current
-            continue
-        name = f"{printer['profile_prefix']}_{role}_flat.json"
-        for d in search_dirs:
-            candidate = os.path.join(d, name)
-            if os.path.isfile(candidate):
-                found[role] = candidate
-                print(f"Profile auto-discovered: {role} -> {candidate}")
+    roles = [("machine", machine), ("process", process),
+             ("filament", filament)]
+    if printer["idex"]:
+        roles.append(("filament2", filament2))
+    found = dict(roles)
+    missing = [role for role, current in roles if not current]
+    prefixes = printer.get("profile_prefixes") or (printer["profile_prefix"],)
+    if missing:
+        for prefix in prefixes:
+            hits = {}
+            for role in missing:
+                name = f"{prefix}_{role}_flat.json"
+                for d in search_dirs:
+                    candidate = os.path.join(d, name)
+                    if os.path.isfile(candidate):
+                        hits[role] = candidate
+                        break
+            if hits:
+                for role, candidate in sorted(hits.items()):
+                    found[role] = candidate
+                    print(f"Profile auto-discovered: {role} -> {candidate}")
                 break
-        else:
-            found[role] = current
-    return found["machine"], found["process"], found["filament"]
+    return (found["machine"], found["process"], found["filament"],
+            found.get("filament2"))
 
 
 def main():
@@ -1527,6 +1591,12 @@ def main():
     parser.add_argument("--filament", default=None,
                         help="flattened filament JSON (overrides "
                         "FILAMENT_JSON; auto-discovered if unset)")
+    parser.add_argument("--filament2", default=None,
+                        help="flattened filament JSON for the H2D's "
+                        "RIGHT tool (overrides FILAMENT2_JSON; "
+                        "auto-discovered from <prefix>_filament2_flat"
+                        ".json if unset). Leave unset to run the left "
+                        "profile on both tools")
     parser.add_argument("--supports", choices=("off", "normal", "tree"),
                         default=None,
                         help="support generation for this run: off, or "
@@ -1614,6 +1684,7 @@ def main():
     machine = args.machine or (None if _is_placeholder(MACHINE_JSON) else MACHINE_JSON)
     process = args.process or (None if _is_placeholder(PROCESS_JSON) else PROCESS_JSON)
     filament = args.filament or (None if _is_placeholder(FILAMENT_JSON) else FILAMENT_JSON)
+    filament2 = args.filament2 or (None if _is_placeholder(FILAMENT2_JSON) else FILAMENT2_JSON)
 
     needed = [("file to slice", path), ("slicer binary", slicer)]
     if not args.slice_only:
@@ -1660,8 +1731,8 @@ def main():
         # Auto-discovery only for STL input: a project 3MF carries its
         # own settings, and silently discovering profiles would override
         # them (CLI precedence) behind the user's back.
-        machine, process, filament = discover_profiles(
-            printer, path, machine, process, filament)
+        machine, process, filament, filament2 = discover_profiles(
+            printer, path, machine, process, filament, filament2)
         check_stl_units(path, args.scale, args.force)
     if kind == "project_3mf" and (machine or process or filament):
         print("NOTE: --load-settings/--load-filaments OVERRIDE the "
@@ -1688,7 +1759,7 @@ def main():
         slicer, path, kind, machine, process, filament,
         arrange=not args.no_arrange, timeout_s=args.slice_timeout,
         keep_dir=args.keep_output, scale=args.scale, bed_type=bed_type,
-        printer=printer, overrides=overrides)
+        printer=printer, overrides=overrides, filament2=filament2)
     try:
         summarize_and_check(sliced, args.force, printer)
         check_filament_load(sliced, args.force)

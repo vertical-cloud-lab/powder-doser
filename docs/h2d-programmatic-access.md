@@ -1382,6 +1382,70 @@ verified FTPS + MQTT path. Verified against the real v02.06.00.51 CLI
 in CI (return_code 0, `filament_map = 1,2` Manual header); not yet
 exercised through to a physical H2D print.
 
+### The "Tensegrity-inspired" bundle: 0.6 nozzles, PLA left / TPU 85A right
+
+The lab H2D does not run the generic 0.4-nozzle defaults above: both
+tools carry **0.6 mm nozzles**, the **left** extruder prints PLA
+(sometimes PETG) from an AMS 2 Pro, and the **right** extruder runs
+**TPU 85A** through the TPU assist module. `flatten_bambu_profiles.py`
+grabs that whole setup in one flag (added 2026-08-12):
+
+```bash
+python scripts/flatten_bambu_profiles.py --for tensegrity \
+    --studio-dir "C:\Program Files\Bambu Studio"
+# writes tensegrity_machine_flat.json   (Bambu Lab H2D 0.6 nozzle)
+#        tensegrity_process_flat.json   (0.30mm Standard @BBL H2D 0.6 nozzle)
+#        tensegrity_filament_flat.json  (Bambu PLA Basic @BBL H2D 0.6 nozzle - LEFT tool)
+#        tensegrity_filament2_flat.json (Bambu TPU 85A @BBL H2D - RIGHT tool)
+```
+
+Why these presets (verified against the bundled v02.06.00.51 profile
+tree in CI, 2026-08-12):
+
+- **`Bambu Lab H2D 0.6 nozzle`** sets `nozzle_diameter = 0.6,0.6`
+  (both tools) and inherits the 0.4-nozzle preset, so the template
+  sidecars carrying the real start G-code still merge in (the
+  ghost-print guard from A1-mini field note 18 holds).
+- **There is no separate "TPU 85A 0.6 nozzle" preset, and that is
+  correct**: `Bambu TPU 85A @BBL H2D` *is* the 0.6/0.8-nozzle preset —
+  its `compatible_printers` lists exactly the 0.6- and 0.8-nozzle H2D
+  variants, and it names `Direct Drive TPU High Flow` (the TPU assist
+  module) among its extruder variants.
+- **TPU 85A is pinned to the right tool by Bambu themselves**:
+  `filament_printable = ["2"]` (bitmask; 2 = right extruder only). It
+  must therefore stay the *second* filament — with the verified
+  `--filament-map "1,2"` recipe, filament N feeds extruder N. The
+  flattener now warns if a restricted filament is put in the wrong
+  position, and checks every process/filament preset's
+  `compatible_printers` against the chosen machine so nozzle
+  mismatches surface at generation time instead of as CLI `-17`/`-66`
+  errors.
+
+`a1_mini_slice_and_send.py` consumes the bundle automatically: for
+the H2D it tries the `tensegrity_*` profile files **first** (falling
+back to `h2d_*`), never mixing the two bundles, and passes the two
+filament files as `--load-filaments "left;right"`. A second profile
+can also be given explicitly with `--filament2` /`FILAMENT2_JSON`;
+with only one profile the left one is duplicated across both tools as
+before. PETG on the left instead of PLA:
+
+```bash
+python scripts/flatten_bambu_profiles.py --for tensegrity \
+    --filament "Bambu PETG Basic @BBL H2D 0.6 nozzle" \
+    --filament "Bambu TPU 85A @BBL H2D" --studio-dir ...
+```
+
+Both variants were sliced end-to-end against the real v02.06.00.51
+CLI in CI (2026-08-12): `return_code 0`, header
+`printer_settings_id = Bambu Lab H2D 0.6 nozzle`,
+`filament_type = PLA;TPU` (resp. `PETG;TPU`), `filament_map = 1,2`
+Manual, `nozzle_diameter = 0.6,0.6`, real `M620` load G-code, 55 °C
+(PLA) / 70 °C (PETG) textured-PEI bed. Not yet printed on the
+physical H2D. One related behaviour change: a job whose *only* used
+filament is TPU is allowed to command a bed below the 45 °C
+ghost-print threshold (Bambu's own textured-PEI setting for TPU 85A
+is 35 °C); any job that includes PLA/PETG is still refused.
+
 ### 2. OrcaSlicer CLI
 
 OrcaSlicer is a Bambu Studio fork and accepts the same general CLI
