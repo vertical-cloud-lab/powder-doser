@@ -626,6 +626,27 @@ listed here so nobody re-debugs them from a stale copy:
     (45 checks, no printer needed), including that the pre-fix
     behaviour reproduces the reported failure.
 
+17. **Camera check verified on Thumbelina — but the rigid pixel diff
+    was too simple (2026-08-11).** Field results: the port-6000
+    capture works with **no extra toggle** (the A1 mini has no "LAN
+    Mode Liveview" setting — that toggle is an H2D thing), the check
+    ran end-to-end, and the same session also closed the H2D
+    milestone (first pre-sliced print sent to the real H2D via
+    `h2d_step4_bambulabs_api.py`). The failure: **if the plate — or
+    anything else in frame — moves significantly, the diff read a
+    genuinely clear plate as "not clear"**, exactly the false-positive
+    direction the doc predicted, made routine by the A1 mini's moving
+    bed. On the H2D the capture failed earlier with `ffmpeg not found
+    on PATH`. Fixes, all in the updated
+    [`bambu_camera_check.py`](../scripts/bambu_camera_check.py):
+    the comparison now *aligns* frame and reference before scoring,
+    `--reference` accepts a folder of empty-bed shots (one per bed
+    position), `--judge llm` sends the frame to Claude for a verdict
+    that doesn't care about movement at all, and ffmpeg is found via
+    `pip install imageio-ffmpeg` / winget / choco / scoop / brew
+    locations, not just PATH. Details in the
+    [camera section](#automatic-bed-clear-check-with-the-printers-own-camera).
+
 ## Automatic bed-clear check with the printer's own camera
 
 The A1 mini already has a camera pointed at the plate, and it is
@@ -634,12 +655,14 @@ extra hardware. [`scripts/bambu_camera_check.py`](../scripts/bambu_camera_check.
 grabs a still from it and, given a reference photo of an empty plate,
 says whether the bed looks clear.
 
-**One toggle first: LAN Mode Liveview** (touchscreen → Settings →
-General). It is *separate* from Developer Mode and LAN Only Mode — with
-it off, the camera port is simply closed and every capture below times
-out while MQTT and FTPS keep working normally. Restart the printer
-after enabling it; the P1/A1 firmware notes report the toggle not
-taking effect until the next boot.[^liveview]
+**No extra toggle on the A1 mini.** Field-verified on Thumbelina
+(2026-08-11): the camera worked with no additional setting — the A1
+mini does **not** have the separate "LAN Mode Liveview" toggle this
+section previously claimed. That toggle exists on the **H2D**
+(touchscreen → Settings → General, separate from Developer Mode / LAN
+Only Mode), where it gates the RTSPS port. So: capture fails on an A1
+mini → suspect the IP, the access code, or network reachability;
+capture fails on an H2D → check Liveview first.[^liveview]
 
 Two protocols, one script:
 
@@ -656,6 +679,14 @@ python bambu_camera_check.py reference --ip <IP> --access-code <CODE>
 # ... later, before a job:
 python bambu_camera_check.py check --ip <IP> --access-code <CODE>
 # CLEAR: bed looks CLEAR - 0.31% of the frame differs from the reference (limit 2.00%)
+
+# bed parks at several positions? use a folder of references:
+python bambu_camera_check.py reference --ip <IP> --access-code <CODE> -o refs/front.jpg
+python bambu_camera_check.py check --ip <IP> --access-code <CODE> --reference refs
+
+# or have Claude look at the frame (pip install anthropic + ANTHROPIC_API_KEY;
+# robust to plate movement, no reference image needed):
+python bambu_camera_check.py check --judge llm --ip <IP> --access-code <CODE>
 ```
 
 Exit codes are `0` clear / `1` not clear / `2` no verdict, so it drops
@@ -679,33 +710,65 @@ against the *median* difference, so a change in room lighting — which
 shifts every pixel by about the same amount — cancels out, while a part
 on the plate survives as a residual. More than `--area-fraction` (2% by
 default) of pixels differing by more than `--pixel-delta` (28/255) reads
-as **NOT CLEAR**. On synthetic frames a part covering ~20% of the plate
-scores 21.6%, an identical frame and a uniform 35-level lighting change
-both score 0.00%.
+as **NOT CLEAR**.
 
-This is a whole-image difference, not a model that understands 3D
-prints. Expect it to:
+**Field result (2026-08-11):** capture from Thumbelina is verified —
+the check "works, technically", but the original rigid comparison was
+too brittle: **any significant movement of the plate (or anything else
+in frame) read as "not clear" even on an empty bed.** The A1 mini is a
+bedslinger, so the plate legitimately parks at different Y positions.
+Three fixes now address this, in increasing order of robustness:
 
-- **false-positive** on a moved camera, a changed light, an AMS/toolhead
-  parked in frame, or a stale reference — all read as "not clear";
+1. **Alignment.** The comparison now searches small translations
+   (±`--max-shift`, default 12 px of the 160 px analysis frame, ~7.5%)
+   and scores the best-matching alignment, so a nudged camera or a bed
+   parked slightly differently no longer reads as "everything changed".
+   The search only engages when the rigid score says the *whole* frame
+   changed — a part touching the frame edge can't be shifted out of
+   view — and a part is a local blob no translation removes, so it
+   still trips the check (all regression-tested).
+2. **Multiple references.** `--reference` (and the send script's
+   `--bed-reference`) now accepts a **folder** of empty-bed shots.
+   Take one reference per position the bed ends up in; the frame
+   counts as clear when it matches *any* of them.
+3. **`--judge llm` — ask Claude instead of diffing pixels.** The
+   frame is sent to a vision model (`claude-opus-5` by default) that
+   is asked, with a strict JSON answer schema, whether the *build
+   plate* is clear — it understands what a printer bed is, so plate
+   movement, lighting, and the parked toolhead simply don't matter,
+   and no reference image is needed. Requires `pip install anthropic`
+   and an `ANTHROPIC_API_KEY`; each check is one small image request
+   (fractions of a cent). It fails **closed** to UNKNOWN — missing
+   SDK, missing key, API error, or "I can't see the plate" never
+   count as CLEAR. `--judge both` demands both judges agree before
+   reporting CLEAR. On the send script the flags are
+   `--camera-judge llm` / `--camera-llm-model`.
+
+Even so, expect the pixel judge to:
+
+- **false-positive** on a changed light, a rearranged scene beyond the
+  shift search, or a stale reference — all read as "not clear";
 - **false-negative** on a low, transparent, or plate-coloured part —
-  which is the dangerous direction.
+  which is the dangerous direction (and can fool the LLM judge too).
 
-So treat `CLEAR` as *evidence*, not as an interlock. `--camera-check`
-paired with `--yes` fails **closed**: if the camera gives no verdict
-(port closed, no reference image, Pillow missing) the script aborts
-rather than printing blind, because `--yes` means nobody is watching.
-`--force` overrides a `NOT CLEAR` verdict for the case where the
-reference is genuinely the stale thing. None of this replaces the
+So treat `CLEAR` from either judge as *evidence*, not as an interlock.
+`--camera-check` paired with `--yes` fails **closed**: if the camera
+gives no verdict (port closed, no reference image, Pillow missing, LLM
+unreachable) the script aborts rather than printing blind, because
+`--yes` means nobody is watching. `--force` overrides a `NOT CLEAR`
+verdict for the case where the reference is genuinely the stale thing.
+None of this replaces the
 [hardware interlock](h2d-programmatic-access.md#hardware-interlock--concrete-options).
 
 Verified against a fake camera server that speaks the port-6000
-protocol — [`scripts/test_bambu_camera_check.py`](../scripts/test_bambu_camera_check.py),
-26 checks, no printer needed. What is *not* yet verified is a capture
-from Thumbelina herself: the protocol implementation matches
-`bambulabs_api`'s (and this repo's, byte for byte, on the auth packet),
-but the first real run should be `capture` alone, eyeballing the JPEG,
-before anything is gated on it.
+protocol plus synthetic moved/occupied scenes and a stubbed Anthropic
+client — [`scripts/test_bambu_camera_check.py`](../scripts/test_bambu_camera_check.py),
+42 checks, no printer needed, including a reproduction of the field
+failure (moved empty bed → falsely "not clear") and its fix. What is
+*not* yet field-run is the `--judge llm` path against a real Thumbelina
+frame — the first real run should be `check --judge llm` with a part
+deliberately left on the plate, to see both verdicts before gating on
+them.
 
 [^liveview]: Bambu Lab wiki, [P1 series WIFI/BT/LIVEVIEW troubleshooting](https://wiki.bambulab.com/en/p1/troubleshooting/wifi-bt-liveview);
     Bambuddy docs, [Camera Streaming](https://wiki.bambuddy.cool/features/camera/)

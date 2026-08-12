@@ -9,12 +9,17 @@ Two transports, because Bambu uses two different camera protocols:
     script speaks it directly with nothing but the standard library.
   * X1 / H2 series (H2D)     -> RTSPS on TCP 322,
     rtsps://bblp:<code>@<ip>:322/streaming/live/1 . There is no sane
-    stdlib RTSP client, so this script shells out to ffmpeg for one frame.
+    stdlib RTSP client, so this script shells out to ffmpeg for one
+    frame. ffmpeg is found on PATH, via the FFMPEG env var / --ffmpeg,
+    via `pip install imageio-ffmpeg` (bundles a static binary - the
+    easiest fix on a lab laptop), or in the usual winget / chocolatey /
+    scoop / Homebrew install locations.
 
-Either way the printer must have **LAN Mode Liveview** enabled
-(touchscreen -> Settings -> General). That toggle is separate from
-Developer Mode / LAN Only Mode: with it off, the port is closed and every
-capture below times out even though MQTT and FTPS work fine.
+On the H2D the camera port is gated by the **LAN Mode Liveview** toggle
+(touchscreen -> Settings -> General), which is separate from Developer
+Mode / LAN Only Mode. The A1 mini has no such separate toggle (field
+observation, 2026-08); if a capture fails there, suspect network or
+access code, not a missing setting.
 
 Subcommands
 -----------
@@ -22,8 +27,8 @@ Subcommands
     reference  save one frame as the "this is what an EMPTY bed looks
                like" baseline (do this with the plate clean and the
                lighting the way it will be at print time)
-    check      capture a frame, compare it against the reference, and
-               print CLEAR / NOT CLEAR / UNKNOWN
+    check      capture a frame, compare it against the reference(s),
+               and print CLEAR / NOT CLEAR / UNKNOWN
 
 Examples
 --------
@@ -35,25 +40,46 @@ Examples
     # then, before each job:
     python bambu_camera_check.py check --ip ... --access-code ...
 
-    # H2D (RTSPS, needs ffmpeg on PATH):
+    # bed position varies (A1 mini is a bedslinger)? Take several
+    # references into a folder and point --reference at the folder:
+    python bambu_camera_check.py reference --ip ... --access-code ... \
+        -o refs/bed_front.jpg
+    python bambu_camera_check.py check --ip ... --access-code ... \
+        --reference refs
+
+    # H2D (RTSPS, needs ffmpeg - see above for install options):
     python bambu_camera_check.py capture --transport rtsp --ip ... \
         --access-code ... -o frame.jpg
 
-Exit codes for `check`: 0 = looks clear, 1 = does NOT look clear,
-2 = unknown (no frame, no reference, or Pillow missing).
+    # let Claude look at the frame instead of pixel-diffing it
+    # (pip install anthropic, ANTHROPIC_API_KEY set; no reference needed):
+    python bambu_camera_check.py check --judge llm --ip ... --access-code ...
 
-IMPORTANT - what this is and is not. The comparison is a dumb
+Exit codes for `check`: 0 = looks clear, 1 = does NOT look clear,
+2 = unknown (no frame, no reference, Pillow missing, or the LLM judge
+could not run).
+
+IMPORTANT - what this is and is not. The default comparison is a
 whole-image difference, not a model that understands 3D prints. It
-reliably catches "the last part is still sitting on the plate" and
-"a tool is lying across the bed", and it reliably false-positives on
-changed lighting, a moved camera, or a toolhead parked in view. Treat
-CLEAR as *evidence*, not as a safety interlock: a transparent or
-low-contrast part on a same-coloured plate can read as clear. Nothing
-here substitutes for the hardware interlock in the docs.
+aligns the frame against the reference (small translations - a nudged
+camera or a bed parked at a slightly different Y no longer read as
+"everything changed") and can match against multiple references, but a
+part on a plate can still hide from it (transparent, low, or
+plate-coloured parts read as clear - the dangerous direction) and a big
+scene change still reads as "not clear". `--judge llm` sends the frame
+to Claude, which understands what a 3D printer bed is and is robust to
+movement and lighting, at the cost of needing an API key and a network
+round trip. Treat CLEAR from either judge as *evidence*, not as a
+safety interlock. Nothing here substitutes for the hardware interlock
+in the docs.
 """
 
 import argparse
+import base64
+import glob as globlib
+import json
 import os
+import re
 import shutil
 import socket
 import ssl
@@ -76,7 +102,17 @@ JPEG_EOI = b"\xff\xd9"
 PIXEL_DELTA = 28
 AREA_FRACTION = 0.02
 
+# How far (in pixels of the 160x160 analysis image, so ~7.5% of the
+# frame) the comparison searches for the best alignment between frame
+# and reference. A shifted plate or nudged camera is absorbed up to
+# this; a part on the plate is a local blob no translation can remove.
+MAX_SHIFT = 12
+
 DEFAULT_REFERENCE = "bed_reference.jpg"
+
+# Model for the --judge llm path. Vision-capable; effort is pinned low
+# because this is a single-image yes/no call.
+DEFAULT_LLM_MODEL = "claude-opus-5"
 
 
 def _is_placeholder(value):
@@ -117,11 +153,12 @@ def capture_chamber_image(ip, access_code, timeout=15.0, port=CAMERA_PORT):
         raw = socket.create_connection((ip, port), timeout=timeout)
     except OSError as exc:
         raise RuntimeError(
-            f"could not open {ip}:{port} ({exc}). The usual cause is "
-            "LAN Mode Liveview being off on the printer (Settings -> "
-            "General); it is a separate toggle from Developer Mode. On "
-            "an X1/H2D use --transport rtsp instead - those stream on "
-            f"{RTSP_PORT}, not {port}.") from exc
+            f"could not open {ip}:{port} ({exc}). On an X1/H2D use "
+            f"--transport rtsp instead - those stream on {RTSP_PORT}, "
+            f"not {port}, and are gated by the LAN Mode Liveview toggle "
+            "(Settings -> General). On an A1/A1 mini/P1 there is no "
+            "separate liveview toggle - check the IP, the access code, "
+            "and that the laptop can reach the printer at all.") from exc
 
     with raw:
         sock = ctx.wrap_socket(raw, server_hostname=str(ip))
@@ -184,15 +221,66 @@ def rtsp_url(ip, access_code, port=RTSP_PORT):
     return f"rtsps://{USERNAME}:{access_code}@{ip}:{port}/streaming/live/1"
 
 
-def capture_rtsp_frame(ip, access_code, timeout=30.0, port=RTSP_PORT):
+def _find_ffmpeg(explicit=None):
+    """Locate an ffmpeg binary, looking well beyond PATH.
+
+    Order: --ffmpeg / FFMPEG env var, PATH, the imageio-ffmpeg wheel's
+    bundled static binary, then the usual Windows/macOS install spots
+    that a fresh terminal often does not have on PATH yet.
+    """
+    for candidate in (explicit, os.environ.get("FFMPEG")):
+        if candidate:
+            if os.path.isfile(candidate):
+                return candidate
+            found = shutil.which(candidate)
+            if found:
+                return found
+    found = shutil.which("ffmpeg")
+    if found:
+        return found
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:
+        pass
+    home = os.path.expanduser("~")
+    for candidate in (
+            # winget's shim dir (only on PATH after a new terminal)
+            os.path.join(os.environ.get("LOCALAPPDATA", ""),
+                         "Microsoft", "WinGet", "Links", "ffmpeg.exe"),
+            r"C:\ProgramData\chocolatey\bin\ffmpeg.exe",
+            os.path.join(home, "scoop", "shims", "ffmpeg.exe"),
+            "/opt/homebrew/bin/ffmpeg",
+            "/usr/local/bin/ffmpeg",
+    ):
+        if candidate and os.path.isfile(candidate):
+            return candidate
+    return None
+
+
+_FFMPEG_INSTALL_HELP = (
+    "install options:\n"
+    "      pip install imageio-ffmpeg      (no admin rights; this script\n"
+    "                                       finds its bundled binary)\n"
+    "      winget install Gyan.FFmpeg      (Windows; reopen the terminal)\n"
+    "      choco install ffmpeg            (Windows, admin)\n"
+    "      brew install ffmpeg             (macOS)\n"
+    "      sudo apt install ffmpeg         (Linux)\n"
+    "    or point the FFMPEG env var / --ffmpeg at the binary.")
+
+
+def capture_rtsp_frame(ip, access_code, timeout=30.0, port=RTSP_PORT,
+                       ffmpeg=None):
     """Return one JPEG frame from the RTSPS stream using ffmpeg."""
-    ffmpeg = shutil.which("ffmpeg")
+    ffmpeg = _find_ffmpeg(ffmpeg)
     if not ffmpeg:
         raise RuntimeError(
-            "ffmpeg not found on PATH. The X1/H2 camera is RTSPS and there "
-            "is no stdlib client for it; install ffmpeg, or capture by "
-            "hand with:\n    ffmpeg -rtsp_transport tcp -i "
-            f"'{rtsp_url(ip, '<CODE>', port)}' -frames:v 1 frame.jpg")
+            "ffmpeg not found (PATH, FFMPEG env var, imageio-ffmpeg, or "
+            "the usual install folders). The X1/H2 camera is RTSPS and "
+            "there is no stdlib client for it; " + _FFMPEG_INSTALL_HELP
+            + "\n    Or capture by hand with:\n    ffmpeg -rtsp_transport"
+            f" tcp -i '{rtsp_url(ip, '<CODE>', port)}' -frames:v 1 "
+            "frame.jpg")
     cmd = [ffmpeg, "-loglevel", "error", "-rtsp_transport", "tcp",
            "-i", rtsp_url(ip, access_code, port),
            "-frames:v", "1", "-f", "image2", "-vcodec", "mjpeg", "pipe:1"]
@@ -211,11 +299,12 @@ def capture_rtsp_frame(ip, access_code, timeout=30.0, port=RTSP_PORT):
     return proc.stdout
 
 
-def capture(ip, access_code, transport="auto", timeout=15.0, port=None):
+def capture(ip, access_code, transport="auto", timeout=15.0, port=None,
+            ffmpeg=None):
     """Capture one frame with the transport appropriate to the printer."""
     if transport == "rtsp":
         return capture_rtsp_frame(ip, access_code, timeout=max(timeout, 30.0),
-                                  port=port or RTSP_PORT)
+                                  port=port or RTSP_PORT, ffmpeg=ffmpeg)
     if transport == "chamber":
         return capture_chamber_image(ip, access_code, timeout=timeout,
                                      port=port or CAMERA_PORT)
@@ -226,11 +315,12 @@ def capture(ip, access_code, transport="auto", timeout=15.0, port=None):
     except RuntimeError as exc:
         print(f"NOTE: chamber-image capture failed ({exc}); trying RTSPS "
               f"on {RTSP_PORT} ...", file=sys.stderr)
-        return capture_rtsp_frame(ip, access_code, timeout=max(timeout, 30.0))
+        return capture_rtsp_frame(ip, access_code, timeout=max(timeout, 30.0),
+                                  ffmpeg=ffmpeg)
 
 
 # --------------------------------------------------------------------
-# The bed-clear heuristic.
+# Judge 1: the pixel-diff heuristic (aligned, multi-reference).
 # --------------------------------------------------------------------
 
 def _load_pillow():
@@ -241,7 +331,10 @@ def _load_pillow():
     return Image, ImageFilter
 
 
-def _prepare(image, roi, size=160):
+ANALYSIS_SIZE = 160
+
+
+def _prepare(image, roi, size=ANALYSIS_SIZE):
     """Grayscale, crop to the ROI, downscale, blur. Returns pixels 0-255."""
     Image, ImageFilter = _load_pillow()
     img = image.convert("L")
@@ -278,11 +371,41 @@ def parse_roi(text):
     return (x0, y0, x1, y1)
 
 
+def _shifted_fraction(now, ref, size, dx, dy, pixel_delta):
+    """Changed fraction comparing now shifted by (dx, dy) against ref.
+
+    Only the overlapping region is compared, and the comparison is
+    against the MEDIAN difference so a uniform lighting change cancels
+    out (normalising each frame by its own mean/std - the obvious first
+    attempt - fails badly: one bright object drags the whole frame's
+    statistics and every pixel then reads as changed).
+    """
+    xs = range(max(0, -dx), size - max(0, dx))
+    ys = range(max(0, -dy), size - max(0, dy))
+    diffs = []
+    for y in ys:
+        row_now = (y + dy) * size + dx
+        row_ref = y * size
+        diffs.extend(now[row_now + x] - ref[row_ref + x] for x in xs)
+    offset = _median(diffs)
+    changed = sum(1 for d in diffs if abs(d - offset) > pixel_delta)
+    return changed / len(diffs)
+
+
 def compare_frames(frame_bytes, reference_bytes, roi=None,
-                   pixel_delta=PIXEL_DELTA, area_fraction=AREA_FRACTION):
+                   pixel_delta=PIXEL_DELTA, area_fraction=AREA_FRACTION,
+                   max_shift=MAX_SHIFT):
     """Return (is_clear, changed_fraction, detail).
 
     is_clear is None when no verdict is possible (Pillow missing).
+
+    The frame is aligned against the reference before scoring: the
+    comparison searches translations up to max_shift pixels (in the
+    160x160 analysis image) and keeps the best-matching one, so a
+    nudged camera or a bed parked at a slightly different position no
+    longer reads as "everything changed". A part on the plate is a
+    local blob no translation can remove, so it still scores high.
+    max_shift=0 restores the old rigid comparison.
     """
     pillow = _load_pillow()
     if pillow is None:
@@ -296,37 +419,229 @@ def compare_frames(frame_bytes, reference_bytes, roi=None,
     except OSError as exc:
         return None, 0.0, f"could not decode an image: {exc}"
 
-    # Compare against the MEDIAN difference rather than the raw one. A
-    # change in room lighting shifts every pixel by roughly the same
-    # amount, and the median absorbs that; a part sitting on the plate
-    # only moves a minority of pixels, so it survives as a residual.
-    # (Normalising each frame by its own mean/std instead - the obvious
-    # first attempt - fails badly: one bright object drags the whole
-    # frame's statistics and every pixel then reads as changed.)
-    diffs = [a - b for a, b in zip(now, ref)]
-    offset = _median(diffs)
-    changed = sum(1 for d in diffs if abs(d - offset) > pixel_delta)
-    fraction = changed / len(now)
+    size = ANALYSIS_SIZE
+    max_shift = max(0, min(int(max_shift), size // 4))
+
+    best = (_shifted_fraction(now, ref, size, 0, 0, pixel_delta), 0, 0)
+    # Only search for an alignment when the rigid comparison says
+    # "everything changed" - the signature of a moved bed/camera, not of
+    # a part. Without this gate, a part touching the frame edge on an
+    # otherwise featureless bed could be shifted partly out of the
+    # comparison window and read as clear.
+    if max_shift and best[0] > max(4 * area_fraction, 0.04):
+        # Coarse-to-fine translation search: coarse grid first, then a
+        # 1-px sweep around the coarse winner. ~100 evaluations total.
+        for dx in range(-max_shift, max_shift + 1, 4):
+            for dy in range(-max_shift, max_shift + 1, 4):
+                if (dx, dy) == (0, 0):
+                    continue
+                frac = _shifted_fraction(now, ref, size, dx, dy, pixel_delta)
+                if frac < best[0]:
+                    best = (frac, dx, dy)
+        cx, cy = best[1], best[2]
+        for dx in range(max(-max_shift, cx - 3), min(max_shift, cx + 3) + 1):
+            for dy in range(max(-max_shift, cy - 3),
+                            min(max_shift, cy + 3) + 1):
+                if (dx, dy) == (cx, cy):
+                    continue
+                frac = _shifted_fraction(now, ref, size, dx, dy, pixel_delta)
+                if frac < best[0]:
+                    best = (frac, dx, dy)
+
+    fraction, dx, dy = best
     is_clear = fraction <= area_fraction
+    shifted = f", aligned at shift ({dx},{dy})" if (dx, dy) != (0, 0) else ""
     detail = (f"{fraction * 100:.2f}% of the frame differs from the "
-              f"reference (limit {area_fraction * 100:.2f}%)")
+              f"reference (limit {area_fraction * 100:.2f}%{shifted})")
     return is_clear, fraction, detail
 
+
+def resolve_reference_paths(reference_path):
+    """A reference can be one image or a folder of them."""
+    if not reference_path:
+        return []
+    if os.path.isdir(reference_path):
+        paths = []
+        for pattern in ("*.jpg", "*.jpeg", "*.png"):
+            paths.extend(globlib.glob(os.path.join(reference_path, pattern)))
+        return sorted(paths)
+    if os.path.isfile(reference_path):
+        return [reference_path]
+    return []
+
+
+def compare_against_references(frame_bytes, reference_path, roi=None,
+                               pixel_delta=PIXEL_DELTA,
+                               area_fraction=AREA_FRACTION,
+                               max_shift=MAX_SHIFT):
+    """Compare a frame against one reference image or a folder of them.
+
+    Returns (is_clear, best_fraction, detail). The frame counts as
+    clear when it matches ANY reference - take references with the bed
+    parked at each position it ends up in, and a moved plate stops
+    reading as "not clear".
+    """
+    paths = resolve_reference_paths(reference_path)
+    if not paths:
+        return None, 0.0, (
+            f"no reference image at {reference_path!r} - run "
+            "`bambu_camera_check.py reference` once with the bed empty "
+            "(or pass a folder of empty-bed shots)")
+    best = None
+    for path in paths:
+        try:
+            with open(path, "rb") as fh:
+                reference = fh.read()
+        except OSError as exc:
+            return None, 0.0, f"could not read the reference image: {exc}"
+        verdict, fraction, detail = compare_frames(
+            frame_bytes, reference, roi=roi, pixel_delta=pixel_delta,
+            area_fraction=area_fraction, max_shift=max_shift)
+        if verdict is None:
+            return None, fraction, detail
+        if best is None or fraction < best[1]:
+            best = (verdict, fraction,
+                    detail + (f" [best of {len(paths)} references: "
+                              f"{os.path.basename(path)}]"
+                              if len(paths) > 1 else ""))
+        if best[0]:
+            break
+    return best
+
+
+# --------------------------------------------------------------------
+# Judge 2: ask Claude to look at the frame (--judge llm).
+#
+# No reference image, robust to a moved plate/camera and lighting, and
+# it understands what a printer bed is - at the cost of an API key
+# (ANTHROPIC_API_KEY), `pip install anthropic`, and a network round
+# trip. Fails to UNKNOWN (never CLEAR) on any error.
+# --------------------------------------------------------------------
+
+_LLM_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "plate_visible": {"type": "boolean"},
+        "bed_clear": {"type": "boolean"},
+        "observation": {"type": "string"},
+    },
+    "required": ["plate_visible", "bed_clear", "observation"],
+    "additionalProperties": False,
+}
+
+_LLM_PROMPT = (
+    "This is a frame from the built-in camera of a Bambu Lab 3D printer, "
+    "looking at the build plate. Decide whether the BUILD PLATE is clear "
+    "enough to start a new print.\n\n"
+    "Clear means: no finished or failed print stuck to the plate, no "
+    "detached filament / spaghetti, no tools, scrapers, or other objects "
+    "resting on it. A normal empty textured/smooth build surface (often "
+    "gold, black, or grey, possibly with a printed grid or logo) is "
+    "clear. Ignore the toolhead/gantry, PTFE tubes, purge chute and "
+    "wiper, filament on spools, and anything outside the plate area. "
+    "Purge lines or small filament scraps at the very edge of the plate "
+    "do not block a print - still mention them in the observation.\n\n"
+    "If the plate is not visible or the image is too dark/blurred to "
+    "tell, set plate_visible to false.\n\n"
+    "Respond with a JSON object only: {\"plate_visible\": bool, "
+    "\"bed_clear\": bool, \"observation\": \"one sentence\"}")
+
+
+def _parse_llm_verdict(text):
+    """Return (verdict True/False/None, observation-or-error string)."""
+    data = None
+    try:
+        data = json.loads(text)
+    except (ValueError, TypeError):
+        match = re.search(r"\{.*\}", text or "", re.S)
+        if match:
+            try:
+                data = json.loads(match.group(0))
+            except ValueError:
+                data = None
+    if not isinstance(data, dict) or "bed_clear" not in data:
+        return None, f"could not parse the model's answer: {text!r}"
+    observation = str(data.get("observation", "")).strip()
+    if not data.get("plate_visible", True):
+        return None, ("the model could not see the plate"
+                      + (f" - {observation}" if observation else ""))
+    return bool(data["bed_clear"]), observation
+
+
+def llm_bed_check(frame_bytes, model=DEFAULT_LLM_MODEL, timeout=90.0):
+    """Ask Claude whether the plate in this JPEG is clear.
+
+    Returns (verdict, message); verdict is True/False/None. Never
+    raises - a missing SDK, missing key, refusal, or API error all
+    degrade to None so the caller falls back to asking a human.
+    """
+    try:
+        import anthropic
+    except ImportError:
+        return None, ("the LLM judge needs the Anthropic SDK: "
+                      "pip install anthropic  (and set ANTHROPIC_API_KEY)")
+    request = dict(
+        model=model,
+        max_tokens=2048,
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "image",
+                 "source": {"type": "base64", "media_type": "image/jpeg",
+                            "data": base64.standard_b64encode(
+                                frame_bytes).decode("ascii")}},
+                {"type": "text", "text": _LLM_PROMPT},
+            ],
+        }],
+    )
+    try:
+        client = anthropic.Anthropic(timeout=timeout)
+        try:
+            response = client.messages.create(
+                output_config={
+                    "effort": "low",
+                    "format": {"type": "json_schema", "schema": _LLM_SCHEMA},
+                },
+                **request)
+        except TypeError:
+            # Older SDK without output_config: the prompt still asks for
+            # bare JSON, and _parse_llm_verdict digs it out of prose.
+            response = client.messages.create(**request)
+    except Exception as exc:
+        return None, f"LLM judge unavailable: {exc}"
+    if getattr(response, "stop_reason", None) == "refusal":
+        return None, "LLM judge unavailable: the model declined the request"
+    text = next((b.text for b in response.content
+                 if getattr(b, "type", "") == "text"), "")
+    verdict, message = _parse_llm_verdict(text)
+    if verdict is None:
+        return None, f"LLM judge inconclusive: {message}"
+    return verdict, f"Claude ({response.model}): {message}"
+
+
+# --------------------------------------------------------------------
+# The combined check.
+# --------------------------------------------------------------------
 
 def check_bed_clear(ip, access_code, reference_path=DEFAULT_REFERENCE,
                     transport="auto", timeout=15.0, roi=None,
                     save_to=None, pixel_delta=PIXEL_DELTA,
-                    area_fraction=AREA_FRACTION, port=None):
-    """Capture and compare. Returns (verdict, message).
+                    area_fraction=AREA_FRACTION, port=None,
+                    max_shift=MAX_SHIFT, judge="diff",
+                    llm_model=DEFAULT_LLM_MODEL, ffmpeg=None):
+    """Capture and judge. Returns (verdict, message).
 
     verdict is True (clear), False (not clear), or None (unknown).
+    judge is "diff" (pixel comparison against the reference(s)),
+    "llm" (ask Claude - no reference needed), or "both" (NOT CLEAR if
+    either says so; CLEAR only when both agree the plate is clear).
     Never raises: a camera fault must not be able to crash a print run,
     it must degrade to "unknown" so the caller can fall back to asking a
     human.
     """
     try:
         frame = capture(ip, access_code, transport=transport,
-                        timeout=timeout, port=port)
+                        timeout=timeout, port=port, ffmpeg=ffmpeg)
     except (RuntimeError, OSError, ValueError) as exc:
         return None, f"camera unavailable: {exc}"
     if save_to:
@@ -336,26 +651,27 @@ def check_bed_clear(ip, access_code, reference_path=DEFAULT_REFERENCE,
         except OSError as exc:
             print(f"NOTE: could not save the frame to {save_to}: {exc}",
                   file=sys.stderr)
-    if not reference_path or not os.path.isfile(reference_path):
-        return None, (f"no reference image at {reference_path!r} - run "
-                      "`bambu_camera_check.py reference` once with the bed "
-                      "empty to create one")
-    try:
-        with open(reference_path, "rb") as fh:
-            reference = fh.read()
-    except OSError as exc:
-        return None, f"could not read the reference image: {exc}"
-    verdict, _fraction, detail = compare_frames(
-        frame, reference, roi=roi, pixel_delta=pixel_delta,
-        area_fraction=area_fraction)
-    if verdict is None:
-        return None, detail
-    if verdict:
-        return True, f"bed looks CLEAR - {detail}"
-    return False, (f"bed does NOT look clear - {detail}. If the plate is "
-                   "genuinely empty, the reference is stale (lighting, "
-                   "camera angle, or a parked toolhead in frame): retake "
-                   "it, or widen the check with --roi/--area-fraction.")
+
+    verdicts = []
+    if judge in ("diff", "both"):
+        verdict, _fraction, detail = compare_against_references(
+            frame, reference_path, roi=roi, pixel_delta=pixel_delta,
+            area_fraction=area_fraction, max_shift=max_shift)
+        verdicts.append((verdict, detail))
+    if judge in ("llm", "both"):
+        verdict, detail = llm_bed_check(frame, model=llm_model)
+        verdicts.append((verdict, detail))
+
+    combined = " | ".join(d for _, d in verdicts)
+    if any(v is False for v, _ in verdicts):
+        return False, (f"bed does NOT look clear - {combined}. If the plate "
+                       "is genuinely empty, the reference is stale (moved "
+                       "camera, lighting, or a parked toolhead in frame): "
+                       "retake it, add references at other bed positions "
+                       "(--reference <folder>), or try --judge llm.")
+    if verdicts and all(v is True for v, _ in verdicts):
+        return True, f"bed looks CLEAR - {combined}"
+    return None, combined or "no judge ran"
 
 
 # --------------------------------------------------------------------
@@ -388,12 +704,27 @@ def build_parser():
                         choices=("auto", "chamber", "rtsp"),
                         help="chamber = A1/A1 mini/P1 on TCP 6000; "
                              "rtsp = X1/H2D on TCP 322 via ffmpeg")
+    parser.add_argument("--ffmpeg", default=None,
+                        help="path to the ffmpeg binary for --transport "
+                             "rtsp (default: PATH, FFMPEG env var, "
+                             "imageio-ffmpeg, or common install folders)")
     parser.add_argument("-o", "--output", default=None,
                         help="where to write the JPEG (default: frame.jpg "
                              "for capture/check, the reference path for "
                              "reference)")
     parser.add_argument("--reference", default=DEFAULT_REFERENCE,
-                        help=f"empty-bed baseline (default {DEFAULT_REFERENCE})")
+                        help="empty-bed baseline: one image, or a folder "
+                             "of images taken at different bed positions "
+                             f"(default {DEFAULT_REFERENCE})")
+    parser.add_argument("--judge", default="diff",
+                        choices=("diff", "llm", "both"),
+                        help="diff = pixel comparison against the "
+                             "reference(s); llm = send the frame to Claude "
+                             "(pip install anthropic + ANTHROPIC_API_KEY, "
+                             "no reference needed); both = strictest")
+    parser.add_argument("--llm-model", default=DEFAULT_LLM_MODEL,
+                        help=f"model for --judge llm (default "
+                             f"{DEFAULT_LLM_MODEL})")
     parser.add_argument("--roi", default=None,
                         help="restrict the comparison to a fraction of the "
                              "frame: x0,y0,x1,y1 in 0-1, e.g. 0.2,0.3,0.8,0.9")
@@ -403,6 +734,10 @@ def build_parser():
     parser.add_argument("--area-fraction", type=float, default=AREA_FRACTION,
                         help="fraction of changed pixels that means NOT "
                              f"clear (default {AREA_FRACTION})")
+    parser.add_argument("--max-shift", type=int, default=MAX_SHIFT,
+                        help="how far (px of the 160x160 analysis image) to "
+                             "search for the best frame/reference alignment "
+                             f"(default {MAX_SHIFT}; 0 = rigid comparison)")
     parser.add_argument("--timeout", type=float, default=15.0)
     return parser
 
@@ -419,24 +754,34 @@ def main():
     if args.mode in ("capture", "reference"):
         out = args.output or (args.reference if args.mode == "reference"
                               else "frame.jpg")
+        if os.path.isdir(out):
+            parser.error(f"{out!r} is a folder - pass an image filename "
+                         "with -o (e.g. -o refs/bed_front.jpg)")
         try:
             frame = capture(ip, code, transport=args.transport,
-                            timeout=args.timeout)
+                            timeout=args.timeout, ffmpeg=args.ffmpeg)
         except (RuntimeError, OSError, ValueError) as exc:
             print(f"ERROR: {exc}")
             return 2
+        parent = os.path.dirname(out)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
         with open(out, "wb") as fh:
             fh.write(frame)
         print(f"Saved {len(frame)} bytes to {out}")
         if args.mode == "reference":
             print("That frame is now the empty-bed baseline. Retake it "
-                  "whenever the camera moves or the lighting changes.")
+                  "whenever the camera moves or the lighting changes, and "
+                  "consider a folder of references (one per bed position) "
+                  "if the plate parks in different spots.")
         return 0
 
     verdict, message = check_bed_clear(
         ip, code, reference_path=args.reference, transport=args.transport,
         timeout=args.timeout, roi=roi, save_to=args.output or "frame.jpg",
-        pixel_delta=args.pixel_delta, area_fraction=args.area_fraction)
+        pixel_delta=args.pixel_delta, area_fraction=args.area_fraction,
+        max_shift=args.max_shift, judge=args.judge,
+        llm_model=args.llm_model, ffmpeg=args.ffmpeg)
     label = {True: "CLEAR", False: "NOT CLEAR", None: "UNKNOWN"}[verdict]
     print(f"{label}: {message}")
     return {True: 0, False: 1, None: 2}[verdict]

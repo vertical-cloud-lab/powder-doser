@@ -614,18 +614,21 @@ def camera_bed_check(printer, ip, code, args):
               "this script (same folder). Copy it from scripts/ in the "
               "repo.")
         return None
-    if not os.path.isfile(args.bed_reference):
+    judge = getattr(args, "camera_judge", "diff")
+    if judge in ("diff", "both") and not os.path.exists(args.bed_reference):
         print(f"NOTE: no empty-bed reference at {args.bed_reference}. "
               "Create one with the plate clean:\n    python "
               "bambu_camera_check.py reference --ip <IP> --access-code "
-              "<CODE>")
+              "<CODE>\n(or pass --camera-judge llm, which needs no "
+              "reference)")
         return None
     frame = grab_frame(printer, cam, ip, code, args.camera_transport,
                        args.camera_timeout)
     if frame is None:
-        print("NOTE: no camera frame. LAN Mode Liveview (Settings -> "
-              "General) is a separate toggle from Developer Mode; with it "
-              "off the camera port stays closed.")
+        print("NOTE: no camera frame. On the H2D, LAN Mode Liveview "
+              "(Settings -> General) is a separate toggle from Developer "
+              "Mode; with it off the camera port stays closed. (The A1 "
+              "mini has no such toggle - check network/access code.)")
         return None
     save_to = args.camera_save or "bed_before_print.jpg"
     try:
@@ -634,23 +637,52 @@ def camera_bed_check(printer, ip, code, args):
         print(f"Camera frame saved to {save_to}")
     except OSError as exc:
         print(f"NOTE: could not save the camera frame: {exc}")
-    try:
-        with open(args.bed_reference, "rb") as fh:
-            reference = fh.read()
-        roi = cam.parse_roi(args.camera_roi)
-    except (OSError, ValueError) as exc:
-        print(f"NOTE: camera check skipped: {exc}")
-        return None
-    verdict, _fraction, detail = cam.compare_frames(
-        frame, reference, roi=roi, pixel_delta=args.camera_pixel_delta,
-        area_fraction=args.camera_area_fraction)
-    if verdict is None:
-        print(f"NOTE: camera check inconclusive: {detail}")
-    elif verdict:
-        print(f"Camera: bed looks CLEAR - {detail}")
-    else:
+
+    verdicts = []
+    if judge in ("diff", "both"):
+        try:
+            roi = cam.parse_roi(args.camera_roi)
+        except ValueError as exc:
+            print(f"NOTE: camera check skipped: {exc}")
+            return None
+        compare = getattr(cam, "compare_against_references", None)
+        if compare is not None:
+            verdict, _fraction, detail = compare(
+                frame, args.bed_reference, roi=roi,
+                pixel_delta=args.camera_pixel_delta,
+                area_fraction=args.camera_area_fraction)
+        else:
+            # Older copy of bambu_camera_check.py without alignment /
+            # folder support - single rigid comparison.
+            try:
+                with open(args.bed_reference, "rb") as fh:
+                    reference = fh.read()
+            except OSError as exc:
+                print(f"NOTE: camera check skipped: {exc}")
+                return None
+            verdict, _fraction, detail = cam.compare_frames(
+                frame, reference, roi=roi,
+                pixel_delta=args.camera_pixel_delta,
+                area_fraction=args.camera_area_fraction)
+        verdicts.append((verdict, detail))
+    if judge in ("llm", "both"):
+        llm_check = getattr(cam, "llm_bed_check", None)
+        if llm_check is None:
+            print("NOTE: this copy of bambu_camera_check.py has no LLM "
+                  "judge - pull a fresh one from the repo.")
+            verdicts.append((None, "LLM judge unavailable"))
+        else:
+            verdicts.append(llm_check(frame, model=args.camera_llm_model))
+
+    detail = " | ".join(d for _, d in verdicts)
+    if any(v is False for v, _ in verdicts):
         print(f"Camera: bed does NOT look clear - {detail}")
-    return verdict
+        return False
+    if verdicts and all(v is True for v, _ in verdicts):
+        print(f"Camera: bed looks CLEAR - {detail}")
+        return True
+    print(f"NOTE: camera check inconclusive: {detail}")
+    return None
 
 
 def _progress_line(printer):
@@ -820,8 +852,19 @@ def build_parser():
                              "and LAN Mode Liveview on at the printer.")
     parser.add_argument("--bed-reference", default="bed_reference.jpg",
                         metavar="JPEG",
-                        help="empty-bed baseline image (make one with "
-                             "`bambu_camera_check.py reference`)")
+                        help="empty-bed baseline: one image, or a folder of "
+                             "images taken at different bed positions (make "
+                             "them with `bambu_camera_check.py reference`)")
+    parser.add_argument("--camera-judge", default="diff",
+                        choices=("diff", "llm", "both"),
+                        help="diff = pixel comparison against "
+                             "--bed-reference; llm = send the frame to "
+                             "Claude (pip install anthropic + "
+                             "ANTHROPIC_API_KEY, no reference needed); "
+                             "both = strictest (default diff)")
+    parser.add_argument("--camera-llm-model", default="claude-opus-5",
+                        help="model for --camera-judge llm "
+                             "(default claude-opus-5)")
     parser.add_argument("--camera-transport", default="auto",
                         choices=("auto", "chamber", "rtsp"))
     parser.add_argument("--camera-roi", default=None, metavar="x0,y0,x1,y1",

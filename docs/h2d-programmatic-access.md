@@ -463,8 +463,13 @@ stops at `RUNNING`). Because `bambulabs_api` is community-maintained
 and H2D-untested (see the library table), the script prints the
 installed library version up front, probes `start_print` for the
 kwargs the installed release actually accepts, and fails loudly rather
-than guessing if a signature has drifted. **This script has run a real
-print on the lab's A1 mini (2026-08-04) but not yet on an H2D.**
+than guessing if a signature has drifted. **This script has run real
+prints on both lab printers: the A1 mini (2026-08-04) and — closing
+the last untested link in the H2D transport chain — a pre-sliced print
+on the real H2D (2026-08-11, field-verified by @me-madsen).** Steps
+2–4 are therefore green on the H2D; `bambulabs_api`'s "H2D untested"
+caveat no longer applies to this workflow, though the library's own
+README still carries it.
 
 **AMS / filament source.** The script no longer assumes the external
 spool holder: it reads `Metadata/slice_info.config` out of the
@@ -893,11 +898,24 @@ Two H2D-specific differences from the A1 mini:
 - The H2D streams **RTSPS on TCP 322**
   (`rtsps://bblp:<code>@<ip>:322/streaming/live/1`), not the A1/P1
   chamber-image protocol on 6000 — so it needs `--transport rtsp` and
-  `ffmpeg` on `PATH`. (`--transport auto` tries 6000 first and falls
-  back, which just costs a timeout on an H2D.)
+  an `ffmpeg` binary. (`--transport auto` tries 6000 first and falls
+  back, which just costs a timeout on an H2D.) The script looks for
+  ffmpeg on `PATH`, in the `FFMPEG` env var / `--ffmpeg` flag, in the
+  `imageio-ffmpeg` pip package, and in the usual winget / chocolatey /
+  scoop / Homebrew install folders. The 2026-08-11 field attempt died
+  with `ffmpeg not found on PATH`; the lowest-friction fix on a lab
+  laptop (no admin rights, works inside a `uv` venv) is:
+
+  ```bash
+  uv pip install imageio-ffmpeg   # bundles a static ffmpeg the script finds
+  # or, system-wide: winget install Gyan.FFmpeg   (then reopen the terminal)
+  ```
+
 - **LAN Mode Liveview** (touchscreen → Settings → General) must be on,
   and it is a separate toggle from Developer Mode. With it off, port
-  322 stays closed while MQTT and FTPS work fine.
+  322 stays closed while MQTT and FTPS work fine. (Field note: this
+  toggle exists on the H2D but **not** on the A1 mini, whose camera
+  worked with no extra setting.)
 
 ### Hardware interlock — concrete options
 

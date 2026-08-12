@@ -13,6 +13,7 @@ and Pillow for the image half.
 """
 
 import os
+import shutil
 import socket
 import ssl
 import struct
@@ -103,6 +104,70 @@ def jpeg(color=(120, 120, 120), size=(320, 240), blob=None):
     buf = BytesIO()
     img.save(buf, format="JPEG", quality=85)
     return buf.getvalue()
+
+
+def textured(width=320, height=240, offset=(0, 0), blob=None):
+    """A deterministic speckled scene, cropped at `offset` - two crops of
+    the same scene at different offsets stand in for 'the bed/camera
+    moved between the reference and the check'."""
+    from PIL import Image, ImageDraw
+    from io import BytesIO
+    scene = Image.new("L", (width + 80, height + 80), 128)
+    draw = ImageDraw.Draw(scene)
+    seed = 12345
+    def rnd(mod):
+        nonlocal seed
+        seed = (seed * 1103515245 + 12345) % (2 ** 31)
+        return seed % mod
+    for _ in range(260):
+        x, y = rnd(width + 60), rnd(height + 60)
+        shade = 40 + rnd(176)
+        draw.rectangle((x, y, x + 14, y + 10), fill=shade)
+    ox, oy = offset
+    img = scene.crop((ox, oy, ox + width, oy + height)).convert("RGB")
+    if blob:
+        ImageDraw.Draw(img).rectangle(blob, fill=(250, 250, 250))
+    buf = BytesIO()
+    img.save(buf, format="JPEG", quality=85)
+    return buf.getvalue()
+
+
+class _FakeLLMResponse:
+    def __init__(self, text):
+        self.model = "claude-fake"
+        self.stop_reason = "end_turn"
+        block = type("Block", (), {"type": "text", "text": text})()
+        self.content = [block]
+
+
+def install_fake_anthropic(behaviour):
+    """Put a fake `anthropic` module into sys.modules.
+
+    behaviour: "json" (answers with valid JSON, but rejects the
+    output_config kwarg first, exercising the old-SDK fallback) or
+    "down" (every request raises).
+    """
+    import types
+
+    class Messages:
+        def create(self, **kwargs):
+            if behaviour == "down":
+                raise RuntimeError("no API key")
+            if "output_config" in kwargs:
+                raise TypeError("unexpected keyword argument 'output_config'")
+            return _FakeLLMResponse(
+                'Here you go: {"plate_visible": true, "bed_clear": true, '
+                '"observation": "plate is empty"}')
+
+    class Anthropic:
+        def __init__(self, **kwargs):
+            self.messages = Messages()
+
+    module = types.ModuleType("anthropic")
+    module.Anthropic = Anthropic
+    previous = sys.modules.get("anthropic")
+    sys.modules["anthropic"] = module
+    return previous
 
 
 def main():
@@ -226,6 +291,105 @@ def main():
                 transport="chamber", timeout=10, port=server.port)
             check("missing reference never reports CLEAR",
                   verdict is None and "reference" in msg, msg)
+
+    if have_pillow:
+        # --- alignment: a moved bed/camera must not read as a part ----
+        ref = textured(offset=(0, 0))
+        moved = textured(offset=(12, 9))
+        clear, frac, _ = cam.compare_frames(moved, ref, max_shift=0)
+        check("rigid comparison flags a moved scene (the reported failure)",
+              clear is False, str(frac))
+        clear, frac, detail = cam.compare_frames(moved, ref)
+        check("aligned comparison absorbs the move and reads clear",
+              clear is True, detail)
+        check("the detail names the alignment shift", "shift" in detail,
+              detail)
+
+        moved_part = textured(offset=(12, 9), blob=(90, 70, 230, 180))
+        clear, frac, _ = cam.compare_frames(moved_part, ref)
+        check("a part on a MOVED bed still reads NOT clear",
+              clear is False, str(frac))
+
+        # A corner blob on a featureless bed must not be shifted out of
+        # the comparison window (alignment only kicks in when the rigid
+        # score says "everything changed").
+        corner = jpeg(blob=(0, 0, 60, 45))
+        clear, _, _ = cam.compare_frames(corner, jpeg())
+        check("alignment cannot shift a corner part out of view",
+              clear is False)
+
+        # --- multiple references (bed parks at several positions) -----
+        refdir = os.path.join(tmp2 := tempfile.mkdtemp(), "refs")
+        os.makedirs(refdir)
+        with open(os.path.join(refdir, "a.jpg"), "wb") as fh:
+            fh.write(textured(offset=(0, 0)))
+        with open(os.path.join(refdir, "b.jpg"), "wb") as fh:
+            fh.write(textured(offset=(48, 30)))
+        far_frame = textured(offset=(48, 30))
+        clear, _, _ = cam.compare_against_references(
+            far_frame, os.path.join(refdir, "a.jpg"))
+        check("a far bed position misses a single reference",
+              clear is False)
+        clear, _, detail = cam.compare_against_references(far_frame, refdir)
+        check("a reference folder covers multiple bed positions",
+              clear is True, detail)
+        verdict, _, detail = cam.compare_against_references(
+            far_frame, os.path.join(refdir, "nope.jpg"))
+        check("a missing reference is UNKNOWN, not CLEAR",
+              verdict is None and "reference" in detail, detail)
+        shutil.rmtree(tmp2, ignore_errors=True)
+
+    # --- ffmpeg discovery ---------------------------------------------
+    with tempfile.TemporaryDirectory() as tmp3:
+        fake = os.path.join(tmp3, "ffmpeg-fake")
+        with open(fake, "w") as fh:
+            fh.write("#!/bin/sh\n")
+        check("explicit --ffmpeg path wins", cam._find_ffmpeg(fake) == fake)
+        old_env = os.environ.get("FFMPEG")
+        os.environ["FFMPEG"] = fake
+        try:
+            check("FFMPEG env var is honoured", cam._find_ffmpeg() == fake)
+        finally:
+            if old_env is None:
+                os.environ.pop("FFMPEG", None)
+            else:
+                os.environ["FFMPEG"] = old_env
+
+    # --- the LLM judge ------------------------------------------------
+    verdict, msg = cam._parse_llm_verdict(
+        '{"plate_visible": true, "bed_clear": true, "observation": "empty"}')
+    check("LLM verdict: clear JSON parses", verdict is True, msg)
+    verdict, msg = cam._parse_llm_verdict(
+        'Sure! {"plate_visible": true, "bed_clear": false, '
+        '"observation": "a part is on the plate"}')
+    check("LLM verdict: JSON inside prose parses", verdict is False, msg)
+    verdict, msg = cam._parse_llm_verdict(
+        '{"plate_visible": false, "bed_clear": true, "observation": "dark"}')
+    check("LLM verdict: unseen plate is UNKNOWN, never CLEAR",
+          verdict is None, msg)
+    verdict, msg = cam._parse_llm_verdict("I cannot tell.")
+    check("LLM verdict: non-JSON answer is UNKNOWN", verdict is None, msg)
+
+    previous = install_fake_anthropic("json")
+    try:
+        verdict, msg = cam.llm_bed_check(b"\xff\xd8fake\xff\xd9")
+        check("LLM judge end-to-end (incl. old-SDK output_config "
+              "fallback)", verdict is True, msg)
+    finally:
+        if previous is None:
+            sys.modules.pop("anthropic", None)
+        else:
+            sys.modules["anthropic"] = previous
+    previous = install_fake_anthropic("down")
+    try:
+        verdict, msg = cam.llm_bed_check(b"\xff\xd8fake\xff\xd9")
+        check("an unreachable LLM degrades to UNKNOWN, never raises",
+              verdict is None and "unavailable" in msg, msg)
+    finally:
+        if previous is None:
+            sys.modules.pop("anthropic", None)
+        else:
+            sys.modules["anthropic"] = previous
 
     # --- ROI parsing --------------------------------------------------
     check("parse_roi accepts fractions",
