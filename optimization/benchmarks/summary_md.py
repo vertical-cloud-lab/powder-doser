@@ -10,7 +10,8 @@ HERE = Path(__file__).parent
 RES = HERE / "results"
 
 ORDER = ["three_phase", "three_phase_vel", "rate_pi_kf", "dual_ukf", "mpc",
-         "bo_three_phase"]
+         "bo_three_phase", "bangbang_naive", "bangbang_ff", "bangbang_safe",
+         "bangbang_trim"]
 
 
 def agg(rows):

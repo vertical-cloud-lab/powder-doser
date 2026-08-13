@@ -37,10 +37,12 @@ RES = HERE / "results"
 
 BASELINE = "three_phase"
 ORDER = ["three_phase", "three_phase_vel", "rate_pi_kf", "dual_ukf", "mpc",
-         "bo_three_phase"]
-#: pairs reported: everything vs the firmware baseline + the feedback trio
+         "bo_three_phase", "bangbang_ff", "bangbang_safe", "bangbang_trim"]
+#: pairs reported: everything vs the firmware baseline + the feedback trio, plus
+#: the bang-bang hybrid vs the best feedback methods (the speed/overshoot front)
 EXTRA_PAIRS = [("rate_pi_kf", "dual_ukf"), ("rate_pi_kf", "mpc"),
-               ("dual_ukf", "mpc")]
+               ("dual_ukf", "mpc"), ("bangbang_trim", "dual_ukf"),
+               ("bangbang_trim", "rate_pi_kf")]
 N_BOOT = 4000
 TIMEOUT_S = 300.0
 

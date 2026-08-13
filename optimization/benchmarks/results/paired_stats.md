@@ -12,6 +12,9 @@
 | dual_ukf | 8 | 0 | 0 | 1 |
 | mpc | 25 | 0 | 0 | 1 |
 | bo_three_phase | 33 | 0 | 0 | 3 |
+| bangbang_ff | 0 | 0 | 0 | 0 |
+| bangbang_safe | 0 | 0 | 0 | 0 |
+| bangbang_trim | 13 | 0 | 0 | 33 |
 
 ### three_phase_vel − three_phase
 
@@ -158,13 +161,100 @@
 
 </details>
 
+### bangbang_ff − three_phase
+
+| metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
+|---|---|---|---|
+| |error| (mg) | +262.25 **\*** | [+253.62, +270.61] |  |
+| time (s, cens. 300) | -257.87 **\*** | [-265.64, -249.49] |  |
+| taps | -77.90 **\*** | [-82.35, -73.27] |  |
+| within ±5 mg | -0.20 **\*** | [-0.27, -0.13] | 6 / 78 |
+| overshoot (strict) | +0.28 **\*** | [+0.24, +0.32] | 111 / 9 |
+
+<details><summary>per-cell mean Δ|error| (mg)</summary>
+
+| powder | context | target g | Δ|e| mg |
+|---|---|---|---|
+| AlSi10Mg | nominal | 0.3 | +145.28 |
+| AlSi10Mg | nominal | 2.0 | +79.00 |
+| AlSi10Mg | stressed | 0.3 | +133.70 |
+| AlSi10Mg | stressed | 2.0 | +168.90 |
+| lactose | nominal | 0.3 | +77.55 |
+| lactose | nominal | 2.0 | +640.46 |
+| lactose | stressed | 0.3 | +90.39 |
+| lactose | stressed | 2.0 | +872.83 |
+| salt | nominal | 0.3 | +20.85 |
+| salt | nominal | 2.0 | +321.41 |
+| salt | stressed | 0.3 | +17.95 |
+| salt | stressed | 2.0 | +578.69 |
+
+</details>
+
+### bangbang_safe − three_phase
+
+| metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
+|---|---|---|---|
+| |error| (mg) | +338.71 **\*** | [+329.25, +348.07] |  |
+| time (s, cens. 300) | -258.07 **\*** | [-265.52, -249.60] |  |
+| taps | -77.90 **\*** | [-82.30, -73.43] |  |
+| within ±5 mg | -0.21 **\*** | [-0.29, -0.14] | 3 / 80 |
+| overshoot (strict) | +0.03 **\*** | [+0.01, +0.06] | 23 / 11 |
+
+<details><summary>per-cell mean Δ|error| (mg)</summary>
+
+| powder | context | target g | Δ|e| mg |
+|---|---|---|---|
+| AlSi10Mg | nominal | 0.3 | +192.28 |
+| AlSi10Mg | nominal | 2.0 | +65.56 |
+| AlSi10Mg | stressed | 0.3 | +194.53 |
+| AlSi10Mg | stressed | 2.0 | +173.66 |
+| lactose | nominal | 0.3 | +279.05 |
+| lactose | nominal | 2.0 | +644.52 |
+| lactose | stressed | 0.3 | +271.03 |
+| lactose | stressed | 2.0 | +875.95 |
+| salt | nominal | 0.3 | +229.73 |
+| salt | nominal | 2.0 | +331.44 |
+| salt | stressed | 0.3 | +226.63 |
+| salt | stressed | 2.0 | +580.20 |
+
+</details>
+
+### bangbang_trim − three_phase
+
+| metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
+|---|---|---|---|
+| |error| (mg) | +27.11 **\*** | [+9.66, +44.87] |  |
+| time (s, cens. 300) | -176.41 **\*** | [-188.45, -164.33] |  |
+| taps | -56.84 **\*** | [-62.16, -51.48] |  |
+| within ±5 mg | +0.16 **\*** | [+0.07, +0.23] | 106 / 50 |
+| overshoot (strict) | +0.41 **\*** | [+0.36, +0.46] | 154 / 5 |
+
+<details><summary>per-cell mean Δ|error| (mg)</summary>
+
+| powder | context | target g | Δ|e| mg |
+|---|---|---|---|
+| AlSi10Mg | nominal | 0.3 | +16.59 |
+| AlSi10Mg | nominal | 2.0 | +26.49 |
+| AlSi10Mg | stressed | 0.3 | +13.58 |
+| AlSi10Mg | stressed | 2.0 | +68.18 |
+| lactose | nominal | 0.3 | +6.49 |
+| lactose | nominal | 2.0 | +44.20 |
+| lactose | stressed | 0.3 | -8.72 |
+| lactose | stressed | 2.0 | +189.49 |
+| salt | nominal | 0.3 | +3.32 |
+| salt | nominal | 2.0 | -5.03 |
+| salt | stressed | 0.3 | -6.62 |
+| salt | stressed | 2.0 | -22.60 |
+
+</details>
+
 ### rate_pi_kf − dual_ukf
 
 | metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
 |---|---|---|---|
-| |error| (mg) | +1.75 | [-1.07, +4.31] |  |
-| time (s, cens. 300) | -20.61 **\*** | [-29.89, -11.75] |  |
-| taps | +0.18 | [-5.63, +5.57] |  |
+| |error| (mg) | +1.75 | [-1.07, +4.36] |  |
+| time (s, cens. 300) | -20.61 **\*** | [-30.10, -11.76] |  |
+| taps | +0.18 | [-5.93, +5.46] |  |
 | within ±5 mg | -0.06 | [-0.11, +0.00] | 46 / 66 |
 | overshoot (strict) | +0.02 | [-0.01, +0.05] | 27 / 20 |
 
@@ -191,10 +281,10 @@
 
 | metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
 |---|---|---|---|
-| |error| (mg) | +2.52 **\*** | [+1.25, +4.21] |  |
-| time (s, cens. 300) | -64.85 **\*** | [-70.51, -59.34] |  |
-| taps | -33.78 **\*** | [-37.19, -30.17] |  |
-| within ±5 mg | +0.04 | [-0.01, +0.10] | 59 / 43 |
+| |error| (mg) | +2.52 **\*** | [+1.27, +4.25] |  |
+| time (s, cens. 300) | -64.85 **\*** | [-70.23, -59.31] |  |
+| taps | -33.78 **\*** | [-37.23, -30.08] |  |
+| within ±5 mg | +0.04 | [-0.01, +0.11] | 59 / 43 |
 | overshoot (strict) | +0.04 **\*** | [+0.01, +0.08] | 30 / 14 |
 
 <details><summary>per-cell mean Δ|error| (mg)</summary>
@@ -220,9 +310,9 @@
 
 | metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
 |---|---|---|---|
-| |error| (mg) | +0.77 | [-1.12, +3.00] |  |
-| time (s, cens. 300) | -44.23 **\*** | [-50.34, -38.34] |  |
-| taps | -33.96 **\*** | [-37.88, -29.93] |  |
+| |error| (mg) | +0.77 | [-1.09, +3.08] |  |
+| time (s, cens. 300) | -44.23 **\*** | [-50.49, -38.13] |  |
+| taps | -33.96 **\*** | [-37.93, -29.73] |  |
 | within ±5 mg | +0.10 **\*** | [+0.04, +0.15] | 67 / 31 |
 | overshoot (strict) | +0.03 | [-0.00, +0.05] | 22 / 13 |
 
@@ -242,6 +332,64 @@
 | salt | nominal | 2.0 | +0.13 |
 | salt | stressed | 0.3 | +5.89 |
 | salt | stressed | 2.0 | -3.20 |
+
+</details>
+
+### bangbang_trim − dual_ukf
+
+| metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
+|---|---|---|---|
+| |error| (mg) | +51.22 **\*** | [+34.30, +69.52] |  |
+| time (s, cens. 300) | -97.56 **\*** | [-106.29, -89.73] |  |
+| taps | -37.60 **\*** | [-42.04, -33.30] |  |
+| within ±5 mg | -0.14 **\*** | [-0.25, -0.03] | 61 / 112 |
+| overshoot (strict) | +0.37 **\*** | [+0.32, +0.41] | 148 / 15 |
+
+<details><summary>per-cell mean Δ|error| (mg)</summary>
+
+| powder | context | target g | Δ|e| mg |
+|---|---|---|---|
+| AlSi10Mg | nominal | 0.3 | +19.29 |
+| AlSi10Mg | nominal | 2.0 | +30.69 |
+| AlSi10Mg | stressed | 0.3 | +14.58 |
+| AlSi10Mg | stressed | 2.0 | +74.27 |
+| lactose | nominal | 0.3 | +8.12 |
+| lactose | nominal | 2.0 | +50.70 |
+| lactose | stressed | 0.3 | +2.01 |
+| lactose | stressed | 2.0 | +420.78 |
+| salt | nominal | 0.3 | +0.54 |
+| salt | nominal | 2.0 | -0.31 |
+| salt | stressed | 0.3 | -5.20 |
+| salt | stressed | 2.0 | -0.88 |
+
+</details>
+
+### bangbang_trim − rate_pi_kf
+
+| metric | diff (a−b) | 95% CI | discordant (a>b / a<b) |
+|---|---|---|---|
+| |error| (mg) | +49.46 **\*** | [+32.08, +68.28] |  |
+| time (s, cens. 300) | -76.95 **\*** | [-86.10, -68.15] |  |
+| taps | -37.78 **\*** | [-42.37, -33.48] |  |
+| within ±5 mg | -0.09 | [-0.18, +0.01] | 65 / 96 |
+| overshoot (strict) | +0.35 **\*** | [+0.30, +0.39] | 137 / 11 |
+
+<details><summary>per-cell mean Δ|error| (mg)</summary>
+
+| powder | context | target g | Δ|e| mg |
+|---|---|---|---|
+| AlSi10Mg | nominal | 0.3 | +20.83 |
+| AlSi10Mg | nominal | 2.0 | +31.07 |
+| AlSi10Mg | stressed | 0.3 | +15.79 |
+| AlSi10Mg | stressed | 2.0 | +75.02 |
+| lactose | nominal | 0.3 | +8.11 |
+| lactose | nominal | 2.0 | +50.37 |
+| lactose | stressed | 0.3 | -0.65 |
+| lactose | stressed | 2.0 | +385.26 |
+| salt | nominal | 0.3 | +6.99 |
+| salt | nominal | 2.0 | +0.23 |
+| salt | stressed | 0.3 | +0.90 |
+| salt | stressed | 2.0 | -0.38 |
 
 </details>
 

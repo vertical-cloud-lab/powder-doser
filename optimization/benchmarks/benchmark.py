@@ -18,7 +18,11 @@ from dataclasses import asdict
 from pathlib import Path
 
 from rig import Context, DoseOutcome, POWDERS, PowderDoserSim, Rig
-from controllers import ALL_CONTROLLERS, TOL_G
+from controllers import ALL_CONTROLLERS as _BASE_CONTROLLERS, TOL_G
+from bangbang import BANGBANG_CONTROLLERS
+
+# base feedback/three-phase methods plus the bang-bang family (PR #124 2026-08)
+ALL_CONTROLLERS = {**_BASE_CONTROLLERS, **BANGBANG_CONTROLLERS}
 
 HERE = Path(__file__).parent
 

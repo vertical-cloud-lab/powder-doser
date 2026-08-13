@@ -27,16 +27,22 @@ TEXT2 = "#52514e"
 GRID = "#e4e3df"
 # validated categorical palette (dataviz reference instance), fixed order
 METHOD_ORDER = ["three_phase", "three_phase_vel", "rate_pi_kf",
-                "dual_ukf", "mpc", "bo_three_phase"]
+                "dual_ukf", "mpc", "bo_three_phase",
+                "bangbang_ff", "bangbang_safe", "bangbang_trim"]
 METHOD_LABEL = {"three_phase": "3-phase (firmware)",
                 "three_phase_vel": "3-phase velocity",
                 "rate_pi_kf": "rate-PI + KF",
                 "dual_ukf": "dual UKF",
                 "mpc": "MPC (cvxpy)",
-                "bo_three_phase": "BO-tuned 3-phase"}
+                "bo_three_phase": "BO-tuned 3-phase",
+                "bangbang_ff": "bang-bang (FF)",
+                "bangbang_safe": "bang-bang (safe)",
+                "bangbang_trim": "bang-bang + trim"}
 COLOR = {"three_phase": "#2a78d6", "three_phase_vel": "#eb6834",
          "rate_pi_kf": "#1baf7a", "dual_ukf": "#eda100",
-         "mpc": "#e87ba4", "bo_three_phase": "#008300"}
+         "mpc": "#e87ba4", "bo_three_phase": "#008300",
+         "bangbang_ff": "#8a8683", "bangbang_safe": "#6c4bd6",
+         "bangbang_trim": "#c1121f"}
 POWDER_MARK = {"salt": "o", "lactose": "s", "AlSi10Mg": "^"}
 
 
