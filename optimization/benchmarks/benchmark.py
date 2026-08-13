@@ -20,11 +20,20 @@ from pathlib import Path
 from rig import Context, DoseOutcome, POWDERS, PowderDoserSim, Rig
 from controllers import ALL_CONTROLLERS as _BASE_CONTROLLERS, TOL_G
 from bangbang import BANGBANG_CONTROLLERS
+from calibrate_from_mongo import apply_calibration, CAL_OUT
 
 # base feedback/three-phase methods plus the bang-bang family (PR #124 2026-08)
 ALL_CONTROLLERS = {**_BASE_CONTROLLERS, **BANGBANG_CONTROLLERS}
 
 HERE = Path(__file__).parent
+
+# Powder parameters: default provisional coefficients, unless calibrate_from_mongo
+# has fitted them to the real battery_runs data (calibrated_powders.json), which
+# is the point of this study.  --uncalibrated forces the old defaults.
+def powder_map(calibrated: bool) -> dict:
+    if calibrated and CAL_OUT.exists():
+        return apply_calibration(POWDERS, CAL_OUT)
+    return POWDERS
 
 CONTEXTS = {
     # nominal bench conditions
@@ -41,8 +50,8 @@ N_SEEDS = 30    # >= ~30 independent seed clusters per the methods-check review
 
 
 def run_dose(method: str, ctrl, powder: str, ctx_name: str,
-             target_g: float, seed: int) -> DoseOutcome:
-    sim = PowderDoserSim(POWDERS[powder], CONTEXTS[ctx_name], seed=seed)
+             target_g: float, seed: int, powders: dict = POWDERS) -> DoseOutcome:
+    sim = PowderDoserSim(powders[powder], CONTEXTS[ctx_name], seed=seed)
     rig = Rig(sim)
     try:
         status = ctrl.run(rig, target_g)
@@ -76,7 +85,15 @@ def main() -> None:
     ap.add_argument("--out", default=str(HERE / "results" / "results.jsonl"))
     ap.add_argument("--bo-params", default=str(HERE / "results" / "bo_params.json"),
                     help="per-powder tuned ThreePhase params; adds bo_three_phase")
+    ap.add_argument("--uncalibrated", action="store_true",
+                    help="use the twin's default coefficients, not the "
+                         "MongoDB-fitted calibrated_powders.json")
     args = ap.parse_args()
+
+    pmap = powder_map(not args.uncalibrated)
+    cal_note = ("calibrated (MongoDB battery_runs fit)"
+                if pmap is not POWDERS else "default provisional coefficients")
+    print(f"powder coefficients: {cal_note}")
 
     methods = [m for m in args.methods.split(",") if m]
     powders = ["salt"] if args.quick else POWDER_SET
@@ -105,7 +122,7 @@ def main() -> None:
                             else:
                                 ctrl = make_controller(method)
                             o = run_dose(method, ctrl, powder, ctx_name,
-                                         target, seed)
+                                         target, seed, powders=pmap)
                             results.append(o)
                             fh.write(json.dumps(asdict(o)) + "\n")
                             fh.flush()

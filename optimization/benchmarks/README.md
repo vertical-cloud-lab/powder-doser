@@ -6,9 +6,33 @@ PR #124 and the Edison reviews, against the digital twin
 in `../edison/query_out/sim_critique.answer.md`).
 
 **Interpretation caveat (from the critique):** the twin's coefficients are
-provisional until the bench calibration experiments are run, so results here
-are a *simulation sensitivity study* — evidence about controller structure and
-failure modes, not proof that one controller is superior on hardware.
+provisional; results here are a *simulation sensitivity study* — evidence about
+controller structure and failure modes, not proof that one controller is
+superior on hardware.
+
+**Calibration (2026-08-13).** The three benchmark powders' feed factors and
+tilt-gain shapes are now **fitted to real experimental data** pulled from
+MongoDB `battery_runs` (the issue #116 / PR #131 characterization battery), via
+`../simulation/calibrate_from_mongo.py`. The battery's rotation block measures
+grams conveyed per 360° (= one auger rev) at three tilts, which is exactly the
+twin's feed factor vs. tilt, so `feed_factor_g_per_rev` (reference condition),
+`tilt_g0`, and `tilt_exp` are least-squares/analytic fits rather than guesses;
+a cohesion proxy comes from the `lowflow`-flag rate and absolute feed factor.
+The fit is written to `../simulation/calibrated_powders.json` and applied by
+`benchmark.py` (disable with `--uncalibrated`). Powder→data mapping and the
+data-quality caveats it exposes:
+
+| slot | real powder (run) | ref g/rev | tilt g0 / exp | note |
+|---|---|---|---|---|
+| salt | salt (2026-08-12) | 0.233 | 0.14 / 0.53 | full valid tilt sweep; tilt camera-verified. The 2026-08-06 salt run conveyed ~10× less and was **not** used (suspected un-achieved tilt). |
+| lactose | calcium-lactate (2026-08-05) | 0.229 | 0.23 / 0.33 | full valid tilt sweep; moderately free-flowing pharma powder. |
+| AlSi10Mg | alsi10mg (2026-08-11) | 0.139 | 0.60 / 0.80 | **tilt-servo fault** invalidated the tilt sweep (plate stuck at 0°); ref feed factor taken from the valid horizontal trials, tilt gain is a free-flowing *prior*, not fit. |
+
+The strongly-cohesive battery powders (brown-rice-flour, sodium-alginate,
+carboxymethyl-cellulose) convey ≲0.03 g/rev with `lowflow`-flagged trials — the
+data says the current rig effectively **cannot dose them**, so they are catalogued
+in `calibrated_powders.json::all_powder_fits` but not used as benchmark slots
+(a 2 g dose would be all timeout, giving no controller discrimination).
 
 ## Layout
 
@@ -18,6 +42,7 @@ failure modes, not proof that one controller is superior on hardware.
 | `controllers.py` | The five feedback/policy method families: `three_phase` (firmware baseline), `three_phase_vel` (velocity bulk), `rate_pi_kf` (rate-PI + switching-R Kalman filter, filterpy), `dual_ukf` (joint state+feed-factor UKF, filterpy), `mpc` (short-horizon MPC, cvxpy/OSQP). All share the identical tap-until-tolerance endgame. |
 | `bangbang.py` | The bang-bang family (PR #124, 2026-08-12 direction): dispense at max rate, hard-stop on a predicted-settled-mass cutoff. `bangbang_naive` (stop at raw crossing — a control), `bangbang_ff` (KF committed-mass predictor), `bangbang_safe` (+ k·σ undershoot bias), `bangbang_trim` (fast bang-bang bulk → seeded rate-PI trickle → tap finish). Uses `MassRateLagKF`, a **3-state (mass, rate, balance-reading) KF that models the balance's 0.7 s integration lag explicitly** — the deferred item below — so the committed-mass predictor works off the lag-free true-mass estimate. |
 | `test_bangbang.py` | Behaviour + estimator checks for the bang-bang family (iteration story, convergence/no-hang, overshoot bound, lag-KF estimator-truth advantage over the raw balance and the 2-state KF, safe abort on a blocked cohesive dose). |
+| `../simulation/calibrate_from_mongo.py` | Pulls `battery_runs` from MongoDB, fits each powder's reference feed factor + tilt gain from the rotation block, writes `calibrated_powders.json` (+ an offline `battery_snapshot.json` for reproducibility). |
 | `bo_tuning.py` | Ax/BoTorch constrained tuning of 7 three-phase policy parameters per powder (strict overshoot as an outcome constraint, rotating scenario seeds, frozen endgame, firmware defaults as safe seed). Writes `results/bo_params.json`. |
 | `benchmark.py` | Grid runner: methods × powders × contexts × targets × 30 seeds → `results/results.jsonl`. |
 | `summary_md.py` | Descriptive markdown tables → `results/summary.md`. |
@@ -51,18 +76,19 @@ takeaways:
   (rate-estimate noise × τ + slug quantization) means a single hard stop is a
   bulk primitive, not a finisher — so `bangbang_trim` hands off to a seeded
   rate-PI trickle + tap endgame.
-* **It buys speed at the cost of the overshoot constraint.** Paired vs
-  `dual_ukf` (seed-cluster bootstrap, CIs exclude 0): **−98 s dose time and
-  −38 taps**, but **+37 pts strict overshoot** and −14 pts within-tolerance.
-  Arriving fast leaves a charged lip whose stochastic tap-slug can cross target
-  — a genuine speed↔overshoot Pareto frontier, with bang-bang at the fast end
-  and the KF/UKF feedback methods at the slow/safe end.
-* **One global parameter set can't serve all powders.** salt and lactose reach
-  ~5 mg *median* accuracy (though overshoot is still elevated, ~33–38 %); a fast
-  free-flowing powder (AlSi10Mg, "flows like a liquid" per the #116
-  observations) is much worse — median 22 mg, 64 % overshoot on small targets.
-  Closing this is exactly the per-powder BO/context layer the roadmap already
-  has (`bo_tuning.py` extends to the bang-bang parameter vector).
+* **It buys speed at the cost of the overshoot constraint.** On the
+  **calibrated** twin, paired vs `dual_ukf` (seed-cluster bootstrap, CIs exclude
+  0): **−139 s dose time and −54 taps**, with matched median accuracy
+  (Δ|error| +0.1 mg, CI spans 0) and +12 pts within-tolerance, but **+20 pts
+  strict overshoot**. Arriving fast leaves a charged lip whose stochastic
+  tap-slug can cross target — a genuine speed↔overshoot Pareto frontier, with
+  bang-bang at the fast end and the KF/UKF feedback methods at the slow/safe end.
+* **Overshoot is powder-dependent.** With the real fitted feed factors, median
+  accuracy is ~4.5–5 mg across salt / lactose / AlSi10Mg, but overshoot rate
+  splits by powder (salt 16 %, AlSi10Mg 19 %, lactose 30 %). One global bang-bang
+  parameter set leaves overshoot elevated on the more variable powders — exactly
+  the per-powder BO/context layer the roadmap already has (`bo_tuning.py` extends
+  to the bang-bang parameter vector).
 
 Objectives/constraints scored per dose: |mass error| after full settle
 (tolerance ±5 mg), dose time, tap count (wear), strict overshoot
