@@ -57,11 +57,12 @@ takeaways:
   Arriving fast leaves a charged lip whose stochastic tap-slug can cross target
   — a genuine speed↔overshoot Pareto frontier, with bang-bang at the fast end
   and the KF/UKF feedback methods at the slow/safe end.
-* **One global parameter set can't serve all powders.** salt and lactose (the
-  bench powders) reach ~±5 mg with low overshoot; a fast free-flowing powder
-  (AlSi10Mg, "flows like a liquid" per the #116 observations) overshoots small
-  targets. Closing this is exactly the per-powder BO/context layer the roadmap
-  already has (`bo_tuning.py` extends to the bang-bang parameter vector).
+* **One global parameter set can't serve all powders.** salt and lactose reach
+  ~5 mg *median* accuracy (though overshoot is still elevated, ~33–38 %); a fast
+  free-flowing powder (AlSi10Mg, "flows like a liquid" per the #116
+  observations) is much worse — median 22 mg, 64 % overshoot on small targets.
+  Closing this is exactly the per-powder BO/context layer the roadmap already
+  has (`bo_tuning.py` extends to the bang-bang parameter vector).
 
 Objectives/constraints scored per dose: |mass error| after full settle
 (tolerance ±5 mg), dose time, tap count (wear), strict overshoot
