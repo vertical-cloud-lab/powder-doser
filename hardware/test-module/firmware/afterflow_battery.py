@@ -25,6 +25,15 @@ Edison critique and the PR #124 outline:
       fire single taps -- bounds tap-alone yield & afterflow).
   B4  Max-rate feed map (only if budget remains): continuous, no stop,
       6 s at tilt {40,55,70}, rpm 55 -> flow(tilt) from the slope.
+  B5  Fill-level sensitivity (drawdown surrogate): a fixed-tilt (55 deg)
+      continuous run at the *start* of the session (auger fullest) and
+      two more at the *end* (auger emptiest, after everything else has
+      dispensed).  Flow(early) vs flow(late) at matched tilt/rpm bounds
+      how far the feed factor drifts as the tube draws down within one
+      session -- the fill covariate Edison flagged, measured for free.
+      (True 3-level fill sweep is not possible here: the loaded tube is
+      over the scale's 102 g limit so it cannot be weighed, and the 50 g
+      cup cap bounds how much fill can be removed in one session.)
 
 SAFETY -- 50 g cup cap (operator away, smaller cup)
 --------------------------------------------------
@@ -56,8 +65,18 @@ import main_three_phase as m3
 POWDER_ID = "salt"
 
 # ---- safety budget (grams dispensed into the cup this session) ----
-CAP_G = 46.0        # stop the battery before starting a trial past this
-HARD_G = 48.0       # emergency halt mid-dispense if reached (< 50 g cup)
+# Two independent limits, both respected by the smaller of the two caps:
+#   (1) cup overflow: operator set "~50 g max" for the new smaller cup.
+#   (2) balance range: the A&D maxes at ~102 g ABSOLUTE.  At this session's
+#       start the empty-ish cup already read a standing 63.5 g (anomalous --
+#       see report), and physical pan load = standing + cumulative dispensed
+#       grows across trials because the cup is never emptied.  To keep the
+#       balance from saturating (which would corrupt every reading), cap
+#       dispensed so 63.5 + cum stays under ~98 g, i.e. cum < ~34 g.
+# The 34 g scale-range cap binds before the 50 g cup cap, so use it.
+STANDING_G = 63.5   # measured pre-tare load at session start (see report)
+CAP_G = 33.0        # stop the battery before starting a trial past this
+HARD_G = 35.0       # emergency halt mid-dispense (abs ~98.5 g < 102 g range)
 
 # ---- timing ----
 NOISE_S = 20.0
@@ -327,6 +346,11 @@ def build_plan():
     and MicroPython portability)."""
     plan = []
 
+    # ---- B5 (early fill): one max-rate continuous run at 55 deg, first,
+    # while the tube is fullest -- pairs with the B5-late runs appended
+    # at the very end for a within-session fill-drawdown comparison. ----
+    plan.append(("B5", 55.0, 1, FAST_RPM, 0.0, "cont"))
+
     # ---- C6: factorial stop-response, tap-while-rotating ----
     tilts = [40.0, 55.0, 70.0]
     masses = [0.30, 0.60]
@@ -360,14 +384,21 @@ def build_plan():
         for tilt in torder:
             plan.append(("B4", tilt, rep, FAST_RPM, 0.0, "cont"))
 
+    # ---- B5 (late fill): two more 55 deg continuous runs at the end,
+    # tube emptiest -- compare flow vs the B5-early run above. ----
+    for rep in range(2, 4):                      # reps 2,3 (rep 1 was early)
+        plan.append(("B5", 55.0, rep, FAST_RPM, 0.0, "cont"))
+
     return plan
 
 
 def main():
-    meta("experiment", "afterflow-battery-C6-C8-B4")
+    meta("experiment", "afterflow-battery-C6-C8-B4-B5")
     meta("powder_id", POWDER_ID)
     meta("cap_g", CAP_G)
     meta("hard_g", HARD_G)
+    meta("standing_load_g_pretare", STANDING_G)
+    meta("scale_max_g", 102.0)
     meta("fast_rpm", FAST_RPM)
     meta("tap_every_polls", TAP_EVERY)
     meta("tap_on_ms", TAP_ON_MS)
@@ -376,7 +407,14 @@ def main():
     meta("taponly_n", TAPONLY_N)
     meta("settle_stream_s", SETTLE_STREAM_S)
     meta("auger_tare_g", 56.716)
-    meta("total_loaded_g", 127.98)
+    # 2026-08-12: loaded 127.98 g total; ~10.16 g dispensed in the
+    # interrupted first attempt (cum 9.42 g + ~0.74 g mid-trial-18) before
+    # the operator reset.  Restart estimate: tube+salt ~= 117.8 g, salt ~= 61.1 g.
+    meta("total_loaded_g_original", 127.98)
+    meta("dispensed_prior_attempt_g", 10.16)
+    meta("total_onboard_est_g", 117.82)
+    meta("salt_remaining_est_g", 61.10)
+    meta("restart", "attempt-2-after-operator-reset")
 
     rig = Rig()
     plan = build_plan()
