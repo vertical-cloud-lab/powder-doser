@@ -38,6 +38,12 @@ def build_payload(seconds, label):
     if n != 1:
         sys.exit("could not find the DURATION_S line in {}".format(
             DEVICE_SCRIPT))
+    # We save on the PC here; don't also leave a copy on the Pico's flash.
+    src, n = re.subn(r"^OUTPUT_FILE = .*$", "OUTPUT_FILE = None",
+                     src, count=1, flags=re.M)
+    if n != 1:
+        sys.exit("could not find the OUTPUT_FILE line in {}".format(
+            DEVICE_SCRIPT))
     if label:
         src, n = re.subn(r'^LABEL = "".*$', "LABEL = {!r}".format(label),
                          src, count=1, flags=re.M)
