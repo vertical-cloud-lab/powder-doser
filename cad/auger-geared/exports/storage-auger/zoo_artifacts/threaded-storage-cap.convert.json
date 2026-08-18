@@ -1,0 +1,14 @@
+{
+  "source": "zoo file conversion stl->step",
+  "operation_id": "402505d4-bbcd-495c-8182-39466a50ad3c",
+  "src_file": "threaded-storage-cap.stl",
+  "nan_normals_fixed": 1,
+  "bbox_mm": [
+    -15.85,
+    -15.85,
+    0.0,
+    15.85,
+    15.85,
+    31.4
+  ]
+}
