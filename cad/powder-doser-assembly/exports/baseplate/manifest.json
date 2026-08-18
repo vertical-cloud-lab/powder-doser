@@ -1,0 +1,27 @@
+{
+  "name": "baseplate",
+  "prompt_file": "07-baseplate.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -100.0,
+      36.0,
+      -54.0
+    ],
+    "max": [
+      100.0,
+      115.0,
+      38.25
+    ],
+    "size": [
+      200.0,
+      79.0,
+      92.25
+    ]
+  }
+}
