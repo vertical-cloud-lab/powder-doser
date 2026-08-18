@@ -1,0 +1,234 @@
+{
+  "prompt": "A rectangular FDM-printable baseplate, 300 mm long (X) by 200 mm wide\n(Y) by 6 mm thick (Z), with 8 mm radius rounded corners. The plate is\npositioned so it spans X = -30 to X = 270, centred on Y = 0.\n\nThe plate has a rectangular discharge cut-out, 70 mm along X and 70 mm\nalong Y, centred on (X = 18, Y = 0), cut fully through the 6 mm\nthickness. Powder falls through this opening to a cup below.\n\nStanding UP from the top face of the plate (extending toward positive Z):\n\n  * Two hinge pillars, one at Y = +27.5 and one at Y = -27.5, both\n    centred on X = 18. Each pillar is 14 mm along X, 6 mm along Y, and\n    50 mm tall. Each pillar has a 5.2 mm horizontal pin hole through its\n    Y face, with the pin axis parallel to Y, located 21 mm above the\n    plate top surface (i.e. 4 mm below the top of the pillar). The two\n    holes are coaxial \u2014 they form one continuous hinge pin path.\n  * Two linear-actuator clevis lugs, 14 mm along X, 4 mm along Y, 25 mm\n    tall. One is centred on (X = 148, Y = +8) and the other on\n    (X = 148, Y = -8). Each has a 5.2 mm horizontal clevis pin hole\n    through its Y face, 5 mm below the top of the lug.\n\nHanging DOWN from the bottom face of the plate (extending toward\nnegative Z), the plate has four square legs, 18 mm x 18 mm cross\nsection, each 150 mm tall. The legs are inset 13 mm from the\nrespective baseplate corners, at:\n    (X = -17, Y = -87), (X = -17, Y = +87),\n    (X = 257, Y = -87), (X = 257, Y = +87).\nEach leg also has a single 4.4 mm M4 clearance hole drilled through its\noutermost X face, 15 mm above the bottom of the leg, for an optional\ncross-brace rail.\n\nThe part must print plate-up (top face on the build plate is fine \u2014 flip\nin the slicer so the legs print downward, supported only if your printer\nneeds it). Output a single solid body. Return STEP and STL.\n",
+  "design_plan": {
+    "description": "FDM-printable baseplate assembly with discharge cutout, hinge pillars, clevis lugs, and four support legs",
+    "components": [
+      "Rectangular baseplate with rounded corners",
+      "Central discharge cutout (rectangular through-hole)",
+      "Two hinge pillars with coaxial pin holes (upward from top face)",
+      "Two linear-actuator clevis lugs with pin holes (upward from top face)",
+      "Four square support legs with M4 clearance holes (downward from bottom face)"
+    ],
+    "dimensions": {
+      "overall_bbox": {
+        "xlen": 300,
+        "ylen": 200,
+        "zlen": 156,
+        "comment": "Z = 6mm plate + 50mm pillars upward + 150mm legs downward = 206mm total, bbox is 156mm accounting for coordinate system"
+      },
+      "key_dimensions": {
+        "baseplate_length_x": 300,
+        "baseplate_width_y": 200,
+        "baseplate_thickness_z": 6,
+        "baseplate_x_range": [
+          -30,
+          270
+        ],
+        "baseplate_y_center": 0,
+        "corner_radius": 8,
+        "discharge_cutout_x": 70,
+        "discharge_cutout_y": 70,
+        "discharge_cutout_center_x": 18,
+        "discharge_cutout_center_y": 0,
+        "hinge_pillar_width_x": 14,
+        "hinge_pillar_depth_y": 6,
+        "hinge_pillar_height_z": 50,
+        "hinge_pillar_x_center": 18,
+        "hinge_pillar_y_positions": [
+          27.5,
+          -27.5
+        ],
+        "hinge_pin_hole_diameter": 5.2,
+        "hinge_pin_hole_height_above_plate": 21,
+        "clevis_lug_width_x": 14,
+        "clevis_lug_depth_y": 4,
+        "clevis_lug_height_z": 25,
+        "clevis_lug_positions": [
+          [
+            148,
+            8
+          ],
+          [
+            148,
+            -8
+          ]
+        ],
+        "clevis_pin_hole_diameter": 5.2,
+        "clevis_pin_hole_depth_from_top": 5,
+        "leg_cross_section": 18,
+        "leg_height_z": 150,
+        "leg_inset_from_corner": 13,
+        "leg_positions": [
+          [
+            -17,
+            -87
+          ],
+          [
+            -17,
+            87
+          ],
+          [
+            257,
+            -87
+          ],
+          [
+            257,
+            87
+          ]
+        ],
+        "leg_m4_hole_diameter": 4.4,
+        "leg_m4_hole_height_from_bottom": 15
+      }
+    },
+    "constraints": {
+      "volume_estimate": 950000,
+      "num_holes": 10,
+      "hole_diameter": "5.2mm (hinge and clevis pins), 4.4mm (M4 clearance)",
+      "symmetry": "Y-axis mirror symmetry for hinge pillars, clevis lugs, and legs",
+      "design_notes": "All holes must be coaxial where specified (hinge pin holes). Discharge cutout is fully through. Legs extend in negative Z, pillars/lugs in positive Z from baseplate.",
+      "print_orientation": "Designed for plate-up printing (top face on build plate), flip in slicer for legs-down orientation",
+      "material": "FDM-printable, single solid body required"
+    },
+    "acceptance_criteria": {
+      "volume_error_threshold_pct": 5,
+      "bbox_iou_threshold": 0.9,
+      "hole_count_exact": 10,
+      "hole_alignment_tolerance_mm": 0.1,
+      "coaxial_hinge_holes_required": true,
+      "single_solid_body_required": true,
+      "cutout_fully_through_required": true
+    },
+    "notes": "Critical: (1) Hinge pillar pin holes MUST be coaxial along Y-axis at Z=27mm above plate top. (2) Discharge cutout fully penetrates plate. (3) Baseplate spans X=-30 to X=270, centered on Y=0 (Y=-100 to Y=100). (4) All upward features (pillars, lugs) start from Z=6mm (top of plate). All downward features (legs) start from Z=0 (bottom of plate). (5) Leg M4 holes drilled through outermost X face means -X face for legs at X=-17, +X face for legs at X=257. (6) Corner rounding applies to baseplate perimeter. (7) Output STEP and STL formats. (8) Verify Y-axis symmetry for paired features."
+  },
+  "converged": true,
+  "total_iterations": 1,
+  "total_time_ms": 45074.18775558472,
+  "total_llm_calls": 3,
+  "final_geometry": {
+    "volume": 534775.5893710554,
+    "center_of_mass": [
+      124.15202197731466,
+      7.483095278352808e-16,
+      -24.55698781850199
+    ],
+    "bounding_box": {
+      "xmin": -30.0,
+      "xmax": 270.0,
+      "xlen": 300.0,
+      "ymin": -100.0,
+      "ymax": 100.0,
+      "ylen": 200.0,
+      "zmin": -150.0,
+      "zmax": 56.0,
+      "zlen": 206.0
+    },
+    "is_valid": true,
+    "num_faces": 60,
+    "num_edges": 144,
+    "num_vertices": 96
+  },
+  "final_step_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0.step",
+  "final_stl_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0.stl",
+  "iterations": [
+    {
+      "iteration": 0,
+      "type": "initial",
+      "execution": {
+        "success": true,
+        "time_ms": 1823.0104446411133
+      },
+      "validation": {
+        "all_passed": true,
+        "checks": [
+          {
+            "metric": "solid_valid",
+            "actual": 1.0,
+            "target": 1.0,
+            "threshold": null,
+            "passed": true,
+            "message": "Solid is valid (watertight)"
+          },
+          {
+            "metric": "volume",
+            "actual": 534775.5893710554,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "Volume: 534775.6 mm\u00b3"
+          },
+          {
+            "metric": "bbox_xlen",
+            "actual": 300.0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox xlen: 300.00 mm"
+          },
+          {
+            "metric": "bbox_ylen",
+            "actual": 200.0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox ylen: 200.00 mm"
+          },
+          {
+            "metric": "bbox_zlen",
+            "actual": 206.0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox zlen: 206.00 mm"
+          },
+          {
+            "metric": "num_faces",
+            "actual": 60,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_faces: 60"
+          },
+          {
+            "metric": "num_edges",
+            "actual": 144,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_edges: 144"
+          },
+          {
+            "metric": "num_vertices",
+            "actual": 96,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_vertices: 96"
+          },
+          {
+            "metric": "center_of_mass",
+            "actual": 0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "Center of mass: (124.15, 0.00, -24.56)"
+          },
+          {
+            "metric": "llm_judge",
+            "actual": 1.0,
+            "target": 1.0,
+            "threshold": null,
+            "passed": true,
+            "message": "All constraints met."
+          }
+        ],
+        "summary": "All validation checks passed.",
+        "feedback_text": "All checks passed. The generated geometry meets all constraints."
+      },
+      "passed": true,
+      "feedback_sent": "All checks passed. The generated geometry meets all constraints.",
+      "error_retries": [],
+      "refiner_input": null,
+      "refiner_output": null
+    }
+  ]
+}

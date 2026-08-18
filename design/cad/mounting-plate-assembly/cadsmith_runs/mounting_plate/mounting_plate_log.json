@@ -1,0 +1,216 @@
+{
+  "prompt": "A rectangular FDM-printable mounting plate, 250 mm long (X) by 80 mm wide\n(Y) by 5 mm thick (Z), with 6 mm radius rounded corners. The discharge\nend of the plate (X = 0) has a U-shaped notch cut into it, 24 mm deep\nalong X, 31 mm wide along Y, centred on Y = 0. This notch lets powder\nfall straight down past the plate.\n\nThe plate has these through-holes for mounting other components from\nabove (all drilled fully through the 5 mm plate, axes parallel to Z):\n\n  * BRK-D group (auger bracket #1, near the discharge end):\n    four 3.4 mm clearance holes for M3 screws in a rectangular pattern,\n    38 mm spacing along X and 18 mm spacing along Y, pattern centred on\n    (X = 35, Y = 0).\n  * TAP group (tap-collar mounting flange):\n    four 3.4 mm clearance holes for M3 screws in a rectangular pattern,\n    38 mm spacing along X and 18 mm spacing along Y, pattern centred on\n    (X = 95, Y = 0).\n  * BRK-M group (auger bracket #2, near the motor end):\n    four 3.4 mm clearance holes for M3 screws in a rectangular pattern,\n    38 mm spacing along X and 18 mm spacing along Y, pattern centred on\n    (X = 155, Y = 0).\n  * NEMA-17 group (stepper motor mount):\n    four 3.4 mm M3 clearance holes on a 31 mm x 31 mm square pattern\n    centred on (X = 215, Y = 0), plus a single 22.4 mm diameter pilot\n    boss clearance hole through the centre at (X = 215, Y = 0).\n\nHanging DOWN from the underside of the plate (i.e. solid features\nattached to the bottom face, extending toward negative Z), the plate\ncarries:\n\n  * Two hinge pillars, one at Y = +20.5 and one at Y = -20.5, both\n    centred on X = 18. Each pillar is 14 mm along X, 6 mm along Y, and\n    extends 24.5 mm downward from the plate underside. Each pillar has a\n    5.2 mm horizontal pin hole through its Y-direction face, with the\n    pin axis parallel to Y, located 18.5 mm below the plate underside\n    so it lies on the auger long axis. The two holes are coaxial \u2014 they\n    form one continuous hinge pin path.\n  * One linear-actuator clevis tab, 16 mm along X, 6 mm along Y, 22 mm\n    tall, centred on (X = 73, Y = 0) and extending 22 mm downward from\n    the plate underside. It has a single 5.2 mm horizontal clevis pin\n    hole through its Y face, 5 mm down from the top of the tab.\n\nThe part must print flange-up (top face of the plate on the build plate)\nwith the hinge pillars and clevis tab as overhangs handled by tree\nsupports. All other features print without supports. Output a single\nsolid body (the plate, pillars, and tab fused together) \u2014 return STEP\nand STL.\n",
+  "design_plan": {
+    "description": "FDM-printable rectangular mounting plate (250\u00d780\u00d75 mm) with rounded corners, U-shaped discharge notch, multiple M3 clearance hole patterns for component mounting, and three downward-extending support features (two hinge pillars and one clevis tab) with horizontal pin holes.",
+    "components": [
+      "Main rectangular plate with rounded corners",
+      "U-shaped discharge notch at X=0 end",
+      "BRK-D hole group (4\u00d7 M3 clearance, rectangular pattern)",
+      "TAP hole group (4\u00d7 M3 clearance, rectangular pattern)",
+      "BRK-M hole group (4\u00d7 M3 clearance, rectangular pattern)",
+      "NEMA-17 hole group (4\u00d7 M3 clearance + 1\u00d7 central boss clearance)",
+      "Two hinge pillars extending downward with coaxial pin holes",
+      "One clevis tab extending downward with pin hole"
+    ],
+    "dimensions": {
+      "overall_bbox": {
+        "xlen": 250,
+        "ylen": 80,
+        "zlen": 29.5,
+        "note": "Z spans from plate top (0) to bottom of hinge pillars (-24.5), total 5 + 24.5 = 29.5 mm"
+      },
+      "key_dimensions": {
+        "plate_length_x": 250,
+        "plate_width_y": 80,
+        "plate_thickness_z": 5,
+        "corner_radius": 6,
+        "notch_depth_x": 24,
+        "notch_width_y": 31,
+        "notch_center_y": 0,
+        "hole_diameter_m3_clearance": 3.4,
+        "nema17_boss_diameter": 22.4,
+        "brk_d_center_x": 35,
+        "brk_d_center_y": 0,
+        "brk_d_spacing_x": 38,
+        "brk_d_spacing_y": 18,
+        "tap_center_x": 95,
+        "tap_center_y": 0,
+        "tap_spacing_x": 38,
+        "tap_spacing_y": 18,
+        "brk_m_center_x": 155,
+        "brk_m_center_y": 0,
+        "brk_m_spacing_x": 38,
+        "brk_m_spacing_y": 18,
+        "nema17_center_x": 215,
+        "nema17_center_y": 0,
+        "nema17_spacing": 31,
+        "hinge_pillar_center_x": 18,
+        "hinge_pillar_y_positions": [
+          20.5,
+          -20.5
+        ],
+        "hinge_pillar_size_x": 14,
+        "hinge_pillar_size_y": 6,
+        "hinge_pillar_height_down": 24.5,
+        "hinge_pin_hole_diameter": 5.2,
+        "hinge_pin_hole_depth_from_plate": 18.5,
+        "clevis_center_x": 73,
+        "clevis_center_y": 0,
+        "clevis_size_x": 16,
+        "clevis_size_y": 6,
+        "clevis_height_down": 22,
+        "clevis_pin_hole_diameter": 5.2,
+        "clevis_pin_hole_depth_from_top": 5
+      }
+    },
+    "constraints": {
+      "volume_estimate": 112000,
+      "volume_breakdown": "Plate: ~95000 mm\u00b3, Pillars: ~4116 mm\u00b3, Clevis: ~2112 mm\u00b3, minus holes/notch: ~11000 mm\u00b3",
+      "num_holes": 14,
+      "hole_breakdown": "13\u00d7 through-holes (3.4 mm dia) + 1\u00d7 boss clearance (22.4 mm dia) + 3\u00d7 pin holes (5.2 mm dia)",
+      "symmetry": "Bilateral symmetry about XZ plane (Y=0): U-notch, all mounting groups, clevis tab centered; hinge pillars mirrored at Y=\u00b120.5",
+      "manufacturing": "FDM printable, flange-up orientation, tree supports for underside features",
+      "coordinate_system": "Plate top surface at Z=0, features extend to Z=-24.5 mm, X=0 is discharge end"
+    },
+    "acceptance_criteria": {
+      "volume_error_threshold_pct": 5,
+      "bbox_iou_threshold": 0.9,
+      "hole_count_exact": 14,
+      "hole_positions_tolerance_mm": 0.1,
+      "feature_symmetry_check": true,
+      "single_solid_body": true
+    },
+    "notes": "CRITICAL: All Z coordinates: plate top = 0, plate bottom = -5, pillars extend to -29.5, clevis to -27. Hinge pin holes at Z=-23.5 (18.5 below plate bottom). Clevis pin at Z=-10 (5 below clevis top). U-notch centered at Y=0, cuts from X=0 to X=24. Rounded corners apply to main plate perimeter only. Ensure coaxial alignment of two hinge pillar pin holes (both parallel to Y-axis, same Z height). All through-holes are fully penetrating the 5mm plate thickness. NEMA-17 pattern is square (31\u00d731 mm), others rectangular (38\u00d718 mm). Generate single fused solid body. Export STEP and STL."
+  },
+  "converged": true,
+  "total_iterations": 1,
+  "total_time_ms": 67067.31033325195,
+  "total_llm_calls": 3,
+  "final_geometry": {
+    "volume": 101608.04957280241,
+    "center_of_mass": [
+      6.014572355094996,
+      5.236341045558057e-16,
+      -3.3160333944617766
+    ],
+    "bounding_box": {
+      "xmin": -125.0,
+      "xmax": 125.0,
+      "xlen": 250.0,
+      "ymin": -40.0,
+      "ymax": 40.0,
+      "ylen": 80.0,
+      "zmin": -29.5,
+      "zmax": 0.0,
+      "zlen": 29.5
+    },
+    "is_valid": true,
+    "num_faces": 41,
+    "num_edges": 107,
+    "num_vertices": 71
+  },
+  "final_step_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/mounting_plate/mounting_plate_iter0.step",
+  "final_stl_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/mounting_plate/mounting_plate_iter0.stl",
+  "iterations": [
+    {
+      "iteration": 0,
+      "type": "initial",
+      "execution": {
+        "success": true,
+        "time_ms": 1717.5190448760986
+      },
+      "validation": {
+        "all_passed": true,
+        "checks": [
+          {
+            "metric": "solid_valid",
+            "actual": 1.0,
+            "target": 1.0,
+            "threshold": null,
+            "passed": true,
+            "message": "Solid is valid (watertight)"
+          },
+          {
+            "metric": "volume",
+            "actual": 101608.04957280241,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "Volume: 101608.0 mm\u00b3"
+          },
+          {
+            "metric": "bbox_xlen",
+            "actual": 250.0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox xlen: 250.00 mm"
+          },
+          {
+            "metric": "bbox_ylen",
+            "actual": 80.0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox ylen: 80.00 mm"
+          },
+          {
+            "metric": "bbox_zlen",
+            "actual": 29.5,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "BBox zlen: 29.50 mm"
+          },
+          {
+            "metric": "num_faces",
+            "actual": 41,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_faces: 41"
+          },
+          {
+            "metric": "num_edges",
+            "actual": 107,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_edges: 107"
+          },
+          {
+            "metric": "num_vertices",
+            "actual": 71,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "num_vertices: 71"
+          },
+          {
+            "metric": "center_of_mass",
+            "actual": 0,
+            "target": null,
+            "threshold": null,
+            "passed": true,
+            "message": "Center of mass: (6.01, 0.00, -3.32)"
+          },
+          {
+            "metric": "llm_judge",
+            "actual": 1.0,
+            "target": 1.0,
+            "threshold": null,
+            "passed": true,
+            "message": "All constraints met. The plate dimensions are correct: 250mm (X) \u00d7 80mm (Y) \u00d7 5mm (Z) with the total Z extent of 29.5mm accounting for the 5mm plate plus 24.5mm hinge pillars extending downward. The U-shaped notch at the discharge end is visible in the rendered views. The rendered images confirm: (1) All 17 through-holes are present - 16 M3 clearance holes in the four mounting groups (BRK-D, TAP, BRK-M, NEMA-17) plus the central 22.4mm NEMA-17 boss hole visible in the center/top-angle view. (2) The hinge pillars are visible hanging below the plate at the discharge end. (3) The clevis tab is visible extending downward from the plate center. The bounding box confirms proper geometry with X=250mm, Y=80mm. The volume of ~101,608 mm\u00b3 is plausible for the solid plate minus notch and holes, plus the pillar/tab extensions. The filleted corners are present. The part is a single fused solid body as required."
+          }
+        ],
+        "summary": "All validation checks passed.",
+        "feedback_text": "All checks passed. The generated geometry meets all constraints."
+      },
+      "passed": true,
+      "feedback_sent": "All checks passed. The generated geometry meets all constraints.",
+      "error_retries": [],
+      "refiner_input": null,
+      "refiner_output": null
+    }
+  ]
+}
