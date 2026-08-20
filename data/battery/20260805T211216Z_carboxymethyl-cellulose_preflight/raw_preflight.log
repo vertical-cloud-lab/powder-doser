@@ -1,0 +1,22 @@
+PREFLIGHT START UTC 2026-08-05T21:12:16Z / MDT 15:12:16
+PRE,rev,0,0.0000,0.0000,0.0000
+PRE,rev,1,0.0000,0.0000,0.0000
+PRE,rev,2,0.0000,0.0000,0.0000
+PRE,rev,3,0.0000,0.0000,0.0000
+PRE,rev,4,0.0000,0.0000,0.0000
+PRE,tap,10,0.0000,0.0000,0.0000
+PRE,END,empty-or-blocked,0.0000,0.0000
+[preflight] 5 rev -> 0.0000 g (0.00 mg/rev), 10 taps -> 0.0000 g :: empty-or-blocked
+PREFLIGHT END UTC 2026-08-05T21:13:01Z / MDT 15:13:01
+DIAG START UTC 2026-08-05T21:13:14Z / MDT 15:13:14
+DIAG,long,10rev@60rpm,0.0000,0.0000,0.0000,3600.0,
+DIAG,fast,10rev@90rpm,0.0000,0.0000,0.0000,3600.0,
+DIAG,agitate,taps0x20,0.0000,0.0000,0.0000,0.0,
+DIAG,agitate,rot0x5rev,0.0000,0.0000,0.0000,1800.0,
+DIAG,agitate,taps1x20,0.0000,0.0000,0.0000,0.0,
+DIAG,agitate,rot1x5rev,0.0000,0.0000,0.0000,1800.0,
+DIAG,agitate,taps2x20,0.0000,0.0000,0.0000,0.0,
+DIAG,agitate,rot2x5rev,0.0000,0.0000,0.0000,1800.0,
+DIAG,END,empty-or-fully-blocked,0.0000,0.0000,0.0000
+[diag] rotation 0.0000 g, taps 0.0000 g, post-agitation rotation 0.0000 g :: empty-or-fully-blocked
+DIAG END UTC 2026-08-05T21:15:18Z / MDT 15:15:18
