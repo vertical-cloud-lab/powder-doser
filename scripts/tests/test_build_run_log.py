@@ -121,6 +121,43 @@ def test_notes_match_the_right_run():
               str(got))
 
 
+def test_feed_factor_reports_horizontal():
+    """Tilt 0 deg is falsy, and an ``or``-style default silently ate it.
+
+    Every entry in the log read "0 deg -- mg/rev" from the day it was
+    generated, for every run, including ones whose block C at 0 deg is a
+    perfectly good measurement (silicon, 57.2 mg/rev).
+    """
+    print("\n-- feed factor at every tilt --")
+    run = {"host_summary": [
+        {"block": "C", "phase": "rotation", "tilt_deg": 0.0,
+         "mean_g": 0.0572},
+        {"block": "C", "phase": "rotation", "tilt_deg": 45.0,
+         "mean_g": 0.2107},
+        {"block": "C", "phase": "rotation", "tilt_deg": 90.0,
+         "mean_g": 0.3024},
+    ]}
+    check("tilt 0 is reported",
+          abs((rl.feed_factor(run, 0.0) or 0) - 57.2) < 0.05,
+          "{}".format(rl.feed_factor(run, 0.0)))
+    check("tilt 45 is reported",
+          abs((rl.feed_factor(run, 45.0) or 0) - 210.7) < 0.05)
+    check("tilt 90 is reported",
+          abs((rl.feed_factor(run, 90.0) or 0) - 302.4) < 0.05)
+    check("a tilt that was not run stays None",
+          rl.feed_factor(run, 30.0) is None)
+    check("a row with no tilt does not match",
+          rl.feed_factor({"host_summary": [
+              {"block": "C", "phase": "rotation", "mean_g": 0.1}]},
+              0.0) is None)
+    # And on the real runs, not just the fixture.
+    zeros = [r for r in rl.load_runs()
+             if rl.feed_factor(r, 90.0) is not None
+             and rl.feed_factor(r, 0.0) is None]
+    check("no committed run reports 45/90 but not 0", not zeros,
+          ", ".join(r.get("powder_id", "?") for r in zeros))
+
+
 def test_real_runs_are_consistent():
     print("\n-- the committed runs all resolve --")
     runs = rl.load_runs()
@@ -159,6 +196,7 @@ def main():
     test_dispensed_mass_ignores_negative_artifacts()
     test_blocks_reflect_what_ran_not_what_was_asked_for()
     test_notes_match_the_right_run()
+    test_feed_factor_reports_horizontal()
     test_real_runs_are_consistent()
     if FAILURES:
         print("\n{} check(s) failed: {}".format(len(FAILURES),

@@ -35,7 +35,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** silicon powder, -110/+200 mesh  ·  batch `metal-2026-08`  ·  operator swcharles (loaded), claude (remote)
 - **Tests** blocks ABCDE  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 7.7190 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 210.70 mg/rev  ·  90 deg 302.35 mg/rev
+- **Feed factor (block C)** 0 deg 57.17 mg/rev  ·  45 deg 210.70 mg/rev  ·  90 deg 302.35 mg/rev
 - **Pre-flight** feed confirmed
 - **Environment** sigma 7.9 mg, 9 shocks, 12 retries
 - **QC** valid -- `ok`
@@ -49,7 +49,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** sodium sulfate (Na2SO4), non-toxic, first beyond salt  ·  batch `inorganic-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDE  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 7.9117 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 208.40 mg/rev  ·  90 deg 243.55 mg/rev
+- **Feed factor (block C)** 0 deg 51.20 mg/rev  ·  45 deg 208.40 mg/rev  ·  90 deg 243.55 mg/rev
 - **Pre-flight** feed confirmed
 - **Environment** sigma 5.9 mg, 9 shocks, 3 retries
 - **QC** valid -- `ok`
@@ -63,7 +63,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** salt (control; battery_version 2 artifact rejection)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDE  ·  48 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 4.5588 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 155.00 mg/rev  ·  90 deg 208.48 mg/rev
+- **Feed factor (block C)** 0 deg 50.42 mg/rev  ·  45 deg 155.00 mg/rev  ·  90 deg 208.48 mg/rev
 - **Pre-flight** feed confirmed
 - **Environment** sigma 12.4 mg, 36 shocks, 57 retries
 - **QC** excluded -- `environment-stress-test`
@@ -78,7 +78,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** salt (food-safe batch), repeat run  ·  batch `food-safe-2026-08`  ·  operator sc
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 8.8914 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 175.35 mg/rev  ·  90 deg 230.42 mg/rev
+- **Feed factor (block C)** 0 deg 34.30 mg/rev  ·  45 deg 175.35 mg/rev  ·  90 deg 230.42 mg/rev
 - **Closed-loop doses** 3x, 3 ok, mean -4.1 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -94,7 +94,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** AlSi10Mg (aluminum-silicon-magnesium AM metal powder, non-food-safe)  ·  batch `metal-2026-08`
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 5.9716 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 75.55 mg/rev  ·  90 deg 68.30 mg/rev
+- **Feed factor (block C)** 0 deg 82.60 mg/rev  ·  45 deg 75.55 mg/rev  ·  90 deg 68.30 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -19.6 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -110,7 +110,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** sodium chloride (table salt), food-safe batch  ·  batch `food-safe-2026-08`  ·  operator swcharles (loaded), claude (remote)
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 4.0081 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 17.10 mg/rev  ·  90 deg 24.90 mg/rev
+- **Feed factor (block C)** 0 deg 5.60 mg/rev  ·  45 deg 17.10 mg/rev  ·  90 deg 24.90 mg/rev
 - **Closed-loop doses** 3x, 2 ok, mean +0.2 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -126,7 +126,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** xanthan gum (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator claude
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 7.8836 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 161.18 mg/rev  ·  90 deg 186.77 mg/rev
+- **Feed factor (block C)** 0 deg 23.72 mg/rev  ·  45 deg 161.18 mg/rev  ·  90 deg 186.77 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -32.9 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -142,7 +142,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** carboxymethyl cellulose (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 3.5647 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 26.35 mg/rev  ·  90 deg 9.35 mg/rev
+- **Feed factor (block C)** 0 deg 2.58 mg/rev  ·  45 deg 26.35 mg/rev  ·  90 deg 9.35 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -43.2 mg
 - **Pre-flight** feed confirmed after extended charging
 - **Environment** not recorded
@@ -168,7 +168,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** calcium lactate (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 9.0390 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 198.28 mg/rev  ·  90 deg 232.25 mg/rev
+- **Feed factor (block C)** 0 deg 47.32 mg/rev  ·  45 deg 198.28 mg/rev  ·  90 deg 232.25 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -26.5 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -183,7 +183,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** brown rice flour (food-safe batch), auger #2  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 0.0256 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 0.25 mg/rev  ·  90 deg 0.20 mg/rev
+- **Feed factor (block C)** 0 deg 0.30 mg/rev  ·  45 deg 0.25 mg/rev  ·  90 deg 0.20 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -999.1 mg
 - **Pre-flight** conveying-slowly
 - **Environment** not recorded
@@ -198,7 +198,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** sodium alginate (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 2.4563 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 9.58 mg/rev  ·  90 deg 10.87 mg/rev
+- **Feed factor (block C)** 0 deg 0.75 mg/rev  ·  45 deg 9.58 mg/rev  ·  90 deg 10.87 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -291.5 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -213,7 +213,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** brown rice flour (food-safe batch), re-run after tape removal  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 0.0043 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 0.00 mg/rev  ·  90 deg 0.00 mg/rev
+- **Feed factor (block C)** 0 deg 0.00 mg/rev  ·  45 deg 0.00 mg/rev  ·  90 deg 0.00 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -1000.0 mg
 - **Pre-flight** no-conveyance
 - **Environment** not recorded
@@ -228,7 +228,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** white rice flour (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 3.2490 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 12.78 mg/rev  ·  90 deg 37.15 mg/rev
+- **Feed factor (block C)** 0 deg 3.75 mg/rev  ·  45 deg 12.78 mg/rev  ·  90 deg 37.15 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -137.9 mg
 - **Pre-flight** feed confirmed
 - **Environment** not recorded
@@ -243,7 +243,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Powder** brown rice flour (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
 - **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
 - **Dispensed** 0.0095 g
-- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 0.20 mg/rev  ·  90 deg 0.10 mg/rev
+- **Feed factor (block C)** 0 deg 0.22 mg/rev  ·  45 deg 0.20 mg/rev  ·  90 deg 0.10 mg/rev
 - **Closed-loop doses** 3x, 0 ok, mean -999.4 mg
 - **Environment** not recorded
 - **QC** excluded -- `no-conveyance-auger-suspect`

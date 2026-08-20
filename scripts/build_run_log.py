@@ -208,10 +208,16 @@ def speeds(run: dict) -> str:
 
 
 def feed_factor(run: dict, tilt: float) -> float | None:
-    """Block C mean mass per 360 deg revolution, in mg."""
+    """Block C mean mass per 360 deg revolution, in mg.
+
+    ``tilt_deg`` is compared against None explicitly: horizontal is 0.0,
+    which is falsy, so an ``or``-style default silently made every run's
+    tilt-0 feed factor unreportable.
+    """
     for row in run.get("host_summary") or []:
+        row_tilt = row.get("tilt_deg")
         if (row.get("block") == "C" and row.get("phase") == "rotation"
-                and abs((row.get("tilt_deg") or -1) - tilt) < 0.01):
+                and row_tilt is not None and abs(row_tilt - tilt) < 0.01):
             mean = row.get("mean_g")
             if mean is not None:
                 return mean * 1000.0
