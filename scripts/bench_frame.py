@@ -126,6 +126,15 @@ def find_live_video(match: str = DEFAULT_STREAM_MATCH) -> dict:
             match, [e.get("title") for e in entries[:6]]))
 
 
+# Which itags a live broadcast advertises depends on the client yt-dlp
+# managed to use, and that has changed under us more than once: the Pi's
+# yt-dlp has no JS runtime, so it falls back to the android-vr player API
+# and sees the classic 91-95 ladder, while other extraction paths return
+# the 229-232/269 set.  Ask for all of them, best resolution first, rather
+# than pinning one and failing with "no manifest".
+DEFAULT_ITAGS = ("95", "232", "94", "231", "93", "230", "229", "269")
+
+
 def fetch_segment(video_id: str, itag: str, seconds_ago: float,
                   remote_path: str = "/tmp/bench_frame.ts") -> int:
     """Pull one HLS segment on the Pi. Returns its size in bytes.
@@ -141,7 +150,7 @@ def fetch_segment(video_id: str, itag: str, seconds_ago: float,
             p=YTDLP_PI_PATH, i=shlex.quote(itag), v=video_id),
         '[ -n "$URL" ] || {{ echo "no manifest for itag {}" >&2; exit 3; }}'
         .format(itag),
-        'curl -sS --limit-rate {r} "$URL" -o /tmp/bench_frame.m3u8'.format(
+        'curl -sSL --limit-rate {r} "$URL" -o /tmp/bench_frame.m3u8'.format(
             r=RATE_LIMIT),
         'N=$(grep -c "^https" /tmp/bench_frame.m3u8 || true)',
         '[ "$N" -ge {b} ] || {{ echo "requested segment is older than the '
@@ -149,7 +158,7 @@ def fetch_segment(video_id: str, itag: str, seconds_ago: float,
             b=back),
         'SEG=$(grep "^https" /tmp/bench_frame.m3u8 | tail -{b} | head -1)'
         .format(b=back),
-        'curl -sS --limit-rate {r} "$SEG" -o {o}'.format(
+        'curl -sSL --limit-rate {r} "$SEG" -o {o}'.format(
             r=RATE_LIMIT, o=remote_path),
         'stat -c %s {o}'.format(o=remote_path),
     ])
@@ -160,6 +169,31 @@ def fetch_segment(video_id: str, itag: str, seconds_ago: float,
         raise BenchFrameError(
             "empty segment for itag {} -- try a lower --itag".format(itag))
     return size
+
+
+def fetch_segment_any(video_id: str, itags, seconds_ago: float,
+                      remote_path: str = "/tmp/bench_frame.ts") -> int:
+    """``fetch_segment`` over a list of itags, first one that works wins.
+
+    A single hard-coded itag is fragile: YouTube has renumbered its live
+    formats at least once, and a broadcast that does not carry the one we
+    ask for returns "no manifest" rather than a smaller rendition.
+    """
+    errors = []
+    for itag in itags:
+        try:
+            size = fetch_segment(video_id, itag, seconds_ago, remote_path)
+        except BenchFrameError as exc:
+            # An older-than-DVR request fails identically on every itag, so
+            # do not burn four more round trips on it.
+            if "DVR window" in str(exc):
+                raise
+            errors.append("itag {}: {}".format(itag, exc))
+            continue
+        print("[bench-frame] itag {}".format(itag))
+        return size
+    raise BenchFrameError(
+        "no itag produced a segment. Tried:\n  " + "\n  ".join(errors))
 
 
 def copy_from_pi(remote_path: str, local_path: str) -> None:
@@ -211,8 +245,11 @@ def main(argv=None) -> int:
                         help="broadcast id; default is the live powder-doser one")
     parser.add_argument("--match", default=DEFAULT_STREAM_MATCH,
                         help="substring identifying the stream to use")
-    parser.add_argument("--itag", default="95",
-                        help="95=720p, 93=360p (fall back if 95 comes back empty)")
+    parser.add_argument("--itag", default=",".join(DEFAULT_ITAGS),
+                        help="comma-separated itags, tried in order. YouTube "
+                             "renumbered its live formats in 2026: the current "
+                             "set is 232=720x1280, 231/230/229 smaller, 269 "
+                             "lowest. The old 91-96 no longer exist.")
     parser.add_argument("--crop",
                         help="optional ffmpeg -vf filter, e.g. "
                              "'crop=260:260:340:540,scale=1040:1040'")
@@ -229,7 +266,9 @@ def main(argv=None) -> int:
         print("[bench-frame] broadcast {} ({})".format(
             video["id"], video["title"]))
 
-        size = fetch_segment(video["id"], args.itag, args.seconds_ago)
+        size = fetch_segment_any(
+            video["id"], [t.strip() for t in args.itag.split(",") if t.strip()],
+            args.seconds_ago)
         print("[bench-frame] segment {} bytes, {:.0f} s behind live".format(
             size, args.seconds_ago))
 

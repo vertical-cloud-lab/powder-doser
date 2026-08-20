@@ -142,6 +142,66 @@ def test_fetch_segment_failures():
         check("beyond the DVR window raises", True)
 
 
+def test_itag_fallback():
+    # Which itags a broadcast advertises has changed under us: the Pi's
+    # yt-dlp sees the 91-95 ladder, other extraction paths return
+    # 229-232/269.  Pinning one and failing with "no manifest" is what
+    # cost a session; the list must be tried in order.
+    check("default list covers both ladders",
+          "95" in bench_frame.DEFAULT_ITAGS
+          and "232" in bench_frame.DEFAULT_ITAGS)
+
+    calls = []
+
+    def fake(video_id, itag, seconds_ago, remote_path="/tmp/bench_frame.ts"):
+        calls.append(itag)
+        if itag != "93":
+            raise bench_frame.BenchFrameError("no manifest for itag " + itag)
+        return 4242
+
+    original = bench_frame.fetch_segment
+    bench_frame.fetch_segment = fake
+    try:
+        size = bench_frame.fetch_segment_any("vid", ["95", "232", "93"], 0.0)
+        check("falls through to the first itag that works", size == 4242)
+        check("tries them in order", calls == ["95", "232", "93"], calls)
+
+        calls.clear()
+        try:
+            bench_frame.fetch_segment_any("vid", ["95", "232"], 0.0)
+            check("exhausting every itag raises", False)
+        except bench_frame.BenchFrameError as exc:
+            check("exhausting every itag raises",
+                  "95" in str(exc) and "232" in str(exc), str(exc))
+
+        # An older-than-DVR request fails identically on every itag, so it
+        # must propagate immediately rather than burn N more round trips.
+        calls.clear()
+
+        def dvr(video_id, itag, seconds_ago, remote_path="/tmp/bench_frame.ts"):
+            calls.append(itag)
+            raise bench_frame.BenchFrameError("older than the DVR window")
+
+        bench_frame.fetch_segment = dvr
+        try:
+            bench_frame.fetch_segment_any("vid", ["95", "232", "93"], 99999.0)
+            check("DVR-window failure is not retried", False)
+        except bench_frame.BenchFrameError:
+            check("DVR-window failure is not retried", calls == ["95"], calls)
+    finally:
+        bench_frame.fetch_segment = original
+
+
+def test_curl_follows_redirects():
+    # Live manifest and segment URLs answer 302.  Without -L, curl writes a
+    # 0-byte file and the failure surfaces as "empty segment" -- which reads
+    # as "wrong itag" and sends you chasing the wrong thing.
+    source = Path(bench_frame.__file__).read_text()
+    bare = [line.strip() for line in source.splitlines()
+            if "curl -sS " in line and "curl -sSL" not in line]
+    check("every curl follows redirects", not bare, bare)
+
+
 def test_credentials_are_not_echoed():
     # CLAUDE.md: the Pi's hostname and credentials must never appear in
     # logs or output.  The module may read them, never print them.
@@ -176,7 +236,8 @@ def main():
     original = bench_frame.pi_run
     try:
         for test in (test_find_live_video, test_fetch_segment_index,
-                     test_fetch_segment_failures,
+                     test_fetch_segment_failures, test_itag_fallback,
+                     test_curl_follows_redirects,
                      test_credentials_are_not_echoed):
             print("--- {}".format(test.__name__))
             test()

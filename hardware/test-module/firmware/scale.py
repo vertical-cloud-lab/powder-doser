@@ -228,11 +228,27 @@ class AndScale:
         return last
 
     def zero(self):
-        """Re-zero (tare) the balance and wait for it to settle."""
+        """Tare the balance and wait for it to settle.
+
+        Sends A&D ``T`` (tare), *not* ``Z`` (re-zero).  The two look
+        interchangeable and are not: ``Z`` only moves the zero point
+        within a limited range around the calibrated zero, so once a
+        couple of grams have collected in the vessel it is silently
+        refused -- no acknowledgement (``erCd`` is 0 on this balance),
+        the displayed value does not change, and the balance stops
+        emitting stable frames for roughly 19 s afterwards.  Every
+        block of the battery starts with a tare, so a refused ``Z``
+        surfaces as ``scale-unreadable`` and aborts the run.
+
+        Measured on the bench 2026-08-20 with 2.0964 g in the beaker:
+        ``Z`` left it reading 2.108 g after 24 s of timeouts, while
+        ``T`` gave a stable 0.0002 g in 322 ms.
+        """
         self._drain()
-        self._command("Z")
-        # The HR-A takes a moment to re-zero; settle before next read.
-        self._sleep_ms(500)
+        self._command("T")
+        # Settle before the next read.  500 ms was the old value and had
+        # no margin: a re-zero on this balance takes ~1.6 s when it works.
+        self._sleep_ms(1500)
 
     def _drain(self):
         """Throw away any stale buffered frames before a fresh request."""
