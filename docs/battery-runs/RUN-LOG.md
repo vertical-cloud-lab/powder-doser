@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-14 entries, 9 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+15 entries, 10 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-08-20 21:48 | 2026-08-20 22:03 | 15:05 | `silicon-110-200` | ABCDE | C/E 30 · D 15/45/90 RPM | 7.72 g | 302.35 mg/rev | -- | sigma 7.9 mg, 9 shocks, 12 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T214823Z_silicon-110-200) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-silicon-110-200.md) | [~1 min](https://youtu.be/23PlXoQgjPQ?t=10088) |
 | 2026-08-20 19:22 | 2026-08-20 19:35 | 13:10 | `sodium-sulfate` | ABCDE | C/E 30 · D 15/45/90 RPM | 7.91 g | 243.55 mg/rev | -- | sigma 5.9 mg, 9 shocks, 3 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T192224Z_sodium-sulfate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-sodium-sulfate.md) | [~1 min](https://youtu.be/23PlXoQgjPQ?t=1329) |
 | 2026-08-20 17:56 | 2026-08-20 18:24 | 27:39 | `salt` | ABCDE | C/E 30 · D 15/45/90 RPM | 4.56 g | 208.48 mg/rev | -- | sigma 12.4 mg, 36 shocks, 57 retries | excluded<br>`environment-stress-test` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T175631Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-salt-artifact-rejection.md) | [~1 min](https://youtu.be/_1u-y15Z5q8?t=24976) |
 | 2026-08-12 21:51 | 2026-08-12 22:07 | 15:13 | `salt` | ABCDEG | C/E 30 · D 15/45/90 RPM | 8.89 g | 230.42 mg/rev | 3x, 3 ok, mean -4.1 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260812T215154Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-12-salt-repeat.md) | [~1 min](https://youtu.be/k9gPANBiMjU?t=10299) |
@@ -26,6 +27,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-08-20 21:48 UTC -- silicon-110-200
+
+- **Window** 2026-08-20T21:48:23.367756+00:00 -> 2026-08-20T22:03:28.536486+00:00  (15:05)
+- **Lab clock** 2026-08-20 15:48:23 MDT -> 2026-08-20 16:03:28 MDT
+- **Powder** silicon powder, -110/+200 mesh  ·  batch `metal-2026-08`  ·  operator swcharles (loaded), claude (remote)
+- **Tests** blocks ABCDE  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
+- **Dispensed** 7.7190 g
+- **Feed factor (block C)** 0 deg -- mg/rev  ·  45 deg 210.70 mg/rev  ·  90 deg 302.35 mg/rev
+- **Pre-flight** feed confirmed
+- **Environment** sigma 7.9 mg, 9 shocks, 12 retries
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260820T214823Z_silicon-110-200](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T214823Z_silicon-110-200)
+- **Notes** [docs/battery-runs/2026-08-20-silicon-110-200.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-silicon-110-200.md)
+- **Video** [https://youtu.be/23PlXoQgjPQ?t=10088](https://youtu.be/23PlXoQgjPQ?t=10088) -- accurate to about a minute
 
 ### 2026-08-20 19:22 UTC -- sodium-sulfate
 

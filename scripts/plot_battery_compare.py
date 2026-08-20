@@ -39,17 +39,21 @@ SURFACE = "#fcfcfb"
 TEXT_PRIMARY = "#0b0b0b"
 TEXT_SECONDARY = "#52514e"
 GRID = "#dcdbd6"
-# Eight slots.  Started at four, silently repainted a fifth powder the
-# same blue as the first, then grew to seven; the eighth (brown) is added
-# for the first non-food-safe powder (alsi10mg) so it does not reuse an
-# earlier hue.  Validated as an ordered set for the adjacent pairlist a
-# grouped bar chart uses (worst adjacent CVD dE 9.2, normal-vision 18.5 on
-# this surface); aqua and magenta sit under 3:1 contrast, which the direct
-# bar labels cover.  Red is left out on purpose -- it is TARGET below, and
-# a series must not wear it.  Above eight powders this warns rather than
-# cycling: split into per-batch facets instead of stretching the palette.
+# Ten slots.  Started at four, silently repainted a fifth powder the same
+# blue as the first, then grew one slot at a time as powders were added:
+# the eighth (brown) for the first non-food-safe powder (alsi10mg), the
+# ninth (olive) for sodium sulfate, the tenth (teal) for silicon.
+# Validated as an ordered set for the adjacent pairlist a grouped bar
+# chart uses (worst adjacent CVD dE 9.2, normal-vision 18.5 on this
+# surface); the teal is 47.2 dE from its nearest neighbour and 4.99:1
+# against the surface.  Aqua and magenta sit under 3:1 contrast, which
+# the direct bar labels cover.  Red is left out on purpose -- it is
+# TARGET below, and a series must not wear it.  Beyond ten powders this
+# warns rather than cycling: split into per-batch facets instead of
+# stretching the palette.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0",
-          "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b", "#a88700"]
+          "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b", "#a88700",
+          "#00798a"]
 NOISE = "#9d9c95"
 TARGET = "#e34948"
 
@@ -120,12 +124,21 @@ def panel_feed_factor(ax, docs):
         ax.bar(xs, values, width=width * 0.9, color=SERIES[i % len(SERIES)],
                label=label_of(doc, docs),
                hatch=None)
+        # Ten powders share a tilt group, so a bar is narrower than its own
+        # horizontal value label and neighbours run together into digit
+        # soup ("34.351.257.2").  Staggering the offset is not enough --
+        # it is measured from each bar's own top, so two bars of similar
+        # height end up staggered onto each other anyway ("3710.9" at
+        # tilt 90 deg).  Rotating the labels makes a label about as wide
+        # as its font is tall, which fits the bar slot whatever the
+        # values do, and the problem cannot come back as powders are
+        # added.
         for x, value, is_censored in zip(xs, values, censored):
             ax.annotate(
                 "< {:.1f}".format(RESOLUTION_MG) if is_censored
                 else "{:.1f}".format(value),
                 xy=(x, value), xytext=(0, 4), textcoords="offset points",
-                ha="center", fontsize=8.5,
+                ha="center", va="bottom", rotation=90, fontsize=8.5,
                 color=TEXT_SECONDARY if is_censored else TEXT_PRIMARY)
 
     ax.axhline(DETECTION_MG, color=NOISE, linewidth=1.6,
@@ -145,11 +158,13 @@ def panel_feed_factor(ax, docs):
                  fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
     # Headroom above the tallest bar so the legend never lands on a bar
     # label -- calcium lactate's 47.3 mg bar at tilt 0 deg sat under an
-    # "upper left" legend before this.
+    # "upper left" legend before this.  The extra 0.6 decade is for the
+    # rotated labels above, which stand roughly five times taller than
+    # the horizontal ones this allowance was first sized for.
     ncol = min(len(docs), 2)
     rows = -(-len(docs) // ncol)
     bottom, top = ax.get_ylim()
-    ax.set_ylim(bottom, top * (10.0 ** (0.75 * rows)))
+    ax.set_ylim(bottom, top * (10.0 ** (0.75 * rows + 0.6)))
     legend = ax.legend(frameon=False, fontsize=9, loc="upper left",
                        ncol=ncol, columnspacing=1.4)
     for text in legend.get_texts():

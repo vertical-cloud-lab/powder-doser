@@ -176,14 +176,26 @@ def tap_headline(taps, doc=None):
     "moves up to 9 mg per tap" would have been a statement about bench
     disturbance.  A quantum is only claimed when it clears both block A's
     spread and twice its own standard error.
+
+    Block A's spread is checked *first*, because "contributes almost
+    nothing" is itself a claim about the powder and needs the same
+    evidence.  Silicon's taps averaged -3.5 mg against a 20 mg block A
+    spread: the room moved the balance further than a tap did, so those
+    trials bound the quantum at nothing at all -- a real 15 mg quantum
+    would have looked the same.  On a quiet bench (block A at the display
+    resolution) a sub-mg mean does bound the quantum, and "almost
+    nothing" stands -- hence the 1 mg materiality guard, without which a
+    quiet run whose taps average -0.04 mg would trip the same branch.
     """
     means = [r["mean_g"] * 1000.0 for r in taps] or [0.0]
     peak = max(means)
+    sems = [abs(r.get("sem_g") or 0.0) * 1000.0 for r in taps] or [0.0]
+    baseline = baseline_spread_mg(doc) if doc else 0.0
+    if baseline >= 1.0 and peak < baseline:
+        return "tap quantum not resolved above the no-actuation baseline"
     if peak < 1.0:
         return "tapping contributes almost nothing"
-    sems = [abs(r.get("sem_g") or 0.0) * 1000.0 for r in taps] or [0.0]
-    floor = max(baseline_spread_mg(doc) if doc else 0.0, 2 * max(sems))
-    if peak < floor:
+    if peak < 2 * max(sems):
         return "tap quantum not resolved above the no-actuation baseline"
     return "tapping moves up to {:.0f} mg per tap".format(peak)
 

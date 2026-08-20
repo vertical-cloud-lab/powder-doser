@@ -156,11 +156,36 @@ def test_tap_headline_respects_the_noise_floor():
           "not resolved" in plot.tap_headline(
               noisy_tap, doc_with_baseline(0.0, noisy_tap)),
           plot.tap_headline(noisy_tap, doc_with_baseline(0.0, noisy_tap)))
-    # Sub-mg taps still fall through to the older wording.
+    # Sub-mg taps read as almost nothing on a quiet bench, where the
+    # trials genuinely bound the quantum.  White rice flour's real block A
+    # was 0.0000 g on every trial, which is what earns that wording.
     wrf = taps_sem((0.11, 0.08), (0.11, 0.07))
-    check("a sub-mg tap still reads as almost nothing",
-          plot.tap_headline(wrf, doc_with_baseline(22.0, wrf))
+    check("a sub-mg tap on a quiet bench reads as almost nothing",
+          plot.tap_headline(wrf, doc_with_baseline(0.0, wrf))
           == "tapping contributes almost nothing")
+    # ...but not in a room with a 22 mg do-nothing scatter.  "Almost
+    # nothing" is a claim about the powder too, and these trials cannot
+    # support it: a real 15 mg quantum would have looked identical.
+    check("the same sub-mg tap in a noisy room is not claimed either",
+          "not resolved" in plot.tap_headline(
+              wrf, doc_with_baseline(22.0, wrf)),
+          plot.tap_headline(wrf, doc_with_baseline(22.0, wrf)))
+    # Silicon (2026-08-20): taps averaged -3.5 mg against a 20 mg block A
+    # spread.  A negative mean is not evidence of a small quantum.
+    si = taps_sem((-3.73, 2.64), (-3.52, 2.35))
+    check("a negative tap mean in a noisy room is not resolved",
+          "not resolved" in plot.tap_headline(
+              si, doc_with_baseline(20.19, si)),
+          plot.tap_headline(si, doc_with_baseline(20.19, si)))
+    # AlSi10Mg (2026-08-11): also a negative mean, but on a bench whose
+    # block A was flat to the display resolution.  The materiality guard
+    # keeps that reading as "almost nothing" rather than flipping every
+    # quiet run with a slightly negative mean.
+    al = taps_sem((-0.33, 0.21), (-0.04, 0.19))
+    check("a negative tap mean on a quiet bench still reads as almost nothing",
+          plot.tap_headline(al, doc_with_baseline(0.0, al))
+          == "tapping contributes almost nothing",
+          plot.tap_headline(al, doc_with_baseline(0.0, al)))
     # The one-argument form used elsewhere must keep working.
     check("no doc: falls back to mean and own error",
           plot.tap_headline(taps(2.31, 20.36))

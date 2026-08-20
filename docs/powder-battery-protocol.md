@@ -78,6 +78,27 @@ finishes the battery in ~7 min. The 2026-08-06 salt run took
 113–265 s. Plan for ~50 min, but do not read an early finish as a crash
 — check for `RUN,END,ok`.
 
+### Durations under artifact rejection (from 2026-08-20)
+
+The table above was measured before every trial was bracketed by
+no-actuation windows.  Bracketing, waiting for a shock-free bracket and
+re-measuring disturbed trials all cost time, so blocks A-E now run about
+2-3x longer:
+
+| Block | before | measured 2026-08-20 (sodium sulfate / silicon) |
+|---|---|---|
+| A baseline | ~15 s | 45 s / 46 s |
+| B hold | ~40 s | 1 m 29 s / 1 m 30 s |
+| C rotation | ~2 min | 4 m 37 s / 5 m 04 s |
+| D speed | ~10 s | 56 s / 57 s |
+| E tap | ~2.5 min | 5 m 23 s / 6 m 47 s |
+| **A-E total** | ~5.5 min | **13 min / 15 min** |
+
+Block E is the most variable of them, because it has the most trials and
+the smallest signal, so it retries most often.  A `blocks="ABCDE"` run is
+therefore a ~15 minute job, not a ~7 minute one, and a longer run in a
+noisier room is the correction working rather than a fault.
+
 Rule of thumb: the *better* a powder conveys, the *shorter* the run.
 Well-conveying powders reach phase 3 and stall there in minutes; poorly
 conveying ones exhaust the 200-cycle fine budget and take ~14 min per
@@ -197,6 +218,16 @@ at **0.36 mg/rev** and block C then measured **26.3 mg/rev** at tilt 45°
 — a 73× under-report — because the diagnostic's 35 revolutions were what
 it took to fill the flights (1.14 → 22.82 mg/rev, monotonic). White rice
 flour charges in ~3 revolutions; this one needed ~30.
+
+The same caution applies to the *number* the pre-flight reports even when
+it does confirm feed, and it is not only cohesive powders. Silicon
+(2026-08-20) read `feed confirmed` at **66.8 mg/rev** averaged over five
+revolutions of `-3.7, -2.2, +0.3, +92.5, +247.0 mg`, and block C then
+measured **302.4 mg/rev** at the same tilt — a 4.5× under-report on a
+free-flowing powder, purely because the auger had not been hand-rotated
+and three of the five revolutions were spent filling empty flights.
+**Read the pre-flight as a go/no-go on the delivery path, never as a feed
+factor**; the per-revolution list matters more than the average.
 
 The discriminator is whether the reading is *exactly* zero:
 

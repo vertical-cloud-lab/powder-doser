@@ -40,6 +40,8 @@ class FakeAxis(object):
 
     def __init__(self):
         self.annotations = []
+        self.annotation_kwargs = []
+        self.ylim = (1.0, 1000.0)
 
     def bar(self, *args, **kwargs):
         pass
@@ -49,6 +51,7 @@ class FakeAxis(object):
 
     def annotate(self, text, xy=None, xytext=(0, 0), **kwargs):
         self.annotations.append((text, xy, xytext))
+        self.annotation_kwargs.append(kwargs)
 
     def set_xticks(self, *args, **kwargs):
         pass
@@ -56,14 +59,32 @@ class FakeAxis(object):
     def set_xticklabels(self, *args, **kwargs):
         pass
 
+    def set_xlabel(self, *args, **kwargs):
+        pass
+
     def set_ylabel(self, *args, **kwargs):
         pass
 
-    def set_ylim(self, *args, **kwargs):
+    def set_yscale(self, *args, **kwargs):
         pass
+
+    def get_ylim(self):
+        return self.ylim
+
+    def set_ylim(self, *args, **kwargs):
+        if len(args) == 2:
+            self.ylim = (args[0], args[1])
+
+    def legend(self, *args, **kwargs):
+        return FakeLegend()
 
     def set_title(self, *args, **kwargs):
         pass
+
+
+class FakeLegend:
+    def get_texts(self):
+        return []
 
 
 def doc(powder_id, dispensed, status="ok"):
@@ -132,10 +153,71 @@ def test_offset_cycle_alternates():
           "{}".format(cmp.DOSE_LABEL_DY))
 
 
+def rotation_doc(powder_id, per_tilt):
+    """A run document with just enough block C rows for panel A."""
+    return {
+        "powder_id": powder_id,
+        "powder": powder_id,
+        "started_utc": "2026-08-20T21:48:23Z",
+        "host_summary": [
+            {"block": "C", "phase": "rotation", "tilt_deg": tilt,
+             "mean_g": mg / 1000.0, "sem_g": 0.0, "rsd_pct": 5.0}
+            for tilt, mg in per_tilt.items()
+        ],
+    }
+
+
+def test_feed_factor_labels_are_rotated():
+    """Ten powders per tilt group: a horizontal label is wider than its bar.
+
+    Before this, neighbouring labels merged into digit soup
+    ("34.351.257.2" at tilt 0 deg).  Staggering the offset was not enough
+    -- it is measured from each bar's own top, so two similarly tall bars
+    stagger onto each other anyway.  Rotation is what actually bounds a
+    label's width, so it is the thing worth pinning.
+    """
+    # The real 2026-08-20 dataset, whose tilt-90 group is the tight one.
+    real = [("white-rice-flour", 37.2), ("sodium-alginate", 10.9),
+            ("brown-rice-flour", 0.2), ("calcium-lactate", 232.2),
+            ("carboxymethyl-cellulose", 9.3), ("xanthan-gum", 186.8),
+            ("salt-0806", 24.9), ("salt-0812", 230.4),
+            ("sodium-sulfate", 243.6), ("silicon-110-200", 302.4)]
+    docs = [rotation_doc(name, {0.0: mg / 5.0, 45.0: mg * 0.7, 90.0: mg})
+            for name, mg in real]
+    ax = FakeAxis()
+    cmp.panel_feed_factor(ax, docs)
+    bar_labels = [(t, kw) for (t, _, _), kw
+                  in zip(ax.annotations, ax.annotation_kwargs)
+                  if not t.startswith("balance resolution")]
+    check("every bar is labelled", len(bar_labels) == 30,
+          "got {}".format(len(bar_labels)))
+    unrotated = [t for t, kw in bar_labels if kw.get("rotation") != 90]
+    check("every value label is rotated", not unrotated,
+          "{}".format(unrotated[:4]))
+    check("rotated labels sit on their bar top",
+          all(kw.get("va") == "bottom" for _, kw in bar_labels))
+
+
+def test_legend_headroom_grows_with_the_powder_count():
+    """The legend must not land on a rotated label, which is ~5x taller."""
+    few = FakeAxis()
+    cmp.panel_feed_factor(few, [rotation_doc("salt", {0.0: 5.0, 90.0: 25.0})])
+    many = FakeAxis()
+    cmp.panel_feed_factor(many, [
+        rotation_doc("p{}".format(i), {0.0: 5.0, 90.0: 25.0})
+        for i in range(10)])
+    check("more powders means more headroom", many.ylim[1] > few.ylim[1],
+          "{} vs {}".format(many.ylim[1], few.ylim[1]))
+    check("headroom clears the tallest bar", many.ylim[1] > 1000.0,
+          "{}".format(many.ylim[1]))
+
+
 def main():
     test_adjacent_dose_labels_differ()
     test_stagger_holds_across_powders()
     test_offset_cycle_alternates()
+    test_feed_factor_labels_are_rotated()
+    test_legend_headroom_grows_with_the_powder_count()
     if FAILURES:
         print("\n{} check(s) failed: {}".format(len(FAILURES),
                                                 ", ".join(FAILURES)))
