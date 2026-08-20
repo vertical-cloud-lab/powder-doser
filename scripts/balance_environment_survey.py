@@ -157,7 +157,10 @@ def survey(t: list[float], mg: list[float], status: list[str]) -> int:
         med = spreads[len(spreads) // 2]
         p90 = spreads[int(0.9 * len(spreads))]
         mark = "ok " if p90 <= GOOD_MG else ("marg" if p90 <= USABLE_MG else "BAD")
-        if p90 > USABLE_MG and dur <= 30.0:
+        # Gate on the durations the battery actually brackets a trial over.
+        # Longer rows are reported for context, but a 30 s absolute spread
+        # is dominated by slow creep that a bracketed trial never sees.
+        if p90 > USABLE_MG and dur <= 10.0:
             verdict_ok = False
         print("[survey]   {:>6.0f}s  {:8.2f} {:8.2f} {:8.2f}  {:4} {}".format(
             dur, med, p90, spreads[-1], mark, what))
@@ -168,6 +171,8 @@ def survey(t: list[float], mg: list[float], status: list[str]) -> int:
     else:
         print("[survey] VERDICT: even short trials are being disturbed. "
               "Wait, or find the source, before running.")
+    print("[survey] Rows above 10 s are context, not a gate: a bracketed "
+          "trial never sees the slow creep that dominates them.")
     print("[survey] Block G (multi-minute closed-loop doses against a "
           "+/-5 mg band) is only safe when the 180 s row is inside 5 mg.")
     return 0 if verdict_ok else 1
