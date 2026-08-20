@@ -490,11 +490,21 @@ def capture(args):
                     status = payload[1] if len(payload) > 1 else "ok"
                     break
     except KeyboardInterrupt:
-        print("\n[capture] interrupted -- saving partial run")
+        # stdout may already be gone (a killed `tee`, a closed tmux
+        # pane), and losing a run's parsed outputs to a BrokenPipeError
+        # while *printing* would be absurd -- the raw log is on disk
+        # either way, but the CSVs and the run document are not.
+        try:
+            print("\n[capture] interrupted -- saving partial run")
+        except Exception:
+            pass
         status = "capture-interrupted"
     finally:
         stop.set()
-        port.close()
+        try:
+            port.close()
+        except Exception:
+            pass
 
     ended_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
     args.ended_local = local_stamp()
@@ -620,6 +630,72 @@ def upload(doc, args):
     return True
 
 
+def replay(path, args):
+    """Rebuild a run from its raw serial log.
+
+    The capture is a pure parser over the device stream, so the raw log
+    is a complete record: if the capture process dies -- a killed pipe,
+    a dropped SSH session, a full disk -- nothing is actually lost, and
+    this reconstructs the CSVs and the run document exactly as a live
+    capture would have written them.  It is also how a run captured on
+    one machine gets analysed on another.
+    """
+    meta, trials, polls, doses, device_summaries = {}, [], [], [], []
+    retries, timeline = [], []
+    status = "incomplete"
+    with open(path, errors="replace") as fh:
+        lines = fh.readlines()
+    for line in lines:
+        block = block_marker(line)
+        if block is not None:
+            timeline.append({"block": block, "started_utc": None,
+                             "started_local": None, "elapsed_s": None})
+        parsed = parse_line(line)
+        if parsed is None:
+            continue
+        kind, payload = parsed
+        if kind == "trial":
+            trials.append(payload)
+        elif kind == "retry":
+            retries.append(payload)
+        elif kind == "poll":
+            polls.append(payload)
+        elif kind == "dose":
+            doses.append(payload)
+        elif kind == "device_summary":
+            device_summaries.append(payload)
+        elif kind == "meta":
+            meta[payload[0]] = payload[1]
+        elif kind == "run" and payload[0] == "END":
+            status = payload[1] if len(payload) > 1 else "ok"
+    if status == "incomplete" and trials:
+        # No RUN,END: the device stream was cut, not finished cleanly.
+        status = "truncated"
+    # Device timestamps are the only clock the log carries, so use them
+    # rather than inventing wall-clock times the capture never saw.
+    def _t(rows):
+        return [r["t_ms"] for r in rows if r.get("t_ms") is not None]
+    stamps = _t(trials) + _t(polls) + _t(doses)
+    elapsed_s = round(max(stamps) / 1000.0, 1) if stamps else None
+    for i, row in enumerate(timeline):
+        row["elapsed_s"] = None
+    out_dir = os.path.dirname(os.path.abspath(path))
+    host_summary = summarize(trials)
+    doc = build_run_document(meta, trials, polls, doses, device_summaries,
+                             host_summary, status, args,
+                             getattr(args, "started_utc", None),
+                             getattr(args, "ended_utc", None),
+                             elapsed_s=elapsed_s, timeline=timeline,
+                             retries=retries)
+    doc["reconstructed_from_raw_log"] = os.path.basename(path)
+    write_outputs(out_dir, args.powder_id, trials, polls, doses,
+                  host_summary, doc, retries=retries)
+    print_summary(host_summary, doses)
+    if args.upload:
+        upload(doc, args)
+    return doc
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description=__doc__.split("\n", 1)[0],
@@ -665,6 +741,14 @@ def main(argv=None):
                         "'blocks=\"CG\", dose_repeats=1'")
     parser.add_argument("--upload", action="store_true",
                         help="insert run.json into MongoDB after capture")
+    parser.add_argument("--from-raw", default=None, metavar="RAW_LOG",
+                        help="rebuild a run's CSVs and run.json from a "
+                        "raw serial log instead of capturing live "
+                        "(recovers a run whose capture process died)")
+    parser.add_argument("--started-utc", default=None,
+                        help="run start time for --from-raw provenance")
+    parser.add_argument("--ended-utc", default=None,
+                        help="run end time for --from-raw provenance")
     parser.add_argument("--upload-file", default=None, metavar="RUN_JSON",
                         help="upload an existing run.json and exit")
     parser.add_argument("--db", default="powder_doser")
@@ -678,6 +762,12 @@ def main(argv=None):
             args.powder_id = normalize_powder_id(args.powder_id)
         except ValueError as exc:
             parser.error(str(exc))
+
+    if args.from_raw:
+        if not args.powder_id:
+            parser.error("--from-raw needs --powder-id")
+        args.started_local = args.ended_local = None
+        return 0 if replay(args.from_raw, args) is not None else 1
 
     if args.upload_file:
         with open(args.upload_file) as fh:

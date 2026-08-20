@@ -81,10 +81,20 @@ class NoisyScale:
         self.t0_ms = clock.ticks_ms()
         self._i = 0
         self.reads = 0
+        self.manual_offset_g = 0.0
+        self._armed = None
+
+    def knock(self, step_g):
+        """A bench knock: the zero moves and stays moved."""
+        self.manual_offset_g += step_g
+
+    def arm(self, after_reads, step_g):
+        """Fire a knock ``after_reads`` reads from now."""
+        self._armed = [after_reads, step_g]
 
     def _artifact_g(self):
         t_s = (self.clock.ticks_ms() - self.t0_ms) / 1000.0
-        offset = self.creep_g_per_s * t_s
+        offset = self.creep_g_per_s * t_s + self.manual_offset_g
         for t_ms, step in self.shocks:
             if self.clock.ticks_ms() >= t_ms:
                 offset += step
@@ -100,6 +110,11 @@ class NoisyScale:
 
     def read(self):
         self.reads += 1
+        if self._armed is not None:
+            self._armed[0] -= 1
+            if self._armed[0] <= 0:
+                self.knock(self._armed[1])
+                self._armed = None
         self.clock.sleep_ms(30)             # a real Q round trip
         return Reading(self._value(),
                        stable=not self.never_stable)
@@ -138,6 +153,7 @@ class Stepper:
         self.clock = clock
         self.rpm = 30.0
         self.run_rpm = 0.0
+        self.on_rotate = None
 
     def set_speed(self, rpm):
         self.rpm = rpm
@@ -145,6 +161,8 @@ class Stepper:
     def rotate_degrees(self, deg):
         self.clock.sleep_ms(int(deg / 360.0 / self.rpm * 60000))
         self.column.rotate(deg)
+        if self.on_rotate is not None:
+            self.on_rotate(self)
 
     def run_at_rpm(self, rpm):
         self.run_rpm = rpm
@@ -292,6 +310,30 @@ def test_overload_is_not_treated_as_data():
     check("overload raises rather than reading 0", False)
 
 
+def test_late_powder_is_not_mistaken_for_a_shock():
+    """A fast powder's slug landing just after the screw stops is real.
+
+    The settle prefix is actuator-gated for *losses* but not for gains:
+    calcium lactate conveys 232 mg per revolution and some of it lands a
+    beat late.  Subtracting that as a bench knock would silently under-
+    report exactly the powders that convey best.
+    """
+    # +200 mg arrives at sample 2 (inside the settle prefix), then flat.
+    samples = make_samples([0.0, 0.0, 0.200, 0.200, 0.200, 0.200,
+                            0.200, 0.200])
+    b = bf.Bracket(samples, fit_from=4, arrivals_until=3)
+    check("late arrival is kept, not removed", not b.steps, b.steps)
+    check("it is recorded as an arrival", len(b.arrivals) == 1, b.arrivals)
+    check("the mass survives into the fit",
+          approx(b.value_at(b.mid_t_ms), 0.200, 1e-6), b.value_at(b.mid_t_ms))
+    # A *loss* in the same prefix is still an artifact: powder does not
+    # climb back out of the beaker.
+    b2 = bf.Bracket(make_samples([0.2, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+                    fit_from=4, arrivals_until=4)
+    check("a drop in the settle window is still a shock",
+          len(b2.steps) == 1, b2.steps)
+
+
 def test_error_vs_duration():
     # Flat for 10 s, then a 100 mg step: short measurements are clean,
     # long ones straddle the step.  This is the survey's headline table.
@@ -306,9 +348,10 @@ def test_error_vs_duration():
 # Integration: the real Battery loop
 # ---------------------------------------------------------------------------
 
-def run_battery(scale, column, clock, blocks="C", **kw):
+def run_battery(scale, column, clock, blocks="C", on_rotate=None, **kw):
     lines = []
     stepper = Stepper(column, clock)
+    stepper.on_rotate = on_rotate
     tap = Tap(column, clock)
     servo = Servo(column)
     battery = pb.Battery(
@@ -351,11 +394,25 @@ def test_creep_does_not_inflate_yield():
 
 
 def test_shock_is_rejected_not_measured():
-    """A 100 mg bench knock must not become 100 mg of powder."""
+    """A 100 mg bench knock must not become 100 mg of powder.
+
+    The knock is fired the instant the auger stops, i.e. inside the
+    post-action settle window.  That window is actuator-gated -- the
+    auger is no longer turning -- which is exactly why sampling through
+    the settle rather than sleeping through it matters.
+    """
     clock = Clock()
     column = Column(g_per_rev=0.030)
-    scale = NoisyScale(column, clock, shocks=[(9000, 0.100)])
-    status, lines, battery = run_battery(scale, column, clock)
+    scale = NoisyScale(column, clock)
+    fired = []
+
+    def knock(stepper):
+        if not fired:
+            fired.append(True)
+            scale.arm(7, 0.100)   # well after the column has drained
+
+    status, lines, battery = run_battery(scale, column, clock,
+                                         on_rotate=knock)
     trials = [t for t in parse_trials(lines) if t["phase"] == "rotation"]
     worst = max(abs(t["delta_g"] - 0.030) for t in trials)
     check("no trial is off by anything like the 100 mg shock",
@@ -371,9 +428,16 @@ def test_shock_is_rejected_not_measured():
 def test_disturbed_trial_is_remeasured():
     clock = Clock()
     column = Column(g_per_rev=0.030)
-    # Shock scheduled to land inside an *after* bracket.
-    scale = NoisyScale(column, clock, shocks=[(9000, 0.080)])
+    scale = NoisyScale(column, clock)
+    fired = []
+
+    def knock(stepper):
+        if not fired:
+            fired.append(True)
+            scale.arm(7, 0.080)
+
     status, lines, battery = run_battery(scale, column, clock,
+                                         on_rotate=knock,
                                          max_trial_retries=2)
     retries = [cap.parse_line(l)[1] for l in lines
                if cap.parse_line(l) and cap.parse_line(l)[0] == "retry"]
@@ -456,6 +520,7 @@ def main():
                test_silent_balance_still_raises,
                test_overload_is_not_treated_as_data,
                test_error_vs_duration,
+               test_late_powder_is_not_mistaken_for_a_shock,
                test_creep_does_not_inflate_yield,
                test_shock_is_rejected_not_measured,
                test_disturbed_trial_is_remeasured,

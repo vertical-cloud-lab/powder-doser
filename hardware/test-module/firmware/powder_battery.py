@@ -148,6 +148,12 @@ DRIFT_CORRECT     = True    # extrapolate pre-action creep across the action
 
 BLOCKS            = "ABCDEFG"   # which blocks to run, in order
 
+# A&D HR-100A capacity.  Capacity is *gross*: taring the vessel does not
+# buy any of it back, so the battery warns before it runs out rather
+# than discovering it as an OL frame mid-block.
+CAPACITY_G        = 102.0
+CAPACITY_WARN_G   = 90.0
+
 # Three-phase controller parameters for Block G: the tuned-salt set
 # from the PR #124 bench demos (continuous bulk with the measured
 # ~0.12 g in-flight anticipation; 45-deg fine increments so phase 3's
@@ -405,9 +411,63 @@ class Battery:
             return
         self._emit("META", "park_tilt_deg", "{:.1f}".format(PARK_TILT_DEG))
 
+    def _await_frames(self, timeout_ms=25000):
+        """Wait out a balance that has gone quiet; ``None`` if it stays so.
+
+        A refused A&D command leaves this balance emitting nothing for
+        roughly 19 s.  That is a recoverable pause, not a fault, so it
+        gets waited out rather than escalated.
+        """
+        waited = 0
+        while True:
+            try:
+                return self._bracket()
+            except balance_filter.BalanceSilent:
+                if waited >= timeout_ms:
+                    return None
+                self._sleep_ms(1000)
+                waited += 1000 + self.bracket_n * self.bracket_ms
+
     def _tare(self):
+        """Establish the zero for the next block -- best effort, not required.
+
+        The A&D balance silently refuses a tare while it considers
+        itself unstable, and then emits nothing at all for ~19 s.  In a
+        working lab it may *never* report stable -- only 2 % of frames
+        were stable during the 2026-08-20 11:44 survey -- so version 1
+        read that silence as ``scale-unreadable`` and aborted the run.
+
+        Nothing downstream needs the displayed value to be zero: every
+        measurement in this battery is a difference between two bracket
+        fits, so a stale zero cancels exactly.  The tare's only real job
+        is keeping the gross load inside the balance's capacity, so it
+        is attempted when the balance looks willing, skipped when it
+        does not, and never allowed to stop a run.
+        """
+        before = self._await_frames()
+        if before is None:
+            self._emit("META", "tare", "balance-silent")
+            return
+        gross = before.value_at(before.mid_t_ms)
+        if gross >= CAPACITY_WARN_G:
+            self._prompt_or_raise(
+                "balance reads {:.1f} g gross, near its {:.0f} g "
+                "capacity -- empty the collection vessel, then Enter "
+                "('skip'/'abort')".format(gross, CAPACITY_G))
+        if before.n_stable == 0:
+            # Sending it now would be refused and cost ~19 s of silence.
+            self._emit("META", "tare", "skipped-unstable")
+            self._sleep_ms(self.settle_ms)
+            return
         self.scale.zero()
         self._sleep_ms(self.settle_ms)
+        after = self._await_frames()
+        if after is None:
+            self._emit("META", "tare", "silent-after-tare")
+            return
+        moved = abs(gross) - abs(after.value_at(after.mid_t_ms))
+        self._emit("META", "tare",
+                   "ok" if moved > 0.5 * abs(gross) else "refused")
 
     # -- measurement ---------------------------------------------------
 
@@ -518,7 +578,11 @@ class Battery:
             action_fn()
             after = self._bracket(settle_ms=self.settle_ms)
             meas = self._delta(before, after)
-            if (not after.disturbed or retries >= self.max_trial_retries
+            # Retry on a shock only, for the same reason quiet_bracket
+            # waits on a shock only: a shock is a transient a fresh
+            # measurement escapes, whereas re-measuring into steady
+            # jitter just spends powder to get the same uncertainty.
+            if (not after.shocked or retries >= self.max_trial_retries
                     or self.max_trial_retries <= 0):
                 break
             self._emit("RETRY", block or "", "" if tilt is None

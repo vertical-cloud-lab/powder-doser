@@ -425,3 +425,69 @@ share links per block, per tilt and per dose. It needs the broadcast's content
 add a new broadcast with `--calibrate`, which reads the anchor off the burned-in
 timestamp overlay rather than the watch page (they differ by several seconds —
 enough to miss a trial). Current links: [`battery-runs/stream-timestamps.md`](battery-runs/stream-timestamps.md).
+
+## Environment-artifact rejection (battery_version 2, 2026-08-20)
+
+Runs from 2026-08-20 onwards carry per-trial quality columns and are not
+directly comparable, trial for trial, with the nine `battery_version` 1
+runs -- the *measurements* mean the same thing, but a version 2 trial
+also reports what was corrected out of it.
+
+**What changed.** Every trial is bracketed by two windows in which no
+actuator is commanded. Mass cannot arrive during them, so anything that
+moves is the environment:
+
+* the bracket slope is the balance's creep, extrapolated across the
+  action, so the trial delta is drift-corrected;
+* a single-poll jump of 10 mg or more is subtracted as a zero step and
+  counted;
+* the residual scatter about the fitted line becomes the trial's own
+  `sigma_g`;
+* a trial whose after-bracket contains a shock is re-measured, and the
+  discarded attempt is emitted as a `RETRY` row.
+
+The post-action settle is *sampled* rather than slept through, so it is
+covered too. The one window that cannot be guarded is the action itself
+(about 2 s for one revolution at 30 RPM), where the survey puts the
+environment's median contribution at 0.70 mg.
+
+**One asymmetry worth knowing.** For the first ~1.2 s after an action, a
+*gain* is trusted as late-arriving powder rather than treated as a
+shock; a *loss* is still an artifact, because powder does not climb back
+out of the vessel. Without that, a fast powder's own slug (calcium
+lactate conveys 232 mg/rev) would be subtracted as a bench knock.
+
+**Waiting versus averaging.** The code waits for a *shock-free* bracket,
+not a quiet one. A shock is a transient that the next window escapes;
+stationary jitter is not, and waiting for it to stop never terminates in
+a busy lab. Jitter is beaten by averaging, which the bracket already
+does. That distinction is why a battery can run in an occupied room.
+
+**The tare is best-effort.** The A&D balance silently refuses a tare
+while it thinks it is unstable and then goes quiet for ~19 s; version 1
+read that as `scale-unreadable` and aborted. Nothing downstream needs
+the displayed value to be zero -- every measurement is a difference
+between two bracket fits -- so the tare is attempted when the balance
+looks willing, skipped when it does not (`META,tare,skipped-unstable`),
+and never allowed to stop a run. Its remaining job, keeping the gross
+load under the 102 g capacity, is now an explicit check.
+
+**Read the environment block before trusting a run.** `run_<id>.json`
+carries an `environment` object and the device emits `META,env.*` rows:
+clean-trial fraction, shock events and mass removed, drift removed,
+retries, and the median trial sigma. A run that silently corrected
+half a gram of shocks must not look identical to a run in a quiet room.
+Rule of thumb: if the median `sigma_g` is a significant fraction of the
+per-trial signal, the run is a stress test, not a measurement.
+
+**Recovering a run whose capture died.** The capture is a pure parser
+over the device stream, so the raw serial log is a complete record:
+
+```bash
+python scripts/powder_battery_capture.py --from-raw \
+    data/battery/<run>/raw_serial_<id>.log --powder-id <id> [--upload]
+```
+
+This rebuilds the CSVs and `run.json` exactly as a live capture would
+have written them, and is how the 2026-08-20 salt run was recovered
+after its `tee` pipeline was killed.

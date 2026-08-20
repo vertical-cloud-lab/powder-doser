@@ -61,6 +61,13 @@ MAX_EXTRAP_S = 60.0
 # How many consecutive brackets to try while waiting for a quiet one.
 QUIET_TRIES = 8
 
+# How long after an action powder may still be landing.  Inside this
+# window a *gain* is trusted as late-arriving powder; after it, the
+# column is assumed drained and a jump is an artifact again.  Kept
+# short deliberately: material in flight lands in well under a second,
+# so a wide window would hand a positive bench knock a free pass.
+ARRIVAL_WINDOW_MS = 1200
+
 
 class BalanceSilent(Exception):
     """The balance returned no usable frame at all (not merely noisy)."""
@@ -91,9 +98,20 @@ class Bracket:
     """
 
     def __init__(self, samples, shock_g=SHOCK_STEP_G,
-                 max_resid_g=MAX_RESID_G, fit_from=0):
+                 max_resid_g=MAX_RESID_G, fit_from=0,
+                 arrivals_until=0):
         self.samples = list(samples)
         self.fit_from = fit_from
+        # Index up to which a *positive* jump may be real powder still
+        # arriving rather than a shock.  The actuator gate says mass
+        # cannot arrive while the auger is stopped, but that is only
+        # true once everything already in flight has landed: a fast
+        # powder can drop a 200 mg slug a beat after the screw stops.
+        # Inside this prefix, gains are therefore trusted and only
+        # *losses* are treated as artifacts -- powder cannot leave the
+        # vessel on its own.  Without this a fast powder's own slug
+        # would be subtracted as a bench knock.
+        self.arrivals_until = arrivals_until
         self.shock_g = shock_g
         self.max_resid_g = max_resid_g
         if not self.samples:
@@ -104,14 +122,18 @@ class Bracket:
         self.n_stable = sum(1 for s in self.samples if s[2])
 
         # -- step detection: actuator-gated, so a jump is not powder --
-        self.steps = []           # (index, jump_g)
+        self.steps = []           # (index, jump_g) -- removed as artifacts
+        self.arrivals = []        # (index, jump_g) -- kept as late powder
         cleaned = [self.raw_g[0]]
         offset = 0.0
         for i in range(1, len(self.raw_g)):
             jump = self.raw_g[i] - self.raw_g[i - 1]
             if abs(jump) >= self.shock_g:
-                self.steps.append((i, jump))
-                offset += jump
+                if jump > 0 and i <= self.arrivals_until:
+                    self.arrivals.append((i, jump))
+                else:
+                    self.steps.append((i, jump))
+                    offset += jump
             cleaned.append(self.raw_g[i] - offset)
         self.clean_g = cleaned
         self.step_total_g = offset
@@ -211,7 +233,7 @@ class Bracket:
 
 def collect(scale, n=BRACKET_N, interval_ms=BRACKET_INTERVAL_MS,
             sleep_ms=None, ticks_ms=None, shock_g=SHOCK_STEP_G,
-            max_resid_g=MAX_RESID_G, settle_n=0):
+            max_resid_g=MAX_RESID_G, settle_n=0, arrivals_until=None):
     """Take ``n`` instantaneous readings and return a :class:`Bracket`.
 
     Uses ``scale.read()`` (the A&D ``Q`` datum) rather than
@@ -250,23 +272,33 @@ def collect(scale, n=BRACKET_N, interval_ms=BRACKET_INTERVAL_MS,
     # ``settle_n`` counts samples that were *attempted*; unusable frames
     # are dropped, so clamp the fit window to what actually arrived.
     fit_from = min(settle_n, max(0, len(samples) - 2))
+    if arrivals_until is None:
+        arrivals_until = min(fit_from,
+                             int(ARRIVAL_WINDOW_MS // max(1, interval_ms)))
     return Bracket(samples, shock_g=shock_g, max_resid_g=max_resid_g,
-                   fit_from=fit_from)
+                   fit_from=fit_from, arrivals_until=arrivals_until)
 
 
 def quiet_bracket(scale, tries=QUIET_TRIES, **kwargs):
-    """Keep taking brackets until one is undisturbed.
+    """Keep taking brackets until one is free of *shocks*.
 
-    Returns ``(bracket, attempts, quiet)``.  96 % of 5 s windows in the
-    survey were inside 2 mg, so a quiet window normally arrives within
-    a try or two; when none does, the best (lowest-residual, unshocked
-    if possible) bracket is returned with ``quiet=False`` so the caller
-    can record the trial as disturbed rather than abort.
+    Returns ``(bracket, attempts, quiet)``.
+
+    Note what this does and does not wait for.  A shock is a transient:
+    waiting genuinely fixes it, because the next window will not contain
+    one.  Stationary jitter is not a transient -- waiting for a quiet
+    window when the whole room is buzzing never terminates, and it is
+    the wrong tool anyway, since jitter is beaten by *averaging*, which
+    the bracket already does (its uncertainty falls as the residual over
+    the square root of the sample count).  So a high-residual bracket is
+    kept and flagged ``unsettled``, and only a shocked one is retried.
+    That distinction is why a battery can run in a busy lab instead of
+    stalling in one.
     """
     best = None
     for attempt in range(1, tries + 1):
         bracket = collect(scale, **kwargs)
-        if not bracket.disturbed:
+        if not bracket.shocked:
             return bracket, attempt, True
         if best is None or _worse(best, bracket):
             best = bracket

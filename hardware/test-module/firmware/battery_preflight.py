@@ -105,7 +105,17 @@ def check(stepper, tap, servo, scale, revs=REVS, rpm=RPM, taps=TAPS,
     servo.move_to(tilt_deg * PLATE_PER_TILT)
     sleep_ms(TILT_SETTLE_MS)
     stepper.set_speed(rpm)
-    scale.zero()
+    # Best-effort tare: this balance refuses the command while it thinks
+    # it is unstable and then goes quiet for ~19 s, and the check below
+    # measures *differences* anyway, so a skipped tare costs nothing but
+    # an offset.  Version 1 read that silence as scale-unreadable.
+    probe = _read_bracket(scale, sleep_ms=sleep_ms, tries=1)
+    if probe is not None and probe.n_stable:
+        scale.zero()
+        sleep_ms(settle_ms)
+    else:
+        log("[preflight] balance not reporting stable -- skipping the "
+            "tare and measuring differences from where it sits")
     sleep_ms(settle_ms)
 
     rev_deltas = []
