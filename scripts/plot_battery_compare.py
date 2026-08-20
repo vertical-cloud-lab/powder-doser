@@ -49,7 +49,7 @@ GRID = "#dcdbd6"
 # a series must not wear it.  Above eight powders this warns rather than
 # cycling: split into per-batch facets instead of stretching the palette.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0",
-          "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b"]
+          "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b", "#a88700"]
 NOISE = "#9d9c95"
 TARGET = "#e34948"
 

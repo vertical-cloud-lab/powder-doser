@@ -426,6 +426,46 @@ add a new broadcast with `--calibrate`, which reads the anchor off the burned-in
 timestamp overlay rather than the watch page (they differ by several seconds —
 enough to miss a trial). Current links: [`battery-runs/stream-timestamps.md`](battery-runs/stream-timestamps.md).
 
+## The run log
+
+[`battery-runs/RUN-LOG.md`](battery-runs/RUN-LOG.md) is the index of every run:
+when it started and stopped, which blocks ran at which speeds, how much powder
+went through, the feed factor, the closed-loop dose result, how disturbed the
+bench was, the QC verdict, and links to both the data and the video. The same
+rows are in [`battery-runs/run-log.csv`](battery-runs/run-log.csv) for sorting
+and plotting.
+
+It is **generated** -- do not edit it by hand. After every run:
+
+```bash
+python scripts/refresh_stream_broadcasts.py   # only if the run is on a new broadcast
+python scripts/build_run_log.py
+```
+
+`build_run_log.py --check` fails when the committed log is stale, so it can gate
+a commit.
+
+Video links come from two places. Broadcast *windows* come from
+[`battery-runs/stream-broadcasts.json`](battery-runs/stream-broadcasts.json),
+which `refresh_stream_broadcasts.py` builds by parsing each broadcast title
+(`powder doser stream picam-d1pr, YYYY-MM-DD UTC HH:MM`) -- that is enough to
+pick the right video and land within about a minute, and the log labels those
+links `~1 min`. Frame-accurate links need the broadcast's content `t=0` in
+[`battery-runs/stream-registry.json`](battery-runs/stream-registry.json); where
+one exists the log uses it and labels the link `exact`. See *Video record*
+above for how to calibrate one.
+
+Two things the log deliberately does not do. It reports **blocks that produced
+trials**, not the blocks that were requested, so a self-skipped block F never
+appears as if it ran. And **dispensed mass drops negative trial deltas rather
+than netting them** -- a negative delta is a balance artifact or a re-tare,
+never powder climbing back out of the cup.
+
+When several runs of one powder share a day, the log cannot tell which run
+notes belong to which run from the filename alone; those are pinned in
+`NOTES_OVERRIDES` in `scripts/build_run_log.py`. Anything unambiguous is
+matched automatically.
+
 ## Environment-artifact rejection (battery_version 2, 2026-08-20)
 
 Runs from 2026-08-20 onwards carry per-trial quality columns and are not

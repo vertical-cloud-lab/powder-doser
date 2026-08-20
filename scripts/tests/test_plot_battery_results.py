@@ -42,6 +42,21 @@ def dose(status, phase_cycles):
     return {"status": status, "phase_cycles": phase_cycles}
 
 
+def taps_sem(*mean_sem_mg):
+    """Block E tap rows carrying their own standard error."""
+    return [{"block": "E", "phase": "tap", "tilt_deg": tilt,
+             "mean_g": m / 1000.0, "sem_g": s / 1000.0}
+            for tilt, (m, s) in zip((0.0, 45.0), mean_sem_mg)]
+
+
+def doc_with_baseline(baseline_sd_mg, tap_rows):
+    """A run document whose block A no-actuation scatter is known."""
+    return {"host_summary": [{"block": "A", "phase": "baseline",
+                              "tilt_deg": 45.0, "mean_g": 0.0,
+                              "std_g": baseline_sd_mg / 1000.0}]
+            + list(tap_rows)}
+
+
 def test_tilt_headline():
     # White rice flour: 3.75 -> 12.78 -> 37.15 mg/rev, still climbing.
     check("tilt rises", plot.tilt_headline(rows(3.75, 12.78, 37.15))
@@ -113,8 +128,60 @@ def test_dose_headline():
     check("dose empty", plot.dose_headline([]) == "no closed-loop doses")
 
 
+def test_tap_headline_respects_the_noise_floor():
+    """A tap quantum smaller than the do-nothing scatter is not a quantum.
+
+    Sodium sulfate (2026-08-20) averaged 9 mg per tap in a room whose eight
+    no-actuation block A trials scattered over 23 mg.  The title read
+    "tapping moves up to 9 mg per tap", which described the bench rather
+    than the powder.
+    """
+    rows = taps_sem((7.90, 2.65), (9.34, 2.63))
+    noisy = plot.tap_headline(rows, doc_with_baseline(22.69, rows))
+    check("noisy room: quantum is not claimed", "not resolved" in noisy,
+          noisy)
+    check("noisy room: no figure is quoted", "mg per tap" not in noisy, noisy)
+    quiet = plot.tap_headline(rows, doc_with_baseline(0.0, rows))
+    check("quiet room: the same taps do read as a quantum",
+          quiet == "tapping moves up to 9 mg per tap", quiet)
+    # Calcium lactate and xanthan gum must keep their real quanta.
+    cl = taps_sem((2.31, 0.29), (20.36, 1.01))
+    check("calcium lactate keeps its quantum",
+          plot.tap_headline(cl, doc_with_baseline(0.0, cl))
+          == "tapping moves up to 20 mg per tap")
+    # A tap swamped by its own scatter is not resolved either, even on a
+    # quiet bench.
+    noisy_tap = taps_sem((1.0, 0.2), (4.0, 6.0))
+    check("a tap lost in its own scatter is not claimed",
+          "not resolved" in plot.tap_headline(
+              noisy_tap, doc_with_baseline(0.0, noisy_tap)),
+          plot.tap_headline(noisy_tap, doc_with_baseline(0.0, noisy_tap)))
+    # Sub-mg taps still fall through to the older wording.
+    wrf = taps_sem((0.11, 0.08), (0.11, 0.07))
+    check("a sub-mg tap still reads as almost nothing",
+          plot.tap_headline(wrf, doc_with_baseline(22.0, wrf))
+          == "tapping contributes almost nothing")
+    # The one-argument form used elsewhere must keep working.
+    check("no doc: falls back to mean and own error",
+          plot.tap_headline(taps(2.31, 20.36))
+          == "tapping moves up to 20 mg per tap")
+
+
+def test_baseline_spread_is_read_from_block_a():
+    rows = taps_sem((1.0, 0.1))
+    check("block A std is reported in mg",
+          abs(plot.baseline_spread_mg(doc_with_baseline(22.69, rows))
+              - 22.69) < 1e-6)
+    check("a run with no block A reports no spread",
+          plot.baseline_spread_mg({"host_summary": []}) == 0.0)
+    check("a missing summary does not raise",
+          plot.baseline_spread_mg({}) == 0.0)
+
+
 def main():
-    for test in (test_tilt_headline, test_tap_headline, test_dose_headline):
+    for test in (test_tilt_headline, test_tap_headline, test_dose_headline,
+                 test_tap_headline_respects_the_noise_floor,
+                 test_baseline_spread_is_read_from_block_a):
         print("--- {}".format(test.__name__))
         test()
     print()

@@ -150,16 +150,41 @@ def panel_speed(ax, doc):
         text.set_color(TEXT_SECONDARY)
 
 
-def tap_headline(taps):
+def baseline_spread_mg(doc):
+    """Block A's no-actuation scatter, in mg -- what nothing at all looks like.
+
+    On a quiet bench this is zero to the balance's display resolution.  In a
+    disturbed room the same eight do-nothing trials can spread over tens of
+    mg, and any per-action quantum smaller than that is a description of the
+    room rather than of the powder.
+    """
+    for row in doc.get("host_summary") or []:
+        if row["block"] == "A" and row.get("std_g") is not None:
+            return abs(row["std_g"]) * 1000.0
+    return 0.0
+
+
+def tap_headline(taps, doc=None):
     """Describe what tapping did, rather than assuming it did nothing.
 
-    Every powder through sodium alginate moved <0.3 mg per tap, but
-    calcium lactate moves ~20 mg, so the panel title has to follow the
-    data.  The 0.1 mg threshold is the balance's display resolution.
+    Every powder through sodium alginate moved <0.3 mg per tap, but calcium
+    lactate moves ~20 mg, so the panel title has to follow the data.  The
+    1 mg floor is a few times the balance's 0.1 mg display resolution.
+
+    A mean alone is not enough, though.  Sodium sulfate's taps averaged 9 mg
+    in a room whose *no-actuation* block A trials scattered over 23 mg, so
+    "moves up to 9 mg per tap" would have been a statement about bench
+    disturbance.  A quantum is only claimed when it clears both block A's
+    spread and twice its own standard error.
     """
-    peak = max([r["mean_g"] * 1000.0 for r in taps] or [0.0])
+    means = [r["mean_g"] * 1000.0 for r in taps] or [0.0]
+    peak = max(means)
     if peak < 1.0:
         return "tapping contributes almost nothing"
+    sems = [abs(r.get("sem_g") or 0.0) * 1000.0 for r in taps] or [0.0]
+    floor = max(baseline_spread_mg(doc) if doc else 0.0, 2 * max(sems))
+    if peak < floor:
+        return "tap quantum not resolved above the no-actuation baseline"
     return "tapping moves up to {:.0f} mg per tap".format(peak)
 
 
@@ -213,7 +238,7 @@ def panel_tap(ax, doc):
     ax.set_xlabel("tube tilt", fontsize=9.5, color=TEXT_SECONDARY)
     ax.set_ylabel("mass per action (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
-    ax.set_title("C  Block E — {} (n=8 each)".format(tap_headline(taps)),
+    ax.set_title("C  Block E — {} (n=8 each)".format(tap_headline(taps, doc)),
                  fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
     legend = ax.legend(frameon=False, fontsize=9, loc="upper left")
     for text in legend.get_texts():
