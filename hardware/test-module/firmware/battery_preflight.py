@@ -36,6 +36,8 @@ Run on the Pico::
 
 import time
 
+import balance_filter
+
 try:
     _sleep_ms = time.sleep_ms                 # MicroPython
 except AttributeError:                        # CPython (sim/tests)
@@ -58,16 +60,37 @@ STABLE_TIMEOUT_MS = 10000
 FEED_OK_G = 0.005         # 5 mg/rev summed over REVS -> 25 mg
 
 
-def _read_grams(scale, timeout_ms=STABLE_TIMEOUT_MS):
-    reading = scale.read_stable(timeout_ms=timeout_ms)
-    if (reading is None or not reading.stable or reading.overload or
-            reading.grams is None):
+BRACKET_N = balance_filter.BRACKET_N
+BRACKET_MS = balance_filter.BRACKET_INTERVAL_MS
+
+
+def _read_bracket(scale, sleep_ms=None, tries=balance_filter.QUIET_TRIES):
+    """Best available settled value, or ``None`` if the balance is silent.
+
+    Version 1 of this check demanded a *stable* (``ST``) frame and gave
+    up as ``scale-unreadable`` when none arrived within 10 s.  On
+    2026-08-20 that aborted three sessions in a row in a room where the
+    balance's noise floor was fine but it rarely asserted ``ST``.  A
+    fitted bracket of instantaneous frames answers the same question
+    better: it is robust to the room, and it reports the creep and the
+    scatter instead of hiding them.  Only a genuinely silent or
+    overloaded balance now stops the check.
+    """
+    try:
+        bracket, _attempts, _quiet = balance_filter.quiet_bracket(
+            scale, tries=tries, n=BRACKET_N, interval_ms=BRACKET_MS,
+            sleep_ms=sleep_ms)
+    except balance_filter.BalanceSilent as exc:
+        print("[preflight] balance silent/overloaded: {}".format(exc))
         return None
-    unit = getattr(reading, "unit", "g")
-    if unit and unit != "g":
-        print("[preflight] scale reports {!r}, not grams".format(unit))
+    return bracket
+
+
+def _read_grams(scale, timeout_ms=STABLE_TIMEOUT_MS, sleep_ms=None):
+    bracket = _read_bracket(scale, sleep_ms=sleep_ms)
+    if bracket is None:
         return None
-    return reading.grams
+    return bracket.value_at(bracket.mid_t_ms)
 
 
 def check(stepper, tap, servo, scale, revs=REVS, rpm=RPM, taps=TAPS,
@@ -86,7 +109,7 @@ def check(stepper, tap, servo, scale, revs=REVS, rpm=RPM, taps=TAPS,
     sleep_ms(settle_ms)
 
     rev_deltas = []
-    before = _read_grams(scale)
+    before = _read_grams(scale, sleep_ms=sleep_ms)
     if before is None:
         log("[preflight] scale unreadable")
         print("PRE,END,scale-unreadable,0,0")
@@ -96,7 +119,7 @@ def check(stepper, tap, servo, scale, revs=REVS, rpm=RPM, taps=TAPS,
     for i in range(revs):
         stepper.rotate_degrees(360.0)
         sleep_ms(settle_ms)
-        after = _read_grams(scale)
+        after = _read_grams(scale, sleep_ms=sleep_ms)
         if after is None:
             log("[preflight] scale unreadable at revolution {}".format(i))
             break
@@ -110,7 +133,7 @@ def check(stepper, tap, servo, scale, revs=REVS, rpm=RPM, taps=TAPS,
     tap_before = before
     tap.tap(taps, TAP_ON_MS, TAP_OFF_MS)
     sleep_ms(settle_ms)
-    tap_after = _read_grams(scale)
+    tap_after = _read_grams(scale, sleep_ms=sleep_ms)
     taps_delta = 0.0 if tap_after is None else tap_after - tap_before
     print("PRE,tap,{},{:.4f},{:.4f},{:.4f}".format(
         taps, tap_before, 0.0 if tap_after is None else tap_after, taps_delta))

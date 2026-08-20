@@ -80,12 +80,14 @@ import math
 import sys
 import time
 
+import balance_filter
+
 # -----------------------------------------------------------------------
 # Frozen battery parameters -- identical for every powder.  Change them
 # only deliberately (and bump SCHEMA "battery_version"), because edits
 # break comparability with earlier runs.
 # -----------------------------------------------------------------------
-BATTERY_VERSION   = 1
+BATTERY_VERSION   = 2
 POWDER_ID         = None
 
 TILTS_DEG         = [0.0, 45.0, 90.0]  # tube tilt; 0 horizontal, 90 vertical
@@ -123,6 +125,26 @@ TILT_SETTLE_MS    = 2000    # extra wait after a servo move
 MIN_FLOW_G        = 0.0005  # below this a trial is flagged lowflow
 MAX_STALLS        = 4       # consecutive lowflow rows before prompting
 MAX_READ_RETRIES  = 3
+
+# -----------------------------------------------------------------------
+# Environment-artifact rejection (battery_version 2, 2026-08-20).
+#
+# Every trial is bracketed by two windows in which no actuator is
+# commanded, so anything that moves during them is provably not powder.
+# The bracket slope is the balance's creep, extrapolated across the
+# action; a single-poll jump above SHOCK_G is a mechanical shock, and is
+# subtracted as a zero step *and counted*; the residual scatter becomes
+# the trial's uncertainty.  See balance_filter.py for the rationale and
+# docs/rig-checks/2026-08-20-calibration-and-environment-survey.md for
+# the measurements that set these numbers.
+# -----------------------------------------------------------------------
+BRACKET_N         = 6       # scale samples per bracket
+BRACKET_MS        = 400     # spacing between bracket samples
+SHOCK_G           = 0.010   # single-poll jump treated as a shock
+MAX_RESID_G       = 0.0015  # residual RMS above which a bracket is unsettled
+QUIET_TRIES       = 8       # brackets to try while waiting for a quiet one
+MAX_TRIAL_RETRIES = 2       # re-measurements of a disturbed trial
+DRIFT_CORRECT     = True    # extrapolate pre-action creep across the action
 
 BLOCKS            = "ABCDEFG"   # which blocks to run, in order
 
@@ -231,7 +253,10 @@ class Battery:
                  taps_per_point=None, refeed_deg=None, vib_bursts=None,
                  dose_repeats=None, dose_target_g=None, settle_ms=None,
                  tilt_settle_ms=None, min_flow_g=None, max_stalls=None,
-                 max_read_retries=None):
+                 max_read_retries=None, bracket_n=None, bracket_ms=None,
+                 shock_g=None, max_resid_g=None, quiet_tries=None,
+                 max_trial_retries=None, drift_correct=None,
+                 ticks_ms=None):
         self.stepper = stepper
         self.tap = tap
         self.servo = servo
@@ -277,24 +302,56 @@ class Battery:
         self.min_flow_g = _default(min_flow_g, MIN_FLOW_G)
         self.max_stalls = _default(max_stalls, MAX_STALLS)
         self.max_read_retries = _default(max_read_retries, MAX_READ_RETRIES)
+        self.bracket_n = _default(bracket_n, BRACKET_N)
+        self.bracket_ms = _default(bracket_ms, BRACKET_MS)
+        self.shock_g = _default(shock_g, SHOCK_G)
+        self.max_resid_g = _default(max_resid_g, MAX_RESID_G)
+        self.quiet_tries = _default(quiet_tries, QUIET_TRIES)
+        self.max_trial_retries = _default(max_trial_retries,
+                                          MAX_TRIAL_RETRIES)
+        self.drift_correct = _default(drift_correct, DRIFT_CORRECT)
+        # Injectable so the simulation tests can drive a virtual clock
+        # through the same drift/shock arithmetic the Pico runs.
+        self._ticks_ms = ticks_ms or _ticks_ms
 
-        self._t0 = _ticks_ms()
+        self._t0 = self._ticks_ms()
         self._tilt = None
+        # Environment bookkeeping, reported as META rows at the end so
+        # the artifact rate lands in the data rather than being silently
+        # absorbed into the measurements.
+        self.env = {"shock_events": 0, "shock_total_g": 0.0,
+                    "retries": 0, "quiet_waits": 0, "disturbed_trials": 0,
+                    "brackets": 0, "unsettled_brackets": 0,
+                    "drift_corrected_g": 0.0}
 
     # -- plumbing ------------------------------------------------------
 
     def _elapsed_ms(self):
-        return _ticks_diff(_ticks_ms(), self._t0)
+        return _ticks_diff(self._ticks_ms(), self._t0)
 
     def _emit(self, *parts):
         self.log(",".join(str(p) for p in parts))
 
     def _emit_trial(self, block, tilt, phase, trial, action, rpm,
-                    before, after, delta, flag=""):
+                    before, after, delta, flag="", meas=None, retries=0):
+        """One CSV row.
+
+        Columns 1-11 are the battery_version 1 contract, unchanged, so
+        every existing parser and every committed run stays readable.
+        battery_version 2 appends the per-trial quality columns:
+        ``sigma_g`` (the trial's own uncertainty), ``drift_g`` (creep
+        removed by extrapolating the pre-action bracket), ``shock_g``
+        (mechanical-shock steps removed) and ``retries`` /``quality``.
+        """
         self._emit("CSV", block, "{:.1f}".format(tilt), phase, trial,
                    action, "{:.0f}".format(rpm) if rpm else "",
                    _fmt_g(before), _fmt_g(after), _fmt_g(delta), flag,
-                   self._elapsed_ms())
+                   self._elapsed_ms(),
+                   _fmt_g(meas.sigma_g) if meas is not None else "",
+                   _fmt_g(meas.drift_g) if meas is not None else "",
+                   _fmt_g(meas.shock_g) if meas is not None else "",
+                   retries,
+                   meas.quality() if meas is not None else "")
 
     def _emit_summary(self, block, tilt, phase, values):
         n, mean, std, sem, lo, hi = sample_stats(values)
@@ -354,42 +411,126 @@ class Battery:
 
     # -- measurement ---------------------------------------------------
 
-    def _read_grams(self):
-        """One stable reading in grams, or ``None`` on scale trouble."""
-        reading = self.scale.read_stable(timeout_ms=self.stable_timeout_ms)
-        if (reading is None or not reading.stable or reading.overload or
-                reading.grams is None):
-            return None
-        unit = getattr(reading, "unit", "g")
-        if unit and unit != "g":
-            self.log("[battery] scale reports {!r}, not grams -- press "
-                     "MODE on the balance to select g".format(unit))
-            return None
-        return reading.grams
+    def _bracket(self, settle_ms=0):
+        """One actuator-gated window of scale samples.
 
-    def _read_required(self):
-        """Stable grams, prompting the operator through failures."""
+        ``settle_ms`` replaces a blind post-action wait with sampling.
+        The auger has already stopped, so the settle window is
+        actuator-gated too: a bench knock landing in it is still
+        provably not powder.  Sampling through it rather than sleeping
+        through it shrinks the window in which a shock is
+        indistinguishable from powder down to the action itself
+        (~2 s for one revolution), where the survey puts the
+        environment's median contribution at 0.70 mg.
+
+        Deliberately built from instantaneous (``Q``) frames rather than
+        from ``read_stable``.  In a working lab the balance may never
+        assert ``ST`` -- that is exactly what aborted the 2026-08-20
+        pre-flight with ``scale-unreadable`` -- yet its ``US`` frames
+        carry perfectly good numbers, and a fitted window of them beats
+        a single stable frame: it also yields the creep rate and an
+        uncertainty.
+        """
+        settle_n = int(settle_ms // self.bracket_ms) if settle_ms else 0
+        bracket = balance_filter.collect(
+            self.scale, n=self.bracket_n, interval_ms=self.bracket_ms,
+            sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms,
+            shock_g=self.shock_g, max_resid_g=self.max_resid_g,
+            settle_n=settle_n)
+        self.env["brackets"] += 1
+        if bracket.steps:
+            self.env["shock_events"] += len(bracket.steps)
+            self.env["shock_total_g"] += bracket.step_total_g
+        if bracket.unsettled:
+            self.env["unsettled_brackets"] += 1
+        return bracket
+
+    def _quiet_bracket(self):
+        """Wait for an undisturbed bracket rather than failing on noise.
+
+        96 % of 5 s windows in the 2026-08-20 survey were inside 2 mg,
+        so a quiet window normally arrives at once; when the room stays
+        busy the best available bracket is used and the trial carries
+        its quality flag, which is far better than aborting the run.
+        """
         failures = 0
         while True:
-            grams = self._read_grams()
-            if grams is not None:
-                return grams
-            failures += 1
-            if failures >= self.max_read_retries:
-                raise SkipBlock("scale reads failing")
-            self._prompt_or_raise(
-                "scale read failed (silent/unstable/overload) -- clear "
-                "the problem (empty the cup if full), then Enter to "
-                "re-tare and retry, 'skip' for next block, 'abort'")
-            self._tare()
+            try:
+                bracket, attempts, quiet = balance_filter.quiet_bracket(
+                    self.scale, tries=self.quiet_tries, n=self.bracket_n,
+                    interval_ms=self.bracket_ms, sleep_ms=self._sleep_ms,
+                    ticks_ms=self._ticks_ms, shock_g=self.shock_g,
+                    max_resid_g=self.max_resid_g)
+            except balance_filter.BalanceSilent as exc:
+                # A genuinely silent or overloaded balance is a real
+                # fault -- unlike mere noise, no amount of waiting fixes
+                # it -- so this is still the path that stops the block.
+                failures += 1
+                if failures >= self.max_read_retries:
+                    raise SkipBlock("scale reads failing: {}".format(exc))
+                self._prompt_or_raise(
+                    "scale silent or overloaded -- clear the problem "
+                    "(empty the cup if full, check the balance is on and "
+                    "reading in g), then Enter to re-tare and retry, "
+                    "'skip' for next block, 'abort'")
+                self._tare()
+                continue
+            self.env["brackets"] += attempts
+            if attempts > 1:
+                self.env["quiet_waits"] += 1
+            if bracket.steps:
+                self.env["shock_events"] += len(bracket.steps)
+                self.env["shock_total_g"] += bracket.step_total_g
+            if bracket.unsettled:
+                self.env["unsettled_brackets"] += 1
+            return bracket
 
-    def _measured(self, action_fn):
-        """Stable reading, action, settle, stable reading."""
-        before = self._read_required()
-        action_fn()
-        self._sleep_ms(self.settle_ms)
-        after = self._read_required()
-        return before, after
+    def _read_required(self):
+        """Best available settled value in grams (drift-corrected fits)."""
+        return self._quiet_bracket().value_at(self._ticks_ms())
+
+    def _delta(self, before, after):
+        meas = balance_filter.Delta(before, after,
+                                    drift_correct=self.drift_correct,
+                                    max_extrap_s=balance_filter.MAX_EXTRAP_S)
+        self.env["drift_corrected_g"] += abs(meas.drift_g)
+        return meas
+
+    def _measured(self, action_fn, block=None, tilt=None, phase=None,
+                  trial=None):
+        """Bracket, act, settle, bracket -- retrying a disturbed trial.
+
+        Returns ``(before_g, after_g, meas, retries)``.  ``before_g`` and
+        ``after_g`` are the fitted bracket values, so the legacy CSV
+        columns keep meaning what they always did; ``meas`` carries the
+        drift correction, the removed shocks and the uncertainty.
+
+        A trial whose *after* bracket is disturbed is re-measured rather
+        than kept: the shock happened while the powder was already in
+        the cup, so a fresh action measures cleanly, and the discarded
+        attempt is emitted as a RETRY row so nothing is hidden.  Each
+        attempt is independently bracketed, so no mass is double
+        counted -- a retry costs one more actuation, not accuracy.
+        """
+        retries = 0
+        while True:
+            before = self._quiet_bracket()
+            action_fn()
+            after = self._bracket(settle_ms=self.settle_ms)
+            meas = self._delta(before, after)
+            if (not after.disturbed or retries >= self.max_trial_retries
+                    or self.max_trial_retries <= 0):
+                break
+            self._emit("RETRY", block or "", "" if tilt is None
+                       else "{:.1f}".format(tilt), phase or "",
+                       "" if trial is None else trial, after.quality(),
+                       _fmt_g(meas.shock_g), _fmt_g(meas.delta_g),
+                       self._elapsed_ms())
+            retries += 1
+            self.env["retries"] += 1
+        if meas.disturbed:
+            self.env["disturbed_trials"] += 1
+        return meas.baseline_g, meas.after_g, meas, retries
 
     def _stall_gate(self, streak, block, tilt):
         """After MAX_STALLS consecutive lowflow rows, check the hopper.
@@ -414,26 +555,28 @@ class Battery:
         self._move_tilt(tilt)
         self._tare()
         deltas = []
-        previous = self._read_required()
+        previous = self._quiet_bracket()
         for i in range(self.baseline_reads):
             self._sleep_ms(self.settle_ms)
-            reading = self._read_required()
-            delta = reading - previous
+            current = self._bracket()
+            meas = self._delta(previous, current)
             self._emit_trial("A", tilt, BASELINE, i, "", 0,
-                             previous, reading, delta)
-            deltas.append(delta)
-            previous = reading
+                             meas.baseline_g, meas.after_g, meas.delta_g,
+                             meas=meas)
+            deltas.append(meas.delta_g)
+            previous = current
         self._emit_summary("A", tilt, BASELINE, deltas)
 
     def _block_b_hold(self):
         for tilt in self.tilts_deg:
             self._move_tilt(tilt)
             self._tare()
-            before = self._read_required()
-            self._sleep_ms(int(self.hold_s * 1000))
-            after = self._read_required()
+            before = self._quiet_bracket()
+            after = self._bracket(settle_ms=int(self.hold_s * 1000))
+            meas = self._delta(before, after)
             self._emit_trial("B", tilt, HOLD, 0, self.hold_s, 0,
-                             before, after, after - before)
+                             meas.baseline_g, meas.after_g, meas.delta_g,
+                             meas=meas)
 
     def _block_c_rotation(self):
         self.stepper.set_speed(self.rotation_rpm)
@@ -447,15 +590,17 @@ class Battery:
             streak = 0
             stall_check = self.min_flow_g > 0
             for trial in range(self.rotation_trials):
-                before, after = self._measured(
+                before, after, meas, retries = self._measured(
                     lambda: self.stepper.rotate_degrees(
-                        self.rotation_step_deg))
-                delta = after - before
+                        self.rotation_step_deg),
+                    block="C", tilt=tilt, phase=ROTATION, trial=trial)
+                delta = meas.delta_g
                 lowflow = stall_check and delta < self.min_flow_g
                 self._emit_trial("C", tilt, ROTATION, trial,
                                  self.rotation_step_deg, self.rotation_rpm,
                                  before, after, delta,
-                                 "lowflow" if lowflow else "")
+                                 "lowflow" if lowflow else "",
+                                 meas=meas, retries=retries)
                 deltas.append(delta)
                 streak = streak + 1 if lowflow else 0
                 if streak >= self.max_stalls:
@@ -470,7 +615,7 @@ class Battery:
         self._tare()
         deltas = []
         for trial, rpm in enumerate(self.speed_rpms):
-            before = self._read_required()
+            before = self._quiet_bracket()
             spin_ms = self.speed_revs / rpm * 60.0 * 1000
             self.stepper.run_at_rpm(rpm)
             waited_ms = 0
@@ -496,11 +641,12 @@ class Battery:
                                1 if reading.stable else 0)
             finally:
                 self.stepper.stop()
-            self._sleep_ms(self.settle_ms)
-            after = self._read_required()
+            after = self._bracket(settle_ms=self.settle_ms)
+            meas = self._delta(before, after)
             self._emit_trial("D", tilt, SPEED, trial, self.speed_revs,
-                             rpm, before, after, after - before)
-            deltas.append(after - before)
+                             rpm, meas.baseline_g, meas.after_g,
+                             meas.delta_g, meas=meas)
+            deltas.append(meas.delta_g)
         self._emit_summary("D", tilt, SPEED, deltas)
 
     def _burst_block(self, block, phase, action_fn, action_label):
@@ -514,24 +660,29 @@ class Battery:
             streak = 0
             stall_check = self.min_flow_g > 0
             for trial in range(self.tap_trials):
-                before, after = self._measured(
-                    lambda: self.stepper.rotate_degrees(self.refeed_deg))
-                refeed_delta = after - before
+                before, after, meas, retries = self._measured(
+                    lambda: self.stepper.rotate_degrees(self.refeed_deg),
+                    block=block, tilt=tilt, phase=REFEED, trial=trial)
+                refeed_delta = meas.delta_g
                 lowflow = stall_check and refeed_delta < self.min_flow_g
                 self._emit_trial(block, tilt, REFEED, trial,
                                  self.refeed_deg, self.rotation_rpm,
                                  before, after, refeed_delta,
-                                 "lowflow" if lowflow else "")
+                                 "lowflow" if lowflow else "",
+                                 meas=meas, retries=retries)
                 refeed_deltas.append(refeed_delta)
                 streak = streak + 1 if lowflow else 0
                 if streak >= self.max_stalls:
                     if not self._stall_gate(streak, block, tilt):
                         stall_check = False
                     streak = 0
-                before, after = self._measured(action_fn)
-                delta = after - before
+                before, after, meas, retries = self._measured(
+                    action_fn, block=block, tilt=tilt, phase=phase,
+                    trial=trial)
+                delta = meas.delta_g
                 self._emit_trial(block, tilt, phase, trial, action_label,
-                                 0, before, after, delta)
+                                 0, before, after, delta,
+                                 meas=meas, retries=retries)
                 burst_deltas.append(delta)
             self._emit_summary(block, tilt, REFEED, refeed_deltas)
             self._emit_summary(block, tilt, phase, burst_deltas)
@@ -585,7 +736,7 @@ class Battery:
     # -- entry ---------------------------------------------------------
 
     def run_all(self):
-        self._t0 = _ticks_ms()
+        self._t0 = self._ticks_ms()
         self._emit("RUN", "BEGIN")
         if self.powder_id:
             self._emit("META", "powder_id", self.powder_id)
@@ -609,6 +760,13 @@ class Battery:
                 ("dose_target_g", self.dose_target_g),
                 ("settle_ms", self.settle_ms),
                 ("min_flow_g", self.min_flow_g),
+                ("bracket_n", self.bracket_n),
+                ("bracket_ms", self.bracket_ms),
+                ("shock_g", self.shock_g),
+                ("max_resid_g", self.max_resid_g),
+                ("quiet_tries", self.quiet_tries),
+                ("max_trial_retries", self.max_trial_retries),
+                ("drift_correct", 1 if self.drift_correct else 0),
                 ("attended", 1 if self.attended else 0)):
             self._emit("META", key, value)
         for key in sorted(self.config_echo):
@@ -643,8 +801,22 @@ class Battery:
             raise
         finally:
             self._park_tilt()
+            self._emit_environment()
             self._emit("RUN", "END", status)
         return status
+
+    def _emit_environment(self):
+        """Report the artifact rate as data, not as a silent correction.
+
+        A run that quietly subtracts shocks and creep looks identical to
+        a run in a perfectly quiet room.  These rows are what let the
+        analysis say how much of a result rests on corrected data.
+        """
+        for key in sorted(self.env):
+            value = self.env[key]
+            self._emit("META", "env." + key,
+                       "{:.4f}".format(value) if isinstance(value, float)
+                       else value)
 
 
 # config.py keys echoed as META rows for provenance.

@@ -239,7 +239,7 @@ def test_full_run_protocol():
           and markers[-1][0] == "END" and markers[-1][1] == "ok")
     meta = dict(rows_of(events, "meta"))
     check("META powder_id", meta.get("powder_id") == "sim-powder")
-    check("META battery_version", meta.get("battery_version") == "1")
+    check("META battery_version", meta.get("battery_version") == "2")
 
     def block(phase, letter=None):
         return [t for t in trials if t["phase"] == phase

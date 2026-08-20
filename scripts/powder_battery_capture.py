@@ -53,6 +53,15 @@ import time
 # Serial-stream contract (what the Pico emits) -- no powder_id here.
 TRIAL_FIELDS = ["block", "tilt_deg", "phase", "trial", "action", "rpm",
                 "before_g", "after_g", "delta_g", "flag", "t_ms"]
+# battery_version 2 appends per-trial quality columns produced by the
+# actuator-gated artifact rejection in balance_filter.py.  Rows from a
+# version 1 device are still accepted and simply leave these empty, so
+# the nine committed runs keep parsing with the same code.
+TRIAL_QUALITY_FIELDS = ["sigma_g", "drift_g", "shock_g", "retries",
+                        "quality"]
+TRIAL_FIELDS_V2 = TRIAL_FIELDS + TRIAL_QUALITY_FIELDS
+RETRY_FIELDS = ["block", "tilt_deg", "phase", "trial", "reason",
+                "shock_g", "discarded_delta_g", "t_ms"]
 POLL_FIELDS = ["block", "tilt_deg", "rpm", "t_ms", "grams", "stable"]
 DOSE_FIELDS = ["n", "target_g", "dispensed_g", "error_g", "status",
                "elapsed_s", "auger_rev", "taps", "phase_cycles", "t_ms"]
@@ -60,7 +69,8 @@ SUMMARY_FIELDS = ["block", "tilt_deg", "phase", "n", "mean_g", "std_g",
                   "sem_g", "min_g", "max_g", "rsd_pct"]
 # CSV files on disk lead every row with the powder ID so a file stays
 # attributable after it is copied out of its run directory.
-OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS
+OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS_V2
+OUT_RETRY_FIELDS = ["powder_id"] + RETRY_FIELDS
 OUT_POLL_FIELDS = ["powder_id"] + POLL_FIELDS
 OUT_DOSE_FIELDS = ["powder_id"] + DOSE_FIELDS
 OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
@@ -115,16 +125,35 @@ def parse_line(line):
     line = line.strip()
     if line.startswith("CSV,"):
         parts = line.split(",")
-        if len(parts) != len(TRIAL_FIELDS) + 1:
+        if len(parts) == len(TRIAL_FIELDS_V2) + 1:
+            fields = TRIAL_FIELDS_V2
+        elif len(parts) == len(TRIAL_FIELDS) + 1:
+            fields = TRIAL_FIELDS
+        else:
             return None
-        row = dict(zip(TRIAL_FIELDS, parts[1:]))
+        row = dict(zip(fields, parts[1:]))
         row["tilt_deg"] = float(row["tilt_deg"])
         for key in ("before_g", "after_g", "delta_g"):
             row[key] = _float_or_none(row[key])
         row["rpm"] = _float_or_none(row["rpm"])
         row["trial"] = int(row["trial"])
         row["t_ms"] = int(row["t_ms"])
+        for key in ("sigma_g", "drift_g", "shock_g"):
+            if key in row:
+                row[key] = _float_or_none(row[key])
+        if row.get("retries") not in (None, ""):
+            row["retries"] = int(row["retries"])
         return "trial", row
+    if line.startswith("RETRY,"):
+        parts = line.split(",")
+        if len(parts) != len(RETRY_FIELDS) + 1:
+            return None
+        row = dict(zip(RETRY_FIELDS, parts[1:]))
+        row["tilt_deg"] = _float_or_none(row["tilt_deg"])
+        for key in ("shock_g", "discarded_delta_g"):
+            row[key] = _float_or_none(row[key])
+        row["t_ms"] = int(row["t_ms"])
+        return "retry", row
     if line.startswith("POLL,"):
         parts = line.split(",")
         if len(parts) != len(POLL_FIELDS) + 1:
@@ -250,9 +279,50 @@ def dose_summary(doses):
     }
 
 
+def environment_summary(meta, trials, retries=None):
+    """Per-run account of what the environment did and what was removed.
+
+    Empty for battery_version 1 runs, which carry no quality columns.
+    Deliberately reported rather than folded into the measurements: a
+    run that silently subtracts shocks looks identical to a run in a
+    quiet room, and the analysis needs to be able to tell them apart.
+    """
+    quality = [t.get("quality") for t in trials if t.get("quality")]
+    if not quality and not (retries or []):
+        return None
+    sigmas = sorted(t["sigma_g"] for t in trials
+                    if t.get("sigma_g") is not None)
+    shocks = [t["shock_g"] for t in trials
+              if t.get("shock_g") not in (None, 0.0)]
+    drifts = [abs(t["drift_g"]) for t in trials
+              if t.get("drift_g") is not None]
+    counts = {}
+    for q in quality:
+        counts[q] = counts.get(q, 0) + 1
+    out = {
+        "trials": len(trials),
+        "quality_counts": counts,
+        "clean_trial_fraction": (round(counts.get("ok", 0) / len(quality), 4)
+                                 if quality else None),
+        "median_sigma_g": (sigmas[len(sigmas) // 2] if sigmas else None),
+        "max_sigma_g": (sigmas[-1] if sigmas else None),
+        "shock_events": len(shocks),
+        "shock_removed_g": round(sum(abs(v) for v in shocks), 6),
+        "drift_removed_median_g": (sorted(drifts)[len(drifts) // 2]
+                                   if drifts else None),
+        "drift_removed_total_g": round(sum(drifts), 6) if drifts else None,
+        "retried_trials": len(retries or []),
+    }
+    for key, value in (meta or {}).items():
+        if key.startswith("env."):
+            out.setdefault("device", {})[key[4:]] = value
+    return out
+
+
 def build_run_document(meta, trials, polls, doses, device_summaries,
                        host_summary, status, args, started_utc,
-                       ended_utc, elapsed_s=None, timeline=None):
+                       ended_utc, elapsed_s=None, timeline=None,
+                       retries=None):
     """One self-contained document per run (issue #126 shape)."""
     try:
         git_commit = subprocess.check_output(
@@ -274,6 +344,11 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
     }
     if preflight is not None:
         qc["preflight_verdict"] = preflight.get("verdict")
+    env = environment_summary(meta, trials, retries)
+    if env:
+        qc["environment_corrected"] = True
+        qc["shock_events"] = env.get("shock_events")
+        qc["retried_trials"] = env.get("retried_trials")
     return {
         "kind": "battery_run",
         "schema_version": SCHEMA_VERSION,
@@ -291,6 +366,8 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "operator": args.operator,
         "notes": args.notes,
         "qc": qc,
+        "environment": env,
+        "retries": retries or [],
         "preflight": preflight,
         "git_commit": git_commit,
         "parameters": meta,
@@ -346,6 +423,7 @@ def capture(args):
         relay.start()
 
     meta, trials, polls, doses, device_summaries = {}, [], [], [], []
+    retries = []
     timeline = []
     status = "incomplete"
     raw_path = os.path.join(
@@ -398,6 +476,8 @@ def capture(args):
                 kind, payload = parsed
                 if kind == "trial":
                     trials.append(payload)
+                elif kind == "retry":
+                    retries.append(payload)
                 elif kind == "poll":
                     polls.append(payload)
                 elif kind == "dose":
@@ -423,10 +503,11 @@ def capture(args):
     doc = build_run_document(meta, trials, polls, doses,
                              device_summaries, host_summary, status,
                              args, started_utc, ended_utc,
-                             elapsed_s=elapsed_s, timeline=timeline)
+                             elapsed_s=elapsed_s, timeline=timeline,
+                             retries=retries)
 
     write_outputs(out_dir, args.powder_id, trials, polls, doses,
-                  host_summary, doc)
+                  host_summary, doc, retries=retries)
     print_summary(host_summary, doses)
     print_timeline(started_utc, ended_utc, elapsed_s, timeline,
                    started_local=args.started_local,
@@ -437,7 +518,7 @@ def capture(args):
 
 
 def write_outputs(out_dir, powder_id, trials, polls, doses,
-                  host_summary, doc):
+                  host_summary, doc, retries=None):
     def write_csv(stem, fields, rows):
         path = os.path.join(
             out_dir, "{}_{}.csv".format(stem, powder_id))
@@ -452,6 +533,8 @@ def write_outputs(out_dir, powder_id, trials, polls, doses,
     write_csv("doses", OUT_DOSE_FIELDS, doses)
     write_csv("summary", OUT_SUMMARY_FIELDS, host_summary)
     write_csv("timeline", OUT_TIMELINE_FIELDS, doc.get("block_timeline", []))
+    if retries:
+        write_csv("retries", OUT_RETRY_FIELDS, retries)
     with open(os.path.join(
             out_dir, "run_{}.json".format(powder_id)), "w") as fh:
         json.dump(doc, fh, indent=2)
