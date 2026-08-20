@@ -215,3 +215,6 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# Battery run raw serial logs are the primary record -- track them by rule
+!data/battery/**/raw_serial_*.log

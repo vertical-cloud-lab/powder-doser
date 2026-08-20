@@ -1,0 +1,1159 @@
+import powder_battery
+>>> powder_battery.run(powder_id='sodium-alginate', attended=False)
+[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+RUN,BEGIN
+META,powder_id,sodium-alginate
+META,battery_version,1
+META,blocks,ABCDEFG
+META,tilts_deg,0.0;45.0;90.0
+META,baseline_reads,8
+META,hold_s,15
+META,rotation_trials,6
+META,rotation_step_deg,360.0
+META,rotation_rpm,30.0
+META,speed_rpms,15.0;45.0;90.0
+META,speed_revs,3.0
+META,tap_tilts,0.0;45.0
+META,tap_trials,8
+META,taps_per_point,1
+META,refeed_deg,360.0
+META,vib_bursts,3
+META,dose_repeats,3
+META,dose_target_g,1.0
+META,settle_ms,2000
+META,min_flow_g,0.0005
+META,attended,0
+META,config.SCALE_BAUD,19200
+META,config.SCALE_BITS,8
+META,config.SCALE_PARITY,0
+META,config.SCALE_STABLE_TIMEOUT_MS,10000
+META,config.SCALE_STOP,1
+META,config.SERVO_SPEED_DEG_PER_S,60
+META,config.STEPPER_ACCEL_REV_PER_S2,4.0
+META,config.STEPPER_FULL_STEPS_REV,200
+META,config.STEPPER_MICROSTEPS,8
+META,config.STEPPER_SPEED_RPM,60
+META,config.TAP_OFF_MS,150
+META,config.TAP_ON_MS,60
+META,config.TAP_PWM_DUTY,1.0
+[battery] block A
+CSV,A,45.0,baseline,0,,,0.0000,0.0000,0.0000,,7465
+CSV,A,45.0,baseline,1,,,0.0000,0.0000,0.0000,,9559
+CSV,A,45.0,baseline,2,,,0.0000,0.0000,0.0000,,11662
+CSV,A,45.0,baseline,3,,,0.0000,0.0000,0.0000,,13777
+CSV,A,45.0,baseline,4,,,0.0000,0.0000,0.0000,,15871
+CSV,A,45.0,baseline,5,,,0.0000,0.0000,0.0000,,17974
+CSV,A,45.0,baseline,6,,,0.0000,0.0000,0.0000,,20089
+CSV,A,45.0,baseline,7,,,0.0000,0.0000,0.0000,,22183
+SUM,A,45.0,baseline,8,0.0000,0.0000,0.0000,0.0000,0.0000
+[battery] block B
+CSV,B,0.0,hold,0,15,,0.0000,0.0000,0.0000,,42657
+CSV,B,45.0,hold,0,15,,0.0000,0.0000,0.0000,,63121
+CSV,B,90.0,hold,0,15,,0.0000,0.0000,0.0000,,83584
+[battery] block C
+PROMPT,block C at tilt 0.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+CSV,C,0.0,rotation,0,360.0,30,0.0000,0.0000,0.0000,lowflow,96008
+CSV,C,0.0,rotation,1,360.0,30,0.0000,0.0010,0.0010,,102416
+CSV,C,0.0,rotation,2,360.0,30,0.0010,0.0020,0.0010,,108825
+CSV,C,0.0,rotation,3,360.0,30,0.0020,0.0028,0.0008,,115232
+CSV,C,0.0,rotation,4,360.0,30,0.0028,0.0030,0.0002,lowflow,121640
+CSV,C,0.0,rotation,5,360.0,30,0.0030,0.0045,0.0015,,128046
+SUM,C,0.0,rotation,6,0.0007,0.0006,0.0002,0.0000,0.0015
+PROMPT,block C at tilt 45.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+CSV,C,45.0,rotation,0,360.0,30,0.0000,0.0094,0.0094,,139721
+CSV,C,45.0,rotation,1,360.0,30,0.0094,0.0204,0.0110,,146127
+CSV,C,45.0,rotation,2,360.0,30,0.0204,0.0300,0.0096,,152533
+CSV,C,45.0,rotation,3,360.0,30,0.0300,0.0396,0.0096,,158939
+CSV,C,45.0,rotation,4,360.0,30,0.0396,0.0484,0.0088,,165345
+CSV,C,45.0,rotation,5,360.0,30,0.0484,0.0575,0.0091,,171753
+SUM,C,45.0,rotation,6,0.0096,0.0008,0.0003,0.0088,0.0110
+PROMPT,block C at tilt 90.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+CSV,C,90.0,rotation,0,360.0,30,0.0000,0.0115,0.0115,,183419
+CSV,C,90.0,rotation,1,360.0,30,0.0115,0.0227,0.0112,,189827
+CSV,C,90.0,rotation,2,360.0,30,0.0227,0.0312,0.0085,,196234
+CSV,C,90.0,rotation,3,360.0,30,0.0312,0.0406,0.0094,,202641
+CSV,C,90.0,rotation,4,360.0,30,0.0406,0.0501,0.0095,,209050
+CSV,C,90.0,rotation,5,360.0,30,0.0501,0.0652,0.0151,,215456
+SUM,C,90.0,rotation,6,0.0109,0.0024,0.0010,0.0085,0.0151
+[battery] block D
+POLL,D,45.0,15,221187,0.0000,1
+POLL,D,45.0,15,221475,0.0000,1
+POLL,D,45.0,15,221762,0.0000,1
+POLL,D,45.0,15,222048,0.0000,1
+POLL,D,45.0,15,222335,0.0000,1
+POLL,D,45.0,15,222623,0.0000,1
+POLL,D,45.0,15,222908,0.0005,0
+POLL,D,45.0,15,223195,0.0007,0
+POLL,D,45.0,15,223483,0.0010,0
+POLL,D,45.0,15,223768,0.0014,0
+POLL,D,45.0,15,224056,0.0019,0
+POLL,D,45.0,15,224343,0.0027,0
+POLL,D,45.0,15,224629,0.0034,0
+POLL,D,45.0,15,224917,0.0043,0
+POLL,D,45.0,15,225204,0.0051,0
+POLL,D,45.0,15,225490,0.0061,0
+POLL,D,45.0,15,225777,0.0070,0
+POLL,D,45.0,15,226064,0.0077,0
+POLL,D,45.0,15,226352,0.0083,0
+POLL,D,45.0,15,226638,0.0090,0
+POLL,D,45.0,15,226925,0.0095,0
+POLL,D,45.0,15,227213,0.0100,0
+POLL,D,45.0,15,227498,0.0104,0
+POLL,D,45.0,15,227786,0.0109,0
+POLL,D,45.0,15,228073,0.0150,0
+POLL,D,45.0,15,228359,0.0150,0
+POLL,D,45.0,15,228647,0.0151,1
+POLL,D,45.0,15,228934,0.0155,0
+POLL,D,45.0,15,229219,0.0160,0
+POLL,D,45.0,15,229508,0.0164,0
+POLL,D,45.0,15,229795,0.0168,0
+POLL,D,45.0,15,230080,0.0172,0
+POLL,D,45.0,15,230368,0.0178,0
+POLL,D,45.0,15,230656,0.0184,0
+POLL,D,45.0,15,230941,0.0190,0
+POLL,D,45.0,15,231228,0.0194,0
+POLL,D,45.0,15,231612,0.0201,0
+POLL,D,45.0,15,231897,0.0249,0
+POLL,D,45.0,15,232184,0.0256,0
+POLL,D,45.0,15,232472,0.0256,1
+POLL,D,45.0,15,232758,0.0259,0
+POLL,D,45.0,15,233045,0.0262,0
+POLL,D,45.0,15,233333,0.0266,0
+POLL,D,45.0,15,233618,0.0269,0
+POLL,D,45.0,15,233906,0.0272,0
+POLL,D,45.0,15,234193,0.0276,0
+POLL,D,45.0,15,234479,0.0282,0
+POLL,D,45.0,15,234766,0.0287,0
+CSV,D,45.0,speed,0,3.0,15,0.0000,0.0332,0.0332,,237644
+POLL,D,45.0,45,238019,0.0333,1
+POLL,D,45.0,45,238306,0.0333,1
+POLL,D,45.0,45,238594,0.0334,1
+POLL,D,45.0,45,238877,0.0369,0
+POLL,D,45.0,45,239165,0.0376,0
+POLL,D,45.0,45,239453,0.0381,0
+POLL,D,45.0,45,239739,0.0415,0
+POLL,D,45.0,45,240026,0.0451,0
+POLL,D,45.0,45,240313,0.0478,0
+POLL,D,45.0,45,240599,0.0488,0
+POLL,D,45.0,45,240886,0.0496,0
+POLL,D,45.0,45,241174,0.0504,0
+POLL,D,45.0,45,241461,0.0555,0
+POLL,D,45.0,45,241747,0.0571,0
+POLL,D,45.0,45,242035,0.0584,0
+POLL,D,45.0,45,242322,0.0593,0
+CSV,D,45.0,speed,1,3.0,45,0.0333,0.0681,0.0348,,244427
+POLL,D,45.0,90,244808,0.0680,1
+POLL,D,45.0,90,245094,0.0680,1
+POLL,D,45.0,90,245381,0.0680,1
+POLL,D,45.0,90,245669,0.0681,1
+POLL,D,45.0,90,245954,0.0756,0
+POLL,D,45.0,90,246242,0.0815,0
+POLL,D,45.0,90,246529,0.0863,0
+POLL,D,45.0,90,246815,0.0922,0
+CSV,D,45.0,speed,2,3.0,90,0.0680,0.1069,0.0389,,248933
+SUM,D,45.0,speed,3,0.0356,0.0029,0.0017,0.0332,0.0389
+[battery] block E
+CSV,E,0.0,refeed,0,360.0,30,0.0000,0.0000,0.0000,lowflow,260588
+CSV,E,0.0,tap,0,1,,0.0000,0.0000,0.0000,,262985
+CSV,E,0.0,refeed,1,360.0,30,0.0000,0.0017,0.0017,,269390
+CSV,E,0.0,tap,1,1,,0.0017,0.0017,0.0000,,271787
+CSV,E,0.0,refeed,2,360.0,30,0.0017,0.0033,0.0016,,278194
+CSV,E,0.0,tap,2,1,,0.0033,0.0033,0.0000,,280576
+CSV,E,0.0,refeed,3,360.0,30,0.0033,0.0047,0.0014,,286995
+CSV,E,0.0,tap,3,1,,0.0047,0.0047,0.0000,,289380
+CSV,E,0.0,refeed,4,360.0,30,0.0047,0.0067,0.0020,,295786
+CSV,E,0.0,tap,4,1,,0.0067,0.0067,0.0000,,298183
+CSV,E,0.0,refeed,5,360.0,30,0.0067,0.0080,0.0013,,304590
+CSV,E,0.0,tap,5,1,,0.0080,0.0080,0.0000,,306971
+CSV,E,0.0,refeed,6,360.0,30,0.0080,0.0105,0.0025,,313377
+CSV,E,0.0,tap,6,1,,0.0105,0.0105,0.0000,,315774
+CSV,E,0.0,refeed,7,360.0,30,0.0105,0.0119,0.0014,,322180
+CSV,E,0.0,tap,7,1,,0.0119,0.0119,0.0000,,324577
+SUM,E,0.0,refeed,8,0.0015,0.0007,0.0003,0.0000,0.0025
+SUM,E,0.0,tap,8,0.0000,0.0000,0.0000,0.0000,0.0000
+CSV,E,45.0,refeed,0,360.0,30,0.0000,0.0118,0.0118,,336234
+CSV,E,45.0,tap,0,1,,0.0118,0.0119,0.0001,,338631
+CSV,E,45.0,refeed,1,360.0,30,0.0119,0.0224,0.0105,,345039
+CSV,E,45.0,tap,1,1,,0.0224,0.0224,0.0000,,347422
+CSV,E,45.0,refeed,2,360.0,30,0.0224,0.0322,0.0098,,353830
+CSV,E,45.0,tap,2,1,,0.0322,0.0322,0.0000,,356227
+CSV,E,45.0,refeed,3,360.0,30,0.0323,0.0432,0.0109,,362633
+CSV,E,45.0,tap,3,1,,0.0432,0.0433,0.0001,,365029
+CSV,E,45.0,refeed,4,360.0,30,0.0433,0.0530,0.0097,,371428
+CSV,E,45.0,tap,4,1,,0.0530,0.0537,0.0007,,374395
+CSV,E,45.0,refeed,5,360.0,30,0.0537,0.0636,0.0099,,380802
+CSV,E,45.0,tap,5,1,,0.0636,0.0637,0.0001,,383198
+CSV,E,45.0,refeed,6,360.0,30,0.0637,0.0745,0.0108,,389604
+CSV,E,45.0,tap,6,1,,0.0745,0.0746,0.0001,,391986
+CSV,E,45.0,refeed,7,360.0,30,0.0746,0.0840,0.0094,,398394
+CSV,E,45.0,tap,7,1,,0.0840,0.0848,0.0008,,401360
+SUM,E,45.0,refeed,8,0.0104,0.0008,0.0003,0.0094,0.0118
+SUM,E,45.0,tap,8,0.0002,0.0003,0.0001,0.0000,0.0008
+[battery] block F
+META,vib,unavailable
+[battery] vibration driver unavailable -- skipping block F
+[battery] block G
+PROMPT,block G (three-phase doses): EMPTY the collection cup now, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 1.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 1.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 4: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.0109 / 1.0000 g (0.9891 g to go, +0.0109 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.0156 / 1.0000 g (0.9844 g to go, +0.0047 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.0171 / 1.0000 g (0.9829 g to go, +0.0015 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0219 / 1.0000 g (0.9781 g to go, +0.0048 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0264 / 1.0000 g (0.9736 g to go, +0.0045 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0267 / 1.0000 g (0.9733 g to go, +0.0003 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0277 / 1.0000 g (0.9723 g to go, +0.0010 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.0349 / 1.0000 g (0.9651 g to go, +0.0072 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.0407 / 1.0000 g (0.9593 g to go, +0.0058 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.0412 / 1.0000 g (0.9588 g to go, +0.0005 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.0429 / 1.0000 g (0.9571 g to go, +0.0017 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.0519 / 1.0000 g (0.9481 g to go, +0.0090 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.0573 / 1.0000 g (0.9427 g to go, +0.0054 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.0579 / 1.0000 g (0.9421 g to go, +0.0006 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.0622 / 1.0000 g (0.9378 g to go, +0.0043 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.0690 / 1.0000 g (0.9310 g to go, +0.0068 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 21 (unstable): mass 0.0704 / 1.0000 g (0.9296 g to go, +0.0014 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 22 (unstable): mass 0.0715 / 1.0000 g (0.9285 g to go, +0.0011 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 23 (unstable): mass 0.0759 / 1.0000 g (0.9241 g to go, +0.0044 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 24 (unstable): mass 0.0836 / 1.0000 g (0.9164 g to go, +0.0077 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 25 (unstable): mass 0.0860 / 1.0000 g (0.9140 g to go, +0.0024 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 26 (unstable): mass 0.0878 / 1.0000 g (0.9122 g to go, +0.0018 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 27 (unstable): mass 0.0941 / 1.0000 g (0.9059 g to go, +0.0063 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 28 (unstable): mass 0.1003 / 1.0000 g (0.8997 g to go, +0.0062 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 29 (unstable): mass 0.1008 / 1.0000 g (0.8992 g to go, +0.0005 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 30 (unstable): mass 0.1027 / 1.0000 g (0.8973 g to go, +0.0019 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 31 (unstable): mass 0.1091 / 1.0000 g (0.8909 g to go, +0.0064 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 32 (unstable): mass 0.1128 / 1.0000 g (0.8872 g to go, +0.0037 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 33 (unstable): mass 0.1131 / 1.0000 g (0.8869 g to go, +0.0003 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 34 (unstable): mass 0.1145 / 1.0000 g (0.8855 g to go, +0.0014 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 35 (unstable): mass 0.1255 / 1.0000 g (0.8745 g to go, +0.0110 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 36 (unstable): mass 0.1262 / 1.0000 g (0.8738 g to go, +0.0007 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 37 (unstable): mass 0.1273 / 1.0000 g (0.8727 g to go, +0.0011 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 38 (unstable): mass 0.1334 / 1.0000 g (0.8666 g to go, +0.0061 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 39 (unstable): mass 0.1385 / 1.0000 g (0.8615 g to go, +0.0051 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 40 (unstable): mass 0.1396 / 1.0000 g (0.8604 g to go, +0.0011 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 41 (unstable): mass 0.1413 / 1.0000 g (0.8587 g to go, +0.0017 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 42 (unstable): mass 0.1478 / 1.0000 g (0.8522 g to go, +0.0065 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 43 (unstable): mass 0.1534 / 1.0000 g (0.8466 g to go, +0.0056 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 44 (unstable): mass 0.1537 / 1.0000 g (0.8463 g to go, +0.0003 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 45 (unstable): mass 0.1550 / 1.0000 g (0.8450 g to go, +0.0013 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 46 (unstable): mass 0.1628 / 1.0000 g (0.8372 g to go, +0.0078 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 47 (unstable): mass 0.1680 / 1.0000 g (0.8320 g to go, +0.0052 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 48 (unstable): mass 0.1691 / 1.0000 g (0.8309 g to go, +0.0011 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 49 (unstable): mass 0.1732 / 1.0000 g (0.8268 g to go, +0.0041 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 50 (unstable): mass 0.1808 / 1.0000 g (0.8192 g to go, +0.0076 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 51 (unstable): mass 0.1835 / 1.0000 g (0.8165 g to go, +0.0027 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 52 (unstable): mass 0.1845 / 1.0000 g (0.8155 g to go, +0.0010 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 53 (unstable): mass 0.1895 / 1.0000 g (0.8105 g to go, +0.0050 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 54 (unstable): mass 0.1983 / 1.0000 g (0.8017 g to go, +0.0088 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 55 (unstable): mass 0.1995 / 1.0000 g (0.8005 g to go, +0.0012 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 56 (unstable): mass 0.2018 / 1.0000 g (0.7982 g to go, +0.0023 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 57 (unstable): mass 0.2059 / 1.0000 g (0.7941 g to go, +0.0041 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 58 (unstable): mass 0.2129 / 1.0000 g (0.7871 g to go, +0.0070 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 59 (unstable): mass 0.2149 / 1.0000 g (0.7851 g to go, +0.0020 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 60 (unstable): mass 0.2166 / 1.0000 g (0.7834 g to go, +0.0017 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 61 (unstable): mass 0.2228 / 1.0000 g (0.7772 g to go, +0.0062 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 62 (unstable): mass 0.2268 / 1.0000 g (0.7732 g to go, +0.0040 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 63 (unstable): mass 0.2274 / 1.0000 g (0.7726 g to go, +0.0006 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 64 (unstable): mass 0.2308 / 1.0000 g (0.7692 g to go, +0.0034 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 65 (unstable): mass 0.2379 / 1.0000 g (0.7621 g to go, +0.0071 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 66 (unstable): mass 0.2429 / 1.0000 g (0.7571 g to go, +0.0050 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 67 (unstable): mass 0.2439 / 1.0000 g (0.7561 g to go, +0.0010 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 68 (unstable): mass 0.2475 / 1.0000 g (0.7525 g to go, +0.0036 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 69 (unstable): mass 0.2537 / 1.0000 g (0.7463 g to go, +0.0062 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 70 (unstable): mass 0.2565 / 1.0000 g (0.7435 g to go, +0.0028 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 71 (unstable): mass 0.2580 / 1.0000 g (0.7420 g to go, +0.0015 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 72 (unstable): mass 0.2625 / 1.0000 g (0.7375 g to go, +0.0045 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 73 (unstable): mass 0.2698 / 1.0000 g (0.7302 g to go, +0.0073 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 74 (unstable): mass 0.2724 / 1.0000 g (0.7276 g to go, +0.0026 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 75 (unstable): mass 0.2737 / 1.0000 g (0.7263 g to go, +0.0013 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 76 (unstable): mass 0.2786 / 1.0000 g (0.7214 g to go, +0.0049 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 77 (unstable): mass 0.2852 / 1.0000 g (0.7148 g to go, +0.0066 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 78 (unstable): mass 0.2859 / 1.0000 g (0.7141 g to go, +0.0007 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 79 (unstable): mass 0.2875 / 1.0000 g (0.7125 g to go, +0.0016 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 80 (unstable): mass 0.2934 / 1.0000 g (0.7066 g to go, +0.0059 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 81 (unstable): mass 0.3000 / 1.0000 g (0.7000 g to go, +0.0066 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 82 (unstable): mass 0.3007 / 1.0000 g (0.6993 g to go, +0.0007 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 83 (unstable): mass 0.3032 / 1.0000 g (0.6968 g to go, +0.0025 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 84 (unstable): mass 0.3104 / 1.0000 g (0.6896 g to go, +0.0072 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 85 (unstable): mass 0.3138 / 1.0000 g (0.6862 g to go, +0.0034 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 86 (unstable): mass 0.3147 / 1.0000 g (0.6853 g to go, +0.0009 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 87 (unstable): mass 0.3181 / 1.0000 g (0.6819 g to go, +0.0034 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 88 (unstable): mass 0.3250 / 1.0000 g (0.6750 g to go, +0.0069 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 89 (unstable): mass 0.3266 / 1.0000 g (0.6734 g to go, +0.0016 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 90 (unstable): mass 0.3283 / 1.0000 g (0.6717 g to go, +0.0017 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 91 (unstable): mass 0.3354 / 1.0000 g (0.6646 g to go, +0.0071 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 92 (unstable): mass 0.3463 / 1.0000 g (0.6537 g to go, +0.0109 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 93 (unstable): mass 0.3472 / 1.0000 g (0.6528 g to go, +0.0009 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 94 (unstable): mass 0.3480 / 1.0000 g (0.6520 g to go, +0.0008 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 95 (unstable): mass 0.3548 / 1.0000 g (0.6452 g to go, +0.0068 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 96 (unstable): mass 0.3628 / 1.0000 g (0.6372 g to go, +0.0080 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 97 (unstable): mass 0.3636 / 1.0000 g (0.6364 g to go, +0.0008 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 98 (unstable): mass 0.3649 / 1.0000 g (0.6351 g to go, +0.0013 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 99 (unstable): mass 0.3717 / 1.0000 g (0.6283 g to go, +0.0068 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 100 (unstable): mass 0.3758 / 1.0000 g (0.6242 g to go, +0.0041 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 101 (unstable): mass 0.3768 / 1.0000 g (0.6232 g to go, +0.0010 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 102 (unstable): mass 0.3780 / 1.0000 g (0.6220 g to go, +0.0012 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 103 (unstable): mass 0.3865 / 1.0000 g (0.6135 g to go, +0.0085 g this poll), elapsed 31.0 s
+[phase 1 bulk] auger halted at 0.6135 g to go (halt threshold 0.6200 g); settling 800 ms
+[phase 1 bulk] settled: mass 0.3958 / 1.0000 g (0.6042 g to go, +0.0093 g while settling), elapsed 32.0 s
+=== phase 1/3 'bulk' end (103 cycles): mass 0.3958 / 1.0000 g (0.6042 g to go, +0.3958 g this phase), elapsed 32.0 s
+=== phase 2/3 'fine' start: 0.6042 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.3959 / 1.0000 g (0.6041 g to go, +0.0001 g this cycle), elapsed 37.0 s
+[phase 2 fine] cycle 2: mass 0.3965 / 1.0000 g (0.6035 g to go, +0.0006 g this cycle), elapsed 41.0 s
+[phase 2 fine] cycle 3: mass 0.3988 / 1.0000 g (0.6012 g to go, +0.0023 g this cycle), elapsed 45.0 s
+[phase 2 fine] cycle 4: mass 0.4022 / 1.0000 g (0.5978 g to go, +0.0034 g this cycle), elapsed 49.0 s
+[phase 2 fine] cycle 5: mass 0.4023 / 1.0000 g (0.5977 g to go, +0.0001 g this cycle), elapsed 53.0 s
+[phase 2 fine] cycle 6: mass 0.4046 / 1.0000 g (0.5954 g to go, +0.0023 g this cycle), elapsed 57.0 s
+[phase 2 fine] cycle 7: mass 0.4055 / 1.0000 g (0.5945 g to go, +0.0009 g this cycle), elapsed 61.0 s
+[phase 2 fine] cycle 8: mass 0.4056 / 1.0000 g (0.5944 g to go, +0.0001 g this cycle), elapsed 65.0 s
+[phase 2 fine] cycle 9: mass 0.4069 / 1.0000 g (0.5931 g to go, +0.0013 g this cycle), elapsed 69.0 s
+[phase 2 fine] cycle 10: mass 0.4125 / 1.0000 g (0.5875 g to go, +0.0056 g this cycle), elapsed 73.0 s
+[phase 2 fine] cycle 11: mass 0.4126 / 1.0000 g (0.5874 g to go, +0.0001 g this cycle), elapsed 77.0 s
+[phase 2 fine] cycle 12: mass 0.4172 / 1.0000 g (0.5828 g to go, +0.0046 g this cycle), elapsed 81.0 s
+[phase 2 fine] cycle 13: mass 0.4173 / 1.0000 g (0.5827 g to go, +0.0001 g this cycle), elapsed 85.0 s
+[phase 2 fine] cycle 14: mass 0.4188 / 1.0000 g (0.5812 g to go, +0.0015 g this cycle), elapsed 89.0 s
+[phase 2 fine] cycle 15: mass 0.4201 / 1.0000 g (0.5799 g to go, +0.0013 g this cycle), elapsed 93.0 s
+[phase 2 fine] cycle 16: mass 0.4215 / 1.0000 g (0.5785 g to go, +0.0014 g this cycle), elapsed 97.0 s
+[phase 2 fine] cycle 17: mass 0.4229 / 1.0000 g (0.5771 g to go, +0.0014 g this cycle), elapsed 101.0 s
+[phase 2 fine] cycle 18: mass 0.4273 / 1.0000 g (0.5727 g to go, +0.0044 g this cycle), elapsed 105.0 s
+[phase 2 fine] cycle 19: mass 0.4311 / 1.0000 g (0.5689 g to go, +0.0038 g this cycle), elapsed 109.0 s
+[phase 2 fine] cycle 20: mass 0.4332 / 1.0000 g (0.5668 g to go, +0.0021 g this cycle), elapsed 113.0 s
+[phase 2 fine] cycle 21: mass 0.4333 / 1.0000 g (0.5667 g to go, +0.0001 g this cycle), elapsed 117.0 s
+[phase 2 fine] cycle 22: mass 0.4341 / 1.0000 g (0.5659 g to go, +0.0008 g this cycle), elapsed 121.0 s
+[phase 2 fine] cycle 23: mass 0.4354 / 1.0000 g (0.5646 g to go, +0.0013 g this cycle), elapsed 125.0 s
+[phase 2 fine] cycle 24: mass 0.4368 / 1.0000 g (0.5632 g to go, +0.0014 g this cycle), elapsed 130.0 s
+[phase 2 fine] cycle 25: mass 0.4376 / 1.0000 g (0.5624 g to go, +0.0008 g this cycle), elapsed 134.0 s
+[phase 2 fine] cycle 26: mass 0.4446 / 1.0000 g (0.5554 g to go, +0.0070 g this cycle), elapsed 138.0 s
+[phase 2 fine] cycle 27: mass 0.4448 / 1.0000 g (0.5552 g to go, +0.0002 g this cycle), elapsed 142.0 s
+[phase 2 fine] cycle 28: mass 0.4475 / 1.0000 g (0.5525 g to go, +0.0027 g this cycle), elapsed 146.0 s
+[phase 2 fine] cycle 29: mass 0.4483 / 1.0000 g (0.5517 g to go, +0.0008 g this cycle), elapsed 150.0 s
+[phase 2 fine] cycle 30: mass 0.4488 / 1.0000 g (0.5512 g to go, +0.0005 g this cycle), elapsed 154.0 s
+[phase 2 fine] cycle 31: mass 0.4498 / 1.0000 g (0.5502 g to go, +0.0010 g this cycle), elapsed 158.0 s
+[phase 2 fine] cycle 32: mass 0.4515 / 1.0000 g (0.5485 g to go, +0.0017 g this cycle), elapsed 162.0 s
+[phase 2 fine] cycle 33: mass 0.4525 / 1.0000 g (0.5475 g to go, +0.0010 g this cycle), elapsed 166.0 s
+[phase 2 fine] cycle 34: mass 0.4573 / 1.0000 g (0.5427 g to go, +0.0048 g this cycle), elapsed 170.0 s
+[phase 2 fine] cycle 35: mass 0.4597 / 1.0000 g (0.5403 g to go, +0.0024 g this cycle), elapsed 174.0 s
+[phase 2 fine] cycle 36: mass 0.4616 / 1.0000 g (0.5384 g to go, +0.0019 g this cycle), elapsed 178.0 s
+[phase 2 fine] cycle 37: mass 0.4623 / 1.0000 g (0.5377 g to go, +0.0007 g this cycle), elapsed 182.0 s
+[phase 2 fine] cycle 38: mass 0.4623 / 1.0000 g (0.5377 g to go, +0.0000 g this cycle), elapsed 186.0 s
+[phase 2 fine] cycle 39: mass 0.4650 / 1.0000 g (0.5350 g to go, +0.0027 g this cycle), elapsed 190.0 s
+[phase 2 fine] cycle 40: mass 0.4652 / 1.0000 g (0.5348 g to go, +0.0002 g this cycle), elapsed 194.0 s
+[phase 2 fine] cycle 41: mass 0.4659 / 1.0000 g (0.5341 g to go, +0.0007 g this cycle), elapsed 198.0 s
+[phase 2 fine] cycle 42: mass 0.4690 / 1.0000 g (0.5310 g to go, +0.0031 g this cycle), elapsed 202.0 s
+[phase 2 fine] cycle 43: mass 0.4707 / 1.0000 g (0.5293 g to go, +0.0017 g this cycle), elapsed 206.0 s
+[phase 2 fine] cycle 44: mass 0.4743 / 1.0000 g (0.5257 g to go, +0.0036 g this cycle), elapsed 210.0 s
+[phase 2 fine] cycle 45: mass 0.4751 / 1.0000 g (0.5249 g to go, +0.0008 g this cycle), elapsed 214.0 s
+[phase 2 fine] cycle 46: mass 0.4762 / 1.0000 g (0.5238 g to go, +0.0011 g this cycle), elapsed 218.0 s
+[phase 2 fine] cycle 47: mass 0.4768 / 1.0000 g (0.5232 g to go, +0.0006 g this cycle), elapsed 222.0 s
+[phase 2 fine] cycle 48: mass 0.4790 / 1.0000 g (0.5210 g to go, +0.0022 g this cycle), elapsed 226.0 s
+[phase 2 fine] cycle 49: mass 0.4800 / 1.0000 g (0.5200 g to go, +0.0010 g this cycle), elapsed 230.0 s
+[phase 2 fine] cycle 50: mass 0.4825 / 1.0000 g (0.5175 g to go, +0.0025 g this cycle), elapsed 234.0 s
+[phase 2 fine] cycle 51: mass 0.4868 / 1.0000 g (0.5132 g to go, +0.0043 g this cycle), elapsed 238.0 s
+[phase 2 fine] cycle 52: mass 0.4904 / 1.0000 g (0.5096 g to go, +0.0036 g this cycle), elapsed 242.0 s
+[phase 2 fine] cycle 53: mass 0.4915 / 1.0000 g (0.5085 g to go, +0.0011 g this cycle), elapsed 246.0 s
+[phase 2 fine] cycle 54: mass 0.4921 / 1.0000 g (0.5079 g to go, +0.0006 g this cycle), elapsed 250.0 s
+[phase 2 fine] cycle 55: mass 0.4932 / 1.0000 g (0.5068 g to go, +0.0011 g this cycle), elapsed 254.0 s
+[phase 2 fine] cycle 56: mass 0.4941 / 1.0000 g (0.5059 g to go, +0.0009 g this cycle), elapsed 258.0 s
+[phase 2 fine] cycle 57: mass 0.4947 / 1.0000 g (0.5053 g to go, +0.0006 g this cycle), elapsed 262.0 s
+[phase 2 fine] cycle 58: mass 0.4983 / 1.0000 g (0.5017 g to go, +0.0036 g this cycle), elapsed 266.0 s
+[phase 2 fine] cycle 59: mass 0.5030 / 1.0000 g (0.4970 g to go, +0.0047 g this cycle), elapsed 270.0 s
+[phase 2 fine] cycle 60: mass 0.5035 / 1.0000 g (0.4965 g to go, +0.0005 g this cycle), elapsed 274.0 s
+[phase 2 fine] cycle 61: mass 0.5040 / 1.0000 g (0.4960 g to go, +0.0005 g this cycle), elapsed 278.0 s
+[phase 2 fine] cycle 62: mass 0.5048 / 1.0000 g (0.4952 g to go, +0.0008 g this cycle), elapsed 282.0 s
+[phase 2 fine] cycle 63: mass 0.5055 / 1.0000 g (0.4945 g to go, +0.0007 g this cycle), elapsed 286.0 s
+[phase 2 fine] cycle 64: mass 0.5070 / 1.0000 g (0.4930 g to go, +0.0015 g this cycle), elapsed 290.0 s
+[phase 2 fine] cycle 65: mass 0.5079 / 1.0000 g (0.4921 g to go, +0.0009 g this cycle), elapsed 294.0 s
+[phase 2 fine] cycle 66: mass 0.5151 / 1.0000 g (0.4849 g to go, +0.0072 g this cycle), elapsed 298.0 s
+[phase 2 fine] cycle 67: mass 0.5171 / 1.0000 g (0.4829 g to go, +0.0020 g this cycle), elapsed 302.0 s
+[phase 2 fine] cycle 68: mass 0.5178 / 1.0000 g (0.4822 g to go, +0.0007 g this cycle), elapsed 306.0 s
+[phase 2 fine] cycle 69: mass 0.5187 / 1.0000 g (0.4813 g to go, +0.0009 g this cycle), elapsed 310.0 s
+[phase 2 fine] cycle 70: mass 0.5188 / 1.0000 g (0.4812 g to go, +0.0001 g this cycle), elapsed 314.0 s
+[phase 2 fine] cycle 71: mass 0.5203 / 1.0000 g (0.4797 g to go, +0.0015 g this cycle), elapsed 318.0 s
+[phase 2 fine] cycle 72: mass 0.5215 / 1.0000 g (0.4785 g to go, +0.0012 g this cycle), elapsed 322.0 s
+[phase 2 fine] cycle 73: mass 0.5220 / 1.0000 g (0.4780 g to go, +0.0005 g this cycle), elapsed 326.0 s
+[phase 2 fine] cycle 74: mass 0.5255 / 1.0000 g (0.4745 g to go, +0.0035 g this cycle), elapsed 330.0 s
+[phase 2 fine] cycle 75: mass 0.5301 / 1.0000 g (0.4699 g to go, +0.0046 g this cycle), elapsed 334.0 s
+[phase 2 fine] cycle 76: mass 0.5306 / 1.0000 g (0.4694 g to go, +0.0005 g this cycle), elapsed 338.0 s
+[phase 2 fine] cycle 77: mass 0.5312 / 1.0000 g (0.4688 g to go, +0.0006 g this cycle), elapsed 342.0 s
+[phase 2 fine] cycle 78: mass 0.5313 / 1.0000 g (0.4687 g to go, +0.0001 g this cycle), elapsed 346.0 s
+[phase 2 fine] cycle 79: mass 0.5332 / 1.0000 g (0.4668 g to go, +0.0019 g this cycle), elapsed 350.0 s
+[phase 2 fine] cycle 80: mass 0.5342 / 1.0000 g (0.4658 g to go, +0.0010 g this cycle), elapsed 354.0 s
+[phase 2 fine] cycle 81: mass 0.5345 / 1.0000 g (0.4655 g to go, +0.0003 g this cycle), elapsed 358.0 s
+[phase 2 fine] cycle 82: mass 0.5398 / 1.0000 g (0.4602 g to go, +0.0053 g this cycle), elapsed 362.0 s
+[phase 2 fine] cycle 83: mass 0.5420 / 1.0000 g (0.4580 g to go, +0.0022 g this cycle), elapsed 366.0 s
+[phase 2 fine] cycle 84: mass 0.5444 / 1.0000 g (0.4556 g to go, +0.0024 g this cycle), elapsed 370.0 s
+[phase 2 fine] cycle 85: mass 0.5444 / 1.0000 g (0.4556 g to go, +0.0000 g this cycle), elapsed 375.0 s
+[phase 2 fine] cycle 86: mass 0.5446 / 1.0000 g (0.4554 g to go, +0.0002 g this cycle), elapsed 379.0 s
+[phase 2 fine] cycle 87: mass 0.5459 / 1.0000 g (0.4541 g to go, +0.0013 g this cycle), elapsed 383.0 s
+[phase 2 fine] cycle 88: mass 0.5482 / 1.0000 g (0.4518 g to go, +0.0023 g this cycle), elapsed 387.0 s
+[phase 2 fine] cycle 89: mass 0.5488 / 1.0000 g (0.4512 g to go, +0.0006 g this cycle), elapsed 391.0 s
+[phase 2 fine] cycle 90: mass 0.5530 / 1.0000 g (0.4470 g to go, +0.0042 g this cycle), elapsed 395.0 s
+[phase 2 fine] cycle 91: mass 0.5550 / 1.0000 g (0.4450 g to go, +0.0020 g this cycle), elapsed 399.0 s
+[phase 2 fine] cycle 92: mass 0.5590 / 1.0000 g (0.4410 g to go, +0.0040 g this cycle), elapsed 403.0 s
+[phase 2 fine] cycle 93: mass 0.5590 / 1.0000 g (0.4410 g to go, +0.0000 g this cycle), elapsed 407.0 s
+[phase 2 fine] cycle 94: mass 0.5599 / 1.0000 g (0.4401 g to go, +0.0009 g this cycle), elapsed 411.0 s
+[phase 2 fine] cycle 95: mass 0.5607 / 1.0000 g (0.4393 g to go, +0.0008 g this cycle), elapsed 415.0 s
+[phase 2 fine] cycle 96: mass 0.5625 / 1.0000 g (0.4375 g to go, +0.0018 g this cycle), elapsed 419.0 s
+[phase 2 fine] cycle 97: mass 0.5627 / 1.0000 g (0.4373 g to go, +0.0002 g this cycle), elapsed 423.0 s
+[phase 2 fine] cycle 98: mass 0.5651 / 1.0000 g (0.4349 g to go, +0.0024 g this cycle), elapsed 427.0 s
+[phase 2 fine] cycle 99: mass 0.5707 / 1.0000 g (0.4293 g to go, +0.0056 g this cycle), elapsed 431.0 s
+[phase 2 fine] cycle 100: mass 0.5718 / 1.0000 g (0.4282 g to go, +0.0011 g this cycle), elapsed 435.0 s
+[phase 2 fine] cycle 101: mass 0.5724 / 1.0000 g (0.4276 g to go, +0.0006 g this cycle), elapsed 439.0 s
+[phase 2 fine] cycle 102: mass 0.5731 / 1.0000 g (0.4269 g to go, +0.0007 g this cycle), elapsed 443.0 s
+[phase 2 fine] cycle 103: mass 0.5741 / 1.0000 g (0.4259 g to go, +0.0010 g this cycle), elapsed 447.0 s
+[phase 2 fine] cycle 104: mass 0.5753 / 1.0000 g (0.4247 g to go, +0.0012 g this cycle), elapsed 451.0 s
+[phase 2 fine] cycle 105: mass 0.5762 / 1.0000 g (0.4238 g to go, +0.0009 g this cycle), elapsed 455.0 s
+[phase 2 fine] cycle 106: mass 0.5810 / 1.0000 g (0.4190 g to go, +0.0048 g this cycle), elapsed 459.0 s
+[phase 2 fine] cycle 107: mass 0.5840 / 1.0000 g (0.4160 g to go, +0.0030 g this cycle), elapsed 463.0 s
+[phase 2 fine] cycle 108: mass 0.5860 / 1.0000 g (0.4140 g to go, +0.0020 g this cycle), elapsed 467.0 s
+[phase 2 fine] cycle 109: mass 0.5865 / 1.0000 g (0.4135 g to go, +0.0005 g this cycle), elapsed 471.0 s
+[phase 2 fine] cycle 110: mass 0.5865 / 1.0000 g (0.4135 g to go, +0.0000 g this cycle), elapsed 475.0 s
+[phase 2 fine] cycle 111: mass 0.5882 / 1.0000 g (0.4118 g to go, +0.0017 g this cycle), elapsed 479.0 s
+[phase 2 fine] cycle 112: mass 0.5895 / 1.0000 g (0.4105 g to go, +0.0013 g this cycle), elapsed 483.0 s
+[phase 2 fine] cycle 113: mass 0.5903 / 1.0000 g (0.4097 g to go, +0.0008 g this cycle), elapsed 487.0 s
+[phase 2 fine] cycle 114: mass 0.5934 / 1.0000 g (0.4066 g to go, +0.0031 g this cycle), elapsed 491.0 s
+[phase 2 fine] cycle 115: mass 0.5980 / 1.0000 g (0.4020 g to go, +0.0046 g this cycle), elapsed 495.0 s
+[phase 2 fine] cycle 116: mass 0.5982 / 1.0000 g (0.4018 g to go, +0.0002 g this cycle), elapsed 499.0 s
+[phase 2 fine] cycle 117: mass 0.5984 / 1.0000 g (0.4016 g to go, +0.0002 g this cycle), elapsed 503.0 s
+[phase 2 fine] cycle 118: mass 0.5986 / 1.0000 g (0.4014 g to go, +0.0002 g this cycle), elapsed 507.0 s
+[phase 2 fine] cycle 119: mass 0.6000 / 1.0000 g (0.4000 g to go, +0.0014 g this cycle), elapsed 511.0 s
+[phase 2 fine] cycle 120: mass 0.6011 / 1.0000 g (0.3989 g to go, +0.0011 g this cycle), elapsed 515.0 s
+[phase 2 fine] cycle 121: mass 0.6019 / 1.0000 g (0.3981 g to go, +0.0008 g this cycle), elapsed 519.0 s
+[phase 2 fine] cycle 122: mass 0.6034 / 1.0000 g (0.3966 g to go, +0.0015 g this cycle), elapsed 523.0 s
+[phase 2 fine] cycle 123: mass 0.6082 / 1.0000 g (0.3918 g to go, +0.0048 g this cycle), elapsed 527.0 s
+[phase 2 fine] cycle 124: mass 0.6108 / 1.0000 g (0.3892 g to go, +0.0026 g this cycle), elapsed 531.0 s
+[phase 2 fine] cycle 125: mass 0.6110 / 1.0000 g (0.3890 g to go, +0.0002 g this cycle), elapsed 535.0 s
+[phase 2 fine] cycle 126: mass 0.6122 / 1.0000 g (0.3878 g to go, +0.0012 g this cycle), elapsed 539.0 s
+[phase 2 fine] cycle 127: mass 0.6122 / 1.0000 g (0.3878 g to go, +0.0000 g this cycle), elapsed 543.0 s
+[phase 2 fine] cycle 128: mass 0.6148 / 1.0000 g (0.3852 g to go, +0.0026 g this cycle), elapsed 547.0 s
+[phase 2 fine] cycle 129: mass 0.6165 / 1.0000 g (0.3835 g to go, +0.0017 g this cycle), elapsed 551.0 s
+[phase 2 fine] cycle 130: mass 0.6199 / 1.0000 g (0.3801 g to go, +0.0034 g this cycle), elapsed 555.0 s
+[phase 2 fine] cycle 131: mass 0.6239 / 1.0000 g (0.3761 g to go, +0.0040 g this cycle), elapsed 559.0 s
+[phase 2 fine] cycle 132: mass 0.6265 / 1.0000 g (0.3735 g to go, +0.0026 g this cycle), elapsed 563.0 s
+[phase 2 fine] cycle 133: mass 0.6266 / 1.0000 g (0.3734 g to go, +0.0001 g this cycle), elapsed 567.0 s
+[phase 2 fine] cycle 134: mass 0.6272 / 1.0000 g (0.3728 g to go, +0.0006 g this cycle), elapsed 571.0 s
+[phase 2 fine] cycle 135: mass 0.6278 / 1.0000 g (0.3722 g to go, +0.0006 g this cycle), elapsed 575.0 s
+[phase 2 fine] cycle 136: mass 0.6295 / 1.0000 g (0.3705 g to go, +0.0017 g this cycle), elapsed 579.0 s
+[phase 2 fine] cycle 137: mass 0.6304 / 1.0000 g (0.3696 g to go, +0.0009 g this cycle), elapsed 583.0 s
+[phase 2 fine] cycle 138: mass 0.6322 / 1.0000 g (0.3678 g to go, +0.0018 g this cycle), elapsed 587.0 s
+[phase 2 fine] cycle 139: mass 0.6380 / 1.0000 g (0.3620 g to go, +0.0058 g this cycle), elapsed 591.0 s
+[phase 2 fine] cycle 140: mass 0.6385 / 1.0000 g (0.3615 g to go, +0.0005 g this cycle), elapsed 595.0 s
+[phase 2 fine] cycle 141: mass 0.6394 / 1.0000 g (0.3606 g to go, +0.0009 g this cycle), elapsed 599.0 s
+[phase 2 fine] cycle 142: mass 0.6395 / 1.0000 g (0.3605 g to go, +0.0001 g this cycle), elapsed 603.0 s
+[phase 2 fine] cycle 143: mass 0.6406 / 1.0000 g (0.3594 g to go, +0.0011 g this cycle), elapsed 607.0 s
+[phase 2 fine] cycle 144: mass 0.6423 / 1.0000 g (0.3577 g to go, +0.0017 g this cycle), elapsed 611.0 s
+[phase 2 fine] cycle 145: mass 0.6431 / 1.0000 g (0.3569 g to go, +0.0008 g this cycle), elapsed 615.0 s
+[phase 2 fine] cycle 146: mass 0.6433 / 1.0000 g (0.3567 g to go, +0.0002 g this cycle), elapsed 620.0 s
+[phase 2 fine] cycle 147: mass 0.6484 / 1.0000 g (0.3516 g to go, +0.0051 g this cycle), elapsed 624.0 s
+[phase 2 fine] cycle 148: mass 0.6510 / 1.0000 g (0.3490 g to go, +0.0026 g this cycle), elapsed 628.0 s
+[phase 2 fine] cycle 149: mass 0.6519 / 1.0000 g (0.3481 g to go, +0.0009 g this cycle), elapsed 632.0 s
+[phase 2 fine] cycle 150: mass 0.6519 / 1.0000 g (0.3481 g to go, +0.0000 g this cycle), elapsed 636.0 s
+[phase 2 fine] cycle 151: mass 0.6528 / 1.0000 g (0.3472 g to go, +0.0009 g this cycle), elapsed 640.0 s
+[phase 2 fine] cycle 152: mass 0.6543 / 1.0000 g (0.3457 g to go, +0.0015 g this cycle), elapsed 644.0 s
+[phase 2 fine] cycle 153: mass 0.6547 / 1.0000 g (0.3453 g to go, +0.0004 g this cycle), elapsed 648.0 s
+[phase 2 fine] cycle 154: mass 0.6579 / 1.0000 g (0.3421 g to go, +0.0032 g this cycle), elapsed 652.0 s
+[phase 2 fine] cycle 155: mass 0.6619 / 1.0000 g (0.3381 g to go, +0.0040 g this cycle), elapsed 656.0 s
+[phase 2 fine] cycle 156: mass 0.6632 / 1.0000 g (0.3368 g to go, +0.0013 g this cycle), elapsed 660.0 s
+[phase 2 fine] cycle 157: mass 0.6632 / 1.0000 g (0.3368 g to go, +0.0000 g this cycle), elapsed 664.0 s
+[phase 2 fine] cycle 158: mass 0.6634 / 1.0000 g (0.3366 g to go, +0.0002 g this cycle), elapsed 668.0 s
+[phase 2 fine] cycle 159: mass 0.6648 / 1.0000 g (0.3352 g to go, +0.0014 g this cycle), elapsed 672.0 s
+[phase 2 fine] cycle 160: mass 0.6665 / 1.0000 g (0.3335 g to go, +0.0017 g this cycle), elapsed 676.0 s
+[phase 2 fine] cycle 161: mass 0.6671 / 1.0000 g (0.3329 g to go, +0.0006 g this cycle), elapsed 680.0 s
+[phase 2 fine] cycle 162: mass 0.6692 / 1.0000 g (0.3308 g to go, +0.0021 g this cycle), elapsed 684.0 s
+[phase 2 fine] cycle 163: mass 0.6726 / 1.0000 g (0.3274 g to go, +0.0034 g this cycle), elapsed 688.0 s
+[phase 2 fine] cycle 164: mass 0.6755 / 1.0000 g (0.3245 g to go, +0.0029 g this cycle), elapsed 692.0 s
+[phase 2 fine] cycle 165: mass 0.6760 / 1.0000 g (0.3240 g to go, +0.0005 g this cycle), elapsed 696.0 s
+[phase 2 fine] cycle 166: mass 0.6768 / 1.0000 g (0.3232 g to go, +0.0008 g this cycle), elapsed 700.0 s
+[phase 2 fine] cycle 167: mass 0.6774 / 1.0000 g (0.3226 g to go, +0.0006 g this cycle), elapsed 704.0 s
+[phase 2 fine] cycle 168: mass 0.6793 / 1.0000 g (0.3207 g to go, +0.0019 g this cycle), elapsed 708.0 s
+[phase 2 fine] cycle 169: mass 0.6800 / 1.0000 g (0.3200 g to go, +0.0007 g this cycle), elapsed 712.0 s
+[phase 2 fine] cycle 170: mass 0.6810 / 1.0000 g (0.3190 g to go, +0.0010 g this cycle), elapsed 716.0 s
+[phase 2 fine] cycle 171: mass 0.6868 / 1.0000 g (0.3132 g to go, +0.0058 g this cycle), elapsed 720.0 s
+[phase 2 fine] cycle 172: mass 0.6877 / 1.0000 g (0.3123 g to go, +0.0009 g this cycle), elapsed 724.0 s
+[phase 2 fine] cycle 173: mass 0.6884 / 1.0000 g (0.3116 g to go, +0.0007 g this cycle), elapsed 728.0 s
+[phase 2 fine] cycle 174: mass 0.6885 / 1.0000 g (0.3115 g to go, +0.0001 g this cycle), elapsed 732.0 s
+[phase 2 fine] cycle 175: mass 0.6899 / 1.0000 g (0.3101 g to go, +0.0014 g this cycle), elapsed 736.0 s
+[phase 2 fine] cycle 176: mass 0.6904 / 1.0000 g (0.3096 g to go, +0.0005 g this cycle), elapsed 740.0 s
+[phase 2 fine] cycle 177: mass 0.6920 / 1.0000 g (0.3080 g to go, +0.0016 g this cycle), elapsed 744.0 s
+[phase 2 fine] cycle 178: mass 0.6949 / 1.0000 g (0.3051 g to go, +0.0029 g this cycle), elapsed 748.0 s
+[phase 2 fine] cycle 179: mass 0.6968 / 1.0000 g (0.3032 g to go, +0.0019 g this cycle), elapsed 752.0 s
+[phase 2 fine] cycle 180: mass 0.7009 / 1.0000 g (0.2991 g to go, +0.0041 g this cycle), elapsed 756.0 s
+[phase 2 fine] cycle 181: mass 0.7014 / 1.0000 g (0.2986 g to go, +0.0005 g this cycle), elapsed 760.0 s
+[phase 2 fine] cycle 182: mass 0.7021 / 1.0000 g (0.2979 g to go, +0.0007 g this cycle), elapsed 764.0 s
+[phase 2 fine] cycle 183: mass 0.7030 / 1.0000 g (0.2970 g to go, +0.0009 g this cycle), elapsed 768.0 s
+[phase 2 fine] cycle 184: mass 0.7044 / 1.0000 g (0.2956 g to go, +0.0014 g this cycle), elapsed 772.0 s
+[phase 2 fine] cycle 185: mass 0.7053 / 1.0000 g (0.2947 g to go, +0.0009 g this cycle), elapsed 776.0 s
+[phase 2 fine] cycle 186: mass 0.7069 / 1.0000 g (0.2931 g to go, +0.0016 g this cycle), elapsed 780.0 s
+[phase 2 fine] cycle 187: mass 0.7119 / 1.0000 g (0.2881 g to go, +0.0050 g this cycle), elapsed 784.0 s
+[phase 2 fine] cycle 188: mass 0.7130 / 1.0000 g (0.2870 g to go, +0.0011 g this cycle), elapsed 788.0 s
+[phase 2 fine] cycle 189: mass 0.7139 / 1.0000 g (0.2861 g to go, +0.0009 g this cycle), elapsed 792.0 s
+[phase 2 fine] cycle 190: mass 0.7140 / 1.0000 g (0.2860 g to go, +0.0001 g this cycle), elapsed 796.0 s
+[phase 2 fine] cycle 191: mass 0.7151 / 1.0000 g (0.2849 g to go, +0.0011 g this cycle), elapsed 800.0 s
+[phase 2 fine] cycle 192: mass 0.7165 / 1.0000 g (0.2835 g to go, +0.0014 g this cycle), elapsed 804.0 s
+[phase 2 fine] cycle 193: mass 0.7174 / 1.0000 g (0.2826 g to go, +0.0009 g this cycle), elapsed 808.0 s
+[phase 2 fine] cycle 194: mass 0.7175 / 1.0000 g (0.2825 g to go, +0.0001 g this cycle), elapsed 812.0 s
+[phase 2 fine] cycle 195: mass 0.7245 / 1.0000 g (0.2755 g to go, +0.0070 g this cycle), elapsed 816.0 s
+[phase 2 fine] cycle 196: mass 0.7253 / 1.0000 g (0.2747 g to go, +0.0008 g this cycle), elapsed 820.0 s
+[phase 2 fine] cycle 197: mass 0.7254 / 1.0000 g (0.2746 g to go, +0.0001 g this cycle), elapsed 824.0 s
+[phase 2 fine] cycle 198: mass 0.7263 / 1.0000 g (0.2737 g to go, +0.0009 g this cycle), elapsed 828.0 s
+[phase 2 fine] cycle 199: mass 0.7272 / 1.0000 g (0.2728 g to go, +0.0009 g this cycle), elapsed 832.0 s
+[phase 2 fine] cycle 200: mass 0.7285 / 1.0000 g (0.2715 g to go, +0.0013 g this cycle), elapsed 836.0 s
+[phase 2 fine] cycle budget (200) exhausted
+=== phase 2/3 'fine' end (200 cycles): mass 0.7285 / 1.0000 g (0.2715 g to go, +0.3327 g this phase), elapsed 836.0 s
+[dose] done: DoseResult(cycle-budget: 0.7285/1.0000 g in 836.0s; cycles bulk:103, fine:200; 52.50 auger rev, 0 taps)
+DOSE,0,1.0000,0.7285,-0.2715,cycle-budget,836.0,52.50,0,bulk:103;fine:200,1238236
+PROMPT,dose 1 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 4 (unstable): mass 0.0061 / 1.0000 g (0.9939 g to go, +0.0061 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.0125 / 1.0000 g (0.9875 g to go, +0.0064 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.0120 / 1.0000 g (0.9880 g to go, -0.0005 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.0135 / 1.0000 g (0.9865 g to go, +0.0015 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0198 / 1.0000 g (0.9802 g to go, +0.0063 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0213 / 1.0000 g (0.9787 g to go, +0.0015 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0218 / 1.0000 g (0.9782 g to go, +0.0005 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0230 / 1.0000 g (0.9770 g to go, +0.0012 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.0291 / 1.0000 g (0.9709 g to go, +0.0061 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.0301 / 1.0000 g (0.9699 g to go, +0.0010 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.0306 / 1.0000 g (0.9694 g to go, +0.0005 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.0348 / 1.0000 g (0.9652 g to go, +0.0042 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.0386 / 1.0000 g (0.9614 g to go, +0.0038 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.0398 / 1.0000 g (0.9602 g to go, +0.0012 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.0438 / 1.0000 g (0.9562 g to go, +0.0040 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.0509 / 1.0000 g (0.9491 g to go, +0.0071 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.0554 / 1.0000 g (0.9446 g to go, +0.0045 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 21 (unstable): mass 0.0559 / 1.0000 g (0.9441 g to go, +0.0005 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 22 (unstable): mass 0.0602 / 1.0000 g (0.9398 g to go, +0.0043 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 23 (unstable): mass 0.0674 / 1.0000 g (0.9326 g to go, +0.0072 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 24 (unstable): mass 0.0685 / 1.0000 g (0.9315 g to go, +0.0011 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 25 (unstable): mass 0.0697 / 1.0000 g (0.9303 g to go, +0.0012 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 26 (unstable): mass 0.0755 / 1.0000 g (0.9245 g to go, +0.0058 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 27 (unstable): mass 0.0815 / 1.0000 g (0.9185 g to go, +0.0060 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 28 (unstable): mass 0.0827 / 1.0000 g (0.9173 g to go, +0.0012 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 29 (unstable): mass 0.0841 / 1.0000 g (0.9159 g to go, +0.0014 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 30 (unstable): mass 0.0913 / 1.0000 g (0.9087 g to go, +0.0072 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 31 (unstable): mass 0.0969 / 1.0000 g (0.9031 g to go, +0.0056 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 32 (unstable): mass 0.0971 / 1.0000 g (0.9029 g to go, +0.0002 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 33 (unstable): mass 0.0988 / 1.0000 g (0.9012 g to go, +0.0017 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 34 (unstable): mass 0.1058 / 1.0000 g (0.8942 g to go, +0.0070 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 35 (unstable): mass 0.1104 / 1.0000 g (0.8896 g to go, +0.0046 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 36 (unstable): mass 0.1110 / 1.0000 g (0.8890 g to go, +0.0006 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 37 (unstable): mass 0.1147 / 1.0000 g (0.8853 g to go, +0.0037 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 38 (unstable): mass 0.1211 / 1.0000 g (0.8789 g to go, +0.0064 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 39 (unstable): mass 0.1225 / 1.0000 g (0.8775 g to go, +0.0014 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 40 (unstable): mass 0.1232 / 1.0000 g (0.8768 g to go, +0.0007 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 41 (unstable): mass 0.1281 / 1.0000 g (0.8719 g to go, +0.0049 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 42 (unstable): mass 0.1354 / 1.0000 g (0.8646 g to go, +0.0073 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 43 (unstable): mass 0.1365 / 1.0000 g (0.8635 g to go, +0.0011 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 44 (unstable): mass 0.1377 / 1.0000 g (0.8623 g to go, +0.0012 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 45 (unstable): mass 0.1416 / 1.0000 g (0.8584 g to go, +0.0039 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 46 (unstable): mass 0.1476 / 1.0000 g (0.8524 g to go, +0.0060 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 47 (unstable): mass 0.1496 / 1.0000 g (0.8504 g to go, +0.0020 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 48 (unstable): mass 0.1515 / 1.0000 g (0.8485 g to go, +0.0019 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 49 (unstable): mass 0.1562 / 1.0000 g (0.8438 g to go, +0.0047 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 50 (unstable): mass 0.1613 / 1.0000 g (0.8387 g to go, +0.0051 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 51 (unstable): mass 0.1623 / 1.0000 g (0.8377 g to go, +0.0010 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 52 (unstable): mass 0.1642 / 1.0000 g (0.8358 g to go, +0.0019 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 53 (unstable): mass 0.1719 / 1.0000 g (0.8281 g to go, +0.0077 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 54 (unstable): mass 0.1755 / 1.0000 g (0.8245 g to go, +0.0036 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 55 (unstable): mass 0.1760 / 1.0000 g (0.8240 g to go, +0.0005 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 56 (unstable): mass 0.1773 / 1.0000 g (0.8227 g to go, +0.0013 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 57 (unstable): mass 0.1857 / 1.0000 g (0.8143 g to go, +0.0084 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 58 (unstable): mass 0.1892 / 1.0000 g (0.8108 g to go, +0.0035 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 59 (unstable): mass 0.1906 / 1.0000 g (0.8094 g to go, +0.0014 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 60 (unstable): mass 0.1950 / 1.0000 g (0.8050 g to go, +0.0044 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 61 (unstable): mass 0.2011 / 1.0000 g (0.7989 g to go, +0.0061 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 62 (unstable): mass 0.2057 / 1.0000 g (0.7943 g to go, +0.0046 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 63 (unstable): mass 0.2073 / 1.0000 g (0.7927 g to go, +0.0016 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 64 (unstable): mass 0.2124 / 1.0000 g (0.7876 g to go, +0.0051 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 65 (unstable): mass 0.2179 / 1.0000 g (0.7821 g to go, +0.0055 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 66 (unstable): mass 0.2180 / 1.0000 g (0.7820 g to go, +0.0001 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 67 (unstable): mass 0.2192 / 1.0000 g (0.7808 g to go, +0.0012 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 68 (unstable): mass 0.2261 / 1.0000 g (0.7739 g to go, +0.0069 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 69 (unstable): mass 0.2325 / 1.0000 g (0.7675 g to go, +0.0064 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 70 (unstable): mass 0.2333 / 1.0000 g (0.7667 g to go, +0.0008 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 71 (unstable): mass 0.2357 / 1.0000 g (0.7643 g to go, +0.0024 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 72 (unstable): mass 0.2464 / 1.0000 g (0.7536 g to go, +0.0107 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 73 (unstable): mass 0.2503 / 1.0000 g (0.7497 g to go, +0.0039 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 74 (unstable): mass 0.2514 / 1.0000 g (0.7486 g to go, +0.0011 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 75 (unstable): mass 0.2551 / 1.0000 g (0.7449 g to go, +0.0037 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 76 (unstable): mass 0.2608 / 1.0000 g (0.7392 g to go, +0.0057 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 77 (unstable): mass 0.2622 / 1.0000 g (0.7378 g to go, +0.0014 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 78 (unstable): mass 0.2629 / 1.0000 g (0.7371 g to go, +0.0007 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 79 (unstable): mass 0.2682 / 1.0000 g (0.7318 g to go, +0.0053 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 80 (unstable): mass 0.2744 / 1.0000 g (0.7256 g to go, +0.0062 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 81 (unstable): mass 0.2755 / 1.0000 g (0.7245 g to go, +0.0011 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 82 (unstable): mass 0.2771 / 1.0000 g (0.7229 g to go, +0.0016 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 83 (unstable): mass 0.2832 / 1.0000 g (0.7168 g to go, +0.0061 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 84 (unstable): mass 0.2896 / 1.0000 g (0.7104 g to go, +0.0064 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 85 (unstable): mass 0.2903 / 1.0000 g (0.7097 g to go, +0.0007 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 86 (unstable): mass 0.2913 / 1.0000 g (0.7087 g to go, +0.0010 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 87 (unstable): mass 0.2963 / 1.0000 g (0.7037 g to go, +0.0050 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 88 (unstable): mass 0.3021 / 1.0000 g (0.6979 g to go, +0.0058 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 89 (unstable): mass 0.3029 / 1.0000 g (0.6971 g to go, +0.0008 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 90 (unstable): mass 0.3051 / 1.0000 g (0.6949 g to go, +0.0022 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 91 (unstable): mass 0.3114 / 1.0000 g (0.6886 g to go, +0.0063 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 92 (unstable): mass 0.3140 / 1.0000 g (0.6860 g to go, +0.0026 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 93 (unstable): mass 0.3145 / 1.0000 g (0.6855 g to go, +0.0005 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 94 (unstable): mass 0.3159 / 1.0000 g (0.6841 g to go, +0.0014 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 95 (unstable): mass 0.3228 / 1.0000 g (0.6772 g to go, +0.0069 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 96 (unstable): mass 0.3243 / 1.0000 g (0.6757 g to go, +0.0015 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 97 (unstable): mass 0.3250 / 1.0000 g (0.6750 g to go, +0.0007 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 98 (unstable): mass 0.3297 / 1.0000 g (0.6703 g to go, +0.0047 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 99 (unstable): mass 0.3353 / 1.0000 g (0.6647 g to go, +0.0056 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 100 (unstable): mass 0.3362 / 1.0000 g (0.6638 g to go, +0.0009 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 101 (unstable): mass 0.3378 / 1.0000 g (0.6622 g to go, +0.0016 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 102 (unstable): mass 0.3483 / 1.0000 g (0.6517 g to go, +0.0105 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 103 (unstable): mass 0.3519 / 1.0000 g (0.6481 g to go, +0.0036 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 104 (unstable): mass 0.3522 / 1.0000 g (0.6478 g to go, +0.0003 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 105 (unstable): mass 0.3534 / 1.0000 g (0.6466 g to go, +0.0012 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 106 (unstable): mass 0.3607 / 1.0000 g (0.6393 g to go, +0.0073 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 107 (unstable): mass 0.3632 / 1.0000 g (0.6368 g to go, +0.0025 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 108 (unstable): mass 0.3642 / 1.0000 g (0.6358 g to go, +0.0010 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 109 (unstable): mass 0.3682 / 1.0000 g (0.6318 g to go, +0.0040 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 110 (unstable): mass 0.3753 / 1.0000 g (0.6247 g to go, +0.0071 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 111 (unstable): mass 0.3771 / 1.0000 g (0.6229 g to go, +0.0018 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 112 (unstable): mass 0.3781 / 1.0000 g (0.6219 g to go, +0.0010 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 113 (unstable): mass 0.3837 / 1.0000 g (0.6163 g to go, +0.0056 g this poll), elapsed 34.0 s
+[phase 1 bulk] auger halted at 0.6163 g to go (halt threshold 0.6200 g); settling 800 ms
+[phase 1 bulk] settled: mass 0.3931 / 1.0000 g (0.6069 g to go, +0.0094 g while settling), elapsed 36.0 s
+=== phase 1/3 'bulk' end (113 cycles): mass 0.3931 / 1.0000 g (0.6069 g to go, +0.3931 g this phase), elapsed 36.0 s
+=== phase 2/3 'fine' start: 0.6069 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.3936 / 1.0000 g (0.6064 g to go, +0.0005 g this cycle), elapsed 41.0 s
+[phase 2 fine] cycle 2: mass 0.3942 / 1.0000 g (0.6058 g to go, +0.0006 g this cycle), elapsed 45.0 s
+[phase 2 fine] cycle 3: mass 0.3950 / 1.0000 g (0.6050 g to go, +0.0008 g this cycle), elapsed 49.0 s
+[phase 2 fine] cycle 4: mass 0.3973 / 1.0000 g (0.6027 g to go, +0.0023 g this cycle), elapsed 53.0 s
+[phase 2 fine] cycle 5: mass 0.4006 / 1.0000 g (0.5994 g to go, +0.0033 g this cycle), elapsed 57.0 s
+[phase 2 fine] cycle 6: mass 0.4006 / 1.0000 g (0.5994 g to go, +0.0000 g this cycle), elapsed 61.0 s
+[phase 2 fine] cycle 7: mass 0.4015 / 1.0000 g (0.5985 g to go, +0.0009 g this cycle), elapsed 65.0 s
+[phase 2 fine] cycle 8: mass 0.4029 / 1.0000 g (0.5971 g to go, +0.0014 g this cycle), elapsed 69.0 s
+[phase 2 fine] cycle 9: mass 0.4041 / 1.0000 g (0.5959 g to go, +0.0012 g this cycle), elapsed 73.0 s
+[phase 2 fine] cycle 10: mass 0.4042 / 1.0000 g (0.5958 g to go, +0.0001 g this cycle), elapsed 77.0 s
+[phase 2 fine] cycle 11: mass 0.4050 / 1.0000 g (0.5950 g to go, +0.0008 g this cycle), elapsed 81.0 s
+[phase 2 fine] cycle 12: mass 0.4069 / 1.0000 g (0.5931 g to go, +0.0019 g this cycle), elapsed 85.0 s
+[phase 2 fine] cycle 13: mass 0.4105 / 1.0000 g (0.5895 g to go, +0.0036 g this cycle), elapsed 89.0 s
+[phase 2 fine] cycle 14: mass 0.4114 / 1.0000 g (0.5886 g to go, +0.0009 g this cycle), elapsed 93.0 s
+[phase 2 fine] cycle 15: mass 0.4116 / 1.0000 g (0.5884 g to go, +0.0002 g this cycle), elapsed 97.0 s
+[phase 2 fine] cycle 16: mass 0.4133 / 1.0000 g (0.5867 g to go, +0.0017 g this cycle), elapsed 101.0 s
+[phase 2 fine] cycle 17: mass 0.4147 / 1.0000 g (0.5853 g to go, +0.0014 g this cycle), elapsed 105.0 s
+[phase 2 fine] cycle 18: mass 0.4154 / 1.0000 g (0.5846 g to go, +0.0007 g this cycle), elapsed 109.0 s
+[phase 2 fine] cycle 19: mass 0.4156 / 1.0000 g (0.5844 g to go, +0.0002 g this cycle), elapsed 113.0 s
+[phase 2 fine] cycle 20: mass 0.4203 / 1.0000 g (0.5797 g to go, +0.0047 g this cycle), elapsed 117.0 s
+[phase 2 fine] cycle 21: mass 0.4214 / 1.0000 g (0.5786 g to go, +0.0011 g this cycle), elapsed 121.0 s
+[phase 2 fine] cycle 22: mass 0.4214 / 1.0000 g (0.5786 g to go, +0.0000 g this cycle), elapsed 125.0 s
+[phase 2 fine] cycle 23: mass 0.4222 / 1.0000 g (0.5778 g to go, +0.0008 g this cycle), elapsed 129.0 s
+[phase 2 fine] cycle 24: mass 0.4230 / 1.0000 g (0.5770 g to go, +0.0008 g this cycle), elapsed 133.0 s
+[phase 2 fine] cycle 25: mass 0.4259 / 1.0000 g (0.5741 g to go, +0.0029 g this cycle), elapsed 137.0 s
+[phase 2 fine] cycle 26: mass 0.4265 / 1.0000 g (0.5735 g to go, +0.0006 g this cycle), elapsed 141.0 s
+[phase 2 fine] cycle 27: mass 0.4303 / 1.0000 g (0.5697 g to go, +0.0038 g this cycle), elapsed 145.0 s
+[phase 2 fine] cycle 28: mass 0.4348 / 1.0000 g (0.5652 g to go, +0.0045 g this cycle), elapsed 149.0 s
+[phase 2 fine] cycle 29: mass 0.4359 / 1.0000 g (0.5641 g to go, +0.0011 g this cycle), elapsed 153.0 s
+[phase 2 fine] cycle 30: mass 0.4360 / 1.0000 g (0.5640 g to go, +0.0001 g this cycle), elapsed 157.0 s
+[phase 2 fine] cycle 31: mass 0.4362 / 1.0000 g (0.5638 g to go, +0.0002 g this cycle), elapsed 161.0 s
+[phase 2 fine] cycle 32: mass 0.4373 / 1.0000 g (0.5627 g to go, +0.0011 g this cycle), elapsed 165.0 s
+[phase 2 fine] cycle 33: mass 0.4387 / 1.0000 g (0.5613 g to go, +0.0014 g this cycle), elapsed 169.0 s
+[phase 2 fine] cycle 34: mass 0.4389 / 1.0000 g (0.5611 g to go, +0.0002 g this cycle), elapsed 173.0 s
+[phase 2 fine] cycle 35: mass 0.4400 / 1.0000 g (0.5600 g to go, +0.0011 g this cycle), elapsed 177.0 s
+[phase 2 fine] cycle 36: mass 0.4444 / 1.0000 g (0.5556 g to go, +0.0044 g this cycle), elapsed 181.0 s
+[phase 2 fine] cycle 37: mass 0.4478 / 1.0000 g (0.5522 g to go, +0.0034 g this cycle), elapsed 185.0 s
+[phase 2 fine] cycle 38: mass 0.4481 / 1.0000 g (0.5519 g to go, +0.0003 g this cycle), elapsed 189.0 s
+[phase 2 fine] cycle 39: mass 0.4487 / 1.0000 g (0.5513 g to go, +0.0006 g this cycle), elapsed 193.0 s
+[phase 2 fine] cycle 40: mass 0.4495 / 1.0000 g (0.5505 g to go, +0.0008 g this cycle), elapsed 197.0 s
+[phase 2 fine] cycle 41: mass 0.4516 / 1.0000 g (0.5484 g to go, +0.0021 g this cycle), elapsed 201.0 s
+[phase 2 fine] cycle 42: mass 0.4526 / 1.0000 g (0.5474 g to go, +0.0010 g this cycle), elapsed 205.0 s
+[phase 2 fine] cycle 43: mass 0.4538 / 1.0000 g (0.5462 g to go, +0.0012 g this cycle), elapsed 209.0 s
+[phase 2 fine] cycle 44: mass 0.4584 / 1.0000 g (0.5416 g to go, +0.0046 g this cycle), elapsed 213.0 s
+[phase 2 fine] cycle 45: mass 0.4606 / 1.0000 g (0.5394 g to go, +0.0022 g this cycle), elapsed 217.0 s
+[phase 2 fine] cycle 46: mass 0.4608 / 1.0000 g (0.5392 g to go, +0.0002 g this cycle), elapsed 221.0 s
+[phase 2 fine] cycle 47: mass 0.4619 / 1.0000 g (0.5381 g to go, +0.0011 g this cycle), elapsed 225.0 s
+[phase 2 fine] cycle 48: mass 0.4630 / 1.0000 g (0.5370 g to go, +0.0011 g this cycle), elapsed 229.0 s
+[phase 2 fine] cycle 49: mass 0.4632 / 1.0000 g (0.5368 g to go, +0.0002 g this cycle), elapsed 233.0 s
+[phase 2 fine] cycle 50: mass 0.4651 / 1.0000 g (0.5349 g to go, +0.0019 g this cycle), elapsed 237.0 s
+[phase 2 fine] cycle 51: mass 0.4656 / 1.0000 g (0.5344 g to go, +0.0005 g this cycle), elapsed 241.0 s
+[phase 2 fine] cycle 52: mass 0.4713 / 1.0000 g (0.5287 g to go, +0.0057 g this cycle), elapsed 246.0 s
+[phase 2 fine] cycle 53: mass 0.4724 / 1.0000 g (0.5276 g to go, +0.0011 g this cycle), elapsed 250.0 s
+[phase 2 fine] cycle 54: mass 0.4731 / 1.0000 g (0.5269 g to go, +0.0007 g this cycle), elapsed 254.0 s
+[phase 2 fine] cycle 55: mass 0.4740 / 1.0000 g (0.5260 g to go, +0.0009 g this cycle), elapsed 258.0 s
+[phase 2 fine] cycle 56: mass 0.4752 / 1.0000 g (0.5248 g to go, +0.0012 g this cycle), elapsed 262.0 s
+[phase 2 fine] cycle 57: mass 0.4762 / 1.0000 g (0.5238 g to go, +0.0010 g this cycle), elapsed 266.0 s
+[phase 2 fine] cycle 58: mass 0.4770 / 1.0000 g (0.5230 g to go, +0.0008 g this cycle), elapsed 270.0 s
+[phase 2 fine] cycle 59: mass 0.4771 / 1.0000 g (0.5229 g to go, +0.0001 g this cycle), elapsed 274.0 s
+[phase 2 fine] cycle 60: mass 0.4842 / 1.0000 g (0.5158 g to go, +0.0071 g this cycle), elapsed 278.0 s
+[phase 2 fine] cycle 61: mass 0.4847 / 1.0000 g (0.5153 g to go, +0.0005 g this cycle), elapsed 282.0 s
+[phase 2 fine] cycle 62: mass 0.4852 / 1.0000 g (0.5148 g to go, +0.0005 g this cycle), elapsed 286.0 s
+[phase 2 fine] cycle 63: mass 0.4860 / 1.0000 g (0.5140 g to go, +0.0008 g this cycle), elapsed 290.0 s
+[phase 2 fine] cycle 64: mass 0.4871 / 1.0000 g (0.5129 g to go, +0.0011 g this cycle), elapsed 294.0 s
+[phase 2 fine] cycle 65: mass 0.4881 / 1.0000 g (0.5119 g to go, +0.0010 g this cycle), elapsed 298.0 s
+[phase 2 fine] cycle 66: mass 0.4891 / 1.0000 g (0.5109 g to go, +0.0010 g this cycle), elapsed 302.0 s
+[phase 2 fine] cycle 67: mass 0.4919 / 1.0000 g (0.5081 g to go, +0.0028 g this cycle), elapsed 306.0 s
+[phase 2 fine] cycle 68: mass 0.4949 / 1.0000 g (0.5051 g to go, +0.0030 g this cycle), elapsed 310.0 s
+[phase 2 fine] cycle 69: mass 0.4965 / 1.0000 g (0.5035 g to go, +0.0016 g this cycle), elapsed 314.0 s
+[phase 2 fine] cycle 70: mass 0.4976 / 1.0000 g (0.5024 g to go, +0.0011 g this cycle), elapsed 318.0 s
+[phase 2 fine] cycle 71: mass 0.4977 / 1.0000 g (0.5023 g to go, +0.0001 g this cycle), elapsed 322.0 s
+[phase 2 fine] cycle 72: mass 0.4988 / 1.0000 g (0.5012 g to go, +0.0011 g this cycle), elapsed 326.0 s
+[phase 2 fine] cycle 73: mass 0.5005 / 1.0000 g (0.4995 g to go, +0.0017 g this cycle), elapsed 330.0 s
+[phase 2 fine] cycle 74: mass 0.5007 / 1.0000 g (0.4993 g to go, +0.0002 g this cycle), elapsed 334.0 s
+[phase 2 fine] cycle 75: mass 0.5020 / 1.0000 g (0.4980 g to go, +0.0013 g this cycle), elapsed 338.0 s
+[phase 2 fine] cycle 76: mass 0.5065 / 1.0000 g (0.4935 g to go, +0.0045 g this cycle), elapsed 342.0 s
+[phase 2 fine] cycle 77: mass 0.5091 / 1.0000 g (0.4909 g to go, +0.0026 g this cycle), elapsed 346.0 s
+[phase 2 fine] cycle 78: mass 0.5091 / 1.0000 g (0.4909 g to go, +0.0000 g this cycle), elapsed 350.0 s
+[phase 2 fine] cycle 79: mass 0.5098 / 1.0000 g (0.4902 g to go, +0.0007 g this cycle), elapsed 354.0 s
+[phase 2 fine] cycle 80: mass 0.5107 / 1.0000 g (0.4893 g to go, +0.0009 g this cycle), elapsed 358.0 s
+[phase 2 fine] cycle 81: mass 0.5123 / 1.0000 g (0.4877 g to go, +0.0016 g this cycle), elapsed 362.0 s
+[phase 2 fine] cycle 82: mass 0.5125 / 1.0000 g (0.4875 g to go, +0.0002 g this cycle), elapsed 366.0 s
+[phase 2 fine] cycle 83: mass 0.5144 / 1.0000 g (0.4856 g to go, +0.0019 g this cycle), elapsed 370.0 s
+[phase 2 fine] cycle 84: mass 0.5202 / 1.0000 g (0.4798 g to go, +0.0058 g this cycle), elapsed 374.0 s
+[phase 2 fine] cycle 85: mass 0.5207 / 1.0000 g (0.4793 g to go, +0.0005 g this cycle), elapsed 378.0 s
+[phase 2 fine] cycle 86: mass 0.5214 / 1.0000 g (0.4786 g to go, +0.0007 g this cycle), elapsed 382.0 s
+[phase 2 fine] cycle 87: mass 0.5221 / 1.0000 g (0.4779 g to go, +0.0007 g this cycle), elapsed 386.0 s
+[phase 2 fine] cycle 88: mass 0.5235 / 1.0000 g (0.4765 g to go, +0.0014 g this cycle), elapsed 390.0 s
+[phase 2 fine] cycle 89: mass 0.5242 / 1.0000 g (0.4758 g to go, +0.0007 g this cycle), elapsed 394.0 s
+[phase 2 fine] cycle 90: mass 0.5252 / 1.0000 g (0.4748 g to go, +0.0010 g this cycle), elapsed 398.0 s
+[phase 2 fine] cycle 91: mass 0.5266 / 1.0000 g (0.4734 g to go, +0.0014 g this cycle), elapsed 402.0 s
+[phase 2 fine] cycle 92: mass 0.5331 / 1.0000 g (0.4669 g to go, +0.0065 g this cycle), elapsed 406.0 s
+[phase 2 fine] cycle 93: mass 0.5336 / 1.0000 g (0.4664 g to go, +0.0005 g this cycle), elapsed 410.0 s
+[phase 2 fine] cycle 94: mass 0.5345 / 1.0000 g (0.4655 g to go, +0.0009 g this cycle), elapsed 414.0 s
+[phase 2 fine] cycle 95: mass 0.5345 / 1.0000 g (0.4655 g to go, +0.0000 g this cycle), elapsed 418.0 s
+[phase 2 fine] cycle 96: mass 0.5354 / 1.0000 g (0.4646 g to go, +0.0009 g this cycle), elapsed 422.0 s
+[phase 2 fine] cycle 97: mass 0.5365 / 1.0000 g (0.4635 g to go, +0.0011 g this cycle), elapsed 426.0 s
+[phase 2 fine] cycle 98: mass 0.5381 / 1.0000 g (0.4619 g to go, +0.0016 g this cycle), elapsed 430.0 s
+[phase 2 fine] cycle 99: mass 0.5404 / 1.0000 g (0.4596 g to go, +0.0023 g this cycle), elapsed 434.0 s
+[phase 2 fine] cycle 100: mass 0.5434 / 1.0000 g (0.4566 g to go, +0.0030 g this cycle), elapsed 438.0 s
+[phase 2 fine] cycle 101: mass 0.5457 / 1.0000 g (0.4543 g to go, +0.0023 g this cycle), elapsed 442.0 s
+[phase 2 fine] cycle 102: mass 0.5467 / 1.0000 g (0.4533 g to go, +0.0010 g this cycle), elapsed 446.0 s
+[phase 2 fine] cycle 103: mass 0.5468 / 1.0000 g (0.4532 g to go, +0.0001 g this cycle), elapsed 450.0 s
+[phase 2 fine] cycle 104: mass 0.5483 / 1.0000 g (0.4517 g to go, +0.0015 g this cycle), elapsed 454.0 s
+[phase 2 fine] cycle 105: mass 0.5492 / 1.0000 g (0.4508 g to go, +0.0009 g this cycle), elapsed 458.0 s
+[phase 2 fine] cycle 106: mass 0.5503 / 1.0000 g (0.4497 g to go, +0.0011 g this cycle), elapsed 462.0 s
+[phase 2 fine] cycle 107: mass 0.5513 / 1.0000 g (0.4487 g to go, +0.0010 g this cycle), elapsed 466.0 s
+[phase 2 fine] cycle 108: mass 0.5553 / 1.0000 g (0.4447 g to go, +0.0040 g this cycle), elapsed 470.0 s
+[phase 2 fine] cycle 109: mass 0.5572 / 1.0000 g (0.4428 g to go, +0.0019 g this cycle), elapsed 474.0 s
+[phase 2 fine] cycle 110: mass 0.5584 / 1.0000 g (0.4416 g to go, +0.0012 g this cycle), elapsed 478.0 s
+[phase 2 fine] cycle 111: mass 0.5588 / 1.0000 g (0.4412 g to go, +0.0004 g this cycle), elapsed 482.0 s
+[phase 2 fine] cycle 112: mass 0.5596 / 1.0000 g (0.4404 g to go, +0.0008 g this cycle), elapsed 486.0 s
+[phase 2 fine] cycle 113: mass 0.5616 / 1.0000 g (0.4384 g to go, +0.0020 g this cycle), elapsed 491.0 s
+[phase 2 fine] cycle 114: mass 0.5617 / 1.0000 g (0.4383 g to go, +0.0001 g this cycle), elapsed 495.0 s
+[phase 2 fine] cycle 115: mass 0.5623 / 1.0000 g (0.4377 g to go, +0.0006 g this cycle), elapsed 499.0 s
+[phase 2 fine] cycle 116: mass 0.5678 / 1.0000 g (0.4322 g to go, +0.0055 g this cycle), elapsed 503.0 s
+[phase 2 fine] cycle 117: mass 0.5707 / 1.0000 g (0.4293 g to go, +0.0029 g this cycle), elapsed 507.0 s
+[phase 2 fine] cycle 118: mass 0.5708 / 1.0000 g (0.4292 g to go, +0.0001 g this cycle), elapsed 511.0 s
+[phase 2 fine] cycle 119: mass 0.5718 / 1.0000 g (0.4282 g to go, +0.0010 g this cycle), elapsed 515.0 s
+[phase 2 fine] cycle 120: mass 0.5726 / 1.0000 g (0.4274 g to go, +0.0008 g this cycle), elapsed 519.0 s
+[phase 2 fine] cycle 121: mass 0.5737 / 1.0000 g (0.4263 g to go, +0.0011 g this cycle), elapsed 523.0 s
+[phase 2 fine] cycle 122: mass 0.5747 / 1.0000 g (0.4253 g to go, +0.0010 g this cycle), elapsed 527.0 s
+[phase 2 fine] cycle 123: mass 0.5773 / 1.0000 g (0.4227 g to go, +0.0026 g this cycle), elapsed 531.0 s
+[phase 2 fine] cycle 124: mass 0.5815 / 1.0000 g (0.4185 g to go, +0.0042 g this cycle), elapsed 535.0 s
+[phase 2 fine] cycle 125: mass 0.5822 / 1.0000 g (0.4178 g to go, +0.0007 g this cycle), elapsed 539.0 s
+[phase 2 fine] cycle 126: mass 0.5828 / 1.0000 g (0.4172 g to go, +0.0006 g this cycle), elapsed 543.0 s
+[phase 2 fine] cycle 127: mass 0.5829 / 1.0000 g (0.4171 g to go, +0.0001 g this cycle), elapsed 547.0 s
+[phase 2 fine] cycle 128: mass 0.5841 / 1.0000 g (0.4159 g to go, +0.0012 g this cycle), elapsed 551.0 s
+[phase 2 fine] cycle 129: mass 0.5856 / 1.0000 g (0.4144 g to go, +0.0015 g this cycle), elapsed 555.0 s
+[phase 2 fine] cycle 130: mass 0.5864 / 1.0000 g (0.4136 g to go, +0.0008 g this cycle), elapsed 559.0 s
+[phase 2 fine] cycle 131: mass 0.5871 / 1.0000 g (0.4129 g to go, +0.0007 g this cycle), elapsed 563.0 s
+[phase 2 fine] cycle 132: mass 0.5908 / 1.0000 g (0.4092 g to go, +0.0037 g this cycle), elapsed 567.0 s
+[phase 2 fine] cycle 133: mass 0.5952 / 1.0000 g (0.4048 g to go, +0.0044 g this cycle), elapsed 571.0 s
+[phase 2 fine] cycle 134: mass 0.5959 / 1.0000 g (0.4041 g to go, +0.0007 g this cycle), elapsed 575.0 s
+[phase 2 fine] cycle 135: mass 0.5967 / 1.0000 g (0.4033 g to go, +0.0008 g this cycle), elapsed 579.0 s
+[phase 2 fine] cycle 136: mass 0.5976 / 1.0000 g (0.4024 g to go, +0.0009 g this cycle), elapsed 583.0 s
+[phase 2 fine] cycle 137: mass 0.5990 / 1.0000 g (0.4010 g to go, +0.0014 g this cycle), elapsed 587.0 s
+[phase 2 fine] cycle 138: mass 0.5998 / 1.0000 g (0.4002 g to go, +0.0008 g this cycle), elapsed 591.0 s
+[phase 2 fine] cycle 139: mass 0.6015 / 1.0000 g (0.3985 g to go, +0.0017 g this cycle), elapsed 595.0 s
+[phase 2 fine] cycle 140: mass 0.6052 / 1.0000 g (0.3948 g to go, +0.0037 g this cycle), elapsed 599.0 s
+[phase 2 fine] cycle 141: mass 0.6064 / 1.0000 g (0.3936 g to go, +0.0012 g this cycle), elapsed 603.0 s
+[phase 2 fine] cycle 142: mass 0.6076 / 1.0000 g (0.3924 g to go, +0.0012 g this cycle), elapsed 607.0 s
+[phase 2 fine] cycle 143: mass 0.6082 / 1.0000 g (0.3918 g to go, +0.0006 g this cycle), elapsed 611.0 s
+[phase 2 fine] cycle 144: mass 0.6083 / 1.0000 g (0.3917 g to go, +0.0001 g this cycle), elapsed 615.0 s
+[phase 2 fine] cycle 145: mass 0.6098 / 1.0000 g (0.3902 g to go, +0.0015 g this cycle), elapsed 619.0 s
+[phase 2 fine] cycle 146: mass 0.6118 / 1.0000 g (0.3882 g to go, +0.0020 g this cycle), elapsed 623.0 s
+[phase 2 fine] cycle 147: mass 0.6138 / 1.0000 g (0.3862 g to go, +0.0020 g this cycle), elapsed 627.0 s
+[phase 2 fine] cycle 148: mass 0.6168 / 1.0000 g (0.3832 g to go, +0.0030 g this cycle), elapsed 631.0 s
+[phase 2 fine] cycle 149: mass 0.6186 / 1.0000 g (0.3814 g to go, +0.0018 g this cycle), elapsed 635.0 s
+[phase 2 fine] cycle 150: mass 0.6188 / 1.0000 g (0.3812 g to go, +0.0002 g this cycle), elapsed 639.0 s
+[phase 2 fine] cycle 151: mass 0.6197 / 1.0000 g (0.3803 g to go, +0.0009 g this cycle), elapsed 643.0 s
+[phase 2 fine] cycle 152: mass 0.6208 / 1.0000 g (0.3792 g to go, +0.0011 g this cycle), elapsed 647.0 s
+[phase 2 fine] cycle 153: mass 0.6223 / 1.0000 g (0.3777 g to go, +0.0015 g this cycle), elapsed 651.0 s
+[phase 2 fine] cycle 154: mass 0.6239 / 1.0000 g (0.3761 g to go, +0.0016 g this cycle), elapsed 655.0 s
+[phase 2 fine] cycle 155: mass 0.6241 / 1.0000 g (0.3759 g to go, +0.0002 g this cycle), elapsed 659.0 s
+[phase 2 fine] cycle 156: mass 0.6283 / 1.0000 g (0.3717 g to go, +0.0042 g this cycle), elapsed 663.0 s
+[phase 2 fine] cycle 157: mass 0.6309 / 1.0000 g (0.3691 g to go, +0.0026 g this cycle), elapsed 667.0 s
+[phase 2 fine] cycle 158: mass 0.6310 / 1.0000 g (0.3690 g to go, +0.0001 g this cycle), elapsed 671.0 s
+[phase 2 fine] cycle 159: mass 0.6319 / 1.0000 g (0.3681 g to go, +0.0009 g this cycle), elapsed 675.0 s
+[phase 2 fine] cycle 160: mass 0.6328 / 1.0000 g (0.3672 g to go, +0.0009 g this cycle), elapsed 679.0 s
+[phase 2 fine] cycle 161: mass 0.6341 / 1.0000 g (0.3659 g to go, +0.0013 g this cycle), elapsed 683.0 s
+[phase 2 fine] cycle 162: mass 0.6349 / 1.0000 g (0.3651 g to go, +0.0008 g this cycle), elapsed 687.0 s
+[phase 2 fine] cycle 163: mass 0.6358 / 1.0000 g (0.3642 g to go, +0.0009 g this cycle), elapsed 691.0 s
+[phase 2 fine] cycle 164: mass 0.6399 / 1.0000 g (0.3601 g to go, +0.0041 g this cycle), elapsed 695.0 s
+[phase 2 fine] cycle 165: mass 0.6421 / 1.0000 g (0.3579 g to go, +0.0022 g this cycle), elapsed 699.0 s
+[phase 2 fine] cycle 166: mass 0.6427 / 1.0000 g (0.3573 g to go, +0.0006 g this cycle), elapsed 703.0 s
+[phase 2 fine] cycle 167: mass 0.6433 / 1.0000 g (0.3567 g to go, +0.0006 g this cycle), elapsed 707.0 s
+[phase 2 fine] cycle 168: mass 0.6444 / 1.0000 g (0.3556 g to go, +0.0011 g this cycle), elapsed 711.0 s
+[phase 2 fine] cycle 169: mass 0.6455 / 1.0000 g (0.3545 g to go, +0.0011 g this cycle), elapsed 715.0 s
+[phase 2 fine] cycle 170: mass 0.6460 / 1.0000 g (0.3540 g to go, +0.0005 g this cycle), elapsed 719.0 s
+[phase 2 fine] cycle 171: mass 0.6484 / 1.0000 g (0.3516 g to go, +0.0024 g this cycle), elapsed 723.0 s
+[phase 2 fine] cycle 172: mass 0.6521 / 1.0000 g (0.3479 g to go, +0.0037 g this cycle), elapsed 727.0 s
+[phase 2 fine] cycle 173: mass 0.6538 / 1.0000 g (0.3462 g to go, +0.0017 g this cycle), elapsed 731.0 s
+[phase 2 fine] cycle 174: mass 0.6538 / 1.0000 g (0.3462 g to go, +0.0000 g this cycle), elapsed 736.0 s
+[phase 2 fine] cycle 175: mass 0.6552 / 1.0000 g (0.3448 g to go, +0.0014 g this cycle), elapsed 740.0 s
+[phase 2 fine] cycle 176: mass 0.6565 / 1.0000 g (0.3435 g to go, +0.0013 g this cycle), elapsed 744.0 s
+[phase 2 fine] cycle 177: mass 0.6576 / 1.0000 g (0.3424 g to go, +0.0011 g this cycle), elapsed 748.0 s
+[phase 2 fine] cycle 178: mass 0.6584 / 1.0000 g (0.3416 g to go, +0.0008 g this cycle), elapsed 752.0 s
+[phase 2 fine] cycle 179: mass 0.6593 / 1.0000 g (0.3407 g to go, +0.0009 g this cycle), elapsed 756.0 s
+[phase 2 fine] cycle 180: mass 0.6637 / 1.0000 g (0.3363 g to go, +0.0044 g this cycle), elapsed 760.0 s
+[phase 2 fine] cycle 181: mass 0.6653 / 1.0000 g (0.3347 g to go, +0.0016 g this cycle), elapsed 764.0 s
+[phase 2 fine] cycle 182: mass 0.6655 / 1.0000 g (0.3345 g to go, +0.0002 g this cycle), elapsed 768.0 s
+[phase 2 fine] cycle 183: mass 0.6663 / 1.0000 g (0.3337 g to go, +0.0008 g this cycle), elapsed 772.0 s
+[phase 2 fine] cycle 184: mass 0.6678 / 1.0000 g (0.3322 g to go, +0.0015 g this cycle), elapsed 776.0 s
+[phase 2 fine] cycle 185: mass 0.6687 / 1.0000 g (0.3313 g to go, +0.0009 g this cycle), elapsed 780.0 s
+[phase 2 fine] cycle 186: mass 0.6704 / 1.0000 g (0.3296 g to go, +0.0017 g this cycle), elapsed 784.0 s
+[phase 2 fine] cycle 187: mass 0.6724 / 1.0000 g (0.3276 g to go, +0.0020 g this cycle), elapsed 788.0 s
+[phase 2 fine] cycle 188: mass 0.6757 / 1.0000 g (0.3243 g to go, +0.0033 g this cycle), elapsed 792.0 s
+[phase 2 fine] cycle 189: mass 0.6775 / 1.0000 g (0.3225 g to go, +0.0018 g this cycle), elapsed 796.0 s
+[phase 2 fine] cycle 190: mass 0.6777 / 1.0000 g (0.3223 g to go, +0.0002 g this cycle), elapsed 800.0 s
+[phase 2 fine] cycle 191: mass 0.6787 / 1.0000 g (0.3213 g to go, +0.0010 g this cycle), elapsed 804.0 s
+[phase 2 fine] cycle 192: mass 0.6796 / 1.0000 g (0.3204 g to go, +0.0009 g this cycle), elapsed 808.0 s
+[phase 2 fine] cycle 193: mass 0.6812 / 1.0000 g (0.3188 g to go, +0.0016 g this cycle), elapsed 812.0 s
+[phase 2 fine] cycle 194: mass 0.6817 / 1.0000 g (0.3183 g to go, +0.0005 g this cycle), elapsed 816.0 s
+[phase 2 fine] cycle 195: mass 0.6827 / 1.0000 g (0.3173 g to go, +0.0010 g this cycle), elapsed 820.0 s
+[phase 2 fine] cycle 196: mass 0.6866 / 1.0000 g (0.3134 g to go, +0.0039 g this cycle), elapsed 824.0 s
+[phase 2 fine] cycle 197: mass 0.6897 / 1.0000 g (0.3103 g to go, +0.0031 g this cycle), elapsed 828.0 s
+[phase 2 fine] cycle 198: mass 0.6903 / 1.0000 g (0.3097 g to go, +0.0006 g this cycle), elapsed 832.0 s
+[phase 2 fine] cycle 199: mass 0.6904 / 1.0000 g (0.3096 g to go, +0.0001 g this cycle), elapsed 836.0 s
+[phase 2 fine] cycle 200: mass 0.6928 / 1.0000 g (0.3072 g to go, +0.0024 g this cycle), elapsed 840.0 s
+[phase 2 fine] cycle budget (200) exhausted
+=== phase 2/3 'fine' end (200 cycles): mass 0.6928 / 1.0000 g (0.3072 g to go, +0.2997 g this phase), elapsed 840.0 s
+[dose] done: DoseResult(cycle-budget: 0.6928/1.0000 g in 840.0s; cycles bulk:113, fine:200; 54.33 auger rev, 0 taps)
+DOSE,1,1.0000,0.6928,-0.3072,cycle-budget,840.0,54.33,0,bulk:113;fine:200,2077786
+PROMPT,dose 2 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 4: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.0100 / 1.0000 g (0.9900 g to go, +0.0100 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.0130 / 1.0000 g (0.9870 g to go, +0.0030 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.0141 / 1.0000 g (0.9859 g to go, +0.0011 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0194 / 1.0000 g (0.9806 g to go, +0.0053 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0248 / 1.0000 g (0.9752 g to go, +0.0054 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0253 / 1.0000 g (0.9747 g to go, +0.0005 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0257 / 1.0000 g (0.9743 g to go, +0.0004 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.0297 / 1.0000 g (0.9703 g to go, +0.0040 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.0336 / 1.0000 g (0.9664 g to go, +0.0039 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.0344 / 1.0000 g (0.9656 g to go, +0.0008 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.0351 / 1.0000 g (0.9649 g to go, +0.0007 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.0399 / 1.0000 g (0.9601 g to go, +0.0048 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.0419 / 1.0000 g (0.9581 g to go, +0.0020 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.0429 / 1.0000 g (0.9571 g to go, +0.0010 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.0439 / 1.0000 g (0.9561 g to go, +0.0010 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.0500 / 1.0000 g (0.9500 g to go, +0.0061 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 21 (unstable): mass 0.0519 / 1.0000 g (0.9481 g to go, +0.0019 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 22 (unstable): mass 0.0524 / 1.0000 g (0.9476 g to go, +0.0005 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 23 (unstable): mass 0.0559 / 1.0000 g (0.9441 g to go, +0.0035 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 24 (unstable): mass 0.0617 / 1.0000 g (0.9383 g to go, +0.0058 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 25 (unstable): mass 0.0627 / 1.0000 g (0.9373 g to go, +0.0010 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 26 (unstable): mass 0.0636 / 1.0000 g (0.9364 g to go, +0.0009 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 27 (unstable): mass 0.0681 / 1.0000 g (0.9319 g to go, +0.0045 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 28 (unstable): mass 0.0741 / 1.0000 g (0.9259 g to go, +0.0060 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 29 (unstable): mass 0.0747 / 1.0000 g (0.9253 g to go, +0.0006 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 30 (unstable): mass 0.0760 / 1.0000 g (0.9240 g to go, +0.0013 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 31 (unstable): mass 0.0817 / 1.0000 g (0.9183 g to go, +0.0057 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 32 (unstable): mass 0.0869 / 1.0000 g (0.9131 g to go, +0.0052 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 33 (unstable): mass 0.0877 / 1.0000 g (0.9123 g to go, +0.0008 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 34 (unstable): mass 0.0894 / 1.0000 g (0.9106 g to go, +0.0017 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 35 (unstable): mass 0.0995 / 1.0000 g (0.9005 g to go, +0.0101 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 36 (unstable): mass 0.1048 / 1.0000 g (0.8952 g to go, +0.0053 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 37 (unstable): mass 0.1058 / 1.0000 g (0.8942 g to go, +0.0010 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 38 (unstable): mass 0.1090 / 1.0000 g (0.8910 g to go, +0.0032 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 39 (unstable): mass 0.1139 / 1.0000 g (0.8861 g to go, +0.0049 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 40 (unstable): mass 0.1202 / 1.0000 g (0.8798 g to go, +0.0063 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 41 (unstable): mass 0.1217 / 1.0000 g (0.8783 g to go, +0.0015 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 42 (unstable): mass 0.1253 / 1.0000 g (0.8747 g to go, +0.0036 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 43 (unstable): mass 0.1326 / 1.0000 g (0.8674 g to go, +0.0073 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 44 (unstable): mass 0.1344 / 1.0000 g (0.8656 g to go, +0.0018 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 45 (unstable): mass 0.1361 / 1.0000 g (0.8639 g to go, +0.0017 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 46 (unstable): mass 0.1412 / 1.0000 g (0.8588 g to go, +0.0051 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 47 (unstable): mass 0.1461 / 1.0000 g (0.8539 g to go, +0.0049 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 48 (unstable): mass 0.1467 / 1.0000 g (0.8533 g to go, +0.0006 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 49 (unstable): mass 0.1474 / 1.0000 g (0.8526 g to go, +0.0007 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 50 (unstable): mass 0.1535 / 1.0000 g (0.8465 g to go, +0.0061 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 51 (unstable): mass 0.1589 / 1.0000 g (0.8411 g to go, +0.0054 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 52 (unstable): mass 0.1595 / 1.0000 g (0.8405 g to go, +0.0006 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 53 (unstable): mass 0.1608 / 1.0000 g (0.8392 g to go, +0.0013 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 54 (unstable): mass 0.1691 / 1.0000 g (0.8309 g to go, +0.0083 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 55 (unstable): mass 0.1724 / 1.0000 g (0.8276 g to go, +0.0033 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 56 (unstable): mass 0.1730 / 1.0000 g (0.8270 g to go, +0.0006 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 57 (unstable): mass 0.1767 / 1.0000 g (0.8233 g to go, +0.0037 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 58 (unstable): mass 0.1852 / 1.0000 g (0.8148 g to go, +0.0085 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 59 (unstable): mass 0.1882 / 1.0000 g (0.8118 g to go, +0.0030 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 60 (unstable): mass 0.1888 / 1.0000 g (0.8112 g to go, +0.0006 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 61 (unstable): mass 0.1929 / 1.0000 g (0.8071 g to go, +0.0041 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 62 (unstable): mass 0.2002 / 1.0000 g (0.7998 g to go, +0.0073 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 63 (unstable): mass 0.2015 / 1.0000 g (0.7985 g to go, +0.0013 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 64 (unstable): mass 0.2017 / 1.0000 g (0.7983 g to go, +0.0002 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 65 (unstable): mass 0.2030 / 1.0000 g (0.7970 g to go, +0.0013 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 66 (unstable): mass 0.2120 / 1.0000 g (0.7880 g to go, +0.0090 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 67 (unstable): mass 0.2142 / 1.0000 g (0.7858 g to go, +0.0022 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 68 (unstable): mass 0.2159 / 1.0000 g (0.7841 g to go, +0.0017 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 69 (unstable): mass 0.2231 / 1.0000 g (0.7769 g to go, +0.0072 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 70 (unstable): mass 0.2304 / 1.0000 g (0.7696 g to go, +0.0073 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 71 (unstable): mass 0.2306 / 1.0000 g (0.7694 g to go, +0.0002 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 72 (unstable): mass 0.2318 / 1.0000 g (0.7682 g to go, +0.0012 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 73 (unstable): mass 0.2406 / 1.0000 g (0.7594 g to go, +0.0088 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 74 (unstable): mass 0.2444 / 1.0000 g (0.7556 g to go, +0.0038 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 75 (unstable): mass 0.2454 / 1.0000 g (0.7546 g to go, +0.0010 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 76 (unstable): mass 0.2508 / 1.0000 g (0.7492 g to go, +0.0054 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 77 (unstable): mass 0.2561 / 1.0000 g (0.7439 g to go, +0.0053 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 78 (unstable): mass 0.2571 / 1.0000 g (0.7429 g to go, +0.0010 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 79 (unstable): mass 0.2583 / 1.0000 g (0.7417 g to go, +0.0012 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 80 (unstable): mass 0.2628 / 1.0000 g (0.7372 g to go, +0.0045 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 81 (unstable): mass 0.2698 / 1.0000 g (0.7302 g to go, +0.0070 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 82 (unstable): mass 0.2709 / 1.0000 g (0.7291 g to go, +0.0011 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 83 (unstable): mass 0.2726 / 1.0000 g (0.7274 g to go, +0.0017 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 84 (unstable): mass 0.2809 / 1.0000 g (0.7191 g to go, +0.0083 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 85 (unstable): mass 0.2857 / 1.0000 g (0.7143 g to go, +0.0048 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 86 (unstable): mass 0.2858 / 1.0000 g (0.7142 g to go, +0.0001 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 87 (unstable): mass 0.2875 / 1.0000 g (0.7125 g to go, +0.0017 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 88 (unstable): mass 0.2941 / 1.0000 g (0.7059 g to go, +0.0066 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 89 (unstable): mass 0.2983 / 1.0000 g (0.7017 g to go, +0.0042 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 90 (unstable): mass 0.2984 / 1.0000 g (0.7016 g to go, +0.0001 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 91 (unstable): mass 0.3003 / 1.0000 g (0.6997 g to go, +0.0019 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 92 (unstable): mass 0.3091 / 1.0000 g (0.6909 g to go, +0.0088 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 93 (unstable): mass 0.3106 / 1.0000 g (0.6894 g to go, +0.0015 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 94 (unstable): mass 0.3114 / 1.0000 g (0.6886 g to go, +0.0008 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 95 (unstable): mass 0.3150 / 1.0000 g (0.6850 g to go, +0.0036 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 96 (unstable): mass 0.3219 / 1.0000 g (0.6781 g to go, +0.0069 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 97 (unstable): mass 0.3242 / 1.0000 g (0.6758 g to go, +0.0023 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 98 (unstable): mass 0.3252 / 1.0000 g (0.6748 g to go, +0.0010 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 99 (unstable): mass 0.3289 / 1.0000 g (0.6711 g to go, +0.0037 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 100 (unstable): mass 0.3352 / 1.0000 g (0.6648 g to go, +0.0063 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 101 (unstable): mass 0.3376 / 1.0000 g (0.6624 g to go, +0.0024 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 102 (unstable): mass 0.3398 / 1.0000 g (0.6602 g to go, +0.0022 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 103 (unstable): mass 0.3439 / 1.0000 g (0.6561 g to go, +0.0041 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 104 (unstable): mass 0.3493 / 1.0000 g (0.6507 g to go, +0.0054 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 105 (unstable): mass 0.3500 / 1.0000 g (0.6500 g to go, +0.0007 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 106 (unstable): mass 0.3535 / 1.0000 g (0.6465 g to go, +0.0035 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 107 (unstable): mass 0.3614 / 1.0000 g (0.6386 g to go, +0.0079 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 108 (unstable): mass 0.3639 / 1.0000 g (0.6361 g to go, +0.0025 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 109 (unstable): mass 0.3645 / 1.0000 g (0.6355 g to go, +0.0006 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 110 (unstable): mass 0.3679 / 1.0000 g (0.6321 g to go, +0.0034 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 111 (unstable): mass 0.3761 / 1.0000 g (0.6239 g to go, +0.0082 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 112 (unstable): mass 0.3786 / 1.0000 g (0.6214 g to go, +0.0025 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 113 (unstable): mass 0.3792 / 1.0000 g (0.6208 g to go, +0.0006 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 114 (unstable): mass 0.3829 / 1.0000 g (0.6171 g to go, +0.0037 g this poll), elapsed 34.0 s
+[phase 1 bulk] auger halted at 0.6171 g to go (halt threshold 0.6200 g); settling 800 ms
+[phase 1 bulk] settled: mass 0.3938 / 1.0000 g (0.6062 g to go, +0.0109 g while settling), elapsed 36.0 s
+=== phase 1/3 'bulk' end (114 cycles): mass 0.3938 / 1.0000 g (0.6062 g to go, +0.3938 g this phase), elapsed 36.0 s
+=== phase 2/3 'fine' start: 0.6062 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.3938 / 1.0000 g (0.6062 g to go, +0.0000 g this cycle), elapsed 40.0 s
+[phase 2 fine] cycle 2: mass 0.3942 / 1.0000 g (0.6058 g to go, +0.0004 g this cycle), elapsed 44.0 s
+[phase 2 fine] cycle 3: mass 0.3946 / 1.0000 g (0.6054 g to go, +0.0004 g this cycle), elapsed 48.0 s
+[phase 2 fine] cycle 4: mass 0.3962 / 1.0000 g (0.6038 g to go, +0.0016 g this cycle), elapsed 52.0 s
+[phase 2 fine] cycle 5: mass 0.4000 / 1.0000 g (0.6000 g to go, +0.0038 g this cycle), elapsed 56.0 s
+[phase 2 fine] cycle 6: mass 0.4001 / 1.0000 g (0.5999 g to go, +0.0001 g this cycle), elapsed 60.0 s
+[phase 2 fine] cycle 7: mass 0.4009 / 1.0000 g (0.5991 g to go, +0.0008 g this cycle), elapsed 64.0 s
+[phase 2 fine] cycle 8: mass 0.4019 / 1.0000 g (0.5981 g to go, +0.0010 g this cycle), elapsed 68.0 s
+[phase 2 fine] cycle 9: mass 0.4030 / 1.0000 g (0.5970 g to go, +0.0011 g this cycle), elapsed 72.0 s
+[phase 2 fine] cycle 10: mass 0.4036 / 1.0000 g (0.5964 g to go, +0.0006 g this cycle), elapsed 76.0 s
+[phase 2 fine] cycle 11: mass 0.4038 / 1.0000 g (0.5962 g to go, +0.0002 g this cycle), elapsed 80.0 s
+[phase 2 fine] cycle 12: mass 0.4071 / 1.0000 g (0.5929 g to go, +0.0033 g this cycle), elapsed 84.0 s
+[phase 2 fine] cycle 13: mass 0.4106 / 1.0000 g (0.5894 g to go, +0.0035 g this cycle), elapsed 89.0 s
+[phase 2 fine] cycle 14: mass 0.4108 / 1.0000 g (0.5892 g to go, +0.0002 g this cycle), elapsed 93.0 s
+[phase 2 fine] cycle 15: mass 0.4131 / 1.0000 g (0.5869 g to go, +0.0023 g this cycle), elapsed 97.0 s
+[phase 2 fine] cycle 16: mass 0.4131 / 1.0000 g (0.5869 g to go, +0.0000 g this cycle), elapsed 101.0 s
+[phase 2 fine] cycle 17: mass 0.4143 / 1.0000 g (0.5857 g to go, +0.0012 g this cycle), elapsed 105.0 s
+[phase 2 fine] cycle 18: mass 0.4152 / 1.0000 g (0.5848 g to go, +0.0009 g this cycle), elapsed 109.0 s
+[phase 2 fine] cycle 19: mass 0.4161 / 1.0000 g (0.5839 g to go, +0.0009 g this cycle), elapsed 113.0 s
+[phase 2 fine] cycle 20: mass 0.4186 / 1.0000 g (0.5814 g to go, +0.0025 g this cycle), elapsed 118.0 s
+[phase 2 fine] cycle 21: mass 0.4218 / 1.0000 g (0.5782 g to go, +0.0032 g this cycle), elapsed 122.0 s
+[phase 2 fine] cycle 22: mass 0.4220 / 1.0000 g (0.5780 g to go, +0.0002 g this cycle), elapsed 126.0 s
+[phase 2 fine] cycle 23: mass 0.4229 / 1.0000 g (0.5771 g to go, +0.0009 g this cycle), elapsed 130.0 s
+[phase 2 fine] cycle 24: mass 0.4252 / 1.0000 g (0.5748 g to go, +0.0023 g this cycle), elapsed 134.0 s
+[phase 2 fine] cycle 25: mass 0.4259 / 1.0000 g (0.5741 g to go, +0.0007 g this cycle), elapsed 138.0 s
+[phase 2 fine] cycle 26: mass 0.4267 / 1.0000 g (0.5733 g to go, +0.0008 g this cycle), elapsed 142.0 s
+[phase 2 fine] cycle 27: mass 0.4273 / 1.0000 g (0.5727 g to go, +0.0006 g this cycle), elapsed 146.0 s
+[phase 2 fine] cycle 28: mass 0.4341 / 1.0000 g (0.5659 g to go, +0.0068 g this cycle), elapsed 150.0 s
+[phase 2 fine] cycle 29: mass 0.4342 / 1.0000 g (0.5658 g to go, +0.0001 g this cycle), elapsed 155.0 s
+[phase 2 fine] cycle 30: mass 0.4348 / 1.0000 g (0.5652 g to go, +0.0006 g this cycle), elapsed 159.0 s
+[phase 2 fine] cycle 31: mass 0.4349 / 1.0000 g (0.5651 g to go, +0.0001 g this cycle), elapsed 163.0 s
+[phase 2 fine] cycle 32: mass 0.4356 / 1.0000 g (0.5644 g to go, +0.0007 g this cycle), elapsed 167.0 s
+[phase 2 fine] cycle 33: mass 0.4381 / 1.0000 g (0.5619 g to go, +0.0025 g this cycle), elapsed 171.0 s
+[phase 2 fine] cycle 34: mass 0.4383 / 1.0000 g (0.5617 g to go, +0.0002 g this cycle), elapsed 175.0 s
+[phase 2 fine] cycle 35: mass 0.4395 / 1.0000 g (0.5605 g to go, +0.0012 g this cycle), elapsed 179.0 s
+[phase 2 fine] cycle 36: mass 0.4456 / 1.0000 g (0.5544 g to go, +0.0061 g this cycle), elapsed 183.0 s
+[phase 2 fine] cycle 37: mass 0.4470 / 1.0000 g (0.5530 g to go, +0.0014 g this cycle), elapsed 187.0 s
+[phase 2 fine] cycle 38: mass 0.4469 / 1.0000 g (0.5531 g to go, -0.0001 g this cycle), elapsed 191.0 s
+[phase 2 fine] cycle 39: mass 0.4481 / 1.0000 g (0.5519 g to go, +0.0012 g this cycle), elapsed 195.0 s
+[phase 2 fine] cycle 40: mass 0.4496 / 1.0000 g (0.5504 g to go, +0.0015 g this cycle), elapsed 199.0 s
+[phase 2 fine] cycle 41: mass 0.4503 / 1.0000 g (0.5497 g to go, +0.0007 g this cycle), elapsed 203.0 s
+[phase 2 fine] cycle 42: mass 0.4513 / 1.0000 g (0.5487 g to go, +0.0010 g this cycle), elapsed 207.0 s
+[phase 2 fine] cycle 43: mass 0.4552 / 1.0000 g (0.5448 g to go, +0.0039 g this cycle), elapsed 211.0 s
+[phase 2 fine] cycle 44: mass 0.4590 / 1.0000 g (0.5410 g to go, +0.0038 g this cycle), elapsed 215.0 s
+[phase 2 fine] cycle 45: mass 0.4595 / 1.0000 g (0.5405 g to go, +0.0005 g this cycle), elapsed 219.0 s
+[phase 2 fine] cycle 46: mass 0.4602 / 1.0000 g (0.5398 g to go, +0.0007 g this cycle), elapsed 223.0 s
+[phase 2 fine] cycle 47: mass 0.4608 / 1.0000 g (0.5392 g to go, +0.0006 g this cycle), elapsed 227.0 s
+[phase 2 fine] cycle 48: mass 0.4618 / 1.0000 g (0.5382 g to go, +0.0010 g this cycle), elapsed 231.0 s
+[phase 2 fine] cycle 49: mass 0.4632 / 1.0000 g (0.5368 g to go, +0.0014 g this cycle), elapsed 235.0 s
+[phase 2 fine] cycle 50: mass 0.4638 / 1.0000 g (0.5362 g to go, +0.0006 g this cycle), elapsed 239.0 s
+[phase 2 fine] cycle 51: mass 0.4674 / 1.0000 g (0.5326 g to go, +0.0036 g this cycle), elapsed 243.0 s
+[phase 2 fine] cycle 52: mass 0.4684 / 1.0000 g (0.5316 g to go, +0.0010 g this cycle), elapsed 247.0 s
+[phase 2 fine] cycle 53: mass 0.4725 / 1.0000 g (0.5275 g to go, +0.0041 g this cycle), elapsed 251.0 s
+[phase 2 fine] cycle 54: mass 0.4734 / 1.0000 g (0.5266 g to go, +0.0009 g this cycle), elapsed 255.0 s
+[phase 2 fine] cycle 55: mass 0.4734 / 1.0000 g (0.5266 g to go, +0.0000 g this cycle), elapsed 259.0 s
+[phase 2 fine] cycle 56: mass 0.4743 / 1.0000 g (0.5257 g to go, +0.0009 g this cycle), elapsed 263.0 s
+[phase 2 fine] cycle 57: mass 0.4758 / 1.0000 g (0.5242 g to go, +0.0015 g this cycle), elapsed 267.0 s
+[phase 2 fine] cycle 58: mass 0.4768 / 1.0000 g (0.5232 g to go, +0.0010 g this cycle), elapsed 271.0 s
+[phase 2 fine] cycle 59: mass 0.4792 / 1.0000 g (0.5208 g to go, +0.0024 g this cycle), elapsed 275.0 s
+[phase 2 fine] cycle 60: mass 0.4828 / 1.0000 g (0.5172 g to go, +0.0036 g this cycle), elapsed 279.0 s
+[phase 2 fine] cycle 61: mass 0.4848 / 1.0000 g (0.5152 g to go, +0.0020 g this cycle), elapsed 283.0 s
+[phase 2 fine] cycle 62: mass 0.4848 / 1.0000 g (0.5152 g to go, +0.0000 g this cycle), elapsed 287.0 s
+[phase 2 fine] cycle 63: mass 0.4850 / 1.0000 g (0.5150 g to go, +0.0002 g this cycle), elapsed 291.0 s
+[phase 2 fine] cycle 64: mass 0.4863 / 1.0000 g (0.5137 g to go, +0.0013 g this cycle), elapsed 295.0 s
+[phase 2 fine] cycle 65: mass 0.4875 / 1.0000 g (0.5125 g to go, +0.0012 g this cycle), elapsed 299.0 s
+[phase 2 fine] cycle 66: mass 0.4885 / 1.0000 g (0.5115 g to go, +0.0010 g this cycle), elapsed 303.0 s
+[phase 2 fine] cycle 67: mass 0.4912 / 1.0000 g (0.5088 g to go, +0.0027 g this cycle), elapsed 307.0 s
+[phase 2 fine] cycle 68: mass 0.4957 / 1.0000 g (0.5043 g to go, +0.0045 g this cycle), elapsed 311.0 s
+[phase 2 fine] cycle 69: mass 0.4963 / 1.0000 g (0.5037 g to go, +0.0006 g this cycle), elapsed 315.0 s
+[phase 2 fine] cycle 70: mass 0.4975 / 1.0000 g (0.5025 g to go, +0.0012 g this cycle), elapsed 319.0 s
+[phase 2 fine] cycle 71: mass 0.4977 / 1.0000 g (0.5023 g to go, +0.0002 g this cycle), elapsed 323.0 s
+[phase 2 fine] cycle 72: mass 0.4986 / 1.0000 g (0.5014 g to go, +0.0009 g this cycle), elapsed 327.0 s
+[phase 2 fine] cycle 73: mass 0.5003 / 1.0000 g (0.4997 g to go, +0.0017 g this cycle), elapsed 331.0 s
+[phase 2 fine] cycle 74: mass 0.5009 / 1.0000 g (0.4991 g to go, +0.0006 g this cycle), elapsed 335.0 s
+[phase 2 fine] cycle 75: mass 0.5016 / 1.0000 g (0.4984 g to go, +0.0007 g this cycle), elapsed 339.0 s
+[phase 2 fine] cycle 76: mass 0.5072 / 1.0000 g (0.4928 g to go, +0.0056 g this cycle), elapsed 343.0 s
+[phase 2 fine] cycle 77: mass 0.5094 / 1.0000 g (0.4906 g to go, +0.0022 g this cycle), elapsed 347.0 s
+[phase 2 fine] cycle 78: mass 0.5099 / 1.0000 g (0.4901 g to go, +0.0005 g this cycle), elapsed 351.0 s
+[phase 2 fine] cycle 79: mass 0.5108 / 1.0000 g (0.4892 g to go, +0.0009 g this cycle), elapsed 355.0 s
+[phase 2 fine] cycle 80: mass 0.5114 / 1.0000 g (0.4886 g to go, +0.0006 g this cycle), elapsed 360.0 s
+[phase 2 fine] cycle 81: mass 0.5130 / 1.0000 g (0.4870 g to go, +0.0016 g this cycle), elapsed 364.0 s
+[phase 2 fine] cycle 82: mass 0.5137 / 1.0000 g (0.4863 g to go, +0.0007 g this cycle), elapsed 368.0 s
+[phase 2 fine] cycle 83: mass 0.5164 / 1.0000 g (0.4836 g to go, +0.0027 g this cycle), elapsed 372.0 s
+[phase 2 fine] cycle 84: mass 0.5209 / 1.0000 g (0.4791 g to go, +0.0045 g this cycle), elapsed 376.0 s
+[phase 2 fine] cycle 85: mass 0.5220 / 1.0000 g (0.4780 g to go, +0.0011 g this cycle), elapsed 380.0 s
+[phase 2 fine] cycle 86: mass 0.5222 / 1.0000 g (0.4778 g to go, +0.0002 g this cycle), elapsed 384.0 s
+[phase 2 fine] cycle 87: mass 0.5226 / 1.0000 g (0.4774 g to go, +0.0004 g this cycle), elapsed 388.0 s
+[phase 2 fine] cycle 88: mass 0.5241 / 1.0000 g (0.4759 g to go, +0.0015 g this cycle), elapsed 392.0 s
+[phase 2 fine] cycle 89: mass 0.5257 / 1.0000 g (0.4743 g to go, +0.0016 g this cycle), elapsed 396.0 s
+[phase 2 fine] cycle 90: mass 0.5260 / 1.0000 g (0.4740 g to go, +0.0003 g this cycle), elapsed 400.0 s
+[phase 2 fine] cycle 91: mass 0.5303 / 1.0000 g (0.4697 g to go, +0.0043 g this cycle), elapsed 404.0 s
+[phase 2 fine] cycle 92: mass 0.5319 / 1.0000 g (0.4681 g to go, +0.0016 g this cycle), elapsed 408.0 s
+[phase 2 fine] cycle 93: mass 0.5359 / 1.0000 g (0.4641 g to go, +0.0040 g this cycle), elapsed 412.0 s
+[phase 2 fine] cycle 94: mass 0.5360 / 1.0000 g (0.4640 g to go, +0.0001 g this cycle), elapsed 416.0 s
+[phase 2 fine] cycle 95: mass 0.5369 / 1.0000 g (0.4631 g to go, +0.0009 g this cycle), elapsed 420.0 s
+[phase 2 fine] cycle 96: mass 0.5386 / 1.0000 g (0.4614 g to go, +0.0017 g this cycle), elapsed 424.0 s
+[phase 2 fine] cycle 97: mass 0.5398 / 1.0000 g (0.4602 g to go, +0.0012 g this cycle), elapsed 428.0 s
+[phase 2 fine] cycle 98: mass 0.5399 / 1.0000 g (0.4601 g to go, +0.0001 g this cycle), elapsed 432.0 s
+[phase 2 fine] cycle 99: mass 0.5429 / 1.0000 g (0.4571 g to go, +0.0030 g this cycle), elapsed 436.0 s
+[phase 2 fine] cycle 100: mass 0.5454 / 1.0000 g (0.4546 g to go, +0.0025 g this cycle), elapsed 440.0 s
+[phase 2 fine] cycle 101: mass 0.5479 / 1.0000 g (0.4521 g to go, +0.0025 g this cycle), elapsed 444.0 s
+[phase 2 fine] cycle 102: mass 0.5486 / 1.0000 g (0.4514 g to go, +0.0007 g this cycle), elapsed 448.0 s
+[phase 2 fine] cycle 103: mass 0.5497 / 1.0000 g (0.4503 g to go, +0.0011 g this cycle), elapsed 452.0 s
+[phase 2 fine] cycle 104: mass 0.5497 / 1.0000 g (0.4503 g to go, +0.0000 g this cycle), elapsed 456.0 s
+[phase 2 fine] cycle 105: mass 0.5521 / 1.0000 g (0.4479 g to go, +0.0024 g this cycle), elapsed 460.0 s
+[phase 2 fine] cycle 106: mass 0.5527 / 1.0000 g (0.4473 g to go, +0.0006 g this cycle), elapsed 464.0 s
+[phase 2 fine] cycle 107: mass 0.5532 / 1.0000 g (0.4468 g to go, +0.0005 g this cycle), elapsed 468.0 s
+[phase 2 fine] cycle 108: mass 0.5592 / 1.0000 g (0.4408 g to go, +0.0060 g this cycle), elapsed 472.0 s
+[phase 2 fine] cycle 109: mass 0.5625 / 1.0000 g (0.4375 g to go, +0.0033 g this cycle), elapsed 476.0 s
+[phase 2 fine] cycle 110: mass 0.5625 / 1.0000 g (0.4375 g to go, +0.0000 g this cycle), elapsed 480.0 s
+[phase 2 fine] cycle 111: mass 0.5631 / 1.0000 g (0.4369 g to go, +0.0006 g this cycle), elapsed 484.0 s
+[phase 2 fine] cycle 112: mass 0.5634 / 1.0000 g (0.4366 g to go, +0.0003 g this cycle), elapsed 488.0 s
+[phase 2 fine] cycle 113: mass 0.5652 / 1.0000 g (0.4348 g to go, +0.0018 g this cycle), elapsed 492.0 s
+[phase 2 fine] cycle 114: mass 0.5667 / 1.0000 g (0.4333 g to go, +0.0015 g this cycle), elapsed 498.0 s
+[phase 2 fine] cycle 115: mass 0.5695 / 1.0000 g (0.4305 g to go, +0.0028 g this cycle), elapsed 502.0 s
+[phase 2 fine] cycle 116: mass 0.5729 / 1.0000 g (0.4271 g to go, +0.0034 g this cycle), elapsed 506.0 s
+[phase 2 fine] cycle 117: mass 0.5744 / 1.0000 g (0.4256 g to go, +0.0015 g this cycle), elapsed 510.0 s
+[phase 2 fine] cycle 118: mass 0.5744 / 1.0000 g (0.4256 g to go, +0.0000 g this cycle), elapsed 514.0 s
+[phase 2 fine] cycle 119: mass 0.5755 / 1.0000 g (0.4245 g to go, +0.0011 g this cycle), elapsed 518.0 s
+[phase 2 fine] cycle 120: mass 0.5761 / 1.0000 g (0.4239 g to go, +0.0006 g this cycle), elapsed 522.0 s
+[phase 2 fine] cycle 121: mass 0.5780 / 1.0000 g (0.4220 g to go, +0.0019 g this cycle), elapsed 526.0 s
+[phase 2 fine] cycle 122: mass 0.5788 / 1.0000 g (0.4212 g to go, +0.0008 g this cycle), elapsed 530.0 s
+[phase 2 fine] cycle 123: mass 0.5815 / 1.0000 g (0.4185 g to go, +0.0027 g this cycle), elapsed 534.0 s
+[phase 2 fine] cycle 124: mass 0.5850 / 1.0000 g (0.4150 g to go, +0.0035 g this cycle), elapsed 538.0 s
+[phase 2 fine] cycle 125: mass 0.5859 / 1.0000 g (0.4141 g to go, +0.0009 g this cycle), elapsed 542.0 s
+[phase 2 fine] cycle 126: mass 0.5868 / 1.0000 g (0.4132 g to go, +0.0009 g this cycle), elapsed 546.0 s
+[phase 2 fine] cycle 127: mass 0.5873 / 1.0000 g (0.4127 g to go, +0.0005 g this cycle), elapsed 550.0 s
+[phase 2 fine] cycle 128: mass 0.5887 / 1.0000 g (0.4113 g to go, +0.0014 g this cycle), elapsed 554.0 s
+[phase 2 fine] cycle 129: mass 0.5901 / 1.0000 g (0.4099 g to go, +0.0014 g this cycle), elapsed 558.0 s
+[phase 2 fine] cycle 130: mass 0.5912 / 1.0000 g (0.4088 g to go, +0.0011 g this cycle), elapsed 562.0 s
+[phase 2 fine] cycle 131: mass 0.5921 / 1.0000 g (0.4079 g to go, +0.0009 g this cycle), elapsed 566.0 s
+[phase 2 fine] cycle 132: mass 0.5982 / 1.0000 g (0.4018 g to go, +0.0061 g this cycle), elapsed 570.0 s
+[phase 2 fine] cycle 133: mass 0.5997 / 1.0000 g (0.4003 g to go, +0.0015 g this cycle), elapsed 574.0 s
+[phase 2 fine] cycle 134: mass 0.6006 / 1.0000 g (0.3994 g to go, +0.0009 g this cycle), elapsed 578.0 s
+[phase 2 fine] cycle 135: mass 0.6016 / 1.0000 g (0.3984 g to go, +0.0010 g this cycle), elapsed 582.0 s
+[phase 2 fine] cycle 136: mass 0.6016 / 1.0000 g (0.3984 g to go, +0.0000 g this cycle), elapsed 586.0 s
+[phase 2 fine] cycle 137: mass 0.6042 / 1.0000 g (0.3958 g to go, +0.0026 g this cycle), elapsed 590.0 s
+[phase 2 fine] cycle 138: mass 0.6049 / 1.0000 g (0.3951 g to go, +0.0007 g this cycle), elapsed 594.0 s
+[phase 2 fine] cycle 139: mass 0.6081 / 1.0000 g (0.3919 g to go, +0.0032 g this cycle), elapsed 598.0 s
+[phase 2 fine] cycle 140: mass 0.6114 / 1.0000 g (0.3886 g to go, +0.0033 g this cycle), elapsed 602.0 s
+[phase 2 fine] cycle 141: mass 0.6139 / 1.0000 g (0.3861 g to go, +0.0025 g this cycle), elapsed 606.0 s
+[phase 2 fine] cycle 142: mass 0.6150 / 1.0000 g (0.3850 g to go, +0.0011 g this cycle), elapsed 610.0 s
+[phase 2 fine] cycle 143: mass 0.6152 / 1.0000 g (0.3848 g to go, +0.0002 g this cycle), elapsed 614.0 s
+[phase 2 fine] cycle 144: mass 0.6162 / 1.0000 g (0.3838 g to go, +0.0010 g this cycle), elapsed 618.0 s
+[phase 2 fine] cycle 145: mass 0.6178 / 1.0000 g (0.3822 g to go, +0.0016 g this cycle), elapsed 622.0 s
+[phase 2 fine] cycle 146: mass 0.6187 / 1.0000 g (0.3813 g to go, +0.0009 g this cycle), elapsed 626.0 s
+[phase 2 fine] cycle 147: mass 0.6197 / 1.0000 g (0.3803 g to go, +0.0010 g this cycle), elapsed 630.0 s
+[phase 2 fine] cycle 148: mass 0.6244 / 1.0000 g (0.3756 g to go, +0.0047 g this cycle), elapsed 634.0 s
+[phase 2 fine] cycle 149: mass 0.6264 / 1.0000 g (0.3736 g to go, +0.0020 g this cycle), elapsed 638.0 s
+[phase 2 fine] cycle 150: mass 0.6272 / 1.0000 g (0.3728 g to go, +0.0008 g this cycle), elapsed 642.0 s
+[phase 2 fine] cycle 151: mass 0.6273 / 1.0000 g (0.3727 g to go, +0.0001 g this cycle), elapsed 646.0 s
+[phase 2 fine] cycle 152: mass 0.6291 / 1.0000 g (0.3709 g to go, +0.0018 g this cycle), elapsed 650.0 s
+[phase 2 fine] cycle 153: mass 0.6309 / 1.0000 g (0.3691 g to go, +0.0018 g this cycle), elapsed 654.0 s
+[phase 2 fine] cycle 154: mass 0.6316 / 1.0000 g (0.3684 g to go, +0.0007 g this cycle), elapsed 658.0 s
+[phase 2 fine] cycle 155: mass 0.6334 / 1.0000 g (0.3666 g to go, +0.0018 g this cycle), elapsed 662.0 s
+[phase 2 fine] cycle 156: mass 0.6387 / 1.0000 g (0.3613 g to go, +0.0053 g this cycle), elapsed 666.0 s
+[phase 2 fine] cycle 157: mass 0.6409 / 1.0000 g (0.3591 g to go, +0.0022 g this cycle), elapsed 671.0 s
+[phase 2 fine] cycle 158: mass 0.6409 / 1.0000 g (0.3591 g to go, +0.0000 g this cycle), elapsed 675.0 s
+[phase 2 fine] cycle 159: mass 0.6415 / 1.0000 g (0.3585 g to go, +0.0006 g this cycle), elapsed 679.0 s
+[phase 2 fine] cycle 160: mass 0.6422 / 1.0000 g (0.3578 g to go, +0.0007 g this cycle), elapsed 683.0 s
+[phase 2 fine] cycle 161: mass 0.6439 / 1.0000 g (0.3561 g to go, +0.0017 g this cycle), elapsed 687.0 s
+[phase 2 fine] cycle 162: mass 0.6445 / 1.0000 g (0.3555 g to go, +0.0006 g this cycle), elapsed 691.0 s
+[phase 2 fine] cycle 163: mass 0.6453 / 1.0000 g (0.3547 g to go, +0.0008 g this cycle), elapsed 695.0 s
+[phase 2 fine] cycle 164: mass 0.6509 / 1.0000 g (0.3491 g to go, +0.0056 g this cycle), elapsed 699.0 s
+[phase 2 fine] cycle 165: mass 0.6511 / 1.0000 g (0.3489 g to go, +0.0002 g this cycle), elapsed 703.0 s
+[phase 2 fine] cycle 166: mass 0.6526 / 1.0000 g (0.3474 g to go, +0.0015 g this cycle), elapsed 707.0 s
+[phase 2 fine] cycle 167: mass 0.6537 / 1.0000 g (0.3463 g to go, +0.0011 g this cycle), elapsed 711.0 s
+[phase 2 fine] cycle 168: mass 0.6548 / 1.0000 g (0.3452 g to go, +0.0011 g this cycle), elapsed 715.0 s
+[phase 2 fine] cycle 169: mass 0.6562 / 1.0000 g (0.3438 g to go, +0.0014 g this cycle), elapsed 719.0 s
+[phase 2 fine] cycle 170: mass 0.6572 / 1.0000 g (0.3428 g to go, +0.0010 g this cycle), elapsed 723.0 s
+[phase 2 fine] cycle 171: mass 0.6597 / 1.0000 g (0.3403 g to go, +0.0025 g this cycle), elapsed 727.0 s
+[phase 2 fine] cycle 172: mass 0.6623 / 1.0000 g (0.3377 g to go, +0.0026 g this cycle), elapsed 731.0 s
+[phase 2 fine] cycle 173: mass 0.6659 / 1.0000 g (0.3341 g to go, +0.0036 g this cycle), elapsed 735.0 s
+[phase 2 fine] cycle 174: mass 0.6660 / 1.0000 g (0.3340 g to go, +0.0001 g this cycle), elapsed 739.0 s
+[phase 2 fine] cycle 175: mass 0.6674 / 1.0000 g (0.3326 g to go, +0.0014 g this cycle), elapsed 743.0 s
+[phase 2 fine] cycle 176: mass 0.6687 / 1.0000 g (0.3313 g to go, +0.0013 g this cycle), elapsed 747.0 s
+[phase 2 fine] cycle 177: mass 0.6695 / 1.0000 g (0.3305 g to go, +0.0008 g this cycle), elapsed 751.0 s
+[phase 2 fine] cycle 178: mass 0.6706 / 1.0000 g (0.3294 g to go, +0.0011 g this cycle), elapsed 755.0 s
+[phase 2 fine] cycle 179: mass 0.6707 / 1.0000 g (0.3293 g to go, +0.0001 g this cycle), elapsed 759.0 s
+[phase 2 fine] cycle 180: mass 0.6764 / 1.0000 g (0.3236 g to go, +0.0057 g this cycle), elapsed 763.0 s
+[phase 2 fine] cycle 181: mass 0.6792 / 1.0000 g (0.3208 g to go, +0.0028 g this cycle), elapsed 767.0 s
+[phase 2 fine] cycle 182: mass 0.6799 / 1.0000 g (0.3201 g to go, +0.0007 g this cycle), elapsed 771.0 s
+[phase 2 fine] cycle 183: mass 0.6799 / 1.0000 g (0.3201 g to go, +0.0000 g this cycle), elapsed 775.0 s
+[phase 2 fine] cycle 184: mass 0.6809 / 1.0000 g (0.3191 g to go, +0.0010 g this cycle), elapsed 779.0 s
+[phase 2 fine] cycle 185: mass 0.6829 / 1.0000 g (0.3171 g to go, +0.0020 g this cycle), elapsed 783.0 s
+[phase 2 fine] cycle 186: mass 0.6837 / 1.0000 g (0.3163 g to go, +0.0008 g this cycle), elapsed 787.0 s
+[phase 2 fine] cycle 187: mass 0.6853 / 1.0000 g (0.3147 g to go, +0.0016 g this cycle), elapsed 791.0 s
+[phase 2 fine] cycle 188: mass 0.6900 / 1.0000 g (0.3100 g to go, +0.0047 g this cycle), elapsed 795.0 s
+[phase 2 fine] cycle 189: mass 0.6901 / 1.0000 g (0.3099 g to go, +0.0001 g this cycle), elapsed 799.0 s
+[phase 2 fine] cycle 190: mass 0.6914 / 1.0000 g (0.3086 g to go, +0.0013 g this cycle), elapsed 803.0 s
+[phase 2 fine] cycle 191: mass 0.6924 / 1.0000 g (0.3076 g to go, +0.0010 g this cycle), elapsed 807.0 s
+[phase 2 fine] cycle 192: mass 0.6926 / 1.0000 g (0.3074 g to go, +0.0002 g this cycle), elapsed 811.0 s
+[phase 2 fine] cycle 193: mass 0.6954 / 1.0000 g (0.3046 g to go, +0.0028 g this cycle), elapsed 815.0 s
+[phase 2 fine] cycle 194: mass 0.6957 / 1.0000 g (0.3043 g to go, +0.0003 g this cycle), elapsed 819.0 s
+[phase 2 fine] cycle 195: mass 0.6969 / 1.0000 g (0.3031 g to go, +0.0012 g this cycle), elapsed 823.0 s
+[phase 2 fine] cycle 196: mass 0.7014 / 1.0000 g (0.2986 g to go, +0.0045 g this cycle), elapsed 827.0 s
+[phase 2 fine] cycle 197: mass 0.7029 / 1.0000 g (0.2971 g to go, +0.0015 g this cycle), elapsed 831.0 s
+[phase 2 fine] cycle 198: mass 0.7029 / 1.0000 g (0.2971 g to go, +0.0000 g this cycle), elapsed 835.0 s
+[phase 2 fine] cycle 199: mass 0.7035 / 1.0000 g (0.2965 g to go, +0.0006 g this cycle), elapsed 839.0 s
+[phase 2 fine] cycle 200: mass 0.7043 / 1.0000 g (0.2957 g to go, +0.0008 g this cycle), elapsed 843.0 s
+[phase 2 fine] cycle budget (200) exhausted
+=== phase 2/3 'fine' end (200 cycles): mass 0.7043 / 1.0000 g (0.2957 g to go, +0.3105 g this phase), elapsed 843.0 s
+[dose] done: DoseResult(cycle-budget: 0.7043/1.0000 g in 843.0s; cycles bulk:114, fine:200; 55.25 auger rev, 0 taps)
+DOSE,2,1.0000,0.7043,-0.2957,cycle-budget,843.0,55.25,0,bulk:114;fine:200,2921045
+RUN,END,ok
