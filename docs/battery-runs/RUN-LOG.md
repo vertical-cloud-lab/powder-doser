@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-17 entries, 12 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+18 entries, 13 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-08-21 17:07 | 2026-08-21 17:20 | 13:09 | `barium-chloride` | ABCDE | C/E 30 · D 15/45/90 RPM | 5.62 g | 200.38 mg/rev | -- | sigma 0.0 mg, no shocks or retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T170712Z_barium-chloride) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-barium-chloride.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=22017) |
 | 2026-08-21 16:18 | 2026-08-21 16:32 | 13:30 | `silicon-325` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.08 g | 1.20 mg/rev | 3x, 0 ok, mean -999.3 mg | sigma 0.0 mg, no shocks or retries | valid<br>`conveying-slowly` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T161838Z_silicon-325) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-silicon-325.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=19103) |
 | 2026-08-21 15:13 | 2026-08-21 15:34 | 21:05 | `alsi10mg` | ABCDE | C/E 30 · D 15/45/90 RPM | 9.12 g | 338.93 mg/rev | -- | sigma 10.4 mg, 15 shocks, 38 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T151337Z_alsi10mg) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-alsi10mg.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=15202) |
 | 2026-08-20 21:48 | 2026-08-20 22:03 | 15:05 | `silicon-110-200` | ABCDE | C/E 30 · D 15/45/90 RPM | 7.72 g | 302.35 mg/rev | -- | sigma 7.9 mg, 9 shocks, 12 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T214823Z_silicon-110-200) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-silicon-110-200.md) | [~1 min](https://youtu.be/23PlXoQgjPQ?t=10088) |
@@ -29,6 +30,20 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-08-21 17:07 UTC -- barium-chloride
+
+- **Window** 2026-08-21T17:07:12.015465+00:00 -> 2026-08-21T17:20:21.249619+00:00  (13:09)
+- **Lab clock** 2026-08-21 11:07:12 MDT -> 2026-08-21 11:20:21 MDT
+- **Powder** barium chloride (inorganic batch, fume hood)  ·  batch `inorganic-2026-08`  ·  operator swc
+- **Tests** blocks ABCDE  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
+- **Dispensed** 5.6197 g
+- **Feed factor (block C)** 0 deg 23.28 mg/rev  ·  45 deg 184.70 mg/rev  ·  90 deg 200.38 mg/rev
+- **Environment** sigma 0.0 mg, no shocks or retries
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260821T170712Z_barium-chloride](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T170712Z_barium-chloride)
+- **Notes** [docs/battery-runs/2026-08-21-barium-chloride.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-barium-chloride.md)
+- **Video** [https://youtu.be/7orNsBiLW2M?t=22017](https://youtu.be/7orNsBiLW2M?t=22017) -- accurate to about a minute
 
 ### 2026-08-21 16:18 UTC -- silicon-325
 
