@@ -312,6 +312,82 @@ def test_tap_headline_keeps_a_credible_quantum():
     title = plot.tap_headline(taps, doc, refeeds)
     check("tap-real-quantum-survives", "20 mg per tap" in title, title)
 
+def test_tap_headline_rejects_a_tilt_inverted_tap():
+    """Salt, 2026-08-21: +9.0 mg/tap at tilt 0 deg, -4.1 mg at tilt 45 deg.
+
+    The re-feed rotation nearly quadrupled over the same span (40 -> 155 mg),
+    so the tap went *negative* exactly where conveyance was strongest.  A tap
+    can only dislodge what rotation carried to the lip, so that ordering is
+    not a powder property -- but the tilt-blind ``max`` reported the 9 mg.
+    """
+    taps = [{"tilt_deg": 0.0, "mean_g": 0.00897, "sem_g": 0.0039646},
+            {"tilt_deg": 45.0, "mean_g": -0.0041, "sem_g": 0.0037781}]
+    refeeds = [{"tilt_deg": 0.0, "mean_g": 0.0403},
+               {"tilt_deg": 45.0, "mean_g": 0.15544}]
+    doc = doc_with_baseline(2.88, taps)
+    title = plot.tap_headline(taps, doc, refeeds)
+    check("tilt-inverted-tap-not-claimed", "not resolved" in title, title)
+    check("tilt-inverted-tap-does-not-quote-9mg",
+          "9 mg" not in title, title)
+
+
+def test_tap_headline_claims_a_quantum_at_the_best_fed_tilt():
+    """The inversion check must not fire when the tap grows with tilt.
+
+    Xanthan gum: 0.15 -> 13.61 mg/tap as the re-feed went 20 -> 136 mg.
+    That is the shape every resolved quantum has had, and it must survive.
+    """
+    taps = [{"tilt_deg": 0.0, "mean_g": 0.00015, "sem_g": 0.00008},
+            {"tilt_deg": 45.0, "mean_g": 0.01361, "sem_g": 0.0012}]
+    refeeds = [{"tilt_deg": 0.0, "mean_g": 0.01998},
+               {"tilt_deg": 45.0, "mean_g": 0.13635}]
+    title = plot.tap_headline(taps, doc_with_baseline(0.0, taps), refeeds)
+    check("best-fed-quantum-survives", "14 mg per tap" in title, title)
+
+
+def test_tap_headline_inversion_check_needs_a_positive_claim():
+    """Silicon: both tilts negative.  The existing noise tests own that case.
+
+    The inversion branch only fires when some *other* tilt would otherwise
+    have supplied a positive quantum, so an all-negative run still falls
+    through to the baseline test rather than being caught here by accident.
+    """
+    taps = [{"tilt_deg": 0.0, "mean_g": -0.00373, "sem_g": 0.0028},
+            {"tilt_deg": 45.0, "mean_g": -0.00352, "sem_g": 0.0026}]
+    refeeds = [{"tilt_deg": 0.0, "mean_g": 0.0557},
+               {"tilt_deg": 45.0, "mean_g": 0.17458}]
+    title = plot.tap_headline(taps, doc_with_baseline(20.19, taps), refeeds)
+    check("all-negative-still-not-resolved", "not resolved" in title, title)
+
+
+def test_panel_title_wraps_long_verdicts():
+    """A long left-aligned title must not run across the next panel.
+
+    "tap quantum not resolved above the no-actuation baseline" is more than
+    twice the length of "tapping contributes almost nothing", and a
+    left-aligned title does not shrink to fit.  Wrapping is what lets the
+    honest verdict stay long.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots()
+    long_text = ("C  Block E — tap quantum not resolved above the "
+                 "no-actuation baseline (n=8 each)")
+    plot.panel_title(ax, long_text)
+    got = ax.get_title(loc="left")
+    check("long title is wrapped", "\n" in got, repr(got))
+    check("no wrapped line exceeds the panel width",
+          max(len(line) for line in got.splitlines()) <= 58, repr(got))
+    check("wrapping preserves the words",
+          got.replace("\n", " ") == long_text, repr(got))
+    short = "D  Block G — no closed-loop doses"
+    plot.panel_title(ax, short)
+    check("a short title is left alone",
+          ax.get_title(loc="left") == short, ax.get_title(loc="left"))
+    plt.close(fig)
+
+
 def main():
     for test in (test_tilt_headline, test_tap_headline, test_dose_headline,
                  test_tap_headline_respects_the_noise_floor,
@@ -320,7 +396,11 @@ def main():
                  test_tilt_headline_needs_statistical_resolution,
                  test_tilt_headline_still_reports_a_real_trend,
                  test_tap_headline_rejects_a_tap_larger_than_its_refeed,
-                 test_tap_headline_keeps_a_credible_quantum):
+                 test_tap_headline_keeps_a_credible_quantum,
+                 test_tap_headline_rejects_a_tilt_inverted_tap,
+                 test_tap_headline_claims_a_quantum_at_the_best_fed_tilt,
+                 test_tap_headline_inversion_check_needs_a_positive_claim,
+                 test_panel_title_wraps_long_verdicts):
         print("--- {}".format(test.__name__))
         test()
     print()

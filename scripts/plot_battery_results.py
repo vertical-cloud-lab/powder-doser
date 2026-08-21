@@ -18,6 +18,7 @@ Usage::
 """
 
 import json
+import textwrap
 import sys
 
 import matplotlib
@@ -157,9 +158,28 @@ def panel_rotation(ax, doc):
     ax.set_ylabel("mass per 360° revolution (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
     ax.set_ylim(0, max(values) * 1.45 if values else 1)
-    ax.set_title("A  Block C — {} (n=6 each, 30 RPM)".format(
-                     tilt_headline(rows, doc)),
-                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
+    panel_title(ax, "A  Block C — {} (n=6 each, 30 RPM)".format(
+        tilt_headline(rows, doc)))
+
+
+def panel_title(ax, text, width=58):
+    """Set a left-aligned panel title, wrapped so it stays over its own panel.
+
+    The headline functions produce titles of very different lengths -- "tap
+    quantum not resolved above the no-actuation baseline" is more than twice
+    "tapping contributes almost nothing" -- and a left-aligned title does not
+    shrink to fit, it runs across the neighbouring panel and collides with
+    that panel's title.  Wrapping keeps the honest-but-long verdicts legible
+    rather than pushing us back towards short ones that claim more.
+
+    Hyphens are not break points here: the verdicts are full of compound
+    terms ("no-actuation", "closed-loop", "cycle-budget") and splitting one
+    across lines reads as a different word.
+    """
+    wrapped = textwrap.fill(text, width, break_on_hyphens=False,
+                            break_long_words=False)
+    ax.set_title(wrapped, fontsize=10.5,
+                 color=TEXT_PRIMARY, loc="left", pad=10)
 
 
 def panel_speed(ax, doc):
@@ -242,6 +262,19 @@ def tap_headline(taps, doc=None, refeeds=None):
     the tap solenoid's impulse coupling into the load cell.  That passed
     both noise tests comfortably.  So the largest claimable quantum is
     capped by its own tilt's re-feed rotation.
+
+    The same "a tap only dislodges what rotation delivered" argument also
+    fixes *where* the quantum has to show up.  Gravity assists the tap and
+    the re-feed rotation alike, so in every run where a quantum resolved it
+    was largest at the best-fed tilt: calcium lactate 2.3 -> 20.4 mg/tap as
+    the re-feed went 42 -> 166 mg, xanthan gum 0.2 -> 13.6 as it went
+    20 -> 136.  On 2026-08-21 salt inverted -- +9.0 mg/tap at tilt 0 deg
+    where the re-feed moved 40 mg, and **-4.1 mg** at tilt 45 deg where it
+    moved 155 mg.  A tap that goes negative exactly where conveyance is
+    strongest is not a powder property, but the tilt-blind ``max`` above
+    reported the 9 mg anyway.  So the claim is evaluated at the tilt whose
+    re-feed rotation is largest: if the tap does nothing measurable *there*,
+    a bigger number at a worse-fed tilt is the room.
     """
     means = [r["mean_g"] * 1000.0 for r in taps] or [0.0]
     if refeeds:
@@ -251,6 +284,11 @@ def tap_headline(taps, doc=None, refeeds=None):
         if not credible:
             return "tap exceeds its own re-feed rotation (not powder)"
         means = credible
+        best_fed = max(by_tilt, key=lambda t: by_tilt[t])
+        at_best = [r["mean_g"] * 1000.0 for r in taps
+                   if r["tilt_deg"] == best_fed]
+        if at_best and max(at_best) <= 0.0 and max(means) > 0.0:
+            return "tap quantum not resolved above the no-actuation baseline"
     peak = max(means)
     sems = [abs(r.get("sem_g") or 0.0) * 1000.0 for r in taps] or [0.0]
     baseline = baseline_spread_mg(doc) if doc else 0.0
@@ -313,9 +351,8 @@ def panel_tap(ax, doc):
     ax.set_xlabel("tube tilt", fontsize=9.5, color=TEXT_SECONDARY)
     ax.set_ylabel("mass per action (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
-    ax.set_title("C  Block E — {} (n=8 each)".format(
-        tap_headline(taps, doc, refeeds)),
-                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
+    panel_title(ax, "C  Block E — {} (n=8 each)".format(
+        tap_headline(taps, doc, refeeds)))
     legend = ax.legend(frameon=False, fontsize=9, loc="upper left")
     for text in legend.get_texts():
         text.set_color(TEXT_SECONDARY)
@@ -346,8 +383,7 @@ def panel_dose(ax, doc):
     ax.set_ylabel("delivered mass (g)", fontsize=9.5,
                   color=TEXT_SECONDARY)
     ax.set_ylim(0, max(values + [target]) * 1.2)
-    ax.set_title("D  Block G — {}".format(dose_headline(doses)),
-                 fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
+    panel_title(ax, "D  Block G — {}".format(dose_headline(doses)))
 
 
 def main(path, out_path):

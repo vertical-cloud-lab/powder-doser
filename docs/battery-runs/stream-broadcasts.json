@@ -497,6 +497,13 @@
       "title": "powder doser stream picam-d1pr, 2026-08-21 UTC 11:00",
       "camera": "picam-d1pr",
       "nominal_start_utc": "2026-08-21T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "Ma91Vx8U-YY",
+      "title": "powder doser stream picam-d1pr, 2026-08-21 UTC 19:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-08-21T19:00:00+00:00",
       "live_status": "is_live"
     }
   ]

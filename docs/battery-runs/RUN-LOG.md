@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-19 entries, 13 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+20 entries, 14 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-08-21 19:20 | 2026-08-21 19:35 | 14:32 | `salt` | ABCDE | C/E 30 · D 15/45/90 RPM | 6.31 g | 265.17 mg/rev | -- | sigma 2.9 mg, 1 shocks, 10 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T192031Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-salt-control-repeat.md) | [~1 min](https://youtu.be/Ma91Vx8U-YY?t=1216) |
 | 2026-08-21 18:27 | 2026-08-21 18:42 | 15:29 | `fumed-silica` | ABCDE | C/E 30 · D 15/45/90 RPM | 0.55 g | 5.57 mg/rev | -- | sigma 4.1 mg, 9 shocks, 16 retries | excluded<br>`no-conveyance-outlet-unverified` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T182705Z_fumed-silica) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-fumed-silica.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=26810) |
 | 2026-08-21 17:07 | 2026-08-21 17:20 | 13:09 | `barium-chloride` | ABCDE | C/E 30 · D 15/45/90 RPM | 5.62 g | 200.38 mg/rev | -- | sigma 0.0 mg, no shocks or retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T170712Z_barium-chloride) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-barium-chloride.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=22017) |
 | 2026-08-21 16:18 | 2026-08-21 16:32 | 13:30 | `silicon-325` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.08 g | 1.20 mg/rev | 3x, 0 ok, mean -999.3 mg | sigma 0.0 mg, no shocks or retries | valid<br>`conveying-slowly` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T161838Z_silicon-325) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-silicon-325.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=19103) |
@@ -31,6 +32,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-08-21 19:20 UTC -- salt
+
+- **Window** 2026-08-21T19:20:31.212009+00:00 -> 2026-08-21T19:35:03.674607+00:00  (14:32)
+- **Lab clock** 2026-08-21 13:20:31 MDT -> 2026-08-21 13:35:03 MDT
+- **Powder** salt (control, sodium chloride)  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks ABCDE  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
+- **Dispensed** 6.3061 g
+- **Feed factor (block C)** 0 deg 38.00 mg/rev  ·  45 deg 146.48 mg/rev  ·  90 deg 265.17 mg/rev
+- **Pre-flight** feed confirmed
+- **Environment** sigma 2.9 mg, 1 shocks, 10 retries
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260821T192031Z_salt](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T192031Z_salt)
+- **Notes** [docs/battery-runs/2026-08-21-salt-control-repeat.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-salt-control-repeat.md)
+- **Video** [https://youtu.be/Ma91Vx8U-YY?t=1216](https://youtu.be/Ma91Vx8U-YY?t=1216) -- accurate to about a minute
 
 ### 2026-08-21 18:27 UTC -- fumed-silica
 

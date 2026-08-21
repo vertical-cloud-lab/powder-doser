@@ -562,3 +562,57 @@ python scripts/powder_battery_capture.py --from-raw \
 This rebuilds the CSVs and `run.json` exactly as a live capture would
 have written them, and is how the 2026-08-20 salt run was recovered
 after its `tee` pipeline was killed.
+
+## Repeating a powder (2026-08-21)
+
+Every powder in this dataset had exactly one battery run until salt reached
+four. That is the structural weakness the Edison review
+(`outputs/edison-battery-review/`) put above all others: the six revolutions
+inside a block are sequential observations of **one fill**, so their RSD is a
+within-run number and says nothing about the spread between fills, augers,
+rooms and days. *"Treat the run, not the revolution, as the experimental
+unit."*
+
+```bash
+python scripts/plot_powder_repeats.py salt out.png data/battery/*/run_*.json
+```
+
+reports the between-run spread beside the within-run spread for any powder
+with two or more runs. It pools only runs whose own QC does not flag the feed
+factor as unreliable — excluded runs, and runs whose notes call block C a
+bound — and **names every run it dropped in the caption**, because silently
+dropping a disagreeing run would overstate the agreement and silently keeping
+a flagged one would manufacture disagreement.
+
+For salt the two terms come out comparable (between-run 7/13/10 % at
+0/45/90° against within-run 18/12/9 %), which is the first evidence that the
+per-revolution error bars are not concealing a larger between-fill term.
+Two runs is a weak variance estimate; the point is the comparison, not the
+number.
+
+**When to spend a repeat.** Highest value on the powders carrying a claim:
+salt (the control), any powder whose result is quoted as a bound, and the two
+powders with a resolved tap quantum. A repeat costs one battery.
+
+## Reading a tap quantum (2026-08-21)
+
+A tap can only dislodge what rotation has already carried to the delivery lip.
+That single fact now gates the block E result three ways, each added after a
+figure asserted something the data did not support:
+
+1. **capped by its own re-feed** — a tap larger than the 360° re-feed rotation
+   measured in the same trials at the same tilt is not powder (fumed silica,
+   2026-08-21: 32.2 mg/tap against a −8.9 mg re-feed, solenoid impulse
+   coupling into the load cell);
+2. **above the no-actuation baseline** — a quantum smaller than block A's
+   scatter describes the room (sodium sulfate, 2026-08-20: 9 mg/tap against a
+   23 mg block A spread);
+3. **claimed at the best-fed tilt** — gravity assists the tap and the re-feed
+   alike, so a resolved quantum is *largest* where conveyance is strongest
+   (calcium lactate 2.3 → 20.4 mg/tap, xanthan gum 0.2 → 13.6). Salt on
+   2026-08-21 read +9.0 mg/tap at tilt 0° and **−4.1 mg** at tilt 45°, where
+   the re-feed was 3.9× larger. An inversion is not a powder property, but a
+   tilt-blind `max()` reported the 9 mg.
+
+If a run's tap number is interesting, check it against all three before
+quoting it.
