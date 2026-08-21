@@ -39,21 +39,37 @@ SURFACE = "#fcfcfb"
 TEXT_PRIMARY = "#0b0b0b"
 TEXT_SECONDARY = "#52514e"
 GRID = "#dcdbd6"
-# Ten slots.  Started at four, silently repainted a fifth powder the same
-# blue as the first, then grew one slot at a time as powders were added:
-# the eighth (brown) for the first non-food-safe powder (alsi10mg), the
-# ninth (olive) for sodium sulfate, the tenth (teal) for silicon.
+# Eleven slots.  Started at four, silently repainted a fifth powder the
+# same blue as the first, then grew one slot at a time as powders were
+# added: the eighth (brown) for the first non-food-safe powder
+# (alsi10mg), the ninth (olive) for sodium sulfate, the tenth (teal) for
+# silicon, the eleventh (slate) for the 2026-08-21 alsi10mg re-run.
 # Validated as an ordered set for the adjacent pairlist a grouped bar
-# chart uses (worst adjacent CVD dE 9.2, normal-vision 18.5 on this
-# surface); the teal is 47.2 dE from its nearest neighbour and 4.99:1
-# against the surface.  Aqua and magenta sit under 3:1 contrast, which
-# the direct bar labels cover.  Red is left out on purpose -- it is
-# TARGET below, and a series must not wear it.  Beyond ten powders this
-# warns rather than cycling: split into per-batch facets instead of
-# stretching the palette.
+# chart uses -- adjacent is the bar that matters, since consecutive
+# powders are the bars that touch, and every bar also carries a direct
+# value label.  The slate is now the set's worst adjacent pair and is
+# still comfortable: 7.57:1 against the surface, 22.0 dE from the teal
+# in normal vision, 12.6 dE under simulated deuteranopia and 13.1 under
+# protanopia.  A second brown scored higher still on CVD separation but
+# was rejected -- two browns read as one series to normal vision
+# whatever dE says.  The green (#1baf7a, 2.74:1) and the pink (#e87ba4,
+# 2.62:1) sit under 3:1 contrast, which the direct bar labels cover.
+# Red is left out on purpose -- it is TARGET below, and a series must
+# not wear it.
+#
+# These separations are pinned by scripts/tests/test_plot_battery_compare.py
+# rather than asserted here, because a comment saying "validated" is
+# exactly what failed to stop the fifth powder being repainted the first
+# powder's blue.  Note the dE figures depend on the dichromat model; the
+# test states the model it uses.
+#
+# Eleven is the end of the road for stretching this: the next powder
+# should get per-batch facets rather than a twelfth slot, because the
+# remaining unused hues all land inside an existing series under CVD.
+# Beyond eleven this warns rather than cycling.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#9a5cd0",
           "#e87ba4", "#008300", "#4a3aa7", "#8c5a2b", "#a88700",
-          "#00798a"]
+          "#00798a", "#3f5566"]
 NOISE = "#9d9c95"
 TARGET = "#e34948"
 

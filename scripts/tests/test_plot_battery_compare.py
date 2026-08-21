@@ -16,6 +16,7 @@ Usage::
     python scripts/tests/test_plot_battery_compare.py
 """
 
+import json
 import os
 import sys
 
@@ -212,12 +213,189 @@ def test_legend_headroom_grows_with_the_powder_count():
           "{}".format(many.ylim[1]))
 
 
+
+# --- palette -------------------------------------------------------------
+#
+# The palette grew one slot at a time as powders were added, and it has
+# already failed silently once: at five powders the fifth wore the same
+# blue as the first, so two powders were one series on the page and
+# nobody noticed until the figure was read closely.  A comment saying
+# "validated" does not stop that recurring, so the separation is asserted
+# here instead -- every pair, in normal vision and under simulated
+# deuteranopia and protanopia, plus contrast against the plotting
+# surface and against the reserved TARGET red.
+
+
+def _srgb_to_linear(channel):
+    if channel <= 0.04045:
+        return channel / 12.92
+    return ((channel + 0.055) / 1.055) ** 2.4
+
+
+def _rgb(hex_colour):
+    raw = hex_colour.lstrip("#")
+    return tuple(int(raw[i:i + 2], 16) / 255.0 for i in (0, 2, 4))
+
+
+def _relative_luminance(hex_colour):
+    r, g, b = [_srgb_to_linear(c) for c in _rgb(hex_colour)]
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(a, b):
+    high, low = sorted([_relative_luminance(a), _relative_luminance(b)],
+                       reverse=True)
+    return (high + 0.05) / (low + 0.05)
+
+
+def _lab(hex_colour):
+    r, g, b = [_srgb_to_linear(c) * 100.0 for c in _rgb(hex_colour)]
+    x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 95.047
+    y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 100.0
+    z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 108.883
+
+    def f(t):
+        return t ** (1.0 / 3.0) if t > 0.008856 else (7.787 * t + 16.0 / 116)
+
+    fx, fy, fz = f(x), f(y), f(z)
+    return (116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz))
+
+
+def _delta_e(a, b):
+    return sum((x - y) ** 2 for x, y in zip(_lab(a), _lab(b))) ** 0.5
+
+
+def _simulate_cvd(hex_colour, kind):
+    """Brettel/Vienot-style dichromat approximation (LMS projection)."""
+    r, g, b = [_srgb_to_linear(c) for c in _rgb(hex_colour)]
+    long_ = 17.8824 * r + 43.5161 * g + 4.11935 * b
+    med = 3.45565 * r + 27.1554 * g + 3.86714 * b
+    short = 0.0299566 * r + 0.184309 * g + 1.46709 * b
+    if kind == "deuteranopia":
+        med = 0.494207 * long_ + 1.24827 * short
+    elif kind == "protanopia":
+        long_ = 2.02344 * med - 2.52581 * short
+    else:
+        raise ValueError(kind)
+    out = (0.080944 * long_ - 0.130504 * med + 0.116721 * short,
+           -0.0102485 * long_ + 0.0540194 * med - 0.113615 * short,
+           -0.000365294 * long_ - 0.00412163 * med + 0.693513 * short)
+
+    def encode(channel):
+        channel = max(0.0, min(1.0, channel))
+        if channel <= 0.0031308:
+            channel *= 12.92
+        else:
+            channel = 1.055 * channel ** (1 / 2.4) - 0.055
+        return int(round(255 * max(0.0, min(1.0, channel))))
+
+    return "#%02x%02x%02x" % tuple(encode(c) for c in out)
+
+
+# What the palette actually promises, and what it does not.
+#
+# Separation is asserted for *adjacent* slots, because that is the
+# design: in a grouped bar chart the bars that touch are consecutive
+# powders, and every bar additionally carries a direct value label.
+# Non-adjacent pairs are deliberately not held to the same bar -- the
+# orange/olive and blue/purple pairs sit closer than this under
+# simulated dichromacy and always have.
+#
+# The absolute numbers depend on the dichromat model, so these floors
+# are set from the model in this file with headroom, not copied from the
+# module docstring (which was measured with a different simulation).
+# Measured here at eleven slots: worst adjacent dE 22.0 normal, 12.6
+# deuteranopia, 13.1 protanopia -- all at the newest pair, slate against
+# teal.
+MIN_ADJACENT_DELTA_E_NORMAL = 18.0
+MIN_ADJACENT_DELTA_E_CVD = 9.0
+
+# Two slots sit under the 3:1 surface-contrast guideline and always
+# have; the direct bar labels carry them.  Pinned by value so a *new*
+# slot cannot quietly join them.
+KNOWN_LOW_CONTRAST = {"#1baf7a", "#e87ba4"}
+
+
+def _adjacent_pairs():
+    return [(i, i + 1) for i in range(len(cmp.SERIES) - 1)]
+
+
+def test_no_two_series_colours_are_identical():
+    """The failure this palette actually had: a fifth powder repainted
+    the same blue as the first, so two powders were one series."""
+    check("no two series colours are the same",
+          len(set(cmp.SERIES)) == len(cmp.SERIES),
+          "{} slots, {} distinct".format(len(cmp.SERIES),
+                                         len(set(cmp.SERIES))))
+
+
+def test_adjacent_series_colours_are_distinguishable():
+    worst = min((_delta_e(cmp.SERIES[i], cmp.SERIES[j]), i, j)
+                for i, j in _adjacent_pairs())
+    check("adjacent slots separated in normal vision",
+          worst[0] >= MIN_ADJACENT_DELTA_E_NORMAL,
+          "worst dE {:.1f} between slots {} and {}".format(*worst))
+    for kind in ("deuteranopia", "protanopia"):
+        worst = min((_delta_e(_simulate_cvd(cmp.SERIES[i], kind),
+                              _simulate_cvd(cmp.SERIES[j], kind)), i, j)
+                    for i, j in _adjacent_pairs())
+        check("adjacent slots separated under {}".format(kind),
+              worst[0] >= MIN_ADJACENT_DELTA_E_CVD,
+              "worst dE {:.1f} between slots {} and {}".format(*worst))
+
+
+def test_no_new_slot_joins_the_low_contrast_exceptions():
+    low = {colour for colour in cmp.SERIES
+           if _contrast(colour, cmp.SURFACE) < 3.0}
+    check("only the documented slots sit under 3:1",
+          low == KNOWN_LOW_CONTRAST,
+          "under 3:1: {}".format(sorted(low) or "none"))
+
+
+def test_no_series_colour_wears_the_reserved_target_red():
+    nearest = min((_delta_e(colour, cmp.TARGET), colour)
+                  for colour in cmp.SERIES)
+    check("no series colour is confusable with the TARGET red",
+          nearest[0] >= MIN_ADJACENT_DELTA_E_NORMAL,
+          "nearest dE {:.1f} ({})".format(*nearest))
+
+
+def test_palette_covers_every_valid_run_in_the_repo():
+    """The cycle warning exists, but it should not be firing in practice."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    battery = os.path.join(here, os.pardir, os.pardir, "data", "battery")
+    if not os.path.isdir(battery):
+        print("SKIP palette covers every valid run (no data/battery)")
+        return
+    valid = 0
+    for entry in sorted(os.listdir(battery)):
+        path = os.path.join(battery, entry)
+        if not os.path.isdir(path):
+            continue
+        for name in os.listdir(path):
+            if not (name.startswith("run_") and name.endswith(".json")):
+                continue
+            with open(os.path.join(path, name)) as handle:
+                run_doc = json.load(handle)
+            qc = run_doc.get("qc") or {}
+            if qc.get("valid_for_cross_powder_comparison"):
+                valid += 1
+    check("palette has a slot for every valid run",
+          valid <= len(cmp.SERIES),
+          "{} valid run(s), {} slots".format(valid, len(cmp.SERIES)))
+
+
 def main():
     test_adjacent_dose_labels_differ()
     test_stagger_holds_across_powders()
     test_offset_cycle_alternates()
     test_feed_factor_labels_are_rotated()
     test_legend_headroom_grows_with_the_powder_count()
+    test_no_two_series_colours_are_identical()
+    test_adjacent_series_colours_are_distinguishable()
+    test_no_new_slot_joins_the_low_contrast_exceptions()
+    test_no_series_colour_wears_the_reserved_target_red()
+    test_palette_covers_every_valid_run_in_the_repo()
     if FAILURES:
         print("\n{} check(s) failed: {}".format(len(FAILURES),
                                                 ", ".join(FAILURES)))
