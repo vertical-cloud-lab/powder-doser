@@ -65,7 +65,7 @@ RESOLUTION_MG = 0.1
 DETECTION_MG = RESOLUTION_MG / 2.0
 
 
-def tilt_headline(rows):
+def tilt_headline(rows, doc=None):
     """Describe the block C trend, which is not always a rise.
 
     White rice flour climbs ~10x from tilt 0 to 90 deg, sodium alginate
@@ -82,19 +82,39 @@ def tilt_headline(rows):
     treated as small measurements -- the same rule panel A's bars already
     follow, and the third repair to this function's habit of claiming
     more than the data carries.
+
+    ``DETECTION_MG`` alone is not that rule, though: it is the balance's
+    *display* resolution, and on a disturbed bench a tilt mean can clear
+    it by two orders of magnitude and still be indistinguishable from
+    zero.  Fumed silica read 2.5 / 2.7 / 5.6 mg per revolution with
+    standard errors of 5.7 / 5.8 / 4.1 mg -- every mean inside one
+    standard error of zero, several individual revolutions negative --
+    and this function called it "feed factor rises with tilt".  A tilt
+    now counts as detected only when its mean also clears twice its own
+    standard error and the block A no-actuation spread, which is the same
+    evidence ``tap_headline`` already demands.
     """
     values = [r["mean_g"] * 1000.0 for r in rows]
     if len(values) < 2 or max(values) <= 0:
         return "feed factor vs tilt"
-    undetected = [r for r, v in zip(rows, values) if v <= DETECTION_MG]
+    baseline = baseline_spread_mg(doc) if doc else 0.0
+
+    def resolved(row, value):
+        sem = abs(row.get("sem_g") or 0.0) * 1000.0
+        return (value > DETECTION_MG
+                and value >= 2 * sem
+                and (baseline < 1.0 or value >= baseline))
+
+    undetected = [r for r, v in zip(rows, values) if not resolved(r, v)]
     if len(undetected) == len(values):
-        return "feed factor below balance resolution at every tilt"
+        return "feed factor not resolved above the noise floor at any tilt"
     if undetected:
-        detected = [(r, v) for r, v in zip(rows, values) if v > DETECTION_MG]
+        detected = [(r, v) for r, v in zip(rows, values) if resolved(r, v)]
         where = ", ".join("{:.0f}°".format(r["tilt_deg"]) for r in undetected)
-        return ("feed factor below balance resolution at {} "
-                "(only {:.0f}° detected, {:.1f} mg/rev)".format(
-                    where, detected[0][0]["tilt_deg"], detected[0][1]))
+        shown = ", ".join("{:.0f}° {:.1f}".format(r["tilt_deg"], v)
+                          for r, v in detected)
+        return ("feed factor not resolved at {} ({} mg/rev)".format(
+            where, shown))
     ratio = max(values) / max(min(values), 1e-9)
     if ratio < 2.0:
         return "feed factor is flat across tilt"
@@ -138,7 +158,7 @@ def panel_rotation(ax, doc):
                   color=TEXT_SECONDARY)
     ax.set_ylim(0, max(values) * 1.45 if values else 1)
     ax.set_title("A  Block C — {} (n=6 each, 30 RPM)".format(
-                     tilt_headline(rows)),
+                     tilt_headline(rows, doc)),
                  fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
 
 
@@ -189,7 +209,7 @@ def baseline_spread_mg(doc):
     return 0.0
 
 
-def tap_headline(taps, doc=None):
+def tap_headline(taps, doc=None, refeeds=None):
     """Describe what tapping did, rather than assuming it did nothing.
 
     Every powder through sodium alginate moved <0.3 mg per tap, but calcium
@@ -211,8 +231,26 @@ def tap_headline(taps, doc=None):
     resolution) a sub-mg mean does bound the quantum, and "almost
     nothing" stands -- hence the 1 mg materiality guard, without which a
     quiet run whose taps average -0.04 mg would trip the same branch.
+
+    Clearing the noise is necessary but not sufficient, because noise is
+    not the only thing that is not powder.  A tap can only dislodge what
+    rotation has already carried to the delivery lip, so a tap quantum
+    larger than the re-feed rotation measured *in the same trials, at the
+    same tilt* is mechanically impossible and is something else -- on
+    2026-08-21 fumed silica's tilt 0 deg taps read 32.2 mg against a
+    -8.9 mg re-feed rotation, every trial flagged as a shock, which was
+    the tap solenoid's impulse coupling into the load cell.  That passed
+    both noise tests comfortably.  So the largest claimable quantum is
+    capped by its own tilt's re-feed rotation.
     """
     means = [r["mean_g"] * 1000.0 for r in taps] or [0.0]
+    if refeeds:
+        by_tilt = {r["tilt_deg"]: r["mean_g"] * 1000.0 for r in refeeds}
+        credible = [m for r, m in zip(taps, means)
+                    if m <= by_tilt.get(r["tilt_deg"], float("inf"))]
+        if not credible:
+            return "tap exceeds its own re-feed rotation (not powder)"
+        means = credible
     peak = max(means)
     sems = [abs(r.get("sem_g") or 0.0) * 1000.0 for r in taps] or [0.0]
     baseline = baseline_spread_mg(doc) if doc else 0.0
@@ -275,7 +313,8 @@ def panel_tap(ax, doc):
     ax.set_xlabel("tube tilt", fontsize=9.5, color=TEXT_SECONDARY)
     ax.set_ylabel("mass per action (mg)", fontsize=9.5,
                   color=TEXT_SECONDARY)
-    ax.set_title("C  Block E — {} (n=8 each)".format(tap_headline(taps, doc)),
+    ax.set_title("C  Block E — {} (n=8 each)".format(
+        tap_headline(taps, doc, refeeds)),
                  fontsize=10.5, color=TEXT_PRIMARY, loc="left", pad=10)
     legend = ax.legend(frameon=False, fontsize=9, loc="upper left")
     for text in legend.get_texts():

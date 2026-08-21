@@ -192,3 +192,41 @@ Either answer is publishable. Fumed silica is a *useful* extreme: at
 screw feeder of this geometry can meter, and the dataset would then span
 **AlSi10Mg 338.9 mg/rev → fumed silica ≤0.25 mg/rev**, more than three
 orders of magnitude on one auger with one frozen parameter set.
+
+## Two figure titles this run caught
+
+`plot_battery_results.py` titled panel A **"feed factor rises with tilt"**
+and panel C **"tapping moves up to 32 mg per tap"** for the data above.
+Both are false, and both slipped past guards added for exactly this class
+of bug (2026-08-05 and 2026-08-20).
+
+- **Panel A** only checked `DETECTION_MG`, the balance's *display*
+  resolution (0.05 mg). On a disturbed bench a mean can clear that by two
+  orders of magnitude and still be inside its own standard error. A tilt
+  now counts as detected only if its mean also clears **twice its own
+  standard error** and the block A no-actuation spread — the same
+  evidence `tap_headline` already demanded.
+- **Panel C** cleared both noise tests (32.2 mg against a 10.5 mg block A
+  spread and a 2.2 mg standard error) because noise is not the only thing
+  that is not powder. A tap can only dislodge what rotation has carried
+  to the lip, so the claimable quantum is now **capped by the re-feed
+  rotation measured in the same trials at the same tilt**.
+
+Swept across all 18 runs; five titles change, all toward weaker claims,
+and every one of them is a run whose own notes already said the trend was
+inside its scatter:
+
+| run | was | now |
+|---|---|---|
+| brown rice flour, 08-04 20:43 | feed factor falls with tilt | not resolved at 0°, 90° |
+| brown rice flour auger #2, 08-05 | feed factor is flat across tilt | not resolved at any tilt |
+| carboxymethyl cellulose, 08-05 | peaks at 45° and falls above it | not resolved at 90° (0° 2.6, 45° 26.3 mg/rev) |
+| silicon -325, 08-21 | below balance resolution at 0°, 45° | not resolved at any tilt |
+| fumed silica, 08-21 | rises with tilt | not resolved at any tilt |
+
+Every conveying run keeps its title unchanged. The CMC one is the only
+judgement call: its 45° peak is corroborated by block D and block E, but
+its 90° mean carries 157 % RSD, so the panel can no longer put a *number*
+on the fall — the title now shows the two resolved tilts and names 90° as
+unresolved, which is the weaker and more defensible statement. Worth a
+look if you disagree.

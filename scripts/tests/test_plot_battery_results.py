@@ -218,7 +218,7 @@ def test_tilt_headline_does_not_trend_between_non_detections():
 
     headline = plot.tilt_headline(rows(0.0, 0.0, 1.2))
     check("a tilt at the detection limit is named, not trended",
-          "below balance resolution" in headline and "rises" not in headline,
+          "not resolved" in headline and "rises" not in headline,
           headline)
     check("the one detected tilt is still reported",
           "90" in headline and "1.2" in headline, headline)
@@ -226,7 +226,7 @@ def test_tilt_headline_does_not_trend_between_non_detections():
     check("all tilts undetected says so once",
           plot.tilt_headline(rows(0.0, 0.0, 0.0)) in (
               "feed factor vs tilt",
-              "feed factor below balance resolution at every tilt"),
+              "feed factor not resolved above the noise floor at any tilt"),
           plot.tilt_headline(rows(0.0, 0.0, 0.0)))
 
     # Every conveying run must keep the headline it already ships with;
@@ -249,11 +249,78 @@ def test_tilt_headline_does_not_trend_between_non_detections():
         check("{} headline unchanged".format(name), got == expected, got)
 
 
+
+def test_tilt_headline_needs_statistical_resolution():
+    """A tilt mean far above the display resolution can still be noise.
+
+    Fumed silica (2026-08-21) read 2.5 / 2.7 / 5.6 mg per revolution with
+    standard errors of 5.7 / 5.8 / 4.1 mg -- every mean inside one
+    standard error of zero -- and the panel titled itself "feed factor
+    rises with tilt".  DETECTION_MG is the balance's *display*
+    resolution, not a detection limit for a disturbed bench.
+    """
+    rows = [
+        {"tilt_deg": 0.0, "mean_g": 0.00252, "sem_g": 0.00574},
+        {"tilt_deg": 45.0, "mean_g": 0.00272, "sem_g": 0.00582},
+        {"tilt_deg": 90.0, "mean_g": 0.00557, "sem_g": 0.00407},
+    ]
+    title = plot.tilt_headline(rows, {"trials": []})
+    check("tilt-noise-is-not-a-rise", "rises" not in title, title)
+    check("tilt-noise-says-unresolved", "not resolved" in title, title)
+
+
+def test_tilt_headline_still_reports_a_real_trend():
+    """The guard must not swallow powders that genuinely trend."""
+    rows = [
+        {"tilt_deg": 0.0, "mean_g": 0.0375, "sem_g": 0.0034},
+        {"tilt_deg": 45.0, "mean_g": 0.1278, "sem_g": 0.0193},
+        {"tilt_deg": 90.0, "mean_g": 0.3715, "sem_g": 0.0682},
+    ]
+    title = plot.tilt_headline(rows, {"trials": []})
+    check("tilt-real-trend-survives", "rises" in title, title)
+
+
+def test_tap_headline_rejects_a_tap_larger_than_its_refeed():
+    """A tap cannot deliver more than rotation brought to the lip.
+
+    Fumed silica's tilt 0 deg taps read 32.2 mg against a -8.9 mg re-feed
+    rotation in the same trials -- the tap solenoid's impulse coupling
+    into the load cell.  It cleared both noise tests comfortably.
+    """
+    taps = [{"tilt_deg": 0.0, "mean_g": 0.03218, "sem_g": 0.0022},
+            {"tilt_deg": 45.0, "mean_g": 0.00185, "sem_g": 0.0008}]
+    refeeds = [{"tilt_deg": 0.0, "mean_g": -0.00886},
+               {"tilt_deg": 45.0, "mean_g": 0.01269}]
+    doc = {"trials": [{"block": "A", "delta_g": 0.004},
+                      {"block": "A", "delta_g": -0.006}]}
+    title = plot.tap_headline(taps, doc, refeeds)
+    check("tap-cannot-exceed-refeed", "32" not in title, title)
+    # 45 deg is credible (1.85 mg < 12.69 mg re-feed) but does not clear
+    # twice its own standard error against the baseline, so it is unresolved
+    # rather than claimed.
+    check("tap-artifact-not-claimed",
+          "not resolved" in title or "almost nothing" in title, title)
+
+
+def test_tap_headline_keeps_a_credible_quantum():
+    """Calcium lactate's 20 mg tap sits well under its 165 mg re-feed."""
+    taps = [{"tilt_deg": 0.0, "mean_g": 0.00231, "sem_g": 0.00026},
+            {"tilt_deg": 45.0, "mean_g": 0.02036, "sem_g": 0.001}]
+    refeeds = [{"tilt_deg": 0.0, "mean_g": 0.04233},
+               {"tilt_deg": 45.0, "mean_g": 0.1655}]
+    doc = {"trials": [{"block": "A", "delta_g": 0.0}]}
+    title = plot.tap_headline(taps, doc, refeeds)
+    check("tap-real-quantum-survives", "20 mg per tap" in title, title)
+
 def main():
     for test in (test_tilt_headline, test_tap_headline, test_dose_headline,
                  test_tap_headline_respects_the_noise_floor,
                  test_baseline_spread_is_read_from_block_a,
-                 test_tilt_headline_does_not_trend_between_non_detections):
+                 test_tilt_headline_does_not_trend_between_non_detections,
+                 test_tilt_headline_needs_statistical_resolution,
+                 test_tilt_headline_still_reports_a_real_trend,
+                 test_tap_headline_rejects_a_tap_larger_than_its_refeed,
+                 test_tap_headline_keeps_a_credible_quantum):
         print("--- {}".format(test.__name__))
         test()
     print()
