@@ -196,7 +196,7 @@ def main(argv=None) -> int:
         status = [r["status"] for r in rows]
     else:
         stdout = run_on_device(False, int(args.settle * 1000), args.port)
-        _before, samples = parse(stdout)
+        _before, _cmds, samples = parse(stdout)
         if not samples:
             print("[survey] no samples -- is the balance switched on?")
             return 2

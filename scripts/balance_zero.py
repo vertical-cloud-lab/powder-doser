@@ -89,17 +89,27 @@ def query():
         return status, None
 
 
-def rezero():
+def send(cmd):
     global _buf
     _buf = b""
-    u.write(b"Z\r\n")
+    u.write(cmd + b"\r\n")
     time.sleep_ms(1800)
 
 
 if DO_ZERO:
     st, mg = query()
     print("BEFORE,%s,%s" % (st, mg))
-    rezero()
+    # A&D 'Z' is the RE-ZERO key: full precision, but range-limited to a few
+    # percent of capacity around the calibrated zero, and this balance has
+    # erCd=0 so a refusal is silent.  A stale mid-run tare can easily leave
+    # the display several grams out, which 'Z' will not clear.  'T' (tare) is
+    # full-range, so fall back to it when 'Z' visibly did not take.
+    send(b"Z")
+    print("CMD,Z")
+    st2, mg2 = query()
+    if mg2 is None or abs(mg2) > 500.0:
+        send(b"T")
+        print("CMD,T")
 
 print("t_ms,status,mg")
 t0 = time.ticks_ms()
@@ -178,10 +188,14 @@ def summarize(samples: list[tuple[float, str, float]]) -> None:
 def parse(stdout: str):
     samples = []
     before = None
+    cmds = []
     for line in stdout.splitlines():
         line = line.strip()
         if line.startswith("BEFORE,"):
             before = line.split(",", 2)[1:]
+            continue
+        if line.startswith("CMD,"):
+            cmds.append(line.split(",", 1)[1])
             continue
         parts = line.split(",")
         if len(parts) != 3 or not parts[0].isdigit():
@@ -190,7 +204,7 @@ def parse(stdout: str):
             samples.append((int(parts[0]) / 1000.0, parts[1], float(parts[2])))
         except ValueError:
             continue
-    return before, samples
+    return before, cmds, samples
 
 
 def main(argv=None) -> int:
@@ -204,12 +218,16 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     out = run_on_device(not args.check_only, int(args.settle * 1000), args.port)
-    before, samples = parse(out)
+    before, cmds, samples = parse(out)
 
     if before is not None:
         status, mg = before
         print("[balance] before re-zero: {} {} mg".format(status, mg))
-        print("[balance] sent A&D 'Z' (documented as 'Same as the RE-ZERO key')")
+        if "T" in cmds:
+            print("[balance] sent A&D 'Z' (the RE-ZERO key); it was refused as "
+                  "out of re-zero range, so sent 'T' (tare, full range)")
+        else:
+            print("[balance] sent A&D 'Z' (documented as 'Same as the RE-ZERO key')")
     summarize(samples)
 
     if args.csv:

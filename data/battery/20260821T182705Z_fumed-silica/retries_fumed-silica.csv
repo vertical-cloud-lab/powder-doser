@@ -1,0 +1,17 @@
+powder_id,block,tilt_deg,phase,trial,reason,shock_g,discarded_delta_g,t_ms
+fumed-silica,E,0.0,tap,0,shock,-0.03,0.0553,490491
+fumed-silica,E,0.0,tap,0,shock,-0.0338,0.0397,498049
+fumed-silica,E,0.0,tap,1,shock,-0.0256,0.0474,524731
+fumed-silica,E,0.0,tap,1,shock,-0.0376,0.0442,532282
+fumed-silica,E,0.0,tap,2,shock,-0.025,0.033,558963
+fumed-silica,E,0.0,tap,2,shock,-0.0369,0.0432,566517
+fumed-silica,E,0.0,tap,3,shock,-0.0316,0.0502,593198
+fumed-silica,E,0.0,tap,3,shock,-0.0362,0.0308,600754
+fumed-silica,E,0.0,tap,4,shock,-0.0261,0.0341,627447
+fumed-silica,E,0.0,tap,4,shock,-0.0217,0.0253,634993
+fumed-silica,E,0.0,tap,5,shock,-0.0249,0.0336,661670
+fumed-silica,E,0.0,tap,5,shock,-0.0314,0.0187,669226
+fumed-silica,E,0.0,tap,6,shock,-0.0291,0.0494,695934
+fumed-silica,E,0.0,tap,6,shock,-0.0312,0.0404,703461
+fumed-silica,E,0.0,tap,7,shock,-0.023,0.0303,730142
+fumed-silica,E,0.0,tap,7,shock,-0.0253,0.0264,737696
