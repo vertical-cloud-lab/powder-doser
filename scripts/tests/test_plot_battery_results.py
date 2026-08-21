@@ -203,10 +203,57 @@ def test_baseline_spread_is_read_from_block_a():
           plot.baseline_spread_mg({}) == 0.0)
 
 
+def test_tilt_headline_does_not_trend_between_non_detections():
+    """A tilt trend needs two detected values to trend between.
+
+    Silicon -325 returned exactly 0.0000 g on all twelve block C
+    revolutions at 0 and 45 deg, with one isolated 7.2 mg event at 90 deg.
+    The ratio test read that as "feed factor rises with tilt", which
+    asserts a tilt dependence built from two non-detections -- the same
+    failure as the hard-coded titles and the unguarded tap headline.
+    """
+    def rows(*vals):
+        return [{"tilt_deg": t, "mean_g": v / 1000.0}
+                for t, v in zip((0.0, 45.0, 90.0), vals)]
+
+    headline = plot.tilt_headline(rows(0.0, 0.0, 1.2))
+    check("a tilt at the detection limit is named, not trended",
+          "below balance resolution" in headline and "rises" not in headline,
+          headline)
+    check("the one detected tilt is still reported",
+          "90" in headline and "1.2" in headline, headline)
+
+    check("all tilts undetected says so once",
+          plot.tilt_headline(rows(0.0, 0.0, 0.0)) in (
+              "feed factor vs tilt",
+              "feed factor below balance resolution at every tilt"),
+          plot.tilt_headline(rows(0.0, 0.0, 0.0)))
+
+    # Every conveying run must keep the headline it already ships with;
+    # this guard is only allowed to fire on non-detections.
+    unchanged = {
+        "white-rice-flour": (rows(3.75, 12.78, 37.15),
+                             "feed factor rises with tilt"),
+        "sodium-alginate": (rows(0.75, 9.58, 10.87),
+                            "feed factor rises with tilt, saturating above 45°"),
+        "carboxymethyl-cellulose": (rows(2.63, 26.32, 9.35),
+                                    "feed factor peaks at 45° and falls above it"),
+        "brown-rice-flour-auger2": (rows(0.30, 0.25, 0.20),
+                                    "feed factor is flat across tilt"),
+        "alsi10mg": (rows(48.9, 230.9, 338.9), "feed factor rises with tilt"),
+        "silicon-110-200": (rows(57.2, 210.7, 302.4),
+                            "feed factor rises with tilt"),
+    }
+    for name, (data, expected) in unchanged.items():
+        got = plot.tilt_headline(data)
+        check("{} headline unchanged".format(name), got == expected, got)
+
+
 def main():
     for test in (test_tilt_headline, test_tap_headline, test_dose_headline,
                  test_tap_headline_respects_the_noise_floor,
-                 test_baseline_spread_is_read_from_block_a):
+                 test_baseline_spread_is_read_from_block_a,
+                 test_tilt_headline_does_not_trend_between_non_detections):
         print("--- {}".format(test.__name__))
         test()
     print()

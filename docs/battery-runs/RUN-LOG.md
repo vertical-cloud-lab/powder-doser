@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-16 entries, 11 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+17 entries, 12 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-08-21 16:18 | 2026-08-21 16:32 | 13:30 | `silicon-325` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.08 g | 1.20 mg/rev | 3x, 0 ok, mean -999.3 mg | sigma 0.0 mg, no shocks or retries | valid<br>`conveying-slowly` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T161838Z_silicon-325) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-silicon-325.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=19103) |
 | 2026-08-21 15:13 | 2026-08-21 15:34 | 21:05 | `alsi10mg` | ABCDE | C/E 30 · D 15/45/90 RPM | 9.12 g | 338.93 mg/rev | -- | sigma 10.4 mg, 15 shocks, 38 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T151337Z_alsi10mg) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-alsi10mg.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=15202) |
 | 2026-08-20 21:48 | 2026-08-20 22:03 | 15:05 | `silicon-110-200` | ABCDE | C/E 30 · D 15/45/90 RPM | 7.72 g | 302.35 mg/rev | -- | sigma 7.9 mg, 9 shocks, 12 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T214823Z_silicon-110-200) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-silicon-110-200.md) | [~1 min](https://youtu.be/23PlXoQgjPQ?t=10088) |
 | 2026-08-20 19:22 | 2026-08-20 19:35 | 13:10 | `sodium-sulfate` | ABCDE | C/E 30 · D 15/45/90 RPM | 7.91 g | 243.55 mg/rev | -- | sigma 5.9 mg, 9 shocks, 3 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260820T192224Z_sodium-sulfate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-20-sodium-sulfate.md) | [~1 min](https://youtu.be/23PlXoQgjPQ?t=1329) |
@@ -28,6 +29,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-08-21 16:18 UTC -- silicon-325
+
+- **Window** 2026-08-21T16:18:38.225294+00:00 -> 2026-08-21T16:32:08.607528+00:00  (13:30)
+- **Lab clock** 2026-08-21 10:18:38 MDT -> 2026-08-21 10:32:08 MDT
+- **Powder** silicon, -325 mesh (<44 um)  ·  batch `metal-2026-08`  ·  operator swcharles
+- **Tests** blocks ABCDEG  ·  64 measured trials  ·  C/E 30 · D 15/45/90 RPM
+- **Dispensed** 0.0784 g
+- **Feed factor (block C)** 0 deg 0.00 mg/rev  ·  45 deg 0.00 mg/rev  ·  90 deg 1.20 mg/rev
+- **Closed-loop doses** 3x, 0 ok, mean -999.3 mg
+- **Environment** sigma 0.0 mg, no shocks or retries
+- **QC** valid -- `conveying-slowly`
+- **Data** [data/battery/20260821T161838Z_silicon-325](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T161838Z_silicon-325)
+- **Notes** [docs/battery-runs/2026-08-21-silicon-325.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-silicon-325.md)
+- **Video** [https://youtu.be/7orNsBiLW2M?t=19103](https://youtu.be/7orNsBiLW2M?t=19103) -- accurate to about a minute
 
 ### 2026-08-21 15:13 UTC -- alsi10mg
 

@@ -245,6 +245,14 @@ def env_cell(run: dict) -> str:
         parts.append(f"{env['shock_events']} shocks")
     if env.get("retried_trials"):
         parts.append(f"{env['retried_trials']} retries")
+    # Suppressing the zeros made the quietest runs the least informative
+    # cell in the table: "sigma 0.0 mg" alone is indistinguishable from a
+    # run where the counters were simply never populated.  A clean bench
+    # is the thing a reader most wants to spot, so say it.
+    clean = env.get("clean_trial_fraction")
+    if (not env.get("shock_events") and not env.get("retried_trials")
+            and clean is not None and clean >= 1.0):
+        parts.append("no shocks or retries")
     return ", ".join(parts) or "recorded"
 
 

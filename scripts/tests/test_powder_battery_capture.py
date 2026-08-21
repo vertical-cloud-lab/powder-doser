@@ -4,6 +4,9 @@ Run:  python3 scripts/tests/test_powder_battery_capture.py
 """
 
 import sys
+import json
+import os
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -209,12 +212,43 @@ def test_lab_local_clock():
           partial["started_local"] is None and partial["ended_local"] is None)
 
 
+def test_load_preflight():
+    """--preflight-json must take a file path *or* the JSON itself.
+
+    Passing the document inline is the natural reading of the flag name, and
+    the 2026-08-21 AlSi10Mg run did exactly that: the crash landed after
+    RUN,END,ok, so the run had to be rebuilt from the raw log and lost its
+    block timeline.  Both spellings are supported now; this pins that.
+    """
+    inline = cap.load_preflight('{"verdict": "feed confirmed", "rev": 5}')
+    check("inline JSON is parsed",
+          inline == {"verdict": "feed confirmed", "rev": 5}, repr(inline))
+
+    handle = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
+    json.dump({"verdict": "conveying-slowly"}, handle)
+    handle.close()
+    try:
+        check("a file path is parsed",
+              cap.load_preflight(handle.name) == {"verdict": "conveying-slowly"})
+        check("leading/trailing space in a path is tolerated",
+              cap.load_preflight("  " + handle.name + "  ")
+              == {"verdict": "conveying-slowly"})
+    finally:
+        os.unlink(handle.name)
+
+    try:
+        cap.load_preflight("/nonexistent/preflight.json")
+        check("a bad path still raises", False, "no exception")
+    except OSError:
+        check("a bad path still raises", True)
+
+
 def main():
     for test in (test_parse_trial, test_parse_poll, test_parse_dose,
                  test_parse_other, test_normalize_powder_id,
                  test_summarize, test_dose_summary, test_block_marker,
                  test_format_elapsed, test_run_document_timeline,
-                 test_lab_local_clock):
+                 test_lab_local_clock, test_load_preflight):
         print("--- {}".format(test.__name__))
         test()
     print()

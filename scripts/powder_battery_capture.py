@@ -319,6 +319,23 @@ def environment_summary(meta, trials, retries=None):
     return out
 
 
+def load_preflight(value):
+    """Return the pre-flight document from a file path or an inline JSON string.
+
+    The flag reads naturally as "--preflight-json '{...}'", and that is how it
+    has been mis-called at the bench -- which raised only *after* the battery
+    had finished, at the point where the artifacts get written.  The raw serial
+    log always survives that (``--from-raw`` rebuilds the run), but the block
+    timeline does not, so the failure costs real data for a typo.  Accept both
+    spellings instead of insisting on the one.
+    """
+    text = str(value).strip()
+    if text.startswith("{"):
+        return json.loads(text)
+    with open(text) as handle:
+        return json.load(handle)
+
+
 def build_run_document(meta, trials, polls, doses, device_summaries,
                        host_summary, status, args, started_utc,
                        ended_utc, elapsed_s=None, timeline=None,
@@ -333,8 +350,7 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         git_commit = None
     preflight = None
     if getattr(args, "preflight_json", None):
-        with open(args.preflight_json) as handle:
-            preflight = json.load(handle)
+        preflight = load_preflight(args.preflight_json)
     qc = {
         # Default to excluding a run: a battery is only comparable across
         # powders once someone has confirmed the rig actually fed.
@@ -721,8 +737,9 @@ def main(argv=None):
                         help="powder batch label shared by runs that came "
                         "out of the same fill container "
                         "(e.g. food-safe-2026-08)")
-    parser.add_argument("--preflight-json", default=None, metavar="JSON",
-                        help="pre-flight feed check result to embed "
+    parser.add_argument("--preflight-json", default=None, metavar="FILE_OR_JSON",
+                        help="pre-flight feed check result to embed, as a "
+                        "path to a JSON file or the JSON document itself "
                         "(from battery_preflight / battery_feed_diagnostic)")
     parser.add_argument("--qc-valid", action="store_true",
                         help="mark the run valid for cross-powder "

@@ -59,6 +59,12 @@ def style(ax):
     ax.set_axisbelow(True)
 
 
+# The balance displays to 0.1 mg, so a per-revolution mean at or under
+# half a display count is "not detected", not a small measurement.
+RESOLUTION_MG = 0.1
+DETECTION_MG = RESOLUTION_MG / 2.0
+
+
 def tilt_headline(rows):
     """Describe the block C trend, which is not always a rise.
 
@@ -66,10 +72,29 @@ def tilt_headline(rows):
     saturates above 45 deg, brown rice flour is flat within its own
     scatter, and carboxymethyl cellulose peaks at 45 deg and falls again
     -- so state which of those this run is.
+
+    A trend also needs two numbers to trend *between*.  Silicon -325
+    returned exactly 0.0000 g on all twelve revolutions at 0 and 45 deg
+    and a single isolated 7.2 mg event at 90 deg; the ratio test happily
+    called that "feed factor rises with tilt", which asserts a tilt
+    dependence out of two non-detections.  Tilts at or below the balance's
+    detection limit are therefore reported as such instead of being
+    treated as small measurements -- the same rule panel A's bars already
+    follow, and the third repair to this function's habit of claiming
+    more than the data carries.
     """
     values = [r["mean_g"] * 1000.0 for r in rows]
     if len(values) < 2 or max(values) <= 0:
         return "feed factor vs tilt"
+    undetected = [r for r, v in zip(rows, values) if v <= DETECTION_MG]
+    if len(undetected) == len(values):
+        return "feed factor below balance resolution at every tilt"
+    if undetected:
+        detected = [(r, v) for r, v in zip(rows, values) if v > DETECTION_MG]
+        where = ", ".join("{:.0f}°".format(r["tilt_deg"]) for r in undetected)
+        return ("feed factor below balance resolution at {} "
+                "(only {:.0f}° detected, {:.1f} mg/rev)".format(
+                    where, detected[0][0]["tilt_deg"], detected[0][1]))
     ratio = max(values) / max(min(values), 1e-9)
     if ratio < 2.0:
         return "feed factor is flat across tilt"

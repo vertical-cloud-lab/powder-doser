@@ -222,6 +222,16 @@ def panel_dose(ax, docs):
                            SERIES[i % len(SERIES)]))
         position += 0.6
 
+    if not xs:
+        # Block G is skipped whenever the bench is too noisy for a
+        # multi-minute dose against a +/-5 mg band, so a facet can have
+        # no doses at all.  An empty axes reads as "every dose delivered
+        # zero", which is the opposite of "no dose was attempted".
+        ax.text(0.5, 0.5, "no closed-loop doses recorded\n"
+                          "(block G not run for these powders)",
+                transform=ax.transAxes, ha="center", va="center",
+                fontsize=10, color=TEXT_SECONDARY)
+
     ax.bar(xs, values, width=0.62, color=colors)
     ax.axhline(target, color=TARGET, linewidth=2, linestyle=(0, (4, 3)))
     ax.annotate("target {:.3f} g".format(target), xy=(min(xs, default=0), target),
@@ -254,7 +264,29 @@ def valid_for_comparison(doc):
     return bool(doc.get("qc", {}).get("valid_for_cross_powder_comparison"))
 
 
-def main(out_path, paths, valid_only=False):
+def batch_of(doc):
+    """Fill-container batch a run belongs to, e.g. ``metal-2026-08``."""
+    return doc.get("batch") or "unbatched"
+
+
+def group_by_batch(docs):
+    """Runs grouped by batch, batches ordered by their first run.
+
+    Ordering by first appearance rather than alphabetically keeps the
+    facets in the order the work actually happened, which is how the run
+    log and the issue thread read.
+    """
+    order, groups = [], {}
+    for doc in docs:
+        key = batch_of(doc)
+        if key not in groups:
+            order.append(key)
+            groups[key] = []
+        groups[key].append(doc)
+    return [(key, groups[key]) for key in order]
+
+
+def main(out_path, paths, valid_only=False, facet=None):
     docs = [json.load(open(p)) for p in paths]
     if valid_only:
         # Three of the runs so far are retracted no-feed attempts.  A
@@ -269,15 +301,15 @@ def main(out_path, paths, valid_only=False):
         docs = kept
     if not docs:
         raise SystemExit("no runs to plot")
-    if len(docs) > len(SERIES):
-        # Cycling is what put two powders in the same blue.  Say so
-        # rather than shipping a figure whose legend cannot be trusted.
-        print("WARNING: {} runs but {} distinct colours -- powders {} onward "
-              "repeat an earlier colour. Split this into facets instead."
-              .format(len(docs), len(SERIES),
-                      ", ".join(d.get("powder_id", "?")
-                                for d in docs[len(SERIES):])))
-
+    # The palette is eleven slots and stretching it further was ruled
+    # out: the remaining unused hues all land inside an existing series
+    # under CVD.  So past eleven the figure facets by batch instead of
+    # repainting a powder someone else's colour.  Colours only have to be
+    # distinct *within* a facet, so each batch restarts the palette.
+    if facet is None:
+        facet = len(docs) > len(SERIES)
+    if facet:
+        return _plot_faceted(out_path, docs)
     fig, axes = plt.subplots(1, 2, figsize=(13.0, 5.2), facecolor=SURFACE)
     for ax in axes:
         style(ax)
@@ -297,8 +329,49 @@ def main(out_path, paths, valid_only=False):
     print("wrote {}".format(out_path))
 
 
+def _plot_faceted(out_path, docs):
+    """One row of panels per batch, each row restarting the palette."""
+    groups = group_by_batch(docs)
+    over = [key for key, members in groups if len(members) > len(SERIES)]
+    if over:
+        # Faceting bought headroom; it did not make the palette infinite.
+        # If a single batch outgrows it, say so rather than cycling
+        # inside the facet, which is the original bug at smaller scale.
+        print("WARNING: batch(es) {} exceed {} colours even faceted -- "
+              "split those by sub-batch or date."
+              .format(", ".join(over), len(SERIES)))
+    rows = len(groups)
+    fig, axes = plt.subplots(rows, 2, figsize=(13.0, 4.6 * rows),
+                             facecolor=SURFACE, squeeze=False)
+    for row, (key, members) in enumerate(groups):
+        for ax in axes[row]:
+            style(ax)
+        panel_feed_factor(axes[row][0], members)
+        panel_dose(axes[row][1], members)
+        axes[row][0].set_ylabel("{}\n{}".format(
+            key, axes[row][0].get_ylabel()))
+    title = ("Uniform powder battery — cross-powder comparison, "
+             "{} runs in {} batches ({})").format(
+                 len(docs), len(groups),
+                 "; ".join("{}: {}".format(
+                     key, ", ".join(label_of(d, members) for d in members))
+                     for key, members in groups))
+    fig.suptitle(textwrap.fill(title, 108), fontsize=13, color=TEXT_PRIMARY,
+                 x=0.008, ha="left", va="top", y=0.995)
+    lines = len(textwrap.wrap(title, 108))
+    fig.tight_layout(rect=(0, 0, 1, 1 - 0.018 * (lines + 1)))
+    fig.savefig(out_path, dpi=170, facecolor=SURFACE)
+    print("wrote {} ({} batch facets)".format(out_path, len(groups)))
+
+
 if __name__ == "__main__":
-    argv = [a for a in sys.argv[1:] if a != "--valid-only"]
+    argv = [a for a in sys.argv[1:]
+            if a not in ("--valid-only", "--facet", "--no-facet")]
     if len(argv) < 2:
         raise SystemExit(__doc__)
-    main(argv[0], argv[1:], valid_only="--valid-only" in sys.argv)
+    facet = None
+    if "--facet" in sys.argv:
+        facet = True
+    if "--no-facet" in sys.argv:
+        facet = False
+    main(argv[0], argv[1:], valid_only="--valid-only" in sys.argv, facet=facet)

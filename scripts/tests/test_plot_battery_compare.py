@@ -360,29 +360,64 @@ def test_no_series_colour_wears_the_reserved_target_red():
           "nearest dE {:.1f} ({})".format(*nearest))
 
 
-def test_palette_covers_every_valid_run_in_the_repo():
-    """The cycle warning exists, but it should not be firing in practice."""
+def _valid_runs_in_repo():
     here = os.path.dirname(os.path.abspath(__file__))
     battery = os.path.join(here, os.pardir, os.pardir, "data", "battery")
     if not os.path.isdir(battery):
-        print("SKIP palette covers every valid run (no data/battery)")
-        return
-    valid = 0
+        return None
+    docs = []
     for entry in sorted(os.listdir(battery)):
         path = os.path.join(battery, entry)
         if not os.path.isdir(path):
             continue
-        for name in os.listdir(path):
+        for name in sorted(os.listdir(path)):
             if not (name.startswith("run_") and name.endswith(".json")):
                 continue
             with open(os.path.join(path, name)) as handle:
                 run_doc = json.load(handle)
-            qc = run_doc.get("qc") or {}
-            if qc.get("valid_for_cross_powder_comparison"):
-                valid += 1
-    check("palette has a slot for every valid run",
-          valid <= len(cmp.SERIES),
-          "{} valid run(s), {} slots".format(valid, len(cmp.SERIES)))
+            if cmp.valid_for_comparison(run_doc):
+                docs.append(run_doc)
+    return docs
+
+
+def test_palette_covers_every_batch_in_the_repo():
+    """Every *facet* must fit the palette -- the whole set no longer has to.
+
+    This check used to require the palette to cover every valid run at
+    once, and it failed the moment silicon-325 became the twelfth.  That
+    is the wrong invariant now: the answer to a twelfth powder was
+    per-batch facets, not a twelfth colour, because the remaining unused
+    hues all land inside an existing series under CVD.  Colours only need
+    to be distinct within a facet, so the invariant is per batch.
+    """
+    docs = _valid_runs_in_repo()
+    if docs is None:
+        print("SKIP palette covers every batch (no data/battery)")
+        return
+    for key, members in cmp.group_by_batch(docs):
+        check("batch {} fits the palette".format(key),
+              len(members) <= len(cmp.SERIES),
+              "{} run(s), {} slots".format(len(members), len(cmp.SERIES)))
+
+
+def test_faceting_kicks_in_past_the_palette():
+    """The figure must facet automatically rather than repaint a powder."""
+    docs = _valid_runs_in_repo()
+    if docs is None:
+        print("SKIP faceting threshold (no data/battery)")
+        return
+    check("the repo's valid runs now exceed one facet's worth",
+          len(docs) > len(cmp.SERIES),
+          "{} valid run(s), {} slots -- if this ever goes back under, the "
+          "auto-facet path stops being exercised by the real dataset"
+          .format(len(docs), len(cmp.SERIES)))
+    batches = cmp.group_by_batch(docs)
+    check("batches are ordered by first appearance",
+          [k for k, _ in batches]
+          == sorted({cmp.batch_of(d) for d in docs},
+                    key=lambda k: [cmp.batch_of(d) for d in docs].index(k)))
+    check("every valid run lands in exactly one facet",
+          sum(len(m) for _, m in batches) == len(docs))
 
 
 def main():
@@ -395,7 +430,8 @@ def main():
     test_adjacent_series_colours_are_distinguishable()
     test_no_new_slot_joins_the_low_contrast_exceptions()
     test_no_series_colour_wears_the_reserved_target_red()
-    test_palette_covers_every_valid_run_in_the_repo()
+    test_palette_covers_every_batch_in_the_repo()
+    test_faceting_kicks_in_past_the_palette()
     if FAILURES:
         print("\n{} check(s) failed: {}".format(len(FAILURES),
                                                 ", ".join(FAILURES)))
