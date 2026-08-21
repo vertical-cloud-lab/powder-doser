@@ -103,7 +103,7 @@ def _restore():
 
 def run_stages(seeds: int, contexts=("nominal", "stressed")) -> list[dict]:
     pmap, rows = _pmap(), []
-    _, last, entry, _ = _instrument()
+    _, last, entry, samples = _instrument(record_samples=True)
     try:
         for powder in POWDER_SET:
             for ctx in contexts:
@@ -111,11 +111,16 @@ def run_stages(seeds: int, contexts=("nominal", "stressed")) -> list[dict]:
                     for seed in range(seeds):
                         sim = PowderDoserSim(pmap[powder], CONTEXTS[ctx], seed=seed)
                         rig = Rig(sim)
-                        last.clear(); entry.clear()
+                        last.clear(); entry.clear(); samples.clear()
                         status = bangbang.BangBangTrim().run(rig, target)
                         final = rig.true_dispensed_g()
                         if not last or not entry:
                             continue          # never reached the trickle/tap stage
+                        # scatter of the KF rate estimate vs the twin's true
+                        # rate over the trickle (finite-differenced ground truth)
+                        rate_err = [b["r"] - (b["truth"] - a["truth"]) / (b["t"] - a["t"])
+                                    for a, b in zip(samples, samples[1:])
+                                    if b["t"] > a["t"] and b["rpm"] > 0.0]
                         rows.append(dict(
                             powder=powder, ctx=ctx, target=target, seed=seed,
                             status=status,
@@ -130,6 +135,8 @@ def run_stages(seeds: int, contexts=("nominal", "stressed")) -> list[dict]:
                             entry_mg=(entry["truth"] - target) * 1000.0,
                             taps=sim.total_taps - entry["taps"],
                             tap_added_mg=(final - entry["truth"]) * 1000.0,
+                            rate_err_sd_gs=(st.pstdev(rate_err) if len(rate_err) > 2 else 0.0),
+                            rate_gs=last["r"], rpm=last["rpm"],
                             t_entry=entry["t"], t_total=rig.t,
                             final_mg=(final - target) * 1000.0))
     finally:
@@ -192,6 +199,11 @@ def report_budget(rows: list[dict]) -> None:
     print(f"  identified feed factor at cutoff: median {_median(rows,'ff'):.3f} g/rev "
           f"(max {max(r['ff'] for r in rows):.3f}) -> the ff-adaptive part of the margin "
           f"fires in {100*sum(r['ff']>0.30 for r in rows)/len(rows):.0f}% of doses")
+    sd = _median(rows, "rate_err_sd_gs")
+    print(f"  at cutoff the trickle is at {_median(rows,'rpm'):.0f} auger rpm, "
+          f"r_hat = {_median(rows,'rate_gs'):.4f} g/s")
+    print(f"  KF rate-estimate scatter vs true rate during the trickle: sd {sd:.4f} g/s "
+          f"-> +/-{sd*TAU_S*1000:.1f} mg of jitter on the r_hat*tau term")
     print(f"  |m_hat - truth| at cutoff: median {st.median([abs(r['m_err_mg']) for r in rows]):.1f} mg "
           f"(signed median {_median(rows,'m_err_mg'):+.1f} mg)")
 
