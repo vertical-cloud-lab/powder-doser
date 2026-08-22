@@ -1,0 +1,1442 @@
+{
+ "surveyed_utc_date": "2026-08-22",
+ "run_from": "powder-doser Pi (BYU campus IP), via Tailscale SSH from the GH Actions runner",
+ "method": "unauthenticated public product/search pages, ~1 request per 2.5 s, gzip/deflate only (the Pi has no brotli decoder), realistic Chrome header set",
+ "sources": {
+  "pass1_products": [
+   {
+    "vendor": "grizzly",
+    "label": "G9649 9x12x2 grade B",
+    "url": "https://www.grizzly.com/products/grizzly-9-x-12-x-2-granite-surface-plate-no-ledge/g9649",
+    "status": 200,
+    "final_url": "https://www.grizzly.com/products/grizzly-9-x-12-x-2-granite-surface-plate-no-ledge/g9649",
+    "bytes": 46055
+   },
+   {
+    "vendor": "grizzly",
+    "label": "G9651 12x18x3 grade B",
+    "url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-no-ledge/g9651",
+    "status": 200,
+    "final_url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-no-ledge/g9651",
+    "bytes": 45522
+   },
+   {
+    "vendor": "grizzly",
+    "label": "G9653 18x18x3 grade B",
+    "url": "https://www.grizzly.com/products/grizzly-18-x-18-x-3-granite-surface-plate-no-ledge/g9653",
+    "status": 200,
+    "final_url": "https://www.grizzly.com/products/grizzly-18-x-18-x-3-granite-surface-plate-no-ledge/g9653",
+    "bytes": 45429
+   },
+   {
+    "vendor": "grizzly",
+    "label": "G9654 18x24x3 grade B",
+    "url": "https://www.grizzly.com/products/grizzly-18-x-24-x-3-granite-surface-plate-no-ledge/g9654",
+    "status": 200,
+    "final_url": "https://www.grizzly.com/products/grizzly-18-x-24-x-3-granite-surface-plate-no-ledge/g9654",
+    "bytes": 45597
+   },
+   {
+    "vendor": "grizzly",
+    "label": "T25102 12x18x3 grade B",
+    "url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-no-ledge-grade-b/t25102",
+    "status": 200,
+    "final_url": "https://www.grizzly.com/search?q=t25102+grizzly%2012%20x%2018%20x%203%20granite%20surface%20plate%20no%20ledge%20grade%20b&source=notfound",
+    "bytes": 36577
+   },
+   {
+    "vendor": "shars",
+    "label": "surface plate category",
+    "url": "https://www.shars.com/products/measuring/granite-surface-plates",
+    "status": 202,
+    "final_url": "https://www.shars.com/products/measuring/granite-surface-plates",
+    "bytes": 1979,
+    "snippet": "body { font-family: \"Arial\"; } window.awsWafCookieDomainList = []; window.gokuProps = { \"key\":\"AQIDAHjcYu/GjX+QlghicBgQ/7bFaQZ+m5FKCMDnO+vTbNg96AEMnIjxGgf3J5zZQaLJzR3DAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM8cdb4tWA/YnZPVNzAgEQgDuXv4YflJyonlUnZ0NJio9hUuyoJwKcGZUl1VGOU"
+   },
+   {
+    "vendor": "taytools",
+    "label": "granite surface plate search",
+    "url": "https://taytools.com/search?q=granite+surface+plate",
+    "status": 200,
+    "final_url": "https://taytools.com/search/?q=granite+surface+plate",
+    "bytes": 262633,
+    "title": "Results for | Taylor Tools",
+    "stock_hints": [
+     "OutOfStock",
+     "BackOrder",
+     "backorder",
+     "out of stock",
+     "in stock",
+     "unavailable",
+     "Add to Cart"
+    ]
+   },
+   {
+    "vendor": "penntool",
+    "label": "granite surface plate search",
+    "url": "https://www.penntoolco.com/catalogsearch/result/?q=granite+surface+plate",
+    "status": 404,
+    "final_url": "https://www.penntoolco.com/catalogsearch/result/?q=granite+surface+plate",
+    "bytes": 25412,
+    "snippet": "\ufffd \b\u0000\ufffd\u07a6~\ufffdv\ufffd\ufffdg\ufffd\ufffd\u0017D\ufffd\u0013\ufffd\ufffdZXY\u001a\ufffd\ufffd\ufffdx\u001aaR\ufffd\ufffdZ \ufffdNH\ufffd\ufffd\ufffd\ufffd\ufffd[\u0013\ufffd\ufffd\ufffd9L\ufffd\ufffd$$\ufffd\ufffdJQi&\ufffd\ufffdx\u0226\ufffd\ufffd\\\ufffd81\ufffd\u0000\ufffd~\u0005 \ufffd\ufffdX1L\ufffd\ufffd\ufffd\ufffd\ufffd}\ufffdFg\u0013UD\u0000\u0000 \ufffd|\ufffd/\ufffd\u0539\ufffd |\u0012 ,\ufffdh\ufffd \u0006\ufffd\ufffd?\u001b\ufffd\ufffd\ufffd\ufffdX\ufffd\u0014\ufffdXO\ufffd\u01df\ufffdw9\ufffd4\ufffdon~\ufffd^\ufffd?\ufffd\ufffd h;\ufffdfM\ufffd\u0019\ufffd\u000f\ufffdV\ufffd{\ufffdq\ufffd6\ufffd\ufffdoUK\ufffdv\ufffd\ufffd \u000fu\ufffd\ufffd5M\u007ff\ufffd\ufffd\u00fd\ufffdT\ufffd\ufffd\u0007i\u001a+S\ufffd;%S\"\ufffdW\ufffd\u0012=\ufffd\ufffd\ufffd5%;2+\ufffd\ufffdmb \ufffd e\ufffd\u0003\ufffd\u06c4\ufffd,\u000f\ufffdj\ufffd\ufffd\ufffdVi:\ufffdc\u04a8 \u0011D\ufffd \ufffd\ufffd\u0004\ufffd\ufffd\u075e\ufffdZ\ufffd\ufffdH )\ufffd\ufffd\u0013\ufffd\ufffd\u02a4\ufffd\ufffd\ufffd\ufffdp\ufffdv:\ufffd\ufffd\ufffd\ufffdX99thC \ufffd\ufffd\ufffd\ufffd=!fO?\ufffd\ufffd\ufffdN\ufffd\ufffd \ufffd}d\u04c6\ufffd"
+   },
+   {
+    "vendor": "harborfreight",
+    "label": "granite surface plate search",
+    "url": "https://www.harborfreight.com/catalogsearch/result/?q=granite%20surface%20plate",
+    "status": 403,
+    "final_url": "https://www.harborfreight.com/catalogsearch/result/?q=granite%20surface%20plate",
+    "bytes": 5645,
+    "snippet": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = '6b70eae9-9e58-11f1-8b47-293eb72a0524'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile "
+   },
+   {
+    "vendor": "harborfreight",
+    "label": "12x18 surface plate",
+    "url": "https://www.harborfreight.com/12-in-x-18-in-granite-surface-plate-38300.html",
+    "status": 403,
+    "final_url": "https://www.harborfreight.com/12-in-x-18-in-granite-surface-plate-38300.html",
+    "bytes": 5645,
+    "snippet": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = '6cbbe143-9e58-11f1-8653-781110b969f7'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile "
+   },
+   {
+    "vendor": "zoro",
+    "label": "granite surface plate search",
+    "url": "https://www.zoro.com/search?q=granite+surface+plate",
+    "status": 200,
+    "final_url": "https://www.zoro.com/search?q=granite+surface+plate",
+    "bytes": 727488,
+    "title": "Results for &quot;granite surface plate&quot;",
+    "prices_found": [
+     137.99,
+     256.99,
+     199.99,
+     492.99,
+     1200.99,
+     45.39,
+     203.99,
+     489.99,
+     40.55,
+     420.99,
+     484.99,
+     221.99
+    ],
+    "stock_hints": [
+     "OutOfStock",
+     "Discontinued",
+     "ships"
+    ]
+   },
+   {
+    "vendor": "globalindustrial",
+    "label": "granite surface plate search",
+    "url": "https://www.globalindustrial.com/search?q=granite+surface+plate",
+    "status": 404,
+    "final_url": "https://www.globalindustrial.com/search?q=granite+surface+plate",
+    "bytes": 554589,
+    "snippet": "globalindustrial.com - Material Handling Equipment | Workbenches | Furniture | Tools | Motors | HVAC .alignVCenter{align-items:center}.flexWrapper,.alignVCenter{display:flex}html,body,p,li,ul,ol,div,footer,header,textarea,input,button,a,menu,aside,fieldset,form,label,img,nav,dir,figure,section,h1,h2"
+   },
+   {
+    "vendor": "mscdirect",
+    "label": "granite surface plate search",
+    "url": "https://www.mscdirect.com/browse/tn/?searchterm=granite+surface+plate",
+    "status": 200,
+    "final_url": "https://www.mscdirect.com/browse/tn/?searchterm=granite+surface+plate",
+    "bytes": 8224,
+    "title": "Pardon Our Interruption"
+   },
+   {
+    "vendor": "traverstool",
+    "label": "granite surface plate search",
+    "url": "https://www.travers.com/search?q=granite+surface+plate",
+    "status": 406,
+    "final_url": "https://www.travers.com/search?q=granite+surface+plate",
+    "bytes": 0,
+    "snippet": ""
+   },
+   {
+    "vendor": "amazon",
+    "label": "granite surface plate search",
+    "url": "https://www.amazon.com/s?k=granite+surface+plate+12x18",
+    "status": 200,
+    "final_url": "https://www.amazon.com/s?k=granite+surface+plate+12x18",
+    "bytes": 1222260,
+    "title": "Amazon.com : granite surface plate 12x18",
+    "prices_found": [
+     98.99,
+     239.99,
+     67.39,
+     137.99,
+     32.99,
+     94.98,
+     30.99,
+     42.99,
+     49.99,
+     56.3,
+     26.99,
+     37.99
+    ],
+    "stock_hints": [
+     "in stock",
+     "unavailable",
+     "ships",
+     "Add to Cart"
+    ]
+   },
+   {
+    "vendor": "mcmaster",
+    "label": "granite surface plate category",
+    "url": "https://www.mcmaster.com/products/surface-plates/",
+    "status": 200,
+    "final_url": "https://www.mcmaster.com/products/surface-plates/",
+    "bytes": 29768
+   },
+   {
+    "vendor": "homedepot",
+    "label": "Pavestone 12x12x1.5 step stone",
+    "url": "https://www.homedepot.com/p/Pavestone-12-in-x-12-in-x-1-5-in-Rustic-Blend-Square-Concrete-Step-Stone-71218-0/202843017",
+    "status": 403,
+    "final_url": "https://www.homedepot.com/p/Pavestone-12-in-x-12-in-x-1-5-in-Rustic-Blend-Square-Concrete-Step-Stone-71218-0/202843017",
+    "bytes": 539,
+    "snippet": "Access Denied Access Denied You don't have permission to access \"http&#58;&#47;&#47;www&#46;homedepot&#46;com&#47;p&#47;Pavestone&#45;12&#45;in&#45;x&#45;12&#45;in&#45;x&#45;1&#45;5&#45;in&#45;Rustic&#45;Blend&#45;Square&#45;Concrete&#45;Step&#45;Stone&#45;71218&#45;0&#47;202843017\" on this server. "
+   },
+   {
+    "vendor": "homedepot",
+    "label": "search: granite slab",
+    "url": "https://www.homedepot.com/s/granite%2520slab",
+    "status": 403,
+    "final_url": "https://www.homedepot.com/s/granite%2520slab",
+    "bytes": 2259,
+    "snippet": "Error Page body{font:14px Arial;margin:0;display:flex;flex-direction:column;min-height:100vh;color:#333} .hdr{background:#f96302;color:#fff;padding:8px;text-align:center} .err{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px} .msg{fon"
+   },
+   {
+    "vendor": "homedepot",
+    "label": "search: granite countertop remnant",
+    "url": "https://www.homedepot.com/s/granite%2520remnant",
+    "status": 403,
+    "final_url": "https://www.homedepot.com/s/granite%2520remnant",
+    "bytes": 2259,
+    "snippet": "Error Page body{font:14px Arial;margin:0;display:flex;flex-direction:column;min-height:100vh;color:#333} .hdr{background:#f96302;color:#fff;padding:8px;text-align:center} .err{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px} .msg{fon"
+   },
+   {
+    "vendor": "homedepot",
+    "label": "search: patio paver 16x16",
+    "url": "https://www.homedepot.com/s/16%2520x%252016%2520patio%2520stone",
+    "status": 403,
+    "final_url": "https://www.homedepot.com/s/16%2520x%252016%2520patio%2520stone",
+    "bytes": 2259,
+    "snippet": "Error Page body{font:14px Arial;margin:0;display:flex;flex-direction:column;min-height:100vh;color:#333} .hdr{background:#f96302;color:#fff;padding:8px;text-align:center} .err{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px} .msg{fon"
+   },
+   {
+    "vendor": "lowes",
+    "label": "search: concrete stepping stone",
+    "url": "https://www.lowes.com/search?searchTerm=concrete+stepping+stone",
+    "status": 403,
+    "final_url": "https://www.lowes.com/search?searchTerm=concrete+stepping+stone",
+    "bytes": 378,
+    "snippet": "Access Denied Access Denied You don't have permission to access \"http&#58;&#47;&#47;www&#46;lowes&#46;com&#47;search&#63;\" on this server. Reference&#32;&#35;18&#46;6b01d817&#46;1787423833&#46;550a4647 https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6b01d817&#46;1787423833&#46;550a4647"
+   },
+   {
+    "vendor": "lowes",
+    "label": "search: granite",
+    "url": "https://www.lowes.com/search?searchTerm=granite+slab",
+    "status": 403,
+    "final_url": "https://www.lowes.com/search?searchTerm=granite+slab",
+    "bytes": 378,
+    "snippet": "Access Denied Access Denied You don't have permission to access \"http&#58;&#47;&#47;www&#46;lowes&#46;com&#47;search&#63;\" on this server. Reference&#32;&#35;18&#46;6601d817&#46;1787423835&#46;3afd8bd5 https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6601d817&#46;1787423835&#46;3afd8bd5"
+   },
+   {
+    "vendor": "amazon",
+    "label": "granite pastry board 16x20",
+    "url": "https://www.amazon.com/Adolif-Granite-Cutting-Marble-Kitchen/dp/B0DJP8LYM7",
+    "status": 200,
+    "final_url": "https://www.amazon.com/Adolif-Granite-Cutting-Marble-Kitchen/dp/B0DJP8LYM7",
+    "bytes": 2801122,
+    "title": "Amazon.com: Adolif Granite Cutting Board 16x20 Inch Large Stone Cutting Board | Multi-Functional Marble Pastry Board With Non-Slip Feet for Baking, Cheese,Charcuterie, Dough - Wedding Gift, House Warm",
+    "prices_found": [
+     64.99,
+     59.99,
+     69.99,
+     54.99,
+     39.99,
+     19.94,
+     6.65,
+     29.99,
+     69.98,
+     23.33,
+     89.99,
+     53.99
+    ],
+    "stock_hints": [
+     "OutOfStock",
+     "in stock",
+     "unavailable",
+     "ships",
+     "Add to Cart"
+    ]
+   },
+   {
+    "vendor": "webstaurant",
+    "label": "granite pastry board search",
+    "url": "https://www.webstaurantstore.com/search/granite-pastry-board.html",
+    "status": 200,
+    "final_url": "https://www.webstaurantstore.com/search/granite-pastry-board.html",
+    "bytes": 37510
+   },
+   {
+    "vendor": "remnantswap",
+    "label": "home",
+    "url": "https://www.remnantswap.com/",
+    "status": 200,
+    "final_url": "https://www.remnantswap.com/",
+    "bytes": 8897,
+    "title": "Buy &amp; sell granite remnants - RemnantSwap"
+   }
+  ],
+  "pass2_mixed": {
+   "grizzly": [
+    {
+     "pn": "G9649",
+     "label": "9x12x2",
+     "search_status": 200,
+     "excerpt": "\ufffdZ\u000e\u0000dZ\ufffd\ufffd\ufffd\ufffd\u0159\ufffd5\ufffd \ufffd\ufffd\u0004\ufffd\u050a\ufffd\ufffd\u0004\ufffd\u0003\ufffdg\ufffd]\ufffd\u0005\ufffdj\u0005 SWY\ufffdf&\ufffd\ufffd6\ufffd\ufffd\ufffd\ufffd>0L\ufffd\ufffd \u0016\ufffd$\ufffd#2\ufffdF\u0000 W]\ufffd\ufffd\ufffd\ufffd]\ufffd\ufffd\u0017\ufffd2)\ufffd v\ufffd#\u0004\u0004m\ufffdA\u0019ub6\ufffd\ufffd\ufffdS\ufffd\ufffd7B@\ufffd'\ufffd\ufffd\u001b`\ufffd\ufffd5\ufffd\ufffdi\ufffd\ufffd\ufffd\ufffd \u000f\ufffd3P\ufffd\ufffdq5\ufffd^4Z/\ufffdlO,$\ufffd\ufffd\"\u0007\u0003W\u0015\ufffd\"\ufffd&0 '(\u000eA\ufffd?x\u070d\ufffd\u001b\ufffd\ufffd\ufffd\u0002g\ufffd\ufffd\u001b\u0014\u01c7\ufffd\u0013\ufffd^\ufffd\ufffdb\ufffd\u0002\ufffd$\u0586\u054da \ufffd\ufffd\u0007\u0404'\ufffdt\ufffd\u00117\ufffd|\ufffd\ufffd9:\ufffdFk\ufffdY\ufffd\ufffd\u0014Jo\ufffd\ufffd\ufffdE\ufffd\ufffdJ\ufffd\ufffd\u0004\ufffd{\u04b4r\ufffd%1\ufffd\ufffdd\ufffdHY2\ufffd[_\u0014Y\ufffd\ufffd\u000eiw\u0131\ufffd\ufffd |A\ufffd\u068c\u04b8\u0015\ufffdU]\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffdQ\ufffdL\ufffd\ufffd &u\ufffda\ufffd\u0000\ufffd\ufffd\ufffd\ufffdipP\u001a\ufffd\u0113\ufffd\ufffd,=f)L \ufffd\ufffdImK\ufffd\uda21\udd387\ufffd\u0353\u0499\ufffdA\ufffdv\ufffd\u0003\ufffd\ufffdvk\ufffde\ufffd\ufffd\ufffd \ufffd\b\ufffd\ufffd41 \ufffd\ufffds\ufffd\ufffdo\ufffdgI\ufffd\u0014yU\ufffd\ufffd-\ufffd \ufffd\ufffdC\ufffd\ufffd'!\ufffd\ufffd\ufffd^\u0005\ufffd|\u0016\ufffdE\ufffdw \ufffd}\ufffdF&\u0016\ufffd\ufffdj\ufffdbH] 8M(N\u0002\ufffd\ufffd,~ ?*\ufffd\ufffdaS\ufffd\u000f\ufffd:\ufffd\ufffd*y\ufffd\ufffd~|\ufffdxX\ufffdyY`\ufffd\ufffd\u0004\ufffd\ufffd\ufffd\u0019\ufffdhtC\u0378\u0010t\u39a0 \u05b7\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdV\ufffd^\ufffd\ufffd\u028d\u001a\ufffd\ufffdr\ufffd\ufffd\ufffd}c\ufffd \ufffd\ufffdF\ufffd\u0014R\ufffdmY\ufffd=\ufffd\ufffd\ufffd1\ufffd1\u0016WW\ufffdJ\ufffd:\ufffd\ufffdI\ufffd\u03fb\u0002\ufffd1>\ufffd%ll\ufffd\ufffduS\ufffd\\\ufffd\ufffdk\u01ff\ufffd\ufffdS\u001aNd\ufffd\u0016\ufffd6\ufffd\u0015\ufffdp4\ufffd\ufffd\ufffd\u0015\u001a8\u0005, h\ufffd\ufffdb\ufffd\ufffdH\ufffdt\ufffd\u0000$0\u0018\ufffd\ufffd](\u0795\ufffd@4n\ufffd\ufffdl\u0018\ufffd\bV0\ufffd\ufffd\ufffd\ufffd\ufffd7[lB\u0018[\ufffd\ufffd\u014b \ufffd (\ufffd\ufffdA\u0016\u0016f\ufffd\ufffd\u0016\ufffd\ufffdm \u0011\u0018s\u0002l\u0010\u0011\ufffdttF"
+    },
+    {
+     "pn": "G9651",
+     "label": "12x18x3",
+     "search_status": 200,
+     "excerpt": "\ufffd\ufffd\u000e\u0000dZK\ufffd\ufffd\ufffd\u015a\ufffd\u001a\ufffd\ufffd\u01dd\u0004\ufffd8O\u0014$$(\ufffd`\ufffd\ufffd\ufffd\u07b5Oy\ufffd U+P\ufffd\ufffd\ufffd\u001a53\u027e\ufffd\ufffd\ufffd\u0007\ufffd\ufffd\ufffda\ufffd,\ufffd\u0002\ufffd$pD\ufffd\ufffd\b`\u1aab\ufffd\ufffd\u001a\ufffd\ufffdh\ufffd\ufffdJ\u0013P)/v \ufffd\u0004x5\u0440F\ufffd\ufffd \ufffd.\ufffd\ufffdn\ufffd p\ufffd x\ufffd ,\u00ff\ufffd\ufffdZ \ufffd\ufffdI\ufffd\ufffd\u0014?\u0003%x\ufffd\u00187\ufffd\ufffdd\ufffd\ufffd2\ufffd\ufffd\ufffdR\u048e*2\u0018\ufffd* \ufffd\ufffd\ufffd\ufffd( \ufffd\ufffd\u0007 \ufffd\ufffd~\ufffd\ufffd'\ufffd\ufffd W\ufffd\ufffd' \u01c7\ufffd\ufffd\u0019\ufffd\ufffdI1 \ufffd\ufffd$\ufffd#k\u001b\ufffd>z\u0001\u000f\ufffd Ol\ufffd\u0010\">\ufffd\ufffdk\ufffd\ufffd\ufffd\u00115[\ufffdd\u0018ZS(\u007f\u0014vm\u0017\u0005z*\ufffd\ufffd\u0012L\ufffd\ufffdee\ufffdCdp\ufffdI\ufffd\ufffd2dPO}A`\u0018Z;\ufffd\ufffd\u0012\ufffd\ufffd\ufffdvp\u0005\ufffdj\u001b\ufffd\u01bdH\ufffd\ua8a6]\u001a\ufffd\ufffd\ufffd\ufffdGu7\ufffd\u0011\ufffd \u0000\ufffd\ufffdj\ufffd\ufffd-\ufffd\ufffd,\ufffd\ufffd @\ufffd`)\ufffd\u0004\ufffd-\ufffd=\ufffdQ\ufffdP\ufffd 6\ufffd\u0005+\ufffd\ufffdc \ufffd\u0520\ufffd\u00b7\ufffd-W\ufffdB\ufffdi%]\ufffd\u0006\ufffd8$\ufffd\ufffdP]#\u0017p\b?\ufffd\ufffd\ufffdP\ufffd\ufffdz\ufffd\ufffd\u0011:h^\ufffd\u007f\ufffd!\u0492`\ufffd\u0001m\ufffd\"\ufffdW\ufffdo\"[=\ufffdh\ufffd\ufffd\ufffd\ufffd\ufffd5`\ufffd\ufffd\ufffd\ufffdw\ufffdi\ufffd\ufffd\ufffd/\u0000qA \ufffd2\bT \ufffdyV\ufffd`\ufffd/+\ufffd@\u001b'\ufffd\u007f\ufffd\u000ekg\ufffda\ufffdi\u0005Mm/\u0010\ufffdb\ufffdA\u0012[\ufffdDF\ufffd\ufffdt\ufffdB\u000e\ufffd\ufffdH\b\u0005\ufffdW\u000e\ufffd\ufffd\ufffd\u0371y\ufffd\ufffd\u0007\ufffd(\ufffd0\bf\u0018,\ufffd\ufffdP{\ufffd\ufffd'\"\u046a\ufffdP\ufffd\ufffd\ufffdVM\ufffd>\ufffd3\ufffd\u0019 \ufffd\ufffd \ufffd\ufffd1\u0003H:^ \ufffd\ufffdAi\ufffd\u0003/\ufffd \ufffdxNb\ufffd\u0014\ufffd\ufffd\ufffd\ufffdM\ufffd\ufffd9\ufffd\ufffdl:\ufffd\u0017\ufffd3e\ufffd&\ufffdDW\ufffdI\ufffd\ufffd\u06ad9\ufffd\ufffd \ufffd\ufffd(\ufffd\u0016\ufffd\ufffd(\ufffd\ufffdA\ufffd\u0101\u073e\u0005^Ei\ufffd\ufffdE\ufffd\ufffd\ufffd\ufffdb\u0015\ufffd\u0547F\ufffdOB\ufffd\ufffd\u025d\u0006\ufffd\ufffd*L\ufffd\"m:B\ufffd\ufffd\ufffdL-dIU\ufffd\ufffdP\ufffdTp"
+    },
+    {
+     "pn": "G9653",
+     "label": "18x18x3",
+     "search_status": 200,
+     "excerpt": "\ufffd\ufffd\u000e\u0000dZK\ufffd\ufffd\ufffd\u015a\ufffd\u001a\ufffd\ufffd\u01dd\u0004\ufffd8O\u0014$$(\ufffd`\ufffd\ufffd\ufffd\u07b5Oy\ufffd U+P\ufffd\ufffd\ufffd\u001a53\u027e\ufffd\ufffd\ufffd\u0007\ufffd\ufffd\ufffda\ufffd,\ufffd\u0002\ufffd$pD\ufffd\ufffd\b`\u1aab\ufffd\ufffd\u001a\ufffd\ufffdh\ufffd\ufffdJ\u0013P)/v \ufffd\u0004x5\u0440F\ufffd\ufffd \ufffd.\ufffd\ufffdn\ufffd p\ufffd x\ufffd ,\u00ff\ufffd\ufffdZ \ufffd\ufffdI\ufffd\ufffd\u0014?\u0003%x\ufffd\u00187\ufffd\ufffdd\ufffd\ufffd2\ufffd\ufffd\ufffdR\u048e*2\u0018\ufffd* \ufffd\ufffd\ufffd\ufffd( \ufffd\ufffd\u0007 \ufffd\ufffd~\ufffd\ufffd'\ufffd\ufffd W\ufffd\ufffd' \u01c7\ufffd\ufffd\u0019\ufffd\ufffdI1 \ufffd\ufffd$\ufffd#k\u001b\ufffd>z\u0001\u000f\ufffd Ol\ufffd\u0010\">\ufffd\ufffdk\ufffd\ufffd\ufffd\u00115[\ufffdd\u0018ZS(\u007f\u0014vm\u0017\u0005z*\ufffd\ufffd\u0012L\ufffd\ufffdee\ufffdCdp\ufffdI\ufffd\ufffd2dPO}A`\u0018Z;\ufffd\ufffd\u0012\ufffd\ufffd\ufffdvp\u0005\ufffdj\u001b\ufffd\u01bdH\ufffd\ua8a6]\u001a\ufffd\ufffd\ufffd\ufffdGu7\ufffd\u0011\ufffd \u0000\ufffd\ufffdj\ufffd\ufffd-\ufffd\ufffd,\ufffd\ufffd @\ufffd`)\ufffd\u0004\ufffd-\ufffd=\ufffdQ\ufffdP\ufffd 6\ufffd\u0005+\ufffd\ufffdc \ufffd\u0520\ufffd\u00b7\ufffd-W\ufffdB\ufffdi%]\ufffd\u0006\ufffd8$\ufffd\ufffdP]#\u0017p\b?\ufffd\ufffd\ufffdP\ufffd\ufffdz\ufffd\ufffd\u0011:h^\ufffd\u007f\ufffd!\u0492`\ufffd\u0001m\ufffd\"\ufffdW\ufffdo\"[=\ufffdh\ufffd\ufffd\ufffd\ufffd\ufffd5`\ufffd\ufffd\ufffd\ufffdw\ufffdi\ufffd\ufffd\ufffd/\u0000qA \ufffd2\bT \ufffdyV\ufffd`\ufffd/+\ufffd@\u001b'\ufffd\u007f\ufffd\u000ekg\ufffda\ufffdi\u0005Mm/\u0010\ufffdb\ufffdA\u0012[\ufffdDF\ufffd\ufffdt\ufffdB\u000e\ufffd\ufffdH\b\u0005\ufffdW\u000e\ufffd\ufffd\ufffd\u0371y\ufffd\ufffd\u0007\ufffd(\ufffd0\bf\u0018,\ufffd\ufffdP{\ufffd\ufffd'\"\u046a\ufffdP\ufffd\ufffd\ufffdVM\ufffd>\ufffd3\ufffd\u0019 \ufffd\ufffd \ufffd\ufffd1\u0003H:^ \ufffd\ufffdAi\ufffd\u0003/\ufffd \ufffdxNb\ufffd\u0014\ufffd\ufffd\ufffd\ufffdM\ufffd\ufffd9\ufffd\ufffdl:\ufffd\u0017\ufffd3e\ufffd&\ufffdDW\ufffdI\ufffd\ufffd\u06ad9\ufffd\ufffd \ufffd\ufffd(\ufffd\u0016\ufffd\ufffd(\ufffd\ufffdA\ufffd\u0101\u073e\u0005^Ei\ufffd\ufffdE\ufffd\ufffd\ufffd\ufffdb\u0015\ufffd\u0547F\ufffdOB\ufffd\ufffd\u025d\u0006\ufffd\ufffd*L\ufffd\"m:B\ufffd\ufffd\ufffdL-dIU\ufffd\ufffdP\ufffdTp"
+    },
+    {
+     "pn": "G9654",
+     "label": "18x24x3",
+     "search_status": 200,
+     "excerpt": "\ufffd\ufffd\u000e\u0000dZK\ufffd\ufffd\ufffd\u015a\ufffd\u001a\ufffd\ufffd\u01dd\u0004\ufffd8O\u0014$$(\ufffd`\ufffd\ufffd\ufffd\u07b5Oy\ufffd U+P\ufffd\ufffd\ufffd\u001a53\u027e\ufffd\ufffd\ufffd\u0007\ufffd\ufffd\ufffda\ufffd,\ufffd\u0002\ufffd$pD\ufffd\ufffd\b`\u1aab\ufffd\ufffd\u001a\ufffd\ufffdh\ufffd\ufffdJ\u0013P)/v \ufffd\u0004x5\u0440F\ufffd\ufffd \ufffd.\ufffd\ufffdn\ufffd p\ufffd x\ufffd ,\u00ff\ufffd\ufffdZ \ufffd\ufffdI\ufffd\ufffd\u0014?\u0003%x\ufffd\u00187\ufffd\ufffdd\ufffd\ufffd2\ufffd\ufffd\ufffdR\u048e*2\u0018\ufffd* \ufffd\ufffd\ufffd\ufffd( \ufffd\ufffd\u0007 \ufffd\ufffd~\ufffd\ufffd'\ufffd\ufffd W\ufffd\ufffd' \u01c7\ufffd\ufffd\u0019\ufffd\ufffdI1 \ufffd\ufffd$\ufffd#k\u001b\ufffd>z\u0001\u000f\ufffd Ol\ufffd\u0010\">\ufffd\ufffdk\ufffd\ufffd\ufffd\u00115[\ufffdd\u0018ZS(\u007f\u0014vm\u0017\u0005z*\ufffd\ufffd\u0012L\ufffd\ufffdee\ufffdCdp\ufffdI\ufffd\ufffd2dPO}A`\u0018Z;\ufffd\ufffd\u0012\ufffd\ufffd\ufffdvp\u0005\ufffdj\u001b\ufffd\u01bdH\ufffd\ua8a6]\u001a\ufffd\ufffd\ufffd\ufffdGu7\ufffd\u0011\ufffd \u0000\ufffd\ufffdj\ufffd\ufffd-\ufffd\ufffd,\ufffd\ufffd @\ufffd`)\ufffd\u0004\ufffd-\ufffd=\ufffdQ\ufffdP\ufffd 6\ufffd\u0005+\ufffd\ufffdc \ufffd\u0520\ufffd\u00b7\ufffd-W\ufffdB\ufffdi%]\ufffd\u0006\ufffd8$\ufffd\ufffdP]#\u0017p\b?\ufffd\ufffd\ufffdP\ufffd\ufffdz\ufffd\ufffd\u0011:h^\ufffd\u007f\ufffd!\u0492`\ufffd\u0001m\ufffd\"\ufffdW\ufffdo\"[=\ufffdh\ufffd\ufffd\ufffd\ufffd\ufffd5`\ufffd\ufffd\ufffd\ufffdw\ufffdi\ufffd\ufffd\ufffd/\u0000qA \ufffd2\bT \ufffdyV\ufffd`\ufffd/+\ufffd@\u001b'\ufffd\u007f\ufffd\u000ekg\ufffda\ufffdi\u0005Mm/\u0010\ufffdb\ufffdA\u0012[\ufffdDF\ufffd\ufffdt\ufffdB\u000e\ufffd\ufffdH\b\u0005\ufffdW\u000e\ufffd\ufffd\ufffd\u0371y\ufffd\ufffd\u0007\ufffd(\ufffd0\bf\u0018,\ufffd\ufffdP{\ufffd\ufffd'\"\u046a\ufffdP\ufffd\ufffd\ufffdVM\ufffd>\ufffd3\ufffd\u0019 \ufffd\ufffd \ufffd\ufffd1\u0003H:^ \ufffd\ufffdAi\ufffd\u0003/\ufffd \ufffdxNb\ufffd\u0014\ufffd\ufffd\ufffd\ufffdM\ufffd\ufffd9\ufffd\ufffdl:\ufffd\u0017\ufffd3e\ufffd&\ufffdDW\ufffdI\ufffd\ufffd\u06ad9\ufffd\ufffd \ufffd\ufffd(\ufffd\u0016\ufffd\ufffd(\ufffd\ufffdA\ufffd\u0101\u073e\u0005^Ei\ufffd\ufffdE\ufffd\ufffd\ufffd\ufffdb\u0015\ufffd\u0547F\ufffdOB\ufffd\ufffd\u025d\u0006\ufffd\ufffd*L\ufffd\"m:B\ufffd\ufffd\ufffdL-dIU\ufffd\ufffdP\ufffdTp"
+    }
+   ],
+   "homedepot_api": {
+    "granite surface plate": {
+     "status": 206,
+     "body": "{\n   \"data\":{\n      \"GenericError\":null\n   },\n   \"error\":[{\n      \"message\":\"Generic errors\" \n   }]\n}"
+    },
+    "concrete step stone 12": {
+     "status": 206,
+     "body": "{\n   \"data\":{\n      \"GenericError\":null\n   },\n   \"error\":[{\n      \"message\":\"Generic errors\" \n   }]\n}"
+    },
+    "patio stone 16 x 16": {
+     "status": 206,
+     "body": "{\n   \"data\":{\n      \"GenericError\":null\n   },\n   \"error\":[{\n      \"message\":\"Generic errors\" \n   }]\n}"
+    },
+    "granite slab": {
+     "status": 206,
+     "body": "{\n   \"data\":{\n      \"GenericError\":null\n   },\n   \"error\":[{\n      \"message\":\"Generic errors\" \n   }]\n}"
+    }
+   },
+   "harborfreight": {
+    "https://www.harborfreight.com/12-in-x-18-in-granite-surface-plate-38300.html": {
+     "status": 403,
+     "excerpt": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = 'c52fdfc0-9e58-11f1-bf14-ff2edd67755d'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile = false; window._pxFirstPartyEnabled = true; var pxCaptchaSrc = '/j4y0BbmN/captcha/captcha.js?a=c&u=c52fdfc0-9e58-11f1-bf14-ff2edd67755d&v=&m=0&h=R0VU'; var script = document.createElement('script'); "
+    },
+    "https://www.harborfreight.com/catalogsearch/result/?q=surface+plate": {
+     "status": 403,
+     "excerpt": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = 'c6c6d856-9e58-11f1-864c-781110b969f7'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile = false; window._pxFirstPartyEnabled = true; var pxCaptchaSrc = '/j4y0BbmN/captcha/captcha.js?a=c&u=c6c6d856-9e58-11f1-864c-781110b969f7&v=&m=0&h=R0VU'; var script = document.createElement('script'); "
+    }
+   },
+   "ksl": {
+    "granite surface plate": {
+     "status": 200,
+     "url": "https://classifieds.ksl.com/search/granite%20surface%20plate",
+     "titles": [],
+     "prices": [],
+     "cities": [],
+     "excerpt": "New and Used Listings | KSL Classifieds (self.__next_s=self.__next_s||[]).push([0,{\"children\":\"window[\\\"dataLayer\\\"] = window[\\\"dataLayer\\\"] || [];\\nwindow.__kslConsentLayerName = \\\"dataLayer\\\";\\nvar gtag = function () { window[\\\"dataLayer\\\"].push(arguments); };\\nwindow.__kslGtag = gtag;\\ngtag('consent', 'default', {\\\"analytics_storage\\\":\\\"denied\\\",\\\"ad_storage\\\":\\\"denied\\\",\\\"ad_user_data\\\":\\\"deni"
+    },
+    "granite remnant": {
+     "status": 200,
+     "url": "https://classifieds.ksl.com/search/granite%20remnant",
+     "titles": [],
+     "prices": [],
+     "cities": [],
+     "excerpt": "New and Used Listings | KSL Classifieds (self.__next_s=self.__next_s||[]).push([0,{\"children\":\"window[\\\"dataLayer\\\"] = window[\\\"dataLayer\\\"] || [];\\nwindow.__kslConsentLayerName = \\\"dataLayer\\\";\\nvar gtag = function () { window[\\\"dataLayer\\\"].push(arguments); };\\nwindow.__kslGtag = gtag;\\ngtag('consent', 'default', {\\\"analytics_storage\\\":\\\"denied\\\",\\\"ad_storage\\\":\\\"denied\\\",\\\"ad_user_data\\\":\\\"deni"
+    },
+    "granite slab": {
+     "status": 200,
+     "url": "https://classifieds.ksl.com/search/granite%20slab",
+     "titles": [],
+     "prices": [],
+     "cities": [],
+     "excerpt": "New and Used Listings | KSL Classifieds (self.__next_s=self.__next_s||[]).push([0,{\"children\":\"window[\\\"dataLayer\\\"] = window[\\\"dataLayer\\\"] || [];\\nwindow.__kslConsentLayerName = \\\"dataLayer\\\";\\nvar gtag = function () { window[\\\"dataLayer\\\"].push(arguments); };\\nwindow.__kslGtag = gtag;\\ngtag('consent', 'default', {\\\"analytics_storage\\\":\\\"denied\\\",\\\"ad_storage\\\":\\\"denied\\\",\\\"ad_user_data\\\":\\\"deni"
+    }
+   },
+   "search": {
+    "granite remnants Provo Orem Utah countertop fabricator": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    },
+    "free granite sink cutout Utah County fabricator": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    },
+    "granite monument headstone company Provo Utah": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    },
+    "Habitat for Humanity ReStore Provo Utah": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    },
+    "granite surface plate Harbor Freight price": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    },
+    "stone slab yard Utah County remnants": {
+     "engine": "mojeek",
+     "status": 200,
+     "links": [
+      {
+       "t": "Newsletter",
+       "u": "https://buttondown.email/Mojeek"
+      }
+     ],
+     "text": "Captcha Search Web Images News Substack Company About Press &amp; Media Careers Contact Us Products Mojeek Ads Focus Web Search API Site Search API Simple Search Boxes Help &amp; Support Support Browsers Mobile API Docs Engage Blog Community Newsletter JavaScript is required to complete this challenge. Please enable it and reload the page. About API Support Blog Feedback Privacy Terms Settings"
+    }
+   }
+  },
+  "pass3_grizzly_shars_ksl": {
+   "grizzly": [
+    {
+     "pn": "G9649",
+     "size_in": "9 x 12 x 2",
+     "url": "https://www.grizzly.com/products/grizzly-9-x-12-x-2-granite-surface-plate-no-ledge/g9649",
+     "status": 200,
+     "title": "Grizzly G9649 - 9&quot; x 12&quot; x 2&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+     "ld_price": [
+      "39.95"
+     ],
+     "dollars": [
+      "39.95",
+      "4.50",
+      "9.95",
+      "49.95",
+      "17.95",
+      "44.95"
+     ],
+     "availability": [
+      "https://schema.org/InStock"
+     ],
+     "weight": [
+      "shipping weight 26 lb"
+     ]
+    },
+    {
+     "pn": "G9651",
+     "size_in": "12 x 18 x 3",
+     "url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-no-ledge/g9651",
+     "status": 200,
+     "title": "Grizzly G9651 - 12&quot; x 18&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+     "ld_price": [
+      "69.95"
+     ],
+     "dollars": [
+      "69.95",
+      "4.50",
+      "9.95",
+      "49.95",
+      "17.95",
+      "44.95"
+     ],
+     "availability": [
+      "https://schema.org/InStock"
+     ]
+    },
+    {
+     "pn": "G9653",
+     "size_in": "18 x 18 x 3",
+     "url": "https://www.grizzly.com/products/grizzly-18-x-18-x-3-granite-surface-plate-no-ledge/g9653",
+     "status": 200,
+     "title": "Grizzly G9653 - 18&quot; x 18&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+     "ld_price": [
+      "79.95"
+     ],
+     "dollars": [
+      "79.95",
+      "4.50",
+      "9.95",
+      "49.95",
+      "17.95",
+      "44.95"
+     ],
+     "availability": [
+      "https://schema.org/InStock"
+     ]
+    },
+    {
+     "pn": "G9654",
+     "size_in": "18 x 24 x 3",
+     "url": "https://www.grizzly.com/products/grizzly-18-x-24-x-3-granite-surface-plate-no-ledge/g9654",
+     "status": 200,
+     "title": "Grizzly G9654 - 18&quot; x 24&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+     "ld_price": [
+      "99.95"
+     ],
+     "dollars": [
+      "99.95",
+      "4.50",
+      "9.95",
+      "49.95",
+      "17.95",
+      "44.95"
+     ],
+     "availability": [
+      "https://schema.org/InStock"
+     ]
+    },
+    {
+     "pn": "G9650",
+     "size_in": "12 x 18 x 3 ledge",
+     "url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-w-ledge/g9650",
+     "status": 200,
+     "title": "Grizzly G9650 - 9&quot; x 12&quot; x 3&quot; Granite Surface Plate, 2 Ledges - Grizzly Industrial, Inc.",
+     "dollars": [
+      "4.50",
+      "9.95",
+      "49.95",
+      "17.95",
+      "44.95"
+     ],
+     "stock": [
+      "Discontinued"
+     ]
+    },
+    {
+     "pn": "T25101",
+     "size_in": "9 x 12 x 3",
+     "url": "https://www.grizzly.com/products/grizzly-9-x-12-x-3-granite-surface-plate-no-ledge/t25101",
+     "status": 200,
+     "title": "Grizzly T25101 - 15&quot; Benchtop English Wheel - Grizzly Industrial, Inc.",
+     "ld_price": [
+      "175.0",
+      "179.0",
+      "193.0",
+      "175",
+      "195"
+     ],
+     "dollars": [
+      "175.00",
+      "195.00",
+      "20.00",
+      "179.00",
+      "193.00",
+      "12.95",
+      "189.00",
+      "88.95"
+     ],
+     "availability": [
+      "https://schema.org/InStock"
+     ],
+     "stock": [
+      "In Stock"
+     ],
+     "weight": [
+      "shipping weight 30 lb",
+      "shipping weight 1213 lb",
+      "shipping weight 43 lb",
+      "shipping weight 110 lb",
+      "shipping weight 470 lb"
+     ]
+    }
+   ],
+   "others": [
+    {
+     "vendor": "shars",
+     "label": "12x18x3 grade B",
+     "url": "https://www.shars.com/12-x-18-x-3-grade-b-granite-surface-plate-no-ledge",
+     "status": 404,
+     "excerpt": "Shars - Page cannot be found window.getWpGA4Cookie = function(name) { match = document.cookie.match(new RegExp(name + '=([^;]+)')); if (match) return decodeURIComponent(match[1].replace(/\\+/g, ' ')) ; }; window.dataLayer = window.dataLayer || []; var"
+    },
+    {
+     "vendor": "shars",
+     "label": "granite plates",
+     "url": "https://www.shars.com/catalogsearch/result/?q=granite+surface+plate",
+     "status": 202,
+     "excerpt": "body { font-family: \"Arial\"; } window.awsWafCookieDomainList = []; window.gokuProps = { \"key\":\"AQIDAHjcYu/GjX+QlghicBgQ/7bFaQZ+m5FKCMDnO+vTbNg96AEMnIjxGgf3J5zZQaLJzR3DAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM8cdb4tWA/Yn"
+    },
+    {
+     "vendor": "taytools",
+     "label": "12x18x3",
+     "url": "https://taytools.com/products/taytools-granite-surface-plate-12-x-18-x-3-grade-b-no-ledge",
+     "status": 200,
+     "title": "Sorry about that. | Taylor Tools",
+     "dollars": [
+      "0.00"
+     ],
+     "json_prices": [],
+     "excerpt": "Sorry about that. | Taylor Tools function getParameter(theParameter) { var params = window.location.search.substr(1).split('&'); for (var i = 0; i dataLayer = [{\"deviceType\":\"Desktop\",\"email\":\"d41d8cd98f00b204e9800998ecf8427e\",\"fbEventId\":\"event.16a89ed602c1b7.3015156393223339850\",\"isInternalIP\":false,\"pageId\":267,\"isManagedPage\":1,\"isMobile\":0}]; window.gtm_user_variant4 = \"not_shown\"; window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments)}; gtag('js', new Date());"
+    },
+    {
+     "vendor": "taytools",
+     "label": "search",
+     "url": "https://taytools.com/search?q=granite%20surface%20plate&type=product",
+     "status": 200,
+     "title": "Results for | Taylor Tools",
+     "dollars": [
+      "0.00"
+     ],
+     "json_prices": [],
+     "excerpt": "Results for | Taylor Tools function getParameter(theParameter) { var params = window.location.search.substr(1).split('&'); for (var i = 0; i dataLayer = [{\"deviceType\":\"Desktop\",\"email\":\"d41d8cd98f00b204e9800998ecf8427e\",\"fbEventId\":\"event.16a89ed6335bbc.8232530412223815695\",\"isInternalIP\":false}]; window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments)}; gtag('js', new Date());gtag('config', 'G-7LERLYGCMX'); /*GA4*/ (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm"
+    },
+    {
+     "vendor": "zoro",
+     "label": "search",
+     "url": "https://www.zoro.com/search?q=granite+surface+plate+12+x+18",
+     "status": 200,
+     "title": "Results for &quot;granite surface plate 12 x 18&quot;",
+     "dollars": [
+      "137.99",
+      "203.99",
+      "131.99",
+      "1,300.99",
+      "1,503.99",
+      "98.59",
+      "115.99",
+      "419.99",
+      "368.99"
+     ],
+     "json_prices": [],
+     "excerpt": "Results for &quot;granite surface plate 12 x 18&quot; :root { --v-theme-background: 255,255,255; --v-theme-background-overlay-multiplier: 1; --v-theme-surface: 255,255,255; --v-theme-surface-overlay-multiplier: 1; --v-theme-surface-bright: 255,255,255; --v-theme-surface-bright-overlay-multiplier: 1; --v-theme-surface-light: 238,238,238; --v-theme-surface-light-overlay-multiplier: 1; --v-theme-surface-variant: 66,66,66; --v-theme-surface-variant-overlay-multiplier: 2; --v-theme-on-surface-variant"
+    },
+    {
+     "vendor": "amazon",
+     "label": "search 12x18x3",
+     "url": "https://www.amazon.com/s?k=granite+surface+plate+12+x+18+x+3",
+     "status": 200,
+     "title": "Amazon.com : granite surface plate 12 x 18 x 3",
+     "dollars": [
+      "137.99",
+      "98.99",
+      "239.99",
+      "1,103.03",
+      "79.99",
+      "67.39",
+      "37.99",
+      "6.74",
+      "99.98",
+      "56.30",
+      "26.99",
+      "35.98",
+      "94.98",
+      "49.99",
+      "53.99"
+     ],
+     "json_prices": [],
+     "excerpt": "var aPageStart = (new Date()).getTime(); var ue_t0=ue_t0||+new Date(); window.ue_ihb = (window.ue_ihb || window.ueinit || 0) + 1; if (window.ue_ihb === 1) { var ue_csm = window, ue_hob = +new Date(); (function(d){var e=d.ue=d.ue||{},f=Date.now||function(){return+new Date};e.d=function(b){return f()-(b?0:d.ue_t0)};e.stub=function(b,a){if(!b[a]){var c=[];b[a]=function(){c.push([c.slice.call(arguments),e.d(),d.ue_id])};b[a].replay=function(b){for(var a;a=c.shift();)b(a[0],a[1],a[2])};b[a].isStub=1}"
+    },
+    {
+     "vendor": "amazon",
+     "label": "search granite slab 30 lb",
+     "url": "https://www.amazon.com/s?k=granite+slab+plate+heavy+base",
+     "status": 200,
+     "title": "Amazon.com : granite slab plate heavy base",
+     "dollars": [
+      "67.39",
+      "137.99",
+      "65.99",
+      "45.39",
+      "99.98",
+      "40.55",
+      "42.65",
+      "23.25",
+      "21.37",
+      "35.98",
+      "79.99",
+      "31.09",
+      "29.53",
+      "30.99",
+      "39.99"
+     ],
+     "json_prices": [],
+     "excerpt": "var aPageStart = (new Date()).getTime(); var ue_t0=ue_t0||+new Date(); window.ue_ihb = (window.ue_ihb || window.ueinit || 0) + 1; if (window.ue_ihb === 1) { var ue_csm = window, ue_hob = +new Date(); (function(d){var e=d.ue=d.ue||{},f=Date.now||function(){return+new Date};e.d=function(b){return f()-(b?0:d.ue_t0)};e.stub=function(b,a){if(!b[a]){var c=[];b[a]=function(){c.push([c.slice.call(arguments),e.d(),d.ue_id])};b[a].replay=function(b){for(var a;a=c.shift();)b(a[0],a[1],a[2])};b[a].isStub=1}"
+    },
+    {
+     "vendor": "wenzhou",
+     "label": "peacock/other",
+     "url": "https://www.penntoolco.com/granite-surface-plates/",
+     "status": 200,
+     "title": "Inspection Surface Plates, Stands &amp; Accessories | Penn Tool Co.",
+     "dollars": [],
+     "json_prices": [
+      "12307.95",
+      "9133.95",
+      "5877.95",
+      "5791.95",
+      "2820.95",
+      "1911.95",
+      "1411.95",
+      "817.95",
+      "689.95",
+      "14765.95",
+      "10061.95",
+      "6768.95",
+      "6504.95",
+      "3319.95",
+      "2064.95"
+     ],
+     "excerpt": "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-P47GSHS'); Inspection Surface Plates, Stands &amp; Accessories | Penn Tool Co. document.documentElement.className = document.documentElement.className.replace('no-js', '"
+    },
+    {
+     "vendor": "mcmaster",
+     "label": "surface plates",
+     "url": "https://www.mcmaster.com/products/surface-plates/",
+     "status": 200,
+     "title": "McMaster-Carr",
+     "dollars": [],
+     "json_prices": [],
+     "excerpt": "McMaster-Carr (function () { window._isShellCacheable = false; window.OriginalHref = document.location.href; if (window.history && window.history.pushState) { if (location.search && location.search.length > 0) { var qsMatch = /(?:\\?)(?:cache=false&reason=[a-z]+&t=\\d{13})(?:&|$)(.*)/i.exec(location.search); if (qsMatch) { var qsToPreserve = qsMatch[1]; var newPath = location.pathname + (qsToPreserve ? '?' : '') + qsToPreserve; window.history.replaceState(null, \"McMaster-Carr\", newPath); } } } els"
+    }
+   ],
+   "ksl": {
+    "granite surface plate": {
+     "url": "https://classifieds.ksl.com/search/granite%20surface%20plate",
+     "status": 200,
+     "items": [],
+     "n_raw": 0,
+     "has_listing_word": 45
+    },
+    "surface plate": {
+     "url": "https://classifieds.ksl.com/search/surface%20plate",
+     "status": 200,
+     "items": [],
+     "n_raw": 0,
+     "has_listing_word": 45
+    },
+    "granite remnant": {
+     "url": "https://classifieds.ksl.com/search/granite%20remnant",
+     "status": 200,
+     "items": [],
+     "n_raw": 0,
+     "has_listing_word": 45
+    },
+    "granite slab": {
+     "url": "https://classifieds.ksl.com/search/granite%20slab",
+     "status": 200,
+     "items": [],
+     "n_raw": 0,
+     "has_listing_word": 45
+    }
+   },
+   "bigbox": {
+    "hd_pip_json": {
+     "url": "https://www.homedepot.com/p/svcs/frontEndModel/202843017",
+     "status": 403,
+     "excerpt": "Access Denied Access Denied You don't have permission to access \"http&#58;&#47;&#47;www&#46;homedepot&#46;com&#47;p&#47;svcs&#47;frontEndModel&#47;202843017\" on this server. Reference&#32;&#35;18&#46;6c01d817&#46;1787424132&#46;1a03226d https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6c01d817&#46;1787424132&#46;1a03226d"
+    },
+    "hd_mobile": {
+     "url": "https://www.homedepot.com/p/202843017",
+     "status": 403,
+     "excerpt": "Error Page body{font:14px Arial;margin:0;display:flex;flex-direction:column;min-height:100vh;color:#333} .hdr{background:#f96302;color:#fff;padding:8px;text-align:center} .err{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px} .msg{font-size:24px;color:#d81118;margin:20px 0} .btn{background:#f96302;color:#fff;border:0;padding:15px 30"
+    },
+    "lowes_api": {
+     "url": "https://www.lowes.com/pd/api/product/1000197335",
+     "status": 403,
+     "excerpt": "Access Denied Access Denied You don't have permission to access \"http&#58;&#47;&#47;www&#46;lowes&#46;com&#47;pd&#47;api&#47;product&#47;1000197335\" on this server. Reference&#32;&#35;18&#46;6601d817&#46;1787424138&#46;3b0501f0 https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6601d817&#46;1787424138&#46;3b0501f0"
+    }
+   }
+  },
+  "pass4_shars_amazon_local": {
+   "shars": [
+    {
+     "label": "grade B 12x18x3 (search hit)",
+     "url": "https://www.shars.com/12-x-18-x-3-grade-b-black-granite-surface-plate",
+     "status": 404,
+     "excerpt": "Shars - Page cannot be found window.getWpGA4Cookie = function(name) { match = document.cookie.match(new RegExp(name + '=([^;]+)')); if (match) return decodeURIComponent(match[1].replace(/\\+/g, ' ')) ;"
+    },
+    {
+     "label": "grade A 12x18 black",
+     "url": "https://www.shars.com/grade-a-12-x-18-black-granite-surface-plate",
+     "status": 200,
+     "title": "Grade A 12&quot; x 18&quot; Black Granite Surface Plate",
+     "json_price": [
+      "123.45",
+      "55.95",
+      "49.96",
+      "203.55",
+      "91.95",
+      "351.96"
+     ],
+     "dollars": [
+      "123.45",
+      "55.95",
+      "80.50",
+      "49.96",
+      "66.20",
+      "203.55",
+      "91.95",
+      "121.85"
+     ],
+     "weight": [],
+     "stock": [
+      "In stock",
+      "Out of stock"
+     ]
+    },
+    {
+     "label": "grade AA 12x18 black",
+     "url": "https://www.shars.com/grade-aa-12-x-18-black-granite-surface-plate",
+     "status": 200,
+     "title": "Grade AA 12&quot; x 18&quot; Black Granite Surface Plate",
+     "json_price": [
+      "114.39",
+      "32.33",
+      "55.95",
+      "4.85",
+      "90.85",
+      "351.96"
+     ],
+     "dollars": [
+      "114.39",
+      "134.70",
+      "32.33",
+      "45.65",
+      "55.95",
+      "80.50",
+      "4.85",
+      "90.85"
+     ],
+     "weight": [],
+     "stock": [
+      "In stock",
+      "Out of stock"
+     ]
+    },
+    {
+     "label": "12x18x2 red",
+     "url": "https://www.shars.com/12-x-18-x-2-red-granite-surface-plate",
+     "status": 200,
+     "title": "12&quot; x 18&quot; x 2&quot; Red Granite Surface Plate",
+     "json_price": [
+      "0",
+      "203.55",
+      "42",
+      "125.95",
+      "18.15",
+      "49.96"
+     ],
+     "dollars": [
+      "203.55",
+      "42.00",
+      "125.95",
+      "189.55",
+      "18.15",
+      "49.96",
+      "66.20",
+      "90.85"
+     ],
+     "weight": [],
+     "stock": [
+      "Out of stock",
+      "Out of Stock",
+      "in stock"
+     ]
+    },
+    {
+     "label": "grade A 18x24 black",
+     "url": "https://www.shars.com/grade-a-18-x-24-black-granite-surface-plate",
+     "status": 200,
+     "title": "Grade A 18&quot; x 24&quot; Black Granite Surface Plate",
+     "json_price": [
+      "171.18",
+      "90.85",
+      "55.95",
+      "125.95",
+      "42",
+      "528.9"
+     ],
+     "dollars": [
+      "171.18",
+      "201.60",
+      "90.85",
+      "55.95",
+      "80.50",
+      "125.95",
+      "189.55",
+      "42.00"
+     ],
+     "weight": [],
+     "stock": [
+      "In stock",
+      "Out of stock"
+     ]
+    }
+   ],
+   "amazon": [
+    {
+     "query": "granite surface plate 12 x 18 x 3",
+     "url": "https://www.amazon.com/s?k=granite%20surface%20plate%2012%20x%2018%20x%203",
+     "status": 200,
+     "cards": [
+      {
+       "asin": "B01LWBEEH8",
+       "title": "Amazon's Choice",
+       "price": null
+      },
+      {
+       "asin": "B003XU7840",
+       "title": "Starrett Tru Stone Inspection Granite Tri-Square, 12&quot; L x 18&quot; W x 4&quot; T | Grade A, For Direct Checking of ",
+       "price": "2,327.00"
+      },
+      {
+       "asin": "B0HFNQFPC3",
+       "title": "Lifting Fixture Heavy-Duty Vertical Stone Lifting Clamp Suitable for Marble, Granite, Concrete Slabs, and Stone Blocks(S",
+       "price": "352.99"
+      }
+     ]
+    },
+    {
+     "query": "granite surface plate 12x18 grade b",
+     "url": "https://www.amazon.com/s?k=granite%20surface%20plate%2012x18%20grade%20b",
+     "status": 200,
+     "cards": [
+      {
+       "asin": "B01LWBEEH8",
+       "title": "Amazon's Choice",
+       "price": null
+      },
+      {
+       "asin": "B0GZ9JVG2Q",
+       "title": "Dasqua 8500-0004 Grade A Granite Surface Plate for Precision Measurement, 630 x 630 x 100 mm Size",
+       "price": "775.73"
+      }
+     ]
+    },
+    {
+     "query": "granite surface plate 9 x 12",
+     "url": "https://www.amazon.com/s?k=granite%20surface%20plate%209%20x%2012",
+     "status": 200,
+     "cards": [
+      {
+       "asin": "B08BXMX46W",
+       "title": "Amazon's Choice",
+       "price": null
+      },
+      {
+       "asin": "B0913GNX9S",
+       "title": "TTC 9&quot; x 12&quot; Granite Plate Cover",
+       "price": "29.99"
+      },
+      {
+       "asin": "B003XU77C8",
+       "title": "Starrett Tru Stone 4-Face Granite Angle Plate, 6&quot; L, 9&quot; W, 12&quot; T | Grade A Inspection, 72-lbs, For Clampi",
+       "price": "2,044.00"
+      }
+     ]
+    }
+   ],
+   "ksl": {
+    "api_search_v1": {
+     "url": "https://classifieds.ksl.com/api/search?keyword=granite%20surface%20plate&perPage=24",
+     "status": 404,
+     "bytes": 83012,
+     "titles": [
+      "Announcements",
+      "Auctions",
+      "Bands Seeking Members",
+      "Boutiques",
+      "Garage, Estate, & Yard Sales",
+      "Grand Openings",
+      "Lost & Found",
+      "Pageants\\/Talent Shows\\/Auditions",
+      "Performances & Gigs",
+      "School Events",
+      "Wanted\\/ISO - Announcements",
+      "Appliances",
+      "Dishwashers",
+      "Fireplaces\\/Wood Burning Stoves",
+      "Microwaves"
+     ],
+     "prices": [],
+     "cities": [],
+     "excerpt": "Oops | ksl.com --> var ddmTopDomain = 'ksl.com'; !function(e,d){var o=\"ddmSessionId\",n=\"ddmDeviceId\",t=function(){var e=2147483648;return Math.floor(Math.random()*e).toString(36)+Math.abs(Math.floor(Math.random()*e)^Date.now()).toString(36)},a=function(e){var "
+    },
+    "api_search_v2": {
+     "url": "https://classifieds.ksl.com/nextjs-api/proxy?nxp=%2Fsearch%3Fkeyword%3Dgranite%2Bsurface%2Bplate",
+     "status": 404,
+     "bytes": 83012,
+     "titles": [
+      "Announcements",
+      "Auctions",
+      "Bands Seeking Members",
+      "Boutiques",
+      "Garage, Estate, & Yard Sales",
+      "Grand Openings",
+      "Lost & Found",
+      "Pageants\\/Talent Shows\\/Auditions",
+      "Performances & Gigs",
+      "School Events",
+      "Wanted\\/ISO - Announcements",
+      "Appliances",
+      "Dishwashers",
+      "Fireplaces\\/Wood Burning Stoves",
+      "Microwaves"
+     ],
+     "prices": [],
+     "cities": [],
+     "excerpt": "Oops | ksl.com --> var ddmTopDomain = 'ksl.com'; !function(e,d){var o=\"ddmSessionId\",n=\"ddmDeviceId\",t=function(){var e=2147483648;return Math.floor(Math.random()*e).toString(36)+Math.abs(Math.floor(Math.random()*e)^Date.now()).toString(36)},a=function(e){var "
+    },
+    "serp_granite_slab": {
+     "url": "https://classifieds.ksl.com/search/granite%20slab",
+     "status": 200,
+     "bytes": 227070,
+     "titles": [
+      "2018 Deere 333G High Flow Skid Steer Loader Tractor",
+      "New 6 Burner Range w/ Oven, Nat Gas or LP",
+      "2026 Ninja 650 Base BK1",
+      "2023 Polaris Ranger XP 1000 Trail Boss Crew",
+      "Deco Metal Fireplace Screen",
+      "Cummins Fuel Filter Head, Part # 014278400",
+      "Hair waver",
+      "Door/Wall Hangers: (Several Listed)",
+      "Mystery Beauty Boxes",
+      "Hair trimmer"
+     ],
+     "prices": [
+      "49900",
+      "1754",
+      "7599",
+      "26500",
+      "25",
+      "75",
+      "42",
+      "20",
+      "12",
+      "8"
+     ],
+     "cities": [
+      "Midvale",
+      "Salt Lake City",
+      "Twin Falls",
+      "Fillmore",
+      "Clearfield"
+     ],
+     "excerpt": "New and Used Listings | KSL Classifieds (self.__next_s=self.__next_s||[]).push([0,{\"children\":\"window[\\\"dataLayer\\\"] = window[\\\"dataLayer\\\"] || [];\\nwindow.__kslConsentLayerName = \\\"dataLayer\\\";\\nvar gtag = function () { window[\\\"dataLayer\\\"].push(arguments); "
+    },
+    "serp_surface_plate": {
+     "url": "https://classifieds.ksl.com/search/keyword/surface%20plate",
+     "status": 200,
+     "bytes": 146349,
+     "titles": [
+      "Starrett 36x60 Precision Granite Surface Plate w/ Stand - Grade A",
+      "Waltco Hydraulic Liftgate -RGL-40 Diamond Plate Surface, Foldable for Trucks/Trailers"
+     ],
+     "prices": [
+      "4000",
+      "3000"
+     ],
+     "cities": [
+      "Bluffdale",
+      "Provo"
+     ],
+     "excerpt": "New and Used Listings | KSL Classifieds (self.__next_s=self.__next_s||[]).push([0,{\"children\":\"window[\\\"dataLayer\\\"] = window[\\\"dataLayer\\\"] || [];\\nwindow.__kslConsentLayerName = \\\"dataLayer\\\";\\nvar gtag = function () { window[\\\"dataLayer\\\"].push(arguments); "
+    }
+   },
+   "misc": {
+    "walmart_cat": {
+     "url": "https://www.walmart.com/c/kp/granite-surface-plate",
+     "status": 200,
+     "excerpt": "(()=>{window.performance.mark(\"ttp\")})(); Granite Surface Plate {\"@context\":\"https://schema.org\",\"@type\":\"CollectionPage\",\"name\":\"Granite Surface Plate\",\"url\":\"https://www.walmart.com/c/kp/granite-surface-plate\",\"mainEntity\":{\"@context\":\"https://schema.org\",\"@type\":\"ItemList\",\"numberOfItems\":16,\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"u"
+    },
+    "hf_search_empty": {
+     "url": "https://www.harborfreight.com/search?q=granite+surface+plate",
+     "status": 403,
+     "excerpt": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = '8dfc3a82-9e59-11f1-bac1-b055309bce17'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile = false; window._pxFirstPartyEnabled = true; var p"
+    },
+    "hf_sitemap_probe": {
+     "url": "https://www.harborfreight.com/catalog/seo_sitemap/product/",
+     "status": 403,
+     "excerpt": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = '8f929320-9e59-11f1-b7c6-ff2edd67755d'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._pxCustomLogo = ''; window._pxJsClientSrc = '/j4y0BbmN/init.js'; window._pxMobile = false; window._pxFirstPartyEnabled = true; var p"
+    }
+   },
+   "local": [
+    {
+     "name": "Rock Solid Granite (Orem)",
+     "url": "https://fablocator.com/fabricators/ut/orem/rock-solid-granite-countertops",
+     "status": 200,
+     "title": "Granite countertops in Orem, UT | Rock Solid Granite Countertops",
+     "phones": [
+      "(801) 225-0812"
+     ],
+     "addr": [],
+     "remnant_mentions": [
+      "a class=\"uk-button uk-button-default sz-btn\" title=\"Search for remnants\" href=\"https://slabzone",
+      "com/remnants\"",
+      "SEARCH REMNANTS"
+     ],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Big Mountain Countertops (Orem)",
+     "url": "https://www.bigmountaincountertops.com/",
+     "status": 200,
+     "title": "Home",
+     "phones": [
+      "(801-225-6521",
+      "801-225-6521"
+     ],
+     "addr": [
+      "317 N Main. Orem, UT 84057"
+     ],
+     "remnant_mentions": [],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Little Stone Countertops (Provo)",
+     "url": "https://www.littlestonecountertops.com/",
+     "status": 200,
+     "title": "Home | Provo Utah | Little Stone Countertops",
+     "phones": [],
+     "addr": [
+      "1452 S State St, Provo, Utah 84606"
+     ],
+     "remnant_mentions": [],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Accent Countertops remnants",
+     "url": "https://accentcountertops.com/quartz-marble-granite-remnants-nevada-utah/",
+     "status": 200,
+     "title": "Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops",
+     "phones": [
+      "801-269-0701",
+      "(801) 269-0701",
+      "(801) 487-8000",
+      "8012690701"
+     ],
+     "addr": [],
+     "remnant_mentions": [
+      "Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops",
+      "com/quartz-marble-granite-remnants-nevada-utah/\" /",
+      "meta property=\"og:title\" content=\"Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops\" /",
+      "com\\/quartz-marble-granite-remnants-nevada-utah\\/\",\"url\":\"https:\\/\\/accentcountertops",
+      "com\\/quartz-marble-granite-remnants-nevada-utah\\/\",\"name\":\"Quartz, Marble, & Granite Remnants Nevada & Utah - Accent Countertops\",\"isPartOf\":{\"@id\":\"https:\\/\\/accentcountertops",
+      "com\\/quartz-marble-granite-remnants-nevada-utah\\/#breadcrumb\"},\"inLanguage\":\"en-US\",\"potentialAction\":[{\"@type\":\"ReadAction\""
+     ],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Cobble Creek (Utah County)",
+     "url": "https://www.cobblecreekcountertops.com/area/utah-county",
+     "status": 200,
+     "title": "",
+     "phones": [
+      "801-618-7699",
+      "(801)-618-7699",
+      "(801)6187699",
+      "(801) 618-7699"
+     ],
+     "addr": [],
+     "remnant_mentions": [],
+     "scrap_mentions": [
+      " Our Utah County team handles sink cutouts, cooktop accommodations, and backsplash coordination with precision"
+     ]
+    },
+    {
+     "name": "Quality Granite Utah",
+     "url": "https://qualitygraniteutah.com/",
+     "status": 200,
+     "title": "Quality Granite Utah | Quality Marble Granite &amp; Quartz",
+     "phones": [
+      "801-800-1244",
+      "(801) 800-1244"
+     ],
+     "addr": [],
+     "remnant_mentions": [],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Signature Marble & Granite",
+     "url": "https://www.signaturemarbleandgranite.com/services/fabrication-installation/",
+     "status": 200,
+     "title": "Countertop Fabricators &amp; Installers in Northern Utah",
+     "phones": [
+      "801-473-6787",
+      "8014736787"
+     ],
+     "addr": [],
+     "remnant_mentions": [],
+     "scrap_mentions": []
+    },
+    {
+     "name": "Granite Countertops Utah",
+     "url": "https://granitecountertopsutah.com/",
+     "status": 200,
+     "title": "Granite Countertops Utah | Custom Stone Countertops \u2013 Salt Lake & Utah County",
+     "phones": [
+      "(801) 376-3856",
+      "8013763856"
+     ],
+     "addr": [],
+     "remnant_mentions": [],
+     "scrap_mentions": [
+      " Sink cutouts, undermount hardware, cooktop openings, and precision edge profiles \u2014 all incl",
+      " Precision cuts, smooth edges, and proper sink cutouts are our standard"
+     ]
+    },
+    {
+     "name": "Habitat ReStore Provo",
+     "url": "https://www.habitatprovo.org/restore",
+     "status": "HTTPSConnectionPool(host='www.habitatprovo.org', port=443): Max retries exceeded with url: /restore (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x7fb6e60b90>: Failed to resolve 'www.habitatprovo.org' ([Errno -2] Name or service not known)\"))",
+     "excerpt": ""
+    },
+    {
+     "name": "RemnantSwap UT search",
+     "url": "https://www.remnantswap.com/search?state=UT",
+     "status": 200,
+     "title": "Remnants - RemnantSwap",
+     "phones": [],
+     "addr": [],
+     "remnant_mentions": [
+      " Remnants - RemnantSwap",
+      "meta name=\"description\" content=\"Fabricators near you selling  remnants\" /",
+      "12\" height=\"60\" alt=\"RemnantSwap\" style=\"border:0\" /",
+      " Remnants",
+      "Search for remnants near ",
+      "script type='text/javascript' src='/include/remnantSwap"
+     ],
+     "scrap_mentions": []
+    }
+   ]
+  },
+  "pass5_remnants_ksl_restore": {
+   "slabzone": {
+    "remnants_home": {
+     "url": "https://slabzone.com/remnants",
+     "status": 200,
+     "bytes": 28599,
+     "title": "The Best Countertop Remnants Search",
+     "materials": [],
+     "sizes": [
+      "180x180",
+      "32x32",
+      "16x16"
+     ],
+     "excerpt": "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag(\"js\", new Date()); gtag(\"config\", \"G-2Y9HY7VQJG\"); (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=\"https://www.clarity.ms/tag/\"+i+\"?ref=bwt\"; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, \"clarity\", \"script\", \"8yqmlq4rs8\"); The Best Countertop Remnants Search Home Slabs All Slabs Popular Stone"
+    },
+    "remnants_ut": {
+     "url": "https://slabzone.com/remnants?state=UT",
+     "status": 200,
+     "bytes": 28608,
+     "title": "The Best Countertop Remnants Search",
+     "materials": [],
+     "sizes": [
+      "180x180",
+      "32x32",
+      "16x16"
+     ],
+     "excerpt": "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag(\"js\", new Date()); gtag(\"config\", \"G-2Y9HY7VQJG\"); (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=\"https://www.clarity.ms/tag/\"+i+\"?ref=bwt\"; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, \"clarity\", \"script\", \"8yqmlq4rs8\"); The Best Countertop Remnants Search Home Slabs All Slabs Popular Stone"
+    },
+    "remnants_orem": {
+     "url": "https://slabzone.com/remnants?search=orem",
+     "status": 200,
+     "bytes": 28609,
+     "title": "The Best Countertop Remnants Search",
+     "materials": [],
+     "sizes": [
+      "180x180",
+      "32x32",
+      "16x16"
+     ],
+     "excerpt": "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag(\"js\", new Date()); gtag(\"config\", \"G-2Y9HY7VQJG\"); (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=\"https://www.clarity.ms/tag/\"+i+\"?ref=bwt\"; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, \"clarity\", \"script\", \"8yqmlq4rs8\"); The Best Countertop Remnants Search Home Slabs All Slabs Popular Stone"
+    },
+    "rocksolid": {
+     "url": "https://slabzone.com/rocksolidgranite/remnants",
+     "status": 200,
+     "bytes": 25911,
+     "title": "The Best Stone Countertop Search",
+     "materials": [],
+     "sizes": [
+      "180x180",
+      "32x32",
+      "16x16"
+     ],
+     "excerpt": "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag(\"js\", new Date()); gtag(\"config\", \"G-2Y9HY7VQJG\"); (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=\"https://www.clarity.ms/tag/\"+i+\"?ref=bwt\"; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, \"clarity\", \"script\", \"8yqmlq4rs8\"); The Best Stone Countertop Search Home Slabs All Slabs Popular Stone Co"
+    }
+   },
+   "ksl": {
+    "surface plate": {
+     "url": "https://classifieds.ksl.com/search/keyword/surface%20plate",
+     "status": 200,
+     "items": [
+      {
+       "title": "Starrett 36x60 Precision Granite Surface Plate w/ Stand - Grade A",
+       "price": "4000",
+       "city": "Provo"
+      }
+     ]
+    },
+    "granite plate": {
+     "url": "https://classifieds.ksl.com/search/keyword/granite%20plate",
+     "status": 200,
+     "items": []
+    },
+    "granite remnant": {
+     "url": "https://classifieds.ksl.com/search/keyword/granite%20remnant",
+     "status": 200,
+     "items": []
+    },
+    "countertop remnant": {
+     "url": "https://classifieds.ksl.com/search/keyword/countertop%20remnant",
+     "status": 200,
+     "items": [
+      {
+       "title": "remnant granite countertop",
+       "price": "100",
+       "city": "Salt Lake City"
+      }
+     ]
+    },
+    "granite scrap": {
+     "url": "https://classifieds.ksl.com/search/keyword/granite%20scrap",
+     "status": 200,
+     "items": []
+    },
+    "marble slab": {
+     "url": "https://classifieds.ksl.com/search/keyword/marble%20slab",
+     "status": 200,
+     "items": [
+      {
+       "title": "Top Quality Quartz / Marble Countertop Slabs ON SALE NOW!",
+       "price": "0.01",
+       "city": "Layton"
+      },
+      {
+       "title": "Marble slabs",
+       "price": "200",
+       "city": "Layton"
+      }
+     ]
+    },
+    "granite piece": {
+     "url": "https://classifieds.ksl.com/search/keyword/granite%20piece",
+     "status": 200,
+     "items": [
+      {
+       "title": "Assorted small pieces Granite Countertop Pieces - Multi-Sized Slabs",
+       "price": "30",
+       "city": "North Ogden"
+      },
+      {
+       "title": "Kitchen Academy 12-Piece Nonstick Cookware Set - Green Granite",
+       "price": "90",
+       "city": "North Ogden"
+      },
+      {
+       "title": "New Thyme \\u0026 Table 12-Piece Ceramic Non-Stick Granite Collection Cookware Set, Non-Toxic Pots and Pans Set",
+       "price": "65",
+       "city": "South Jordan"
+      },
+      {
+       "title": "Granite Pieces",
+       "price": "45",
+       "city": "Logan"
+      }
+     ]
+    }
+   },
+   "misc": {
+    "restore_uc": {
+     "url": "https://habitatuc.org/restore/",
+     "status": 200,
+     "title": "ReStore - Habitat for Humanity of Utah County",
+     "addr": [
+      "340 S. Orem Blvd. Orem, UT 84058"
+     ],
+     "phones": [
+      "801-344-8527",
+      "801-400-7726",
+      "801.344.8527"
+     ],
+     "excerpt": "ReStore - Habitat for Humanity of Utah County {\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https:\\/\\/www.habitatuc.org\\/restore\\/\",\"url\":\"https:\\/\\/www.habitatuc.org\\/restore\\/\",\"name\":\"ReStore - Habitat for Humanity of Utah County\",\"isPartOf\":{\"@id\":\"https:\\/\\/www.habitatuc.org\\/#website\"},\"datePublished\":\"2019-01-16T14:3"
+    },
+    "restore_uc_alt": {
+     "url": "https://www.habitatuc.org/",
+     "status": 200,
+     "title": "Home - Habitat for Humanity of Utah County",
+     "addr": [
+      "340 S. Orem Blvd. Orem, UT 84058"
+     ],
+     "phones": [
+      "801.344.8527"
+     ],
+     "excerpt": "Home - Habitat for Humanity of Utah County {\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https:\\/\\/www.habitatuc.org\\/\",\"url\":\"https:\\/\\/www.habitatuc.org\\/\",\"name\":\"Home - Habitat for Humanity of Utah County\",\"isPartOf\":{\"@id\":\"https:\\/\\/www.habitatuc.org\\/#website\"},\"primaryImageOfPage\":{\"@id\":\"https:\\/\\/www.habitatuc.org"
+    },
+    "restore_search": {
+     "url": "https://www.habitat.org/restores?zip=84604",
+     "status": 200,
+     "title": "Habitat for Humanity ReStores",
+     "addr": [],
+     "phones": [],
+     "excerpt": "form.antibot > * { display: none !important; } form.antibot noscript { display: block !important; } window.dataLayer = window.dataLayer || []; (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0];var j=d.createElement(s);var dl=l!='dataLayer'?'&amp;l='+l:'';j.src='//www.g"
+    },
+    "remnantswap_ut": {
+     "url": "https://www.remnantswap.com/remnants?state=Utah",
+     "status": 404,
+     "title": "RemnantSwap",
+     "addr": [],
+     "phones": [],
+     "excerpt": "RemnantSwap var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-459370-5']);_gaq.push(['_trackPageview']);_gaq.push(['_trackPageLoadTime']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga."
+    },
+    "byu_surplus": {
+     "url": "https://surplus.byu.edu/",
+     "status": 200,
+     "title": "Surplus",
+     "addr": [],
+     "phones": [
+      "801-422-7004",
+      "801-422-3872",
+      "801-422-4636"
+     ],
+     "excerpt": ":root { --siteBgColor: #ffffff; --siteInverseBgColor: #000000; --bannerColor: #BFF0FD; --bannerBackgroundColor: #ff1e3c; --bannerTextColor: #ffffff; --primaryColor: #002e5d; --secondaryColor: #0047ba; --courseAccentColor: #1fb3d1; --courseAccentTextColor: #000000; --programAccentColor: #0062b8; --programAccentTextColor: #ffffff; --colorRed: #ff1e3c"
+    }
+   }
+  }
+ }
+}
