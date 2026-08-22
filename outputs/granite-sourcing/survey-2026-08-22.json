@@ -1,0 +1,470 @@
+{
+ "mode": "all",
+ "plates": [
+  {
+   "vendor": "grizzly",
+   "label": "G9649 9x12x2",
+   "url": "https://www.grizzly.com/products/grizzly-9-x-12-x-2-granite-surface-plate-no-ledge/g9649",
+   "status": 200,
+   "title": "Grizzly G9649 - 9&quot; x 12&quot; x 2&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+   "json_price": [
+    "39.95"
+   ],
+   "dollars": [
+    "39.95",
+    "4.50",
+    "9.95",
+    "49.95",
+    "17.95",
+    "44.95"
+   ],
+   "availability": [
+    "https://schema.org/InStock"
+   ],
+   "is_freight": [
+    "false"
+   ],
+   "ship_weight_lb": [
+    "26"
+   ]
+  },
+  {
+   "vendor": "grizzly",
+   "label": "G9651 12x18x3",
+   "url": "https://www.grizzly.com/products/grizzly-12-x-18-x-3-granite-surface-plate-no-ledge/g9651",
+   "status": 200,
+   "title": "Grizzly G9651 - 12&quot; x 18&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+   "json_price": [
+    "69.95"
+   ],
+   "dollars": [
+    "69.95",
+    "4.50",
+    "9.95",
+    "49.95",
+    "17.95",
+    "44.95"
+   ],
+   "availability": [
+    "https://schema.org/InStock"
+   ],
+   "is_freight": [
+    "false",
+    "true"
+   ],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "grizzly",
+   "label": "G9653 18x18x3",
+   "url": "https://www.grizzly.com/products/grizzly-18-x-18-x-3-granite-surface-plate-no-ledge/g9653",
+   "status": 200,
+   "title": "Grizzly G9653 - 18&quot; x 18&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+   "json_price": [
+    "79.95"
+   ],
+   "dollars": [
+    "79.95",
+    "4.50",
+    "9.95",
+    "49.95",
+    "17.95",
+    "44.95"
+   ],
+   "availability": [
+    "https://schema.org/InStock"
+   ],
+   "is_freight": [
+    "false",
+    "true"
+   ],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "grizzly",
+   "label": "G9654 18x24x3",
+   "url": "https://www.grizzly.com/products/grizzly-18-x-24-x-3-granite-surface-plate-no-ledge/g9654",
+   "status": 200,
+   "title": "Grizzly G9654 - 18&quot; x 24&quot; x 3&quot; Granite Surface Plate, No Ledge - Grizzly Industrial, Inc.",
+   "json_price": [
+    "99.95"
+   ],
+   "dollars": [
+    "99.95",
+    "4.50",
+    "9.95",
+    "49.95",
+    "17.95",
+    "44.95"
+   ],
+   "availability": [
+    "https://schema.org/InStock"
+   ],
+   "is_freight": [
+    "false",
+    "true"
+   ],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "shars",
+   "label": "grade A 12x18",
+   "url": "https://www.shars.com/grade-a-12-x-18-black-granite-surface-plate",
+   "status": 200,
+   "title": "Grade A 12&quot; x 18&quot; Black Granite Surface Plate",
+   "json_price": [
+    "123.45",
+    "203.55",
+    "90.85",
+    "4.85",
+    "351.96",
+    "528.9",
+    "55.95",
+    "42"
+   ],
+   "dollars": [
+    "123.45",
+    "203.55",
+    "90.85",
+    "4.85",
+    "351.96",
+    "483.95",
+    "528.90",
+    "55.95",
+    "80.50",
+    "42.00"
+   ],
+   "availability": [
+    "https:\\/\\/schema.org\\/InStock"
+   ],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "shars",
+   "label": "grade AA 12x18",
+   "url": "https://www.shars.com/grade-aa-12-x-18-black-granite-surface-plate",
+   "status": 200,
+   "title": "Grade AA 12&quot; x 18&quot; Black Granite Surface Plate",
+   "json_price": [
+    "114.39",
+    "42",
+    "203.55",
+    "26.45",
+    "49.96",
+    "18.15",
+    "125.95",
+    "91.95"
+   ],
+   "dollars": [
+    "114.39",
+    "134.70",
+    "42.00",
+    "203.55",
+    "26.45",
+    "49.96",
+    "66.20",
+    "18.15",
+    "125.95",
+    "189.55"
+   ],
+   "availability": [
+    "https:\\/\\/schema.org\\/InStock"
+   ],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "shars",
+   "label": "grade A 18x24",
+   "url": "https://www.shars.com/grade-a-18-x-24-black-granite-surface-plate",
+   "status": 200,
+   "title": "Grade A 18&quot; x 24&quot; Black Granite Surface Plate",
+   "json_price": [
+    "171.18",
+    "90.85",
+    "0",
+    "26.45",
+    "351.96",
+    "49.96",
+    "528.9",
+    "91.95"
+   ],
+   "dollars": [
+    "171.18",
+    "201.60",
+    "90.85",
+    "26.45",
+    "351.96",
+    "483.95",
+    "49.96",
+    "66.20",
+    "528.90",
+    "91.95"
+   ],
+   "availability": [
+    "https:\\/\\/schema.org\\/InStock"
+   ],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "zoro",
+   "label": "search 12x18",
+   "url": "https://www.zoro.com/search?q=granite+surface+plate+12+x+18",
+   "status": 200,
+   "title": "Results for &quot;granite surface plate 12 x 18&quot;",
+   "json_price": [],
+   "dollars": [
+    "137.99",
+    "203.99",
+    "131.99",
+    "1,300.99",
+    "1,503.99",
+    "98.59",
+    "115.99",
+    "419.99",
+    "368.99"
+   ],
+   "availability": [],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "amazon",
+   "label": "search 12x18x3",
+   "url": "https://www.amazon.com/s?k=granite+surface+plate+12+x+18+x+3",
+   "status": 200,
+   "title": "Amazon.com : granite surface plate 12 x 18 x 3",
+   "json_price": [],
+   "dollars": [
+    "137.99",
+    "98.99",
+    "239.99",
+    "1,103.03",
+    "79.99",
+    "67.39",
+    "37.99",
+    "6.74",
+    "99.98",
+    "56.30"
+   ],
+   "availability": [],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "walmart",
+   "label": "category",
+   "url": "https://www.walmart.com/c/kp/granite-surface-plate",
+   "status": 200,
+   "title": "Granite Surface Plate",
+   "json_price": [
+    "0",
+    "63.99",
+    "204.95",
+    "118.19",
+    "552.12",
+    "244.08",
+    "6",
+    "95.38"
+   ],
+   "dollars": [
+    "0.00",
+    "15.99",
+    "22.88",
+    "63.99",
+    "204.95",
+    "228.63",
+    "118.19",
+    "9.99",
+    "552.12",
+    "244.08"
+   ],
+   "availability": [],
+   "is_freight": [],
+   "ship_weight_lb": []
+  },
+  {
+   "vendor": "harborfreight",
+   "label": "search",
+   "url": "https://www.harborfreight.com/search?q=granite+surface+plate",
+   "status": 403,
+   "excerpt": "Access to this page has been denied /* PerimeterX assignments */ window._pxVid = ''; window._pxUuid = 'b7f06e59-9e5b-11f1-b1cc-ff2edd67755d'; window._pxAppId = 'PXj4y0BbmN'; window._pxHostUrl = '/j4y0BbmN/xhr'; window._p"
+  }
+ ],
+ "local": [
+  {
+   "name": "Habitat ReStore (Orem)",
+   "url": "https://www.habitatuc.org/restore/",
+   "status": 200,
+   "title": "ReStore - Habitat for Humanity of Utah County",
+   "phones": [
+    "801-344-8527",
+    "801-400-7726",
+    "801.344.8527"
+   ],
+   "addresses": [
+    "340 S. Orem Blvd. Orem, UT 84058"
+   ],
+   "remnant_mentions": []
+  },
+  {
+   "name": "Rock Solid Granite (Orem)",
+   "url": "https://fablocator.com/fabricators/ut/orem/rock-solid-granite-countertops",
+   "status": 200,
+   "title": "Granite countertops in Orem, UT | Rock Solid Granite Countertops",
+   "phones": [
+    "(801) 225-0812"
+   ],
+   "addresses": [],
+   "remnant_mentions": [
+    "a class=\"uk-button uk-button-default sz-btn\" title=\"Search for remnants\" href=\"https://slabzone",
+    "com/remnants\"",
+    "SEARCH REMNANTS"
+   ]
+  },
+  {
+   "name": "Big Mountain Countertops",
+   "url": "https://www.bigmountaincountertops.com/",
+   "status": 200,
+   "title": "Home",
+   "phones": [
+    "(801-225-6521",
+    "801-225-6521"
+   ],
+   "addresses": [
+    "317 N Main. Orem, UT 84057"
+   ],
+   "remnant_mentions": []
+  },
+  {
+   "name": "Little Stone Countertops",
+   "url": "https://www.littlestonecountertops.com/",
+   "status": 200,
+   "title": "Home | Provo Utah | Little Stone Countertops",
+   "phones": [],
+   "addresses": [
+    "1452 S State St, Provo, Utah 84606"
+   ],
+   "remnant_mentions": []
+  },
+  {
+   "name": "Accent Countertops remnants",
+   "url": "https://accentcountertops.com/quartz-marble-granite-remnants-nevada-utah/",
+   "status": 200,
+   "title": "Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops",
+   "phones": [
+    "801-269-0701",
+    "(801) 269-0701",
+    "(801) 487-8000",
+    "8012690701"
+   ],
+   "addresses": [],
+   "remnant_mentions": [
+    "Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops",
+    "com/quartz-marble-granite-remnants-nevada-utah/\" /",
+    "meta property=\"og:title\" content=\"Quartz, Marble, &amp; Granite Remnants Nevada &amp; Utah - Accent Countertops\" /",
+    "com\\/quartz-marble-granite-remnants-nevada-utah\\/\",\"url\":\"https:\\/\\/accentcountertops",
+    "com\\/quartz-marble-granite-remnants-nevada-utah\\/\",\"name\":\"Quartz, Marble, & Granite Remnants Nevada & Utah - Acce"
+   ]
+  },
+  {
+   "name": "Cobble Creek (Utah County)",
+   "url": "https://www.cobblecreekcountertops.com/area/utah-county",
+   "status": 200,
+   "title": "",
+   "phones": [
+    "801-618-7699",
+    "(801)-618-7699",
+    "(801)6187699",
+    "(801) 618-7699"
+   ],
+   "addresses": [],
+   "remnant_mentions": [
+    " Our Utah County team handles sink cutouts, cooktop accommodations, and backsplash coordination with precision"
+   ]
+  },
+  {
+   "name": "Quality Granite Utah",
+   "url": "https://qualitygraniteutah.com/",
+   "status": 200,
+   "title": "Quality Granite Utah | Quality Marble Granite &amp; Quartz",
+   "phones": [
+    "801-800-1244",
+    "(801) 800-1244"
+   ],
+   "addresses": [],
+   "remnant_mentions": []
+  },
+  {
+   "name": "Granite Countertops Utah",
+   "url": "https://granitecountertopsutah.com/",
+   "status": 200,
+   "title": "Granite Countertops Utah | Custom Stone Countertops \u2013 Salt Lake & Utah County",
+   "phones": [
+    "(801) 376-3856",
+    "8013763856"
+   ],
+   "addresses": [],
+   "remnant_mentions": [
+    " Sink cutouts, undermount hardware, cooktop openings, and precision edge profiles \u2014 all incl",
+    " Precision cuts, smooth edges, and proper sink cutouts are our standard"
+   ]
+  },
+  {
+   "name": "BYU Surplus",
+   "url": "https://surplus.byu.edu/",
+   "status": 200,
+   "title": "Surplus",
+   "phones": [
+    "801-422-7004",
+    "801-422-3872",
+    "801-422-4636"
+   ],
+   "addresses": [],
+   "remnant_mentions": [
+    "or taken) by any person or entity, even if said item(s) have been identified as scrap, or discarded as refuse"
+   ]
+  }
+ ],
+ "ksl": {
+  "surface plate": {
+   "url": "https://classifieds.ksl.com/search/keyword/surface%20plate",
+   "status": 200,
+   "items": [
+    {
+     "title": "Starrett 36x60 Precision Granite Surface Plate w/ Stand - Grade A",
+     "price": "4000",
+     "city": "Provo"
+    }
+   ]
+  },
+  "granite plate": {
+   "url": "https://classifieds.ksl.com/search/keyword/granite%20plate",
+   "status": 200,
+   "items": []
+  },
+  "granite remnant": {
+   "url": "https://classifieds.ksl.com/search/keyword/granite%20remnant",
+   "status": 200,
+   "items": []
+  },
+  "countertop remnant": {
+   "url": "https://classifieds.ksl.com/search/keyword/countertop%20remnant",
+   "status": 200,
+   "items": [
+    {
+     "title": "remnant granite countertop",
+     "price": "100",
+     "city": "Salt Lake City"
+    }
+   ]
+  },
+  "granite scrap": {
+   "url": "https://classifieds.ksl.com/search/keyword/granite%20scrap",
+   "status": 200,
+   "items": []
+  }
+ }
+}

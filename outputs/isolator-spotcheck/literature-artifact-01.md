@@ -1,0 +1,14 @@
+| Item | Design note | Corrected value/form | Practical effect |
+|---|---:|---:|---|
+| Full-sheet shape factor \(S\) | 14.4 | \(S=ab/[2t(a+b)] = 305\times457/[2\times6.35\times(305+457)] = 14.4\) | Note is correct on this row; no change (pqac-00000011, pqac-00000015) |
+| Full-sheet \(E_c\) (bonded, incompressible) | 290 MPa | With hardness factor \(k\approx0.85\): \(E_c=E(1+2kS^2)=0.7(1+2\times0.85\times14.4^2)\approx247\) MPa; with finite-bulk-modulus correction \(1/E_c^*=1/E_c+1/K\), \(E_c^*\approx198\) MPa for \(K=1000\) MPa and \(\approx220\) MPa for \(K=2000\) MPa | The note overstates sheet stiffness; sheet is still very stiff (pqac-00000011, pqac-00000015) |
+| Full-sheet deflection | \(5.1\times10^{-5}\) mm | Using \(\sigma=325/139385=0.00233\) MPa and \(E_c^*=198\)–220 MPa: \(\delta=(\sigma/E_c^*)t\approx6.7\times10^{-5}\) to \(7.5\times10^{-5}\) mm | Still negligible; only ~1.3–1.5× larger than note (pqac-00000015) |
+| Small-pad \(E_c\) | 0.97 MPa | With \(S=0.437\), \(k\approx0.85\): \(E_c=0.7(1+2\times0.85\times0.437^2)\approx0.93\) MPa | Very close to note; no practical change (pqac-00000011, pqac-00000015) |
+| Small-pad deflection | 2.13 mm | \(\sigma=80/493=0.162\) MPa, \(\epsilon=0.162/0.93=0.174\), \(\delta=0.174\times12.7\approx2.21\) mm | Similar to note; pad remains very compliant vertically (pqac-00000015) |
+| Compliance ratio (pad/sheet deflection) | ~40,000× | Using \(2.21\) mm and \(6.7\times10^{-5}\) to \(7.5\times10^{-5}\) mm: ~29,000 to 33,000× | The huge ratio survives, but 40,000× is overstated (pqac-00000015) |
+| \(f_0\) from static deflection | \(15.76/\sqrt{2.1}=10.9\) Hz | Constant check is correct: \(\frac{1}{2\pi}\sqrt{9810}=15.76\). But if \(K_{dyn}/K_{stat}=2\)–4, then \(f_{0,actual}=10.9\sqrt{2}\) to \(10.9\sqrt{4}=15.4\)–21.8 Hz | This is a material correction and undermines static-deflection sizing (pqac-00000018, pqac-00000016) |
+| Horizontal mode frequency | 5.1 Hz | \(k_h=GA/t\approx0.23\times(4\times493\times10^{-6})/0.0127\approx3.6\times10^4\) N/m, \(f_h=\frac{1}{2\pi}\sqrt{k_h/m}\approx5.1\)–5.3 Hz for \(m=32.5\) kg | Note is essentially correct, and this mode sits in a bad band (pqac-00000015) |
+| Tilt to produce 100 mg offset | not treated | Using typical EMFC tilt sensitivity ~0.05–0.2 mg/\(\mu\)rad, a 100 mg offset implies ~500–2000 \(\mu\)rad = 0.029–0.115° | Shows that very small rocking/tilt changes can plausibly cause the observed step events (pqac-00000021, pqac-00000006) |
+
+
+*Table: This table compares the design note's key numerical claims for Claims 1 and 3 against corrected values, including bulk-modulus and dynamic-stiffness corrections. It highlights which numbers change materially and which qualitative conclusions survive.*
