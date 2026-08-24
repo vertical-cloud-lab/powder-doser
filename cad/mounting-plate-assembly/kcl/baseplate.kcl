@@ -1,0 +1,95 @@
+// Baseplate — bench side of the rotating sub-assembly.
+//
+// Per the issue #62 follow-up review:
+//   * front edge sits 10 mm BEHIND the hinge axis (i.e. the hinge axis
+//     is 10 mm in front of the baseplate's front edge)
+//   * two complementary forward-and-up hinge arms (one each side of the
+//     auger) with a central gap between them, mirroring the mounting
+//     plate's two side hinges
+//   * NO powder window — powder falls in front of the baseplate
+//
+// Local coordinates: base bottom on Z=0, base top at Z=baseT.  Final
+// translate moves the assembly so the bottom lands at zBaseTop.
+//
+// NOTE: this is the KCL mirror of cad_model.py.  cad_model.py is the
+// source of truth (see README "zoo.dev experience").
+import "params.kcl" as p
+
+// ---- baseplate body ----
+base = startSketchOn(XY)
+  |> startProfile(at = [-p.baseW/2, p.baseYBack])
+  |> line(end = [p.baseW, 0])
+  |> line(end = [0, p.baseL])
+  |> line(end = [-p.baseW, 0])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// ---- four corner legs ----
+legX = p.baseW/2 - p.baseLegInset - p.baseLegW/2
+legYF = p.baseYFront - p.baseLegInset - p.baseLegW/2
+legYB = p.baseYBack  + p.baseLegInset + p.baseLegW/2
+
+legFR = startSketchOn(XY)
+  |> startProfile(at = [legX - p.baseLegW/2, legYF - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+legFL = startSketchOn(XY)
+  |> startProfile(at = [-legX - p.baseLegW/2, legYF - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+legBR = startSketchOn(XY)
+  |> startProfile(at = [legX - p.baseLegW/2, legYB - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+legBL = startSketchOn(XY)
+  |> startProfile(at = [-legX - p.baseLegW/2, legYB - p.baseLegW/2])
+  |> line(end = [p.baseLegW, 0])
+  |> line(end = [0, p.baseLegW])
+  |> line(end = [-p.baseLegW, 0])
+  |> close()
+  |> extrude(length = -p.baseLegH)
+
+// ---- baseplate hinge arms (middle layer of the 3-layer sandwich) ----
+// In local frame, base top is at z=baseT; the hinge axis is at
+// z = hingeAxisZLocal.  Each arm fills the rectangle
+// (armBackY..yDisp, baseT..hingeAxisZLocal+eyeOd/2) and is extruded
+// armThk along X — armThk = hingeLobeW - hingeLayerGap so the arm fits
+// snugly in the middle third of the ramp half-span between the
+// mounting plate's inner and outer hinge lobes (per the fifth review).
+// The arm bottom extends BACK onto the baseplate top (armBaseSupportLen)
+// so it is in full contact with the baseplate (per Will's review).
+armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
+armBackY = p.baseYFront - p.armBaseSupportLen
+armFrontY = p.yDisp
+armLen = armFrontY - armBackY
+armHeight = armTopLocal - p.baseT
+
+rightArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armLen, 0])
+  |> line(end = [0, armHeight])
+  |> line(end = [-armLen, 0])
+  |> close()
+  |> extrude(length = p.armThk)
+
+leftArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armLen, 0])
+  |> line(end = [0, armHeight])
+  |> line(end = [-armLen, 0])
+  |> close()
+  |> extrude(length = -p.armThk)
+
+// (Linear-actuator base clevis removed — no longer using a linear actuator.)
