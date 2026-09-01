@@ -14,6 +14,15 @@ field named ``block``.  That field name is part of the serial protocol and
 is left alone; only the prose and the tables say "test protocol".
 
     python make_protocol_table.py      # -> test_protocols.tex, TEST-PROTOCOLS.md
+
+Then rebuild the SI and refresh the preview crop that TEST-PROTOCOLS.md
+embeds (page and crop box track the table's position in si.pdf)::
+
+    cd .. && latexmk -pdf si.tex
+    pdftoppm -png -r 150 -f 3 -l 3 -x 100 -y 430 -W 1180 -H 810 \\
+        si.pdf protocols/test_protocols_preview && \\
+        mv protocols/test_protocols_preview-3.png \\
+           protocols/test_protocols_preview.png
 """
 
 import collections
@@ -236,6 +245,10 @@ def markdown_table():
         "is unchanged. Only the prose and tables say *test protocol*.",
         "",
         "## Specification",
+        "",
+        "As typeset in the SI (Table S2):",
+        "",
+        "![Test-protocol table as typeset in the SI](test_protocols_preview.png)",
         "",
         "Parameters are the frozen defaults of",
         "`hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`).",

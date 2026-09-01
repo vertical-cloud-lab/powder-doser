@@ -17,6 +17,10 @@ is unchanged. Only the prose and tables say *test protocol*.
 
 ## Specification
 
+As typeset in the SI (Table S2):
+
+![Test-protocol table as typeset in the SI](test_protocols_preview.png)
+
 Parameters are the frozen defaults of
 `hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`).
 *Trials* is the number of machine-readable trial records each protocol
