@@ -1,0 +1,3447 @@
+{
+  "counts": {
+    "units": 104,
+    "words": 5449,
+    "sentences": 234
+  },
+  "sections": {
+    "Abstract": {
+      "words": 231,
+      "sentences": 7,
+      "jargon": 9,
+      "nominalizations": 7,
+      "fog_score": 26.4,
+      "mean_sentence": 33.0,
+      "max_sentence": 62,
+      "long_count": 3,
+      "jargon_per_100w": 3.9,
+      "nom_per_100w": 3.0
+    },
+    "Introduction": {
+      "words": 665,
+      "sentences": 18,
+      "jargon": 17,
+      "nominalizations": 38,
+      "fog_score": 27.2,
+      "mean_sentence": 36.9,
+      "max_sentence": 64,
+      "long_count": 11,
+      "jargon_per_100w": 2.6,
+      "nom_per_100w": 5.7
+    },
+    "Platform overview": {
+      "words": 492,
+      "sentences": 16,
+      "jargon": 14,
+      "nominalizations": 12,
+      "fog_score": 19.3,
+      "mean_sentence": 30.8,
+      "max_sentence": 60,
+      "long_count": 7,
+      "jargon_per_100w": 2.8,
+      "nom_per_100w": 2.4
+    },
+    "Design evolution": {
+      "words": 369,
+      "sentences": 14,
+      "jargon": 3,
+      "nominalizations": 17,
+      "fog_score": 21.5,
+      "mean_sentence": 26.4,
+      "max_sentence": 45,
+      "long_count": 4,
+      "jargon_per_100w": 0.8,
+      "nom_per_100w": 4.6
+    },
+    "Generative AI as a CAD tool": {
+      "words": 1053,
+      "sentences": 35,
+      "jargon": 28,
+      "nominalizations": 62,
+      "fog_score": 22.7,
+      "mean_sentence": 30.1,
+      "max_sentence": 72,
+      "long_count": 14,
+      "jargon_per_100w": 2.7,
+      "nom_per_100w": 5.9
+    },
+    "Dispensing performance": {
+      "words": 697,
+      "sentences": 27,
+      "jargon": 50,
+      "nominalizations": 39,
+      "fog_score": 24.3,
+      "mean_sentence": 25.8,
+      "max_sentence": 89,
+      "long_count": 7,
+      "jargon_per_100w": 7.2,
+      "nom_per_100w": 5.6
+    },
+    "Cost and accessibility": {
+      "words": 106,
+      "sentences": 4,
+      "jargon": 2,
+      "nominalizations": 4,
+      "fog_score": 22.7,
+      "mean_sentence": 26.5,
+      "max_sentence": 37,
+      "long_count": 2,
+      "jargon_per_100w": 1.9,
+      "nom_per_100w": 3.8
+    },
+    "Mechanical design and fabrication": {
+      "words": 106,
+      "sentences": 4,
+      "jargon": 6,
+      "nominalizations": 4,
+      "fog_score": 15.9,
+      "mean_sentence": 26.5,
+      "max_sentence": 49,
+      "long_count": 1,
+      "jargon_per_100w": 5.7,
+      "nom_per_100w": 3.8
+    },
+    "Electronics and firmware": {
+      "words": 73,
+      "sentences": 3,
+      "jargon": 6,
+      "nominalizations": 1,
+      "fog_score": 15.2,
+      "mean_sentence": 24.3,
+      "max_sentence": 43,
+      "long_count": 1,
+      "jargon_per_100w": 8.2,
+      "nom_per_100w": 1.4
+    },
+    "AI design workflow and logging": {
+      "words": 130,
+      "sentences": 4,
+      "jargon": 5,
+      "nominalizations": 4,
+      "fog_score": 21.9,
+      "mean_sentence": 32.5,
+      "max_sentence": 39,
+      "long_count": 3,
+      "jargon_per_100w": 3.8,
+      "nom_per_100w": 3.1
+    },
+    "Dispensing characterization protocol": {
+      "words": 508,
+      "sentences": 15,
+      "jargon": 12,
+      "nominalizations": 25,
+      "fog_score": 22.8,
+      "mean_sentence": 33.9,
+      "max_sentence": 68,
+      "long_count": 7,
+      "jargon_per_100w": 2.4,
+      "nom_per_100w": 4.9
+    },
+    "Conclusions": {
+      "words": 297,
+      "sentences": 10,
+      "jargon": 10,
+      "nominalizations": 13,
+      "fog_score": 26.1,
+      "mean_sentence": 29.7,
+      "max_sentence": 118,
+      "long_count": 3,
+      "jargon_per_100w": 3.4,
+      "nom_per_100w": 4.4
+    },
+    "Author contributions": {
+      "words": 43,
+      "sentences": 6,
+      "jargon": 1,
+      "nominalizations": 11,
+      "fog_score": 17.8,
+      "mean_sentence": 7.2,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 2.3,
+      "nom_per_100w": 25.6
+    },
+    "Conflicts of interest": {
+      "words": 19,
+      "sentences": 2,
+      "jargon": 0,
+      "nominalizations": 0,
+      "fog_score": 5.9,
+      "mean_sentence": 9.5,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 0.0,
+      "nom_per_100w": 0.0
+    },
+    "Data availability": {
+      "words": 64,
+      "sentences": 3,
+      "jargon": 2,
+      "nominalizations": 4,
+      "fog_score": 16.7,
+      "mean_sentence": 21.3,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 3.1,
+      "nom_per_100w": 6.2
+    },
+    "Acknowledgements": {
+      "words": 89,
+      "sentences": 3,
+      "jargon": 1,
+      "nominalizations": 0,
+      "fog_score": 17.7,
+      "mean_sentence": 29.7,
+      "max_sentence": 65,
+      "long_count": 1,
+      "jargon_per_100w": 1.1,
+      "nom_per_100w": 0.0
+    },
+    "Bill of materials": {
+      "words": 197,
+      "sentences": 27,
+      "jargon": 13,
+      "nominalizations": 4,
+      "fog_score": 11.1,
+      "mean_sentence": 7.3,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 6.6,
+      "nom_per_100w": 2.0
+    },
+    "Construction guide": {
+      "words": 140,
+      "sentences": 17,
+      "jargon": 6,
+      "nominalizations": 1,
+      "fog_score": 8.5,
+      "mean_sentence": 8.2,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 4.3,
+      "nom_per_100w": 0.7
+    },
+    "Exit-nozzle variants": {
+      "words": 71,
+      "sentences": 8,
+      "jargon": 3,
+      "nominalizations": 2,
+      "fog_score": 11.6,
+      "mean_sentence": 8.9,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 4.2,
+      "nom_per_100w": 2.8
+    },
+    "AI usage log": {
+      "words": 99,
+      "sentences": 11,
+      "jargon": 1,
+      "nominalizations": 4,
+      "fog_score": 13.5,
+      "mean_sentence": 9.0,
+      "max_sentence": 0,
+      "long_count": 0,
+      "jargon_per_100w": 1.0,
+      "nom_per_100w": 4.0
+    }
+  },
+  "long_sentences": [
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "kind": "abstract",
+      "words": 40,
+      "em_dashes": 0,
+      "text": "Here we present the base module of an open-source, low-cost powder doser: a 3D-printed Archimedes-auger dispenser with solenoid tapping and vibration assistance, servo-controlled tilt, and closed-loop gravimetric feedback from an analytical balance beneath the collection cup, controlled by a $6 microcontroller."
+    },
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "kind": "abstract",
+      "words": 62,
+      "em_dashes": 2,
+      "text": "Uniquely, the platform's mechanical parts were designed without conventional CAD software: every part was modelled through an agent-mediated programmatic-CAD workflow \u2014 large-language-model (LLM) coding agents authoring parametric CAD code under human review, with chat-driven text-to-CAD services evaluated as comparators and one (Zoo Design Studio) adopted late in the project \u2014 and the full design history, including failures, is preserved in a public version-controlled repository."
+    },
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "kind": "abstract",
+      "words": 41,
+      "em_dashes": 0,
+      "text": "We define a three-phase (bulk\u2013fine\u2013tap) closed-loop dosing procedure and an ISO 8655-inspired gravimetric validation protocol spanning ten surrogate and target powders for the single demonstrated channel, and discuss the implications of low-cost powder dosing for autonomous additive-manufacturing alloy discovery."
+    },
+    {
+      "file": "main.tex",
+      "line": 164,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 40,
+      "em_dashes": 0,
+      "text": "A decade of digital-chemistry infrastructure has matured software orchestration, Bayesian experiment planning, and liquid-handling robotics, but solid handling remains comparatively underdeveloped: most SDL demonstrations either restrict themselves to liquids or rely on manual powder weighing as a hidden human-in-the-loop step."
+    },
+    {
+      "file": "main.tex",
+      "line": 166,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 49,
+      "em_dashes": 0,
+      "text": "Gravimetric benchtop dispensers such as the METTLER TOLEDO XPR/CHRONECT line, Labman powder-dosing stations, and MTI's AM powder dispensers are priced from tens of thousands to several hundred thousand dollars, are designed around pharmaceutical or quality-control workflows, and typically dose one vial at a time from proprietary dosing heads."
+    },
+    {
+      "file": "main.tex",
+      "line": 166,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 49,
+      "em_dashes": 0,
+      "text": "Loss-in-weight feeders from continuous pharmaceutical manufacturing solve a related problem at much larger mass flow rates, and laboratory micro-dosing studies have demonstrated mg-scale dosing with capillary, vibratory, and auger mechanisms, but none of these are available as open, reproducible, low-cost designs that a lab can print, assemble, and extend."
+    },
+    {
+      "file": "main.tex",
+      "line": 166,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 37,
+      "em_dashes": 0,
+      "text": "The open-source hardware movement has shown that 3D-printed instruments can reach research-grade performance at 1\u201310% of commercial cost while enabling community-driven improvement, with platforms such as Jubilee and low-cost SDL toolkits demonstrating the pattern for automation hardware specifically."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 46,
+      "em_dashes": 0,
+      "text": "The platform's mechanical parts were designed through generative artificial intelligence, principally an agent-mediated programmatic CAD workflow in which large-language-model (LLM) coding agents author parametric CAD code that humans review; end-to-end text-to-CAD services were evaluated separately as comparators, and one of them was adopted for late-stage parts."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 54,
+      "em_dashes": 0,
+      "text": "No conventional interactive CAD package (e.g. SolidWorks or Fusion 360) was used at any point from project start to finish: the only graphical CAD environment opened was Zoo Design Studio, introduced late in the project, driven primarily through chat prompts to its agent, and used in a limited, exploratory capacity until the final parts."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 48,
+      "em_dashes": 2,
+      "text": "Throughout, the division of labour was explicit \u2014 the human team made the design decisions, supplied specifications and drawings, reviewed every output, and printed and tested the parts, while the AI tools did the modelling \u2014 and per-part provenance (AI-generated, AI-revised, or human-corrected) is recorded in the repository design log."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 36,
+      "em_dashes": 0,
+      "text": "Generative CAD research has produced impressive datasets and models, and LLMs can emit CAD programs from natural-language prompts, but published evaluations focus on benchmark geometry rather than the messy reality of designing a working instrument end-to-end."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 38,
+      "em_dashes": 2,
+      "text": "Because the entire design history of this project \u2014 every prompt, every generated part, every review comment, and every failure \u2014 is preserved in a public GitHub repository, this platform doubles as a documented case study of AI-assisted hardware design."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 42,
+      "em_dashes": 0,
+      "text": "We report the workflow that ultimately worked (part-by-part generation against explicit interface specifications, with automated geometry checks and human visual review), the recurring failure modes (assembly-level spatial reasoning, silent regressions, hallucinated part choices), and practical observations for others considering AI-assisted instrument design."
+    },
+    {
+      "file": "main.tex",
+      "line": 172,
+      "section": "Introduction",
+      "kind": "body",
+      "words": 64,
+      "em_dashes": 2,
+      "text": "The objectives of this work are therefore: (1) deliver an open-source, low-cost, accurate single-powder dosing module suitable for SDL integration; (2) document and critically evaluate the use of generative AI as a primary CAD tool across a complete hardware project; and (3) establish the modular foundation \u2014 mechanical, electronic, and firmware \u2014 for the multi-powder doser, automated calibration, and powder-property database that constitute the subsequent stages of this program."
+    },
+    {
+      "file": "main.tex",
+      "line": 178,
+      "section": "Platform overview",
+      "kind": "body",
+      "words": 44,
+      "em_dashes": 0,
+      "text": "Dosing resolution is set by step-counted auger rotation; powder adhesion and bridging are broken by two auxiliary actuators: a 12 V push\u2013pull solenoid striking a printed tap collar clamped to the auger tube, and an eccentric-rotating-mass (ERM) vibration motor mounted on the same collar."
+    },
+    {
+      "file": "main.tex",
+      "line": 178,
+      "section": "Platform overview",
+      "kind": "body",
+      "words": 60,
+      "em_dashes": 0,
+      "text": "The auger assembly rides on a hinged mounting plate whose tilt is set by a servo-driven gear sector, so the auger can be parked horizontally (no gravity feed, clean shutoff) and tilted toward vertical for dispensing; the hinge geometry keeps the exit-nozzle dispense point stationary during tilt (Fig. c), so the dose lands in the same spot at any angle."
+    },
+    {
+      "file": "main.tex",
+      "line": 178,
+      "section": "Platform overview",
+      "kind": "body",
+      "words": 36,
+      "em_dashes": 0,
+      "text": "Dispensed mass is measured by an analytical balance (A&D HR-100A, 0.1 mg readability) beneath the collection cup, read by the microcontroller over RS-232, closing the loop for three-phase (bulk\u2013fine\u2013tap) gravimetric dosing (Fig. d)."
+    },
+    {
+      "file": "main.tex",
+      "line": 183,
+      "section": "Platform overview",
+      "kind": "caption",
+      "words": 52,
+      "em_dashes": 0,
+      "text": "(a) Single-channel powder-doser module (CAD render; photograph of the printed platform will replace this render): printed Archimedes auger (25 mm OD), printed spur-gear drive from a NEMA-11 stepper, tap collar (which mounts the tap solenoid and ERM vibration motor, not individually resolved at this scale), and servo-tilted hinged mounting plate on the baseplate."
+    },
+    {
+      "file": "main.tex",
+      "line": 183,
+      "section": "Platform overview",
+      "kind": "caption",
+      "words": 41,
+      "em_dashes": 0,
+      "text": "(b) Schematic of the powder-flow path through the module: powder is loaded through slots into the auger tube, which is itself the reservoir (no separate hopper), and is conveyed down the helical channel \u2192 exit nozzle \u2192 collection cup on the analytical balance."
+    },
+    {
+      "file": "main.tex",
+      "line": 183,
+      "section": "Platform overview",
+      "kind": "caption",
+      "words": 35,
+      "em_dashes": 0,
+      "text": "(c) Tilt sweep about the fixed dispense point (red marker): the hinge axis passes through the exit-nozzle tip so the dispense point does not translate as the channel tilts from 0\u00b0 (horizontal park) to 90\u00b0 (vertical dispense)."
+    },
+    {
+      "file": "main.tex",
+      "line": 187,
+      "section": "Platform overview",
+      "kind": "body",
+      "words": 50,
+      "em_dashes": 0,
+      "text": "Control electronics are a single Raspberry Pi Pico W microcontroller running MicroPython, with a Tic T500 driver for the stepper, DRV8871 for the solenoid, DRV2605L for the vibration motor, and a MAX3232 transceiver for the balance's RS-232 interface; the full schematic, firmware, and wiring guide are in the repository."
+    },
+    {
+      "file": "main.tex",
+      "line": 191,
+      "section": "Design evolution",
+      "kind": "body",
+      "words": 45,
+      "em_dashes": 0,
+      "text": "Early viability analysis of dose control and powder adhesion, informed by AI-assisted literature surveys of micro-dosing mechanisms, prompted a structured comparison of eight dosing archetypes (tap-sieve, metering wheel, capillary wiper, auger, and others); the candidate enumeration was AI-generated, and the human team made the selection."
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "kind": "body",
+      "words": 35,
+      "em_dashes": 0,
+      "text": "The second generation embedded the auger in a self-contained single-channel module (frame, drive, actuators) conceived by the human team as the repeating unit of a modular multi-powder architecture; the AI tools generated the corresponding CAD."
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "kind": "body",
+      "words": 45,
+      "em_dashes": 2,
+      "text": "The third generation was a deliberate methodological pivot: rather than asking the AI tools to generate the whole module at once, each part \u2014 auger, geared auger, bracket, tap collar, mounting plate, baseplate, servo hinge \u2014 was AI-modelled, human-reviewed, and printed individually against explicit interface specifications (Section )."
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "kind": "body",
+      "words": 35,
+      "em_dashes": 2,
+      "text": "By the late stages, the AI's role had narrowed to modelling the parts \u2014 translating the drawings into parametric CAD and computing derived dimensions and tolerances \u2014 while all design decisions were made by the human team."
+    },
+    {
+      "file": "main.tex",
+      "line": 205,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 54,
+      "em_dashes": 0,
+      "text": "Our AI workflow used LLM coding agents (GitHub Copilot coding agent, primarily Claude-family models) operating directly on the version-controlled repository: the agent wrote parametric CAD as Python (build123d/CadQuery) or OpenSCAD code, rendered multi-view images and STLs in continuous integration, and opened pull requests that the human team reviewed using the rendered views."
+    },
+    {
+      "file": "main.tex",
+      "line": 205,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 44,
+      "em_dashes": 2,
+      "text": "Two commercial text-to-CAD services, CADSmith and Zoo Design Studio \u2014 the latter pairing a code-based CAD kernel (KCL) with a conversational design agent, Zookeeper \u2014 were evaluated on the same parts for comparison, and Zoo Design Studio was ultimately adopted for late-stage parts (Tool comparison, below)."
+    },
+    {
+      "file": "main.tex",
+      "line": 210,
+      "section": "Generative AI as a CAD tool",
+      "kind": "caption",
+      "words": 38,
+      "em_dashes": 1,
+      "text": "(a) First AI-generated tap collar: an amalgamation of separate functions with part-to-part interferences, incorrect tolerancing, no clearance for the solenoid and vibration motor it must carry, and a general lack of spatial reasoning \u2014 impossible to implement as drawn."
+    },
+    {
+      "file": "main.tex",
+      "line": 210,
+      "section": "Generative AI as a CAD tool",
+      "kind": "caption",
+      "words": 46,
+      "em_dashes": 0,
+      "text": "(e\u2013h) Four review iterations of the mounting plate: the agent inserted an unexplained hole (e), then raised platforms (f), then a gap that left the motor plate floating (g); only when the correct upstream part files were supplied did it produce a clean plate (h)."
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 72,
+      "em_dashes": 1,
+      "text": "The results were visually plausible but mechanically incoherent: the first tap collar was an unimplementable amalgamation of separate functions \u2014 interferences between features, incorrect tolerancing, and no space for the solenoid and vibration motor it exists to carry (Fig. a); an early bracket arrived with its two mounting plates not connected to each other; and assembly-level prompts repeatedly produced interferences, floating parts, and regressions, with feedback on one defect introducing new defects elsewhere."
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 59,
+      "em_dashes": 0,
+      "text": "Across the 97 logged design iterations, each entry records its trigger, rationale, and outcome (built-and-worked, built-with-issues, failed, or superseded), giving per-part provenance and iteration counts; a structured quantitative analysis of this log (acceptance rates by workflow, defect taxonomy, and which defects were caught by automated checks versus human review) is reported in the repository and will accompany the multi-doser follow-up."
+    },
+    {
+      "file": "main.tex",
+      "line": 216,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 48,
+      "em_dashes": 0,
+      "text": "Because any iteration could silently alter unrelated geometry, every generated part required full re-inspection; in one documented case the agent produced four miniature test nozzles with two of the four silently swapped relative to their documentation, which would have invalidated a dispensing comparison had it not been caught."
+    },
+    {
+      "file": "main.tex",
+      "line": 216,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 42,
+      "em_dashes": 2,
+      "text": "Automated self-checks (single-body assertions, watertightness, interface-dimension probes run in CI) caught a useful subset of defects cheaply, but small-scale errors \u2014 a one-layer height mismatch discovered only when a print peeled off the build plate \u2014 escaped both the checks and three-view visual review."
+    },
+    {
+      "file": "main.tex",
+      "line": 216,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 38,
+      "em_dashes": 0,
+      "text": "We observed a consistent division of labour across the design phase: generative exploration was genuinely valuable early, while final-stage convergence suffered from the agent's inability to recognize how close a design was to its optimum, perturbing already-refined features."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 60,
+      "em_dashes": 2,
+      "text": "Zoo Design Studio, evaluated last, was judged by the design team to be the best of the tools tried: its Zookeeper agent exhibited markedly stronger spatial reasoning, ran built-in sanity checks (e.g. body counts) before returning results, and \u2014 because the agent operates inside a live, code-backed CAD view \u2014 produced editable models the team could inspect as they were generated."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 48,
+      "em_dashes": 0,
+      "text": "Individual iterations were slower (of order an hour), but one to two Zoo iterations surpassed what seven to eight Copilot iterations achieved, and the final tap collar reached a usable design in three Zoo iterations after the same number of Copilot iterations failed to orient the solenoid correctly."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "Its limits at evaluation time were the converse of its strengths: imported reference CAD was read-only, there were no multi-part assembly constraints, and manual edits in the graphical editor were largely restricted to parameter values, so interaction remained chat-driven."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 37,
+      "em_dashes": 0,
+      "text": "First, the rankings are qualitative impressions from a single design campaign, not measurements; a quantitative cross-tool benchmark (identical prompts, identical parts, iteration counts and defect taxonomies) is in progress and will be reported with the multi-doser follow-up."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "kind": "body",
+      "words": 37,
+      "em_dashes": 0,
+      "text": "What the AI-mediated workflow bought instead was thorough self-documentation as a side effect of working: every design intent, constraint, and revision exists as text, giving reproducibility, provenance, and transferability that conventional CAD sessions do not leave behind."
+    },
+    {
+      "file": "main.tex",
+      "line": 222,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 89,
+      "em_dashes": 2,
+      "text": "The validation campaign now under way spans ten chemically and rheologically diverse powders (Table ): six low-hazard surrogates chosen to bracket the flowability range \u2014 from free-flowing table salt, the design baseline, through calcium lactate, sodium alginate, and xanthan gum to the highly cohesive rice flours \u2014 and four target materials for the autonomous-AM application: gas-atomized AlSi10Mg alloy powder, crystalline silicon in two size grades (a fine \u224845\u00b5m grade that jammed a commercial trickler and motivated this platform, and a coarser 100\u2013200 mesh grade procured as its replacement), and a fumed-silica glidant."
+    },
+    {
+      "file": "main.tex",
+      "line": 222,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 54,
+      "em_dashes": 0,
+      "text": "Qualitative manual tests of the surrogate set and AlSi10Mg through the printed auger (video-documented in the repository) already span the intended difficulty range: salt and AlSi10Mg flow smoothly under rotation alone, xanthan gum bridges unless tapped, and brown rice flour resists rotation entirely, moving only under steep tilt with active tapping (Table )."
+    },
+    {
+      "file": "main.tex",
+      "line": 224,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 74,
+      "em_dashes": 0,
+      "text": "The data shown are synthetic placeholders (watermarked in the figure) illustrating the analysis and presentation that the bench campaign will populate: (a) cumulative dispensed mass versus time at fixed auger speed, establishing per-powder mass-flow (feed-factor) calibrations; (b) requested-versus-measured dose parity across 20 mg\u20135 g with closed-loop gravimetric control, the primary accuracy metric; and (c) the speed\u2013accuracy trade-off (dose coefficient of variation versus auger speed) that motivates the three-phase bulk\u2013fine\u2013tap dosing procedure (Section )."
+    },
+    {
+      "file": "main.tex",
+      "line": 224,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 53,
+      "em_dashes": 0,
+      "text": "The reporting structure is modelled on the gravimetric performance evaluation of the open-hardware digital pipette, which adapted the ISO 8655-6 protocol for piston pipettes: replicate deliveries at target masses spanning the operating envelope, decomposed into systematic error (mean deviation from target) and random error (standard deviation, expressed as CV), reported against pre-registered acceptance limits."
+    },
+    {
+      "file": "main.tex",
+      "line": 224,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 42,
+      "em_dashes": 0,
+      "text": "Acceptance targets, chosen so that dose error contributes less than one atomic percent of composition error in a typical five-component blend, are \u00b15% accuracy at and above 100 mg and \u00b110% below 100 mg (i.e. at the 50 and 20 mg targets), with per-dose times under 30 s."
+    },
+    {
+      "file": "main.tex",
+      "line": 224,
+      "section": "Dispensing performance",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "The campaign will also report powder-property descriptors (size distribution, bulk/tapped density, flowability class), actuation ablations (auger only, +tap, +vibration), balance noise under idle and actuated conditions, and wear/fouling observations, which together define the platform's intended operating envelope."
+    },
+    {
+      "file": "main.tex",
+      "line": 231,
+      "section": "Dispensing performance",
+      "kind": "caption",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "Qualitative behaviour summarizes manual bench tests of the printed auger module documented in the repository (issues #88/#116); the fine-silicon and glidant entries reflect prior experience dosing the same materials with a commercial powder trickler, to be re-characterized on this platform."
+    },
+    {
+      "file": "main.tex",
+      "line": 260,
+      "section": "Cost and accessibility",
+      "kind": "body",
+      "words": 36,
+      "em_dashes": 2,
+      "text": "The complete single-channel module \u2014 printed parts, motors, drivers, and microcontroller \u2014 costs under $200 in single-unit quantities excluding the analytical balance, which most laboratories already own (SI Table S1), and prints in under 24 h on a consumer printer."
+    },
+    {
+      "file": "main.tex",
+      "line": 260,
+      "section": "Cost and accessibility",
+      "kind": "body",
+      "words": 37,
+      "em_dashes": 0,
+      "text": "Even where commercial instruments outperform on absolute accuracy, the two-orders-of-magnitude cost gap changes what is possible: a lab can dedicate one printed channel per powder, accept cross-contamination-free disposable wetted parts, and replicate failed channels in a day."
+    },
+    {
+      "file": "main.tex",
+      "line": 266,
+      "section": "Mechanical design and fabrication",
+      "kind": "body",
+      "words": 49,
+      "em_dashes": 0,
+      "text": "The auger (25 mm OD printed helix, loaded through slots in the tube wall; no separate hopper), gear train (printed spur pair, 2.25:1), bracket, tap collar, mounting plate, hinged baseplate, and servo sector are parametric models; source (build123d/OpenSCAD/KCL), STLs, and renders for every iteration are in the repository."
+    },
+    {
+      "file": "main.tex",
+      "line": 269,
+      "section": "Electronics and firmware",
+      "kind": "body",
+      "words": 43,
+      "em_dashes": 0,
+      "text": "The stepper is driven by a Pololu Tic T500 over UART, the solenoid by a DRV8871 H-bridge, the vibration motor by a DRV2605L haptic driver over I2C; the A&D HR-100A balance is read over RS-232 through a MAX3232 transceiver."
+    },
+    {
+      "file": "main.tex",
+      "line": 272,
+      "section": "AI design workflow and logging",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "LLM coding agents (GitHub Copilot coding agent; Claude-family models, 2026 sessions) executed design tasks specified as GitHub issues; each agent session produced a pull request containing generated CAD code, rendered orthographic/isometric views, and STLs, which the team reviewed in-browser."
+    },
+    {
+      "file": "main.tex",
+      "line": 272,
+      "section": "AI design workflow and logging",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "Literature and design-review queries were run through Edison Scientific; commercial text-to-CAD evaluations used CADSmith and Zoo Design Studio with the same part specifications, with Zoo Design Studio's modelling performed through its Zookeeper conversational agent and adopted for late-stage parts."
+    },
+    {
+      "file": "main.tex",
+      "line": 272,
+      "section": "AI design workflow and logging",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "In line with Digital Discovery's LLM-usage guidance, the complete prompt/response history (issues, pull-request threads, agent session logs, and Zoo Design Studio transcripts), model identifiers, and generation dates are preserved in the public repository and summarized in the SI."
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 38,
+      "em_dashes": 0,
+      "text": "Phase 3 (tap-to-target): solenoid tap bursts with settle-and-read cycles until the filtered mass enters the terminal tolerance band; if successive bursts move no mass, the auger is nudged a few degrees to re-feed the tube lip and tapping resumes."
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 58,
+      "em_dashes": 0,
+      "text": "The terminal tolerance is predeclared per target mass and strictly tighter than the corresponding acceptance limit (half the limit by default; e.g. \u00b11 mg at the 20 mg target rather than a fixed \u00b15 mg), and any phase whose entry threshold meets or exceeds the requested mass is skipped automatically, so a 20 mg dose starts directly in the tap phase."
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 55,
+      "em_dashes": 0,
+      "text": "Both phase-exit thresholds and every per-phase parameter (tilt angle, rotation increment, step rate, taps per cycle, tap on/off times, settle time) are independently configurable per powder, at the REPL or from a stored per-powder profile; the ERM vibration motor is available as an additional agitation primitive but is not used in the baseline procedure."
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 45,
+      "em_dashes": 0,
+      "text": "Dosing terminates when the filtered mass enters the terminal tolerance band (success) or when a timeout or the overshoot bound trips; every dose is then classified as success, undershoot-timeout, or overshoot from the same filtered final mass, and failed doses remain in the reported denominators."
+    },
+    {
+      "file": "main.tex",
+      "line": 277,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 68,
+      "em_dashes": 0,
+      "text": "Per-powder calibration follows an on-device characterization sweep (also in the repository) that records per-rotation and per-tap mass yield at each tilt angle with repeats, balance-noise baselines with the mechanism mounted, and re-feed accounting between taps; each run is stamped with a powder identifier and archived as versioned CSV plus a database document, so every dose in the paper is traceable to its powder, parameters, and raw balance stream."
+    },
+    {
+      "file": "main.tex",
+      "line": 277,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 39,
+      "em_dashes": 0,
+      "text": "The sweep characterizes each powder's response and supports a documented manual choice of settings; the resulting per-powder parameter profile is frozen and versioned in the repository before validation replicates begin, and validation outcomes are not used to retune it."
+    },
+    {
+      "file": "main.tex",
+      "line": 277,
+      "section": "Dispensing characterization protocol",
+      "kind": "body",
+      "words": 59,
+      "em_dashes": 0,
+      "text": "Validation adapts the ISO 8655-6 gravimetric structure used for the open-hardware digital pipette to powder dosing: for each of the ten powders (Table ), n\u226510 replicate doses at four target masses spanning the envelope (5 g, 500 mg, 50 mg, and the 20 mg lower bound), reporting systematic error, random error (CV), overshoot rate, and dose time per condition against the acceptance limits of Section ."
+    },
+    {
+      "file": "main.tex",
+      "line": 281,
+      "section": "Conclusions",
+      "kind": "body",
+      "words": 42,
+      "em_dashes": 2,
+      "text": "A single-channel, 3D-printed auger powder doser with closed-loop gravimetric control can be built for under $200 from printed parts and commodity electronics, and its design process \u2014 conducted entirely through generative-AI tools under human review, without conventional CAD software \u2014 is fully documented and reusable."
+    },
+    {
+      "file": "main.tex",
+      "line": 281,
+      "section": "Conclusions",
+      "kind": "body",
+      "words": 40,
+      "em_dashes": 0,
+      "text": "The methodological result is as transferable as the hardware: whole-assembly AI generation is not currently viable, but part-by-part generation against explicit interfaces, fortified by automated geometry checks and disciplined human review, is a practical and auditable way to design instruments."
+    },
+    {
+      "file": "main.tex",
+      "line": 287,
+      "section": "Conclusions",
+      "kind": "body",
+      "words": 118,
+      "em_dashes": 1,
+      "text": "Ongoing work extends the platform to (1) a multi-powder doser arraying N printed channels around a shared collection cup (Fig. ), with a loaded subset of 8\u201312 powders and a path to a 50-powder pool via swappable sealed cartridges; (2) automated per-powder calibration and algorithmic optimization of the dosing parameters that this paper fixes by hand \u2014 the three-phase procedure's thresholds, angles, speeds, and tap schedules form a natural policy-parameter space for contextual, constraint-aware Bayesian optimization against the gravimetric loop, for which a literature-grounded problem formulation is already documented in the repository; (3) a public database of optimized parameters across a large powder library, linking flowability descriptors to dosing behaviour; and (4) continued evaluation of generative tools, including AI-generated PCBs to replace the breadboard electronics."
+    },
+    {
+      "file": "main.tex",
+      "line": 306,
+      "section": "Acknowledgements",
+      "kind": "body",
+      "words": 65,
+      "em_dashes": 0,
+      "text": "Generative AI tools were used extensively and deliberately as research objects and assistants in this work: GitHub Copilot coding agent (Claude-family models) generated CAD code, firmware, and figure scripts under human review; Edison Scientific was used for literature search and design review; CADSmith and Zoo Design Studio (via its Zookeeper agent) were evaluated as text-to-CAD tools, with Zoo Design Studio adopted for late-stage part design."
+    }
+  ],
+  "stacked_modifiers": [
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "term": "off-the-shelf"
+    },
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "term": "large-language-model"
+    },
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "term": "text-to-CAD"
+    },
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 164,
+      "section": "Introduction",
+      "term": "order-of-magnitude"
+    },
+    {
+      "file": "main.tex",
+      "line": 164,
+      "section": "Introduction",
+      "term": "human-in-the-loop"
+    },
+    {
+      "file": "main.tex",
+      "line": 166,
+      "section": "Introduction",
+      "term": "Loss-in-weight"
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "term": "large-language-model"
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "term": "end-to-end"
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "term": "text-to-CAD"
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "term": "end-to-end"
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 178,
+      "section": "Platform overview",
+      "term": "eccentric-rotating-mass"
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "term": "fixed-dispense-point"
+    },
+    {
+      "file": "main.tex",
+      "line": 205,
+      "section": "Generative AI as a CAD tool",
+      "term": "text-to-CAD"
+    },
+    {
+      "file": "main.tex",
+      "line": 210,
+      "section": "Generative AI as a CAD tool",
+      "term": "part-to-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 210,
+      "section": "Generative AI as a CAD tool",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 210,
+      "section": "Generative AI as a CAD tool",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "term": "built-and-worked"
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "term": "built-with-issues"
+    },
+    {
+      "file": "main.tex",
+      "line": 224,
+      "section": "Dispensing performance",
+      "term": "requested-versus-measured"
+    },
+    {
+      "file": "main.tex",
+      "line": 260,
+      "section": "Cost and accessibility",
+      "term": "two-orders-of-magnitude"
+    },
+    {
+      "file": "main.tex",
+      "line": 260,
+      "section": "Cost and accessibility",
+      "term": "cross-contamination-free"
+    },
+    {
+      "file": "main.tex",
+      "line": 269,
+      "section": "Electronics and firmware",
+      "term": "rotate-by-steps"
+    },
+    {
+      "file": "main.tex",
+      "line": 269,
+      "section": "Electronics and firmware",
+      "term": "tilt-to-angle"
+    },
+    {
+      "file": "main.tex",
+      "line": 272,
+      "section": "AI design workflow and logging",
+      "term": "text-to-CAD"
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "term": "tap-to-target"
+    },
+    {
+      "file": "main.tex",
+      "line": 275,
+      "section": "Dispensing characterization protocol",
+      "term": "settle-and-read"
+    },
+    {
+      "file": "main.tex",
+      "line": 281,
+      "section": "Conclusions",
+      "term": "part-by-part"
+    },
+    {
+      "file": "main.tex",
+      "line": 306,
+      "section": "Acknowledgements",
+      "term": "text-to-CAD"
+    },
+    {
+      "file": "si.tex",
+      "line": 75,
+      "section": "Construction guide",
+      "term": "step-by-step"
+    }
+  ],
+  "multi_dash": [
+    {
+      "file": "main.tex",
+      "line": 135,
+      "section": "Abstract",
+      "em_dashes": 2,
+      "text": "Uniquely, the platform's mechanical parts were designed without conventional CAD software: every part was modelled through an agent-mediated programmatic-CAD workflow \u2014 large-language-model (LLM) coding agents authoring parametric CAD code under human review, with chat-driven text-to-CAD services evaluated as comparators and one (Zoo Design Studio) adopted late in the project \u2014 and the full design history, including failures, is preserved in a public version-controlled repository."
+    },
+    {
+      "file": "main.tex",
+      "line": 164,
+      "section": "Introduction",
+      "em_dashes": 2,
+      "text": "For autonomous alloy design by additive manufacturing (AM) \u2014 where candidate compositions are realized by blending elemental or master-alloy powders \u2014 accurate, repeatable, multi-powder dosing is the gating unit operation."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "em_dashes": 2,
+      "text": "Throughout, the division of labour was explicit \u2014 the human team made the design decisions, supplied specifications and drawings, reviewed every output, and printed and tested the parts, while the AI tools did the modelling \u2014 and per-part provenance (AI-generated, AI-revised, or human-corrected) is recorded in the repository design log."
+    },
+    {
+      "file": "main.tex",
+      "line": 170,
+      "section": "Introduction",
+      "em_dashes": 2,
+      "text": "Because the entire design history of this project \u2014 every prompt, every generated part, every review comment, and every failure \u2014 is preserved in a public GitHub repository, this platform doubles as a documented case study of AI-assisted hardware design."
+    },
+    {
+      "file": "main.tex",
+      "line": 172,
+      "section": "Introduction",
+      "em_dashes": 2,
+      "text": "The objectives of this work are therefore: (1) deliver an open-source, low-cost, accurate single-powder dosing module suitable for SDL integration; (2) document and critically evaluate the use of generative AI as a primary CAD tool across a complete hardware project; and (3) establish the modular foundation \u2014 mechanical, electronic, and firmware \u2014 for the multi-powder doser, automated calibration, and powder-property database that constitute the subsequent stages of this program."
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "em_dashes": 2,
+      "text": "The third generation was a deliberate methodological pivot: rather than asking the AI tools to generate the whole module at once, each part \u2014 auger, geared auger, bracket, tap collar, mounting plate, baseplate, servo hinge \u2014 was AI-modelled, human-reviewed, and printed individually against explicit interface specifications (Section )."
+    },
+    {
+      "file": "main.tex",
+      "line": 193,
+      "section": "Design evolution",
+      "em_dashes": 2,
+      "text": "By the late stages, the AI's role had narrowed to modelling the parts \u2014 translating the drawings into parametric CAD and computing derived dimensions and tolerances \u2014 while all design decisions were made by the human team."
+    },
+    {
+      "file": "main.tex",
+      "line": 205,
+      "section": "Generative AI as a CAD tool",
+      "em_dashes": 2,
+      "text": "Two commercial text-to-CAD services, CADSmith and Zoo Design Studio \u2014 the latter pairing a code-based CAD kernel (KCL) with a conversational design agent, Zookeeper \u2014 were evaluated on the same parts for comparison, and Zoo Design Studio was ultimately adopted for late-stage parts (Tool comparison, below)."
+    },
+    {
+      "file": "main.tex",
+      "line": 214,
+      "section": "Generative AI as a CAD tool",
+      "em_dashes": 2,
+      "text": "This mirrors the known weakness of current LLMs in compositional spatial reasoning and suggests that interface-first decomposition \u2014 standard practice in human mechanical design \u2014 is currently mandatory rather than optional for AI CAD."
+    },
+    {
+      "file": "main.tex",
+      "line": 216,
+      "section": "Generative AI as a CAD tool",
+      "em_dashes": 2,
+      "text": "Automated self-checks (single-body assertions, watertightness, interface-dimension probes run in CI) caught a useful subset of defects cheaply, but small-scale errors \u2014 a one-layer height mismatch discovered only when a print peeled off the build plate \u2014 escaped both the checks and three-view visual review."
+    },
+    {
+      "file": "main.tex",
+      "line": 218,
+      "section": "Generative AI as a CAD tool",
+      "em_dashes": 2,
+      "text": "Zoo Design Studio, evaluated last, was judged by the design team to be the best of the tools tried: its Zookeeper agent exhibited markedly stronger spatial reasoning, ran built-in sanity checks (e.g. body counts) before returning results, and \u2014 because the agent operates inside a live, code-backed CAD view \u2014 produced editable models the team could inspect as they were generated."
+    },
+    {
+      "file": "main.tex",
+      "line": 222,
+      "section": "Dispensing performance",
+      "em_dashes": 2,
+      "text": "The validation campaign now under way spans ten chemically and rheologically diverse powders (Table ): six low-hazard surrogates chosen to bracket the flowability range \u2014 from free-flowing table salt, the design baseline, through calcium lactate, sodium alginate, and xanthan gum to the highly cohesive rice flours \u2014 and four target materials for the autonomous-AM application: gas-atomized AlSi10Mg alloy powder, crystalline silicon in two size grades (a fine \u224845\u00b5m grade that jammed a commercial trickler and motivated this platform, and a coarser 100\u2013200 mesh grade procured as its replacement), and a fumed-silica glidant."
+    },
+    {
+      "file": "main.tex",
+      "line": 260,
+      "section": "Cost and accessibility",
+      "em_dashes": 2,
+      "text": "The complete single-channel module \u2014 printed parts, motors, drivers, and microcontroller \u2014 costs under $200 in single-unit quantities excluding the analytical balance, which most laboratories already own (SI Table S1), and prints in under 24 h on a consumer printer."
+    },
+    {
+      "file": "main.tex",
+      "line": 281,
+      "section": "Conclusions",
+      "em_dashes": 2,
+      "text": "A single-channel, 3D-printed auger powder doser with closed-loop gravimetric control can be built for under $200 from printed parts and commodity electronics, and its design process \u2014 conducted entirely through generative-AI tools under human review, without conventional CAD software \u2014 is fully documented and reusable."
+    }
+  ],
+  "jargon": {
+    "\\bcomparator(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "ai/ml jargon",
+        "gloss": "tool we compared against",
+        "severity": 2,
+        "match": "comparators"
+      },
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "tool we compared against",
+        "severity": 2,
+        "match": "comparators"
+      }
+    ],
+    "\\bagent-mediated\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "ai/ml jargon",
+        "gloss": "done through an AI agent",
+        "severity": 2,
+        "match": "agent-mediated"
+      },
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "done through an AI agent",
+        "severity": 2,
+        "match": "agent-mediated"
+      }
+    ],
+    "\\btext-to-CAD\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "ai/ml jargon",
+        "gloss": "type a description, get a 3D model",
+        "severity": 1,
+        "match": "text-to-CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "type a description, get a 3D model",
+        "severity": 1,
+        "match": "text-to-CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "type a description, get a 3D model",
+        "severity": 1,
+        "match": "text-to-CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 272,
+        "section": "AI design workflow and logging",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "type a description, get a 3D model",
+        "severity": 1,
+        "match": "text-to-CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 306,
+        "section": "Acknowledgements",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "type a description, get a 3D model",
+        "severity": 1,
+        "match": "text-to-CAD"
+      }
+    ],
+    "\\bprogrammatic[- ]CAD\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "ai/ml jargon",
+        "gloss": "CAD written as code",
+        "severity": 1,
+        "match": "programmatic-CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "CAD written as code",
+        "severity": 1,
+        "match": "programmatic CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "ai/ml jargon",
+        "gloss": "CAD written as code",
+        "severity": 1,
+        "match": "programmatic CAD"
+      },
+      {
+        "file": "main.tex",
+        "line": 292,
+        "section": "Conclusions",
+        "kind": "caption",
+        "category": "ai/ml jargon",
+        "gloss": "CAD written as code",
+        "severity": 1,
+        "match": "programmatic-CAD"
+      }
+    ],
+    "\\bparametric\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 193,
+        "section": "Design evolution",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "main.tex",
+        "line": 303,
+        "section": "Data availability",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "si.tex",
+        "line": 77,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      },
+      {
+        "file": "si.tex",
+        "line": 112,
+        "section": "Exit-nozzle variants",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "dimension-driven",
+        "severity": 1,
+        "match": "parametric"
+      }
+    ],
+    "\\bgravimetric\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 166,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "Gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 168,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 178,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 187,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 254,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 260,
+        "section": "Cost and accessibility",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "Gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 281,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      },
+      {
+        "file": "si.tex",
+        "line": 41,
+        "section": "Bill of materials",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "weight-based",
+        "severity": 2,
+        "match": "gravimetric"
+      }
+    ],
+    "\\bsurrogate(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogates"
+      },
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 237,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 238,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 239,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 240,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 241,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      },
+      {
+        "file": "main.tex",
+        "line": 242,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "stand-in powder",
+        "severity": 2,
+        "match": "surrogate"
+      }
+    ],
+    "\\bISO 8655(-\\d)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 135,
+        "section": "Abstract",
+        "kind": "abstract",
+        "category": "metrology / stats jargon",
+        "gloss": "the pipette-accuracy standard",
+        "severity": 1,
+        "match": "ISO 8655"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "the pipette-accuracy standard",
+        "severity": 1,
+        "match": "ISO 8655-6"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "the pipette-accuracy standard",
+        "severity": 1,
+        "match": "ISO 8655"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "the pipette-accuracy standard",
+        "severity": 1,
+        "match": "ISO 8655-6"
+      }
+    ],
+    "\\bmaster-alloy\\b": [
+      {
+        "file": "main.tex",
+        "line": 164,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "a concentrated pre-blended alloy",
+        "severity": 3,
+        "match": "master-alloy"
+      }
+    ],
+    "\\bunit operation\\b": [
+      {
+        "file": "main.tex",
+        "line": 164,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "process step",
+        "severity": 3,
+        "match": "unit operation"
+      }
+    ],
+    "\\bgating\\b": [
+      {
+        "file": "main.tex",
+        "line": 164,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "rate-limiting",
+        "severity": 2,
+        "match": "gating"
+      }
+    ],
+    "\\bloss-in-weight\\b": [
+      {
+        "file": "main.tex",
+        "line": 166,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "feeders metered by watching the hopper lose weight",
+        "severity": 3,
+        "match": "Loss-in-weight"
+      }
+    ],
+    "\\bform factor\\b": [
+      {
+        "file": "main.tex",
+        "line": 166,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "size and shape",
+        "severity": 2,
+        "match": "form factor"
+      }
+    ],
+    "\\bsilent regression(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "an unrelated feature quietly changing; 'regression' reads as curve fitting",
+        "severity": 3,
+        "match": "silent regressions"
+      },
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "an unrelated feature quietly changing; 'regression' reads as curve fitting",
+        "severity": 3,
+        "match": "silent regressions"
+      }
+    ],
+    "\\bhallucinat(ed|ion|ions)\\b": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "invented, non-existent",
+        "severity": 2,
+        "match": "hallucinated"
+      }
+    ],
+    "\\bbenchmark geometry\\b": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "test shapes rather than real parts",
+        "severity": 2,
+        "match": "benchmark geometry"
+      }
+    ],
+    "\\bpull request(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a proposed, reviewable change",
+        "severity": 1,
+        "match": "pull requests"
+      },
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a proposed, reviewable change",
+        "severity": 1,
+        "match": "pull requests"
+      },
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a proposed, reviewable change",
+        "severity": 1,
+        "match": "pull requests"
+      },
+      {
+        "file": "main.tex",
+        "line": 272,
+        "section": "AI design workflow and logging",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a proposed, reviewable change",
+        "severity": 1,
+        "match": "pull request"
+      },
+      {
+        "file": "si.tex",
+        "line": 124,
+        "section": "AI usage log",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a proposed, reviewable change",
+        "severity": 1,
+        "match": "pull request"
+      }
+    ],
+    "\\bdivision of labour\\b": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "who did what",
+        "severity": 1,
+        "match": "division of labour"
+      },
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "who did what",
+        "severity": 1,
+        "match": "division of labour"
+      }
+    ],
+    "\\bbridging\\b": [
+      {
+        "file": "main.tex",
+        "line": 178,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "powder arching over the opening and stopping",
+        "severity": 2,
+        "match": "bridging"
+      },
+      {
+        "file": "main.tex",
+        "line": 239,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "powder arching over the opening and stopping",
+        "severity": 2,
+        "match": "bridging"
+      },
+      {
+        "file": "main.tex",
+        "line": 240,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "powder arching over the opening and stopping",
+        "severity": 2,
+        "match": "bridging"
+      }
+    ],
+    "\\bERM\\b": [
+      {
+        "file": "main.tex",
+        "line": 178,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "main.tex",
+        "line": 187,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "main.tex",
+        "line": 198,
+        "section": "Design evolution",
+        "kind": "caption",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "si.tex",
+        "line": 54,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      },
+      {
+        "file": "si.tex",
+        "line": 89,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "the off-balance motor used in phone vibrate",
+        "severity": 2,
+        "match": "ERM"
+      }
+    ],
+    "\\bUART\\b|\\bI\\$\\^2\\$C\\b|\\bI2C\\b|\\bRS-232\\b": [
+      {
+        "file": "main.tex",
+        "line": 178,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      },
+      {
+        "file": "main.tex",
+        "line": 187,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      },
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "UART"
+      },
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "I2C"
+      },
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      },
+      {
+        "file": "si.tex",
+        "line": 55,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "I2C"
+      },
+      {
+        "file": "si.tex",
+        "line": 62,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      },
+      {
+        "file": "si.tex",
+        "line": 94,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "I2C"
+      },
+      {
+        "file": "si.tex",
+        "line": 94,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "serial link",
+        "severity": 1,
+        "match": "RS-232"
+      }
+    ],
+    "\\bNEMA-\\d+\\b": [
+      {
+        "file": "main.tex",
+        "line": 178,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "a standard motor frame size",
+        "severity": 1,
+        "match": "NEMA-11"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "category": "electronics jargon",
+        "gloss": "a standard motor frame size",
+        "severity": 1,
+        "match": "NEMA-11"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "a standard motor frame size",
+        "severity": 1,
+        "match": "NEMA-11"
+      },
+      {
+        "file": "si.tex",
+        "line": 50,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "a standard motor frame size",
+        "severity": 1,
+        "match": "NEMA-11"
+      },
+      {
+        "file": "si.tex",
+        "line": 85,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "a standard motor frame size",
+        "severity": 1,
+        "match": "NEMA-11"
+      }
+    ],
+    "\\bGUI\\b": [
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "point-and-click",
+        "severity": 2,
+        "match": "GUI"
+      },
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "point-and-click",
+        "severity": 2,
+        "match": "GUI"
+      },
+      {
+        "file": "main.tex",
+        "line": 292,
+        "section": "Conclusions",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "point-and-click",
+        "severity": 2,
+        "match": "GUI"
+      },
+      {
+        "file": "si.tex",
+        "line": 113,
+        "section": "Exit-nozzle variants",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "point-and-click",
+        "severity": 2,
+        "match": "GUI"
+      }
+    ],
+    "\\btransceiver\\b": [
+      {
+        "file": "main.tex",
+        "line": 187,
+        "section": "Platform overview",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "signal-level converter",
+        "severity": 2,
+        "match": "transceiver"
+      },
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "signal-level converter",
+        "severity": 2,
+        "match": "transceiver"
+      },
+      {
+        "file": "si.tex",
+        "line": 62,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "signal-level converter",
+        "severity": 2,
+        "match": "transceiver"
+      }
+    ],
+    "\\bdribble\\b": [
+      {
+        "file": "main.tex",
+        "line": 193,
+        "section": "Design evolution",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "powder trickling out after the dose ends",
+        "severity": 2,
+        "match": "dribble"
+      },
+      {
+        "file": "si.tex",
+        "line": 105,
+        "section": "Exit-nozzle variants",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "powder trickling out after the dose ends",
+        "severity": 2,
+        "match": "dribble"
+      }
+    ],
+    "\\bKCL\\b": [
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "KittyCAD Language, Zoo's CAD scripting language",
+        "severity": 3,
+        "match": "KCL"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "KittyCAD Language, Zoo's CAD scripting language",
+        "severity": 3,
+        "match": "KCL"
+      }
+    ],
+    "\\bSTL(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the standard 3D-printable mesh file format",
+        "severity": 2,
+        "match": "STLs"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the standard 3D-printable mesh file format",
+        "severity": 2,
+        "match": "STLs"
+      },
+      {
+        "file": "main.tex",
+        "line": 272,
+        "section": "AI design workflow and logging",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the standard 3D-printable mesh file format",
+        "severity": 2,
+        "match": "STLs"
+      },
+      {
+        "file": "main.tex",
+        "line": 303,
+        "section": "Data availability",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the standard 3D-printable mesh file format",
+        "severity": 2,
+        "match": "STLs"
+      },
+      {
+        "file": "si.tex",
+        "line": 77,
+        "section": "Construction guide",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the standard 3D-printable mesh file format",
+        "severity": 2,
+        "match": "STLs"
+      }
+    ],
+    "\\bkernel\\b": [
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "the geometry engine",
+        "severity": 2,
+        "match": "kernel"
+      }
+    ],
+    "\\binterference(s)\\b": [
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "two parts occupying the same space",
+        "severity": 3,
+        "match": "interferences"
+      },
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "two parts occupying the same space",
+        "severity": 3,
+        "match": "interferences"
+      },
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "two parts occupying the same space",
+        "severity": 3,
+        "match": "interferences"
+      },
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "two parts occupying the same space",
+        "severity": 3,
+        "match": "interferences"
+      }
+    ],
+    "\\btolerancing\\b": [
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "assigning allowed dimensional error",
+        "severity": 2,
+        "match": "tolerancing"
+      },
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "assigning allowed dimensional error",
+        "severity": 2,
+        "match": "tolerancing"
+      }
+    ],
+    "\\bstale input files?\\b": [
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "out-of-date source files",
+        "severity": 2,
+        "match": "stale input files"
+      }
+    ],
+    "\\bupstream part files?\\b": [
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "cad/software jargon",
+        "gloss": "the files this part must mate with",
+        "severity": 2,
+        "match": "upstream part files"
+      }
+    ],
+    "\\bamalgamation\\b": [
+      {
+        "file": "main.tex",
+        "line": 210,
+        "section": "Generative AI as a CAD tool",
+        "kind": "caption",
+        "category": "business / vague",
+        "gloss": "mash-up",
+        "severity": 2,
+        "match": "amalgamation"
+      },
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "mash-up",
+        "severity": 2,
+        "match": "amalgamation"
+      }
+    ],
+    "\\bcompositional spatial reasoning\\b": [
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "reasoning about how parts fit together",
+        "severity": 2,
+        "match": "compositional spatial reasoning"
+      }
+    ],
+    "\\bdefect taxonomy\\b": [
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "a classification of the faults found",
+        "severity": 2,
+        "match": "defect taxonomy"
+      }
+    ],
+    "\\bwatertight(ness)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "no holes in the 3D surface",
+        "severity": 3,
+        "match": "watertightness"
+      }
+    ],
+    "\\bsingle-body assertion(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "a check that the part is one solid piece",
+        "severity": 3,
+        "match": "single-body assertions"
+      }
+    ],
+    "\\bCI\\b": [
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "continuous integration, the automated build service",
+        "severity": 2,
+        "match": "CI"
+      }
+    ],
+    "\\bthree-view\\b": [
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "front/side/top",
+        "severity": 2,
+        "match": "three-view"
+      }
+    ],
+    "\\bplateau at\\b": [
+      {
+        "file": "main.tex",
+        "line": 216,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "stop improving at",
+        "severity": 1,
+        "match": "plateau at"
+      }
+    ],
+    "\\bglidant\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "flow aid",
+        "severity": 3,
+        "match": "glidant"
+      },
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "flow aid",
+        "severity": 3,
+        "match": "glidant"
+      },
+      {
+        "file": "main.tex",
+        "line": 231,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "category": "powder-handling jargon",
+        "gloss": "flow aid",
+        "severity": 3,
+        "match": "glidant"
+      },
+      {
+        "file": "main.tex",
+        "line": 246,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "flow aid",
+        "severity": 3,
+        "match": "Glidant"
+      }
+    ],
+    "\\btrickler\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "a commercial fine-powder dispenser",
+        "severity": 3,
+        "match": "trickler"
+      },
+      {
+        "file": "main.tex",
+        "line": 231,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "category": "powder-handling jargon",
+        "gloss": "a commercial fine-powder dispenser",
+        "severity": 3,
+        "match": "trickler"
+      },
+      {
+        "file": "main.tex",
+        "line": 244,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "a commercial fine-powder dispenser",
+        "severity": 3,
+        "match": "trickler"
+      }
+    ],
+    "\\b\\d+\\s*[\u2013-]{1,2}\\s*\\d+\\s*mesh\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "sieve size; inconsistent with the um grade quoted for the other silicon",
+        "severity": 3,
+        "match": "100\u2013200 mesh"
+      },
+      {
+        "file": "main.tex",
+        "line": 245,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sieve size; inconsistent with the um grade quoted for the other silicon",
+        "severity": 3,
+        "match": "100\u2013200 mesh"
+      }
+    ],
+    "\\brheologic(al|ally)\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "flow-behaviour",
+        "severity": 2,
+        "match": "rheologically"
+      }
+    ],
+    "\\bgas-atomi(z|s)ed\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "made by spraying molten metal into droplets",
+        "severity": 2,
+        "match": "gas-atomized"
+      },
+      {
+        "file": "main.tex",
+        "line": 243,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "made by spraying molten metal into droplets",
+        "severity": 2,
+        "match": "gas-atomized"
+      }
+    ],
+    "\\bflowability\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "how freely a powder flows",
+        "severity": 2,
+        "match": "flowability"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "how freely a powder flows",
+        "severity": 2,
+        "match": "flowability"
+      },
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "how freely a powder flows",
+        "severity": 2,
+        "match": "flowability"
+      }
+    ],
+    "\\bcohesive\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 239,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 240,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "Cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 241,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 242,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 244,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      },
+      {
+        "file": "main.tex",
+        "line": 246,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "sticky, clumping",
+        "severity": 1,
+        "match": "cohesive"
+      }
+    ],
+    "\\bpre-?declared\\b": [
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "fixed in advance",
+        "severity": 2,
+        "match": "predeclared"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "fixed in advance",
+        "severity": 2,
+        "match": "predeclared"
+      }
+    ],
+    "\\bablation(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "leave-one-out comparison; to a materials reader 'ablation' means laser removal of material",
+        "severity": 3,
+        "match": "ablations"
+      }
+    ],
+    "\\bdescriptor(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "measured property",
+        "severity": 2,
+        "match": "descriptors"
+      },
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "measured property",
+        "severity": 2,
+        "match": "descriptors"
+      }
+    ],
+    "\\bfeed[- ]factor\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "mass delivered per auger turn",
+        "severity": 3,
+        "match": "feed-factor"
+      }
+    ],
+    "\\btapped density\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "powder-handling jargon",
+        "gloss": "density after settling by tapping",
+        "severity": 2,
+        "match": "tapped density"
+      }
+    ],
+    "\\bparity\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "a plot of asked-for versus actually-delivered",
+        "severity": 3,
+        "match": "parity"
+      }
+    ],
+    "\\boperating envelope\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "the range of doses it can handle",
+        "severity": 3,
+        "match": "operating envelope"
+      },
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "the range of doses it can handle",
+        "severity": 3,
+        "match": "operating envelope"
+      }
+    ],
+    "\\bpre-registered\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "committed to in advance",
+        "severity": 2,
+        "match": "pre-registered"
+      }
+    ],
+    "\\bsystematic error\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "consistent offset from target",
+        "severity": 1,
+        "match": "systematic error"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "consistent offset from target",
+        "severity": 1,
+        "match": "systematic error"
+      }
+    ],
+    "\\brandom error\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "scatter between repeats",
+        "severity": 1,
+        "match": "random error"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "scatter between repeats",
+        "severity": 1,
+        "match": "random error"
+      }
+    ],
+    "\\bcoefficient of variation\\b": [
+      {
+        "file": "main.tex",
+        "line": 224,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "relative scatter",
+        "severity": 1,
+        "match": "coefficient of variation"
+      },
+      {
+        "file": "main.tex",
+        "line": 254,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "category": "metrology / stats jargon",
+        "gloss": "relative scatter",
+        "severity": 1,
+        "match": "coefficient of variation"
+      }
+    ],
+    "\\bfines\\b": [
+      {
+        "file": "main.tex",
+        "line": 244,
+        "section": "Dispensing performance",
+        "kind": "table",
+        "category": "powder-handling jargon",
+        "gloss": "the finest particles",
+        "severity": 2,
+        "match": "fines"
+      }
+    ],
+    "\\bwetted parts\\b": [
+      {
+        "file": "main.tex",
+        "line": 260,
+        "section": "Cost and accessibility",
+        "kind": "body",
+        "category": "business / vague",
+        "gloss": "the parts the powder touches",
+        "severity": 3,
+        "match": "wetted parts"
+      }
+    ],
+    "\\bprimitives?\\b": [
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "basic command",
+        "severity": 3,
+        "match": "primitives"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "basic command",
+        "severity": 3,
+        "match": "primitive"
+      }
+    ],
+    "\\bH-bridge\\b": [
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "a driver that can reverse the motor",
+        "severity": 2,
+        "match": "H-bridge"
+      },
+      {
+        "file": "si.tex",
+        "line": 53,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "a driver that can reverse the motor",
+        "severity": 2,
+        "match": "H-bridge"
+      }
+    ],
+    "\\borthographic\\b": [
+      {
+        "file": "main.tex",
+        "line": 272,
+        "section": "AI design workflow and logging",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "straight-on",
+        "severity": 1,
+        "match": "orthographic"
+      }
+    ],
+    "\\bisometric\\b": [
+      {
+        "file": "main.tex",
+        "line": 272,
+        "section": "AI design workflow and logging",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "angled 3D",
+        "severity": 1,
+        "match": "isometric"
+      }
+    ],
+    "\\bREPL\\b": [
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "cad/software jargon",
+        "gloss": "interactive command prompt on the microcontroller",
+        "severity": 3,
+        "match": "REPL"
+      }
+    ],
+    "\\bterminal tolerance\\b": [
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "how close to target counts as done",
+        "severity": 2,
+        "match": "terminal tolerance"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "how close to target counts as done",
+        "severity": 2,
+        "match": "terminal tolerance"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "category": "metrology / stats jargon",
+        "gloss": "how close to target counts as done",
+        "severity": 2,
+        "match": "terminal tolerance"
+      }
+    ],
+    "\\bpolicy-parameter space\\b": [
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "the set of tunable dosing settings",
+        "severity": 3,
+        "match": "policy-parameter space"
+      }
+    ],
+    "\\bconstraint-aware\\b": [
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "respecting limits such as no-overshoot",
+        "severity": 3,
+        "match": "constraint-aware"
+      }
+    ],
+    "\\bcontextual\\b": [
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "ai/ml jargon",
+        "gloss": "per-powder",
+        "severity": 2,
+        "match": "contextual"
+      }
+    ],
+    "\\bPCB(s)?\\b": [
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "printed circuit board",
+        "severity": 2,
+        "match": "PCBs"
+      },
+      {
+        "file": "main.tex",
+        "line": 297,
+        "section": "Author contributions",
+        "kind": "body",
+        "category": "electronics jargon",
+        "gloss": "printed circuit board",
+        "severity": 2,
+        "match": "PCB"
+      }
+    ],
+    "\\bbreakout\\b": [
+      {
+        "file": "si.tex",
+        "line": 53,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "a small pre-wired module",
+        "severity": 1,
+        "match": "breakout"
+      },
+      {
+        "file": "si.tex",
+        "line": 55,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "a small pre-wired module",
+        "severity": 1,
+        "match": "breakout"
+      },
+      {
+        "file": "si.tex",
+        "line": 62,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "a small pre-wired module",
+        "severity": 1,
+        "match": "breakout"
+      }
+    ],
+    "\\bbuck regulator\\b": [
+      {
+        "file": "si.tex",
+        "line": 64,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "step-down power supply",
+        "severity": 2,
+        "match": "buck regulator"
+      }
+    ],
+    "\\bback-?EMF\\b": [
+      {
+        "file": "si.tex",
+        "line": 65,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "voltage kicked back by the motor",
+        "severity": 2,
+        "match": "back-EMF"
+      }
+    ],
+    "\\bshunt regulator\\b": [
+      {
+        "file": "si.tex",
+        "line": 65,
+        "section": "Bill of materials",
+        "kind": "table",
+        "category": "electronics jargon",
+        "gloss": "clamp that dumps excess voltage",
+        "severity": 2,
+        "match": "shunt regulator"
+      }
+    ]
+  },
+  "acronyms": {
+    "LLM": {
+      "count": 9,
+      "first": 844,
+      "defined": true,
+      "status": "defined at first use"
+    },
+    "SDL": {
+      "count": 6,
+      "first": 1809,
+      "defined": true,
+      "status": "defined at first use"
+    },
+    "AM": {
+      "count": 4,
+      "first": 2417,
+      "defined": true,
+      "status": "defined at first use"
+    },
+    "ERM": {
+      "count": 8,
+      "first": 7274,
+      "defined": true,
+      "status": "defined at first use"
+    },
+    "GUI": {
+      "count": 4,
+      "first": 9219,
+      "defined": false,
+      "status": "never defined"
+    },
+    "CNC": {
+      "count": 1,
+      "first": 10273,
+      "defined": false,
+      "status": "never defined"
+    },
+    "STL": {
+      "count": 5,
+      "first": 12827,
+      "defined": false,
+      "status": "never defined"
+    },
+    "KCL": {
+      "count": 2,
+      "first": 13053,
+      "defined": true,
+      "status": "defined at first use"
+    },
+    "CI": {
+      "count": 1,
+      "first": 17119,
+      "defined": false,
+      "status": "never defined"
+    },
+    "CV": {
+      "count": 2,
+      "first": 22063,
+      "defined": true,
+      "status": "defined AFTER first use"
+    },
+    "REPL": {
+      "count": 1,
+      "first": 29322,
+      "defined": false,
+      "status": "never defined"
+    },
+    "PCB": {
+      "count": 2,
+      "first": 33019,
+      "defined": false,
+      "status": "never defined"
+    },
+    "EMF": {
+      "count": 1,
+      "first": 36507,
+      "defined": false,
+      "status": "never defined"
+    }
+  },
+  "insider": {
+    "unanchored 'the repository'": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 187,
+        "section": "Platform overview",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 191,
+        "section": "Design evolution",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 205,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 214,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 218,
+        "section": "Generative AI as a CAD tool",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 222,
+        "section": "Dispensing performance",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 231,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 266,
+        "section": "Mechanical design and fabrication",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 269,
+        "section": "Electronics and firmware",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 275,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 277,
+        "section": "Dispensing characterization protocol",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "main.tex",
+        "line": 287,
+        "section": "Conclusions",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "si.tex",
+        "line": 35,
+        "section": "Bill of materials",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "si.tex",
+        "line": 75,
+        "section": "Construction guide",
+        "kind": "body",
+        "match": "the repository"
+      },
+      {
+        "file": "si.tex",
+        "line": 136,
+        "section": "AI usage log",
+        "kind": "body",
+        "match": "the repository"
+      }
+    ],
+    "unanchored 'design log'": [
+      {
+        "file": "main.tex",
+        "line": 170,
+        "section": "Introduction",
+        "kind": "body",
+        "match": "design log"
+      },
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "match": "design log"
+      },
+      {
+        "file": "main.tex",
+        "line": 191,
+        "section": "Design evolution",
+        "kind": "body",
+        "match": "design log"
+      },
+      {
+        "file": "main.tex",
+        "line": 303,
+        "section": "Data availability",
+        "kind": "body",
+        "match": "design log"
+      }
+    ],
+    "repo file path": [
+      {
+        "file": "main.tex",
+        "line": 183,
+        "section": "Platform overview",
+        "kind": "caption",
+        "match": "DESIGN-LOG.md"
+      },
+      {
+        "file": "si.tex",
+        "line": 112,
+        "section": "Exit-nozzle variants",
+        "kind": "body",
+        "match": "cad/auger-geared/nozzle-variants.scad"
+      }
+    ],
+    "bare issue/discussion number": [
+      {
+        "file": "main.tex",
+        "line": 231,
+        "section": "Dispensing performance",
+        "kind": "caption",
+        "match": "#88"
+      },
+      {
+        "file": "si.tex",
+        "line": 136,
+        "section": "AI usage log",
+        "kind": "body",
+        "match": "#39"
+      }
+    ]
+  }
+}
