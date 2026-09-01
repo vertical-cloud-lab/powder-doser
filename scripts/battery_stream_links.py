@@ -31,14 +31,13 @@ import json
 import os
 import sys
 
-REGISTRY = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "docs", "battery-runs", "stream-registry.json",
-)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Seconds of run-up before the event, so a link lands just before the thing
-# it points at rather than a frame into it.
-LEAD_IN_S = 5
+# Registry loading and the wall-clock -> ?t= arithmetic are shared with the
+# capture scripts, which stamp the same link into each run document.
+from stream_reference import (  # noqa: E402
+    LEAD_IN_S, REGISTRY, hms, link, load_registry, parse_utc, pick_stream,
+)
 
 BLOCK_LABELS = {
     "A": "baseline (no actuation)",
@@ -83,38 +82,6 @@ Anchoring a stream (deriving content_t0)
 
    Two samples a few thousand seconds apart confirm there is no drift.
 """
-
-
-def load_registry(path=REGISTRY):
-    with open(path) as fh:
-        return json.load(fh)["streams"]
-
-
-def parse_utc(text):
-    return datetime.datetime.fromisoformat(text)
-
-
-def hms(seconds):
-    seconds = int(round(seconds))
-    h, rem = divmod(seconds, 3600)
-    m, s = divmod(rem, 60)
-    return "%dh%02dm%02ds" % (h, m, s) if h else "%dm%02ds" % (m, s)
-
-
-def pick_stream(streams, started, ended, camera="picam-d1pr"):
-    """The stream whose coverage contains the whole run, if any."""
-    for s in streams:
-        if s.get("camera") != camera:
-            continue
-        t0 = parse_utc(s["content_t0_utc"])
-        # Broadcasts roll every 8 h; treat that as the coverage window.
-        if t0 <= started and ended <= t0 + datetime.timedelta(hours=8):
-            return s
-    return None
-
-
-def link(video_id, offset_s, lead_in=LEAD_IN_S):
-    return "https://youtu.be/%s?t=%d" % (video_id, max(0, int(round(offset_s)) - lead_in))
 
 
 def block_spans(doc):

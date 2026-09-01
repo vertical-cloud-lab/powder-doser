@@ -298,6 +298,16 @@ doc on the issue #126 branch:
   "powder": "xanthan gum, batch 3",     // free-form description
   "operator": "wm", "notes": "...",
   "git_commit": "<hash of the host repo at capture time>",
+  "video": {                             // bench-camera record of this run
+    "camera": "picam-d1pr",
+    "channel_url": "https://youtube.com/@byu-vcl-hardware-streams",
+    "broadcast_slot_utc": "2026-08-04T19:00:00+00:00",
+    "resolved": true,                    // false until the broadcast is anchored
+    "video_id": "w1D5DRiHFWM",
+    "content_t0_utc": "2026-08-04T19:01:06+00:00",
+    "t_offset_s": 8195.0,
+    "url": "https://youtu.be/w1D5DRiHFWM?t=8190"
+  },
   "parameters": {                        // META rows from the device
     "points_per_angle": "5", "angles_deg": "0;15;30;45;60;75;90",
     "rotation_step_deg": "360.0", "taps_per_point": "1",
@@ -313,6 +323,24 @@ doc on the issue #126 branch:
   "host_summary":   [ /* recomputed + pooled rotation+refeed + RSD% */ ]
 }
 ```
+
+The `video` block is written by
+[`scripts/stream_reference.py`](../scripts/stream_reference.py) while the run
+is captured, so each artifact points at its own video instead of the pairing
+having to be reconstructed from timestamps later (issue #148). Resolving is
+best-effort and never fatal: a fresh run is normally `"resolved": false`,
+because the covering broadcast's content `t=0` can only be calibrated from the
+burned-in overlay clock afterwards, and from the Pi (YouTube bot-blocks
+datacenter IPs). Unresolved blocks still name the camera, the channel and the
+8 h broadcast slot, which is everything
+
+```bash
+python scripts/stream_reference.py --backfill data/**/run_*.json
+```
+
+needs to fill in the `?t=` link once the anchor lands in
+[`battery-runs/stream-registry.json`](battery-runs/stream-registry.json).
+Use `--camera` at capture time if a run is shot on a different rig camera.
 
 Feeding the optimizer (issue #124): the per-angle
 `(mean, sem)` pairs for `rotation+refeed` and `tap` are exactly the

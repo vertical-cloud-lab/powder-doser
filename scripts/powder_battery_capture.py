@@ -293,6 +293,7 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "qc": qc,
         "preflight": preflight,
         "git_commit": git_commit,
+        "video": video_reference(started_utc, ended_utc, args),
         "parameters": meta,
         "trials": trials,
         "polls": polls,
@@ -302,6 +303,39 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "host_summary": host_summary,
     }
 
+
+# ---------------------------------------------------------------------------
+# Bench-camera video reference
+# ---------------------------------------------------------------------------
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import stream_reference
+except ImportError:  # a bench checkout may predate scripts/stream_reference.py
+    stream_reference = None
+
+
+def video_reference(started_utc, ended_utc, args):
+    """The ``video`` block: which broadcast holds this run, and where in it.
+
+    Recorded as the run is captured so the artifact points at its own video
+    instead of the pairing having to be reconstructed later (issue #148).
+    Resolution is best-effort by design -- a run must never fail because a
+    link could not be worked out.
+    """
+    camera = getattr(args, "camera", None) or "picam-d1pr"
+    if stream_reference is None:
+        return {"camera": camera, "resolved": False, "url": None,
+                "started_utc": started_utc, "ended_utc": ended_utc,
+                "note": "scripts/stream_reference.py not on this host; "
+                        "resolve later with --backfill"}
+    try:
+        return stream_reference.describe(started_utc, ended_utc,
+                                         camera=camera)
+    except Exception as exc:  # never let provenance break a capture
+        return {"camera": camera, "resolved": False, "url": None,
+                "started_utc": started_utc, "ended_utc": ended_utc,
+                "note": "video reference unresolved: %s" % exc}
 
 # ---------------------------------------------------------------------------
 # Capture
@@ -562,6 +596,10 @@ def main(argv=None):
                         help="powder batch label shared by runs that came "
                         "out of the same fill container "
                         "(e.g. food-safe-2026-08)")
+    parser.add_argument("--camera", default="picam-d1pr",
+                        help="bench camera whose livestream covers the run; "
+                        "recorded in the run document so the video can be "
+                        "found later (see scripts/stream_reference.py)")
     parser.add_argument("--preflight-json", default=None, metavar="JSON",
                         help="pre-flight feed check result to embed "
                         "(from battery_preflight / battery_feed_diagnostic)")
@@ -604,6 +642,9 @@ def main(argv=None):
                 parser.error("{} has no powder_id -- re-run with "
                              "--powder-id <id>".format(args.upload_file))
             doc["powder_id"] = args.powder_id
+        if stream_reference is not None and not doc.get("video"):
+            # A run captured before this field existed still gets one.
+            stream_reference.backfill(doc, camera=args.camera)
         return 0 if upload(doc, args) else 1
 
     if not args.powder_id:

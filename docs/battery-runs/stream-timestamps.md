@@ -20,6 +20,21 @@ Links are offset 5 s early so the action starts just after the seek. Times
 come from `started_utc` plus the per-trial device `t_ms` in each run
 document, so they are good to a couple of seconds.
 
+## Recorded in the run document
+
+Runs captured from 2026-09-01 on carry their own `video` block, written by
+[`scripts/stream_reference.py`](../../scripts/stream_reference.py) as the run
+is recorded, so a run document no longer needs this file to say which
+broadcast it belongs to. Older runs, and runs captured before their broadcast
+was anchored, are filled in with
+
+```bash
+python scripts/stream_reference.py --backfill data/battery/*/run_*.json
+```
+
+Both paths share one registry and one piece of `?t=` arithmetic, so a link in
+a run document and a link in the table below can never drift apart.
+
 ## Anchoring: do not trust the watch page's start timestamp
 
 The `?t=` parameter is an offset into the video timeline, and for a live

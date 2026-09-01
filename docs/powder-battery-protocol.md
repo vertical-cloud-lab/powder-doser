@@ -396,3 +396,16 @@ share links per block, per tilt and per dose. It needs the broadcast's content
 add a new broadcast with `--calibrate`, which reads the anchor off the burned-in
 timestamp overlay rather than the watch page (they differ by several seconds —
 enough to miss a trial). Current links: [`battery-runs/stream-timestamps.md`](battery-runs/stream-timestamps.md).
+
+The pairing itself is no longer something to rediscover afterwards: the capture
+script stamps a `video` block into every run document as the run is recorded
+(see [the schema](characterization-data-collection.md#run-document-schema-v1)).
+A run captured before its broadcast is anchored records the camera, the channel
+and the 8 h broadcast slot to look in, and picks up its `?t=` link later from
+
+```bash
+python scripts/stream_reference.py --backfill data/battery/*/run_*.json
+```
+
+which re-resolves each run against the current registry. Re-upload a backfilled
+run (`--upload-file`) so the database copy matches the local artifact.
