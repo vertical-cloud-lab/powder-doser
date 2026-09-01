@@ -10,7 +10,7 @@ answers the question the EDA left open: **what changed in the gap?**
 Reproduce with `python scripts/analyze_block_d_overturn.py`, which rebuilds
 everything below from the tidy CSVs committed at `86f2642`.
 
-![block D over-turn](https://github.com/vertical-cloud-lab/powder-doser/blob/PLACEHOLDER/docs/rig-checks/2026-09-01_block-d-overturn.png?raw=true)
+![block D over-turn](https://github.com/vertical-cloud-lab/powder-doser/blob/a3cfbe2/docs/rig-checks/2026-09-01_block-d-overturn.png?raw=true)
 
 ## The defect
 
