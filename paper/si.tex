@@ -7,6 +7,7 @@
 \documentclass[10pt]{article}
 \usepackage[margin=2.2cm]{geometry}
 \usepackage{graphicx}
+\usepackage{array}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{hyperref}
@@ -97,6 +98,42 @@ the KiCad schematic in
 \item \textbf{Checkout:} run the firmware self-test (rotate, tap, vibrate,
 tilt, tare/read), then a per-powder calibration sweep.
 \end{enumerate}
+
+\section{Powder test protocols}
+\label{si:protocols}
+
+Per-powder characterization runs a uniform test battery: one fixed sequence
+of seven \emph{test protocols}, executed identically for every powder so
+that the results are directly comparable across powders
+(Table~\ref{tbl:protocols}).  The battery is deliberately a characterization
+sequence rather than an optimization workflow---every parameter is frozen,
+and the object is to observe how each powder responds under identical
+conditions.
+
+Protocols A--F isolate the platform's degrees of freedom one at a time.
+Protocol~A establishes the balance noise floor for the run, so that every
+subsequent mass change is read against a measured floor rather than an
+assumed one.  Protocol~B holds each tilt angle with no actuator commanded,
+which separates powders that discharge under gravity alone from those that
+require actuation, and which measures the horizontal-park shutoff directly.
+Protocols~C and~D characterize the auger itself, respectively as mass
+delivered per revolution at each tilt and as mass flow rate versus rotation
+speed.  Protocols~E and~F characterize the two agitation actuators, each
+trial pairing a metered re-feed rotation with a single actuation burst so
+that the recorded mass change is attributable to the burst alone.
+Protocol~G then exercises the three-phase closed-loop controller
+described in the Experimental section of the main text, which is built on
+those primitives.
+
+Each protocol emits machine-readable trial records over the serial link,
+captured as versioned CSV and stamped with the powder identifier, the
+battery version, and the run parameters, so that every reported number is
+traceable to its raw balance stream.  The firmware and the archived CSVs
+identify the protocols by the same letters used here.  The battery
+implementation, its parameter defaults, and a hardware-independent test
+suite are in \texttt{hardware/test-module/firmware/} in the repository.
+
+\input{protocols/test_protocols}
 
 \section{Exit-nozzle variants}
 
