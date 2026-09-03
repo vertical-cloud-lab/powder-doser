@@ -150,3 +150,11 @@ Unchanged from the morning notes, and none of it is blocked by the hood:
 `META,park_tilt_deg,0.0` then `RUN,END,ok`: tilt parked at 0°, stepper disabled,
 solenoid off. No tmux server, no capture process. Salt is loaded in the auger
 and ~1.5 g of it is in the collection cup.
+
+![rig parked after the stand-down](../rig-checks/frames/2026-09-03_standdown-final-state.png)
+
+Bench camera at 11:24 MDT: tube horizontal, beaker on the pan with the breeze
+break closed, balance showing a normal reading in grams — no `Error 1`, no
+overload `E`. The instrument is working; it is the room it sits in that is not
+holding still. The ~1.5 g on the display is the pre-flight's salt and should be
+emptied before the next run, per the standing bench checklist.
