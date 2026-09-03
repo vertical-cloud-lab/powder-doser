@@ -1,0 +1,246 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "ok",
+  "started_utc": "2026-09-03T17:04:37.854828+00:00",
+  "ended_utc": "2026-09-03T17:05:55.344184+00:00",
+  "started_local": "2026-09-03 11:04:37 MDT",
+  "ended_local": "2026-09-03 11:05:55 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 77.5,
+  "block_timeline": [
+    {
+      "block": "H",
+      "started_utc": "2026-09-03T17:04:40.357176+00:00",
+      "started_local": "2026-09-03 11:04:40 MDT",
+      "elapsed_s": 2.5
+    }
+  ],
+  "powder_id": "salt",
+  "powder": "sodium chloride (table salt), design baseline",
+  "batch": "food-safe-2026-08",
+  "operator": "swcharles",
+  "notes": "Block H re-run after the 2026-09-03 morning attempt aborted 4 of 6 doses scale-error. Operator reports a student repeatedly used the fume-hood compressed air during the morning session; this run tests whether that explains the balance degradation. No code change: the three-phase doser still uses read_stable().",
+  "qc": {
+    "valid_for_cross_powder_comparison": false,
+    "verdict": "doser-scale-unreadable",
+    "preflight_verdict": "feed confirmed",
+    "last_amended_utc": "2026-09-03T17:26:05.938917+00:00"
+  },
+  "environment": null,
+  "retries": [],
+  "preflight": {
+    "rev_deltas": [
+      0.172766668,
+      0.27954996,
+      0.27173346,
+      0.32456654,
+      0.360216616
+    ],
+    "tilt_deg": 90.0,
+    "rpm": 30.0,
+    "rotation_rev_total": 5,
+    "taps_delta_g": 0.13248348,
+    "verdict": "feed confirmed",
+    "rotation_delta_g": 1.4088333,
+    "taps_total": 10
+  },
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "salt",
+    "battery_version": "3",
+    "blocks": "H",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "dose_h_targets_g": "0.0500;0.2000",
+    "dose_h_repeats": "3",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "bracket_n": "6",
+    "bracket_ms": "400",
+    "shock_g": "0.01",
+    "max_resid_g": "0.0015",
+    "quiet_tries": "8",
+    "max_trial_retries": "2",
+    "drift_correct": "1",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "dose_h.thresholds.0.0500": "0.0500;0.0250;0.0050",
+    "dose_h.thresholds.0.2000": "0.2000;0.0500;0.0050",
+    "park_tilt_deg": "0.0",
+    "env.brackets": "0",
+    "env.disturbed_trials": "0",
+    "env.drift_corrected_g": "0.0000",
+    "env.quiet_waits": "0",
+    "env.retries": "0",
+    "env.shock_events": "0",
+    "env.shock_total_g": "0.0000",
+    "env.unsettled_brackets": "0"
+  },
+  "trials": [],
+  "polls": [],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 13312,
+      "block": "H"
+    },
+    {
+      "n": 1,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 12.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 25113,
+      "block": "H"
+    },
+    {
+      "n": 2,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 38354,
+      "block": "H"
+    },
+    {
+      "n": 3,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "scale-error",
+      "elapsed_s": 12.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 50167,
+      "block": "H"
+    },
+    {
+      "n": 4,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 63425,
+      "block": "H"
+    },
+    {
+      "n": 5,
+      "target_g": 0.2,
+      "dispensed_g": 1.541,
+      "error_g": 1.341,
+      "status": "overshoot",
+      "elapsed_s": 10.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:0;tap:0",
+      "t_ms": 73027,
+      "block": "H"
+    }
+  ],
+  "dose_summary": {
+    "n": 6,
+    "ok": 0,
+    "mean_error_g": 0.13183333333333333,
+    "std_error_g": 0.5969088428450919,
+    "max_abs_error_g": 1.341,
+    "mean_elapsed_s": 12.166666666666666
+  },
+  "dose_summary_by_target": [
+    {
+      "block": "H",
+      "target_g": 0.05,
+      "n": 3,
+      "ok": 0,
+      "statuses": [
+        "scale-error"
+      ],
+      "mean_error_g": -0.05000000000000001,
+      "std_error_g": 8.498374721940739e-18,
+      "max_abs_error_g": 0.05,
+      "mean_rel_error_pct": -100.0,
+      "mean_elapsed_s": 12.666666666666666
+    },
+    {
+      "block": "H",
+      "target_g": 0.2,
+      "n": 3,
+      "ok": 0,
+      "statuses": [
+        "overshoot",
+        "scale-error"
+      ],
+      "mean_error_g": 0.31366666666666665,
+      "std_error_g": 0.8896967648212134,
+      "max_abs_error_g": 1.341,
+      "mean_rel_error_pct": 156.833,
+      "mean_elapsed_s": 11.666666666666666
+    }
+  ],
+  "device_summary": [],
+  "host_summary": [],
+  "amendments": [
+    {
+      "amended_utc": "2026-09-03T17:26:05.938917+00:00",
+      "author": "claude",
+      "summary": "Block H re-run: all six doses failed before the auger turned; QC verdict finalised from 'pending'.",
+      "detail": "Captured with --qc-verdict pending because the outcome could not be judged until the doses ran. Five of six doses exited scale-error at the tare/first read in 12-13 s with 0.00 auger revolutions; the sixth had its tare silently refused and read the 1.541 g of pre-flight salt already in the beaker, so every phase skipped and it returned an instant overshoot. No dose is a measurement of salt's dose accuracy at 50 or 200 mg. The pre-flight immediately before was 'feed confirmed' at 281.8 mg/rev, so the delivery path was clear and the failure is the balance read path, not the mechanism.",
+      "qc_change": {
+        "verdict": {
+          "from": "pending",
+          "to": "doser-scale-unreadable"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": false
+        }
+      }
+    }
+  ]
+}

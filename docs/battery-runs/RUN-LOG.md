@@ -4,13 +4,14 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-21 entries, 14 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+22 entries, 14 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 2026-09-03 16:35 | 2026-09-03 16:37 | 2:28 | `salt` | H | -- | 7.77 g | -- | 200 mg 3x -142.0 mg; 50 mg 3x +2482.3 mg | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T163527Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-first-run.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=20112) |
+| 2026-09-03 17:04 | 2026-09-03 17:05 | 1:17 | `salt` | H | -- | 1.54 g | -- | 200 mg 3x +313.7 mg; 50 mg 3x -50.0 mg | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T170437Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=21862) |
+| 2026-09-03 16:35 | 2026-09-03 16:37 | 2:28 | `salt` | H | -- | 7.77 g | -- | 200 mg 3x -142.0 mg; 50 mg 3x +2482.3 mg | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T163527Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=20112) |
 | 2026-08-21 19:20 | 2026-08-21 19:35 | 14:32 | `salt` | ABCDE | C/E 30 · D 15/45/90 RPM | 6.31 g | 265.17 mg/rev | -- | sigma 2.9 mg, 1 shocks, 10 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T192031Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-salt-control-repeat.md) | [~1 min](https://youtu.be/Ma91Vx8U-YY?t=1216) |
 | 2026-08-21 18:27 | 2026-08-21 18:42 | 15:29 | `fumed-silica` | ABCDE | C/E 30 · D 15/45/90 RPM | 0.55 g | 5.57 mg/rev | -- | sigma 4.1 mg, 9 shocks, 16 retries | excluded<br>`no-conveyance-outlet-unverified` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T182705Z_fumed-silica) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-fumed-silica.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=26810) |
 | 2026-08-21 17:07 | 2026-08-21 17:20 | 13:09 | `barium-chloride` | ABCDE | C/E 30 · D 15/45/90 RPM | 5.62 g | 200.38 mg/rev | -- | sigma 0.0 mg, no shocks or retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T170712Z_barium-chloride) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-barium-chloride.md) | [~1 min](https://youtu.be/7orNsBiLW2M?t=22017) |
@@ -34,6 +35,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 ## Per-run detail
 
+### 2026-09-03 17:04 UTC -- salt
+
+- **Window** 2026-09-03T17:04:37.854828+00:00 -> 2026-09-03T17:05:55.344184+00:00  (1:17)
+- **Lab clock** 2026-09-03 11:04:37 MDT -> 2026-09-03 11:05:55 MDT
+- **Powder** sodium chloride (table salt), design baseline  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 1.5410 g
+- **Closed-loop doses** 200 mg 3x +313.7 mg; 50 mg 3x -50.0 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** excluded -- `doser-scale-unreadable`
+- **Data** [data/battery/20260903T170437Z_salt](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T170437Z_salt)
+- **Notes** [docs/battery-runs/2026-09-03-salt-block-h-rerun.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun.md)
+- **Video** [https://youtu.be/AvK-wSqQGrQ?t=21862](https://youtu.be/AvK-wSqQGrQ?t=21862) -- accurate to about a minute
+
 ### 2026-09-03 16:35 UTC -- salt
 
 - **Window** 2026-09-03T16:35:27.282874+00:00 -> 2026-09-03T16:37:55.987297+00:00  (2:28)
@@ -46,7 +62,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Environment** not recorded
 - **QC** excluded -- `doser-scale-unreadable`
 - **Data** [data/battery/20260903T163527Z_salt](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T163527Z_salt)
-- **Notes** [docs/battery-runs/2026-09-03-salt-block-h-first-run.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-first-run.md)
+- **Notes** [docs/battery-runs/2026-09-03-salt-block-h-rerun.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun.md)
 - **Video** [https://youtu.be/AvK-wSqQGrQ?t=20112](https://youtu.be/AvK-wSqQGrQ?t=20112) -- accurate to about a minute
 
 ### 2026-08-21 19:20 UTC -- salt
