@@ -163,11 +163,33 @@ DOSE_BRACKET_INTERVAL_MS = 250
 
 # A pan reading further than this from zero after taring means the tare
 # did not take (the A&D refuses one silently while unstable) or the cup
-# was never emptied.  Dosing onto it reports the leftover powder as this
-# dose's delivery -- 7.5393 g and 1.5410 g of phantom "overshoot" on
-# 2026-09-03 -- so the dose is refused instead.  Raised to 4x tolerance
-# when the tolerance band is wide enough to make 20 mg the tighter test.
-DOSE_MAX_BASELINE_G = 0.020
+# was never emptied.  That is worth SAYING loudly -- it is how 7.5393 g
+# and 1.5410 g of phantom "overshoot" got reported on 2026-09-03 -- but
+# it is not by itself a reason to refuse, because the baseline is
+# subtracted from every later read, so the dose is measured as a
+# difference and the leftover cancels exactly.
+DOSE_WARN_BASELINE_G = 0.020
+
+# It IS a reason to refuse once the pan is loaded enough to threaten the
+# balance (102 g full scale, ~47 g of that vessel) or to mean something
+# else has gone wrong.  An unattended run cannot empty its own cup, and
+# a pre-flight legitimately leaves ~1 g in it, so this ceiling has to sit
+# well above normal leftovers or it blocks every unattended dose.
+DOSE_MAX_BASELINE_G = 10.0
+
+# The A&D intermittently answers nothing for a few seconds -- most often
+# right after a tare, and the 2026-08-20 work measured up to ~19 s when a
+# tare is refused.  A bracket is ~1.4 s, so one started in that window
+# sees no frames at all, which is what returned "no usable frames in 5
+# reads" on four of six doses on 2026-09-03.  A bench probe timed the
+# balance answering again 119 ms after a normal tare, so retrying works.
+#
+# Counted, not timed, on purpose: MicroPython's time.time() -- the
+# doser's default clock -- returns INTEGER seconds on this build, so a
+# seconds-based deadline is unreliable at this scale.  The first attempt
+# at this fix gave up after a single try for exactly that reason.
+# 12 attempts is ~20 s of wall clock at ~1.4-1.7 s per bracket.
+DOSE_READ_RETRIES = 12
 
 # --- Per-phase parameters ------------------------------------------------
 # Every phase understands the same keys:
@@ -580,6 +602,11 @@ class ThreePhaseDoser:
         self._baseline_g = 0.0
         self.baseline_drift_g_per_s = 0.0
         self.read_sigma_g = 0.0
+        self.last_baseline_g = 0.0
+        # Extra bracket attempts spent waiting out a quiet balance,
+        # summed over the dose.  Non-zero means the balance went silent
+        # and the retry recovered it, which is worth having in the data.
+        self.read_retries = 0
         # Own (mutable) copies, so live `set` tuning at the REPL never
         # rewrites the module-level defaults.
         self.phases = [dict(p) for p in (phases or PHASES)]
@@ -640,20 +667,38 @@ class ThreePhaseDoser:
         window are subtracted; the balance has to go genuinely silent
         before this returns None.
         """
-        try:
-            bracket = _bf.collect(
-                self.scale, n=DOSE_BRACKET_N,
-                interval_ms=DOSE_BRACKET_INTERVAL_MS,
-                sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms)
-        except _bf.BalanceSilent as exc:
-            self.log("[dose] balance silent: {}".format(exc))
+        bracket = self._collect_retry()
+        if bracket is None:
             return None
-        except Exception as exc:                      # pragma: no cover
-            self.log("[dose] bracket read failed ({}); "
-                     "falling back to read_stable".format(exc))
-            return self._stable_grams()
         self.read_sigma_g = bracket.resid_rms_g
         return bracket.value_at(bracket.mid_t_ms)
+
+    def _collect_retry(self, retries=DOSE_READ_RETRIES):
+        """A bracket, retried while the balance is merely quiet.
+
+        ``BalanceSilent`` means no frame arrived at all, which on this
+        bench is usually transient -- failing on the first one abandoned
+        four of six doses on 2026-09-03.  A balance still silent after
+        every attempt is genuinely dead, and that still fails.
+        """
+        for attempt in range(1, retries + 1):
+            if attempt > 1:
+                self.read_retries += 1
+            try:
+                return _bf.collect(
+                    self.scale, n=DOSE_BRACKET_N,
+                    interval_ms=DOSE_BRACKET_INTERVAL_MS,
+                    sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms)
+            except _bf.BalanceSilent as exc:
+                if attempt == retries:
+                    self.log("[dose] balance silent over {} attempts: "
+                             "{}".format(attempt, exc))
+                    return None
+                self._sleep_ms(500)
+            except Exception as exc:                  # pragma: no cover
+                self.log("[dose] bracket read failed ({})".format(exc))
+                return None
+        return None
 
     def _read_grams(self):
         """Current mass relative to this dose's post-tare baseline."""
@@ -682,13 +727,8 @@ class ThreePhaseDoser:
         self.scale.zero()
         self._baseline_g = 0.0
         if self.bracket_reads:
-            try:
-                bracket = _bf.collect(
-                    self.scale, n=DOSE_BRACKET_N,
-                    interval_ms=DOSE_BRACKET_INTERVAL_MS,
-                    sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms)
-            except Exception as exc:
-                self.log("[dose] baseline bracket failed ({})".format(exc))
+            bracket = self._collect_retry()
+            if bracket is None:
                 return False, 0.0
             baseline = bracket.value_at(bracket.mid_t_ms)
             self.baseline_drift_g_per_s = bracket.slope_g_per_s
@@ -697,14 +737,22 @@ class ThreePhaseDoser:
             baseline = self._stable_grams()
             if baseline is None:
                 return False, 0.0
-        limit = max(DOSE_MAX_BASELINE_G, 4.0 * self.tolerance_g)
-        if abs(baseline) > limit:
-            self.log("[dose] pan reads {:.4f} g after taring (limit {:.4f} "
-                     "g) -- the tare did not take, or the cup is not "
-                     "empty.  Refusing to dose onto it.".format(
-                         baseline, limit))
+        self.last_baseline_g = baseline
+        if abs(baseline) > DOSE_MAX_BASELINE_G:
+            self.log("[dose] pan reads {:.4f} g after taring (ceiling "
+                     "{:.4f} g) -- too loaded to dose onto safely. "
+                     "Empty the cup.".format(baseline, DOSE_MAX_BASELINE_G))
             return False, baseline
         self._baseline_g = baseline
+        if abs(baseline) > max(DOSE_WARN_BASELINE_G, 4.0 * self.tolerance_g):
+            # Says so loudly, but does not refuse: every later read has
+            # this subtracted, so the dose is a difference and the
+            # leftover cancels.  What must never happen again is the
+            # leftover being reported as delivered mass.
+            self.log("[dose] WARNING the tare did not take -- pan reads "
+                     "{:.4f} g. Subtracting it as this dose's baseline; "
+                     "delivered mass is measured as the increment above "
+                     "it, not the displayed value.".format(baseline))
         drift = self.baseline_drift_g_per_s * 60.0
         self.log("[dose] tared: baseline {:+.1f} mg (subtracted), drift "
                  "{:+.1f} mg/min, read noise {:.2f} mg".format(
@@ -725,6 +773,7 @@ class ThreePhaseDoser:
         t0 = self._now()
         state = {"taps": 0, "deg": 0.0}
         phase_cycles = []
+        self.read_retries = 0
 
         def result(status, grams):
             res = DoseResult(status, target_g, grams, self._now() - t0,
