@@ -102,6 +102,13 @@ except ImportError:
     # hardware classes below are simply never instantiated.
     _ON_HARDWARE = False
 
+try:
+    import balance_filter as _bf
+except ImportError:
+    # Pre-2026-08-20 deployments without balance_filter.py still run;
+    # the doser falls back to read_stable() and logs the old behaviour.
+    _bf = None
+
 
 # =========================================================================
 # GEAR RATIOS (PR #124 review) -- every user-facing value in this file
@@ -144,6 +151,23 @@ PHASE3_TOLERANCE_G      = 0.001   # done when within +/- this of the goal
 
 # --- Global safety limits ------------------------------------------------
 DOSE_TIMEOUT_S = 600              # hard wall-clock limit for one dose
+
+# --- Balance read shape (2026-09-03) -------------------------------------
+# Every dose read is a bracket of instantaneous frames rather than one
+# stable frame; see ThreePhaseDoser._bracket_grams.  5 x 250 ms = 1.25 s
+# per read, which is about what a *successful* read_stable() cost anyway,
+# and it divides the jitter by sqrt(5) instead of demanding an ST frame
+# the balance may never offer while the rig is actuating.
+DOSE_BRACKET_N = 5
+DOSE_BRACKET_INTERVAL_MS = 250
+
+# A pan reading further than this from zero after taring means the tare
+# did not take (the A&D refuses one silently while unstable) or the cup
+# was never emptied.  Dosing onto it reports the leftover powder as this
+# dose's delivery -- 7.5393 g and 1.5410 g of phantom "overshoot" on
+# 2026-09-03 -- so the dose is refused instead.  Raised to 4x tolerance
+# when the tolerance band is wide enough to make 20 mg the tighter test.
+DOSE_MAX_BASELINE_G = 0.020
 
 # --- Per-phase parameters ------------------------------------------------
 # Every phase understands the same keys:
@@ -512,6 +536,7 @@ class DoseResult:
     SCALE_ERROR = "scale-error"
     STALLED = "stalled"          # no powder flow (hopper empty / lip dry)
     BUDGET = "cycle-budget"      # a phase exceeded its max_cycles
+    NOT_TARED = "not-tared"      # pan not empty / tare refused: see dose()
 
     def __init__(self, status, target_g, dispensed_g, elapsed_s,
                  phase_cycles, taps, auger_deg):
@@ -539,12 +564,22 @@ class DoseResult:
 class ThreePhaseDoser:
     def __init__(self, stepper, tap, servo, scale, cfg,
                  phases=None, thresholds=None, timeout_s=DOSE_TIMEOUT_S,
-                 log=print, monotonic=None, sleep_ms=None):
+                 log=print, monotonic=None, sleep_ms=None,
+                 bracket_reads=True, ticks_ms=None):
         self.stepper = stepper
         self.tap = tap
         self.servo = servo
         self.scale = scale
         self.cfg = cfg
+        # Read the balance through balance_filter's bracketed
+        # instantaneous frames rather than through read_stable().  See
+        # _read_grams; set False to restore the pre-2026-09-03 path.
+        self.bracket_reads = bool(bracket_reads) and _bf is not None
+        # Post-tare offset, subtracted from every read in this dose so a
+        # tare the balance silently refused does not become a mass.
+        self._baseline_g = 0.0
+        self.baseline_drift_g_per_s = 0.0
+        self.read_sigma_g = 0.0
         # Own (mutable) copies, so live `set` tuning at the REPL never
         # rewrites the module-level defaults.
         self.phases = [dict(p) for p in (phases or PHASES)]
@@ -560,6 +595,13 @@ class ThreePhaseDoser:
                 sleep_ms = lambda ms: time.sleep(ms / 1000.0)
         self._now = monotonic
         self._sleep_ms = sleep_ms
+        # Bracket sample timestamps.  Deliberately NOT derived from
+        # ``monotonic``: its hardware default is ``time.time()``, which
+        # on MicroPython has 1-second resolution and would collapse a
+        # 1.25 s bracket onto a single instant, so the slope fit would
+        # divide by zero.  None means balance_filter's own ticks_ms
+        # (``time.ticks_ms`` on the Pico); the sim injects a virtual one.
+        self._ticks_ms = ticks_ms
 
     @property
     def tolerance_g(self):
@@ -579,6 +621,96 @@ class ThreePhaseDoser:
                      "on the balance to select g".format(reading.unit))
             return None
         return reading.grams
+
+    def _bracket_grams(self):
+        """Mass from a bracket of INSTANTANEOUS frames, or None.
+
+        ``read_stable()`` waits for the balance to assert ``ST`` and
+        returns ``None`` otherwise.  On 2026-09-03 that abandoned four of
+        six Block H doses: the A&D was 97 % stable at rest, collapsed to
+        0-2 % the moment the rig actuated, and never recovered inside the
+        run -- so every dose read was a coin flip.  ``balance_filter``
+        already solved this for blocks A-E on 2026-08-20; the doser was
+        simply never given the same path.
+
+        An ``US`` frame still carries a perfectly good number.  A bracket
+        of them is a *better* estimator than one stable frame, because
+        averaging n frames divides the jitter by sqrt(n) and the fit also
+        yields a slope and an honest uncertainty.  Shock steps inside the
+        window are subtracted; the balance has to go genuinely silent
+        before this returns None.
+        """
+        try:
+            bracket = _bf.collect(
+                self.scale, n=DOSE_BRACKET_N,
+                interval_ms=DOSE_BRACKET_INTERVAL_MS,
+                sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms)
+        except _bf.BalanceSilent as exc:
+            self.log("[dose] balance silent: {}".format(exc))
+            return None
+        except Exception as exc:                      # pragma: no cover
+            self.log("[dose] bracket read failed ({}); "
+                     "falling back to read_stable".format(exc))
+            return self._stable_grams()
+        self.read_sigma_g = bracket.resid_rms_g
+        return bracket.value_at(bracket.mid_t_ms)
+
+    def _read_grams(self):
+        """Current mass relative to this dose's post-tare baseline."""
+        grams = (self._bracket_grams() if self.bracket_reads
+                 else self._stable_grams())
+        if grams is None:
+            return None
+        return grams - self._baseline_g
+
+    def _tare_and_baseline(self, target_g):
+        """Tare, then measure what the pan actually reads afterwards.
+
+        Returns ``(ok, grams)``.  The 2026-09-03 runs produced two doses
+        reported as delivering 7.5393 g and 1.5410 g of salt with the
+        auger never turning (``0.00 rev``): the balance silently refuses a
+        tare while it considers itself unstable, so the doser read powder
+        left in the cup by a previous step as this dose's delivery.  A
+        ``scale-error`` at least looks like a fault; ``overshoot: 1.5410
+        g`` looks like a measurement, which is worse.
+
+        So the tare is treated as best-effort and *verified*: whatever it
+        left behind becomes this dose's baseline and is subtracted from
+        every later read, and a baseline too large to be residual drift
+        aborts the dose as NOT_TARED instead of dosing onto a full cup.
+        """
+        self.scale.zero()
+        self._baseline_g = 0.0
+        if self.bracket_reads:
+            try:
+                bracket = _bf.collect(
+                    self.scale, n=DOSE_BRACKET_N,
+                    interval_ms=DOSE_BRACKET_INTERVAL_MS,
+                    sleep_ms=self._sleep_ms, ticks_ms=self._ticks_ms)
+            except Exception as exc:
+                self.log("[dose] baseline bracket failed ({})".format(exc))
+                return False, 0.0
+            baseline = bracket.value_at(bracket.mid_t_ms)
+            self.baseline_drift_g_per_s = bracket.slope_g_per_s
+            self.read_sigma_g = bracket.resid_rms_g
+        else:
+            baseline = self._stable_grams()
+            if baseline is None:
+                return False, 0.0
+        limit = max(DOSE_MAX_BASELINE_G, 4.0 * self.tolerance_g)
+        if abs(baseline) > limit:
+            self.log("[dose] pan reads {:.4f} g after taring (limit {:.4f} "
+                     "g) -- the tare did not take, or the cup is not "
+                     "empty.  Refusing to dose onto it.".format(
+                         baseline, limit))
+            return False, baseline
+        self._baseline_g = baseline
+        drift = self.baseline_drift_g_per_s * 60.0
+        self.log("[dose] tared: baseline {:+.1f} mg (subtracted), drift "
+                 "{:+.1f} mg/min, read noise {:.2f} mg".format(
+                     1000.0 * baseline, 1000.0 * drift,
+                     1000.0 * self.read_sigma_g))
+        return True, 0.0
 
     def _objectives(self, tag, grams, target_g, gain, t0,
                     gain_label="this cycle"):
@@ -605,8 +737,12 @@ class ThreePhaseDoser:
 
         self.log("[dose] three-phase dose to {:.4f} g; taring scale"
                  .format(target_g))
-        self.scale.zero()
-        grams = self._stable_grams()
+        tared, baseline = self._tare_and_baseline(target_g)
+        if not tared:
+            status = (DoseResult.NOT_TARED if baseline
+                      else DoseResult.SCALE_ERROR)
+            return result(status, 0.0)
+        grams = self._read_grams()
         if grams is None:
             return result(DoseResult.SCALE_ERROR, 0.0)
 
@@ -695,7 +831,7 @@ class ThreePhaseDoser:
                 self.tap.tap(taps_n, p["tap_on_ms"], p["tap_off_ms"])
                 state["taps"] += taps_n
             self._sleep_ms(int(p["settle_ms"]))
-            grams = self._stable_grams()
+            grams = self._read_grams()
             if grams is None:
                 return before, DoseResult.SCALE_ERROR, cycles
             cycles += 1
@@ -778,7 +914,7 @@ class ThreePhaseDoser:
                         break
                     continue
                 misses = 0
-                grams = reading.grams
+                grams = reading.grams - self._baseline_g
                 self._objectives(
                     tag + " poll {}{}:".format(
                         polls, "" if reading.stable else " (unstable)"),
@@ -808,7 +944,7 @@ class ThreePhaseDoser:
                      max(0.0, target_g - grams), halt_at_g,
                      int(p["settle_ms"])))
         self._sleep_ms(int(p["settle_ms"]))
-        settled = self._stable_grams()
+        settled = self._read_grams()
         if settled is None:
             return grams, DoseResult.SCALE_ERROR, polls
         self._objectives(tag + " settled:", settled, target_g,

@@ -1061,6 +1061,19 @@ def run(powder_id=None, attended=True, **overrides):
             timeout_s=DOSE_TIMEOUT_S)
 
     doser = doser_factory()
+    # Provenance for the 2026-09-03 read-path change.  All 11 committed
+    # Block G runs were collected with the doser reading the balance
+    # through read_stable(); from this run on it reads bracketed
+    # instantaneous frames instead (main_three_phase._bracket_grams), so
+    # dose numbers either side of this flag are not the same method.
+    echo_extra = {
+        "dose_read_path": ("bracket" if getattr(doser, "bracket_reads", False)
+                           else "read_stable"),
+        "dose_bracket_n": getattr(m3p, "DOSE_BRACKET_N", 0),
+        "dose_bracket_interval_ms": getattr(
+            m3p, "DOSE_BRACKET_INTERVAL_MS", 0),
+        "dose_max_baseline_g": getattr(m3p, "DOSE_MAX_BASELINE_G", 0.0),
+    }
     vib = None
     try:
         import main as rig_main            # resident PR #100 firmware
@@ -1072,6 +1085,7 @@ def run(powder_id=None, attended=True, **overrides):
               "block F will be skipped".format(exc))
     echo = {k: getattr(config, k) for k in CONFIG_ECHO_KEYS
             if hasattr(config, k)}
+    echo.update(echo_extra)
     battery = Battery(
         stepper, tap, servo, balance, vib=vib, doser=doser,
         doser_factory=doser_factory,
