@@ -136,17 +136,27 @@ def run_on_device(do_zero: bool, settle_ms: int, port: str) -> str:
     script = header + DEVICE_SNIPPET
     # Built by concatenation, not str.format: the device snippet contains
     # literal braces (the parity dict) that format() would try to expand.
+    # ``rm`` must not become the command whose status ssh reports, or a
+    # failed mpremote exits 0 and the empty output gets diagnosed as a dead
+    # balance.  A busy serial port -- another session mid-diagnostic -- looks
+    # exactly like a powered-off balance once the status is lost.
     remote = (
         "cat > /tmp/_balance_zero.py <<'__EOF__'\n" + script + "\n__EOF__\n"
         + "source " + PI_VENV
         + "; mpremote connect " + shlex.quote(port)
-        + " run /tmp/_balance_zero.py; rm -f /tmp/_balance_zero.py"
+        + " run /tmp/_balance_zero.py; rc=$?"
+        + "; rm -f /tmp/_balance_zero.py; exit $rc"
     )
     proc = subprocess.run(
         ["ssh", "-o", "StrictHostKeyChecking=no", pi_target(), "bash -s"],
         input=remote, text=True, capture_output=True,
         timeout=max(120, settle_ms // 1000 + 120),
     )
+    blob = (proc.stdout or "") + (proc.stderr or "")
+    if "may be in use by another program" in blob:
+        sys.exit("{} is busy on the Pi -- another session is driving the "
+                 "Pico. Wait for it to finish rather than forcing the "
+                 "port.".format(port))
     if proc.returncode != 0:
         sys.exit("device command failed ({}): {}".format(
             proc.returncode, proc.stderr.strip()[-400:]))

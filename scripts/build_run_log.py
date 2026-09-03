@@ -170,6 +170,31 @@ def find_video(when: dt.datetime | None, broadcasts: list[dict],
 # per-run derived numbers
 
 
+def actuated(dose: dict) -> bool:
+    """Did this dose move either actuator?
+
+    The auger and the tap solenoid are the only things that can put powder
+    in the cup, so a dose that turned neither dispensed nothing -- whatever
+    the balance said.  Both 2026-09-03 Block H runs contain a dose that
+    reported a delivery (7.5393 g and 1.5410 g) with zero revolutions and
+    zero taps: the tare was silently refused while the balance was
+    unstable, and the doser read the *previous* diagnostic's powder,
+    already in the cup, as its own.  Each matches the preceding
+    diagnostic's mass to under a milligram.
+
+    Left un-filtered this is worse than a `scale-error`, because it turns
+    into a plausible-looking mean error in an aggregate.  Doses that
+    predate this check all turned the auger, so nothing already committed
+    changes.  A dose carrying neither field is not evidence of anything
+    and counts as actuated -- this only ever removes a dose the device
+    positively reported as idle.
+    """
+    rev, taps = dose.get("auger_rev"), dose.get("taps")
+    if rev is None and taps is None:
+        return True
+    return bool(rev or 0) or bool(taps or 0)
+
+
 def dispensed_g(run: dict) -> float | None:
     """Powder actually delivered: measured trial gains plus closed-loop doses.
 
@@ -181,7 +206,7 @@ def dispensed_g(run: dict) -> float | None:
         return None
     total = sum(max(0.0, t.get("delta_g") or 0.0) for t in trials)
     total += sum(max(0.0, d.get("dispensed_g") or 0.0)
-                 for d in run.get("doses") or [])
+                 for d in run.get("doses") or [] if actuated(d))
     return total
 
 
@@ -239,7 +264,20 @@ def dose_cell(run: dict) -> str:
     averages a 4 mg error on a 50 mg dose against the same 4 mg on a 1 g
     dose, which are 8 % and 0.4 % of target.  Single-target runs -- every
     run committed so far -- render exactly as before.
+
+    Doses that moved neither actuator are reported rather than averaged
+    (see ``actuated``): the run document's own summaries include them, so
+    the 2026-09-03 re-run's stored mean error is +313.7 mg for a run that
+    dispensed nothing at all.
     """
+    doses = run.get("doses") or []
+    if doses and not all(actuated(d) for d in doses):
+        real = [d for d in doses if actuated(d)]
+        skipped = f"{len(doses) - len(real)} of {len(doses)} never actuated"
+        if not real:
+            return f"no dose actuated ({len(doses)} attempted)"
+        return f"{len(real)}x measured, {skipped}"
+
     by_target = run.get("dose_summary_by_target") or []
     if len(by_target) > 1:
         parts = []
@@ -291,6 +329,8 @@ NOTES_OVERRIDES = {
         "2026-08-05-carboxymethyl-cellulose-aborted.md",
     "20260805T215252Z_carboxymethyl-cellulose":
         "2026-08-05-carboxymethyl-cellulose.md",
+    "20260903T163527Z_salt": "2026-09-03-salt-block-h-first-run.md",
+    "20260903T170437Z_salt": "2026-09-03-salt-block-h-rerun-standdown.md",
 }
 
 

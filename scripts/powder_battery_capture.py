@@ -284,20 +284,56 @@ def summarize(trials):
     return out
 
 
+def dose_actuated(dose):
+    """Did this dose move either actuator?
+
+    The auger and the tap solenoid are the only things that can put
+    powder in the cup, so a dose that turned neither dispensed nothing --
+    whatever the balance reported.  This is the same actuator-gate
+    reasoning ``balance_filter`` uses for blocks A-E, applied to the
+    summaries the dose blocks produce.
+
+    It matters because such a dose does not merely fail, it fails while
+    *looking* like a measurement.  Both 2026-09-03 Block H runs contain
+    one: with the balance too unstable to accept a tare, the doser read
+    the powder already sitting in the cup from the preceding diagnostic
+    as its own delivery -- 7.5393 g against a 50 mg target, and 1.5410 g
+    against a 200 mg one, each matching the diagnostic's mass to under a
+    milligram, both with zero revolutions and zero taps.  Averaged in,
+    that turned a run which dispensed nothing into a stored mean error of
+    +313.7 mg.
+
+    Every dose committed before this check turned the auger, so no
+    existing summary changes.  A dose that carries neither field is not
+    evidence of anything and counts as actuated: this check only ever
+    removes a dose the device positively reported as idle.
+    """
+    rev, taps = dose.get("auger_rev"), dose.get("taps")
+    if rev is None and taps is None:
+        return True
+    return bool(rev or 0) or bool(taps or 0)
+
+
 def dose_summary(doses):
     """Aggregate accuracy/speed over the closed-loop doses.
 
     Kept over *all* doses so the field means what it always meant.  Once
     Block H runs, a single mean mixes 50 mg and 1 g targets and the
     number to read is ``dose_summary_by_target`` instead.
+
+    ``n`` stays the number of doses attempted; the statistics are taken
+    over the ones that actuated (see ``dose_actuated``), and
+    ``n_no_actuation`` says how many were left out.
     """
     if not doses:
         return None
-    errors = [d["error_g"] for d in doses if d["error_g"] is not None]
-    times = [d["elapsed_s"] for d in doses]
+    real = [d for d in doses if dose_actuated(d)]
+    errors = [d["error_g"] for d in real if d["error_g"] is not None]
+    times = [d["elapsed_s"] for d in real]
     n, mean_err, std_err, _, lo, hi = sample_stats(errors)
     return {
         "n": len(doses),
+        "n_no_actuation": len(doses) - len(real),
         "ok": sum(1 for d in doses if d["status"] == "ok"),
         "mean_error_g": mean_err,
         "std_error_g": std_err,
@@ -324,8 +360,9 @@ def dose_summary_by_target(doses):
     out = []
     for (block, target), rows in sorted(
             groups.items(), key=lambda kv: (kv[0][1] or 0.0, kv[0][0])):
-        errors = [r["error_g"] for r in rows if r["error_g"] is not None]
-        times = [r["elapsed_s"] for r in rows]
+        real = [r for r in rows if dose_actuated(r)]
+        errors = [r["error_g"] for r in real if r["error_g"] is not None]
+        times = [r["elapsed_s"] for r in real]
         n, mean_err, std_err, _, lo, hi = sample_stats(errors)
         rel = (100.0 * mean_err / target
                if mean_err is not None and target else None)
@@ -333,6 +370,7 @@ def dose_summary_by_target(doses):
             "block": block,
             "target_g": target,
             "n": len(rows),
+            "n_no_actuation": len(rows) - len(real),
             "ok": sum(1 for r in rows if r["status"] == "ok"),
             "statuses": sorted({r["status"] for r in rows}),
             "mean_error_g": mean_err,
@@ -684,11 +722,13 @@ def print_summary(host_summary, doses):
                   if row["rsd_pct"] is not None else "-"))
     for dose in doses:
         print("dose {}{}: {} {:.4f}/{:.4f} g ({:+.4f} g) in {:.1f} s, "
-              "{} taps, cycles {}".format(
+              "{} taps, cycles {}{}".format(
                   dose.get("block") or DEFAULT_DOSE_BLOCK, dose["n"],
                   dose["status"], dose["dispensed_g"],
                   dose["target_g"], dose["error_g"], dose["elapsed_s"],
-                  dose["taps"], dose["phase_cycles"]))
+                  dose["taps"], dose["phase_cycles"],
+                  "" if dose_actuated(dose) else
+                  "  <- NEITHER ACTUATOR MOVED; not a measurement"))
     by_target = dose_summary_by_target(doses) or []
     if len(by_target) > 1:
         # The Block G / Block H comparison, which is the point of

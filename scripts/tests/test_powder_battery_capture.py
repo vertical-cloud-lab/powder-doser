@@ -161,6 +161,44 @@ def test_dose_summary_by_target():
           cap.dose_summary_by_target([]) is None)
 
 
+def test_a_dose_that_never_actuated_is_not_averaged_in():
+    """2026-09-03: a refused tare turned cup residue into an 'overshoot'.
+
+    Both Block H runs contain a dose that reported a delivery with zero
+    revolutions and zero taps -- the doser read powder the *pre-flight*
+    had put in the cup, because the balance was too unstable to accept a
+    tare.  Averaged in, it made a run that dispensed nothing report a
+    +313.7 mg mean error, which is the kind of number that ends up in a
+    manuscript.
+    """
+    real = {"n": 0, "block": "H", "target_g": 0.200, "error_g": -0.010,
+            "elapsed_s": 90.0, "status": "stalled", "auger_rev": 2.0,
+            "taps": 4}
+    phantom = {"n": 1, "block": "H", "target_g": 0.200, "error_g": 1.341,
+               "elapsed_s": 10.0, "status": "overshoot", "auger_rev": 0.0,
+               "taps": 0}
+    agg = cap.dose_summary([real, phantom])
+    check("attempts still counted", agg["n"] == 2, agg)
+    check("the idle dose is reported", agg["n_no_actuation"] == 1, agg)
+    check("mean error is the actuated dose alone",
+          abs(agg["mean_error_g"] + 0.010) < 1e-9, agg)
+    check("max abs error excludes the phantom",
+          abs(agg["max_abs_error_g"] - 0.010) < 1e-9, agg)
+
+    row = cap.dose_summary_by_target([real, phantom])[0]
+    check("by-target excludes it too",
+          row["n"] == 2 and row["n_no_actuation"] == 1
+          and abs(row["mean_error_g"] + 0.010) < 1e-9, row)
+
+    # A dose driven only by the tap solenoid is a real dose.
+    tapped = dict(phantom, auger_rev=0.0, taps=6)
+    check("taps alone count as actuation", cap.dose_actuated(tapped))
+    # ...and a dose with neither field recorded must not be dropped, or
+    # every pre-Block-H run silently loses its accuracy numbers.
+    check("missing fields are not evidence of idleness",
+          cap.dose_actuated({"n": 0, "error_g": -0.004}))
+
+
 def test_block_marker():
     check("block marker", cap.block_marker("[battery] block C") == "C")
     check("block marker trailing text",

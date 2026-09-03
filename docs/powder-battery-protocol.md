@@ -237,6 +237,50 @@ source ~/.config/powder-doser/env       # MONGODB_URI
 `--unattended` makes every device prompt auto-continue (stall prompts
 auto-answer `keep`), so the run never blocks on a keyboard.
 
+**One prompt `--unattended` cannot honestly answer** is Block G/H's
+*"EMPTY the collection cup now"*. Nothing in an unattended run can empty
+a cup, so the prompt is auto-continued with the previous dose's — or the
+pre-flight's — powder still in it. If the tare is then refused (which
+happens silently on this balance while it is unstable), the doser reads
+the accumulated contents as *this* dose's delivery. It has fired twice,
+both on 2026-09-03: a 50 mg dose reported 7.5393 g and a 200 mg dose
+reported 1.5410 g, each matching the preceding diagnostic's mass to
+under a milligram, with **zero auger revolutions** on the row. Check
+`auger_rev` before believing any Block G/H dose, and empty the cup
+between runs.
+
+### When not to run: the shared fume hood (2026-09-03)
+
+**While students are using this fume hood, the dose blocks (G and H) do
+not run.** Declared by @swcharles on issue #116 after a student used the
+hood's compressed air twice in one session; deferred to the new fume
+hood.
+
+This is a different objection from the standing "Block G is blocked on
+the granite" note, and the difference decides what fixes it:
+
+- The pre-run environment survey is a **snapshot, not a guarantee**. On
+  2026-09-03 the 240 s survey returned the best numbers of the whole
+  campaign — 0.011 mg jitter, 97 % stable frames, 0.8 mg of
+  environmental error over 180 s against a ±5 mg dose band, the first
+  time the Block G/H gate has passed since the fume-hood move. The bench
+  then degraded to 0–13 % stable and stayed there for over an hour,
+  because the disturbance arrived from outside the experiment.
+- **A dose cannot be bracketed.** Blocks A–E survive an occupied lab
+  because each trial is seconds long with a do-nothing window either
+  side, which `balance_filter` fits and subtracts. Mass arrives
+  throughout a closed-loop dose, so there is no do-nothing interval and
+  no amount of software separates a disturbance from the dose.
+- **The unit of loss is the run.** Two Block H attempts on 2026-09-03
+  produced zero usable doses between them, in ~4 minutes of rig time and
+  a session of bench time.
+
+So: **blocks A–E remain runnable in a shared hood** — that is what the
+2026-08-20 artifact rejection bought, and eight powders have been
+characterised through it. Blocks G and H wait for a hood the experiment
+controls. Neither is a reason to skip the pre-run survey; a run that
+starts is still worth gating.
+
 ### Pre-run bench checklist (the manual step)
 
 An unattended run cannot see the rig, and every item below produces the

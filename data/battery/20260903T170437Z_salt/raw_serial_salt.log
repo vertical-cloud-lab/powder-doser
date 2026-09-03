@@ -1,0 +1,89 @@
+import powder_battery
+>>> powder_battery.run(powder_id='salt', attended=False, blocks="H")
+[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+RUN,BEGIN
+META,powder_id,salt
+META,battery_version,3
+META,blocks,H
+META,tilts_deg,0.0;45.0;90.0
+META,baseline_reads,8
+META,hold_s,15
+META,rotation_trials,6
+META,rotation_step_deg,360.0
+META,rotation_rpm,30.0
+META,speed_rpms,15.0;45.0;90.0
+META,speed_revs,3.0
+META,tap_tilts,0.0;45.0
+META,tap_trials,8
+META,taps_per_point,1
+META,refeed_deg,360.0
+META,vib_bursts,3
+META,dose_repeats,3
+META,dose_target_g,1.0
+META,dose_h_targets_g,0.0500;0.2000
+META,dose_h_repeats,3
+META,settle_ms,2000
+META,min_flow_g,0.0005
+META,bracket_n,6
+META,bracket_ms,400
+META,shock_g,0.01
+META,max_resid_g,0.0015
+META,quiet_tries,8
+META,max_trial_retries,2
+META,drift_correct,1
+META,attended,0
+META,config.SCALE_BAUD,19200
+META,config.SCALE_BITS,8
+META,config.SCALE_PARITY,0
+META,config.SCALE_STABLE_TIMEOUT_MS,10000
+META,config.SCALE_STOP,1
+META,config.SERVO_SPEED_DEG_PER_S,60
+META,config.STEPPER_ACCEL_REV_PER_S2,4.0
+META,config.STEPPER_FULL_STEPS_REV,200
+META,config.STEPPER_MICROSTEPS,8
+META,config.STEPPER_SPEED_RPM,60
+META,config.TAP_OFF_MS,150
+META,config.TAP_ON_MS,60
+META,config.TAP_PWM_DUTY,1.0
+[battery] block H
+PROMPT,block H (small closed-loop doses): EMPTY the collection cup now, then Enter ('skip'/'abort')
+META,dose_h.thresholds.0.0500,0.0500;0.0250;0.0050
+[battery] dose target 0.0500 g, thresholds 0.0500/0.0250/0.0050
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] done: DoseResult(scale-error: 0.0000/0.0500 g in 13.0s; cycles -; 0.00 auger rev, 0 taps)
+DOSE,0,0.0500,0.0000,-0.0500,scale-error,13.0,0.00,0,,13312,H
+PROMPT,block H dose 0 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] done: DoseResult(scale-error: 0.0000/0.0500 g in 12.0s; cycles -; 0.00 auger rev, 0 taps)
+DOSE,1,0.0500,0.0000,-0.0500,scale-error,12.0,0.00,0,,25113,H
+PROMPT,block H dose 1 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] done: DoseResult(scale-error: 0.0000/0.0500 g in 13.0s; cycles -; 0.00 auger rev, 0 taps)
+DOSE,2,0.0500,0.0000,-0.0500,scale-error,13.0,0.00,0,,38354,H
+PROMPT,block H dose 2 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+META,dose_h.thresholds.0.2000,0.2000;0.0500;0.0050
+[battery] dose target 0.2000 g, thresholds 0.2000/0.0500/0.0050
+[dose] three-phase dose to 0.2000 g; taring scale
+[dose] done: DoseResult(scale-error: 0.0000/0.2000 g in 12.0s; cycles -; 0.00 auger rev, 0 taps)
+DOSE,3,0.2000,0.0000,-0.2000,scale-error,12.0,0.00,0,,50167,H
+PROMPT,block H dose 3 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.2000 g; taring scale
+[dose] done: DoseResult(scale-error: 0.0000/0.2000 g in 13.0s; cycles -; 0.00 auger rev, 0 taps)
+DOSE,4,0.2000,0.0000,-0.2000,scale-error,13.0,0.00,0,,63425,H
+PROMPT,block H dose 4 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.2000 g; taring scale
+=== phase 1/3 'bulk' skipped (-1.3410 g to go is already <= 0.2000 g threshold)
+=== phase 2/3 'fine' skipped (-1.3410 g to go is already <= 0.0500 g threshold)
+=== phase 3/3 'tap' skipped (-1.3410 g to go is already <= 0.0050 g threshold)
+[dose] done: DoseResult(overshoot: 1.5410/0.2000 g in 10.0s; cycles bulk:0, fine:0, tap:0; 0.00 auger rev, 0 taps)
+DOSE,5,0.2000,1.5410,1.3410,overshoot,10.0,0.00,0,bulk:0;fine:0;tap:0,73027,H
+META,park_tilt_deg,0.0
+META,env.brackets,0
+META,env.disturbed_trials,0
+META,env.drift_corrected_g,0.0000
+META,env.quiet_waits,0
+META,env.retries,0
+META,env.shock_events,0
+META,env.shock_total_g,0.0000
+META,env.unsettled_brackets,0
+RUN,END,ok

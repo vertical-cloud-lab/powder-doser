@@ -97,6 +97,42 @@ def test_dispensed_mass_ignores_negative_artifacts():
           rl.dispensed_g({}) is None)
 
 
+def test_a_dose_that_never_actuated_is_not_counted_as_powder():
+    print("\n-- cup residue read after a refused tare is not a dose --")
+    # The 2026-09-03 re-run: six doses, none of which turned the auger,
+    # the last of which reported the pre-flight's own 1.541 g.  The log
+    # said "1.54 g dispensed, 200 mg 3x +313.7 mg" for a run that
+    # dispensed nothing.
+    doses = [{"n": i, "block": "H", "target_g": 0.05, "dispensed_g": 0.0,
+              "error_g": -0.05, "status": "scale-error", "auger_rev": 0.0,
+              "taps": 0} for i in range(3)]
+    doses.append({"n": 3, "block": "H", "target_g": 0.20,
+                  "dispensed_g": 1.541, "error_g": 1.341,
+                  "status": "overshoot", "auger_rev": 0.0, "taps": 0})
+    run = {"trials": [], "doses": doses}
+    check("an idle dose contributes no dispensed mass",
+          abs(rl.dispensed_g(run)) < 1e-9, str(rl.dispensed_g(run)))
+    cell = rl.dose_cell(run)
+    check("the cell says so rather than averaging",
+          "no dose actuated" in cell, cell)
+    check("no error number is quoted for a run that dispensed nothing",
+          "mg" not in cell.replace("50 mg", ""), cell)
+
+    doses.append({"n": 4, "block": "H", "target_g": 0.20,
+                  "dispensed_g": 0.168, "error_g": -0.032,
+                  "status": "stalled", "auger_rev": 1.5, "taps": 5})
+    cell = rl.dose_cell(run)
+    check("a partly-actuated run reports the split",
+          "1x measured" in cell and "4 of 5 never actuated" in cell, cell)
+    check("its dispensed mass is the actuated dose only",
+          abs(rl.dispensed_g(run) - 0.168) < 1e-9, str(rl.dispensed_g(run)))
+
+    # Committed runs carry auger_rev on every dose and all of them turned;
+    # a dose with neither field must still count, or older logs change.
+    check("missing actuation fields are not read as idle",
+          rl.actuated({"n": 0, "dispensed_g": 0.9}))
+
+
 def test_blocks_reflect_what_ran_not_what_was_asked_for():
     print("\n-- a skipped block does not appear as if it ran --")
     run = {"parameters": {"blocks": "ABCDEFG"},

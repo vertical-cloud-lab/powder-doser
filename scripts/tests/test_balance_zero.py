@@ -167,6 +167,63 @@ def test_snippet_documents_why_the_fallback_exists():
     check("erCd" in src, "the silent-refusal reason should be recorded")
 
 
+def _run_on_device_with(stdout="", stderr="", returncode=0):
+    """Drive run_on_device() against a stubbed ssh, returning the remote script."""
+    import os
+    import subprocess as _sp
+
+    captured = {}
+
+    class FakeProc:
+        def __init__(self):
+            self.stdout, self.stderr, self.returncode = stdout, stderr, returncode
+
+    def fake_run(argv, **kwargs):
+        captured["remote"] = kwargs.get("input", "")
+        return FakeProc()
+
+    saved_run, saved_env = _sp.run, dict(os.environ)
+    os.environ["RPI_POWDER_DOSER_USERNAME"] = "u"
+    os.environ["RPI_POWDER_DOSER_HOSTNAME"] = "h"
+    balance_zero.subprocess.run = fake_run
+    try:
+        out = balance_zero.run_on_device(False, 400, "/dev/ttyACM0")
+        return captured.get("remote", ""), out
+    finally:
+        balance_zero.subprocess.run = saved_run
+        os.environ.clear()
+        os.environ.update(saved_env)
+
+
+def test_mpremote_failure_is_not_swallowed_by_the_cleanup_rm():
+    # The remote command used to end `mpremote ... run X; rm -f X`, so ssh
+    # reported rm's status.  A failed mpremote then exited 0 with empty
+    # output, and summarize() blamed the balance.
+    remote, _out = _run_on_device_with()
+    tail = remote.strip().splitlines()[-1]
+    check("rc=$?" in tail and tail.rstrip().endswith("exit $rc"),
+          "mpremote's exit status must survive the cleanup rm: {!r}".format(tail))
+    check(tail.index("rc=$?") < tail.index("rm -f"),
+          "the status has to be captured before rm runs: {!r}".format(tail))
+
+
+def test_busy_port_is_not_diagnosed_as_a_dead_balance():
+    # 2026-09-03: a parallel session held /dev/ttyACM0 for a servo
+    # diagnostic.  The script printed "no samples -- is the balance switched
+    # on?" and the balance was fine.  Wrong instrument blamed, wrong fix.
+    busy = "mpremote: failed to access /dev/ttyACM0 (it may be in use by another program)"
+    for where in ("stdout", "stderr"):
+        try:
+            _run_on_device_with(**{where: busy}, returncode=1)
+        except SystemExit as exc:
+            msg = str(exc)
+            check("busy" in msg, "a busy port should say so, got {!r}".format(msg))
+            check("switched on" not in msg,
+                  "a busy port must not be reported as a dead balance")
+        else:
+            raise AssertionError("a busy port on {} should abort".format(where))
+
+
 def main():
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):
