@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-22 entries, 14 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+23 entries, 15 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-03 21:40 | 2026-09-03 21:44 | 3:38 | `salt` | H | -- | 0.77 g | -- | 200 mg 3x +2.8 mg; 50 mg 3x +4.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T214049Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-new-hood.md) | [~1 min](https://youtu.be/xjtJNMo8DKw?t=5734) |
 | 2026-09-03 17:04 | 2026-09-03 17:05 | 1:17 | `salt` | H | -- | 0.00 g | -- | no dose actuated (6 attempted) | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T170437Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun-standdown.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=21862) |
 | 2026-09-03 16:35 | 2026-09-03 16:37 | 2:28 | `salt` | H | -- | 0.23 g | -- | 4x measured, 2 of 6 never actuated | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T163527Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-first-run.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=20112) |
 | 2026-08-21 19:20 | 2026-08-21 19:35 | 14:32 | `salt` | ABCDE | C/E 30 · D 15/45/90 RPM | 6.31 g | 265.17 mg/rev | -- | sigma 2.9 mg, 1 shocks, 10 retries | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260821T192031Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-21-salt-control-repeat.md) | [~1 min](https://youtu.be/Ma91Vx8U-YY?t=1216) |
@@ -34,6 +35,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-03 21:40 UTC -- salt
+
+- **Window** 2026-09-03T21:40:49.956552+00:00 -> 2026-09-03T21:44:28.108887+00:00  (3:38)
+- **Lab clock** 2026-09-03 15:40:49 MDT -> 2026-09-03 15:44:28 MDT
+- **Powder** salt (Block H, 50 mg + 200 mg targets)  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.7709 g
+- **Closed-loop doses** 200 mg 3x +2.8 mg; 50 mg 3x +4.2 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260903T214049Z_salt](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T214049Z_salt)
+- **Notes** [docs/battery-runs/2026-09-03-salt-block-h-new-hood.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-new-hood.md)
+- **Video** [https://youtu.be/xjtJNMo8DKw?t=5734](https://youtu.be/xjtJNMo8DKw?t=5734) -- accurate to about a minute
 
 ### 2026-09-03 17:04 UTC -- salt
 

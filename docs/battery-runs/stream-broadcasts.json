@@ -777,6 +777,27 @@
       "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 11:00",
       "camera": "picam-d1pr",
       "nominal_start_utc": "2026-09-03T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "GjNhlw72-z0",
+      "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 19:37",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-03T19:37:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "zWdHivvfKPA",
+      "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 19:38",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-03T19:38:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "xjtJNMo8DKw",
+      "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 20:05",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-03T20:05:00+00:00",
       "live_status": "is_live"
     }
   ]
