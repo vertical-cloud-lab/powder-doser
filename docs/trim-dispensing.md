@@ -279,7 +279,9 @@ discharge, if tilt/auger stop cannot bound the final slug."
 ## 7. What to do next
 
 **Bench measurements, in priority order.** Every number above is simulated;
-these are what would make them real.
+these are what would make them real. The full protocols, sample sizes, and
+closed-loop campaign designs are in
+[`trim-bench-plan.md`](trim-bench-plan.md).
 
 1. **Identify `tau_bal` in the configured serial/response mode**, with
    confidence intervals, across load and filter setting, quiet and vibrating.
