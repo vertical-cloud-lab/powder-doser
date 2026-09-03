@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+xanthan-gum,0,1.0,0.9564,-0.0436,stalled,174.0,6.72,76,bulk:16;fine:16;tap:38,575915
+xanthan-gum,1,1.0,0.9699,-0.0301,stalled,199.0,6.97,90,bulk:18;fine:18;tap:45,775016
+xanthan-gum,2,1.0,0.975,-0.025,stalled,193.0,6.97,86,bulk:18;fine:18;tap:43,968276

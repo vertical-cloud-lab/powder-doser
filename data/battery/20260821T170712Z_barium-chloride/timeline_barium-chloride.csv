@@ -1,0 +1,6 @@
+powder_id,block,started_utc,started_local,elapsed_s
+barium-chloride,A,2026-08-21T17:07:14.412089+00:00,2026-08-21 11:07:14 MDT,2.4
+barium-chloride,B,2026-08-21T17:08:04.191450+00:00,2026-08-21 11:08:04 MDT,52.2
+barium-chloride,C,2026-08-21T17:09:46.040650+00:00,2026-08-21 11:09:46 MDT,154.0
+barium-chloride,D,2026-08-21T17:13:48.964662+00:00,2026-08-21 11:13:48 MDT,396.9
+barium-chloride,E,2026-08-21T17:14:49.874159+00:00,2026-08-21 11:14:49 MDT,457.9
