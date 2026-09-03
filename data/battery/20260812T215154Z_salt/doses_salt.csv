@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+salt,0,1.0,0.9956,-0.0044,ok,169.0,5.42,70,bulk:11;fine:14;tap:35,573891
+salt,1,1.0,0.9968,-0.0032,ok,132.0,4.5,42,bulk:12;fine:14;tap:21,706340
+salt,2,1.0,0.9953,-0.0047,ok,203.0,5.07,122,bulk:12;fine:11;tap:61,909177
