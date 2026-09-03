@@ -189,10 +189,11 @@ def blocks_run(run: dict) -> str:
     """Blocks that actually produced trials, not the blocks that were asked for."""
     seen = {t.get("block") for t in run.get("trials") or []}
     seen |= {d.get("block") for d in run.get("device_summary") or []}
-    ordered = "".join(b for b in "ABCDEFG" if b in seen)
-    if run.get("doses"):
-        ordered = "".join(sorted(set(ordered + "G")))
-    return ordered
+    # Dose blocks emit DOSE rows rather than trials, so they have to be
+    # read off the doses themselves.  Rows predating Block H carry no
+    # block and are Block G by definition.
+    seen |= {d.get("block") or "G" for d in run.get("doses") or []}
+    return "".join(b for b in "ABCDEFGH" if b in seen)
 
 
 def speeds(run: dict) -> str:
@@ -225,6 +226,23 @@ def feed_factor(run: dict, tilt: float) -> float | None:
 
 
 def dose_cell(run: dict) -> str:
+    """Closed-loop dose accuracy, per target.
+
+    Once Block H runs, a run holds doses at 50 mg, 200 mg and 1 g, and a
+    single mean over all of them is not a number anybody wants: it
+    averages a 4 mg error on a 50 mg dose against the same 4 mg on a 1 g
+    dose, which are 8 % and 0.4 % of target.  Single-target runs -- every
+    run committed so far -- render exactly as before.
+    """
+    by_target = run.get("dose_summary_by_target") or []
+    if len(by_target) > 1:
+        parts = []
+        for row in sorted(by_target, key=lambda r: -(r["target_g"] or 0.0)):
+            err = row.get("mean_error_g")
+            mg = f"{row['target_g'] * 1000:.0f} mg"
+            parts.append(f"{mg} {row['n']}x {err * 1000:+.1f} mg"
+                         if err is not None else f"{mg} {row['n']}x")
+        return "; ".join(parts)
     ds = run.get("dose_summary") or {}
     if not ds.get("n"):
         return "--"

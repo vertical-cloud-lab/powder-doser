@@ -34,6 +34,16 @@ The battery covers every degree of freedom of the rig once:
                        with the THREE-PHASE controller (PR #124) under
                        the frozen parameter set below --> accuracy,
                        time-to-dose and phase breakdown per powder.
+  Block H  "small"     The same controller asked for SMALLER doses --
+                       three each at 50 mg and 200 mg.  1.000 g is
+                       deliberately not repeated here: Block G already
+                       measures it in the same run under identical
+                       conditions, so the three targets together give
+                       error-vs-target over a 20x span.  Only the two
+                       hand-over thresholds move with the target (see
+                       ``dose_thresholds_for``); the phases, the
+                       tolerance and every other parameter are the
+                       frozen Block G set.
 
 Tilt convention: user-facing TILT degrees, 0 = tube horizontal,
 90 = tube vertical -- i.e. the servo-horn convention of main.py and
@@ -48,7 +58,7 @@ characterize.py stream; captured by ``scripts/powder_battery_capture.py``)::
     META,<key>,<value>
     CSV,<block>,<tilt_deg>,<phase>,<trial>,<action>,<rpm>,<before_g>,<after_g>,<delta_g>,<flag>,<t_ms>
     POLL,<block>,<tilt_deg>,<rpm>,<t_ms>,<grams>,<stable>
-    DOSE,<n>,<target_g>,<dispensed_g>,<error_g>,<status>,<elapsed_s>,<auger_rev>,<taps>,<phase_cycles>,<t_ms>
+    DOSE,<n>,<target_g>,<dispensed_g>,<error_g>,<status>,<elapsed_s>,<auger_rev>,<taps>,<phase_cycles>,<t_ms>,<block>
     SUM,<block>,<tilt_deg>,<phase>,<n>,<mean_g>,<std_g>,<sem_g>,<min_g>,<max_g>
     PROMPT,<message>
     RUN,END,<status>
@@ -57,7 +67,10 @@ characterize.py stream; captured by ``scripts/powder_battery_capture.py``)::
 errors -- a cohesive powder refusing to move at tilt 0 is exactly the
 behaviour the battery exists to record -- so they are kept (flagged);
 the operator is only prompted after ``MAX_STALLS`` consecutive
-low-flow rows in case the hopper is simply empty.  Unattended runs
+low-flow rows in case the hopper is simply empty.  The trailing
+``block`` on a DOSE row is ``G`` or ``H``; it was added with Block H
+(``battery_version`` 3) and rows without it are read as Block G, so
+every committed run stays parseable.  Unattended runs
 (``attended=False``) auto-answer every prompt (stall prompts answer
 ``keep``), so the battery never blocks on a keyboard.
 
@@ -87,7 +100,7 @@ import balance_filter
 # only deliberately (and bump SCHEMA "battery_version"), because edits
 # break comparability with earlier runs.
 # -----------------------------------------------------------------------
-BATTERY_VERSION   = 2
+BATTERY_VERSION   = 3
 POWDER_ID         = None
 
 TILTS_DEG         = [0.0, 45.0, 90.0]  # tube tilt; 0 horizontal, 90 vertical
@@ -120,6 +133,14 @@ DOSE_REPEATS      = 3       # Block G
 DOSE_TARGET_G     = 1.000
 DOSE_TIMEOUT_S    = 900
 
+# Block H: the same closed-loop controller asked for SMALLER doses, to
+# see whether accuracy is a fixed mass or a fixed fraction of the
+# target.  1.000 g is deliberately absent -- Block G already measures
+# it under identical conditions, so Block H's points are compared
+# against that rather than re-measuring it.
+DOSE_H_TARGETS_G  = [0.050, 0.200]
+DOSE_H_REPEATS    = 3       # per target, matching Block G's replication
+
 SETTLE_MS         = 2000    # wait after actuation before trusting scale
 TILT_SETTLE_MS    = 2000    # extra wait after a servo move
 MIN_FLOW_G        = 0.0005  # below this a trial is flagged lowflow
@@ -146,7 +167,7 @@ QUIET_TRIES       = 8       # brackets to try while waiting for a quiet one
 MAX_TRIAL_RETRIES = 2       # re-measurements of a disturbed trial
 DRIFT_CORRECT     = True    # extrapolate pre-action creep across the action
 
-BLOCKS            = "ABCDEFG"   # which blocks to run, in order
+BLOCKS            = "ABCDEFGH"  # which blocks to run, in order
 
 # A&D HR-100A capacity.  Capacity is *gross*: taring the vessel does not
 # buy any of it back, so the battery warns before it runs out rather
@@ -185,6 +206,50 @@ DOSE_PHASES = (
         "max_cycles": 200,
     },
 )
+
+def dose_thresholds_for(target_g, thresholds=None, phases=None):
+    """Hand-over thresholds for a dose of ``target_g``.
+
+    Block G's frozen thresholds are absolute masses chosen around the
+    *actuators*, not around the target: t2 (fine->tap) is roughly two
+    fine increments, and t3 is the tolerance the balance can resolve.
+    Scaling all three with the target would therefore be wrong -- it
+    would ask the tap phase to close a band narrower than one tap, and
+    ask the balance for a resolution it does not have.  Two rules, each
+    of which is the identity at 1.000 g, so Block G is untouched:
+
+    * ``t1 = min(t1, target)`` -- never enter the bulk phase for a dose
+      that is not much larger than the mass already in flight when the
+      auger stops (0.12 g for salt).  The controller leaves bulk once
+      ``remaining <= t1 + anticipation``, so a target at or below t1
+      skips bulk outright and the dose starts in the fine phase.
+    * ``t2 = min(t2, target / 2)`` -- give the tap phase at least the
+      last half of a small dose.  One 45-deg fine increment is ~20 mg
+      on a fast powder, which is a large fraction of a 50 mg dose, so
+      handing over at the frozen 50 mg would leave the fine phase able
+      to overshoot the whole target in a single step.
+    * ``t3`` is unchanged: the tolerance is set by what the balance can
+      resolve in this room, not by how much was asked for.
+
+    Returns ``(thresholds, phases)`` -- the phase list is passed through
+    unchanged, so the doser always sees exactly the three phases the
+    bench has run all along.
+    """
+    t1, t2, t3 = list(thresholds or DOSE_THRESHOLDS)
+    scaled = (min(t1, target_g), min(t2, target_g / 2.0), t3)
+    return scaled, [dict(p) for p in (phases or DOSE_PHASES)]
+
+
+def dose_target_usable(target_g, thresholds=None):
+    """Is ``target_g`` big enough for the controller to mean anything?
+
+    Below ~4x the tolerance the hand-over band collapses into the
+    tolerance band and the "dose" is one actuator quantum, so such a
+    target is recorded as skipped rather than run and reported.
+    """
+    t3 = list(thresholds or DOSE_THRESHOLDS)[2]
+    return target_g > 4.0 * t3
+
 
 # Phase labels used in CSV/SUM rows.
 BASELINE = "baseline"
@@ -257,7 +322,9 @@ class Battery:
                  rotation_rpm=None, speed_rpms=None, speed_revs=None,
                  speed_poll_ms=None, tap_tilts=None, tap_trials=None,
                  taps_per_point=None, refeed_deg=None, vib_bursts=None,
-                 dose_repeats=None, dose_target_g=None, settle_ms=None,
+                 dose_repeats=None, dose_target_g=None,
+                 doser_factory=None, dose_h_targets_g=None,
+                 dose_h_repeats=None, settle_ms=None,
                  tilt_settle_ms=None, min_flow_g=None, max_stalls=None,
                  max_read_retries=None, bracket_n=None, bracket_ms=None,
                  shock_g=None, max_resid_g=None, quiet_tries=None,
@@ -269,6 +336,11 @@ class Battery:
         self.scale = scale
         self.vib = vib
         self.doser = doser
+        # Block H needs a doser per target, because the hand-over
+        # thresholds depend on the target.  Supplied as a factory so
+        # this module stays hardware-agnostic: only run() knows the
+        # concrete ThreePhaseDoser class.
+        self.doser_factory = doser_factory
         self.log = log
         if sleep_ms is None:
             try:
@@ -303,6 +375,10 @@ class Battery:
         self.vib_bursts = _default(vib_bursts, VIB_BURSTS)
         self.dose_repeats = _default(dose_repeats, DOSE_REPEATS)
         self.dose_target_g = _default(dose_target_g, DOSE_TARGET_G)
+        self.dose_h_targets_g = [float(t) for t in
+                                 _default(dose_h_targets_g,
+                                          DOSE_H_TARGETS_G)]
+        self.dose_h_repeats = _default(dose_h_repeats, DOSE_H_REPEATS)
         self.settle_ms = _default(settle_ms, SETTLE_MS)
         self.tilt_settle_ms = _default(tilt_settle_ms, TILT_SETTLE_MS)
         self.min_flow_g = _default(min_flow_g, MIN_FLOW_G)
@@ -772,6 +848,31 @@ class Battery:
 
         self._burst_block("F", VIB, bursts, self.vib_bursts)
 
+    def _run_doses(self, block, doser, target_g, repeats, n0=0, last=True):
+        """Emit ``repeats`` closed-loop doses of ``target_g`` as DOSE rows.
+
+        Shared by Blocks G and H so a small dose is recorded exactly
+        like a 1 g one and the two are directly comparable.  ``n`` is
+        monotonic within the block, so ``(block, n)`` keys a dose even
+        when a block sweeps several targets.
+        """
+        for i in range(repeats):
+            n = n0 + i
+            result = doser.dose(target_g)
+            cycles = ";".join("{}:{}".format(name, count)
+                              for name, count in result.phase_cycles)
+            self._emit("DOSE", n, _fmt_g(result.target_g),
+                       _fmt_g(result.dispensed_g),
+                       _fmt_g(result.dispensed_g - result.target_g),
+                       result.status, "{:.1f}".format(result.elapsed_s),
+                       "{:.2f}".format(result.auger_deg / 360.0),
+                       result.taps, cycles, self._elapsed_ms(), block)
+            self._tilt = None    # the doser moved the servo itself
+            if not (last and i + 1 == repeats):
+                self._prompt_or_raise(
+                    "block {} dose {} done -- empty the cup for the next "
+                    "dose, then Enter ('skip'/'abort')".format(block, n))
+
     def _block_g_dose(self):
         if self.doser is None:
             self._emit("META", "dose", "unavailable")
@@ -781,21 +882,55 @@ class Battery:
         self._prompt_or_raise(
             "block G (three-phase doses): EMPTY the collection cup now, "
             "then Enter ('skip'/'abort')")
-        for n in range(self.dose_repeats):
-            result = self.doser.dose(self.dose_target_g)
-            cycles = ";".join("{}:{}".format(name, count)
-                              for name, count in result.phase_cycles)
-            self._emit("DOSE", n, _fmt_g(result.target_g),
-                       _fmt_g(result.dispensed_g),
-                       _fmt_g(result.dispensed_g - result.target_g),
-                       result.status, "{:.1f}".format(result.elapsed_s),
-                       "{:.2f}".format(result.auger_deg / 360.0),
-                       result.taps, cycles, self._elapsed_ms())
-            self._tilt = None    # the doser moved the servo itself
-            if n + 1 < self.dose_repeats:
-                self._prompt_or_raise(
-                    "dose {} done -- empty the cup for the next dose, "
-                    "then Enter ('skip'/'abort')".format(n + 1))
+        self._run_doses("G", self.doser, self.dose_target_g,
+                        self.dose_repeats)
+
+    def _block_h_small_dose(self):
+        """Closed-loop doses at targets smaller than Block G's 1.000 g.
+
+        Same controller, same phases, same tolerance -- only the target
+        and the two hand-over thresholds change (see
+        ``dose_thresholds_for``).  The question is whether dose error is
+        a fixed mass (so a 50 mg dose is 20x worse in relative terms
+        than a 1 g one) or a fixed fraction of the target.
+        """
+        if self.doser_factory is None:
+            self._emit("META", "dose_h", "unavailable")
+            self.log("[battery] no doser factory wired -- skipping block "
+                     "H (a Block H dose needs thresholds rescaled to its "
+                     "target, so it cannot reuse Block G's doser)")
+            return
+        targets = [t for t in self.dose_h_targets_g if t > 0]
+        skipped = [t for t in targets if not dose_target_usable(t)]
+        for target in skipped:
+            self._emit("META", "dose_h.skipped." + _fmt_g(target),
+                       "target below 4x tolerance")
+            self.log("[battery] dose target {:.4f} g skipped -- below "
+                     "4x the dose tolerance, the hand-over band would "
+                     "collapse into it".format(target))
+        targets = [t for t in targets if dose_target_usable(t)]
+        if not targets:
+            return
+        self._prompt_or_raise(
+            "block H (small closed-loop doses): EMPTY the collection cup "
+            "now, then Enter ('skip'/'abort')")
+        n = 0
+        for index, target in enumerate(targets):
+            thresholds, phases = dose_thresholds_for(target)
+            self._emit("META", "dose_h.thresholds." + _fmt_g(target),
+                       ";".join(_fmt_g(t) for t in thresholds))
+            # Deliberately not "[battery] block H ...": the host reads
+            # that prefix as a block-start marker for the run timeline.
+            self.log("[battery] dose target {:.4f} g, thresholds "
+                     "{}".format(target,
+                                 "/".join(_fmt_g(t) for t in thresholds)))
+            doser = self.doser_factory(target_g=target,
+                                       thresholds=list(thresholds),
+                                       phases=phases)
+            last_target = index + 1 == len(targets)
+            self._run_doses("H", doser, target, self.dose_h_repeats,
+                            n0=n, last=last_target)
+            n += self.dose_h_repeats
 
     # -- entry ---------------------------------------------------------
 
@@ -822,6 +957,9 @@ class Battery:
                 ("vib_bursts", self.vib_bursts),
                 ("dose_repeats", self.dose_repeats),
                 ("dose_target_g", self.dose_target_g),
+                ("dose_h_targets_g",
+                 ";".join(_fmt_g(t) for t in self.dose_h_targets_g)),
+                ("dose_h_repeats", self.dose_h_repeats),
                 ("settle_ms", self.settle_ms),
                 ("min_flow_g", self.min_flow_g),
                 ("bracket_n", self.bracket_n),
@@ -843,6 +981,7 @@ class Battery:
             "E": self._block_e_tap,
             "F": self._block_f_vib,
             "G": self._block_g_dose,
+            "H": self._block_h_small_dose,
         }
         status = "ok"
         try:
@@ -908,11 +1047,20 @@ def run(powder_id=None, attended=True, **overrides):
     tap = m3p.Tap()
     servo = m3p.Servo()
     balance = m3p.Scale()
-    doser = m3p.ThreePhaseDoser(
-        stepper, tap, servo, balance, config,
-        phases=[dict(p) for p in DOSE_PHASES],
-        thresholds=list(DOSE_THRESHOLDS),
-        timeout_s=DOSE_TIMEOUT_S)
+    def doser_factory(target_g=None, thresholds=None, phases=None):
+        """A doser configured for one target.
+
+        Block G's doser is just the ``target_g=DOSE_TARGET_G`` case, so
+        both blocks run the identical class with the identical three
+        phases -- only the hand-over thresholds differ.
+        """
+        return m3p.ThreePhaseDoser(
+            stepper, tap, servo, balance, config,
+            phases=[dict(p) for p in (phases or DOSE_PHASES)],
+            thresholds=list(thresholds or DOSE_THRESHOLDS),
+            timeout_s=DOSE_TIMEOUT_S)
+
+    doser = doser_factory()
     vib = None
     try:
         import main as rig_main            # resident PR #100 firmware
@@ -926,6 +1074,7 @@ def run(powder_id=None, attended=True, **overrides):
             if hasattr(config, k)}
     battery = Battery(
         stepper, tap, servo, balance, vib=vib, doser=doser,
+        doser_factory=doser_factory,
         input_line=sys.stdin.readline if attended else None,
         attended=attended, config_echo=echo,
         stable_timeout_ms=getattr(config, "SCALE_STABLE_TIMEOUT_MS", 10000),

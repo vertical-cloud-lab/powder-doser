@@ -109,6 +109,45 @@ def test_blocks_reflect_what_ran_not_what_was_asked_for():
     run["doses"] = [{"n": 0}]
     check("closed-loop doses add block G", "G" in rl.blocks_run(run),
           rl.blocks_run(run))
+    # Block H doses are DOSE rows too, so the block letter has to come
+    # off the dose rather than being assumed to be G.
+    run["doses"] = [{"n": 0, "block": "H"}]
+    got = rl.blocks_run(run)
+    check("block H doses are not reported as block G",
+          "H" in got and "G" not in got, got)
+    run["doses"] = [{"n": 0, "block": "G"}, {"n": 0, "block": "H"}]
+    check("both dose blocks are listed", rl.blocks_run(run) == "ACEGH",
+          rl.blocks_run(run))
+
+
+def test_dose_cell_separates_targets():
+    """A run with Block G and Block H holds doses at three scales.
+
+    Averaging them into one figure hides the thing the two blocks exist
+    to compare, so the cell has to break down per target.
+    """
+    print("\n-- dose cell reports each target separately --")
+    single = {"dose_summary": {"n": 3, "ok": 3, "mean_error_g": -0.0041}}
+    check("a single-target run renders exactly as before",
+          rl.dose_cell(single) == "3x, 3 ok, mean -4.1 mg",
+          rl.dose_cell(single))
+    multi = {
+        "dose_summary": {"n": 9, "ok": 9, "mean_error_g": -0.004},
+        "dose_summary_by_target": [
+            {"block": "H", "target_g": 0.050, "n": 3,
+             "mean_error_g": -0.004},
+            {"block": "H", "target_g": 0.200, "n": 3,
+             "mean_error_g": -0.004},
+            {"block": "G", "target_g": 1.000, "n": 3,
+             "mean_error_g": -0.004},
+        ],
+    }
+    got = rl.dose_cell(multi)
+    check("every target appears",
+          "1000 mg" in got and "200 mg" in got and "50 mg" in got, got)
+    check("largest target first", got.startswith("1000 mg"), got)
+    check("the mixed-target mean is not shown", "9x" not in got, got)
+    check("no doses still renders as a dash", rl.dose_cell({}) == "--")
 
 
 def test_notes_match_the_right_run():
@@ -195,6 +234,7 @@ def main():
     test_link_never_seeks_before_the_video_starts()
     test_dispensed_mass_ignores_negative_artifacts()
     test_blocks_reflect_what_ran_not_what_was_asked_for()
+    test_dose_cell_separates_targets()
     test_notes_match_the_right_run()
     test_feed_factor_reports_horizontal()
     test_real_runs_are_consistent()

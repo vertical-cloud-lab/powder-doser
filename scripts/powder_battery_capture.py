@@ -65,6 +65,13 @@ RETRY_FIELDS = ["block", "tilt_deg", "phase", "trial", "reason",
 POLL_FIELDS = ["block", "tilt_deg", "rpm", "t_ms", "grams", "stable"]
 DOSE_FIELDS = ["n", "target_g", "dispensed_g", "error_g", "status",
                "elapsed_s", "auger_rev", "taps", "phase_cycles", "t_ms"]
+# battery_version 3 appends the block letter, because Block H doses at
+# 50/200 mg alongside Block G's 1.000 g and a target alone no longer
+# identifies which block a dose belongs to.  Rows without it are Block
+# G by definition -- H did not exist -- so the eleven committed runs
+# keep parsing unchanged.
+DOSE_FIELDS_V3 = DOSE_FIELDS + ["block"]
+DEFAULT_DOSE_BLOCK = "G"
 SUMMARY_FIELDS = ["block", "tilt_deg", "phase", "n", "mean_g", "std_g",
                   "sem_g", "min_g", "max_g", "rsd_pct"]
 # CSV files on disk lead every row with the powder ID so a file stays
@@ -72,7 +79,7 @@ SUMMARY_FIELDS = ["block", "tilt_deg", "phase", "n", "mean_g", "std_g",
 OUT_TRIAL_FIELDS = ["powder_id"] + TRIAL_FIELDS_V2
 OUT_RETRY_FIELDS = ["powder_id"] + RETRY_FIELDS
 OUT_POLL_FIELDS = ["powder_id"] + POLL_FIELDS
-OUT_DOSE_FIELDS = ["powder_id"] + DOSE_FIELDS
+OUT_DOSE_FIELDS = ["powder_id"] + DOSE_FIELDS_V3
 OUT_SUMMARY_FIELDS = ["powder_id"] + SUMMARY_FIELDS
 TIMELINE_FIELDS = ["block", "started_utc", "started_local", "elapsed_s"]
 OUT_TIMELINE_FIELDS = ["powder_id"] + TIMELINE_FIELDS
@@ -167,9 +174,15 @@ def parse_line(line):
         return "poll", row
     if line.startswith("DOSE,"):
         parts = line.split(",")
-        if len(parts) != len(DOSE_FIELDS) + 1:
+        if len(parts) == len(DOSE_FIELDS_V3) + 1:
+            fields = DOSE_FIELDS_V3
+        elif len(parts) == len(DOSE_FIELDS) + 1:
+            fields = DOSE_FIELDS
+        else:
             return None
-        row = dict(zip(DOSE_FIELDS, parts[1:]))
+        row = dict(zip(fields, parts[1:]))
+        row.setdefault("block", DEFAULT_DOSE_BLOCK)
+        row["block"] = row["block"] or DEFAULT_DOSE_BLOCK
         row["n"] = int(row["n"])
         for key in ("target_g", "dispensed_g", "error_g"):
             row[key] = _float_or_none(row[key])
@@ -208,13 +221,22 @@ def block_marker(line):
     battery takes ~50 min and most of it is block G, so knowing which
     block is live -- and for how long -- is the difference between "this
     is stuck" and "this is the dose phase behaving normally".
+
+    Only a bare block letter counts.  The device logs other lines that
+    begin the same way -- Block H announces the thresholds it derived
+    for each of its targets -- and taking the first word of those would
+    append a second timeline entry mid-block, silently restarting the
+    block's clock and shortening its measured duration.
     """
     line = line.strip()
     prefix = "[battery] block "
     if not line.startswith(prefix):
         return None
     rest = line[len(prefix):].strip()
-    return rest.split()[0] if rest else None
+    if not rest:
+        return None
+    word = rest.split()[0]
+    return word if len(word) == 1 and word.isalpha() else None
 
 
 def format_elapsed(seconds):
@@ -263,7 +285,12 @@ def summarize(trials):
 
 
 def dose_summary(doses):
-    """Aggregate accuracy/speed over the closed-loop doses."""
+    """Aggregate accuracy/speed over the closed-loop doses.
+
+    Kept over *all* doses so the field means what it always meant.  Once
+    Block H runs, a single mean mixes 50 mg and 1 g targets and the
+    number to read is ``dose_summary_by_target`` instead.
+    """
     if not doses:
         return None
     errors = [d["error_g"] for d in doses if d["error_g"] is not None]
@@ -277,6 +304,45 @@ def dose_summary(doses):
         "max_abs_error_g": max(abs(e) for e in errors) if errors else None,
         "mean_elapsed_s": sum(times) / len(times) if times else None,
     }
+
+
+def dose_summary_by_target(doses):
+    """Per-(block, target) accuracy -- the Block G vs Block H comparison.
+
+    Block H exists to ask whether dose error is a fixed *mass* or a
+    fixed *fraction* of the target, so the relative error is carried
+    alongside the absolute one; a fixed-mass controller shows a flat
+    ``mean_error_g`` and a ``mean_rel_error_pct`` that grows as the
+    target shrinks.
+    """
+    if not doses:
+        return None
+    groups = {}
+    for dose in doses:
+        key = (dose.get("block") or DEFAULT_DOSE_BLOCK, dose["target_g"])
+        groups.setdefault(key, []).append(dose)
+    out = []
+    for (block, target), rows in sorted(
+            groups.items(), key=lambda kv: (kv[0][1] or 0.0, kv[0][0])):
+        errors = [r["error_g"] for r in rows if r["error_g"] is not None]
+        times = [r["elapsed_s"] for r in rows]
+        n, mean_err, std_err, _, lo, hi = sample_stats(errors)
+        rel = (100.0 * mean_err / target
+               if mean_err is not None and target else None)
+        out.append({
+            "block": block,
+            "target_g": target,
+            "n": len(rows),
+            "ok": sum(1 for r in rows if r["status"] == "ok"),
+            "statuses": sorted({r["status"] for r in rows}),
+            "mean_error_g": mean_err,
+            "std_error_g": std_err,
+            "max_abs_error_g": (max(abs(e) for e in errors)
+                                if errors else None),
+            "mean_rel_error_pct": round(rel, 3) if rel is not None else None,
+            "mean_elapsed_s": sum(times) / len(times) if times else None,
+        })
+    return out
 
 
 def environment_summary(meta, trials, retries=None):
@@ -391,6 +457,7 @@ def build_run_document(meta, trials, polls, doses, device_summaries,
         "polls": polls,
         "doses": doses,
         "dose_summary": dose_summary(doses),
+        "dose_summary_by_target": dose_summary_by_target(doses),
         "device_summary": device_summaries,
         "host_summary": host_summary,
     }
@@ -448,8 +515,9 @@ def capture(args):
     args.started_local = local_stamp()
     print("[capture] run started {}  (local {})".format(
         started_utc, args.started_local))
-    print("[capture] a full battery takes ~50 min; blocks A-F are the "
-          "first ~7 min and block G (3 closed-loop doses) is the rest")
+    print("[capture] blocks A-F are the first ~15-25 min; the closed-loop "
+          "dose blocks are the rest -- G is 3 x 1 g and H is 3 each at "
+          "50 mg and 200 mg, so a full ABCDEFGH run can reach ~2 h")
     print("[capture] writing to {}".format(out_dir))
     if args.unattended:
         print("[capture] UNATTENDED run -- prompts auto-continue on the "
@@ -615,11 +683,27 @@ def print_summary(host_summary, doses):
                   "{:.1f}".format(row["rsd_pct"])
                   if row["rsd_pct"] is not None else "-"))
     for dose in doses:
-        print("dose {}: {} {:.4f}/{:.4f} g ({:+.4f} g) in {:.1f} s, "
+        print("dose {}{}: {} {:.4f}/{:.4f} g ({:+.4f} g) in {:.1f} s, "
               "{} taps, cycles {}".format(
-                  dose["n"], dose["status"], dose["dispensed_g"],
+                  dose.get("block") or DEFAULT_DOSE_BLOCK, dose["n"],
+                  dose["status"], dose["dispensed_g"],
                   dose["target_g"], dose["error_g"], dose["elapsed_s"],
                   dose["taps"], dose["phase_cycles"]))
+    by_target = dose_summary_by_target(doses) or []
+    if len(by_target) > 1:
+        # The Block G / Block H comparison, which is the point of
+        # running both: absolute error flat across targets means a
+        # fixed-mass controller, and the relative column is what grows.
+        print("{:>5} {:>10} {:>4} {:>4} {:>11} {:>10} {:>9}".format(
+            "block", "target_g", "n", "ok", "mean_err_g", "std_err_g",
+            "rel_err%"))
+        for row in by_target:
+            print("{:>5} {:>10.4f} {:>4} {:>4} {:>11} {:>10} {:>9}".format(
+                row["block"], row["target_g"], row["n"], row["ok"],
+                *["{:+.4f}".format(row[k]) if row[k] is not None else "-"
+                  for k in ("mean_error_g", "std_error_g")],
+                "{:+.2f}".format(row["mean_rel_error_pct"])
+                if row["mean_rel_error_pct"] is not None else "-"))
 
 
 # ---------------------------------------------------------------------------

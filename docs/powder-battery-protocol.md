@@ -31,6 +31,7 @@ degrees, tilt/2, converted internally).
 | E | tap | 8 single-tap trials at tilt 0° and 45°, each preceded by a measured 360° re-feed rotation | tapping | mg/tap (tap-only, re-feed accounted separately, per #131) | fine-actuator quantum per powder |
 | F | vib | Same shape as E with 3 DRV2605L effect bursts per trial instead of the tap | vibration | mg/burst; skipped with a `META,vib,unavailable` row while the driver reports EIO | vibration ablation |
 | G | dose | 3 × 1.000 g closed-loop doses with the **three-phase controller** (PR #124) under the frozen parameter set below | all, closed loop | Accuracy (error vs ±5 mg tolerance), time-to-dose, phase breakdown (cycles, taps, revolutions) | the headline per-powder dosing table; measured-vs-requested panel |
+| H | small | 3 × 0.050 g and 3 × 0.200 g closed-loop doses, same controller, same tolerance | dose target | Whether dose error is a fixed **mass** or a fixed **fraction** of the target | error-vs-target panel, over a 20× span with Block G's 1 g point |
 
 Frozen three-phase parameters for Block G (identical for every powder;
 from the tuned salt demo that landed −0.7 mg):
@@ -45,6 +46,81 @@ from the tuned salt demo that landed −0.7 mg):
 
 Budget per powder: roughly **4–10 g** (powder-dependent — free-flowing
 powders dispense more in blocks C/D) and **~40–50 min** wall clock.
+
+### Block H: the same controller at smaller targets (2026-09-03)
+
+Block G measures one target, 1.000 g, so it cannot say whether the
+±5 mg tolerance is a property of the *controller* or of the *target*.
+Block H adds **50 mg and 200 mg**, three doses each. 1.000 g is
+deliberately **not** repeated: Block G measures it in the same run,
+under the same environment, on the same powder, so the three targets
+together give error-vs-target across a 20× span for the cost of six
+extra doses rather than nine.
+
+Everything the controller does is the frozen Block G set — same three
+phases, same angles, same RPMs, same tap counts, same tolerance. Only
+the two hand-over thresholds move with the target, and only by two
+rules, both of which are the **identity at 1.000 g** so Block G's data
+is untouched (`powder_battery.dose_thresholds_for`):
+
+| Threshold | Rule | 1.000 g | 200 mg | 50 mg |
+|---|---|---|---|---|
+| t1 bulk→fine | `min(t1, target)` | 500 mg | 200 mg | 50 mg |
+| t2 fine→tap | `min(t2, target/2)` | 50 mg | 50 mg | 25 mg |
+| t3 tolerance | unchanged | ±5 mg | ±5 mg | ±5 mg |
+
+Why not simply scale all three with the target:
+
+- **t3 is set by the balance, not by the target.** ±0.5 % of 50 mg is
+  ±0.25 mg — below the environment's per-trial noise by a factor of
+  20+, so a proportional tolerance would guarantee that every small
+  dose runs to its cycle budget and reports a failure that is really a
+  measurement limit. Holding it at ±5 mg also makes error *in mg*
+  directly comparable across all three targets, and the relative error
+  falls out by division.
+- **t1 exists to keep the bulk phase away from small doses.** Bulk
+  carries ~0.12 g in flight when the auger stops (the frozen
+  anticipation, measured on salt). That is 60 % of a 200 mg dose and
+  240 % of a 50 mg one, so bulk cannot be opened for either. The
+  controller leaves bulk once `remaining ≤ t1 + anticipation`, so
+  setting `t1 = target` skips it outright and the dose starts in the
+  fine phase. **The anticipation itself is not scaled** — it is a
+  physical in-flight mass, not a fraction of what was asked for.
+- **t2 exists to keep the fine phase from overshooting.** One 45°
+  fine increment is ~⅛ of a revolution, so ~20 mg on a fast powder —
+  40 % of a 50 mg dose. Handing over at the frozen 50 mg would let a
+  single fine step cross the whole target, so the tap phase takes the
+  last half of a small dose instead.
+
+A target below **4 × the tolerance** (i.e. ≤20 mg) is refused rather
+than run: the hand-over band collapses into the tolerance band and the
+"dose" is one actuator quantum. It is recorded as
+`META,dose_h.skipped.<target>` so the refusal is in the data.
+
+The DOSE serial row gained a trailing **block letter** for this
+(`battery_version` 3). Rows without it predate Block H and are read as
+Block G, so all eleven committed runs parse unchanged — verified by
+replaying `20260806T145120Z_salt`'s raw log and diffing.
+
+**Expect Block H to be slow on a powder that already fails Block G.**
+Its two failure modes are the ones Block G documents — the fine phase
+exhausting its cycle budget, and phase 3 stalling at tilt 0° where the
+tap quantum collapses — and both burn the full budget before giving up.
+On the food-safe powders Block G ran 2–14 min per dose; budget
+**6 doses** for Block H on top of Block G's 3. `--run-args 'blocks="H",
+dose_h_repeats=1'` cuts it to two doses for a first look.
+
+**One thing Block H cannot currently measure**, and it should be said
+before the data is read rather than after: the 2026-08-20 environment
+survey put the balance's error over a 180 s window at **18–21 mg** in
+this room. A 50 mg dose against a ±5 mg band is therefore **inside the
+environmental uncertainty** — the dose itself is real, but its error
+bar is comparable to the target. Blocks A–E survive an occupied lab
+because their trials are seconds long and actuator-gated; a
+multi-minute closed-loop dose has no do-nothing interval to bracket
+against, so no amount of software fixes it. Block H's 200 mg point is
+the more trustworthy of the two until the balance is isolated, and the
+50 mg point should be read as a bound rather than a measurement.
 
 ### How long each block should take
 
@@ -61,11 +137,19 @@ usually a dose phase behaving exactly as designed.
 | E tap | ~2.5 min | 32 measured actions |
 | F vib | ~2.5 min | currently skipped in seconds |
 | **G dose** | **~14 min per dose** | ~42 min for the default 3 |
+| **H small** | **~2–14 min per dose** | 6 doses (3 each at 50 and 200 mg) |
 
 A dose that exhausts the 200-cycle fine-phase budget takes ~14 min; one
 that converges early takes less. Nothing else in the battery runs longer
-than ~3 minutes, so **any wait beyond ~10 minutes is block G** unless the
-run has genuinely died.
+than ~3 minutes, so **any wait beyond ~10 minutes is a dose block**
+unless the run has genuinely died.
+
+Block H has no measured duration yet — it has not run on hardware. Its
+doses start in the fine phase rather than in bulk (see below), so they
+skip the phase that opens quickly and go straight to the one that
+grinds, and the per-dose spread should look like Block G's endgame.
+Budget it as up to 6 × Block G's per-dose time until there is real
+data, and treat a full `ABCDEFGH` run as potentially **~2 h**.
 
 Block G is also the only block whose duration depends strongly on the
 powder, so the whole-run estimate follows it. The 2026-08-05 calcium
@@ -315,6 +399,12 @@ reporting EIO, so F self-skips).
 doses: `--run-args 'blocks="G"'`, or a quick smoke:
 `--run-args 'blocks="ACG", rotation_trials=3, dose_repeats=1'`.
 
+Back-filling the dose blocks on a powder whose flow blocks are already
+recorded — which is the case for sodium sulfate, silicon −110/+200,
+AlSi10Mg and barium chloride — is `--run-args 'blocks="GH"'`. That
+skips A–F entirely and runs only the nine doses. A single target is
+`--run-args 'blocks="H", dose_h_targets_g=[0.200]'`.
+
 ### How the rig is left afterwards
 
 `Battery.run_all()` parks the rig in its `finally`, so this happens after
@@ -371,7 +461,7 @@ Per run, under `data/battery/<UTC-stamp>_<powder-id>/`:
 | `raw_serial_<id>.log` | every serial line, verbatim |
 | `trials_<id>.csv` | one row per measured action: `powder_id, block, tilt_deg, phase, trial, action, rpm, before_g, after_g, delta_g, flag, t_ms` |
 | `polls_<id>.csv` | streamed scale polls from Block D (mass-vs-time traces) |
-| `doses_<id>.csv` | one row per Block G dose: target, dispensed, error, status, elapsed, revolutions, taps, per-phase cycles |
+| `doses_<id>.csv` | one row per closed-loop dose: target, dispensed, error, status, elapsed, revolutions, taps, per-phase cycles, and the `block` it came from (`G` or `H`; blank in runs predating Block H, read as `G`) |
 | `summary_<id>.csv` | per-(block, tilt, phase) n/mean/std/sem/min/max/RSD |
 | `timeline_<id>.csv` | host wall clock at each block start: `powder_id, block, started_utc, elapsed_s` |
 | `run_<id>.json` | the complete self-contained run document |
@@ -379,6 +469,16 @@ Per run, under `data/battery/<UTC-stamp>_<powder-id>/`:
 The run document carries `started_utc`, `ended_utc`, `elapsed_s` and
 `block_timeline` (schema version 2; version 1 documents predate the last
 two and are otherwise identical).
+
+It also carries **`dose_summary_by_target`**, which is the field to read
+once Block H runs. `dose_summary` still aggregates *every* dose, which
+is what it always did and is fine for a Block-G-only run — but with two
+dose blocks in one run it averages a 50 mg dose against a 1 g one, and
+the same 4 mg error is 8 % of one and 0.4 % of the other. The
+per-target rows carry `mean_rel_error_pct` alongside `mean_error_g`, so
+a fixed-mass controller shows a flat absolute column and a relative one
+that grows as the target shrinks. That contrast **is** the Block H
+result. The run log's dose cell splits per target for the same reason.
 
 Plots: `scripts/plot_battery_run.py` is the *did it feed at all?* diagnostic
 (used on the no-feed brown-rice-flour run); `scripts/plot_battery_results.py`

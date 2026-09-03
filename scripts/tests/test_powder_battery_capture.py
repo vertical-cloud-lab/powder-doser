@@ -52,6 +52,18 @@ def test_parse_dose():
     check("dose fields", row["n"] == 1 and row["status"] == "ok"
           and abs(row["error_g"] + 0.0007) < 1e-9 and row["taps"] == 63
           and row["phase_cycles"] == "bulk:17;fine:10;tap:43", row)
+    # battery_version 2 rows -- every committed run is made of these --
+    # carry no block, and predate Block H, so they are Block G.
+    check("v2 dose row is block G", row["block"] == "G", row.get("block"))
+    _, row = cap.parse_line(
+        "DOSE,4,0.0500,0.0468,-0.0032,ok,61.0,0.42,9,"
+        "fine:3;tap:19,1900000,H")
+    check("v3 dose row carries its block", row["block"] == "H", row)
+    check("v3 dose fields", row["n"] == 4
+          and abs(row["target_g"] - 0.05) < 1e-9
+          and abs(row["error_g"] + 0.0032) < 1e-9, row)
+    check("dose row of the wrong width ignored",
+          cap.parse_line("DOSE,1,1.0000,0.9993,-0.0007,ok,280.0") is None)
 
 
 def test_parse_other():
@@ -111,6 +123,44 @@ def test_dose_summary():
     check("empty dose summary", cap.dose_summary([]) is None)
 
 
+def test_dose_summary_by_target():
+    """The Block G vs Block H comparison.
+
+    Same absolute error at both targets must show as the same
+    ``mean_error_g`` and a relative error that grows as the target
+    shrinks -- that contrast is the entire point of Block H.
+    """
+    doses = (
+        [{"n": i, "block": "H", "target_g": 0.050, "error_g": -0.004,
+          "elapsed_s": 60.0, "status": "ok"} for i in range(3)]
+        + [{"n": i + 3, "block": "H", "target_g": 0.200, "error_g": -0.004,
+            "elapsed_s": 90.0, "status": "stalled"} for i in range(3)]
+        + [{"n": i, "block": "G", "target_g": 1.000, "error_g": -0.004,
+            "elapsed_s": 200.0, "status": "ok"} for i in range(3)]
+    )
+    rows = cap.dose_summary_by_target(doses)
+    check("one row per target", len(rows) == 3, rows)
+    check("ordered by target",
+          [r["target_g"] for r in rows] == [0.050, 0.200, 1.000])
+    check("blocks preserved", [r["block"] for r in rows] == ["H", "H", "G"])
+    check("absolute error is flat",
+          all(abs(r["mean_error_g"] + 0.004) < 1e-9 for r in rows), rows)
+    check("relative error grows as the target shrinks",
+          [r["mean_rel_error_pct"] for r in rows] == [-8.0, -2.0, -0.4],
+          [r["mean_rel_error_pct"] for r in rows])
+    check("statuses carried", rows[1]["statuses"] == ["stalled"]
+          and rows[1]["ok"] == 0, rows[1])
+    # A version 2 run has no block column; it must still aggregate.
+    legacy = [{"n": i, "target_g": 1.000, "error_g": -0.004,
+               "elapsed_s": 200.0, "status": "ok"} for i in range(3)]
+    rows = cap.dose_summary_by_target(legacy)
+    check("legacy doses group as block G",
+          len(rows) == 1 and rows[0]["block"] == "G" and rows[0]["n"] == 3,
+          rows)
+    check("empty by-target summary",
+          cap.dose_summary_by_target([]) is None)
+
+
 def test_block_marker():
     check("block marker", cap.block_marker("[battery] block C") == "C")
     check("block marker trailing text",
@@ -122,6 +172,14 @@ def test_block_marker():
     check("block marker ignores csv",
           cap.block_marker("CSV,C,45.0,rotation,2,360.0,30,0.1,0.13,"
                            "0.03,,182345") is None)
+    # Only a bare letter starts a block.  A line that merely mentions a
+    # block would append a second timeline entry mid-block, restarting
+    # its clock and under-reporting how long the block actually took --
+    # which is the whole reason the timeline exists.
+    check("block marker ignores a within-block note",
+          cap.block_marker("[battery] block H: skipping 0.0100 g") is None)
+    check("block marker ignores a word that is not a letter",
+          cap.block_marker("[battery] block target 0.0500 g") is None)
 
 
 def test_format_elapsed():
@@ -246,7 +304,8 @@ def test_load_preflight():
 def main():
     for test in (test_parse_trial, test_parse_poll, test_parse_dose,
                  test_parse_other, test_normalize_powder_id,
-                 test_summarize, test_dose_summary, test_block_marker,
+                 test_summarize, test_dose_summary,
+                 test_dose_summary_by_target, test_block_marker,
                  test_format_elapsed, test_run_document_timeline,
                  test_lab_local_clock, test_load_preflight):
         print("--- {}".format(test.__name__))

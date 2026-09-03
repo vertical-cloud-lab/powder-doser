@@ -181,8 +181,26 @@ class FakeDoser:
         return FakeDoseResult(target_g, target_g + self.error_g, 280.0)
 
 
+class FakeDoserFactory:
+    """Stands in for the ThreePhaseDoser constructor in ``run()``.
+
+    Records how each Block H doser was configured so the tests can
+    assert on the thresholds the block derived for every target.
+    """
+
+    def __init__(self, column, error_g=-0.0007):
+        self.column = column
+        self.error_g = error_g
+        self.calls = []
+
+    def __call__(self, target_g=None, thresholds=None, phases=None):
+        self.calls.append({"target_g": target_g, "thresholds": thresholds,
+                           "phases": phases})
+        return FakeDoser(self.column, error_g=self.error_g)
+
+
 def make_battery(column=None, vib=True, doser=True, attended_input=None,
-                 **kwargs):
+                 doser_factory=True, **kwargs):
     clock = VirtualClock()
     column = column or Column()
     stepper = FakeStepper(column, clock)
@@ -190,14 +208,17 @@ def make_battery(column=None, vib=True, doser=True, attended_input=None,
     servo = FakeServo(column)
     scale = FakeScale(column)
     lines = []
+    factory = FakeDoserFactory(column) if doser_factory else None
     battery = pb.Battery(
         stepper, tap, servo, scale,
         vib=FakeVib(column) if vib else None,
         doser=FakeDoser(column) if doser else None,
+        doser_factory=factory,
         log=lines.append, sleep_ms=clock.sleep_ms,
         input_line=attended_input,
         attended=attended_input is not None,
         powder_id="sim-powder", **kwargs)
+    battery.sim_doser_factory = factory
     return battery, lines, column, stepper, tap, servo
 
 
@@ -239,7 +260,7 @@ def test_full_run_protocol():
           and markers[-1][0] == "END" and markers[-1][1] == "ok")
     meta = dict(rows_of(events, "meta"))
     check("META powder_id", meta.get("powder_id") == "sim-powder")
-    check("META battery_version", meta.get("battery_version") == "2")
+    check("META battery_version", meta.get("battery_version") == "3")
 
     def block(phase, letter=None):
         return [t for t in trials if t["phase"] == phase
@@ -258,7 +279,12 @@ def test_full_run_protocol():
           len(block("refeed", "E")) == pb.TAP_TRIALS * len(pb.TAP_TILTS))
     check("vib rows", len(block("vib")) == pb.TAP_TRIALS * len(pb.TAP_TILTS))
     doses = rows_of(events, "dose")
-    check("dose rows", len(doses) == pb.DOSE_REPEATS, len(doses))
+    g_doses = [d for d in doses if d["block"] == "G"]
+    h_doses = [d for d in doses if d["block"] == "H"]
+    check("dose rows", len(g_doses) == pb.DOSE_REPEATS, len(g_doses))
+    check("block H dose rows",
+          len(h_doses) == pb.DOSE_H_REPEATS * len(pb.DOSE_H_TARGETS_G),
+          len(h_doses))
     check("dose error round-trip",
           all(abs(d["error_g"] + 0.0007) < 1e-9 for d in doses))
     check("dose phase cycles",
@@ -352,6 +378,149 @@ def test_block_selection():
           len(rows_of(events, "dose")) == pb.DOSE_REPEATS)
 
 
+def test_block_h_thresholds():
+    """The scaling rule, checked at the three targets that will run.
+
+    The 1.000 g case must be the identity, because Block G's data was
+    collected with those exact numbers and Block H is only meaningful
+    if the 1 g point it is compared against is unchanged.
+    """
+    frozen, phases = pb.dose_thresholds_for(1.000)
+    check("1 g reproduces Block G thresholds",
+          tuple(frozen) == tuple(pb.DOSE_THRESHOLDS), frozen)
+    check("phases passed through unchanged",
+          len(phases) == len(pb.DOSE_PHASES)
+          and [p["name"] for p in phases]
+          == [p["name"] for p in pb.DOSE_PHASES],
+          [p["name"] for p in phases])
+    check("phases are copies, not the frozen dicts",
+          all(a is not b for a, b in zip(phases, pb.DOSE_PHASES)))
+
+    for target, expected in ((0.200, (0.200, 0.050, 0.005)),
+                             (0.050, (0.050, 0.025, 0.005))):
+        got, _ = pb.dose_thresholds_for(target)
+        check("thresholds at {:.3f} g".format(target),
+              all(abs(a - b) < 1e-12 for a, b in zip(got, expected)), got)
+
+    # Ordering is what makes the phase sequence well defined; a target
+    # that inverted it would silently make a phase unreachable.
+    for target in pb.DOSE_H_TARGETS_G + [pb.DOSE_TARGET_G]:
+        t1, t2, t3 = pb.dose_thresholds_for(target)[0]
+        check("t1>=t2>=t3 at {:.3f} g".format(target),
+              t1 >= t2 >= t3, (t1, t2, t3))
+
+    # The bulk phase carries ~0.12 g in flight when the auger stops, so
+    # it must not open for a dose of that order.  The controller leaves
+    # bulk once remaining <= t1 + anticipation, so a target at or below
+    # that sum never enters it.
+    anticipation = pb.DOSE_PHASES[0]["anticipation_g"]
+    for target in pb.DOSE_H_TARGETS_G:
+        t1 = pb.dose_thresholds_for(target)[0][0]
+        check("bulk skipped at {:.3f} g".format(target),
+              target <= t1 + anticipation, (target, t1, anticipation))
+    t1_g = pb.dose_thresholds_for(pb.DOSE_TARGET_G)[0][0]
+    check("bulk still runs at 1 g", pb.DOSE_TARGET_G > t1_g + anticipation)
+
+    check("50/200 mg are usable targets",
+          all(pb.dose_target_usable(t) for t in pb.DOSE_H_TARGETS_G))
+    check("a target inside the tolerance band is not usable",
+          not pb.dose_target_usable(pb.DOSE_THRESHOLDS[2] * 2))
+
+
+def test_block_h_small_doses():
+    battery, lines, _, _, _, _ = make_battery(blocks="H")
+    status = battery.run_all()
+    events = parsed(lines)
+    doses = rows_of(events, "dose")
+    check("block H status ok", status == "ok", status)
+    check("no trials in block H", not rows_of(events, "trial"))
+    check("dose count",
+          len(doses) == pb.DOSE_H_REPEATS * len(pb.DOSE_H_TARGETS_G),
+          len(doses))
+    check("all rows labelled H", all(d["block"] == "H" for d in doses))
+    check("dose index monotonic within the block",
+          [d["n"] for d in doses] == list(range(len(doses))),
+          [d["n"] for d in doses])
+    for target in pb.DOSE_H_TARGETS_G:
+        rows = [d for d in doses if abs(d["target_g"] - target) < 1e-9]
+        check("{:.3f} g repeated {}x".format(target, pb.DOSE_H_REPEATS),
+              len(rows) == pb.DOSE_H_REPEATS, len(rows))
+
+    # Each target gets its own doser, configured with its own thresholds.
+    calls = battery.sim_doser_factory.calls
+    check("one doser per target",
+          [c["target_g"] for c in calls] == list(pb.DOSE_H_TARGETS_G),
+          [c["target_g"] for c in calls])
+    for call in calls:
+        expected = pb.dose_thresholds_for(call["target_g"])[0]
+        check("doser thresholds at {:.3f} g".format(call["target_g"]),
+              all(abs(a - b) < 1e-12
+                  for a, b in zip(call["thresholds"], expected)),
+              call["thresholds"])
+    # The host builds the run timeline from "[battery] block X" lines,
+    # so a per-target log line must not look like one -- a duplicate
+    # marker restarts the block's clock and hides its real duration.
+    markers = [cap.block_marker(l) for l in lines]
+    check("exactly one timeline marker for the block",
+          [m for m in markers if m] == ["H"],
+          [m for m in markers if m])
+    meta = dict(rows_of(events, "meta"))
+    check("thresholds recorded as META",
+          all("dose_h.thresholds." + pb._fmt_g(t) in meta
+              for t in pb.DOSE_H_TARGETS_G), sorted(meta))
+    check("META dose_h_targets_g",
+          meta.get("dose_h_targets_g")
+          == ";".join(pb._fmt_g(t) for t in pb.DOSE_H_TARGETS_G),
+          meta.get("dose_h_targets_g"))
+
+    # Per-target aggregation is the Block G / Block H comparison.
+    by_target = cap.dose_summary_by_target(doses)
+    check("per-target summary rows", len(by_target) == 2, by_target)
+    check("per-target summary ordered by target",
+          [row["target_g"] for row in by_target]
+          == sorted(pb.DOSE_H_TARGETS_G))
+    small = by_target[0]
+    check("relative error tracks the target",
+          abs(small["mean_rel_error_pct"] + 100 * 0.0007 / 0.050) < 1e-6,
+          small["mean_rel_error_pct"])
+
+
+def test_block_h_skipped_without_factory():
+    """No factory means no Block H -- and it says so, rather than
+    silently dosing 50 mg with Block G's 1 g thresholds."""
+    battery, lines, _, _, _, _ = make_battery(blocks="H",
+                                              doser_factory=False)
+    status = battery.run_all()
+    events = parsed(lines)
+    meta = dict(rows_of(events, "meta"))
+    check("block H skip status ok", status == "ok", status)
+    check("block H skip META", meta.get("dose_h") == "unavailable")
+    check("no doses emitted", not rows_of(events, "dose"))
+
+
+def test_dose_row_backwards_compatible():
+    """A battery_version 2 DOSE row still parses, as Block G.
+
+    Eleven committed runs are made of these, so the trailing block
+    column has to be optional rather than required.
+    """
+    old = ("DOSE,0,1.0000,0.9953,-0.0047,ok,265.0,14.20,70,"
+           "bulk:16;fine:42;tap:35,412345")
+    kind, row = cap.parse_line(old)
+    check("v2 dose row parses", kind == "dose")
+    check("v2 dose row defaults to block G", row["block"] == "G",
+          row.get("block"))
+    check("v2 dose fields intact",
+          row["n"] == 0 and abs(row["target_g"] - 1.0) < 1e-9
+          and row["taps"] == 70 and row["status"] == "ok", row)
+    new = old + ",H"
+    kind, row = cap.parse_line(new)
+    check("v3 dose row parses", kind == "dose")
+    check("v3 dose row carries its block", row["block"] == "H")
+    check("a short DOSE row is still rejected",
+          cap.parse_line("DOSE,0,1.0000") is None)
+
+
 def test_operator_abort():
     battery, lines, _, _, _, _ = make_battery(
         attended_input=lambda: "abort")
@@ -372,10 +541,20 @@ def test_host_summary_round_trip():
     check("host summary groups", ("C", 45.0, "rotation") in keys
           and ("E", 0.0, "tap") in keys and ("D", 45.0, "speed") in keys)
     doses = rows_of(events, "dose")
+    total = pb.DOSE_REPEATS + pb.DOSE_H_REPEATS * len(pb.DOSE_H_TARGETS_G)
     agg = cap.dose_summary(doses)
-    check("dose summary", agg["n"] == pb.DOSE_REPEATS
-          and agg["ok"] == pb.DOSE_REPEATS
+    check("dose summary", agg["n"] == total and agg["ok"] == total
           and abs(agg["mean_error_g"] + 0.0007) < 1e-9, agg)
+    # With both dose blocks in one run the headline mean mixes targets,
+    # so the per-target breakdown is what the analysis reads.
+    by_target = cap.dose_summary_by_target(doses)
+    check("per-target summary covers every target",
+          [row["target_g"] for row in by_target]
+          == sorted(pb.DOSE_H_TARGETS_G + [pb.DOSE_TARGET_G]),
+          [row["target_g"] for row in by_target])
+    check("per-target summary keeps the block",
+          [row["block"] for row in by_target] == ["H", "H", "G"],
+          [row["block"] for row in by_target])
 
 
 def main():
@@ -383,6 +562,9 @@ def main():
                  test_tilt_parked_after_abort,
                  test_cohesive_lowflow_unattended,
                  test_missing_hardware_skips, test_block_selection,
+                 test_block_h_thresholds, test_block_h_small_doses,
+                 test_block_h_skipped_without_factory,
+                 test_dose_row_backwards_compatible,
                  test_operator_abort, test_host_summary_round_trip):
         print("--- {}".format(test.__name__))
         test()
