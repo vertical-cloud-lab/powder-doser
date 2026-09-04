@@ -35,6 +35,56 @@ If using Edison Analysis, refer to https://docs.edisonscientific.com/edison-clie
 
 If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, etc.).
 
+## Onshape
+
+Onshape is the team's GUI/cloud CAD — browser + REST API, so it is Linux/CI-friendly by
+construction (API docs: https://onshape-public.github.io/docs/, interactive explorer:
+https://cad.onshape.com/glassworks/explorer/). Auth is an HMAC-signed key pair in
+`ONSHAPE_ACCESS_KEY` / `ONSHAPE_SECRET_KEY`; no OAuth app is needed for
+read/translate/FeatureScript work, and never echo or commit the keys. Probe auth with
+`GET /api/v6/users/sessioninfo` *and* a documents list — an unapproved personal
+Education-plan key can 204 on sessioninfo yet 401 ("Unauthenticated API request") on
+everything else; company/classroom-scoped keys (Company settings → Developer → API keys)
+are what works. For enterprise-domain documents (e.g. `byudesign.onshape.com`), call that
+domain, not `cad.onshape.com`. Always post clickable document/tab links in issues/PRs.
+
+- **Import/export.** Push geometry via multipart
+  `POST /api/v6/blobelements/d/{did}/w/{wid}?translate=true`, then poll
+  `GET /api/v6/translations/{id}` to `DONE`. Upload **STEP, not STL** — STEP imports as an
+  editable Part Studio solid, STL as a dumb mesh. Export with
+  `POST .../partstudios/d/{did}/w/{wid}/e/{eid}/translations` (`formatName=STEP`/`STL`),
+  poll, download. STEP carries geometry and part names only — plate layout, extruder
+  routing, and filament profiles live exclusively in the `.3mf`.
+- **Share links ≠ export.** An anonymous-read share serves `features`, `elements`,
+  `shadedviews`, `thumbnails` (200) but 401/403s every geometry/export endpoint unless
+  export was enabled on the share; there is no cookie workaround — ask the owner or use
+  API keys with real access. The feature-tree JSON is still the full parametric source, so
+  mirroring it + renders into git beats committing nothing (byu-vcl#169).
+- **Verify, don't assert.** Render the live workspace via the `shadedviews` endpoint and
+  read back bounding boxes / `featureStatus` after driving parameters through the API.
+- **Commit the ids.** Any document a script or teammate creates should get its URL +
+  did/wid/eids committed (e.g. an `ONSHAPE-DOCUMENT.md`) — stdout-only ids become a
+  scavenger hunt. Make driver scripts idempotent: find the document and studios by name
+  and replace only the stale feature, so element ids (and bookmarks) survive re-runs.
+- **One source of truth.** If a git-tracked file (`.fs`/`.scad`/`.py`) regenerates the
+  document, hand-edits in Onshape get silently overwritten — agree on the direction up
+  front. Prefer one document containing all Part Studios + the assembly over one document
+  per part (powder-doser#128).
+- **FeatureScript.** Custom features can only be referenced from a **version**, never a
+  workspace: push Feature Studio → compile server-side → cut a version → insert into a
+  Part Studio. Traps that each cost real time (worked example + details:
+  tensegrity-optimization#95): colliding with an `onshape/std` name (e.g. `BLEND_BOUNDS`)
+  kills the compile *silently* — `featureSpecs: []`, no error, so prefix your constants;
+  `fSphere` takes a `Query` centre, use `opSphere` for generated geometry; operation ids
+  must be contiguous per parent; `POST .../features` needs the flattened `btType`
+  serialization (`"BTMFeature-134"`); enum parameters need the feature's full
+  `d::v::e::m` namespace (empty is accepted with 200, then regen `ERROR`); the REST layer
+  returns `featureStatus` only, never regen message text. Lint/debug through
+  `POST .../partstudios/.../featurescript` — it gives real line-numbered errors but only
+  accepts a single anonymous function (no `FeatureScript NNNN;` header, no imports).
+  Add `regenError` guards + sane bounds so bad dialog values error instead of building
+  junk geometry.
+
 ## LaTeX
 
 Install MiKTeX instead of TeXLive to reduce download size and time. In the first installation of MiKTeX, download known required packages based on the LaTeX file itself, and install anything else ad-hoc as needed.
