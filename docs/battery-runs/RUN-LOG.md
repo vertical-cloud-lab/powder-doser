@@ -4,12 +4,14 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-24 entries, 15 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+26 entries, 17 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-04 20:37 | 2026-09-04 20:45 | 8:29 | `xanthan-gum` | H | -- | 0.81 g | -- | 200 mg 3x +2.9 mg; 50 mg 3x +17.8 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T203727Z_xanthan-gum) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-xanthan-gum-block-h.md) | [~1 min](https://youtu.be/JrdlEVz18R0?t=5832) |
+| 2026-09-04 19:00 | 2026-09-04 19:43 | 43:09 | `white-rice-flour` | H | -- | 0.72 g | -- | 200 mg 3x -4.9 mg; 50 mg 3x -4.7 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T190011Z_white-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-white-rice-flour-block-h.md) | [~1 min](https://youtu.be/JrdlEVz18R0?t=0) |
 | 2026-09-04 00:18 | 2026-09-04 00:19 | 1:35 | `salt` | G | -- | 1.00 g | -- | 1x, 1 ok, mean +3.9 mg | not recorded | excluded<br>`unreviewed` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T001821Z_salt) | [~1 min](https://youtu.be/xjtJNMo8DKw?t=15186) |
 | 2026-09-03 21:40 | 2026-09-03 21:44 | 3:38 | `salt` | H | -- | 0.77 g | -- | 200 mg 3x +2.8 mg; 50 mg 3x +4.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T214049Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-new-hood.md) | [~1 min](https://youtu.be/xjtJNMo8DKw?t=5734) |
 | 2026-09-03 17:04 | 2026-09-03 17:05 | 1:17 | `salt` | H | -- | 0.00 g | -- | no dose actuated (6 attempted) | not recorded | excluded<br>`doser-scale-unreadable` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260903T170437Z_salt) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-03-salt-block-h-rerun-standdown.md) | [~1 min](https://youtu.be/AvK-wSqQGrQ?t=21862) |
@@ -36,6 +38,36 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-04 20:37 UTC -- xanthan-gum
+
+- **Window** 2026-09-04T20:37:27.608249+00:00 -> 2026-09-04T20:45:56.683050+00:00  (8:29)
+- **Lab clock** 2026-09-04 14:37:27 MDT -> 2026-09-04 14:45:56 MDT
+- **Powder** xanthan gum (food-safe batch, Block H)  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.8120 g
+- **Closed-loop doses** 200 mg 3x +2.9 mg; 50 mg 3x +17.8 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260904T203727Z_xanthan-gum](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T203727Z_xanthan-gum)
+- **Notes** [docs/battery-runs/2026-09-04-xanthan-gum-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-xanthan-gum-block-h.md)
+- **Video** [https://youtu.be/JrdlEVz18R0?t=5832](https://youtu.be/JrdlEVz18R0?t=5832) -- accurate to about a minute
+
+### 2026-09-04 19:00 UTC -- white-rice-flour
+
+- **Window** 2026-09-04T19:00:11.494223+00:00 -> 2026-09-04T19:43:20.501073+00:00  (43:09)
+- **Lab clock** 2026-09-04 13:00:11 MDT -> 2026-09-04 13:43:20 MDT
+- **Powder** white rice flour (food-safe batch)  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.7213 g
+- **Closed-loop doses** 200 mg 3x -4.9 mg; 50 mg 3x -4.7 mg
+- **Pre-flight** conveying-slowly
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260904T190011Z_white-rice-flour](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T190011Z_white-rice-flour)
+- **Notes** [docs/battery-runs/2026-09-04-white-rice-flour-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-white-rice-flour-block-h.md)
+- **Video** [https://youtu.be/JrdlEVz18R0?t=0](https://youtu.be/JrdlEVz18R0?t=0) -- accurate to about a minute
 
 ### 2026-09-04 00:18 UTC -- salt
 

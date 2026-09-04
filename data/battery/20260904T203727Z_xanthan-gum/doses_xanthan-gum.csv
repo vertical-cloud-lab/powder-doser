@@ -1,0 +1,7 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+xanthan-gum,0,0.05,0.0459,-0.0041,ok,54.0,0.38,20,bulk:0;fine:3;tap:10,54372,H
+xanthan-gum,1,0.05,0.0477,-0.0023,ok,37.0,0.75,0,bulk:0;fine:6;tap:0,91179,H
+xanthan-gum,2,0.05,0.1098,0.0598,overshoot,13.0,0.13,0,bulk:1;fine:1;tap:0,104770,H
+xanthan-gum,3,0.2,0.2025,0.0025,ok,85.0,0.89,22,bulk:1;fine:7;tap:11,189584,H
+xanthan-gum,4,0.2,0.2026,0.0026,ok,89.0,0.89,24,bulk:1;fine:7;tap:12,277945,H
+xanthan-gum,5,0.2,0.2035,0.0035,ok,226.0,1.13,106,bulk:0;fine:9;tap:53,504597,H
