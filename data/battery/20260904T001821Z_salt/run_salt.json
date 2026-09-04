@@ -1,0 +1,161 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "ok",
+  "started_utc": "2026-09-04T00:18:21.628305+00:00",
+  "ended_utc": "2026-09-04T00:19:56.781762+00:00",
+  "started_local": "2026-09-03 18:18:21 MDT",
+  "ended_local": "2026-09-03 18:19:56 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 95.2,
+  "block_timeline": [
+    {
+      "block": "G",
+      "started_utc": "2026-09-04T00:18:24.168006+00:00",
+      "started_local": "2026-09-03 18:18:24 MDT",
+      "elapsed_s": 2.5
+    }
+  ],
+  "powder_id": "salt",
+  "powder": null,
+  "batch": "food-safe-2026-08",
+  "operator": "claude",
+  "notes": "issue #148 live demo 2026-09-04: 1 g salt, three-phase closed-loop dose",
+  "qc": {
+    "valid_for_cross_powder_comparison": false,
+    "verdict": "unreviewed"
+  },
+  "environment": null,
+  "retries": [],
+  "preflight": null,
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "salt",
+    "battery_version": "3",
+    "blocks": "G",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "1",
+    "dose_target_g": "1.0",
+    "dose_h_targets_g": "0.0500;0.2000",
+    "dose_h_repeats": "3",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "bracket_n": "6",
+    "bracket_ms": "400",
+    "shock_g": "0.01",
+    "max_resid_g": "0.0015",
+    "quiet_tries": "8",
+    "max_trial_retries": "2",
+    "drift_correct": "1",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "config.dose_bracket_interval_ms": "250",
+    "config.dose_bracket_n": "5",
+    "config.dose_max_baseline_g": "10.0",
+    "config.dose_read_path": "bracket",
+    "park_tilt_deg": "0.0",
+    "env.brackets": "0",
+    "env.disturbed_trials": "0",
+    "env.drift_corrected_g": "0.0000",
+    "env.quiet_waits": "0",
+    "env.retries": "0",
+    "env.shock_events": "0",
+    "env.shock_total_g": "0.0000",
+    "env.unsettled_brackets": "0"
+  },
+  "trials": [],
+  "polls": [],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 1.0,
+      "dispensed_g": 1.004,
+      "error_g": 0.0039,
+      "status": "ok",
+      "elapsed_s": 90.0,
+      "auger_rev": 3.08,
+      "taps": 16,
+      "phase_cycles": "bulk:5;fine:10;tap:8",
+      "t_ms": 90658,
+      "block": "G"
+    }
+  ],
+  "dose_summary": {
+    "n": 1,
+    "ok": 1,
+    "mean_error_g": 0.0039,
+    "std_error_g": null,
+    "max_abs_error_g": 0.0039,
+    "mean_elapsed_s": 90.0
+  },
+  "dose_summary_by_target": [
+    {
+      "block": "G",
+      "target_g": 1.0,
+      "n": 1,
+      "ok": 1,
+      "statuses": [
+        "ok"
+      ],
+      "mean_error_g": 0.0039,
+      "std_error_g": null,
+      "max_abs_error_g": 0.0039,
+      "mean_rel_error_pct": 0.39,
+      "mean_elapsed_s": 90.0
+    }
+  ],
+  "device_summary": [],
+  "host_summary": [],
+  "video": {
+    "channel": "https://youtube.com/@byu-vcl-hardware-streams",
+    "camera": "picam-d1pr",
+    "video_id": "xjtJNMo8DKw",
+    "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 20:05",
+    "content_t0_utc": "2026-09-03T20:05:31+00:00",
+    "anchor": "release_timestamp-6s",
+    "anchor_uncertainty_s": 3,
+    "live_status": "is_live",
+    "lead_in_s": 15,
+    "started_t_s": 15170.6,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=15155",
+    "ended_t_s": 15265.8,
+    "blocks": [
+      {
+        "block": "G",
+        "t_s": 15173.2,
+        "url": "https://youtu.be/xjtJNMo8DKw?t=15158"
+      }
+    ],
+    "doses": [
+      {
+        "n": 0,
+        "t_s": 15175.8,
+        "url": "https://youtu.be/xjtJNMo8DKw?t=15160"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+salt,0,1.0,1.004,0.0039,ok,90.0,3.08,16,bulk:5;fine:10;tap:8,90658,G

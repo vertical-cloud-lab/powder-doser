@@ -231,5 +231,58 @@
  "started_local": "2026-09-03 15:40:49 MDT",
  "started_utc": "2026-09-03T21:40:49.956552+00:00",
  "status": "ok",
- "trials": []
+ "trials": [],
+ "video": {
+  "anchor": "release_timestamp-6s",
+  "anchor_uncertainty_s": 3,
+  "blocks": [
+   {
+    "block": "H",
+    "t_s": 5722.8,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5707"
+   }
+  ],
+  "camera": "picam-d1pr",
+  "channel": "https://youtube.com/@byu-vcl-hardware-streams",
+  "content_t0_utc": "2026-09-03T20:05:31+00:00",
+  "doses": [
+   {
+    "n": 0,
+    "t_s": 5724.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5709"
+   },
+   {
+    "n": 1,
+    "t_s": 5741.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5726"
+   },
+   {
+    "n": 2,
+    "t_s": 5763.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5748"
+   },
+   {
+    "n": 3,
+    "t_s": 5780.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5765"
+   },
+   {
+    "n": 4,
+    "t_s": 5820.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5805"
+   },
+   {
+    "n": 5,
+    "t_s": 5873.1,
+    "url": "https://youtu.be/xjtJNMo8DKw?t=5858"
+   }
+  ],
+  "ended_t_s": 5937.1,
+  "lead_in_s": 15,
+  "live_status": "was_live",
+  "started_t_s": 5719.0,
+  "title": "powder doser stream picam-d1pr, 2026-09-03 UTC 20:05",
+  "url": "https://youtu.be/xjtJNMo8DKw?t=5704",
+  "video_id": "xjtJNMo8DKw"
+ }
 }
