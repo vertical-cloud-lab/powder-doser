@@ -1,5 +1,9 @@
 # DigiKey-only re-order — 50-doser scale-up (PR #115)
 
+> **⚠ SUPERSEDED (2026-09-07)** by [`digikey-reorder-25-dosers.md`](./digikey-reorder-25-dosers.md)
+> after @sgbaird's decisions: **25 dosers**, **no UPS**, **one PSU per doser**
+> (Option A). Kept for the price-forensics history; do not order from this doc.
+
 **Who/why:** @kinstonwithoutg's DigiKey order was cancelled and needs re-ordering, but the
 cost wouldn't reproduce from the ×50 list in the PR #115 thread
 ([request](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5428149972)).
