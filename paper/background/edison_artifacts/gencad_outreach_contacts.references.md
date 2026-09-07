@@ -1,0 +1,23 @@
+1. (wu2021deepcadadeep pages 1-2): Rundi Wu, Chang Xiao, and Changxi Zheng. Deepcad: a deep generative network for computer-aided design models. 2021 IEEE/CVF International Conference on Computer Vision (ICCV), pages 6752-6762, May 2021. URL: https://doi.org/10.48550/arxiv.2105.09492, doi:10.48550/arxiv.2105.09492. This article has 419 citations.
+
+2. (xie2505texttocadqueryanew pages 1-3): Haoyang Xie and Feng Ju. Text-to-cadquery: a new paradigm for cad generation with scalable large model capabilities. ArXiv, May 2505. URL: https://doi.org/10.48550/arxiv.2505.06507, doi:10.48550/arxiv.2505.06507. This article has 29 citations.
+
+3. (rukhovich2025cadrecodereverseengineering pages 1-2): Danila Rukhovich, Elona Dupont, Dimitrios Mallis, Kseniya Cherenkova, Anis Kacem, and Djamila Aouada. Cad-recode: reverse engineering cad code from point clouds. ArXiv, Dec 2025. URL: https://doi.org/10.48550/arxiv.2412.14042, doi:10.48550/arxiv.2412.14042. This article has 51 citations.
+
+4. (barkley2603cadsmithmultiagentcad pages 1-2): Jesse Barkley, Rumi Loghmani, and A. Farimani. Cadsmith: multi-agent cad generation with programmatic geometric validation. ArXiv, Mar 2603. URL: https://doi.org/10.48550/arxiv.2603.26512, doi:10.48550/arxiv.2603.26512. This article has 0 citations.
+
+5. (shui2026articadarticulatedcad pages 1-3): Yuan Shui, Y. Guan, Zhan Zhang, Juncheng Hu, Jing Zhang, Dong Xu, and Qian Yu. Articad: articulated cad assembly design via multi-agent code generation. ArXiv, Apr 2026. URL: https://doi.org/10.48550/arxiv.2604.10992, doi:10.48550/arxiv.2604.10992. This article has 0 citations.
+
+6. (seff2020sketchgraphsalargescale pages 1-3): Ari Seff, Yaniv Ovadia, Wenda Zhou, and Ryan P. Adams. Sketchgraphs: a large-scale dataset for modeling relational geometry in computer-aided design. Preprint, Jan 2020. URL: https://doi.org/10.48550/arxiv.2007.08506, doi:10.48550/arxiv.2007.08506. This article has 126 citations.
+
+7. (willis2021fusion360gallery pages 1-2): Karl D. D. Willis, Yewen Pu, Jieliang Luo, Hang Chu, Tao Du, Joseph G. Lambourne, Armando Solar-Lezama, and Wojciech Matusik. Fusion 360 gallery. ACM Transactions on Graphics, 40:1-24, Jul 2021. URL: https://doi.org/10.1145/3450626.3459818, doi:10.1145/3450626.3459818. This article has 340 citations and is from a highest quality peer-reviewed journal.
+
+8. (doris2026cadcoderanopensource pages 1-2): Anna C. Doris, Md Ferdous Alam, A. Nobari, and Faez Ahmed. Cad-coder: an open-source vision-language model for computer-aided design code generation. ArXiv, May 2026. URL: https://doi.org/10.48550/arxiv.2505.14646, doi:10.48550/arxiv.2505.14646. This article has 33 citations.
+
+9. (ocker2503fromideato pages 1-3): Felix Ocker, Stefan Menzel, Ahmed Sadik, and Thiago Rios. From idea to cad: a language model-driven multi-agent system for collaborative design. ArXiv, Mar 2503. URL: https://doi.org/10.48550/arxiv.2503.04417, doi:10.48550/arxiv.2503.04417. This article has 24 citations.
+
+10. (sadik2509humanintheloopquantitativeevaluation pages 1-2): Ahmed R. Sadik and M. Bujny. Human-in-the-loop: quantitative evaluation of 3d models generation by large language models. ArXiv, Sep 2509. URL: https://doi.org/10.48550/arxiv.2509.07010, doi:10.48550/arxiv.2509.07010. This article has 2 citations.
+
+11. (tom2024selfdrivinglaboratoriesfor pages 86-87): Gary Tom, Stefan P. Schmid, Sterling G. Baird, Yang Cao, Kourosh Darvish, Han Hao, Stanley Lo, Sergio Pablo-García, Ella M. Rajaonson, Marta Skreta, Naruki Yoshikawa, Samantha Corapi, Gun Deniz Akkoc, Felix Strieth-Kalthoff, Martin Seifrid, and Alán Aspuru-Guzik. Self-driving laboratories for chemistry and materials science. Chemical Reviews, 124:9633-9732, Aug 2024. URL: https://doi.org/10.1021/acs.chemrev.4c00055, doi:10.1021/acs.chemrev.4c00055. This article has 686 citations and is from a highest quality peer-reviewed journal.
+
+12. (tom2024selfdrivinglaboratoriesfor pages 91-92): Gary Tom, Stefan P. Schmid, Sterling G. Baird, Yang Cao, Kourosh Darvish, Han Hao, Stanley Lo, Sergio Pablo-García, Ella M. Rajaonson, Marta Skreta, Naruki Yoshikawa, Samantha Corapi, Gun Deniz Akkoc, Felix Strieth-Kalthoff, Martin Seifrid, and Alán Aspuru-Guzik. Self-driving laboratories for chemistry and materials science. Chemical Reviews, 124:9633-9732, Aug 2024. URL: https://doi.org/10.1021/acs.chemrev.4c00055, doi:10.1021/acs.chemrev.4c00055. This article has 686 citations and is from a highest quality peer-reviewed journal.
