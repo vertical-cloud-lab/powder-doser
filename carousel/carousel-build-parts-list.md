@@ -77,9 +77,9 @@ dynamic radial load 75 N max @20 mm, axial 15 N max.
 
 | # | Part | Representative P/N | Qty | ~USD | Notes |
 |---|---|---|---|---|---|
-| D1 | NEMA 34 closed-loop stepper, 12 N·m, 1000 PPR encoder | StepperOnline **34HS59-6004D-E1000** | 1 | 110 | The motor in the attached datasheet/STEP. Ø14 shaft. |
-| D2 | Closed-loop stepper driver (NEMA 34) | StepperOnline **CL86T** (24–110 VDC, 0–8.2 A) | 1 | 55 | Reads the motor encoder; STEP/DIR/ENA input. |
-| D3 | Motor PSU | Mean Well **LRS-350-48** (48 V, 7.3 A) | 1 | 35 | ≥6 A for the motor; 48–80 VDC band of the CL86T. |
+| D1 | NEMA 34 closed-loop stepper, 12 N·m, 1000 PPR encoder | StepperOnline **34HS59-6004D-E1000** | 1 | 63 | The motor in the attached datasheet/STEP. Ø14 shaft. Page-verified $62.58, in stock 2026-09-07. |
+| D2 | Closed-loop stepper driver (NEMA 34) | StepperOnline **CL86T-V41** (24–110 VDC, 0–8.2 A) | 1 | 46 | Reads the motor encoder; STEP/DIR/ENA input. Page-verified $46.31, in stock 2026-09-07. |
+| D3 | Motor PSU | Mean Well **LRS-350-48** (48 V, 7.3 A) | 1 | ~40 | ≥6 A for the motor; 48–80 VDC band of the CL86T. **No longer available at DigiKey (2026-09-07)** — bundle with the StepperOnline order or buy from Mouser `[confirm]`. |
 | D4 | Logic PSU | Mean Well **LRS-50-12** (12 V) or reuse bench 12 V | 1 | 15 | MCU, sensors, brake. |
 | D5 | 5 V regulator for MCU/sensors | Pololu **D24V22F5** | 1 | 8 | Same family already in BOM §10. |
 
@@ -172,13 +172,13 @@ here (that suits a horizontal turntable, which we ruled out, §11).
 
 | Block | ~USD |
 |---|---|
-| Drive (D1–D5) | ~220 |
+| Drive (D1–D5) | ~170 |
 | Bearing/axle (B1–B4) | ~55–115 |
 | Coupling/reduction (C1–C3) | ~95–145 |
 | Sensing/detent/safety (S1–S5) | ~75–135 |
 | Frame (F1–F5) | ~130–230 |
 | Control/wiring (E1–E4) | ~40 |
-| **Total (excl. 50 augers & dosing heads)** | **~$680–$1,070** |
+| **Total (excl. 50 augers & dosing heads)** | **~$630–$1,020** |
 
 ---
 
@@ -281,7 +281,7 @@ high-effort literature, task `499c6c09-0970-47f9-a7b7-a54ac9bfc090`,
   vertical lift modules (counterbalanced paternosters), Weiss/DESTACO/CAMCO
   barrel-cam rotary index tables.
 - **Budget cross-check:** the review's independent estimate is **$500–1,100**
-  for a functional prototype — consistent with §8's ~$680–1,070.
+  for a functional prototype — consistent with §8's ~$630–1,020.
 
 *(Citations with DOIs are listed at the end of the full review.)*
 

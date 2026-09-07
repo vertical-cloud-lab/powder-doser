@@ -16,34 +16,39 @@ decisions ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/115
   retrieved — **reconcile this cart against it before submitting** in case the
   cancelled order differed (e.g. no carousel PSU, different caps).
 
-**Price provenance:** DigiKey listing prices as indexed by web search on
-**2026-09-07** (digikey.com returns HTTP 403 to automated fetchers, so these are
-search-snapshot prices — the cart pulls live pricing when the part numbers are
-entered). Servo/Pico/cord prices were re-checked this session; others carry over
-from the 2026-09-02 check.
+**Price provenance:** every DigiKey line below was **page-verified on
+2026-09-07** by loading the actual product pages through the lab Raspberry Pi's
+residential connection (per @sgbaird's direction). digikey.com 403s both
+datacenter IPs and plain-`curl` TLS fingerprints; a Chrome-impersonating client
+(`curl_cffi`, in a throwaway venv on the Pi, removed afterwards) returns the
+full pages. Prices, tier breaks, and stock states below are DigiKey's own
+server-rendered data from those loads — no more search-snapshot guesses. The
+cart still pulls live pricing on CSV upload.
 
 ## The DigiKey cart (25 dosers)
 
 | # | Part | MPN | DigiKey product page | Qty | Unit $ (break) | Ext $ |
 |---|---|---|---|---|---|---|
 | 1 | Raspberry Pi **Pico 2 WH** (RP2350, headers, Wi-Fi) — 1/doser | SC1634 | <https://www.digikey.com/en/products/detail/raspberry-pi/SC1634/26241087> | 25 | 8.00 | 200.00 |
-| 2 | 0.1″ 20-pos male header (connector/pigtail headers) — 2/doser | 10129378-920003BLF | <https://www.digikey.com/en/products/detail/amphenol-icc-fci-/10129378-920003BLF/7915971> | 50 | ~0.51 | ~25.50 |
-| 3 | **MG996R-series tilt servo** (Terasic-branded MG996R) — 2/doser | FXX-3037-TOP | <https://www.digikey.com/en/products/detail/terasic-inc/FXX-3037-TOP/7044113> | 50 | 12.50 | 625.00 |
-| 4 | Mean Well **GST60A12-P1J** 12 V/5 A brick — 1/doser ⚠ **backorder** | GST60A12-P1J | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712> | 25 | 16.50 @25 (18.60 @1) | 412.50 |
-| 5 | Mean Well **YP12+YC12** AC cord, 5-15P→C13 (feeds the GST brick's C14 inlet) — 1/brick | YP12-YC12 | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/YP12-YC12/7707223> | 25 | 6.13 | 153.25 |
-| 6 | Mean Well **LRS-350-48** 48 V PSU (carousel NEMA 34 + CL86T) — *drop if not on the cancelled order* | LRS-350-48 | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/LRS-350-48/7705033> | 1 | 32.50 | 32.50 |
-| | **DigiKey subtotal** | | | | | **≈ $1,450** |
+| 2 | 0.1″ 20-pos male header (connector/pigtail headers) — 2/doser | 10129378-920003BLF | <https://www.digikey.com/en/products/detail/amphenol-icc-fci-/10129378-920003BLF/7915971> | 50 | 0.435 @10+ (0.51 @1) | 21.75 |
+| 3 | **MG996R-series tilt servo** (Terasic-branded MG996R) — 2/doser | FXX-3037-TOP | <https://www.digikey.com/en/products/detail/terasic-inc/FXX-3037-TOP/7044113> | 50 | 12.50 (no breaks) | 625.00 |
+| 4 | Mean Well **GST60A12-P1J** 12 V/5 A brick — 1/doser ✅ **backorder cleared, in stock** | GST60A12-P1J | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712> | 25 | 17.10 @25 (19.40 @1) | 427.50 |
+| 5 | Mean Well **YP12+YC12** AC cord, 5-15P→C13 (feeds the GST brick's C14 inlet) — 1/brick, 5,583 in stock | YP12-YC12 | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/YP12-YC12/7707223> | 25 | 6.19 @10+ (7.29 @1) | 154.75 |
+| | **DigiKey subtotal** | | | | | **$1,429.00** |
 
 Removed vs the ×50 doc: **SMART1500LCDT UPS** (−$379.12, per decision — and BOM §4
-records one already ordered via BYU ME #12929).
+records one already ordered via BYU ME #12929). Removed on page-verification:
+**LRS-350-48** 48 V carousel PSU — its DigiKey page now shows **“This product is
+no longer available at DigiKey”**, so it can't be on this cart at all; source it
+with the StepperOnline drive order or from Mouser instead (see watch-outs).
 
 Optional add-ons (listed as vendor "any"/Adafruit in the BOM — add here to keep a
 single PO, DigiKey stocks both):
 
 | Part | MPN | DigiKey product page | Qty | Unit $ | Ext $ |
 |---|---|---|---|---|---|
-| 100 µF / 25 V radial electrolytic — 3/doser (C1/C2/C3, BOM §2) | ECA-1EM101 (Panasonic) | <https://www.digikey.com/en/products/detail/panasonic-industry/ECA-1EM101/245011> | 100 (75 + spares) | ~0.13 `[confirm]` | ~13.00 |
-| 2.1 mm DC jack → screw-terminal adapter (female; mates the GST brick's plug — BOM §4 item 13b, needed under one-PSU-per-doser) | Adafruit 368 | <https://www.digikey.com/en/products/detail/adafruit-industries-llc/368/5629434> | 25 | ~2.00 `[confirm]` | ~50.00 |
+| 100 µF / 25 V radial electrolytic — 3/doser (C1/C2/C3, BOM §2). ⚠ Plain **ECA-1EM101** is 0-stock with a 37-week lead — order the in-stock **-B** packaging variant instead (1,597 in stock, same cap) | ECA-1EM101**B** (Panasonic) | <https://www.digikey.com/en/products/detail/panasonic-industry/ECA-1EM101B/268461> | 100 (75 + spares) | 0.1291 @100 (0.33 @1) | 12.91 |
+| 2.1 mm DC jack → screw-terminal adapter (female; mates the GST brick's plug — BOM §4 item 13b, needed under one-PSU-per-doser) | Adafruit 368 | <https://www.digikey.com/en/products/detail/adafruit-industries-llc/368/5629434> | 25 | 2.00 (verified, in stock) | 50.00 |
 
 ### CSV for DigiKey's BOM/list upload
 
@@ -52,26 +57,44 @@ Quantity,Part Number,Customer Reference
 25,SC1634,Pico 2 WH (1/doser)
 50,10129378-920003BLF,0.1in 20-pos male headers (2/doser)
 50,FXX-3037-TOP,MG996R tilt servos (2/doser)
-25,GST60A12-P1J,12V 5A brick (1/doser) - backordered, see note
+25,GST60A12-P1J,12V 5A brick (1/doser) - in stock as of 2026-09-07
 25,YP12-YC12,AC cord for GST60A12 (1/brick)
-1,LRS-350-48,48V PSU for carousel CL86T - drop if not on cancelled order
-100,ECA-1EM101,100uF/25V bulk caps (3/doser + spares) - optional
+100,ECA-1EM101B,100uF/25V bulk caps (3/doser + spares) - optional
 25,368,2.1mm jack to screw terminal (1/brick) - optional
 ```
 
-## Stock watch-outs (checked 2026-09-07)
+(LRS-350-48 removed — no longer available at DigiKey. Plain ECA-1EM101 swapped
+for the in-stock ECA-1EM101B packaging variant.)
 
-- **GST60A12-P1J is still on DigiKey backorder** (likely related to the original
-  cancellation). Options, in order: (a) place the backorder line and wait;
-  (b) substitute the **GSM60A12-P1J** medical variant — same 12 V/5 A, same 2.1 mm
-  plug, ≈ $21 — <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GSM60A12-P1J/7703568>
-  (stock also looked thin; check live); (c) off-DigiKey fallback: RS
-  (us.rs-online.com) showed **166 in stock @ $23.05**.
-- **FXX-3037-TOP servos**: in stock / ships same day; 50 pcs sits well inside the
-  ~115-unit US stock seen earlier (100 pcs barely did). If DigiKey pricing stings,
-  TowerPro MG996R multi-packs run ~$3–5/pc on Amazon (~−$400), but that breaks the
-  single-PO convenience.
-- **YP12+YC12** re-priced: $6.13 (the ×50 doc's ~$3.50 guess was low).
+## Stock watch-outs (page-verified 2026-09-07 via the lab Pi)
+
+- **GST60A12-P1J backorder has cleared — it is in stock at DigiKey** (product
+  page and category filter both say In Stock; ordering 25 should go straight
+  through, which removes the suspected cause of the original cancellation).
+  Tier price is **$17.10 @25** ($19.40 @1), a bit above the earlier $16.50
+  snapshot. The fallbacks are no longer needed, kept for reference: (a)
+  **GSM60A12-P1J** medical variant, page-verified in stock, $21.20 @25 —
+  <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GSM60A12-P1J/7703568>;
+  (b) RS (us.rs-online.com) — unverifiable by machine (403s even the Pi).
+- **LRS-350-48 is no longer available at DigiKey** (page banner: “This product
+  is no longer available at DigiKey”; not a marketplace listing either, and no
+  LRS-350H-48 successor listed). Buy it elsewhere `[confirm the exact listing
+  in a browser]`: add it to the StepperOnline order alongside the carousel
+  motor + driver, or Mouser (mouser.com also 403s automated clients, so it
+  needs a human click-through).
+- **FXX-3037-TOP servos**: in stock, $12.50 flat (no qty breaks). The page
+  doesn't server-render the exact count (US stock read ~115 on 2026-09-02 and
+  50 are needed) — glance at the number when adding to the cart. TowerPro
+  MG996R multi-packs still run ~$3–5/pc on Amazon (~−$400) if a second vendor
+  is acceptable.
+- **YP12-YC12 cord**: 5,583 in stock; tiers $7.29 @1 / $6.19 @10+ (the ×50
+  doc's $3.50 and the last session's $6.13 were both off).
+- **ECA-1EM101 (plain, bulk)**: 0 in stock, **37-week** factory lead — the
+  optional caps line now points at **ECA-1EM101B** (1,597 in stock,
+  $0.1291 @100). Same-family spares if that moves: ECA-1EM101I (454 in stock),
+  ECA-1VM101 (35 V rating, 21k in stock).
+- **SC1634 Pico 2 WH**: $8.00, in stock (the 18-week figure on the page is the
+  manufacturer lead that applies only if it slips to backorder).
 
 ## Not on DigiKey — don't look for these in the cart
 
@@ -82,6 +105,15 @@ below should need re-ordering; kept for reference:
 - NEMA 34 34HS59-6004D-E1000 + CL86T V4.1 (StepperOnline / Amazon).
 - Balance: A&D HR-100A (ceproducts.shop) + AD-1671 anti-vibration table.
 - Tic T500 / Pololu / Adafruit / StepperOnline lines.
+- **New (per the LRS-350-48 delisting above): the 48 V carousel PSU joins this
+  list** — bundle it with the StepperOnline order or buy from Mouser.
+
+Bonus from the same Pi session — the two StepperOnline carousel-drive links
+finally **direct-loaded (HTTP 200, exact SKU confirmed on-page)** after months
+of 403-only checks, and both are cheaper than the BOM's estimates:
+
+- 34HS59-6004D-E1000 motor: **$62.58, in stock** (BOM guessed ~$110).
+- CL86T-V41 driver: **$46.31, in stock** (BOM guessed ~$55).
 
 ## Gap check — needed by the design but on *no* order list
 

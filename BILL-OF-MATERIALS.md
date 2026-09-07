@@ -216,9 +216,9 @@ factor this lands in the **~5–12 N·m at the carousel shaft** range.
 
 | Ref | Part | Vendor / P-N | Qty | ~USD | Notes |
 |---|---|---|---|---|---|
-| MC1 | **NEMA 34 closed-loop stepper, 12 N·m** | StepperOnline **34HS59-6004D-E1000** | 1 | ~110 | 86×86×175 mm, 6.0 A/phase, Ø14 shaft, 5.5 kg, **1000 PPR (4000 CPR) optical encoder**. 12 N·m holding covers the shaft budget directly. |
-| MD1 | **Closed-loop stepper driver (HSS/CL series)** | StepperOnline **CL86T** (or **CL86T-V41**) | 1 | ~55 | 0–8.2 A, 24–110 VDC; reads the motor encoder so a stall/overload is corrected, not silently dropped. STEP/DIR interface (like the DRV8825 cost-alt path, §5 item 11-alt); pairs with the 34HS59 above. |
-| MP1 | 48–60 VDC PSU for the closed-loop driver | e.g. Mean Well **LRS-350-48** | 1 | ~35 | Separate from the 12 V logic rail; size for ≥6 A motor current. |
+| MC1 | **NEMA 34 closed-loop stepper, 12 N·m** | StepperOnline **34HS59-6004D-E1000** | 1 | 62.58 | 86×86×175 mm, 6.0 A/phase, Ø14 shaft, 5.5 kg, **1000 PPR (4000 CPR) optical encoder**. 12 N·m holding covers the shaft budget directly. Price page-verified in stock 2026-09-07 (earlier ~$110 estimate was high). |
+| MD1 | **Closed-loop stepper driver (HSS/CL series)** | StepperOnline **CL86T-V41** | 1 | 46.31 | 0–8.2 A, 18–80 VAC / 24–110 VDC; reads the motor encoder so a stall/overload is corrected, not silently dropped. STEP/DIR interface (like the DRV8825 cost-alt path, §5 item 11-alt); pairs with the 34HS59 above. V4.1 page-verified in stock 2026-09-07. |
+| MP1 | 48–60 VDC PSU for the closed-loop driver | e.g. Mean Well **LRS-350-48** | 1 | ~35 | Separate from the 12 V logic rail; size for ≥6 A motor current. **No longer available at DigiKey (2026-09-07)** — source from Mouser or with the StepperOnline order. |
 
 **Lighter / cheaper alternative — geared NEMA 23/24:** a **NEMA 23
 closed-loop** (StepperOnline **23HS45-4204D-E1000**, ~3 N·m, ~$60) or
@@ -467,7 +467,7 @@ the remaining vendor links come from `hardware/vibration-motor-and-solenoid.md`
 | **NEMA-11 11HS18-0674S** stepper | https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-10ncm-14-16oz-in-0-67a-28x28x45mm-4-wires-11hs18-0674s | Vendor (audited PR #25) |
 | **NEMA 34 closed-loop 12 N·m** (carousel drive) **34HS59-6004D-E1000** | https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000 | Vendor (closed-loop carousel drive, §5.1) |
 | **NEMA 23 closed-loop 3 N·m** (geared-carousel alt) **23HS45-4204D-E1000** | https://www.omc-stepperonline.com/nema-23-closed-loop-stepper-motor-3-0nm-424oz-in-encoder-1000ppr-4000cpr-23hs45-4204d-e1000 | Vendor (closed-loop carousel alt, §5.1) |
-| **CL86T** closed-loop stepper driver (NEMA 34) | https://www.omc-stepperonline.com/closed-loop-stepper-driver-0-8-2a-18-80vac-24-110vdc-for-nema-34-stepper-motor-cl86t | Vendor (closed-loop carousel driver, §5.1) |
+| **CL86T-V41** closed-loop stepper driver (NEMA 34) | https://www.omc-stepperonline.com/closed-loop-stepper-driver-v4-1-0-8-2a-18-80vac-24-110vdc-for-nema-34-stepper-motor-cl86t-v41 | Vendor (V4.1 URL posted by @sgbaird, PR #115; page-verified 2026-09-07) |
 | **ST-FC01** 5 mm flexible shaft coupler | https://www.omc-stepperonline.com/5mm-5mm-flexible-shaft-coupling-18x25mm-cnc-stepper-motor-shaft-coupler-st-fc01 | Vendor (audited PR #25) |
 | Mean Well **GST60A12-P1J** 12 V / 5 A PSU | https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712 | Vendor (audited PR #25) |
 | **Barrel-jack** 2.1 mm DC adapter (Adafruit #368) | https://www.adafruit.com/product/368 | Vendor (audited PR #25) |
@@ -480,11 +480,17 @@ the remaining vendor links come from `hardware/vibration-motor-and-solenoid.md`
 | **A&D HR-100A** balance (Galaxy HR series) | https://andweighing.com/products/galaxy-hr-series-analytical-balances/ | Official A&D (lab equipment) |
 | **Eaton Tripp Lite SMART1500LCDT** UPS | https://tripplite.eaton.com/smartpro-lcd-1500va-900w-line-interactive-ups-avr-tower-lcd-usb-10-outlets~SMART1500LCDT | Official Eaton / Tripp Lite |
 
-> **Note:** `omc-stepperonline.com` and `digikey.com` may return HTTP 403 to
-> automated link-checkers (anti-bot), but the pages open normally in a browser
-> and were audited as the correct parts in PR #25. The **Tic T500** is Pololu
-> **#3135** (connectors soldered); the otherwise-identical **#3134** (no
-> connectors) is the bare-board variant referenced in some firmware notes.
+> **Note:** `omc-stepperonline.com` and `digikey.com` return HTTP 403 to
+> datacenter IPs and plain-`curl` TLS fingerprints, but the pages open normally
+> in a browser and were audited as the correct parts in PR #25.
+> **2026-09-07 update:** routed through the lab Raspberry Pi's residential
+> connection (Chrome-impersonating TLS), both StepperOnline carousel-drive
+> pages and every DigiKey link in `orders/digikey-reorder-25-dosers.md`
+> **direct-loaded HTTP 200 with the exact part number confirmed on-page** —
+> except **Mean Well LRS-350-48**, whose page now says it is no longer
+> available at DigiKey (see §5.1 MP1). The **Tic T500** is Pololu **#3135**
+> (connectors soldered); the otherwise-identical **#3134** (no connectors) is
+> the bare-board variant referenced in some firmware notes.
 
 ### Carousel / rotary-indexing reference links (§5.2)
 
