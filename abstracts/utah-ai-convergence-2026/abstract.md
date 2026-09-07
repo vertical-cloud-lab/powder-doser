@@ -1,0 +1,18 @@
+---
+Meeting: 2026 Utah AI Convergence — Student Poster Competition
+Dates: June 23–24, 2026 (Law School Building, University of Utah)
+Submission deadline: June 2, 2026 (extension granted)
+Format: poster abstract; main-text word limit 500 words.
+Scope: research that uses or advances AI; emphasis on AI in generating designs
+for the powder doser project. See issue #77.
+---
+
+Title: An Open-Source, Low-Cost Powder Doser Designed with Agentic AI and Generative CAD for Autonomous Alloy Discovery
+
+Additive manufacturing of aerospace structural alloys depends on rapid, reproducible exploration of powder feedstocks, yet accurately metering and blending dry metal powders remains a largely manual bottleneck in research laboratories. Commercial dispensers are often cost-prohibitive and poorly matched to alloy-focused, many-powder workflows, and existing open-source designs have not been rigorously developed or tested for laser powder bed fusion (L-PBF). We are developing an open-source, low-cost, modular powder doser for precise metering of metal and feedstock powders, intended for integration into a self-driving, Bayesian-optimization materials-discovery loop in which dosed powders feed ultrasonic atomization and L-PBF of aerospace alloys. Hardware targets from the project proposal include up to 30 reservoirs, blends up to 250 mL, per-powder gravimetric accuracy of ±1 mg with a ±0.1 mg stretch goal, and cross-contamination characterization across five to seven representative L-PBF feedstock powders.
+
+A central research thread of the project is evaluating how far agentic AI and generative ("text-to-CAD") tools can carry mechanical design of a real laboratory instrument. We used GitHub Copilot coding agents with multiple large language models to generate and revise parametric CAD (CadQuery and OpenSCAD) directly from engineering requirements, and we also evaluated hosted generative-CAD services as comparison points. Across these tools, fully AI-generated part designs were not deployment-ready for the doser. We therefore adopted an engineer-led workflow: engineers design the parts and supply exact dimensions, sketches, and manufacturing constraints; AI models those parts as editable parametric scripts; and engineers review the models, 3D print prototypes, and iterate. Throughout, the engineers have not opened a traditional CAD graphical interface.
+
+Several lessons have emerged. Specificity improves results: explicit drawings and constraints produce better models than high-level prompts, but useful geometry still requires many correction cycles. A recurring limitation is weak spatial reasoning—even near-final AI models frequently introduce hallucinated or unnecessary features that must be removed or, if still functional, tolerated. Most repeated AI sessions are spent correcting and guiding the model toward the intended geometry rather than exploring new designs, and AI did not reduce assembly complexity. In our experience to date, AI is most effective as a modeling assistant rather than an autonomous design agent.
+
+The poster will present the dosing mechanism and prototypes designed by engineers and modeled by AI—including the auger, auger bracket, tap collar with vibration motor and solenoid mounts, and tilting mounting plate—alongside a comparison of the AI CAD/modeling workflows we tried, the specific failure modes we observed, and practical strategies that improved AI-modeled outputs. Open-source deliverables include parametric CAD, bill of materials, and control code, supporting the broader role of the doser within an autonomous alloy-discovery pipeline relevant to aerospace additive manufacturing.
