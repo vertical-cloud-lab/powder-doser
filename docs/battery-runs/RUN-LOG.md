@@ -4,12 +4,14 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-26 entries, 17 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+28 entries, 18 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-08 19:42 | 2026-09-08 20:35 | 53:14 | `carboxymethyl-cellulose` | H | -- | 0.68 g | -- | 200 mg 3x -22.6 mg; 50 mg 3x -2.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T194201Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/fYvC0UJN6Ro?t=2506) |
+| 2026-09-08 17:27 | 2026-09-08 18:48 | 80:37 | `carboxymethyl-cellulose` | H | -- | 0.63 g | -- | 200 mg 3x -17.3 mg; 50 mg 3x -23.1 mg | not recorded | excluded<br>`outlet-misaligned` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T172730Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/ZNVp-45Wimk?t=23235) |
 | 2026-09-04 20:37 | 2026-09-04 20:45 | 8:29 | `xanthan-gum` | H | -- | 0.81 g | -- | 200 mg 3x +2.9 mg; 50 mg 3x +17.8 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T203727Z_xanthan-gum) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-xanthan-gum-block-h.md) | [~1 min](https://youtu.be/JrdlEVz18R0?t=5832) |
 | 2026-09-04 19:00 | 2026-09-04 19:43 | 43:09 | `white-rice-flour` | H | -- | 0.72 g | -- | 200 mg 3x -4.9 mg; 50 mg 3x -4.7 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T190011Z_white-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-white-rice-flour-block-h.md) | [~1 min](https://youtu.be/JrdlEVz18R0?t=0) |
 | 2026-09-04 00:18 | 2026-09-04 00:19 | 1:35 | `salt` | G | -- | 1.00 g | -- | 1x, 1 ok, mean +3.9 mg | not recorded | excluded<br>`unreviewed` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T001821Z_salt) | [~1 min](https://youtu.be/xjtJNMo8DKw?t=15186) |
@@ -38,6 +40,34 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-08 19:42 UTC -- carboxymethyl-cellulose
+
+- **Window** 2026-09-08T19:42:01.071124+00:00 -> 2026-09-08T20:35:15.912754+00:00  (53:14)
+- **Lab clock** 2026-09-08 13:42:01 MDT -> 2026-09-08 14:35:15 MDT
+- **Powder** carboxymethyl cellulose  ·  batch `food-safe-2026-08`  ·  operator claude
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.6758 g
+- **Closed-loop doses** 200 mg 3x -22.6 mg; 50 mg 3x -2.2 mg
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260908T194201Z_carboxymethyl-cellulose](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T194201Z_carboxymethyl-cellulose)
+- **Notes** [docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md)
+- **Video** [https://youtu.be/fYvC0UJN6Ro?t=2506](https://youtu.be/fYvC0UJN6Ro?t=2506) -- accurate to about a minute
+
+### 2026-09-08 17:27 UTC -- carboxymethyl-cellulose
+
+- **Window** 2026-09-08T17:27:30.646788+00:00 -> 2026-09-08T18:48:08.256118+00:00  (80:37)
+- **Lab clock** 2026-09-08 11:27:30 MDT -> 2026-09-08 12:48:08 MDT
+- **Powder** carboxymethyl cellulose  ·  batch `food-safe-2026-08`  ·  operator claude
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.6289 g
+- **Closed-loop doses** 200 mg 3x -17.3 mg; 50 mg 3x -23.1 mg
+- **Environment** not recorded
+- **QC** excluded -- `outlet-misaligned`
+- **Data** [data/battery/20260908T172730Z_carboxymethyl-cellulose](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T172730Z_carboxymethyl-cellulose)
+- **Notes** [docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md)
+- **Video** [https://youtu.be/ZNVp-45Wimk?t=23235](https://youtu.be/ZNVp-45Wimk?t=23235) -- accurate to about a minute
 
 ### 2026-09-04 20:37 UTC -- xanthan-gum
 
