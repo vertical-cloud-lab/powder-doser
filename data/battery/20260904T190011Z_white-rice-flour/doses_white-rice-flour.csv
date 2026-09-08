@@ -1,0 +1,7 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+white-rice-flour,0,0.05,0.045,-0.005,ok,78.0,0.63,28,bulk:0;fine:5;tap:14,78712,H
+white-rice-flour,1,0.05,0.045,-0.005,ok,136.0,0.75,60,bulk:0;fine:6;tap:30,214796,H
+white-rice-flour,2,0.05,0.046,-0.004,ok,147.0,1.38,50,bulk:0;fine:11;tap:25,361683,H
+white-rice-flour,3,0.2,0.1952,-0.0048,ok,766.0,8.63,236,bulk:0;fine:69;tap:118,1127104,H
+white-rice-flour,4,0.2,0.1951,-0.0049,ok,780.0,9.88,214,bulk:0;fine:79;tap:107,1907081,H
+white-rice-flour,5,0.2,0.195,-0.005,ok,677.0,8.64,182,bulk:0;fine:69;tap:91,2584521,H

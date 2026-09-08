@@ -1,0 +1,1860 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "ok",
+  "started_utc": "2026-08-11T18:30:43.564056+00:00",
+  "ended_utc": "2026-08-11T18:53:08.395481+00:00",
+  "started_local": "2026-08-11 12:30:43 MDT",
+  "ended_local": "2026-08-11 12:53:08 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 1344.8,
+  "block_timeline": [
+    {
+      "block": "A",
+      "started_utc": "2026-08-11T18:30:45.724245+00:00",
+      "started_local": "2026-08-11 12:30:45 MDT",
+      "elapsed_s": 2.2
+    },
+    {
+      "block": "B",
+      "started_utc": "2026-08-11T18:31:07.938249+00:00",
+      "started_local": "2026-08-11 12:31:07 MDT",
+      "elapsed_s": 24.4
+    },
+    {
+      "block": "C",
+      "started_utc": "2026-08-11T18:32:09.318789+00:00",
+      "started_local": "2026-08-11 12:32:09 MDT",
+      "elapsed_s": 85.8
+    },
+    {
+      "block": "D",
+      "started_utc": "2026-08-11T18:34:21.196865+00:00",
+      "started_local": "2026-08-11 12:34:21 MDT",
+      "elapsed_s": 217.6
+    },
+    {
+      "block": "E",
+      "started_utc": "2026-08-11T18:34:53.915342+00:00",
+      "started_local": "2026-08-11 12:34:53 MDT",
+      "elapsed_s": 250.3
+    },
+    {
+      "block": "F",
+      "started_utc": "2026-08-11T18:37:26.739580+00:00",
+      "started_local": "2026-08-11 12:37:26 MDT",
+      "elapsed_s": 403.2
+    },
+    {
+      "block": "G",
+      "started_utc": "2026-08-11T18:37:26.747182+00:00",
+      "started_local": "2026-08-11 12:37:26 MDT",
+      "elapsed_s": 403.2
+    }
+  ],
+  "powder_id": "alsi10mg",
+  "powder": "AlSi10Mg (aluminum-silicon-magnesium AM metal powder, non-food-safe)",
+  "batch": "metal-2026-08",
+  "operator": null,
+  "notes": "First non-food-safe powder; not hand-rotated beforehand, pre-flight charged empty flights in 4 rev then fed 72.4 mg on rev 5. Fume hood.",
+  "qc": {
+    "valid_for_cross_powder_comparison": false,
+    "verdict": "no-tilt-servo-fault",
+    "preflight_verdict": "feed confirmed",
+    "reason": "tilt actuator (servos) inoperative; plate fixed at 0 deg for entire run",
+    "last_amended_utc": "2026-08-11T22:21:24.223161+00:00"
+  },
+  "preflight": {
+    "rev_deltas": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0724
+    ],
+    "tilt_deg": 90.0,
+    "rpm": 30.0,
+    "rotation_rev_total": 5,
+    "taps_delta_g": 0.0,
+    "verdict": "feed confirmed",
+    "rotation_delta_g": 0.0724,
+    "taps_total": 10
+  },
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "alsi10mg",
+    "battery_version": "1",
+    "blocks": "ABCDEFG",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "vib": "unavailable",
+    "park_tilt_deg": "0.0"
+  },
+  "trials": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 0,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 7519
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 1,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 9615
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 2,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 11730
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 3,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 13824
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 4,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 15939
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 5,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 18033
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 6,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 20134
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 7,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 22249
+    },
+    {
+      "block": "B",
+      "tilt_deg": 0.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 42705
+    },
+    {
+      "block": "B",
+      "tilt_deg": 45.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 63170
+    },
+    {
+      "block": "B",
+      "tilt_deg": 90.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 83635
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0857,
+      "delta_g": 0.0857,
+      "flag": "",
+      "t_ms": 96073
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0857,
+      "after_g": 0.1698,
+      "delta_g": 0.0841,
+      "flag": "",
+      "t_ms": 102478
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1698,
+      "after_g": 0.253,
+      "delta_g": 0.0832,
+      "flag": "",
+      "t_ms": 108885
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.253,
+      "after_g": 0.3296,
+      "delta_g": 0.0766,
+      "flag": "",
+      "t_ms": 115289
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3296,
+      "after_g": 0.4121,
+      "delta_g": 0.0825,
+      "flag": "",
+      "t_ms": 121697
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.4121,
+      "after_g": 0.4956,
+      "delta_g": 0.0835,
+      "flag": "",
+      "t_ms": 128102
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0782,
+      "delta_g": 0.0782,
+      "flag": "",
+      "t_ms": 139776
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0782,
+      "after_g": 0.1541,
+      "delta_g": 0.0759,
+      "flag": "",
+      "t_ms": 146181
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1541,
+      "after_g": 0.2369,
+      "delta_g": 0.0828,
+      "flag": "",
+      "t_ms": 152587
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.2369,
+      "after_g": 0.3161,
+      "delta_g": 0.0792,
+      "flag": "",
+      "t_ms": 158993
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3161,
+      "after_g": 0.3863,
+      "delta_g": 0.0702,
+      "flag": "",
+      "t_ms": 165400
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3863,
+      "after_g": 0.4533,
+      "delta_g": 0.067,
+      "flag": "",
+      "t_ms": 171806
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0685,
+      "delta_g": 0.0685,
+      "flag": "",
+      "t_ms": 183472
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0685,
+      "after_g": 0.1321,
+      "delta_g": 0.0636,
+      "flag": "",
+      "t_ms": 189880
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1321,
+      "after_g": 0.2004,
+      "delta_g": 0.0683,
+      "flag": "",
+      "t_ms": 196287
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.2004,
+      "after_g": 0.2724,
+      "delta_g": 0.072,
+      "flag": "",
+      "t_ms": 202694
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.2724,
+      "after_g": 0.3425,
+      "delta_g": 0.0701,
+      "flag": "",
+      "t_ms": 209102
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3425,
+      "after_g": 0.4098,
+      "delta_g": 0.0673,
+      "flag": "",
+      "t_ms": 215509
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 0,
+      "action": "3.0",
+      "rpm": 15.0,
+      "before_g": 0.0,
+      "after_g": 0.3531,
+      "delta_g": 0.3531,
+      "flag": "",
+      "t_ms": 236843
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 1,
+      "action": "3.0",
+      "rpm": 45.0,
+      "before_g": 0.3531,
+      "after_g": 0.5311,
+      "delta_g": 0.178,
+      "flag": "",
+      "t_ms": 243719
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 2,
+      "action": "3.0",
+      "rpm": 90.0,
+      "before_g": 0.5311,
+      "after_g": 0.6637,
+      "delta_g": 0.1326,
+      "flag": "",
+      "t_ms": 248225
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0778,
+      "delta_g": 0.0778,
+      "flag": "",
+      "t_ms": 259881
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 0,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0778,
+      "after_g": 0.0778,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 262278
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0778,
+      "after_g": 0.1405,
+      "delta_g": 0.0627,
+      "flag": "",
+      "t_ms": 268681
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 1,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.1405,
+      "after_g": 0.1404,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 271077
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1404,
+      "after_g": 0.2073,
+      "delta_g": 0.0669,
+      "flag": "",
+      "t_ms": 277483
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 2,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.2073,
+      "after_g": 0.2072,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 279867
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.2072,
+      "after_g": 0.2781,
+      "delta_g": 0.0709,
+      "flag": "",
+      "t_ms": 286286
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 3,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.2781,
+      "after_g": 0.278,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 288665
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.278,
+      "after_g": 0.3447,
+      "delta_g": 0.0667,
+      "flag": "",
+      "t_ms": 295074
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 4,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.3447,
+      "after_g": 0.3447,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 297470
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3447,
+      "after_g": 0.4157,
+      "delta_g": 0.071,
+      "flag": "",
+      "t_ms": 303874
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 5,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.4157,
+      "after_g": 0.4156,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 306271
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 6,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.4156,
+      "after_g": 0.4769,
+      "delta_g": 0.0613,
+      "flag": "",
+      "t_ms": 312676
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 6,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.4769,
+      "after_g": 0.477,
+      "delta_g": 0.0001,
+      "flag": "",
+      "t_ms": 315059
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 7,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.477,
+      "after_g": 0.5481,
+      "delta_g": 0.0711,
+      "flag": "",
+      "t_ms": 321466
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 7,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.5481,
+      "after_g": 0.5481,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 323863
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": -0.0001,
+      "after_g": 0.0423,
+      "delta_g": 0.0424,
+      "flag": "",
+      "t_ms": 335525
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 0,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0423,
+      "after_g": 0.0423,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 337922
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0423,
+      "after_g": 0.1076,
+      "delta_g": 0.0653,
+      "flag": "",
+      "t_ms": 344327
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 1,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.1076,
+      "after_g": 0.1075,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 346724
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1075,
+      "after_g": 0.177,
+      "delta_g": 0.0695,
+      "flag": "",
+      "t_ms": 353128
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 2,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.177,
+      "after_g": 0.1773,
+      "delta_g": 0.0003,
+      "flag": "",
+      "t_ms": 355512
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.1773,
+      "after_g": 0.2432,
+      "delta_g": 0.0659,
+      "flag": "",
+      "t_ms": 361919
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 3,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.2432,
+      "after_g": 0.2432,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 364316
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.2432,
+      "after_g": 0.3088,
+      "delta_g": 0.0656,
+      "flag": "",
+      "t_ms": 370718
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 4,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.3088,
+      "after_g": 0.3088,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 373115
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3088,
+      "after_g": 0.3705,
+      "delta_g": 0.0617,
+      "flag": "",
+      "t_ms": 380470
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 5,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.3705,
+      "after_g": 0.3686,
+      "delta_g": -0.0019,
+      "flag": "",
+      "t_ms": 382867
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 6,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3685,
+      "after_g": 0.3954,
+      "delta_g": 0.0269,
+      "flag": "",
+      "t_ms": 389842
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 6,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.3954,
+      "after_g": 0.3952,
+      "delta_g": -0.0002,
+      "flag": "",
+      "t_ms": 392239
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 7,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.3952,
+      "after_g": 0.457,
+      "delta_g": 0.0618,
+      "flag": "",
+      "t_ms": 398645
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 7,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.457,
+      "after_g": 0.4563,
+      "delta_g": -0.0007,
+      "flag": "",
+      "t_ms": 401042
+    }
+  ],
+  "polls": [
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 221149,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 221435,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 221723,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 222010,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 222295,
+      "grams": 0.0081,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 222582,
+      "grams": 0.0098,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 222871,
+      "grams": 0.0103,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 223155,
+      "grams": 0.0104,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 223443,
+      "grams": 0.011,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 223730,
+      "grams": 0.0243,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 224015,
+      "grams": 0.0367,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 224304,
+      "grams": 0.0519,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 224591,
+      "grams": 0.0654,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 224876,
+      "grams": 0.075,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 225165,
+      "grams": 0.0853,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 225452,
+      "grams": 0.0955,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 225739,
+      "grams": 0.1045,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226025,
+      "grams": 0.1125,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226313,
+      "grams": 0.1158,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226600,
+      "grams": 0.1168,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226885,
+      "grams": 0.117,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227174,
+      "grams": 0.1171,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227460,
+      "grams": 0.1177,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227747,
+      "grams": 0.1333,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228034,
+      "grams": 0.1466,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228322,
+      "grams": 0.1612,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228607,
+      "grams": 0.1771,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228895,
+      "grams": 0.1862,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229182,
+      "grams": 0.1955,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229468,
+      "grams": 0.2076,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229755,
+      "grams": 0.2173,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230042,
+      "grams": 0.2247,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230328,
+      "grams": 0.2287,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230616,
+      "grams": 0.2292,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230904,
+      "grams": 0.2292,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231285,
+      "grams": 0.2293,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231572,
+      "grams": 0.2341,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231860,
+      "grams": 0.2471,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232146,
+      "grams": 0.2596,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232432,
+      "grams": 0.273,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232721,
+      "grams": 0.2873,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233005,
+      "grams": 0.3001,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233294,
+      "grams": 0.312,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233581,
+      "grams": 0.3232,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233867,
+      "grams": 0.3332,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234153,
+      "grams": 0.3407,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234441,
+      "grams": 0.3424,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234726,
+      "grams": 0.3424,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 237309,
+      "grams": 0.3532,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 237597,
+      "grams": 0.3532,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 237885,
+      "grams": 0.3535,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 238169,
+      "grams": 0.3748,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 238457,
+      "grams": 0.3935,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 238745,
+      "grams": 0.4033,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 239030,
+      "grams": 0.4057,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 239317,
+      "grams": 0.4073,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 239605,
+      "grams": 0.4196,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 239890,
+      "grams": 0.4363,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 240178,
+      "grams": 0.4444,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 240465,
+      "grams": 0.4472,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 240753,
+      "grams": 0.4593,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 241038,
+      "grams": 0.4796,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 241326,
+      "grams": 0.4912,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 241615,
+      "grams": 0.4963,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 244100,
+      "grams": 0.5312,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 244386,
+      "grams": 0.5312,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 244674,
+      "grams": 0.5313,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 244960,
+      "grams": 0.5425,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 245246,
+      "grams": 0.5557,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 245533,
+      "grams": 0.5767,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 245821,
+      "grams": 0.5907,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 246106,
+      "grams": 0.6109,
+      "stable": 0
+    }
+  ],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 1.0,
+      "dispensed_g": 0.9948,
+      "error_g": -0.0052,
+      "status": "stalled",
+      "elapsed_s": 320.0,
+      "auger_rev": 23.43,
+      "taps": 82,
+      "phase_cycles": "bulk:67;fine:47;tap:41",
+      "t_ms": 720557
+    },
+    {
+      "n": 1,
+      "target_g": 1.0,
+      "dispensed_g": 0.9677,
+      "error_g": -0.0323,
+      "status": "stalled",
+      "elapsed_s": 313.0,
+      "auger_rev": 14.51,
+      "taps": 78,
+      "phase_cycles": "bulk:31;fine:49;tap:39",
+      "t_ms": 1033551
+    },
+    {
+      "n": 2,
+      "target_g": 1.0,
+      "dispensed_g": 0.9788,
+      "error_g": -0.0212,
+      "status": "stalled",
+      "elapsed_s": 307.0,
+      "auger_rev": 14.39,
+      "taps": 76,
+      "phase_cycles": "bulk:32;fine:48;tap:38",
+      "t_ms": 1340716
+    }
+  ],
+  "dose_summary": {
+    "n": 3,
+    "ok": 0,
+    "mean_error_g": -0.019566666666666666,
+    "std_error_g": 0.01362363142973757,
+    "max_abs_error_g": 0.0323,
+    "mean_elapsed_s": 313.3333333333333
+  },
+  "device_summary": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0826,
+      "std_g": 0.0031,
+      "sem_g": 0.0013,
+      "min_g": 0.0766,
+      "max_g": 0.0857
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0756,
+      "std_g": 0.0059,
+      "sem_g": 0.0024,
+      "min_g": 0.067,
+      "max_g": 0.0828
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0683,
+      "std_g": 0.0028,
+      "sem_g": 0.0012,
+      "min_g": 0.0636,
+      "max_g": 0.072
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "n": 3,
+      "mean_g": 0.2212,
+      "std_g": 0.1164,
+      "sem_g": 0.0672,
+      "min_g": 0.1326,
+      "max_g": 0.3531
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.0686,
+      "std_g": 0.0053,
+      "sem_g": 0.0019,
+      "min_g": 0.0613,
+      "max_g": 0.0778
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -0.0,
+      "std_g": 0.0001,
+      "sem_g": 0.0,
+      "min_g": -0.0001,
+      "max_g": 0.0001
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.0574,
+      "std_g": 0.0148,
+      "sem_g": 0.0052,
+      "min_g": 0.0269,
+      "max_g": 0.0695
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -0.0003,
+      "std_g": 0.0007,
+      "sem_g": 0.0002,
+      "min_g": -0.0019,
+      "max_g": 0.0003
+    }
+  ],
+  "host_summary": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 0.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 45.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 90.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.08259999999999999,
+      "std_g": 0.0031317726609701403,
+      "sem_g": 0.001278540834962523,
+      "min_g": 0.0766,
+      "max_g": 0.0857,
+      "rsd_pct": 3.79149232562971
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.07555,
+      "std_g": 0.005911937076796403,
+      "sem_g": 0.0024135382049320594,
+      "min_g": 0.067,
+      "max_g": 0.0828,
+      "rsd_pct": 7.8251979838469925
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0683,
+      "std_g": 0.0028305476501906805,
+      "sem_g": 0.00115556623926685,
+      "min_g": 0.0636,
+      "max_g": 0.072,
+      "rsd_pct": 4.1442864570873805
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "n": 3,
+      "mean_g": 0.2212333333333333,
+      "std_g": 0.11643411584811961,
+      "sem_g": 0.06722326812776792,
+      "min_g": 0.1326,
+      "max_g": 0.3531,
+      "rsd_pct": 52.62955364537575
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.06855,
+      "std_g": 0.005298517312823058,
+      "sem_g": 0.0018733087610657538,
+      "min_g": 0.0613,
+      "max_g": 0.0778,
+      "rsd_pct": 7.729419858239326
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -3.7500000000000003e-05,
+      "std_g": 7.44023809142845e-05,
+      "sem_g": 2.630521404045756e-05,
+      "min_g": -0.0001,
+      "max_g": 0.0001,
+      "rsd_pct": 198.40634910475865
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.0573875,
+      "std_g": 0.014839179559530912,
+      "sem_g": 0.0052464422468945565,
+      "min_g": 0.0269,
+      "max_g": 0.0695,
+      "rsd_pct": 25.857860264919907
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -0.000325,
+      "std_g": 0.000696419413859206,
+      "sem_g": 0.0002462214450449026,
+      "min_g": -0.0019,
+      "max_g": 0.0003,
+      "rsd_pct": 214.2828965720634
+    }
+  ],
+  "amendments": [
+    {
+      "amended_utc": "2026-08-11T22:21:24.223161+00:00",
+      "author": "swcharles",
+      "summary": "Tilt servos failed during the run; the plate stayed at 0 deg the whole time (confirmed by operator and video youtu.be/Elgle_1Ys1M). All tilt_deg labels are commanded-only, not achieved -- every measurement was physically at tilt 0 deg. AlSi10Mg must be re-run.",
+      "detail": "This retroactively explains the run's anomalous near-flat/decreasing feed-factor-vs-tilt (82.6/75.6/68.3 mg/rev at nominal 0/45/90): there was no tilt change at all, so blocks B, C and E (and the dose phase tilts) were all executed at 0 deg, and the small downward trend is column depletion over time rather than a tilt effect. Non-tilt observations (preflight empty-flight charge, dose behaviour under the frozen controller) remain as recorded but are single-tilt (0 deg).",
+      "evidence": {
+        "reported_by": "swcharles",
+        "source": "operator bench observation + public video",
+        "video_url": "https://youtu.be/Elgle_1Ys1M",
+        "fault": "tilt servos non-functional during run",
+        "observed": "plate remained at 0 deg (horizontal) for the entire battery; commanded tilt changes (blocks B/C/E preflight/dose phases) were never physically achieved",
+        "servo_notes": "both servos felt very stiff; left servo horn had unscrewed; a left-side hinge screw is backing out from vibration (visible ~9:26 in the video)",
+        "consequence": "every measurement was taken at physical tilt 0 deg; all tilt_deg labels in trials/summary/preflight are commanded-only, not achieved",
+        "action": "AlSi10Mg to be re-run once the servos are fixed",
+        "measured_numbers_touched": false
+      },
+      "qc_change": {
+        "verdict": {
+          "from": "ok",
+          "to": "no-tilt-servo-fault"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": true,
+          "to": false
+        },
+        "reason": {
+          "from": null,
+          "to": "tilt actuator (servos) inoperative; plate fixed at 0 deg for entire run"
+        }
+      }
+    }
+  ]
+}
