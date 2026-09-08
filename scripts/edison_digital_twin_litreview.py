@@ -177,18 +177,20 @@ def _load_task_id() -> str:
 
 
 def fetch() -> str:
-    """Fetch the task once and write the artifact triplet. Returns status."""
+    """Fetch the task once and write the artifact triplet. Returns status.
+
+    The answer lives on the *non-verbose* ``PQATaskResponse`` (``answer`` /
+    ``formatted_answer``); the verbose variant returns a
+    ``TaskResponseVerbose`` whose payload is the raw environment frame
+    without those convenience fields, so we deliberately fetch non-verbose.
+    """
     client = make_client()
     task_id = _load_task_id()
-    task = client.get_task(task_id=task_id, verbose=True)
+    task = client.get_task(task_id=task_id)
     status = str(getattr(task, "status", "?"))
     print(f"status: {status}", flush=True)
 
     dump = task.model_dump(mode="json", exclude_none=True)
-    # The verbose environment frame can be enormous; keep task.json readable
-    # by dropping it (the answer + formatted answer carry the trajectory's
-    # user-facing artifacts).
-    dump.pop("environment_frame", None)
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     (ARTIFACT_DIR / f"{KEY}.task.json").write_text(
         json.dumps(dump, indent=2, default=str) + "\n"
@@ -202,10 +204,10 @@ def fetch() -> str:
         (ARTIFACT_DIR / f"{KEY}.references.md").write_text(
             str(formatted).rstrip() + "\n"
         )
-    if answer or formatted:
-        VERBATIM_DOC.write_text(
-            f"Question: {QUERY}\n\n{str(formatted or answer).rstrip()}\n"
-        )
+    if formatted or answer:
+        # ``formatted_answer`` already opens with "Question: <query>", the
+        # same layout as the other verbatim docs in docs/edison/.
+        VERBATIM_DOC.write_text(str(formatted or answer).rstrip() + "\n")
         print(f"artifacts written under {ARTIFACT_DIR.relative_to(REPO_ROOT)}")
     else:
         print("(no answer body yet)")

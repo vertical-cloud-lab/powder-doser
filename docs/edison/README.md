@@ -13,6 +13,14 @@ exactly what the model said before any of it was paraphrased into the
 | `analysis-v2-corrected-gondola.md` | `844f6123-36b7-4e61-a0f6-c2e357f804b0` | `job-futurehouse-data-analysis-crow-high` | success |
 | _generative-CAD lit-review (resubmitted)_ | `f5a27ed3-8530-4102-9e31-5af9bbe9b0e0` | `job-futurehouse-paperqa3-high` | submitted, polling |
 | _gantry-only analysis iter 1 of 3_ | `d6e32c46-2774-4477-a060-9993ef51ab10` | `job-futurehouse-data-analysis-crow-high` | submitted, polling |
+| `literature-high-digital-twin-simulation.md` | `674609d3-f9ed-4902-a679-68acb5ec69c8` | `job-futurehouse-paperqa3-high` | success |
+
+The digital-twin lit review (issue #158, prompted by MATTERIX) was submitted
+via `scripts/edison_digital_twin_litreview.py` using the `edison-client` SDK
+(`EDISON_PLATFORM_API_KEY`); its raw API artifacts (task object, answer,
+formatted answer + references) live in
+[`digital_twin_artifacts/`](digital_twin_artifacts/) following the same
+per-key triplet convention as `hardware/edison_artifacts/`.
 
 A previous generative-CAD literature query (`task_id`
 `524e7e92-a326-440a-b6fd-f6eb220d9019`) was sent to the **wrong endpoint**
