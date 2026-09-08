@@ -84,7 +84,40 @@ insurance.
 **4. Drift** was −11.4 mg/min in the pre-run survey (elevated vs −2.6 mg/min
 that morning; #157 tracks this). Documented as a limitation per the operator's
 standing instruction; the 50 mg doses (115–240 s) sit mostly below the
-timescale where it dominates.
+timescale where it dominates. For the ~15 min 200 mg doses the sign matters:
+negative ambient drift makes the reading *lower* than truth, the controller
+keeps feeding, and **the reported undershoot overstates the true one** — so
+dose 4/5's −14.2/−49.0 mg are upper bounds on the true miss (and the true
+delivered mass may even exceed target). The morning session measured per-dose
+tare slopes varying −0.0 to +6.2 mg/min, so no single slope corrects this
+without a concurrent reference; it stays a documented limitation.
+
+## Morning-session record (recovered from the Pi `~/handoff/`)
+
+The 11:27 session lost its GitHub credentials mid-run (the same 1 h token
+expiry that later hit the re-run session) and parked its report on the Pi.
+Its pre-run record, kept here for provenance:
+
+- At rest: 0.014 mg sample-to-sample jitter, 100 % stable frames. 240 s
+  survey: 0 shocks, drift −2.6 mg/min, 180 s dose row 16.4 mg (the survey's
+  own gate called the multi-minute dose blocks BAD; proceeded per operator).
+- Charging the column (CMC peaks at 45° and arches at 90°, so the standard
+  90° pre-flight under-reads it):
+
+| charge step (tilt) | mg/rev |
+|---|---|
+| pre-flight 5 rev @ 90° | 15.1 (rev-0 lip dump; revs 1–4 ≈ 0) |
+| 35 rev @ 60 rpm, 90° | 1.87 |
+| 8 rev @ 30 rpm, 45° | 2.77 |
+| 18 rev @ 45 rpm, 45° | 7.71, still climbing (last 6 revs ~8.5) |
+
+- Even after ~66 charging revolutions, feed at 45° reached only ~8 mg/rev vs
+  the fresh fill's 26.3 — attributed at the time to caking/moisture or a low
+  auger. With the #156 discovery, most of that gap was the misaligned outlet;
+  the re-run's post-alignment numbers (20 → 11 mg/rev, declining) say the
+  remainder — a real deficit vs the fresh fill — is genuine.
+- Its pre-run survey CSV is at
+  `docs/rig-checks/data/2026-09-08_cmc-preroll-survey-240s.csv`.
 
 ## Environment / provenance
 
