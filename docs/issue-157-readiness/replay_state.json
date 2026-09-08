@@ -1,0 +1,40 @@
+{
+ "generated_utc": "2026-09-08T16:58:50.205904+00:00",
+ "profile": "block-g",
+ "ready": false,
+ "reason": "drift +3.3 mg/min",
+ "rate_mg_min": 3.281,
+ "jitter_mg": 0.0767,
+ "step_events": 0,
+ "tau_min": 21.3,
+ "tau_source": "fitted live",
+ "eta_min": 14.4,
+ "confirmed": false,
+ "ready_streak": 0,
+ "history": [
+  {
+   "t_s": 30.0,
+   "rate_mg_min": 13.55
+  },
+  {
+   "t_s": 365.0,
+   "rate_mg_min": 10.43
+  },
+  {
+   "t_s": 693.0,
+   "rate_mg_min": 7.52
+  },
+  {
+   "t_s": 1022.0,
+   "rate_mg_min": 7.53
+  },
+  {
+   "t_s": 1350.0,
+   "rate_mg_min": 5.5
+  },
+  {
+   "t_s": 1679.0,
+   "rate_mg_min": 3.28
+  }
+ ]
+}

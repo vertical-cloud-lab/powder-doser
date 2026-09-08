@@ -1,0 +1,19 @@
+[survey] wrote /tmp/drift157/seg3.csv
+[survey] 942 samples over 270 s, 659/942 stable (70 %)
+[survey] sample-to-sample jitter 0.074 mg
+[survey]   -> drafts are not the problem (at or below the 0.1 mg display resolution)
+[survey] drift +7.5 mg/min over the longest quiet stretch (269 s)
+[survey] 0 mechanical step event(s) > 10 mg
+
+[survey] worst-case environmental error by measurement duration:
+[survey]       dur    median      p90    worst   what takes that long
+[survey]        5s      1.00     1.70     2.70  ok   block C/E: one 360 deg revolution, or one tap, bracketed
+[survey]       10s      1.70     2.60     3.30  marg block D: three revolutions at 90 RPM
+[survey]       15s      2.30     3.30     4.00  marg block B: a static hold; block D at 15 RPM
+[survey]       30s      4.20     5.40     6.30  BAD  block A baseline sweep
+[survey]       60s      7.80     9.60    10.50  BAD  a slow trial, or one dose phase
+[survey]      180s     22.30    24.30    25.20  BAD  block G: a short closed-loop dose
+
+[survey] VERDICT: short-trial blocks (A-F) are safe to run now.
+[survey] Rows above 10 s are context, not a gate: a bracketed trial never sees the slow creep that dominates them.
+[survey] Block G (multi-minute closed-loop doses against a +/-5 mg band) is only safe when the 180 s row is inside 5 mg.

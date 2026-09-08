@@ -1,0 +1,22 @@
+{
+ "generated_utc": "2026-09-08T16:57:50.068808+00:00",
+ "profile": "block-g",
+ "ready": true,
+ "reason": "ok",
+ "rate_mg_min": 0.026,
+ "jitter_mg": 0.0882,
+ "step_events": 0,
+ "tau_min": 21.0,
+ "tau_source": "issue-157 default",
+ "eta_min": 0.0,
+ "history": [
+  {
+   "t_s": 44.9,
+   "rate_mg_min": -5.9
+  },
+  {
+   "t_s": 224.9,
+   "rate_mg_min": 0.03
+  }
+ ]
+}

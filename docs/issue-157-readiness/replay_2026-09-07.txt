@@ -1,0 +1,43 @@
+[gate] seg0_smoke.csv: 210 pts/60 s  drift +13.55 mg/min  jitter 0.087 mg  68% stable
+[gate] readiness by measurement profile (tau 21 min, issue-157 default):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  WAIT  21 min  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  44 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +13.5 mg/min; predicted ready ~44 min from now (at 17:42 UTC (11:42 lab time))
+[gate] seg1.csv: 942 pts/270 s  drift +10.43 mg/min  jitter 0.081 mg  68% stable
+[gate] readiness by measurement profile (tau 21 min, fitted live):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  WAIT  16 min  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  39 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +10.4 mg/min; predicted ready ~39 min from now (at 17:38 UTC (11:38 lab time))
+[gate] seg2.csv: 942 pts/270 s  drift +7.52 mg/min  jitter 0.073 mg  72% stable
+[gate] readiness by measurement profile (tau 19 min, fitted live):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  WAIT   8 min  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  28 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +7.5 mg/min; predicted ready ~28 min from now (at 17:27 UTC (11:27 lab time))
+[gate] seg3.csv: 942 pts/270 s  drift +7.53 mg/min  jitter 0.074 mg  70% stable
+[gate] readiness by measurement profile (tau 26 min, fitted live):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  WAIT  11 min  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  40 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +7.5 mg/min; predicted ready ~40 min from now (at 17:38 UTC (11:38 lab time))
+[gate] seg4.csv: 942 pts/270 s  drift +5.50 mg/min  jitter 0.073 mg  73% stable
+[gate] readiness by measurement profile (tau 26 min, fitted live):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  WAIT   2 min  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  31 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +5.5 mg/min; predicted ready ~31 min from now (at 17:29 UTC (11:29 lab time))
+[gate] seg5.csv: 942 pts/270 s  drift +3.28 mg/min  jitter 0.077 mg  71% stable
+[gate] readiness by measurement profile (tau 21 min, fitted live):
+[gate]   short    limit  30.0 mg/min  GO  now  blocks A-F: bracketed trials of 10 s or less
+[gate]   block-h  limit  17.6 mg/min  GO  now  block H: one 17 s bracketed micro-dose
+[gate]   dose-60  limit   5.0 mg/min  GO  now  a slow trial, or one dose phase
+[gate]   block-g  limit   1.7 mg/min  WAIT  14 min  block G: multi-minute closed-loop dose, +/-5 mg band <-- --profile block-g
+[gate] not yet: drift +3.3 mg/min; predicted ready ~14 min from now (at 17:13 UTC (11:13 lab time))
+[gate] replay exhausted without reaching the block-g limit
