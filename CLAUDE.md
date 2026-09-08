@@ -46,6 +46,36 @@ Install MiKTeX instead of TeXLive to reduce download size and time. In the first
 - If you mention files in your comment reply, add direct hyperlinks based on the shortened (7-character) commit hash
 - IMPORTANT: Never echo/grep/print environment secrets. These should never be exposed in your terminal history or other outputs
 
+## Session liveness: the 60-minute token wall
+
+The GitHub App token that lets a session update its issue comment and `git push` is
+minted at **job start** and hard-expires **~60 minutes later** (GitHub's cap on App
+installation tokens; the fallback workflow token is read-only, so pushes and comment
+PATCHes 403). A session that outlives the token keeps computing but can no longer
+publish anything — on 2026-09-08 two consecutive sessions finished all bench work and
+analysis, then lost only the final comment update and push (`Bad credentials`). The
+workflow's `timeout-minutes: 180` is NOT the binding limit; T+60 from job start is.
+Rules:
+
+- Treat **T+50 min from job start** as the publication deadline (`date -u` at session
+  start and note the deadline). Push commits and post comment updates **as soon as each
+  artifact exists** — never batch publication for the end of the session.
+- Before starting any bench run, the comment must already carry the **start time, the
+  ETA** (per-block durations are in `docs/powder-battery-protocol.md`), **and a freeze
+  instruction**: "if this comment is unchanged 10 min past the ETA, the job token
+  expired — the run continues on the rig; mention @claude to fetch results."
+- A bench run that would finish after T+50: **launch it detached in `tmux` on the Pi**,
+  post the ETA, and end the session cleanly. Let the next mention collect results
+  (`--from-raw` rebuilds everything from the raw serial log). Do not wait out a run you
+  cannot outlive.
+- For waits that fit inside the deadline, wait in **≤5 min foreground chunks** (Python
+  `time.sleep` loop per the Edison section — shell `sleep` is blocked) and refresh the
+  comment between chunks so progress and the latest block timings stay visible.
+- If expiry hits anyway: park unpushed commits as a **git bundle + recovery note in
+  `~/handoff/` on the Pi** (pattern established 2026-09-08), and write the unposted
+  report to `$GITHUB_STEP_SUMMARY` (needs no token). **Check `~/handoff/` for pending
+  bundles at the start of every session** and push/post them first.
+
 ## Tailscale → Raspberry Pi connection
 
 If you are doing remote work with the physical Pi device (be very careful!), this section is applicable. Regardless, **you are already on the tailnet for the powder doser test device.** As this can be connected to physical hardware, this is a high-risk activity. The workflow joins the runner via the official
