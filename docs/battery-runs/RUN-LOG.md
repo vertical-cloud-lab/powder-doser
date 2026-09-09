@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-28 entries, 18 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+29 entries, 19 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-09 18:53 | 2026-09-09 19:58 | 64:48 | `sodium-alginate` | H | -- | 0.39 g | -- | 200 mg 3x -101.5 mg; 50 mg 3x -19.6 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T185352Z_sodium-alginate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-sodium-alginate-block-h.md) | [~1 min](https://youtu.be/cL7gRQLVpCc?t=28417) |
 | 2026-09-08 19:42 | 2026-09-08 20:35 | 53:14 | `carboxymethyl-cellulose` | H | -- | 0.68 g | -- | 200 mg 3x -22.6 mg; 50 mg 3x -2.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T194201Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/fYvC0UJN6Ro?t=2506) |
 | 2026-09-08 17:27 | 2026-09-08 18:48 | 80:37 | `carboxymethyl-cellulose` | H | -- | 0.63 g | -- | 200 mg 3x -17.3 mg; 50 mg 3x -23.1 mg | not recorded | excluded<br>`outlet-misaligned` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T172730Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/ZNVp-45Wimk?t=23235) |
 | 2026-09-04 20:37 | 2026-09-04 20:45 | 8:29 | `xanthan-gum` | H | -- | 0.81 g | -- | 200 mg 3x +2.9 mg; 50 mg 3x +17.8 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260904T203727Z_xanthan-gum) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-04-xanthan-gum-block-h.md) | [~1 min](https://youtu.be/JrdlEVz18R0?t=5832) |
@@ -40,6 +41,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-09 18:53 UTC -- sodium-alginate
+
+- **Window** 2026-09-09T18:53:52.488407+00:00 -> 2026-09-09T19:58:41.156468+00:00  (64:48)
+- **Lab clock** 2026-09-09 12:53:52 MDT -> 2026-09-09 13:58:41 MDT
+- **Powder** sodium alginate  ·  batch `food-safe-2026-08`  ·  operator claude
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.3867 g
+- **Closed-loop doses** 200 mg 3x -101.5 mg; 50 mg 3x -19.6 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260909T185352Z_sodium-alginate](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T185352Z_sodium-alginate)
+- **Notes** [docs/battery-runs/2026-09-09-sodium-alginate-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-sodium-alginate-block-h.md)
+- **Video** [https://youtu.be/cL7gRQLVpCc?t=28417](https://youtu.be/cL7gRQLVpCc?t=28417) -- accurate to about a minute
 
 ### 2026-09-08 19:42 UTC -- carboxymethyl-cellulose
 
