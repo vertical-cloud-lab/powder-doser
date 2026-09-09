@@ -4,12 +4,13 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-29 entries, 19 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+30 entries, 20 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-09 22:52 | 2026-09-09 23:26 | 34:42 | `calcium-lactate` | H | -- | 0.57 g | -- | 200 mg 2x -6.9 mg; 50 mg 3x +9.9 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T225206Z_calcium-lactate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-calcium-lactate-block-h.md) | [~1 min](https://youtu.be/DSWvWUz_YGM?t=13911) |
 | 2026-09-09 18:53 | 2026-09-09 19:58 | 64:48 | `sodium-alginate` | H | -- | 0.39 g | -- | 200 mg 3x -101.5 mg; 50 mg 3x -19.6 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T185352Z_sodium-alginate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-sodium-alginate-block-h.md) | [~1 min](https://youtu.be/cL7gRQLVpCc?t=28417) |
 | 2026-09-08 19:42 | 2026-09-08 20:35 | 53:14 | `carboxymethyl-cellulose` | H | -- | 0.68 g | -- | 200 mg 3x -22.6 mg; 50 mg 3x -2.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T194201Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/fYvC0UJN6Ro?t=2506) |
 | 2026-09-08 17:27 | 2026-09-08 18:48 | 80:37 | `carboxymethyl-cellulose` | H | -- | 0.63 g | -- | 200 mg 3x -17.3 mg; 50 mg 3x -23.1 mg | not recorded | excluded<br>`outlet-misaligned` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T172730Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/ZNVp-45Wimk?t=23235) |
@@ -41,6 +42,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-09 22:52 UTC -- calcium-lactate
+
+- **Window** 2026-09-09T22:52:06.440326+00:00 -> 2026-09-09T23:26:48.916614+00:00  (34:42)
+- **Lab clock** 2026-09-09 16:52:06 MDT -> 2026-09-09 17:26:48 MDT
+- **Powder** calcium lactate (food-safe batch, Block H)  ·  batch `food-safe-2026-08`  ·  operator swcharles
+- **Tests** blocks H  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.5679 g
+- **Closed-loop doses** 200 mg 2x -6.9 mg; 50 mg 3x +9.9 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260909T225206Z_calcium-lactate](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T225206Z_calcium-lactate)
+- **Notes** [docs/battery-runs/2026-09-09-calcium-lactate-block-h.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-calcium-lactate-block-h.md)
+- **Video** [https://youtu.be/DSWvWUz_YGM?t=13911](https://youtu.be/DSWvWUz_YGM?t=13911) -- accurate to about a minute
 
 ### 2026-09-09 18:53 UTC -- sodium-alginate
 

@@ -188,11 +188,26 @@ def actuated(dose: dict) -> bool:
     changes.  A dose carrying neither field is not evidence of anything
     and counts as actuated -- this only ever removes a dose the device
     positively reported as idle.
+
+    A zero-actuation dose is only a phantom when its reported delivery is
+    *implausible* for the target: the 09-03 phantoms read 7.7x and 37x
+    their targets (whole previous diagnostics mis-read as the dose).  The
+    2026-09-09 calcium lactate run has the real counterpart -- dose 2
+    overshot to 1.24x target with zero commanded actuation because the
+    previous bulk halt's in-flight powder settled after the tare.  That
+    mass is genuinely in the cup and the overshoot is a real controller
+    failure mode, so target-scale deliveries count as measured.
     """
     rev, taps = dose.get("auger_rev"), dose.get("taps")
     if rev is None and taps is None:
         return True
-    return bool(rev or 0) or bool(taps or 0)
+    if bool(rev or 0) or bool(taps or 0):
+        return True
+    target = dose.get("target_g") or 0.0
+    delivered = dose.get("dispensed_g")
+    if delivered is None or target <= 0:
+        return False
+    return 0.0 < abs(delivered) <= 2.0 * target
 
 
 def dispensed_g(run: dict) -> float | None:

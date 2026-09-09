@@ -133,6 +133,40 @@ def test_a_dose_that_never_actuated_is_not_counted_as_powder():
           rl.actuated({"n": 0, "dispensed_g": 0.9}))
 
 
+def test_inflight_settle_overshoot_is_a_real_dose():
+    print("\n-- zero-actuation dose with a target-scale delivery is real --")
+    # 2026-09-09 calcium lactate dose 2: the previous bulk halt's
+    # in-flight powder settled after the tare and crossed the 50 mg
+    # target with zero commanded actuation -- 62.1 mg genuinely in the
+    # cup, a real controller failure mode.  The phantom filter must not
+    # eat it: phantoms are *implausible* deliveries (the 09-03 pair read
+    # 7.7x and 37x their targets), not target-scale ones.
+    real = {"n": 2, "block": "H", "target_g": 0.05, "dispensed_g": 0.0621,
+            "error_g": 0.0121, "status": "overshoot", "auger_rev": 0.0,
+            "taps": 0}
+    check("target-scale zero-actuation overshoot counts as measured",
+          rl.actuated(real))
+    check("a whole-diagnostic phantom is still excluded",
+          not rl.actuated({"n": 5, "block": "H", "target_g": 0.2,
+                           "dispensed_g": 1.541, "error_g": 1.341,
+                           "status": "overshoot", "auger_rev": 0.0,
+                           "taps": 0}))
+    check("a 0.0 g scale-error row is still excluded",
+          not rl.actuated({"n": 0, "block": "H", "target_g": 0.05,
+                           "dispensed_g": 0.0, "error_g": -0.05,
+                           "status": "scale-error", "auger_rev": 0.0,
+                           "taps": 0}))
+    doses = [{"n": 0, "block": "H", "target_g": 0.05, "dispensed_g": 0.0487,
+              "error_g": -0.0013, "status": "ok", "auger_rev": 0.5,
+              "taps": 12}, real]
+    cell = rl.dose_cell({"trials": [], "doses": doses,
+                         "dose_summary_by_target": [
+                             {"block": "H", "target_g": 0.05, "n": 2,
+                              "ok": 1, "mean_error_g": 0.0054}]})
+    check("the cell aggregates it instead of reporting never-actuated",
+          "never actuated" not in cell, cell)
+
+
 def test_blocks_reflect_what_ran_not_what_was_asked_for():
     print("\n-- a skipped block does not appear as if it ran --")
     run = {"parameters": {"blocks": "ABCDEFG"},
