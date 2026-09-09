@@ -188,8 +188,101 @@ existing literature review.
 
 A high-effort `LITERATURE_HIGH` query covering objectives, two-stage vs.
 joint optimization, parameter classification, hardware-in-the-loop
-Bayesian optimization, and powder-physics accuracy floors was submitted
-for this issue. Verbatim answer, references, and full task state:
-[`edison_artifacts/`](edison_artifacts/).
+Bayesian optimization, and powder-physics accuracy floors was run for
+this issue (task `0c1829bf-e499-4659-9d61-12a31a845f0b`, success).
+Verbatim answer, numbered references, and full task state:
+[`edison_artifacts/`](edison_artifacts/) —
+[answer](edison_artifacts/optimization_review.answer.md),
+[references](edison_artifacts/optimization_review.references.md).
 
-*(Synthesis pending — filled in below once the task completes.)*
+### 3.1 Where the literature confirms the review above
+
+- **Objectives.** Published gravimetric dosing work reports RSD/relative
+  error of feed rate (loss-in-weight feeders), per-material percentage
+  error and failure rate (SDL dispensers), and treats throughput as a
+  constraint, not an objective. Formal Pareto fronts for speed vs.
+  accuracy are essentially absent from the dosing literature — the
+  dominant paradigm is exactly the **epsilon-constraint** framing
+  proposed in §2 ("as fast as possible subject to error < tolerance").
+- **Asymmetric overshoot handling** is established practice, embodied
+  structurally rather than as an explicit loss function: auger systems
+  deliberately undershoot the bulk phase and approach from below
+  (Quantos's self-adaptive algorithm implicitly penalizes overshoot;
+  only spatula-type systems like Cooper's dual-arm robot can return
+  excess to the hopper).
+- **The switchover threshold is the key omission.** Edison independently
+  flags the bulk→trim switchover threshold as "arguably the single most
+  impactful parameter not listed in the team's notes," recommends a
+  **flow-rate-dependent prediction of in-flight mass** rather than a
+  fixed offset, and documents the analogous gravimetric↔volumetric
+  transition as a primary error source in loss-in-weight feeders.
+- **Q and R should be identified, not black-box optimized.** Named
+  methods: Mehra-style innovation/output-correlation, autocovariance
+  least squares (ALS), maximum-likelihood/EM, with innovation-whiteness
+  validation. Optimizing Q/R against dose error "risks exploiting filter
+  lag to produce artificially smooth (but delayed) estimates, yielding
+  non-physical and non-transferable values."
+- **Two-stage sequential optimization is a greedy decomposition** of a
+  coupled problem; freezing throughput-optimal speed parameters can
+  leave the accuracy floor set by physics (in-flight mass, pulsation)
+  rather than by the remaining tunables. A constrained joint formulation
+  is preferred.
+
+### 3.2 What the literature adds (quantitative anchors)
+
+- **Budgets:** hardware-in-the-loop BO typically converges in 30–100
+  physical trials (PI drive tuning: useful Pareto sets in 15–30 trials
+  after 10 random initializations); recommended: 10 initialization + 40–90
+  BO trials, 3–5 replicates per condition. Digital-twin-guided BO cut
+  hardware experiments by 46–57%.
+- **Auger operating band:** loss-in-weight feeders are usable in roughly
+  20–90% of rated drive command; outside that, flow turns erratic. The
+  **feed factor** (mass per screw revolution) as a function of fill level
+  is the standard calibration object — worth adopting directly.
+- **Tilt** was the strongest single predictor of mass flow rate in
+  vibratory powder dispensing, converting all-or-nothing discharge into a
+  controllable regime — supporting screening it first rather than
+  assuming RPM dominates.
+- **Tapping/vibration is powder- and geometry-specific:** above the flow
+  threshold, more amplitude *increased* dose-mass variability; excitation
+  parallel to the capillary axis halved RSD vs. perpendicular (5% vs.
+  10%). So tap frequency belongs in the bulk-speed screen, but tap
+  *energy* is what matters for trim increments.
+- **Accuracy floors:** dosing below about 20 mg is flagged as hard across
+  platforms; best-case vibratory dispensing RSD near 5%; balance noise
+  0.1–1 mg. Metal-AM powders (Hausner near 1.0–1.1) should support much
+  tighter tolerances than cohesive surrogates like xanthan gum (Hausner
+  potentially >1.4) — tolerance bands must be material-dependent.
+- **Algorithm pointers:** qNEHVI for noisy multi-objective BO (validated
+  at 1–30% objective-range noise, supports batches), SafeOpt/LoSBO for
+  certified-safe exploration (no jams/spills), EGBO for constraint-heavy
+  Pareto coverage, and contextual GPs with powder descriptors (Hausner,
+  d50, bulk density) for cross-powder transfer.
+
+### 3.3 Edison's recommended formulation vs. §2
+
+Edison's single most defensible formulation is bi-objective:
+
+> **Minimize** (dose_time, |dose_error|) **subject to**
+> P(overshoot > tolerance) ≤ α, no_jam, no_spill,
+> over {tilt, bulk_RPM, trim_RPM, tap_frequency, switchover_threshold,
+> trim_tolerance_band, KP, KI}, with Q/R and initial PI gains identified
+> from data, and powder descriptors as context variables.
+
+This differs from §2 only in keeping |error| as a second objective
+(Pareto) instead of a chance constraint, and in adding `trim_RPM` and
+the tolerance band as decision variables. Both formulations are
+defensible: use the **epsilon-constraint version of §2 when the
+application tolerance is fixed** (most alloy-discovery dosing), and the
+**bi-objective version when the doser must serve multiple dose
+regimes** and the operating point will be chosen per campaign. Edison's
+suggestion to let the optimizer see the tolerance band is best treated
+carefully — leave it fixed when it is a downstream requirement, optimize
+it only when "futile-cycling time vs. accuracy" is genuinely negotiable.
+
+The protocol ordering in §2 (instrument/log → screen → identify →
+constrained BO → hold-out validation) matches Edison's §6
+recommendation, including the fractional-factorial screen (16–32 runs
+with replicates) before any BO, and the same log schema (raw balance
+trace, filtered estimate, phase timestamps, actuator settings, powder
+lot and fill level, ambient conditions).
