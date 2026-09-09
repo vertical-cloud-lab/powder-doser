@@ -1,0 +1,232 @@
+{
+ "slots": {
+  "salt": {
+   "name": "salt",
+   "feed_factor_g_per_rev": 0.23295,
+   "tilt_g0": 0.1434,
+   "tilt_exp": 0.532,
+   "cohesion": 0.05,
+   "density_g_per_cm3": 1.2,
+   "particle_size_um": 400.0,
+   "moisture_sensitivity": 1.5,
+   "hygroscopicity": 0.05,
+   "angle_of_repose_deg": 32.0,
+   "_provenance": {
+    "source_powder_id": "salt",
+    "source_run_utc": "2026-08-12",
+    "fit_from": "battery rotation block (g per 360 deg vs tilt)",
+    "flow_index": 0.143,
+    "limitation": "full valid tilt sweep"
+   }
+  },
+  "lactose": {
+   "name": "lactose",
+   "feed_factor_g_per_rev": 0.22945,
+   "tilt_g0": 0.229,
+   "tilt_exp": 0.327,
+   "cohesion": 0.05,
+   "density_g_per_cm3": 0.8,
+   "particle_size_um": 60.0,
+   "moisture_sensitivity": 2.2,
+   "hygroscopicity": 0.06,
+   "angle_of_repose_deg": 42.0,
+   "_provenance": {
+    "source_powder_id": "calcium-lactate",
+    "source_run_utc": "2026-08-05",
+    "fit_from": "battery rotation block (g per 360 deg vs tilt)",
+    "flow_index": 0.229,
+    "limitation": "full valid tilt sweep"
+   }
+  },
+  "AlSi10Mg": {
+   "name": "AlSi10Mg",
+   "feed_factor_g_per_rev": 0.13892,
+   "tilt_g0": 0.6,
+   "tilt_exp": 0.8,
+   "cohesion": 0.186,
+   "density_g_per_cm3": 1.45,
+   "particle_size_um": 45.0,
+   "moisture_sensitivity": 0.8,
+   "hygroscopicity": 0.005,
+   "angle_of_repose_deg": 27.0,
+   "_provenance": {
+    "source_powder_id": "alsi10mg",
+    "source_run_utc": "2026-08-11",
+    "fit_from": "battery rotation block (g per 360 deg vs tilt)",
+    "flow_index": 1.0,
+    "limitation": "tilt-servo fault: tilt sweep invalid, feed factor taken from the horizontal (plate 0) trials; tilt gain is a free-flowing prior, not fit"
+   }
+  }
+ },
+ "all_powder_fits": {
+  "alsi10mg": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "alsi10mg",
+   "source_run_utc": "2026-08-11",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.08335,
+    "45.0": 0.07705,
+    "90.0": 0.0684
+   },
+   "fit": {
+    "base_g_per_rev": 0.0684,
+    "tilt_g0": 0.98,
+    "tilt_exp": 1.0
+   },
+   "flow_index": 1.0,
+   "tap_release_ratio": -0.001,
+   "cohesion_proxy": 0.186,
+   "qc_verdict": "no-tilt-servo-fault",
+   "used": "qc-invalid"
+  },
+  "brown-rice-flour": {
+   "lowflow_rate": 0.559,
+   "source_powder_id": "brown-rice-flour",
+   "source_run_utc": "2026-08-05",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.0,
+    "45.0": 0.0,
+    "90.0": 0.0
+   },
+   "fit": {
+    "base_g_per_rev": 0.0,
+    "tilt_g0": 0.4,
+    "tilt_exp": 1.0,
+    "note": "no conveyance at steepest tilt"
+   },
+   "flow_index": 0.0,
+   "tap_release_ratio": 0.0,
+   "cohesion_proxy": 0.691,
+   "qc_verdict": "conveying-slowly",
+   "used": "valid"
+  },
+  "calcium-lactate": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "calcium-lactate",
+   "source_run_utc": "2026-08-05",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.05255,
+    "45.0": 0.19725,
+    "90.0": 0.22945
+   },
+   "fit": {
+    "base_g_per_rev": 0.22945,
+    "tilt_g0": 0.229,
+    "tilt_exp": 0.327
+   },
+   "flow_index": 0.229,
+   "tap_release_ratio": 0.129,
+   "cohesion_proxy": 0.05,
+   "qc_verdict": "ok",
+   "used": "valid"
+  },
+  "carboxymethyl-cellulose": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "carboxymethyl-cellulose",
+   "source_run_utc": "2026-08-05",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.00285,
+    "45.0": 0.02685,
+    "90.0": 0.00325
+   },
+   "fit": {
+    "base_g_per_rev": 0.00325,
+    "tilt_g0": 0.8769,
+    "tilt_exp": 1.0
+   },
+   "flow_index": 0.877,
+   "tap_release_ratio": 0.002,
+   "cohesion_proxy": 0.295,
+   "qc_verdict": "ok",
+   "used": "valid"
+  },
+  "salt": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "salt",
+   "source_run_utc": "2026-08-12",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.0334,
+    "45.0": 0.17735,
+    "90.0": 0.23295
+   },
+   "fit": {
+    "base_g_per_rev": 0.23295,
+    "tilt_g0": 0.1434,
+    "tilt_exp": 0.532
+   },
+   "flow_index": 0.143,
+   "tap_release_ratio": 0.005,
+   "cohesion_proxy": 0.05,
+   "qc_verdict": "ok",
+   "used": "valid"
+  },
+  "sodium-alginate": {
+   "lowflow_rate": 0.088,
+   "source_powder_id": "sodium-alginate",
+   "source_run_utc": "2026-08-05",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.0009,
+    "45.0": 0.0095,
+    "90.0": 0.01035
+   },
+   "fit": {
+    "base_g_per_rev": 0.01035,
+    "tilt_g0": 0.087,
+    "tilt_exp": 0.3
+   },
+   "flow_index": 0.087,
+   "tap_release_ratio": 0.01,
+   "cohesion_proxy": 0.345,
+   "qc_verdict": "ok",
+   "used": "valid"
+  },
+  "white-rice-flour": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "white-rice-flour",
+   "source_run_utc": "2026-08-04",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.0038,
+    "45.0": 0.011,
+    "90.0": 0.0358
+   },
+   "fit": {
+    "base_g_per_rev": 0.0358,
+    "tilt_g0": 0.1061,
+    "tilt_exp": 2.43
+   },
+   "flow_index": 0.106,
+   "tap_release_ratio": 0.005,
+   "cohesion_proxy": 0.24,
+   "qc_verdict": "ok",
+   "used": "valid"
+  },
+  "xanthan-gum": {
+   "lowflow_rate": 0.0,
+   "source_powder_id": "xanthan-gum",
+   "source_run_utc": "2026-08-06",
+   "n_rotation_tilts": 3,
+   "rotation_g_per_rev_by_horn_deg": {
+    "0.0": 0.0261,
+    "45.0": 0.15275,
+    "90.0": 0.1841
+   },
+   "fit": {
+    "base_g_per_rev": 0.1841,
+    "tilt_g0": 0.1418,
+    "tilt_exp": 0.36
+   },
+   "flow_index": 0.142,
+   "tap_release_ratio": 0.107,
+   "cohesion_proxy": 0.05,
+   "qc_verdict": "ok",
+   "used": "valid"
+  }
+ }
+}
