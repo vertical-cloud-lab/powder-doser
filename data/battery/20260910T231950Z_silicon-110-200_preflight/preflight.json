@@ -1,0 +1,13 @@
+{
+  "verdict": "feed confirmed",
+  "rotation_rev_total": 5,
+  "rotation_delta_g": 1.5826,
+  "mg_per_rev": 316.52,
+  "per_rev_g": [0.3287, 0.3401, 0.3258, 0.2967, 0.2913],
+  "tap_total": 10,
+  "tap_delta_g": 0.0952,
+  "tilt_deg": 90,
+  "rpm": 30,
+  "at_utc": "2026-09-10T23:19:50Z",
+  "note": "steady from revolution 1 (no charging transient -- delivery flights full at load); 316.5 mg/rev vs 302.4 mg/rev block C @ 90 deg on 2026-08-20, +4.7% across a 3-week gap and a fresh reload; 9.5 mg/tap at 90 deg; balance unstable at check time (gate-hold wander) so tare skipped and deltas used; column left charged for the next attempt"
+}
