@@ -1,0 +1,18 @@
+{
+  "uploads": {
+    "fig1_overview": "data_entry:7be902fd-4467-42e0-9f33-21b52c9ea34b",
+    "fig2_genai": "data_entry:d1eb20fa-e61c-456f-bfd4-db48cf97755b",
+    "fig3_dispense": "data_entry:bf9871e7-d9c5-469f-a249-487778fcdcd5",
+    "fig4_design": "data_entry:fcdbc459-ddbc-4b1b-97aa-9d799983c8e1",
+    "fig5_future": "data_entry:feadf251-0497-4d70-908c-7fc58e013973",
+    "figS1_nozzles": "data_entry:2a21601c-e861-45c1-bde6-d6c799551f95"
+  },
+  "tasks": {
+    "fig1_overview": "605f1e07-decb-47db-bec2-acf3e8fdf50a",
+    "fig2_genai": "e782f6d1-1c2d-4b4b-827c-28ff98366142",
+    "fig3_dispense": "b82549ae-7abf-4635-80aa-f94248216bbd",
+    "fig4_design": "b6484651-a9d4-4b3f-a875-d4c0a4161722",
+    "fig5_future": "4e8c689d-ccc4-4935-bd7a-6660add87cf1",
+    "figS1_nozzles": "90b538d5-04f8-4e4f-b3db-643babbaff4c"
+  }
+}
