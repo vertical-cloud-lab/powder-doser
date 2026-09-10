@@ -1,0 +1,9 @@
+[preflight] balance not reporting stable -- skipping the tare and measuring differences from where it sits
+PRE,rev,0,-5.6906,-5.6837,0.0069
+PRE,rev,1,-5.6837,-5.5722,0.1115
+PRE,rev,2,-5.5722,-5.1725,0.3997
+PRE,rev,3,-5.1725,-4.8504,0.3222
+PRE,rev,4,-4.8504,-4.4303,0.4200
+PRE,tap,10,-4.4303,-4.3669,0.0635
+PRE,END,feed confirmed,1.2603,0.0635
+[preflight] 5 rev -> 1.2603 g (252.05 mg/rev), 10 taps -> 0.0635 g :: feed confirmed
