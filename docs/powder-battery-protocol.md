@@ -357,6 +357,20 @@ and three of the five revolutions were spent filling empty flights.
 **Read the pre-flight as a go/no-go on the delivery path, never as a feed
 factor**; the per-revolution list matters more than the average.
 
+The *shape* of the per-revolution list carries a third warning, learned on
+barium chloride (2026-09-10): a **first-revolution discharge followed by a
+dying tail** — 366 / 201 / 28 / 19 / 70 mg on a column that had sat loaded
+for ~3 weeks — is the *arching* signature. The delivery section discharges
+what it already held while the caked storage section above has stopped
+refilling the flights. That run's 5-revolution total (0.68 g) sailed
+through the feed gate, and the dose blocks then drained the flights inside
+one dose and stalled the other eight. When a column has **sat loaded for
+days–weeks** (especially a hygroscopic salt — BaCl₂, CaCl₂-class) and the
+last three pre-flight revolutions average far below the powder's known
+steady state, run `battery_feed_diagnostic` *before* committing to dose
+blocks: `arching-responds-to-agitation` there costs three minutes instead
+of a condemned run.
+
 The discriminator is whether the reading is *exactly* zero:
 
 | Pre-flight reading | Read it as | Do |

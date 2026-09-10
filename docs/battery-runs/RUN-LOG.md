@@ -4,13 +4,14 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-31 entries, 21 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+32 entries, 21 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 2026-09-10 13:39 | 2026-09-10 13:47 | 8:09 | `sodium-sulfate` | GH | -- | 3.86 g | -- | 1000 mg 3x -4.2 mg; 200 mg 3x +10.8 mg; 50 mg 3x +28.9 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T133932Z_sodium-sulfate) | [~1 min](https://youtu.be/8GwtWc9_Mpc?t=9557) |
+| 2026-09-10 17:08 | 2026-09-10 17:13 | 4:33 | `barium-chloride` | GH | -- | 0.35 g | -- | 1000 mg 3x -884.8 mg; 200 mg 3x -199.7 mg; 50 mg 3x -48.8 mg | not recorded | excluded<br>`arching-no-feed` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T170858Z_barium-chloride) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-barium-chloride-blocks-gh-no-feed.md) | [~1 min](https://youtu.be/8GwtWc9_Mpc?t=22123) |
+| 2026-09-10 13:39 | 2026-09-10 13:47 | 8:09 | `sodium-sulfate` | GH | -- | 3.86 g | -- | 1000 mg 3x -4.2 mg; 200 mg 3x +10.8 mg; 50 mg 3x +28.9 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T133932Z_sodium-sulfate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-sodium-sulfate-blocks-gh.md) | [~1 min](https://youtu.be/8GwtWc9_Mpc?t=9557) |
 | 2026-09-09 22:52 | 2026-09-09 23:26 | 34:42 | `calcium-lactate` | H | -- | 0.57 g | -- | 200 mg 2x -6.9 mg; 50 mg 3x +9.9 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T225206Z_calcium-lactate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-calcium-lactate-block-h.md) | [~1 min](https://youtu.be/DSWvWUz_YGM?t=13911) |
 | 2026-09-09 18:53 | 2026-09-09 19:58 | 64:48 | `sodium-alginate` | H | -- | 0.39 g | -- | 200 mg 3x -101.5 mg; 50 mg 3x -19.6 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260909T185352Z_sodium-alginate) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-09-sodium-alginate-block-h.md) | [~1 min](https://youtu.be/cL7gRQLVpCc?t=28417) |
 | 2026-09-08 19:42 | 2026-09-08 20:35 | 53:14 | `carboxymethyl-cellulose` | H | -- | 0.68 g | -- | 200 mg 3x -22.6 mg; 50 mg 3x -2.2 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260908T194201Z_carboxymethyl-cellulose) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-08-carboxymethyl-cellulose-block-h.md) | [~1 min](https://youtu.be/fYvC0UJN6Ro?t=2506) |
@@ -44,6 +45,21 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 ## Per-run detail
 
+### 2026-09-10 17:08 UTC -- barium-chloride
+
+- **Window** 2026-09-10T17:08:58.309454+00:00 -> 2026-09-10T17:13:32.171917+00:00  (4:33)
+- **Lab clock** 2026-09-10 11:08:58 MDT -> 2026-09-10 11:13:32 MDT
+- **Powder** barium chloride  ·  batch `inorganic-2026-08`  ·  operator swcharles
+- **Tests** blocks GH  ·  0 measured trials  ·  n/a
+- **Dispensed** 0.3504 g
+- **Closed-loop doses** 1000 mg 3x -884.8 mg; 200 mg 3x -199.7 mg; 50 mg 3x -48.8 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** excluded -- `arching-no-feed`
+- **Data** [data/battery/20260910T170858Z_barium-chloride](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T170858Z_barium-chloride)
+- **Notes** [docs/battery-runs/2026-09-10-barium-chloride-blocks-gh-no-feed.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-barium-chloride-blocks-gh-no-feed.md)
+- **Video** [https://youtu.be/8GwtWc9_Mpc?t=22123](https://youtu.be/8GwtWc9_Mpc?t=22123) -- accurate to about a minute
+
 ### 2026-09-10 13:39 UTC -- sodium-sulfate
 
 - **Window** 2026-09-10T13:39:32.068188+00:00 -> 2026-09-10T13:47:41.617731+00:00  (8:09)
@@ -56,6 +72,7 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 - **Environment** not recorded
 - **QC** valid -- `ok`
 - **Data** [data/battery/20260910T133932Z_sodium-sulfate](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T133932Z_sodium-sulfate)
+- **Notes** [docs/battery-runs/2026-09-10-sodium-sulfate-blocks-gh.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-sodium-sulfate-blocks-gh.md)
 - **Video** [https://youtu.be/8GwtWc9_Mpc?t=9557](https://youtu.be/8GwtWc9_Mpc?t=9557) -- accurate to about a minute
 
 ### 2026-09-09 22:52 UTC -- calcium-lactate
