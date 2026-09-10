@@ -1,0 +1,11 @@
+powder_id,block,tilt_deg,phase,trial,reason,shock_g,discarded_delta_g,t_ms
+salt,E,0.0,refeed,3,shock,-0.0369,0.0437,513501
+salt,E,0.0,refeed,3,shock,-0.0139,0.043,525073
+salt,E,0.0,tap,5,shock,-0.0105,0.0067,584946
+salt,E,0.0,tap,5,shock,-0.0123,0.0037,592490
+salt,E,45.0,tap,0,shock,-0.0119,-0.0003,672627
+salt,E,45.0,tap,2,shock,-0.01,0.015,718447
+salt,E,45.0,tap,3,shock,0.0304,0.0123,745122
+salt,E,45.0,refeed,4,shock,-0.0112,0.1751,764242
+salt,E,45.0,refeed,4,shock,0.0115,0.1309,775813
+salt,E,45.0,tap,5,shock,-0.0162,0.0214,821538

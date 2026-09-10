@@ -1,0 +1,310 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "ok",
+  "started_utc": "2026-09-03T17:04:37.854828+00:00",
+  "ended_utc": "2026-09-03T17:05:55.344184+00:00",
+  "started_local": "2026-09-03 11:04:37 MDT",
+  "ended_local": "2026-09-03 11:05:55 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 77.5,
+  "block_timeline": [
+    {
+      "block": "H",
+      "started_utc": "2026-09-03T17:04:40.357176+00:00",
+      "started_local": "2026-09-03 11:04:40 MDT",
+      "elapsed_s": 2.5
+    }
+  ],
+  "powder_id": "salt",
+  "powder": "sodium chloride (table salt), design baseline",
+  "batch": "food-safe-2026-08",
+  "operator": "swcharles",
+  "notes": "Block H re-run after the 2026-09-03 morning attempt aborted 4 of 6 doses scale-error. Operator reports a student repeatedly used the fume-hood compressed air during the morning session; this run tests whether that explains the balance degradation. No code change: the three-phase doser still uses read_stable().",
+  "qc": {
+    "valid_for_cross_powder_comparison": false,
+    "verdict": "doser-scale-unreadable",
+    "preflight_verdict": "feed confirmed",
+    "last_amended_utc": "2026-09-03T17:13:43.686579+00:00"
+  },
+  "environment": null,
+  "retries": [],
+  "preflight": {
+    "rev_deltas": [
+      0.172766668,
+      0.27954996,
+      0.27173346,
+      0.32456654,
+      0.360216616
+    ],
+    "tilt_deg": 90.0,
+    "rpm": 30.0,
+    "rotation_rev_total": 5,
+    "taps_delta_g": 0.13248348,
+    "verdict": "feed confirmed",
+    "rotation_delta_g": 1.4088333,
+    "taps_total": 10
+  },
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "salt",
+    "battery_version": "3",
+    "blocks": "H",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "dose_h_targets_g": "0.0500;0.2000",
+    "dose_h_repeats": "3",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "bracket_n": "6",
+    "bracket_ms": "400",
+    "shock_g": "0.01",
+    "max_resid_g": "0.0015",
+    "quiet_tries": "8",
+    "max_trial_retries": "2",
+    "drift_correct": "1",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "dose_h.thresholds.0.0500": "0.0500;0.0250;0.0050",
+    "dose_h.thresholds.0.2000": "0.2000;0.0500;0.0050",
+    "park_tilt_deg": "0.0",
+    "env.brackets": "0",
+    "env.disturbed_trials": "0",
+    "env.drift_corrected_g": "0.0000",
+    "env.quiet_waits": "0",
+    "env.retries": "0",
+    "env.shock_events": "0",
+    "env.shock_total_g": "0.0000",
+    "env.unsettled_brackets": "0"
+  },
+  "trials": [],
+  "polls": [],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 13312,
+      "block": "H"
+    },
+    {
+      "n": 1,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 12.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 25113,
+      "block": "H"
+    },
+    {
+      "n": 2,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 38354,
+      "block": "H"
+    },
+    {
+      "n": 3,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "scale-error",
+      "elapsed_s": 12.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 50167,
+      "block": "H"
+    },
+    {
+      "n": 4,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "scale-error",
+      "elapsed_s": 13.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "",
+      "t_ms": 63425,
+      "block": "H"
+    },
+    {
+      "n": 5,
+      "target_g": 0.2,
+      "dispensed_g": 1.541,
+      "error_g": 1.341,
+      "status": "overshoot",
+      "elapsed_s": 10.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:0;tap:0",
+      "t_ms": 73027,
+      "block": "H"
+    }
+  ],
+  "dose_summary": {
+    "n": 6,
+    "ok": 0,
+    "mean_error_g": 0.13183333333333333,
+    "std_error_g": 0.5969088428450919,
+    "max_abs_error_g": 1.341,
+    "mean_elapsed_s": 12.166666666666666
+  },
+  "dose_summary_by_target": [
+    {
+      "block": "H",
+      "target_g": 0.05,
+      "n": 3,
+      "ok": 0,
+      "statuses": [
+        "scale-error"
+      ],
+      "mean_error_g": -0.05000000000000001,
+      "std_error_g": 8.498374721940739e-18,
+      "max_abs_error_g": 0.05,
+      "mean_rel_error_pct": -100.0,
+      "mean_elapsed_s": 12.666666666666666
+    },
+    {
+      "block": "H",
+      "target_g": 0.2,
+      "n": 3,
+      "ok": 0,
+      "statuses": [
+        "overshoot",
+        "scale-error"
+      ],
+      "mean_error_g": 0.31366666666666665,
+      "std_error_g": 0.8896967648212134,
+      "max_abs_error_g": 1.341,
+      "mean_rel_error_pct": 156.833,
+      "mean_elapsed_s": 11.666666666666666
+    }
+  ],
+  "device_summary": [],
+  "host_summary": [],
+  "amendments": [
+    {
+      "amended_utc": "2026-09-03T17:13:43.686579+00:00",
+      "author": "swcharles",
+      "summary": "stood down: shared fume hood, student used the compressed air again mid-session",
+      "detail": "Run completed RUN,END,ok in 77 s but measured nothing: all six doses exited before the auger turned (0.00 revolutions each), five as scale-error and the sixth as an 'overshoot' that is the pre-flight's own 1.541 g of salt read after a refused tare. No dose accuracy number from this run is a measurement. Block H is deferred to the new fume hood.",
+      "evidence": {
+        "operator_declaration": "2026-09-03, swcharles on issue #116: while students are using this fume hood we cannot run tests; a student used the fume-hood compressed air again during the session. Block H stood down, to be resumed in the new fume hood.",
+        "auger_revolutions_all_six_doses": 0.0,
+        "doses_exiting_scale_error": 5,
+        "dose5_reported_overshoot_g": 1.541,
+        "dose5_is_preflight_residue": {
+          "preflight_rotation_delta_g": 1.4088333,
+          "preflight_taps_delta_g": 0.13248348,
+          "sum_g": 1.5413168,
+          "note": "matches the reported delivery to 0.3 mg; the cup was never emptied because --unattended auto-answers the empty-the-cup prompt, and the tare was refused while the balance was unstable"
+        },
+        "balance_state": {
+          "2026-09-03T16:19Z_at_rest_before_any_actuation": {
+            "jitter_mg": 0.013,
+            "stable_fraction": 0.98
+          },
+          "2026-09-03T16:21Z_240s_survey_at_rest": {
+            "jitter_mg": 0.011,
+            "stable_fraction": 0.97
+          },
+          "2026-09-03T16:39Z_after_morning_run": {
+            "jitter_mg": 1.804,
+            "stable_fraction": 0.02
+          },
+          "2026-09-03T16:42Z_eight_min_after": {
+            "jitter_mg": 2.882,
+            "stable_fraction": 0.0
+          },
+          "2026-09-03T17:12Z_90s_read_only_after_standdown": {
+            "jitter_mg": 0.721,
+            "stable_fraction": 0.13
+          }
+        }
+      },
+      "qc_change": {
+        "verdict": {
+          "from": "pending",
+          "to": "doser-scale-unreadable"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": false
+        }
+      }
+    },
+    {
+      "amended_utc": "2026-09-03T17:22:38.256200+00:00",
+      "author": "claude",
+      "summary": "follow-up: the balance kept degrading at rest after the stand-down",
+      "detail": "Two read-only captures seven minutes apart with the rig parked and nothing commanded in between went 0.721 -> 2.724 mg jitter and 13.6 -> 109.7 mg peak-to-peak. Not a decaying actuation transient; consistent with recurrent external disturbance. See docs/battery-runs/2026-09-03-salt-block-h-rerun-standdown.md.",
+      "evidence": {
+        "balance_at_rest_after_standdown": [
+          {
+            "utc": "2026-09-03T17:12Z",
+            "window_s": 90,
+            "jitter_mg": 0.721,
+            "stable_fraction": 0.13,
+            "peak_to_peak_mg": 13.6
+          },
+          {
+            "utc": "2026-09-03T17:19Z",
+            "window_s": 120,
+            "jitter_mg": 2.724,
+            "stable_fraction": 0.04,
+            "peak_to_peak_mg": 109.7
+          }
+        ],
+        "rig_state_during_both": "tilt parked 0 deg, stepper disabled, solenoid off, no capture process",
+        "reading": "the balance degraded further with the rig idle, so this is not a decaying actuation transient",
+        "csv": [
+          "docs/rig-checks/data/2026-09-03_balance-post-air-standdown-90s.csv",
+          "docs/rig-checks/data/2026-09-03_balance-post-air-settled-120s.csv"
+        ]
+      }
+    }
+  ]
+}

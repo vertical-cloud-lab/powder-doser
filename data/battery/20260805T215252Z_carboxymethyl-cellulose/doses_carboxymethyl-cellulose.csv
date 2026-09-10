@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+carboxymethyl-cellulose,0,1.0,0.9511,-0.0489,stalled,651.0,31.68,66,bulk:53;fine:135;tap:33,1052051
+carboxymethyl-cellulose,1,1.0,0.9575,-0.0425,stalled,668.0,30.89,78,bulk:51;fine:136;tap:39,1719837
+carboxymethyl-cellulose,2,1.0,0.9619,-0.0381,stalled,688.0,31.93,92,bulk:56;fine:137;tap:46,2408000

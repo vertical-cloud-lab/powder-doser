@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+white-rice-flour,0,1.0,0.8597,-0.1403,cycle-budget,822.0,38.75,0,bulk:51;fine:200,1223964
+white-rice-flour,1,1.0,0.8399,-0.1601,cycle-budget,825.0,37.83,0,bulk:48;fine:200,2048494
+white-rice-flour,2,1.0,0.8868,-0.1132,cycle-budget,818.0,34.17,0,bulk:36;fine:200,2867008

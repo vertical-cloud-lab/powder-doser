@@ -215,3 +215,10 @@ __marimo__/
 *.bbl
 *.blg
 *.synctex.gz
+
+# The battery's raw serial log is the primary record of a run -- it is what
+# `powder_battery_capture.py --from-raw` rebuilds a run document from when a
+# capture dies after RUN,END. The blanket *.log above (inherited from the
+# Python template's Django section) swallows it, so every run's log has only
+# ever reached the repo via `git add -f`. Track them by rule instead.
+!data/battery/**/raw_serial_*.log

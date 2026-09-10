@@ -1,0 +1,4 @@
+powder_id,block,tilt_deg,phase,trial,reason,shock_g,discarded_delta_g,t_ms
+sodium-sulfate,C,0.0,rotation,4,shock,-0.0112,0.0607,201474
+sodium-sulfate,C,0.0,rotation,4,shock,-0.0142,0.0773,213061
+sodium-sulfate,C,45.0,rotation,0,shock,0.0109,0.2497,264009

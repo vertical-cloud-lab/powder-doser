@@ -1,0 +1,38 @@
+{
+  "powder_id": "fumed-silica",
+  "utc": "2026-08-21T18:10Z",
+  "preflight": {
+    "verdict": "empty-or-blocked",
+    "revolutions": 5,
+    "rotation_delta_g": -0.0461,
+    "mg_per_rev": -9.21,
+    "per_rev_mg": [-37.2, -0.1, -3.1, -3.3, -2.4],
+    "taps": 10,
+    "taps_delta_g": 0.0029
+  },
+  "diagnostic": {
+    "verdict": "mechanical-no-feed",
+    "note": "standard escalation, 45 revolutions; thresholds calibrated on powders with feed factors 100-1000x larger, so not informative for a 0.03-0.06 g/cm3 powder",
+    "rotation_g": -0.0667,
+    "taps_g": 0.0399,
+    "post_agitation_rotation_g": -0.0286
+  },
+  "long_integration": {
+    "note": "350 continuous revolutions at tilt 90 deg to beat the balance noise floor; the decisive test, since a healthy fumed-silica feed is only a few mg per revolution",
+    "verdict": "conveying-slowly (module rule) -- read as no measurable conveyance",
+    "stages": [
+      {"label": "150rev@90rpm", "delta_g": -0.0299, "mg_per_rev": -0.199},
+      {"label": "150rev@90rpm", "delta_g": 0.0388, "mg_per_rev": 0.259},
+      {"label": "taps0x30", "delta_g": -0.0084},
+      {"label": "50rev@90rpm post-agitation", "delta_g": -0.0083, "mg_per_rev": -0.166}
+    ],
+    "total_revolutions": 350,
+    "net_delta_g": 0.0006,
+    "mg_per_rev_mean": 0.0017,
+    "mg_per_rev_upper_bound": 0.25
+  },
+  "camera": {
+    "delivery_end_confirmed": false,
+    "reason": "the improvised draft cage (cardboard box + plastic window) blocks the bench camera sightline; operator reports the tape was removed"
+  }
+}
