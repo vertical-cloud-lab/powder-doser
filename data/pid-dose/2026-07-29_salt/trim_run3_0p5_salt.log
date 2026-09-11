@@ -1,0 +1,13 @@
+T,start,0.4925
+T,round,1,mass,0.4925
+T,round,2,mass,0.4931
+T,round,3,mass,0.4937
+T,round,4,mass,0.4942
+T,round,5,mass,0.4952
+T,round,6,mass,0.4954
+T,tilt,17.0
+T,round,7,mass,0.4959
+T,round,8,mass,0.4964
+T,round,9,mass,0.4965
+T,round,10,mass,0.5014
+TRIM_SUMMARY,final_g=0.5014,rounds=10
