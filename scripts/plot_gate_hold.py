@@ -89,9 +89,15 @@ def main():
         ax.text(when, ax.get_ylim()[1], " " + label, rotation=90,
                 va="top", ha="right", fontsize=8, color=MUTED)
 
+    # the shock statement is derived, never asserted: count single-poll jumps
+    # past the survey script's 10 mg step threshold inside each window
+    shocks = sum(1 for p, t, mg in windows
+                 for a, b in zip(mg, mg[1:]) if abs(b - a) >= 10.0)
+    shock_txt = ("zero mechanical shocks throughout" if shocks == 0 else
+                 "{} mechanical shock event(s) marked by the jumps".format(shocks))
     ax.set_ylabel("balance reading (mg, as read)", color=INK)
     ax.set_title("Dose-gate hold: baseline wander vs wall clock (MDT), "
-                 "zero mechanical shocks throughout", color=INK, fontsize=11)
+                 + shock_txt, color=INK, fontsize=11)
 
     # bottom: end-to-end drift per window vs the launch condition
     mids, rates, labels = [], [], []
