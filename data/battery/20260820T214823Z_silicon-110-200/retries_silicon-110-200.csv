@@ -1,0 +1,13 @@
+powder_id,block,tilt_deg,phase,trial,reason,shock_g,discarded_delta_g,t_ms
+silicon-110-200,C,0.0,rotation,0,shock,-0.0123,0.0493,155176
+silicon-110-200,C,0.0,rotation,0,shock,0.0019,0.0293,169226
+silicon-110-200,C,45.0,rotation,0,shock,-0.0004,0.1871,262474
+silicon-110-200,C,45.0,rotation,5,shock,-0.013,0.1905,336867
+silicon-110-200,C,45.0,rotation,5,shock,-0.0106,0.2496,350920
+silicon-110-200,E,0.0,refeed,0,shock,-0.0107,0.0469,533301
+silicon-110-200,E,0.0,tap,1,shock,-0.0124,0.0128,571544
+silicon-110-200,E,0.0,tap,2,shock,-0.0123,0.028,598221
+silicon-110-200,E,0.0,refeed,4,shock,-0.011,0.0606,636478
+silicon-110-200,E,0.0,refeed,4,shock,-0.0109,0.0653,648045
+silicon-110-200,E,45.0,tap,3,shock,-0.0117,0.0031,808322
+silicon-110-200,E,45.0,tap,5,shock,-0.0105,0.0002,854130

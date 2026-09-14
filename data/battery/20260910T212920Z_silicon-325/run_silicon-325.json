@@ -1,0 +1,332 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "ok",
+  "started_utc": "2026-09-10T21:29:20.709985+00:00",
+  "ended_utc": "2026-09-10T21:33:25.941779+00:00",
+  "started_local": "2026-09-10 15:29:20 MDT",
+  "ended_local": "2026-09-10 15:33:25 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 245.2,
+  "block_timeline": [
+    {
+      "block": "G",
+      "started_utc": "2026-09-10T21:29:23.231893+00:00",
+      "started_local": "2026-09-10 15:29:23 MDT",
+      "elapsed_s": 2.5
+    },
+    {
+      "block": "H",
+      "started_utc": "2026-09-10T21:29:52.114987+00:00",
+      "started_local": "2026-09-10 15:29:52 MDT",
+      "elapsed_s": 31.4
+    }
+  ],
+  "powder_id": "silicon-325",
+  "powder": "silicon, -325 mesh (<44 um)",
+  "batch": "metal-2026-08",
+  "operator": "swcharles",
+  "notes": null,
+  "qc": {
+    "valid_for_cross_powder_comparison": true,
+    "verdict": "conveying-slowly",
+    "preflight_verdict": "empty-or-blocked",
+    "last_amended_utc": "2026-09-10T21:35:19.464755+00:00"
+  },
+  "environment": null,
+  "retries": [],
+  "preflight": {
+    "verdict": "empty-or-blocked",
+    "rotation_rev_total": 5,
+    "rotation_delta_g": 0.0,
+    "mg_per_rev": 0.0,
+    "per_rev_g": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "tap_total": 10,
+    "tap_delta_g": 0.0024,
+    "tilt_deg": 90,
+    "rpm": 30,
+    "at_utc": "2026-09-10T21:24:00Z",
+    "diagnostic": {
+      "verdict": "mechanical-no-feed",
+      "rotation_g": 0.0025,
+      "taps_g": 0.0118,
+      "post_agitation_rotation_g": 0.0017,
+      "steps_delta_g": {
+        "10rev@60rpm": 0.0,
+        "10rev@90rpm": 0.0025,
+        "taps0x20": 0.0045,
+        "rot0x5rev": 0.0007,
+        "taps1x20": 0.0044,
+        "rot1x5rev": 0.0006,
+        "taps2x20": 0.0029,
+        "rot2x5rev": 0.0004
+      },
+      "at_utc": "2026-09-10T21:28:00Z"
+    },
+    "note": "Reproduces the 2026-08-21 silicon-325 signature on a fresh load: rotation <=0.12 mg/rev before and after agitation, taps ~0.2 mg/tap. Path open (taps convey); rig excluded (AlSi10Mg fed ~380 mg/rev on this rig 100 min earlier, 20260910T194447Z). Automated mechanical-no-feed verdict read as fine-particle cohesion, not a rig fault."
+  },
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "silicon-325",
+    "battery_version": "3",
+    "blocks": "GH",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "dose_h_targets_g": "0.0500;0.2000",
+    "dose_h_repeats": "3",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "bracket_n": "6",
+    "bracket_ms": "400",
+    "shock_g": "0.01",
+    "max_resid_g": "0.0015",
+    "quiet_tries": "8",
+    "max_trial_retries": "2",
+    "drift_correct": "1",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "config.dose_bracket_interval_ms": "250",
+    "config.dose_bracket_n": "5",
+    "config.dose_max_baseline_g": "10.0",
+    "config.dose_read_path": "bracket",
+    "dose_h.thresholds.0.0500": "0.0500;0.0250;0.0050",
+    "dose_h.thresholds.0.2000": "0.2000;0.0500;0.0050",
+    "park_tilt_deg": "0.0",
+    "env.brackets": "0",
+    "env.disturbed_trials": "0",
+    "env.drift_corrected_g": "0.0000",
+    "env.quiet_waits": "0",
+    "env.retries": "0",
+    "env.shock_events": "0",
+    "env.shock_total_g": "0.0000",
+    "env.unsettled_brackets": "0"
+  },
+  "trials": [],
+  "polls": [],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 1.0,
+      "dispensed_g": 0.0009,
+      "error_g": -0.9991,
+      "status": "stalled",
+      "elapsed_s": 11.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:17",
+      "t_ms": 10858,
+      "block": "G"
+    },
+    {
+      "n": 1,
+      "target_g": 1.0,
+      "dispensed_g": 0.0,
+      "error_g": -1.0,
+      "status": "stalled",
+      "elapsed_s": 9.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:17",
+      "t_ms": 19846,
+      "block": "G"
+    },
+    {
+      "n": 2,
+      "target_g": 1.0,
+      "dispensed_g": 0.0,
+      "error_g": -1.0,
+      "status": "stalled",
+      "elapsed_s": 9.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:16",
+      "t_ms": 28931,
+      "block": "G"
+    },
+    {
+      "n": 0,
+      "target_g": 0.05,
+      "dispensed_g": 0.0,
+      "error_g": -0.05,
+      "status": "stalled",
+      "elapsed_s": 31.0,
+      "auger_rev": 0.63,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:5",
+      "t_ms": 60207,
+      "block": "H"
+    },
+    {
+      "n": 1,
+      "target_g": 0.05,
+      "dispensed_g": -0.0001,
+      "error_g": -0.0501,
+      "status": "stalled",
+      "elapsed_s": 35.0,
+      "auger_rev": 0.63,
+      "taps": 0,
+      "phase_cycles": "bulk:1;fine:5",
+      "t_ms": 95029,
+      "block": "H"
+    },
+    {
+      "n": 2,
+      "target_g": 0.05,
+      "dispensed_g": -0.0,
+      "error_g": -0.05,
+      "status": "stalled",
+      "elapsed_s": 31.0,
+      "auger_rev": 0.63,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:5",
+      "t_ms": 126099,
+      "block": "H"
+    },
+    {
+      "n": 3,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "stalled",
+      "elapsed_s": 31.0,
+      "auger_rev": 0.63,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:5",
+      "t_ms": 156890,
+      "block": "H"
+    },
+    {
+      "n": 4,
+      "target_g": 0.2,
+      "dispensed_g": 0.0,
+      "error_g": -0.2,
+      "status": "stalled",
+      "elapsed_s": 31.0,
+      "auger_rev": 0.63,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:5",
+      "t_ms": 187982,
+      "block": "H"
+    },
+    {
+      "n": 5,
+      "target_g": 0.2,
+      "dispensed_g": 0.0008,
+      "error_g": -0.1992,
+      "status": "stalled",
+      "elapsed_s": 52.0,
+      "auger_rev": 1.13,
+      "taps": 0,
+      "phase_cycles": "bulk:0;fine:9",
+      "t_ms": 239995,
+      "block": "H"
+    }
+  ],
+  "dose_summary": {
+    "n": 9,
+    "n_no_actuation": 0,
+    "ok": 0,
+    "mean_error_g": -0.4164888888888889,
+    "std_error_g": 0.4421855533722366,
+    "max_abs_error_g": 1.0,
+    "mean_elapsed_s": 26.666666666666668
+  },
+  "dose_summary_by_target": [
+    {
+      "block": "H",
+      "target_g": 0.05,
+      "n": 3,
+      "n_no_actuation": 0,
+      "ok": 0,
+      "statuses": [
+        "stalled"
+      ],
+      "mean_error_g": -0.05003333333333334,
+      "std_error_g": 5.773502691896023e-05,
+      "max_abs_error_g": 0.0501,
+      "mean_rel_error_pct": -100.067,
+      "mean_elapsed_s": 32.333333333333336
+    },
+    {
+      "block": "H",
+      "target_g": 0.2,
+      "n": 3,
+      "n_no_actuation": 0,
+      "ok": 0,
+      "statuses": [
+        "stalled"
+      ],
+      "mean_error_g": -0.19973333333333332,
+      "std_error_g": 0.00046188021535171385,
+      "max_abs_error_g": 0.2,
+      "mean_rel_error_pct": -99.867,
+      "mean_elapsed_s": 38.0
+    },
+    {
+      "block": "G",
+      "target_g": 1.0,
+      "n": 3,
+      "n_no_actuation": 0,
+      "ok": 0,
+      "statuses": [
+        "stalled"
+      ],
+      "mean_error_g": -0.9996999999999999,
+      "std_error_g": 0.0005196152422706701,
+      "max_abs_error_g": 1.0,
+      "mean_rel_error_pct": -99.97,
+      "mean_elapsed_s": 9.666666666666666
+    }
+  ],
+  "device_summary": [],
+  "host_summary": [],
+  "amendments": [
+    {
+      "amended_utc": "2026-09-10T21:35:19.464755+00:00",
+      "author": "claude (session 20260910-2110), diagnostic evidence embedded in preflight block",
+      "summary": "QC review: all 9 G+H doses stalled at ~0 g with clean environment counters; verdict set to the powder's established conveying-slowly and promoted to valid as the dose-block lower bound",
+      "detail": "Pre-flight 5 rev @90deg = 0.0000 g but 10 taps = 2.4 mg (outlet open); escalated diagnostic: 35 further rev ~4 mg total (<=0.12 mg/rev) before AND after 60 taps (11.8 mg), automated verdict mechanical-no-feed overridden to powder cohesion because (1) it reproduces the 2026-08-21 silicon-325 signature on a freshly loaded auger, (2) taps convey so the path is open, (3) AlSi10Mg fed ~380 mg/rev on this rig 100 min earlier (20260910T194447Z). Stalled doses are the genuine fine-particle result, comparable across powders per the brown-rice-flour precedent; env counters 0 shocks / 0 unsettled brackets so the zeros are real.",
+      "qc_change": {
+        "verdict": {
+          "from": "unreviewed",
+          "to": "conveying-slowly"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": true
+        }
+      }
+    }
+  ]
+}

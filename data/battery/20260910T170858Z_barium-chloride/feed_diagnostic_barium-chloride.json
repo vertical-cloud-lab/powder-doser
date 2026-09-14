@@ -1,0 +1,18 @@
+{
+  "kind": "battery_feed_diagnostic",
+  "at_utc": "2026-09-10T17:15:30Z",
+  "tilt_deg": 90,
+  "verdict": "arching-responds-to-agitation",
+  "rotation_long_10rev_60rpm_g": 0.0006,
+  "rotation_fast_10rev_90rpm_g": 0.0000,
+  "agitation_rounds": [
+    {"taps20_g": 0.0002, "rot5rev_g": 0.0004},
+    {"taps20_g": 0.0058, "rot5rev_g": 0.0058},
+    {"taps20_g": 0.0028, "rot5rev_g": 0.0007}
+  ],
+  "totals_g": {"rotation": 0.0006, "taps": 0.0088, "post_agitation_rotation": 0.0069},
+  "post_agitation_mg_per_rev": 0.46,
+  "reference_steady_state_mg_per_rev_tilt45_20260821": 190.8,
+  "raw_log": "2026-09-10_barium-chloride_feed_diagnostic.log",
+  "note": "rotation dead before agitation, partially alive after, then re-arching: powder arching over the auger intake, not an empty column (taps kept producing) and not a blocked outlet (post-agitation rotation conveyed)."
+}

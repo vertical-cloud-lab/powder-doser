@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+alsi10mg,0,1.0,0.9948,-0.0052,stalled,320.0,23.43,82,bulk:67;fine:47;tap:41,720557
+alsi10mg,1,1.0,0.9677,-0.0323,stalled,313.0,14.51,78,bulk:31;fine:49;tap:39,1033551
+alsi10mg,2,1.0,0.9788,-0.0212,stalled,307.0,14.39,76,bulk:32;fine:48;tap:38,1340716

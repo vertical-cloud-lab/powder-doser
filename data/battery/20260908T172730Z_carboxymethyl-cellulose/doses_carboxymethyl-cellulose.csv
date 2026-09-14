@@ -1,0 +1,7 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+carboxymethyl-cellulose,0,0.05,0.0104,-0.0396,stalled,672.0,2.39,330,bulk:1;fine:18;tap:165,671695,H
+carboxymethyl-cellulose,1,0.05,0.0229,-0.0271,stalled,868.0,7.26,326,bulk:0;fine:57;tap:163,1540304,H
+carboxymethyl-cellulose,2,0.05,0.0474,-0.0026,ok,622.0,5.64,242,bulk:1;fine:37;tap:121,2162104,H
+carboxymethyl-cellulose,3,0.2,0.1568,-0.0432,timeout,902.0,18.14,72,bulk:1;fine:145;tap:36,3064110,H
+carboxymethyl-cellulose,4,0.2,0.196,-0.004,ok,887.0,10.69,254,bulk:0;fine:85;tap:127,3950524,H
+carboxymethyl-cellulose,5,0.2,0.1954,-0.0046,ok,882.0,11.19,264,bulk:1;fine:82;tap:132,4833110,H

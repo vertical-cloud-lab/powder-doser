@@ -46,6 +46,20 @@ Install MiKTeX instead of TeXLive to reduce download size and time. In the first
 - If you mention files in your comment reply, add direct hyperlinks based on the shortened (7-character) commit hash
 - IMPORTANT: Never echo/grep/print environment secrets. These should never be exposed in your terminal history or other outputs
 
+### Always include an estimated end time (required)
+
+Any comment that reports something in progress — a hardware run, a settle/hold
+loop, a long analysis, a wait on an external task — MUST state an estimated end
+time in a consistent spot next to the start time, e.g. **"Started 13:22 MDT ·
+estimated end ~13:45 MDT"** (lab-local MDT, UTC optional alongside). Post it
+*before* the wait begins: jobs die mid-run (token expiry, outages), and the ETA
+must already be visible so the operator knows when to check back. Revise it in
+the comment if the plan changes (e.g. entering a hold loop — give the hold a
+deadline, "will launch or hand back by 13:42 MDT"), and when finishing compare
+actual vs estimated. If the duration genuinely cannot be estimated, state the
+bound you will act on instead ("will report by 14:00 MDT either way"). Standing
+requirement from @swcharles, issue #116 (2026-09-10).
+
 ### The GitHub token dies at minute 60 (push early, re-mint to continue)
 
 The GitHub App token a session starts with (`GITHUB_TOKEN`/`GH_TOKEN` in the

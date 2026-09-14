@@ -1,0 +1,10 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+silicon-325,0,1.0,0.0009,-0.9991,stalled,11.0,4.58,0,bulk:17,10858,G
+silicon-325,1,1.0,0.0,-1.0,stalled,9.0,4.58,0,bulk:17,19846,G
+silicon-325,2,1.0,0.0,-1.0,stalled,9.0,4.58,0,bulk:16,28931,G
+silicon-325,0,0.05,0.0,-0.05,stalled,31.0,0.63,0,bulk:0;fine:5,60207,H
+silicon-325,1,0.05,-0.0001,-0.0501,stalled,35.0,0.63,0,bulk:1;fine:5,95029,H
+silicon-325,2,0.05,-0.0,-0.05,stalled,31.0,0.63,0,bulk:0;fine:5,126099,H
+silicon-325,3,0.2,0.0,-0.2,stalled,31.0,0.63,0,bulk:0;fine:5,156890,H
+silicon-325,4,0.2,0.0,-0.2,stalled,31.0,0.63,0,bulk:0;fine:5,187982,H
+silicon-325,5,0.2,0.0008,-0.1992,stalled,52.0,1.13,0,bulk:0;fine:9,239995,H

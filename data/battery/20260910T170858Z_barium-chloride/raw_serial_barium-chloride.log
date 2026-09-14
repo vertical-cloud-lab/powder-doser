@@ -1,0 +1,317 @@
+import powder_battery
+>>> powder_battery.run(powder_id='barium-chloride', attended=False, blocks="GH")
+[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+RUN,BEGIN
+META,powder_id,barium-chloride
+META,battery_version,3
+META,blocks,GH
+META,tilts_deg,0.0;45.0;90.0
+META,baseline_reads,8
+META,hold_s,15
+META,rotation_trials,6
+META,rotation_step_deg,360.0
+META,rotation_rpm,30.0
+META,speed_rpms,15.0;45.0;90.0
+META,speed_revs,3.0
+META,tap_tilts,0.0;45.0
+META,tap_trials,8
+META,taps_per_point,1
+META,refeed_deg,360.0
+META,vib_bursts,3
+META,dose_repeats,3
+META,dose_target_g,1.0
+META,dose_h_targets_g,0.0500;0.2000
+META,dose_h_repeats,3
+META,settle_ms,2000
+META,min_flow_g,0.0005
+META,bracket_n,6
+META,bracket_ms,400
+META,shock_g,0.01
+META,max_resid_g,0.0015
+META,quiet_tries,8
+META,max_trial_retries,2
+META,drift_correct,1
+META,attended,0
+META,config.SCALE_BAUD,19200
+META,config.SCALE_BITS,8
+META,config.SCALE_PARITY,0
+META,config.SCALE_STABLE_TIMEOUT_MS,10000
+META,config.SCALE_STOP,1
+META,config.SERVO_SPEED_DEG_PER_S,60
+META,config.STEPPER_ACCEL_REV_PER_S2,4.0
+META,config.STEPPER_FULL_STEPS_REV,200
+META,config.STEPPER_MICROSTEPS,8
+META,config.STEPPER_SPEED_RPM,60
+META,config.TAP_OFF_MS,150
+META,config.TAP_ON_MS,60
+META,config.TAP_PWM_DUTY,1.0
+META,config.dose_bracket_interval_ms,250
+META,config.dose_bracket_n,5
+META,config.dose_max_baseline_g,10.0
+META,config.dose_read_path,bracket
+[battery] block G
+PROMPT,block G (three-phase doses): EMPTY the collection cup now, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -5.2276 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -5227.6 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 4 (unstable): mass 0.0077 / 1.0000 g (0.9923 g to go, +0.0077 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.0198 / 1.0000 g (0.9802 g to go, +0.0121 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.0307 / 1.0000 g (0.9693 g to go, +0.0109 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.0409 / 1.0000 g (0.9591 g to go, +0.0102 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0581 / 1.0000 g (0.9419 g to go, +0.0172 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0707 / 1.0000 g (0.9293 g to go, +0.0126 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0743 / 1.0000 g (0.9257 g to go, +0.0036 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0859 / 1.0000 g (0.9141 g to go, +0.0116 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.1040 / 1.0000 g (0.8960 g to go, +0.0181 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.1133 / 1.0000 g (0.8867 g to go, +0.0093 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.1147 / 1.0000 g (0.8853 g to go, +0.0014 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.1189 / 1.0000 g (0.8811 g to go, +0.0042 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.1300 / 1.0000 g (0.8700 g to go, +0.0111 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.1369 / 1.0000 g (0.8631 g to go, +0.0069 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.1439 / 1.0000 g (0.8561 g to go, +0.0070 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.1623 / 1.0000 g (0.8377 g to go, +0.0184 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.1812 / 1.0000 g (0.8188 g to go, +0.0189 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 21 (unstable): mass 0.1861 / 1.0000 g (0.8139 g to go, +0.0049 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 22 (unstable): mass 0.1935 / 1.0000 g (0.8065 g to go, +0.0074 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 23 (unstable): mass 0.2132 / 1.0000 g (0.7868 g to go, +0.0197 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 24 (unstable): mass 0.2282 / 1.0000 g (0.7718 g to go, +0.0150 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 25 (unstable): mass 0.2315 / 1.0000 g (0.7685 g to go, +0.0033 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 26 (unstable): mass 0.2348 / 1.0000 g (0.7652 g to go, +0.0033 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 27 (unstable): mass 0.2358 / 1.0000 g (0.7642 g to go, +0.0010 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 28 (unstable): mass 0.2358 / 1.0000 g (0.7642 g to go, +0.0000 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 29: mass 0.2359 / 1.0000 g (0.7641 g to go, +0.0001 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 30 (unstable): mass 0.2360 / 1.0000 g (0.7640 g to go, +0.0001 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 31 (unstable): mass 0.2366 / 1.0000 g (0.7634 g to go, +0.0006 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 32 (unstable): mass 0.2423 / 1.0000 g (0.7577 g to go, +0.0057 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 33 (unstable): mass 0.2466 / 1.0000 g (0.7534 g to go, +0.0043 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 34 (unstable): mass 0.2552 / 1.0000 g (0.7448 g to go, +0.0086 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 35 (unstable): mass 0.2642 / 1.0000 g (0.7358 g to go, +0.0090 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 36 (unstable): mass 0.2677 / 1.0000 g (0.7323 g to go, +0.0035 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 37 (unstable): mass 0.2726 / 1.0000 g (0.7274 g to go, +0.0049 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 38 (unstable): mass 0.2843 / 1.0000 g (0.7157 g to go, +0.0117 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 39 (unstable): mass 0.2952 / 1.0000 g (0.7048 g to go, +0.0109 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 40 (unstable): mass 0.2980 / 1.0000 g (0.7020 g to go, +0.0028 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 41 (unstable): mass 0.3032 / 1.0000 g (0.6968 g to go, +0.0052 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 42 (unstable): mass 0.3092 / 1.0000 g (0.6908 g to go, +0.0060 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 43 (unstable): mass 0.3136 / 1.0000 g (0.6864 g to go, +0.0044 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 44 (unstable): mass 0.3154 / 1.0000 g (0.6846 g to go, +0.0018 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 45 (unstable): mass 0.3208 / 1.0000 g (0.6792 g to go, +0.0054 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 46 (unstable): mass 0.3247 / 1.0000 g (0.6753 g to go, +0.0039 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 47 (unstable): mass 0.3278 / 1.0000 g (0.6722 g to go, +0.0031 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 48 (unstable): mass 0.3297 / 1.0000 g (0.6703 g to go, +0.0019 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 49 (unstable): mass 0.3320 / 1.0000 g (0.6680 g to go, +0.0023 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 50 (unstable): mass 0.3342 / 1.0000 g (0.6658 g to go, +0.0022 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 51 (unstable): mass 0.3343 / 1.0000 g (0.6657 g to go, +0.0001 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 52: mass 0.3344 / 1.0000 g (0.6656 g to go, +0.0001 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 53 (unstable): mass 0.3345 / 1.0000 g (0.6655 g to go, +0.0001 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 54 (unstable): mass 0.3347 / 1.0000 g (0.6653 g to go, +0.0002 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 55 (unstable): mass 0.3348 / 1.0000 g (0.6652 g to go, +0.0001 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 56 (unstable): mass 0.3349 / 1.0000 g (0.6651 g to go, +0.0001 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 57 (unstable): mass 0.3350 / 1.0000 g (0.6650 g to go, +0.0001 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 58 (unstable): mass 0.3353 / 1.0000 g (0.6647 g to go, +0.0003 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 59 (unstable): mass 0.3355 / 1.0000 g (0.6645 g to go, +0.0002 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 60 (unstable): mass 0.3357 / 1.0000 g (0.6643 g to go, +0.0002 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 61 (unstable): mass 0.3359 / 1.0000 g (0.6641 g to go, +0.0002 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 62 (unstable): mass 0.3361 / 1.0000 g (0.6639 g to go, +0.0002 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 63 (unstable): mass 0.3363 / 1.0000 g (0.6637 g to go, +0.0002 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 64 (unstable): mass 0.3364 / 1.0000 g (0.6636 g to go, +0.0001 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 65 (unstable): mass 0.3365 / 1.0000 g (0.6635 g to go, +0.0001 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 66 (unstable): mass 0.3366 / 1.0000 g (0.6634 g to go, +0.0001 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 67 (unstable): mass 0.3368 / 1.0000 g (0.6632 g to go, +0.0002 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 68 (unstable): mass 0.3369 / 1.0000 g (0.6631 g to go, +0.0001 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 69 (unstable): mass 0.3374 / 1.0000 g (0.6626 g to go, +0.0005 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 70 (unstable): mass 0.3413 / 1.0000 g (0.6587 g to go, +0.0039 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 71 (unstable): mass 0.3414 / 1.0000 g (0.6586 g to go, +0.0001 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 72 (unstable): mass 0.3418 / 1.0000 g (0.6582 g to go, +0.0004 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 73 (unstable): mass 0.3421 / 1.0000 g (0.6579 g to go, +0.0003 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 74 (unstable): mass 0.3424 / 1.0000 g (0.6576 g to go, +0.0003 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 75 (unstable): mass 0.3425 / 1.0000 g (0.6575 g to go, +0.0001 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 76 (unstable): mass 0.3427 / 1.0000 g (0.6573 g to go, +0.0002 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 77 (unstable): mass 0.3429 / 1.0000 g (0.6571 g to go, +0.0002 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 78 (unstable): mass 0.3432 / 1.0000 g (0.6568 g to go, +0.0003 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 79 (unstable): mass 0.3434 / 1.0000 g (0.6566 g to go, +0.0002 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 80: mass 0.3434 / 1.0000 g (0.6566 g to go, +0.0000 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 81: mass 0.3435 / 1.0000 g (0.6565 g to go, +0.0001 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 82: mass 0.3435 / 1.0000 g (0.6565 g to go, +0.0000 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 83: mass 0.3436 / 1.0000 g (0.6564 g to go, +0.0001 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 84 (unstable): mass 0.3438 / 1.0000 g (0.6562 g to go, +0.0002 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 85 (unstable): mass 0.3440 / 1.0000 g (0.6560 g to go, +0.0002 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 86 (unstable): mass 0.3442 / 1.0000 g (0.6558 g to go, +0.0002 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 87 (unstable): mass 0.3445 / 1.0000 g (0.6555 g to go, +0.0003 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 88 (unstable): mass 0.3448 / 1.0000 g (0.6552 g to go, +0.0003 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 89 (unstable): mass 0.3450 / 1.0000 g (0.6550 g to go, +0.0002 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 90 (unstable): mass 0.3452 / 1.0000 g (0.6548 g to go, +0.0002 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 91: mass 0.3452 / 1.0000 g (0.6548 g to go, +0.0000 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 92: mass 0.3453 / 1.0000 g (0.6547 g to go, +0.0001 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 93: mass 0.3453 / 1.0000 g (0.6547 g to go, +0.0000 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 94: mass 0.3453 / 1.0000 g (0.6547 g to go, +0.0000 g this poll), elapsed 33.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (94 cycles): mass 0.3453 / 1.0000 g (0.6547 g to go, +0.3453 g this phase), elapsed 33.0 s
+[dose] done: DoseResult(stalled: 0.3453/1.0000 g in 33.0s; cycles bulk:94; 25.67 auger rev, 0 taps)
+DOSE,0,1.0000,0.3453,-0.6547,stalled,33.0,25.67,0,bulk:94,33173,G
+PROMPT,block G dose 0 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8822 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4882.2 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 2: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0001 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 3: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 4: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 5: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 6: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 7: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 8: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 9: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 10: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 11: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 12: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 13: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 14: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 15: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 9.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (15 cycles): mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0001 g this phase), elapsed 9.0 s
+[dose] done: DoseResult(stalled: 0.0001/1.0000 g in 9.0s; cycles bulk:15; 4.58 auger rev, 0 taps)
+DOSE,1,1.0000,0.0001,-0.9999,stalled,9.0,4.58,0,bulk:15,42165,G
+PROMPT,block G dose 1 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8820 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4882.0 mg (subtracted), drift +5.4 mg/min, read noise 0.03 mg
+=== phase 1/3 'bulk' start: 0.9999 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 2: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 3: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 4: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 5: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 6: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 7: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 8: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 9: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 10: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 11: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 12: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 13: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 14: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 15: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this poll), elapsed 9.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (15 cycles): mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0000 g this phase), elapsed 9.0 s
+[dose] done: DoseResult(stalled: 0.0001/1.0000 g in 9.0s; cycles bulk:15; 4.58 auger rev, 0 taps)
+DOSE,2,1.0000,0.0001,-0.9999,stalled,9.0,4.58,0,bulk:15,51153,G
+[battery] block H
+PROMPT,block H (small closed-loop doses): EMPTY the collection cup now, then Enter ('skip'/'abort')
+META,dose_h.thresholds.0.0500,0.0500;0.0250;0.0050
+[battery] dose target 0.0500 g, thresholds 0.0500/0.0250/0.0050
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8819 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4881.9 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== phase 1/3 'bulk' skipped (0.0499 g to go is already <= 0.0500 g threshold)
+=== phase 2/3 'fine' start: 0.0499 g to go, exit at 0.0250 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.0003 / 0.0500 g (0.0497 g to go, +0.0002 g this cycle), elapsed 10.0 s
+[phase 2 fine] cycle 2: mass 0.0005 / 0.0500 g (0.0495 g to go, +0.0002 g this cycle), elapsed 15.0 s
+[phase 2 fine] cycle 3: mass 0.0007 / 0.0500 g (0.0493 g to go, +0.0002 g this cycle), elapsed 21.0 s
+[phase 2 fine] cycle 4: mass 0.0008 / 0.0500 g (0.0492 g to go, +0.0001 g this cycle), elapsed 26.0 s
+[phase 2 fine] cycle 5: mass 0.0011 / 0.0500 g (0.0489 g to go, +0.0003 g this cycle), elapsed 31.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (5 cycles): mass 0.0011 / 0.0500 g (0.0489 g to go, +0.0011 g this phase), elapsed 31.0 s
+[dose] done: DoseResult(stalled: 0.0011/0.0500 g in 31.0s; cycles bulk:0, fine:5; 0.63 auger rev, 0 taps)
+DOSE,0,0.0500,0.0011,-0.0489,stalled,31.0,0.63,0,bulk:0;fine:5,82840,H
+PROMPT,block H dose 0 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8805 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4880.5 mg (subtracted), drift +5.6 mg/min, read noise 0.03 mg
+=== phase 1/3 'bulk' skipped (0.0500 g to go is already <= 0.0500 g threshold)
+=== phase 2/3 'fine' start: 0.0500 g to go, exit at 0.0250 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.0002 / 0.0500 g (0.0498 g to go, +0.0001 g this cycle), elapsed 10.0 s
+[phase 2 fine] cycle 2: mass 0.0003 / 0.0500 g (0.0497 g to go, +0.0001 g this cycle), elapsed 15.0 s
+[phase 2 fine] cycle 3: mass 0.0004 / 0.0500 g (0.0496 g to go, +0.0002 g this cycle), elapsed 21.0 s
+[phase 2 fine] cycle 4: mass 0.0005 / 0.0500 g (0.0495 g to go, +0.0001 g this cycle), elapsed 26.0 s
+[phase 2 fine] cycle 5: mass 0.0010 / 0.0500 g (0.0490 g to go, +0.0005 g this cycle), elapsed 31.0 s
+[phase 2 fine] cycle 6: mass 0.0011 / 0.0500 g (0.0489 g to go, +0.0001 g this cycle), elapsed 36.0 s
+[phase 2 fine] cycle 7: mass 0.0013 / 0.0500 g (0.0487 g to go, +0.0002 g this cycle), elapsed 42.0 s
+[phase 2 fine] cycle 8: mass 0.0015 / 0.0500 g (0.0485 g to go, +0.0001 g this cycle), elapsed 47.0 s
+[phase 2 fine] cycle 9: mass 0.0016 / 0.0500 g (0.0484 g to go, +0.0002 g this cycle), elapsed 52.0 s
+[phase 2 fine] cycle 10: mass 0.0018 / 0.0500 g (0.0482 g to go, +0.0001 g this cycle), elapsed 58.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (10 cycles): mass 0.0018 / 0.0500 g (0.0482 g to go, +0.0017 g this phase), elapsed 58.0 s
+[dose] done: DoseResult(stalled: 0.0018/0.0500 g in 58.0s; cycles bulk:0, fine:10; 1.25 auger rev, 0 taps)
+DOSE,1,0.0500,0.0018,-0.0482,stalled,58.0,1.25,0,bulk:0;fine:10,140396,H
+PROMPT,block H dose 1 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.0500 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8786 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4878.6 mg (subtracted), drift +5.5 mg/min, read noise 0.03 mg
+=== phase 1/3 'bulk' skipped (0.0499 g to go is already <= 0.0500 g threshold)
+=== phase 2/3 'fine' start: 0.0499 g to go, exit at 0.0250 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass -0.0000 / 0.0500 g (0.0500 g to go, -0.0001 g this cycle), elapsed 9.0 s
+[phase 2 fine] cycle 2: mass 0.0001 / 0.0500 g (0.0499 g to go, +0.0001 g this cycle), elapsed 15.0 s
+[phase 2 fine] cycle 3: mass 0.0003 / 0.0500 g (0.0497 g to go, +0.0002 g this cycle), elapsed 20.0 s
+[phase 2 fine] cycle 4: mass 0.0004 / 0.0500 g (0.0496 g to go, +0.0001 g this cycle), elapsed 25.0 s
+[phase 2 fine] cycle 5: mass 0.0006 / 0.0500 g (0.0494 g to go, +0.0002 g this cycle), elapsed 31.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (5 cycles): mass 0.0006 / 0.0500 g (0.0494 g to go, +0.0005 g this phase), elapsed 31.0 s
+[dose] done: DoseResult(stalled: 0.0006/0.0500 g in 31.0s; cycles bulk:0, fine:5; 0.63 auger rev, 0 taps)
+DOSE,2,0.0500,0.0006,-0.0494,stalled,31.0,0.63,0,bulk:0;fine:5,171187,H
+PROMPT,block H dose 2 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+META,dose_h.thresholds.0.2000,0.2000;0.0500;0.0050
+[battery] dose target 0.2000 g, thresholds 0.2000/0.0500/0.0050
+[dose] three-phase dose to 0.2000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8779 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4877.9 mg (subtracted), drift -3.4 mg/min, read noise 0.04 mg
+=== phase 1/3 'bulk' start: 0.2000 g to go, exit at 0.2000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 0.2000 g (0.2000 g to go, +0.0001 g this poll), elapsed 5.0 s
+[phase 1 bulk] auger halted at 0.2000 g to go (halt threshold 0.3200 g); settling 800 ms
+[phase 1 bulk] settled: mass 0.0000 / 0.2000 g (0.2000 g to go, +0.0000 g while settling), elapsed 7.0 s
+=== phase 1/3 'bulk' end (1 cycles): mass 0.0000 / 0.2000 g (0.2000 g to go, +0.0001 g this phase), elapsed 7.0 s
+=== phase 2/3 'fine' start: 0.2000 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.0004 / 0.2000 g (0.1996 g to go, +0.0004 g this cycle), elapsed 13.0 s
+[phase 2 fine] cycle 2: mass 0.0005 / 0.2000 g (0.1995 g to go, +0.0001 g this cycle), elapsed 19.0 s
+[phase 2 fine] cycle 3: mass 0.0006 / 0.2000 g (0.1994 g to go, +0.0001 g this cycle), elapsed 24.0 s
+[phase 2 fine] cycle 4: mass 0.0006 / 0.2000 g (0.1994 g to go, +0.0000 g this cycle), elapsed 29.0 s
+[phase 2 fine] cycle 5: mass 0.0008 / 0.2000 g (0.1992 g to go, +0.0002 g this cycle), elapsed 35.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (5 cycles): mass 0.0008 / 0.2000 g (0.1992 g to go, +0.0008 g this phase), elapsed 35.0 s
+[dose] done: DoseResult(stalled: 0.0008/0.2000 g in 35.0s; cycles bulk:1, fine:5; 0.63 auger rev, 0 taps)
+DOSE,3,0.2000,0.0008,-0.1992,stalled,35.0,0.63,0,bulk:1;fine:5,206082,H
+PROMPT,block H dose 3 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.2000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8770 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4877.0 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== phase 1/3 'bulk' skipped (0.1999 g to go is already <= 0.2000 g threshold)
+=== phase 2/3 'fine' start: 0.1999 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.0002 / 0.2000 g (0.1998 g to go, +0.0001 g this cycle), elapsed 9.0 s
+[phase 2 fine] cycle 2: mass 0.0003 / 0.2000 g (0.1997 g to go, +0.0001 g this cycle), elapsed 15.0 s
+[phase 2 fine] cycle 3: mass 0.0003 / 0.2000 g (0.1997 g to go, +0.0000 g this cycle), elapsed 20.0 s
+[phase 2 fine] cycle 4: mass 0.0004 / 0.2000 g (0.1996 g to go, +0.0001 g this cycle), elapsed 25.0 s
+[phase 2 fine] cycle 5: mass 0.0006 / 0.2000 g (0.1994 g to go, +0.0002 g this cycle), elapsed 31.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (5 cycles): mass 0.0006 / 0.2000 g (0.1994 g to go, +0.0006 g this phase), elapsed 31.0 s
+[dose] done: DoseResult(stalled: 0.0006/0.2000 g in 31.0s; cycles bulk:0, fine:5; 0.63 auger rev, 0 taps)
+DOSE,4,0.2000,0.0006,-0.1994,stalled,31.0,0.63,0,bulk:0;fine:5,237353,H
+PROMPT,block H dose 4 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 0.2000 g; taring scale
+[dose] WARNING the tare did not take -- pan reads -4.8763 g. Subtracting it as this dose's baseline; delivered mass is measured as the increment above it, not the displayed value.
+[dose] tared: baseline -4876.3 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== phase 1/3 'bulk' skipped (0.2000 g to go is already <= 0.2000 g threshold)
+=== phase 2/3 'fine' start: 0.2000 g to go, exit at 0.0500 g to go; angle 22.5 plate deg, 45 auger deg/cycle @ 30 rpm, 0 taps/cycle, settle 1500 ms
+[phase 2 fine] cycle 1: mass 0.0000 / 0.2000 g (0.2000 g to go, +0.0000 g this cycle), elapsed 10.0 s
+[phase 2 fine] cycle 2: mass 0.0002 / 0.2000 g (0.1998 g to go, +0.0002 g this cycle), elapsed 15.0 s
+[phase 2 fine] cycle 3: mass 0.0002 / 0.2000 g (0.1998 g to go, -0.0000 g this cycle), elapsed 20.0 s
+[phase 2 fine] cycle 4: mass -0.0003 / 0.2000 g (0.2003 g to go, -0.0004 g this cycle), elapsed 26.0 s
+[phase 2 fine] cycle 5: mass -0.0004 / 0.2000 g (0.2004 g to go, -0.0001 g this cycle), elapsed 31.0 s
+[phase 2 fine] no powder flow -- hopper empty, jam, or nudge budget spent
+=== phase 2/3 'fine' end (5 cycles): mass -0.0004 / 0.2000 g (0.2004 g to go, -0.0004 g this phase), elapsed 31.0 s
+[dose] done: DoseResult(stalled: -0.0004/0.2000 g in 31.0s; cycles bulk:0, fine:5; 0.63 auger rev, 0 taps)
+DOSE,5,0.2000,-0.0004,-0.2004,stalled,31.0,0.63,0,bulk:0;fine:5,268625,H
+META,park_tilt_deg,0.0
+META,env.brackets,0
+META,env.disturbed_trials,0
+META,env.drift_corrected_g,0.0000
+META,env.quiet_waits,0
+META,env.retries,0
+META,env.shock_events,0
+META,env.shock_total_g,0.0000
+META,env.unsettled_brackets,0
+RUN,END,ok

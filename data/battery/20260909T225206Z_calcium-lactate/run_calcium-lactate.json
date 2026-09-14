@@ -1,0 +1,227 @@
+{
+  "kind": "battery_run",
+  "schema_version": 3,
+  "status": "capture-interrupted",
+  "started_utc": "2026-09-09T22:52:06.440326+00:00",
+  "ended_utc": "2026-09-09T23:26:48.916614+00:00",
+  "started_local": "2026-09-09 16:52:06 MDT",
+  "ended_local": "2026-09-09 17:26:48 MDT",
+  "lab_timezone": "MDT",
+  "elapsed_s": 2082.5,
+  "block_timeline": [
+    {
+      "block": "H",
+      "started_utc": "2026-09-09T22:52:10.228201+00:00",
+      "started_local": "2026-09-09 16:52:10 MDT",
+      "elapsed_s": 3.8
+    }
+  ],
+  "powder_id": "calcium-lactate",
+  "powder": "calcium lactate (food-safe batch, Block H)",
+  "batch": "food-safe-2026-08",
+  "operator": "swcharles",
+  "notes": null,
+  "qc": {
+    "valid_for_cross_powder_comparison": true,
+    "verdict": "ok",
+    "preflight_verdict": "feed confirmed",
+    "last_amended_utc": "2026-09-09T23:36:57.640195+00:00"
+  },
+  "environment": null,
+  "retries": [],
+  "preflight": {
+    "rev_total": 5,
+    "rev_delta_g": 1.443,
+    "mg_per_rev": 288.59,
+    "taps_total": 10,
+    "taps_delta_g": 0.0559,
+    "verdict": "feed confirmed",
+    "tilt_deg": 90,
+    "rpm": 30,
+    "note": "No charging transient: rev list 341/291/266/265/281 mg, column fully primed. 18 pct above the 2026-08-05 pre-flight (244.9 mg/rev), consistent with a fresh full load. Tap response 5.59 mg/tap at tilt 90."
+  },
+  "git_commit": null,
+  "parameters": {
+    "powder_id": "calcium-lactate",
+    "battery_version": "3",
+    "blocks": "H",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "dose_h_targets_g": "0.0500;0.2000",
+    "dose_h_repeats": "3",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "bracket_n": "6",
+    "bracket_ms": "400",
+    "shock_g": "0.01",
+    "max_resid_g": "0.0015",
+    "quiet_tries": "8",
+    "max_trial_retries": "2",
+    "drift_correct": "1",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "config.dose_bracket_interval_ms": "250",
+    "config.dose_bracket_n": "5",
+    "config.dose_max_baseline_g": "10.0",
+    "config.dose_read_path": "bracket",
+    "dose_h.thresholds.0.0500": "0.0500;0.0250;0.0050",
+    "dose_h.thresholds.0.2000": "0.2000;0.0500;0.0050"
+  },
+  "trials": [],
+  "polls": [],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 0.05,
+      "dispensed_g": 0.0487,
+      "error_g": -0.0013,
+      "status": "ok",
+      "elapsed_s": 47.0,
+      "auger_rev": 0.5,
+      "taps": 12,
+      "phase_cycles": "bulk:0;fine:4;tap:6",
+      "t_ms": 46825,
+      "block": "H"
+    },
+    {
+      "n": 1,
+      "target_g": 0.05,
+      "dispensed_g": 0.071,
+      "error_g": 0.021,
+      "status": "overshoot",
+      "elapsed_s": 12.0,
+      "auger_rev": 0.92,
+      "taps": 2,
+      "phase_cycles": "bulk:1;fine:0;tap:1",
+      "t_ms": 59637,
+      "block": "H"
+    },
+    {
+      "n": 2,
+      "target_g": 0.05,
+      "dispensed_g": 0.0621,
+      "error_g": 0.0121,
+      "status": "overshoot",
+      "elapsed_s": 9.0,
+      "auger_rev": 0.0,
+      "taps": 0,
+      "phase_cycles": "bulk:1;fine:0;tap:0",
+      "t_ms": 67780,
+      "block": "H"
+    },
+    {
+      "n": 3,
+      "target_g": 0.2,
+      "dispensed_g": 0.1951,
+      "error_g": -0.0049,
+      "status": "ok",
+      "elapsed_s": 220.0,
+      "auger_rev": 0.5,
+      "taps": 116,
+      "phase_cycles": "bulk:1;fine:4;tap:58",
+      "t_ms": 287826,
+      "block": "H"
+    },
+    {
+      "n": 4,
+      "target_g": 0.2,
+      "dispensed_g": 0.191,
+      "error_g": -0.009,
+      "status": "cycle-budget",
+      "elapsed_s": 707.0,
+      "auger_rev": 0.6,
+      "taps": 400,
+      "phase_cycles": "bulk:1;fine:4;tap:200",
+      "t_ms": 995211,
+      "block": "H"
+    }
+  ],
+  "dose_summary": {
+    "n": 5,
+    "n_no_actuation": 1,
+    "ok": 2,
+    "mean_error_g": 0.0014500000000000006,
+    "std_error_g": 0.013407584917998221,
+    "max_abs_error_g": 0.021,
+    "mean_elapsed_s": 246.5
+  },
+  "dose_summary_by_target": [
+    {
+      "block": "H",
+      "target_g": 0.05,
+      "n": 3,
+      "n_no_actuation": 1,
+      "ok": 1,
+      "statuses": [
+        "ok",
+        "overshoot"
+      ],
+      "mean_error_g": 0.009850000000000001,
+      "std_error_g": 0.015768481220460012,
+      "max_abs_error_g": 0.021,
+      "mean_rel_error_pct": 19.7,
+      "mean_elapsed_s": 29.5
+    },
+    {
+      "block": "H",
+      "target_g": 0.2,
+      "n": 2,
+      "n_no_actuation": 0,
+      "ok": 1,
+      "statuses": [
+        "cycle-budget",
+        "ok"
+      ],
+      "mean_error_g": -0.00695,
+      "std_error_g": 0.0028991378028648445,
+      "max_abs_error_g": 0.009,
+      "mean_rel_error_pct": -3.475,
+      "mean_elapsed_s": 463.5
+    }
+  ],
+  "device_summary": [],
+  "host_summary": [],
+  "amendments": [
+    {
+      "amended_utc": "2026-09-09T23:36:57.640195+00:00",
+      "author": "claude",
+      "summary": "Collection QC review: promoted to valid/ok; capture-interrupted status and the missing sixth dose row explained",
+      "detail": "The device completed all six doses and parked itself; at 23:18 UTC (during dose 5's tap phase, right after nudge 10/10) the USB serial stream corrupted and the capture hung reading it, so the run document ends at dose 4 and carries status=capture-interrupted from the SIGINT recovery at 23:26:48 UTC, which flushed run.json and all CSVs intact. Dose 5 is reconstructed outside the doses array (run notes): the trace reaches 0.1701/0.2000 g at cycle 144, the bench camera at 23:28:57 UTC shows the run's final tare-relative mass static at 0.1635 g and the tube parked at 0 deg, and a 300 s post-run capture reads 164.9->164.5 mg; dose 5 therefore delivered ~0.1645 g, error ~-0.0355 g, stalled (nudge budget exhausted), ~560-900 s. Launch gate: held ~50 min while a -9.7 mg/min baseline drift decayed to a ~2 mg/min floor (zero shocks, jitter at display floor throughout); post-run diagnostic with MORE powder in the vessel reads -0.08 mg/min, attributing the drift to the vessel/enclosure drying, not the powder. Per-dose drift bias bounds: doses 0-2 (9-47 s) <2 mg; dose 3 (220 s) <7 mg; dose 4 (707 s) <20 mg, decaying through the run. The 50 mg triplet is complete and drift-immune; the recorded 200 mg pair is valid with the stated bounds.",
+      "qc_change": {
+        "verdict": {
+          "from": "unreviewed",
+          "to": "ok"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": true
+        }
+      }
+    }
+  ]
+}
