@@ -28,9 +28,15 @@
   "operator": "swcharles",
   "notes": null,
   "qc": {
-    "valid_for_cross_powder_comparison": false,
-    "verdict": "unreviewed",
-    "preflight_verdict": "feed confirmed"
+    "valid_for_cross_powder_comparison": true,
+    "verdict": "ok",
+    "preflight_verdict": "feed confirmed",
+    "review": {
+      "at_utc": "2026-09-15T03:14:00Z",
+      "by": "claude (issue #116 attempt-5 session), operator confirmation @williamulbz",
+      "basis": "launch gate passed clean (w2: e2e -0.8 mg, p2p 4.7 mg, 0 shocks); pre-flight feed confirmed 276.5 mg/rev steady from rev 1; environment pristine for the whole run (0 shocks, 0 retries, 0 disturbed trials)",
+      "exclusions": "H dose n=2 (50 mg, +5.2 mg overshoot) delivered with 0.0 auger rev and 0 taps -- mass arrived without actuation (afterflow/settling), so it is not a controller measurement; keep for afterflow accounting only. H dose n=5 (200 mg, +32.6 mg overshoot) IS a valid measurement of the frozen fine-increment quantum."
+    }
   },
   "environment": null,
   "retries": [],

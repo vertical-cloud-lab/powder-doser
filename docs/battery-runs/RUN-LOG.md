@@ -4,12 +4,14 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 
 **Generated file -- do not edit by hand.** Rebuild with `python scripts/build_run_log.py` after each run (and `python scripts/refresh_stream_broadcasts.py` first if the run is on a broadcast newer than the listing). The same rows are in [`run-log.csv`](run-log.csv).
 
-34 entries, 23 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
+36 entries, 24 valid for cross-powder comparison. All times UTC; the lab is on MDT (UTC-6), given alongside per run below.
 
 ## Runs
 
 | Start (UTC) | End | Dur | Powder | Blocks | Speeds (RPM) | Dispensed | Feed @90 deg | Doses | Environment | QC | Data | Video |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-09-15 02:55 | 2026-09-15 03:05 | 9:17 | `silicon-110-200` | GH | -- | 3.79 g | -- | 1000 mg 3x +0.2 mg; 200 mg 3x +9.8 mg; 50 mg 3x +1.1 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260915T025556Z_silicon-110-200) | [~1 min](https://youtu.be/wn2vf0Yyo58?t=28541) |
+| 2026-09-10 23:19 | -- | -- | `silicon-110-200` | -- | -- | -- | -- | -- | not recorded | excluded<br>`feed confirmed` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T231950Z_silicon-110-200_preflight) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-silicon-110-200-gh-standdown.md) | [~1 min](https://youtu.be/ICtO7rPS5ws?t=15575) |
 | 2026-09-10 21:29 | 2026-09-10 21:33 | 4:05 | `silicon-325` | GH | -- | 0.00 g | -- | 1000 mg 3x -999.7 mg; 200 mg 3x -199.7 mg; 50 mg 3x -50.0 mg | not recorded | valid<br>`conveying-slowly` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T212920Z_silicon-325) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-silicon-325-blocks-gh.md) | [~1 min](https://youtu.be/ICtO7rPS5ws?t=8945) |
 | 2026-09-10 19:44 | 2026-09-10 19:59 | 14:59 | `alsi10mg` | GH | -- | 3.82 g | -- | 1000 mg 3x +1.9 mg; 200 mg 3x -0.3 mg; 50 mg 3x +21.5 mg | not recorded | valid<br>`ok` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T194447Z_alsi10mg) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-alsi10mg-blocks-gh.md) | [~1 min](https://youtu.be/ICtO7rPS5ws?t=2672) |
 | 2026-09-10 17:08 | 2026-09-10 17:13 | 4:33 | `barium-chloride` | GH | -- | 0.35 g | -- | 1000 mg 3x -884.8 mg; 200 mg 3x -199.7 mg; 50 mg 3x -48.8 mg | not recorded | excluded<br>`arching-no-feed` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T170858Z_barium-chloride) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-barium-chloride-blocks-gh-no-feed.md) | [~1 min](https://youtu.be/8GwtWc9_Mpc?t=22123) |
@@ -46,6 +48,31 @@ Every battery run on the bench rig, newest first: when it ran, what it ran, how 
 | 2026-08-04 20:43 | 2026-08-04 20:50 | 7:04 | `brown-rice-flour` | ABCDEG | C/E 30 · D 15/45/90 RPM | 0.01 g | 0.10 mg/rev | 3x, 0 ok, mean -999.4 mg | not recorded | excluded<br>`no-conveyance-auger-suspect` | [dir](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260804T204316Z_brown-rice-flour) · [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-08-04-brown-rice-flour.md) | [exact](https://youtu.be/w1D5DRiHFWM?t=6115) |
 
 ## Per-run detail
+
+### 2026-09-15 02:55 UTC -- silicon-110-200
+
+- **Window** 2026-09-15T02:55:56.009768+00:00 -> 2026-09-15T03:05:12.988928+00:00  (9:17)
+- **Lab clock** 2026-09-14 20:55:56 MDT -> 2026-09-14 21:05:12 MDT
+- **Powder** silicon powder, -110/+200 mesh  ·  batch `metal-2026-08`  ·  operator swcharles
+- **Tests** blocks GH  ·  0 measured trials  ·  n/a
+- **Dispensed** 3.7873 g
+- **Closed-loop doses** 1000 mg 3x +0.2 mg; 200 mg 3x +9.8 mg; 50 mg 3x +1.1 mg
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** valid -- `ok`
+- **Data** [data/battery/20260915T025556Z_silicon-110-200](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260915T025556Z_silicon-110-200)
+- **Video** [https://youtu.be/wn2vf0Yyo58?t=28541](https://youtu.be/wn2vf0Yyo58?t=28541) -- accurate to about a minute
+
+### 2026-09-10 23:19 UTC -- silicon-110-200
+
+- **Window** 2026-09-10T23:19:50+00:00 -> (none)  (--)
+- **Tests** blocks (none)  ·  0 measured trials  ·  n/a
+- **Pre-flight** feed confirmed
+- **Environment** not recorded
+- **QC** excluded -- `feed confirmed`
+- **Data** [data/battery/20260910T231950Z_silicon-110-200_preflight](https://github.com/vertical-cloud-lab/powder-doser/tree/main/data/battery/20260910T231950Z_silicon-110-200_preflight)
+- **Notes** [docs/battery-runs/2026-09-10-silicon-110-200-gh-standdown.md](https://github.com/vertical-cloud-lab/powder-doser/blob/main/docs/battery-runs/2026-09-10-silicon-110-200-gh-standdown.md)
+- **Video** [https://youtu.be/ICtO7rPS5ws?t=15575](https://youtu.be/ICtO7rPS5ws?t=15575) -- accurate to about a minute
 
 ### 2026-09-10 21:29 UTC -- silicon-325
 

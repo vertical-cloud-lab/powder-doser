@@ -945,6 +945,97 @@
       "title": "powder doser stream picam-d1pr, 2026-09-10 UTC 19:00",
       "camera": "picam-d1pr",
       "nominal_start_utc": "2026-09-10T19:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "idilTWn8VIc",
+      "title": "powder doser stream picam-d1pr, 2026-09-11 UTC 03:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-11T03:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "RiMyJPo5fes",
+      "title": "powder doser stream picam-d1pr, 2026-09-11 UTC 11:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-11T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "QWbd_k6Bugc",
+      "title": "powder doser stream picam-d1pr, 2026-09-11 UTC 19:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-11T19:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "SAZ88lrFs00",
+      "title": "powder doser stream picam-d1pr, 2026-09-12 UTC 03:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-12T03:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "MlTSnWdb3so",
+      "title": "powder doser stream picam-d1pr, 2026-09-12 UTC 11:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-12T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "FjJWG7t-gig",
+      "title": "powder doser stream picam-d1pr, 2026-09-12 UTC 19:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-12T19:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "prBrUXZS6h4",
+      "title": "powder doser stream picam-d1pr, 2026-09-13 UTC 03:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-13T03:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "7py8jad72Hs",
+      "title": "powder doser stream picam-d1pr, 2026-09-13 UTC 11:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-13T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "DwLSxcY289k",
+      "title": "powder doser stream picam-d1pr, 2026-09-13 UTC 19:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-13T19:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "Xzm9Ay8kWiA",
+      "title": "powder doser stream picam-d1pr, 2026-09-14 UTC 03:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-14T03:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "xwRybDmm8Tc",
+      "title": "powder doser stream picam-d1pr, 2026-09-14 UTC 11:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-14T11:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "wn2vf0Yyo58",
+      "title": "powder doser stream picam-d1pr, 2026-09-14 UTC 19:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-14T19:00:00+00:00",
+      "live_status": "was_live"
+    },
+    {
+      "video_id": "Tl9iE4wHTsw",
+      "title": "powder doser stream picam-d1pr, 2026-09-15 UTC 03:00",
+      "camera": "picam-d1pr",
+      "nominal_start_utc": "2026-09-15T03:00:00+00:00",
       "live_status": "is_live"
     }
   ]
