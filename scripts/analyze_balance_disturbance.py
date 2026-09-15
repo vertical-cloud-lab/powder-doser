@@ -6,13 +6,17 @@ measurement disturbance per actuation state (issue #157 / the #162 gaps).
 
 What run 1 (2026-09-15) actually showed: the "blocked" auger dispenses.
 Quiet windows sit at drift level while every actuation block deposits
-real, persistent mass; the 5 g guard halted the session mid-55 rpm.  So
-this script reports both readings of the data:
+real, persistent mass; the 5 g guard halted the session mid-55 rpm.
+Run 2 (same day, auger exit covered) completed with ~0 net deposition,
+so the same numbers read as pure measurement disturbance.  The script
+reports both readings of the data:
 
   * the salvage: fume-hood quiet floor + drift from the quiet windows
     (the #162 "R from stationary readings" item, issue #157);
-  * the evidence: deposition per tap / per burst / per auger revolution,
-    per-block levels, and the post-halt afterflow tails.
+  * the evidence: apparent deposition per tap / per burst / per auger
+    revolution, per-block levels/noise/ST-fraction, and the post-halt
+    tails (afterflow if the block leaks, vibration-bias recovery if it
+    holds).  Titles adapt to the outcome (guard halt vs complete).
 
 Usage:
     python scripts/analyze_balance_disturbance.py <log> <outdir>
@@ -99,6 +103,7 @@ def block_stats(df):
         coef = np.polyfit(t, d, 1)
         resid = d - np.polyval(coef, t)
         chg = datum_changed(g)
+        st = g["flag"].values == "S"
         rows.append({
             "block": blk, "kind": kind_of(blk),
             "t_start_s": t[0], "t_end_s": t[-1],
@@ -108,7 +113,12 @@ def block_stats(df):
             "p2p_mg": float(d.max() - d.min()),
             "slope_mg_per_min": float(coef[0] * 60.0),
             "delta_mg": float(np.mean(d[-6:]) - np.mean(d[:6])),
-            "st_frac": float((g["flag"] == "S").mean()),
+            "st_frac": float(st.mean()),
+            # settling proxy: time from block start to the first
+            # balance-flagged-stable frame (#162 "settling under
+            # disturbance"; most meaningful for post_* blocks)
+            "first_stable_s": float(t[st][0] - t[0]) if st.any()
+            else np.nan,
         })
     return pd.DataFrame(rows)
 
@@ -159,8 +169,9 @@ def main():
     singles.to_csv(outdir / "tap_epochs.csv", index=False)
 
     # ---- salvage: fume-hood quiet floor + drift ----
-    floors, drifts, quiet_st = [], [], []
-    for blk in ("quiet_pre", "quiet_mid1", "quiet_mid2", "quiet_post"):
+    floors, drifts, quiet_st, quiet_names = [], [], [], []
+    for blk in ("quiet_pre", "quiet_mid1", "quiet_mid2", "quiet_mid3",
+                "quiet_mid4", "quiet_post"):
         g = df[df["block"] == blk].dropna(subset=["mass_g"])
         if len(g) < 20:
             continue
@@ -171,6 +182,7 @@ def main():
         floors.append(np.std(resid[datum_changed(g)]))
         drifts.append(coef[0] * 60.0)
         quiet_st.append((g["flag"] == "S").mean())
+        quiet_names.append(blk)
     quiet_floor = float(np.mean(floors)) if floors else np.nan
 
     # ---- evidence: deposition per actuation ----
@@ -206,7 +218,10 @@ def main():
     summary = {
         "meta": meta,
         "outcome": "mass_guard_halt" if guard else "complete",
+        "post_blocks_meaning": ("afterflow (real mass landing)" if guard
+                                else "vibration-bias recovery, not mass"),
         "quiet_floor_sigma_datum_mg": quiet_floor,
+        "quiet_windows": quiet_names,
         "quiet_floor_per_window_mg": [round(f, 3) for f in floors],
         "quiet_drift_mg_per_min": [round(d, 2) for d in drifts],
         "quiet_st_frac": [round(s, 3) for s in quiet_st],
@@ -238,10 +253,15 @@ def main():
                           alpha=0.13, lw=0)
             seen.add(b["kind"])
     ax.set_ylabel("mass vs session start (mg)", color=INK2, fontsize=9)
-    ax.set_title(
-        'The "blocked" auger dispenses: actuation deposits mass; quiet '
-        "windows hold flat (guard halt at 5 g)", color=INK, fontsize=11,
-        loc="left")
+    if guard:
+        title = ('The "blocked" auger dispenses: actuation deposits '
+                 "mass; quiet windows hold flat (guard halt at 5 g)")
+    else:
+        title = ("Blocked auger holds (net {:+.1f} mg over {:.0f} min): "
+                 "actuation biases the reading; quiet windows recover"
+                 ).format(summary["total_deposited_mg"],
+                          allg["t_ms"].iloc[-1] / 60000.0)
+    ax.set_title(title, color=INK, fontsize=11, loc="left")
     style_ax(ax)
     order = [k for k in ("tap", "auger", "hold", "combined", "servo")
              if k in seen]
@@ -297,8 +317,9 @@ def main():
         axt.plot(mm["t"], mm["d"], color=S2_ORANGE, lw=2.0,
                  label="mean of {} taps".format(sb["event"].nunique()))
         axt.axvline(0, color=INK2, lw=0.8, ls=":")
-    axt.set_title("Each single tap lands real mass", color=INK,
-                  fontsize=10.5, loc="left")
+    axt.set_title("Each single tap lands real mass" if guard else
+                  "Single-tap impulse response",
+                  color=INK, fontsize=10.5, loc="left")
     axt.set_xlabel("time since tap (s)", color=INK2, fontsize=9)
     axt.set_ylabel("mass vs pre-tap (mg)", color=INK2, fontsize=9)
     axt.legend(frameon=False, fontsize=8, labelcolor=INK2)
@@ -314,13 +335,50 @@ def main():
                  fontsize=8, color=INK2)
     axd.set_xlabel("deposition (mg per actuation unit)", color=INK2,
                    fontsize=9)
-    axd.set_title("Leak rate by actuator", color=INK, fontsize=10.5,
-                  loc="left")
+    axd.set_title("Leak rate by actuator" if guard else
+                  "Apparent deposition (block holds)",
+                  color=INK, fontsize=10.5, loc="left")
     style_ax(axd)
     axd.grid(True, axis="x", color=MUTED, alpha=0.22, linewidth=0.6)
     axd.grid(False, axis="y")
     axd.invert_yaxis()
     fig.savefig(outdir / "quietfloor_and_leak.png", bbox_inches="tight",
+                facecolor=SURFACE)
+    plt.close(fig)
+
+    # ------ figure 3: disturbance map (noise + ST flag per state) ------
+    bb = blocks.reset_index(drop=True)
+    fig, (axs, axf) = plt.subplots(
+        2, 1, figsize=(11.5, 5.8), sharex=True, dpi=160,
+        gridspec_kw={"hspace": 0.10})
+    fig.patch.set_facecolor(SURFACE)
+    x = np.arange(len(bb))
+    cols = [KIND_TINT.get(k, MUTED) for k in bb["kind"]]
+    axs.bar(x, bb["sigma_detr_mg"].clip(lower=0.05), color=cols,
+            width=0.72)
+    axs.set_yscale("log")
+    axs.axhline(quiet_floor, color=INK2, lw=1.0, ls="--")
+    axs.text(len(bb) - 0.4, quiet_floor * 1.12,
+             "mean quiet floor {:.1f} mg".format(quiet_floor),
+             ha="right", va="bottom", fontsize=8, color=INK2)
+    axs.set_ylabel("detrended sigma (mg, log)", color=INK2, fontsize=9)
+    axs.set_title(
+        "Disturbance map: balance noise and stable-flag behaviour per "
+        "actuation state", color=INK, fontsize=11, loc="left")
+    style_ax(axs)
+    order = [k for k in ("quiet", "tap", "auger", "hold", "combined",
+                         "servo", "post") if (bb["kind"] == k).any()]
+    axs.legend([plt.Rectangle((0, 0), 1, 1,
+                              color=KIND_TINT.get(k, MUTED), alpha=0.8)
+                for k in order], order, loc="upper left", ncol=len(order),
+               frameon=False, fontsize=8, labelcolor=INK2)
+    axf.bar(x, bb["st_frac"] * 100.0, color=cols, width=0.72)
+    axf.set_ylabel("ST-flagged frames (%)", color=INK2, fontsize=9)
+    axf.set_ylim(0, 100)
+    axf.set_xticks(x, bb["block"], rotation=60, ha="right", fontsize=7,
+                   color=INK2)
+    style_ax(axf)
+    fig.savefig(outdir / "disturbance_map.png", bbox_inches="tight",
                 facecolor=SURFACE)
     plt.close(fig)
 
