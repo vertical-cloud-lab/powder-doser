@@ -158,6 +158,11 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
     df, ev, pt, meta = parse(log_path)
 
+    # mechanical config label ("blocked auger", "empty auger", ...) from the
+    # firmware's experiment metadata; drives titles and figure-1 filename
+    cfg = meta.get("experiment", "blocked-auger-balance-disturbance")
+    cfg = cfg.replace("-balance-disturbance", "").replace("-", " ")
+
     ref = df[df["block"] == "quiet_pre"]["mass_g"].dropna()
     ref0 = ref.iloc[: max(5, len(ref) // 4)].median()
     df["dev_mg"] = (df["mass_g"] - ref0) * 1000.0
@@ -254,12 +259,13 @@ def main():
             seen.add(b["kind"])
     ax.set_ylabel("mass vs session start (mg)", color=INK2, fontsize=9)
     if guard:
-        title = ('The "blocked" auger dispenses: actuation deposits '
-                 "mass; quiet windows hold flat (guard halt at 5 g)")
+        title = ('The "{}" dispenses: actuation deposits '
+                 "mass; quiet windows hold flat (guard halt at 5 g)"
+                 ).format(cfg)
     else:
-        title = ("Blocked auger holds (net {:+.1f} mg over {:.0f} min): "
-                 "actuation biases the reading; quiet windows recover"
-                 ).format(summary["total_deposited_mg"],
+        title = ("{}: net {:+.1f} mg over {:.0f} min -- deviations are "
+                 "measurement disturbance, not mass"
+                 ).format(cfg.capitalize(), summary["total_deposited_mg"],
                           allg["t_ms"].iloc[-1] / 60000.0)
     ax.set_title(title, color=INK, fontsize=11, loc="left")
     style_ax(ax)
@@ -278,7 +284,7 @@ def main():
     ax2.legend(loc="upper left", ncol=2, frameon=False, fontsize=8,
                labelcolor=INK2)
     style_ax(ax2)
-    fig.savefig(outdir / "blocked_auger_overview.png",
+    fig.savefig(outdir / (cfg.replace(" ", "_") + "_overview.png"),
                 bbox_inches="tight", facecolor=SURFACE)
     plt.close(fig)
 
@@ -295,7 +301,7 @@ def main():
     axq.plot(tq, dq, color=INK, lw=0.8)
     axq.plot(tq, np.polyval(cf, tq), color=S1_BLUE, lw=1.6, ls="--",
              label="drift {:+.2f} mg/min".format(cf[0] * 60))
-    axq.set_title("Fume-hood quiet floor (120 s)", color=INK,
+    axq.set_title("Quiet floor (120 s)", color=INK,
                   fontsize=10.5, loc="left")
     axq.set_xlabel("session time (s)", color=INK2, fontsize=9)
     axq.set_ylabel("deviation (mg)", color=INK2, fontsize=9)
@@ -336,7 +342,7 @@ def main():
     axd.set_xlabel("deposition (mg per actuation unit)", color=INK2,
                    fontsize=9)
     axd.set_title("Leak rate by actuator" if guard else
-                  "Apparent deposition (block holds)",
+                  "Apparent deposition ({})".format(cfg),
                   color=INK, fontsize=10.5, loc="left")
     style_ax(axd)
     axd.grid(True, axis="x", color=MUTED, alpha=0.22, linewidth=0.6)

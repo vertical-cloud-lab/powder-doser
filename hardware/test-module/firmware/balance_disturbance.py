@@ -43,6 +43,12 @@ Telemetry (CSV over USB stdout)
 import time
 import main_three_phase as m3
 
+# Mechanical configuration the battery is running against, stamped into the
+# telemetry metadata.  r1/r2 (2026-09-15) ran "blocked-auger" (nominally
+# blocked, then exit-covered); r3 runs "empty-auger" -- a clean auger with no
+# powder anywhere, after the balance drift fix.  Edit per run.
+CONFIG_LABEL = "empty-auger"
+
 POLL_MS = 60                # same cadence the dose controllers use
 QUIET_LONG_S = 120.0
 QUIET_MID_S = 30.0
@@ -167,8 +173,8 @@ class Rig:
 
 
 def main():
-    meta("experiment", "blocked-auger-balance-disturbance")
-    meta("powder_id", "none-blocked-auger")
+    meta("experiment", CONFIG_LABEL + "-balance-disturbance")
+    meta("powder_id", "none-" + CONFIG_LABEL)
     meta("poll_ms", POLL_MS)
     meta("rpm_ladder", "|".join("{:.0f}".format(r) for r in RPM_LADDER))
     meta("spin_s", SPIN_S)
