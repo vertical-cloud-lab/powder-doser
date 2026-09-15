@@ -1,0 +1,19 @@
+{
+  "verdict": "feed confirmed",
+  "rotation_rev_total": 5,
+  "rotation_delta_g": 1.3825,
+  "mg_per_rev": 276.5,
+  "per_rev_g": [
+    0.2896,
+    0.2766,
+    0.2848,
+    0.2595,
+    0.272
+  ],
+  "tap_total": 10,
+  "tap_delta_g": 0.0087,
+  "tilt_deg": 90,
+  "rpm": 30,
+  "at_utc": "2026-09-15T02:55:24Z",
+  "note": "fresh-load pre-flight for the 2026-09-14 attempt-3 G+H run, immediately after the launch gate passed"
+}
