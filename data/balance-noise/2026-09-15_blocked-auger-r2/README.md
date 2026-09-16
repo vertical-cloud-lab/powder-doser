@@ -1,5 +1,14 @@
 # Blocked-auger balance-disturbance battery, run 2 — 2026-09-15 (complete)
 
+> **Scope note (2026-09-16).** This map describes the **pre-drift-fix bench
+> with the covered, powder-laden tube installed**. r3 (same day, clean empty
+> auger, post drift-fix) plus direct bench observation showed the current
+> bench reproduces none of these signatures — actuation moves the reading by
+> less than one display count (0.1 mg). Do not apply the spin-bias
+> correction or the ST-distrust rule below to post-fix data; keep this
+> dataset as the historical/worst-case reference. See
+> [`../2026-09-15_empty-auger/README.md`](../2026-09-15_empty-auger/README.md).
+
 Re-run of the r1 battery after the auger exit was physically covered
 (PR #131 request). Same script
 ([`balance_disturbance.py`](../../../hardware/test-module/firmware/balance_disturbance.py)),

@@ -3,9 +3,12 @@
 
 Built for r2 (2026-09-15 morning, covered auger, pre drift-fix) vs r3
 (same day, empty auger, post drift-fix), where the comparison itself is
-the finding: r3's stream is clamped to an exact 0.0000 g through the
-same actuation sequence that r2 resolved as ±10-60 mg disturbance
-structure, and the ST flag stays asserted straight through spins.
+the finding: the same actuation sequence that r2 resolved as ±10-60 mg
+disturbance structure leaves r3's stream flat at an exact 0.0000 g with
+the ST flag asserted straight through spins. Bench observation
+(2026-09-16, PR #131) confirmed the r3 flatness is genuine — on the
+post-fix bench actuation couples <0.1 mg into the balance; see the r3
+README for the corrected interpretation.
 
 Usage:
     python scripts/plot_disturbance_compare.py \
