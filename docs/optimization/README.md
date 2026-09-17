@@ -7,11 +7,12 @@ auger at a fixed tilt / RPM / tap setting until the Kalman-filtered mass
 estimate crosses a cutoff, followed by a **trim phase** — PI control of the
 auger, or discrete solenoid taps — that closes the remaining error).
 
-This document has four parts: a direct review of the brainstorm, a
+This document has five parts: a direct review of the brainstorm, a
 proposed problem formulation, a synthesis of the high-effort Edison
 Scientific literature query commissioned for this issue
-(artifacts in [`edison_artifacts/`](edison_artifacts/)), and
-clarifications raised in the PR #162 review (§4).
+(artifacts in [`edison_artifacts/`](edison_artifacts/)),
+clarifications raised in the PR #162 review (§4), and a worked
+screening-DOE example requested in that review (§5).
 
 ---
 
@@ -353,9 +354,10 @@ once per powder class, before BO. Each candidate parameter (tilt, RPM,
 tap frequency, cutoff margin) gets two levels spanning its safe range; a
 chosen fraction `2^(k−p)` of the full `2^k` grid (e.g. 8 of the 16
 corner settings for k = 4, plus center points to detect curvature, with
-3–5 replicates each) still estimates every main effect and the
-two-factor interactions. At 1–2 min per dispense this is one unattended
-overnight run.
+3–5 replicates each) still estimates every main effect free of
+two-factor interactions (the interactions themselves arrive in aliased
+pairs — §5.3). At 1–2 min per dispense this is one unattended overnight
+run. §5 gives the full worked design for this rig.
 
 What it returns, and where each output lands:
 
@@ -429,3 +431,183 @@ KI}`, consistent with §1.3 and §3.3:
   moment, so `tilt_trim` earns a BO slot only if the screen shows the
   trim increment is sensitive to it; otherwise hold tilt constant
   across phases and avoid the transient entirely.
+
+---
+
+## 5. Worked example: the screening DOE for this rig
+
+Requested in review: what the §4.2 screen concretely looks like, and
+why tilt, auger RPM, tap frequency, and cutoff margin are the right
+four factors. Levels below are in real units but are placeholders
+until confirmed against `config.py` on the rig plus a short
+range-finding pass; the *rules* for setting each level are part of the
+design and are stated alongside.
+
+### 5.1 Why these four factors — and why nothing else
+
+A parameter earns a factorial slot when all five of these hold; the
+screened four are the only candidates that pass every test:
+
+1. **Its effect is empirically unknown and powder-specific.** The
+   literature cannot predict even the *direction* of some of these
+   effects (tap excitation may raise, plateau, or lower flow — §3.2);
+   a screen exists to resolve exactly that kind of uncertainty.
+   Parameters whose effect is known by construction (a wider stopping
+   band is always faster and less accurate) teach a screen nothing.
+2. **It acts on the plant, not on the estimator or the measurement
+   protocol.** The screen measures flow physics and the bulk→trim
+   handover. Q/R shape the *estimate* of that physics — varying them
+   in the same factorial would confound filter lag with flow response,
+   and §1.3's identification route is cheaper and transferable. The
+   balance settling wait is measurement protocol, identified once from
+   a step-response test.
+3. **It is live in the bulk phase.** The screen freezes the trim
+   policy at current defaults, so each run's end-to-end time and error
+   are attributable to the screened factors. KP/KI and the trim
+   authority bound act only after cutoff, and their sensible starting
+   point — the IMC center of §4.3 — *requires the feed factor this
+   screen measures*, so they cannot precede it.
+4. **It is software-settable, continuous, and safely boundable at two
+   levels.** All four change between runs over the serial REPL
+   (`a <deg>` for tilt, stepper speed, tap cadence, cutoff parameter);
+   no hardware is touched during an unattended block.
+5. **Jointly, the four span both objectives.** Tilt, RPM, and tap
+   cadence set the bulk flow regime — its mean (speed) and its
+   variability/pulsation (the accuracy-relevant part). The cutoff
+   margin is the single accuracy-side factor: §1.2's coupling variable
+   that converts a flow regime into a terminal error and a trim
+   workload. Screening the three mechanical factors without the margin
+   would characterize speed only; screening the margin at one flow
+   regime would miss the interaction the design exists to measure.
+
+Per factor, the open question the screen answers:
+
+| Factor | Open question |
+|---|---|
+| `tilt_bulk` | The literature's strongest single flow predictor (§3.2) — is that true on this auger and this powder, and where do no-flow and flooding set in? |
+| Auger RPM | Feed factor (mass/rev) and pulsation vs. RPM — the plant gain that margin scaling and the IMC gains are built on; locates the usable band (LIW practice: erratic outside roughly 20–90% of drive) |
+| Tap cadence (bulk) | Does background tapping help bulk flow *at all* here, and at what cost in flow variability and balance noise? Direction genuinely unknown (§3.2) |
+| Cutoff margin | How much of the flow regime survives cutoff as landed-after-cutoff mass — and does the required margin scale with flow rate (§1.2's claim, tested as the RPM × margin interaction) |
+
+And the excluded parameters, each with its better route (§1.5):
+
+| Excluded | Route | Why not a screen factor |
+|---|---|---|
+| Q, R | Identify from traces (§1.3) | Estimator, not plant (test 2); degenerate pair — only the ratio matters |
+| KP, KI, trim authority bound | IMC center from the screen's feed factor, then bounded BO (§4.3) | Trim-phase only (test 3); their optimum is conditional on the remainder the margin leaves |
+| Balance settling wait | One-off step-response test | Measurement protocol (test 2); the dedicated test costs minutes, a factorial cell costs dispenses |
+| Stopping band / spec tolerance | Application spec or policy (§4.3) | Effect monotone by construction (test 1) |
+| ERM vibration | Held out of round 1 (§1.5) | Corrupts the mass signal most; becomes factor E in the resolution-V variant (§5.4) once duty-cycled reads exist |
+| Tap energy / single-tap increment | Per-powder increment-distribution measurement (§1.3) | A distribution to estimate, not an effect to detect; trim-phase resolution floor |
+
+### 5.2 The design: 2^(4−1), resolution IV, 8 corners + 4 centers
+
+Half fraction of the 2^4 grid, generator `D = ABC` (defining relation
+`I = ABCD`), plus center points:
+
+| | Factor | − level | + level | Center | Rule for setting the levels |
+|---|---|---|---|---|---|
+| A | `tilt_bulk` (° from horizontal) | 20 | 50 | 35 | Range-find inside the servo band: − just above sustained-flow onset, + just below flooding/spill |
+| B | Auger RPM | 60 | 240 | 150 | About 20% and 80% of the usable band: stall below it, erratic flow or flooding above it |
+| C | Tap cadence in bulk (Hz) | 0 (off) | 5 | 2.5 | Cadence = 1000/(`TAP_ON_MS` + `TAP_OFF_MS`); the 0 level tests whether bulk tapping is needed at all (switch − to 1 Hz once presence is established) |
+| D | Cutoff margin (mg at a 500 mg target) | 10 | 75 | 42.5 | −: slightly above filter lag × flow rate at the slowest corner; +: covers the largest post-cutoff landed mass observed in range-finding at the fastest corner, plus 3σ |
+
+The eight corners (coded, then in real units):
+
+| Run | A | B | C | D = ABC | tilt (°) | RPM | tap (Hz) | margin (mg) |
+|---|---|---|---|---|---|---|---|---|
+| 1 | − | − | − | − | 20 | 60 | 0 | 10 |
+| 2 | + | − | − | + | 50 | 60 | 0 | 75 |
+| 3 | − | + | − | + | 20 | 240 | 0 | 75 |
+| 4 | + | + | − | − | 50 | 240 | 0 | 10 |
+| 5 | − | − | + | + | 20 | 60 | 5 | 75 |
+| 6 | + | − | + | − | 50 | 60 | 5 | 10 |
+| 7 | − | + | + | − | 20 | 240 | 5 | 10 |
+| 8 | + | + | + | + | 50 | 240 | 5 | 75 |
+| C1–C4 | 0 | 0 | 0 | 0 | 35 | 150 | 2.5 | 42.5 |
+
+Three replicates of each corner plus the 4 center points = 28
+dispenses per block; at 2–4 min per full dose cycle that is roughly
+1–2 hours — one unattended evening, leaving room for the §5.3 foldover
+block on a second.
+
+Protocol — the part that makes this a designed experiment rather than
+28 dispenses:
+
+- **One powder lot, one target mass** (e.g. 500 mg of the xanthan gum
+  surrogate on the existing 0.1 mg-class balance). The screen is per
+  powder class × dose regime; the mg-trace and multi-gram regimes get
+  their own screens if and when they matter.
+- **Trim frozen at current defaults, ERM off, settling wait fixed and
+  conservative** — every measured difference then belongs to A–D.
+- **Randomized run order**, with the center points pinned near
+  positions 1, 10, 19, 28: they estimate curvature *and* monitor
+  within-block drift (compaction, humidity uptake).
+- **Hopper topped up on a fixed cadence** (the feed factor drifts with
+  fill level); log fill level, ambient humidity, and whether powder
+  was recycled from earlier runs (recycling changes its state).
+- Corners 4 and 7 (high RPM, minimal margin) are deliberately
+  aggressive and will sometimes overshoot. On a surrogate-powder test
+  rig an overshoot is not a lost sample but a *measurement* of the
+  stopping transient — cheaply mapping the failure boundary is exactly
+  why the screen precedes BO.
+
+Responses per run, and what consumes each (§4.2's table made
+concrete): `t_bulk`, `t_trim`, `t_total`; signed final error and an
+overshoot flag; **landed-after-cutoff mass** (settled final mass minus
+the estimate at cutoff — the §1.2 stopping transient, whose regression
+on B is the first margin-scaling law); bulk flow-rate mean and SD from
+the trace (feed factor → IMC plant gain); event flags (stall/bridge,
+flood, spill, jam → safe-set boundary); replicate SD per corner
+(heteroscedastic GP noise); and the full §2 log schema per run (BO
+initialization data).
+
+### 5.3 What is estimable, the alias trade, and the analysis
+
+Resolution IV means the eight corners estimate all four **main effects
+free of two-factor interactions** (mains alias only with three-factor
+terms, assumed negligible). The six two-factor interactions arrive in
+three aliased pairs — a hard constraint of any 4-factor half fraction,
+and the complementary-pair structure is fixed no matter which physical
+factor takes which letter:
+
+- tilt×RPM + tap×margin
+- **tilt×tap + RPM×margin** — contains §1.2's expected coupling
+- tilt×margin + RPM×tap
+
+Because RPM×margin is *expected* to be large (in-flight mass scales
+with flow rate), a large second alias string is confirmation of §1.2 —
+but attributing it strictly requires the **foldover**: a second block
+on the complementary eight corners (equivalently, rerun with the
+margin column's signs reversed). The two blocks combine into the full
+2^4 with every interaction individually estimable, and the block
+(night) effect lands on the four-factor interaction — on nothing we
+care about. On the cohesive surrogate (xanthan gum), tilt×tap is
+plausible too, so plan both nights; on a free-flowing metal surrogate
+the first block alone may settle it.
+
+Analysis, in order:
+
+1. Replicated corners give **pure error** (16 df), so effects get real
+   t-tests rather than only a half-normal plot; the centers-vs-corners
+   contrast tests curvature. Significant curvature is fine — the GP
+   models it — it only warns against using the linear fit as the map.
+2. Fit the same model to **log s² per corner** (dispersion effects):
+   which settings make flow erratic is the accuracy half of the story
+   and feeds the heteroscedastic noise model directly.
+3. Decision rules: a factor null on both the mean and dispersion
+   responses is fixed at its cheap/fast level and dropped from the BO
+   (each dropped dimension saves real dispenses). Overshoot flags vs.
+   (B, D) give the first empirical margin-scaling curve. Stall/flood
+   corners set the BO box bounds and initial safe set. All runs seed
+   the GP.
+
+### 5.4 The five-factor variant, for when ERM is promoted
+
+When the ERM vibration amplitude enters (cohesive powders, once
+duty-cycled actuate–pause–read protects the balance), do not bolt a
+fifth factor onto the 8-run design: a `2^(5−1)` half fraction with
+`I = ABCDE` is **resolution V** — 16 corners with every two-factor
+interaction clear of every other — for the same two-block hardware
+budget as 8 runs plus a foldover. That is the natural round-2 design
+on xanthan gum.
