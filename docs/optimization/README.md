@@ -7,10 +7,11 @@ auger at a fixed tilt / RPM / tap setting until the Kalman-filtered mass
 estimate crosses a cutoff, followed by a **trim phase** — PI control of the
 auger, or discrete solenoid taps — that closes the remaining error).
 
-This document has three parts: a direct review of the brainstorm, a
-proposed problem formulation, and a synthesis of the high-effort Edison
+This document has four parts: a direct review of the brainstorm, a
+proposed problem formulation, a synthesis of the high-effort Edison
 Scientific literature query commissioned for this issue
-(artifacts in [`edison_artifacts/`](edison_artifacts/)).
+(artifacts in [`edison_artifacts/`](edison_artifacts/)), and
+clarifications raised in the PR #162 review (§4).
 
 ---
 
@@ -148,12 +149,13 @@ variables rather than one global optimum.
 
 | Parameter | Class | Recommendation |
 |---|---|---|
-| Tilt angle | Bulk recipe | Optimize (screen first; safe bounds from spill/jam limits) |
+| Tilt angle (per phase, §4.3) | Bulk/trim recipe | Optimize; screen `tilt_bulk` and `tilt_trim` separately (safe bounds from spill/jam limits) |
 | Auger RPM | Bulk recipe | Optimize (screen first) |
 | Tap frequency (bulk) | Bulk recipe | Optimize; interacts with balance noise — prefer duty-cycled actuate/read |
 | **Cutoff margin** | Coupling | **Optimize — highest leverage; scale with measured flow rate** |
 | Q, R | Estimation | Identify from data; expose only the Q/R ratio (bandwidth) if optimizing |
-| KP, KI | Trim | Classical tuning for baseline, BO refinement after |
+| KP, KI | Trim | IMC/relay baseline from identified plant gain, bounded BO refinement after (§4.3) |
+| Trim authority bound (RPM cap/floor, or pulse duration) | Trim | Optimize as bounded variable — this is what "trim RPM" means under PI trim (§4.3) |
 | Tap increment / taps-per-reading | Trim | Characterize increment distribution per powder; optimize decision rule |
 | Trim tolerance band | Requirement | Fix from application spec, don't optimize |
 | Balance settling wait | Timing | Measure step response once; fix |
@@ -286,3 +288,144 @@ recommendation, including the fractional-factorial screen (16–32 runs
 with replicates) before any BO, and the same log schema (raw balance
 trace, filtered estimate, phase timestamps, actuator settings, powder
 lot and fill level, ambient conditions).
+
+---
+
+## 4. Clarifications from review (PR #162)
+
+Three questions from review deserve durable answers here. They anchor on
+Edison's §6 protocol and §6.3 formulation
+([answer](edison_artifacts/optimization_review.answer.md)); that file is
+a verbatim record of the Edison output and stays unedited, so the
+clarifications live in this document.
+
+### 4.1 What powder characterization contributes to the optimization
+
+The characterization step (Edison §6.1.2: Hausner ratio, particle size
+distribution, bulk/tapped density, angle of repose) adds **no decision
+variables and never appears in the objective**. It enters the campaign
+in four concrete places:
+
+1. **Context variables → cross-powder transfer.** The target
+   application is a multi-powder library (8–12 active reservoirs
+   against a library of about 30 powders, per
+   [`design/brainstorming.md`](../../design/brainstorming.md)), and a
+   full BO campaign costs 50–100 dispenses *per powder*. That cost is
+   only paid down if campaigns transfer: fit one surrogate
+   `f(tilt, RPM, …; Hausner, d50, ρ_bulk)` over parameters *and*
+   descriptors, so data from already-characterized powders warm-starts
+   each new powder, and conditioning the model on a new powder's
+   measured descriptors yields good starting parameters before a single
+   dispense. Without recorded descriptors, every powder is a cold
+   start.
+2. **Feasible tolerance selection.** The accuracy floor (minimum stable
+   increment, avalanche statistics) tracks flowability: Hausner near
+   1.0–1.1 (metal-AM powders) supports far tighter tolerances than
+   Hausner above 1.4 (xanthan gum surrogate). Setting `tol` in
+   `P(|error| ≤ tol) ≥ 0.95` below the material's floor hands the
+   constrained BO an empty feasible set — the campaign spends its whole
+   budget discovering the target was impossible. Characterization sets
+   a defensible `tol` per material class *before* hardware time is
+   spent.
+3. **Bounds and priors that shrink the search.** Conditioned bulk
+   density predicts the feed factor (mass per revolution) and hence the
+   flow rate at any RPM — which scales the cutoff-margin prior (§1.2)
+   and the expected single-tap increment. Cohesion class indicates
+   which tilt/RPM regions are bridging- or flooding-prone, i.e. the
+   initial safe set that constrained/SafeOpt-style BO requires.
+4. **Pooling and drift diagnosis.** Descriptors recorded per lot let
+   later campaigns be pooled, and make lot-to-lot drift (humidity
+   uptake changing flowability) show up as a shifted context rather
+   than unexplained noise.
+
+Cost note: Hausner ratio and bulk/tapped density need only a graduated
+cylinder plus the existing tapper; angle of repose is a photograph. PSD
+is the expensive one — the vendor's d50 is an acceptable stand-in at
+first. If the device were only ever tuned per-powder from scratch,
+items 2–3 alone justify the cheap subset; item 1 is what makes the
+30-powder ambition tractable.
+
+### 4.2 The screening DOE: what it is and what it feeds
+
+The fractional-factorial screen (Edison §6.2) is neither an optimizer
+nor new hardware — it is a scripted, pre-planned block of dispenses run
+once per powder class, before BO. Each candidate parameter (tilt, RPM,
+tap frequency, cutoff margin) gets two levels spanning its safe range; a
+chosen fraction `2^(k−p)` of the full `2^k` grid (e.g. 8 of the 16
+corner settings for k = 4, plus center points to detect curvature, with
+3–5 replicates each) still estimates every main effect and the
+two-factor interactions. At 1–2 min per dispense this is one unattended
+overnight run.
+
+What it returns, and where each output lands:
+
+| Screen output | Feeds |
+|---|---|
+| Main-effect ranking (which parameters actually move flow rate, variability, overshoot) | Fix insensitive parameters → lower-dimensional BO; each dropped dimension saves real dispenses |
+| Flow-rate mean/variance map (feed-factor profile) | Cutoff-margin scaling (§1.2); plant gain for the IMC-style PI baseline (§4.3) |
+| Onset of bridging, erratic flow, spills/jams | Box bounds and the initial safe set constrained BO starts from |
+| Replicate scatter per setting | Heteroscedastic noise model for the GP; replicate count for later evaluations |
+| The 16–32 structured runs themselves | BO initialization data (replacing purely random initialization) |
+
+Architecturally it contributes **software and workflow, not mechanism**:
+it defines the per-powder calibration routine the doser can run
+autonomously, and its logging needs (raw balance trace, filtered
+estimate, phase timestamps, actuator commands) are exactly the log
+schema of campaign step 1 in §2 — implement the logger once and both
+stages use it. Its findings can also re-rank hardware effort: if tilt
+dominates (as the vibratory-dispensing literature suggests), tilt
+repeatability is worth more engineering than another control knob.
+
+### 4.3 Decision-variable refinements (KP/KI, trim RPM, tolerance, per-phase tilt)
+
+Four refinements to Edison's §6.3 variable list `{tilt, bulk_RPM,
+trim_RPM, tap_frequency, switchover_threshold, trim_tolerance_band, KP,
+KI}`, consistent with §1.3 and §3.3:
+
+- **KP/KI are IMC-initialized, then BO-refined — not cold-searched.**
+  This document (§1.3) and Edison itself (§3(b) and §6.6) both stage it
+  this way: derive conservative gains from an integrating-process model
+  (IMC-style, with the measured feed factor as the plant gain and the
+  closed-loop time constant chosen against balance settling/filter
+  lag), then let BO refine only within a bounded region around that
+  center (e.g. a factor of 3 either way on a log scale) under safe-BO
+  constraints. The gains stay in the *joint* campaign because their
+  optimum shifts with the other variables — the cutoff margin sets the
+  remainder handed to trim, and the trim authority bound sets how hard
+  the loop may push — and because the plant violates IMC's assumptions
+  (integrating, stochastic, quantized avalanche arrivals), which makes
+  the IMC result a known-safe center rather than an optimum.
+- **"trim_RPM" means the trim authority bound, not a competitor to the
+  PI output.** Under PI trim the instantaneous auger RPM *is* the
+  controller output, so a fixed trim RPM would indeed be redundant. The
+  legitimate free parameters are the saturation bounds on that output:
+  the RPM cap, and the minimum usable RPM below which auger flow turns
+  erratic (loss-in-weight practice puts the usable band above roughly
+  15–20% of rated drive; below it, pulsed on/off modulation replaces
+  slower rotation). In the tap-trim or pulsed-auger variant there is no
+  PI at all and the fixed pulse rate/duration is first-class. The
+  cleanest framing is §2's: a discrete **trim mode** (continuous PI vs.
+  pulsed auger vs. taps) plus that mode's small parameter set.
+- **Spec tolerance ≠ stopping band — only the second is tunable.** The
+  application tolerance in `P(|error| ≤ tol)` defines the problem; an
+  optimizer allowed to move it will always widen it, since every
+  relaxation looks faster. Fix it per application — or, equivalently,
+  run the bi-objective variant and let a human choose the operating
+  point off the time-vs-error Pareto front. The controller's internal
+  **stopping band** (when trim declares done) may legitimately differ
+  from the spec — tighter, to leave margin for settling drift, and
+  asymmetric, since the approach is from below — and *is* a valid
+  bounded decision variable, bounded below by balance noise and the
+  single-increment floor. Where policy sets stopping band = spec
+  tolerance, drop it from the variable list (§3.3's recommendation).
+- **Tilt should be per-phase.** Bulk wants maximum *controllable* flow;
+  trim wants the minimum stable increment; the test-rig firmware's
+  servo presets (horizontal/tilt/vertical/tip) already anticipate
+  distinct poses. So screen `tilt_bulk` and `tilt_trim` as separate
+  variables — and note the end-of-dose retract pose is itself an
+  actuation against in-flight mass that interacts with the cutoff
+  margin. The caveat is the mid-dose transition: the servo move costs
+  time and mechanically disturbs the head at the accuracy-critical
+  moment, so `tilt_trim` earns a BO slot only if the screen shows the
+  trim increment is sensitive to it; otherwise hold tilt constant
+  across phases and avoid the transient entirely.
