@@ -73,7 +73,9 @@ PREDICTORS = [
     ("bulk_density_g_ml", "bulk density (g/mL)"),
     ("tapped_density_g_ml", "tapped density (g/mL)"),
     ("hausner_ratio", "Hausner ratio"),
-    ("carr_index_pct", "Carr index (%)"),
+    # Carr index is omitted: derived from the same densities, it is
+    # rank-identical to the Hausner ratio and adds no information to a
+    # Spearman analysis.
     ("d50_um", "d50 (um)"),
     ("angle_repose_deg", "angle of repose (deg)"),
     ("true_density_g_cm3", "true density (g/cm3)"),
@@ -95,11 +97,11 @@ def load() -> pd.DataFrame:
     resp = pd.read_csv(DATA / "battery_responses.csv")
     df = props.merge(resp, on="powder_id", validate="1:1")
 
-    # derive flow indices when only densities are present
+    # derive the Hausner ratio when only densities are present; Carr is
+    # kept consistent with the (possibly explicit) HR rather than re-derived
     hr = df["tapped_density_g_ml"] / df["bulk_density_g_ml"]
     df["hausner_ratio"] = df.get("hausner_ratio", hr).fillna(hr)
-    carr = 100.0 * (df["tapped_density_g_ml"] - df["bulk_density_g_ml"]) / df["tapped_density_g_ml"]
-    df["carr_index_pct"] = df.get("carr_index_pct", carr).fillna(carr)
+    df["carr_index_pct"] = 100.0 * (1.0 - 1.0 / df["hausner_ratio"])
 
     df["log10_ff90"] = np.log10(df["ff90_mg_per_rev"])
     df["log10_ff45"] = np.log10(df["ff45_mg_per_rev"].where(df["ff45_mg_per_rev"] > 0))
@@ -214,15 +216,16 @@ def make_scatter_figure(df: pd.DataFrame):
     fig, axes = plt.subplots(2, 2, figsize=(11, 8.6))
     fig.patch.set_facecolor(SURFACE)
 
-    scatter_panel(axes[0, 0], df, "bulk_density_g_ml", "ff90_mg_per_rev",
+    scatter_panel(axes[0, 0], df, "angle_repose_deg", "ff90_mg_per_rev",
+                  "literature angle of repose (deg)", "feed factor @90 deg (mg/rev, log)")
+    scatter_panel(axes[0, 1], df, "bulk_density_g_ml", "ff90_mg_per_rev",
                   "literature bulk density (g/mL)", "feed factor @90 deg (mg/rev, log)")
-    scatter_panel(axes[0, 1], df, "d50_um", "ff90_mg_per_rev",
+    scatter_panel(axes[1, 0], df, "d50_um", "ff90_mg_per_rev",
                   "literature d50 (um)", "feed factor @90 deg (mg/rev, log)",
                   logx=True)
-    scatter_panel(axes[1, 0], df, "hausner_ratio", "ff90_mg_per_rev",
-                  "literature Hausner ratio", "feed factor @90 deg (mg/rev, log)")
-    scatter_panel(axes[1, 1], df, "carr_index_pct", "tap45_mg_per_tap",
-                  "literature Carr index (%)", "tap quantum @45 deg (mg/tap, log)")
+    scatter_panel(axes[1, 1], df, "moisture_pct", "absG_err",
+                  "literature equilibrium moisture (wt%)",
+                  "|block G dose error| @1 g (mg, log)")
 
     handles, labels_ = axes[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels_, loc="lower center", ncol=2, frameon=False,
@@ -313,9 +316,9 @@ def main():
     print("\nTop |rho| (n>=6):")
     top = tbl[(tbl["n"] >= 6)].assign(a=lambda d: d["rho"].abs()).sort_values("a", ascending=False)
     print(top.head(12).to_string(index=False))
-    sub = df[["vol90_ul_per_rev", "hausner_ratio", "d50_um"]].dropna()
+    sub = df[["vol90_ul_per_rev", "hausner_ratio", "d50_um", "angle_repose_deg"]].dropna()
     if len(sub) >= 4:
-        for col in ("hausner_ratio", "d50_um"):
+        for col in ("hausner_ratio", "d50_um", "angle_repose_deg"):
             rho, p = stats.spearmanr(np.log10(sub["vol90_ul_per_rev"].clip(lower=0.01)), sub[col])
             print(f"log10(volume/rev @90) vs {col}: rho={rho:+.2f} p={p:.3f} n={len(sub)}")
 
