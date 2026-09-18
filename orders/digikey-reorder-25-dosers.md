@@ -25,16 +25,29 @@ full pages. Prices, tier breaks, and stock states below are DigiKey's own
 server-rendered data from those loads — no more search-snapshot guesses. The
 cart still pulls live pricing on CSV upload.
 
+**Re-verified 2026-09-18** (same Pi method, all pages HTTP 200) after
+@kinstonwithoutg's arrived-inventory check-in — **nothing in this cart has
+arrived, so the whole cart is still to order**, with two stock-driven changes:
+the 20-pos header line is swapped to Sullins breakaway strips (Amphenol down to
+9 in stock) and the servo line is **3 units short of stock** (47 available, 50
+needed) — see the rows and watch-outs below. GST bricks (4,857), cords (5,318),
+and Pico 2 WH (2,918) are all comfortably in stock at unchanged prices.
+
 ## The DigiKey cart (25 dosers)
 
 | # | Part | MPN | DigiKey product page | Qty | Unit $ (break) | Ext $ |
 |---|---|---|---|---|---|---|
-| 1 | Raspberry Pi **Pico 2 WH** (RP2350, headers, Wi-Fi) — 1/doser | SC1634 | <https://www.digikey.com/en/products/detail/raspberry-pi/SC1634/26241087> | 25 | 8.00 | 200.00 |
-| 2 | 0.1″ 20-pos male header (connector/pigtail headers) — 2/doser | 10129378-920003BLF | <https://www.digikey.com/en/products/detail/amphenol-icc-fci-/10129378-920003BLF/7915971> | 50 | 0.435 @10+ (0.51 @1) | 21.75 |
-| 3 | **MG996R-series tilt servo** (Terasic-branded MG996R) — 2/doser | FXX-3037-TOP | <https://www.digikey.com/en/products/detail/terasic-inc/FXX-3037-TOP/7044113> | 50 | 12.50 (no breaks) | 625.00 |
-| 4 | Mean Well **GST60A12-P1J** 12 V/5 A brick — 1/doser ✅ **backorder cleared, in stock** | GST60A12-P1J | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712> | 25 | 17.10 @25 (19.40 @1) | 427.50 |
-| 5 | Mean Well **YP12+YC12** AC cord, 5-15P→C13 (feeds the GST brick's C14 inlet) — 1/brick, 5,583 in stock | YP12-YC12 | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/YP12-YC12/7707223> | 25 | 6.19 @10+ (7.29 @1) | 154.75 |
-| | **DigiKey subtotal** | | | | | **$1,429.00** |
+| 1 | Raspberry Pi **Pico 2 WH** (RP2350, headers, Wi-Fi) — 1/doser. 2,918 in stock (2026-09-18) | SC1634 | <https://www.digikey.com/en/products/detail/raspberry-pi/SC1634/26241087> | 25 | 8.00 | 200.00 |
+| 2 | 0.1″ **40-pos breakaway male header**, snap each strip in half → 2 × 20-pos (connector/pigtail headers) — 1 strip/doser. ⚠ **Swapped 2026-09-18:** the original Amphenol 10129378-920003BLF 20-pos is down to **9 in stock** (50 needed); Sullins breakaway is the standard substitute, 48,079 in stock | **PRPC040SAAN-RC** (Sullins) | <https://www.digikey.com/en/products/detail/sullins-connector-solutions/PRPC040SAAN-RC/2775214> | 25 | 1.041 @10+ (1.23 @1) | 26.03 |
+| 3 | **MG996R-series tilt servo** (Terasic-branded MG996R) — 2/doser. ⚠ **2026-09-18: only 47 in stock** (50 needed; 56-week mfr lead behind it). Either cut this line to 47 and source 3 elsewhere, or move the whole line to Amazon TowerPro MG996R multi-packs (≈$3–5/pc, saves ≈$400) | FXX-3037-TOP | <https://www.digikey.com/en/products/detail/terasic-inc/FXX-3037-TOP/7044113> | 50 | 12.50 (no breaks) | 625.00 |
+| 4 | Mean Well **GST60A12-P1J** 12 V/5 A brick — 1/doser ✅ in stock, **4,857** (2026-09-18) | GST60A12-P1J | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/GST60A12-P1J/7703712> | 25 | 17.10 @25 (19.40 @1) | 427.50 |
+| 5 | Mean Well **YP12+YC12** AC cord, 5-15P→C13 (feeds the GST brick's C14 inlet) — 1/brick, 5,318 in stock (2026-09-18) | YP12-YC12 | <https://www.digikey.com/en/products/detail/mean-well-usa-inc/YP12-YC12/7707223> | 25 | 6.19 @10+ (7.29 @1) | 154.75 |
+| | **DigiKey subtotal** (if all 50 servos were in stock) | | | | | **$1,433.28** |
+
+> Servo-stock reality check: with only 47 servos on the shelf, the practical
+> options are **(a)** DigiKey cart with 47 servos = **$1,395.78** + 3 servos
+> from a second vendor, or **(b)** servos entirely via Amazon multi-packs →
+> DigiKey cart = **$808.28** + ≈$150–250 on Amazon for 50 MG996R.
 
 Removed vs the ×50 doc: **SMART1500LCDT UPS** (−$379.12, per decision — and BOM §4
 records one already ordered via BYU ME #12929). Removed on page-verification:
@@ -55,18 +68,39 @@ single PO, DigiKey stocks both):
 ```csv
 Quantity,Part Number,Customer Reference
 25,SC1634,Pico 2 WH (1/doser)
-50,10129378-920003BLF,0.1in 20-pos male headers (2/doser)
-50,FXX-3037-TOP,MG996R tilt servos (2/doser)
-25,GST60A12-P1J,12V 5A brick (1/doser) - in stock as of 2026-09-07
+25,PRPC040SAAN-RC,40-pos breakaway headers - snap in half = 2x 20-pos per doser
+50,FXX-3037-TOP,MG996R tilt servos (2/doser) - only 47 in stock 2026-09-18 see notes
+25,GST60A12-P1J,12V 5A brick (1/doser) - in stock as of 2026-09-18
 25,YP12-YC12,AC cord for GST60A12 (1/brick)
 100,ECA-1EM101B,100uF/25V bulk caps (3/doser + spares) - optional
 25,368,2.1mm jack to screw terminal (1/brick) - optional
 ```
 
 (LRS-350-48 removed — no longer available at DigiKey. Plain ECA-1EM101 swapped
-for the in-stock ECA-1EM101B packaging variant.)
+for the in-stock ECA-1EM101B packaging variant. 2026-09-18: Amphenol
+10129378-920003BLF header swapped for Sullins PRPC040SAAN-RC breakaway strips —
+only 9 of the Amphenol left in stock.)
 
-## Stock watch-outs (page-verified 2026-09-07 via the lab Pi)
+## Stock watch-outs (page-verified 2026-09-07, re-verified 2026-09-18, via the lab Pi)
+
+2026-09-18 deltas first:
+
+- **FXX-3037-TOP servos: 47 in stock** (was ≈115 on 2026-09-02) vs **50
+  needed** — the line no longer covers the build on its own. Decide: 47 from
+  DigiKey + 3 elsewhere, or all 50 via Amazon TowerPro MG996R multi-packs
+  (≈$3–5/pc; Amazon is already an approved route for this project's
+  purchasing — the NEMA 34, CL86T, NEMA-11s and Waveshare boards all came
+  through it).
+- **Amphenol 10129378-920003BLF header: 9 in stock** — line swapped to
+  **Sullins PRPC040SAAN-RC** 40-pos breakaway strips (48,079 in stock,
+  $1.041 @10+); snap each strip in half for the two 20-pos runs per doser.
+  Any 0.1″ breakaway male header is equivalent if this one moves.
+- **GST60A12-P1J: 4,857 in stock**, $17.10 @25 unchanged. **YP12-YC12: 5,318
+  in stock**, $6.19 @10+ unchanged. **SC1634: 2,918 in stock**, $8.00
+  unchanged. **ECA-1EM101B** cut-tape in stock, $0.1291 @100 unchanged;
+  **Adafruit 368** in stock, $2.00 unchanged.
+
+Original 2026-09-07 notes:
 
 - **GST60A12-P1J backorder has cleared — it is in stock at DigiKey** (product
   page and category filter both say In Stock; ordering 25 should go straight

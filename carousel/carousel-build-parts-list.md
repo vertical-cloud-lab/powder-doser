@@ -297,6 +297,14 @@ build above and surface prior art / failure modes / improvements.
 - **Task ID:** `11ddf6db-5baa-4e5f-a789-3d2d1d3195be` (`LITERATURE_HIGH`)
 - **Status when dispatched:** queued / running — **fetch next session** and
   fold the feedback into §2–§7 and the §10 open items.
+- **Fetch attempted 2026-09-18:** `get_task` returned **`PermissionError:
+  Permission denied`** — the session's current `EDISON_PLATFORM_API_KEY`
+  cannot read this task (Edison tasks are scoped to the dispatching account,
+  and the key appears to have been rotated since 2026-06-25). To retrieve it:
+  query with the original key/account, or decide whether to re-dispatch the
+  same question (costs a fresh `LITERATURE_HIGH` run). The first review task
+  `499c6c09…` was fetched before the rotation and its artifacts are already
+  committed under [`edison/`](./edison/).
 - **Asked specifically about the vertical geometry:** dominant torque/holding
   requirement for a horizontal-axis loaded wheel; retaining/releasing hanging
   augers at the bottom station; vertical-carousel / paternoster / vertical-lift
