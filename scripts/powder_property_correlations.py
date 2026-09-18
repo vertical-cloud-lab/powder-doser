@@ -139,17 +139,48 @@ def style_axis(ax):
     ax.tick_params(colors=MUTED, labelsize=8)
     ax.grid(True, color=GRID, linewidth=0.7, zorder=0)
     ax.set_axisbelow(True)
+    ax.margins(x=0.08, y=0.12)
 
 
 def label_points(ax, x, y, labels, fontsize=7.5):
+    """Direct-label each point, greedily dodging label-box collisions."""
+    fig = ax.figure
+    fig.canvas.draw()  # realise transforms
+    ab = ax.get_window_extent()
+    placed = []  # (x0, y0, x1, y1) in display coords
+    candidates = [(5, 4, "left"), (5, -12, "left"), (-5, 4, "right"),
+                  (-5, -12, "right"), (5, 15, "left"), (-5, 15, "right")]
     for xi, yi, li in zip(x, y, labels):
         if np.isnan(xi) or np.isnan(yi):
             continue
-        ax.annotate(li, (xi, yi), xytext=(4, 4), textcoords="offset points",
-                    fontsize=fontsize, color=INK2, zorder=5)
+        px, py = ax.transData.transform((xi, yi))
+        w = fontsize * 0.62 * len(li) * fig.dpi / 72
+        h = (fontsize + 3) * fig.dpi / 72
+        chosen = candidates[0]
+        for dx, dy, ha in candidates:
+            cx = px + dx * fig.dpi / 72
+            cy = py + dy * fig.dpi / 72
+            box = (cx - (w if ha == "right" else 0), cy,
+                   cx + (0 if ha == "right" else w), cy + h)
+            inside = (box[0] >= ab.x0 - 2 and box[2] <= ab.x1 + 2
+                      and box[1] >= ab.y0 - 2 and box[3] <= ab.y1 + 2)
+            if inside and all(box[2] < b[0] or box[0] > b[2] or box[3] < b[1]
+                              or box[1] > b[3] for b in placed):
+                chosen = (dx, dy, ha)
+                placed.append(box)
+                break
+        else:
+            dx, dy, ha = chosen
+            cx = px + dx * fig.dpi / 72
+            cy = py + dy * fig.dpi / 72
+            placed.append((cx - (w if ha == "right" else 0), cy,
+                           cx + (0 if ha == "right" else w), cy + h))
+        dx, dy, ha = chosen
+        ax.annotate(li, (xi, yi), xytext=(dx, dy), textcoords="offset points",
+                    fontsize=fontsize, color=INK2, ha=ha, zorder=5)
 
 
-def scatter_panel(ax, df, xcol, ycol, xlabel, ylabel, logy=True):
+def scatter_panel(ax, df, xcol, ycol, xlabel, ylabel, logy=True, logx=False):
     for batch, color in (("food-safe-2026-08", BLUE), ("metal-2026-08", ORANGE)):
         sub = df[df["batch"] == batch]
         conveys = sub["conveys"].astype(str).eq("True")
@@ -161,15 +192,22 @@ def scatter_panel(ax, df, xcol, ycol, xlabel, ylabel, logy=True):
                    zorder=4)
     if logy:
         ax.set_yscale("log")
-    label_points(ax, df[xcol].to_numpy(), df[ycol].to_numpy(), df["label"])
+    if logx:
+        ax.set_xscale("log")
+        ticks = [t for t in (10, 20, 50, 100, 200, 500, 1000)
+                 if df[xcol].min() * 0.8 <= t <= df[xcol].max() * 1.3]
+        ax.set_xticks(ticks)
+        ax.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     sub = df[[xcol, ycol]].dropna()
     if len(sub) >= 4:
         rho, p = stats.spearmanr(sub[xcol], sub[ycol])
-        ax.text(0.02, 0.98, f"Spearman rho = {rho:+.2f}\nn = {len(sub)}, p = {p:.3f}",
-                transform=ax.transAxes, va="top", fontsize=8, color=INK)
+        ax.set_title(f"Spearman rho = {rho:+.2f}   (n = {len(sub)}, p = {p:.3f})",
+                     loc="left", fontsize=8.5, color=INK)
     ax.set_xlabel(xlabel, fontsize=9, color=INK2)
     ax.set_ylabel(ylabel, fontsize=9, color=INK2)
     style_axis(ax)
+    label_points(ax, df[xcol].to_numpy(), df[ycol].to_numpy(), df["label"])
 
 
 def make_scatter_figure(df: pd.DataFrame):
@@ -179,8 +217,8 @@ def make_scatter_figure(df: pd.DataFrame):
     scatter_panel(axes[0, 0], df, "bulk_density_g_ml", "ff90_mg_per_rev",
                   "literature bulk density (g/mL)", "feed factor @90 deg (mg/rev, log)")
     scatter_panel(axes[0, 1], df, "d50_um", "ff90_mg_per_rev",
-                  "literature d50 (um)", "feed factor @90 deg (mg/rev, log)")
-    axes[0, 1].set_xscale("log")
+                  "literature d50 (um)", "feed factor @90 deg (mg/rev, log)",
+                  logx=True)
     scatter_panel(axes[1, 0], df, "hausner_ratio", "ff90_mg_per_rev",
                   "literature Hausner ratio", "feed factor @90 deg (mg/rev, log)")
     scatter_panel(axes[1, 1], df, "carr_index_pct", "tap45_mg_per_tap",
@@ -212,8 +250,16 @@ def make_heatmap(tbl: pd.DataFrame):
     fig, ax = plt.subplots(figsize=(10.5, 6.2))
     fig.patch.set_facecolor(SURFACE)
     im = ax.imshow(piv_rho.to_numpy(dtype=float), cmap=cmap, vmin=-1, vmax=1, aspect="auto")
+    short_resp = {
+        "log10 feed factor @90 (mg/rev)": "feed factor @90\n(log, mg/rev)",
+        "log10 feed factor @45 (mg/rev)": "feed factor @45\n(log, mg/rev)",
+        "log10 tap quantum @45 (mg)": "tap quantum @45\n(log, mg)",
+        "speed slope (% over 6x RPM)": "speed slope\n(% over 6x RPM)",
+        "|block G err| @1 g (mg, dosed only)": "|dose err| @1 g\n(block G, mg)",
+        "|block H err| @200 mg (mg, dosed only)": "|dose err| @200 mg\n(block H, mg)",
+    }
     ax.set_xticks(range(len(piv_rho.columns)))
-    ax.set_xticklabels([c.replace(" (", "\n(") for c in piv_rho.columns], fontsize=8, color=INK2)
+    ax.set_xticklabels([short_resp.get(c, c) for c in piv_rho.columns], fontsize=8, color=INK2)
     ax.set_yticks(range(len(piv_rho.index)))
     ax.set_yticklabels(piv_rho.index, fontsize=9, color=INK2)
     ax.tick_params(colors=MUTED)
