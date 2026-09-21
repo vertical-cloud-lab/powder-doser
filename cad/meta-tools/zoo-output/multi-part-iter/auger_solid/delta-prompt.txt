@@ -1,0 +1,1 @@
+The current model returns 4 disjoint solids. Combine the outer tube, the central shaft, and the helical flight into a single fused watertight body using a union/boolean-add operation. The resulting STEP must contain exactly one solid. Keep all geometry and parameters unchanged; only change the boolean structure so the parts merge.

@@ -1,0 +1,151 @@
+// NEMA 11 mounting collar
+// Single fused collar with plate holes, pilot, sleeve bore, and bottom flange.
+@settings(defaultLengthUnit = mm, kclVersion = 2.0)
+
+plateSize = 28mm
+plateThickness = 4mm
+pilotDiameter = 22mm
+boltPattern = 23mm
+m25ClearanceDiameter = 2.9mm
+sleeveOuterDiameter = 16mm
+sleeveBoreDiameter = 5.5mm
+sleeveLength = 18mm
+bottomFlangeOuterDiameter = 24mm
+bottomFlangeThickness = 3mm
+sleeveFlangeOverlap = 0.05mm
+
+plateHalfSize = plateSize / 2
+boltPatternHalf = boltPattern / 2
+plateCutterLength = plateThickness + 2mm
+sleeveOuterRadius = sleeveOuterDiameter / 2
+sleeveBoreRadius = sleeveBoreDiameter / 2
+lowerBodyLength = sleeveLength + bottomFlangeThickness
+boreCutterLength = lowerBodyLength + 1mm
+
+plateProfile = sketch(on = XY) {
+  bottomEdge = line(start = [var -14mm, var -14mm], end = [var 14mm, var -14mm])
+  rightEdge = line(start = [var 14mm, var -14mm], end = [var 14mm, var 14mm])
+  topEdge = line(start = [var 14mm, var 14mm], end = [var -14mm, var 14mm])
+  leftEdge = line(start = [var -14mm, var 14mm], end = [var -14mm, var -14mm])
+
+  coincident([bottomEdge.end, rightEdge.start])
+  coincident([rightEdge.end, topEdge.start])
+  coincident([topEdge.end, leftEdge.start])
+  coincident([leftEdge.end, bottomEdge.start])
+  horizontal(bottomEdge)
+  vertical(rightEdge)
+  horizontal(topEdge)
+  vertical(leftEdge)
+  horizontalDistance([ORIGIN, bottomEdge.start]) == -plateHalfSize
+  verticalDistance([ORIGIN, bottomEdge.start]) == -plateHalfSize
+  horizontalDistance([bottomEdge.start, bottomEdge.end]) == plateSize
+  verticalDistance([rightEdge.start, rightEdge.end]) == plateSize
+}
+
+plateBlank = extrude(region(point = [13mm, 0mm], sketch = plateProfile), length = plateThickness)
+hiddenPlateProfile = hide(plateProfile)
+
+plateCutSketch = sketch(on = offsetPlane(XY, offset = -1mm)) {
+  pilotCircle = circle(start = [var 11mm, var 0mm], center = [var 0mm, var 0mm])
+  boltTopRight = circle(start = [var 12.95mm, var 11.5mm], center = [var 11.5mm, var 11.5mm])
+  boltTopLeft = circle(start = [var -10.05mm, var 11.5mm], center = [var -11.5mm, var 11.5mm])
+  boltBottomLeft = circle(start = [var -10.05mm, var -11.5mm], center = [var -11.5mm, var -11.5mm])
+  boltBottomRight = circle(start = [var 12.95mm, var -11.5mm], center = [var 11.5mm, var -11.5mm])
+
+  coincident([pilotCircle.center, ORIGIN])
+  horizontal([pilotCircle.center, pilotCircle.start])
+  diameter(pilotCircle) == pilotDiameter
+
+  horizontal([
+    boltTopRight.center,
+    boltTopRight.start
+  ])
+  horizontalDistance([ORIGIN, boltTopRight.center]) == boltPatternHalf
+  verticalDistance([ORIGIN, boltTopRight.center]) == boltPatternHalf
+  diameter(boltTopRight) == m25ClearanceDiameter
+
+  horizontal([boltTopLeft.center, boltTopLeft.start])
+  horizontalDistance([ORIGIN, boltTopLeft.center]) == -boltPatternHalf
+  verticalDistance([ORIGIN, boltTopLeft.center]) == boltPatternHalf
+  diameter(boltTopLeft) == m25ClearanceDiameter
+
+  horizontal([
+    boltBottomLeft.center,
+    boltBottomLeft.start
+  ])
+  horizontalDistance([ORIGIN, boltBottomLeft.center]) == -boltPatternHalf
+  verticalDistance([ORIGIN, boltBottomLeft.center]) == -boltPatternHalf
+  diameter(boltBottomLeft) == m25ClearanceDiameter
+
+  horizontal([
+    boltBottomRight.center,
+    boltBottomRight.start
+  ])
+  horizontalDistance([ORIGIN, boltBottomRight.center]) == boltPatternHalf
+  verticalDistance([ORIGIN, boltBottomRight.center]) == -boltPatternHalf
+  diameter(boltBottomRight) == m25ClearanceDiameter
+}
+
+pilotCutter = extrude(region(point = [0mm, 0mm], sketch = plateCutSketch), length = plateCutterLength, method = NEW)
+boltTopRightCutter = extrude(region(point = [11.5mm, 11.5mm], sketch = plateCutSketch), length = plateCutterLength, method = NEW)
+boltTopLeftCutter = extrude(region(point = [-11.5mm, 11.5mm], sketch = plateCutSketch), length = plateCutterLength, method = NEW)
+boltBottomLeftCutter = extrude(region(point = [-11.5mm, -11.5mm], sketch = plateCutSketch), length = plateCutterLength, method = NEW)
+boltBottomRightCutter = extrude(region(point = [11.5mm, -11.5mm], sketch = plateCutSketch), length = plateCutterLength, method = NEW)
+hiddenPlateCutSketch = hide(plateCutSketch)
+
+mountPlate = subtract(
+  [plateBlank],
+  tools = [
+    pilotCutter,
+    boltTopRightCutter,
+    boltTopLeftCutter,
+    boltBottomLeftCutter,
+    boltBottomRightCutter
+  ],
+)
+
+sleeveOuterSketch = sketch(on = offsetPlane(XY, offset = -18.05mm)) {
+  sleeveOuterCircle = circle(start = [var 8mm, var 0mm], center = [var 0mm, var 0mm])
+
+  coincident([sleeveOuterCircle.center, ORIGIN])
+  horizontal([
+    sleeveOuterCircle.center,
+    sleeveOuterCircle.start
+  ])
+  diameter(sleeveOuterCircle) == sleeveOuterDiameter
+}
+
+sleeveOuterBlank = extrude(region(point = [0mm, 0mm], sketch = sleeveOuterSketch), length = sleeveLength + sleeveFlangeOverlap, method = NEW)
+hiddenSleeveOuterSketch = hide(sleeveOuterSketch)
+
+bottomFlangeSketch = sketch(on = offsetPlane(XY, offset = -21mm)) {
+  flangeOuterCircle = circle(start = [var 12mm, var 0mm], center = [var 0mm, var 0mm])
+
+  coincident([flangeOuterCircle.center, ORIGIN])
+  horizontal([
+    flangeOuterCircle.center,
+    flangeOuterCircle.start
+  ])
+  diameter(flangeOuterCircle) == bottomFlangeOuterDiameter
+}
+
+bottomFlangeBlank = extrude(region(point = [0mm, 0mm], sketch = bottomFlangeSketch), length = bottomFlangeThickness, method = NEW)
+hiddenBottomFlangeSketch = hide(bottomFlangeSketch)
+
+lowerBlank = union([sleeveOuterBlank, bottomFlangeBlank])
+
+boreCutSketch = sketch(on = offsetPlane(XY, offset = -21.5mm)) {
+  boreCircle = circle(start = [var 2.75mm, var 0mm], center = [var 0mm, var 0mm])
+
+  coincident([boreCircle.center, ORIGIN])
+  horizontal([boreCircle.center, boreCircle.start])
+  diameter(boreCircle) == sleeveBoreDiameter
+}
+
+boreCutter = extrude(region(point = [0mm, 0mm], sketch = boreCutSketch), length = boreCutterLength, method = NEW)
+hiddenBoreCutSketch = hide(boreCutSketch)
+
+sleeveFlange = subtract(lowerBlank, tools = [boreCutter])
+
+fusedMountingCollar = union([mountPlate, sleeveFlange])
+  |> appearance(color = "#9099a3", metalness = 70, roughness = 35)

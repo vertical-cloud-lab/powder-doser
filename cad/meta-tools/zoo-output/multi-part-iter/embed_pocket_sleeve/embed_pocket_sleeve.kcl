@@ -1,0 +1,146 @@
+// Sleeve with angled wire-exit cuts
+// 30 mm OD sleeve with ERM and solenoid embed pockets
+
+@settings(defaultLengthUnit = mm)
+
+sleeveColor = "#6f806d"
+
+sleeveInnerDiameter = 24.2mm
+sleeveOuterDiameter = 30mm
+sleeveHeight = 24mm
+sleeveInnerRadius = sleeveInnerDiameter / 2
+sleeveOuterRadius = sleeveOuterDiameter / 2
+wallMidRadius = (sleeveInnerRadius + sleeveOuterRadius) / 2
+cutOverlap = 0.001mm
+
+motorPocketDiameter = 11mm
+motorPocketDepth = 3.6mm
+motorPocketFrontX = sleeveOuterRadius + cutOverlap
+motorPocketCutDepth = motorPocketDepth + cutOverlap
+
+solenoidPocketWidth = 12mm
+solenoidPocketHeight = 9mm
+solenoidPocketDepth = 19mm
+solenoidPocketFrontX = -sleeveOuterRadius - cutOverlap
+solenoidPocketCutDepth = solenoidPocketDepth + cutOverlap
+
+wireExitDiameter = 4mm
+wireExitLength = 0.925mm
+motorWireStartX = 13.2mm
+solenoidWireStartX = -13.2mm
+motorWireStartZ = -4mm
+solenoidWireStartZ = -3mm
+
+sleeveSketch = sketch(on = XY) {
+  outerCircle = circle(start = [var 15mm, var 0mm], center = [var 0mm, var 0mm])
+  innerCircle = circle(start = [var 12.1mm, var 0mm], center = [var 0mm, var 0mm])
+  outerGuide = line(start = [var 0mm, var 0mm], end = [var 15mm, var 0mm], construction = true)
+  innerGuide = line(start = [var 0mm, var 0mm], end = [var 12.1mm, var 0mm], construction = true)
+  wallPoint = point(at = [var 13.55mm, var 0mm])
+
+  coincident([outerCircle.center, ORIGIN])
+  coincident([innerCircle.center, ORIGIN])
+  coincident([outerGuide.start, outerCircle.center])
+  coincident([outerGuide.end, outerCircle.start])
+  coincident([innerGuide.start, innerCircle.center])
+  coincident([innerGuide.end, innerCircle.start])
+  horizontal(outerGuide)
+  horizontal(innerGuide)
+  diameter(outerCircle) == sleeveOuterDiameter
+  diameter(innerCircle) == sleeveInnerDiameter
+  horizontalDistance([wallPoint, ORIGIN]) == wallMidRadius
+  verticalDistance([wallPoint, ORIGIN]) == 0mm
+}
+sleeveRegion = region(point = sleeveSketch.wallPoint)
+sleeveTube = extrude(sleeveRegion, length = sleeveHeight, symmetric = true)
+hide(sleeveSketch)
+
+motorPocketPlane = {
+  origin = [motorPocketFrontX, 0mm, 0mm],
+  xAxis = [0.0, 1.0, 0.0],
+  yAxis = [0.0, 0.0, -1.0]
+}
+motorPocketSketch = sketch(on = motorPocketPlane) {
+  pocketCircle = circle(start = [var 5.5mm, var 0mm], center = [var 0mm, var 0mm])
+  pocketGuide = line(start = [var 0mm, var 0mm], end = [var 5.5mm, var 0mm], construction = true)
+
+  coincident([pocketCircle.center, ORIGIN])
+  coincident([pocketGuide.start, pocketCircle.center])
+  coincident([pocketGuide.end, pocketCircle.start])
+  horizontal(pocketGuide)
+  diameter(pocketCircle) == motorPocketDiameter
+}
+motorPocketRegion = region(point = motorPocketSketch.pocketCircle.center)
+hide(motorPocketSketch)
+
+solenoidPocketPlane = {
+  origin = [solenoidPocketFrontX, 0mm, 0mm],
+  xAxis = [0.0, 1.0, 0.0],
+  yAxis = [0.0, 0.0, 1.0]
+}
+solenoidPocketSketch = sketch(on = solenoidPocketPlane) {
+  pocketBottom = line(start = [var -6mm, var -4.5mm], end = [var 6mm, var -4.5mm])
+  pocketRight = line(start = [var 6mm, var -4.5mm], end = [var 6mm, var 4.5mm])
+  pocketTop = line(start = [var 6mm, var 4.5mm], end = [var -6mm, var 4.5mm])
+  pocketLeft = line(start = [var -6mm, var 4.5mm], end = [var -6mm, var -4.5mm])
+
+  coincident([pocketBottom.end, pocketRight.start])
+  coincident([pocketRight.end, pocketTop.start])
+  coincident([pocketTop.end, pocketLeft.start])
+  coincident([pocketLeft.end, pocketBottom.start])
+  coincident([pocketBottom.start, [-6mm, -4.5mm]])
+  horizontal(pocketBottom)
+  vertical(pocketRight)
+  horizontal(pocketTop)
+  vertical(pocketLeft)
+  distance([pocketBottom.start, pocketBottom.end]) == solenoidPocketWidth
+  distance([pocketRight.start, pocketRight.end]) == solenoidPocketHeight
+}
+solenoidPocketRegion = region(point = [0mm, 0mm], sketch = solenoidPocketSketch)
+hide(solenoidPocketSketch)
+
+motorWirePlane = {
+  origin = [motorWireStartX, 0mm, motorWireStartZ],
+  xAxis = [0.0, 1.0, 0.0],
+  yAxis = [0.5, 0.0, 0.8660254]
+}
+motorWireSketch = sketch(on = motorWirePlane) {
+  wireCircle = circle(start = [var 2mm, var 0mm], center = [var 0mm, var 0mm])
+  wireGuide = line(start = [var 0mm, var 0mm], end = [var 2mm, var 0mm], construction = true)
+
+  coincident([wireCircle.center, ORIGIN])
+  coincident([wireGuide.start, wireCircle.center])
+  coincident([wireGuide.end, wireCircle.start])
+  horizontal(wireGuide)
+  diameter(wireCircle) == wireExitDiameter
+}
+motorWireRegion = region(point = motorWireSketch.wireCircle.center)
+hide(motorWireSketch)
+
+solenoidWirePlane = {
+  origin = [
+    solenoidWireStartX,
+    0mm,
+    solenoidWireStartZ
+  ],
+  xAxis = [0.0, 1.0, 0.0],
+  yAxis = [0.5, 0.0, -0.8660254]
+}
+solenoidWireSketch = sketch(on = solenoidWirePlane) {
+  wireCircle = circle(start = [var 2mm, var 0mm], center = [var 0mm, var 0mm])
+  wireGuide = line(start = [var 0mm, var 0mm], end = [var 2mm, var 0mm], construction = true)
+
+  coincident([wireCircle.center, ORIGIN])
+  coincident([wireGuide.start, wireCircle.center])
+  coincident([wireGuide.end, wireCircle.start])
+  horizontal(wireGuide)
+  diameter(wireCircle) == wireExitDiameter
+}
+solenoidWireRegion = region(point = solenoidWireSketch.wireCircle.center)
+hide(solenoidWireSketch)
+
+sleeveWithMotorPocket = subtract([sleeveTube], tools = extrude(motorPocketRegion, length = motorPocketCutDepth))
+sleeveWithPockets = subtract(sleeveWithMotorPocket, tools = extrude(solenoidPocketRegion, length = solenoidPocketCutDepth))
+sleeveWithMotorWire = subtract(sleeveWithPockets, tools = extrude(motorWireRegion, length = wireExitLength))
+sleeveWithWireExits = subtract(sleeveWithMotorWire, tools = extrude(solenoidWireRegion, length = wireExitLength))
+pocketedSleeve = appearance(sleeveWithWireExits, color = sleeveColor, roughness = 85)
