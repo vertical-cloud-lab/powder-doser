@@ -393,25 +393,26 @@ filters:
 
 ---
 
-## 3. Code that will need to exist (after this design is agreed)
+## 3. The code (built 2026-09-22, this PR)
+
+All six pieces exist; the table now points at them:
 
 | Piece | Where it runs | What it is |
 |---|---|---|
-| Tap-cadence knobs + `RESULT` line | Pico (`trickle_tap/`) | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`tap_on_ms=60 / tap_off_ms=440`), reusing the `Tap` driver + `main_three_phase` per-phase cadence pattern; one machine-parseable JSON result line per dose (incl. the §2.6 stop-event fields); overshoot-abort guard |
-| `scripts/opt_dose_capture.py` | Pi Zero | Per-dose executor, fully non-interactive: params in over serial (incl. `tau_afterflow_s`), dose, telemetry off, spool + Mongo upload, JSON line to stdout (patterned on #131's `characterize_capture.py`) |
-| `scripts/opt_campaign.py` | Laptop | Honegumi/Ax ask–tell loop (William's `ax-platform==0.4.3` sample as the skeleton), SSH per trial, screening-block runner, penalization, snapshots, resume, Pareto readout; owns all operator interaction (§1.2 countdown + cadence prompts) |
-| `scripts/fit_tau_afterflow.py` | Laptop | §2.8 fit: stop-event rows → τ0 (+ τ1 if real) → `powder_models` upsert + diagnostic plot (pattern: #131's `analyze_battery_afterflow.py`) |
-| `scripts/dose.py` | Pi Zero | Production dosing from a saved profile (§1.4), pulling τ_afterflow from `powder_models` |
-| Schema/helpers module | shared | Trial/campaign/profile document builders + validation, so Zero and laptop write identical shapes |
+| [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard. Sim-tested (`sim/test_trickle_tap.py`, 14 tests) |
+| [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice |
+| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts, snapshots + `--resume`, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout, `--validate-params` replicate blocks that write `dosing_profiles` |
+| [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
+| [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
+| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: search space, campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, spool + lazy-pymongo upload (stdlib-only for the Zero) |
 
-With the interim manual mode dropped (§5), these scripts gate the first campaign
-dose. Build order: firmware tap knobs + `RESULT` line → `opt_dose_capture.py` →
-`opt_campaign.py`; the other three can trail. Six of the eight §2.1 knobs are
-live-settable on the rig today — the two tap categoricals are exactly what the
-firmware piece adds.
+Host-side tests: `scripts/tests/test_opt_dose_capture.py` (executor against a
+canned fake-serial Pico). The loop itself dry-runs end to end with
+`opt_campaign.py --simulate` — screening → τ fit → anchors → warm-started BO →
+Pareto — with no hardware.
 
-Simulation tests will dry-run the campaign loop against the #124 twin (no hardware),
-same pattern as `trickle_tap/sim/`.
+Remaining before the first rig dose: upload the updated `trickle_tap/` folder to
+the Pico (MicroPico, as usual) and `git pull` on the Zero.
 
 ## 4. Decisions — locked 2026-09-22 (William, issue #164)
 
