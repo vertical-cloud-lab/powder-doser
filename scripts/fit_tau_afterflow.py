@@ -116,8 +116,14 @@ def fit_events(events):
     }
 
 
-def upsert_powder_model(powder_id, fit, campaign_id=None):
-    """powder_models document (Mongo + local cache); returns cache path."""
+def upsert_powder_model(powder_id, fit, campaign_id=None,
+                        cache_dir=None, upload=True):
+    """powder_models document (Mongo + local cache); returns cache path.
+
+    ``cache_dir`` overrides the repo-level cache -- used by
+    ``opt_campaign.py --simulate`` so sim fits can never shadow a real
+    powder model.
+    """
     doc = {
         "kind": "powder_model",
         "schema_version": oc.SCHEMA_VERSION,
@@ -126,14 +132,16 @@ def upsert_powder_model(powder_id, fit, campaign_id=None):
         "source_campaign": campaign_id,
         "updated_utc": oc.utcnow_iso(),
     }
-    os.makedirs(MODEL_CACHE, exist_ok=True)
-    cache = os.path.join(MODEL_CACHE, "{}.json".format(powder_id))
+    cache_dir = cache_dir or MODEL_CACHE
+    os.makedirs(cache_dir, exist_ok=True)
+    cache = os.path.join(cache_dir, "{}.json".format(powder_id))
     with open(cache, "w") as f:
         json.dump(doc, f, indent=1)
-    db = oc.mongo_db()
-    if db is not None:
-        db[oc.COLL_POWDER_MODELS].replace_one(
-            {"powder_id": powder_id}, doc, upsert=True)
+    if upload:
+        db = oc.mongo_db()
+        if db is not None:
+            db[oc.COLL_POWDER_MODELS].replace_one(
+                {"powder_id": powder_id}, doc, upsert=True)
     return cache
 
 

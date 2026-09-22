@@ -114,6 +114,10 @@ def main(argv=None):
     if profile is None:
         raise SystemExit("no dosing profile for {!r} (run a campaign + "
                          "--validate-params first)".format(powder_id))
+    if profile.get("simulated"):
+        raise SystemExit("profile {} came from a --simulate campaign -- "
+                         "refusing to dose real powder from it".format(
+                             profile.get("profile_id")))
     log("profile {} from {} (validated={}, tau={} s)".format(
         profile.get("profile_id"), source, profile.get("validated"),
         profile.get("tau_afterflow_s")))

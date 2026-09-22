@@ -602,8 +602,13 @@ class Runner:
             log("tau_afterflow fit: {}".format(fit))
             if fit.get("tau0_s"):
                 try:
-                    ft.upsert_powder_model(self.powder_id, fit,
-                                           doc["campaign_id"])
+                    # A --simulate fit must never shadow a real powder
+                    # model: it stays in the campaign dir, off Mongo.
+                    ft.upsert_powder_model(
+                        self.powder_id, fit, doc["campaign_id"],
+                        cache_dir=(self.campaign.dir
+                                   if self.args.simulate else None),
+                        upload=not self.args.simulate)
                 except Exception as exc:
                     log("powder_models upsert failed ({}); fit kept in "
                         "the campaign doc".format(exc))
@@ -768,24 +773,30 @@ class Runner:
             "frozen_params": doc["frozen_params"],
             "validation": stats,
             "validated": bool(errs) and len(clean) == len(results),
+            "simulated": bool(self.args.simulate),
             "campaign_id": doc["campaign_id"],
             "git_commit": doc["git_commit"],
             "created_utc": oc.utcnow_iso(),
         }
-        os.makedirs(PROFILE_CACHE, exist_ok=True)
-        cache = os.path.join(PROFILE_CACHE,
+        # A --simulate profile must never be dosed from: it stays in
+        # the campaign dir and off Mongo, where dose.py never looks.
+        cache_dir = (self.campaign.dir if self.args.simulate
+                     else PROFILE_CACHE)
+        os.makedirs(cache_dir, exist_ok=True)
+        cache = os.path.join(cache_dir,
                              "{}.json".format(self.powder_id))
         with open(cache, "w") as f:
             json.dump(profile, f, indent=1)
         uploaded = False
-        try:
-            db = oc.mongo_db()
-            if db is not None:
-                db[oc.COLL_PROFILES].insert_one(dict(profile))
-                uploaded = True
-        except Exception as exc:
-            log("profile upload failed ({}); cached at {}".format(
-                exc, cache))
+        if not self.args.simulate:
+            try:
+                db = oc.mongo_db()
+                if db is not None:
+                    db[oc.COLL_PROFILES].insert_one(dict(profile))
+                    uploaded = True
+            except Exception as exc:
+                log("profile upload failed ({}); cached at {}".format(
+                    exc, cache))
         log("validation stats: {}".format(stats))
         log("profile {} (validated={}, uploaded={}) cached at {}".format(
             profile["profile_id"], profile["validated"], uploaded, cache))
