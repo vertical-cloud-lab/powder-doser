@@ -21,6 +21,12 @@ before code is written:
 > filters — and §5, the laptop runbook ("what do I need on my computer to run
 > this manually").
 
+> **Clarification, later the same day** — "run this manually" meant manually
+> *starting* the loop, not hand-running doses: once launched, the campaign is
+> automated end to end (ask → SSH dose → tell → record), and the operator
+> supervises rather than operates. §1.2, §2.3, §3, §4 and §5 now say so; the
+> interim hand-transcribed ask–tell mode a draft of §5.3 described is dropped.
+
 It builds on four open threads:
 
 | Thread | What it contributes here |
@@ -63,9 +69,10 @@ It builds on four open threads:
   the host does not scrape human-oriented REPL text.
 - **Pi Zero (executor / bench host).** Exactly the role #131 established. Runs a thin
   per-dose script: push one parameter set over serial (`set k v` already exists), issue
-  the dose, capture telemetry, take the settled final reading, prompt the operator for
-  the spill check, write the trial document to the SD card **and** MongoDB, print one
-  JSON result line back up the SSH pipe. It never chooses parameters.
+  the dose, capture telemetry, take the settled final reading, write the trial document
+  to the SD card **and** MongoDB, print one JSON result line back up the SSH pipe. It is
+  fully non-interactive — it never chooses parameters, and every operator interaction
+  lives in the laptop loop (§1.2).
 - **Laptop (optimizer).** Runs the Honegumi-templated Ax loop: ask a parameter set →
   invoke the Zero over SSH → tell Ax the outcomes → repeat. This is the one deliberate
   departure from #131's "run everything on the Zero" pattern, and it is forced:
@@ -87,12 +94,15 @@ it stopped — across SSH drops, laptop sleeps, or days between sessions.
 
 ### 1.2 Where the user types
 
-All user input happens in two places, both in front of William:
+**The only manual act that runs anything is starting the campaign** (William's
+2026-09-22 clarification): once launched, the loop drives itself — ask, dose over
+SSH, tell, record, next — with no per-dose typing. User input happens in two
+places, both in front of William:
 
 1. **Campaign launch (laptop terminal):**
 
    ```
-   python scripts/opt_campaign.py --powder-id xanthan --target-g 0.5 \
+   python scripts/opt_campaign.py --powder-id salt --target-g 0.5 \
        --budget 40 [--resume <campaign_id>] [--screen-only]
    ```
 
@@ -100,11 +110,15 @@ All user input happens in two places, both in front of William:
    queries pull a powder's whole history across characterization, battery, and
    optimization runs).
 
-2. **Operator prompts between doses (same terminal, relayed to hands at the rig):**
-   confirm cup emptied / hopper topped up when the session protocol asks (§2.5), and
-   answer the per-dose spill check (`spill? [y/N]`) — the one outcome the rig cannot
-   yet sense itself (§2.3). Campaign sessions are supervised by design; the operator
-   is at or near the rig.
+2. **Supervision, not operation (same terminal, hands at the rig when asked):**
+   between doses the loop shows a short auto-continuing countdown — touch nothing
+   and the next dose starts, recorded as "no spill"; press `s` to flag a spill on
+   the dose just finished (§2.3), `p` to pause. It hard-blocks only at the §2.5
+   cadence prompts (cup emptied back into the hopper, top-up), which genuinely
+   need hands at the rig, and it parks itself if several consecutive countdowns
+   pass untouched, so a walked-away session pauses rather than dosing unattended.
+   Sessions stay supervised by design — operator at or near the rig, hand near
+   `!`/power — but a clean session is: launch, cadence hands, watching.
 
 Nothing is typed on the Zero beyond starting/attaching tmux, and nothing on the Pico
 beyond what the scripts send.
@@ -219,7 +233,7 @@ Both are per-dose binary flags, not modeled objectives:
 | Flag | Definition | Detection |
 |---|---|---|
 | `jam` | Dose could not proceed/finish: stall bail fired, tap nudge/cycle budget exhausted, or `DOSE_TIMEOUT_S` hit | Automatic — the firmware already raises all three |
-| `spill` | Powder landed outside the cup | Operator prompt after each dose (v1). Later: mass-balance discrepancy (revolutions × learned feed factor vs Δmass on balance) and/or the webcam; spilled powder is invisible to the balance, so the rig alone can't see it yet |
+| `spill` | Powder landed outside the cup | Operator keypress during the between-dose countdown (v1) — an untouched countdown records "no spill", so a clean dose needs no input (§1.2). Later: mass-balance discrepancy (revolutions × learned feed factor vs Δmass on balance) and/or the webcam; spilled powder is invisible to the balance, so the rig alone can't see it yet |
 
 **Handling in the loop (v1, deliberately rough):** a flagged dose is fed back to Ax
 with *penalized* objectives — `t_total` = the timeout ceiling, `abs_error` = the 20 mg
@@ -243,8 +257,10 @@ Per powder (no powder properties provided or modeled in v1 — each powder is an
 independent campaign; the schema still stamps `powder_id` everywhere so later
 cross-powder modeling needs no migration):
 
-1. **Range-finding (about 5 manual doses).** Bracket each continuous box: tilt just
-   above no-flow, just below spill/flood; confirm the RPM band. Sets the §2.1 boxes.
+1. **Range-finding (about 5 operator-driven doses).** The one genuinely hands-on
+   step, before any loop runs: bracket each continuous box by eye — tilt just
+   above no-flow, just below spill/flood; confirm the RPM band. Sets the §2.1
+   boxes. (Everything after this step is the automated loop, §1.2.)
 2. **Screening (about 20 doses)** — the #162 §5 process, updated to this parameter
    list. Eight factors is too many for the original 2⁴⁻¹, so: **2⁸⁻⁴ resolution-IV
    fraction (16 corners) + 4 center points** ≈ 20 doses, one unattended-ish session.
@@ -382,11 +398,17 @@ filters:
 | Piece | Where it runs | What it is |
 |---|---|---|
 | Tap-cadence knobs + `RESULT` line | Pico (`trickle_tap/`) | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`tap_on_ms=60 / tap_off_ms=440`), reusing the `Tap` driver + `main_three_phase` per-phase cadence pattern; one machine-parseable JSON result line per dose (incl. the §2.6 stop-event fields); overshoot-abort guard |
-| `scripts/opt_dose_capture.py` | Pi Zero | Per-dose executor: params in over serial (incl. `tau_afterflow_s`), dose, telemetry off, spill prompt, spool + Mongo upload, JSON line to stdout (patterned on #131's `characterize_capture.py`) |
-| `scripts/opt_campaign.py` | Laptop | Honegumi/Ax ask–tell loop (William's `ax-platform==0.4.3` sample as the skeleton), SSH per trial, screening-block runner, penalization, snapshots, resume, Pareto readout |
+| `scripts/opt_dose_capture.py` | Pi Zero | Per-dose executor, fully non-interactive: params in over serial (incl. `tau_afterflow_s`), dose, telemetry off, spool + Mongo upload, JSON line to stdout (patterned on #131's `characterize_capture.py`) |
+| `scripts/opt_campaign.py` | Laptop | Honegumi/Ax ask–tell loop (William's `ax-platform==0.4.3` sample as the skeleton), SSH per trial, screening-block runner, penalization, snapshots, resume, Pareto readout; owns all operator interaction (§1.2 countdown + cadence prompts) |
 | `scripts/fit_tau_afterflow.py` | Laptop | §2.8 fit: stop-event rows → τ0 (+ τ1 if real) → `powder_models` upsert + diagnostic plot (pattern: #131's `analyze_battery_afterflow.py`) |
 | `scripts/dose.py` | Pi Zero | Production dosing from a saved profile (§1.4), pulling τ_afterflow from `powder_models` |
 | Schema/helpers module | shared | Trial/campaign/profile document builders + validation, so Zero and laptop write identical shapes |
+
+With the interim manual mode dropped (§5), these scripts gate the first campaign
+dose. Build order: firmware tap knobs + `RESULT` line → `opt_dose_capture.py` →
+`opt_campaign.py`; the other three can trail. Six of the eight §2.1 knobs are
+live-settable on the rig today — the two tap categoricals are exactly what the
+firmware piece adds.
 
 Simulation tests will dry-run the campaign loop against the #124 twin (no hardware),
 same pattern as `trickle_tap/sim/`.
@@ -413,16 +435,23 @@ The §4 questions in the first draft of this doc are all answered:
    band box.
 7. **New (this round): τ_afterflow** is quantified as a function of mass rate during
    screening and saved per powder for the filters (§2.8).
+8. **Operating model (clarified later the same day): the loop is automated — only
+   its start is manual.** William launches `opt_campaign.py` from his computer and
+   supervises; there is no per-dose human transport layer and no interim
+   hand-transcribed mode, so the §3 build-order scripts gate the first campaign
+   dose (§5.3 spells out what the loop automates per trial).
 
 ---
 
 ## 5. Runbook: running this from your computer
 
-Three stages of "manually": what you can set up and verify **today** (§5.1 — all of
-it laptop-side, nothing depends on unwritten code), what a campaign session looks
-like once §3's scripts exist (§5.2), and the fully manual ask–tell loop (§5.3) —
-which is both how the very first doses can run before `opt_campaign.py` exists and
-the fallback if the script misbehaves mid-session.
+"Manually" means what William meant (2026-09-22 clarification): you **start** the
+optimization loop by hand from your computer; you never hand-run doses. Two parts:
+what you can set up and verify **today** (§5.1 — all of it laptop-side, nothing
+depends on unwritten code), and what a campaign session looks like — and automates
+— once §3's scripts exist (§5.2–§5.3). There is no interim hand-transcribed mode:
+the first campaign dose waits on the three §3 build-order pieces, which are
+deliberately small.
 
 The laptop-side stack was verified 2026-09-22 on a clean Linux machine with
 **Python 3.12.3**: `pip install ax-platform==0.4.3` resolves to botorch 0.12.0,
@@ -483,54 +512,59 @@ the pan; then from the laptop:
 python scripts/opt_campaign.py --powder-id salt --target-g 0.5 --budget 40
 ```
 
-Everything after that is answering prompts: the per-dose spill check, and the
-cup-empty / hopper-top-up cadence prompts (§2.5). `Ctrl-C`, laptop sleep, or a
-dropped SSH session are all safe — each dose is atomic on the Zero (§1.1), and
-`--resume <campaign_id>` picks up from the Mongo ledger + the Ax JSON snapshot
-without re-dosing anything.
+Everything after that is automatic. The loop pauses for a human only at the
+cup-empty / hopper-top-up cadence prompts (§2.5); between doses the §1.2 spill
+countdown auto-continues and the campaign moves on by itself. `Ctrl-C`, laptop
+sleep, or a dropped SSH session are all safe — each dose is atomic on the Zero
+(§1.1), and `--resume <campaign_id>` picks up from the Mongo ledger + the Ax JSON
+snapshot without re-dosing anything.
 
-### 5.3 The fully manual ask–tell loop
+### 5.3 What the loop automates, per trial
 
-This is the sample's own pattern pointed at the rig instead of `branin_moo` — you
-are the transport layer. Two terminals:
+`opt_campaign.py` is the sample's own ask–tell pattern pointed at the rig instead
+of `branin_moo` — the transport layer is code, not the operator:
 
-- **Terminal A (rig):** `ssh` to the Zero, `tmux`, attach to the Pico REPL
-  (`mpremote` or pyserial miniterm, as in #131), with `main_trickle.py` running.
-- **Terminal B (optimizer):** `python -i campaign_manual.py` — the sample with the
-  experiment definition swapped for the real one:
+1. **Ask.** `ax_client.get_next_trial()` → one parameter set; the laptop mints a
+   trial UUID.
+2. **Dose.** One SSH invocation:
+   `ssh <zero> python scripts/opt_dose_capture.py --trial <uuid> --params '<json>'`.
+   The Zero pushes the `set` lines, runs `g 0.5`, captures telemetry and the
+   settled reading, spools + uploads the trial document, and prints one JSON
+   result line. If the pipe drops mid-dose the dose still completes and lands in
+   spool/Mongo under that UUID, and the laptop fetches it on reconnect instead of
+   re-dosing (§1.1).
+3. **Check-in.** The §1.2 countdown — a keypress only to flag a spill or pause;
+   the §2.5 cadence prompts block when due.
+4. **Tell.** `complete_trial(...)` with the outcomes (penalized per §2.3 if the
+   dose was flagged), then `ax_client.save_to_json_file(...)` plus a local CSV
+   append — every trial, so a crash at any point loses nothing.
 
-  ```python
-  ax_client.create_experiment(
-      name="salt_manual",
-      parameters=[
-          {"name": "bulk_tap", "type": "choice", "is_ordered": False,
-           "values": ["off", "2hz"]},
-          {"name": "trim_tap", "type": "choice", "is_ordered": False,
-           "values": ["off", "2hz"]},
-          {"name": "bulk_tilt_deg", "type": "range", "bounds": [15.0, 40.0]},
-          {"name": "trickle_tilt_deg", "type": "range", "bounds": [10.0, 30.0]},
-          {"name": "tap_tilt_deg", "type": "range", "bounds": [0.0, 15.0]},
-          {"name": "bulk_rpm", "type": "range", "bounds": [20.0, 100.0]},
-          {"name": "trickle_start_remaining_g", "type": "range",
-           "bounds": [0.05, 0.30]},
-          {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
-      ],
-      objectives={
-          "t_total_s": ObjectiveProperties(minimize=True, threshold=180.0),
-          "abs_error_mg": ObjectiveProperties(minimize=True, threshold=20.0),
-      },
-  )
-  ```
+The experiment definition it carries is the sample's, with the real search space
+and objectives swapped in:
 
-  (Thresholds passed explicitly — the verification run confirmed Ax silently
-  *infers* thresholds when they are omitted, which is not what we want scoring
-  hypervolume.)
+```python
+ax_client.create_experiment(
+    name="salt_campaign",
+    parameters=[
+        {"name": "bulk_tap", "type": "choice", "is_ordered": False,
+         "values": ["off", "2hz"]},
+        {"name": "trim_tap", "type": "choice", "is_ordered": False,
+         "values": ["off", "2hz"]},
+        {"name": "bulk_tilt_deg", "type": "range", "bounds": [15.0, 40.0]},
+        {"name": "trickle_tilt_deg", "type": "range", "bounds": [10.0, 30.0]},
+        {"name": "tap_tilt_deg", "type": "range", "bounds": [0.0, 15.0]},
+        {"name": "bulk_rpm", "type": "range", "bounds": [20.0, 100.0]},
+        {"name": "trickle_start_remaining_g", "type": "range",
+         "bounds": [0.05, 0.30]},
+        {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
+    ],
+    objectives={
+        "t_total_s": ObjectiveProperties(minimize=True, threshold=180.0),
+        "abs_error_mg": ObjectiveProperties(minimize=True, threshold=20.0),
+    },
+)
+```
 
-Then per dose: `get_next_trial()` in B; type the suggestion into A as `set` lines
-(`set bulk_tilt_deg 27.4`, `set bulk_rpm 63`, … — every §2.1 knob is live-settable
-today except the two tap categoricals, which need the §3 firmware addition) and
-dose with `g 0.5`; read `t_total` and the settled error off the dose summary; back
-in B, `complete_trial(trial_index=i, raw_data={"t_total_s": 74.2, "abs_error_mg":
-6.1})` and `ax_client.save_to_json_file("salt_manual.json")` every trial. Log each
-dose on paper or a CSV as well — in manual mode *you* are also the ledger, and the
-rows get backfilled to `opt_trials` later the same way #131 backfills offline runs.
+(Thresholds passed explicitly — the 2026-09-22 verification run confirmed Ax
+silently *infers* thresholds when they are omitted, which is not what we want
+scoring hypervolume.)
