@@ -128,6 +128,61 @@ PLATE_GEAR_RATIO = 2.0            # servo-horn deg per plate deg
 MAX_AUGER_RPM = 240.0 / AUGER_GEAR_RATIO   # ~109 auger RPM
 
 
+# Millisecond clock for in-phase pacing (cadence taps, halt-slope
+# windows).  time.time() is whole seconds on this MicroPython build, so
+# sub-second deadlines must come from ticks_ms; the CPython fallbacks
+# keep the sim tests running on the same code path.
+try:
+    _ticks_ms_fn = time.ticks_ms
+    _ticks_diff_fn = time.ticks_diff
+    _ticks_add_fn = time.ticks_add
+except AttributeError:                       # CPython (sim)
+    def _ticks_ms_fn():
+        return int(time.monotonic() * 1000)
+
+    def _ticks_diff_fn(a, b):
+        return a - b
+
+    def _ticks_add_fn(t, delta):
+        return t + delta
+
+
+def _recent_slope(hist, window_s, tdiff=None):
+    """Least-squares slope, g/s, over the trailing ``window_s`` of
+    ``hist`` -- a list of ``(ticks_ms, grams)`` poll pairs.  This is the
+    issue #164 stop-event "rate from the last-2 s poll slope" (the #131
+    definition); returns None with fewer than 3 points in the window.
+    """
+    if len(hist) < 3:
+        return None
+    if tdiff is None:
+        tdiff = _ticks_diff_fn
+    t_end = hist[-1][0]
+    pts = []
+    for t, g in hist:
+        back_s = tdiff(t_end, t) / 1000.0
+        if 0.0 <= back_s <= window_s:
+            pts.append((-back_s, g))
+    n = len(pts)
+    if n < 3:
+        return None
+    mt = 0.0
+    mg = 0.0
+    for t, g in pts:
+        mt += t
+        mg += g
+    mt /= n
+    mg /= n
+    num = 0.0
+    den = 0.0
+    for t, g in pts:
+        num += (t - mt) * (g - mg)
+        den += (t - mt) * (t - mt)
+    if den <= 0.0:
+        return None
+    return num / den
+
+
 # =========================================================================
 # THREE-PHASE DOSE PARAMETERS -- the knobs this file exists for.
 #
@@ -199,8 +254,11 @@ DOSE_READ_RETRIES = 12
 #   continuous       1 = velocity mode: spin the auger steadily at
 #                    rotation_rpm while polling the scale, halt at
 #                    exit threshold + anticipation_g.  Ignores
-#                    rotation_deg and taps_per_cycle.  0 = incremental
-#                    rotate-settle-measure cycles (the default).
+#                    rotation_deg; taps_per_cycle > 0 fires CADENCE
+#                    taps -- one tap_on_ms pulse per (tap_on_ms +
+#                    tap_off_ms) period while spinning (issue #164).
+#                    0 = incremental rotate-settle-measure cycles
+#                    (the default).
 #   poll_ms          velocity mode: scale polling interval
 #   anticipation_g   velocity mode: halt this many grams BEFORE the
 #                    phase-exit threshold (margin for in-flight powder
@@ -233,7 +291,9 @@ PHASE1_BULK = {
     "continuous": 1,          # set 1 for velocity mode (phase 1's option)
     "poll_ms": 250,
     "anticipation_g": 0.0,
-    "taps_per_cycle": 2,      # some powders may want taps here too
+    "taps_per_cycle": 0,      # velocity mode now honors this as CADENCE
+                              # tapping (issue #164) -- keep 0 to preserve
+                              # the pre-#164 no-tap bulk behaviour
     "tap_on_ms": 60,
     "tap_off_ms": 150,
     "settle_ms": 800,         # bulk can trust a rougher reading
@@ -607,6 +667,14 @@ class ThreePhaseDoser:
         # summed over the dose.  Non-zero means the balance went silent
         # and the retry recovered it, which is worth having in the data.
         self.read_retries = 0
+        # Overshoot guard (issue #164): a phase aborts the dose as
+        # OVERSHOOT the moment mass exceeds target + this.  0 disables;
+        # TrickleTapDoser sets it from trickle_params per dose.
+        self.overshoot_abort_g = 0.0
+        # Filled by _run_phase_continuous on a clean halt: the stop
+        # event (at-halt mass, settled mass, afterflow, trailing-slope
+        # rate) the issue #164 tau_afterflow fit consumes.
+        self.last_halt = None
         # Own (mutable) copies, so live `set` tuning at the REPL never
         # rewrites the module-level defaults.
         self.phases = [dict(p) for p in (phases or PHASES)]
@@ -886,11 +954,18 @@ class ThreePhaseDoser:
             cycles += 1
             self._objectives(tag + " cycle {}:".format(cycles),
                              grams, target_g, grams - before, t0)
+            if (self.overshoot_abort_g > 0.0
+                    and grams > target_g + self.overshoot_abort_g):
+                self.log(tag + " overshoot guard: {:+.1f} mg past the "
+                         "target -- aborting".format(
+                             1000.0 * (grams - target_g)))
+                return grams, DoseResult.OVERSHOOT, cycles
             if grams - before < p["min_gain_g"]:
                 stalls += 1
                 if stalls >= p["max_stall_cycles"]:
                     if p["stall_nudge_deg"] > 0 and nudges < p["max_nudges"]:
                         nudges += 1
+                        state["nudges"] = state.get("nudges", 0) + 1
                         self.log(tag + " lip empty; nudging auger {:.1f} deg"
                                  " (nudge {}/{})".format(
                                      p["stall_nudge_deg"], nudges,
@@ -916,8 +991,14 @@ class ThreePhaseDoser:
         vibrates, so waiting for stable frames here would hang.  The
         auger halts once remaining <= exit threshold + ``anticipation_g``
         (margin for in-flight powder and the halt itself), then one
-        settled stable reading closes the phase.  ``rotation_deg`` and
-        ``taps_per_cycle`` are ignored in this mode.
+        settled stable reading closes the phase.  ``rotation_deg`` is
+        ignored in this mode; ``taps_per_cycle`` > 0 enables CADENCE
+        tapping (issue #164) -- one ``tap_on_ms`` solenoid pulse per
+        ``tap_on_ms + tap_off_ms`` period while the auger spins.
+
+        On a clean halt the stop event lands in ``self.last_halt``
+        (at-halt mass, settled mass, afterflow, trailing 2 s slope) for
+        the issue #164 tau_afterflow fit.
 
         Stall rule: less than ``min_gain_g`` of flow within
         ``max_stall_cycles`` x ``settle_ms`` of spinning aborts as
@@ -935,6 +1016,23 @@ class ThreePhaseDoser:
         halt_at_g = exit_g + max(0.0, p["anticipation_g"])
         poll_ms = max(50, int(p["poll_ms"]))
         stall_limit_s = (p["max_stall_cycles"] * p["settle_ms"]) / 1000.0
+        # Sub-second pacing (cadence taps, slope window) needs the ms
+        # clock; the sim injects a virtual one as plain ints, hardware
+        # uses the wrap-safe ticks_* family.
+        if self._ticks_ms is None:
+            tms, tdiff, tadd = _ticks_ms_fn, _ticks_diff_fn, _ticks_add_fn
+        else:
+            tms = self._ticks_ms
+            tdiff = lambda a, b: a - b
+            tadd = lambda t, d: t + d
+        cad_on_ms = int(p["tap_on_ms"])
+        cad_period_ms = 0
+        if int(p["taps_per_cycle"]) > 0:
+            cad_period_ms = max(100, cad_on_ms + int(p["tap_off_ms"]))
+            self.log(tag + " cadence taps on: one {} ms pulse per {} ms"
+                     .format(cad_on_ms, cad_period_ms))
+        next_tap = tadd(tms(), cad_period_ms)
+        hist = []                   # (ticks_ms, grams) for the halt slope
         polls = 0
         misses = 0
         prev = grams
@@ -952,6 +1050,12 @@ class ThreePhaseDoser:
                     break
                 self._sleep_ms(poll_ms)
                 self.stepper.keep_alive()
+                if cad_period_ms and tdiff(tms(), next_tap) >= 0:
+                    self.tap.tap(1, cad_on_ms, 0)
+                    state["taps"] += 1
+                    next_tap = tadd(next_tap, cad_period_ms)
+                    if tdiff(tms(), next_tap) > 0:      # missed beats
+                        next_tap = tadd(tms(), cad_period_ms)
                 reading = self.scale.read()
                 polls += 1
                 if (reading is None or reading.overload
@@ -964,12 +1068,22 @@ class ThreePhaseDoser:
                     continue
                 misses = 0
                 grams = reading.grams - self._baseline_g
+                hist.append((tms(), grams))
+                if len(hist) > 40:
+                    hist.pop(0)
                 self._objectives(
                     tag + " poll {}{}:".format(
                         polls, "" if reading.stable else " (unstable)"),
                     grams, target_g, grams - prev, t0,
                     gain_label="this poll")
                 prev = grams
+                if (self.overshoot_abort_g > 0.0
+                        and grams > target_g + self.overshoot_abort_g):
+                    self.log(tag + " overshoot guard: {:+.1f} mg past the "
+                             "target -- aborting".format(
+                                 1000.0 * (grams - target_g)))
+                    status = DoseResult.OVERSHOOT
+                    break
                 if target_g - grams <= halt_at_g:
                     break
                 if grams - gain_ref >= p["min_gain_g"]:
@@ -998,6 +1112,17 @@ class ThreePhaseDoser:
             return grams, DoseResult.SCALE_ERROR, polls
         self._objectives(tag + " settled:", settled, target_g,
                          settled - grams, t0, gain_label="while settling")
+        # Stop event (issue #164): what the tau_afterflow fit needs from
+        # this halt.  ``grams`` is the last in-flight poll before the
+        # halt; the slope is the trailing-2 s poll fit (#131 definition).
+        self.last_halt = {
+            "phase": p["name"],
+            "m_stop_g": grams,
+            "settled_g": settled,
+            "afterflow_g": settled - grams,
+            "rate_slope_gps": _recent_slope(hist, 2.0, tdiff),
+            "rpm": rpm,
+        }
         return settled, None, polls
 
 

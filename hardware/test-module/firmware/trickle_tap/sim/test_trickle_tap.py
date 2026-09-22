@@ -14,6 +14,7 @@ notice when numpy is not installed; everything else is stdlib-only.
 Run:  python3 hardware/test-module/firmware/trickle_tap/sim/test_trickle_tap.py
 """
 
+import json
 import random
 import sys
 import types
@@ -437,6 +438,142 @@ def test_live_param_change_applies():
           12.5 in servo.history and stages.get("trickle", 0) > 0)
 
 
+# ---------------------------------------------------------------------------
+# Issue #164 additions: RESULT line, stop events, cadence taps,
+# overshoot guard, final settle.
+# ---------------------------------------------------------------------------
+
+def _dose_collecting(plant, p_over=None, target=1.0):
+    """Run a dose capturing log lines; returns (res, RESULT doc, rig)."""
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over=p_over, log=lambda msg="": lines.append(str(msg)))
+    tap.times = []
+    _plain_tap = tap.tap
+
+    def timed_tap(count=1, on_ms=None, off_ms=None):
+        tap.times.append(clock.t)
+        _plain_tap(count, on_ms, off_ms)
+
+    tap.tap = timed_tap
+    res = doser.dose(target)
+    doc = None
+    for ln in lines:
+        if ln.startswith("RESULT "):
+            doc = json.loads(ln[len("RESULT "):])
+    return res, doc, doser, tap, clock
+
+
+def test_result_line_and_stop_events():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=1.0)
+    check("RESULT line emitted and parses as json", doc is not None)
+    if doc is None:
+        return
+    check("RESULT status matches the DoseResult ({})".format(doc["status"]),
+          doc["status"] == res.status)
+    check("RESULT final_g matches dispensed ({} vs {:.5f})".format(
+        doc["final_g"], res.dispensed_g),
+        abs(doc["final_g"] - res.dispensed_g) < 1e-6)
+    check("scored against the settled final reading",
+          doc["settled_final"] == 1)
+    check("phase times present and t_total covers them",
+          doc["t_total_s"] >= doc["t_bulk_s"] + doc["t_trickle_s"]
+          + doc["t_tap_s"] + doc["t_settle_s"] - 0.1)
+    check("final settle waited >= final_settle_ms",
+          doc["t_settle_s"] >= trickle_params.FINAL_SETTLE_MS / 1000.0)
+    check("params echo carries the 8 searched knobs",
+          all(k in doc["params"] for k in (
+              "bulk_tap", "trickle_tap", "bulk_tilt_deg",
+              "trickle_tilt_deg", "tap_tilt_deg", "bulk_rpm",
+              "trickle_start_remaining_g", "tolerance_g",
+              "tau_afterflow_s")))
+    events = doc["stop_events"]
+    check("two stop events for a bulk + trickle dose (got {})".format(
+        len(events)), len(events) == 2)
+    if len(events) == 2:
+        bulk, trickle = events
+        check("bulk stop event has a positive trailing slope "
+              "({})".format(bulk["rate_slope_gps"]),
+              bulk["phase"] == "bulk"
+              and bulk["rate_slope_gps"] is not None
+              and 0.02 < bulk["rate_slope_gps"] < 0.5)
+        check("trickle stop event carries the KF rate "
+              "({})".format(trickle["rate_kf_gps"]),
+              trickle["phase"] == "trickle"
+              and trickle["rate_kf_gps"] is not None
+              and 0.0 <= trickle["rate_kf_gps"] <= 0.06)
+        check("afterflow deltas recorded (bulk {:+.1f} mg)".format(
+            1000.0 * bulk["afterflow_g"]),
+            bulk["afterflow_g"] is not None
+            and trickle["afterflow_g"] is not None)
+        check("events record the tau they executed with",
+              bulk["tau_s"] == doser.p["tau_afterflow_s"]
+              and trickle["tau_s"] == doser.p["tau_afterflow_s"])
+
+
+def test_bulk_cadence_taps_at_2hz():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(
+        plant, p_over={"bulk_tap": True}, target=1.0)
+    check("dose with bulk cadence taps completes",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.OVERSHOOT))
+    bulk_end = doc["t_bulk_s"] + 5.0 if doc else 15.0
+    bulk_taps = [t for t in tap.times if t <= bulk_end]
+    check("cadence taps fired during bulk ({} taps)".format(
+        len(bulk_taps)), len(bulk_taps) >= 3)
+    if len(bulk_taps) >= 3:
+        gaps = [b - a for a, b in zip(bulk_taps, bulk_taps[1:])]
+        gaps.sort()
+        median = gaps[len(gaps) // 2]
+        check("cadence period ~0.5 s (median gap {:.2f} s)".format(median),
+              0.4 <= median <= 0.65)
+    check("taps counted in the dose summary", res.taps >= len(bulk_taps))
+
+
+def test_trickle_cadence_taps():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(
+        plant, p_over={"trickle_tap": True, "bulk_enabled": False},
+        target=0.2)
+    check("trickle-cadence dose completes",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.OVERSHOOT))
+    check("cadence taps fired during the trickle ({} total)".format(
+        len(tap.times)), len(tap.times) >= 3)
+    check("shipped defaults keep both cadences off (salt baseline)",
+          trickle_params.BULK_TAP is False
+          and trickle_params.TRICKLE_TAP is False)
+    check("RESULT records trickle_tap on", doc is not None
+          and doc["params"]["trickle_tap"] in (True, 1))
+
+
+def test_overshoot_guard_aborts_runaway():
+    # A pathological feed factor (8 g/rev) blows past the target between
+    # polls; the guard must abort as OVERSHOOT instead of carrying on.
+    plant = Plant(ff_g_per_rev=8.0)
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=1.0)
+    check("runaway dose aborts as overshoot (got {})".format(res.status),
+          res.status == m3.DoseResult.OVERSHOOT)
+    check("tap endgame never ran after the abort", res.taps == 0)
+    check("RESULT still emitted on the abort path", doc is not None
+          and doc["status"] == m3.DoseResult.OVERSHOOT)
+
+
+def test_final_settle_reads_at_rest():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=0.2)
+    if res.status != m3.DoseResult.OK:
+        check("final-settle test needs an ok dose (got {})".format(
+            res.status), False)
+        return
+    # After 2 s at rest the lagged balance has converged to the pan, so
+    # the scoring read matches the true settled mass.
+    check("scoring read matches the true pan mass "
+          "({:+.1f} mg apart)".format(
+              1000.0 * (res.dispensed_g - plant.pan)),
+          abs(res.dispensed_g - plant.pan) < 0.003)
+
+
 def main():
     for fn in (test_kf_matches_numpy_reference,
                test_kf_basic_properties,
@@ -446,7 +583,12 @@ def main():
                test_stalled_trickle_hands_to_taps,
                test_telemetry_rows_are_well_formed,
                test_balance_lag_mismatch_smoke,
-               test_live_param_change_applies):
+               test_live_param_change_applies,
+               test_result_line_and_stop_events,
+               test_bulk_cadence_taps_at_2hz,
+               test_trickle_cadence_taps,
+               test_overshoot_guard_aborts_runaway,
+               test_final_settle_reads_at_rest):
         print(fn.__name__)
         fn()
     if _FAILURES:

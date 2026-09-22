@@ -24,6 +24,7 @@ Commands:
     set <k> <v>    change any trickle_params value live (s lists keys);
                    shorthands: goal -> goal_mass_g, tilt -> trickle_tilt_deg
     log            print the last dose's telemetry CSV (for plot_trickle.py)
+    res            reprint the last dose's machine-parseable RESULT line
     r <deg>        rotate auger by <deg> auger degrees (signed)
     t              tap (TAP_COUNT solenoid pulses)
     a <deg>        mounting plate to <deg> plate degrees
@@ -71,6 +72,7 @@ HELP = (
     "  set <k> <v>    live-change a parameter (set goal 0.5 / set tilt 15)\n"
     "  log            print last dose telemetry CSV (paste into\n"
     "                 plot_trickle.py to see the PI behaviour)\n"
+    "  res            reprint the last dose's RESULT json line\n"
     "  r <deg> / t    rotate auger / tap solenoid\n"
     "  a <deg> / p <name>   plate angle / preset\n"
     "  w / z          read / tare scale\n"
@@ -170,6 +172,12 @@ class TrickleRig(m3.Rig):
                 self.set_param(arg)
             elif cmd == "log":
                 self.print_log()
+            elif cmd == "res":
+                if self.doser is None or self.doser.last_result is None:
+                    print("[res] no dose result yet -- run a dose first")
+                else:
+                    import json
+                    print("RESULT " + json.dumps(self.doser.last_result))
             else:
                 m3.Rig.handle(self, line)     # r/t/a/p/w/z/! and errors
         except Exception as exc:

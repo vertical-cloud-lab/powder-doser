@@ -118,6 +118,35 @@ rpm_cmd` (the PI), `pred_g, cutoff_g` (the halt rule), `clamp_hits`
 (how often the r ≥ 0 projection fired — nonzero means the σ margin was
 miscalibrated in that stretch, a number the study asks to watch).
 
+## Optimization-campaign additions (issue #164)
+
+The issue #164 campaign drives this runner mechanically, so the firmware
+grew four small features (all off/neutral by default — a manual session
+behaves as before):
+
+- **Cadence taps** — `set bulk_tap 1` / `set trickle_tap 1` fire one
+  `TAP_CADENCE_ON_MS` solenoid pulse per
+  `TAP_CADENCE_ON_MS + TAP_CADENCE_OFF_MS` period (60 + 440 ms = 2 Hz,
+  locked 2026-09-22) while that phase actuates: a flow aid for powders
+  that will not feed from rotation alone.  Both are off in the salt
+  baseline; they are the two categorical parameters of the #164 search
+  space.
+- **Final settle** — after the last actuation the dose waits
+  `FINAL_SETTLE_MS` (2 s) and takes one more bracketed reading; *that*
+  settled value scores the dose (`|error|`, `t_total`) and decides
+  ok-vs-overshoot, per the campaign's objective definitions.
+- **Overshoot guard** — any phase aborts the dose as `overshoot` the
+  moment mass exceeds `goal + OVERSHOOT_ABORT_G` (100 mg), instead of
+  feeding a runaway dose to completion.
+- **`RESULT` line** — every dose (aborts included) ends with one
+  machine-parseable line, `RESULT {json}`: status, settled final mass,
+  signed error, per-phase times, tap/nudge counts, the learned feed
+  factor, the searched parameters *as executed*, and one **stop event**
+  per halt (bulk halt + trickle cutoff: at-stop mass, settled mass,
+  afterflow, rate from both the KF and the trailing-2 s poll slope) —
+  the per-powder `tau_afterflow` fit dataset.  `res` reprints the last
+  one; `scripts/opt_dose_capture.py` parses it on the Pi Zero.
+
 ## Testing without the rig
 
 ```

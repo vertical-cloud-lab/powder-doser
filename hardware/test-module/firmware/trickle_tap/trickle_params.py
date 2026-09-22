@@ -108,11 +108,37 @@ FF_PRIOR_G_PER_REV = 0.35    # feed-factor prior, g per auger rev.  Learned
                              # first seconds.
 
 # =========================================================================
+# Optimization-campaign knobs (issue #164) -- cadence taps + result line
+# =========================================================================
+
+# Cadence tapping: a flow aid for powders that will not feed from
+# rotation alone.  Each is an on/off categorical in the issue #164
+# search space; "on" fires ONE solenoid pulse per cadence period while
+# the phase runs.  Salt baseline: both off.
+BULK_TAP = False             # cadence taps during the bulk phase
+TRICKLE_TAP = False          # cadence taps during the PI trickle
+
+# The fixed "on" cadence (locked 2026-09-22: 2 Hz).  60 ms energize
+# pulse (the proven TAP_ON_MS) + 440 ms gap = one tap per 500 ms.
+TAP_CADENCE_ON_MS = 60
+TAP_CADENCE_OFF_MS = 440
+
+# Wait after the last actuation before the settled FINAL reading that
+# scores the dose (|error| and t_total are measured against it), ms.
+FINAL_SETTLE_MS = 2000
+
+# =========================================================================
 # Safety
 # =========================================================================
 
 DOSE_TIMEOUT_S = 600         # hard wall-clock abort for one dose
 MAX_POLL_MISSES = 10         # consecutive silent polls before scale-error
+
+# Overshoot guard (issue #164): abort the dose the moment the measured
+# mass exceeds goal + this, instead of letting later phases discover it.
+# 0 disables.  Distinct from TOLERANCE_G: that scores the dose, this
+# stops the rig from feeding a runaway one.
+OVERSHOOT_ABORT_G = 0.100
 
 # =========================================================================
 # Telemetry

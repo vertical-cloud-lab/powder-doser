@@ -31,6 +31,7 @@ surface plus ``set_velocity_rpm(rpm)`` (see ``main_trickle.py`` /
 Pico and under CPython.
 """
 
+import json
 import time
 
 import main_three_phase as m3
@@ -44,12 +45,16 @@ except ImportError:          # pragma: no cover - params file always ships
 try:
     _ticks_ms = time.ticks_ms                 # MicroPython
     _ticks_diff = time.ticks_diff
+    _ticks_add = time.ticks_add
 except AttributeError:                        # CPython (sim tests)
     def _ticks_ms():
         return int(time.monotonic() * 1000)
 
     def _ticks_diff(a, b):
         return a - b
+
+    def _ticks_add(t, delta):
+        return t + delta
 
 
 def params_dict(module=None):
@@ -66,6 +71,26 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
                     "r_sp_gps,err_gps,integ,rpm_cmd,pred_g,cutoff_g,"
                     "clamp_hits")
 
+# The searched + campaign-relevant knobs echoed back in every RESULT
+# line (issue #164 section 2.6: parameters *as executed*, not just as
+# commanded).
+RESULT_PARAM_KEYS = (
+    "bulk_tap", "trickle_tap", "bulk_tilt_deg", "trickle_tilt_deg",
+    "tap_tilt_deg", "bulk_rpm", "trickle_start_remaining_g",
+    "tolerance_g", "tau_afterflow_s", "goal_mass_g",
+    "tap_cadence_on_ms", "tap_cadence_off_ms", "overshoot_abort_g",
+    "final_settle_ms",
+)
+
+
+def _round(value, digits):
+    if value is None:
+        return None
+    try:
+        return round(value, digits)
+    except (TypeError, ValueError):
+        return value
+
 
 class TrickleTapDoser(m3.ThreePhaseDoser):
     """Bulk -> KF/PI trickle -> tap endgame, with per-poll telemetry."""
@@ -79,6 +104,12 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         self.last_log_path = None
         self._phase_label = None
         self._t0_ms = 0
+        # Issue #164 campaign additions: per-halt stop events (the
+        # tau_afterflow dataset), the learned feed factor at cutoff, and
+        # the last machine-parseable RESULT document ('res' reprints it).
+        self.stop_events = []
+        self.last_ff = None
+        self.last_result = None
 
     # -- clocks --------------------------------------------------------
 
@@ -134,16 +165,66 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("[dose] telemetry write failed ({}); rows kept in "
                      "RAM -- 'log' still prints them".format(exc))
 
+    def _emit_result(self, res, state, t_marks, settled):
+        """One machine-parseable ``RESULT {json}`` line per dose.
+
+        The opt_dose_capture.py executor on the Pi Zero parses this
+        instead of scraping the human-oriented log text (issue #164
+        section 3).  Emitted on EVERY dose exit, aborts included; the
+        'res' REPL command reprints the last one.
+        """
+        p = self.p
+        events = []
+        for ev in self.stop_events:
+            out = {}
+            for k, v in ev.items():
+                out[k] = _round(v, 5) if isinstance(v, float) else v
+            events.append(out)
+        doc = {
+            "v": 1,
+            "status": res.status,
+            "target_g": _round(res.target_g, 5),
+            "final_g": _round(res.dispensed_g, 5),
+            "settled_final": 1 if settled else 0,
+            "error_mg": _round(
+                1000.0 * (res.dispensed_g - res.target_g), 2),
+            "t_total_s": _round(self._t_s(), 2),
+            "t_bulk_s": _round(t_marks.get("bulk", 0.0), 2),
+            "t_trickle_s": _round(t_marks.get("trickle", 0.0), 2),
+            "t_tap_s": _round(t_marks.get("tap", 0.0), 2),
+            "t_settle_s": _round(t_marks.get("settle", 0.0), 2),
+            "phase_cycles": dict(res.phase_cycles),
+            "taps": res.taps,
+            "nudges": state.get("nudges", 0),
+            "auger_rev": _round(res.auger_deg / 360.0, 3),
+            "ff_g_per_rev": _round(self.last_ff, 4),
+            "baseline_g": _round(self.last_baseline_g, 5),
+            "read_retries": self.read_retries,
+            "stop_events": events,
+            "params": dict((k, p.get(k)) for k in RESULT_PARAM_KEYS),
+            "telemetry_rows": len(self.telemetry),
+            "log_path": self.last_log_path,
+            "dose_n": self.dose_count,
+        }
+        self.last_result = doc
+        self.log("RESULT " + json.dumps(doc))
+
     # -- stage parameter dicts (built fresh so live `set` applies) -----
 
     def _bulk_phase(self):
         p, cfg = self.p, self.cfg
+        # bulk_tap on -> cadence tapping while the auger spins: one
+        # tap_cadence_on_ms pulse per (on + off) period (issue #164;
+        # the velocity-mode runner honors taps_per_cycle > 0 as cadence).
         return {"name": "bulk", "angle_deg": p["bulk_tilt_deg"],
                 "rotation_deg": 0.0, "rotation_rpm": p["bulk_rpm"],
                 "continuous": 1, "poll_ms": int(p["bulk_poll_ms"]),
                 "anticipation_g": p["bulk_anticipation_g"],
-                "taps_per_cycle": 0, "tap_on_ms": cfg.TAP_ON_MS,
-                "tap_off_ms": cfg.TAP_OFF_MS,
+                "taps_per_cycle": 1 if p.get("bulk_tap") else 0,
+                "tap_on_ms": int(p.get("tap_cadence_on_ms",
+                                       cfg.TAP_ON_MS)),
+                "tap_off_ms": int(p.get("tap_cadence_off_ms",
+                                        cfg.TAP_OFF_MS)),
                 "settle_ms": int(p["bulk_settle_ms"]),
                 "min_gain_g": 0.002, "max_stall_cycles": 10,
                 "stall_nudge_deg": 0.0, "max_nudges": 0, "max_cycles": 100}
@@ -174,18 +255,24 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
 
         t0 = self._now()
         self._t0_ms = self._tms()
-        state = {"taps": 0, "deg": 0.0}
+        state = {"taps": 0, "deg": 0.0, "nudges": 0}
         stage_cycles = []
         self.telemetry = []
         self.read_retries = 0
         self.dose_count += 1
+        self.stop_events = []
+        self.last_ff = None
+        self.last_halt = None
+        self.overshoot_abort_g = float(p.get("overshoot_abort_g", 0.0))
+        t_marks = {}                 # stage name -> seconds spent in it
 
-        def result(status, grams):
+        def result(status, grams, settled=False):
             self._phase_label = None
             self._flush_log()
             res = m3.DoseResult(status, target_g, grams, self._now() - t0,
                                 stage_cycles, state["taps"], state["deg"])
             self.log("[dose] done: {!r}".format(res))
+            self._emit_result(res, state, t_marks, settled)
             return res
 
         if target_g <= 0:
@@ -214,10 +301,20 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                          target_g - grams, bulk["rotation_rpm"],
                          p["trickle_start_remaining_g"]
                          + p["bulk_anticipation_g"]))
+            t_stage = self._t_s()
             grams, status, cycles = self._run_phase(
                 1, bulk, p["trickle_start_remaining_g"], target_g, grams,
                 t0, state)
+            t_marks["bulk"] = self._t_s() - t_stage
             stage_cycles.append(("bulk", cycles))
+            if self.last_halt is not None:
+                ev = self.last_halt
+                ev["t_stop_s"] = _round(self._t_s(), 2)
+                ev["rate_kf_gps"] = None
+                ev["tau_s"] = p["tau_afterflow_s"]
+                ev["stalled"] = 0
+                self.stop_events.append(ev)
+                self.last_halt = None
             if status is not None:
                 self._restore_rig()
                 return result(status, grams)
@@ -229,8 +326,10 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         # --- stage 2: KF + rate-PI trickle -----------------------------
         if target_g - grams > tol:
             self._phase_label = "trickle"
+            t_stage = self._t_s()
             grams, status, polls = self._run_trickle(target_g, grams, t0,
                                                      state)
+            t_marks["trickle"] = self._t_s() - t_stage
             stage_cycles.append(("trickle", polls))
             if status is not None:
                 self._restore_rig()
@@ -247,8 +346,10 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("=== stage 3 'tap': {:.4f} g to go, single taps at "
                      "{:.1f} plate deg".format(target_g - grams,
                                                tap["angle_deg"]))
+            t_stage = self._t_s()
             grams, status, cycles = self._run_phase(
                 3, tap, tol, target_g, grams, t0, state)
+            t_marks["tap"] = self._t_s() - t_stage
             stage_cycles.append(("tap", cycles))
             if status is not None:
                 self._restore_rig()
@@ -258,11 +359,30 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("=== stage 3 'tap' skipped ({:.4f} g to go is inside "
                      "tolerance)".format(target_g - grams))
 
+        # --- final settle: the reading that scores the dose -------------
+        # t_total and |error| are defined against the balance AT REST
+        # (issue #164 section 2.2), so wait out the afterflow + balance
+        # lag before the reading, and only then restore the rig (servo
+        # motion shakes the pan).
+        settle_ms = int(p.get("final_settle_ms", 0))
+        t_stage = self._t_s()
+        if settle_ms > 0:
+            self._phase_label = None
+            self.log("[dose] final settle {} ms before the scoring "
+                     "reading".format(settle_ms))
+            self._sleep_ms(settle_ms)
+            settled = self._read_grams()
+            if settled is None:
+                t_marks["settle"] = self._t_s() - t_stage
+                self._restore_rig()
+                return result(m3.DoseResult.SCALE_ERROR, grams)
+            grams = settled
+        t_marks["settle"] = self._t_s() - t_stage
         self._restore_rig()
         status = m3.DoseResult.OK
         if grams > target_g + tol:
             status = m3.DoseResult.OVERSHOOT
-        return result(status, grams)
+        return result(status, grams, settled=settle_ms > 0)
 
     # -- stage 2 internals ---------------------------------------------
 
@@ -299,6 +419,20 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         polls, misses = 0, 0
         stalled = False
         status = None
+        # Cadence tapping during the trickle (issue #164): one
+        # tap_cadence_on_ms pulse per (on + off) period.  The solenoid
+        # shakes the pan, so every poll counts as "noisy" to the KF
+        # while the knob is on.
+        cad_on_ms = int(p.get("tap_cadence_on_ms", 60))
+        cad_period_ms = 0
+        if p.get("trickle_tap"):
+            cad_period_ms = max(100, cad_on_ms
+                                + int(p.get("tap_cadence_off_ms", 440)))
+            self.log("[trickle] cadence taps on: one {} ms pulse per "
+                     "{} ms".format(cad_on_ms, cad_period_ms))
+        next_tap = prev_ms + cad_period_ms
+        hist = []                     # (ticks_ms, z) fresh polls for the
+                                      # stop-event trailing slope
         print_every = max(1, int(p["print_every_n_polls"]))
         self.log("[trickle] seeded at {:.4f} g; cutoff when m+r*{:.2f}s"
                  "+{:.1f}*sigma >= {:.4f} g".format(m0, tau, p["k_sigma"],
@@ -312,6 +446,13 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                     break
                 self._sleep_ms(dt_ms)
                 self.stepper.keep_alive()
+                if (cad_period_ms
+                        and self._tdiff(self._tms(), next_tap) >= 0):
+                    self.tap.tap(1, cad_on_ms, 0)
+                    state["taps"] += 1
+                    next_tap = _ticks_add(next_tap, cad_period_ms)
+                    if self._tdiff(self._tms(), next_tap) > 0:
+                        next_tap = _ticks_add(self._tms(), cad_period_ms)
                 reading = self.scale.read()
                 now_ms = self._tms()
                 dt = self._tdiff(now_ms, prev_ms) / 1000.0
@@ -324,6 +465,9 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                 if fresh:
                     misses = 0
                     z = reading.grams - self._baseline_g
+                    hist.append((now_ms, z))
+                    if len(hist) > 40:
+                        hist.pop(0)
                 else:
                     misses += 1
                     if misses >= int(p["max_poll_misses"]):
@@ -331,7 +475,8 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                         status = m3.DoseResult.SCALE_ERROR
                         break
                     z = 0.0                   # unused when fresh is False
-                m, r = kf.update(z, rpm > 1e-6, u_rev_s=rpm / 60.0, ff=ff,
+                m, r = kf.update(z, rpm > 1e-6 or cad_period_ms > 0,
+                                 u_rev_s=rpm / 60.0, ff=ff,
                                  fresh=fresh, dt=dt)
                 if revs > 0.3 and m - m0 > 1e-3:
                     ff = 0.9 * ff + 0.1 * ((m - m0) / revs)
@@ -391,12 +536,30 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             # command (possibly ~0); restore it or the tap-phase nudges crawl
             self.stepper.set_speed(self.cfg.STEPPER_SPEED_RPM)
         state["deg"] += revs * 360.0
+        self.last_ff = ff
         if status is not None:
             return grams, status, polls
+        m_stop, r_stop = m, r         # KF estimates at the halt
+        t_stop_s = self._t_s()
         self._sleep_ms(int(p["post_trickle_settle_ms"]))
         settled = self._read_grams()
         if settled is None:
             return m, m3.DoseResult.SCALE_ERROR, polls
+        # Stop event (issue #164 section 2.8): rate at stop from the KF
+        # r_hat AND the trailing-2 s poll slope (both #131 definitions),
+        # at-stop mass estimate, settled mass, and the afterflow delta.
+        self.stop_events.append({
+            "phase": "trickle",
+            "stalled": 1 if stalled else 0,
+            "t_stop_s": _round(t_stop_s, 2),
+            "m_stop_g": _round(m_stop, 5),
+            "settled_g": _round(settled, 5),
+            "afterflow_g": _round(settled - m_stop, 5),
+            "rate_kf_gps": _round(r_stop, 5),
+            "rate_slope_gps": _round(
+                m3._recent_slope(hist, 2.0, self._tdiff), 5),
+            "tau_s": tau,
+        })
         self._tel("%.2f,trickle_end,%.5f,1,%.5f,,,,,,,,,,%d" % (
             self._t_s(), settled, settled, kf.clamp_hits))
         self.log("[trickle] halted{}; settled at {:.4f} g ({:+.1f} mg vs "
