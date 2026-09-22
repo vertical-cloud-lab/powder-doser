@@ -10,6 +10,17 @@ before code is written:
    start prescribed by [PR #162](https://github.com/vertical-cloud-lab/powder-doser/pull/162),
    dose-amount policy, and what gets recorded per dose (§2).
 
+> **Update 2026-09-22** — William answered §4's open questions in
+> [issue #164](https://github.com/vertical-cloud-lab/powder-doser/issues/164):
+> tap cadence **2 Hz**, target mass **0.5 g**, thresholds **180 s / 20 mg**
+> confirmed, first powder **salt**, tuned baseline committed to PR #154
+> (`d21d652`), Honegumi sample provided (`ax-platform==0.4.3`, SOBOL → SAASBO,
+> existing-data attach). The answers are folded in below; §4 records them as
+> locked decisions. Two additions on his request: §2.8 — τ_afterflow quantified
+> as a function of mass rate during screening and saved per powder for the
+> filters — and §5, the laptop runbook ("what do I need on my computer to run
+> this manually").
+
 It builds on four open threads:
 
 | Thread | What it contributes here |
@@ -106,7 +117,8 @@ Everything follows #131's write-local-first rule; Mongo is the queryable ledger.
 |---|---|
 | `opt_campaigns` (Mongo) | One document per campaign: `campaign_id`, `powder_id`, target mass, search-space definition (boxes + categoricals), **frozen-parameter snapshot** (every `trickle_params` value not being searched — the hand-tuned baseline), firmware git SHA, Ax/Honegumi config, status, and the Ax experiment JSON snapshot (updated as the campaign runs). |
 | `opt_trials` (Mongo) | One document per dose (§2.6 field list): parameters, outcomes, flags, per-poll telemetry rows (a dose is a few hundred rows — small enough to embed), session covariates. Written by the Zero at dose completion. |
-| `dosing_profiles` (Mongo) | **The product.** One document per (powder, profile): the chosen parameter set, the frozen-parameter snapshot it rides on, provenance (`campaign_id`, date, firmware SHA), and validated performance (median/p95 |error|, median time, P(|error| ≤ 10 mg) from the §2.4 validation replicates). |
+| `dosing_profiles` (Mongo) | **The product.** One document per (powder, profile): the chosen parameter set, the frozen-parameter snapshot it rides on, provenance (`campaign_id`, date, firmware SHA), and validated performance (median/p95 \|error\|, median time, P(\|error\| ≤ 10 mg) from the §2.4 validation replicates). |
+| `powder_models` (Mongo) | One document per `powder_id`: measured physical constants, starting with the §2.8 τ_afterflow fit (τ0, optional rate slope τ1, fit stats, rate range covered, source stop-event count, provenance). Profiles copy in the values they were validated with; future powders append here. |
 | Zero SD card | JSONL spool of every trial document + the raw telemetry CSV per dose (the existing `/trickle_log_NNN.csv` pulled off the Pico), under `data/opt/<campaign_id>/`. Offline-safe; backfill to Mongo later exactly as #131 does. |
 | Laptop | Ax experiment snapshot JSON (also mirrored into the campaign document); analysis notebooks/plots. Interesting runs get committed to `data/` in the repo as before. |
 
@@ -134,23 +146,28 @@ is expected to work but is logged as such until we have data across targets.
 ### 2.1 Search space — 8 parameters
 
 Two categorical, six continuous. Boxes below are placeholders to be finalized by
-range-finding + the screen (§2.4); the hand-tuned #154 values sit inside every box.
+range-finding + the screen (§2.4); the salt-tuned baseline
+([#154 `d21d652`](https://github.com/vertical-cloud-lab/powder-doser/pull/154/commits/d21d652763afbd59d9fc42d58fdd127e54c75a8c))
+sits inside every box and centers it.
 
-| # | Parameter | Type | Placeholder box | Firmware knob |
-|---|---|---|---|---|
-| 1 | Bulk taps | categorical {off, on} | on = fixed cadence (§4 Q1) | new — port of `main_three_phase`'s per-phase `tap_on_ms`/`tap_off_ms` into the bulk phase |
-| 2 | Trim (PI-phase) taps | categorical {off, on} | on = fixed cadence (§4 Q1) | new — same machinery during the trickle |
-| 3 | Bulk tilt | continuous | 15–40 plate ° | `BULK_TILT_DEG` |
-| 4 | Trim tilt | continuous | 10–30 plate ° | `TRICKLE_TILT_DEG` |
-| 5 | Tap tilt | continuous | 0–15 plate ° | `TAP_TILT_DEG` |
-| 6 | Bulk RPM | continuous | 20–100 auger RPM (ceiling 109) | `BULK_RPM` |
-| 7 | Bulk→trim threshold | continuous | 0.05–0.20 g remaining | `TRICKLE_START_REMAINING_G` |
-| 8 | Trim tolerance band | continuous | 3–15 mg | `TOLERANCE_G` |
+| # | Parameter | Type | Placeholder box | Salt-tuned value | Firmware knob |
+|---|---|---|---|---|---|
+| 1 | Bulk taps | categorical {off, on @ 2 Hz} | — | off | new — port of `main_three_phase`'s per-phase `tap_on_ms`/`tap_off_ms` into the bulk phase |
+| 2 | Trim (PI-phase) taps | categorical {off, on @ 2 Hz} | — | off | new — same machinery during the trickle |
+| 3 | Bulk tilt | continuous | 15–40 plate ° | 30.0 | `BULK_TILT_DEG` |
+| 4 | Trim tilt | continuous | 10–30 plate ° | 15.0 | `TRICKLE_TILT_DEG` |
+| 5 | Tap tilt | continuous | 0–15 plate ° | 10.0 | `TAP_TILT_DEG` |
+| 6 | Bulk RPM | continuous | 20–100 auger RPM (ceiling 109) | 55.0 | `BULK_RPM` |
+| 7 | Bulk→trim threshold | continuous | 0.05–0.30 g remaining | 0.250 | `TRICKLE_START_REMAINING_G` |
+| 8 | Trim tolerance band | continuous | 3–15 mg | 5.0 mg | `TOLERANCE_G` |
 
-Per issue #164, the tap parameters are **on/off only** — the "on" frequency is a fixed
-constant taken from William's tuned setup, not a search dimension (the firmware
-precedent is `tap_on_ms=60 / tap_off_ms=150`, about 4.8 Hz, and #162's screen used
-5 Hz; §4 Q1 confirms the value). Two notes on the list:
+Per issue #164, the tap parameters are **on/off only** — the "on" cadence is fixed at
+**2 Hz** (William, 2026-09-22): one solenoid cycle per 500 ms, keeping the firmware's
+proven 60 ms energize pulse, i.e. `tap_on_ms=60 / tap_off_ms=440` (precedent was
+60/150 ≈ 4.8 Hz in `main_three_phase`; #162's screen assumed 5 Hz — both superseded).
+Cadence tapping exists as a flow aid for powders that will not feed from rotation
+alone; salt flows fine, so the tuned baseline has both off, and the screen learns
+whether "on" buys anything on a given powder. Two notes on the list:
 
 - **Trim tolerance band is safe to search** because |error| is scored against the
   *settled final reading*, not against "inside the band": widening the band directly
@@ -162,9 +179,12 @@ precedent is `tap_on_ms=60 / tap_off_ms=150`, about 4.8 Hz, and #162's screen us
 - **Everything else is frozen** at the hand-tuned values from William's #154 testing —
   PI gains, cutoff margin, k·σ, τ_bal, anticipation, settle times, tap budgets, KF
   noise levels. The frozen snapshot is recorded in the campaign document (§1.3) so
-  every trial is reproducible. Prerequisite: export the tuned `trickle_params.py` (and
-  any locally modified controller files) off the rig Pico and commit them, so the repo
-  baseline *is* the rig baseline (§4 Q2).
+  every trial is reproducible. The prerequisite is met: the tuned baseline is
+  committed as [#154 `d21d652`](https://github.com/vertical-cloud-lab/powder-doser/pull/154/commits/d21d652763afbd59d9fc42d58fdd127e54c75a8c)
+  (trickle tilt 15°, bulk tilt 30°, tap tilt 10°, threshold 0.25 g; the file's
+  `GOAL_MASS_G = 0.75` was the bench goal — the campaign doses 0.5 g, §2.5). One
+  value leaves the frozen set: `TAU_AFTERFLOW_S` becomes a measured per-powder
+  quantity (§2.8) rather than the hardcoded 0.30 s guess.
 
 ### 2.2 Objectives
 
@@ -175,11 +195,22 @@ campaign's product is a Pareto front to pick from rather than a single blessed n
   + taps + final settle; end-to-end, per #162's formulation).
 - `abs_error` — |settled final mass − target|, in mg, from the balance at rest.
 
-Ax's multi-objective machinery (qNEHVI under the default Honegumi template) needs
-reference thresholds — outcomes worse than these contribute nothing to hypervolume.
-Proposed: **t_total ≤ 180 s, |error| ≤ 20 mg** (the tuned controller already beats
-10 mg, so 20 mg is a generous outer fence; §4 Q4). Trials run sequentially
-(batch size 1) — the rig is serial hardware.
+Ax's multi-objective machinery needs reference thresholds — outcomes worse than these
+contribute nothing to hypervolume. **Confirmed: t_total ≤ 180 s, |error| ≤ 20 mg**
+(the tuned controller already beats 10 mg, so 20 mg is a generous outer fence). In the
+campaign script these are `ObjectiveProperties(minimize=True, threshold=180.0)` /
+`threshold=20.0`. Trials run sequentially (batch size 1) — the rig is serial hardware.
+
+William's Honegumi sample (issue #164, 2026-09-22) fixes the template:
+`ax-platform==0.4.3`, a two-step `GenerationStrategy` (SOBOL seed then
+`Models.SAASBO` — fully Bayesian SAAS priors, which under a two-objective config
+means qNEHVI acquisition over SAAS GPs), and the existing-data `attach_trial`
+block, which is exactly the §2.4 screening warm start. Two implementation notes:
+with the screening block attached there is little for SOBOL to do, so its
+`num_trials` shrinks from the sample's 6 to 2 sanity probes; and SAAS fits are
+NUTS-sampled, so `get_next_trial()` takes CPU minutes late in a campaign
+(measured in §5) — acceptable at our dose cadence, with plain `Models.MOO`
+(MAP GP + qNEHVI) as the drop-in fallback if it drags.
 
 ### 2.3 Constraints: no jams, no spills
 
@@ -222,14 +253,13 @@ cross-powder modeling needs no migration):
    factor inert on both gets fixed at its cheap level and dropped from the BO —
    each dropped dimension saves real doses), failure corners tighten the box, replicate
    scatter (from the centers) calibrates the GP noise, and **all screening doses are
-   attached to Ax as existing data** (a Honegumi template toggle), so the BO starts
-   warm instead of burning budget on random initialization.
-3. **BO phase (30–40 doses).** Honegumi-templated Ax service loop: multi-objective
-   qNEHVI, sequential trials, categorical support, existing-data attach. Template
-   selections: objective = multi, model = Default, task = single, custom threshold =
-   yes, constraints = none (parameter-space), existing data = yes. (William to paste
-   the Honegumi sample he generated — §4 Q5 — and we pin `ax-platform` to the version
-   the template targets.)
+   attached to Ax as existing data** (the `attach_trial` block in William's sample),
+   so the BO starts warm instead of burning budget on random initialization.
+   Screening has a second deliverable: its stop events are the dataset for the
+   per-powder τ_afterflow fit (§2.8).
+3. **BO phase (30–40 doses).** The Honegumi/Ax service loop exactly as William's
+   sample shapes it (§2.2): sequential ask–tell, SAASBO after a short SOBOL step,
+   screening data attached. Runs with τ_afterflow frozen at the §2.8 refit value.
 4. **Pareto readout + profile pick.** Plot the feasible front (time vs |error|);
    William picks the operating point (or the knee by default).
 5. **Validation (8–10 replicate doses)** at the picked point. Median/p95 |error|,
@@ -241,8 +271,8 @@ sessions of 45–90 min.
 
 ### 2.5 Same amount every dose? Yes.
 
-Issue #164 asks whether we need to dose different amounts to stay safe. Recommendation:
-**one fixed target mass for the entire campaign — 0.5 g proposed** (§4 Q3). Reasons:
+Issue #164 asks whether we need to dose different amounts to stay safe.
+**Confirmed: one fixed target mass for the entire campaign — 0.5 g.** Reasons:
 
 - **Comparability is the point.** `t_total` and `|error|` are only comparable across
   trials at a fixed target; varying the target makes it a context variable the GP must
@@ -253,10 +283,10 @@ Issue #164 asks whether we need to dose different amounts to stay safe. Recommen
 - **The target must comfortably exceed the bulk→trim threshold.** A dose with
   `target < threshold + anticipation` skips the bulk phase entirely (existing firmware
   behavior), which would make parameters 1/3/6 inert on those trials and corrupt the
-  model. Rule: `target ≥ max(threshold box) + anticipation + margin`. With the
-  proposed threshold box capped at 0.20 g and anticipation 0.05 g, a 0.5 g target
-  keeps every trial three-phase. (Searching the threshold up to 0.30 g instead pushes
-  the target to 1 g and doubles powder throughput per campaign — William's call, §4 Q3.)
+  model. Rule: `target ≥ max(threshold box) + anticipation + margin`. The threshold
+  box is capped at 0.30 g (it must contain the tuned 0.250 g); with anticipation
+  0.05 g, the worst-case bulk halt is at 0.35 g remaining, so a 0.5 g target leaves
+  every trial a real three-phase dose with at least 0.15 g dispensed in bulk.
 
 **Session protocol** (the actual safety/consistency mechanics, per dose and per
 session): auto-tare before every dose; empty the receiving cup back into the hopper on
@@ -277,6 +307,10 @@ One `opt_trials` document per dose:
 - **Outcomes:** `t_bulk_s`, `t_trickle_s`, `t_tap_s`, `t_settle_s`, `t_total_s`;
   settled final mass; signed `error_mg`; `abs_error_mg`; overshoot flag; tap count and
   nudge count; learned feed factor at cutoff.
+- **Stop events (feeds §2.8):** one row per halt (bulk halt, trickle cutoff):
+  rate-at-stop from the KF `r̂` and from the last-2 s poll slope (both #131
+  definitions), at-stop mass estimate, settled mass, `afterflow_g`, and the
+  `tau_afterflow_s` the dose executed with.
 - **Flags:** `jam` (with reason code: stall / tap-budget / timeout), `spill`
   (operator answer), `aborted`.
 - **Covariates:** doses since cup empty, hopper top-up marker, recycle count,
@@ -297,32 +331,206 @@ noise handled by Ax's inferred-noise GP plus center-point replicates rather than
 explicit heteroscedastic model. Each has a named upgrade path in #162's doc, and the
 data schema is deliberately shaped so none of the upgrades requires re-collecting data.
 
+### 2.8 τ_afterflow — quantified during screening, saved per powder, used in the filters
+
+The firmware's predictive cutoff halts the trickle when
+`m̂ + r̂·τ_afterflow + k·σ ≥ goal − margin`; today `TAU_AFTERFLOW_S = 0.30` is a
+hardcoded guess. [PR #131](https://github.com/vertical-cloud-lab/powder-doser/pull/131)'s
+stop-response work showed the real value is a per-powder property: **afterflow ≈
+τ × (flow at stop)** holds for every powder that flows (pooled over 37 battery stop
+events: r = 0.95), with per-powder τ spanning 0.78–1.17 s and salt's dedicated stop
+tests pooling to **τ = 0.83 ± 0.04 s** (n = 84) — well above the hardcoded 0.30. Per
+William (issue #164, 2026-09-22), the campaign quantifies τ_afterflow **as a function
+of mass rate, while the screening is happening**, and saves it per powder for the
+filters:
+
+- **Free data — no extra doses.** Every dose emits two stop events at very
+  different rates: the bulk halt (high rate — `BULK_RPM` × feed factor, spread
+  across the RPM/tilt box by the screen's own design) and the trickle cutoff (low
+  rate, at or under `TRICKLE_MAX_RATE_GPS`). The Zero records each as a §2.6
+  stop-event row: rate-at-stop (KF `r̂`, with the last-2 s poll slope as
+  cross-check — the two #131 definitions), at-stop mass estimate, and
+  `afterflow_g` = settled reading − at-stop estimate.
+- **The fit.** At screening end (about 40 usable stop events spanning the rate
+  range; jam/spill doses excluded), robust-fit the zero-intercept model
+  `afterflow(ṁ) = τ0·ṁ + τ1·ṁ²` — equivalently τ(ṁ) = τ0 + τ1·ṁ, the
+  "function of mass rate" asked for. If τ1 is insignificant (#131's pooled data
+  says a single τ fits well), save the scalar τ0 alone.
+- **Where it lives.** The `powder_models` document for that `powder_id` (§1.3),
+  refreshed as later stop events accumulate; every trial records the value it
+  executed with; the dosing profile copies the value it was validated with.
+- **How it is used.** Screening itself runs the tuned baseline untouched
+  (τ = 0.30 s — the value William's within-10 mg tuning was validated with;
+  changing a frozen parameter mid-baseline would corrupt the screen). At BO
+  start the refit τ̂ is frozen in and pushed per dose (`set tau_afterflow_s …`),
+  and BO, validation, and production all run on it — a single scalar, so no
+  firmware change beyond the knob push (a τ1 slope knob is the upgrade if the
+  rate dependence turns out real). The screening → BO controller change is a
+  §2.7-style v1 roughness; the 4 screening center points are re-dosed once under
+  τ̂ (4 doses) so the warm-start data and the BO regime share an anchor.
+- **Known bias, accepted in v1.** Settled-minus-at-stop deltas fold the balance
+  lag into τ (#131's caveat: a shared 0.1–0.2 s inflation; the 2026-08-14 drop
+  tests put τ_bal near 0.16 s while the firmware believes 0.7). The cutoff's
+  margin + k·σ terms absorb constant offsets, and bench-plan test A1 (τ_bal
+  measurement) is the clean-up path — the fit is re-runnable from stored
+  stop-event rows once τ_bal is pinned.
+
 ---
 
 ## 3. Code that will need to exist (after this design is agreed)
 
 | Piece | Where it runs | What it is |
 |---|---|---|
-| Tap-cadence knobs + `RESULT` line | Pico (`trickle_tap/`) | `BULK_TAP` / `TRICKLE_TAP` categorical knobs reusing the `Tap` driver + `main_three_phase` per-phase cadence pattern; one machine-parseable JSON result line per dose; overshoot-abort guard |
-| `scripts/opt_dose_capture.py` | Pi Zero | Per-dose executor: params in over serial, dose, telemetry off, spill prompt, spool + Mongo upload, JSON line to stdout (patterned on #131's `characterize_capture.py`) |
-| `scripts/opt_campaign.py` | Laptop | Honegumi/Ax ask–tell loop, SSH per trial, screening-block runner, penalization, snapshots, resume, Pareto readout |
-| `scripts/dose.py` | Pi Zero | Production dosing from a saved profile (§1.4) |
+| Tap-cadence knobs + `RESULT` line | Pico (`trickle_tap/`) | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`tap_on_ms=60 / tap_off_ms=440`), reusing the `Tap` driver + `main_three_phase` per-phase cadence pattern; one machine-parseable JSON result line per dose (incl. the §2.6 stop-event fields); overshoot-abort guard |
+| `scripts/opt_dose_capture.py` | Pi Zero | Per-dose executor: params in over serial (incl. `tau_afterflow_s`), dose, telemetry off, spill prompt, spool + Mongo upload, JSON line to stdout (patterned on #131's `characterize_capture.py`) |
+| `scripts/opt_campaign.py` | Laptop | Honegumi/Ax ask–tell loop (William's `ax-platform==0.4.3` sample as the skeleton), SSH per trial, screening-block runner, penalization, snapshots, resume, Pareto readout |
+| `scripts/fit_tau_afterflow.py` | Laptop | §2.8 fit: stop-event rows → τ0 (+ τ1 if real) → `powder_models` upsert + diagnostic plot (pattern: #131's `analyze_battery_afterflow.py`) |
+| `scripts/dose.py` | Pi Zero | Production dosing from a saved profile (§1.4), pulling τ_afterflow from `powder_models` |
 | Schema/helpers module | shared | Trial/campaign/profile document builders + validation, so Zero and laptop write identical shapes |
 
 Simulation tests will dry-run the campaign loop against the #124 twin (no hardware),
 same pattern as `trickle_tap/sim/`.
 
-## 4. Open questions for William
+## 4. Decisions — locked 2026-09-22 (William, issue #164)
 
-1. **Tap "on" cadence:** what fixed frequency (or on/off ms) is your tuned rig using
-   for bulk and PI taps? (Firmware precedent is 60/150 ms ≈ 4.8 Hz.)
-2. **Export the tuned baseline:** please pull your current `trickle_params.py` (and any
-   locally modified files) off the rig Pico so the frozen snapshot in the campaign
-   document matches the rig, and so the search boxes can be centered on your tuned
-   values. This is the one hard prerequisite.
-3. **Target mass:** 0.5 g with the threshold box capped at 0.20 g, or 1 g with the
-   threshold searched to 0.30 g? (§2.5)
-4. **Objective thresholds:** happy with 180 s / 20 mg as the hypervolume fence? (§2.2)
-5. **Honegumi sample:** paste the generated sample code from the site into the issue so
-   the campaign script pins the same `ax-platform` version and template shape.
-6. **First powder:** which `powder_id` runs campaign #1?
+The §4 questions in the first draft of this doc are all answered:
+
+1. **Tap "on" cadence: 2 Hz**, both bulk and PI phases (`tap_on_ms=60 /
+   tap_off_ms=440`). Cadence tapping is a flow aid for powders that will not feed
+   from rotation alone; salt baseline runs with both off.
+2. **Tuned baseline: committed** —
+   [#154 `d21d652`](https://github.com/vertical-cloud-lab/powder-doser/pull/154/commits/d21d652763afbd59d9fc42d58fdd127e54c75a8c)
+   updates `trickle_params.py` with the values that worked well for salt. This is the
+   §2.1 frozen snapshot and box center.
+3. **Target mass: 0.5 g**, threshold box capped at 0.30 g (§2.5).
+4. **Objective thresholds: 180 s / 20 mg** confirmed (§2.2).
+5. **Honegumi sample: provided** — `ax-platform==0.4.3`, SOBOL → SAASBO
+   `GenerationStrategy`, existing-data `attach_trial` block (§2.2; laptop-side
+   verification in §5).
+6. **First powder: salt** (`powder_id = "salt"`). Best-studied powder in the ledger:
+   #131 gives it a feed factor near 0.113 g/rev, a measured τ_afterflow prior of
+   0.83 s (§2.8), and the single-tap increment near 6.5 mg that floors the tolerance
+   band box.
+7. **New (this round): τ_afterflow** is quantified as a function of mass rate during
+   screening and saved per powder for the filters (§2.8).
+
+---
+
+## 5. Runbook: running this from your computer
+
+Three stages of "manually": what you can set up and verify **today** (§5.1 — all of
+it laptop-side, nothing depends on unwritten code), what a campaign session looks
+like once §3's scripts exist (§5.2), and the fully manual ask–tell loop (§5.3) —
+which is both how the very first doses can run before `opt_campaign.py` exists and
+the fallback if the script misbehaves mid-session.
+
+The laptop-side stack was verified 2026-09-22 on a clean Linux machine with
+**Python 3.12.3**: `pip install ax-platform==0.4.3` resolves to botorch 0.12.0,
+gpytorch 1.13, torch 2.14.0, pyro-ppl 1.9.1, numpy 2.5.3, pandas 3.0.6, and
+William's issue-#164 sample runs **unmodified** — 5 `attach_trial` rows accepted,
+Sobol suggestions instant, SAASBO suggestions 37–47 s each (at 9 completed trials,
+2-core CI runner; NUTS refits the model every ask, so expect low minutes per
+suggestion late in a 60-trial campaign), Pareto readout and
+`save_to_json_file()` both fine.
+
+### 5.1 One-time setup
+
+1. **Python 3.10–3.12 in a venv.** `ax-platform==0.4.3` is a 2024 pin — if the
+   system Python is newer than 3.12, make a 3.12 environment
+   (`conda create -n doser-opt python=3.12` or a python.org install). Then:
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate        # Windows: .venv\Scripts\activate
+   pip install ax-platform==0.4.3 pymongo
+   ```
+
+   Sizing: on Windows/macOS the default torch wheel is CPU-only and the install is
+   about 1 GB. On Linux the default wheel bundles CUDA (5.8 GB measured!) — if the
+   laptop is Linux without an NVIDIA GPU, run
+   `pip install torch --index-url https://download.pytorch.org/whl/cpu` *first*,
+   then the line above. No GPU is needed at this problem size.
+2. **Smoke-test the optimizer** by running the issue-#164 sample exactly as pasted
+   (`python honegumi_sample.py`). The 6 Sobol trials are instant; the 15 SAASBO
+   trials cost 40 s to a few minutes each, so let it run 15–30 min (or shrink
+   `range(21)`); it should end by printing nothing after
+   `get_pareto_optimal_parameters()` — add a `print(pareto_results)` to see the
+   front. If it completes, the whole Ax/BoTorch/torch stack is good.
+3. **Tailscale path to the rig.** Install the Tailscale app, log into the tailnet,
+   and confirm the Zero is visible (`tailscale status`), then
+   `ssh <user>@<zero-hostname> echo ok`. Auth is Tailscale SSH via the tailnet
+   ACLs — no key files; if it refuses, the ACL needs your device (admin change).
+   This is the #131 path, so it likely already works from your machine.
+4. **Repo in both places.** Laptop: clone the repo (campaign script + analysis run
+   from it). Zero: `git pull` on its checkout (it will host
+   `opt_dose_capture.py`). Pico: already carries the tuned #154 `trickle_tap/`
+   firmware — the §3 knob additions ship as a normal MicroPico file upload when
+   ready.
+5. **MongoDB from the laptop.** Export the same `MONGODB_URI` the Zero uses (#131
+   convention: env var only — never in the shell history of a shared machine,
+   never committed). In Atlas, Network Access must allow your laptop's IP. Test:
+
+   ```bash
+   python -c "import os,pymongo;print(pymongo.MongoClient(os.environ['MONGODB_URI']).powder_doser.command('ping'))"
+   ```
+
+### 5.2 A campaign session (once §3's scripts exist)
+
+Rig on, balance on and warm, hopper loaded with the campaign powder, empty cup on
+the pan; then from the laptop:
+
+```bash
+python scripts/opt_campaign.py --powder-id salt --target-g 0.5 --budget 40
+```
+
+Everything after that is answering prompts: the per-dose spill check, and the
+cup-empty / hopper-top-up cadence prompts (§2.5). `Ctrl-C`, laptop sleep, or a
+dropped SSH session are all safe — each dose is atomic on the Zero (§1.1), and
+`--resume <campaign_id>` picks up from the Mongo ledger + the Ax JSON snapshot
+without re-dosing anything.
+
+### 5.3 The fully manual ask–tell loop
+
+This is the sample's own pattern pointed at the rig instead of `branin_moo` — you
+are the transport layer. Two terminals:
+
+- **Terminal A (rig):** `ssh` to the Zero, `tmux`, attach to the Pico REPL
+  (`mpremote` or pyserial miniterm, as in #131), with `main_trickle.py` running.
+- **Terminal B (optimizer):** `python -i campaign_manual.py` — the sample with the
+  experiment definition swapped for the real one:
+
+  ```python
+  ax_client.create_experiment(
+      name="salt_manual",
+      parameters=[
+          {"name": "bulk_tap", "type": "choice", "is_ordered": False,
+           "values": ["off", "2hz"]},
+          {"name": "trim_tap", "type": "choice", "is_ordered": False,
+           "values": ["off", "2hz"]},
+          {"name": "bulk_tilt_deg", "type": "range", "bounds": [15.0, 40.0]},
+          {"name": "trickle_tilt_deg", "type": "range", "bounds": [10.0, 30.0]},
+          {"name": "tap_tilt_deg", "type": "range", "bounds": [0.0, 15.0]},
+          {"name": "bulk_rpm", "type": "range", "bounds": [20.0, 100.0]},
+          {"name": "trickle_start_remaining_g", "type": "range",
+           "bounds": [0.05, 0.30]},
+          {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
+      ],
+      objectives={
+          "t_total_s": ObjectiveProperties(minimize=True, threshold=180.0),
+          "abs_error_mg": ObjectiveProperties(minimize=True, threshold=20.0),
+      },
+  )
+  ```
+
+  (Thresholds passed explicitly — the verification run confirmed Ax silently
+  *infers* thresholds when they are omitted, which is not what we want scoring
+  hypervolume.)
+
+Then per dose: `get_next_trial()` in B; type the suggestion into A as `set` lines
+(`set bulk_tilt_deg 27.4`, `set bulk_rpm 63`, … — every §2.1 knob is live-settable
+today except the two tap categoricals, which need the §3 firmware addition) and
+dose with `g 0.5`; read `t_total` and the settled error off the dose summary; back
+in B, `complete_trial(trial_index=i, raw_data={"t_total_s": 74.2, "abs_error_mg":
+6.1})` and `ax_client.save_to_json_file("salt_manual.json")` every trial. Log each
+dose on paper or a CSV as well — in manual mode *you* are also the ledger, and the
+rows get backfilled to `opt_trials` later the same way #131 backfills offline runs.
