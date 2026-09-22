@@ -18,13 +18,13 @@ degrees / RPM (44:20 gearing folded in likewise).
 # =========================================================================
 
 # Goal (target) mass for a bare ``g`` command, grams.
-GOAL_MASS_G = 0.200
+GOAL_MASS_G = 0.7500
 
 # Dispensing angle during the PI trickle, plate degrees.  Steeper (bigger)
 # feeds faster but holds more powder on the tube lip; the twin's deployed
 # controller trickles at 20.  The fine phase of the three-phase firmware
 # uses 22.5, the tap endgame 0 (horizontal, most precise).
-TRICKLE_TILT_DEG = 20.0
+TRICKLE_TILT_DEG = 15.0
 
 # =========================================================================
 # Dose structure
@@ -37,20 +37,20 @@ TOLERANCE_G = 0.005
 # trickle, grams.  A goal below (this + BULK_ANTICIPATION_G) skips bulk
 # entirely and the whole dose is trickle + taps -- handy for watching the
 # PI behaviour on its own at small targets.
-TRICKLE_START_REMAINING_G = 0.300
+TRICKLE_START_REMAINING_G = 0.250
 
 # Bulk phase (velocity mode, borrowed from main_three_phase's phase 1):
 # spin at BULK_RPM / BULK_TILT_DEG until remaining <= TRICKLE_START_
 # REMAINING_G + BULK_ANTICIPATION_G, then settle and hand to the trickle.
 BULK_ENABLED = True          # 0/False = always start in the trickle
-BULK_TILT_DEG = 25.0
+BULK_TILT_DEG = 30.0
 BULK_RPM = 55.0              # auger RPM (ceiling ~109)
 BULK_ANTICIPATION_G = 0.050  # halt this much EARLY (in-flight margin)
 BULK_POLL_MS = 250
 BULK_SETTLE_MS = 1500
 
 # Tap endgame tilt, plate degrees (0 = horizontal, the precise end).
-TAP_TILT_DEG = 0.0
+TAP_TILT_DEG = 10.0
 TAPS_PER_CYCLE = 1           # single taps: a 2-burst can dump a slug past
                              # target off a charged lip (twin finding)
 TAP_SETTLE_MS = 1500
