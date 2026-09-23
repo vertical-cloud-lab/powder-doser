@@ -413,7 +413,9 @@ canned fake-serial Pico). The loop itself dry-runs end to end with
 Pareto — with no hardware.
 
 Remaining before the first rig dose: upload the updated `trickle_tap/` folder to
-the Pico (MicroPico, as usual) and `git pull` on the Zero.
+the Pico (MicroPico, as usual) and bring this branch's `scripts/` onto the Zero
+(§5.1 item 4 — the Zero's tree is not yet a git checkout; the sparse-checkout
+conversion there is the verified path).
 
 ## 4. Decisions — locked 2026-09-22 (William, issue #164)
 
@@ -494,20 +496,36 @@ suggestion late in a 60-trial campaign), Pareto readout and
    This is the #131 path, so it likely already works from your machine.
 4. **Repo in both places.** Laptop: clone the repo (campaign script + analysis run
    from it). Zero: `~/powder-doser` there is currently a plain copied tree, **not
-   a git checkout** (verified 2026-09-23) — either convert it in place, which is
-   safe because the repo tracks nothing under `data/`, `handoff/`, or
-   `preflight_*.json`, so `checkout -f` cannot touch the bench artifacts:
+   a git checkout** (verified 2026-09-23) — convert it in place over SSH with a
+   sparse, blob-filtered checkout of `scripts/` alone (sequence verified
+   end-to-end 2026-09-23 against a replica of the bench tree). This transfers
+   about 80 KiB instead of the repo's full 134 MB — kind to the bench Wi-Fi —
+   and only *adds* files: the tracked `scripts/` names and the on-device bench
+   scripts are disjoint, `data/`, `handoff/`, and `preflight_*.json` are
+   untracked, and everything else on the device sits outside the sparse pattern.
+   No `-f` anywhere, so if any of that ever stops being true git refuses
+   instead of overwriting:
 
    ```bash
+   ssh <user>@<zero-hostname>
    cd ~/powder-doser
-   git init && git remote add origin https://github.com/vertical-cloud-lab/powder-doser.git
-   git fetch origin main && git checkout -f -B main origin/main
+   git init
+   git remote add origin https://github.com/vertical-cloud-lab/powder-doser.git
+   git sparse-checkout set --no-cone '/scripts/'
+   git fetch --depth 1 --filter=blob:none origin claude/issue-164-20260922-1928
+   git checkout -t origin/claude/issue-164-20260922-1928
+   git log --oneline -1     # expect the PR #166 tip
    ```
 
-   or keep copying `scripts/` + firmware over as before. Either way it must end
-   up hosting this branch's `scripts/`. Pico: already carries the tuned #154
-   `trickle_tap/` firmware — the §3 knob additions ship as a normal MicroPico
-   file upload when ready.
+   Point it at the PR branch until #166 merges — `origin/main` does not have
+   the campaign scripts yet. Afterwards switch once with
+   `git fetch --depth 1 origin main && git checkout -t origin/main`; update
+   with `git pull --ff-only` either way. `git status` on the Zero will list
+   the bench artifacts as untracked (append `data/`, `handoff/`,
+   `preflight_*.json` to `.git/info/exclude` to quiet them) and may list the
+   device's older `docs/`/`hardware/` copies as modified — expected, and left
+   untouched. Pico: already carries the tuned #154 `trickle_tap/` firmware —
+   the §3 knob additions ship as a normal MicroPico file upload when ready.
 5. **MongoDB.** Access is provisioned end-to-end; `opt_common.resolve_mongo_uri`
    looks for a connection string as `$MONGODB_URI`, then `$PI_MONGODB_URI`, then
    the #131 credential file `~/.config/powder-doser/env` — so per host:
