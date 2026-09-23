@@ -146,18 +146,51 @@ def frozen_snapshot():
 # Executors: SSH to the Zero, or the PR #124 virtual plant
 # ---------------------------------------------------------------------------
 
+# The Zero's venv is the only interpreter there with pymongo (PR #131).
+DEFAULT_REMOTE_PYTHON = "~/powder-doser-venv/bin/python"
+
+
+def _shell_path(path):
+    """shlex.quote that keeps a leading ``~/`` expandable on the remote
+    shell -- a quoted tilde is a literal tilde, so the documented
+    ``~/powder-doser`` defaults would otherwise never resolve."""
+    if path == "~":
+        return "~"
+    if path.startswith("~/"):
+        return "~/" + shlex.quote(path[2:])
+    return shlex.quote(path)
+
+
 class SSHExecutor:
-    def __init__(self, host, remote_repo, port, operator):
+    def __init__(self, host, remote_repo, port, operator,
+                 remote_python=DEFAULT_REMOTE_PYTHON):
         self.host = host
         self.remote = remote_repo.rstrip("/")
         self.port = port
         self.operator = operator
+        self.remote_python = remote_python
+
+    def _remote_cmd(self, extra):
+        """The one sh line run on the Zero per invocation.
+
+        Non-interactive SSH reads no rc files, so the #131 credential
+        file is sourced explicitly when present (opt_common also reads
+        it directly as a fallback); the venv interpreter is preferred
+        with a plain-python3 fallback for hosts without the venv.
+        """
+        args = " ".join(shlex.quote(c)
+                        for c in ["scripts/opt_dose_capture.py"] + extra)
+        env_file = _shell_path(oc.MONGODB_ENV_FILE)
+        return ("[ -f {env} ] && . {env}; "
+                "cd {repo} || exit 9; "
+                'PY={py}; [ -x "$PY" ] || PY=python3; '
+                'exec "$PY" {args}').format(
+                    env=env_file, repo=_shell_path(self.remote),
+                    py=_shell_path(self.remote_python), args=args)
 
     def _invoke(self, extra, timeout_s):
-        cmd = ["python3", "{}/scripts/opt_dose_capture.py".format(
-            self.remote)] + extra
         ssh = ["ssh", "-o", "BatchMode=yes", self.host,
-               " ".join(shlex.quote(c) for c in cmd)]
+               self._remote_cmd(extra)]
         proc = subprocess.run(ssh, capture_output=True, text=True,
                               timeout=timeout_s)
         sys.stderr.write(proc.stderr)
@@ -500,7 +533,8 @@ class Runner:
             if not args.host:
                 raise SystemExit("--host is required unless --simulate")
             self.executor = SSHExecutor(args.host, args.remote_repo,
-                                        args.pico_port, args.operator)
+                                        args.pico_port, args.operator,
+                                        args.remote_python)
         self.operator = Operator(args.countdown, args.cup_every,
                                  args.park_after, args.simulate)
         self.records = self.campaign.records()
@@ -845,6 +879,9 @@ def main(argv=None):
                                    "e.g. pi@<zero-hostname>")
     ap.add_argument("--remote-repo", default="~/powder-doser",
                     help="repo checkout path on the Zero")
+    ap.add_argument("--remote-python", default=DEFAULT_REMOTE_PYTHON,
+                    help="interpreter on the Zero (falls back to "
+                         "python3 when the path is absent)")
     ap.add_argument("--pico-port", default=None,
                     help="serial port on the Zero (default /dev/ttyACM0)")
     ap.add_argument("--resume", metavar="CAMPAIGN_ID")
@@ -866,9 +903,16 @@ def main(argv=None):
                          "write the dosing profile")
     ap.add_argument("--replicates", type=int, default=8)
     args = ap.parse_args(argv)
-    if not os.environ.get(oc.MONGODB_URI_ENV) and not args.simulate:
-        log("warning: {} not set -- running local-only; the Zero still "
-            "spools/uploads on its side".format(oc.MONGODB_URI_ENV))
+    uri, source = oc.resolve_mongo_uri()
+    if uri:
+        log("MongoDB ledger: {} database via {}".format(oc.DB_NAME,
+                                                        source))
+    elif not args.simulate:
+        log("warning: no MongoDB URI found (checked ${}, ${}, {}) -- "
+            "running local-only; the Zero still spools/uploads on its "
+            "side".format(oc.MONGODB_URI_ENV,
+                          oc.MONGODB_URI_ENV_FALLBACKS[0],
+                          oc.MONGODB_ENV_FILE))
     Runner(args).run()
     return 0
 

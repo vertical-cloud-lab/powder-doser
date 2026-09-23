@@ -26,6 +26,14 @@ COLL_TRIALS = "opt_trials"
 COLL_PROFILES = "dosing_profiles"
 COLL_POWDER_MODELS = "powder_models"
 MONGODB_URI_ENV = "MONGODB_URI"
+# The repo's CI secret holding the rig-scoped Atlas user (readWrite on
+# powder_doser only) -- the same value the Zero keeps on-device.
+MONGODB_URI_ENV_FALLBACKS = ("PI_MONGODB_URI",)
+# PR #131's on-device convention: `export MONGODB_URI='...'`, mode 600.
+# Parsed directly (not shell-sourced) so credentials still resolve when
+# the executor arrives over a non-interactive SSH invocation that never
+# reads .bashrc/.profile.
+MONGODB_ENV_FILE = "~/.config/powder-doser/env"
 
 # The firmware's machine-parseable dose summary (trickle_controller).
 RESULT_PREFIX = "RESULT "
@@ -311,6 +319,56 @@ def find_spooled_trial(out_root, trial_uuid, campaign_id=None):
     return None
 
 
+def _env_file_uri(path, keys=(MONGODB_URI_ENV,) + MONGODB_URI_ENV_FALLBACKS):
+    """First matching KEY=value from a #131-style env file, or None.
+
+    Understands ``export KEY=value`` and bare ``KEY=value`` lines with
+    optional single/double quotes -- enough for the file the Zero
+    actually has, without shelling out.
+    """
+    try:
+        with open(path) as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return None
+    found = {}
+    for line in lines:
+        m = re.match(r"^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$",
+                     line)
+        if not m:
+            continue
+        value = m.group(2).strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        found[m.group(1)] = value
+    for key in keys:
+        if found.get(key):
+            return found[key]
+    return None
+
+
+def resolve_mongo_uri(uri=None, env_file=MONGODB_ENV_FILE):
+    """-> (connection string or None, human-readable source label).
+
+    Resolution order: explicit argument, ``$MONGODB_URI``,
+    ``$PI_MONGODB_URI`` (the CI secret for the rig-scoped user), then
+    the Zero's ``~/.config/powder-doser/env`` file.  The label names
+    where the URI came from and never contains the URI itself, so it is
+    always safe to log.
+    """
+    if uri:
+        return uri, "explicit --uri"
+    for name in (MONGODB_URI_ENV,) + MONGODB_URI_ENV_FALLBACKS:
+        value = os.environ.get(name)
+        if value:
+            return value, "${}".format(name)
+    path = os.path.expanduser(env_file)
+    value = _env_file_uri(path)
+    if value:
+        return value, env_file
+    return None, None
+
+
 def mongo_db(uri=None):
     """The powder_doser database handle, or None (no URI / no pymongo).
 
@@ -318,7 +376,7 @@ def mongo_db(uri=None):
     keep working -- but does raise on a genuinely bad connection so the
     caller can say so.
     """
-    uri = uri or os.environ.get(MONGODB_URI_ENV)
+    uri, _ = resolve_mongo_uri(uri)
     if not uri:
         return None
     import pymongo                      # lazy: optional on the Zero

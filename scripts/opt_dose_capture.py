@@ -13,8 +13,10 @@ invocation, one dose (campaign-setup.md sections 1.1 / 3 / 5.3):
    firmware's machine-readable ``RESULT {json}`` line,
 4. pull the dose telemetry CSV (``log``),
 5. build the opt_trials document, spool it to the SD card
-   (``data/opt/<campaign_id>/``), upload it to MongoDB when
-   ``MONGODB_URI`` is set, and
+   (``data/opt/<campaign_id>/``), upload it to MongoDB when a
+   connection string resolves (``$MONGODB_URI``, ``$PI_MONGODB_URI``,
+   or the #131 ``~/.config/powder-doser/env`` file -- see
+   ``opt_common.resolve_mongo_uri``), and
 6. print exactly ONE JSON summary line on stdout for the laptop.
 
 Everything human-readable goes to stderr; stdout is the contract.

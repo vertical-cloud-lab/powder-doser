@@ -404,7 +404,8 @@ All six pieces exist; the table now points at them:
 | [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts, snapshots + `--resume`, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout, `--validate-params` replicate blocks that write `dosing_profiles` |
 | [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
 | [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
-| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: search space, campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, spool + lazy-pymongo upload (stdlib-only for the Zero) |
+| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: search space, campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
+| [`scripts/check_mongo.py`](../../scripts/check_mongo.py) | anywhere | MongoDB preflight: reports which credential source resolved (never the URI itself), pings the cluster, lists the `powder_doser` collections |
 
 Host-side tests: `scripts/tests/test_opt_dose_capture.py` (executor against a
 canned fake-serial Pico). The loop itself dry-runs end to end with
@@ -492,17 +493,54 @@ suggestion late in a 60-trial campaign), Pareto readout and
    ACLs — no key files; if it refuses, the ACL needs your device (admin change).
    This is the #131 path, so it likely already works from your machine.
 4. **Repo in both places.** Laptop: clone the repo (campaign script + analysis run
-   from it). Zero: `git pull` on its checkout (it will host
-   `opt_dose_capture.py`). Pico: already carries the tuned #154 `trickle_tap/`
-   firmware — the §3 knob additions ship as a normal MicroPico file upload when
-   ready.
-5. **MongoDB from the laptop.** Export the same `MONGODB_URI` the Zero uses (#131
-   convention: env var only — never in the shell history of a shared machine,
-   never committed). In Atlas, Network Access must allow your laptop's IP. Test:
+   from it). Zero: `~/powder-doser` there is currently a plain copied tree, **not
+   a git checkout** (verified 2026-09-23) — either convert it in place, which is
+   safe because the repo tracks nothing under `data/`, `handoff/`, or
+   `preflight_*.json`, so `checkout -f` cannot touch the bench artifacts:
 
    ```bash
-   python -c "import os,pymongo;print(pymongo.MongoClient(os.environ['MONGODB_URI']).powder_doser.command('ping'))"
+   cd ~/powder-doser
+   git init && git remote add origin https://github.com/vertical-cloud-lab/powder-doser.git
+   git fetch origin main && git checkout -f -B main origin/main
    ```
+
+   or keep copying `scripts/` + firmware over as before. Either way it must end
+   up hosting this branch's `scripts/`. Pico: already carries the tuned #154
+   `trickle_tap/` firmware — the §3 knob additions ship as a normal MicroPico
+   file upload when ready.
+5. **MongoDB.** Access is provisioned end-to-end; `opt_common.resolve_mongo_uri`
+   looks for a connection string as `$MONGODB_URI`, then `$PI_MONGODB_URI`, then
+   the #131 credential file `~/.config/powder-doser/env` — so per host:
+
+   - **Zero: nothing to do.** The env file is in place (mode 600, holding the
+     scoped Atlas user — readWrite on `powder_doser` only) and the campaign
+     code reads it directly, so credentials survive the non-interactive SSH
+     invocations `opt_campaign.py` makes (which read no rc files). `pymongo`
+     lives only in `~/powder-doser-venv`, which the SSH executor now prefers
+     (`--remote-python`, falling back to `python3`).
+   - **Laptop:** export `MONGODB_URI` before a campaign (#131 convention: env
+     var only — never in the shell history of a shared machine, never
+     committed). Get the value from the Atlas console (Database Access) or
+     reuse the Zero's scoped user; GitHub repo secrets cannot be read back out
+     of the settings UI. This is optional — without it the laptop-side campaign
+     mirror is skipped and the Zero still uploads every trial.
+   - **CI / @claude sessions:** already wired. The workflow injects the repo
+     secrets `MONGODB_URI` (admin-grade user), `PI_MONGODB_URI` (identical to
+     the Zero's scoped user), and `MONGODB_USERNAME`/`MONGODB_PASSWORD`.
+
+   Verify from any host with the preflight (it never prints the URI):
+
+   ```bash
+   python scripts/check_mongo.py                # laptop / CI
+   ssh <zero> '~/powder-doser-venv/bin/python ~/powder-doser/scripts/check_mongo.py'
+   ```
+
+   The four campaign collections (`opt_campaigns`, `opt_trials`,
+   `dosing_profiles`, `powder_models`) are created by the first write — no
+   Atlas-side setup is needed. Atlas Network Access already admits both
+   datacenter (CI) and residential (bench) IPs, so a new laptop IP is unlikely
+   to need an allowlist change; if the preflight fails there anyway, that is
+   the first thing to check.
 
 ### 5.2 A campaign session (once §3's scripts exist)
 

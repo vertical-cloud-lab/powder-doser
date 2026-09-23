@@ -199,9 +199,80 @@ def test_jam_classification():
           and oc.classify_status("overshoot") == (False, None, False))
 
 
+@contextlib.contextmanager
+def _mongo_env(**values):
+    """os.environ with the Mongo vars forced to ``values`` (or absent)."""
+    names = (oc.MONGODB_URI_ENV,) + oc.MONGODB_URI_ENV_FALLBACKS
+    saved = {n: os.environ.pop(n, None) for n in names}
+    os.environ.update(values)
+    try:
+        yield
+    finally:
+        for n in names:
+            os.environ.pop(n, None)
+            if saved[n] is not None:
+                os.environ[n] = saved[n]
+
+
+def test_mongo_uri_resolution():
+    with tempfile.TemporaryDirectory(prefix="optenv-") as tmp:
+        env_file = os.path.join(tmp, "env")
+        with open(env_file, "w") as f:
+            f.write("# comment\n"
+                    "export MONGODB_URI='mongodb+srv://file-user@x/'\n"
+                    "OTHER=ignored\n")
+        with _mongo_env():
+            uri, src = oc.resolve_mongo_uri(env_file=env_file)
+            check("env file is parsed (export + quotes) when no env var",
+                  uri == "mongodb+srv://file-user@x/" and src == env_file)
+            check("no URI anywhere -> (None, None)",
+                  oc.resolve_mongo_uri(env_file=os.path.join(tmp, "nope"))
+                  == (None, None))
+        with _mongo_env(PI_MONGODB_URI="mongodb+srv://pi@x/"):
+            uri, src = oc.resolve_mongo_uri(env_file=env_file)
+            check("$PI_MONGODB_URI beats the env file",
+                  uri == "mongodb+srv://pi@x/" and src == "$PI_MONGODB_URI")
+        with _mongo_env(MONGODB_URI="mongodb+srv://main@x/",
+                        PI_MONGODB_URI="mongodb+srv://pi@x/"):
+            uri, src = oc.resolve_mongo_uri(env_file=env_file)
+            check("$MONGODB_URI wins over every fallback",
+                  uri == "mongodb+srv://main@x/" and src == "$MONGODB_URI")
+            check("explicit argument wins over $MONGODB_URI",
+                  oc.resolve_mongo_uri("mongodb://arg/")[0]
+                  == "mongodb://arg/")
+        with open(env_file, "w") as f:
+            f.write('PI_MONGODB_URI="mongodb+srv://pi-file@x/"\n')
+        with _mongo_env():
+            check("bare PI_MONGODB_URI= line in the file also resolves",
+                  oc.resolve_mongo_uri(env_file=env_file)[0]
+                  == "mongodb+srv://pi-file@x/")
+
+
+def test_ssh_remote_cmd():
+    import opt_campaign as ocamp
+    ex = ocamp.SSHExecutor("pi@zero", "~/powder-doser", None, None)
+    cmd = ex._remote_cmd(["--fetch", "aaaa-bbbb",
+                          "--params", '{"a": 1}'])
+    check("~ stays expandable in cd (not swallowed by quoting)",
+          "cd ~/powder-doser " in cmd and "'~" not in cmd)
+    check("credential file sourced for non-interactive SSH",
+          ". ~/.config/powder-doser/env; " in cmd)
+    check("venv python preferred with python3 fallback",
+          'PY=~/powder-doser-venv/bin/python; [ -x "$PY" ] || '
+          "PY=python3" in cmd)
+    check("script args are shell-quoted",
+          "'{\"a\": 1}'" in cmd and "scripts/opt_dose_capture.py" in cmd)
+    spaced = ocamp.SSHExecutor("pi@zero", "~/my repo", None, None,
+                               remote_python="/opt/py 3/bin/python")
+    cmd2 = spaced._remote_cmd([])
+    check("paths with spaces still quote safely",
+          "cd ~/'my repo' " in cmd2 and "PY='/opt/py 3/bin/python';" in cmd2)
+
+
 def main():
     for fn in (test_firmware_set_lines, test_penalization,
-               test_jam_classification, test_executor_end_to_end):
+               test_jam_classification, test_mongo_uri_resolution,
+               test_ssh_remote_cmd, test_executor_end_to_end):
         print(fn.__name__)
         fn()
     if _FAILURES:
