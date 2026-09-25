@@ -1,0 +1,32 @@
+powder_id,target_mg,display,n,n_reconstructed,mean_error_mg,sd_error_mg,mean_abs_error_mg,min_error_mg,max_error_mg,mean_error_pct,sd_error_pct,pass_5pct,pass_fw_status_ok,pass_fw_abs5,mean_time_s,median_time_s,statuses,rounds,dates,read_paths,locations,runs
+alsi10mg,50.0,AlSi10Mg,3,0,21.47,26.71,23.73,-3.4,49.7,42.93,53.42,0/3,1/3,1/3,24.7,15.0,ok;overshoot,2,2026-09-10,bracket,new_fume_hood,20260910T194447Z_alsi10mg
+alsi10mg,200.0,AlSi10Mg,3,0,-0.27,2.72,2.0,-2.8,2.6,-0.13,1.36,3/3,3/3,3/3,169.7,214.0,ok,2,2026-09-10,bracket,new_fume_hood,20260910T194447Z_alsi10mg
+alsi10mg,1000.0,AlSi10Mg,3,0,1.87,6.57,4.4,-2.7,9.4,0.19,0.66,3/3,2/3,2/3,103.7,65.0,ok;overshoot,2,2026-09-10,bracket,new_fume_hood,20260910T194447Z_alsi10mg
+brown-rice-flour,1000.0,Brown rice flour,3,0,-999.13,0.9,999.13,-1000.0,-998.2,-99.91,0.09,0/3,0/3,0/3,7.0,7.0,stalled,1,2026-08-05,read_stable,lab_pre_hood,20260805T185305Z_brown-rice-flour
+calcium-lactate,50.0,Calcium lactate,2,0,9.85,15.77,11.15,-1.3,21.0,19.7,31.54,1/2,1/2,1/2,29.5,29.5,ok;overshoot,2,2026-09-09,bracket,new_fume_hood,20260909T225206Z_calcium-lactate
+calcium-lactate,200.0,Calcium lactate,3,1,-16.47,16.61,16.47,-35.5,-4.9,-8.23,8.31,2/3,1/3,1/3,463.5,463.5,cycle-budget;ok;stalled,2,2026-09-09,bracket,new_fume_hood,20260909T225206Z_calcium-lactate
+calcium-lactate,1000.0,Calcium lactate,3,0,-26.5,9.95,26.5,-34.6,-15.4,-2.65,0.99,3/3,0/3,0/3,247.7,263.0,stalled,1,2026-08-05,read_stable,lab_pre_hood,20260805T200002Z_calcium-lactate
+carboxymethyl-cellulose,50.0,CMC,3,0,-2.17,2.4,2.3,-4.6,0.2,-4.33,4.8,2/3,3/3,3/3,188.7,211.0,ok,2,2026-09-08,bracket,new_fume_hood,20260908T194201Z_carboxymethyl-cellulose
+carboxymethyl-cellulose,200.0,CMC,3,0,-22.57,23.4,22.57,-49.0,-4.5,-11.28,11.7,1/3,1/3,1/3,874.7,903.0,ok;timeout,2,2026-09-08,bracket,new_fume_hood,20260908T194201Z_carboxymethyl-cellulose
+carboxymethyl-cellulose,1000.0,CMC,3,0,-43.17,5.43,43.17,-48.9,-38.1,-4.32,0.54,3/3,0/3,0/3,669.0,668.0,stalled,1,2026-08-05,read_stable,lab_pre_hood,20260805T215252Z_carboxymethyl-cellulose
+salt,50.0,NaCl (control),3,0,4.2,4.75,4.6,-0.6,8.9,8.4,9.5,1/3,2/3,2/3,18.7,17.0,ok;overshoot,2,2026-09-03,bracket,new_fume_hood,20260903T214049Z_salt
+salt,200.0,NaCl (control),3,0,2.77,9.2,6.1,-3.7,13.3,1.38,4.6,2/3,2/3,2/3,52.3,53.0,ok;overshoot,2,2026-09-03,bracket,new_fume_hood,20260903T214049Z_salt
+salt,1000.0,NaCl (control),6,0,-1.95,5.3,4.88,-4.7,8.8,-0.19,0.53,6/6,5/6,5/6,181.0,186.0,ok;overshoot,1,2026-08-06;2026-08-12,read_stable,lab_pre_hood;shared_fume_hood,20260806T145120Z_salt;20260812T215154Z_salt
+silicon-110-200,50.0,Si (-110/+200 mesh),2,0,1.1,4.81,3.4,-2.3,4.5,2.2,9.62,1/2,2/2,2/2,18.0,18.0,ok,2,2026-09-15,bracket,new_fume_hood,20260915T025556Z_silicon-110-200
+silicon-110-200,200.0,Si (-110/+200 mesh),3,0,9.77,19.77,11.97,-1.8,32.6,4.88,9.89,2/3,2/3,2/3,30.7,34.0,ok;overshoot,2,2026-09-15,bracket,new_fume_hood,20260915T025556Z_silicon-110-200
+silicon-110-200,1000.0,Si (-110/+200 mesh),3,0,0.2,2.82,2.0,-2.2,3.3,0.02,0.28,3/3,3/3,3/3,138.7,128.0,ok,2,2026-09-15,bracket,new_fume_hood,20260915T025556Z_silicon-110-200
+silicon-325,50.0,Si (-325 mesh),3,0,-50.03,0.06,50.03,-50.1,-50.0,-100.07,0.12,0/3,0/3,0/3,32.3,31.0,stalled,2,2026-09-10,bracket,new_fume_hood,20260910T212920Z_silicon-325
+silicon-325,200.0,Si (-325 mesh),3,0,-199.73,0.46,199.73,-200.0,-199.2,-99.87,0.23,0/3,0/3,0/3,38.0,31.0,stalled,2,2026-09-10,bracket,new_fume_hood,20260910T212920Z_silicon-325
+silicon-325,1000.0,Si (-325 mesh),6,0,-999.52,0.65,999.52,-1000.0,-998.4,-99.95,0.07,0/6,0/6,0/6,8.2,8.0,stalled,1;2,2026-08-21;2026-09-10,bracket;read_stable,new_fume_hood;shared_fume_hood,20260821T161838Z_silicon-325;20260910T212920Z_silicon-325
+sodium-alginate,50.0,Sodium alginate,3,0,-19.6,8.25,19.6,-27.8,-11.3,-39.2,16.5,0/3,0/3,0/3,622.7,561.0,stalled;timeout,2,2026-09-09,bracket,new_fume_hood,20260909T185352Z_sodium-alginate
+sodium-alginate,200.0,Sodium alginate,3,0,-101.5,73.28,101.5,-185.7,-52.1,-50.75,36.64,0/3,0/3,0/3,671.7,903.0,stalled;timeout,2,2026-09-09,bracket,new_fume_hood,20260909T185352Z_sodium-alginate
+sodium-alginate,1000.0,Sodium alginate,3,0,-291.47,18.22,291.47,-307.2,-271.5,-29.15,1.82,0/3,0/3,0/3,839.7,840.0,cycle-budget,1,2026-08-05,read_stable,lab_pre_hood,20260805T145725Z_sodium-alginate
+sodium-sulfate,50.0,Sodium sulfate,3,0,28.9,15.74,28.9,17.7,46.9,57.8,31.49,0/3,0/3,0/3,11.7,10.0,overshoot,2,2026-09-10,bracket,new_fume_hood,20260910T133932Z_sodium-sulfate
+sodium-sulfate,200.0,Sodium sulfate,3,0,10.77,17.72,13.77,-4.5,30.2,5.38,8.86,2/3,1/3,1/3,38.0,30.0,ok;overshoot,2,2026-09-10,bracket,new_fume_hood,20260910T133932Z_sodium-sulfate
+sodium-sulfate,1000.0,Sodium sulfate,3,0,-4.17,1.1,4.17,-4.9,-2.9,-0.42,0.11,3/3,3/3,3/3,111.3,86.0,ok,2,2026-09-10,bracket,new_fume_hood,20260910T133932Z_sodium-sulfate
+white-rice-flour,50.0,White rice flour,3,0,-4.67,0.58,4.67,-5.0,-4.0,-9.33,1.15,0/3,3/3,3/3,120.3,136.0,ok,2,2026-09-04,bracket,new_fume_hood,20260904T190011Z_white-rice-flour
+white-rice-flour,200.0,White rice flour,3,0,-4.9,0.1,4.9,-5.0,-4.8,-2.45,0.05,3/3,3/3,3/3,741.0,766.0,ok,2,2026-09-04,bracket,new_fume_hood,20260904T190011Z_white-rice-flour
+white-rice-flour,1000.0,White rice flour,3,0,-137.87,23.54,137.87,-160.1,-113.2,-13.79,2.35,0/3,0/3,0/3,821.7,822.0,cycle-budget,1,2026-08-04,read_stable,lab_pre_hood,20260804T211422Z_white-rice-flour
+xanthan-gum,50.0,Xanthan gum,3,0,17.8,36.38,22.07,-4.1,59.8,35.6,72.77,1/3,2/3,2/3,34.7,37.0,ok;overshoot,2,2026-09-04,bracket,new_fume_hood,20260904T203727Z_xanthan-gum
+xanthan-gum,200.0,Xanthan gum,3,0,2.87,0.55,2.87,2.5,3.5,1.43,0.28,3/3,3/3,3/3,133.3,89.0,ok,2,2026-09-04,bracket,new_fume_hood,20260904T203727Z_xanthan-gum
+xanthan-gum,1000.0,Xanthan gum,3,0,-32.9,9.61,32.9,-43.6,-25.0,-3.29,0.96,3/3,0/3,0/3,188.7,193.0,stalled,1,2026-08-06,read_stable,lab_pre_hood,20260806T140254Z_xanthan-gum
