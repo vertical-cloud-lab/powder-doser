@@ -412,10 +412,12 @@ canned fake-serial Pico). The loop itself dry-runs end to end with
 `opt_campaign.py --simulate` — screening → τ fit → anchors → warm-started BO →
 Pareto — with no hardware.
 
-Remaining before the first rig dose: upload the updated `trickle_tap/` folder to
-the Pico (MicroPico, as usual) and bring this branch's `scripts/` onto the Zero
-(§5.1 item 4 — the Zero's tree is not yet a git checkout; the sparse-checkout
-conversion there is the verified path).
+Remaining before the first rig dose: upload the updated `trickle_tap/` build to
+its own `/trickle_tap` folder on the Pico, **not the root**, after agreeing a
+handover with whoever holds the rig (§5.1 item 6; commands in the
+[firmware README](../../hardware/test-module/firmware/trickle_tap/README.md)).
+The Zero's `scripts/` is already a sparse checkout of this branch (§5.1 item
+4, converted 2026-09-23), so it only needs `git pull --ff-only` there.
 
 ## 4. Decisions — locked 2026-09-22 (William, issue #164)
 
@@ -495,8 +497,10 @@ suggestion late in a 60-trial campaign), Pareto readout and
    ACLs — no key files; if it refuses, the ACL needs your device (admin change).
    This is the #131 path, so it likely already works from your machine.
 4. **Repo in both places.** Laptop: clone the repo (campaign script + analysis run
-   from it). Zero: `~/powder-doser` there is currently a plain copied tree, **not
-   a git checkout** (verified 2026-09-23) — convert it in place over SSH with a
+   from it). Zero: **done 2026-09-23.** `~/powder-doser` is now a sparse
+   checkout of this branch (seen at the PR tip on 2026-09-25), so update it
+   with `git pull --ff-only`.  For the record, it was a plain copied tree,
+   **not a git checkout**, and was converted in place over SSH with a
    sparse, blob-filtered checkout of `scripts/` alone (sequence verified
    end-to-end 2026-09-23 against a replica of the bench tree). This transfers
    about 80 KiB instead of the repo's full 134 MB — kind to the bench Wi-Fi —
@@ -524,8 +528,8 @@ suggestion late in a 60-trial campaign), Pareto readout and
    the bench artifacts as untracked (append `data/`, `handoff/`,
    `preflight_*.json` to `.git/info/exclude` to quiet them) and may list the
    device's older `docs/`/`hardware/` copies as modified — expected, and left
-   untouched. Pico: already carries the tuned #154 `trickle_tap/` firmware —
-   the §3 knob additions ship as a normal MicroPico file upload when ready.
+   untouched. Pico: see item 6. The §3 build goes to `/trickle_tap`, not the
+   root.
 5. **MongoDB.** Access is provisioned end-to-end; `opt_common.resolve_mongo_uri`
    looks for a connection string as `$MONGODB_URI`, then `$PI_MONGODB_URI`, then
    the #131 credential file `~/.config/powder-doser/env` — so per host:
@@ -559,6 +563,31 @@ suggestion late in a 60-trial campaign), Pareto readout and
    datacenter (CI) and residential (bench) IPs, so a new laptop IP is unlikely
    to need an allowlist change; if the preflight fails there anyway, that is
    the first thing to check.
+6. **The rig is shared.** Other sessions load and run their own firmware on
+   the same Pico through the same Zero: the #116/#131 battery runs, and other
+   @claude jobs. So:
+
+   - **Pico flash:** this build lives in `/trickle_tap`, never the root, and
+     nothing is installed as `main.py`. The battery firmware at the root
+     imports the root `config.py`/`main_three_phase.py`, and §3 changed
+     `main_three_phase.py`, so a root upload would silently change their
+     runs. Upload commands are in the
+     [firmware README](../../hardware/test-module/firmware/trickle_tap/README.md).
+   - **Executor guards** (`opt_dose_capture.py`, and `dose.py` through it):
+     - Takes the same exclusive port lock as `mpremote` and the #116
+       `portguard.sh`, and refuses if any other process has the port open.
+       That includes the #116/#131 capture scripts, which don't lock.
+     - Never sends Ctrl-C to a program it didn't start. It boots its runner
+       only from an idle `>>>` prompt, after a clean raw-REPL soft reset, so
+       no root module another session imported stays cached.
+     - Doses only when `s` reports `firmware: <opt_common.FIRMWARE_ID>`.
+     - Anything else ends the dose as `rig-busy`: nothing is dosed, it counts
+       as an infra error, and the campaign stops so `--resume` can retry.
+       `--takeover` is the operator's explicit override.
+   - **People:** agree a handover before a campaign session, and while you
+     own the rig leave a `~/RIG-NOTICE-<date>.txt` on the Zero (the #116
+     convention). The guards cover machines, not people. For example, an
+     unlocked capture script can still open the port in the middle of a dose.
 
 ### 5.2 A campaign session (once §3's scripts exist)
 

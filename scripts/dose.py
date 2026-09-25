@@ -106,6 +106,10 @@ def main(argv=None):
     ap.add_argument("--out", default=odc.DEFAULT_OUT)
     ap.add_argument("--operator")
     ap.add_argument("--timeout-s", type=float, default=720.0)
+    ap.add_argument("--pico-dir", default=oc.PICO_FIRMWARE_DIR,
+                    help="trickle_tap folder on the Pico's flash")
+    ap.add_argument("--takeover", action="store_true",
+                    help="ctrl-C whatever runs on the shared Pico first")
     ap.add_argument("--no-upload", action="store_true")
     args = ap.parse_args(argv)
 
@@ -129,9 +133,16 @@ def main(argv=None):
     raw_log = os.path.join(spool, "serial_{}.log".format(trial_uuid))
 
     soft, hard = full_set_lines(profile)
-    sess = odc.PicoSession(args.port, args.baud, raw_log)
     try:
-        odc.ensure_runner(sess)
+        sess = odc.PicoSession(args.port, args.baud, raw_log)
+    except odc.RigBusy as exc:
+        raise SystemExit("rig busy, not dosing: {}".format(exc))
+    try:
+        try:
+            odc.ensure_runner(sess, pico_dir=args.pico_dir,
+                              takeover=args.takeover)
+        except odc.RigBusy as exc:
+            raise SystemExit("rig busy, not dosing: {}".format(exc))
         for line in soft:
             key = line.split()[1]
             sess.send(line)

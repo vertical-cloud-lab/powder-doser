@@ -148,6 +148,9 @@ def frozen_snapshot():
 
 # The Zero's venv is the only interpreter there with pymongo (PR #131).
 DEFAULT_REMOTE_PYTHON = "~/powder-doser-venv/bin/python"
+# The Pico is shared with other sessions (campaign-setup section 5.1).
+BUSY_HINT = ("another session is using the Pico, nothing was dosed; wait "
+             "for it (or agree a handover)")
 
 
 def _shell_path(path):
@@ -163,12 +166,13 @@ def _shell_path(path):
 
 class SSHExecutor:
     def __init__(self, host, remote_repo, port, operator,
-                 remote_python=DEFAULT_REMOTE_PYTHON):
+                 remote_python=DEFAULT_REMOTE_PYTHON, takeover=False):
         self.host = host
         self.remote = remote_repo.rstrip("/")
         self.port = port
         self.operator = operator
         self.remote_python = remote_python
+        self.takeover = takeover
 
     def _remote_cmd(self, extra):
         """The one sh line run on the Zero per invocation.
@@ -212,6 +216,8 @@ class SSHExecutor:
             extra += ["--port", self.port]
         if self.operator:
             extra += ["--operator", self.operator]
+        if self.takeover:
+            extra += ["--takeover"]
         try:
             return self._invoke(extra, timeout_s=900)
         except (subprocess.TimeoutExpired, RuntimeError, OSError) as exc:
@@ -534,7 +540,7 @@ class Runner:
                 raise SystemExit("--host is required unless --simulate")
             self.executor = SSHExecutor(args.host, args.remote_repo,
                                         args.pico_port, args.operator,
-                                        args.remote_python)
+                                        args.remote_python, args.takeover)
         self.operator = Operator(args.countdown, args.cup_every,
                                  args.park_after, args.simulate)
         self.records = self.campaign.records()
@@ -566,7 +572,10 @@ class Runner:
             summary["status"], summary["t_total_s"],
             summary["abs_error_mg"], summary["jam"],
             " INFRA-ERROR" if summary["infra_error"] else ""))
-        spill, keep_going = self.operator.after_dose(summary)
+        if summary["status"] == "rig-busy":   # nothing dosed: no countdown,
+            spill, keep_going = False, True   # no cup-cadence tick
+        else:
+            spill, keep_going = self.operator.after_dose(summary)
         record = {
             "label": label, "mode": mode, "trial_index": trial_index,
             "trial_uuid": trial_uuid, "params": params,
@@ -619,8 +628,10 @@ class Runner:
         for label, params in plan:
             record = self.run_trial(label, params, "screen")
             if not self.usable(record):
-                log("infra error on {} -- fix the rig and re-run with "
-                    "--resume {}".format(label, doc["campaign_id"]))
+                log("{} on {} -- {} and re-run with --resume {}".format(
+                    record["summary"]["status"], label,
+                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
+                    else "fix the rig", doc["campaign_id"]))
                 raise KeyboardInterrupt
             self.campaign.save()
         # tau fit from the screening stop events (section 2.8)
@@ -662,8 +673,14 @@ class Runner:
                    if l.startswith("center")]
         for i in range(done, len(centers)):
             label, params = centers[i]
-            self.run_trial("re" + label, params, "recenter")
+            record = self.run_trial("re" + label, params, "recenter")
             self.campaign.save()
+            if not self.usable(record):
+                log("{} on re{} -- {}, then --resume {}".format(
+                    record["summary"]["status"], label,
+                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
+                    else "fix the rig", doc["campaign_id"]))
+                raise KeyboardInterrupt
         doc["phase"] = "bo"
         self.campaign.save()
 
@@ -706,8 +723,10 @@ class Runner:
             if not self.usable(record):
                 self.ax.log_trial_failure(trial_index=idx)
                 self.ax.save_to_json_file(self.campaign.snapshot_path)
-                log("infra error -- fix the rig, then --resume {}".format(
-                    doc["campaign_id"]))
+                log("{} -- {}, then --resume {}".format(
+                    record["summary"]["status"],
+                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
+                    else "fix the rig", doc["campaign_id"]))
                 raise KeyboardInterrupt
             self.ax.complete_trial(trial_index=idx,
                                    raw_data=self.raw_data(record))
@@ -884,6 +903,10 @@ def main(argv=None):
                          "python3 when the path is absent)")
     ap.add_argument("--pico-port", default=None,
                     help="serial port on the Zero (default /dev/ttyACM0)")
+    ap.add_argument("--takeover", action="store_true",
+                    help="let each dose ctrl-C whatever another session "
+                         "left running on the shared Pico (default: stop "
+                         "with status rig-busy instead)")
     ap.add_argument("--resume", metavar="CAMPAIGN_ID")
     ap.add_argument("--screen-only", action="store_true")
     ap.add_argument("--simulate", action="store_true",

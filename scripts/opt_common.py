@@ -38,6 +38,15 @@ MONGODB_ENV_FILE = "~/.config/powder-doser/env"
 # The firmware's machine-parseable dose summary (trickle_controller).
 RESULT_PREFIX = "RESULT "
 
+# The trickle_tap build this code speaks to (trickle_controller.
+# FIRMWARE_ID; the tests cross-check the two).  The Pico is shared with
+# other sessions that load other firmware, so the executor refuses to
+# dose on anything else.  That build lives in its own folder on the
+# Pico's flash so its config.py / main_three_phase.py never replace
+# the root-level modules other firmware imports (section 5.1).
+FIRMWARE_ID = "trickle_tap/2026-09-25"
+PICO_FIRMWARE_DIR = "/trickle_tap"
+
 # Objective reference thresholds, locked 2026-09-22 (campaign-setup
 # section 2.2).  Also the penalization ceilings for jam/spill doses.
 THRESHOLD_T_TOTAL_S = 180.0
@@ -81,7 +90,8 @@ JAM_REASONS = {
     "cycle-budget": "tap-budget",
     "timeout": "timeout",
 }
-INFRA_STATUSES = ("scale-error", "not-tared", "no-result", "serial-error")
+INFRA_STATUSES = ("scale-error", "not-tared", "no-result", "serial-error",
+                  "rig-busy")
 
 
 def utcnow_iso():
@@ -248,6 +258,7 @@ def build_trial_doc(campaign_id, trial_uuid, trial_index, powder_id,
             "dose_n": (result_doc or {}).get("dose_n"),
             "read_retries": (result_doc or {}).get("read_retries"),
             "baseline_g": (result_doc or {}).get("baseline_g"),
+            "firmware": (result_doc or {}).get("fw"),
         },
         "telemetry": {
             "header": telemetry_header,

@@ -33,11 +33,19 @@ Commands:
     !              emergency stop -- de-energise everything
 """
 
+import sys
 import time
 
-import config
-import main_three_phase as m3
-from trickle_controller import TrickleTapDoser, TELEMETRY_HEADER
+# The Pico is shared: other firmware keeps its own config.py /
+# main_three_phase.py at the flash root, so this build lives in
+# /trickle_tap and resolves its imports there first (README).
+if "/trickle_tap" not in sys.path:
+    sys.path.insert(0, "/trickle_tap")
+
+import config                                            # noqa: E402
+import main_three_phase as m3                            # noqa: E402
+from trickle_controller import (                         # noqa: E402
+    FIRMWARE_ID, TrickleTapDoser, TELEMETRY_HEADER)
 
 
 class TrickleStepper(m3.Stepper):
@@ -100,6 +108,7 @@ class TrickleRig(m3.Rig):
                             if self.doser else "?"))
 
     def state(self):
+        print("firmware: {}".format(FIRMWARE_ID))
         print("stepper: {} auger rpm (max ~{:.0f}), 1/{} microsteps; "
               "plate at {:.1f} deg; scale UART{} @ {}".format(
                   config.STEPPER_SPEED_RPM, m3.MAX_AUGER_RPM,

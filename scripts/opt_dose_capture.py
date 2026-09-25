@@ -5,8 +5,13 @@ The fully non-interactive rig side of ``opt_campaign.py`` -- one
 invocation, one dose (campaign-setup.md sections 1.1 / 3 / 5.3):
 
 1. connect to the Pico over USB serial (``main_trickle.py`` running; if
-   the Pico sits at a bare REPL after a power cycle, it is bootstrapped
-   automatically),
+   the Pico sits idle at a bare ``>>>`` REPL, the runner is booted from
+   ``/trickle_tap`` automatically).  The Pico is SHARED with other
+   sessions' firmware and tools, so this refuses (status ``rig-busy``,
+   nothing sent that could disturb it, nothing dosed) when another
+   process holds the port, when an unknown program is running, or when
+   the runner is not ``opt_common.FIRMWARE_ID`` -- ``--takeover`` is the
+   operator's explicit override (campaign-setup section 5.1),
 2. push the trial's parameter set as ``set <key> <value>`` lines and
    verify every echo,
 3. run ``g <target>``, stream every line to a raw log, and parse the
@@ -56,6 +61,8 @@ DEFAULT_OUT = os.path.join(REPO_ROOT, "data", "opt")
 TELEMETRY_BEGIN = "--- BEGIN trickle telemetry CSV ---"
 TELEMETRY_END = "--- END trickle telemetry CSV ---"
 READY_MARKER = "trickle parameters"       # the 's' state listing
+FIRMWARE_PREFIX = "firmware: "             # first line of that listing
+IDLE_PROMPT = ">>>"                        # a bare MicroPython REPL
 
 
 def log(msg):
@@ -66,12 +73,68 @@ def log(msg):
 # Serial session
 # ---------------------------------------------------------------------------
 
+class RigBusy(RuntimeError):
+    """The shared Pico belongs to someone else right now; nothing that
+    could disturb it was sent, and nothing was dosed."""
+
+
+def port_holders(port_path):
+    """Other local processes with the serial device open -> [(pid, cmd)].
+
+    The exclusive open below already refuses lock-takers (mpremote and
+    the #116 portguard.sh take the same flock); this catches the bench
+    tools that open the port WITHOUT a lock (the #116/#131 capture
+    scripts use a plain ``serial.Serial``).  Without root only the rig
+    user's own processes are visible -- which is every rig session.
+    """
+    target = os.path.realpath(port_path)
+    holders = []
+    try:
+        pids = [p for p in os.listdir("/proc") if p.isdigit()]
+    except OSError:
+        return holders
+    for pid in pids:
+        if int(pid) == os.getpid():
+            continue
+        fd_dir = os.path.join("/proc", pid, "fd")
+        try:
+            links = [os.readlink(os.path.join(fd_dir, fd))
+                     for fd in os.listdir(fd_dir)]
+        except OSError:
+            continue
+        if target in links:
+            try:
+                with open(os.path.join("/proc", pid, "cmdline"), "rb") as f:
+                    cmd = f.read().replace(b"\0", b" ").decode(
+                        errors="replace").strip()
+            except OSError:
+                cmd = "?"
+            holders.append((int(pid), cmd[:120]))
+    return holders
+
+
 class PicoSession:
     """Line-oriented conversation with the running main_trickle REPL."""
 
     def __init__(self, port_path, baud, raw_log_path):
         import serial                     # pip install pyserial
-        self.port = serial.Serial(port_path, baud, timeout=0.25)
+        try:
+            # The same advisory lock mpremote takes: while a dose runs,
+            # other sessions' mpremote calls fail fast instead of
+            # interleaving with it, and theirs keep us out likewise.
+            self.port = serial.Serial(port_path, baud, timeout=0.25,
+                                      exclusive=True)
+        except OSError as exc:            # pyserial's SerialException
+            if "lock" in str(exc).lower():
+                raise RigBusy("{} is locked by another session (mpremote "
+                              "or a port guard)".format(port_path))
+            raise
+        holders = port_holders(port_path)
+        if holders:
+            self.port.close()
+            raise RigBusy("{} is also open in {}".format(
+                port_path, "; ".join("pid {} ({})".format(p, c)
+                                     for p, c in holders)))
         self.raw = open(raw_log_path, "a")
         self.raw.write("--- session {} ---\n".format(oc.utcnow_iso()))
 
@@ -106,6 +169,24 @@ class PicoSession:
             last = time.monotonic()
             yield line
 
+    def drain(self, quiet_s=0.5, max_s=3.0):
+        """Read whatever is pending -> (lines, went_quiet): stops at the
+        first ``quiet_s`` of silence, or gives up after ``max_s``."""
+        seen = []
+        deadline = time.monotonic() + max_s
+        last = time.monotonic()
+        while time.monotonic() < deadline:
+            raw = self.port.readline()
+            if raw:
+                line = raw.decode(errors="replace").rstrip("\r\n")
+                self.raw.write(line + "\n")
+                self.raw.flush()
+                seen.append(line)
+                last = time.monotonic()
+            elif time.monotonic() - last >= quiet_s:
+                return seen, True
+        return seen, False
+
     def collect_until(self, predicate, timeout_s):
         """Collect lines until ``predicate(line)`` is truthy; returns
         (matching line or None, all lines seen)."""
@@ -117,35 +198,126 @@ class PicoSession:
         return None, seen
 
 
-def ensure_runner(sess, boot_timeout_s=60):
-    """Make sure main_trickle's command loop is answering.
+def _classify(lines):
+    """-> "runner" (main_trickle's listing), "repl" (idle >>>), or None."""
+    for line in lines:
+        if READY_MARKER in line:
+            return "runner"
+        if line.startswith(IDLE_PROMPT):
+            return "repl"
+    return None
 
-    Probes with ``s``; on silence assumes a bare REPL (fresh power-up)
-    and boots the runner, which the MicroPico workflow otherwise starts
-    by hand.  Raises RuntimeError when the rig cannot be reached.
-    """
-    sess.send("")
-    match, _ = sess.collect_until(lambda l: READY_MARKER in l, 4)
+
+def _probe(sess, line, timeout_s):
+    """Send ``line``; -> (classification, lines seen)."""
+    sess.send(line)
+    seen = []
+    for got in sess.lines(timeout_s):
+        seen.append(got)
+        kind = _classify([got])
+        if kind:
+            return kind, seen
+    return None, seen
+
+
+def _firmware_of(lines):
+    for line in lines:
+        if line.startswith(FIRMWARE_PREFIX):
+            return line[len(FIRMWARE_PREFIX):].strip()
+    return None
+
+
+def _wait_for(sess, text, timeout_s):
+    match, _ = sess.collect_until(lambda l: text in l, timeout_s)
     if match is None:
-        sess.send("s")
-        match, _ = sess.collect_until(lambda l: READY_MARKER in l, 6)
-    if match is not None:
-        return
-    log("runner not answering; bootstrapping main_trickle on the Pico")
-    sess.port.write(b"\x03\x03")          # -> >>> (idle REPL only)
-    time.sleep(1.0)
-    sess.send("import main_trickle")
-    time.sleep(1.0)
-    sess.send("main_trickle.main()")
-    match, _ = sess.collect_until(lambda l: READY_MARKER in l,
-                                  boot_timeout_s)
-    if match is None:
-        sess.send("s")
-        match, _ = sess.collect_until(lambda l: READY_MARKER in l, 10)
+        raise RuntimeError("Pico never printed {!r}".format(text))
+
+
+def _boot_runner(sess, pico_dir, boot_timeout_s):
+    """From an idle REPL: clean soft reset, then start /trickle_tap's
+    runner.  The raw-REPL soft reset (what mpremote does) empties
+    sys.modules -- no root-level config/main_three_phase left over from
+    another session -- without running main.py.  -> listing lines."""
+    log("booting main_trickle from {} on the Pico".format(pico_dir or "/"))
+    sess.port.write(b"\r\x01")               # ctrl-A: raw REPL
+    _wait_for(sess, "raw REPL; CTRL-B to exit", 5)
+    sess.port.write(b"\x04")                  # ctrl-D: soft reset
+    _wait_for(sess, "soft reboot", 10)
+    _wait_for(sess, "raw REPL; CTRL-B to exit", 10)
+    sess.port.write(b"\x02")                  # ctrl-B: friendly REPL
+    _wait_for(sess, IDLE_PROMPT, 5)
+    boot = "import main_trickle; main_trickle.main()"
+    if pico_dir.strip("/"):
+        boot = "import sys; sys.path.insert(0, {!r}); {}".format(
+            pico_dir, boot)
+    sess.send(boot)
+    match, seen = sess.collect_until(lambda l: READY_MARKER in l,
+                                     boot_timeout_s)
     if match is None:
         raise RuntimeError(
             "Pico did not reach the main_trickle command loop -- is the "
-            "trickle_tap folder uploaded and the USB cable good?")
+            "trickle_tap build uploaded to {} (README) and the USB cable "
+            "good?".format(pico_dir or "/"))
+    return seen
+
+
+def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
+                  boot_timeout_s=60):
+    """Make sure OUR main_trickle build is answering -- without ever
+    interrupting a program someone else started on the shared Pico.
+
+    * our runner answering ``s`` with the expected ``firmware:`` line
+      -> use it;
+    * an idle ``>>>`` REPL -> clean-boot the runner from ``pico_dir``;
+    * anything else (output streaming with nobody connected, a program
+      that answers neither probe, another firmware's runner) -> RigBusy,
+      unless ``takeover`` (operator's call): then ctrl-C and boot ours.
+
+    Raises RigBusy (nothing disturbed) or RuntimeError (rig fault).
+    """
+    # Output streaming while nobody holds the port means a program is
+    # mid-run (another session's, or a dose whose executor died): never
+    # type into it.
+    pending, quiet = sess.drain()
+    kind, seen = None, pending
+    if quiet:
+        kind, seen = _probe(sess, "", 2)
+        if kind != "repl":                # "runner" only from a fresh 's'
+            kind, seen = _probe(sess, "s", 4)
+    if kind == "runner":
+        rest, _ = sess.drain()
+        fw = _firmware_of(seen + rest)
+        if fw == oc.FIRMWARE_ID:
+            return
+        what = "a runner reporting firmware {!r}".format(fw) if fw else \
+            "a trickle runner without a firmware id (another build)"
+        if not takeover:
+            raise RigBusy(
+                "the Pico is running {} -- expected {!r}.  If it is a "
+                "stale copy of ours, re-run with --takeover to restart "
+                "it".format(what, oc.FIRMWARE_ID))
+        log("--takeover: stopping {}".format(what))
+    elif kind is None:
+        if not takeover:
+            raise RigBusy(
+                "the Pico is {} -- probably another session's program; "
+                "not interrupting it.  Re-run with --takeover only if you "
+                "know it is safe to stop".format(
+                    "answering neither main_trickle's 's' nor a >>> prompt"
+                    if quiet else "streaming output with nobody connected"))
+        log("--takeover: interrupting whatever is running on the Pico")
+    if kind != "repl":
+        # ctrl-C stops a program; ctrl-B also leaves a raw REPL behind
+        sess.port.write(b"\x03\x03\x02")
+        _wait_for(sess, IDLE_PROMPT, 5)
+    listing = _boot_runner(sess, pico_dir, boot_timeout_s)
+    rest, _ = sess.drain()
+    fw = _firmware_of(listing + rest)
+    if fw != oc.FIRMWARE_ID:
+        raise RuntimeError(
+            "booted firmware {!r} from {}, expected {!r} -- upload this "
+            "branch's trickle_tap build there (README)".format(
+                fw, pico_dir or "/", oc.FIRMWARE_ID))
 
 
 def push_params(sess, params):
@@ -247,23 +419,22 @@ def do_dose(args):
     raw_log = os.path.join(spool, "serial_{}.log".format(args.trial))
 
     result_doc, status, telemetry = None, "serial-error", (None, [])
+    sess = None
     try:
         sess = PicoSession(args.port, args.baud, raw_log)
+        ensure_runner(sess, pico_dir=args.pico_dir, takeover=args.takeover)
+        push_params(sess, params)
+        result_doc, status = run_dose(sess, args.target_g, args.timeout_s)
+        if result_doc is not None:
+            telemetry = pull_telemetry(sess)
+    except RigBusy as exc:
+        log("rig busy, nothing dosed: {}".format(exc))
+        status = "rig-busy"
     except Exception as exc:
-        log("cannot open {}: {}".format(args.port, exc))
-        sess = None
-    if sess is not None:
-        try:
-            ensure_runner(sess)
-            push_params(sess, params)
-            result_doc, status = run_dose(sess, args.target_g,
-                                          args.timeout_s)
-            if result_doc is not None:
-                telemetry = pull_telemetry(sess)
-        except Exception as exc:
-            log("dose attempt failed: {}".format(exc))
-            status = "serial-error"
-        finally:
+        log("dose attempt failed: {}".format(exc))
+        status = "serial-error"
+    finally:
+        if sess is not None:
             sess.close()
 
     doc = oc.build_trial_doc(
@@ -317,6 +488,12 @@ def main(argv=None):
     ap.add_argument("--timeout-s", type=float, default=720.0,
                     help="wall clock to wait for the RESULT line "
                          "(firmware dose timeout is 600 s)")
+    ap.add_argument("--pico-dir", default=oc.PICO_FIRMWARE_DIR,
+                    help="folder holding the trickle_tap build on the "
+                         "Pico's flash ('/' = legacy root upload)")
+    ap.add_argument("--takeover", action="store_true",
+                    help="operator override: ctrl-C whatever runs on the "
+                         "shared Pico and boot our runner")
     ap.add_argument("--no-upload", action="store_true")
     ap.add_argument("--fetch", metavar="UUID",
                     help="print a stored trial's summary; never doses")

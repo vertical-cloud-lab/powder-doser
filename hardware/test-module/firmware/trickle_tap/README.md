@@ -19,7 +19,7 @@ the firmware set was previously scattered across three branches:
 | `trickle_params.py` | **edit this** — every knob, goal mass and tilt first | new (PR #154) |
 | `trickle_controller.py` | the ported dose controller + telemetry | new (PR #154) |
 | `trickle_kf.py` | the Kalman filter, pure Python (no numpy on a Pico) | new (PR #154) |
-| `main_three_phase.py` | drivers (stepper/tap/servo/scale) + read machinery, reused by subclassing | byte-identical copy of `claude/issue-116-blockh-recovered` @ `81bbe75` |
+| `main_three_phase.py` | drivers (stepper/tap/servo/scale) + read machinery, reused by subclassing | copy of `claude/issue-116-blockh-recovered` @ `81bbe75`, **extended for cadence taps (issue #164) — no longer identical** |
 | `scale.py`, `balance_filter.py` | A&D protocol + bracketed-read / shock-rejection layer | same |
 | `config.py`, `tic.py` | pins, serial formats, Tic T500 protocol | byte-identical copy of the PR #100 branch (`copilot/integrate-scale-feedback-loop`) |
 | `test_scale_contact.py` | first thing to run if the scale won't answer | same |
@@ -34,13 +34,32 @@ the firmware set was previously scattered across three branches:
 
 ## Quick start
 
-1. Open **this folder** in VS Code with the
-   [MicroPico](https://marketplace.visualstudio.com/items?itemName=paulober.pico-w-go)
-   extension, connect the Pico W over USB, and **"Upload project to Pico"**.
-   (Uploading is additive — it does not delete the battery firmware already
-   on the Pico, and the copied files here are byte-identical to what those
-   runs used.)
-2. Open `main_trickle.py` → **"Run current file on Pico"**.
+**The Pico is shared.** The #116/#131 battery firmware, and whatever other
+sessions load, lives at the Pico's flash root and imports the root
+`config.py` / `main_three_phase.py`.  This build changed
+`main_three_phase.py`, so it goes in **its own folder, `/trickle_tap`, never
+the root**.  Don't use MicroPico's "Upload project to Pico", which writes to the
+root.  `main_trickle.py` puts `/trickle_tap` first on `sys.path`, so its
+imports resolve to these copies and root files are never touched.
+
+1. Upload from the Zero (or any machine with the Pico on USB). `mpremote`
+   takes the port lock, so it fails fast if another session holds the Pico.
+   Check with its owner before interrupting a program that is running:
+
+   ```bash
+   cd hardware/test-module/firmware/trickle_tap
+   mpremote connect /dev/ttyACM0 fs mkdir :trickle_tap      # first time only
+   mpremote connect /dev/ttyACM0 fs cp balance_filter.py config.py \
+       main_three_phase.py main_trickle.py scale.py tic.py \
+       trickle_controller.py trickle_kf.py trickle_params.py :trickle_tap/
+   ```
+2. Start it from a **fresh** REPL: press Ctrl+D (soft reset) first, so no
+   root-level module another session imported is still cached.  Then run
+   `import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()`
+   (or open `main_trickle.py` → **"Run current file on Pico"**).  The
+   campaign executor (`scripts/opt_dose_capture.py`) does all of this itself.
+   It only boots from an idle `>>>` prompt, and it refuses with `rig-busy`
+   instead of interrupting another session's program.
 3. In the Pico terminal:
 
 ```
@@ -53,8 +72,8 @@ log            # print the last dose's telemetry CSV
 !              # EMERGENCY STOP (de-energise everything)
 ```
 
-To make it the power-on program, additionally upload `main_trickle.py`
-renamed as `main.py`.  Keep a hand near `!` (or the power switch) for the
+Don't install it as the power-on `main.py` on the shared Pico: that would
+start it at every power-up for every other session too.  Keep a hand near `!` (or the power switch) for the
 first doses — this controller has **never run on hardware** (bench-plan §4
 asks for five supervised smoke doses before any campaign use).
 
@@ -63,8 +82,9 @@ asks for five supervised smoke doses before any campaign use).
 Three ways, most to least persistent:
 
 - **Edit `trickle_params.py`** (goal mass and trickle tilt are the first two
-  values), save, right-click → "Upload file to Pico", then Ctrl+D (soft
-  reset) and re-run.  Survives power cycles.
+  values), save, `mpremote connect /dev/ttyACM0 fs cp trickle_params.py
+  :trickle_tap/`, then Ctrl+D (soft reset) and re-run.  Survives power
+  cycles.
 - **`set <key> <value>`** at the REPL — every lowercase form of a
   `trickle_params` name works (`set trickle_tilt_deg 15`,
   `set cutoff_margin_g 0.025`, `set bulk_enabled 0`…).  Shorthands:

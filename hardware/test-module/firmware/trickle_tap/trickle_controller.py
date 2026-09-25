@@ -71,6 +71,12 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
                     "r_sp_gps,err_gps,integ,rpm_cmd,pred_g,cutoff_g,"
                     "clamp_hits")
 
+# Identity of this build, printed by 's' and carried in every RESULT
+# line.  The Pico is shared with other sessions' firmware, so the
+# campaign executor refuses to dose unless this matches
+# scripts/opt_common.FIRMWARE_ID -- bump both together.
+FIRMWARE_ID = "trickle_tap/2026-09-25"
+
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
 # commanded).
@@ -205,6 +211,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             "telemetry_rows": len(self.telemetry),
             "log_path": self.last_log_path,
             "dose_n": self.dose_count,
+            "fw": FIRMWARE_ID,
         }
         self.last_result = doc
         self.log("RESULT " + json.dumps(doc))

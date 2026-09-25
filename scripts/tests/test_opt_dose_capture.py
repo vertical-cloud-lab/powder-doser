@@ -11,8 +11,10 @@ Run:  python3 scripts/tests/test_opt_dose_capture.py
 import io
 import json
 import os
+import re
 import sys
 import tempfile
+import time
 import types
 import contextlib
 
@@ -44,27 +46,83 @@ RESULT_DOC = {
                "trickle_start_remaining_g": 0.22, "tolerance_g": 0.006,
                "tau_afterflow_s": 0.83, "goal_mass_g": 0.75},
     "telemetry_rows": 2, "log_path": "/trickle_log_004.csv",
-    "dose_n": 5,
+    "dose_n": 5, "fw": oc.FIRMWARE_ID,
 }
 
 
 class FakeSerial:
-    """Just enough of pyserial to satisfy PicoSession."""
+    """Just enough of pyserial -- and of a shared Pico -- for PicoSession.
+
+    ``mode`` is what the Pico is doing when the executor connects:
+    "runner" (main_trickle answering, firmware ``fw``), "repl" (idle
+    >>>), "busy" (someone's program, silent), "streaming" (someone's
+    program printing with nobody connected).
+    """
 
     doses = 0
     instances = 0
+    mode = "runner"
+    fw = oc.FIRMWARE_ID
+    lock_error = False
+    last = None
 
-    def __init__(self, port, baud, timeout=0.25):
+    def __init__(self, port, baud, timeout=0.25, exclusive=False):
+        if FakeSerial.lock_error:
+            raise OSError(11, "Could not exclusively lock port {}: [Errno "
+                              "11] Resource temporarily unavailable"
+                          .format(port))
         FakeSerial.instances += 1
+        FakeSerial.last = self
+        self.exclusive = exclusive
+        self.mode = FakeSerial.mode
+        self.raw_mode = False
         self.queue = []
         self.set_seen = []
+        self.writes = []
+        self.closed = False
+
+    def _listing(self):
+        return ((["firmware: {}".format(FakeSerial.fw)]
+                 if FakeSerial.fw else [])
+                + ["stepper: 55 auger rpm",
+                   "trickle parameters ('set <key> <value>'):",
+                   "  bulk_rpm = 55.0"])
 
     def write(self, data):
+        self.writes.append(data)
+        if b"\x03" in data and self.mode in ("busy", "runner",
+                                             "streaming"):
+            self.mode = "repl"
+            self.queue += ["KeyboardInterrupt:", ">>> "]
+        if b"\x01" in data and self.mode == "repl":
+            self.raw_mode = True
+            self.queue += ["raw REPL; CTRL-B to exit", ">"]
+            return
+        if data == b"\x04" and self.raw_mode:
+            self.queue += ["MPY: soft reboot", "raw REPL; CTRL-B to exit",
+                           ">"]
+            return
+        if b"\x02" in data and self.mode == "repl":
+            self.raw_mode = False
+            self.queue += ["MicroPython v1.24.1; Raspberry Pi Pico", ">>> "]
+            return
         line = data.decode(errors="replace").strip()
-        if line == "s" or line == "":
-            self.queue += ["stepper: 55 auger rpm",
-                           "trickle parameters ('set <key> <value>'):",
-                           "  bulk_rpm = 55.0"]
+        if self.mode == "repl":
+            if "import main_trickle" in line:
+                self.boot_line = line
+                self.mode = "runner"
+                self.queue += ["[rig] bringing up powder-doser test module"]
+                self.queue += self._listing()
+            elif line == "":
+                self.queue.append(">>> ")
+            elif line and line[0] >= " ":
+                self.queue += ["NameError: name {!r} isn't defined"
+                               .format(line), ">>> "]
+            return
+        if self.mode != "runner":
+            return
+        if line == "s":
+            self.queue += self._listing()
         elif line.startswith("set "):
             _, key, value = line.split(" ", 2)
             self.set_seen.append((key, value))
@@ -87,12 +145,26 @@ class FakeSerial:
         pass
 
     def readline(self):
+        if self.mode == "streaming":
+            time.sleep(0.05)
+            return b"PRE,rev,3,0.25,0.0312\r\n"
         if self.queue:
-            return (self.queue.pop(0) + "\r\n").encode()
+            item = self.queue.pop(0)
+            # a prompt carries no newline: readline returns it on timeout
+            return (item if item in (">>> ", ">")
+                    else item + "\r\n").encode()
+        time.sleep(0.01)
         return b""
 
     def close(self):
-        pass
+        self.closed = True
+
+
+def _fake_pico(mode="runner", fw=oc.FIRMWARE_ID, lock_error=False):
+    FakeSerial.mode, FakeSerial.fw = mode, fw
+    FakeSerial.lock_error = lock_error
+    FakeSerial.last = None
+    sys.modules["serial"] = types.SimpleNamespace(Serial=FakeSerial)
 
 
 _FAILURES = []
@@ -141,7 +213,7 @@ def _run_capture(argv):
 
 
 def test_executor_end_to_end():
-    sys.modules["serial"] = types.SimpleNamespace(Serial=FakeSerial)
+    _fake_pico()
     tmp = tempfile.mkdtemp(prefix="optdose-")
     argv = ["--powder-id", "salt", "--target-g", "0.5",
             "--campaign-id", "salt-test", "--trial", "aaaa-bbbb",
@@ -170,6 +242,10 @@ def test_executor_end_to_end():
                                        "0.50,bulk,0.002"])
     check("covariates stored",
           doc["covariates"] == {"doses_since_cup_empty": 4})
+    check("port opened with the exclusive (mpremote-compatible) lock",
+          FakeSerial.last.exclusive is True)
+    check("firmware id recorded with the trial",
+          doc["device"]["firmware"] == oc.FIRMWARE_ID)
 
     doses_before = FakeSerial.doses
     code2, lines2 = _run_capture(argv)
@@ -184,6 +260,91 @@ def test_executor_end_to_end():
     code4, lines4 = _run_capture(["--fetch", "nope", "--out", tmp])
     check("--fetch on an unknown uuid exits 3",
           code4 == 3 and json.loads(lines4[0])["status"] == "not-found")
+
+
+def _dose_argv(tmp, trial, *extra):
+    return (["--powder-id", "salt", "--target-g", "0.5",
+             "--campaign-id", "salt-test", "--trial", trial,
+             "--params", json.dumps(PARAMS), "--out", tmp, "--no-upload"]
+            + list(extra))
+
+
+def test_shared_pico_guards():
+    """The Pico is shared with other sessions' firmware (section 5.1):
+    never interrupt their programs, never dose on foreign firmware."""
+    import opt_dose_capture as odc
+    tmp = tempfile.mkdtemp(prefix="optdose-shared-")
+
+    def run(mode, trial, *extra, **fake):
+        _fake_pico(mode, **fake)
+        before = FakeSerial.doses
+        code, lines = _run_capture(_dose_argv(tmp, trial, *extra))
+        return (code, json.loads(lines[0]), FakeSerial.last,
+                FakeSerial.doses - before)
+
+    code, summ, port, dosed = run("repl", "t-repl")
+    wrote = b"".join(port.writes)
+    check("idle >>> REPL: clean raw-mode soft reset, then boot",
+          wrote.index(b"\x01") < wrote.index(b"\x04")
+          < wrote.index(b"\x02"))
+    check("idle >>> REPL: runner imported from /trickle_tap",
+          "sys.path.insert(0, '/trickle_tap')" in port.boot_line)
+    check("idle >>> REPL: dose then runs", summ["status"] == "ok"
+          and dosed == 1 and code == 0)
+
+    code, summ, port, dosed = run("busy", "t-busy")
+    check("unknown program: rig-busy, exit 4, nothing dosed",
+          summ["status"] == "rig-busy" and summ["infra_error"]
+          and code == 4 and dosed == 0)
+    check("unknown program: never ctrl-C'd",
+          not any(b"\x03" in w for w in port.writes))
+
+    code, summ, port, dosed = run("streaming", "t-stream")
+    check("output streaming with nobody connected: rig-busy, not a "
+          "single byte typed into it",
+          summ["status"] == "rig-busy" and port.writes == [] and dosed == 0)
+
+    for i, fw in enumerate(("trickle_tap/2026-01-01", None)):
+        code, summ, port, dosed = run("runner", "t-fw-{}".format(i), fw=fw)
+        check("foreign runner firmware {!r}: rig-busy, no set/g "
+              "sent".format(fw),
+              summ["status"] == "rig-busy" and port.set_seen == []
+              and dosed == 0)
+
+    code, summ, port, dosed = run("busy", "t-take", "--takeover")
+    check("--takeover: ctrl-C, clean boot, dose",
+          any(b"\x03" in w for w in port.writes)
+          and summ["status"] == "ok" and dosed == 1)
+
+    code, summ, port, dosed = run("runner", "t-lock", lock_error=True)
+    check("port locked by mpremote/portguard: rig-busy",
+          summ["status"] == "rig-busy" and port is None and dosed == 0)
+
+    real_holders = odc.port_holders
+    odc.port_holders = lambda path: [(4242, "python3 scripts/"
+                                            "powder_battery_capture.py")]
+    try:
+        code, summ, port, dosed = run("runner", "t-held")
+    finally:
+        odc.port_holders = real_holders
+    check("port open in an unlocked bench script: rig-busy, port closed",
+          summ["status"] == "rig-busy" and port.closed and dosed == 0
+          and port.writes == [])
+    check("port_holders runs on this host without raising",
+          isinstance(odc.port_holders("/dev/null"), list))
+
+
+def test_firmware_id_in_sync():
+    path = os.path.join(os.path.dirname(os.path.dirname(_HERE)),
+                        "hardware", "test-module", "firmware",
+                        "trickle_tap", "trickle_controller.py")
+    if not os.path.exists(path):          # e.g. the Zero's sparse checkout
+        print("  SKIP firmware source not checked out here")
+        return
+    with open(path) as f:
+        m = re.search(r'^FIRMWARE_ID = "([^"]+)"', f.read(), re.M)
+    check("opt_common.FIRMWARE_ID matches trickle_controller.FIRMWARE_ID",
+          m is not None and m.group(1) == oc.FIRMWARE_ID)
 
 
 def test_jam_classification():
@@ -272,7 +433,8 @@ def test_ssh_remote_cmd():
 def main():
     for fn in (test_firmware_set_lines, test_penalization,
                test_jam_classification, test_mongo_uri_resolution,
-               test_ssh_remote_cmd, test_executor_end_to_end):
+               test_ssh_remote_cmd, test_executor_end_to_end,
+               test_shared_pico_guards, test_firmware_id_in_sync):
         print(fn.__name__)
         fn()
     if _FAILURES:
