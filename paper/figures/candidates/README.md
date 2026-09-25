@@ -1,5 +1,13 @@
 # Candidate manuscript figures — issue #116 round-1 powder battery
 
+> **Units note (2026-09-25).** Revolutions, rpm and rotation angles in this directory are
+> **auger** quantities: the dosing firmware (`main_three_phase.py`) folds the as-built
+> 20:44 stepper-to-auger gear (2.2:1, PR #124) into every rotation. The tilt labels
+> (0/45/90°) are the battery's recorded settings; the tilt plate is geared 2:1, so the
+> physical tube angles are **0°, 22.5° and 45°**. The manuscript figures
+> (`paper/figures/make_data_figures.py`) report physical angles; these exploratory
+> figures keep the recorded labels.
+
 Options to choose between for the Digital Discovery manuscript (PR #97), built
 from the round-1 uniform battery in issue #116. **Nothing here is wired into
 `main.tex` yet** — pick the panels you want and they get promoted into

@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{array}
 \usepackage{hyperref}
 \usepackage{mathptmx}
 
@@ -28,112 +29,148 @@ Gage Erickson, and Sterling G. Baird}
 
 \section{Bill of materials}
 
-Table~\ref{tbl:bom} lists the complete per-channel bill of materials for the
-single-channel module, plus system-shared items (one per platform regardless
-of channel count).  Prices are single-unit USD as of 2026-Q2 and should be
-reconfirmed at order time; vendor links and mirrored vendor design files are
-maintained in \texttt{hardware/} in the repository.
+Table~\ref{tbl:bom} lists the parts for one channel, plus the items a platform
+needs only once whatever its number of channels. Prices are single-unit US
+dollars as of September 2026 and should be checked at order time; vendor links
+are kept in \texttt{hardware/} in the repository
+(\url{https://github.com/vertical-cloud-lab/powder-doser}).
 
 \begin{table}[h]
 \centering
 \small
-\caption{Bill of materials. Printed parts are excluded (about 350~g PLA per
-channel, $<$\$10), as is the gravimetric-feedback instrument (A\&D HR-100A
-analytical balance, 0.1~mg readability), shared laboratory equipment that most
-labs already own.}
+\caption{Bill of materials. Printed parts are excluded (about 260~g of PLA per
+channel, under \$10), as are the custom circuit board, which can be replaced by a
+breadboard, and the analytical balance (A\&D HR-100A, 0.1~mg readability),
+which most laboratories already own.}
 \label{tbl:bom}
-\begin{tabular}{p{6.8cm}cp{1.4cm}p{4.2cm}}
+\begin{tabular}{p{7.0cm}cp{1.4cm}p{4.0cm}}
 \toprule
 Part & Qty & Price (USD) & Source \\
 \midrule
 \multicolumn{4}{l}{\emph{Per channel}}\\
 NEMA-11 bipolar stepper, 0.67~A, 10~N$\cdot$cm (11HS18-0674S) & 1 & 14 & StepperOnline \\
 Pololu Tic T500 stepper controller & 1 & 33 & Pololu \#3135 \\
-JF-0530B 5~V push--pull solenoid (tap actuator) & 1 & 7.50 & Adafruit \#412 \\
-DRV8871 H-bridge breakout (solenoid drive) & 1 & 7.50 & Adafruit \#3190 \\
+Pololu 33~V shunt regulator (clamps stepper back-voltage) & 1 & 15 & Pololu \#3776 \\
+12~V push--pull solenoid, JF-0530B type (tapping) & 1 & 7.50 & Adafruit \#412 \\
+DRV8871 H-bridge breakout (solenoid driver) & 1 & 7.50 & Adafruit \#3190 \\
 ERM coin vibration motor, 10~mm & 1 & 1.95 & Adafruit \#1201 \\
 DRV2605L haptic driver breakout (I$^2$C) & 1 & 7.95 & Adafruit \#2305 \\
-MG996R-class metal-gear servo (tilt) & 1 & 12 & generic \\
-6805ZZ bearing (auger support) & 1 & 3 & generic \\
-5~mm shaft coupler, fasteners (M3/M5), bulk capacitors & --- & 10 & generic \\
+MG996R-class metal-gear servo (tilt) & 2 & 24 & generic \\
+Fasteners (M3), bulk capacitors & --- & 5 & generic \\
 \midrule
-\multicolumn{4}{l}{\emph{System-shared (one per platform)}}\\
+\multicolumn{4}{l}{\emph{Shared (one per platform)}}\\
 Raspberry Pi Pico~W & 1 & 6 & Raspberry Pi \\
-MAX3232 RS-232 transceiver breakout (balance interface) & 1 & 3 & generic \\
-Mean Well GST60A12-P1J 12~V/5~A supply + cord + pigtail & 1 & 26 & Digi-Key \\
+Waveshare Pico-2CH-RS232 board (balance interface) & 1 & 9 & Waveshare 19979 \\
+Mean Well GST60A12-P1J 12~V/5~A supply, cord and pigtail & 1 & 26 & Digi-Key \\
 Pololu D24V22F5 5~V buck regulator & 1 & 19 & Pololu \#2858 \\
-Pololu 33~V shunt regulator (back-EMF clamp) & 1 & 15 & Pololu \#3776 \\
-Breadboard/protoboard, headers, wiring & --- & 10 & generic \\
+Headers and wiring & --- & 10 & generic \\
 \midrule
-\multicolumn{2}{l}{\textbf{Total, single-channel platform}} & \textbf{$\approx$175} & \\
+\multicolumn{2}{l}{\textbf{Total, single-channel platform}} & \textbf{$\approx$185} & \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \section{Construction guide}
 
-A step-by-step illustrated build guide is maintained in the repository
-(\url{https://github.com/vertical-cloud-lab/powder-doser}) alongside the
-parametric CAD sources and STLs for every part.  In outline:
+An illustrated build guide is kept in the repository alongside the parametric
+CAD sources and STL files for every part. In outline:
 
 \begin{enumerate}
-\item \textbf{Print} the auger, gear pair, bracket, tap collar (two clamp
-halves), mounting plate, hinged baseplate, and servo sector in PLA
-(0.2~mm layers, 4 perimeters, 25\% infill, no supports; print the auger
-vertically, helix up).
-\item \textbf{Auger drive:} press the 6805ZZ bearing into the bracket, seat
-the auger, mesh the printed gear pair, and bolt the NEMA-11 stepper to the
-front face of the mounting plate.
-\item \textbf{Tap collar:} clamp the two collar halves around the auger tube;
-mount the solenoid to the collar flange (2$\times$M3) so the plunger strikes
-the anvil pad, and adhere the ERM motor to the opposite pad.
-\item \textbf{Tilt stage:} join the mounting plate to the baseplate through
-the side hinges (printed pins), engage the servo sector, and confirm the
-exit nozzle lies on the hinge axis.
-\item \textbf{Electronics:} wire the Pico~W, Tic T500 (UART), DRV8871,
-DRV2605L (I$^2$C), MAX3232 (RS-232 to the HR-100A balance), and servo per
-the KiCad schematic in
-\texttt{hardware/test-module/}; flash the MicroPython firmware.
+\item \textbf{Print} the auger, the 20-tooth pinion, the bracket and collars,
+the tap collar (two clamp halves), the mounting plate, the hinged baseplate and
+the servo gear sector in PLA (0.2~mm layers, four perimeters, 25\% infill, no
+supports). Print the auger upright.
+\item \textbf{Auger drive:} seat the auger in its printed collars on the
+mounting plate, bolt the NEMA-11 stepper with its pinion to the plate, and
+check that the pinion meshes with the auger's 44-tooth gear band (2.2:1).
+\item \textbf{Tap collar:} clamp the two collar halves around the auger tube,
+mount the solenoid on the collar flange (2$\times$M3) so that its plunger
+strikes the anvil pad, and stick the vibration motor to the opposite pad.
+\item \textbf{Tilt stage:} join the mounting plate to the baseplate through the
+side hinges (printed pins), mesh the two servos with the plate's gear (2:1), and
+check that the outlet lies on the hinge axis.
+\item \textbf{Electronics:} wire the Pico~W, Tic T500 (serial), DRV8871,
+DRV2605L (I$^2$C), the RS-232 board (to the HR-100A balance) and the servos as
+shown in the schematic in \texttt{hardware/test-module/}, then flash the
+MicroPython firmware.
 \item \textbf{Checkout:} run the firmware self-test (rotate, tap, vibrate,
-tilt, tare/read), then a per-powder calibration sweep.
+tilt, tare and read), then the test protocols listed in the main text.
 \end{enumerate}
 
-\section{Exit-nozzle variants}
+\section{Auger and outlet geometry}
 
-Four printed exit-nozzle geometries were produced for dispense testing
-(Fig.~\ref{fgr:nozzles}); the dispensing campaign will report flow-initiation
-and dribble behaviour per nozzle and per powder.
+Fig.~\ref{fgr:nozzles} shows a cross-section of the geared auger and the four
+printed outlet variants. The tests in the main text used the Type~4 outlet,
+with a 3~mm exit hole.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/figS1_nozzles}
-\caption{Cross-sections of the four exit-nozzle variant CAD models (Types 1--4, panels (a)--(d))
-of the test auger, differing in exit constriction and chamfer geometry. The variants are
-parametric OpenSCAD models (\texttt{cad/auger-geared/nozzle-variants.scad}) authored by AI
-coding agents under human review; no GUI CAD package was used.}
+\caption{(a) Cross-section of the geared auger: the 8~mm central core, the
+single-start helical flight (10~mm pitch, 2~mm thick) fused to the 21~mm bore of
+the tube, and the external gear band. (b--e) Cross-sections of the four outlet
+variants (Types~1--4), which differ in exit constriction and chamfer. All are
+parametric OpenSCAD models (\texttt{cad/auger-geared/} in the repository)
+written by AI coding agents under human review; no conventional CAD software was
+used to design them.}
 \label{fgr:nozzles}
 \end{figure}
 
+\section{Bench noise}
+
+Protocol~A takes eight balance readings with nothing moving at the start of
+every run. Their spread sets the smallest change that run can resolve
+(Fig.~\ref{fgr:bench}). It was 0.0~mg on every run up to 12 August 2026 and
+rose to tens of milligrams from 20 August. The cause was later traced to powder
+trapped under a misaligned dust plate on the balance; after cleaning, the
+balance drifted by less than 0.1~mg over 16 minutes. All data in the paper
+predate that fix.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS2_bench}
+\caption{Balance noise floor for every first-round run: the spread (maximum
+minus minimum) of eight readings taken with nothing moving (protocol~A), in
+date order. Runs whose eight readings were identical are drawn at the axis
+floor. The dashed line is the controller's $\pm$5~mg stopping band.}
+\label{fgr:bench}
+\end{figure}
+
+\section{Closed-loop dose record}
+
+Table~\ref{tbl:doses} summarizes every valid closed-loop dose by powder and
+target mass. A dose is valid when its run passed quality screening, the dose
+ended in a defined controller state, and the auger or solenoid actually moved;
+doses excluded for any other reason (for example, a misaligned outlet, an
+unreadable balance or powder that caked in the tube) are listed with the reason
+in the per-dose file.
+
+\small
+\input{figures/data/dose_summary_table}
+\normalsize
+
 \section{AI usage log}
 
-In line with Digital Discovery's guidance on LLM use, all AI interactions are
-preserved verbatim and publicly:
+In line with \textit{Digital Discovery}'s guidance on the use of LLMs, all AI
+interactions are preserved publicly in the repository:
 
 \begin{itemize}
-\item \textbf{CAD/code generation:} every agent session (GitHub Copilot coding
-agent; Claude-family models, April--June 2026) is recorded as a pull request
-containing the prompt (issue text and review comments), the generated CAD
-code, rendered views, and the human review thread.
+\item \textbf{CAD and code generation:} every coding-agent session (GitHub
+Copilot coding agent and Claude-family models, 2026) is recorded as a pull
+request containing the prompt (issue text and review comments), the generated
+CAD code, rendered views and the human review thread.
 \item \textbf{Design reviews and literature queries:} Edison Scientific query
-scripts, task identifiers, raw answers, and extracted references are archived
-under \texttt{paper/background/} on the corresponding branches; the
-consolidated, validated bibliography with per-entry verification status is at
-\texttt{paper/references\_validation.md}.
+scripts, task identifiers, raw answers and extracted references are archived
+with the corresponding branches; the consolidated bibliography, with the
+verification status of each entry, is \texttt{paper/references\_validation.md}.
 \item \textbf{Text-to-CAD evaluations:} CADSmith run artifacts and the Zoo
-Design Studio (Zookeeper agent) session transcripts and best-practice notes
-are preserved on their respective branches.
-\item \textbf{Qualitative observations:} the running team journal of AI
-behaviour (good and bad) is public in the repository's discussion \#39.
+Design Studio (Zookeeper agent) session transcripts and notes are preserved on
+their branches.
+\item \textbf{Analysis and writing:} the data-analysis scripts behind every
+figure, and the AI-drafted revisions of this manuscript, are in
+\texttt{paper/} with their review threads.
+\item \textbf{Qualitative observations:} the team's running journal of AI
+behaviour, good and bad, is discussion~\#39 in the repository.
 \end{itemize}
 
 \end{document}

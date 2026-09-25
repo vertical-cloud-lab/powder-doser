@@ -1,5 +1,13 @@
 # Dose-rate EDA — issue #116 round-1 battery, blocks A–F
 
+> **Units note (2026-09-25).** Revolutions, rpm and rotation angles in this directory are
+> **auger** quantities: the dosing firmware (`main_three_phase.py`) folds the as-built
+> 20:44 stepper-to-auger gear (2.2:1, PR #124) into every rotation. The tilt labels
+> (0/45/90°) are the battery's recorded settings; the tilt plate is geared 2:1, so the
+> physical tube angles are **0°, 22.5° and 45°**. The manuscript figures
+> (`paper/figures/make_data_figures.py`) report physical angles; these exploratory
+> figures keep the recorded labels.
+
 Exploratory analysis of everything the round-1 campaign measured about **dose
 rate**: what the auger delivers, and how that changes with powder, tilt, speed
 and actuation mode. Block G (the three-phase closed-loop controller) is
