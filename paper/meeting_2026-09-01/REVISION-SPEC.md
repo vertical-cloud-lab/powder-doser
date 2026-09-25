@@ -21,6 +21,17 @@ follows from those.
 ## 0. The one thing that blocks everything else
 
 ### S01 — ⚠️ Resolve the gear ratio before regenerating any figure
+
+> **Resolved 2026-09-25 — the ×3 below is wrong; do not apply it.** The #116 battery never
+> used `main.py` for rotation: every run went through `main_three_phase.Stepper`, which
+> folds `AUGER_GEAR_RATIO = 44/20` into its steps per revolution (since 3d99974, from the
+> PR #124 review, where the rig builder reported a 20-tooth pinion and a 44-tooth auger
+> gear). Logged revolutions are therefore auger revolutions and need no rescaling, and the
+> protocol-D pulse period (3.94 s at a commanded 15 rpm, against 4.00 s per auger
+> revolution) confirms 2.2:1. The tilt plate is also geared 2:1, so the battery's tilt
+> labels 0/45/90 are tube angles of 0/22.5/45°. `main.tex` now says 2.2:1 and reports
+> physical angles. Still open: `cad/auger-geared/` (16:48) and the BOM ("48T band") do not
+> match the as-built 20:44 pair, so count the teeth and commit the printed gear files.
 `F106` · **Blocker** · Owner: Sam + Claude
 
 Three sources disagree about the stepper-to-auger reduction:
