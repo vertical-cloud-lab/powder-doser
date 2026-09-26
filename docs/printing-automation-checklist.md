@@ -100,8 +100,19 @@ Reference material:
       FastAPI `/print` and `/print_stl` with the safety envelope.
       Caveat: the BambuStudio binary is x86-only, so slicing must live
       on an x86 box (lab PC / NUC / CI) even if a Pi does the sending.
+      The Pi already on the tailnet is the powder doser's campaign
+      controller (Zero 2 W, 512 MB, Wi-Fi only): fine for tests and
+      supervised sends, but give always-on printer duties their own Pi.
 - [ ] **Reachability from the Pi.** Run `h2d_smoketest.py` *from the
       lab Pi* against both printers — the one open network question.
+      Status 2026-09-26: the only always-on tailnet device CI can SSH
+      into is the powder doser's Pi Zero 2 W, on byu-devices Wi-Fi
+      (2.4 GHz). A 2-minute passive listen heard no printer discovery
+      beacons (UDP 2021/1990), which proves nothing: byu-devices
+      delivers almost no broadcast/multicast between clients (2 mDNS
+      packets in 90 s on a /17). What decides it is a TCP connection
+      from the Pi to each printer's IP on 8883/990; that needs the IPs,
+      which are not in the repo (don't scan the campus subnet for them).
       Long-term: byu-devices exemption / dedicated AP (the Shawn
       conversation) instead of relying on the currently-observed
       allowance.
