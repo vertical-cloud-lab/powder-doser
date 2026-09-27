@@ -103,19 +103,31 @@ Reference material:
       The Pi already on the tailnet is the powder doser's campaign
       controller (Zero 2 W, 512 MB, Wi-Fi only): fine for tests and
       supervised sends, but give always-on printer duties their own Pi.
-- [ ] **Reachability from the Pi.** Run `h2d_smoketest.py` *from the
+- [x] **Reachability from the Pi.** Run `h2d_smoketest.py` *from the
       lab Pi* against both printers — the one open network question.
-      Status 2026-09-26: the only always-on tailnet device CI can SSH
-      into is the powder doser's Pi Zero 2 W, on byu-devices Wi-Fi
-      (2.4 GHz). A 2-minute passive listen heard no printer discovery
-      beacons (UDP 2021/1990), which proves nothing: byu-devices
-      delivers almost no broadcast/multicast between clients (2 mDNS
-      packets in 90 s on a /17). What decides it is a TCP connection
-      from the Pi to each printer's IP on 8883/990; that needs the IPs,
-      which are not in the repo (don't scan the campus subnet for them).
-      Long-term: byu-devices exemption / dedicated AP (the Shawn
-      conversation) instead of relying on the currently-observed
-      allowance.
+      Verified 2026-09-26 (17:55 MT) from the powder doser's Pi Zero 2 W
+      on byu-devices Wi-Fi, driven over Tailscale SSH from a laptop on
+      the tailnet. Credentials went over the SSH session's stdin, never
+      to disk or the command line.
+      - TCP connect + ping from the Pi: A1 mini :8883/:990/:6000 and
+        H2D :8883/:990/:322 all reachable.
+      - `h2d_smoketest.py` (unchanged; paho-mqtt 2.1.0 in a throwaway
+        venv under `/tmp`, removed afterwards): **both printers pass,
+        exit 0.** MQTT-over-TLS auth plus a live
+        `device/<SERIAL>/report` message from each, and implicit-FTPS
+        login plus a `/cache` listing from each (A1 mini: a long list of
+        past jobs; H2D: empty).
+
+      So byu-devices does **not** block Pi→printer unicast, even though
+      it delivers almost no broadcast/multicast between clients (a
+      2-minute passive listen heard no discovery beacons on UDP
+      2021/1990). Address printers by IP; SSDP discovery won't find them
+      from the Pi. Gotcha: an attempt the night before timed out on
+      every port with no ping replies because Thumbelina was offline
+      (Bambu Studio showed it offline), not because of the network.
+      Check the printer is online before blaming client isolation.
+      Long-term, a byu-devices exemption / dedicated AP (the Shawn
+      conversation) is still sturdier than an undocumented allowance.
 - [ ] **Hardware interlock, installed and tested mid-print.** The
       [three options](h2d-programmatic-access.md#hardware-interlock--concrete-options)
       are picked out; this is the gate before anything runs unattended.
