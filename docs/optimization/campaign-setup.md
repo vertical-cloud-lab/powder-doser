@@ -1,6 +1,7 @@
 # Optimization campaign: workflow and algorithm design (issue #164)
 
-Design-only document — no campaign code exists yet. It answers the two questions issue
+Design document for the issue #164 campaign; the code it specifies is built and listed
+in §3. It answers the two questions issue
 [#164](https://github.com/vertical-cloud-lab/powder-doser/issues/164) asks to settle
 before code is written:
 
@@ -162,7 +163,8 @@ is expected to work but is logged as such until we have data across targets.
 Two categorical, six continuous. Boxes below are placeholders to be finalized by
 range-finding + the screen (§2.4); the salt-tuned baseline
 ([#154 `d21d652`](https://github.com/vertical-cloud-lab/powder-doser/pull/154/commits/d21d652763afbd59d9fc42d58fdd127e54c75a8c))
-sits inside every box and centers it.
+sits inside every box, though not at its midpoint. §2.9 covers how it enters the
+optimizer.
 
 | # | Parameter | Type | Placeholder box | Salt-tuned value | Firmware knob |
 |---|---|---|---|---|---|
@@ -261,9 +263,10 @@ cross-powder modeling needs no migration):
    step, before any loop runs: bracket each continuous box by eye — tilt just
    above no-flow, just below spill/flood; confirm the RPM band. Sets the §2.1
    boxes. (Everything after this step is the automated loop, §1.2.)
-2. **Screening (about 20 doses)** — the #162 §5 process, updated to this parameter
+2. **Screening (about 22 doses)** — the #162 §5 process, updated to this parameter
    list. Eight factors is too many for the original 2⁴⁻¹, so: **2⁸⁻⁴ resolution-IV
-   fraction (16 corners) + 4 center points** ≈ 20 doses, one unattended-ish session.
+   fraction (16 corners) + 4 center points** ≈ 20 doses, one unattended-ish session,
+   plus one dose at the hand-tuned baseline before the block and one after it (§2.9).
    The two tap categoricals slot in natively as two-level factors (off/on). Same
    analysis and decision rules as #162 §5.3: main-effect and dispersion ranking (a
    factor inert on both gets fixed at its cheap level and dropped from the BO —
@@ -282,8 +285,8 @@ cross-powder modeling needs no migration):
    median time, P(|error| ≤ 10 mg) get stamped into the `dosing_profiles` document —
    a profile is only marked `validated` after this block.
 
-Total ≈ 65–75 doses per powder; at roughly 1–3 min a dose that is 3–5 supervised
-sessions of 45–90 min.
+Total ≈ 70–80 doses per powder (including the 6 re-dosed anchors of §2.8); at
+roughly 1–3 min a dose that is 3–5 supervised sessions of 45–90 min.
 
 ### 2.5 Same amount every dose? Yes.
 
@@ -382,14 +385,54 @@ filters:
   and BO, validation, and production all run on it — a single scalar, so no
   firmware change beyond the knob push (a τ1 slope knob is the upgrade if the
   rate dependence turns out real). The screening → BO controller change is a
-  §2.7-style v1 roughness; the 4 screening center points are re-dosed once under
-  τ̂ (4 doses) so the warm-start data and the BO regime share an anchor.
+  §2.7-style v1 roughness; the 4 screening center points and the 2 baseline doses
+  (§2.9) are re-dosed once under τ̂ (6 doses) so the warm-start data and the BO
+  regime share anchors.
 - **Known bias, accepted in v1.** Settled-minus-at-stop deltas fold the balance
   lag into τ (#131's caveat: a shared 0.1–0.2 s inflation; the 2026-08-14 drop
   tests put τ_bal near 0.16 s while the firmware believes 0.7). The cutoff's
   margin + k·σ terms absorb constant offsets, and bench-plan test A1 (τ_bal
   measurement) is the clean-up path — the fit is re-runnable from stored
   stop-event rows once τ_bal is pinned.
+
+### 2.9 How the hand-tuned baseline enters the optimizer
+
+Added 2026-09-29, after William asked on PR #166 how his tuning reaches the algorithm.
+The tuned file is `trickle_params.py` as of `d21d652`. In that commit William changed four
+searched knobs by hand: bulk tilt 25 → 30°, trickle tilt 20 → 15°, tap tilt 0 → 10°,
+and the bulk→trim threshold 0.30 → 0.25 g. He also changed the bench goal, which the
+campaign overrides with its own target. Everything else, validated in the same testing,
+came from the #154 port. The file reaches the campaign through five channels:
+
+| Channel | Effect on the optimizer | Code |
+|---|---|---|
+| **Frozen constants.** Every value that is not searched: PI gains, KF noise levels, τ_bal, cutoff margin, k·σ, anticipation, settle times, tap budgets, the 100 mg overshoot guard. | Held fixed on every dose, so they define the controller that Ax is tuning around; Ax cannot compensate for a bad one. They are snapshotted into the campaign document when it is created and **pushed before every dose** (`--frozen`). A value someone left `set` on the shared runner therefore cannot leak into a trial. Before this change, a screening dose could even run on a stale τ. | `frozen_snapshot()`, `Runner.frozen_push()`, `opt_dose_capture.push_params` |
+| **Baseline anchor doses.** The 8 searched values as tuned, both taps off. | Dosed once before and once after the screening block at the tuned τ = 0.30 s, then twice more under the fitted τ. All four doses are attached to Ax as observed data, so the surrogate knows this good region exists and the observed Pareto front already contains William's point. qNEHVI scores a candidate by the hypervolume it adds beyond that front, so BO only gains by beating William's point on at least one objective. The repeat doses also give the surrogate a direct noise estimate at a point that matters. | `screening_plan(baseline=…)`, `recenter()`, `_init_ax()` |
+| **Readout reference.** | `pareto.json` reports the baseline's median t and \|error\| in each τ regime, and lists the front points that match or beat it on both objectives. This is the direct answer to "did optimization beat hand tuning?" | `baseline_summary()`, `readout()` |
+| **Box placement.** | The boxes were drawn to contain every tuned value. The box *edges*, not the tuned values, set the 16 screening corners and the 4 centers. | `oc.SEARCH_SPACE_AX` |
+| **τ_afterflow = 0.30 s.** | Screening runs on it, because it is the value the tuning was validated with. From the anchors on, the §2.8 fit replaces it. | `TAU_AFTERFLOW_S`, §2.8 |
+
+The tuned point is **not** the box center. The 2⁸⁻⁴ design's curvature check needs its
+center points at the box midpoints (27.5°, 20°, 7.5°, 60 rpm, 0.175 g, 9 mg), and the
+tuned point is off the midpoint on every continuous axis. Before 2026-09-29 the campaign
+never dosed the tuned point, and Ax never saw it; the baseline anchors close that gap.
+They add 4 doses. `--baseline-reps 0` restores the old plan, and the main-effect
+analysis of §2.4 uses corners and centers only.
+
+**Re-tuning by hand:** the campaign uses whatever `trickle_params.py` holds in the
+**laptop's checkout when the campaign is created**. The snapshot is stored in the
+campaign document and never re-read. Commit new hand tuning before starting a campaign.
+Edits made only to the Pico's copy, or with live `set` commands, are overwritten by the
+per-dose push.
+
+![Hand-tuned baseline in the search space and in objective space](hand-tuned-baseline.png)
+
+*Left: where the `d21d652` values sit in each continuous box, next to the screening
+levels. The boxes, tuned values, and levels are the real campaign's; the BO
+suggestions (squares) come from the simulated campaign on the right. Right: that
+campaign on the virtual plant (illustrative, not rig data; `opt_campaign.py --simulate
+--model moo --budget 14`), with the baseline doses as the reference the front has to
+beat. Regenerate with [`make_hand_tuned_figure.py`](make_hand_tuned_figure.py).*
 
 ---
 
@@ -400,15 +443,17 @@ All six pieces exist; the table now points at them:
 | Piece | Where it runs | What it is |
 |---|---|---|
 | [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard. Sim-tested (`sim/test_trickle_tap.py`, 14 tests) |
-| [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice |
-| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts, snapshots + `--resume`, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout, `--validate-params` replicate blocks that write `dosing_profiles` |
+| [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes the campaign's frozen snapshot (`--frozen`) and then the trial's `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice; `--fetch` on a uuid with no result answers `in-progress`, `interrupted`, or `not-found` (§5.4) |
+| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-params` replicate blocks that write `dosing_profiles` |
 | [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
 | [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
 | [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: search space, campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
 | [`scripts/check_mongo.py`](../../scripts/check_mongo.py) | anywhere | MongoDB preflight: reports which credential source resolved (never the URI itself), pings the cluster, lists the `powder_doser` collections |
 
 Host-side tests: `scripts/tests/test_opt_dose_capture.py` (executor against a
-canned fake-serial Pico). The loop itself dry-runs end to end with
+canned fake-serial Pico) and `scripts/tests/test_opt_campaign_resume.py` (the §5.4
+halts, injected into the loop against the sim plant; its BO checks use real
+`ax-platform==0.4.3` and are skipped without it). The loop itself dry-runs end to end with
 `opt_campaign.py --simulate` — screening → τ fit → anchors → warm-started BO →
 Pareto — with no hardware.
 
@@ -429,7 +474,8 @@ The §4 questions in the first draft of this doc are all answered:
 2. **Tuned baseline: committed** —
    [#154 `d21d652`](https://github.com/vertical-cloud-lab/powder-doser/pull/154/commits/d21d652763afbd59d9fc42d58fdd127e54c75a8c)
    updates `trickle_params.py` with the values that worked well for salt. This is the
-   §2.1 frozen snapshot and box center.
+   §2.1 frozen snapshot. The tuned point lies inside every box but is not its center;
+   it is dosed as the §2.9 baseline anchor.
 3. **Target mass: 0.5 g**, threshold box capped at 0.30 g (§2.5).
 4. **Objective thresholds: 180 s / 20 mg** confirmed (§2.2).
 5. **Honegumi sample: provided** — `ax-platform==0.4.3`, SOBOL → SAASBO
@@ -601,9 +647,11 @@ python scripts/opt_campaign.py --powder-id salt --target-g 0.5 --budget 40
 Everything after that is automatic. The loop pauses for a human only at the
 cup-empty / hopper-top-up cadence prompts (§2.5); between doses the §1.2 spill
 countdown auto-continues and the campaign moves on by itself. `Ctrl-C`, laptop
-sleep, or a dropped SSH session are all safe — each dose is atomic on the Zero
-(§1.1), and `--resume <campaign_id>` picks up from the Mongo ledger + the Ax JSON
-snapshot without re-dosing anything.
+sleep, a dropped SSH session, or an empty hopper are all safe: each dose is atomic
+on the Zero (§1.1), and the laptop records each dose before it runs. `--resume`
+(no id needed) settles any dose that was out on the rig, then continues from the
+campaign's local state and Ax snapshot. If the local copy is gone, it restores them
+from the MongoDB mirror. §5.4 has the details.
 
 ### 5.3 What the loop automates, per trial
 
@@ -654,3 +702,86 @@ ax_client.create_experiment(
 (Thresholds passed explicitly — the 2026-09-22 verification run confirmed Ax
 silently *infers* thresholds when they are omitted, which is not what we want
 scoring hypervolume.)
+
+### 5.4 Halts, interruptions, and resuming
+
+Added 2026-09-29. Two rules make a halted campaign safe to resume: **every dose is
+written down before it runs**, and **`--resume` asks the Zero how the in-flight dose
+ended before it doses anything new.** Nothing that reached the powder is ever
+forgotten or re-dosed blindly.
+
+**What is saved, and when:**
+
+| Where | What | Written |
+|---|---|---|
+| Laptop `data/opt/<campaign_id>/campaign.json` | phase, status, fitted τ, budget, frozen snapshot, screening plan, and `in_flight`: the dose currently out on the rig (uuid, label, params, Ax trial index) | before and after every dose (atomic replace) |
+| Laptop `…/campaign_records.jsonl` | one line per finished dose: label, mode, params, outcomes, stop events, spill/void flags, covariates, Ax trial index | after every dose |
+| Laptop `…/ax_snapshot.json` | the Ax experiment (every asked and told trial) + generation strategy | after every ask and every tell |
+| Zero `data/opt/<campaign_id>/` | `trial_<uuid>.json` (full document + telemetry), `serial_<uuid>.log` (raw serial), `trials.jsonl` | at the end of every dose, even with the laptop gone (SIGHUP is ignored) |
+| MongoDB `opt_trials` | the Zero's trial document | by the Zero, right after its spool |
+| MongoDB `opt_campaigns` | `campaign.json` + the Ax snapshot + every record, which is enough to rebuild the laptop directory | every laptop save |
+| Powder file: `data/powder_models/<powder>.json` + `powder_models` (Mongo) | the `latest_campaign` block (below), next to the τ fit | every laptop save |
+
+**What happens per halt:**
+
+| Halt | On the rig | Kept | What the loop does |
+|---|---|---|---|
+| Hopper or auger runs empty mid-dose | The firmware sees no flow and ends the dose `stalled` (bulk: 15 s of spinning without gain; tap endgame: nudge budget spent), or at `timeout`. | full `RESULT` + telemetry, spooled + uploaded | A stall never auto-continues; the loop asks. `e` = it ran empty: refill, and the dose is **voided** (kept in the records, never modeled) and the same parameters are dosed again. `j` = the powder really jammed: kept, penalized (§2.3). `e` also works in the normal countdown, e.g. for an empty hopper that ended at `timeout`. |
+| SSH drops mid-dose | The dose finishes, spools, and uploads anyway. | everything, under the uuid | The loop asks the Zero every 30 s for up to 15 min (a dose still running reports `in-progress`). If the Zero stays unreachable, the loop pauses with the dose in flight, and `--resume` fetches and records it. |
+| Laptop Ctrl-C, sleep, crash, or power loss during a dose or its countdown | The dose finishes. | the Zero's copy; `in_flight` on the laptop | `--resume` fetches the result by uuid and records it (flag a spill then, if there was one). In BO, Ax is told the result before the next ask. |
+| Laptop stopped before the Zero got the command | Nothing dosed. | `in_flight` | The Zero answers `not-found`; the uuid is dropped and the same point is dosed. |
+| Zero reboots, or the executor is killed mid-dose | The Pico may finish the dose on its own; nothing is spooled. | `serial_<uuid>.log` on the Zero; telemetry possibly on the Pico's flash (`/trickle_log_NNN.csv`) | `interrupted`: recorded as an infra error (not modeled), and the point is dosed again. Check the cup; the next dose tares. |
+| `rig-busy` (another session holds the Pico), serial or scale fault | Nothing dosed (rig-busy), or aborted. | the fault record | The loop pauses; after `--resume` the same point (in BO, the same Ax trial) is dosed again. |
+| Laptop lost, or `data/opt/` wiped | — | the MongoDB mirror | `--resume <id>` rebuilds the directory from `opt_campaigns` and continues. |
+
+What the model learns from: jam and spill doses are modeled, penalized per §2.3.
+Voided and infra-error doses stay in the records, so nothing is lost, but never reach
+Ax, the τ fit, or the front. BO never throws a suggestion away because of the rig:
+a trial Ax asked for but was never told about is dosed again with the same
+parameters. Before 2026-09-29, a trial left running made `get_next_trial` raise
+`MaxParallelismReachedException` on resume (Ax 0.4.3).
+
+**Resuming by hand:**
+
+```bash
+python scripts/opt_campaign.py --powder-id salt --resume --host <user>@<zero-hostname>
+```
+
+With no id, `--resume` takes this powder's most recent campaign: the newest
+`campaign.json` under `data/opt/`, else the powder file's pointer, locally or in
+MongoDB. To pick a specific campaign, pass its id (`--resume salt-20260929T…Z`). The
+loop prints the id when it pauses, and the powder file stores it. The campaign keeps
+its own target mass, budget, screening plan, and frozen snapshot; pass `--budget`
+only to change the BO budget. Before resuming, clear whatever stopped it (refill,
+get the rig back, reconnect), and leave the cup on the pan, since the next dose
+tares. `--validate-params` also runs inside the latest campaign by default, so the
+replicates use its fitted τ.
+
+**The powder file** (`data/powder_models/salt.json`, mirrored to `powder_models` in
+MongoDB) holds the τ fit and the latest run, including the iteration number:
+
+```json
+{
+ "powder_id": "salt",
+ "tau_afterflow": {"tau0_s": 0.97, "model": "linear", "n_events": 42},
+ "latest_campaign": {
+  "campaign_id": "salt-20260929T004444Z",
+  "status": "paused",
+  "phase": "bo",
+  "iteration": 31,
+  "bo_iteration": 3,
+  "progress": {"screen": [22, 22], "recenter": [6, 6], "bo": [3, 40], "validation": 0},
+  "last_dose": {"trial_index": 30, "label": "bo-002", "mode": "bo", "status": "ok",
+                "t_total_s": 118.8, "abs_error_mg": 4.1, "jam": false, "spill": false,
+                "void": null},
+  "in_flight": {"label": "bo-003", "trial_uuid": "…"},
+  "tau_afterflow_s": 0.97,
+  "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-20260929T004444Z --host <user>@<zero-hostname>"
+ }
+}
+```
+
+`iteration` is the number of doses recorded, so the next dose gets `trial_index`
+`iteration`. `progress` counts only modeled doses per phase, against the plan. A
+`--simulate` campaign writes its powder file inside its own campaign directory, never
+here.
