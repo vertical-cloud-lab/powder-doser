@@ -495,6 +495,20 @@ def test_ssh_remote_cmd():
     check("paths with spaces still quote safely",
           "cd ~/'my repo' " in cmd2 and "PY='/opt/py 3/bin/python';" in cmd2)
 
+    # An older executor on the Zero answers --fetch with a short dict.
+    real_run = ocamp.subprocess.run
+    ocamp.subprocess.run = lambda *a, **k: types.SimpleNamespace(
+        stdout='{"kind": "opt_trial_summary", "trial_uuid": "u1", '
+               '"status": "not-found", "infra_error": true}\n',
+        stderr="", returncode=3)
+    try:
+        short = ex.fetch("u1", "salt-test")
+    finally:
+        ocamp.subprocess.run = real_run
+    check("a short status answer is filled out to the summary shape",
+          short["status"] == "not-found" and short["t_total_s"] is None
+          and short["stop_events"] == [] and short["jam"] is False)
+
 
 def main():
     for fn in (test_firmware_set_lines, test_frozen_snapshot_helpers,

@@ -233,7 +233,11 @@ class SSHExecutor:
         for line in reversed(proc.stdout.splitlines()):
             line = line.strip()
             if line.startswith("{"):
-                return json.loads(line)
+                summary = json.loads(line)
+                # an older executor answers statuses with fewer keys
+                return dict(oc.status_summary(summary.get("trial_uuid"),
+                                              summary.get("status")),
+                            **summary)
         raise RuntimeError("no summary line from the Zero "
                            "(exit {})".format(proc.returncode))
 
@@ -980,9 +984,14 @@ class Runner:
 
     def _stop_for(self, record):
         s = record["summary"]
+        hint = {"rig-busy": BUSY_HINT,
+                "not-found": "the Zero never ran it -- if its stderr above "
+                             "shows an argparse error, its checkout is "
+                             "older than this laptop's: git pull --ff-only "
+                             "in ~/powder-doser"}.get(s["status"],
+                                                     "fix the rig")
         log("{} on {} -- {}, then --resume {}".format(
-            s["status"], record["label"],
-            BUSY_HINT if s["status"] == "rig-busy" else "fix the rig",
+            s["status"], record["label"], hint,
             self.campaign.doc["campaign_id"]))
         raise KeyboardInterrupt
 
