@@ -457,12 +457,16 @@ halts, injected into the loop against the sim plant; its BO checks use real
 `opt_campaign.py --simulate` — screening → τ fit → anchors → warm-started BO →
 Pareto — with no hardware.
 
-Remaining before the first rig dose: upload the updated `trickle_tap/` build to
-its own `/trickle_tap` folder on the Pico, **not the root**, after agreeing a
-handover with whoever holds the rig (§5.1 item 6; commands in the
-[firmware README](../../hardware/test-module/firmware/trickle_tap/README.md)).
-The Zero's `scripts/` is already a sparse checkout of this branch (§5.1 item
-4, converted 2026-09-23), so it only needs `git pull --ff-only` there.
+**On the rig since 2026-09-29.** The build is in the Pico's own `/trickle_tap`
+folder (uploaded over the Zero with `mpremote`, every file checked by sha256; the
+root files were not touched), and the first campaign ran on it unattended (§5.5).
+One deliberate difference from the repo: `/trickle_tap/config.py` is the Pico's
+own root `config.py`, which differs from the repo copy only in
+`SERVO_DEFAULT_DEG = 0` (repo: 90). The rig homes the tilt servo to horizontal at
+boot, and a 90° home could tip a loaded tube, so the README's "keep your locally
+tuned `config.py`" rule applies. Re-uploading from the repo must keep that file.
+The Zero's `scripts/` is a sparse checkout of this branch (§5.1 item 4), so it
+only needs `git pull --ff-only` there.
 
 ## 4. Decisions — locked 2026-09-22 (William, issue #164)
 
@@ -785,3 +789,45 @@ MongoDB) holds the τ fit and the latest run, including the iteration number:
 `iteration`. `progress` counts only modeled doses per phase, against the plan. A
 `--simulate` campaign writes its powder file inside its own campaign directory, never
 here.
+
+### 5.5 Unattended runs
+
+Added 2026-09-29, when William asked for an overnight campaign from CI with nobody
+at the rig. `--unattended` drops every prompt: no countdown, no cup-empty cadence
+stop (the cup is never emptied), and spills are recorded as `null` (unobserved)
+rather than "no spill". Instead of pausing for a resume, the campaign **ends** at
+the first limit, reads out the front, and marks itself `finished` with a
+`stop_reason`:
+
+| Limit | Flag | Why |
+|---|---|---|
+| Cup budget | `--cup-budget-g` | The HR-100A takes 102 g. The budget is the headroom above the cup. Every dose's settled reading adds to the cup load (a dose that ran without one counts as target + the 100 mg overshoot guard), and no dose starts that could go past the budget. The load before each dose is stored as the `cup_load_g` covariate. |
+| Deadline | `--stop-at` | No dose starts unless the median of the last five doses (plus the last Ax suggestion time in BO) still fits. A CI job is killed at its `timeout-minutes`, so this leaves time for the readout and the upload. |
+| Stall streak | `--max-stall-streak` (2) | A stall looks the same whether the hopper ran empty or the powder jammed. Nobody can check, so each stall stays a penalized jam, and two in a row end the run. |
+| Jam streak | `--max-jam-streak` (3) | Something physical is wrong. |
+| Rig fault | — | A serial or scale fault is retried once on the same point, then ends the run. `rig-busy` (another session has the Pico) ends it immediately. |
+
+`--no-flash-log` pushes `log_to_flash 0` with the frozen snapshot. The executor
+already pulls every dose's telemetry over serial into the trial document, and
+the shared Pico's flash had 68 KB free after the `/trickle_tap` upload.
+
+Running from CI (the `claude.yml` job): the job's 180 min timeout, not the cup,
+is the binding limit at 0.5 g per dose. The loop runs on the runner as the
+"laptop" (`/tmp` venv with the pinned stack), SSHes to the Zero exactly as
+§5.3 describes, and is launched detached so it survives between the agent's
+foreground polls:
+
+```bash
+setsid nohup python -u scripts/opt_campaign.py --powder-id salt --target-g 0.5 \
+    --host <user>@<zero-hostname> --unattended --cup-budget-g 45 \
+    --stop-at <job start + 150 min> --budget 200 --no-flash-log \
+    --operator claude-unattended > /tmp/campaign.log 2>&1 < /dev/null &
+python scripts/opt_report.py data/opt/<campaign_id>   # figure + report.md
+```
+
+While it owns the rig the session leaves `~/RIG-NOTICE-<date>.txt` on the Zero
+(§5.1 item 6). `scripts/opt_report.py` writes `campaign_overview.png` and
+`report.md` into the campaign directory. The report covers every dose, the
+screening main effects over the 16 corners, the τ fit, the model's Pareto set,
+and the recommended point: the knee of the observed front, with each objective
+scaled by its threshold.
