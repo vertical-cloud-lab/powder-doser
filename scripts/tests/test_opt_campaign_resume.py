@@ -309,9 +309,89 @@ def test_restore_from_mongo():
         shutil.rmtree(state, ignore_errors=True)
 
 
+class _Scripted:
+    """Executor wrapper: attempt n -> a scripted outcome instead of the
+    sim's (``stall`` = the dose ran and the firmware bailed on no flow;
+    any other string = a status-only infra summary, nothing dosed)."""
+
+    def __init__(self, inner, script):
+        self.inner, self.script, self.attempts = inner, dict(script), 0
+
+    def dose(self, campaign_id, trial_uuid, *args, **kw):
+        what = self.script.pop(self.attempts, None)
+        self.attempts += 1
+        if what not in (None, "stall"):
+            return oc.status_summary(trial_uuid, what)
+        summary = self.inner.dose(campaign_id, trial_uuid, *args, **kw)
+        if what == "stall":
+            summary = dict(summary, status="stalled", jam=True,
+                           jam_reason="stall")
+        return summary
+
+    def fetch(self, trial_uuid, campaign_id):
+        return self.inner.fetch(trial_uuid, campaign_id)
+
+
+def _unattended(state, script, *extra):
+    runner = ocamp.Runner(_args(state, "--unattended", *extra))
+    runner.executor = _Scripted(runner.executor, script)
+    _quiet(runner.run)
+    return runner
+
+
+def test_unattended_limits():
+    state = tempfile.mkdtemp(prefix="optunattended-")
+    try:
+        r = _unattended(os.path.join(state, "cup"), {},
+                        "--cup-budget-g", "3")
+        doc = r.campaign.doc
+        loads = [x["covariates"]["cup_load_g"] for x in r.records]
+        check("cup budget: ends finished before the balance could "
+              "overfill, never paused",
+              doc["status"] == "finished"
+              and doc["stop_reason"].startswith("cup budget")
+              and doc["in_flight"] is None
+              and r.cup_load_g() + 0.6 > 3.0 >= r.cup_load_g())
+        check("cup load recorded per dose and only ever grows",
+              loads[0] == 0 and loads == sorted(loads)
+              and len(set(loads)) == len(loads))
+        check("unattended: spills recorded as unobserved (None)",
+              all(x["spill"] is None for x in r.records))
+        check("readout written when an unattended campaign ends",
+              os.path.exists(os.path.join(r.campaign.dir, "pareto.json")))
+
+        r = _unattended(os.path.join(state, "late"), {},
+                        "--stop-at", "2000-01-01T00:00:00Z")
+        check("deadline already past: ends before the first dose",
+              r.records == [] and r.campaign.doc["status"] == "finished"
+              and r.campaign.doc["stop_reason"].startswith("deadline"))
+
+        r = _unattended(os.path.join(state, "stall"), {2: "stall",
+                                                         3: "stall"})
+        check("two stalls in a row end it (nobody can refill), each "
+              "kept as a penalized jam",
+              len(r.records) == 4
+              and r.campaign.doc["stop_reason"].startswith("2 stalls")
+              and all(x["summary"]["jam"] for x in r.records[2:]))
+
+        r = _unattended(os.path.join(state, "retry"),
+                        {1: "serial-error", 3: "rig-busy"})
+        labels = [x["label"] for x in r.records]
+        check("one serial fault: same point retried once, then onward",
+              labels[1] == labels[2] and r.records[1]["summary"][
+                  "infra_error"] and not r.records[2]["summary"][
+                  "infra_error"])
+        check("rig-busy: never retried, the campaign ends finished",
+              len(r.records) == 4
+              and r.campaign.doc["stop_reason"].startswith("rig-busy")
+              and r.campaign.doc["status"] == "finished")
+    finally:
+        shutil.rmtree(state, ignore_errors=True)
+
+
 def main():
     for fn in (test_screening_halts, test_bo_halts,
-               test_restore_from_mongo):
+               test_restore_from_mongo, test_unattended_limits):
         print(fn.__name__)
         fn()
     if _FAILURES:

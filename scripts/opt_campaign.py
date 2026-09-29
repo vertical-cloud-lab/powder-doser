@@ -46,6 +46,14 @@ and the ``powder_models`` document) carries a ``latest_campaign`` block
 with the campaign id, phase, iteration number, last dose, and the
 resume command.
 
+``--unattended`` is for a session with nobody at the rig (an overnight
+run from CI): no countdown, no cadence stop (the cup is never emptied),
+spills recorded as unobserved, and the campaign ENDS -- readout, status
+``finished``, no resume expected -- at the first limit: the cup budget
+(``--cup-budget-g``: powder the balance can still take on top of the
+cup), the ``--stop-at`` deadline, a streak of stalls or jams (an empty
+hopper nobody can refill), or a rig fault that one retry did not clear.
+
 ``--simulate`` runs the identical loop against the PR #124 virtual
 plant (the trickle_tap sim rig) instead of SSH -- no hardware, used by
 scripts/tests and for shaking down the loop before a rig session.
@@ -92,6 +100,10 @@ ANCHOR_PREFIXES = ("center-", "baseline-")
 
 def log(msg):
     print("[campaign] {}".format(msg), flush=True)
+
+
+class CampaignEnd(Exception):
+    """An --unattended campaign hit a limit: stop dosing, read out."""
 
 
 def utcstamp():
@@ -385,11 +397,13 @@ VOID_EMPTY = "hopper-empty"
 
 
 class Operator:
-    def __init__(self, countdown_s, cup_every, park_after, simulate):
+    def __init__(self, countdown_s, cup_every, park_after, simulate,
+                 unattended=False):
         self.countdown_s = countdown_s
         self.cup_every = cup_every
         self.park_after = park_after
         self.simulate = simulate
+        self.unattended = unattended
         self.untouched = 0
         self.doses_since_empty = 0
         self.recycle_count = 0
@@ -408,6 +422,12 @@ class Operator:
         and its parameters are dosed again after the refill.
         """
         self.doses_since_empty += 1
+        if self.unattended:
+            # Nobody can see a spill (None = unobserved, never
+            # penalized) or tell an empty hopper from a jam: a stall
+            # stays a penalized jam, and the Runner ends the campaign
+            # on a streak of them instead of asking.
+            return None, None, True
         if self.simulate or self.countdown_s <= 0:
             return False, None, True
         if summary.get("jam_reason") == "stall":
@@ -477,7 +497,7 @@ class Operator:
         return VOID_EMPTY
 
     def cadence_prompt(self):
-        if self.simulate or not self.cup_every:
+        if self.simulate or self.unattended or not self.cup_every:
             return
         if self.doses_since_empty >= self.cup_every:
             print("\n*** CADENCE STOP: empty the cup back into the "
@@ -762,7 +782,23 @@ class Runner:
                                         args.pico_port, args.operator,
                                         args.remote_python, args.takeover)
         self.operator = Operator(args.countdown, args.cup_every,
-                                 args.park_after, args.simulate)
+                                 args.park_after, args.simulate,
+                                 unattended=args.unattended)
+        self.stop_at = None
+        if args.stop_at:
+            self.stop_at = datetime.datetime.fromisoformat(
+                args.stop_at.replace("Z", "+00:00")).timestamp()
+        if args.unattended:
+            doc["unattended"] = {
+                "cup_budget_g": args.cup_budget_g,
+                "stop_at": args.stop_at,
+                "max_stall_streak": args.max_stall_streak,
+                "max_jam_streak": args.max_jam_streak}
+        if args.no_flash_log:
+            doc["frozen_overrides"] = {"log_to_flash": False}
+        self.dose_wall_s = []           # laptop wall clock per dose
+        self.ask_wall_s = []            # per Ax suggestion
+        self.infra_streak = 0
         self.records = self.campaign.records()
         if self.records:
             last = self.records[-1]
@@ -852,9 +888,89 @@ class Runner:
     def frozen_push(self):
         """The frozen snapshot each dose pushes before its searched
         values (section 2.9): the hand-tuned constants, exactly."""
-        frozen = self.campaign.doc.get("frozen_params") or {}
+        doc = self.campaign.doc
+        frozen = dict(doc.get("frozen_params") or {})
+        # Controller-neutral switches only (e.g. log_to_flash off when
+        # the shared Pico's flash is nearly full -- the executor pulls
+        # the telemetry over serial anyway).
+        frozen.update(doc.get("frozen_overrides") or {})
         return {k: v for k, v in frozen.items()
                 if k not in oc.SEARCHED_FIRMWARE_KEYS and k != "goal_mass_g"}
+
+    # -- unattended limits ----------------------------------------------
+
+    def _guard_g(self):
+        frozen = self.campaign.doc.get("frozen_params") or {}
+        return float(frozen.get("overshoot_abort_g") or 0.1)
+
+    def cup_load_g(self):
+        """Powder in the cup since it was last emptied, g: every dose's
+        settled reading; a dose that may have run without one counts as
+        target + the overshoot guard."""
+        doc = self.campaign.doc
+        rc = self.operator.recycle_count
+        total = 0.0
+        for r in self.records:
+            if (r.get("covariates") or {}).get("recycle_count", 0) != rc:
+                continue
+            s = r["summary"]
+            if s["status"] in NOTHING_DOSED:
+                continue
+            g = s.get("settled_final_g")
+            total += (max(0.0, g) if g is not None
+                      else doc["target_g"] + self._guard_g())
+        return total
+
+    def check_limits(self, ask=False):
+        """--unattended: CampaignEnd when the next dose (plus its Ax
+        suggestion, when ``ask``) would overfill the cup or run past
+        --stop-at."""
+        args = self.args
+        if not args.unattended:
+            return
+        doc = self.campaign.doc
+        if args.cup_budget_g:
+            load = self.cup_load_g()
+            nxt = doc["target_g"] + self._guard_g()
+            if load + nxt > args.cup_budget_g:
+                raise CampaignEnd(
+                    "cup budget: {:.2f} g in the cup, and the next dose "
+                    "could add {:.2f} g over the {:.1f} g budget".format(
+                        load, nxt, args.cup_budget_g))
+        if self.stop_at is not None:
+            import statistics
+            recent = self.dose_wall_s[-5:]
+            est = statistics.median(recent) if recent else 240.0
+            if ask:
+                est += self.ask_wall_s[-1] if self.ask_wall_s else 60.0
+            left = self.stop_at - time.time()
+            if est > left:
+                raise CampaignEnd(
+                    "deadline: {:.0f} s left before {}, the next dose "
+                    "needs about {:.0f} s".format(max(0.0, left),
+                                                  args.stop_at, est))
+
+    def check_streaks(self):
+        """--unattended: a run of stalls means the hopper/auger ran
+        empty (nobody can refill it); a run of jams, that something
+        physical is wrong.  Either ends the campaign."""
+        args = self.args
+        if not args.unattended:
+            return
+        stalls = jams = 0
+        for r in reversed(self.records):
+            s = r["summary"]
+            if not self.usable(r) or not s["jam"]:
+                break
+            if s.get("jam_reason") == "stall" and stalls == jams:
+                stalls += 1
+            jams += 1
+        if args.max_stall_streak and stalls >= args.max_stall_streak:
+            raise CampaignEnd(
+                "{} stalls in a row: the hopper or auger has probably run "
+                "empty".format(stalls))
+        if args.max_jam_streak and jams >= args.max_jam_streak:
+            raise CampaignEnd("{} jams in a row".format(jams))
 
     # -- one dose, soup to nuts ----------------------------------------
 
@@ -862,6 +978,7 @@ class Runner:
         doc = self.campaign.doc
         trial_index = len(self.records)
         trial_uuid = str(uuid.uuid4())
+        self.check_limits()
         self.operator.cadence_prompt()
         tau = doc.get("tau_afterflow") or {}
         if mode in ("recenter", "bo", "validation") and tau.get("tau0_s"):
@@ -875,9 +992,11 @@ class Runner:
         doc["in_flight"] = {
             "trial_uuid": trial_uuid, "trial_index": trial_index,
             "label": label, "mode": mode, "params": params,
-            "covariates": self.operator.covariates(),
+            "covariates": dict(self.operator.covariates(),
+                               cup_load_g=round(self.cup_load_g(), 4)),
             "ax_trial_index": ax_trial_index, "utc": oc.utcnow_iso()}
         self.save()
+        t0 = time.monotonic()
         summary = self.executor.dose(
             doc["campaign_id"], trial_uuid, trial_index, self.powder_id,
             doc["target_g"], mode, oc.validate_params(params),
@@ -886,8 +1005,17 @@ class Runner:
             log("could not learn how {} ended: the Zero is unreachable. "
                 "Nothing was re-dosed; --resume {} asks the Zero again"
                 .format(label, doc["campaign_id"]))
+            if self.args.unattended:
+                raise CampaignEnd("the Zero became unreachable during "
+                                  "{}".format(label))
             raise KeyboardInterrupt
-        return self._finish_trial(doc["in_flight"], summary)
+        if summary["status"] not in NOTHING_DOSED:
+            self.dose_wall_s.append(time.monotonic() - t0)
+        record = self._finish_trial(doc["in_flight"], summary)
+        if not summary["infra_error"]:
+            self.infra_streak = 0
+        self.check_streaks()
+        return record
 
     def _finish_trial(self, flight, summary, recovered=False):
         log("  -> status={} t={} s |err|={} mg jam={}{}{}".format(
@@ -990,6 +1118,16 @@ class Runner:
                              "older than this laptop's: git pull --ff-only "
                              "in ~/powder-doser"}.get(s["status"],
                                                      "fix the rig")
+        if self.args.unattended:
+            self.infra_streak += 1
+            if s["status"] in ("rig-busy", "not-found") or \
+                    self.infra_streak > 1:
+                raise CampaignEnd("{} on {} ({})".format(
+                    s["status"], record["label"], hint))
+            log("{} on {} -- retrying the same point once in 30 s".format(
+                s["status"], record["label"]))
+            time.sleep(0 if self.args.simulate else 30)
+            return
         log("{} on {} -- {}, then --resume {}".format(
             s["status"], record["label"], hint,
             self.campaign.doc["campaign_id"]))
@@ -1141,9 +1279,12 @@ class Runner:
                 break
             idx, params = self._open_ax_trial()
             if idx is None:
+                self.check_limits(ask=True)
                 log("asking Ax for suggestion {}/{} (SAAS refits can take "
                     "minutes late in a campaign)".format(done + 1, budget))
+                t0 = time.monotonic()
                 params, idx = self.ax.get_next_trial()
+                self.ask_wall_s.append(time.monotonic() - t0)
                 # on disk before its dose starts
                 self.ax.save_to_json_file(self.campaign.snapshot_path)
             else:
@@ -1153,6 +1294,7 @@ class Runner:
                                     ax_trial_index=idx)
             if record["summary"]["infra_error"]:
                 self._stop_for(record)      # the trial stays open
+                continue                    # (unattended: one retry)
             if not self.usable(record):
                 continue                    # voided: same point again
             self.ax.complete_trial(trial_index=idx,
@@ -1235,7 +1377,8 @@ class Runner:
         path = os.path.join(self.campaign.dir, "pareto.json")
         with open(path, "w") as f:
             json.dump(out, f, indent=1, default=str)
-        doc["status"] = "readout-ready"
+        doc["status"] = ("finished" if self.args.unattended
+                         else "readout-ready")
         self.save()
         log("=== observed feasible front ({} points) -> {}".format(
             len(front), path))
@@ -1359,7 +1502,18 @@ class Runner:
             if doc["phase"] == "bo":
                 self.bo()
             if doc["phase"] == "readout":
+                if args.unattended:
+                    doc["stop_reason"] = "BO budget reached"
                 self.readout()
+        except CampaignEnd as end:
+            # --unattended: no one will resume this; read out what the
+            # campaign learned and mark it finished.
+            log("unattended campaign ends: {}".format(end))
+            doc["stop_reason"] = str(end)
+            if self.ax is not None:
+                self.ax.save_to_json_file(self.campaign.snapshot_path)
+            self.save()
+            self.readout()
         except KeyboardInterrupt:
             doc["status"] = "paused"
             if self.ax is not None:
@@ -1411,6 +1565,27 @@ def parse_args(argv=None):
     ap.add_argument("--countdown", type=float, default=10.0)
     ap.add_argument("--cup-every", type=int, default=20)
     ap.add_argument("--park-after", type=int, default=10)
+    ap.add_argument("--unattended", action="store_true",
+                    help="nobody at the rig: no prompts, the cup is never "
+                         "emptied, and the campaign ends (readout, no "
+                         "resume) at the first limit below")
+    ap.add_argument("--cup-budget-g", type=float, default=None,
+                    help="--unattended: powder the balance can still take "
+                         "on top of the cup, g (HR-100A: 102 g capacity "
+                         "minus the cup); no dose starts that could "
+                         "exceed it")
+    ap.add_argument("--stop-at", metavar="UTC_ISO", default=None,
+                    help="--unattended: start no dose that would not "
+                         "finish by this time, e.g. 2026-09-29T04:00Z")
+    ap.add_argument("--max-stall-streak", type=int, default=2,
+                    help="--unattended: consecutive stalled doses that end "
+                         "the campaign (empty hopper; 0 = never)")
+    ap.add_argument("--max-jam-streak", type=int, default=3,
+                    help="--unattended: consecutive jams that end the "
+                         "campaign (0 = never)")
+    ap.add_argument("--no-flash-log", action="store_true",
+                    help="push log_to_flash 0 with the frozen snapshot "
+                         "(telemetry still comes back over serial)")
     ap.add_argument("--state-dir", default=DEFAULT_STATE)
     ap.add_argument("--operator", default=None)
     ap.add_argument("--validate-params", metavar="JSON",
