@@ -81,6 +81,9 @@ SEARCH_SPACE_AX = [
     {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
 ]
 OBJECTIVE_NAMES = ("t_total_s", "abs_error_mg")
+# The firmware keys of the 8 searched knobs (pushed per trial, so a
+# frozen-snapshot push leaves them out).
+SEARCHED_FIRMWARE_KEYS = tuple(key for _name, key, _kind in SEARCH_PARAMS)
 
 # Firmware DoseResult.status -> jam classification (campaign-setup
 # section 2.3).  Everything else is either fine ("ok"/"overshoot") or
@@ -90,8 +93,13 @@ JAM_REASONS = {
     "cycle-budget": "tap-budget",
     "timeout": "timeout",
 }
+# The last four are what a ``--fetch`` can answer about a trial uuid
+# with no stored result (section 5.4): the executor is still dosing it,
+# it died mid-dose, the Zero never saw it, or the Zero could not be
+# asked at all.
 INFRA_STATUSES = ("scale-error", "not-tared", "no-result", "serial-error",
-                  "rig-busy")
+                  "rig-busy", "in-progress", "interrupted", "not-found",
+                  "unreachable")
 
 
 def utcnow_iso():
@@ -162,6 +170,38 @@ def firmware_set_lines(params):
         lines.append("set tau_afterflow_s {:.6g}".format(
             float(params["tau_afterflow_s"])))
     return lines
+
+
+def frozen_set_lines(frozen, skip=()):
+    """A frozen-parameter snapshot -> sorted ``set`` lines.
+
+    Booleans go as 0/1 and numbers as-is.  ``goal_mass_g``, the ``skip``
+    keys, and non-numeric values are left out; the dose target comes
+    from the ``g`` command.
+    """
+    lines = []
+    for key in sorted(frozen or {}):
+        value = frozen[key]
+        if key in skip or key == "goal_mass_g":
+            continue
+        if isinstance(value, bool):
+            lines.append("set {} {}".format(key, 1 if value else 0))
+        elif isinstance(value, (int, float)):
+            lines.append("set {} {:.6g}".format(key, value))
+    return lines
+
+
+def baseline_params(frozen):
+    """The hand-tuned values of the 8 searched knobs, in campaign space,
+    from a frozen snapshot (lowercase trickle_params keys)."""
+    out = {}
+    for name, key, kind in SEARCH_PARAMS:
+        value = frozen[key]
+        if kind == "cat":
+            out[name] = CAT_ON if value else CAT_OFF
+        else:
+            out[name] = float(value)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -293,6 +333,18 @@ def trial_summary(doc, spool_path=None, uploaded=None):
     }
 
 
+def status_summary(trial_uuid, status, **extra):
+    """A summary-shaped answer for a trial with no stored result (the
+    ``--fetch`` statuses and a laptop that cannot reach the Zero)."""
+    out = {"kind": "opt_trial_summary", "trial_uuid": trial_uuid,
+           "status": status, "jam": False, "jam_reason": None,
+           "infra_error": True, "t_total_s": None, "abs_error_mg": None,
+           "error_mg": None, "settled_final_g": None, "taps": None,
+           "stop_events": [], "parameters": None, "uploaded": False}
+    out.update(extra)
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Spool + Mongo (write-local-first, PR #131 rule)
 # ---------------------------------------------------------------------------
@@ -380,19 +432,25 @@ def resolve_mongo_uri(uri=None, env_file=MONGODB_ENV_FILE):
     return None, None
 
 
+_MONGO_CLIENTS = {}
+
+
 def mongo_db(uri=None):
     """The powder_doser database handle, or None (no URI / no pymongo).
 
     Never raises for a missing configuration -- offline operation must
     keep working -- but does raise on a genuinely bad connection so the
-    caller can say so.
+    caller can say so.  One client per URI is reused: the campaign loop
+    writes several times per dose.
     """
     uri, _ = resolve_mongo_uri(uri)
     if not uri:
         return None
-    import pymongo                      # lazy: optional on the Zero
-    client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=10000)
-    return client[DB_NAME]
+    if uri not in _MONGO_CLIENTS:
+        import pymongo                  # lazy: optional on the Zero
+        _MONGO_CLIENTS[uri] = pymongo.MongoClient(
+            uri, serverSelectionTimeoutMS=10000)
+    return _MONGO_CLIENTS[uri][DB_NAME]
 
 
 def upload_trial(doc, uri=None):

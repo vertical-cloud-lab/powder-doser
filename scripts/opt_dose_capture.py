@@ -12,8 +12,9 @@ invocation, one dose (campaign-setup.md sections 1.1 / 3 / 5.3):
    process holds the port, when an unknown program is running, or when
    the runner is not ``opt_common.FIRMWARE_ID`` -- ``--takeover`` is the
    operator's explicit override (campaign-setup section 5.1),
-2. push the trial's parameter set as ``set <key> <value>`` lines and
-   verify every echo,
+2. push the campaign's frozen snapshot (``--frozen``) and then the
+   trial's parameter set as ``set <key> <value>`` lines, verifying
+   every echo,
 3. run ``g <target>``, stream every line to a raw log, and parse the
    firmware's machine-readable ``RESULT {json}`` line,
 4. pull the dose telemetry CSV (``log``),
@@ -320,9 +321,17 @@ def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
                 fw, pico_dir or "/", oc.FIRMWARE_ID))
 
 
-def push_params(sess, params):
-    """Send every ``set`` line and verify the firmware's echo."""
-    for line in oc.firmware_set_lines(params):
+def push_params(sess, params, frozen=None):
+    """Send every ``set`` line and verify the firmware's echo.
+
+    The campaign's frozen snapshot (the hand-tuned constants) goes
+    first, so no value left ``set`` on the live runner by an earlier
+    session or dose can leak into this trial.  The searched values and
+    tau go on top.
+    """
+    lines = (oc.frozen_set_lines(frozen, skip=oc.SEARCHED_FIRMWARE_KEYS)
+             + oc.firmware_set_lines(params))
+    for line in lines:
         key = line.split()[1]
         sess.send(line)
         ok, seen = sess.collect_until(
@@ -389,20 +398,63 @@ def emit(summary):
         pass                              # the spool already has it
 
 
+def live_dose_pid(trial_uuid):
+    """PID of a running dose invocation for ``trial_uuid``, or None.
+
+    Read-only /proc scan: the executor's argv carries ``--trial <uuid>``
+    from the moment sshd starts it, so this sees a dose still running
+    after the laptop's SSH pipe dropped.
+    """
+    try:
+        pids = [p for p in os.listdir("/proc") if p.isdigit()]
+    except OSError:
+        return None
+    for pid in pids:
+        if int(pid) == os.getpid():
+            continue
+        try:
+            with open(os.path.join("/proc", pid, "cmdline"), "rb") as f:
+                argv = [a.decode(errors="replace")
+                        for a in f.read().split(b"\0")]
+        except OSError:
+            continue
+        if (any(a.endswith("opt_dose_capture.py") for a in argv)
+                and "--fetch" not in argv and "--trial" in argv
+                and trial_uuid in argv):
+            return int(pid)
+    return None
+
+
 def do_fetch(args):
+    """Report on one trial uuid; never doses.
+
+    A stored result prints its summary (exit 0).  Otherwise the status
+    says why there is none (campaign-setup section 5.4):
+    ``in-progress`` (exit 5; ask again later), ``interrupted`` (exit 3;
+    the executor started talking to the Pico, then died before
+    spooling), or ``not-found`` (exit 3; it never started, so nothing
+    was dosed).
+    """
     doc = oc.find_spooled_trial(args.out, args.fetch,
                                 campaign_id=args.campaign_id or None)
-    if doc is None:
-        emit({"kind": "opt_trial_summary", "trial_uuid": args.fetch,
-              "status": "not-found", "infra_error": True})
-        return 3
-    emit(oc.trial_summary(doc, uploaded=None))
-    return 0
+    if doc is not None:
+        emit(oc.trial_summary(doc, uploaded=None))
+        return 0
+    pid = live_dose_pid(args.fetch)
+    if pid is not None:
+        emit(oc.status_summary(args.fetch, "in-progress", pid=pid))
+        return 5
+    started = args.campaign_id and os.path.exists(os.path.join(
+        args.out, args.campaign_id, "serial_{}.log".format(args.fetch)))
+    emit(oc.status_summary(args.fetch,
+                           "interrupted" if started else "not-found"))
+    return 3
 
 
 def do_dose(args):
     params = oc.validate_params(json.loads(args.params))
     covariates = json.loads(args.covariates) if args.covariates else {}
+    frozen = json.loads(args.frozen) if args.frozen else {}
     powder_id = oc.normalize_powder_id(args.powder_id)
 
     # Idempotency: a re-invocation with a uuid that already dosed is a
@@ -413,6 +465,12 @@ def do_dose(args):
             "instead of re-dosing".format(args.trial))
         emit(oc.trial_summary(prior, uploaded=None))
         return 0
+    pid = live_dose_pid(args.trial)
+    if pid is not None:
+        log("trial {} is still dosing (pid {}) -- not starting it "
+            "twice".format(args.trial, pid))
+        emit(oc.status_summary(args.trial, "in-progress", pid=pid))
+        return 5
 
     started_utc = oc.utcnow_iso()
     spool = oc.spool_dir(args.out, args.campaign_id)
@@ -423,7 +481,7 @@ def do_dose(args):
     try:
         sess = PicoSession(args.port, args.baud, raw_log)
         ensure_runner(sess, pico_dir=args.pico_dir, takeover=args.takeover)
-        push_params(sess, params)
+        push_params(sess, params, frozen)
         result_doc, status = run_dose(sess, args.target_g, args.timeout_s)
         if result_doc is not None:
             telemetry = pull_telemetry(sess)
@@ -482,6 +540,9 @@ def main(argv=None):
                     choices=["screen", "recenter", "bo", "validation",
                              "production"])
     ap.add_argument("--params", help="JSON campaign-space parameters")
+    ap.add_argument("--frozen", help="JSON frozen-parameter snapshot "
+                                     "(lowercase trickle_params keys), "
+                                     "pushed before --params")
     ap.add_argument("--covariates", help="JSON session covariates")
     ap.add_argument("--operator")
     ap.add_argument("--out", default=DEFAULT_OUT)

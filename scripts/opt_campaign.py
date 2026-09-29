@@ -10,26 +10,41 @@ outcomes, snapshot, repeat.  The only manual act is starting it:
         --budget 40 --host pi@<zero-hostname>
 
 Campaign order per powder (section 2.4): a 2^(8-4) resolution-IV
-screening fraction (16 corners) + 4 center points, then the per-powder
+screening fraction (16 corners) + 4 center points, bracketed by two
+doses at the hand-tuned baseline (section 2.9), then the per-powder
 tau_afterflow fit from the screening stop events (section 2.8), then
-the 4 centers re-dosed under the fitted tau, then the BO phase (SOBOL
-sanity probes -> SAASBO / qNEHVI over the two objectives
+the centers and baselines re-dosed under the fitted tau, then the BO
+phase (SOBOL sanity probes -> SAASBO / qNEHVI over the two objectives
 minimize(t_total_s, abs_error_mg) with the locked 180 s / 20 mg
 thresholds), then the Pareto readout.  All screening doses are attached
 to Ax as existing data (the sample's ``attach_trial`` block) so BO
-starts warm.
+starts warm.  Every dose first pushes the campaign's frozen snapshot of
+trickle_params.py, so the hand-tuned constants are what actually runs.
 
 Operator interaction (section 1.2): between doses a short countdown
 auto-continues -- touch nothing and the next dose starts, recorded as
 "no spill"; ``s`` flags a spill on the dose just finished (penalized
-per section 2.3), ``p`` pauses; several untouched countdowns in a row
-park the loop.  The cup-empty / hopper-top-up cadence prompt
+per section 2.3), ``e`` says the hopper/auger ran empty (the dose is
+voided -- kept in the ledger, never modeled -- and dosed again after
+the refill), ``p`` pauses; several untouched countdowns in a row park
+the loop.  A dose that ends ``stalled`` (no powder flow) never
+auto-continues: the operator says whether the hopper ran empty or the
+powder really jammed.  The cup-empty / hopper-top-up cadence prompt
 (``--cup-every``) hard-blocks, because it needs hands at the rig.
 
-Interruptions are safe anywhere: every dose is atomic on the Zero
-(same-uuid re-invocation returns the stored result), the Ax experiment
-is snapshotted after every tell, and ``--resume <campaign_id>``
-continues from the local state + snapshot without re-dosing.
+Interruptions are safe anywhere (section 5.4).  Every dose is atomic on
+the Zero (same-uuid re-invocation returns the stored result), and the
+laptop writes the trial uuid into the campaign document before it
+doses, so a dose that finished while the loop was down (Ctrl-C, SSH
+drop, crash) is fetched from the Zero and recorded, never forgotten or
+re-dosed.  The Ax experiment is snapshotted after every ask and tell,
+an Ax trial that was asked but never told is dosed again with the same
+parameters, and ``--resume`` (no id = this powder's latest campaign)
+continues from the local state, or from the MongoDB mirror when the
+local copy is gone.  The powder file (data/powder_models/<powder>.json
+and the ``powder_models`` document) carries a ``latest_campaign`` block
+with the campaign id, phase, iteration number, last dose, and the
+resume command.
 
 ``--simulate`` runs the identical loop against the PR #124 virtual
 plant (the trickle_tap sim rig) instead of SSH -- no hardware, used by
@@ -37,12 +52,13 @@ scripts/tests and for shaking down the loop before a rig session.
 
 Validation (section 2.4 step 5): after picking a point off the front,
 
-    python scripts/opt_campaign.py --powder-id salt --target-g 0.5 \
-        --host pi@zero --validate-params '{"bulk_tap": "off", ...}' \
-        --replicates 8
+    python scripts/opt_campaign.py --powder-id salt --host pi@zero \
+        --validate-params '{"bulk_tap": "off", ...}' --replicates 8
 
-doses the replicates and writes the ``dosing_profiles`` document (plus
-a local cache under data/profiles/) that ``dose.py`` dispenses from.
+doses the replicates inside the powder's latest campaign (or
+``--resume <id>``), so they run on its fitted tau, and writes the
+``dosing_profiles`` document (plus a local cache under data/profiles/)
+that ``dose.py`` dispenses from.
 
 Dependencies (laptop only): ``pip install ax-platform==0.4.3 pymongo``
 (section 5.1; on Linux install the CPU torch wheel first).
@@ -69,6 +85,9 @@ PROFILE_CACHE = os.path.join(REPO_ROOT, "data", "profiles")
 
 N_CORNERS = 16          # 2^(8-4) resolution-IV fraction
 N_CENTERS = 4
+N_BASELINES = 2         # hand-tuned baseline doses (section 2.9)
+# Screening labels re-dosed under the fitted tau (section 2.8).
+ANCHOR_PREFIXES = ("center-", "baseline-")
 
 
 def log(msg):
@@ -84,8 +103,9 @@ def utcstamp():
 # Screening design: 2^(8-4)_IV + centers (section 2.4, from #162 section 5)
 # ---------------------------------------------------------------------------
 
-def screening_plan(seed=42):
-    """16 resolution-IV corners + 4 centers as campaign parameter dicts.
+def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES):
+    """16 resolution-IV corners + 4 centers as campaign parameter dicts,
+    bracketed by ``baseline_reps`` doses at ``baseline``.
 
     Base factors A-D are the four tilts/RPM (full 2^4); the generators
     E=BCD, F=ACD, G=ABC, H=ABD (the standard minimum-aberration
@@ -93,6 +113,13 @@ def screening_plan(seed=42):
     two tap categoricals -- which slot in natively as two-level
     factors.  Corner order is shuffled (seeded) per DOE practice;
     centers run at the box midpoints with both cadences off.
+
+    ``baseline`` is the hand-tuned point (section 2.9).  It sits inside
+    every box but not at its midpoint, so it rides along as extra
+    doses rather than replacing the centers.  The first baseline dose
+    opens the block on known-good settings and the second closes it,
+    so drift across the block shows up at a fixed point.  The DOE's
+    main-effect analysis uses corners + centers only.
     """
     bounds = {p["name"]: p.get("bounds") for p in oc.SEARCH_SPACE_AX}
 
@@ -126,6 +153,11 @@ def screening_plan(seed=42):
     plan = [("corner-{:02d}".format(i), p) for i, p in enumerate(corners)]
     plan += [("center-{:02d}".format(i), dict(center))
              for i in range(N_CENTERS)]
+    if baseline and baseline_reps > 0:
+        base = [("baseline-{:02d}".format(i), dict(baseline))
+                for i in range(baseline_reps)]
+        half = (baseline_reps + 1) // 2
+        plan = base[:half] + plan + base[half:]
     return plan
 
 
@@ -206,12 +238,14 @@ class SSHExecutor:
                            "(exit {})".format(proc.returncode))
 
     def dose(self, campaign_id, trial_uuid, trial_index, powder_id,
-             target_g, mode, params, covariates):
+             target_g, mode, params, covariates, frozen=None):
         extra = ["--powder-id", powder_id, "--target-g", str(target_g),
                  "--campaign-id", campaign_id, "--trial", trial_uuid,
                  "--trial-index", str(trial_index), "--mode", mode,
                  "--params", json.dumps(params),
                  "--covariates", json.dumps(covariates)]
+        if frozen:
+            extra += ["--frozen", json.dumps(frozen, sort_keys=True)]
         if self.port:
             extra += ["--port", self.port]
         if self.operator:
@@ -220,32 +254,43 @@ class SSHExecutor:
             extra += ["--takeover"]
         try:
             return self._invoke(extra, timeout_s=900)
-        except (subprocess.TimeoutExpired, RuntimeError, OSError) as exc:
+        except (subprocess.TimeoutExpired, RuntimeError, OSError,
+                ValueError) as exc:
             log("dose invocation failed ({}); trying to fetch the "
                 "stored result".format(exc))
             return self.fetch(trial_uuid, campaign_id)
 
-    def fetch(self, trial_uuid, campaign_id, attempts=4, wait_s=30):
-        for i in range(attempts):
+    def fetch(self, trial_uuid, campaign_id, attempts=4, wait_s=30,
+              max_wait_s=900):
+        """What the Zero knows about one trial uuid (never doses).
+
+        -> the stored summary, or a status-only summary: ``not-found``
+        (never started: nothing dosed), ``interrupted`` (the executor
+        died mid-dose), or ``unreachable`` (SSH failed ``attempts``
+        times, or the dose was still running after ``max_wait_s``).
+        An ``in-progress`` answer is waited out.
+        """
+        deadline = time.monotonic() + max_wait_s
+        failures = 0
+        while True:
             try:
                 summary = self._invoke(
                     ["--fetch", trial_uuid, "--campaign-id", campaign_id],
                     timeout_s=60)
-                if summary.get("status") != "not-found":
+                if summary.get("status") != "in-progress":
                     return summary
+                log("trial {} is still dosing on the Zero; asking again "
+                    "in {} s".format(trial_uuid[:8], wait_s))
             except Exception as exc:
+                failures += 1
                 log("fetch attempt {}/{} failed: {}".format(
-                    i + 1, attempts, exc))
-            if i + 1 < attempts:
-                log("dose may still be running on the Zero; retrying the "
-                    "fetch in {} s".format(wait_s))
-                time.sleep(wait_s)
-        return {"kind": "opt_trial_summary", "trial_uuid": trial_uuid,
-                "status": "serial-error", "jam": False,
-                "jam_reason": None, "infra_error": True,
-                "t_total_s": None, "abs_error_mg": None,
-                "error_mg": None, "settled_final_g": None, "taps": None,
-                "stop_events": [], "parameters": None, "uploaded": False}
+                    failures, attempts, exc))
+                if failures >= attempts:
+                    break
+            if time.monotonic() + wait_s > deadline:
+                break
+            time.sleep(wait_s)
+        return oc.status_summary(trial_uuid, "unreachable")
 
 
 class SimExecutor:
@@ -262,7 +307,9 @@ class SimExecutor:
         self.seed = seed
 
     def dose(self, campaign_id, trial_uuid, trial_index, powder_id,
-             target_g, mode, params, covariates):
+             target_g, mode, params, covariates, frozen=None):
+        # ``frozen`` needs no push here: the plant is built from the
+        # same trickle_params.py the snapshot was read from.
         p_over = {
             "bulk_tap": params["bulk_tap"] == oc.CAT_ON,
             "trickle_tap": params["trim_tap"] == oc.CAT_ON,
@@ -300,7 +347,8 @@ class SimExecutor:
 
     def fetch(self, trial_uuid, campaign_id):
         doc = oc.find_spooled_trial(self.out_root, trial_uuid, campaign_id)
-        return oc.trial_summary(doc) if doc else None
+        return (oc.trial_summary(doc) if doc
+                else oc.status_summary(trial_uuid, "not-found"))
 
 
 # ---------------------------------------------------------------------------
@@ -329,6 +377,9 @@ def _read_key_with_timeout(seconds):
         return sys.stdin.readline().strip()[:1] or "\n"
 
 
+VOID_EMPTY = "hopper-empty"
+
+
 class Operator:
     def __init__(self, countdown_s, cup_every, park_after, simulate):
         self.countdown_s = countdown_s
@@ -338,18 +389,28 @@ class Operator:
         self.untouched = 0
         self.doses_since_empty = 0
         self.recycle_count = 0
+        self.hopper_refills = 0
 
     def covariates(self):
         return {"doses_since_cup_empty": self.doses_since_empty,
-                "recycle_count": self.recycle_count}
+                "recycle_count": self.recycle_count,
+                "hopper_refills": self.hopper_refills}
 
     def after_dose(self, summary):
-        """The spill countdown.  Returns (spill, keep_going)."""
+        """The spill countdown -> (spill, void, keep_going).
+
+        ``void`` is VOID_EMPTY when the operator says the hopper/auger
+        ran empty: the dose stays in the ledger but is never modeled,
+        and its parameters are dosed again after the refill.
+        """
         self.doses_since_empty += 1
         if self.simulate or self.countdown_s <= 0:
-            return False, True
+            return False, None, True
+        if summary.get("jam_reason") == "stall":
+            return self._stall_prompt(summary)
         print("    countdown {}s -- [Enter]=next  s=SPILL on that dose  "
-              "p=pause".format(self.countdown_s), flush=True)
+              "e=hopper ran EMPTY (void it)  p=pause".format(
+                  self.countdown_s), flush=True)
         key = _read_key_with_timeout(self.countdown_s)
         if key is None:
             self.untouched += 1
@@ -359,22 +420,57 @@ class Operator:
                 try:
                     input()
                 except EOFError:
-                    return False, False
+                    return False, None, False
                 self.untouched = 0
-            return False, True
+            return False, None, True
         self.untouched = 0
         if key in ("s", "S"):
             print("    SPILL recorded on trial {}".format(
                 summary["trial_uuid"][:8]), flush=True)
-            return True, True
+            return True, None, True
+        if key in ("e", "E"):
+            return False, self._refill(), True
         if key in ("p", "P"):
             print("    paused; press Enter to resume (Ctrl-C to stop "
                   "-- --resume continues later)", flush=True)
             try:
                 input()
             except EOFError:
-                return False, False
-        return False, True
+                return False, None, False
+        return False, None, True
+
+    def _stall_prompt(self, summary):
+        """A stall means no powder flowed.  An empty hopper/auger looks
+        exactly like a powder that jams, and only a person can tell them
+        apart, so this never auto-continues."""
+        self.untouched = 0
+        print("\n*** trial {} STALLED: no powder flow.  Look at the hopper "
+              "and auger:\n    e = it ran EMPTY: refill; the dose is voided "
+              "and dosed again\n    j = the powder really jammed at these "
+              "settings: keep it (penalized)\n    s = keep it, and flag a "
+              "spill ***".format(summary["trial_uuid"][:8]), flush=True)
+        while True:
+            try:
+                key = input("    e/j/s: ").strip()[:1].lower()
+            except EOFError:               # nobody there: keep it, stop
+                return False, None, False
+            if key == "e":
+                return False, self._refill(), True
+            if key == "j":
+                return False, None, True
+            if key == "s":
+                return True, None, True
+
+    def _refill(self):
+        print("    VOID: refill the hopper (re-prime the auger if it ran "
+              "dry), then press Enter -- the same parameters dose "
+              "again", flush=True)
+        try:
+            input()
+        except EOFError:
+            pass
+        self.hopper_refills += 1
+        return VOID_EMPTY
 
     def cadence_prompt(self):
         if self.simulate or not self.cup_every:
@@ -395,6 +491,8 @@ class Operator:
 # Campaign state (local-first; Mongo is the queryable mirror)
 # ---------------------------------------------------------------------------
 
+MIRROR_BACKOFF_S = 300
+
 class Campaign:
     def __init__(self, campaign_id, state_root):
         self.campaign_id = campaign_id
@@ -407,6 +505,7 @@ class Campaign:
         self.records_path = os.path.join(self.dir,
                                          "campaign_records.jsonl")
         self.doc = None
+        self.mirror_retry_at = 0.0
 
     def exists(self):
         return os.path.exists(self.path)
@@ -416,22 +515,69 @@ class Campaign:
             self.doc = json.load(f)
         return self.doc
 
-    def save(self):
+    def save(self, records=None, mirror=True):
+        """Local JSON first (atomic replace), then the Mongo mirror:
+        the doc + the Ax snapshot + every dose record, which is enough
+        for ``restore_from_mongo`` to rebuild this directory elsewhere.
+        -> the Mongo handle when the mirror succeeded, else None."""
         self.doc["updated_utc"] = oc.utcnow_iso()
-        with open(self.path, "w") as f:
+        tmp = self.path + ".tmp"
+        with open(tmp, "w") as f:
             json.dump(self.doc, f, indent=1)
+        os.replace(tmp, self.path)
+        # Offline, every attempt waits out the 10 s server selection, so
+        # after a failure the mirror rests a few minutes; the next
+        # successful save carries the full state anyway.
+        if not mirror or time.monotonic() < self.mirror_retry_at:
+            return None
         try:
             db = oc.mongo_db()
             if db is not None:
-                mirror = dict(self.doc)
+                doc = dict(self.doc)
                 if os.path.exists(self.snapshot_path):
                     with open(self.snapshot_path) as f:
-                        mirror["ax_snapshot"] = f.read()
+                        doc["ax_snapshot"] = f.read()
+                if records is not None:
+                    doc["records"] = records
                 db[oc.COLL_CAMPAIGNS].replace_one(
-                    {"campaign_id": self.campaign_id}, mirror, upsert=True)
+                    {"campaign_id": self.campaign_id}, doc, upsert=True)
+                return db
         except Exception as exc:
+            self.mirror_retry_at = time.monotonic() + MIRROR_BACKOFF_S
             log("campaign mirror to Mongo failed ({}); local state is "
-                "authoritative".format(exc))
+                "authoritative, retrying in {} s".format(
+                    exc, MIRROR_BACKOFF_S))
+        return None
+
+    def restore_from_mongo(self):
+        """Rebuild this campaign's local directory from its
+        ``opt_campaigns`` mirror (another laptop, or a wiped data/opt/).
+        -> True when restored."""
+        try:
+            db = oc.mongo_db()
+            found = (db[oc.COLL_CAMPAIGNS].find_one(
+                {"campaign_id": self.campaign_id})
+                if db is not None else None)
+        except Exception as exc:
+            log("could not read the Mongo mirror ({})".format(exc))
+            return False
+        if not found:
+            return False
+        found.pop("_id", None)
+        snapshot = found.pop("ax_snapshot", None)
+        records = found.pop("records", None) or []
+        if snapshot:
+            with open(self.snapshot_path, "w") as f:
+                f.write(snapshot)
+        with open(self.records_path, "w") as f:
+            for record in records:
+                f.write(json.dumps(record) + "\n")
+        self.doc = found
+        self.save(mirror=False)
+        log("restored {} from MongoDB: {} dose records{}".format(
+            self.campaign_id, len(records),
+            " + the Ax snapshot" if snapshot else ""))
+        return True
 
     def records(self):
         if not os.path.exists(self.records_path):
@@ -490,20 +636,84 @@ def ax_parameterization(params):
 # The loop
 # ---------------------------------------------------------------------------
 
+DEFAULT_BUDGET = 40
+# Summaries whose dose provably never reached the powder.
+NOTHING_DOSED = ("rig-busy", "not-found")
+
+
+def latest_campaign_id(state_root, powder_id, simulate):
+    """This powder's most recently updated campaign -> id or None.
+
+    Looks under ``state_root`` first (a --simulate run only resumes
+    simulated campaigns, and a real run only real ones), then at the
+    powder file's ``latest_campaign`` pointer, locally and in Mongo,
+    which ``Campaign.restore_from_mongo`` can then fetch.
+    """
+    best = None
+    if os.path.isdir(state_root):
+        for name in os.listdir(state_root):
+            try:
+                with open(os.path.join(state_root, name,
+                                       "campaign.json")) as f:
+                    doc = json.load(f)
+            except (OSError, ValueError):
+                continue
+            if (doc.get("kind") != "opt_campaign"
+                    or doc.get("powder_id") != powder_id
+                    or bool(doc.get("simulate")) != bool(simulate)):
+                continue
+            key = doc.get("updated_utc") or doc.get("created_utc") or ""
+            if best is None or key > best[0]:
+                best = (key, doc["campaign_id"])
+    if best is not None:
+        return best[1]
+    if simulate:
+        return None
+    import fit_tau_afterflow as ft
+    model = ft.load_powder_model(powder_id)
+    if model is None:
+        try:
+            db = oc.mongo_db()
+            if db is not None:
+                model = db[oc.COLL_POWDER_MODELS].find_one(
+                    {"powder_id": powder_id})
+        except Exception as exc:
+            log("could not read powder_models ({})".format(exc))
+    return ((model or {}).get("latest_campaign") or {}).get("campaign_id")
+
+
 class Runner:
     def __init__(self, args):
         self.args = args
         self.powder_id = oc.normalize_powder_id(args.powder_id)
         state_root = args.state_dir
-        if args.resume:
-            self.campaign = Campaign(args.resume, state_root)
+        cid = args.resume
+        if cid == "latest":
+            cid = latest_campaign_id(state_root, self.powder_id,
+                                     args.simulate)
+            if cid is not None:
+                log("resuming {}'s latest {}campaign: {}".format(
+                    self.powder_id, "simulated " if args.simulate else "",
+                    cid))
+            elif not args.validate_params:
+                raise SystemExit("no {}campaign for powder {!r} to "
+                                 "resume".format(
+                                     "simulated " if args.simulate
+                                     else "", self.powder_id))
+        if cid:
+            self.campaign = Campaign(cid, state_root)
+            if not self.campaign.exists() and not args.simulate:
+                self.campaign.restore_from_mongo()
             if not self.campaign.exists():
                 raise SystemExit("no local state for campaign {!r} under "
-                                 "{}".format(args.resume, state_root))
+                                 "{} and no MongoDB mirror".format(
+                                     cid, state_root))
             self.campaign.load()
         else:
             cid = "{}-{}".format(self.powder_id, utcstamp())
             self.campaign = Campaign(cid, state_root)
+            frozen = frozen_snapshot()
+            baseline = oc.baseline_params(frozen)
             self.campaign.doc = {
                 "kind": "opt_campaign",
                 "schema_version": oc.SCHEMA_VERSION,
@@ -519,19 +729,25 @@ class Runner:
                 "search_space": oc.SEARCH_SPACE_AX,
                 "objectives": {"t_total_s": oc.THRESHOLD_T_TOTAL_S,
                                "abs_error_mg": oc.THRESHOLD_ABS_ERROR_MG},
-                "frozen_params": frozen_snapshot(),
-                "screening_plan": screening_plan(args.seed),
+                "frozen_params": frozen,
+                "baseline_params": baseline,
+                "screening_plan": screening_plan(args.seed, baseline,
+                                                 args.baseline_reps),
+                "budget": DEFAULT_BUDGET,
                 "tau_afterflow": None,
+                "in_flight": None,
                 "generation": {"model": args.model,
                                "sobol_trials": args.sobol_trials,
                                "seed": args.seed,
                                "ax_platform": "0.4.3"},
             }
-            self.campaign.save()
         doc = self.campaign.doc
         if doc["powder_id"] != self.powder_id:
             raise SystemExit("campaign {} is for powder {!r}".format(
                 doc["campaign_id"], doc["powder_id"]))
+        if args.budget is not None:
+            doc["budget"] = args.budget
+        doc.setdefault("budget", DEFAULT_BUDGET)
 
         if args.simulate:
             self.executor = SimExecutor(state_root, seed=args.seed)
@@ -545,13 +761,100 @@ class Runner:
                                  args.park_after, args.simulate)
         self.records = self.campaign.records()
         if self.records:
-            last_cov = self.records[-1].get("covariates") or {}
+            last = self.records[-1]
+            last_cov = last.get("covariates") or {}
             self.operator.recycle_count = last_cov.get("recycle_count", 0)
+            self.operator.hopper_refills = last_cov.get("hopper_refills", 0)
+            self.operator.doses_since_empty = (
+                last_cov.get("doses_since_cup_empty", 0)
+                + (0 if last["summary"]["status"] in NOTHING_DOSED else 1))
         self.ax = None
+        self.save()
+
+    # -- persistence ----------------------------------------------------
+
+    def save(self):
+        """Campaign doc (local, then the Mongo mirror with every record),
+        then the powder file's ``latest_campaign`` block.  --simulate
+        state never leaves the campaign directory."""
+        sim = bool(self.args.simulate)
+        db = self.campaign.save(self.records, mirror=not sim)
+        import fit_tau_afterflow as ft
+        try:
+            ft.update_powder_model(
+                self.powder_id, {"latest_campaign": self.run_status()},
+                cache_dir=self.campaign.dir if sim else None,
+                upload=db is not None, db=db)
+        except Exception as exc:
+            log("powder file update failed ({})".format(exc))
+
+    def run_status(self):
+        """Where this campaign stands and how to continue it -- the
+        powder file's ``latest_campaign`` block (section 5.4)."""
+        doc = self.campaign.doc
+        plan = doc["screening_plan"]
+        n_anchors = sum(1 for label, _ in plan
+                        if label.startswith(ANCHOR_PREFIXES))
+        last = self.records[-1] if self.records else None
+        flight = doc.get("in_flight")
+        resume = "python scripts/opt_campaign.py --powder-id {} " \
+                 "--resume {}".format(self.powder_id, doc["campaign_id"])
+        resume += (" --simulate" if doc.get("simulate")
+                   else " --host <user>@<zero-hostname>")
+        if os.path.abspath(self.args.state_dir) != DEFAULT_STATE:
+            resume += " --state-dir {}".format(self.args.state_dir)
+        state_dir = os.path.abspath(self.campaign.dir)
+        if state_dir.startswith(REPO_ROOT + os.sep):
+            state_dir = os.path.relpath(state_dir, REPO_ROOT)
+        return {
+            "campaign_id": doc["campaign_id"],
+            "simulate": bool(doc.get("simulate")),
+            "target_g": doc["target_g"],
+            "status": doc["status"],
+            "phase": doc["phase"],
+            # doses recorded so far = the next dose's trial_index
+            "iteration": len(self.records),
+            "bo_iteration": self._n_usable("bo"),
+            "progress": {
+                "screen": [self._n_usable("screen"), len(plan)],
+                "recenter": [self._n_usable("recenter"), n_anchors],
+                "bo": [self._n_usable("bo"), doc.get("budget")],
+                "validation": self._n_usable("validation"),
+            },
+            "last_dose": None if last is None else {
+                "trial_index": last["trial_index"],
+                "label": last["label"],
+                "mode": last["mode"],
+                "trial_uuid": last["trial_uuid"],
+                "status": last["summary"]["status"],
+                "t_total_s": last["summary"]["t_total_s"],
+                "abs_error_mg": last["summary"]["abs_error_mg"],
+                "jam": last["summary"]["jam"],
+                "spill": last["spill"],
+                "void": last.get("void"),
+                "utc": last["utc"],
+            },
+            "in_flight": None if not flight else {
+                "label": flight["label"],
+                "trial_uuid": flight["trial_uuid"],
+                "utc": flight["utc"],
+            },
+            "tau_afterflow_s": (doc.get("tau_afterflow") or {}).get(
+                "tau0_s"),
+            "state_dir": state_dir,
+            "resume": resume,
+        }
+
+    def frozen_push(self):
+        """The frozen snapshot each dose pushes before its searched
+        values (section 2.9): the hand-tuned constants, exactly."""
+        frozen = self.campaign.doc.get("frozen_params") or {}
+        return {k: v for k, v in frozen.items()
+                if k not in oc.SEARCHED_FIRMWARE_KEYS and k != "goal_mass_g"}
 
     # -- one dose, soup to nuts ----------------------------------------
 
-    def run_trial(self, label, params, mode):
+    def run_trial(self, label, params, mode, ax_trial_index=None):
         doc = self.campaign.doc
         trial_index = len(self.records)
         trial_uuid = str(uuid.uuid4())
@@ -563,49 +866,125 @@ class Runner:
             trial_index, mode, label,
             {k: (round(v, 4) if isinstance(v, float) else v)
              for k, v in params.items()}))
-        covariates = self.operator.covariates()
+        # Write-ahead: until this dose's record lands, --resume asks the
+        # Zero about this uuid instead of forgetting or re-dosing it.
+        doc["in_flight"] = {
+            "trial_uuid": trial_uuid, "trial_index": trial_index,
+            "label": label, "mode": mode, "params": params,
+            "covariates": self.operator.covariates(),
+            "ax_trial_index": ax_trial_index, "utc": oc.utcnow_iso()}
+        self.save()
         summary = self.executor.dose(
             doc["campaign_id"], trial_uuid, trial_index, self.powder_id,
             doc["target_g"], mode, oc.validate_params(params),
-            covariates)
-        log("  -> status={} t={} s |err|={} mg jam={}{}".format(
+            doc["in_flight"]["covariates"], frozen=self.frozen_push())
+        if summary["status"] == "unreachable":
+            log("could not learn how {} ended: the Zero is unreachable. "
+                "Nothing was re-dosed; --resume {} asks the Zero again"
+                .format(label, doc["campaign_id"]))
+            raise KeyboardInterrupt
+        return self._finish_trial(doc["in_flight"], summary)
+
+    def _finish_trial(self, flight, summary, recovered=False):
+        log("  -> status={} t={} s |err|={} mg jam={}{}{}".format(
             summary["status"], summary["t_total_s"],
             summary["abs_error_mg"], summary["jam"],
-            " INFRA-ERROR" if summary["infra_error"] else ""))
-        if summary["status"] == "rig-busy":   # nothing dosed: no countdown,
-            spill, keep_going = False, True   # no cup-cadence tick
+            " INFRA-ERROR" if summary["infra_error"] else "",
+            " (recovered from the Zero)" if recovered else ""))
+        if summary["status"] in NOTHING_DOSED:   # no countdown, no
+            spill, void, keep_going = False, None, True  # cadence tick
         else:
-            spill, keep_going = self.operator.after_dose(summary)
+            if recovered and not self.args.simulate:
+                print("    {} finished while the loop was down; flag it "
+                      "now if it spilled or ran empty".format(
+                          flight["label"]), flush=True)
+            spill, void, keep_going = self.operator.after_dose(summary)
         record = {
-            "label": label, "mode": mode, "trial_index": trial_index,
-            "trial_uuid": trial_uuid, "params": params,
+            "label": flight["label"], "mode": flight["mode"],
+            "trial_index": flight["trial_index"],
+            "trial_uuid": flight["trial_uuid"],
+            "ax_trial_index": flight.get("ax_trial_index"),
+            "params": flight["params"],
             "summary": {k: v for k, v in summary.items()
                         if k != "stop_events"},
             "stop_events": summary.get("stop_events") or [],
             "spill": spill,
-            "covariates": covariates,
+            "void": void,
+            "recovered": recovered,
+            "covariates": flight["covariates"],
             "utc": oc.utcnow_iso(),
         }
         self.records.append(record)
         self.campaign.append_record(record)
-        if spill:
+        self.campaign.doc["in_flight"] = None
+        self.save()
+        if (spill or void) and not self.args.simulate:
             try:
                 db = oc.mongo_db()
                 if db is not None:
                     db[oc.COLL_TRIALS].update_one(
-                        {"trial_uuid": trial_uuid},
-                        {"$set": {"flags.spill": True}})
+                        {"trial_uuid": record["trial_uuid"]},
+                        {"$set": {"flags.spill": spill,
+                                  "flags.void": void}})
             except Exception as exc:
-                log("spill flag mirror failed ({}); recorded locally"
+                log("spill/void flag mirror failed ({}); recorded locally"
                     .format(exc))
         if not keep_going:
             raise KeyboardInterrupt
         return record
 
+    def reconcile(self):
+        """Settle the dose that was in flight when the loop last stopped
+        (section 5.4): record it from the Zero's spool if it ran, drop
+        it if it never started -- never re-dose it blindly."""
+        doc = self.campaign.doc
+        flight = doc.get("in_flight")
+        if not flight:
+            return
+        if any(r["trial_uuid"] == flight["trial_uuid"]
+               for r in self.records):
+            doc["in_flight"] = None               # recorded; stopped just
+            self.save()                           # before clearing it
+            return
+        log("{} (trial {}) was in flight when the loop stopped -- asking "
+            "the Zero how it ended".format(flight["label"],
+                                           flight["trial_uuid"][:8]))
+        summary = self.executor.fetch(flight["trial_uuid"],
+                                      doc["campaign_id"])
+        if summary["status"] == "unreachable":
+            raise SystemExit(
+                "cannot settle {} while the Zero is unreachable; nothing "
+                "was re-dosed.  Run --resume again once SSH works".format(
+                    flight["label"]))
+        if summary["status"] == "not-found":
+            log("the Zero never started it -- nothing was dosed; it will "
+                "be dosed again")
+            doc["in_flight"] = None
+            self.save()
+            return
+        self._finish_trial(flight, summary, recovered=True)
+
     @staticmethod
     def usable(record):
+        """A dose the model learns from: it ran to a real outcome (no
+        infrastructure fault) and the operator did not void it."""
+        return not record["summary"]["infra_error"] and not record.get("void")
+
+    def _n_usable(self, mode):
+        return sum(1 for r in self.records
+                   if r["mode"] == mode and self.usable(r))
+
+    def _done_labels(self, mode):
+        return {r["label"] for r in self.records
+                if r["mode"] == mode and self.usable(r)}
+
+    def _stop_for(self, record):
         s = record["summary"]
-        return not s["infra_error"]
+        log("{} on {} -- {}, then --resume {}".format(
+            s["status"], record["label"],
+            BUSY_HINT if s["status"] == "rig-busy" else "fix the rig",
+            self.campaign.doc["campaign_id"]))
+        raise KeyboardInterrupt
 
     @staticmethod
     def raw_data(record):
@@ -619,21 +998,21 @@ class Runner:
 
     def screening(self):
         doc = self.campaign.doc
-        done = {r["label"] for r in self.records if r["mode"] == "screen"
-                and self.usable(r)}
-        plan = [(l, p) for l, p in doc["screening_plan"] if l not in done]
-        if plan:
-            log("screening: {} of {} doses remaining".format(
-                len(plan), len(doc["screening_plan"])))
-        for label, params in plan:
+        announced = False
+        while True:
+            done = self._done_labels("screen")
+            plan = [(l, p) for l, p in doc["screening_plan"]
+                    if l not in done]
+            if not plan:
+                break
+            if not announced:
+                log("screening: {} of {} doses remaining".format(
+                    len(plan), len(doc["screening_plan"])))
+                announced = True
+            label, params = plan[0]         # a voided dose goes again
             record = self.run_trial(label, params, "screen")
-            if not self.usable(record):
-                log("{} on {} -- {} and re-run with --resume {}".format(
-                    record["summary"]["status"], label,
-                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
-                    else "fix the rig", doc["campaign_id"]))
-                raise KeyboardInterrupt
-            self.campaign.save()
+            if record["summary"]["infra_error"]:
+                self._stop_for(record)
         # tau fit from the screening stop events (section 2.8)
         if doc.get("tau_afterflow") is None:
             import fit_tau_afterflow as ft
@@ -658,31 +1037,31 @@ class Runner:
                     log("powder_models upsert failed ({}); fit kept in "
                         "the campaign doc".format(exc))
             doc["phase"] = "recenter"
-            self.campaign.save()
+            self.save()
 
     def recenter(self):
+        """Re-dose every replicated anchor (centers + hand-tuned
+        baselines) under the fitted tau, so the warm-start data and the
+        BO regime share reference points (section 2.8)."""
         doc = self.campaign.doc
         if not (doc.get("tau_afterflow") or {}).get("tau0_s"):
             log("no usable tau fit -- skipping the re-centered anchors")
             doc["phase"] = "bo"
-            self.campaign.save()
+            self.save()
             return
-        done = sum(1 for r in self.records if r["mode"] == "recenter"
-                   and self.usable(r))
-        centers = [(l, p) for l, p in doc["screening_plan"]
-                   if l.startswith("center")]
-        for i in range(done, len(centers)):
-            label, params = centers[i]
-            record = self.run_trial("re" + label, params, "recenter")
-            self.campaign.save()
-            if not self.usable(record):
-                log("{} on re{} -- {}, then --resume {}".format(
-                    record["summary"]["status"], label,
-                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
-                    else "fix the rig", doc["campaign_id"]))
-                raise KeyboardInterrupt
+        anchors = [("re" + l, p) for l, p in doc["screening_plan"]
+                   if l.startswith(ANCHOR_PREFIXES)]
+        while True:
+            done = self._done_labels("recenter")
+            todo = [(l, p) for l, p in anchors if l not in done]
+            if not todo:
+                break
+            label, params = todo[0]
+            record = self.run_trial(label, params, "recenter")
+            if record["summary"]["infra_error"]:
+                self._stop_for(record)
         doc["phase"] = "bo"
-        self.campaign.save()
+        self.save()
 
     def _init_ax(self):
         from ax.service.ax_client import AxClient
@@ -709,41 +1088,107 @@ class Runner:
             attached))
         self.ax.save_to_json_file(self.campaign.snapshot_path)
 
+    def _sync_ax(self):
+        """Tell Ax every recorded BO dose it was never told -- the loop
+        stopped between the record and complete_trial (a Ctrl-C at the
+        countdown, a pause, a crash)."""
+        from ax.core.base_trial import TrialStatus
+        told = 0
+        for r in self.records:
+            idx = r.get("ax_trial_index")
+            if r["mode"] != "bo" or idx is None or not self.usable(r):
+                continue
+            trial = self.ax.experiment.trials.get(idx)
+            if trial is not None and trial.status == TrialStatus.RUNNING:
+                self.ax.complete_trial(trial_index=idx,
+                                       raw_data=self.raw_data(r))
+                told += 1
+        if told:
+            log("told Ax {} recorded dose(s) it had not heard about".format(
+                told))
+            self.ax.save_to_json_file(self.campaign.snapshot_path)
+
+    def _open_ax_trial(self):
+        """-> (index, params) of an Ax trial that was asked but never
+        told, else (None, None).  Dosing it again keeps the suggestion
+        and Ax's one-running-trial limit (a stale RUNNING trial makes
+        get_next_trial raise MaxParallelismReachedException)."""
+        from ax.core.base_trial import TrialStatus
+        for idx in sorted(self.ax.experiment.trials):
+            trial = self.ax.experiment.trials[idx]
+            if trial.status in (TrialStatus.RUNNING, TrialStatus.CANDIDATE,
+                                TrialStatus.STAGED):
+                return idx, dict(trial.arm.parameters)
+        return None, None
+
     def bo(self):
         doc = self.campaign.doc
         self._init_ax()
-        done = sum(1 for r in self.records
-                   if r["mode"] == "bo" and self.usable(r))
-        budget = self.args.budget
-        while done < budget:
-            log("asking Ax for suggestion {}/{} (SAAS refits can take "
-                "minutes late in a campaign)".format(done + 1, budget))
-            params, idx = self.ax.get_next_trial()
-            record = self.run_trial("bo-{:03d}".format(done), params, "bo")
-            if not self.usable(record):
-                self.ax.log_trial_failure(trial_index=idx)
+        self._sync_ax()
+        budget = doc["budget"]
+        while True:
+            done = self._n_usable("bo")
+            if done >= budget:
+                break
+            idx, params = self._open_ax_trial()
+            if idx is None:
+                log("asking Ax for suggestion {}/{} (SAAS refits can take "
+                    "minutes late in a campaign)".format(done + 1, budget))
+                params, idx = self.ax.get_next_trial()
+                # on disk before its dose starts
                 self.ax.save_to_json_file(self.campaign.snapshot_path)
-                log("{} -- {}, then --resume {}".format(
-                    record["summary"]["status"],
-                    BUSY_HINT if record["summary"]["status"] == "rig-busy"
-                    else "fix the rig", doc["campaign_id"]))
-                raise KeyboardInterrupt
+            else:
+                log("dosing Ax trial {} again: it was asked before the "
+                    "loop stopped, and never told".format(idx))
+            record = self.run_trial("bo-{:03d}".format(done), params, "bo",
+                                    ax_trial_index=idx)
+            if record["summary"]["infra_error"]:
+                self._stop_for(record)      # the trial stays open
+            if not self.usable(record):
+                continue                    # voided: same point again
             self.ax.complete_trial(trial_index=idx,
                                    raw_data=self.raw_data(record))
             self.ax.save_to_json_file(self.campaign.snapshot_path)
-            self.campaign.save()
-            done += 1
+            self.save()
         doc["phase"] = "readout"
-        self.campaign.save()
+        self.save()
+
+    def baseline_summary(self):
+        """Medians of the clean hand-tuned baseline doses, per tau
+        regime (screening: the tuned 0.30 s; anchors: the fitted tau)."""
+        import statistics
+        out = {}
+        for mode, key in (("screen", "tuned_tau"),
+                          ("recenter", "fitted_tau")):
+            rs = [r for r in self.records
+                  if r["mode"] == mode and self.usable(r)
+                  and r["label"].startswith(("baseline-", "rebaseline-"))
+                  and not r["summary"]["jam"] and not r["spill"]
+                  and r["summary"]["t_total_s"] is not None]
+            if rs:
+                out[key] = {
+                    "n": len(rs),
+                    "median_t_total_s": statistics.median(
+                        r["summary"]["t_total_s"] for r in rs),
+                    "median_abs_error_mg": statistics.median(
+                        r["summary"]["abs_error_mg"] for r in rs),
+                }
+        return out or None
 
     def readout(self):
         doc = self.campaign.doc
-        # Observed feasible front: usable, no jam, no spill.
+        # Observed feasible front: usable, no jam, no spill, and inside
+        # the 180 s / 20 mg reference box (anything outside it adds no
+        # hypervolume and is no operating point).
         pts = [(r["summary"]["t_total_s"], r["summary"]["abs_error_mg"],
                 r) for r in self.records
                if self.usable(r) and not r["summary"]["jam"]
                and not r["spill"]
-               and r["summary"]["t_total_s"] is not None]
+               and r["summary"]["t_total_s"] is not None
+               and r["summary"]["abs_error_mg"] is not None
+               and r["summary"]["t_total_s"] <= oc.THRESHOLD_T_TOTAL_S
+               and r["summary"]["abs_error_mg"]
+               <= oc.THRESHOLD_ABS_ERROR_MG]
         front = []
         for t, e, r in sorted(pts, key=lambda x: (x[0], x[1])):
             if all(not (t2 <= t and e2 <= e and (t2 < t or e2 < e))
@@ -766,19 +1211,34 @@ class Runner:
                     for k, v in pareto.items()]
             except Exception as exc:
                 log("model Pareto readout unavailable ({})".format(exc))
+        base = self.baseline_summary()
+        ref = (base or {}).get("fitted_tau") or (base or {}).get("tuned_tau")
+        beating = [p for p in front
+                   if ref and "baseline-" not in p["label"]
+                   and p["t_total_s"] <= ref["median_t_total_s"]
+                   and p["abs_error_mg"] <= ref["median_abs_error_mg"]]
         out = {"campaign_id": doc["campaign_id"],
                "observed_feasible_front": front,
-               "model_pareto": model_front}
+               "model_pareto": model_front,
+               "baseline": base,
+               "front_points_beating_baseline": [p["label"]
+                                                 for p in beating]}
         path = os.path.join(self.campaign.dir, "pareto.json")
         with open(path, "w") as f:
             json.dump(out, f, indent=1, default=str)
         doc["status"] = "readout-ready"
-        self.campaign.save()
+        self.save()
         log("=== observed feasible front ({} points) -> {}".format(
             len(front), path))
         for p in front:
             log("  t={:6.1f} s  |err|={:5.1f} mg  {}  {}".format(
                 p["t_total_s"], p["abs_error_mg"], p["mode"], p["label"]))
+        if ref:
+            log("hand-tuned baseline ({} doses): median t={:.1f} s, "
+                "|err|={:.1f} mg; {} front point(s) match or beat it on "
+                "both objectives".format(
+                    ref["n"], ref["median_t_total_s"],
+                    ref["median_abs_error_mg"], len(beating)))
         log("pick a point, then run --validate-params with its params "
             "(see pareto.json)")
 
@@ -790,11 +1250,14 @@ class Runner:
         params = {k: v for k, v in params.items()}
         results = []
         for i in range(replicates):
-            record = self.run_trial("val-{:02d}".format(i), dict(params),
-                                    "validation")
-            if self.usable(record):
-                results.append(record)
-            self.campaign.save()
+            while True:                     # a voided replicate goes again
+                record = self.run_trial("val-{:02d}".format(i),
+                                        dict(params), "validation")
+                if record["summary"]["infra_error"]:
+                    self._stop_for(record)
+                if self.usable(record):
+                    break
+            results.append(record)
         errs = [r["summary"]["abs_error_mg"] for r in results
                 if r["summary"]["abs_error_mg"] is not None]
         times = [r["summary"]["t_total_s"] for r in results
@@ -850,6 +1313,12 @@ class Runner:
             except Exception as exc:
                 log("profile upload failed ({}); cached at {}".format(
                     exc, cache))
+        doc["last_profile"] = {"profile_id": profile["profile_id"],
+                               "validated": profile["validated"],
+                               "validation": stats}
+        doc["status"] = ("validated" if profile["validated"]
+                         else "validation-failed")
+        self.save()
         log("validation stats: {}".format(stats))
         log("profile {} (validated={}, uploaded={}) cached at {}".format(
             profile["profile_id"], profile["validated"], uploaded, cache))
@@ -859,14 +1328,19 @@ class Runner:
     def run(self):
         doc = self.campaign.doc
         args = self.args
-        if args.validate_params:
-            self.validate(oc.validate_params(
-                json.loads(args.validate_params)), args.replicates)
-            return
         try:
+            self.reconcile()
+            if args.validate_params:
+                doc["status"] = "validating"
+                self.validate(oc.validate_params(
+                    json.loads(args.validate_params)), args.replicates)
+                return
+            doc["status"] = "running"
             if doc["phase"] == "screen":
                 self.screening()
             if args.screen_only:
+                doc["status"] = "paused"
+                self.save()
                 log("--screen-only: stopping after screening + tau fit; "
                     "--resume {} continues into BO".format(
                         doc["campaign_id"]))
@@ -879,21 +1353,23 @@ class Runner:
                 self.readout()
         except KeyboardInterrupt:
             doc["status"] = "paused"
-            self.campaign.save()
             if self.ax is not None:
                 self.ax.save_to_json_file(self.campaign.snapshot_path)
+            self.save()
             log("paused cleanly -- continue with: opt_campaign.py "
                 "--powder-id {} --resume {}".format(
                     self.powder_id, doc["campaign_id"]))
 
 
-def main(argv=None):
+def parse_args(argv=None):
     ap = argparse.ArgumentParser(
         description="issue #164 optimization campaign loop")
     ap.add_argument("--powder-id", required=True)
     ap.add_argument("--target-g", type=float, default=0.5)
-    ap.add_argument("--budget", type=int, default=40,
-                    help="BO doses after the screening block")
+    ap.add_argument("--budget", type=int, default=None,
+                    help="BO doses after the screening block (default "
+                         "{}; a resumed campaign keeps its own unless "
+                         "this is given)".format(DEFAULT_BUDGET))
     ap.add_argument("--host", help="SSH target for the Pi Zero, "
                                    "e.g. pi@<zero-hostname>")
     ap.add_argument("--remote-repo", default="~/powder-doser",
@@ -907,7 +1383,14 @@ def main(argv=None):
                     help="let each dose ctrl-C whatever another session "
                          "left running on the shared Pico (default: stop "
                          "with status rig-busy instead)")
-    ap.add_argument("--resume", metavar="CAMPAIGN_ID")
+    ap.add_argument("--resume", metavar="CAMPAIGN_ID", nargs="?",
+                    const="latest",
+                    help="continue a campaign; with no id, this powder's "
+                         "latest one (the powder file's latest_campaign)")
+    ap.add_argument("--baseline-reps", type=int, default=N_BASELINES,
+                    help="doses at the hand-tuned trickle_params.py point "
+                         "bracketing the screening block (0 = none; new "
+                         "campaigns only)")
     ap.add_argument("--screen-only", action="store_true")
     ap.add_argument("--simulate", action="store_true",
                     help="dry-run the loop against the virtual plant")
@@ -923,11 +1406,22 @@ def main(argv=None):
     ap.add_argument("--operator", default=None)
     ap.add_argument("--validate-params", metavar="JSON",
                     help="run validation replicates at these params and "
-                         "write the dosing profile")
+                         "write the dosing profile (inside the powder's "
+                         "latest campaign unless --resume names one)")
     ap.add_argument("--replicates", type=int, default=8)
     args = ap.parse_args(argv)
+    if args.validate_params and not args.resume:
+        args.resume = "latest"
+    return args
+
+
+def main(argv=None):
+    args = parse_args(argv)
     uri, source = oc.resolve_mongo_uri()
-    if uri:
+    if args.simulate:
+        log("--simulate: state stays under {}; nothing goes to "
+            "MongoDB".format(args.state_dir))
+    elif uri:
         log("MongoDB ledger: {} database via {}".format(oc.DB_NAME,
                                                         source))
     elif not args.simulate:

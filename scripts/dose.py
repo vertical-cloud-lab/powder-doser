@@ -79,15 +79,8 @@ def full_set_lines(profile):
     keys a newer firmware no longer knows are warned about and
     skipped -- the profile still dominates where it matters.
     """
-    frozen = dict(profile.get("frozen_params") or {})
-    frozen.pop("goal_mass_g", None)          # the CLI target wins
-    soft = []
-    for key in sorted(frozen):
-        value = frozen[key]
-        if isinstance(value, bool):
-            soft.append("set {} {}".format(key, 1 if value else 0))
-        elif isinstance(value, (int, float)):
-            soft.append("set {} {:.6g}".format(key, value))
+    # goal_mass_g is never pushed: the CLI target wins
+    soft = oc.frozen_set_lines(profile.get("frozen_params"))
     params = dict(profile["parameters"])
     if profile.get("tau_afterflow_s") is not None:
         params["tau_afterflow_s"] = profile["tau_afterflow_s"]

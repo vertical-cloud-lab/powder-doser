@@ -190,6 +190,32 @@ def test_firmware_set_lines():
     check("all 8 searched knobs + tau pushed", len(lines) == 9)
 
 
+FROZEN = {"trickle_kp": 250.0, "k_sigma": 1.0, "log_to_flash": True,
+          "bulk_poll_ms": 250, "goal_mass_g": 0.75, "tau_afterflow_s": 0.3,
+          "bulk_rpm": 55.0, "trickle_tap": False, "note": "text"}
+
+
+def test_frozen_snapshot_helpers():
+    lines = oc.frozen_set_lines(FROZEN, skip=oc.SEARCHED_FIRMWARE_KEYS)
+    check("frozen push: bools as 0/1, ints and floats as numbers",
+          "set log_to_flash 1" in lines and "set bulk_poll_ms 250" in lines
+          and "set trickle_kp 250" in lines)
+    check("frozen push leaves out the target, searched knobs, and text",
+          not any(l.split()[1] in ("goal_mass_g", "bulk_rpm", "trickle_tap",
+                                   "note") for l in lines))
+    check("frozen push carries the tuned tau (screening runs on it)",
+          "set tau_afterflow_s 0.3" in lines)
+    import opt_campaign as ocamp
+    base = oc.baseline_params(ocamp.frozen_snapshot())
+    check("baseline = trickle_params.py's hand-tuned values",
+          base == {"bulk_tap": "off", "trim_tap": "off",
+                   "bulk_tilt_deg": 30.0, "trickle_tilt_deg": 15.0,
+                   "tap_tilt_deg": 10.0, "bulk_rpm": 55.0,
+                   "trickle_start_remaining_g": 0.25,
+                   "tolerance_g": 0.005}
+          if os.path.isdir(ocamp.FIRMWARE_DIR) else True)
+
+
 def test_penalization():
     ok = oc.ax_raw_data({"t_total_s": 74.3, "abs_error_mg": 4.2})
     jam = oc.ax_raw_data({"t_total_s": 74.3, "abs_error_mg": 4.2}, jam=True)
@@ -261,6 +287,33 @@ def test_executor_end_to_end():
     check("--fetch on an unknown uuid exits 3",
           code4 == 3 and json.loads(lines4[0])["status"] == "not-found")
 
+    # A dose whose executor died after opening the Pico session: the raw
+    # serial log exists, the trial document does not.
+    with open(os.path.join(tmp, "salt-test", "serial_dead-1.log"), "w") as f:
+        f.write("--- session ---\n")
+    code5, lines5 = _run_capture(["--fetch", "dead-1", "--campaign-id",
+                                  "salt-test", "--out", tmp])
+    check("--fetch: executor died mid-dose -> interrupted, exit 3",
+          code5 == 3 and json.loads(lines5[0])["status"] == "interrupted")
+
+    import opt_dose_capture as odc
+    real_pid = odc.live_dose_pid
+    odc.live_dose_pid = lambda uuid: 4242 if uuid == "live-1" else None
+    try:
+        code6, lines6 = _run_capture(["--fetch", "live-1", "--campaign-id",
+                                      "salt-test", "--out", tmp])
+        before = FakeSerial.doses
+        code7, lines7 = _run_capture(_dose_argv(tmp, "live-1"))
+    finally:
+        odc.live_dose_pid = real_pid
+    check("--fetch: dose still running -> in-progress, exit 5",
+          code6 == 5 and json.loads(lines6[0])["status"] == "in-progress")
+    check("same uuid while it is still dosing: not started twice",
+          code7 == 5 and FakeSerial.doses == before
+          and json.loads(lines7[0])["status"] == "in-progress")
+    check("live_dose_pid scans this host without raising",
+          real_pid("no-such-uuid") is None)
+
 
 def _dose_argv(tmp, trial, *extra):
     return (["--powder-id", "salt", "--target-g", "0.5",
@@ -281,6 +334,19 @@ def test_shared_pico_guards():
         code, lines = _run_capture(_dose_argv(tmp, trial, *extra))
         return (code, json.loads(lines[0]), FakeSerial.last,
                 FakeSerial.doses - before)
+
+    code, summ, port, dosed = run("runner", "t-frozen", "--frozen",
+                                  json.dumps(FROZEN))
+    keys = [k for k, _v in port.set_seen]
+    check("--frozen: snapshot pushed first, searched knobs + tau on top",
+          summ["status"] == "ok" and keys[0] == "bulk_poll_ms"
+          and keys.index("trickle_kp") < keys.index("bulk_tap")
+          and keys[-1] == "tau_afterflow_s"
+          and ("tau_afterflow_s", "0.3") in port.set_seen
+          and ("tau_afterflow_s", "0.83") == port.set_seen[-1])
+    check("--frozen: the target and the searched knobs are not pushed "
+          "from the snapshot", keys.count("bulk_rpm") == 1
+          and "goal_mass_g" not in keys and "note" not in keys)
 
     code, summ, port, dosed = run("repl", "t-repl")
     wrote = b"".join(port.writes)
@@ -431,7 +497,8 @@ def test_ssh_remote_cmd():
 
 
 def main():
-    for fn in (test_firmware_set_lines, test_penalization,
+    for fn in (test_firmware_set_lines, test_frozen_snapshot_helpers,
+               test_penalization,
                test_jam_classification, test_mongo_uri_resolution,
                test_ssh_remote_cmd, test_executor_end_to_end,
                test_shared_pico_guards, test_firmware_id_in_sync):

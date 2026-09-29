@@ -116,33 +116,61 @@ def fit_events(events):
     }
 
 
+def powder_model_path(powder_id, cache_dir=None):
+    return os.path.join(cache_dir or MODEL_CACHE,
+                        "{}.json".format(powder_id))
+
+
+def load_powder_model(powder_id, cache_dir=None):
+    """The local powder file for ``powder_id``, or None."""
+    try:
+        with open(powder_model_path(powder_id, cache_dir)) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def update_powder_model(powder_id, fields, cache_dir=None, upload=True,
+                        db=None):
+    """Merge ``fields`` into the powder's ``powder_models`` document
+    (local file + Mongo ``$set``) without touching its other blocks, so
+    the tau fit and the campaign's ``latest_campaign`` block share one
+    file.  ``db`` reuses a handle the caller already has.  -> path."""
+    doc = load_powder_model(powder_id, cache_dir) or {
+        "kind": "powder_model",
+        "schema_version": oc.SCHEMA_VERSION,
+        "powder_id": powder_id,
+    }
+    doc.update(fields)
+    doc["updated_utc"] = oc.utcnow_iso()
+    cache = powder_model_path(powder_id, cache_dir)
+    os.makedirs(os.path.dirname(cache), exist_ok=True)
+    with open(cache, "w") as f:
+        json.dump(doc, f, indent=1)
+    if upload:
+        db = db if db is not None else oc.mongo_db()
+        if db is not None:
+            db[oc.COLL_POWDER_MODELS].update_one(
+                {"powder_id": powder_id},
+                {"$set": dict(fields, updated_utc=doc["updated_utc"],
+                              kind="powder_model",
+                              schema_version=oc.SCHEMA_VERSION)},
+                upsert=True)
+    return cache
+
+
 def upsert_powder_model(powder_id, fit, campaign_id=None,
                         cache_dir=None, upload=True):
-    """powder_models document (Mongo + local cache); returns cache path.
+    """Save a tau fit to the powder_models document (Mongo + local
+    cache); returns the cache path.
 
     ``cache_dir`` overrides the repo-level cache -- used by
     ``opt_campaign.py --simulate`` so sim fits can never shadow a real
     powder model.
     """
-    doc = {
-        "kind": "powder_model",
-        "schema_version": oc.SCHEMA_VERSION,
-        "powder_id": powder_id,
-        "tau_afterflow": fit,
-        "source_campaign": campaign_id,
-        "updated_utc": oc.utcnow_iso(),
-    }
-    cache_dir = cache_dir or MODEL_CACHE
-    os.makedirs(cache_dir, exist_ok=True)
-    cache = os.path.join(cache_dir, "{}.json".format(powder_id))
-    with open(cache, "w") as f:
-        json.dump(doc, f, indent=1)
-    if upload:
-        db = oc.mongo_db()
-        if db is not None:
-            db[oc.COLL_POWDER_MODELS].replace_one(
-                {"powder_id": powder_id}, doc, upsert=True)
-    return cache
+    return update_powder_model(
+        powder_id, {"tau_afterflow": fit, "source_campaign": campaign_id},
+        cache_dir=cache_dir, upload=upload)
 
 
 # ---------------------------------------------------------------------------
