@@ -1,0 +1,462 @@
+{
+ "kind": "opt_campaign",
+ "schema_version": 1,
+ "campaign_id": "salt-20260929T014732Z",
+ "powder_id": "salt",
+ "target_g": 0.5,
+ "status": "finished",
+ "phase": "bo",
+ "created_utc": "2026-09-29T01:47:32.782088+00:00",
+ "operator": "claude-unattended",
+ "git_commit": "994423ee54d7c498212d01c4df53ca76d7f0f6c7",
+ "simulate": false,
+ "search_space": [
+  {
+   "name": "bulk_tap",
+   "type": "choice",
+   "is_ordered": false,
+   "values": [
+    "off",
+    "2hz"
+   ]
+  },
+  {
+   "name": "trim_tap",
+   "type": "choice",
+   "is_ordered": false,
+   "values": [
+    "off",
+    "2hz"
+   ]
+  },
+  {
+   "name": "bulk_tilt_deg",
+   "type": "range",
+   "bounds": [
+    15.0,
+    40.0
+   ]
+  },
+  {
+   "name": "trickle_tilt_deg",
+   "type": "range",
+   "bounds": [
+    10.0,
+    30.0
+   ]
+  },
+  {
+   "name": "tap_tilt_deg",
+   "type": "range",
+   "bounds": [
+    0.0,
+    15.0
+   ]
+  },
+  {
+   "name": "bulk_rpm",
+   "type": "range",
+   "bounds": [
+    20.0,
+    100.0
+   ]
+  },
+  {
+   "name": "trickle_start_remaining_g",
+   "type": "range",
+   "bounds": [
+    0.05,
+    0.3
+   ]
+  },
+  {
+   "name": "tolerance_g",
+   "type": "range",
+   "bounds": [
+    0.003,
+    0.015
+   ]
+  }
+ ],
+ "objectives": {
+  "t_total_s": 180.0,
+  "abs_error_mg": 20.0
+ },
+ "frozen_params": {
+  "bulk_anticipation_g": 0.05,
+  "bulk_enabled": true,
+  "bulk_poll_ms": 250,
+  "bulk_rpm": 55.0,
+  "bulk_settle_ms": 1500,
+  "bulk_tap": false,
+  "bulk_tilt_deg": 30.0,
+  "cutoff_margin_g": 0.035,
+  "dose_timeout_s": 600,
+  "ff_prior_g_per_rev": 0.35,
+  "final_settle_ms": 2000,
+  "goal_mass_g": 0.75,
+  "kf_q_var": 0.0002,
+  "k_sigma": 1.0,
+  "log_max_rows": 2400,
+  "log_to_flash": true,
+  "max_poll_misses": 10,
+  "noisy_sd_g": 0.008,
+  "overshoot_abort_g": 0.1,
+  "post_trickle_settle_ms": 1200,
+  "print_every_n_polls": 2,
+  "quiet_sd_g": 0.0005,
+  "rate_tau_s": 0.5,
+  "stall_bail_s": 8.0,
+  "taps_per_cycle": 1,
+  "tap_cadence_off_ms": 440,
+  "tap_cadence_on_ms": 60,
+  "tap_max_cycles": 120,
+  "tap_max_nudges": 20,
+  "tap_nudge_deg": 5.0,
+  "tap_settle_ms": 1500,
+  "tap_tilt_deg": 10.0,
+  "tau_afterflow_s": 0.3,
+  "tau_bal_s": 0.7,
+  "tolerance_g": 0.005,
+  "trickle_dt_s": 0.25,
+  "trickle_integ_clamp": 0.5,
+  "trickle_ki": 120.0,
+  "trickle_kp": 250.0,
+  "trickle_max_rate_gps": 0.05,
+  "trickle_min_rate_gps": 0.003,
+  "trickle_rpm_cap": 45.0,
+  "trickle_start_remaining_g": 0.25,
+  "trickle_tap": false,
+  "trickle_tilt_deg": 15.0
+ },
+ "baseline_params": {
+  "bulk_tap": "off",
+  "trim_tap": "off",
+  "bulk_tilt_deg": 30.0,
+  "trickle_tilt_deg": 15.0,
+  "tap_tilt_deg": 10.0,
+  "bulk_rpm": 55.0,
+  "trickle_start_remaining_g": 0.25,
+  "tolerance_g": 0.005
+ },
+ "screening_plan": [
+  [
+   "baseline-00",
+   {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 30.0,
+    "trickle_tilt_deg": 15.0,
+    "tap_tilt_deg": 10.0,
+    "bulk_rpm": 55.0,
+    "trickle_start_remaining_g": 0.25,
+    "tolerance_g": 0.005
+   }
+  ],
+  [
+   "corner-00",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-01",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-02",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-03",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-04",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-05",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-06",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-07",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-08",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-09",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-10",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-11",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "corner-12",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-13",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-14",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "corner-15",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz"
+   }
+  ],
+  [
+   "center-00",
+   {
+    "bulk_tilt_deg": 27.5,
+    "trickle_tilt_deg": 20.0,
+    "tap_tilt_deg": 7.5,
+    "bulk_rpm": 60.0,
+    "trickle_start_remaining_g": 0.175,
+    "tolerance_g": 0.009,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "center-01",
+   {
+    "bulk_tilt_deg": 27.5,
+    "trickle_tilt_deg": 20.0,
+    "tap_tilt_deg": 7.5,
+    "bulk_rpm": 60.0,
+    "trickle_start_remaining_g": 0.175,
+    "tolerance_g": 0.009,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "center-02",
+   {
+    "bulk_tilt_deg": 27.5,
+    "trickle_tilt_deg": 20.0,
+    "tap_tilt_deg": 7.5,
+    "bulk_rpm": 60.0,
+    "trickle_start_remaining_g": 0.175,
+    "tolerance_g": 0.009,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "center-03",
+   {
+    "bulk_tilt_deg": 27.5,
+    "trickle_tilt_deg": 20.0,
+    "tap_tilt_deg": 7.5,
+    "bulk_rpm": 60.0,
+    "trickle_start_remaining_g": 0.175,
+    "tolerance_g": 0.009,
+    "bulk_tap": "off",
+    "trim_tap": "off"
+   }
+  ],
+  [
+   "baseline-01",
+   {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 30.0,
+    "trickle_tilt_deg": 15.0,
+    "tap_tilt_deg": 10.0,
+    "bulk_rpm": 55.0,
+    "trickle_start_remaining_g": 0.25,
+    "tolerance_g": 0.005
+   }
+  ]
+ ],
+ "budget": 200,
+ "tau_afterflow": {
+  "tau0_s": 0.8338,
+  "tau1_s_per_gps": null,
+  "tau1_t_stat": 1.11,
+  "tau0_median_s": 0.8338,
+  "model": "linear",
+  "n_events": 26,
+  "rate_range_gps": [
+   0.0221,
+   0.1586
+  ],
+  "resid_rms_mg": 31.57
+ },
+ "in_flight": null,
+ "generation": {
+  "model": "saasbo",
+  "sobol_trials": 2,
+  "seed": 999,
+  "ax_platform": "0.4.3"
+ },
+ "unattended": {
+  "cup_budget_g": 45.0,
+  "stop_at": "2026-09-29T04:05:00Z",
+  "max_stall_streak": 2,
+  "max_jam_streak": 3
+ },
+ "frozen_overrides": {
+  "log_to_flash": false
+ },
+ "updated_utc": "2026-09-29T04:07:36.287095+00:00",
+ "stop_reason": "deadline: 0 s left before 2026-09-29T04:05:00Z, the next dose needs about 153 s"
+}

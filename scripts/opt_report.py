@@ -112,12 +112,17 @@ def main_effects(records, doc):
             vals = [x[key] for x in xs if x[key] is not None]
             return statistics.mean(vals) if vals else None
 
+        # An overshoot ends in seconds, so raw time means would reward
+        # it: time is averaged over the doses that ended ok.
+        lo_ok = [x for x in lo if x["status"] == "ok"]
+        hi_ok = [x for x in hi if x["status"] == "ok"]
         rows.append({
             "factor": title,
             "levels": ("off / 2 Hz" if bounds[name] is None else
                        "{:g} / {:g}".format(*bounds[name])),
             "n": (len(lo), len(hi)),
-            "t_lo": mean(lo, "t_total_s"), "t_hi": mean(hi, "t_total_s"),
+            "t_lo": mean(lo_ok, "t_total_s"), "t_hi": mean(hi_ok, "t_total_s"),
+            "n_ok": (len(lo_ok), len(hi_ok)),
             "e_lo": mean(lo, "abs_error_mg"),
             "e_hi": mean(hi, "abs_error_mg"),
             "flag_lo": sum(1 for x in lo if x["status"] != "ok"),
@@ -209,11 +214,11 @@ def figure(doc, records, pick, path):
         # Nothing observed dominates a front point, so the space below
         # and left of it is empty: the label goes there.
         s = pick["summary"]
-        ax.annotate("recommended: {}\n{:.0f} s, {:.1f} mg".format(
+        ax.annotate("best single dose: {}\n{:.0f} s, {:.1f} mg".format(
             pick["label"], s["t_total_s"], s["abs_error_mg"]),
             (s["t_total_s"], max(s["abs_error_mg"], floor)),
-            xytext=(-14, -34), textcoords="offset points", fontsize=8,
-            ha="right", color=INK, arrowprops=dict(
+            xytext=(0.36, 0.05), textcoords="axes fraction", fontsize=8,
+            ha="left", color=INK, arrowprops=dict(
                 arrowstyle="-", color=INK_2, lw=0.8))
     ax.set_yscale("log")
     ax.set_xlabel("t_total (s), dose start to settled reading")
@@ -272,7 +277,7 @@ def report(cdir):
     L.append("")
     if pick is not None:
         s = pick["summary"]
-        L.append("## Recommended parameters (knee of the observed front)\n")
+        L.append("## Best observed dose (knee of the observed front)\n")
         L.append("`{}` ({}): t_total {:.1f} s, |error| {:.1f} mg, a single "
                  "dose, not yet validated with replicates.\n".format(
                      pick["label"], pick["mode"], s["t_total_s"],
@@ -292,16 +297,23 @@ def report(cdir):
                 fmt(pm.get("abs_error_mg")), params_cell(m["params"])))
         L.append("")
     if effects:
-        L.append("## Screening main effects ({} corners, raw outcomes)\n"
+        L.append("## Screening main effects ({} corners)\n"
                  .format(n_corners))
-        L.append("| Factor | low / high | mean t_total low -> high (s) | "
-                 "mean abs_error low -> high (mg) | flagged low / high |")
+        L.append("8 corners sit at each level of every factor. Time is "
+                 "averaged over the corners that ended `ok` (an overshoot "
+                 "ends in seconds and would look fast); |error| is averaged "
+                 "over all of them.\n")
+        L.append("| Factor | low / high | mean t_total of ok doses, low -> "
+                 "high (s) | mean abs_error, low -> high (mg) | overshoot "
+                 "or jam, low / high |")
         L.append("|---|---|---|---|---|")
         for e in effects:
-            L.append("| {} | {} | {} -> {} | {} -> {} | {} / {} |".format(
-                e["factor"], e["levels"], fmt(e["t_lo"]), fmt(e["t_hi"]),
-                fmt(e["e_lo"]), fmt(e["e_hi"]), e["flag_lo"],
-                e["flag_hi"]))
+            L.append("| {} | {} | {} (n={}) -> {} (n={}) | {} -> {} | "
+                     "{} / {} |".format(
+                         e["factor"], e["levels"], fmt(e["t_lo"]),
+                         e["n_ok"][0], fmt(e["t_hi"]), e["n_ok"][1],
+                         fmt(e["e_lo"]), fmt(e["e_hi"]), e["flag_lo"],
+                         e["flag_hi"]))
         L.append("")
     L.append("## Every dose\n")
     L.append("| # | label | taps bulk/trim, bulk tilt, trim tilt, tap tilt, "
