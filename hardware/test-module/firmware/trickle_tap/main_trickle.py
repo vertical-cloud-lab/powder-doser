@@ -109,6 +109,13 @@ class TrickleRig(m3.Rig):
 
     def state(self):
         print("firmware: {}".format(FIRMWARE_ID))
+        try:
+            import gc
+            gc.collect()
+            print("heap: {} bytes free, {} used".format(gc.mem_free(),
+                                                        gc.mem_alloc()))
+        except AttributeError:                # CPython sim
+            pass
         print("stepper: {} auger rpm (max ~{:.0f}), 1/{} microsteps; "
               "plate at {:.1f} deg; scale UART{} @ {}".format(
                   config.STEPPER_SPEED_RPM, m3.MAX_AUGER_RPM,
@@ -151,7 +158,7 @@ class TrickleRig(m3.Rig):
         print("[set] {} = {} (was {})".format(key, value, old))
 
     def print_log(self):
-        if self.doser is None or not self.doser.telemetry:
+        if self.doser is None or len(self.doser.telemetry) == 0:
             print("[log] no telemetry yet -- run a dose first")
             return
         print("--- BEGIN trickle telemetry CSV ---")

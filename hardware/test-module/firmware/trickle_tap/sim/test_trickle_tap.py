@@ -638,6 +638,70 @@ def test_tap_burst_until_close():
           and "tap_burst" not in (doc or {}).get("phase_cycles", {}))
 
 
+def test_telemetry_can_never_abort_a_dose():
+    # 2026-09-30 Al 4047 (PR #166): the telemetry list's growth raised
+    # MemoryError at row 257, mid-bulk, and the exception escaped the dose
+    # with no RESULT line.  (1) A full row store, (2) a row that cannot
+    # be allocated, and (3) any exception inside the dose must all still
+    # end in a RESULT, with the auger stopped.
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        Plant(), {"log_max_rows": 20}, log=lines.append)
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    check("capped telemetry: dose still ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK)
+    check("capped telemetry: 20 rows kept, RESULT flags truncation",
+          len(doser.telemetry) == 20 and doc["telemetry_truncated"] == 1)
+    check("capped telemetry: the slot array was sized from log_max_rows",
+          doser.telemetry.cap == 20)
+
+    doser, stepper, tap, servo, clock = make_doser(Plant())
+    real_append = doser.telemetry.append
+
+    def append_oom(row):
+        if doser.telemetry.n >= 30:
+            raise MemoryError("memory allocation failed, allocating "
+                              "2048 bytes")
+        return real_append(row)
+    doser.telemetry.append = append_oom
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    check("row MemoryError: dose completes ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK and abs(res.dispensed_g - 2.0)
+          <= doser.p["tolerance_g"] + 1e-9)
+    check("row MemoryError: truncation flagged in RESULT",
+          doc["telemetry_truncated"] == 1)
+
+    plant = Plant()
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(plant,
+                                                   log=lines.append)
+    real_read = doser.scale.read
+    calls = [0]
+
+    def read_boom():
+        calls[0] += 1
+        if calls[0] == 60:
+            raise MemoryError("memory allocation failed, allocating "
+                              "2048 bytes")
+        return real_read()
+    doser.scale.read = read_boom
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    result_lines = [l for l in lines if l.startswith("RESULT ")]
+    check("dose exception: exactly one RESULT line", len(result_lines) == 1)
+    check("dose exception: status fw-error with the error text",
+          doc is not None and doc["status"] == "fw-error"
+          and "MemoryError" in doc.get("error", ""))
+    check("dose exception: last mass seen is reported ({:.4f} g)".format(
+        res.dispensed_g), 0.0 < res.dispensed_g < 2.0
+          and doc["final_g"] == round(res.dispensed_g, 5))
+    check("dose exception: auger stopped", plant.rpm == 0.0)
+    check("dose exception: the next dose runs normally",
+          doser.dose(0.2).status == m3.DoseResult.OK)
+
+
 def main():
     for fn in (test_kf_matches_numpy_reference,
                test_kf_basic_properties,
@@ -653,7 +717,8 @@ def main():
                test_trickle_cadence_taps,
                test_overshoot_guard_aborts_runaway,
                test_final_settle_reads_at_rest,
-               test_tap_burst_until_close):
+               test_tap_burst_until_close,
+               test_telemetry_can_never_abort_a_dose):
         print(fn.__name__)
         fn()
     if _FAILURES:

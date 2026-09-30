@@ -153,5 +153,10 @@ OVERSHOOT_ABORT_G = 0.100
 LOG_TO_FLASH = True          # write /trickle_log_<n>.csv on the Pico after
                              # each dose (download with MicroPico, or print
                              # with the ``log`` command)
-LOG_MAX_ROWS = 2400          # RAM guard: ~10 min of 4 Hz rows
+LOG_MAX_ROWS = 1200          # RAM guard: ~5 min of 4 Hz rows.  The slot
+                             # array is allocated once at boot; 2400 rows
+                             # of strings never fit the Pico W heap
+                             # (2026-09-30 MemoryError at row 257, PR #166)
+LOG_MIN_FREE_BYTES = 24000   # stop logging (not dosing) below this much
+                             # free heap, so the controller keeps room
 PRINT_EVERY_N_POLLS = 2      # console cadence during the trickle (1 = all)

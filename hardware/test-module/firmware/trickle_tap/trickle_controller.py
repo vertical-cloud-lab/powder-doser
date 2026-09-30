@@ -31,6 +31,7 @@ surface plus ``set_velocity_rpm(rpm)`` (see ``main_trickle.py`` /
 Pico and under CPython.
 """
 
+import gc
 import json
 import time
 
@@ -55,6 +56,10 @@ except AttributeError:                        # CPython (sim tests)
 
     def _ticks_add(t, delta):
         return t + delta
+
+
+# gc.mem_free is MicroPython-only; under CPython the reserve check is off.
+_mem_free = getattr(gc, "mem_free", None)
 
 
 def params_dict(module=None):
@@ -90,6 +95,54 @@ RESULT_PARAM_KEYS = (
 )
 
 
+class TelemetryBuffer:
+    """Fixed-capacity row store that can never take a dose down.
+
+    2026-09-30 (Al 4047, PR #166): a plain list grew one row per poll and
+    MicroPython doubles a list's storage when it fills; at row 257 that
+    asked the fragmented Pico W heap for one contiguous 2048-byte block,
+    got ``MemoryError``, and the exception escaped the dose mid-bulk.
+    The slot array is allocated ONCE, up front (boot, when the heap is
+    clean), so appending never needs a large block; a row that still
+    cannot be allocated (the heap is simply full) ends logging for this
+    dose with ``truncated`` set -- the dose itself carries on.
+    """
+
+    def __init__(self, cap):
+        self.cap = max(0, int(cap))
+        self._slots = [None] * self.cap
+        self.n = 0
+        self.truncated = False
+
+    def clear(self):
+        for i in range(self.n):
+            self._slots[i] = None
+        self.n = 0
+        self.truncated = False
+
+    def append(self, row):
+        if self.truncated:
+            return False
+        if self.n >= self.cap:
+            self.truncated = True
+            return False
+        self._slots[self.n] = row
+        self.n += 1
+        return True
+
+    def drop(self):
+        """Free every row (the out-of-memory path) and stop logging."""
+        self.clear()
+        self.truncated = True
+
+    def __len__(self):
+        return self.n
+
+    def __iter__(self):
+        for i in range(self.n):
+            yield self._slots[i]
+
+
 def _round(value, digits):
     if value is None:
         return None
@@ -105,7 +158,9 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
     def __init__(self, stepper, tap, servo, scale, cfg, p=None, **kw):
         super().__init__(stepper, tap, servo, scale, cfg, **kw)
         self.p = dict(p) if p is not None else params_dict()
-        self.telemetry = []          # CSV rows (strings) of the last dose
+        # CSV rows (strings) of the last dose, in a slot array sized
+        # once here while the heap is still clean (TelemetryBuffer).
+        self.telemetry = TelemetryBuffer(self.p["log_max_rows"])
         self.dose_count = 0
         self.log_dir = ""            # "" = filesystem root on the Pico
         self.last_log_path = None
@@ -117,6 +172,8 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         self.stop_events = []
         self.last_ff = None
         self.last_result = None
+        self._last_grams = 0.0       # last mass seen (fw-error reports it)
+        self._dose_ctx = None
 
     # -- clocks --------------------------------------------------------
 
@@ -134,8 +191,44 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         return self._tdiff(self._tms(), self._t0_ms) / 1000.0
 
     def _tel(self, row):
-        if len(self.telemetry) < int(self.p["log_max_rows"]):
-            self.telemetry.append(row)
+        """Log one row; telemetry is best-effort and never raises."""
+        tel = self.telemetry
+        if tel.truncated:
+            return
+        # Leave the controller its working heap: every row is a fresh
+        # string, so stop logging while there is still room to format
+        # the rest of the dose's print lines and its RESULT.
+        if (_mem_free is not None and tel.n % 16 == 0
+                and _mem_free() < int(self.p.get("log_min_free_bytes", 0))):
+            tel.truncated = True
+            self.log("[dose] heap low ({} bytes free) -- telemetry stops at"
+                     " {} rows; the dose carries on".format(_mem_free(),
+                                                            tel.n))
+            return
+        try:
+            if not tel.append(row):
+                self.log("[dose] telemetry full at {} rows (log_max_rows);"
+                         " not logging the rest of this dose".format(
+                             tel.cap))
+        except MemoryError:
+            tel.truncated = True
+
+    def _reset_telemetry(self):
+        """Empty the row store before a dose, re-sizing it only when
+        ``log_max_rows`` was changed with ``set``."""
+        cap = int(self.p["log_max_rows"])
+        self.telemetry.clear()
+        gc.collect()
+        if cap != self.telemetry.cap:
+            self.telemetry = None
+            gc.collect()
+            try:
+                self.telemetry = TelemetryBuffer(cap)
+            except MemoryError:
+                self.log("[dose] no room for {} telemetry rows; logging "
+                         "off for this dose".format(cap))
+                self.telemetry = TelemetryBuffer(0)
+                self.telemetry.truncated = True
 
     def _objectives(self, tag, grams, target_g, gain, t0, gain_label="this cycle"):
         # Base-class hook: every bulk poll / tap cycle / phase summary
@@ -143,13 +236,14 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         # the CSV too (PI columns empty).
         m3.ThreePhaseDoser._objectives(self, tag, grams, target_g, gain,
                                        t0, gain_label)
+        self._last_grams = grams
         if self._phase_label is not None:
             self._tel("%.2f,%s,%.5f,1,%.5f,,,,,,,,,," % (
                 self._t_s(), self._phase_label, grams, grams))
 
     def _flush_log(self):
         self.last_log_path = None
-        if not self.p["log_to_flash"] or not self.telemetry:
+        if not self.p["log_to_flash"] or len(self.telemetry) == 0:
             return
         for i in range(1000):
             path = "%s/trickle_log_%03d.csv" % (self.log_dir, i)
@@ -172,7 +266,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("[dose] telemetry write failed ({}); rows kept in "
                      "RAM -- 'log' still prints them".format(exc))
 
-    def _emit_result(self, res, state, t_marks, settled):
+    def _emit_result(self, res, state, t_marks, settled, error=None):
         """One machine-parseable ``RESULT {json}`` line per dose.
 
         The opt_dose_capture.py executor on the Pi Zero parses this
@@ -210,10 +304,13 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             "stop_events": events,
             "params": dict((k, p.get(k)) for k in RESULT_PARAM_KEYS),
             "telemetry_rows": len(self.telemetry),
+            "telemetry_truncated": 1 if self.telemetry.truncated else 0,
             "log_path": self.last_log_path,
             "dose_n": self.dose_count,
             "fw": FIRMWARE_ID,
         }
+        if error is not None:
+            doc["error"] = error
         self.last_result = doc
         self.log("RESULT " + json.dumps(doc))
 
@@ -267,10 +364,52 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
     # -- the dose ------------------------------------------------------
 
     def dose(self, target_g=None):
-        p = self.p
+        """One dose; ALWAYS ends in a RESULT line.
+
+        Any exception inside the dose (2026-09-30: a telemetry
+        ``MemoryError`` mid-bulk) used to escape to the REPL loop with
+        no RESULT, so the Zero's executor sat out its whole timeout.
+        Now the rig is made safe and the dose is reported as
+        ``fw-error`` (an infrastructure fault, never modeled) with the
+        last mass seen.
+        """
         if target_g is None:
-            target_g = p["goal_mass_g"]
+            target_g = self.p["goal_mass_g"]
         target_g = float(target_g)
+        self._last_grams = 0.0
+        self._dose_ctx = None
+        try:
+            return self._dose(target_g)
+        except Exception as exc:
+            if isinstance(exc, MemoryError):
+                self.telemetry.drop()         # make room to report
+                gc.collect()
+            return self._fail_dose(target_g, exc)
+
+    def _fail_dose(self, target_g, exc):
+        for halt in (self.stepper.stop, self._restore_rig):
+            try:
+                halt()
+            except Exception:
+                pass
+        self._phase_label = None
+        ctx = self._dose_ctx or {}
+        t0 = ctx.get("t0", self._now())
+        state = ctx.get("state", {"taps": 0, "deg": 0.0, "nudges": 0})
+        res = m3.DoseResult(self.FW_ERROR, target_g, self._last_grams,
+                            self._now() - t0, ctx.get("stage_cycles", []),
+                            state["taps"], state["deg"])
+        self.log("[dose] firmware error {!r}; rig stopped, {:.4f} g "
+                 "delivered so far".format(exc, self._last_grams))
+        self.log("[dose] done: {!r}".format(res))
+        self._emit_result(res, state, ctx.get("t_marks", {}), False,
+                          error=repr(exc))
+        return res
+
+    FW_ERROR = "fw-error"
+
+    def _dose(self, target_g):
+        p = self.p
         self.timeout_s = p["dose_timeout_s"]
         self.thresholds = [p["trickle_start_remaining_g"], p["tolerance_g"]]
         tol = p["tolerance_g"]
@@ -279,14 +418,16 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         self._t0_ms = self._tms()
         state = {"taps": 0, "deg": 0.0, "nudges": 0}
         stage_cycles = []
-        self.telemetry = []
+        t_marks = {}                 # stage name -> seconds spent in it
+        self._dose_ctx = {"t0": t0, "state": state,
+                          "stage_cycles": stage_cycles, "t_marks": t_marks}
+        self._reset_telemetry()
         self.read_retries = 0
         self.dose_count += 1
         self.stop_events = []
         self.last_ff = None
         self.last_halt = None
         self.overshoot_abort_g = float(p.get("overshoot_abort_g", 0.0))
-        t_marks = {}                 # stage name -> seconds spent in it
 
         def result(status, grams, settled=False):
             self._phase_label = None
@@ -520,6 +661,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                 m, r = kf.update(z, rpm > 1e-6 or cad_period_ms > 0,
                                  u_rev_s=rpm / 60.0, ff=ff,
                                  fresh=fresh, dt=dt)
+                self._last_grams = m
                 if revs > 0.3 and m - m0 > 1e-3:
                     ff = 0.9 * ff + 0.1 * ((m - m0) / revs)
                 sigma = kf.pred_sigma(tau)

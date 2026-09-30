@@ -97,7 +97,8 @@ JAM_REASONS = {
 # with no stored result (section 5.4): the executor is still dosing it,
 # it died mid-dose, the Zero never saw it, or the Zero could not be
 # asked at all.
-INFRA_STATUSES = ("scale-error", "not-tared", "no-result", "serial-error",
+INFRA_STATUSES = ("scale-error", "not-tared", "fw-error", "no-result",
+                  "serial-error",
                   "rig-busy", "in-progress", "interrupted", "not-found",
                   "unreachable")
 
