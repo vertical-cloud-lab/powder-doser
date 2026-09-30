@@ -53,6 +53,12 @@ BULK_SETTLE_MS = 1500
 TAP_TILT_DEG = 10.0
 TAPS_PER_CYCLE = 1           # single taps: a 2-burst can dump a slug past
                              # target off a charged lip (twin finding)
+# Tap burst: TAP_BURST_TAPS taps per cycle while MORE than
+# TAP_BURST_ABOVE_G is still to go, then TAPS_PER_CYCLE for the last
+# stretch, where the slug risk above matters.  Both stretches share
+# TAP_MAX_CYCLES and TAP_MAX_NUDGES.  0 = off (the tuned salt runs).
+TAP_BURST_ABOVE_G = 0.0
+TAP_BURST_TAPS = 2
 TAP_SETTLE_MS = 1500
 TAP_NUDGE_DEG = 5.0          # auger nudge when the lip runs dry
 TAP_MAX_NUDGES = 20          # the twin's tap_finish budget; the trickle can

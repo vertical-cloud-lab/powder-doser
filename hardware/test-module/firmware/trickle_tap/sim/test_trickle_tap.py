@@ -574,6 +574,70 @@ def test_final_settle_reads_at_rest():
           abs(res.dispensed_g - plant.pan) < 0.003)
 
 
+def _dose_counting_taps(plant, p_over, target):
+    """Dose recording (taps fired, true mass to go) per solenoid call."""
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over=p_over, log=lambda msg="": lines.append(str(msg)))
+    calls = []
+    _plain_tap = tap.tap
+
+    def counting_tap(count=1, on_ms=None, off_ms=None):
+        calls.append((count, target - plant.pan))
+        _plain_tap(count, on_ms, off_ms)
+
+    tap.tap = counting_tap
+    res = doser.dose(target)
+    doc = None
+    for ln in lines:
+        if ln.startswith("RESULT "):
+            doc = json.loads(ln[len("RESULT "):])
+    return res, doc, calls
+
+
+def test_tap_burst_until_close():
+    # 1 mg taps so the endgame is long enough to see both stretches.
+    over = {"tap_burst_above_g": 0.020, "tap_burst_taps": 2}
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001), over,
+                                          0.2)
+    counts = [c for c, _ in calls]
+    print("    -> {!r} ({} doubles, {} singles)".format(
+        res, counts.count(2), counts.count(1)))
+    check("burst dose completes ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK)
+    check("taps fired two at a time first", counts[:1] == [2])
+    check("then single taps for the last stretch",
+          1 in counts and 2 not in counts[counts.index(1):])
+    check("every double fired with more than 20 mg to go "
+          "(read through the balance lag)",
+          all(togo > 0.020 - 0.003 for c, togo in calls if c == 2))
+    stages = doc["phase_cycles"] if doc else {}
+    check("RESULT counts the burst cycles inside the tap stage",
+          0 < stages.get("tap_burst", 0) < stages.get("tap", 0))
+    check("RESULT records the burst knobs as executed", doc is not None
+          and doc["params"]["tap_burst_above_g"] == 0.020
+          and doc["params"]["tap_burst_taps"] == 2)
+    check("taps total matches the solenoid calls",
+          res.taps == sum(counts))
+
+    # The two stretches share the cycle budget.
+    over_budget = dict(over, tap_max_cycles=12)
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001),
+                                          over_budget, 0.2)
+    stages = doc["phase_cycles"] if doc else {}
+    check("shared budget: {} tap cycles in total, at most 12".format(
+        stages.get("tap")), stages.get("tap", 99) <= 12
+          and res.status == m3.DoseResult.BUDGET)
+
+    # Off by default: the shipped salt behaviour is single taps only.
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001), None,
+                                          0.2)
+    check("shipped defaults keep the burst off (single taps only)",
+          trickle_params.TAP_BURST_ABOVE_G == 0.0
+          and set(c for c, _ in calls) == {1}
+          and "tap_burst" not in (doc or {}).get("phase_cycles", {}))
+
+
 def main():
     for fn in (test_kf_matches_numpy_reference,
                test_kf_basic_properties,
@@ -588,7 +652,8 @@ def main():
                test_bulk_cadence_taps_at_2hz,
                test_trickle_cadence_taps,
                test_overshoot_guard_aborts_runaway,
-               test_final_settle_reads_at_rest):
+               test_final_settle_reads_at_rest,
+               test_tap_burst_until_close):
         print(fn.__name__)
         fn()
     if _FAILURES:

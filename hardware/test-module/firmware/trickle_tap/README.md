@@ -166,6 +166,12 @@ behaves as before):
   afterflow, rate from both the KF and the trailing-2 s poll slope) —
   the per-powder `tau_afterflow` fit dataset.  `res` reprints the last
   one; `scripts/opt_dose_capture.py` parses it on the Pi Zero.
+- **Tap burst** (added 2026-09-30 for the Al 4047 dose in PR #166) —
+  `set tap_burst_above_g 0.010` fires `TAP_BURST_TAPS` (2) taps per tap
+  cycle while more than 10 mg is still to go, then single taps for the
+  last stretch, where a 2-tap slug could overshoot.  Both stretches share
+  the tap cycle and nudge budgets, and `phase_cycles.tap_burst` in the
+  `RESULT` line counts the multi-tap cycles.  Off (0) by default.
 
 ## Testing without the rig
 
@@ -173,11 +179,13 @@ behaves as before):
 python3 sim/test_trickle_tap.py
 ```
 
-Nine CPython checks: the pure-Python KF against the trim study's numpy
-filter on a shared 400-step trace (agreement to ~1e-15; skipped without
+CPython checks: the pure-Python KF against the trim study's numpy
+filter on a shared 400-step trace (agreement to 1e-15; skipped without
 numpy), two closed-loop doses on a virtual plant, the within-tolerance
 no-actuation interlock, stall → tap handover, telemetry shape, a
-balance-lag-mismatch smoke test, and live parameter changes.
+balance-lag-mismatch smoke test, live parameter changes, and the
+campaign additions above (RESULT line, cadence taps, overshoot guard,
+final settle, tap burst).
 
 ## Faithfulness notes (what differs from the twin, and why)
 

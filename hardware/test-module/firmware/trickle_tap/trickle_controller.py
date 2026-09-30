@@ -75,7 +75,7 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
 # line.  The Pico is shared with other sessions' firmware, so the
 # campaign executor refuses to dose unless this matches
 # scripts/opt_common.FIRMWARE_ID -- bump both together.
-FIRMWARE_ID = "trickle_tap/2026-09-25"
+FIRMWARE_ID = "trickle_tap/2026-09-30"
 
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
@@ -85,7 +85,8 @@ RESULT_PARAM_KEYS = (
     "tap_tilt_deg", "bulk_rpm", "trickle_start_remaining_g",
     "tolerance_g", "tau_afterflow_s", "goal_mass_g",
     "tap_cadence_on_ms", "tap_cadence_off_ms", "overshoot_abort_g",
-    "final_settle_ms",
+    "final_settle_ms", "taps_per_cycle", "tap_burst_taps",
+    "tap_burst_above_g",
 )
 
 
@@ -249,6 +250,20 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                 "max_nudges": int(p["tap_max_nudges"]),
                 "max_cycles": int(p["tap_max_cycles"])}
 
+    def _tap_burst_phase(self, tap, tol):
+        """The tap stage's opening stretch: ``tap_burst_taps`` per cycle
+        while more than ``tap_burst_above_g`` is to go.  None = off."""
+        p = self.p
+        above = float(p.get("tap_burst_above_g", 0.0))
+        taps_n = int(p.get("tap_burst_taps", 0))
+        if above <= tol or taps_n <= tap["taps_per_cycle"]:
+            return None
+        burst = dict(tap)
+        burst["name"] = "tap-burst"
+        burst["taps_per_cycle"] = taps_n
+        burst["exit_g"] = above
+        return burst
+
     # -- the dose ------------------------------------------------------
 
     def dose(self, target_g=None):
@@ -350,12 +365,32 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         if target_g - grams > tol:
             self._phase_label = "tap"
             tap = self._tap_phase()
-            self.log("=== stage 3 'tap': {:.4f} g to go, single taps at "
-                     "{:.1f} plate deg".format(target_g - grams,
-                                               tap["angle_deg"]))
+            burst = self._tap_burst_phase(tap, tol)
             t_stage = self._t_s()
-            grams, status, cycles = self._run_phase(
-                3, tap, tol, target_g, grams, t0, state)
+            cycles, status = 0, None
+            if burst is not None and target_g - grams > burst["exit_g"]:
+                self.log("=== stage 3 'tap': {:.4f} g to go, {} taps per "
+                         "cycle until {:.4f} g to go, then {} at {:.1f} "
+                         "plate deg".format(target_g - grams,
+                                            burst["taps_per_cycle"],
+                                            burst["exit_g"],
+                                            tap["taps_per_cycle"],
+                                            tap["angle_deg"]))
+                nudges0 = state["nudges"]
+                grams, status, cycles = self._run_phase(
+                    3, burst, burst["exit_g"], target_g, grams, t0, state)
+                stage_cycles.append(("tap_burst", cycles))
+                # the closing stretch gets what is left of both budgets
+                tap["max_cycles"] -= cycles
+                tap["max_nudges"] -= state["nudges"] - nudges0
+            else:
+                self.log("=== stage 3 'tap': {:.4f} g to go, single taps "
+                         "at {:.1f} plate deg".format(target_g - grams,
+                                                      tap["angle_deg"]))
+            if status is None and target_g - grams > tol:
+                grams, status, more = self._run_phase(
+                    3, tap, tol, target_g, grams, t0, state)
+                cycles += more
             t_marks["tap"] = self._t_s() - t_stage
             stage_cycles.append(("tap", cycles))
             if status is not None:
