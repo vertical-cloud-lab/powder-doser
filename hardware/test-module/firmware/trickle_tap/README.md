@@ -172,6 +172,18 @@ behaves as before):
   last stretch, where a 2-tap slug could overshoot.  Both stretches share
   the tap cycle and nudge budgets, and `phase_cycles.tap_burst` in the
   `RESULT` line counts the multi-tap cycles.  Off (0) by default.
+- **Bulk-only dose** (added 2026-09-30 for a clogged Al 4047 load in
+  PR #166, where chunks in the tube fed at 40° and stopped dead at the
+  10°/15° trim tilts) — `set bulk_only 1` runs the whole dose at
+  `BULK_TILT_DEG` with the bulk cadence taps: no trickle, no tap
+  endgame, the tube never tips shallower.  The auger rpm tapers from
+  `BULK_RPM` to `BULK_MIN_RPM` (20) over the last `BULK_TAPER_START_G`
+  (100 mg), and is multiplied by 1.5 (up to `BULK_RPM`) after every
+  `BULK_BOOST_S` (3 s) without 2 mg of flow.  The auger halts when
+  mass + trailing-2 s slope × `TAU_AFTERFLOW_S` reaches goal − tol/2,
+  and a dose that settles short by more than the tolerance gets another
+  pass (`BULK_MAX_PASSES`, 8).  Each halt is a bulk stop event, and no
+  flow at full rpm for 15 s ends the dose as `stalled`.  Off by default.
 
 ## Testing without the rig
 

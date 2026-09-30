@@ -44,7 +44,7 @@ RESULT_PREFIX = "RESULT "
 # dose on anything else.  That build lives in its own folder on the
 # Pico's flash so its config.py / main_three_phase.py never replace
 # the root-level modules other firmware imports (section 5.1).
-FIRMWARE_ID = "trickle_tap/2026-09-30"
+FIRMWARE_ID = "trickle_tap/2026-09-30b"
 PICO_FIRMWARE_DIR = "/trickle_tap"
 
 # Objective reference thresholds, locked 2026-09-22 (campaign-setup

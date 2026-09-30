@@ -702,6 +702,127 @@ def test_telemetry_can_never_abort_a_dose():
           doser.dose(0.2).status == m3.DoseResult.OK)
 
 
+class CloggedPlant(Plant):
+    """2026-09-30 Al 4047 (PR #166): chunks lodged in the tube.  It feeds
+    at a steep tilt only, and only above a minimum auger speed; the
+    delivery is slow (about 15 mg/s at 100 rpm)."""
+
+    def __init__(self, min_tilt_deg=35.0, min_rpm=30.0, **kw):
+        kw.setdefault("ff_g_per_rev", 0.009)
+        super().__init__(**kw)
+        self.min_tilt = min_tilt_deg
+        self.min_rpm = min_rpm
+
+    def meter(self, revs):
+        if self.tilt < self.min_tilt or self.rpm < self.min_rpm:
+            return
+        Plant.meter(self, revs)
+
+
+BULK_ONLY_OVER = {"bulk_only": True, "bulk_tap": True, "bulk_tilt_deg": 40.0,
+                  "bulk_rpm": 100.0, "tolerance_g": 0.003,
+                  "tau_afterflow_s": 0.8338}
+
+
+def test_bulk_only_clog():
+    # The clog plant stops dead below 35 deg (the 10/15 deg trim tilts
+    # delivered nothing on the rig) and below 30 rpm, so the taper's
+    # 20 rpm floor has to be boosted back up to keep powder coming.
+    plant = CloggedPlant()
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, BULK_ONLY_OVER, log=lambda msg="": lines.append(str(msg)))
+    rpms = []
+    _plain = stepper.run_at_rpm
+
+    def logged(rpm):
+        rpms.append(rpm)
+        _plain(rpm)
+
+    stepper.run_at_rpm = logged
+    res = doser.dose(0.32)
+    doc = doser.last_result
+    print("    -> {!r}; rpm commands {:.0f}..{:.0f}".format(
+        res, min(rpms), max(rpms)))
+    check("bulk-only dose ends ok within 3 mg (got {}, {:+.1f} mg)".format(
+        res.status, 1000.0 * (res.dispensed_g - 0.32)),
+        res.status == m3.DoseResult.OK
+        and abs(res.dispensed_g - 0.32) <= 0.003 + 1e-9)
+    check("the tube never left the bulk tilt (servo went to {})".format(
+        sorted(set(servo.history))), set(servo.history) == {40.0})
+    check("no trickle or tap stage ran", doc is not None
+          and doc["phase_cycles"].get("trickle") == 0
+          and doc["phase_cycles"].get("tap") == 0 and doc["nudges"] == 0)
+    check("rpm started at bulk_rpm and tapered below it",
+          rpms[0] == 100.0 and min(rpms) < 60.0)
+    check("no-flow boost fired and sped the auger back up",
+          any("no flow" in ln for ln in lines)
+          and any(b > a for a, b in zip(rpms, rpms[1:])))
+    check("every tap was a cadence tap while spinning (no tap endgame)",
+          res.taps > 10 and stepper.total_deg == 0.0)
+    check("each halt is a bulk stop event with its rpm", doc is not None
+          and doc["stop_events"]
+          and all(e["phase"] == "bulk" and e["rpm"] > 0
+                  for e in doc["stop_events"]))
+    check("RESULT echoes the bulk-only knobs", doc is not None
+          and doc["params"]["bulk_only"] in (True, 1)
+          and doc["params"]["bulk_min_rpm"] == trickle_params.BULK_MIN_RPM)
+    n_cols = len(TELEMETRY_HEADER.split(","))
+    check("bulk-only telemetry rows are well formed and carry the rpm",
+          len(doser.telemetry) > 10
+          and all(len(r.split(",")) == n_cols for r in doser.telemetry)
+          and all(r.split(",")[11] != "" for r in doser.telemetry
+                  if r.split(",")[1] == "bulk"))
+
+    # No flow at any speed -> stalled at full rpm, not an endless spin.
+    plant = CloggedPlant(min_rpm=1e9)
+    doser, stepper, tap, servo, clock = make_doser(plant, BULK_ONLY_OVER)
+    res = doser.dose(0.32)
+    check("dead-blocked tube ends as stalled (got {}) after boosting to "
+          "full rpm ({:.0f})".format(res.status, plant.max_rpm_seen),
+          res.status == m3.DoseResult.STALLED
+          and plant.max_rpm_seen == 100.0)
+
+    check("shipped defaults keep bulk-only off (tuned three-stage dose)",
+          trickle_params.BULK_ONLY is False)
+
+
+def test_heap_check_collects_before_truncating():
+    # mem_free() excludes uncollected garbage: on the rig it read 1248
+    # bytes at row 80 and truncated telemetry although a collection
+    # would have freed ~100 kB.  Only a shortfall that survives
+    # gc.collect() may stop logging.
+    import trickle_controller as tc
+
+    class FakeGC:
+        def __init__(self, freed):
+            self.freed = freed
+            self.collected = 0
+
+        def collect(self):
+            self.collected += 1
+
+        def mem_free(self):
+            return 100000 if (self.freed and self.collected) else 1000
+
+    real_gc, real_free = tc.gc, tc._mem_free
+    try:
+        for freed in (True, False):
+            fake = FakeGC(freed)
+            tc.gc, tc._mem_free = fake, fake.mem_free
+            doser, stepper, tap, servo, clock = make_doser(Plant())
+            res = doser.dose(0.5)
+            label = "garbage" if freed else "a really full heap"
+            check("heap check with {}: dose ok (got {})".format(
+                label, res.status), res.status == m3.DoseResult.OK)
+            check("heap check with {}: telemetry {} ({} rows)".format(
+                label, "kept" if freed else "truncated",
+                len(doser.telemetry)),
+                doser.telemetry.truncated is (not freed))
+    finally:
+        tc.gc, tc._mem_free = real_gc, real_free
+
+
 def main():
     for fn in (test_kf_matches_numpy_reference,
                test_kf_basic_properties,
@@ -718,7 +839,9 @@ def main():
                test_overshoot_guard_aborts_runaway,
                test_final_settle_reads_at_rest,
                test_tap_burst_until_close,
-               test_telemetry_can_never_abort_a_dose):
+               test_telemetry_can_never_abort_a_dose,
+               test_bulk_only_clog,
+               test_heap_check_collects_before_truncating):
         print(fn.__name__)
         fn()
     if _FAILURES:

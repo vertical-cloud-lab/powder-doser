@@ -49,6 +49,22 @@ BULK_ANTICIPATION_G = 0.050  # halt this much EARLY (in-flight margin)
 BULK_POLL_MS = 250
 BULK_SETTLE_MS = 1500
 
+# Bulk-only dose (added 2026-09-30 for a clogged Al 4047 load, PR #166):
+# 1 = the WHOLE dose runs at BULK_TILT_DEG with the bulk cadence taps --
+# no trickle, no tap endgame, the tube never tips shallower (chunks in
+# the tube fed at 40 deg and stopped dead at the 10/15 deg trim tilts).
+# The auger rpm then tapers from BULK_RPM to BULK_MIN_RPM over the last
+# BULK_TAPER_START_G, and steps back up x1.5 (to at most BULK_RPM) after
+# every BULK_BOOST_S without flow.  It halts when mass + trailing-2 s
+# slope * TAU_AFTERFLOW_S reaches goal - TOLERANCE_G/2; a dose that
+# settles short by more than the tolerance gets another pass, up to
+# BULK_MAX_PASSES.  0 = the tuned bulk -> trickle -> tap dose.
+BULK_ONLY = False
+BULK_TAPER_START_G = 0.100
+BULK_MIN_RPM = 20.0
+BULK_BOOST_S = 3.0
+BULK_MAX_PASSES = 8
+
 # Tap endgame tilt, plate degrees (0 = horizontal, the precise end).
 TAP_TILT_DEG = 10.0
 TAPS_PER_CYCLE = 1           # single taps: a 2-burst can dump a slug past

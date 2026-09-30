@@ -80,7 +80,7 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
 # line.  The Pico is shared with other sessions' firmware, so the
 # campaign executor refuses to dose unless this matches
 # scripts/opt_common.FIRMWARE_ID -- bump both together.
-FIRMWARE_ID = "trickle_tap/2026-09-30"
+FIRMWARE_ID = "trickle_tap/2026-09-30b"
 
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
@@ -91,7 +91,8 @@ RESULT_PARAM_KEYS = (
     "tolerance_g", "tau_afterflow_s", "goal_mass_g",
     "tap_cadence_on_ms", "tap_cadence_off_ms", "overshoot_abort_g",
     "final_settle_ms", "taps_per_cycle", "tap_burst_taps",
-    "tap_burst_above_g",
+    "tap_burst_above_g", "bulk_only", "bulk_taper_start_g",
+    "bulk_min_rpm", "bulk_boost_s", "bulk_max_passes",
 )
 
 
@@ -197,9 +198,16 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             return
         # Leave the controller its working heap: every row is a fresh
         # string, so stop logging while there is still room to format
-        # the rest of the dose's print lines and its RESULT.
+        # the rest of the dose's print lines and its RESULT.  mem_free()
+        # does not count garbage the collector has not reclaimed yet
+        # (2026-09-30: 1248 bytes "free" at row 80 of a 128 kB heap), so
+        # only a shortfall that survives a collection counts.
+        floor = int(self.p.get("log_min_free_bytes", 0))
         if (_mem_free is not None and tel.n % 16 == 0
-                and _mem_free() < int(self.p.get("log_min_free_bytes", 0))):
+                and _mem_free() < floor):
+            gc.collect()
+        if (_mem_free is not None and tel.n % 16 == 0
+                and _mem_free() < floor):
             tel.truncated = True
             self.log("[dose] heap low ({} bytes free) -- telemetry stops at"
                      " {} rows; the dose carries on".format(_mem_free(),
@@ -452,6 +460,52 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         if grams is None:
             return result(m3.DoseResult.SCALE_ERROR, 0.0)
 
+        def finish(grams):
+            # --- final settle: the reading that scores the dose ---------
+            # t_total and |error| are defined against the balance AT REST
+            # (issue #164 section 2.2), so wait out the afterflow + balance
+            # lag before the reading, and only then restore the rig (servo
+            # motion shakes the pan).
+            settle_ms = int(p.get("final_settle_ms", 0))
+            t_stage = self._t_s()
+            if settle_ms > 0:
+                self._phase_label = None
+                self.log("[dose] final settle {} ms before the scoring "
+                         "reading".format(settle_ms))
+                self._sleep_ms(settle_ms)
+                settled = self._read_grams()
+                if settled is None:
+                    t_marks["settle"] = self._t_s() - t_stage
+                    self._restore_rig()
+                    return result(m3.DoseResult.SCALE_ERROR, grams)
+                grams = settled
+            t_marks["settle"] = self._t_s() - t_stage
+            self._restore_rig()
+            status = m3.DoseResult.OK
+            if grams > target_g + tol:
+                status = m3.DoseResult.OVERSHOOT
+            return result(status, grams, settled=settle_ms > 0)
+
+        # --- bulk-only dose: stage 1 is the whole dose -----------------
+        if p.get("bulk_only"):
+            if target_g - grams > tol:
+                self._phase_label = "bulk"
+                t_stage = self._t_s()
+                grams, status, polls = self._run_bulk_only(target_g, grams,
+                                                           t0, state)
+                t_marks["bulk"] = self._t_s() - t_stage
+                stage_cycles.append(("bulk", polls))
+                if status is not None:
+                    self._restore_rig()
+                    return result(status, grams)
+            else:
+                stage_cycles.append(("bulk", 0))
+            stage_cycles.append(("trickle", 0))
+            stage_cycles.append(("tap", 0))
+            self.log("=== stages 2-3 skipped (bulk_only: the dose never "
+                     "leaves the bulk tilt)")
+            return finish(grams)
+
         # --- stage 1: bulk (velocity mode, inherited) ------------------
         bulk = self._bulk_phase()
         need_bulk = (p["bulk_enabled"] and
@@ -542,30 +596,206 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("=== stage 3 'tap' skipped ({:.4f} g to go is inside "
                      "tolerance)".format(target_g - grams))
 
-        # --- final settle: the reading that scores the dose -------------
-        # t_total and |error| are defined against the balance AT REST
-        # (issue #164 section 2.2), so wait out the afterflow + balance
-        # lag before the reading, and only then restore the rig (servo
-        # motion shakes the pan).
-        settle_ms = int(p.get("final_settle_ms", 0))
-        t_stage = self._t_s()
-        if settle_ms > 0:
-            self._phase_label = None
-            self.log("[dose] final settle {} ms before the scoring "
-                     "reading".format(settle_ms))
-            self._sleep_ms(settle_ms)
+        return finish(grams)
+
+    # -- bulk-only internals (BULK_ONLY) -------------------------------
+
+    def _bulk_taper_rpm(self, remaining_g, tol):
+        """BULK_RPM until BULK_TAPER_START_G to go, then linear down to
+        BULK_MIN_RPM at the tolerance band."""
+        p = self.p
+        top = float(p["bulk_rpm"])
+        floor = min(top, max(1.0, float(p["bulk_min_rpm"])))
+        start = float(p["bulk_taper_start_g"])
+        if start <= tol or remaining_g >= start:
+            return top
+        frac = max(0.0, (remaining_g - tol) / (start - tol))
+        return floor + (top - floor) * frac
+
+    def _run_bulk_only(self, target_g, grams, t0, state):
+        """The whole dose at BULK_TILT_DEG (see BULK_ONLY in trickle_params).
+
+        Velocity mode like the bulk phase -- instantaneous polls every
+        BULK_POLL_MS, cadence taps when BULK_TAP -- with three additions:
+
+        * taper: the rpm follows ``_bulk_taper_rpm`` (slower near the
+          goal, so less powder is in flight when the auger halts);
+        * boost: every BULK_BOOST_S the trailing slope over that window
+          is checked; under 2 mg per window is "no flow" and multiplies
+          the rpm by 1.5 (capped at BULK_RPM), flow relaxes it a step.
+          No flow at BULK_RPM for the bulk stall window (10 x
+          BULK_SETTLE_MS) ends the dose as stalled;
+        * predictive halt: mass + trailing-2 s slope * TAU_AFTERFLOW_S
+          >= goal - tol/2, then BULK_SETTLE_MS and a settled read.  Short
+          by more than the tolerance -> another pass (the auger restarts
+          at the taper rpm), up to BULK_MAX_PASSES.
+
+        Every halt is a stop event.  Returns (grams, status|None, polls).
+        """
+        p = self.p
+        tol = p["tolerance_g"]
+        tau = p["tau_afterflow_s"]
+        top = float(p["bulk_rpm"])
+        aim = target_g - 0.5 * tol
+        boost_s = max(0.5, float(p["bulk_boost_s"]))
+        stall_s = 10 * int(p["bulk_settle_ms"]) / 1000.0
+        poll_ms = max(50, int(p["bulk_poll_ms"]))
+        max_passes = max(1, int(p["bulk_max_passes"]))
+        min_gain = 0.002
+        cad_on_ms = int(p.get("tap_cadence_on_ms", 60))
+        cad_period_ms = 0
+        if p.get("bulk_tap"):
+            cad_period_ms = max(100, cad_on_ms
+                                + int(p.get("tap_cadence_off_ms", 440)))
+        tag = "[phase 1 bulk-only]"
+        self.servo.move_to(p["bulk_tilt_deg"])
+        self.log("=== stage 1 'bulk' (bulk_only): {:.4f} g to go at {:.1f} "
+                 "plate deg; {:.0f} rpm tapering to {:.0f} over the last "
+                 "{:.0f} mg, x1.5 after {:.1f} s without flow; halt when "
+                 "m + slope*{:.2f}s >= {:.4f} g; cadence taps {}".format(
+                     target_g - grams, p["bulk_tilt_deg"], top,
+                     min(top, float(p["bulk_min_rpm"])),
+                     1000.0 * float(p["bulk_taper_start_g"]), boost_s, tau,
+                     aim, "on" if cad_period_ms else "off"))
+        polls, passes = 0, 0
+        boost = 1.0
+        while True:
+            passes += 1
+            status = None
+            hist = []                 # (ticks_ms, grams) this pass
+            misses = 0
+            rpm = min(top, self._bulk_taper_rpm(target_g - grams, tol)
+                      * boost)
+            revs = 0.0
+            slope = None
+            window_t = self._t_s()    # the current boost window (ms clock)
+            dry_since = None          # no flow at full rpm since
+            prev_ms = self._tms()
+            next_tap = _ticks_add(prev_ms, cad_period_ms)
+            self.stepper.run_at_rpm(rpm)
+            try:
+                while True:
+                    if self._now() - t0 > self.timeout_s:
+                        self.log(tag + " dose timeout ({} s)".format(
+                            self.timeout_s))
+                        status = m3.DoseResult.TIMEOUT
+                        break
+                    self._sleep_ms(poll_ms)
+                    self.stepper.keep_alive()
+                    if (cad_period_ms
+                            and self._tdiff(self._tms(), next_tap) >= 0):
+                        self.tap.tap(1, cad_on_ms, 0)
+                        state["taps"] += 1
+                        next_tap = _ticks_add(next_tap, cad_period_ms)
+                        if self._tdiff(self._tms(), next_tap) > 0:
+                            next_tap = _ticks_add(self._tms(), cad_period_ms)
+                    reading = self.scale.read()
+                    now_ms = self._tms()
+                    revs += rpm / 60.0 * self._tdiff(now_ms, prev_ms) / 1000.0
+                    prev_ms = now_ms
+                    polls += 1
+                    if (reading is None or reading.overload
+                            or reading.grams is None):
+                        misses += 1
+                        if misses >= int(p["max_poll_misses"]):
+                            self.log(tag + " scale went quiet mid-rotation")
+                            status = m3.DoseResult.SCALE_ERROR
+                            break
+                        continue
+                    misses = 0
+                    grams = reading.grams - self._baseline_g
+                    self._last_grams = grams
+                    hist.append((now_ms, grams))
+                    if len(hist) > 40:
+                        hist.pop(0)
+                    slope = m3._recent_slope(hist, 2.0, self._tdiff)
+                    # a pass's first polls give a noise-dominated slope
+                    # that would halt a top-up before powder arrives
+                    r = 0.0
+                    if (slope is not None and slope > 0.0 and self._tdiff(
+                            now_ms, hist[0][0]) >= 1500):
+                        r = slope
+                    pred = grams + r * tau
+                    self._tel("%.2f,bulk,%.5f,1,%.5f,%.5f,,,,,,%.2f,%.5f,"
+                              "%.5f,0" % (self._t_s(), grams, grams, r, rpm,
+                                          pred, aim))
+                    self.log(tag + " poll {}: mass {:.4f} / {:.4f} g ({:.4f}"
+                             " g to go), {:.0f} rpm, {:.1f} mg/s, elapsed "
+                             "{:.1f} s".format(polls, grams, target_g,
+                                               target_g - grams, rpm,
+                                               1000.0 * r, self._t_s()))
+                    if (self.overshoot_abort_g > 0.0
+                            and grams > target_g + self.overshoot_abort_g):
+                        self.log(tag + " overshoot guard: {:+.1f} mg past "
+                                 "the target -- aborting".format(
+                                     1000.0 * (grams - target_g)))
+                        status = m3.DoseResult.OVERSHOOT
+                        break
+                    if pred >= aim:
+                        break
+                    now = self._t_s()
+                    if now - window_t >= boost_s:
+                        flow = m3._recent_slope(hist, boost_s, self._tdiff)
+                        window_t = now
+                        if flow is None or flow * boost_s < min_gain:
+                            if rpm < top - 1e-6:
+                                boost *= 1.5
+                                self.log(tag + " no flow for {:.1f} s -- "
+                                         "rpm up".format(boost_s))
+                            elif dry_since is None:
+                                dry_since = now - boost_s
+                            elif now - dry_since > stall_s:
+                                self.log(tag + " no powder flow for {:.1f} s"
+                                         " at {:.0f} rpm -- hopper empty or "
+                                         "jam".format(now - dry_since, rpm))
+                                status = m3.DoseResult.STALLED
+                                break
+                        else:
+                            dry_since = None
+                            boost = max(1.0, boost / 1.5)
+                    want = min(top, self._bulk_taper_rpm(target_g - grams,
+                                                         tol) * boost)
+                    if abs(want - rpm) >= 1.0:
+                        rpm = want
+                        self.stepper.run_at_rpm(rpm)
+            finally:
+                self.stepper.stop()
+            state["deg"] += revs * 360.0
+            if status is not None:
+                return grams, status, polls
+            m_stop, t_stop_s = grams, self._t_s()
+            self.log(tag + " auger halted (pass {}) at {:.0f} rpm with "
+                     "{:.4f} g to go; settling {} ms".format(
+                         passes, rpm, max(0.0, target_g - grams),
+                         int(p["bulk_settle_ms"])))
+            self._sleep_ms(int(p["bulk_settle_ms"]))
             settled = self._read_grams()
             if settled is None:
-                t_marks["settle"] = self._t_s() - t_stage
-                self._restore_rig()
-                return result(m3.DoseResult.SCALE_ERROR, grams)
+                return grams, m3.DoseResult.SCALE_ERROR, polls
+            self.stop_events.append({
+                "phase": "bulk", "pass": passes, "stalled": 0,
+                "t_stop_s": _round(t_stop_s, 2),
+                "m_stop_g": m_stop, "settled_g": settled,
+                "afterflow_g": settled - m_stop,
+                "rate_slope_gps": slope, "rate_kf_gps": None,
+                "rpm": _round(rpm, 1), "tau_s": tau,
+            })
+            self._tel("%.2f,bulk_end,%.5f,1,%.5f,,,,,,,,,,0" % (
+                self._t_s(), settled, settled))
             grams = settled
-        t_marks["settle"] = self._t_s() - t_stage
-        self._restore_rig()
-        status = m3.DoseResult.OK
-        if grams > target_g + tol:
-            status = m3.DoseResult.OVERSHOOT
-        return result(status, grams, settled=settle_ms > 0)
+            self._last_grams = grams
+            self.log(tag + " settled: mass {:.4f} / {:.4f} g ({:+.1f} mg "
+                     "after the halt, {:+.1f} mg vs target)".format(
+                         grams, target_g, 1000.0 * (grams - m_stop),
+                         1000.0 * (grams - target_g)))
+            if target_g - grams <= tol:
+                return grams, None, polls
+            if passes >= max_passes:
+                self.log(tag + " pass budget ({}) spent {:.1f} mg short"
+                         .format(max_passes, 1000.0 * (target_g - grams)))
+                return grams, m3.DoseResult.BUDGET, polls
+            self.log(tag + " {:.1f} mg short -- pass {}".format(
+                1000.0 * (target_g - grams), passes + 1))
 
     # -- stage 2 internals ---------------------------------------------
 
