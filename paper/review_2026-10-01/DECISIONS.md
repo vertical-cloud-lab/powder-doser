@@ -112,7 +112,17 @@ The BOM still lists it.
 
 ### 7. Panel (a): the CAD render
 
-**Answer in [MEETING-DECISIONS.md](../meeting_2026-10-01/MEETING-DECISIONS.md), items 5–6.** Panel (a) is now the PR #170 render; its caption says which parts are real files and which are stand-ins.
+**Choose one.** Panel (a) is now the PR #170 render of the current design, from the same
+camera as the June render. Its auger, cap and pinion are the real files; the solenoid
+and tap collar are modelled from photos, and the plates, brackets and stepper are still
+June stand-ins. Who makes the refreshed render, and whether it should show who modelled
+what, are in [MEETING-DECISIONS.md](../meeting_2026-10-01/MEETING-DECISIONS.md), item 5.
+
+- [x] Keep the #170 render, and refresh it when the remaining real parts are swapped in (current)
+- [ ] Replace it with a photo of the current rig
+- [ ] Go back to the June render
+
+**Notes:**
 
 ### 8. Panel (b): the as-built photo
 
@@ -216,7 +226,13 @@ readers match the raw files to the paper.
 
 ### 19. How prominently to say the tested rig uses redrawn parts
 
-**Answer in [MEETING-DECISIONS.md](../meeting_2026-10-01/MEETING-DECISIONS.md), item 3** (how the abstract describes the tested doser).
+**Choose one.** The exact abstract wording is
+[MEETING-DECISIONS.md](../meeting_2026-10-01/MEETING-DECISIONS.md), item 3; this is
+only where it is said.
+
+- [x] Abstract, introduction and Experimental (current)
+- [ ] Introduction and Experimental only
+- [ ] Experimental only
 
 ### 20. Corresponding authors' e-mails and affiliation
 
