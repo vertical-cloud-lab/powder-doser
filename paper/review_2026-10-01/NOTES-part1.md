@@ -6,7 +6,26 @@ caption. Each timestamp links to that moment in the video. Line numbers refer to
 [`paper/main.tex` @ `ae02647`](https://github.com/vertical-cloud-lab/powder-doser/blob/ae02647/paper/main.tex).
 The full corrected transcript is in [TRANSCRIPT-part1.md](TRANSCRIPT-part1.md).
 
-None of this has been implemented. Part 2 has not been recorded yet.
+Part 2 has not been recorded yet.
+
+**Status (2026-10-01, evening).** Everything below has been implemented except where noted;
+open questions moved to [DECISIONS.md](DECISIONS.md).
+
+| # | Item | Status |
+|---|---|---|
+| 1 | Tilt range | Settled at the meeting: 45° is the maximum. Nothing in the paper mentions a 90° tilt; firmware docstrings on the battery branches corrected. |
+| 2 | No loading slots | Text, Fig. 1c and SI now describe the capped fill opening. Which auger ran the tests: DECISIONS item 1. |
+| 3 | Supports | "Most parts need support material." |
+| 4 | Fig. 1a out of date | Now the PR #170 render of the current design (real auger, cap, pinion; approximated collar and solenoid). DECISIONS item 7. |
+| 5 | Fig. 1c | Replaced by a CAD section through the Fusion auger and cap, with the gear, the flight on the outlet third and the cap. |
+| 6 | Auger dimensions | Measured from the Fusion STL (flight 0.5 mm thick, 10.4 mm pitch). DECISIONS item 2. |
+| 7 | Will's small-dose data | Abstract and future work now mention the controller work; no new data. DECISIONS item 16. |
+| 8 | Design log | Updated on PR #74's branch to 128 entries; count refreshed. |
+| 9 | Zoo "late in the project" | Now "we explored Zoo Design Studio". |
+| 10 | Carousel | "Later versions will dose several powders." |
+| 11 | "Generations" | Now "versions". |
+| 12 | CADSmith | "Performed about as well as the coding agent." DECISIONS item 5. |
+| — | Wording edits | All applied, including the serial comma throughout (DECISIONS item 10) and removing the phone gloss (item 13). |
 
 ## To raise with Sterling: facts to check and decisions
 

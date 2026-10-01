@@ -1,5 +1,7 @@
 # Open decisions for the manuscript (2026-10-01)
 
+> **Superseded** by [`review_2026-10-01/DECISIONS.md`](review_2026-10-01/DECISIONS.md), which carries over every question still open here. Please answer there.
+
 **How to use this file.** Open it in the GitHub editor
 ([edit link](https://github.com/vertical-cloud-lab/powder-doser/edit/copilot/draft-base-manuscript/paper/OPEN-DECISIONS.md)),
 change `[ ]` to `[x]` for your answers, type anything extra after **Notes:**, and
