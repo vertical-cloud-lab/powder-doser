@@ -6,13 +6,12 @@ change `[ ]` to `[x]` for your answers, type anything extra after **Notes:**, an
 commit straight to the branch. Then ask `@claude` on PR #97 to implement it.
 
 - **Choose one** means pick a single box; **Choose any** means tick as many as apply.
-- A box that is already ticked shows what the draft does **now** (as of commit `9698a67`).
+- A box that is already ticked shows what the draft does **now** (as of commit `eb08113`).
   Leave it ticked to keep that, or move the tick to change it.
 - This file holds only questions raised by the meeting. The main checklist is
   [`review_2026-10-01/DECISIONS.md`](../review_2026-10-01/DECISIONS.md), written by the
-  parallel session; it replaces `OPEN-DECISIONS.md`. Where a question here covers the
-  same ground as one there, it says so. **Answer those here**, because this version has
-  the evidence from the meeting, and I'll copy the answer across. Section F lists
+  parallel session; it replaces `OPEN-DECISIONS.md`. Where the two overlap, the item
+  there points to the question here, so each question is answered once. Section F lists
   meeting evidence for other questions in that file.
 - What was said, and what has already been done about it, is in
   [MEETING-NOTES.md](MEETING-NOTES.md). The corrected transcript is
@@ -26,7 +25,7 @@ Questions 1, 3 and 4 matter most.
 
 ### 1. Which printed parts were on the doser for the August and September tests?
 
-**Choose one. Answer this instead of DECISIONS.md item 3.** During the meeting Sam
+**Choose one.** (DECISIONS.md item 3 points here.) During the meeting Sam
 listed the lab's Fusion 360 files for the assembly
 ([#170](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-5939517081)):
 baseplate, brackets, mounting plate, servo pinion, stepper pinion, tap collar, auger
@@ -72,8 +71,8 @@ The draft says the team "recreated its parts in Fusion 360 and changed some of t
 
 ### 3. How should the abstract describe the tested doser?
 
-**Choose one.** This follows from questions 1 and 2. It sits alongside DECISIONS.md
-item 18 (the title) and item 19 (how prominently to say it).
+**Choose one.** (DECISIONS.md item 19 points here.) This follows from questions 1 and
+2. The title is DECISIONS.md item 18.
 
 - [x] "The team later redrew the parts in conventional CAD, and the tested doser uses some of these, including the auger and its drive gear." (current; no longer accurate if the answer to question 1 is "all eight")
 - [ ] "The team later redrew the parts in conventional CAD, and the tested doser was printed from these redrawn parts, apart from one AI-modelled part."
@@ -111,21 +110,25 @@ session is looking for it too.
 
 ## B. Fig. 1
 
-### 5. Fig. 1a: who makes the refreshed render, and should it show who modelled what?
+### 5. Fig. 1a, the CAD view of the doser
 
-These add to DECISIONS.md item 7, which asks whether to keep the #170 render until the
-remaining parts are swapped in. In the meeting Sam said panel (a) was out of date: the
+(DECISIONS.md item 7 points here.) In the meeting Sam said panel (a) was out of date: the
 stepper was a stand-in, there was no solenoid, and the tap collar had changed. "I love
 the idea of it, but it should be updated." Two ways to update it were discussed: a new
 render, which could be a job for Brandon and Ethan in the lab, or a good photograph. The
 #170 session is now building a full assembly in Onshape from all eight Fusion parts,
 with simple models of the stepper, solenoid and servos.
 
-**Who makes the refreshed render? Choose one.**
+Panel (a) is now the #170 render. Its auger, cap and pinion are the real files; the tap
+collar and solenoid are modelled from a photo, and the plates and brackets are June
+AI-modelled stand-ins.
 
-- [ ] The #170 session, from its Onshape assembly
-- [ ] Brandon and Ethan, from the same files
-- [ ] Nobody; use a photograph instead (who takes it, in Notes)
+**What should panel (a) be? Choose one.**
+
+- [x] Keep the #170 render, and refresh it from the #170 Onshape assembly once all parts are in (current)
+- [ ] A new render by Brandon and Ethan, from the same files
+- [ ] A photograph of the current rig (who takes it, in Notes)
+- [ ] Go back to the June render
 
 **Colour the parts by who modelled them (AI tools or the team)? Choose one.** Fig. 1
 would then show the split between AI and human work that the paper describes.
@@ -152,7 +155,7 @@ the full bill of materials".
 
 ### 7. Build instructions
 
-**Choose any. Answer this instead of the build-guide box in DECISIONS.md item 22.** The
+**Choose any.** (DECISIONS.md item 22 points here.) The
 meeting asked "where are the reproducible build instructions for this thing?" A reader,
 or an agent, should be able to find the file to print for each part and the order to
 assemble them. The SI now has a build outline and a table of the printed parts with
@@ -167,15 +170,15 @@ their Fusion 360 links.
 
 ### 8. Where the design files are published
 
-**Choose any.** DECISIONS.md item 22 covers merging #170 and #74 before submission;
-this question is about where readers get the files. During the meeting Sam turned on
+**Choose any.** (DECISIONS.md item 22 points here for #170 and the Onshape parts; it
+keeps the design-log merge and a DOI-backed release.) During the meeting Sam turned on
 public sharing, with downloads, for the eight Fusion 360 parts. The #170 session then
 exported them as STEP files to `cad/full-assembly/components/fusion-step/`.
 
-- [x] STEP and STL files in the repository, once #170 is merged (current)
+- [ ] Merge #170 before submission, so the STEP and STL files the Data availability statement promises are on `main`
+- [x] STEP and STL files in the repository (current text; true once #170 is merged)
 - [x] Public Fusion 360 links in the SI parts table (current)
 - [ ] A public Onshape document of the assembly (Vertical Cloud Lab classroom), from #170
-- [ ] A tagged release archived on Zenodo with a DOI, at submission
 
 **Notes:**
 
@@ -200,7 +203,7 @@ superseded version.
 
 ### 10. "Atomizer"
 
-**Choose one. Answer this instead of DECISIONS.md item 15.** At 08:14 the transcript
+**Choose one.** (DECISIONS.md item 15 points here.) At 08:14 the transcript
 reads: "And then on top of that adding the fact that we've actually used it with ...
 atomizer ... I think that's good ... one of the updates for recent [weeks]." The
 manuscript repository doesn't mention an atomizer, but the project's proposals do: the
@@ -216,9 +219,23 @@ transcription error.
 
 **Notes:**
 
-### 11. How the project started, and who did it
+### 11. Will's controller work
 
-**Choose any. Answer this instead of DECISIONS.md item 14.** The meeting objected to
+**Choose one.** (DECISIONS.md item 16 points here.) From the meeting: "now it's just a
+control problem, so we're working on that." Nobody asked for new data, and Sterling has
+said all the data for this paper are in. The abstract now ends "ongoing controller work
+targets this", and the Conclusions say that better control should make small doses more
+reliable.
+
+- [x] Mention it only, with no data (current)
+- [ ] Also point to the work in the repository (#161, #164, #166)
+- [ ] Add a short SI section with Will's newer small-dose results (which runs, in Notes)
+
+**Notes:**
+
+### 12. How the project started, and who did it
+
+**Choose any.** (DECISIONS.md item 14 points here.) The meeting objected to
 "generations" because it implied hand-offs between teams; the same team did the whole
 project, in less than a year. The draft now says "four versions in its first six
 weeks". The meeting also noted that the first version came out of a one- or two-day
@@ -232,7 +249,7 @@ Najjar, who committed to the repository on its first day (23 April 2026).
 
 **Notes:**
 
-### 12. AI tools change quickly
+### 13. AI tools change quickly
 
 **Choose any.** Two points from the meeting:
 - An assistant had just gained agent features ("they put an agent in an agent"). The
@@ -254,7 +271,7 @@ Najjar, who committed to the repository on its first day (23 April 2026).
 
 ## E. Housekeeping
 
-### 13. The raw transcript
+### 14. The raw transcript
 
 **Choose one.** `Powder Doser Manuscript Overview.txt` at the top of the repository is the
 raw Tactiq export. It includes a phone call and some personal conversation. The
@@ -267,7 +284,7 @@ remove it from the git history.
 
 **Notes:**
 
-### 14. When the video arrives
+### 15. When the video arrives
 
 **Choose any.**
 
@@ -277,7 +294,7 @@ remove it from the git history.
 
 **Notes:**
 
-### 15. Anything else
+### 16. Anything else
 
 **Notes:**
 
@@ -294,10 +311,5 @@ remove it from the git history.
 - **Item 8 (where the glove box was).** #117 records a session on 24 July in the
   Lessard Lab glovebox at the University of Utah, with Claude as the control agent. If
   the Fig. 1b photo is from that session, the answer is the University of Utah.
-- **Item 16 (Will's data).** The meeting said "now it's just a control problem, so
-  we're working on that"; nobody asked for new data. If you want the paper to point to
-  #161, #164 and #166, say so in that item's Notes.
 - **Item 21 (acknowledgements).** Devora Najjar's first commit was on the repository's
-  first day, which fits the hackathon (question 11 here).
-- **Item 22 (design files).** All eight Fusion 360 parts now have public share links
-  with downloads on, and STEP exports are on the #170 branch.
+  first day, which fits the hackathon (question 12 here).
