@@ -184,6 +184,30 @@ behaves as before):
   and a dose that settles short by more than the tolerance gets another
   pass (`BULK_MAX_PASSES`, 8).  Each halt is a bulk stop event, and no
   flow at full rpm for 15 s ends the dose as `stalled`.  Off by default.
+- **Bulk → tap dose** (added 2026-10-01 in PR #166, for the
+  [no-PI campaign](../../../../docs/optimization/campaign-setup.md#6-alternative-campaign-bulk--tap-no-pi-trickle))
+  — `set trickle_enabled 0` drops the PI trickle.  The bulk then runs
+  the bulk-only stage above (taper, boost, predictive halt) in one
+  pass, but aims `BULK_STOP_MARGIN_G` (10 mg) short of the goal, and
+  the unchanged tap endgame (burst included) finishes from the settled
+  reading.  Start the taper before the predicted afterflow (flow ×
+  `TAU_AFTERFLOW_S`, about 0.1 g for salt at 100 rpm) or the halt fires
+  at full speed.  `BULK_ONLY` wins when both are set.  On by default
+  (`TRICKLE_ENABLED = True`: the tuned three-stage dose).
+- **Kalman-filter bulk halt** — `set bulk_halt_kf 1` makes the
+  predictive halt of both modes above use the trickle's Kalman filter
+  (`m̂ + r̂·τ + k·σ`, the PI cutoff rule) instead of the trailing slope.
+  The filter starts at the pass's first trusted poll (1.5 s in), seeded
+  from the poll-slope fit: the trickle's 0.35 g/rev feed-factor prior
+  is 3× salt's and left `m̂` 140 mg ahead at the halt in the sim.  Off
+  by default: the filter de-lags `m̂` with `TAU_BAL_S` = 0.7 s, while
+  the 2026-08-14 drop tests put the balance lag near 0.16 s.  If they
+  are right, `m̂` runs 0.54 s × the flow ahead of the pan: about 12 mg
+  at trickle rates (lost in the scatter of the salt campaign's trickle
+  cutoffs, where `m̂` was above the settled mass in 18 of 35) but
+  50–85 mg at bulk rates, so the bulk halts early.  The τ fit also
+  pairs the slope rule's raw reading with its own slope.  Each bulk
+  stop event records its `predictor`.
 
 ## Testing without the rig
 
@@ -197,7 +221,7 @@ numpy), two closed-loop doses on a virtual plant, the within-tolerance
 no-actuation interlock, stall → tap handover, telemetry shape, a
 balance-lag-mismatch smoke test, live parameter changes, and the
 campaign additions above (RESULT line, cadence taps, overshoot guard,
-final settle, tap burst).
+final settle, tap burst, bulk-only, bulk → tap with both halt rules).
 
 ## Faithfulness notes (what differs from the twin, and why)
 

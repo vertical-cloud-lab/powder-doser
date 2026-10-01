@@ -195,6 +195,37 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES,
     return plan
 
 
+def frozen_override(item, frozen, variant):
+    """``--frozen-set KEY=VALUE`` -> (key, value typed like the
+    snapshot's).  Searched knobs, the variant's switch, and the target
+    are set per trial, so they are refused here."""
+    key, sep, raw = item.partition("=")
+    key, raw = key.strip().lower(), raw.strip().lower()
+    if not sep or key not in frozen:
+        raise SystemExit("--frozen-set {!r}: expected KEY=VALUE with a "
+                         "trickle_params key".format(item))
+    per_trial = {k for _n, k, _t in oc.search_params(variant)}
+    per_trial |= set(oc.VARIANTS[variant]["mode"]) | {"goal_mass_g"}
+    if key in per_trial:
+        raise SystemExit("--frozen-set {}: set per trial in a {} campaign, "
+                         "not frozen".format(key, variant))
+    old = frozen[key]
+    try:
+        if isinstance(old, bool):
+            value = {"true": True, "on": True, "false": False,
+                     "off": False}.get(raw)
+            if value is None:
+                value = bool(int(float(raw)))
+        elif isinstance(old, int):
+            value = int(float(raw))
+        else:
+            value = float(raw)
+    except ValueError:
+        raise SystemExit("--frozen-set {}: {!r} is not a number".format(
+            key, raw))
+    return key, value
+
+
 def frozen_snapshot():
     """Every trickle_params value, lowercase-keyed -- the campaign
     document's frozen-parameter record (section 1.3)."""
@@ -745,7 +776,8 @@ class Runner:
                                  "resume".format(
                                      "simulated " if args.simulate
                                      else "", self.powder_id))
-        if cid:
+        resumed = bool(cid)
+        if resumed:
             self.campaign = Campaign(cid, state_root)
             if not self.campaign.exists() and not args.simulate:
                 self.campaign.restore_from_mongo()
@@ -765,6 +797,11 @@ class Runner:
             frozen.update(oc.VARIANTS[variant]["mode"])
             if variant == oc.VARIANT_BULK_TAP:
                 frozen["tau_afterflow_s"] = self.tau_prior(args.simulate)
+            for item in args.frozen_set:
+                key, value = frozen_override(item, frozen, variant)
+                log("frozen {} = {} (was {})".format(key, value,
+                                                     frozen[key]))
+                frozen[key] = value
             baseline = oc.baseline_params(frozen, variant)
             self.campaign.doc = {
                 "kind": "opt_campaign",
@@ -795,6 +832,9 @@ class Runner:
                                "seed": args.seed,
                                "ax_platform": "0.4.3"},
             }
+        if resumed and args.frozen_set:
+            log("--frozen-set ignored: {} keeps the snapshot it was "
+                "created with".format(cid))
         doc = self.campaign.doc
         if doc["powder_id"] != self.powder_id:
             raise SystemExit("campaign {} is for powder {!r}".format(
@@ -1647,6 +1687,11 @@ def parse_args(argv=None):
     ap.add_argument("--max-jam-streak", type=int, default=3,
                     help="--unattended: consecutive jams that end the "
                          "campaign (0 = never)")
+    ap.add_argument("--frozen-set", metavar="KEY=VALUE", action="append",
+                    default=[],
+                    help="new campaigns: change one frozen trickle_params "
+                         "value for the whole campaign (repeatable), e.g. "
+                         "bulk_halt_kf=1 or tap_burst_above_g=0.01")
     ap.add_argument("--no-flash-log", action="store_true",
                     help="push log_to_flash 0 with the frozen snapshot "
                          "(telemetry still comes back over serial)")

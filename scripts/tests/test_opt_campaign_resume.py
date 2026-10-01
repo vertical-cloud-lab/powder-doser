@@ -483,10 +483,38 @@ def test_bulk_tap_campaign():
         shutil.rmtree(state, ignore_errors=True)
 
 
+def test_frozen_set():
+    state = tempfile.mkdtemp(prefix="optfrozenset-")
+    try:
+        r = _quiet(ocamp.Runner, _args(
+            state, "--variant", "bulk-tap", "--frozen-set",
+            "bulk_halt_kf=1", "--frozen-set", "tap_burst_above_g=0.01"))
+        frozen = r.campaign.doc["frozen_params"]
+        push = r.frozen_push()
+        check("--frozen-set: typed into the snapshot and pushed per dose",
+              frozen["bulk_halt_kf"] is True
+              and frozen["tap_burst_above_g"] == 0.01
+              and push["bulk_halt_kf"] is True
+              and "bulk_stop_margin_g" not in push
+              and "trickle_enabled" not in push)
+        refused = 0
+        for item in ("bulk_stop_margin_g=0.02", "trickle_enabled=1",
+                     "no_such_knob=1"):
+            try:
+                _quiet(ocamp.Runner, _args(state, "--variant", "bulk-tap",
+                                           "--frozen-set", item))
+            except SystemExit:
+                refused += 1
+        check("--frozen-set refuses searched knobs, the variant switch, "
+              "and unknown keys", refused == 3)
+    finally:
+        shutil.rmtree(state, ignore_errors=True)
+
+
 def main():
     for fn in (test_screening_halts, test_bo_halts,
                test_restore_from_mongo, test_unattended_limits,
-               test_bulk_tap_campaign):
+               test_bulk_tap_campaign, test_frozen_set):
         print(fn.__name__)
         fn()
     if _FAILURES:

@@ -22,6 +22,11 @@ before code is written:
 > filters — and §5, the laptop runbook ("what do I need on my computer to run
 > this manually").
 
+> **Update 2026-10-01** — §6 adds an alternative campaign that drops the PI trickle:
+> the bulk halts on a predicted final mass a set margin short of the goal and the tap
+> endgame finishes (`opt_campaign.py --variant bulk-tap`, firmware
+> `set trickle_enabled 0`). Everything else in this document applies to it unchanged.
+
 > **Clarification, later the same day** — "run this manually" meant manually
 > *starting* the loop, not hand-running doses: once launched, the campaign is
 > automated end to end (ask → SSH dose → tell → record), and the operator
@@ -442,12 +447,12 @@ All six pieces exist; the table now points at them:
 
 | Piece | Where it runs | What it is |
 |---|---|---|
-| [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard. Sim-tested (`sim/test_trickle_tap.py`, 14 tests) |
+| [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard; the §6 bulk → tap dose (`TRICKLE_ENABLED = 0`, `BULK_STOP_MARGIN_G`, optional Kalman-filter halt `BULK_HALT_KF`). Sim-tested (`sim/test_trickle_tap.py`, 19 tests) |
 | [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes the campaign's frozen snapshot (`--frozen`) and then the trial's `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice; `--fetch` on a uuid with no result answers `in-progress`, `interrupted`, or `not-found` (§5.4) |
-| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-params` replicate blocks that write `dosing_profiles` |
+| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-params` replicate blocks that write `dosing_profiles`, `--variant bulk-tap` (§6), `--frozen-set KEY=VALUE` |
 | [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
 | [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
-| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: search space, campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
+| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: both variants' search spaces (`VARIANTS`; a parameter set's names pick its variant), campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
 | [`scripts/check_mongo.py`](../../scripts/check_mongo.py) | anywhere | MongoDB preflight: reports which credential source resolved (never the URI itself), pings the cluster, lists the `powder_doser` collections |
 
 Host-side tests: `scripts/tests/test_opt_dose_capture.py` (executor against a
@@ -831,3 +836,158 @@ While it owns the rig the session leaves `~/RIG-NOTICE-<date>.txt` on the Zero
 screening main effects over the 16 corners, the τ fit, the model's Pareto set,
 and the recommended point: the knee of the observed front, with each objective
 scaled by its threshold.
+
+---
+
+## 6. Alternative campaign: bulk → tap (no PI trickle)
+
+Added 2026-10-01. William asked on PR #166 whether the bulk phase, halted on a predicted
+final mass, gets close enough to the goal for the tap endgame to finish the dose
+without the PI trickle, which would make dosing much faster. The evidence behind the
+question is the Al 4047 bulk-only top-up (`56a01060`, `data/opt/production-al4047-9fxeqt/`):
+it halted 2.3 mg short at 31 rpm and settled at +0.95 mg, 0.32 g in 65 s on a clogged
+tube. This variant tests that idea as a campaign. It reuses the executor, the τ fit,
+the anchors, SAASBO, resume, the readout, validation, and `dose.py` as they are; only
+the dose and the search space change.
+
+### 6.1 The dose
+
+`set trickle_enabled 0` (firmware `trickle_tap/2026-10-01`):
+
+| Stage | What runs |
+|---|---|
+| 1 bulk | Velocity mode at `BULK_TILT_DEG`, with cadence taps if `BULK_TAP`. The rpm holds `BULK_RPM` until `BULK_TAPER_START_G` is left to go, then tapers linearly to `BULK_MIN_RPM` at the stop margin. Each 3 s without 2 mg of flow multiplies the rpm by 1.5 (capped at `BULK_RPM`). The auger halts when the **predicted final mass** reaches goal − `BULK_STOP_MARGIN_G`, then waits 1.5 s and takes a settled reading. One pass. |
+| 2 trickle | Skipped. |
+| 3 taps | The tap endgame, unchanged, from the settled bulk reading: single taps (or the tap burst) at `TAP_TILT_DEG` with settled reads and dry-lip nudges, until within `TOLERANCE_G`. |
+
+The prediction is the bulk-only rule, `reading + trailing-2 s slope × τ_afterflow`, the
+same one that landed the Al 4047 top-up. `--frozen-set bulk_halt_kf=1` swaps in the
+trickle's Kalman filter instead (§6.5). The bulk is one pass because a second pass
+spins 1.5 s before its slope is trusted. At 40° and 20 rpm salt flows 35–78 mg/s
+(the salt campaign's bulk stop events), so a top-up could add about 75 mg before it is
+able to halt. The taps take whatever the pass leaves. `BULK_ONLY = 1`, if frozen,
+still wins over this mode.
+
+### 6.2 Search space
+
+The three PI-only knobs leave: trim taps, trim tilt, and the bulk→trim threshold. Three
+knobs of the predictive bulk come in:
+
+| # | Parameter | Box | Shipped value (baseline) | Firmware knob |
+|---|---|---|---|---|
+| 1 | Bulk taps | off / 2 Hz | off | `BULK_TAP` |
+| 2 | Bulk tilt | 15–40° | 30 | `BULK_TILT_DEG` |
+| 3 | Bulk RPM | 20–100 | 55 | `BULK_RPM` |
+| 4 | Approach (taper floor) RPM | 5–25 | 20 | `BULK_MIN_RPM` |
+| 5 | Taper start | 0.05–0.30 g to go | 0.10 | `BULK_TAPER_START_G` |
+| 6 | Bulk stop margin | 0–50 mg | 10 mg | `BULK_STOP_MARGIN_G` |
+| 7 | Tap tilt | 0–15° | 10 | `TAP_TILT_DEG` |
+| 8 | Tolerance band | 3–15 mg | 5 mg | `TOLERANCE_G` |
+
+- **Approach rpm** sets the flow at the halt, and the afterflow scales with it. On salt
+  at 20 rpm without taps, the bulk halts kept flowing 21–129 mg after the stop, at
+  35–78 mg/s. With 2 Hz taps the ratio of afterflow to stop rate was larger (median
+  1.4 s, up to 3.2 s), because the taps keep shaking the loaded lip.
+- **Taper start** only matters if it is larger than the margin plus the predicted
+  afterflow (flow × τ: 85–125 mg for salt at 55–100 rpm). Below that, the halt fires
+  at full speed before the taper begins; in the sim, a 0.10 g taper start and no taper
+  at all gave the same dose at 55 rpm. The low end of the box tests that no-taper regime.
+- **Stop margin** trades overshoot against tap time. At 0 the bulk aims at the goal
+  itself, so any under-predicted afterflow becomes overshoot. At 50 mg the taps finish
+  the last 50 mg, 70–100 single taps on salt at 0.5–0.7 mg each, close to the
+  120-cycle tap budget.
+
+The shipped values are `trickle_params.py`'s bulk and tap tuning plus the bulk-only
+defaults. No hand-tuned bulk → tap point exists yet, so the two baseline doses are a
+reference, not a tuned optimum.
+
+### 6.3 What differs from the three-stage campaign
+
+- **Screen.** The same 2⁸⁻⁴ resolution-IV design: A bulk tilt, B approach rpm, C tap
+  tilt, D bulk rpm, E = BCD stop margin, F = ACD tolerance, G = ABC bulk taps,
+  H = ABD taper start. The 4 centers sit at the box midpoints with bulk taps off, and
+  the 2 baseline doses bracket the block, as in §2.4 and §2.9.
+- **τ during screening.** The powder's fitted τ (salt: 0.8338 s from
+  `salt-20260929T014732Z`), else 0.83 s. The three-stage screen runs the tuned 0.30 s
+  because its bulk halt is a fixed threshold. Here the halt is the prediction, and
+  0.30 s would overshoot by design: salt's halts at 100 rpm kept flowing 95–139 mg.
+  After screening, τ is refit from the bulk halts alone and the anchors are re-dosed,
+  exactly as in §2.8.
+- **The dose structure travels with the parameters.** Every bulk-tap trial pushes
+  `set trickle_enabled 0` as a verified line with its searched values, and every
+  three-stage trial pushes `1`, so a runner left in either mode by another session
+  cannot run the wrong dose. The executor and `dose.py` tell the variants apart by the
+  parameter names, so the Zero needs no new flag.
+- **Bookkeeping.** Campaign ids are `<powder>-bulktap-<UTC>`, and the campaign document,
+  the powder file's `latest_campaign` block, and validated profiles carry
+  `"variant": "bulk-tap"`. A profile's frozen snapshot has `trickle_enabled: false`, so
+  `dose.py` doses it as validated. `--resume` keeps a campaign's variant (with
+  `--variant`, it only considers that variant's campaigns), and `--validate-params`
+  reads the variant off the parameters.
+
+### 6.4 Running it
+
+Before the first dose:
+
+- Upload the three changed files to `/trickle_tap` on the Pico:
+  `trickle_controller.py`, `trickle_params.py`, and `trickle_kf.py`. Keep the rig's own
+  `config.py`.
+- Run `git pull --ff-only` in `~/powder-doser` on the Zero.
+
+The firmware id is now `trickle_tap/2026-10-01`, and the executor refuses any other
+firmware with `rig-busy`. That applies to three-stage campaigns and `dose.py` too.
+
+```bash
+python scripts/opt_campaign.py --powder-id salt --variant bulk-tap --target-g 0.5 \
+    --budget 40 --host <user>@<zero-hostname>
+# optional, for the whole campaign: the Kalman-filter halt, 2-tap bursts above 10 mg
+#   --frozen-set bulk_halt_kf=1 --frozen-set tap_burst_above_g=0.01
+```
+
+`--frozen-set KEY=VALUE` (new campaigns only, repeatable) changes one frozen
+`trickle_params` value in the campaign's snapshot. It refuses the searched knobs and
+the variant's switch. `--unattended` (§5.5) works the same as for the three-stage
+campaign.
+
+The readout's reference is the three-stage salt campaign: its recommended point
+`bo-005` took 99.7 s at −2.4 mg (model: 102 s, 0.9 mg), and its fastest clean dose,
+`corner-09`, took 51.8 s at −0.7 mg.
+
+### 6.5 Slope or Kalman filter for the halt
+
+The default is the slope rule, for three reasons:
+
+1. It is the rule that worked on the rig (the Al 4047 top-up).
+2. The §2.8 τ fit pairs the raw reading at the halt with the trailing slope, which is
+   exactly what the slope rule uses, so the fitted τ calibrates it directly.
+3. The Kalman filter de-lags its mass estimate `m̂` with `TAU_BAL_S` = 0.7 s, while the
+   2026-08-14 drop tests put the balance lag near 0.16 s. If they are right, `m̂` runs
+   0.54 s × the flow ahead of the pan. That is about 12 mg at trickle rates, lost in
+   the scatter of the salt campaign's trickle cutoffs (`m̂` was above the settled mass
+   in 18 of 35), but 50–85 mg at bulk rates, so the bulk would halt early and leave
+   the rest to the taps.
+
+`bulk_halt_kf 1` is still there to test the filter directly. In the bulk it starts at
+the pass's first trusted poll, seeded from the slope fit (`TrickleKF.seed(rate_gps=…)`),
+and learns the feed factor from the slope. The trickle's 0.35 g/rev prior is 3× salt's
+and left `m̂` 140 mg ahead at the halt of a 0.5 g sim dose. Its stop events record
+`"predictor": "kf"` and pair `m̂` with `r̂`, so the τ refit calibrates the filter's own
+prediction. The fit drops negative afterflows as settling artifacts, though, so if `m̂`
+is ahead of the settled mass the fitted τ cannot fall far enough to compensate. Pin
+τ_bal first (bench-plan test A1).
+
+The sim shows both sides. These are single 0.5 g doses at the shipped bulk settings
+(30°, 55 rpm, taper from 0.10 g) with τ = 0.83 s, on the virtual plant, not the rig:
+
+| Plant balance lag | Halt rule | Margin 10 mg | Margin 40 mg |
+|---|---|---|---|
+| 0.7 s (the filter's belief) | slope | overshoot, +14.7 mg in 14 s | −0.8 mg in 29 s, 6 taps |
+| 0.7 s | Kalman filter | −0.8 mg in 29 s, 6 taps | −3.8 mg in 74 s, 24 taps |
+| 0.16 s (the drop tests) | slope | −4.0 mg in 71 s, 23 taps | +0.5 mg in 116 s, 41 taps |
+| 0.16 s | Kalman filter | +1.6 mg in 215 s, 81 taps | −1.3 mg in 248 s, 94 taps |
+
+For reference, the three-stage dose with the shipped tuning took 141 s (47 taps) and
+150 s (50 taps) on the same two plants. The filter wins when its lag belief is right
+and loses badly when it is not. The slope rule's overshoot at 10 mg is what the τ refit
+corrects: refit from a simulated bulk-tap screen, τ comes out at 0.91 s.
+
