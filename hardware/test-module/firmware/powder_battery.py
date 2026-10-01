@@ -6,14 +6,18 @@ results are directly comparable across powders.  This is deliberately
 tuned-salt values from the PR #124 three-phase demos) and the point is
 to see how each powder behaves under the same conditions.
 
-The battery covers every degree of freedom of the rig once:
+The battery covers every degree of freedom of the rig once ("tilt"
+below is the firmware SETTING; settings 0/45/90 are physical tube
+angles of 0/22.5/45 deg -- see "Tilt convention"):
 
   Block A  "baseline"  Scale noise floor: 8 no-actuation stable-reading
                        deltas at tilt 45.
   Block B  "hold"      Static-tilt avalanche check: at tilt 0, 45 and
                        90, hold 15 s with NO actuation and measure the
-                       mass change.  Free-flowing powders discharge on
-                       their own near vertical; cohesive ones do not.
+                       mass change.  Free-flowing powders may discharge
+                       on their own at the steepest tilt (setting 90 =
+                       45 deg physical, NOT vertical); cohesive ones
+                       do not.
   Block C  "rotation"  Tilt x rotation yield: at tilt 0, 45 and 90,
                        six incremental 360-deg auger rotations at
                        30 auger RPM, stable reading after each -->
@@ -35,11 +39,20 @@ The battery covers every degree of freedom of the rig once:
                        the frozen parameter set below --> accuracy,
                        time-to-dose and phase breakdown per powder.
 
-Tilt convention: user-facing TILT degrees, 0 = tube horizontal,
-90 = tube vertical -- i.e. the servo-horn convention of main.py and
-the 0/45/90 requested in issue #116.  The three-phase servo speaks
-mounting-PLATE degrees (2:1 horn gearing, plate 45 = vertical), so
-tilt is halved at the servo boundary (``PLATE_PER_TILT``).
+Tilt convention: user-facing TILT *settings* 0/45/90 (the servo-horn
+convention of main.py and the 0/45/90 requested in issue #116); the
+setting is what every ``<tilt_deg>`` field below records.  It is
+halved at the servo boundary (``PLATE_PER_TILT``) into the
+mounting-PLATE degrees the three-phase servo speaks, and that plate
+value is the PHYSICAL tube angle above horizontal: the tilt plate is
+geared 2:1, so the firmware's "vertical" preset only reaches 45 deg
+(confirmed on PR #124).  Settings 0 / 45 / 90 are therefore physical
+tube angles of 0 / 22.5 / 45 deg, and 45 deg is the maximum tilt
+reached in every run -- no run ever put the tube at 90 deg (vertical).
+Halve a recorded ``tilt_deg`` to get the physical angle.  Setting
+values, field names and the record format are deliberately unchanged
+so archived datasets stay parseable.
+Corrected 2026-10-01: this previously said 90 = tube vertical (wrong).
 
 Serial protocol (one machine-readable line per event, superset of the
 characterize.py stream; captured by ``scripts/powder_battery_capture.py``)::
@@ -88,7 +101,9 @@ import time
 BATTERY_VERSION   = 1
 POWDER_ID         = None
 
-TILTS_DEG         = [0.0, 45.0, 90.0]  # tube tilt; 0 horizontal, 90 vertical
+# Tilt SETTINGS, not physical angles: the 2:1 plate gear makes the tube
+# angle setting/2, i.e. 0/22.5/45 deg (max 45).  Corrected 2026-10-01.
+TILTS_DEG         = [0.0, 45.0, 90.0]  # settings; tube 0/22.5/45 deg
 PLATE_PER_TILT    = 0.5                # plate deg per tilt deg (2:1 gearing)
 PARK_TILT_DEG     = 0.0                # tilt the rig is left at after a run
 
