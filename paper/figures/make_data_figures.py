@@ -38,6 +38,7 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.dates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -474,6 +475,45 @@ def figS2_bench() -> None:
 
 
 # ----------------------------------------------------------------------------
+# Figure S3 - generative-AI agent activity per week
+# ----------------------------------------------------------------------------
+# Categorical slots 7 and 3 of the reference palette, so neither agent borrows
+# the surrogate/research hues; people stay in neutral ink.
+AGENT_COLOUR = {"copilot": "#4a3aa7", "claude": "#1baf7a", "people": MUTED}
+AGENT_LABEL = {"copilot": "GitHub Copilot coding agent",
+               "claude": "Claude (Claude Code)", "people": "People"}
+
+
+def figS3_ai_usage() -> None:
+    """Agent requests and commits per week (data/build_ai_usage.py)."""
+    u = pd.read_csv(HERE / "data" / "ai_usage_weekly.csv",
+                    parse_dates=["week_start"])
+    x = u.week_start + pd.Timedelta(days=3.5)
+    fig, axes = plt.subplots(2, 1, figsize=(SINGLE_COL_IN, 2.9), sharex=True,
+                             gridspec_kw=dict(hspace=0.28))
+    panels = [("requests_", ["copilot", "claude"], "Agent requests per week"),
+              ("commits_", ["copilot", "claude", "people"], "Commits per week")]
+    for ax, (prefix, who, ylabel), letter in zip(axes, panels, "ab"):
+        bottom = np.zeros(len(u))
+        for w in who:
+            y = u[prefix + w].to_numpy()
+            ax.bar(x, y, bottom=bottom, width=6.0, color=AGENT_COLOUR[w],
+                   edgecolor="white", linewidth=0.4, label=AGENT_LABEL[w],
+                   zorder=3)
+            bottom += y
+        ax.set_ylabel(ylabel)
+        ax.grid(axis="y", alpha=0.8)
+        panel_label(ax, letter)
+    handles, labels = axes[-1].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, 0.93),
+               ncol=3, fontsize=5.4, handlelength=1.0, columnspacing=1.2)
+    axes[-1].xaxis.set_major_locator(matplotlib.dates.MonthLocator())
+    axes[-1].xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%b"))
+    axes[-1].set_xlabel("2026")
+    save(fig, "figS3_ai_usage")
+
+
+# ----------------------------------------------------------------------------
 # SI Table S2 - closed-loop dose summary (LaTeX, generated)
 # ----------------------------------------------------------------------------
 def tableS2_doses() -> None:
@@ -632,4 +672,5 @@ if __name__ == "__main__":
     fig4_knobs()
     fig5_closed_loop()
     figS2_bench()
+    figS3_ai_usage()
     tableS2_doses()

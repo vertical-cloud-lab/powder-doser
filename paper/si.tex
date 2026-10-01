@@ -149,6 +149,16 @@ in the per-dose file.
 \input{figures/data/dose_summary_table}
 \normalsize
 
+\section{Run inventory}
+
+Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
+runs that were aborted, postponed or excluded, so that each number in the main
+text can be traced to the run it came from.
+
+\small
+\input{figures/data/run_inventory_table}
+\normalsize
+
 \section{AI usage log}
 
 In line with \textit{Digital Discovery}'s guidance on the use of LLMs, all AI
@@ -172,5 +182,25 @@ figure, and the AI-drafted revisions of this manuscript, are in
 \item \textbf{Qualitative observations:} the team's running journal of AI
 behaviour, good and bad, is discussion~\#39 in the repository.
 \end{itemize}
+
+Fig.~\ref{fgr:aiusage} shows how agent use was spread over the project. Team
+members sent 754 requests to the two coding agents between April and September
+2026, and the agents authored 789 of the 877 commits (90\%). The counts cover
+all work in the repository (CAD, firmware, data analysis and writing), not only
+the design of the parts. The team moved from the GitHub Copilot coding agent to
+Claude at the start of July 2026.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/figS3_ai_usage}
+\caption{Generative-AI agent activity per week over the project. (a) Requests
+to an agent: comments and issue or pull-request descriptions written by a team
+member that address \texttt{@copilot} or \texttt{@claude}, plus pull requests
+the Copilot coding agent opened when assigned an issue. Each request starts one
+agent session. (b) Commits on all branches by author; commits that were later
+rebased onto another branch are counted once. Counts are from the public
+repository history (\texttt{paper/figures/data/build\_ai\_usage.py}).}
+\label{fgr:aiusage}
+\end{figure}
 
 \end{document}
