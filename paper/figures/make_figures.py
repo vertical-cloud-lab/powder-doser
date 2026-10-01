@@ -292,45 +292,24 @@ def fig2() -> None:
 
 
 # ----------------------------------------------------------------------------
-# Figure 6 — future work: multi-doser array
+# Figure 6 — future work: roller-chain multi-doser (issue #128)
 # ----------------------------------------------------------------------------
 def fig6() -> None:
-    fig = plt.figure(figsize=(SINGLE_COL_IN, 2.2))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=0.15)
+    """Hand sketch and Onshape model of the multi-doser carriages.
 
-    # (a) radial array schematic
+    Both images are from issue #128 (2026-08-27 update); the Onshape screenshot
+    is cropped to the model, removing the editor's toolbars and view cube.
+    """
+    fig = plt.figure(figsize=(SINGLE_COL_IN, 1.75))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.45, 1.0], wspace=0.06)
+
     ax = fig.add_subplot(gs[0, 0])
-    ax.set_aspect("equal")
-    ax.set_axis_off()
+    show(ax, "multidoser_carriage_sketch.png")
     panel_label(ax, "a")
-    n = 8
-    for k in range(n):
-        ang = 2 * np.pi * k / n
-        x, y = 2.4 * np.cos(ang), 2.4 * np.sin(ang)
-        rect = patches.Rectangle(
-            (-0.42, -0.7),
-            0.84,
-            1.4,
-            fc="#dbe6f4",
-            ec="0.3",
-            lw=0.6,
-            transform=matplotlib.transforms.Affine2D()
-            .rotate(ang + np.pi / 2)
-            .translate(x, y)
-            + ax.transData,
-        )
-        ax.add_patch(rect)
-    ax.add_patch(patches.Circle((0, 0), 0.9, fc="#f6e8c8", ec="0.3", lw=0.8))
-    ax.text(0, 0, "shared\ncup", ha="center", va="center", fontsize=5.5)
-    ax.set_xlim(-3.6, 3.6)
-    ax.set_ylim(-3.6, 3.6)
-    ax.set_title("8-channel radial array\n(concept)", fontsize=6)
 
-    # (b) inward-tilting collection-cup render
     ax = fig.add_subplot(gs[0, 1])
-    show(ax, "inward_collection_cup_iso.png")
+    show(ax, "multidoser_carriages_onshape.png")
     panel_label(ax, "b")
-    ax.set_title("Inward-tilting channels\nover shared cup\n(preliminary CAD)", fontsize=6)
 
     _save(fig, "fig6_future")
     plt.close(fig)
