@@ -21,6 +21,11 @@ Dose structure (each stage skipped when already inside its threshold):
 3. **tap**    -- the firmware's phase-3 endgame, single taps with
    settled reads and dry-lip nudges, until within tolerance.
 
+``TRICKLE_ENABLED = 0`` drops stage 2: the bulk then tapers its rpm and
+halts on a predicted final mass ``BULK_STOP_MARGIN_G`` short of the
+goal, and the tap endgame finishes from there (the bulk -> tap dose).
+``BULK_ONLY = 1`` drops stages 2 and 3.
+
 Reads between stages go through the ThreePhaseDoser bracket machinery
 (``balance_filter``), i.e. the verified-tare and silent-balance-retry
 fixes from the 2026-09-03 Block H session are inherited, not copied.
@@ -80,7 +85,7 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
 # line.  The Pico is shared with other sessions' firmware, so the
 # campaign executor refuses to dose unless this matches
 # scripts/opt_common.FIRMWARE_ID -- bump both together.
-FIRMWARE_ID = "trickle_tap/2026-09-30b"
+FIRMWARE_ID = "trickle_tap/2026-10-01"
 
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
@@ -93,6 +98,7 @@ RESULT_PARAM_KEYS = (
     "final_settle_ms", "taps_per_cycle", "tap_burst_taps",
     "tap_burst_above_g", "bulk_only", "bulk_taper_start_g",
     "bulk_min_rpm", "bulk_boost_s", "bulk_max_passes",
+    "trickle_enabled", "bulk_stop_margin_g", "bulk_halt_kf",
 )
 
 
@@ -486,13 +492,55 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                 status = m3.DoseResult.OVERSHOOT
             return result(status, grams, settled=settle_ms > 0)
 
+        def endgame(grams):
+            # --- stage 3: tap endgame (inherited phase machinery) ------
+            if target_g - grams > tol:
+                self._phase_label = "tap"
+                tap = self._tap_phase()
+                burst = self._tap_burst_phase(tap, tol)
+                t_stage = self._t_s()
+                cycles, status = 0, None
+                if burst is not None and target_g - grams > burst["exit_g"]:
+                    self.log("=== stage 3 'tap': {:.4f} g to go, {} taps per "
+                             "cycle until {:.4f} g to go, then {} at {:.1f} "
+                             "plate deg".format(target_g - grams,
+                                                burst["taps_per_cycle"],
+                                                burst["exit_g"],
+                                                tap["taps_per_cycle"],
+                                                tap["angle_deg"]))
+                    nudges0 = state["nudges"]
+                    grams, status, cycles = self._run_phase(
+                        3, burst, burst["exit_g"], target_g, grams, t0, state)
+                    stage_cycles.append(("tap_burst", cycles))
+                    # the closing stretch gets what is left of both budgets
+                    tap["max_cycles"] -= cycles
+                    tap["max_nudges"] -= state["nudges"] - nudges0
+                else:
+                    self.log("=== stage 3 'tap': {:.4f} g to go, single taps "
+                             "at {:.1f} plate deg".format(target_g - grams,
+                                                          tap["angle_deg"]))
+                if status is None and target_g - grams > tol:
+                    grams, status, more = self._run_phase(
+                        3, tap, tol, target_g, grams, t0, state)
+                    cycles += more
+                t_marks["tap"] = self._t_s() - t_stage
+                stage_cycles.append(("tap", cycles))
+                if status is not None:
+                    self._restore_rig()
+                    return result(status, grams)
+            else:
+                stage_cycles.append(("tap", 0))
+                self.log("=== stage 3 'tap' skipped ({:.4f} g to go is inside "
+                         "tolerance)".format(target_g - grams))
+            return finish(grams)
+
         # --- bulk-only dose: stage 1 is the whole dose -----------------
         if p.get("bulk_only"):
             if target_g - grams > tol:
                 self._phase_label = "bulk"
                 t_stage = self._t_s()
-                grams, status, polls = self._run_bulk_only(target_g, grams,
-                                                           t0, state)
+                grams, status, polls = self._run_bulk_predictive(
+                    target_g, grams, t0, state)
                 t_marks["bulk"] = self._t_s() - t_stage
                 stage_cycles.append(("bulk", polls))
                 if status is not None:
@@ -505,6 +553,29 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("=== stages 2-3 skipped (bulk_only: the dose never "
                      "leaves the bulk tilt)")
             return finish(grams)
+
+        # --- bulk -> tap dose: a predictive bulk replaces stages 1-2 ---
+        if not p.get("trickle_enabled", True):
+            margin = max(0.0, float(p["bulk_stop_margin_g"]))
+            if p["bulk_enabled"] and target_g - grams > margin + tol:
+                self._phase_label = "bulk"
+                t_stage = self._t_s()
+                grams, status, polls = self._run_bulk_predictive(
+                    target_g, grams, t0, state, to_taps=True)
+                t_marks["bulk"] = self._t_s() - t_stage
+                stage_cycles.append(("bulk", polls))
+                if status is not None:
+                    self._restore_rig()
+                    return result(status, grams)
+            else:
+                stage_cycles.append(("bulk", 0))
+                self.log("=== stage 1 'bulk' skipped ({:.4f} g to go is "
+                         "inside the stop margin)".format(target_g - grams))
+            stage_cycles.append(("trickle", 0))
+            self.log("=== stage 2 'trickle' off (trickle_enabled 0): the "
+                     "tap endgame takes over at {:.4f} g to go".format(
+                         target_g - grams))
+            return endgame(grams)
 
         # --- stage 1: bulk (velocity mode, inherited) ------------------
         bulk = self._bulk_phase()
@@ -556,64 +627,26 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             self.log("=== stage 2 'trickle' skipped ({:.4f} g to go is "
                      "inside tolerance)".format(target_g - grams))
 
-        # --- stage 3: tap endgame (inherited phase machinery) ----------
-        if target_g - grams > tol:
-            self._phase_label = "tap"
-            tap = self._tap_phase()
-            burst = self._tap_burst_phase(tap, tol)
-            t_stage = self._t_s()
-            cycles, status = 0, None
-            if burst is not None and target_g - grams > burst["exit_g"]:
-                self.log("=== stage 3 'tap': {:.4f} g to go, {} taps per "
-                         "cycle until {:.4f} g to go, then {} at {:.1f} "
-                         "plate deg".format(target_g - grams,
-                                            burst["taps_per_cycle"],
-                                            burst["exit_g"],
-                                            tap["taps_per_cycle"],
-                                            tap["angle_deg"]))
-                nudges0 = state["nudges"]
-                grams, status, cycles = self._run_phase(
-                    3, burst, burst["exit_g"], target_g, grams, t0, state)
-                stage_cycles.append(("tap_burst", cycles))
-                # the closing stretch gets what is left of both budgets
-                tap["max_cycles"] -= cycles
-                tap["max_nudges"] -= state["nudges"] - nudges0
-            else:
-                self.log("=== stage 3 'tap': {:.4f} g to go, single taps "
-                         "at {:.1f} plate deg".format(target_g - grams,
-                                                      tap["angle_deg"]))
-            if status is None and target_g - grams > tol:
-                grams, status, more = self._run_phase(
-                    3, tap, tol, target_g, grams, t0, state)
-                cycles += more
-            t_marks["tap"] = self._t_s() - t_stage
-            stage_cycles.append(("tap", cycles))
-            if status is not None:
-                self._restore_rig()
-                return result(status, grams)
-        else:
-            stage_cycles.append(("tap", 0))
-            self.log("=== stage 3 'tap' skipped ({:.4f} g to go is inside "
-                     "tolerance)".format(target_g - grams))
+        return endgame(grams)
 
-        return finish(grams)
+    # -- predictive bulk internals (BULK_ONLY, TRICKLE_ENABLED = 0) -----
 
-    # -- bulk-only internals (BULK_ONLY) -------------------------------
-
-    def _bulk_taper_rpm(self, remaining_g, tol):
+    def _bulk_taper_rpm(self, remaining_g, end_g):
         """BULK_RPM until BULK_TAPER_START_G to go, then linear down to
-        BULK_MIN_RPM at the tolerance band."""
+        BULK_MIN_RPM at ``end_g`` to go (the tolerance band for a
+        bulk-only dose, the stop margin for a bulk -> tap one)."""
         p = self.p
         top = float(p["bulk_rpm"])
         floor = min(top, max(1.0, float(p["bulk_min_rpm"])))
         start = float(p["bulk_taper_start_g"])
-        if start <= tol or remaining_g >= start:
+        if start <= end_g or remaining_g >= start:
             return top
-        frac = max(0.0, (remaining_g - tol) / (start - tol))
+        frac = max(0.0, (remaining_g - end_g) / (start - end_g))
         return floor + (top - floor) * frac
 
-    def _run_bulk_only(self, target_g, grams, t0, state):
-        """The whole dose at BULK_TILT_DEG (see BULK_ONLY in trickle_params).
+    def _run_bulk_predictive(self, target_g, grams, t0, state,
+                             to_taps=False):
+        """Stage 1 that halts on a predicted final mass, at BULK_TILT_DEG.
 
         Velocity mode like the bulk phase -- instantaneous polls every
         BULK_POLL_MS, cadence taps when BULK_TAP -- with three additions:
@@ -625,10 +658,18 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
           the rpm by 1.5 (capped at BULK_RPM), flow relaxes it a step.
           No flow at BULK_RPM for the bulk stall window (10 x
           BULK_SETTLE_MS) ends the dose as stalled;
-        * predictive halt: mass + trailing-2 s slope * TAU_AFTERFLOW_S
-          >= goal - tol/2, then BULK_SETTLE_MS and a settled read.  Short
-          by more than the tolerance -> another pass (the auger restarts
-          at the taper rpm), up to BULK_MAX_PASSES.
+        * predictive halt at the aim, then BULK_SETTLE_MS and a settled
+          read.  The prediction is mass + trailing-2 s slope *
+          TAU_AFTERFLOW_S, or with BULK_HALT_KF the trickle's Kalman
+          filter: m_hat + r_hat * TAU_AFTERFLOW_S + K_SIGMA * sigma.
+
+        BULK_ONLY (``to_taps`` False) aims at goal - TOLERANCE_G/2 and
+        runs another pass while more than the tolerance is to go, up to
+        BULK_MAX_PASSES.  A bulk -> tap dose (``to_taps``) aims
+        BULK_STOP_MARGIN_G short of the goal and makes ONE pass: a
+        top-up pass spins 1.5 s before its prediction is trusted, which
+        can overshoot a free-flowing powder, so whatever is left goes to
+        the tap endgame instead.
 
         Every halt is a stop event.  Returns (grams, status|None, polls).
         """
@@ -636,26 +677,40 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         tol = p["tolerance_g"]
         tau = p["tau_afterflow_s"]
         top = float(p["bulk_rpm"])
-        aim = target_g - 0.5 * tol
+        if to_taps:
+            margin = max(0.0, float(p["bulk_stop_margin_g"]))
+            aim = target_g - margin
+            end_g = max(tol, margin)
+            max_passes = 1
+            tag = "[phase 1 bulk->tap]"
+        else:
+            aim = target_g - 0.5 * tol
+            end_g = tol
+            max_passes = max(1, int(p["bulk_max_passes"]))
+            tag = "[phase 1 bulk-only]"
         boost_s = max(0.5, float(p["bulk_boost_s"]))
         stall_s = 10 * int(p["bulk_settle_ms"]) / 1000.0
         poll_ms = max(50, int(p["bulk_poll_ms"]))
-        max_passes = max(1, int(p["bulk_max_passes"]))
         min_gain = 0.002
+        use_kf = bool(p.get("bulk_halt_kf"))
+        k_sigma = float(p["k_sigma"])
+        ff = float(p["ff_prior_g_per_rev"])
         cad_on_ms = int(p.get("tap_cadence_on_ms", 60))
         cad_period_ms = 0
         if p.get("bulk_tap"):
             cad_period_ms = max(100, cad_on_ms
                                 + int(p.get("tap_cadence_off_ms", 440)))
-        tag = "[phase 1 bulk-only]"
         self.servo.move_to(p["bulk_tilt_deg"])
-        self.log("=== stage 1 'bulk' (bulk_only): {:.4f} g to go at {:.1f} "
-                 "plate deg; {:.0f} rpm tapering to {:.0f} over the last "
-                 "{:.0f} mg, x1.5 after {:.1f} s without flow; halt when "
-                 "m + slope*{:.2f}s >= {:.4f} g; cadence taps {}".format(
+        self.log("=== stage 1 'bulk' ({}): {:.4f} g to go at {:.1f} plate "
+                 "deg; {:.0f} rpm tapering to {:.0f} over the last {:.0f} mg"
+                 ", x1.5 after {:.1f} s without flow; halt when {} >= "
+                 "{:.4f} g; cadence taps {}".format(
+                     "bulk -> tap, no PI trickle" if to_taps else "bulk_only",
                      target_g - grams, p["bulk_tilt_deg"], top,
                      min(top, float(p["bulk_min_rpm"])),
-                     1000.0 * float(p["bulk_taper_start_g"]), boost_s, tau,
+                     1000.0 * float(p["bulk_taper_start_g"]), boost_s,
+                     ("KF m + r*{:.2f}s + {:.1f}*sigma".format(tau, k_sigma)
+                      if use_kf else "m + slope*{:.2f}s".format(tau)),
                      aim, "on" if cad_period_ms else "off"))
         polls, passes = 0, 0
         boost = 1.0
@@ -664,7 +719,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             status = None
             hist = []                 # (ticks_ms, grams) this pass
             misses = 0
-            rpm = min(top, self._bulk_taper_rpm(target_g - grams, tol)
+            rpm = min(top, self._bulk_taper_rpm(target_g - grams, end_g)
                       * boost)
             revs = 0.0
             slope = None
@@ -672,6 +727,8 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
             dry_since = None          # no flow at full rpm since
             prev_ms = self._tms()
             next_tap = _ticks_add(prev_ms, cad_period_ms)
+            kf = None                 # BULK_HALT_KF: built once armed
+            m_hat, r_hat, sigma = grams, 0.0, 0.0
             self.stepper.run_at_rpm(rpm)
             try:
                 while True:
@@ -710,15 +767,52 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                         hist.pop(0)
                     slope = m3._recent_slope(hist, 2.0, self._tdiff)
                     # a pass's first polls give a noise-dominated slope
-                    # that would halt a top-up before powder arrives
-                    r = 0.0
-                    if (slope is not None and slope > 0.0 and self._tdiff(
-                            now_ms, hist[0][0]) >= 1500):
-                        r = slope
-                    pred = grams + r * tau
-                    self._tel("%.2f,bulk,%.5f,1,%.5f,%.5f,,,,,,%.2f,%.5f,"
-                              "%.5f,0" % (self._t_s(), grams, grams, r, rpm,
-                                          pred, aim))
+                    # (and an unlearned KF rate) that would halt a top-up
+                    # before powder arrives
+                    armed = self._tdiff(now_ms, hist[0][0]) >= 1500
+                    flowing = armed and slope is not None and slope > 0.0
+                    if use_kf and kf is None and flowing and rpm > 1.0:
+                        # Started from the poll fit rather than from rest
+                        # with the trickle's ff prior: that prior is 3x
+                        # salt's, and m_hat ran 140 mg ahead at the halt
+                        # of a 0.5 g sim dose.
+                        kf = TrickleKF(p["trickle_dt_s"],
+                                       tau_bal_s=p["tau_bal_s"],
+                                       rate_tau_s=p["rate_tau_s"],
+                                       q_var=p["kf_q_var"],
+                                       quiet_sd_g=p["quiet_sd_g"],
+                                       noisy_sd_g=p["noisy_sd_g"])
+                        kf.seed(grams, sigma_g=max(1e-3, self.read_sigma_g),
+                                rate_gps=slope)
+                        ff = slope / (rpm / 60.0)
+                        kf_ms = now_ms
+                        m_hat, r_hat = kf.x[0], kf.x[1]
+                    elif kf is not None:
+                        dt = self._tdiff(now_ms, kf_ms) / 1000.0
+                        kf_ms = now_ms
+                        m_hat, r_hat = kf.update(
+                            grams, True, u_rev_s=rpm / 60.0, ff=ff,
+                            fresh=True, dt=min(2.0, max(0.02, dt)))
+                        # the slope measures the delivery rate directly
+                        # at bulk rpm; ff (g/rev) drifts with the rpm
+                        if flowing:
+                            ff = 0.9 * ff + 0.1 * (slope / (rpm / 60.0))
+                    if kf is not None:
+                        sigma = kf.pred_sigma(tau)
+                        r = r_hat
+                        pred = m_hat + r_hat * tau + k_sigma * sigma
+                        self._tel("%.2f,bulk,%.5f,1,%.5f,%.5f,%.5f,%.4f,,,,"
+                                  "%.2f,%.5f,%.5f,%d" % (
+                                      self._t_s(), grams, m_hat, r_hat,
+                                      sigma, ff, rpm, pred, aim,
+                                      kf.clamp_hits))
+                    else:
+                        r = slope if flowing and not use_kf else 0.0
+                        pred = grams + r * tau
+                        self._tel("%.2f,bulk,%.5f,1,%.5f,%.5f,,,,,,%.2f,"
+                                  "%.5f,%.5f,0" % (self._t_s(), grams,
+                                                   grams, r, rpm, pred,
+                                                   aim))
                     self.log(tag + " poll {}: mass {:.4f} / {:.4f} g ({:.4f}"
                              " g to go), {:.0f} rpm, {:.1f} mg/s, elapsed "
                              "{:.1f} s".format(polls, grams, target_g,
@@ -754,16 +848,21 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                             dry_since = None
                             boost = max(1.0, boost / 1.5)
                     want = min(top, self._bulk_taper_rpm(target_g - grams,
-                                                         tol) * boost)
+                                                         end_g) * boost)
                     if abs(want - rpm) >= 1.0:
                         rpm = want
                         self.stepper.run_at_rpm(rpm)
             finally:
                 self.stepper.stop()
             state["deg"] += revs * 360.0
+            if kf is not None:
+                self.last_ff = ff
             if status is not None:
                 return grams, status, polls
-            m_stop, t_stop_s = grams, self._t_s()
+            # the stop event pairs the halt estimate with its own rate,
+            # so the tau fit stays consistent with the predictor in use
+            m_stop = m_hat if kf is not None else grams
+            t_stop_s = self._t_s()
             self.log(tag + " auger halted (pass {}) at {:.0f} rpm with "
                      "{:.4f} g to go; settling {} ms".format(
                          passes, rpm, max(0.0, target_g - grams),
@@ -777,7 +876,9 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                 "t_stop_s": _round(t_stop_s, 2),
                 "m_stop_g": m_stop, "settled_g": settled,
                 "afterflow_g": settled - m_stop,
-                "rate_slope_gps": slope, "rate_kf_gps": None,
+                "rate_slope_gps": slope,
+                "rate_kf_gps": r_hat if kf is not None else None,
+                "predictor": "kf" if kf is not None else "slope",
                 "rpm": _round(rpm, 1), "tau_s": tau,
             })
             self._tel("%.2f,bulk_end,%.5f,1,%.5f,,,,,,,,,,0" % (
@@ -788,7 +889,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
                      "after the halt, {:+.1f} mg vs target)".format(
                          grams, target_g, 1000.0 * (grams - m_stop),
                          1000.0 * (grams - target_g)))
-            if target_g - grams <= tol:
+            if to_taps or target_g - grams <= tol:
                 return grams, None, polls
             if passes >= max_passes:
                 self.log(tag + " pass budget ({}) spent {:.1f} mg short"

@@ -41,6 +41,10 @@ Usage (normally built by opt_campaign.py, not typed):
         --trial-index 7 --mode bo \
         --params '{"bulk_tap": "off", "trim_tap": "off", ...}'
 
+``--params`` names either variant's 8 knobs (opt_common.VARIANTS): the
+three-stage campaign's, or the bulk -> tap campaign's, which also
+pushes ``set trickle_enabled 0``.
+
     python3 scripts/opt_dose_capture.py --fetch <uuid>
 
 Dependencies: pyserial; pymongo only when uploading.
@@ -326,11 +330,12 @@ def push_params(sess, params, frozen=None):
 
     The campaign's frozen snapshot (the hand-tuned constants) goes
     first, so no value left ``set`` on the live runner by an earlier
-    session or dose can leak into this trial.  The searched values and
-    tau go on top.
+    session or dose can leak into this trial.  The searched values, the
+    variant's dose-structure switch, and tau go on top.
     """
-    lines = (oc.frozen_set_lines(frozen, skip=oc.SEARCHED_FIRMWARE_KEYS)
-             + oc.firmware_set_lines(params))
+    hard = oc.firmware_set_lines(params)
+    skip = set(oc.firmware_values(params)) - {"tau_afterflow_s"}
+    lines = oc.frozen_set_lines(frozen, skip=skip) + hard
     for line in lines:
         key = line.split()[1]
         sess.send(line)

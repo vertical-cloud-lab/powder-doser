@@ -182,12 +182,55 @@ PARAMS = {"bulk_tap": "off", "trim_tap": "2hz", "bulk_tilt_deg": 27.5,
           "tolerance_g": 0.006, "tau_afterflow_s": 0.83}
 
 
+BULK_TAP_PARAMS = {"bulk_tap": "2hz", "bulk_tilt_deg": 40.0,
+                   "bulk_rpm": 100.0, "bulk_min_rpm": 10.0,
+                   "bulk_taper_start_g": 0.2, "bulk_stop_margin_g": 0.02,
+                   "tap_tilt_deg": 15.0, "tolerance_g": 0.003,
+                   "tau_afterflow_s": 0.83}
+
+
 def test_firmware_set_lines():
     lines = oc.firmware_set_lines(oc.validate_params(PARAMS))
     check("categoricals map to boolean knobs",
           "set bulk_tap 0" in lines and "set trickle_tap 1" in lines)
-    check("tau_afterflow_s rides along", "set tau_afterflow_s 0.83" in lines)
-    check("all 8 searched knobs + tau pushed", len(lines) == 9)
+    check("tau_afterflow_s rides along, last",
+          lines[-1] == "set tau_afterflow_s 0.83")
+    check("all 8 searched knobs + the PI-trickle switch + tau pushed",
+          len(lines) == 10 and "set trickle_enabled 1" in lines)
+
+
+def test_bulk_tap_variant():
+    check("each parameter set names its variant",
+          oc.variant_of(PARAMS) == oc.VARIANT_THREE_STAGE
+          and oc.variant_of(BULK_TAP_PARAMS) == oc.VARIANT_BULK_TAP)
+    clean = oc.validate_params(BULK_TAP_PARAMS)
+    lines = oc.firmware_set_lines(clean)
+    check("bulk-tap push: 8 knobs, trickle_enabled 0, tau last",
+          len(lines) == 10 and "set trickle_enabled 0" in lines
+          and "set bulk_stop_margin_g 0.02" in lines
+          and "set bulk_min_rpm 10" in lines
+          and lines[-1] == "set tau_afterflow_s 0.83"
+          and not any("trickle_tilt" in l or "trickle_start" in l
+                      for l in lines))
+    for bad, why in (
+            (dict(BULK_TAP_PARAMS, trickle_tilt_deg=15.0), "a trim knob"),
+            ({k: v for k, v in BULK_TAP_PARAMS.items()
+              if k != "bulk_stop_margin_g"}, "a missing margin")):
+        try:
+            oc.validate_params(bad)
+            ok = False
+        except ValueError:
+            ok = True
+        check("bulk-tap params with {} are rejected".format(why), ok)
+    check("the bulk-tap box contains the shipped trickle_params values",
+          all(b["bounds"][0] <= {"bulk_tilt_deg": 30.0, "bulk_rpm": 55.0,
+                                 "bulk_min_rpm": 20.0,
+                                 "bulk_taper_start_g": 0.1,
+                                 "bulk_stop_margin_g": 0.01,
+                                 "tap_tilt_deg": 10.0,
+                                 "tolerance_g": 0.005}[b["name"]]
+              <= b["bounds"][1]
+              for b in oc.BULK_TAP_SEARCH_SPACE_AX if "bounds" in b))
 
 
 FROZEN = {"trickle_kp": 250.0, "k_sigma": 1.0, "log_to_flash": True,
@@ -347,6 +390,24 @@ def test_shared_pico_guards():
     check("--frozen: the target and the searched knobs are not pushed "
           "from the snapshot", keys.count("bulk_rpm") == 1
           and "goal_mass_g" not in keys and "note" not in keys)
+
+    stale = dict(FROZEN, trickle_enabled=True, bulk_stop_margin_g=0.01)
+    _fake_pico("runner")
+    code, lines = _run_capture(
+        ["--powder-id", "salt", "--target-g", "0.5", "--campaign-id",
+         "salt-bulktap-test", "--trial", "t-bulktap", "--params",
+         json.dumps(BULK_TAP_PARAMS), "--frozen", json.dumps(stale),
+         "--out", tmp, "--no-upload"])
+    port = FakeSerial.last
+    keys = [k for k, _v in port.set_seen]
+    check("bulk-tap trial: the snapshot's trickle_enabled/margin are not "
+          "pushed, the variant's are, after the snapshot",
+          json.loads(lines[0])["status"] == "ok"
+          and keys.count("trickle_enabled") == 1
+          and ("trickle_enabled", "0") in port.set_seen
+          and ("bulk_stop_margin_g", "0.02") in port.set_seen
+          and keys.count("bulk_stop_margin_g") == 1
+          and keys.index("trickle_kp") < keys.index("trickle_enabled"))
 
     code, summ, port, dosed = run("repl", "t-repl")
     wrote = b"".join(port.writes)
@@ -511,7 +572,8 @@ def test_ssh_remote_cmd():
 
 
 def main():
-    for fn in (test_firmware_set_lines, test_frozen_snapshot_helpers,
+    for fn in (test_firmware_set_lines, test_bulk_tap_variant,
+               test_frozen_snapshot_helpers,
                test_penalization,
                test_jam_classification, test_mongo_uri_resolution,
                test_ssh_remote_cmd, test_executor_end_to_end,

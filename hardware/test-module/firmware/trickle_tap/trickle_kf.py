@@ -68,8 +68,13 @@ class TrickleKF:
                   [0.5 * dt ** 3 * v, dt ** 2 * v, 0.0],
                   [0.0, 0.0, 1e-8]]
 
-    def seed(self, mass_g, sigma_g=None, r_sigma_gps=0.02):
+    def seed(self, mass_g, sigma_g=None, r_sigma_gps=0.02, rate_gps=0.0):
         """Start mid-dose from a settled reading: m = b = mass, r = 0.
+
+        ``rate_gps`` > 0 starts it on a MOVING reading instead (the
+        bulk's predictive halt, seeded from a poll-slope fit): b is the
+        reading, r the rate, and m leads b by the steady-state balance
+        lag, ``rate_gps * tau_bal_s``.
 
         With ``sigma_g`` omitted the covariance keeps the original's
         ``diag(0.05)`` (the cross-check test relies on that).  On the
@@ -83,8 +88,10 @@ class TrickleKF:
         m and b are known to ``sigma_g``, and the rate at rest is known
         to be ~0 within ``r_sigma_gps``.
         """
-        self.x[0] = mass_g
+        self.x[0] = mass_g + rate_gps * self.tau_bal_s
         self.x[2] = mass_g
+        if rate_gps > 0.0:
+            self.x[1] = rate_gps
         if sigma_g is not None:
             v = sigma_g * sigma_g
             self.P = [[v, 0.0, 0.0],

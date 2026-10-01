@@ -65,6 +65,26 @@ BULK_MIN_RPM = 20.0
 BULK_BOOST_S = 3.0
 BULK_MAX_PASSES = 8
 
+# Bulk -> tap dose (added 2026-10-01, PR #166): 0 = no PI trickle.  The
+# bulk then runs like BULK_ONLY's (taper, no-flow boost, predictive
+# halt) but aims BULK_STOP_MARGIN_G short of the goal, in ONE pass, and
+# the tap endgame below finishes the dose.  The taper ends at the larger
+# of the margin and TOLERANCE_G; start it before the predicted afterflow
+# (flow x TAU_AFTERFLOW_S, about 0.1 g for salt at 100 rpm) or the halt
+# fires at full speed.  TRICKLE_START_REMAINING_G and
+# BULK_ANTICIPATION_G are unused in this mode, and BULK_ONLY wins when
+# both are set.  1 = the tuned bulk -> trickle -> tap dose.
+TRICKLE_ENABLED = True
+BULK_STOP_MARGIN_G = 0.010
+
+# The predictive halt of BULK_ONLY and TRICKLE_ENABLED = 0 doses.
+# 0 = mass + trailing-2 s poll slope * TAU_AFTERFLOW_S, the rule the
+# 2026-09-30 Al 4047 top-up landed +0.95 mg with (the TAU fit pairs the
+# same raw reading with the same slope).  1 = the Kalman filter below:
+# halt when m_hat + r_hat * TAU_AFTERFLOW_S + K_SIGMA * sigma reaches
+# the aim, the PI trickle's cutoff rule with the auger at bulk rpm.
+BULK_HALT_KF = False
+
 # Tap endgame tilt, plate degrees (0 = horizontal, the precise end).
 TAP_TILT_DEG = 10.0
 TAPS_PER_CYCLE = 1           # single taps: a 2-burst can dump a slug past

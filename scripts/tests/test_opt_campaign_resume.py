@@ -103,9 +103,13 @@ def _quiet(fn, *args):
         return fn(*args)
 
 
-def _powder_file(runner):
+def _powder_file_doc(runner):
     with open(os.path.join(runner.campaign.dir, "salt.json")) as f:
-        return json.load(f)["latest_campaign"]
+        return json.load(f)
+
+
+def _powder_file(runner):
+    return _powder_file_doc(runner)["latest_campaign"]
 
 
 def test_screening_halts():
@@ -389,9 +393,100 @@ def test_unattended_limits():
         shutil.rmtree(state, ignore_errors=True)
 
 
+def test_bulk_tap_campaign():
+    """The section 6 variant: the same loop on the bulk -> tap dose."""
+    state = tempfile.mkdtemp(prefix="optbulktap-")
+    try:
+        extra = (("--budget", "2") if HAVE_AX else ("--screen-only",))
+        r = _runner(state, None, "--variant", "bulk-tap", *extra)
+        _quiet(r.run)
+        doc = r.campaign.doc
+        names = [n for n, _k, _t in oc.BULK_TAP_SEARCH_PARAMS]
+        check("bulk-tap campaign: its own id, variant, and search space",
+              "-bulktap-" in doc["campaign_id"]
+              and doc["variant"] == oc.VARIANT_BULK_TAP
+              and [p["name"] for p in doc["search_space"]] == names)
+        frozen = doc["frozen_params"]
+        check("frozen snapshot: PI trickle off, screening on the 0.83 s "
+              "tau prior", frozen["trickle_enabled"] is False
+              and frozen["tau_afterflow_s"] == ocamp.BULK_TAP_TAU_PRIOR_S)
+        plan = dict(doc["screening_plan"])
+        corners = [p for l, p in plan.items() if l.startswith("corner-")]
+        bounds = {p["name"]: p.get("bounds") for p in doc["search_space"]}
+        check("16 corners at the bulk-tap box edges, every factor "
+              "balanced 8/8", len(corners) == 16 and all(
+                  sorted(set(c[n] for c in corners)) == (
+                      sorted(oc.CAT_VALUES) if bounds[n] is None
+                      else bounds[n])
+                  and sum(1 for c in corners if c[n] in
+                          (oc.CAT_ON, (bounds[n] or [0, 0])[1])) == 8
+                  for n in names))
+        check("centers at the box midpoints with bulk taps off",
+              plan["center-00"]["bulk_stop_margin_g"] == 0.025
+              and plan["center-00"]["bulk_min_rpm"] == 15.0
+              and plan["center-00"]["bulk_tap"] == oc.CAT_OFF)
+        check("baseline = trickle_params.py's bulk/tap values",
+              plan["baseline-00"] == {
+                  "bulk_tap": "off", "bulk_tilt_deg": 30.0,
+                  "bulk_rpm": 55.0, "bulk_min_rpm": 20.0,
+                  "bulk_taper_start_g": 0.1, "bulk_stop_margin_g": 0.01,
+                  "tap_tilt_deg": 10.0, "tolerance_g": 0.005})
+        trials = []
+        for name in sorted(os.listdir(r.campaign.dir)):
+            if name.startswith("trial_"):
+                with open(os.path.join(r.campaign.dir, name)) as f:
+                    trials.append(json.load(f))
+        check("every dose ran without the PI trickle ({} doses)".format(
+            len(trials)), len(trials) == len(r.records) >= 22 and all(
+                t["parameters_executed"]["trickle_enabled"] in (False, 0)
+                and not t["outcomes"]["t_trickle_s"]
+                and all(e["phase"] == "bulk" for e in t["stop_events"])
+                for t in trials))
+        check("tau fitted from the bulk halts alone",
+              (doc.get("tau_afterflow") or {}).get("tau0_s") is not None)
+        if HAVE_AX:
+            ax_names = list(r.ax.experiment.search_space.parameters)
+            bo = [x for x in r.records if x["mode"] == "bo"]
+            check("BO ran on the bulk-tap space: {} doses".format(len(bo)),
+                  sorted(ax_names) == sorted(names) and len(bo) == 2
+                  and all(sorted(ocamp.ax_parameterization(x["params"]))
+                          == sorted(names) for x in bo)
+                  and doc["phase"] == "readout"
+                  and os.path.exists(os.path.join(r.campaign.dir,
+                                                  "pareto.json")))
+        cid = doc["campaign_id"]
+        try:
+            ocamp.Runner(_args(state, "--resume", cid, "--variant",
+                               "three-stage"))
+            mismatch = False
+        except SystemExit:
+            mismatch = True
+        check("--variant three-stage refuses to resume a bulk-tap "
+              "campaign", mismatch)
+
+        params = dict(plan["center-00"])
+        v = ocamp.Runner(_args(state, "--validate-params",
+                               json.dumps(params), "--replicates", "2"))
+        _quiet(v.run)
+        with open(os.path.join(v.campaign.dir, "profile_salt.json")) as f:
+            prof = json.load(f)
+        check("validation runs inside the bulk-tap campaign (variant "
+              "read off the params) and writes a bulk-tap profile",
+              v.campaign.doc["campaign_id"] == cid
+              and prof["variant"] == oc.VARIANT_BULK_TAP
+              and sorted(prof["parameters"]) == sorted(names)
+              and prof["frozen_params"]["trickle_enabled"] is False)
+        check("the sim profile no longer overwrites the sim powder file",
+              "tau_afterflow" in _powder_file_doc(v)
+              and "parameters" not in _powder_file_doc(v))
+    finally:
+        shutil.rmtree(state, ignore_errors=True)
+
+
 def main():
     for fn in (test_screening_halts, test_bo_halts,
-               test_restore_from_mongo, test_unattended_limits):
+               test_restore_from_mongo, test_unattended_limits,
+               test_bulk_tap_campaign):
         print(fn.__name__)
         fn()
     if _FAILURES:

@@ -787,6 +787,98 @@ def test_bulk_only_clog():
           trickle_params.BULK_ONLY is False)
 
 
+BULK_TAP_OVER = {"trickle_enabled": False, "bulk_stop_margin_g": 0.040,
+                 "trickle_tilt_deg": 22.0, "tau_afterflow_s": 0.83}
+
+
+def test_bulk_then_taps():
+    # 2026-10-01 (PR #166): the bulk -> tap dose.  No PI trickle: the
+    # bulk halts on a predicted final mass bulk_stop_margin_g short of
+    # the goal and the unchanged tap endgame finishes.
+    plant = Plant(afterflow_s=0.83)
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, BULK_TAP_OVER, log=lambda msg="": lines.append(str(msg)))
+    res = doser.dose(0.5)
+    doc = doser.last_result
+    stages = dict(res.phase_cycles)
+    err_mg = 1000.0 * (res.dispensed_g - 0.5)
+    print("    -> {!r} (error {:+.1f} mg)".format(res, err_mg))
+    check("bulk -> tap dose ends ok within tolerance (got {}, {:+.1f} mg)"
+          .format(res.status, err_mg), res.status == m3.DoseResult.OK
+          and abs(err_mg) <= 1000.0 * doser.p["tolerance_g"] + 1e-6)
+    check("the PI trickle never ran (no velocity commands, 0 polls)",
+          stepper.velocity_calls == 0 and stages.get("trickle") == 0
+          and doc["t_trickle_s"] == 0.0)
+    check("the tube went bulk tilt -> tap tilt, never the trickle tilt",
+          22.0 not in servo.history
+          and servo.history[0] == doser.p["bulk_tilt_deg"]
+          and servo.history[-1] == doser.p["tap_tilt_deg"])
+    check("the bulk handed over short and the taps finished",
+          stages.get("bulk", 0) > 0 and stages.get("tap", 0) > 0
+          and res.taps > 0)
+    events = doc["stop_events"]
+    check("one bulk stop event, slope predictor, at most one pass",
+          len(events) == 1 and events[0]["phase"] == "bulk"
+          and events[0]["predictor"] == "slope"
+          and events[0]["rate_slope_gps"] > 0.02)
+    check("RESULT echoes the bulk -> tap knobs", doc["params"][
+        "trickle_enabled"] in (False, 0)
+        and doc["params"]["bulk_stop_margin_g"] == 0.040
+        and doc["params"]["bulk_halt_kf"] in (False, 0))
+
+    # An early taper start lets the auger slow down before the halt.
+    rpms = []
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, dict(BULK_TAP_OVER, bulk_taper_start_g=0.30,
+                    bulk_min_rpm=10.0))
+    _plain = stepper.run_at_rpm
+
+    def logged(rpm):
+        rpms.append(rpm)
+        _plain(rpm)
+    stepper.run_at_rpm = logged
+    res = doser.dose(0.5)
+    halt_rpm = doser.last_result["stop_events"][0]["rpm"]
+    check("taper: rpm stepped down before the halt ({:.0f} -> {:.0f} rpm)"
+          .format(rpms[0], halt_rpm), res.status == m3.DoseResult.OK
+          and rpms[0] == doser.p["bulk_rpm"]
+          and halt_rpm < 0.8 * doser.p["bulk_rpm"])
+
+    # The Kalman-filter halt: same stage, m_hat + r_hat*tau + k*sigma.
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, dict(BULK_TAP_OVER, bulk_halt_kf=True))
+    res = doser.dose(0.5)
+    doc = doser.last_result
+    ev = doc["stop_events"][0] if doc["stop_events"] else {}
+    kf_rows = [r.split(",") for r in doser.telemetry
+               if r.split(",")[1] == "bulk" and r.split(",")[6] != ""]
+    check("KF halt: dose ok (got {}, {:+.1f} mg)".format(
+        res.status, 1000.0 * (res.dispensed_g - 0.5)),
+        res.status == m3.DoseResult.OK)
+    check("KF halt: the stop event carries the KF rate and m_hat",
+          ev.get("predictor") == "kf" and ev.get("rate_kf_gps") > 0.02
+          and doc["ff_g_per_rev"] is not None)
+    check("KF halt: bulk telemetry rows carry sigma and ff once armed "
+          "({} rows)".format(len(kf_rows)), len(kf_rows) > 5
+          and all(row[7] != "" for row in kf_rows))
+
+    # Less than the margin to go: straight to the taps.
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(plant, BULK_TAP_OVER)
+    res = doser.dose(0.03)
+    check("target inside the stop margin: bulk skipped, taps only "
+          "(got {})".format(res.status), res.status == m3.DoseResult.OK
+          and dict(res.phase_cycles).get("bulk") == 0
+          and plant.max_rpm_seen == 0.0 and res.taps > 0)
+
+    check("shipped defaults keep the PI trickle on and the slope halt",
+          trickle_params.TRICKLE_ENABLED is True
+          and trickle_params.BULK_HALT_KF is False)
+
+
 def test_heap_check_collects_before_truncating():
     # mem_free() excludes uncollected garbage: on the rig it read 1248
     # bytes at row 80 and truncated telemetry although a collection
@@ -841,6 +933,7 @@ def main():
                test_tap_burst_until_close,
                test_telemetry_can_never_abort_a_dose,
                test_bulk_only_clog,
+               test_bulk_then_taps,
                test_heap_check_collects_before_truncating):
         print(fn.__name__)
         fn()

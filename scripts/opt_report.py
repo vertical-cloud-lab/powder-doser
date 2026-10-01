@@ -12,6 +12,9 @@ writes, next to them:
   corners of the 2^(8-4) fraction, section 2.4), the tau fit, and the
   recommended parameter set.
 
+Both campaign variants (``campaign.json``'s ``variant``): the
+three-stage campaign and the bulk -> tap one (section 6).
+
     python scripts/opt_report.py data/opt/salt-20260929T014732Z
 
 Recommendation rule (single doses, not validated replicates): among
@@ -37,17 +40,41 @@ INK = "#0b0b0b"
 INK_2 = "#52514e"
 GRID = "#e4e3df"
 MODE_STYLE = {                       # slot order fixed, never cycled
-    "screen": ("#2a78d6", "o", "screening (tau 0.30 s)"),
+    "screen": ("#2a78d6", "o", "screening (tau {tau:.2f} s)"),
     "recenter": ("#eb6834", "D", "re-dosed anchors (fitted tau)"),
     "bo": ("#1baf7a", "s", "Bayesian optimization"),
     "validation": ("#1baf7a", "^", "validation"),
 }
-FACTORS = [("bulk_tap", "Bulk taps"), ("trim_tap", "Trim taps"),
-           ("bulk_tilt_deg", "Bulk tilt (deg)"),
-           ("trickle_tilt_deg", "Trim tilt (deg)"),
-           ("tap_tilt_deg", "Tap tilt (deg)"), ("bulk_rpm", "Bulk RPM"),
-           ("trickle_start_remaining_g", "Bulk->trim threshold (g)"),
-           ("tolerance_g", "Trim tolerance band (g)")]
+TITLES = {"bulk_tap": "Bulk taps", "trim_tap": "Trim taps",
+          "bulk_tilt_deg": "Bulk tilt (deg)",
+          "trickle_tilt_deg": "Trim tilt (deg)",
+          "tap_tilt_deg": "Tap tilt (deg)", "bulk_rpm": "Bulk RPM",
+          "trickle_start_remaining_g": "Bulk->trim threshold (g)",
+          "tolerance_g": "Trim tolerance band (g)",
+          "bulk_min_rpm": "Approach (taper floor) RPM",
+          "bulk_taper_start_g": "Taper start (g to go)",
+          "bulk_stop_margin_g": "Bulk stop margin (g)"}
+# Table order, and the dose-table cell, per variant.
+FACTORS = {
+    oc.VARIANT_THREE_STAGE: (
+        "bulk_tap", "trim_tap", "bulk_tilt_deg", "trickle_tilt_deg",
+        "tap_tilt_deg", "bulk_rpm", "trickle_start_remaining_g",
+        "tolerance_g"),
+    oc.VARIANT_BULK_TAP: (
+        "bulk_tap", "bulk_tilt_deg", "bulk_rpm", "bulk_min_rpm",
+        "bulk_taper_start_g", "bulk_stop_margin_g", "tap_tilt_deg",
+        "tolerance_g"),
+}
+CELL_HEADER = {
+    oc.VARIANT_THREE_STAGE: "taps bulk/trim, bulk tilt, trim tilt, tap "
+                            "tilt, RPM, threshold g, tol mg",
+    oc.VARIANT_BULK_TAP: "bulk taps, bulk tilt, RPM, approach RPM, taper "
+                         "start g, stop margin mg, tap tilt, tol mg",
+}
+
+
+def variant(doc):
+    return doc.get("variant", oc.VARIANT_THREE_STAGE)
 
 
 def load(cdir):
@@ -93,12 +120,14 @@ def knee(records):
 def main_effects(records, doc):
     """Mean outcome at each level of each factor over the 16 corners.
     Flagged doses (overshoot/jam) keep their raw values here."""
-    bounds = {p["name"]: p.get("bounds") for p in oc.SEARCH_SPACE_AX}
+    bounds = {p["name"]: p.get("bounds")
+              for p in oc.search_space_ax(variant(doc))}
     corners = [r for r in records if r["mode"] == "screen" and usable(r)
                and r["label"].startswith("corner-")
                and r["summary"]["t_total_s"] is not None]
     rows = []
-    for name, title in FACTORS:
+    for name in FACTORS[variant(doc)]:
+        title = TITLES[name]
         lo, hi = [], []
         for r in corners:
             v = r["params"][name]
@@ -136,6 +165,12 @@ def fmt(v, spec="{:.1f}"):
 
 
 def params_cell(p):
+    if oc.variant_of(p) == oc.VARIANT_BULK_TAP:
+        return ("{bulk_tap}, {bulk_tilt_deg:.1f}, {bulk_rpm:.0f}, "
+                "{bulk_min_rpm:.0f}, {bulk_taper_start_g:.3f}, {margin:.1f}, "
+                "{tap_tilt_deg:.1f}, {tol:.1f}").format(
+                    margin=1000.0 * p["bulk_stop_margin_g"],
+                    tol=1000.0 * p["tolerance_g"], **p)
     return ("{bulk_tap}/{trim_tap}, {bulk_tilt_deg:.1f}, "
             "{trickle_tilt_deg:.1f}, {tap_tilt_deg:.1f}, {bulk_rpm:.0f}, "
             "{trickle_start_remaining_g:.3f}, {tol:.1f}").format(
@@ -164,9 +199,12 @@ def figure(doc, records, pick, path):
              and r["summary"]["abs_error_mg"] is not None]
     floor = 0.3                                   # log axis floor, mg
     seen = set()
+    screen_tau = (doc.get("frozen_params") or {}).get("tau_afterflow_s",
+                                                      0.30)
     for r in dosed:
         color, marker, label = MODE_STYLE.get(r["mode"],
                                               MODE_STYLE["screen"])
+        label = label.format(tau=screen_tau)
         s = r["summary"]
         ok = clean(r)
         lab = None
@@ -253,6 +291,9 @@ def report(cdir):
 
     L = []
     L.append("# Campaign {}\n".format(doc["campaign_id"]))
+    if variant(doc) == oc.VARIANT_BULK_TAP:
+        L.append("- **bulk -> tap** campaign: no PI trickle; the bulk halts "
+                 "on a predicted final mass and the taps finish")
     L.append("- powder `{}`, target {} g, status **{}**{}".format(
         doc["powder_id"], doc["target_g"], doc["status"],
         " ({})".format(doc["stop_reason"]) if doc.get("stop_reason")
@@ -286,9 +327,8 @@ def report(cdir):
             dict(pick["params"]), indent=1)))
     if pareto and pareto.get("model_pareto"):
         L.append("## Model Pareto set (Ax, predicted means)\n")
-        L.append("| Ax trial | t_total (s) | abs_error (mg) | taps bulk/trim, "
-                 "bulk tilt, trim tilt, tap tilt, RPM, threshold g, "
-                 "tol mg |")
+        L.append("| Ax trial | t_total (s) | abs_error (mg) | {} |".format(
+            CELL_HEADER[variant(doc)]))
         L.append("|---|---|---|---|")
         for m in pareto["model_pareto"]:
             pm = m["predicted_means"]
@@ -316,9 +356,8 @@ def report(cdir):
                          e["flag_hi"]))
         L.append("")
     L.append("## Every dose\n")
-    L.append("| # | label | taps bulk/trim, bulk tilt, trim tilt, tap tilt, "
-             "RPM, threshold g, tol mg | status | t_total (s) | error (mg) "
-             "| taps |")
+    L.append("| # | label | {} | status | t_total (s) | error (mg) "
+             "| taps |".format(CELL_HEADER[variant(doc)]))
     L.append("|---|---|---|---|---|---|---|")
     for r in records:
         s = r["summary"]

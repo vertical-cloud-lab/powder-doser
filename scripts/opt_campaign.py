@@ -58,6 +58,14 @@ hopper nobody can refill), or a rig fault that one retry did not clear.
 plant (the trickle_tap sim rig) instead of SSH -- no hardware, used by
 scripts/tests and for shaking down the loop before a rig session.
 
+``--variant bulk-tap`` (section 6) optimizes the bulk -> tap dose
+instead: no PI trickle (firmware TRICKLE_ENABLED = 0), and the search
+space swaps the trim taps, trim tilt, and bulk->trim threshold for the
+predictive bulk's approach rpm, taper start, and stop margin.  The loop,
+executor, tau fit, anchors, BO, readout, and validation are the same;
+screening runs on the powder's fitted tau (0.83 s without one), since
+the bulk halt itself is the prediction.
+
 Validation (section 2.4 step 5): after picking a point off the front,
 
     python scripts/opt_campaign.py --powder-id salt --host pi@zero \
@@ -97,6 +105,22 @@ N_BASELINES = 2         # hand-tuned baseline doses (section 2.9)
 # Screening labels re-dosed under the fitted tau (section 2.8).
 ANCHOR_PREFIXES = ("center-", "baseline-")
 
+# Factors A-H of the 2^(8-4)_IV screen per variant: A-D are the full
+# 2^4, E=BCD, F=ACD, G=ABC, H=ABD.
+SCREEN_FACTORS = {
+    oc.VARIANT_THREE_STAGE: (
+        "bulk_tilt_deg", "trickle_tilt_deg", "tap_tilt_deg", "bulk_rpm",
+        "trickle_start_remaining_g", "tolerance_g", "bulk_tap", "trim_tap"),
+    oc.VARIANT_BULK_TAP: (
+        "bulk_tilt_deg", "bulk_min_rpm", "tap_tilt_deg", "bulk_rpm",
+        "bulk_stop_margin_g", "tolerance_g", "bulk_tap",
+        "bulk_taper_start_g"),
+}
+# The bulk -> tap screen's tau when the powder has no fitted one: salt's
+# PR #131 stop tests (the bulk halt IS the prediction there, so the
+# three-stage screen's tuned 0.30 s would overshoot by design).
+BULK_TAP_TAU_PRIOR_S = 0.83
+
 
 def log(msg):
     print("[campaign] {}".format(msg), flush=True)
@@ -115,7 +139,8 @@ def utcstamp():
 # Screening design: 2^(8-4)_IV + centers (section 2.4, from #162 section 5)
 # ---------------------------------------------------------------------------
 
-def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES):
+def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES,
+                   variant=oc.VARIANT_THREE_STAGE):
     """16 resolution-IV corners + 4 centers as campaign parameter dicts,
     bracketed by ``baseline_reps`` doses at ``baseline``.
 
@@ -123,8 +148,9 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES):
     E=BCD, F=ACD, G=ABC, H=ABD (the standard minimum-aberration
     2^(8-4)_IV set) carry the threshold, the tolerance band, and the
     two tap categoricals -- which slot in natively as two-level
-    factors.  Corner order is shuffled (seeded) per DOE practice;
-    centers run at the box midpoints with both cadences off.
+    factors (``SCREEN_FACTORS`` has the bulk -> tap variant's order).
+    Corner order is shuffled (seeded) per DOE practice; centers run at
+    the box midpoints with the cadences off.
 
     ``baseline`` is the hand-tuned point (section 2.9).  It sits inside
     every box but not at its midpoint, so it rides along as extra
@@ -133,9 +159,12 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES):
     so drift across the block shows up at a fixed point.  The DOE's
     main-effect analysis uses corners + centers only.
     """
-    bounds = {p["name"]: p.get("bounds") for p in oc.SEARCH_SPACE_AX}
+    bounds = {p["name"]: p.get("bounds")
+              for p in oc.search_space_ax(variant)}
 
     def level(name, hi):
+        if bounds[name] is None:                 # categorical off / on
+            return oc.CAT_ON if hi > 0 else oc.CAT_OFF
         lo_v, hi_v = bounds[name]
         return hi_v if hi > 0 else lo_v
 
@@ -146,22 +175,15 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES):
         c = 1 if i & 4 else -1
         d = 1 if i & 8 else -1
         e, f, g, h = b * c * d, a * c * d, a * b * c, a * b * d
-        corners.append({
-            "bulk_tilt_deg": level("bulk_tilt_deg", a),
-            "trickle_tilt_deg": level("trickle_tilt_deg", b),
-            "tap_tilt_deg": level("tap_tilt_deg", c),
-            "bulk_rpm": level("bulk_rpm", d),
-            "trickle_start_remaining_g": level("trickle_start_remaining_g",
-                                               e),
-            "tolerance_g": level("tolerance_g", f),
-            "bulk_tap": oc.CAT_ON if g > 0 else oc.CAT_OFF,
-            "trim_tap": oc.CAT_ON if h > 0 else oc.CAT_OFF,
-        })
+        corners.append({name: level(name, sign) for name, sign in
+                        zip(SCREEN_FACTORS[variant],
+                            (a, b, c, d, e, f, g, h))})
     import random
     random.Random(seed).shuffle(corners)
     center = {name: (b[0] + b[1]) / 2.0
               for name, b in bounds.items() if b}
-    center.update({"bulk_tap": oc.CAT_OFF, "trim_tap": oc.CAT_OFF})
+    center.update({name: oc.CAT_OFF
+                   for name, b in bounds.items() if b is None})
     plan = [("corner-{:02d}".format(i), p) for i, p in enumerate(corners)]
     plan += [("center-{:02d}".format(i), dict(center))
              for i in range(N_CENTERS)]
@@ -324,21 +346,12 @@ class SimExecutor:
 
     def dose(self, campaign_id, trial_uuid, trial_index, powder_id,
              target_g, mode, params, covariates, frozen=None):
-        # ``frozen`` needs no push here: the plant is built from the
-        # same trickle_params.py the snapshot was read from.
-        p_over = {
-            "bulk_tap": params["bulk_tap"] == oc.CAT_ON,
-            "trickle_tap": params["trim_tap"] == oc.CAT_ON,
-            "bulk_tilt_deg": params["bulk_tilt_deg"],
-            "trickle_tilt_deg": params["trickle_tilt_deg"],
-            "tap_tilt_deg": params["tap_tilt_deg"],
-            "bulk_rpm": params["bulk_rpm"],
-            "trickle_start_remaining_g":
-                params["trickle_start_remaining_g"],
-            "tolerance_g": params["tolerance_g"],
-        }
-        if params.get("tau_afterflow_s") is not None:
-            p_over["tau_afterflow_s"] = params["tau_afterflow_s"]
+        # The same push as the rig: the frozen snapshot (minus the
+        # flash/console switches, which stay sim-quiet), then the
+        # searched values, the variant's switch, and tau.
+        p_over = {k: v for k, v in (frozen or {}).items()
+                  if k not in ("log_to_flash", "print_every_n_polls")}
+        p_over.update(oc.firmware_values(params))
         plant = self.sim.Plant(seed=self.seed + trial_index,
                                afterflow_s=0.83)
         lines = []
@@ -634,11 +647,11 @@ def make_ax_client(model_name, sobol_trials, seed):
     return AxClient(generation_strategy=gs, verbose_logging=False)
 
 
-def create_experiment(ax_client, name):
+def create_experiment(ax_client, name, variant=oc.VARIANT_THREE_STAGE):
     from ax.service.ax_client import ObjectiveProperties
     ax_client.create_experiment(
         name=name,
-        parameters=[dict(p) for p in oc.SEARCH_SPACE_AX],
+        parameters=[dict(p) for p in oc.search_space_ax(variant)],
         objectives={
             # Thresholds passed EXPLICITLY -- Ax silently infers them
             # when omitted, which must not score our hypervolume
@@ -653,7 +666,8 @@ def create_experiment(ax_client, name):
 
 def ax_parameterization(params):
     """Campaign params -> the Ax search-space dict (drops tau)."""
-    return {name: params[name] for name, _k, _kind in oc.SEARCH_PARAMS}
+    return {name: params[name] for name, _k, _kind
+            in oc.search_params(oc.variant_of(params))}
 
 
 # ---------------------------------------------------------------------------
@@ -665,13 +679,14 @@ DEFAULT_BUDGET = 40
 NOTHING_DOSED = ("rig-busy", "not-found")
 
 
-def latest_campaign_id(state_root, powder_id, simulate):
+def latest_campaign_id(state_root, powder_id, simulate, variant=None):
     """This powder's most recently updated campaign -> id or None.
 
     Looks under ``state_root`` first (a --simulate run only resumes
     simulated campaigns, and a real run only real ones), then at the
     powder file's ``latest_campaign`` pointer, locally and in Mongo,
-    which ``Campaign.restore_from_mongo`` can then fetch.
+    which ``Campaign.restore_from_mongo`` can then fetch.  ``variant``
+    (``--variant``) narrows it to that variant's campaigns.
     """
     best = None
     if os.path.isdir(state_root):
@@ -684,7 +699,9 @@ def latest_campaign_id(state_root, powder_id, simulate):
                 continue
             if (doc.get("kind") != "opt_campaign"
                     or doc.get("powder_id") != powder_id
-                    or bool(doc.get("simulate")) != bool(simulate)):
+                    or bool(doc.get("simulate")) != bool(simulate)
+                    or (variant and doc.get(
+                        "variant", oc.VARIANT_THREE_STAGE) != variant)):
                 continue
             key = doc.get("updated_utc") or doc.get("created_utc") or ""
             if best is None or key > best[0]:
@@ -703,7 +720,11 @@ def latest_campaign_id(state_root, powder_id, simulate):
                     {"powder_id": powder_id})
         except Exception as exc:
             log("could not read powder_models ({})".format(exc))
-    return ((model or {}).get("latest_campaign") or {}).get("campaign_id")
+    latest = (model or {}).get("latest_campaign") or {}
+    if variant and latest.get("variant",
+                              oc.VARIANT_THREE_STAGE) != variant:
+        return None
+    return latest.get("campaign_id")
 
 
 class Runner:
@@ -714,7 +735,7 @@ class Runner:
         cid = args.resume
         if cid == "latest":
             cid = latest_campaign_id(state_root, self.powder_id,
-                                     args.simulate)
+                                     args.simulate, args.variant)
             if cid is not None:
                 log("resuming {}'s latest {}campaign: {}".format(
                     self.powder_id, "simulated " if args.simulate else "",
@@ -734,14 +755,22 @@ class Runner:
                                      cid, state_root))
             self.campaign.load()
         else:
-            cid = "{}-{}".format(self.powder_id, utcstamp())
+            variant = args.variant or oc.VARIANT_THREE_STAGE
+            cid = "{}-{}{}".format(
+                self.powder_id, "bulktap-" if variant ==
+                oc.VARIANT_BULK_TAP else "", utcstamp())
             self.campaign = Campaign(cid, state_root)
             frozen = frozen_snapshot()
-            baseline = oc.baseline_params(frozen)
+            # the snapshot is what runs (dose.py pushes a profile's copy)
+            frozen.update(oc.VARIANTS[variant]["mode"])
+            if variant == oc.VARIANT_BULK_TAP:
+                frozen["tau_afterflow_s"] = self.tau_prior(args.simulate)
+            baseline = oc.baseline_params(frozen, variant)
             self.campaign.doc = {
                 "kind": "opt_campaign",
                 "schema_version": oc.SCHEMA_VERSION,
                 "campaign_id": cid,
+                "variant": variant,
                 "powder_id": self.powder_id,
                 "target_g": args.target_g,
                 "status": "running",
@@ -750,13 +779,14 @@ class Runner:
                 "operator": args.operator,
                 "git_commit": oc.git_commit(REPO_ROOT),
                 "simulate": bool(args.simulate),
-                "search_space": oc.SEARCH_SPACE_AX,
+                "search_space": oc.search_space_ax(variant),
                 "objectives": {"t_total_s": oc.THRESHOLD_T_TOTAL_S,
                                "abs_error_mg": oc.THRESHOLD_ABS_ERROR_MG},
                 "frozen_params": frozen,
                 "baseline_params": baseline,
                 "screening_plan": screening_plan(args.seed, baseline,
-                                                 args.baseline_reps),
+                                                 args.baseline_reps,
+                                                 variant),
                 "budget": DEFAULT_BUDGET,
                 "tau_afterflow": None,
                 "in_flight": None,
@@ -769,6 +799,10 @@ class Runner:
         if doc["powder_id"] != self.powder_id:
             raise SystemExit("campaign {} is for powder {!r}".format(
                 doc["campaign_id"], doc["powder_id"]))
+        self.variant = doc.get("variant", oc.VARIANT_THREE_STAGE)
+        if args.variant and args.variant != self.variant:
+            raise SystemExit("campaign {} is a {} campaign, not {}".format(
+                doc["campaign_id"], self.variant, args.variant))
         if args.budget is not None:
             doc["budget"] = args.budget
         doc.setdefault("budget", DEFAULT_BUDGET)
@@ -811,6 +845,22 @@ class Runner:
         self.ax = None
         self.save()
 
+    def tau_prior(self, simulate):
+        """The bulk -> tap screen's tau: the powder's fitted value, else
+        BULK_TAP_TAU_PRIOR_S (a --simulate campaign never reads the
+        real powder file)."""
+        if not simulate:
+            import fit_tau_afterflow as ft
+            model = ft.load_powder_model(self.powder_id) or {}
+            fitted = (model.get("tau_afterflow") or {}).get("tau0_s")
+            if fitted:
+                log("bulk-tap screening runs on {}'s fitted tau {} s".format(
+                    self.powder_id, fitted))
+                return float(fitted)
+        log("bulk-tap screening runs on the {} s tau prior".format(
+            BULK_TAP_TAU_PRIOR_S))
+        return BULK_TAP_TAU_PRIOR_S
+
     # -- persistence ----------------------------------------------------
 
     def save(self):
@@ -848,6 +898,7 @@ class Runner:
             state_dir = os.path.relpath(state_dir, REPO_ROOT)
         return {
             "campaign_id": doc["campaign_id"],
+            "variant": self.variant,
             "simulate": bool(doc.get("simulate")),
             "target_g": doc["target_g"],
             "status": doc["status"],
@@ -894,8 +945,10 @@ class Runner:
         # the shared Pico's flash is nearly full -- the executor pulls
         # the telemetry over serial anyway).
         frozen.update(doc.get("frozen_overrides") or {})
+        pushed = [key for _n, key, _k in oc.search_params(self.variant)]
+        pushed += list(oc.VARIANTS[self.variant]["mode"])
         return {k: v for k, v in frozen.items()
-                if k not in oc.SEARCHED_FIRMWARE_KEYS and k != "goal_mass_g"}
+                if k not in pushed and k != "goal_mass_g"}
 
     # -- unattended limits ----------------------------------------------
 
@@ -1218,7 +1271,8 @@ class Runner:
             return
         args = self.args
         self.ax = make_ax_client(args.model, args.sobol_trials, args.seed)
-        create_experiment(self.ax, "{}_campaign".format(self.powder_id))
+        create_experiment(self.ax, "{}_campaign".format(self.powder_id),
+                          self.variant)
         # Warm start: attach every screening + recenter dose as existing
         # data (the sample's attach_trial block).
         attached = 0
@@ -1435,8 +1489,9 @@ class Runner:
             "profile_id": "{}-{}".format(doc["campaign_id"], utcstamp()),
             "powder_id": self.powder_id,
             "target_g": doc["target_g"],
-            "parameters": {k: params[k]
-                           for k, _f, _t in oc.SEARCH_PARAMS},
+            "variant": self.variant,
+            "parameters": {k: params[k] for k, _f, _t
+                           in oc.search_params(self.variant)},
             "tau_afterflow_s": tau,
             "frozen_params": doc["frozen_params"],
             "validation": stats,
@@ -1447,12 +1502,15 @@ class Runner:
             "created_utc": oc.utcnow_iso(),
         }
         # A --simulate profile must never be dosed from: it stays in
-        # the campaign dir and off Mongo, where dose.py never looks.
-        cache_dir = (self.campaign.dir if self.args.simulate
-                     else PROFILE_CACHE)
-        os.makedirs(cache_dir, exist_ok=True)
-        cache = os.path.join(cache_dir,
-                             "{}.json".format(self.powder_id))
+        # the campaign dir (next to, not over, the sim powder file) and
+        # off Mongo, where dose.py never looks.
+        if self.args.simulate:
+            cache = os.path.join(self.campaign.dir,
+                                 "profile_{}.json".format(self.powder_id))
+        else:
+            os.makedirs(PROFILE_CACHE, exist_ok=True)
+            cache = os.path.join(PROFILE_CACHE,
+                                 "{}.json".format(self.powder_id))
         with open(cache, "w") as f:
             json.dump(profile, f, indent=1)
         uploaded = False
@@ -1485,7 +1543,8 @@ class Runner:
             if args.validate_params:
                 doc["status"] = "validating"
                 self.validate(oc.validate_params(
-                    json.loads(args.validate_params)), args.replicates)
+                    json.loads(args.validate_params), self.variant),
+                    args.replicates)
                 return
             doc["status"] = "running"
             if doc["phase"] == "screen":
@@ -1528,6 +1587,11 @@ def parse_args(argv=None):
     ap = argparse.ArgumentParser(
         description="issue #164 optimization campaign loop")
     ap.add_argument("--powder-id", required=True)
+    ap.add_argument("--variant", choices=sorted(oc.VARIANTS), default=None,
+                    help="new campaigns: three-stage (bulk -> PI trickle "
+                         "-> taps, the default) or bulk-tap (no PI "
+                         "trickle, section 6); with --resume, only that "
+                         "variant's campaigns")
     ap.add_argument("--target-g", type=float, default=0.5)
     ap.add_argument("--budget", type=int, default=None,
                     help="BO doses after the screening block (default "
@@ -1596,6 +1660,9 @@ def parse_args(argv=None):
     args = ap.parse_args(argv)
     if args.validate_params and not args.resume:
         args.resume = "latest"
+    if args.validate_params and not args.variant:
+        # validate inside the latest campaign of the params' own variant
+        args.variant = oc.variant_of(json.loads(args.validate_params))
     return args
 
 

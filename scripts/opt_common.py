@@ -44,7 +44,7 @@ RESULT_PREFIX = "RESULT "
 # dose on anything else.  That build lives in its own folder on the
 # Pico's flash so its config.py / main_three_phase.py never replace
 # the root-level modules other firmware imports (section 5.1).
-FIRMWARE_ID = "trickle_tap/2026-09-30b"
+FIRMWARE_ID = "trickle_tap/2026-10-01"
 PICO_FIRMWARE_DIR = "/trickle_tap"
 
 # Objective reference thresholds, locked 2026-09-22 (campaign-setup
@@ -52,7 +52,8 @@ PICO_FIRMWARE_DIR = "/trickle_tap"
 THRESHOLD_T_TOTAL_S = 180.0
 THRESHOLD_ABS_ERROR_MG = 20.0
 
-# The 8-parameter search space (campaign-setup section 2.1 / 5.3).
+# The 8-parameter search space of the three-stage (bulk -> PI trickle
+# -> tap) campaign (campaign-setup section 2.1 / 5.3).
 # Campaign-space name -> firmware ``set`` key.  The two categoricals
 # take CAT_VALUES; "on" means the fixed 2 Hz cadence.
 CAT_OFF, CAT_ON = "off", "2hz"
@@ -84,6 +85,64 @@ OBJECTIVE_NAMES = ("t_total_s", "abs_error_mg")
 # The firmware keys of the 8 searched knobs (pushed per trial, so a
 # frozen-snapshot push leaves them out).
 SEARCHED_FIRMWARE_KEYS = tuple(key for _name, key, _kind in SEARCH_PARAMS)
+
+# The bulk -> tap variant (campaign-setup section 6, added 2026-10-01):
+# the firmware's TRICKLE_ENABLED = 0 dose, with no PI trickle.  The trim
+# taps, trim tilt, and bulk->trim threshold go with the trickle; the
+# predictive bulk's approach rpm, taper start, and stop margin come in.
+BULK_TAP_SEARCH_PARAMS = (
+    ("bulk_tap", "bulk_tap", "cat"),
+    ("bulk_tilt_deg", "bulk_tilt_deg", "float"),
+    ("bulk_rpm", "bulk_rpm", "float"),
+    ("bulk_min_rpm", "bulk_min_rpm", "float"),
+    ("bulk_taper_start_g", "bulk_taper_start_g", "float"),
+    ("bulk_stop_margin_g", "bulk_stop_margin_g", "float"),
+    ("tap_tilt_deg", "tap_tilt_deg", "float"),
+    ("tolerance_g", "tolerance_g", "float"),
+)
+BULK_TAP_SEARCH_SPACE_AX = [
+    {"name": "bulk_tap", "type": "choice", "is_ordered": False,
+     "values": list(CAT_VALUES)},
+    {"name": "bulk_tilt_deg", "type": "range", "bounds": [15.0, 40.0]},
+    {"name": "bulk_rpm", "type": "range", "bounds": [20.0, 100.0]},
+    {"name": "bulk_min_rpm", "type": "range", "bounds": [5.0, 25.0]},
+    {"name": "bulk_taper_start_g", "type": "range", "bounds": [0.05, 0.30]},
+    {"name": "bulk_stop_margin_g", "type": "range", "bounds": [0.0, 0.05]},
+    {"name": "tap_tilt_deg", "type": "range", "bounds": [0.0, 15.0]},
+    {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
+]
+
+# Campaign variants.  ``mode`` is the dose-structure switch every trial
+# pushes with its searched values (hard-verified, never left to what
+# the shared runner was last ``set`` to): a parameter set means one
+# dose structure.  A frozen BULK_ONLY = 1 still overrides both.
+VARIANT_THREE_STAGE, VARIANT_BULK_TAP = "three-stage", "bulk-tap"
+VARIANTS = {
+    VARIANT_THREE_STAGE: {"search_params": SEARCH_PARAMS,
+                          "search_space": SEARCH_SPACE_AX,
+                          "mode": {"trickle_enabled": True}},
+    VARIANT_BULK_TAP: {"search_params": BULK_TAP_SEARCH_PARAMS,
+                       "search_space": BULK_TAP_SEARCH_SPACE_AX,
+                       "mode": {"trickle_enabled": False}},
+}
+
+
+def search_params(variant=None):
+    return VARIANTS[variant or VARIANT_THREE_STAGE]["search_params"]
+
+
+def search_space_ax(variant=None):
+    return VARIANTS[variant or VARIANT_THREE_STAGE]["search_space"]
+
+
+def variant_of(params):
+    """The variant whose search parameters a parameterization names
+    (the three-stage campaign on a tie, e.g. an empty dict)."""
+    names = set(params)
+
+    def overlap(v):
+        return len(names & {n for n, _k, _t in search_params(v)})
+    return max((VARIANT_THREE_STAGE, VARIANT_BULK_TAP), key=overlap)
 
 # Firmware DoseResult.status -> jam classification (campaign-setup
 # section 2.3).  Everything else is either fine ("ok"/"overshoot") or
@@ -131,10 +190,11 @@ def git_commit(repo_root=None):
 # Parameter translation: campaign space <-> firmware ``set`` lines
 # ---------------------------------------------------------------------------
 
-def validate_params(params):
-    """Check a campaign-space parameterization; returns a clean copy."""
+def validate_params(params, variant=None):
+    """Check a campaign-space parameterization of ``variant`` (default:
+    the one its names match); returns a clean copy."""
     clean = {}
-    for name, _key, kind in SEARCH_PARAMS:
+    for name, _key, kind in search_params(variant or variant_of(params)):
         if name not in params:
             raise ValueError("missing search parameter {!r}".format(name))
         value = params[name]
@@ -153,23 +213,35 @@ def validate_params(params):
     return clean
 
 
-def firmware_set_lines(params):
-    """Campaign parameterization -> ordered ``set <key> <value>`` lines.
+def firmware_values(params):
+    """Campaign parameterization -> ordered ``{firmware key: value}``.
 
-    Categoricals become the firmware's boolean knobs (``2hz`` -> 1,
-    ``off`` -> 0); the optional ``tau_afterflow_s`` rides along when the
-    campaign has a fitted per-powder value to push (section 2.8).
+    Categoricals become the firmware's boolean knobs (``2hz`` -> True,
+    ``off`` -> False), the variant's dose-structure switch follows the
+    searched knobs, and the optional ``tau_afterflow_s`` rides along
+    last when the campaign has a fitted per-powder value to push
+    (section 2.8).
     """
-    lines = []
-    for name, key, kind in SEARCH_PARAMS:
+    variant = variant_of(params)
+    out = {}
+    for name, key, kind in search_params(variant):
         value = params[name]
-        if kind == "cat":
-            lines.append("set {} {}".format(key, 1 if value == CAT_ON else 0))
-        else:
-            lines.append("set {} {:.6g}".format(key, float(value)))
+        out[key] = value == CAT_ON if kind == "cat" else float(value)
+    out.update(VARIANTS[variant]["mode"])
     if params.get("tau_afterflow_s") is not None:
-        lines.append("set tau_afterflow_s {:.6g}".format(
-            float(params["tau_afterflow_s"])))
+        out["tau_afterflow_s"] = float(params["tau_afterflow_s"])
+    return out
+
+
+def firmware_set_lines(params):
+    """Campaign parameterization -> ordered ``set <key> <value>`` lines
+    (``firmware_values``; booleans as 0/1)."""
+    lines = []
+    for key, value in firmware_values(params).items():
+        if isinstance(value, bool):
+            lines.append("set {} {}".format(key, 1 if value else 0))
+        else:
+            lines.append("set {} {:.6g}".format(key, value))
     return lines
 
 
@@ -192,11 +264,12 @@ def frozen_set_lines(frozen, skip=()):
     return lines
 
 
-def baseline_params(frozen):
-    """The hand-tuned values of the 8 searched knobs, in campaign space,
-    from a frozen snapshot (lowercase trickle_params keys)."""
+def baseline_params(frozen, variant=None):
+    """The hand-tuned values of a variant's 8 searched knobs, in
+    campaign space, from a frozen snapshot (lowercase trickle_params
+    keys)."""
     out = {}
-    for name, key, kind in SEARCH_PARAMS:
+    for name, key, kind in search_params(variant):
         value = frozen[key]
         if kind == "cat":
             out[name] = CAT_ON if value else CAT_OFF
