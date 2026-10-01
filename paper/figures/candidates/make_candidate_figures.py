@@ -35,6 +35,18 @@ RESEARCH = "#eb6834"    # slot 2, orange
 ACCENT = "#1baf7a"      # slot 3, aqua
 # Tilt is an ordered magnitude, so it gets a one-hue ordinal ramp, not hues.
 TILT_RAMP = {0.0: "#86b6ef", 45.0: "#2a78d6", 90.0: "#104281"}
+# The battery records tilt as 0/45/90 (``tilt_deg`` in data/), but the tilt
+# plate is geared 2:1, so the physical tube angles above horizontal are 0, 22.5
+# and 45 degrees - 45 degrees is the maximum tilt in every test.  Data stay
+# keyed by the recorded setting; every axis, tick, legend and caption goes
+# through PHYS (recorded setting -> physical degrees above horizontal).
+PHYS = {0.0: 0.0, 45.0: 22.5, 90.0: 45.0}
+TILT_AXIS = "Tube tilt (deg above horizontal; 0 = horizontal park, 45 = maximum)"
+
+
+def deg(recorded: float) -> str:
+    """Physical tube angle for a recorded tilt setting, formatted for a label."""
+    return f"{PHYS[float(recorded)]:g}"
 # Status palette (fixed, never themed) - always paired with a text label.
 GOOD, WARNING, SERIOUS, CRITICAL = "#0ca30c", "#fab219", "#ec835a", "#d03b3b"
 STATUS = {"ok": GOOD, "overshoot": WARNING,
@@ -218,7 +230,7 @@ def figA1_feed_vs_tilt(out: Path):
             xs, ys = [], []
             for tilt in (0.0, 45.0, 90.0):
                 mg, _ = feed_factor(rid, tilt)
-                xs.append(tilt)
+                xs.append(PHYS[tilt])
                 ys.append(max(mg, 0.05))
             bounded = pid in BOUNDED
             ax.plot(xs, ys, marker="o" if track == "surrogate" else "s",
@@ -229,15 +241,16 @@ def figA1_feed_vs_tilt(out: Path):
         labels = spread([np.log10(e[1]) for e in ends], 0.135)
         for (pid, yend, bounded), ylab in zip(ends, labels):
             ax.annotate(DISPLAY[pid] + (" $\\leq$bound" if bounded else ""),
-                        (90, 10 ** ylab), xytext=(9, 0),
+                        (PHYS[90.0], 10 ** ylab), xytext=(9, 0),
                         textcoords="offset points", fontsize=7.3,
                         color=INK if not bounded else INK2, va="center")
         ax.set_yscale("log")
-        ax.set_xticks([0, 45, 90])
-        ax.set_xlabel("Auger tilt (deg;  0 = horizontal, 90 = vertical)")
+        ax.set_xticks([PHYS[t] for t in (0.0, 45.0, 90.0)])
+        ax.set_xticklabels([deg(t) for t in (0.0, 45.0, 90.0)])
+        ax.set_xlabel(TILT_AXIS.replace("; ", ";\n"))   # two panels side by side
         ax.set_title(title, fontsize=9)
         ax.grid(axis="y", alpha=0.6)
-        ax.set_xlim(-8, 150)
+        ax.set_xlim(-4, 75)
     axes[0].set_ylabel("Feed factor (mg per 360$^\\circ$ revolution)")
     fig.suptitle("A1 · Feed factor spans three orders of magnitude across powders",
                  fontsize=11, fontweight="bold", y=1.0)
@@ -247,7 +260,7 @@ def figA1_feed_vs_tilt(out: Path):
 
 
 def figA2_feed_rank(out: Path):
-    """Ranked feed factor at 45 deg, with censored powders drawn as bounds.
+    """Ranked feed factor at 22.5 deg (recorded 45), censored powders as bounds.
 
     Position-encoded dots rather than bars: bar *length* on a log axis is not
     proportional to the value it encodes, and there is no zero baseline to
@@ -285,7 +298,7 @@ def figA2_feed_rank(out: Path):
     ax.set_xscale("log")
     ax.set_xlim(left, 1600)
     ax.set_ylim(-0.8, len(pids) - 0.2)
-    ax.set_xlabel("Feed factor at 45$^\\circ$ tilt (mg per revolution, log scale)")
+    ax.set_xlabel(f"Feed factor at {deg(45.0)}$^\\circ$ tilt (mg per revolution, log scale)")
     ax.set_title("A2 \u00b7 One auger, one parameter set, 3+ decades of conveyance",
                  fontsize=10.5)
     ax.grid(axis="x", alpha=0.6)
@@ -296,7 +309,10 @@ def figA2_feed_rank(out: Path):
 
 
 def figA3_tilt_sensitivity(out: Path):
-    """How much gravity assist each powder needs: ratio of 90 deg to 0 deg."""
+    """How much gravity assist each powder needs: ratio of 45 deg to 0 deg.
+
+    The maximum tilt is recorded as 90 but is a 45 deg physical tube angle.
+    """
     rows = []
     for pid in REP.powder_id:
         if pid in BOUNDED:
@@ -314,7 +330,7 @@ def figA3_tilt_sensitivity(out: Path):
     ax.axvline(1, color=INK2, lw=1, ls="--")
     ax.text(1.05, -0.65, "no tilt benefit", fontsize=7, color=INK2)
     ax.set_yticklabels([DISPLAY[r[0]] for r in rows], fontsize=8)
-    ax.set_xlabel("Feed factor ratio, 90$^\\circ$ / 0$^\\circ$ tilt")
+    ax.set_xlabel(f"Feed factor ratio, {deg(90.0)}$^\\circ$ / {deg(0.0)}$^\\circ$ tilt")
     ax.set_title("A3 · Gravity dependence separates cohesive from free-flowing",
                  fontsize=10.5)
     ax.grid(axis="x", alpha=0.6)
@@ -324,7 +340,7 @@ def figA3_tilt_sensitivity(out: Path):
     track_legend(ax, loc="lower right", bars=True)
     finish(fig, out / "A3_tilt_sensitivity.png",
            "A large ratio means the powder barely conveys horizontally and needs the tube tipped "
-           "toward vertical; a small ratio means the screw meters it under its own action.\n"
+           "up to 45$^\\circ$; a small ratio means the screw meters it under its own action.\n"
            "Powders whose feed factor is an upper bound are omitted (the ratio is undefined).")
 
 
@@ -383,7 +399,7 @@ def figB1_rsd_vs_feed(out: Path):
                  fontsize=10.5)
     ax.grid(alpha=0.6, which="both")
     handles = [Line2D([], [], marker="o", ls="", color=TILT_RAMP[t],
-                      label=f"{t:.0f}$^\\circ$ tilt") for t in (0.0, 45.0, 90.0)]
+                      label=f"{deg(t)}$^\\circ$ tilt") for t in (0.0, 45.0, 90.0)]
     handles += [Line2D([], [], marker="o", ls="", color=INK2, label="Surrogate"),
                 Line2D([], [], marker="s", ls="", color=INK2, label="Research")]
     handles += ax.get_legend_handles_labels()[0][-2:]
@@ -419,8 +435,8 @@ def figB2_salt_repeats(out: Path):
                 f"between-run {between:.0f}%\nwithin-run {within:.0f}%",
                 ha="center", fontsize=7, color=INK2)
     ax.set_xticks(range(3))
-    ax.set_xticklabels([f"{t:.0f}$^\\circ$" for t in tilts])
-    ax.set_xlabel("Auger tilt")
+    ax.set_xticklabels([f"{deg(t)}$^\\circ$" for t in tilts])
+    ax.set_xlabel("Tube tilt (deg above horizontal)")
     ax.set_ylabel("Feed factor (mg per revolution)")
     ax.set_ylim(0, 375)
     ax.set_title("B2 · The control repeats: between-run scatter $\\approx$ within-run",
@@ -481,7 +497,7 @@ def figC1_massrev_vs_rpm(out: Path):
         ax.annotate(text, (90, ylab), xytext=(8, 0), textcoords="offset points",
                     fontsize=7.3, color=INK2, va="center")
     finish(fig, out / "C1_massrev_vs_rpm.png",
-           "Block D, 3 continuous revolutions per speed at 45 deg tilt - n = 1 per speed per run, "
+           f"Block D, 3 continuous revolutions per speed at {deg(45.0)} deg tilt - n = 1 per speed per run, "
            "so these are trends, not measured slopes.\n"
            "Normalised within powder so shape, not magnitude, is compared. Excluded (no resolvable "
            "15 RPM reference, or QC-flagged carry-over between speeds): " + ", ".join(dropped) + ".")
@@ -511,7 +527,7 @@ def figC2_traces(out: Path):
                  fontsize=11, fontweight="bold")
     fig.tight_layout()
     finish(fig, out / "C2_traces.png",
-           "Block D streaming balance polls (~4 Hz) during 3 revolutions at 15 RPM, 45 deg tilt.")
+           f"Block D streaming balance polls (~4 Hz) during 3 revolutions at 15 RPM, {deg(45.0)} deg tilt.")
 
 
 # =============================================================================
@@ -570,15 +586,15 @@ def figD1_tap_quantum(out: Path):
     ax.text(ax.get_xlim()[0] * 1.1, 5.7,
             "$\\pm$5 mg closed-loop tolerance", fontsize=7.2, color=CRITICAL)
     ax.set_xlim(ax.get_xlim()[0], ax.get_xlim()[1] * 2.4)
-    ax.set_xlabel("Feed factor at 45$^\\circ$ (mg per revolution)")
-    ax.set_ylabel("Tap quantum at 45$^\\circ$ (mg per solenoid tap)")
+    ax.set_xlabel(f"Feed factor at {deg(45.0)}$^\\circ$ (mg per revolution)")
+    ax.set_ylabel(f"Tap quantum at {deg(45.0)}$^\\circ$ (mg per solenoid tap)")
     ax.set_title("D1 \u00b7 The tap quantum does not track the feed factor",
                  fontsize=10.5)
     ax.grid(alpha=0.6, which="both")
     track_legend(ax, loc="lower right")
     place_labels(ax, items)
     finish(fig, out / "D1_tap_quantum.png",
-           "Block E, 8 single-tap trials at 45 deg, each preceded by a measured re-feed "
+           f"Block E, 8 single-tap trials at {deg(45.0)} deg, each preceded by a measured re-feed "
            "rotation; error bars are the standard error of those 8 taps.\n"
            "Plotted only where the quantum resolves above its own noise (mean > 2 SE). "
            "Not resolved in any QC-valid run: " + ", ".join(unresolved) + ".")
@@ -725,7 +741,7 @@ def figF1_operating_map(out: Path):
     ax.set_yscale("log")
     ax.set_xlim(0.1, 1400)
     ax.set_ylim(1.2, 700)
-    ax.set_xlabel("Feed factor at 45$^\\circ$ (mg per revolution)  $\\rightarrow$  throughput")
+    ax.set_xlabel(f"Feed factor at {deg(45.0)}$^\\circ$ (mg per revolution)  $\\rightarrow$  throughput")
     ax.set_ylabel("Revolution RSD (%)  $\\rightarrow$  scatter")
     ax.set_title("F1 · A two-number fingerprint places any new powder on the map",
                  fontsize=10.5)

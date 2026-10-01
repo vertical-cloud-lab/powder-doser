@@ -61,7 +61,7 @@ Fasteners (M3), bulk capacitors & --- & 5 & generic \\
 \multicolumn{4}{l}{\emph{Shared (one per platform)}}\\
 Raspberry Pi Pico~W & 1 & 6 & Raspberry Pi \\
 Waveshare Pico-2CH-RS232 board (balance interface) & 1 & 9 & Waveshare 19979 \\
-Mean Well GST60A12-P1J 12~V/5~A supply, cord and pigtail & 1 & 26 & Digi-Key \\
+Mean Well GST60A12-P1J 12~V/5~A supply, cord, and pigtail & 1 & 26 & Digi-Key \\
 Pololu D24V22F5 5~V buck regulator & 1 & 19 & Pololu \#2858 \\
 Headers and wiring & --- & 10 & generic \\
 \midrule
@@ -76,45 +76,52 @@ An illustrated build guide is kept in the repository alongside the parametric
 CAD sources and STL files for every part. In outline:
 
 \begin{enumerate}
-\item \textbf{Print} the auger, the 20-tooth pinion, the bracket and collars,
-the tap collar (two clamp halves), the mounting plate, the hinged baseplate and
-the servo gear sector in PLA (0.2~mm layers, four perimeters, 25\% infill, no
-supports). Print the auger upright.
-\item \textbf{Auger drive:} seat the auger in its printed collars on the
+\item \textbf{Print} the auger and its screw-on cap, the 20-tooth stepper
+pinion, the auger brackets, the tap collar, the mounting plate, the hinged
+baseplate, and the servo pinions in PLA (0.2~mm layers, four perimeters, 25\%
+infill). Most parts need support material. Print the auger upright.
+\item \textbf{Auger drive:} seat the auger in its printed brackets on the
 mounting plate, bolt the NEMA-11 stepper with its pinion to the plate, and
-check that the pinion meshes with the auger's 44-tooth gear band (2.2:1).
-\item \textbf{Tap collar:} clamp the two collar halves around the auger tube,
-mount the solenoid on the collar flange (2$\times$M3) so that its plunger
-strikes the anvil pad, and stick the vibration motor to the opposite pad.
+check that the pinion meshes with the 44-tooth gear on the auger (2.2:1).
+\item \textbf{Tap collar:} clamp the collar around the auger tube and mount
+the solenoid in it so that its plunger strikes the tube. (A vibration motor was
+also planned for the collar but was not used in this work.)
 \item \textbf{Tilt stage:} join the mounting plate to the baseplate through the
 side hinges (printed pins), mesh the two servos with the plate's gear (2:1), and
 check that the outlet lies on the hinge axis.
 \item \textbf{Electronics:} wire the Pico~W, Tic T500 (serial), DRV8871,
-DRV2605L (I$^2$C), the RS-232 board (to the HR-100A balance) and the servos as
+DRV2605L (I$^2$C), the RS-232 board (to the HR-100A balance), and the servos as
 shown in the schematic in \texttt{hardware/test-module/}, then flash the
 MicroPython firmware.
+\item \textbf{Fill:} unscrew the cap, pour the powder into the upper end of
+the auger tube, and screw the cap back on. There are no loading slots; the tube
+is its own reservoir.
 \item \textbf{Checkout:} run the firmware self-test (rotate, tap, vibrate,
-tilt, tare and read), then the test protocols listed in the main text.
+tilt, tare, and read), then the test protocols listed in the main text.
 \end{enumerate}
 
 \section{Auger and outlet geometry}
 
-Fig.~\ref{fgr:nozzles} shows a cross-section of the geared auger and the four
-printed outlet variants. The tests in the main text used the Type~4 outlet,
-with a 3~mm exit hole.
+Fig.~\ref{fgr:nozzles} shows the AI-modelled geared auger and its four
+printed outlet variants, made early in the project. The auger used in the
+tests is the team's later Fusion~360 part, shown in section in Fig.~1c of the
+main text; like the Type~4 variant, it ends in a tapered outlet with a 3~mm exit
+hole.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/figS1_nozzles}
-\caption{(a) Cross-section of the geared auger: the 8~mm central core, the
-single-start helical flight (10~mm pitch, 2~mm thick) fused to the 21~mm bore of
-the tube, and the external gear band. (b--e) Cross-sections of the four outlet
-variants (Types~1--4), which differ in exit constriction and chamfer. All are
-parametric OpenSCAD models (\texttt{cad/auger-geared/} in the repository)
-written by AI coding agents under human review; no conventional CAD software was
-used to design them. The auger used in the tests is the later Fusion~360
-recreation of this part, whose gear band has 44 teeth rather than the 48 of the
-AI-modelled band.}
+\caption{(a) Cross-section of the AI-modelled geared auger: the 8~mm central
+core, the single-start helical flight (10~mm pitch, 2~mm thick) running the full
+length of the 21~mm bore, and the external gear band. (b--e) Cross-sections of
+the four outlet variants (Types~1--4), which differ in exit constriction and
+chamfer. All are parametric OpenSCAD models (\texttt{cad/auger-geared/} in the
+repository) written by AI coding agents under human review; no conventional CAD
+software was used to design them. The auger used in the tests is the team's
+later Fusion~360 part (main text, Fig.~1c). Its flight is 0.5~mm thick with a
+10.4~mm pitch and covers only the third of the tube nearest the outlet, the tube
+is filled through a screw-on cap rather than through loading slots, and its gear
+has 44 teeth rather than 48.}
 \label{fgr:nozzles}
 \end{figure}
 
@@ -142,7 +149,7 @@ Table~\ref{tbl:doses} summarizes every valid closed-loop dose by powder and
 target mass. A dose is valid when its run passed quality screening, the dose
 ended in a defined controller state, and the auger or solenoid actually moved;
 doses excluded for any other reason (for example, a misaligned outlet, an
-unreadable balance or powder that caked in the tube) are listed with the reason
+unreadable balance, or powder that caked in the tube) are listed with the reason
 in the per-dose file.
 
 \small
@@ -152,8 +159,15 @@ in the per-dose file.
 \section{Run inventory}
 
 Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
-runs that were aborted, postponed or excluded, so that each number in the main
+runs that were aborted, postponed, or excluded, so that each number in the main
 text can be traced to the run it came from.
+
+The test battery's raw records store tilt as a servo setting (0, 45, or 90)
+rather than as an angle. The tilt plate is geared 2:1, so these settings are
+tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$ above horizontal, and
+45$^\circ$ is the steepest tilt reached in any test. The main text and its
+figures report tube angles; the conversion is made
+once, in \texttt{paper/figures/make\_data\_figures.py}.
 
 \small
 \input{figures/data/run_inventory_table}
@@ -168,9 +182,9 @@ interactions are preserved publicly in the repository:
 \item \textbf{CAD and code generation:} every coding-agent session (GitHub
 Copilot coding agent and Claude-family models, 2026) is recorded as a pull
 request containing the prompt (issue text and review comments), the generated
-CAD code, rendered views and the human review thread.
+CAD code, rendered views, and the human review thread.
 \item \textbf{Design reviews and literature queries:} Edison Scientific query
-scripts, task identifiers, raw answers and extracted references are archived
+scripts, task identifiers, raw answers, and extracted references are archived
 with the corresponding branches; the consolidated bibliography, with the
 verification status of each entry, is \texttt{paper/references\_validation.md}.
 \item \textbf{Text-to-CAD evaluations:} CADSmith run artifacts and the Zoo
@@ -186,7 +200,7 @@ behaviour, good and bad, is discussion~\#39 in the repository.
 Fig.~\ref{fgr:aiusage} shows how agent use was spread over the project. Team
 members addressed the two coding agents 754 times between April and September
 2026, and the agents authored 789 of the 877 commits (90\%). The counts cover
-all work in the repository (CAD, firmware, data analysis and writing), not only
+all work in the repository (CAD, firmware, data analysis, and writing), not only
 the design of the parts. The team moved from the GitHub Copilot coding agent to
 Claude at the start of July 2026.
 

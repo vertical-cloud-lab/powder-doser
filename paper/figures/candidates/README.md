@@ -1,12 +1,12 @@
 # Candidate manuscript figures — issue #116 round-1 powder battery
 
-> **Units note (2026-09-25).** Revolutions, rpm and rotation angles in this directory are
-> **auger** quantities: the dosing firmware (`main_three_phase.py`) folds the as-built
-> 20:44 stepper-to-auger gear (2.2:1, PR #124) into every rotation. The tilt labels
-> (0/45/90°) are the battery's recorded settings; the tilt plate is geared 2:1, so the
-> physical tube angles are **0°, 22.5° and 45°**. The manuscript figures
-> (`paper/figures/make_data_figures.py`) report physical angles; these exploratory
-> figures keep the recorded labels.
+> **Corrected 2026-10-01:** the battery records tilt as 0/45/90, which the 2:1 tilt gear
+> turns into tube angles of 0, 22.5 and 45 degrees; this document and its figures now use
+> the physical angles, and 45 degrees was the maximum tilt in every test.
+>
+> Revolutions, rpm and rotation angles in this directory are **auger** quantities: the
+> dosing firmware (`main_three_phase.py`) folds the as-built 20:44 stepper-to-auger gear
+> (2.2:1, PR #124) into every rotation.
 
 Options to choose between for the Digital Discovery manuscript (PR #97), built
 from the round-1 uniform battery in issue #116. **Nothing here is wired into
@@ -24,7 +24,9 @@ python make_candidate_figures.py                   # -> out/*.png
 ```
 
 The tidy CSVs in `data/` are committed (272 kB) so step 2 works from this branch
-alone; the raw per-run tree is ~37 MB and lives on the run branches.
+alone; the raw per-run tree is ~37 MB and lives on the run branches. Their
+`tilt_deg` column keeps the recorded settings (0/45/90); `make_candidate_figures.py`
+maps them to the physical tube angles (0/22.5/45°, its `PHYS` table) at plot time.
 
 ## What the dataset actually contains
 
@@ -41,7 +43,7 @@ under suspicion, environment stress test, unverified outlet).
 Three facts constrain what can honestly be plotted:
 
 1. **Feed factor spans >3 decades**, AlSi10Mg 231 mg/rev down to fumed silica
-   ≤0.25 mg/rev at 45°, on one auger with one frozen parameter set.
+   ≤0.25 mg/rev at 22.5°, on one auger with one frozen parameter set.
 2. **Three powders are censored, not small**: brown rice flour, Si −325 mesh
    and fumed silica conveyed nothing resolvable. They are plotted as upper
    bounds with arrows, never as small numbers.

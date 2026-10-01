@@ -51,7 +51,7 @@ DISPLAY = {
 
 
 def consistency_ratio(run: dict) -> float | None:
-    """Block E re-feed / block C rotation, both mg/rev at tilt 45 deg.
+    """Block E re-feed / block C rotation, both mg/rev at recorded tilt 45 (22.5 deg).
 
     The two blocks measure the same quantity minutes apart.  Every
     well-behaved run in the #116 dataset lands in 0.74-1.12; a run outside

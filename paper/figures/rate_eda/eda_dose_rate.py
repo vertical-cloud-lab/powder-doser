@@ -7,13 +7,18 @@ powder delivers.  Blocks A-F are exactly that experiment.  Block G (the
 three-phase closed-loop dose) is the controller, and is deliberately excluded
 here except as a sanity reference.
 
-    Block A  8 no-actuation reads at tilt 45              -> detection floor
-    Block B  15 s static hold at tilt 0/45/90, no actuator -> gravity-only flow
-    Block C  6 x 360 deg at 30 RPM, at tilt 0/45/90        -> mg/rev vs tilt
-    Block D  3 rev continuous at 15/45/90 RPM, tilt 45     -> mg/s vs speed
+    Block A  8 no-actuation reads at tilt 22.5             -> detection floor
+    Block B  15 s static hold at tilt 0/22.5/45, no actuator -> gravity-only flow
+    Block C  6 x 360 deg at 30 RPM, at tilt 0/22.5/45      -> mg/rev vs tilt
+    Block D  3 rev continuous at 15/45/90 RPM, tilt 22.5   -> mg/s vs speed
              (+ streamed balance polls -> semi-instantaneous rate)
-    Block E  8 x (360 deg re-feed + 1 solenoid tap), tilt 0/45 -> mg/tap
+    Block E  8 x (360 deg re-feed + 1 solenoid tap), tilt 0/22.5 -> mg/tap
     Block F  same shape with the ERM motor                 -> never ran (EIO)
+
+Tilts above are physical tube angles in degrees above horizontal.  The battery
+records them as 0/45/90 (``tilt_deg`` in the data); the tilt plate is geared
+2:1, so 45 degrees is the maximum tilt in every test.  The code keys on the
+recorded values and maps every label through ``PHYS``.
 
 Inputs are the tidy CSVs in ``../candidates/data/`` (built by
 ``../candidates/build_dataset.py`` from the run artifacts on the
@@ -45,6 +50,15 @@ ACCENT = "#1baf7a"      # categorical slot 3, aqua
 # Tilt and RPM are ordered magnitudes -> one-hue ordinal ramp, never hues.
 TILT_RAMP = {0.0: "#86b6ef", 45.0: "#2a78d6", 90.0: "#104281"}
 RPM_RAMP = {15.0: "#86b6ef", 45.0: "#2a78d6", 90.0: "#104281"}
+# Recorded tilt setting -> physical tube angle (deg above horizontal); the
+# tilt plate is geared 2:1.  Auger speeds (15/45/90 RPM) are not affected.
+PHYS = {0.0: 0.0, 45.0: 22.5, 90.0: 45.0}
+TILT_AXIS = "tube tilt (deg above horizontal; 0 = horizontal park, 45 = maximum)"
+
+
+def deg(recorded: float) -> str:
+    """Physical tube angle for a recorded tilt setting, formatted for a label."""
+    return f"{PHYS[float(recorded)]:g}"
 GOOD, WARNING, SERIOUS, CRITICAL = "#0ca30c", "#fab219", "#ec835a", "#d03b3b"
 INK, INK2, MUTED = "#0b0b0b", "#52514e", "#b8b6ae"
 SURFACE = "#fcfcfb"
@@ -278,7 +292,7 @@ def fig_coverage(outdir):
 # R2  the rate ladder at the reference condition
 # ---------------------------------------------------------------------------
 def reference_rate() -> pd.DataFrame:
-    """Block C at tilt 45, 30 RPM: mg/rev and the mg/s it implies."""
+    """Block C at tilt 22.5 deg (recorded 45), 30 RPM: mg/rev and mg/s."""
     rows = []
     for _, r in REP.iterrows():
         t = TRIALS[(TRIALS.run_id == r.run_id) & (TRIALS.block == "C")
@@ -321,7 +335,7 @@ def fig_ladder(outdir):
     ax.grid(axis="x", alpha=0.6)
     ax.set_axisbelow(True)
     ax.set_title("R2  Dose rate spans three decades under one frozen parameter set\n"
-                 "block C: 30 RPM, tilt 45$^\\circ$, mean of six single revolutions",
+                 f"block C: 30 RPM, tilt {deg(45.0)}$^\\circ$, mean of six single revolutions",
                  loc="left")
     # right-hand text column: the per-revolution quantum behind each rate
     ax.text(1.02, 1.02, "mg/rev", transform=ax.transAxes, fontsize=8,
@@ -356,23 +370,26 @@ def fig_tilt(outdir):
         c = track_colour(r.track)
         floor = 0.06
         y = np.maximum(m.values, floor)
+        x = np.array([PHYS[v] for v in m.index])   # physical tube angle
         censored = m.values <= floor
-        ax.plot(m.index, y, "-", color=c, lw=1.6, alpha=0.85)
-        ax.plot(m.index[~censored], y[~censored], "o", color=c, ms=5,
+        ax.plot(x, y, "-", color=c, lw=1.6, alpha=0.85)
+        ax.plot(x[~censored], y[~censored], "o", color=c, ms=5,
                 mec=SURFACE, mew=1)
         # a revolution that moved nothing measurable is a bound, not a zero
-        ax.plot(m.index[censored], y[censored], "v", color=SURFACE, ms=7,
+        ax.plot(x[censored], y[censored], "v", color=SURFACE, ms=7,
                 mec=c, mew=1.6)
         ends.append(np.log10(y[-1])); labs.append(r.display); cols.append(c)
         if m.get(0.0, 0) > 0.5:
             ratios.append((r.display, r.track, m[90.0] / m[0.0]))
     for yy, lab, c in zip(spread(ends, 0.105), labs, cols):
-        ax.text(93, 10 ** yy, " " + lab, fontsize=7.5, color=c, va="center")
+        ax.text(PHYS[90.0] + 1.5, 10 ** yy, " " + lab, fontsize=7.5, color=c,
+                va="center")
     ax.set_yscale("log")
-    ax.set_xticks([0, 45, 90])
-    ax.set_xlim(-6, 210)
+    ax.set_xticks([PHYS[t] for t in (0.0, 45.0, 90.0)])
+    ax.set_xticklabels([deg(t) for t in (0.0, 45.0, 90.0)])
+    ax.set_xlim(-3, 105)
     ax.set_ylim(0.045, 1600)
-    ax.set_xlabel("tube tilt (deg; 0 = horizontal, 90 = vertical)")
+    ax.set_xlabel(TILT_AXIS)
     ax.set_ylabel("mass per auger revolution (mg)")
     ax.grid(alpha=0.6)
     ax.set_axisbelow(True)
@@ -397,7 +414,7 @@ def fig_tilt(outdir):
     ax2.set_xscale("log")
     ax2.set_xlim(0.8, 45)
     log_ticks(ax2, "x", (1, 3, 10, 30))
-    ax2.set_xlabel("gravity assist:  mg/rev at 90$^\\circ$ / mg/rev at 0$^\\circ$")
+    ax2.set_xlabel(f"gravity assist:  mg/rev at {deg(90.0)}$^\\circ$ / mg/rev at {deg(0.0)}$^\\circ$")
     ax2.grid(axis="x", alpha=0.6)
     ax2.set_axisbelow(True)
     ax2.set_title("R3b  How much of the flow is gravity, not the auger",
@@ -575,7 +592,7 @@ def fig_instantaneous(outdir):
              transform=axc.transAxes, fontsize=7.5, color=INK2)
     fig.suptitle("R5  Semi-instantaneous rate: the auger delivers one slug "
                  "per revolution\nblock D streamed balance polls, tilt "
-                 "45$^\\circ$; top row is 15 RPM, dotted lines mark "
+                 f"{deg(45.0)}$^\\circ$; top row is 15 RPM, dotted lines mark "
                  "revolutions",
                  x=0.008, y=0.99, ha="left", va="top", fontsize=10.5,
                  fontweight="bold")
@@ -644,12 +661,12 @@ def fig_knobs(outdir):
                  "noise band are omitted -- which is why most rows have no "
                  "hold marker at all.", loc="left")
     ax.legend(handles=[
-        Line2D([], [], marker="o", ls="", color=TILT_RAMP[0.0], label="1 rev, tilt 0$^\\circ$"),
-        Line2D([], [], marker="o", ls="", color=TILT_RAMP[45.0], label="1 rev, tilt 45$^\\circ$"),
-        Line2D([], [], marker="o", ls="", color=TILT_RAMP[90.0], label="1 rev, tilt 90$^\\circ$"),
-        Line2D([], [], marker="^", ls="", color=ACCENT, label="1 tap, tilt 0$^\\circ$"),
-        Line2D([], [], marker="^", ls="", color="#0d7a55", label="1 tap, tilt 45$^\\circ$"),
-        Line2D([], [], marker="s", ls="", color=MUTED, label="15 s hold, tilt 90$^\\circ$"),
+        Line2D([], [], marker="o", ls="", color=TILT_RAMP[0.0], label=f"1 rev, tilt {deg(0.0)}$^\\circ$"),
+        Line2D([], [], marker="o", ls="", color=TILT_RAMP[45.0], label=f"1 rev, tilt {deg(45.0)}$^\\circ$"),
+        Line2D([], [], marker="o", ls="", color=TILT_RAMP[90.0], label=f"1 rev, tilt {deg(90.0)}$^\\circ$"),
+        Line2D([], [], marker="^", ls="", color=ACCENT, label=f"1 tap, tilt {deg(0.0)}$^\\circ$"),
+        Line2D([], [], marker="^", ls="", color="#0d7a55", label=f"1 tap, tilt {deg(45.0)}$^\\circ$"),
+        Line2D([], [], marker="s", ls="", color=MUTED, label=f"15 s hold, tilt {deg(90.0)}$^\\circ$"),
     ], loc="lower right", fontsize=7.5, ncol=2)
     save(fig, "R6_knobs", outdir)
 
@@ -718,8 +735,8 @@ def fig_normalisation(outdir):
         ax2.plot([x, x], [a, b], color=MUTED, lw=0.8, zorder=0)
     ax2.set_xscale("log"); ax2.set_yscale("log")
     ax2.set_xlim(*lim); ax2.set_ylim(*lim)
-    ax2.set_xlabel("block C, 30 RPM, tilt 45$^\\circ$   (mg/rev)")
-    ax2.set_ylabel("block D, 45 RPM, tilt 45$^\\circ$   (mg/rev)")
+    ax2.set_xlabel(f"block C, 30 RPM, tilt {deg(45.0)}$^\\circ$   (mg/rev)")
+    ax2.set_ylabel(f"block D, 45 RPM, tilt {deg(45.0)}$^\\circ$   (mg/rev)")
     ax2.grid(alpha=0.6); ax2.set_axisbelow(True)
     ax2.legend(fontsize=8, loc="upper left")
     ax2.set_title("R7b  Correcting it reconciles two independent\n"
@@ -781,10 +798,10 @@ def fig_variance(outdir):
                  loc="left")
 
     spans = {
-        "powder\n(at 45$^\\circ$, 30 RPM)": np.log10(
+        f"powder\n(at {deg(45.0)}$^\\circ$, 30 RPM)": np.log10(
             reference_rate().query("not bounded").mg_rev.max()
             / reference_rate().query("not bounded").mg_rev.min()),
-        "tilt\n(0$^\\circ$ to 90$^\\circ$)": np.log10(
+        f"tilt\n({deg(0.0)}$^\\circ$ to {deg(90.0)}$^\\circ$)": np.log10(
             np.median([TRIALS[(TRIALS.run_id == r) & (TRIALS.block == "C")]
                        .groupby("tilt_deg").delta_g.mean().max()
                        / max(TRIALS[(TRIALS.run_id == r) & (TRIALS.block == "C")]
@@ -824,17 +841,19 @@ def write_tables(outdir):
             powder_id=r.powder_id, display=r.display, track=r.track,
             run_id=r.run_id, qc_valid=r.qc_valid, qc_verdict=r.qc_verdict,
             noise_floor_mg=round(floor, 2),
-            mg_rev_tilt0=round(c["mean"].get(0.0, np.nan), 2),
-            mg_rev_tilt45=round(c["mean"].get(45.0, np.nan), 2),
-            mg_rev_tilt90=round(c["mean"].get(90.0, np.nan), 2),
-            rsd_pct_tilt45=round(100 * c["std"].get(45.0, np.nan)
-                                 / c["mean"].get(45.0, np.nan), 1)
+            # tilt columns are named by physical tube angle (0/22.5/45 deg);
+            # the data are keyed by the recorded setting (0/45/90)
+            mg_rev_tilt0deg=round(c["mean"].get(0.0, np.nan), 2),
+            mg_rev_tilt22p5deg=round(c["mean"].get(45.0, np.nan), 2),
+            mg_rev_tilt45deg=round(c["mean"].get(90.0, np.nan), 2),
+            rsd_pct_tilt22p5deg=round(100 * c["std"].get(45.0, np.nan)
+                                      / c["mean"].get(45.0, np.nan), 1)
             if c["mean"].get(45.0, 0) > 0 else np.nan,
             gravity_assist=round(c["mean"].get(90.0, np.nan)
                                  / c["mean"].get(0.0, np.nan), 2)
             if c["mean"].get(0.0, 0) > 0.5 else np.nan,
             censored=bool(L.loc[r.powder_id, "bounded"]),
-            mg_s_ref_30rpm_tilt45=round(L.loc[r.powder_id, "mg_s"], 3),
+            mg_s_ref_30rpm_tilt22p5deg=round(L.loc[r.powder_id, "mg_s"], 3),
             mg_s_15rpm=round(d.mg_s.get(15.0, np.nan), 1),
             mg_s_45rpm=round(d.mg_s.get(45.0, np.nan), 1),
             mg_s_90rpm=round(d.mg_s.get(90.0, np.nan), 1),
@@ -843,18 +862,18 @@ def write_tables(outdir):
             mg_rev_90rpm=round(d.mg_rev.get(90.0, np.nan), 1),
             speed_exponent_alpha=round(A.alpha.get(r.run_id, np.nan), 3),
             speed_exponent_r2=round(A.r2.get(r.run_id, np.nan), 3),
-            mg_per_tap_tilt0=round(e[(e.phase == "tap") & (e.tilt_deg == 0.0)]
-                                   .delta_g.mean() * 1000, 2),
-            mg_per_tap_tilt45=round(e[(e.phase == "tap") & (e.tilt_deg == 45.0)]
-                                    .delta_g.mean() * 1000, 2),
+            mg_per_tap_tilt0deg=round(e[(e.phase == "tap") & (e.tilt_deg == 0.0)]
+                                      .delta_g.mean() * 1000, 2),
+            mg_per_tap_tilt22p5deg=round(e[(e.phase == "tap") & (e.tilt_deg == 45.0)]
+                                         .delta_g.mean() * 1000, 2),
             tap_resolvable=bool(max(
                 e[(e.phase == "tap") & (e.tilt_deg == 0.0)].delta_g.mean() * 1000,
                 e[(e.phase == "tap") & (e.tilt_deg == 45.0)].delta_g.mean() * 1000)
                 > floor) and r.powder_id not in TAP_ARTIFACT,
-            hold15s_tilt90_mg=round(
+            hold15s_tilt45deg_mg=round(
                 t[(t.block == "B") & (t.tilt_deg == 90.0)].delta_g.mean() * 1000, 1),
         ))
-    out = pd.DataFrame(rows).sort_values("mg_rev_tilt45", ascending=False)
+    out = pd.DataFrame(rows).sort_values("mg_rev_tilt22p5deg", ascending=False)
     path = Path(outdir) / "rate_summary.csv"
     out.to_csv(path, index=False)
     print(f"  {path.name}  ({len(out)} powders)")

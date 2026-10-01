@@ -1,12 +1,12 @@
 # Dose-rate EDA — issue #116 round-1 battery, blocks A–F
 
-> **Units note (2026-09-25).** Revolutions, rpm and rotation angles in this directory are
-> **auger** quantities: the dosing firmware (`main_three_phase.py`) folds the as-built
-> 20:44 stepper-to-auger gear (2.2:1, PR #124) into every rotation. The tilt labels
-> (0/45/90°) are the battery's recorded settings; the tilt plate is geared 2:1, so the
-> physical tube angles are **0°, 22.5° and 45°**. The manuscript figures
-> (`paper/figures/make_data_figures.py`) report physical angles; these exploratory
-> figures keep the recorded labels.
+> **Corrected 2026-10-01:** the battery records tilt as 0/45/90, which the 2:1 tilt gear
+> turns into tube angles of 0, 22.5 and 45 degrees; this document and its figures now use
+> the physical angles, and 45 degrees was the maximum tilt in every test.
+>
+> Revolutions, rpm and rotation angles in this directory are **auger** quantities: the
+> dosing firmware (`main_three_phase.py`) folds the as-built 20:44 stepper-to-auger gear
+> (2.2:1, PR #124) into every rotation.
 
 Exploratory analysis of everything the round-1 campaign measured about **dose
 rate**: what the auger delivers, and how that changes with powder, tilt, speed
@@ -21,7 +21,15 @@ python eda_dose_rate.py          # -> out/*.png and out/rate_summary.csv
 Inputs are the committed tidy CSVs in [`../candidates/data/`](../candidates/data),
 distilled by `../candidates/build_dataset.py` from the per-run artifacts on the
 `claude/issue-116-*` branches. `out/rate_summary.csv` is the one-row-per-powder
-table of every derived quantity discussed below.
+table of every derived quantity discussed below. Its tilt columns are named by
+physical tube angle (`mg_rev_tilt0deg`, `mg_rev_tilt22p5deg`, `mg_rev_tilt45deg`,
+`rsd_pct_tilt22p5deg`, `mg_s_ref_30rpm_tilt22p5deg`, `mg_per_tap_tilt0deg`,
+`mg_per_tap_tilt22p5deg`, `hold15s_tilt45deg_mg`). Copies made before 2026-10-01
+used the recorded settings as suffixes (`_tilt0`/`_tilt45`/`_tilt90` = 0/22.5/45°),
+so an old `mg_rev_tilt45` is today's `mg_rev_tilt22p5deg`, not `mg_rev_tilt45deg`.
+The `tilt_deg` column of the input CSVs still holds the recorded 0/45/90, mapped to
+physical angles by the script's `PHYS` table. The `15rpm`/`45rpm`/`90rpm` columns
+are auger speeds and are unaffected.
 
 ## What was collected
 
@@ -32,12 +40,12 @@ run identically for every powder — the firmware docstring is explicit that thi
 
 | Block | What it varies | Measurement | Trials/run |
 |---|---|---|---|
-| A `baseline` | nothing | 8 no-actuation deltas at tilt 45° | 8 |
-| B `hold` | tilt (0/45/90°) | mass change over a 15 s static hold, no actuator | 3 |
-| C `rotation` | tilt (0/45/90°) at 30 RPM | 6 × single 360° revolutions, stable read after each | 18 |
-| D `speed` | auger RPM (15/45/90) at tilt 45° | 3 rev continuous + streamed balance polls | 3 (+48/16/8 polls) |
-| E `tap` | tilt (0/45°) | 8 × (measured 360° re-feed + one solenoid tap) | 32 |
-| F `vib` | tilt (0/45°) | same with the ERM motor | **0 — never ran** |
+| A `baseline` | nothing | 8 no-actuation deltas at tilt 22.5° | 8 |
+| B `hold` | tilt (0/22.5/45°) | mass change over a 15 s static hold, no actuator | 3 |
+| C `rotation` | tilt (0/22.5/45°) at 30 RPM | 6 × single 360° revolutions, stable read after each | 18 |
+| D `speed` | auger RPM (15/45/90) at tilt 22.5° | 3 rev continuous + streamed balance polls | 3 (+48/16/8 polls) |
+| E `tap` | tilt (0/22.5°) | 8 × (measured 360° re-feed + one solenoid tap) | 32 |
+| F `vib` | tilt (0/22.5°) | same with the ERM motor | **0 — never ran** |
 | G `dose` | — | 3 closed-loop 1 g doses (out of scope here) | 0–3 |
 
 Block F never produced a single trial in any run: the DRV2605L haptic driver
@@ -65,15 +73,15 @@ advertise "tapping and vibration assistance", and the planned actuation ablation
 ## Findings
 
 **1. Rate spans three decades under one frozen parameter set.** At the
-reference condition (30 RPM, tilt 45°) the module delivers 115 mg/s for
+reference condition (30 RPM, tilt 22.5°) the module delivers 115 mg/s for
 AlSi10Mg and ≤0.12 mg/s for fumed silica. Three powders (brown rice flour,
 Si −325 mesh, fumed silica) are *censored*, not small — they never cleared the
 balance floor, and are drawn as upper bounds throughout.
 
 **2. Tilt is the strongest knob the firmware owns.** Median gravity assist
-(mg/rev at 90° ÷ mg/rev at 0°) is **6.9×**, range 2.2–14.5×. It is also the
+(mg/rev at 45° ÷ mg/rev at 0°) is **6.9×**, range 2.2–14.5×. It is also the
 *only* knob that turns a non-doseable powder into a doseable one: Si −325 mesh
-conveys literally nothing at 0° and 45° and 1.2 mg/rev at 90°.
+conveys literally nothing at 0° and 22.5° and 1.2 mg/rev at 45°.
 
 **3. Speed is sub-linear, and that splits the powders into two regimes.**
 Fitting rate ∝ RPM^α gives a median **α = 0.78** — six times the speed buys
@@ -100,7 +108,7 @@ those two numbers are aliased floors, not measurements.
 
 **5. Nothing flows on its own.** Across every powder and every tilt, a 15 s
 static hold with no actuation produced no mass change that clears its own run's
-noise floor — with one marginal exception (Si 110/200 mesh, 46 mg at 90° against
+noise floor — with one marginal exception (Si 110/200 mesh, 46 mg at 45° against
 a 29 mg floor). The two largest apparent hold signals (sodium sulfate 120 mg,
 NaCl 42 mg) both occur at tilt **0°**, where gravity discharge is impossible,
 so they are bench drift. This is direct evidence for the "clean shutoff"
