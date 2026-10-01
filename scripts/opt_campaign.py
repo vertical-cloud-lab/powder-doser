@@ -69,12 +69,16 @@ the bulk halt itself is the prediction.
 Validation (section 2.4 step 5): after picking a point off the front,
 
     python scripts/opt_campaign.py --powder-id salt --host pi@zero \
-        --validate-params '{"bulk_tap": "off", ...}' --replicates 8
+        --validate-point bo-003 --replicates 8
 
 doses the replicates inside the powder's latest campaign (or
 ``--resume <id>``), so they run on its fitted tau, and writes the
 ``dosing_profiles`` document (plus a local cache under data/profiles/)
-that ``dose.py`` dispenses from.
+that ``dose.py`` dispenses from.  ``--validate-point`` takes the label
+of one of the campaign's doses (report.md, pareto.json);
+``--validate-params '{"bulk_tap": "off", ...}'`` takes any 8 values
+instead.  Each block is listed in the campaign document's
+``profiles`` (section 5.7).
 
 Dependencies (laptop only): ``pip install ax-platform==0.4.3 pymongo``
 (section 5.1; on Linux install the CPU torch wheel first).
@@ -771,7 +775,7 @@ class Runner:
                 log("resuming {}'s latest {}campaign: {}".format(
                     self.powder_id, "simulated " if args.simulate else "",
                     cid))
-            elif not args.validate_params:
+            elif not args.validate_params:  # a point label needs one too
                 raise SystemExit("no {}campaign for powder {!r} to "
                                  "resume".format(
                                      "simulated " if args.simulate
@@ -1450,9 +1454,10 @@ class Runner:
             try:
                 pareto = self.ax.get_pareto_optimal_parameters(
                     use_model_predictions=True)
+                labels = oc.ax_trial_labels(self.records)
                 model_front = [
-                    {"trial_index": k, "params": v[0],
-                     "predicted_means": v[1][0]}
+                    {"trial_index": k, "label": labels.get(k),
+                     "params": v[0], "predicted_means": v[1][0]}
                     for k, v in pareto.items()]
             except Exception as exc:
                 log("model Pareto readout unavailable ({})".format(exc))
@@ -1490,14 +1495,34 @@ class Runner:
 
     # -- validation / profile (section 2.4 step 5) ----------------------
 
-    def validate(self, params, replicates):
+    def point_params(self, label):
+        """--validate-point: the searched values the campaign's dose
+        ``label`` ran with (its tau is the campaign's to set)."""
+        doc = self.campaign.doc
+        doses = [r for r in self.records if r["mode"] != "validation"]
+        runs = [r for r in doses if r["label"] == label]
+        if not runs:
+            raise SystemExit(
+                "campaign {} has no dose labelled {!r}; pick a label from "
+                "its report.md or pareto.json (it has {} ... {})".format(
+                    doc["campaign_id"], label,
+                    ", ".join(r["label"] for r in doses[:2]),
+                    ", ".join(r["label"] for r in doses[-2:])))
+        params = {k: v for k, v in runs[-1]["params"].items()
+                  if k != "tau_afterflow_s"}
+        log("validating {} of campaign {}: {}".format(
+            label, doc["campaign_id"], params))
+        return oc.validate_params(params, self.variant)
+
+    def validate(self, params, replicates, point=None):
         import statistics
         doc = self.campaign.doc
         params = {k: v for k, v in params.items()}
+        prefix = "val-{}-".format(point) if point else "val-"
         results = []
         for i in range(replicates):
             while True:                     # a voided replicate goes again
-                record = self.run_trial("val-{:02d}".format(i),
+                record = self.run_trial("{}{:02d}".format(prefix, i),
                                         dict(params), "validation")
                 if record["summary"]["infra_error"]:
                     self._stop_for(record)
@@ -1526,14 +1551,20 @@ class Runner:
         profile = {
             "kind": "dosing_profile",
             "schema_version": oc.SCHEMA_VERSION,
-            "profile_id": "{}-{}".format(doc["campaign_id"], utcstamp()),
+            "profile_id": "{}-{}{}".format(
+                doc["campaign_id"], point + "-" if point else "",
+                utcstamp()),
             "powder_id": self.powder_id,
             "target_g": doc["target_g"],
             "variant": self.variant,
             "parameters": {k: params[k] for k, _f, _t
                            in oc.search_params(self.variant)},
+            "point": point,                 # the dose it came from, if any
             "tau_afterflow_s": tau,
-            "frozen_params": doc["frozen_params"],
+            # what the replicates ran: the snapshot plus its overrides
+            # (e.g. log_to_flash off), so dose.py replays exactly that
+            "frozen_params": dict(doc["frozen_params"],
+                                  **(doc.get("frozen_overrides") or {})),
             "validation": stats,
             "validated": bool(errs) and len(clean) == len(results),
             "simulated": bool(self.args.simulate),
@@ -1564,27 +1595,39 @@ class Runner:
                 log("profile upload failed ({}); cached at {}".format(
                     exc, cache))
         doc["last_profile"] = {"profile_id": profile["profile_id"],
+                               "point": point,
                                "validated": profile["validated"],
                                "validation": stats}
+        # Every block, so several candidate points can be compared later
+        # (opt_report.py lists them); the cache above keeps only the last.
+        doc.setdefault("profiles", []).append(dict(
+            doc["last_profile"], parameters=profile["parameters"],
+            created_utc=profile["created_utc"]))
         doc["status"] = ("validated" if profile["validated"]
                          else "validation-failed")
         self.save()
         log("validation stats: {}".format(stats))
-        log("profile {} (validated={}, uploaded={}) cached at {}".format(
-            profile["profile_id"], profile["validated"], uploaded, cache))
+        log("profile {}{} (validated={}, uploaded={}) cached at {}".format(
+            profile["profile_id"], " for " + point if point else "",
+            profile["validated"], uploaded, cache))
 
     # -- top level -------------------------------------------------------
 
     def run(self):
         doc = self.campaign.doc
         args = self.args
+        point = None
+        if args.validate_point:             # a typo fails before any SSH
+            point = args.validate_point
+            params = self.point_params(point)
+        elif args.validate_params:
+            params = oc.validate_params(json.loads(args.validate_params),
+                                        self.variant)
         try:
             self.reconcile()
-            if args.validate_params:
+            if args.validate_params or point:
                 doc["status"] = "validating"
-                self.validate(oc.validate_params(
-                    json.loads(args.validate_params), self.variant),
-                    args.replicates)
+                self.validate(params, args.replicates, point=point)
                 return
             doc["status"] = "running"
             if doc["phase"] == "screen":
@@ -1697,13 +1740,18 @@ def parse_args(argv=None):
                          "(telemetry still comes back over serial)")
     ap.add_argument("--state-dir", default=DEFAULT_STATE)
     ap.add_argument("--operator", default=None)
-    ap.add_argument("--validate-params", metavar="JSON",
-                    help="run validation replicates at these params and "
-                         "write the dosing profile (inside the powder's "
-                         "latest campaign unless --resume names one)")
+    val = ap.add_mutually_exclusive_group()
+    val.add_argument("--validate-params", metavar="JSON",
+                     help="run validation replicates at these params and "
+                          "write the dosing profile (inside the powder's "
+                          "latest campaign unless --resume names one)")
+    val.add_argument("--validate-point", metavar="LABEL",
+                     help="the same, at the values one of the campaign's "
+                          "doses ran with, by its label in report.md or "
+                          "pareto.json (e.g. bo-003, corner-09)")
     ap.add_argument("--replicates", type=int, default=8)
     args = ap.parse_args(argv)
-    if args.validate_params and not args.resume:
+    if (args.validate_params or args.validate_point) and not args.resume:
         args.resume = "latest"
     if args.validate_params and not args.variant:
         # validate inside the latest campaign of the params' own variant

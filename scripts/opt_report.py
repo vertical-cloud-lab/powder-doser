@@ -109,7 +109,8 @@ def in_box(r):
 
 def knee(records):
     """Front point closest to the origin in threshold-scaled units."""
-    pts = [r for r in records if clean(r) and in_box(r)]
+    pts = [r for r in records if clean(r) and in_box(r)
+           and r["mode"] != "validation"]  # replicates, not candidates
     if not pts:
         return None
     return min(pts, key=lambda r: (
@@ -228,9 +229,11 @@ def figure(doc, records, pick, path):
                               if "base" not in seen else None))
             seen.add("base")
 
-    # observed feasible front (clean, inside the box), as a step line
+    # observed feasible front (clean, inside the box), as a step line;
+    # validation replicates are plotted, but they are not candidates
     pts = sorted((r["summary"]["t_total_s"], r["summary"]["abs_error_mg"])
-                 for r in dosed if clean(r) and in_box(r))
+                 for r in dosed if clean(r) and in_box(r)
+                 and r["mode"] != "validation")
     front, best = [], float("inf")
     for t, e in pts:
         if e < best:
@@ -286,7 +289,12 @@ def report(cdir):
     doc, records, pareto = load(cdir)
     pick = knee(records)
     fig_path = os.path.join(cdir, "campaign_overview.png")
-    figure(doc, records, pick, fig_path)
+    try:
+        figure(doc, records, pick, fig_path)
+    except ImportError:                 # the laptop's Ax stack lacks it
+        print("matplotlib is not installed: report.md only (pip install "
+              "matplotlib for the figure)")
+        fig_path = None
     effects, n_corners = main_effects(records, doc)
 
     L = []
@@ -326,15 +334,39 @@ def report(cdir):
         L.append("```json\n{}\n```\n".format(json.dumps(
             dict(pick["params"]), indent=1)))
     if pareto and pareto.get("model_pareto"):
+        labels = oc.ax_trial_labels(records)
         L.append("## Model Pareto set (Ax, predicted means)\n")
-        L.append("| Ax trial | t_total (s) | abs_error (mg) | {} |".format(
-            CELL_HEADER[variant(doc)]))
-        L.append("|---|---|---|---|")
+        L.append("The dose column is the label `--validate-point` takes.\n")
+        L.append("| Ax trial | dose | t_total (s) | abs_error (mg) | {} |"
+                 .format(CELL_HEADER[variant(doc)]))
+        L.append("|---|---|---|---|---|")
         for m in pareto["model_pareto"]:
             pm = m["predicted_means"]
-            L.append("| {} | {} | {} | {} |".format(
-                m["trial_index"], fmt(pm.get("t_total_s")),
-                fmt(pm.get("abs_error_mg")), params_cell(m["params"])))
+            L.append("| {} | {} | {} | {} | {} |".format(
+                m["trial_index"],
+                m.get("label") or labels.get(m["trial_index"], "-"),
+                fmt(pm.get("t_total_s")), fmt(pm.get("abs_error_mg")),
+                params_cell(m["params"])))
+        L.append("")
+    if doc.get("profiles"):
+        L.append("## Validation blocks\n")
+        L.append("One `dosing_profiles` document each; `dose.py` doses the "
+                 "newest validated one unless `--profile` names another.\n")
+        L.append("| profile_id | point | {} | clean / replicates | median "
+                 "abs_error (mg) | p95 (mg) | P(<= 10 mg) | median t_total "
+                 "(s) | validated |".format(CELL_HEADER[variant(doc)]))
+        L.append("|---|---|---|---|---|---|---|---|---|")
+        for p in doc["profiles"]:
+            v = p.get("validation") or {}
+            L.append("| {} | {} | {} | {} / {} | {} | {} | {} | {} | {} |"
+                     .format(p["profile_id"], p.get("point") or "-",
+                             params_cell(p["parameters"]), v.get("clean"),
+                             v.get("replicates"),
+                             fmt(v.get("median_abs_error_mg")),
+                             fmt(v.get("p95_abs_error_mg")),
+                             fmt(v.get("p_within_10mg"), "{:.2f}"),
+                             fmt(v.get("median_t_total_s")),
+                             p["validated"]))
         L.append("")
     if effects:
         L.append("## Screening main effects ({} corners)\n"
@@ -378,8 +410,8 @@ def main(argv=None):
     ap.add_argument("campaign_dir")
     args = ap.parse_args(argv)
     pick, fig = report(args.campaign_dir)
-    print("wrote {} and report.md; recommended: {}".format(
-        fig, pick["label"] if pick else None))
+    print("wrote {}report.md; recommended: {}".format(
+        fig + " and " if fig else "", pick["label"] if pick else None))
     return 0
 
 

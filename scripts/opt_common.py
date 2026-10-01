@@ -327,6 +327,25 @@ def ax_raw_data(outcomes, jam=False, spill=False):
     return {"t_total_s": float(t), "abs_error_mg": float(e)}
 
 
+def ax_trial_labels(records):
+    """Ax trial index -> the campaign dose label it holds.
+
+    The usable screening + anchor doses are attached in record order
+    when BO starts (trials 0, 1, ...); a BO dose carries its own
+    ``ax_trial_index``.
+    """
+    labels, n = {}, 0
+    for r in records:
+        if r.get("summary", {}).get("infra_error") or r.get("void"):
+            continue
+        if r["mode"] in ("screen", "recenter"):
+            labels[n] = r["label"]
+            n += 1
+        elif r["mode"] == "bo" and r.get("ax_trial_index") is not None:
+            labels[r["ax_trial_index"]] = r["label"]
+    return labels
+
+
 # ---------------------------------------------------------------------------
 # Document builders
 # ---------------------------------------------------------------------------

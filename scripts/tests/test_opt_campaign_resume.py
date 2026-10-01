@@ -483,6 +483,99 @@ def test_bulk_tap_campaign():
         shutil.rmtree(state, ignore_errors=True)
 
 
+def test_validate_point():
+    """Validating front points by dose label, several blocks in one
+    campaign (section 5.7)."""
+    state = tempfile.mkdtemp(prefix="optpoint-")
+    try:
+        extra = (("--budget", "2") if HAVE_AX else ("--screen-only",))
+        r = _runner(state, None, *extra)
+        _quiet(r.run)
+        cid = r.campaign.doc["campaign_id"]
+        if HAVE_AX:
+            labels = oc.ax_trial_labels(r.records)
+            by_label = {x["label"]: x for x in r.records}
+            trials = r.ax.experiment.trials
+            check("Ax trial -> dose label: all {} trials, same values".format(
+                len(trials)), sorted(labels) == sorted(trials) and all(
+                    ocamp.ax_parameterization(by_label[labels[i]]["params"])
+                    == trials[i].arm.parameters for i in trials))
+            with open(os.path.join(r.campaign.dir, "pareto.json")) as f:
+                model = json.load(f).get("model_pareto") or []
+            check("pareto.json labels its model front ({} points)".format(
+                len(model)), all(m["label"] == labels[m["trial_index"]]
+                                 for m in model))
+        corner = next(x for x in r.records if x["label"] == "corner-05")
+        tau = r.campaign.doc["tau_afterflow"]["tau0_s"]
+
+        v = _runner(state, None, "--validate-point", "corner-05",
+                    "--replicates", "2", "--no-flash-log")
+        _quiet(v.run)
+        vals = [x for x in v.records if x["mode"] == "validation"]
+        with open(os.path.join(v.campaign.dir, "profile_salt.json")) as f:
+            prof = json.load(f)
+        check("--validate-point corner-05: its 8 values on the fitted tau, "
+              "replicates labelled by the point, the profile says which",
+              v.campaign.doc["campaign_id"] == cid
+              and [x["label"] for x in vals] == ["val-corner-05-00",
+                                                 "val-corner-05-01"]
+              and all(x["params"] == dict(corner["params"],
+                                          tau_afterflow_s=tau)
+                      for x in vals)
+              and prof["point"] == "corner-05"
+              and prof["profile_id"].startswith(cid + "-corner-05-")
+              and prof["parameters"] == corner["params"]
+              and prof["tau_afterflow_s"] == tau)
+        check("the profile carries the overrides its replicates ran with "
+              "(log_to_flash off), so dose.py replays them",
+              v.frozen_push()["log_to_flash"] is False
+              and prof["frozen_params"]["log_to_flash"] is False)
+
+        center = dict(r.campaign.doc["screening_plan"])["center-00"]
+        w = _runner(state, None, "--validate-params", json.dumps(center),
+                    "--replicates", "2")
+        _quiet(w.run)
+        blocks = w.campaign.doc["profiles"]
+        check("a second block (--validate-params): val-NN labels, and the "
+              "campaign keeps both blocks",
+              [x["label"] for x in w.records[-2:]] == ["val-00", "val-01"]
+              and [b["point"] for b in blocks] == ["corner-05", None]
+              and blocks[0]["parameters"] == corner["params"]
+              and blocks[1]["parameters"] == center
+              and w.campaign.doc["last_profile"]["profile_id"]
+              == blocks[1]["profile_id"])
+        import opt_report
+        figure, opt_report.figure = opt_report.figure, lambda *a: None
+        try:                                # (no matplotlib needed)
+            _quiet(opt_report.report, w.campaign.dir)
+        finally:
+            opt_report.figure = figure
+        with open(os.path.join(w.campaign.dir, "report.md")) as f:
+            md = f.read()
+        check("report.md lists both validation blocks",
+              "## Validation blocks" in md
+              and md.count(w.campaign.doc["campaign_id"] + "-") >= 2
+              and "| corner-05 |" in md)
+
+        refused = 0
+        for label in ("no-such-dose", "val-00"):
+            u = _runner(state, None, "--validate-point", label)
+            try:
+                _quiet(u.run)
+            except SystemExit:
+                refused += u.executor.attempts == 0
+        try:
+            _quiet(_args, state, "--validate-point", "corner-05",
+                   "--validate-params", json.dumps(center))
+        except SystemExit:
+            refused += 1
+        check("unknown and validation labels refused before any dose; "
+              "--validate-point and --validate-params exclusive",
+              refused == 3)
+    finally:
+        shutil.rmtree(state, ignore_errors=True)
+
+
 def test_frozen_set():
     state = tempfile.mkdtemp(prefix="optfrozenset-")
     try:
@@ -514,7 +607,7 @@ def test_frozen_set():
 def main():
     for fn in (test_screening_halts, test_bo_halts,
                test_restore_from_mongo, test_unattended_limits,
-               test_bulk_tap_campaign, test_frozen_set):
+               test_bulk_tap_campaign, test_validate_point, test_frozen_set):
         print(fn.__name__)
         fn()
     if _FAILURES:

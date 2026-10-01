@@ -288,7 +288,8 @@ cross-powder modeling needs no migration):
    William picks the operating point (or the knee by default).
 5. **Validation (8–10 replicate doses)** at the picked point. Median/p95 |error|,
    median time, P(|error| ≤ 10 mg) get stamped into the `dosing_profiles` document —
-   a profile is only marked `validated` after this block.
+   a profile is only marked `validated` after this block. Several candidate points
+   can each get a block; §5.7 has the commands.
 
 Total ≈ 70–80 doses per powder (including the 6 re-dosed anchors of §2.8); at
 roughly 1–3 min a dose that is 3–5 supervised sessions of 45–90 min.
@@ -449,7 +450,7 @@ All six pieces exist; the table now points at them:
 |---|---|---|
 | [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard; the §6 bulk → tap dose (`TRICKLE_ENABLED = 0`, `BULK_STOP_MARGIN_G`, optional Kalman-filter halt `BULK_HALT_KF`). Sim-tested (`sim/test_trickle_tap.py`, 19 tests) |
 | [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes the campaign's frozen snapshot (`--frozen`) and then the trial's `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice; `--fetch` on a uuid with no result answers `in-progress`, `interrupted`, or `not-found` (§5.4) |
-| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-params` replicate blocks that write `dosing_profiles`, `--variant bulk-tap` (§6), `--frozen-set KEY=VALUE` |
+| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-point LABEL` / `--validate-params` replicate blocks that write `dosing_profiles` (§5.7), `--variant bulk-tap` (§6), `--frozen-set KEY=VALUE` |
 | [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
 | [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
 | [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: both variants' search spaces (`VARIANTS`; a parameter set's names pick its variant), campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
@@ -853,7 +854,7 @@ and `set` values are gone at the next reset. The points are stored here:
 | `data/opt/<campaign_id>/campaign.json` | The frozen snapshot (every other `trickle_params` value) and the τ fit. |
 | `data/opt/<campaign_id>/zero/` | Each dose's trial document and raw serial session, every `set` echo included. |
 | MongoDB `opt_campaigns`, `opt_trials` | The same documents. The campaign document also mirrors every dose record. |
-| MongoDB `dosing_profiles`, `data/profiles/<powder>.json` | Only after `--validate-params`. This is what `dose.py` doses from. |
+| MongoDB `dosing_profiles`, `data/profiles/<powder>.json` | Only after a validation block (§5.7). This is what `dose.py` doses from. |
 
 To turn a point into firmware commands: `bulk_tap` and `trim_tap` become
 `set bulk_tap` and `set trickle_tap` (`2hz` = 1, `off` = 0), the six numeric
@@ -936,17 +937,106 @@ handed over (§5.1 item 6).
 
    ```bash
    python scripts/opt_campaign.py --powder-id salt --host <user>@<zero-hostname> \
-     --validate-params '{"bulk_tap": "2hz", "trim_tap": "off", "bulk_tilt_deg": 40, "trickle_tilt_deg": 10, "tap_tilt_deg": 15, "bulk_rpm": 100, "trickle_start_remaining_g": 0.3, "tolerance_g": 0.003}' \
-     --replicates 8
+     --takeover --validate-point bo-005 --replicates 8
    ```
 
    That writes the `dosing_profiles` document. From then on the Zero doses the
    point, with the whole frozen snapshot pushed too, through
    `scripts/dose.py --powder-id salt --target-g 0.5` (add `--takeover` when the
-   Pico sits in its power-on `main.py`).
+   Pico sits in its power-on `main.py`). §5.7 covers validating other points and
+   choosing between them.
 
 Routes 2 and 3 need the Zero's executor and the Pico's `/trickle_tap` build to
 report the same `FIRMWARE_ID`. Otherwise they answer `rig-busy` and dose nothing.
+
+### 5.7 Validating other points from the front
+
+Added 2026-10-01, when William asked how to pick points other than the
+recommended one and validate them.
+
+Any dose of a campaign can be validated, and several can be validated one after
+another. Each block doses its point `--replicates` times (default 8) inside the
+campaign, on the campaign's fitted τ, and writes its own `dosing_profiles`
+document. The steps, from the laptop:
+
+1. **One-time: MongoDB on the laptop.** `dose.py` on the Zero reads profiles from
+   MongoDB, so the laptop has to upload them. Copy the Zero's credential file and
+   check it:
+
+   ```bash
+   pip install pymongo
+   mkdir -p ~/.config/powder-doser
+   scp <user>@<zero-hostname>:.config/powder-doser/env ~/.config/powder-doser/env
+   chmod 600 ~/.config/powder-doser/env
+   python scripts/check_mongo.py
+   ```
+
+   Without it, each block still runs and records its doses (the Zero uploads
+   those), but the profile stays in the laptop's `data/profiles/<powder>.json`.
+
+2. **Pick points.** `git pull` this branch, then open
+   `data/opt/<campaign_id>/report.md`. Three of its tables name doses by label:
+   *Model Pareto set* (the `dose` column), *Best observed dose*, and *Every dose*.
+   `pareto.json` holds the same points with their values. Any label works, front
+   or not, except validation replicates. Check *Every dose* for other doses at the
+   same values: a lucky single dose shows up there. Doses from screening ran on
+   the screening τ (0.30 s for a three-stage campaign), and their validation runs
+   on the fitted one.
+
+3. **Validate a point by its label.** With the rig handed over (§5.1 item 6), the
+   campaign's powder in the hopper, and an empty cup on the pan:
+
+   ```bash
+   python scripts/opt_campaign.py --powder-id salt --host <user>@<zero-hostname> \
+     --takeover --validate-point bo-003 --replicates 8
+   ```
+
+   The first line it prints names the campaign and the 8 values. The replicates are
+   labelled `val-bo-003-00`, `val-bo-003-01`, and so on. Each one gets the usual
+   countdown: `s` flags a spill, which saves the profile as `validated: false`,
+   and `e` says the hopper ran empty, so the replicate is voided and dosed again.
+   The cup-empty prompt still comes every `--cup-every` doses. A block ends with
+   two lines: the stats and the `profile_id`.
+
+   To validate values that no dose ran, such as a front point with one knob
+   moved, pass all 8 as JSON instead:
+
+   ```bash
+   python scripts/opt_campaign.py --powder-id salt --host <user>@<zero-hostname> \
+     --takeover --replicates 8 \
+     --validate-params '{"bulk_tap": "2hz", "trim_tap": "off", "bulk_tilt_deg": 40, "trickle_tilt_deg": 30, "tap_tilt_deg": 15, "bulk_rpm": 60, "trickle_start_remaining_g": 0.3, "tolerance_g": 0.003}'
+   ```
+
+   The single quotes work in bash, zsh, and Git Bash. Windows PowerShell and
+   `cmd` treat quotes differently, and `--validate-point` avoids the problem.
+
+   Both commands run inside the powder's latest campaign. Add
+   `--resume <campaign_id>` to use another one.
+
+4. **Compare the blocks.** `python scripts/opt_report.py data/opt/<campaign_id>`
+   rewrites `report.md` with a *Validation blocks* table: one row per block with
+   its point, values, clean/total replicates, median and p95 |error|,
+   P(|error| ≤ 10 mg), median time, and `profile_id`. (The figure needs
+   `pip install matplotlib`; without it only `report.md` is written.) Compare the
+   numbers, not the `validated` flag. `validated` only means that no replicate
+   jammed and none was flagged as a spill (§2.4 step 5), and at 8 replicates
+   "p95" is the second-worst replicate.
+
+5. **Choose the one production uses.** `dose.py` doses the newest validated
+   profile of the powder. To use another one, name it (on the Zero, in
+   `~/powder-doser`):
+
+   ```bash
+   ~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 \
+     --takeover --profile salt-20260929T014732Z-bo-003-20261002T010203Z
+   ```
+
+   (That id is an example; copy the real one from the block's last line or the
+   report.) Validating the preferred point last does the same without `--profile`.
+
+A block interrupted partway (Ctrl-C, a pause, a rig fault) starts again from
+replicate 0 when the command is re-run. The replicates it already dosed stay in
+the records, but they don't count toward the new block.
 
 ---
 

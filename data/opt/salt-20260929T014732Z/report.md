@@ -24,13 +24,15 @@
 
 ## Model Pareto set (Ax, predicted means)
 
-| Ax trial | t_total (s) | abs_error (mg) | taps bulk/trim, bulk tilt, trim tilt, tap tilt, RPM, threshold g, tol mg |
-|---|---|---|---|
-| 33 | 102.1 | 0.9 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 |
-| 31 | 118.2 | 0.3 | 2hz/off, 40.0, 30.0, 15.0, 100, 0.300, 3.0 |
-| 40 | 99.3 | 5.3 | 2hz/2hz, 40.0, 10.0, 15.0, 100, 0.300, 3.0 |
-| 38 | 57.3 | 12.1 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 15.0 |
-| 39 | 99.0 | 11.1 | off/off, 40.0, 10.0, 15.0, 20, 0.300, 15.0 |
+The dose column is the label `--validate-point` takes.
+
+| Ax trial | dose | t_total (s) | abs_error (mg) | taps bulk/trim, bulk tilt, trim tilt, tap tilt, RPM, threshold g, tol mg |
+|---|---|---|---|---|
+| 33 | bo-005 | 102.1 | 0.9 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 |
+| 31 | bo-003 | 118.2 | 0.3 | 2hz/off, 40.0, 30.0, 15.0, 100, 0.300, 3.0 |
+| 40 | bo-012 | 99.3 | 5.3 | 2hz/2hz, 40.0, 10.0, 15.0, 100, 0.300, 3.0 |
+| 38 | bo-010 | 57.3 | 12.1 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 15.0 |
+| 39 | bo-011 | 99.0 | 11.1 | off/off, 40.0, 10.0, 15.0, 20, 0.300, 15.0 |
 
 ## Screening main effects (16 corners)
 
