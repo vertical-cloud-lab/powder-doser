@@ -1,0 +1,22 @@
+date_local_MDT,powder,protocols,run_id,location,outcome,reason,key_results,issue116_comments
+2026-09-03 10:35,salt,H,20260903T163527Z_salt,shared_fume_hood,invalid,"doser-scale-unreadable: read_stable() path, balance 0-2 % stable once rig actuated; refused tare",4/6 scale-error; dose 1 phantom 7.5393 g (0 rev); dose 2 57.5 mg (+7.5) from one 45 deg fine increment,5528661410
+2026-09-03 11:04,salt,H,20260903T170437Z_salt,shared_fume_hood,invalid,doser-scale-unreadable; student repeatedly used hood compressed air; operator stood the shared hood down for G/H (5529240158),0.00 auger rev on all six; 5 scale-error; dose 5 '1.5410 g' = pre-flight salt (1.54132 g),5529102139;5529245844
+2026-09-03 ~15:04,salt,H,,new_fume_hood,aborted (no run doc),"first attempt after relocation hit two new firmware faults (over-strict refused-tare guard; integer-second retry deadline); fixed, re-run 15:40",,5531825264; run note 2026-09-03-salt-block-h-new-hood.md
+2026-09-03 15:40,salt,H,20260903T214049Z_salt,new_fume_hood,valid,qc ok; first bracket-read run,50 mg +8.9/+4.3/-0.6; 200 mg -1.3/+13.3/-3.7; 4/6 ok,5544565454
+2026-09-03 18:18,salt,"G x1 (demo, #148)",20260904T001821Z_salt,new_fume_hood,"demo (valid=false, unreviewed)",issue #148 demo,"1.0040 g (+3.9 mg), ok, 90 s",#148; 5544565454
+2026-09-04 13:00,white rice flour,H,20260904T190011Z_white-rice-flour,new_fume_hood,valid,qc ok,50 mg -5.0/-5.0/-4.0; 200 mg -4.8/-4.9/-5.0; 6/6 ok; 200 mg doses 677-780 s,5544943576;5545930757
+2026-09-04 14:37,xanthan gum,H,20260904T203727Z_xanthan-gum,new_fume_hood,valid,qc ok (static/drift noted),50 mg -4.1/-2.3/+59.8; 200 mg +2.5/+2.6/+3.5; 5/6 ok,5545930757
+2026-09-08 11:27,CMC,H,20260908T172730Z_carboxymethyl-cellulose,new_fume_hood,invalid,outlet-misaligned (#156),apparent 50 mg -39.6/-27.1/-2.6; 200 mg -43.2/-4.0/-4.6 (not accuracy data),5590598698
+2026-09-08 13:42,CMC,H,20260908T194201Z_carboxymethyl-cellulose,new_fume_hood,valid (caveat),200 mg triple feed-limited; drift -11.4 mg/min,50 mg -4.6/+0.2/-2.1 (3/3 ok); 200 mg -4.5/-14.2/-49.0 (1/3 ok),5592079984
+2026-09-09 12:53,sodium alginate,H,20260909T185352Z_sodium-alginate,new_fume_hood,valid,qc ok (budget-limited),50 mg -27.8/-11.3/-19.7; 200 mg -66.7/-52.1/-185.7; 0/6 ok,5606851396;5609012161
+2026-09-09 16:52,calcium lactate,H,20260909T225206Z_calcium-lactate,new_fume_hood,valid (capture-interrupted),qc ok; dose H5 reconstructed,50 mg -1.3/+21.0/+12.1 (H2 zero-actuation); 200 mg -4.9/-9.0/~-35.5; 2/6 ok,5609012161
+2026-09-10 07:39,sodium sulfate,G+H,20260910T133932Z_sodium-sulfate,new_fume_hood,valid,qc ok,1 g -2.9/-4.7/-4.9 (3/3); 50 mg +17.7/+22.1/+46.9; 200 mg +6.6/+30.2/-4.5,5619383507
+2026-09-10 11:08,barium chloride,G+H,20260910T170858Z_barium-chloride,new_fume_hood,invalid,arching-no-feed (caked hygroscopic column),9/9 stalled; G0 0.3453 g,5622273948
+2026-09-10 13:44,AlSi10Mg,G+H,20260910T194447Z_alsi10mg,new_fume_hood,valid,qc ok,1 g -2.7/+9.4/-1.1; 50 mg -3.4/+18.1/+49.7; 200 mg -2.8/-0.6/+2.6; 6/9 ok,5623309132
+2026-09-10 15:29,Si -325,G+H,20260910T212920Z_silicon-325,new_fume_hood,valid (conveying-slowly),cannot dose (replicates 2026-08-21),9/9 stalled at ~0 g (18.0 rev -> 1.6 mg),5625482642
+2026-09-10 16:20-17:25,Si -110/+200,G+H not run,20260910T231950Z_silicon-110-200_preflight,new_fume_hood,stand-down #1,"dose gate failed 10/10 windows (+/-10-30 mg, ~10 min period, 0 shocks)","pre-flight 316.5 mg/rev, 9.5 mg/tap",5626124921
+2026-09-14 12:22-13:58,Si -110/+200,not run,,new_fume_hood,stand-down #2,"19 gate windows, 0 passes (wave + mid-hold beaker service); Pi dropped off tailnet 14:00",,5668530343
+2026-09-14 15:43-17:17,Si -110/+200,not run,,new_fume_hood,stand-down #3,"30 gate windows, 0 passes (wave, bench activity, then -7 to -9 mg/min drift)",,5671072772
+2026-09-14 19:55-20:27,Si -110/+200,not run,,new_fume_hood,stand-down #4,rig contention: PR #131 blocked-auger fixture install + concurrent sessions,,5673425201
+2026-09-14 20:55,Si -110/+200,G+H,20260915T025556Z_silicon-110-200,new_fume_hood,valid,"qc ok; H2 excluded (0 rev, 0 taps)",1 g -0.5/+3.3/-2.2 (3/3); 50 mg +4.5/-2.3/[+5.2 excl]; 200 mg -1.5/-1.8/+32.6,5673671255
+2026-09-15 10:42,salt,0.5 g demo,20260915T164228Z_salt-demo,new_fume_hood,demo (valid=false),gate not passed (+2.9 mg/min drift); batch demo,"0.4963 g (-3.7 mg), ok, 100 s, bulk 0/fine 16/tap 2",5683919348
