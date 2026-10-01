@@ -1,0 +1,43 @@
+{
+  "doc_type": "pid_dose_telemetry",
+  "powder_id": "salt",
+  "pr": 131,
+  "controller": "pid (single continuous loop on auger speed w/ flow anticipation + tilt gain-schedule + tap stall-fallback); NOT three-phase",
+  "control_law": "e_pred = (target - m_filt) - T_ANT*flow; u_rpm = clamp(KP*e_pred + KI*I, 0, MAX_RPM)",
+  "gains": {
+    "kp_rpm_per_g": 150.0,
+    "ki": 8.0,
+    "t_ant_s": 1.1,
+    "max_rpm": 45.0,
+    "tol_g": 0.002
+  },
+  "telemetry": "~10 Hz raw A&D Q-polls incl. unstable (US) frames; 10 s pre-roll incl. pre-zeroing absolute mass; 10 s post-roll; instantaneous tilt/auger-rpm/tap count per row",
+  "runs": [
+    {
+      "run": "run1",
+      "started_utc": "2026-07-29T19:36Z",
+      "controller_rev": "pid-v1",
+      "summary": {
+        "status": "timeout",
+        "final_g": "0.9406",
+        "target_g": "1.0000",
+        "taps": "80"
+      },
+      "d_rows": 4450,
+      "note": "reached 0.9406 g in 12 s, then hopper bridged/starved: 40 stall rounds + 80 taps yielded nothing; timeout at 420 s. Pre-roll absolute mass 0.9778 g (cup not empty)."
+    },
+    {
+      "run": "run2",
+      "started_utc": "2026-07-29T20:52Z",
+      "controller_rev": "pid-v2",
+      "summary": {
+        "status": "ok",
+        "final_g": "1.0012",
+        "target_g": "1.0000",
+        "taps": "0"
+      },
+      "d_rows": 356,
+      "note": "clean single-loop PID dose: 1.0012 g final (+1.2 mg, within +/-2 mg), ~11 s active dosing, 0 taps. Hopper had re-fed after overnight settling (probe: 0.957 g in 5 rev)."
+    }
+  ]
+}
