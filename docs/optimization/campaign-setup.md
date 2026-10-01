@@ -863,8 +863,8 @@ the dose and the search space change.
 The prediction is the bulk-only rule, `reading + trailing-2 s slope × τ_afterflow`, the
 same one that landed the Al 4047 top-up. `--frozen-set bulk_halt_kf=1` swaps in the
 trickle's Kalman filter instead (§6.5). The bulk is one pass because a second pass
-spins 1.5 s before its slope is trusted. At 40° and 20 rpm salt flows 35–78 mg/s
-(the salt campaign's bulk stop events), so a top-up could add about 75 mg before it is
+spins 1.5 s before its slope is trusted. At 40° and 20 rpm, salt's bulk halts in the
+salt campaign were flowing 46–78 mg/s, so a top-up could add 70–120 mg before it is
 able to halt. The taps take whatever the pass leaves. `BULK_ONLY = 1`, if frozen,
 still wins over this mode.
 
@@ -886,10 +886,10 @@ knobs of the predictive bulk come in:
 
 - **Approach rpm** sets the flow at the halt, and the afterflow scales with it. On salt
   at 20 rpm without taps, the bulk halts kept flowing 21–129 mg after the stop, at
-  35–78 mg/s. With 2 Hz taps the ratio of afterflow to stop rate was larger (median
-  1.4 s, up to 3.2 s), because the taps keep shaking the loaded lip.
+  35–78 mg/s. At 20 rpm with 2 Hz taps the ratio of afterflow to stop rate was larger
+  (median 1.4 s, up to 3.2 s), because the taps keep shaking the loaded lip.
 - **Taper start** only matters if it is larger than the margin plus the predicted
-  afterflow (flow × τ: 85–125 mg for salt at 55–100 rpm). Below that, the halt fires
+  afterflow (flow × τ: about 70–130 mg for salt at 55–100 rpm). Below that, the halt fires
   at full speed before the taper begins; in the sim, a 0.10 g taper start and no taper
   at all gave the same dose at 55 rpm. The low end of the box tests that no-taper regime.
 - **Stop margin** trades overshoot against tap time. At 0 the bulk aims at the goal
