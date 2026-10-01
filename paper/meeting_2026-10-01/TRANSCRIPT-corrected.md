@@ -46,8 +46,8 @@ I should have reduced the reasoning. It really does speed things up if you use O
 medium effort. There's low, medium, high, extra high and then max. Max is what I have set
 as the default for all the repositories, partly because of the asynchronous nature of
 it: you send a ping, and you want it to do a good job on its own before it gets back.
-But it certainly takes its time. *[Aside: a run that was pinged with no instruction
-still used 350 tokens to say so.]*
+But it certainly takes its time. *[Aside about a stray @claude ping with no
+instruction, which Claude answered briefly. Omitted.]*
 
 **04:00:** *[Aside about using AI more generally, for example ChatGPT for career
 research. Omitted.]*
@@ -220,7 +220,7 @@ opening it. But if you go to the File tab: Share, file link, anyone, and allow
 downloads.
 
 **31:15 Sterling:** Then I think you might have to exit out of it. Put that on the new
-issue that I made [#165].
+issue that I made [#165?].
 
 **32:36:** *[Personal conversation omitted.]*
 
