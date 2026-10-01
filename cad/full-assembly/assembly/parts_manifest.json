@@ -1,0 +1,54 @@
+{
+  "auger": {
+    "status": "current",
+    "source": "Fusion 360 (Sam), 'Threaded Auger Final.stl', #117 zip"
+  },
+  "cap": {
+    "status": "current",
+    "source": "Fusion 360 (Sam), 'Cap Final.stl', #117 zip"
+  },
+  "stepper_pinion": {
+    "status": "spec",
+    "source": "20 T module 1 per the Fusion redesign video EO9qnYssKRQ"
+  },
+  "solenoid": {
+    "status": "approx",
+    "source": "12 V push-pull solenoid (TAU0730TM-14 label), sized from photos"
+  },
+  "tap_collar": {
+    "status": "approx",
+    "source": "ring + angled solenoid cradle, from the 11 Sep photo (#156)"
+  },
+  "tap_collar_mount": {
+    "status": "june",
+    "source": "June hard-stop plate (PR #51); Fusion tap collar not shared"
+  },
+  "brackets": {
+    "status": "june",
+    "source": "June split-collar brackets (PR #47); rig uses the Fusion flexible brackets"
+  },
+  "mounting_plate": {
+    "status": "june",
+    "source": "June CadQuery (PR #66); Fusion redesign (v8my5C7718w) not shared"
+  },
+  "baseplate": {
+    "status": "june",
+    "source": "June CadQuery (PR #66); Fusion redesign (zOh_KagOwOU) not shared"
+  },
+  "servo_pinions": {
+    "status": "june",
+    "source": "June 14 T (2:1 with the 28 T hinge gears); Fusion version not shared"
+  },
+  "hinge_pins": {
+    "status": "june",
+    "source": "June M5 pins"
+  },
+  "nema11": {
+    "status": "june",
+    "source": "NEMA-11 body as a box"
+  },
+  "mg996r": {
+    "status": "june",
+    "source": "MG996R bodies as boxes"
+  }
+}
