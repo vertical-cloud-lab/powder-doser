@@ -9,110 +9,106 @@
    "parts": [
     {
      "partId": "JFD",
-     "name": "Baseplate"
+     "name": "Baseplate",
+     "solid": "Body1"
     }
-   ]
+   ],
+   "sha256": "9328bd45049414fc8bab82e096d0105ff3adce7491cc0dd79f0f5e6cd68d80ba"
   },
   "fusion-step/mounting-plate.step": {
    "elementId": "c129d8bb42b4ef96e5384506",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Tilt gear 28T (stepper side)"
+     "name": "Tilt gear 28T (left)",
+     "solid": "Spur Gear (28 teeth)"
     },
     {
      "partId": "JFH",
-     "name": "Tilt gear arm (stepper side)"
+     "name": "Tilt gear arm (left)",
+     "solid": "Body2"
     },
     {
      "partId": "JFL",
-     "name": "Mounting plate"
+     "name": "Mounting plate",
+     "solid": "Body3"
     },
     {
      "partId": "JFP",
-     "name": "Tilt gear 28T (solenoid side)"
+     "name": "Tilt gear 28T (right)",
+     "solid": "Spur Gear (28 teeth) (1)"
     },
     {
      "partId": "JFT",
-     "name": "Tilt gear arm (solenoid side)"
+     "name": "Tilt gear arm (right)",
+     "solid": "Body5"
     }
-   ]
+   ],
+   "sha256": "a255ea72f7d0dcf22e265cd86d5a4c277465fb1ec94ada65ab414b2387978280"
   },
   "fusion-step/auger.step": {
    "elementId": "87e3fcaef4c956b47a8ff5ba",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Auger"
+     "name": "Auger",
+     "solid": "Shaft"
     }
-   ]
+   ],
+   "sha256": "06cd250b5885fa9261eee4b0ed785ef02d52bac3bfc72ba77bf36334fc82fcbe"
   },
   "fusion-step/auger-cap.step": {
    "elementId": "f99e877987cdd73ea3ab57ce",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Auger cap"
+     "name": "Auger cap",
+     "solid": "Cap"
     }
-   ]
+   ],
+   "sha256": "8aa578308e3fcd594f1f590cb2c88ad5ef87ecab0401bb9cb2b55437ed1fea30"
   },
   "fusion-step/brackets.step": {
    "elementId": "d4266dcd202f4faf52ba5e51",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Auger bracket"
+     "name": "Auger bracket",
+     "solid": "Body1"
     }
-   ]
+   ],
+   "sha256": "24d5a53c8a9840ee33b2aa28bb95f67973fdb46888a7887a2eec687d436d5d24"
   },
   "ai-step/tap-collar-base.step": {
    "elementId": "e1153bae6c800f6e0a2e6ff9",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Tap collar base (AI, PR 51)"
+     "name": "Tap collar base (AI, PR 51)",
+     "solid": null
     }
-   ]
+   ],
+   "sha256": "7670961002057765f3c5961088ebdfe7a57c3d6c06cd07b35c581e3bad3f41fc"
   },
   "fusion-step/tap-collar.step": {
    "elementId": "d280770701066bab90c7a84e",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Tap collar"
+     "name": "Tap collar",
+     "solid": "Body1"
     }
-   ]
+   ],
+   "sha256": "31326250271216f63c9def6554e78299a9400df821f27656e897c149d420b1cf"
   },
   "purchased/adafruit-412-solenoid.step": {
-   "elementId": "5d606c33869e3dadc201d4eb",
+   "elementId": "d3ffa0bfdef25c1369b96854",
+   "sha256": "e4f6e73e8f269567968d5984aed0957ebbac3a293016eacba312e4186bc44ca4",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Open CASCADE STEP translator 7.9 3.1"
-    },
-    {
-     "partId": "JFH",
-     "name": "Open CASCADE STEP translator 7.9 3.2"
-    },
-    {
-     "partId": "JFL",
-     "name": "Open CASCADE STEP translator 7.9 3.3"
-    },
-    {
-     "partId": "JFP",
-     "name": "Open CASCADE STEP translator 7.9 3.4"
-    },
-    {
-     "partId": "JFT",
-     "name": "Open CASCADE STEP translator 7.9 3.5"
-    },
-    {
-     "partId": "JFX",
-     "name": "Open CASCADE STEP translator 7.9 3.6"
-    },
-    {
-     "partId": "JFb",
-     "name": "Open CASCADE STEP translator 7.9 3.7"
+     "name": "Adafruit 412 solenoid",
+     "solid": null
     }
    ]
   },
@@ -121,36 +117,44 @@
    "parts": [
     {
      "partId": "JFD",
-     "name": "Stepper pinion 20T"
+     "name": "Stepper pinion 20T",
+     "solid": "Spur Gear (20 teeth)"
     }
-   ]
+   ],
+   "sha256": "4159c0b169bfb719678eacf90e35f907b6d3ac2dac0ca4ace26afe311fe96955"
   },
   "purchased/nema11-11hs18-0674s.step": {
    "elementId": "37290fc4dca25d407f9168cb",
    "parts": [
     {
      "partId": "JFD",
-     "name": "NEMA 11 stepper 11HS18-0674S"
+     "name": "NEMA 11 stepper 11HS18-0674S",
+     "solid": null
     }
-   ]
+   ],
+   "sha256": "73c2c09421a07b3f06fc127ae47d1d5b01b33df06e35b6026155b16e4601851f"
   },
   "fusion-step/servo-pinion.step": {
    "elementId": "8377769b57b15d1601716d4d",
    "parts": [
     {
      "partId": "JFD",
-     "name": "Servo pinion 14T"
+     "name": "Servo pinion 14T",
+     "solid": "Spur Gear (14 teeth)"
     }
-   ]
+   ],
+   "sha256": "17eda10f49bbe508598b2882a3bcd5df2af6862c7f9e0cb0c292bcfd35eba47f"
   },
   "purchased/mg996r-servo.step": {
    "elementId": "ad6ed61ddae64b27b09139c0",
    "parts": [
     {
      "partId": "JFD",
-     "name": "MG996R servo"
+     "name": "MG996R servo",
+     "solid": null
     }
-   ]
+   ],
+   "sha256": "4b6422363b180821ed3f3ea5d2184c1e54cb9a8f9473718339d240caef944dc8"
   }
  },
  "assembly": {
@@ -159,127 +163,135 @@
    {
     "placement": "Baseplate",
     "instanceId": "MxVpCC3Sa7MIctvwc",
-    "partId": "JFD"
+    "elementId": "0043eabe02f952fba23eb592",
+    "partId": "JFD",
+    "part": "Baseplate"
    },
    {
     "placement": "Mounting plate",
     "instanceId": "MDXknuje2Uqfbj/fm",
-    "partId": "JFD"
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFD",
+    "part": "Tilt gear 28T (left)"
    },
    {
     "placement": "Mounting plate",
     "instanceId": "M9XU0ruDc5t2p2qGj",
-    "partId": "JFH"
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFH",
+    "part": "Tilt gear arm (left)"
    },
    {
     "placement": "Mounting plate",
     "instanceId": "MsxZIJpfKCyC9q6tU",
-    "partId": "JFL"
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFL",
+    "part": "Mounting plate"
    },
    {
     "placement": "Mounting plate",
     "instanceId": "MLmrJCpJhPai32alj",
-    "partId": "JFP"
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFP",
+    "part": "Tilt gear 28T (right)"
    },
    {
     "placement": "Mounting plate",
     "instanceId": "MjEmXknJKT3LF5x+s",
-    "partId": "JFT"
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFT",
+    "part": "Tilt gear arm (right)"
    },
    {
     "placement": "Auger",
     "instanceId": "MQ2iWZyAoXJvnMo5K",
-    "partId": "JFD"
+    "elementId": "87e3fcaef4c956b47a8ff5ba",
+    "partId": "JFD",
+    "part": "Auger"
    },
    {
     "placement": "Auger cap",
     "instanceId": "M3vXt8e4ev+07cuT4",
-    "partId": "JFD"
+    "elementId": "f99e877987cdd73ea3ab57ce",
+    "partId": "JFD",
+    "part": "Auger cap"
    },
    {
     "placement": "Bracket (rear)",
     "instanceId": "Mh6QZukK6aSESq9WG",
-    "partId": "JFD"
+    "elementId": "d4266dcd202f4faf52ba5e51",
+    "partId": "JFD",
+    "part": "Auger bracket"
    },
    {
     "placement": "Bracket (front)",
     "instanceId": "M8A8S3qWvuvSxZTQQ",
-    "partId": "JFD"
+    "elementId": "d4266dcd202f4faf52ba5e51",
+    "partId": "JFD",
+    "part": "Auger bracket"
    },
    {
     "placement": "Tap collar base (AI)",
     "instanceId": "MSdzgT85RmE6G1sAa",
-    "partId": "JFD"
+    "elementId": "e1153bae6c800f6e0a2e6ff9",
+    "partId": "JFD",
+    "part": "Tap collar base (AI, PR 51)"
    },
    {
     "placement": "Tap collar",
     "instanceId": "MdHyJPztLyuR+RcTV",
-    "partId": "JFD"
+    "elementId": "d280770701066bab90c7a84e",
+    "partId": "JFD",
+    "part": "Tap collar"
    },
    {
     "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "Mdh4Sm0+98irLHATE",
-    "partId": "JFD"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "M8YdHMSilPQH8XVIN",
-    "partId": "JFH"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "MeSQd1lrgmy4da7r5",
-    "partId": "JFL"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "MXq/7DXYTf0/sS8/8",
-    "partId": "JFP"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "MdZjYcJG9gIkbwYn7",
-    "partId": "JFT"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "MHh4nwFH67EK9cjmN",
-    "partId": "JFX"
-   },
-   {
-    "placement": "Solenoid (Adafruit 412)",
-    "instanceId": "Mc3v1lFwpXzbpp1KU",
-    "partId": "JFb"
+    "instanceId": "MI7l/3ifZUFw0iDLE",
+    "elementId": "d3ffa0bfdef25c1369b96854",
+    "partId": "JFD",
+    "part": "Adafruit 412 solenoid"
    },
    {
     "placement": "Stepper pinion",
     "instanceId": "MrURar88lbcOyGaZx",
-    "partId": "JFD"
+    "elementId": "15b8225e32009990daff71ef",
+    "partId": "JFD",
+    "part": "Stepper pinion 20T"
    },
    {
     "placement": "Stepper (NEMA 11)",
     "instanceId": "MprMBXCxJJcxEl4zo",
-    "partId": "JFD"
+    "elementId": "37290fc4dca25d407f9168cb",
+    "partId": "JFD",
+    "part": "NEMA 11 stepper 11HS18-0674S"
    },
    {
     "placement": "Servo pinion (+X)",
     "instanceId": "MIUJy6t3PlbHqI3Ti",
-    "partId": "JFD"
+    "elementId": "8377769b57b15d1601716d4d",
+    "partId": "JFD",
+    "part": "Servo pinion 14T"
    },
    {
     "placement": "Servo pinion (-X)",
     "instanceId": "Mzk+DwgCPMdJk/tfj",
-    "partId": "JFD"
+    "elementId": "8377769b57b15d1601716d4d",
+    "partId": "JFD",
+    "part": "Servo pinion 14T"
    },
    {
     "placement": "Servo MG996R (+X)",
     "instanceId": "MlF5grbJOuQGUCEU7",
-    "partId": "JFD"
+    "elementId": "ad6ed61ddae64b27b09139c0",
+    "partId": "JFD",
+    "part": "MG996R servo"
    },
    {
     "placement": "Servo MG996R (-X)",
     "instanceId": "Mhj3AxOG8Vl+DlW/A",
-    "partId": "JFD"
+    "elementId": "ad6ed61ddae64b27b09139c0",
+    "partId": "JFD",
+    "part": "MG996R servo"
    }
   ],
   "url": "https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f/w/b4151a24f733d0ffc48da6d2/e/dfbe0ae499cd860a85aa8da6"

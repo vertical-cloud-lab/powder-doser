@@ -113,9 +113,9 @@ def adafruit412() -> cq.Workplane:
                .translate((0, axis_y, -h / 2 - SOL_BOTTOM_STICKOUT)))
     bushing = (cq.Workplane("XY").circle(SOL_BUSHING_D / 2).extrude(0.5)
                .translate((0, axis_y, -h / 2 - 0.5)))
-    spring = None
+    spring = None              # turns touch the plunger so the model is one solid
     for k in range(6):
-        turn = (cq.Workplane("XY").circle(4.0).circle(3.2).extrude(0.8)
+        turn = (cq.Workplane("XY").circle(4.0).circle(SOL_PLUNGER_D / 2 - 0.1).extrude(0.8)
                 .translate((0, axis_y, h / 2 + 1.0 + k * (top_len - 3.0) / 6)))
         spring = turn if spring is None else spring.union(turn)
     cap = (cq.Workplane("XY").circle(4.5).extrude(1.0)

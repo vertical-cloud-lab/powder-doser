@@ -117,8 +117,10 @@ COLLAR_ROLL_DEG = 0.0
 # stepper + pinion
 NEMA_IN_MP = T([NZ, Y, X],
                (MP_STEPPER_FACE_BACK_X, 0.0, MP_STEPPER_Z))
-PINION_IN_MP = T([Z, Y, NX],
-                 (MP_STEPPER_FACE_FRONT_X + PINION_HUB_GAP + PINION_LEN, 0.0, MP_STEPPER_Z))
+PINION_PHASE_DEG = 9.0     # half a 20 T pitch: zero tooth overlap with the 44 T gear
+PINION_IN_MP = (T([Z, Y, NX],
+                  (MP_STEPPER_FACE_FRONT_X + PINION_HUB_GAP + PINION_LEN, 0.0, MP_STEPPER_Z))
+                @ rot_about(Z, PINION_PHASE_DEG))
 
 # servos (world): spline +Z native, case towards native +X
 _servo_top_x = SERVO_POST_INNER_X - SERVO_FLANGE_UNDERSIDE_BELOW_TOP
