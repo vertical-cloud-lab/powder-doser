@@ -37,7 +37,7 @@ session (job [36922265580](https://github.com/vertical-cloud-lab/powder-doser/ac
 | 1 | Tilt range | 00:48. Sam thinks the runs went to vertical; Sterling asks Claude to check | **Settled after the meeting: 45° maximum.** Done everywhere |
 | 2 | Loading slots | 04:40: "you've gotten rid of that like months ago" | Done: the tube is filled through its capped end |
 | 3 | Supports | 04:40: "we're using supports in the printing" | Done: "most of them with support material" |
-| 4 | Fig. 1a out of date | 12:01–12:55: stand-in stepper, no solenoid, old tap collar. "It should be updated" | Replaced with the #170 render. Open: [question 5](MEETING-DECISIONS.md#5-fig-1a-the-cad-view-of-the-doser) |
+| 4 | Fig. 1a out of date | 12:01–12:55: stand-in stepper, no solenoid, old tap collar. "It should be updated" | Replaced with the #170 render. Open: [question 5](MEETING-DECISIONS.md#5-fig-1a-who-makes-the-refreshed-render-and-should-it-show-who-modelled-what) |
 | 5 | Fig. 1c | 09:03: the new auger "has the reservoir for two-thirds", and the screw does not run throughout | Done: a CAD section of the Fusion auger, with the flight on the third nearest the outlet |
 | 6 | Auger dimensions | 09:03: "make sure that the data in here is still accurate" | Done from the Fusion file: 25 mm OD, 21 mm bore, 250 mm long, 10.4 mm pitch, 8 mm core. The parallel session asks you to confirm it is the printed file |
 | 7 | Smaller doses and controls | 05:14 and 08:14: "now it's just a control problem, so we're working on that" | Done in the abstract and Conclusions. Open: [question 11](MEETING-DECISIONS.md#11-wills-controller-work) |
@@ -78,7 +78,7 @@ session (job [36922265580](https://github.com/vertical-cloud-lab/powder-doser/ac
 | Sam | Links for the auger filling stand and the 3.32 mL and 9.18 mL augers | Done (#170, 20:10 UTC) |
 | Sam | Find the AI-modelled tap-collar base | Open. The likeliest file is in [question 4](MEETING-DECISIONS.md#4-the-tap-collar-base) |
 | Sterling | Open PR #170 and give Claude the assembly task | Done (20:02 UTC). The session has downloaded the eight Fusion files through the Pi as STEP. The simplified stepper, solenoid and servo models, the Onshape upload and the assembly are in progress |
-| Brandon, Ethan | An updated render or photograph for Fig. 1a | Open ([question 5](MEETING-DECISIONS.md#5-fig-1a-the-cad-view-of-the-doser)) |
+| Brandon, Ethan | An updated render or photograph for Fig. 1a | Open ([question 5](MEETING-DECISIONS.md#5-fig-1a-who-makes-the-refreshed-render-and-should-it-show-who-modelled-what)) |
 | Not assigned | An assembly GIF with the full bill of materials (Sterling's note on #170) | Open ([question 6](MEETING-DECISIONS.md#6-an-assembly-view-with-the-bill-of-materials)) |
 
 ## Tooling notes from the meeting (not for the paper)

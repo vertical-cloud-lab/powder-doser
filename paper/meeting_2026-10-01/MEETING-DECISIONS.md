@@ -71,8 +71,8 @@ The draft says the team "recreated its parts in Fusion 360 and changed some of t
 
 ### 3. How should the abstract describe the tested doser?
 
-**Choose one.** (DECISIONS.md item 19 points here.) This follows from questions 1 and
-2. The title is DECISIONS.md item 18.
+**Choose one.** This is the wording; where it is said is DECISIONS.md item 19, and the
+title is item 18. It follows from questions 1 and 2.
 
 - [x] "The team later redrew the parts in conventional CAD, and the tested doser uses some of these, including the auger and its drive gear." (current; no longer accurate if the answer to question 1 is "all eight")
 - [ ] "The team later redrew the parts in conventional CAD, and the tested doser was printed from these redrawn parts, apart from one AI-modelled part."
@@ -110,25 +110,21 @@ session is looking for it too.
 
 ## B. Fig. 1
 
-### 5. Fig. 1a, the CAD view of the doser
+### 5. Fig. 1a: who makes the refreshed render, and should it show who modelled what?
 
-(DECISIONS.md item 7 points here.) In the meeting Sam said panel (a) was out of date: the
+DECISIONS.md item 7 asks whether to keep the #170 render or use a photograph; these two
+questions follow on from it. In the meeting Sam said panel (a) was out of date: the
 stepper was a stand-in, there was no solenoid, and the tap collar had changed. "I love
 the idea of it, but it should be updated." Two ways to update it were discussed: a new
 render, which could be a job for Brandon and Ethan in the lab, or a good photograph. The
 #170 session is now building a full assembly in Onshape from all eight Fusion parts,
 with simple models of the stepper, solenoid and servos.
 
-Panel (a) is now the #170 render. Its auger, cap and pinion are the real files; the tap
-collar and solenoid are modelled from a photo, and the plates and brackets are June
-AI-modelled stand-ins.
+**Who makes the refreshed render? Choose one.**
 
-**What should panel (a) be? Choose one.**
-
-- [x] Keep the #170 render, and refresh it from the #170 Onshape assembly once all parts are in (current)
-- [ ] A new render by Brandon and Ethan, from the same files
-- [ ] A photograph of the current rig (who takes it, in Notes)
-- [ ] Go back to the June render
+- [ ] The #170 session, from its Onshape assembly
+- [ ] Brandon and Ethan, from the same files
+- [ ] Nobody; a photograph replaces it (who takes it, in Notes)
 
 **Colour the parts by who modelled them (AI tools or the team)? Choose one.** Fig. 1
 would then show the split between AI and human work that the paper describes.
