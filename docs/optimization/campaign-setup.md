@@ -837,6 +837,117 @@ screening main effects over the 16 corners, the τ fit, the model's Pareto set,
 and the recommended point: the knee of the observed front, with each objective
 scaled by its threshold.
 
+### 5.6 Dosing one stored point by hand
+
+Added 2026-10-01, when William asked where the optimized parameters live and how
+to run a dose with them to watch it.
+
+**The Pico doesn't hold a campaign's point.** `/trickle_tap/trickle_params.py`
+keeps the hand-tuned baseline. Each campaign dose pushes its point with `set`,
+and `set` values are gone at the next reset. The points are stored here:
+
+| Where | What |
+|---|---|
+| `data/opt/<campaign_id>/pareto.json`, `report.md` | The readout: the observed front and the model's Pareto set, each point with its 8 values. |
+| `data/opt/<campaign_id>/campaign_records.jsonl` | One line per dose: label, the values pushed (τ included), outcome, stop events. |
+| `data/opt/<campaign_id>/campaign.json` | The frozen snapshot (every other `trickle_params` value) and the τ fit. |
+| `data/opt/<campaign_id>/zero/` | Each dose's trial document and raw serial session, every `set` echo included. |
+| MongoDB `opt_campaigns`, `opt_trials` | The same documents. The campaign document also mirrors every dose record. |
+| MongoDB `dosing_profiles`, `data/profiles/<powder>.json` | Only after `--validate-params`. This is what `dose.py` doses from. |
+
+To turn a point into firmware commands: `bulk_tap` and `trim_tap` become
+`set bulk_tap` and `set trickle_tap` (`2hz` = 1, `off` = 0), the six numeric
+names are already firmware keys, and τ goes as `set tau_afterflow_s`. For the
+recommended point of the salt campaign
+[`salt-20260929T014732Z`](../../data/opt/salt-20260929T014732Z/report.md),
+`bo-005`:
+
+```
+set bulk_tap 1
+set trickle_tap 0
+set bulk_tilt_deg 40
+set trickle_tilt_deg 10
+set tap_tilt_deg 15
+set bulk_rpm 100
+set trickle_start_remaining_g 0.3
+set tolerance_g 0.003
+set tau_afterflow_s 0.8338
+set log_to_flash 0
+```
+
+The last line keeps telemetry off the Pico's nearly full flash; `log` still
+prints it. A freshly booted runner takes every other value from
+`trickle_params.py`, which matches the salt campaign's frozen snapshot for every
+knob a three-stage dose uses.
+
+Three ways to dose a point, all on the Zero over SSH. Each one needs the rig
+handed over (§5.1 item 6).
+
+1. **At the runner's prompt**, to watch every poll. Nothing is uploaded, and
+   `--capture` keeps a copy of the session.
+
+   ```bash
+   mpremote connect /dev/ttyACM0 soft-reset repl --capture ~/manual-dose.log
+   ```
+
+   `soft-reset` stops whatever the Pico is running and resets it without
+   running its power-on `main.py`. At the `>>>` prompt, start this build's
+   runner. The path has to go first, or the older runner at the flash root
+   loads instead:
+
+   ```
+   import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()
+   ```
+
+   Paste the `set` lines. The runner doesn't echo what you type, but each line
+   answers `[set] <key> = <value> (was ...)`. Check the values with `s`, then
+   dose with `g 0.5`. Afterwards, `res` reprints the `RESULT` line and `log`
+   prints the telemetry CSV for `plot_trickle.py`. Ctrl-C aborts a dose: the
+   auger loops halt the motor on the way out, and re-running the import line
+   brings the rig back up with the tap solenoid off. To hand the rig back,
+   press Ctrl-C, then Ctrl-D (the Pico reboots into its power-on `main.py`),
+   then Ctrl-] to leave `mpremote`.
+
+2. **Through the executor**, the same path a campaign dose takes. The trial is
+   spooled to `data/opt/manual-salt/` and uploaded to `opt_trials`. Leave any
+   `mpremote` session first, because the executor refuses a port that another
+   process holds.
+
+   ```bash
+   cd ~/powder-doser
+   T=$(cat /proc/sys/kernel/random/uuid)
+   ~/powder-doser-venv/bin/python scripts/opt_dose_capture.py --takeover \
+     --mode production --campaign-id manual-salt --trial "$T" \
+     --powder-id salt --target-g 0.5 \
+     --params '{"bulk_tap": "2hz", "trim_tap": "off", "bulk_tilt_deg": 40, "trickle_tilt_deg": 10, "tap_tilt_deg": 15, "bulk_rpm": 100, "trickle_start_remaining_g": 0.3, "tolerance_g": 0.003, "tau_afterflow_s": 0.8338}' \
+     --frozen '{"log_to_flash": false}' &
+   tail -F --pid=$! "data/opt/manual-salt/serial_$T.log"
+   ```
+
+   `tail` shows the Pico's output live and exits when the dose ends, and the
+   executor's one-line JSON summary follows. Ctrl-C stops only `tail`; the dose
+   carries on. `--takeover` stops the Pico's power-on `main.py` (without it the
+   executor answers `rig-busy`). A runner that is already up is reused as it
+   is, though, so reboot the Pico first (Ctrl-C, Ctrl-D in `mpremote`) if you
+   `set` values by hand that shouldn't carry into this dose.
+
+3. **Validate it, then use `dose.py`**, for production. From the laptop, inside
+   the campaign that found the point (8 replicates on its fitted τ):
+
+   ```bash
+   python scripts/opt_campaign.py --powder-id salt --host <user>@<zero-hostname> \
+     --validate-params '{"bulk_tap": "2hz", "trim_tap": "off", "bulk_tilt_deg": 40, "trickle_tilt_deg": 10, "tap_tilt_deg": 15, "bulk_rpm": 100, "trickle_start_remaining_g": 0.3, "tolerance_g": 0.003}' \
+     --replicates 8
+   ```
+
+   That writes the `dosing_profiles` document. From then on the Zero doses the
+   point, with the whole frozen snapshot pushed too, through
+   `scripts/dose.py --powder-id salt --target-g 0.5` (add `--takeover` when the
+   Pico sits in its power-on `main.py`).
+
+Routes 2 and 3 need the Zero's executor and the Pico's `/trickle_tap` build to
+report the same `FIRMWARE_ID`. Otherwise they answer `rig-busy` and dose nothing.
+
 ---
 
 ## 6. Alternative campaign: bulk → tap (no PI trickle)
