@@ -63,6 +63,20 @@ PR_SUBSYSTEM = {
     "68": "Auger",
 }
 
+# From June 2026 on, most design work ran through issues and through PRs that
+# span several subsystems, so newer entries name their subsystem explicitly with
+# a ``sub=<slug>`` key on the ENTRY marker. When present it overrides ``pr=``.
+SUB_SLUG = {
+    "auger": "Auger",
+    "module": "Doser module",
+    "mounting": "Mounting plate & hinge",
+    "electronics": "Electronics & PCB",
+    "firmware": "Firmware & control",
+    "test-rig": "Test method & rig",
+    "multi-doser": "Multi-doser",
+    "tooling": "Design tooling",
+}
+
 # Display order for the index.
 SUBSYSTEM_ORDER = [
     "Scoop / excavator",
@@ -74,6 +88,10 @@ SUBSYSTEM_ORDER = [
     "Doser module",
     "Mounting plate & hinge",
     "Electronics & PCB",
+    "Firmware & control",
+    "Test method & rig",
+    "Multi-doser",
+    "Design tooling",
 ]
 
 ENTRY_RE = re.compile(r"<!-- ENTRY (?P<meta>[^>]*?)-->\r?\n", re.S)
@@ -96,7 +114,10 @@ class Entry:
         nm = NAME_RE.search(head)
         self.name = nm.group("name") if nm else head
         self.base = VERSION_RE.sub("", self.name)
-        self.subsystem = PR_SUBSYSTEM.get(self.pr, "Other")
+        sub = kv.get("sub")
+        if sub is not None and sub not in SUB_SLUG:
+            raise ValueError(f"unknown sub={sub!r} on entry {head!r}")
+        self.subsystem = SUB_SLUG[sub] if sub else PR_SUBSYSTEM.get(self.pr, "Other")
 
     @property
     def day(self) -> str:
