@@ -64,7 +64,7 @@ def main() -> None:
         r"protocol F never produced data); "
         r"\emph{Doses} is the number of closed-loop doses attempted. Locations: an "
         r"open laboratory bench (to 6 August 2026), a shared fume hood (11 August to "
-        r"3 September) and a second fume hood (from 3 September). Runs that failed screening are "
+        r"3 September), and a second fume hood (from 3 September). Runs that failed screening are "
         r"listed here and in \texttt{paper/figures/data/runs\_all.csv} with the reason; "
         r"the Experimental section describes how runs were chosen for each figure.}"
         r"\label{tbl:runs}\\",

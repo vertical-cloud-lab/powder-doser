@@ -72,8 +72,9 @@ Headers and wiring & --- & 10 & generic \\
 
 \section{Construction guide}
 
-An illustrated build guide is kept in the repository alongside the parametric
-CAD sources and STL files for every part. In outline:
+Table~\ref{tbl:parts} lists the printed parts of the tested doser and where to
+download each one; the wiring guide and firmware are in \texttt{hardware/} in
+the repository. The build, in outline:
 
 \begin{enumerate}
 \item \textbf{Print} the auger and its screw-on cap, the 20-tooth stepper
@@ -99,6 +100,32 @@ is its own reservoir.
 \item \textbf{Checkout:} run the firmware self-test (rotate, tap, vibrate,
 tilt, tare, and read), then the test protocols listed in the main text.
 \end{enumerate}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Printed parts of the tested doser and their design files. Each part
+was modelled by the team in Fusion~360 (most of them as recreations of the
+AI-modelled parts) and is shared publicly with downloads enabled; STEP exports
+of all eight are also in the repository
+(\texttt{cad/full-assembly/components/fusion-step/}, pull request \#170). The
+AI-modelled originals are in \texttt{cad/}.}
+\label{tbl:parts}
+\begin{tabular}{p{6.2cm}l}
+\toprule
+Part & Fusion~360 share link \\
+\midrule
+Auger: threaded storage tube with 44-tooth gear & \url{https://a360.co/4y1oz2H} \\
+Screw-on cap & \url{https://a360.co/4w9kRE5} \\
+Stepper pinion, 20 teeth & \url{https://a360.co/4yqSHFz} \\
+Auger brackets & \url{https://a360.co/46XtYN1} \\
+Tap collar & \url{https://a360.co/4AIIgyz} \\
+Mounting plate & \url{https://a360.co/4xXUj8L} \\
+Baseplate & \url{https://a360.co/4AOA7sI} \\
+Servo pinion & \url{https://a360.co/4dcGSdF} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Auger and outlet geometry}
 
