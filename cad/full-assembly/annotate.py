@@ -10,6 +10,8 @@ the current rig (the driver never worked and the manuscript dropped it), so
 that label is gone; pass ``--vibration`` to put it back on the tap collar.
 
     python3 annotate.py
+    python3 annotate.py --src assembly_iso_az090_hires.png \
+        --out assembly_iso_az090_hires_annotated.png      # print resolution
 """
 from __future__ import annotations
 
@@ -54,11 +56,13 @@ def main() -> None:
     args = ap.parse_args()
 
     im = Image.open(RENDERS / args.src).convert("RGBA")
+    # anchors were projected at 1400 x 1000; the --hires render is 4x that
+    k = im.width / 1400.0
     anchors = json.loads((RENDERS / "anchors_az090.json").read_text())
     x0, y0, x1, y1 = content_bbox(im)
 
     # canvas = the June crop proportions: labels above and to the right
-    pad_l, pad_t, pad_r, pad_b = 20, 95, 215, 40
+    pad_l, pad_t, pad_r, pad_b = (round(v * k) for v in (20, 95, 215, 40))
     W = (x1 - x0) + pad_l + pad_r
     H = (y1 - y0) + pad_t + pad_b
     # transparent canvas, like the June figure (the render's background has
@@ -69,15 +73,18 @@ def main() -> None:
 
     def P(name):
         x, y = anchors[name]
-        return (x + dx, y + dy)
+        return (x * k + dx, y * k + dy)
+
+    def off(xy, ox, oy):
+        return (xy[0] + ox * k, xy[1] + oy * k)
 
     d = ImageDraw.Draw(canvas)
-    font = _font(46)
+    font = _font(round(46 * k))
 
     # powder stream: dots, larger near the outlet
-    stream = [(x + dx, y + dy) for x, y in anchors["stream"]]
+    stream = [(x * k + dx, y * k + dy) for x, y in anchors["stream"]]
     for i, (x, y) in enumerate(stream):
-        r = 2.6 - 1.0 * i / len(stream)
+        r = (2.6 - 1.0 * i / len(stream)) * k
         d.ellipse((x - r, y - r, x + r, y + r), fill=(25, 25, 25, 255))
     stream_end = max(stream, key=lambda p: p[1])
 
@@ -85,27 +92,25 @@ def main() -> None:
         tb = d.textbbox(xy_text, text, font=font)
         if start is None:   # leader leaves from the text edge nearest the anchor
             cx = min(max(anchor_xy[0], tb[0]), tb[2])
-            cy = tb[3] + 6 if anchor_xy[1] > tb[3] else tb[1] - 6
+            cy = tb[3] + 6 * k if anchor_xy[1] > tb[3] else tb[1] - 6 * k
             if tb[1] <= anchor_xy[1] <= tb[3]:
                 cy = (tb[1] + tb[3]) / 2
-                cx = tb[0] - 8 if anchor_xy[0] < tb[0] else tb[2] + 8
+                cx = tb[0] - 8 * k if anchor_xy[0] < tb[0] else tb[2] + 8 * k
             start = (cx, cy)
-        d.line([start, anchor_xy], fill=LEADER + (255,), width=3)
+        d.line([start, anchor_xy], fill=LEADER + (255,), width=max(1, round(3 * k)))
         d.text(xy_text, text, font=font, fill=TEXT + (255,))
 
     rot = P("Rotation")
     tap = P("Tapping")
     tilt = P("Tilt")
-    label("Rotation", (rot[0] - 175, 18), (rot[0] + 4, rot[1] - 4))
-    label("Tapping", (tap[0] + 30, 18), (tap[0] + 3, tap[1] - 3))
-    tilt_txt = (tilt[0] + 95, tilt[1] - 78)
-    label("Tilt", tilt_txt, (tilt[0] + 18, tilt[1] + 6),
-          start=(tilt_txt[0] - 10, tilt_txt[1] + 30))
-    ps_txt = (stream_end[0] + 75, stream_end[1] - 30)
-    label("Powder stream", ps_txt, (stream_end[0] + 8, stream_end[1] - 4),
-          start=(ps_txt[0] - 8, ps_txt[1] + 22))
+    label("Rotation", (rot[0] - 175 * k, 18 * k), off(rot, 4, -4))
+    label("Tapping", (tap[0] + 30 * k, 18 * k), off(tap, 3, -3))
+    tilt_txt = off(tilt, 95, -78)
+    label("Tilt", tilt_txt, off(tilt, 18, 6), start=off(tilt_txt, -10, 30))
+    ps_txt = off(stream_end, 75, -30)
+    label("Powder stream", ps_txt, off(stream_end, 8, -4), start=off(ps_txt, -8, 22))
     if args.vibration:
-        label("Vibration", (tap[0] + 120, 85), (tap[0] - 10, tap[1] + 55))
+        label("Vibration", (tap[0] + 120 * k, 85 * k), off(tap, -10, 55))
 
     canvas.save(RENDERS / args.out)
     print(f"  -> {(RENDERS / args.out).relative_to(HERE)}  ({W}x{H})")

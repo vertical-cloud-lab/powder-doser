@@ -39,7 +39,7 @@ import trimesh
 import vtk
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE / "parts" / "june"))
+sys.path.insert(0, str(HERE / "components" / "june"))
 
 from cad_model import (  # noqa: E402  (June parametric source, vendored)
     GEAR_CENTRE_DISTANCE, GEAR_HINGE_TIP_D, GEAR_X_CENTRE, MG996R_BODY_H, MG996R_BODY_L, MG996R_BODY_T,
@@ -51,8 +51,8 @@ from cad_model import (  # noqa: E402  (June parametric source, vendored)
     build_mounting_plate, build_servo_pinion,
 )
 
-PARTS_DIR = HERE / "parts"
-GEN_DIR = HERE / "parts" / "generated"
+PARTS_DIR = HERE / "components"
+GEN_DIR = HERE / "components" / "generated"
 ASM_DIR = HERE / "assembly"
 RENDER_DIR = HERE / "renders"
 
@@ -474,7 +474,10 @@ def main() -> None:
     for tilt in (0.0, 22.5, 45.0):
         parts = build_parts(tilt)
         ren, win = make_renderer(parts)
-        set_reference_camera(ren)
+        if tilt == 0:
+            set_reference_camera(ren)   # the reference figure's exact view
+        else:
+            set_iso_camera(ren)         # same direction, re-fitted to the tilt
         tag = f"tilt{tilt:g}".replace(".", "p")
         name = "assembly_iso_az090.png" if tilt == 0 else f"assembly_iso_az090_{tag}.png"
         write_png(win, RENDER_DIR / name)
