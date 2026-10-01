@@ -991,3 +991,34 @@ For reference, the three-stage dose with the shipped tuning took 141 s (47 taps)
 and loses badly when it is not. The slope rule's overshoot at 10 mg is what the τ refit
 corrects: refit from a simulated bulk-tap screen, τ comes out at 0.91 s.
 
+
+### 6.6 Simulated shakedown
+
+Both campaigns ran end to end on the PR #124 virtual plant, with the same seed and
+budget (`--simulate --model moo --budget 14`): 22 screening doses, 6 re-dosed anchors,
+and 14 BO doses each, 0.5 g of a salt-like powder. The plant flows smoothly with no
+slugs, so the rig will be noisier. These numbers show the loop works and how the two
+doses differ in shape; they do not predict rig performance.
+
+| | bulk → tap | three-stage |
+|---|---|---|
+| Clean doses (`ok`, no jam) | 27 of 42 | 30 of 42 |
+| Overshoots | 15 (12 in the screen) | 12 |
+| Median clean dose | 17.8 s, 2.3 mg | 125 s, 4.5 mg |
+| Clean BO doses | 13 of 14 | 7 of 14 |
+| Front of the clean doses | 13.5 s / 3.3 mg, 16.0 s / 1.6 mg, 65.8 s / 1.3 mg, 79.0 s / 0.5 mg | 19.2 s / 3.0 mg, 31.0 s / 0.1 mg, 120 s / 0.0 mg |
+| Fitted τ | 0.91 s | 1.01 s |
+
+![Simulated bulk-to-tap and three-stage campaigns](bulk-tap-sim-comparison.png)
+
+*Left: every modeled dose of both campaigns; hollow markers overshot or jammed.
+Right: median time per stage of the clean doses. Regenerate with
+[`make_bulk_tap_sim_figure.py`](make_bulk_tap_sim_figure.py).*
+
+The bulk → tap screen overshot most at its zero-margin corners, and at 100 rpm with
+the 0.83 s screening τ. `corner-10` (15°, 100 rpm, 50 mg margin) halted with 169 mg to go
+at 148 mg/s, and this plant's afterflow there was 1.15 s × the flow, so it landed
++17 mg. After the τ refit, 13 of the 14 BO doses were clean. On the rig, expect the
+same pattern wherever the afterflow outruns τ: at 2 Hz bulk taps and 40°, salt's
+afterflow reached 3.2 s × the stop rate (§6.2). The overshoot guard still aborts
+anything past 100 mg.
