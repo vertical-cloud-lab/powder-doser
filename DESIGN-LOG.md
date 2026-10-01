@@ -1572,7 +1572,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 **Design:** Moving the balance out of the hood did not help; a team member removed the outer plates, found powder under a slightly misaligned dust plate, cleaned it and re-seated the plate.
 **Rationale:** Powder inside the weighing mechanism, not air currents, was causing the drift.
 
-**Outcome ✅ — fixed** ([#157](https://github.com/vertical-cloud-lab/powder-doser/issues/157#issuecomment-5686518259)): "the scale tares immediately and does not drift".
+**Outcome ✅ — fixed** ([#157](https://github.com/vertical-cloud-lab/powder-doser/issues/157#issuecomment-5686518259)): "the scale tares immediately and does not drift". ▶ [Fix video](https://youtube.com/shorts/GjIO17coxe8)
 
 ---
 
