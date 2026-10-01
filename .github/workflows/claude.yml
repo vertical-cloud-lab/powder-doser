@@ -73,6 +73,8 @@ jobs:
       PI_MONGODB_URI: ${{ secrets.PI_MONGODB_URI }}
       MCMASTER_USERNAME: ${{ secrets.MCMASTER_USERNAME }}
       MCMASTER_PASSWORD: ${{ secrets.MCMASTER_PASSWORD }}
+      ONSHAPE_ACCESS_KEY: ${{ secrets.ONSHAPE_ACCESS_KEY }}
+      ONSHAPE_SECRET_KEY: ${{ secrets.ONSHAPE_SECRET_KEY }}
       TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
       TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
       TAILNET_ID: ${{ secrets.TAILNET_ID }}
