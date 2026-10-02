@@ -44,12 +44,15 @@ STEPPER_SIDE = (0.95, 0.12, 0.42)
 TOP_FRONT = (0.25, 0.55, 0.80)
 OUTLET_END = (0.30, 0.92, 0.35)
 DRIVE = (0.62, 0.62, 0.48)     # stepper pinion and 44T gear, over the front bracket
+AUGER_SIDE = (0.80, 0.25, 0.55)  # the auger unit side on, over the doser
 
 TUBE_R = 12.5                  # auger tube radius under the tap collar (auger.step)
 
 # One entry per assembly_bom.STEPS entry: caption, the instance-name
-# prefixes to frame (None = the whole doser), camera direction, motion
-# frames.  Facts are from hardware.py, layout.py and the README.
+# prefixes to frame (None = the whole doser; a string = one camera shared
+# by the steps with that name, framing everything in by then), camera
+# direction, motion frames.  Facts are from hardware.py, layout.py, the
+# STEP files and the README.
 WALK = [
     ("Start with a flat board or bench top, 38 mm (1.5 in) thick. Set the printed baseplate on it, "
      "hinge towers and servo posts up: its rear sits flat on the board and its two legs hang over "
@@ -79,12 +82,25 @@ WALK = [
      "locknut on top, and an M3 x 30 flat head down into the countersunk hole, with a plain M3 "
      "nut under the floor (only 2 mm there, too thin for a locknut).",
      ["Tap collar base (AI)", "Tap base"], TOP_FRONT, 20),
-    ("Slide the two brackets and the tap collar onto the auger tube, then lower it onto the plate "
-     "so its 44T gear meshes with the stepper pinion.", None, FIG1A, 20),
-    ("Brackets: 2 x M3 x 20 button heads each, up from under the floor with locknuts on top, and "
-     "an M3 x 14 with a locknut across each split clamp. Tap collar: an M3 x 20 button head down "
-     "through its ears, locknut underneath, collar rolled 30 deg away from the stepper.",
-     ["Bracket", "Tap collar", "Tap collar clamp"], FIG1A, 20),
+    ("Next, the auger unit: the auger with its two brackets and the tap collar, put together off "
+     "the plate and set on in one piece. The 44T gear sits between the brackets and won't pass "
+     "their bores, so each part slides on from one end of the tube.", "unit", AUGER_SIDE, 14),
+    ("Slide one bracket onto the tube from the outlet end, split clamp on top, until it is 2 mm "
+     "short of the 44T gear. Its clamp screw goes in later.", "unit", AUGER_SIDE, 18),
+    ("Slide the tap collar on after it, also from the outlet end, solenoid plate first, up to "
+     "1.5 mm from the bracket. Its clamp ears go on the stepper's side.", "unit", AUGER_SIDE, 18),
+    ("Slide the other bracket on from the cap end, split clamp on top, to about 40 mm behind the "
+     "gear. The cap thread is 26.0 mm across, 0.5 mm more than the bore, so ease the clamp open "
+     "over it.", "unit", AUGER_SIDE, 22),
+    ("Lower the unit onto the plate: the brackets onto their M3 hole rows, the tap collar onto its "
+     "base with its ears over the hard-stop bump, and the 44T gear into mesh with the stepper "
+     "pinion. Slide the brackets along the tube to line up with the holes.", "unit", AUGER_SIDE, 22),
+    ("Fix each bracket with 2 x M3 x 20 button heads, up from under the floor with locknuts on top, "
+     "and close its split clamp with an M3 x 14 and a locknut.", ["Bracket"], FIG1A, 20),
+    ("Close the tap collar's clamp with an M3 x 20 button head down through its ears, locknut "
+     "underneath. The collar stays loose on the turning tube, its solenoid leaning 30 deg away "
+     "from the stepper: the one pose in which the nut clears the bump.",
+     ["Tap collar", "Tap collar clamp"], FIG1A, 18),
     ("Fix the Adafruit 412 solenoid to the tap collar's plate with 2 x M3 x 5 socket head screws "
      "into its frame.", ["Tap collar", "Solenoid"], OUTLET_END, 18),
     ("Screw the cap onto the back end of the auger tube.", None, FIG1A, 16),
@@ -239,13 +255,24 @@ def main() -> None:
     def s_upto(k, e):
         return lambda kk: 1.0 if kk < k else (e if kk == k else 0.0)
 
-    # cameras: the assembled doser, and one per step
+    # cameras: the assembled doser, one per group of steps, and one per step
     one = lambda kk: 1.0       # noqa: E731
     overall = fit_camera(view, pts(None, one), FIG1A, margin=0.86)
+    groups = {}
+    for k, (_, focus, dirv, _) in enumerate(WALK):
+        if isinstance(focus, str):
+            groups.setdefault(focus, []).append(k)
+    group_cam = {}
+    for g, ks in groups.items():
+        p = [ab._points([d for d in order if d["step"] <= k and d["item"] != "Mounting board"],
+                        inst, s_upto(k, e), every=7) for k in ks for e in (0.0, 1.0)]
+        group_cam[g] = fit_camera(view, np.vstack(p), WALK[ks[0]][2], margin=0.86)
     cams = []
     for k, (_, focus, dirv, _) in enumerate(WALK):
         if focus is None:
             cams.append(overall)
+        elif isinstance(focus, str):
+            cams.append(group_cam[focus])
         else:
             p = np.vstack([pts(focus, s_upto(k, 0.0)), pts(focus, s_upto(k, 1.0))])
             cams.append(fit_camera(view, p, dirv, margin=0.78))

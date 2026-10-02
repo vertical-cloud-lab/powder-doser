@@ -29,12 +29,12 @@ the depth the baseplate's legs are made for.
 | 17 | M3×30 flat head screw | 1 | Fastener | [McMaster-Carr 92125A140](https://www.mcmaster.com/92125A140/) | 10 |
 | 18 | M3 hex nut | 1 | Fastener | [McMaster-Carr 91828A211](https://www.mcmaster.com/91828A211/) | 10 |
 | 19 | Auger | 1 | Printed (PLA) | [Fusion 360, lab account; 44 T gear on the tube](https://a360.co/4y1oz2H) | 11 |
-| 20 | Bracket | 2 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/46XtYN1) | 11 |
-| 21 | Tap collar | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4AIIgyz) | 11 |
-| 22 | M3×20 button head screw | 5 | Fastener | [McMaster-Carr 92095A185](https://www.mcmaster.com/92095A185/) | 12 |
-| 23 | Solenoid | 1 | Purchased | [Adafruit 412, 12 V push-pull](https://www.adafruit.com/product/412) | 13 |
-| 24 | M3×5 socket head screw | 2 | Fastener | [McMaster-Carr 91292A110](https://www.mcmaster.com/91292A110/) | 13 |
-| 25 | Auger cap | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4w9kRE5) | 14 |
+| 20 | Bracket | 2 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/46XtYN1) | 12 |
+| 21 | Tap collar | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4AIIgyz) | 13 |
+| 22 | M3×20 button head screw | 5 | Fastener | [McMaster-Carr 92095A185](https://www.mcmaster.com/92095A185/) | 16 |
+| 23 | Solenoid | 1 | Purchased | [Adafruit 412, 12 V push-pull](https://www.adafruit.com/product/412) | 18 |
+| 24 | M3×5 socket head screw | 2 | Fastener | [McMaster-Carr 91292A110](https://www.mcmaster.com/91292A110/) | 18 |
+| 25 | Auger cap | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4w9kRE5) | 19 |
 
 25 line items: 11 printed parts, 4 purchased parts, 52 fasteners and 1 board you supply.
 
@@ -50,7 +50,12 @@ the depth the baseplate's legs are made for.
 8. Stepper (items 12, 13)
 9. Stepper pinion (item 14)
 10. Tap-collar base (items 6, 15, 16, 17, 18)
-11. Auger with brackets and tap collar (items 19, 20, 21)
-12. Bracket and collar screws (items 5, 6, 22)
-13. Solenoid (items 23, 24)
-14. Auger cap (item 25)
+11. Auger, held over the plate (item 19)
+12. Front bracket onto the tube (item 20)
+13. Tap collar onto the tube (item 21)
+14. Rear bracket onto the tube (item 20)
+15. Auger unit onto the plate (items 19, 20, 21)
+16. Bracket screws and clamps (items 5, 6, 22)
+17. Tap-collar clamp (items 6, 22)
+18. Solenoid (items 23, 24)
+19. Auger cap (item 25)

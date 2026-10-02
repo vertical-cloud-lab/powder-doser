@@ -29,11 +29,11 @@ so the two line up:
 the doser is screwed to, 11 printed parts, 4 purchased parts and 52
 fasteners of 12 kinds, each with its McMaster-Carr part number. The same
 data is in [`assembly/bom.csv`](assembly/bom.csv). The item numbers match
-the balloons below and the 14 steps in the GIF.
+the balloons below and the 19 steps in the GIF.
 
 ![Assembly, step by step](renders/assembly_steps.gif)
 
-The same 14 steps as an instruction-style walkthrough
+The same 19 steps as an instruction-style walkthrough
 ([`animate.py`](animate.py)), in the format of the OT-2 lid-camera mount's
 GIF (byu-vcl PR #234). It has one large view and a plain-language caption
 for every step, with close-ups of the small fasteners and 2–3 s holds. It
@@ -77,11 +77,36 @@ the teeth don't appear to run backwards.
 
 Each part moves in along its own insertion direction. A part rides on the
 part it attaches to (its "parent") until its own step, so the exploded view
-is every offset up the chain added together. The auger, both brackets and
-the tap collar go in as one unit: the brackets and collar slide onto the
-tube from its ends, and the 44T gear between the brackets stops them going
-on any other way. Electronics, wiring and the balance aren't in the CAD;
-they're in the SI bill of materials (PR #97).
+is every offset up the chain added together. Electronics, wiring and the
+balance aren't in the CAD; they're in the SI bill of materials (PR #97).
+
+**The auger unit (steps 11–15).** The auger, both brackets and the tap
+collar go on as one unit, put together off the plate. The 44T gear sits
+between the brackets and is wider than their bores, so each part has to
+slide onto the tube from one end. The sizes are from the STEP files: the
+tube is Ø25.0 from the outlet to the gear and from the gear to the cap
+thread, the bracket and collar bores are Ø25.5, and the cap thread is
+Ø26.0.
+
+11. The auger is held over the plate, outlet end forward.
+12. One bracket slides on from the outlet end, split clamp on top, and
+    stops 2.4 mm short of the gear.
+13. The tap collar follows it from the outlet end, solenoid plate first,
+    and stops 1.5 mm from the bracket. Its clamp ears are on the stepper's
+    side.
+14. The other bracket slides on from the cap end, over the cap thread, and
+    ends up 41 mm behind the gear. The thread is 0.5 mm wider than the
+    bore, so the split clamp has to be eased open with its screw out.
+15. The unit is lowered onto the plate. The brackets land on their M3 hole
+    rows, the collar on its base, and the gear meshes with the stepper
+    pinion.
+
+Lowered straight down, the gear's teeth would cut through the pinion's
+over the last 10 mm, by up to 40 mm³ (OCC booleans). The old one-piece drop
+did this too. So the auger turns as it comes down, the way a gear rolls
+down a rack: −h/22 rad over the last 12 mm, while the pinion stays put.
+That leaves no overlap at any height checked, from 0.3 to 11.5 mm
+(`assembly_bom.auger_roll`).
 
 ## What is in the assembly
 
@@ -391,8 +416,8 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/pr97_fig1_preview.png` | PR #97's Fig. 1 built by its own `make_figures.py` (@ `43f8ac8`) with this panel (a); a preview only, PR #97 itself is unchanged |
 | `renders/assembly_iso_az090_tilt22p5.png`, `_tilt45.png` | same direction at 22.5° and 45° tube tilt |
 | `renders/assembly_front_from_outlet.png` | view from the outlet end, to compare with photos |
-| `renders/assembly_steps.gif` | 14-step assembly animation with the BOM, ending in a 0–45° tilt |
-| `renders/assembly_walkthrough.gif` | the same 14 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
+| `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
+| `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |

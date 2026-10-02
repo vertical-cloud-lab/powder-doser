@@ -5,7 +5,7 @@ Writes, from the same parts and positions as ``build.py``:
 * ``BOM.md`` and ``assembly/bom.csv``: every part in the CAD assembly, in
   build order, with quantities, sources and (for fasteners) McMaster-Carr
   part numbers;
-* ``renders/assembly_steps.gif``: the doser put together in 14 steps from
+* ``renders/assembly_steps.gif``: the doser put together in 19 steps from
   a fully exploded start, with the BOM alongside and the rows of the step
   in progress highlighted, ending with a 0-45-0 deg tilt;
 * ``renders/assembly_exploded_bom.png``: the exploded start with a
@@ -55,8 +55,33 @@ FUSION = {
 # outlet towards -Y, stepper on -X).  "fastener" uses the generic offset:
 # a screw backs out along its own axis, a nut lifts off its seat.  The
 # mounting board doesn't move: it is the bench everything is built on.
+# A part named again in a later step makes a second move then (the auger
+# is held over the plate while its brackets and collar go on, then
+# lowered); RIDE (no offset) puts a part that only rides along in the step.
+#
+# The auger unit is put together off the plate: the 44T gear sits between
+# the brackets and is wider than their Ø25.5 bores (and the collar's), so
+# the front bracket and the collar slide on from the outlet end (tube
+# Ø25.0) and the rear bracket from the cap end, over the Ø26.0 cap thread.
+# Each starts 15 mm or more past its end of the tube.
 # --------------------------------------------------------------------------- #
 UP = (0.0, 0.0, 1.0)
+RIDE = (0.0, 0.0, 0.0)
+AUGER_HELD = (0.0, 0.0, 110.0)          # over the plate while the unit is put together
+# Lowered straight down, the 44T gear's teeth would cut through the stepper
+# pinion's over the last 10 mm (up to 40 mm3, OCC booleans), so the auger
+# turns as it comes down, as a gear rolls down a rack: -h / r over the last
+# ROLL_FROM mm (the tip circles first touch 11.5 mm up).  No overlap at any
+# height checked (0.3 to 11.5 mm); the pinion stays put.
+GEAR_R = 22.0                           # 44T module 1, pitch radius
+ROLL_FROM = 12.0
+
+
+def auger_roll(h: float) -> float:
+    """Auger angle (deg, about its own axis) with the unit h mm above its seat."""
+    return -math.degrees(min(max(h, 0.0), ROLL_FROM) / GEAR_R)
+
+
 STEPS = [
     ("Baseplate onto the board", [("Mounting board", None, (0, 0, 0)),
                                   ("Baseplate", "Mounting board", (0, 0, 70))]),
@@ -80,14 +105,18 @@ STEPS = [
                          ("Tap base nut (-)", "Tap collar base (AI)", "fastener"),
                          ("Tap base screw (+)", "Tap collar base (AI)", "fastener"),
                          ("Tap base nut (+)", "Mounting plate", "fastener")]),
-    ("Auger with brackets and tap collar", [("Auger", "Mounting plate", (0, 0, 110)),
-                                            ("Bracket (rear)", "Auger", (0, 0, 0)),
-                                            ("Bracket (front)", "Auger", (0, 0, 0)),
-                                            ("Tap collar", "Auger", (0, 0, 0))]),
-    ("Bracket and collar screws", [("Bracket screw", "Mounting plate", "fastener"),
+    ("Auger, held over the plate", [("Auger", "Mounting plate", (0, 0, 50))]),
+    ("Front bracket onto the tube", [("Bracket (front)", "Auger", (0, -95, 0))]),
+    ("Tap collar onto the tube", [("Tap collar", "Auger", (0, -80, 0))]),
+    ("Rear bracket onto the tube", [("Bracket (rear)", "Auger", (0, 140, 0))]),
+    ("Auger unit onto the plate", [("Auger", "Mounting plate", AUGER_HELD),
+                                   ("Bracket (front)", "Auger", RIDE),
+                                   ("Tap collar", "Auger", RIDE),
+                                   ("Bracket (rear)", "Auger", RIDE)]),
+    ("Bracket screws and clamps", [("Bracket screw", "Mounting plate", "fastener"),
                                    ("Bracket nut", "Bracket", "fastener"),
-                                   ("Bracket clamp", "Bracket", "fastener"),
-                                   ("Tap collar clamp", "Tap collar", "fastener")]),
+                                   ("Bracket clamp", "Bracket", "fastener")]),
+    ("Tap-collar clamp", [("Tap collar clamp", "Tap collar", "fastener")]),
     ("Solenoid", [("Solenoid (Adafruit 412)", "Tap collar", "solenoid"),
                   ("Solenoid screw", "Tap collar", "fastener")]),
     ("Auger cap", [("Auger cap", "Auger", (0, 70, 0))]),
@@ -158,7 +187,9 @@ def poses(tilt_deg: float = 0.0, auger_deg: float = 0.0) -> dict[str, np.ndarray
 
 def scene(tilt_deg: float = 0.0):
     """Instances in build order: dicts with name, item, polydata, colour,
-    world 4x4 (final), parent, offset (world vector) and step index."""
+    world 4x4 (final), parent, moves ([(step index, offset world vector)]),
+    step (the first, when the part comes in) and steps (every step it
+    moves or rides in)."""
     P = {**layout.placements(tilt_deg), **layout.mount_placements()}
     F = hardware.fastener_placements(tilt_deg, with_board=True)
     inst = {}
@@ -172,28 +203,32 @@ def scene(tilt_deg: float = 0.0):
     for k, (title, entries) in enumerate(STEPS):
         for pattern, parent, off in entries:
             if off == "fastener":      # every fastener whose name starts with the pattern
-                names = [n for n in inst if n.startswith(pattern) and "key" in inst[n]]
+                names = [n for n in inst if n.startswith(pattern) and "key" in inst[n]
+                         and "step" not in inst[n]]
             else:
                 names = [pattern]
-            names = [n for n in names if "step" not in inst[n]]
             assert names, pattern
             for n in names:
                 d = inst[n]
-                d["step"] = k
                 # brackets' screws etc. name their own bracket as the parent
                 par = parent
                 if parent == "Bracket":
                     par = "Bracket (rear)" if "rear" in n else "Bracket (front)"
-                d["parent"] = par
                 if off == "fastener":
                     z = d["M"][:3, 2]
                     L = hardware.HARDWARE[d["key"]].get("L", 0.0)
                     nut = hardware.HARDWARE[d["key"]]["kind"] == "nut"
-                    d["off"] = z * (14.0 if nut else -(L + 10.0))
+                    v = z * (14.0 if nut else -(L + 10.0))
                 elif off == "solenoid":
-                    d["off"] = d["M"][:3, 2] * 45.0     # back out along the plunger axis
+                    v = d["M"][:3, 2] * 45.0     # back out along the plunger axis
                 else:
-                    d["off"] = np.asarray(off, float)
+                    v = np.asarray(off, float)
+                if "step" in d:          # a later move of a part already in
+                    assert par == d["parent"], n
+                    d["moves"].append((k, v))
+                    d["steps"].add(k)
+                    continue
+                d.update(step=k, steps={k}, parent=par, moves=[(k, v)])
                 order.append(n)
     missing = [n for n in inst if "step" not in inst[n]]
     assert not missing, missing
@@ -204,7 +239,8 @@ def displacement(d, inst, s_of_step) -> np.ndarray:
     """World translation of an instance when step k is s_of_step(k) done."""
     v = np.zeros(3)
     while d is not None:
-        v += d["off"] * (1.0 - s_of_step(d["step"]))
+        for k, off in d["moves"]:
+            v += off * (1.0 - s_of_step(k))
         d = inst.get(d["parent"]) if d["parent"] else None
     return v
 
@@ -262,7 +298,7 @@ def write_bom(rows, order) -> None:
               f"{sum(r['qty'] for r in rows if r['kind'] == 'Purchased')} purchased parts, "
               f"{n_fast} fasteners and {n_own} board you supply.", "", "## Build steps", ""]
     for k, (title, _) in enumerate(STEPS):
-        used = [r for r in rows if any(d["step"] == k and d["item"] == r["item"] for d in order)]
+        used = [r for r in rows if any(k in d["steps"] and d["item"] == r["item"] for d in order)]
         nos = ", ".join(str(r["no"]) for r in used)
         lines.append(f"{k + 1}. {title} (item{'s' if len(used) > 1 else ''} {nos})")
     (HERE / "BOM.md").write_text("\n".join(lines) + "\n")
@@ -302,6 +338,9 @@ class View:
         for d in self.order:
             v = displacement(d, self.inst, s_of_step)
             M = d["M"] if tilt_M is None else tilt_M[d["name"]]
+            if d["name"] == "Auger" and tilt_M is None:     # rolls into mesh (auger_roll)
+                h = sum(off[2] * (1.0 - s_of_step(k)) for k, off in d["moves"])
+                M = M @ layout.rot_about(layout.Z, auger_roll(h))
             self.actors[d["name"]].SetUserTransform(build._vtk_matrix(build.W2J @ _T(v) @ M))
             self.actors[d["name"]].SetVisibility(visible_from is None or d["step"] <= visible_from)
 
@@ -392,14 +431,15 @@ def anchor_world(d, inst, s_of_step):
     return p
 
 
-def draw_balloons(img, view, rows, order, inst, s_of_step, items=None, r=13, avoid=None):
-    """Numbered balloons with leaders; one per BOM row (first instance)."""
+def draw_balloons(img, view, rows, order, inst, s_of_step, names=None, r=13, avoid=None):
+    """Numbered balloons with leaders; one per BOM row (its first instance,
+    or the first of the given instance names)."""
     d_img = ImageDraw.Draw(img)
     font = _font(int(r * 1.45), bold=True)
     W, H = img.size
     first = {}
     for d in order:
-        if d["item"] not in first and (items is None or d["item"] in items):
+        if d["item"] not in first and (names is None or d["name"] in names):
             first[d["item"]] = d
     pts = []
     for row in rows:
@@ -554,8 +594,8 @@ def main() -> None:
     add(compose(img, (), "All parts"), 2500)
     n_move = 9
     for k in range(nsteps):
-        nos = [r["no"] for r in rows if any(d["step"] == k and d["item"] == r["item"] for d in order)]
-        items = {d["item"] for d in order if d["step"] == k}
+        nos = [r["no"] for r in rows if any(k in d["steps"] and d["item"] == r["item"] for d in order)]
+        names = {d["name"] for d in order if k in d["steps"]}
         title = f"Step {k + 1}/{nsteps}: {STEPS[k][0]}"
         for i in range(1, n_move + 1):
             e = i / n_move
@@ -564,7 +604,7 @@ def main() -> None:
             view.pose(s_of)
             img = view.image()
             if i == n_move:
-                draw_balloons(img, view, rows, order, inst, s_of, items=items)
+                draw_balloons(img, view, rows, order, inst, s_of, names=names)
             add(compose(img, nos, title), 70 if i < n_move else 900)
     # zoom in on the assembled doser, then tilt 0 -> 45 -> 0 about the hinge
     view.pose(lambda k: 1.0)
