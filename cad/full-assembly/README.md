@@ -101,6 +101,12 @@ thread, the bracket and collar bores are Ø25.5, and the cap thread is
     rows, the collar on its base, and the gear meshes with the stepper
     pinion.
 
+![The auger unit, steps 11 to 15](renders/auger_unit_steps.gif)
+
+[`renders/auger_unit_steps.gif`](renders/auger_unit_steps.gif) is these
+five steps of the walkthrough on their own (18 s). The bracket screws and
+the tap-collar clamp follow as steps 16 and 17.
+
 Lowered straight down, the gear's teeth would cut through the pinion's
 over the last 10 mm, by up to 40 mm³ (OCC booleans). The old one-piece drop
 did this too. So the auger turns as it comes down, the way a gear rolls
@@ -419,6 +425,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
 | `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
+| `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the auger unit put together and lowered on |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
 | `BOM.md`, `assembly/bom.csv` | bill of materials, build order |

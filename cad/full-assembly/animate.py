@@ -14,6 +14,7 @@ The parts, positions, build order and insertion directions are the ones
 
     xvfb-run -a python3 animate.py      # -> renders/assembly_walkthrough.gif
                                         #    renders/doser_motion.gif (the working part only)
+                                        #    renders/auger_unit_steps.gif (steps 11-15 only)
 """
 from __future__ import annotations
 
@@ -45,6 +46,8 @@ TOP_FRONT = (0.25, 0.55, 0.80)
 OUTLET_END = (0.30, 0.92, 0.35)
 DRIVE = (0.62, 0.62, 0.48)     # stepper pinion and 44T gear, over the front bracket
 AUGER_SIDE = (0.80, 0.25, 0.55)  # the auger unit side on, over the doser
+BRACKETS = (-0.85, -0.15, 0.50)  # both brackets from the side away from the stepper
+COLLAR_EARS = (0.55, 0.55, 0.63)  # the tap collar's clamp ears, from over the stepper side
 
 TUBE_R = 12.5                  # auger tube radius under the tap collar (auger.step)
 
@@ -96,11 +99,11 @@ WALK = [
      "base with its ears over the hard-stop bump, and the 44T gear into mesh with the stepper "
      "pinion. Slide the brackets along the tube to line up with the holes.", "unit", AUGER_SIDE, 22),
     ("Fix each bracket with 2 x M3 x 20 button heads, up from under the floor with locknuts on top, "
-     "and close its split clamp with an M3 x 14 and a locknut.", ["Bracket"], FIG1A, 20),
+     "and close its split clamp with an M3 x 14 and a locknut.", ["Bracket"], BRACKETS, 20),
     ("Close the tap collar's clamp with an M3 x 20 button head down through its ears, locknut "
      "underneath. The collar stays loose on the turning tube, its solenoid leaning 30 deg away "
      "from the stepper: the one pose in which the nut clears the bump.",
-     ["Tap collar", "Tap collar clamp"], FIG1A, 18),
+     ["Tap collar", "Tap collar clamp"], COLLAR_EARS, 18),
     ("Fix the Adafruit 412 solenoid to the tap collar's plate with 2 x M3 x 5 socket head screws "
      "into its frame.", ["Tap collar", "Solenoid"], OUTLET_END, 18),
     ("Screw the cap onto the back end of the auger tube.", None, FIG1A, 16),
@@ -285,9 +288,12 @@ def main() -> None:
 
     # intro: the baseplate alone, then step by step
     cur = overall
+    unit = [k for k, w in enumerate(WALK) if w[1] == "unit"]
     for k, (caption, focus, dirv, n) in enumerate(WALK):
         label = f"{k + 1} / {nsteps}"
         start = cur
+        if k == unit[0]:
+            unit_from = len(frames)
         n = max(8, round(0.75 * n))
         for i in range(1, n + 1):
             e = ease(i / n)
@@ -299,6 +305,8 @@ def main() -> None:
         hold = int(np.clip(len(caption) / 9.0, 20, 32))
         add(overlay(view.image(), label, caption), hold * 1000 // FPS)
         cur = cams[k]
+        if k == unit[-1]:
+            unit_to = len(frames)
 
     # ---- the doser working ------------------------------------------------
     rows = ab.bom(order)
@@ -399,6 +407,8 @@ def main() -> None:
     save_gif(frames, durations, ab.RENDERS / "assembly_walkthrough.gif")
     save_gif(frames[motion_from:motion_to], durations[motion_from:motion_to],
              ab.RENDERS / "doser_motion.gif")
+    save_gif(frames[unit_from:unit_to], durations[unit_from:unit_to],
+             ab.RENDERS / "auger_unit_steps.gif")
 
 
 def save_gif(frames, durations, out, colors=128):
