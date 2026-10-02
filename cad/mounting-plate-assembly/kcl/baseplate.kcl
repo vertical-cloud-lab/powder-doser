@@ -1,0 +1,189 @@
+// Baseplate — bench side of the rotating sub-assembly.
+//
+// Per Will's PR #66 comment 4721011696:
+//   * the legs and most of the rear of the baseplate are GONE; the
+//     part is now a small RECTANGULAR forward-only mounting tab that
+//     bolts onto a separate frame
+//   * DUAL servos (one per side, +X and -X mirror) — the +X mount
+//     setup is mirrored across X=0 onto the -X side, so the
+//     mounting plate is lifted by two gears working together
+//   * four M5 mounting holes near the four tab corners, for bolting the
+//     part to the separate frame
+//   * the underside flange (per servo, also mirrored) is a rectangular
+//     rib under the servo body, with a supportive triangular gusset
+//     right under the servo mount and a HORIZONTAL M5 mounting hole
+//     (axis parallel to Y) drilled through the gusset
+//   * the two hinge arms (one each side of the auger) keep their
+//     sloped back face, with the arm depth slightly reduced so the
+//     arms no longer interfere with the front bracket
+//
+// Local coordinates: base bottom on Z=0, base top at Z=baseT.  Final
+// translate moves the assembly so the bottom lands at zBaseTop.
+//
+// NOTE: this is the KCL mirror of cad_model.py.  cad_model.py is the
+// source of truth (see README "zoo.dev experience").
+import "params.kcl" as p
+
+// ---- rectangular forward-only baseplate body (chamfered rear corners) ----
+// Per Will's review (pullrequestreview-4509355231) the two REAR corners
+// are chamfered 25 mm × 45°.
+base = startSketchOn(XY)
+  |> startProfile(at = [-p.baseFrontHalfW, p.baseYFront])
+  |> line(end = [2 * p.baseFrontHalfW, 0])
+  |> line(end = [0, -(p.baseYFront - p.baseYRear - p.baseRearChamfer)])
+  |> line(end = [-p.baseRearChamfer, -p.baseRearChamfer])
+  |> line(end = [-(2 * p.baseFrontHalfW - 2 * p.baseRearChamfer), 0])
+  |> line(end = [-p.baseRearChamfer, p.baseRearChamfer])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// ---- baseplate hinge arms (middle layer of the 3-layer sandwich) ----
+// In local frame, base top is at z=baseT; the hinge axis is at
+// z = hingeAxisZLocal.  Each arm fills a trapezoid in YZ — bottom is
+// the flat baseplate top from arm_back_y forward to yDisp, top is the
+// hinge-axis-level run from slope_top_y forward to yDisp, and the
+// back face is the sloped run rising from (arm_back_y, baseT) up to
+// (slope_top_y, arm_top_local).  The arm is extruded armThk along X.
+armTopLocal = p.hingeAxisZLocal + p.hingeEyeOd/2
+armBackY = p.baseYFront - p.armBaseSupportLen
+slopeTopY = armBackY + p.armSlopeRun
+armFrontY = p.yDisp
+
+rightArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armFrontY - armBackY, 0])
+  |> line(end = [0, armTopLocal - p.baseT])
+  |> line(end = [slopeTopY - armFrontY, 0])
+  |> close()
+  |> extrude(length = p.armThk)
+
+leftArm = startSketchOn(YZ)
+  |> startProfile(at = [armBackY, p.baseT])
+  |> line(end = [armFrontY - armBackY, 0])
+  |> line(end = [0, armTopLocal - p.baseT])
+  |> line(end = [slopeTopY - armFrontY, 0])
+  |> close()
+  |> extrude(length = -p.armThk)
+
+// ---- DUAL MG996R servo mounts (+X and -X) ----
+// Per Will's comment 4721011696 the +X servo mount is mirrored across
+// X=0 onto the -X side so the mounting plate is supported and driven
+// by two gears.  Posts, porch and flange all duplicate.
+
+pinionZLocal = p.pinionZ - p.zBaseTop
+postZLo = p.servoWallZLo
+postZHi = pinionZLocal + p.mg996rHoleZSpread / 2 + 5.0
+
+// ---------------- +X servo mount ----------------
+// (a) the porch — a slab of baseplate-thickness material under the
+// servo footprint, fused to the baseplate front edge.
+porchXLoPos = p.servoWallX
+porchXHiPos = p.servoBodyXHi + 1.0
+porchYLo = p.baseYFront - 2.0
+porchYHi = p.farPostYHi + 1.0
+
+porchPos = startSketchOn(XY)
+  |> startProfile(at = [porchXLoPos, porchYLo])
+  |> line(end = [porchXHiPos - porchXLoPos, 0])
+  |> line(end = [0, porchYHi - porchYLo])
+  |> line(end = [-(porchXHiPos - porchXLoPos), 0])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// (b) the two square posts.
+nearPostPos = startSketchOn(XY)
+  |> startProfile(at = [p.servoWallX, p.nearPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.nearPostYHi - p.nearPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+farPostPos = startSketchOn(XY)
+  |> startProfile(at = [p.servoWallX, p.farPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.farPostYHi - p.farPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+// (c) underside flange (YZ plane, downstand from the baseplate bottom)
+// — now a rectangular rib spanning the servo body in Y, sitting right
+// under the servo mount (per pullrequestreview-4509355231).
+flangePos = startSketchOn(YZ)
+  |> startProfile(at = [p.servoBodyYLo, 0])
+  |> line(end = [p.servoBodyYHi - p.servoBodyYLo, 0])
+  |> line(end = [0, -p.flangeDepth])
+  |> line(end = [-(p.servoBodyYHi - p.servoBodyYLo), 0])
+  |> close()
+  |> extrude(length = p.flangeThk)
+  |> translate(x = p.flangeX - p.flangeThk / 2)
+
+// (d) supportive gusset (XZ plane) right under the servo mount, tying
+// the flange into the baseplate; the horizontal M5 hole (axis ‖ Y) is
+// drilled through this gusset at the 0° datum.
+gussetYMid = (p.servoBodyYLo + p.servoBodyYHi) / 2
+gussetPos = startSketchOn(XZ)
+  |> startProfile(at = [p.flangeX, 0])
+  |> line(end = [-p.flangeGussetRun, 0])
+  |> line(end = [p.flangeGussetRun, -p.flangeDepth])
+  |> close()
+  |> extrude(length = p.flangeGussetThk)
+  |> translate(y = gussetYMid - p.flangeGussetThk / 2)
+
+// ---------------- -X servo mount (mirror) ----------------
+// (a) porch
+porchXLoNeg = -porchXHiPos
+porchXHiNeg = -porchXLoPos
+porchNeg = startSketchOn(XY)
+  |> startProfile(at = [porchXLoNeg, porchYLo])
+  |> line(end = [porchXHiNeg - porchXLoNeg, 0])
+  |> line(end = [0, porchYHi - porchYLo])
+  |> line(end = [-(porchXHiNeg - porchXLoNeg), 0])
+  |> close()
+  |> extrude(length = p.baseT)
+
+// (b) posts
+nearPostNeg = startSketchOn(XY)
+  |> startProfile(at = [-p.servoWallX - p.servoWallT, p.nearPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.nearPostYHi - p.nearPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+farPostNeg = startSketchOn(XY)
+  |> startProfile(at = [-p.servoWallX - p.servoWallT, p.farPostYLo])
+  |> line(end = [p.servoWallT, 0])
+  |> line(end = [0, p.farPostYHi - p.farPostYLo])
+  |> line(end = [-p.servoWallT, 0])
+  |> close()
+  |> extrude(length = postZHi - postZLo)
+  |> translate(z = postZLo)
+
+// (c) flange (rectangular, under the servo body)
+flangeNeg = startSketchOn(YZ)
+  |> startProfile(at = [p.servoBodyYLo, 0])
+  |> line(end = [p.servoBodyYHi - p.servoBodyYLo, 0])
+  |> line(end = [0, -p.flangeDepth])
+  |> line(end = [-(p.servoBodyYHi - p.servoBodyYLo), 0])
+  |> close()
+  |> extrude(length = p.flangeThk)
+  |> translate(x = -p.flangeX - p.flangeThk / 2)
+
+// (d) gusset (under the servo mount)
+gussetNeg = startSketchOn(XZ)
+  |> startProfile(at = [-p.flangeX, 0])
+  |> line(end = [p.flangeGussetRun, 0])
+  |> line(end = [-p.flangeGussetRun, -p.flangeDepth])
+  |> close()
+  |> extrude(length = p.flangeGussetThk)
+  |> translate(y = gussetYMid - p.flangeGussetThk / 2)
+
+// ---- four M5 corner mounting holes ----
+// (true bores live in cad_model.py; the KCL mirror leaves the hole
+// pattern documented via params: X = ±baseMountHoleX, Y =
+// baseMountHoleYRear / baseMountHoleYFront)
