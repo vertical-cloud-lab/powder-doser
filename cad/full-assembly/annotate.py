@@ -61,8 +61,9 @@ def main() -> None:
     anchors = json.loads((RENDERS / "anchors_az090.json").read_text())
     x0, y0, x1, y1 = content_bbox(im)
 
-    # canvas = the June crop proportions: labels above and to the right
-    pad_l, pad_t, pad_r, pad_b = (round(v * k) for v in (20, 95, 215, 40))
+    # draw on a generous canvas, then crop to the drawing plus a margin (the
+    # powder stream and its label can run past the parts)
+    pad_l, pad_t, pad_r, pad_b = (round(v * k) for v in (60, 140, 300, 260))
     W = (x1 - x0) + pad_l + pad_r
     H = (y1 - y0) + pad_t + pad_b
     # transparent canvas, like the June figure (the render's background has
@@ -112,6 +113,10 @@ def main() -> None:
     if args.vibration:
         label("Vibration", (tap[0] + 120 * k, 85 * k), off(tap, -10, 55))
 
+    m = round(14 * k)
+    bx0, by0, bx1, by1 = content_bbox(canvas)
+    canvas = canvas.crop((max(0, bx0 - m), max(0, by0 - m), min(W, bx1 + m + 1), min(H, by1 + m + 1)))
+    W, H = canvas.size
     canvas.save(RENDERS / args.out)
     print(f"  -> {(RENDERS / args.out).relative_to(HERE)}  ({W}x{H})")
     # flattened copy for viewing on GitHub (dark mode hides black-on-clear)

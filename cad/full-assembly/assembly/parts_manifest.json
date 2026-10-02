@@ -1,54 +1,138 @@
 {
-  "auger": {
+  "Baseplate": {
     "status": "current",
-    "source": "Fusion 360 (Sam), 'Threaded Auger Final.stl', #117 zip"
+    "source": "Fusion 360 (lab account), https://a360.co/4AOA7sI"
   },
-  "cap": {
+  "Mounting plate": {
     "status": "current",
-    "source": "Fusion 360 (Sam), 'Cap Final.stl', #117 zip"
+    "source": "Fusion 360 (lab account), https://a360.co/4xXUj8L"
   },
-  "stepper_pinion": {
-    "status": "spec",
-    "source": "20 T module 1 per the Fusion redesign video EO9qnYssKRQ"
+  "Auger": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4y1oz2H"
   },
-  "solenoid": {
-    "status": "approx",
-    "source": "12 V push-pull solenoid (TAU0730TM-14 label), sized from photos"
+  "Auger cap": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4w9kRE5"
   },
-  "tap_collar": {
-    "status": "approx",
-    "source": "ring + angled solenoid cradle, from the 11 Sep photo (#156)"
+  "Bracket (rear)": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/46XtYN1"
   },
-  "tap_collar_mount": {
-    "status": "june",
-    "source": "June hard-stop plate (PR #51); Fusion tap collar not shared"
+  "Bracket (front)": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/46XtYN1"
   },
-  "brackets": {
-    "status": "june",
-    "source": "June split-collar brackets (PR #47); rig uses the Fusion flexible brackets"
+  "Tap collar base (AI)": {
+    "status": "AI",
+    "source": "Copilot coding agent, mount_plate.step from PR #51"
   },
-  "mounting_plate": {
-    "status": "june",
-    "source": "June CadQuery (PR #66); Fusion redesign (v8my5C7718w) not shared"
+  "Tap collar": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4AIIgyz"
   },
-  "baseplate": {
-    "status": "june",
-    "source": "June CadQuery (PR #66); Fusion redesign (zOh_KagOwOU) not shared"
+  "Solenoid (Adafruit 412)": {
+    "status": "purchased",
+    "source": "simplified from the Adafruit 412 datasheet"
   },
-  "servo_pinions": {
-    "status": "june",
-    "source": "June 14 T (2:1 with the 28 T hinge gears); Fusion version not shared"
+  "Stepper pinion": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4yqSHFz"
   },
-  "hinge_pins": {
-    "status": "june",
-    "source": "June M5 pins"
+  "Stepper (NEMA 11)": {
+    "status": "purchased",
+    "source": "simplified from the 11HS18-0674S datasheet"
   },
-  "nema11": {
-    "status": "june",
-    "source": "NEMA-11 body as a box"
+  "Servo pinion (+X)": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4dcGSdF"
   },
-  "mg996r": {
-    "status": "june",
-    "source": "MG996R bodies as boxes"
+  "Servo pinion (-X)": {
+    "status": "current",
+    "source": "Fusion 360 (lab account), https://a360.co/4dcGSdF"
+  },
+  "Servo MG996R (+X)": {
+    "status": "purchased",
+    "source": "simplified from the MG996R datasheet"
+  },
+  "Servo MG996R (-X)": {
+    "status": "purchased",
+    "source": "simplified from the MG996R datasheet"
+  },
+  "Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long": {
+    "status": "purchased",
+    "qty": 2,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "hinge"
+    ]
+  },
+  "Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm": {
+    "status": "purchased",
+    "qty": 2,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "hinge"
+    ]
+  },
+  "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 12 mm long": {
+    "status": "purchased",
+    "qty": 12,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "brackets",
+      "servos"
+    ]
+  },
+  "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 5 mm long": {
+    "status": "purchased",
+    "qty": 2,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "solenoid"
+    ]
+  },
+  "Button head screw, 18-8 stainless, M3 x 0.5 mm, 20 mm long": {
+    "status": "purchased",
+    "qty": 5,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "brackets",
+      "tap collar"
+    ]
+  },
+  "Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long": {
+    "status": "purchased",
+    "qty": 1,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "tap collar"
+    ]
+  },
+  "Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long": {
+    "status": "purchased",
+    "qty": 1,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "tap collar"
+    ]
+  },
+  "Hex nut, 18-8 stainless, M3 x 0.5 mm": {
+    "status": "purchased",
+    "qty": 17,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "brackets",
+      "servos",
+      "tap collar"
+    ]
+  },
+  "Socket head screw, 18-8 stainless, M2.5 x 0.45 mm, 8 mm long": {
+    "status": "purchased",
+    "qty": 4,
+    "source": "ISO-dimension stand-in",
+    "joints": [
+      "stepper"
+    ]
   }
 }

@@ -28,8 +28,11 @@ How the frames were tied together (numbers read off the STEP files):
   plate towards the cap so the solenoid hangs over the collar's Ø6.9
   plunger hole (as on the 11 Sep rig photo, where the solenoid is in
   front of its plate).  Clamp ears over the base's hard-stop bump.
-  Roll about the auger is 0 here (plunger vertical); on the rig the
-  collar has turned roughly 40° towards +X.
+  The collar rides loose on the turning tube and its clamp ears rest
+  against that bump, so it is rolled about the auger 30° towards +X (away
+  from the stepper), 3° short of touching the bump; this is the pose in
+  the 11 Sep rig photo (about 40° by eye), and the only one in which the
+  clamp nut clears the bump.
 
     python3 layout.py              # interference check + preview PNG + GLB
 """
@@ -112,7 +115,7 @@ COLLAR_IN_MP = T([NZ, NX, Y],
 TAP_BASE_IN_MP = T([Z, X, Y],
                    (MP_ROW_TAP_BASE, MP_FLOOR_Y, MP_MID_Z))
 SOLENOID_IN_COLLAR = T(None, (0.0, 15.8, 41.0))
-COLLAR_ROLL_DEG = 0.0
+COLLAR_ROLL_DEG = -30.0   # right-handed about MP +X; negative leans the solenoid to +X
 
 # stepper + pinion
 NEMA_IN_MP = T([NZ, Y, X],
