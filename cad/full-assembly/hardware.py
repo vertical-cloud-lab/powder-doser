@@ -57,13 +57,17 @@ HERE = Path(__file__).resolve().parent
 MCM_DIR = HERE / "components" / "mcmaster"
 
 # --------------------------------------------------------------------------- #
-# catalogue: key -> spec.  "mcmaster" is filled in from the logged-in
-# McMaster-Carr product page the STEP file was downloaded from.
+# catalogue: key -> spec (mm).  Head diameter dk and height k, nut width s
+# and height m are McMaster-Carr's own figures for the part number in
+# MCMASTER, read from its catalog tables on 2 Oct 2026
+# (components/mcmaster/parts.json; fastener_check.py compares them).
+# Every screw is fully threaded; P is the coarse pitch.
 # --------------------------------------------------------------------------- #
+PITCH = {2.5: 0.45, 3.0: 0.5, 5.0: 0.8}
 HARDWARE = {
     "bhcs_m5x45": dict(kind="bhcs", d=5.0, L=45.0, dk=9.5, k=2.75,
                        desc="Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long"),
-    "locknut_m5": dict(kind="nut", d=5.0, s=8.0, m=5.0,
+    "locknut_m5": dict(kind="nut", d=5.0, s=8.0, m=5.0, insert=True,
                        desc="Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm"),
     "shcs_m3x14": dict(kind="shcs", d=3.0, L=14.0, dk=5.5, k=3.0,
                        desc="Socket head screw, 18-8 stainless, M3 x 0.5 mm, 14 mm long"),
@@ -75,9 +79,9 @@ HARDWARE = {
                        desc="Button head screw, 18-8 stainless, M3 x 0.5 mm, 20 mm long"),
     "bhcs_m3x25": dict(kind="bhcs", d=3.0, L=25.0, dk=5.7, k=1.65,
                        desc="Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long"),
-    "fhcs_m3x30": dict(kind="fhcs", d=3.0, L=30.0, dk=6.0, k=1.5,
+    "fhcs_m3x30": dict(kind="fhcs", d=3.0, L=30.0, dk=6.0, k=1.7,
                        desc="Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long"),
-    "locknut_m3": dict(kind="nut", d=3.0, s=5.5, m=4.0,
+    "locknut_m3": dict(kind="nut", d=3.0, s=5.5, m=4.0, insert=True,
                        desc="Nylon-insert locknut, 18-8 stainless, M3 x 0.5 mm"),
     "hexnut_m3": dict(kind="nut", d=3.0, s=5.5, m=2.4,
                       desc="Hex nut, 18-8 stainless, M3 x 0.5 mm"),
@@ -175,32 +179,95 @@ def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None) ->
 # --------------------------------------------------------------------------- #
 # models in the canonical seat frame
 # --------------------------------------------------------------------------- #
-def _iso_model(spec: dict) -> cq.Workplane:
+def _thread_profile(r_major: float, P: float, z0: float, z1: float) -> list[tuple[float, float]]:
+    """(r, z) zig-zag from z0 to z1: crests at r_major, roots 0.6 P deeper.
+    Revolved, it reads as a thread in renders (rings, not a helix)."""
+    r_minor = r_major - 0.6 * P
+    n = max(1, int((z1 - z0) / P))
+    pts = [(r_minor, z0)]
+    for i in range(n):
+        pts += [(r_major, z0 + (i + 0.5) * P), (r_minor, z0 + (i + 1) * P)]
+    return pts
+
+
+def _hex_turned(s: float, m: float, top: bool = True, bottom: bool = True) -> cq.Workplane:
+    """Hex prism with its corners turned off at 30 deg (ISO 4032 / DIN 934):
+    the chamfer circle is 0.95 s on the faces, so the flats stay flat."""
+    R = s * 1.1547 / 2 + 0.5
+    h = (R - 0.475 * s) * np.tan(np.radians(30))
+    prof = [(0.0, 0.0), (0.475 * s if bottom else R, 0.0), (R, h if bottom else 0.0),
+            (R, m - h if top else m), (0.475 * s if top else R, m), (0.0, m)]
+    prof = [q for i, q in enumerate(prof) if i == 0 or q != prof[i - 1]]
+    cone = cq.Workplane("XZ").polyline(prof).close().revolve(360, (0, 0, 0), (0, 1, 0))
+    return cq.Workplane("XY").polygon(6, s * 1.1547).extrude(m).intersect(cone)
+
+
+def _iso_model(spec: dict, cosmetic: bool = True) -> cq.Workplane:
+    """Stand-in in the seat frame.  cosmetic=False gives the plain shapes
+    the renders used until 2 Oct 2026 (no threads, flat-topped locknut)."""
     d = spec["d"]
+    P = PITCH[d]
+    if spec["kind"] in ("shcs", "bhcs", "fhcs"):
+        L, dk, k = spec["L"], spec["dk"], spec["k"]
+        # shank, as an (r, z) profile from the bearing face to the tip
+        if cosmetic:
+            z_thr = min(1.5 * P, 0.2 * L)
+            shank = [(d / 2, 0.0), (d / 2, z_thr)] + _thread_profile(d / 2, P, z_thr, L - 0.3 * P)[1:]
+            shank += [(d / 2 - 0.6 * P, L), (0.0, L)]
+        else:
+            shank = [(d / 2, 0.0), (d / 2, L), (0.0, L)]
     if spec["kind"] == "fhcs":     # seat = the flush head top; L is overall
-        L, dk, k = spec["L"], spec["dk"], spec["k"]
-        head = cq.Workplane("XY").circle(dk / 2).workplane(offset=k).circle(d / 2).loft()
-        shank = cq.Workplane("XY").circle(d / 2).extrude(L)
+        # 90 deg head: Ø dk at the top face (z = 0), meeting the shank at z = k
+        prof = [(0.0, 0.0), (dk / 2, 0.0), (d / 2, k)] + [(r, z) for r, z in shank if z > k]
+        body = cq.Workplane("XZ").polyline(prof).close().revolve(360, (0, 0, 0), (0, 1, 0))
         sock = cq.Workplane("XY").workplane(offset=-0.01).polygon(6, 0.35 * dk * 1.1547).extrude(0.8 * k)
-        return head.union(shank).cut(sock)
+        return body.cut(sock)
     if spec["kind"] in ("shcs", "bhcs"):
-        L, dk, k = spec["L"], spec["dk"], spec["k"]
         # socket from below the head (the dome bulges past -k) to 0.4 k deep
         sock = (cq.Workplane("XY").workplane(offset=-1.3 * k)
                 .polygon(6, 0.5 * dk * 1.1547).extrude(0.9 * k))
-        if spec["kind"] == "bhcs":     # head and shank as one revolved profile
-            body = (cq.Workplane("XZ").moveTo(0, -k)
+        rev = cq.Workplane("XZ").polyline([(0.0, 0.0)] + shank).close().revolve(360, (0, 0, 0), (0, 1, 0))
+        if spec["kind"] == "bhcs":     # dome head on the shank
+            head = (cq.Workplane("XZ").moveTo(0, -k)
                     .threePointArc((0.3 * dk, -0.85 * k), (dk / 2, -0.3 * k))
-                    .lineTo(dk / 2, 0).lineTo(d / 2, 0).lineTo(d / 2, L).lineTo(0, L).close()
+                    .lineTo(dk / 2, 0).lineTo(0, 0).close()
                     .revolve(360, (0, 0, 0), (0, 1, 0)))
-            return body.cut(sock)
-        shank = cq.Workplane("XY").circle(d / 2).extrude(L)
-        head = cq.Workplane("XY").workplane(offset=-k).circle(dk / 2).extrude(k)
-        head = head.faces("<Z").edges().fillet(0.08 * dk)
-        return shank.union(head).cut(sock)
+        else:
+            head = cq.Workplane("XY").workplane(offset=-k).circle(dk / 2).extrude(k)
+            head = head.faces("<Z").edges().fillet(0.08 * dk)
+        return head.union(rev).cut(sock)
     s, m = spec["s"], spec["m"]
-    nut = cq.Workplane("XY").polygon(6, s * 1.1547).extrude(m).faces(">Z or <Z").chamfer(0.12 * s)
-    return nut.cut(cq.Workplane("XY").circle(d / 2).extrude(m))
+    if not cosmetic:
+        nut = cq.Workplane("XY").polygon(6, s * 1.1547).extrude(m).faces(">Z or <Z").chamfer(0.12 * s)
+    elif spec.get("insert"):
+        # nylon-insert locknut (DIN 985 shape): hex body, round crown rolled
+        # over the nylon ring, ring visible in the top (see nylon_insert())
+        m_hex = 0.76 * m
+        nut = _hex_turned(s, m_hex, top=False)
+        crown = (cq.Workplane("XY").workplane(offset=m_hex - 0.01).circle(0.47 * s)
+                 .extrude(m - m_hex + 0.01).faces(">Z").edges().fillet(0.35 * (m - m_hex)))
+        nut = nut.union(crown).cut(cq.Workplane("XY").workplane(offset=m - 0.45)
+                                   .circle(0.38 * s).extrude(1.0))
+    else:
+        nut = _hex_turned(s, m)
+    nut = nut.cut(cq.Workplane("XY").circle(d / 2 - 0.6 * P).extrude(m))
+    if cosmetic:     # internal thread: cut rings out to the major diameter
+        prof = [(d / 2 - 0.61 * P, 0.0)] + [(d / 2 - 0.6 * P + (0.6 * P if i % 2 else 0.0), z)
+                                             for i, (_, z) in enumerate(_thread_profile(d / 2, P, 0.3 * P, m - 0.3 * P))][1:]
+        prof += [(d / 2 - 0.61 * P, m)]
+        rings = cq.Workplane("XZ").polyline(prof).close().revolve(360, (0, 0, 0), (0, 1, 0))
+        nut = nut.cut(rings)
+    return nut
+
+
+def nylon_insert(spec: dict):
+    """The nylon ring of a nylon-insert locknut, in the nut's seat frame
+    (for renders that colour it separately), or None."""
+    if not spec.get("insert"):
+        return None
+    s, m, d = spec["s"], spec["m"], spec["d"]
+    return (cq.Workplane("XY").workplane(offset=m - 0.45).circle(0.38 * s).circle(0.47 * d)
+            .extrude(0.35).val())
 
 
 def _mcmaster_model(path: Path, spec: dict):
