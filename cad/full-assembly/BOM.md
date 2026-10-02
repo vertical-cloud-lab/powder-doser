@@ -10,40 +10,42 @@ see the SI bill of materials in PR #97.
 |---:|---|---:|---|---|---:|
 | 1 | Baseplate | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4AOA7sI) | 1 |
 | 2 | Servo | 2 | Purchased | [MG996R metal-gear servo](https://askelectronics.co.ke/product/servo-motor-mg996r-high-torque-metal-gear/) | 2 |
-| 3 | M3×12 socket head screw | 12 | Fastener | [McMaster-Carr 91292A114](https://www.mcmaster.com/91292A114/) | 3 |
-| 4 | M3 hex nut | 17 | Fastener | [McMaster-Carr 91828A211](https://www.mcmaster.com/91828A211/) | 3 |
+| 3 | M3×14 socket head screw | 10 | Fastener | [McMaster-Carr 91292A027](https://www.mcmaster.com/91292A027/) | 3 |
+| 4 | M3 nylon-insert locknut | 16 | Fastener | [McMaster-Carr 93625A100](https://www.mcmaster.com/93625A100/) | 3 |
 | 5 | Servo pinion | 2 | Printed (PLA) | [Fusion 360, lab account; 14 T](https://a360.co/4dcGSdF) | 4 |
-| 6 | Mounting plate | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4xXUj8L) | 5 |
-| 7 | M5×45 button head screw | 2 | Fastener | [McMaster-Carr 92095A223](https://www.mcmaster.com/92095A223/) | 6 |
-| 8 | M5 nylon-insert locknut | 2 | Fastener | [McMaster-Carr 93625A200](https://www.mcmaster.com/93625A200/) | 6 |
-| 9 | Stepper motor | 1 | Purchased | [NEMA 11, StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s) | 7 |
-| 10 | M2.5×8 socket head screw | 4 | Fastener | [McMaster-Carr 91292A012](https://www.mcmaster.com/91292A012/) | 7 |
-| 11 | Stepper pinion | 1 | Printed (PLA) | [Fusion 360, lab account; 20 T module 1](https://a360.co/4yqSHFz) | 8 |
-| 12 | Tap-collar base | 1 | Printed (PLA) | AI-modelled (PR #51), the one AI part left on the rig (`components/ai-step/tap-collar-base.step`) | 9 |
-| 13 | M3×25 button head screw | 1 | Fastener | [McMaster-Carr 92095A186](https://www.mcmaster.com/92095A186/) | 9 |
-| 14 | M3×30 flat head screw | 1 | Fastener | [McMaster-Carr 92125A140](https://www.mcmaster.com/92125A140/) | 9 |
-| 15 | Auger | 1 | Printed (PLA) | [Fusion 360, lab account; 44 T gear on the tube](https://a360.co/4y1oz2H) | 10 |
-| 16 | Bracket | 2 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/46XtYN1) | 10 |
-| 17 | Tap collar | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4AIIgyz) | 10 |
-| 18 | M3×20 button head screw | 5 | Fastener | [McMaster-Carr 92095A185](https://www.mcmaster.com/92095A185/) | 11 |
-| 19 | Solenoid | 1 | Purchased | [Adafruit 412, 12 V push-pull](https://www.adafruit.com/product/412) | 12 |
-| 20 | M3×5 socket head screw | 2 | Fastener | [McMaster-Carr 91292A110](https://www.mcmaster.com/91292A110/) | 12 |
-| 21 | Auger cap | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4w9kRE5) | 13 |
+| 6 | M3×10 socket head screw | 2 | Fastener | [McMaster-Carr 91292A113](https://www.mcmaster.com/91292A113/) | 4 |
+| 7 | Mounting plate | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4xXUj8L) | 5 |
+| 8 | M5×45 button head screw | 2 | Fastener | [McMaster-Carr 92095A223](https://www.mcmaster.com/92095A223/) | 6 |
+| 9 | M5 nylon-insert locknut | 2 | Fastener | [McMaster-Carr 93625A200](https://www.mcmaster.com/93625A200/) | 6 |
+| 10 | Stepper motor | 1 | Purchased | [NEMA 11, StepperOnline 11HS18-0674S](https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s) | 7 |
+| 11 | M2.5×8 socket head screw | 4 | Fastener | [McMaster-Carr 91292A012](https://www.mcmaster.com/91292A012/) | 7 |
+| 12 | Stepper pinion | 1 | Printed (PLA) | [Fusion 360, lab account; 20 T module 1](https://a360.co/4yqSHFz) | 8 |
+| 13 | Tap-collar base | 1 | Printed (PLA) | AI-modelled (PR #51), the one AI part left on the rig (`components/ai-step/tap-collar-base.step`) | 9 |
+| 14 | M3×25 button head screw | 1 | Fastener | [McMaster-Carr 92095A186](https://www.mcmaster.com/92095A186/) | 9 |
+| 15 | M3×30 flat head screw | 1 | Fastener | [McMaster-Carr 92125A140](https://www.mcmaster.com/92125A140/) | 9 |
+| 16 | M3 hex nut | 1 | Fastener | [McMaster-Carr 91828A211](https://www.mcmaster.com/91828A211/) | 9 |
+| 17 | Auger | 1 | Printed (PLA) | [Fusion 360, lab account; 44 T gear on the tube](https://a360.co/4y1oz2H) | 10 |
+| 18 | Bracket | 2 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/46XtYN1) | 10 |
+| 19 | Tap collar | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4AIIgyz) | 10 |
+| 20 | M3×20 button head screw | 5 | Fastener | [McMaster-Carr 92095A185](https://www.mcmaster.com/92095A185/) | 11 |
+| 21 | Solenoid | 1 | Purchased | [Adafruit 412, 12 V push-pull](https://www.adafruit.com/product/412) | 12 |
+| 22 | M3×5 socket head screw | 2 | Fastener | [McMaster-Carr 91292A110](https://www.mcmaster.com/91292A110/) | 12 |
+| 23 | Auger cap | 1 | Printed (PLA) | [Fusion 360, lab account](https://a360.co/4w9kRE5) | 13 |
 
-21 line items: 11 printed parts, 4 purchased parts and 46 fasteners.
+23 line items: 11 printed parts, 4 purchased parts and 46 fasteners.
 
 ## Build steps
 
 1. Baseplate (item 1)
 2. Servos into the posts (item 2)
 3. Servo screws and nuts (items 3, 4)
-4. Servo pinions (items 3, 5)
-5. Mounting plate onto the hinge (item 6)
-6. Hinge screws and locknuts (items 7, 8)
-7. Stepper (items 9, 10)
-8. Stepper pinion (item 11)
-9. Tap-collar base (items 4, 12, 13, 14)
-10. Auger with brackets and tap collar (items 15, 16, 17)
-11. Bracket and collar screws (items 3, 4, 18)
-12. Solenoid (items 19, 20)
-13. Auger cap (item 21)
+4. Servo pinions (items 5, 6)
+5. Mounting plate onto the hinge (item 7)
+6. Hinge screws and locknuts (items 8, 9)
+7. Stepper (items 10, 11)
+8. Stepper pinion (item 12)
+9. Tap-collar base (items 4, 13, 14, 15, 16)
+10. Auger with brackets and tap collar (items 17, 18, 19)
+11. Bracket and collar screws (items 3, 4, 20)
+12. Solenoid (items 21, 22)
+13. Auger cap (item 23)

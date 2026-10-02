@@ -29,7 +29,10 @@ Joint summary (world = Fusion baseplate frame, see onshape/layout.py):
   is countersunk on top (90 deg, Ø6), so it takes an M3 x 30 flat head
   from above with the nut under the floor; that nut and the screw tip
   stand 0.4 and 1.0 mm proud of the 2 mm gap at tilt 0.
-* bracket clamp: M3 x 12 across the two 3 mm ears (2 mm split), nut.
+* M3 nuts are nylon-insert locknuts, as on the rig ("all nuts have been
+  replaced with locknuts", #132), except the one under the plate's floor,
+  where only a plain nut fits.
+* bracket clamp: M3 x 14 across the two 3 mm ears (2 mm split), locknut.
 * tap-collar clamp: M3 x 20 button head through the 5.8 mm ears (2.2 mm
   split), nut underneath.  The nut only clears the base's hard-stop bump
   with the collar rolled away from the stepper (``COLLAR_ROLL_DEG``).
@@ -37,10 +40,10 @@ Joint summary (world = Fusion baseplate frame, see onshape/layout.py):
   tapped ears.
 * stepper: M2.5 x 8 through the 6 mm plate into the NEMA 11 face
   (2.5 mm deep threads; the screw goes 2 mm in).
-* servos: M3 x 12 through each 5 mm post and the 2.5 mm flange, nut on
-  the flange (3.7 mm from the case wall, room for an M3 nut, not M4).
-* servo pinions: M3 x 12 through the pinion's Ø3.4 bore into the servo
-  output shaft (4.4 mm of thread).
+* servos: M3 x 14 through each 5 mm post and the 2.5 mm flange, locknut
+  on the flange (3.7 mm from the case wall, room for an M3 nut, not M4).
+* servo pinions: M3 x 10 through the pinion's Ø3.4 bore into the servo
+  output shaft (2.4 mm of thread; x 12 could bottom out in the spline).
 """
 from __future__ import annotations
 
@@ -62,8 +65,10 @@ HARDWARE = {
                        desc="Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long"),
     "locknut_m5": dict(kind="nut", d=5.0, s=8.0, m=5.0,
                        desc="Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm"),
-    "shcs_m3x12": dict(kind="shcs", d=3.0, L=12.0, dk=5.5, k=3.0,
-                       desc="Socket head screw, 18-8 stainless, M3 x 0.5 mm, 12 mm long"),
+    "shcs_m3x14": dict(kind="shcs", d=3.0, L=14.0, dk=5.5, k=3.0,
+                       desc="Socket head screw, 18-8 stainless, M3 x 0.5 mm, 14 mm long"),
+    "shcs_m3x10": dict(kind="shcs", d=3.0, L=10.0, dk=5.5, k=3.0,
+                       desc="Socket head screw, 18-8 stainless, M3 x 0.5 mm, 10 mm long"),
     "shcs_m3x5": dict(kind="shcs", d=3.0, L=5.0, dk=5.5, k=3.0,
                       desc="Socket head screw, 18-8 stainless, M3 x 0.5 mm, 5 mm long"),
     "bhcs_m3x20": dict(kind="bhcs", d=3.0, L=20.0, dk=5.7, k=1.65,
@@ -72,6 +77,8 @@ HARDWARE = {
                        desc="Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long"),
     "fhcs_m3x30": dict(kind="fhcs", d=3.0, L=30.0, dk=6.0, k=1.5,
                        desc="Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long"),
+    "locknut_m3": dict(kind="nut", d=3.0, s=5.5, m=4.0,
+                       desc="Nylon-insert locknut, 18-8 stainless, M3 x 0.5 mm"),
     "hexnut_m3": dict(kind="nut", d=3.0, s=5.5, m=2.4,
                       desc="Hex nut, 18-8 stainless, M3 x 0.5 mm"),
     "shcs_m2p5x8": dict(kind="shcs", d=2.5, L=8.0, dk=4.5, k=2.5,
@@ -122,23 +129,23 @@ def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None) ->
         for sx in (-1, 1):
             add(f"Bracket screw ({b}, {'+' if sx > 0 else '-'})", "bhcs_m3x20", "brackets",
                 M, (sx * 24.0, 6.0, -6.0), (0, 0, 1))
-            add(f"Bracket nut ({b}, {'+' if sx > 0 else '-'})", "hexnut_m3", "brackets",
+            add(f"Bracket nut ({b}, {'+' if sx > 0 else '-'})", "locknut_m3", "brackets",
                 M, (sx * 24.0, 6.0, 8.0), (0, 0, 1))
-        add(f"Bracket clamp screw ({b})", "shcs_m3x12", "brackets", M, (4.0, 6.0, 49.2), (-1, 0, 0))
-        add(f"Bracket clamp nut ({b})", "hexnut_m3", "brackets", M, (-4.0, 6.0, 49.2), (-1, 0, 0))
+        add(f"Bracket clamp screw ({b})", "shcs_m3x14", "brackets", M, (4.0, 6.0, 49.2), (-1, 0, 0))
+        add(f"Bracket clamp nut ({b})", "locknut_m3", "brackets", M, (-4.0, 6.0, 49.2), (-1, 0, 0))
 
     # tap-collar base: holes at x = -24 (14 mm tall) and +24 (19.7 mm, the
     # hard-stop side), y = 0
     M = W["Tap collar base (AI)"]
     add("Tap base screw (-)", "bhcs_m3x25", "tap collar", M, (-24.0, 0.0, -6.0), (0, 0, 1))
-    add("Tap base nut (-)", "hexnut_m3", "tap collar", M, (-24.0, 0.0, 14.0), (0, 0, 1))
+    add("Tap base nut (-)", "locknut_m3", "tap collar", M, (-24.0, 0.0, 14.0), (0, 0, 1))
     add("Tap base screw (+)", "fhcs_m3x30", "tap collar", M, (24.0, 0.0, 21.0), (0, 0, -1))
     add("Tap base nut (+)", "hexnut_m3", "tap collar", M, (24.0, 0.0, -6.0), (0, 0, -1))
 
     # tap-collar clamp (collar frame: ears at x = -20.2, y = 8.5, z = +-1.1..6.9)
     M = W["Tap collar"]
     add("Tap collar clamp screw", "bhcs_m3x20", "tap collar", M, (-20.2, 8.5, 6.9), (0, 0, -1))
-    add("Tap collar clamp nut", "hexnut_m3", "tap collar", M, (-20.2, 8.5, -6.9), (0, 0, -1))
+    add("Tap collar clamp nut", "locknut_m3", "tap collar", M, (-20.2, 8.5, -6.9), (0, 0, -1))
     # solenoid: through the 1.2 mm plate (y = 15.8..17) into the tapped ears
     for x, z, tag in ((-9.1, 33.0, "lower"), (9.1, 49.0, "upper")):
         add(f"Solenoid screw ({tag})", "shcs_m3x5", "solenoid", M, (x, 17.0, z), (0, -1, 0))
@@ -155,13 +162,13 @@ def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None) ->
         for y in (11.5, 59.54):
             for z in (11.48, 20.52):
                 pos = f"{tag}, y{y:.0f} z{z:.0f}"
-                add(f"Servo screw ({pos})", "shcs_m3x12", "servos", np.eye(4),
+                add(f"Servo screw ({pos})", "shcs_m3x14", "servos", np.eye(4),
                     (s * 72.1, y, z), (-s, 0, 0))
-                add(f"Servo nut ({pos})", "hexnut_m3", "servos", np.eye(4),
+                add(f"Servo nut ({pos})", "locknut_m3", "servos", np.eye(4),
                     (s * 64.6, y, z), (-s, 0, 0))
         # servo pinion: head on the 60 deg recess where it is Ø5.5 (z = 1.25)
         Mp = W[f"Servo pinion ({tag})"]
-        add(f"Servo pinion screw ({tag})", "shcs_m3x12", "servos", Mp, (0.0, 0.0, 1.25), (0, 0, 1))
+        add(f"Servo pinion screw ({tag})", "shcs_m3x10", "servos", Mp, (0.0, 0.0, 1.25), (0, 0, 1))
     return out
 
 
@@ -274,7 +281,9 @@ def models() -> dict[str, tuple[object, str]]:
 MCMASTER: dict[str, str] = {
     "bhcs_m5x45": "92095A223",
     "locknut_m5": "93625A200",
-    "shcs_m3x12": "91292A114",
+    "shcs_m3x14": "91292A027",
+    "shcs_m3x10": "91292A113",
+    "locknut_m3": "93625A100",
     "shcs_m3x5": "91292A110",
     "bhcs_m3x20": "92095A185",
     "bhcs_m3x25": "92095A186",
@@ -288,7 +297,9 @@ HW_STEP_DIR = HERE / "components" / "hardware"
 SHORT = {
     "bhcs_m5x45": "M5 x 45 button head screw",
     "locknut_m5": "M5 nylon-insert locknut",
-    "shcs_m3x12": "M3 x 12 socket head screw",
+    "shcs_m3x14": "M3 x 14 socket head screw",
+    "shcs_m3x10": "M3 x 10 socket head screw",
+    "locknut_m3": "M3 nylon-insert locknut",
     "shcs_m3x5": "M3 x 5 socket head screw",
     "bhcs_m3x20": "M3 x 20 button head screw",
     "bhcs_m3x25": "M3 x 25 button head screw",

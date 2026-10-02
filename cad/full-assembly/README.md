@@ -24,9 +24,9 @@ so the two line up:
 
 ## Assembly animation and bill of materials
 
-**[BOM.md](BOM.md)** lists all 21 line items in build order: 11 printed
-parts, 4 purchased parts and 46 fasteners with their McMaster-Carr part
-numbers. The same data is in [`assembly/bom.csv`](assembly/bom.csv). The
+**[BOM.md](BOM.md)** lists all 23 line items in build order: 11 printed
+parts, 4 purchased parts and 46 fasteners of 11 kinds, each with its
+McMaster-Carr part number. The same data is in [`assembly/bom.csv`](assembly/bom.csv). The
 item numbers match the balloons below and the 13 steps in the GIF.
 
 ![Assembly, step by step](renders/assembly_steps.gif)
@@ -76,19 +76,23 @@ grey tilt.
 [`hardware.py`](hardware.py) places every screw and nut, reading each joint
 off the hole geometry in the STEP files. Each length is the shortest
 standard one that passes the grip plus a full nut. All of them are 18-8
-stainless.
+stainless. The M3 nuts are nylon-insert locknuts, because the team
+replaced every nut on the rig with a locknut
+([#132](https://github.com/vertical-cloud-lab/powder-doser/issues/132#issuecomment-5181688024)).
 
 | McMaster-Carr | Part | Qty | Where |
 |---|---|---:|---|
 | [92095A223](https://www.mcmaster.com/92095A223/) | M5 x 45 button head screw | 2 | hinge, from inside each knuckle |
 | [93625A200](https://www.mcmaster.com/93625A200/) | M5 nylon-insert locknut | 2 | hinge, outside each 28T gear |
-| [91292A114](https://www.mcmaster.com/91292A114/) | M3 x 12 socket head screw | 12 | servos to posts (8), servo pinions (2), bracket clamps (2) |
-| [91828A211](https://www.mcmaster.com/91828A211/) | M3 hex nut | 17 | servos (8), brackets (6), tap-collar base (2), collar clamp (1) |
+| [91292A027](https://www.mcmaster.com/91292A027/) | M3 x 14 socket head screw | 10 | servos to posts (8), bracket clamps (2) |
+| [93625A100](https://www.mcmaster.com/93625A100/) | M3 nylon-insert locknut | 16 | servos (8), brackets (6), tap-collar base (1), collar clamp (1) |
+| [91828A211](https://www.mcmaster.com/91828A211/) | M3 hex nut | 1 | under the plate's floor, where a locknut doesn't fit |
+| [91292A113](https://www.mcmaster.com/91292A113/) | M3 x 10 socket head screw | 2 | servo pinions, into the servo shaft |
 | [92095A185](https://www.mcmaster.com/92095A185/) | M3 x 20 button head screw | 5 | brackets to plate (4), tap-collar clamp (1) |
 | [92095A186](https://www.mcmaster.com/92095A186/) | M3 x 25 button head screw | 1 | tap-collar base, plain hole |
 | [92125A140](https://www.mcmaster.com/92125A140/) | M3 x 30 flat head screw | 1 | tap-collar base, countersunk hole |
 | [91292A110](https://www.mcmaster.com/91292A110/) | M3 x 5 socket head screw | 2 | solenoid to the collar's plate |
-| [91292A012](https://www.mcmaster.com/91292A012/) | M2.5 x 8 socket head screw | 4 | stepper to its plate |
+| [91292A012](https://www.mcmaster.com/91292A012/) | M2.5 x 8 socket head screw | 4 | stepper to its plate (vendor drawing: 4-M2.5, 4 mm deep min.) |
 
 How the joints were read:
 - **Hinge.** The holes are Ø5.3 in the towers and Ø5.7 in the knuckles and
@@ -117,26 +121,50 @@ described under *Check on the rig* below.
 the lab login both worked, but mcmaster.com restricted the BYU VCL account
 right after login ("Access has been restricted ... your use exceeds typical
 patterns"). A logged-out session was not restricted. I stopped after two
-logins so the account wouldn't get locked. Each part number above was
-confirmed from two or more public listings that quote McMaster's own
-description, such as
-[Clearpath's fastener docs](https://docs.clearpathrobotics.com/docs_robots/common/parts/fasteners/screw_socket_head/)
-and published BOMs. Until the STEP files are in hand, `hardware.py`
-draws each fastener from its ISO dimensions. Drop McMaster's STEP files
-into `components/mcmaster/<part number>.step` and every script uses them
-instead: `hardware.py` re-orients each file from its geometry.
+logins so the account wouldn't get locked. Every part number was checked
+against public listings that quote McMaster's own description. Most were
+checked against two or more:
+[Clearpath's McMaster fastener tables](https://docs.clearpathrobotics.com/docs_robots/common/parts/fasteners/screw_socket_head/),
+reli-tool cross-references and published BOMs. Until the STEP files are in
+hand, `hardware.py` draws each fastener from its ISO dimensions. Drop
+McMaster's STEP files into `components/mcmaster/<part number>.step` and
+every script uses them instead: `hardware.py` re-orients each file from its
+geometry.
+
+**What the rig has instead.** Photos of the rig (11 Sep, 4 Aug, #72, #156)
+and the issue threads show different hardware in several places. The BOM
+above is a consistent set for the CAD, not an inventory of the rig.
+- The rig's hardware is mostly zinc-plated Phillips pan heads. The stepper
+  is the exception: it uses button-head socket screws with washers.
+- **Hinge:** a pan head sits outside the gear, with no nut, and the screws
+  were backing out
+  ([#116](https://github.com/vertical-cloud-lab/powder-doser/issues/116#issuecomment-5259483789)).
+  A nut can't go inside the knuckle (3.6 mm to the tube), hence the CAD's
+  flipped screw with the locknut outside.
+- **Brackets and tap-collar base:** the pan heads are on top, with the nuts
+  under the plate. Those nuts sit in the 2 mm gap above the baseplate, so
+  the plate can't quite reach 0° there. The CAD screws from below instead.
+- **Servos:** the screws are longer, with domed nuts, and only the lower
+  hole of each visible post is used.
+- **Solenoid:** nuts were reported coming off it
+  ([#117](https://github.com/vertical-cloud-lab/powder-doser/issues/117#issuecomment-5097409563)),
+  so its ears may be clearance holes rather than the tapped holes assumed
+  here. If so, use M3 x 8 with a locknut on the outside of the collar's
+  plate.
+- **Bench mount:** the baseplate legs hang over the edge of a board that is
+  zip-tied to a PVC stand. The four Ø5.5 corner holes and two leg holes
+  are unused, so they aren't in the BOM.
 
 **Check on the rig:**
 - The base's countersunk hole takes a flat head from above, so its nut
-  ends up under the plate's floor. There, the nut and the screw tip stand
+  ends up under the plate's floor. There the nut and the screw tip stand
   0.4 mm and 1.0 mm proud of the 2 mm gap at tilt 0. Either the rig parks
   a fraction of a degree up, or that screw is shorter and threads into the
   plastic.
-- The servo-pinion screw is assumed to be M3, threaded into the MG996R
-  output shaft (4.4 mm of thread).
-- The baseplate's four Ø5.5 corner holes and two Ø5.5 leg holes are for
-  fixing it to the bench or stand. They are site-specific, so they aren't
-  in the BOM.
+- The servo-pinion screw is assumed to be M3 into the MG996R output shaft.
+  At x 10 it engages 2.4 mm of thread; x 12 could bottom out in the spline.
+- The stepper pinion has a D-bore and no set-screw hole, so there is no set
+  screw.
 
 ## Onshape assembly (all current files)
 
@@ -153,10 +181,11 @@ Studio per file and the *Powder doser assembly* tab.
 | Baseplate, mounting plate (with both 28T tilt gears), auger bracket (x2), tap collar, auger, auger cap, stepper pinion (20T), servo pinion (14T, x2) | lab Fusion 360 account, share links in [PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170), exported to STEP in `components/fusion-step/` |
 | Tap-collar base (hard-stop plate) | AI version still in use: `mount_plate.step` from PR #51 (`cad/mounting-plate-assembly/imported-parts/tap-collar/` @ `eaf528a`), in `components/ai-step/` |
 | NEMA 11 11HS18-0674S, MG996R (x2), Adafruit 412 solenoid | simplified models from the datasheet dimensions, `onshape/purchased_parts.py` -> `components/purchased/` |
-| 46 screws and nuts, 9 kinds | `hardware.py`, one Part Studio per kind named with its McMaster number, from `components/hardware/*.step` (each in its seat frame) |
+| 46 screws and nuts, 11 kinds | `hardware.py`, one Part Studio per kind named with its McMaster number, from `components/hardware/*.step` (each in its seat frame) |
 
-The assembly has 61 instances: the 15 parts of `layout.py` and the 46
-fasteners of `hardware.py`.
+The assembly has 61 placements: the 15 parts of `layout.py` and the 46
+fasteners of `hardware.py`. That makes 65 instances, because the mounting
+plate's STEP has five bodies.
 
 The Fusion links were exported through the share page's own Download API,
 with `onshape/fetch_fusion_shares.py` run on the rig's Raspberry Pi. The
@@ -221,7 +250,7 @@ of the instances it created to `layout.py` and leaves hand-added instances
 alone. The API key has no delete scope, so a superseded Part Studio is
 renamed "(superseded, safe to delete)" instead of being removed. These
 tabs can be deleted by hand: every tab whose name ends in "(superseded,
-safe to delete)" (six fastener tabs from a first upload and the old Adafruit
+safe to delete)" (the fastener tabs from earlier uploads and the old Adafruit
 412), *Baseplate (stray upload, ...)*, and the empty *Part Studio 1*.
 
 ## Running it

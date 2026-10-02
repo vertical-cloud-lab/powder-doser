@@ -1,22 +1,24 @@
 No.,Part,Qty,Type,Description / source,Link,Step
 1,Baseplate,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4AOA7sI,1
 2,Servo,2,Purchased,MG996R metal-gear servo,https://askelectronics.co.ke/product/servo-motor-mg996r-high-torque-metal-gear/,2
-3,M3×12 socket head screw,12,Fastener,"Socket head screw, 18-8 stainless, M3 x 0.5 mm, 12 mm long",https://www.mcmaster.com/91292A114/,3
-4,M3 hex nut,17,Fastener,"Hex nut, 18-8 stainless, M3 x 0.5 mm",https://www.mcmaster.com/91828A211/,3
+3,M3×14 socket head screw,10,Fastener,"Socket head screw, 18-8 stainless, M3 x 0.5 mm, 14 mm long",https://www.mcmaster.com/91292A027/,3
+4,M3 nylon-insert locknut,16,Fastener,"Nylon-insert locknut, 18-8 stainless, M3 x 0.5 mm",https://www.mcmaster.com/93625A100/,3
 5,Servo pinion,2,Printed (PLA),"Fusion 360, lab account; 14 T",https://a360.co/4dcGSdF,4
-6,Mounting plate,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4xXUj8L,5
-7,M5×45 button head screw,2,Fastener,"Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long",https://www.mcmaster.com/92095A223/,6
-8,M5 nylon-insert locknut,2,Fastener,"Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm",https://www.mcmaster.com/93625A200/,6
-9,Stepper motor,1,Purchased,"NEMA 11, StepperOnline 11HS18-0674S",https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s,7
-10,M2.5×8 socket head screw,4,Fastener,"Socket head screw, 18-8 stainless, M2.5 x 0.45 mm, 8 mm long",https://www.mcmaster.com/91292A012/,7
-11,Stepper pinion,1,Printed (PLA),"Fusion 360, lab account; 20 T module 1",https://a360.co/4yqSHFz,8
-12,Tap-collar base,1,Printed (PLA),"AI-modelled (PR #51), the one AI part left on the rig",components/ai-step/tap-collar-base.step,9
-13,M3×25 button head screw,1,Fastener,"Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long",https://www.mcmaster.com/92095A186/,9
-14,M3×30 flat head screw,1,Fastener,"Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long",https://www.mcmaster.com/92125A140/,9
-15,Auger,1,Printed (PLA),"Fusion 360, lab account; 44 T gear on the tube",https://a360.co/4y1oz2H,10
-16,Bracket,2,Printed (PLA),"Fusion 360, lab account",https://a360.co/46XtYN1,10
-17,Tap collar,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4AIIgyz,10
-18,M3×20 button head screw,5,Fastener,"Button head screw, 18-8 stainless, M3 x 0.5 mm, 20 mm long",https://www.mcmaster.com/92095A185/,11
-19,Solenoid,1,Purchased,"Adafruit 412, 12 V push-pull",https://www.adafruit.com/product/412,12
-20,M3×5 socket head screw,2,Fastener,"Socket head screw, 18-8 stainless, M3 x 0.5 mm, 5 mm long",https://www.mcmaster.com/91292A110/,12
-21,Auger cap,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4w9kRE5,13
+6,M3×10 socket head screw,2,Fastener,"Socket head screw, 18-8 stainless, M3 x 0.5 mm, 10 mm long",https://www.mcmaster.com/91292A113/,4
+7,Mounting plate,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4xXUj8L,5
+8,M5×45 button head screw,2,Fastener,"Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long",https://www.mcmaster.com/92095A223/,6
+9,M5 nylon-insert locknut,2,Fastener,"Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm",https://www.mcmaster.com/93625A200/,6
+10,Stepper motor,1,Purchased,"NEMA 11, StepperOnline 11HS18-0674S",https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s,7
+11,M2.5×8 socket head screw,4,Fastener,"Socket head screw, 18-8 stainless, M2.5 x 0.45 mm, 8 mm long",https://www.mcmaster.com/91292A012/,7
+12,Stepper pinion,1,Printed (PLA),"Fusion 360, lab account; 20 T module 1",https://a360.co/4yqSHFz,8
+13,Tap-collar base,1,Printed (PLA),"AI-modelled (PR #51), the one AI part left on the rig",components/ai-step/tap-collar-base.step,9
+14,M3×25 button head screw,1,Fastener,"Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long",https://www.mcmaster.com/92095A186/,9
+15,M3×30 flat head screw,1,Fastener,"Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long",https://www.mcmaster.com/92125A140/,9
+16,M3 hex nut,1,Fastener,"Hex nut, 18-8 stainless, M3 x 0.5 mm",https://www.mcmaster.com/91828A211/,9
+17,Auger,1,Printed (PLA),"Fusion 360, lab account; 44 T gear on the tube",https://a360.co/4y1oz2H,10
+18,Bracket,2,Printed (PLA),"Fusion 360, lab account",https://a360.co/46XtYN1,10
+19,Tap collar,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4AIIgyz,10
+20,M3×20 button head screw,5,Fastener,"Button head screw, 18-8 stainless, M3 x 0.5 mm, 20 mm long",https://www.mcmaster.com/92095A185/,11
+21,Solenoid,1,Purchased,"Adafruit 412, 12 V push-pull",https://www.adafruit.com/product/412,12
+22,M3×5 socket head screw,2,Fastener,"Socket head screw, 18-8 stainless, M3 x 0.5 mm, 5 mm long",https://www.mcmaster.com/91292A110/,12
+23,Auger cap,1,Printed (PLA),"Fusion 360, lab account",https://a360.co/4w9kRE5,13

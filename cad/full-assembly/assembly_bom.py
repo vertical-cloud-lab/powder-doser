@@ -120,7 +120,9 @@ ITEM_INFO = {
 SHORT = {  # short fastener names for the table
     "bhcs_m5x45": "M5×45 button head screw",
     "locknut_m5": "M5 nylon-insert locknut",
-    "shcs_m3x12": "M3×12 socket head screw",
+    "shcs_m3x14": "M3×14 socket head screw",
+    "shcs_m3x10": "M3×10 socket head screw",
+    "locknut_m3": "M3 nylon-insert locknut",
     "shcs_m3x5": "M3×5 socket head screw",
     "bhcs_m3x20": "M3×20 button head screw",
     "bhcs_m3x25": "M3×25 button head screw",

@@ -172,6 +172,8 @@ def sync_part_names(c: Onshape, rec: dict) -> None:
     """Rename parts (metadata only, geometry untouched) to STEP_NAMES."""
     did, wid = rec["documentId"], rec["workspaceId"]
     for rel, st in rec["partStudios"].items():
+        if rel not in STEP_NAMES:      # a file no longer in the assembly
+            continue
         for p in st["parts"]:
             want = desired_name(rel, p.get("solid"))
             if p["name"] != want:
@@ -204,6 +206,15 @@ def sync_studios(c: Onshape, rec: dict, places: dict) -> None:
             {"partId": p["partId"], "name": p["name"], "solid": inv.get(p["name"])} for p in parts]}
         DOC_JSON.write_text(json.dumps(rec, indent=1) + "\n")
         print(f"imported {rel} -> {eid} ({len(parts)} part(s))", flush=True)
+    # files that left the assembly (e.g. a fastener size that changed)
+    wanted = {p for p, _ in places.values()}
+    for rel, st in studios.items():
+        if rel not in wanted and not st.get("superseded"):
+            rename_element(c, did, wid, st["elementId"],
+                           f"{Path(rel).stem} (superseded, safe to delete)")
+            st["superseded"] = True
+            print(f"superseded {rel}")
+    DOC_JSON.write_text(json.dumps(rec, indent=1) + "\n")
 
 
 def sync_assembly(c: Onshape, rec: dict, places: dict) -> None:

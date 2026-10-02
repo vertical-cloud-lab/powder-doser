@@ -75,12 +75,20 @@
       "hinge"
     ]
   },
-  "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 12 mm long": {
+  "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 14 mm long": {
     "status": "purchased",
-    "qty": 12,
-    "source": "McMaster-Carr 91292A114",
+    "qty": 10,
+    "source": "McMaster-Carr 91292A027",
     "joints": [
       "brackets",
+      "servos"
+    ]
+  },
+  "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 10 mm long": {
+    "status": "purchased",
+    "qty": 2,
+    "source": "McMaster-Carr 91292A113",
+    "joints": [
       "servos"
     ]
   },
@@ -117,13 +125,21 @@
       "tap collar"
     ]
   },
-  "Hex nut, 18-8 stainless, M3 x 0.5 mm": {
+  "Nylon-insert locknut, 18-8 stainless, M3 x 0.5 mm": {
     "status": "purchased",
-    "qty": 17,
-    "source": "McMaster-Carr 91828A211",
+    "qty": 16,
+    "source": "McMaster-Carr 93625A100",
     "joints": [
       "brackets",
       "servos",
+      "tap collar"
+    ]
+  },
+  "Hex nut, 18-8 stainless, M3 x 0.5 mm": {
+    "status": "purchased",
+    "qty": 1,
+    "source": "McMaster-Carr 91828A211",
+    "joints": [
       "tap collar"
     ]
   },
