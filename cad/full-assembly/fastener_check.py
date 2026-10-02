@@ -1,6 +1,7 @@
 """Each fastener stand-in next to McMaster-Carr's own picture and numbers.
 
-For every part number in hardware.MCMASTER this draws one row:
+For every part number in hardware.MCMASTER (including the wood screws
+that hold the baseplate to its board) this draws one row:
 McMaster's product image for the family, the stand-in as the renders used
 it until 2 Oct 2026, the stand-in now, and McMaster's catalog dimensions
 for that exact part number against the model's.  Both renders use
@@ -38,6 +39,7 @@ NYLON = (0.93, 0.93, 0.90)
 
 # The stand-ins as rendered until 2 Oct 2026 (cosmetic=False, and these specs)
 BEFORE = {"fhcs_m3x30": {"k": 1.5}}
+NEW = {"wood_10x1p25": "added 2 Oct with the mounting board"}
 
 # Camera direction (from the part towards the camera) in the display frame:
 # screws along X, head at +X; nuts standing on Z.  Matched by eye to
@@ -46,6 +48,7 @@ VIEW = {
     "shcs": (0.50, -1.0, 0.42),
     "bhcs": (0.80, -1.0, 0.42),
     "fhcs": (1.25, -1.0, 0.55),
+    "wood": (0.80, -1.0, 0.42),
     "nut": (0.0, -1.0, 0.45),
 }
 
@@ -130,7 +133,11 @@ def compare_rows(key: str, spec: dict, mc: dict) -> list[tuple[str, str, str, bo
         rows.append(("head diameter", f"{mc['head_dia_mm']:g}", f"{spec['dk']:g}", abs(mc["head_dia_mm"] - spec["dk"]) < 1e-6))
         k_txt = f"{spec['k']:g}" + (f" (was {old['k']:g})" if old["k"] != spec["k"] else "")
         rows.append(("head height", f"{mc['head_ht_mm']:g}", k_txt, abs(mc["head_ht_mm"] - spec["k"]) < 1e-6))
-        rows.append(("threading", mc["threading"].lower(), "fully threaded (was plain)", True))
+        if spec["kind"] == "wood":
+            rows.append(("thread length", f"{mc['thread_length_mm']:g}", f"{spec['thread_len']:g}",
+                         abs(mc["thread_length_mm"] - spec["thread_len"]) < 1e-6))
+        else:
+            rows.append(("threading", mc["threading"].lower(), "fully threaded (was plain)", True))
     if spec.get("insert"):
         rows.append(("nylon insert", "yes", "yes (was a plain hex)", True))
     return rows
@@ -138,7 +145,7 @@ def compare_rows(key: str, spec: dict, mc: dict) -> list[tuple[str, str, str, bo
 
 def main() -> None:
     db = json.loads((MCM / "parts.json").read_text())
-    qty = {r["key"]: (r["qty"], ", ".join(r["joints"])) for r in hardware.bom_rows()}
+    qty = {r["key"]: (r["qty"], ", ".join(r["joints"])) for r in hardware.bom_rows(with_board=True)}
     keys = list(hardware.HARDWARE)
     cell = (300, 150)
     pad, label_w, table_w, row_h, head_h = 16, 270, 520, 186, 64
@@ -183,7 +190,10 @@ def main() -> None:
         ins = hardware.nylon_insert(spec)
         if ins is not None:
             now.append((ins, NYLON))
-        sheet.paste(fit(render(before, kind), cell), (xs[1], y))
+        if key in NEW:
+            dr.text((xs[1] + 10, y + 60), f"(none: {NEW[key]})", font=_font(15), fill=(120, 120, 120))
+        else:
+            sheet.paste(fit(render(before, kind), cell), (xs[1], y))
         sheet.paste(fit(render(now, kind), cell), (xs[2], y))
         ty = y + 2
         dr.text((x_tab + 150, ty), "McMaster", font=_font(14), fill=(120, 120, 120))

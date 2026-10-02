@@ -66,6 +66,7 @@ COL_SERVO_PINION = (0.50, 0.85, 0.55)
 COL_SERVO_BODY = (0.20, 0.20, 0.22)
 COL_SOLENOID = (0.60, 0.62, 0.66)
 COL_STEEL = (0.76, 0.77, 0.80)
+COL_BOARD = (0.93, 0.82, 0.64)      # the mounting board (assembly views only)
 
 COLOURS = {
     "Baseplate": COL_BASE,
@@ -83,6 +84,7 @@ COLOURS = {
     "Servo pinion (-X)": COL_SERVO_PINION,
     "Servo MG996R (+X)": COL_SERVO_BODY,
     "Servo MG996R (-X)": COL_SERVO_BODY,
+    "Mounting board": COL_BOARD,
 }
 
 # Provenance of every non-fastener part ("current" = the file the rig was

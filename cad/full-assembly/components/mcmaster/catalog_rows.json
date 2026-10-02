@@ -176,6 +176,29 @@
     "alt": "Image of Product. Front orientation. Locknuts. Nylon-Insert Locknuts.",
     "sha256": "c75f7220eaeb79b772213cc97ad9497feab79e13f1dee3577293ea5b404b4749"
    }
+  },
+  {
+   "url": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+   "retrieved_utc": "2026-10-02T04:58Z/05:02Z",
+   "rows": {
+    "93360A609": [
+     {
+      "row": "1 | 1/4\" | 0.365\" | 0.128\" | 3/32\" | Standard | 13 | Partially | Threaded | Thread | Forming | 50 | 93360A609 | 28.00 |",
+      "header": [
+       "| Head |",
+       "| Lg. | Dia. | Ht. | Drill | Bit | Size | Rounded | Head | Profile | Approx. | Threads | per | In. | Threading | Tapping | Method | Pkg. | Qty. | Pkg. |",
+       "316 | Stainless | Steel |"
+      ]
+     }
+    ]
+   },
+   "confirmed_with_filters": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/drive-size~no-2/thread-length~3-4/thread-length~0-75/",
+   "image": {
+    "file": "93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410_2x_637499466955352008.png",
+    "url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/933/93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410@2x_637499466955352008.png",
+    "alt": "Image of Product. Front orientation. Wood Screws. Stainless Steel Phillips Rounded Head Screws for Plywood and Oriented Strand Board.",
+    "sha256": "fbd88ae4ccbc7f0d1dc3faedf4e0501e014ec6b0454debc5d39c0fb8ade0b9aa"
+   }
   }
  ]
 }

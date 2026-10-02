@@ -16,9 +16,15 @@ placement in ``layout.py`` reads like the hardware:
   diagonally opposite (18.2 mm across, 16.0 mm along), per the datasheet
   numbers recorded in the AI tap-collar CAD (PR #51).  Mounting face is
   the plane y = 0 with the body in -y; plunger axis +z (spring end up),
-  body centred on z = 0.
+  body centred on z = 0.  ``adafruit412_pieces()`` gives the frame, the
+  plunger (with its end cap) and the return spring separately, for the
+  tapping animation; the STEP is their union.
+* Mounting board: any flat board or bench top the baseplate is screwed to,
+  drawn 250 x 220 x 38.1 mm (1.5 in; the depth the baseplate's legs are
+  made for, see layout.py).  Top face on z = 0, front edge on y = 0.
 
     python3 purchased_parts.py      # -> ../components/purchased/*.step, *.stl
+                                    #    ../components/mount/mounting-board.step
 """
 from __future__ import annotations
 
@@ -27,6 +33,7 @@ from pathlib import Path
 import cadquery as cq
 
 OUT = Path(__file__).resolve().parent.parent / "components" / "purchased"
+OUT_MOUNT = OUT.parent / "mount"
 
 # NEMA 11, 11HS18-0674S
 NEMA11_W = 28.0
@@ -90,7 +97,10 @@ def mg996r() -> cq.Workplane:
     return case.union(flange).union(boss).union(spline)
 
 
-def adafruit412() -> cq.Workplane:
+def adafruit412_pieces() -> dict[str, cq.Workplane]:
+    """frame (with coil, ears and bushing), plunger (with its end cap) and
+    spring; the plunger moves along z, the spring sits between the frame
+    top (z = SOL_BODY_L / 2) and the cap."""
     h = SOL_BODY_L
     frame = (cq.Workplane("XY").box(SOL_W, SOL_D, h).translate((0, -SOL_D / 2, 0))
              .cut(cq.Workplane("XY").box(SOL_W + 2, SOL_D - 2.4, h - 2.4)
@@ -120,7 +130,22 @@ def adafruit412() -> cq.Workplane:
         spring = turn if spring is None else spring.union(turn)
     cap = (cq.Workplane("XY").circle(4.5).extrude(1.0)
            .translate((0, axis_y, h / 2 + top_len - 1.0)))
-    return frame.union(coil).union(ears).union(plunger).union(bushing).union(spring).union(cap)
+    return {"frame": frame.union(coil).union(ears).union(bushing),
+            "plunger": plunger.union(cap), "spring": spring}
+
+
+def adafruit412() -> cq.Workplane:
+    p = adafruit412_pieces()
+    return p["frame"].union(p["plunger"]).union(p["spring"])
+
+
+# mounting board
+BOARD_W, BOARD_D, BOARD_T = 250.0, 220.0, 38.1
+
+
+def mounting_board() -> cq.Workplane:
+    return (cq.Workplane("XY").box(BOARD_W, BOARD_D, BOARD_T, centered=(True, False, False))
+            .translate((0, 0, -BOARD_T)).faces(">Z").edges().chamfer(1.0))
 
 
 PARTS = {
@@ -131,6 +156,8 @@ PARTS = {
 
 
 def main() -> None:
+    OUT_MOUNT.mkdir(parents=True, exist_ok=True)
+    cq.exporters.export(mounting_board(), str(OUT_MOUNT / "mounting-board.step"))
     OUT.mkdir(parents=True, exist_ok=True)
     for stem, (fn, label) in PARTS.items():
         wp = fn()

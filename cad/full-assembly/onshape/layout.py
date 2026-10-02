@@ -24,6 +24,15 @@ How the frames were tied together (numbers read off the STEP files):
   9.04 mm); spline straight under the hinge at (y, z) = (45.4, 16), which
   is 27.26 mm = 1.298 x (28 + 14) / 2 from it; flange on the posts' inner
   faces (|x| = 67.1).  Servo pinions coplanar with the 28 T gears.
+* Gears: the 14 T servo pinions mesh the plate's 28 T gears, so at a tilt
+  of t they have turned -2 t (``SERVO_RATIO``); the 20 T stepper pinion
+  turns -44/20 times the auger (``STEPPER_RATIO``).  ``placements`` takes
+  the auger's angle as well as the tilt.
+* Mounting board: any flat board or bench top.  The baseplate's rear
+  59.6 mm (y = 55.4..115) sits on it and its two legs hang over the front
+  edge, their back faces on it.  The legs are 40 mm deep and their Ø5.5
+  holes are 19 mm down, i.e. halfway down a 38.1 mm (1.5 in) board, so
+  that is the board drawn here (``mount_placements``).
 * Tap collar: Fusion collar on the auger above the AI base, solenoid
   plate towards the cap so the solenoid hangs over the collar's Ø6.9
   plunger hole (as on the 11 Sep rig photo, where the solenoid is in
@@ -132,34 +141,59 @@ SERVO_NEG = T([NY, NZ, X], (-_servo_top_x, HINGE_Y, SERVO_SPLINE_Z))
 SPINION_POS = T([Y, Z, X], (GEAR_PLANE_X[0], HINGE_Y, SERVO_SPLINE_Z))
 SPINION_NEG = T([Y, NZ, NX], (-GEAR_PLANE_X[0], HINGE_Y, SERVO_SPLINE_Z))
 
+# gear trains: tilt gear 28 T : servo pinion 14 T, auger 44 T : stepper pinion 20 T
+SERVO_RATIO = 28 / 14
+STEPPER_RATIO = 44 / 20
 
-def placements(tilt_deg: float = 0.0, roll_deg: float = COLLAR_ROLL_DEG) -> dict:
-    """name -> (STEP path relative to components/, world transform)."""
+# mounting board (world): top on z = 0, front edge on the legs' back faces
+BOARD_T = 38.1                 # 1.5 in
+BOARD_FRONT_Y = 55.4
+
+BOARD_HOLES = [(sx * 80.0, y) for sx in (1, -1) for y in (65.4, 95.4)]   # Ø5.5 corner holes
+LEG_HOLES = [(sx * 70.0, -19.0) for sx in (1, -1)]                       # Ø5.5, (x, z), y = 50.4..55.4
+LEG_FRONT_Y = 50.4
+
+
+def placements(tilt_deg: float = 0.0, roll_deg: float = COLLAR_ROLL_DEG,
+               auger_deg: float = 0.0) -> dict:
+    """name -> (STEP path relative to components/, world transform).
+    auger_deg turns the auger (and cap) about its axis, right-handed about
+    the outlet-to-cap direction, and the stepper pinion with it."""
     tilt = (T(None, (0, HINGE_Y, HINGE_Z)) @ rot_about(X, tilt_deg)
             @ T(None, (0, -HINGE_Y, -HINGE_Z)))
     mp = tilt @ MP
     roll = (T(None, (0, 0, MP_MID_Z)) @ rot_about(X, roll_deg)
             @ T(None, (0, 0, -MP_MID_Z)))           # about the auger axis (MP X)
     collar = mp @ roll @ COLLAR_IN_MP
+    auger = mp @ AUGER_IN_MP @ rot_about(Z, auger_deg)
+    # the pinions' local Z: the auger's direction (stepper), world +X / -X (servos)
+    pinion = mp @ PINION_IN_MP @ rot_about(Z, -STEPPER_RATIO * auger_deg)
+    sp = SERVO_RATIO * tilt_deg
     return {
         "Baseplate": ("fusion-step/baseplate.step", np.eye(4)),
         "Mounting plate": ("fusion-step/mounting-plate.step", mp),
-        "Auger": ("fusion-step/auger.step", mp @ AUGER_IN_MP),
-        "Auger cap": ("fusion-step/auger-cap.step",
-                      mp @ AUGER_IN_MP @ T(None, (0, 0, AUGER_LEN))),
+        "Auger": ("fusion-step/auger.step", auger),
+        "Auger cap": ("fusion-step/auger-cap.step", auger @ T(None, (0, 0, AUGER_LEN))),
         "Bracket (rear)": ("fusion-step/brackets.step", mp @ bracket_in_mp(MP_ROWS_BRACKET[0])),
         "Bracket (front)": ("fusion-step/brackets.step", mp @ bracket_in_mp(MP_ROWS_BRACKET[1])),
         "Tap collar base (AI)": ("ai-step/tap-collar-base.step", mp @ TAP_BASE_IN_MP),
         "Tap collar": ("fusion-step/tap-collar.step", collar),
         "Solenoid (Adafruit 412)": ("purchased/adafruit-412-solenoid.step",
                                     collar @ SOLENOID_IN_COLLAR),
-        "Stepper pinion": ("fusion-step/stepper-pinion.step", mp @ PINION_IN_MP),
+        "Stepper pinion": ("fusion-step/stepper-pinion.step", pinion),
         "Stepper (NEMA 11)": ("purchased/nema11-11hs18-0674s.step", mp @ NEMA_IN_MP),
-        "Servo pinion (+X)": ("fusion-step/servo-pinion.step", SPINION_POS),
-        "Servo pinion (-X)": ("fusion-step/servo-pinion.step", SPINION_NEG),
+        "Servo pinion (+X)": ("fusion-step/servo-pinion.step", SPINION_POS @ rot_about(Z, -sp)),
+        "Servo pinion (-X)": ("fusion-step/servo-pinion.step", SPINION_NEG @ rot_about(Z, sp)),
         "Servo MG996R (+X)": ("purchased/mg996r-servo.step", SERVO_POS),
         "Servo MG996R (-X)": ("purchased/mg996r-servo.step", SERVO_NEG),
     }
+
+
+def mount_placements() -> dict:
+    """The board the baseplate is screwed to (not part of the doser, so not
+    in ``placements``; the renders of the doser leave it out)."""
+    return {"Mounting board": ("mount/mounting-board.step",
+                               T(None, (0.0, BOARD_FRONT_Y, 0.0)))}
 
 
 def _shape(path: Path):
@@ -194,14 +228,15 @@ def main() -> None:
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-check", action="store_true")
+    ap.add_argument("--tilt", type=float, default=0.0)
     a = ap.parse_args()
-    places = placements()
+    places = placements(a.tilt)
     out = {n: {"step": p, "transform_mm": np.round(M, 6).tolist()} for n, (p, M) in places.items()}
     (HERE / "placements.json").write_text(json.dumps(out, indent=1) + "\n")
     print(f"outlet {OUTLET_MP_X:.2f} mm in front of the hinge (MP x); "
           f"world outlet y = {HINGE_Y - OUTLET_MP_X:.2f}")
     if not a.no_check:
-        for h in interference(places):
+        for h in interference({**places, **mount_placements()}):
             print("overlap", h)
 
 

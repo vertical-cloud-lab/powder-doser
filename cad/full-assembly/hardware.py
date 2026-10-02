@@ -44,6 +44,11 @@ Joint summary (world = Fusion baseplate frame, see onshape/layout.py):
   on the flange (3.7 mm from the case wall, room for an M3 nut, not M4).
 * servo pinions: M3 x 10 through the pinion's Ø3.4 bore into the servo
   output shaft (2.4 mm of thread; x 12 could bottom out in the spline).
+* mounting board (``with_board``): #10 x 1-1/4 in pan head wood screws
+  (316 stainless: McMaster has no 18-8 one in this size),
+  four down through the baseplate's Ø5.5 corner holes (6 mm plate) and two
+  through the legs (5 mm) into the board's front edge, 19 mm down, i.e.
+  halfway down the 38.1 mm board (onshape/layout.py, "Mounting board").
 """
 from __future__ import annotations
 
@@ -87,6 +92,12 @@ HARDWARE = {
                       desc="Hex nut, 18-8 stainless, M3 x 0.5 mm"),
     "shcs_m2p5x8": dict(kind="shcs", d=2.5, L=8.0, dk=4.5, k=2.5,
                         desc="Socket head screw, 18-8 stainless, M2.5 x 0.45 mm, 8 mm long"),
+    # #10 wood screw (0.19 in major, 13 threads per inch), McMaster's figures
+    # in inches: head 0.365 x 0.128, threaded 3/4 in from the tip
+    "wood_10x1p25": dict(kind="wood", d=0.19 * 25.4, L=1.25 * 25.4, dk=0.365 * 25.4, k=0.128 * 25.4,
+                         P=25.4 / 13, d_root=3.3, thread_len=0.75 * 25.4,
+                         desc="Pan head Phillips screw for wood (plywood, OSB), 316 stainless, #10, "
+                              "1-1/4 in long"),
 }
 
 
@@ -105,8 +116,10 @@ def _frame(origin, z_dir, x_hint=(0.0, 0.0, 1.0)) -> np.ndarray:
     return M
 
 
-def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None) -> list[tuple[str, str, str, np.ndarray]]:
-    """[(instance name, hardware key, joint, world 4 x 4)] for every fastener."""
+def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None,
+                        with_board: bool = False) -> list[tuple[str, str, str, np.ndarray]]:
+    """[(instance name, hardware key, joint, world 4 x 4)] for every fastener
+    (with_board: also the screws into the mounting board)."""
     import sys
     sys.path.insert(0, str(HERE / "onshape"))
     import layout as L
@@ -173,6 +186,16 @@ def fastener_placements(tilt_deg: float = 0.0, roll_deg: float | None = None) ->
         # servo pinion: head on the 60 deg recess where it is Ø5.5 (z = 1.25)
         Mp = W[f"Servo pinion ({tag})"]
         add(f"Servo pinion screw ({tag})", "shcs_m3x10", "servos", Mp, (0.0, 0.0, 1.25), (0, 0, 1))
+
+    if with_board:
+        # baseplate to the board: down through the corner holes, and through
+        # the legs into the front edge
+        for x, y in L.BOARD_HOLES:
+            add(f"Board screw ({'+' if x > 0 else '-'}X, y{y:.0f})", "wood_10x1p25", "board",
+                np.eye(4), (x, y, 6.0), (0, 0, -1))
+        for x, z in L.LEG_HOLES:
+            add(f"Board screw (leg {'+' if x > 0 else '-'}X)", "wood_10x1p25", "board",
+                np.eye(4), (x, L.LEG_FRONT_Y, z), (0, 1, 0))
     return out
 
 
@@ -206,7 +229,9 @@ def _iso_model(spec: dict, cosmetic: bool = True) -> cq.Workplane:
     """Stand-in in the seat frame.  cosmetic=False gives the plain shapes
     the renders used until 2 Oct 2026 (no threads, flat-topped locknut)."""
     d = spec["d"]
-    P = PITCH[d]
+    P = spec.get("P") or PITCH[d]
+    if spec["kind"] == "wood":
+        return _wood_screw(spec, cosmetic)
     if spec["kind"] in ("shcs", "bhcs", "fhcs"):
         L, dk, k = spec["L"], spec["dk"], spec["k"]
         # shank, as an (r, z) profile from the bearing face to the tip
@@ -258,6 +283,36 @@ def _iso_model(spec: dict, cosmetic: bool = True) -> cq.Workplane:
         rings = cq.Workplane("XZ").polyline(prof).close().revolve(360, (0, 0, 0), (0, 1, 0))
         nut = nut.cut(rings)
     return nut
+
+
+def _wood_screw(spec: dict, cosmetic: bool = True) -> cq.Workplane:
+    """Pan head Phillips screw for wood: plain shank under the head, then
+    the thread to a gimlet point (crests shrinking over the last 2.5
+    pitches)."""
+    d, L, dk, k, P = spec["d"], spec["L"], spec["dk"], spec["k"], spec["P"]
+    r, r0 = d / 2, spec["d_root"] / 2
+    tip = 2.5 * P
+    if cosmetic:
+        z_thr = L - spec["thread_len"]
+        prof = [(0.0, 0.0), (0.93 * r, 0.0), (0.93 * r, z_thr)]
+        z = z_thr
+        while z + P < L - 0.2:
+            taper = min(1.0, (L - (z + P / 2)) / tip)
+            prof += [(r0 + (r - r0) * taper, z + P / 2), (r0 * min(1.0, (L - z - P) / tip), z + P)]
+            z += P
+        prof += [(0.0, L)]
+    else:
+        prof = [(0.0, 0.0), (r, 0.0), (r, L - tip), (0.0, L)]
+    body = cq.Workplane("XZ").polyline(prof).close().revolve(360, (0, 0, 0), (0, 1, 0))
+    # pan head: flat top, rounded edge
+    head = (cq.Workplane("XZ").moveTo(0, 0).lineTo(dk / 2, 0).lineTo(dk / 2, -0.4 * k)
+            .threePointArc((0.47 * dk, -0.8 * k), (0.36 * dk, -k)).lineTo(0, -k).close()
+            .revolve(360, (0, 0, 0), (0, 1, 0)))
+    # Phillips recess: two crossed slots
+    w, ln, dep = 0.13 * dk, 0.52 * dk, 0.6 * k
+    cross = (cq.Workplane("XY").workplane(offset=-k - 0.1).rect(ln, w).extrude(dep + 0.1)
+             .union(cq.Workplane("XY").workplane(offset=-k - 0.1).rect(w, ln).extrude(dep + 0.1)))
+    return head.union(body).cut(cross)
 
 
 def nylon_insert(spec: dict):
@@ -345,6 +400,8 @@ def models() -> dict[str, tuple[object, str]]:
 # public listings that quote McMaster's own description (Clearpath Robotics
 # fastener docs, reli-tool cross-references, published BOMs); see README,
 # "Fasteners".  mcmaster.com itself refused the lab account on 2 Oct 2026.
+# All are in McMaster's own (logged-out) catalog tables:
+# components/mcmaster/catalog_rows.json.
 MCMASTER: dict[str, str] = {
     "bhcs_m5x45": "92095A223",
     "locknut_m5": "93625A200",
@@ -357,6 +414,7 @@ MCMASTER: dict[str, str] = {
     "fhcs_m3x30": "92125A140",
     "hexnut_m3": "91828A211",
     "shcs_m2p5x8": "91292A012",
+    "wood_10x1p25": "93360A609",
 }
 
 
@@ -373,6 +431,7 @@ SHORT = {
     "fhcs_m3x30": "M3 x 30 flat head screw",
     "hexnut_m3": "M3 hex nut",
     "shcs_m2p5x8": "M2.5 x 8 socket head screw",
+    "wood_10x1p25": "#10 x 1-1/4 in pan head wood screw",
 }
 
 
@@ -388,12 +447,14 @@ def export_steps() -> dict[str, Path]:
     return out
 
 
-def bom_rows() -> list[dict]:
+def bom_rows(with_board: bool = False) -> list[dict]:
     """One row per hardware key, with quantity and the joints it is used in."""
-    pl = fastener_placements()
+    pl = fastener_placements(with_board=with_board)
     rows = []
     for key, spec in HARDWARE.items():
         uses = [j for _, k, j, _ in pl if k == key]
+        if not uses:
+            continue
         rows.append(dict(key=key, desc=spec["desc"], qty=len(uses),
                          joints=sorted(set(uses)), mcmaster=MCMASTER.get(key, "")))
     return rows
@@ -401,6 +462,6 @@ def bom_rows() -> list[dict]:
 
 if __name__ == "__main__":
     export_steps()
-    for r in bom_rows():
+    for r in bom_rows(with_board=True):
         print(f"{r['qty']:3d}  {r['mcmaster'] or '-':10s} {r['desc']}  ({', '.join(r['joints'])})")
-    print(sum(r["qty"] for r in bom_rows()), "fasteners")
+    print(sum(r["qty"] for r in bom_rows(with_board=True)), "fasteners")

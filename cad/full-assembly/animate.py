@@ -2,18 +2,26 @@
 (byu-vcl PR #234, ``ot2-overhead-camera/lid-mount/cad/animate.py``): one
 large view, each part sliding in along its own insertion direction, a
 plain-language caption for every step, a step counter, a 2-3 s hold so the
-caption can be read, and close-ups for the small fasteners.  It ends on the
-assembled doser tilting 0-45-0 deg, with the McMaster-Carr part numbers.
+caption can be read, and close-ups for the small fasteners.  It starts
+from the board the doser is screwed to and ends with the doser working:
+the servos tilting the plate 0-45-0 deg (both gears of each pair
+turning), the stepper turning the auger through its 20T/44T gears, and
+the solenoid tapping the tube, then the McMaster-Carr part numbers.
 
 The parts, positions, build order and insertion directions are the ones
-``assembly_bom.py`` uses for the BOM GIF (which stays as it is).
+``assembly_bom.py`` uses for the BOM GIF; the gear ratios are in
+``onshape/layout.py``.
 
     xvfb-run -a python3 animate.py      # -> renders/assembly_walkthrough.gif
+                                        #    renders/doser_motion.gif (the working part only)
 """
 from __future__ import annotations
 
+import shutil
+import subprocess
 import textwrap
 
+import cadquery as cq
 import numpy as np
 import vtk
 from PIL import Image, ImageDraw, ImageFont
@@ -22,6 +30,7 @@ import assembly_bom as ab
 import build
 import hardware
 import layout
+import purchased_parts as pp
 
 SIZE = (960, 720)
 FPS = 10
@@ -34,13 +43,20 @@ FIG1A = (0.64, 0.64, 0.38)     # the Fig. 1a direction
 STEPPER_SIDE = (0.95, 0.12, 0.42)
 TOP_FRONT = (0.25, 0.55, 0.80)
 OUTLET_END = (0.30, 0.92, 0.35)
+DRIVE = (0.62, 0.62, 0.48)     # stepper pinion and 44T gear, over the front bracket
+
+TUBE_R = 12.5                  # auger tube radius under the tap collar (auger.step)
 
 # One entry per assembly_bom.STEPS entry: caption, the instance-name
 # prefixes to frame (None = the whole doser), camera direction, motion
 # frames.  Facts are from hardware.py, layout.py and the README.
 WALK = [
-    ("Start with the printed baseplate: hinge towers and servo posts up.",
-     None, FIG1A, 12),
+    ("Start with a flat board or bench top, 38 mm (1.5 in) thick. Set the printed baseplate on it, "
+     "hinge towers and servo posts up: its rear sits flat on the board and its two legs hang over "
+     "the front edge.", None, FIG1A, 14),
+    ("Screw the baseplate down with 6 x #10 x 1-1/4 in pan head wood screws: 4 down through its "
+     "corner holes, and 2 through the legs into the board's front edge.",
+     ["Baseplate", "Board screw"], FIG1A, 18),
     ("Lower the two MG996R servos between the baseplate's posts, output spline up. Each spline "
      "ends up right under the hinge axis.", None, FIG1A, 18),
     ("Fix each servo with 4 x M3 x 14 socket head screws, in through the post and the servo's "
@@ -107,6 +123,54 @@ def overlay(img: Image.Image, label: str, caption: str) -> Image.Image:
             d.text((14, y0 + i * lh), line, font=f, fill=(0, 0, 0, 255))
     img.alpha_composite(layer)
     return img.convert("RGB")
+
+
+def box(lo, hi) -> np.ndarray:
+    """The 8 corners of a world-space box (a region for fit_camera)."""
+    return np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])],
+                    float)
+
+
+def tagged(view, img: Image.Image, tags) -> Image.Image:
+    """Small labels with leaders: (text, world point, label offset in px)."""
+    d = ImageDraw.Draw(img)
+    f = _font(17)
+    for text, p, (dx, dy) in tags:
+        x, y = view.project((build.W2J @ np.append(p, 1.0))[:3])
+        w = d.textlength(text, font=f)
+        lx, ly = x + dx, y + dy
+        bx = lx - w if dx < 0 else lx
+        d.line([(x, y), (lx, ly)], fill=(70, 70, 70), width=2)
+        d.ellipse((x - 3, y - 3, x + 3, y + 3), fill=(50, 50, 50))
+        d.rectangle((bx - 5, ly - 12, bx + w + 5, ly + 12), fill=(255, 255, 255), outline=(120, 120, 120))
+        d.text((bx, ly), text, font=f, fill=(0, 0, 0), anchor="lm")
+    return img
+
+
+def solenoid_actors(view) -> dict:
+    """The solenoid's frame, plunger and spring as separate actors (hidden),
+    so the tap can move the plunger and squash the spring."""
+    out = {}
+    for k, wp in pp.adafruit412_pieces().items():
+        pd = build._polydata(cq.Compound.makeCompound(wp.solids().vals()))
+        a = build._actor(pd, build.COL_SOLENOID, np.eye(4))
+        a.SetVisibility(False)
+        view.ren.AddActor(a)
+        out[k] = a
+    return out
+
+
+def tap_pose(actors: dict, M_sol: np.ndarray, s: float) -> None:
+    """Plunger s mm down its axis (towards the tube); the spring between the
+    frame top and the plunger's cap squashes to fit."""
+    h = pp.SOL_BODY_L
+    z_cap = h / 2 + (pp.SOL_LEN_TOTAL - h - pp.SOL_BOTTOM_STICKOUT) - 1.0    # cap underside
+    f = (z_cap - s - h / 2) / (z_cap - h / 2)
+    S = ab._T((0, 0, h / 2)) @ np.diag([1.0, 1.0, f, 1.0]) @ ab._T((0, 0, -h / 2))
+    M = build.W2J @ M_sol
+    actors["frame"].SetUserTransform(build._vtk_matrix(M))
+    actors["plunger"].SetUserTransform(build._vtk_matrix(M @ ab._T((0, 0, -s))))
+    actors["spring"].SetUserTransform(build._vtk_matrix(M @ S))
 
 
 def fit_camera(view, pts_world: np.ndarray, dirv, margin: float = 0.8):
@@ -209,37 +273,122 @@ def main() -> None:
         add(overlay(view.image(), label, caption), hold * 1000 // FPS)
         cur = cams[k]
 
-    # back out to the whole doser, then tilt 0 -> 45 -> 0 about the hinge
+    # ---- the doser working ------------------------------------------------
+    rows = ab.bom(order)
+    n_of = lambda kind: sum(r["qty"] for r in rows if r["kind"] == kind)      # noqa: E731
     view.pose(one)
-    cap = "Assembled: 11 printed parts, 4 purchased parts and 46 fasteners."
+    cap = (f"Assembled: {n_of('Printed (PLA)')} printed parts, {n_of('Purchased')} purchased parts "
+           f"and {n_of('Fastener')} fasteners, on the board.")
     for i in range(1, 9):
         set_cam([a + (b - a) * ease(i / 8) for a, b in zip(cur, overall)])
         add(overlay(view.image(), "", cap), 1000 // FPS)
     add(overlay(view.image(), "", cap), 1500)
+    cur = overall
+    sol = solenoid_actors(view)
 
-    def tilt_Ms(t):
-        P = layout.placements(float(t))
-        Fp = {nm: M for nm, _, _, M in hardware.fastener_placements(float(t))}
-        return {d["name"]: (P[d["name"]][1] if d["name"] in P else Fp[d["name"]]) for d in order}
+    def go_to(cam_to):
+        """Cut to a close-up (camera moves redraw every pixel: costly in a GIF)."""
+        nonlocal cur
+        set_cam(cam_to)
+        cur = cam_to
 
-    cap = "The two servos tilt the mounting plate about the hinge, up to 45 deg."
+    # 1. tilt, whole doser: both gears of each pair turn
+    cap = ("The two servos tilt the mounting plate about the hinge, up to 45 deg. Each servo's 14T "
+           "pinion turns its 28T gear, so the pinion turns twice as far, the other way.")
+    add(overlay(view.image(), "tilt 0 deg", cap), 1500)
     for t in list(np.linspace(0, 45, 10)) + list(np.linspace(45, 0, 10)):
-        view.pose(one, tilt_M=tilt_Ms(t))
+        view.pose(one, tilt_M=ab.poses(t))
         add(overlay(view.image(), f"tilt {t:.0f} deg", cap), 1000 // FPS)
     durations[-11] = 900                 # pause at 45 deg
+    motion_from = len(frames)
+    # close-ups: 5 deg of tilt and 6 deg of stepper pinion a frame, a third of a
+    # tooth or less, so the teeth don't strobe backwards
+    tilts = list(np.linspace(0, 45, 10)) + [45.0] + list(np.linspace(45, 0, 10))
+
+    # 2. the same, close up on one gear pair
+    gear_c = np.array([48.0, layout.HINGE_Y, layout.HINGE_Z])
+    pin_c = np.array([48.0, layout.HINGE_Y, layout.SERVO_SPLINE_Z])
+    cam_gear = fit_camera(view, box((41, 24, 4), (55, 67, 64)), FIG1A, margin=0.85)
+    cap = ("Close up: the 14T servo pinion (bottom) and the plate's 28T gear. 45 deg of tilt is "
+           "90 deg at the servo.")
+    view.pose(one)
+    go_to(cam_gear)
+
+    def gear_tags(t):
+        return [("28T gear (plate)", gear_c + (0, 0, 16), (-150, -60)),
+                (f"14T servo pinion, {-2 * t:.0f} deg", pin_c + (0, 0, -9), (-200, 40))]
+
+    add(tagged(view, overlay(view.image(), "tilt 0 deg", cap), gear_tags(0)), 1500)
+    for t in tilts:
+        view.pose(one, tilt_M=ab.poses(t))
+        add(tagged(view, overlay(view.image(), f"tilt {t:.0f} deg", cap), gear_tags(t)), 1000 // FPS)
+
+    # 3. stepper drive: 20T pinion on the motor, 44T gear on the auger
+    pin_s = np.array([-32.0, layout.HINGE_Y + 71.73, layout.HINGE_Z])
+    gear_s = np.array([0.0, layout.HINGE_Y + 71.73, layout.HINGE_Z])
+    cam_drive = fit_camera(view, box((-44, 110, 19), (24, 125, 67)), DRIVE, margin=0.85)
+    cap = ("The stepper's 20T pinion turns the 44T gear on the auger tube: 2.2 turns of the motor per "
+           "turn of the auger. The brackets and the tap collar stay put; the cap turns with the tube.")
+    view.pose(one)
+    go_to(cam_drive)
+
+    def drive_tags(a):
+        return [(f"20T pinion, {layout.STEPPER_RATIO * a:.0f} deg", pin_s + (0, 0, -13), (-170, 60)),
+                (f"44T gear, {a:.0f} deg", gear_s + (0, 0, 25), (40, -60))]
+
+    add(tagged(view, overlay(view.image(), "auger 0 deg", cap), drive_tags(0)), 1500)
+    step = 6.0 / layout.STEPPER_RATIO       # pinion 6 deg a frame
+    for i in range(1, 41):
+        a = -step * i                       # pinion +6 deg a frame
+        view.pose(one, tilt_M=ab.poses(0.0, a))
+        add(tagged(view, overlay(view.image(), f"auger {abs(a):.0f} deg", cap), drive_tags(-a)), 70)
+    view.pose(one)
+
+    # 4. solenoid tapping: the plunger hits the tube through the collar's hole
+    M_sol = ab.poses()["Solenoid (Adafruit 412)"]
+    stroke = layout.SOLENOID_IN_COLLAR[2, 3] - (pp.SOL_BODY_L / 2 + pp.SOL_BOTTOM_STICKOUT) - TUBE_R
+    cam_tap = fit_camera(view, pts(["Solenoid"], one), OUTLET_END, margin=0.75)
+    cap = (f"The solenoid taps: its plunger drops {stroke:.1f} mm through the hole in the tap collar and "
+           "hits the auger tube, then the spring pulls it back, to shake the powder loose.")
+    go_to(cam_tap)
+    view.actors["Solenoid (Adafruit 412)"].SetVisibility(False)
+    for a in sol.values():
+        a.SetVisibility(True)
+    tap_pose(sol, M_sol, 0.0)
+    add(overlay(view.image(), "tap", cap), 1200)
+    for k in range(4):
+        for s_mm, ms in ((0.5, 40), (1.0, 120), (0.6, 60), (0.25, 60), (0.0, 400)):
+            tap_pose(sol, M_sol, s_mm * stroke)
+            add(overlay(view.image(), f"tap {k + 1}", cap), ms)
+    for a in sol.values():
+        a.SetVisibility(False)
+    view.actors["Solenoid (Adafruit 412)"].SetVisibility(True)
+    motion_to = len(frames)
+
+    go_to(overall)
     pns = ", ".join(dict.fromkeys(hardware.MCMASTER.values()))
     add(overlay(view.image(), "", f"Assembled. Fasteners (McMaster-Carr): {pns}."), 4000)
 
-    # one shared palette keeps the colours steady from frame to frame
-    picks = [frames[i] for i in np.linspace(0, len(frames) - 1, 12).astype(int)]
-    mosaic = Image.new("RGB", (SIZE[0], SIZE[1] * len(picks)))
+    save_gif(frames, durations, ab.RENDERS / "assembly_walkthrough.gif")
+    save_gif(frames[motion_from:motion_to], durations[motion_from:motion_to],
+             ab.RENDERS / "doser_motion.gif")
+
+
+def save_gif(frames, durations, out, colors=128):
+    """One shared palette, from every 6th frame at half size, keeps the
+    colours steady from frame to frame; gifsicle -O3 (lossless) then stores
+    only what changes."""
+    w, h = SIZE[0] // 2, SIZE[1] // 2
+    picks = [f.resize((w, h)) for f in frames[::6]]
+    mosaic = Image.new("RGB", (w, h * len(picks)))
     for i, f in enumerate(picks):
-        mosaic.paste(f, (0, i * SIZE[1]))
-    pal = mosaic.quantize(colors=96, method=Image.Quantize.MEDIANCUT)
+        mosaic.paste(f, (0, i * h))
+    pal = mosaic.quantize(colors=colors, method=Image.Quantize.MEDIANCUT)
     q = [f.quantize(palette=pal, dither=Image.Dither.NONE) for f in frames]
-    out = ab.RENDERS / "assembly_walkthrough.gif"
     q[0].save(out, save_all=True, append_images=q[1:], duration=durations, loop=0,
               optimize=False, disposal=1)
+    if shutil.which("gifsicle"):
+        subprocess.run(["gifsicle", "-O3", "--batch", str(out)], check=True)
     print(f"  -> {out.relative_to(ab.HERE)}  ({len(frames)} frames, {sum(durations) / 1000:.0f} s, "
           f"{out.stat().st_size / 1e6:.1f} MB)")
 

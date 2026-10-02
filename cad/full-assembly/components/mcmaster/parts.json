@@ -1,6 +1,6 @@
 {
   "source": "McMaster-Carr catalog tables (logged out), read through the doser Pi on 2026-10-02",
-  "retrieved_utc": "2026-10-02T01:49Z/02:01Z",
+  "retrieved_utc": "2026-10-02T01:49Z/02:01Z; 93360A609: 2026-10-02T04:58Z/05:02Z",
   "method": "Headed Chromium on the runner, all traffic through an ssh -D SOCKS tunnel to the doser Pi (residential IP), throttled to 400 kB/s, no login. Product pages (mcmaster.com/<PN>/) answer 'Log in to view Product Detail', so no STEP files; the catalog pages' product tables and family images are open.",
   "families": {
     "shcs": {
@@ -42,6 +42,14 @@
       "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/936/93625A100_f6287b2e-d38f-47a5-9552-494fab634579@2x_1693944172.png",
       "image_alt": "Nylon-Insert Locknuts (tile image of 93625A100, same series, on the stainless-steel metric locknut page)",
       "image_sha256": "cb7c3a554f8c10c0bb2d93a2bb67890a4db2054ddfbf0c59543712af9260ee68"
+    },
+    "wood": {
+      "family": "Stainless Steel Phillips Rounded Head Screws for Plywood and Oriented Strand Board (316 stainless)",
+      "catalog": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+      "image": "93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410_2x_637499466955352008.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/933/93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410@2x_637499466955352008.png",
+      "image_alt": "Image of Product. Front orientation. Wood Screws. Stainless Steel Phillips Rounded Head Screws for Plywood and Oriented Strand Board.",
+      "image_sha256": "fbd88ae4ccbc7f0d1dc3faedf4e0501e014ec6b0454debc5d39c0fb8ade0b9aa"
     }
   },
   "parts": {
@@ -167,6 +175,29 @@
         "head_ht_mm": 2.5,
         "threading": "Fully Threaded",
         "thread_spacing": "Coarse"
+      }
+    },
+    "93360A609": {
+      "family": "wood",
+      "catalog": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+      "mcmaster": {
+        "thread": "#10",
+        "length_mm": 31.75,
+        "head_dia_mm": 9.270999999999999,
+        "head_ht_mm": 3.2512,
+        "threading": "Partially Threaded",
+        "thread_length_mm": 19.049999999999997,
+        "threads_per_inch": 13,
+        "head": "pan",
+        "drive": "Phillips No. 2",
+        "material": "316 stainless steel",
+        "pilot_drill_in": "3/32",
+        "inch": {
+          "length": "1-1/4",
+          "head_dia": "0.365",
+          "head_ht": "0.128",
+          "thread_length": "3/4"
+        }
       }
     }
   }
