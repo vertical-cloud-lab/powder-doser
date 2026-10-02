@@ -389,12 +389,28 @@ def draw_balloons(img, view, rows, order, inst, s_of_step, items=None, r=13, avo
     if not pts:
         return
     ctr = np.mean([p for _, p in pts], axis=0)
-    # initial balloon positions: pushed out radially, then relaxed apart
+    # parts' silhouette: balloons go on the white background, not on parts
+    arr = np.asarray(img.convert("RGB")).astype(int)
+    solid = (arr.sum(axis=2) < 3 * 245)
+
+    def on_parts(b):
+        x0, x1 = int(max(0, b[0] - r)), int(min(W, b[0] + r + 1))
+        y0, y1 = int(max(0, b[1] - r)), int(min(H, b[1] + r + 1))
+        return solid[y0:y1, x0:x1].mean() if x1 > x0 and y1 > y0 else 0.0
+
+    # initial balloon positions: pushed out radially until off the parts,
+    # then relaxed apart (and kept off the parts)
     pos = []
     for no, p in pts:
         v = p - ctr
         n = np.linalg.norm(v) or 1.0
-        pos.append(p + v / n * 70 + np.array([0, -10]))
+        u = v / n
+        b = p + u * 40
+        for _ in range(60):
+            if on_parts(b) < 0.02:
+                break
+            b = b + u * 8
+        pos.append(b + u * 12)
     pos = np.array(pos, float)
     for _ in range(300):
         for i in range(len(pos)):
@@ -405,6 +421,10 @@ def draw_balloons(img, view, rows, order, inst, s_of_step, items=None, r=13, avo
                     push = (dv / (dist or 1.0)) * (2.5 * r - dist) / 2
                     pos[i] += push
                     pos[j] -= push
+        for i in range(len(pos)):          # drift back off any part
+            if on_parts(pos[i]) > 0.02:
+                v = pos[i] - ctr
+                pos[i] += v / (np.linalg.norm(v) or 1.0) * 3
         pos[:, 0] = np.clip(pos[:, 0], r + 4, W - r - 4)
         pos[:, 1] = np.clip(pos[:, 1], r + 4, H - r - 4)
     for (no, p), b in zip(pts, pos):
