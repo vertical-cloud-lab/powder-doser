@@ -59,11 +59,17 @@ FUSION = {
 # is held over the plate while its brackets and collar go on, then
 # lowered); RIDE (no offset) puts a part that only rides along in the step.
 #
-# The auger unit is put together off the plate: the 44T gear sits between
-# the brackets and is wider than their Ø25.5 bores (and the collar's), so
-# the front bracket and the collar slide on from the outlet end (tube
-# Ø25.0) and the rear bracket from the cap end, over the Ø26.0 cap thread.
-# Each starts 15 mm or more past its end of the tube.
+# The auger: the 44T gear sits between the brackets and is wider than their
+# Ø25.5 bores (and the collar's), so the front bracket and the collar slide
+# on from the outlet end (tube Ø25.0) while the auger is held over the
+# plate, and the rear bracket from the cap end, over the Ø26.0 cap thread,
+# once the auger is down: the stepper's body sits 7 mm over the rear
+# bracket's base, so lowered with the rest that bracket would cut through
+# the motor (up to 1079 mm3, OCC booleans), but slid along the tube it
+# passes under it.  The stepper can't go on after the auger instead: its
+# two inner screws' Ø4.5 heads can't get past the 44T gear (their axes are
+# 23.5 mm from the auger's, the gear's tips 23).  Each part starts 15 mm
+# or more past its end of the tube.
 # --------------------------------------------------------------------------- #
 UP = (0.0, 0.0, 1.0)
 RIDE = (0.0, 0.0, 0.0)
@@ -108,11 +114,10 @@ STEPS = [
     ("Auger, held over the plate", [("Auger", "Mounting plate", (0, 0, 50))]),
     ("Front bracket onto the tube", [("Bracket (front)", "Auger", (0, -95, 0))]),
     ("Tap collar onto the tube", [("Tap collar", "Auger", (0, -80, 0))]),
+    ("Auger onto the plate", [("Auger", "Mounting plate", AUGER_HELD),
+                              ("Bracket (front)", "Auger", RIDE),
+                              ("Tap collar", "Auger", RIDE)]),
     ("Rear bracket onto the tube", [("Bracket (rear)", "Auger", (0, 140, 0))]),
-    ("Auger unit onto the plate", [("Auger", "Mounting plate", AUGER_HELD),
-                                   ("Bracket (front)", "Auger", RIDE),
-                                   ("Tap collar", "Auger", RIDE),
-                                   ("Bracket (rear)", "Auger", RIDE)]),
     ("Bracket screws and clamps", [("Bracket screw", "Mounting plate", "fastener"),
                                    ("Bracket nut", "Bracket", "fastener"),
                                    ("Bracket clamp", "Bracket", "fastener")]),

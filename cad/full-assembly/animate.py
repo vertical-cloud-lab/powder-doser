@@ -85,19 +85,19 @@ WALK = [
      "locknut on top, and an M3 x 30 flat head down into the countersunk hole, with a plain M3 "
      "nut under the floor (only 2 mm there, too thin for a locknut).",
      ["Tap collar base (AI)", "Tap base"], TOP_FRONT, 20),
-    ("Next, the auger unit: the auger with its two brackets and the tap collar, put together off "
-     "the plate and set on in one piece. The 44T gear sits between the brackets and won't pass "
-     "their bores, so each part slides on from one end of the tube.", "unit", AUGER_SIDE, 14),
+    ("Next, the auger. The 44T gear sits between the two brackets and won't pass their bores, so "
+     "the brackets and the tap collar slide onto the tube from its ends: two from the outlet end "
+     "now, and one from the cap end once the auger is down.", "unit", AUGER_SIDE, 14),
     ("Slide one bracket onto the tube from the outlet end, split clamp on top, until it is 2 mm "
      "short of the 44T gear. Its clamp screw goes in later.", "unit", AUGER_SIDE, 18),
     ("Slide the tap collar on after it, also from the outlet end, solenoid plate first, up to "
      "1.5 mm from the bracket. Its clamp ears go on the stepper's side.", "unit", AUGER_SIDE, 18),
-    ("Slide the other bracket on from the cap end, split clamp on top, to about 40 mm behind the "
-     "gear. The cap thread is 26.0 mm across, 0.5 mm more than the bore, so ease the clamp open "
-     "over it.", "unit", AUGER_SIDE, 22),
-    ("Lower the unit onto the plate: the brackets onto their M3 hole rows, the tap collar onto its "
+    ("Lower the auger onto the plate: the bracket onto its M3 hole row, the tap collar onto its "
      "base with its ears over the hard-stop bump, and the 44T gear into mesh with the stepper "
-     "pinion. Slide the brackets along the tube to line up with the holes.", "unit", AUGER_SIDE, 22),
+     "pinion, turning the auger a little to let the teeth in.", "unit", AUGER_SIDE, 22),
+    ("Slide the other bracket on from the cap end, split clamp on top, along the plate and under "
+     "the stepper to its hole row (lowered with the rest, it would hit the stepper). The cap "
+     "thread is 0.5 mm wider than the bore, so ease the clamp open over it.", "unit", AUGER_SIDE, 24),
     ("Fix each bracket with 2 x M3 x 20 button heads, up from under the floor with locknuts on top, "
      "and close its split clamp with an M3 x 14 and a locknut.", ["Bracket"], BRACKETS, 20),
     ("Close the tap collar's clamp with an M3 x 20 button head down through its ears, locknut "

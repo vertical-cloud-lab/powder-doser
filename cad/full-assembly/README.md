@@ -80,10 +80,9 @@ part it attaches to (its "parent") until its own step, so the exploded view
 is every offset up the chain added together. Electronics, wiring and the
 balance aren't in the CAD; they're in the SI bill of materials (PR #97).
 
-**The auger unit (steps 11–15).** The auger, both brackets and the tap
-collar go on as one unit, put together off the plate. The 44T gear sits
-between the brackets and is wider than their bores, so each part has to
-slide onto the tube from one end. The sizes are from the STEP files: the
+**The auger (steps 11–15).** The 44T gear sits between the two brackets
+and is wider than their bores, so the brackets and the tap collar have to
+slide onto the tube from its ends. The sizes are from the STEP files: the
 tube is Ø25.0 from the outlet to the gear and from the gear to the cap
 thread, the bracket and collar bores are Ø25.5, and the cap thread is
 Ø26.0.
@@ -94,14 +93,31 @@ thread, the bracket and collar bores are Ø25.5, and the cap thread is
 13. The tap collar follows it from the outlet end, solenoid plate first,
     and stops 1.5 mm from the bracket. Its clamp ears are on the stepper's
     side.
-14. The other bracket slides on from the cap end, over the cap thread, and
-    ends up 41 mm behind the gear. The thread is 0.5 mm wider than the
-    bore, so the split clamp has to be eased open with its screw out.
-15. The unit is lowered onto the plate. The brackets land on their M3 hole
-    rows, the collar on its base, and the gear meshes with the stepper
+14. The auger is lowered onto the plate. The bracket lands on its M3 hole
+    row, the collar on its base, and the gear meshes with the stepper
     pinion.
+15. The other bracket slides on from the cap end, along the plate and
+    under the stepper, to its hole row. The cap thread is 0.5 mm wider
+    than the bore, so the split clamp has to be eased open over it, with
+    its screw out.
 
-![The auger unit, steps 11 to 15](renders/auger_unit_steps.gif)
+The rear bracket goes on last because the stepper's body sits 7.25 mm
+above its base. Lowered with the rest, it would cut through the motor, by
+up to 1079 mm³ (OCC booleans). The old one-piece drop did this. Slid along
+the tube, it passes under the motor; its only contact is the cap thread.
+Its locknut on the stepper side ends up 3.25 mm under the motor, so it
+needs holding with a thin wrench while the screw is driven up from below.
+Fitting the stepper after the auger instead doesn't work. Its two inner
+M2.5 screws sit 23.5 mm from the auger axis, and their Ø4.5 heads can't
+get past the 44T gear, whose tips reach 23 mm.
+
+Lowered straight down, the gear's teeth would also cut through the
+pinion's over the last 10 mm, by up to 40 mm³. So the auger turns as it
+comes down, the way a gear rolls down a rack: −h/22 rad over the last
+12 mm, while the pinion stays put. That leaves no overlap at any height
+checked, from 0.3 to 11.5 mm (`assembly_bom.auger_roll`).
+
+![The auger, steps 11 to 15](renders/auger_unit_steps.gif)
 
 [`renders/auger_unit_steps.gif`](renders/auger_unit_steps.gif) is these
 five steps of the walkthrough on their own (18 s). The bracket screws and
@@ -425,7 +441,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
 | `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
-| `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the auger unit put together and lowered on |
+| `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the brackets and tap collar onto the auger, around lowering it onto the plate |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
 | `BOM.md`, `assembly/bom.csv` | bill of materials, build order |
