@@ -178,16 +178,18 @@ def _iso_model(spec: dict) -> cq.Workplane:
         return head.union(shank).cut(sock)
     if spec["kind"] in ("shcs", "bhcs"):
         L, dk, k = spec["L"], spec["dk"], spec["k"]
-        shank = cq.Workplane("XY").circle(d / 2).extrude(L)
-        if spec["kind"] == "shcs":
-            head = cq.Workplane("XY").workplane(offset=-k).circle(dk / 2).extrude(k)
-            head = head.faces("<Z").edges().fillet(0.08 * dk)
-        else:
-            head = (cq.Workplane("XZ").moveTo(0, 0).lineTo(dk / 2, 0).lineTo(dk / 2, -0.3 * k)
-                    .threePointArc((0.3 * dk, -0.85 * k), (0, -k)).close()
+        # socket from below the head (the dome bulges past -k) to 0.4 k deep
+        sock = (cq.Workplane("XY").workplane(offset=-1.3 * k)
+                .polygon(6, 0.5 * dk * 1.1547).extrude(0.9 * k))
+        if spec["kind"] == "bhcs":     # head and shank as one revolved profile
+            body = (cq.Workplane("XZ").moveTo(0, -k)
+                    .threePointArc((0.3 * dk, -0.85 * k), (dk / 2, -0.3 * k))
+                    .lineTo(dk / 2, 0).lineTo(d / 2, 0).lineTo(d / 2, L).lineTo(0, L).close()
                     .revolve(360, (0, 0, 0), (0, 1, 0)))
-        sock = (cq.Workplane("XY").workplane(offset=-k - 0.01)
-                .polygon(6, 0.5 * dk * 1.1547).extrude(0.6 * k))
+            return body.cut(sock)
+        shank = cq.Workplane("XY").circle(d / 2).extrude(L)
+        head = cq.Workplane("XY").workplane(offset=-k).circle(dk / 2).extrude(k)
+        head = head.faces("<Z").edges().fillet(0.08 * dk)
         return shank.union(head).cut(sock)
     s, m = spec["s"], spec["m"]
     nut = cq.Workplane("XY").polygon(6, s * 1.1547).extrude(m).faces(">Z or <Z").chamfer(0.12 * s)
@@ -282,6 +284,32 @@ MCMASTER: dict[str, str] = {
 }
 
 
+HW_STEP_DIR = HERE / "components" / "hardware"
+SHORT = {
+    "bhcs_m5x45": "M5 x 45 button head screw",
+    "locknut_m5": "M5 nylon-insert locknut",
+    "shcs_m3x12": "M3 x 12 socket head screw",
+    "shcs_m3x5": "M3 x 5 socket head screw",
+    "bhcs_m3x20": "M3 x 20 button head screw",
+    "bhcs_m3x25": "M3 x 25 button head screw",
+    "fhcs_m3x30": "M3 x 30 flat head screw",
+    "hexnut_m3": "M3 hex nut",
+    "shcs_m2p5x8": "M2.5 x 8 socket head screw",
+}
+
+
+def export_steps() -> dict[str, Path]:
+    """Write every fastener, in its seat frame, to components/hardware/
+    (the files the Onshape document imports)."""
+    HW_STEP_DIR.mkdir(parents=True, exist_ok=True)
+    out = {}
+    for key, (shape, src) in models().items():
+        f = HW_STEP_DIR / f"{key}.step"
+        cq.exporters.export(cq.Workplane("XY").add(shape), str(f))
+        out[key] = f
+    return out
+
+
 def bom_rows() -> list[dict]:
     """One row per hardware key, with quantity and the joints it is used in."""
     pl = fastener_placements()
@@ -294,6 +322,7 @@ def bom_rows() -> list[dict]:
 
 
 if __name__ == "__main__":
+    export_steps()
     for r in bom_rows():
         print(f"{r['qty']:3d}  {r['mcmaster'] or '-':10s} {r['desc']}  ({', '.join(r['joints'])})")
     print(sum(r["qty"] for r in bom_rows()), "fasteners")

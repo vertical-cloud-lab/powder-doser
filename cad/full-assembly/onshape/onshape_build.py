@@ -29,9 +29,13 @@ import numpy as np
 import requests
 from requests.auth import HTTPBasicAuth
 
+import sys
+
 import layout
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))
+import hardware  # noqa: E402
 API = "https://cad.onshape.com/api/v10"
 COMPANY_NAME = "Vertical Cloud Lab"
 DOC_NAME = "Powder doser - full assembly (current design)"
@@ -59,7 +63,19 @@ STEP_NAMES = {
     "purchased/mg996r-servo.step": ("MG996R servo", {}),
     "purchased/adafruit-412-solenoid.step": ("Adafruit 412 solenoid", {}),
 }
+for _k in hardware.HARDWARE:   # fasteners, in their seat frames (hardware.py)
+    _pn = hardware.MCMASTER.get(_k, "")
+    STEP_NAMES[f"hardware/{_k}.step"] = (
+        f"{hardware.SHORT[_k]}" + (f" (McMaster {_pn})" if _pn else ""), {})
 NAME_PROP = "57f3fb8efa3416c06701d60d"   # Onshape "Name" metadata property
+
+
+def all_placements() -> dict:
+    """layout.py's parts plus every fastener from hardware.py."""
+    places = dict(layout.placements())
+    for name, key, _, M in hardware.fastener_placements():
+        places[name] = (f"hardware/{key}.step", M)
+    return places
 
 
 class Onshape:
@@ -245,7 +261,8 @@ def sync_assembly(c: Onshape, rec: dict, places: dict) -> None:
 
 def build(new_doc: bool) -> dict:
     c = Onshape()
-    places = layout.placements()
+    hardware.export_steps()
+    places = all_placements()
     if not new_doc and DOC_JSON.exists():
         rec = json.loads(DOC_JSON.read_text())
     else:

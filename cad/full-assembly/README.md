@@ -147,6 +147,10 @@ Studio per file and the *Powder doser assembly* tab.
 | Baseplate, mounting plate (with both 28T tilt gears), auger bracket (x2), tap collar, auger, auger cap, stepper pinion (20T), servo pinion (14T, x2) | lab Fusion 360 account, share links in [PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170), exported to STEP in `components/fusion-step/` |
 | Tap-collar base (hard-stop plate) | AI version still in use: `mount_plate.step` from PR #51 (`cad/mounting-plate-assembly/imported-parts/tap-collar/` @ `eaf528a`), in `components/ai-step/` |
 | NEMA 11 11HS18-0674S, MG996R (x2), Adafruit 412 solenoid | simplified models from the datasheet dimensions, `onshape/purchased_parts.py` -> `components/purchased/` |
+| 46 screws and nuts, 9 kinds | `hardware.py`, one Part Studio per kind named with its McMaster number, from `components/hardware/*.step` (each in its seat frame) |
+
+The assembly has 61 instances: the 15 parts of `layout.py` and the 46
+fasteners of `hardware.py`.
 
 The Fusion links were exported through the share page's own Download API,
 with `onshape/fetch_fusion_shares.py` run on the rig's Raspberry Pi. The
@@ -202,16 +206,17 @@ pip install cadquery requests numpy
 cd cad/full-assembly/onshape
 python3 purchased_parts.py      # NEMA 11 / MG996R / Adafruit 412 models
 python3 layout.py               # placements.json + interference check
-python3 onshape_build.py        # sync the Onshape document (needs ONSHAPE_ACCESS_KEY/SECRET_KEY)
+python3 onshape_build.py        # fastener STEPs + sync the Onshape document (needs ONSHAPE_ACCESS_KEY/SECRET_KEY)
 ```
 
 `onshape_build.py` is idempotent against `onshape_document.json`. It
 re-imports a STEP only if its contents changed. It resets the transforms
 of the instances it created to `layout.py` and leaves hand-added instances
 alone. The API key has no delete scope, so a superseded Part Studio is
-renamed "(superseded, safe to delete)" instead of being removed. Three tabs
-can be deleted by hand: *Adafruit 412 solenoid (superseded, ...)*,
-*Baseplate (stray upload, ...)* and the empty *Part Studio 1*.
+renamed "(superseded, safe to delete)" instead of being removed. These
+tabs can be deleted by hand: every tab whose name ends in "(superseded,
+safe to delete)" (six fastener tabs from a first upload and the old Adafruit
+412), *Baseplate (stray upload, ...)*, and the empty *Part Studio 1*.
 
 ## Running it
 
