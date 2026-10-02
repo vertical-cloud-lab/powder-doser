@@ -62,7 +62,7 @@
   "Button head screw, 18-8 stainless, M5 x 0.8 mm, 45 mm long": {
     "status": "purchased",
     "qty": 2,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 92095A223",
     "joints": [
       "hinge"
     ]
@@ -70,7 +70,7 @@
   "Nylon-insert locknut, 18-8 stainless, M5 x 0.8 mm": {
     "status": "purchased",
     "qty": 2,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 93625A200",
     "joints": [
       "hinge"
     ]
@@ -78,7 +78,7 @@
   "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 12 mm long": {
     "status": "purchased",
     "qty": 12,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 91292A114",
     "joints": [
       "brackets",
       "servos"
@@ -87,7 +87,7 @@
   "Socket head screw, 18-8 stainless, M3 x 0.5 mm, 5 mm long": {
     "status": "purchased",
     "qty": 2,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 91292A110",
     "joints": [
       "solenoid"
     ]
@@ -95,7 +95,7 @@
   "Button head screw, 18-8 stainless, M3 x 0.5 mm, 20 mm long": {
     "status": "purchased",
     "qty": 5,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 92095A185",
     "joints": [
       "brackets",
       "tap collar"
@@ -104,7 +104,7 @@
   "Button head screw, 18-8 stainless, M3 x 0.5 mm, 25 mm long": {
     "status": "purchased",
     "qty": 1,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 92095A186",
     "joints": [
       "tap collar"
     ]
@@ -112,7 +112,7 @@
   "Flat head screw (90 deg), 18-8 stainless, M3 x 0.5 mm, 30 mm long": {
     "status": "purchased",
     "qty": 1,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 92125A140",
     "joints": [
       "tap collar"
     ]
@@ -120,7 +120,7 @@
   "Hex nut, 18-8 stainless, M3 x 0.5 mm": {
     "status": "purchased",
     "qty": 17,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 91828A211",
     "joints": [
       "brackets",
       "servos",
@@ -130,7 +130,7 @@
   "Socket head screw, 18-8 stainless, M2.5 x 0.45 mm, 8 mm long": {
     "status": "purchased",
     "qty": 4,
-    "source": "ISO-dimension stand-in",
+    "source": "McMaster-Carr 91292A012",
     "joints": [
       "stepper"
     ]

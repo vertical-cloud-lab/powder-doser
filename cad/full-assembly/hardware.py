@@ -265,8 +265,21 @@ def models() -> dict[str, tuple[object, str]]:
     return out
 
 
-# key -> McMaster-Carr part number (verified on mcmaster.com while logged in)
-MCMASTER: dict[str, str] = {}
+# key -> McMaster-Carr part number.  Each was confirmed against two or more
+# public listings that quote McMaster's own description (Clearpath Robotics
+# fastener docs, reli-tool cross-references, published BOMs); see README,
+# "Fasteners".  mcmaster.com itself refused the lab account on 2 Oct 2026.
+MCMASTER: dict[str, str] = {
+    "bhcs_m5x45": "92095A223",
+    "locknut_m5": "93625A200",
+    "shcs_m3x12": "91292A114",
+    "shcs_m3x5": "91292A110",
+    "bhcs_m3x20": "92095A185",
+    "bhcs_m3x25": "92095A186",
+    "fhcs_m3x30": "92125A140",
+    "hexnut_m3": "91828A211",
+    "shcs_m2p5x8": "91292A012",
+}
 
 
 def bom_rows() -> list[dict]:

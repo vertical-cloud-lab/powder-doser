@@ -1,12 +1,18 @@
 # Full assembly, current design
 
-The annotated overview render from [#165](https://github.com/vertical-cloud-lab/powder-doser/issues/165)
-(manuscript Fig. 1a) was made in June from the AI-era parts. The rig has
-changed since then. This package rebuilds that render with the parts that
-changed swapped in, from **exactly the same camera**, so the two images
-line up.
+Every part of the current doser module in one assembly: the eight lab
+Fusion 360 designs, the AI tap-collar base the rig still uses, simplified
+models of the stepper, servos and solenoid, and all 46 screws and nuts.
+It is the source of manuscript Fig. 1a (PR #97 uses
+`renders/assembly_iso_az090_hires_annotated_white.png` as is), the bill of
+materials and the assembly animation, and it matches the
+[Onshape assembly](#onshape-assembly-all-current-files).
 
 ![Current design, annotated](renders/assembly_iso_az090_annotated_white.png)
+
+The camera is the one the June render from
+[#165](https://github.com/vertical-cloud-lab/powder-doser/issues/165) used,
+so the two line up:
 
 | June render vs. current design (same camera) |
 |---|
@@ -16,45 +22,121 @@ line up.
 |---|
 | ![](renders/compare_front_vs_photo.png) |
 
+## Assembly animation and bill of materials
+
+**[BOM.md](BOM.md)** lists all 21 line items in build order: 11 printed
+parts, 4 purchased parts and 46 fasteners with their McMaster-Carr part
+numbers. The same data is in [`assembly/bom.csv`](assembly/bom.csv). The
+item numbers match the balloons below and the 13 steps in the GIF.
+
+![Assembly, step by step](renders/assembly_steps.gif)
+
+| Exploded, every item numbered | Assembled, every item numbered |
+|---|---|
+| ![](renders/assembly_exploded_bom.png) | ![](renders/assembly_bom_callouts.png) |
+
+Each part moves in along its own insertion direction. A part rides on the
+part it attaches to (its "parent") until its own step, so the exploded view
+is every offset up the chain added together. The auger, both brackets and
+the tap collar go in as one unit: the brackets and collar slide onto the
+tube from its ends, and the 44T gear between the brackets stops them going
+on any other way. Electronics, wiring and the balance aren't in the CAD;
+they're in the SI bill of materials (PR #97).
+
 ## What is in the assembly
 
-This table is the Fig. 1a render. Every part's source is also in
-[`assembly/parts_manifest.json`](assembly/parts_manifest.json). The
-[Onshape assembly](#onshape-assembly-all-current-files) below uses the current
-Fusion file for every printed part.
+| Part | Qty | Source |
+|---|---:|---|
+| Baseplate (servo posts, hinge towers) | 1 | Fusion 360, lab account ([share](https://a360.co/4AOA7sI)) |
+| Mounting plate (knuckles, both 28T tilt gears, stepper plate) | 1 | Fusion 360 ([share](https://a360.co/4xXUj8L)) |
+| Auger (44T module-1 gear on the tube, flight on the outlet end) | 1 | Fusion 360 ([share](https://a360.co/4y1oz2H)) |
+| Auger cap (screw-on) | 1 | Fusion 360 ([share](https://a360.co/4w9kRE5)) |
+| Auger bracket (split clamp) | 2 | Fusion 360 ([share](https://a360.co/46XtYN1)) |
+| Tap collar | 1 | Fusion 360 ([share](https://a360.co/4AIIgyz)) |
+| Stepper pinion, 20T | 1 | Fusion 360 ([share](https://a360.co/4yqSHFz)) |
+| Servo pinion, 14T | 2 | Fusion 360 ([share](https://a360.co/4dcGSdF)) |
+| Tap-collar base (hard stop) | 1 | AI-modelled, `mount_plate.step` from PR #51; the only AI part left on the rig |
+| NEMA 11 stepper (11HS18-0674S), MG996R servo (x2), Adafruit 412 solenoid | 4 | simplified from datasheets by `onshape/purchased_parts.py` |
+| Screws and nuts | 46 | McMaster-Carr, see [Fasteners](#fasteners) |
 
-| Part | Status | Source |
-|---|---|---|
-| Auger (44T module-1 gear on the tube, flight on the outlet end only, Ø3 outlet) | **current file** | Sam's Fusion 360 `Threaded Auger Final.stl`, from the [#117 zip](https://github.com/vertical-cloud-lab/powder-doser/issues/117#issuecomment-5004533979) ([video](https://youtu.be/sKrvGBTUc8U)) |
-| Screw-on cap | **current file** | Sam's Fusion 360 `Cap Final.stl`, same zip |
-| Stepper pinion, 20T module 1 | regenerated from spec | Fusion redesign spec ([video](https://youtu.be/EO9qnYssKRQ)); meshes the 44T gear at the same 32 mm centre distance as June |
-| 12 V push-pull solenoid (TAU0730TM-14 label) | approximated | sized from rig photos against the 25 mm tube |
-| Tap collar (clamp ring + solenoid cradle at 40° from vertical) | approximated | modelled from the 11 Sep photo; the real file is now in `components/fusion-step/` (Onshape assembly below) |
-| Tap-collar hard-stop plate | June stand-in | PR #51 |
-| Auger brackets (×2) | June stand-in | PR #47 split collars; the rig uses the Fusion flexible brackets ([video](https://youtu.be/Ldaato5X1x4)) and has no bracket in front of the tap collar |
-| Mounting plate with the two 28T tilt gears | June stand-in | PR #66 CadQuery; Fusion redesign ([video](https://youtu.be/v8my5C7718w)) now in `components/fusion-step/` |
-| Baseplate with servo mounts | June stand-in | PR #66 CadQuery; Fusion redesign ([video](https://youtu.be/zOh_KagOwOU)) now in `components/fusion-step/` |
-| Servo pinions (×2, 14T) | June stand-in | PR #66; Fusion redesign ([video](https://youtu.be/X1pHIL-XZiQ)) now in `components/fusion-step/` |
-| Hinge pins, NEMA-11 and MG996R bodies | June | simple solids |
+The STEP files are in `components/fusion-step/` (exported from the share
+links by `onshape/fetch_fusion_shares.py`), `components/ai-step/` and
+`components/purchased/`. `components/fusion/*.stl` are the STLs from the
+[#117 zip](https://github.com/vertical-cloud-lab/powder-doser/issues/117#issuecomment-5004533979),
+which PR #97's auger-section script reads.
 
-The Fusion auger drops into the June layout unchanged. Its gear sits
-83.33 mm (L/3) from the outlet, which is where June put its gear band, and
-20T + 44T at module 1 gives the June 32 mm centre distance.
+The "Vibration" label from the June figure is gone, because there is no
+working vibration motor on the rig (`python3 annotate.py --vibration` puts
+it back). The colours are the June palette rather than the rig's blue and
+white, so the figure keeps its colour code: gold auger, purple tapping,
+grey tilt.
 
-The "Vibration" label is gone. There is no working vibration motor on the
-rig, and the manuscript no longer claims vibration assistance. Use
-`python3 annotate.py --vibration` to put it back.
+## Fasteners
 
-The colours are the June palette rather than the rig's blue/white, so the
-figure keeps its colour code (gold auger, purple tapping, grey tilt).
+[`hardware.py`](hardware.py) places every screw and nut, reading each joint
+off the hole geometry in the STEP files. Each length is the shortest
+standard one that passes the grip plus a full nut. All of them are 18-8
+stainless.
+
+| McMaster-Carr | Part | Qty | Where |
+|---|---|---:|---|
+| [92095A223](https://www.mcmaster.com/92095A223/) | M5 x 45 button head screw | 2 | hinge, from inside each knuckle |
+| [93625A200](https://www.mcmaster.com/93625A200/) | M5 nylon-insert locknut | 2 | hinge, outside each 28T gear |
+| [91292A114](https://www.mcmaster.com/91292A114/) | M3 x 12 socket head screw | 12 | servos to posts (8), servo pinions (2), bracket clamps (2) |
+| [91828A211](https://www.mcmaster.com/91828A211/) | M3 hex nut | 17 | servos (8), brackets (6), tap-collar base (2), collar clamp (1) |
+| [92095A185](https://www.mcmaster.com/92095A185/) | M3 x 20 button head screw | 5 | brackets to plate (4), tap-collar clamp (1) |
+| [92095A186](https://www.mcmaster.com/92095A186/) | M3 x 25 button head screw | 1 | tap-collar base, plain hole |
+| [92125A140](https://www.mcmaster.com/92125A140/) | M3 x 30 flat head screw | 1 | tap-collar base, countersunk hole |
+| [91292A110](https://www.mcmaster.com/91292A110/) | M3 x 5 socket head screw | 2 | solenoid to the collar's plate |
+| [91292A012](https://www.mcmaster.com/91292A012/) | M2.5 x 8 socket head screw | 4 | stepper to its plate |
+
+How the joints were read:
+- **Hinge.** The holes are Ø5.3 in the towers and Ø5.7 in the knuckles and
+  gears, so the plate turns on an M5 shank. The auger tube passes 3.6 mm
+  inside the knuckles, which leaves no room for a nut there. So the screw
+  goes in from the inside with a 2.75 mm button head (0.85 mm clear of the
+  tube at every tilt), and the locknut sits outside the gear.
+- **Under the mounting plate.** At tilt 0 the plate's floor is 2 mm above
+  the baseplate, so only a button head (1.65 mm) fits underneath. The
+  bracket screws and the base's plain-hole screw go in from below, with
+  the nut on top.
+- **Tap-collar clamp.** The nut only clears the base's hard-stop bump with
+  the collar rolled away from the stepper. That roll is also how the collar
+  sits on the rig, so the assembly uses it (30°, 3° short of the bump).
+- **Servos.** The nut sits on the flange, 3.7 mm from the case wall. An M3
+  nut fits there; an M4 nut does not, which is why the Ø4.0 post holes get
+  M3.
+
+**The McMaster CAD files could not be downloaded.** The rig's Pi tunnel and
+the lab login both worked, but mcmaster.com restricted the BYU VCL account
+right after login ("Access has been restricted ... your use exceeds typical
+patterns"). A logged-out session was not restricted. I stopped after two
+logins so the account wouldn't get locked. Each part number above was
+confirmed from two or more public listings that quote McMaster's own
+description, such as
+[Clearpath's fastener docs](https://docs.clearpathrobotics.com/docs_robots/common/parts/fasteners/screw_socket_head/)
+and published BOMs. Until the STEP files are in hand, `hardware.py`
+draws each fastener from its ISO dimensions. Drop McMaster's STEP files
+into `components/mcmaster/<part number>.step` and every script uses them
+instead: `hardware.py` re-orients each file from its geometry.
+
+**Check on the rig:**
+- The base's countersunk hole takes a flat head from above, so its nut
+  ends up under the plate's floor. There, the nut and the screw tip stand
+  0.4 mm and 1.0 mm proud of the 2 mm gap at tilt 0. Either the rig parks
+  a fraction of a degree up, or that screw is shorter and threads into the
+  plastic.
+- The servo-pinion screw is assumed to be M3, threaded into the MG996R
+  output shaft (4.4 mm of thread).
+- The baseplate's four Ø5.5 corner holes and two Ø5.5 leg holes are for
+  fixing it to the bench or stand. They are site-specific, so they aren't
+  in the BOM.
 
 ## Onshape assembly (all current files)
 
 **[Powder doser - full assembly (current design)](https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f/w/b4151a24f733d0ffc48da6d2/e/dfbe0ae499cd860a85aa8da6)**,
 owned by the Vertical Cloud Lab Onshape company. One document holds a Part
-Studio per file and the *Powder doser assembly* tab. This is the full
-current design. The Fig. 1a render above still uses the June stand-ins
-listed in the table.
+Studio per file and the *Powder doser assembly* tab.
 
 | Onshape, isometric | Onshape, from the outlet end |
 |---|---|
@@ -94,11 +176,13 @@ come from the STEP geometry, not from eyeballing:
   The spline sits straight under the hinge, 27.26 mm = 1.298 x (28 + 14) / 2
   away, so the 14T pinions mesh the 28T gears. The flange is on the posts'
   inner faces.
-- Tap collar: on the auger over its base, with the clamp ears over the
-  base's hard-stop bump. The solenoid plate faces the cap, so the solenoid
-  hangs over the collar's Ø6.9 plunger hole. The roll about the auger is 0
-  (plunger vertical). On the rig the collar has turned about 40° towards
-  +X; see `COLLAR_ROLL_DEG`.
+- Tap collar: on the auger over its base. The solenoid plate faces the
+  cap, so the solenoid hangs over the collar's Ø6.9 plunger hole. The
+  collar rides loose on the turning tube, with its clamp ears against the
+  base's hard-stop bump. It is rolled 30° towards +X (away from the
+  stepper), 3° short of touching the bump (`COLLAR_ROLL_DEG`). That is the
+  pose in the 11 Sep photo (about 40° by eye), and the only one in which
+  the clamp nut clears the bump.
 
 `python3 layout.py` writes `placements.json` and runs a pairwise
 interference check. The only overlaps left are expected ones: the cap
@@ -133,32 +217,34 @@ can be deleted by hand: *Adafruit 412 solenoid (superseded, ...)*,
 
 ```bash
 pip install cadquery vtk trimesh pillow
+sudo apt install fonts-crosextra-carlito   # label font (Calibri metrics)
 cd cad/full-assembly
-xvfb-run -a python3 build.py --hires   # renders + assembly exports (about 1 min)
-python3 annotate.py                    # annotated 970x663 render (+ _white copy)
+xvfb-run -a python3 build.py --hires   # renders + assembly exports (about 20 s)
+python3 annotate.py                    # annotated render (+ _white copy)
 python3 annotate.py --src assembly_iso_az090_hires.png --out assembly_iso_az090_hires_annotated.png
 python3 compare.py                     # the two comparison panels
+xvfb-run -a python3 assembly_bom.py    # BOM.md, bom.csv, GIF, balloon views (about 1 min)
 ```
 
-The camera is pinned to the June az = 90° view after its `ResetCamera()`.
-With every part set back to its June version, the June script and this one
-produce the same image. The annotation uses Carlito (metric-compatible with
-Calibri, `apt install fonts-crosextra-carlito`) and falls back to Liberation
-Sans. The annotated PNGs keep the transparent background the June figure
-had; the `_white` copies are for viewing on GitHub.
+`build.py` renders the parts from `onshape/layout.py` and `hardware.py`.
+These are the same transforms the Onshape document is built from. The
+camera is the June az = 90° view, pinned after its `ResetCamera()`. Until
+`e1b3293` the render used the June stand-ins, and with every part set back
+to its June version it reproduced the June image exactly. The annotated
+PNGs keep the transparent background the June figure had; the `_white`
+copies are for viewing on GitHub and for the manuscript.
 
 | Output | What it is |
 |---|---|
 | `renders/assembly_iso_az090.png` | the reference view, tilt 0 |
-| `renders/assembly_iso_az090_annotated.png` | labelled, transparent background (970×663) |
-| `renders/assembly_iso_az090_hires_annotated.png` | labelled, print resolution (3881×2650) |
+| `renders/assembly_iso_az090_annotated.png` | labelled, transparent background (901×660) |
+| `renders/assembly_iso_az090_hires_annotated_white.png` | labelled, print resolution (3603×2643), **PR #97 Fig. 1a** |
 | `renders/assembly_iso_az090_tilt22p5.png`, `_tilt45.png` | same direction at 22.5° and 45° tube tilt |
 | `renders/assembly_front_from_outlet.png` | view from the outlet end, to compare with photos |
+| `renders/assembly_steps.gif` | 13-step assembly animation with the BOM, ending in a 0–45° tilt |
+| `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
+| `BOM.md`, `assembly/bom.csv` | bill of materials, build order |
 | `assembly/full_assembly.glb` / `.stl` | the whole assembly in the June frame (mm), per-part colours in the GLB |
-| `components/generated/*.stl` | the regenerated pinion and the approximated collar and solenoid |
+| `assembly/parts_manifest.json` | source of every part, and the McMaster number of every fastener |
 | `components/fusion-step/*.step` | the eight lab Fusion 360 designs, exported 1 Oct 2026 |
 | `renders/onshape_assembly_{iso,front,top,right}.png` | shaded views of the Onshape assembly, rendered by Onshape |
-
-`components/june/cad_model.py` and the June STLs are vendored from
-`cad/mounting-plate-assembly/` on `copilot/add-servo-angle-control` @ `97521d2`,
-which isn't on `main`.
