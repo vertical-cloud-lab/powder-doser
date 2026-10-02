@@ -244,6 +244,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_iso_az090.png` | the reference view, tilt 0 |
 | `renders/assembly_iso_az090_annotated.png` | labelled, transparent background (901×660) |
 | `renders/assembly_iso_az090_hires_annotated_white.png` | labelled, print resolution (3603×2643), **PR #97 Fig. 1a** |
+| `renders/pr97_fig1_preview.png` | PR #97's Fig. 1 built by its own `make_figures.py` (@ `43f8ac8`) with this panel (a); a preview only, PR #97 itself is unchanged |
 | `renders/assembly_iso_az090_tilt22p5.png`, `_tilt45.png` | same direction at 22.5° and 45° tube tilt |
 | `renders/assembly_front_from_outlet.png` | view from the outlet end, to compare with photos |
 | `renders/assembly_steps.gif` | 13-step assembly animation with the BOM, ending in a 0–45° tilt |
