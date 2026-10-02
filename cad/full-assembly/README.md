@@ -31,6 +31,13 @@ item numbers match the balloons below and the 13 steps in the GIF.
 
 ![Assembly, step by step](renders/assembly_steps.gif)
 
+The same 13 steps as an instruction-style walkthrough
+([`animate.py`](animate.py)), in the format of the OT-2 lid-camera mount's
+GIF (byu-vcl PR #234). It has one large view and a plain-language caption
+for every step, with close-ups of the small fasteners and 2–3 s holds.
+
+![Assembly walkthrough](renders/assembly_walkthrough.gif)
+
 | Exploded, every item numbered | Assembled, every item numbered |
 |---|---|
 | ![](renders/assembly_exploded_bom.png) | ![](renders/assembly_bom_callouts.png) |
@@ -117,19 +124,49 @@ screws run into the shaft and the solenoid ears they thread into. The
 countersunk tap-base screw and its nut meet the baseplate at tilt 0, as
 described under *Check on the rig* below.
 
-**The McMaster CAD files could not be downloaded.** The rig's Pi tunnel and
-the lab login both worked, but mcmaster.com restricted the BYU VCL account
-right after login ("Access has been restricted ... your use exceeds typical
-patterns"). A logged-out session was not restricted. I stopped after two
-logins so the account wouldn't get locked. Every part number was checked
-against public listings that quote McMaster's own description. Most were
-checked against two or more:
-[Clearpath's McMaster fastener tables](https://docs.clearpathrobotics.com/docs_robots/common/parts/fasteners/screw_socket_head/),
-reli-tool cross-references and published BOMs. Until the STEP files are in
-hand, `hardware.py` draws each fastener from its ISO dimensions. Drop
-McMaster's STEP files into `components/mcmaster/<part number>.step` and
-every script uses them instead: `hardware.py` re-orients each file from its
-geometry.
+**Checked against McMaster's own catalog (2 Oct).** McMaster's product
+pages now answer a logged-out browser with "Log in to view Product
+Detail", so the STEP files still can't be downloaded. The lab account was
+also restricted after a login that day ("Access has been restricted ...
+your use exceeds typical patterns"), and nobody has logged in since. The
+catalog pages are still open, though.
+[`mcmaster_fetch.py`](mcmaster_fetch.py) reads them through the rig's Pi
+(SOCKS tunnel, throttled, no login). Every one of the 11 part numbers is
+in McMaster's table, with the thread, length and head size (width and
+height for the nuts) listed above:
+[`components/mcmaster/catalog_rows.json`](components/mcmaster/catalog_rows.json)
+has the raw rows and [`parts.json`](components/mcmaster/parts.json) the
+parsed figures.
+
+[`fastener_check.py`](fastener_check.py) renders each stand-in in
+McMaster's "front orientation", beside McMaster's picture of the family
+and its catalog row. In that orientation a screw has its head on the right
+and its tip rising to the left; a nut is seen from about 30° above, with a
+flat towards you.
+
+![Fasteners vs. McMaster-Carr](renders/fastener_check.png)
+
+The comparison changed four things in `hardware.py`. Every other dimension
+already matched.
+- The M3 x 30 flat head's head is 1.7 mm high, as McMaster lists it, not
+  1.5.
+- Every screw is fully threaded on McMaster, so the stand-ins now have
+  cosmetic threads (revolved rings at the coarse pitch). The nuts have
+  internal ones.
+- The nuts' corners are turned off at 30°, as on McMaster's DIN 934 nuts.
+  Before, every edge was chamfered.
+- Both nylon-insert locknuts now have their crown and nylon ring.
+
+The GLB/STL exports keep plain fastener bodies with the same envelopes.
+The threads only matter in renders, and they would quadruple the files.
+
+McMaster's STEP files and images aren't committed: they come with no
+licence to redistribute them, and this repo is public (see
+[`components/mcmaster/README.md`](components/mcmaster/README.md)).
+`python3 mcmaster_fetch.py --images` fetches the five images the check
+uses. If McMaster's STEP files are downloaded by hand, drop them into
+`components/mcmaster/<part number>.step` and every script uses them instead;
+`hardware.py` re-orients each file from its geometry.
 
 **What the rig has instead.** Photos of the rig (11 Sep, 4 Aug, #72, #156)
 and the issue threads show different hardware in several places. The BOM
@@ -264,6 +301,8 @@ python3 annotate.py                    # annotated render (+ _white copy)
 python3 annotate.py --src assembly_iso_az090_hires.png --out assembly_iso_az090_hires_annotated.png
 python3 compare.py                     # the two comparison panels
 xvfb-run -a python3 assembly_bom.py    # BOM.md, bom.csv, GIF, balloon views (about 1 min)
+xvfb-run -a python3 animate.py         # step-by-step walkthrough GIF (about 1.5 min)
+xvfb-run -a python3 fastener_check.py  # fasteners vs. McMaster (images: mcmaster_fetch.py --images)
 ```
 
 `build.py` renders the parts from `onshape/layout.py` and `hardware.py`.
@@ -283,9 +322,11 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_iso_az090_tilt22p5.png`, `_tilt45.png` | same direction at 22.5° and 45° tube tilt |
 | `renders/assembly_front_from_outlet.png` | view from the outlet end, to compare with photos |
 | `renders/assembly_steps.gif` | 13-step assembly animation with the BOM, ending in a 0–45° tilt |
+| `renders/assembly_walkthrough.gif` | the same 13 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the 0–45° tilt (`animate.py`) |
+| `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
 | `BOM.md`, `assembly/bom.csv` | bill of materials, build order |
-| `assembly/full_assembly.glb` / `.stl` | the whole assembly in the June frame (mm), per-part colours in the GLB |
+| `assembly/full_assembly.glb` / `.stl` | the whole assembly in the June frame (mm), per-part colours in the GLB; fasteners without their cosmetic threads |
 | `assembly/parts_manifest.json` | source of every part, and the McMaster number of every fastener |
 | `components/fusion-step/*.step` | the eight lab Fusion 360 designs, exported 1 Oct 2026 |
 | `renders/onshape_assembly_{iso,front,top,right}.png` | shaded views of the Onshape assembly, rendered by Onshape |

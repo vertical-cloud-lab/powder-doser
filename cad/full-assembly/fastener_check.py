@@ -17,6 +17,7 @@ McMaster's figures and the image files come from components/mcmaster/
 from __future__ import annotations
 
 import json
+import textwrap
 from pathlib import Path
 
 import numpy as np
@@ -167,7 +168,8 @@ def main() -> None:
         dr.text((pad, y + 4), pn, font=_font(22, True), fill=(20, 20, 20))
         dr.text((pad, y + 32), hardware.SHORT[key], font=_font(18), fill=(30, 30, 30))
         dr.text((pad, y + 56), f"qty {n}: {joints}", font=_font(16), fill=(90, 90, 90))
-        dr.text((pad, y + 80), fam["family"], font=_font(14), fill=(120, 120, 120))
+        for j, line in enumerate(textwrap.wrap(fam["family"], 34)):
+            dr.text((pad, y + 80 + 17 * j), line, font=_font(14), fill=(120, 120, 120))
         img_path = MCM / "img" / fam["image"]
         if img_path.exists():
             sheet.paste(fit(Image.open(img_path), cell), (xs[0], y))
