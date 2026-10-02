@@ -2,8 +2,10 @@
 
 1. creates a document owned by the "Vertical Cloud Lab" Onshape company
    (or reuses the one recorded in onshape_document.json),
-2. imports every STEP in ``layout.placements()`` that is new or changed
-   (one Part Studio per file) and keeps part names in step with STEP_NAMES,
+2. imports every STEP in ``layout.placements()`` that is new (one Part
+   Studio per file); a changed STEP replaces the geometry of its Part
+   Studio in place (the blob its Import feature reads), so part ids, tabs
+   and assembly instances stay; part names are kept in step with STEP_NAMES,
 3. inserts one instance per placement in the assembly tab and sets its
    absolute transform from ``layout.py`` (tilt 0, the rig's home pose),
 4. saves shaded views rendered by Onshape (renders/onshape_assembly_*.png).
@@ -62,6 +64,7 @@ STEP_NAMES = {
     "purchased/nema11-11hs18-0674s.step": ("NEMA 11 stepper 11HS18-0674S", {}),
     "purchased/mg996r-servo.step": ("MG996R servo", {}),
     "purchased/adafruit-412-solenoid.step": ("Adafruit 412 solenoid", {}),
+    "mount/mounting-board.step": ("Mounting board (any flat board, 1.5 in thick)", {}),
 }
 for _k in hardware.HARDWARE:   # fasteners, in their seat frames (hardware.py)
     _pn = hardware.MCMASTER.get(_k, "")
@@ -71,9 +74,10 @@ NAME_PROP = "57f3fb8efa3416c06701d60d"   # Onshape "Name" metadata property
 
 
 def all_placements() -> dict:
-    """layout.py's parts plus every fastener from hardware.py."""
-    places = dict(layout.placements())
-    for name, key, _, M in hardware.fastener_placements():
+    """layout.py's parts and mounting board, plus every fastener from
+    hardware.py (with the board's wood screws)."""
+    places = {**layout.placements(), **layout.mount_placements()}
+    for name, key, _, M in hardware.fastener_placements(with_board=True):
         places[name] = (f"hardware/{key}.step", M)
     return places
 
@@ -116,6 +120,44 @@ def renamed_step(src: Path, part_names: dict, product: str) -> bytes:
         txt = txt.replace(f"MANIFOLD_SOLID_BREP('{old}'", f"MANIFOLD_SOLID_BREP('{new}'")
     txt = re.sub(r"PRODUCT\('[^']*','[^']*'", f"PRODUCT('{product}','{product}'", txt)
     return txt.encode()
+
+
+def _import_feature(c: Onshape, did: str, wid: str, eid: str):
+    """(features response, the importForeign feature, its blob element id)."""
+    fs = c.get(f"/partstudios/d/{did}/w/{wid}/e/{eid}/features")
+    for ft in fs["features"]:
+        if ft["featureType"] == "importForeign":
+            for prm in ft["parameters"]:
+                if prm["parameterId"] == "blobData":
+                    return fs, ft, prm["namespace"].split("::")[0][1:]
+    return fs, None, None
+
+
+def update_in_place(c: Onshape, did: str, wid: str, eid: str, rel: str) -> bool:
+    """Replace the geometry of an imported Part Studio without a new tab:
+    upload the new STEP over the blob its Import feature reads, then point
+    the feature at the blob's new microversion.  Part ids (and so the
+    assembly's instances) are kept.  False if the studio isn't a plain
+    single-import one."""
+    fs, ft, blob = _import_feature(c, did, wid, eid)
+    if ft is None:
+        return False
+    studio, names = STEP_NAMES[rel]
+    data = renamed_step(layout.COMP / rel, names, studio)
+    fname = f"{studio}.step"
+    c.post(f"/blobelements/d/{did}/w/{wid}/e/{blob}",
+           files={"file": (fname, data, "application/step")},
+           data={"encodedFilename": fname, "fileContentLength": str(len(data))})
+    mv = next(e["microversionId"] for e in c.get(f"/documents/d/{did}/w/{wid}/elements")
+              if e["id"] == blob)
+    for prm in ft["parameters"]:
+        if prm["parameterId"] == "blobData":
+            prm["namespace"] = f"e{blob}::m{mv}"
+    fs = c.get(f"/partstudios/d/{did}/w/{wid}/e/{eid}/features")
+    c.post(f"/partstudios/d/{did}/w/{wid}/e/{eid}/features/featureid/{ft['featureId']}",
+           json={"feature": ft, "serializationVersion": fs["serializationVersion"],
+                 "sourceMicroversion": fs["sourceMicroversion"]})
+    return True
 
 
 def import_step(c: Onshape, did: str, wid: str, rel: str) -> str:
@@ -184,9 +226,10 @@ def sync_part_names(c: Onshape, rec: dict) -> None:
 
 
 def sync_studios(c: Onshape, rec: dict, places: dict) -> None:
-    """Import every STEP that is new or changed since the recorded upload.
-    A changed file gets a fresh Part Studio; the old tab is renamed
-    "(superseded)" because the API key has no delete scope."""
+    """Import every STEP that is new since the recorded upload, and update
+    changed ones in place.  If that fails, a changed file gets a fresh Part
+    Studio and the old tab is renamed "(superseded)", because the API key
+    has no delete scope."""
     did, wid = rec["documentId"], rec["workspaceId"]
     studios = rec.setdefault("partStudios", {})
     for rel in dict.fromkeys(p for p, _ in places.values()):
@@ -195,6 +238,18 @@ def sync_studios(c: Onshape, rec: dict, places: dict) -> None:
         if old and old.get("sha256", sha) == sha:
             old["sha256"] = sha
             continue
+        if old and not old.get("superseded"):
+            try:
+                if update_in_place(c, did, wid, old["elementId"], rel):
+                    ids = {p["partId"] for p in c.get(f"/parts/d/{did}/w/{wid}/e/{old['elementId']}")}
+                    if ids == {p["partId"] for p in old["parts"]}:
+                        old["sha256"] = sha
+                        DOC_JSON.write_text(json.dumps(rec, indent=1) + "\n")
+                        print(f"updated {rel} in place", flush=True)
+                        continue
+                    print(f"{rel}: part ids changed in place; re-importing")
+            except RuntimeError as e:
+                print(f"{rel}: in-place update failed ({str(e)[:160]}); re-importing")
         eid = import_step(c, did, wid, rel)
         parts = name_parts(c, did, wid, eid, rel)
         if old:

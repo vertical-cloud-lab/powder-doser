@@ -2,7 +2,8 @@
 
 Every part of the current doser module in one assembly: the eight lab
 Fusion 360 designs, the AI tap-collar base the rig still uses, simplified
-models of the stepper, servos and solenoid, and all 46 screws and nuts.
+models of the stepper, servos and solenoid, all 52 screws and nuts, and the
+board it is screwed down to.
 It is the source of manuscript Fig. 1a (PR #97 uses
 `renders/assembly_iso_az090_hires_annotated_white.png` as is), the bill of
 materials and the assembly animation, and it matches the
@@ -24,19 +25,51 @@ so the two line up:
 
 ## Assembly animation and bill of materials
 
-**[BOM.md](BOM.md)** lists all 23 line items in build order: 11 printed
-parts, 4 purchased parts and 46 fasteners of 11 kinds, each with its
-McMaster-Carr part number. The same data is in [`assembly/bom.csv`](assembly/bom.csv). The
-item numbers match the balloons below and the 13 steps in the GIF.
+**[BOM.md](BOM.md)** lists all 25 line items in build order: the board
+the doser is screwed to, 11 printed parts, 4 purchased parts and 52
+fasteners of 12 kinds, each with its McMaster-Carr part number. The same
+data is in [`assembly/bom.csv`](assembly/bom.csv). The item numbers match
+the balloons below and the 14 steps in the GIF.
 
 ![Assembly, step by step](renders/assembly_steps.gif)
 
-The same 13 steps as an instruction-style walkthrough
+The same 14 steps as an instruction-style walkthrough
 ([`animate.py`](animate.py)), in the format of the OT-2 lid-camera mount's
 GIF (byu-vcl PR #234). It has one large view and a plain-language caption
-for every step, with close-ups of the small fasteners and 2–3 s holds.
+for every step, with close-ups of the small fasteners and 2–3 s holds. It
+ends with the doser working (below).
 
 ![Assembly walkthrough](renders/assembly_walkthrough.gif)
+
+### The doser working
+
+[`renders/doser_motion.gif`](renders/doser_motion.gif) is the end of the
+walkthrough on its own: three close-ups, each moving the parts the way the
+drive train moves them ([`onshape/layout.py`](onshape/layout.py) has the
+ratios).
+
+![The doser working](renders/doser_motion.gif)
+
+- **Tilt.** Each servo turns a 14T pinion, which drives one of the
+  mounting plate's 28T gears. The pinion turns twice as far as the plate,
+  the other way: 45° of tilt is 90° at the servo. (Until 2 Oct the pinions
+  stayed put while the plate turned, so in the tilted views the 28T teeth
+  went through them, by up to 80 mm³. The interference check now finds
+  only tooth contact, at most 0.02 mm³, from 0 to 45°.)
+- **Rotation.** The stepper's 20T pinion drives the 44T gear on the auger
+  tube, so the motor turns 2.2 times per turn of the auger. The cap turns
+  with the tube. The brackets and the tap collar stay put, because the
+  tube turns inside them. Pinion and gear stay in mesh with no overlap at
+  any angle.
+- **Tapping.** The solenoid's plunger drops 7.6 mm through the collar's
+  Ø6.9 hole and hits the tube, squashing the return spring, then the spring
+  pulls it back. That 7.6 mm is the gap in the model between the plunger's
+  end (at rest) and the tube. The solenoid is one solid in the STEP file;
+  for the animation, `purchased_parts.adafruit412_pieces()` splits it into
+  the frame, the plunger and the spring.
+
+The close-ups turn the gears by a third of a tooth per frame or less, so
+the teeth don't appear to run backwards.
 
 | Exploded, every item numbered | Assembled, every item numbered |
 |---|---|
@@ -64,7 +97,20 @@ they're in the SI bill of materials (PR #97).
 | Servo pinion, 14T | 2 | Fusion 360 ([share](https://a360.co/4dcGSdF)) |
 | Tap-collar base (hard stop) | 1 | AI-modelled, `mount_plate.step` from PR #51; the only AI part left on the rig |
 | NEMA 11 stepper (11HS18-0674S), MG996R servo (x2), Adafruit 412 solenoid | 4 | simplified from datasheets by `onshape/purchased_parts.py` |
-| Screws and nuts | 46 | McMaster-Carr, see [Fasteners](#fasteners) |
+| Screws and nuts | 52 | McMaster-Carr, see [Fasteners](#fasteners) |
+| Mounting board, 38 mm (1.5 in) thick | 1 | any flat board or bench top (yours); drawn 250 x 220 mm by `onshape/purchased_parts.py` |
+
+**The board underneath.** The baseplate is drawn to be screwed down to a
+flat board. Its rear 60 mm (y = 55.4 to 115 mm) sits flat on top. Two legs
+hang over the board's front edge, with their back faces against it. The
+legs are 40 mm deep, and each has a Ø5.5 hole 19 mm (¾ in) down: halfway
+down a 1.5 in board. Four more Ø5.5 holes sit in the plate's rear corners.
+None of these were used until 2 Oct. The board in the CAD is 1.5 in thick,
+so that both sets of holes work. It sits under the doser in the BOM,
+the GIFs and Onshape, but not in Fig. 1a or the GLB/STL, which show the
+doser alone. The outlet hangs 21.6 mm in front of the board's edge, so the
+board needs to stand above the balance, as the rig's board does on its
+PVC stand.
 
 The STEP files are in `components/fusion-step/` (exported from the share
 links by `onshape/fetch_fusion_shares.py`), `components/ai-step/` and
@@ -83,7 +129,8 @@ grey tilt.
 [`hardware.py`](hardware.py) places every screw and nut, reading each joint
 off the hole geometry in the STEP files. Each length is the shortest
 standard one that passes the grip plus a full nut. All of them are 18-8
-stainless. The M3 nuts are nylon-insert locknuts, because the team
+stainless, except the wood screws: McMaster's only stainless pan head
+Phillips wood screws are 316. The M3 nuts are nylon-insert locknuts, because the team
 replaced every nut on the rig with a locknut
 ([#132](https://github.com/vertical-cloud-lab/powder-doser/issues/132#issuecomment-5181688024)).
 
@@ -100,8 +147,15 @@ replaced every nut on the rig with a locknut
 | [92125A140](https://www.mcmaster.com/92125A140/) | M3 x 30 flat head screw | 1 | tap-collar base, countersunk hole |
 | [91292A110](https://www.mcmaster.com/91292A110/) | M3 x 5 socket head screw | 2 | solenoid to the collar's plate |
 | [91292A012](https://www.mcmaster.com/91292A012/) | M2.5 x 8 socket head screw | 4 | stepper to its plate (vendor drawing: 4-M2.5, 4 mm deep min.) |
+| [93360A609](https://www.mcmaster.com/93360A609/) | #10 x 1-1/4 in pan head Phillips wood screw, 316 stainless | 6 | baseplate to the board: 4 down through the corner holes, 2 through the legs into the front edge |
 
 How the joints were read:
+- **Board.** The six Ø5.5 holes take #10 wood screws. That's the biggest
+  common wood screw that passes Ø5.5 (Ø4.8 mm thread). At 1-1/4 in, the
+  four corner screws go 25.75 mm into the board, through the 6 mm plate,
+  and the two leg screws 26.75 mm into its front edge, through the 5 mm
+  legs. McMaster lists a 3/32 in pilot drill. The pan heads (Ø9.27) clear
+  the legs' gussets by 1.4 mm and the servo cases by 4.9 mm.
 - **Hinge.** The holes are Ø5.3 in the towers and Ø5.7 in the knuckles and
   gears, so the plate turns on an M5 shank. The auger tube passes 3.6 mm
   inside the knuckles, which leaves no room for a nut there. So the screw
@@ -131,7 +185,7 @@ also restricted after a login that day ("Access has been restricted ...
 your use exceeds typical patterns"), and nobody has logged in since. The
 catalog pages are still open, though.
 [`mcmaster_fetch.py`](mcmaster_fetch.py) reads them through the rig's Pi
-(SOCKS tunnel, throttled, no login). Every one of the 11 part numbers is
+(SOCKS tunnel, throttled, no login). Every one of the 12 part numbers is
 in McMaster's table, with the thread, length and head size (width and
 height for the nuts) listed above:
 [`components/mcmaster/catalog_rows.json`](components/mcmaster/catalog_rows.json)
@@ -189,8 +243,9 @@ above is a consistent set for the CAD, not an inventory of the rig.
   here. If so, use M3 x 8 with a locknut on the outside of the collar's
   plate.
 - **Bench mount:** the baseplate legs hang over the edge of a board that is
-  zip-tied to a PVC stand. The four Ø5.5 corner holes and two leg holes
-  are unused, so they aren't in the BOM.
+  zip-tied to a PVC stand. That board is thinner than the 1.5 in the legs
+  are made for (the legs reach below it), and the four corner holes and two
+  leg holes are unused. The CAD uses all six, with the board at 1.5 in.
 
 **Check on the rig:**
 - The base's countersunk hole takes a flat head from above, so its nut
@@ -218,11 +273,12 @@ Studio per file and the *Powder doser assembly* tab.
 | Baseplate, mounting plate (with both 28T tilt gears), auger bracket (x2), tap collar, auger, auger cap, stepper pinion (20T), servo pinion (14T, x2) | lab Fusion 360 account, share links in [PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170), exported to STEP in `components/fusion-step/` |
 | Tap-collar base (hard-stop plate) | AI version still in use: `mount_plate.step` from PR #51 (`cad/mounting-plate-assembly/imported-parts/tap-collar/` @ `eaf528a`), in `components/ai-step/` |
 | NEMA 11 11HS18-0674S, MG996R (x2), Adafruit 412 solenoid | simplified models from the datasheet dimensions, `onshape/purchased_parts.py` -> `components/purchased/` |
-| 46 screws and nuts, 11 kinds | `hardware.py`, one Part Studio per kind named with its McMaster number, from `components/hardware/*.step` (each in its seat frame) |
+| 52 screws and nuts, 12 kinds | `hardware.py`, one Part Studio per kind named with its McMaster number, from `components/hardware/*.step` (each in its seat frame) |
+| Mounting board (any flat board, 1.5 in thick) | `onshape/purchased_parts.py` -> `components/mount/mounting-board.step` |
 
-The assembly has 61 placements: the 15 parts of `layout.py` and the 46
-fasteners of `hardware.py`. That makes 65 instances, because the mounting
-plate's STEP has five bodies.
+The assembly has 68 placements: the 15 parts of `layout.py`, the
+mounting board, and the 52 fasteners of `hardware.py`. That makes 72
+instances, because the mounting plate's STEP has five bodies.
 
 The Fusion links were exported through the share page's own Download API,
 with `onshape/fetch_fusion_shares.py` run on the rig's Raspberry Pi. The
@@ -252,6 +308,15 @@ come from the STEP geometry, not from eyeballing:
   The spline sits straight under the hinge, 27.26 mm = 1.298 x (28 + 14) / 2
   away, so the 14T pinions mesh the 28T gears. The flange is on the posts'
   inner faces.
+- Gears: `placements(tilt, auger_deg=...)` turns each 14T servo pinion
+  by −2 × the tilt (it meshes a 28T gear on the plate), and the 20T stepper
+  pinion by −44/20 × the auger's angle. Both trains were checked with OCC
+  booleans at 0–45° of tilt and 0–90° of auger rotation: the teeth touch
+  (at most 0.02 mm³ of overlap) but never cut into each other.
+- Mounting board: `mount_placements()`. Its top is on the baseplate's
+  underside (z = 0) and its front edge on the legs' back faces
+  (y = 55.4). It isn't in `placements()`, so Fig. 1a and the GLB/STL show
+  the doser alone.
 - Tap collar: on the auger over its base. The solenoid plate faces the
   cap, so the solenoid hangs over the collar's Ø6.9 plunger hole. The
   collar rides loose on the turning tube, with its clamp ears against the
@@ -276,19 +341,24 @@ want to drive the tilt.
 ```bash
 pip install cadquery requests numpy
 cd cad/full-assembly/onshape
-python3 purchased_parts.py      # NEMA 11 / MG996R / Adafruit 412 models
+python3 purchased_parts.py      # NEMA 11 / MG996R / Adafruit 412 models, mounting board
 python3 layout.py               # placements.json + interference check
 python3 onshape_build.py        # fastener STEPs + sync the Onshape document (needs ONSHAPE_ACCESS_KEY/SECRET_KEY)
 ```
 
 `onshape_build.py` is idempotent against `onshape_document.json`. It
-re-imports a STEP only if its contents changed. It resets the transforms
-of the instances it created to `layout.py` and leaves hand-added instances
-alone. The API key has no delete scope, so a superseded Part Studio is
-renamed "(superseded, safe to delete)" instead of being removed. These
-tabs can be deleted by hand: every tab whose name ends in "(superseded,
-safe to delete)" (the fastener tabs from earlier uploads and the old Adafruit
-412), *Baseplate (stray upload, ...)*, and the empty *Part Studio 1*.
+only touches a STEP if its contents changed, and then it updates the Part
+Studio in place: it uploads the new file over the blob that the studio's
+*Import* feature reads, and points the feature at the new version. Part
+ids, tabs and assembly instances stay the same (since 2 Oct; this is how
+the eleven fastener studios got their threads). It resets the transforms
+of the instances it created to `layout.py` and leaves hand-added
+instances alone. If an in-place update fails, it falls back to a fresh
+Part Studio and renames the old one "(superseded, safe to delete)",
+because the API key has no delete scope. These tabs, left from earlier
+uploads, can be deleted by hand: the 14 whose names end in "(superseded,
+safe to delete)", *Baseplate (stray upload, ...)*, and the empty *Part
+Studio 1*.
 
 ## Running it
 
@@ -301,7 +371,7 @@ python3 annotate.py                    # annotated render (+ _white copy)
 python3 annotate.py --src assembly_iso_az090_hires.png --out assembly_iso_az090_hires_annotated.png
 python3 compare.py                     # the two comparison panels
 xvfb-run -a python3 assembly_bom.py    # BOM.md, bom.csv, GIF, balloon views (about 1 min)
-xvfb-run -a python3 animate.py         # step-by-step walkthrough GIF (about 1.5 min)
+xvfb-run -a python3 animate.py         # walkthrough + motion GIFs (about 2 min; gifsicle -O3 if installed)
 xvfb-run -a python3 fastener_check.py  # fasteners vs. McMaster (images: mcmaster_fetch.py --images)
 ```
 
@@ -321,8 +391,9 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/pr97_fig1_preview.png` | PR #97's Fig. 1 built by its own `make_figures.py` (@ `43f8ac8`) with this panel (a); a preview only, PR #97 itself is unchanged |
 | `renders/assembly_iso_az090_tilt22p5.png`, `_tilt45.png` | same direction at 22.5° and 45° tube tilt |
 | `renders/assembly_front_from_outlet.png` | view from the outlet end, to compare with photos |
-| `renders/assembly_steps.gif` | 13-step assembly animation with the BOM, ending in a 0–45° tilt |
-| `renders/assembly_walkthrough.gif` | the same 13 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the 0–45° tilt (`animate.py`) |
+| `renders/assembly_steps.gif` | 14-step assembly animation with the BOM, ending in a 0–45° tilt |
+| `renders/assembly_walkthrough.gif` | the same 14 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
+| `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
 | `BOM.md`, `assembly/bom.csv` | bill of materials, build order |

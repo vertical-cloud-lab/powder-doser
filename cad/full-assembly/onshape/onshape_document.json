@@ -158,7 +158,7 @@
   },
   "hardware/bhcs_m5x45.step": {
    "elementId": "7d54151d5299fd2f69cfc87b",
-   "sha256": "871b34d3e36d6668bef9cf6164e66f0f179a81a2ceff47743a7b13c341ffe363",
+   "sha256": "632355a30c116f56430785cd569792e606e747afd7d7d0a0317a811a4f350f0c",
    "parts": [
     {
      "partId": "JFD",
@@ -169,7 +169,7 @@
   },
   "hardware/locknut_m5.step": {
    "elementId": "3815b5f91d55b34aaa20146a",
-   "sha256": "345bef674e6bb6decb6216c2840f6caa03dc4c71316172cde462a2f586f7f25d",
+   "sha256": "a8d87d548ebaddebd219fce7f06e2df9794815f942ad78ec0868a4e4711dedc0",
    "parts": [
     {
      "partId": "JFD",
@@ -180,7 +180,7 @@
   },
   "hardware/bhcs_m3x20.step": {
    "elementId": "fff224b7ae41060e004c3398",
-   "sha256": "bfe11186f68479d3d869fcc65c946e95c8b233b91b0d3d925a66186803cfd0a1",
+   "sha256": "b6d5c80d945900f02afcd158125e826ab13e5d507adc8f9987a00913cc30d054",
    "parts": [
     {
      "partId": "JFD",
@@ -191,7 +191,7 @@
   },
   "hardware/hexnut_m3.step": {
    "elementId": "63eae747d72b0304d2ee062d",
-   "sha256": "946016d1bf1f246719032f95446e195b9e120e1ec814ff674139153de230cf90",
+   "sha256": "207a573e04004fd61ecbfcce27ec42dafa9ddac64e0984cd8640bd85b0d55348",
    "parts": [
     {
      "partId": "JFD",
@@ -214,7 +214,7 @@
   },
   "hardware/bhcs_m3x25.step": {
    "elementId": "cbb5a9bc8232b59e5872a6dc",
-   "sha256": "38ca494375409b9aacdbdc23585ae36d3aababc39142b5fefb4e4686259720b9",
+   "sha256": "912ca26602180cd57c01fae9798305c1d020d477c6dab88c021591db939de72d",
    "parts": [
     {
      "partId": "JFD",
@@ -225,7 +225,7 @@
   },
   "hardware/fhcs_m3x30.step": {
    "elementId": "ecabb74909f4716edac72fe5",
-   "sha256": "5385fbe16a1114dd80b9c0ffc1c350ce83e447098c9441600af096e2cfd44467",
+   "sha256": "56d7e0aeda079983a9d006d199273f5f25cea750f407c6bdf2ab17437ed32938",
    "parts": [
     {
      "partId": "JFD",
@@ -236,7 +236,7 @@
   },
   "hardware/shcs_m3x5.step": {
    "elementId": "c02b1d0eb676306253639534",
-   "sha256": "f9965bc617de35d0d188c12d2e3ceaa7f76b40f9b6a8d7fdf1caf0bdfc196b66",
+   "sha256": "a56c93127f74d377e9bd4e1c30802158cd81da3db3321e1f16bd37ca84f41078",
    "parts": [
     {
      "partId": "JFD",
@@ -247,7 +247,7 @@
   },
   "hardware/shcs_m2p5x8.step": {
    "elementId": "bacc9722db61aa6fd3c775e4",
-   "sha256": "047bd518fd6fdf2030b1b5ccfafa7c25eb70260b2be17239bc3132296d151579",
+   "sha256": "32e06a5c771db11a18cf19114c965af9e5298c1a38a1eceff637876d598a112b",
    "parts": [
     {
      "partId": "JFD",
@@ -258,7 +258,7 @@
   },
   "hardware/locknut_m3.step": {
    "elementId": "8ef95ec74f99b822172120fe",
-   "sha256": "d56e36fcdddd1d419059ee6289b9473003cf17468a5800f9e37066b03f2520f2",
+   "sha256": "17be64c97905d242fd3f431fdac88d2b41a0bf4c6e56ac1c70db0b185894ebcf",
    "parts": [
     {
      "partId": "JFD",
@@ -269,7 +269,7 @@
   },
   "hardware/shcs_m3x14.step": {
    "elementId": "87885b992d4c5bc7dcf488fb",
-   "sha256": "0866805cf2199edfc872c3c0eb98e86a9f6dab93532ea33c40e0a82394c0ff0f",
+   "sha256": "c4992f6ed8524f94520e0e3df13e1d052f90f6480bd945ce1d79d27584222f46",
    "parts": [
     {
      "partId": "JFD",
@@ -280,11 +280,33 @@
   },
   "hardware/shcs_m3x10.step": {
    "elementId": "a21498865ce6691a19c8b5f8",
-   "sha256": "7900e4c523ad54a67c0869f6ff367037755bb469c86c3b0771dda46af652ad69",
+   "sha256": "2841901a1fc080c9425b2b91971c4bf79184795081cc23e87e95f862d8506c1f",
    "parts": [
     {
      "partId": "JFD",
      "name": "M3 x 10 socket head screw (McMaster 91292A113)",
+     "solid": null
+    }
+   ]
+  },
+  "mount/mounting-board.step": {
+   "elementId": "0bb9360e89beba81d26e4f32",
+   "sha256": "5f754afaab372681b7cfa14eed56aa10442d045f13035e5661f05c96d223cae2",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Mounting board (any flat board, 1.5 in thick)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/wood_10x1p25.step": {
+   "elementId": "484f650d7f2ee347f97f71a2",
+   "sha256": "7ca0dc940ff25902e9eca57c7a94dc547f06b0cc545fec43d85234db9a14efca",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)",
      "solid": null
     }
    ]
@@ -425,6 +447,13 @@
     "elementId": "ad6ed61ddae64b27b09139c0",
     "partId": "JFD",
     "part": "MG996R servo"
+   },
+   {
+    "placement": "Mounting board",
+    "instanceId": "McmD1mzJEnwj+cVtx",
+    "elementId": "0bb9360e89beba81d26e4f32",
+    "partId": "JFD",
+    "part": "Mounting board (any flat board, 1.5 in thick)"
    },
    {
     "placement": "Hinge screw (+X)",
@@ -747,6 +776,48 @@
     "elementId": "a21498865ce6691a19c8b5f8",
     "partId": "JFD",
     "part": "M3 x 10 socket head screw (McMaster 91292A113)"
+   },
+   {
+    "placement": "Board screw (+X, y65)",
+    "instanceId": "My3YbzTHQpg4f27Ix",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (+X, y95)",
+    "instanceId": "MwukZSH8FX8IoVZ0X",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (-X, y65)",
+    "instanceId": "Mk027aAUv05dRXoXu",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (-X, y95)",
+    "instanceId": "MXlfYJa/ePOr4IoRp",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (leg +X)",
+    "instanceId": "MRCo3vybIttcDwdoo",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (leg -X)",
+    "instanceId": "MqI9ORYEb5T2tjjjt",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
    }
   ],
   "url": "https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f/w/b4151a24f733d0ffc48da6d2/e/dfbe0ae499cd860a85aa8da6"
