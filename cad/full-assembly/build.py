@@ -311,11 +311,24 @@ def powder_stream_points(outlet, n: int = 150, drop: float = 95.0, seed: int = 1
     return [tuple(map(float, p)) for p in zip(x, y, z)]
 
 
+def _plain_fastener_polydata(key: str) -> vtk.vtkPolyData:
+    """The fastener without its cosmetic threads (same envelope): the
+    threads only matter in renders and would quadruple the exports."""
+    k = "hw-plain:" + key
+    if k not in _MESH_CACHE:
+        _MESH_CACHE[k] = _polydata(hardware._iso_model(hardware.HARDWARE[key], cosmetic=False).val()
+                                   if hardware.mcmaster_file(key) is None else hardware.models()[key][0])
+    return _MESH_CACHE[k]
+
+
 def export_assembly(parts) -> None:
-    """GLB (one node per part, coloured) and a merged STL, June frame, mm."""
+    """GLB (one node per part, coloured) and a merged STL, June frame, mm.
+    Fasteners go in without their cosmetic threads."""
     scene = trimesh.Scene()
     merged = []
-    for name, pd, colour, M, _ in parts:
+    for name, pd, colour, M, group in parts:
+        if group.startswith("hardware:"):
+            pd = _plain_fastener_polydata(group.split(":", 1)[1])
         tm = _to_trimesh(_world_polydata(pd, M))
         rgba = (np.array(list(colour) + [1.0]) * 255).astype(np.uint8)
         tm.visual.face_colors = np.tile(rgba, (len(tm.faces), 1))
