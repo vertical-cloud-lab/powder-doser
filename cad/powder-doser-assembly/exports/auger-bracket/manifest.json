@@ -1,0 +1,7 @@
+{
+  "name": "auger-bracket",
+  "prompt_file": "09-auger-bracket.md",
+  "kcl": "source.kcl",
+  "exports": ["step", "obj"],
+  "bbox_mm": {"size": [60.0, 12.0, 45.97]}
+}
