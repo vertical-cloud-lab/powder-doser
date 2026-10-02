@@ -107,6 +107,12 @@ How the joints were read:
   nut fits there; an M4 nut does not, which is why the Ø4.0 post holes get
   M3.
 
+An interference check of every fastener against every part (OCC boolean
+intersections) leaves only expected contacts. The servo-pinion and solenoid
+screws run into the shaft and the solenoid ears they thread into. The
+countersunk tap-base screw and its nut meet the baseplate at tilt 0, as
+described under *Check on the rig* below.
+
 **The McMaster CAD files could not be downloaded.** The rig's Pi tunnel and
 the lab login both worked, but mcmaster.com restricted the BYU VCL account
 right after login ("Access has been restricted ... your use exceeds typical
