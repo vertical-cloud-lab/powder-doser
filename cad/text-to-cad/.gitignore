@@ -1,0 +1,7 @@
+/tmp/
+__pycache__/
+/STEP/reference/
+/sim/cache/
+# the repo's root .gitignore (Python template) ignores every lib/ and parts/
+!lib/
+!parts/
