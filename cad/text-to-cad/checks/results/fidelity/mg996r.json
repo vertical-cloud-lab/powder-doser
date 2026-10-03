@@ -1,0 +1,32 @@
+{
+ "new": "STEP/purchased/mg996r.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/purchased/mg996r-servo.step",
+ "volume_new_mm3": 30488.3,
+ "volume_ref_mm3": 30488.3,
+ "volume_intersection_mm3": 30485.2,
+ "volume_error_pct": 0.0,
+ "iou": 0.9998,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 7.988296810464627e-14,
+  "p95": 3.819528331204024e-14,
+  "max": 8.661718187476609e-11
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 6.779232491296188e-14,
+  "p95": 2.9571831058265777e-14,
+  "max": 8.98484113869917e-11
+ },
+ "faces_new": 48,
+ "faces_ref": 48,
+ "seconds": 28.4
+}

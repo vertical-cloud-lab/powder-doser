@@ -19,20 +19,28 @@ from nozzle_clearance import clearance
 
 ROOT = Path(__file__).resolve().parents[1]
 TILTS = (0.0, 22.5, 45.0)
-RADII = (5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 40.0)
+RADII = (10.0, 20.0, 30.0, 40.0, 50.0, 60.0)
+# (name, servo layout, board front edge y or None for the layout's own, label)
+CONFIGS = [
+    ("below", "below", None, "servos below (current); board edge at the legs, y = 55.4"),
+    ("below_board_back", "below", 100.0,
+     "servos below, board edge moved back to y = 100 (legs hang free)"),
+    ("above", "above", None, "servos above (variant); board edge at its lips, y = 100"),
+]
 
 
 def run(source: str) -> dict:
-    res = {"source": source, "radii_mm": RADII, "tilts_deg": TILTS, "rows": []}
-    for variant in ("below", "above"):
+    res = {"source": source, "radii_mm": RADII, "tilts_deg": TILTS,
+           "configs": {c[0]: c[3] for c in CONFIGS}, "rows": []}
+    for cfg, variant, board_y, _ in CONFIGS:
         for tilt in TILTS:
-            parts = parts_index.assembly(tilt, variant, source)
+            parts = parts_index.assembly(tilt, variant, source, board_front_y=board_y)
             outlet = frames.outlet_point(tilt)
             for row in clearance(parts, tuple(outlet), RADII):
-                row.update(variant=variant, tilt_deg=tilt,
+                row.update(config=cfg, variant=variant, tilt_deg=tilt,
                            outlet_mm=[round(v, 2) for v in outlet])
                 res["rows"].append(row)
-                print(variant, tilt, row["cup_radius_mm"], row["gap_mm"], row["limited_by"])
+                print(cfg, tilt, row["cup_radius_mm"], row["gap_mm"], row["limited_by"], flush=True)
     return res
 
 
@@ -41,20 +49,23 @@ def plot(res: dict, out: Path) -> None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    fig, axes = plt.subplots(1, len(TILTS), figsize=(12, 3.8), sharey=True)
-    colors = {"below": "#8a8f98", "above": "#2a6fdb"}
-    labels = {"below": "servos below (current)", "above": "servos above (variant)"}
+    fig, axes = plt.subplots(1, len(TILTS), figsize=(13, 4.2), sharey=True)
+    colors = {"below": "#8a8f98", "below_board_back": "#d08a2c", "above": "#2a6fdb"}
+    styles = {"below": "o-", "below_board_back": "s--", "above": "o-"}
+    labels = {"below": "servos below (current), board edge at legs",
+              "below_board_back": "servos below, board edge moved back",
+              "above": "servos above (variant), plate overhangs board"}
     for ax, tilt in zip(axes, TILTS):
-        for variant in ("below", "above"):
-            rows = [r for r in res["rows"] if r["variant"] == variant and r["tilt_deg"] == tilt]
+        for cfg in labels:
+            rows = [r for r in res["rows"] if r["config"] == cfg and r["tilt_deg"] == tilt]
             ax.plot([2 * r["cup_radius_mm"] for r in rows], [r["gap_mm"] for r in rows],
-                    "o-", color=colors[variant], label=labels[variant], lw=2)
+                    styles[cfg], color=colors[cfg], label=labels[cfg], lw=2)
         ax.set_title(f"tilt {tilt:g}°")
         ax.set_xlabel("cup diameter (mm)")
         ax.grid(alpha=0.3)
     axes[0].set_ylabel("closest nozzle-to-rim gap (mm)")
-    axes[0].legend(frameon=False)
-    fig.suptitle("How close a cup centred under the outlet can come")
+    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    fig.suptitle("How close a cup (or any receiver) centred under the outlet can come")
     fig.tight_layout()
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=150)

@@ -108,9 +108,11 @@ SPINION_NEG = T([Y, NZ, NX], (-GEAR_PLANE_X[0], HINGE_Y, SERVO_SPLINE_Z))
 SERVO_RATIO = 28 / 14
 STEPPER_RATIO = 44 / 20
 
-# mounting board: top on z = 0, front edge where the legs' back faces are
+# mounting board: top on z = 0.  Its front edge is where the legs' back
+# faces are (current design), or 44.6 mm further back, where the
+# servos-above plate's lips are (that plate overhangs the board).
 BOARD_T = 38.1
-BOARD_FRONT_Y = 55.4
+BOARD_FRONT_Y = {"below": 55.4, "above": 100.0}
 
 # the servos-above variant: the servo side of the drive turned 180 deg
 # about the hinge axis
@@ -161,8 +163,9 @@ def placements(tilt_deg: float = 0.0, variant: str = "below",
     }
 
 
-def board_placement() -> np.ndarray:
-    return T(None, (0.0, BOARD_FRONT_Y, 0.0))
+def board_placement(variant: str = "below", front_y: float | None = None) -> np.ndarray:
+    y = BOARD_FRONT_Y[variant] if front_y is None else front_y
+    return T(None, (0.0, y, 0.0))
 
 
 def to_location(M: np.ndarray):

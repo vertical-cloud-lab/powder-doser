@@ -1,0 +1,32 @@
+{
+ "new": "tmp/fasteners/out/wood_10x1p25.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/wood_10x1p25.step",
+ "volume_new_mm3": 606.9,
+ "volume_ref_mm3": 606.9,
+ "volume_intersection_mm3": 606.6,
+ "volume_error_pct": -0.0,
+ "iou": 0.999,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 1.0627808744763135e-13,
+  "p95": 6.400185169833589e-13,
+  "max": 5.9971646498965525e-12
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 1.1426852303911498e-13,
+  "p95": 7.350582455290378e-13,
+  "max": 6.841225948391228e-12
+ },
+ "faces_new": 37,
+ "faces_ref": 37,
+ "seconds": 28.7
+}

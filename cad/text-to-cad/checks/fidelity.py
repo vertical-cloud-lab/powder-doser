@@ -69,7 +69,15 @@ def common_volume(a, b, fuzzy: float = 0.0) -> float:
         return float("nan")
     props = GProp_GProps()
     BRepGProp.VolumeProperties_s(op.Shape(), props)
-    return props.Mass()
+    v = props.Mass()
+    if v <= 0.0 and NUDGE != (0.0, 0.0, 0.0):
+        # the nudge can also make the kernel miss the overlap (a thin
+        # cylindrical shank): try the plain boolean before reporting zero
+        op2 = BRepAlgoAPI_Common(a.wrapped, b.wrapped)
+        if op2.IsDone():
+            BRepGProp.VolumeProperties_s(op2.Shape(), props)
+            v = max(v, props.Mass())
+    return v
 
 
 def mesh_of(shape, tol: float = 0.02):

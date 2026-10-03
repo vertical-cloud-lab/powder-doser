@@ -44,6 +44,13 @@ def load(key: str, source: str = "recreated"):
     return _import(REFERENCE_DIR / f"{key}.step")
 
 
+def board_box(M):
+    """PR #170's board: 250 x 220 x 38.1, top on z = 0, front edge on y = 0."""
+    from build123d import Align, Box
+    b = Box(250.0, 220.0, frames.BOARD_T, align=(Align.CENTER, Align.MIN, Align.MAX))
+    return b.moved(frames.to_location(M))
+
+
 def _reference_mp_flipped():
     from build123d import Axis, Compound
     ref = _import(REFERENCE_DIR / "mounting_plate.step")
@@ -62,7 +69,7 @@ def placed(key: str, M, source: str = "recreated"):
 
 
 def assembly(tilt_deg: float = 0.0, variant: str = "below", source: str = "recreated",
-             board: bool = True, fallback: bool = True) -> dict:
+             board: bool = True, fallback: bool = True, board_front_y: float | None = None) -> dict:
     """{name: placed shape}.  With ``fallback`` a part missing from the
     recreation is taken from the reference (and named so)."""
     out = {}
@@ -74,5 +81,5 @@ def assembly(tilt_deg: float = 0.0, variant: str = "below", source: str = "recre
                 raise
             out[name + " [PR #170 file]"] = placed(key, M, "reference")
     if board:
-        out["Mounting board"] = placed("mounting_board", frames.board_placement(), "reference")
+        out["Mounting board"] = board_box(frames.board_placement(variant, board_front_y))
     return out
