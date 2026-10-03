@@ -5,9 +5,12 @@ Model (SI units throughout):
   g_n = 2*zeta*sqrt(m_eff*k_n), zeta set from the restitution coefficient e;
 * Cundall-Strack tangential spring k_t = 2/7 k_n with damping and a Coulomb
   limit |F_t| <= mu*F_n (separate mu for particle-particle and particle-wall);
-* constant-torque ("type A") rolling resistance |M_r| = mu_r*R_eff*F_n opposing
-  the relative rolling velocity, capped (cap shared over the particle's
-  contacts) so the summed torque cannot reverse a spin within one step;
+* elastic-plastic spring-dashpot rolling resistance (EPSD, Ai et al. 2011
+  "type C"): rolling spring k_r = 2.25*k_n*mu_r^2*R*^2 on the relative rolling
+  rotation, torque capped at mu_r*R**F_n, viscous damping (ratio eta_r) while
+  below the cap;
+* optional cohesion: constant pull-off force F_coh (Bond number F_coh/(m g))
+  while in contact or within a small gap;
 * semi-implicit Euler integration, cell-list neighbour search; every particle
   sums its own contacts (full neighbour list) so the force loop is a plain
   parallel loop with per-particle contact history (ping-pong buffers).
@@ -43,8 +46,9 @@ NW = 5          # wall primitives per particle (auger: bore, cone, core, flight,
 MAXC = 16       # max particle-particle contacts stored per particle
 
 # indices into the parameter vector
-P_KN, P_KT, P_MUPP, P_MUPW, P_MURPP, P_MURPW, P_ZETA, P_ZTOP, P_ZCAP, P_RCYL, P_RDISC = range(11)
-NPRM = 11
+(P_KN, P_KT, P_MUPP, P_MUPW, P_MURPP, P_MURPW, P_ZETA, P_ZTOP, P_ZCAP, P_RCYL, P_RDISC,
+ P_ETAR, P_FCOH, P_GAP) = range(14)
+NPRM = 14
 
 
 def zeta_from_e(e: float) -> float:
@@ -141,23 +145,107 @@ def build_cells(pos, active, lo, h, nx, ny, nz, cstart, ccount, cfill, order, pc
             cfill[c] += 1
 
 
+@njit(inline="always", fastmath=True)
+def _contact(ri, nx_, ny_, nz_, delta, vrx, vry, vrz, wrx, wry, wrz, sx, sy, sz,
+             mx, my, mz, kn, kt, zeta, mu, mur, Reff, meff, Ir, etar, fcoh, dt):
+    """One contact (pair or wall).  n points into particle i; (vr) contact-point
+    velocity of i relative to the partner; (wr) relative angular velocity;
+    (s) tangential spring; (m) rolling-spring torque.  Returns force, torque and
+    the updated springs."""
+    vn = vrx * nx_ + vry * ny_ + vrz * nz_
+    Frep = kn * delta - 2.0 * zeta * math.sqrt(meff * kn) * vn
+    if Frep < 0.0:
+        Frep = 0.0
+    Fn = Frep - fcoh
+    Fcap = Frep + fcoh                       # load that sets the friction limits
+    vtx = vrx - vn * nx_
+    vty = vry - vn * ny_
+    vtz = vrz - vn * nz_
+    sn = sx * nx_ + sy * ny_ + sz * nz_
+    sx += -sn * nx_ + vtx * dt
+    sy += -sn * ny_ + vty * dt
+    sz += -sn * nz_ + vtz * dt
+    gt = 2.0 * zeta * math.sqrt(meff * kt)
+    ftx = -kt * sx - gt * vtx
+    fty = -kt * sy - gt * vty
+    ftz = -kt * sz - gt * vtz
+    ft = math.sqrt(ftx * ftx + fty * fty + ftz * ftz)
+    fmax = mu * Fcap
+    if ft > fmax:
+        sc = fmax / ft if ft > 0.0 else 0.0
+        ftx *= sc
+        fty *= sc
+        ftz *= sc
+        sx = -ftx / kt
+        sy = -fty / kt
+        sz = -ftz / kt
+    fx = Fn * nx_ + ftx
+    fy = Fn * ny_ + fty
+    fz = Fn * nz_ + ftz
+    # torque of F_t applied at -r_i n
+    tx = -ri * (ny_ * ftz - nz_ * fty)
+    ty = -ri * (nz_ * ftx - nx_ * ftz)
+    tz = -ri * (nx_ * fty - ny_ * ftx)
+    # EPSD rolling resistance on the tangential part of the relative rotation
+    wn = wrx * nx_ + wry * ny_ + wrz * nz_
+    wrx -= wn * nx_
+    wry -= wn * ny_
+    wrz -= wn * nz_
+    mn = mx * nx_ + my * ny_ + mz * nz_
+    mx -= mn * nx_
+    my -= mn * ny_
+    mz -= mn * nz_
+    if mur > 0.0:
+        kr = 2.25 * kn * mur * mur * Reff * Reff
+        mx -= kr * wrx * dt
+        my -= kr * wry * dt
+        mz -= kr * wrz * dt
+        mm = math.sqrt(mx * mx + my * my + mz * mz)
+        mmax = mur * Reff * Fcap
+        if mm > mmax:
+            sc = mmax / mm
+            mx *= sc
+            my *= sc
+            mz *= sc
+            tx += mx
+            ty += my
+            tz += mz
+        else:
+            cr = 2.0 * etar * math.sqrt(Ir * kr)
+            tx += mx - cr * wrx
+            ty += my - cr * wry
+            tz += mz - cr * wrz
+    else:
+        mx = 0.0
+        my = 0.0
+        mz = 0.0
+    return fx, fy, fz, tx, ty, tz, sx, sy, sz, mx, my, mz
+
+
 @njit(parallel=True, fastmath=True)
-def compute_forces(pos, vel, angv, rad, mass, inert, active,
-                   lo, h, nx, ny, nz, cstart, ccount, order,
-                   hid, hxi, nid, nxi, wxi,
-                   prm, mode, theta, Omega, gx, gy, gz, dt, force, torque, ovl):
+def compute_forces(pos, vel, angv, rad, mass, inert, active, fixed,
+                   lo, h, dims, cstart, ccount, order, hr, hw, wxi, wmr,
+                   prm, mode, theta, Omega, g3, dt, force, torque, ovl):
     N = pos.shape[0]
+    hid, hxi, hmr = hr                  # contact history read buffers
+    nid, nxi, nmr = hw                  # ... and write buffers
+    nx, ny, nz = dims[0], dims[1], dims[2]
+    gx, gy, gz = g3[0], g3[1], g3[2]
     kn = prm[P_KN]
     kt = prm[P_KT]
     zeta = prm[P_ZETA]
+    etar = prm[P_ETAR]
+    fcoh = prm[P_FCOH]
+    gap = prm[P_GAP]
     for i in prange(N):
-        if not active[i]:
+        if not active[i] or fixed[i]:
             continue
         xi_ = pos[i, 0]
         yi = pos[i, 1]
         zi = pos[i, 2]
         ri = rad[i]
         mi = mass[i]
+        Ii = inert[i]
         fx = mi * gx
         fy = mi * gy
         fz = mi * gz
@@ -166,17 +254,6 @@ def compute_forces(pos, vel, angv, rad, mass, inert, active,
         tz = 0.0
         omax = 0.0
         nc = 0
-        # rolling-torque cap: shared over the contacts of the previous step so the
-        # summed rolling torque can at most stop (never reverse) a relative spin
-        nprev = 1
-        for b in range(MAXC):
-            if hid[i, b] < 0:
-                break
-            nprev += 1
-        for k in range(NW):
-            if wxi[i, k, 0] != 0.0 or wxi[i, k, 1] != 0.0 or wxi[i, k, 2] != 0.0:
-                nprev += 1
-        rcap = 0.5 * inert[i] / (dt * nprev)
         ix = min(max(int((xi_ - lo[0]) / h), 0), nx - 1)
         iy = min(max(int((yi - lo[1]) / h), 0), ny - 1)
         iz = min(max(int((zi - lo[2]) / h), 0), nz - 1)
@@ -191,96 +268,69 @@ def compute_forces(pos, vel, angv, rad, mass, inert, active,
                         dx = xi_ - pos[j, 0]
                         dy = yi - pos[j, 1]
                         dz = zi - pos[j, 2]
-                        rs = ri + rad[j]
+                        rj = rad[j]
+                        rs = ri + rj
                         d2 = dx * dx + dy * dy + dz * dz
-                        if d2 >= rs * rs:
+                        if d2 >= (rs + gap) * (rs + gap):
                             continue
                         d = math.sqrt(d2)
                         nxv = dx / d
                         nyv = dy / d
                         nzv = dz / d
                         delta = rs - d
+                        if delta <= 0.0:             # cohesive gap only: pull-off force
+                            fx -= fcoh * nxv
+                            fy -= fcoh * nyv
+                            fz -= fcoh * nzv
+                            continue
                         if delta / (2.0 * ri) > omax:
                             omax = delta / (2.0 * ri)
                         mj = mass[j]
-                        meff = mi * mj / (mi + mj)
-                        # contact-point velocities: v + w x (-r_i n) and v_j + w_j x (r_j n)
-                        rj = rad[j]
                         vrx = (vel[i, 0] - vel[j, 0]) - ri * (angv[i, 1] * nzv - angv[i, 2] * nyv) \
                             - rj * (angv[j, 1] * nzv - angv[j, 2] * nyv)
                         vry = (vel[i, 1] - vel[j, 1]) - ri * (angv[i, 2] * nxv - angv[i, 0] * nzv) \
                             - rj * (angv[j, 2] * nxv - angv[j, 0] * nzv)
                         vrz = (vel[i, 2] - vel[j, 2]) - ri * (angv[i, 0] * nyv - angv[i, 1] * nxv) \
                             - rj * (angv[j, 0] * nyv - angv[j, 1] * nxv)
-                        vn = vrx * nxv + vry * nyv + vrz * nzv
-                        gn = 2.0 * zeta * math.sqrt(meff * kn)
-                        Fn = kn * delta - gn * vn
-                        if Fn < 0.0:
-                            Fn = 0.0
-                        vtx = vrx - vn * nxv
-                        vty = vry - vn * nyv
-                        vtz = vrz - vn * nzv
-                        # tangential history
                         sx = 0.0
                         sy = 0.0
                         sz = 0.0
+                        mx = 0.0
+                        my = 0.0
+                        mz = 0.0
                         for b in range(MAXC):
                             if hid[i, b] == j:
                                 sx = hxi[i, b, 0]
                                 sy = hxi[i, b, 1]
                                 sz = hxi[i, b, 2]
+                                mx = hmr[i, b, 0]
+                                my = hmr[i, b, 1]
+                                mz = hmr[i, b, 2]
                                 break
                             if hid[i, b] < 0:
                                 break
-                        sn = sx * nxv + sy * nyv + sz * nzv
-                        sx += -sn * nxv + vtx * dt
-                        sy += -sn * nyv + vty * dt
-                        sz += -sn * nzv + vtz * dt
-                        gt = 2.0 * zeta * math.sqrt(meff * kt)
-                        ftx = -kt * sx - gt * vtx
-                        fty = -kt * sy - gt * vty
-                        ftz = -kt * sz - gt * vtz
-                        ft = math.sqrt(ftx * ftx + fty * fty + ftz * ftz)
-                        fmax = prm[P_MUPP] * Fn
-                        if ft > fmax:
-                            sc = fmax / ft
-                            ftx *= sc
-                            fty *= sc
-                            ftz *= sc
-                            sx = -ftx / kt
-                            sy = -fty / kt
-                            sz = -ftz / kt
+                        Ij = inert[j]
+                        Ir = 1.0 / (1.0 / (Ii + mi * ri * ri) + 1.0 / (Ij + mj * rj * rj))
+                        cf = _contact(ri, nxv, nyv, nzv, delta, vrx, vry, vrz,
+                                      angv[i, 0] - angv[j, 0], angv[i, 1] - angv[j, 1],
+                                      angv[i, 2] - angv[j, 2], sx, sy, sz, mx, my, mz,
+                                      kn, kt, zeta, prm[P_MUPP], prm[P_MURPP], ri * rj / rs,
+                                      mi * mj / (mi + mj), Ir, etar, fcoh, dt)
+                        fx += cf[0]
+                        fy += cf[1]
+                        fz += cf[2]
+                        tx += cf[3]
+                        ty += cf[4]
+                        tz += cf[5]
                         if nc < MAXC:
                             nid[i, nc] = j
-                            nxi[i, nc, 0] = sx
-                            nxi[i, nc, 1] = sy
-                            nxi[i, nc, 2] = sz
+                            nxi[i, nc, 0] = cf[6]
+                            nxi[i, nc, 1] = cf[7]
+                            nxi[i, nc, 2] = cf[8]
+                            nmr[i, nc, 0] = cf[9]
+                            nmr[i, nc, 1] = cf[10]
+                            nmr[i, nc, 2] = cf[11]
                             nc += 1
-                        fx += Fn * nxv + ftx
-                        fy += Fn * nyv + fty
-                        fz += Fn * nzv + ftz
-                        # torque of F_t applied at -r_i n
-                        tx += -ri * (nyv * ftz - nzv * fty)
-                        ty += -ri * (nzv * ftx - nxv * ftz)
-                        tz += -ri * (nxv * fty - nyv * ftx)
-                        # rolling resistance
-                        wx = angv[i, 0] - angv[j, 0]
-                        wy = angv[i, 1] - angv[j, 1]
-                        wz = angv[i, 2] - angv[j, 2]
-                        wn = wx * nxv + wy * nyv + wz * nzv
-                        wx -= wn * nxv
-                        wy -= wn * nyv
-                        wz -= wn * nzv
-                        wm = math.sqrt(wx * wx + wy * wy + wz * wz)
-                        if wm > 1e-12:
-                            Reff = ri * rj / (ri + rj)
-                            Mr = prm[P_MURPP] * Reff * Fn
-                            Mcap = rcap * wm
-                            if Mr > Mcap:
-                                Mr = Mcap
-                            tx -= Mr * wx / wm
-                            ty -= Mr * wy / wm
-                            tz -= Mr * wz / wm
         for b in range(nc, MAXC):
             nid[i, b] = -1
         # ---- walls ----
@@ -288,9 +338,13 @@ def compute_forces(pos, vel, angv, rad, mass, inert, active,
             s, wnx, wny, wnz = wall_geom(k, xi_, yi, zi, theta, mode, prm)
             delta = ri - s
             if delta <= 0.0:
-                wxi[i, k, 0] = 0.0
-                wxi[i, k, 1] = 0.0
-                wxi[i, k, 2] = 0.0
+                for c3 in range(3):
+                    wxi[i, k, c3] = 0.0
+                    wmr[i, k, c3] = 0.0
+                if delta > -gap and not (mode == 0 and k == 4):   # cohesion to the wall
+                    fx -= fcoh * wnx
+                    fy -= fcoh * wny
+                    fz -= fcoh * wnz
                 continue
             if delta / (2.0 * ri) > omax:
                 omax = delta / (2.0 * ri)
@@ -301,78 +355,37 @@ def compute_forces(pos, vel, angv, rad, mass, inert, active,
                 vwx = -Omega * (yi + rcy)
                 vwy = Omega * (xi_ + rcx)
                 wwz = Omega
+                mu = prm[P_MUPW] if k != 4 else 0.0  # top lid is frictionless, not cohesive
+                mur = prm[P_MURPW] if k != 4 else 0.0
+                fc = fcoh if k != 4 else 0.0
             else:
                 vwx = 0.0
                 vwy = 0.0
                 wwz = 0.0
+                mu = prm[P_MUPW] if k == 0 else 0.0  # base disc uses the wall values,
+                mur = prm[P_MURPW] if k == 0 else 0.0  # the lifted cylinder is frictionless
+                fc = fcoh if k == 0 else 0.0
             vrx = vel[i, 0] + (angv[i, 1] * rcz - angv[i, 2] * rcy) - vwx
             vry = vel[i, 1] + (angv[i, 2] * rcx - angv[i, 0] * rcz) - vwy
             vrz = vel[i, 2] + (angv[i, 0] * rcy - angv[i, 1] * rcx)
-            vn = vrx * wnx + vry * wny + vrz * wnz
-            gn = 2.0 * zeta * math.sqrt(mi * kn)
-            Fn = kn * delta - gn * vn
-            if Fn < 0.0:
-                Fn = 0.0
-            fx += Fn * wnx
-            fy += Fn * wny
-            fz += Fn * wnz
-            if mode == 0:
-                mu = prm[P_MUPW] if k != 4 else 0.0  # top cap is frictionless
-                mur = prm[P_MURPW] if k != 4 else 0.0
-            else:
-                mu = prm[P_MUPW] if k == 0 else 0.0  # base disc uses the wall values,
-                mur = prm[P_MURPW] if k == 0 else 0.0  # the lifted cylinder is frictionless
-            if mu <= 0.0:
-                continue
-            vtx = vrx - vn * wnx
-            vty = vry - vn * wny
-            vtz = vrz - vn * wnz
-            sx = wxi[i, k, 0]
-            sy = wxi[i, k, 1]
-            sz = wxi[i, k, 2]
-            sn = sx * wnx + sy * wny + sz * wnz
-            sx += -sn * wnx + vtx * dt
-            sy += -sn * wny + vty * dt
-            sz += -sn * wnz + vtz * dt
-            gt = 2.0 * zeta * math.sqrt(mi * kt)
-            ftx = -kt * sx - gt * vtx
-            fty = -kt * sy - gt * vty
-            ftz = -kt * sz - gt * vtz
-            ft = math.sqrt(ftx * ftx + fty * fty + ftz * ftz)
-            fmax = mu * Fn
-            if ft > fmax:
-                sc = fmax / ft if ft > 0.0 else 0.0
-                ftx *= sc
-                fty *= sc
-                ftz *= sc
-                sx = -ftx / kt
-                sy = -fty / kt
-                sz = -ftz / kt
-            wxi[i, k, 0] = sx
-            wxi[i, k, 1] = sy
-            wxi[i, k, 2] = sz
-            fx += ftx
-            fy += fty
-            fz += ftz
-            tx += rcy * ftz - rcz * fty
-            ty += rcz * ftx - rcx * ftz
-            tz += rcx * fty - rcy * ftx
-            wx = angv[i, 0]
-            wy = angv[i, 1]
-            wz = angv[i, 2] - wwz
-            wn = wx * wnx + wy * wny + wz * wnz
-            wx -= wn * wnx
-            wy -= wn * wny
-            wz -= wn * wnz
-            wm = math.sqrt(wx * wx + wy * wy + wz * wz)
-            if wm > 1e-12:
-                Mr = mur * ri * Fn
-                Mcap = rcap * wm
-                if Mr > Mcap:
-                    Mr = Mcap
-                tx -= Mr * wx / wm
-                ty -= Mr * wy / wm
-                tz -= Mr * wz / wm
+            cf = _contact(ri, wnx, wny, wnz, delta, vrx, vry, vrz,
+                          angv[i, 0], angv[i, 1], angv[i, 2] - wwz,
+                          wxi[i, k, 0], wxi[i, k, 1], wxi[i, k, 2],
+                          wmr[i, k, 0], wmr[i, k, 1], wmr[i, k, 2],
+                          kn, kt, zeta, mu, mur, ri, mi, Ii + mi * ri * ri,
+                          etar, fc, dt)
+            fx += cf[0]
+            fy += cf[1]
+            fz += cf[2]
+            tx += cf[3]
+            ty += cf[4]
+            tz += cf[5]
+            wxi[i, k, 0] = cf[6]
+            wxi[i, k, 1] = cf[7]
+            wxi[i, k, 2] = cf[8]
+            wmr[i, k, 0] = cf[9]
+            wmr[i, k, 1] = cf[10]
+            wmr[i, k, 2] = cf[11]
         force[i, 0] = fx
         force[i, 1] = fy
         force[i, 2] = fz
@@ -383,9 +396,9 @@ def compute_forces(pos, vel, angv, rad, mass, inert, active,
 
 
 @njit(fastmath=True)
-def run_block(nsteps, dt, pos, vel, angv, rad, mass, inert, active,
+def run_block(nsteps, dt, pos, vel, angv, rad, mass, inert, active, fixed,
               lo, h, nx, ny, nz, cstart, ccount, cfill, order, pcell,
-              hid_a, hxi_a, hid_b, hxi_b, wxi, prm, mode,
+              hid_a, hxi_a, hmr_a, hid_b, hxi_b, hmr_b, wxi, wmr, prm, mode,
               theta0, Omega, gvec, force, torque, ovl, captured, cap_t, t0):
     """Advance nsteps (even) with per-step tube speed Omega[s] and gravity
     (incl. tap pseudo-acceleration) gvec[s].  Particles whose centre crosses
@@ -393,23 +406,24 @@ def run_block(nsteps, dt, pos, vel, angv, rad, mass, inert, active,
     angle, dispensed mass, number lost (left the domain) and the max overlap."""
     N = pos.shape[0]
     theta = theta0
+    dims = np.array([nx, ny, nz])
+    ha = (hid_a, hxi_a, hmr_a)
+    hb = (hid_b, hxi_b, hmr_b)
     mdisp = 0.0
     nlost = 0
     omax = 0.0
     for s in range(nsteps):
         build_cells(pos, active, lo, h, nx, ny, nz, cstart, ccount, cfill, order, pcell)
         if s % 2 == 0:
-            compute_forces(pos, vel, angv, rad, mass, inert, active, lo, h, nx, ny, nz,
-                           cstart, ccount, order, hid_a, hxi_a, hid_b, hxi_b, wxi,
-                           prm, mode, theta, Omega[s], gvec[s, 0], gvec[s, 1], gvec[s, 2],
-                           dt, force, torque, ovl)
+            compute_forces(pos, vel, angv, rad, mass, inert, active, fixed, lo, h, dims,
+                           cstart, ccount, order, ha, hb, wxi, wmr, prm, mode, theta, Omega[s],
+                           gvec[s], dt, force, torque, ovl)
         else:
-            compute_forces(pos, vel, angv, rad, mass, inert, active, lo, h, nx, ny, nz,
-                           cstart, ccount, order, hid_b, hxi_b, hid_a, hxi_a, wxi,
-                           prm, mode, theta, Omega[s], gvec[s, 0], gvec[s, 1], gvec[s, 2],
-                           dt, force, torque, ovl)
+            compute_forces(pos, vel, angv, rad, mass, inert, active, fixed, lo, h, dims,
+                           cstart, ccount, order, hb, ha, wxi, wmr, prm, mode, theta, Omega[s],
+                           gvec[s], dt, force, torque, ovl)
         for i in range(N):
-            if not active[i]:
+            if not active[i] or fixed[i]:
                 continue
             if ovl[i] > omax:
                 omax = ovl[i]
@@ -440,7 +454,7 @@ def run_block(nsteps, dt, pos, vel, angv, rad, mass, inert, active,
 class DEM:
     """State container + driver.  Geometry mode 0 = auger section, 1 = repose test."""
 
-    def __init__(self, pos, rad, rho, mode, prm, dt, lo, hi):
+    def __init__(self, pos, rad, rho, mode, prm, dt, lo, hi, fixed=None):
         self.N = len(rad)
         self.pos = np.ascontiguousarray(pos, dtype=np.float64)
         self.vel = np.zeros_like(self.pos)
@@ -449,12 +463,13 @@ class DEM:
         self.mass = rho * 4.0 / 3.0 * np.pi * self.rad ** 3
         self.inert = 0.4 * self.mass * self.rad ** 2
         self.active = np.ones(self.N, dtype=np.bool_)
+        self.fixed = np.zeros(self.N, dtype=np.bool_) if fixed is None else np.asarray(fixed, np.bool_)
         self.captured = np.zeros(self.N, dtype=np.bool_)
         self.cap_t = np.full(self.N, np.nan)
         self.mode = mode
         self.prm = np.asarray(prm, dtype=np.float64)
         self.dt = dt
-        self.h = 2.0 * self.rad.max() * 1.001
+        self.h = (2.0 * self.rad.max() + self.prm[P_GAP]) * 1.001
         self.lo = np.asarray(lo, dtype=np.float64)
         n = np.ceil((np.asarray(hi) - self.lo) / self.h).astype(int) + 1
         self.nx, self.ny, self.nz = int(n[0]), int(n[1]), int(n[2])
@@ -468,7 +483,10 @@ class DEM:
         self.hid_b = -np.ones((self.N, MAXC), np.int64)
         self.hxi_a = np.zeros((self.N, MAXC, 3))
         self.hxi_b = np.zeros((self.N, MAXC, 3))
+        self.hmr_a = np.zeros((self.N, MAXC, 3))
+        self.hmr_b = np.zeros((self.N, MAXC, 3))
         self.wxi = np.zeros((self.N, NW, 3))
+        self.wmr = np.zeros((self.N, NW, 3))
         self.force = np.zeros((self.N, 3))
         self.torque = np.zeros((self.N, 3))
         self.ovl = np.zeros(self.N)
@@ -480,10 +498,11 @@ class DEM:
     def advance(self, nsteps, Omega, gvec):
         theta, md, nl, om = run_block(
             nsteps, self.dt, self.pos, self.vel, self.angv, self.rad, self.mass, self.inert,
-            self.active, self.lo, self.h, self.nx, self.ny, self.nz, self.cstart, self.ccount,
-            self.cfill, self.order, self.pcell, self.hid_a, self.hxi_a, self.hid_b, self.hxi_b,
-            self.wxi, self.prm, self.mode, self.theta, Omega, gvec, self.force, self.torque,
-            self.ovl, self.captured, self.cap_t, self.t)
+            self.active, self.fixed, self.lo, self.h, self.nx, self.ny, self.nz, self.cstart,
+            self.ccount, self.cfill, self.order, self.pcell, self.hid_a, self.hxi_a, self.hmr_a,
+            self.hid_b, self.hxi_b, self.hmr_b, self.wxi, self.wmr, self.prm, self.mode,
+            self.theta, Omega, gvec, self.force, self.torque, self.ovl, self.captured,
+            self.cap_t, self.t)
         self.theta = theta
         self.m_disp += md
         self.n_lost += nl
@@ -491,13 +510,13 @@ class DEM:
         return om
 
     def kinetic_energy(self):
-        a = self.active
+        a = self.active & ~self.fixed
         return float(0.5 * np.sum(self.mass[a] * np.sum(self.vel[a] ** 2, axis=1)))
 
     def save(self, fn):
         np.savez_compressed(fn, pos=self.pos, vel=self.vel, angv=self.angv, rad=self.rad,
-                            active=self.active, hid=self.hid_a, hxi=self.hxi_a, wxi=self.wxi,
-                            t=self.t, theta=self.theta)
+                            active=self.active, hid=self.hid_a, hxi=self.hxi_a, hmr=self.hmr_a,
+                            wxi=self.wxi, wmr=self.wmr, t=self.t, theta=self.theta)
 
     def load(self, fn):
         d = np.load(fn)
@@ -507,7 +526,9 @@ class DEM:
         self.active[:] = d["active"]
         self.hid_a[:] = d["hid"]
         self.hxi_a[:] = d["hxi"]
+        self.hmr_a[:] = d["hmr"]
         self.wxi[:] = d["wxi"]
+        self.wmr[:] = d["wmr"]
         self.theta = float(d["theta"])
 
 

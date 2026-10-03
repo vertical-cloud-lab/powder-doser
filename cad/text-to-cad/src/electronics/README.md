@@ -128,22 +128,21 @@ The PCB stands vertically with its components facing -Y, toward the doser:
 * upright front face at y = 36.0;
 * lower edge at z = 12.
 
-**Recommended pose (translation only, no rotation):**
+**Pose in the doser assemblies** (`lib/electronics_place.py`): the holder
+is turned -90° about z, so its 120 × 70 mm footprint runs along y with the
+components facing -x, towards the doser. It stands on the +X side of the
+board, at x = 50..120:
 
-* current doser (baseplate x = -95..95, y up to 115): `(0, 150, 0)`. The
-  holder occupies y = 150..220 and the frontmost PCB part sits at y ≈ 155.
-* servos-above doser (up to y ≈ 170): `(0, 190, 0)`.
+* current doser: origin at `(50, 200, 0)`, so the holder spans y = 140..260;
+* servos-above doser (its baseplate reaches y = 170): origin at
+  `(50, 240, 0)`, so the holder spans y = 180..300.
 
-The populated board inside the holder frame is `Rx(+90 deg)` followed by
-`T(-50.8, 26.0, 12.0)`. In the world frame for the current doser:
-
-```
-pcb_assembly -> world (holder at y = 150):
-[[1, 0,  0, -50.8],
- [0, 0, -1, 176.0],
- [0, 1,  0,  12.0],
- [0, 0,  0,   1  ]]
-```
+The first pose, on the centre line behind the doser at `(0, 150, 0)` or
+`(0, 190, 0)`, did not work. The auger runs along y on x = 0 out to
+y = 286, and the mounting plate, stepper and rear bracket sweep
+x = -46..54 behind the hinge, so the tube and the plate cut through the
+holder and the board (`checks/electronics_clearance.py`). Off the centre
+line, the tilting parts pass the holder at every angle from 0 to 45°.
 
 ## Uncertainties and findings
 

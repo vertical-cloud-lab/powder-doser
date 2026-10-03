@@ -34,8 +34,13 @@ D_SPREAD = 0.1 * MM
 RHO = 1500.0                 # solid density, kg/m^3 (organic / salt-like lab powder)
 KN = 25.0                    # normal stiffness, N/m (softened; overlaps checked in logs)
 E_REST = 0.3                 # restitution
-MU_PP, MU_PW = 0.5, 0.35     # sliding friction particle-particle, particle-PLA wall
-MUR_PP, MUR_PW = 0.25, 0.25  # rolling resistance (raised from 0.1: see repose check)
+MU_PP = float(os.environ.get("SIM_MUPP", 0.5))   # sliding friction particle-particle
+MU_PW = 0.35                 # sliding friction particle-PLA wall
+MUR_PP = MUR_PW = float(os.environ.get("SIM_MUR", 0.3))   # EPSD rolling coefficient (calibrated)
+ETA_R = 0.3                  # rolling damping ratio (EPSD)
+BOND = float(os.environ.get("SIM_BOND", 0.0))   # cohesion: F_coh = BOND * m_mean * g
+COH_GAP_D = 0.05             # cohesion acts up to a gap of 0.05 d
+SUFFIX = f"_bo{BOND:g}" if BOND > 0 else ""
 DT = 1.5e-5                  # time step, s (~ t_c/20 for the lightest pair)
 # ---- simulated section and operating point --------------------------------
 Z_CAP = 6.0 * MM             # capture plane: annular gap there 3.8 mm ~ 4.2 d
@@ -55,6 +60,10 @@ def params(mode=0, rcyl=0.0, zcap=Z_CAP):
     p[dem.P_MURPP], p[dem.P_MURPW] = MUR_PP, MUR_PW
     p[dem.P_ZETA] = dem.zeta_from_e(E_REST)
     p[dem.P_ZTOP], p[dem.P_ZCAP], p[dem.P_RCYL] = Z_TOP, zcap, rcyl
+    p[dem.P_ETAR] = ETA_R
+    if BOND > 0:
+        p[dem.P_FCOH] = BOND * RHO * math.pi / 6 * D_MEAN ** 3 * G
+        p[dem.P_GAP] = COH_GAP_D * D_MEAN
     return p
 
 
@@ -158,7 +167,8 @@ def save_frames(name, frames, sim, extra=None):
 def common_meta(sim, wall):
     return dict(n_particles=int(sim.N), d_mean_mm=D_MEAN / MM, d_range_mm=[(D_MEAN - D_SPREAD) / MM,
                 (D_MEAN + D_SPREAD) / MM], rho_solid=RHO, k_n=KN, k_t=KN * 2 / 7, e=E_REST,
-                mu_pp=MU_PP, mu_pw=MU_PW, mur_pp=MUR_PP, mur_pw=MUR_PW, dt=DT,
+                mu_pp=MU_PP, mu_pw=MU_PW, mur_pp=MUR_PP, mur_pw=MUR_PW, eta_r=ETA_R,
+                rolling_model="EPSD (Ai et al. 2011 type C)", bond=BOND, coh_gap_d=COH_GAP_D, dt=DT,
                 t_contact=contact_time(), z_capture_mm=Z_CAP / MM, z_top_mm=Z_TOP / MM,
                 rpm_tube=RPM_TUBE, froude=(RPM_TUBE * 2 * math.pi / 60) ** 2 * dem.R_BORE / G,
                 tap_amplitude_mm=TAP_A / MM, tap_duration_ms=TAP_T * 1e3,
@@ -173,54 +183,70 @@ def dump(name, obj):
 
 # ---------------------------------------------------------------------------
 def sc_repose():
-    """Fixed-base heap: a column in a lifted (frictionless) cylinder of radius 6 mm
-    drains onto a rough base disc of radius 8 mm (mu = 1.0, mu_r = 0.5); the excess
-    falls off the edge and the heap slope is fitted to the surface profile."""
+    """Lifted-cylinder heap on a base of glued (fixed) spheres.  A column of radius
+    7 mm and height 27 mm drains as the frictionless cylinder lifts at 50 mm/s; the
+    flank slope is fitted between 25 % and 75 % of the heap height."""
     rng = np.random.default_rng(3)
-    rc, rdisc, hfill = 6.0 * MM, 8.0 * MM, 14.0 * MM
+    rc, hcol, rbase = 7.0 * MM, 27.0 * MM, 17.0 * MM
+    gb = np.arange(-rbase, rbase + 1e-9, 0.9 * MM)
+    X, Y = np.meshgrid(gb, gb)
+    base = np.c_[X.ravel(), Y.ravel()]
+    base = base[np.hypot(base[:, 0], base[:, 1]) < rbase] + rng.uniform(-0.1 * MM, 0.1 * MM, (1, 2))
+    base += rng.uniform(-0.1 * MM, 0.1 * MM, base.shape)
+    rbs = 0.5 * rng.uniform(D_MEAN - D_SPREAD, D_MEAN + D_SPREAD, len(base))
     a = (D_MEAN + D_SPREAD) * 1.02
-    pts = lattice((-rc, -rc, 0.0), (rc, rc, hfill), a, rng)
+    pts = lattice((-rc, -rc, 1.4 * MM), (rc, rc, hcol), a, rng)
     pts = pts[np.hypot(pts[:, 0], pts[:, 1]) < rc - 0.55 * MM]
     rad = 0.5 * rng.uniform(D_MEAN - D_SPREAD, D_MEAN + D_SPREAD, len(pts))
+    allp = np.vstack([np.c_[base, rbs], pts])
+    allr = np.r_[rbs, rad]
+    fixed = np.r_[np.ones(len(base), bool), np.zeros(len(pts), bool)]
     prm = params(mode=1, rcyl=rc, zcap=0.0)
-    prm[dem.P_MUPW], prm[dem.P_MURPW], prm[dem.P_RDISC] = 1.0, 0.5, rdisc
-    sim = dem.DEM(pts, rad, RHO, 1, prm, DT, (-12 * MM, -12 * MM, -1 * MM), (12 * MM, 12 * MM, hfill + MM))
+    prm[dem.P_MUPW], prm[dem.P_MURPW], prm[dem.P_RDISC] = 1.0, 0.5, rbase + 1 * MM
+    sim = dem.DEM(allp, allr, RHO, 1, prm, DT, (-rbase - 2 * MM, -rbase - 2 * MM, -1 * MM),
+                  (rbase + 2 * MM, rbase + 2 * MM, hcol + MM), fixed=fixed)
     w0 = time.time()
     nb = 2 * int(round(0.0005 / DT / 2))
     om = np.zeros(nb)
     g = np.tile([0.0, 0.0, -G], (nb, 1))
-    while sim.t < 0.20:                      # settle inside the cylinder
+    while sim.t < 0.12:                      # settle inside the cylinder
         sim.advance(nb, om, g)
     v_lift = 0.05                            # m/s
     t_lift0 = sim.t
-    while sim.t < t_lift0 + 0.70:            # lift the cylinder, let the heap come to rest
+    while True:
         sim.prm[dem.P_ZCAP] = (sim.t - t_lift0) * v_lift   # lower edge height of the cylinder
-        if sim.prm[dem.P_ZCAP] > hfill + 2 * MM:
+        if sim.prm[dem.P_ZCAP] > hcol + 2 * MM:
             sim.prm[dem.P_RCYL] = 0.0
+            if sim.kinetic_energy() < 1e-9 or sim.t > t_lift0 + 0.95:
+                break
         sim.advance(nb, om, g)
-    p = sim.pos[sim.active]
+    mob = sim.active & ~sim.fixed
+    p = sim.pos[mob]
     r = np.hypot(p[:, 0], p[:, 1])
-    ztop = p[:, 2] + sim.rad[sim.active]
-    edges = np.arange(0, rdisc + 0.5 * MM, 1.0 * MM)
+    ztop = p[:, 2] + sim.rad[mob]
+    zb = 2 * np.median(rbs)                  # top of the glued layer
+    edges = np.arange(0, rbase + 1e-9, 1.0 * MM)
     rb, hb = [], []
     for lo_, hi_ in zip(edges[:-1], edges[1:]):
         m = (r >= lo_) & (r < hi_)
         if m.sum() >= 3:
             rb.append(0.5 * (lo_ + hi_))
-            hb.append(np.percentile(ztop[m], 90))
+            hb.append(np.percentile(ztop[m], 90) - zb)
     rb, hb = np.array(rb), np.array(hb)
-    sel = (rb > 1.0 * MM) & (rb < rdisc - 0.5 * MM)
+    H = hb.max()
+    sel = (rb > rb[np.argmax(hb)]) & (hb > 0.25 * H) & (hb < 0.75 * H)
     slope = np.polyfit(rb[sel], hb[sel], 1)[0]
     ang = float(np.degrees(np.arctan(-slope)))
-    res = dict(scenario="repose", angle_of_repose_deg=ang, heap_height_mm=float(hb.max() / MM),
-               base_disc_radius_mm=rdisc / MM, base_mu=1.0, base_mu_r=0.5,
-               n_on_heap=int(sim.active.sum()), profile_r_mm=(rb / MM).tolist(),
-               profile_h_mm=(hb / MM).tolist(), fit_bins=int(sel.sum()),
-               ke_final_uJ=sim.kinetic_energy() * 1e6, **common_meta(sim, time.time() - w0))
-    np.savez_compressed(os.path.join(FRAMES, "repose_final.npz"), pos=sim.pos, rad=sim.rad,
-                        active=sim.active)
-    dump("repose", res)
-    print(f"angle of repose {ang:.1f} deg, N={sim.N}, on heap {sim.active.sum()}, wall {time.time()-w0:.0f}s")
+    res = dict(scenario="repose", angle_of_repose_deg=ang, heap_height_mm=float(H / MM),
+               heap_height_d=float(H / D_MEAN), n_glued=int(len(base)), n_mobile=int(len(pts)),
+               n_on_heap=int(mob.sum()), cylinder_r_mm=rc / MM, column_h_mm=hcol / MM,
+               lift_speed_m_s=v_lift, profile_r_mm=(rb / MM).tolist(), profile_h_mm=(hb / MM).tolist(),
+               fit_bins=int(sel.sum()), t_end_s=sim.t, ke_final_uJ=sim.kinetic_energy() * 1e6,
+               **common_meta(sim, time.time() - w0))
+    dump(f"repose_mur{MUR_PP:g}_mu{MU_PP:g}{SUFFIX}", res)
+    print(f"mu_r={MUR_PP} mu={MU_PP} Bo={BOND}: angle of repose {ang:.1f} deg, H={H/MM:.1f} mm "
+          f"({H/D_MEAN:.1f} d), fit bins {sel.sum()}, mobile {len(pts)}, glued {len(base)}, "
+          f"wall {time.time()-w0:.0f}s", flush=True)
 
 
 def sc_settle():
@@ -228,17 +254,17 @@ def sc_settle():
     print("N =", sim.N, "t_c =", contact_time(), "dt ratio =", contact_time() / DT, flush=True)
     w0 = time.time()
     log, _ = run(sim, 0.30, [(0, 0.0), (1, 0.0)], [(0, 0.0), (1, 0.0)])
-    sim.save(os.path.join(FRAMES, "settled.npz"))
+    sim.save(os.path.join(FRAMES, f"settled{SUFFIX}.npz"))
     res = dict(scenario="settle", m_total_mg=float(sim.mass.sum() * 1e6),
                m_disp_during_settle_mg=sim.m_disp * 1e6, log=log,
                **common_meta(sim, time.time() - w0))
-    dump("settle", res)
+    dump("settle" + SUFFIX, res)
     print(f"settled N={sim.N} in {time.time()-w0:.0f}s wall; KE={sim.kinetic_energy()*1e6:.4f} uJ")
 
 
 def load_settled():
     sim = make_auger()
-    sim.load(os.path.join(FRAMES, "settled.npz"))
+    sim.load(os.path.join(FRAMES, f"settled{SUFFIX}.npz"))
     sim.m_disp = 0.0
     sim.t = 0.0
     return sim
@@ -273,7 +299,7 @@ def sc_dose(tilt_deg, revs=1.5):
                bulk_vol_last_rev_mm3=last_rev * 1e-6 / (RHO * 0.6) * 1e9,
                m_total_mg=float(sim.mass.sum() * 1e6), log=log,
                **common_meta(sim, time.time() - w0))
-    name = f"dose_tilt{tilt_deg:g}"
+    name = f"dose_tilt{tilt_deg:g}{SUFFIX}"
     dump(name, res)
     save_frames(name, frames, sim)
 
@@ -295,8 +321,8 @@ def sc_leaktap():
     res = dict(scenario="leaktap", tilt_deg=45.0, m_during_tilt_mg=leak_tilt,
                leak_during_hold_mg=leak_hold, hold_s=t_hold - 0.05, tap_times_s=taps,
                mass_per_tap_mg=per_tap, log=log, **common_meta(sim, time.time() - w0))
-    dump("leaktap", res)
-    save_frames("leaktap", frames, sim)
+    dump("leaktap" + SUFFIX, res)
+    save_frames("leaktap" + SUFFIX, frames, sim)
 
 
 def sc_sequence(tilt=35.0):
@@ -342,9 +368,9 @@ def sc_sequence(tilt=35.0):
                m_per_tap_mg=[mi(tk + 0.15) - mi(tk) for tk in taps],
                m_tilt_back_mg=mi(t_end) - mi(T["back0"]), m_total_mg=mi(t_end), log=log,
                **common_meta(sim, time.time() - w0))
-    dump("sequence", res)
-    save_frames("sequence", frames, sim, extra=dict(
-        chamber0=dem.flight_chamber(sim.pos * 0 + np.load(os.path.join(FRAMES, "settled.npz"))["pos"], 0.0)))
+    dump("sequence" + SUFFIX, res)
+    pos0 = np.load(os.path.join(FRAMES, f"settled{SUFFIX}.npz"))["pos"]
+    save_frames("sequence" + SUFFIX, frames, sim, extra=dict(chamber0=dem.flight_chamber(pos0, 0.0)))
 
 
 if __name__ == "__main__":

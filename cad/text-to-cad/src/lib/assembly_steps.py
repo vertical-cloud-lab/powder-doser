@@ -83,8 +83,8 @@ def steps_servos_above() -> list[dict]:
     add("Solenoid onto the collar's plate: 2 x M3 x 5", [("solenoid", [0, 0, 45]),
                                                           ("solenoid_screw_lower", [0, 0, 20]),
                                                           ("solenoid_screw_upper", [0, 0, 20])])
-    add("Electronics: the POWDER_DOSER_V2 board on its holder behind the doser",
-        [("electronics", [0, 60, 40])])
+    add("Electronics: the POWDER_DOSER_V2 board on its holder beside the doser, "
+        "components facing it; 3 x #10 wood screws", [("electronics", [60, 0, 40])])
     return S
 
 

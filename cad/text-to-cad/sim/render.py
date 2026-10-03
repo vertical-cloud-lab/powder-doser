@@ -111,7 +111,8 @@ def make_gif(name="sequence", out="dem_sequence.gif", fps=15):
     axm.set_xlim(0, t_log[-1])
     axm.set_ylim(0, max(1.0, m_log.max() * 1.1))
     txt = fig.text(0.70, 0.46, "", va="top", ha="left", fontsize=10, color=INK, family="monospace")
-    fig.text(0.02, 0.965, "DEM: powder in the auger outlet section (side section, lab frame)",
+    fig.text(0.02, 0.965, "DEM: powder in the auger outlet section (side section, lab frame)"
+             + (f", cohesive Bo = {res['bond']:g}" if res.get("bond", 0) > 0 else ""),
              fontsize=11, color=INK, weight="bold")
     fig.text(0.70, 0.17, "colour = flight chamber at t = 0\n"
              "-- red dashed: capture plane (z = 6 mm)\n"
@@ -254,6 +255,10 @@ def plot_taps():
         s = load("sequence")
         a2.plot(np.arange(len(s["m_per_tap_mg"])), s["m_per_tap_mg"], "o", color=PAL[0], ms=8, mec=SURF,
                 mew=2, label=f"after 1 rev ({s['tilt_deg']:.0f} deg)")
+    if os.path.exists(os.path.join(RES, "sequence_bo3.json")):
+        s = load("sequence_bo3")
+        a2.plot(np.arange(len(s["m_per_tap_mg"])), s["m_per_tap_mg"], "s", color=PAL[2], ms=8, mec=SURF,
+                mew=2, label="after 1 rev, cohesive Bo = 3")
     for k, v in enumerate(r["mass_per_tap_mg"]):
         a2.text(k, v + 0.1, f"{v:.0f}", ha="center", va="bottom", fontsize=8, color=PAL[1])
     a2.set_xticks(np.arange(len(labels)), labels)
@@ -269,9 +274,9 @@ def plot_taps():
 
 
 def plot_repose():
-    if not os.path.exists(os.path.join(RES, "repose.json")):
+    if not os.path.exists(os.path.join(RES, "repose_mur0.8_mu0.6.json")):
         return
-    r = load("repose")
+    r = load("repose_mur0.8_mu0.6")
     fig, ax = plt.subplots(figsize=(5, 3))
     rr, hh = np.array(r["profile_r_mm"]), np.array(r["profile_h_mm"])
     ax.plot(rr, hh, "o-", color=PAL[0], ms=4, lw=1.5)
@@ -291,6 +296,8 @@ if __name__ == "__main__":
     what = sys.argv[1:] or ["gif", "plots"]
     if "gif" in what:
         make_gif()
+        if os.path.exists(os.path.join(FRAMES, "sequence_bo3_frames.npz")):
+            make_gif("sequence_bo3", "dem_sequence_cohesive.gif")
     if "plots" in what:
         plot_sequence()
         plot_dose()
