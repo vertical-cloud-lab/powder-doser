@@ -32,15 +32,21 @@ CAMERA = {"assembly": "35:22", "motion": "35:18"}
 
 
 def tree_of(variant: str):
-    mod, _ = MODELS[variant]
-    model = getattr(__import__(mod), mod)
-    return model()
+    """The assembly's labelled tree, as its model builds it (the clips only
+    need the labels; the saved STEP is what gets rendered)."""
+    from lib.electronics_place import electronics
+    return doser.build_doser(variant, electronics=electronics(variant))
+
+
+# the GIF holds each finished step itself (caption_gif), so the clip only
+# needs a short pause between moves; that keeps the frame count down
+GIF_MOVE, GIF_HOLD, GIF_PAUSE_MS = 1.5, 0.25, 1700
 
 
 def annotate(variant: str, tree, out_dir: Path) -> tuple[Path, list[dict]]:
     _, step_path = MODELS[variant]
-    steps = AS.steps_servos_above() if variant == "above" else AS.steps_servos_above()
-    clip_steps, captions = AS.timed_steps(tree, steps)
+    steps = AS.steps_servos_above()
+    clip_steps, captions = AS.timed_steps(tree, steps, GIF_MOVE, GIF_HOLD)
     js = doser.animation(variant, tree, clip_steps)
     out_dir.mkdir(parents=True, exist_ok=True)
     js_path = out_dir / f"{variant}_clips.js"
@@ -74,7 +80,8 @@ def video(step: Path, clip: str, out: Path, fps: int, width: int, height: int,
     subprocess.run(cmd, check=True, cwd=ROOT)
 
 
-def caption_gif(src: Path, dst: Path, captions: list[dict], fps: int, title: str) -> None:
+def caption_gif(src: Path, dst: Path, captions: list[dict], fps: int, title: str,
+                move: float = GIF_MOVE) -> None:
     from PIL import Image, ImageDraw, ImageFont, ImageSequence
 
     im = Image.open(src)
@@ -83,10 +90,16 @@ def caption_gif(src: Path, dst: Path, captions: list[dict], fps: int, title: str
         bold = ImageFont.truetype("DejaVuSans-Bold.ttf", 21)
     except OSError:
         font = bold = ImageFont.load_default()
-    frames, n = [], len(captions)
+    frames, durations, n = [], [], len(captions)
     for i, fr in enumerate(ImageSequence.Iterator(im)):
         t = i / fps
         cap = next((c for c in captions if c["t0"] <= t < c["t1"]), captions[-1])
+        # a step's frames while its parts move, then its last frame, held so
+        # the caption can be read (the clip's own hold frames are dropped)
+        last = t + 1.0 / fps >= cap["t1"] - 1e-6
+        if t >= cap["t0"] + move and not last:
+            continue
+        durations.append(GIF_PAUSE_MS if last else int(1000 / fps))
         fr = fr.convert("RGB")
         w, h = fr.size
         bar = 78
@@ -109,7 +122,7 @@ def caption_gif(src: Path, dst: Path, captions: list[dict], fps: int, title: str
         for k, ln in enumerate(lines[:2]):
             d.text((16, h + 34 + 21 * k), ln, font=font, fill=(240, 240, 240))
         frames.append(canvas.quantize(colors=128, method=Image.Quantize.MEDIANCUT))
-    frames[0].save(dst, save_all=True, append_images=frames[1:], duration=int(1000 / fps),
+    frames[0].save(dst, save_all=True, append_images=frames[1:], duration=durations,
                    loop=0, optimize=True)
 
 

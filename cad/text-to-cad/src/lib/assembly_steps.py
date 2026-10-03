@@ -112,21 +112,24 @@ def resolve(tree, label: str) -> list[str]:
     return [] if node is None else leaves(node)
 
 
-def timed_steps(tree, steps: list[dict]) -> tuple[list[dict], list[dict]]:
+def timed_steps(tree, steps: list[dict], move: float = MOVE,
+                hold: float = HOLD) -> tuple[list[dict], list[dict]]:
     """(clip steps for doser.animation, caption timeline).  Parts whose
     label isn't in the tree are skipped (e.g. no electronics)."""
     clip, captions, t = [], [], 0.0
     for i, st in enumerate(steps):
         groups = []
         for label, d in st["parts"]:
-            leaves = resolve(tree, label)
+            # leaves can share a label (the PCB's header pins do); the clip's
+            # m.get(label) moves all of them, so each label goes in once
+            leaves = list(dict.fromkeys(resolve(tree, label)))
             if leaves:
                 groups.append({"parts": leaves, "dir": d, "t0": round(t, 3),
-                               "move": MOVE, "hold": HOLD})
+                               "move": move, "hold": hold})
         if not groups:
             continue
         clip += groups
         captions.append({"step": len(captions) + 1, "t0": round(t, 3),
-                         "t1": round(t + MOVE + HOLD, 3), "caption": st["caption"]})
-        t += MOVE + HOLD
+                         "t1": round(t + move + hold, 3), "caption": st["caption"]})
+        t += move + hold
     return clip, captions

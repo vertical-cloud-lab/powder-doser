@@ -236,13 +236,14 @@ def kinematics(variant: str) -> dict:
 # animation clips (a self-contained JS module in the sidecar)
 # --------------------------------------------------------------------------- #
 def leaf_labels(shape) -> list[str]:
-    out = []
-    kids = getattr(shape, "children", ()) or ()
-    if not kids:
-        return [shape.label] if shape.label else []
-    for ch in kids:
-        out += leaf_labels(ch)
-    return out
+    """Distinct leaf labels under ``shape`` (the clip's m.get(label) moves
+    every leaf carrying a label, so a repeated one must not be moved twice)."""
+    def rec(node):
+        kids = getattr(node, "children", ()) or ()
+        if not kids:
+            return [node.label] if node.label else []
+        return [lbl for ch in kids for lbl in rec(ch)]
+    return list(dict.fromkeys(rec(shape)))
 
 
 def animation(variant: str, tree: bd.Compound, steps: list[dict]) -> str:
