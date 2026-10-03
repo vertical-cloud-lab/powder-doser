@@ -364,7 +364,7 @@ is the only CAD artifact currently on `main`.
 | M3 clamp screws | 3 | 1 per auger bracket (×2) + 1 tap collar | PR #47/#51 |
 | M3 × 12 SHCS + nut (bracket mounting) | 8 | 4 per bracket × 2 | PR #59 |
 | M3 × 12 SHCS + nut (tap-collar mount) | 4 | — | PR #59 |
-| M3 × 8 SHCS (NEMA-11 mount) | 4 | 23 mm bolt pattern | PR #59 |
+| M2.5 × 8 SHCS (NEMA-11 mount) | 4 | 23 mm bolt pattern; the motor's face holes are M2.5-tapped (`params.py` `NEMA11_HOLE_PITCH`), so M3 won't thread | PR #59, PR #112 |
 | M3 self-tapping (solenoid) | 2 | into Ø2.7 pilots | PR #51 |
 | M3 setscrew (stepper pinion) | 1 | into Ø2.5 pilot | PR #112 |
 | M5 hinge pin + lock-nut | 2 | one per side (Ø5 pin, Ø5.4 bore) | PR #57/#63 |

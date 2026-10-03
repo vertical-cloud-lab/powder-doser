@@ -1,5 +1,33 @@
 # Remaining to order — 25 dosers (as of 2026-09-18)
 
+> **Update 2026-10-02 — live-priced via the lab Pi.** @Dila-Kandel's
+> 2026-09-24 check left four items unordered: 48 V PSU, 5 V bucks, wiring
+> substrate, M3/M5 fasteners. The wiring substrate drops out: the V2 PCB
+> (`POWDER_DOSER_V2.zip`, PR #115 2026-09-29) is the substrate, and its
+> `5v_reg` footprint is the D24V22F5's 0.7″ × 0.7″ outline, so the bucks are
+> still needed. Remaining cost **excluding PCBs ≈ $564** before shipping/tax:
+>
+> | Item | Qty | Source (2026-10-02) | Ext $ |
+> |---|---|---|---|
+> | Pololu **D24V22F5** 5 V/2.5 A buck | 25 | [pololu.com #2858](https://www.pololu.com/product/2858): $17.43 @5+, 97 in stock (+100 buildable "within a few days") | 435.75 |
+> | Mean Well **LRS-350-48** 48 V/7.3 A PSU (carousel) | 1 | [TRC Electronics](https://www.trcelectronics.com/products/mean-well-lrs-350-48) $36.11, in stock (Amazon genuine Mean Well [B013EU4KNK](https://www.amazon.com/dp/B013EU4KNK) $40.29; skip the ≈$24 no-brand clones) | 36.11 |
+> | Fasteners, 18-8 stainless, all 25 dosers (breakdown below) | — | [Bolt Depot](https://boltdepot.com/Metric_socket_cap_Stainless_steel_18-8_(A-2)) | 92.50 |
+> | **Total** | | | **564.36** |
+>
+> Fastener breakdown (BOM §6.2 × 25; Bolt Depot product #):
+> M3×12 SHCS #6381, 350 → 4 × 100 = $17.72 · M3×16 SHCS #6382 (clamps), 75 →
+> 100 = $4.50 · M3 hex nut #4773, 375 → 4 × 100 = $9.56 · M3×4 cup-point set
+> screw #8705, 25 → 100 = $5.56 · **M2.5**×8 SHCS #6371 (NEMA-11 face holes are
+> M2.5, not M3), 100 → 100 = $6.61 · M5×40 SHCS #6414 (hinge pins), 50 × $0.34 =
+> $17.00 · M5×20 SHCS #6410 (corners + servo flange), 150 → 100 + 50 × $0.17 =
+> $20.47 · M5 nylon-insert lock nut #4794, 200 → 2 × 100 = $11.08. M5 corner-bolt
+> length depends on the stand.
+>
+> Not in the total: the V2 PCB's `12vBarrel` footprint needs a PCB-mount
+> 5.5 × 2.1 mm jack per board. Same Sky PJ-002AH (5 A) is $0.71 on DigiKey
+> (≈$18 for 25); match the footprint to the jack the BYU-built boards used. It
+> replaces the optional Adafruit 368 jack-to-terminal line in the DigiKey cart.
+
 Answer to @kinstonwithoutg's 2026-09-15 check-in on PR #115 ("Check what do I
 have left to order on DigiKey or other places for 25 dosers"), cross-referencing
 the arrived-items list against [`BILL-OF-MATERIALS.md`](../BILL-OF-MATERIALS.md)
