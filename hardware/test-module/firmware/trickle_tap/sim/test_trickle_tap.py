@@ -1,0 +1,949 @@
+"""CPython tests for the trickle-tap runner (no hardware needed).
+
+Drives the real ``TrickleTapDoser`` (and through it the real
+``ThreePhaseDoser`` read machinery and the pure-Python ``TrickleKF``)
+against a virtual powder plant with a first-order balance lag, so the
+identical code path the Pico runs is exercised end to end.
+
+Also cross-checks ``TrickleKF`` against the trim study's numpy
+``MassRateLagKF`` (``optimization/trim/estimators.py``) on a shared
+input trace -- the "identical outputs" acceptance criterion from
+``docs/trim-bench-plan.md`` section 4.  That one test is skipped with a
+notice when numpy is not installed; everything else is stdlib-only.
+
+Run:  python3 hardware/test-module/firmware/trickle_tap/sim/test_trickle_tap.py
+"""
+
+import json
+import random
+import sys
+import types
+from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(_HERE.parent))          # the trickle_tap folder
+
+
+# --- stub the Pico-only modules before the imports -------------------------
+
+_config = types.ModuleType("config")
+for _k, _v in (
+        ("SCALE_UART_ID", 0), ("PIN_SCALE_TX", 12), ("PIN_SCALE_RX", 13),
+        ("SCALE_BAUD", 19200), ("SCALE_BITS", 8), ("SCALE_PARITY", 0),
+        ("SCALE_STOP", 1), ("SCALE_RESPONSE_TIMEOUT_MS", 1000),
+        ("SCALE_STABLE_TIMEOUT_MS", 10000), ("STEPPER_SPEED_RPM", 30.0),
+        ("STEPPER_MICROSTEPS", 8), ("STEPPER_FULL_STEPS_REV", 200),
+        ("STEPPER_ACCEL_REV_PER_S2", 2.0), ("STEPPER_DISPENSE_DEG", 360.0),
+        ("TAP_ON_MS", 60), ("TAP_OFF_MS", 150), ("TAP_PWM_DUTY", 1.0),
+        ("TAP_COUNT", 1), ("SERVO_SPEED_DEG_PER_S", 60.0),
+        ("SERVO_PRESETS", {"horizontal": 0, "vertical": 90}),
+        ("TIC_UART_ID", 1), ("PIN_TIC_TX", 4), ("PIN_TIC_RX", 5),
+        ("TIC_BAUD", 9600), ("TIC_READ_TIMEOUT_MS", 50),
+        ("STEPPER_DIRECTION", 1), ("STEPPER_IDLE_DEENERGIZE", True)):
+    setattr(_config, _k, _v)
+sys.modules.setdefault("config", _config)
+
+_tic = types.ModuleType("tic")
+
+
+class _NoTic:
+    def __init__(self, *a, **k):
+        raise RuntimeError("sim tests do not touch the Tic")
+
+
+_tic.TicSerial = _NoTic
+sys.modules.setdefault("tic", _tic)
+
+import main_three_phase as m3                                    # noqa: E402
+from trickle_controller import (TrickleTapDoser, TELEMETRY_HEADER,  # noqa: E402
+                                params_dict)
+from trickle_kf import TrickleKF                                 # noqa: E402
+import trickle_params                                            # noqa: E402
+
+
+# ---------------------------------------------------------------------------
+# Virtual clock, plant, and rig fakes
+# ---------------------------------------------------------------------------
+
+class VirtualClock:
+    def __init__(self, plant=None):
+        self.t = 0.0
+        self.plant = plant
+
+    def sleep_ms(self, ms):
+        remaining = ms / 1000.0
+        step = 0.01
+        while remaining > 1e-9:
+            dt = min(step, remaining)
+            self.t += dt
+            if self.plant is not None:
+                self.plant.advance(dt)
+            remaining -= dt
+
+    def time(self):
+        return self.t
+
+    def ticks_ms(self):
+        return int(self.t * 1000)
+
+
+class Plant:
+    """Hopper -> auger -> lip -> pan, with a first-order lagged balance.
+
+    Deliberately simple and smooth (no slug quantisation) so the
+    closed-loop assertions are about the CONTROLLER, not about a noisy
+    plant realisation.  ``tau_bal_s`` defaults to the KF's belief so the
+    happy-path tests run with a well-modelled balance; the robustness
+    smoke test overrides it.
+    """
+
+    def __init__(self, ff_g_per_rev=0.113, tau_bal_s=0.7, lip_tau_s=0.4,
+                 tap_yield_g=0.0065, hopper_g=50.0, seed=7,
+                 quiet_sd=2e-4, noisy_sd=2e-3, afterflow_s=0.6,
+                 holdup_g=0.10, dislodge_g=0.006):
+        self.ff = ff_g_per_rev
+        self.tau_bal = tau_bal_s
+        self.lip_tau = lip_tau_s
+        self.tap_yield = tap_yield_g
+        self.hopper = hopper_g
+        self.rng = random.Random(seed)
+        self.quiet_sd = quiet_sd
+        self.noisy_sd = noisy_sd
+        self.afterflow_s = afterflow_s    # lip keeps draining this long
+        self.holdup_g = holdup_g          # screw charge near the outlet
+        self.dislodge_g = dislodge_g      # what a rest-nudge shakes loose
+        self.rpm = 0.0
+        self.tilt = 45.0
+        self.lip = 0.0
+        self.screw = 0.0
+        self.pan = 0.0
+        self.b = 0.0            # lagged balance state
+        self.since_spin = 1e9
+        self.max_rpm_seen = 0.0
+
+    def set_rpm(self, rpm):
+        self.rpm = max(0.0, rpm)
+        self.max_rpm_seen = max(self.max_rpm_seen, self.rpm)
+
+    def meter(self, revs):
+        """Auger turns move powder from the hopper onto the lip."""
+        mass = min(self.hopper, self.ff * revs)
+        self.hopper -= mass
+        self.lip += mass
+        # spinning also charges the screw's outlet holdup
+        self.screw = min(self.holdup_g, self.screw + 0.3 * mass)
+
+    def nudge(self, revs):
+        """A rotation from rest: meters, and dislodges some lip charge."""
+        self.meter(revs)
+        moved = min(self.screw, self.dislodge_g)
+        self.screw -= moved
+        self.lip += moved
+        self.since_spin = 0.0             # shaken material can fall
+
+    def tap_once(self):
+        moved = min(self.lip, self.tap_yield)
+        self.lip -= moved
+        self.pan += moved
+
+    def advance(self, dt):
+        if self.rpm > 0.0:
+            self.meter(self.rpm / 60.0 * dt)
+            self.since_spin = 0.0
+        else:
+            self.since_spin += dt
+        # The trim-study premise: at rest nothing arrives.  The lip only
+        # discharges while actuating or during a short afterflow window.
+        if self.rpm > 0.0 or self.since_spin < self.afterflow_s:
+            k = (0.2 + 0.8 * max(0.0, self.tilt) / 25.0) / self.lip_tau
+            flow = self.lip * min(1.0, k * dt)
+            self.lip -= flow
+            self.pan += flow
+        # balance reading tracks the pan mass through a first-order lag
+        self.b += (self.pan - self.b) * min(1.0, dt / max(1e-3, self.tau_bal))
+
+    @property
+    def actuating(self):
+        return self.rpm > 0.0
+
+
+class Reading:
+    def __init__(self, grams, stable):
+        self.grams = grams
+        self.stable = stable
+        self.overload = False
+        self.unit = "g"
+
+
+class FakeScale:
+    def __init__(self, plant, clock):
+        self.plant = plant
+        self.clock = clock
+        self.tare_ref = 0.0
+
+    def _displayed(self):
+        noisy = self.plant.actuating
+        sd = self.plant.noisy_sd if noisy else self.plant.quiet_sd
+        return (self.plant.b - self.tare_ref
+                + self.plant.rng.gauss(0.0, sd))
+
+    def read(self):
+        return Reading(self._displayed(), not self.plant.actuating)
+
+    def read_stable(self, timeout_ms=10000):
+        return Reading(self._displayed(), True)
+
+    def zero(self):
+        self.tare_ref = self.plant.b
+        self.clock.sleep_ms(1500)
+
+
+class FakeStepper:
+    def __init__(self, plant):
+        self.plant = plant
+        self.total_deg = 0.0
+        self.velocity_calls = 0
+        self._rpm = 30.0
+
+    def set_speed(self, rpm):
+        self._rpm = rpm
+
+    def rotate_degrees(self, deg):
+        self.total_deg += deg
+        self.plant.nudge(deg / 360.0)
+
+    def run_at_rpm(self, rpm):                # bulk velocity mode
+        self.plant.set_rpm(rpm)
+
+    def set_velocity_rpm(self, rpm):          # trickle PI commands
+        self.velocity_calls += 1
+        self.plant.set_rpm(rpm)
+
+    def keep_alive(self):
+        pass
+
+    def stop(self):
+        self.plant.set_rpm(0.0)
+
+    def enable(self, on=True):
+        pass
+
+
+class FakeTap:
+    def __init__(self, plant):
+        self.plant = plant
+        self.count = 0
+
+    def tap(self, count=1, on_ms=None, off_ms=None):
+        for _ in range(count):
+            self.count += 1
+            self.plant.tap_once()
+
+
+class FakeServo:
+    def __init__(self, plant):
+        self.plant = plant
+        self.angle = 45.0
+        self.history = []
+
+    def move_to(self, angle):
+        self.angle = angle
+        self.history.append(angle)
+        self.plant.tilt = angle
+
+
+def make_doser(plant, p_over=None, log=lambda *a: None):
+    clock = VirtualClock(plant)
+    scale = FakeScale(plant, clock)
+    stepper = FakeStepper(plant)
+    tap = FakeTap(plant)
+    servo = FakeServo(plant)
+    p = params_dict(trickle_params)
+    p["log_to_flash"] = False                 # no files from tests
+    p["print_every_n_polls"] = 10 ** 9
+    if p_over:
+        p.update(p_over)
+    doser = TrickleTapDoser(stepper, tap, servo, scale, _config, p=p,
+                            log=log, monotonic=clock.time,
+                            sleep_ms=clock.sleep_ms,
+                            ticks_ms=clock.ticks_ms)
+    return doser, stepper, tap, servo, clock
+
+
+# ---------------------------------------------------------------------------
+# Check harness (same convention as sim/test_three_phase_reads.py)
+# ---------------------------------------------------------------------------
+
+_FAILURES = []
+
+
+def check(what, ok):
+    print("  {} {}".format("PASS" if ok else "FAIL", what))
+    if not ok:
+        _FAILURES.append(what)
+
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+
+def test_kf_matches_numpy_reference():
+    try:
+        import numpy  # noqa: F401
+    except ImportError:
+        print("  SKIP numpy not installed -- cross-check not run "
+              "(pip install numpy to enable)")
+        return
+    trim_dir = _HERE.parents[4] / "optimization" / "trim"
+    if not (trim_dir / "estimators.py").exists():
+        print("  SKIP optimization/trim not present in this checkout")
+        return
+    sys.path.insert(0, str(trim_dir))
+    from estimators import MassRateLagKF
+
+    dt = 0.25
+    ref = MassRateLagKF(dt, tau_bal_s=0.7)
+    kf = TrickleKF(dt, tau_bal_s=0.7)
+    ref.seed(0.05)
+    kf.seed(0.05)
+    rng = random.Random(3)
+    worst = 0.0
+    z = 0.05
+    for i in range(400):
+        z += max(0.0, rng.gauss(0.008, 0.004))     # a rising mass trace
+        noisy = i % 7 != 0
+        fresh = i % 5 != 4                          # stale frames mixed in
+        u = None if i % 11 == 10 else 12.0 / 60.0   # input dropouts too
+        m_ref, r_ref = ref.update(z, noisy, u_rev_s=u, ff=0.113, fresh=fresh)
+        m_new, r_new = kf.update(z, noisy, u_rev_s=u, ff=0.113, fresh=fresh)
+        worst = max(worst, abs(m_ref - m_new), abs(r_ref - r_new),
+                    abs(ref.pred_sigma(0.3) - kf.pred_sigma(0.3)))
+    check("pure-Python KF matches the numpy study filter to 1e-9 "
+          "(worst |diff| = {:.2e})".format(worst), worst < 1e-9)
+    check("clamp accounting matches ({} vs {})".format(
+        ref.clamp_hits, kf.clamp_hits), ref.clamp_hits == kf.clamp_hits)
+    sys.path.remove(str(trim_dir))
+
+
+def test_kf_basic_properties():
+    kf = TrickleKF(0.25, tau_bal_s=0.7)
+    kf.seed(0.1)
+    for _ in range(200):
+        m, r = kf.update(0.1, False, u_rev_s=0.0, ff=0.113)
+    check("KF converges to a constant reading (|m-0.1| < 0.2 mg)",
+          abs(m - 0.1) < 2e-4)
+    check("rate estimate decays to ~0 on a constant reading", r < 1e-4)
+    sym = max(abs(kf.P[i][j] - kf.P[j][i])
+              for i in range(3) for j in range(3))
+    check("covariance stays symmetric (max asym {:.1e})".format(sym),
+          sym < 1e-12)
+    check("pred_sigma positive and finite", 0.0 < kf.pred_sigma(0.3) < 1.0)
+
+
+def test_small_dose_trickles_to_tolerance():
+    plant = Plant()
+    doser, stepper, tap, servo, clock = make_doser(plant)
+    target = 0.2
+    res = doser.dose(target)
+    err_mg = 1000.0 * (res.dispensed_g - target)
+    stages = dict(res.phase_cycles)
+    print("    -> {!r} (error {:+.1f} mg, {} taps)".format(
+        res, err_mg, tap.count))
+    check("dose completes ok", res.status == m3.DoseResult.OK)
+    check("bulk skipped for a 0.2 g target", stages.get("bulk", -1) == 0)
+    check("trickle stage ran (>= 10 polls)", stages.get("trickle", 0) >= 10)
+    check("final mass within +/-5 mg of target (got {:+.1f} mg)".format(
+        err_mg), abs(err_mg) <= 5.0)
+    check("commanded rpm never exceeded the cap",
+          plant.max_rpm_seen <= doser.p["trickle_rpm_cap"] + 1e-9)
+    check("PI actually commanded velocities", stepper.velocity_calls > 5)
+
+
+def test_large_dose_runs_bulk_first():
+    plant = Plant()
+    doser, stepper, tap, servo, clock = make_doser(plant)
+    res = doser.dose(1.0)
+    stages = dict(res.phase_cycles)
+    err_mg = 1000.0 * (res.dispensed_g - 1.0)
+    print("    -> {!r} (error {:+.1f} mg)".format(res, err_mg))
+    check("dose completes ok", res.status == m3.DoseResult.OK)
+    check("bulk ran for a 1 g target", stages.get("bulk", 0) > 0)
+    check("final mass within +/-5 mg of target (got {:+.1f} mg)".format(
+        err_mg), abs(err_mg) <= 5.0)
+
+
+def test_within_tolerance_means_no_actuation():
+    plant = Plant()
+    doser, stepper, tap, servo, clock = make_doser(plant)
+    res = doser.dose(0.004)          # 4 mg target, inside the 5 mg tolerance
+    check("done immediately", res.status == m3.DoseResult.OK)
+    check("auger never turned", stepper.total_deg == 0.0
+          and plant.max_rpm_seen == 0.0)
+    check("solenoid never fired", tap.count == 0)
+
+
+def test_stalled_trickle_hands_to_taps():
+    # Hopper runs dry mid-trickle; lip retains enough for the taps.
+    plant = Plant(hopper_g=0.16, lip_tau_s=2.5)
+    plant.lip = 0.03
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over={"stall_bail_s": 4.0})
+    res = doser.dose(0.2)
+    print("    -> {!r} ({} taps)".format(res, tap.count))
+    check("stall did not abort the dose (status ok or stalled-in-taps)",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.STALLED))
+    check("tap endgame engaged after the stall", tap.count > 0)
+
+
+def test_telemetry_rows_are_well_formed():
+    plant = Plant()
+    doser, stepper, tap, servo, clock = make_doser(plant)
+    doser.dose(0.2)
+    n_cols = len(TELEMETRY_HEADER.split(","))
+    bad = [r for r in doser.telemetry if len(r.split(",")) != n_cols]
+    check("telemetry captured ({} rows)".format(len(doser.telemetry)),
+          len(doser.telemetry) > 10)
+    check("every row has the header's {} columns ({} bad)".format(
+        n_cols, len(bad)), not bad)
+    trickle_rows = [r for r in doser.telemetry
+                    if r.split(",")[1] == "trickle"]
+    check("trickle rows carry rpm/pred fields",
+          trickle_rows and all(r.split(",")[11] != "" for r in trickle_rows))
+
+
+def test_balance_lag_mismatch_smoke():
+    # Plant lag 0.16 s (the drop-test value) vs the KF belief of 0.7 s --
+    # the mismatch bench-plan test B4 probes.  Just proves the port keeps
+    # running and finishes; the overshoot statistics are the study's job.
+    plant = Plant(tau_bal_s=0.16)
+    doser, stepper, tap, servo, clock = make_doser(plant)
+    res = doser.dose(0.2)
+    err_mg = 1000.0 * (res.dispensed_g - 0.2)
+    print("    -> {!r} (error {:+.1f} mg)".format(res, err_mg))
+    check("dose terminates gracefully under lag mismatch",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.OVERSHOOT,
+                         m3.DoseResult.STALLED))
+    check("error still inside +/-25 mg under mismatch", abs(err_mg) <= 25.0)
+
+
+def test_live_param_change_applies():
+    plant = Plant()
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over={"trickle_tilt_deg": 12.5, "bulk_enabled": False})
+    res = doser.dose(0.5)
+    stages = dict(res.phase_cycles)
+    check("bulk_enabled=False forces a pure trickle start",
+          stages.get("bulk", -1) == 0)
+    check("trickle ran at the configured tilt (servo saw 12.5)",
+          12.5 in servo.history and stages.get("trickle", 0) > 0)
+
+
+# ---------------------------------------------------------------------------
+# Issue #164 additions: RESULT line, stop events, cadence taps,
+# overshoot guard, final settle.
+# ---------------------------------------------------------------------------
+
+def _dose_collecting(plant, p_over=None, target=1.0):
+    """Run a dose capturing log lines; returns (res, RESULT doc, rig)."""
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over=p_over, log=lambda msg="": lines.append(str(msg)))
+    tap.times = []
+    _plain_tap = tap.tap
+
+    def timed_tap(count=1, on_ms=None, off_ms=None):
+        tap.times.append(clock.t)
+        _plain_tap(count, on_ms, off_ms)
+
+    tap.tap = timed_tap
+    res = doser.dose(target)
+    doc = None
+    for ln in lines:
+        if ln.startswith("RESULT "):
+            doc = json.loads(ln[len("RESULT "):])
+    return res, doc, doser, tap, clock
+
+
+def test_result_line_and_stop_events():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=1.0)
+    check("RESULT line emitted and parses as json", doc is not None)
+    if doc is None:
+        return
+    check("RESULT status matches the DoseResult ({})".format(doc["status"]),
+          doc["status"] == res.status)
+    check("RESULT final_g matches dispensed ({} vs {:.5f})".format(
+        doc["final_g"], res.dispensed_g),
+        abs(doc["final_g"] - res.dispensed_g) < 1e-6)
+    check("scored against the settled final reading",
+          doc["settled_final"] == 1)
+    check("phase times present and t_total covers them",
+          doc["t_total_s"] >= doc["t_bulk_s"] + doc["t_trickle_s"]
+          + doc["t_tap_s"] + doc["t_settle_s"] - 0.1)
+    check("final settle waited >= final_settle_ms",
+          doc["t_settle_s"] >= trickle_params.FINAL_SETTLE_MS / 1000.0)
+    check("params echo carries the 8 searched knobs",
+          all(k in doc["params"] for k in (
+              "bulk_tap", "trickle_tap", "bulk_tilt_deg",
+              "trickle_tilt_deg", "tap_tilt_deg", "bulk_rpm",
+              "trickle_start_remaining_g", "tolerance_g",
+              "tau_afterflow_s")))
+    events = doc["stop_events"]
+    check("two stop events for a bulk + trickle dose (got {})".format(
+        len(events)), len(events) == 2)
+    if len(events) == 2:
+        bulk, trickle = events
+        check("bulk stop event has a positive trailing slope "
+              "({})".format(bulk["rate_slope_gps"]),
+              bulk["phase"] == "bulk"
+              and bulk["rate_slope_gps"] is not None
+              and 0.02 < bulk["rate_slope_gps"] < 0.5)
+        check("trickle stop event carries the KF rate "
+              "({})".format(trickle["rate_kf_gps"]),
+              trickle["phase"] == "trickle"
+              and trickle["rate_kf_gps"] is not None
+              and 0.0 <= trickle["rate_kf_gps"] <= 0.06)
+        check("afterflow deltas recorded (bulk {:+.1f} mg)".format(
+            1000.0 * bulk["afterflow_g"]),
+            bulk["afterflow_g"] is not None
+            and trickle["afterflow_g"] is not None)
+        check("events record the tau they executed with",
+              bulk["tau_s"] == doser.p["tau_afterflow_s"]
+              and trickle["tau_s"] == doser.p["tau_afterflow_s"])
+
+
+def test_bulk_cadence_taps_at_2hz():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(
+        plant, p_over={"bulk_tap": True}, target=1.0)
+    check("dose with bulk cadence taps completes",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.OVERSHOOT))
+    bulk_end = doc["t_bulk_s"] + 5.0 if doc else 15.0
+    bulk_taps = [t for t in tap.times if t <= bulk_end]
+    check("cadence taps fired during bulk ({} taps)".format(
+        len(bulk_taps)), len(bulk_taps) >= 3)
+    if len(bulk_taps) >= 3:
+        gaps = [b - a for a, b in zip(bulk_taps, bulk_taps[1:])]
+        gaps.sort()
+        median = gaps[len(gaps) // 2]
+        check("cadence period ~0.5 s (median gap {:.2f} s)".format(median),
+              0.4 <= median <= 0.65)
+    check("taps counted in the dose summary", res.taps >= len(bulk_taps))
+
+
+def test_trickle_cadence_taps():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(
+        plant, p_over={"trickle_tap": True, "bulk_enabled": False},
+        target=0.2)
+    check("trickle-cadence dose completes",
+          res.status in (m3.DoseResult.OK, m3.DoseResult.OVERSHOOT))
+    check("cadence taps fired during the trickle ({} total)".format(
+        len(tap.times)), len(tap.times) >= 3)
+    check("shipped defaults keep both cadences off (salt baseline)",
+          trickle_params.BULK_TAP is False
+          and trickle_params.TRICKLE_TAP is False)
+    check("RESULT records trickle_tap on", doc is not None
+          and doc["params"]["trickle_tap"] in (True, 1))
+
+
+def test_overshoot_guard_aborts_runaway():
+    # A pathological feed factor (8 g/rev) blows past the target between
+    # polls; the guard must abort as OVERSHOOT instead of carrying on.
+    plant = Plant(ff_g_per_rev=8.0)
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=1.0)
+    check("runaway dose aborts as overshoot (got {})".format(res.status),
+          res.status == m3.DoseResult.OVERSHOOT)
+    check("tap endgame never ran after the abort", res.taps == 0)
+    check("RESULT still emitted on the abort path", doc is not None
+          and doc["status"] == m3.DoseResult.OVERSHOOT)
+
+
+def test_final_settle_reads_at_rest():
+    plant = Plant()
+    res, doc, doser, tap, clock = _dose_collecting(plant, target=0.2)
+    if res.status != m3.DoseResult.OK:
+        check("final-settle test needs an ok dose (got {})".format(
+            res.status), False)
+        return
+    # After 2 s at rest the lagged balance has converged to the pan, so
+    # the scoring read matches the true settled mass.
+    check("scoring read matches the true pan mass "
+          "({:+.1f} mg apart)".format(
+              1000.0 * (res.dispensed_g - plant.pan)),
+          abs(res.dispensed_g - plant.pan) < 0.003)
+
+
+def _dose_counting_taps(plant, p_over, target):
+    """Dose recording (taps fired, true mass to go) per solenoid call."""
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, p_over=p_over, log=lambda msg="": lines.append(str(msg)))
+    calls = []
+    _plain_tap = tap.tap
+
+    def counting_tap(count=1, on_ms=None, off_ms=None):
+        calls.append((count, target - plant.pan))
+        _plain_tap(count, on_ms, off_ms)
+
+    tap.tap = counting_tap
+    res = doser.dose(target)
+    doc = None
+    for ln in lines:
+        if ln.startswith("RESULT "):
+            doc = json.loads(ln[len("RESULT "):])
+    return res, doc, calls
+
+
+def test_tap_burst_until_close():
+    # 1 mg taps so the endgame is long enough to see both stretches.
+    over = {"tap_burst_above_g": 0.020, "tap_burst_taps": 2}
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001), over,
+                                          0.2)
+    counts = [c for c, _ in calls]
+    print("    -> {!r} ({} doubles, {} singles)".format(
+        res, counts.count(2), counts.count(1)))
+    check("burst dose completes ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK)
+    check("taps fired two at a time first", counts[:1] == [2])
+    check("then single taps for the last stretch",
+          1 in counts and 2 not in counts[counts.index(1):])
+    check("every double fired with more than 20 mg to go "
+          "(read through the balance lag)",
+          all(togo > 0.020 - 0.003 for c, togo in calls if c == 2))
+    stages = doc["phase_cycles"] if doc else {}
+    check("RESULT counts the burst cycles inside the tap stage",
+          0 < stages.get("tap_burst", 0) < stages.get("tap", 0))
+    check("RESULT records the burst knobs as executed", doc is not None
+          and doc["params"]["tap_burst_above_g"] == 0.020
+          and doc["params"]["tap_burst_taps"] == 2)
+    check("taps total matches the solenoid calls",
+          res.taps == sum(counts))
+
+    # The two stretches share the cycle budget.
+    over_budget = dict(over, tap_max_cycles=12)
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001),
+                                          over_budget, 0.2)
+    stages = doc["phase_cycles"] if doc else {}
+    check("shared budget: {} tap cycles in total, at most 12".format(
+        stages.get("tap")), stages.get("tap", 99) <= 12
+          and res.status == m3.DoseResult.BUDGET)
+
+    # Off by default: the shipped salt behaviour is single taps only.
+    res, doc, calls = _dose_counting_taps(Plant(tap_yield_g=0.001), None,
+                                          0.2)
+    check("shipped defaults keep the burst off (single taps only)",
+          trickle_params.TAP_BURST_ABOVE_G == 0.0
+          and set(c for c, _ in calls) == {1}
+          and "tap_burst" not in (doc or {}).get("phase_cycles", {}))
+
+
+def test_telemetry_can_never_abort_a_dose():
+    # 2026-09-30 Al 4047 (PR #166): the telemetry list's growth raised
+    # MemoryError at row 257, mid-bulk, and the exception escaped the dose
+    # with no RESULT line.  (1) A full row store, (2) a row that cannot
+    # be allocated, and (3) any exception inside the dose must all still
+    # end in a RESULT, with the auger stopped.
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        Plant(), {"log_max_rows": 20}, log=lines.append)
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    check("capped telemetry: dose still ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK)
+    check("capped telemetry: 20 rows kept, RESULT flags truncation",
+          len(doser.telemetry) == 20 and doc["telemetry_truncated"] == 1)
+    check("capped telemetry: the slot array was sized from log_max_rows",
+          doser.telemetry.cap == 20)
+
+    doser, stepper, tap, servo, clock = make_doser(Plant())
+    real_append = doser.telemetry.append
+
+    def append_oom(row):
+        if doser.telemetry.n >= 30:
+            raise MemoryError("memory allocation failed, allocating "
+                              "2048 bytes")
+        return real_append(row)
+    doser.telemetry.append = append_oom
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    check("row MemoryError: dose completes ok (got {})".format(res.status),
+          res.status == m3.DoseResult.OK and abs(res.dispensed_g - 2.0)
+          <= doser.p["tolerance_g"] + 1e-9)
+    check("row MemoryError: truncation flagged in RESULT",
+          doc["telemetry_truncated"] == 1)
+
+    plant = Plant()
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(plant,
+                                                   log=lines.append)
+    real_read = doser.scale.read
+    calls = [0]
+
+    def read_boom():
+        calls[0] += 1
+        if calls[0] == 60:
+            raise MemoryError("memory allocation failed, allocating "
+                              "2048 bytes")
+        return real_read()
+    doser.scale.read = read_boom
+    res = doser.dose(2.0)
+    doc = doser.last_result
+    result_lines = [l for l in lines if l.startswith("RESULT ")]
+    check("dose exception: exactly one RESULT line", len(result_lines) == 1)
+    check("dose exception: status fw-error with the error text",
+          doc is not None and doc["status"] == "fw-error"
+          and "MemoryError" in doc.get("error", ""))
+    check("dose exception: last mass seen is reported ({:.4f} g)".format(
+        res.dispensed_g), 0.0 < res.dispensed_g < 2.0
+          and doc["final_g"] == round(res.dispensed_g, 5))
+    check("dose exception: auger stopped", plant.rpm == 0.0)
+    check("dose exception: the next dose runs normally",
+          doser.dose(0.2).status == m3.DoseResult.OK)
+
+
+class CloggedPlant(Plant):
+    """2026-09-30 Al 4047 (PR #166): chunks lodged in the tube.  It feeds
+    at a steep tilt only, and only above a minimum auger speed; the
+    delivery is slow (about 15 mg/s at 100 rpm)."""
+
+    def __init__(self, min_tilt_deg=35.0, min_rpm=30.0, **kw):
+        kw.setdefault("ff_g_per_rev", 0.009)
+        super().__init__(**kw)
+        self.min_tilt = min_tilt_deg
+        self.min_rpm = min_rpm
+
+    def meter(self, revs):
+        if self.tilt < self.min_tilt or self.rpm < self.min_rpm:
+            return
+        Plant.meter(self, revs)
+
+
+BULK_ONLY_OVER = {"bulk_only": True, "bulk_tap": True, "bulk_tilt_deg": 40.0,
+                  "bulk_rpm": 100.0, "tolerance_g": 0.003,
+                  "tau_afterflow_s": 0.8338}
+
+
+def test_bulk_only_clog():
+    # The clog plant stops dead below 35 deg (the 10/15 deg trim tilts
+    # delivered nothing on the rig) and below 30 rpm, so the taper's
+    # 20 rpm floor has to be boosted back up to keep powder coming.
+    plant = CloggedPlant()
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, BULK_ONLY_OVER, log=lambda msg="": lines.append(str(msg)))
+    rpms = []
+    _plain = stepper.run_at_rpm
+
+    def logged(rpm):
+        rpms.append(rpm)
+        _plain(rpm)
+
+    stepper.run_at_rpm = logged
+    res = doser.dose(0.32)
+    doc = doser.last_result
+    print("    -> {!r}; rpm commands {:.0f}..{:.0f}".format(
+        res, min(rpms), max(rpms)))
+    check("bulk-only dose ends ok within 3 mg (got {}, {:+.1f} mg)".format(
+        res.status, 1000.0 * (res.dispensed_g - 0.32)),
+        res.status == m3.DoseResult.OK
+        and abs(res.dispensed_g - 0.32) <= 0.003 + 1e-9)
+    check("the tube never left the bulk tilt (servo went to {})".format(
+        sorted(set(servo.history))), set(servo.history) == {40.0})
+    check("no trickle or tap stage ran", doc is not None
+          and doc["phase_cycles"].get("trickle") == 0
+          and doc["phase_cycles"].get("tap") == 0 and doc["nudges"] == 0)
+    check("rpm started at bulk_rpm and tapered below it",
+          rpms[0] == 100.0 and min(rpms) < 60.0)
+    check("no-flow boost fired and sped the auger back up",
+          any("no flow" in ln for ln in lines)
+          and any(b > a for a, b in zip(rpms, rpms[1:])))
+    check("every tap was a cadence tap while spinning (no tap endgame)",
+          res.taps > 10 and stepper.total_deg == 0.0)
+    check("each halt is a bulk stop event with its rpm", doc is not None
+          and doc["stop_events"]
+          and all(e["phase"] == "bulk" and e["rpm"] > 0
+                  for e in doc["stop_events"]))
+    check("RESULT echoes the bulk-only knobs", doc is not None
+          and doc["params"]["bulk_only"] in (True, 1)
+          and doc["params"]["bulk_min_rpm"] == trickle_params.BULK_MIN_RPM)
+    n_cols = len(TELEMETRY_HEADER.split(","))
+    check("bulk-only telemetry rows are well formed and carry the rpm",
+          len(doser.telemetry) > 10
+          and all(len(r.split(",")) == n_cols for r in doser.telemetry)
+          and all(r.split(",")[11] != "" for r in doser.telemetry
+                  if r.split(",")[1] == "bulk"))
+
+    # No flow at any speed -> stalled at full rpm, not an endless spin.
+    plant = CloggedPlant(min_rpm=1e9)
+    doser, stepper, tap, servo, clock = make_doser(plant, BULK_ONLY_OVER)
+    res = doser.dose(0.32)
+    check("dead-blocked tube ends as stalled (got {}) after boosting to "
+          "full rpm ({:.0f})".format(res.status, plant.max_rpm_seen),
+          res.status == m3.DoseResult.STALLED
+          and plant.max_rpm_seen == 100.0)
+
+    check("shipped defaults keep bulk-only off (tuned three-stage dose)",
+          trickle_params.BULK_ONLY is False)
+
+
+BULK_TAP_OVER = {"trickle_enabled": False, "bulk_stop_margin_g": 0.040,
+                 "trickle_tilt_deg": 22.0, "tau_afterflow_s": 0.83}
+
+
+def test_bulk_then_taps():
+    # 2026-10-01 (PR #166): the bulk -> tap dose.  No PI trickle: the
+    # bulk halts on a predicted final mass bulk_stop_margin_g short of
+    # the goal and the unchanged tap endgame finishes.
+    plant = Plant(afterflow_s=0.83)
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, BULK_TAP_OVER, log=lambda msg="": lines.append(str(msg)))
+    res = doser.dose(0.5)
+    doc = doser.last_result
+    stages = dict(res.phase_cycles)
+    err_mg = 1000.0 * (res.dispensed_g - 0.5)
+    print("    -> {!r} (error {:+.1f} mg)".format(res, err_mg))
+    check("bulk -> tap dose ends ok within tolerance (got {}, {:+.1f} mg)"
+          .format(res.status, err_mg), res.status == m3.DoseResult.OK
+          and abs(err_mg) <= 1000.0 * doser.p["tolerance_g"] + 1e-6)
+    check("the PI trickle never ran (no velocity commands, 0 polls)",
+          stepper.velocity_calls == 0 and stages.get("trickle") == 0
+          and doc["t_trickle_s"] == 0.0)
+    check("the tube went bulk tilt -> tap tilt, never the trickle tilt",
+          22.0 not in servo.history
+          and servo.history[0] == doser.p["bulk_tilt_deg"]
+          and servo.history[-1] == doser.p["tap_tilt_deg"])
+    check("the bulk handed over short and the taps finished",
+          stages.get("bulk", 0) > 0 and stages.get("tap", 0) > 0
+          and res.taps > 0)
+    events = doc["stop_events"]
+    check("one bulk stop event, slope predictor, at most one pass",
+          len(events) == 1 and events[0]["phase"] == "bulk"
+          and events[0]["predictor"] == "slope"
+          and events[0]["rate_slope_gps"] > 0.02)
+    check("RESULT echoes the bulk -> tap knobs", doc["params"][
+        "trickle_enabled"] in (False, 0)
+        and doc["params"]["bulk_stop_margin_g"] == 0.040
+        and doc["params"]["bulk_halt_kf"] in (False, 0))
+
+    # An early taper start lets the auger slow down before the halt.
+    rpms = []
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, dict(BULK_TAP_OVER, bulk_taper_start_g=0.30,
+                    bulk_min_rpm=10.0))
+    _plain = stepper.run_at_rpm
+
+    def logged(rpm):
+        rpms.append(rpm)
+        _plain(rpm)
+    stepper.run_at_rpm = logged
+    res = doser.dose(0.5)
+    halt_rpm = doser.last_result["stop_events"][0]["rpm"]
+    check("taper: rpm stepped down before the halt ({:.0f} -> {:.0f} rpm)"
+          .format(rpms[0], halt_rpm), res.status == m3.DoseResult.OK
+          and rpms[0] == doser.p["bulk_rpm"]
+          and halt_rpm < 0.8 * doser.p["bulk_rpm"])
+
+    # The Kalman-filter halt: same stage, m_hat + r_hat*tau + k*sigma.
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(
+        plant, dict(BULK_TAP_OVER, bulk_halt_kf=True))
+    res = doser.dose(0.5)
+    doc = doser.last_result
+    ev = doc["stop_events"][0] if doc["stop_events"] else {}
+    kf_rows = [r.split(",") for r in doser.telemetry
+               if r.split(",")[1] == "bulk" and r.split(",")[6] != ""]
+    check("KF halt: dose ok (got {}, {:+.1f} mg)".format(
+        res.status, 1000.0 * (res.dispensed_g - 0.5)),
+        res.status == m3.DoseResult.OK)
+    check("KF halt: the stop event carries the KF rate and m_hat",
+          ev.get("predictor") == "kf" and ev.get("rate_kf_gps") > 0.02
+          and doc["ff_g_per_rev"] is not None)
+    check("KF halt: bulk telemetry rows carry sigma and ff once armed "
+          "({} rows)".format(len(kf_rows)), len(kf_rows) > 5
+          and all(row[7] != "" for row in kf_rows))
+
+    # Less than the margin to go: straight to the taps.
+    plant = Plant(afterflow_s=0.83)
+    doser, stepper, tap, servo, clock = make_doser(plant, BULK_TAP_OVER)
+    res = doser.dose(0.03)
+    check("target inside the stop margin: bulk skipped, taps only "
+          "(got {})".format(res.status), res.status == m3.DoseResult.OK
+          and dict(res.phase_cycles).get("bulk") == 0
+          and plant.max_rpm_seen == 0.0 and res.taps > 0)
+
+    check("shipped defaults keep the PI trickle on and the slope halt",
+          trickle_params.TRICKLE_ENABLED is True
+          and trickle_params.BULK_HALT_KF is False)
+
+
+def test_heap_check_collects_before_truncating():
+    # mem_free() excludes uncollected garbage: on the rig it read 1248
+    # bytes at row 80 and truncated telemetry although a collection
+    # would have freed ~100 kB.  Only a shortfall that survives
+    # gc.collect() may stop logging.
+    import trickle_controller as tc
+
+    class FakeGC:
+        def __init__(self, freed):
+            self.freed = freed
+            self.collected = 0
+
+        def collect(self):
+            self.collected += 1
+
+        def mem_free(self):
+            return 100000 if (self.freed and self.collected) else 1000
+
+    real_gc, real_free = tc.gc, tc._mem_free
+    try:
+        for freed in (True, False):
+            fake = FakeGC(freed)
+            tc.gc, tc._mem_free = fake, fake.mem_free
+            doser, stepper, tap, servo, clock = make_doser(Plant())
+            res = doser.dose(0.5)
+            label = "garbage" if freed else "a really full heap"
+            check("heap check with {}: dose ok (got {})".format(
+                label, res.status), res.status == m3.DoseResult.OK)
+            check("heap check with {}: telemetry {} ({} rows)".format(
+                label, "kept" if freed else "truncated",
+                len(doser.telemetry)),
+                doser.telemetry.truncated is (not freed))
+    finally:
+        tc.gc, tc._mem_free = real_gc, real_free
+
+
+def main():
+    for fn in (test_kf_matches_numpy_reference,
+               test_kf_basic_properties,
+               test_small_dose_trickles_to_tolerance,
+               test_large_dose_runs_bulk_first,
+               test_within_tolerance_means_no_actuation,
+               test_stalled_trickle_hands_to_taps,
+               test_telemetry_rows_are_well_formed,
+               test_balance_lag_mismatch_smoke,
+               test_live_param_change_applies,
+               test_result_line_and_stop_events,
+               test_bulk_cadence_taps_at_2hz,
+               test_trickle_cadence_taps,
+               test_overshoot_guard_aborts_runaway,
+               test_final_settle_reads_at_rest,
+               test_tap_burst_until_close,
+               test_telemetry_can_never_abort_a_dose,
+               test_bulk_only_clog,
+               test_bulk_then_taps,
+               test_heap_check_collects_before_truncating):
+        print(fn.__name__)
+        fn()
+    if _FAILURES:
+        print("\n{} check(s) FAILED: {}".format(
+            len(_FAILURES), "; ".join(_FAILURES)))
+        return 1
+    print("\nall trickle-tap checks pass")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
