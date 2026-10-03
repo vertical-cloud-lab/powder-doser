@@ -19,7 +19,9 @@ auger towards -Y.
   front of the nozzle.  With nothing hanging below it, the plate can
   overhang the board: it runs from the towers' feet (y = 55.4) back to
   y = 170, the board's edge moves to y = 100, and four #10 screws go into
-  the board at y = 115 and 155.  Nothing is below z = 0, so it prints flat
+  the board at y = 115 and 155.  A 54 mm slot between the towers runs back
+  to the board's edge, so in front of the board the plate is a fork and a
+  cup up to about 58 mm across can rise past it to the tube.  Nothing is below z = 0, so it prints flat
   on the bed (registration lips were tried and dropped: they put supports
   under the whole plate).
 """
@@ -80,6 +82,9 @@ FRAME_FRONT_POST_FOOT_Z = 58.0
 ABOVE_BOARD_EDGE_Y = 100.0
 ABOVE_PLATE_REAR_Y = 170.0
 ABOVE_HOLES = [(sx * 80.0, y) for sx in (1, -1) for y in (115.0, 155.0)]
+# ...and a slot between the hinge towers, back to the board's edge, so the
+# plate is a fork in front of the board and a cup can rise past it
+ABOVE_SLOT_HALF_W = 27.0        # towers' inner faces are at |x| = 28.9
 
 
 def _yz_prism(points, x0: float, x1: float) -> bd.Part:
@@ -103,6 +108,11 @@ def _plate(servos: str) -> bd.Part:
                                                     close=True)), amount=PLATE_T)
     for x, y in (CORNER_HOLES if servos == "below" else ABOVE_HOLES):
         plate -= bd.Cylinder(CORNER_HOLE_D / 2, 3 * PLATE_T).moved(bd.Location((x, y, 0)))
+    if servos == "above":
+        hw = ABOVE_SLOT_HALF_W
+        plate -= bd.Box(2 * hw, ABOVE_BOARD_EDGE_Y - BOARD_EDGE_Y + 1.0, 3 * PLATE_T,
+                        align=(bd.Align.CENTER, bd.Align.MIN, bd.Align.CENTER)).moved(
+            bd.Location((0, BOARD_EDGE_Y - 1.0, PLATE_T / 2)))
     return plate
 
 

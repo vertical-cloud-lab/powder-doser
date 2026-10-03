@@ -19,7 +19,7 @@ from nozzle_clearance import clearance
 
 ROOT = Path(__file__).resolve().parents[1]
 TILTS = (0.0, 22.5, 45.0)
-RADII = (10.0, 20.0, 30.0, 40.0, 50.0, 60.0)
+RADII = (10.0, 20.0, 29.0, 42.5, 50.0, 60.0)
 # (name, servo layout, board front edge y or None for the layout's own, label)
 CONFIGS = [
     ("below", "below", None, "servos below (current); board edge at the legs, y = 55.4"),
