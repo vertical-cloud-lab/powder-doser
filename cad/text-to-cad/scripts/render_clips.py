@@ -45,9 +45,15 @@ def annotate(variant: str, tree, out_dir: Path) -> tuple[Path, list[dict]]:
     out_dir.mkdir(parents=True, exist_ok=True)
     js_path = out_dir / f"{variant}_clips.js"
     js_path.write_text(js)
-    # the kinematics exactly as the model's build resolved them (its sidecar)
+    # the kinematics exactly as the model's build resolved them (its sidecar),
+    # turned back into the declaration vocabulary `cadgen step build` takes
     side = json.loads((ROOT / (step_path + ".json")).read_text())
     kin = side.get("kinematics")
+    if kin:
+        kin = {**kin, "mates": [
+            {"name": m["name"], "kind": m["kind"], "parent": m["parent"], "child": m["child"],
+             "origin": m["axis"]["origin"], "direction": m["axis"]["dir"],
+             "limits": m["limits"]["value"]} for m in kin["mates"]]}
     kin_path = out_dir / f"{variant}_kinematics.json"
     kin_path.write_text(json.dumps(kin))
     out = out_dir / f"{Path(step_path).stem}_animated.step"
@@ -115,6 +121,7 @@ def main() -> None:
     ap.add_argument("--width", type=int, default=960)
     ap.add_argument("--height", type=int, default=640)
     a = ap.parse_args()
+    sys.argv[1:] = []        # the model's own decorator CLI must not see these flags
     tree = tree_of(a.variant)
     tmp = ROOT / "tmp" / "clips"
     step, captions = annotate(a.variant, tree, tmp)

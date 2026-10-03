@@ -75,6 +75,10 @@ PINION_HUB_GAP = 0.5
 PINION_TEETH_W, PINION_LEN = 10.0, 16.1
 AUGER_GEAR_FROM_OUTLET = 83.33
 AUGER_LEN = 250.0
+# the cap screwed home: its thread groove meets the auger's 3.5 mm-pitch
+# thread half a turn round from the model's frame (checks/cap_thread.py: the
+# overlap is 546 mm^3 at 0 deg and zero from 150 to 210 deg)
+CAP_TURN_DEG = 180.0
 
 MP = T([NY, Z, NX], (MP_MID_Z, HINGE_Y, HINGE_Z))
 
@@ -148,7 +152,7 @@ def placements(tilt_deg: float = 0.0, variant: str = "below",
         "Baseplate": ("baseplate_servos_above" if above else "baseplate", np.eye(4)),
         "Mounting plate": ("mounting_plate_servos_above" if above else "mounting_plate", mp),
         "Auger": ("auger", auger),
-        "Auger cap": ("auger_cap", auger @ T(None, (0, 0, AUGER_LEN))),
+        "Auger cap": ("auger_cap", auger @ T(None, (0, 0, AUGER_LEN)) @ rot_about(Z, CAP_TURN_DEG)),
         "Bracket (rear)": ("bracket", mp @ bracket_in_mp(MP_ROWS_BRACKET[0])),
         "Bracket (front)": ("bracket", mp @ bracket_in_mp(MP_ROWS_BRACKET[1])),
         "Tap collar base": ("tap_collar_base", mp @ TAP_BASE_IN_MP),
