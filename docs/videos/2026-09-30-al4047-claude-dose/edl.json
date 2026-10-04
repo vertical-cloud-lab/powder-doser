@@ -1,0 +1,87 @@
+[
+ {
+  "start": "14:25:21",
+  "end": "14:25:41",
+  "speed": 10,
+  "left": "phone-full",
+  "out_start": 0.0,
+  "out_end": 2.0
+ },
+ {
+  "start": "14:25:41",
+  "end": "14:36:31",
+  "speed": 100,
+  "left": "phone",
+  "zoom_in": 0.6,
+  "out_start": 2.0,
+  "out_end": 8.5
+ },
+ {
+  "start": "14:36:31",
+  "end": "14:37:31",
+  "speed": 12,
+  "left": "phone",
+  "out_start": 8.5,
+  "out_end": 13.5
+ },
+ {
+  "start": "14:40:36",
+  "end": "14:42:04",
+  "speed": 20,
+  "left": "phone",
+  "fade_in": true,
+  "out_start": 13.5,
+  "out_end": 17.9
+ },
+ {
+  "start": "14:59:03",
+  "end": "14:59:43",
+  "speed": 8,
+  "left": "screen",
+  "y0": 260,
+  "fade_in": true,
+  "out_start": 17.9,
+  "out_end": 22.9
+ },
+ {
+  "start": "15:00:58",
+  "end": "15:01:18",
+  "speed": 4,
+  "left": "screen",
+  "y0": 270,
+  "fade_in": true,
+  "out_start": 22.9,
+  "out_end": 27.9
+ },
+ {
+  "start": "15:29:52",
+  "end": "15:32:18",
+  "speed": 30,
+  "left": "screen",
+  "y0": 380,
+  "fade_in": true,
+  "out_start": 27.9,
+  "out_end": 32.77
+ },
+ {
+  "start": "15:50:18",
+  "end": "15:51:42",
+  "speed": 10,
+  "left": "screen",
+  "y0": 800,
+  "fade_in": true,
+  "out_start": 32.77,
+  "out_end": 41.17
+ },
+ {
+  "start": "15:57:10",
+  "end": "15:58:22",
+  "speed": 12,
+  "left": "screen",
+  "y0": 300,
+  "fade_in": true,
+  "fade_out": 0.8,
+  "out_start": 41.17,
+  "out_end": 47.17
+ }
+]
