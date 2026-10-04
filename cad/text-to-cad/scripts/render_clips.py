@@ -108,7 +108,7 @@ def caption_gif(src: Path, dst: Path, captions: list[dict], fps: int, title: str
         d = ImageDraw.Draw(canvas)
         d.rectangle([0, h, w, h + bar], fill=(32, 36, 44))
         d.text((16, h + 8), f"Step {cap['step']}/{n}", font=bold, fill=(255, 206, 84))
-        d.text((16 + 120, h + 8), title, font=font, fill=(200, 205, 214))
+        d.text((16 + 150, h + 9), title, font=font, fill=(200, 205, 214))
         # wrap the caption to the bar
         words, line, lines = cap["caption"].split(), "", []
         for wd in words:

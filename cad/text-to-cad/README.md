@@ -103,18 +103,22 @@ How close a cup can come to the outlet. A cup of diameter D, centred under
 the outlet, is raised until its rim touches something
 (`checks/nozzle_clearance.py`, gap in mm, limiting part in brackets):
 
-| Layout, tilt | Ø20–40 | Ø58 | Ø85 | Ø120 |
-|---|---|---|---|---|
-| Current, 0° | 12.5 (auger) | 81.3 (board) | 81.3 (board) | 81.3 (board) |
-| Current, 45° | 8.8 (auger) | 73.2 (board) | 73.2 (board) | 73.2 (baseplate) |
-| Current, board moved back, 45° | 8.8 (auger) | 35.0 (baseplate) | 35.0 (baseplate) | 73.2 (baseplate) |
-| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | 35.0 (baseplate) | 35.0 (baseplate) |
-| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 38.8 (baseplate) | 38.8 (baseplate) |
+| Layout, tilt | Ø20 | Ø40 | Ø58 | Ø85 | Ø120 |
+|---|---|---|---|---|---|
+| Current, 0° | 12.5 (auger) | 12.5 (auger) | 81.3 (board) | 81.3 (board) | 81.3 (board) |
+| Current, 45° | 8.8 (auger) | 73.2 (board) | 73.2 (board) | 73.2 (board) | 73.2 (baseplate) |
+| Current, board moved back, 45° | 8.8 (auger) | 35.0 (baseplate) | 35.0 (baseplate) | 35.0 (baseplate) | 73.2 (baseplate) |
+| Servos above, 0° | 12.5 (auger) | 12.5 (auger) | 22.3 (mounting plate) | 43.2 (baseplate) | 43.2 (baseplate) |
+| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 11.6 (auger) | 38.8 (baseplate) | 38.8 (baseplate) |
+| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | **8.8 (auger)** | 35.0 (baseplate) | 35.0 (baseplate) |
 
 8.8 mm is the floor here: it is the auger tube's own end face
-(12.5 mm × cos 45°). With the servos above, cups up to 58 mm across reach it.
-With the current layout, any cup wider than 40 mm stops 73 mm below the
-outlet.
+(12.5 mm × cos 45°). At 45° with the servos above, cups up to 58 mm across
+reach it. With the current layout, any cup 40 mm or wider stops 73 mm below
+the outlet, because the board and the baseplate's front arms are in the
+way.
+
+![nozzle clearance](renders/checks/nozzle_clearance_reference.png)
 
 ## Interference
 

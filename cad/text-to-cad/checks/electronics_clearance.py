@@ -86,8 +86,8 @@ def main() -> None:
                                             "electronics_solid": i, "mm3": round(v, 2)})
                         print(variant, tilt, name, "x electronics solid", i, round(v, 2), flush=True)
             gap = min_gap(parts, elec)
-            out.setdefault("min_gap_mm", []).append({"variant": variant, "tilt": tilt, **gap})
-            print(variant, tilt, "hits", n, "min gap", gap, flush=True)
+            out.setdefault("box_gap_lower_bound_mm", []).append({"variant": variant, "tilt": tilt, **gap})
+            print(variant, tilt, "hits", n, "box gap (lower bound)", gap, flush=True)
     p = ROOT / "checks" / "results" / "electronics_clearance.json"
     p.write_text(json.dumps(out, indent=1) + "\n")
     print("wrote", p)

@@ -1,0 +1,60 @@
+{
+ "tilts": [
+  0.0,
+  15.0,
+  30.0,
+  45.0
+ ],
+ "hits": [],
+ "box_gap_lower_bound_mm": [
+  {
+   "variant": "below",
+   "tilt": 0.0,
+   "mm": 0.0,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "below",
+   "tilt": 15.0,
+   "mm": 0.0,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "below",
+   "tilt": 30.0,
+   "mm": 0.0,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "below",
+   "tilt": 45.0,
+   "mm": 0.0,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "above",
+   "tilt": 0.0,
+   "mm": 4.6,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "above",
+   "tilt": 15.0,
+   "mm": 0.0,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "above",
+   "tilt": 30.0,
+   "mm": 4.39,
+   "part": "Mounting plate"
+  },
+  {
+   "variant": "above",
+   "tilt": 45.0,
+   "mm": 17.75,
+   "part": "Mounting plate"
+  }
+ ],
+ "note": "hits: electronics solids overlapping a placed part by > 0.05 mm^3 (OCC boolean on every pair whose boxes touch); box_gap_lower_bound_mm: gap between bounding boxes, 0 where the boxes overlap without the parts touching"
+}
