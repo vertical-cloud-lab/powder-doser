@@ -48,7 +48,7 @@ is the walkthrough for slides ([`video.py`](video.py)). It is 1280×720 at
 30 fps (H.264), 47 s long, and has no text at all: no title, captions,
 step numbers, labels or part numbers.
 
-- **Assembly, faster.** The 19 steps take 28 s instead of about 80.
+- **Assembly, faster.** The 19 steps take 28 s instead of 67.5 s.
   Each part slides in over 1 s and the screws and nuts over 0.5 s, with
   0.2–0.35 s pauses instead of the caption holds. In a step that has
   both, the fasteners go in after the part they fix.
@@ -463,7 +463,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
 | `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
-| `renders/assembly_presentation_720p.mp4` | the walkthrough for slides: 1280×720, 30 fps H.264, no text, the assembly about 3× faster and the doser working at the GIF's speed (`video.py`); `_frames.png` is a contact sheet of it |
+| `renders/assembly_presentation_720p.mp4` | the walkthrough for slides: 1280×720, 30 fps H.264, no text, the assembly 2.4× faster and the doser working at the GIF's speed (`video.py`); `_frames.png` is a contact sheet of it |
 | `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the brackets and tap collar onto the auger, around lowering it onto the plate |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |

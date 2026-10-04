@@ -2,10 +2,10 @@
 1280x720, 30 fps H.264 MP4 with no text at all (no title, step counter,
 captions, labels or part numbers).
 
-The assembly runs about three times as fast as in the GIF. The caption
-holds are gone, the parts take 1 s and the screws and nuts 0.5 s, and in a
-step with both, the fasteners go in after the part they fix. The camera
-flies between views instead of cutting. The doser working at the end (the
+The assembly runs 2.4 times as fast as in the GIF (28 s, not 67.5 s).
+The caption holds are gone, the parts take 1 s and the screws and nuts
+0.5 s, and in a step with both, the fasteners go in after the part they
+fix. The camera flies between views instead of cutting. The doser working at the end (the
 tilt, one tilt gear pair, the stepper drive, the solenoid tap) runs at the
 GIF's speed, sampled at 30 fps instead of 10.
 
