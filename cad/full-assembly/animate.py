@@ -10,7 +10,8 @@ the solenoid tapping the tube, then the McMaster-Carr part numbers.
 
 The parts, positions, build order and insertion directions are the ones
 ``assembly_bom.py`` uses for the BOM GIF; the gear ratios are in
-``onshape/layout.py``.
+``onshape/layout.py``.  ``video.py`` renders the same walkthrough as a
+720p MP4 with no text, for presentations.
 
     xvfb-run -a python3 animate.py      # -> renders/assembly_walkthrough.gif
                                         #    renders/doser_motion.gif (the working part only)
@@ -50,6 +51,10 @@ BRACKETS = (-0.85, -0.15, 0.50)  # both brackets from the side away from the ste
 COLLAR_EARS = (0.55, 0.55, 0.63)  # the tap collar's clamp ears, from over the stepper side
 
 TUBE_R = 12.5                  # auger tube radius under the tap collar (auger.step)
+# plunger travel from rest to the tube
+STROKE = layout.SOLENOID_IN_COLLAR[2, 3] - (pp.SOL_BODY_L / 2 + pp.SOL_BOTTOM_STICKOUT) - TUBE_R
+GEAR_BOX = ((41, 24, 4), (55, 67, 64))       # one servo pinion and its 28T gear (world mm)
+DRIVE_BOX = ((-44, 110, 19), (24, 125, 67))  # the stepper pinion and the 44T gear
 
 # One entry per assembly_bom.STEPS entry: caption, the instance-name
 # prefixes to frame (None = the whole doser; a string = one camera shared
@@ -192,10 +197,11 @@ def tap_pose(actors: dict, M_sol: np.ndarray, s: float) -> None:
     actors["spring"].SetUserTransform(build._vtk_matrix(M @ S))
 
 
-def fit_camera(view, pts_world: np.ndarray, dirv, margin: float = 0.8):
-    """Camera looking along -dirv (June frame) that fits pts_world; the
-    caption band at the bottom is kept clear.  Returns (position, focal,
-    view angle): Zoom() narrows the view angle, so it is part of the state."""
+def fit_camera(view, pts_world: np.ndarray, dirv, margin: float = 0.8, band=(60, 110)):
+    """Camera looking along -dirv (June frame) that fits pts_world; band is
+    the rows kept clear at the top (title) and bottom (caption), in px.
+    Returns (position, focal, view angle): Zoom() narrows the view angle,
+    so it is part of the state."""
     cam = view.ren.GetActiveCamera()
     cam.SetViewUp(0, 0, 1)
     dirv = np.asarray(dirv, float)
@@ -206,8 +212,8 @@ def fit_camera(view, pts_world: np.ndarray, dirv, margin: float = 0.8):
     cam.SetPosition(*(ctr + dirv * 1500))
     cam.SetViewAngle(18.0)
     view.ren.ResetCameraClippingRange()
-    W, H = SIZE
-    usable = (60, H - 110)             # below the title, above the caption
+    W, H = view.win.GetSize()
+    usable = (band[0], H - band[1])    # below the title, above the caption
     for _ in range(4):
         px = np.array([view.project(p) for p in cj])
         (x0, y0), (x1, y1) = px.min(0), px.max(0)
@@ -237,6 +243,55 @@ def fit_camera(view, pts_world: np.ndarray, dirv, margin: float = 0.8):
     return np.array(cam.GetPosition()), np.array(cam.GetFocalPoint()), np.array(cam.GetViewAngle())
 
 
+def s_upto(k, e):
+    """Steps before k done, step k e of the way, later steps not started."""
+    return lambda kk: 1.0 if kk < k else (e if kk == k else 0.0)
+
+
+def pts(order, inst, names_prefixes, s_of):
+    """Vertices of the instances whose names start with one of the prefixes
+    (None = all of them)."""
+    sel = order if names_prefixes is None else [
+        d for d in order if any(d["name"].startswith(p) for p in names_prefixes)]
+    return ab._points(sel, inst, s_of, every=7)
+
+
+def step_cameras(view, order, inst, band=(60, 110)):
+    """The assembled doser's camera, and one camera per WALK step: the whole
+    doser, one camera shared by a group of steps, or a close-up."""
+    one = lambda kk: 1.0       # noqa: E731
+    overall = fit_camera(view, pts(order, inst, None, one), FIG1A, margin=0.86, band=band)
+    groups = {}
+    for k, (_, focus, dirv, _) in enumerate(WALK):
+        if isinstance(focus, str):
+            groups.setdefault(focus, []).append(k)
+    group_cam = {}
+    for g, ks in groups.items():
+        p = [ab._points([d for d in order if d["step"] <= k and d["item"] != "Mounting board"],
+                        inst, s_upto(k, e), every=7) for k in ks for e in (0.0, 1.0)]
+        group_cam[g] = fit_camera(view, np.vstack(p), WALK[ks[0]][2], margin=0.86, band=band)
+    cams = []
+    for k, (_, focus, dirv, _) in enumerate(WALK):
+        if focus is None:
+            cams.append(overall)
+        elif isinstance(focus, str):
+            cams.append(group_cam[focus])
+        else:
+            p = np.vstack([pts(order, inst, focus, s_upto(k, 0.0)),
+                           pts(order, inst, focus, s_upto(k, 1.0))])
+            cams.append(fit_camera(view, p, dirv, margin=0.78, band=band))
+    return overall, cams
+
+
+def motion_cameras(view, order, inst, band=(60, 110)):
+    """Close-ups of the doser working: one tilt gear pair, the stepper
+    drive, the solenoid."""
+    one = lambda kk: 1.0       # noqa: E731
+    return (fit_camera(view, box(*GEAR_BOX), FIG1A, margin=0.85, band=band),
+            fit_camera(view, box(*DRIVE_BOX), DRIVE, margin=0.85, band=band),
+            fit_camera(view, pts(order, inst, ["Solenoid"], one), OUTLET_END, margin=0.75, band=band))
+
+
 def main() -> None:
     order, inst = ab.scene()
     view = ab.View(order, inst, SIZE)
@@ -250,35 +305,11 @@ def main() -> None:
         cam.SetViewUp(0, 0, 1)
         view.ren.ResetCameraClippingRange()
 
-    def pts(names_prefixes, s_of):
-        sel = order if names_prefixes is None else [
-            d for d in order if any(d["name"].startswith(p) for p in names_prefixes)]
-        return ab._points(sel, inst, s_of, every=7)
-
-    def s_upto(k, e):
-        return lambda kk: 1.0 if kk < k else (e if kk == k else 0.0)
-
-    # cameras: the assembled doser, one per group of steps, and one per step
+    # cameras: the assembled doser, one per group of steps, one per step,
+    # and the close-ups of the doser working
     one = lambda kk: 1.0       # noqa: E731
-    overall = fit_camera(view, pts(None, one), FIG1A, margin=0.86)
-    groups = {}
-    for k, (_, focus, dirv, _) in enumerate(WALK):
-        if isinstance(focus, str):
-            groups.setdefault(focus, []).append(k)
-    group_cam = {}
-    for g, ks in groups.items():
-        p = [ab._points([d for d in order if d["step"] <= k and d["item"] != "Mounting board"],
-                        inst, s_upto(k, e), every=7) for k in ks for e in (0.0, 1.0)]
-        group_cam[g] = fit_camera(view, np.vstack(p), WALK[ks[0]][2], margin=0.86)
-    cams = []
-    for k, (_, focus, dirv, _) in enumerate(WALK):
-        if focus is None:
-            cams.append(overall)
-        elif isinstance(focus, str):
-            cams.append(group_cam[focus])
-        else:
-            p = np.vstack([pts(focus, s_upto(k, 0.0)), pts(focus, s_upto(k, 1.0))])
-            cams.append(fit_camera(view, p, dirv, margin=0.78))
+    overall, cams = step_cameras(view, order, inst)
+    cam_gear, cam_drive, cam_tap = motion_cameras(view, order, inst)
 
     frames, durations = [], []
 
@@ -343,7 +374,6 @@ def main() -> None:
     # 2. the same, close up on one gear pair
     gear_c = np.array([48.0, layout.HINGE_Y, layout.HINGE_Z])
     pin_c = np.array([48.0, layout.HINGE_Y, layout.SERVO_SPLINE_Z])
-    cam_gear = fit_camera(view, box((41, 24, 4), (55, 67, 64)), FIG1A, margin=0.85)
     cap = ("Close up: the 14T servo pinion (bottom) and the plate's 28T gear. 45 deg of tilt is "
            "90 deg at the servo.")
     view.pose(one)
@@ -361,7 +391,6 @@ def main() -> None:
     # 3. stepper drive: 20T pinion on the motor, 44T gear on the auger
     pin_s = np.array([-32.0, layout.HINGE_Y + 71.73, layout.HINGE_Z])
     gear_s = np.array([0.0, layout.HINGE_Y + 71.73, layout.HINGE_Z])
-    cam_drive = fit_camera(view, box((-44, 110, 19), (24, 125, 67)), DRIVE, margin=0.85)
     cap = ("The stepper's 20T pinion turns the 44T gear on the auger tube: 2.2 turns of the motor per "
            "turn of the auger. The brackets and the tap collar stay put; the cap turns with the tube.")
     view.pose(one)
@@ -381,9 +410,7 @@ def main() -> None:
 
     # 4. solenoid tapping: the plunger hits the tube through the collar's hole
     M_sol = ab.poses()["Solenoid (Adafruit 412)"]
-    stroke = layout.SOLENOID_IN_COLLAR[2, 3] - (pp.SOL_BODY_L / 2 + pp.SOL_BOTTOM_STICKOUT) - TUBE_R
-    cam_tap = fit_camera(view, pts(["Solenoid"], one), OUTLET_END, margin=0.75)
-    cap = (f"The solenoid taps: its plunger drops {stroke:.1f} mm through the hole in the tap collar and "
+    cap = (f"The solenoid taps: its plunger drops {STROKE:.1f} mm through the hole in the tap collar and "
            "hits the auger tube, then the spring pulls it back, to shake the powder loose.")
     go_to(cam_tap)
     view.actors["Solenoid (Adafruit 412)"].SetVisibility(False)
@@ -393,7 +420,7 @@ def main() -> None:
     add(overlay(view.image(), "tap", cap), 1200)
     for k in range(4):
         for s_mm, ms in ((0.5, 40), (1.0, 120), (0.6, 60), (0.25, 60), (0.0, 400)):
-            tap_pose(sol, M_sol, s_mm * stroke)
+            tap_pose(sol, M_sol, s_mm * STROKE)
             add(overlay(view.image(), f"tap {k + 1}", cap), ms)
     for a in sol.values():
         a.SetVisibility(False)

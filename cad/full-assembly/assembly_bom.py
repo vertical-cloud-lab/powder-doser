@@ -240,12 +240,15 @@ def scene(tilt_deg: float = 0.0):
     return [inst[n] for n in order], inst
 
 
-def displacement(d, inst, s_of_step) -> np.ndarray:
-    """World translation of an instance when step k is s_of_step(k) done."""
+def displacement(d, inst, s_of_step, fast_of_step=None) -> np.ndarray:
+    """World translation of an instance when step k is s_of_step(k) done
+    (fast_of_step(k) for the fasteners' own moves, if given: the video puts
+    them in after the part they fix)."""
     v = np.zeros(3)
     while d is not None:
+        s = fast_of_step if fast_of_step and d["metal"] else s_of_step
         for k, off in d["moves"]:
-            v += off * (1.0 - s_of_step(k))
+            v += off * (1.0 - s(k))
         d = inst.get(d["parent"]) if d["parent"] else None
     return v
 
@@ -339,9 +342,9 @@ class View:
             self.ren.AddActor(a)
             self.actors[d["name"]] = a
 
-    def pose(self, s_of_step, visible_from=None, tilt_M=None):
+    def pose(self, s_of_step, visible_from=None, tilt_M=None, fast_of_step=None):
         for d in self.order:
-            v = displacement(d, self.inst, s_of_step)
+            v = displacement(d, self.inst, s_of_step, fast_of_step)
             M = d["M"] if tilt_M is None else tilt_M[d["name"]]
             if d["name"] == "Auger" and tilt_M is None:     # rolls into mesh (auger_roll)
                 h = sum(off[2] * (1.0 - s_of_step(k)) for k, off in d["moves"])

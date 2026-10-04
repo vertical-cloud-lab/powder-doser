@@ -41,6 +41,34 @@ ends with the doser working (below).
 
 ![Assembly walkthrough](renders/assembly_walkthrough.gif)
 
+### Presentation video
+
+[`renders/assembly_presentation_720p.mp4`](renders/assembly_presentation_720p.mp4)
+is the walkthrough for slides ([`video.py`](video.py)). It is 1280×720 at
+30 fps (H.264), 47 s long, and has no text at all: no title, captions,
+step numbers, labels or part numbers.
+
+- **Assembly, faster.** The 19 steps take 28 s instead of about 80.
+  Each part slides in over 1 s and the screws and nuts over 0.5 s, with
+  0.2–0.35 s pauses instead of the caption holds. In a step that has
+  both, the fasteners go in after the part they fix.
+- **The doser working, same speed.** The tilt, the gear close-up, the
+  stepper drive and the solenoid taps move exactly as fast as in the
+  GIF, sampled at 30 fps instead of 10. Two still stretches are shorter
+  because they only held captions: the assembled doser before the tilt
+  (one 1.5 s still instead of 0.8 s + 1.5 s + 1.5 s) and the end (2 s
+  instead of 4 s with the part numbers).
+- **Camera.** It flies between views instead of cutting to the close-ups.
+  The tilt has its own view, with room for the tube at 45°, which would
+  leave the 16:9 frame at the top. After the stepper close-up the auger
+  stays where the drive left it, so it doesn't jump back.
+- **Rendering.** Each frame is rendered at 2560×1440 and scaled down for
+  anti-aliasing. The parts, build order, insertion directions and
+  cameras are the GIF's (`animate.step_cameras`, `motion_cameras`),
+  refit to the 16:9 frame without the caption band.
+
+![Presentation video, 12 frames](renders/assembly_presentation_720p_frames.png)
+
 ### The doser working
 
 [`renders/doser_motion.gif`](renders/doser_motion.gif) is the end of the
@@ -122,13 +150,6 @@ checked, from 0.3 to 11.5 mm (`assembly_bom.auger_roll`).
 [`renders/auger_unit_steps.gif`](renders/auger_unit_steps.gif) is these
 five steps of the walkthrough on their own (18 s). The bracket screws and
 the tap-collar clamp follow as steps 16 and 17.
-
-Lowered straight down, the gear's teeth would cut through the pinion's
-over the last 10 mm, by up to 40 mm³ (OCC booleans). The old one-piece drop
-did this too. So the auger turns as it comes down, the way a gear rolls
-down a rack: −h/22 rad over the last 12 mm, while the pinion stays put.
-That leaves no overlap at any height checked, from 0.3 to 11.5 mm
-(`assembly_bom.auger_roll`).
 
 ## What is in the assembly
 
@@ -419,6 +440,7 @@ python3 annotate.py --src assembly_iso_az090_hires.png --out assembly_iso_az090_
 python3 compare.py                     # the two comparison panels
 xvfb-run -a python3 assembly_bom.py    # BOM.md, bom.csv, GIF, balloon views (about 1 min)
 xvfb-run -a python3 animate.py         # walkthrough + motion GIFs (about 2 min; gifsicle -O3 if installed)
+xvfb-run -a python3 video.py           # presentation MP4, 720p, no text (about 10 min on 4 cores; needs ffmpeg)
 xvfb-run -a python3 fastener_check.py  # fasteners vs. McMaster (images: mcmaster_fetch.py --images)
 ```
 
@@ -441,6 +463,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
 | `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
+| `renders/assembly_presentation_720p.mp4` | the walkthrough for slides: 1280×720, 30 fps H.264, no text, the assembly about 3× faster and the doser working at the GIF's speed (`video.py`); `_frames.png` is a contact sheet of it |
 | `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the brackets and tap collar onto the auger, around lowering it onto the plate |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
