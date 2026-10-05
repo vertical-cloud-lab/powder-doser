@@ -192,6 +192,11 @@ tap as a 4 ms, about 38 g acceleration pulse of the tube.
 
 ## Onshape
 
+[`onshape/`](onshape/README.md) makes the servos-above "thinner table"
+edit in Onshape through the REST API: a company-owned document, three
+native features driven by `#table_trim`, checked against the expected
+geometry, in 24 API calls.
+
 [`docs/onshape.md`](docs/onshape.md) covers the options. The most valuable
 next step is pushing this project's kinematics sidecar into the existing
 Onshape assembly as real mates and gear relations (the live document has

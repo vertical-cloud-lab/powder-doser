@@ -4,6 +4,8 @@ How the [text-to-cad](https://github.com/earthtojake/text-to-cad) workflow (cadg
 
 Written for issue #172 on 2026-10-03. Endpoint names are `operationId`s from Onshape's [OpenAPI spec](https://cad.onshape.com/api/openapi) (v1.221), browsable in [Glassworks](https://cad.onshape.com/glassworks/explorer).
 
+**Update (2026-10-05):** the servos-above "thinner table" edit was made in Onshape through the API, with three native features driven by one variable, checked against the expected geometry, and done in 24 calls. See [`../onshape/README.md`](../onshape/README.md).
+
 ## Short answer
 
 Yes, and neither replaces the other:

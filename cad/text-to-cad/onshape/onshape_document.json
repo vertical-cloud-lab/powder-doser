@@ -1,0 +1,454 @@
+{
+ "documentId": "28d9eba0d7a4cbd3170c820e",
+ "workspaceId": "aa1104360ebacf99765acf35",
+ "owner": "Vertical Cloud Lab",
+ "url": "https://cad.onshape.com/documents/28d9eba0d7a4cbd3170c820e/w/aa1104360ebacf99765acf35",
+ "partStudio": {
+  "elementId": "f7b21d67c4ad8ce3eac06991",
+  "source": "text-to-cad 8aae55e"
+ },
+ "versions": [
+  {
+   "id": "52b2ab225ebb4ca8013a0ae2",
+   "name": "text-to-cad import"
+  },
+  {
+   "id": "9b1536ddfd62af766656409d",
+   "name": "table 6 -> 3 mm"
+  }
+ ],
+ "api_calls": {
+  "import": 7,
+  "inspect": 3,
+  "edit": 3,
+  "verify": 8
+ },
+ "bodies": [
+  {
+   "id": "KFPG",
+   "name": "board_screw_neg_y155_3"
+  },
+  {
+   "id": "KFLG",
+   "name": "board_screw_neg_y155_2"
+  },
+  {
+   "id": "KFHG",
+   "name": "board_screw_neg_y155_1"
+  },
+  {
+   "id": "KFDG",
+   "name": "board_screw_neg_y155"
+  },
+  {
+   "id": "KF/F",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_15"
+  },
+  {
+   "id": "KF7F",
+   "name": "servo_nut_neg_y60_z21_body_15"
+  },
+  {
+   "id": "KF3F",
+   "name": "servo_screw_neg_y60_z21_9"
+  },
+  {
+   "id": "KFzF",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_14"
+  },
+  {
+   "id": "KFvF",
+   "name": "servo_nut_neg_y60_z21_body_14"
+  },
+  {
+   "id": "KFrF",
+   "name": "servo_screw_neg_y60_z21_8"
+  },
+  {
+   "id": "KFnF",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_13"
+  },
+  {
+   "id": "KFjF",
+   "name": "servo_nut_neg_y60_z21_body_13"
+  },
+  {
+   "id": "KFfF",
+   "name": "servo_screw_neg_y60_z21_7"
+  },
+  {
+   "id": "KFbF",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_12"
+  },
+  {
+   "id": "KFXF",
+   "name": "servo_nut_neg_y60_z21_body_12"
+  },
+  {
+   "id": "KFTF",
+   "name": "servo_screw_neg_y60_z21_6"
+  },
+  {
+   "id": "KFPF",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_11"
+  },
+  {
+   "id": "KFLF",
+   "name": "servo_nut_neg_y60_z21_body_11"
+  },
+  {
+   "id": "KFHF",
+   "name": "servo_screw_neg_y60_z21_5"
+  },
+  {
+   "id": "KFDF",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_10"
+  },
+  {
+   "id": "KF/E",
+   "name": "servo_nut_neg_y60_z21_body_10"
+  },
+  {
+   "id": "KF7E",
+   "name": "servo_screw_neg_y60_z21_4"
+  },
+  {
+   "id": "KF3E",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_9"
+  },
+  {
+   "id": "KFzE",
+   "name": "servo_nut_neg_y60_z21_body_9"
+  },
+  {
+   "id": "KFvE",
+   "name": "servo_screw_neg_y60_z21_3"
+  },
+  {
+   "id": "KFrE",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_8"
+  },
+  {
+   "id": "KFnE",
+   "name": "servo_nut_neg_y60_z21_body_8"
+  },
+  {
+   "id": "KFjE",
+   "name": "servo_screw_neg_y60_z21_2"
+  },
+  {
+   "id": "KFfE",
+   "name": "hinge_locknut_neg_1"
+  },
+  {
+   "id": "KFbE",
+   "name": "hinge_screw_neg_1"
+  },
+  {
+   "id": "KFXE",
+   "name": "hinge_locknut_neg"
+  },
+  {
+   "id": "KFTE",
+   "name": "hinge_screw_neg"
+  },
+  {
+   "id": "KFPE",
+   "name": "auger_cap"
+  },
+  {
+   "id": "KFLE",
+   "name": "auger"
+  },
+  {
+   "id": "KFHE",
+   "name": "stepper_screw_pp_3"
+  },
+  {
+   "id": "KFDE",
+   "name": "stepper_screw_pp_2"
+  },
+  {
+   "id": "KF/D",
+   "name": "stepper_screw_pp_1"
+  },
+  {
+   "id": "KF7D",
+   "name": "stepper_screw_pp"
+  },
+  {
+   "id": "KF3D",
+   "name": "solenoid_screw_upper_1"
+  },
+  {
+   "id": "KFzD",
+   "name": "solenoid_screw_upper"
+  },
+  {
+   "id": "KFvD",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_7"
+  },
+  {
+   "id": "KFrD",
+   "name": "servo_nut_neg_y60_z21_body_7"
+  },
+  {
+   "id": "KFnD",
+   "name": "tap_collar_clamp_screw_4"
+  },
+  {
+   "id": "KFjD",
+   "name": "tap_base_nut_p"
+  },
+  {
+   "id": "KFfD",
+   "name": "tap_base_screw_p"
+  },
+  {
+   "id": "KFbD",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_6"
+  },
+  {
+   "id": "KFXD",
+   "name": "servo_nut_neg_y60_z21_body_6"
+  },
+  {
+   "id": "KFTD",
+   "name": "tap_base_screw_n"
+  },
+  {
+   "id": "KFPD",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_5"
+  },
+  {
+   "id": "KFLD",
+   "name": "servo_nut_neg_y60_z21_body_5"
+  },
+  {
+   "id": "KFHD",
+   "name": "servo_screw_neg_y60_z21_1"
+  },
+  {
+   "id": "KFDD",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_4"
+  },
+  {
+   "id": "KF/C",
+   "name": "servo_nut_neg_y60_z21_body_4"
+  },
+  {
+   "id": "KF7C",
+   "name": "tap_collar_clamp_screw_3"
+  },
+  {
+   "id": "KF3C",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_3"
+  },
+  {
+   "id": "KFzC",
+   "name": "servo_nut_neg_y60_z21_body_3"
+  },
+  {
+   "id": "KFvC",
+   "name": "tap_collar_clamp_screw_2"
+  },
+  {
+   "id": "KFrC",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_2"
+  },
+  {
+   "id": "KFnC",
+   "name": "servo_nut_neg_y60_z21_body_2"
+  },
+  {
+   "id": "KFjC",
+   "name": "servo_screw_neg_y60_z21"
+  },
+  {
+   "id": "KFfC",
+   "name": "servo_nut_neg_y60_z21_nylon_insert_1"
+  },
+  {
+   "id": "KFbC",
+   "name": "servo_nut_neg_y60_z21_body_1"
+  },
+  {
+   "id": "KFXC",
+   "name": "tap_collar_clamp_screw_1"
+  },
+  {
+   "id": "KFTC",
+   "name": "servo_nut_neg_y60_z21_nylon_insert"
+  },
+  {
+   "id": "KFPC",
+   "name": "servo_nut_neg_y60_z21_body"
+  },
+  {
+   "id": "KFLC",
+   "name": "tap_collar_clamp_screw"
+  },
+  {
+   "id": "KFHC",
+   "name": "stepper_leads"
+  },
+  {
+   "id": "KFDC",
+   "name": "stepper_leads"
+  },
+  {
+   "id": "KF/B",
+   "name": "stepper_leads"
+  },
+  {
+   "id": "KF7B",
+   "name": "stepper_leads"
+  },
+  {
+   "id": "KF3B",
+   "name": "stepper_motor"
+  },
+  {
+   "id": "KFzB",
+   "name": "stepper_pinion"
+  },
+  {
+   "id": "KFvB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFrB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFnB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFjB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFfB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFbB",
+   "name": "solenoid_spring"
+  },
+  {
+   "id": "KFXB",
+   "name": "solenoid_plunger"
+  },
+  {
+   "id": "KFTB",
+   "name": "solenoid_coil"
+  },
+  {
+   "id": "KFPB",
+   "name": "solenoid_yoke"
+  },
+  {
+   "id": "KFLB",
+   "name": "tap_collar"
+  },
+  {
+   "id": "KFHB",
+   "name": "tap_collar_base"
+  },
+  {
+   "id": "KFDB",
+   "name": "bracket_front_1"
+  },
+  {
+   "id": "JF/",
+   "name": "bracket_front"
+  },
+  {
+   "id": "JF7",
+   "name": "mounting_plate_block_neg_1"
+  },
+  {
+   "id": "JF3",
+   "name": "mounting_plate_block_neg"
+  },
+  {
+   "id": "JFz",
+   "name": "mounting_plate_gear_neg_1"
+  },
+  {
+   "id": "JFv",
+   "name": "mounting_plate_gear_neg"
+  },
+  {
+   "id": "JFr",
+   "name": "mounting_plate_plate"
+  },
+  {
+   "id": "JFn",
+   "name": "servo_pinion_screw_neg_1"
+  },
+  {
+   "id": "JFj",
+   "name": "servo_pinion_neg_1"
+  },
+  {
+   "id": "JFf",
+   "name": "servo_pinion_screw_neg"
+  },
+  {
+   "id": "JFb",
+   "name": "servo_pinion_neg"
+  },
+  {
+   "id": "JFX",
+   "name": "servo_neg_output_spline_1"
+  },
+  {
+   "id": "JFT",
+   "name": "servo_neg_case_1"
+  },
+  {
+   "id": "JFP",
+   "name": "servo_neg_output_spline"
+  },
+  {
+   "id": "JFL",
+   "name": "servo_neg_case"
+  },
+  {
+   "id": "JFH",
+   "name": "baseplate"
+  },
+  {
+   "id": "JFD",
+   "name": "board"
+  }
+ ],
+ "baseplate": {
+  "partId": "JFH",
+  "underside": [
+   "JFe"
+  ]
+ },
+ "features": {
+  "table_trim": {
+   "featureId": "FTvvunMrI39lzl4_175",
+   "status": "OK"
+  },
+  "Thin the table": {
+   "featureId": "FVkV78khuipq1xB_175",
+   "status": "OK"
+  },
+  "Lower the doser": {
+   "featureId": "FvTEqp5UZnzUo0w_175",
+   "status": "OK"
+  }
+ },
+ "table_trim_mm": 3.0,
+ "export": {
+  "file": "/tmp/os/onshape_after_trim3.step",
+  "bytes": 10061175,
+  "table_trim_mm": 3.0
+ }
+}
