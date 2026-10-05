@@ -17,9 +17,9 @@ Both edits start from the version "text-to-cad import" (the assembly at
 | **main** | **Thinner table**: the 6 mm table becomes 3 mm, so everything on it sits 3 mm lower. This was my reading of the request before the text-to-cad session chose its approach. | 3 standard features driven by `#table_trim` | Baseplate IoU 1.0000 against the expected solid; the other 99 solids moved by exactly −3 mm |
 | **branch** "hinge 5 mm lower (text-to-cad approach)" | **The text-to-cad lowering**: towers and cradles 5 mm shorter, tilting system and servos 5 mm lower, the table relieved under the mounting plate | Variable + Transform + one custom FeatureScript feature ([`featurescript/lower_hinge.fs`](featurescript/lower_hinge.fs)) | Baseplate IoU **1.0000** against text-to-cad's `baseplate_servos_above.step`; all 100 solids match the text-to-cad assembly; tilt sweep clean |
 
-| Branch (text-to-cad lowering), in Onshape | Main (thinner table): section through the +X tower |
+| Branch (text-to-cad lowering), in Onshape | Section through the +X tower: Onshape (blue) on top of text-to-cad (orange) |
 |---|---|
-| ![Onshape hinge v2](../renders/onshape/onshape_hinge_v2_iso.png) | ![section](../renders/onshape/section_x35_trim3.png) |
+| ![Onshape hinge v2](../renders/onshape/onshape_hinge_v2_iso.png) | ![section](../renders/onshape/section_x35_hinge_v2.png) |
 
 ## Common to both: the import
 
@@ -47,6 +47,8 @@ script finds it by its box, not its normal.
 
 To change the amount, run `python3 onshape/lower_table.py set --trim 2.5`
 (one call), or edit the variable in Onshape.
+
+![section, thinner table](../renders/onshape/section_x35_trim3.png)
 
 Checks:
 
