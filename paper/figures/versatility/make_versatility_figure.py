@@ -35,7 +35,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.lines import Line2D
 from PIL import Image
 
 HERE = Path(__file__).resolve().parent
@@ -57,24 +56,22 @@ HEAD_PX = 110  # height of the headline band at the top of a GIF frame
 
 plt.rcParams.update({
     "font.family": "sans-serif",
-    "font.size": 15,
-    "axes.titlesize": 17,
-    "axes.labelsize": 15,
+    "font.size": 18,
+    "axes.labelsize": 20,
     "axes.linewidth": 1.0,
     "axes.edgecolor": MUTED,
     "axes.labelcolor": INK,
     "axes.spines.top": False,
     "axes.spines.right": False,
-    "xtick.labelsize": 14,
-    "ytick.labelsize": 15,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18,
     "xtick.color": INK2,
     "ytick.color": INK,
     "xtick.major.width": 1.0,
     "xtick.minor.width": 0.7,
     "ytick.major.size": 0,
-    "legend.frameon": False,
-    "legend.fontsize": 14,
 })
+CALLOUT_FS = 18  # direct labels and callouts
 
 # Plain names for a general audience; sieve sizes give the silicon grades.
 NAMES = {
@@ -177,8 +174,8 @@ def draw(step: int, headline: bool):
     conv, doses = DATA
     fig = plt.figure(figsize=FIG_IN, dpi=DPI)
     fig.patch.set_facecolor("white")
-    ax = fig.add_axes([0.185, 0.185, 0.43, 0.66])
-    bx = fig.add_axes([0.665, 0.185, 0.315, 0.66], sharey=ax)
+    ax = fig.add_axes([0.215, 0.175, 0.40, 0.69])
+    bx = fig.add_axes([0.695, 0.175, 0.285, 0.69], sharey=ax)
 
     n_dnc = len(mdf.DID_NOT_CONVEY)
     top = conv.y.max()
@@ -191,9 +188,8 @@ def draw(step: int, headline: bool):
     ax.set_xticks([10, 100, 1000])
     ax.set_xticklabels(["10", "100", "1,000"])
     ax.grid(axis="x", which="major", color=GRID, lw=1.0, zorder=0)
-    ax.set_xlabel("Powder moved per auger turn (mg, log scale)")
-    ax.set_title("How much one turn of the auger moves", loc="left",
-                 fontweight="bold", pad=10)
+    ax.set_xlabel("Powder moved per auger turn\n(mg, log scale)", loc="left",
+                  labelpad=10)
     ax.set_yticks(conv.y)
     ax.set_yticklabels(conv.name)
     for tl, flows in zip(ax.get_yticklabels(), conv.flows):
@@ -225,7 +221,7 @@ def draw(step: int, headline: bool):
             continue
         r = conv[conv.powder_id == pid].iloc[0]
         ax.text(r.mg_per_turn * 1.32, r.y, f"{r.mg_per_turn:.0f} mg",
-                va="center", ha="left", color=INK2, fontsize=14)
+                va="center", ha="left", color=INK2, fontsize=CALLOUT_FS)
 
     if step >= S_RESEARCH:
         flowing = conv[conv.flows]
@@ -235,16 +231,15 @@ def draw(step: int, headline: bool):
                     arrowprops=dict(arrowstyle="<|-|>", color=INK2, lw=1.2,
                                     shrinkA=0, shrinkB=0, mutation_scale=12))
         ax.text(np.sqrt(lo * hi), yb + 0.12, f"{hi / lo:.0f}× range",
-                ha="center", va="bottom", color=INK, fontsize=14)
+                ha="center", va="bottom", color=INK, fontsize=CALLOUT_FS)
 
     # ---- (b) delivered at a 1 g request -------------------------------------
     bx.set_xlim(-0.06, 1.16)
     bx.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
     bx.set_xticklabels(["0", "0.25", "0.5", "0.75", "1"])
     bx.tick_params(axis="y", labelleft=False)
-    bx.set_xlabel("Powder delivered (g)")
-    bx.set_title("Delivered when asked for 1 g", loc="left",
-                 fontweight="bold", pad=10)
+    bx.set_xlabel("Powder delivered (g)\nwhen asked for 1 g", loc="left",
+                  labelpad=10)
     if step < S_DOSE_AXES:
         bx.set_visible(False)
     else:
@@ -255,7 +250,7 @@ def draw(step: int, headline: bool):
         for yy in conv.y:
             bx.axhline(yy, color="#f3f2ee", lw=1.0, zorder=0)
         bx.text(TARGET_G, top + 0.92, "1 g ± 5%", ha="center", va="bottom",
-                color=INK, fontsize=14)
+                color=INK, fontsize=CALLOUT_FS)
 
     if step >= S_HITS:
         for r in doses.itertuples():
@@ -275,26 +270,34 @@ def draw(step: int, headline: bool):
         untested = conv[~conv.powder_id.isin(doses.powder_id)]
         for r in untested.itertuples():
             bx.text(0.5, r.y, "not tested at 1 g", ha="center", va="center",
-                    style="italic", color=FAINT, fontsize=13)
+                    style="italic", color=FAINT, fontsize=CALLOUT_FS - 1)
 
-    # ---- legend: entries appear with the marks they explain ------------------
-    handles = [
-        Line2D([], [], marker="o", ls="", ms=12, color=SURROGATE,
-               markeredgecolor="white", label="Food-safe stand-in"),
-        Line2D([], [], marker="s", ls="", ms=10.5, color=RESEARCH,
-               markeredgecolor="white", label="Research-relevant"),
-        Line2D([], [], marker="o", ls="", ms=10.5, color=INK2,
-               markerfacecolor="white", markeredgewidth=2.0,
-               label="Dose outside ±5% of 1 g"),
-    ]
-    leg = fig.legend(handles=handles, loc="lower center", ncol=3,
-                     bbox_to_anchor=(0.5, 0.005), handletextpad=0.3,
-                     columnspacing=2.2)
-    shown = [step >= S_SALT, step >= S_RESEARCH, step >= S_MISSES]
-    for h, t, on in zip(leg.legend_handles, leg.get_texts(), shown):
-        if not on:
-            h.set_alpha(0)
-            t.set_alpha(0)
+    # ---- callouts in place of a legend ----------------------------------
+    # Each group is named once, next to one of its marks, joined by a plain
+    # line (no arrowhead) in a faded shade of the group's own colour. Text
+    # sits in the empty part of the row so that nothing overlaps.
+    def callout(a, text, xy, xytext, c, align="left"):
+        a.annotate(text, xy=xy, xytext=xytext, textcoords="data",
+                   ha=align, va="center", color=c, fontsize=CALLOUT_FS,
+                   fontweight="bold",
+                   arrowprops=dict(arrowstyle="-", color=c, alpha=0.4, lw=1.6,
+                                   shrinkA=4, shrinkB=9))
+
+    def at(pid):
+        return conv[conv.powder_id == pid].iloc[0]
+
+    if step >= S_FOOD:
+        r = at("carboxymethyl-cellulose")  # blue mark with an empty row
+        callout(ax, "Food-safe stand-in", (r.mg_per_turn, r.y),
+                (r.mg_per_turn * 3.2, r.y - 0.5), SURROGATE)
+    if step >= S_RESEARCH:
+        r = at("sodium-sulfate")  # orange mark with an empty row
+        callout(ax, "Research-relevant", (r.mg_per_turn, r.y),
+                (r.mg_per_turn * 1.45, r.y + 0.5), RESEARCH)
+    if step >= S_MISSES:
+        r = at("white-rice-flour")  # open marks: 0.84-0.89 g
+        x0 = doses[doses.powder_id == r.powder_id].delivered_g.min()
+        callout(bx, "Outside ±5%", (x0, r.y), (0.02, r.y + 0.5), INK2)
 
     if headline:
         h = fig.text(0.02, 0.975, STEPS[step][0], ha="left", va="top",
