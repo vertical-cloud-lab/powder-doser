@@ -38,3 +38,17 @@
 {"run": "hinge-verify", "n": 6, "method": "GET", "path": "/translations/6ac417d1ca7a5d8e34a0f7f1", "status": 200, "utc": "2026-10-05T21:34:31Z"}
 {"run": "hinge-verify", "n": 7, "method": "GET", "path": "/documents/d/28d9eba0d7a4cbd3170c820e/externaldata/6ac417d774f9e125b26830f7", "status": 200, "utc": "2026-10-05T21:34:32Z"}
 {"run": "hinge-verify", "n": 8, "method": "POST", "path": "/documents/d/28d9eba0d7a4cbd3170c820e/versions", "status": 200, "utc": "2026-10-05T21:34:32Z"}
+{"run": "hinge-v2", "n": 1, "method": "POST", "path": "/featurestudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/4dee40c90e267508c7d0310e", "status": 200, "utc": "2026-10-05T21:40:15Z"}
+{"run": "hinge-v2", "n": 2, "method": "GET", "path": "/documents/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/elements", "status": 200, "utc": "2026-10-05T21:40:15Z"}
+{"run": "hinge-v2", "n": 3, "method": "POST", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/features/featureid/FWniV5GcUN9BWvI_175", "status": 400, "utc": "2026-10-05T21:40:15Z"}
+{"run": "hinge-v2", "n": 1, "method": "GET", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/features", "status": 200, "utc": "2026-10-05T21:40:32Z"}
+{"run": "hinge-v2", "n": 2, "method": "POST", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/features/featureid/FWniV5GcUN9BWvI_175", "status": 200, "utc": "2026-10-05T21:40:33Z"}
+{"run": "hinge-v2", "n": 3, "method": "POST", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/features", "status": 200, "utc": "2026-10-05T21:40:35Z"}
+{"run": "hinge-verify", "n": 1, "method": "GET", "path": "/parts/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991", "status": 200, "utc": "2026-10-05T21:40:41Z"}
+{"run": "hinge-verify", "n": 2, "method": "GET", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/boundingboxes", "status": 200, "utc": "2026-10-05T21:40:41Z"}
+{"run": "hinge-verify", "n": 3, "method": "GET", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/shadedviews", "status": 200, "utc": "2026-10-05T21:40:43Z"}
+{"run": "hinge-verify", "n": 4, "method": "GET", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/shadedviews", "status": 200, "utc": "2026-10-05T21:40:44Z"}
+{"run": "hinge-verify", "n": 5, "method": "POST", "path": "/partstudios/d/28d9eba0d7a4cbd3170c820e/w/eed99580491f919f912af3c6/e/f7b21d67c4ad8ce3eac06991/translations", "status": 200, "utc": "2026-10-05T21:40:45Z"}
+{"run": "hinge-verify", "n": 6, "method": "GET", "path": "/translations/6ac4195c38a2a3e7a8d18476", "status": 200, "utc": "2026-10-05T21:41:05Z"}
+{"run": "hinge-verify", "n": 7, "method": "GET", "path": "/documents/d/28d9eba0d7a4cbd3170c820e/externaldata/6ac419622d147739fb47ba60", "status": 200, "utc": "2026-10-05T21:41:06Z"}
+{"run": "hinge-verify", "n": 8, "method": "POST", "path": "/documents/d/28d9eba0d7a4cbd3170c820e/versions", "status": 200, "utc": "2026-10-05T21:41:07Z"}
