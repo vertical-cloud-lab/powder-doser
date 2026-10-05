@@ -21,7 +21,9 @@
   "import": 7,
   "inspect": 3,
   "edit": 3,
-  "verify": 8
+  "verify": 8,
+  "hinge-branch": 7,
+  "hinge-verify": 9
  },
  "bodies": [
   {
@@ -450,5 +452,44 @@
   "file": "/tmp/os/onshape_after_trim3.step",
   "bytes": 10061175,
   "table_trim_mm": 3.0
+ },
+ "branches": {
+  "hinge 5 mm lower (text-to-cad approach)": {
+   "workspaceId": "eed99580491f919f912af3c6",
+   "fromVersion": "text-to-cad import",
+   "featureStudio": {
+    "elementId": "4dee40c90e267508c7d0310e",
+    "sha256": "267eec18b83a7ba03daee0c60e849a7cbc71206dc133944a1e2e67ed1bea8e07",
+    "microversion": "81b464c1f3d51d48562486e2"
+   },
+   "features": {
+    "hinge_drop": {
+     "featureId": "F8PNlzGT0FqNA7j_175",
+     "status": "OK"
+    },
+    "Lower the tilting system": {
+     "featureId": "FHc5cPPOmX6CcJs_175",
+     "status": "OK"
+    },
+    "Lower hinge, relieve table": {
+     "featureId": "FWniV5GcUN9BWvI_175",
+     "status": "OK"
+    }
+   },
+   "hinge_drop_mm": 5.0,
+   "baseplate": [
+    {
+     "partId": "JID",
+     "name": "baseplate"
+    }
+   ],
+   "versions": [
+    {
+     "id": "2ea2b194411e1b812f3befcd",
+     "name": "hinge 5 mm lower"
+    }
+   ],
+   "export": "/tmp/os/onshape_hinge_drop5.step"
+  }
  }
 }
