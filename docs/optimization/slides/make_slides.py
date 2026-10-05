@@ -38,7 +38,7 @@ OUT = HERE
 # --------------------------------------------------------------------------- #
 PARETO_STEPS = [
     "Hand-tuned settings took 3 to 6 minutes\nper 0.5 g dose of salt",
-    "The optimizer tried 38 other settings\nin one unattended 2-hour run",
+    "The optimizer then tried 31 other settings,\nunattended, in under 2\u00bd hours",
     "The best trade-offs between speed and accuracy\nform the Pareto front",
     "The recommended settings dose 0.5 g in under 2 minutes,\nmore accurately than hand tuning",
 ]
@@ -373,7 +373,7 @@ def slide_front_math(step: int, version: str = "example", message: bool = True):
                 ha="left", va="center")
         return fig
     if step >= 4:
-        _hv_patches(ax, front, ss.BLUE_LIGHT, 1.0 if step == 4 else 0.7)
+        _hv_patches(ax, front, ss.BLUE_LIGHT, 1.0 if step == 4 else 0.55)
         ax.plot([LIMIT_T, LIMIT_T], [-0.9, LIMIT_E], color=INK2, lw=1.6, ls=(0, (5, 4)), zorder=2)
         ax.plot([-0.13, LIMIT_T], [LIMIT_E, LIMIT_E], color=INK2, lw=1.6, ls=(0, (5, 4)), zorder=2)
         ax.text(LIMIT_T + 0.08, LIMIT_E, "limits:\n3 min, 20 mg", color=INK2, fontsize=FS,
@@ -393,14 +393,14 @@ def slide_front_math(step: int, version: str = "example", message: bool = True):
         k = new_front.index(TOY_NEXT)
         e_top = new_front[k - 1][1]
         x_right = new_front[k + 1][0]
-        ax.add_patch(Rectangle((cx, ce), x_right - cx, e_top - ce, facecolor=BLUE, alpha=0.35,
+        ax.add_patch(Rectangle((cx, ce), x_right - cx, e_top - ce, facecolor=BLUE, alpha=0.6,
                                edgecolor="none", zorder=2))
         ax.errorbar([cx], [ce], xerr=[[TOY_NEXT_SD[0]], [TOY_NEXT_SD[0]]],
                     yerr=[[TOY_NEXT_SD[1]], [TOY_NEXT_SD[1]]], fmt="none", ecolor=BLUE,
                     alpha=0.45, elinewidth=3, capsize=0, zorder=5)
         ax.scatter([cx], [ce], s=200, facecolor="white", edgecolor=BLUE, linewidth=3.0, zorder=7)
-        ss.callout(ax, "predicted next dose,\nwith its uncertainty", (cx - 0.08, ce + 0.5),
-                   (0.25, 21.5), BLUE)
+        ss.callout(ax, "predicted next dose, with its uncertainty", (cx - 0.04, ce + 0.6),
+                   (0.25, 26.5), BLUE)
         ss.callout(ax, "area it would add", (cx + 0.2, ce + 1.6), (3.6, 9.0), BLUE)
     return fig
 

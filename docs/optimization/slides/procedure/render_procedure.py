@@ -7,15 +7,18 @@ colours, poses and the three-piece solenoid of ``animate.py``, so the plunger
 can move).  Added here, in the same world frame (the Fusion baseplate's: Z up,
 outlet towards -Y) and drawn in the June render frame like the rest:
 
-* powder grains: Ø1.4 mm spheres let out of the Ø3 hole in the centre of the
+* powder grains: Ø2.4 mm spheres let out of the Ø3 hole in the centre of the
   auger's outlet face (the face centre moved through the auger's pose at the
   frame's tilt), with a small random velocity mostly along the tube axis,
   falling under gravity (9810 mm/s², seeded, so every run is the same) into
   the cup, where they stop on the powder pile; the pile grows with every grain
   that lands (a heap that spreads to the wall, then rises), and grains that
-  landed stay on its surface until the pile buries them.  A falling grain is
-  drawn along the last 5 ms of its path (a short streak once it is fast), so
-  the stream reads at slide size;
+  landed stay on its surface until the pile buries them.  Each grain of the
+  timeline is drawn as --grain-mult spheres (default 4, each let out at its own
+  moment in the frame), so the bulk stream reads as a continuous stream at
+  slide size and the trickle as a few grains; the pile ends 10 mm deep (mean)
+  whatever the count.  The grains are the same in every blur sub-frame, so
+  they stay sharp;
 * a clear cup (Ø45 x 50 mm, its rim 8 mm under the mounting board's
   underside) right under the stream, on the Ø90 pan of a balance (a 180 x 200
   x 70 mm rounded body with a blank display strip).
@@ -45,6 +48,7 @@ frame is rendered at --scale times --size and scaled down (LANCZOS).
         [--jobs 3] [--scale 2] [--size 1080]
         [--frames 0:50]   # only these output frames (A:B, or a comma list of
                           # frames and ranges); the grains are still simulated from 0
+        [--grain-mult 4]  # spheres per grain of the timeline
 
 Writes ``frame_00000.png`` ... and ``contact.png`` (12 frames spread evenly,
 4 x 3) to --out-dir.
@@ -78,10 +82,10 @@ CAM_MARGIN = 0.95
 FIT_TILTS = (0.0, 20.0, 40.0)
 
 # Powder (world mm, s)
-GRAIN_D = 1.4
-GRAIN_RGB = (0.58, 0.56, 0.52)
-PILE_RGB = (0.60, 0.57, 0.52)
-SHUTTER = 0.005         # s: a falling grain is drawn along its last 5 ms (a short streak)
+GRAIN_D = 2.4
+GRAIN_RGB = (0.45, 0.42, 0.38)
+PILE_RGB = (0.50, 0.47, 0.42)
+GRAIN_MULT = 4          # spheres drawn per grain of the timeline
 GRAVITY = 9810.0
 SEED = 412
 FILL_MM = 10.0          # mean depth of powder in the cup once every grain is in
@@ -90,7 +94,7 @@ REPOSE = 0.50           # slope of the heap (tan of its angle of repose)
 # Cup and balance (world mm).  The board's underside is at z = -38.1.
 CUP_R, CUP_H, CUP_WALL, CUP_FLOOR = 22.5, 50.0, 1.2, 2.0
 CUP_RIM_Z = -46.0
-CUP_RGB, CUP_OPACITY = (0.84, 0.89, 0.95), 0.22
+CUP_RGB, CUP_OPACITY = (0.84, 0.89, 0.95), 0.18
 PAN_R, PAN_T, STEM_H = 45.0, 3.0, 6.0
 PAN_RGB = (0.80, 0.81, 0.83)
 BAL_W, BAL_D, BAL_H = 180.0, 200.0, 70.0      # x, y, z
@@ -162,33 +166,18 @@ def pile_height(shape, r):
     return hb + np.maximum(0.0, hc - REPOSE * np.asarray(r, float))
 
 
-def streaks(P0, V0, TS, t, g) -> np.ndarray:
-    """Centres to draw for grains in flight at time t: each along the last
-    SHUTTER of its path (no earlier than it came out), spheres 0.45 D apart."""
-    if not len(P0):
-        return np.zeros((0, 3))
-    a = t - TS
-    speed = np.linalg.norm(V0 + g * a[:, None], axis=1)
-    m = 1 + np.ceil(speed * min(SHUTTER, 1.0) / (0.45 * GRAIN_D)).astype(int)
-    out = []
-    for k in range(int(m.max())):
-        sel = m > k
-        ak = np.maximum(a[sel] - SHUTTER * k / np.maximum(m[sel] - 1, 1), 0.0)[:, None]
-        out.append(P0[sel] + V0[sel] * ak + 0.5 * g * ak * ak)
-    return np.vstack(out)
-
-
-def simulate(frames, fps, layout, cup_xy):
-    """Grains in output time.  Returns one dict per frame (flying and resting
-    grain centres, world mm; the pile shape) and the landing points."""
+def simulate(frames, fps, layout, cup_xy, mult=GRAIN_MULT):
+    """Grains in output time, mult spheres per grain of the timeline.
+    Returns one dict per frame (flying and resting grain centres, world mm;
+    the pile shape), the landing points and a summary."""
     rng = np.random.default_rng(SEED)
     dt = 1.0 / fps
     cx, cy = cup_xy
     r_pile = CUP_R - CUP_WALL - 0.15
     floor = CUP_RIM_Z - CUP_H + CUP_FLOOR + 0.05
     rg = GRAIN_D / 2
-    n_total = sum(int(f.get("puff", 0)) for f in frames) + int(
-        math.floor(sum(float(f.get("emit", 0.0)) for f in frames) + 1e-6))
+    n_total = mult * (sum(int(f.get("puff", 0)) for f in frames) + int(
+        math.floor(sum(float(f.get("emit", 0.0)) for f in frames) + 1e-6)))
     vol_grain = FILL_MM * math.pi * r_pile ** 2 / max(n_total, 1)
     g = np.array([0.0, 0.0, -GRAVITY])
     P0 = np.zeros((0, 3))
@@ -203,7 +192,7 @@ def simulate(frames, fps, layout, cup_xy):
         acc += float(f.get("emit", 0.0))
         n = int(math.floor(acc + 1e-9))
         acc -= n
-        p = int(f.get("puff", 0))
+        n, p = n * mult, int(f.get("puff", 0)) * mult
         if n + p:
             o, u = outlet(layout, float(f["tilt"]))
             e1 = np.cross(u, (1.0, 0.0, 0.0))
@@ -211,8 +200,8 @@ def simulate(frames, fps, layout, cup_xy):
             e2 = np.cross(u, e1)
             k = n + p
             ang = rng.random(k) * 2 * math.pi
-            rad = 0.9 * np.sqrt(rng.random(k))
-            p0 = (o + u * (rg + 0.4) + np.outer(np.cos(ang) * rad, e1)
+            rad = 0.35 * np.sqrt(rng.random(k))           # a Ø2.4 grain in the Ø3 hole
+            p0 = (o + u * (rg + 0.3) + np.outer(np.cos(ang) * rad, e1)
                   + np.outer(np.sin(ang) * rad, e2))
             speed = np.r_[rng.uniform(15.0, 40.0, n), rng.uniform(20.0, 60.0, p)]
             sig = np.r_[np.full(n, 9.0), np.full(p, 25.0)]
@@ -243,7 +232,7 @@ def simulate(frames, fps, layout, cup_xy):
         if len(rest):           # grains the pile has covered are gone
             rr = np.hypot(rest[:, 0] - cx, rest[:, 1] - cy)
             rest = rest[rest[:, 2] > floor + pile_height(shape, rr) + 0.1 * GRAIN_D]
-        out.append(dict(flying=streaks(P0, V0, TS, t, g), rest=rest.copy(), pile=shape))
+        out.append(dict(flying=pos.copy(), rest=rest.copy(), pile=shape))
     land = np.vstack(land_pts) if land_pts else np.zeros((0, 2))
     info = dict(n_total=n_total, landed=landed, missed=missed, in_air=len(P0),
                 fill=landed * vol_grain / (math.pi * r_pile ** 2),
@@ -368,7 +357,7 @@ class Extras:
         self.pile_mapper = vtk.vtkPolyDataMapper()
         self.pile.SetMapper(self.pile_mapper)
         self.pile.GetProperty().SetColor(*PILE_RGB)
-        self.pile.GetProperty().SetAmbient(0.25)
+        self.pile.GetProperty().SetAmbient(0.2)
         self.pile.GetProperty().SetDiffuse(0.85)
         self.pile.GetProperty().SetSpecular(0.05)
         self.pile.SetUserTransform(build._vtk_matrix(build.W2J @ self.M_pile))
@@ -387,8 +376,8 @@ class Extras:
         self.grains = vtk.vtkActor()
         self.grains.SetMapper(gm)
         self.grains.GetProperty().SetColor(*GRAIN_RGB)
-        self.grains.GetProperty().SetAmbient(0.15)
-        self.grains.GetProperty().SetSpecular(0.25)
+        self.grains.GetProperty().SetAmbient(0.12)
+        self.grains.GetProperty().SetSpecular(0.2)
         self.grains.GetProperty().SetSpecularPower(20.0)
         ren.AddActor(self.grains)
         self._pile_key = None
@@ -488,6 +477,8 @@ def main() -> None:
     ap.add_argument("--frames", help="only these output frames: A:B, or a comma list of frames and A:B ranges")
     ap.add_argument("--camera-dir", help="override the camera direction (June frame x,y,z)")
     ap.add_argument("--no-board", action="store_true", help="leave the mounting board out")
+    ap.add_argument("--grain-mult", type=int, default=GRAIN_MULT,
+                    help="spheres drawn per grain of the timeline (stream density)")
     args = ap.parse_args()
     t_start = time.time()
 
@@ -501,9 +492,9 @@ def main() -> None:
     # the grains: once with the cup under the outlet at tilt 0, then again with
     # the cup centred on where they landed
     o0, _ = outlet(layout, 0.0)
-    _, land, _ = simulate(frames, fps, layout, (o0[0], o0[1]))
+    _, land, _ = simulate(frames, fps, layout, (o0[0], o0[1]), args.grain_mult)
     cup_xy = (float(o0[0]), float(np.mean(land[:, 1]))) if len(land) else (float(o0[0]), float(o0[1]))
-    sim, land, info = simulate(frames, fps, layout, cup_xy)
+    sim, land, info = simulate(frames, fps, layout, cup_xy, args.grain_mult)
     for t in (0.0, 10.0, 15.0, 40.0):
         o, u = outlet(layout, t)
         print(f"  outlet at tilt {t:4.1f}: world {np.round(o, 2)}, June {np.round(to_june(build, o)[0], 2)}, "
