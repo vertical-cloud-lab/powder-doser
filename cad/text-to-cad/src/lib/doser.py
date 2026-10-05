@@ -205,13 +205,13 @@ def kinematics(variant: str) -> dict:
     return {
         "mates": [
             cadgen.revolute("tilt", parent="#baseplate", child="#tilt_group",
-                            origin=list(F.HINGE), direction=[1, 0, 0], limits=(0, 45)),
+                            origin=list(F.hinge(variant)), direction=[1, 0, 0], limits=(0, 45)),
             cadgen.revolute("servo_pinion_pos", parent="#baseplate", child="#servo_pinion_pos_group",
                             origin=_axis_point(pin_pos), direction=[1, 0, 0], limits=(-90, 0)),
             cadgen.revolute("servo_pinion_neg", parent="#baseplate", child="#servo_pinion_neg_group",
                             origin=_axis_point(pin_neg), direction=[1, 0, 0], limits=(-90, 0)),
             cadgen.revolute("auger_spin", parent="#mounting_plate", child="#auger_group",
-                            origin=[round(float(v), 4) for v in F.outlet_point(0.0)],
+                            origin=[round(float(v), 4) for v in F.outlet_point(0.0, variant)],
                             direction=[0, 1, 0], limits=(0, 720)),
             cadgen.revolute("stepper_pinion_spin", parent="#mounting_plate", child="#stepper_pinion",
                             origin=_axis_point(step_pin), direction=[0, 1, 0],
@@ -253,10 +253,10 @@ def animation(variant: str, tree: bd.Compound, steps: list[dict]) -> str:
     tilt = groups["tilt_group"]
     auger_grp = next(c for c in tilt.children if c.label == "auger_group")
     data = {
-        "hinge": list(F.HINGE),
+        "hinge": list(F.hinge(variant)),
         "tilt_parts": leaf_labels(tilt),
         "auger_parts": leaf_labels(auger_grp),
-        "outlet": [float(v) for v in F.outlet_point(0.0)],
+        "outlet": [float(v) for v in F.outlet_point(0.0, variant)],
         "stepper_axis": _axis_point(P["Stepper pinion"][1]),
         "pinion_pos": leaf_labels(groups["servo_pinion_pos_group"]),
         "pinion_neg": leaf_labels(groups["servo_pinion_neg_group"]),

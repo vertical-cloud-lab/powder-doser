@@ -18,7 +18,11 @@ Two layouts:
 * ``"above"`` - the servos-above variant (issue #172): both servos and
   their pinions turned 180 deg about the hinge axis, so the pinions mesh
   the 28T gears from above, and the baseplate's front arms, legs and posts
-  go.  Nothing hangs below or in front of the nozzle any more.
+  go.  Nothing hangs below or in front of the nozzle any more.  The whole
+  doser also sits ``DROP["above"]`` = 5 mm lower on its baseplate: the
+  towers and cradles are that much shorter, and the plate is relieved
+  under the mounting plate's floor (see baseplate.py).  Every placement
+  except the baseplate's is the PR #170 one moved down by ``lower(variant)``.
 """
 from __future__ import annotations
 
@@ -113,8 +117,8 @@ SERVO_RATIO = 28 / 14
 STEPPER_RATIO = 44 / 20
 
 # mounting board: top on z = 0.  Its front edge is where the legs' back
-# faces are (current design), or 44.6 mm further back, where the
-# servos-above plate's lips are (that plate overhangs the board).
+# faces are (current design), or 44.6 mm further back for the servos-above
+# plate, which overhangs the board.
 BOARD_T = 38.1
 BOARD_FRONT_Y = {"below": 55.4, "above": 100.0}
 
@@ -122,15 +126,31 @@ BOARD_FRONT_Y = {"below": 55.4, "above": 100.0}
 # about the hinge axis
 FLIP = rot_about(X, 180.0, HINGE)
 
+# How far each layout's doser sits below PR #170's.  At rest the mounting
+# plate's floor is 2.0 mm above the baseplate and the M3 button heads under
+# it 0.35 mm, so lowering it means relieving the plate under the floor
+# (baseplate.py).  5 mm leaves those heads 1.35 mm above the board top.
+DROP = {"below": 0.0, "above": 5.0}
 
-def outlet_point(tilt_deg: float = 0.0) -> np.ndarray:
+
+def lower(variant: str = "below") -> np.ndarray:
+    """Moves PR #170's placements down to this layout's height."""
+    return T(None, (0.0, 0.0, -DROP[variant]))
+
+
+def hinge(variant: str = "below") -> tuple[float, float, float]:
+    return (0.0, HINGE_Y, HINGE_Z - DROP[variant])
+
+
+def outlet_point(tilt_deg: float = 0.0, variant: str = "below") -> np.ndarray:
     """World position of the outlet hole (centre of the auger's end face)."""
-    M = tilt_matrix(tilt_deg) @ MP @ AUGER_IN_MP
+    M = lower(variant) @ tilt_matrix(tilt_deg) @ MP @ AUGER_IN_MP
     return (M @ np.array([0.0, 0.0, 0.0, 1.0]))[:3]
 
 
 def tilt_matrix(tilt_deg: float) -> np.ndarray:
-    """The mounting plate's motion: outlet down for positive tilt."""
+    """The mounting plate's motion: outlet down for positive tilt (about
+    PR #170's hinge; ``lower(variant)`` goes on the left)."""
     return rot_about(X, tilt_deg, HINGE)
 
 
@@ -140,13 +160,14 @@ def placements(tilt_deg: float = 0.0, variant: str = "below",
     (src/parts, src/purchased); ``variant`` is "below" or "above"."""
     if variant not in ("below", "above"):
         raise ValueError(variant)
-    mp = tilt_matrix(tilt_deg) @ MP
+    low = lower(variant)
+    mp = low @ tilt_matrix(tilt_deg) @ MP
     roll = rot_about(X, roll_deg, (0.0, 0.0, MP_MID_Z))
     collar = mp @ roll @ COLLAR_IN_MP
     auger = mp @ AUGER_IN_MP @ rot_about(Z, auger_deg)
     pinion = mp @ PINION_IN_MP @ rot_about(Z, -STEPPER_RATIO * auger_deg)
     sp = SERVO_RATIO * tilt_deg
-    side = FLIP if variant == "above" else np.eye(4)
+    side = low @ (FLIP if variant == "above" else np.eye(4))
     above = variant == "above"
     return {
         "Baseplate": ("baseplate_servos_above" if above else "baseplate", np.eye(4)),

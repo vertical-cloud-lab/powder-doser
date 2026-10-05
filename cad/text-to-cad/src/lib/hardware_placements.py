@@ -7,7 +7,8 @@ origin where its head (or a nut's bearing face) seats; ``lib.fasteners``
 returns the step.parts models in that frame.
 
 Servos-above: the servo screws and nuts turn 180 deg about the hinge with
-the servos, and the two leg screws go with the legs.
+the servos, and the two leg screws go with the legs.  Everything but the
+board screws also moves down with the doser (``frames.lower``).
 """
 from __future__ import annotations
 
@@ -49,16 +50,17 @@ def fastener_placements(tilt_deg: float = 0.0, variant: str = "below",
     The carrier is the placement the fastener moves with (frames.placements)."""
     P = F.placements(tilt_deg, variant)
     W = {n: M for n, (_, M) in P.items()}
-    side = F.FLIP if variant == "above" else np.eye(4)
+    low = F.lower(variant)
+    side = low @ (F.FLIP if variant == "above" else np.eye(4))
     out = []
 
     def add(name, key, joint, carrier, parent_M, origin, z_dir):
         out.append((name, key, joint, carrier, parent_M @ seat_frame(origin, z_dir)))
 
     for s, tag in ((1, "+X"), (-1, "-X")):
-        add(f"Hinge screw ({tag})", "bhcs_m5x45", "hinge", "Baseplate", np.eye(4),
+        add(f"Hinge screw ({tag})", "bhcs_m5x45", "hinge", "Baseplate", low,
             (s * 16.1, F.HINGE_Y, F.HINGE_Z), (s, 0, 0))
-        add(f"Hinge locknut ({tag})", "locknut_m5", "hinge", "Baseplate", np.eye(4),
+        add(f"Hinge locknut ({tag})", "locknut_m5", "hinge", "Baseplate", low,
             (s * 54.1, F.HINGE_Y, F.HINGE_Z), (s, 0, 0))
 
     for b in ("rear", "front"):

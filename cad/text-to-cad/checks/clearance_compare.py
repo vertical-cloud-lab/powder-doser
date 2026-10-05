@@ -25,7 +25,7 @@ CONFIGS = [
     ("below", "below", None, "servos below (current); board edge at the legs, y = 55.4"),
     ("below_board_back", "below", 100.0,
      "servos below, board edge moved back to y = 100 (legs hang free)"),
-    ("above", "above", None, "servos above (variant); board edge at its lips, y = 100"),
+    ("above", "above", None, "servos above (variant, 5 mm lower); plate overhangs the board, edge at y = 100"),
 ]
 
 
@@ -35,7 +35,7 @@ def run(source: str) -> dict:
     for cfg, variant, board_y, _ in CONFIGS:
         for tilt in TILTS:
             parts = parts_index.assembly(tilt, variant, source, board_front_y=board_y)
-            outlet = frames.outlet_point(tilt)
+            outlet = frames.outlet_point(tilt, variant)
             for row in clearance(parts, tuple(outlet), RADII):
                 row.update(config=cfg, variant=variant, tilt_deg=tilt,
                            outlet_mm=[round(v, 2) for v in outlet])
