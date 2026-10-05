@@ -45,8 +45,10 @@ ends with the doser working (below).
 
 [`renders/assembly_presentation_720p.mp4`](renders/assembly_presentation_720p.mp4)
 is the walkthrough for slides ([`video.py`](video.py)). It is 1280×720 at
-30 fps (H.264), 47 s long, and has no text at all: no title, captions,
-step numbers, labels or part numbers.
+30 fps (H.264) and 50 s long. The only text is one line for each of the
+three electronics as it is shown working: *Servos for precise tilting*,
+*Stepper motor for rotation* and *Solenoid for tapping*. There is no
+title, no step captions, no labels and no part numbers.
 
 - **Assembly, faster.** The 19 steps take 28 s instead of 67.5 s.
   Each part slides in over 1 s and the screws and nuts over 0.5 s, with
@@ -58,6 +60,13 @@ step numbers, labels or part numbers.
   because they only held captions: the assembled doser before the tilt
   (one 1.5 s still instead of 0.8 s + 1.5 s + 1.5 s) and the end (2 s
   instead of 4 s with the part numbers).
+- **The three captions.** Each appears (0.3 s fade) as the camera
+  arrives at that feature's view and stays 4 s, through the motion. The
+  still before each motion is 1 s longer than it would otherwise be, so
+  the line can be read before anything moves; that is the only slowdown
+  (47 s → 50 s). The text is Carlito 44 px, bottom left, composited onto
+  the rendered frames, so `CAPTIONS`, `TEXT_S` and `PAUSE_S` in `video.py`
+  change it without re-rendering anything else.
 - **Camera.** It flies between views instead of cutting to the close-ups.
   The tilt has its own view, with room for the tube at 45°, which would
   leave the 16:9 frame at the top. After the stepper close-up the auger
@@ -440,7 +449,8 @@ python3 annotate.py --src assembly_iso_az090_hires.png --out assembly_iso_az090_
 python3 compare.py                     # the two comparison panels
 xvfb-run -a python3 assembly_bom.py    # BOM.md, bom.csv, GIF, balloon views (about 1 min)
 xvfb-run -a python3 animate.py         # walkthrough + motion GIFs (about 2 min; gifsicle -O3 if installed)
-xvfb-run -a python3 video.py           # presentation MP4, 720p, no text (about 10 min on 4 cores; needs ffmpeg)
+xvfb-run -a python3 video.py           # presentation MP4, 720p (about 13 min on 4 cores; needs ffmpeg)
+python3 youtube_upload.py              # unlisted YouTube upload; needs YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN
 xvfb-run -a python3 fastener_check.py  # fasteners vs. McMaster (images: mcmaster_fetch.py --images)
 ```
 
@@ -463,7 +473,7 @@ copies are for viewing on GitHub and for the manuscript.
 | `renders/assembly_steps.gif` | 19-step assembly animation with the BOM, ending in a 0–45° tilt |
 | `renders/assembly_walkthrough.gif` | the same 19 steps in the style of the OT-2 lid-mount GIF (byu-vcl PR #234): one view, a caption per step, close-ups of the fasteners, then the doser working: the 0–45° tilt, and close-ups of the tilt gears, the stepper drive and the solenoid tap (`animate.py`) |
 | `renders/doser_motion.gif` | the close-ups of the doser working, on their own |
-| `renders/assembly_presentation_720p.mp4` | the walkthrough for slides: 1280×720, 30 fps H.264, no text, the assembly 2.4× faster and the doser working at the GIF's speed (`video.py`); `_frames.png` is a contact sheet of it |
+| `renders/assembly_presentation_720p.mp4` | the walkthrough for slides: 1280×720, 30 fps H.264, the assembly 2.4× faster and the doser working at the GIF's speed, with one caption per electronic part (`video.py`); `_frames.png` is a contact sheet of it |
 | `renders/auger_unit_steps.gif` | walkthrough steps 11–15 on their own: the brackets and tap collar onto the auger, around lowering it onto the plate |
 | `renders/fastener_check.png` | every fastener stand-in in McMaster's orientation, next to McMaster's picture and catalog row (`fastener_check.py`) |
 | `renders/assembly_exploded_bom.png`, `assembly_bom_callouts.png` | every BOM item ballooned, exploded and assembled |
