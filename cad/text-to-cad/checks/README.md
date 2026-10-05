@@ -4,6 +4,7 @@
 |---|---|
 | `fidelity.py` | A recreated part against the Fusion 360 / PR #170 STEP it duplicates (same frame, no registration): IoU, volume error, bounding-box deltas, two-way surface deviation |
 | `interference.py` | Every pair of placed parts over the tilt range, both layouts, plus every screw and nut against the parts it passes through ([write-up](results/interference.md)) |
+| `plate_clearance.py` | The lowered servos-above doser (`frames.DROP`): every moving part and screw against the baseplate and board, 0–10° in 0.5° steps and on to 45°, plus the rest gaps of the lowest ones |
 | `interference_reference.py` | The flagged pairs again on PR #170's own files, to separate inherited overlaps from ones the recreation introduced |
 | `electronics_clearance.py` | The PCB and its holder against every placed part over the tilt range |
 | `cap_thread.py` | Auger-cap overlap against the cap's turn on the thread (sets `lib.frames.CAP_TURN_DEG`) |

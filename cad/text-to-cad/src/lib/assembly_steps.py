@@ -38,8 +38,8 @@ def steps_servos_above() -> list[dict]:
         S.append({"caption": caption, "parts": parts})
 
     add("A flat board or bench top, 38 mm (1.5 in) thick", [("board", [0, 0, -40])])
-    add("Baseplate onto the board; its two lips butt against the board's front edge, "
-        "so the plate overhangs it by 44.6 mm", [("baseplate", [0, 0, 60])])
+    add("Baseplate onto the board, overhanging its front edge by 44.6 mm; it is relieved "
+        "under the mounting plate, so the doser sits 5 mm lower", [("baseplate", [0, 0, 60])])
     add("4 x #10 x 1-1/4 in pan head wood screws through the plate into the board",
         [(f"board_screw_{t}_y{y}", [0, 0, 25]) for t in ("pos", "neg") for y in (115, 155)])
     add("Mounting plate lowered onto the hinge towers: knuckles inside them, "

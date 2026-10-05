@@ -1,7 +1,7 @@
 | Part | Watertight | Bodies | Volume (cm³) | Wall min / p05 (mm) | Best orientation | Support area (mm², % of surface) | Height (mm) |
 |---|---|---|---|---|---|---|---|
 | baseplate | yes | 1 | 139.5 | 2.028 / 5.0 | rot_minus_90_x | 3572.29 (6.9 %) | 115.0 |
-| baseplate_servos_above | yes | 1 | 189.9 | 1.918 / 5.0 | current_plus_z | 382.64 (0.6 %) | 80.66 |
+| baseplate_servos_above | yes | 1 | 137.6 | 1.506 / 2.0 | current_plus_z | 382.64 (0.6 %) | 75.66 |
 | mounting_plate | **no** | 3 | None | 0.012 / 2.353 | rot_plus_90_x | 2039.23 (5.2 %) | 54.71 |
 | mounting_plate_servos_above | **no** | 3 | None | 0.012 / 2.417 | rot_plus_90_x | 2004.01 (5.1 %) | 54.71 |
 | auger | **no** | 1 | None | 0.002 / 0.489 | current_plus_z | 4058.8 (8.5 %) | 250.0 |

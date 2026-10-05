@@ -8,7 +8,8 @@ every screw and nut is a step.parts model, and the POWDER_DOSER_V2 PCB is
 built from its Gerbers. The assemblies carry kinematics (tilt geared to both
 servo pinions, auger geared to the stepper, solenoid plunger) and animation
 clips. A second layout puts the **servos above the hinge**, so nothing hangs
-below or in front of the nozzle. Both layouts are checked for interference,
+below or in front of the nozzle, and sits **5 mm lower** on a baseplate
+relieved under the mounting plate. Both layouts are checked for interference,
 nozzle-to-cup clearance and printability, and a DEM model simulates the
 powder (tilt, rotation, tapping).
 
@@ -34,7 +35,7 @@ build123d 0.11.1 on Python 3.12, with the text-to-cad `cad`, `step-parts` and
 | `src/lib/` | `frames.py` (world frame and every placement, ported from PR #170), `hardware_placements.py` + `fasteners.py` (step.parts screws and nuts in PR #170's seat frames), `doser.py` (the assembly tree, kinematics and animation clips), `assembly_steps.py` (build order and captions), `electronics_place.py` |
 | `src/assembly_current.py`, `src/assembly_servos_above.py` | The two full assemblies → `STEP/`, `GLB/` |
 | `scripts/render_clips.py` | Renders the clips with text-to-cad's own `cadgen step snapshot --animation … --video` and captions the assembly GIF |
-| `checks/` | Fidelity, interference, electronics clearance, cap thread, nozzle-to-cup clearance, printability, PCB checks; results in `checks/results/` |
+| `checks/` | Fidelity, interference, plate clearance of the lowered doser, electronics clearance, cap thread, nozzle-to-cup clearance, printability, PCB checks; results in `checks/results/` |
 | `sim/` | DEM powder model of the auger ([README](sim/README.md)); figures in `renders/sim/` |
 | `docs/onshape.md` | How this could work with Onshape and its REST API |
 
@@ -98,6 +99,52 @@ difference.
 * **Build order** (`src/lib/assembly_steps.py`, the GIF above): the plate goes
   onto the towers first, then the servos drop in from above (their splines
   pass 8 mm over the gear tips), and then the pinions slide on from inside.
+* **5 mm lower** (`lib.frames.DROP`, `baseplate.py`): see below.
+
+### 5 mm lower
+
+Shortening the towers alone gains nothing. At rest, the mounting plate's
+floor sits **2.0 mm** above the baseplate, and the four M3 button heads
+under it (the bracket screws) only **0.35 mm** above. Tilting lifts them,
+so the rest position sets the height. What is "underneath the auger towards
+the back" is that floor, 108 mm wide at the front and 68 mm at the rear.
+It reaches from the towers to 5 mm past the plate's back edge.
+
+So the plate is relieved under the floor instead of being thinned all
+over:
+
+* `frames.DROP["above"] = 5`: every part and screw above the plate moves
+  down 5 mm. The hinge is now 38.25 mm above the board top (it was 43.25),
+  and the towers and servo cradles are 5 mm shorter.
+* **Relief:** a pocket under the floor's footprint (plus 1.5 mm, and 3 mm on
+  the walls the floor swings towards), down to a **2 mm skin**. The floor
+  clears the skin by 1 mm. The plate stays 6 mm under the towers, the
+  cradles and the board screws.
+* The slot widens from 54 to 57.8 mm, to the towers' inner faces, because
+  the knuckle tongues now dip below the plate top beside the towers. It
+  runs on to y = 111, past the front bracket's screw heads. The rear
+  bracket's heads get Ø9 notches.
+* **What limits it:** those button heads now hang **1.35 mm above the
+  board**. Going lower means countersinking them into the mounting plate's
+  floor (about 1.5 mm more), raising that floor (new brackets, tap-collar
+  base and stepper plate), or recessing the board.
+* **Swing:** as the doser tilts, the floor moves back up to 2.7 mm before
+  it clears the plate top at about 4.5°. The first relief had only 1.5 mm
+  on its chamfers and hit the plate at 4°. The standard 0/15/30/45° sweep
+  would have missed that.
+  [`checks/plate_clearance.py`](checks/plate_clearance.py) sweeps 0–10° in
+  0.5° steps, then on to 45°. Only the intended hard stop touches: the
+  tap-collar base rests on the towers' backs at 0°.
+* **Cost:** the plate drops from 190 to 138 cm³ and still prints flat
+  (0.6 % support). Between each tower and its cradle, the fork arm over
+  the board edge is now the 2 mm skin. The towers' feet, the cradles' rails
+  and the front strip stay 6 mm thick. Print one and check it for flex
+  before relying on it.
+* **Versus a uniformly thinner table:** taking t mm off the whole table
+  lowers everything by t with nothing else changed. The clearances above
+  move down with the table. A 3 mm table (the Onshape session's
+  `#table_trim`, [`onshape/`](onshape/README.md)) gives 3 mm. A 2 mm table
+  would give 4 mm, with the whole 44.6 mm overhang only 2 mm thick.
 
 How close a cup can come to the outlet. A cup of diameter D, centred under
 the outlet, is raised until its rim touches something
@@ -141,6 +188,10 @@ In short:
   mounting plate and rear bracket. The real leads leave towards the plate, so
   route them away from it.
 * Nothing else collides at 0, 15, 30 or 45° in either layout.
+* **Servos above, 5 mm lower:** everything but the baseplate moved down
+  together, so only pairs with the baseplate or the board changed.
+  [`checks/plate_clearance.py`](checks/plate_clearance.py) sweeps those in
+  0.5° steps ([results](checks/results/plate_clearance.json)).
 
 ## Printability
 
@@ -148,7 +199,9 @@ In short:
 thickness, overhang/support area, best orientation) on the STLs:
 [`checks/results/printability.md`](checks/results/printability.md).
 The baseplates, bracket, tap-collar base and PCB holder are clean watertight
-single bodies with minimum walls of 1.7–4 mm. The tap collar's thinnest wall
+single bodies with minimum walls of 1.7–4 mm. The servos-above baseplate's
+thinnest section is now its 2 mm skin under the mounting plate. The tool's
+1.5 mm reading is a ray grazing a board-screw hole in the 6 mm plate. The tap collar's thinnest wall
 is 0.74 mm. The auger's helical flight is 0.5 mm thick by design, which is
 about one extrusion line on a 0.4 mm nozzle. The auger, auger cap and both
 mounting plates export non-watertight or multi-body STLs (the helical sweeps,

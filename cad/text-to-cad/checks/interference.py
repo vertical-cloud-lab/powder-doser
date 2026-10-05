@@ -7,7 +7,10 @@ separately against the parts they pass through (``--fasteners``): a screw in
 a clearance hole should show nothing, and threads cut into a tapped part
 (motor, servo shaft, solenoid) are flagged as expected.
 
-    python3 checks/interference.py [--tilts 0 15 30 45] [--fasteners]
+    python3 checks/interference.py [--tilts 0 15 30 45] [--fasteners] [--variants above]
+
+With ``--variants`` only those layouts are swept; the others are kept from
+the previous results.
 """
 from __future__ import annotations
 
@@ -84,11 +87,13 @@ def main() -> None:
     ap.add_argument("--tilts", type=float, nargs="+", default=[0.0, 15.0, 30.0, 45.0])
     ap.add_argument("--min", type=float, default=0.05, help="mm^3 to report")
     ap.add_argument("--fasteners", action="store_true")
+    ap.add_argument("--variants", nargs="+", default=["below", "above"], choices=["below", "above"])
     a = ap.parse_args()
     t0 = time.time()
-    res = {v: sweep(v, a.tilts, a.min, a.fasteners) for v in ("below", "above")}
-    res["seconds"] = round(time.time() - t0, 1)
     out = ROOT / "checks" / "results" / "interference.json"
+    res = json.loads(out.read_text()) if out.exists() else {}
+    res.update({v: sweep(v, a.tilts, a.min, a.fasteners) for v in a.variants})
+    res["seconds"] = round(time.time() - t0, 1)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res, indent=1) + "\n")
     print("wrote", out, res["seconds"], "s")

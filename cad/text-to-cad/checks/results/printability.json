@@ -22,13 +22,13 @@
    "part": "baseplate_servos_above",
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 189.9,
-   "wall_min_mm": 1.918,
-   "wall_p05_mm": 5.0,
+   "volume_cm3": 137.6,
+   "wall_min_mm": 1.506,
+   "wall_p05_mm": 2.0,
    "best_orientation": "current_plus_z",
    "support_area_mm2": 382.64,
    "support_area_pct": 0.6,
-   "build_height_mm": 80.66,
+   "build_height_mm": 75.66,
    "thin_wall": false
   },
   {
@@ -391,17 +391,17 @@
      "bbox_mm": [
       190.0,
       142.7,
-      80.66
+      75.66
      ],
-     "volume_mm3": 189922.6,
-     "surface_area_mm2": 69451.8,
-     "triangle_count": 3668,
+     "volume_mm3": 137648.3,
+     "surface_area_mm2": 62526.5,
+     "triangle_count": 4112,
      "watertight": true,
      "euler_number": -26,
      "body_count": 1
     },
     "scale": {
-     "bbox_diagonal_mm": 250.9369,
+     "bbox_diagonal_mm": 249.3747,
      "units_suspect": false,
      "note": "bbox consistent with millimetre units"
     },
@@ -416,9 +416,9 @@
       "20-30deg": 108.31,
       "30-40deg": 57.78,
       "40-50deg": 96.19,
-      "50-60deg": 42.11,
-      "60-70deg": 708.01,
-      "70-80deg": 811.6,
+      "50-60deg": 589.7,
+      "60-70deg": 739.55,
+      "70-80deg": 74.4,
       "80-90deg": 95.62
      },
      "largest_faces_below_limit": [
@@ -426,7 +426,7 @@
        "location_xyz": [
         -37.1,
         44.81,
-        34.31
+        29.31
        ],
        "surface_angle_deg": 5.6,
        "area_mm2": 10.85
@@ -435,16 +435,7 @@
        "location_xyz": [
         -33.0,
         44.23,
-        34.37
-       ],
-       "surface_angle_deg": 5.6,
-       "area_mm2": 10.85
-      },
-      {
-       "location_xyz": [
-        37.1,
-        44.23,
-        34.37
+        29.37
        ],
        "surface_angle_deg": 5.6,
        "area_mm2": 10.85
@@ -453,34 +444,25 @@
        "location_xyz": [
         33.0,
         44.81,
-        34.31
+        29.31
        ],
        "surface_angle_deg": 5.6,
        "area_mm2": 10.85
       },
       {
        "location_xyz": [
-        -37.1,
-        41.44,
-        35.21
+        37.1,
+        44.23,
+        29.37
        ],
-       "surface_angle_deg": 28.1,
-       "area_mm2": 10.85
-      },
-      {
-       "location_xyz": [
-        -33.0,
-        40.92,
-        35.49
-       ],
-       "surface_angle_deg": 28.1,
+       "surface_angle_deg": 5.6,
        "area_mm2": 10.85
       },
       {
        "location_xyz": [
         33.0,
         41.44,
-        35.21
+        30.21
        ],
        "surface_angle_deg": 28.1,
        "area_mm2": 10.85
@@ -489,7 +471,25 @@
        "location_xyz": [
         37.1,
         40.92,
-        35.49
+        30.49
+       ],
+       "surface_angle_deg": 28.1,
+       "area_mm2": 10.85
+      },
+      {
+       "location_xyz": [
+        -37.1,
+        41.44,
+        30.21
+       ],
+       "surface_angle_deg": 28.1,
+       "area_mm2": 10.85
+      },
+      {
+       "location_xyz": [
+        -33.0,
+        40.92,
+        30.49
        ],
        "surface_angle_deg": 28.1,
        "area_mm2": 10.85
@@ -498,83 +498,83 @@
     },
     "wall_thickness": {
      "samples_valid": 2000,
-     "min_mm": 1.918,
-     "p05_mm": 5.0,
-     "p25_mm": 6.0,
+     "min_mm": 1.506,
+     "p05_mm": 2.0,
+     "p25_mm": 2.0,
      "median_mm": 6.0,
-     "max_mm": 190.0,
+     "max_mm": 114.6,
      "thinnest_samples": [
       {
        "location_xyz": [
-        82.58,
-        155.95,
+        -81.78,
+        157.09,
         4.0
        ],
-       "thickness_mm": 1.918
+       "thickness_mm": 1.506
+      },
+      {
+       "location_xyz": [
+        -70.43,
+        32.94,
+        69.8
+       ],
+       "thickness_mm": 1.703
+      },
+      {
+       "location_xyz": [
+        -70.43,
+        32.94,
+        60.76
+       ],
+       "thickness_mm": 1.703
       },
       {
        "location_xyz": [
         -68.77,
-        75.93,
-        73.89
+        77.66,
+        69.58
        ],
-       "thickness_mm": 2.106
+       "thickness_mm": 1.813
       },
       {
        "location_xyz": [
-        70.43,
-        75.93,
-        73.89
+        9.63,
+        132.82,
+        2.0
        ],
-       "thickness_mm": 2.106
+       "thickness_mm": 2.0
       },
       {
        "location_xyz": [
-        70.43,
-        75.93,
-        73.89
+        -9.63,
+        147.53,
+        0.0
        ],
-       "thickness_mm": 2.106
+       "thickness_mm": 2.0
       },
       {
        "location_xyz": [
-        70.43,
-        34.63,
-        73.89
+        -9.63,
+        147.53,
+        0.0
        ],
-       "thickness_mm": 2.106
+       "thickness_mm": 2.0
       },
       {
        "location_xyz": [
-        68.77,
-        75.93,
-        67.13
+        -9.63,
+        147.53,
+        0.0
        ],
-       "thickness_mm": 2.12
-      },
-      {
-       "location_xyz": [
-        68.77,
-        75.93,
-        67.13
-       ],
-       "thickness_mm": 2.12
-      },
-      {
-       "location_xyz": [
-        68.77,
-        75.93,
-        67.13
-       ],
-       "thickness_mm": 2.12
+       "thickness_mm": 2.0
       }
      ]
     },
     "support_volume": {
      "angle_limit_used_deg": 45.0,
-     "estimated_support_volume_mm3": 16630.4,
-     "part_volume_mm3": 189922.6,
-     "support_to_part_ratio_pct": 8.8,
+     "estimated_support_volume_mm3": 14905.9,
+     "part_volume_mm3": 137648.3,
+     "support_to_part_ratio_pct": 10.8,
      "method": "prism from face centroid to build plate; coarse upper-bound estimate"
     },
     "partial": false
@@ -582,7 +582,7 @@
    "orientations": {
     "file": "/home/runner/work/powder-doser/powder-doser/cad/text-to-cad/STL/parts/baseplate_servos_above.stl",
     "scale": {
-     "bbox_diagonal_mm": 250.9369,
+     "bbox_diagonal_mm": 249.3747,
      "units_suspect": false,
      "note": "bbox consistent with millimetre units"
     },
@@ -594,36 +594,36 @@
        "orientation": "current_plus_z",
        "support_area_mm2": 382.64,
        "support_area_pct": 0.6,
-       "build_height_mm": 80.66
+       "build_height_mm": 75.66
       },
       {
        "orientation": "flip_180_x",
-       "support_area_mm2": 21301.17,
-       "support_area_pct": 30.7,
-       "build_height_mm": 80.66
+       "support_area_mm2": 18056.75,
+       "support_area_pct": 28.9,
+       "build_height_mm": 75.66
       },
       {
        "orientation": "rot_plus_90_x",
-       "support_area_mm2": 3331.26,
-       "support_area_pct": 4.8,
+       "support_area_mm2": 3102.79,
+       "support_area_pct": 5.0,
        "build_height_mm": 142.7
       },
       {
        "orientation": "rot_minus_90_x",
-       "support_area_mm2": 2531.23,
-       "support_area_pct": 3.6,
+       "support_area_mm2": 2754.47,
+       "support_area_pct": 4.4,
        "build_height_mm": 142.7
       },
       {
        "orientation": "rot_plus_90_y",
-       "support_area_mm2": 9092.08,
-       "support_area_pct": 13.1,
+       "support_area_mm2": 8944.36,
+       "support_area_pct": 14.3,
        "build_height_mm": 190.0
       },
       {
        "orientation": "rot_minus_90_y",
-       "support_area_mm2": 9193.9,
-       "support_area_pct": 13.2,
+       "support_area_mm2": 9046.18,
+       "support_area_pct": 14.5,
        "build_height_mm": 190.0
       }
      ]

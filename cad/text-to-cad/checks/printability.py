@@ -6,7 +6,10 @@ the skill's FDM limits (references/process-limits.md: min supported wall
 1.2 mm, unsupported 1.6 mm, min hole 2.0 mm).  The tool only measures; the
 verdicts here are this script's.
 
-    python3 checks/printability.py [--tool /path/to/dfam_tool.py]
+    python3 checks/printability.py [--tool /path/to/dfam_tool.py] [--parts baseplate_servos_above ...]
+
+With ``--parts`` only those parts are measured again; the other rows are
+kept from the previous results.
 
 Writes checks/results/printability.json and printability.md.
 """
@@ -57,11 +60,22 @@ def run(tool: Path, cmd: str, stl: Path) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tool", type=Path, default=TOOL)
+    ap.add_argument("--parts", nargs="+", default=None)
     a = ap.parse_args()
     parts = {k: ROOT / "STL" / "parts" / f"{k}.stl" for k in PRINTED}
     parts.update(EXTRA)
+    out = ROOT / "checks" / "results"
+    old_rows, old_raw = {}, {}
+    if a.parts:
+        old = json.loads((out / "printability.json").read_text())
+        old_rows, old_raw = {r["part"]: r for r in old["rows"]}, old["raw"]
     rows, raw = [], {}
     for name, stl in parts.items():
+        if a.parts and name not in a.parts:
+            if name in old_rows:
+                rows.append(old_rows[name])
+                raw[name] = old_raw.get(name)
+            continue
         if not stl.exists():
             continue
         stl = printable_stl(name, stl)
@@ -88,7 +102,6 @@ def main() -> None:
             "thin_wall": (wt.get("p05_mm") or 99) < FDM["wall_unsupported"],
         })
         print(rows[-1], flush=True)
-    out = ROOT / "checks" / "results"
     out.mkdir(parents=True, exist_ok=True)
     (out / "printability.json").write_text(json.dumps({"fdm_limits": FDM, "rows": rows,
                                                        "raw": raw}, indent=1) + "\n")
