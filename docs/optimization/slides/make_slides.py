@@ -347,30 +347,57 @@ def _hv_patches(ax, front, color, alpha, z=1):
                                edgecolor="none", zorder=z, alpha=alpha))
 
 
+FRONT_STEPS_CAMPAIGN = FRONT_STEPS[:4] + [
+    "Before each dose, the model predicted where it would land,\nwith an uncertainty",
+]
+
+
 def slide_front_math(step: int, version: str = "example", message: bool = True):
-    fig = ss.slide(FRONT_STEPS[step - 1] if message else None)
+    """version "example": ten made-up doses; "campaign": the real doses, the
+    recommended dose as the example, and in step 5 the model's prediction for
+    it (Ax snapshot) against where it landed."""
+    real = version == "campaign"
+    fig = ss.slide((FRONT_STEPS_CAMPAIGN if real else FRONT_STEPS)[step - 1] if message else None)
     ax = _pareto_axes(fig, False)
-    ax.text(7.0, -0.9, "worked example", color=GREY, fontsize=FS, ha="right", va="bottom")
-    front = cd.pareto_front(TOY)
+    if real:
+        D = cd.doses()
+        pts_all = [(d["t"] / 60, d["abs"]) for d in D if d["abs"] <= OFF_SCALE]
+        clean = [(d["t"] / 60, d["abs"]) for d in D if d["status"] == "ok"]
+        hand = [(d["t"] / 60, d["abs"]) for d in D if d["group"] == "hand"]
+        rec = next(d for d in D if d["label"] == cd.RECOMMENDED)
+        one = (rec["t"] / 60, rec["abs"])
+        front = cd.pareto_front(clean)
+    else:
+        ax.text(7.0, -0.9, "worked example", color=GREY, fontsize=FS, ha="right", va="bottom")
+        pts_all, hand, one = TOY, [], TOY_ONE
+        front = cd.pareto_front(TOY)
     fx, fy = zip(*front)
     if step == 1:
-        x, e = TOY_ONE
+        x, e = one
         ax.scatter([x], [e], s=190, color=INK, zorder=6)
         ax.plot([x, x], [-0.9, e], color=INK2, lw=1.6, ls=(0, (3, 3)))
         ax.plot([-0.13, x], [e, e], color=INK2, lw=1.6, ls=(0, (3, 3)))
-        ss.callout(ax, f"one dose: {x:g} min, {e:g} mg off", (x, e), (2.9, 17.0), INK)
+        ss.callout(ax, f"one dose: {x:.1f} min, {e:.1f} mg off".replace(".0 ", " "), (x, e),
+                   (2.9, 17.0), INK)
         return fig
     col = GREY if step == 2 else FAINT
-    rest = [p for p in TOY if not (step >= 3 and p in front)]
+    rest = [p for p in pts_all if not (step >= 3 and p in front) and p not in hand
+            and not (step == 2 and p == one)]
     ax.scatter(*zip(*rest), s=130, facecolor="white", edgecolor=col, linewidth=2.2, zorder=3)
+    if hand:
+        ax.scatter(*zip(*hand), s=150, color=ORANGE if step == 2 else ss.ORANGE_LIGHT,
+                   edgecolor="white", linewidth=1.6, zorder=4)
     if step == 2:
-        x, e = front[2]
+        x, e = one if real else front[2]
         ax.add_patch(Rectangle((x, e), 7.0 - x, 31.5 - e, facecolor=ss.GHOST, edgecolor="none",
                                zorder=0))
         ax.scatter([x], [e], s=190, color=INK, zorder=6)
-        ss.callout(ax, "this dose ...", (x, e), (0.35, 1.2), INK)
-        ax.text(4.3, 24.0, "... beats every dose\nin the grey area", color=INK, fontsize=FS,
-                ha="left", va="center")
+        ss.callout(ax, "this dose ...", (x, e), (0.35, 1.2) if not real else (0.55, 19.0), INK)
+        if real:
+            ss.callout(ax, "... beats all four hand-tuned doses", (4.2, 4.7), (3.3, 24.0), ORANGE)
+        else:
+            ax.text(4.3, 24.0, "... beats every dose\nin the grey area", color=INK, fontsize=FS,
+                    ha="left", va="center")
         return fig
     if step >= 4:
         _hv_patches(ax, front, ss.BLUE_LIGHT, 1.0 if step == 4 else 0.55)
@@ -384,12 +411,26 @@ def slide_front_math(step: int, version: str = "example", message: bool = True):
     ax.plot(sx, sy, color=BLUE, lw=3.0, zorder=4)
     ax.scatter(fx, fy, s=170, color=BLUE, edgecolor="white", linewidth=1.8, zorder=6)
     if step == 3:
-        ss.callout(ax, "Pareto front", (0.9, 10.5), (1.6, 19.0), BLUE)
-    if step == 5:
+        if real:
+            ss.callout(ax, "Pareto front", (0.55, 6.8), (1.1, 17.0), BLUE)
+        else:
+            ss.callout(ax, "Pareto front", (0.9, 10.5), (1.6, 19.0), BLUE)
+    if step == 5 and real:
+        tm, ts, em, es = rec["pred"]
+        px, pe, sx_, se_ = tm / 60, em, ts / 60, es
+        ax.errorbar([px], [pe], xerr=[[sx_], [sx_]], yerr=[[min(se_, pe + 0.9)], [se_]],
+                    fmt="none", ecolor=BLUE, alpha=0.4, elinewidth=3, capsize=0, zorder=5)
+        ax.scatter([px], [pe], s=200, facecolor="white", edgecolor=BLUE, linewidth=3.0, zorder=7)
+        ax.plot([px, one[0]], [pe, one[1]], color=BLUE, lw=1.6, alpha=0.6, zorder=6)
+        ax.scatter([one[0]], [one[1]], s=200, color=BLUE, edgecolor="white", linewidth=2,
+                   zorder=8)
+        ss.callout(ax, f"predicted: {px:.1f} \u00b1 {sx_:.1f} min, {pe:.0f} \u00b1 {se_:.0f} mg",
+                   (px, pe + se_ * 0.75), (1.9, 29.3), BLUE)
+        ss.callout(ax, f"dosed: {one[0]:.1f} min, {one[1]:.1f} mg", (one[0] + 0.05, one[1]),
+                   (3.4, 8.0), BLUE)
+    if step == 5 and not real:
         cx, ce = TOY_NEXT
         new_front = cd.pareto_front(list(front) + [TOY_NEXT])
-        gain = [(x, e) for x, e in new_front]
-        # the extra area if the dose lands where predicted
         k = new_front.index(TOY_NEXT)
         e_top = new_front[k - 1][1]
         x_right = new_front[k + 1][0]
@@ -520,7 +561,7 @@ SLIDES = {
     "pareto": (slide_pareto, len(PARETO_STEPS), ("linear", "model", "log")),
     "traces": (slide_traces, len(TRACE_STEPS), ("pair", "all")),
     "knobs": (slide_knobs, len(KNOB_STEPS), ("dumbbell",)),
-    "front-math": (slide_front_math, len(FRONT_STEPS), ("example",)),
+    "front-math": (slide_front_math, len(FRONT_STEPS), ("example", "campaign")),
     "model-math": (slide_model_math, len(MODEL_STEPS), ("example",)),
 }
 
