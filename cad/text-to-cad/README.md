@@ -128,6 +128,9 @@ over:
   board**. Going lower means countersinking them into the mounting plate's
   floor (about 1.5 mm more), raising that floor (new brackets, tap-collar
   base and stepper plate), or recessing the board.
+* The M3 × 30 flat head under the tap-collar base now ends flush with the
+  plate's underside, in the slot in front of the board's edge. Keep the
+  board's edge at y = 100, as designed, or use an M3 × 25.
 * **Swing:** as the doser tilts, the floor moves back up to 2.7 mm before
   it clears the plate top at about 4.5°. The first relief had only 1.5 mm
   on its chamfers and hit the plate at 4°. The standard 0/15/30/45° sweep
