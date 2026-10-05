@@ -27,7 +27,8 @@ What is drawn at real speed and what isn't:
   averaged per frame) instead of strobing.
 - A tap's plunger stroke is drawn over 0.15 s whatever the speed, so it
   can be seen (the real pulse is 60 ms).
-- Grains are 0.5 mg each, emitted so the cup fills the way the balance did.
+- Each timeline grain stands for 0.5 mg (drawn as 4 spheres), emitted so the
+  cup fills the way the balance did.
 - The tilt-up at the start and the return to 0 deg at the end are added
   for the clip; on the rig the plate stays at the last tilt between doses.
 

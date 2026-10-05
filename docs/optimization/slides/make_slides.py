@@ -165,7 +165,7 @@ TRACE_STEPS_ALL = [
 ]
 
 
-def _trace_axes(fig, zoom: float):
+def _trace_axes(fig, zoom: float, xmax: int = 6):
     """zoom 0: the whole dose; 1: the last 100 mg (0.40-0.50 g)."""
     ax = fig.add_axes(TRACE_RECT)
     lo = 0.40 * zoom
@@ -174,13 +174,13 @@ def _trace_axes(fig, zoom: float):
     else:
         yt = [0.40, 0.42, 0.44, 0.46, 0.48, 0.50]
     yt = [v for v in yt if v >= lo - 1e-9]
-    ss.style_axes(ax, (-0.1, 6.0), (lo - 0.012 * (1 - 0.75 * zoom), 0.512),
-                  [0, 1, 2, 3, 4, 5, 6], yt, yfmt=lambda v: f"{v:.2f}".rstrip("0").rstrip(".")
+    ss.style_axes(ax, (-0.07 * xmax / 6, xmax), (lo - 0.012 * (1 - 0.75 * zoom), 0.512),
+                  list(range(xmax + 1)), yt, yfmt=lambda v: f"{v:.2f}".rstrip("0").rstrip(".")
                   if zoom < 0.5 else f"{v:.2f}")
     ss.ylabel_top(ax, "Powder in the cup (g)", y=1.07)
     ss.xlabel(ax, "Time since the dose started (min)")
     ax.axhline(0.5, color=GREY, lw=1.6, ls=(0, (5, 4)), zorder=1, xmax=0.985)
-    ax.text(6.05, 0.5, "target", color=GREY, fontsize=FS, va="center", ha="left")
+    ax.text(xmax * 1.008, 0.5, "target", color=GREY, fontsize=FS, va="center", ha="left")
     return ax
 
 
@@ -197,7 +197,8 @@ def slide_traces(step: float, version: str = "pair", message: bool = True):
     k = int(np.ceil(step - 1e-9))
     steps = TRACE_STEPS if version == "pair" else TRACE_STEPS_ALL
     fig = ss.slide(steps[min(k, 3) - 1] if message else None)
-    ax = _trace_axes(fig, zoom)
+    pair = version == "pair"
+    ax = _trace_axes(fig, zoom, 4 if pair else 6)
     D = {d["label"]: d for d in cd.doses()}
     hands = [HAND_TRACE] if version == "pair" else list(cd.HAND_TUNED)
     recs = [cd.RECOMMENDED] if version == "pair" else ["bo-003", cd.RECOMMENDED, "bo-006"]
@@ -225,15 +226,15 @@ def slide_traces(step: float, version: str = "pair", message: bool = True):
         ss.callout(ax, "hand-tuned, 4 doses", (2.5, 0.47), (2.3, 0.33), ORANGE)
     if k == 2 and zoom == 0:
         if version == "pair":
-            ss.callout(ax, "hand-tuned", (3.6, 0.494), (4.0, 0.36), ORANGE)
-            ss.callout(ax, "recommended", (1.0, 0.482), (1.47, 0.30), BLUE)
+            ss.callout(ax, "hand-tuned", (3.3, 0.491), (2.75, 0.36), ORANGE)
+            ss.callout(ax, "recommended", (1.0, 0.482), (1.25, 0.25), BLUE)
         else:
             ss.callout(ax, "hand-tuned, 4 doses", (3.6, 0.494), (4.0, 0.36), ORANGE)
             ss.callout(ax, "recommended, 3 doses", (1.0, 0.482), (1.47, 0.30), BLUE)
     if k == 3 and zoom == 1:
         if version == "pair":
-            ss.callout(ax, f"{_tap_rate(h):.1f} mg per tap", (3.0, 0.4878), (3.4, 0.455), ORANGE)
-            ss.callout(ax, f"{_tap_rate(r):.1f} mg per tap", (1.03, 0.4844), (1.58, 0.435), BLUE)
+            ss.callout(ax, f"{_tap_rate(h):.1f} mg per tap", (3.0, 0.4878), (2.75, 0.452), ORANGE)
+            ss.callout(ax, f"{_tap_rate(r):.1f} mg per tap", (1.45, 0.4945), (1.85, 0.4885), BLUE)
         else:
             hr = [_tap_rate(cd.trace(D[x]["uuid"])) for x in hands]
             rr = [_tap_rate(cd.trace(D[x]["uuid"])) for x in recs]
