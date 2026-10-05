@@ -40,7 +40,7 @@ PARETO_STEPS = [
     "Hand-tuned settings took 3 to 6 minutes\nper 0.5 g dose of salt",
     "The optimizer then tried 31 other settings,\nunattended, in under 2\u00bd hours",
     "The best trade-offs between speed and accuracy\nform the Pareto front",
-    "The recommended settings dose 0.5 g in under 2 minutes,\nmore accurately than hand tuning",
+    "The recommended settings dosed 0.5 g in under 2 minutes,\nmore accurately than hand tuning",
 ]
 # version "model": the front is the model's (Ax, SAASBO posterior means), which
 # averages over the dose-to-dose noise; the recommended settings are on it
@@ -92,7 +92,7 @@ def slide_pareto(step: int, version: str = "linear", message: bool = True):
     else:
         front = cd.pareto_front([(d["x"], d["abs"], d["label"]) for d in clean])
         on_front = {f[2] for f in front}
-    rec = [d for d in D if d["label"] in ("bo-003", cd.RECOMMENDED, "bo-006")]
+    rec = [d for d in D if d["label"] == cd.RECOMMENDED]
 
     def y(v):
         return max(v, 0.5) if logy else v
@@ -143,7 +143,8 @@ def slide_pareto(step: int, version: str = "linear", message: bool = True):
     if step == 4:
         ax.scatter([d["x"] for d in rec], [y(d["abs"]) for d in rec], s=170, color=BLUE,
                    edgecolor="white", linewidth=1.8, zorder=6)
-        ss.callout(ax, "Recommended settings", (103.5 / 60, y(1.0)),
+        r = rec[0]
+        ss.callout(ax, "Recommended settings", (r["x"], y(r["abs"])),
                    (2.13, y(17.0) if not logy else 30), BLUE)
     return fig
 
@@ -160,7 +161,7 @@ TRACE_STEPS = [
 ]
 TRACE_STEPS_ALL = [
     "Hand-tuned doses spent most of their time\ntapping out the last 60 to 80 mg",
-    "Doses at the recommended settings finished\nin under 2 minutes",
+    "Doses at or near the recommended settings\nfinished in under 2 minutes",
     "Each of their taps moved about twice as much powder,\nso the endgame was much shorter",
 ]
 
@@ -230,7 +231,7 @@ def slide_traces(step: float, version: str = "pair", message: bool = True):
             ss.callout(ax, "recommended", (1.0, 0.482), (1.25, 0.25), BLUE)
         else:
             ss.callout(ax, "hand-tuned, 4 doses", (3.6, 0.494), (4.0, 0.36), ORANGE)
-            ss.callout(ax, "recommended, 3 doses", (1.0, 0.482), (1.47, 0.30), BLUE)
+            ss.callout(ax, "at or near the recommended settings", (1.0, 0.482), (1.47, 0.30), BLUE)
     if k == 3 and zoom == 1:
         if version == "pair":
             ss.callout(ax, f"{_tap_rate(h):.1f} mg per tap", (3.0, 0.4878), (2.75, 0.452), ORANGE)
