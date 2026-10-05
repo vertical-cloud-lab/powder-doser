@@ -3,11 +3,16 @@ electronics (the PCB holder and its 300 components stand beside the doser,
 on the board, and don't move when the table is thinned).  Names, colours and
 the assembly tree are kept (XCAF read -> remove one component -> write).
 
-    python3 onshape/doser_step.py [out.step]
+    python3 onshape/doser_step.py [out.step] [--rev 8aae55e]
+
+The Onshape document was imported from the assembly at 8aae55e, before the
+text-to-cad session lowered it, so by default the STEP is read from git at
+that commit (``--rev ""`` reads the working tree).
 """
 from __future__ import annotations
 
-import sys
+import argparse
+import subprocess
 from pathlib import Path
 
 from OCP.IFSelect import IFSelect_RetDone
@@ -29,13 +34,25 @@ def _name(label) -> str:
     return a.Get().ToExtString() if label.FindAttribute(TDataStd_Name.GetID_s(), a) else ""
 
 
-def write(out: Path) -> Path:
+def source(rev: str) -> Path:
+    if not rev:
+        return SRC
+    rel = SRC.relative_to(Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"],
+                                                       cwd=HERE, text=True).strip()))
+    out = Path(f"/tmp/os/assembly_servos_above_{rev}.step")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_bytes(subprocess.check_output(["git", "show", f"{rev}:{rel}"], cwd=HERE))
+    return out
+
+
+def write(out: Path, rev: str = "8aae55e") -> Path:
+    src = source(rev)
     doc = TDocStd_Document(TCollection_ExtendedString("doser"))
     r = STEPCAFControl_Reader()
     r.SetNameMode(True)
     r.SetColorMode(True)
-    if r.ReadFile(str(SRC)) != IFSelect_RetDone or not r.Transfer(doc):
-        raise RuntimeError(f"could not read {SRC}")
+    if r.ReadFile(str(src)) != IFSelect_RetDone or not r.Transfer(doc):
+        raise RuntimeError(f"could not read {src}")
     st = XCAFDoc_DocumentTool.ShapeTool_s(doc.Main())
     roots = TDF_LabelSequence()
     st.GetFreeShapes(roots)
@@ -61,4 +78,8 @@ def write(out: Path) -> Path:
 
 
 if __name__ == "__main__":
-    write(Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/tmp/os/doser_servos_above.step"))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("out", nargs="?", type=Path, default=Path("/tmp/os/doser_servos_above.step"))
+    ap.add_argument("--rev", default="8aae55e", help="git revision of the assembly STEP ('' = working tree)")
+    a = ap.parse_args()
+    write(a.out, a.rev)

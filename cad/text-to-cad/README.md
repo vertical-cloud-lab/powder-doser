@@ -250,10 +250,12 @@ tap as a 4 ms, about 38 g acceleration pulse of the tube.
 
 ## Onshape
 
-[`onshape/`](onshape/README.md) makes the servos-above "thinner table"
-edit in Onshape through the REST API: a company-owned document, three
-native features driven by `#table_trim`, checked against the expected
-geometry, in 24 API calls.
+[`onshape/`](onshape/README.md) makes the lowering in Onshape through the
+REST API, in one company-owned document. A branch reproduces this
+README's 5 mm lowering with a FeatureScript feature, and its baseplate
+matches `baseplate_servos_above.step` at IoU 1.0000. The main workspace
+has the simpler alternative, a 3 mm thinner table driven by one variable.
+Together they took 54 API calls.
 
 [`docs/onshape.md`](docs/onshape.md) covers the options. The most valuable
 next step is pushing this project's kinematics sidecar into the existing
