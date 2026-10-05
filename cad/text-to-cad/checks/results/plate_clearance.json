@@ -1,0 +1,123 @@
+{
+ "variant": "above",
+ "drop_mm": 5.0,
+ "tilts": [
+  0.0,
+  0.5,
+  1.0,
+  1.5,
+  2.0,
+  2.5,
+  3.0,
+  3.5,
+  4.0,
+  4.5,
+  5.0,
+  5.5,
+  6.0,
+  6.5,
+  7.0,
+  7.5,
+  8.0,
+  8.5,
+  9.0,
+  9.5,
+  10.0,
+  12.5,
+  15.0,
+  22.5,
+  30.0,
+  37.5,
+  45.0
+ ],
+ "hits": [
+  {
+   "tilt": 0.0,
+   "part": "Tap collar base",
+   "fixed": "Baseplate",
+   "mm3": 0.135,
+   "expected": true
+  }
+ ],
+ "rest_gaps_mm": [
+  {
+   "part": "Mounting plate",
+   "z_min": 3.0,
+   "to_plate": 0.3,
+   "to_board": 3.0
+  },
+  {
+   "part": "Bracket (rear)",
+   "z_min": 9.0,
+   "to_plate": 6.26,
+   "to_board": 9.0
+  },
+  {
+   "part": "Bracket (front)",
+   "z_min": 9.0,
+   "to_plate": 6.26,
+   "to_board": 9.0
+  },
+  {
+   "part": "Tap collar base",
+   "z_min": 9.0,
+   "to_plate": 0.0,
+   "to_board": 9.58
+  },
+  {
+   "part": "Stepper (NEMA 11)",
+   "z_min": 4.15,
+   "to_plate": 4.36,
+   "to_board": 4.15
+  },
+  {
+   "part": "Bracket screw (rear, -)",
+   "z_min": 1.35,
+   "to_plate": 1.92,
+   "to_board": 1.35
+  },
+  {
+   "part": "Bracket screw (rear, +)",
+   "z_min": 1.35,
+   "to_plate": 1.92,
+   "to_board": 1.35
+  },
+  {
+   "part": "Bracket screw (front, -)",
+   "z_min": 1.35,
+   "to_plate": 2.28,
+   "to_board": 1.35
+  },
+  {
+   "part": "Bracket screw (front, +)",
+   "z_min": 1.35,
+   "to_plate": 2.28,
+   "to_board": 1.35
+  },
+  {
+   "part": "Tap base screw (-)",
+   "z_min": 1.35,
+   "to_plate": 2.28,
+   "to_board": 9.89
+  },
+  {
+   "part": "Tap base nut (-)",
+   "z_min": 23.0,
+   "to_plate": 10.96,
+   "to_board": 24.89
+  },
+  {
+   "part": "Tap base screw (+)",
+   "z_min": -0.0,
+   "to_plate": 3.67,
+   "to_board": 11.04
+  },
+  {
+   "part": "Tap base nut (+)",
+   "z_min": 0.6,
+   "to_plate": 1.72,
+   "to_board": 9.54
+  }
+ ],
+ "seconds": 216.3
+}

@@ -155,13 +155,15 @@ the outlet, is raised until its rim touches something
 | Current, 0° | 12.5 (auger) | 12.5 (auger) | 81.3 (board) | 81.3 (board) | 81.3 (board) |
 | Current, 45° | 8.8 (auger) | 73.2 (board) | 73.2 (board) | 73.2 (board) | 73.2 (baseplate) |
 | Current, board moved back, 45° | 8.8 (auger) | 35.0 (baseplate) | 35.0 (baseplate) | 35.0 (baseplate) | 73.2 (baseplate) |
-| Servos above, 0° | 12.5 (auger) | 12.5 (auger) | 22.3 (mounting plate) | 43.2 (baseplate) | 43.2 (baseplate) |
-| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 11.6 (auger) | 38.8 (baseplate) | 38.8 (baseplate) |
-| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | **8.8 (auger)** | 35.0 (baseplate) | 35.0 (baseplate) |
+| Servos above, 0° | 12.5 (auger) | 12.5 (auger) | 22.3 (mounting plate) | 38.3 (baseplate) | 38.3 (baseplate) |
+| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 11.6 (auger) | 33.8 (baseplate) | 33.8 (baseplate) |
+| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | **8.8 (auger)** | 30.1 (baseplate) | 30.1 (baseplate) |
 
 8.8 mm is the floor here: it is the auger tube's own end face
 (12.5 mm × cos 45°). At 45° with the servos above, cups up to 58 mm across
-reach it. With the current layout, any cup 40 mm or wider stops 73 mm below
+reach it. The servos-above rows are for the doser 5 mm lower. That brings
+the outlet 5 mm closer to the baseplate, so wider cups stop 5 mm sooner
+(they were 43.2, 38.8 and 35.0 mm at 0, 22.5 and 45°). With the current layout, any cup 40 mm or wider stops 73 mm below
 the outlet, because the board and the baseplate's front arms are in the
 way.
 
