@@ -556,6 +556,26 @@ def test_validate_point():
               "## Validation blocks" in md
               and md.count(w.campaign.doc["campaign_id"] + "-") >= 2
               and "| corner-05 |" in md)
+        check("an attended block's profile says spills were watched",
+              blocks[0]["validation"]["spills_observed"] is True)
+
+        pareto = os.path.join(w.campaign.dir, "pareto.json")
+        before = (open(pareto).read() if os.path.exists(pareto) else None)
+        u = ocamp.Runner(_args(state, "--unattended", "--validate-point",
+                               "corner-05", "--replicates", "4"))
+        u.executor = _Scripted(u.executor, {0: "stall", 1: "stall"})
+        _quiet(u.run)
+        doc = u.campaign.doc
+        after = (open(pareto).read() if os.path.exists(pareto) else None)
+        check("unattended block cut short (2 stalls): replicates kept, no "
+              "profile, the campaign's readout and records untouched",
+              doc["status"] == "validation-stopped"
+              and doc["validation_stop_reason"].startswith("2 stalls")
+              and len(doc["profiles"]) == len(blocks)
+              and [x["label"] for x in u.records[-2:]]
+              == ["val-corner-05-00", "val-corner-05-01"]
+              and after == before and "stop_reason" not in doc
+              and "unattended" not in doc)
 
         refused = 0
         for label in ("no-such-dose", "val-00"):

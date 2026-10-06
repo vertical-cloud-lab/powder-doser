@@ -1038,6 +1038,14 @@ A block interrupted partway (Ctrl-C, a pause, a rig fault) starts again from
 replicate 0 when the command is re-run. The replicates it already dosed stay in
 the records, but they don't count toward the new block.
 
+**Unattended blocks** (`--unattended`, e.g. from CI; added 2026-10-06). There is no
+countdown, so spills are recorded as unobserved and the profile's stats say
+`spills_observed: false`. A §5.5 limit (deadline, stall or jam streak, rig fault)
+stops the block without writing a profile: the campaign's status becomes
+`validation-stopped`, with the reason in `validation_stop_reason`. It never re-runs
+the campaign's readout (`pareto.json`) or overwrites the campaign's own
+`unattended` record.
+
 ---
 
 ## 6. Alternative campaign: bulk → tap (no PI trickle)

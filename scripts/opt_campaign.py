@@ -53,6 +53,8 @@ spills recorded as unobserved, and the campaign ENDS -- readout, status
 (``--cup-budget-g``: powder the balance can still take on top of the
 cup), the ``--stop-at`` deadline, a streak of stalls or jams (an empty
 hopper nobody can refill), or a rig fault that one retry did not clear.
+An unattended validation block that hits a limit just stops: no
+profile, status ``validation-stopped``, the campaign's readout untouched.
 
 ``--simulate`` runs the identical loop against the PR #124 virtual
 plant (the trickle_tap sim rig) instead of SSH -- no hardware, used by
@@ -866,7 +868,10 @@ class Runner:
         if args.stop_at:
             self.stop_at = datetime.datetime.fromisoformat(
                 args.stop_at.replace("Z", "+00:00")).timestamp()
-        if args.unattended:
+        self.validating = bool(args.validate_params or args.validate_point)
+        # A validation block keeps the campaign's own unattended record;
+        # its profile says whether anyone was watching for spills.
+        if args.unattended and not self.validating:
             doc["unattended"] = {
                 "cup_budget_g": args.cup_budget_g,
                 "stop_at": args.stop_at,
@@ -1546,6 +1551,8 @@ class Runner:
                               / len(errs)) if errs else None,
             "median_t_total_s": statistics.median(times) if times
             else None,
+            # --unattended: nobody could flag a spill (records say None)
+            "spills_observed": not self.args.unattended,
         }
         tau = (doc.get("tau_afterflow") or {}).get("tau0_s")
         profile = {
@@ -1648,6 +1655,16 @@ class Runner:
                     doc["stop_reason"] = "BO budget reached"
                 self.readout()
         except CampaignEnd as end:
+            if self.validating:
+                # An unattended block cut short keeps its replicates in
+                # the records but writes no profile, and leaves the
+                # campaign's readout (pareto.json) and stop_reason alone.
+                log("unattended validation block ends early: {}; no "
+                    "profile written".format(end))
+                doc["status"] = "validation-stopped"
+                doc["validation_stop_reason"] = str(end)
+                self.save()
+                return
             # --unattended: no one will resume this; read out what the
             # campaign learned and mark it finished.
             log("unattended campaign ends: {}".format(end))
