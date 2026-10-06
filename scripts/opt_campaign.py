@@ -877,8 +877,14 @@ class Runner:
                 "stop_at": args.stop_at,
                 "max_stall_streak": args.max_stall_streak,
                 "max_jam_streak": args.max_jam_streak}
+        # Logging-only overrides, so a resumed campaign may change them.
+        overrides = dict(doc.get("frozen_overrides") or {})
         if args.no_flash_log:
-            doc["frozen_overrides"] = {"log_to_flash": False}
+            overrides["log_to_flash"] = False
+        if args.log_max_rows is not None:
+            overrides["log_max_rows"] = args.log_max_rows
+        if overrides:
+            doc["frozen_overrides"] = overrides
         self.dose_wall_s = []           # laptop wall clock per dose
         self.ask_wall_s = []            # per Ax suggestion
         self.infra_streak = 0
@@ -1755,6 +1761,13 @@ def parse_args(argv=None):
     ap.add_argument("--no-flash-log", action="store_true",
                     help="push log_to_flash 0 with the frozen snapshot "
                          "(telemetry still comes back over serial)")
+    ap.add_argument("--log-max-rows", type=int, default=None,
+                    help="push this telemetry size with the frozen snapshot "
+                         "(resumed campaigns too).  The Pico allocates the "
+                         "buffer at boot (1200 rows on the 2026-09-30 "
+                         "build); re-sizing it later to an older "
+                         "snapshot's 2400 failed on the rig and turned "
+                         "telemetry off for the dose")
     ap.add_argument("--state-dir", default=DEFAULT_STATE)
     ap.add_argument("--operator", default=None)
     val = ap.add_mutually_exclusive_group()

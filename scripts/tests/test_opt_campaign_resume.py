@@ -509,7 +509,8 @@ def test_validate_point():
         tau = r.campaign.doc["tau_afterflow"]["tau0_s"]
 
         v = _runner(state, None, "--validate-point", "corner-05",
-                    "--replicates", "2", "--no-flash-log")
+                    "--replicates", "2", "--no-flash-log",
+                    "--log-max-rows", "600")
         _quiet(v.run)
         vals = [x for x in v.records if x["mode"] == "validation"]
         with open(os.path.join(v.campaign.dir, "profile_salt.json")) as f:
@@ -527,9 +528,13 @@ def test_validate_point():
               and prof["parameters"] == corner["params"]
               and prof["tau_afterflow_s"] == tau)
         check("the profile carries the overrides its replicates ran with "
-              "(log_to_flash off), so dose.py replays them",
+              "(log_to_flash off, 600 telemetry rows), so dose.py "
+              "replays them",
               v.frozen_push()["log_to_flash"] is False
-              and prof["frozen_params"]["log_to_flash"] is False)
+              and prof["frozen_params"]["log_to_flash"] is False
+              and v.frozen_push()["log_max_rows"] == 600
+              and prof["frozen_params"]["log_max_rows"] == 600
+              and v.campaign.doc["frozen_params"]["log_max_rows"] != 600)
 
         center = dict(r.campaign.doc["screening_plan"])["center-00"]
         w = _runner(state, None, "--validate-params", json.dumps(center),
