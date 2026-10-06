@@ -25,7 +25,7 @@ CONFIGS = [
     ("below", "below", None, "servos below (current); board edge at the legs, y = 55.4"),
     ("below_board_back", "below", 100.0,
      "servos below, board edge moved back to y = 100 (legs hang free)"),
-    ("above", "above", None, "servos above (variant, 5 mm lower); plate overhangs the board, edge at y = 100"),
+    ("above", "above", None, "servos above (variant, 5 mm lower); plate overhangs the board, edge at y = 108"),
 ]
 
 

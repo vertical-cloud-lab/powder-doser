@@ -11,7 +11,9 @@ clips. A second layout puts the **servos above the hinge**, so nothing hangs
 below or in front of the nozzle, and sits **5 mm lower** on a baseplate
 relieved under the mounting plate. Both layouts are checked for interference,
 nozzle-to-cup clearance and printability, and a DEM model simulates the
-powder (tilt, rotation, tapping).
+powder (tilt, rotation, tapping). Along the auger, from the outlet back:
+the front bracket, the tap collar on its base, the 44T gear, the stepper
+and the rear bracket ([the collar's order](#tap-collar-between-the-front-bracket-and-the-gear)).
 
 Toolchain: `cadgen[snapshot]==0.7.10` (text-to-cad's runtime) and
 build123d 0.11.1 on Python 3.12, with the text-to-cad `cad`, `step-parts` and
@@ -35,6 +37,7 @@ build123d 0.11.1 on Python 3.12, with the text-to-cad `cad`, `step-parts` and
 | `src/lib/` | `frames.py` (world frame and every placement, ported from PR #170), `hardware_placements.py` + `fasteners.py` (step.parts screws and nuts in PR #170's seat frames), `doser.py` (the assembly tree, kinematics and animation clips), `assembly_steps.py` (build order and captions), `electronics_place.py` |
 | `src/assembly_current.py`, `src/assembly_servos_above.py` | The two full assemblies → `STEP/`, `GLB/` |
 | `scripts/render_clips.py` | Renders the clips with text-to-cad's own `cadgen step snapshot --animation … --video` and captions the assembly GIF |
+| `scripts/render_stills.py` | The iso renders and the before/after close-up of the tap collar (`cadgen step snapshot`) |
 | `checks/` | Fidelity, interference, plate clearance of the lowered doser, electronics clearance, cap thread, nozzle-to-cup clearance, printability, PCB checks; results in `checks/results/` |
 | `sim/` | DEM powder model of the auger ([README](sim/README.md)); figures in `renders/sim/` |
 | `docs/onshape.md` | How this could work with Onshape and its REST API |
@@ -50,6 +53,7 @@ export PYTHONPATH=src:src/parts:src/purchased:src/electronics
 python3 src/assembly_servos_above.py                     # about 7 min on a 4-core runner
 python3 src/assembly_current.py
 python3 scripts/render_clips.py --variant above --clips motion assembly --fps 6
+python3 scripts/render_stills.py iso collar
 python3 checks/fetch_reference.py                        # PR #170's files, for the checks
 (cd checks && PYTHONPATH=../src:. python3 interference.py --fasteners)
 ```
@@ -92,7 +96,7 @@ difference.
 * **Baseplate** (`baseplate_servos_above.py`): the front arms, legs and
   servo posts go. The servos sit in open-top cradles on the hinge towers, and
   a slot between the towers clears the tap-collar hardware. The plate
-  overhangs the board's front edge by 44.6 mm, and it prints flat with
+  overhangs the board's front edge by 52.6 mm, and it prints flat with
   0.6 % of its surface needing support (the current baseplate needs 6.9 %).
 * **Mounting plate** (`mounting_plate_servos_above.py`): the two 28T gears
   are turned 180° about the hinge, so the 14T pinions mesh them from above.
@@ -122,22 +126,24 @@ over:
   cradles and the board screws.
 * The slot widens from 54 to 57.8 mm, to the towers' inner faces, because
   the knuckle tongues now dip below the plate top beside the towers. It
-  runs on to y = 111, past the front bracket's screw heads. The rear
-  bracket's heads get Ø9 notches.
+  runs on to y = 111, past the tap-collar base's screw head, nut and
+  screw end. The rear bracket's heads get Ø9 notches.
 * **What limits it:** those button heads now hang **1.35 mm above the
   board**. Going lower means countersinking them into the mounting plate's
   floor (about 1.5 mm more), raising that floor (new brackets, tap-collar
   base and stepper plate), or recessing the board.
-* The M3 × 30 flat head under the tap-collar base now ends flush with the
-  plate's underside, in the slot in front of the board's edge. Keep the
-  board's edge at y = 100, as designed, or use an M3 × 25.
+* The M3 × 30 flat head through the tap-collar base's tower now ends flush
+  with the plate's underside, at y = 102–105 in the slot. The board's edge
+  is at y = 108, so the screw end hangs in front of the board. Keep the
+  edge behind y = 106. (An M3 × 25 would not reach its nut: tower and floor are
+  27 mm.)
 * **Swing:** as the doser tilts, the floor moves back up to 2.7 mm before
   it clears the plate top at about 4.5°. The first relief had only 1.5 mm
   on its chamfers and hit the plate at 4°. The standard 0/15/30/45° sweep
   would have missed that.
   [`checks/plate_clearance.py`](checks/plate_clearance.py) sweeps 0–10° in
-  0.5° steps, then on to 45°. Only the intended hard stop touches: the
-  tap-collar base rests on the towers' backs at 0°.
+  0.5° steps, then on to 45°. Nothing touches. (With PR #170's order the
+  tap-collar base rested on the towers' backs at 0°, 0.135 mm³.)
 * **Cost:** the plate drops from 190 to 138 cm³ and still prints flat
   (0.6 % support). Between each tower and its cradle, the fork arm over
   the board edge is now the 2 mm skin. The towers' feet, the cradles' rails
@@ -156,19 +162,27 @@ the outlet, is raised until its rim touches something
 | Layout, tilt | Ø20 | Ø40 | Ø58 | Ø85 | Ø120 |
 |---|---|---|---|---|---|
 | Current, 0° | 12.5 (auger) | 12.5 (auger) | 81.3 (board) | 81.3 (board) | 81.3 (board) |
-| Current, 45° | 8.8 (auger) | 73.2 (board) | 73.2 (board) | 73.2 (board) | 73.2 (baseplate) |
-| Current, board moved back, 45° | 8.8 (auger) | 35.0 (baseplate) | 35.0 (baseplate) | 35.0 (baseplate) | 73.2 (baseplate) |
-| Servos above, 0° | 12.5 (auger) | 12.5 (auger) | 22.3 (mounting plate) | 38.3 (baseplate) | 38.3 (baseplate) |
-| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 11.6 (auger) | 33.8 (baseplate) | 33.8 (baseplate) |
-| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | **8.8 (auger)** | 30.1 (baseplate) | 30.1 (baseplate) |
+| Current, 45° | 8.8 (auger) | 74.3 (board) | 74.3 (board) | 74.3 (board) | 75.3 (baseplate) |
+| Current, board moved back, 45° | 8.8 (auger) | 36.2 (baseplate) | 36.2 (baseplate) | 36.2 (baseplate) | 75.3 (baseplate) |
+| Servos above, 0° | 12.5 (auger) | 12.5 (auger) | 25.2 (mounting plate) | 38.3 (baseplate) | 38.3 (baseplate) |
+| Servos above, 22.5° | 11.6 (auger) | 11.6 (auger) | 11.6 (auger) | 34.4 (baseplate) | 34.4 (baseplate) |
+| **Servos above, 45°** | **8.8 (auger)** | **8.8 (auger)** | **8.8 (auger)** | 31.2 (baseplate) | 31.2 (baseplate) |
 
 8.8 mm is the floor here: it is the auger tube's own end face
 (12.5 mm × cos 45°). At 45° with the servos above, cups up to 58 mm across
 reach it. The servos-above rows are for the doser 5 mm lower. That brings
-the outlet 5 mm closer to the baseplate, so wider cups stop 5 mm sooner
-(they were 43.2, 38.8 and 35.0 mm at 0, 22.5 and 45°). With the current layout, any cup 40 mm or wider stops 73 mm below
-the outlet, because the board and the baseplate's front arms are in the
-way.
+the outlet 5 mm closer to the baseplate, so wider cups stop about 5 mm
+sooner (they were 43.2, 38.8 and 35.0 mm at 0, 22.5 and 45°). With the
+current layout at 45°, any cup 40 mm or wider stops 74 mm below the outlet,
+because the board and the baseplate's front arms are in the way.
+
+These are for the auger where it now sits, 1.6 mm further back than PR
+#170 had it ([below](#tap-collar-between-the-front-bracket-and-the-gear)).
+The outlet is 1.6 mm closer to the hinge, so wider cups get 0.6–1.1 mm
+more at 22.5° and 45°, and Ø58 cups 2.9 mm more at 0° with the servos
+above. In the current layout a Ø40 cup at 22.5° now overlaps the board's
+edge by 0.8 mm and stops at 77.5 mm (it reached 11.6 mm before). That cup
+is marginal either way: the auger slides about 1 mm along its axis.
 
 ![nozzle clearance](renders/checks/nozzle_clearance_reference.png)
 
@@ -180,6 +194,11 @@ In short:
 * **Fixed:** the auger cap's thread was half a turn out of phase with the
   auger's as placed (546 mm³). `CAP_TURN_DEG = 180` seats it
   ([`checks/cap_thread.py`](checks/cap_thread.py)).
+* **Fixed:** the front bracket and the tap collar were the wrong way round,
+  as in PR #170's layout ([below](#tap-collar-between-the-front-bracket-and-the-gear)).
+  The sweep was re-run after the swap: the only part pair that changed is
+  the stepper pinion's D-bore on the motor shaft (0.64 → 0.79 mm³; the
+  pinion now sits 1.6 mm further onto the shaft).
 * **Fixed:** the first electronics pose put the PCB holder on the auger's
   centre line behind the doser, where the tube and the mounting plate cut
   through it. The holder now stands beside the doser on the +X side, turned
@@ -197,6 +216,53 @@ In short:
   together, so only pairs with the baseplate or the board changed.
   [`checks/plate_clearance.py`](checks/plate_clearance.py) sweeps those in
   0.5° steps ([results](checks/results/plate_clearance.json)).
+
+## Tap collar between the front bracket and the gear
+
+PR #170's layout, and this recreation until `f489826`, put the tap collar
+and its base on the floor's front M3 row and the front bracket behind them,
+next to the 44T gear. The collar rides loose on the turning tube. The base's
+hard-stop tower keeps it from turning, but nothing kept it from sliding
+along the tube, so as the doser tilts outlet down it would slide forward off
+its base. On the lab's doser the order is the other way round (Sam Charles,
+and the 11 Sep rig photo and June render in PR #170): front bracket, then
+the collar on its base, then the gear.
+
+* **Rows:** the mounting plate is unchanged. The front bracket stands on
+  the front row (x = −42.33 in the plate's frame, world y = 87.7), and the
+  tap-collar base on the middle row (−58.33, y = 103.7). The collar sits
+  on its base, 1.5 mm behind the bracket and 1.5 mm in front of the gear,
+  so it can move 3 mm in all.
+* **Gear and pinion 1.6 mm back:** the base is 18 mm long. On the middle
+  row its back end would run 0.6 mm into the 44T gear's face (the base's
+  block is inside the gear's tip circle) and into the stepper pinion's
+  face (its tower is inside the pinion's). So the pinion and the gear
+  (still centred on the pinion's teeth) stand 1 mm behind the base:
+  `frames.GEAR_TAP_BASE_GAP`. The pinion's Ø9 hub reaches 1.1 mm into the
+  stepper plate's Ø22 pilot hole (the motor's pilot fills only its back
+  2 mm), and the shaft engages 15.1 mm of the pinion's 16.1 mm. The outlet
+  moves back with the auger and is now 10.0 mm in front of the hinge.
+* **Servos above:** the base's M3 × 30 flat head ends flush with the
+  plate's underside. On the front row that was in the slot in front of
+  the board. On the middle row it would rest on the board (0.00 mm), so
+  the board's edge moves from y = 100 to 108 and the front board screws
+  from y = 115 to 120. The plate now overhangs the board by 52.6 mm.
+* **No 0° stop:** the tap-collar base used to rest on the hinge towers'
+  backs at 0° (0.135 mm³). On the middle row it clears them by 6.3 mm and
+  the front bracket clears them by 2.6 mm, so the servos hold the rest
+  pose. In the current layout the base's M3 screw and nut still reach the
+  baseplate (4.7 and 7.3 mm³, as before), now at y = 103.7.
+* **Build order:** the 20T pinion goes on before the tap-collar base,
+  whose tower is now inside its tip circle 1 mm in front of it. Then the
+  tap collar and the front bracket slide onto the tube from the outlet end,
+  in that order.
+
+![tap collar, before and after](renders/assembly/collar_order_closeup.png)
+
+![sections, before and after](renders/checks/collar_order_sections.png)
+
+Not redone: the Onshape document ([`onshape/`](onshape/README.md)) still
+has the old order and the board screws at y = 115.
 
 ## Printability
 
@@ -253,7 +319,8 @@ tap as a 4 ms, about 38 g acceleration pulse of the tube.
 [`onshape/`](onshape/README.md) makes the lowering in Onshape through the
 REST API, in one company-owned document. A branch reproduces this
 README's 5 mm lowering with a FeatureScript feature, and its baseplate
-matches `baseplate_servos_above.step` at IoU 1.0000. The main workspace
+matched `baseplate_servos_above.step` at IoU 1.0000 (as of `ab2e27b`,
+before the collar swap moved the front board screws from y = 115 to 120). The main workspace
 has the simpler alternative, a 3 mm thinner table driven by one variable.
 Together they took 54 API calls.
 

@@ -31,7 +31,10 @@ from lib import hardware_placements as H  # noqa: E402
 
 TILTS = [i * 0.5 for i in range(21)] + [12.5, 15.0, 22.5, 30.0, 37.5, 45.0]
 FIXED = ("Baseplate", "Mounting board")
-# the tap-collar base is the 0 deg hard stop: it rests on the towers' backs
+# With PR #170's order (tap-collar base on the floor's front row) the base
+# rested on the towers' backs at 0 deg (0.135 mm^3), a de facto hard stop.
+# On the middle row, behind the front bracket, it clears them by 6.3 mm and
+# the front bracket by 2.6 mm, so nothing should touch.
 HARD_STOP = ("Tap collar base", "Baseplate")
 LOW = ("Mounting plate", "Stepper (NEMA 11)", "Bracket (front)", "Bracket (rear)", "Tap collar base")
 

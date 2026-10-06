@@ -442,15 +442,6 @@
       },
       {
        "location_xyz": [
-        33.0,
-        44.81,
-        29.31
-       ],
-       "surface_angle_deg": 5.6,
-       "area_mm2": 10.85
-      },
-      {
-       "location_xyz": [
         37.1,
         44.23,
         29.37
@@ -461,15 +452,15 @@
       {
        "location_xyz": [
         33.0,
-        41.44,
-        30.21
+        44.81,
+        29.31
        ],
-       "surface_angle_deg": 28.1,
+       "surface_angle_deg": 5.6,
        "area_mm2": 10.85
       },
       {
        "location_xyz": [
-        37.1,
+        -33.0,
         40.92,
         30.49
        ],
@@ -487,9 +478,18 @@
       },
       {
        "location_xyz": [
-        -33.0,
+        37.1,
         40.92,
         30.49
+       ],
+       "surface_angle_deg": 28.1,
+       "area_mm2": 10.85
+      },
+      {
+       "location_xyz": [
+        33.0,
+        41.44,
+        30.21
        ],
        "surface_angle_deg": 28.1,
        "area_mm2": 10.85
@@ -500,7 +500,7 @@
      "samples_valid": 2000,
      "min_mm": 1.506,
      "p05_mm": 2.0,
-     "p25_mm": 2.0,
+     "p25_mm": 2.12,
      "median_mm": 6.0,
      "max_mm": 114.6,
      "thinnest_samples": [
@@ -538,6 +538,14 @@
       },
       {
        "location_xyz": [
+        -11.83,
+        121.91,
+        2.0
+       ],
+       "thickness_mm": 2.0
+      },
+      {
+       "location_xyz": [
         9.63,
         132.82,
         2.0
@@ -546,25 +554,17 @@
       },
       {
        "location_xyz": [
-        -9.63,
-        147.53,
-        0.0
+        9.63,
+        132.82,
+        2.0
        ],
        "thickness_mm": 2.0
       },
       {
        "location_xyz": [
-        -9.63,
-        147.53,
-        0.0
-       ],
-       "thickness_mm": 2.0
-      },
-      {
-       "location_xyz": [
-        -9.63,
-        147.53,
-        0.0
+        9.63,
+        132.82,
+        2.0
        ],
        "thickness_mm": 2.0
       }

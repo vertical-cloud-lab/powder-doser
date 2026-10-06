@@ -14,7 +14,12 @@ Order of the servos-above build (why it has to be this order):
   the splines from inside, meshing the gears sideways;
 * the stepper goes before the auger: its inner M2.5 heads can't pass the
   44T gear afterwards (PR #170), and the rear bracket goes on last, slid
-  along the tube from the cap end, under the stepper (PR #170).
+  along the tube from the cap end, under the stepper (PR #170);
+* the 20T pinion goes on before the tap-collar base, whose hard-stop
+  tower is inside the pinion's tip circle 1 mm in front of it, and the
+  base before the auger, which brings the collar down into its cradle
+  (the collar, then the front bracket, slid onto the tube from the
+  outlet end).
 """
 from __future__ import annotations
 
@@ -41,7 +46,7 @@ def steps_servos_above() -> list[dict]:
     add("Baseplate onto the board, overhanging its front edge by 52.6 mm; it is relieved "
         "under the mounting plate, so the doser sits 5 mm lower", [("baseplate", [0, 0, 60])])
     add("4 x #10 x 1-1/4 in pan head wood screws through the plate into the board",
-        [(f"board_screw_{t}_y{y}", [0, 0, 25]) for t in ("pos", "neg") for y in (122, 155)])
+        [(f"board_screw_{t}_y{y}", [0, 0, 25]) for t in ("pos", "neg") for y in (120, 155)])
     add("Mounting plate lowered onto the hinge towers: knuckles inside them, "
         "28T gears outside", [("mounting_plate", [0, 0, 70])])
     add("Hinge: M5 x 45 button head from inside each knuckle, "
@@ -57,15 +62,15 @@ def steps_servos_above() -> list[dict]:
     add("14T pinions slid onto the splines from inside, meshing the 28T gears from above",
         _pm("servo_pinion_{}", -25))
     add("M3 x 10 socket head into each servo shaft", _pm("servo_pinion_screw_{}", -14))
+    add("Stepper (NEMA 11) onto its plate from behind: 4 x M2.5 x 8",
+        [("stepper", [0, 60, 0])] + [(f"stepper_screw_{a}{b}", [0, -15, 0])
+                                     for a in ("p", "n") for b in ("p", "n")])
+    add("20T pinion onto the stepper shaft", [("stepper_pinion", [0, -30, 0])])
     add("Tap-collar base (hard stop) on the plate's middle hole row: "
         "M3 x 25 button head + M3 x 30 flat head, locknut and nut",
         [("tap_collar_base", [0, 0, 40]), ("tap_base_screw_n", [0, 0, -15]),
          ("tap_base_nut_n", [0, 0, 15]), ("tap_base_screw_p", [0, 0, 15]),
          ("tap_base_nut_p", [0, 0, -15])])
-    add("Stepper (NEMA 11) onto its plate from behind: 4 x M2.5 x 8",
-        [("stepper", [0, 60, 0])] + [(f"stepper_screw_{a}{b}", [0, -15, 0])
-                                     for a in ("p", "n") for b in ("p", "n")])
-    add("20T pinion onto the stepper shaft", [("stepper_pinion", [0, -30, 0])])
     add("Auger, with the tap collar and then the front bracket slid on from the outlet end, "
         "lowered onto the plate; the 44T gear meshes the pinion",
         [("auger_group", [0, 0, 70]), ("tap_collar", [0, 0, 70]),

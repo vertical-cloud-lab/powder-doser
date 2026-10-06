@@ -22,6 +22,8 @@ from lib import frames as F  # noqa: E402
 from lib import hardware_placements as H  # noqa: E402
 
 CUTS = {35.0: "x = 35 (through the +X hinge tower)", 24.0: "x = 24 (through the +X bracket screws)"}
+# (the front bracket's screws at y = 87.7, the tap-collar base's button head
+# at y = 103.7, in front of the board's edge, and the rear bracket's at 169.4)
 SHOW = {"Baseplate": "#8c9198", "Mounting board": "#d8c39a", "Mounting plate": "#b9bcc2",
         "Bracket (front)": "#7fa6c4", "Bracket (rear)": "#7fa6c4", "Tap collar base": "#5d8db3",
         "Servo MG996R (+X)": "#202124", "Servo pinion (+X)": "#5aa36f"}
@@ -29,7 +31,7 @@ HW = ("Hinge screw (+X)", "Hinge locknut (+X)", "Bracket screw", "Bracket nut", 
 # labels on the "after" panels: (cut x, text, arrow tip (y, z), text at (y, z))
 NOTES = [(35.0, "hinge and towers 5 mm lower", (45.4, 33.0), (75.0, 50.0)),
          (35.0, "floor 1 mm above the 2 mm skin", (95.0, 2.5), (120.0, 24.0)),
-         (24.0, "M3 button heads 1.35 mm above the board: the limit", (103.7, 1.3), (112.0, -8.5)),
+         (24.0, "M3 button heads 1.35 mm above the board: the limit", (169.4, 1.3), (120.0, -8.5)),
          (24.0, "slot to y = 111", (110.0, 4.0), (128.0, 30.0))]
 
 

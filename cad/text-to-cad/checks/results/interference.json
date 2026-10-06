@@ -11,12 +11,6 @@
    {
     "tilt": 0.0,
     "a": "Baseplate",
-    "b": "Tap collar base",
-    "mm3": 0.135
-   },
-   {
-    "tilt": 0.0,
-    "a": "Baseplate",
     "b": "Servo MG996R (+X)",
     "mm3": 68.95
    },
@@ -34,12 +28,6 @@
    },
    {
     "tilt": 0.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
-   },
-   {
-    "tilt": 0.0,
     "a": "Bracket (rear)",
     "b": "Stepper (NEMA 11)",
     "mm3": 6.259
@@ -48,7 +36,7 @@
     "tilt": 0.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 15.0,
@@ -70,12 +58,6 @@
    },
    {
     "tilt": 15.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
-   },
-   {
-    "tilt": 15.0,
     "a": "Bracket (rear)",
     "b": "Stepper (NEMA 11)",
     "mm3": 6.259
@@ -84,7 +66,7 @@
     "tilt": 15.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 30.0,
@@ -106,12 +88,6 @@
    },
    {
     "tilt": 30.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
-   },
-   {
-    "tilt": 30.0,
     "a": "Bracket (rear)",
     "b": "Stepper (NEMA 11)",
     "mm3": 6.259
@@ -120,7 +96,7 @@
     "tilt": 30.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 45.0,
@@ -142,12 +118,6 @@
    },
    {
     "tilt": 45.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
-   },
-   {
-    "tilt": 45.0,
     "a": "Bracket (rear)",
     "b": "Stepper (NEMA 11)",
     "mm3": 6.259
@@ -156,7 +126,7 @@
     "tilt": 45.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    }
   ],
   "fasteners": [
@@ -637,21 +607,9 @@
   "pairs": [
    {
     "tilt": 0.0,
-    "a": "Baseplate",
-    "b": "Tap collar base",
-    "mm3": 0.135
-   },
-   {
-    "tilt": 0.0,
     "a": "Mounting plate",
     "b": "Stepper (NEMA 11)",
     "mm3": 17.232
-   },
-   {
-    "tilt": 0.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
    },
    {
     "tilt": 0.0,
@@ -663,19 +621,13 @@
     "tilt": 0.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 15.0,
     "a": "Mounting plate",
     "b": "Stepper (NEMA 11)",
     "mm3": 17.232
-   },
-   {
-    "tilt": 15.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
    },
    {
     "tilt": 15.0,
@@ -687,19 +639,13 @@
     "tilt": 15.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 30.0,
     "a": "Mounting plate",
     "b": "Stepper (NEMA 11)",
     "mm3": 17.232
-   },
-   {
-    "tilt": 30.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
    },
    {
     "tilt": 30.0,
@@ -711,19 +657,13 @@
     "tilt": 30.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    },
    {
     "tilt": 45.0,
     "a": "Mounting plate",
     "b": "Stepper (NEMA 11)",
     "mm3": 17.232
-   },
-   {
-    "tilt": 45.0,
-    "a": "Auger",
-    "b": "Auger cap",
-    "mm3": 546.423
    },
    {
     "tilt": 45.0,
@@ -735,7 +675,7 @@
     "tilt": 45.0,
     "a": "Stepper pinion",
     "b": "Stepper (NEMA 11)",
-    "mm3": 0.642
+    "mm3": 0.789
    }
   ],
   "fasteners": [
@@ -805,7 +745,7 @@
    },
    {
     "tilt": 0.0,
-    "fastener": "Board screw (+X, y115)",
+    "fastener": "Board screw (+X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -821,7 +761,7 @@
    },
    {
     "tilt": 0.0,
-    "fastener": "Board screw (-X, y115)",
+    "fastener": "Board screw (-X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -901,7 +841,7 @@
    },
    {
     "tilt": 15.0,
-    "fastener": "Board screw (+X, y115)",
+    "fastener": "Board screw (+X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -917,7 +857,7 @@
    },
    {
     "tilt": 15.0,
-    "fastener": "Board screw (-X, y115)",
+    "fastener": "Board screw (-X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -997,7 +937,7 @@
    },
    {
     "tilt": 30.0,
-    "fastener": "Board screw (+X, y115)",
+    "fastener": "Board screw (+X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1013,7 +953,7 @@
    },
    {
     "tilt": 30.0,
-    "fastener": "Board screw (-X, y115)",
+    "fastener": "Board screw (-X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1093,7 +1033,7 @@
    },
    {
     "tilt": 45.0,
-    "fastener": "Board screw (+X, y115)",
+    "fastener": "Board screw (+X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1109,7 +1049,7 @@
    },
    {
     "tilt": 45.0,
-    "fastener": "Board screw (-X, y115)",
+    "fastener": "Board screw (-X, y122)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1125,5 +1065,5 @@
    }
   ]
  },
- "seconds": 2128.9
+ "seconds": 1363.5
 }
