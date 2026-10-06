@@ -745,7 +745,7 @@
    },
    {
     "tilt": 0.0,
-    "fastener": "Board screw (+X, y122)",
+    "fastener": "Board screw (+X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -761,7 +761,7 @@
    },
    {
     "tilt": 0.0,
-    "fastener": "Board screw (-X, y122)",
+    "fastener": "Board screw (-X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -841,7 +841,7 @@
    },
    {
     "tilt": 15.0,
-    "fastener": "Board screw (+X, y122)",
+    "fastener": "Board screw (+X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -857,7 +857,7 @@
    },
    {
     "tilt": 15.0,
-    "fastener": "Board screw (-X, y122)",
+    "fastener": "Board screw (-X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -937,7 +937,7 @@
    },
    {
     "tilt": 30.0,
-    "fastener": "Board screw (+X, y122)",
+    "fastener": "Board screw (+X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -953,7 +953,7 @@
    },
    {
     "tilt": 30.0,
-    "fastener": "Board screw (-X, y122)",
+    "fastener": "Board screw (-X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1033,7 +1033,7 @@
    },
    {
     "tilt": 45.0,
-    "fastener": "Board screw (+X, y122)",
+    "fastener": "Board screw (+X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1049,7 +1049,7 @@
    },
    {
     "tilt": 45.0,
-    "fastener": "Board screw (-X, y122)",
+    "fastener": "Board screw (-X, y120)",
     "kind": "wood_10x1p25",
     "part": "Mounting board",
     "mm3": 325.135,
@@ -1065,5 +1065,5 @@
    }
   ]
  },
- "seconds": 1363.5
+ "seconds": 1084.0
 }

@@ -4,8 +4,8 @@
 pair of placed parts (OCC boolean on each pair whose boxes touch; overlaps
 above 0.05 mm³ reported), then every screw and nut against the parts it
 passes through. Raw numbers: `interference.json` (re-run after the front
-bracket / tap collar swap; 1364 s on the CI runner, the two layouts in
-parallel).
+bracket / tap collar swap; 1084 s on the CI runner, the two layouts run
+separately).
 `interference_reference.py` repeats the flagged pairs on PR #170's own files
 (the lab's Fusion 360 exports and PR #170's purchased-part stand-ins) to show
 which overlaps the recreation inherited and which it introduced:
