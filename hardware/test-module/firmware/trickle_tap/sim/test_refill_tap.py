@@ -42,9 +42,11 @@ class TipPlant(tt.Plant):
 
     def __init__(self, tip_g=0.003, tap_frac=0.065, tube_feed_g=0.0003,
                  tube_g=0.2, ff_rest=0.35, direct_frac=0.4, slug_p=0.0,
-                 slug_g=0.0, **kw):
+                 slug_g=0.0, tip_charge_frac=0.0, tip_cap_g=0.0, **kw):
         super().__init__(**kw)
         self.tip = tip_g
+        self.tip_charge_frac = tip_charge_frac   # spinning charges the tip
+        self.tip_cap = tip_cap_g
         self.tap_frac = tap_frac
         self.tube_feed = tube_feed_g
         self.tube = tube_g
@@ -53,6 +55,12 @@ class TipPlant(tt.Plant):
         self.slug_p = slug_p
         self.slug_g = slug_g
         self.rotations = 0
+
+    def meter(self, revs):
+        super().meter(revs)
+        if self.tip_charge_frac > 0.0:
+            self.tip = min(max(self.tip, self.tip_cap), self.tip
+                           + self.tip_charge_frac * self.ff * revs)
 
     def nudge(self, revs):
         moved = min(self.hopper, self.ff_rest * revs)
