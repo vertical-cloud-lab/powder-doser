@@ -25,7 +25,7 @@ MCMASTER = {
 }
 
 BOARD_HOLES = [(sx * 80.0, y) for sx in (1, -1) for y in (65.4, 95.4)]
-BOARD_HOLES_ABOVE = [(sx * 80.0, y) for sx in (1, -1) for y in (115.0, 155.0)]
+BOARD_HOLES_ABOVE = [(sx * 80.0, y) for sx in (1, -1) for y in (122.0, 155.0)]
 LEG_HOLES = [(sx * 70.0, -19.0) for sx in (1, -1)]
 LEG_FRONT_Y = 50.4
 

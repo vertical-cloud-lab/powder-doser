@@ -18,8 +18,8 @@ auger towards -Y.
   front arms, the legs and the gussets go, leaving nothing below or in
   front of the nozzle.  With nothing hanging below it, the plate can
   overhang the board: it runs from the towers' feet (y = 55.4) back to
-  y = 170, the board's edge moves to y = 100, and four #10 screws go into
-  the board at y = 115 and 155.  A slot between the towers runs back past
+  y = 170, the board's edge moves to y = 108, and four #10 screws go into
+  the board at y = 122 and 155.  A slot between the towers runs back past
   the board's edge, so in front of the board the plate is a fork and a
   cup up to about 58 mm across can rise past it to the tube.  Nothing is
   below z = 0, so it prints flat on the bed (registration lips were tried
@@ -87,17 +87,20 @@ FRAME_FOOT_REAR_Y = 101.0
 FRAME_FRONT_POST_Y = 27.3       # FLIP_Y - 63.5
 FRAME_FRONT_POST_FOOT_Z = 58.0
 # servos-above: nothing hangs below the plate, so it can overhang the board.
-# The board edge moves 44.6 mm back (the outlet then overhangs it by 66 mm
+# The board edge moves 52.6 mm back (the outlet then overhangs it by 73 mm
 # at rest) and the plate grows rearwards to keep four screws in the board.
-ABOVE_BOARD_EDGE_Y = 100.0
+# The edge is behind the tap-collar base's M3 x 30 flat head, which ends
+# flush with the plate's underside at y = 101-107 (frames.BOARD_FRONT_Y).
+ABOVE_BOARD_EDGE_Y = 108.0
 ABOVE_PLATE_REAR_Y = 170.0
-ABOVE_HOLES = [(sx * 80.0, y) for sx in (1, -1) for y in (115.0, 155.0)]
+ABOVE_HOLES = [(sx * 80.0, y) for sx in (1, -1) for y in (122.0, 155.0)]
 # ...and a slot between the hinge towers, back to the board's edge, so the
 # plate is a fork in front of the board and a cup can rise past it
 # lowered (frames.DROP), it widens to the towers' inner faces, because the
 # mounting plate's knuckle tongues then dip below the plate top beside them,
-# and it runs on to y = 111, past where the front bracket's screw heads
-# swing as the doser tilts (they clear the plate top at 4.3 deg, y = 109.2)
+# and it runs on to y = 111, past where the tap-collar base's screw head,
+# nut and screw end swing as the doser tilts (the front bracket's heads are
+# further forward, at y = 85-91)
 ABOVE_SLOT_HALF_W = TOWER_X[0]
 ABOVE_SLOT_END_Y = 111.0
 ABOVE_DROP = DROP["above"]

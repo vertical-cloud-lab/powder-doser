@@ -72,10 +72,23 @@ MP_FLOOR_Y = -29.25
 MP_STEPPER_FACE_BACK_X = -89.33
 MP_STEPPER_FACE_FRONT_X = -83.33
 MP_STEPPER_Z = -9.8
-MP_ROWS_BRACKET = (-124.0, -58.33)
-MP_ROW_TAP_BASE = -42.33
+# the floor's three M3 rows (mounting_plate.FLOOR_HOLE_XS), front to back:
+# the front bracket at -42.33, the tap-collar base at -58.33, the rear
+# bracket at -124.  The collar rides loose on the tube, so it has to sit
+# between the front bracket and the auger's 44T gear, which keep it on its
+# base when the doser tilts (PR #170 had the front bracket and the base the
+# other way round, with nothing in front of the collar).
+MP_ROWS_BRACKET = (-124.0, -42.33)
+MP_ROW_TAP_BASE = -58.33
+TAP_BASE_DEPTH = 18.0
 
-PINION_HUB_GAP = 0.5
+# The 20T pinion and the auger's 44T gear (centred on the pinion's teeth)
+# stand GEAR_TAP_BASE_GAP behind the tap-collar base: the base's hard-stop
+# tower is inside the pinion's tip circle, and the gear's inside the base's
+# block.  That is 1.6 mm further back than PR #170, which put the pinion's
+# hub 0.5 mm off the stepper plate; the Ø9 hub now reaches 1.1 mm into the
+# plate's Ø22 pilot hole (the motor's pilot fills only the back 2 mm of it).
+GEAR_TAP_BASE_GAP = 1.0
 PINION_TEETH_W, PINION_LEN = 10.0, 16.1
 AUGER_GEAR_FROM_OUTLET = 83.33
 AUGER_LEN = 250.0
@@ -86,9 +99,9 @@ CAP_TURN_DEG = 180.0
 
 MP = T([NY, Z, NX], (MP_MID_Z, HINGE_Y, HINGE_Z))
 
-_pinion_teeth_mid_x = (MP_STEPPER_FACE_FRONT_X + PINION_HUB_GAP
-                       + (PINION_LEN - PINION_TEETH_W) + PINION_TEETH_W / 2)
-OUTLET_MP_X = _pinion_teeth_mid_x + AUGER_GEAR_FROM_OUTLET     # 11.6 mm
+PINION_FRONT_X = MP_ROW_TAP_BASE - TAP_BASE_DEPTH / 2 - GEAR_TAP_BASE_GAP   # -68.33
+_pinion_teeth_mid_x = PINION_FRONT_X - PINION_TEETH_W / 2
+OUTLET_MP_X = _pinion_teeth_mid_x + AUGER_GEAR_FROM_OUTLET     # 10.0 mm
 AUGER_IN_MP = T([Z, Y, NX], (OUTLET_MP_X, 0.0, MP_MID_Z))
 
 
@@ -103,9 +116,7 @@ COLLAR_ROLL_DEG = -30.0
 
 NEMA_IN_MP = T([NZ, Y, X], (MP_STEPPER_FACE_BACK_X, 0.0, MP_STEPPER_Z))
 PINION_PHASE_DEG = 9.0
-PINION_IN_MP = (T([Z, Y, NX], (MP_STEPPER_FACE_FRONT_X + PINION_HUB_GAP + PINION_LEN,
-                               0.0, MP_STEPPER_Z))
-                @ rot_about(Z, PINION_PHASE_DEG))
+PINION_IN_MP = T([Z, Y, NX], (PINION_FRONT_X, 0.0, MP_STEPPER_Z)) @ rot_about(Z, PINION_PHASE_DEG)
 
 _servo_top_x = SERVO_POST_INNER_X - SERVO_FLANGE_UNDERSIDE_BELOW_TOP
 SERVO_POS = T([NY, Z, NX], (_servo_top_x, HINGE_Y, SERVO_SPLINE_Z))
@@ -117,10 +128,12 @@ SERVO_RATIO = 28 / 14
 STEPPER_RATIO = 44 / 20
 
 # mounting board: top on z = 0.  Its front edge is where the legs' back
-# faces are (current design), or 44.6 mm further back for the servos-above
-# plate, which overhangs the board.
+# faces are (current design), or 52.6 mm further back for the servos-above
+# plate, which overhangs the board.  There the tap-collar base's M3 x 30
+# flat head ends flush with the plate's underside (y = 101-107 at rest),
+# so the board's edge has to stay behind it.
 BOARD_T = 38.1
-BOARD_FRONT_Y = {"below": 55.4, "above": 100.0}
+BOARD_FRONT_Y = {"below": 55.4, "above": 108.0}
 
 # the servos-above variant: the servo side of the drive turned 180 deg
 # about the hinge axis
