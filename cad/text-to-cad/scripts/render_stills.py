@@ -82,7 +82,7 @@ def collar(before_ref: str) -> None:
     fig.suptitle("Servos-above doser at rest, from the +X side (the +X servo hidden). The collar "
                  "rides loose on the tube; now the front bracket and the gear keep it on its base",
                  fontsize=11.5)
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
     out = OUT / "collar_order_closeup.png"
     fig.savefig(out, dpi=100)
     print("wrote", out)

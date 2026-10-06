@@ -182,7 +182,8 @@ The outlet is 1.6 mm closer to the hinge, so wider cups get 0.6–1.1 mm
 more at 22.5° and 45°, and Ø58 cups 2.9 mm more at 0° with the servos
 above. In the current layout a Ø40 cup at 22.5° now overlaps the board's
 edge by 0.8 mm and stops at 77.5 mm (it reached 11.6 mm before). That cup
-is marginal either way: the auger slides about 1 mm along its axis.
+is marginal either way: tilted, the auger slides forward until its gear
+meets the tap-collar base, 1 mm ahead of where it is drawn.
 
 ![nozzle clearance](renders/checks/nozzle_clearance_reference.png)
 
@@ -242,6 +243,12 @@ the collar on its base, then the gear.
   stepper plate's Ø22 pilot hole (the motor's pilot fills only its back
   2 mm), and the shaft engages 15.1 mm of the pinion's 16.1 mm. The outlet
   moves back with the auger and is now 10.0 mm in front of the hinge.
+* **Thrust:** nothing else holds the auger along its axis, so when the
+  doser tilts outlet down it slides forward until the gear's face meets
+  the tap-collar base's back end (the base is 0.5 mm longer than the
+  collar at each end). The gear then turns against the base. Check on the
+  doser which of the two it runs against; a thin PTFE or nylon washer
+  between them would take the wear.
 * **Servos above:** the base's M3 × 30 flat head ends flush with the
   plate's underside. On the front row that was in the slot in front of
   the board. On the middle row it would rest on the board (0.00 mm), so
