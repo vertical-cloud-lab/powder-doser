@@ -1046,6 +1046,19 @@ stops the block without writing a profile: the campaign's status becomes
 the campaign's readout (`pareto.json`) or overwrites the campaign's own
 `unattended` record.
 
+**Telemetry size for older campaigns** (found 2026-10-06). A campaign created before
+2026-09-30, such as `salt-20260929T014732Z`, has `log_max_rows = 2400` in its frozen
+snapshot. The 2026-09-30 firmware allocates its telemetry buffer at boot (1200 rows)
+and could not re-size it to 2400 on the rig, so each dose printed `no room for 2400
+telemetry rows; logging off for this dose` and its trial document had no per-poll
+rows. The dose itself is unaffected. Add `--log-max-rows 1200` when validating such a
+campaign. Like `log_to_flash`, it goes into the campaign's `frozen_overrides` and is
+copied into each profile, so `dose.py` pushes it too. A runner that already failed
+the re-size has to allocate a new buffer on a fragmented heap, so first return the
+Pico to an idle `>>>` (for example `mpremote connect /dev/ttyACM0 exec "pass"` on the
+Zero). The next dose then boots a fresh runner whose boot-time buffer already
+matches.
+
 ---
 
 ## 6. Alternative campaign: bulk → tap (no PI trickle)
