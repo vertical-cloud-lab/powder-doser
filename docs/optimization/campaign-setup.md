@@ -944,7 +944,7 @@ handed over (§5.1 item 6).
    point, with the whole frozen snapshot pushed too, through
    `scripts/dose.py --powder-id salt --target-g 0.5` (add `--takeover` when the
    Pico sits in its power-on `main.py`). §5.7 covers validating other points and
-   choosing between them.
+   choosing between them, and §5.8 has the `dose.py` steps on the Zero.
 
 Routes 2 and 3 need the Zero's executor and the Pico's `/trickle_tap` build to
 report the same `FIRMWARE_ID`. Otherwise they answer `rig-busy` and dose nothing.
@@ -1023,12 +1023,12 @@ document. The steps, from the laptop:
    "p95" is the second-worst replicate.
 
 5. **Choose the one production uses.** `dose.py` doses the newest validated
-   profile of the powder. To use another one, name it (on the Zero, in
-   `~/powder-doser`):
+   profile of the powder. To use another one, name it. On the Zero (§5.8 has
+   the full steps):
 
    ```bash
-   ~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 \
-     --takeover --profile salt-20260929T014732Z-bo-003-20261002T010203Z
+   cd ~/powder-doser
+   ~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 --takeover --profile salt-20260929T014732Z-bo-003-20261002T010203Z
    ```
 
    (That id is an example; copy the real one from the block's last line or the
@@ -1058,6 +1058,89 @@ the re-size has to allocate a new buffer on a fragmented heap, so first return t
 Pico to an idle `>>>` (for example `mpremote connect /dev/ttyACM0 exec "pass"` on the
 Zero). The next dose then boots a fresh runner whose boot-time buffer already
 matches.
+
+### 5.8 Production doses with `dose.py` on the Zero
+
+Added 2026-10-06, after the §5.7 `dose.py --profile` command failed when run from
+the home directory: `scripts/dose.py` is a path relative to `~/powder-doser`.
+
+Nothing has to be installed or updated on the Zero. The checkout, the venv
+(pyserial, pymongo, mpremote) and the credential file are in place (§5.1 items 4
+and 5). The checkout stays on the commit whose `FIRMWARE_ID` matches the Pico's
+`/trickle_tap` build, which is `6fc5f79` as of 2026-10-06. A `git pull` on the
+Zero also needs that commit's firmware uploaded
+([README](../../hardware/test-module/firmware/trickle_tap/README.md)); without it
+every dose stops with a firmware mismatch.
+
+1. **Log in and change into the checkout.**
+
+   ```bash
+   ssh <user>@<zero-hostname>
+   cd ~/powder-doser
+   ~/powder-doser-venv/bin/python scripts/check_mongo.py    # optional; expect "ping OK"
+   ```
+
+2. **Check the rig.** Powder in the hopper, and the cup on the pan with room left
+   (the cup weighs about 51 g, which leaves about 50 g under the scale's limit).
+   Nothing else may hold the Pico's port, so close any `mpremote`, Thonny or
+   MicroPico connection first.
+
+3. **Dose.** Keep the command on one line: if a pasted line break splits it, the
+   first half runs without `--profile` and doses the newest profile instead.
+
+   ```bash
+   ~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 --takeover --profile salt-20260929T014732Z-bo-005-20261006T034908Z
+   ```
+
+   Leave out `--profile` to dose the powder's newest validated profile.
+   `--takeover` stops the Pico's power-on `main.py`. It does nothing when the
+   runner is still up from the previous dose, which is reused. Every dose pushes
+   the profile's frozen snapshot, its 8 values and its τ, so values someone left
+   `set` on the runner don't carry over.
+
+4. **What you see.** Within a few seconds:
+
+   ```
+   [dose] profile salt-20260929T014732Z-bo-005-20261006T034908Z from mongodb (validated=True, tau=0.8338 s)
+   [opt-dose] --takeover: interrupting whatever is running on the Pico
+   [opt-dose] booting main_trickle from /trickle_tap on the Pico
+   ```
+
+   (The two `[opt-dose]` lines appear only when the runner has to be started.)
+   Then nothing prints while it doses (60–115 s for `bo-005`), and it ends with a
+   line like `[dose] dose 1a2b3c4d: ok in 78.4 s, error -1.8 mg (uploaded=True)`
+   and a JSON summary. To watch the Pico's output live, open a second SSH window
+   once the dose has started:
+
+   ```bash
+   cd ~/powder-doser/data/opt/production-salt && tail -F "$(ls -t serial_*.log | head -1)"
+   ```
+
+   Ctrl-C in `dose.py` stops only the recording, not the dose. To abort a dose,
+   press Ctrl-C in `dose.py`, then run
+   `~/powder-doser-venv/bin/mpremote connect /dev/ttyACM0 repl` and press Ctrl-C
+   there; the auger loops stop the motor on the way out.
+
+5. **Records.** The trial document and the raw serial log go to
+   `data/opt/production-<powder>/` on the Zero and to MongoDB `opt_trials`
+   (`mode: "production"`, with the `profile_id`). The fetched profile is cached
+   in `data/profiles/<powder>.json`, so the Zero can still dose it when MongoDB
+   is unreachable.
+
+6. **Hand the rig back** when you're done, not between doses: run
+   `~/powder-doser-venv/bin/mpremote connect /dev/ttyACM0 repl`, then press
+   Ctrl-C (the runner stops at `>>>`), Ctrl-D (soft reboot; wait for
+   `[rig] ready`) and Ctrl-] to leave.
+
+| Message | Cause | Fix |
+|---|---|---|
+| `can't open file '/home/<user>/scripts/dose.py'` | Run outside the checkout | `cd ~/powder-doser`, or give the full path `~/powder-doser/scripts/dose.py`; it works from any directory |
+| `no such file or directory: …/powder-doser-venv/bin/python` | Run on the laptop | `ssh` to the Zero first |
+| `Mongo unreachable (…)`, then `no dosing profile for 'salt'` | No network or no credentials, and nothing cached | `scripts/check_mongo.py`; check the Zero's Wi-Fi |
+| `no matching profile in Mongo`, then `no dosing profile for 'salt'` | A mistyped `--profile` id, or the wrong `--powder-id` | Copy the id from the *Validation blocks* table in the campaign's `report.md` |
+| `rig busy, not dosing: /dev/ttyACM0 is locked by another session …` or `… is also open in pid …` | Another program holds the Pico's port | Close it, or wait for whoever is using the rig |
+| `rig busy, not dosing: the Pico is … not interrupting it` | The Pico runs another program and `--takeover` was left out | Add `--takeover` if nobody else is using the rig |
+| `RuntimeError: booted firmware … expected …` | The Zero's scripts and the Pico's `/trickle_tap` build come from different commits, usually after a `git pull` on the Zero | Upload the firmware of the Zero's commit (README) |
 
 ---
 

@@ -24,7 +24,14 @@ Both profiles are `validated: true` in MongoDB `dosing_profiles`: no replicate j
 stalled, or overshot. Nobody watched for spills (`spills_observed: false`).
 
 **`dose.py` picks the newest validated profile, which is now `corner-09`.** To dose
-`bo-005`, name it: `--profile salt-20260929T014732Z-bo-005-20261006T034908Z`.
+`bo-005`, name it: `--profile salt-20260929T014732Z-bo-005-20261006T034908Z`. Run it on
+the Zero from `~/powder-doser`
+([campaign-setup.md §5.8](../../../docs/optimization/campaign-setup.md#58-production-doses-with-dosepy-on-the-zero)):
+
+```bash
+cd ~/powder-doser
+~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 --takeover --profile salt-20260929T014732Z-bo-005-20261006T034908Z
+```
 
 ## What the small threshold does
 
