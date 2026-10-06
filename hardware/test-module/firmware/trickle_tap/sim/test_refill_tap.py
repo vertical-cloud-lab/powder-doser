@@ -196,6 +196,13 @@ def test_refills_wait_for_tap_evidence():
             zip([0] + [x["after_tap"] for x in ev], ev)]
     check("{} refills, each after >= 3 taps since the last (gaps {})".format(
         len(ev), gaps), len(ev) >= 2 and min(gaps) >= 3)
+    # an average window shorter than the evidence rule must not lock out
+    # refills: the evidence counts taps since the refill, not the window
+    c = endgame(RefillTapDoser, {"seed": 5, "tip_g": 0.0, "ff_rest": 0.05},
+                short_g=0.080, p_over={"refill_avg_taps": 1,
+                                       "refill_min_taps": 2})
+    check("refill_avg_taps 1 < refill_min_taps 2 still refills ({})".format(
+        c["refills"]), c["refills"] >= 2)
 
 
 def test_refill_budget():

@@ -95,12 +95,12 @@ class RefillTapDoser(TrickleTapDoser):
         return self._run_refill_taps(num, p, exit_g, target_g, grams, t0,
                                      state)
 
-    def _refill_hold(self, window, avg, need, room, state):
+    def _refill_hold(self, taps_since, avg, need, room, state):
         """None = refill now, else the reason it is held back."""
         q = self.p
         if state["refills"] >= int(q["refill_max"]):
             return "budget spent"
-        if len(window) < max(1, int(q["refill_min_taps"])):
+        if taps_since < max(1, int(q["refill_min_taps"])):
             return "gathering taps"
         if avg * q["refill_taps_to_go"] >= need:
             return "yield ok"
@@ -135,7 +135,8 @@ class RefillTapDoser(TrickleTapDoser):
         cycles = 0
         stalls = 0
         nudges = 0
-        window = []                  # tap yields since the last refill
+        window = []                  # the last refill_avg_taps yields ...
+        taps_since = 0               # ... of this many since the last refill
         while target_g - grams > exit_g:
             if self._now() - t0 > self.timeout_s:
                 self.log(tag + " dose timeout ({} s)".format(self.timeout_s))
@@ -154,6 +155,7 @@ class RefillTapDoser(TrickleTapDoser):
             cycles += 1
             gain = grams - before
             self.tap_yields.append(gain)
+            taps_since += 1
             window.append(gain)
             if len(window) > max(1, int(q["refill_avg_taps"])):
                 window.pop(0)
@@ -168,7 +170,7 @@ class RefillTapDoser(TrickleTapDoser):
                 return grams, m3.DoseResult.OVERSHOOT, cycles
             if target_g - grams <= exit_g:
                 break
-            hold = self._refill_hold(window, avg, need,
+            hold = self._refill_hold(taps_since, avg, need,
                                      target_g + tol - grams, state)
             self.log("{}   yield avg {:.2f} mg over {} tap(s); {:.1f} mg "
                      "needed -> {}".format(
@@ -180,6 +182,7 @@ class RefillTapDoser(TrickleTapDoser):
                 if status is not None:
                     return grams, status, cycles
                 window = []
+                taps_since = 0
                 stalls = 0
                 continue
             # Outside the refill zone: the stock dry-lip nudge, unchanged.
