@@ -304,8 +304,8 @@ def report(cdir):
                  "on a predicted final mass and the taps finish")
     L.append("- powder `{}`, target {} g, status **{}**{}".format(
         doc["powder_id"], doc["target_g"], doc["status"],
-        " ({})".format(doc["stop_reason"]) if doc.get("stop_reason")
-        else ""))
+        "; the search loop stopped on: {}".format(doc["stop_reason"])
+        if doc.get("stop_reason") else ""))
     counts = {}
     for r in records:
         counts[r["mode"]] = counts.get(r["mode"], 0) + 1
@@ -326,11 +326,21 @@ def report(cdir):
     L.append("")
     if pick is not None:
         s = pick["summary"]
+        blocks = [p for p in doc.get("profiles") or []
+                  if p.get("point") == pick["label"]]
+        if blocks:
+            v = blocks[-1].get("validation") or {}
+            note = ("a single dose; its validation block ({} / {} clean, "
+                    "median {} s and {} mg) is under *Validation blocks*"
+                    .format(v.get("clean"), v.get("replicates"),
+                            fmt(v.get("median_t_total_s")),
+                            fmt(v.get("median_abs_error_mg"))))
+        else:
+            note = "a single dose, not yet validated with replicates"
         L.append("## Best observed dose (knee of the observed front)\n")
-        L.append("`{}` ({}): t_total {:.1f} s, |error| {:.1f} mg, a single "
-                 "dose, not yet validated with replicates.\n".format(
-                     pick["label"], pick["mode"], s["t_total_s"],
-                     s["abs_error_mg"]))
+        L.append("`{}` ({}): t_total {:.1f} s, |error| {:.1f} mg, {}.\n"
+                 .format(pick["label"], pick["mode"], s["t_total_s"],
+                         s["abs_error_mg"], note))
         L.append("```json\n{}\n```\n".format(json.dumps(
             dict(pick["params"]), indent=1)))
     if pareto and pareto.get("model_pareto"):

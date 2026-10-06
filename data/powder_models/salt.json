@@ -4,11 +4,12 @@
  "powder_id": "salt",
  "latest_campaign": {
   "campaign_id": "salt-20260929T014732Z",
+  "variant": "three-stage",
   "simulate": false,
   "target_g": 0.5,
-  "status": "finished",
+  "status": "validated",
   "phase": "bo",
-  "iteration": 42,
+  "iteration": 60,
   "bo_iteration": 14,
   "progress": {
    "screen": [
@@ -23,27 +24,27 @@
     14,
     200
    ],
-   "validation": 0
+   "validation": 18
   },
   "last_dose": {
-   "trial_index": 41,
-   "label": "bo-013",
-   "mode": "bo",
-   "trial_uuid": "3e32f86c-4f2a-43e8-ba76-4d1c95a8dd01",
+   "trial_index": 59,
+   "label": "val-corner-09-07",
+   "mode": "validation",
+   "trial_uuid": "76243c26-df08-4df4-82d5-0d4772ca1017",
    "status": "ok",
-   "t_total_s": 189.91,
-   "abs_error_mg": 14.68,
+   "t_total_s": 355.88,
+   "abs_error_mg": 2.8,
    "jam": false,
    "spill": null,
    "void": null,
-   "utc": "2026-09-29T04:06:39.429988+00:00"
+   "utc": "2026-10-06T04:20:38.188494+00:00"
   },
   "in_flight": null,
   "tau_afterflow_s": 0.8338,
   "state_dir": "data/opt/salt-20260929T014732Z",
   "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-20260929T014732Z --host <user>@<zero-hostname>"
  },
- "updated_utc": "2026-09-29T04:07:36.473036+00:00",
+ "updated_utc": "2026-10-06T04:20:38.648927+00:00",
  "tau_afterflow": {
   "tau0_s": 0.8338,
   "tau1_s_per_gps": null,

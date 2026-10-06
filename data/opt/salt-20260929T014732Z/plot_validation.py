@@ -100,13 +100,13 @@ def main(argv):
     style(ax)
     ax.axhspan(-3, 3, color=BAND, zorder=0)
     ax.axhline(0, color=INK_2, lw=0.8, zorder=1)
-    ax.text(0.01, -2.8, "±3 mg band", transform=ax.get_yaxis_transform(),
-            ha="left", va="bottom", fontsize=8.5, color=INK_2)
-    worst = [abs(r["summary"]["error_mg"]) for b in by_point.values()
-             for r in b[0] + b[1] + ([b[2]] if b[2] else [])
-             if r["summary"].get("error_mg") is not None]
-    lim = max([6.0] + [w * 1.15 for w in worst])
-    ax.set_ylim(-lim, lim)
+    ax.text(0.01, 2.85, "±3 mg band", transform=ax.get_yaxis_transform(),
+            ha="left", va="top", fontsize=8.5, color=INK_2)
+    errs = [r["summary"]["error_mg"] for b in by_point.values()
+            for r in b[0] + b[1] + ([b[2]] if b[2] else [])
+            if r["summary"].get("error_mg") is not None]
+    ax.set_ylim(min([-4.0] + [e - 0.8 for e in errs]),
+                max([3.6] + [e + 0.8 for e in errs]))
     for point, color in POINTS:
         block, early, origin = by_point[point]
         for group, kw in ((block, dict(facecolors=color, s=52)),
@@ -119,13 +119,9 @@ def main(argv):
                            zorder=3, **kw)
         if origin is not None and origin["summary"]["t_total_s"]:
             ax.scatter(origin["summary"]["t_total_s"],
-                       origin["summary"]["error_mg"], marker="D", s=60,
-                       facecolors="none", edgecolors=INK, linewidths=1.2,
+                       origin["summary"]["error_mg"], marker="D", s=70,
+                       facecolors="none", edgecolors=color, linewidths=1.6,
                        zorder=4)
-            ax.annotate("campaign dose", (origin["summary"]["t_total_s"],
-                                          origin["summary"]["error_mg"]),
-                        xytext=(6, -12), textcoords="offset points",
-                        fontsize=8, color=INK_2)
     # identity legend: colour = point, fill = in the block
     handles = [plt.Line2D([], [], ls="", marker="o", ms=7, mfc=c, mec=c,
                           label=p) for p, c in POINTS]
@@ -134,7 +130,7 @@ def main(argv):
                                   mfc="none", mec=INK_2,
                                   label="before the restart (not in block)"))
     handles.append(plt.Line2D([], [], ls="", marker="D", ms=6, mfc="none",
-                              mec=INK, label="campaign's single dose"))
+                              mec=INK_2, label="the campaign's single dose"))
     ax.legend(handles=handles, fontsize=8.5, frameon=False,
               loc="upper right")
     ax.set_xlabel("dose time, start to settled reading (s)", color=INK)
@@ -169,8 +165,10 @@ def main(argv):
                    transform=a.get_yaxis_transform(), ha="right",
                    va="bottom", fontsize=8.5, color=INK_2)
         a.axhline(3, color=INK_2, lw=0.8, ls=":", zorder=2)
-        a.text(0.99, 3.3, "3 mg", transform=a.get_yaxis_transform(),
-               ha="right", va="bottom", fontsize=8.5, color=INK_2)
+        # label where no trace crosses the band line
+        a.text({"bo-005": 0.01}.get(point, 0.42), 3.3, "3 mg band",
+               transform=a.get_yaxis_transform(), ha="left", va="bottom",
+               fontsize=8.5, color=INK_2)
         times = [r["summary"]["t_total_s"] for r in block
                  if r["summary"]["t_total_s"] is not None]
         errs = [r["summary"]["abs_error_mg"] for r in block

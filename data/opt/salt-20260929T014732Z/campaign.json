@@ -4,7 +4,7 @@
  "campaign_id": "salt-20260929T014732Z",
  "powder_id": "salt",
  "target_g": 0.5,
- "status": "finished",
+ "status": "validated",
  "phase": "bo",
  "created_utc": "2026-09-29T01:47:32.782088+00:00",
  "operator": "claude-unattended",
@@ -455,8 +455,75 @@
   "max_jam_streak": 3
  },
  "frozen_overrides": {
-  "log_to_flash": false
+  "log_to_flash": false,
+  "log_max_rows": 1200
  },
- "updated_utc": "2026-09-29T04:07:36.287095+00:00",
- "stop_reason": "deadline: 0 s left before 2026-09-29T04:05:00Z, the next dose needs about 153 s"
+ "updated_utc": "2026-10-06T04:20:38.579181+00:00",
+ "stop_reason": "deadline: 0 s left before 2026-09-29T04:05:00Z, the next dose needs about 153 s",
+ "last_profile": {
+  "profile_id": "salt-20260929T014732Z-corner-09-20261006T042038Z",
+  "point": "corner-09",
+  "validated": true,
+  "validation": {
+   "replicates": 8,
+   "clean": 8,
+   "median_abs_error_mg": 2.6,
+   "p95_abs_error_mg": 2.8,
+   "p_within_10mg": 1.0,
+   "median_t_total_s": 201.98,
+   "spills_observed": false
+  }
+ },
+ "profiles": [
+  {
+   "profile_id": "salt-20260929T014732Z-bo-005-20261006T034908Z",
+   "point": "bo-005",
+   "validated": true,
+   "validation": {
+    "replicates": 8,
+    "clean": 8,
+    "median_abs_error_mg": 1.83,
+    "p95_abs_error_mg": 2.3,
+    "p_within_10mg": 1.0,
+    "median_t_total_s": 78.39,
+    "spills_observed": false
+   },
+   "parameters": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003
+   },
+   "created_utc": "2026-10-06T03:49:08.483056+00:00"
+  },
+  {
+   "profile_id": "salt-20260929T014732Z-corner-09-20261006T042038Z",
+   "point": "corner-09",
+   "validated": true,
+   "validation": {
+    "replicates": 8,
+    "clean": 8,
+    "median_abs_error_mg": 2.6,
+    "p95_abs_error_mg": 2.8,
+    "p_within_10mg": 1.0,
+    "median_t_total_s": 201.98,
+    "spills_observed": false
+   },
+   "parameters": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003
+   },
+   "created_utc": "2026-10-06T04:20:38.521286+00:00"
+  }
+ ]
 }

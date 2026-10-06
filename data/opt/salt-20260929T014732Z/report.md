@@ -1,13 +1,13 @@
 # Campaign salt-20260929T014732Z
 
-- powder `salt`, target 0.5 g, status **finished** (deadline: 0 s left before 2026-09-29T04:05:00Z, the next dose needs about 153 s)
-- 42 doses: 22 screen, 6 recenter, 14 bo
+- powder `salt`, target 0.5 g, status **validated**; the search loop stopped on: deadline: 0 s left before 2026-09-29T04:05:00Z, the next dose needs about 153 s
+- 60 doses: 22 screen, 6 recenter, 14 bo, 18 validation
 - tau_afterflow fit: 0.8338 s (linear model, 26 stop events, rates 0.0221-0.1586 g/s)
-- powder in the cup at the end: 21.13 g
+- powder in the cup at the end: 30.09 g
 
 ## Best observed dose (knee of the observed front)
 
-`corner-09` (screen): t_total 51.8 s, |error| 0.7 mg, a single dose, not yet validated with replicates.
+`corner-09` (screen): t_total 51.8 s, |error| 0.7 mg, a single dose; its validation block (8 / 8 clean, median 202.0 s and 2.6 mg) is under *Validation blocks*.
 
 ```json
 {
@@ -33,6 +33,15 @@ The dose column is the label `--validate-point` takes.
 | 40 | bo-012 | 99.3 | 5.3 | 2hz/2hz, 40.0, 10.0, 15.0, 100, 0.300, 3.0 |
 | 38 | bo-010 | 57.3 | 12.1 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 15.0 |
 | 39 | bo-011 | 99.0 | 11.1 | off/off, 40.0, 10.0, 15.0, 20, 0.300, 15.0 |
+
+## Validation blocks
+
+One `dosing_profiles` document each; `dose.py` doses the newest validated one unless `--profile` names another.
+
+| profile_id | point | taps bulk/trim, bulk tilt, trim tilt, tap tilt, RPM, threshold g, tol mg | clean / replicates | median abs_error (mg) | p95 (mg) | P(<= 10 mg) | median t_total (s) | validated |
+|---|---|---|---|---|---|---|---|---|
+| salt-20260929T014732Z-bo-005-20261006T034908Z | bo-005 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | 8 / 8 | 1.8 | 2.3 | 1.00 | 78.4 | True |
+| salt-20260929T014732Z-corner-09-20261006T042038Z | corner-09 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | 8 / 8 | 2.6 | 2.8 | 1.00 | 202.0 | True |
 
 ## Screening main effects (16 corners)
 
@@ -95,5 +104,23 @@ The dose column is the label `--validate-point` takes.
 | 39 | bo-011 | off/off, 40.0, 10.0, 15.0, 20, 0.300, 15.0 | ok | 55.6 | -10.1 | 7 |
 | 40 | bo-012 | 2hz/2hz, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 136.4 | -2.6 | 56 |
 | 41 | bo-013 | off/off, 15.0, 10.0, 15.0, 20, 0.050, 15.0 | ok | 189.9 | -14.7 | 52 |
+| 42 | val-bo-005-00 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 81.6 | -1.3 | 20 |
+| 43 | val-bo-005-01 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 64.2 | -0.6 | 15 |
+| 44 | val-bo-005-00 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 69.8 | -2.0 | 17 |
+| 45 | val-bo-005-01 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 109.6 | -2.6 | 30 |
+| 46 | val-bo-005-02 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 114.4 | -1.6 | 32 |
+| 47 | val-bo-005-03 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 68.5 | -1.9 | 17 |
+| 48 | val-bo-005-04 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 81.0 | -0.8 | 21 |
+| 49 | val-bo-005-05 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 97.6 | -2.3 | 26 |
+| 50 | val-bo-005-06 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 60.5 | -1.3 | 14 |
+| 51 | val-bo-005-07 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0 | ok | 75.8 | -1.8 | 19 |
+| 52 | val-corner-09-00 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 297.6 | -2.6 | 104 |
+| 53 | val-corner-09-01 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 47.1 | -2.8 | 22 |
+| 54 | val-corner-09-02 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 99.2 | -2.0 | 40 |
+| 55 | val-corner-09-03 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 103.5 | -2.7 | 42 |
+| 56 | val-corner-09-04 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 106.3 | -2.3 | 44 |
+| 57 | val-corner-09-05 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 385.0 | -2.6 | 131 |
+| 58 | val-corner-09-06 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 328.5 | -2.4 | 115 |
+| 59 | val-corner-09-07 | 2hz/off, 40.0, 30.0, 15.0, 20, 0.050, 3.0 | ok | 355.9 | -2.8 | 124 |
 
 ![overview](campaign_overview.png)
