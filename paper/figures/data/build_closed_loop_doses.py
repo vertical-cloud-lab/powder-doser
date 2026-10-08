@@ -38,7 +38,8 @@ Conventions (read these before using the numbers)
   2026-09-03 21:40Z on).  Numbers either side are not the same measurement method.
 * dose_valid (strict) = run QC valid AND terminal control state (not
   scale-error / not-tared) AND the dose actuated something (auger_rev > 0 or
-  taps > 0) AND not a demo.  The zero-actuation rule follows the capture
+  taps > 0 or a bulk cycle, i.e. a continuous spin too short for the 1 s clock
+  to log any revolutions) AND not a demo.  The zero-actuation rule follows the capture
   script's own statistics (n_no_actuation); the #116 sessions applied it
   inconsistently (Si 110/200 H2 excluded in QC, calcium lactate H2 kept in
   prose), so ``actuated`` is exported for re-analysis.
@@ -457,10 +458,14 @@ def make_dose_row(run_id, rnd, doc, x, block, seq, det, read_path, location, is_
     rev = fnum(x.get("auger_rev"))
     taps = x.get("taps")
     reconstructed = bool(x.get("_reconstructed"))
-    actuated = None if reconstructed else ((rev or 0) > 0 or (taps or 0) > 0)
+    cyc = parse_cycles(x.get("phase_cycles"))
+    # A bulk cycle is a continuous auger spin even when it is too short for the
+    # firmware's 1 s clock to log any revolutions (two 50 mg doses, 9 and 15 Sep
+    # 2026, delivered 62 and 55 mg that way; raw serial logs, 'phase 1/3 bulk start').
+    bulk_spun = (cyc.get("bulk") or 0) > 0
+    actuated = None if reconstructed else ((rev or 0) > 0 or (taps or 0) > 0 or bulk_spun)
     if reconstructed:
         actuated = True
-    cyc = parse_cycles(x.get("phase_cycles"))
     status = x.get("status", "")
     protocol = "demo" if is_demo else block
     run_valid = bool(qc.get("valid_for_cross_powder_comparison"))

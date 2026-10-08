@@ -247,7 +247,7 @@ balance.
 Table~\ref{tbl:noiseact} compares each small dose's margin to its acceptance
 limit with the noise of its own run. Of the 14 doses of 50~mg that finished
 within the limit, only one lies more than twice its run's noise inside it, and
-12 lie within one noise width of the limit. Of the 14 that missed, 12 lie more
+12 lie within one noise width of the limit. Of the 16 that missed, 13 lie more
 than twice the noise outside it. At 200~mg, 6 of the 18 passes and 10 of the 12
 failures are robust in the same sense. The failures are therefore real, while
 most 50~mg passes cannot be told apart from noise. The controller also stops at
@@ -278,12 +278,52 @@ and one times the noise of a limit. Markers as in Fig.~5 of the main text.}
 \section{Closed-loop dose record}
 \label{sec:doses}
 
-Table~\ref{tbl:doses} summarizes every valid closed-loop dose by powder and
-target mass. A dose is valid when its run passed quality screening, the dose
-ended in a defined controller state, and the auger or solenoid actually moved;
-doses excluded for any other reason (for example, a misaligned outlet, an
-unreadable balance, or powder that caked in the tube) are listed with the reason
-in the per-dose file.
+Table~\ref{tbl:doseaccount} accounts for every closed-loop dose attempt in both
+test rounds, including the attempts we excluded and the combinations of powder
+and target that were never run. A dose is valid when its run passed quality
+screening, the dose ended in a defined controller state, and the auger or
+solenoid moved. Two 50~mg doses, on calcium lactate and on coarse silicon, were
+first excluded because the firmware logged no auger revolution, but their serial
+logs show a short continuous spin that delivered 62 and 55~mg, so we count them
+as valid overshoots. Table~\ref{tbl:doses} summarizes the valid doses by powder
+and target mass.
+
+Fig.~\ref{fgr:dosetraces} shows balance readings during representative doses of
+a fast and a slow powder. Doses that finished within the limit spent about half
+their time in the tap phase (median 46\% at 50~mg, 50\% at 200~mg, and 53\% at
+1~g). On the free-flowing powders, one 45$^\circ$ auger turn delivered a median of
+30~mg, against 2~mg on the slow powders. The last step of a 50~mg dose on a
+free-flowing powder added a median of 46~mg (range 8--100~mg), more than the
+whole $\pm$5~mg acceptance band, so a dose could step right over it. On the slow
+powders the last step added at most 9~mg, and doses stopped near the lower edge
+of the band. In 19 of the 60 valid 50 and 200~mg doses, the controller began
+with a brief continuous spin that delivered up to 103~mg. Its bulk phase started
+whenever the tared reading sat a fraction of a milligram below zero, because the
+threshold for that phase equalled the target. Per-dose phase times and final
+increments are in \texttt{paper/figures/data/dose\_phase\_summary.csv}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_dose_traces}
+\caption{Balance readings during closed-loop doses of a fast, free-flowing
+powder (a--c, AlSi10Mg) and a slow one (d--f, white rice flour) at 50~mg,
+200~mg, and 1~g. The thick line is the dose with the median time of its set of
+three, and thin lines are the other two. Shading and the bar above each panel
+mark the phases of the thick-line dose: bulk (continuous rotation, tube at
+45$^\circ$), fine (45$^\circ$ auger turns, tube at 22.5$^\circ$), and tap (pairs of
+taps, tube horizontal). The green band is the acceptance limit and the dashed
+line the target. Markers are filled within the limit and open outside it. Time
+axes differ. In (a), the second 45$^\circ$ turn added 58~mg, more than the whole
+target. In (b), a first reading just below zero triggered a brief bulk spin.
+Tap-phase readings then ranged over 140--191~mg, and the dose stopped on the
+first reading inside the $\pm$5~mg band. Panels (a--e) are from September 2026,
+and (f) is from 4 August 2026.}
+\label{fgr:dosetraces}
+\end{figure}
+
+{\small
+\input{figures/data/dose_accounting_table}
+}
 
 \small
 \input{figures/data/dose_summary_table}
