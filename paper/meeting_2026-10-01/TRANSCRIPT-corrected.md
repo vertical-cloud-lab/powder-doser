@@ -1,8 +1,8 @@
 # Corrected transcript: 1 October 2026 meeting (Sam Charles, Sterling Baird)
 
 The meeting ran for 55 minutes, starting at 13:16:56 MDT (19:16:56 UTC). The source is
-the raw Tactiq export,
-[`Powder Doser Manuscript Overview.txt`](../../Powder%20Doser%20Manuscript%20Overview.txt).
+the raw Tactiq export, which was deleted from the repository on 8 October 2026 at the
+team's request because it also recorded personal conversation.
 The summary is in [MEETING-NOTES.md](MEETING-NOTES.md), and the questions that came out
 of it are in [MEETING-DECISIONS.md](MEETING-DECISIONS.md).
 

@@ -1,9 +1,9 @@
 # 1 October 2026 meeting: Sam and Sterling on the manuscript
 
 The meeting ran for 55 minutes, 13:17–14:12 MDT (19:17–20:12 UTC). These notes draw on
-two sources: the raw Tactiq transcript
-([`Powder Doser Manuscript Overview.txt`](../../Powder%20Doser%20Manuscript%20Overview.txt))
-and the GitHub activity during the meeting. The corrected transcript is
+two sources: the raw Tactiq transcript (deleted from the repository on 8 October 2026
+at the team's request; the corrected transcript replaces it) and the GitHub activity
+during the meeting. The corrected transcript is
 [TRANSCRIPT-corrected.md](TRANSCRIPT-corrected.md). The questions for Sterling and Sam
 are in [MEETING-DECISIONS.md](MEETING-DECISIONS.md).
 

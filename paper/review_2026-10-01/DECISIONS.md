@@ -18,7 +18,7 @@ just points there, so nothing has to be answered twice. Items 1, 2, 4 and sectio
 matter most.
 
 Sources: Sam's [part-1 video notes](NOTES-part1.md), the 1 Oct Sam/Sterling meeting
-([`Powder Doser Manuscript Overview.txt`](../../Powder%20Doser%20Manuscript%20Overview.txt)),
+([corrected transcript](../meeting_2026-10-01/TRANSCRIPT-corrected.md)),
 Sterling's 1 Oct comment on PR #97, PR #170 (current-design render and Fusion files),
 and the round-3 Edison mock review (section E).
 
