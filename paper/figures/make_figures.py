@@ -3,7 +3,8 @@
 
 Real CAD renders and photographs are pulled from paper/figures/assets/
 (extracted from the design branches of this repository; the as-built photo
-comes from issue #165 and the current-design annotated render from PR #170).
+comes from issue #165, and the current-design annotated render, the exploded
+view and the build-step stills from PR #170).
 Fig. 1c is drawn from assets/auger_section.json, an axial cut through the
 tested Fusion 360 auger and cap made by data/build_auger_section.py.  The
 measured-data figures (Figs. 3-5) are drawn by make_data_figures.py.
@@ -98,26 +99,34 @@ def show(ax, name: str, **kw) -> None:
 def tilt_diagram(ax) -> None:
     """Side view of the tilt range, drawn natively with its coordinate frame.
 
-    The hinge axis (x, out of the page) passes through the dispense point, so
-    the tube swings about the outlet and the dose lands in the same place at
-    every angle.  The three poses are the tilts used in the tests: 0 deg
-    (horizontal park), 22.5 deg and 45 deg, the maximum.  The firmware's
-    "vertical" preset reaches 45 deg because the tilt plate is geared 2:1.
-    Geometry is schematic (tube length : diameter = 10 : 1).
+    The hinge axis (x, out of the page) runs just behind the outlet: 11.6 mm
+    behind it in the PR #170 assembly of the current parts, where the
+    44-tooth gear meets the stepper pinion.  The tube swings about that axis,
+    so over 0-45 deg the outlet (red) moves only about 3 mm horizontally and
+    8 mm down, and the dose lands in nearly the same place.  The three poses
+    are the tilts used in the tests: 0 deg (horizontal park), 22.5 deg and
+    45 deg, the maximum.  The firmware's "vertical" preset reaches 45 deg
+    because the tilt plate is geared 2:1.  The hinge offset is to scale for
+    the 250 mm tube; the tube's width is not (length : diameter = 10 : 1).
     """
     L, w = 1.0, 0.1
+    d = 11.6 / 250.0                             # hinge behind the outlet
+    hx, hy = -d, 0.0                             # hinge axis (pivot)
     poses = [(0.0, "#e9d3a6", "0° (horizontal park)"),
              (22.5, "#d4ad62", "22.5°"),
              (45.0, "#b6862c", "45° (maximum)")]
+    outlets = []
     for theta, fc, label in poses:
         t = np.deg2rad(theta)
         ux, uy = -np.cos(t), np.sin(t)          # outlet -> back end
         nx, ny = -uy, ux                         # tube-width direction
+        px, py = hx + d * np.cos(t), hy - d * np.sin(t)   # outlet position
+        outlets.append((px, py))
         corners = [
-            (0 + nx * w / 2, 0 + ny * w / 2),
-            (ux * L + nx * w / 2, uy * L + ny * w / 2),
-            (ux * L - nx * w / 2, uy * L - ny * w / 2),
-            (0 - nx * w / 2, 0 - ny * w / 2),
+            (px + nx * w / 2, py + ny * w / 2),
+            (px + ux * L + nx * w / 2, py + uy * L + ny * w / 2),
+            (px + ux * L - nx * w / 2, py + uy * L - ny * w / 2),
+            (px - nx * w / 2, py - ny * w / 2),
         ]
         ax.add_patch(patches.Polygon(corners, closed=True, fc=fc, ec="0.35",
                                      lw=0.6, alpha=0.95, zorder=2))
@@ -125,16 +134,21 @@ def tilt_diagram(ax) -> None:
             ax.text(-L / 2, -0.11, label, fontsize=5.4, ha="center",
                     va="top", color="0.2")
         else:
-            ax.text(ux * (L + 0.06), uy * (L + 0.06), label, fontsize=5.4,
-                    ha="right", va="bottom", color="0.2")
-    # angle arc measured from the horizontal park position
+            ax.text(px + ux * (L + 0.06), py + uy * (L + 0.06), label,
+                    fontsize=5.4, ha="right", va="bottom", color="0.2")
+    # angle arc measured from the horizontal park position, about the hinge
     arc = np.deg2rad(np.linspace(0, 45, 40))
-    ax.plot(-0.46 * np.cos(arc), 0.46 * np.sin(arc), color="0.35", lw=0.6,
-            zorder=3)
-    ax.text(-0.38 * np.cos(np.deg2rad(11)), 0.38 * np.sin(np.deg2rad(11)),
+    ax.plot(hx - 0.46 * np.cos(arc), hy + 0.46 * np.sin(arc), color="0.35",
+            lw=0.6, zorder=3)
+    ax.text(hx - 0.38 * np.cos(np.deg2rad(11)),
+            hy + 0.38 * np.sin(np.deg2rad(11)),
             r"$\theta$", fontsize=7, ha="center", va="center", zorder=4)
-    # fixed dispense point and falling dose
-    ax.plot(0, 0, "o", ms=4.2, color="#d03b3b", zorder=5)
+    # hinge axis (out of the page), outlet at each tilt, and falling dose
+    ax.add_patch(patches.Circle((hx, hy), 0.021, fc="white", ec="0.15",
+                                lw=0.5, zorder=6))
+    ax.plot(hx, hy, ".", ms=1.2, color="0.15", zorder=7)
+    for px, py in outlets:
+        ax.plot(px, py, "o", ms=2.6, color="#d03b3b", zorder=5)
     for dy in (-0.10, -0.18, -0.26):
         ax.plot(0, dy, ".", ms=1.8, color="#b6862c", zorder=4)
     ax.add_patch(patches.Rectangle((-0.12, -0.42), 0.24, 0.1, fc="#fbf3df",
@@ -225,10 +239,12 @@ def fig1() -> None:
     bottom = outer[1].subgridspec(1, 3, width_ratios=[0.95, 1.05, 1.0],
                                   wspace=0.12)
 
-    # (a) annotated CAD render of the current design (PR #170: same camera as
-    #     the June render in issue #165, with the Fusion auger, cap, 20-tooth
-    #     pinion, solenoid and tap collar swapped in) and (b) the as-built
-    #     module (issue #165; frame at t = 65 s of the first automated dispense)
+    # (a) annotated CAD render of the current design (PR #170, commit
+    #     ce256c3: same camera as the June render in issue #165, with every
+    #     printed part from the team's Fusion 360 files except the AI-modelled
+    #     tap-collar base) and (b) the as-built module (issue #165; frame at
+    #     t = 65 s of the first automated dispense, in the University of Utah
+    #     glove box, issue #117)
     ax = fig.add_subplot(top[0, 0])
     show(ax, "cad_render_current_annotated.png")
     panel_label(ax, "a")
@@ -243,7 +259,7 @@ def fig1() -> None:
     auger_section(ax)
     panel_label(ax, "c")
 
-    # (d) tilt range (0-45 deg) about the fixed dispense point, with its frame
+    # (d) tilt range (0-45 deg) about the hinge just behind the outlet
     ax = fig.add_subplot(bottom[0, 1])
     tilt_diagram(ax)
     panel_label(ax, "d")
@@ -370,7 +386,86 @@ def figs1() -> None:
     plt.close(fig)
 
 
+# ----------------------------------------------------------------------------
+# Figures S1 and S2 — exploded view and build steps of the current design
+# ----------------------------------------------------------------------------
+# Build steps of cad/full-assembly/BOM.md (PR #170); bracketed numbers are the
+# item numbers of the exploded view (Fig. S1).
+ASSEMBLY_STEPS = [
+    "Baseplate onto the board [1, 2]",
+    "Screws into the board [3]",
+    "Servos into the posts [4]",
+    "Servo screws and nuts [5, 6]",
+    "Servo pinions [7, 8]",
+    "Mounting plate on the hinge [9]",
+    "Hinge screws and nuts [10, 11]",
+    "Stepper [12, 13]",
+    "Stepper pinion [14]",
+    "Tap-collar base [6, 15–18]",
+    "Auger over the plate [19]",
+    "Front bracket on the tube [20]",
+    "Tap collar on the tube [21]",
+    "Auger onto the plate [19–21]",
+    "Rear bracket on the tube [20]",
+    "Bracket screws and clamps [5, 6, 22]",
+    "Tap-collar clamp [6, 22]",
+    "Solenoid [23, 24]",
+    "Auger cap [25]",
+]
+
+
+def figs_assembly_exploded() -> None:
+    """Exploded view of the current design with every BOM item numbered.
+
+    Rendered by PR #170 (cad/full-assembly/renders/assembly_exploded_bom.png,
+    commit ce256c3) from the team's Fusion 360 parts, the AI-modelled
+    tap-collar base, datasheet models of the purchased parts and McMaster-Carr
+    fasteners; the table on the right is its bill of materials.
+    """
+    img = load("assembly_exploded_bom.png")
+    h, w = img.shape[:2]
+    fig = plt.figure(figsize=(DOUBLE_COL_IN, DOUBLE_COL_IN * h / w))
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.imshow(img)
+    ax.set_axis_off()
+    _save(fig, "figS_assembly_exploded")
+    plt.close(fig)
+
+
+def figs_assembly_steps() -> None:
+    """The 19 build steps as stills from the PR #170 assembly animation.
+
+    Stills are the end of each step in assembly_walkthrough.gif, extracted by
+    data/extract_assembly_steps.py into assets/assembly_steps/.
+    """
+    ncol, nrow = 4, 5
+    aspect = 1.6                       # every still padded to this width/height
+    fig, axes = plt.subplots(nrow, ncol, figsize=(DOUBLE_COL_IN, 6.0),
+                             gridspec_kw=dict(hspace=0.30, wspace=0.08))
+    for k, ax in enumerate(axes.flat):
+        ax.set_axis_off()
+        if k < len(ASSEMBLY_STEPS):
+            img = load(f"assembly_steps/step{k + 1:02d}.png")
+            h, w = img.shape[:2]
+            H, W = max(h, int(round(w / aspect))), max(w, int(round(h * aspect)))
+            canvas = np.full((H, W, 3), 255, dtype=np.uint8)
+            r0, c0 = (H - h) // 2, (W - w) // 2
+            canvas[r0:r0 + h, c0:c0 + w] = img
+            ax.imshow(canvas)
+            ax.set_title(f"{k + 1}. {ASSEMBLY_STEPS[k]}", fontsize=5.3,
+                         loc="left", pad=2.0)
+        else:
+            ax.text(0.04, 0.6,
+                    "Numbers in brackets are the\n"
+                    "item numbers in Fig. S1.",
+                    fontsize=5.6, ha="left", va="center", color="0.25",
+                    transform=ax.transAxes)
+    _save(fig, "figS_assembly_steps")
+    plt.close(fig)
+
+
 if __name__ == "__main__":
-    for fn in (fig1, fig2, fig6, figs1):
+    for fn in (fig1, fig2, fig6, figs1, figs_assembly_exploded,
+               figs_assembly_steps):
         fn()
         print(f"wrote {fn.__name__}")
