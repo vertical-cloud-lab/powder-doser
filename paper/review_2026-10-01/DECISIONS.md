@@ -50,7 +50,7 @@ are no loading slots. Fig. 1c is a section through this file.
 **Did each powder get its own printed auger?** The design log (entry e114, "Labelled
 campaign augers with separate caps") suggests so. **Choose one.**
 
-- [ ] Yes, one auger per powder (I'll add one sentence to the Experimental section)
+- [x] Yes, one auger per powder (I'll add one sentence to the Experimental section)
 - [ ] No, one auger, cleaned between powders (I'll say how it was cleaned; method in Notes)
 - [ ] Mixed (in Notes)
 
@@ -158,8 +158,8 @@ a CAD section view. Panel (c) is now a true section cut through the Fusion STL, 
 upright, with the cap, fill opening, plain reservoir, 44-tooth gear, flight, core and
 outlet labelled. Preview: [fig1_overview.png](../figures/preview/fig1_overview.png).
 
-- [x] Keep the 2-D section (current)
-- [ ] Use a shaded 3-D cut-away render instead
+- [ ] Keep the 2-D section (current)
+- [x] Use a shaded 3-D cut-away render instead
 - [ ] Draw it horizontal, as the tube sits when parked
 
 **Notes:**
@@ -188,9 +188,9 @@ main text, captions and SI ("reviewed, printed, and tested").
 
 **Choose one.**
 
-- [x] "a tube with a screw inside" (current)
+- [ ] "a tube with a screw inside" (current)
 - [ ] "an Archimedes screw: a tube with a spiral blade inside"
-- [ ] "a tube with a spiral inside"
+- [x] "a tube with a spiral inside"
 
 ### 13. "The kind that makes a phone vibrate"
 
@@ -247,14 +247,14 @@ only where it is said.
 
 **Sam's e-mail. Choose one.**
 
-- [ ] Use the address on Sam's git commits
+- [x] Use the address on Sam's git commits
 - [ ] Use this address (in Notes)
 
 **Sterling's affiliation and e-mail. Choose one.** The draft lists Utah MSE with
 `sterling.baird@byu.edu`.
 
 - [ ] University of Utah MSE, with a Utah e-mail (in Notes)
-- [ ] BYU (department in Notes), keep `sterling.baird@byu.edu`
+- [x] BYU (department in Notes), keep `sterling.baird@byu.edu`
 - [ ] Both affiliations (details in Notes)
 
 **Notes:**
@@ -263,7 +263,7 @@ only where it is said.
 
 **Choose any.**
 
-- [ ] Acknowledge Devora Najjar (first Archimedes-auger OpenSCAD model, April 2026)
+- [x] Acknowledge Devora Najjar (first Archimedes-auger OpenSCAD model, April 2026)
 - [ ] Acknowledge Marcus Madsen (uploaded files on 4 August 2026)
 - [ ] Acknowledge the lab members who printed or assembled parts (names in Notes)
 - [ ] None of these
@@ -276,7 +276,7 @@ only where it is said.
 128-entry design log. Neither is on `main` yet.
 
 - [ ] Merge PR #74 (`DESIGN-LOG.md`, updated today to 128 entries)
-- [ ] Archive a tagged release with a DOI (for example Zenodo) at submission, and cite it
+- [x] Archive a tagged release with a DOI (for example Zenodo) at submission, and cite it
 
 PR #170, the Onshape parts and the build guide are in
 [MEETING-DECISIONS.md](../meeting_2026-10-01/MEETING-DECISIONS.md), items 7–9.
@@ -289,14 +289,14 @@ PR #170, the Onshape parts and the build guide are in
 covers the same ground in tube angles. A dated correction note is on the PR description.
 
 - [ ] Close PR #150 as superseded by Table 3
-- [ ] Fix its files to 0/22.5/45° and keep it open
+- [x] Fix its files to 0/22.5/45° and keep it open
 
 ### 24. Smaller items (defaults are the current draft)
 
 - Speed sweep: [x] text only, as an indication (current) · [ ] add an SI plot · [ ] drop it
 - Fumed silica: [x] keep, with the screening disclosure (current) · [ ] Table 1 only · [ ] remove
 - SEM or powder characterisation: [x] none (current) · [ ] add the #163 literature values as an SI table
-- U of U glovebox demonstration: [x] leave out (current) · [ ] add a short qualitative paragraph
+- U of U glovebox demonstration: [ ] leave out (current) · [x] add a short qualitative paragraph, and also put Philip Lampkin in the acknowledgements (maybe there was one other person, too?)
 - SI Fig. S3 (AI activity per week): [x] keep (current) · [ ] CAD work only · [ ] drop
 - Generative-AI section: [x] current length (current) · [ ] add a quantitative design-log analysis to the SI
 - Fusion vs Zoo time comparison: [x] keep as rough (current) · [ ] actual hours (in Notes) · [ ] remove
@@ -317,12 +317,12 @@ caption provenance, cost exclusions, and four plainer sentences. The rest needs 
 
 **Choose any.** Each of these uses only existing records.
 
-- [ ] SI table of every dose attempt: valid, excluded (with reason), and not attempted, by powder and target (all three reviewers)
-- [ ] Representative mass-against-time traces of closed-loop doses at 50 mg, 200 mg and 1 g, with phase changes marked (Abolhasani)
-- [ ] Balance noise after actuation, and whether pass/fail at 50 mg survives that noise, split by round and location (Khinast)
-- [ ] CAD-only analysis of the design log: parts, iterations, failure types, and what caught each (automated check or person) (Schulz; also old item 16)
-- [ ] Table of the tested auger's dimensions against the AI-modelled auger's (Khinast)
-- [ ] Derive the "less than one atomic percent" composition-error claim in the SI, or soften it (Khinast)
+- [x] SI table of every dose attempt: valid, excluded (with reason), and not attempted, by powder and target (all three reviewers)
+- [x] Representative mass-against-time traces of closed-loop doses at 50 mg, 200 mg and 1 g, with phase changes marked (Abolhasani)
+- [x] Balance noise after actuation, and whether pass/fail at 50 mg survives that noise, split by round and location (Khinast), in SI
+- [x] CAD-only analysis of the design log: parts, iterations, failure types, and what caught each (automated check or person) (Schulz; also old item 16), keeping it brief, probably tabular, and only in SI
+- [x] Table of the tested auger's dimensions against the AI-modelled auger's (Khinast), tabular and based on a comparison of what changed
+- [x] Derive the "less than one atomic percent" composition-error claim in the SI, or soften it (Khinast), noting that you should be looking at byu-vcl a lot and that you can send your own Edison query. Note that for our own alloy workflows, we'll probably be processing total batch sizes between 10-500 grams 
 - [ ] None for now
 
 **Notes:**
@@ -337,7 +337,7 @@ caption provenance, cost exclusions, and four plainer sentences. The rest needs 
 - [ ] Repeated-use wear and fouling of the PLA auger with AlSi10Mg (Khinast)
 - [ ] A run of consecutive unattended doses, logging every human intervention (Abolhasani)
 - [ ] Fix the vibration driver and run protocol F (Khinast)
-- [ ] None; state these as limitations (current)
+- [x] None; state these as limitations (current)
 
 **Notes:**
 
@@ -345,10 +345,10 @@ caption provenance, cost exclusions, and four plainer sentences. The rest needs 
 
 **Choose any.**
 
-- [ ] One-page AI-CAD workflow in the SI: an example dimensioned drawing, the interface checklist, and when a part counted as finished (Schulz)
-- [ ] List the human tasks between doses (filling, positioning, taring, clearing faults) (Abolhasani)
-- [ ] Drop the "one or two Zoo iterations matched seven or eight coding-agent iterations" numbers, as they are impressions (Schulz)
-- [ ] Give the months each AI tool was used, with model names where the logs record them (Schulz)
+- [x] One-page AI-CAD workflow in the SI: an example dimensioned drawing, the interface checklist, and when a part counted as finished (Schulz)
+- [x] List the human tasks between doses (filling, positioning, taring, clearing faults) (Abolhasani), in the SI
+- [x] Drop the "one or two Zoo iterations matched seven or eight coding-agent iterations" numbers, as they are impressions (Schulz)
+- [x] Give the months each AI tool was used, with model names where the logs record them (Schulz)
 
 **Notes:**
 
@@ -361,5 +361,6 @@ caption provenance, cost exclusions, and four plainer sentences. The rest needs 
 - [ ] Implement the writing-only items from the round-3 review
 - [ ] Wait for part 2 of Sam's video review, then do both together
 - [ ] Another plain-language pass after these edits
+- [x] use cringe-filter package
 
 **Notes:**
