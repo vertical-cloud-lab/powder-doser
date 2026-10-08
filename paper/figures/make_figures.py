@@ -210,6 +210,9 @@ def fig1() -> None:
     ax = fig.add_subplot(gs[1, 0])
     img = load("rotation_0_45_90.png")
     img = img[int(img.shape[0] * 0.10):, :]  # trim internal suptitle
+    # Keep the 0 and 45 deg poses only: 45 deg is the stage's maximum tilt,
+    # so the render's 90 deg (vertical) pose is never reached.
+    img = img[:, : int(img.shape[1] * 0.673)]
     ax.imshow(img)
     ax.set_axis_off()
     panel_label(ax, "c")

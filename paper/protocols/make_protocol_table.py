@@ -4,7 +4,8 @@ The uniform powder test battery runs one frozen sequence of seven test
 protocols on every powder, so results are directly comparable across
 powders.  The protocol specification below is transcribed from the
 firmware constants in ``hardware/test-module/firmware/powder_battery.py``
-(``BATTERY_VERSION = 2``, on the ``claude/issue-116-*`` branches); the
+(``BATTERY_VERSION = 2``, on the ``claude/issue-116-*`` branches), with
+tilt converted from servo settings to tube angles (see below); the
 as-run coverage columns of the markdown table are computed from the tidy
 CSVs in ``paper/figures/candidates/data/`` so they cannot drift from the
 data.
@@ -19,7 +20,7 @@ Then rebuild the SI and refresh the preview crop that TEST-PROTOCOLS.md
 embeds (page and crop box track the table's position in si.pdf)::
 
     cd .. && latexmk -pdf si.tex
-    pdftoppm -png -r 150 -f 3 -l 3 -x 100 -y 430 -W 1180 -H 810 \\
+    pdftoppm -png -r 150 -f 3 -l 3 -x 100 -y 406 -W 1180 -H 858 \\
         si.pdf protocols/test_protocols_preview && \\
         mv protocols/test_protocols_preview-3.png \\
            protocols/test_protocols_preview.png
@@ -36,7 +37,11 @@ DATA = HERE.parent / "figures" / "candidates" / "data"
 # ----------------------------------------------------------------------
 # Protocol specification -- frozen firmware parameters (battery_version 2).
 #
-# tilt convention: 0 deg = auger tube horizontal, 90 deg = vertical.
+# tilt convention: the auger tube's angle above horizontal, from 0 deg
+# (horizontal park) to 45 deg, the maximum tilt.  powder_battery.py and the
+# raw CSVs store tilt as a servo setting (0, 45 or 90); the tilt plate is
+# geared 2:1, so those settings are tube angles of 0, 22.5 and 45 deg,
+# which is what the tables report.
 # "trials" counts the machine-readable trial rows the protocol emits per
 # run, which is what the analysis treats as its unit of replication.
 # ----------------------------------------------------------------------
@@ -45,7 +50,7 @@ PROTOCOLS = [
         key="A",
         name="Balance baseline",
         varies="Nothing",
-        fixed="Tilt 45°; 8 reads",
+        fixed="Tilt 22.5°; 8 reads",
         measures="Mass change with no actuator commanded, giving the "
                  "per-run noise floor every other protocol is read against",
         trials="8",
@@ -53,7 +58,7 @@ PROTOCOLS = [
     dict(
         key="B",
         name="Static hold",
-        varies="Tilt (0/45/90°)",
+        varies="Tilt (0/22.5/45°)",
         fixed="15 s hold; no actuation",
         measures="Spontaneous discharge under gravity alone, separating "
                  "free-flowing powders from those needing actuation and "
@@ -63,7 +68,7 @@ PROTOCOLS = [
     dict(
         key="C",
         name="Rotation yield",
-        varies="Tilt (0/45/90°)",
+        varies="Tilt (0/22.5/45°)",
         fixed="6 × 360° steps; 30 rpm",
         measures="Mass delivered per auger revolution and its "
                  "revolution-to-revolution spread, i.e. the feed factor "
@@ -74,7 +79,7 @@ PROTOCOLS = [
         key="D",
         name="Speed sweep",
         varies="Auger speed (15/45/90 rpm)",
-        fixed="Tilt 45°; 3 rev continuous; balance streamed every 250 ms",
+        fixed="Tilt 22.5°; 3 rev continuous; balance streamed every 250 ms",
         measures="Mass flow rate versus rotation speed, and the "
                  "within-revolution pulsation of the discharge from the "
                  "streamed mass trace",
@@ -83,7 +88,7 @@ PROTOCOLS = [
     dict(
         key="E",
         name="Tap yield",
-        varies="Tilt (0/45°)",
+        varies="Tilt (0/22.5°)",
         fixed="8 trials × (360° re-feed + 1 solenoid tap, 60 ms on)",
         measures="Mass released per solenoid tap, with the metered re-feed "
                  "rotation logged separately so the tap delta is tap-only",
@@ -92,7 +97,7 @@ PROTOCOLS = [
     dict(
         key="F",
         name="Vibration yield",
-        varies="Tilt (0/45°)",
+        varies="Tilt (0/22.5°)",
         fixed="As protocol E, with 3 ERM bursts replacing the tap",
         measures="Mass released per vibration burst, the counterpart of "
                  "protocol E for the eccentric-rotating-mass actuator",
@@ -117,13 +122,15 @@ CAPTION = (
     r"sequence rather than an optimization workflow. Protocols A--F "
     r"characterize the actuation primitives one at a time, and protocol G "
     r"exercises the three-phase closed-loop controller built on them. Tilt is "
-    r"measured from horizontal (0$^\circ$ = auger tube horizontal, "
-    r"90$^\circ$ = vertical). \emph{Trials} is the number of machine-readable "
-    r"trial records each protocol emits per run, which is the unit of "
-    r"replication in the analysis. Parameter values are the frozen defaults of "
-    r"the battery firmware "
+    r"the auger tube's angle above horizontal, from 0$^\circ$ (horizontal "
+    r"park) to 45$^\circ$, the maximum tilt. \emph{Trials} is the number of "
+    r"machine-readable trial records each protocol emits per run, which is the "
+    r"unit of replication in the analysis. Parameter values are the frozen "
+    r"defaults of the battery firmware "
     r"(\texttt{hardware/test-module/firmware/powder\_battery.py}), which "
-    r"identifies the protocols by the same letters."
+    r"identifies the protocols by the same letters. The firmware and its raw "
+    r"records give tilt as a servo setting (0, 45, or 90), which the 2:1 tilt "
+    r"gear turns into tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$."
 )
 
 
@@ -237,8 +244,8 @@ def markdown_table():
         "",
         "Protocols A–F characterize the actuation primitives one at a time;",
         "protocol G exercises the three-phase closed-loop controller built on",
-        "them. Tilt is measured from horizontal (0° = auger tube horizontal,",
-        "90° = vertical).",
+        "them. Tilt is the auger tube's angle above horizontal, from 0°",
+        "(horizontal park) to 45°, the maximum tilt.",
         "",
         "The firmware and the raw CSVs identify these by the same letters, in a",
         "field named `block`; that field name is part of the serial protocol and",
@@ -251,7 +258,10 @@ def markdown_table():
         "![Test-protocol table as typeset in the SI](test_protocols_preview.png)",
         "",
         "Parameters are the frozen defaults of",
-        "`hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`).",
+        "`hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`),",
+        "except that tilt is given as a tube angle: the firmware and the raw CSVs",
+        "store it as a servo setting (0, 45, or 90), which the 2:1 tilt gear turns",
+        "into tube angles of 0°, 22.5°, and 45°.",
         "*Trials* is the number of machine-readable trial records each protocol",
         "emits per run — the unit of replication in the analysis.",
         "",

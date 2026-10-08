@@ -8,8 +8,8 @@ powder behaves under identical conditions.
 
 Protocols A–F characterize the actuation primitives one at a time;
 protocol G exercises the three-phase closed-loop controller built on
-them. Tilt is measured from horizontal (0° = auger tube horizontal,
-90° = vertical).
+them. Tilt is the auger tube's angle above horizontal, from 0°
+(horizontal park) to 45°, the maximum tilt.
 
 The firmware and the raw CSVs identify these by the same letters, in a
 field named `block`; that field name is part of the serial protocol and
@@ -22,18 +22,21 @@ As typeset in the SI (Table S2):
 ![Test-protocol table as typeset in the SI](test_protocols_preview.png)
 
 Parameters are the frozen defaults of
-`hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`).
+`hardware/test-module/firmware/powder_battery.py` (`BATTERY_VERSION = 2`),
+except that tilt is given as a tube angle: the firmware and the raw CSVs
+store it as a servo setting (0, 45, or 90), which the 2:1 tilt gear turns
+into tube angles of 0°, 22.5°, and 45°.
 *Trials* is the number of machine-readable trial records each protocol
 emits per run — the unit of replication in the analysis.
 
 | Protocol | Varied factor | Fixed parameters | Quantity measured | Trials |
 |---|---|---|---|---|
-| **A** Balance baseline | Nothing | Tilt 45°; 8 reads | Mass change with no actuator commanded, giving the per-run noise floor every other protocol is read against | 8 |
-| **B** Static hold | Tilt (0/45/90°) | 15 s hold; no actuation | Spontaneous discharge under gravity alone, separating free-flowing powders from those needing actuation and testing the horizontal-park shutoff claim | 3 |
-| **C** Rotation yield | Tilt (0/45/90°) | 6 × 360° steps; 30 rpm | Mass delivered per auger revolution and its revolution-to-revolution spread, i.e. the feed factor and precision at each tilt | 18 |
-| **D** Speed sweep | Auger speed (15/45/90 rpm) | Tilt 45°; 3 rev continuous; balance streamed every 250 ms | Mass flow rate versus rotation speed, and the within-revolution pulsation of the discharge from the streamed mass trace | 3 (+ polls) |
-| **E** Tap yield | Tilt (0/45°) | 8 trials × (360° re-feed + 1 solenoid tap, 60 ms on) | Mass released per solenoid tap, with the metered re-feed rotation logged separately so the tap delta is tap-only | 32 |
-| **F** Vibration yield | Tilt (0/45°) | As protocol E, with 3 ERM bursts replacing the tap | Mass released per vibration burst, the counterpart of protocol E for the eccentric-rotating-mass actuator | 32 |
+| **A** Balance baseline | Nothing | Tilt 22.5°; 8 reads | Mass change with no actuator commanded, giving the per-run noise floor every other protocol is read against | 8 |
+| **B** Static hold | Tilt (0/22.5/45°) | 15 s hold; no actuation | Spontaneous discharge under gravity alone, separating free-flowing powders from those needing actuation and testing the horizontal-park shutoff claim | 3 |
+| **C** Rotation yield | Tilt (0/22.5/45°) | 6 × 360° steps; 30 rpm | Mass delivered per auger revolution and its revolution-to-revolution spread, i.e. the feed factor and precision at each tilt | 18 |
+| **D** Speed sweep | Auger speed (15/45/90 rpm) | Tilt 22.5°; 3 rev continuous; balance streamed every 250 ms | Mass flow rate versus rotation speed, and the within-revolution pulsation of the discharge from the streamed mass trace | 3 (+ polls) |
+| **E** Tap yield | Tilt (0/22.5°) | 8 trials × (360° re-feed + 1 solenoid tap, 60 ms on) | Mass released per solenoid tap, with the metered re-feed rotation logged separately so the tap delta is tap-only | 32 |
+| **F** Vibration yield | Tilt (0/22.5°) | As protocol E, with 3 ERM bursts replacing the tap | Mass released per vibration burst, the counterpart of protocol E for the eccentric-rotating-mass actuator | 32 |
 | **G** Closed-loop dose | Nothing | 3 doses; 1.000 g target; three-phase controller | Delivered mass, dose error, time to dose, and the bulk/fine/tap cycle breakdown of the closed-loop controller | 3 doses |
 
 ## As-run coverage, round-1 campaign
