@@ -76,6 +76,7 @@ Table~\ref{tbl:parts} lists the printed parts of the current doser and where to
 download each one. Fig.~\ref{fgr:exploded} shows every part of the mechanical
 assembly, numbered, with its bill of materials, and Fig.~\ref{fgr:steps} shows
 the build in 19 steps. Both come from a CAD assembly of the team's part files,
+% TODO (human): the Onshape document is still private (8 Oct 2026); set it to public.
 which is also a public Onshape document
 (\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f}); the same
 steps are animated in the repository README. The wiring guide and firmware are
@@ -87,8 +88,8 @@ refer to Fig.~\ref{fgr:steps}, item numbers to Fig.~\ref{fgr:exploded}):
 four perimeters, 25\% infill). Most parts need support material. Print the
 auger upright.
 \item \textbf{Base} (steps 1--5): screw the baseplate to a flat board or bench
-top 38~mm thick, fit the two servos into its posts, and fit a 14-tooth pinion
-on each servo.
+top (the CAD assumes 38~mm, the depth its front legs are made for), fit the two
+servos into its posts, and fit a 14-tooth pinion on each servo.
 \item \textbf{Tilt stage} (steps 6--7): mount the mounting plate on the hinge
 with M5 screws and locknuts, so that the servo pinions mesh with the plate's
 28-tooth gears (2:1).
@@ -157,7 +158,8 @@ Smaller auger, about 9.2~mL & \url{https://a360.co/47qXATc} \\
 \caption{Exploded view of the current design with every item of its mechanical
 bill of materials numbered: printed parts, purchased parts, and fasteners
 (McMaster-Carr part numbers in \texttt{cad/full-assembly/BOM.md}). Item~1 is
-whatever the doser is screwed to, a board or bench top 38~mm thick. The printed
+whatever the doser is screwed to; the CAD uses a board 38~mm thick, the depth
+the baseplate's front legs are made for. The printed
 parts are the files in Table~\ref{tbl:parts}; the stepper, servos, and solenoid
 are simplified models made from their datasheets. Electronics are listed in
 Table~\ref{tbl:bom}. The CAD assembly was built by an AI agent from the team's

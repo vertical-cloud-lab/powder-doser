@@ -19,6 +19,22 @@ commit straight to the branch. Then ask `@claude` on PR #97 to implement it.
 
 Questions 1, 3 and 4 matter most.
 
+> **Status, 8 October 2026.** Sterling's answers (commit `303bd57`) are implemented in
+> `c4e6423`–`3f10751` and the commit after it. Item by item:
+> 1–3 kept as drafted ("some" redrawn parts). 4: the tap-collar base is in Fabrication and
+> SI Table S2; the file on the rig is `mount_plate.step` as of `debe299` (18 May), the
+> version PR #170 matched to the mounting plate, not the 10 June one. 5: Fig. 1a is now
+> the #170 render with every real part. 6: SI Fig. S1 (exploded view with numbered BOM)
+> and the assembly GIF at the top of the README. 7: SI build guide rewritten around the
+> 19 steps of the #170 animation (SI Fig. S2), with the filling stand. 8: Onshape link in
+> the SI and Data availability; **the document is still private**. 9: filling stand and
+> both smaller augers in SI Table S2, one sentence in §2.1. 10: glove-box session and the
+> atomizer doses in the Conclusions ("Leave it out" was also ticked; the two added boxes
+> were taken as the answer). 12: hackathon in §2.2 and the acknowledgements; Ron's
+> surname is a TODO. 13: months per tool and a snapshot sentence; the unticked Onshape
+> API / text-to-cad option was also added, as one sentence. 14: raw transcript deleted.
+> 15: waiting for the video.
+
 ---
 
 ## A. What the tested doser was made of

@@ -17,6 +17,15 @@ for questions raised at the 1 Oct meeting. Where the two overlap, the question h
 just points there, so nothing has to be answered twice. Items 1, 2, 4 and section E
 matter most.
 
+> **Status, 8 October 2026.** This file was not changed in the 8 October round, so every
+> pre-ticked default stands and nothing unticked was implemented, with two exceptions
+> that came from elsewhere: item 5 (CADSmith) now follows Sterling's 2 October PR comment
+> ("only able to generate very simplified kind of blocky geometries"), and item 27's
+> tool months were added because MEETING-DECISIONS.md item 13 asked for them. Item 8 is
+> answered by the evidence: the Fig. 1b frame is from the 24 July session in the
+> University of Utah glove box (#117), and the caption now says so. Still open: items 1
+> (one auger per powder?), 4, 20–23 and 25–27.
+
 Sources: Sam's [part-1 video notes](NOTES-part1.md), the 1 Oct Sam/Sterling meeting
 ([corrected transcript](../meeting_2026-10-01/TRANSCRIPT-corrected.md)),
 Sterling's 1 Oct comment on PR #97, PR #170 (current-design render and Fusion files),
