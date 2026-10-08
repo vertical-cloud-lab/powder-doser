@@ -18,7 +18,7 @@ just points there, so nothing has to be answered twice. Items 1, 2, 4 and sectio
 matter most.
 
 > **Status, 8 October 2026 (second round).** Sterling's answers (commit `ccadc2b`) are
-> implemented in `af8851c`–the final commit of that day. Item by item:
+> implemented in `af8851c` to `ac3ec1b`. Item by item:
 > **1** one auger per powder, in Experimental (confirmed by #134 and #116); the text now
 > also says each auger was filled once and stored loaded. **2** unchanged; SI Table
 > "augercompare" sets the tested auger against the AI-modelled one. **4** still open.
