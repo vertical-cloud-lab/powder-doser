@@ -1,0 +1,131 @@
+BASE = https://cad.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+=== Re-run: 2026-05-12T16:59:22Z, all three realms ===
+
+--- BASE=https://cad.onshape.com ---
+BASE = https://cad.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+
+--- BASE=https://partner.dev.onshape.com ---
+BASE = https://partner.dev.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+
+--- BASE=https://staging.dev.onshape.com ---
+BASE = https://staging.dev.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 204
+{}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 401
+{"message":"Unauthenticated API request", "status":401}
+items returned: 0
+
+=== Re-run: 2026-05-12T21:14Z, new "classroom" API key ===
+
+BASE = https://cad.onshape.com
+access key: len=24
+secret key: len=48
+
+== GET /api/v6/users/sessioninfo ==
+HTTP 200
+{
+  "id": "<redacted-user-id>",
+  "name": "Sterling",
+  "email": "<redacted>",
+  "role": 5,
+  "state": 1,
+  "company": null
+}
+
+== GET /api/v6/documents (own, first page) ==
+HTTP 200
+items returned: 1
+  - id=<redacted-doc-id>  name='test'  owner='Vertical Cloud Lab'  modified=2026-05-12T19:02:24.104+00:00
+=== Onshape upload-and-translate probe: 2026-05-12T22:00:58Z ===
+Demonstrates round-trip: local STEP -> Onshape blob upload
+  -> server-side translation -> Part Studio -> STL re-translate.
+Doc/workspace/element/translation/user IDs are redacted.
+
+BASE = https://cad.onshape.com
+upload source: auger_barrel_cadquery.step  (14150 bytes)
+
+== GET /documents ==
+HTTP 200
+  using doc name='test'  (id redacted)
+  default workspace resolved (id redacted)
+  elements before upload: 5  (['auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step'])
+
+== POST /blobelements/d/{did}/w/{wid} (translate=true) ==
+HTTP 200
+  response keys: ['accelerationUnits', 'angleUnits', 'angularVelocityUnits', 'applicationTarget', 'areaUnits', 'dataType', 'densityUnits', 'elementType', 'energyUnits', 'filename', 'forceUnits', 'foreignDataId', 'id', 'lengthUnits', 'massUnits', 'microversionId', 'momentUnits', 'name', 'pressureUnits', 'prettyType', 'safeToShow', 'specifiedUnit', 'thumbnailInfo', 'thumbnails', 'timeUnits', 'translationEventKey', 'translationId', 'type', 'unupdatable', 'volumeUnits', 'zip']
+  translation id (redacted) created; initial state=None
+
+== GET /translations/{tid} (poll) ==
+  state=ACTIVE
+  state=DONE
+
+  elements after upload: 7  (['auger_barrel_cadquery (1)', 'auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step', 'auger_barrel_cadquery.step'])
+
+== POST /partstudios/.../translations  (formatName=STL) ==
+HTTP 200
+  STL translation queued; initial state=ACTIVE
+
+=== Re-run: 2026-05-12T23:09:54Z — STEP-upload round-trip (per @sgbaird-alt request to verify in Onshape UI) ===
+
+BASE = https://cad.onshape.com
+upload source: auger_barrel_cadquery.step  (14150 bytes)
+
+== GET /documents ==
+HTTP 200
+  using doc name='test'  (id redacted)
+  default workspace resolved (id redacted)
+  elements before upload: 7  (['auger_barrel_cadquery (1)', 'auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step', 'auger_barrel_cadquery.step'])
+
+== POST /blobelements/d/{did}/w/{wid} (translate=true) ==
+HTTP 200
+  response keys: ['accelerationUnits', 'angleUnits', 'angularVelocityUnits', 'applicationTarget', 'areaUnits', 'dataType', 'densityUnits', 'elementType', 'energyUnits', 'filename', 'forceUnits', 'foreignDataId', 'id', 'lengthUnits', 'massUnits', 'microversionId', 'momentUnits', 'name', 'pressureUnits', 'prettyType', 'safeToShow', 'specifiedUnit', 'thumbnailInfo', 'thumbnails', 'timeUnits', 'translationEventKey', 'translationId', 'type', 'unupdatable', 'volumeUnits', 'zip']
+  translation id (redacted) created; initial state=None
+
+== GET /translations/{tid} (poll) ==
+  state=ACTIVE
+  state=DONE
+
+  elements after upload: 9  (['auger_barrel_cadquery (2)', 'auger_barrel_cadquery (1)', 'auger_barrel_cadquery', 'Part Studio 1', 'Assembly 1', 'BOM : Assembly 1', 'auger_barrel_cadquery.step', 'auger_barrel_cadquery.step', 'auger_barrel_cadquery.step'])
+
+== POST /partstudios/.../translations  (formatName=STL) ==
+HTTP 200
+  STL translation queued; initial state=ACTIVE

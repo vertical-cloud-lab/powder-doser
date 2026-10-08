@@ -1,0 +1,13 @@
+{
+  "id": "af338f92-6d42-40e2-8fc4-fe96e8f569f6",
+  "created_at": "2026-05-15T22:46:58.282000882Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "queued",
+  "updated_at": "2026-05-15T22:46:58.282000882Z",
+  "conversation_id": "93ff0f25-5c37-4167-816a-29f7f8b0dad1",
+  "prompt": "A thin-walled cylindrical sleeve that slips over a 24 mm OD tube near its dispense end. Sleeve inner diameter 24.2 mm, outer diameter 30 mm, height 24 mm. On one side cut a circular blind pocket 11 mm diameter and 3.6 mm deep for an ERM disc vibration motor. On the diametrically opposite side cut a rectangular blind pocket 12 mm \u00d7 9 mm \u00d7 19 mm deep for a tubular push-pull solenoid. Both pockets must connect to the outside of the sleeve via a \u00d84 mm wire-exit channel angled downward 30\u00b0. Do NOT cut through to the bore. Do NOT add a hopper or any other opening.",
+  "output_format": "step",
+  "model_version": "",
+  "model": "kcl",
+  "feedback": null
+}

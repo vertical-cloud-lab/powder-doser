@@ -1,0 +1,12 @@
+$ curl -O https://dl.appstreaming.autodesk.com/production/installers/Fusion%20Admin%20Install.exe
+  -> 1.4G  Fusion360ClientInstaller.exe
+$ file Fusion360ClientInstaller.exe
+  PE32 executable (GUI) Intel 80386, for MS Windows, 5 sections
+$ wine Fusion360ClientInstaller.exe /S
+  wine: failed to open L"C:\\windows\\syswow64\\rundll32.exe": c0000135
+  wine: failed to load L"\\??\\C:\\windows\\syswow64\\ntdll.dll" error c0000135
+  ShellExecuteEx failed: Internal error.
+  (32-bit installer; wine32 multilib not available on this server image.
+   Even with wine32, Fusion is a streaming GUI; Generative Design itself
+   is a server-side cloud service requiring a paid GD subscription with
+   per-job tokens — there is no headless/CLI invocation path.)

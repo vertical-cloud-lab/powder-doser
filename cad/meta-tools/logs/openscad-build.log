@@ -1,0 +1,13 @@
+$ openscad --version
+  OpenSCAD version 2021.01
+$ openscad -o trough.stl excavator_trough.scad
+   Halfedges:     732
+   Edges:         366
+   Halffacets:    248
+   Facets:        124
+   Volumes:         2
+$ ls -lh trough.stl
+  79K trough.stl
+$ head -2 trough.stl
+  solid OpenSCAD_Model
+    facet normal -0.760414 0 0.649439

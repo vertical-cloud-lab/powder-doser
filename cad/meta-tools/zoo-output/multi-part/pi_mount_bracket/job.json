@@ -1,0 +1,16 @@
+{
+  "type": "text_to_cad",
+  "id": "184b9296-9c47-4258-9bfb-45102601c598",
+  "created_at": "2026-05-15T22:47:00.059Z",
+  "started_at": "2026-05-15T22:47:00.532Z",
+  "completed_at": "2026-05-15T22:54:01.490Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "completed",
+  "updated_at": "2026-05-15T22:54:00.862Z",
+  "conversation_id": "bc22725a-e379-40be-9ee9-10de8fe0f7ea",
+  "prompt": "A flat back-plate bracket for a Raspberry Pi Zero 2 W. Plate outline 70 mm \u00d7 32 mm \u00d7 3 mm. Four M2.5 stand-off bosses 4 mm tall and 5 mm diameter, located on the official Pi Zero 2 W 58 mm \u00d7 23 mm rectangular hole pattern, centered on the plate. Two slot mounting holes (4 mm wide, 12 mm long) at each short end of the plate, on the long-axis centerline, for chassis attachment. Add a 16 mm \u00d7 8 mm rectangular cable cut-out centered on one long edge for the GPIO ribbon. Do NOT model the Raspberry Pi itself. Do NOT add a lid or cover.",
+  "output_format": "step",
+  "model_version": "0.1.0",
+  "model": "kcl",
+  "feedback": null
+}
