@@ -9,6 +9,7 @@ Every request goes through fsgen's own client, so it lands in the same call ledg
     python onshape_doc.py create                # 2 calls: company id, new public document
     fsgen studio push parts/baseplate_servos_above.fs --name "Baseplate (servos above)" --metrics
     python onshape_doc.py version "name" "description"     # 1 call
+    python onshape_doc.py branch "name" DIR     # 1 call: branch from the last version; fsgen state in DIR
     python onshape_doc.py views                 # 1 call per view
     python onshape_doc.py export                # STEP export (translation, polls, download)
 
@@ -81,6 +82,28 @@ def cmd_version(o: Onshape, rec: dict, name: str, description: str) -> None:
     print("version:", name, v["id"])
 
 
+def cmd_branch(o: Onshape, rec: dict, name: str, folder: str) -> None:
+    """Branch from the last version and give fsgen a state folder that points at the branch.
+
+    Element and feature ids are kept in a branch, so fsgen's saved state only needs the new
+    workspace id: the next push from that folder updates the branch in place."""
+    v = rec["versions"][-1]
+    ws = o.post(f"documents/d/{rec['documentId']}/workspaces",
+                {"name": name, "versionId": v["id"], "description": f"branched from version {v['name']}"})
+    rec.setdefault("branches", []).append({"name": name, "workspaceId": ws["id"], "fromVersion": v["id"],
+                                           "url": f"https://cad.onshape.com/documents/{rec['documentId']}/w/{ws['id']}"})
+    save(rec)
+    d = HERE / folder
+    d.mkdir(parents=True, exist_ok=True)
+    states = nb.load_states()
+    for st in states.values():
+        st["wid"] = ws["id"]
+    (d / ".fsgen_native.json").write_text(json.dumps(states, indent=2))
+    (d / ".fsgen_workspace.json").write_text(json.dumps(
+        {"did": rec["documentId"], "wid": ws["id"], "fs": "", "part": "", "eval": ""}, indent=2))
+    print("branch:", name, rec["branches"][-1]["url"])
+
+
 def cmd_views(o: Onshape, rec: dict, tag: str) -> None:
     st = studio(rec)
     for view, matrix in VIEWS.items():
@@ -101,7 +124,7 @@ def cmd_export(o: Onshape, rec: dict, tag: str) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["create", "version", "views", "export"])
+    ap.add_argument("cmd", choices=["create", "version", "branch", "views", "export"])
     ap.add_argument("args", nargs="*")
     ap.add_argument("--budget", type=int, default=10)
     a = ap.parse_args()
@@ -112,6 +135,8 @@ if __name__ == "__main__":
         cmd_create(o, rec)
     elif a.cmd == "version":
         cmd_version(o, rec, a.args[0], a.args[1] if len(a.args) > 1 else "")
+    elif a.cmd == "branch":
+        cmd_branch(o, rec, a.args[0], a.args[1])
     elif a.cmd == "views":
         cmd_views(o, rec, a.args[0] if a.args else "final")
     else:
