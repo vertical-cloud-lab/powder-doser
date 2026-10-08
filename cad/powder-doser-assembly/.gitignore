@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+
+# Mesh exports are regenerable from build.py (STEP is the committed deliverable)
+exports/stl/
