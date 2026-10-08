@@ -72,62 +72,111 @@ Headers and wiring & --- & 10 & generic \\
 
 \section{Construction guide}
 
-Table~\ref{tbl:parts} lists the printed parts of the tested doser and where to
-download each one; the wiring guide and firmware are in \texttt{hardware/} in
-the repository. The build, in outline:
+Table~\ref{tbl:parts} lists the printed parts of the current doser and where to
+download each one. Fig.~\ref{fgr:exploded} shows every part of the mechanical
+assembly, numbered, with its bill of materials, and Fig.~\ref{fgr:steps} shows
+the build in 19 steps. Both come from a CAD assembly of the team's part files,
+which is also a public Onshape document
+(\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f}); the same
+steps are animated in the repository README. The wiring guide and firmware are
+in \texttt{hardware/} in the repository. The build, in outline (step numbers
+refer to Fig.~\ref{fgr:steps}, item numbers to Fig.~\ref{fgr:exploded}):
 
 \begin{enumerate}
-\item \textbf{Print} the auger and its screw-on cap, the 20-tooth stepper
-pinion, the auger brackets, the tap collar, the mounting plate, the hinged
-baseplate, and the servo pinions in PLA (0.2~mm layers, four perimeters, 25\%
-infill). Most parts need support material. Print the auger upright.
-\item \textbf{Auger drive:} seat the auger in its printed brackets on the
-mounting plate, bolt the NEMA-11 stepper with its pinion to the plate, and
-check that the pinion meshes with the 44-tooth gear on the auger (2.2:1).
-\item \textbf{Tap collar:} clamp the collar around the auger tube and mount
-the solenoid in it so that its plunger strikes the tube. (A vibration motor was
-also planned for the collar but was not used in this work.)
-\item \textbf{Tilt stage:} join the mounting plate to the baseplate through the
-side hinges (printed pins), mesh the two servos with the plate's gear (2:1), and
-check that the outlet lies on the hinge axis.
+\item \textbf{Print} the parts in Table~\ref{tbl:parts} in PLA (0.2~mm layers,
+four perimeters, 25\% infill). Most parts need support material. Print the
+auger upright.
+\item \textbf{Base} (steps 1--5): screw the baseplate to a flat board or bench
+top 38~mm thick, fit the two servos into its posts, and fit a 14-tooth pinion
+on each servo.
+\item \textbf{Tilt stage} (steps 6--7): mount the mounting plate on the hinge
+with M5 screws and locknuts, so that the servo pinions mesh with the plate's
+28-tooth gears (2:1).
+\item \textbf{Drive} (steps 8--10): bolt the NEMA-11 stepper to its plate, fit
+the 20-tooth pinion, and bolt the tap-collar base to the plate.
+\item \textbf{Auger} (steps 11--17): slide one bracket and then the tap collar
+onto the tube from the outlet end, lower the auger onto the plate so that its
+44-tooth gear meshes with the stepper pinion (2.2:1), slide the second bracket
+on from the cap end, and tighten the bracket screws and the tap-collar clamp.
+The collar's ears rest against the raised stop on its base, so the collar
+stays put while the tube turns inside it.
+\item \textbf{Solenoid} (step 18): screw the solenoid to the tap collar so that
+its plunger strikes the tube. (A vibration motor was also planned for the
+collar but was not used in this work.)
 \item \textbf{Electronics:} wire the Pico~W, Tic T500 (serial), DRV8871,
 DRV2605L (I$^2$C), the RS-232 board (to the HR-100A balance), and the servos as
 shown in the schematic in \texttt{hardware/test-module/}, then flash the
 MicroPython firmware.
-\item \textbf{Fill:} unscrew the cap, pour the powder into the upper end of
-the auger tube, and screw the cap back on. There are no loading slots; the tube
-is its own reservoir.
+\item \textbf{Fill} (step 19): with the auger standing upright in the printed
+filling stand, unscrew the cap, pour the powder into the upper end of the tube,
+and screw the cap back on. There are no loading slots; the tube is its own
+reservoir. For small or costly samples, one of the two smaller augers in
+Table~\ref{tbl:parts} can take its place.
 \item \textbf{Checkout:} run the firmware self-test (rotate, tap, tilt,
 tare, and read), then the test protocols listed in the main text.
 \end{enumerate}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \small
-\caption{Printed parts of the current doser and their design files. Each part
-was modelled by the team in Fusion~360 (most of them as recreations of the
-AI-modelled parts) and is shared publicly with downloads enabled. The auger,
-its cap, and the stepper pinion were on the rig for every test in the main
-text; STEP exports
-of all eight are also in the repository
-(\texttt{cad/full-assembly/components/fusion-step/}, pull request \#170). The
-AI-modelled originals are in \texttt{cad/}.}
+\caption{Printed parts of the current doser and their design files. Every part
+except the tap-collar base was modelled by the team in Fusion~360, most of them
+as recreations of AI-modelled parts, and is shared publicly with downloads
+enabled. The tap-collar base is still the AI-modelled part, written by the
+coding agent in May 2026 (pull request \#51). The auger, its cap, and the
+stepper pinion were on the rig for every test in the main text. STEP exports of
+the Fusion~360 parts are also in the repository
+(\texttt{cad/full-assembly/components/fusion-step/}, pull request \#170), and
+the AI-modelled originals are in \texttt{cad/}.}
 \label{tbl:parts}
-\begin{tabular}{p{6.2cm}l}
+\begin{tabular}{p{7.4cm}l}
 \toprule
-Part & Fusion~360 share link \\
+Part & Design file \\
 \midrule
 Auger: threaded storage tube with 44-tooth gear & \url{https://a360.co/4y1oz2H} \\
 Screw-on cap & \url{https://a360.co/4w9kRE5} \\
 Stepper pinion, 20 teeth & \url{https://a360.co/4yqSHFz} \\
-Auger brackets & \url{https://a360.co/46XtYN1} \\
+Auger brackets (two) & \url{https://a360.co/46XtYN1} \\
 Tap collar & \url{https://a360.co/4AIIgyz} \\
+Tap-collar base (AI-modelled) & \href{https://github.com/vertical-cloud-lab/powder-doser/blob/debe299/design/cad/tap-collar/mount_plate.step}{\texttt{mount\_plate.step}, pull request \#51} \\
 Mounting plate & \url{https://a360.co/4xXUj8L} \\
 Baseplate & \url{https://a360.co/4AOA7sI} \\
-Servo pinion & \url{https://a360.co/4dcGSdF} \\
+Servo pinions, 14 teeth (two) & \url{https://a360.co/4dcGSdF} \\
+\midrule
+\multicolumn{2}{l}{\emph{Accessories}}\\
+Auger filling stand & \url{https://a360.co/4yqMPfp} \\
+Smaller auger, about 3.3~mL & \url{https://a360.co/4hxzCu5} \\
+Smaller auger, about 9.2~mL & \url{https://a360.co/47qXATc} \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_assembly_exploded}
+\caption{Exploded view of the current design with every item of its mechanical
+bill of materials numbered: printed parts, purchased parts, and fasteners
+(McMaster-Carr part numbers in \texttt{cad/full-assembly/BOM.md}). Item~1 is
+whatever the doser is screwed to, a board or bench top 38~mm thick. The printed
+parts are the files in Table~\ref{tbl:parts}; the stepper, servos, and solenoid
+are simplified models made from their datasheets. Electronics are listed in
+Table~\ref{tbl:bom}. The CAD assembly was built by an AI agent from the team's
+part files, working through Onshape's programming interface, and rendered from
+the same files (pull request \#170).}
+\label{fgr:exploded}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_assembly_steps}
+\caption{The build in 19 steps, as stills from the end of each step of the
+assembly animation in the repository. Bracketed numbers are the item numbers of
+Fig.~\ref{fgr:exploded}. This order passes the CAD assembly's collision checks;
+it is one workable order rather than a record of how the test rig was built.}
+\label{fgr:steps}
+\end{figure}
+
+\clearpage
 
 \section{Auger and outlet geometry}
 

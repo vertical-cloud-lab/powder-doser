@@ -1,5 +1,25 @@
 # powder-excavator
 
+## Current design: the single-channel powder doser
+
+![Assembly of the current powder doser, step by step](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/renders/assembly_walkthrough.gif?raw=true)
+
+The doser described in the manuscript in [`paper/`](paper/) (main text and SI),
+built in 19 steps from the team's Fusion 360 part files and the one remaining
+AI-modelled part (the tap-collar base), with every screw and nut. The numbered bill of materials, the STEP files and the scripts behind this
+animation are in `cad/full-assembly/`
+([PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170);
+[`BOM.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/BOM.md)),
+and the same assembly is an
+[Onshape document](https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f).
+SI Table S2 links the design file of every printed part, SI Fig. S1 is the
+exploded view, and SI Fig. S2 shows the steps as stills.
+
+The rest of this README describes the project's first concept, a
+gantry-mounted powder scoop, from April 2026.
+
+## First concept: the powder excavator (April 2026)
+
 A pure-mechanical, gantry-mounted "ladle / trough" for picking up loose
 powder from a bed and depositing it at a target location. The trough is
 suspended between two vertical arms that grip its **two short end caps**;
