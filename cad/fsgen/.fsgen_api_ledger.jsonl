@@ -28,3 +28,4 @@
 {"t": "2026-10-08T11:42:24", "run": "20261008-114220", "purpose": "onshape_doc export", "call": "GET documents/d/{id}/externaldata/{xid}", "status": 200, "counted": true}
 {"t": "2026-10-08T11:42:47", "run": "20261008-114246", "purpose": "onshape_doc version", "call": "POST documents/d/{id}/versions", "status": 200, "counted": true}
 {"t": "2026-10-08T11:42:48", "run": "20261008-114248", "purpose": "onshape_doc branch", "call": "POST documents/d/{id}/workspaces", "status": 200, "counted": true}
+{"t": "2026-10-08T11:46:18", "run": "20261008-114618", "purpose": "onshape_doc tree", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}

@@ -11,6 +11,7 @@ Every request goes through fsgen's own client, so it lands in the same call ledg
     python onshape_doc.py version "name" "description"     # 1 call
     python onshape_doc.py branch "name" DIR     # 1 call: branch from the last version; fsgen state in DIR
     python onshape_doc.py views                 # 1 call per view
+    python onshape_doc.py tree                  # 1 call: the feature tree as Onshape stores it
     python onshape_doc.py export                # STEP export (translation, polls, download)
 
 Run from this folder with ONSHAPE_ACCESS_KEY / ONSHAPE_SECRET_KEY set.
@@ -116,6 +117,16 @@ def cmd_views(o: Onshape, rec: dict, tag: str) -> None:
         print("->", out.relative_to(HERE))
 
 
+def cmd_tree(o: Onshape, rec: dict) -> None:
+    st = studio(rec)
+    feats = o.get(f"partstudios/d/{st.did}/w/{st.wid}/e/{st.eid}/features")
+    out = HERE / "results" / "onshape_features.json"
+    out.write_text(json.dumps(feats, indent=1) + "\n")
+    for f in feats["features"]:
+        print(f"  {f['featureType']:12s} {f['name']}")
+    print("->", out.relative_to(HERE))
+
+
 def cmd_export(o: Onshape, rec: dict, tag: str) -> None:
     st = studio(rec)
     files = nb.export_studio(o, st, HERE / "results" / "onshape_export", tag, ("step",))
@@ -124,7 +135,7 @@ def cmd_export(o: Onshape, rec: dict, tag: str) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["create", "version", "branch", "views", "export"])
+    ap.add_argument("cmd", choices=["create", "version", "branch", "views", "tree", "export"])
     ap.add_argument("args", nargs="*")
     ap.add_argument("--budget", type=int, default=10)
     a = ap.parse_args()
@@ -137,6 +148,8 @@ if __name__ == "__main__":
         cmd_version(o, rec, a.args[0], a.args[1] if len(a.args) > 1 else "")
     elif a.cmd == "branch":
         cmd_branch(o, rec, a.args[0], a.args[1])
+    elif a.cmd == "tree":
+        cmd_tree(o, rec)
     elif a.cmd == "views":
         cmd_views(o, rec, a.args[0] if a.args else "final")
     else:
