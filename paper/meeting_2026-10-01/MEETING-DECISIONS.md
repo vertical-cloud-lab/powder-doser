@@ -93,14 +93,14 @@ session is looking for it too.
 
 **Is that the part on the rig? Choose one.**
 
-- [ ] Yes
+- [x] Yes
 - [ ] No; the part on the rig came from Zoo Design Studio
 - [ ] No; it's another file (link in Notes)
 
 **Where should the paper say so? Choose any.**
 
-- [ ] Fabrication (Experimental section)
-- [ ] The SI parts table, with a link to the file
+- [x] Fabrication (Experimental section)
+- [x] The SI parts table, with a link to the file
 - [ ] The abstract or the introduction (only if the answer to question 1 is "all eight")
 - [ ] Nowhere
 
@@ -122,7 +122,7 @@ with simple models of the stepper, solenoid and servos.
 
 **Who makes the refreshed render? Choose one.**
 
-- [ ] The #170 session, from its Onshape assembly
+- [x] The #170 session, from its Onshape assembly
 - [ ] Brandon and Ethan, from the same files
 - [ ] Nobody; a photograph replaces it (who takes it, in Notes)
 
@@ -139,8 +139,8 @@ would then show the split between AI and human work that the paper describes.
 **Choose any.** On #170 you noted that we should later ask for "an assembly GIF with
 the full bill of materials".
 
-- [ ] An exploded view with numbered bill-of-materials labels, in the SI
-- [ ] An animated assembly GIF in the repository README, linked from the SI
+- [x] An exploded view with numbered bill-of-materials labels, in the SI
+- [x] An animated assembly GIF in the repository README, linked from the SI
 - [ ] Neither, for this paper
 
 **Notes:**
@@ -159,8 +159,8 @@ their Fusion 360 links.
 
 - [x] The SI outline and parts table (current)
 - [ ] A step-by-step guide with photos in the repository (`hardware/BUILD.md`), linked from the SI
-- [ ] Turn the narrated #120 videos, or a new assembly video, into illustrated steps
-- [ ] Include the auger filling stand in the guide
+- [x] Turn a new assembly video into illustrated steps
+- [x] Include the auger filling stand in the guide
 
 **Notes:**
 
@@ -174,7 +174,7 @@ exported them as STEP files to `cad/full-assembly/components/fusion-step/`.
 - [ ] Merge #170 before submission, so the STEP and STL files the Data availability statement promises are on `main`
 - [x] STEP and STL files in the repository (current text; true once #170 is merged)
 - [x] Public Fusion 360 links in the SI parts table (current)
-- [ ] A public Onshape document of the assembly (Vertical Cloud Lab classroom), from #170
+- [x] public Onshape document of the assembly (Vertical Cloud Lab classroom), from #170
 
 **Notes:**
 
@@ -187,8 +187,8 @@ Smaller augers were asked for in #117 for the University of Utah glovebox trials
 older cap designs are being kept out, so that nobody, human or agent, picks up a
 superseded version.
 
-- [ ] List the filling stand in the SI parts table
-- [ ] Mention the smaller augers in one sentence (the reservoir can be sized to the sample)
+- [x] List the filling stand in the SI parts table
+- [x] Mention the smaller augers in one sentence (the reservoir can be sized to the sample)
 - [ ] Neither
 
 **Notes:**
@@ -208,10 +208,11 @@ alloy pipeline feeds dosed powder to an ultrasonic atomizer
 So this may mean the doser has now been used ahead of the atomizer. It may also be a
 transcription error.
 
-- [ ] Powder from the doser has gone into the ultrasonic atomizer; add one sentence (details in Notes)
+- [x] Powder from the doser has gone into the ultrasonic atomizer; add one sentence (details in Notes)
 - [ ] It meant the University of Utah glovebox use (the glovebox line in DECISIONS.md item 24)
 - [ ] Something else (Notes)
 - [x] Leave it out, for example because it was a transcription error (current)
+- [x] Also mention the use of it inside the glove box
 
 **Notes:**
 
@@ -238,8 +239,8 @@ weeks". The meeting also noted that the first version came out of a one- or two-
 hackathon with two other people. DECISIONS.md item 21 asks about acknowledging Devora
 Najjar, who committed to the repository on its first day (23 April 2026).
 
-- [ ] Say the project began at a hackathon (event and date in Notes)
-- [ ] Acknowledge the two hackathon collaborators (names in Notes)
+- [x] Say the project began at a hackathon (event and date in Notes)
+- [x] Acknowledge the two hackathon collaborators (names in Notes)
 - [ ] Add "by the same team" to the design-history sentence
 - [ ] None of these
 
@@ -255,9 +256,10 @@ Najjar, who committed to the repository on its first day (23 April 2026).
   working in Onshape. #170 is building the doser assembly through the Onshape API in
   the same way.
 
-- [ ] Give the months each tool was used, and say the comparison is a snapshot
+- [x] Give the months each tool was used, and say the comparison is a snapshot
 - [ ] Add one outlook sentence: agents can now drive full CAD packages through their APIs, not only write CAD code
 - [ ] Neither
+- [ ] mention that we're noticing that the use of onshape with the onshape API is one of the most successful, but that improvements are being seen throughout all handling of these kinds of tasks. Can also cite text-to-cad as one of the promising newer examples
 
 **Which tool gained agent features?** (Notes)
 
@@ -274,9 +276,9 @@ raw Tactiq export. It includes a phone call and some personal conversation. The
 corrected transcript in this folder leaves those out. Deleting the raw file would not
 remove it from the git history.
 
-- [x] Leave it where it is (current)
+- [ ] Leave it where it is (current)
 - [ ] Move it into this folder
-- [ ] Delete it, keeping only the corrected transcript
+- [x] Delete it, keeping only the corrected transcript
 
 **Notes:**
 
