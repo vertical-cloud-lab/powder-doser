@@ -28,6 +28,7 @@ Gage Erickson, and Sterling G. Baird}
 \maketitle
 
 \section{Bill of materials}
+\label{sec:bom}
 
 Table~\ref{tbl:bom} lists the parts for one channel, plus the items a platform
 needs only once whatever its number of channels. Prices are single-unit US
@@ -71,6 +72,7 @@ Headers and wiring & --- & 10 & generic \\
 \end{table}
 
 \section{Construction guide}
+\label{sec:build}
 
 Table~\ref{tbl:parts} lists the printed parts of the current doser and where to
 download each one. Fig.~\ref{fgr:exploded} shows every part of the mechanical
@@ -181,6 +183,7 @@ it is one workable order rather than a record of how the test rig was built.}
 \clearpage
 
 \section{Auger and outlet geometry}
+\label{sec:auger}
 
 Fig.~\ref{fgr:nozzles} shows the AI-modelled geared auger and its four
 printed outlet variants, made early in the project. The auger used in the
@@ -206,6 +209,7 @@ has 44 teeth rather than 48.}
 \end{figure}
 
 \section{Bench noise}
+\label{sec:bench}
 
 Protocol~A takes eight balance readings with nothing moving at the start of
 every run. Their spread sets the smallest change that run can resolve
@@ -224,6 +228,7 @@ floor. The dashed line is the controller's $\pm$5~mg stopping band.}
 \end{figure}
 
 \section{Closed-loop dose record}
+\label{sec:doses}
 
 Table~\ref{tbl:doses} summarizes every valid closed-loop dose by powder and
 target mass. A dose is valid when its run passed quality screening, the dose
@@ -237,6 +242,7 @@ in the per-dose file.
 \normalsize
 
 \section{Run inventory}
+\label{sec:runs}
 
 Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
 runs that were aborted, postponed, or excluded, so that each number in the main
@@ -254,6 +260,7 @@ once, in \texttt{paper/figures/make\_data\_figures.py}.
 \normalsize
 
 \section{AI usage log}
+\label{sec:ailog}
 
 In line with \textit{Digital Discovery}'s guidance on the use of LLMs, all AI
 interactions are preserved publicly in the repository:
