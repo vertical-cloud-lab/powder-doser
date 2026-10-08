@@ -227,6 +227,54 @@ floor. The dashed line is the controller's $\pm$5~mg stopping band.}
 \label{fgr:bench}
 \end{figure}
 
+\subsection*{Noise after actuation}
+
+The controller acts on readings taken 1.5~s after it moves, so we also measured
+the noise of those readings (Fig.~\ref{fgr:noiseact}a). For each run, we took
+the robust standard deviation (1.4826 times the median absolute deviation) of
+the change between consecutive tap-phase readings. Tapping adds only a few
+milligrams per cycle and the cup cannot lose mass, so on the noisier runs this
+scatter is balance noise. On quiet runs it is an upper bound, because it also
+contains the powder that each tap delivered. The noise after actuation was at
+most 0.9~mg in all six first-round runs with a tap phase, but 5--19~mg in five
+of the ten second-round runs with small doses. On those same runs, the first
+reading of each dose, taken at rest, scattered by at most 0.4~mg, so the
+stability check made before each set of doses could not detect this noise. On
+the noisy runs, lowering the tube to horizontal alone shifted the reading by a
+median of 5--16~mg, which suggests that the doser's own motion disturbed the
+balance.
+
+Table~\ref{tbl:noiseact} compares each small dose's margin to its acceptance
+limit with the noise of its own run. Of the 14 doses of 50~mg that finished
+within the limit, only one lies more than twice its run's noise inside it, and
+12 lie within one noise width of the limit. Of the 14 that missed, 12 lie more
+than twice the noise outside it. At 200~mg, 6 of the 18 passes and 10 of the 12
+failures are robust in the same sense. The failures are therefore real, while
+most 50~mg passes cannot be told apart from noise. The controller also stops at
+the first reading inside its band, so on noisy runs the recorded masses lean
+high. All small doses come from the second round, in one fume hood with
+bracketed readings, so this comparison cannot be split by round or location.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS_noise_after_actuation}
+\caption{Balance noise after actuation and the pass/fail calls of small doses.
+(a) Filled markers: noise after actuation for every run with a closed-loop tap
+phase, the robust standard deviation of the change between consecutive
+tap-phase readings, each taken 1.5~s after two solenoid taps with the tube
+horizontal. Open markers apply the same statistic at rest, to the first reading
+of each dose minus its tare reading. Fine silicon and barium chloride never
+reached the tap phase, so their values come from fine-phase steps that
+delivered nothing. Values below 0.1~mg are drawn at 0.1~mg, and \dag\ marks runs
+excluded from the dose analysis. Above the dashed lines, no 50~mg or 200~mg dose
+can be a robust pass. (b, c) Error of each valid 50 and 200~mg dose against the
+noise of its run (named along the top). Light and dark grey zones lie within two
+and one times the noise of a limit. Markers as in Fig.~5 of the main text.}
+\label{fgr:noiseact}
+\end{figure}
+
+\input{figures/data/post_actuation_noise_table}
+
 \section{Closed-loop dose record}
 \label{sec:doses}
 
