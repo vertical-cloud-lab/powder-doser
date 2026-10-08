@@ -10,6 +10,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage[super,sort&compress,comma]{natbib}
 \usepackage{hyperref}
 \usepackage{mathptmx}
 
@@ -187,16 +188,21 @@ it is one workable order rather than a record of how the test rig was built.}
 
 Fig.~\ref{fgr:nozzles} shows the AI-modelled geared auger and its four
 printed outlet variants, made early in the project. The auger used in the
-tests is the team's later Fusion~360 part, shown in section in Fig.~1c of the
-main text; like the Type~4 variant, it ends in a tapered outlet with a 3~mm exit
-hole.
+tests is the team's later Fusion~360 part, shown as a cut-away in Fig.~1c of the
+main text. Like the Type~4 variant, it ends in a tapered outlet with a 3~mm exit
+hole. Table~\ref{tbl:augercompare} compares it feature by feature with the first
+AI-modelled geared auger. In June 2026 the coding agent also modelled, at our
+request, a threaded storage version with a screw-on cap and the flight confined
+to the outlet third. The tested auger follows that design, so the team's own
+changes were the gear pair, a uniform flight at a slightly longer pitch, and the
+cap thread and size.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/figS1_nozzles}
 \caption{(a) Cross-section of the AI-modelled geared auger: the 8~mm central
-core, the single-start helical flight (10~mm pitch, 2~mm thick) running the full
-length of the 21~mm bore, and the external gear band. (b--e) Cross-sections of
+core, the single-start helical flight (10~mm pitch) running the full length of
+the 21~mm bore, and the external gear band. (b--e) Cross-sections of
 the four outlet variants (Types~1--4), which differ in exit constriction and
 chamfer. All are parametric OpenSCAD models (\texttt{cad/auger-geared/} in the
 repository) written by AI coding agents under human review; no conventional CAD
@@ -204,9 +210,11 @@ software was used to design them. The auger used in the tests is the team's
 later Fusion~360 part (main text, Fig.~1c). Its flight is 0.5~mm thick with a
 10.4~mm pitch and covers only the third of the tube nearest the outlet, the tube
 is filled through a screw-on cap rather than through loading slots, and its gear
-has 44 teeth rather than 48.}
+has 44 teeth rather than 48 (Table~\ref{tbl:augercompare}).}
 \label{fgr:nozzles}
 \end{figure}
+
+\input{figures/data/auger_comparison_table}
 
 \section{AI-assisted CAD workflow}
 \label{sec:aicad}
@@ -271,8 +279,10 @@ Table~\ref{tbl:designlog} summarizes the CAD entries of the design log. Of the
 were printed. The log records 41 defects. People reviewing renders, slicer
 previews, or CAD caught 30 of them, printing or bench tests caught 6, and the
 agent's own checks caught 4. Parts that did not fit their neighbours were the
-most common defect (19), followed by designs built around out-of-date inputs (7)
-and changes nobody had asked for (6).
+most common defect (19), followed by designs built around missing or
+out-of-date inputs (7) and changes nobody had asked for (6). All 41 were in
+AI-modelled entries. The log was compiled afterwards from the repository, so
+these counts are lower bounds.
 
 \input{figures/data/design_log_cad_table}
 
@@ -345,6 +355,21 @@ and one times the noise of a limit. Markers as in Fig.~5 of the main text.}
 
 \input{figures/data/post_actuation_noise_table}
 
+\section{Human tasks in the test campaign}
+\label{sec:operator}
+
+Table~\ref{tbl:operator} lists every task a person did in the test campaign,
+when it is needed, how often it happened, and what could automate it. Nobody
+acted between doses. Every run was started unattended, so the firmware's 137
+requests to empty the cup continued at once, and each dose was weighed from its
+own tare with earlier powder left in the cup. The human work fell between runs
+(filling, mounting, and positioning an auger, and emptying the cup) and on
+faults, most of which involved the balance or its surroundings. Each powder had
+its own printed auger, labelled by hand and stored filled, with the cap on and
+tape over the outlet. Counts taken from the issue threads are lower bounds.
+
+\input{figures/data/operator_tasks_table}
+
 \section{Closed-loop dose record}
 \label{sec:doses}
 
@@ -398,6 +423,55 @@ and (f) is from 4 August 2026.}
 \small
 \input{figures/data/dose_summary_table}
 \normalsize
+
+\section{Composition error from dosing error}
+\label{sec:comperror}
+
+The acceptance limits apply to each feedstock in a blend, and a feedstock built
+from several passing doses of 100~mg or more is also within $\pm$5\%. Let
+feedstock $f$ have mass $m_f$, relative mass error $\varepsilon_f$, and element
+mass fractions $c_{fk}$, and let $M_k$ be the atomic weight of element $k$. With
+$n_k=\sum_f m_f c_{fk}/M_k$ and $N=\sum_k n_k$, the mole fraction $x_k=n_k/N$
+changes to first order by
+\begin{equation}
+\delta x_k=\sum_f S_{kf}\,\varepsilon_f,\qquad
+S_{kf}=\frac{m_f}{N}\left(\frac{c_{fk}}{M_k}-x_k\sum_j\frac{c_{fj}}{M_j}\right).
+\label{eq:comperror}
+\end{equation}
+Mass fractions follow by setting every $M$ to one. For pure elements,
+$\delta x_i=x_i(\varepsilon_i-\sum_j x_j\varepsilon_j)$. If every error sits at a
+common limit $L$ with the least favourable signs, $|\delta x_i|=2x_i(1-x_i)L$.
+For an equimolar five-component blend ($x_i=0.2$, $L=5\%$), this is 1.6 atomic
+percent, or 1.65 without the linear approximation. If the errors are
+independent and uniform within the limits, the standard deviation is 0.52
+atomic percent.
+
+Table~\ref{tbl:comperror} applies Eq.~\ref{eq:comperror} to batches of 10, 100,
+and 500~g, the range planned for our alloy work. Batch size only decides which
+limit applies, so the dosing columns barely change with it. With uniform errors,
+each element of the equimolar blend stays within one atomic percent in 97\% of
+simulated blends. The measured errors of accepted doses give a standard
+deviation of 0.40 atomic percent, and 0.08 atomic percent for the three
+research-relevant powders. The aluminium-rich blends we plan to make, such as
+Al-5Mn-2Cr-2Zr-0.5Ti, stay near 0.4 atomic percent even in the worst case. The
+Al-24Si test blend behaves like the equimolar blend.
+
+The balance also records each delivered mass, so the composition actually dosed
+is known to within the balance uncertainty. For a 10~g batch, this is 0.002
+atomic percent at 0.1~mg and 0.08 atomic percent at 5~mg. A dose that misses its
+target can then be corrected, by re-targeting later feedstocks to the recorded
+masses or topping up earlier ones. Feedstock chemistry adds an error of similar
+size: supplier ranges for the silicon and AlSi10Mg powders put the 100~g
+Al-24Si blend anywhere from 23.6 to 24.8~wt\% Si. Processing can add far more,
+and directed energy deposition from elemental powders has shifted compositions
+by 5--10 atomic percent.\cite{Moorehead2020Throughput,Chen2020Elemental} The
+dosing limits are therefore suited to screening compositions. They do not by
+themselves fix the composition of an atomized or printed alloy, which still has
+to be measured.
+
+\input{figures/data/composition_error_table}
+
+\clearpage
 
 \section{Run inventory}
 \label{sec:runs}
@@ -464,5 +538,9 @@ rebased onto another branch are counted once. Counts are from the public
 repository history (\texttt{paper/figures/data/build\_ai\_usage.py}).}
 \label{fgr:aiusage}
 \end{figure}
+
+\renewcommand{\refname}{References}
+\bibliographystyle{rsc}
+\bibliography{references}
 
 \end{document}

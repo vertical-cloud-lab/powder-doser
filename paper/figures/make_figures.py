@@ -5,8 +5,8 @@ Real CAD renders and photographs are pulled from paper/figures/assets/
 (extracted from the design branches of this repository; the as-built photo
 comes from issue #165, and the current-design annotated render, the exploded
 view and the build-step stills from PR #170).
-Fig. 1c is drawn from assets/auger_section.json, an axial cut through the
-tested Fusion 360 auger and cap made by data/build_auger_section.py.  The
+Fig. 1c is assets/auger_cutaway.png, a shaded 3-D cut-away of the tested
+Fusion 360 auger and cap rendered by data/render_auger_cutaway.py.  The
 measured-data figures (Figs. 3-5) are drawn by make_data_figures.py.
 
 Usage:  python3 make_figures.py        (writes PDFs next to this script,
@@ -171,63 +171,59 @@ def tilt_diagram(ax) -> None:
     ax.set_axis_off()
 
 
-def auger_section(ax) -> None:
-    """Fig. 1c: axial cut through the tested auger and its screw-on cap.
+def auger_cutaway(ax) -> None:
+    """Fig. 1c: shaded 3-D cut-away of the tested auger and its screw-on cap.
 
-    Drawn from assets/auger_section.json (data/build_auger_section.py), i.e.
-    the Fusion 360 parts that ran every test, with the outlet at the bottom
-    and the cup on the balance below it.  Units are mm.
+    The render (assets/auger_cutaway.png, made by
+    data/render_auger_cutaway.py) shows the Fusion 360 parts that ran every
+    test, cut in half through the tube axis and drawn upright with the
+    outlet at the bottom.  The PNG's "anchors" text chunk gives the image
+    positions of the labelled features and the projection from the part
+    frame (mm; outlet at z = 0, cut face y = 0) to image pixels, so the
+    leader and dimension lines follow the render.  Axes units are pixels.
     """
-    sec = json.loads((ASSETS / "auger_section.json").read_text())
-    dims = sec["dimensions"]
-    for key, fc in (("auger", "#d4ad62"), ("cap", "#5b7fbf")):
-        for poly in sec[key]:
-            ext = np.asarray(poly["exterior"])
-            path = [ext] + [np.asarray(i) for i in poly["interiors"]]
-            verts = np.concatenate(path)
-            codes = np.concatenate([
-                [matplotlib.path.Path.MOVETO]
-                + [matplotlib.path.Path.LINETO] * (len(p) - 2)
-                + [matplotlib.path.Path.CLOSEPOLY] for p in path])
-            ax.add_patch(patches.PathPatch(matplotlib.path.Path(verts, codes),
-                                           fc=fc, ec="0.25", lw=0.25,
-                                           zorder=3))
-    # powder in the reservoir and in the flight, falling to the cup
-    rng = np.random.default_rng(3)
-    px = rng.uniform(-9.8, 9.8, 900)
-    pz = rng.uniform(12, 150, 900)
-    keep = (pz > 84) | (np.abs(px) > 4.6)       # not inside the core
-    ax.plot(px[keep], pz[keep], ".", ms=0.6, color="#8a6a2a", alpha=0.35,
-            zorder=2)
-    for z in np.linspace(-6, -36, 6):
-        ax.plot(rng.uniform(-0.6, 0.6), z, ".", ms=1.6, color="#8a6a2a",
-                zorder=2)
-    ax.add_patch(patches.Polygon([(-16, -40), (16, -40), (12, -58),
-                                  (-12, -58)], closed=True, fc="#fbf3df",
-                                 ec="0.3", lw=0.6))
-    ax.add_patch(patches.Rectangle((-26, -64), 52, 6, fc="#dfe6ef", ec="0.3",
-                                   lw=0.6))
-    pitch = dims["flight_pitch_mm"]
-    callouts = [
-        ("screw-on cap\n(fill opening)", (13.5, 240), (30, 246)),
-        ("reservoir: plain tube,\nØ 25 mm outside,\nØ 21 mm bore", (11.5, 160),
-         (30, 168)),
-        ("44-tooth gear\n(driven by stepper)", (23, 83), (30, 103)),
-        (f"single-start flight,\n{pitch:.1f} mm pitch,\n"
-         "on Ø 8 mm core", (8.5, 42), (30, 52)),
-        ("tapered outlet", (6, 4), (30, 8)),
-        ("cup on balance", (15, -48), (30, -46)),
+    with Image.open(ASSETS / "auger_cutaway.png") as im:
+        meta = json.loads(im.text["anchors"])
+        img = np.asarray(im.convert("RGBA"))
+    anchor = meta["anchors"]
+    A = np.asarray(meta["projection"]["A"])
+    b = np.asarray(meta["projection"]["b"])
+
+    def px(x: float, z: float) -> np.ndarray:      # point on the cut face
+        return A @ (x, 0.0, z) + b
+
+    s = float(np.hypot(*A[:, 2]))                  # px per mm along the axis
+    ax.imshow(img, zorder=1)
+    xt = px(0, 0)[0] + 32 * s                      # label column
+    callouts = [                                   # text, anchor, label height
+        ("screw-on cap", "cap", 254),
+        ("threaded fill\nopening", "thread", 224),
+        ("plain reservoir:\nØ 25 mm tube,\nØ 21 mm bore", "reservoir", 165),
+        ("44-tooth gear\n(driven by stepper)", "gear", 104),
+        ("Ø 8 mm core", "core", 70),
+        ("single-start flight,\n10.4 mm pitch", "flight", 45),
+        ("tapered outlet,\nØ 3 mm exit hole", "outlet", 10),
     ]
-    for text, (xt, yt), (xl, yl) in callouts:
-        ax.annotate(text, xy=(xt, yt), xytext=(xl, yl), fontsize=4.9,
-                    ha="left", va="center",
-                    arrowprops=dict(arrowstyle="-", lw=0.45, color="0.35"))
-    # 50 mm scale bar
-    ax.plot([-44, -44], [150, 200], color="0.2", lw=0.9)
-    ax.text(-47, 175, "50 mm", rotation=90, fontsize=4.8, ha="right",
-            va="center")
-    ax.set_xlim(-60, 92)
-    ax.set_ylim(-68, 262)
+    for text, key, z_label in callouts:
+        ax.annotate(text, xy=anchor[key], xytext=(xt, px(0, z_label)[1]),
+                    fontsize=4.9, ha="left", va="center", zorder=3,
+                    arrowprops=dict(arrowstyle="-", lw=0.45, color="0.3",
+                                    shrinkA=1.5, shrinkB=0))
+        ax.plot(*anchor[key], "o", ms=1.0, color="0.15", zorder=4)
+    # dimension lines in the cut plane: the whole tube and the flighted end
+    for z1, xd, text in ((250.0, -40.0, "250 mm"), (83.3, -28.0, "83 mm")):
+        p0, p1 = px(xd, 0.0), px(xd, z1)
+        ax.annotate("", xy=p1, xytext=p0,
+                    arrowprops=dict(arrowstyle="<|-|>", lw=0.5, color="0.2",
+                                    mutation_scale=4, shrinkA=0, shrinkB=0))
+        ax.text(*(0.5 * (p0 + p1) - (1.2 * s, 0)), text, rotation=90,
+                fontsize=4.8, ha="right", va="center")
+        for z in (0.0, z1):                        # extension lines
+            ax.plot(*np.c_[px(-12.5, z), px(xd - 2.5, z)], color="0.55",
+                    lw=0.3, zorder=0)
+    x0, y0 = px(0, 0)
+    ax.set_xlim(x0 - 68 * s, x0 + 100 * s)
+    ax.set_ylim(y0 + 10 * s, y0 - 292 * s)
     ax.set_aspect("equal")
     ax.set_axis_off()
 
@@ -252,11 +248,11 @@ def fig1() -> None:
     show(ax, "as_built_first_dispense.jpg", crop_white=False)
     panel_label(ax, "b")
 
-    # (c) axial cut through the tested auger and cap: the tube is its own
+    # (c) 3-D cut-away of the tested auger and cap: the tube is its own
     #     reservoir, filled through the capped end; the flight occupies only
     #     the outlet third, and the 44-tooth gear sits on the outside.
     ax = fig.add_subplot(bottom[0, 0])
-    auger_section(ax)
+    auger_cutaway(ax)
     panel_label(ax, "c")
 
     # (d) tilt range (0-45 deg) about the hinge just behind the outlet

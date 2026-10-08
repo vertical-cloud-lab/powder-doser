@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cut the tested auger and its screw-on cap along their axis for Fig. 1c.
+"""Cut the tested auger and its screw-on cap along their axis.
 
 The auger and cap that ran every test are Sam Charles's Fusion 360 parts
 ("Threaded Auger Final" and "Cap Final", shared as STL in the issue #117 zip
@@ -7,8 +7,12 @@ and committed under cad/full-assembly/components/fusion/ in PR #170).  This
 script slices both meshes with the plane through the tube axis, keeps the
 solid regions (even-odd fill of the section loops), and writes them to
 assets/auger_section.json together with the dimensions measured from the
-mesh.  make_figures.py draws Fig. 1c from that file, so the figure needs no
-CAD libraries.
+mesh.  Fig. 1c used to be drawn from that file; it is now the shaded 3-D
+cut-away made by render_auger_cutaway.py, which reuses _load() and
+CAP_SEAT_Z from here.  The cap polygons in the JSON are not phased to the
+tube's thread (render_auger_cutaway.py turns the cap 180 deg so the two
+threads interleave); the measured dimensions are unaffected, and
+build_auger_comparison.py checks them against its own measurements.
 
 Usage:
     python3 build_auger_section.py                      # read the STLs from PR #170's branch
