@@ -208,6 +208,76 @@ has 44 teeth rather than 48.}
 \label{fgr:nozzles}
 \end{figure}
 
+\section{AI-assisted CAD workflow}
+\label{sec:aicad}
+
+Fig.~\ref{fgr:workflow} shows how the AI-modelled parts were made. A team member
+opened a GitHub issue for one part, often with an annotated sketch
+(Fig.~\ref{fgr:workflow}a). The GitHub Copilot coding agent wrote the part as
+CadQuery or OpenSCAD code and opened a pull request. Scripts in its session
+rendered views, exported STL and STEP files, and checked that the part was one
+closed solid (pull request~\#53) that did not overlap its neighbours (pull
+request~\#66). We reviewed the renders and replied in the pull request, often
+with marked-up screenshots. Each reply started a new agent session, with a
+median length of 11~min. We printed accepted parts, fitted them, and tested them
+on the doser, and problems went back to the agent. Issue~\#34 summed up the loop
+as ``AI design $\rightarrow$ printing $\rightarrow$ testing $\rightarrow$ feedback
+$\rightarrow$ AI design''. From June 2026, some parts, including the final tap
+collar, were modelled instead by chatting with the Zookeeper agent in Zoo Design
+Studio.
+
+Each request set out how the part met its neighbours:
+\begin{itemize}
+\item mating parts and their files (the first auger for the bracket, pull
+request~\#47; the stepper motor of issue~\#24 for the pinion, issue~\#48);
+\item holes and fasteners (clamp screw and mounting holes, issue~\#46; M5 holes
+on a square, pull request~\#66);
+\item bores and clearances (the auger diameter ``with some tolerance'',
+issue~\#46);
+\item gear ratios and axes (2:1 servo gear, issue~\#65; hinge axis through the
+dosing point, issue~\#56);
+\item the face to print on (issue~\#46);
+\item features that must not change (the auger's internal screw, issues~\#48
+and \#67);
+\item checks to run first (no interference and no floating bodies, issue~\#65).
+\end{itemize}
+Material was rarely stated, and all parts were printed in PLA.
+
+We wrote no formal acceptance criteria but applied four in practice. The agent's
+checks had to pass. A team member reviewed the renders and approved a print
+(``We'll print and test this version'', pull request~\#68). The printed part had
+to fit its neighbours and work (issue~\#46, pull request~\#49). Finally, we
+stopped asking for changes and froze the geometry. The type-4 auger, for
+example, became the main design after a bench test (issue~\#48). Because each
+request risked changing features that were already right, parts often stopped
+at ``good enough'' (discussion~\#39).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_workflow}
+\caption{AI-assisted CAD workflow. (a) Sketch of the auger bracket that opened
+issue~\#46 (14 May 2026), the first part-by-part request. It gives the 2~mm
+clamp slot, the 10~mm thickness, the bore (auger diameter plus clearance), the
+face to print on, and a smooth collar-to-plate transition. The GitHub Copilot
+coding agent modelled it in CadQuery (pull request~\#47), and the same sketch
+was posted for the Zoo and CADSmith trials (issues~\#52 and \#54). (b) The loop
+used for each part, April to June 2026. Orange boxes are team steps and blue
+boxes AI steps. Each Zoo Design Studio round took about an hour.}
+\label{fgr:workflow}
+\end{figure}
+
+Table~\ref{tbl:designlog} summarizes the CAD entries of the design log. Of the
+76 entries that made or changed a part model, the coding agent wrote 72, and 16
+were printed. The log records 41 defects. People reviewing renders, slicer
+previews, or CAD caught 30 of them, printing or bench tests caught 6, and the
+agent's own checks caught 4. Parts that did not fit their neighbours were the
+most common defect (19), followed by designs built around out-of-date inputs (7)
+and changes nobody had asked for (6).
+
+\input{figures/data/design_log_cad_table}
+
+\clearpage
+
 \section{Bench noise}
 \label{sec:bench}
 
@@ -354,10 +424,11 @@ In line with \textit{Digital Discovery}'s guidance on the use of LLMs, all AI
 interactions are preserved publicly in the repository:
 
 \begin{itemize}
-\item \textbf{CAD and code generation:} every coding-agent session (GitHub
-Copilot coding agent and Claude-family models, 2026) is recorded as a pull
-request containing the prompt (issue text and review comments), the generated
-CAD code, rendered views, and the human review thread.
+\item \textbf{CAD and code generation:} every coding-agent session is recorded
+as a pull request containing the prompt (issue text and review comments), the
+generated CAD code, rendered views, and the human review thread.
+Table~\ref{tbl:aitools} lists each AI tool, the months it was used, and the
+models the records name.
 \item \textbf{Design reviews and literature queries:} Edison Scientific query
 scripts, task identifiers, raw answers, and extracted references are archived
 with the corresponding branches; the consolidated bibliography, with the
@@ -372,12 +443,14 @@ figure, and the AI-drafted revisions of this manuscript, are in
 behaviour, good and bad, is discussion~\#39 in the repository.
 \end{itemize}
 
+\input{figures/data/ai_tools_table}
+
 Fig.~\ref{fgr:aiusage} shows how agent use was spread over the project. Team
 members addressed the two coding agents 754 times between April and September
 2026, and the agents authored 789 of the 877 commits (90\%). The counts cover
-all work in the repository (CAD, firmware, data analysis, and writing), not only
-the design of the parts. The team moved from the GitHub Copilot coding agent to
-Claude at the start of July 2026.
+all work in the repository: CAD, firmware, data analysis, and writing. The team
+moved from the GitHub Copilot coding agent to Claude Code at the end of June
+2026.
 
 \begin{figure}[h]
 \centering
