@@ -382,3 +382,11 @@
 | `Zhao2025Mage` | Mage: a multi-agent engine for automated rtl code generation | origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/llm_hardware_hdl_codegen.answer.md<br>origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/llm_hardware_hdl_codegen.references.md | needs-manual-verification | DOI resolves, but Crossref lookup failed: Crossref JSON parse failed: Expecting value: line 1 column 1 (char 0) |
 | `Zhong2024Llm4eda` | Llm4eda: emerging progress in large language models for electronic design automation | origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/gen_eda_landscape.answer.md<br>origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/gen_eda_landscape.references.md<br>origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/llm_hardware_hdl_codegen.answer.md (+1 more) | needs-manual-verification | DOI resolves, but Crossref lookup failed: Crossref JSON parse failed: Expecting value: line 1 column 1 (char 0) |
 | `ZoundPcbschemagen` | Pcbschemagen: constraint-guided schematic design via llm for printed circuit boards (pcb) | origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/code_based_eda_frameworks.answer.md<br>origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/code_based_eda_frameworks.references.md<br>origin/copilot/literature-search-generative-pcb-design:paper/background/edison_artifacts/eda_datasets_benchmarks.answer.md (+3 more) | needs-manual-verification | DOI resolves, but Crossref lookup failed: Crossref JSON parse failed: Expecting value: line 1 column 1 (char 0) |
+
+## Added after the generated report
+
+| Key | Title | Source | Status | Note |
+|---|---|---|---|---|
+| `Chen2020Elemental` | A Review on Metallic Alloys Fabrication Using Elemental Powder Blends by Laser Powder Directed Energy Deposition Process | Edison literature task 9c4dc52d (`paper/composition_error/`), 8 Oct 2026 | verified-DOI | 10.3390/ma13163562 resolves; Crossref metadata found |
+| `Charles2026Release` | Zenodo release of this repository | placeholder | needs-DOI | Archive a tagged release at submission and add its DOI (DECISIONS.md item 22) |
+

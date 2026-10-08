@@ -17,14 +17,30 @@ for questions raised at the 1 Oct meeting. Where the two overlap, the question h
 just points there, so nothing has to be answered twice. Items 1, 2, 4 and section E
 matter most.
 
-> **Status, 8 October 2026.** This file was not changed in the 8 October round, so every
-> pre-ticked default stands and nothing unticked was implemented, with two exceptions
-> that came from elsewhere: item 5 (CADSmith) now follows Sterling's 2 October PR comment
-> ("only able to generate very simplified kind of blocky geometries"), and item 27's
-> tool months were added because MEETING-DECISIONS.md item 13 asked for them. Item 8 is
-> answered by the evidence: the Fig. 1b frame is from the 24 July session in the
-> University of Utah glove box (#117), and the caption now says so. Still open: items 1
-> (one auger per powder?), 4, 20–23 and 25–27.
+> **Status, 8 October 2026 (second round).** Sterling's answers (commit `ccadc2b`) are
+> implemented in `af8851c`–the final commit of that day. Item by item:
+> **1** one auger per powder, in Experimental (confirmed by #134 and #116); the text now
+> also says each auger was filled once and stored loaded. **2** unchanged; SI Table
+> "augercompare" sets the tested auger against the AI-modelled one. **4** still open.
+> **9** Fig. 1c is a shaded 3-D cut-away (`render_auger_cutaway.py`). **12** "a tube with
+> a spiral inside". **20** Sam's commit address (samuelwcharles@gmail.com); Sterling at BYU
+> Mechanical Engineering, taken from his GitHub profile because the Notes were empty, so
+> all six authors share one affiliation. **21** Devora Najjar (now also credited with the
+> first auger model), plus Ron Darling and Nasa Sinnott-Armstrong from the PR comments,
+> and Philip Lampkin and Jacob Lessard for the glove-box trial ("Jacob" in the 24 July
+> notes is taken to be the host lab's PI; confirm). **22** Data availability cites a
+> Zenodo release (`Charles2026Release`, DOI to be added at submission); PR #74 is not
+> merged, so the release must include `DESIGN-LOG.md` from its branch. **23** PR #150's
+> files now use 0/22.5/45° (`7d1acc9`); its description note is updated and it stays open.
+> **24** new §"A first trial in a glove box" (qualitative). **25** all six analyses are in
+> the SI. The dose accounting found two 50 mg doses wrongly excluded as "no actuation"
+> (the logs show a short bulk spin), so 50 mg is now 14 of 30 within the limit and 99
+> doses are valid. The composition claim is now derived: 0.5 at% (SD) and 1.6 at% (worst
+> case) for an equimolar five-component blend, about 0.4 at% worst case for the planned
+> Al-rich blends. **26** stated as limitations. **27** all four done (SI workflow page,
+> human tasks table, the 1–2 vs 7–8 numbers dropped, months and models per tool).
+> **F** `cringe-filter` lint is clean apart from overall length; paper-context score
+> +231 → +119 for main.tex. Its paper instructions are in `.github/instructions/`.
 
 Sources: Sam's [part-1 video notes](NOTES-part1.md), the 1 Oct Sam/Sterling meeting
 ([corrected transcript](../meeting_2026-10-01/TRANSCRIPT-corrected.md)),
