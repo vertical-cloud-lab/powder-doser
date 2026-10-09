@@ -288,18 +288,16 @@ def fetch() -> str:
     else:
         print("(no answer body yet)")
 
-    # Any data-storage files attached to the trajectory (provenance API).
-    # Literature jobs usually attach none, but keep the listing for the record.
+    # Data-storage files attached to the trajectory (provenance API). For this
+    # literature job the only entry is ``pqa:docs:<task_id>``, a ~76 MB pickle
+    # of the PaperQA document index (chunks of the retrieved papers). Only the
+    # listing is committed: the index redistributes third-party paper text and
+    # pickles are unsafe to load. Retrieve it on demand with
+    # ``client.fetch_data_from_storage(<data_storage id from the listing>)``.
     files = client.list_files(trajectory_id=task_id)
     (ARTIFACT_DIR / f"{KEY}.files.json").write_text(
         json.dumps(files, indent=2, default=str) + "\n"
     )
-    for entry in files.get("data", []):
-        storage = entry.get("data_storage") or {}
-        storage_id = storage.get("id") or entry.get("data_storage_id")
-        if storage_id:
-            out = client.fetch_data_from_storage(storage_id)
-            print(f"fetched trajectory file {storage_id}: {out}")
     return status
 
 

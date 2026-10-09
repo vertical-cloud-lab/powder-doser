@@ -15,6 +15,14 @@ exactly what the model said before any of it was paraphrased into the
 | _gantry-only analysis iter 1 of 3_ | `d6e32c46-2774-4477-a060-9993ef51ab10` | `job-futurehouse-data-analysis-crow-high` | submitted, polling |
 | `literature-high-triboelectric-charging-models.md` (issue #158; raw files in `triboelectric_artifacts/`) | `7ecb8d00-cfea-4c5c-944b-e6c7ed19a29f` | `job-futurehouse-paperqa3-high` | success |
 
+The triboelectric review's trajectory also has a PaperQA document index
+attached (`pqa:docs:7ecb8d00-…`, data-storage id
+`d8e2fd24-5d81-4b27-b9e0-c5e4d1e1f5c8`, a 76 MB pickle of retrieved paper
+chunks). It is listed in `triboelectric_artifacts/triboelectric_litreview.files.json`
+but deliberately not committed, because it redistributes third-party paper
+text in a public repository and pickles are unsafe to load. Fetch it on
+demand with `EdisonClient.fetch_data_from_storage("d8e2fd24-…")`.
+
 A previous generative-CAD literature query (`task_id`
 `524e7e92-a326-440a-b6fd-f6eb220d9019`) was sent to the **wrong endpoint**
 (`api.platform.futurehouse.org`) and ended up cancelled; it has been
