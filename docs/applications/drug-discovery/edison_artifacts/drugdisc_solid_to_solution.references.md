@@ -1,0 +1,63 @@
+1. (bhatt2019nextgenerationcompounddelivery pages 2-4): Snehal Bhatt, Sue Crimmin, Jeffrey Gross, Elizabeth Nixon, Maggie Truong, Michael Weglos, and Lorena Kallal. Next-generation compound delivery platforms to support miniaturized biology. SLAS Technology, 24:245-255, Jun 2019. URL: https://doi.org/10.1177/2472630318820017, doi:10.1177/2472630318820017. This article has 2 citations and is from a peer-reviewed journal.
+
+2. (lynch2024highthroughputscreeningto pages 3-4): Caitlin Lynch, Srilatha Sakamuru, Masato Ooka, Ruili Huang, Carleen Klumpp-Thomas, Paul Shinn, David Gerhold, Anna Rossoshek, Sam Michael, Warren Casey, Michael F. Santillo, Suzanne Fitzpatrick, Russell S. Thomas, Anton Simeonov, and Menghang Xia. High-throughput screening to advance in vitro toxicology: accomplishments, challenges, and future directions. Annual Review of Pharmacology and Toxicology, 64:191-209, Jan 2024. URL: https://doi.org/10.1146/annurev-pharmtox-112122-104310, doi:10.1146/annurev-pharmtox-112122-104310. This article has 88 citations and is from a highest quality peer-reviewed journal.
+
+3. (roberts2016implementationandchallenges pages 2-3): Karen Roberts, Rowena Callis, Tim Ikeda, Amalia Paunovic, Carly Simpson, Eric Tang, Nick Turton, and Graeme Walker. Implementation and challenges of direct acoustic dosing into cell-based assays. Journal of Laboratory Automation, 21:76-89, Feb 2016. URL: https://doi.org/10.1177/2211068215595212, doi:10.1177/2211068215595212. This article has 23 citations.
+
+4. (richard2025analyticalqualityevaluation pages 3-4): Ann M. Richard, Dingyin Tao, Christopher A. LeClair, William Leister, Kirill V. Tretyakov, Edward White, Ken C. Lewis, Andrea Sefler, Paul Shinn, Bradley J. Collins, Dac-Trung Nguyen, Lin Ye, Tongan Zhao, Tuan Xu, Antony J. Williams, Suramya Waidyanatha, Russell S. Thomas, Raymond Tice, Anton Simeonov, and Ruili Huang. Analytical quality evaluation of the tox21 compound library. Chemical Research in Toxicology, 38:15-41, Dec 2025. URL: https://doi.org/10.1021/acs.chemrestox.4c00330, doi:10.1021/acs.chemrestox.4c00330. This article has 21 citations and is from a domain leading peer-reviewed journal.
+
+5. (tice2013improvingthehuman pages 1-2): Raymond R. Tice, Christopher P. Austin, Robert J. Kavlock, and John R. Bucher. Improving the human hazard characterization of chemicals: a tox21 update. Environmental Health Perspectives, 121:756-765, Jul 2013. URL: https://doi.org/10.1289/ehp.1205784, doi:10.1289/ehp.1205784. This article has 747 citations and is from a highest quality peer-reviewed journal.
+
+6. (sou2018automatedassaysfor pages 3-5): Tomás Sou and Christel A. S. Bergström. Automated assays for thermodynamic (equilibrium) solubility determination. Drug discovery today. Technologies, 27:11-19, Jul 2018. URL: https://doi.org/10.1016/j.ddtec.2018.04.004, doi:10.1016/j.ddtec.2018.04.004. This article has 98 citations.
+
+7. (gomezsanchez2020methoddevelopmentand pages 1-2): Ruben Gomez-Sanchez, Stephen Besley, Zoe Zeliku, and Robert J. Young. Method development and application of an accelerated solution stability screen for drug discovery. SLAS Discovery, 25:1191-1196, Dec 2020. URL: https://doi.org/10.1177/2472555220931795, doi:10.1177/2472555220931795. This article has 5 citations and is from a peer-reviewed journal.
+
+8. (dawes2016compoundtransferby pages 2-3): Timothy D. Dawes, Rebecca Turincio, Steven W. Jones, Richard A. Rodriguez, Dhireshan Gadiagellan, Peter Thana, Kevin R. Clark, Amy E. Gustafson, Linda Orren, Marya Liimatta, Daniel P. Gross, Till Maurer, and Maureen H. Beresini. Compound transfer by acoustic droplet ejection promotes quality and efficiency in ultra-high-throughput screening campaigns. Journal of Laboratory Automation, 21:64-75, Feb 2016. URL: https://doi.org/10.1177/2211068215590588, doi:10.1177/2211068215590588. This article has 31 citations.
+
+9. (butler2014naturalproductlibraries pages 3-4): Mark Butler, Frank Fontaine, and Matthew Cooper. Natural product libraries: assembly, maintenance, and screening. Planta Medica, 80:1161-1170, Dec 2014. URL: https://doi.org/10.1055/s-0033-1360109, doi:10.1055/s-0033-1360109. This article has 64 citations and is from a peer-reviewed journal.
+
+10. (kulesskiy2016precisioncancermedicine pages 2-3): Evgeny Kulesskiy, Jani Saarela, Laura Turunen, and Krister Wennerberg. Precision cancer medicine in the acoustic dispensing era. Journal of Laboratory Automation, 21:27-36, Feb 2016. URL: https://doi.org/10.1177/2211068215618869, doi:10.1177/2211068215618869. This article has 36 citations.
+
+11. (roberts2016implementationandchallenges pages 7-9): Karen Roberts, Rowena Callis, Tim Ikeda, Amalia Paunovic, Carly Simpson, Eric Tang, Nick Turton, and Graeme Walker. Implementation and challenges of direct acoustic dosing into cell-based assays. Journal of Laboratory Automation, 21:76-89, Feb 2016. URL: https://doi.org/10.1177/2211068215595212, doi:10.1177/2211068215595212. This article has 23 citations.
+
+12. (kulesskiy2016precisioncancermedicine pages 3-7): Evgeny Kulesskiy, Jani Saarela, Laura Turunen, and Krister Wennerberg. Precision cancer medicine in the acoustic dispensing era. Journal of Laboratory Automation, 21:27-36, Feb 2016. URL: https://doi.org/10.1177/2211068215618869, doi:10.1177/2211068215618869. This article has 36 citations.
+
+13. (sreeramulu2020nmrqualitycontrol pages 1-2): Sridhar Sreeramulu, Christian Richter, Till Kuehn, Kamal Azzaoui, Marcel Jules José Blommers, Rebecca Del Conte, Marco Fragai, Nils Trieloff, Peter Schmieder, Marc Nazaré, Edgar Specker, Vladimir Ivanov, Hartmut Oschkinat, Lucia Banci, and Harald Schwalbe. Nmr quality control of fragment libraries for screening. Journal of Biomolecular Nmr, 74:555-563, Jun 2020. URL: https://doi.org/10.1007/s10858-020-00327-9, doi:10.1007/s10858-020-00327-9. This article has 32 citations and is from a peer-reviewed journal.
+
+14. (gillespie2013theprecipitationof pages 10-15): Cheska Gillespie. The precipitation of candidate drugs on mixing dmso stock solutions with aqueous buffers. Dissertation, Jan 2013. URL: https://doi.org/10.48730/4vj6-z540, doi:10.48730/4vj6-z540. This article has 0 citations.
+
+15. (eribol2016screeningapplicationsin pages 7-9): P. Eribol, A. K. Uguz, and K. O. Ulgen. Screening applications in drug discovery based on microfluidic technology. Biomicrofluidics, 10 1:011502, Jan 2016. URL: https://doi.org/10.1063/1.4940886, doi:10.1063/1.4940886. This article has 62 citations and is from a peer-reviewed journal.
+
+16. (gillespie2013theprecipitationof pages 25-29): Cheska Gillespie. The precipitation of candidate drugs on mixing dmso stock solutions with aqueous buffers. Dissertation, Jan 2013. URL: https://doi.org/10.48730/4vj6-z540, doi:10.48730/4vj6-z540. This article has 0 citations.
+
+17. (sou2018automatedassaysfor pages 2-3): Tomás Sou and Christel A. S. Bergström. Automated assays for thermodynamic (equilibrium) solubility determination. Drug discovery today. Technologies, 27:11-19, Jul 2018. URL: https://doi.org/10.1016/j.ddtec.2018.04.004, doi:10.1016/j.ddtec.2018.04.004. This article has 98 citations.
+
+18. (gillespie2013theprecipitationof pages 70-76): Cheska Gillespie. The precipitation of candidate drugs on mixing dmso stock solutions with aqueous buffers. Dissertation, Jan 2013. URL: https://doi.org/10.48730/4vj6-z540, doi:10.48730/4vj6-z540. This article has 0 citations.
+
+19. (ladisic2023theeffectof pages 19-23): S Ladisic. The effect of sample composition acoustic droplet ejection of small molecules in dmso. Unknown journal, 2023.
+
+20. (gillespie2013theprecipitationof pages 32-35): Cheska Gillespie. The precipitation of candidate drugs on mixing dmso stock solutions with aqueous buffers. Dissertation, Jan 2013. URL: https://doi.org/10.48730/4vj6-z540, doi:10.48730/4vj6-z540. This article has 0 citations.
+
+21. (gillespie2013theprecipitationof pages 29-32): Cheska Gillespie. The precipitation of candidate drugs on mixing dmso stock solutions with aqueous buffers. Dissertation, Jan 2013. URL: https://doi.org/10.48730/4vj6-z540, doi:10.48730/4vj6-z540. This article has 0 citations.
+
+22. (jiang2023autonomousbiomimeticsolid pages 8-10): Ying Jiang, Hatem Fakhruldeen, Gabriella Pizzuto, Louis Longley, Ai He, Tianwei Dai, Rob Clowes, Nicola Rankin, and Andrew I. Cooper. Autonomous biomimetic solid dispensing using a dual-arm robotic manipulator. Digital Discovery, 2:1733-1744, Jan 2023. URL: https://doi.org/10.1039/d3dd00075c, doi:10.1039/d3dd00075c. This article has 70 citations and is from a peer-reviewed journal.
+
+23. (jiang2023autonomousbiomimeticsolid pages 7-8): Ying Jiang, Hatem Fakhruldeen, Gabriella Pizzuto, Louis Longley, Ai He, Tianwei Dai, Rob Clowes, Nicola Rankin, and Andrew I. Cooper. Autonomous biomimetic solid dispensing using a dual-arm robotic manipulator. Digital Discovery, 2:1733-1744, Jan 2023. URL: https://doi.org/10.1039/d3dd00075c, doi:10.1039/d3dd00075c. This article has 70 citations and is from a peer-reviewed journal.
+
+24. (jiang2023autonomousbiomimeticsolid pages 10-11): Ying Jiang, Hatem Fakhruldeen, Gabriella Pizzuto, Louis Longley, Ai He, Tianwei Dai, Rob Clowes, Nicola Rankin, and Andrew I. Cooper. Autonomous biomimetic solid dispensing using a dual-arm robotic manipulator. Digital Discovery, 2:1733-1744, Jan 2023. URL: https://doi.org/10.1039/d3dd00075c, doi:10.1039/d3dd00075c. This article has 70 citations and is from a peer-reviewed journal.
+
+25. (jiang2023autonomousbiomimeticsolid pages 1-2): Ying Jiang, Hatem Fakhruldeen, Gabriella Pizzuto, Louis Longley, Ai He, Tianwei Dai, Rob Clowes, Nicola Rankin, and Andrew I. Cooper. Autonomous biomimetic solid dispensing using a dual-arm robotic manipulator. Digital Discovery, 2:1733-1744, Jan 2023. URL: https://doi.org/10.1039/d3dd00075c, doi:10.1039/d3dd00075c. This article has 70 citations and is from a peer-reviewed journal.
+
+26. (tu2026sticktothe pages 1-2): Noah P. Tu and Ying Wang. Stick to the beads: supercharging medicinal chemistry and methodology development with chembeads. RSC Medicinal Chemistry, 17:52-64, Jan 2026. URL: https://doi.org/10.1039/d5md00827a, doi:10.1039/d5md00827a. This article has 3 citations and is from a peer-reviewed journal.
+
+27. (nsouli2025advancingorganicchemistry pages 11-11): Reem Nsouli, Gaurav Galiyan, and Laura K. G. Ackerman-Biegasiewicz. Advancing organic chemistry using high‐throughput experimentation. Angewandte Chemie International Edition, Sep 2025. URL: https://doi.org/10.1002/anie.202506588, doi:10.1002/anie.202506588. This article has 46 citations.
+
+28. (tu2026sticktothe pages 4-5): Noah P. Tu and Ying Wang. Stick to the beads: supercharging medicinal chemistry and methodology development with chembeads. RSC Medicinal Chemistry, 17:52-64, Jan 2026. URL: https://doi.org/10.1039/d5md00827a, doi:10.1039/d5md00827a. This article has 3 citations and is from a peer-reviewed journal.
+
+29. (jiang2023autonomousbiomimeticsolid pages 10-10): Ying Jiang, Hatem Fakhruldeen, Gabriella Pizzuto, Louis Longley, Ai He, Tianwei Dai, Rob Clowes, Nicola Rankin, and Andrew I. Cooper. Autonomous biomimetic solid dispensing using a dual-arm robotic manipulator. Digital Discovery, 2:1733-1744, Jan 2023. URL: https://doi.org/10.1039/d3dd00075c, doi:10.1039/d3dd00075c. This article has 70 citations and is from a peer-reviewed journal.
+
+30. (roberts2016implementationandchallenges pages 1-2): Karen Roberts, Rowena Callis, Tim Ikeda, Amalia Paunovic, Carly Simpson, Eric Tang, Nick Turton, and Graeme Walker. Implementation and challenges of direct acoustic dosing into cell-based assays. Journal of Laboratory Automation, 21:76-89, Feb 2016. URL: https://doi.org/10.1177/2211068215595212, doi:10.1177/2211068215595212. This article has 23 citations.
+
+31. (roberts2016implementationandchallenges pages 6-7): Karen Roberts, Rowena Callis, Tim Ikeda, Amalia Paunovic, Carly Simpson, Eric Tang, Nick Turton, and Graeme Walker. Implementation and challenges of direct acoustic dosing into cell-based assays. Journal of Laboratory Automation, 21:76-89, Feb 2016. URL: https://doi.org/10.1177/2211068215595212, doi:10.1177/2211068215595212. This article has 23 citations.
+
+32. (bhatt2019nextgenerationcompounddelivery pages 5-7): Snehal Bhatt, Sue Crimmin, Jeffrey Gross, Elizabeth Nixon, Maggie Truong, Michael Weglos, and Lorena Kallal. Next-generation compound delivery platforms to support miniaturized biology. SLAS Technology, 24:245-255, Jun 2019. URL: https://doi.org/10.1177/2472630318820017, doi:10.1177/2472630318820017. This article has 2 citations and is from a peer-reviewed journal.
