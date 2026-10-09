@@ -1,0 +1,22 @@
+{
+  "drugdisc_solid_to_solution": {
+    "task_id": "d7647710-ba7b-4df9-9f6c-f879f6e99403",
+    "job_name": "job-futurehouse-paperqa3-high",
+    "submitted_at": "2026-10-09T20:29:54.087650+00:00"
+  },
+  "drugdisc_solid_dispensing_tech": {
+    "task_id": "37670a26-862e-4c6e-b7ba-808aa0328cb3",
+    "job_name": "job-futurehouse-paperqa3-high",
+    "submitted_at": "2026-10-09T20:29:55.041102+00:00"
+  },
+  "drugdisc_applications": {
+    "task_id": "e2135dd8-d640-409f-9cff-0af1481ebc27",
+    "job_name": "job-futurehouse-paperqa3-high",
+    "submitted_at": "2026-10-09T20:29:55.779352+00:00"
+  },
+  "drugdisc_precedent": {
+    "task_id": "91b0f9aa-23d9-4f4d-95fc-0525f85d7704",
+    "job_name": "job-futurehouse-paperqa3-precedent",
+    "submitted_at": "2026-10-09T20:29:56.914439+00:00"
+  }
+}
