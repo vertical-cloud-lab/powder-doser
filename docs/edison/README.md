@@ -13,6 +13,7 @@ exactly what the model said before any of it was paraphrased into the
 | `analysis-v2-corrected-gondola.md` | `844f6123-36b7-4e61-a0f6-c2e357f804b0` | `job-futurehouse-data-analysis-crow-high` | success |
 | _generative-CAD lit-review (resubmitted)_ | `f5a27ed3-8530-4102-9e31-5af9bbe9b0e0` | `job-futurehouse-paperqa3-high` | submitted, polling |
 | _gantry-only analysis iter 1 of 3_ | `d6e32c46-2774-4477-a060-9993ef51ab10` | `job-futurehouse-data-analysis-crow-high` | submitted, polling |
+| `literature-high-triboelectric-charging-models.md` (issue #158) | `7ecb8d00-cfea-4c5c-944b-e6c7ed19a29f` | `job-futurehouse-paperqa3-high` | submitted, polling |
 
 A previous generative-CAD literature query (`task_id`
 `524e7e92-a326-440a-b6fd-f6eb220d9019`) was sent to the **wrong endpoint**
