@@ -1017,7 +1017,10 @@ document. The steps, from the laptop:
    `cmd` treat quotes differently, and `--validate-point` avoids the problem.
 
    Both commands run inside the powder's latest campaign. Add
-   `--resume <campaign_id>` to use another one.
+   `--resume <campaign_id>` to use another one. Once a margin campaign (§7) exists
+   for the powder, it is the latest one, and its labels (`bo-003`, `corner-09`) name
+   different doses, so validate a point of the first salt campaign with
+   `--resume salt-20260929T014732Z --validate-point bo-003`.
 
 4. **Compare the blocks.** `python scripts/opt_report.py data/opt/<campaign_id>`
    rewrites `report.md` with a *Validation blocks* table: one row per block with
