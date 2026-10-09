@@ -629,10 +629,216 @@ def test_frozen_set():
         shutil.rmtree(state, ignore_errors=True)
 
 
+def _trial_docs(cdir):
+    out = {}
+    for name in sorted(os.listdir(cdir)):
+        if name.startswith("trial_"):
+            with open(os.path.join(cdir, name)) as f:
+                doc = json.load(f)
+            out[doc["trial_uuid"]] = doc
+    return out
+
+
+class _Overshoot:
+    """The SimExecutor, with the listed dose attempts ending past the
+    band (status ``overshoot``, raw |error| small)."""
+
+    def __init__(self, inner, attempts):
+        self.inner = inner
+        self.attempts = 0
+        self.marked = set(attempts)
+
+    def dose(self, *args, **kw):
+        summary = self.inner.dose(*args, **kw)
+        if self.attempts in self.marked:
+            summary = dict(summary, status="overshoot", error_mg=4.0,
+                           abs_error_mg=4.0)
+        self.attempts += 1
+        return summary
+
+    def fetch(self, trial_uuid, campaign_id):
+        return self.inner.fetch(trial_uuid, campaign_id)
+
+
+def test_margin_campaign():
+    """Section 7: the three-stage-margin variant.  A warm start on a
+    (simulated) three-stage parent: its corners again at 0 mg, the
+    checks at the fitted tau, the parent's doses attached at 35 mg,
+    overshoots scored as failures, and a 9-knob profile that dose.py
+    pushes in full.  A cold start screens the 2^(9-4)_IV fraction."""
+    state = tempfile.mkdtemp(prefix="optmargin-")
+    try:
+        names = [n for n, _k, _t in oc.MARGIN_SEARCH_PARAMS]
+        cold = _quiet(ocamp.Runner, _args(
+            state, "--variant", "three-stage-margin", "--screen-only"))
+        doc = cold.campaign.doc
+        corners = [p for l, p in doc["screening_plan"]
+                   if l.startswith("corner-")]
+        bounds = {p["name"]: p.get("bounds") for p in doc["search_space"]}
+        check("no three-stage parent -> a cold 2^(9-4)_IV screen: 32 "
+              "corners, every factor balanced 16/16, + centers + baselines",
+              "-margin-" in doc["campaign_id"]
+              and doc["variant"] == oc.VARIANT_THREE_STAGE_MARGIN
+              and "warm_start" not in doc and len(corners) == 32
+              and len(doc["screening_plan"]) == 32 + 4 + 2
+              and [p["name"] for p in doc["search_space"]] == names
+              and bounds["cutoff_margin_g"] == [0.0, 0.035]
+              and all(sum(1 for c in corners if c[n] in
+                          (oc.CAT_ON, (bounds[n] or [0, 0])[1])) == 16
+                      for n in names)
+              and doc["scoring"] == {"overshoot": "penalized"})
+        shutil.rmtree(cold.campaign.dir)
+
+        if not HAVE_AX:
+            print("  (ax-platform not installed: warm-start checks "
+                  "skipped)")
+            return
+        parent = _runner(state, None, "--budget", "1")
+        _quiet(parent.run)
+        pv = _runner(state, None, "--validate-point", "center-00",
+                     "--replicates", "2", "--no-flash-log")
+        _quiet(pv.run)
+        pdoc = pv.campaign.doc
+        pid = pdoc["campaign_id"]
+        check("parent: a simulated three-stage campaign with a validated "
+              "point ({})".format(pdoc["status"]),
+              pdoc["last_profile"]["validated"] is True)
+
+        try:
+            _quiet(ocamp.Runner, _args(state, "--variant",
+                                       "three-stage-margin", "--frozen-set",
+                                       "tap_burst_above_g=0.01"))
+            refused = False
+        except SystemExit:
+            refused = True
+        check("--frozen-set refused on a warm start (the parent's "
+              "controller must run)", refused)
+
+        r = _runner(state, None, "--variant", "three-stage-margin",
+                    "--budget", "2")
+        doc = r.campaign.doc
+        pcorners = [(l, p) for l, p in pdoc["screening_plan"]
+                    if l.startswith("corner-")]
+        check("warm start from the parent: same frozen snapshot and "
+              "logging overrides, its tau carried over (no refit)",
+              doc["warm_start"]["campaign_id"] == pid
+              and doc["warm_start"]["cutoff_margin_g"] == 0.035
+              and all(doc["frozen_params"][k] == v
+                      for k, v in pdoc["frozen_params"].items())
+              and doc["frozen_overrides"] == pdoc["frozen_overrides"]
+              and doc["tau_afterflow"] == pdoc["tau_afterflow"])
+        check("screening = the parent's 16 corners, same labels, at 0 mg",
+              [(l, p) for l, p in doc["screening_plan"]]
+              == [(l, dict(p, cutoff_margin_g=0.0)) for l, p in pcorners]
+              and len(pcorners) == 16)
+        anchors = dict(doc["anchor_plan"])
+        check("checks: the parent's validated point at 35 mg twice, the "
+              "box center at 17.5 mg twice",
+              sorted(anchors) == ["center-00", "center-01",
+                                  "check-center-00-00",
+                                  "check-center-00-01"]
+              and anchors["check-center-00-00"]
+              == dict(pdoc["profiles"][0]["parameters"],
+                      cutoff_margin_g=0.035)
+              and anchors["center-00"]["cutoff_margin_g"] == 0.0175)
+        _quiet(r.run)
+        doc = r.campaign.doc
+        trials = _trial_docs(r.campaign.dir)
+        tau = pdoc["tau_afterflow"]["tau0_s"]
+        ran = [(x["mode"], x["label"],
+                trials[x["trial_uuid"]]["parameters_executed"])
+               for x in r.records]
+        check("every dose executed its margin: corners 0 mg on the "
+              "screening tau 0.30 s, checks/centers on the fitted "
+              "{} s".format(tau),
+              len(ran) == 16 + 4 + 2 and all(
+                  pe["cutoff_margin_g"] == (
+                      0.0 if mode == "screen" else
+                      dict(doc["anchor_plan"]).get(
+                          label, {}).get("cutoff_margin_g",
+                                         pe["cutoff_margin_g"]))
+                  and pe["tau_afterflow_s"] == (
+                      0.3 if mode == "screen" else tau)
+                  and pe["k_sigma"] == pdoc["frozen_params"]["k_sigma"]
+                  for mode, label, pe in ran))
+        precs = [x for x in pv.campaign.records() if pv.usable(x)]
+        trials_ax = r.ax.experiment.trials
+        labels = oc.ax_trial_labels(r.records, doc.get("ax_attached"))
+        check("Ax: 9 knobs; the parent's {} doses attached first at 35 mg, "
+              "then the 20 new ones, then 2 BO".format(len(precs)),
+              sorted(r.ax.experiment.search_space.parameters)
+              == sorted(names)
+              and len(trials_ax) == len(precs) + 20 + 2
+              and doc["warm_start"]["attached"] == len(precs)
+              and all(trials_ax[i].arm.parameters["cutoff_margin_g"]
+                      == 0.035 and labels[i] == "{}/{}".format(
+                          pid, precs[i]["label"])
+                      for i in range(len(precs)))
+              and doc["phase"] == "readout")
+        with open(os.path.join(r.campaign.dir, "pareto.json")) as f:
+            model = json.load(f).get("model_pareto") or []
+        check("pareto.json labels its model front, parent points "
+              "included ({} points)".format(len(model)),
+              model and all(m["label"] for m in model))
+        rec = {"summary": {"status": "overshoot", "jam": False,
+                           "t_total_s": 20.0, "abs_error_mg": 4.0},
+               "spill": False}
+        check("an overshoot is scored like a jam in the margin campaign "
+              "only", r.raw_data(rec) == {"t_total_s": 180.0,
+                                          "abs_error_mg": 20.0}
+              and pv.raw_data(rec) == {"t_total_s": 20.0,
+                                       "abs_error_mg": 4.0})
+
+        point = dict(anchors["center-00"])
+        v = ocamp.Runner(_args(state, "--validate-params",
+                               json.dumps(point), "--replicates", "2"))
+        v.executor = _Overshoot(v.executor, {1})
+        _quiet(v.run)
+        with open(os.path.join(v.campaign.dir, "profile_salt.json")) as f:
+            prof = json.load(f)
+        import dose
+        soft, hard = dose.full_set_lines(prof)
+        check("validation inside the margin campaign (variant read off the "
+              "9 values): an overshoot replicate fails the block, and the "
+              "profile pushes the margin hard",
+              v.campaign.doc["campaign_id"] == doc["campaign_id"]
+              and prof["variant"] == oc.VARIANT_THREE_STAGE_MARGIN
+              and sorted(prof["parameters"]) == sorted(names)
+              and prof["validated"] is False
+              and prof["validation"]["clean"] == 1
+              and "set cutoff_margin_g 0.0175" in hard
+              and "set trickle_enabled 1" in hard)
+        try:
+            ocamp.Runner(_args(state, "--resume", doc["campaign_id"],
+                               "--variant", "three-stage"))
+            mismatch = False
+        except SystemExit:
+            mismatch = True
+        check("--variant three-stage refuses to resume a margin campaign",
+              mismatch)
+        import opt_report
+        figure, opt_report.figure = opt_report.figure, lambda *a: None
+        try:
+            _quiet(opt_report.report, r.campaign.dir)
+        finally:
+            opt_report.figure = figure
+        with open(os.path.join(r.campaign.dir, "report.md")) as f:
+            md = f.read()
+        check("report.md: the crossed corners, 35 mg -> 0 mg, and the "
+              "margin's effect by factor level",
+              "## Margin: the parent's corners at 35 mg and at 0 mg" in md
+              and md.count("| corner-") >= 16
+              and "| Trim tilt (deg) | 10 / 30 |" in md
+              and "overshoots at 0 mg, low / high" in md)
+    finally:
+        shutil.rmtree(state, ignore_errors=True)
+
+
 def main():
     for fn in (test_screening_halts, test_bo_halts,
                test_restore_from_mongo, test_unattended_limits,
-               test_bulk_tap_campaign, test_validate_point, test_frozen_set):
+               test_bulk_tap_campaign, test_validate_point, test_frozen_set,
+               test_margin_campaign):
         print(fn.__name__)
         fn()
     if _FAILURES:

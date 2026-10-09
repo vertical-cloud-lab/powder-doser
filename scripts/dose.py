@@ -14,6 +14,20 @@ same ledger a later cross-powder model will want.
 Profiles are validated at one target mass; dosing another target is
 expected to work and is logged as such (the trial document carries
 both the profile id and the target actually dosed).
+
+``--endgame refill`` doses the same profile with PR #154's refill-tap
+endgame (campaign-setup section 5.9): the Pico's refill runner,
+``main_trickle_refill``, whose tap stage turns the auger between taps
+whenever the running tap yield falls far below what is still needed.
+Bulk and PI trickle are the profile's, unchanged.  Every refill knob is
+pushed (``refill_params.py``'s values; ``--refill-set refill_deg=15``
+changes one), and the trial records ``covariates.endgame = "refill"``
+plus the RESULT line's per-refill section.  Opt-in only: campaign doses
+never boot this runner.
+
+    python3 scripts/dose.py --powder-id salt --target-g 0.5 \
+        --profile salt-20260929T014732Z-bo-005-20261006T034908Z \
+        --endgame refill
 """
 
 import argparse
@@ -104,7 +118,26 @@ def main(argv=None):
     ap.add_argument("--takeover", action="store_true",
                     help="ctrl-C whatever runs on the shared Pico first")
     ap.add_argument("--no-upload", action="store_true")
+    ap.add_argument("--endgame", choices=sorted(oc.RUNNERS),
+                    default="stock",
+                    help="refill = PR #154's refill-tap endgame "
+                         "(main_trickle_refill on the Pico) after the "
+                         "profile's bulk + PI trickle; stock = the "
+                         "validated tap endgame")
+    ap.add_argument("--refill-set", metavar="KEY=VALUE", action="append",
+                    default=[],
+                    help="--endgame refill: change one refill_params knob "
+                         "for this dose (repeatable), e.g. refill_deg=15 "
+                         "or refill_min_to_go_g=0.015")
     args = ap.parse_args(argv)
+    if args.refill_set and args.endgame != "refill":
+        ap.error("--refill-set needs --endgame refill")
+    try:
+        refill_knobs = (oc.refill_values(dict(
+            oc.refill_override(i) for i in args.refill_set))
+            if args.endgame == "refill" else None)
+    except ValueError as exc:
+        ap.error("--refill-set {}".format(exc))
 
     powder_id = oc.normalize_powder_id(args.powder_id)
     profile, source = load_profile(powder_id, args.profile)
@@ -118,6 +151,9 @@ def main(argv=None):
     log("profile {} from {} (validated={}, tau={} s)".format(
         profile.get("profile_id"), source, profile.get("validated"),
         profile.get("tau_afterflow_s")))
+    if refill_knobs is not None:
+        log("endgame: refill-tap ({})".format(", ".join(
+            "{}={}".format(k, v) for k, v in sorted(refill_knobs.items()))))
 
     campaign_id = "production-{}".format(powder_id)
     trial_uuid = str(uuid.uuid4())
@@ -126,6 +162,8 @@ def main(argv=None):
     raw_log = os.path.join(spool, "serial_{}.log".format(trial_uuid))
 
     soft, hard = full_set_lines(profile)
+    if refill_knobs is not None:
+        hard += oc.refill_set_lines(refill_knobs)
     try:
         sess = odc.PicoSession(args.port, args.baud, raw_log)
     except odc.RigBusy as exc:
@@ -133,7 +171,7 @@ def main(argv=None):
     try:
         try:
             odc.ensure_runner(sess, pico_dir=args.pico_dir,
-                              takeover=args.takeover)
+                              takeover=args.takeover, runner=args.endgame)
         except odc.RigBusy as exc:
             raise SystemExit("rig busy, not dosing: {}".format(exc))
         for line in soft:
@@ -163,8 +201,11 @@ def main(argv=None):
         powder_id=powder_id, target_g=args.target_g, mode="production",
         params=profile["parameters"], result_doc=result_doc,
         telemetry_rows=telemetry[1], telemetry_header=telemetry[0],
-        covariates={"profile_id": profile.get("profile_id"),
-                    "profile_target_g": profile.get("target_g")},
+        covariates=dict({"profile_id": profile.get("profile_id"),
+                         "profile_target_g": profile.get("target_g"),
+                         "endgame": args.endgame},
+                        **({"refill_params": refill_knobs}
+                           if refill_knobs is not None else {})),
         operator=args.operator, started_utc=started,
         repo_root=REPO_ROOT, raw_status=status)
     spool_path = oc.spool_trial(args.out, doc)
@@ -176,9 +217,13 @@ def main(argv=None):
             log("upload failed ({}); spooled at {}".format(exc,
                                                            spool_path))
     out = doc["outcomes"]
-    log("dose {}: {} in {} s, error {} mg (uploaded={})".format(
+    refill = doc.get("refill")
+    log("dose {}: {} in {} s, error {} mg{} (uploaded={})".format(
         trial_uuid[:8], doc["flags"]["status"], out["t_total_s"],
-        out["error_mg"], uploaded))
+        out["error_mg"], "" if refill is None else
+        ", {} refill(s) delivering {:.1f} mg over {} tap cycles".format(
+            refill.get("refills"), 1000.0 * (refill.get("refill_g") or 0.0),
+            refill.get("tap_cycles")), uploaded))
     print(json.dumps(oc.trial_summary(doc, spool_path=spool_path,
                                       uploaded=uploaded)))
     return 0 if not doc["flags"]["infra_error"] else 4

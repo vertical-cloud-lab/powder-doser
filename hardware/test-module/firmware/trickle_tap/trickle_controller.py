@@ -85,7 +85,7 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
 # line.  The Pico is shared with other sessions' firmware, so the
 # campaign executor refuses to dose unless this matches
 # scripts/opt_common.FIRMWARE_ID -- bump both together.
-FIRMWARE_ID = "trickle_tap/2026-10-01"
+FIRMWARE_ID = "trickle_tap/2026-10-09"
 
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
@@ -99,6 +99,9 @@ RESULT_PARAM_KEYS = (
     "tap_burst_above_g", "bulk_only", "bulk_taper_start_g",
     "bulk_min_rpm", "bulk_boost_s", "bulk_max_passes",
     "trickle_enabled", "bulk_stop_margin_g", "bulk_halt_kf",
+    # the PI trickle's hand-over to the taps: searched by the
+    # three-stage-margin campaign (2026-10-09), k_sigma adds to it
+    "cutoff_margin_g", "k_sigma",
 )
 
 

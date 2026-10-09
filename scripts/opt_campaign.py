@@ -60,6 +60,23 @@ profile, status ``validation-stopped``, the campaign's readout untouched.
 plant (the trickle_tap sim rig) instead of SSH -- no hardware, used by
 scripts/tests and for shaking down the loop before a rig session.
 
+``--variant three-stage-margin`` (section 7) searches a 9th knob on top
+of the three-stage dose: ``cutoff_margin_g``, how far short of the goal
+the PI trickle's predicted final mass halts it and the taps take over
+(0-35 mg; the trickle was hand-tuned at 35).  By default it warm-starts
+from the powder's latest three-stage campaign (``--warm-start``): every
+usable dose of that campaign goes to Ax as data at its own 35 mg, the
+screening block re-doses that campaign's 16 corners at 0 mg (the old
+fraction crossed with the margin), and four checks at the fitted tau
+(the parent's fastest validated point at 35 mg, twice; the box center
+at 17.5 mg, twice) replace the anchors.  The parent's frozen snapshot
+and tau fit carry over unchanged, so the margin is the only controller
+change.  With no parent (``--warm-start none``, or a powder without a
+three-stage campaign) it screens a fresh 2^(9-4)_IV fraction (32
+corners) instead.  Margin campaigns score an overshoot (a dose that
+ends past the band) like a jam, and a validation block containing one
+fails.
+
 ``--variant bulk-tap`` (section 6) optimizes the bulk -> tap dose
 instead: no PI trickle (firmware TRICKLE_ENABLED = 0), and the search
 space swaps the trim taps, trim tilt, and bulk->trim threshold for the
@@ -105,14 +122,27 @@ FIRMWARE_DIR = os.path.join(REPO_ROOT, "hardware", "test-module",
 DEFAULT_STATE = os.path.join(REPO_ROOT, "data", "opt")
 PROFILE_CACHE = os.path.join(REPO_ROOT, "data", "profiles")
 
-N_CORNERS = 16          # 2^(8-4) resolution-IV fraction
 N_CENTERS = 4
 N_BASELINES = 2         # hand-tuned baseline doses (section 2.9)
 # Screening labels re-dosed under the fitted tau (section 2.8).
 ANCHOR_PREFIXES = ("center-", "baseline-")
+# A warm-started margin campaign's checks (section 7.2): the parent's
+# fastest validated point at the parent's margin, and the box center.
+N_CHECKS = 2
+N_MARGIN_CENTERS = 2
+# Fixed reference doses the readout compares the front against.
+REFERENCE_PREFIXES = ("baseline-", "rebaseline-", "check-")
 
-# Factors A-H of the 2^(8-4)_IV screen per variant: A-D are the full
-# 2^4, E=BCD, F=ACD, G=ABC, H=ABD.
+# The resolution-IV fractions, by factor count: the number of base
+# factors (a full 2^n), and for each generated factor the base factors
+# it multiplies (0 = A).
+#   8 factors, 16 runs: A-D, E=BCD, F=ACD, G=ABC, H=ABD
+#   9 factors, 32 runs: A-E, F=BCDE, G=ACDE, H=ABDE, J=ABCE
+DESIGNS = {
+    8: (4, ((1, 2, 3), (0, 2, 3), (0, 1, 2), (0, 1, 3))),
+    9: (5, ((1, 2, 3, 4), (0, 2, 3, 4), (0, 1, 3, 4), (0, 1, 2, 4))),
+}
+# The factors of each variant's screen, base factors first.
 SCREEN_FACTORS = {
     oc.VARIANT_THREE_STAGE: (
         "bulk_tilt_deg", "trickle_tilt_deg", "tap_tilt_deg", "bulk_rpm",
@@ -121,7 +151,14 @@ SCREEN_FACTORS = {
         "bulk_tilt_deg", "bulk_min_rpm", "tap_tilt_deg", "bulk_rpm",
         "bulk_stop_margin_g", "tolerance_g", "bulk_tap",
         "bulk_taper_start_g"),
+    oc.VARIANT_THREE_STAGE_MARGIN: (
+        "bulk_tilt_deg", "trickle_tilt_deg", "tap_tilt_deg", "bulk_rpm",
+        "cutoff_margin_g", "trickle_start_remaining_g", "tolerance_g",
+        "bulk_tap", "trim_tap"),
 }
+# Campaign-id tag per variant (salt-margin-20261009T...Z).
+CID_TAGS = {oc.VARIANT_BULK_TAP: "bulktap-",
+            oc.VARIANT_THREE_STAGE_MARGIN: "margin-"}
 # The bulk -> tap screen's tau when the powder has no fitted one: salt's
 # PR #131 stop tests (the bulk halt IS the prediction there, so the
 # three-stage screen's tuned 0.30 s would overshoot by design).
@@ -145,18 +182,37 @@ def utcstamp():
 # Screening design: 2^(8-4)_IV + centers (section 2.4, from #162 section 5)
 # ---------------------------------------------------------------------------
 
+def design_rows(n_factors):
+    """The +-1 rows of the ``DESIGNS`` fraction for ``n_factors``, in
+    standard order (base factor A alternating fastest)."""
+    n_base, generators = DESIGNS[n_factors]
+    rows = []
+    for i in range(2 ** n_base):
+        signs = [1 if i >> j & 1 else -1 for j in range(n_base)]
+        for gen in generators:
+            sign = 1
+            for j in gen:
+                sign *= signs[j]
+            signs.append(sign)
+        rows.append(signs)
+    return rows
+
+
 def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES,
                    variant=oc.VARIANT_THREE_STAGE):
-    """16 resolution-IV corners + 4 centers as campaign parameter dicts,
-    bracketed by ``baseline_reps`` doses at ``baseline``.
+    """The resolution-IV corners + 4 centers as campaign parameter
+    dicts, bracketed by ``baseline_reps`` doses at ``baseline``.
 
-    Base factors A-D are the four tilts/RPM (full 2^4); the generators
-    E=BCD, F=ACD, G=ABC, H=ABD (the standard minimum-aberration
-    2^(8-4)_IV set) carry the threshold, the tolerance band, and the
-    two tap categoricals -- which slot in natively as two-level
-    factors (``SCREEN_FACTORS`` has the bulk -> tap variant's order).
-    Corner order is shuffled (seeded) per DOE practice; centers run at
-    the box midpoints with the cadences off.
+    Eight factors (both 8-knob variants): 16 corners.  Base factors A-D
+    are the four tilts/RPM (full 2^4); the generators E=BCD, F=ACD,
+    G=ABC, H=ABD (the standard minimum-aberration 2^(8-4)_IV set) carry
+    the threshold, the tolerance band, and the two tap categoricals --
+    which slot in natively as two-level factors (``SCREEN_FACTORS`` has
+    the bulk -> tap variant's order).  Nine (a cold-started margin
+    campaign): 32 corners, A-E full 2^5 with the margin as E, and
+    F=BCDE, G=ACDE, H=ABDE, J=ABCE.  Corner order is shuffled (seeded)
+    per DOE practice; centers run at the box midpoints with the
+    cadences off.
 
     ``baseline`` is the hand-tuned point (section 2.9).  It sits inside
     every box but not at its midpoint, so it rides along as extra
@@ -174,16 +230,9 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES,
         lo_v, hi_v = bounds[name]
         return hi_v if hi > 0 else lo_v
 
-    corners = []
-    for i in range(N_CORNERS):
-        a = 1 if i & 1 else -1
-        b = 1 if i & 2 else -1
-        c = 1 if i & 4 else -1
-        d = 1 if i & 8 else -1
-        e, f, g, h = b * c * d, a * c * d, a * b * c, a * b * d
-        corners.append({name: level(name, sign) for name, sign in
-                        zip(SCREEN_FACTORS[variant],
-                            (a, b, c, d, e, f, g, h))})
+    factors = SCREEN_FACTORS[variant]
+    corners = [{name: level(name, sign) for name, sign in zip(factors, row)}
+               for row in design_rows(len(factors))]
     import random
     random.Random(seed).shuffle(corners)
     center = {name: (b[0] + b[1]) / 2.0
@@ -199,6 +248,52 @@ def screening_plan(seed=42, baseline=None, baseline_reps=N_BASELINES,
         half = (baseline_reps + 1) // 2
         plan = base[:half] + plan + base[half:]
     return plan
+
+
+def warm_start_plans(parent_doc, baseline):
+    """A margin campaign on top of a three-stage ``parent_doc`` (section
+    7.2) -> (screening plan, anchor plan, check point label).
+
+    Screening: the parent's 16 corners again at the margin box's floor
+    (0 mg), at the parent's screening tau like the originals, so the
+    two blocks together are the parent's 2^(8-4)_IV fraction crossed
+    with the margin.  Anchors, at the fitted tau: the parent's fastest
+    validated point at the parent's own margin (a drift check against
+    its validation block; the hand-tuned ``baseline`` without one), and
+    the 9-knob box center.
+    """
+    space = oc.search_space_ax(oc.VARIANT_THREE_STAGE_MARGIN)
+    bounds = {p["name"]: p.get("bounds") for p in space}
+    lo, hi = bounds["cutoff_margin_g"]
+    tuned = float(parent_doc["frozen_params"]["cutoff_margin_g"])
+    if not lo <= tuned <= hi:
+        raise SystemExit(
+            "the parent campaign ran at cutoff_margin_g {} g, outside the "
+            "margin box {}-{} g, so its doses cannot be attached".format(
+                tuned, lo, hi))
+    plan = [(label, dict(params, cutoff_margin_g=lo))
+            for label, params in parent_doc["screening_plan"]
+            if label.startswith("corner-")]
+    validated = [p for p in parent_doc.get("profiles") or []
+                 if p.get("validated") and p.get("point")
+                 and (p.get("validation") or {}).get("median_t_total_s")
+                 is not None]
+    if validated:
+        best = min(validated,
+                   key=lambda p: p["validation"]["median_t_total_s"])
+        point = best["point"]
+        check = {k: best["parameters"][k] for k, _f, _t in oc.SEARCH_PARAMS}
+    else:
+        point = "baseline"
+        check = {k: baseline[k] for k, _f, _t in oc.SEARCH_PARAMS}
+    center = {name: (b[0] + b[1]) / 2.0 for name, b in bounds.items() if b}
+    center.update({name: oc.CAT_OFF
+                   for name, b in bounds.items() if b is None})
+    anchors = [("check-{}-{:02d}".format(point, i),
+                dict(check, cutoff_margin_g=tuned)) for i in range(N_CHECKS)]
+    anchors += [("center-{:02d}".format(i), dict(center))
+                for i in range(N_MARGIN_CENTERS)]
+    return plan, anchors, point
 
 
 def frozen_override(item, frozen, variant):
@@ -794,11 +889,23 @@ class Runner:
             self.campaign.load()
         else:
             variant = args.variant or oc.VARIANT_THREE_STAGE
-            cid = "{}-{}{}".format(
-                self.powder_id, "bulktap-" if variant ==
-                oc.VARIANT_BULK_TAP else "", utcstamp())
+            cid = "{}-{}{}".format(self.powder_id, CID_TAGS.get(variant, ""),
+                                   utcstamp())
             self.campaign = Campaign(cid, state_root)
             frozen = frozen_snapshot()
+            parent = None
+            if variant == oc.VARIANT_THREE_STAGE_MARGIN:
+                parent = self.warm_start_parent()
+            if parent is not None:
+                # The parent's controller, exactly: its snapshot over
+                # today's file (knobs it predates keep today's defaults,
+                # which reproduce its dose).
+                frozen.update(parent.doc["frozen_params"])
+                if args.frozen_set:
+                    raise SystemExit(
+                        "--frozen-set: a warm-started margin campaign runs "
+                        "its parent's controller so the parent's doses stay "
+                        "valid data; use --warm-start none to change it")
             # the snapshot is what runs (dose.py pushes a profile's copy)
             frozen.update(oc.VARIANTS[variant]["mode"])
             if variant == oc.VARIANT_BULK_TAP:
@@ -809,6 +916,11 @@ class Runner:
                                                      frozen[key]))
                 frozen[key] = value
             baseline = oc.baseline_params(frozen, variant)
+            if parent is not None:
+                plan, anchors, point = warm_start_plans(parent.doc, baseline)
+            else:
+                plan = screening_plan(args.seed, baseline,
+                                      args.baseline_reps, variant)
             self.campaign.doc = {
                 "kind": "opt_campaign",
                 "schema_version": oc.SCHEMA_VERSION,
@@ -827,9 +939,7 @@ class Runner:
                                "abs_error_mg": oc.THRESHOLD_ABS_ERROR_MG},
                 "frozen_params": frozen,
                 "baseline_params": baseline,
-                "screening_plan": screening_plan(args.seed, baseline,
-                                                 args.baseline_reps,
-                                                 variant),
+                "screening_plan": plan,
                 "budget": DEFAULT_BUDGET,
                 "tau_afterflow": None,
                 "in_flight": None,
@@ -838,6 +948,32 @@ class Runner:
                                "seed": args.seed,
                                "ax_platform": "0.4.3"},
             }
+            if variant == oc.VARIANT_THREE_STAGE_MARGIN:
+                # the margin trades overshoot risk for tap time, and an
+                # overshoot cannot be undone in production (section 7.3)
+                self.campaign.doc["scoring"] = {"overshoot": "penalized"}
+            if parent is not None:
+                pdoc = parent.doc
+                tau = pdoc.get("tau_afterflow") or {}
+                self.campaign.doc.update({
+                    "warm_start": {
+                        "campaign_id": pdoc["campaign_id"],
+                        "cutoff_margin_g": float(
+                            pdoc["frozen_params"]["cutoff_margin_g"]),
+                        "check_point": point,
+                        "attached": None},    # filled when BO starts
+                    "anchor_plan": anchors,
+                    # the margin is the only change: no tau refit
+                    "tau_afterflow": dict(tau) if tau.get("tau0_s")
+                    else None,
+                    "frozen_overrides": dict(
+                        pdoc.get("frozen_overrides") or {}),
+                })
+                log("warm start from {}: its {} corners again at {:.1f} mg"
+                    ", then {} checks at tau {} s".format(
+                        pdoc["campaign_id"], len(plan), 1000.0 * float(
+                            plan[0][1]["cutoff_margin_g"]) if plan else 0.0,
+                        len(anchors), tau.get("tau0_s")))
         if resumed and args.frozen_set:
             log("--frozen-set ignored: {} keeps the snapshot it was "
                 "created with".format(cid))
@@ -900,6 +1036,47 @@ class Runner:
         self.ax = None
         self.save()
 
+    def warm_start_parent(self):
+        """--warm-start: the three-stage campaign a new margin campaign
+        builds on (section 7.2) -> its loaded Campaign, or None for a
+        cold start.  Default: this powder's latest three-stage campaign
+        (a --simulate run only looks at simulated ones)."""
+        args = self.args
+        want = args.warm_start
+        if want and want.lower() == "none":
+            log("--warm-start none: a cold margin campaign")
+            return None
+        cid = want or latest_campaign_id(args.state_dir, self.powder_id,
+                                         args.simulate,
+                                         oc.VARIANT_THREE_STAGE)
+        if cid is None:
+            log("no three-stage {}campaign for {!r} to warm-start from: "
+                "a cold margin campaign".format(
+                    "simulated " if args.simulate else "", self.powder_id))
+            return None
+        parent = self.parent_campaign(cid)
+        pdoc = parent.doc
+        if (pdoc.get("variant", oc.VARIANT_THREE_STAGE)
+                != oc.VARIANT_THREE_STAGE
+                or pdoc.get("powder_id") != self.powder_id
+                or bool(pdoc.get("simulate")) != bool(args.simulate)):
+            raise SystemExit(
+                "--warm-start {}: needs a {}three-stage campaign of powder "
+                "{!r}".format(cid, "simulated " if args.simulate else "",
+                              self.powder_id))
+        return parent
+
+    def parent_campaign(self, cid):
+        parent = Campaign(cid, self.args.state_dir)
+        if not parent.exists() and not self.args.simulate:
+            parent.restore_from_mongo()
+        if not parent.exists():
+            raise SystemExit("warm start: no local state for campaign {!r} "
+                             "under {} and no MongoDB mirror".format(
+                                 cid, self.args.state_dir))
+        parent.load()
+        return parent
+
     def tau_prior(self, simulate):
         """The bulk -> tap screen's tau: the powder's fitted value, else
         BULK_TAP_TAU_PRIOR_S (a --simulate campaign never reads the
@@ -938,8 +1115,7 @@ class Runner:
         powder file's ``latest_campaign`` block (section 5.4)."""
         doc = self.campaign.doc
         plan = doc["screening_plan"]
-        n_anchors = sum(1 for label, _ in plan
-                        if label.startswith(ANCHOR_PREFIXES))
+        n_anchors = len(self.anchor_plan())
         last = self.records[-1] if self.records else None
         flight = doc.get("in_flight")
         resume = "python scripts/opt_campaign.py --powder-id {} " \
@@ -1241,13 +1417,20 @@ class Runner:
             self.campaign.doc["campaign_id"]))
         raise KeyboardInterrupt
 
-    @staticmethod
-    def raw_data(record):
+    def overshoot_penalized(self, record):
+        """Section 7.3: a margin campaign scores a dose that ended past
+        the band like a jam (older campaigns keep the raw |error|)."""
+        scoring = self.campaign.doc.get("scoring") or {}
+        return (scoring.get("overshoot") == "penalized"
+                and record["summary"]["status"] == "overshoot")
+
+    def raw_data(self, record):
         s = record["summary"]
         return oc.ax_raw_data(
             {"t_total_s": s["t_total_s"], "abs_error_mg":
              s["abs_error_mg"]},
-            jam=s["jam"], spill=record["spill"])
+            jam=s["jam"], spill=record["spill"],
+            overshoot=self.overshoot_penalized(record))
 
     # -- phases ---------------------------------------------------------
 
@@ -1291,21 +1474,34 @@ class Runner:
                 except Exception as exc:
                     log("powder_models upsert failed ({}); fit kept in "
                         "the campaign doc".format(exc))
-            doc["phase"] = "recenter"
-            self.save()
+        else:
+            log("tau_afterflow {} s carried over from {} -- no refit".format(
+                doc["tau_afterflow"].get("tau0_s"),
+                (doc.get("warm_start") or {}).get("campaign_id")))
+        doc["phase"] = "recenter"
+        self.save()
+
+    def anchor_plan(self):
+        """The doses re-run under the fitted tau: the screening plan's
+        centers + baselines, or a warm-started campaign's checks."""
+        doc = self.campaign.doc
+        if doc.get("anchor_plan") is not None:
+            return [(l, p) for l, p in doc["anchor_plan"]]
+        return [("re" + l, p) for l, p in doc["screening_plan"]
+                if l.startswith(ANCHOR_PREFIXES)]
 
     def recenter(self):
         """Re-dose every replicated anchor (centers + hand-tuned
         baselines) under the fitted tau, so the warm-start data and the
-        BO regime share reference points (section 2.8)."""
+        BO regime share reference points (section 2.8).  A warm-started
+        margin campaign runs its checks here instead (section 7.2)."""
         doc = self.campaign.doc
         if not (doc.get("tau_afterflow") or {}).get("tau0_s"):
             log("no usable tau fit -- skipping the re-centered anchors")
             doc["phase"] = "bo"
             self.save()
             return
-        anchors = [("re" + l, p) for l, p in doc["screening_plan"]
-                   if l.startswith(ANCHOR_PREFIXES)]
+        anchors = self.anchor_plan()
         while True:
             done = self._done_labels("recenter")
             todo = [(l, p) for l, p in anchors if l not in done]
@@ -1328,9 +1524,30 @@ class Runner:
         self.ax = make_ax_client(args.model, args.sobol_trials, args.seed)
         create_experiment(self.ax, "{}_campaign".format(self.powder_id),
                           self.variant)
+        doc = self.campaign.doc
         # Warm start: attach every screening + recenter dose as existing
-        # data (the sample's attach_trial block).
-        attached = 0
+        # data (the sample's attach_trial block); a margin campaign's
+        # parent's usable doses go first, at the parent's own margin.
+        attached = []
+        warm = doc.get("warm_start")
+        if warm:
+            parent = self.parent_campaign(warm["campaign_id"])
+            for r in parent.records():
+                if not self.usable(r):
+                    continue
+                params = {k: v for k, v in r["params"].items()
+                          if k != "tau_afterflow_s"}
+                params["cutoff_margin_g"] = warm["cutoff_margin_g"]
+                _, idx = self.ax.attach_trial(ax_parameterization(params))
+                self.ax.complete_trial(trial_index=idx,
+                                       raw_data=self.raw_data(r))
+                attached.append("{}/{}".format(warm["campaign_id"],
+                                               r["label"]))
+            warm["attached"] = len(attached)
+            log("attached {} doses of {} at cutoff_margin_g {} g".format(
+                len(attached), warm["campaign_id"],
+                warm["cutoff_margin_g"]))
+        n_parent = len(attached)
         for r in self.records:
             if r["mode"] not in ("screen", "recenter") or \
                     not self.usable(r):
@@ -1339,10 +1556,13 @@ class Runner:
             _, idx = self.ax.attach_trial(parameterization)
             self.ax.complete_trial(trial_index=idx,
                                    raw_data=self.raw_data(r))
-            attached += 1
+            attached.append(r["label"])
         log("attached {} screening/anchor doses as existing data".format(
-            attached))
+            len(attached) - n_parent))
+        # Ax trial index -> dose label (oc.ax_trial_labels)
+        doc["ax_attached"] = attached
         self.ax.save_to_json_file(self.campaign.snapshot_path)
+        self.save()
 
     def _sync_ax(self):
         """Tell Ax every recorded BO dose it was never told -- the loop
@@ -1414,15 +1634,16 @@ class Runner:
         self.save()
 
     def baseline_summary(self):
-        """Medians of the clean hand-tuned baseline doses, per tau
-        regime (screening: the tuned 0.30 s; anchors: the fitted tau)."""
+        """Medians of the clean hand-tuned baseline doses (a warm-started
+        margin campaign: its checks), per tau regime (screening: the
+        tuned 0.30 s; anchors: the fitted tau)."""
         import statistics
         out = {}
         for mode, key in (("screen", "tuned_tau"),
                           ("recenter", "fitted_tau")):
             rs = [r for r in self.records
                   if r["mode"] == mode and self.usable(r)
-                  and r["label"].startswith(("baseline-", "rebaseline-"))
+                  and r["label"].startswith(REFERENCE_PREFIXES)
                   and not r["summary"]["jam"] and not r["spill"]
                   and r["summary"]["t_total_s"] is not None]
             if rs:
@@ -1448,7 +1669,8 @@ class Runner:
                and r["summary"]["abs_error_mg"] is not None
                and r["summary"]["t_total_s"] <= oc.THRESHOLD_T_TOTAL_S
                and r["summary"]["abs_error_mg"]
-               <= oc.THRESHOLD_ABS_ERROR_MG]
+               <= oc.THRESHOLD_ABS_ERROR_MG
+               and not self.overshoot_penalized(r)]
         front = []
         for t, e, r in sorted(pts, key=lambda x: (x[0], x[1])):
             if all(not (t2 <= t and e2 <= e and (t2 < t or e2 < e))
@@ -1465,7 +1687,8 @@ class Runner:
             try:
                 pareto = self.ax.get_pareto_optimal_parameters(
                     use_model_predictions=True)
-                labels = oc.ax_trial_labels(self.records)
+                labels = oc.ax_trial_labels(self.records,
+                                            doc.get("ax_attached"))
                 model_front = [
                     {"trial_index": k, "label": labels.get(k),
                      "params": v[0], "predicted_means": v[1][0]}
@@ -1475,7 +1698,8 @@ class Runner:
         base = self.baseline_summary()
         ref = (base or {}).get("fitted_tau") or (base or {}).get("tuned_tau")
         beating = [p for p in front
-                   if ref and "baseline-" not in p["label"]
+                   if ref and not any(x in p["label"]
+                                      for x in ("baseline-", "check-"))
                    and p["t_total_s"] <= ref["median_t_total_s"]
                    and p["abs_error_mg"] <= ref["median_abs_error_mg"]]
         out = {"campaign_id": doc["campaign_id"],
@@ -1545,7 +1769,8 @@ class Runner:
         times = [r["summary"]["t_total_s"] for r in results
                  if r["summary"]["t_total_s"] is not None]
         clean = [r for r in results
-                 if not r["summary"]["jam"] and not r["spill"]]
+                 if not r["summary"]["jam"] and not r["spill"]
+                 and not self.overshoot_penalized(r)]
         stats = {
             "replicates": len(results),
             "clean": len(clean),
@@ -1695,9 +1920,16 @@ def parse_args(argv=None):
     ap.add_argument("--powder-id", required=True)
     ap.add_argument("--variant", choices=sorted(oc.VARIANTS), default=None,
                     help="new campaigns: three-stage (bulk -> PI trickle "
-                         "-> taps, the default) or bulk-tap (no PI "
-                         "trickle, section 6); with --resume, only that "
-                         "variant's campaigns")
+                         "-> taps, the default), three-stage-margin (the "
+                         "same plus the trickle's cutoff margin, section "
+                         "7), or bulk-tap (no PI trickle, section 6); with "
+                         "--resume, only that variant's campaigns")
+    ap.add_argument("--warm-start", metavar="CAMPAIGN_ID", default=None,
+                    help="new three-stage-margin campaigns: the three-stage "
+                         "campaign whose doses it attaches at their own "
+                         "margin and whose corners it re-doses at 0 mg "
+                         "(default: this powder's latest; 'none' = a cold "
+                         "2^(9-4) screen)")
     ap.add_argument("--target-g", type=float, default=0.5)
     ap.add_argument("--budget", type=int, default=None,
                     help="BO doses after the screening block (default "

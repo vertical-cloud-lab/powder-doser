@@ -44,7 +44,7 @@ RESULT_PREFIX = "RESULT "
 # dose on anything else.  That build lives in its own folder on the
 # Pico's flash so its config.py / main_three_phase.py never replace
 # the root-level modules other firmware imports (section 5.1).
-FIRMWARE_ID = "trickle_tap/2026-10-01"
+FIRMWARE_ID = "trickle_tap/2026-10-09"
 PICO_FIRMWARE_DIR = "/trickle_tap"
 
 # Objective reference thresholds, locked 2026-09-22 (campaign-setup
@@ -112,11 +112,24 @@ BULK_TAP_SEARCH_SPACE_AX = [
     {"name": "tolerance_g", "type": "range", "bounds": [0.003, 0.015]},
 ]
 
+# The three-stage campaign plus the PI trickle's hand-over to the taps
+# (campaign-setup section 7, added 2026-10-09): CUTOFF_MARGIN_G, how far
+# short of the goal the trickle's predicted final mass halts it, searched
+# from 0 up to the 35 mg it was hand-tuned at.  Same firmware dose, one
+# more knob; K_SIGMA stays frozen (it adds to the margin, so searching
+# both would be redundant).
+MARGIN_SEARCH_PARAMS = SEARCH_PARAMS + (
+    ("cutoff_margin_g", "cutoff_margin_g", "float"),)
+MARGIN_SEARCH_SPACE_AX = SEARCH_SPACE_AX + [
+    {"name": "cutoff_margin_g", "type": "range", "bounds": [0.0, 0.035]},
+]
+
 # Campaign variants.  ``mode`` is the dose-structure switch every trial
 # pushes with its searched values (hard-verified, never left to what
 # the shared runner was last ``set`` to): a parameter set means one
 # dose structure.  A frozen BULK_ONLY = 1 still overrides both.
 VARIANT_THREE_STAGE, VARIANT_BULK_TAP = "three-stage", "bulk-tap"
+VARIANT_THREE_STAGE_MARGIN = "three-stage-margin"
 VARIANTS = {
     VARIANT_THREE_STAGE: {"search_params": SEARCH_PARAMS,
                           "search_space": SEARCH_SPACE_AX,
@@ -124,7 +137,14 @@ VARIANTS = {
     VARIANT_BULK_TAP: {"search_params": BULK_TAP_SEARCH_PARAMS,
                        "search_space": BULK_TAP_SEARCH_SPACE_AX,
                        "mode": {"trickle_enabled": False}},
+    VARIANT_THREE_STAGE_MARGIN: {"search_params": MARGIN_SEARCH_PARAMS,
+                                 "search_space": MARGIN_SEARCH_SPACE_AX,
+                                 "mode": {"trickle_enabled": True}},
 }
+# Tie-break order for variant_of: the older variants first, so an
+# 8-knob three-stage parameterization never reads as a margin one.
+VARIANT_ORDER = (VARIANT_THREE_STAGE, VARIANT_BULK_TAP,
+                 VARIANT_THREE_STAGE_MARGIN)
 
 
 def search_params(variant=None):
@@ -136,13 +156,68 @@ def search_space_ax(variant=None):
 
 
 def variant_of(params):
-    """The variant whose search parameters a parameterization names
+    """The variant whose search parameters a parameterization names:
+    an exact match of the names (tau aside), else the largest overlap
     (the three-stage campaign on a tie, e.g. an empty dict)."""
-    names = set(params)
+    names = set(params) - {"tau_afterflow_s"}
+    for v in VARIANT_ORDER:
+        if names == {n for n, _k, _t in search_params(v)}:
+            return v
 
     def overlap(v):
         return len(names & {n for n, _k, _t in search_params(v)})
-    return max((VARIANT_THREE_STAGE, VARIANT_BULK_TAP), key=overlap)
+    return max(VARIANT_ORDER, key=overlap)
+
+
+# PR #154's refill-tap endgame (brought in 2026-10-09): a second runner
+# in the same /trickle_tap folder, main_trickle_refill.py, whose tap
+# stage turns the auger between taps whenever the running tap yield is
+# far below what is still needed.  An opt-in PRODUCTION option (dose.py
+# --endgame refill); campaign doses only ever boot the stock runner, and
+# the executor tells the two apart by their firmware lines.
+REFILL_FIRMWARE_ID = FIRMWARE_ID + "+refill-tap/2026-10-06"
+RUNNERS = {
+    "stock": {"module": "main_trickle", "firmware": FIRMWARE_ID},
+    "refill": {"module": "main_trickle_refill",
+               "firmware": REFILL_FIRMWARE_ID},
+}
+# refill_params.py's knobs, so a dose pushes all of them (the Zero's
+# sparse checkout has scripts/ only; the tests cross-check the file).
+REFILL_DEFAULTS = {
+    "refill_enabled": True, "refill_deg": 10.0, "refill_rpm": 20.0,
+    "refill_avg_taps": 4, "refill_min_taps": 2, "refill_taps_to_go": 20,
+    "refill_min_to_go_g": 0.025, "refill_settle_ms": 800, "refill_max": 20,
+}
+
+
+def refill_override(item):
+    """``KEY=VALUE`` -> (refill knob, value typed like its default)."""
+    key, sep, raw = item.partition("=")
+    key, raw = key.strip().lower(), raw.strip().lower()
+    if not sep or key not in REFILL_DEFAULTS:
+        raise ValueError("{!r}: expected KEY=VALUE with KEY one of {}".format(
+            item, ", ".join(sorted(REFILL_DEFAULTS))))
+    old = REFILL_DEFAULTS[key]
+    if isinstance(old, bool):
+        value = {"true": True, "on": True, "false": False,
+                 "off": False}.get(raw)
+        return key, bool(int(float(raw))) if value is None else value
+    if isinstance(old, int):
+        return key, int(float(raw))
+    return key, float(raw)
+
+
+def refill_values(overrides=None):
+    """Every refill-tap knob a dose runs with: the defaults, then
+    ``overrides`` ({key: value})."""
+    out = dict(REFILL_DEFAULTS)
+    out.update(overrides or {})
+    return out
+
+
+def refill_set_lines(overrides=None):
+    """The refill runner's ``set`` lines (all knobs, sorted)."""
+    return frozen_set_lines(refill_values(overrides))
 
 # Firmware DoseResult.status -> jam classification (campaign-setup
 # section 2.3).  Everything else is either fine ("ok"/"overshoot") or
@@ -312,33 +387,39 @@ def outcomes_from_result(result_doc):
     }
 
 
-def ax_raw_data(outcomes, jam=False, spill=False):
+def ax_raw_data(outcomes, jam=False, spill=False, overshoot=False):
     """Objective values for Ax, penalized per campaign-setup 2.3.
 
     A jam/spill dose reports the timeout ceiling / error cap (or the
     true value if worse) so the surrogate learns the region is bad
-    instead of the trial being discarded.
+    instead of the trial being discarded.  ``overshoot`` (a dose that
+    ended past the band, which production cannot undo) is penalized the
+    same way when the campaign scores it so (section 7).
     """
     t = outcomes.get("t_total_s")
     e = outcomes.get("abs_error_mg")
-    if jam or spill or t is None or e is None:
+    if jam or spill or overshoot or t is None or e is None:
         t = max(t or 0.0, THRESHOLD_T_TOTAL_S)
         e = max(e or 0.0, THRESHOLD_ABS_ERROR_MG)
     return {"t_total_s": float(t), "abs_error_mg": float(e)}
 
 
-def ax_trial_labels(records):
+def ax_trial_labels(records, attached=None):
     """Ax trial index -> the campaign dose label it holds.
 
     The usable screening + anchor doses are attached in record order
     when BO starts (trials 0, 1, ...); a BO dose carries its own
-    ``ax_trial_index``.
+    ``ax_trial_index``.  ``attached`` is the campaign document's
+    ``ax_attached`` list when it has one (a warm-started campaign
+    attaches its parent's doses first, as ``<parent id>/<label>``).
     """
     labels, n = {}, 0
+    if attached is not None:
+        labels = dict(enumerate(attached))
     for r in records:
         if r.get("summary", {}).get("infra_error") or r.get("void"):
             continue
-        if r["mode"] in ("screen", "recenter"):
+        if r["mode"] in ("screen", "recenter") and attached is None:
             labels[n] = r["label"]
             n += 1
         elif r["mode"] == "bo" and r.get("ax_trial_index") is not None:
@@ -358,7 +439,7 @@ def build_trial_doc(campaign_id, trial_uuid, trial_index, powder_id,
     status = raw_status or (result_doc or {}).get("status") or "no-result"
     jam, jam_reason, infra = classify_status(status)
     outcomes = outcomes_from_result(result_doc or {})
-    return {
+    doc = {
         "kind": "opt_trial",
         "schema_version": SCHEMA_VERSION,
         "campaign_id": campaign_id,
@@ -398,6 +479,11 @@ def build_trial_doc(campaign_id, trial_uuid, trial_index, powder_id,
             "rows": telemetry_rows or [],
         },
     }
+    if (result_doc or {}).get("refill") is not None:
+        # the refill-tap runner's endgame record: every refill, what it
+        # delivered, and the refill knobs as executed
+        doc["refill"] = result_doc["refill"]
+    return doc
 
 
 def trial_summary(doc, spool_path=None, uploaded=None):

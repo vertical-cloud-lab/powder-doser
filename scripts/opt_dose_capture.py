@@ -41,9 +41,16 @@ Usage (normally built by opt_campaign.py, not typed):
         --trial-index 7 --mode bo \
         --params '{"bulk_tap": "off", "trim_tap": "off", ...}'
 
-``--params`` names either variant's 8 knobs (opt_common.VARIANTS): the
-three-stage campaign's, or the bulk -> tap campaign's, which also
+``--params`` names one variant's knobs (opt_common.VARIANTS): the
+three-stage campaign's 8, the margin campaign's 9 (the same plus
+``cutoff_margin_g``), or the bulk -> tap campaign's 8, which also
 pushes ``set trickle_enabled 0``.
+
+``--endgame refill`` (production doses only) boots PR #154's refill-tap
+runner, ``main_trickle_refill``, instead and pushes every refill knob
+(``--refill-set KEY=VALUE`` changes one).  Either way the other runner
+of this build, left idle by an earlier dose, is stopped and swapped
+without ``--takeover``; anything else on the Pico still needs it.
 
     python3 scripts/opt_dose_capture.py --fetch <uuid>
 
@@ -238,12 +245,13 @@ def _wait_for(sess, text, timeout_s):
         raise RuntimeError("Pico never printed {!r}".format(text))
 
 
-def _boot_runner(sess, pico_dir, boot_timeout_s):
+def _boot_runner(sess, pico_dir, boot_timeout_s, module="main_trickle"):
     """From an idle REPL: clean soft reset, then start /trickle_tap's
-    runner.  The raw-REPL soft reset (what mpremote does) empties
-    sys.modules -- no root-level config/main_three_phase left over from
-    another session -- without running main.py.  -> listing lines."""
-    log("booting main_trickle from {} on the Pico".format(pico_dir or "/"))
+    runner ``module``.  The raw-REPL soft reset (what mpremote does)
+    empties sys.modules -- no root-level config/main_three_phase left
+    over from another session -- without running main.py.  -> listing
+    lines."""
+    log("booting {} from {} on the Pico".format(module, pico_dir or "/"))
     sess.port.write(b"\r\x01")               # ctrl-A: raw REPL
     _wait_for(sess, "raw REPL; CTRL-B to exit", 5)
     sess.port.write(b"\x04")                  # ctrl-D: soft reset
@@ -251,7 +259,7 @@ def _boot_runner(sess, pico_dir, boot_timeout_s):
     _wait_for(sess, "raw REPL; CTRL-B to exit", 10)
     sess.port.write(b"\x02")                  # ctrl-B: friendly REPL
     _wait_for(sess, IDLE_PROMPT, 5)
-    boot = "import main_trickle; main_trickle.main()"
+    boot = "import {0}; {0}.main()".format(module)
     if pico_dir.strip("/"):
         boot = "import sys; sys.path.insert(0, {!r}); {}".format(
             pico_dir, boot)
@@ -260,19 +268,23 @@ def _boot_runner(sess, pico_dir, boot_timeout_s):
                                      boot_timeout_s)
     if match is None:
         raise RuntimeError(
-            "Pico did not reach the main_trickle command loop -- is the "
+            "Pico did not reach the {} command loop -- is the "
             "trickle_tap build uploaded to {} (README) and the USB cable "
-            "good?".format(pico_dir or "/"))
+            "good?".format(module, pico_dir or "/"))
     return seen
 
 
 def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
-                  boot_timeout_s=60):
-    """Make sure OUR main_trickle build is answering -- without ever
-    interrupting a program someone else started on the shared Pico.
+                  boot_timeout_s=60, runner="stock"):
+    """Make sure OUR ``runner`` (opt_common.RUNNERS: the stock
+    main_trickle, or the refill-tap main_trickle_refill) is answering --
+    without ever interrupting a program someone else started on the
+    shared Pico.
 
-    * our runner answering ``s`` with the expected ``firmware:`` line
-      -> use it;
+    * that runner answering ``s`` with its ``firmware:`` line -> use it;
+    * this build's OTHER runner answering (idle at its prompt: a dose in
+      flight would hold the port or stream output) -> stop it and boot
+      the wanted one;
     * an idle ``>>>`` REPL -> clean-boot the runner from ``pico_dir``;
     * anything else (output streaming with nobody connected, a program
       that answers neither probe, another firmware's runner) -> RigBusy,
@@ -280,6 +292,9 @@ def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
 
     Raises RigBusy (nothing disturbed) or RuntimeError (rig fault).
     """
+    want = oc.RUNNERS[runner]["firmware"]
+    module = oc.RUNNERS[runner]["module"]
+    ours = {r["firmware"] for r in oc.RUNNERS.values()}
     # Output streaming while nobody holds the port means a program is
     # mid-run (another session's, or a dose whose executor died): never
     # type into it.
@@ -292,16 +307,20 @@ def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
     if kind == "runner":
         rest, _ = sess.drain()
         fw = _firmware_of(seen + rest)
-        if fw == oc.FIRMWARE_ID:
+        if fw == want:
             return
         what = "a runner reporting firmware {!r}".format(fw) if fw else \
             "a trickle runner without a firmware id (another build)"
-        if not takeover:
+        if fw in ours:
+            log("switching runners: stopping this build's idle {} for "
+                "{}".format(fw, module))
+        elif not takeover:
             raise RigBusy(
                 "the Pico is running {} -- expected {!r}.  If it is a "
                 "stale copy of ours, re-run with --takeover to restart "
-                "it".format(what, oc.FIRMWARE_ID))
-        log("--takeover: stopping {}".format(what))
+                "it".format(what, want))
+        else:
+            log("--takeover: stopping {}".format(what))
     elif kind is None:
         if not takeover:
             raise RigBusy(
@@ -315,27 +334,28 @@ def ensure_runner(sess, pico_dir=oc.PICO_FIRMWARE_DIR, takeover=False,
         # ctrl-C stops a program; ctrl-B also leaves a raw REPL behind
         sess.port.write(b"\x03\x03\x02")
         _wait_for(sess, IDLE_PROMPT, 5)
-    listing = _boot_runner(sess, pico_dir, boot_timeout_s)
+    listing = _boot_runner(sess, pico_dir, boot_timeout_s, module)
     rest, _ = sess.drain()
     fw = _firmware_of(listing + rest)
-    if fw != oc.FIRMWARE_ID:
+    if fw != want:
         raise RuntimeError(
             "booted firmware {!r} from {}, expected {!r} -- upload this "
             "branch's trickle_tap build there (README)".format(
-                fw, pico_dir or "/", oc.FIRMWARE_ID))
+                fw, pico_dir or "/", want))
 
 
-def push_params(sess, params, frozen=None):
+def push_params(sess, params, frozen=None, extra=()):
     """Send every ``set`` line and verify the firmware's echo.
 
     The campaign's frozen snapshot (the hand-tuned constants) goes
     first, so no value left ``set`` on the live runner by an earlier
     session or dose can leak into this trial.  The searched values, the
-    variant's dose-structure switch, and tau go on top.
+    variant's dose-structure switch, and tau go on top, then ``extra``
+    (the refill runner's knobs).
     """
     hard = oc.firmware_set_lines(params)
     skip = set(oc.firmware_values(params)) - {"tau_afterflow_s"}
-    lines = oc.frozen_set_lines(frozen, skip=skip) + hard
+    lines = oc.frozen_set_lines(frozen, skip=skip) + hard + list(extra)
     for line in lines:
         key = line.split()[1]
         sess.send(line)
@@ -461,6 +481,12 @@ def do_dose(args):
     covariates = json.loads(args.covariates) if args.covariates else {}
     frozen = json.loads(args.frozen) if args.frozen else {}
     powder_id = oc.normalize_powder_id(args.powder_id)
+    refill = []
+    if args.endgame == "refill":
+        knobs = oc.refill_values(dict(oc.refill_override(i)
+                                      for i in args.refill_set))
+        refill = oc.refill_set_lines(knobs)
+        covariates = dict(covariates, endgame="refill", refill_params=knobs)
 
     # Idempotency: a re-invocation with a uuid that already dosed is a
     # fetch, never a second dose.
@@ -485,8 +511,9 @@ def do_dose(args):
     sess = None
     try:
         sess = PicoSession(args.port, args.baud, raw_log)
-        ensure_runner(sess, pico_dir=args.pico_dir, takeover=args.takeover)
-        push_params(sess, params, frozen)
+        ensure_runner(sess, pico_dir=args.pico_dir, takeover=args.takeover,
+                      runner=args.endgame)
+        push_params(sess, params, frozen, extra=refill)
         result_doc, status = run_dose(sess, args.target_g, args.timeout_s)
         if result_doc is not None:
             telemetry = pull_telemetry(sess)
@@ -563,10 +590,28 @@ def main(argv=None):
     ap.add_argument("--no-upload", action="store_true")
     ap.add_argument("--fetch", metavar="UUID",
                     help="print a stored trial's summary; never doses")
+    ap.add_argument("--endgame", choices=sorted(oc.RUNNERS),
+                    default="stock",
+                    help="refill = PR #154's refill-tap runner "
+                         "(main_trickle_refill); production doses only")
+    ap.add_argument("--refill-set", metavar="KEY=VALUE", action="append",
+                    default=[],
+                    help="--endgame refill: change one refill_params knob "
+                         "for this dose (repeatable), e.g. refill_deg=15")
     args = ap.parse_args(argv)
 
     if args.fetch:
         return do_fetch(args)
+    if args.endgame != "stock" and args.mode != "production":
+        ap.error("--endgame {} is a production option (--mode production); "
+                 "campaign doses run the stock endgame".format(args.endgame))
+    if args.refill_set and args.endgame != "refill":
+        ap.error("--refill-set needs --endgame refill")
+    try:
+        for item in args.refill_set:
+            oc.refill_override(item)
+    except ValueError as exc:
+        ap.error("--refill-set {}".format(exc))
     missing = [n for n in ("powder_id", "target_g", "campaign_id",
                            "trial", "params") if getattr(args, n) is None]
     if missing:

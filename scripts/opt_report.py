@@ -12,8 +12,11 @@ writes, next to them:
   corners of the 2^(8-4) fraction, section 2.4), the tau fit, and the
   recommended parameter set.
 
-Both campaign variants (``campaign.json``'s ``variant``): the
-three-stage campaign and the bulk -> tap one (section 6).
+Every campaign variant (``campaign.json``'s ``variant``): the
+three-stage campaign, the bulk -> tap one (section 6), and the
+three-stage + cutoff-margin one (section 7), whose report also pairs
+its corners with its warm-start parent's (the same corner at 35 mg and
+at 0 mg) when the parent's directory sits next to it.
 
     python scripts/opt_report.py data/opt/salt-20260929T014732Z
 
@@ -53,7 +56,8 @@ TITLES = {"bulk_tap": "Bulk taps", "trim_tap": "Trim taps",
           "tolerance_g": "Trim tolerance band (g)",
           "bulk_min_rpm": "Approach (taper floor) RPM",
           "bulk_taper_start_g": "Taper start (g to go)",
-          "bulk_stop_margin_g": "Bulk stop margin (g)"}
+          "bulk_stop_margin_g": "Bulk stop margin (g)",
+          "cutoff_margin_g": "Cutoff margin (g)"}
 # Table order, and the dose-table cell, per variant.
 FACTORS = {
     oc.VARIANT_THREE_STAGE: (
@@ -64,12 +68,19 @@ FACTORS = {
         "bulk_tap", "bulk_tilt_deg", "bulk_rpm", "bulk_min_rpm",
         "bulk_taper_start_g", "bulk_stop_margin_g", "tap_tilt_deg",
         "tolerance_g"),
+    oc.VARIANT_THREE_STAGE_MARGIN: (
+        "bulk_tap", "trim_tap", "bulk_tilt_deg", "trickle_tilt_deg",
+        "tap_tilt_deg", "bulk_rpm", "trickle_start_remaining_g",
+        "tolerance_g", "cutoff_margin_g"),
 }
 CELL_HEADER = {
     oc.VARIANT_THREE_STAGE: "taps bulk/trim, bulk tilt, trim tilt, tap "
                             "tilt, RPM, threshold g, tol mg",
     oc.VARIANT_BULK_TAP: "bulk taps, bulk tilt, RPM, approach RPM, taper "
                          "start g, stop margin mg, tap tilt, tol mg",
+    oc.VARIANT_THREE_STAGE_MARGIN: "taps bulk/trim, bulk tilt, trim tilt, "
+                                   "tap tilt, RPM, threshold g, tol mg, "
+                                   "margin mg",
 }
 
 
@@ -172,10 +183,73 @@ def params_cell(p):
                 "{tap_tilt_deg:.1f}, {tol:.1f}").format(
                     margin=1000.0 * p["bulk_stop_margin_g"],
                     tol=1000.0 * p["tolerance_g"], **p)
-    return ("{bulk_tap}/{trim_tap}, {bulk_tilt_deg:.1f}, "
+    cell = ("{bulk_tap}/{trim_tap}, {bulk_tilt_deg:.1f}, "
             "{trickle_tilt_deg:.1f}, {tap_tilt_deg:.1f}, {bulk_rpm:.0f}, "
             "{trickle_start_remaining_g:.3f}, {tol:.1f}").format(
                 tol=1000.0 * p["tolerance_g"], **p)
+    if "cutoff_margin_g" in p:
+        cell += ", {:.1f}".format(1000.0 * p["cutoff_margin_g"])
+    return cell
+
+
+def crossed(doc, records, cdir):
+    """A warm-started margin campaign's corners paired with its parent's
+    (section 7.2) -> (parent doc, [(label, parent record, this record)])
+    or None when there is no parent directory next to ``cdir``."""
+    warm = doc.get("warm_start")
+    if not warm:
+        return None
+    pdir = os.path.join(os.path.dirname(os.path.abspath(cdir)),
+                        warm["campaign_id"])
+    if not os.path.exists(os.path.join(pdir, "campaign.json")):
+        return None
+    pdoc, precs, _ = load(pdir)
+
+    def corners(recs):
+        out = {}
+        for r in recs:
+            if (r["mode"] == "screen" and usable(r)
+                    and r["label"].startswith("corner-")):
+                out[r["label"]] = r       # the last usable dose
+        return out
+    hi, lo = corners(precs), corners(records)
+    return pdoc, [(l, hi[l], lo[l]) for l in sorted(lo) if l in hi]
+
+
+def margin_effects(pairs, doc):
+    """The margin's effect on each corner pair, overall and split by
+    each other factor's level (the margin x factor interactions the
+    crossed fraction estimates).  Time uses pairs where both ended ok."""
+    bounds = {p["name"]: p.get("bounds")
+              for p in oc.search_space_ax(variant(doc))}
+
+    def deltas(ps):
+        both = [(a["summary"], b["summary"]) for _l, a, b in ps
+                if a["summary"]["status"] == "ok"
+                and b["summary"]["status"] == "ok"]
+        dt = [b["t_total_s"] - a["t_total_s"] for a, b in both]
+        de = [b["abs_error_mg"] - a["abs_error_mg"]
+              for _l, a, b in ((l, x["summary"], y["summary"])
+                               for l, x, y in ps)
+              if a["abs_error_mg"] is not None
+              and b["abs_error_mg"] is not None]
+        return (statistics.mean(dt) if dt else None, len(dt),
+                statistics.mean(de) if de else None,
+                sum(1 for _l, _a, b in ps
+                    if b["summary"]["status"] == "overshoot"))
+    rows = []
+    for name in FACTORS[oc.VARIANT_THREE_STAGE]:
+        lo, hi = [], []
+        for pair in pairs:
+            v = pair[2]["params"][name]
+            high = (v == oc.CAT_ON) if bounds[name] is None \
+                else (v >= sum(bounds[name]) / 2.0)
+            (hi if high else lo).append(pair)
+        rows.append({"factor": TITLES[name],
+                     "levels": ("off / 2 Hz" if bounds[name] is None else
+                                "{:g} / {:g}".format(*bounds[name])),
+                     "lo": deltas(lo), "hi": deltas(hi)})
+    return deltas(pairs), rows
 
 
 def figure(doc, records, pick, path):
@@ -302,6 +376,16 @@ def report(cdir):
     if variant(doc) == oc.VARIANT_BULK_TAP:
         L.append("- **bulk -> tap** campaign: no PI trickle; the bulk halts "
                  "on a predicted final mass and the taps finish")
+    if variant(doc) == oc.VARIANT_THREE_STAGE_MARGIN:
+        warm = doc.get("warm_start") or {}
+        L.append("- **three-stage + cutoff margin** campaign: the PI "
+                 "trickle's hand-over margin is searched too (0-35 mg); "
+                 "overshoots are scored like jams{}".format(
+                     "; warm-started from `{}` ({} of its doses attached "
+                     "at {:.0f} mg)".format(
+                         warm["campaign_id"], warm.get("attached"),
+                         1000.0 * warm["cutoff_margin_g"])
+                     if warm else ""))
     L.append("- powder `{}`, target {} g, status **{}**{}".format(
         doc["powder_id"], doc["target_g"], doc["status"],
         "; the search loop stopped on: {}".format(doc["stop_reason"])
@@ -344,7 +428,7 @@ def report(cdir):
         L.append("```json\n{}\n```\n".format(json.dumps(
             dict(pick["params"]), indent=1)))
     if pareto and pareto.get("model_pareto"):
-        labels = oc.ax_trial_labels(records)
+        labels = oc.ax_trial_labels(records, doc.get("ax_attached"))
         L.append("## Model Pareto set (Ax, predicted means)\n")
         L.append("The dose column is the label `--validate-point` takes.\n")
         L.append("| Ax trial | dose | t_total (s) | abs_error (mg) | {} |"
@@ -378,13 +462,59 @@ def report(cdir):
                              fmt(v.get("median_t_total_s")),
                              p["validated"]))
         L.append("")
+    pairing = crossed(doc, records, cdir)
+    if pairing and pairing[1]:
+        pdoc, pairs = pairing
+        overall, rows = margin_effects(pairs, doc)
+        hi_mg = 1000.0 * float(pdoc["frozen_params"]["cutoff_margin_g"])
+        lo_mg = 1000.0 * float(pairs[0][2]["params"]["cutoff_margin_g"])
+        L.append("## Margin: the parent's corners at {:.0f} mg and at {:.0f} "
+                 "mg\n".format(hi_mg, lo_mg))
+        L.append("Each corner of `{}`'s 2^(8-4) fraction, dosed there at "
+                 "its {:.0f} mg margin and here at {:.0f} mg, both on the "
+                 "screening tau. Over the {} pairs: t_total changes by {} s "
+                 "(mean of the {} pairs where both ended ok), |error| by {} "
+                 "mg, and {} of the {:.0f} mg doses overshot.\n".format(
+                     pdoc["campaign_id"], hi_mg, lo_mg, len(pairs),
+                     fmt(overall[0], "{:+.1f}"), overall[1],
+                     fmt(overall[2], "{:+.1f}"), overall[3], lo_mg))
+        L.append("| corner | {} | {:.0f} mg: status, t (s), error (mg) | "
+                 "{:.0f} mg: status, t (s), error (mg) |".format(
+                     CELL_HEADER[oc.VARIANT_THREE_STAGE], hi_mg, lo_mg))
+        L.append("|---|---|---|---|")
+        for label, a, b in pairs:
+            sa, sb = a["summary"], b["summary"]
+            L.append("| {} | {} | {}, {}, {} | {}, {}, {} |".format(
+                label, params_cell({k: v for k, v in a["params"].items()
+                                    if k != "tau_afterflow_s"}),
+                sa["status"], fmt(sa["t_total_s"]),
+                fmt(sa.get("error_mg"), "{:+.1f}"), sb["status"],
+                fmt(sb["t_total_s"]), fmt(sb.get("error_mg"), "{:+.1f}")))
+        L.append("")
+        L.append("The margin's effect split by each other factor's level "
+                 "(a margin x factor interaction is a difference between "
+                 "the two columns):\n")
+        L.append("| Factor | low / high | change in t_total, at low -> at "
+                 "high (s) | change in abs_error, low -> high (mg) | "
+                 "overshoots at {:.0f} mg, low / high |".format(lo_mg))
+        L.append("|---|---|---|---|---|")
+        for e in rows:
+            L.append("| {} | {} | {} (n={}) -> {} (n={}) | {} -> {} | "
+                     "{} / {} |".format(
+                         e["factor"], e["levels"],
+                         fmt(e["lo"][0], "{:+.1f}"), e["lo"][1],
+                         fmt(e["hi"][0], "{:+.1f}"), e["hi"][1],
+                         fmt(e["lo"][2], "{:+.1f}"),
+                         fmt(e["hi"][2], "{:+.1f}"), e["lo"][3],
+                         e["hi"][3]))
+        L.append("")
     if effects:
         L.append("## Screening main effects ({} corners)\n"
                  .format(n_corners))
-        L.append("8 corners sit at each level of every factor. Time is "
+        L.append("{} corners sit at each level of every factor. Time is "
                  "averaged over the corners that ended `ok` (an overshoot "
                  "ends in seconds and would look fast); |error| is averaged "
-                 "over all of them.\n")
+                 "over all of them.\n".format(n_corners // 2))
         L.append("| Factor | low / high | mean t_total of ok doses, low -> "
                  "high (s) | mean abs_error, low -> high (mg) | overshoot "
                  "or jam, low / high |")

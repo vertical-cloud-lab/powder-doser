@@ -48,6 +48,16 @@ RESULT_DOC = {
     "telemetry_rows": 2, "log_path": "/trickle_log_004.csv",
     "dose_n": 5, "fw": oc.FIRMWARE_ID,
 }
+# What PR #154's refill runner adds to its RESULT line.
+REFILL_SECTION = {
+    "id": "refill-tap/2026-10-06", "refills": 2, "refill_deg": 20.0,
+    "refill_g": 0.0071, "refill_max_g": 0.0042, "tap_cycles": 9,
+    "tap_mean_g": 0.0011,
+    "events": [{"n": 1, "t_s": 61.2, "deg": 10.0, "after_tap": 2,
+                "mass_before_g": 0.4551, "delivered_g": 0.0042,
+                "avg_yield_g": 0.0005, "need_g": 0.0399}],
+    "params": dict(oc.REFILL_DEFAULTS),
+}
 
 
 class FakeSerial:
@@ -65,6 +75,9 @@ class FakeSerial:
     fw = oc.FIRMWARE_ID
     lock_error = False
     last = None
+    # what a fresh boot of each runner module reports
+    BOOT_FW = {"main_trickle": oc.FIRMWARE_ID,
+               "main_trickle_refill": oc.REFILL_FIRMWARE_ID}
 
     def __init__(self, port, baud, timeout=0.25, exclusive=False):
         if FakeSerial.lock_error:
@@ -75,6 +88,8 @@ class FakeSerial:
         FakeSerial.last = self
         self.exclusive = exclusive
         self.mode = FakeSerial.mode
+        self.fw = FakeSerial.fw
+        self.boot_line = None
         self.raw_mode = False
         self.queue = []
         self.set_seen = []
@@ -82,8 +97,8 @@ class FakeSerial:
         self.closed = False
 
     def _listing(self):
-        return ((["firmware: {}".format(FakeSerial.fw)]
-                 if FakeSerial.fw else [])
+        return ((["firmware: {}".format(self.fw)]
+                 if self.fw else [])
                 + ["stepper: 55 auger rpm",
                    "trickle parameters ('set <key> <value>'):",
                    "  bulk_rpm = 55.0"])
@@ -110,6 +125,10 @@ class FakeSerial:
         if self.mode == "repl":
             if "import main_trickle" in line:
                 self.boot_line = line
+                module = ("main_trickle_refill"
+                          if "import main_trickle_refill" in line
+                          else "main_trickle")
+                self.fw = FakeSerial.BOOT_FW[module]
                 self.mode = "runner"
                 self.queue += ["[rig] bringing up powder-doser test module"]
                 self.queue += self._listing()
@@ -129,9 +148,12 @@ class FakeSerial:
             self.queue.append("[set] {} = {} (was x)".format(key, value))
         elif line.startswith("g "):
             FakeSerial.doses += 1
+            doc = dict(RESULT_DOC, fw=self.fw)
+            if self.fw == oc.REFILL_FIRMWARE_ID:
+                doc["refill"] = REFILL_SECTION
             self.queue += ["[dose] trickle-tap dose to 0.5000 g",
                            "=== stage 1 'bulk': ...",
-                           "RESULT " + json.dumps(RESULT_DOC)]
+                           "RESULT " + json.dumps(doc)]
         elif line == "log":
             self.queue += ["--- BEGIN trickle telemetry CSV ---",
                            "t_s,phase,z_g",
@@ -461,6 +483,189 @@ def test_shared_pico_guards():
           isinstance(odc.port_holders("/dev/null"), list))
 
 
+MARGIN_PARAMS = dict(PARAMS, cutoff_margin_g=0.012)
+
+
+def test_margin_variant():
+    """Section 7: the three-stage dose with the trickle's cutoff margin
+    searched -- a 9th knob, pushed per trial like the other 8."""
+    check("8 three-stage knobs + cutoff_margin_g name the margin variant; "
+          "8 alone stay three-stage",
+          oc.variant_of(MARGIN_PARAMS) == oc.VARIANT_THREE_STAGE_MARGIN
+          and oc.variant_of(PARAMS) == oc.VARIANT_THREE_STAGE)
+    lines = oc.firmware_set_lines(oc.validate_params(MARGIN_PARAMS))
+    check("margin push: 9 knobs + the PI-trickle switch + tau last",
+          len(lines) == 11 and "set cutoff_margin_g 0.012" in lines
+          and "set trickle_enabled 1" in lines
+          and lines[-1] == "set tau_afterflow_s 0.83")
+    try:
+        oc.validate_params(MARGIN_PARAMS, oc.VARIANT_THREE_STAGE)
+        ok = False
+    except ValueError:
+        ok = True
+    check("a three-stage campaign refuses a margin value", ok)
+    box = {b["name"]: b["bounds"] for b in oc.MARGIN_SEARCH_SPACE_AX
+           if "bounds" in b}
+    check("margin box 0-35 mg: the hand-tuned 35 mg is its top edge",
+          box["cutoff_margin_g"] == [0.0, 0.035]
+          and [b for b in oc.MARGIN_SEARCH_SPACE_AX
+               if b["name"] != "cutoff_margin_g"] == oc.SEARCH_SPACE_AX)
+
+    _fake_pico("runner")
+    tmp = tempfile.mkdtemp(prefix="optdose-margin-")
+    code, lines = _run_capture(
+        ["--powder-id", "salt", "--target-g", "0.5", "--campaign-id",
+         "salt-margin-test", "--trial", "t-margin", "--params",
+         json.dumps(MARGIN_PARAMS), "--frozen",
+         json.dumps(dict(FROZEN, cutoff_margin_g=0.035)), "--out", tmp,
+         "--no-upload"])
+    port = FakeSerial.last
+    keys = [k for k, _v in port.set_seen]
+    check("executor: the trial's margin pushed once, after the snapshot "
+          "(whose 35 mg is left out)",
+          json.loads(lines[0])["status"] == "ok"
+          and keys.count("cutoff_margin_g") == 1
+          and ("cutoff_margin_g", "0.012") in port.set_seen
+          and keys.index("trickle_kp") < keys.index("cutoff_margin_g"))
+
+
+def _firmware_source(name):
+    path = os.path.join(os.path.dirname(os.path.dirname(_HERE)),
+                        "hardware", "test-module", "firmware",
+                        "trickle_tap", name)
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        return f.read()
+
+
+def test_refill_endgame():
+    """PR #154's refill-tap endgame as an opt-in production option: its
+    own runner, swapped in and out without --takeover, never in a
+    campaign dose."""
+    params_src = _firmware_source("refill_params.py")
+    tap_src = _firmware_source("refill_tap.py")
+    if params_src is None or tap_src is None:
+        print("  SKIP firmware source not checked out here")
+    else:
+        ns = {}
+        exec(params_src, ns)
+        knobs = {k.lower(): v for k, v in ns.items()
+                 if k.isupper() and not k.startswith("_")}
+        check("opt_common.REFILL_DEFAULTS == refill_params.py",
+              knobs == oc.REFILL_DEFAULTS)
+        m = re.search(r'^REFILL_ID = "([^"]+)"', tap_src, re.M)
+        check("opt_common.REFILL_FIRMWARE_ID == this build + refill_tap's "
+              "REFILL_ID", m is not None and oc.REFILL_FIRMWARE_ID
+              == oc.FIRMWARE_ID + "+" + m.group(1))
+    check("--refill-set parsing: typed like the defaults, unknown keys "
+          "refused",
+          oc.refill_override("refill_deg=15") == ("refill_deg", 15.0)
+          and oc.refill_override("refill_max=8") == ("refill_max", 8)
+          and oc.refill_override("refill_enabled=0")
+          == ("refill_enabled", False))
+    try:
+        oc.refill_override("tap_tilt_deg=5")
+        ok = False
+    except ValueError:
+        ok = True
+    check("--refill-set refuses a non-refill knob", ok)
+
+    tmp = tempfile.mkdtemp(prefix="optdose-refill-")
+    _fake_pico("runner")                  # the stock runner is up
+    code, lines = _run_capture(_dose_argv(
+        tmp, "t-refill", "--mode", "production", "--endgame", "refill",
+        "--refill-set", "refill_deg=15"))
+    port = FakeSerial.last
+    summ = json.loads(lines[0])
+    keys = [k for k, _v in port.set_seen]
+    check("--endgame refill: this build's idle stock runner is swapped "
+          "for main_trickle_refill without --takeover",
+          summ["status"] == "ok" and any(b"\x03" in w for w in port.writes)
+          and "import main_trickle_refill" in (port.boot_line or ""))
+    check("--endgame refill: every refill knob pushed after the trial's "
+          "values, --refill-set applied",
+          [k for k in keys if k.startswith("refill_")]
+          == sorted(oc.REFILL_DEFAULTS)
+          and ("refill_enabled", "1") in port.set_seen
+          and ("refill_deg", "15") in port.set_seen
+          and keys.index("tau_afterflow_s") < keys.index("refill_avg_taps"))
+    with open(os.path.join(tmp, "salt-test",
+                           "trial_t-refill.json")) as f:
+        doc = json.load(f)
+    check("trial doc: the RESULT's refill section and the endgame "
+          "covariates", doc["refill"]["refills"] == 2
+          and doc["covariates"]["endgame"] == "refill"
+          and doc["covariates"]["refill_params"]["refill_deg"] == 15.0
+          and doc["device"]["firmware"] == oc.REFILL_FIRMWARE_ID)
+
+    _fake_pico("runner", fw=oc.REFILL_FIRMWARE_ID)   # refill runner up
+    code, lines = _run_capture(_dose_argv(tmp, "t-after-refill"))
+    port = FakeSerial.last
+    check("a campaign dose finding the refill runner swaps the stock one "
+          "back, no --takeover, no refill knobs",
+          json.loads(lines[0])["status"] == "ok"
+          and "import main_trickle;" in (port.boot_line or "")
+          and not any(k.startswith("refill_") for k, _v in port.set_seen))
+
+    refused = 0
+    for extra in (("--endgame", "refill"),                  # mode bo
+                  ("--mode", "production", "--refill-set",
+                   "refill_deg=15"),                        # no endgame
+                  ("--mode", "production", "--endgame", "refill",
+                   "--refill-set", "tap_tilt_deg=5")):
+        _fake_pico("runner")
+        try:
+            with contextlib.redirect_stderr(io.StringIO()):
+                _run_capture(_dose_argv(tmp, "t-refused", *extra))
+        except SystemExit:
+            refused += FakeSerial.last is None
+    check("--endgame refill outside production, --refill-set without it, "
+          "and an unknown refill knob are refused before the port opens",
+          refused == 3)
+
+    import dose
+    cache = tempfile.mkdtemp(prefix="optdose-profiles-")
+    profile = {"profile_id": "salt-test-bo-005", "powder_id": "salt",
+               "target_g": 0.5, "validated": True,
+               "parameters": {k: v for k, v in PARAMS.items()
+                              if k != "tau_afterflow_s"},
+               "tau_afterflow_s": 0.8338, "frozen_params": FROZEN}
+    with open(os.path.join(cache, "salt.json"), "w") as f:
+        json.dump(profile, f)
+    real_cache, real_env = dose.PROFILE_CACHE, oc.MONGODB_ENV_FILE
+    dose.PROFILE_CACHE = cache
+    oc.MONGODB_ENV_FILE = os.path.join(cache, "no-such-env")
+    try:
+        with _mongo_env():
+            _fake_pico("runner")
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), \
+                    contextlib.redirect_stderr(err):
+                code = dose.main(["--powder-id", "salt", "--target-g", "0.5",
+                                  "--endgame", "refill", "--refill-set",
+                                  "refill_min_to_go_g=0.015", "--out", tmp,
+                                  "--no-upload"])
+    finally:
+        dose.PROFILE_CACHE, oc.MONGODB_ENV_FILE = real_cache, real_env
+    port = FakeSerial.last
+    summ = json.loads(out.getvalue().strip().splitlines()[-1])
+    with open(os.path.join(tmp, "production-salt", "trial_{}.json".format(
+            summ["trial_uuid"]))) as f:
+        doc = json.load(f)
+    check("dose.py --endgame refill: the profile's values + tau, then the "
+          "refill knobs, on the refill runner",
+          code == 0 and summ["status"] == "ok"
+          and "import main_trickle_refill" in (port.boot_line or "")
+          and ("tau_afterflow_s", "0.8338") in port.set_seen
+          and ("refill_min_to_go_g", "0.015") in port.set_seen
+          and ("refill_enabled", "1") in port.set_seen
+          and doc["covariates"]["endgame"] == "refill"
+          and doc["covariates"]["profile_id"] == "salt-test-bo-005"
+          and doc["refill"]["refills"] == 2
+          and "2 refill(s)" in err.getvalue())
+
+
 def test_firmware_id_in_sync():
     path = os.path.join(os.path.dirname(os.path.dirname(_HERE)),
                         "hardware", "test-module", "firmware",
@@ -577,7 +782,8 @@ def main():
                test_penalization,
                test_jam_classification, test_mongo_uri_resolution,
                test_ssh_remote_cmd, test_executor_end_to_end,
-               test_shared_pico_guards, test_firmware_id_in_sync):
+               test_shared_pico_guards, test_firmware_id_in_sync,
+               test_margin_variant, test_refill_endgame):
         print(fn.__name__)
         fn()
     if _FAILURES:

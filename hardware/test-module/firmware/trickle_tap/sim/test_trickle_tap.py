@@ -915,6 +915,31 @@ def test_heap_check_collects_before_truncating():
         tc.gc, tc._mem_free = real_gc, real_free
 
 
+def test_cutoff_margin_moves_the_handover():
+    """CUTOFF_MARGIN_G, the three-stage-margin campaign's 9th knob
+    (2026-10-09): a smaller margin hands the taps a smaller remainder
+    and a shorter tap stage, and every RESULT line echoes the margin
+    and k_sigma the dose ran with."""
+    out = {}
+    for margin in (0.035, 0.0):
+        res, doc, doser, tap, clock = _dose_collecting(
+            Plant(seed=11), p_over={"cutoff_margin_g": margin}, target=0.5)
+        ev = [e for e in doc["stop_events"] if e["phase"] == "trickle"]
+        out[margin] = (res, doc, 0.5 - ev[-1]["settled_g"] if ev else None)
+        check("margin {:.0f} mg: dose ok ({!r})".format(1000 * margin, res),
+              res.status == m3.DoseResult.OK)
+        check("margin {:.0f} mg: RESULT echoes cutoff_margin_g and k_sigma "
+              "({}, {})".format(1000 * margin, doc["params"].get(
+                  "cutoff_margin_g"), doc["params"].get("k_sigma")),
+              doc["params"].get("cutoff_margin_g") == margin
+              and doc["params"].get("k_sigma") == trickle_params.K_SIGMA)
+    (_r35, d35, h35), (_r0, d0, h0) = out[0.035], out[0.0]
+    check("margin 0 hands over closer: {:.1f} mg vs {:.1f} mg to go".format(
+        1000 * h0, 1000 * h35), None not in (h0, h35) and h0 < h35 - 0.025)
+    check("and taps for less time: {:.0f} s vs {:.0f} s".format(
+        d0["t_tap_s"], d35["t_tap_s"]), d0["t_tap_s"] < d35["t_tap_s"])
+
+
 def main():
     for fn in (test_kf_matches_numpy_reference,
                test_kf_basic_properties,
@@ -934,7 +959,8 @@ def main():
                test_telemetry_can_never_abort_a_dose,
                test_bulk_only_clog,
                test_bulk_then_taps,
-               test_heap_check_collects_before_truncating):
+               test_heap_check_collects_before_truncating,
+               test_cutoff_margin_moves_the_handover):
         print(fn.__name__)
         fn()
     if _FAILURES:
