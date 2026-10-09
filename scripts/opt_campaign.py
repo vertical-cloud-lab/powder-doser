@@ -796,6 +796,20 @@ def create_experiment(ax_client, name, variant=oc.VARIANT_THREE_STAGE):
     )
 
 
+def in_search_space(params, variant):
+    """True when every searched value of ``params`` sits inside the
+    variant's box (Ax refuses to attach anything else)."""
+    for p in oc.search_space_ax(variant):
+        value = params.get(p["name"])
+        if p.get("bounds"):
+            lo, hi = p["bounds"]
+            if value is None or not lo <= float(value) <= hi:
+                return False
+        elif value not in p["values"]:
+            return False
+    return True
+
+
 def ax_parameterization(params):
     """Campaign params -> the Ax search-space dict (drops tau)."""
     return {name: params[name] for name, _k, _kind
@@ -1532,21 +1546,26 @@ class Runner:
         warm = doc.get("warm_start")
         if warm:
             parent = self.parent_campaign(warm["campaign_id"])
+            outside = []
             for r in parent.records():
                 if not self.usable(r):
                     continue
                 params = {k: v for k, v in r["params"].items()
                           if k != "tau_afterflow_s"}
                 params["cutoff_margin_g"] = warm["cutoff_margin_g"]
+                if not in_search_space(params, self.variant):
+                    outside.append(r["label"])  # e.g. hand-picked values
+                    continue
                 _, idx = self.ax.attach_trial(ax_parameterization(params))
                 self.ax.complete_trial(trial_index=idx,
                                        raw_data=self.raw_data(r))
                 attached.append("{}/{}".format(warm["campaign_id"],
                                                r["label"]))
             warm["attached"] = len(attached)
-            log("attached {} doses of {} at cutoff_margin_g {} g".format(
-                len(attached), warm["campaign_id"],
-                warm["cutoff_margin_g"]))
+            log("attached {} doses of {} at cutoff_margin_g {} g{}".format(
+                len(attached), warm["campaign_id"], warm["cutoff_margin_g"],
+                "; left out {} outside the box: {}".format(
+                    len(outside), ", ".join(outside)) if outside else ""))
         n_parent = len(attached)
         for r in self.records:
             if r["mode"] not in ("screen", "recenter") or \

@@ -1448,7 +1448,12 @@ By default a new margin campaign builds on the powder's latest three-stage campa
   (`salt-20260929T014732Z/bo-005`). This campaign's own corners keep the parent's
   labels, so `corner-09` here is the parent's `corner-09` at 0 mg.
 - **The readout's reference** is the check point at 35 mg (the parent's validated
-  optimum, re-dosed today) instead of the hand-tuned baseline.
+  optimum, re-dosed today) instead of the hand-tuned baseline. `--baseline-reps` does
+  not apply (the checks take the baselines' place), and the corners keep the parent's
+  run order.
+- **Attached doses must sit inside the box.** A parent dose with hand-picked values
+  outside it (a `--validate-params` block, say) is left out and named in the log; all
+  60 salt doses are inside.
 - **The report** (`opt_report.py`) pairs each corner with the parent's (35 mg vs 0 mg)
   and splits the margin's effect on time and |error| by each other knob's level; a
   difference between the two levels is that knob's interaction with the margin.
