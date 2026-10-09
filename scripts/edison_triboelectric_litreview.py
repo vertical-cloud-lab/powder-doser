@@ -21,6 +21,7 @@ per-key triplet convention as ``hardware/edison_artifacts/``:
   so an interrupted session can be resumed by a follow-up run.
 * ``triboelectric_litreview.task.json`` — full task object from the API.
 * ``triboelectric_litreview.task.verbose.json`` — verbose trajectory payload.
+* ``triboelectric_litreview.files.json`` — trajectory file listing.
 * ``triboelectric_litreview.answer.md`` — the assistant's answer in markdown.
 * ``triboelectric_litreview.references.md`` — formatted answer + references.
 
@@ -286,6 +287,19 @@ def fetch() -> str:
         print(f"artifacts written under {ARTIFACT_DIR.relative_to(REPO_ROOT)}")
     else:
         print("(no answer body yet)")
+
+    # Any data-storage files attached to the trajectory (provenance API).
+    # Literature jobs usually attach none, but keep the listing for the record.
+    files = client.list_files(trajectory_id=task_id)
+    (ARTIFACT_DIR / f"{KEY}.files.json").write_text(
+        json.dumps(files, indent=2, default=str) + "\n"
+    )
+    for entry in files.get("data", []):
+        storage = entry.get("data_storage") or {}
+        storage_id = storage.get("id") or entry.get("data_storage_id")
+        if storage_id:
+            out = client.fetch_data_from_storage(storage_id)
+            print(f"fetched trajectory file {storage_id}: {out}")
     return status
 
 
