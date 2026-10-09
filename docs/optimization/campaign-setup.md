@@ -27,6 +27,12 @@ before code is written:
 > endgame finishes (`opt_campaign.py --variant bulk-tap`, firmware
 > `set trickle_enabled 0`). Everything else in this document applies to it unchanged.
 
+> **Update 2026-10-09** — §7 adds a third campaign variant that also searches the PI
+> trickle's cutoff margin, the "tap begin threshold" (`opt_campaign.py --variant
+> three-stage-margin`), warm-started from the salt campaign's 60 doses. §5.9 adds
+> PR #154's refill-tap endgame as an opt-in way to dose a validated profile
+> (`dose.py --endgame refill`), outside any campaign. Firmware `trickle_tap/2026-10-09`.
+
 > **Clarification, later the same day** — "run this manually" meant manually
 > *starting* the loop, not hand-running doses: once launched, the campaign is
 > automated end to end (ask → SSH dose → tell → record), and the operator
@@ -448,12 +454,12 @@ All six pieces exist; the table now points at them:
 
 | Piece | Where it runs | What it is |
 |---|---|---|
-| [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard; the §6 bulk → tap dose (`TRICKLE_ENABLED = 0`, `BULK_STOP_MARGIN_G`, optional Kalman-filter halt `BULK_HALT_KF`). Sim-tested (`sim/test_trickle_tap.py`, 19 tests) |
-| [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes the campaign's frozen snapshot (`--frozen`) and then the trial's `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice; `--fetch` on a uuid with no result answers `in-progress`, `interrupted`, or `not-found` (§5.4) |
-| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-point LABEL` / `--validate-params` replicate blocks that write `dosing_profiles` (§5.7), `--variant bulk-tap` (§6), `--frozen-set KEY=VALUE` |
+| [`trickle_tap/`](../../hardware/test-module/firmware/trickle_tap/) firmware additions | Pico | `BULK_TAP` / `TRICKLE_TAP` on/off knobs at the fixed 2 Hz cadence (`TAP_CADENCE_ON_MS=60 / TAP_CADENCE_OFF_MS=440`), cadence-tap machinery in both velocity mode and the PI loop (KF treats taps as noise); one machine-parseable `RESULT {json}` line per dose, aborts included (`res` reprints), with per-phase times, the settled scoring read (`FINAL_SETTLE_MS`), the §2.6 stop-event rows, and the params as executed; `OVERSHOOT_ABORT_G` guard; the §6 bulk → tap dose (`TRICKLE_ENABLED = 0`, `BULK_STOP_MARGIN_G`, optional Kalman-filter halt `BULK_HALT_KF`); `cutoff_margin_g` and `k_sigma` in RESULT's `params` (§7); PR #154's refill-tap runner `main_trickle_refill.py` next to `main_trickle.py` (§5.9). Sim-tested (`sim/test_trickle_tap.py`, 20 tests; `sim/test_refill_tap.py`, 10) |
+| [`scripts/opt_dose_capture.py`](../../scripts/opt_dose_capture.py) | Pi Zero | Per-dose executor, fully non-interactive: probes/boots the runner, pushes the campaign's frozen snapshot (`--frozen`) and then the trial's `set` lines with echo verification (incl. `tau_afterflow_s`), doses, parses `RESULT`, pulls telemetry, spools to `data/opt/<campaign_id>/` + Mongo upload, one JSON summary line on stdout. SIGHUP-immune; same-uuid re-invocation (or `--fetch`) returns the stored result and never doses twice; `--fetch` on a uuid with no result answers `in-progress`, `interrupted`, or `not-found` (§5.4); `--endgame refill` (production doses only) boots the refill-tap runner instead, and either runner of this build is swapped for the other without `--takeover` when it sits idle (§5.9) |
+| [`scripts/opt_campaign.py`](../../scripts/opt_campaign.py) | Laptop | The §5.2 loop: pinned `ax-platform==0.4.3` SOBOL→SAASBO template (`--model moo` fallback), explicit 180 s / 20 mg thresholds, §2.4 screening block (2⁸⁻⁴ IV + 4 centers + the §2.9 hand-tuned baseline doses) attached as existing data, τ refit + re-centered anchors, per-trial SSH dose with fetch-on-reconnect, §1.2 countdown/park/cadence prompts (incl. hopper-empty voiding), write-ahead in-flight dose + resume reconciliation (§5.4), snapshots + `--resume` (no id = latest campaign; restores from Mongo when the local copy is gone), the powder file's `latest_campaign` block, `--screen-only`, `--simulate` (dry-run against the #124-derived sim plant), Pareto readout against the baseline, `--validate-point LABEL` / `--validate-params` replicate blocks that write `dosing_profiles` (§5.7), `--variant bulk-tap` (§6), `--frozen-set KEY=VALUE`, `--variant three-stage-margin` with `--warm-start` (§7) |
 | [`scripts/fit_tau_afterflow.py`](../../scripts/fit_tau_afterflow.py) | Laptop | §2.8 fit: robust median-ratio τ0, quadratic τ1 kept only when \|t\|>2 and n≥10; `powder_models` upsert + local cache; `--plot` diagnostic scatter |
-| [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"` |
-| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: both variants' search spaces (`VARIANTS`; a parameter set's names pick its variant), campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
+| [`scripts/dose.py`](../../scripts/dose.py) | Pi Zero | §1.4 production dosing from the newest validated profile (Mongo → local cache fallback), full push of frozen snapshot + searched values + τ, logs `mode: "production"`; `--endgame refill` / `--refill-set KEY=VALUE` dose the profile with the refill-tap endgame (§5.9) |
+| [`scripts/opt_common.py`](../../scripts/opt_common.py) | shared | Schema/helpers: the three variants' search spaces (`VARIANTS`; a parameter set's names pick its variant), campaign↔firmware parameter translation, jam classification, §2.3 penalization, document builders, Mongo credential resolution (`$MONGODB_URI` → `$PI_MONGODB_URI` → `~/.config/powder-doser/env`), spool + lazy-pymongo upload (stdlib-only for the Zero) |
 | [`scripts/check_mongo.py`](../../scripts/check_mongo.py) | anywhere | MongoDB preflight: reports which credential source resolved (never the URI itself), pings the cluster, lists the `powder_doser` collections |
 
 Host-side tests: `scripts/tests/test_opt_dose_capture.py` (executor against a
@@ -1142,6 +1148,65 @@ every dose stops with a firmware mismatch.
 | `rig busy, not dosing: the Pico is … not interrupting it` | The Pico runs another program and `--takeover` was left out | Add `--takeover` if nobody else is using the rig |
 | `RuntimeError: booted firmware … expected …` | The Zero's scripts and the Pico's `/trickle_tap` build come from different commits, usually after a `git pull` on the Zero | Upload the firmware of the Zero's commit (README) |
 
+### 5.9 Production doses with the refill-tap endgame
+
+Added 2026-10-09, on William's request to make PR #154's `trickle_refill` method an
+option for dosing with the optimized parameters, outside the optimization campaign.
+
+**What changes.** Only the tap stage. After every tap the refill runner averages the
+yield of the last 4 taps since the last refill. When that average × 20 is below what is
+still needed to reach the band (at that yield the dose would need more than 20 more
+taps), it turns the auger 10° at 20 rpm between taps to refill the tube tip, measures
+what the turn itself delivered, and restarts the average. It never refills with less
+than 25 mg still to go, never when the largest refill delivery seen in the dose could
+overshoot, and at most 20 times per dose. Every stock budget still applies. Bulk, the
+PI trickle and the profile's values are the profile's. The rule, its guards, the rig-log
+evidence behind it (tap yield falls from 2.8 mg on the first tap to 0.5 mg after 40),
+and a simulated A/B are in
+[README_refill_tap.md](../../hardware/test-module/firmware/trickle_tap/README_refill_tap.md).
+
+**Before the first refill dose** (once): the upload and `git pull` of §7.4, which
+bring the refill runner (`main_trickle_refill.py`, `refill_tap.py`, `refill_params.py`)
+and this commit's controller to `/trickle_tap`, keeping the rig's own `config.py`. The
+Zero's `scripts/` and the Pico's build have to come from the same commit (firmware
+`trickle_tap/2026-10-09`), for stock doses as well.
+
+**Dose.** On the Zero, as in §5.8, with `--endgame refill`:
+
+```bash
+cd ~/powder-doser
+~/powder-doser-venv/bin/python scripts/dose.py --powder-id salt --target-g 0.5 --takeover --profile salt-20260929T014732Z-bo-005-20261006T034908Z --endgame refill
+```
+
+- `--refill-set KEY=VALUE` changes one refill knob for this dose (repeatable):
+  `refill_deg=15`, `refill_min_to_go_g=0.015`, `refill_taps_to_go=30`, … Any other key
+  is refused before the port opens.
+- `--refill-set refill_enabled=0` runs the stock endgame on the refill runner, step for
+  step: the A/B baseline on the same build.
+- Any stored point works the same way through the executor (§5.6 option 2): add
+  `--endgame refill` to its `--mode production` command.
+
+**What runs.** The executor boots `main_trickle_refill` instead of `main_trickle`. When
+the other runner of this build is up and idle at its prompt, it is stopped and swapped
+without `--takeover`; any other program on the Pico still needs `--takeover`. Every dose
+pushes the profile's frozen snapshot, its values and τ, then all 9 refill knobs
+(`refill_params.py`'s values, with `--refill-set` on top), each echo verified, so knobs
+someone left `set` on the runner never carry over.
+
+**Records.** Each dose is a normal production trial in `data/opt/production-<powder>/`
+and `opt_trials`, with `covariates.endgame = "refill"`, `covariates.refill_params`, and
+the RESULT's per-refill record under `refill` (when, how far the auger turned, what it
+delivered, the tap yields around it). The last log line adds the refill count, e.g.
+`ok in 61.0 s, error -1.2 mg, 3 refill(s) delivering 9.4 mg over 18 tap cycles`. At
+the REPL, `refills` prints the same for the last dose.
+
+**Never in a campaign.** The executor refuses `--endgame refill` outside
+`--mode production`, and a campaign dose that finds the refill runner up swaps the stock
+runner back. A profile was validated on the stock endgame, so a refill dose is that
+profile plus an endgame nobody has measured on this rig. The README suggests supervised
+smoke doses first (check what each refill delivered with `refills`), then ABBA blocks
+of `refill_enabled 1` and `0` at the same goal.
+
 ---
 
 ## 6. Alternative campaign: bulk → tap (no PI trickle)
@@ -1327,3 +1392,125 @@ at 148 mg/s, and this plant's afterflow there was 1.15 s × the flow, so it land
 same pattern wherever the afterflow outruns τ: at 2 Hz bulk taps and 40°, salt's
 afterflow reached 3.2 s × the stop rate (§6.2). The overshoot guard still aborts
 anything past 100 mg.
+
+---
+
+## 7. Campaign variant: the PI trickle's cutoff margin searched
+
+Added 2026-10-09. William asked on PR #166 to make the "tap begin threshold" a campaign
+parameter. That threshold is `CUTOFF_MARGIN_G`: the PI trickle halts when its predicted
+final mass `m̂ + r̂·τ + k·σ` reaches goal − margin, and the taps finish the dose. It was
+hand-tuned at 35 mg. In the 2026-10-06 salt validation at `bo-005`, the trickle handed
+over a median 53 mg short and the taps took a median 51 s of a 78 s dose
+([`tap_margin_20261008.png`](../../data/opt/salt-20260929T014732Z/tap_margin_20261008.png),
+[`plot_tap_margin.py`](../../data/opt/salt-20260929T014732Z/plot_tap_margin.py)).
+Replaying those doses' own tap stages from a closer start put the median at 48–71 s for
+a 15 mg margin, an estimate only rig doses can confirm. At 20–30° trim tilt, though,
+5 of 23 salt doses dropped a slug 11–111 mg past the aim after the cutoff, so the safe
+margin depends on the other knobs. That is why it is searched rather than just lowered.
+
+### 7.1 Search space
+
+The three-stage campaign's 8 knobs (§2.1) plus one:
+
+| # | Parameter | Box | Hand-tuned | Firmware knob |
+|---|---|---|---|---|
+| 9 | Cutoff margin | 0–35 mg | 35 mg | `CUTOFF_MARGIN_G` |
+
+- **The box tops out at the hand-tuned 35 mg**, so every dose of the three-stage
+  campaign is a point of this space (on its upper face) and can be attached as data.
+- **`K_SIGMA` stays frozen at 1.** Its k·σ term adds to the margin, so searching both
+  would be redundant.
+- **Firmware.** No control change: the margin already sets both the cutoff and the PI's
+  rate taper (set-point = (mg to go − margin) / 2τ). RESULT's `params` now echoes
+  `cutoff_margin_g` and `k_sigma` (firmware `trickle_tap/2026-10-09`).
+- **Same dose as the three-stage campaign.** Every trial pushes `set trickle_enabled 1`
+  and its margin as verified lines, like its other 8 values.
+
+### 7.2 Warm start from the three-stage campaign
+
+By default a new margin campaign builds on the powder's latest three-stage campaign
+(`--warm-start <id>` names one; salt: `salt-20260929T014732Z`):
+
+| Block | Doses | τ | Why |
+|---|---|---|---|
+| Ax data | every usable dose of the parent at margin 35 mg; for salt all 60: 42 campaign doses and 18 validation replicates | as dosed | real data on the box's 35 mg face; the replicates tell the model how noisy `bo-005` and `corner-09` are |
+| Screening | the parent's 16 corners again, same labels, at 0 mg | 0.30 s, as the originals | the same 16 corners at 35 and at 0 mg are the parent's 2⁸⁻⁴ IV fraction crossed with the margin: the margin's effect **and its interaction with every other knob**, trim tilt included, clear of the other two-factor interactions |
+| Checks (the anchor phase) | the parent's fastest validated point at 35 mg, twice (salt: `check-bo-005-00/01`); the box center at 17.5 mg, twice | fitted (salt 0.8338 s) | drift check against the 2026-10-06 `bo-005` block; a mid-margin point in the BO regime |
+| BO | SOBOL 2 → SAASBO, `--budget` (40) | fitted | 80 attached doses for salt |
+
+- **The margin is the only controller change.** The parent's frozen snapshot carries
+  over (knobs it predates keep today's defaults, which reproduce its dose), and so do its
+  logging overrides (salt: `log_to_flash` off, 1200 telemetry rows) and its τ fit (no
+  refit). `--frozen-set` is refused on a warm start; use `--warm-start none` to change
+  the controller.
+- **Labels.** Ax and the readout name the parent's doses `<parent id>/<label>`
+  (`salt-20260929T014732Z/bo-005`). This campaign's own corners keep the parent's
+  labels, so `corner-09` here is the parent's `corner-09` at 0 mg.
+- **The readout's reference** is the check point at 35 mg (the parent's validated
+  optimum, re-dosed today) instead of the hand-tuned baseline.
+- **The report** (`opt_report.py`) pairs each corner with the parent's (35 mg vs 0 mg)
+  and splits the margin's effect on time and |error| by each other knob's level; a
+  difference between the two levels is that knob's interaction with the margin.
+
+**Cold start** (`--warm-start none`, or a powder with no three-stage campaign): a fresh
+2⁹⁻⁴ IV screen of 32 corners (A–E a full 2⁵ with the margin as E; F = BCDE, G = ACDE,
+H = ABDE, J = ABCE), 4 centers and 2 baselines, 38 doses, then the usual τ fit and
+re-dosed anchors (§2.8).
+
+### 7.3 Overshoots count as failures
+
+A smaller margin trades overshoot risk for tap time, and in production an overshoot
+cannot be undone. A margin campaign therefore scores a dose that ends past the band
+(status `overshoot`) like a jam: at least 180 s and 20 mg for Ax, out of the observed
+front, and a validation block with one overshoot fails (`validated: false`). This
+applies to the parent's attached doses too (8 of the salt campaign's 60 overshot). Older
+campaigns keep scoring an overshoot by its raw |error|, as before; the rule lives in the
+campaign document (`"scoring": {"overshoot": "penalized"}`).
+
+### 7.4 Running it
+
+**Before the first dose**, once, with the rig handed over (`mpremote` stops whatever
+runs on the Pico). The Pico's `/trickle_tap` still holds the 2026-09-30 build
+(`6fc5f79`), and the Zero's sparse checkout has no firmware folder, so the six
+Pico-side files that changed since go over from the laptop. The rig's own `config.py`
+stays. About 30 KB more flash is needed (`mpremote connect /dev/ttyACM0 df` shows the
+free space):
+
+```bash
+# laptop, in this branch's checkout
+cd hardware/test-module/firmware/trickle_tap
+scp trickle_controller.py trickle_kf.py trickle_params.py main_trickle_refill.py \
+    refill_params.py refill_tap.py <user>@<zero-hostname>:/tmp/
+# the Zero
+cd /tmp && ~/powder-doser-venv/bin/mpremote connect /dev/ttyACM0 fs cp \
+    trickle_controller.py trickle_kf.py trickle_params.py main_trickle_refill.py \
+    refill_params.py refill_tap.py :trickle_tap/
+cd ~/powder-doser && git pull --ff-only
+```
+
+The executor refuses any other firmware id with `rig-busy`, for every campaign variant
+and `dose.py`, so the upload and the pull go together. Then, from the laptop:
+
+```bash
+python scripts/opt_campaign.py --powder-id salt --variant three-stage-margin --target-g 0.5 \
+    --budget 40 --warm-start salt-20260929T014732Z --host <user>@<zero-hostname>
+```
+
+`--warm-start salt-20260929T014732Z` is the default for salt (its latest three-stage
+campaign); naming it makes sure a missing local copy can never turn this into a cold
+start silently.
+
+- It prints `warm start from salt-20260929T014732Z: its 16 corners again at 0.0 mg, then
+  4 checks at tau 0.8338 s`, then doses those 20 (about 10 g of salt), then BO.
+- **Expect overshoots in the screen.** 6 of the parent's 16 corners overshot at 35 mg,
+  every one at 100 rpm, a 0.05 g bulk→trim threshold, or both: those overshoot in the
+  bulk, before the margin matters, and will again. At 0 mg the trickle's own slugs
+  come on top, most likely at 30° trim tilt and with trim taps. The overshoot guard
+  still aborts anything past 100 mg.
+- `--unattended`, `--resume`, `--validate-point` and `--validate-params` (now 9 values)
+  work as before. With more than one campaign per powder, `--validate-point` validates
+  in the most recently updated one, so name it: `--resume <id> --validate-point bo-003`.
+- **Profiles.** A margin profile carries all 9 values, and `dose.py` pushes the margin
+  with them. The two existing salt profiles keep dosing at 35 mg, the margin in their
+  frozen snapshot.

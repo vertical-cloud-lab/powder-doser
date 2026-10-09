@@ -51,8 +51,13 @@ imports resolve to these copies and root files are never touched.
    mpremote connect /dev/ttyACM0 fs mkdir :trickle_tap      # first time only
    mpremote connect /dev/ttyACM0 fs cp balance_filter.py config.py \
        main_three_phase.py main_trickle.py scale.py tic.py \
-       trickle_controller.py trickle_kf.py trickle_params.py :trickle_tap/
+       trickle_controller.py trickle_kf.py trickle_params.py \
+       main_trickle_refill.py refill_params.py refill_tap.py :trickle_tap/
    ```
+
+   The last three are PR #154's refill-tap runner
+   ([README_refill_tap.md](README_refill_tap.md)), an opt-in production
+   endgame (`dose.py --endgame refill`); campaign doses never boot it.
 2. Start it from a **fresh** REPL: press Ctrl+D (soft reset) first, so no
    root-level module another session imported is still cached.  Then run
    `import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()`
@@ -208,11 +213,29 @@ behaves as before):
   50–85 mg at bulk rates, so the bulk halts early.  The τ fit also
   pairs the slope rule's raw reading with its own slope.  Each bulk
   stop event records its `predictor`.
+- **Cutoff margin echoed** (2026-10-09, firmware
+  `trickle_tap/2026-10-09`) — RESULT's `params` now carries
+  `cutoff_margin_g` and `k_sigma`: the
+  [margin campaign](../../../../docs/optimization/campaign-setup.md#7-campaign-variant-the-pi-trickles-cutoff-margin-searched)
+  searches `CUTOFF_MARGIN_G` (0–35 mg) as a 9th knob.  No control
+  change: the margin already sets both the predictive cutoff and the
+  PI's rate taper.
+- **Refill-tap runner** (2026-10-09, from PR #154 `d37c4ac`) —
+  `main_trickle_refill.py` is `main_trickle.py` with a tap stage that
+  turns the auger between taps whenever the running tap yield falls far
+  below what is still needed ([README_refill_tap.md](README_refill_tap.md)).
+  Its firmware line is `trickle_tap/2026-10-09+refill-tap/2026-10-06`
+  and its RESULT carries a `refill` section.  Production only:
+  `dose.py --endgame refill`
+  ([§5.9](../../../../docs/optimization/campaign-setup.md#59-production-doses-with-the-refill-tap-endgame)).
+  The executor swaps between the two runners by itself when the other
+  one sits idle at its prompt.
 
 ## Testing without the rig
 
 ```
 python3 sim/test_trickle_tap.py
+python3 sim/test_refill_tap.py
 ```
 
 CPython checks: the pure-Python KF against the trim study's numpy
@@ -221,7 +244,9 @@ numpy), two closed-loop doses on a virtual plant, the within-tolerance
 no-actuation interlock, stall → tap handover, telemetry shape, a
 balance-lag-mismatch smoke test, live parameter changes, and the
 campaign additions above (RESULT line, cadence taps, overshoot guard,
-final settle, tap burst, bulk-only, bulk → tap with both halt rules).
+final settle, tap burst, bulk-only, bulk → tap with both halt rules, the
+cutoff margin moving the hand-over).  `sim/test_refill_tap.py` checks the
+refill-tap endgame (10 tests, PR #154).
 
 ## Faithfulness notes (what differs from the twin, and why)
 

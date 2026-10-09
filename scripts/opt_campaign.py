@@ -1702,10 +1702,15 @@ class Runner:
                                       for x in ("baseline-", "check-"))
                    and p["t_total_s"] <= ref["median_t_total_s"]
                    and p["abs_error_mg"] <= ref["median_abs_error_mg"]]
+        warm = doc.get("warm_start")
+        ref_name = ("check point {} at {:.0f} mg".format(
+            warm["check_point"], 1000.0 * warm["cutoff_margin_g"])
+            if warm else "hand-tuned baseline")
         out = {"campaign_id": doc["campaign_id"],
                "observed_feasible_front": front,
                "model_pareto": model_front,
                "baseline": base,
+               "reference": ref_name,
                "front_points_beating_baseline": [p["label"]
                                                  for p in beating]}
         path = os.path.join(self.campaign.dir, "pareto.json")
@@ -1720,10 +1725,10 @@ class Runner:
             log("  t={:6.1f} s  |err|={:5.1f} mg  {}  {}".format(
                 p["t_total_s"], p["abs_error_mg"], p["mode"], p["label"]))
         if ref:
-            log("hand-tuned baseline ({} doses): median t={:.1f} s, "
+            log("{} ({} doses): median t={:.1f} s, "
                 "|err|={:.1f} mg; {} front point(s) match or beat it on "
                 "both objectives".format(
-                    ref["n"], ref["median_t_total_s"],
+                    ref_name, ref["n"], ref["median_t_total_s"],
                     ref["median_abs_error_mg"], len(beating)))
         log("pick a point, then run --validate-params with its params "
             "(see pareto.json)")

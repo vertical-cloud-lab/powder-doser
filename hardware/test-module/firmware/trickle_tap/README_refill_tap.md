@@ -1,5 +1,14 @@
 # Refill-tap endgame (`main_trickle_refill.py`)
 
+> **On PR #166 since 2026-10-09:** this runner ships in the same
+> `/trickle_tap` build as `main_trickle.py` and is an opt-in
+> production endgame: `scripts/dose.py --endgame refill` (and
+> `opt_dose_capture.py --endgame refill --mode production`) boot it,
+> push every refill knob, and record the RESULT's `refill` section
+> ([campaign-setup §5.9](../../../../docs/optimization/campaign-setup.md#59-production-doses-with-the-refill-tap-endgame)).
+> Campaign doses never run it.  Its `s` listing now starts with
+> "trickle parameters", the line the executor waits for.
+
 An alternate form of `main_trickle.py` whose tap stage keeps a running
 average of the yield of each tap. When that yield is far below what is
 still needed to reach the tolerance band, it turns the auger a set amount
@@ -65,12 +74,10 @@ A/B comparison is one `set` away on the same build.
 
 ## Running it
 
-1. **Upload only `refill_params.py`, `refill_tap.py` and
+1. **Upload `refill_params.py`, `refill_tap.py` and
    `main_trickle_refill.py`** into the Pico's `/trickle_tap` folder, next to
-   the build already there. They work on top of either build, this PR's or
-   PR #166's, and the rig runs #166's. Do not re-upload the rest of this
-   branch's folder over #166's files: this branch has the older
-   controller.
+   the build already there (on PR #166 they are part of the build's upload
+   list, [README](README.md)).
 2. Open `main_trickle_refill.py` and choose "Run current file on Pico".
 3. At the REPL:
 
@@ -116,10 +123,10 @@ A/B comparison is one `set` away on the same build.
 The RESULT line (on #166's build) gets a `refill` section (count, auger
 degrees, mass delivered by the refills, per-refill events, the knobs as
 executed), and its `fw` is tagged `+refill-tap/2026-10-06`. #166's dose
-executor only boots `main_trickle.py` and refuses a runner whose
-`firmware:` line it does not know. So doses from this runner can't
-silently end up in a campaign: running one there would need
-`opt_common.FIRMWARE_ID` changed on purpose.
+executor boots this runner only for `--endgame refill`, which it accepts
+only for production doses; a campaign dose that finds it running swaps
+`main_trickle.py` back in. So doses from this runner can't silently end
+up in a campaign.
 
 ## Suggested first session (salt, 0.5 g)
 
