@@ -11,7 +11,7 @@ commit straight to the branch. Then ask `@claude` on PR #97 to implement it.
 - Questions with nothing ticked are facts or choices only the team can supply.
 
 The background for most items is the guidelines audit,
-[`GUIDELINES-AUDIT.md`](GUIDELINES-AUDIT.md). Items 1, 5, 9, 10 and 16 matter most.
+[`GUIDELINES-AUDIT.md`](GUIDELINES-AUDIT.md). **Item 9 is urgent** (credentials in public files). Items 1, 5, 10 and 16 matter most after that.
 
 ---
 
@@ -142,17 +142,37 @@ METTLER TOLEDO logo on the balance in the glove box. Cropping would cut the dose
 
 **Notes:**
 
-### 9. AI session logs are being deleted
+### 9. AI session logs: the archive, and credentials found in them (urgent)
 
-**Choose one.** DD requires "log files that include the inputs and outputs used in
-their study". GitHub deletes Actions logs 90 days after each run. Logs for runs up to
-about 11 July (all the Copilot sessions that modelled the AI parts) already return
-"410 Gone", and a few more expire every day. This session downloaded every log still
-available, plus the Claude execution-log artifacts, and stored them as described in
-the status note below. The paper now says the April to early-July logs are gone.
+**Status.** DD requires "log files that include the inputs and outputs used in their
+study". GitHub deletes Actions logs and artifacts 90 days after each run, and logs for
+runs before about 11 July (the Copilot sessions that modelled the AI parts) already
+return "410 Gone". This session downloaded everything still available: the job logs of
+404 of the 1051 runs since 11 July (most of the rest were skipped runs that never had a
+log) and all 290 Claude Code session transcripts (`claude-execution-log` artifacts),
+about 760 MB. They are attached to an **unpublished draft release**,
+[AI session logs archive](https://github.com/vertical-cloud-lab/powder-doser/releases/tag/untagged-23140c2b784562c3fbb0),
+which only people with write access can see. The paper now says the April to early-July
+logs expired and the later ones are part of the archived release.
 
-- [ ] Publish the archive as a GitHub release now and include it in the Zenodo release
-- [ ] Keep it unpublished until the Zenodo release
+**Credentials found.** Job logs are masked, but artifacts are not. A scan of the
+downloads for this repository's secrets found a credential for the test Pi and an old
+database connection string in a few Claude transcripts (and one job log) that are still
+on GitHub, plus the Pi's tailnet name in many transcripts. Which runs they are in is
+listed only in the draft release's notes, which only people with write access can see.
+Every archived copy is redacted (`<REDACTED:...>`), but the originals on GitHub can be
+downloaded by any signed-in GitHub user until they expire.
+
+**Choose any.**
+
+- [ ] Change the Pi's password, then update its repository secret
+- [ ] Rotate the database password named in the release notes, if it still works
+- [ ] Delete the affected runs' artifacts and logs from GitHub now (the redacted copies stay in the archive)
+
+**Archive. Choose one.**
+
+- [x] Keep it as a draft until the Zenodo release, then upload the assets there (current)
+- [ ] Publish the release now (this creates a tag) and include it in the Zenodo release
 - [ ] Other (Notes)
 
 **Notes:**
