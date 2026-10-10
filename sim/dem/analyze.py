@@ -31,7 +31,9 @@ import numpy as np
 
 def load(case):
     meta = json.load(open(os.path.join(case, "case.json")))
-    O = np.loadtxt(os.path.join(case, "outflow.txt"), comments="#", ndmin=2)
+    # audit_outlet.py writes a corrected series when grains left the box without crossing the counting disk
+    f = "outflow_corrected.txt" if os.path.exists(os.path.join(case, "outflow_corrected.txt")) else "outflow.txt"
+    O = np.loadtxt(os.path.join(case, f), comments="#", ndmin=2)
     return meta, O
 
 

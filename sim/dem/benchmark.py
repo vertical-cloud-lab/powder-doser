@@ -1,10 +1,11 @@
 """How many particles fit in one auger? Throughput and memory scaling.
 
-Fills the *entire* 250 mm Auger4 bore (23 flight turns + funnel) with a
+Fills the *entire* 250 mm bore of the parametric auger (23 flight turns +
+funnel; the default open-core AugerParams) with a
 dense FCC packing of monodisperse spheres (0.2 % initial overlap, so
 every particle starts with its full contact set), then times a fixed
 number of LIGGGHTS steps against the static mesh. Particle diameter
-sets the count: 0.9 mm -> ~0.14 M ... 0.35 mm -> ~2.4 M particles.
+sets the count: 0.9 mm -> 0.11 M ... 0.35 mm -> 2.05 M particles.
 
 Reports wall time per step, particle-steps per second, and peak RSS
 (memory) per particle, which is what limits a CPU twin.
@@ -77,7 +78,7 @@ def dense_packing(P, d, z_max):
 
 def run_one(d_mm, workdir, steps=150, warm=20):
     os.makedirs(workdir, exist_ok=True)
-    P = AugerParams(n_turns=23, feed_h=4.0)  # full 250 mm Auger4 bore
+    P = AugerParams(n_turns=23, feed_h=4.0)  # full 250 mm bore
     write_ascii_stl(os.path.join(workdir, "auger.stl"), auger_triangles(P))
     pts = dense_packing(P, d_mm, P.flight_top + P.flight_t)
     R = P.bore_r + 1.0

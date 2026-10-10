@@ -43,6 +43,8 @@ def main():
         json.dump(meta["cfg"], open(os.path.join(dst, "config.json"), "w"), indent=1)
         shutil.copy(case, os.path.join(dst, "case.json"))
         shutil.copy(os.path.join(d, "outflow.txt"), os.path.join(dst, "outflow.txt"))
+        if os.path.exists(os.path.join(d, "outflow_corrected.txt")):
+            shutil.copy(os.path.join(d, "outflow_corrected.txt"), os.path.join(dst, "outflow_corrected.txt"))
         if os.path.exists(os.path.join(d, "in.auger")):
             shutil.copy(os.path.join(d, "in.auger"), os.path.join(dst, "in.auger"))
         try:

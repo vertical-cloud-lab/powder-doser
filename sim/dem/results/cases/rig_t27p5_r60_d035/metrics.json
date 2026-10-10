@@ -1,0 +1,23 @@
+{
+ "case": "rig_t27p5_r60_d035",
+ "incline_deg": 27.5,
+ "rpm": 60,
+ "d_mm": 0.35,
+ "bore_d_mm": 20.9,
+ "core_d_mm": 7.96,
+ "shaft": true,
+ "pitch_mm": 10.4,
+ "starts": 1,
+ "exit_d_mm": 3.0,
+ "n_particles_init": 54826,
+ "complete": false,
+ "sim_time_s": 0.144930255,
+ "rate_mg_s": 0.0,
+ "mg_per_rev": 0.0,
+ "grain_mg": 0.048602729095677345,
+ "m_first_rev_mg": 0.962820063385368,
+ "mg_per_rev_full": 38.62054613502218,
+ "wall_s": null,
+ "windows": {},
+ "finished": false
+}

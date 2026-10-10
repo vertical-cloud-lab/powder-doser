@@ -1,0 +1,23 @@
+{
+ "case": "micro_rig_d030",
+ "incline_deg": 15,
+ "rpm": 55,
+ "d_mm": 0.3,
+ "bore_d_mm": 10.0,
+ "core_d_mm": 4.0,
+ "shaft": true,
+ "pitch_mm": 5.0,
+ "starts": 1,
+ "exit_d_mm": 2.5,
+ "n_particles_init": 13801,
+ "complete": false,
+ "sim_time_s": 0.34026384,
+ "rate_mg_s": 0.0,
+ "mg_per_rev": 0.0,
+ "grain_mg": 0.030536280592892782,
+ "m_first_rev_mg": 5.17283448133082,
+ "mg_per_rev_full": 25.619693915496082,
+ "wall_s": null,
+ "windows": {},
+ "finished": false
+}

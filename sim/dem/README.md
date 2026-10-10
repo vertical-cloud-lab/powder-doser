@@ -22,7 +22,7 @@ MP4: [`results/rig_t27p5_r60.mp4`](results/rig_t27p5_r60.mp4).*
 
 * **Without any calibration, the twin lands on the rig's measured salt yield at the PR #166 centre point** (105 vs
   105 ± 11 mg/rev at 27.5°, 60 rpm). Across the 0–45° tilt range it stays within about 35 % of the measurements
-  (22 / 71 / 105 / 153 mg/rev against ≈28 / 106–110 / 105 / ≈195), reproducing the 7× rise of yield with tilt.
+  (33 / 71 / 105 / 153 mg/rev against ≈28 / 106–110 / 105 / ≈195), reproducing the 7× rise of yield with tilt.
   It uses the rig's real auger geometry (measured from `threaded-auger-final.stl`), real-size salt and textbook
   friction. The core tip that sits inside the 3 mm exit
   leaves a 1.07 mm annulus (about 2.5 grain diameters), so grains arch across it and break up again. That produces the
@@ -50,12 +50,17 @@ were compared with salt measured on the rig, plus one geometry variant:
 |---|---|---|---|---|---|---|---|
 | `rig_t27p5_r60` | 27.5°, 60 rpm | CAD exit (core tip in the hole) | **116** ± 20 | 105 | 105 ± 11 (PR #166 centre point, n = 8) | 54 | 1.50 |
 | `rig_t22p5_r90` | 22.5°, 90 rpm | CAD exit (core tip in the hole) | **79** ± 14 | 71 | 106–110 (battery D, two days) | 37 | 1.50 |
-| `rig_t00_r60` | 0°, 60 rpm | CAD exit (core tip in the hole) | **25** ± 10 | 22 | ≈28 (battery C: 36 ± 7.5 at 30 rpm, n = 12, scaled by rpm^-0.35) | 1 | 1.00 |
+| `rig_t00_r60` | 0°, 60 rpm | CAD exit (core tip in the hole) | **38** ± 13 | 33 | ≈28 (battery C: 36 ± 7.5 at 30 rpm, n = 12, scaled by rpm^-0.35) | 3 | 1.00 |
 | `rig_t45_r60` | 45°, 60 rpm | CAD exit (core tip in the hole) | **174** | 153 | ≈195 (battery C: 248 ± 30 at 30 rpm, n = 12, scaled by rpm^-0.35) | 25 | 0.75 |
 | `rig_t27p5_r60_seed2` | 27.5°, 60 rpm | CAD exit, repeat with a different random packing | **124** | 102 | 105 ± 11 | – | 1.00 |
 | `rig_t27p5_r60_tip0p5` | 27.5°, 60 rpm | core tip cut 0.5 mm short | **153** | 112 | 105 ± 11 | – | 0.60 |
 | `rig_t27p5_r60_tip1p0` | 27.5°, 60 rpm | core tip cut 1.0 mm short | **271** | 224 | 105 ± 11 | – | 0.60 |
 | `rig_t27p5_r60_tip2` | 27.5°, 60 rpm | core tip cut 2 mm short | **465** | 427 | 105 ± 11 | – | 0.30 |
+
+*Outlet-count audit: at 0° tilt gravity points sideways, and 37 % of the grains leaving the exit fell out of the
+simulation box before reaching the counting disk. The 0° numbers above are reconstructed from grain IDs in the dumps
+(`audit_outlet.py`, `outflow_corrected.txt`). Every other case with dumps was audited and had every exit counted, and
+`run_case.py` now uses a wider, higher counting disk.*
 
 *Rig references at 0° and 45° are battery C measurements at 30 rpm, scaled to 60 rpm with the rig's own measured
 law (flow ∝ rpm^0.65, i.e. mg/rev ∝ rpm^−0.35). "After first ¼ rev" drops the start-up transient; ± is the
@@ -69,14 +74,14 @@ run-to-run scatter is small compared with its ±15–20 % within-run (pulse) sca
 
 Observations:
 
-* **Throughput.** Whole-run means are 105 / 71 / 22 / 153 mg/rev at 27.5 / 22.5 / 0 / 45°, against
+* **Throughput.** Whole-run means are 105 / 71 / 33 / 153 mg/rev at 27.5 / 22.5 / 0 / 45°, against
   105 ± 11 / 106–110 / ≈28 / ≈195 measured. The twin reproduces the strong tilt dependence and stays within
-  about 35 % everywhere, with no fitted parameter. Most of the remaining (low) bias is the size of two known
-  effects:
+  about 35 % everywhere (−34 % at 22.5° / 90 rpm, +18 % at 0°), with no fitted parameter. The remaining scatter is the
+  size of two known effects:
   * the rig's own fill-level effect: flow at 55° fell from 143 to 40 mg/s as a tube emptied;
   * the twin's statistical error over 1–1.5 revolutions: ±15–20 % per case.
 * **Afterflow.** After the motor stops the twin keeps delivering 54 mg (27.5°, 60 rpm, 0.6 s window), 37 mg
-  (22.5°, 90 rpm) and 1 mg (0°). The rig measured 81 ± 6.5 mg after a 60 rpm bulk halt at 40° (PR #166) and
+  (22.5°, 90 rpm) and 3 mg (0°). The rig measured 81 ± 6.5 mg after a 60 rpm bulk halt at 40° (PR #166) and
   22–36 mg auger-only at 55° (PR #131).
 * **Pulsed delivery.** The twin's discharge comes in slugs: in 50 ms windows it swings between about 13 and
   220 mg/s at 27.5°.
@@ -243,6 +248,7 @@ What the sweep says (salt-sized grains, one run each, so differences under about
 | [`analyze.py`](analyze.py) | dosing metrics: mg/rev, mass per 5/15/45/90° nudge (mean, sd, CV), afterflow, funnel hold-up |
 | [`figures.py`](figures.py) | comparison, scaling and sweep plots |
 | [`render_geometries.py`](render_geometries.py) | cut-away gallery of all simulated geometries |
+| [`audit_outlet.py`](audit_outlet.py) | follows grain IDs through the dumps to check that every grain leaving the exit was counted; writes a corrected outflow series if not |
 | [`export_results.py`](export_results.py), [`report_tables.py`](report_tables.py) | copy small per-case outputs into `results/`; print the README tables |
 | [`render.py`](render.py) | OVITO (Tachyon) cut-away movie: the near half of the rotating auger is clipped away (wall grey-blue, flight blue, solid core amber); grains are coloured by speed; a live dispensed-mass panel sits alongside |
 | [`results/`](results/) | case configs, outflow time series, metrics, benchmark data, figures, movies |

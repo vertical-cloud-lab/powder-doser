@@ -40,7 +40,8 @@ plt.rcParams.update({"font.size": 10, "axes.edgecolor": INK2, "axes.labelcolor":
 
 def load_case(case):
     meta = json.load(open(os.path.join(case, "case.json")))
-    O = np.loadtxt(os.path.join(case, "outflow.txt"), comments="#", ndmin=2)
+    f = "outflow_corrected.txt" if os.path.exists(os.path.join(case, "outflow_corrected.txt")) else "outflow.txt"
+    O = np.loadtxt(os.path.join(case, f), comments="#", ndmin=2)
     return meta, O[:, 0], O[:, 1] * 1e6
 
 

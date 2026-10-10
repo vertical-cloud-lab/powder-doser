@@ -1,17 +1,22 @@
 """Parametric surface meshes of the rotating-tube auger for LIGGGHTS.
 
-The rig's auger (``Auger4.stl``, Sam's "main design") is one rotating
-part: a 21 mm bore tube with an internal helical flight fused to the
-wall (10 mm pitch, about 2.2 mm thick, open 8 mm core), ending in a
-32 deg half-angle cone that necks down to a 2.5 mm exit hole. Measured
-from the STL by slicing (see README.md):
+The rig's auger (``threaded-auger-final.stl`` on branch
+``claude/issue-165-20261001-1931``; *not* ``Auger4.stl`` on main) is one
+rotating part, measured by slicing the STL and testing which points are
+solid:
 
-    bore radius R          10.5 mm
-    flight inner radius     4.0 mm   (open core, no shaft)
-    pitch                  10.0 mm   (right-handed)
-    flight axial thickness  2.2 mm
-    funnel                 cone r = 1.22 mm at z = 0 -> 8.85 mm at z = 12,
-                           then a flat shelf out to the bore
+    bore radius            10.45 mm
+    solid core radius       3.98 mm  (z = 12..83 mm), tapering in the funnel
+                                     to a 0.43 mm conical tip at the exit plane
+    flight                  single start, right-handed, 10.4 mm pitch,
+                            0.5 mm thick, continuing down the funnel
+    funnel                  cone r = 1.5 mm at z = 0 -> 10.45 mm at z = 12
+                            (36.9 deg half-angle); with the core tip in the
+                            hole the exit is an annulus r 0.43..1.5 mm
+
+The same generator also builds open-core / shaft / multi-start / short or
+long funnel variants (the micro-auger sweep) and a core tip cut off at
+``tip_z0`` above the exit plane.
 
 Everything is generated with the auger axis on +z and the exit hole at
 z = 0, so LIGGGHTS can spin the mesh with ``fix move/mesh rotate``
@@ -38,6 +43,8 @@ import numpy as np
 
 @dataclass
 class AugerParams:
+    # defaults are the parametric open-core variant used by benchmark.py; the rig
+    # auger is configured in results/cases/rig_*/config.json
     bore_r: float = 10.5          # mm, tube inner radius
     core_r: float = 4.0           # mm, flight inner edge (0 => flight reaches a shaft)
     shaft_r: float = 0.0          # mm, solid central shaft radius (0 => open core)

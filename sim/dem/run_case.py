@@ -211,7 +211,9 @@ def build_case(cfg, workdir):
     os.makedirs(workdir, exist_ok=True)
     P = AugerParams(**cfg["geometry"])
     write_ascii_stl(os.path.join(workdir, "auger.stl"), auger_triangles(P))
-    write_disk_stl(os.path.join(workdir, "outlet.stl"), radius=P.exit_r + 6.0, z=-1.5)
+    # counting disk just below the exit; wide, because at low tilt the grains fall sideways (-x)
+    # (audit_outlet.py checks that no exit goes uncounted)
+    write_disk_stl(os.path.join(workdir, "outlet.stl"), radius=P.bore_r + 40.0, z=-0.3)
     # plug: small disk closing the exit throat during settling
     write_disk_stl(os.path.join(workdir, "plug.stl"), radius=P.exit_r + 0.6, z=0.0)
     d = cfg["d_mean_mm"]
@@ -221,7 +223,8 @@ def build_case(cfg, workdir):
         keep = (pts[:, 0] < cfg["fill_x_max_mm"]) | (pts[:, 2] < P.funnel_h)
         pts, diam = pts[keep], diam[keep]
     R = P.bore_r + 1.0
-    box = (-R * 1e-3, R * 1e-3, -R * 1e-3, R * 1e-3, -6e-3, (P.z_top + 2.0) * 1e-3)
+    # extra room on the -x (gravity) side so grains leaving the exit at low tilt cross the counting disk
+    box = (-(R + 40.0) * 1e-3, R * 1e-3, -R * 1e-3, R * 1e-3, -6e-3, (P.z_top + 2.0) * 1e-3)
     write_data(os.path.join(workdir, "data.init"), pts, diam, cfg["density"], box)
 
     dmin = d * (1 - cfg["d_spread"]) * 1e-3
