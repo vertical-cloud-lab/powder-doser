@@ -1,0 +1,76 @@
+{
+ "reference": [
+  {
+   "a": "Baseplate",
+   "b": "Servo MG996R (+X)",
+   "mm3": 68.95
+  },
+  {
+   "a": "Baseplate",
+   "b": "Servo MG996R (-X)",
+   "mm3": 68.95
+  },
+  {
+   "a": "Mounting plate",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 1.065
+  },
+  {
+   "a": "Bracket (rear)",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 0.0
+  },
+  {
+   "a": "Stepper pinion",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 0.66
+  },
+  {
+   "a": "Baseplate",
+   "b": "Tap collar base",
+   "mm3": 0.137
+  },
+  {
+   "a": "Auger",
+   "b": "Auger cap",
+   "mm3": 0.0
+  }
+ ],
+ "recreated": [
+  {
+   "a": "Baseplate",
+   "b": "Servo MG996R (+X)",
+   "mm3": 68.95
+  },
+  {
+   "a": "Baseplate",
+   "b": "Servo MG996R (-X)",
+   "mm3": 68.95
+  },
+  {
+   "a": "Mounting plate",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 17.232
+  },
+  {
+   "a": "Bracket (rear)",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 6.259
+  },
+  {
+   "a": "Stepper pinion",
+   "b": "Stepper (NEMA 11)",
+   "mm3": 0.642
+  },
+  {
+   "a": "Baseplate",
+   "b": "Tap collar base",
+   "mm3": 0.135
+  },
+  {
+   "a": "Auger",
+   "b": "Auger cap",
+   "mm3": 0.0
+  }
+ ]
+}

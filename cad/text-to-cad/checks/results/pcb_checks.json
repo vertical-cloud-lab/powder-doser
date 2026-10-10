@@ -1,0 +1,87 @@
+{
+  "board": {
+    "fr4_bbox_min": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fr4_size": [
+      101.6,
+      76.2,
+      1.6
+    ],
+    "expected_size": [
+      101.6,
+      76.2,
+      1.6
+    ],
+    "envelope_ok": true,
+    "gerber_drills": 137,
+    "drill_breakdown": {
+      "pth": 128,
+      "via": 6,
+      "npth": 3,
+      "slots": 3
+    },
+    "unmatched_drills": [],
+    "tolerance_mm": 0.01
+  },
+  "registration": {
+    "max_pin_to_hole_mm": {
+      "5v_reg->U1_d24v22f5_5v": 0.0,
+      "hapticdriver->U3_drv2605l_haptic": 0.0,
+      "pico_l->U2_pico_w": 0.0,
+      "pico_r->U2_pico_w": 0.0003,
+      "Shunt->SR1_shunt_33v": 0.0,
+      "solenoiddriver->U4_drv8871_solenoid": 0.0,
+      "stepperpins->U5_tic_t500": 0.0,
+      "tic->U5_tic_t500": 0.0,
+      "ticpower->U5_tic_t500": 0.0,
+      "waveshareleft->U6_pico_2ch_rs232": 0.0004,
+      "waveshareright->U6_pico_2ch_rs232": 0.0006
+    },
+    "tolerance_mm": 0.05,
+    "pins_checked": 107,
+    "ok": true
+  },
+  "holder": {
+    "holder_bbox": [
+      [
+        -60.0,
+        0.0,
+        0.0
+      ],
+      [
+        60.0,
+        70.0,
+        84.0
+      ]
+    ],
+    "assembly_bbox": [
+      [
+        -60.0,
+        0.0,
+        -20.4
+      ],
+      [
+        60.0,
+        70.0,
+        92.137
+      ]
+    ],
+    "min_y_of_parts_above_wood": 0.0,
+    "holder_solids": 1,
+    "holder_valid": true,
+    "holder_volume_mm3": 69768.9,
+    "holder_mass_g_pla_100pct": 86.5,
+    "footprint_ok": true,
+    "pcb_vs_holder_pairs_tested": 293,
+    "pcb_vs_holder_overlaps_mm3": [],
+    "note": "wood screws extend to z < 0 on purpose (into the 38.1 mm board)"
+  },
+  "verdict": {
+    "board": true,
+    "registration": true,
+    "holder": true
+  }
+}

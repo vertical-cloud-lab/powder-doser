@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/baseplate.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/baseplate.step",
+ "volume_new_mm3": 139544.1,
+ "volume_ref_mm3": 139546.1,
+ "volume_intersection_mm3": 139519.6,
+ "volume_error_pct": -0.0,
+ "iou": 0.9996,
+ "bbox_min_delta_mm": [
+  0.0,
+  -0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 7.193478741413398e-05,
+  "p95": 6.880365175376819e-08,
+  "max": 0.004818897951504003
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 6.560422248669437e-05,
+  "p95": 6.280134181579906e-08,
+  "max": 0.004831793127073302
+ },
+ "faces_new": 76,
+ "faces_ref": 76,
+ "seconds": 12.3
+}

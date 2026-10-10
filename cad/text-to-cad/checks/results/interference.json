@@ -1,0 +1,1069 @@
+{
+ "below": {
+  "variant": "below",
+  "tilts": [
+   0.0,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "pairs": [
+   {
+    "tilt": 0.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (+X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 0.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (-X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 0.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 0.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 0.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 15.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (+X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 15.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (-X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 15.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 15.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 15.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 30.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (+X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 30.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (-X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 30.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 30.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 30.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 45.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (+X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 45.0,
+    "a": "Baseplate",
+    "b": "Servo MG996R (-X)",
+    "mm3": 68.95
+   },
+   {
+    "tilt": 45.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 45.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 45.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   }
+  ],
+  "fasteners": [
+   {
+    "tilt": 0.0,
+    "fastener": "Tap base screw (+)",
+    "kind": "fhcs_m3x30",
+    "part": "Baseplate",
+    "mm3": 4.748,
+    "expected": false
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Tap base nut (+)",
+    "kind": "hexnut_m3",
+    "part": "Baseplate",
+    "mm3": 7.274,
+    "expected": false
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (+X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (+X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (-X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (-X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (leg +X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (leg -X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (+X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (+X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (-X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (-X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (leg +X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (leg -X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (+X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (+X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (-X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (-X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (leg +X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (leg -X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (+X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (+X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (-X, y65)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (-X, y95)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (leg +X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (leg -X)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 340.956,
+    "expected": true
+   }
+  ]
+ },
+ "above": {
+  "variant": "above",
+  "tilts": [
+   0.0,
+   15.0,
+   30.0,
+   45.0
+  ],
+  "pairs": [
+   {
+    "tilt": 0.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 0.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 0.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 15.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 15.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 15.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 30.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 30.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 30.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   },
+   {
+    "tilt": 45.0,
+    "a": "Mounting plate",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 17.232
+   },
+   {
+    "tilt": 45.0,
+    "a": "Bracket (rear)",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 6.259
+   },
+   {
+    "tilt": 45.0,
+    "a": "Stepper pinion",
+    "b": "Stepper (NEMA 11)",
+    "mm3": 0.789
+   }
+  ],
+  "fasteners": [
+   {
+    "tilt": 0.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (+X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (+X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (-X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 0.0,
+    "fastener": "Board screw (-X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (+X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (+X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (-X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 15.0,
+    "fastener": "Board screw (-X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (+X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (+X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (-X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 30.0,
+    "fastener": "Board screw (-X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Solenoid screw (lower)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Solenoid screw (upper)",
+    "kind": "shcs_m3x5",
+    "part": "Solenoid (Adafruit 412)",
+    "mm3": 1.152,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (--)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (-+)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (+-)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Stepper screw (++)",
+    "kind": "shcs_m2p5x8",
+    "part": "Stepper (NEMA 11)",
+    "mm3": 2.668,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Servo pinion screw (+X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (+X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Servo pinion screw (-X)",
+    "kind": "shcs_m3x10",
+    "part": "Servo MG996R (-X)",
+    "mm3": 4.473,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (+X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (+X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (-X, y120)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   },
+   {
+    "tilt": 45.0,
+    "fastener": "Board screw (-X, y155)",
+    "kind": "wood_10x1p25",
+    "part": "Mounting board",
+    "mm3": 325.135,
+    "expected": true
+   }
+  ]
+ },
+ "seconds": 1084.0
+}
