@@ -1,0 +1,279 @@
+# Manual trickle-tap runner (KF + rate-PI on the Pico)
+
+Run the PR #124 twin's **trickle-tap controller** — the 3-state Kalman
+filter, the rate-PI loop, the predictive cutoff `m̂ + r̂τ + kσ ≥ goal − margin`,
+and the tap endgame — **on the real rig**, interactively, and watch it work.
+Until now this controller only existed in simulation
+([`optimization/benchmarks/bangbang.py`](../../../../optimization/benchmarks),
+re-derived in [`optimization/trim/trim_methods.py`](../../../../optimization/trim));
+every real dose so far used `main_three_phase.py`'s fixed increments.  This
+folder is the §4 port from [`docs/trim-bench-plan.md`](../../../../docs/trim-bench-plan.md),
+packaged so one person with the rig can run doses by hand.
+
+**This folder is self-contained** — every file the Pico needs is here, because
+the firmware set was previously scattered across three branches:
+
+| file | role | source of truth |
+|---|---|---|
+| `main_trickle.py` | **run this** — rig bring-up + REPL | new (PR #154) |
+| `trickle_params.py` | **edit this** — every knob, goal mass and tilt first | new (PR #154) |
+| `trickle_controller.py` | the ported dose controller + telemetry | new (PR #154) |
+| `trickle_kf.py` | the Kalman filter, pure Python (no numpy on a Pico) | new (PR #154) |
+| `main_three_phase.py` | drivers (stepper/tap/servo/scale) + read machinery, reused by subclassing | copy of `claude/issue-116-blockh-recovered` @ `81bbe75`, **extended for cadence taps (issue #164) — no longer identical** |
+| `scale.py`, `balance_filter.py` | A&D protocol + bracketed-read / shock-rejection layer | same |
+| `config.py`, `tic.py` | pins, serial formats, Tic T500 protocol | byte-identical copy of the PR #100 branch (`copilot/integrate-scale-feedback-loop`) |
+| `test_scale_contact.py` | first thing to run if the scale won't answer | same |
+| `plot_trickle.py` | laptop-side: telemetry CSV → inspection figure | new (PR #154) |
+| `sim/test_trickle_tap.py` | CPython tests, no hardware needed | new (PR #154) |
+| `example_run.csv/.png` | a simulated dose + its figure, so you know what to expect | new (PR #154) |
+
+> **If your Pico already carries a locally tuned `config.py`** (baud, pins,
+> servo range), keep yours: upload everything *except* `config.py`.  The copy
+> here is the repo's canonical rig config, including the 19200 8N1
+> AutoTrickler balance preset confirmed 2026-07-07.
+
+## Quick start
+
+**The Pico is shared.** The #116/#131 battery firmware, and whatever other
+sessions load, lives at the Pico's flash root and imports the root
+`config.py` / `main_three_phase.py`.  This build changed
+`main_three_phase.py`, so it goes in **its own folder, `/trickle_tap`, never
+the root**.  Don't use MicroPico's "Upload project to Pico", which writes to the
+root.  `main_trickle.py` puts `/trickle_tap` first on `sys.path`, so its
+imports resolve to these copies and root files are never touched.
+
+1. Upload from the Zero (or any machine with the Pico on USB). `mpremote`
+   takes the port lock, so it fails fast if another session holds the Pico.
+   Check with its owner before interrupting a program that is running:
+
+   ```bash
+   cd hardware/test-module/firmware/trickle_tap
+   mpremote connect /dev/ttyACM0 fs mkdir :trickle_tap      # first time only
+   mpremote connect /dev/ttyACM0 fs cp balance_filter.py config.py \
+       main_three_phase.py main_trickle.py scale.py tic.py \
+       trickle_controller.py trickle_kf.py trickle_params.py \
+       main_trickle_refill.py refill_params.py refill_tap.py :trickle_tap/
+   ```
+
+   The last three are PR #154's refill-tap runner
+   ([README_refill_tap.md](README_refill_tap.md)), an opt-in production
+   endgame (`dose.py --endgame refill`); campaign doses never boot it.
+2. Start it from a **fresh** REPL: press Ctrl+D (soft reset) first, so no
+   root-level module another session imported is still cached.  Then run
+   `import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()`
+   (or open `main_trickle.py` → **"Run current file on Pico"**).  The
+   campaign executor (`scripts/opt_dose_capture.py`) does all of this itself.
+   It only boots from an idle `>>>` prompt, and it refuses with `rig-busy`
+   instead of interrupting another session's program.
+3. In the Pico terminal:
+
+```
+g              # dose GOAL_MASS_G (default 0.200 g) with trickle-tap
+g 0.5          # dose 0.5 g
+set tilt 15    # trickle at 15 plate degrees from now on
+set goal 0.1   # bare g now doses 0.1 g
+s              # show every parameter and the rig state
+log            # print the last dose's telemetry CSV
+!              # EMERGENCY STOP (de-energise everything)
+```
+
+Don't install it as the power-on `main.py` on the shared Pico: that would
+start it at every power-up for every other session too.  Keep a hand near `!` (or the power switch) for the
+first doses — this controller has **never run on hardware** (bench-plan §4
+asks for five supervised smoke doses before any campaign use).
+
+## Changing parameters
+
+Three ways, most to least persistent:
+
+- **Edit `trickle_params.py`** (goal mass and trickle tilt are the first two
+  values), save, `mpremote connect /dev/ttyACM0 fs cp trickle_params.py
+  :trickle_tap/`, then Ctrl+D (soft reset) and re-run.  Survives power
+  cycles.
+- **`set <key> <value>`** at the REPL — every lowercase form of a
+  `trickle_params` name works (`set trickle_tilt_deg 15`,
+  `set cutoff_margin_g 0.025`, `set bulk_enabled 0`…).  Shorthands:
+  `goal`, `tilt`, `tol`.  Lost on reset.
+- **`g <grams>`** overrides the goal for one dose.
+
+Parameters worth knowing on day one: `trickle_tilt_deg` (the tilt ask),
+`goal_mass_g`, `bulk_enabled` (set 0 to watch a pure trickle from rest),
+`cutoff_margin_g` / `k_sigma` (how early the trickle halts),
+`tau_bal_s` (the balance-lag belief — the study's most sensitive number;
+bench-plan test A1 measures it), and `trickle_kp` / `trickle_ki`.
+
+## What a dose looks like
+
+Stages (each skipped automatically if already inside its threshold):
+
+1. **bulk** — velocity mode at `BULK_RPM` until
+   `TRICKLE_START_REMAINING_G` (+ anticipation) remain.  Targets below
+   ~0.35 g skip straight to the trickle.
+2. **trickle** — the PI loop, printing one line per poll (~4 Hz): KF mass,
+   rate vs set-point, commanded rpm, the cutoff prediction, sigma.
+3. **tap** — single solenoid taps with settled bracketed reads, auger
+   nudges when the lip runs dry, until within `TOLERANCE_G`.
+
+Expect the trickle to hand over **35–65 mg short by design** (the fixed
+35 mg margin plus the k·σ term) and the taps to close the rest; that is the
+deployed twin's behaviour, priced in the trim study.
+
+## Inspecting a run
+
+Every dose buffers one telemetry row per trickle poll (plus the bulk/tap
+mass staircase) and writes `/trickle_log_NNN.csv` on the Pico.  Get it to
+your laptop either by downloading the file with MicroPico, or by typing
+`log` and pasting the terminal output into a file.  Then:
+
+```
+python3 plot_trickle.py trickle_log_000.csv                 # full dose
+python3 plot_trickle.py trickle_log_000.csv --trickle-only  # zoom the PI
+```
+
+(needs `pip install matplotlib`).  The figure below is the included
+**simulated** `example_run.csv` — a 0.2 g dose against the virtual plant,
+zoomed to the trickle: PI ramp-up, the rate holding its set-point, the taper,
+and the cutoff prediction reaching the halt line.
+
+![example trickle telemetry](example_run_trickle_zoom.png)
+
+Columns: `t_s, phase, z_g` (raw balance), `fresh`, `m_g, r_gps, sigma_g`
+(KF state), `ff_gpr` (learned feed factor), `r_sp_gps, err_gps, integ,
+rpm_cmd` (the PI), `pred_g, cutoff_g` (the halt rule), `clamp_hits`
+(how often the r ≥ 0 projection fired — nonzero means the σ margin was
+miscalibrated in that stretch, a number the study asks to watch).
+
+## Optimization-campaign additions (issue #164)
+
+The issue #164 campaign drives this runner mechanically, so the firmware
+grew four small features (all off/neutral by default — a manual session
+behaves as before):
+
+- **Cadence taps** — `set bulk_tap 1` / `set trickle_tap 1` fire one
+  `TAP_CADENCE_ON_MS` solenoid pulse per
+  `TAP_CADENCE_ON_MS + TAP_CADENCE_OFF_MS` period (60 + 440 ms = 2 Hz,
+  locked 2026-09-22) while that phase actuates: a flow aid for powders
+  that will not feed from rotation alone.  Both are off in the salt
+  baseline; they are the two categorical parameters of the #164 search
+  space.
+- **Final settle** — after the last actuation the dose waits
+  `FINAL_SETTLE_MS` (2 s) and takes one more bracketed reading; *that*
+  settled value scores the dose (`|error|`, `t_total`) and decides
+  ok-vs-overshoot, per the campaign's objective definitions.
+- **Overshoot guard** — any phase aborts the dose as `overshoot` the
+  moment mass exceeds `goal + OVERSHOOT_ABORT_G` (100 mg), instead of
+  feeding a runaway dose to completion.
+- **`RESULT` line** — every dose (aborts included) ends with one
+  machine-parseable line, `RESULT {json}`: status, settled final mass,
+  signed error, per-phase times, tap/nudge counts, the learned feed
+  factor, the searched parameters *as executed*, and one **stop event**
+  per halt (bulk halt + trickle cutoff: at-stop mass, settled mass,
+  afterflow, rate from both the KF and the trailing-2 s poll slope) —
+  the per-powder `tau_afterflow` fit dataset.  `res` reprints the last
+  one; `scripts/opt_dose_capture.py` parses it on the Pi Zero.
+- **Tap burst** (added 2026-09-30 for the Al 4047 dose in PR #166) —
+  `set tap_burst_above_g 0.010` fires `TAP_BURST_TAPS` (2) taps per tap
+  cycle while more than 10 mg is still to go, then single taps for the
+  last stretch, where a 2-tap slug could overshoot.  Both stretches share
+  the tap cycle and nudge budgets, and `phase_cycles.tap_burst` in the
+  `RESULT` line counts the multi-tap cycles.  Off (0) by default.
+- **Bulk-only dose** (added 2026-09-30 for a clogged Al 4047 load in
+  PR #166, where chunks in the tube fed at 40° and stopped dead at the
+  10°/15° trim tilts) — `set bulk_only 1` runs the whole dose at
+  `BULK_TILT_DEG` with the bulk cadence taps: no trickle, no tap
+  endgame, the tube never tips shallower.  The auger rpm tapers from
+  `BULK_RPM` to `BULK_MIN_RPM` (20) over the last `BULK_TAPER_START_G`
+  (100 mg), and is multiplied by 1.5 (up to `BULK_RPM`) after every
+  `BULK_BOOST_S` (3 s) without 2 mg of flow.  The auger halts when
+  mass + trailing-2 s slope × `TAU_AFTERFLOW_S` reaches goal − tol/2,
+  and a dose that settles short by more than the tolerance gets another
+  pass (`BULK_MAX_PASSES`, 8).  Each halt is a bulk stop event, and no
+  flow at full rpm for 15 s ends the dose as `stalled`.  Off by default.
+- **Bulk → tap dose** (added 2026-10-01 in PR #166, for the
+  [no-PI campaign](../../../../docs/optimization/campaign-setup.md#6-alternative-campaign-bulk--tap-no-pi-trickle))
+  — `set trickle_enabled 0` drops the PI trickle.  The bulk then runs
+  the bulk-only stage above (taper, boost, predictive halt) in one
+  pass, but aims `BULK_STOP_MARGIN_G` (10 mg) short of the goal, and
+  the unchanged tap endgame (burst included) finishes from the settled
+  reading.  Start the taper before the predicted afterflow (flow ×
+  `TAU_AFTERFLOW_S`, about 0.1 g for salt at 100 rpm) or the halt fires
+  at full speed.  `BULK_ONLY` wins when both are set.  On by default
+  (`TRICKLE_ENABLED = True`: the tuned three-stage dose).
+- **Kalman-filter bulk halt** — `set bulk_halt_kf 1` makes the
+  predictive halt of both modes above use the trickle's Kalman filter
+  (`m̂ + r̂·τ + k·σ`, the PI cutoff rule) instead of the trailing slope.
+  The filter starts at the pass's first trusted poll (1.5 s in), seeded
+  from the poll-slope fit: the trickle's 0.35 g/rev feed-factor prior
+  is 3× salt's and left `m̂` 140 mg ahead at the halt in the sim.  Off
+  by default: the filter de-lags `m̂` with `TAU_BAL_S` = 0.7 s, while
+  the 2026-08-14 drop tests put the balance lag near 0.16 s.  If they
+  are right, `m̂` runs 0.54 s × the flow ahead of the pan: about 12 mg
+  at trickle rates (lost in the scatter of the salt campaign's trickle
+  cutoffs, where `m̂` was above the settled mass in 18 of 35) but
+  50–85 mg at bulk rates, so the bulk halts early.  The τ fit also
+  pairs the slope rule's raw reading with its own slope.  Each bulk
+  stop event records its `predictor`.
+- **Cutoff margin echoed** (2026-10-09, firmware
+  `trickle_tap/2026-10-09`) — RESULT's `params` now carries
+  `cutoff_margin_g` and `k_sigma`: the
+  [margin campaign](../../../../docs/optimization/campaign-setup.md#7-campaign-variant-the-pi-trickles-cutoff-margin-searched)
+  searches `CUTOFF_MARGIN_G` (0–35 mg) as a 9th knob.  No control
+  change: the margin already sets both the predictive cutoff and the
+  PI's rate taper.
+- **Refill-tap runner** (2026-10-09, from PR #154 `d37c4ac`) —
+  `main_trickle_refill.py` is `main_trickle.py` with a tap stage that
+  turns the auger between taps whenever the running tap yield falls far
+  below what is still needed ([README_refill_tap.md](README_refill_tap.md)).
+  Its firmware line is `trickle_tap/2026-10-09+refill-tap/2026-10-06`
+  and its RESULT carries a `refill` section.  Production only:
+  `dose.py --endgame refill`
+  ([§5.9](../../../../docs/optimization/campaign-setup.md#59-production-doses-with-the-refill-tap-endgame)).
+  The executor swaps between the two runners by itself when the other
+  one sits idle at its prompt.
+
+## Testing without the rig
+
+```
+python3 sim/test_trickle_tap.py
+python3 sim/test_refill_tap.py
+```
+
+CPython checks: the pure-Python KF against the trim study's numpy
+filter on a shared 400-step trace (agreement to 1e-15; skipped without
+numpy), two closed-loop doses on a virtual plant, the within-tolerance
+no-actuation interlock, stall → tap handover, telemetry shape, a
+balance-lag-mismatch smoke test, live parameter changes, and the
+campaign additions above (RESULT line, cadence taps, overshoot guard,
+final settle, tap burst, bulk-only, bulk → tap with both halt rules, the
+cutoff margin moving the hand-over).  `sim/test_refill_tap.py` checks the
+refill-tap endgame (10 tests, PR #154).
+
+## Faithfulness notes (what differs from the twin, and why)
+
+- **KF seed covariance.** The twin seeds `P = diag(0.05)`; from a settled
+  bracketed read that makes the cutoff's k·σ term ≈ 0.22 g on the first
+  polls — bigger than the whole trim headroom — so a from-rest trickle
+  would halt on poll 1 having dispensed nothing.  (The twin never sees
+  this because its trim always starts exactly 0.30 g out.)  The port seeds
+  P from the bracket's measured sigma (≥ 1 mg floor); analysis in
+  `TrickleKF.seed`'s docstring.
+- **Measured dt.** The loop period on hardware is the commanded sleep plus
+  serial latency, so the KF model is rebuilt from the measured interval
+  each poll instead of assuming a fixed dt.  With a constant dt it is
+  bit-identical to the twin (that is what the cross-check test drives).
+- **Fixed margin.** The twin's ff-adaptive margin term is dropped, matching
+  the trim study (the Edison review confirmed it fires in 0 of 360 doses).
+- **Tap budgets** follow the twin's `tap_finish` (20 nudges / 120 cycles),
+  not the three-phase phase-3 defaults (10 / 150), because the trickle
+  hands over deeper than the three-phase fine→tap threshold.
+
+## Safety / etiquette
+
+- The rig may be mid-campaign (battery runs launch detached and go for
+  hours).  **Check nothing is running before taking the bench.**
+- First doses: salt, small targets (50–200 mg), hand near `!`.
+- The tare is verified, not trusted (a refused tare becomes a subtracted
+  baseline, loudly) — but still start with an empty cup; the balance has
+  also not been calibrated since the fume-hood move (bench-plan §1).
+- If the scale answers nothing: run `test_scale_contact.py` first — it
+  scans both known serial presets and prints a verdict.

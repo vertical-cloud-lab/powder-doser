@@ -1,0 +1,62 @@
+{
+ "kind": "powder_model",
+ "schema_version": 1,
+ "powder_id": "salt",
+ "latest_campaign": {
+  "campaign_id": "salt-20260929T014732Z",
+  "variant": "three-stage",
+  "simulate": false,
+  "target_g": 0.5,
+  "status": "validated",
+  "phase": "bo",
+  "iteration": 60,
+  "bo_iteration": 14,
+  "progress": {
+   "screen": [
+    22,
+    22
+   ],
+   "recenter": [
+    6,
+    6
+   ],
+   "bo": [
+    14,
+    200
+   ],
+   "validation": 18
+  },
+  "last_dose": {
+   "trial_index": 59,
+   "label": "val-corner-09-07",
+   "mode": "validation",
+   "trial_uuid": "76243c26-df08-4df4-82d5-0d4772ca1017",
+   "status": "ok",
+   "t_total_s": 355.88,
+   "abs_error_mg": 2.8,
+   "jam": false,
+   "spill": null,
+   "void": null,
+   "utc": "2026-10-06T04:20:38.188494+00:00"
+  },
+  "in_flight": null,
+  "tau_afterflow_s": 0.8338,
+  "state_dir": "data/opt/salt-20260929T014732Z",
+  "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-20260929T014732Z --host <user>@<zero-hostname>"
+ },
+ "updated_utc": "2026-10-06T04:20:38.648927+00:00",
+ "tau_afterflow": {
+  "tau0_s": 0.8338,
+  "tau1_s_per_gps": null,
+  "tau1_t_stat": 1.11,
+  "tau0_median_s": 0.8338,
+  "model": "linear",
+  "n_events": 26,
+  "rate_range_gps": [
+   0.0221,
+   0.1586
+  ],
+  "resid_rms_mg": 31.57
+ },
+ "source_campaign": "salt-20260929T014732Z"
+}

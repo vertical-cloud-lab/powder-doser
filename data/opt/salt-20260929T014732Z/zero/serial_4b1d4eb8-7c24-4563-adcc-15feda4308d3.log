@@ -1,0 +1,200 @@
+--- session 2026-09-29T03:52:21.575813+00:00 ---
+>> 
+>> s
+firmware: trickle_tap/2026-09-25
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 15.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_enabled = True
+  bulk_poll_ms = 250
+  bulk_rpm = 100.0
+  bulk_settle_ms = 1500
+  bulk_tap = True
+  bulk_tilt_deg = 40.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 2400
+  log_to_flash = False
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 15.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.8338
+  tau_bal_s = 0.7
+  tolerance_g = 0.003
+  trickle_dt_s = 0.25
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.139625
+  trickle_tap = False
+  trickle_tilt_deg = 30.0
+>> set bulk_anticipation_g 0.05
+[set] bulk_anticipation_g = 0.05 (was 0.05)
+>> set bulk_enabled 1
+[set] bulk_enabled = True (was True)
+>> set bulk_poll_ms 250
+[set] bulk_poll_ms = 250 (was 250)
+>> set bulk_settle_ms 1500
+[set] bulk_settle_ms = 1500 (was 1500)
+>> set cutoff_margin_g 0.035
+[set] cutoff_margin_g = 0.035 (was 0.035)
+>> set dose_timeout_s 600
+[set] dose_timeout_s = 600 (was 600)
+>> set ff_prior_g_per_rev 0.35
+[set] ff_prior_g_per_rev = 0.35 (was 0.35)
+>> set final_settle_ms 2000
+[set] final_settle_ms = 2000 (was 2000)
+>> set k_sigma 1
+[set] k_sigma = 1.0 (was 1.0)
+>> set kf_q_var 0.0002
+[set] kf_q_var = 0.0002 (was 0.0002)
+>> set log_max_rows 2400
+[set] log_max_rows = 2400 (was 2400)
+>> set log_to_flash 0
+[set] log_to_flash = False (was False)
+>> set max_poll_misses 10
+[set] max_poll_misses = 10 (was 10)
+>> set noisy_sd_g 0.008
+[set] noisy_sd_g = 0.008 (was 0.008)
+>> set overshoot_abort_g 0.1
+[set] overshoot_abort_g = 0.1 (was 0.1)
+>> set post_trickle_settle_ms 1200
+[set] post_trickle_settle_ms = 1200 (was 1200)
+>> set print_every_n_polls 2
+[set] print_every_n_polls = 2 (was 2)
+>> set quiet_sd_g 0.0005
+[set] quiet_sd_g = 0.0005 (was 0.0005)
+>> set rate_tau_s 0.5
+[set] rate_tau_s = 0.5 (was 0.5)
+>> set stall_bail_s 8
+[set] stall_bail_s = 8.0 (was 8.0)
+>> set tap_cadence_off_ms 440
+[set] tap_cadence_off_ms = 440 (was 440)
+>> set tap_cadence_on_ms 60
+[set] tap_cadence_on_ms = 60 (was 60)
+>> set tap_max_cycles 120
+[set] tap_max_cycles = 120 (was 120)
+>> set tap_max_nudges 20
+[set] tap_max_nudges = 20 (was 20)
+>> set tap_nudge_deg 5
+[set] tap_nudge_deg = 5.0 (was 5.0)
+>> set tap_settle_ms 1500
+[set] tap_settle_ms = 1500 (was 1500)
+>> set taps_per_cycle 1
+[set] taps_per_cycle = 1 (was 1)
+>> set tau_afterflow_s 0.3
+[set] tau_afterflow_s = 0.3 (was 0.8338)
+>> set tau_bal_s 0.7
+[set] tau_bal_s = 0.7 (was 0.7)
+>> set trickle_dt_s 0.25
+[set] trickle_dt_s = 0.25 (was 0.25)
+>> set trickle_integ_clamp 0.5
+[set] trickle_integ_clamp = 0.5 (was 0.5)
+>> set trickle_ki 120
+[set] trickle_ki = 120.0 (was 120.0)
+>> set trickle_kp 250
+[set] trickle_kp = 250.0 (was 250.0)
+>> set trickle_max_rate_gps 0.05
+[set] trickle_max_rate_gps = 0.05 (was 0.05)
+>> set trickle_min_rate_gps 0.003
+[set] trickle_min_rate_gps = 0.003 (was 0.003)
+>> set trickle_rpm_cap 45
+[set] trickle_rpm_cap = 45.0 (was 45.0)
+>> set bulk_tap 0
+[set] bulk_tap = False (was True)
+>> set trickle_tap 1
+[set] trickle_tap = True (was False)
+>> set bulk_tilt_deg 40
+[set] bulk_tilt_deg = 40.0 (was 40.0)
+>> set trickle_tilt_deg 30
+[set] trickle_tilt_deg = 30.0 (was 30.0)
+>> set tap_tilt_deg 15
+[set] tap_tilt_deg = 15.0 (was 15.0)
+>> set bulk_rpm 100
+[set] bulk_rpm = 100.0 (was 100.0)
+>> set trickle_start_remaining_g 0.3
+[set] trickle_start_remaining_g = 0.3 (was 0.139625)
+>> set tolerance_g 0.015
+[set] tolerance_g = 0.015 (was 0.003)
+>> set tau_afterflow_s 0.8338
+[set] tau_afterflow_s = 0.8338 (was 0.3)
+>> g 0.5000
+[dose] trickle-tap dose to 0.5000 g (tol 15.0 mg, trickle tilt 30.0 plate deg); taring scale
+[dose] tared: baseline +0.0 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== stage 1 'bulk': 0.5000 g to go, velocity mode @ 100 rpm until 0.3500 g to go
+[phase 1 bulk] poll 1: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 3 (unstable): mass 0.0063 / 0.5000 g (0.4937 g to go, +0.0063 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 4 (unstable): mass 0.0750 / 0.5000 g (0.4250 g to go, +0.0687 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.1481 / 0.5000 g (0.3519 g to go, +0.0731 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.1944 / 0.5000 g (0.3056 g to go, +0.0463 g this poll), elapsed 7.0 s
+[phase 1 bulk] auger halted at 0.3056 g to go (halt threshold 0.3500 g); settling 1500 ms
+[phase 1 bulk] settled: mass 0.2891 / 0.5000 g (0.2109 g to go, +0.0947 g while settling), elapsed 10.0 s
+[trickle] cadence taps on: one 60 ms pulse per 500 ms
+[trickle] seeded at 0.2891 g; cutoff when m+r*0.83s+1.0*sigma >= 0.4650 g
+[trickle]  13.4s m 0.2891 r  64.7 mg/s (sp  50.0) rpm  14.2 pred 0.3551/0.4650 sigma 12.0 mg
+[trickle]  14.1s m 0.3140 r  53.3 mg/s (sp  50.0) rpm  10.9 pred 0.3685/0.4650 sigma 10.1 mg
+[trickle]  14.9s m 0.3303 r  55.2 mg/s (sp  50.0) rpm  11.2 pred 0.3857/0.4650 sigma 9.3 mg
+[trickle]  15.7s m 0.3472 r  56.8 mg/s (sp  50.0) rpm  11.4 pred 0.4038/0.4650 sigma 9.2 mg
+[trickle]  16.4s m 0.3637 r  53.9 mg/s (sp  50.0) rpm  11.7 pred 0.4179/0.4650 sigma 9.2 mg
+[trickle]  17.2s m 0.3842 r  48.9 mg/s (sp  48.5) rpm  11.3 pred 0.4340/0.4650 sigma 9.1 mg
+[trickle]  18.0s m 0.4007 r  37.6 mg/s (sp  38.5) rpm   8.7 pred 0.4412/0.4650 sigma 9.1 mg
+[trickle]  18.7s m 0.4185 r  29.6 mg/s (sp  27.9) rpm   6.8 pred 0.4522/0.4650 sigma 9.1 mg
+[trickle]  19.5s m 0.4572 r  21.8 mg/s (sp   4.7) rpm   4.8 pred 0.4844/0.4650 sigma 9.1 mg
+[trickle] predictive cutoff: m 0.4572 + r*tau 0.0181 + k*sigma 0.0091 >= 0.4650 g
+[trickle] halted; settled at 0.5761 g (+118.9 mg vs KF m_hat, 0.0000 g to go), 18 polls, 0 KF clamps, ff 0.241 g/rev
+=== stage 3 'tap' skipped (-0.0761 g to go is inside tolerance)
+[dose] final settle 2000 ms before the scoring reading
+[dose] done: DoseResult(overshoot: 0.5756/0.5000 g in 25.0s; cycles bulk:6, trickle:18, tap:0; 4.11 auger rev, 13 taps)
+RESULT {"fw": "trickle_tap/2026-09-25", "t_total_s": 25.33, "t_bulk_s": 5.65, "taps": 13, "t_trickle_s": 11.75, "t_settle_s": 3.35, "phase_cycles": {"tap": 0, "bulk": 6, "trickle": 18}, "ff_g_per_rev": 0.2407, "error_mg": 75.6, "params": {"tap_cadence_off_ms": 440, "trickle_tap": true, "trickle_tilt_deg": 30.0, "tolerance_g": 0.015, "goal_mass_g": 0.75, "trickle_start_remaining_g": 0.3, "bulk_tilt_deg": 40.0, "tau_afterflow_s": 0.8338, "tap_tilt_deg": 15.0, "bulk_tap": false, "overshoot_abort_g": 0.1, "final_settle_ms": 2000, "bulk_rpm": 100.0, "tap_cadence_on_ms": 60}, "telemetry_rows": 26, "nudges": 0, "log_path": null, "settled_final": 1, "baseline_g": 0.0, "t_tap_s": 0.0, "auger_rev": 4.108, "status": "overshoot", "final_g": 0.5756, "v": 1, "target_g": 0.5, "stop_events": [{"settled_g": 0.28912, "rate_slope_gps": 0.12342, "rpm": 100.0, "rate_kf_gps": null, "t_stop_s": 10.21, "m_stop_g": 0.1944, "tau_s": 0.8338, "afterflow_g": 0.09472, "stalled": 0, "phase": "bulk"}, {"phase": "trickle", "rate_kf_gps": 0.02175, "settled_g": 0.57612, "stalled": 0, "tau_s": 0.8338, "m_stop_g": 0.45718, "afterflow_g": 0.11894, "rate_slope_gps": 0.05199, "t_stop_s": 19.48}], "read_retries": 0, "dose_n": 38}
+>> log
+--- BEGIN trickle telemetry CSV ---
+t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,r_sp_gps,err_gps,integ,rpm_cmd,pred_g,cutoff_g,clamp_hits
+5.72,bulk,0.00000,1,0.00000,,,,,,,,,,
+6.09,bulk,0.00000,1,0.00000,,,,,,,,,,
+6.37,bulk,0.00630,1,0.00630,,,,,,,,,,
+6.76,bulk,0.07500,1,0.07500,,,,,,,,,,
+7.13,bulk,0.14810,1,0.14810,,,,,,,,,,
+7.42,bulk,0.19440,1,0.19440,,,,,,,,,,
+10.21,bulk,0.28912,1,0.28912,,,,,,,,,,
+12.97,trickle,0.28910,1,0.28910,0.00000,0.01352,0.3500,0.05000,0.05000,0.0000,0.00,0.30262,0.46500,0
+13.36,trickle,0.28910,1,0.28910,0.06474,0.01201,0.3500,0.05000,-0.01474,0.0141,14.19,0.35509,0.46500,0
+13.73,trickle,0.28910,1,0.31331,0.01631,0.01088,0.3500,0.05000,0.03369,0.0083,0.00,0.33779,0.46500,0
+14.12,trickle,0.28910,1,0.31401,0.05328,0.01005,0.3500,0.05000,-0.00328,0.0209,10.93,0.36849,0.46500,0
+14.50,trickle,0.29450,1,0.32970,0.02012,0.00947,0.3500,0.05000,0.02988,0.0197,1.54,0.35594,0.46500,0
+14.89,trickle,0.29600,1,0.33031,0.05523,0.00933,0.3500,0.05000,-0.00523,0.0308,11.17,0.38569,0.46500,0
+15.26,trickle,0.30390,1,0.34580,0.02302,0.00915,0.3500,0.05000,0.02698,0.0287,2.14,0.37414,0.46500,0
+15.66,trickle,0.30780,1,0.34724,0.05684,0.00920,0.3324,0.05000,-0.00684,0.0389,11.41,0.40383,0.46500,0
+16.03,trickle,0.31490,1,0.36178,0.02517,0.00908,0.3199,0.05000,0.02483,0.0362,2.63,0.39185,0.46500,0
+16.42,trickle,0.32150,1,0.36372,0.05393,0.00918,0.3054,0.05000,-0.00393,0.0454,11.66,0.41787,0.46500,0
+16.80,trickle,0.33340,1,0.37856,0.02959,0.00911,0.2946,0.05000,0.02041,0.0439,4.28,0.41234,0.46500,0
+17.17,trickle,0.34360,1,0.38416,0.04894,0.00908,0.2833,0.04848,-0.00046,0.0516,11.29,0.43405,0.46500,0
+17.57,trickle,0.34850,1,0.39630,0.03268,0.00920,0.2739,0.04120,0.00852,0.0514,6.05,0.43274,0.46500,0
+17.95,trickle,0.35590,1,0.40073,0.03764,0.00908,0.2646,0.03854,0.00091,0.0547,8.70,0.44119,0.46500,0
+18.33,trickle,0.37220,1,0.41107,0.03171,0.00914,0.2566,0.03234,0.00063,0.0551,6.84,0.44665,0.46500,0
+18.70,trickle,0.38100,1,0.41845,0.02956,0.00910,0.2493,0.02791,-0.00164,0.0553,6.80,0.45220,0.46500,0
+19.10,trickle,0.40420,1,0.43097,0.02644,0.00921,0.2434,0.02040,-0.00603,0.0547,6.15,0.46223,0.46500,0
+19.47,trickle,0.45670,1,0.45718,0.02175,0.00908,0.2407,0.00469,-0.01707,0.0523,4.77,0.48441,0.46500,0
+21.96,trickle_end,0.57612,1,0.57612,,,,,,,,,,0
+--- END trickle telemetry CSV ---
