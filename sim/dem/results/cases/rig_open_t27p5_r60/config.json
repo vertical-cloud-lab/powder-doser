@@ -27,7 +27,7 @@
  "ced": 0.0,
  "incline_deg": 27.5,
  "rpm": 60,
- "revs": 1.0,
+ "revs": 3.0,
  "settle_s": 0.12,
  "stop_s": 0.3,
  "dt": null,

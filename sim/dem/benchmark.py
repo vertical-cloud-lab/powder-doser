@@ -8,7 +8,8 @@ number of LIGGGHTS steps against the static mesh. Particle diameter
 sets the count: 0.9 mm -> 0.11 M ... 0.35 mm -> 2.05 M particles.
 
 Reports wall time per step, particle-steps per second, and peak RSS
-(memory) per particle, which is what limits a CPU twin.
+(memory) per particle, which is what limits a CPU twin. ``--np`` runs it
+under MPI (peak RSS is then that of the largest rank).
 """
 
 from __future__ import annotations
@@ -25,7 +26,7 @@ import time
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from geometry import AugerParams, auger_triangles, write_ascii_stl  # noqa: E402
+from geometry import AugerParams, auger_triangles, write_mesh  # noqa: E402
 from run_case import free_point_mask, write_data  # noqa: E402
 
 TEMPLATE = """atom_style granular
@@ -48,7 +49,7 @@ pair_style gran model hertz tangential history rolling_friction epsd2
 pair_coeff * *
 timestep {dt:.4e}
 fix gravi all gravity 9.81 vector -0.866025 0. -0.5
-fix auger all mesh/surface file auger.stl type 2 scale 0.001 curvature_tolerant yes
+fix auger all mesh/surface file auger.{ext} type 2 scale 0.001 curvature_tolerant yes
 fix walls all wall/gran model hertz tangential history rolling_friction epsd2 mesh n_meshes 1 meshes auger
 fix integr all nve/sphere
 thermo {steps}
@@ -76,10 +77,10 @@ def dense_packing(P, d, z_max):
     return np.concatenate(out)
 
 
-def run_one(d_mm, workdir, steps=150, warm=20):
+def run_one(d_mm, workdir, steps=150, warm=20, nproc=1, ext="vtk"):
     os.makedirs(workdir, exist_ok=True)
     P = AugerParams(n_turns=23, feed_h=4.0)  # full 250 mm bore
-    write_ascii_stl(os.path.join(workdir, "auger.stl"), auger_triangles(P))
+    write_mesh(os.path.join(workdir, f"auger.{ext}"), auger_triangles(P))
     pts = dense_packing(P, d_mm, P.flight_top + P.flight_t)
     R = P.bore_r + 1.0
     box = (-R * 1e-3, R * 1e-3, -R * 1e-3, R * 1e-3, -2e-3, (P.z_top + 2) * 1e-3)
@@ -87,16 +88,17 @@ def run_one(d_mm, workdir, steps=150, warm=20):
     G = 2e5 / 2.6
     dt = 0.2 * math.pi * (d_mm / 2e3) * math.sqrt(2160 / G) / (0.1631 * 0.3 + 0.8766)
     with open(os.path.join(workdir, "in.bench"), "w") as f:
-        f.write(TEMPLATE.format(skin=0.5 * d_mm * 1e-3, dt=dt, steps=steps, warm=warm))
+        f.write(TEMPLATE.format(skin=0.5 * d_mm * 1e-3, dt=dt, steps=steps, warm=warm, ext=ext))
+    mpi = ["mpirun", "--oversubscribe", "-np", str(nproc)] if nproc > 1 else []
     t0 = time.time()
-    p = subprocess.run(["/usr/bin/time", "-v", "liggghts", "-in", "in.bench", "-log", "log.bench", "-echo", "none",
+    p = subprocess.run(["/usr/bin/time", "-v"] + mpi + ["liggghts", "-in", "in.bench", "-log", "log.bench", "-echo", "none",
                         "-screen", "screen.txt"], cwd=workdir, capture_output=True, text=True)
     wall = time.time() - t0
     rss_kb = int(re.search(r"Maximum resident set size \(kbytes\): (\d+)", p.stderr).group(1))
     loops = re.findall(r"Loop time of ([\d.eE+-]+) on \d+ procs for (\d+) steps with (\d+) atoms",
                        open(os.path.join(workdir, "screen.txt")).read())
     loop_t, n_steps, n_atoms = float(loops[-1][0]), int(loops[-1][1]), int(loops[-1][2])
-    res = {"d_mm": d_mm, "n_particles": n_atoms, "steps": n_steps, "loop_s": loop_t,
+    res = {"d_mm": d_mm, "np": nproc, "mesh": ext, "n_particles": n_atoms, "steps": n_steps, "loop_s": loop_t,
            "s_per_step": loop_t / n_steps, "particle_steps_per_s": n_atoms * n_steps / loop_t,
            "peak_rss_mb": rss_kb / 1024, "bytes_per_particle": rss_kb * 1024 / n_atoms,
            "dt_s": dt, "total_wall_s": wall, "rc": p.returncode}
@@ -109,8 +111,11 @@ if __name__ == "__main__":
     ap.add_argument("--diams", default="0.9,0.6,0.45,0.35")
     ap.add_argument("--root", default="/tmp/dem/bench")
     ap.add_argument("--out", default="bench_results.jsonl")
+    ap.add_argument("--np", default="1", help="comma-separated MPI rank counts")
+    ap.add_argument("--mesh", default="vtk", choices=("vtk", "stl"))
     a = ap.parse_args()
     for dm in [float(x) for x in a.diams.split(",")]:
-        r = run_one(dm, os.path.join(a.root, f"d{dm:.2f}"))
-        with open(a.out, "a") as f:
-            f.write(json.dumps(r) + "\n")
+        for n in [int(x) for x in a.np.split(",")]:
+            r = run_one(dm, os.path.join(a.root, f"d{dm:.2f}_np{n}"), nproc=n, ext=a.mesh)
+            with open(a.out, "a") as f:
+                f.write(json.dumps(r) + "\n")
