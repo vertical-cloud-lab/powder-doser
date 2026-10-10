@@ -165,12 +165,11 @@ def extrusion_2020(length: float) -> cq.Workplane:
 
 
 def corner_bracket() -> cq.Workplane:
-    """Cast 2020 corner bracket, 20 x 20 x 20, two M5 slots. Legs along
-    +x and +z, back faces on the x = 0 and z = 0 planes."""
+    """Cast 2020 corner bracket, 20 x 20 x 18, two M5 holes. Legs along
+    +x and +z, back faces on the x = 0 and z = 0 planes, centred on y = 0."""
     t = 3.5
-    b = (cq.Workplane("XZ").polyline([(0, 0), (20, 0), (20, t), (t, 20), (0, 20)]).close().extrude(-18)
-         .translate((0, 9, 0)))
-    b = b.union(cq.Workplane("XZ").polyline([(t, t), (16, t), (t, 16)]).close().extrude(-2).translate((0, 1, 0)))
+    b = (cq.Workplane("XZ").polyline([(0, 0), (20, 0), (20, t), (t, 20), (0, 20)]).close().extrude(9, both=True))
+    b = b.union(cq.Workplane("XZ").polyline([(t, t), (16, t), (t, 16)]).close().extrude(1, both=True))
     holes = (cq.Workplane("XY").center(12, 0).circle(2.75).extrude(t + 1)
              .union(cq.Workplane("YZ").center(0, 12).circle(2.75).extrude(t + 1)))
     return b.cut(holes)

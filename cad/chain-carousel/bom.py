@@ -66,7 +66,7 @@ ITEMS = [
     (19, ("washer_38",), None, "Washer 1/2 in", "McMaster-Carr", "98023A033", "https://www.mcmaster.com/98023A033/", 0.2,
      "each", (5,), "Fasteners"),
     # ---- fasteners
-    (20, ("m5x16_shcs",), None, "M5 x 16 socket head screw (motor to plate)", "McMaster-Carr", "91292A126",
+    (20, ("m5x18_shcs",), None, "M5 x 18 socket head screw (motor flange into the M5-tapped plate)", "McMaster-Carr", "91292A126",
      "https://www.mcmaster.com/91292A126/", 0.25, "pack of 50", (3,), "Fasteners"),
     (21, ("m5x20_fhcs",), None, "M5 x 20 flat head screw + nut (motor plate up into the deck)", "McMaster-Carr", "92125A212",
      "https://www.mcmaster.com/92125A212/", 0.30, "pack of 25", (4,), "Fasteners"),

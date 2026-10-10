@@ -278,27 +278,33 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
         add(Placement("ext_cross", f"Cross member {i + 1}", T(Rx(-math.pi / 2), (x, -L_cross / 2, z_rail)), 1, ALU,
                       "frame", (0, 0, -80)))
         for sy in (-1, 1):
-            for sx in (-1, 1):
-                # bracket in the corner between this cross member and a rail, under the deck
-                Rb = Rz(math.pi / 2 if sy < 0 else -math.pi / 2) @ Rx(0)
-                M = T(Rz(0 if sx > 0 else math.pi) @ Rx(math.pi / 2) @ Rz(math.pi / 2 * 0),
-                      (x + sx * EXT / 2, sy * (RAIL_Y - EXT / 2), z_rail - EXT / 2))
-                del Rb
+            for sx in ((-1, 1) if abs(x) < 500 else (-int(np.sign(x)),)):
+                # inside corner between this cross member and a rail: one leg on the
+                # rail's inner face, the other on the cross member's side face
+                Rb = np.array([[sx, 0, 0], [0, 0, -sy], [0, sx * sy, 0]], float)
                 add(Placement("corner_bracket", f"Corner bracket {i + 1}{'FB'[sy > 0]}{'LR'[sx > 0]}",
-                              M @ T(Rz(-math.pi / 2 if sy < 0 else math.pi / 2)), 1, ALU, "frame", (0, 0, -120)))
-    # 2. legs + feet
+                              T(Rb, (x + sx * EXT / 2, sy * (RAIL_Y - EXT / 2), z_rail)), 1, ALU, "frame", (0, 0, -120)))
+    # 2. legs + feet: each leg hangs under a rail end on two corner brackets,
+    # one to the rail's underside, one to the end cross member's underside
     for sx in (-1, 1):
         for sy in (-1, 1):
             x, y = sx * (L_long / 2 - EXT / 2), sy * RAIL_Y
-            add(Placement("ext_leg", "Leg", T(None, (x, y, -DECK_T - EXT - LEG_L)), 2, ALU, "frame", (0, 0, -150)))
-            add(Placement("foot", "Leveling foot", T(None, (x, y, -DECK_T - EXT - LEG_L - 20)), 2, DARK, "frame", (0, 0, -200)))
+            zt = -DECK_T - EXT
+            add(Placement("ext_leg", "Leg", T(None, (x, y, zt - LEG_L)), 2, ALU, "frame", (0, 0, -150)))
+            add(Placement("foot", "Leveling foot", T(None, (x, y, zt - LEG_L - 20)), 2, DARK, "frame", (0, 0, -200)))
+            Ra = np.array([[-sx, 0, 0], [0, sx, 0], [0, 0, -1]], float)
+            add(Placement("corner_bracket", "Leg bracket (rail)", T(Ra, (x - sx * EXT / 2, y, zt)), 2, ALU, "frame",
+                          (0, 0, -150)))
+            Rc = np.array([[0, -sy, 0], [-sy, 0, 0], [0, 0, -1]], float)
+            add(Placement("corner_bracket", "Leg bracket (cross member)", T(Rc, (x, y - sy * EXT / 2, zt)), 2, ALU,
+                          "frame", (0, 0, -150)))
     # 3. motor + plate (plate under the deck, motor under the plate)
     z_plate = -DECK_T - MOTOR_PLATE_T
     add(Placement("motor_plate", "Motor plate", T(None, (X_DRIVE, 0, z_plate)), 3, ALU, "drive", (0, 0, -120)))
     add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(None, (X_DRIVE, 0, z_plate)), 3, DARK, "drive", (0, 0, -260)))
     for sx in (-1, 1):
         for sy in (-1, 1):
-            add(Placement("m5x16_shcs", "Motor screw M5x16", T(Rx(math.pi), (X_DRIVE + sx * M34_BOLT_SQ / 2, sy * M34_BOLT_SQ / 2,
+            add(Placement("m5x18_shcs", "Motor screw M5x18", T(Rx(math.pi), (X_DRIVE + sx * M34_BOLT_SQ / 2, sy * M34_BOLT_SQ / 2,
                                                                           z_plate - 12)), 3, DARK, "drive", (0, 0, -320)))
     # 4. deck (+ the motor plate's countersunk screws)
     add(Placement("deck", "Deck (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
@@ -408,7 +414,7 @@ BUILDERS = {
     "hold_down": PT.hold_down,
     "m3x10_bhcs": lambda: PT.shcs(3, 10, "button"),
     "m4x30_shcs": lambda: PT.shcs(4, 30),
-    "m5x16_shcs": lambda: PT.shcs(5, 16),
+    "m5x18_shcs": lambda: PT.shcs(5, 18),
     "m5x20_fhcs": lambda: PT.shcs(5, 20, "flat"),
     "m5x25_fhcs": lambda: PT.shcs(5, 25, "flat"),
     "m5x40_shcs": lambda: PT.shcs(5, 40),
