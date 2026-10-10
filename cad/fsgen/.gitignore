@@ -1,0 +1,2 @@
+# The root .gitignore ignores parts/ (Python packaging); fsgen scripts live here
+!parts/
