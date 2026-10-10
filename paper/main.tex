@@ -152,7 +152,7 @@
 \footnotetext{\textit{$^{a}$~Department of Mechanical Engineering, Brigham Young University, Provo, UT, USA. E-mail: samuelwcharles@gmail.com, sterling.baird@byu.edu}}
 \footnotetext{\textit{$^{b}$~Acceleration Consortium, University of Toronto, 80 St George St, Toronto, ON M5S 3H6, Canada.}}
 
-\footnotetext{\dag~Supplementary Information available: bill of materials; construction guide with an exploded view and illustrated assembly steps; auger and outlet geometry, with the tested and AI-modelled augers compared; the AI-assisted CAD workflow and a summary of the design log; balance noise at rest and after actuation; human tasks in the test campaign; the closed-loop dose record, with every attempt accounted for and example traces; composition error from dosing error; run inventory; and AI usage log. See DOI: 00.0000/00000000.}
+\footnotetext{\dag~Supplementary Information available: bill of materials; construction guide with an exploded view and illustrated assembly steps; auger and outlet geometry, with the tested and AI-modelled augers compared; the AI-assisted CAD workflow and a summary of the design log; balance noise at rest and after actuation; human tasks in the test campaign; the closed-loop dose record, with every attempt accounted for and example traces; composition error from dosing error; the test protocols as recorded, with run and record counts; run inventory; and AI usage log. See DOI: 00.0000/00000000.}
 
 %%%END OF FOOTNOTES%%%
 
@@ -259,7 +259,7 @@ We tested the doser on 13 powders (Table~\ref{tbl:powders}). Seven are food-safe
 
 \begin{table*}[t]
 \small
-  \caption{\ Test protocols. Every powder went through the same protocols in the same order with frozen settings, so results can be compared across powders. The sequence characterizes the powders and does not tune anything. Rotations and speeds refer to the auger, and tilts are the tube's angle above horizontal, from 0$^\circ$ (horizontal park) to 45$^\circ$ (the steepest used). A trial is one recorded measurement.}
+  \caption{\ Test protocols. Every powder went through the same protocols in the same order with frozen settings, so results can be compared across powders. The sequence characterizes the powders and does not tune anything. Rotations and speeds refer to the auger, and tilts are the tube's angle above horizontal, from 0$^\circ$ (horizontal park) to 45$^\circ$ (the steepest used). A trial is one recorded measurement. SI Table~\siref{tbl:protocolrecords} gives the settings as the raw records store them and the number of records each protocol produced.}
   \label{tbl:protocols}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{2.6cm}p{2.5cm}p{5.0cm}p{5.2cm}l}
     \hline
@@ -359,7 +359,7 @@ The AI-modelled auger, gears, bracket, tap collar, mounting plate, hinged basepl
 \subsection{Electronics and firmware}
 A Raspberry Pi Pico~W runs MicroPython firmware with commands to rotate by a given angle, tap, vibrate, tilt to an angle, and read the mass. A Pololu Tic T500 drives the stepper over a serial (UART) link, a DRV8871 H-bridge drives the solenoid, and a DRV2605L haptic driver runs the vibration motor over I$^2$C. The balance is read over RS-232 through an SP3232 transceiver board. The electronics began on a breadboard and now sit on a custom printed circuit board (PCB). Schematics, board files, the wiring guide, and the firmware are in the repository (\texttt{hardware/}).
 
-The dosing firmware includes both gear ratios, so its rotation commands and records are in auger revolutions, auger rpm, and tube degrees. The one exception is the test battery, whose raw records store the tilt as a servo setting rather than an angle. The 2:1 tilt gear halves that setting, so the battery's three tilts are tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$. We report tube angles throughout and convert the raw settings once, in the analysis scripts. SI Section~\siref{sec:runs} maps the raw settings to angles. The auger ratio is confirmed independently by the protocol-D traces, whose pulses recur once per commanded auger revolution (3.94 against 4.00~s).
+The dosing firmware includes both gear ratios, so its rotation commands and records are in auger revolutions, auger rpm, and tube degrees. The one exception is the test battery, whose raw records store the tilt as a servo setting rather than an angle. The 2:1 tilt gear halves that setting, so the battery's three tilts are tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$. We report tube angles throughout and convert the raw settings once, in the analysis scripts. SI Section~\siref{sec:protocols} maps the raw settings to angles. The auger ratio is confirmed independently by the protocol-D traces, whose pulses recur once per commanded auger revolution (3.94 against 4.00~s).
 
 \subsection{Powders and test protocols}
 Table~\ref{tbl:powders} lists the 13 powders. Each powder had its own printed auger and cap, labelled with the powder's name, so no auger carried two powders. We filled each auger once through its capped upper end, without controlling the fill level or weighing it, and stored it loaded with tape over the outlet. A run began by mounting the filled auger and removing the tape, with occasional top-ups. Within a run nobody acted between doses: each dose was weighed from its own tare with earlier powder left in the cup, and the cup was emptied between runs. SI Table~\siref{tbl:operator} lists every task a person did in the campaign. The test protocols (Table~\ref{tbl:protocols}) ran in a fixed order with frozen settings, identically for every powder. Each protocol emitted machine-readable trial records over the serial link, and we archived them as versioned CSV files stamped with the powder, firmware version, and settings, so every number in this paper can be traced to its raw balance record. A trial is one recorded measurement: in protocol C one trial is a single auger revolution, so its 18 trials are six revolutions at each of three tilts. Protocol D streamed the balance every 0.25~s nominally (0.29--0.39~s in practice) while the auger turned continuously. Its timing loop advanced by the nominal poll interval rather than the elapsed time, so the auger turned 15--54\% further than the three revolutions commanded per speed. Masses and rates from protocol D use the elapsed time.
@@ -394,9 +394,13 @@ This module is the first of several planned stages. The first extension is a mul
 \end{figure}
 
 \section*{Author contributions}
-% CRediT terms (https://credit.niso.org): "CAD review" -> validation, "hardware fabrication" -> resources.
-% TODO (human): confirm each author's roles and the author list (paper/submission/SUBMISSION-DECISIONS.md, item 1).
-S.C.: conceptualization, methodology, investigation, validation, writing -- original draft. W.M.: investigation, validation. L.W.: investigation, software. C.R.: investigation, resources. G.E.: investigation, resources. S.G.B.: conceptualization, supervision, funding acquisition, writing -- review \& editing.
+% CRediT roles (https://credit.niso.org), proposed 10 Oct 2026 from the GitHub record in
+% paper/submission/CREDIT.md, which lists the evidence for each role. Each author must confirm
+% their own roles, and anyone who critically reviews the final draft should also get
+% "writing -- review & editing" (ICMJE). The author list is still open
+% (paper/submission/SUBMISSION-DECISIONS.md, item 1); if it changes, move the dropped
+% authors' work to the Acknowledgements.
+S.C.: conceptualization, methodology, investigation, validation, data curation, writing -- original draft, writing -- review \& editing. W.M.: methodology, software, investigation, formal analysis, validation. L.W.: software, investigation, resources. C.R.: investigation. G.E.: investigation. S.G.B.: conceptualization, methodology, software, formal analysis, visualization, resources, supervision, project administration, funding acquisition, writing -- original draft, writing -- review \& editing.
 
 \section*{Conflicts of interest}
 There are no conflicts to declare.
@@ -406,10 +410,13 @@ There are no conflicts to declare.
 % in PR #170 (cad/full-assembly/components/); merge it before submission. The Onshape
 % document below is still private (8 Oct 2026); set it to public (Share > Public).
 % See paper/meeting_2026-10-01/MEETING-DECISIONS.md, item 8.
-% TODO (human, at submission): tag a release, archive it on Zenodo, and put its DOI in the
-% Charles2026Release entry of references.bib (DECISIONS.md item 22). PR #74 (the design
-% log) is not merged, so the release must include DESIGN-LOG.md from that branch.
-The repository at \url{https://github.com/vertical-cloud-lab/powder-doser} holds all design files: the parametric CAD source, the team's Fusion~360 parts as STEP and STL files, renders, and an animated assembly guide. It also holds the KiCad schematics, the MicroPython firmware, the AI prompt and response logs, the 128-entry design log, the raw test-protocol records, and the analysis scripts. The assembled current design is also a public Onshape document (\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f}), and each printed part has a public Fusion~360 link (SI Table~\siref{tbl:parts}). The tidy datasets and scripts behind Figs.~\ref{fgr:conveyance}--\ref{fgr:closedloop} are in \texttt{paper/figures/}. Hardware designs are released under an open license (see the repository). At submission, a tagged release of the repository, including the design log, design files, firmware, and data, was archived on Zenodo with a DOI, and that release is the citable version of everything listed here.\cite{Charles2026Release} References cited in the SI are listed in this article's reference list.
+% TODO (human, at submission): tag v1.0.0, archive it on Zenodo, and put the version DOI in
+% the Charles2026Release entry of references.bib. DD needs the version DOI and the
+% all-versions (concept) DOI by acceptance at the latest. PR #74 (the design log) is not
+% merged, so the release must include DESIGN-LOG.md from that branch.
+% TODO (human): name the licences once chosen (SUBMISSION-DECISIONS.md, item 5).
+% Wording follows the RSC templates for data in a repository and for code.
+Data for this article, including the raw test-protocol records, the per-dose record, the tidy datasets behind Figs.~\ref{fgr:conveyance}--\ref{fgr:closedloop}, the 128-entry design log, and the AI prompt and response logs, are available in the powder-doser repository at \url{https://github.com/vertical-cloud-lab/powder-doser} and in its archived release on Zenodo.\cite{Charles2026Release} The code for the doser firmware (MicroPython), the analysis and figure scripts (Python), and the parametric CAD source (CadQuery, OpenSCAD, and KCL) can be found at the same repository and release. The version of the code employed for this study is version 1.0.0. The repository also holds the team's Fusion~360 parts as STEP and STL files, renders, an animated assembly guide, and the KiCad schematics. The assembled current design is a public Onshape document (\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f}), and each printed part has a public Fusion~360 link (SI Table~\siref{tbl:parts}). Running \texttt{paper/figures/make\_data\_figures.py} rebuilds the data figures, and the scripts in \texttt{paper/figures/data/} rebuild the SI tables. Hardware designs, code, and data are released under the open licenses stated in the repository. The SI summarizes every run and every dose attempt in tables. References cited in the SI are listed in this article's reference list.
 
 \section*{Acknowledgements}
 % Ron Darling confirmed by S.G.B. on PR #97 (8 Oct 2026). Nasa Sinnott-Armstrong is the

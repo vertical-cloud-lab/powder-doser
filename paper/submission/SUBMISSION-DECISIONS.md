@@ -13,6 +13,13 @@ commit straight to the branch. Then ask `@claude` on PR #97 to implement it.
 The background for most items is the guidelines audit,
 [`GUIDELINES-AUDIT.md`](GUIDELINES-AUDIT.md). **Item 9 is urgent** (credentials in public files). Items 1, 5, 10 and 16 matter most after that.
 
+> **Update, 10 Oct 2026 (later session).** The submission package for the New Hardware
+> Developments collection (due 13 Nov) is now in this folder: every remaining human TODO with
+> its owner ([`HUMAN-TODOS.md`](HUMAN-TODOS.md)), the proposed CRediT roles with evidence
+> ([`CREDIT.md`](CREDIT.md)), the ESI checklist ([`ESI-CHECKLIST.md`](ESI-CHECKLIST.md)) and
+> the dated plan ([`SUBMISSION-PLAN.md`](SUBMISSION-PLAN.md)). Item 2 now refers to the
+> roles in `CREDIT.md`, which replace the June roles quoted below.
+
 ---
 
 ## A. Authors
