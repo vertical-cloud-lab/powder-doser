@@ -57,8 +57,9 @@ mounting-PLATE degrees the three-phase servo speaks, and that plate
 value is the PHYSICAL tube angle above horizontal: the tilt plate is
 geared 2:1, so the firmware's "vertical" preset only reaches 45 deg
 (confirmed on PR #124).  Settings 0 / 45 / 90 are therefore physical
-tube angles of 0 / 22.5 / 45 deg, and 45 deg is the maximum tilt
-reached in every run -- no run ever put the tube at 90 deg (vertical).
+tube angles of 0 / 22.5 / 45 deg.  45 deg is the steepest tilt used in
+any run, not a hardware limit (the servos can turn further; steeper tilts
+were never commanded) -- no run ever put the tube at 90 deg (vertical).
 Halve a recorded ``tilt_deg`` to get the physical angle.  Setting
 values, field names and the record format are deliberately unchanged
 so archived datasets stay parseable.
@@ -117,7 +118,8 @@ BATTERY_VERSION   = 3
 POWDER_ID         = None
 
 # Tilt SETTINGS, not physical angles: the 2:1 plate gear makes the tube
-# angle setting/2, i.e. 0/22.5/45 deg (max 45).  Corrected 2026-10-01.
+# angle setting/2, i.e. 0/22.5/45 deg (45 = steepest used, not a hardware
+# limit).  Corrected 2026-10-01; clarified 2026-10-10.
 TILTS_DEG         = [0.0, 45.0, 90.0]  # settings; tube 0/22.5/45 deg
 PLATE_PER_TILT    = 0.5                # plate deg per tilt deg (2:1 gearing)
 PARK_TILT_DEG     = 0.0                # tilt the rig is left at after a run
