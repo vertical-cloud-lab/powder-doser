@@ -1,0 +1,559 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supplementary Information for:
+% "An open-source, 3D-printed auger powder doser designed with generative
+%  artificial intelligence" (Digital Discovery submission)
+% Build: latexmk -pdf si.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[super,sort&compress,comma]{natbib}
+\usepackage{hyperref}
+\usepackage{mathptmx}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+\title{Supplementary Information\\[2mm]
+\large An open-source, 3D-printed auger powder doser designed with generative
+artificial intelligence}
+\author{Sam Charles, Will Mulberry, Luke Winters, Carl Robison,\\
+Gage Erickson, and Sterling G. Baird}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Bill of materials}
+\label{sec:bom}
+
+Table~\ref{tbl:bom} lists the parts for one channel, plus the items a platform
+needs only once whatever its number of channels. Prices are single-unit US
+dollars as of September 2026 and should be checked at order time; vendor links
+are kept in \texttt{hardware/} in the repository
+(\url{https://github.com/vertical-cloud-lab/powder-doser}).
+
+\begin{table}[h]
+\centering
+\small
+\caption{Bill of materials. Printed parts are excluded (about 260~g of PLA per
+channel, under \$10), as are the custom circuit board, which can be replaced by a
+breadboard, and the analytical balance (A\&D HR-100A, 0.1~mg readability),
+which most laboratories already own.}
+\label{tbl:bom}
+\begin{tabular}{p{7.0cm}cp{1.4cm}p{4.0cm}}
+\toprule
+Part & Qty & Price (USD) & Source \\
+\midrule
+\multicolumn{4}{l}{\emph{Per channel}}\\
+NEMA-11 bipolar stepper, 0.67~A, 10~N$\cdot$cm (11HS18-0674S) & 1 & 14 & StepperOnline \\
+Pololu Tic T500 stepper controller & 1 & 33 & Pololu \#3135 \\
+Pololu 33~V shunt regulator (clamps stepper back-voltage) & 1 & 15 & Pololu \#3776 \\
+12~V push--pull solenoid, JF-0530B type (tapping) & 1 & 7.50 & Adafruit \#412 \\
+DRV8871 H-bridge breakout (solenoid driver) & 1 & 7.50 & Adafruit \#3190 \\
+ERM coin vibration motor, 10~mm & 1 & 1.95 & Adafruit \#1201 \\
+DRV2605L haptic driver breakout (I$^2$C) & 1 & 7.95 & Adafruit \#2305 \\
+MG996R-class metal-gear servo (tilt) & 2 & 24 & generic \\
+Fasteners (M3), bulk capacitors & --- & 5 & generic \\
+\midrule
+\multicolumn{4}{l}{\emph{Shared (one per platform)}}\\
+Raspberry Pi Pico~W & 1 & 6 & Raspberry Pi \\
+Waveshare Pico-2CH-RS232 board (balance interface) & 1 & 9 & Waveshare 19979 \\
+Mean Well GST60A12-P1J 12~V/5~A supply, cord, and pigtail & 1 & 26 & Digi-Key \\
+Pololu D24V22F5 5~V buck regulator & 1 & 19 & Pololu \#2858 \\
+Headers and wiring & --- & 10 & generic \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total, single-channel platform}} & \textbf{$\approx$185} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Construction guide}
+\label{sec:build}
+
+Table~\ref{tbl:parts} lists the printed parts of the current doser and where to
+download each one. Fig.~\ref{fgr:exploded} shows every part of the mechanical
+assembly, numbered, with its bill of materials, and Fig.~\ref{fgr:steps} shows
+the build in 19 steps. Both come from a CAD assembly of the team's part files,
+% TODO (human): the Onshape document is still private (8 Oct 2026); set it to public.
+which is also a public Onshape document
+(\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f}); the same
+steps are animated in the repository README. The wiring guide and firmware are
+in \texttt{hardware/} in the repository. The build, in outline (step numbers
+refer to Fig.~\ref{fgr:steps}, item numbers to Fig.~\ref{fgr:exploded}):
+
+\begin{enumerate}
+\item \textbf{Print} the parts in Table~\ref{tbl:parts} in PLA (0.2~mm layers,
+four perimeters, 25\% infill). Most parts need support material. Print the
+auger upright.
+\item \textbf{Base} (steps 1--5): screw the baseplate to a flat board or bench
+top (the CAD assumes 38~mm, the depth its front legs are made for), fit the two
+servos into its posts, and fit a 14-tooth pinion on each servo.
+\item \textbf{Tilt stage} (steps 6--7): mount the mounting plate on the hinge
+with M5 screws and locknuts, so that the servo pinions mesh with the plate's
+28-tooth gears (2:1).
+\item \textbf{Drive} (steps 8--10): bolt the NEMA-11 stepper to its plate, fit
+the 20-tooth pinion, and bolt the tap-collar base to the plate.
+\item \textbf{Auger} (steps 11--17): slide one bracket and then the tap collar
+onto the tube from the outlet end, lower the auger onto the plate so that its
+44-tooth gear meshes with the stepper pinion (2.2:1), slide the second bracket
+on from the cap end, and tighten the bracket screws and the tap-collar clamp.
+The collar's ears rest against the raised stop on its base, so the collar
+stays put while the tube turns inside it.
+\item \textbf{Solenoid} (step 18): screw the solenoid to the tap collar so that
+its plunger strikes the tube. (A vibration motor was also planned for the
+collar but was not used in this work.)
+\item \textbf{Electronics:} wire the Pico~W, Tic T500 (serial), DRV8871,
+DRV2605L (I$^2$C), the RS-232 board (to the HR-100A balance), and the servos as
+shown in the schematic in \texttt{hardware/test-module/}, then flash the
+MicroPython firmware.
+\item \textbf{Fill} (step 19): with the auger standing upright in the printed
+filling stand, unscrew the cap, pour the powder into the upper end of the tube,
+and screw the cap back on. There are no loading slots; the tube is its own
+reservoir. For small or costly samples, one of the two smaller augers in
+Table~\ref{tbl:parts} can take its place.
+\item \textbf{Checkout:} run the firmware self-test (rotate, tap, tilt,
+tare, and read), then the test protocols listed in the main text.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Printed parts of the current doser and their design files. Every part
+except the tap-collar base was modelled by the team in Fusion~360, most of them
+as recreations of AI-modelled parts, and is shared publicly with downloads
+enabled. The tap-collar base is still the AI-modelled part, written by the
+coding agent in May 2026 (pull request \#51). The auger, its cap, and the
+stepper pinion were on the rig for every test in the main text. STEP exports of
+the Fusion~360 parts are also in the repository
+(\texttt{cad/full-assembly/components/fusion-step/}, pull request \#170), and
+the AI-modelled originals are in \texttt{cad/}.}
+\label{tbl:parts}
+\begin{tabular}{p{7.4cm}l}
+\toprule
+Part & Design file \\
+\midrule
+Auger: threaded storage tube with 44-tooth gear & \url{https://a360.co/4y1oz2H} \\
+Screw-on cap & \url{https://a360.co/4w9kRE5} \\
+Stepper pinion, 20 teeth & \url{https://a360.co/4yqSHFz} \\
+Auger brackets (two) & \url{https://a360.co/46XtYN1} \\
+Tap collar & \url{https://a360.co/4AIIgyz} \\
+Tap-collar base (AI-modelled) & \href{https://github.com/vertical-cloud-lab/powder-doser/blob/debe299/design/cad/tap-collar/mount_plate.step}{\texttt{mount\_plate.step}, pull request \#51} \\
+Mounting plate & \url{https://a360.co/4xXUj8L} \\
+Baseplate & \url{https://a360.co/4AOA7sI} \\
+Servo pinions, 14 teeth (two) & \url{https://a360.co/4dcGSdF} \\
+\midrule
+\multicolumn{2}{l}{\emph{Accessories}}\\
+Auger filling stand & \url{https://a360.co/4yqMPfp} \\
+Smaller auger, about 3.3~mL & \url{https://a360.co/4hxzCu5} \\
+Smaller auger, about 9.2~mL & \url{https://a360.co/47qXATc} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_assembly_exploded}
+\caption{Exploded view of the current design with every item of its mechanical
+bill of materials numbered: printed parts, purchased parts, and fasteners
+(McMaster-Carr part numbers in \texttt{cad/full-assembly/BOM.md}). Item~1 is
+whatever the doser is screwed to; the CAD uses a board 38~mm thick, the depth
+the baseplate's front legs are made for. The printed
+parts are the files in Table~\ref{tbl:parts}; the stepper, servos, and solenoid
+are simplified models made from their datasheets. Electronics are listed in
+Table~\ref{tbl:bom}. The CAD assembly was built by an AI agent from the team's
+part files, working through Onshape's programming interface, and rendered from
+the same files (pull request \#170).}
+\label{fgr:exploded}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_assembly_steps}
+\caption{The build in 19 steps, as stills from the end of each step of the
+assembly animation in the repository. Bracketed numbers are the item numbers of
+Fig.~\ref{fgr:exploded}. This order passes the CAD assembly's collision checks;
+it is one workable order rather than a record of how the test rig was built.}
+\label{fgr:steps}
+\end{figure}
+
+\clearpage
+
+\section{Auger and outlet geometry}
+\label{sec:auger}
+
+Fig.~\ref{fgr:nozzles} shows the AI-modelled geared auger and its four
+printed outlet variants, made early in the project. The auger used in the
+tests is the team's later Fusion~360 part, shown as a cut-away in Fig.~1c of the
+main text. Like the Type~4 variant, it ends in a tapered outlet with a 3~mm exit
+hole. Table~\ref{tbl:augercompare} compares it feature by feature with the first
+AI-modelled geared auger. In June 2026 the coding agent also modelled, at our
+request, a threaded storage version with a screw-on cap and the flight confined
+to the outlet third. The tested auger follows that design, so the team's own
+changes were the gear pair, a uniform flight at a slightly longer pitch, and the
+cap thread and size.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS1_nozzles}
+\caption{(a) Cross-section of the AI-modelled geared auger: the 8~mm central
+core, the single-start helical flight (10~mm pitch) running the full length of
+the 21~mm bore, and the external gear band. (b--e) Cross-sections of
+the four outlet variants (Types~1--4), which differ in exit constriction and
+chamfer. All are parametric OpenSCAD models (\texttt{cad/auger-geared/} in the
+repository) written by AI coding agents under human review; no conventional CAD
+software was used to design them. The auger used in the tests is the team's
+later Fusion~360 part (main text, Fig.~1c). Its flight is 0.5~mm thick with a
+10.4~mm pitch and covers only the third of the tube nearest the outlet, the tube
+is filled through a screw-on cap rather than through loading slots, and its gear
+has 44 teeth rather than 48 (Table~\ref{tbl:augercompare}).}
+\label{fgr:nozzles}
+\end{figure}
+
+\input{figures/data/auger_comparison_table}
+
+\section{AI-assisted CAD workflow}
+\label{sec:aicad}
+
+Fig.~\ref{fgr:workflow} shows how the AI-modelled parts were made. A team member
+opened a GitHub issue for one part, often with an annotated sketch
+(Fig.~\ref{fgr:workflow}a). The GitHub Copilot coding agent wrote the part as
+CadQuery or OpenSCAD code and opened a pull request. Scripts in its session
+rendered views, exported STL and STEP files, and checked that the part was one
+closed solid (pull request~\#53) that did not overlap its neighbours (pull
+request~\#66). We reviewed the renders and replied in the pull request, often
+with marked-up screenshots. Each reply started a new agent session, with a
+median length of 11~min. We printed accepted parts, fitted them, and tested them
+on the doser, and problems went back to the agent. Issue~\#34 summed up the loop
+as ``AI design $\rightarrow$ printing $\rightarrow$ testing $\rightarrow$ feedback
+$\rightarrow$ AI design''. From June 2026, some parts, including the final tap
+collar, were modelled instead by chatting with the Zookeeper agent in Zoo Design
+Studio.
+
+Each request set out how the part met its neighbours:
+\begin{itemize}
+\item mating parts and their files (the first auger for the bracket, pull
+request~\#47; the stepper motor of issue~\#24 for the pinion, issue~\#48);
+\item holes and fasteners (clamp screw and mounting holes, issue~\#46; M5 holes
+on a square, pull request~\#66);
+\item bores and clearances (the auger diameter ``with some tolerance'',
+issue~\#46);
+\item gear ratios and axes (2:1 servo gear, issue~\#65; hinge axis through the
+dosing point, issue~\#56);
+\item the face to print on (issue~\#46);
+\item features that must not change (the auger's internal screw, issues~\#48
+and \#67);
+\item checks to run first (no interference and no floating bodies, issue~\#65).
+\end{itemize}
+Material was rarely stated, and all parts were printed in PLA.
+
+We wrote no formal acceptance criteria but applied four in practice. The agent's
+checks had to pass. A team member reviewed the renders and approved a print
+(``We'll print and test this version'', pull request~\#68). The printed part had
+to fit its neighbours and work (issue~\#46, pull request~\#49). Finally, we
+stopped asking for changes and froze the geometry. The type-4 auger, for
+example, became the main design after a bench test (issue~\#48). Because each
+request risked changing features that were already right, parts often stopped
+at ``good enough'' (discussion~\#39).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_workflow}
+\caption{AI-assisted CAD workflow. (a) Sketch of the auger bracket that opened
+issue~\#46 (14 May 2026), the first part-by-part request. It gives the 2~mm
+clamp slot, the 10~mm thickness, the bore (auger diameter plus clearance), the
+face to print on, and a smooth collar-to-plate transition. The GitHub Copilot
+coding agent modelled it in CadQuery (pull request~\#47), and the same sketch
+was posted for the Zoo and CADSmith trials (issues~\#52 and \#54). (b) The loop
+used for each part, April to June 2026. Orange boxes are team steps and blue
+boxes AI steps. Each Zoo Design Studio round took about an hour.}
+\label{fgr:workflow}
+\end{figure}
+
+Table~\ref{tbl:designlog} summarizes the CAD entries of the design log. Of the
+76 entries that made or changed a part model, the coding agent wrote 72, and 16
+were printed. The log records 41 defects. People reviewing renders, slicer
+previews, or CAD caught 30 of them, printing or bench tests caught 6, and the
+agent's own checks caught 4. Parts that did not fit their neighbours were the
+most common defect (19), followed by designs built around missing or
+out-of-date inputs (7) and changes nobody had asked for (6). All 41 were in
+AI-modelled entries. The log was compiled afterwards from the repository, so
+these counts are lower bounds.
+
+\input{figures/data/design_log_cad_table}
+
+\clearpage
+
+\section{Bench noise}
+\label{sec:bench}
+
+Protocol~A takes eight balance readings with nothing moving at the start of
+every run. Their spread sets the smallest change that run can resolve
+(Fig.~\ref{fgr:bench}). It was 0.0~mg on every run up to 12 August 2026 and
+rose to tens of milligrams from 20 August. Runs are compared against their own
+noise floor throughout the main text.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS2_bench}
+\caption{Balance noise floor for every first-round run: the spread (maximum
+minus minimum) of eight readings taken with nothing moving (protocol~A), in
+date order. Runs whose eight readings were identical are drawn at the axis
+floor. The dashed line is the controller's $\pm$5~mg stopping band.}
+\label{fgr:bench}
+\end{figure}
+
+\subsection*{Noise after actuation}
+
+The controller acts on readings taken 1.5~s after it moves, so we also measured
+the noise of those readings (Fig.~\ref{fgr:noiseact}a). For each run, we took
+the robust standard deviation (1.4826 times the median absolute deviation) of
+the change between consecutive tap-phase readings. Tapping adds only a few
+milligrams per cycle and the cup cannot lose mass, so on the noisier runs this
+scatter is balance noise. On quiet runs it is an upper bound, because it also
+contains the powder that each tap delivered. The noise after actuation was at
+most 0.9~mg in all six first-round runs with a tap phase, but 5--19~mg in five
+of the ten second-round runs with small doses. On those same runs, the first
+reading of each dose, taken at rest, scattered by at most 0.4~mg, so the
+stability check made before each set of doses could not detect this noise. On
+the noisy runs, lowering the tube to horizontal alone shifted the reading by a
+median of 5--16~mg, which suggests that the doser's own motion disturbed the
+balance.
+
+Table~\ref{tbl:noiseact} compares each small dose's margin to its acceptance
+limit with the noise of its own run. Of the 14 doses of 50~mg that finished
+within the limit, only one lies more than twice its run's noise inside it, and
+12 lie within one noise width of the limit. Of the 16 that missed, 13 lie more
+than twice the noise outside it. At 200~mg, 6 of the 18 passes and 10 of the 12
+failures are robust in the same sense. The failures are therefore real, while
+most 50~mg passes cannot be told apart from noise. The controller also stops at
+the first reading inside its band, so on noisy runs the recorded masses lean
+high. All small doses come from the second round, in one fume hood with
+bracketed readings, so this comparison cannot be split by round or location.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/figS_noise_after_actuation}
+\caption{Balance noise after actuation and the pass/fail calls of small doses.
+(a) Filled markers: noise after actuation for every run with a closed-loop tap
+phase, the robust standard deviation of the change between consecutive
+tap-phase readings, each taken 1.5~s after two solenoid taps with the tube
+horizontal. Open markers apply the same statistic at rest, to the first reading
+of each dose minus its tare reading. Fine silicon and barium chloride never
+reached the tap phase, so their values come from fine-phase steps that
+delivered nothing. Values below 0.1~mg are drawn at 0.1~mg, and \dag\ marks runs
+excluded from the dose analysis. Above the dashed lines, no 50~mg or 200~mg dose
+can be a robust pass. (b, c) Error of each valid 50 and 200~mg dose against the
+noise of its run (named along the top). Light and dark grey zones lie within two
+and one times the noise of a limit. Markers as in Fig.~5 of the main text.}
+\label{fgr:noiseact}
+\end{figure}
+
+\input{figures/data/post_actuation_noise_table}
+
+\section{Human tasks in the test campaign}
+\label{sec:operator}
+
+Table~\ref{tbl:operator} lists every task a person did in the test campaign,
+when it is needed, how often it happened, and what could automate it. Nobody
+acted between doses. Every run was started unattended, so the firmware's 137
+requests to empty the cup continued at once, and each dose was weighed from its
+own tare with earlier powder left in the cup. The human work fell between runs
+(filling, mounting, and positioning an auger, and emptying the cup) and on
+faults, most of which involved the balance or its surroundings. Each powder had
+its own printed auger, labelled by hand and stored filled, with the cap on and
+tape over the outlet. Counts taken from the issue threads are lower bounds.
+
+\input{figures/data/operator_tasks_table}
+
+\section{Closed-loop dose record}
+\label{sec:doses}
+
+Table~\ref{tbl:doseaccount} accounts for every closed-loop dose attempt in both
+test rounds, including the attempts we excluded and the combinations of powder
+and target that were never run. A dose is valid when its run passed quality
+screening, the dose ended in a defined controller state, and the auger or
+solenoid moved. Two 50~mg doses, on calcium lactate and on coarse silicon, were
+first excluded because the firmware logged no auger revolution, but their serial
+logs show a short continuous spin that delivered 62 and 55~mg, so we count them
+as valid overshoots. Table~\ref{tbl:doses} summarizes the valid doses by powder
+and target mass.
+
+Fig.~\ref{fgr:dosetraces} shows balance readings during representative doses of
+a fast and a slow powder. Doses that finished within the limit spent about half
+their time in the tap phase (median 46\% at 50~mg, 50\% at 200~mg, and 53\% at
+1~g). On the free-flowing powders, one 45$^\circ$ auger turn delivered a median of
+30~mg, against 2~mg on the slow powders. The last step of a 50~mg dose on a
+free-flowing powder added a median of 46~mg (range 8--100~mg), more than the
+whole $\pm$5~mg acceptance band, so a dose could step right over it. On the slow
+powders the last step added at most 9~mg, and doses stopped near the lower edge
+of the band. In 19 of the 60 valid 50 and 200~mg doses, the controller began
+with a brief continuous spin that delivered up to 103~mg. Its bulk phase started
+whenever the tared reading sat a fraction of a milligram below zero, because the
+threshold for that phase equalled the target. Per-dose phase times and final
+increments are in \texttt{paper/figures/data/dose\_phase\_summary.csv}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/figS_dose_traces}
+\caption{Balance readings during closed-loop doses of a fast, free-flowing
+powder (a--c, AlSi10Mg) and a slow one (d--f, white rice flour) at 50~mg,
+200~mg, and 1~g. The thick line is the dose with the median time of its set of
+three, and thin lines are the other two. Shading and the bar above each panel
+mark the phases of the thick-line dose: bulk (continuous rotation, tube at
+45$^\circ$), fine (45$^\circ$ auger turns, tube at 22.5$^\circ$), and tap (pairs of
+taps, tube horizontal). The green band is the acceptance limit and the dashed
+line the target. Markers are filled within the limit and open outside it. Time
+axes differ. In (a), the second 45$^\circ$ turn added 58~mg, more than the whole
+target. In (b), a first reading just below zero triggered a brief bulk spin.
+Tap-phase readings then ranged over 140--191~mg, and the dose stopped on the
+first reading inside the $\pm$5~mg band. Panels (a--e) are from September 2026,
+and (f) is from 4 August 2026.}
+\label{fgr:dosetraces}
+\end{figure}
+
+{\small
+\input{figures/data/dose_accounting_table}
+}
+
+\small
+\input{figures/data/dose_summary_table}
+\normalsize
+
+\section{Composition error from dosing error}
+\label{sec:comperror}
+
+The acceptance limits apply to each feedstock in a blend, and a feedstock built
+from several passing doses of 100~mg or more is also within $\pm$5\%. Let
+feedstock $f$ have mass $m_f$, relative mass error $\varepsilon_f$, and element
+mass fractions $c_{fk}$, and let $M_k$ be the atomic weight of element $k$. With
+$n_k=\sum_f m_f c_{fk}/M_k$ and $N=\sum_k n_k$, the mole fraction $x_k=n_k/N$
+changes to first order by
+\begin{equation}
+\delta x_k=\sum_f S_{kf}\,\varepsilon_f,\qquad
+S_{kf}=\frac{m_f}{N}\left(\frac{c_{fk}}{M_k}-x_k\sum_j\frac{c_{fj}}{M_j}\right).
+\label{eq:comperror}
+\end{equation}
+Mass fractions follow by setting every $M$ to one. For pure elements,
+$\delta x_i=x_i(\varepsilon_i-\sum_j x_j\varepsilon_j)$. If every error sits at a
+common limit $L$ with the least favourable signs, $|\delta x_i|=2x_i(1-x_i)L$.
+For an equimolar five-component blend ($x_i=0.2$, $L=5\%$), this is 1.6 atomic
+percent, or 1.65 without the linear approximation. If the errors are
+independent and uniform within the limits, the standard deviation is 0.52
+atomic percent.
+
+Table~\ref{tbl:comperror} applies Eq.~\ref{eq:comperror} to batches of 10, 100,
+and 500~g, the range planned for our alloy work. Batch size only decides which
+limit applies, so the dosing columns barely change with it. With uniform errors,
+each element of the equimolar blend stays within one atomic percent in 97\% of
+simulated blends. The measured errors of accepted doses give a standard
+deviation of 0.40 atomic percent, and 0.08 atomic percent for the three
+research-relevant powders. The aluminium-rich blends we plan to make, such as
+Al-5Mn-2Cr-2Zr-0.5Ti, stay near 0.4 atomic percent even in the worst case. The
+Al-24Si test blend behaves like the equimolar blend.
+
+The balance also records each delivered mass, so the composition actually dosed
+is known to within the balance uncertainty. For a 10~g batch, this is 0.002
+atomic percent at 0.1~mg and 0.08 atomic percent at 5~mg. A dose that misses its
+target can then be corrected, by re-targeting later feedstocks to the recorded
+masses or topping up earlier ones. Feedstock chemistry adds an error of similar
+size: supplier ranges for the silicon and AlSi10Mg powders put the 100~g
+Al-24Si blend anywhere from 23.6 to 24.8~wt\% Si. Processing can add far more,
+and directed energy deposition from elemental powders has shifted compositions
+by 5--10 atomic percent.\cite{Moorehead2020Throughput,Chen2020Elemental} The
+dosing limits are therefore suited to screening compositions. They do not by
+themselves fix the composition of an atomized or printed alloy, which still has
+to be measured.
+
+\input{figures/data/composition_error_table}
+
+\clearpage
+
+\section{Test protocols as recorded}
+\label{sec:protocols}
+
+Table~3 of the main text specifies the eight test protocols in tube angles and
+auger units. Table~\ref{tbl:protocolrecords} gives the same protocols as the raw
+records store them, and counts the runs and records behind each one, so that a
+reader can match any row of the raw CSV files to its protocol.
+
+The test battery's raw records store tilt as a servo setting (0, 45, or 90)
+rather than as an angle. The tilt plate is geared 2:1, so these settings are
+tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$ above horizontal, and
+45$^\circ$ is the steepest tilt reached in any test. The main text and its
+figures report tube angles; the conversion is made
+once, in \texttt{paper/figures/make\_data\_figures.py}.
+
+\input{figures/data/protocol_records_table}
+
+\section{Run inventory}
+\label{sec:runs}
+
+Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
+runs that were aborted, postponed, or excluded, so that each number in the main
+text can be traced to the run it came from.
+
+\small
+\input{figures/data/run_inventory_table}
+\normalsize
+
+\section{AI usage log}
+\label{sec:ailog}
+
+In line with \textit{Digital Discovery}'s guidance on the use of LLMs, all AI
+interactions are preserved publicly in the repository:
+
+\begin{itemize}
+\item \textbf{CAD and code generation:} every coding-agent session is recorded
+as a pull request containing the prompt (issue text and review comments), the
+generated CAD code, rendered views, and the human review thread. The raw
+session logs that GitHub Actions keeps expire after 90 days: those from April to
+early July 2026 had expired by October 2026, and the later logs and the Claude Code
+session transcripts were downloaded then and are part of the archived release.
+Table~\ref{tbl:aitools} lists each AI tool, the months it was used, and the
+models the records name.
+\item \textbf{Design reviews and literature queries:} Edison Scientific query
+scripts, task identifiers, raw answers, and extracted references are archived
+with the corresponding branches; the consolidated bibliography, with the
+verification status of each entry, is \texttt{paper/references\_validation.md}.
+\item \textbf{Text-to-CAD evaluations:} CADSmith run artifacts and the Zoo
+Design Studio (Zookeeper agent) session transcripts and notes are preserved on
+their branches.
+\item \textbf{Analysis and writing:} the data-analysis scripts behind every
+figure, and the AI-drafted revisions of this manuscript, are in
+\texttt{paper/} with their review threads.
+\item \textbf{Qualitative observations:} the team's running journal of AI
+behaviour, good and bad, is discussion~\#39 in the repository.
+\end{itemize}
+
+\input{figures/data/ai_tools_table}
+
+Fig.~\ref{fgr:aiusage} shows how agent use was spread over the project. Team
+members addressed the two coding agents 754 times between April and September
+2026, and the agents authored 789 of the 877 commits (90\%). The counts cover
+all work in the repository: CAD, firmware, data analysis, and writing. The team
+moved from the GitHub Copilot coding agent to Claude Code at the end of June
+2026.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/figS3_ai_usage}
+\caption{Generative-AI agent activity per week over the project. (a) Requests
+to an agent: comments and issue or pull-request descriptions written by a team
+member that address \texttt{@copilot} or \texttt{@claude}, plus pull requests
+the Copilot coding agent opened when assigned an issue. Most such requests
+started one agent session, so the count is an approximate measure of use. (b) Commits on all branches by author; commits that were later
+rebased onto another branch are counted once. Counts are from the public
+repository history (\texttt{paper/figures/data/build\_ai\_usage.py}).}
+\label{fgr:aiusage}
+\end{figure}
+
+\renewcommand{\refname}{References}
+\bibliographystyle{rsc}
+\bibliography{references}
+
+\end{document}
