@@ -54,8 +54,8 @@ ITEMS = [
      "https://us.misumi-ec.com/vona2/detail/110302683830/", 4.0, "cut to length", (2,), "Frame"),
     (14, ("corner_bracket",), None, "2020 corner bracket with M5 screws and T-nuts", "Amazon", "",
      "https://www.amazon.com/s?k=2020+corner+bracket+m5", 0.60, "20-pack ~$12", (1,), "Frame"),
-    (15, ("foot",), None, "Leveling foot M8 (with M8 tapped end in the extrusion bore, or T-nut adapter)", "Amazon", "",
-     "https://www.amazon.com/s?k=leveling+feet+m8", 2.0, "4-pack ~$8", (2,), "Frame"),
+    (15, ("foot",), None, "Leveling foot, M5 stud (into the leg's centre bore, tapped M5)", "Amazon", "",
+     "https://www.amazon.com/s?k=m5+leveling+feet+2020+extrusion", 2.0, "4-pack ~$8", (2,), "Frame"),
     (16, ("deck",), None, "Deck, HDPE 1/2 in, 48 x 48 in sheet cut to 1050 x 740 (DXF in dxf/)", "McMaster-Carr", "8619K478",
      "https://www.mcmaster.com/8619K478/", 165.0, "1 sheet", (4,), "Frame"),
     # ---- idler hardware
@@ -151,7 +151,8 @@ def step_lines() -> dict[int, list[str]]:
     out: dict[int, list[str]] = {}
     for r in rows():
         for s in map(int, r["steps"].split(",")):
-            out.setdefault(s, []).append(f"[{r['item']}] {r['qty']} x {r['description'][:70]}")
+            d = r["description"]
+            out.setdefault(s, []).append(f"[{r['item']}] {r['qty']} x {d if len(d) <= 100 else d[:97] + '...'}")
     return out
 
 

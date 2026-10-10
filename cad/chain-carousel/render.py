@@ -121,22 +121,27 @@ def font(size):
 
 
 def caption(img: Image.Image, title: str, lines: list[str] = ()) -> Image.Image:
-    d = ImageDraw.Draw(img)
-    d.text((28, 22), title, fill=(20, 20, 20), font=font(34))
-    y = 70
+    """Title and the step's BoM lines on a white band above the render."""
+    band = 70 + 30 * len(lines) + 12
+    out = Image.new("RGB", (img.width, img.height + band), (255, 255, 255))
+    out.paste(img, (0, band))
+    d = ImageDraw.Draw(out)
+    d.text((28, 18), title, fill=(20, 20, 20), font=font(34))
+    y = 66
     for ln in lines:
-        d.text((30, y), ln, fill=(60, 60, 60), font=font(22))
+        d.text((30, y), ln, fill=(70, 70, 70), font=font(22))
         y += 30
-    return img
+    d.line((0, band - 1, img.width, band - 1), fill=(210, 210, 210), width=2)
+    return out
 
 
-HERO = dict(focal=(0, -60, -60), direction=(0.55, -1.0, 0.75), dist=2300)
+HERO = dict(focal=(60, -60, -90), direction=(0.55, -1.0, 0.75), dist=2050)
 CAMS = {
     "iso": HERO,
     "top": dict(focal=(0, 0, 0), direction=(0, -0.0001, 1), dist=2500, up=(0, 1, 0)),
     "front": dict(focal=(0, 0, -120), direction=(0, -1, 0.0001), dist=2600),
     "station": dict(focal=(-7, -230, 20), direction=(0.9, -1.0, 0.9), dist=820),
-    "drive": dict(focal=(183, 0, -60), direction=(1.0, -0.8, 0.5), dist=900),
+    "drive": dict(focal=(183, 0, -100), direction=(1.0, -1.3, -0.35), dist=950),
     "idler": dict(focal=(-190, 0, 0), direction=(-0.6, -1.0, 1.0), dist=520),
     "chain_detail": dict(focal=(150, -40, 8), direction=(0.3, -1.0, 1.0), dist=260),
 }
@@ -160,15 +165,18 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
     frames = []
     for s, title in L.STEPS.items():
         view.clear()
+        under_deck = s in (5, 7)                    # new parts go in from below the deck
         for p in pl:
             if p.step < s:
-                view.ren.AddActor(actor(p, tuple(0.55 + 0.45 * c for c in p.color) if p.step < s else p.color, opacity=1.0))
+                faded = tuple(0.55 + 0.45 * c for c in p.color)
+                op = 0.25 if (under_deck and p.key == "deck") else 1.0
+                view.ren.AddActor(actor(p, faded, opacity=op))
             elif p.step == s:
                 view.ren.AddActor(actor(p, p.color, offset=p.explode))
         cam = step_camera(s)
         view.camera(**cam)
         img = view.image()
-        img = caption(img, f"Step {s}. {title}", bom_items.get(s, [])[:12])
+        img = caption(img, f"Step {s}. {title}", bom_items.get(s, [])[:14])
         f = OUT / "steps" / f"step_{s:02d}.png"
         f.parent.mkdir(parents=True, exist_ok=True)
         img.save(f)
@@ -178,18 +186,22 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
 
 
 def step_camera(s: int) -> dict:
-    if s in (3, 6):
-        return dict(focal=(183, 0, -90), direction=(1.0, -1.0, 0.45), dist=1000)
+    if s in (1, 2):
+        return dict(focal=(0, 0, -120), direction=(0.55, -1.0, 0.6), dist=2100)
+    if s == 3:
+        return dict(focal=(183, 0, -160), direction=(1.0, -1.2, 0.35), dist=1100)
+    if s == 6:
+        return dict(focal=(183, 0, -10), direction=(0.9, -1.0, 0.9), dist=520)
     if s == 5:
-        return dict(focal=(-180, 0, -10), direction=(-0.7, -1.0, 0.8), dist=620)
+        return dict(focal=(-190, 0, -20), direction=(-0.7, -1.0, 0.55), dist=560)
     if s == 7:
-        return dict(focal=(-7, -80, -20), direction=(0.5, -1.0, 0.9), dist=520)
+        return dict(focal=(-7, -80, -20), direction=(0.5, -1.0, 0.6), dist=520)
     if s in (10, 11):
         return dict(focal=(-7, -200, 30), direction=(0.9, -1.0, 0.9), dist=900)
     if s == 12:
         return dict(focal=(150, -450, -200), direction=(0.6, -1.0, 0.8), dist=1600)
     if s == 8:
-        return dict(focal=(0, 0, 0), direction=(0.5, -1.0, 1.1), dist=1500)
+        return dict(focal=(0, 0, 0), direction=(0.45, -1.0, 1.0), dist=1050)
     return HERO
 
 

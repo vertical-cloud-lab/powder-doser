@@ -301,11 +301,11 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     # 3. motor + plate (plate under the deck, motor under the plate)
     z_plate = -DECK_T - MOTOR_PLATE_T
     add(Placement("motor_plate", "Motor plate", T(None, (X_DRIVE, 0, z_plate)), 3, ALU, "drive", (0, 0, -120)))
-    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(None, (X_DRIVE, 0, z_plate)), 3, DARK, "drive", (0, 0, -260)))
+    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(None, (X_DRIVE, 0, z_plate)), 3, DARK, "drive", (0, 0, -140)))
     for sx in (-1, 1):
         for sy in (-1, 1):
             add(Placement("m5x18_shcs", "Motor screw M5x18", T(Rx(math.pi), (X_DRIVE + sx * M34_BOLT_SQ / 2, sy * M34_BOLT_SQ / 2,
-                                                                          z_plate - 12)), 3, DARK, "drive", (0, 0, -320)))
+                                                                          z_plate - 12)), 3, DARK, "drive", (0, 0, -190)))
     # 4. deck (+ the motor plate's countersunk screws)
     add(Placement("deck", "Deck (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
     for kind, (x, y), size in deck_holes():

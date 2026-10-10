@@ -1,0 +1,46 @@
+item,qty,description,vendor,part_number,url,unit_usd,ext_usd,pack,steps,category,keys
+1,1,"ANSI #35 roller chain, 3 ft (96 pitches) + 2 connecting links",Amazon (Aobbmok),B0C1YTF613,https://www.amazon.com/Aobbmok-Roller-Chain-Connecting-Replacements/dp/B0C1YTF613/,7.99,7.99,1 box (on the ME order),8,Chain,"chain_inner,chain_outer"
+2,12,"#35 A-1 attachment connecting link (bent tab, 1 hole), replaces 12 riveted outer links",Red Boar Chain,35 A1 C/L,https://redboarchain.com/products/35-a1-c-l-attachment-connecting-link-for-35-roller-chain,21.75,261.0,each,8,Chain,chain_a1
+3,1,#35 chain breaker / pin press (removes the 11 outer links the A-1 links replace),Amazon,,https://www.amazon.com/s?k=%2335+roller+chain+breaker,15.0,15.0,tool,8,Tools,
+4,1,"Sprocket 35B19, 19T ANSI 35, B hub, bored 14 mm H7 + 5 mm keyway (NEMA 34 shaft)",USA Roller Chain,35B19,https://usarollerchain.com/products/35b19-sprocket,14.99,14.99,stock bore; bore + keyway in the BYU shop,6,Chain,sprocket_drive
+5,1,"Idler sprocket #35 19T with ball bearing, 1/2 in bore",Amazon,B07LDKCN1X,https://www.amazon.com/HEAVY-ROLLER-CHAIN-SPROCKET-IDLER/dp/B07LDKCN1X,7.99,7.99,each,5,Chain,sprocket_idler
+6,1,"NEMA 34 closed-loop stepper 34HS59-6004D-E1000, 12 N*m, 14 mm keyed shaft",StepperOnline,34HS59-6004D-E1000,https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000,0.0,0.0,already bought by UofU,3,Drive,nema34
+7,1,Key 5 x 5 x 25 mm (ships with the motor),StepperOnline,,,0.0,0.0,with motor,6,Drive,key_5x5
+8,1,"Motor plate, 6061 aluminium 1/4 in x 6 in x 6 in, cut to 140 x 140 and drilled (DXF in dxf/)",McMaster-Carr,89015K251,https://www.mcmaster.com/89015K251/,22.0,22.0,1 piece,3,Drive,motor_plate
+9,1,Closed-loop stepper driver CL86T V4.1 (24-80 VDC),StepperOnline,CL86T,https://www.omc-stepperonline.com/closed-loop-stepper-driver-0-8-2a-18-80vac-24-110vdc-for-nema-34-stepper-motor-cl86t,47.43,47.43,each,12,Drive,cl86t
+10,1,"Power supply Mean Well LRS-350-36 (36 V, 9.7 A)",Digi-Key,LRS-350-36,https://www.digikey.com/en/products/detail/mean-well-usa-inc/LRS-350-36/7705124,40.0,40.0,each,12,Drive,lrs350
+11,2,"2020 T-slot extrusion, 1050 mm (long rails)",Misumi,HFS5-2020-1050,https://us.misumi-ec.com/vona2/detail/110302683830/,13.0,26.0,cut to length,1,Frame,ext_long
+12,5,"2020 T-slot extrusion, 690 mm (cross members)",Misumi,HFS5-2020-690,https://us.misumi-ec.com/vona2/detail/110302683830/,9.0,45.0,cut to length,1,Frame,ext_cross
+13,4,"2020 T-slot extrusion, 230 mm (legs)",Misumi,HFS5-2020-230,https://us.misumi-ec.com/vona2/detail/110302683830/,4.0,16.0,cut to length,2,Frame,ext_leg
+14,24,2020 corner bracket with M5 screws and T-nuts,Amazon,,https://www.amazon.com/s?k=2020+corner+bracket+m5,0.6,14.4,20-pack ~$12,1,Frame,corner_bracket
+15,4,"Leveling foot, M5 stud (into the leg's centre bore, tapped M5)",Amazon,,https://www.amazon.com/s?k=m5+leveling+feet+2020+extrusion,2.0,8.0,4-pack ~$8,2,Frame,foot
+16,1,"Deck, HDPE 1/2 in, 48 x 48 in sheet cut to 1050 x 740 (DXF in dxf/)",McMaster-Carr,8619K478,https://www.mcmaster.com/8619K478/,165.0,165.0,1 sheet,4,Frame,deck
+17,1,Hex bolt 1/2-13 x 2-1/2 in (idler stud),McMaster-Carr,92620A724,https://www.mcmaster.com/92620A724/,1.5,1.5,each,5,Fasteners,idler_stud
+18,1,Nylon-insert locknut 1/2-13,McMaster-Carr,95615A140,https://www.mcmaster.com/95615A140/,0.5,0.5,each,5,Fasteners,nut_38
+19,1,Washer 1/2 in,McMaster-Carr,98023A033,https://www.mcmaster.com/98023A033/,0.2,0.2,each,5,Fasteners,washer_38
+20,4,M5 x 18 socket head screw (motor flange into the M5-tapped plate),McMaster-Carr,91292A126,https://www.mcmaster.com/91292A126/,0.25,1.0,pack of 50,3,Fasteners,m5x18_shcs
+21,4,M5 x 20 flat head screw + nut (motor plate up into the deck),McMaster-Carr,92125A212,https://www.mcmaster.com/92125A212/,0.3,1.2,pack of 25,4,Fasteners,m5x20_fhcs
+22,24,M5 x 25 flat head screw (deck to frame),McMaster-Carr,92125A214,https://www.mcmaster.com/92125A214/,0.3,7.2,pack of 25,4,Fasteners,m5x25_fhcs
+23,24,"M5 drop-in T-nut, 2020 slot 6",Amazon,,https://www.amazon.com/s?k=2020+drop+in+t+nut+m5,0.1,2.4,100-pack ~$10,4,Fasteners,tnut_m5
+24,1,M5 x 40 socket head screw + nut (tensioner jack screw),McMaster-Carr,91292A135,https://www.mcmaster.com/91292A135/,0.4,0.4,each,5,Fasteners,m5x40_shcs
+25,12,M3 x 10 button head screw (carriage to A-1 tab),McMaster-Carr,92095A181,https://www.mcmaster.com/92095A181/,0.12,1.44,pack of 100,9,Fasteners,m3x10_bhcs
+26,12,"M3 heat-set insert, 5.7 mm long",McMaster-Carr,94180A333,https://www.mcmaster.com/94180A333/,0.2,2.4,pack of 100,9,Fasteners,insert_m3
+27,4,M4 x 30 socket head screw + nylon locknut (hold-down blocks),McMaster-Carr,91292A120,https://www.mcmaster.com/91292A120/,0.25,1.0,pack of 50,10,Fasteners,m4x30_shcs
+28,1,M5 x 70 socket head screw + nylon locknut (hinge pin),McMaster-Carr,91292A139,https://www.mcmaster.com/91292A139/,0.6,0.6,each,11,Fasteners,m5x70_shcs
+29,12,"Carriage base plate, printed PETG (H2D bed; ~125 g each)",printed,carriage.stl,,2.5,30.0,filament,9,Printed,carriage
+30,3,"Idler slider, spacer and tensioner block, printed PETG",printed,idler_*.stl,,0.5,1.5,filament,5,Printed,"idler_slider,tensioner_block,idler_spacer"
+31,2,"Hold-down block, printed PETG",printed,hold_down.stl,,0.3,0.6,filament,10,Printed,hold_down
+32,2,"Hall sensor holder, printed PETG",printed,hall_holder.stl,,0.05,0.1,filament,7,Printed,hall_holder
+33,2,"A3144 hall-effect switch (open collector), index + home",Amazon,,https://www.amazon.com/s?k=a3144+hall+effect+sensor,0.5,1.0,10-pack ~$6,7,Electronics,a3144
+34,13,Neodymium disc magnet 6 x 3 mm N52 (12 index + 1 home),Amazon,,https://www.amazon.com/s?k=6x3mm+n52+magnets,0.15,1.95,50-pack ~$8,9,Electronics,magnet
+35,1,Raspberry Pi 4 Model B (any Pi with pigpio works; the lab's spare),Adafruit,4296,https://www.adafruit.com/product/4296,35.0,35.0,each,12,Electronics,raspberry_pi
+36,1,"Interface board: ULN2803A (step/dir/enable to the CL86T opto inputs), 3 x 10k pull-ups to 3.3 V, screw terminals, perfboard",Digi-Key,ULN2803A,https://www.digikey.com/en/products/detail/texas-instruments/ULN2803ADWR/277680,4.0,4.0,kit,12,Electronics,perfboard
+37,1,"E-stop mushroom switch, NC, in enclosure (breaks the 36 V DC feed to the driver)",Amazon,,https://www.amazon.com/s?k=emergency+stop+switch+enclosure,15.0,15.0,each,12,Electronics,estop
+38,1,"Electronics board, 1/4 in plywood 420 x 300",Home Depot,,,6.0,6.0,offcut,12,Electronics,board_panel
+39,1,"Wire, fuses and connectors: 18 AWG (36 V), 22 AWG (signals), IEC C14 inlet with fuse + switch, 4-pin motor + encoder extension",Amazon,,,25.0,25.0,lot,12,Electronics,
+40,1,"Mounting plate (Sam's Oct 8 Onshape design), printed",lab,Onshape 581956d5,https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f,0.0,0.0,existing,11,Module,sam_mounting_plate
+41,2,"Auger, threaded storage, and cap (lab design, PR #170)",lab,auger.step,,0.0,0.0,existing,11,Module,"auger,auger_cap"
+42,1,Digital dial indicator 0-12.7 mm x 0.01 mm with magnetic base (lift and sag tests),Amazon,,https://www.amazon.com/s?k=digital+dial+indicator+magnetic+base,30.0,30.0,each,13,Test,
+43,1,"Push-pull force gauge 50 N (station push-up, drag force)",Amazon,,https://www.amazon.com/s?k=digital+force+gauge+50n,40.0,40.0,each,13,Test,
+44,1,ADXL345 accelerometer breakout (carriage vibration in transit),Adafruit,4097,https://www.adafruit.com/product/4097,8.0,8.0,each,13,Test,
+45,11,Dummy module mass: 250 g bag of table salt (or 2 x 125 g steel bars) per carriage,grocery,,,1.0,11.0,each,13,Test,
