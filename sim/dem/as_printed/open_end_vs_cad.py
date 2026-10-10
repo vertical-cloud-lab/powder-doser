@@ -56,8 +56,16 @@ def main():
     ax = axs[0]
     ax.set_facecolor(SURF)
     on_o, on_c = r_o <= revs_o + 1e-9, r_c <= revs_c + 1e-9  # motor-on part only (afterflow is in the json)
-    ax.plot(r_o[on_o], m_o[on_o], color=OPEN, lw=2, label="printed open end")
+    ax.plot(r_o[on_o], m_o[on_o], color=OPEN, lw=2, label="printed open end, 1.5 turns meshed")
     ax.plot(r_c[on_c], m_c[on_c], color=CAD, lw=2, label="CAD cone + Ø3 exit")
+    if os.path.exists(os.path.join(CASES, "rig_open_t27p5_r60_4turns", "outflow.txt")):
+        r_4, m_4, revs_4, _ = load("rig_open_t27p5_r60_4turns")
+        on_4 = r_4 <= revs_4 + 1e-9
+        ax.plot(r_4[on_4], m_4[on_4], color=OPEN, lw=1.6, ls=(0, (5, 2)), label="printed open end, 4 turns meshed")
+        pr_4, _, s_4 = summary(r_4, m_4, revs_4)
+        out["open_end_4turns"] = {"per_rev_mg": pr_4, "sector45_mg": s_4.round(1).tolist(),
+                                  "afterflow_mg": float(m_4[-1] - np.interp(revs_4, r_4, m_4)) if r_4[-1] > revs_4 else None}
+        json.dump(out, open(os.path.join(HERE, "open_end_vs_cad.json"), "w"), indent=1)
     xx = np.array([0, max(revs_o, revs_c)])
     ax.plot(xx, RIG_MG_PER_REV * xx, color=INK2, lw=1.2, ls=(0, (4, 3)), label="rig, 105 mg/rev")
     ax.set_xlim(-0.05, max(revs_o, revs_c) + 0.05)
@@ -68,7 +76,7 @@ def main():
     ax2 = axs[1]
     ax2.set_facecolor(SURF)
     w = 1 / 8
-    ax2.bar(e_o[:-1] + w / 2, s_o, width=w * 0.86, color=OPEN, label="printed open end")
+    ax2.bar(e_o[:-1] + w / 2, s_o, width=w * 0.86, color=OPEN, label="printed open end, 1.5 turns meshed")
     ax2.bar(e_c[:-1] + w / 2, s_c, width=w * 0.86, color=CAD, label="CAD cone + Ø3 exit")
     ax2.set_xlabel("auger revolutions since the exit opened", fontsize=8.5, color=INK2)
     ax2.set_ylabel("salt per 45° of rotation (mg)", fontsize=8.5, color=INK2)

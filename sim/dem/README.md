@@ -24,8 +24,8 @@ MP4: [`results/rig_t27p5_r60.mp4`](results/rig_t27p5_r60.mp4).*
   The twin below uses the Fusion `threaded-auger-final` (12 mm cone to a Ø3 mm exit, core tip in the hole). The
   A1 mini's job cache also holds `auger_open_end` (2026-09-09): no cone, the Ø20.8 mm bore runs to the exit, and the
   exit area is 47× larger.
-  * Run with the same settings, the open end dumps 1.7 g as the exit opens, then delivers about 0.65–1.0 g per
-    revolution in one slug per turn. That is 6–10× the cone exit and the rig's 105 mg/rev.
+  * Run with the same settings, the open end dumps 1.7 g as the exit opens. After that it delivers one slug per turn:
+    1.0 g first, then about 0.6–0.7 g per revolution. That is about 6× the cone exit and the rig's 105 mg/rev.
   * The 53 g / ~100 g full-length auger Will used for PR #166 points to the cone design for those measurements, but no
     log says which exit was on. The H2D's job history would settle it.
 * **Without any calibration, the twin lands on the rig's measured salt yield at the PR #166 centre point** (105 vs
@@ -91,25 +91,26 @@ printers themselves show.
   history, or a photo of the exit, would settle it.
 
 **The twin with the printed open end.** Case `rig_open_t27p5_r60` uses the same salt, contacts, tilt, rpm, prefill and
-feed as `rig_t27p5_r60`, run for 3 revolutions on 2 MPI ranks:
+feed as `rig_t27p5_r60`, run for 3 revolutions on 2 MPI ranks. A check with 4 flight turns meshed instead of 1.5
+(`rig_open_t27p5_r60_4turns`, 2 revolutions on 4 ranks) repeats it closely:
 
 | twin at 27.5°, 60 rpm | CAD cone, Ø3 exit (`rig_t27p5_r60`) | printed open end (`rig_open_t27p5_r60`) |
 |---|---|---|
 | first ¼ revolution after the exit opens | 12 mg | **1.69 g**: the powder around the core tip falls straight out |
-| per revolution | 105 mg (whole run), 116 ± 20 after the first ¼ rev | **2.69 g / 677 mg / 655 mg** in revolutions 1 / 2 / 3; 851 ± 261 mg/rev after the first ¼ rev |
+| per revolution | 105 mg (whole run), 116 ± 20 after the first ¼ rev | **2.69 g / 677 mg / 655 mg** in revolutions 1 / 2 / 3 (4 turns meshed: 2.71 g / 621 mg). The first revolution is the 1.69 g dump plus a 1.0 g slug. |
 | delivery | pulsed, but powder in every 45° sector (CV of a 15° nudge 0.62, none empty) | **one slug per revolution** (up to 23 g/s in 25 ms windows), nothing for about half of every turn (CV of a 15° nudge 1.74, 55 % empty) |
 | afterflow | 54 mg in 0.6 s | 0 mg in 0.3 s; the motor happened to stop between slugs |
 | salt left below the 12 mm line at the end | 1.08 g (in the cone) | 0.26 g |
 
 Movie: [`results/rig_open_t27p5_r60.mp4`](results/rig_open_t27p5_r60.mp4) (GIF: [`results/rig_open_t27p5_r60.gif`](results/rig_open_t27p5_r60.gif)).
-The outlet audit (`audit_outlet.py`) counted every exiting grain.
+The outlet audit (`audit_outlet.py`, 0.02 s dumps) found every exiting grain counted.
 
 ![open end vs CAD](as_printed/open_end_vs_cad.png)
 
 What this says:
-* **Opening the exit removes the throttle.** With the same powder and settings the twin delivers about 0.65–1.0 g
-  per revolution once the start-up dump has gone, against 105 mg/rev for the cone exit and on the rig. That is 6–10×
-  more, and it is consistent with the PR #166 centre point having been measured on a cone-exit auger.
+* **Opening the exit removes the throttle.** With the same powder and settings the twin delivers about 0.6–0.7 g
+  per revolution once the start-up dump and the first slug have gone. The cone exit, and the rig, give 105 mg/rev.
+  That is about 6× more, which is consistent with the PR #166 centre point having been measured on a cone-exit auger.
 * **It does not remove the slugs.** With an open end, each pulse comes from the end of the flight sweeping past the
   low side of the tube once per turn. The pulses get bigger, not smaller, and nothing comes out for about half of every
   turn. Ways to smooth an open-end feeder:
@@ -119,9 +120,10 @@ What this says:
   A wider hole alone does not do it.
 * **Afterflow now depends on where the flight end stops.** It was 0 mg here only because the motor stopped between
   slugs. Stopping mid-slug lets the rest of that slug fall out.
-* **Caveat: the simulated section is short.** Only the last 1.5 flight turns are meshed, with a fed top. After the
-  first revolution the feed cannot keep the pockets as full as a full 8-turn auger would, so 677 and 655 mg are lower
-  bounds. The first full slug, about 1.0 g between 0.5 and 1.0 rev, is the better estimate for a full auger.
+* **The short section is not what limits it.** With 4 flight turns meshed, the pockets reaching the exit in the
+  second revolution are pre-filled rather than fed, and the run still gives a 1.0 g first slug, then 621 mg. The
+  1.5-turn case gave 1.0 g, then 677 and 655 mg. So about 0.6–0.7 g per revolution is the twin's steady value for the
+  open end at this setting. The rig's fill-level effect is still not modelled.
 
 ## 1. How close is the twin to the rig?
 
@@ -408,7 +410,7 @@ python render.py --case /tmp/dem/rig_t27p5_r60 --out rig.mp4 --gif rig.gif
 
 1. **Record which auger and exit each run used, and measure the as-printed exit** (from the H2D print jobs with
    `as_printed/gcode_profile.py`, or a photo or calliper). Also measure the salt PSD (sieve or image). These are the
-   inputs the twin is most sensitive to: the open end gives 6–10× the cone exit's flow (§0).
+   inputs the twin is most sensitive to: the open end gives about 6× the cone exit's flow (§0).
 2. **Calibrate** μ, μ_r and the fill level against the battery C angle sweep (36 / 161 / 248 mg/rev at 0 / 22.5 / 45°)
    with a small Bayesian-optimisation loop. Each evaluation is one micro-scale or 30 min rig-scale run. Then validate
    against the PR #166 rpm law (flow ∝ rpm^0.65) without refitting.
@@ -426,7 +428,7 @@ are in [`engines/gpu_engines_on_cpu.md`](engines/gpu_engines_on_cpu.md) and [`en
 
 | Engine / tool | Outcome |
 |---|---|
-| **LIGGGHTS-PUBLIC 3.8** (Debian package) | Used for every case: Hertz–Mindlin, EPSD2 rolling friction, SJKR cohesion, rotating triangle meshes, `massflow/mesh` outlet counting. **MPI works.** With `openmpi-bin` 4.1.6 the rig case runs at 2 and 4 ranks, and STL and VTK meshes give identical outflow. The earlier segfault in `InputMeshTri::meshtrifile` did not reproduce. `run_case.py` now writes VTK (`geometry.write_vtk`) and runs `np` ranks. LIGGGHTS 3.8 only reads VTK with a non-standard header: no `#` on the version line, and a quoted `"DATASET UNSTRUCTURED_GRID"` line. The earlier §1–§3 cases ran serially, one per core. |
+| **LIGGGHTS-PUBLIC 3.8** (Debian package) | Used for every case: Hertz–Mindlin, EPSD2 rolling friction, SJKR cohesion, rotating triangle meshes, `massflow/mesh` outlet counting. **MPI works.** With `openmpi-bin` 4.1.6 the rig case runs at 2 and 4 ranks with either STL or VTK meshes, and at 4 ranks the two formats give identical outflow. The earlier segfault in `InputMeshTri::meshtrifile` did not reproduce. `run_case.py` now writes VTK (`geometry.write_vtk`) and runs `np` ranks. LIGGGHTS 3.8 only reads VTK with a non-standard header: no `#` on the version line, and a quoted `"DATASET UNSTRUCTURED_GRID"` line. The earlier §1–§3 cases ran serially, one per core. |
 | LAMMPS 2024 (Debian; GRANULAR, KSPACE, `coul/*`) | Installed. It is not used for the auger because it has no rotating-STL granular walls. It is the open path for the triboelectric extension discussed on #158 (`pair_style hybrid/overlay granular … coul/long`). |
 | OVITO 3.16 (pip) + Mesa lavapipe | Headless Tachyon rendering of the cut-away movies. OVITO needs a Vulkan instance even for Tachyon, hence `mesa-vulkan-drivers`. |
 | Chrono::GPU (PyChrono 10.0.0, conda) | **No CPU path.** Chrono::GPU, now called Chrono::DEM, is CUDA/HIP-only, and neither it nor Chrono::Multicore has Python bindings in 10.0.0 (`No module named 'pychrono.gpu'` / `'pychrono.multicore'`). The CUDA build's FSI module fails with `cudaErrorInsufficientDriver`. **The CPU route that does run is core `ChSystemSMC` with Chrono's multicore collision detection.** It runs the 29k-grain rig section stably, but only with a two-sided mesh. It reaches 0.16 M particle-steps/s on 2 threads, against 0.89 M on 1 core for LIGGGHTS, and it silently ignores rolling friction. |
