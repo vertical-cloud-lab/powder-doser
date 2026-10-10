@@ -69,6 +69,8 @@ def metrics(case):
         "complete": bool(done), "sim_time_s": float(t_end),
         "rate_mg_s": float(rate), "mg_per_rev": float(rate * T), "grain_mg": grain_mg,
         "m_first_rev_mg": float(np.interp(min(t0 + T, t_end), t, m) - np.interp(t0, t, m)),
+        # mean over the whole motor-on period, start-up included
+        "mg_per_rev_full": float((np.interp(t_hi, t, m) - np.interp(t0, t, m)) / max(t_hi - t0, 1e-9) * T),
         "wall_s": meta.get("wall_s"),
     }
     # windowed doses during steady rotation

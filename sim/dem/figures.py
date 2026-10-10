@@ -49,11 +49,16 @@ RIG_DATA = {
     "rig_t27p5_r60": (105.0, 11.0, "PR #166 centre point, 27.5°, 60 rpm (n = 8)"),
     "rig_t22p5_r90": (108.0, 2.5, "battery D, 22.5°, 90 rpm (106.4 / 109.9)"),
     "rig_t27p5_r60_tip2": (105.0, 11.0, "PR #166 centre point, 27.5°, 60 rpm (n = 8)"),
+    # battery C 0 deg at 30 rpm: 36 +- 7.5 mg/rev (n = 12); x (60/30)^-0.35 from the measured flow ~ rpm^0.65 law
+    "rig_t00_r60": (28.0, 6.0, "battery C, 0°, 36±7.5 at 30 rpm → ≈28 at 60 rpm"),
+    "rig_t45_r60": (195.0, 24.0, "battery C, 45°, 248±30 at 30 rpm → ≈195 at 60 rpm"),
 }
 CASE_LABEL = {
     "rig_t27p5_r60": "CAD exit",
     "rig_t22p5_r90": "CAD exit",
     "rig_t27p5_r60_tip2": "core tip cut 2 mm short",
+    "rig_t00_r60": "CAD exit",
+    "rig_t45_r60": "CAD exit",
 }
 
 
@@ -77,8 +82,8 @@ def fig_rig(cases, out):
             mu, sd, rl = RIG_DATA[key]
             drawn.add(rl)
             rr = np.array([0, revs])
-            a1.fill_between(rr, (mu - sd) * rr, (mu + sd) * rr, color=INK2, alpha=0.10, lw=0)
-            a1.plot(rr, mu * rr, color=INK2, ls="--", lw=1.4, label=f"rig: {rl}")
+            a1.fill_between(rr, (mu - sd) * rr, (mu + sd) * rr, color=col, alpha=0.10, lw=0)
+            a1.plot(rr, mu * rr, color=col, ls="--", lw=1.4, label=f"rig: {rl}")
         if key == "rig_t27p5_r60":
             w = T / 8
             t_stop = t0 + revs * T
@@ -90,7 +95,7 @@ def fig_rig(cases, out):
                 a2.text(0.01, RIG_DATA[key][0] / 8, " rig mean / 8", va="bottom", fontsize=8, color=INK2)
             a2.set_title(f"dose arrives in pulses ({meta['cfg']['incline_deg']:g}°, {meta['cfg']['rpm']:g} rpm)", fontsize=10)
     a1.axvline(0, color=INK2, lw=0.8, ls=":")
-    a1.set_xlabel("auger revolutions since motor start (after the last tick the motor is stopped)")
+    a1.set_xlabel("auger revolutions since motor start (curves continue past the stop: afterflow)")
     a1.set_ylabel("dispensed mass (mg)")
     a1.set_title("Rig auger, real-size salt (d50 0.425 mm): twin vs measured", fontsize=10)
     a1.legend(frameon=False, fontsize=8, loc="upper left")
@@ -108,8 +113,8 @@ def fig_scaling(bench_jsonl, out):
     thr = np.array([r["particle_steps_per_s"] for r in B])
     mem = np.array([r["peak_rss_mb"] for r in B]) / 1024
     # real counts
-    free_vol_mm3 = (math.pi * 10.5 ** 2 - 63.1) * 238 + 1139  # Auger4 bore minus flight, plus funnel
-    phi = 0.6
+    free_vol_mm3 = 79000.0  # rig auger internal volume (79 mL, threaded-auger-final.stl)
+    phi = 0.55  # salt bulk 1.19 g/mL / 2.165 g/mL
 
     def count(d_mm, vol_mm3):
         return phi * vol_mm3 / (math.pi / 6 * d_mm ** 3)
@@ -118,13 +123,13 @@ def fig_scaling(bench_jsonl, out):
         return mg / (rho_mg_mm3 * math.pi / 6 * d_mm ** 3)
 
     marks = [
-        ("10 mg salt (d 0.45 mm)", dose(0.45, 2.16, 10)),
-        ("one rev of salt (113 mg)", dose(0.45, 2.16, 113)),
+        ("10 mg salt (d 0.425 mm)", dose(0.425, 2.165, 10)),
+        ("one rev of salt (105 mg)", dose(0.425, 2.165, 105)),
         ("1 mg Sc (d 40 µm)", dose(0.040, 2.99, 1)),
-        ("10 mg AlSi10Mg (d 35 µm)", dose(0.035, 2.67, 10)),
-        ("full Auger4 of salt", count(0.45, free_vol_mm3)),
-        ("Auger4 funnel of AlSi10Mg", count(0.035, 1139)),
-        ("full Auger4 of AlSi10Mg", count(0.035, free_vol_mm3)),
+        ("10 mg AlSi10Mg (d 42 µm)", dose(0.042, 2.67, 10)),
+        ("full rig auger of salt", count(0.425, free_vol_mm3)),
+        ("rig funnel of AlSi10Mg", count(0.042, 1389)),
+        ("full rig auger of AlSi10Mg", count(0.042, free_vol_mm3)),
     ]
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.4))
     nn = np.logspace(2, 10, 50)
@@ -143,13 +148,14 @@ def fig_scaling(bench_jsonl, out):
     a1.legend(frameon=False, loc="upper left", fontsize=8)
     a1.set_title("Memory: how many grains fit", fontsize=10)
     # wall time per auger revolution at 55 rpm for salt-sized grains
-    steps_rev = (60 / 55) / 2.18e-5
+    steps_rev = 1.0 / 2.06e-5  # 60 rpm, rig-case time step
     per_core = np.median(thr)
     hrs1 = nn * steps_rev / per_core / 3600
     a2.loglog(nn, hrs1, color=C[0], label=f"1 CPU core ({per_core / 1e6:.2f} M particle-steps/s, measured)")
     a2.loglog(nn, hrs1 / 4 / 0.85, color=C[2], label="4 cores, ideal MPI (not working in this build)")
     a2.loglog(N, N * steps_rev / thr / 3600, "o", color=C[0], ms=7)
-    for i, (lab, n) in enumerate(marks[:5]):
+    salt_marks = [marks[0], marks[1], ("twin dosing section (29 k grains)", 2.9e4), marks[4]]
+    for i, (lab, n) in enumerate(salt_marks):
         a2.axvline(n, color=INK2, lw=0.6, alpha=0.5)
         a2.text(n * 1.08, 3e-3 * (4 ** (i % 3)), lab, rotation=90, fontsize=7.5, color=INK2, va="bottom")
     a2.axhline(1, color=INK2, lw=0.8, ls=":")
@@ -159,7 +165,7 @@ def fig_scaling(bench_jsonl, out):
     a2.set_xlim(1e2, 1e7)
     a2.set_xlabel("particles in the simulation")
     a2.set_ylabel("wall time per auger revolution (h)")
-    a2.set_title("Speed: salt-sized grains (dt 22 µs), 55 rpm", fontsize=10)
+    a2.set_title("Speed: salt grains (dt 21 µs), one revolution at 60 rpm", fontsize=10)
     a2.legend(frameon=False, loc="upper left", fontsize=8)
     fig.tight_layout()
     fig.savefig(out, dpi=130)
@@ -179,11 +185,19 @@ def fig_sweep(rows, out, title):
         ([r.get("afterflow_mg", np.nan) for r in rows], "afterflow in 0.5 s after stop (mg)"),
         ([r.get("funnel_holdup_mg", np.nan) for r in rows], "powder parked in funnel (mg)"),
     ]
-    for a, (v, lab) in zip(ax, vals):
-        a.barh(y, v, color=C[0], height=0.6)
-        for yi, vi in zip(y, v):
+    se = [r.get("mg_per_rev_se", np.nan) for r in rows]
+    cv15 = [r["windows"].get("15", {}).get("cv", np.nan) for r in rows]
+    for j, (a, (v, lab)) in enumerate(zip(ax, vals)):
+        a.barh(y, v, color=C[0], height=0.6, xerr=se if j == 0 else None,
+               error_kw={"ecolor": INK2, "elinewidth": 1.0, "capsize": 2.5})
+        for yi, vi, s_, c_ in zip(y, v, se, cv15):
             if np.isfinite(vi):
-                a.text(vi, yi, f" {vi:.1f}" if vi < 100 else f" {vi:.0f}", va="center", fontsize=8, color=INK)
+                txt = f" {vi:.1f}" if vi < 100 else f" {vi:.0f}"
+                if j == 0 and np.isfinite(s_):
+                    txt = f"  {vi:.1f} ± {s_:.1f}"
+                if j == 1 and np.isfinite(c_):
+                    txt += f" (CV {c_:.2f})"
+                a.text(vi + (s_ if j == 0 and np.isfinite(s_) else 0), yi, txt, va="center", fontsize=8, color=INK)
         a.set_xlabel(lab, fontsize=9)
         a.grid(axis="y", visible=False)
         a.margins(x=0.25)
@@ -227,7 +241,8 @@ def main():
     ap.add_argument("--out", default="results")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    fig_rig([os.path.join(a.runs, k) for k in RIG_DATA], os.path.join(a.out, "rig_vs_measured.png"))
+    fig_rig([os.path.join(a.runs, k) for k in ("rig_t27p5_r60", "rig_t22p5_r90", "rig_t00_r60", "rig_t45_r60", "rig_t27p5_r60_tip2")],
+            os.path.join(a.out, "rig_vs_measured.png"))
     if os.path.exists(a.bench):
         fig_scaling(a.bench, os.path.join(a.out, "scaling.png"))
     labels = {

@@ -176,6 +176,8 @@ def main():
     ap.add_argument("--frames-dir", default=None, help="persistent frame cache (enables incremental rendering)")
     ap.add_argument("--frames-only", action="store_true", help="render missing frames, skip video assembly")
     ap.add_argument("--ymax", type=float, default=None)
+    ap.add_argument("--stride", type=int, default=1, help="render only frames i with i %% stride == offset (parallel workers)")
+    ap.add_argument("--offset", type=int, default=0)
     a = ap.parse_args()
 
     from PIL import Image, ImageDraw, ImageFont
@@ -205,14 +207,14 @@ def main():
     tmp = a.frames_dir or tempfile.mkdtemp(prefix="render_")
     os.makedirs(tmp, exist_ok=True)
     try:
-        font = ImageFont.truetype("DejaVuSans.ttf", 18)
+        font = ImageFont.truetype("DejaVuSans.ttf", 15)
         font_s = ImageFont.truetype("DejaVuSans.ttf", 14)
     except OSError:
         font = font_s = ImageFont.load_default()
     geo = meta["geometry"]
     z_top = geo["funnel_h"] + geo["n_turns"] * geo["pitch"] + geo["flight_t"] + geo["feed_h"]
     for i, fpath in enumerate(files):
-        if os.path.exists(os.path.join(tmp, f"f{i:05d}.png")):
+        if i % a.stride != a.offset or os.path.exists(os.path.join(tmp, f"f{i:05d}.png")):
             continue
         step, A = read_dump(fpath)
         # hide feed-zone spill that leaves through the open top of the meshed section

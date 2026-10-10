@@ -165,7 +165,7 @@ fix m3 all property/global coefficientRestitution peratomtypepair 2 {e} {e} {e} 
 fix m4 all property/global coefficientFriction peratomtypepair 2 {mu_pp} {mu_pw} {mu_pw} {mu_pw}
 fix m5 all property/global coefficientRollingFriction peratomtypepair 2 {mu_r} {mu_r} {mu_r} {mu_r}
 {ced_line}
-pair_style gran model hertz tangential history rolling_friction epsd2 {cohesion}
+pair_style gran model hertz tangential history {cohesion} rolling_friction epsd2
 pair_coeff * *
 timestep {dt:.4e}
 
@@ -173,7 +173,7 @@ fix gravi all gravity 9.81 vector {gx:.6f} {gy:.6f} {gz:.6f}
 fix auger  all mesh/surface file auger.stl type 2 scale 0.001 curvature_tolerant yes
 fix plug   all mesh/surface file plug.stl type 2 scale 0.001
 fix outlet all mesh/surface/planar file outlet.stl type 2 scale 0.001
-fix walls  all wall/gran model hertz tangential history rolling_friction epsd2 {cohesion} mesh n_meshes 2 meshes auger plug
+fix walls  all wall/gran model hertz tangential history {cohesion} rolling_friction epsd2 mesh n_meshes 2 meshes auger plug
 
 fix pts1 all particletemplate/sphere 15485863 atom_type 1 density constant {rho} radius constant {r1:.6e}
 fix pts2 all particletemplate/sphere 15485867 atom_type 1 density constant {rho} radius constant {r2:.6e}
@@ -198,7 +198,7 @@ fix logmf all print {log_every} "${{t}} ${{mout}} ${{nout}} ${{natoms}}" file ou
 run {settle_steps}
 # --- open the exit and start the motor
 unfix walls
-fix walls2 all wall/gran model hertz tangential history rolling_friction epsd2 {cohesion} mesh n_meshes 1 meshes auger
+fix walls2 all wall/gran model hertz tangential history {cohesion} rolling_friction epsd2 mesh n_meshes 1 meshes auger
 fix spin all move/mesh mesh auger rotate origin 0. 0. 0. axis 0. 0. 1. period {period:.6f}
 print "PHASE rotate start t=${{t}}"
 run {rot_steps}
