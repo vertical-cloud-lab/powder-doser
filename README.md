@@ -1,4 +1,21 @@
-# powder-excavator
+# powder-doser
+
+An open-source, 3D-printed auger powder doser whose parts were first designed with
+generative AI, and the manuscript that describes it (in preparation for *Digital
+Discovery*). The project began in April 2026 as the "powder excavator" concept
+described further down.
+
+## Where things are
+
+| Folder | Contents |
+|---|---|
+| [`paper/`](paper/) | Manuscript (`main.tex`, `main.pdf`), SI (`si.tex`, `si.pdf`), bibliography, cover letter, mock reviews and decision files. Build `si.tex` before `main.tex` (`latexmk -pdf`). |
+| [`paper/figures/`](paper/figures/) | Scripts that draw every figure. The data behind them are CSV files in `paper/figures/data/`: one row per dose in `doses_all.csv`, one per run in `runs_all.csv`. |
+| [`cad/`](cad/) | Parametric CAD source and build scripts |
+| [`hardware/`](hardware/) | KiCad schematics, test-module firmware and vendor files |
+| [`docs/`](docs/) | How-to notes, such as [headed browser automation on the test Pi](docs/pi-browser-automation.md) |
+
+Code is MIT-licensed ([`LICENSE`](LICENSE)).
 
 ## Current design: the single-channel powder doser
 

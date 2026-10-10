@@ -500,7 +500,10 @@ interactions are preserved publicly in the repository:
 \begin{itemize}
 \item \textbf{CAD and code generation:} every coding-agent session is recorded
 as a pull request containing the prompt (issue text and review comments), the
-generated CAD code, rendered views, and the human review thread.
+generated CAD code, rendered views, and the human review thread. The raw
+session logs that GitHub Actions keeps expire after 90 days: those from April to
+early July 2026 had expired by October 2026, and the later logs and the Claude Code
+session transcripts were downloaded then and are part of the archived release.
 Table~\ref{tbl:aitools} lists each AI tool, the months it was used, and the
 models the records name.
 \item \textbf{Design reviews and literature queries:} Edison Scientific query
