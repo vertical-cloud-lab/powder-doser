@@ -95,12 +95,12 @@ def free_point_mask(P, pts, rad, margin=1.02):
         ok &= (r > P.shaft_r + c) | (z < P.funnel_h - c)
         if P.tip_r is not None:
             ts = (P.shaft_r - P.tip_r) / P.funnel_h
-            rt = P.tip_r + ts * np.clip(z, 0, None)
-            ok &= (z >= P.funnel_h) | (r > rt + c * math.sqrt(1 + ts ** 2))
+            rt = P.tip_r + ts * np.clip(z, P.tip_z0, None)
+            ok &= (z >= P.funnel_h) | (z < P.tip_z0 - c) | (r > rt + c * math.sqrt(1 + ts ** 2))
     # flight: helical phase distance
     r_in = max(P.core_r, P.shaft_r)
     lead = P.pitch * P.starts
-    z_start = P.flight_z0 if P.flight_into_funnel else P.funnel_h
+    z_start = max(P.flight_z0, P.tip_z0) if P.flight_into_funnel else P.funnel_h
     in_flight_band = (r > r_in - c) | ((z < P.funnel_h) & (P.tip_r is not None))
     for k in range(P.starts):
         ph = 2 * np.pi * k / P.starts

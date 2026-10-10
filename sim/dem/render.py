@@ -68,7 +68,27 @@ def speed_colors(v, vmax):
     return c
 
 
-def render_frame(A, tris, theta, beta, png, size, vmax, view_center, fov):
+def face_colors(tris_mm, geo):
+    """Colour the auger mesh by part: tube/funnel wall, flight, solid core."""
+    c = tris_mm.mean(axis=1)
+    r = np.hypot(c[:, 0], c[:, 1])
+    z = c[:, 2]
+    slope = (geo["funnel_top_r"] - geo["exit_r"]) / geo["funnel_h"]
+    r_out = np.where(z >= geo["funnel_h"], geo["bore_r"], geo["exit_r"] + slope * np.clip(z, 0, None))
+    col = np.tile([0.05, 0.22, 0.55], (len(c), 1))           # flight: blue (Tachyon lighting brightens a lot)
+    col[r > r_out - 0.15] = [0.50, 0.58, 0.68]               # tube and funnel wall: grey-blue
+    if geo.get("shaft_r", 0) > 0:
+        tip = geo.get("tip_r")
+        if tip is not None:
+            r_in = np.where(z >= geo["funnel_h"], geo["shaft_r"],
+                            tip + (geo["shaft_r"] - tip) * np.clip(z, 0, None) / geo["funnel_h"])
+        else:
+            r_in = np.full_like(z, geo["shaft_r"])
+        col[(r < r_in + 0.15) & ((z > geo["funnel_h"] - 0.2) | (tip is not None))] = [0.70, 0.36, 0.05]  # core: amber
+    return col
+
+
+def render_frame(A, tris, theta, beta, png, size, vmax, view_center, fov, colors=None):
     from ovito.data import DataCollection, Particles, TriangleMesh, SimulationCell
     from ovito.pipeline import Pipeline, StaticSource
     from ovito.vis import Viewport, TachyonRenderer, TriangleMeshVis, ParticlesVis
@@ -87,14 +107,18 @@ def render_frame(A, tris, theta, beta, png, size, vmax, view_center, fov):
     # rotate mesh with the auger, clip the half nearest the camera (y < 0)
     T = tris @ rot_z(theta).T
     cen_y = T.mean(axis=1)[:, 1]
-    T = T[cen_y > -2e-4]
-    T = T @ Rd.T
-    mesh = TriangleMesh()
-    verts = T.reshape(-1, 3)
-    mesh.set_vertices(verts)
-    mesh.set_faces(np.arange(len(verts)).reshape(-1, 3))
-    mesh.vis = TriangleMeshVis(color=(0.62, 0.72, 0.85), transparency=0.15, highlight_edges=False)
-    data.objects.append(mesh)
+    keep = cen_y > -2e-4
+    T = T[keep] @ Rd.T
+    # one TriangleMesh per part so each gets its own colour (wall / flight / core)
+    cols = colors[keep] if colors is not None else np.tile([0.62, 0.72, 0.85], (len(T), 1))
+    for col in np.unique(cols, axis=0):
+        sel = np.all(cols == col, axis=1)
+        mesh = TriangleMesh()
+        verts = T[sel].reshape(-1, 3)
+        mesh.set_vertices(verts)
+        mesh.set_faces(np.arange(len(verts)).reshape(-1, 3))
+        mesh.vis = TriangleMeshVis(color=tuple(col), transparency=0.08, highlight_edges=False)
+        data.objects.append(mesh)
     pipe = Pipeline(source=StaticSource(data=data))
     pipe.add_to_scene()
     vp = Viewport(type=Viewport.Type.Ortho, camera_dir=(0, 1, 0), camera_up=(0, 0, 1),
@@ -159,6 +183,7 @@ def main():
     meta = json.load(open(os.path.join(a.case, "case.json")))
     cfg = meta["cfg"]
     tris = read_stl(os.path.join(a.case, "auger.stl"))
+    fcol = face_colors(tris * 1e3, meta["geometry"])
     O = np.loadtxt(os.path.join(a.case, "outflow.txt"), comments="#", ndmin=2)
     t_log, m_log = O[:, 0], O[:, 1] * 1e6
     beta = math.radians(cfg["incline_deg"] - 90.0)
@@ -199,7 +224,7 @@ def main():
         theta = omega * min(max(0.0, t - meta["settle_s"]), max(0.0, t_stop - meta["settle_s"]))
         left = os.path.join(tmp, f"l{os.getpid()}.png")
         right = os.path.join(tmp, f"r{os.getpid()}.png")
-        render_frame(A, tris, theta, beta, left, (W - 480, H), vmax=0.08, view_center=tuple(center), fov=fov)
+        render_frame(A, tris, theta, beta, left, (W - 480, H), vmax=0.08, view_center=tuple(center), fov=fov, colors=fcol)
         mass_panel(t, t_log, m_log, meta, right, (480, H), a.exp_rate, a.ymax)
         img = Image.new("RGB", (W, H), "white")
         img.paste(Image.open(left).convert("RGB"), (0, 0))

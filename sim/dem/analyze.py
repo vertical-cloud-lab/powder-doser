@@ -83,6 +83,9 @@ def metrics(case):
                          "cv": float(dm.std(ddof=1) / dm.mean()) if dm.mean() > 0 else None,
                          "p_empty": float(np.mean(dm < 0.5 * grain_mg)), "n": int(len(dm))}
     out["windows"] = win
+    if "90" in win and win["90"]["n"] >= 2:
+        # standard error of mg/rev from quarter-turn blocks (the discharge is pulsed, so this is rough)
+        out["mg_per_rev_se"] = float(4 * win["90"]["sd_mg"] / math.sqrt(win["90"]["n"]))
     if cfg["stop_s"] > 0 and t_end > t_stop:
         out["afterflow_mg"] = float(m[-1] - np.interp(t_stop, t, m))
         out["afterflow_window_s"] = float(t_end - t_stop)

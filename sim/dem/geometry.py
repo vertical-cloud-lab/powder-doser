@@ -51,6 +51,8 @@ class AugerParams:
     feed_h: float = 14.0          # mm of open bore above the last flight (feed zone)
     tip_r: float | None = None    # mm, radius of the solid core's conical tip at the exit plane
                                   # (rig auger: core tapers 3.98 -> 0.43 mm through the funnel)
+    tip_z0: float = 0.0           # mm, height where the core tip is cut off flat (0 = tip reaches the exit
+                                  # plane as in the CAD; an FDM print cannot make the 0.86 mm point)
     flight_into_funnel: bool = False  # continue the flight down the funnel between the cones
     flight_z0: float = 0.4        # mm, lowest point of the flight when it runs into the funnel
     throat_h: float = 0.8         # mm, straight exit throat below the cone (0 = none)
@@ -113,7 +115,7 @@ def _helical_flight(p: AugerParams, phase: float):
     tris = []
     lead = p.pitch * p.starts  # axial advance per revolution of one start
     turns = p.n_turns / p.starts  # revolutions each start makes over n_turns pitches
-    z_start = p.flight_z0 if p.flight_into_funnel else p.funnel_h
+    z_start = max(p.flight_z0, p.tip_z0) if p.flight_into_funnel else p.funnel_h
     phi0 = -2 * np.pi * (p.funnel_h - z_start) / lead
     phi1 = 2 * np.pi * turns
     n_phi = int(np.ceil((phi1 - phi0) / (2 * np.pi) * p.n_theta))
@@ -178,10 +180,12 @@ def auger_triangles(p: AugerParams):
                                        np.linspace(p.funnel_h, p.z_top, n_z + 1), p.n_theta // 2)
         if p.tip_r is not None:
             n_t = max(2, int(np.ceil(p.funnel_h / p.dz)))
+            u0 = p.tip_z0 / p.funnel_h
+            r0 = p.tip_r + u0 * (p.shaft_r - p.tip_r)
             tris += _surface_of_revolution(lambda u: p.tip_r + u * (p.shaft_r - p.tip_r),
-                                           lambda u: u * p.funnel_h, np.linspace(0, 1, n_t + 1), p.n_theta // 2)
-            tris += _surface_of_revolution(lambda s: s, lambda s: 0.0,
-                                           np.linspace(0.0, p.tip_r, 2), p.n_theta // 2)
+                                           lambda u: u * p.funnel_h, np.linspace(u0, 1, n_t + 1), p.n_theta // 2)
+            tris += _surface_of_revolution(lambda s: s, lambda s: p.tip_z0,
+                                           np.linspace(0.0, r0, 2), p.n_theta // 2)
         else:
             tris += _surface_of_revolution(lambda s: s, lambda s: p.funnel_h,
                                            np.linspace(0.0, p.shaft_r, 3), p.n_theta // 2)
