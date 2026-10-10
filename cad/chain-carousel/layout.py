@@ -103,12 +103,12 @@ def deck_holes() -> list[tuple[str, tuple, tuple]]:
     """(kind, centre, size) for every opening in the deck, world x/y."""
     S = station_frame()
     holes = [("circle", (X_DRIVE, 0.0), (80.0,)),                      # drive sprocket hub
-             ("slot", (X_IDLER - TENSION_TRAVEL / 2, 0.0), (32.0, 32.0 + TENSION_TRAVEL))]
+             ("slot", (X_IDLER - 3.0, 0.0), (32.0, 32.0 + TENSION_TRAVEL))]
     for sx in (-1, 1):                                                  # motor plate, countersunk
         for sy in (-1, 1):
             holes.append(("csk", (X_DRIVE + sx * (MOTOR_PLATE / 2 - 10), sy * (MOTOR_PLATE / 2 - 10)), (5.5,)))
     for sy in (-1, 1):                                                  # idler slider clamps
-        holes.append(("circle", (X_IDLER - 25.0, sy * 20.0), (5.5,)))
+        holes.append(("csk", (X_IDLER - 22.0, sy * 18.0), (5.5,)))
     # station reach-through, in the carriage frame -> world
     c = to_world(S, (0, (CUT_Y[0] + CUT_Y[1]) / 2, 0))
     holes.append(("rect", (c[0], c[1]), (2 * CUT_X + 6, CUT_Y[1] - CUT_Y[0] + 6)))
@@ -116,10 +116,10 @@ def deck_holes() -> list[tuple[str, tuple, tuple]]:
         h = to_world(S, (x, CAR_Y0 + 40, 0))
         holes.append(("circle", (h[0], h[1]), (11.8,)))
     for x in (-43.0, -19.0, 19.0, 43.0):                                # hold-down blocks
-        h = to_world(S, (x, CAR_Y0 + CAR_L - 1 + 24, 0))
+        h = to_world(S, (x, CAR_Y0 + CAR_L - 1 + 28, 0))
         holes.append(("circle", (h[0], h[1]), (4.5,)))
-    for y in (-9.0, 9.0):                                               # tensioner block
-        holes.append(("circle", (X_IDLER + 52.0, y), (4.5,)))
+    for y in (-9.0, 9.0):                                               # tensioner block, from above
+        holes.append(("csk4", (X_IDLER + 42.0, y), (4.5,)))
     # deck to frame: M5 countersunk into T-nuts along both long rails and the cross members
     for x in np.linspace(-DECK_L / 2 + 40, DECK_L / 2 - 40, 7):
         for sy in (-1, 1):
@@ -141,6 +141,9 @@ def deck_part() -> cq.Workplane:
     for kind, (x, y), size in deck_holes():
         if kind == "circle":
             d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
+        elif kind == "csk4":
+            d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
+            d = d.cut(cq.Workplane("XY").center(x, y).circle(4.2).workplane(offset=-2.6).circle(1.8).loft())
         elif kind == "csk":
             d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
             d = d.cut(cq.Workplane("XY").center(x, y).circle(5.5).workplane(offset=-3.0).circle(2.75)
@@ -310,26 +313,43 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     add(Placement("deck", "Deck (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
     for kind, (x, y), size in deck_holes():
         if kind == "csk":
-            key = "m5x20_fhcs" if abs(x - X_DRIVE) < MOTOR_PLATE and abs(y) < MOTOR_PLATE else "m5x25_fhcs"
-            add(Placement(key, "Deck screw" if key == "m5x25_fhcs" else "Motor plate screw", T(None, (x, y, 0)), 4,
-                          DARK, "deck", (0, 0, 160)))
-            if key == "m5x25_fhcs":
+            plate = abs(x - X_DRIVE) < MOTOR_PLATE and abs(y) < MOTOR_PLATE
+            clamp = abs(x - (X_IDLER - 22.0)) < 1 and abs(abs(y) - 18.0) < 1
+            if clamp:
+                continue                                    # placed with the idler (step 5)
+            add(Placement("m5x25_fhcs" if plate else "m5x18_fhcs", "Motor plate screw" if plate else "Deck screw",
+                          T(None, (x, y, 0)), 4, DARK, "deck", (0, 0, 160)))
+            if plate:
+                add(Placement("nut_m5", "Motor plate nut", T(None, (x, y, -DECK_T - MOTOR_PLATE_T - 4)), 4, STEEL, "deck",
+                              (0, 0, -60)))
+            else:
                 add(Placement("tnut_m5", "T-nut", T(Rx(math.pi), (x, y, -DECK_T - 2.2)), 4, STEEL, "deck", (0, 0, 100)))
-    # 5. idler
-    xi = X_IDLER - TENSION_TRAVEL / 2
-    add(Placement("idler_slider", "Idler slider (printed)", T(Rx(math.pi), (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, -60)))
-    add(Placement("idler_stud", "Idler stud 3/8-16x2-1/2", T(None, (xi, 0, -DECK_T - 8 - 6)), 5, STEEL, "idler", (0, 0, -120)))
+    # 5. idler: slider and jack block under the deck, idler on a spacer above
+    xi = X_IDLER
+    add(Placement("idler_slider", "Idler slider (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, -70)))
+    add(Placement("idler_stud", "Idler stud 1/2-13 x 2-1/4", T(None, (xi, 0, -DECK_T - 8 - 7.7)), 5, STEEL, "idler", (0, 0, -130)))
     add(Placement("idler_spacer", "Idler spacer (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, 40)))
-    add(Placement("sprocket_idler", "Idler sprocket 19T (bearing)", T(Rz(ALPHA / 2 * 0 + math.pi / 2 - ALPHA / 2), (xi, 0, CHAIN_Z)),
+    add(Placement("sprocket_idler", "Idler sprocket 19T (bearing)", T(Rz(math.pi / 2 - ALPHA / 2), (xi, 0, CHAIN_Z)),
                   5, STEEL, "idler", (0, 0, 80)))
-    add(Placement("washer_38", "Washer 3/8", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2)), 5, STEEL, "idler", (0, 0, 110)))
-    add(Placement("nut_38", "Nylock nut 3/8-16", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2 + 1.6)), 5, STEEL, "idler", (0, 0, 130)))
-    add(Placement("tensioner_block", "Tensioner block (printed)", T(None, (X_IDLER + 52.0, 0, 0)), 5, ORANGE, "idler", (0, 0, 60)))
-    add(Placement("m5x40_shcs", "Jack screw M5x40", T(Ry(math.pi / 2), (X_IDLER + 62.0, 0, 5.0)), 5, DARK, "idler", (40, 0, 60)))
+    add(Placement("washer_12", "Washer 1/2", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2)), 5, STEEL, "idler", (0, 0, 110)))
+    add(Placement("nut_12", "Nylon-insert locknut 1/2-13", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2 + 2.4)), 5, STEEL, "idler",
+                  (0, 0, 130)))
+    for sy in (-1, 1):
+        add(Placement("m5x25_fhcs", "Slider clamp screw", T(None, (xi - 22.0, sy * 18.0, 0)), 5, DARK, "idler", (0, 0, 60)))
+        add(Placement("nut_m5", "Slider clamp nut", T(None, (xi - 22.0, sy * 18.0, -DECK_T - 8 - 4)), 5, STEEL, "idler",
+                      (0, 0, -100)))
+    add(Placement("tensioner_block", "Tensioner block (printed)", T(None, (X_IDLER + 42.0, 0, -DECK_T)), 5, ORANGE, "idler",
+                  (0, 0, -70)))
+    for y in (-9.0, 9.0):
+        add(Placement("m4x20_fhcs", "Tensioner block screw", T(None, (X_IDLER + 42.0, y, 0)), 5, DARK, "idler", (0, 0, 60)))
+    # jack screw: head outboard, tip on the slider's +x face (32 mm from the stud)
+    add(Placement("m5x40_shcs", "Jack screw M5x40", T(Ry(-math.pi / 2), (X_IDLER + 72.0, 0, -DECK_T - 5)), 5, DARK, "idler",
+                  (40, 0, -70)))
+    add(Placement("nut_m5", "Jack screw nut", T(Ry(-math.pi / 2), (X_IDLER + 50.2, 0, -DECK_T - 5)), 5, STEEL, "idler",
+                  (40, 0, -70)))
     # 6. drive sprocket
     add(Placement("sprocket_drive", "Drive sprocket 35B19, 14 mm bore", T(Rz(math.pi / 2), (X_DRIVE, 0, CHAIN_Z)), 6, STEEL,
                   "drive", (0, 0, 90)))
-    add(Placement("key_5x5", "Key 5x5x25", T(Rz(0), (X_DRIVE + M34_SHAFT_D / 2 - 1.0, 0, CHAIN_Z - 17)), 6, STEEL, "drive", (0, 0, 60)))
     # 7. hall sensors
     S = station_frame()
     for x, nm in ((25.0, "index"), (-25.0, "home")):
@@ -362,16 +382,19 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     for x in (-31.0, 31.0):
         add(Placement("hold_down", "Hold-down block (printed)", S @ T(None, (x, 0, 0)), 10, ORANGE, "station", (0, -40, 50)))
         for dx in (-12.0, 12.0):
-            p = to_world(S, (x + dx, CAR_Y0 + CAR_L - 1 + 24, CAR_SKID + TONGUE[1] + 4.5))
-            add(Placement("m4x30_shcs", "Hold-down screw M4x30", T(None, tuple(p)), 10, DARK, "station", (0, -40, 80)))
+            p = to_world(S, (x + dx, CAR_Y0 + CAR_L - 1 + 28, CAR_SKID + TONGUE[1] + 4.5))
+            add(Placement("m4x20_shcs", "Hold-down screw M4x20", T(None, tuple(p)), 10, DARK, "station", (0, -40, 80)))
+            add(Placement("tnut_m4", "Hold-down T-nut M4", T(Rx(math.pi), (p[0], p[1], -DECK_T - 2.2)), 10, STEEL, "station",
+                          (0, -40, -40)))
     # 11. module 1 on carriage 1
     Ms = sam_frame(link_frame(CARRIAGE_LINK0, 0.0), tilt_deg)
     add(Placement("sam_mounting_plate", "Mounting plate (Sam, Oct 8)", Ms, 11, SAM, "module", (0, 0, 120)))
     Ma = Ms @ T(Ry(math.pi / 2), (AUGER_Z0_XS, 0, 0))                    # auger +z along Sam's +x
     add(Placement("auger", "Auger, threaded storage (lab)", Ma, 11, WHITE, "module", (0, 0, 160)))
     add(Placement("auger_cap", "Auger cap (lab)", Ma @ T(None, (0, 0, 250.0)), 11, WHITE, "module", (0, 0, 160)))
-    Mp = link_frame(CARRIAGE_LINK0, 0.0) @ T(Ry(math.pi / 2), (-LUG_X - LUG_T / 2 - 0.5, HINGE_Y, HINGE_Z))
-    add(Placement("m5x70_shcs", "Hinge pin M5x70", Mp, 11, DARK, "module", (-60, 0, 120)))
+    for sx in (-1, 1):    # one short pin per side: a through pin would cross the auger's outlet end
+        Mp = link_frame(CARRIAGE_LINK0, 0.0) @ T(Ry(sx * math.pi / 2), (sx * (LUG_X + LUG_T / 2), HINGE_Y, HINGE_Z))
+        add(Placement("m5x18_shcs", "Hinge pin M5x18", Mp, 11, DARK, "module", (sx * 60, 0, 120)))
     # 12. electronics board beside the rig (on the bench, in front of the drive end)
     zb = -DECK_T - EXT - LEG_L - 20 - 8
     bx, by = DECK_L / 2 + 260, -120.0
@@ -395,14 +418,16 @@ BUILDERS = {
     "nema34": PT.nema34,
     "deck": deck_part,
     "idler_slider": PT.idler_slider,
-    "idler_stud": PT.idler_stud,
-    "idler_spacer": lambda: PT.washer(16.0, 9.8, DECK_T + CHAIN_Z - IDLER_W / 2),
+    "idler_stud": lambda: PT.idler_stud(12.7, 57.15, 19.05),
+    "idler_spacer": lambda: PT.washer(20.0, 13.2, DECK_T + CHAIN_Z - IDLER_W / 2),
     "sprocket_idler": PT.sprocket_idler,
-    "washer_38": lambda: PT.washer(20.6, 10.3, 1.6),
-    "nut_38": PT.nut_38,
+    "washer_12": lambda: PT.washer(27.0, 13.5, 2.4),
+    "nut_12": lambda: PT.nut_imperial(12.7, 19.05, 15.1),
+    "nut_m5": lambda: PT.hexnut(5),
+    "m4x20_fhcs": lambda: PT.shcs(4, 20, "flat"),
+    "tnut_m4": PT.tnut_m5,
     "tensioner_block": PT.tensioner_block,
     "sprocket_drive": PT.sprocket_drive,
-    "key_5x5": PT.key_5x5,
     "hall_holder": PT.hall_holder,
     "a3144": PT.a3144,
     "chain_a1": PT.chain_a1_link,
@@ -413,12 +438,11 @@ BUILDERS = {
     "magnet": PT.magnet,
     "hold_down": PT.hold_down,
     "m3x10_bhcs": lambda: PT.shcs(3, 10, "button"),
-    "m4x30_shcs": lambda: PT.shcs(4, 30),
+    "m4x20_shcs": lambda: PT.shcs(4, 20),
     "m5x18_shcs": lambda: PT.shcs(5, 18),
-    "m5x20_fhcs": lambda: PT.shcs(5, 20, "flat"),
+    "m5x18_fhcs": lambda: PT.shcs(5, 18, "flat"),
     "m5x25_fhcs": lambda: PT.shcs(5, 25, "flat"),
     "m5x40_shcs": lambda: PT.shcs(5, 40),
-    "m5x70_shcs": lambda: PT.shcs(5, 70),
     "tnut_m5": PT.tnut_m5,
     "board_panel": PT.board_panel,
     "lrs350": PT.lrs350,

@@ -43,7 +43,7 @@ SEAT_D = 1.005 * BUSH_D + 0.076                      # ANSI seating-curve diamet
 HUB_D = 42.1         # 35B19 hub (1-21/32")
 LTB = 22.2           # length through bore (7/8")
 DRIVE_BORE = 14.0    # bored to the NEMA 34 shaft, 5 mm key
-IDLER_BORE = 9.525   # 3/8" ball-bearing idler
+IDLER_BORE = 12.7    # 1/2" ball-bearing idler (Amazon B07LDKCN1X)
 IDLER_HUB_D = 28.6
 IDLER_W = 12.7
 
@@ -99,10 +99,10 @@ LUG_T = 5.0
 HINGE_D = 5.3        # M5 pin, as in Sam's parts
 # Station reach-through: clears Sam's Oct 8 electronics carriage (71 x 36)
 # and the auger's 44T gear when the mounting plate rests on the carriage.
-CUT_Y = (CAR_Y0 + 186.0, CAR_Y0 + 272.0)
+CUT_Y = (CAR_Y0 + 176.0, CAR_Y0 + 272.0)
 CUT_X = 21.0
-SAM_GEAR_XS = 73.75  # gear centre in Sam's part studio (x along the auger)
-AUGER_Z0_XS = -4.6   # auger STEP z = 0 (outlet end) in Sam's x
+SAM_GEAR_XS = 83.75  # gear centre in Sam's part studio: between his 2nd and 3rd clamp rings
+AUGER_Z0_XS = 0.4    # auger STEP z = 0 (outlet end) in Sam's x: the gear (z 78.3-88.3) fills the 10.1 mm gap
 
 # --- station test fixtures ---
 HOLD_DOWN_GAP = 0.5

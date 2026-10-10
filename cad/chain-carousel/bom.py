@@ -37,7 +37,7 @@ ITEMS = [
      "StepperOnline", "34HS59-6004D-E1000",
      "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
      0.0, "already bought by UofU", (3,), "Drive"),
-    (7, ("key_5x5",), None, "Key 5 x 5 x 25 mm (ships with the motor)", "StepperOnline", "", "", 0.0, "with motor", (6,), "Drive"),
+    (7, None, 1, "Key 5 x 5 x 25 mm (ships with the motor)", "StepperOnline", "", "", 0.0, "with motor", (6,), "Drive"),
     (8, ("motor_plate",), None, "Motor plate, 6061 aluminium 1/4 in x 6 in x 6 in, cut to 140 x 140 and drilled (DXF in dxf/)",
      "McMaster-Carr", "89015K251", "https://www.mcmaster.com/89015K251/", 22.0, "1 piece", (3,), "Drive"),
     (9, ("cl86t",), None, "Closed-loop stepper driver CL86T V4.1 (24-80 VDC)", "StepperOnline", "CL86T",
@@ -59,19 +59,19 @@ ITEMS = [
     (16, ("deck",), None, "Deck, HDPE 1/2 in, 48 x 48 in sheet cut to 1050 x 740 (DXF in dxf/)", "McMaster-Carr", "8619K478",
      "https://www.mcmaster.com/8619K478/", 165.0, "1 sheet", (4,), "Frame"),
     # ---- idler hardware
-    (17, ("idler_stud",), None, "Hex bolt 1/2-13 x 2-1/2 in (idler stud)", "McMaster-Carr", "92620A724",
+    (17, ("idler_stud",), None, "Hex bolt 1/2-13 x 2-1/4 in (idler stud)", "McMaster-Carr", "92620A724",
      "https://www.mcmaster.com/92620A724/", 1.5, "each", (5,), "Fasteners"),
-    (18, ("nut_38",), None, "Nylon-insert locknut 1/2-13", "McMaster-Carr", "95615A140", "https://www.mcmaster.com/95615A140/",
+    (18, ("nut_12",), None, "Nylon-insert locknut 1/2-13", "McMaster-Carr", "95615A140", "https://www.mcmaster.com/95615A140/",
      0.5, "each", (5,), "Fasteners"),
-    (19, ("washer_38",), None, "Washer 1/2 in", "McMaster-Carr", "98023A033", "https://www.mcmaster.com/98023A033/", 0.2,
+    (19, ("washer_12",), None, "Washer 1/2 in", "McMaster-Carr", "98023A033", "https://www.mcmaster.com/98023A033/", 0.2,
      "each", (5,), "Fasteners"),
     # ---- fasteners
-    (20, ("m5x18_shcs",), None, "M5 x 18 socket head screw (motor flange into the M5-tapped plate)", "McMaster-Carr", "91292A126",
+    (20, None, 4, "M5 x 18 socket head screw (motor flange into the M5-tapped plate)", "McMaster-Carr", "91292A126",
      "https://www.mcmaster.com/91292A126/", 0.25, "pack of 50", (3,), "Fasteners"),
-    (21, ("m5x20_fhcs",), None, "M5 x 20 flat head screw + nut (motor plate up into the deck)", "McMaster-Carr", "92125A212",
+    (21, ("m5x18_fhcs",), None, "M5 x 18 flat head screw (deck to frame, into T-nuts)", "McMaster-Carr", "92125A212",
      "https://www.mcmaster.com/92125A212/", 0.30, "pack of 25", (4,), "Fasteners"),
-    (22, ("m5x25_fhcs",), None, "M5 x 25 flat head screw (deck to frame)", "McMaster-Carr", "92125A214",
-     "https://www.mcmaster.com/92125A214/", 0.30, "pack of 25", (4,), "Fasteners"),
+    (22, ("m5x25_fhcs", "nut_m5"), None, "M5 x 25 flat head screw + M5 nylon-insert locknut (motor plate, slider clamps; jack-screw nut)",
+     "McMaster-Carr", "", "", 0.30, "packs", (4, 5), "Fasteners"),
     (23, ("tnut_m5",), None, "M5 drop-in T-nut, 2020 slot 6", "Amazon", "", "https://www.amazon.com/s?k=2020+drop+in+t+nut+m5", 0.10,
      "100-pack ~$10", (4,), "Fasteners"),
     (24, ("m5x40_shcs",), None, "M5 x 40 socket head screw + nut (tensioner jack screw)", "McMaster-Carr", "91292A135",
@@ -80,9 +80,11 @@ ITEMS = [
      "https://www.mcmaster.com/92095A181/", 0.12, "pack of 100", (9,), "Fasteners"),
     (26, ("insert_m3",), None, "M3 heat-set insert, 5.7 mm long", "McMaster-Carr", "94180A333", "https://www.mcmaster.com/94180A333/",
      0.20, "pack of 100", (9,), "Fasteners"),
-    (27, ("m4x30_shcs",), None, "M4 x 30 socket head screw + nylon locknut (hold-down blocks)", "McMaster-Carr", "91292A120",
+    (27, ("m4x20_shcs", "tnut_m4"), None, "M4 x 20 socket head screw + M4 drop-in T-nut (hold-down blocks, into the front rail)", "McMaster-Carr", "91292A120",
      "https://www.mcmaster.com/91292A120/", 0.25, "pack of 50", (10,), "Fasteners"),
-    (28, ("m5x70_shcs",), None, "M5 x 70 socket head screw + nylon locknut (hinge pin)", "McMaster-Carr", "91292A139",
+    (46, ("m4x20_fhcs",), None, "M4 x 20 flat head screw (tensioner block, down from the deck top into the PETG)", "McMaster-Carr", "", "", 0.15,
+     "pack of 100", (5,), "Fasteners"),
+    (28, None, 2, "M5 x 18 socket head screw + nylon locknut (module 1 hinge pins, one per side)", "McMaster-Carr", "91292A139",
      "https://www.mcmaster.com/91292A139/", 0.6, "each", (11,), "Fasteners"),
     # ---- printed parts
     (29, ("carriage",), None, "Carriage base plate, printed PETG (H2D bed; ~125 g each)", "printed", "carriage.stl", "", 2.5,
@@ -138,8 +140,6 @@ def rows() -> list[dict]:
         q = sum(n[k] for k in keys) if keys else qty
         if item == 1:
             q = 1                                   # the chain is one box; 84 links of it are in the CAD
-        if item == 21:
-            q = n["m5x20_fhcs"]
         out.append(dict(item=item, qty=q, description=desc, vendor=vendor, part_number=pn, url=url,
                         unit_usd=price, ext_usd=round(q * price, 2), pack=pack,
                         steps=",".join(map(str, steps)), category=cat, keys=",".join(keys or ())))

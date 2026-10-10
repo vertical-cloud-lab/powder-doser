@@ -99,7 +99,7 @@ def sprocket_drive() -> cq.Workplane:
     hub = cq.Workplane("XY").circle(HUB_D / 2).extrude(LTB - TOOTH_W).translate((0, 0, -LTB + TOOTH_W / 2))
     s = ring.union(hub)
     bore = cq.Workplane("XY").circle(DRIVE_BORE / 2).extrude(60).translate((0, 0, -30))
-    key = cq.Workplane("XY").center(DRIVE_BORE / 2, 0).rect(4.6, M34_KEY_W).extrude(60).translate((0, 0, -30))
+    key = cq.Workplane("XY").center(0, -DRIVE_BORE / 2).rect(M34_KEY_W, 4.6).extrude(60).translate((0, 0, -30))
     setscrews = (cq.Workplane("YZ").center(0, -LTB + TOOTH_W / 2 + 8).circle(3.0).extrude(30)
                  .union(cq.Workplane("XZ").center(0, -LTB + TOOTH_W / 2 + 8).circle(3.0).extrude(-30)))
     return s.cut(bore).cut(key).cut(setscrews)
@@ -123,7 +123,7 @@ def nema34() -> cq.Workplane:
     cap = (cq.Workplane("XY").rect(f, f).extrude(-12).edges("|Z").chamfer(6)
            .faces(">Z").workplane().rect(M34_BOLT_SQ, M34_BOLT_SQ, forConstruction=True)
            .vertices().hole(M34_HOLE_D))
-    body = (cq.Workplane("XY").rect(f - 1, f - 1).extrude(-(M34_BODY_L - 24)).edges("|Z").chamfer(11)
+    body = (cq.Workplane("XY").rect(f - 1, f - 1).extrude(-(M34_BODY_L - 24)).edges("|Z").chamfer(21)
             .translate((0, 0, -12)))
     rear = cq.Workplane("XY").rect(f, f).extrude(-12).edges("|Z").chamfer(6).translate((0, 0, -(M34_BODY_L - 12)))
     enc = cq.Workplane("XY").rect(f - 6, f - 6).extrude(-M34_ENC_L).edges("|Z").fillet(4).translate((0, 0, -M34_BODY_L))
@@ -188,15 +188,15 @@ def deck(cut_station: bool = True) -> cq.Workplane:
 
 
 # ---------------------------------------------------------------- idler
-def idler_stud() -> cq.Workplane:
-    """3/8"-16 x 2-1/2" hex bolt, head down (under the deck)."""
-    head = cq.Workplane("XY").polygon(6, 14.3 / math.cos(math.pi / 6)).extrude(6.0)
-    shank = cq.Workplane("XY").circle(9.525 / 2).extrude(63.5).translate((0, 0, 6.0))
+def idler_stud(d: float = 12.7, L: float = 57.15, af: float = 19.05, hh: float = 7.7) -> cq.Workplane:
+    """Hex bolt (1/2"-13 x 2-1/4" by default), head (z 0..hh) down under the slider."""
+    head = cq.Workplane("XY").polygon(6, af / math.cos(math.pi / 6)).extrude(hh)
+    shank = cq.Workplane("XY").circle(d / 2).extrude(L).translate((0, 0, hh))
     return head.union(shank)
 
 
-def nut_38() -> cq.Workplane:
-    return cq.Workplane("XY").polygon(6, 14.3 / math.cos(math.pi / 6)).extrude(8.3).faces(">Z").workplane().hole(9.525)
+def nut_imperial(d: float, af: float, h: float) -> cq.Workplane:
+    return cq.Workplane("XY").polygon(6, af / math.cos(math.pi / 6)).extrude(h).faces(">Z").workplane().hole(d)
 
 
 def washer(od: float, id_: float, t: float) -> cq.Workplane:
@@ -204,27 +204,24 @@ def washer(od: float, id_: float, t: float) -> cq.Workplane:
 
 
 def idler_slider() -> cq.Workplane:
-    """Printed (PETG) slider: sits in the deck's idler slot, carries the
-    3/8" stud and sets the idler's tooth ring at the chain centre plane.
-    Its tail takes the M5 jack screw from the tensioner block."""
-    h = CHAIN_Z - IDLER_W / 2           # top of the boss, under the bearing's inner race
-    base = cq.Workplane("XY").rect(40, 30).extrude(3.0).edges("|Z").fillet(4)
-    boss = cq.Workplane("XY").circle(9.0).extrude(h)
-    tail = cq.Workplane("XY").center(-26, 0).rect(16, 14).extrude(10).edges("|Z").fillet(2)
-    s = base.union(boss).union(tail)
-    s = s.cut(cq.Workplane("XY").circle(9.7 / 2).extrude(30).translate((0, 0, -5)))
-    nut_pocket = cq.Workplane("YZ").center(0, 5).polygon(6, 9.2).extrude(4).translate((-32, 0, 0))
-    return s.cut(nut_pocket).cut(cq.Workplane("YZ").center(0, 5).circle(2.7).extrude(20).translate((-40, 0, 0)))
+    """Printed (PETG) slider under the deck: carries the 1/2" stud, top face
+    (z = 0) against the deck's underside. Two slots for the M5 clamp screws;
+    the jack screw pushes its +x face to tension the chain."""
+    p = cq.Workplane("XY").rect(64, 50).extrude(-8).edges("|Z").fillet(4)
+    p = p.cut(cq.Workplane("XY").circle(13.0 / 2).extrude(-20).translate((0, 0, 5)))
+    for y in (-18, 18):
+        p = p.cut(cq.Workplane("XY").center(-22, y).slot2D(5.5 + TENSION_TRAVEL, 5.5).extrude(-20).translate((0, 0, 5)))
+    return p
 
 
 def tensioner_block() -> cq.Workplane:
-    """Printed block screwed to the deck; an M5 jack screw through it pushes
-    the idler slider outward (-x) to tension the chain."""
-    b = cq.Workplane("XY").rect(16, 30).extrude(16).edges("|Z").fillet(2)
-    b = b.cut(cq.Workplane("YZ").center(0, 5).circle(2.75).extrude(30).translate((-15, 0, 0)))
+    """Printed block under the deck, screwed up into it; the M5 jack screw
+    runs through it (nut trapped on the far side) into the slider's +x face."""
+    b = cq.Workplane("XY").rect(16, 30).extrude(-16).edges("|Z").fillet(2)
+    b = b.cut(cq.Workplane("YZ").center(0, -5).circle(2.75).extrude(30).translate((-15, 0, 0)))
+    b = b.cut(cq.Workplane("YZ").center(0, -5).polygon(6, 9.8).extrude(4.4).translate((3.9, 0, 0)))
     for y in (-9, 9):
-        b = b.cut(cq.Workplane("XY").center(0, y).circle(2.0).extrude(30).translate((0, 0, -5)))
-        b = b.cut(cq.Workplane("XY").center(0, y).circle(3.2).extrude(3).translate((0, 0, 13)))
+        b = b.cut(cq.Workplane("XY").center(0, y).circle(1.7).extrude(-12).translate((0, 0, 0.1)))
     return b
 
 
@@ -263,11 +260,11 @@ def carriage() -> cq.Workplane:
     wall = (cq.Workplane("XY").center(0, y0 + 5).rect(A1_TAB_L + 10, 10).extrude(tab_top - z0)
             .translate((0, 0, z0)))
     insert_z = CHAIN_Z + OUTER_GAP / 2 + PLATE_T + A1_HOLE_Z
-    insert = cq.Workplane("XZ").center(0, insert_z).circle(4.0 / 2).extrude(-7).translate((0, y0, 0))
+    insert = cq.Workplane("XZ").center(0, insert_z).circle(4.0 / 2).extrude(-10).translate((0, y0, 0))
     plate = plate.union(wall).cut(insert)
     # skids: two inner, two outer, all clear of the deck's station cut-out
     skids = (cq.Workplane("XY").pushPoints([(-25, y0 + 27), (25, y0 + 27)]).rect(12, 40).extrude(CAR_SKID)
-             .union(cq.Workplane("XY").pushPoints([(-25, y1 - 10), (25, y1 - 10)]).rect(12, 14).extrude(CAR_SKID))
+             .union(cq.Workplane("XY").pushPoints([(-25, y1 - 6), (25, y1 - 6)]).rect(12, 12).extrude(CAR_SKID))
              .edges("|Z").fillet(2))
     plate = plate.union(skids)
     # hinge lugs (merge into the ribs)
@@ -278,9 +275,9 @@ def carriage() -> cq.Workplane:
         plate = plate.union(lug)
     pin = cq.Workplane("YZ").center(HINGE_Y, HINGE_Z).circle(HINGE_D / 2).extrude(80).translate((-40, 0, 0))
     plate = plate.cut(pin)
-    # rest posts under the mounting plate's free end (Sam's plate: 98.8 from the hinge, 18 below it)
-    y_rest = HINGE_Y - 94.0
-    posts = (cq.Workplane("XY").pushPoints([(-20, y_rest), (20, y_rest)]).rect(8, 8)
+    # rest posts under the feet of Sam's plate (18 below its hinge, |y| 18.7-24.7, 69-99 from the hinge)
+    y_rest = HINGE_Y - 84.0
+    posts = (cq.Workplane("XY").pushPoints([(-25, y_rest), (25, y_rest)]).rect(8, 8)
              .extrude(HINGE_Z - 18.0 - z1).translate((0, 0, z1)))
     plate = plate.union(posts)
     # hold-down tongue
@@ -307,8 +304,8 @@ def hold_down() -> cq.Workplane:
     lead = cq.Workplane("YZ").polyline([(y_t0 + 4, tz + 0.5), (y_t0 + 14, tz + 0.5), (y_t0 + 14, tz + 3)]).close().extrude(40).translate((-20, 0, 0))
     b = base.union(lip).cut(lead)
     for x in (-12, 12):
-        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 24).circle(2.2).extrude(30).translate((0, 0, -1)))
-        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 24).circle(4.2).extrude(4).translate((0, 0, tz + 0.5)))
+        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 28).circle(2.2).extrude(30).translate((0, 0, -1)))
+        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 28).circle(4.2).extrude(4).translate((0, 0, tz + 0.5)))
     return b.edges("|Z").fillet(1.5)
 
 
