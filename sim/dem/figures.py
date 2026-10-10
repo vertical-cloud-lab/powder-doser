@@ -1,0 +1,307 @@
+"""Figures for the DEM twin write-up (sim/dem/README.md).
+
+    python figures.py --runs /tmp/dem/runs --bench /tmp/dem/bench/bench_results.jsonl --out results/
+
+Produces:
+  baseline_vs_rig.png   cumulative dispensed mass of the faithful Auger4 case
+                        vs the rig's bench feed factor, plus the per-45-deg
+                        pulse train and the afterflow tail
+  scaling.png           particle count vs throughput / memory on this runner,
+                        with the particle counts of real doses and augers
+  sweep.png             micro-auger geometry variants: mg per rev, dose
+                        quantum spread, afterflow and dead inventory
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import os
+import sys
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from analyze import metrics  # noqa: E402
+
+INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
+C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
+
+plt.rcParams.update({"font.size": 10, "axes.edgecolor": INK2, "axes.labelcolor": INK, "xtick.color": INK2,
+                     "ytick.color": INK2, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.8,
+                     "axes.spines.top": False, "axes.spines.right": False, "lines.linewidth": 2.0,
+                     "figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb", "savefig.facecolor": "#fcfcfb"})
+
+
+def load_case(case):
+    meta = json.load(open(os.path.join(case, "case.json")))
+    f = "outflow_corrected.txt" if os.path.exists(os.path.join(case, "outflow_corrected.txt")) else "outflow.txt"
+    O = np.loadtxt(os.path.join(case, f), comments="#", ndmin=2)
+    return meta, O[:, 0], O[:, 1] * 1e6
+
+
+# measured salt yields for the rig auger (mg per auger revolution, mean, sd, label)
+RIG_DATA = {
+    "rig_t27p5_r60": (105.0, 11.0, "PR #166 centre point, 27.5°, 60 rpm (n = 8)"),
+    "rig_t22p5_r90": (108.0, 2.5, "battery D, 22.5°, 90 rpm (106.4 / 109.9)"),
+    "rig_t27p5_r60_tip2": (105.0, 11.0, "PR #166 centre point, 27.5°, 60 rpm (n = 8)"),
+    # battery C 0 deg at 30 rpm: 36 +- 7.5 mg/rev (n = 12); x (60/30)^-0.35 from the measured flow ~ rpm^0.65 law
+    "rig_t00_r60": (28.0, 6.0, "battery C, 0°, 36±7.5 at 30 rpm → ≈28 at 60 rpm"),
+    "rig_t45_r60": (195.0, 24.0, "battery C, 45°, 248±30 at 30 rpm → ≈195 at 60 rpm"),
+}
+CASE_LABEL = {
+    "rig_t27p5_r60": "CAD exit",
+    "rig_t22p5_r90": "CAD exit",
+    "rig_t27p5_r60_tip2": "core tip cut 2 mm short",
+    "rig_t00_r60": "CAD exit",
+    "rig_t45_r60": "CAD exit",
+}
+
+
+def fig_rig(cases, out):
+    cases = [c for c in cases if os.path.exists(os.path.join(c, "outflow.txt"))]
+    if not cases:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.3), gridspec_kw={"width_ratios": [1.3, 1]})
+    a1, a2 = axes
+    drawn = set()
+    for i, case in enumerate(cases):
+        key = os.path.basename(case.rstrip("/"))
+        meta, t, m = load_case(case)
+        T, t0 = meta["period_s"], meta["settle_s"]
+        revs = meta["cfg"]["revs"]
+        m0 = np.interp(t0, t, m)
+        col = C[i]
+        lab = f"twin, {CASE_LABEL.get(key, key)}: {meta['cfg']['incline_deg']:g}°, {meta['cfg']['rpm']:g} rpm"
+        a1.plot((t - t0) / T, m - m0, color=col, label=lab)
+        if key in RIG_DATA and RIG_DATA[key][2] not in drawn:
+            mu, sd, rl = RIG_DATA[key]
+            drawn.add(rl)
+            rr = np.array([0, revs])
+            a1.fill_between(rr, (mu - sd) * rr, (mu + sd) * rr, color=col, alpha=0.10, lw=0)
+            a1.plot(rr, mu * rr, color=col, ls="--", lw=1.4, label=f"rig: {rl}")
+        if key == "rig_t27p5_r60":
+            w = T / 8
+            t_stop = t0 + revs * T
+            edges = np.arange(t0, min(t_stop, t[-1]) - w + 1e-12, w)
+            dm = np.interp(edges + w, t, m) - np.interp(edges, t, m)
+            a2.bar((edges - t0) / T + 1 / 16, dm, width=1 / 8 * 0.86, color=col, edgecolor="none")
+            if key in RIG_DATA:
+                a2.axhline(RIG_DATA[key][0] / 8, color=col, ls="--", lw=1.3)
+                a2.text(0.01, RIG_DATA[key][0] / 8, " rig mean / 8", va="bottom", fontsize=8, color=INK2)
+            a2.set_title(f"dose arrives in pulses ({meta['cfg']['incline_deg']:g}°, {meta['cfg']['rpm']:g} rpm)", fontsize=10)
+    a1.axvline(0, color=INK2, lw=0.8, ls=":")
+    a1.set_xlabel("auger revolutions since motor start (curves continue past the stop: afterflow)")
+    a1.set_ylabel("dispensed mass (mg)")
+    a1.set_title("Rig auger, real-size salt (d50 0.425 mm): twin vs measured", fontsize=10)
+    a1.legend(frameon=False, fontsize=8, loc="upper left")
+    a2.set_xlabel("auger revolutions since motor start")
+    a2.set_ylabel("mass per 45° of rotation (mg)")
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
+def fig_scaling(bench_jsonl, out):
+    B = [json.loads(line) for line in open(bench_jsonl)]
+    B.sort(key=lambda r: r["n_particles"])
+    N = np.array([r["n_particles"] for r in B], float)
+    thr = np.array([r["particle_steps_per_s"] for r in B])
+    mem = np.array([r["peak_rss_mb"] for r in B]) / 1024
+    # real counts
+    free_vol_mm3 = 79000.0  # rig auger internal volume (79 mL, threaded-auger-final.stl)
+    phi = 0.55  # salt bulk 1.19 g/mL / 2.165 g/mL
+
+    def count(d_mm, vol_mm3):
+        return phi * vol_mm3 / (math.pi / 6 * d_mm ** 3)
+
+    def dose(d_mm, rho_mg_mm3, mg):
+        return mg / (rho_mg_mm3 * math.pi / 6 * d_mm ** 3)
+
+    marks = [
+        ("10 mg salt (d 0.425 mm)", dose(0.425, 2.165, 10)),
+        ("one rev of salt (105 mg)", dose(0.425, 2.165, 105)),
+        ("1 mg Sc (d 40 µm)", dose(0.040, 2.99, 1)),
+        ("10 mg AlSi10Mg (d 42 µm)", dose(0.042, 2.67, 10)),
+        ("full rig auger of salt", count(0.425, free_vol_mm3)),
+        ("rig funnel of AlSi10Mg", count(0.042, 1389)),
+        ("full rig auger of AlSi10Mg", count(0.042, free_vol_mm3)),
+    ]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.4))
+    nn = np.logspace(2, 10, 50)
+    bpp = np.median([r["bytes_per_particle"] for r in B if r["n_particles"] > 3e5] or [2000])
+    a1.loglog(N, mem, "o", color=C[0], ms=8, label="measured peak RAM (1 core)")
+    a1.loglog(nn, nn * bpp / 1024 ** 3, color=C[0], lw=1.2, alpha=0.6, label=f"{bpp / 1e3:.1f} kB per particle")
+    a1.axhline(15, color=C[7], lw=1.2, ls="--")
+    a1.text(1.5e2, 17, "this runner: 15 GB", color=INK2, fontsize=8)
+    for i, (lab, n) in enumerate(marks):
+        a1.axvline(n, color=INK2, lw=0.6, alpha=0.5)
+        a1.text(n * 1.08, 2e-3 * (3.2 ** (i % 4)), lab, rotation=90, fontsize=7.5, color=INK2, va="bottom")
+    a1.set_xlim(1e2, 1e10)
+    a1.set_ylim(1e-3, 1e4)
+    a1.set_xlabel("particles in the simulation")
+    a1.set_ylabel("memory (GB)")
+    a1.legend(frameon=False, loc="upper left", fontsize=8)
+    a1.set_title("Memory: how many grains fit", fontsize=10)
+    # wall time per auger revolution at 55 rpm for salt-sized grains
+    steps_rev = 1.0 / 2.06e-5  # 60 rpm, rig-case time step
+    per_core = np.median(thr)
+    hrs1 = nn * steps_rev / per_core / 3600
+    a2.loglog(nn, hrs1, color=C[0], label=f"1 CPU core ({per_core / 1e6:.2f} M particle-steps/s, measured)")
+    a2.loglog(nn, hrs1 / 4 / 0.85, color=C[2], label="4 cores, ideal MPI (not working in this build)")
+    a2.loglog(N, N * steps_rev / thr / 3600, "o", color=C[0], ms=7)
+    salt_marks = [marks[0], marks[1], ("twin dosing section (29 k grains)", 2.9e4), marks[4]]
+    for i, (lab, n) in enumerate(salt_marks):
+        a2.axvline(n, color=INK2, lw=0.6, alpha=0.5)
+        a2.text(n * 1.08, 3e-3 * (4 ** (i % 3)), lab, rotation=90, fontsize=7.5, color=INK2, va="bottom")
+    a2.axhline(1, color=INK2, lw=0.8, ls=":")
+    a2.text(1.5e2, 1.2, "1 hour", fontsize=8, color=INK2)
+    a2.axhline(24, color=INK2, lw=0.8, ls=":")
+    a2.text(1.5e2, 29, "1 day", fontsize=8, color=INK2)
+    a2.set_xlim(1e2, 1e7)
+    a2.set_xlabel("particles in the simulation")
+    a2.set_ylabel("wall time per auger revolution (h)")
+    a2.set_title("Speed: salt grains (dt 21 µs), one revolution at 60 rpm", fontsize=10)
+    a2.legend(frameon=False, loc="upper left", fontsize=8)
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
+def fig_sweep(rows, out, title):
+    rows = [r for r in rows if r.get("complete")]
+    if not rows:
+        return
+    labels = [r["label"] for r in rows]
+    y = np.arange(len(rows))
+    fig, ax = plt.subplots(1, 4, figsize=(13, 0.55 * len(rows) + 1.6), sharey=True)
+    vals = [
+        ([r["mg_per_rev"] for r in rows], "mass per revolution (mg)"),
+        ([r["windows"].get("15", {}).get("sd_mg", np.nan) for r in rows], "sd of mass per 15° nudge (mg)"),
+        ([r.get("afterflow_mg", np.nan) for r in rows], "afterflow in 0.5 s after stop (mg)"),
+        ([r.get("funnel_holdup_mg", np.nan) for r in rows], "powder parked in funnel (mg)"),
+    ]
+    se = [r.get("mg_per_rev_se", np.nan) for r in rows]
+    cv15 = [r["windows"].get("15", {}).get("cv", np.nan) for r in rows]
+    for j, (a, (v, lab)) in enumerate(zip(ax, vals)):
+        a.barh(y, v, color=C[0], height=0.6, xerr=se if j == 0 else None,
+               error_kw={"ecolor": INK2, "elinewidth": 1.0, "capsize": 2.5})
+        for yi, vi, s_, c_ in zip(y, v, se, cv15):
+            if np.isfinite(vi):
+                txt = f" {vi:.1f}" if vi < 100 else f" {vi:.0f}"
+                if j == 0 and np.isfinite(s_):
+                    txt = f"  {vi:.1f} ± {s_:.1f}"
+                if j == 1 and np.isfinite(c_):
+                    txt += f" (CV {c_:.2f})"
+                a.text(vi + (s_ if j == 0 and np.isfinite(s_) else 0), yi, txt, va="center", fontsize=8, color=INK)
+        a.set_xlabel(lab, fontsize=9)
+        a.grid(axis="y", visible=False)
+        a.margins(x=0.25)
+    ax[0].set_yticks(y, labels)
+    ax[0].invert_yaxis()
+    fig.suptitle(title, fontsize=10.5)
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
+def fig_tip(runs, out):
+    """Discharge vs how far the core tip stops short of the exit plane (rig auger, 27.5 deg, 60 rpm)."""
+    cases = [("rig_t27p5_r60", 0.0), ("rig_t27p5_r60_tip0p5", 0.5), ("rig_t27p5_r60_tip1p0", 1.0), ("rig_t27p5_r60_tip2", 2.0)]
+    pts = []
+    for key, z0 in cases:
+        c = os.path.join(runs, key)
+        if os.path.exists(os.path.join(c, "outflow.txt")):
+            r = metrics(c)
+            pts.append((z0, r["mg_per_rev_full"], r["mg_per_rev"], r.get("mg_per_rev_se")))
+    if len(pts) < 2:
+        return
+    z = np.array([p[0] for p in pts])
+    fig, ax = plt.subplots(figsize=(6.8, 4.4))
+    ax.axhspan(105 - 11, 105 + 11, color=C[1], alpha=0.15, lw=0)
+    ax.axhline(105, color=C[1], ls="--", lw=1.4)
+    ax.text(z.max() * 0.98, 112, "rig, PR #166 centre point (105 ± 11)", ha="right", fontsize=8, color=INK2)
+    ax.plot(z, [p[1] for p in pts], "o-", color=C[0], ms=8, label="twin, whole run")
+    ax.plot(z, [p[2] for p in pts], "s--", color=C[0], ms=6, alpha=0.6, label="twin, after first ¼ rev")
+    ax.set_xlabel("core tip stops short of the exit plane (mm)  [0 = CAD]")
+    ax.set_ylabel("discharge (mg per revolution)")
+    sec = ax.secondary_xaxis("top", functions=(lambda x: 1.07 + 0.454 * x, lambda g: (g - 1.07) / 0.454))
+    sec.set_xlabel("narrowest annulus gap (mm); grains are 0.425 mm", fontsize=9)
+    ax.set_title("The core tip is a needle valve (rig auger, 27.5°, 60 rpm)", fontsize=10)
+    ax.legend(frameon=False, fontsize=8, loc="center right")
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
+def fig_quantum(rows, out):
+    """sd of the mass delivered per rotation increment vs its mean, against the grain-counting limit."""
+    rows = [r for r in rows if r.get("complete") and r["windows"]]
+    if not rows:
+        return
+    fig, ax = plt.subplots(figsize=(6.8, 5.0))
+    mm = np.logspace(-1.3, 2.3, 50)
+    g = rows[0]["grain_mg"]
+    ax.loglog(mm, np.sqrt(mm * g), color=INK2, lw=1.2, ls="--")
+    ax.text(mm[-12], np.sqrt(mm[-12] * g) * 0.62, "Poisson limit\n(independent grains)", fontsize=8, color=INK2)
+    for i, r in enumerate(rows[:8]):
+        w = r["windows"]
+        ks = [k for k in ("5", "15", "45", "90") if k in w]
+        x = [w[k]["mean_mg"] for k in ks]
+        y = [w[k]["sd_mg"] for k in ks]
+        ax.loglog(x, y, "o-", color=C[i], ms=6, lw=1.6, label=r.get("label", r["case"]))
+    ax.set_xlabel("mean mass per nudge (mg)  [5°, 15°, 45°, 90° of rotation]")
+    ax.set_ylabel("sd of mass per nudge (mg)")
+    ax.set_title("Dose quantum: how repeatable is a fixed rotation step?", fontsize=10)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left")
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--runs", default="/tmp/dem/runs")
+    ap.add_argument("--bench", default="/tmp/dem/bench/bench_results.jsonl")
+    ap.add_argument("--out", default="results")
+    a = ap.parse_args()
+    os.makedirs(a.out, exist_ok=True)
+    fig_tip(a.runs, os.path.join(a.out, "tip_valve.png"))
+    fig_rig([os.path.join(a.runs, k) for k in ("rig_t27p5_r60", "rig_t22p5_r90", "rig_t00_r60", "rig_t45_r60", "rig_t27p5_r60_tip2")],
+            os.path.join(a.out, "rig_vs_measured.png"))
+    if os.path.exists(a.bench):
+        fig_scaling(a.bench, os.path.join(a.out, "scaling.png"))
+    labels = {
+        "micro_open": "micro, open 4 mm core",
+        "micro_shaft": "micro, solid shaft",
+        "micro_exit18": "micro, 1.8 mm exit",
+        "micro_pitch3": "micro, 3 mm pitch",
+        "micro_2start": "micro, 2-start flight",
+        "micro_tilt0": "micro, 0° tilt",
+        "micro_rig": "micro, rig-style solid core + tip",
+        "micro_cone45": "micro, 45° funnel (3 mm)",
+        "micro_cone17": "micro, 17° funnel (10 mm)",
+        "micro_hifric": "micro, high friction",
+        "micro_cohesive": "micro, solid shaft, cohesive (SJKR)",
+        "micro_shaft_pitch3": "micro, solid shaft, 3 mm pitch",
+        "micro_best": "micro, shaft + 2-start + 45° funnel",
+    }
+    rows = []
+    for k, lab in labels.items():
+        c = os.path.join(a.runs, k)
+        if os.path.exists(os.path.join(c, "outflow.txt")):
+            r = metrics(c)
+            r["label"] = lab
+            rows.append(r)
+    fig_sweep(rows, os.path.join(a.out, "sweep.png"),
+              "Geometry variants at the trickle tilt (15°, 55 rpm, salt d = 0.45 mm); micro = 10 mm bore, 5 mm pitch, 2.5 mm exit")
+    fig_quantum(rows, os.path.join(a.out, "dose_quantum.png"))
+
+
+if __name__ == "__main__":
+    main()
