@@ -36,7 +36,7 @@ from dataclasses import asdict
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from geometry import AugerParams, auger_triangles, write_ascii_stl, write_disk_stl  # noqa: E402
+from geometry import AugerParams, auger_triangles, disk_triangles, write_ascii_stl, write_mesh  # noqa: E402
 
 DEFAULTS = {
     "name": "case",
@@ -65,6 +65,9 @@ DEFAULTS = {
     "fill_frac": 1.0,           # fraction of the meshed height to pre-fill
     "fill_x_max_mm": None,      # pre-fill only x < this (gravity's side component is -x)
     "feed": True,
+    "feed_rate_scale": 1.0,     # x the default insertion rate (an open exit needs more feed)
+    "feed_skip_core": False,    # keep feed insertion out of a solid core wider than the -x slab cut
+    "mesh_format": "vtk",       # "vtk" or "stl"; both run under MPI (see README)
     "seed": 12345,
 }
 
@@ -170,9 +173,9 @@ pair_coeff * *
 timestep {dt:.4e}
 
 fix gravi all gravity 9.81 vector {gx:.6f} {gy:.6f} {gz:.6f}
-fix auger  all mesh/surface file auger.stl type 2 scale 0.001 curvature_tolerant yes
-fix plug   all mesh/surface file plug.stl type 2 scale 0.001
-fix outlet all mesh/surface/planar file outlet.stl type 2 scale 0.001
+fix auger  all mesh/surface file auger.{ext} type 2 scale 0.001 curvature_tolerant yes
+fix plug   all mesh/surface file plug.{ext} type 2 scale 0.001
+fix outlet all mesh/surface/planar file outlet.{ext} type 2 scale 0.001
 fix walls  all wall/gran model hertz tangential history {cohesion} rolling_friction epsd2 mesh n_meshes 2 meshes auger plug
 
 fix pts1 all particletemplate/sphere 15485863 atom_type 1 density constant {rho} radius constant {r1:.6e}
@@ -210,12 +213,16 @@ print "PHASE done t=${{t}}"
 def build_case(cfg, workdir):
     os.makedirs(workdir, exist_ok=True)
     P = AugerParams(**cfg["geometry"])
-    write_ascii_stl(os.path.join(workdir, "auger.stl"), auger_triangles(P))
+    ext = cfg["mesh_format"]
+    tris = auger_triangles(P)
+    write_ascii_stl(os.path.join(workdir, "auger.stl"), tris)  # render.py reads the STL
+    if ext != "stl":
+        write_mesh(os.path.join(workdir, f"auger.{ext}"), tris)
     # counting disk just below the exit; wide, because at low tilt the grains fall sideways (-x)
     # (audit_outlet.py checks that no exit goes uncounted)
-    write_disk_stl(os.path.join(workdir, "outlet.stl"), radius=P.bore_r + 40.0, z=-0.3)
+    write_mesh(os.path.join(workdir, f"outlet.{ext}"), disk_triangles(P.bore_r + 40.0, -0.3), "outlet")
     # plug: small disk closing the exit throat during settling
-    write_disk_stl(os.path.join(workdir, "plug.stl"), radius=P.exit_r + 0.6, z=0.0)
+    write_mesh(os.path.join(workdir, f"plug.{ext}"), disk_triangles(P.exit_r + 0.6, 0.0), "plug")
     d = cfg["d_mean_mm"]
     z_fill = P.funnel_h + (P.z_top - P.funnel_h) * cfg["fill_frac"]
     pts, diam = initial_packing(P, d, cfg["d_spread"], min(z_fill, P.z_top - d), cfg["seed"])
@@ -243,12 +250,20 @@ def build_case(cfg, workdir):
         fx = cfg["fill_x_max_mm"]
         feed_x = (fx if fx is not None else P.bore_r) * 1e-3
         # mass rate well above any outflow; overlap check skips full slots
+        parts = ["feedcyl", "feedlow"]
+        core_region = ""
+        if cfg["feed_skip_core"] and P.shaft_r > 0:
+            core_region = (f"region feedcore cylinder z 0. 0. {(P.shaft_r + 0.6 * d) * 1e-3:.6e} "
+                           f"{zf0:.6e} {zf1:.6e} side out units box\n")
+            parts.append("feedcore")
+        rate = int(4000 * (0.4 / d) ** 3 * cfg["feed_rate_scale"])
         feed_block = (
             f"region feedcyl cylinder z 0. 0. {rfeed:.6e} {zf0:.6e} {zf1:.6e} units box\n"
             f"region feedlow block {-rfeed:.6e} {feed_x:.6e} {-rfeed:.6e} {rfeed:.6e} {zf0:.6e} {zf1:.6e} units box\n"
-            f"region feedreg intersect 2 feedcyl feedlow\n"
+            + core_region +
+            f"region feedreg intersect {len(parts)} {' '.join(parts)}\n"
             f"fix feed all insert/rate/region seed 86028157 distributiontemplate pdd nparticles INF "
-            f"particlerate {int(4000 * (0.4 / d) ** 3)} insert_every {steps(0.02)} overlapcheck yes all_in yes "
+            f"particlerate {rate} insert_every {steps(0.02)} overlapcheck yes all_in yes "
             f"vel constant 0. 0. -0.05 region feedreg ntry_mc 2000\n"
         )
     dump_block = ""
@@ -271,7 +286,7 @@ def build_case(cfg, workdir):
         ced_line = f"fix m6 all property/global cohesionEnergyDensity peratomtypepair 2 {cfg['ced']} {cfg['ced']} {cfg['ced']} {cfg['ced']}"
         cohesion = "cohesion sjkr"
     txt = TEMPLATE.format(
-        name=cfg["name"], skin=0.5 * d * 1e-3, E=cfg["youngs"], nu=cfg["poisson"], e=cfg["restitution"],
+        name=cfg["name"], ext=ext, skin=0.5 * d * 1e-3, E=cfg["youngs"], nu=cfg["poisson"], e=cfg["restitution"],
         mu_pp=cfg["mu_pp"], mu_pw=cfg["mu_pw"], mu_r=cfg["mu_roll"], ced_line=ced_line, cohesion=cohesion,
         dt=dt, gx=gx, gy=gy, gz=gz, rho=cfg["density"],
         r1=d * (1 - cfg["d_spread"]) * 0.5e-3, r2=d * 0.5e-3, r3=d * (1 + cfg["d_spread"]) * 0.5e-3,

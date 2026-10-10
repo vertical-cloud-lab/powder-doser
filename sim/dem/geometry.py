@@ -28,8 +28,8 @@ Only the bottom ``n_turns`` of the 250 mm tube are meshed; a feed zone
 above the last flight is kept topped up by particle insertion, which
 stands in for the rest of the powder column.
 
-Meshes are written as ASCII STL in millimetres (LIGGGHTS scales them
-with ``scale 0.001``).
+Meshes are written in millimetres (LIGGGHTS scales them with
+``scale 0.001``), as LIGGGHTS-dialect VTK (``write_vtk``) or ASCII STL.
 """
 
 from __future__ import annotations
@@ -215,12 +215,45 @@ def write_ascii_stl(path: str, tris: np.ndarray, name: str = "auger") -> None:
         f.write(f"endsolid {name}\n")
 
 
+def write_vtk(path: str, tris: np.ndarray, name: str = "auger") -> None:
+    """Triangles as a legacy ASCII VTK unstructured grid, in the dialect LIGGGHTS 3.8 reads.
+
+    LIGGGHTS-PUBLIC's reader (``InputMeshTri::meshtrifile_vtk``) drops ``#`` comment
+    lines, then wants ``ASCII`` on its third remaining line and the single token
+    ``DATASET UNSTRUCTURED_GRID`` on the fourth. So the version line has no ``#`` and
+    the DATASET line is quoted. A standard VTK header fails with "Expecting ASCII VTK
+    mesh file". Shared vertices are merged, which makes the file about 6x smaller than
+    the ASCII STL.
+    """
+    tris = np.asarray(tris, float)
+    n = np.cross(tris[:, 1] - tris[:, 0], tris[:, 2] - tris[:, 0])
+    tris = tris[np.linalg.norm(n, axis=1) >= 1e-14]  # drop degenerate facets, as for STL
+    pts, idx = np.unique(np.round(tris.reshape(-1, 3), 6), axis=0, return_inverse=True)
+    idx = idx.reshape(-1, 3)
+    with open(path, "w") as f:
+        f.write(f"vtk DataFile Version 2.0\n{name}\nASCII\n\"DATASET UNSTRUCTURED_GRID\"\n")
+        f.write(f"POINTS {len(pts)} float\n")
+        f.writelines(f"{p[0]:.6f} {p[1]:.6f} {p[2]:.6f}\n" for p in pts)
+        f.write(f"CELLS {len(idx)} {4 * len(idx)}\n")
+        f.writelines(f"3 {c[0]} {c[1]} {c[2]}\n" for c in idx)
+        f.write(f"CELL_TYPES {len(idx)}\n" + "5\n" * len(idx))
+
+
+def write_mesh(path: str, tris: np.ndarray, name: str = "auger") -> None:
+    """ASCII STL or LIGGGHTS-dialect VTK, chosen by the file extension."""
+    (write_vtk if path.endswith(".vtk") else write_ascii_stl)(path, tris, name)
+
+
+def disk_triangles(radius: float, z: float, n: int = 48) -> np.ndarray:
+    """Planar disk (normal -z), e.g. the counting disk for fix massflow/mesh."""
+    th = np.linspace(0, 2 * np.pi, n + 1)
+    return np.asarray([((0.0, 0.0, z), (radius * np.cos(th[j + 1]), radius * np.sin(th[j + 1]), z),
+                        (radius * np.cos(th[j]), radius * np.sin(th[j]), z)) for j in range(n)])
+
+
 def write_disk_stl(path: str, radius: float, z: float, n: int = 48) -> None:
     """Planar counting disk (normal -z) for fix massflow/mesh."""
-    th = np.linspace(0, 2 * np.pi, n + 1)
-    tris = [((0.0, 0.0, z), (radius * np.cos(th[j + 1]), radius * np.sin(th[j + 1]), z),
-             (radius * np.cos(th[j]), radius * np.sin(th[j]), z)) for j in range(n)]
-    write_ascii_stl(path, np.asarray(tris), "outlet")
+    write_ascii_stl(path, disk_triangles(radius, z, n), "outlet")
 
 
 def pocket_volume_mm3(p: AugerParams) -> float:  # noqa: D401

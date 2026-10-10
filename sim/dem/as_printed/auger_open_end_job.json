@@ -1,0 +1,22 @@
+{
+ "file": "/cache/auger_open_end.3mf (+ auger_open_end_plate_1.gcode, 1_auger_open_end.bbl)",
+ "printer": "Bambu Lab A1 mini (printer_model_id N1), 0.4 mm nozzle",
+ "sd_card_timestamp": "2026-09-09 03:21 (FTP listing time)",
+ "slicer": "Bambu Studio 02.06.00.51",
+ "process": "0.20mm Standard @BBL A1M, 2 wall loops, 15% sparse infill, tree supports",
+ "filament": "Bambu PLA Basic, #0086D6 (blue), 38.64 g, 12.75 m",
+ "predicted_print_time_s": 7875,
+ "object": "auger_open_end.stl, printed exit-down (print z = 0 is the exit plane)",
+ "how_read": "implicit FTPS (port 990) from the powder-doser Pi, read-only; sliced 3MF jobs hold the G-code, not the mesh",
+ "other_auger_jobs_on_the_A1_mini": [
+  "2026-06-30 threaded_archimedes-auger-storage-test (1).stl + threaded-storage-cap (1).stl",
+  "2026-07-01 Test Threaded Storage Auger and Cap x8",
+  "2026-07-09 Auger manual threads v1 test.stl + Cap manual threads v1.stl (thread-fit coupon)",
+  "2026-07-10 auger threads v2.stl + cap v2.stl / cap v3.stl (thread-fit coupons)",
+  "2026-07-11 Auger Manual Thread v4.stl + Cap v4.stl (thread-fit coupon)",
+  "2026-08-07 Auger Filling Stand.stl",
+  "2026-08-27 Auger Carriage + Frame Carriage",
+  "2026-09-09 Doser Centering Device.step"
+ ],
+ "not_checked": "H2D: its LAN access code in the repo secret is rejected (FTPS 530 Login incorrect)"
+}
