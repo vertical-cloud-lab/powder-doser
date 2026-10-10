@@ -10,7 +10,8 @@
    "id": "494b3ee81838f562a542094a",
    "name": "text-to-cad design (fsgen 0.2.0)",
    "description": "Servos-above baseplate as a native fsgen 0.2.0 tree: plateThickness 6 mm, hingeDrop 5 mm. Matches cad/text-to-cad STEP/parts/baseplate_servos_above.step at IoU 1.000000 (volume 0.032 mm3 lower: dimension expressions rounded to 6 significant digits).",
-   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/v/494b3ee81838f562a542094a"
+   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/v/494b3ee81838f562a542094a",
+   "partStudioUrl": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/v/494b3ee81838f562a542094a/e/90ab6355538f5d532922ca60"
   }
  ],
  "branches": [
@@ -18,7 +19,8 @@
    "name": "thinner table (plateThickness 3 mm)",
    "workspaceId": "ad5c3faacfea2bbf8b231a69",
    "fromVersion": "494b3ee81838f562a542094a",
-   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/ad5c3faacfea2bbf8b231a69"
+   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/ad5c3faacfea2bbf8b231a69",
+   "partStudioUrl": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/ad5c3faacfea2bbf8b231a69/e/90ab6355538f5d532922ca60"
   },
   {
    "name": "hinge 5 mm lower, Variable Studio only (hingeDrop 10 mm)",
@@ -32,7 +34,108 @@
      },
      "t": "2026-10-10T15:05:59"
     }
-   ]
+   ],
+   "partStudioUrl": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/86882f77405eeea74b4ff776/e/90ab6355538f5d532922ca60"
   }
- ]
+ ],
+ "partStudio": {
+  "name": "Baseplate (servos above)",
+  "elementId": "90ab6355538f5d532922ca60",
+  "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/363b7f98896e7b44dab64f48/e/90ab6355538f5d532922ca60",
+  "features": [
+   {
+    "name": "Plate sketch",
+    "type": "newSketch",
+    "fid": "FL13d0cub1noYOw_0",
+    "status": "OK"
+   },
+   {
+    "name": "Plate",
+    "type": "extrude",
+    "fid": "F8QxmGhlvQZTeIN_0",
+    "status": "OK"
+   },
+   {
+    "name": "Relief floor plane",
+    "type": "cPlane",
+    "fid": "FekalT9w6ZRJJWj_1",
+    "status": "OK"
+   },
+   {
+    "name": "Relief sketch",
+    "type": "newSketch",
+    "fid": "F8DZaKdP6kGNtAo_1",
+    "status": "OK"
+   },
+   {
+    "name": "Relief",
+    "type": "extrude",
+    "fid": "FAZqApVnRrktV1u_1",
+    "status": "OK"
+   },
+   {
+    "name": "Slot and notch sketch",
+    "type": "newSketch",
+    "fid": "FE7VLMkEubu67Kr_1",
+    "status": "OK"
+   },
+   {
+    "name": "Cup slot and head notches",
+    "type": "extrude",
+    "fid": "Fs7wqA7DHIOhgi6_1",
+    "status": "OK"
+   },
+   {
+    "name": "Tower plane",
+    "type": "cPlane",
+    "fid": "FcBvAr3poq56PAW_1",
+    "status": "OK"
+   },
+   {
+    "name": "Tower sketch",
+    "type": "newSketch",
+    "fid": "FiaSrilbyIRzggv_1",
+    "status": "OK"
+   },
+   {
+    "name": "Hinge tower",
+    "type": "extrude",
+    "fid": "FkoXjAbHyyWR6Dc_1",
+    "status": "OK"
+   },
+   {
+    "name": "Cradle plane",
+    "type": "cPlane",
+    "fid": "F7l2UAXKpAF2Oi9_1",
+    "status": "OK"
+   },
+   {
+    "name": "Cradle sketch",
+    "type": "newSketch",
+    "fid": "FQRBezAxoDTQLX4_1",
+    "status": "OK"
+   },
+   {
+    "name": "Servo cradle",
+    "type": "extrude",
+    "fid": "Fi5PQMwaqwN82fw_1",
+    "status": "OK"
+   },
+   {
+    "name": "Mirror tower and cradle",
+    "type": "mirror",
+    "fid": "F2Cl4ycCMxIPKPi_1",
+    "status": "OK"
+   }
+  ]
+ },
+ "variableStudio": {
+  "name": "Baseplate (servos above) variables",
+  "elementId": "364eccf08394f1f306d8d663"
+ },
+ "fsgen": {
+  "repo": "https://github.com/Lucasfrit/onshape-fsgen",
+  "version": "0.2.0",
+  "commit": "eabcc02"
+ }
 }

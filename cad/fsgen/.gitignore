@@ -1,2 +1,3 @@
-# The root .gitignore ignores parts/ (Python packaging); fsgen scripts live here
+# The root .gitignore ignores parts/ (Python packaging) and *.log; fsgen scripts and push logs live here
 !parts/
+!*.log

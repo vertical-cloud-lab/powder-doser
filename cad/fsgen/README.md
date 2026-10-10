@@ -7,6 +7,11 @@ locally first, then pushes it feature by feature, so design iterations cost no A
 folder repeats the job PR #176 did through the REST API directly: the servos-above baseplate
 in Onshape, plus the "thinner table" edit. It then compares the API calls.
 
+**Repeated with fsgen 0.2.0 in [`v0.2.0/`](v0.2.0/README.md).** The mirror now builds on the
+first push, and in Onshape the cradles follow `#plateThickness` and `#hingeDrop`. The towers still
+don't: their sketch is over-constrained and loses its dimensions. The same steps took 35 calls
+(36 here).
+
 **Onshape document (public, owned by Vertical Cloud Lab):**
 [Powder doser baseplate, servos above - fsgen native tree (#171)](https://cad.onshape.com/documents/81c1f65bc8ecb1a4935de521/w/559770a1e881cadedeacf3ad/e/3c350455e7fb77d514c18760).
 Onshape asks you to sign in to view it, even though it is public.
