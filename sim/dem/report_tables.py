@@ -14,6 +14,7 @@ RIG = {
     "rig_t00_r60": ("0°, 60 rpm", "CAD exit (core tip in the hole)", "≈28 (battery C: 36 ± 7.5 at 30 rpm, n = 12, scaled by rpm^-0.35)"),
     "rig_t45_r60": ("45°, 60 rpm", "CAD exit (core tip in the hole)", "≈195 (battery C: 248 ± 30 at 30 rpm, n = 12, scaled by rpm^-0.35)"),
     "rig_t27p5_r60_seed2": ("27.5°, 60 rpm", "CAD exit, repeat with a different random packing", "105 ± 11"),
+    "rig_t27p5_r60_d035": ("27.5°, 60 rpm", "CAD exit, finer salt (d50 0.35 instead of 0.425 mm)", "105 ± 11"),
     "rig_t27p5_r60_tip0p5": ("27.5°, 60 rpm", "core tip cut 0.5 mm short", "105 ± 11"),
     "rig_t27p5_r60_tip1p0": ("27.5°, 60 rpm", "core tip cut 1.0 mm short", "105 ± 11"),
     "rig_t27p5_r60_tip2": ("27.5°, 60 rpm", "core tip cut 2 mm short", "105 ± 11"),
@@ -32,6 +33,7 @@ MICRO = [
     ("micro_hifric", "baseline, high friction (μ 0.7 / 0.6, μr 0.5)"),
     ("micro_cohesive", "solid shaft, cohesive grains (SJKR 20 kJ/m³)"),
     ("micro_best", "combined: solid shaft + 2-start + short 45° funnel"),
+    ("micro_rig_d030", "rig-style tip in the exit, finer salt (d 0.30 mm)"),
 ]
 
 

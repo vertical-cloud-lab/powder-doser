@@ -65,5 +65,13 @@
  "dt": 1.694130919355861e-05,
  "n_init": 54826,
  "settle_s": 0.12,
- "period_s": 1.0
+ "period_s": 1.0,
+ "wall_s": 968.1043093204498,
+ "rc": 0,
+ "summary": {
+  "per_rev_mg": [],
+  "m_settle_mg": 0.0,
+  "m_total_mg": 54.1356759266116,
+  "n_atoms_final": 55515
+ }
 }

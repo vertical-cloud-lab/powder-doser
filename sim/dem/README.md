@@ -53,6 +53,7 @@ were compared with salt measured on the rig, plus one geometry variant:
 | `rig_t00_r60` | 0°, 60 rpm | CAD exit (core tip in the hole) | **38** ± 13 | 33 | ≈28 (battery C: 36 ± 7.5 at 30 rpm, n = 12, scaled by rpm^-0.35) | 3 | 1.00 |
 | `rig_t45_r60` | 45°, 60 rpm | CAD exit (core tip in the hole) | **174** | 153 | ≈195 (battery C: 248 ± 30 at 30 rpm, n = 12, scaled by rpm^-0.35) | 25 | 0.75 |
 | `rig_t27p5_r60_seed2` | 27.5°, 60 rpm | CAD exit, repeat with a different random packing | **124** | 102 | 105 ± 11 | – | 1.00 |
+| `rig_t27p5_r60_d035` | 27.5°, 60 rpm | CAD exit, finer salt (d50 0.35 instead of 0.425 mm) | **195** | 135 | 105 ± 11 | – | 0.40 |
 | `rig_t27p5_r60_tip0p5` | 27.5°, 60 rpm | core tip cut 0.5 mm short | **153** | 112 | 105 ± 11 | – | 0.60 |
 | `rig_t27p5_r60_tip1p0` | 27.5°, 60 rpm | core tip cut 1.0 mm short | **271** | 224 | 105 ± 11 | – | 0.60 |
 | `rig_t27p5_r60_tip2` | 27.5°, 60 rpm | core tip cut 2 mm short | **465** | 427 | 105 ± 11 | – | 0.30 |
@@ -89,6 +90,10 @@ Observations:
   * The spinning flight and tip then break the arch.
   * The rig shows the same pattern: one pulse per revolution, with 61–76 % of each revolution's mass in 3 of 8
     45° sectors.
+* **Grain size matters about as much as friction.** No PSD has been measured for the rig's salt. With d50 0.35 mm
+  instead of 0.425 mm the twin delivers about 135 mg/rev (+29 %, whole run over 0.4 rev) at the same 27.5° / 60 rpm,
+  because the 1.07 mm annulus is then 3 rather than 2.5 grains wide. Measuring the PSD is the cheapest way to tighten
+  the twin.
 * **The exit annulus is the throttle.** The tip-offset sweep below shows the curve directly: 105 / 112 / 224 / 427 mg/rev
   as the core tip stops 0 / 0.5 / 1.0 / 2.0 mm short of the exit plane. Flat for the first 0.5 mm, then 2× per extra
   half-millimetre. Cutting the core tip 2 mm short of the exit plane gives the funnel a plain
@@ -161,6 +166,7 @@ changing one internal dimension at a time:
 | long funnel, 17° half-angle (almost no dam) | 38.2 ± 2.9 | 0.53 (0.47) | 1.59 (0.37) | 0 % | 3.7 | 200 |
 | solid shaft, cohesive grains (SJKR 20 kJ/m³) | 0.2 ± 0.1 | 0.00 (4.54) | 0.01 (2.82) | 99 % | 0.2 | 123 |
 | combined: solid shaft + 2-start + short 45° funnel | 67.2 ± 9.8 | 0.93 (0.42) | 2.80 (0.38) | 0 % | 15.2 | 40 |
+| rig-style tip in the exit, finer salt (d 0.30 mm) | 29.3 ± 14.3 | 0.41 (0.80) | 1.22 (0.78) | 9 % | 1.4 | – |
 
 ![sweep](results/sweep.png)
 
@@ -189,6 +195,9 @@ What the sweep says (salt-sized grains, one run each, so differences under about
 * **Cohesion shuts everything down.** With an illustrative SJKR cohesion (20 kJ/m³, not calibrated) the same
   micro-auger delivers 0.2 mg/rev and 99 % of nudges are empty. That is the failure the rig shows for Si −325
   mesh, flours and alginate.
+* **Finer grains un-jam a narrow exit.** The rig-style tip-in-exit micro design passes 29 mg/rev with 0.30 mm grains
+  vs 18 mg/rev with 0.45 mm grains, and empty 5° nudges drop from 21 % to 9 %. The same 0.85 mm annulus is 2.8 instead
+  of 1.9 grain diameters wide. Exit dimensions should be chosen per powder, in grain diameters.
 * **Combining the "best" features does not simply add up.** Solid shaft + 2-start + short 45° funnel gives
   67 ± 10 mg/rev with a 40 mg funnel inventory, but the afterflow triples (15 mg) because the short funnel lets the
   two-start flights feed the exit directly. Single-variable sweeps rank the dimensions; the trade-offs need a

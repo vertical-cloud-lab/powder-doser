@@ -11,13 +11,28 @@
  "exit_d_mm": 3.0,
  "n_particles_init": 54826,
  "complete": false,
- "sim_time_s": 0.144930255,
- "rate_mg_s": 0.0,
- "mg_per_rev": 0.0,
+ "sim_time_s": 0.51974988,
+ "rate_mg_s": 194.83104722506317,
+ "mg_per_rev": 194.83104722506317,
  "grain_mg": 0.048602729095677345,
- "m_first_rev_mg": 0.962820063385368,
- "mg_per_rev_full": 38.62054613502218,
- "wall_s": null,
- "windows": {},
- "finished": false
+ "m_first_rev_mg": 54.1356759266116,
+ "mg_per_rev_full": 135.42387036266678,
+ "wall_s": 968.1043093204498,
+ "windows": {
+  "5": {
+   "mean_mg": 2.720708392221004,
+   "sd_mg": 0.6073267448535147,
+   "cv": 0.22322375547117487,
+   "p_empty": 0.0,
+   "n": 10
+  },
+  "15": {
+   "mean_mg": 8.22252344070292,
+   "sd_mg": 1.7473059662126738,
+   "cv": 0.212502400122474,
+   "p_empty": 0.0,
+   "n": 3
+  }
+ },
+ "finished": true
 }
