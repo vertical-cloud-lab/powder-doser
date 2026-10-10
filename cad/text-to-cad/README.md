@@ -38,6 +38,7 @@ build123d 0.11.1 on Python 3.12, with the text-to-cad `cad`, `step-parts` and
 | `src/assembly_current.py`, `src/assembly_servos_above.py` | The two full assemblies → `STEP/`, `GLB/` |
 | `scripts/render_clips.py` | Renders the clips with text-to-cad's own `cadgen step snapshot --animation … --video` and captions the assembly GIF |
 | `scripts/render_stills.py` | The iso renders and the before/after close-up of the tap collar (`cadgen step snapshot`) |
+| `scripts/as_built.py`, `reference/as-built/` | The real doser on the livestream next to this CAD: what has changed since Oct 2 and where its design files are ([README](reference/as-built/README.md)) |
 | `checks/` | Fidelity, interference, plate clearance of the lowered doser, electronics clearance, cap thread, nozzle-to-cup clearance, printability, PCB checks; results in `checks/results/` |
 | `sim/` | DEM powder model of the auger ([README](sim/README.md)); figures in `renders/sim/` |
 | `docs/onshape.md` | How this could work with Onshape and its REST API |
@@ -336,3 +337,13 @@ next step is pushing this project's kinematics sidecar into the existing
 Onshape assembly as real mates and gear relations (the live document has
 none). The return path, Onshape version → STEP → these checks in CI, comes
 second.
+
+## The real doser (livestream)
+
+Since 2 Oct the real doser has stood on a new stand over the balance: a black
+open-front baseplate, a perforated post behind it and perforated legs at the
+sides. Its design file is a lab Onshape document, not this repo.
+[`reference/as-built/`](reference/as-built/README.md) compares the
+livestream with this CAD part by part, and lists the design files that aren't
+in the repo: the stand, the white C-clip rear bracket, the PCB housing, the
+centering device (#177), the filling stand and the small augers.
