@@ -49,6 +49,11 @@ class AugerParams:
     exit_r: float = 1.25          # mm, exit hole radius
     funnel_top_r: float = 8.85    # mm, cone radius at its top (shelf out to bore_r)
     feed_h: float = 14.0          # mm of open bore above the last flight (feed zone)
+    tip_r: float | None = None    # mm, radius of the solid core's conical tip at the exit plane
+                                  # (rig auger: core tapers 3.98 -> 0.43 mm through the funnel)
+    flight_into_funnel: bool = False  # continue the flight down the funnel between the cones
+    flight_z0: float = 0.4        # mm, lowest point of the flight when it runs into the funnel
+    throat_h: float = 0.8         # mm, straight exit throat below the cone (0 = none)
     n_theta: int = 48             # circumferential resolution (sagitta 0.02 mm at R = 10.5)
     dz: float = 2.0               # mm, target axial edge length
     dr: float = 1.7               # mm, target radial edge length on the flight
@@ -86,39 +91,61 @@ def _surface_of_revolution(r_of_s, z_of_s, s, n_theta, theta0=0.0, theta1=2 * np
     return tris
 
 
+def _r_out(p: AugerParams, z):
+    """Outer wall radius at height z (bore above the funnel, cone below)."""
+    z = np.asarray(z, float)
+    cone = p.exit_r + (p.funnel_top_r - p.exit_r) * np.clip(z, 0, None) / p.funnel_h
+    return np.where(z >= p.funnel_h, p.bore_r, cone)
+
+
+def _r_in(p: AugerParams, z):
+    """Inner edge of the flight at height z (core/shaft, or the core tip cone in the funnel)."""
+    z = np.asarray(z, float)
+    r_core = max(p.core_r, p.shaft_r)
+    if p.tip_r is None:
+        return np.full_like(z, r_core)
+    tip = p.tip_r + (p.shaft_r - p.tip_r) * np.clip(z, 0, None) / p.funnel_h
+    return np.where(z >= p.funnel_h, r_core, tip)
+
+
 def _helical_flight(p: AugerParams, phase: float):
-    """Thick helical ribbon between core_r and bore_r, one start."""
+    """Thick helical ribbon between the inner edge and the outer wall, one start."""
     tris = []
-    r_in = max(p.core_r, p.shaft_r)
-    n_r = max(2, int(np.ceil((p.bore_r - r_in) / p.dr)))
-    rs = np.linspace(r_in, p.bore_r, n_r + 1)
     lead = p.pitch * p.starts  # axial advance per revolution of one start
     turns = p.n_turns / p.starts  # revolutions each start makes over n_turns pitches
-    n_phi = int(np.ceil(turns * p.n_theta))
-    phis = np.linspace(0.0, 2 * np.pi * turns, n_phi + 1)
+    z_start = p.flight_z0 if p.flight_into_funnel else p.funnel_h
+    phi0 = -2 * np.pi * (p.funnel_h - z_start) / lead
+    phi1 = 2 * np.pi * turns
+    n_phi = int(np.ceil((phi1 - phi0) / (2 * np.pi) * p.n_theta))
+    phis = np.linspace(phi0, phi1, n_phi + 1)
+    n_r = max(2, int(np.ceil((p.bore_r - max(p.core_r, p.shaft_r)) / p.dr)))
+    ss = np.linspace(0.0, 1.0, n_r + 1)
 
-    def pt(r, phi, dz):
+    def pt(sv, phi, dz):
+        z = p.funnel_h + lead * phi / (2 * np.pi) + dz
+        ri, ro = float(_r_in(p, z)), float(_r_out(p, z))
+        r = ri + sv * (ro - ri)
         a = phi + phase
-        return (r * np.cos(a), r * np.sin(a), p.funnel_h + lead * phi / (2 * np.pi) + dz)
+        return (r * np.cos(a), r * np.sin(a), z)
 
     for dz_off in (0.0, p.flight_t):
         for i in range(n_r):
             for j in range(n_phi):
                 _quad(tris,
-                      pt(rs[i], phis[j], dz_off), pt(rs[i + 1], phis[j], dz_off),
-                      pt(rs[i + 1], phis[j + 1], dz_off), pt(rs[i], phis[j + 1], dz_off))
-    # inner edge strip (skip when the flight is fused to a shaft)
-    if p.shaft_r < r_in - 1e-9:
+                      pt(ss[i], phis[j], dz_off), pt(ss[i + 1], phis[j], dz_off),
+                      pt(ss[i + 1], phis[j + 1], dz_off), pt(ss[i], phis[j + 1], dz_off))
+    # inner edge strip (only when the core is open)
+    if p.shaft_r <= 0:
         for j in range(n_phi):
             _quad(tris,
-                  pt(r_in, phis[j], 0.0), pt(r_in, phis[j + 1], 0.0),
-                  pt(r_in, phis[j + 1], p.flight_t), pt(r_in, phis[j], p.flight_t))
+                  pt(0.0, phis[j], 0.0), pt(0.0, phis[j + 1], 0.0),
+                  pt(0.0, phis[j + 1], p.flight_t), pt(0.0, phis[j], p.flight_t))
     # radial end caps
     for phi in (phis[0], phis[-1]):
         for i in range(n_r):
             _quad(tris,
-                  pt(rs[i], phi, 0.0), pt(rs[i + 1], phi, 0.0),
-                  pt(rs[i + 1], phi, p.flight_t), pt(rs[i], phi, p.flight_t))
+                  pt(ss[i], phi, 0.0), pt(ss[i + 1], phi, 0.0),
+                  pt(ss[i + 1], phi, p.flight_t), pt(ss[i], phi, p.flight_t))
     return tris
 
 
@@ -137,16 +164,27 @@ def auger_triangles(p: AugerParams):
     s = np.linspace(0.0, 1.0, n_c + 1)
     tris += _surface_of_revolution(lambda u: p.exit_r + u * (p.funnel_top_r - p.exit_r),
                                    lambda u: u * p.funnel_h, s, p.n_theta)
-    # short exit throat (0.8 mm) so the hole has a rim, as printed
-    tris += _surface_of_revolution(lambda u: p.exit_r, lambda u: u,
-                                   np.linspace(-0.8, 0.0, 2), max(24, p.n_theta // 2))
+    # short exit throat so the hole has a rim, as printed (0 = exit flush with the cone)
+    if p.throat_h > 0:
+        tris += _surface_of_revolution(lambda u: p.exit_r, lambda u: u,
+                                       np.linspace(-p.throat_h, 0.0, 2), max(24, p.n_theta // 2))
     # flights
     for k in range(p.starts):
         tris += _helical_flight(p, 2 * np.pi * k / p.starts)
-    # optional central shaft (closed at the bottom by the flight start / cone)
+    # optional solid central core: cylinder above the funnel, closed below either by
+    # a conical tip that runs down to the exit (rig auger) or by a flat end cap
     if p.shaft_r > 0:
         tris += _surface_of_revolution(lambda s: p.shaft_r, lambda s: s,
                                        np.linspace(p.funnel_h, p.z_top, n_z + 1), p.n_theta // 2)
+        if p.tip_r is not None:
+            n_t = max(2, int(np.ceil(p.funnel_h / p.dz)))
+            tris += _surface_of_revolution(lambda u: p.tip_r + u * (p.shaft_r - p.tip_r),
+                                           lambda u: u * p.funnel_h, np.linspace(0, 1, n_t + 1), p.n_theta // 2)
+            tris += _surface_of_revolution(lambda s: s, lambda s: 0.0,
+                                           np.linspace(0.0, p.tip_r, 2), p.n_theta // 2)
+        else:
+            tris += _surface_of_revolution(lambda s: s, lambda s: p.funnel_h,
+                                           np.linspace(0.0, p.shaft_r, 3), p.n_theta // 2)
     return np.asarray(tris, dtype=float)
 
 
@@ -174,7 +212,7 @@ def write_disk_stl(path: str, radius: float, z: float, n: int = 48) -> None:
     write_ascii_stl(path, np.asarray(tris), "outlet")
 
 
-def pocket_volume_mm3(p: AugerParams) -> float:
+def pocket_volume_mm3(p: AugerParams) -> float:  # noqa: D401
     """Free volume of one flight pocket (one pitch, one start)."""
     r_in = max(p.core_r, p.shaft_r)
     annulus = np.pi * (p.bore_r ** 2 - r_in ** 2)

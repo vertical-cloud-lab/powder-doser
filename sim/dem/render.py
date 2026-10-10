@@ -104,7 +104,7 @@ def render_frame(A, tris, theta, beta, png, size, vmax, view_center, fov):
     pipe.remove_from_scene()
 
 
-def mass_panel(t_now, t, m, meta, png, size, exp_rate=None):
+def mass_panel(t_now, t, m, meta, png, size, exp_rate=None, ymax=None):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -121,8 +121,10 @@ def mass_panel(t_now, t, m, meta, png, size, exp_rate=None):
     ax.axvspan(0, t_stop - t0, color="#e8f0e0", zorder=0)
     ax.axvline(t_stop - t0, color="0.4", lw=1, ls=":")
     ax.text(0.02, 0.97, "motor on", transform=ax.transAxes, va="top", fontsize=9, color="#4a7a2a")
-    ax.set_xlim(-t0, t[-1] - t0)
-    ymax = max(1.0, (m[-1] - m0) * 1.08, (exp_rate or 0) * (t_stop - t0) * 1.05)
+    t_end = t_stop + meta["cfg"]["stop_s"]
+    ax.set_xlim(-t0, t_end - t0)
+    if ymax is None:
+        ymax = max(1.0, (m[-1] - m0) * 1.08, (exp_rate or 0) * (t_stop - t0) * 1.05)
     ax.set_ylim(min(0.0, -0.02 * ymax), ymax)
     ax.set_xlabel("time since motor start (s)")
     ax.set_ylabel("dispensed mass (mg)")
@@ -147,6 +149,9 @@ def main():
     ap.add_argument("--title", default="")
     ap.add_argument("--fps", type=int, default=25)
     ap.add_argument("--max-frames", type=int, default=100000)
+    ap.add_argument("--frames-dir", default=None, help="persistent frame cache (enables incremental rendering)")
+    ap.add_argument("--frames-only", action="store_true", help="render missing frames, skip video assembly")
+    ap.add_argument("--ymax", type=float, default=None)
     a = ap.parse_args()
 
     from PIL import Image, ImageDraw, ImageFont
@@ -158,6 +163,8 @@ def main():
     t_log, m_log = O[:, 0], O[:, 1] * 1e6
     beta = math.radians(cfg["incline_deg"] - 90.0)
     files = sorted(glob.glob(os.path.join(a.case, "dump", "p.*.txt")), key=lambda p: int(re.findall(r"p\.(\d+)\.txt", p)[0]))
+    if a.frames_only and files:
+        files = files[:-1]  # the newest dump may still be being written
     files = files[:: a.every][: a.max_frames]
     dt = meta["dt"]
     omega = 2 * math.pi / meta["period_s"]
@@ -170,20 +177,30 @@ def main():
     center = (lo + hi) / 2
     fov = 0.55 * max(hi[0] - lo[0], hi[2] - lo[2])
     W, H = 1280, 640
-    tmp = tempfile.mkdtemp(prefix="render_")
+    tmp = a.frames_dir or tempfile.mkdtemp(prefix="render_")
+    os.makedirs(tmp, exist_ok=True)
     try:
         font = ImageFont.truetype("DejaVuSans.ttf", 18)
         font_s = ImageFont.truetype("DejaVuSans.ttf", 14)
     except OSError:
         font = font_s = ImageFont.load_default()
+    geo = meta["geometry"]
+    z_top = geo["funnel_h"] + geo["n_turns"] * geo["pitch"] + geo["flight_t"] + geo["feed_h"]
     for i, fpath in enumerate(files):
+        if os.path.exists(os.path.join(tmp, f"f{i:05d}.png")):
+            continue
         step, A = read_dump(fpath)
+        # hide feed-zone spill that leaves through the open top of the meshed section
+        # (it is deleted at the box edge and never reaches the outlet)
+        if len(A):
+            zz, rr = A[:, 5] * 1e3, np.hypot(A[:, 3], A[:, 4]) * 1e3
+            A = A[(zz < z_top - 0.2) & ~((rr > geo["bore_r"] + 0.3) & (zz > 0))]
         t = step * dt
         theta = omega * min(max(0.0, t - meta["settle_s"]), max(0.0, t_stop - meta["settle_s"]))
-        left = os.path.join(tmp, "l.png")
-        right = os.path.join(tmp, "r.png")
+        left = os.path.join(tmp, f"l{os.getpid()}.png")
+        right = os.path.join(tmp, f"r{os.getpid()}.png")
         render_frame(A, tris, theta, beta, left, (W - 480, H), vmax=0.08, view_center=tuple(center), fov=fov)
-        mass_panel(t, t_log, m_log, meta, right, (480, H), a.exp_rate)
+        mass_panel(t, t_log, m_log, meta, right, (480, H), a.exp_rate, a.ymax)
         img = Image.new("RGB", (W, H), "white")
         img.paste(Image.open(left).convert("RGB"), (0, 0))
         img.paste(Image.open(right).convert("RGB"), (W - 480, 0))
@@ -194,6 +211,8 @@ def main():
         img.save(os.path.join(tmp, f"f{i:05d}.png"))
         if i % 20 == 0:
             print(f"frame {i}/{len(files)} t={t:.3f}", flush=True)
+    if a.frames_only:
+        return
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(a.fps), "-i", os.path.join(tmp, "f%05d.png"),
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "23", "-movflags", "+faststart", a.out], check=True)
     if a.gif:

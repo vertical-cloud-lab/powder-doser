@@ -81,33 +81,37 @@ def free_point_mask(P, pts, rad, margin=1.02):
     r = np.hypot(x, y)
     th = np.arctan2(y, x)
     ok = np.ones(len(pts), bool)
+    c = rad * margin
     # bore
-    ok &= r < P.bore_r - rad * margin
+    ok &= r < P.bore_r - c
     # funnel cone (z < funnel_h): r < cone radius minus normal clearance
-    zc = z < P.funnel_h + rad * margin
+    zc = z < P.funnel_h + c
     slope = (P.funnel_top_r - P.exit_r) / P.funnel_h
     rc = P.exit_r + slope * z
-    cos_a = 1.0 / math.sqrt(1 + slope ** 2)
-    ok &= ~zc | (r < rc - rad * margin / cos_a)
-    ok &= z > rad * margin
-    # shaft
+    ok &= ~zc | (r < rc - c * math.sqrt(1 + slope ** 2))
+    ok &= z > c
+    # solid core: cylinder above the funnel, conical tip (or flat cap) below
     if P.shaft_r > 0:
-        ok &= (r > P.shaft_r + rad * margin) | (z < P.funnel_h - rad)
+        ok &= (r > P.shaft_r + c) | (z < P.funnel_h - c)
+        if P.tip_r is not None:
+            ts = (P.shaft_r - P.tip_r) / P.funnel_h
+            rt = P.tip_r + ts * np.clip(z, 0, None)
+            ok &= (z >= P.funnel_h) | (r > rt + c * math.sqrt(1 + ts ** 2))
     # flight: helical phase distance
     r_in = max(P.core_r, P.shaft_r)
     lead = P.pitch * P.starts
-    in_flight_band = r > r_in - rad * margin
+    z_start = P.flight_z0 if P.flight_into_funnel else P.funnel_h
+    in_flight_band = (r > r_in - c) | ((z < P.funnel_h) & (P.tip_r is not None))
     for k in range(P.starts):
         ph = 2 * np.pi * k / P.starts
         theta = np.mod(th - ph, 2 * np.pi)
-        # local axial position relative to the flight surfaces
         zl = z - P.funnel_h - lead * theta / (2 * np.pi)
         u = np.mod(zl, lead)
         rr = np.maximum(r, 1e-6)
         helix_tan = lead / (2 * np.pi * rr)
-        ax_clear = rad * margin * np.sqrt(1 + helix_tan ** 2)
+        ax_clear = c * np.sqrt(1 + helix_tan ** 2)
         clash = (u < P.flight_t + ax_clear) | (u > lead - ax_clear)
-        within = (z > P.funnel_h - rad) & (z < P.flight_top + P.flight_t + rad * 2)
+        within = (z > z_start - 2 * c) & (z < P.flight_top + P.flight_t + 2 * c)
         ok &= ~(in_flight_band & within & clash)
     return ok
 
