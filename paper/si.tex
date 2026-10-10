@@ -473,12 +473,13 @@ to be measured.
 
 \clearpage
 
-\section{Run inventory}
-\label{sec:runs}
+\section{Test protocols as recorded}
+\label{sec:protocols}
 
-Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
-runs that were aborted, postponed, or excluded, so that each number in the main
-text can be traced to the run it came from.
+Table~3 of the main text specifies the eight test protocols in tube angles and
+auger units. Table~\ref{tbl:protocolrecords} gives the same protocols as the raw
+records store them, and counts the runs and records behind each one, so that a
+reader can match any row of the raw CSV files to its protocol.
 
 The test battery's raw records store tilt as a servo setting (0, 45, or 90)
 rather than as an angle. The tilt plate is geared 2:1, so these settings are
@@ -486,6 +487,15 @@ tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$ above horizontal, and
 45$^\circ$ is the steepest tilt reached in any test. The main text and its
 figures report tube angles; the conversion is made
 once, in \texttt{paper/figures/make\_data\_figures.py}.
+
+\input{figures/data/protocol_records_table}
+
+\section{Run inventory}
+\label{sec:runs}
+
+Table~\ref{tbl:runs} lists every run recorded in the two test rounds, including
+runs that were aborted, postponed, or excluded, so that each number in the main
+text can be traced to the run it came from.
 
 \small
 \input{figures/data/run_inventory_table}
