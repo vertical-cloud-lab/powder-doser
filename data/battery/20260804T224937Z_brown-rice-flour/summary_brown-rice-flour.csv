@@ -1,0 +1,13 @@
+powder_id,block,tilt_deg,phase,n,mean_g,std_g,sem_g,min_g,max_g,rsd_pct
+brown-rice-flour,A,45.0,baseline,8,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,B,0.0,hold,1,0.0,,,0.0,0.0,
+brown-rice-flour,B,45.0,hold,1,0.0,,,0.0,0.0,
+brown-rice-flour,B,90.0,hold,1,0.0,,,0.0,0.0,
+brown-rice-flour,C,0.0,rotation,6,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,C,45.0,rotation,6,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,C,90.0,rotation,6,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,D,45.0,speed,3,0.00039999999999999996,0.0006928203230275509,0.0004,0.0,0.0012,173.20508075688775
+brown-rice-flour,E,0.0,refeed,8,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,E,0.0,tap,8,0.0,0.0,0.0,0.0,0.0,
+brown-rice-flour,E,45.0,refeed,8,0.0003625,0.0006566962768281848,0.00023217719526258385,0.0,0.0019,181.15759360777517
+brown-rice-flour,E,45.0,tap,8,0.0,7.559289460184545e-05,2.672612419124244e-05,-0.0001,0.0001,

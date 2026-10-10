@@ -1,0 +1,48 @@
+powder_id,run,t_ms,event
+salt,run1,20,preroll start (pre-zeroing absolute mass)
+salt,run1,10079,tare (Z) sent
+salt,run1,10694,tare settled at 0.0000 g
+salt,run1,10787,dose start: PID to 1.0000 g
+salt,run1,33069,stall 10 s; tap burst
+salt,run1,43111,stall 10 s; tap burst
+salt,run1,53152,stall 10 s; tap burst
+salt,run1,63193,stall 10 s; tap burst
+salt,run1,73235,stall 10 s; tap burst
+salt,run1,83277,stall 10 s; tap burst
+salt,run1,93319,stall 10 s; tap burst
+salt,run1,103368,stall 10 s; tap burst
+salt,run1,113400,stall 10 s; tap burst
+salt,run1,123442,stall 10 s; tap burst
+salt,run1,133482,stall 10 s; tap burst
+salt,run1,143524,stall 10 s; tap burst
+salt,run1,153566,stall 10 s; tap burst
+salt,run1,163608,stall 10 s; tap burst
+salt,run1,173648,stall 10 s; tap burst
+salt,run1,183697,stall 10 s; tap burst
+salt,run1,193732,stall 10 s; tap burst
+salt,run1,203772,stall 10 s; tap burst
+salt,run1,213814,stall 10 s; tap burst
+salt,run1,223856,stall 10 s; tap burst
+salt,run1,233898,stall 10 s; tap burst
+salt,run1,243937,stall 10 s; tap burst
+salt,run1,253979,stall 10 s; tap burst
+salt,run1,264027,stall 10 s; tap burst
+salt,run1,274063,stall 10 s; tap burst
+salt,run1,284103,stall 10 s; tap burst
+salt,run1,294145,stall 10 s; tap burst
+salt,run1,304187,stall 10 s; tap burst
+salt,run1,314227,stall 10 s; tap burst
+salt,run1,324269,stall 10 s; tap burst
+salt,run1,334311,stall 10 s; tap burst
+salt,run1,344357,stall 10 s; tap burst
+salt,run1,354393,stall 10 s; tap burst
+salt,run1,364435,stall 10 s; tap burst
+salt,run1,374476,stall 10 s; tap burst
+salt,run1,384517,stall 10 s; tap burst
+salt,run1,394559,stall 10 s; tap burst
+salt,run1,404601,stall 10 s; tap burst
+salt,run1,414642,stall 10 s; tap burst
+salt,run1,424686,stall 10 s; tap burst
+salt,run1,430810,dose timeout after 420 s
+salt,run1,430813,postroll start
+salt,run1,441798,final stable weigh: 0.9406 g
