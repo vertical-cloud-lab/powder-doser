@@ -73,6 +73,11 @@ run-to-run scatter is small compared with its ±15–20 % within-run (pulse) sca
 
 ![tip valve](results/tip_valve.png)
 
+![core tip cut 2 mm short](results/rig_t27p5_r60_tip2.gif)
+
+*The same twin with the core tip cut 2 mm short of the exit plane (0.3 rev, stopped once the steady rate was clear):
+a continuous stream instead of slugs, about 4× the rig's rate. [MP4](results/rig_t27p5_r60_tip2.mp4).*
+
 Observations:
 
 * **Throughput.** Whole-run means are 105 / 71 / 33 / 153 mg/rev at 27.5 / 22.5 / 0 / 45°, against
