@@ -38,7 +38,7 @@ DATA = HERE.parent / "figures" / "candidates" / "data"
 # Protocol specification -- frozen firmware parameters (battery_version 2).
 #
 # tilt convention: the auger tube's angle above horizontal, from 0 deg
-# (horizontal park) to 45 deg, the maximum tilt.  powder_battery.py and the
+# (horizontal park) to 45 deg, the steepest tilt tested (not a hardware limit).  powder_battery.py and the
 # raw CSVs store tilt as a servo setting (0, 45 or 90); the tilt plate is
 # geared 2:1, so those settings are tube angles of 0, 22.5 and 45 deg,
 # which is what the tables report.
@@ -123,7 +123,7 @@ CAPTION = (
     r"characterize the actuation primitives one at a time, and protocol G "
     r"exercises the three-phase closed-loop controller built on them. Tilt is "
     r"the auger tube's angle above horizontal, from 0$^\circ$ (horizontal "
-    r"park) to 45$^\circ$, the maximum tilt. \emph{Trials} is the number of "
+    r"park) to 45$^\circ$, the steepest tilt tested. \emph{Trials} is the number of "
     r"machine-readable trial records each protocol emits per run, which is the "
     r"unit of replication in the analysis. Parameter values are the frozen "
     r"defaults of the battery firmware "
@@ -245,7 +245,7 @@ def markdown_table():
         "Protocols A–F characterize the actuation primitives one at a time;",
         "protocol G exercises the three-phase closed-loop controller built on",
         "them. Tilt is the auger tube's angle above horizontal, from 0°",
-        "(horizontal park) to 45°, the maximum tilt.",
+        "(horizontal park) to 45°, the steepest tilt tested (not the mechanism's limit).",
         "",
         "The firmware and the raw CSVs identify these by the same letters, in a",
         "field named `block`; that field name is part of the serial protocol and",

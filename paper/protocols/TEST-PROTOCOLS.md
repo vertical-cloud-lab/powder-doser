@@ -9,7 +9,7 @@ powder behaves under identical conditions.
 Protocols A–F characterize the actuation primitives one at a time;
 protocol G exercises the three-phase closed-loop controller built on
 them. Tilt is the auger tube's angle above horizontal, from 0°
-(horizontal park) to 45°, the maximum tilt.
+(horizontal park) to 45°, the steepest tilt tested (not the mechanism's limit).
 
 The firmware and the raw CSVs identify these by the same letters, in a
 field named `block`; that field name is part of the serial protocol and
