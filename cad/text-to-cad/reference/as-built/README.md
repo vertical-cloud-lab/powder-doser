@@ -89,6 +89,21 @@ plate v2, servo pinion v1, stepper pinion v1, tap collar v1, auger v1, cap v2.
 
   That makes 14 counted calls. A further 400 response isn't counted.
   `as_built.py onshape` repeats the thumbnails and the shaded view in 5 calls.
+
+  **The issue/PR sweep agent made its own Onshape requests, without the
+  client and without logging them.** It reconstructed them afterwards from
+  its transcript, and they are back-filled in `api_calls.jsonl` as run
+  `pr176-issue-sweep-agent`, with estimated times.
+  - It made 414 to 446 requests, all read-only GETs. The range is there
+    because 32 later list pages may not have been sent.
+  - 311 of them returned 400: list requests with page sizes of 50 or 100,
+    where Onshape's maximum is 20.
+  - The other 103 to 135 succeeded. They covered:
+    - the documents above, their parts, bounding boxes and shaded views;
+    - document listings;
+    - two unrelated documents, "parts2duplicate" and "Pi_can_mount".
+  - If only successful requests count, this run used 117 to 149 calls in
+    all, about 5 to 6 % of the company's 2,500 a year.
 - **Fusion.** The share pages' metadata (version numbers) for all 11 links,
   with no downloads.
 
