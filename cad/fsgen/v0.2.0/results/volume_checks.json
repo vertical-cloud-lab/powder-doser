@@ -1,0 +1,39 @@
+{
+ "volume_checks": [
+  {
+   "case": "main workspace (design)",
+   "local_mm3": 137661.008,
+   "local_with_fsgen_rounding_mm3": 137660.976,
+   "onshape_mm3": 137660.976,
+   "onshape_minus_rounded_local_mm3": 0.0
+  },
+  {
+   "case": "branch: thinner table, fsgen push",
+   "local_mm3": 103908.655,
+   "local_with_fsgen_rounding_mm3": 103908.647,
+   "onshape_mm3": 103908.647,
+   "onshape_minus_rounded_local_mm3": 0.0
+  },
+  {
+   "case": "branch: hingeDrop 10 in the Variable Studio only",
+   "local_mm3": 135121.008,
+   "local_with_fsgen_rounding_mm3": 135120.976,
+   "onshape_mm3": 135120.976,
+   "onshape_minus_rounded_local_mm3": 0.0
+  }
+ ],
+ "variable_studio_test": {
+  "edit": "hingeDrop 5 -> 10 mm in Onshape's Variable Studio only (no fsgen push)",
+  "candidates_mm3": {
+   "everything follows (fsgen push)": {
+    "local": 131589.049,
+    "with_rounding": 131589.017
+   },
+   "towers don't follow": {
+    "local": 135121.008,
+    "with_rounding": 135120.976
+   }
+  },
+  "onshape_mm3": 135120.976
+ }
+}

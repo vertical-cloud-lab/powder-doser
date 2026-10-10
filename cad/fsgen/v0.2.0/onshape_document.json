@@ -1,0 +1,38 @@
+{
+ "documentId": "57bb938243b883c7bdad1045",
+ "workspaceId": "363b7f98896e7b44dab64f48",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/363b7f98896e7b44dab64f48",
+ "defaultElementId": null,
+ "versions": [
+  {
+   "id": "494b3ee81838f562a542094a",
+   "name": "text-to-cad design (fsgen 0.2.0)",
+   "description": "Servos-above baseplate as a native fsgen 0.2.0 tree: plateThickness 6 mm, hingeDrop 5 mm. Matches cad/text-to-cad STEP/parts/baseplate_servos_above.step at IoU 1.000000 (volume 0.032 mm3 lower: dimension expressions rounded to 6 significant digits).",
+   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/v/494b3ee81838f562a542094a"
+  }
+ ],
+ "branches": [
+  {
+   "name": "thinner table (plateThickness 3 mm)",
+   "workspaceId": "ad5c3faacfea2bbf8b231a69",
+   "fromVersion": "494b3ee81838f562a542094a",
+   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/ad5c3faacfea2bbf8b231a69"
+  },
+  {
+   "name": "hinge 5 mm lower, Variable Studio only (hingeDrop 10 mm)",
+   "workspaceId": "86882f77405eeea74b4ff776",
+   "fromVersion": "494b3ee81838f562a542094a",
+   "url": "https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/86882f77405eeea74b4ff776",
+   "variableStudioEdits": [
+    {
+     "values_mm": {
+      "hingeDrop": 10.0
+     },
+     "t": "2026-10-10T15:05:59"
+    }
+   ]
+  }
+ ]
+}
