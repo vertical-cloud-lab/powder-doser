@@ -13,7 +13,7 @@ open questions moved to [DECISIONS.md](DECISIONS.md).
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Tilt range | Settled at the meeting: 45° is the maximum. Nothing in the paper mentions a 90° tilt; firmware docstrings on the battery branches corrected. |
+| 1 | Tilt range | Settled at the meeting: 45° is the steepest tilt tested (clarified 10 Oct: not the mechanism's limit). Nothing in the paper mentions a 90° tilt; firmware docstrings on the battery branches corrected. |
 | 2 | No loading slots | Text, Fig. 1c and SI now describe the capped fill opening. Which auger ran the tests: DECISIONS item 1. |
 | 3 | Supports | "Most parts need support material." |
 | 4 | Fig. 1a out of date | Now the PR #170 render of the current design (real auger, cap, pinion; approximated collar and solenoid). DECISIONS item 7. |

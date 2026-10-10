@@ -2,7 +2,7 @@
 
 > **Corrected 2026-10-01:** the battery records tilt as 0/45/90, which the 2:1 tilt gear
 > turns into tube angles of 0, 22.5 and 45 degrees; this document and its figures now use
-> the physical angles, and 45 degrees was the maximum tilt in every test.
+> the physical angles, and 45 degrees was the steepest tilt in every test (not the mechanism's limit).
 >
 > Revolutions, rpm and rotation angles in this directory are **auger** quantities: the
 > dosing firmware (`main_three_phase.py`) folds the as-built 20:44 stepper-to-auger gear

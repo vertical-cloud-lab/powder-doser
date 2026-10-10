@@ -34,7 +34,7 @@ session (job [36922265580](https://github.com/vertical-cloud-lab/powder-doser/ac
 
 | # | Point | In the meeting | Status |
 |---|---|---|---|
-| 1 | Tilt range | 00:48. Sam thinks the runs went to vertical; Sterling asks Claude to check | **Settled after the meeting: 45° maximum.** Done everywhere |
+| 1 | Tilt range | 00:48. Sam thinks the runs went to vertical; Sterling asks Claude to check | **Settled after the meeting: 45° maximum.** Done everywhere. Clarified 10 Oct: 45° is the steepest tilt the tests used, not the mechanism's limit |
 | 2 | Loading slots | 04:40: "you've gotten rid of that like months ago" | Done: the tube is filled through its capped end |
 | 3 | Supports | 04:40: "we're using supports in the printing" | Done: "most of them with support material" |
 | 4 | Fig. 1a out of date | 12:01–12:55: stand-in stepper, no solenoid, old tap collar. "It should be updated" | Replaced with the #170 render. Open: [question 5](MEETING-DECISIONS.md#5-fig-1a-who-makes-the-refreshed-render-and-should-it-show-who-modelled-what) |

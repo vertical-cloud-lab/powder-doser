@@ -41,7 +41,7 @@ TILT_RAMP = {0.0: "#86b6ef", 45.0: "#2a78d6", 90.0: "#104281"}
 # keyed by the recorded setting; every axis, tick, legend and caption goes
 # through PHYS (recorded setting -> physical degrees above horizontal).
 PHYS = {0.0: 0.0, 45.0: 22.5, 90.0: 45.0}
-TILT_AXIS = "Tube tilt (deg above horizontal; 0 = horizontal park, 45 = maximum)"
+TILT_AXIS = "Tube tilt (deg above horizontal; 0 = horizontal park, 45 = steepest tested)"
 
 
 def deg(recorded: float) -> str:

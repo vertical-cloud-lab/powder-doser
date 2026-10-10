@@ -230,7 +230,7 @@ main text, captions and SI ("reviewed, printed, and tested").
 ### 17. Raw tilt settings in the SI
 
 **Choose one.** Nothing in the manuscript says or implies a 90° tilt; tilts run from 0° to
-the 45° maximum. One SI sentence (Section S6) explains that the raw records store tilt as
+45°, the steepest tilt used (10 Oct: not the mechanism's limit, so the paper no longer calls it the maximum). One SI sentence (Section S6) explains that the raw records store tilt as
 a servo setting of 0, 45 or 90, which the 2:1 gear turns into 0°, 22.5° and 45°. That lets
 readers match the raw files to the paper.
 

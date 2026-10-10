@@ -53,7 +53,7 @@ RPM_RAMP = {15.0: "#86b6ef", 45.0: "#2a78d6", 90.0: "#104281"}
 # Recorded tilt setting -> physical tube angle (deg above horizontal); the
 # tilt plate is geared 2:1.  Auger speeds (15/45/90 RPM) are not affected.
 PHYS = {0.0: 0.0, 45.0: 22.5, 90.0: 45.0}
-TILT_AXIS = "tube tilt (deg above horizontal; 0 = horizontal park, 45 = maximum)"
+TILT_AXIS = "tube tilt (deg above horizontal; 0 = horizontal park, 45 = steepest tested)"
 
 
 def deg(recorded: float) -> str:

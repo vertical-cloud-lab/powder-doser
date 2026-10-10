@@ -105,7 +105,8 @@ def tilt_diagram(ax) -> None:
     so over 0-45 deg the outlet (red) moves only about 3 mm horizontally and
     8 mm down, and the dose lands in nearly the same place.  The three poses
     are the tilts used in the tests: 0 deg (horizontal park), 22.5 deg and
-    45 deg, the maximum.  The firmware's "vertical" preset reaches 45 deg
+    45 deg, the steepest tilt tested (not the mechanism's limit: the servos
+    can turn further).  The firmware's "vertical" preset reaches 45 deg
     because the tilt plate is geared 2:1.  The hinge offset is to scale for
     the 250 mm tube; the tube's width is not (length : diameter = 10 : 1).
     """
@@ -114,7 +115,7 @@ def tilt_diagram(ax) -> None:
     hx, hy = -d, 0.0                             # hinge axis (pivot)
     poses = [(0.0, "#e9d3a6", "0° (horizontal park)"),
              (22.5, "#d4ad62", "22.5°"),
-             (45.0, "#b6862c", "45° (maximum)")]
+             (45.0, "#b6862c", "45° (steepest tested)")]
     outlets = []
     for theta, fc, label in poses:
         t = np.deg2rad(theta)
