@@ -103,7 +103,7 @@ def deck_holes() -> list[tuple[str, tuple, tuple]]:
     """(kind, centre, size) for every opening in the deck, world x/y."""
     S = station_frame()
     holes = [("circle", (X_DRIVE, 0.0), (80.0,)),                      # drive sprocket hub
-             ("slot", (X_IDLER - 3.0, 0.0), (32.0, 32.0 + TENSION_TRAVEL))]
+             ("slot", (X_IDLER - 3.0, 0.0), (22.0, 22.0 + TENSION_TRAVEL))]
     for sx in (-1, 1):                                                  # motor plate, countersunk
         for sy in (-1, 1):
             holes.append(("csk", (X_DRIVE + sx * (MOTOR_PLATE / 2 - 10), sy * (MOTOR_PLATE / 2 - 10)), (5.5,)))
@@ -116,22 +116,25 @@ def deck_holes() -> list[tuple[str, tuple, tuple]]:
         h = to_world(S, (x, CAR_Y0 + 40, 0))
         holes.append(("circle", (h[0], h[1]), (11.8,)))
     for x in (-43.0, -19.0, 19.0, 43.0):                                # hold-down blocks
-        h = to_world(S, (x, CAR_Y0 + CAR_L - 1 + 28, 0))
+        h = to_world(S, (x, CAR_Y0 + CAR_L - 1 + HD_HOLE_DY, 0))
         holes.append(("circle", (h[0], h[1]), (4.5,)))
     for y in (-9.0, 9.0):                                               # tensioner block, from above
         holes.append(("csk4", (X_IDLER + 42.0, y), (4.5,)))
     # deck to frame: M5 countersunk into T-nuts along both long rails and the cross members
-    for x in np.linspace(-DECK_L / 2 + 40, DECK_L / 2 - 40, 7):
+    for x in (-450.0, -280.0, -130.0, 80.0, 183.0, 300.0, 450.0):
         for sy in (-1, 1):
             holes.append(("csk", (float(x), sy * RAIL_Y), (5.5,)))
     for cx in cross_x():
-        for y in (-150.0, 150.0):
+        if abs(cx - X_DRIVE) < 100:
+            continue                                    # motor-box members sit under the motor plate's edges
+        for y in (-150.0, 150.0) if abs(cx - DECK_SEAM_X) > 15 else (-250.0, -100.0, 100.0, 250.0):
             holes.append(("csk", (cx, y), (5.5,)))
     return holes
 
 
 def cross_x() -> list[float]:
-    return [x if x is not None else (X_DRIVE - 80.0 if i == 2 else X_DRIVE + 80.0)
+    nones = [i for i, x in enumerate(CROSS_X) if x is None]
+    return [x if x is not None else (X_DRIVE - 80.0 if i == nones[0] else X_DRIVE + 80.0)
             for i, x in enumerate(CROSS_X)]
 
 
@@ -157,6 +160,13 @@ def deck_part() -> cq.Workplane:
                    .rotate((0, 0, 0), (0, 0, 1), math.degrees(ang)).translate((x, y, 0)))
             d = d.cut(cut)
     return d
+
+
+def deck_half(side: int) -> cq.Workplane:
+    """The deck is two 24 x 48 in sheets butted on the cross member at DECK_SEAM_X."""
+    box = cq.Workplane("XY").center((DECK_SEAM_X - DECK_L / 2 if side < 0 else DECK_SEAM_X + DECK_L / 2) / 2, 0) \
+        .rect(DECK_L / 2 + (DECK_SEAM_X if side < 0 else -DECK_SEAM_X), DECK_W + 2).extrude(-DECK_T - 4).translate((0, 0, 2))
+    return deck_part().intersect(box)
 
 
 # ---------------------------------------------------------------- reference parts
@@ -273,7 +283,7 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     z_rail = -DECK_T - EXT / 2
 
     # 1. frame
-    L_long, L_cross = DECK_L, 2 * RAIL_Y - EXT
+    L_long, L_cross = RAIL_L, 2 * RAIL_Y - EXT
     for sy in (-1, 1):
         add(Placement("ext_long", f"Long rail {'front' if sy < 0 else 'back'}",
                       T(Ry(math.pi / 2), (-L_long / 2, sy * RAIL_Y, z_rail)), 1, ALU, "frame", (0, sy * 60, -40)))
@@ -281,7 +291,8 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
         add(Placement("ext_cross", f"Cross member {i + 1}", T(Rx(-math.pi / 2), (x, -L_cross / 2, z_rail)), 1, ALU,
                       "frame", (0, 0, -80)))
         for sy in (-1, 1):
-            for sx in ((-1, 1) if abs(x) < 500 else (-int(np.sign(x)),)):
+            sides = CROSS_BRACKET_SIDES.get(x, (-1, 1) if abs(x) < RAIL_L / 2 - 20 else (-int(np.sign(x)),))
+            for sx in sides:
                 # inside corner between this cross member and a rail: one leg on the
                 # rail's inner face, the other on the cross member's side face
                 Rb = np.array([[sx, 0, 0], [0, 0, -sy], [0, sx * sy, 0]], float)
@@ -310,10 +321,11 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
             add(Placement("m5x18_shcs", "Motor screw M5x18", T(Rx(math.pi), (X_DRIVE + sx * M34_BOLT_SQ / 2, sy * M34_BOLT_SQ / 2,
                                                                           z_plate - 12)), 3, DARK, "drive", (0, 0, -190)))
     # 4. deck (+ the motor plate's countersunk screws)
-    add(Placement("deck", "Deck (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
+    add(Placement("deck_left", "Deck, idler half (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
+    add(Placement("deck_right", "Deck, drive half (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
     for kind, (x, y), size in deck_holes():
         if kind == "csk":
-            plate = abs(x - X_DRIVE) < MOTOR_PLATE and abs(y) < MOTOR_PLATE
+            plate = abs(abs(x - X_DRIVE) - (MOTOR_PLATE / 2 - 10)) < 1 and abs(abs(y) - (MOTOR_PLATE / 2 - 10)) < 1
             clamp = abs(x - (X_IDLER - 22.0)) < 1 and abs(abs(y) - 18.0) < 1
             if clamp:
                 continue                                    # placed with the idler (step 5)
@@ -327,7 +339,7 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     # 5. idler: slider and jack block under the deck, idler on a spacer above
     xi = X_IDLER
     add(Placement("idler_slider", "Idler slider (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, -70)))
-    add(Placement("idler_stud", "Idler stud 1/2-13 x 2-1/4", T(None, (xi, 0, -DECK_T - 8 - 7.7)), 5, STEEL, "idler", (0, 0, -130)))
+    add(Placement("idler_stud", "Idler stud 1/2-13 x 2-1/2", T(None, (xi, 0, -DECK_T - 8 - 7.7)), 5, STEEL, "idler", (0, 0, -130)))
     add(Placement("idler_spacer", "Idler spacer (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, 40)))
     add(Placement("sprocket_idler", "Idler sprocket 19T (bearing)", T(Rz(math.pi / 2 - ALPHA / 2), (xi, 0, CHAIN_Z)),
                   5, STEEL, "idler", (0, 0, 80)))
@@ -343,9 +355,9 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     for y in (-9.0, 9.0):
         add(Placement("m4x20_fhcs", "Tensioner block screw", T(None, (X_IDLER + 42.0, y, 0)), 5, DARK, "idler", (0, 0, 60)))
     # jack screw: head outboard, tip on the slider's +x face (32 mm from the stud)
-    add(Placement("m5x40_shcs", "Jack screw M5x40", T(Ry(-math.pi / 2), (X_IDLER + 72.0, 0, -DECK_T - 5)), 5, DARK, "idler",
+    add(Placement("m5x40_shcs", "Jack screw M5x40", T(Ry(math.pi / 2), (X_IDLER + 72.0, 0, -DECK_T - 5)), 5, DARK, "idler",
                   (40, 0, -70)))
-    add(Placement("nut_m5", "Jack screw nut", T(Ry(-math.pi / 2), (X_IDLER + 50.2, 0, -DECK_T - 5)), 5, STEEL, "idler",
+    add(Placement("nut_m5", "Jack screw nut", T(Ry(math.pi / 2), (X_IDLER + 46.2, 0, -DECK_T - 5)), 5, STEEL, "idler",
                   (40, 0, -70)))
     # 6. drive sprocket
     add(Placement("sprocket_drive", "Drive sprocket 35B19, 14 mm bore", T(Rz(math.pi / 2), (X_DRIVE, 0, CHAIN_Z)), 6, STEEL,
@@ -370,10 +382,10 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     for k, li in enumerate(carriage_links()):
         Mc = link_frame(li, 0.0)
         add(Placement("carriage", f"Carriage {k + 1}", Mc, 9, PETG, "carriages", (0, 0, 70)))
-        tab_z = CHAIN_Z + OUTER_GAP / 2 + PLATE_T + A1_HOLE_Z
-        add(Placement("m3x10_bhcs", f"Carriage screw {k + 1}", Mc @ T(Rx(math.pi / 2), (0, A1_C, tab_z)), 9, DARK,
+        tab_z = CHAIN_Z + A1_HOLE_C
+        add(Placement("m25x8_bhcs", f"Carriage screw {k + 1}", Mc @ T(Rx(math.pi / 2), (0, A1_C - PLATE_T, tab_z)), 9, DARK,
                       "carriages", (0, 0, 70)))
-        add(Placement("insert_m3", f"Heat-set insert {k + 1}", Mc @ T(Rx(-math.pi / 2), (0, CAR_Y0, tab_z)), 9, BRASS,
+        add(Placement("insert_m25", f"Heat-set insert {k + 1}", Mc @ T(Rx(-math.pi / 2), (0, CAR_Y0, tab_z)), 9, BRASS,
                       "carriages", (0, 0, 70)))
         add(Placement("magnet", f"Index magnet {k + 1}", Mc @ T(None, (25, CAR_Y0 + 40, 0.2)), 9, STEEL, "carriages", (0, 0, 70)))
         if k == 0:
@@ -382,8 +394,8 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     for x in (-31.0, 31.0):
         add(Placement("hold_down", "Hold-down block (printed)", S @ T(None, (x, 0, 0)), 10, ORANGE, "station", (0, -40, 50)))
         for dx in (-12.0, 12.0):
-            p = to_world(S, (x + dx, CAR_Y0 + CAR_L - 1 + 28, CAR_SKID + TONGUE[1] + 4.5))
-            add(Placement("m4x20_shcs", "Hold-down screw M4x20", T(None, tuple(p)), 10, DARK, "station", (0, -40, 80)))
+            p = to_world(S, (x + dx, CAR_Y0 + CAR_L - 1 + HD_HOLE_DY, CAR_SKID + TONGUE[1] + 2.5))
+            add(Placement("m4x25_shcs", "Hold-down screw M4x25", T(None, tuple(p)), 10, DARK, "station", (0, -40, 80)))
             add(Placement("tnut_m4", "Hold-down T-nut M4", T(Rx(math.pi), (p[0], p[1], -DECK_T - 2.2)), 10, STEEL, "station",
                           (0, -40, -40)))
     # 11. module 1 on carriage 1
@@ -409,7 +421,7 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
 
 
 BUILDERS = {
-    "ext_long": lambda: PT.extrusion_2020(DECK_L),
+    "ext_long": lambda: PT.extrusion_2020(RAIL_L),
     "ext_cross": lambda: PT.extrusion_2020(2 * RAIL_Y - EXT),
     "ext_leg": lambda: PT.extrusion_2020(LEG_L),
     "corner_bracket": PT.corner_bracket,
@@ -417,8 +429,10 @@ BUILDERS = {
     "motor_plate": PT.motor_plate,
     "nema34": PT.nema34,
     "deck": deck_part,
+    "deck_left": lambda: deck_half(-1),
+    "deck_right": lambda: deck_half(1),
     "idler_slider": PT.idler_slider,
-    "idler_stud": lambda: PT.idler_stud(12.7, 57.15, 19.05),
+    "idler_stud": lambda: PT.idler_stud(12.7, 63.5, 19.05),
     "idler_spacer": lambda: PT.washer(20.0, 13.2, DECK_T + CHAIN_Z - IDLER_W / 2),
     "sprocket_idler": PT.sprocket_idler,
     "washer_12": lambda: PT.washer(27.0, 13.5, 2.4),
@@ -434,11 +448,11 @@ BUILDERS = {
     "chain_outer": PT.chain_outer_link,
     "chain_inner": PT.chain_inner_link,
     "carriage": PT.carriage,
-    "insert_m3": PT.heat_insert_m3,
+    "insert_m25": PT.heat_insert_m25,
     "magnet": PT.magnet,
     "hold_down": PT.hold_down,
-    "m3x10_bhcs": lambda: PT.shcs(3, 10, "button"),
-    "m4x20_shcs": lambda: PT.shcs(4, 20),
+    "m25x8_bhcs": lambda: PT.shcs(2.5, 8, "button"),
+    "m4x25_shcs": lambda: PT.shcs(4, 25),
     "m5x18_shcs": lambda: PT.shcs(5, 18),
     "m5x18_fhcs": lambda: PT.shcs(5, 18, "flat"),
     "m5x25_fhcs": lambda: PT.shcs(5, 25, "flat"),

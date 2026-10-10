@@ -169,7 +169,7 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
         for p in pl:
             if p.step < s:
                 faded = tuple(0.55 + 0.45 * c for c in p.color)
-                op = 0.25 if (under_deck and p.key == "deck") else 1.0
+                op = 0.25 if (under_deck and p.key.startswith("deck")) else 1.0
                 view.ren.AddActor(actor(p, faded, opacity=op))
             elif p.step == s:
                 view.ren.AddActor(actor(p, p.color, offset=p.explode))

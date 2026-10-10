@@ -2,10 +2,10 @@
 """Drive and log the chain-carousel test rig from a Raspberry Pi (issue #128).
 
 Hardware (BOM.md items 9, 33-36): CL86T closed-loop driver on step/dir/
-enable through a ULN2803A (common-anode: PUL+/DIR+/ENA+ to the Pi's 5 V,
-PUL-/DIR-/ENA- to the ULN2803A outputs), two A3144 hall switches under the
-deck at the station (open collector, 10k pull-ups to 3.3 V): INDEX sees the
-magnet every carriage carries, HOME only carriage 1's second magnet.
+enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to PUL+/DIR+/ENA+, the
+minus terminals to ground), two US5881 hall switches under the deck at the
+station (open drain, 10k pull-ups to 3.3 V): INDEX sees the magnet every
+carriage carries, HOME only carriage 1's second magnet.
 
 Geometry: one module = 8 pitches = 76.2 mm = 8/19 of a turn of the 19T drive
 sprocket. Targets are absolute step counts, round(k * PPR * 8 / 19), so the
@@ -66,7 +66,7 @@ class Rig:
         for p in (PIN_INDEX, PIN_HOME, PIN_ALARM):
             self.pi.set_mode(p, pigpio.INPUT)
             self.pi.set_pull_up_down(p, pigpio.PUD_UP)
-        # A3144 pulls low when a magnet's south pole is over it
+        # the US5881 pulls low when a magnet's south pole is over it
         self.pi.callback(PIN_INDEX, pigpio.FALLING_EDGE, lambda g, l, t: self.edges.append(("index", self.pos, t)))
         self.pi.callback(PIN_HOME, pigpio.FALLING_EDGE, lambda g, l, t: self.edges.append(("home", self.pos, t)))
 
@@ -80,7 +80,7 @@ class Rig:
     # ---- motion
     def enable(self, on: bool = True):
         if self.pi:
-            self.pi.write(PIN_ENA, 0 if on else 1)      # ULN2803A sinks ENA-: driver enabled when low here
+            self.pi.write(PIN_ENA, 0 if on else 1)      # ENA+ high (opto on) disables the CL86T
 
     def move_steps(self, n: int, speed_mm_s: float = 50.0, accel_mm_s2: float = 250.0):
         """Trapezoidal move of n steps (sign = direction) with pigpio waves."""

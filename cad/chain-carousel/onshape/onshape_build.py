@@ -99,13 +99,27 @@ def create() -> dict:
                 print("->", shaded(c, rec, name, view))
             except RuntimeError as e:
                 print("view", name, "failed:", str(e)[:200])
-    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v0 chain test rig",
-                                                      "description": "Initial import from cad/chain-carousel (#128)"})
+    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v1 chain test rig",
+                                                      "description": "Import from cad/chain-carousel (#128): 303 instances, "
+                                                                     "45 parts, no interferences over 0.5 mm^3"})
     rec["version"] = {"id": v["id"], "name": v["name"]}
     rec["api_calls"] = c.calls
     DOC_JSON.write_text(json.dumps(rec, indent=1))
     print(json.dumps(rec, indent=1)[:2000])
     return rec
+
+
+def supersede(old_json: Path, new: dict) -> None:
+    """Rename an earlier document so nobody edits it by mistake (the API key
+    has no delete scope, so it can't be removed)."""
+    old = json.loads(old_json.read_text())
+    c = Onshape(budget=2, run="supersede")
+    c.post(f"/documents/{old['documentId']}", json={
+        "name": f"{DOC_NAME} - SUPERSEDED, see {new['documentId'][:8]}",
+        "description": f"Superseded by {new['url']} (same rig, frame and fastener fixes). Kept because the API key "
+                       "cannot delete documents."})
+    old["superseded_by"] = new["url"]
+    old_json.write_text(json.dumps(old, indent=1))
 
 
 def views() -> None:
@@ -118,5 +132,11 @@ def views() -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["create", "views"])
+    ap.add_argument("--supersede", type=Path, help="earlier onshape_document*.json to mark superseded")
     a = ap.parse_args()
-    create() if a.cmd == "create" else views()
+    if a.cmd == "create":
+        rec = create()
+        if a.supersede:
+            supersede(a.supersede, rec)
+    else:
+        views()

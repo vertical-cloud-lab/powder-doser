@@ -57,18 +57,17 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
 
 def chain_a1_link() -> cq.Workplane:
     """#35 A-1 attachment connecting link: an outer link whose top plate
-    carries a tab bent up 90 deg on the outer side (+y) with one M3 hole.
-    With the chain lying flat the tab stands vertical, hole axis radial."""
+    runs out past its edge and bends up 90 deg into a tab on the outer side
+    (+y), one hole. With the chain lying flat the tab stands vertical, hole
+    axis radial (Tsubaki RS35 A-1: S, C, X, N in params.py)."""
     link = chain_outer_link(clip=True)
-    z_top = OUTER_GAP / 2 + PLATE_T
-    web = (cq.Workplane("XY").center(0, (PLATE_H / 2 + A1_C) / 2)
-           .rect(A1_TAB_L, A1_C - PLATE_H / 2 + PLATE_T).extrude(PLATE_T)
-           .translate((0, PLATE_T / 2, z_top - PLATE_T)))
-    tab = (cq.Workplane("XZ").center(0, z_top + (A1_H - PLATE_T) / 2 - 0.0)
-           .rect(A1_TAB_L, A1_H + PLATE_T).extrude(-PLATE_T)
-           .translate((0, A1_C, -PLATE_T / 2)))
-    hole = (cq.Workplane("XZ").center(0, z_top + A1_HOLE_Z).circle(A1_HOLE_D / 2)
-            .extrude(-10).translate((0, A1_C - 3, 0)))
+    z_top = OUTER_GAP / 2 + PLATE_T                       # top face of the top plate
+    web = (cq.Workplane("XY").center(0, (PLATE_H / 2 - 1 + A1_C) / 2)
+           .rect(A1_TAB_L, A1_C - PLATE_H / 2 + 1).extrude(PLATE_T).translate((0, 0, z_top - PLATE_T)))
+    tab = (cq.Workplane("XY").center(0, A1_C - PLATE_T / 2).rect(A1_TAB_L, PLATE_T)
+           .extrude(A1_X - (z_top - PLATE_T)).translate((0, 0, z_top - PLATE_T)))
+    tab = tab.edges("|Y and >Z").fillet(A1_TAB_L / 2 - 0.01)
+    hole = (cq.Workplane("XZ").center(0, A1_HOLE_C).circle(A1_HOLE_D / 2).extrude(-10).translate((0, A1_C - 5, 0)))
     return link.union(web).union(tab).cut(hole)
 
 
@@ -107,7 +106,7 @@ def sprocket_drive() -> cq.Workplane:
 
 def sprocket_idler() -> cq.Workplane:
     """19T #35 idler with a pressed-in ball bearing (35BB19H style),
-    3/8" bore. Tooth ring centred on z = 0, bearing hub both sides."""
+    1/2 in bore. Tooth ring centred on z = 0, bearing hub both sides."""
     ring = _tooth_disc(TOOTH_W).translate((0, 0, -TOOTH_W / 2))
     hub = cq.Workplane("XY").circle(IDLER_HUB_D / 2).extrude(IDLER_W).translate((0, 0, -IDLER_W / 2))
     race = cq.Workplane("XY").circle(IDLER_HUB_D / 2 - 2).circle(IDLER_HUB_D / 2 - 3).extrude(IDLER_W + 0.01).translate((0, 0, -IDLER_W / 2))
@@ -256,11 +255,11 @@ def carriage() -> cq.Workplane:
                .extrude(CAR_T + 2).edges("|Z").fillet(6).translate((0, 0, z0 - 1)))
     plate = plate.cut(win).cut(lighten)
     # inner wall that meets the A-1 tab
-    tab_top = CHAIN_Z + OUTER_GAP / 2 + PLATE_T + A1_H
-    wall = (cq.Workplane("XY").center(0, y0 + 5).rect(A1_TAB_L + 10, 10).extrude(tab_top - z0)
+    tab_top = CHAIN_Z + A1_X
+    wall = (cq.Workplane("XY").center(0, y0 + 5).rect(A1_TAB_L + 14, 10).extrude(tab_top + 1 - z0)
             .translate((0, 0, z0)))
-    insert_z = CHAIN_Z + OUTER_GAP / 2 + PLATE_T + A1_HOLE_Z
-    insert = cq.Workplane("XZ").center(0, insert_z).circle(4.0 / 2).extrude(-10).translate((0, y0, 0))
+    insert_z = CHAIN_Z + A1_HOLE_C
+    insert = cq.Workplane("XZ").center(0, insert_z).circle(3.2 / 2).extrude(-9).translate((0, y0, 0))
     plate = plate.union(wall).cut(insert)
     # skids: two inner, two outer, all clear of the deck's station cut-out
     skids = (cq.Workplane("XY").pushPoints([(-25, y0 + 27), (25, y0 + 27)]).rect(12, 40).extrude(CAR_SKID)
@@ -287,7 +286,7 @@ def carriage() -> cq.Workplane:
     plate = plate.union(tongue)
     # magnet pockets from below
     for (x, y) in ((-25, y0 + 40), (25, y0 + 40)):
-        plate = plate.cut(cq.Workplane("XY").center(x, y).circle(MAGNET_D / 2 + 0.1)
+        plate = plate.cut(cq.Workplane("XY").center(x, y).circle(MAGNET_D / 2 + 0.15)
                           .extrude(MAGNET_H + 0.3).translate((0, 0, -0.1)))
     return plate
 
@@ -298,14 +297,14 @@ def hold_down() -> cq.Workplane:
     along the chain, Y radial (same as the carriage), Z up from the deck."""
     y_t0 = CAR_Y0 + CAR_L - 1          # tongue inner edge
     tz = CAR_SKID + TONGUE[1]
-    base = cq.Workplane("XY").center(0, y_t0 + 22).rect(40, 20).extrude(tz + 0.5 + 4)
+    base = cq.Workplane("XY").center(0, y_t0 + 12 + (HD_HOLE_DY + 5 - 12) / 2).rect(40, HD_HOLE_DY + 5 - 12).extrude(tz + 0.5 + 4)
     lip = (cq.Workplane("XY").center(0, y_t0 + 9).rect(40, 10).extrude(4)
            .translate((0, 0, tz + 0.5)))
     lead = cq.Workplane("YZ").polyline([(y_t0 + 4, tz + 0.5), (y_t0 + 14, tz + 0.5), (y_t0 + 14, tz + 3)]).close().extrude(40).translate((-20, 0, 0))
     b = base.union(lip).cut(lead)
     for x in (-12, 12):
-        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 28).circle(2.2).extrude(30).translate((0, 0, -1)))
-        b = b.cut(cq.Workplane("XY").center(x, y_t0 + 28).circle(4.2).extrude(4).translate((0, 0, tz + 0.5)))
+        b = b.cut(cq.Workplane("XY").center(x, y_t0 + HD_HOLE_DY).circle(2.2).extrude(30).translate((0, 0, -1)))
+        b = b.cut(cq.Workplane("XY").center(x, y_t0 + HD_HOLE_DY).circle(4.2).extrude(4).translate((0, 0, tz + 2.5)))
     return b.edges("|Z").fillet(1.5)
 
 
@@ -358,6 +357,10 @@ def tnut_m5() -> cq.Workplane:
 
 def heat_insert_m3() -> cq.Workplane:
     return cq.Workplane("XY").circle(2.3).circle(1.5).extrude(5.7)
+
+
+def heat_insert_m25() -> cq.Workplane:
+    return cq.Workplane("XY").circle(1.9).circle(1.25).extrude(4.0)
 
 
 # ---------------------------------------------------------------- electronics

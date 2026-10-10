@@ -26,13 +26,16 @@ PIN_LEN = OUTER_W + 2 * PIN_HEAD
 # The chain lies flat on the deck (pins vertical), resting on its pin heads.
 CHAIN_Z = PIN_LEN / 2                       # chain centre plane above the deck
 
-# A-1 attachment connecting link (bent tab, one hole, on the top plate).
-# Tsubaki/US Tsubaki RS35 A-1 envelope; see BOM.md for the vendor table.
-A1_C = 7.9           # chain centre line -> tab mounting face (radial here)
-A1_H = 9.5           # tab height above the top outer plate
-A1_HOLE_D = 3.4      # M3 clearance
-A1_HOLE_Z = 5.6      # hole centre above the top outer plate
-A1_TAB_L = 15.9      # tab length along the chain
+# A-1 attachment connecting link (bent tab, one hole, on the top plate), from
+# Tsubaki's RS35 A-1 table: S = 0.250 in pitch line -> tab face, C = 0.375 in
+# chain centre plane -> hole, X = 0.563 in -> tab end, N = 0.311 in tab width,
+# hole 0.102 in (Red Boar's is 0.10 in: M2.5). With the chain lying flat the
+# tab stands vertical on the outside of the loop, hole axis radial.
+A1_C = 6.35          # S: pitch line -> tab mounting face (radial here)
+A1_HOLE_D = 2.6
+A1_TAB_L = 7.9       # N
+A1_HOLE_C = 9.525    # C, above the chain centre plane
+A1_X = 14.3          # X, tab end above the chain centre plane
 
 # --- 19T ANSI 35 sprockets (USA Roller Chain 35B19 / 35BB19H tables) ---
 N_TEETH = 19
@@ -40,12 +43,12 @@ PD = P / math.sin(math.pi / N_TEETH)                 # 57.87 pitch diameter
 OD = P * (0.6 + 1 / math.tan(math.pi / N_TEETH))     # 62.88 outside diameter
 TOOTH_W = 4.27       # 0.168" single-strand #35 tooth
 SEAT_D = 1.005 * BUSH_D + 0.076                      # ANSI seating-curve diameter
-HUB_D = 42.1         # 35B19 hub (1-21/32")
-LTB = 22.2           # length through bore (7/8")
+HUB_D = 46.8         # 35B19 hub, 1-27/32 in (USA Roller Chain)
+LTB = 19.05          # length through bore, 3/4 in
 DRIVE_BORE = 14.0    # bored to the NEMA 34 shaft, 5 mm key
-IDLER_BORE = 12.7    # 1/2" ball-bearing idler (Amazon B07LDKCN1X)
-IDLER_HUB_D = 28.6
-IDLER_W = 12.7
+IDLER_BORE = 12.7    # 1/2 in ball-bearing idler (Amazon B07LDKCN1X)
+IDLER_HUB_D = 32.0
+IDLER_W = 9.65       # 0.38 in through the bearing (35BB19H); measure the Amazon one
 
 # Centre distance for 96 links on two 19T sprockets (ANSI formula, equal
 # sprockets: L = 2C/P + N). layout.py refines it so the loop closes exactly.
@@ -63,18 +66,21 @@ M34_HOLE_D = 5.5
 M34_PILOT_D = 73.0
 M34_PILOT_H = 1.6
 M34_SHAFT_D = 14.0
-M34_SHAFT_L = 32.0
+M34_SHAFT_L = 37.0   # 25 mm of it keyed
 M34_KEY_W = 5.0
-M34_BODY_L = 156.0                                    # motor body
-M34_ENC_L = 20.0                                      # encoder housing behind it
+M34_BODY_L = 150.0                                    # motor body
+M34_ENC_L = 19.0                                      # encoder housing: 169 mm overall
 
 # --- deck and frame ---
 DECK_T = 12.7        # 1/2" HDPE
-DECK_L = 1050.0      # cut from a 48" x 48" sheet; set by the 250 mm auger (README)
+DECK_L = 1050.0      # two 1/2 x 24 x 48 in sheets, seam at DECK_SEAM_X; size set by the 250 mm auger
+DECK_SEAM_X = -70.0  # each sheet edge on its own cross member (x = -80 and -60)
 DECK_W = 740.0
 EXT = 20.0           # 2020 extrusion
 RAIL_Y = DECK_W / 2 - EXT / 2 - 5                     # long rails, centre y
-CROSS_X = (-515.0, -280.0, None, None, 515.0)         # None: the two either side of the motor
+RAIL_L = 1000.0      # VEVOR 1000 mm bars, used uncut; the deck overhangs 25 mm at each end
+CROSS_X = (-490.0, -280.0, -80.0, -60.0, None, None, 490.0)   # None: the two either side of the motor
+CROSS_BRACKET_SIDES = {-80.0: (-1,), -60.0: (1,)}            # the seam pair touch: brackets on the outer sides only
 LEG_L = 230.0
 MOTOR_PLATE_T = 6.35  # 1/4" 6061
 MOTOR_PLATE = 140.0
@@ -86,7 +92,7 @@ MOTOR_PLATE = 140.0
 # the hinge, so the tube runs 150 mm past the plate back toward the chain:
 # the hinge has to sit ~270 mm out for the cap end to stay outside the chain.
 CAR_W = 70.0         # along the chain: 6.2 mm between neighbours on the straights
-CAR_Y0 = A1_C + PLATE_T                               # inner face on the tab
+CAR_Y0 = A1_C                                         # inner face on the tab's mounting face
 CAR_L = 290.0        # radial; one piece on the H2D (350 x 320 bed)
 CAR_T = 5.0          # Sam's base plates are 5 mm
 CAR_SKID = 1.5       # PETG skids under the plate ride on the HDPE
@@ -106,6 +112,7 @@ AUGER_Z0_XS = 0.4    # auger STEP z = 0 (outlet end) in Sam's x: the gear (z 78.
 
 # --- station test fixtures ---
 HOLD_DOWN_GAP = 0.5
+HD_HOLE_DY = 30.9    # hold-down screws land on the front rail's top slot (y = -RAIL_Y)
 HALL_R_INDEX = 70.0  # radial position of the index magnet on every carriage
 HALL_R_HOME = 105.0  # only carriage 1 has a magnet here
-MAGNET_D, MAGNET_H = 6.0, 3.0
+MAGNET_D, MAGNET_H = 6.35, 3.18                       # K&J D42-N52, 1/4 x 1/8 in

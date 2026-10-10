@@ -52,6 +52,8 @@ def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
 
 
 def main() -> None:
+    import shutil
+    shutil.rmtree(HERE / "step" / "components", ignore_errors=True)    # no stale parts
     (HERE / "step" / "components").mkdir(parents=True, exist_ok=True)
     (HERE / "stl").mkdir(exist_ok=True)
     (HERE / "dxf").mkdir(exist_ok=True)
@@ -66,8 +68,9 @@ def main() -> None:
             s = s.rotate((0, 0, 0), (1, 0, 0), 0)
         cq.exporters.export(cq.Workplane("XY").add(s), str(HERE / "stl" / f"{k}.stl"), tolerance=0.02, angularTolerance=0.1)
     # 1:1 templates: deck (top view) and motor plate
-    deck = cq.Workplane("XY").add(L.shape("deck")).section(-DECK_T_HALF)
-    cq.exporters.export(deck, str(HERE / "dxf" / "deck.dxf"))
+    for k in ("deck_left", "deck_right"):
+        sec = cq.Workplane("XY").add(L.shape(k)).section(-DECK_T_HALF)
+        cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
     plate = cq.Workplane("XY").add(L.shape("motor_plate")).section(3.0)
     cq.exporters.export(plate, str(HERE / "dxf" / "motor_plate.dxf"))
     asm = assembly()
