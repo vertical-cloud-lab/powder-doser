@@ -274,7 +274,7 @@ def fig1() -> None:
         (0.0, 8.0, "Dose request\n(target mass)"),
         (0.0, 4.6, "Three-phase\ncontroller (bulk\n→ fine → tap)"),
         (5.8, 4.6, "Auger rotation,\nsolenoid taps,\ntilt servo"),
-        (5.8, 0.9, "Analytical\nbalance (A&D\nHR-100A)"),
+        (5.8, 0.9, "Analytical\nbalance"),
     ]
     for x, y, label in boxes:
         ax.add_patch(patches.FancyBboxPatch((x, y), bw, 2.3,

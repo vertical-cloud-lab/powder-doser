@@ -390,3 +390,7 @@
 | `Chen2020Elemental` | A Review on Metallic Alloys Fabrication Using Elemental Powder Blends by Laser Powder Directed Energy Deposition Process | Edison literature task 9c4dc52d (`paper/composition_error/`), 8 Oct 2026 | verified-DOI | 10.3390/ma13163562 resolves; Crossref metadata found |
 | `Charles2026Release` | Zenodo release of this repository | placeholder | needs-DOI | Archive a tagged release at submission and add its DOI (DECISIONS.md item 22) |
 
+
+## Update, 10 Oct 2026
+
+Seven cited entries printed badly in `main.pdf` (a verification note, the journal "Text", or a bare "ArXiv, year"). Three now cite their published versions, confirmed on Crossref: `Fei2024Alabos` (*Digital Discovery*, 2024, 10.1039/D4DD00129J), `Baird2026Honegumi` (*npj Comput. Mater.*, 2026, 10.1038/s41524-026-02156-0) and `Wu2021Deepcad` (ICCV 2021, 10.1109/ICCV48922.2021.00670). Four are cited as arXiv preprints in the RSC format: `Seff2021Vitruvion` (2109.14124), `Alrashedy2025Generating` (2410.05340), `Badagabettu2024Query2cad` (2406.00144) and `Jansen2023Words` (2305.14874). Their verification notes were removed from `references.bib` so they no longer print.
