@@ -52,13 +52,20 @@ were compared with salt measured on the rig, plus one geometry variant:
 | `rig_t22p5_r90` | 22.5°, 90 rpm | CAD exit (core tip in the hole) | **79** ± 14 | 71 | 106–110 (battery D, two days) | 37 | 1.50 |
 | `rig_t00_r60` | 0°, 60 rpm | CAD exit (core tip in the hole) | **25** ± 10 | 22 | ≈28 (battery C: 36 ± 7.5 at 30 rpm, n = 12, scaled by rpm^-0.35) | 1 | 1.00 |
 | `rig_t45_r60` | 45°, 60 rpm | CAD exit (core tip in the hole) | **174** | 153 | ≈195 (battery C: 248 ± 30 at 30 rpm, n = 12, scaled by rpm^-0.35) | 25 | 0.75 |
+| `rig_t27p5_r60_seed2` | 27.5°, 60 rpm | CAD exit, repeat with a different random packing | **124** | 102 | 105 ± 11 | – | 1.00 |
+| `rig_t27p5_r60_tip0p5` | 27.5°, 60 rpm | core tip cut 0.5 mm short | **153** | 112 | 105 ± 11 | – | 0.60 |
+| `rig_t27p5_r60_tip1p0` | 27.5°, 60 rpm | core tip cut 1.0 mm short | **271** | 224 | 105 ± 11 | – | 0.60 |
 | `rig_t27p5_r60_tip2` | 27.5°, 60 rpm | core tip cut 2 mm short | **465** | 427 | 105 ± 11 | – | 0.30 |
 
 *Rig references at 0° and 45° are battery C measurements at 30 rpm, scaled to 60 rpm with the rig's own measured
 law (flow ∝ rpm^0.65, i.e. mg/rev ∝ rpm^−0.35). "After first ¼ rev" drops the start-up transient; ± is the
-standard error from quarter-turn blocks. The core-tip-cut case was stopped after 0.3 rev once its steady rate was clear.*
+standard error from quarter-turn blocks. The core-tip-offset cases were run for 0.3–0.6 rev, enough for their steady rate.
+The repeat with a different random initial packing gives 102 vs 105 mg/rev for the whole-run mean, so the twin's
+run-to-run scatter is small compared with its ±15–20 % within-run (pulse) scatter.*
 
 ![twin vs rig](results/rig_vs_measured.png)
+
+![tip valve](results/tip_valve.png)
 
 Observations:
 
@@ -77,7 +84,9 @@ Observations:
   * The spinning flight and tip then break the arch.
   * The rig shows the same pattern: one pulse per revolution, with 61–76 % of each revolution's mass in 3 of 8
     45° sectors.
-* **The exit annulus is the throttle.** Cutting the core tip 2 mm short of the exit plane gives the funnel a plain
+* **The exit annulus is the throttle.** The tip-offset sweep below shows the curve directly: 105 / 112 / 224 / 427 mg/rev
+  as the core tip stops 0 / 0.5 / 1.0 / 2.0 mm short of the exit plane. Flat for the first 0.5 mm, then 2× per extra
+  half-millimetre. Cutting the core tip 2 mm short of the exit plane gives the funnel a plain
   3 mm hole. The twin then discharges **about 430–470 mg/s, 4–5× the rig**. That is near the Beverloo estimate of
   about 590 mg/s for a vertical 3 mm orifice. So the as-printed tip on the rig must sit close to the CAD position. It also
   makes this one dimension a natural **needle valve** for metering.
@@ -146,6 +155,7 @@ changing one internal dimension at a time:
 | short funnel, 45° half-angle (steep dam at 15° tilt) | 46.3 ± 5.6 | 0.64 (0.39) | 1.93 (0.31) | 0 % | 6.6 | 46 |
 | long funnel, 17° half-angle (almost no dam) | 38.2 ± 2.9 | 0.53 (0.47) | 1.59 (0.37) | 0 % | 3.7 | 200 |
 | solid shaft, cohesive grains (SJKR 20 kJ/m³) | 0.2 ± 0.1 | 0.00 (4.54) | 0.01 (2.82) | 99 % | 0.2 | 123 |
+| combined: solid shaft + 2-start + short 45° funnel | 67.2 ± 9.8 | 0.93 (0.42) | 2.80 (0.38) | 0 % | 15.2 | 40 |
 
 ![sweep](results/sweep.png)
 
@@ -174,6 +184,11 @@ What the sweep says (salt-sized grains, one run each, so differences under about
 * **Cohesion shuts everything down.** With an illustrative SJKR cohesion (20 kJ/m³, not calibrated) the same
   micro-auger delivers 0.2 mg/rev and 99 % of nudges are empty. That is the failure the rig shows for Si −325
   mesh, flours and alginate.
+* **Combining the "best" features does not simply add up.** Solid shaft + 2-start + short 45° funnel gives
+  67 ± 10 mg/rev with a 40 mg funnel inventory, but the afterflow triples (15 mg) because the short funnel lets the
+  two-start flights feed the exit directly. Single-variable sweeps rank the dimensions; the trade-offs need a
+  multi-objective optimisation (dose resolution vs afterflow vs inventory) over them. Each micro case costs about
+  10 core-minutes, so a BO loop is cheap.
 * **Afterflow drops by an order of magnitude** at micro scale: 1–7 mg in 0.5 s, vs 37–54 mg for the rig-auger twin
   at bulk settings and 47–126 mg measured.
 

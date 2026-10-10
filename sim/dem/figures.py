@@ -209,6 +209,35 @@ def fig_sweep(rows, out, title):
     plt.close(fig)
 
 
+def fig_tip(runs, out):
+    """Discharge vs how far the core tip stops short of the exit plane (rig auger, 27.5 deg, 60 rpm)."""
+    cases = [("rig_t27p5_r60", 0.0), ("rig_t27p5_r60_tip0p5", 0.5), ("rig_t27p5_r60_tip1p0", 1.0), ("rig_t27p5_r60_tip2", 2.0)]
+    pts = []
+    for key, z0 in cases:
+        c = os.path.join(runs, key)
+        if os.path.exists(os.path.join(c, "outflow.txt")):
+            r = metrics(c)
+            pts.append((z0, r["mg_per_rev_full"], r["mg_per_rev"], r.get("mg_per_rev_se")))
+    if len(pts) < 2:
+        return
+    z = np.array([p[0] for p in pts])
+    fig, ax = plt.subplots(figsize=(6.8, 4.4))
+    ax.axhspan(105 - 11, 105 + 11, color=C[1], alpha=0.15, lw=0)
+    ax.axhline(105, color=C[1], ls="--", lw=1.4)
+    ax.text(z.max() * 0.98, 112, "rig, PR #166 centre point (105 ± 11)", ha="right", fontsize=8, color=INK2)
+    ax.plot(z, [p[1] for p in pts], "o-", color=C[0], ms=8, label="twin, whole run")
+    ax.plot(z, [p[2] for p in pts], "s--", color=C[0], ms=6, alpha=0.6, label="twin, after first ¼ rev")
+    ax.set_xlabel("core tip stops short of the exit plane (mm)  [0 = CAD]")
+    ax.set_ylabel("discharge (mg per revolution)")
+    sec = ax.secondary_xaxis("top", functions=(lambda x: 1.07 + 0.454 * x, lambda g: (g - 1.07) / 0.454))
+    sec.set_xlabel("narrowest annulus gap (mm); grains are 0.425 mm", fontsize=9)
+    ax.set_title("The core tip is a needle valve (rig auger, 27.5°, 60 rpm)", fontsize=10)
+    ax.legend(frameon=False, fontsize=8, loc="center right")
+    fig.tight_layout()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+
+
 def fig_quantum(rows, out):
     """sd of the mass delivered per rotation increment vs its mean, against the grain-counting limit."""
     rows = [r for r in rows if r.get("complete") and r["windows"]]
@@ -241,6 +270,7 @@ def main():
     ap.add_argument("--out", default="results")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
+    fig_tip(a.runs, os.path.join(a.out, "tip_valve.png"))
     fig_rig([os.path.join(a.runs, k) for k in ("rig_t27p5_r60", "rig_t22p5_r90", "rig_t00_r60", "rig_t45_r60", "rig_t27p5_r60_tip2")],
             os.path.join(a.out, "rig_vs_measured.png"))
     if os.path.exists(a.bench):
@@ -258,6 +288,7 @@ def main():
         "micro_hifric": "micro, high friction",
         "micro_cohesive": "micro, solid shaft, cohesive (SJKR)",
         "micro_shaft_pitch3": "micro, solid shaft, 3 mm pitch",
+        "micro_best": "micro, shaft + 2-start + 45° funnel",
     }
     rows = []
     for k, lab in labels.items():
@@ -269,11 +300,6 @@ def main():
     fig_sweep(rows, os.path.join(a.out, "sweep.png"),
               "Geometry variants at the trickle tilt (15°, 55 rpm, salt d = 0.45 mm); micro = 10 mm bore, 5 mm pitch, 2.5 mm exit")
     fig_quantum(rows, os.path.join(a.out, "dose_quantum.png"))
-    with open(os.path.join(a.out, "metrics.jsonl"), "w") as f:
-        for k in [*RIG_DATA, *labels]:
-            c = os.path.join(a.runs, k)
-            if os.path.exists(os.path.join(c, "outflow.txt")):
-                f.write(json.dumps(metrics(c)) + "\n")
 
 
 if __name__ == "__main__":

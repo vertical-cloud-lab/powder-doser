@@ -1,0 +1,38 @@
+{
+ "case": "rig_t27p5_r60_tip0p5",
+ "incline_deg": 27.5,
+ "rpm": 60,
+ "d_mm": 0.425,
+ "bore_d_mm": 20.9,
+ "core_d_mm": 7.96,
+ "shaft": true,
+ "pitch_mm": 10.4,
+ "starts": 1,
+ "exit_d_mm": 3.0,
+ "n_particles_init": 28905,
+ "complete": false,
+ "sim_time_s": 0.719855424,
+ "rate_mg_s": 153.44956177998407,
+ "mg_per_rev": 153.44956177998407,
+ "grain_mg": 0.0870208484136526,
+ "m_first_rev_mg": 67.1416643931593,
+ "mg_per_rev_full": 111.9297445798528,
+ "wall_s": 680.9672257900238,
+ "windows": {
+  "5": {
+   "mean_mg": 2.129036236057057,
+   "sd_mg": 0.9625648430974278,
+   "cv": 0.4521129451887974,
+   "p_empty": 0.0,
+   "n": 25
+  },
+  "15": {
+   "mean_mg": 6.277329483367318,
+   "sd_mg": 2.3037942993221483,
+   "cv": 0.36700229061201595,
+   "p_empty": 0.0,
+   "n": 8
+  }
+ },
+ "finished": true
+}
