@@ -18,5 +18,5 @@
   "2026-08-27 Auger Carriage + Frame Carriage",
   "2026-09-09 Doser Centering Device.step"
  ],
- "not_checked": "H2D: its LAN access code in the repo secret is rejected (FTPS 530 Login incorrect)"
+ "h2d": "read 2026-10-11 after the access code was updated: no job files for cloud prints; one auger print (6-7 Oct, cone exit) in its timelapses, see h2d/h2d_prints.json"
 }

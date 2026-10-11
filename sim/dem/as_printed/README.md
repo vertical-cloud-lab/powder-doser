@@ -20,8 +20,8 @@ python compare_profiles.py          # exit_cad_vs_printed.png
 ## How the job files were read
 
 The printers are on the lab network, and the powder-doser Pi can reach them (PR #23).
-From the runner, a stdlib-only Python script went over Tailscale SSH to the Pi and did the
-following, read-only, with implicit FTPS on port 990 using the PR #23 `ImplicitFTP_TLS` fix:
+From the runner, a stdlib-only Python script ([`printer_ftps/`](printer_ftps/)) went over Tailscale SSH to the Pi
+and did the following, read-only, with implicit FTPS on port 990 using the PR #23 `ImplicitFTP_TLS` fix:
 
 * listed each printer's SD card
 * streamed the auger job files back
@@ -33,7 +33,7 @@ Nothing was uploaded or printed, and no MQTT commands were sent.
 | Printer | Result |
 |---|---|
 | A1 mini | Read. The job cache goes back to June. The auger jobs are listed in [`auger_open_end_job.json`](auger_open_end_job.json). |
-| H2D | Not read: FTPS answers `530 Login incorrect`, so the `H2D_ACCESS_CODE` secret is stale. The code changes when LAN mode is re-enabled or the printer is reset; it is shown on the printer's screen under the network / LAN-only settings. |
+| H2D | Read on 2026-10-11, after the access code was updated. It keeps no job files for cloud prints (no `/cache`), but its timelapses (15 Jul – 9 Oct) and camera clips (26 Sep – 9 Oct) show one auger print, on 6–7 Oct. Its first 12 mm match the CAD cone exit, not the open end: see [`h2d/`](h2d/). |
 
 ## `auger_open_end` (A1 mini, sent 2026-09-09)
 

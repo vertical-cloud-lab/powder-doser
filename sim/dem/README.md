@@ -20,14 +20,15 @@ questions from #158:
 is cut away: wall grey-blue, flight blue, solid core and its tip amber; grains are coloured by speed. Full-resolution
 MP4: [`results/rig_t27p5_r60.mp4`](results/rig_t27p5_r60.mp4).*
 
-* **Review follow-up: an open-ended auger was printed, and the exit sets the flow ([§0](#0-which-exit-is-on-the-rig-review-follow-up)).**
+* **Review follow-up: an open-ended test auger was printed, but the newest full-length auger keeps the cone, and the exit sets the flow ([§0](#0-which-exit-is-on-the-rig-review-follow-up)).**
   The twin below uses the Fusion `threaded-auger-final` (12 mm cone to a Ø3 mm exit, core tip in the hole). The
   A1 mini's job cache also holds `auger_open_end` (2026-09-09): no cone, the Ø20.8 mm bore runs to the exit, and the
   exit area is 47× larger.
   * Run with the same settings, the open end dumps 1.7 g as the exit opens. After that it delivers one slug per turn:
     1.0 g first, then about 0.6–0.7 g per revolution. That is about 6× the cone exit and the rig's 105 mg/rev.
-  * The 53 g / ~100 g full-length auger Will used for PR #166 points to the cone design for those measurements, but no
-    log says which exit was on. The H2D's job history would settle it.
+  * The H2D's newest full-length auger (printed 6–7 Oct) has the cone exit. Its timelapse shows the first 12 mm printing
+    as a nearly solid disk that opens into the tube, with the gear at the CAD's 78.6–88.6 mm. The open end exists only as
+    the A1 mini's 110 mm test print. The 53 g / ~100 g auger Will used for PR #166 also fits the cone design.
 * **Without any calibration, the twin lands on the rig's measured salt yield at the PR #166 centre point** (105 vs
   105 ± 11 mg/rev at 27.5°, 60 rpm). Across the 0–45° tilt range it stays within about 35 % of the measurements
   (33 / 71 / 105 / 153 mg/rev against ≈28 / 106–110 / 105 / ≈195), reproducing the 7× rise of yield with tilt.
@@ -75,8 +76,18 @@ printers themselves show.
   * The same flight as the CAD: 0.50 mm thick, 10.42 mm pitch, right-handed, running to the exit.
   * A 44T gear 79–88 mm up. The part is 110 mm long overall, printed in blue PLA, 38.6 g.
   * The other auger jobs on the A1 mini are June–July storage-auger tests and thread-fit coupons.
-* **H2D**, where the full-length augers were printed in August: not read. The LAN access code in the
-  `H2D_ACCESS_CODE` secret is rejected (`530 Login incorrect`).
+* **H2D**, where the full-length augers are printed: read on 2026-10-11 with the updated access code
+  ([`as_printed/h2d/`](as_printed/h2d/)). It keeps no job files for cloud prints (no `/cache`), so there is no G-code
+  to rebuild. Its camera record does survive: 36 timelapses (15 Jul – 9 Oct) and 500 clips recorded while printing
+  (26 Sep – 9 Oct).
+  * They show **one auger print, 6–7 Oct**: a full-length black threaded auger.
+  * It is the **CAD cone design, not the open end**. At 0.08 mm per timelapse frame it is about 253 mm long (CAD 250)
+    with the gear at about 78–89 mm (CAD 78.6–88.6).
+  * Its exit end prints as a nearly solid disk for the first few millimetres and opens to the full bore by about
+    12 mm: the 12 mm cone. An open end would show a thin ring around an open bore from the first layer.
+  * The camera cannot resolve the Ø3 mm hole or the core tip in it.
+
+![H2D exit evidence](as_printed/h2d/h2d_oct7_exit_evidence.png)
 
 ![CAD vs printed exit](as_printed/exit_cad_vs_printed.png)
 
@@ -87,8 +98,10 @@ printers themselves show.
   about 100 g of salt, or about 80 mL.
   * That fits the 250 mm, 79 mL Fusion auger (56.7 g empty on 31 Jul).
   * It does not fit the 110 mm open-end print, which weighs 38.6 g with supports and has about 25 mL of free volume.
-* The black augers on the stream since about 1 Oct are not this blue print, and their exit is unknown. The H2D's job
-  history, or a photo of the exit, would settle it.
+* The black augers on the stream since about 1 Oct are not this blue print. The one auger the H2D's camera
+  recorded, printed 6–7 Oct, has the cone exit. Augers printed before 26 Sep left no camera record on the H2D (none of
+  its timelapses from 15 Jul shows one), so their exit is still unrecorded. Across both printers, the only open-end
+  print is the A1 mini's 110 mm test.
 
 **The twin with the printed open end.** Case `rig_open_t27p5_r60` uses the same salt, contacts, tilt, rpm, prefill and
 feed as `rig_t27p5_r60`, run for 3 revolutions on 2 MPI ranks. A check with 4 flight turns meshed instead of 1.5
