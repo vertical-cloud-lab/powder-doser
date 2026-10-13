@@ -10,6 +10,9 @@ listed them as the biggest gap.
 They were copied off unchanged on 2026-09-29, before the first campaign run.
 That session had the rig handed over, so `mpremote` could stop the idle program
 on the Pico. The flash copies are still in place; nothing on the Pico was deleted.
+(Update 2026-10-13: these 26 logs were then deleted from the Pico to free flash
+for a firmware upload, after a sha256 check against the copies here. See
+[`../2026-10_pico-flash-backup/`](../2026-10_pico-flash-backup/).)
 
 - `trickle_log_000.csv` to `trickle_log_025.csv`: one dose each, in the 15-column
   schema documented in the
