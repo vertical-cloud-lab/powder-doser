@@ -1,19 +1,21 @@
-"""Where every part goes: the chain solution, the 12 carriages, the station
-and the assembly steps.
+"""Where every part goes: the chain solution, the 12 carriages, the frame,
+the station and the assembly steps (v2, vertical twin-chain loop).
 
-The chain is solved exactly for 96 links on two 19T sprockets: with the
-drive sprocket's pin at 90 deg (top) and C = 38.5 pitches, both free spans
-are 38 links and each sprocket carries 10 (the polygon effect tilts each
-span by 0.39 mm over 362 mm). The loop runs counter-clockwise seen from
-above: top span drive -> idler, around the idler, bottom (front) span back.
+Each chain is solved exactly for 96 links on four 32T sprockets on a
+76.2 x 228.6 mm rectangle of centres: with 32 teeth a 90-degree wrap is
+exactly 8 links, so the pins at every tangent point sit in a tooth gap and
+the straights are whole pitches (bottom 8, sides 24, top 8). The two chains
+are identical, 305 mm apart in x, and every carriage bolts to the same link
+number on both, so a carriage only ever moves in the y-z plane.
 
-Carriage 1 sits at the station, on the front span near x = 0. Every 8th link
-is an A-1 attachment connecting link; carriage k bolts to the k-th of them.
+The loop runs counter-clockwise seen from the back (+x looking toward -x):
+along the bottom toward +y, up the +y side, back along the top, down the -y
+side. Carriage 1 sits at the station on the bottom straight.
 """
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
@@ -26,29 +28,33 @@ import parts as PT
 HERE = Path(__file__).resolve().parent
 REF = HERE / "reference"            # Sam's Onshape export, the lab auger
 
-C = 38.5 * P                         # centre distance that closes 96 links exactly
-X_DRIVE, X_IDLER = C / 2, -C / 2
-R = PD / 2
 ALPHA = 2 * math.pi / N_TEETH
-CARRIAGE_LINK0 = 66                  # carriage 1's A-1 link (front span, near x = 0)
+CORNERS = {"B+": (LOOP_Y, Z_BOT), "T+": (LOOP_Y, Z_TOP), "T-": (-LOOP_Y, Z_TOP), "B-": (-LOOP_Y, Z_BOT)}
+DRIVE = "B+"                         # NEMA 34 on this shaft, at the back
+CARRIAGE_LINK0 = 4                   # carriage 1's A-1 link: on the bottom straight (links 0-7)
 
 
+@lru_cache(None)
 def chain_pins() -> np.ndarray:
-    """96 pin centres (x, y), in loop order, starting at the drive's top pin."""
-    ha = ALPHA / 2
-    A = np.array([X_DRIVE, R])
-    B = np.array([X_IDLER + P / 2, R * math.cos(ha)])
-    D = np.array([X_IDLER, -R])
-    E = np.array([X_DRIVE - P / 2, -R * math.cos(ha)])
-    pts = [A + (B - A) * i / 38 for i in range(38)]
-    a0 = math.pi / 2 - ha
-    pts += [np.array([X_IDLER + R * math.cos(a0 + k * ALPHA), R * math.sin(a0 + k * ALPHA)]) for k in range(10)]
-    pts += [D + (E - D) * i / 38 for i in range(38)]
-    a1 = -math.pi / 2 - ha
-    pts += [np.array([X_DRIVE + R * math.cos(a1 + k * ALPHA), R * math.sin(a1 + k * ALPHA)]) for k in range(10)]
+    """96 pin centres (y, z), in loop order, starting at the bottom run's
+    tangent point under the B- sprocket."""
+    b, a = LOOP_B, LOOP_A
+    pts = []
+    y0, z0 = -b / 2, Z_BOT - R
+    pts += [(y0 + k * P, z0) for k in range(8)]                                       # bottom straight
+    pts += [(b / 2 + R * math.cos(-math.pi / 2 + j * ALPHA), Z_BOT + R * math.sin(-math.pi / 2 + j * ALPHA))
+            for j in range(8)]                                                         # round B+
+    pts += [(b / 2 + R, Z_BOT + k * P) for k in range(24)]                            # up the +y side
+    pts += [(b / 2 + R * math.cos(j * ALPHA), Z_TOP + R * math.sin(j * ALPHA)) for j in range(8)]   # round T+
+    pts += [(b / 2 - k * P, Z_TOP + R) for k in range(8)]                             # top straight
+    pts += [(-b / 2 + R * math.cos(math.pi / 2 + j * ALPHA), Z_TOP + R * math.sin(math.pi / 2 + j * ALPHA))
+            for j in range(8)]                                                         # round T-
+    pts += [(-b / 2 - R, Z_TOP - k * P) for k in range(24)]                           # down the -y side
+    pts += [(-b / 2 + R * math.cos(math.pi + j * ALPHA), Z_BOT + R * math.sin(math.pi + j * ALPHA))
+            for j in range(8)]                                                         # round B-
     pts = np.array(pts)
     gaps = np.linalg.norm(np.roll(pts, -1, axis=0) - pts, axis=1)
-    assert len(pts) == N_LINKS and np.allclose(gaps, P, atol=2e-3), (len(pts), gaps.min(), gaps.max())
+    assert len(pts) == N_LINKS and np.allclose(gaps, P, atol=1e-6), (len(pts), gaps.min(), gaps.max())
     return pts
 
 
@@ -58,11 +64,6 @@ def T(R3=None, t=(0.0, 0.0, 0.0)) -> np.ndarray:
         M[:3, :3] = R3
     M[:3, 3] = t
     return M
-
-
-def Rz(a):
-    c, s = math.cos(a), math.sin(a)
-    return np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
 
 
 def Rx(a):
@@ -75,14 +76,35 @@ def Ry(a):
     return np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]])
 
 
-def link_frame(i: int, z: float = CHAIN_Z) -> np.ndarray:
-    """Frame of link i: origin mid-way between pins i and i+1, y outward
-    (right of travel: the loop runs counter-clockwise), z up, so x points
-    against the travel."""
+def Rz(a):
+    c, s = math.cos(a), math.sin(a)
+    return np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+
+
+def cols(*vs) -> np.ndarray:
+    return np.array(vs, float).T
+
+
+def carriage_frame(i: int) -> np.ndarray:
+    """Carriage frame on link i: u along the travel, w inward (into the
+    loop), x front -> back; origin on the front chain's pitch line mid-way
+    between the link's pins."""
     p = chain_pins()
-    a, b = p[i], p[(i + 1) % N_LINKS]
-    t = (b - a) / np.linalg.norm(b - a)
-    return T(Rz(math.atan2(t[1], t[0]) + math.pi), ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, z))
+    a, b = p[i % N_LINKS], p[(i + 1) % N_LINKS]
+    ty, tz = (b - a) / P
+    u, w = (0.0, ty, tz), (0.0, -tz, ty)
+    return T(cols(u, w, (1.0, 0.0, 0.0)), (0.0, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2))
+
+
+def link_frame(i: int, back: bool) -> np.ndarray:
+    """Frame of link i in parts.py's link coordinates (x along the chain, y
+    radially outward, z along the pins). The A-1 tab is on +z, so z points
+    from each chain toward the modules: +x on the front chain, -x on the back."""
+    C = carriage_frame(i)
+    u, w = C[:3, 0], C[:3, 1]
+    if back:
+        return T(cols(u, -w, (-1.0, 0.0, 0.0)), C[:3, 3] + (CHAIN_L, 0.0, 0.0))
+    return T(cols(-u, -w, (1.0, 0.0, 0.0)), C[:3, 3])
 
 
 def carriage_links() -> list[int]:
@@ -90,83 +112,64 @@ def carriage_links() -> list[int]:
 
 
 def station_frame() -> np.ndarray:
-    """Carriage 1's frame (z = 0 on the deck): the dispense station."""
-    return link_frame(CARRIAGE_LINK0, 0.0)
+    """Carriage 1's frame at home: the dispense station."""
+    return carriage_frame(CARRIAGE_LINK0)
 
 
 def to_world(M: np.ndarray, xyz) -> np.ndarray:
     return (M @ np.r_[np.asarray(xyz, float), 1.0])[:3]
 
 
-# ---------------------------------------------------------------- deck
-def deck_holes() -> list[tuple[str, tuple, tuple]]:
-    """(kind, centre, size) for every opening in the deck, world x/y."""
-    S = station_frame()
-    holes = [("circle", (X_DRIVE, 0.0), (80.0,)),                      # drive sprocket hub
-             ("slot", (X_IDLER - 3.0, 0.0), (22.0, 22.0 + TENSION_TRAVEL))]
-    for sx in (-1, 1):                                                  # motor plate, countersunk
-        for sy in (-1, 1):
-            holes.append(("csk", (X_DRIVE + sx * (MOTOR_PLATE / 2 - 10), sy * (MOTOR_PLATE / 2 - 10)), (5.5,)))
-    for sy in (-1, 1):                                                  # idler slider clamps
-        holes.append(("csk", (X_IDLER - 22.0, sy * 18.0), (5.5,)))
-    # station reach-through, in the carriage frame -> world
-    c = to_world(S, (0, (CUT_Y[0] + CUT_Y[1]) / 2, 0))
-    holes.append(("rect", (c[0], c[1]), (2 * CUT_X + 6, CUT_Y[1] - CUT_Y[0] + 6)))
-    for x in (-25.0, 25.0):                                             # hall sensors (home -X, index +X)
-        h = to_world(S, (x, CAR_Y0 + 40, 0))
-        holes.append(("circle", (h[0], h[1]), (11.8,)))
-    for x in (-43.0, -19.0, 19.0, 43.0):                                # hold-down blocks
-        h = to_world(S, (x, CAR_Y0 + CAR_L - 1 + HD_HOLE_DY, 0))
-        holes.append(("circle", (h[0], h[1]), (4.5,)))
-    for y in (-9.0, 9.0):                                               # tensioner block, from above
-        holes.append(("csk4", (X_IDLER + 42.0, y), (4.5,)))
-    # deck to frame: M5 countersunk into T-nuts along both long rails and the cross members
-    for x in (-450.0, -280.0, -130.0, 80.0, 183.0, 300.0, 450.0):
-        for sy in (-1, 1):
-            holes.append(("csk", (float(x), sy * RAIL_Y), (5.5,)))
-    for cx in cross_x():
-        if abs(cx - X_DRIVE) < 100:
-            continue                                    # motor-box members sit under the motor plate's edges
-        for y in (-150.0, 150.0) if abs(cx - DECK_SEAM_X) > 15 else (-250.0, -100.0, 100.0, 250.0):
-            holes.append(("csk", (cx, y), (5.5,)))
-    return holes
+STATION_Y = float(station_frame()[1, 3])                 # 4.76: carriage 1's centre on the bottom run
 
 
-def cross_x() -> list[float]:
-    nones = [i for i, x in enumerate(CROSS_X) if x is None]
-    return [x if x is not None else (X_DRIVE - 80.0 if i == nones[0] else X_DRIVE + 80.0)
-            for i, x in enumerate(CROSS_X)]
+# ---------------------------------------------------------------- side plates
+def side_holes(back: bool) -> list[tuple]:
+    """(kind, (y, z), size) for every opening in a side plate, world y/z.
+    kinds: circle (d), slot (d, length, vertical), tap (M5 tapped)."""
+    out = []
+    j = BRG["J"] / 2
+    lo, hi = TENSION_TRAVEL
+    for name, (y, z) in CORNERS.items():
+        if name.startswith("B"):
+            out.append(("circle", (y, z), (32.0,)))                                 # shaft, clears the insert collar
+            for dz in (-j, j):
+                out.append(("circle", (y, z + dz), (BRG["BOLT_D"] + 1.0,)))
+        else:                                                                       # top: vertical slots to tension
+            out.append(("slot", (y, z + (lo + hi) / 2), (32.0, 32.0 + hi - lo)))
+            for dz in (-j, j):
+                out.append(("slot", (y, z + dz + (lo + hi) / 2), (BRG["BOLT_D"] + 1.0, BRG["BOLT_D"] + 1.0 + hi - lo)))
+            for dy in (-10.0, 10.0):                                                # tensioner block screws
+                out.append(("tap", (y + dy, z - j - 13.0 - 6.0 - 12.0), (5.0,)))
+    for sy in (-1, 1):                                                              # to the posts' slots
+        for z in (200.0, 320.0, 440.0, 540.0):
+            out.append(("circle", (sy * POST_Y, z), (5.5,)))
+    for dy in (-12.0, 12.0):                                                        # hold-down, into its inserts
+        out.append(("circle", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - 2.0 - 11.0), (5.5,)))
+    if back:                                                                        # NEMA 34 standoffs
+        y, z = CORNERS[DRIVE]
+        for dy in (-1, 1):
+            for dz in (-1, 1):
+                out.append(("circle", (y + dy * M34_BOLT_SQ / 2, z + dz * M34_BOLT_SQ / 2), (5.5,)))
+    return out
 
 
 @lru_cache(None)
-def deck_part() -> cq.Workplane:
-    d = PT.deck()
-    for kind, (x, y), size in deck_holes():
-        if kind == "circle":
-            d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
-        elif kind == "csk4":
-            d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
-            d = d.cut(cq.Workplane("XY").center(x, y).circle(4.2).workplane(offset=-2.6).circle(1.8).loft())
-        elif kind == "csk":
-            d = d.cut(cq.Workplane("XY").center(x, y).circle(size[0] / 2).extrude(-DECK_T - 2).translate((0, 0, 1)))
-            d = d.cut(cq.Workplane("XY").center(x, y).circle(5.5).workplane(offset=-3.0).circle(2.75)
-                      .loft().translate((0, 0, 0.0)))
+def side_plate_part(back: bool) -> cq.Workplane:
+    """Side plate in its own frame: x = world y, y = world z, z = world x
+    measured from the plate's inner face (front plate: z in [-6.35, 0];
+    back plate: z in [0, 6.35])."""
+    t = PLATE_T_SIDE
+    z0 = 0.0 if back else -t
+    p = PT.side_plate(back).translate((0, 0, z0))
+    for kind, (y, z), size in side_holes(back):
+        if kind in ("circle", "tap"):
+            d = size[0] if kind == "circle" else 4.2
+            p = p.cut(cq.Workplane("XY").center(y, z).circle(d / 2).extrude(t + 2).translate((0, 0, z0 - 1)))
         elif kind == "slot":
-            d = d.cut(cq.Workplane("XY").center(x, y).slot2D(size[1], size[0]).extrude(-DECK_T - 2).translate((0, 0, 1)))
-        elif kind == "rect":
-            S = station_frame()
-            ang = math.atan2(S[1, 0], S[0, 0])
-            cut = (cq.Workplane("XY").rect(size[0], size[1]).extrude(-DECK_T - 2).translate((0, 0, 1))
-                   .rotate((0, 0, 0), (0, 0, 1), math.degrees(ang)).translate((x, y, 0)))
-            d = d.cut(cut)
-    return d
-
-
-def deck_half(side: int) -> cq.Workplane:
-    """The deck is two 24 x 48 in sheets butted on the cross member at DECK_SEAM_X."""
-    box = cq.Workplane("XY").center((DECK_SEAM_X - DECK_L / 2 if side < 0 else DECK_SEAM_X + DECK_L / 2) / 2, 0) \
-        .rect(DECK_L / 2 + (DECK_SEAM_X if side < 0 else -DECK_SEAM_X), DECK_W + 2).extrude(-DECK_T - 4).translate((0, 0, 2))
-    return deck_part().intersect(box)
+            p = p.cut(cq.Workplane("XY").center(y, z).slot2D(size[1], size[0], angle=90).extrude(t + 2)
+                      .translate((0, 0, z0 - 1)))
+    return p
 
 
 # ---------------------------------------------------------------- reference parts
@@ -228,13 +231,13 @@ def reference_parts() -> dict[str, cq.Workplane]:
     return out
 
 
+SAM_IN_CARRIAGE = T(cols((0, 0, 1), (1, 0, 0), (0, 1, 0)), (0.0, HINGE_W, HINGE_X))   # his x -> x, y -> u, z -> w
+
+
 def sam_frame(carriage_M: np.ndarray, tilt_deg: float = 0.0) -> np.ndarray:
-    """Sam's studio frame on a carriage: his +x (hinge -> gear) points back
-    toward the chain (-Y), his y is the carriage X, his z is up; hinge at
-    (0, HINGE_Y, HINGE_Z). Positive tilt lifts the gear end (outlet down)."""
-    Rs = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1]], float)   # sam x->-Y, y->X, z->Z
-    M = T(Rs, (0.0, HINGE_Y, HINGE_Z))
-    return carriage_M @ M @ T(Ry(-math.radians(tilt_deg)))
+    """Sam's studio frame on a carriage. Positive tilt lifts the cap end
+    into the loop (outlet down), about the hinge."""
+    return carriage_M @ SAM_IN_CARRIAGE @ T(Ry(-math.radians(tilt_deg)))
 
 
 # ---------------------------------------------------------------- placements
@@ -252,211 +255,264 @@ class Placement:
 STEEL = (0.62, 0.64, 0.67)
 DARK = (0.18, 0.18, 0.2)
 ALU = (0.80, 0.82, 0.85)
-HDPE = (0.95, 0.95, 0.92)
+PLATE_ALU = (0.70, 0.72, 0.76)
 PETG = (0.16, 0.36, 0.78)
 ORANGE = (0.95, 0.55, 0.12)
 SAM = (0.10, 0.25, 0.85)
 WHITE = (0.97, 0.97, 0.97)
+BLANK = (0.88, 0.88, 0.84)
 BRASS = (0.80, 0.65, 0.25)
 GREEN = (0.10, 0.50, 0.25)
 RED = (0.85, 0.12, 0.10)
+CAST = (0.42, 0.44, 0.47)
 
 STEPS = {
-    1: "Frame: long rails, cross members, corner brackets",
-    2: "Legs and leveling feet",
-    3: "NEMA 34 on its motor plate",
-    4: "Deck onto the frame; motor plate up into the deck",
-    5: "Idler: slider, stud, spacer, idler sprocket, tensioner",
-    6: "Drive sprocket on the motor shaft",
-    7: "Hall sensors (index, home) into the deck",
-    8: "Chain: 12 A-1 attachment links every 8 pitches, close the loop, tension",
-    9: "Carriages: inserts and magnets, then bolt each to its A-1 tab",
-    10: "Station hold-down blocks",
-    11: "Module 1: Sam's mounting plate, auger and cap on carriage 1",
-    12: "Electronics board: supply, driver, Pi, interface board, e-stop",
+    1: "Base frame: rails, corner brackets, leveling feet",
+    2: "Posts and top frame",
+    3: "Side plates onto the posts",
+    4: "Bearings, corner shafts and tensioners",
+    5: "Sprockets on the shafts (set screws loose)",
+    6: "NEMA 34: standoffs, coupling, motor",
+    7: "Chains: 12 A-1 links per chain, close both loops",
+    8: "Carriages across both chains; phase and tension",
+    9: "Station: hold-downs and hall switches",
+    10: "Modules: Sam's plate, auger and cap on every carriage",
+    11: "Electronics board: supply, driver, Pi, interface board, e-stop",
 }
+
+X_FRONT_OUT = -SIDE_GAP - PLATE_T_SIDE          # front plate's outer face
+X_BACK_OUT = CHAIN_L + SIDE_GAP + PLATE_T_SIDE  # back plate's outer face
+X_POST = (X_FRONT_OUT - EXT / 2, X_BACK_OUT + EXT / 2)
+RAIL_X0, RAIL_X1 = X_FRONT_OUT - EXT, X_BACK_OUT + EXT
+SHAFT_X0 = X_FRONT_OUT - BRG["H"]
+SHAFT_L = X_BACK_OUT + BRG["H"] - SHAFT_X0
+DRIVE_EXTRA = 20.0                               # drive shaft's stub into the coupling
+
+
+def bracket(corner, n1, n2) -> np.ndarray:
+    """Corner bracket: leg on the surface with outward normal n1, the other
+    leg against the surface with outward normal n2, at the corner point."""
+    n1, n2 = np.asarray(n1, float), np.asarray(n2, float)
+    return T(cols(n2, np.cross(n1, n2), n1), corner)
 
 
 def placements(tilt_deg: float = 0.0) -> list[Placement]:
     out: list[Placement] = []
     add = out.append
-    z_rail = -DECK_T - EXT / 2
+    zr0, zr1 = Z_BASE, Z_BASE + EXT                       # base rails
+    zt0, zt1 = Z_TOP_RAIL, Z_TOP_RAIL + EXT               # top rails
+    L_x, L_y = RAIL_X1 - RAIL_X0, 2 * POST_Y - EXT        # rails along x run full length; along y fit between
+    L_post = zt0 - zr1
 
-    # 1. frame
-    L_long, L_cross = RAIL_L, 2 * RAIL_Y - EXT
+    # 1. base frame
     for sy in (-1, 1):
-        add(Placement("ext_long", f"Long rail {'front' if sy < 0 else 'back'}",
-                      T(Ry(math.pi / 2), (-L_long / 2, sy * RAIL_Y, z_rail)), 1, ALU, "frame", (0, sy * 60, -40)))
-    for i, x in enumerate(cross_x()):
-        add(Placement("ext_cross", f"Cross member {i + 1}", T(Rx(-math.pi / 2), (x, -L_cross / 2, z_rail)), 1, ALU,
-                      "frame", (0, 0, -80)))
-        for sy in (-1, 1):
-            sides = CROSS_BRACKET_SIDES.get(x, (-1, 1) if abs(x) < RAIL_L / 2 - 20 else (-int(np.sign(x)),))
-            for sx in sides:
-                # inside corner between this cross member and a rail: one leg on the
-                # rail's inner face, the other on the cross member's side face
-                Rb = np.array([[sx, 0, 0], [0, 0, -sy], [0, sx * sy, 0]], float)
-                add(Placement("corner_bracket", f"Corner bracket {i + 1}{'FB'[sy > 0]}{'LR'[sx > 0]}",
-                              T(Rb, (x + sx * EXT / 2, sy * (RAIL_Y - EXT / 2), z_rail)), 1, ALU, "frame", (0, 0, -120)))
-    # 2. legs + feet: each leg hangs under a rail end on two corner brackets,
-    # one to the rail's underside, one to the end cross member's underside
+        add(Placement("ext_x", f"Base rail {'-y' if sy < 0 else '+y'}", T(Ry(math.pi / 2), (RAIL_X0, sy * POST_Y, (zr0 + zr1) / 2)),
+                      1, ALU, "frame", (0, sy * 40, -40)))
+    for xp in X_POST:
+        add(Placement("ext_y", f"Base cross rail {'front' if xp < 0 else 'back'}",
+                      T(Rx(-math.pi / 2), (xp, -L_y / 2, (zr0 + zr1) / 2)), 1, ALU, "frame", (0, 0, -60)))
     for sx in (-1, 1):
         for sy in (-1, 1):
-            x, y = sx * (L_long / 2 - EXT / 2), sy * RAIL_Y
-            zt = -DECK_T - EXT
-            add(Placement("ext_leg", "Leg", T(None, (x, y, zt - LEG_L)), 2, ALU, "frame", (0, 0, -150)))
-            add(Placement("foot", "Leveling foot", T(None, (x, y, zt - LEG_L - 20)), 2, DARK, "frame", (0, 0, -200)))
-            Ra = np.array([[-sx, 0, 0], [0, sx, 0], [0, 0, -1]], float)
-            add(Placement("corner_bracket", "Leg bracket (rail)", T(Ra, (x - sx * EXT / 2, y, zt)), 2, ALU, "frame",
-                          (0, 0, -150)))
-            Rc = np.array([[0, -sy, 0], [-sy, 0, 0], [0, 0, -1]], float)
-            add(Placement("corner_bracket", "Leg bracket (cross member)", T(Rc, (x, y - sy * EXT / 2, zt)), 2, ALU,
-                          "frame", (0, 0, -150)))
-    # 3. motor + plate (plate under the deck, motor under the plate)
-    z_plate = -DECK_T - MOTOR_PLATE_T
-    add(Placement("motor_plate", "Motor plate", T(None, (X_DRIVE, 0, z_plate)), 3, ALU, "drive", (0, 0, -120)))
-    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(None, (X_DRIVE, 0, z_plate)), 3, DARK, "drive", (0, 0, -140)))
-    for sx in (-1, 1):
+            add(Placement("foot", "Leveling foot", T(None, (sx * (L_x / 2 - 15) + (RAIL_X0 + RAIL_X1) / 2, sy * POST_Y, 0.0)),
+                          1, DARK, "frame", (0, 0, -80)))
+            add(Placement("tnut_m5", "T-nut (foot)", T(Rx(math.pi), (sx * (L_x / 2 - 15) + (RAIL_X0 + RAIL_X1) / 2, sy * POST_Y,
+                                                                    zr0 + 2.2)), 1, STEEL, "frame", (0, 0, -80)))
+    # 2. posts and top frame
+    for xp in X_POST:
         for sy in (-1, 1):
-            add(Placement("m5x18_shcs", "Motor screw M5x18", T(Rx(math.pi), (X_DRIVE + sx * M34_BOLT_SQ / 2, sy * M34_BOLT_SQ / 2,
-                                                                          z_plate - 12)), 3, DARK, "drive", (0, 0, -190)))
-    # 4. deck (+ the motor plate's countersunk screws)
-    add(Placement("deck_left", "Deck, idler half (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
-    add(Placement("deck_right", "Deck, drive half (1/2in HDPE)", T(), 4, HDPE, "deck", (0, 0, 120)))
-    for kind, (x, y), size in deck_holes():
-        if kind == "csk":
-            plate = abs(abs(x - X_DRIVE) - (MOTOR_PLATE / 2 - 10)) < 1 and abs(abs(y) - (MOTOR_PLATE / 2 - 10)) < 1
-            clamp = abs(x - (X_IDLER - 22.0)) < 1 and abs(abs(y) - 18.0) < 1
-            if clamp:
-                continue                                    # placed with the idler (step 5)
-            add(Placement("m5x25_fhcs" if plate else "m5x18_fhcs", "Motor plate screw" if plate else "Deck screw",
-                          T(None, (x, y, 0)), 4, DARK, "deck", (0, 0, 160)))
-            if plate:
-                add(Placement("nut_m5", "Motor plate nut", T(None, (x, y, -DECK_T - MOTOR_PLATE_T - 4)), 4, STEEL, "deck",
-                              (0, 0, -60)))
-            else:
-                add(Placement("tnut_m5", "T-nut", T(Rx(math.pi), (x, y, -DECK_T - 2.2)), 4, STEEL, "deck", (0, 0, 100)))
-    # 5. idler: slider and jack block under the deck, idler on a spacer above
-    xi = X_IDLER
-    add(Placement("idler_slider", "Idler slider (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, -70)))
-    add(Placement("idler_stud", "Idler stud 1/2-13 x 2-1/2", T(None, (xi, 0, -DECK_T - 8 - 7.7)), 5, STEEL, "idler", (0, 0, -130)))
-    add(Placement("idler_spacer", "Idler spacer (printed)", T(None, (xi, 0, -DECK_T)), 5, ORANGE, "idler", (0, 0, 40)))
-    add(Placement("sprocket_idler", "Idler sprocket 19T (bearing)", T(Rz(math.pi / 2 - ALPHA / 2), (xi, 0, CHAIN_Z)),
-                  5, STEEL, "idler", (0, 0, 80)))
-    add(Placement("washer_12", "Washer 1/2", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2)), 5, STEEL, "idler", (0, 0, 110)))
-    add(Placement("nut_12", "Nylon-insert locknut 1/2-13", T(None, (xi, 0, CHAIN_Z + IDLER_W / 2 + 2.4)), 5, STEEL, "idler",
-                  (0, 0, 130)))
+            add(Placement("ext_post", "Post", T(None, (xp, sy * POST_Y, zr1)), 2, ALU, "frame", (0, sy * 30, 0)))
+            sx = 1 if xp < 0 else -1           # inner side (toward the loop) along x
+            # post foot: one bracket on the long rail's top (inner x side), one on the cross rail's top (inner y side)
+            add(Placement("corner_bracket", "Corner bracket (post foot)",
+                          bracket((xp + sx * EXT / 2, sy * POST_Y, zr1), (0, 0, 1), (sx, 0, 0)), 2, ALU, "frame", (0, 0, 40)))
+            add(Placement("corner_bracket", "Corner bracket (post foot)",
+                          bracket((xp, sy * (POST_Y - EXT / 2), zr1), (0, 0, 1), (0, -sy, 0)), 2, ALU, "frame", (0, 0, 40)))
+            # post head: the same under the top rails
+            add(Placement("corner_bracket", "Corner bracket (post head)",
+                          bracket((xp + sx * EXT / 2, sy * POST_Y, zt0), (0, 0, -1), (sx, 0, 0)), 2, ALU, "frame", (0, 0, 60)))
+            add(Placement("corner_bracket", "Corner bracket (post head)",
+                          bracket((xp, sy * (POST_Y - EXT / 2), zt0), (0, 0, -1), (0, -sy, 0)), 2, ALU, "frame", (0, 0, 60)))
     for sy in (-1, 1):
-        add(Placement("m5x25_fhcs", "Slider clamp screw", T(None, (xi - 22.0, sy * 18.0, 0)), 5, DARK, "idler", (0, 0, 60)))
-        add(Placement("nut_m5", "Slider clamp nut", T(None, (xi - 22.0, sy * 18.0, -DECK_T - 8 - 4)), 5, STEEL, "idler",
-                      (0, 0, -100)))
-    add(Placement("tensioner_block", "Tensioner block (printed)", T(None, (X_IDLER + 42.0, 0, -DECK_T)), 5, ORANGE, "idler",
-                  (0, 0, -70)))
-    for y in (-9.0, 9.0):
-        add(Placement("m4x20_fhcs", "Tensioner block screw", T(None, (X_IDLER + 42.0, y, 0)), 5, DARK, "idler", (0, 0, 60)))
-    # jack screw: head outboard, tip on the slider's +x face (32 mm from the stud)
-    add(Placement("m5x40_shcs", "Jack screw M5x40", T(Ry(math.pi / 2), (X_IDLER + 72.0, 0, -DECK_T - 5)), 5, DARK, "idler",
-                  (40, 0, -70)))
-    add(Placement("nut_m5", "Jack screw nut", T(Ry(math.pi / 2), (X_IDLER + 46.2, 0, -DECK_T - 5)), 5, STEEL, "idler",
-                  (40, 0, -70)))
-    # 6. drive sprocket
-    add(Placement("sprocket_drive", "Drive sprocket 35B19, 14 mm bore", T(Rz(math.pi / 2), (X_DRIVE, 0, CHAIN_Z)), 6, STEEL,
-                  "drive", (0, 0, 90)))
-    # 7. hall sensors
-    S = station_frame()
-    for x, nm in ((25.0, "index"), (-25.0, "home")):
-        p = to_world(S, (x, CAR_Y0 + 40, 0))
-        add(Placement("hall_holder", f"Hall holder ({nm})", T(None, tuple(p)), 7, ORANGE, "sensors", (0, 0, -60)))
-        add(Placement("a3144", f"A3144 hall sensor ({nm})", T(None, (p[0], p[1], -0.8)), 7, DARK, "sensors", (0, 0, -90)))
-    # 8. chain
+        add(Placement("ext_x", f"Top rail {'-y' if sy < 0 else '+y'}", T(Ry(math.pi / 2), (RAIL_X0, sy * POST_Y, (zt0 + zt1) / 2)),
+                      2, ALU, "frame", (0, sy * 30, 80)))
+    for xp in X_POST:
+        add(Placement("ext_y", f"Top cross rail {'front' if xp < 0 else 'back'}",
+                      T(Rx(-math.pi / 2), (xp, -L_y / 2, (zt0 + zt1) / 2)), 2, ALU, "frame", (0, 0, 80)))
+    # 3. side plates (front: inner face at x = -30; back: at x = L + 30), screwed to the posts
+    Rside = cols((0, 1, 0), (0, 0, 1), (1, 0, 0))          # plate x -> world y, y -> z, z -> x
+    add(Placement("side_plate_front", "Side plate, front (1/4in 6061)", T(Rside, (-SIDE_GAP, 0, 0)), 3, PLATE_ALU, "plates",
+                  (-70, 0, 0)))
+    add(Placement("side_plate_back", "Side plate, back (1/4in 6061)", T(Rside, (CHAIN_L + SIDE_GAP, 0, 0)), 3, PLATE_ALU,
+                  "plates", (70, 0, 0)))
+    for back in (False, True):
+        xi = CHAIN_L + SIDE_GAP if back else -SIDE_GAP     # inner face
+        sgn = 1 if back else -1                            # outward
+        for kind, (y, z), size in side_holes(back):
+            if kind == "circle" and abs(abs(y) - POST_Y) < 0.1:
+                # M5 button head on the plate's inner face, into a T-nut in the post's slot
+                add(Placement("m5x12_bhcs", "Side plate screw M5x12", T(Ry(-sgn * math.pi / 2), (xi, y, z)), 3, DARK, "plates",
+                              (sgn * 90, 0, 0)))
+                add(Placement("tnut_m5", "T-nut (side plate)", T(Ry(sgn * math.pi / 2), (xi + sgn * (PLATE_T_SIDE + 2.2), y, z)),
+                              3, STEEL, "plates", (sgn * 110, 0, 0)))
+    # 4. bearings, shafts, tensioners
+    for back in (False, True):
+        xo = X_BACK_OUT if back else X_FRONT_OUT
+        Rb = cols((0, 1, 0), (0, 0, 1), (1, 0, 0)) if back else cols((0, -1, 0), (0, 0, 1), (-1, 0, 0))
+        sgn = 1 if back else -1
+        for name, (y, z) in CORNERS.items():
+            add(Placement("flange_bearing", f"Flange bearing {name} {'back' if back else 'front'}", T(Rb, (xo, y, z)), 4, CAST,
+                          "bearings", (sgn * 60, 0, 0)))
+            for dz in (-BRG["J"] / 2, BRG["J"] / 2):
+                add(Placement("bolt_m10x30", "Bearing bolt M10x30", T(Ry(sgn * math.pi / 2), (xo + sgn * BRG["T"], y, z + dz)), 4,
+                              DARK, "bearings", (sgn * 90, 0, 0)))
+                add(Placement("nut_m10", "Bearing nut M10 (nylock)", T(Ry(sgn * math.pi / 2),
+                                                                      (xo - sgn * (PLATE_T_SIDE + 8.0), y, z + dz)), 4, STEEL,
+                              "bearings", (-sgn * 40, 0, 0)))
+            if name.startswith("T"):
+                Rt = cols((0, 1, 0), (0, 0, 1), (1, 0, 0)) if back else cols((0, -1, 0), (0, 0, 1), (-1, 0, 0))
+                zb = z - BRG["J"] / 2 - 13.0 - 6.0                       # block's top: 6 mm under the bearing's lower lobe
+                add(Placement("tensioner_block", f"Tensioner block {name} {'back' if back else 'front'} (printed)",
+                              T(Rt, (xo, y, zb)), 4, ORANGE, "bearings", (sgn * 40, 0, -20)))
+                for dy in (-10.0, 10.0):
+                    add(Placement("m5x10_shcs", "Tensioner block screw M5x10", T(Ry(sgn * math.pi / 2), (xo + sgn * 4.0, y + dy, zb - 12)),
+                                  4, DARK, "bearings", (sgn * 70, 0, -20)))
+                xs = xo + sgn * 7.0
+                add(Placement("m5x30_shcs", "Jack screw M5x30", T(cols((0, 1, 0), (1, 0, 0), (0, 0, -1)), (xs, y, z - BRG["J"] / 2 - 13.0 - 30.0)),
+                              4, DARK, "bearings", (sgn * 40, 0, -50)))
+                add(Placement("nut_m5", "Jack screw nut", T(None, (xs, y, zb - 8.4)), 4, STEEL, "bearings", (sgn * 40, 0, -20)))
+    for name, (y, z) in CORNERS.items():
+        key = "shaft_drive" if name == DRIVE else "shaft"
+        add(Placement(key, f"Shaft {name} (1/2in)", T(Ry(math.pi / 2), (SHAFT_X0, y, z)), 4, STEEL, "shafts", (0, 0, 0)))
+    # 5. sprockets: hub outward; any multiple of 11.25 deg puts a tooth gap on every pin
+    for name, (y, z) in CORNERS.items():
+        add(Placement("sprocket_32", f"Sprocket 35B32 {name} front", T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (0.0, y, z)), 5, STEEL,
+                      "sprockets", (60, 0, 0)))
+        add(Placement("sprocket_32", f"Sprocket 35B32 {name} back", T(cols((0, 1, 0), (0, 0, -1), (-1, 0, 0)), (CHAIN_L, y, z)), 5,
+                      STEEL, "sprockets", (-60, 0, 0)))
+    # 6. motor on standoffs behind the back plate, coaxial with the drive shaft
+    y, z = CORNERS[DRIVE]
+    x_c0 = X_BACK_OUT + BRG["H"] + 1.0
+    x_face = X_BACK_OUT + STANDOFF_L                        # motor shaft MOTOR_SHAFT_IN into the coupling's 14 mm side
+    for dy in (-1, 1):
+        for dz in (-1, 1):
+            p = (y + dy * M34_BOLT_SQ / 2, z + dz * M34_BOLT_SQ / 2)
+            add(Placement("standoff", "Standoff M5 hex", T(Ry(math.pi / 2), (X_BACK_OUT, *p)), 6, ALU, "drive", (60, 0, 0)))
+            add(Placement("m5x12_shcs", "Standoff screw M5x12 (plate)", T(Ry(-math.pi / 2), (CHAIN_L + SIDE_GAP, *p)), 6, DARK,
+                          "drive", (-30, 0, 0)))
+            add(Placement("m5x20_shcs", "Motor screw M5x20", T(Ry(math.pi / 2), (x_face + 12.0, *p)), 6, DARK, "drive", (140, 0, 0)))
+    add(Placement("coupling", "Jaw coupling 14 mm - 1/2in", T(Ry(math.pi / 2), (x_c0, y, z)), 6, ALU, "drive", (70, 0, 0)))
+    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(cols((0, 1, 0), (0, 0, -1), (-1, 0, 0)), (x_face, y, z)), 6, DARK,
+                  "drive", (130, 0, 0)))
+    # 7. chains: every 8th link an A-1 attachment connecting link, same links on both chains
     cl = set(carriage_links())
-    for i in range(N_LINKS):
-        M = link_frame(i)
-        if i in cl:
-            add(Placement("chain_a1", "A-1 attachment connecting link", M, 8, STEEL, "chain", (0, 0, 40)))
-        elif i % 2 == 0:
-            add(Placement("chain_outer", "Outer link", M, 8, STEEL, "chain", (0, 0, 40)))
-        else:
-            add(Placement("chain_inner", "Inner link", M, 8, STEEL, "chain", (0, 0, 40)))
-    # 9. carriages
+    for back in (False, True):
+        for i in range(N_LINKS):
+            M = link_frame(i, back)
+            ex = (60 if not back else -60, 0, 0)
+            if i in cl:
+                add(Placement("chain_a1", f"A-1 attachment connecting link ({'back' if back else 'front'})", M, 7, STEEL, "chain", ex))
+            elif i % 2 == 0:
+                add(Placement("chain_outer", "Outer link", M, 7, STEEL, "chain", ex))
+            else:
+                add(Placement("chain_inner", "Inner link", M, 7, STEEL, "chain", ex))
+    # 8. carriages
     for k, li in enumerate(carriage_links()):
-        Mc = link_frame(li, 0.0)
-        add(Placement("carriage", f"Carriage {k + 1}", Mc, 9, PETG, "carriages", (0, 0, 70)))
-        tab_z = CHAIN_Z + A1_HOLE_C
-        add(Placement("m25x8_bhcs", f"Carriage screw {k + 1}", Mc @ T(Rx(math.pi / 2), (0, A1_C - PLATE_T, tab_z)), 9, DARK,
-                      "carriages", (0, 0, 70)))
-        add(Placement("insert_m25", f"Heat-set insert {k + 1}", Mc @ T(Rx(-math.pi / 2), (0, CAR_Y0, tab_z)), 9, BRASS,
-                      "carriages", (0, 0, 70)))
-        add(Placement("magnet", f"Index magnet {k + 1}", Mc @ T(None, (25, CAR_Y0 + 40, 0.2)), 9, STEEL, "carriages", (0, 0, 70)))
+        C = carriage_frame(li)
+        out_dir = tuple(-C[:3, 1] * 60)                    # lift outward, away from the loop
+        add(Placement("carriage", f"Carriage {k + 1}", C, 8, PETG, "carriages", out_dir))
+        for xa in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
+            add(Placement("m25x6_bhcs", f"Carriage screw {k + 1}", C @ T(Rx(-math.pi / 2), (0, CAR_W0 + PLATE_T, xa)), 8, DARK,
+                          "carriages", out_dir))
+            add(Placement("insert_m25", f"Heat-set insert {k + 1}", C @ T(Rx(math.pi / 2), (0, CAR_W0, xa)), 8, BRASS, "carriages",
+                          out_dir))
+        mz = CAR_W0 - 0.3 - MAGNET_H
+        add(Placement("magnet", f"Index magnet {k + 1}", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X0 + 7.0)), 8, STEEL, "carriages", out_dir))
         if k == 0:
-            add(Placement("magnet", "Home magnet", Mc @ T(None, (-25, CAR_Y0 + 40, 0.2)), 9, STEEL, "carriages", (0, 0, 70)))
-    # 10. hold-downs
-    for x in (-31.0, 31.0):
-        add(Placement("hold_down", "Hold-down block (printed)", S @ T(None, (x, 0, 0)), 10, ORANGE, "station", (0, -40, 50)))
-        for dx in (-12.0, 12.0):
-            p = to_world(S, (x + dx, CAR_Y0 + CAR_L - 1 + HD_HOLE_DY, CAR_SKID + TONGUE[1] + 2.5))
-            add(Placement("m4x25_shcs", "Hold-down screw M4x25", T(None, tuple(p)), 10, DARK, "station", (0, -40, 80)))
-            add(Placement("tnut_m4", "Hold-down T-nut M4", T(Rx(math.pi), (p[0], p[1], -DECK_T - 2.2)), 10, STEEL, "station",
-                          (0, -40, -40)))
-    # 11. module 1 on carriage 1
-    Ms = sam_frame(link_frame(CARRIAGE_LINK0, 0.0), tilt_deg)
-    add(Placement("sam_mounting_plate", "Mounting plate (Sam, Oct 8)", Ms, 11, SAM, "module", (0, 0, 120)))
-    Ma = Ms @ T(Ry(math.pi / 2), (AUGER_Z0_XS, 0, 0))                    # auger +z along Sam's +x
-    add(Placement("auger", "Auger, threaded storage (lab)", Ma, 11, WHITE, "module", (0, 0, 160)))
-    add(Placement("auger_cap", "Auger cap (lab)", Ma @ T(None, (0, 0, 250.0)), 11, WHITE, "module", (0, 0, 160)))
-    for sx in (-1, 1):    # one short pin per side: a through pin would cross the auger's outlet end
-        Mp = link_frame(CARRIAGE_LINK0, 0.0) @ T(Ry(sx * math.pi / 2), (sx * (LUG_X + LUG_T / 2), HINGE_Y, HINGE_Z))
-        add(Placement("m5x18_shcs", "Hinge pin M5x18", Mp, 11, DARK, "module", (sx * 60, 0, 120)))
-    # 12. electronics board beside the rig (on the bench, in front of the drive end)
-    zb = -DECK_T - EXT - LEG_L - 20 - 8
-    bx, by = DECK_L / 2 + 260, -120.0
-    add(Placement("board_panel", "Electronics board (1/4in plywood)", T(None, (bx, by, zb)), 12, (0.80, 0.68, 0.48), "elec", (0, -80, 0)))
-    add(Placement("lrs350", "Mean Well LRS-350-36", T(None, (bx - 90, by + 70, zb + 6.35)), 12, ALU, "elec", (0, -80, 60)))
-    add(Placement("cl86t", "CL86T closed-loop driver", T(None, (bx + 105, by + 55, zb + 6.35)), 12, DARK, "elec", (0, -80, 60)))
-    add(Placement("raspberry_pi", "Raspberry Pi", T(None, (bx - 120, by - 85, zb + 6.35 + 6)), 12, GREEN, "elec", (0, -80, 60)))
-    add(Placement("perfboard", "Interface board (ULN2803A, pull-ups)", T(None, (bx - 20, by - 85, zb + 6.35 + 6)), 12, GREEN,
-                  "elec", (0, -80, 60)))
-    add(Placement("estop", "E-stop", T(None, (bx + 150, by - 90, zb + 6.35)), 12, RED, "elec", (0, -80, 60)))
+            add(Placement("magnet", "Home magnet", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X1 - 7.0)), 8, STEEL, "carriages", out_dir))
+    # 9. station: hold-downs over both tongues, hall switches in their lips
+    S = station_frame()
+    HDf = T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (-SIDE_GAP, STATION_Y, Z_RUN))
+    HDb = T(cols((0, -1, 0), (0, 0, 1), (-1, 0, 0)), (CHAIN_L + SIDE_GAP, STATION_Y, Z_RUN))
+    tz = CAR_W0 + HOLD_DOWN_GAP
+    zc = SIDE_GAP + CAR_X0 + 7.0
+    Rsw = cols((1, 0, 0), (0, 0, -1), (0, 1, 0))
+    for HD, nm, sgn in ((HDf, "front, INDEX", -1), (HDb, "back, HOME", 1)):
+        add(Placement("hold_down", f"Hold-down ({nm.split(',')[0]}, printed)", HD, 9, ORANGE, "station", (0, 0, 60)))
+        add(Placement("hall_switch", f"Hall switch US5881 ({nm.split(', ')[1]})", HD @ T(Rsw, (0, tz + 0.8, zc)), 9, DARK, "station",
+                      (0, 0, 90)))
+        for dy in (-12.0, 12.0):
+            p = to_world(HD, (dy, CAR_W0 - CAR_T - 2.0 - 11.0, 0.0))
+            xo = X_BACK_OUT if sgn > 0 else X_FRONT_OUT
+            add(Placement("m5x16_shcs", "Hold-down screw M5x16", T(Ry(sgn * math.pi / 2), (xo, p[1], p[2])), 9, DARK, "station",
+                          (sgn * 60, 0, 0)))
+            add(Placement("insert_m5", "M5 heat-set insert (hold-down)", HD @ T(None, (dy, CAR_W0 - CAR_T - 2.0 - 11.0, 0.0)), 9, BRASS,
+                          "station", (0, 0, 60)))
+    # 10. modules: module 1 is the lab's (real auger); 2-12 carry a printed auger blank
+    for k, li in enumerate(carriage_links()):
+        C = carriage_frame(li)
+        Ms = sam_frame(C, tilt_deg if k == 0 else 0.0)
+        out_dir = tuple(C[:3, 1] * 80)                     # lift inward
+        add(Placement("sam_mounting_plate", f"Mounting plate (Sam, Oct 8) {k + 1}", Ms, 10, SAM, "modules", out_dir))
+        Ma = Ms @ T(Ry(math.pi / 2), (AUGER_Z0_XS, 0, 0))
+        if k == 0:
+            add(Placement("auger", "Auger, threaded storage (lab) 1", Ma, 10, WHITE, "modules", out_dir))
+        else:
+            add(Placement("auger_blank", f"Auger blank (printed) {k + 1}", Ma, 10, BLANK, "modules", out_dir))
+        add(Placement("auger_cap", f"Auger cap (lab) {k + 1}", Ma @ T(None, (0, 0, AUGER_LEN)), 10, WHITE, "modules", out_dir))
+        for su in (-1, 1):
+            add(Placement("m5x12_bhcs", f"Hinge pin M5x12 {k + 1}", C @ T(Ry(su * math.pi / 2), (su * (CAR_W / 2 - 3.0), HINGE_W, HINGE_X)),
+                          10, DARK, "modules", out_dir))
+        if k == 0:
+            add(Placement("sam_electronics_carriage", "Electronics carriage (Sam, Oct 8), docked at the station",
+                          sam_frame(C, tilt_deg), 10, (0.20, 0.45, 0.95), "modules", (0, 0, -90)))
+    # 11. electronics board beside the rig (on the bench, behind it on the +y side)
+    bx, by = CHAIN_L + 330.0, 260.0
+    add(Placement("board_panel", "Electronics board (1/4in plywood)", T(None, (bx, by, 0.0)), 11, (0.80, 0.68, 0.48), "elec", (0, 80, 0)))
+    add(Placement("lrs350", "Mean Well LRS-350-48", T(None, (bx - 90, by + 70, 6.35)), 11, ALU, "elec", (0, 80, 60)))
+    add(Placement("cl86t", "CL86T closed-loop driver", T(None, (bx + 105, by + 55, 6.35)), 11, DARK, "elec", (0, 80, 60)))
+    add(Placement("raspberry_pi", "Raspberry Pi", T(None, (bx - 120, by - 85, 6.35 + 6)), 11, GREEN, "elec", (0, 80, 60)))
+    add(Placement("perfboard", "Interface board (74AHCT125, pull-ups)", T(None, (bx - 20, by - 85, 6.35 + 6)), 11, GREEN, "elec",
+                  (0, 80, 60)))
+    add(Placement("estop", "E-stop", T(None, (bx + 150, by - 90, 6.35)), 11, RED, "elec", (0, 80, 60)))
     return out
 
 
 BUILDERS = {
-    "ext_long": lambda: PT.extrusion_2020(RAIL_L),
-    "ext_cross": lambda: PT.extrusion_2020(2 * RAIL_Y - EXT),
-    "ext_leg": lambda: PT.extrusion_2020(LEG_L),
+    "ext_x": lambda: PT.extrusion_2020(RAIL_X1 - RAIL_X0),
+    "ext_y": lambda: PT.extrusion_2020(2 * POST_Y - EXT),
+    "ext_post": lambda: PT.extrusion_2020(Z_TOP_RAIL - Z_BASE - EXT),
     "corner_bracket": PT.corner_bracket,
     "foot": PT.leveling_foot,
-    "motor_plate": PT.motor_plate,
-    "nema34": PT.nema34,
-    "deck": deck_part,
-    "deck_left": lambda: deck_half(-1),
-    "deck_right": lambda: deck_half(1),
-    "idler_slider": PT.idler_slider,
-    "idler_stud": lambda: PT.idler_stud(12.7, 63.5, 19.05),
-    "idler_spacer": lambda: PT.washer(20.0, 13.2, DECK_T + CHAIN_Z - IDLER_W / 2),
-    "sprocket_idler": PT.sprocket_idler,
-    "washer_12": lambda: PT.washer(27.0, 13.5, 2.4),
-    "nut_12": lambda: PT.nut_imperial(12.7, 19.05, 15.1),
-    "nut_m5": lambda: PT.hexnut(5),
-    "m4x20_fhcs": lambda: PT.shcs(4, 20, "flat"),
-    "tnut_m4": PT.tnut_m5,
+    "side_plate_front": lambda: side_plate_part(False),
+    "side_plate_back": lambda: side_plate_part(True),
+    "flange_bearing": PT.flange_bearing,
+    "shaft": lambda: PT.shaft(SHAFT_L),
+    "shaft_drive": lambda: PT.shaft(SHAFT_L + DRIVE_EXTRA),
     "tensioner_block": PT.tensioner_block,
-    "sprocket_drive": PT.sprocket_drive,
-    "hall_holder": PT.hall_holder,
-    "a3144": PT.a3144,
+    "sprocket_32": PT.sprocket_32,
+    "standoff": PT.standoff,
+    "coupling": PT.coupling,
+    "nema34": PT.nema34,
     "chain_a1": PT.chain_a1_link,
     "chain_outer": PT.chain_outer_link,
     "chain_inner": PT.chain_inner_link,
     "carriage": PT.carriage,
     "insert_m25": PT.heat_insert_m25,
+    "insert_m5": lambda: cq.Workplane("XY").circle(3.5).circle(2.5).extrude(7.0),
     "magnet": PT.magnet,
     "hold_down": PT.hold_down,
-    "m25x8_bhcs": lambda: PT.shcs(2.5, 8, "button"),
-    "m4x25_shcs": lambda: PT.shcs(4, 25),
-    "m5x18_shcs": lambda: PT.shcs(5, 18),
-    "m5x18_fhcs": lambda: PT.shcs(5, 18, "flat"),
-    "m5x25_fhcs": lambda: PT.shcs(5, 25, "flat"),
-    "m5x40_shcs": lambda: PT.shcs(5, 40),
+    "hall_switch": PT.hall_switch,
+    "auger_blank": PT.auger_blank,
+    "m25x6_bhcs": lambda: PT.shcs(2.5, 6, "button"),
+    "m5x12_bhcs": lambda: PT.shcs(5, 12, "button"),
+    "m5x12_shcs": lambda: PT.shcs(5, 12),
+    "m5x16_shcs": lambda: PT.shcs(5, 16),
+    "m5x20_shcs": lambda: PT.shcs(5, 20),
+    "m5x30_shcs": lambda: PT.shcs(5, 30),
+    "bolt_m10x30": lambda: PT.shcs(10, 30),
+    "m5x10_shcs": lambda: PT.shcs(5, 10),
+    "nut_m10": lambda: PT.hexnut(10),
+    "nut_m5": lambda: PT.hexnut(5),
     "tnut_m5": PT.tnut_m5,
     "board_panel": PT.board_panel,
     "lrs350": PT.lrs350,
@@ -488,9 +544,9 @@ def moved(key: str, M: np.ndarray) -> cq.Shape:
 
 if __name__ == "__main__":
     p = chain_pins()
-    print("C =", round(C, 3), "mm; pins:", len(p), "; carriage links:", carriage_links())
-    S = station_frame()
-    print("station frame origin", np.round(S[:3, 3], 2), "x-axis", np.round(S[:3, 0], 3))
+    print("pins:", len(p), "; carriage links:", carriage_links(), "; station y =", round(STATION_Y, 2))
+    print("loop pitch-line box: y +-%.1f, z %.1f-%.1f" % (LOOP_Y + R, Z_BOT - R, Z_TOP + R))
+    print("shaft clearance to the gear: %.2f mm" % SHAFT_CLEAR)
     pl = placements()
     from collections import Counter
-    print(len(pl), "placements;", Counter(x.key for x in pl).most_common(12))
+    print(len(pl), "placements;", Counter(x.key for x in pl).most_common(14))
