@@ -21,15 +21,16 @@ import numpy as np
 import layout as L
 
 SKIP = {("chain_inner", "chain_outer"), ("chain_a1", "chain_inner"), ("auger", "auger_cap"), ("auger_blank", "auger_cap"),
-        ("carriage", "insert_m25"), ("insert_m25", "m25x6_bhcs"), ("carriage", "m25x6_bhcs"),
+        ("carriage", "insert_m3"), ("insert_m3", "m3x6_bhcs"), ("carriage", "m3x6_bhcs"),
         ("m5x10_fhcs", "sam_mounting_plate"),                       # hinge pin in Sam's knuckle
         ("m5x12_bhcs", "tnut_m5"), ("ext_post", "tnut_m5"), ("ext_x", "tnut_m5"), ("ext_post", "m5x12_bhcs"),
-        ("bolt_m10x30", "nut_m10"), ("coupling", "nema34"), ("m5x12_shcs", "standoff"), ("m5x20_shcs", "standoff"),
+        ("bolt_m6x25", "nut_m6"), ("m5x25_shcs", "nut_m5"), ("nema34", "sprocket_15_motor"),   # key in its keyway
+        ("nema34", "nut_m5"),                                       # the modelled body's corner chamfer is a little full
         ("m5x30_shcs", "nut_m5"), ("m5x10_shcs", "side_plate_front"), ("m5x10_shcs", "side_plate_back"),
         ("hold_down", "insert_m5"), ("insert_m5", "m5x16_shcs"), ("foot", "tnut_m5"), ("ext_x", "foot")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
 
-MOVING = ("carriage", "sam_mounting_plate", "auger", "auger_blank", "auger_cap", "m5x10_fhcs", "m25x6_bhcs", "insert_m25",
+MOVING = ("carriage", "sam_mounting_plate", "auger", "auger_blank", "auger_cap", "m5x10_fhcs", "m3x6_bhcs", "insert_m3",
           "magnet", "sam_electronics_carriage")
 
 

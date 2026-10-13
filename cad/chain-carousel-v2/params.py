@@ -32,19 +32,19 @@ OUTER_GAP = INNER_W + 0.05                 # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T          # 9.91
 PIN_LEN = OUTER_W + 2 * PIN_HEAD
 
-# A-1 attachment connecting link (bent tab, one hole), from Tsubaki's RS35
-# A-1 table: S = 0.250 in pitch line -> tab face, C = 0.375 in chain centre
-# plane -> hole, X = 0.563 in -> tab end, N = 0.311 in tab width, hole
-# 0.102 in (Red Boar's is 0.10 in: M2.5). With the chain in a vertical plane
+# A-1 attachment connecting link (bent tab, one hole): Nitro CL35-A1, which
+# matches Tsubaki's RS35 A-1 table: S = 0.250 in pitch line -> tab face,
+# C = 0.375 in chain centre plane -> hole, X = 0.562 in -> tab end, N = 0.312
+# in tab width, hole 0.133 in (M3; Red Boar's is 0.10 in). With the chain in a vertical plane
 # the tab lies along the pins, on the outside of the loop, and its hole is
 # radial: vertical at the station, square to the augers and to the travel.
 A1_C = 6.35          # S: pitch line -> tab mounting face (radially outward)
-A1_HOLE_D = 2.6
+A1_HOLE_D = 3.38
 A1_TAB_L = 7.9       # N
 A1_HOLE_C = 9.525    # C, from the chain centre plane toward the modules
 A1_X = 14.3          # X, tab end from the chain centre plane
 
-# --- 32T ANSI 35 sprockets, type B (hub one side) ---
+# --- 32T ANSI 35 sprockets, type B (hub one side): 35BS32-5/8, Surplus Center 601139 ---
 # 32 teeth: four 90-degree wraps of exactly 8 links each, and a pitch radius
 # big enough that the auger's 44T gear clears the corner shafts (see SHAFT_CLEAR).
 N_TEETH = 32
@@ -53,9 +53,10 @@ R = PD / 2                                           # 48.57
 OD = P * (0.6 + 1 / math.tan(math.pi / N_TEETH))     # 102.42 outside diameter
 TOOTH_W = 4.27       # 0.168" single-strand #35 tooth
 SEAT_D = 1.005 * BUSH_D + 0.076                      # ANSI seating-curve diameter
-HUB_D = 63.5         # 35B32 hub, 2-1/2 in
-LTB = 25.4           # length through bore, 1 in
-SPROCKET_BORE = 12.7  # 1/2 in finished bore, set screws over a flat
+HUB_D = 50.8         # 2 in hub
+LTB = 22.225         # length through bore, 7/8 in
+SPROCKET_BORE = 15.875  # 5/8 in finished bore, 3/16 x 3/32 in keyway, 2 set screws
+KEYWAY = (4.76, 2.38)
 
 # --- loop: four sprockets on a rectangle, 104 links ---
 LOOP_M, LOOP_N = 12, 24  # links on the bottom/top runs and on each side
@@ -116,16 +117,21 @@ POST_Y = 112.0       # post centres: clear of the bearings and the motor standof
 SIDE_GAP = 30.0      # chain centre plane -> side plate's inner face
 PLATE_T_SIDE = 6.35  # 1/4 in 6061 side plates
 SIDE_W = 2 * POST_Y + EXT                             # 244
-SIDE_Z = (180.0, 555.0)                               # side plate bottom, top
+SIDE_Z = (180.0, 555.0)                               # front side plate bottom, top
+SIDE_Z_BACK = (70.0, 555.0)                           # the back plate runs down to carry the motor
 FOOT_H = 15.0        # leveling foot: bench -> underside of the base rails
 Z_BASE = FOOT_H      # base rails' underside
 Z_TOP_RAIL = 576.0   # top rails' underside, above the side plates and the post-head brackets
 TENSION_TRAVEL = (-6.0, 8.0)  # top shafts' slot travel about nominal: down to fit the chain, up to tension it
+DRIVE_TRAVEL = 4.0   # motor slides +-4 mm in its slots to tension the drive chain
 
 # --- shafts and bearings (all four corners alike) ---
-SHAFT_D = 12.7       # 1/2 in
-BRG = dict(L=113.0, J=90.0, W=60.0, T=11.0, H=33.3, BOSS_D=52.0, BOLT_D=10.0)   # UCFL201-8 envelope
-SHAFT_CLEAR = R - HINGE_W - GEAR_R - SHAFT_D / 2     # 7.6: gear past a corner shaft
+SHAFT_D = 15.875     # 5/8 in keyed shafting (the sprockets' bore)
+# SBSFL202-10 2-bolt stamped-steel flange unit (Surplus Center 600174): 3.189 x
+# 2.3125 x 0.875 in, 2-1/2 in bolt centres, 1/4 in bolts, 7/8 in through the
+# insert. Its rear dome sits in a 49 mm hole in the plate (FYH catalogue).
+BRG = dict(L=81.0, W=58.7, J=63.5, T=3.0, OUT=12.6, IN=9.6, DOME_D=47.0, RING_D=24.0, BOLT_D=6.35, HOLE=49.0)
+SHAFT_CLEAR = R - HINGE_W - GEAR_R - SHAFT_D / 2     # 6.0: gear past a corner shaft
 
 # --- StepperOnline 34HS59-6004D-E1000 (NEMA 34, 12 N*m, 1000-line encoder) ---
 M34_FLANGE = 86.0
@@ -138,9 +144,17 @@ M34_SHAFT_L = 37.0   # 25 mm of it keyed
 M34_KEY_W = 5.0
 M34_BODY_L = 150.0
 M34_ENC_L = 19.0
-COUPLING = dict(D=30.0, L=40.0)                      # jaw coupling 14 mm <-> 1/2 in
-MOTOR_SHAFT_IN = 17.0  # motor shaft's engagement in the coupling
-STANDOFF_L = BRG["H"] + 1.0 + COUPLING["L"] + M34_SHAFT_L - MOTOR_SHAFT_IN   # 94.3: side plate -> motor flange
+
+# --- drive: NEMA 34 inside the frame on the back plate, #35 drive chain up to the B+ shaft ---
+# Two 35BS15H sprockets (Surplus Center: 5/8 in keyed on the shaft, 1/2 in
+# re-bored to 14 mm + 5 mm keyway on the motor): 1.99 in OD, 1-11/32 in hub,
+# 3/4 in through the bore. 44 links from the roll's spare, 1:1.
+N15 = 15
+PD15 = P / math.sin(math.pi / N15)                   # 45.81
+HUB15_D, LTB15 = 34.1, 19.05
+DRIVE_LINKS = 44
+C_DRIVE = (DRIVE_LINKS - N15) / 2 * P                # 138.11: closes exactly with 14-link spans (as v1's loop)
+Z_MOTOR = Z_BOT - C_DRIVE                            # 120.46: motor axis, under the B+ shaft
 
 # --- station test fixtures ---
 HOLD_DOWN_GAP = 0.5

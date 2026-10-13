@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig from a Raspberry Pi (issue #128).
+"""Drive and log the chain-carousel test rig v2 from a Raspberry Pi (issue #128).
 
-Hardware (BOM.md items 9, 33-36): CL86T closed-loop driver on step/dir/
-enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to PUL+/DIR+/ENA+, the
-minus terminals to ground), two US5881 hall switches under the deck at the
-station (open drain, 10k pull-ups to 3.3 V): INDEX sees the magnet every
-carriage carries, HOME only carriage 1's second magnet.
+Hardware (see BOM.md): CL86T closed-loop driver on step/dir/enable through a
+74AHCT125 (3.3 V GPIO in, 5 V out to PUL+/DIR+/ENA+, the minus terminals to
+ground), two US5881 hall switches in the station hold-downs (open drain, 10k
+pull-ups to 3.3 V): INDEX, in the front hold-down, sees the magnet in every
+carriage's front tongue; HOME, in the back hold-down, sees only carriage 1's
+back-tongue magnet.
 
-Geometry: one module = 8 pitches = 76.2 mm = 8/19 of a turn of the 19T drive
-sprocket. Targets are absolute step counts, round(k * PPR * 8 / 19), so the
-non-integer steps per module never accumulate (error <= half a step,
-0.02 mm at 4000 pulses/rev).
+Geometry: one module = 8 pitches = 76.2 mm = 8/32 of a turn of the 32T drive
+sprocket, so at 4000 pulses/rev a module is exactly 1000 steps. Targets are
+absolute step counts anyway (round(k * PPR * 8 / 32)), so a different PPR
+setting can't accumulate a rounding error.
 
     sudo pigpiod
     python3 chain_rig.py home
     python3 chain_rig.py index 1                      # one module forward
     python3 chain_rig.py repeat --moves 100 --modules 1 --speed 50 --accel 250
-    python3 chain_rig.py lap                          # 12 modules, log every index edge
+    python3 chain_rig.py lap                          # 13 modules, log every index edge
     python3 chain_rig.py endurance --moves 2000
     python3 chain_rig.py --sim repeat --moves 5       # no hardware: simulated pins
 
@@ -34,10 +35,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 PITCH_MM = 9.525
-TEETH = 19
+TEETH = 32
 MODULE_PITCHES = 8
-N_MODULES = 12
-MM_PER_REV = TEETH * PITCH_MM                      # 180.975
+N_MODULES = 13
+MM_PER_REV = TEETH * PITCH_MM                      # 304.8
 
 # BCM pin numbers (the interface board's screw terminals)
 PIN_STEP, PIN_DIR, PIN_ENA = 17, 27, 22

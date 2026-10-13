@@ -135,29 +135,42 @@ def caption(img: Image.Image, title: str, lines: list[str] = ()) -> Image.Image:
     return out
 
 
+def front_open(p: L.Placement) -> bool:
+    """Hide the front side plate and everything bolted outside it, to look
+    straight at the front chain loop."""
+    return p.key == "side_plate_front" or (p.M[0, 3] < -30.5 and p.key not in ("ext_x", "foot", "board_panel"))
+
+
 HERO = dict(focal=(150, 0, 300), direction=(-0.9, -1.0, 0.55), dist=1750)
 CAMS = {
     "iso": HERO,
-    "back_iso": dict(focal=(200, 0, 290), direction=(1.0, -0.8, 0.5), dist=1850),
-    "front": dict(focal=(150, 0, 330), direction=(-1, 0.0001, 0.0001), dist=1700),
+    "loop": dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1250, hide=front_open),
+    "tilt90": dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1250, hide=front_open, tilt=90.0),
+    "station": dict(focal=(70, 0, 205), direction=(-1.0, -0.65, -0.32), dist=560, hide=front_open),
+    "corner": dict(focal=(60, 60, 250), direction=(-1.0, -0.25, 0.12), dist=440, hide=front_open),
     "side": dict(focal=(250, 0, 300), direction=(0.0001, -1, 0.0001), dist=1900),
-    "station": dict(focal=(60, 0, 200), direction=(-0.75, -1.0, 0.45), dist=620),
-    "corner": dict(focal=(30, 60, 260), direction=(-1.0, -0.35, 0.25), dist=420),
-    "drive": dict(focal=(420, 30, 260), direction=(0.6, -1.0, 0.35), dist=900),
-    "chain_detail": dict(focal=(5, 20, 205), direction=(-0.8, -1.0, -0.35), dist=230),
+    "back_iso": dict(focal=(260, 0, 290), direction=(1.0, -0.8, 0.5), dist=1850),
+    "drive": dict(focal=(420, 40, 260), direction=(0.55, -1.0, 0.35), dist=820),
+    "chain_detail": dict(focal=(4, 10, 204), direction=(-0.75, -1.0, -0.55), dist=210, hide=front_open),
 }
 
 
-def hero_views(view: View, pl, tag=""):
-    view.clear()
-    for p in pl:
-        view.ren.AddActor(actor(p, p.color))
+def hero_views(view: View, tag=""):
     out = {}
+    cache: dict[float, list] = {}
     for name, cam in CAMS.items():
+        cam = dict(cam)
+        hide = cam.pop("hide", None)
+        tilt = cam.pop("tilt", 0.0)
+        if tilt not in cache:
+            cache[tilt] = L.placements(tilt)
+        view.clear()
+        for p in cache[tilt]:
+            if hide is None or not hide(p):
+                view.ren.AddActor(actor(p, p.color))
         view.camera(**cam)
-        img = view.image()
         f = OUT / f"rig_{name}{tag}.png"
-        img.save(f)
+        view.image().save(f)
         out[name] = f
     return out
 
@@ -218,7 +231,7 @@ def main():
         view.camera(**HERO)
         view.image().save(OUT / "rig_iso_quick.png")
         return
-    hero_views(view, pl)
+    hero_views(view)
     import bom
     items = bom.step_lines()
     frames = step_images(view, pl, items)

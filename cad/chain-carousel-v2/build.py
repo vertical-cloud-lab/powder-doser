@@ -1,14 +1,14 @@
-"""Export the chain-carousel test rig.
+"""Export the chain-carousel test rig v2.
 
     python build.py
 
-* step/chain_carousel_rig.step  the whole rig as one STEP assembly: named,
-  coloured instances that share their part definitions (the chain's 84
-  plain links are 2 parts, not 84), so Onshape imports it as one assembly
-  plus one Part Studio per unique part.
+* step/chain_carousel_rig_v2.step  the whole rig as one STEP assembly: named,
+  coloured instances that share their part definitions (the two chains'
+  182 plain links are 2 parts, not 182), so Onshape imports it as one
+  assembly plus one Part Studio per unique part.
 * step/components/<key>.step     every unique part on its own (reference parts: reference/).
 * stl/<part>.stl                 the printed parts, print-ready orientation.
-* dxf/deck.dxf, dxf/motor_plate.dxf  cutting/drilling templates (1:1).
+* dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1).
 * placements.json                every instance: key, name, step, 4x4 transform.
 """
 from __future__ import annotations
@@ -22,7 +22,8 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("carriage", "idler_slider", "tensioner_block", "idler_spacer", "hold_down", "hall_holder")
+PRINTED = ("carriage", "hold_down", "tensioner_block", "auger_blank")
+STEP_FILE = "chain_carousel_rig_v2.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -35,7 +36,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig")
+    asm = cq.Assembly(name="Chain carousel test rig v2")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
@@ -64,23 +65,23 @@ def main() -> None:
         cq.exporters.export(cq.Workplane("XY").add(L.shape(k)), str(HERE / "step" / "components" / f"{k}.step"))
     for k in PRINTED:
         s = L.shape(k)
-        if k == "idler_slider":                     # printed base-down
-            s = s.rotate((0, 0, 0), (1, 0, 0), 0)
+        if k == "carriage":                         # outer face down on the bed
+            s = s.rotate((0, 0, 0), (1, 0, 0), 90)
+        bb = s.BoundingBox()
+        s = s.translate((0, 0, -bb.zmin))
         cq.exporters.export(cq.Workplane("XY").add(s), str(HERE / "stl" / f"{k}.stl"), tolerance=0.02, angularTolerance=0.1)
-    # 1:1 templates: deck (top view) and motor plate
-    for k in ("deck_left", "deck_right"):
-        sec = cq.Workplane("XY").add(L.shape(k)).section(-DECK_T_HALF)
+    # 1:1 drilling templates for the two side plates (outer-face view, world y across, z up)
+    for k, z in (("side_plate_front", -PLATE_T_SIDE / 2), ("side_plate_back", PLATE_T_SIDE / 2)):
+        sec = cq.Workplane("XY").add(L.shape(k)).section(z)
         cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
-    plate = cq.Workplane("XY").add(L.shape("motor_plate")).section(3.0)
-    cq.exporters.export(plate, str(HERE / "dxf" / "motor_plate.dxf"))
     asm = assembly()
-    asm.save(str(HERE / "step" / "chain_carousel_rig.step"), exportType="STEP")
+    asm.save(str(HERE / "step" / STEP_FILE), exportType="STEP")
     pl = [dict(key=p.key, name=p.name, step=p.step, M=np.round(p.M, 6).tolist()) for p in L.placements()]
     (HERE / "placements.json").write_text(json.dumps(pl, indent=0))
     print("exported", len(keys), "unique parts,", len(pl), "instances")
 
 
-DECK_T_HALF = 6.35
+PLATE_T_SIDE = L.PLATE_T_SIDE
 
 if __name__ == "__main__":
     main()

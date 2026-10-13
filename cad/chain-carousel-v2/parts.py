@@ -91,17 +91,34 @@ def _tooth_disc(t: float, n: int = N_TEETH) -> cq.Workplane:
     return disc.cut(gaps)
 
 
-def sprocket_32() -> cq.Workplane:
-    """35B32 (32T, B hub) with a 1/2 in finished bore and two set screws.
-    Tooth ring centred on z = 0, hub toward -z (outward, toward the bearing)."""
-    ring = _tooth_disc(TOOTH_W).translate((0, 0, -TOOTH_W / 2))
-    hub = cq.Workplane("XY").circle(HUB_D / 2).extrude(LTB - TOOTH_W).translate((0, 0, -LTB + TOOTH_W / 2))
+def sprocket(n: int, bore: float, hub_d: float, ltb: float, key: tuple) -> cq.Workplane:
+    """Type B (hub one side) #35 sprocket with a finished bore, keyway and
+    two set screws (one over the keyway, one at 90 deg). Tooth ring centred
+    on z = 0, hub toward -z."""
+    ring = _tooth_disc(TOOTH_W, n).translate((0, 0, -TOOTH_W / 2))
+    hub = cq.Workplane("XY").circle(hub_d / 2).extrude(ltb - TOOTH_W).translate((0, 0, -ltb + TOOTH_W / 2))
     s = ring.union(hub)
-    bore = cq.Workplane("XY").circle(SPROCKET_BORE / 2).extrude(60).translate((0, 0, -30))
-    zs = -LTB + TOOTH_W / 2 + 9
-    setscrews = (cq.Workplane("YZ").center(0, zs).circle(3.0).extrude(40)
-                 .union(cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40)))
-    return s.cut(bore).cut(setscrews)
+    bore_ = cq.Workplane("XY").circle(bore / 2).extrude(60).translate((0, 0, -30))
+    kw = cq.Workplane("XY").center(0, bore / 2).rect(key[0], 2 * key[1]).extrude(60).translate((0, 0, -30))
+    zs = -ltb + TOOTH_W / 2 + (ltb - TOOTH_W) / 2
+    setscrews = (cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40)
+                 .union(cq.Workplane("YZ").center(0, zs).circle(3.0).extrude(40)))
+    return s.cut(bore_).cut(kw).cut(setscrews)
+
+
+def sprocket_32() -> cq.Workplane:
+    """35BS32-5/8: 32T, 2 in hub, 7/8 in through the bore, 5/8 in bore."""
+    return sprocket(N_TEETH, SPROCKET_BORE, HUB_D, LTB, KEYWAY)
+
+
+def sprocket_15_shaft() -> cq.Workplane:
+    """35BS15H-5/8 on the B+ shaft's stub."""
+    return sprocket(N15, SPROCKET_BORE, HUB15_D, LTB15, KEYWAY)
+
+
+def sprocket_15_motor() -> cq.Workplane:
+    """35BS15H-1/2 re-bored to 14 mm with a 5 mm keyway, on the NEMA 34."""
+    return sprocket(N15, M34_SHAFT_D, HUB15_D, LTB15, (5.0, 2.3))
 
 
 # ---------------------------------------------------------------- shafts, bearings, drive
@@ -112,40 +129,23 @@ def shaft(length: float, d: float = SHAFT_D) -> cq.Workplane:
 
 
 def flange_bearing() -> cq.Workplane:
-    """2-bolt rhombic flange unit with a set-screw insert (UCFL201-8
-    envelope). Mounting face at z = 0, body toward +z (away from the plate),
-    bore along z, bolt line along y."""
+    """SBSFL202-10 2-bolt stamped-steel flange unit (envelope). Mounting
+    plane z = 0 (on the plate's outer face), front dome and insert toward +z,
+    rear dome toward -z (into the plate's 49 mm hole), bolt line along y."""
     b = BRG
-    lobe_r = 13.0
-    flange = (cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(lobe_r).extrude(b["T"])
-              .union(cq.Workplane("XY").circle(b["W"] / 2).extrude(b["T"])))
-    # tangent hull between the lobes and the centre circle
-    hull = (cq.Workplane("XY").polyline([(-lobe_r, -b["J"] / 2), (-b["W"] / 2 + 3, -8), (-b["W"] / 2 + 3, 8),
-                                         (-lobe_r, b["J"] / 2), (lobe_r, b["J"] / 2), (b["W"] / 2 - 3, 8),
-                                         (b["W"] / 2 - 3, -8), (lobe_r, -b["J"] / 2)]).close().extrude(b["T"]))
-    flange = flange.union(hull)
-    boss = cq.Workplane("XY").circle(b["BOSS_D"] / 2).extrude(b["H"] - 6)
-    insert = cq.Workplane("XY").circle(14.0).extrude(b["H"])
-    body = flange.union(boss).union(insert)
-    body = body.cut(cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(b["BOLT_D"] / 2 + 0.5)
-                    .extrude(b["T"] + 1).translate((0, 0, -0.5)))
-    return body.cut(cq.Workplane("XY").circle(SHAFT_D / 2).extrude(b["H"] + 2).translate((0, 0, -1)))
-
-
-def coupling() -> cq.Workplane:
-    """Jaw coupling 14 mm <-> 1/2 in (envelope), along +z from z = 0."""
-    c = COUPLING
-    hubs = cq.Workplane("XY").circle(c["D"] / 2).extrude(c["L"])
-    groove = cq.Workplane("XY").circle(c["D"] / 2 + 1).circle(c["D"] / 2 - 1.5).extrude(3).translate((0, 0, c["L"] / 2 - 1.5))
-    bore = cq.Workplane("XY").circle(SHAFT_D / 2).extrude(c["L"] / 2).union(
-        cq.Workplane("XY").circle(M34_SHAFT_D / 2).extrude(c["L"] / 2).translate((0, 0, c["L"] / 2)))
-    return hubs.cut(groove).cut(bore)
-
-
-def standoff(length: float = STANDOFF_L) -> cq.Workplane:
-    """M5 hex standoff, 8 mm across flats, female both ends, along +z."""
-    s = cq.Workplane("XY").polygon(6, 8 / math.cos(math.pi / 6)).extrude(length)
-    return s.cut(cq.Workplane("XY").circle(2.1).extrude(length + 2).translate((0, 0, -1)))
+    lobe_r = 9.0
+    lobes = cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(lobe_r).extrude(b["T"])
+    hull = (cq.Workplane("XY").polyline([(-lobe_r, -b["J"] / 2), (-b["W"] / 2, -6), (-b["W"] / 2, 6), (-lobe_r, b["J"] / 2),
+                                         (lobe_r, b["J"] / 2), (b["W"] / 2, 6), (b["W"] / 2, -6), (lobe_r, -b["J"] / 2)])
+            .close().extrude(b["T"]))
+    flange = lobes.union(hull).union(cq.Workplane("XY").circle(b["W"] / 2 - 4).extrude(b["T"]))
+    front = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(b["OUT"] - 2.0).edges(">Z").chamfer(4)
+    rear = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(-(b["IN"] - 1.0)).edges("<Z").chamfer(4)
+    ring = cq.Workplane("XY").circle(b["RING_D"] / 2).extrude(b["OUT"] + b["IN"]).translate((0, 0, -b["IN"]))
+    body = flange.union(front).union(rear).union(ring)
+    body = body.cut(cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(b["BOLT_D"] / 2 + 0.4)
+                    .extrude(b["T"] + 2).translate((0, 0, -1)))
+    return body.cut(cq.Workplane("XY").circle(SHAFT_D / 2).extrude(b["OUT"] + b["IN"] + 2).translate((0, 0, -b["IN"] - 1)))
 
 
 def nema34() -> cq.Workplane:
@@ -203,7 +203,7 @@ def side_plate(back: bool) -> cq.Workplane:
     y up (world z), plate from z = 0 (inner face) to z = +PLATE_T_SIDE
     (outer face). Holes are added by layout.py (they follow the chain
     solution); this is the blank."""
-    w, z0, z1 = SIDE_W, SIDE_Z[0], SIDE_Z[1]
+    w, (z0, z1) = SIDE_W, (SIDE_Z_BACK if back else SIDE_Z)
     p = (cq.Workplane("XY").center(0, (z0 + z1) / 2).rect(w, z1 - z0).extrude(PLATE_T_SIDE)
          .edges("|Z").fillet(6))
     return p
@@ -212,8 +212,8 @@ def side_plate(back: bool) -> cq.Workplane:
 def tensioner_block() -> cq.Workplane:
     """Printed (PETG) jack block under a top bearing, on the side plate's
     outer face: two M5 screws into the plate, an M5 jack screw (nut trapped)
-    pushing up on the bearing's lower lobe. Frame: x across (world y), y up,
-    back face on z = 0."""
+    pushing up on the underside of the bearing's front dome. Frame: x across
+    (world y), y up, back face on z = 0."""
     b = cq.Workplane("XY").center(0, -9).rect(30, 18).extrude(14).edges("|Z").fillet(2)
     b = b.cut(cq.Workplane("XZ").center(0, 7).circle(2.75).extrude(30))                            # jack screw, along y
     b = b.cut(cq.Workplane("XY").center(0, -6.2).rect(9.6, 4.4).extrude(12.6).translate((0, 0, 1.5)))  # nut slot, open to the front
@@ -229,7 +229,7 @@ def carriage() -> cq.Workplane:
     travel), Y = w (radially inward, into the loop), Z = x (front -> back).
 
     * a 5 mm plate outside both chains, sitting on the two A-1 tabs; one
-      M2.5 heat-set insert at each end takes the screw through the tab
+      M3 heat-set insert at each end takes the screw through the tab
       (the holes are radial: vertical at the station),
     * tongues past both chains for the station hold-downs, with the index
       magnet (front, every carriage) and home magnet (back, carriage 1),
@@ -295,9 +295,9 @@ def carriage() -> cq.Workplane:
                                             (su * (25.2 - SNAP_LAP), top_face + 1.5), (su * 25.2, top_face + 2.4)])
                .close().extrude(12).translate((0, 0, SNAP_X - 6)))
         plate = plate.union(arm).union(lip)
-    # A-1 tab screws: M2.5 heat-set insert holes, radial (along w), from the inner face
+    # A-1 tab screws: M3 heat-set insert holes, radial (along w), from the inner face
     for x in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
-        plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(3.2 / 2).extrude(4.6).translate((0, w1 + 0.01, 0)))
+        plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(4.0 / 2).extrude(4.6).translate((0, w1 + 0.01, 0)))
     # magnet pockets from the inner face of the tongues
     for x in (CAR_X0 + 7.0, CAR_X1 - 7.0):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(MAGNET_D / 2 + 0.15).extrude(MAGNET_H + 0.3)
@@ -373,7 +373,7 @@ def shcs(d: float, L: float, head: str = "socket") -> cq.Workplane:
 
 
 def hexnut(d: float) -> cq.Workplane:
-    s = {3: 5.5, 5: 8.0, 10: 16.0}[int(d)]
+    s = {3: 5.5, 5: 8.0, 6: 10.0, 10: 16.0}[int(d)]
     return cq.Workplane("XY").polygon(6, s / math.cos(math.pi / 6)).extrude(0.8 * d).faces(">Z").workplane().hole(d)
 
 
@@ -383,8 +383,9 @@ def tnut_m5() -> cq.Workplane:
     return b.faces(">Z").workplane().hole(5)
 
 
-def heat_insert_m25() -> cq.Workplane:
-    return cq.Workplane("XY").circle(1.9).circle(1.25).extrude(4.0)
+def heat_insert_m3() -> cq.Workplane:
+    """CNC Kitchen M3 short insert (M3 x 4, 4.6 OD), melted into a 4.0 mm hole."""
+    return cq.Workplane("XY").circle(2.3).circle(1.5).extrude(4.0)
 
 
 # ---------------------------------------------------------------- electronics

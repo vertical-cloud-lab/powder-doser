@@ -126,31 +126,34 @@ STATION_Y = float(station_frame()[1, 3])                 # 4.76: carriage 1's ce
 # ---------------------------------------------------------------- side plates
 def side_holes(back: bool) -> list[tuple]:
     """(kind, (y, z), size) for every opening in a side plate, world y/z.
-    kinds: circle (d), slot (d, length, vertical), tap (M5 tapped)."""
+    kinds: circle (d), slot (d, length; vertical), tap (M5 tapped)."""
     out = []
     j = BRG["J"] / 2
     lo, hi = TENSION_TRAVEL
     for name, (y, z) in CORNERS.items():
         if name.startswith("B"):
-            out.append(("circle", (y, z), (32.0,)))                                 # shaft, clears the insert collar
-            for dz in (-j, j):
-                out.append(("circle", (y, z + dz), (BRG["BOLT_D"] + 1.0,)))
+            out.append(("circle", (y, z), (BRG["HOLE"],)))                          # the bearing's rear dome
+            for dy in (-j, j):                                                      # bolt line horizontal
+                out.append(("circle", (y + dy, z), (BRG["BOLT_D"] + 0.8,)))
         else:                                                                       # top: vertical slots to tension
-            out.append(("slot", (y, z + (lo + hi) / 2), (32.0, 32.0 + hi - lo)))
-            for dz in (-j, j):
-                out.append(("slot", (y, z + dz + (lo + hi) / 2), (BRG["BOLT_D"] + 1.0, BRG["BOLT_D"] + 1.0 + hi - lo)))
+            zm = z + (lo + hi) / 2
+            out.append(("slot", (y, zm), (BRG["HOLE"], BRG["HOLE"] + hi - lo)))
+            for dy in (-j, j):
+                out.append(("slot", (y + dy, zm), (BRG["BOLT_D"] + 0.8, BRG["BOLT_D"] + 0.8 + hi - lo)))
             for dy in (-10.0, 10.0):                                                # tensioner block screws
-                out.append(("tap", (y + dy, z - j - 13.0 - 6.0 - 12.0), (5.0,)))
+                out.append(("tap", (y + dy, z - BRG["DOME_D"] / 2 - 6.0 - 12.0), (5.0,)))
+    zs = (90.0, 140.0, 200.0, 320.0, 440.0, 540.0) if back else (200.0, 320.0, 440.0, 540.0)
     for sy in (-1, 1):                                                              # to the posts' slots
-        for z in (200.0, 320.0, 440.0, 540.0):
+        for z in zs:
             out.append(("circle", (sy * POST_Y, z), (5.5,)))
-    for dy in (-12.0, 12.0):                                                        # hold-down, into its inserts
-        out.append(("circle", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - 2.0 - 11.0), (5.5,)))
-    if back:                                                                        # NEMA 34 standoffs
-        y, z = CORNERS[DRIVE]
+    for dy in (-12.0, 12.0):                                                        # hold-down, into its inserts:
+        out.append(("slot", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - 2.0 - 11.0), (5.5, 9.5)))   # +-2 mm to set the lip gap
+    if back:                                                                        # NEMA 34, slotted to tension the drive chain
+        out.append(("slot", (LOOP_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
         for dy in (-1, 1):
             for dz in (-1, 1):
-                out.append(("circle", (y + dy * M34_BOLT_SQ / 2, z + dz * M34_BOLT_SQ / 2), (5.5,)))
+                out.append(("slot", (LOOP_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2),
+                            (M34_HOLE_D, M34_HOLE_D + 2 * DRIVE_TRAVEL)))
     return out
 
 
@@ -270,9 +273,9 @@ STEPS = {
     1: "Base frame: rails, corner brackets, leveling feet",
     2: "Posts and top frame",
     3: "Side plates onto the posts",
-    4: "Bearings, corner shafts and tensioners",
-    5: "Sprockets on the shafts (set screws loose)",
-    6: "NEMA 34: standoffs, coupling, motor",
+    4: "Flange bearings and top-shaft tensioners on the side plates",
+    5: "Corner shafts with their sprockets (set screws loose)",
+    6: "NEMA 34 on the back plate, 15T sprockets, drive chain",
     7: "Chains: 12 A-1 links per chain, close both loops",
     8: "Carriages across both chains; phase and tension",
     9: "Station: hold-downs and hall switches",
@@ -284,9 +287,35 @@ X_FRONT_OUT = -SIDE_GAP - PLATE_T_SIDE          # front plate's outer face
 X_BACK_OUT = CHAIN_L + SIDE_GAP + PLATE_T_SIDE  # back plate's outer face
 X_POST = (X_FRONT_OUT - EXT / 2, X_BACK_OUT + EXT / 2)
 RAIL_X0, RAIL_X1 = X_FRONT_OUT - EXT, X_BACK_OUT + EXT
-SHAFT_X0 = X_FRONT_OUT - BRG["H"]
-SHAFT_L = X_BACK_OUT + BRG["H"] - SHAFT_X0
-DRIVE_EXTRA = 20.0                               # drive shaft's stub into the coupling
+SHAFT_X0 = X_FRONT_OUT - BRG["OUT"]
+SHAFT_L = X_BACK_OUT + BRG["OUT"] - SHAFT_X0      # 404.7: flush with both bearings' inserts
+X_DRV = X_BACK_OUT + BRG["OUT"] + 7.5            # drive chain's centre plane, 2 mm clear of the bearing
+DRIVE_EXTRA = X_DRV + LTB15 - TOOTH_W / 2 - (X_BACK_OUT + BRG["OUT"])   # B+ shaft's stub for the 15T
+
+
+@lru_cache(None)
+def drive_chain_pins() -> np.ndarray:
+    """44 pin centres (y, z) of the drive chain: two equal 15T sprockets,
+    C = 14.5 pitches, solved like v1's loop (14-link spans, 8 links on each
+    sprocket). The stub sprocket (B+ shaft) is at the top."""
+    r = PD15 / 2
+    al = 2 * math.pi / N15
+    ha = al / 2
+    xd, xi = C_DRIVE / 2, -C_DRIVE / 2           # local x: motor (-) -> stub (+)
+    A = np.array([xd, r])
+    B = np.array([xi + P / 2, r * math.cos(ha)])
+    D = np.array([xi, -r])
+    E = np.array([xd - P / 2, -r * math.cos(ha)])
+    span = (DRIVE_LINKS - 16) // 2
+    pts = [A + (B - A) * i / span for i in range(span)]
+    pts += [np.array([xi + r * math.cos(math.pi / 2 - ha + k * al), r * math.sin(math.pi / 2 - ha + k * al)]) for k in range(8)]
+    pts += [D + (E - D) * i / span for i in range(span)]
+    pts += [np.array([xd + r * math.cos(-math.pi / 2 - ha + k * al), r * math.sin(-math.pi / 2 - ha + k * al)]) for k in range(8)]
+    pts = np.array(pts)
+    gaps = np.linalg.norm(np.roll(pts, -1, axis=0) - pts, axis=1)
+    assert len(pts) == DRIVE_LINKS and np.allclose(gaps, P, atol=2e-3), (len(pts), gaps.min(), gaps.max())
+    zc = (Z_BOT + Z_MOTOR) / 2
+    return np.column_stack([LOOP_Y + pts[:, 1], zc + pts[:, 0]])
 
 
 def bracket(corner, n1, n2) -> np.ndarray:
@@ -354,55 +383,62 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
                               (sgn * 90, 0, 0)))
                 add(Placement("tnut_m5", "T-nut (side plate)", T(Ry(sgn * math.pi / 2), (xi + sgn * (PLATE_T_SIDE + 2.2), y, z)),
                               3, STEEL, "plates", (sgn * 110, 0, 0)))
-    # 4. bearings, shafts, tensioners
+    # 4. bearings (bolt line horizontal) and tensioners under the top ones
     for back in (False, True):
         xo = X_BACK_OUT if back else X_FRONT_OUT
-        Rb = cols((0, 1, 0), (0, 0, 1), (1, 0, 0)) if back else cols((0, -1, 0), (0, 0, 1), (-1, 0, 0))
+        Rb = cols((0, 0, -1), (0, 1, 0), (1, 0, 0)) if back else cols((0, 0, 1), (0, 1, 0), (-1, 0, 0))
         sgn = 1 if back else -1
         for name, (y, z) in CORNERS.items():
             add(Placement("flange_bearing", f"Flange bearing {name} {'back' if back else 'front'}", T(Rb, (xo, y, z)), 4, CAST,
                           "bearings", (sgn * 60, 0, 0)))
-            for dz in (-BRG["J"] / 2, BRG["J"] / 2):
-                add(Placement("bolt_m10x30", "Bearing bolt M10x30", T(Ry(sgn * math.pi / 2), (xo + sgn * BRG["T"], y, z + dz)), 4,
+            for dy in (-BRG["J"] / 2, BRG["J"] / 2):
+                add(Placement("bolt_m6x25", "Bearing bolt 1/4-20 x 1in", T(Ry(sgn * math.pi / 2), (xo + sgn * BRG["T"], y + dy, z)), 4,
                               DARK, "bearings", (sgn * 90, 0, 0)))
-                add(Placement("nut_m10", "Bearing nut M10 (nylock)", T(Ry(sgn * math.pi / 2),
-                                                                      (xo - sgn * (PLATE_T_SIDE + 8.0), y, z + dz)), 4, STEEL,
-                              "bearings", (-sgn * 40, 0, 0)))
+                add(Placement("nut_m6", "Bearing nut 1/4-20 (nylock)", T(Ry(sgn * math.pi / 2), (xo - sgn * (PLATE_T_SIDE + 5.0), y + dy, z)),
+                              4, STEEL, "bearings", (-sgn * 40, 0, 0)))
             if name.startswith("T"):
                 Rt = cols((0, 1, 0), (0, 0, 1), (1, 0, 0)) if back else cols((0, -1, 0), (0, 0, 1), (-1, 0, 0))
-                zb = z - BRG["J"] / 2 - 13.0 - 6.0                       # block's top: 6 mm under the bearing's lower lobe
+                zb = z - BRG["DOME_D"] / 2 - 6.0                          # block's top: 6 mm under the front dome
                 add(Placement("tensioner_block", f"Tensioner block {name} {'back' if back else 'front'} (printed)",
                               T(Rt, (xo, y, zb)), 4, ORANGE, "bearings", (sgn * 40, 0, -20)))
                 for dy in (-10.0, 10.0):
                     add(Placement("m5x10_shcs", "Tensioner block screw M5x10", T(Ry(sgn * math.pi / 2), (xo + sgn * 4.0, y + dy, zb - 12)),
                                   4, DARK, "bearings", (sgn * 70, 0, -20)))
                 xs = xo + sgn * 7.0
-                add(Placement("m5x30_shcs", "Jack screw M5x30", T(cols((0, 1, 0), (1, 0, 0), (0, 0, -1)), (xs, y, z - BRG["J"] / 2 - 13.0 - 30.0)),
+                add(Placement("m5x30_shcs", "Jack screw M5x30", T(cols((0, 1, 0), (1, 0, 0), (0, 0, -1)), (xs, y, z - BRG["DOME_D"] / 2 - 30.0)),
                               4, DARK, "bearings", (sgn * 40, 0, -50)))
                 add(Placement("nut_m5", "Jack screw nut", T(None, (xs, y, zb - 8.4)), 4, STEEL, "bearings", (sgn * 40, 0, -20)))
     for name, (y, z) in CORNERS.items():
         key = "shaft_drive" if name == DRIVE else "shaft"
-        add(Placement(key, f"Shaft {name} (1/2in)", T(Ry(math.pi / 2), (SHAFT_X0, y, z)), 4, STEEL, "shafts", (0, 0, 0)))
-    # 5. sprockets: hub outward; any multiple of 11.25 deg puts a tooth gap on every pin
+        add(Placement(key, f"Shaft {name} (1/2in)", T(Ry(math.pi / 2), (SHAFT_X0, y, z)), 5, STEEL, "shafts", (-120, 0, 0)))
+    # 5. shafts (above) and sprockets: hub outward; any multiple of 11.25 deg puts a tooth gap on every pin
     for name, (y, z) in CORNERS.items():
         add(Placement("sprocket_32", f"Sprocket 35B32 {name} front", T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (0.0, y, z)), 5, STEEL,
                       "sprockets", (60, 0, 0)))
         add(Placement("sprocket_32", f"Sprocket 35B32 {name} back", T(cols((0, 1, 0), (0, 0, -1), (-1, 0, 0)), (CHAIN_L, y, z)), 5,
                       STEEL, "sprockets", (-60, 0, 0)))
-    # 6. motor on standoffs behind the back plate, coaxial with the drive shaft
-    y, z = CORNERS[DRIVE]
-    x_c0 = X_BACK_OUT + BRG["H"] + 1.0
-    x_face = X_BACK_OUT + STANDOFF_L                        # motor shaft MOTOR_SHAFT_IN into the coupling's 14 mm side
+    # 6. NEMA 34 inside the frame on the back plate's inner face; #35 drive chain up to the B+ shaft's stub
+    Rm = cols((0, 1, 0), (0, 0, 1), (1, 0, 0))              # motor z (shaft) -> +x, through the back plate
+    xi_b = CHAIN_L + SIDE_GAP
+    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(Rm, (xi_b, LOOP_Y, Z_MOTOR)), 6, DARK, "drive", (0, 0, -150)))
     for dy in (-1, 1):
         for dz in (-1, 1):
-            p = (y + dy * M34_BOLT_SQ / 2, z + dz * M34_BOLT_SQ / 2)
-            add(Placement("standoff", "Standoff M5 hex", T(Ry(math.pi / 2), (X_BACK_OUT, *p)), 6, ALU, "drive", (60, 0, 0)))
-            add(Placement("m5x12_shcs", "Standoff screw M5x12 (plate)", T(Ry(-math.pi / 2), (CHAIN_L + SIDE_GAP, *p)), 6, DARK,
-                          "drive", (-30, 0, 0)))
-            add(Placement("m5x20_shcs", "Motor screw M5x20", T(Ry(math.pi / 2), (x_face + 12.0, *p)), 6, DARK, "drive", (140, 0, 0)))
-    add(Placement("coupling", "Jaw coupling 14 mm - 1/2in", T(Ry(math.pi / 2), (x_c0, y, z)), 6, ALU, "drive", (70, 0, 0)))
-    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(cols((0, 1, 0), (0, 0, -1), (-1, 0, 0)), (x_face, y, z)), 6, DARK,
-                  "drive", (130, 0, 0)))
+            p = (LOOP_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2)
+            add(Placement("m5x25_shcs", "Motor bolt M5x25", T(Ry(math.pi / 2), (X_BACK_OUT, *p)), 6, DARK, "drive", (80, 0, 0)))
+            add(Placement("nut_m5", "Motor nut M5 (nylock)", T(Ry(-math.pi / 2), (xi_b - 12.0, *p)), 6, STEEL, "drive", (-80, 0, -150)))
+    Rs15 = cols((0, 1, 0), (0, 0, -1), (-1, 0, 0))          # hub outward (+x)
+    add(Placement("sprocket_15_motor", "Drive sprocket 15T on the motor (35BS15H-1/2 bored 14 mm)",
+                  T(Rs15 @ Rz(-math.pi / N15), (X_DRV, LOOP_Y, Z_MOTOR)), 6,
+                  STEEL, "drive", (80, 0, -150)))
+    add(Placement("sprocket_15_shaft", "Drive sprocket 15T on the B+ shaft (35BS15H-5/8)", T(Rs15, (X_DRV, LOOP_Y, Z_BOT)), 6, STEEL,
+                  "drive", (80, 0, 0)))
+    dp = drive_chain_pins()
+    for i in range(DRIVE_LINKS):
+        a_, b_ = dp[i], dp[(i + 1) % DRIVE_LINKS]
+        ty, tz = (b_ - a_) / P
+        Ml = T(cols((0, -ty, -tz), (0, tz, -ty), (1, 0, 0)), (X_DRV, (a_[0] + b_[0]) / 2, (a_[1] + b_[1]) / 2))
+        key = "chain_outer" if i % 2 == 0 else "chain_inner"
+        add(Placement(key, "Drive chain link", Ml, 6, STEEL, "drive", (80, 0, 0)))
     # 7. chains: every 8th link an A-1 attachment connecting link, same links on both chains
     cl = set(carriage_links())
     for back in (False, True):
@@ -421,9 +457,9 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
         out_dir = tuple(-C[:3, 1] * 60)                    # lift outward, away from the loop
         add(Placement("carriage", f"Carriage {k + 1}", C, 8, PETG, "carriages", out_dir))
         for xa in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
-            add(Placement("m25x6_bhcs", f"Carriage screw {k + 1}", C @ T(Rx(-math.pi / 2), (0, CAR_W0 + PLATE_T, xa)), 8, DARK,
+            add(Placement("m3x6_bhcs", f"Carriage screw M3x6 {k + 1}", C @ T(Rx(-math.pi / 2), (0, CAR_W0 + PLATE_T, xa)), 8, DARK,
                           "carriages", out_dir))
-            add(Placement("insert_m25", f"Heat-set insert {k + 1}", C @ T(Rx(math.pi / 2), (0, CAR_W0, xa)), 8, BRASS, "carriages",
+            add(Placement("insert_m3", f"Heat-set insert M3 {k + 1}", C @ T(Rx(math.pi / 2), (0, CAR_W0, xa)), 8, BRASS, "carriages",
                           out_dir))
         mz = CAR_W0 - 0.3 - MAGNET_H
         add(Placement("magnet", f"Index magnet {k + 1}", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X0 + 7.0)), 8, STEEL, "carriages", out_dir))
@@ -490,29 +526,28 @@ BUILDERS = {
     "shaft_drive": lambda: PT.shaft(SHAFT_L + DRIVE_EXTRA),
     "tensioner_block": PT.tensioner_block,
     "sprocket_32": PT.sprocket_32,
-    "standoff": PT.standoff,
-    "coupling": PT.coupling,
+    "sprocket_15_shaft": PT.sprocket_15_shaft,
+    "sprocket_15_motor": PT.sprocket_15_motor,
     "nema34": PT.nema34,
     "chain_a1": PT.chain_a1_link,
     "chain_outer": PT.chain_outer_link,
     "chain_inner": PT.chain_inner_link,
     "carriage": PT.carriage,
-    "insert_m25": PT.heat_insert_m25,
+    "insert_m3": PT.heat_insert_m3,
     "insert_m5": lambda: cq.Workplane("XY").circle(3.5).circle(2.5).extrude(7.0),
     "magnet": PT.magnet,
     "hold_down": PT.hold_down,
     "hall_switch": PT.hall_switch,
     "auger_blank": PT.auger_blank,
-    "m25x6_bhcs": lambda: PT.shcs(2.5, 6, "button"),
+    "m3x6_bhcs": lambda: PT.shcs(3, 6, "button"),
     "m5x12_bhcs": lambda: PT.shcs(5, 12, "button"),
     "m5x10_fhcs": lambda: PT.shcs(5, 10, "flat"),
-    "m5x12_shcs": lambda: PT.shcs(5, 12),
     "m5x16_shcs": lambda: PT.shcs(5, 16),
-    "m5x20_shcs": lambda: PT.shcs(5, 20),
     "m5x30_shcs": lambda: PT.shcs(5, 30),
-    "bolt_m10x30": lambda: PT.shcs(10, 30),
+    "bolt_m6x25": lambda: PT.shcs(6, 25),
+    "nut_m6": lambda: PT.hexnut(6),
+    "m5x25_shcs": lambda: PT.shcs(5, 25),
     "m5x10_shcs": lambda: PT.shcs(5, 10),
-    "nut_m10": lambda: PT.hexnut(10),
     "nut_m5": lambda: PT.hexnut(5),
     "tnut_m5": PT.tnut_m5,
     "board_panel": PT.board_panel,
