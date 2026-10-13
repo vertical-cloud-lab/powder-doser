@@ -157,6 +157,28 @@ def wait(poll_s: int = 180, max_s: int = 3000) -> str:
     return status
 
 
+def artifacts() -> None:
+    """Download every output file of the trajectory into outputs/ (data only; nothing is executed)."""
+    client = _client()
+    data = json.loads((HERE / "mock_review.task.json").read_text())
+    out_dir = HERE / "outputs"
+    out_dir.mkdir(exist_ok=True)
+    for item in data["environment_frame"]["state"]["info"]["output_data"]:
+        name = Path(item["filename"]).name
+        got = client.fetch_data_from_storage(item["entry_id"])
+        if isinstance(got, list):
+            got = got[0] if got else None
+        if isinstance(got, Path):
+            shutil.copy(got, out_dir / name)
+        elif got is not None and hasattr(got, "content"):
+            content = got.content
+            (out_dir / name).write_bytes(content if isinstance(content, bytes) else str(content).encode())
+        else:
+            print("could not fetch", name)
+            continue
+        print("fetched", name, (out_dir / name).stat().st_size)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "prepare"
-    {"prepare": prepare, "dispatch": dispatch, "wait": wait}[cmd]()
+    {"prepare": prepare, "dispatch": dispatch, "wait": wait, "artifacts": artifacts}[cmd]()
