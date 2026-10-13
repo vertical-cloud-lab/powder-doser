@@ -1,0 +1,14 @@
+powder_id,name,track,flows,mg_per_turn,se_mg,doses_1g,within_5pct_1g,min_delivered_g,max_delivered_g
+alsi10mg,AlSi10Mg alloy,research,True,230.95,12.6893,3,3,0.9973,1.0094
+silicon-110-200,Silicon (75–150 µm),research,True,210.7,5.9918,3,3,0.9978,1.0033
+sodium-sulfate,Sodium sulfate,research,True,208.4,13.1123,3,3,0.9951,0.9971
+calcium-lactate,Calcium lactate,surrogate,True,198.2833,1.8157,3,3,0.9654,0.9846
+barium-chloride,Barium chloride,research,True,184.7,12.9421,0,0,,
+xanthan-gum,Xanthan gum,surrogate,True,161.1833,7.9421,3,3,0.9564,0.975
+salt,Table salt (NaCl),surrogate,True,146.4833,10.9542,6,6,0.9953,1.0088
+carboxymethyl-cellulose,CMC (cellulose gum),surrogate,True,26.35,0.9801,3,3,0.9511,0.9619
+white-rice-flour,White rice flour,surrogate,True,12.7833,1.9568,3,0,0.8399,0.8868
+sodium-alginate,Sodium alginate,surrogate,True,9.5833,0.3103,3,0,0.6928,0.7285
+fumed-silica,Fumed silica,research,False,,,0,0,,
+silicon-325,Silicon (<44 µm),research,False,,,6,0,0.0,0.0016
+brown-rice-flour,Brown rice flour,surrogate,False,,,3,0,0.0,0.0018
