@@ -1,103 +1,100 @@
-# Multi-doser chain carousel: test rig v0 (#128)
+# Multi-doser chain carousel: test rig v2, vertical twin chain (#128)
 
-A bench rig for the one question the multi-doser can't skip: **does a horizontal #35 roller-chain loop carry and index the passive carriages from the [Aug 18 pitch](https://github.com/vertical-cloud-lab/powder-doser/issues/128) reliably?** It uses the chain already on the ME order (Aobbmok #35, 96 links), the NEMA 34 UofU bought, and Sam's Oct 8 mounting plate as module 1. Everything else is a real, orderable part ([BOM.md](BOM.md): **$641 for the rig, $783 with test gear**, prices checked 2026-10-10) or printed ([`stl/`](stl)).
+The second version of the chain test rig, after [Sam's review of v1](https://github.com/vertical-cloud-lab/powder-doser/issues/128) on 2026-10-13. **Two #35 chains run in vertical planes, one at the front of the carriages (the auger's outlet and hinge end) and one at the back (the cap end), 305 mm apart, so a whole module fits between them.** Each chain goes round four 32T sprockets at the corners of a rectangle. The front and back sprockets at each corner share one shaft, so there are four "gear points" and the two chains can't drift out of step. Each carriage bolts to an A-1 tab on each chain from the outside of the loop. The tabs' holes run vertically at the station, square to the augers and to the travel. The modules ride on the inside. The station is on the bottom straight (the short end of the rectangle), with hold-down tabs at both the front and back ends. The frame is 2020 built vertically.
+
+v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a copy that was then changed.
 
 **Onshape (public, owned by Vertical Cloud Lab), built through the REST API:**
-[Multi-doser chain carousel - test rig v0 (#128)](https://cad.onshape.com/documents/c9896149cba99f2afec4806f/w/3f1508df6e8733bea9d712ac/e/e076714403de8a0874ebae27) (version `v1 chain test rig`). The assembly tree is the build sequence (`01 Frame` … `12 Electronics board`), and all 45 unique parts are in one Part Studio. See [Onshape](#onshape) below.
+[Multi-doser chain carousel - test rig v2, vertical twin chain (#128)](https://cad.onshape.com/documents/5263dae97a3922029b5cccf3/w/30f999cdf6cf5f4014d88b2a/e/f8db64562886e92e866b11ed) (version `v2 vertical twin chain`). The assembly tree is the build sequence (`01 Base frame` … `11 Electronics board`).
 
-![Rig, Onshape render](renders/onshape/onshape_front_iso.png)
-
-| Station (module 1 on carriage 1, hold-downs, hall sensors under the deck) | Drive end from below (NEMA 34 on its plate) |
+| Front chain loop (front plate hidden) | Module 1 tilted to 90° at the station |
 |---|---|
-| ![](renders/rig_station.png) | ![](renders/rig_drive.png) |
+| ![](renders/rig_loop.png) | ![](renders/rig_tilt90.png) |
+| **Back: the NEMA 34 inside the frame drives the bottom +y shaft through a #35 chain** | **Station: front hold-down round carriage 1's tongue** |
+| ![](renders/rig_back_iso.png) | ![](renders/rig_chain_detail.png) |
+
+## What Sam asked for, and what the model does
+
+| Ask (2026-10-13) | In v2 |
+|---|---|
+| Chain moving vertically, gears vertical | Both loops lie in vertical planes; the sprockets turn on horizontal shafts along the augers |
+| Two chains, front and back, far enough apart for the whole auger | Chain centre planes 305 mm apart. Each module spans 28–285 mm from the front chain (hinge knuckle to cap end), clear of both A-1 tabs |
+| Footprint just what a vertical module needs | **435 x 244 mm** frame (feet 254 mm) and 596 mm tall. v1's deck was 1050 x 740 mm, so this is 14% of v1's footprint |
+| Four gear points, one at each corner | Four corner shafts (5/8 in), each carrying the front and the back sprocket, so 8 x 35BS32 in all |
+| Electronics carriage interfaces at the bottom of the loop, the short end | Station on the 12-link bottom straight. Carriage 1 has a window for Sam's electronics carriage, shown docked under module 1. Under the front half of the bottom run, 35–198 mm above the bench is clear for the station; the motor sits under the back half |
+| 8020, built vertically | 2020 frame: four posts, base and top rails, with two 1/4 in 6061 side plates that carry the bearings |
+| Tabs at both the front and back ends | A hold-down at each tongue: a C with a lip 0.5 mm above the tongue and a foot 2 mm below it, so the station's push and any pull go into the frame, not the chain |
+| Two holes per carriage, front and back, running vertically; augers inside the loop, connections outside | Each carriage sits on the outer faces of two A-1 tabs, with one M3 through each tab's 0.133 in hole into a heat-set insert. The holes are radial: vertical at the station, square to the augers and the travel |
 
 ## The design in numbers
 
 | | Value | Why |
 |---|---|---|
-| Chain | ANSI #35, 96 pitches, 9.525 mm pitch, lying flat (pins vertical) | The box on the ME order. Flat, so carriages stay upright all the way round |
-| Sprockets | 2 x 19T ANSI 35: drive 35B19 bored 14 mm on the motor shaft, idler with a ball bearing | 19T is the smallest count with under 1.5% chordal speed ripple |
-| Centre distance | **366.71 mm = 38.5 pitches** | For two equal 19T sprockets this closes 96 links exactly: two 38-link spans plus 10 links on each sprocket ([`layout.chain_pins`](layout.py)) |
-| Modules | **12, every 8 pitches (76.2 mm)** | 96 / 8. One module is 8/19 of a sprocket turn |
-| Attachment | 12 x #35 **A-1 attachment connecting links** (Red Boar), tab up and outward; each carriage bolts on with one M2.5 into a heat-set insert | Steel stays in the tension path; the PETG carriage only hangs off the tab (July 31 advice). Tab dimensions are Tsubaki's RS35 A-1 table |
-| Carriage | PETG, 70 x 290 mm, 4 skids on the deck, 125 g | Rides on the deck, not on the chain, so the chain only pulls |
-| Deck | 1/2 in HDPE, 1050 x 740 mm in two 24 x 48 in sheets, on a 2020 frame (one 10-pack of 1000 mm bars) with legs | Low-friction wear surface under the whole sweep, round the ends too |
-| Drive | NEMA 34 34HS59-6004D-E1000 + CL86T on 48 V, sprocket straight on the 14 mm shaft | Needs about 0.23 N·m against 12 N·m available. The 4000-count encoder catches missed steps |
-| Station | Deck window under carriage 1, two hold-down blocks over the carriage tongue, 2 hall switches (US5881) | Reacts the station's upward push locally (Aug 18 pitch, [12:41]–[13:23]) instead of through the chain |
-| Clearance | **No overlaps over 0.5 mm³** among 303 instances in the home pose, and none while indexing 8 pitches round both wraps ([`check_interference.py`](check_interference.py)) | Parts that touch by design (threads, inserts, pins in bushings) are listed and skipped |
+| Chains | 2 x ANSI #35, 104 pitches each, in vertical planes 305 mm apart | Cut from one 10 ft roll (320 pitches), which also gives the 44-link drive chain |
+| Sprockets | 8 x 35BS32-5/8 (32T, 2 in hub), centres on a **114.3 x 228.6 mm** rectangle (12 x 24 pitches) | With 32 teeth a 90° wrap is exactly 8 links, so the loop closes exactly: 2 x 12 + 2 x 24 + 32 = 104 ([`layout.chain_pins`](layout.py)). 12-link runs keep the 102 mm sprockets 12 mm apart |
+| Why 32T | The auger's 44T gear (46 mm across) passes the corner shafts | The gear sits 34.7 mm inside the chain line. With v1's 19T sprockets (29 mm radius) it would sweep straight through the shaft line. 32T gives 5.8 mm to a 5/8 in shaft |
+| Modules | **13, every 8 pitches (76.2 mm)** | 104 / 8. One module is a quarter turn of a 32T sprocket, exactly 1000 steps at 4000 pulses/rev |
+| Attachment | 26 x Nitro CL35-A1 A-1 connecting links, the same 13 link positions on both chains | Steel stays in the tension path. The carriage sits on the tabs' outer faces, outside the loop, so it never meets a sprocket |
+| Carriage | PETG, 60 x 351 mm, tongues past both chains, chamfered hinge lugs, two snap hooks | On a corner two neighbours are 90° apart about the sprocket axis, so anything at a carriage's edge more than about 45 mm inside the chain line would hit the next one. The snap hooks keep Sam's plate shut on the top run, where it hangs upside down |
+| Shafts and bearings | 4 x 5/8 in keyed 1018, 8 x SBSFL202-10 stamped flange bearings, top pair slotted with jack screws | The top shafts move together to tension both chains. No vendor checked sells a 1/2 in-bore 32T |
+| Drive | NEMA 34 34HS59-6004D-E1000 inside the frame on the back plate, 1:1 #35 drive chain (15T/15T, 44 links) to the B+ shaft | Coaxial direct drive would hang the 6 kg motor about 300 mm off the back. Inside, nothing sticks out more than about 20 mm |
+| Station | Bottom run, carriage 1 at y = 4.76 mm; front and back hold-downs carry the INDEX and HOME hall switches over magnets in the tongues | Reacts the station's push locally (Aug 18 pitch, [12:41]–[13:23]). Both sensors are in parts that are already at the station |
+| Clearance | **No overlaps over 0.5 mm³** among 576 instances at home, over an 8-pitch indexing sweep (every module through every corner position), and with module 1 tilted 15–90° at the station ([`check_interference.py`](check_interference.py)) | Tightest gaps: carriage to carriage on a corner 4.3 mm, gear to corner shaft 5.8 mm, carriage plate to sprocket tips 3.6 mm. At 90° tilt the cap end is about 27 mm under the module on the top run |
+| Cost | **$1,035; $894 without test gear** ([BOM.md](BOM.md)) | Prices checked 2026-10-13; lines carried from v1 were checked 2026-10-10. The NEMA 34, module 1 and Sam's electronics carriage are already in the lab |
 
-### The auger sets the rig's size
+## Things to look at before ordering or printing
 
-The lab auger is **250 mm** long. Sam's Oct 8 mounting plate holds it with the **outlet at the hinge**: the 44T gear fills the 10.1 mm gap between his second and third clamp rings. The tube then runs about 150 mm past the plate's free end. With the outlet pointing outward over the balance, that free end points back at the chain. The hinge therefore has to sit **270 mm** from the chain for the cap end to clear the chain and the A-1 tabs. On the wraps each carriage sweeps a 330 mm radius, so the deck is 1050 x 740 mm for 12 modules. Two other options don't work:
-
-- **Pointing the augers inward** puts 12 cap ends into the 58 mm-wide middle of the loop.
-- **Laying them along the chain** needs 26 pitches per module, which leaves 3 modules on this chain.
-
-A **150 mm auger** would bring the hinge in to about 170 mm and the deck down to about 850 x 540 mm, which is one 24 x 48 in sheet instead of two. That is worth deciding before the carriage is printed 12 times. `HINGE_Y` in [`params.py`](params.py) is the one number to change; the cut-outs, sensors and hold-downs follow it.
-
-### Correction to the July 31 sprocket note
-
-The July 31 pricing comment said to buy "ANSI #35 sprockets, not 06C". **ISO 06C is ANSI 35**: 9.525 mm pitch, 5.08 mm bushing, 4.78 mm between the inner plates. The one to avoid is **06B** (British standard). It has the same pitch, but a 6.35 mm roller and 5.72 mm between the inner plates, and its roughly 5.3 mm teeth bind in a #35 chain's 4.78 mm gap. Many metric-bore listings are 06B, so check the tooth width (#35: 0.168 in / 4.27 mm) before buying. The chain's Amazon listing no longer gives dimensions either, so **measure the chain that arrives** (4.78 mm between the inner plates, 5.08 mm bushing) before ordering sprockets.
+1. **13 modules and a 10 ft roll, not 12 and the 3 ft box.** The 32T sprockets are 102 mm across, so with 8-link bottom and top runs (76 mm centres) they overlapped. At 12 links the loop needs 104 pitches if the sides stay 24 links long, which is what leaves room to tilt module 1 to 90°. The 3 ft box on the ME order (96 links) becomes spares.
+2. **Each module rolls a full turn about its own axis every lap and hangs upside down on the top run.** That is inherent to a vertical loop with the augers along the shafts. It makes the open-outlet question from the July 15 meeting the first thing to test ([TEST-PLAN.md](TEST-PLAN.md) T6).
+3. **Sam's plate needs holding shut upside down.** The carriage's two printed snap hooks do it without changing his part. The station's tilt has to pull the plate past them, so T4 measures that force.
+4. **The carriage is 351 mm long.** It prints in one piece only on the H2D, laid on the bed's diagonal. An A1 mini version would need splitting at the window.
+5. **Sprocket phase:** key the front sprocket on each shaft and lock the back one with its set screws after the carriages are on. A 32T tooth is 11.25°, so two keyed sprockets could land up to 4.8 mm out of step.
+6. **Shop work:** cut and drill the two side plates from [`dxf/`](dxf), and re-bore one 15T sprocket from 1/2 in to 14 mm with a 5 mm keyway for the motor.
+7. **The station itself is still not designed.** The rig gives it the window, the hold-downs, the sensors, and clear space under the bottom run. The linear actuator, couplings and tilt drive come next. The CAD shows Sam's electronics carriage docked so the interface can be checked.
 
 ## How it goes together
 
-[**ASSEMBLY.md**](ASSEMBLY.md) has 12 steps, each with a render and the BoM lines it uses.
+[**ASSEMBLY.md**](ASSEMBLY.md) has 11 steps, each with a render and the BoM lines it uses.
 
 ![Assembly steps](renders/assembly_steps.gif)
 
 ## Testing the chain
 
-[**TEST-PLAN.md**](TEST-PLAN.md) covers T0 fit, T1 tension, T2 drag, **T3 index repeatability**, T4 station push-up, T5 transit vibration and powder loss, T6 endurance and T7 wraps on video. [`test/chain_rig.py`](test/chain_rig.py) runs them from a Pi (pigpio step/dir into the CL86T, hall-sensor homing, CSV log, `--sim` for a dry run).
+[**TEST-PLAN.md**](TEST-PLAN.md) covers T0 fit, T1 tension and phase, T2 drive torque, **T3 index repeatability**, T4 station push-up, hold-downs and snap force, T5 tilt clearance, T6 transit vibration and powder over full laps, T7 endurance and T8 corners on video. [`test/chain_rig.py`](test/chain_rig.py) runs them from a Pi (pigpio step/dir into the CL86T, hall-switch homing, CSV log, `--sim` for a dry run).
 
 ## Onshape
 
-[`onshape/onshape_build.py`](onshape/onshape_build.py) does all of this through the REST API:
+[`onshape/onshape_build.py`](onshape/onshape_build.py) creates the document in the Vertical Cloud Lab company, makes it public, uploads [`step/chain_carousel_rig_v2.step`](step/chain_carousel_rig_v2.step) as one composite import, saves Onshape's shaded views to [`renders/onshape/`](renders/onshape) and marks a version. That took **10 API calls**, all logged in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl), on top of v1's 39. The ids are in [`onshape/onshape_document.json`](onshape/onshape_document.json). Git stays the source of truth: change `params.py`, run `build.py`, re-import.
 
-1. creates the document in the Vertical Cloud Lab company and makes it public;
-2. uploads [`step/chain_carousel_rig.step`](step/chain_carousel_rig.step) once as a composite import (`flattenAssemblies=false`);
-3. saves Onshape's own shaded views to [`renders/onshape/`](renders/onshape);
-4. marks a version.
-
-The STEP shares part definitions between instances (the 84 plain chain links are two parts), so 303 instances import from 45 parts in one upload and one poll. Every call is logged in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl) and the ids are in [`onshape/onshape_document.json`](onshape/onshape_document.json).
-
-| Purpose | Calls |
-|---|---|
-| Read Sam's two documents; export his Oct 8 Part Studio and Aug 27 assembly to STEP (read-only) | 10 |
-| Each build: company id, new document, upload, translation poll, element list, 3 shaded views, version | 9 x 3 |
-| Rename the two earlier builds "SUPERSEDED" | 2 |
-| **Total** | **39** |
-
-That is 1.6% of the company's 2,500 calls a year. The first two builds had a 50 mm-long rail and some fastener clashes. The API key has no delete scope, so those documents were renamed rather than removed (ids in `onshape_document_v0_superseded.json` and `_v1_`). **Git stays the source of truth**: change `params.py`, run `build.py`, re-import. If someone edits the design in Onshape, bring the change back as a reviewed STEP export.
-
-### How the Pi was used
-
-Amazon blocks the CI runner's datacenter IP, so the two Amazon prices in the BoM (the chain and the idler) were read through the powder-doser Pi. That was a rate-capped `curl` (250 kB/s) over Tailscale SSH; nothing was installed or changed on the Pi. The other vendors were reachable directly. The Pi is also the intended controller: [`test/chain_rig.py`](test/chain_rig.py) runs on any Pi with `pigpio`.
+![Onshape render](renders/onshape/onshape_front_iso.png)
 
 ## Files
 
 | File | What |
 |---|---|
 | [`params.py`](params.py) | Every dimension, with its source |
-| [`parts.py`](parts.py) | CadQuery models: chain links (inner, outer, A-1), 19T sprockets with real tooth gaps, NEMA 34, 2020 profile, printed parts, fasteners, electronics envelopes |
-| [`layout.py`](layout.py) | Exact chain solution, carriage frames, deck openings, placements and assembly steps |
-| [`build.py`](build.py) | STEP assembly (tree = assembly steps) + per-part STEP in `step/components/`, print STLs, DXF cutting templates (both deck halves, motor plate), `placements.json` |
-| [`render.py`](render.py) | Hero views, one image per step, GIF (VTK, `xvfb-run`) |
-| [`check_interference.py`](check_interference.py) | OCC boolean clash check: home pose, and `--sweep` over 8 pitches of indexing |
+| [`parts.py`](parts.py) | CadQuery models: chain links (inner, outer, A-1), 32T and 15T sprockets with real tooth gaps, stamped flange bearing, NEMA 34, 2020 profile, printed parts, the auger blank, fasteners, electronics envelopes |
+| [`layout.py`](layout.py) | Exact chain solutions (the 104-link loops and the drive chain), carriage frames, side-plate holes, placements and assembly steps |
+| [`build.py`](build.py) | STEP assembly (tree = assembly steps) + per-part STEP in `step/components/`, print STLs, DXF drilling templates for both side plates, `placements.json` |
+| [`render.py`](render.py) | Hero views (some with the front plate hidden), one image per step, GIF (VTK, `xvfb-run`) |
+| [`check_interference.py`](check_interference.py) | OCC boolean clash check: home pose, `--sweep` over 8 pitches of indexing, `--tilt` for module 1 at 15–90° |
 | [`docs.py`](docs.py) | Writes BOM.md, bom.csv and ASSEMBLY.md from the BoM table and the step text |
 | [`bom.py`](bom.py) | The BoM table, with sources and verified/estimate flags; quantities counted from the CAD |
-| [`reference/`](reference) | Sam's Oct 8 Part Studio (exported from his Onshape doc) and the lab auger + cap (PR #170) |
+| [`reference/`](reference) | Sam's Oct 8 Part Studio (mounting plate and electronics carriage) and the lab auger + cap (PR #170), as in v1 |
 | [`onshape/`](onshape) | API client with a call budget and ledger, build script, document ids |
 | [`test/chain_rig.py`](test/chain_rig.py) | Pi driver and logger for the tests |
 
 ```bash
 pip install cadquery vtk pillow requests
 python build.py && python docs.py && python check_interference.py && xvfb-run -a python render.py
+python check_interference.py --sweep && python check_interference.py --tilt
 cd onshape && python onshape_build.py create        # needs ONSHAPE_ACCESS_KEY / ONSHAPE_SECRET_KEY
 ```
 
 ## Not done yet
 
-- **No station in the CAD.** Sam's electronics carriage is in `reference/` but not placed; this rig only provides the window, hold-downs and sensors it will need. The linear actuator and couplings come next.
-- **No mates in Onshape.** The import places every instance; it adds no revolute mates for the sprockets and no hinge mate for module 1. Onshape has no chain mate, so animating the loop would mean driving instance transforms from `layout.py`.
-- **Not built or run.** Every number in TEST-PLAN.md is a prediction until T0–T7 are done.
-- **Unverified prices** (marked "estimate" in BOM.md): metric fasteners, the motor plate stock, leveling feet, Pi and the interface board. The NEMA 34 drawing wasn't reachable (StepperOnline returns 403 to automated fetches), so its flange is modelled from the NEMA 34 standard and the 37 mm shaft and 169 mm length from a reseller's listing. **Check the motor in hand** before cutting the motor plate.
+- **No station mechanism** (linear actuator, kinematic couplings, tilt drive). Sam's electronics carriage is placed docked under module 1 for reference only.
+- **No mates in Onshape.** The import places every instance. Onshape has no chain mate, so animating the loop would mean driving instance transforms from `layout.py`.
+- **Not built or run.** Every number in TEST-PLAN.md is a prediction until T0–T8 are done.
+- **Modelled from catalogue figures, not drawings:** the SBSFL202-10's dome and insert are an envelope built from its listed 3.189 x 2.3125 x 0.875 in and FYH's 49 mm mounting hole. The NEMA 34's flange is from the NEMA 34 standard (StepperOnline's drawing wasn't reachable). Check both in hand before drilling the plates.
+- **Unverified prices** (marked "estimate" in BOM.md): generic metric and imperial fasteners, key stock, leveling feet, the Pi and the interface board. SendCutSend only prices a part once a DXF is uploaded.
