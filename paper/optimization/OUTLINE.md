@@ -108,8 +108,11 @@ Figures (all built by `figures/make_figures.py` from `data/`):
    alloy per element from handling constraints and hazards (the TMS abstract's framing); static and
    loosening fasteners were problems in the July glove-box trial.
 7. **Prospective multi-task test** on a freshly atomized batch.
-8. **Spreadability.** Blade-spread single 50–100 µm layers of 3–4 deliberately varied batches (sieved vs
-   unsieved, dried vs humid, plus commercial AlSi10Mg); measure areal mass and coverage.
+8. **Spreadability and batch-to-batch resolution.** Blade-spread single 50–100 µm layers of 3–4
+   deliberately varied batches of one alloy (sieved vs unsieved, dried vs humid, reused vs virgin, plus
+   commercial AlSi10Mg); fingerprint the same batches on the same day. Specify blade gap and speed,
+   substrate, spread length, RH, replicate layers and image metrics (areal mass, coverage, uniformity,
+   streak/void area), and validate coarse-grained DEM against one fine-powder experiment.
 
 9. **Controller housekeeping that affects comparisons across powders** (from the #154/#166/#131
    records): identify the balance lag τ_bal in the HR-100A's configured response mode (drop tests give
@@ -134,7 +137,9 @@ Figures (all built by `figures/make_figures.py` from `data/`):
    descriptor kernel from the dosing fingerprint; warm start from existing doses (the mechanism already
    used to attach screening doses).
 3. **Benchmark** (needed for the ML rubric): leave-one-powder-out replays on surrogates fitted to each
-   campaign; baselines Sobol, single-task SAASBO, carry-over of the most similar powder's settings;
+   campaign; baselines Sobol, single-task SAASBO, carry-over of the most similar powder's settings, a pooled
+   GP without task correlations, a descriptor-only model and a rule-based warm start; same initial designs
+   for every method, paired seeds, and no held-out data in the "best known hypervolume";
    metric = doses to 90 % of best known hypervolume; ≥10 replays with seeds; report hyperparameters.
 4. **DEM.** Friction sweep and a cohesion curve in the rig geometry (only one cohesion point, in the
    micro-auger, exists); separate particle–wall adhesion from particle–particle cohesion; tie the inferred
@@ -197,6 +202,48 @@ Figures (all built by `figures/make_figures.py` from `data/`):
 2. Nov–Jan: single-task campaigns (A3–A5), benchmark (B3), emulator and inference on salt (B5).
 3. Jan–Feb: glove-box precursor campaign (A6), prospective test (A7), property links (B6).
 4. Mar: TMS talk with real Figs. 3–6; spreadability (A8) and submission after.
+
+## 4b. Edison mock review (2026-10-13) and what was done with it
+
+Task `2a2e76ab-6ce4-489d-b248-dd7dab7026b5` (ANALYSIS), run on the draft at `7842545`; answer, task
+JSON, notebook and all 33 trajectory files are in [`mock_review/`](mock_review/). Panel: handling
+editor (Ryan R. Wicker persona; the live board lists **A. T. Clare as Editor-in-Chief**, Wicker as
+emeritus, so address the cover letter to Clare), Laura Cordova (AM feedstock / spreadability), Hongyang
+Cheng (DEM inference), Keith A. Brown (BO / autonomous experimentation), Johannes Khinast (feeder
+metrology). All four: **major revision**; editor: send for review only if the AM-facing validation
+(same-lot properties, spreadability, multi-powder campaigns) is completed, otherwise consider *Powder
+Technology*, *Digital Discovery* or *HardwareX*. Placeholder-data comments: none were raised (the prompt
+asked the panel to judge the planned work instead), so nothing was skipped on that basis (#96 rule).
+
+| # | Action (reviewer) | Type | Done in this draft |
+|---|---|---|---|
+| 1 | Same-lot characterization of the dosed lots (Co, Ch, Kh) | experiments | Planned (§4.A2) |
+| 2 | Batch-to-batch / treatment study within one alloy, e.g. AlSi10Mg dried vs humid, sieved vs unsieved (Co, editor) | experiments | **Added to plan** (§4.A8 extended); not run |
+| 3 | Blade-spread validation with a fully specified protocol: blade gap and speed, substrate, length, RH, replicate layers, image metrics (Co, Ch) | experiments | Planned; protocol details still to write |
+| 4 | Real multi-task campaigns on several metal / precursor powders (Br, editor, Kh) | experiments | Planned (§4.A3) |
+| 5 | Multi-task benchmark with paired replay seeds, same initial designs, no leakage of held-out data into "best known hypervolume", plus pooled-GP, descriptor-only and rule-based baselines (Br) | analysis | Planned (§4.B3); baseline list to extend |
+| 6 | One-sided error, P(overshoot) constraint, time conditional on success (Br, Kh) | analysis | Planned (§4.B1); discussed in text |
+| 7 | Intervals for validation results (Br, Kh) | analysis | **Done**: bootstrap CIs of medians, Clopper–Pearson bounds, n = 59 needed for P ≥ 0.95 |
+| 8 | Measurement-system analysis of the fingerprint: repeatability across fills, days, operators; standardized powder state (Kh) | experiments | Limitation now stated in Discussion; experiments planned (§4.A5) |
+| 9 | Unified failure taxonomy (Kh, Br) | writing | **Done** in §2.4; per-dose table still for the SI |
+| 10 | Measured as-built exit geometry with uncertainty propagated (Ch, Kh) | experiments | Planned (§4.A1) |
+| 11 | Synthetic-recovery identifiability study before real inference; separate particle–wall adhesion (Ch) | simulation | Planned (§4.B4–B5); wall-adhesion caveat added to §2.6 |
+| 12 | Full emulator / likelihood / discrepancy specification, posterior predictive checks (Ch, Br) | analysis | Planned (§4.B5) |
+| 13 | Validate coarse-graining in the narrow outlet (Ch, Co) | simulation | **Added to plan**; not done |
+| 14 | Temper AM claims ("no extra cost", "does not fail on cohesive powders", single AlSi10Mg dose) (editor, Co) | writing | **Done** throughout |
+| 15 | Fix Fig. 6a fine-Si caption, screening overshoot counts, Fig. 5a speed labels, quantitative DEM residuals (all) | writing | **Done** |
+| 16 | SI tables: per-dose campaign table, feed-factor curves, property table, DEM inputs and runs (all) | writing | Still to make (§3, SI row) |
+| 17 | Table mapping every statistical model to the Elsevier ML rubric (editor, Br, Ch) | writing | Still to make |
+| 18 | Separate the AI agent's role from the optimizer's (Br, editor) | writing | **Done** in §2.4 |
+
+Also done from the minor comments: El Kassem et al. (KONA 2021, DEM calibration from auger-dosing
+experiments) cited as the closest precedent in the Introduction; "no fitted parameters" rephrased as "no
+parameters fitted to dosing data"; the stopping band is described as symmetric (±δ); the abstract states
+that 14 of the 42 doses were chosen by the optimizer; a table of fingerprint descriptors (units,
+replicates, status) added; Spearman ρ now reported with a bootstrap interval and a Bonferroni-adjusted p.
+Still open from the minor comments: supplier/lot/storage history in Table 1; label stage-transition masses
+in Fig. 1a; an image or sieve result for the clogged Al 4047; CPU model for the DEM timings; outlet mesh
+resolution and leak checks; units and uncertainty for tap quantum and τ_af in a table.
 
 ## 5. Sources mined for this draft
 
