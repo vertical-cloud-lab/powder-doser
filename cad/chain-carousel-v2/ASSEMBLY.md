@@ -1,229 +1,240 @@
-# Assembly: chain-carousel test rig
+# Assembly: chain-carousel test rig v2 (vertical twin chain)
 
-Twelve steps in build order, then the test set-up. In each render the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The same order is the Onshape assembly's tree (`01 Frame` ... `12 Electronics board`).
+Eleven steps in build order, then the test set-up. In each render the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The same order is the Onshape assembly's tree (`01 Base frame` ... `11 Electronics board`).
 
-Tools: chain breaker (BOM item 3), metric hex keys, 8 mm and 1/2 in wrenches, drill + countersink, 3-1/8 in hole saw, jigsaw, soldering iron, heat-set insert tip, feeler gauges.
+Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for the 2020 and the shafts, soldering iron, heat-set insert tip, feeler gauges.
 
-## Step 1. Frame: long rails, cross members, corner brackets
+## Step 1. Base frame: rails, corner brackets, leveling feet
 
 ![Step 1](renders/steps/step_01.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 11 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 2 bars whole (rails), 7 cut to 690 (cross members), 4 legs of 230 from the offcuts |
-| 12 | 28 | 2020 90-degree corner bracket |
-| 13 | 56 | M5 x 10 button head screw for the brackets (2 per bracket) |
-| 14 | 84 | M5 drop-in T-nut, 2020 slot 6 (brackets + deck screws) |
+| 15 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 541 mm, 4 long rails of 417.7 mm, 4 cross rails of 204 mm (5 bars) |
+| 18 | 56 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet) |
+| 19 | 4 | Leveling foot, M5 stud, into a T-nut in the base rail's bottom slot |
 
-The frame uses one VEVOR 10-pack of 1000 mm 2020 bars: 2 whole bars are the long rails, 7 are cut
-to 690 mm for the cross members, and 4 legs of 230 mm come from the offcuts. Lay the rails parallel,
-710 mm apart centre to centre. Put the cross members between them at 10, 236.6, 396.6, 560, 580, 780
-and 990 mm from the **drive end** of the rails:
+The frame uses half of one VEVOR 10-pack of 1000 mm 2020 bars. Cut four posts of 541 mm, four long
+rails of 417.7 mm (one post and one long rail come out of each of four bars) and four cross rails of
+204 mm (all four from a fifth bar). Square every cut.
 
-- the pair at 236.6 and 396.6 box in the motor plate;
-- the touching pair at 560 and 580 carry the seam between the two deck sheets, one sheet edge each.
+Lay two long rails on the bench, 224 mm apart centre to centre, and put a cross rail between them at
+each end, flush with the rail ends. Screw the four leveling feet up into drop-in T-nuts in the long rails'
+bottom slots, 15 mm in from each end. The cross rails are held by the post brackets in step 2, so leave them
+loose for now.
 
-Join each cross member to both rails with a corner bracket in each inside corner. The end members
-only get brackets on their inner side. Use M5 x 10 button heads into drop-in T-nuts, snug. Square the
-frame by its diagonals (equal within 1 mm), then tighten.
-
-## Step 2. Legs and leveling feet
+## Step 2. Posts and top frame
 
 ![Step 2](renders/steps/step_02.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 11 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 2 bars whole (rails), 7 cut to 690 (cross members), 4 legs of 230 from the offcuts |
-| 12 | 28 | 2020 90-degree corner bracket |
-| 13 | 56 | M5 x 10 button head screw for the brackets (2 per bracket) |
-| 15 | 4 | Leveling foot, M5 stud (into the leg's centre bore, tapped M5) |
+| 15 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 541 mm, 4 long rails of 417.7 mm, 4 cross rails of 204 mm (5 bars) |
+| 16 | 16 | 2020 90-degree corner bracket |
+| 17 | 32 | M5 x 10 button head screw for the brackets (2 per bracket) |
+| 18 | 56 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet) |
 
-Hang a 230 mm leg under each rail end with two corner brackets: one to the rail's underside, one to
-the end cross member's underside. Tap each leg's 4.2 mm centre bore M5 at the bottom and screw in
-an M5 leveling foot. Level the frame on the bench.
+Stand a post on each end of the long rails (the cross rails butt against them underneath). Each post
+gets four corner brackets: at its foot, one on the long rail's top on the inner side and one on the cross
+rail's top; at its head, the same two under the top rails. Use M5 x 10 button heads into drop-in T-nuts.
+Put the two top long rails and two top cross rails on the posts the same way as the base, then square the
+box by its diagonals (equal within 1 mm) and tighten.
 
-## Step 3. NEMA 34 on its motor plate
+Don't put brackets on the posts' inner x faces between 180 and 555 mm: the side plates sit there.
+
+## Step 3. Side plates onto the posts
 
 ![Step 3](renders/steps/step_03.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 6 | 1 | NEMA 34 closed-loop stepper 34HS59-6004D-E1000, 12 N*m, 6 A, 14 mm x 37 mm keyed shaft |
-| 8 | 1 | Motor plate, 6061 aluminium 1/4 in, 140 x 140, from dxf/motor_plate.dxf (pilot bore, 4 x M5 tapped) |
-| 20 | 4 | M5 x 12 socket head screw (motor flange into the M5-tapped plate) |
+| 18 | 56 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet) |
+| 20 | 2 | Side plates, 1/4 in 6061: front 244 x 375 mm, back 244 x 485 mm, both from one 12 x 36 in plate; cut and drilled from dxf/ (BYU shop, or SendCutSend: price on upload) |
+| 21 | 20 | M5 x 12 button head screw (side plates to the posts' T-nuts) |
 
-Make the motor plate from [`dxf/motor_plate.dxf`](dxf/motor_plate.dxf): 1/4 in 6061, 140 x 140 mm, a 73.5 mm
-pilot bore (hole saw or the shop's lathe), 4 x M5 tapped holes on the 69.6 mm square, and 4 x 5.5 mm corner
-holes for the screws that hang it from the deck. Bolt the NEMA 34 up against the plate's underside: shaft
-up, pilot in the bore, 4 x M5 x 12 through the motor flange into the tapped holes. The screws must not
-stand proud of the plate's top face. The 34HS59 is 169 mm long and weighs about 6 kg; it hangs 190 mm
-below the deck.
+Have the two side plates cut from one 12 x 36 in sheet of 1/4 in 6061 (`dxf/side_plate_front.dxf`,
+`dxf/side_plate_back.dxf`, by the BYU shop or SendCutSend). The front plate is 244 x 375 mm. The back
+plate runs down to 70 mm above the bench, 244 x 485 mm, because it carries the motor.
+Tap the four M5 holes under the top bearing slots on each plate.
 
-## Step 4. Deck onto the frame; motor plate up into the deck
+Bolt each plate to the inner faces of its two posts with M5 x 12 button heads from the inside into drop-in
+T-nuts: four per post at the front, six at the back. Set the front plate's bottom edge 180 mm above the
+bench and the back plate's 70 mm; blocks on the base rails hold them while you tighten. The plates'
+inner faces end up 365 mm apart, 30 mm outside each chain.
+
+## Step 4. Flange bearings and top-shaft tensioners on the side plates
 
 ![Step 4](renders/steps/step_04.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 14 | 84 | M5 drop-in T-nut, 2020 slot 6 (brackets + deck screws) |
-| 16 | 2 | HDPE sheet 1/2 x 24 x 48 in, white; one per deck half (455 and 595 x 740 mm) |
-| 21 | 28 | M5 x 18 flat head (countersunk) screw, deck to frame T-nuts |
-| 22 | 6 | M5 x 25 flat head screw (motor plate and slider clamps, through the deck) |
-| 18 | 7 | M5 nylock nut (motor plate, slider clamps, jack screw) |
+| 8 | 8 | 2-bolt stamped-steel flange bearing SBSFL202-10: 5/8 in bore, set screws, 2-1/2 in bolt centres, 1/4 in bolts |
+| 10 | 16 | Hex bolt 1/4-20 x 1 in + nylock nut (bearings to the side plates) |
+| 27 | 8 | M5 x 10 socket head screw (tensioner blocks, into tapped holes in the plates) |
+| 28 | 4 | M5 x 30 socket head screw + hex nut (tensioner jack screws) |
+| 30 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
 
-The deck is two 1/2 in HDPE sheets, both cut from 24 x 48 in stock to a 740 mm width: the idler half
-is 455 mm long, the drive half 595 mm. They butt together over the touching pair of cross members at
-560/580 mm from the drive end, and each sheet screws into its own member. Print
-[`dxf/deck_left.dxf`](dxf/deck_left.dxf) and [`dxf/deck_right.dxf`](dxf/deck_right.dxf) at 1:1, tape them on and mark out.
-Cut the 80 mm drive hole (3-1/8 in hole saw), the idler slot (22 x 34 mm), the station window
-and the two 11.8 mm sensor holes. Drill and **countersink every screw hole so the heads sit 0.3 mm
-below the surface**, because the carriage skids slide over them. Lay both halves on the frame and screw
-them down with M5 x 18 flat heads into drop-in T-nuts in the rails and cross members. Then lift the
-motor plate into its box under the drive hole and fix it with 4 x M5 x 25 flat heads from the top,
-with nylock nuts underneath.
+Mount the eight SBSFL202-10 flange bearings on the plates' outer faces, bolt line horizontal, with
+1/4-20 x 1 in bolts and nylock nuts. Each bearing's rear dome sits in its plate's 49 mm hole. The four bottom
+bearings are fixed; their shafts are 258.6 mm above the bench. Put the four top bearings at the bottom of their
+slots, 6 mm below the nominal 487.2 mm, which leaves room to fit the chains in step 7.
+Snug those bolts only.
 
-## Step 5. Idler: slider, stud, spacer, idler sprocket, tensioner
+Under each top bearing, screw a printed tensioner block to the plate (two M5 x 10 into the tapped holes).
+Drop an M5 nut into the block's slot and run an M5 x 30 jack screw up through it until it touches the
+underside of the bearing's front dome.
+
+## Step 5. Corner shafts with their sprockets (set screws loose)
 
 ![Step 5](renders/steps/step_05.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 5 | 1 | Idler sprocket #35 19T with ball bearing, 1/2 in bore |
-| 17 | 1 | Idler stud: 1/2-13 x 2-1/2 in hex bolt, Grade 5, with a 1/2-13 nylock nut and a washer |
-| 22 | 6 | M5 x 25 flat head screw (motor plate and slider clamps, through the deck) |
-| 18 | 7 | M5 nylock nut (motor plate, slider clamps, jack screw) |
-| 23 | 1 | M5 x 40 socket head screw (tensioner jack screw) |
-| 24 | 2 | M4 x 20 flat head screw (tensioner block, down from the deck into the PETG) |
-| 30 | 3 | Idler slider, spacer and tensioner block, PETG (print the spacer to suit the idler's measured width) |
+| 4 | 8 | Sprocket 35BS32-5/8: 32T, type B, 2 in hub, 7/8 in through the bore, 5/8 in bore, 3/16 in keyway, 2 set screws |
+| 7 | 1 | Keyed shafting, 5/8 in x 72 in, 1018 cold-drawn, 3/16 in keyway: cut 3 x 403 mm + 1 x 427 mm (the drive shaft) |
+| 9 | 1 | Key stock 3/16 x 3/16 in, 12 in (keys for the 4 front sprockets and the 15T on the shaft) |
 
-Measure the idler sprocket's width through its bearing, W. Print the spacer with height
-12.7 + 5.4 - W/2 mm, which puts the tooth ring at the chain's centre plane, 5.4 mm
-above the deck. The model uses W = 9.65 mm, the 35BB19H figure.
+Cut the 72 in keyed bar into three shafts of 402.9 mm and one of 427.3 mm. The long
+one is the drive shaft and goes in the bottom +y corner (B+). Each shaft carries two sprockets. Feed it through
+the front bearing, slide on the front sprocket with its hub toward the front, then the back sprocket with its
+hub toward the back, and push the shaft on through the back bearing.
 
-1. From below: put the printed slider under the idler slot with the 1/2-13 bolt up through it and
-   the slot. Clamp it with the two M5 x 25 flat heads through the deck, finger-tight for now.
-2. From above: the spacer, the idler sprocket, a washer and the nylock nut. Make it snug: the bearing
-   turns, not the bolt.
-3. Screw the tensioner block to the deck's underside with two M4 x 20 flat heads from the top, and
-   trap an M5 nut in it.
-4. Thread the M5 x 40 jack screw through the block until it touches the slider's face. The slider
-   has 12 mm of travel.
+Centre each sprocket's teeth on its chain line, 305 mm apart, with the front one 30 mm inside the
+front plate. A 30 mm spacer block between the plate and the tooth ring sets it. Key the front sprocket and
+tighten its set screws. Leave the back one's key out and its set screws loose: the carriages set its
+phase in step 8. Tighten the bearings' set screws on the shaft. The drive shaft sticks out of the back
+bearing by 24 mm for the drive chain.
 
-## Step 6. Drive sprocket on the motor shaft
+## Step 6. NEMA 34 on the back plate, 15T sprockets, drive chain
 
 ![Step 6](renders/steps/step_06.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 4 | 1 | Sprocket 35B19, 19T ANSI 35, B hub, stock bore; shop bores it to 14 mm H7 + 5 mm keyway |
-| 7 | 1 | Key 5 x 5 x 25 mm (ships in the motor's keyway) |
+| 1 | 1 | ANSI #35 roller chain, 10 ft roll (320 pitches, 1 connecting link): two 104-link loops + the 44-link drive chain |
+| 3 | 1 | Roller chain breaker, #25-#60 (Dura-Roll #1) |
+| 5 | 1 | Sprocket 35BS15H-5/8: 15T, 5/8 in bore, 3/16 in keyway (drive chain, on the B+ shaft's stub) |
+| 6 | 1 | Sprocket 35BS15H-1/2: 15T, 1/2 in bore; shop re-bores it to 14 mm H7 with a 5 mm keyway for the NEMA 34 |
+| 9 | 1 | Key stock 3/16 x 3/16 in, 12 in (keys for the 4 front sprockets and the 15T on the shaft) |
+| 11 | 1 | NEMA 34 closed-loop stepper 34HS59-6004D-E1000, 12 N*m, 6 A, 14 mm x 37 mm keyed shaft |
+| 14 | 4 | M5 x 25 socket head screw + nylock nut (motor flange to the back plate, in slots) |
 
-Have the 35B19 bored to 14 mm H7 with a 5 mm keyway (BYU machine shop). Check that the key is in
-the motor shaft, then slide the sprocket on **hub down**, into the deck hole. Set the tooth ring's
-mid-plane 5.4 mm above the deck: rest a 3.3 mm shim under the tooth ring, tighten both set
-screws (one over the key), and remove the shim. The 37 mm shaft stands about 10 mm above the sprocket.
+Have the shop re-bore the 35BS15H-1/2 sprocket to 14 mm H7 and broach a 5 mm keyway, then slide it onto
+the NEMA 34's shaft, hub outward, over the key. Offer the motor up to the back plate's **inner** face from inside
+the frame, with its pilot in the plate's slot and the shaft and sprocket out the back. Bolt it on with four
+M5 x 25 from outside and nylock nuts on the flange. The motor's axis is 120.5 mm above the bench, right
+under the drive shaft. It is 6 kg, so support it while you fit the bolts.
 
-## Step 7. Hall sensors (index, home) into the deck
+Key the 35BS15H-5/8 sprocket onto the drive shaft's stub, hub outward, in line with the motor's sprocket:
+both tooth rings sit 20.1 mm outside the plate. Cut 44 pitches from the 10 ft roll and close
+them round both sprockets with the roll's connecting link. Pull the motor down in its slots (+-4 mm) until
+the chain has about 2 mm of play at mid-span, then tighten its bolts.
+
+## Step 7. Chains: 12 A-1 links per chain, close both loops
 
 ![Step 7](renders/steps/step_07.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 32 | 2 | Hall sensor holder, PETG |
-| 33 | 2 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME |
+| 1 | 1 | ANSI #35 roller chain, 10 ft roll (320 pitches, 1 connecting link): two 104-link loops + the 44-link drive chain |
+| 2 | 26 | #35 A-1 attachment connecting link, spring clip, 0.133 in hole (M3): 13 per chain |
+| 3 | 1 | Roller chain breaker, #25-#60 (Dura-Roll #1) |
 
-Solder 30 cm leads to the two US5881 sensors. Push each into its printed holder, face up, and press the
-holders into the sensor holes from below so the sensor face sits 0.8 mm under the deck surface.
-The one on the drive side (+X in the carriage frame) is INDEX; the other is HOME. Both run on 5 V,
-and their open-drain outputs get 10k pull-ups to 3.3 V.
+**First measure the chain** (see the BoM note): about 4.78 mm between the inner plates and a 5.08 mm
+bushing means ANSI 35, which is what the sprockets are.
 
-## Step 8. Chain: 12 A-1 attachment links every 8 pitches, close the loop, tension
+Cut two loops of 104 pitches from the 10 ft roll with the chain breaker (the drive chain in step 6 used
+another 44). In each, take out an outer link
+every 8 pitches and fit an A-1 attachment connecting link in its place, 13 per chain. On the front chain
+the tabs point back (+x, toward the other chain); on the back chain they point forward. Number the A-1
+links 1-13 the same way on both chains.
+
+Wrap each chain round its four sprockets with the tabs on the outside of the loop, then close it with its
+13th A-1 link. Each spring clip's closed end points the way the chain travels. The chains hang slack,
+because the top shafts are still at the bottom of their slots.
+
+## Step 8. Carriages across both chains; phase and tension
 
 ![Step 8](renders/steps/step_08.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 1 | 1 | ANSI #35 roller chain, 3 ft (96 pitches) + 2 connecting links (now listed as AZSSMUK) |
-| 2 | 12 | #35 A-1 attachment connecting link (bent tab, 0.10 in hole, M2.5); buy a 10-pack + a 5-pack |
-| 3 | 1 | Chain breaker CB25/60 (#25-#60) |
+| 22 | 26 | M3 x 6 button head screw (carriage to each A-1 tab) |
+| 23 | 26 | M3 x 4 heat-set insert (CNC Kitchen short), two per carriage |
+| 29 | 13 | Carriage, PETG (H2D, on the bed's diagonal; about 100 g each) |
+| 34 | 14 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home) |
 
-**First measure the chain** (see the BoM note): about 4.78 mm between the inner plates and a 5.08 mm
-bushing means ANSI 35, which is what the sprockets are. Lay it round both sprockets to check the
-length: 96 pitches, both spans tight with the idler slid fully in.
+Print 13 carriages in PETG on the H2D, outer face down, laid on the bed's diagonal (each is
+351 mm long). Use 0.2 mm layers, 4 walls and 30% gyroid. On each carriage:
 
-With the chain breaker, take out **11 riveted outer links, one every 8 pitches**. Fit an A-1
-attachment connecting link in each gap, **tab up and on the outside of the loop**, then close the
-loop with the 12th A-1 link. Each spring clip's closed end points the way the chain travels
-(counter-clockwise seen from above).
+1. Melt an M3 heat-set insert into each end, under where the A-1 tab sits.
+2. Glue a 1/4 x 1/8 in magnet, **south pole up**, into the front tongue's pocket (INDEX).
+3. On carriage 1 only, glue a second one into the back tongue's pocket (HOME).
 
-Back the jack screw out until the mid-span deflection is 3-4 mm under a 5 N side push (TEST-PLAN
-T1), then tighten the slider clamps.
+Turn the drive shaft by hand until A-1 link 1 on both chains is on the bottom run, then lay carriage 1
+under the two tabs and screw it on with two M3 x 6 button heads, one through each tab. Index on and fit
+the other twelve. The carriages now lock the chains in phase. Tighten the back sprockets' set screws on the
+round of the shaft and spot a dimple under each.
 
-## Step 9. Carriages: inserts and magnets, then bolt each to its A-1 tab
+To tension, turn the four jack screws the same amount until each long side deflects 3-4 mm under a 5 N
+side push at mid-span. Do the front and back together, so the top shafts stay level. Then tighten the top
+bearings' bolts.
+
+## Step 9. Station: hold-downs and hall switches
 
 ![Step 9](renders/steps/step_09.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 25 | 12 | M2.5 x 8 button head screw (carriage to A-1 tab, through the 0.10 in hole) |
-| 26 | 12 | M2.5 heat-set insert (CNC Kitchen), in each carriage's inner wall |
-| 29 | 12 | Carriage, PETG (H2D bed; about 125 g each) |
-| 34 | 13 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (12 index + 1 home) |
+| 25 | 4 | M5 x 16 socket head screw (hold-downs, through the side plates) |
+| 26 | 4 | M5 heat-set insert (hold-downs) |
+| 30 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
+| 33 | 2 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME |
 
-Print 12 carriages in PETG on the H2D: skids down, 0.2 mm layers, 4 walls, 30% gyroid, about 125 g
-each. Then, on each one:
+Melt two M5 heat-set inserts into the plate-side face of each printed hold-down. Push a US5881 hall
+switch into each lip's pocket, flat (branded) face down, and lead the wires out of the top. The front
+switch is INDEX and the back one is HOME.
 
-1. Melt an M2.5 heat-set insert into the inner wall.
-2. Glue a 1/4 x 1/8 in magnet, **south pole down**, into the +X pocket under the inner skid (INDEX).
-3. On carriage 1 only, glue a second magnet into the -X pocket (HOME).
-4. Write the carriage number on a rib.
+With carriage 1 at the station, hold each hold-down against its plate's inner face with its C round the
+carriage's tongue, and screw it on from outside with two M5 x 16. The holes are slotted, so set the lip
+0.5 mm over the tongue with a feeler gauge before tightening. Then index all 13 carriages through by
+hand. Each tongue must slide into both C's without catching.
 
-Stand each carriage on the deck against its A-1 tab and screw it on from the chain side with an
-M2.5 x 8 button head through the tab's 0.10 in hole. Carriage 1 goes on the A-1 link that sits over
-the sensors when the chain is at home.
-
-## Step 10. Station hold-down blocks
+## Step 10. Modules: Sam's plate, auger and cap on every carriage
 
 ![Step 10](renders/steps/step_10.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 27 | 4 | M4 x 25 socket head screw, each into an M4 drop-in T-nut in the front rail (hold-downs) |
-| 31 | 2 | Hold-down block, PETG |
+| 24 | 26 | M5 x 10 flat head (countersunk) screw: hinge pins, two per module |
+| 31 | 12 | Auger blank, PETG (the auger's outside, hollow; fill with salt to about 200 g per module) |
+| 32 | 12 | Mounting plate (Sam's Oct 8 Onshape part) and auger cap (PR #170), printed for modules 2-13 |
+| 41 | 1 | Module 1: mounting plate (Sam's Oct 8 Onshape design), printed |
+| 42 | 1 | Module 1: auger, threaded storage, and cap (lab design, PR #170) |
+| 43 | 1 | Electronics carriage (Sam's Oct 8), shown docked at the station for reference |
 
-Bolt the two hold-down blocks to the front rail at the station: M4 x 25 screws into M4 drop-in T-nuts in
-the rail's top slot, through the deck. Slide carriage 1 under them by hand. With a feeler gauge, set
-each lip 0.5 mm above the tongue before tightening. Then index every carriage in and check its tongue
-slides under the lips without catching.
+Module 1 is the lab's: Sam's Oct 8 mounting plate holding the lab auger (threaded storage + cap). The
+44T gear sits in the 10.1 mm gap between his second and third clamp rings, with the outlet end at the
+hinge. Modules 2-13 are stand-ins of the same size and mass: a printed mounting plate (Sam's Onshape
+part), a printed auger blank (stl/auger_blank.stl: the auger's outside, hollow) filled with table salt to
+about 200 g in all, and a printed cap.
 
-## Step 11. Module 1: Sam's mounting plate, auger and cap on carriage 1
+Put each plate between its carriage's lugs, hinge end at the front, and pin it with two M5 x 10 flat
+heads through the lugs into the knuckle. Then press the plate's free end down past the two snap hooks.
+The hooks hold it shut on the top run, where it hangs upside down. The hinge axis is 33 mm behind
+the front chain and 11.65 mm inside the chain line.
+
+Sam's electronics carriage is shown docked under module 1 at the station. It belongs to the station
+(linear actuator not yet designed), not to this rig.
+
+## Step 11. Electronics board: supply, driver, Pi, interface board, e-stop
 
 ![Step 11](renders/steps/step_11.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 28 | 2 | M5 x 18 socket head screw + nylock nut (module 1 hinge pins, one per side) |
-| 41 | 1 | Mounting plate (Sam's Oct 8 Onshape design), printed |
-| 42 | 2 | Auger, threaded storage, and cap (lab design, PR #170) |
-
-Module 1 is the hardware the lab already has: Sam's Oct 8 mounting plate holding the lab auger
-(threaded storage + cap). The 44T gear sits in the 10.1 mm gap between his second and third clamp
-rings, with the outlet end at the hinge.
-
-Put the plate between carriage 1's lugs, hinge end outward. Pin each side with an M5 x 18 socket
-head through the lug into the plate's knuckle, with a nylock nut. A single through-pin would cross
-the auger's outlet end. Leave the nuts snug but free, so the plate drops onto its rest posts under
-its own weight. The hinge axis is 276 mm out from the chain line and 28 mm above the
-deck. The gear hangs in the carriage window, and the cap end stops 20 mm short of the chain.
-
-## Step 12. Electronics board: supply, driver, Pi, interface board, e-stop
-
-![Step 12](renders/steps/step_12.png)
-
-| # | Qty | Part |
-|---|---|---|
-| 9 | 1 | Closed-loop stepper driver CL86T V4.1 (24-80 VDC, 5 V/24 V logic selector) |
-| 10 | 1 | Power supply Mean Well LRS-350-48 (48 V, 7.3 A) |
+| 12 | 1 | Closed-loop stepper driver CL86T V4.1 (24-80 VDC, 5 V/24 V logic selector) |
+| 13 | 1 | Power supply Mean Well LRS-350-48 (48 V, 7.3 A) |
 | 35 | 1 | Raspberry Pi Zero 2 W (or any spare Pi that runs pigpio) |
 | 36 | 1 | Interface board: 74AHCT125 (3.3 V GPIO to 5 V step/dir/enable), 3 x 10k pull-ups to 3.3 V, screw terminals, perfboard |
 | 37 | 1 | E-stop GCX1136 (22 mm, NC, twist to release) + enclosure; breaks the 48 V feed to the driver |
@@ -231,7 +242,7 @@ deck. The gear hangs in the carriage window, and the cap end stops 20 mm short o
 | 39 | 1 | IEC C14 inlet with switch + fuse drawer (Qualtek 719W-UEL3BR51) |
 | 40 | 1 | 18 AWG stranded hook-up wire, 25 ft (48 V and motor) |
 
-The electronics board sits on the bench beside the drive end. Wire it like this:
+The electronics board sits on the bench behind the rig. Wire it like this:
 
 | From | To |
 |---|---|
@@ -246,20 +257,20 @@ The electronics board sits on the bench beside the drive end. Wire it like this:
 | Pi 3.3 V via 10k | GPIO 23 (INDEX), GPIO 24 (HOME), GPIO 25 (CL86T ALM+; ALM- to GND) |
 | Pi 5 V, GND | Both US5881 VCC, GND; outputs to GPIO 23 / 24 |
 
-The 74AHCT125 is there because a 3.3 V GPIO pin only just reaches the CL86T's 7 mA input minimum. A
-ULN2803 sinking the minus terminals drops about 1 V, which would put it at the same limit.
+Run the hall-switch leads down the front and back plates' inner faces in adhesive cable clips, clear of
+the tongues.
 
 Set the CL86T DIP switches to 4000 pulses/rev and the motor current to 6.0 A. Run `sudo pigpiod`, then
-`python3 test/chain_rig.py --sim lap` to check the software and `python3 test/chain_rig.py home` to
-check the hardware.
+`python3 test/chain_rig.py --sim lap` to check the software and `python3 test/chain_rig.py home` to check the
+hardware. At 4000 pulses/rev one module is exactly 1000 steps.
 
-## Step 13. Test set-up (not in the CAD)
+## Step 12. Test set-up (not in the CAD)
 
 | # | Qty | Part |
 |---|---|---|
-| 43 | 1 | Digital indicator 0-1 in / 0.01 mm with arm and magnetic base (lift, sag, index tests) |
-| 44 | 1 | Digital hanging scale 50 kg (drag and push-up force; a 50 N push-pull gauge is better if the lab has one) |
-| 45 | 1 | ADXL343 accelerometer breakout (transit vibration) |
-| 46 | 11 | Dummy module mass: 250 g bag of table salt per carriage |
+| 44 | 1 | Digital indicator 0-1 in / 0.01 mm with arm and magnetic base (index, lift, sag tests) |
+| 45 | 1 | Digital hanging scale 50 kg (torque lever, push-up and snap forces; a 50 N push-pull gauge is better if the lab has one) |
+| 46 | 1 | ADXL343 accelerometer breakout (transit vibration) |
+| 47 | 3 | Table salt, 26 oz (fills the 12 auger blanks to working mass) |
 
-Put a 250 g dummy (a salt bag taped to the plate) on carriages 2-12, mount the dial indicator on its magnetic base on a steel plate on the deck at the station, and stick the ADXL345 to module 1's mounting plate near the outlet. Then run [TEST-PLAN.md](TEST-PLAN.md) T0-T7.
+Fill the auger blanks on carriages 2-13 with salt to about 200 g per module. Clamp the dial indicator's magnetic base to a steel plate screwed to the front side plate's inner face beside the station, and stick the ADXL343 to module 1's mounting plate near the outlet. Then run [TEST-PLAN.md](TEST-PLAN.md) T0-T8.

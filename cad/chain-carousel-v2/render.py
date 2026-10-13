@@ -138,7 +138,8 @@ def caption(img: Image.Image, title: str, lines: list[str] = ()) -> Image.Image:
 def front_open(p: L.Placement) -> bool:
     """Hide the front side plate and everything bolted outside it, to look
     straight at the front chain loop."""
-    return p.key == "side_plate_front" or (p.M[0, 3] < -30.5 and p.key not in ("ext_x", "foot", "board_panel"))
+    return (p.key == "side_plate_front" or (p.M[0, 3] < -30.5 and p.key not in ("ext_x", "foot", "board_panel"))
+            or (p.key == "m5x12_bhcs" and p.M[0, 3] < -29.0))
 
 
 HERO = dict(focal=(150, 0, 300), direction=(-0.9, -1.0, 0.55), dist=1750)
@@ -147,10 +148,10 @@ CAMS = {
     "loop": dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1250, hide=front_open),
     "tilt90": dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1250, hide=front_open, tilt=90.0),
     "station": dict(focal=(70, 0, 205), direction=(-1.0, -0.65, -0.32), dist=560, hide=front_open),
-    "corner": dict(focal=(60, 60, 250), direction=(-1.0, -0.25, 0.12), dist=440, hide=front_open),
+    "corner": dict(focal=(70, 80, 245), direction=(-1.0, 0.28, 0.1), dist=470, hide=front_open),
     "side": dict(focal=(250, 0, 300), direction=(0.0001, -1, 0.0001), dist=1900),
-    "back_iso": dict(focal=(260, 0, 290), direction=(1.0, -0.8, 0.5), dist=1850),
-    "drive": dict(focal=(420, 40, 260), direction=(0.55, -1.0, 0.35), dist=820),
+    "back_iso": dict(focal=(230, 0, 290), direction=(1.0, 0.75, 0.45), dist=1700),
+    "drive": dict(focal=(345, 50, 190), direction=(1.0, 0.85, 0.25), dist=640),
     "chain_detail": dict(focal=(4, 10, 204), direction=(-0.75, -1.0, -0.55), dist=210, hide=front_open),
 }
 
@@ -175,11 +176,16 @@ def hero_views(view: View, tag=""):
     return out
 
 
+OPEN_STEPS = (5, 7, 8, 9, 10)          # look at the loop with the front plate and its hardware hidden
+
+
 def step_images(view: View, pl, bom_items: dict[int, list[str]]):
     frames = []
     for s, title in L.STEPS.items():
         view.clear()
         for p in pl:
+            if s in OPEN_STEPS and p.step < s and front_open(p):
+                continue
             if p.step < s:
                 faded = tuple(0.55 + 0.45 * c for c in p.color)
                 view.ren.AddActor(actor(p, faded))
@@ -192,7 +198,6 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
         f = OUT / "steps" / f"step_{s:02d}.png"
         f.parent.mkdir(parents=True, exist_ok=True)
         img.save(f)
-        # assembled state of the step too (offsets removed) for the GIF
         frames.append(img)
     return frames
 
@@ -201,19 +206,15 @@ def step_camera(s: int) -> dict:
     if s in (1, 2, 3):
         return dict(focal=(150, 0, 290), direction=(-0.9, -1.0, 0.6), dist=1900)
     if s == 4:
-        return dict(focal=(150, 0, 330), direction=(-0.9, -1.0, 0.45), dist=1700)
-    if s == 5:
-        return dict(focal=(150, 0, 360), direction=(-0.6, -1.0, 0.35), dist=1500)
+        return dict(focal=(150, 0, 360), direction=(-0.9, -1.0, 0.45), dist=1650)
+    if s in (5, 7, 8, 10):
+        return dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1350)
     if s == 6:
-        return dict(focal=(450, 30, 260), direction=(0.7, -1.0, 0.35), dist=1100)
-    if s in (7, 8):
-        return dict(focal=(150, 0, 370), direction=(-0.9, -1.0, 0.45), dist=1650)
+        return dict(focal=(330, 50, 200), direction=(1.0, 0.85, 0.3), dist=900)
     if s == 9:
-        return dict(focal=(60, 0, 205), direction=(-0.75, -1.0, 0.45), dist=700)
-    if s == 10:
-        return dict(focal=(150, 0, 370), direction=(-0.9, -1.0, 0.45), dist=1650)
+        return dict(focal=(70, 0, 205), direction=(-1.0, -0.65, -0.32), dist=620)
     if s == 11:
-        return dict(focal=(400, 150, 250), direction=(0.3, -1.0, 0.8), dist=2000)
+        return dict(focal=(450, 150, 200), direction=(0.45, 1.0, 0.8), dist=1900)
     return HERO
 
 

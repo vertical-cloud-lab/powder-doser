@@ -12,8 +12,8 @@ from pathlib import Path
 
 import bom
 import layout as L
-from params import (BRG, CHAIN_L, EXT, HINGE_W, HINGE_X, LOOP_A, LOOP_B, N_LINKS, N_MODULES, POST_Y, SIDE_Z,
-                    STANDOFF_L, TENSION_TRAVEL, Z_BOT, Z_RUN, Z_TOP, Z_TOP_RAIL)
+from params import (BRG, CHAIN_L, DRIVE_LINKS, DRIVE_TRAVEL, EXT, HINGE_W, HINGE_X, N_LINKS, N_MODULES, POST_Y, SIDE_Z,
+                    SIDE_Z_BACK, TENSION_TRAVEL, Z_BOT, Z_MOTOR, Z_TOP, Z_TOP_RAIL)
 
 HERE = Path(__file__).resolve().parent
 L_LONG = L.RAIL_X1 - L.RAIL_X0
@@ -36,41 +36,49 @@ Put the two top long rails and two top cross rails on the posts the same way as 
 box by its diagonals (equal within 1 mm) and tighten.
 
 Don't put brackets on the posts' inner x faces between {SIDE_Z[0]:.0f} and {SIDE_Z[1]:.0f} mm: the side plates sit there.""",
-    3: f"""Have the two side plates cut from 1/4 in 6061 (dxf/side_plate_front.dxf, dxf/side_plate_back.dxf;
-SendCutSend or the BYU shop). Tap the four M5 holes under the top bearing slots on each plate. The back plate
-also has the motor's four standoff holes.
+    3: f"""Have the two side plates cut from one 12 x 36 in sheet of 1/4 in 6061 (`dxf/side_plate_front.dxf`,
+`dxf/side_plate_back.dxf`, by the BYU shop or SendCutSend). The front plate is 244 x {SIDE_Z[1] - SIDE_Z[0]:.0f} mm. The back
+plate runs down to {SIDE_Z_BACK[0]:.0f} mm above the bench, 244 x {SIDE_Z_BACK[1] - SIDE_Z_BACK[0]:.0f} mm, because it carries the motor.
+Tap the four M5 holes under the top bearing slots on each plate.
 
 Bolt each plate to the inner faces of its two posts with M5 x 12 button heads from the inside into drop-in
-T-nuts, four per post. Set the plate's bottom edge {SIDE_Z[0]:.0f} mm above the bench (rest it on two
-{SIDE_Z[0] - 35:.0f} mm blocks on the base rails while you tighten). The plates' inner faces end up
-{CHAIN_L + 60:.0f} mm apart, 30 mm outside each chain.""",
-    4: f"""Mount the eight flange bearings on the plates' outer faces, bolt line vertical, with M10 x 30 (or 3/8-16
-x 1-1/4) bolts and nylock nuts. The four bottom bearings are fixed; their shafts are {Z_BOT:.1f} mm above the
-bench. Put the four top bearings at the bottom of their slots, {-TENSION_TRAVEL[0]:.0f} mm below the
-nominal {Z_TOP:.1f} mm, which leaves room to fit the chains in step 7. Snug those bolts only.
+T-nuts: four per post at the front, six at the back. Set the front plate's bottom edge {SIDE_Z[0]:.0f} mm above the
+bench and the back plate's {SIDE_Z_BACK[0]:.0f} mm; blocks on the base rails hold them while you tighten. The plates'
+inner faces end up {CHAIN_L + 60:.0f} mm apart, 30 mm outside each chain.""",
+    4: f"""Mount the eight SBSFL202-10 flange bearings on the plates' outer faces, bolt line horizontal, with
+1/4-20 x 1 in bolts and nylock nuts. Each bearing's rear dome sits in its plate's 49 mm hole. The four bottom
+bearings are fixed; their shafts are {Z_BOT:.1f} mm above the bench. Put the four top bearings at the bottom of their
+slots, {-TENSION_TRAVEL[0]:.0f} mm below the nominal {Z_TOP:.1f} mm, which leaves room to fit the chains in step 7.
+Snug those bolts only.
 
 Under each top bearing, screw a printed tensioner block to the plate (two M5 x 10 into the tapped holes).
 Drop an M5 nut into the block's slot and run an M5 x 30 jack screw up through it until it touches the
-bearing's lower lobe.""",
-    5: f"""Each shaft carries two sprockets. Feed it through the front bearing, slide on the front sprocket with its
-hub toward the front, then the back sprocket with its hub toward the back, and push the shaft on through
-the back bearing. Centre each sprocket's teeth on its chain line: {CHAIN_L:.0f} mm apart, with the front
-one 30 mm inside the front plate. A 30 mm spacer block between the plate and the tooth ring sets it. Snug
-one set screw on each sprocket so the teeth stay put, and leave the rest loose: the carriages set the
-phase between front and back in step 8. Tighten the bearings' own set screws on the shaft.
+underside of the bearing's front dome.""",
+    5: f"""Cut the 72 in keyed bar into three shafts of {L.SHAFT_L:.1f} mm and one of {L.SHAFT_L + L.DRIVE_EXTRA:.1f} mm. The long
+one is the drive shaft and goes in the bottom +y corner (B+). Each shaft carries two sprockets. Feed it through
+the front bearing, slide on the front sprocket with its hub toward the front, then the back sprocket with its
+hub toward the back, and push the shaft on through the back bearing.
 
-The drive shaft (B+, bottom, +y side) is 20 mm longer than the other three and sticks out of the back
-bearing.""",
-    6: f"""Screw four M5 hex standoffs ({STANDOFF_L:.0f} mm) to the back plate around the drive shaft, using M5 x 12
-from inside. Put the jaw coupling's 1/2 in hub on the drive shaft's stub and the 14 mm hub on the motor
-shaft over its key. Offer the NEMA 34 up with the spider between the jaws, and screw its flange to the
-standoffs with four M5 x 20. Leave about 1 mm of float between the jaws, then tighten both hubs.
+Centre each sprocket's teeth on its chain line, {CHAIN_L:.0f} mm apart, with the front one 30 mm inside the
+front plate. A 30 mm spacer block between the plate and the tooth ring sets it. Key the front sprocket and
+tighten its set screws. Leave the back one's key out and its set screws loose: the carriages set its
+phase in step 8. Tighten the bearings' set screws on the shaft. The drive shaft sticks out of the back
+bearing by {L.DRIVE_EXTRA:.0f} mm for the drive chain.""",
+    6: f"""Have the shop re-bore the 35BS15H-1/2 sprocket to 14 mm H7 and broach a 5 mm keyway, then slide it onto
+the NEMA 34's shaft, hub outward, over the key. Offer the motor up to the back plate's **inner** face from inside
+the frame, with its pilot in the plate's slot and the shaft and sprocket out the back. Bolt it on with four
+M5 x 25 from outside and nylock nuts on the flange. The motor's axis is {Z_MOTOR:.1f} mm above the bench, right
+under the drive shaft. It is 6 kg, so support it while you fit the bolts.
 
-The motor is 6 kg on {STANDOFF_L:.0f} mm standoffs. Lift it while you fit it, and don't hang anything else from it.""",
+Key the 35BS15H-5/8 sprocket onto the drive shaft's stub, hub outward, in line with the motor's sprocket:
+both tooth rings sit {L.X_DRV - L.X_BACK_OUT:.1f} mm outside the plate. Cut {DRIVE_LINKS} pitches from the 10 ft roll and close
+them round both sprockets with the roll's connecting link. Pull the motor down in its slots (+-{DRIVE_TRAVEL:.0f} mm) until
+the chain has about 2 mm of play at mid-span, then tighten its bolts.""",
     7: f"""**First measure the chain** (see the BoM note): about 4.78 mm between the inner plates and a 5.08 mm
 bushing means ANSI 35, which is what the sprockets are.
 
-Cut two loops of {N_LINKS} pitches from the 10 ft roll with the chain breaker. In each, take out an outer link
+Cut two loops of {N_LINKS} pitches from the 10 ft roll with the chain breaker (the drive chain in step 6 used
+another {DRIVE_LINKS}). In each, take out an outer link
 every 8 pitches and fit an A-1 attachment connecting link in its place, 13 per chain. On the front chain
 the tabs point back (+x, toward the other chain); on the back chain they point forward. Number the A-1
 links 1-13 the same way on both chains.
@@ -81,13 +89,14 @@ because the top shafts are still at the bottom of their slots.""",
     8: f"""Print {N_MODULES} carriages in PETG on the H2D, outer face down, laid on the bed's diagonal (each is
 {CHAIN_L + 46:.0f} mm long). Use 0.2 mm layers, 4 walls and 30% gyroid. On each carriage:
 
-1. Melt an M2.5 heat-set insert into each end, under where the A-1 tab sits.
+1. Melt an M3 heat-set insert into each end, under where the A-1 tab sits.
 2. Glue a 1/4 x 1/8 in magnet, **south pole up**, into the front tongue's pocket (INDEX).
 3. On carriage 1 only, glue a second one into the back tongue's pocket (HOME).
 
 Turn the drive shaft by hand until A-1 link 1 on both chains is on the bottom run, then lay carriage 1
-under the two tabs and screw it on with two M2.5 x 6 button heads, one through each tab. Index on and fit
-the other twelve. The carriages now lock the chains in phase. Tighten the remaining sprocket set screws.
+under the two tabs and screw it on with two M3 x 6 button heads, one through each tab. Index on and fit
+the other twelve. The carriages now lock the chains in phase. Tighten the back sprockets' set screws on the
+round of the shaft and spot a dimple under each.
 
 To tension, turn the four jack screws the same amount until each long side deflects 3-4 mm under a 5 N
 side push at mid-span. Do the front and back together, so the top shafts stay level. Then tighten the top
@@ -113,7 +122,7 @@ the front chain and {HINGE_W:.2f} mm inside the chain line.
 
 Sam's electronics carriage is shown docked under module 1 at the station. It belongs to the station
 (linear actuator not yet designed), not to this rig.""",
-    11: """The electronics board sits on the bench beside the back of the rig. Wire it like this:
+    11: """The electronics board sits on the bench behind the rig. Wire it like this:
 
 | From | To |
 |---|---|
@@ -177,7 +186,7 @@ def write_assembly(rs: list[dict]) -> None:
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
            "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The same order is the "
            "Onshape assembly's tree (`01 Base frame` ... `11 Electronics board`).", "",
-           "Tools: chain breaker, metric hex keys, 8 and 16 mm (or 9/16 in) wrenches, M5 tap, chop or band saw for "
+           "Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for "
            "the 2020 and the shafts, soldering iron, heat-set insert tip, feeler gauges.", ""]
     for s, title in L.STEPS.items():
         out += [f"## Step {s}. {title}", "", f"![Step {s}](renders/steps/step_{s:02d}.png)", "",

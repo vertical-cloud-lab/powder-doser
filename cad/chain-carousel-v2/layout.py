@@ -420,16 +420,16 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
     # 6. NEMA 34 inside the frame on the back plate's inner face; #35 drive chain up to the B+ shaft's stub
     Rm = cols((0, 1, 0), (0, 0, 1), (1, 0, 0))              # motor z (shaft) -> +x, through the back plate
     xi_b = CHAIN_L + SIDE_GAP
-    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(Rm, (xi_b, LOOP_Y, Z_MOTOR)), 6, DARK, "drive", (0, 0, -150)))
+    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(Rm, (xi_b, LOOP_Y, Z_MOTOR)), 6, DARK, "drive", (-170, 0, 0)))
     for dy in (-1, 1):
         for dz in (-1, 1):
             p = (LOOP_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2)
             add(Placement("m5x25_shcs", "Motor bolt M5x25", T(Ry(math.pi / 2), (X_BACK_OUT, *p)), 6, DARK, "drive", (80, 0, 0)))
-            add(Placement("nut_m5", "Motor nut M5 (nylock)", T(Ry(-math.pi / 2), (xi_b - 12.0, *p)), 6, STEEL, "drive", (-80, 0, -150)))
+            add(Placement("nut_m5", "Motor nut M5 (nylock)", T(Ry(-math.pi / 2), (xi_b - 12.0, *p)), 6, STEEL, "drive", (-120, 0, 0)))
     Rs15 = cols((0, 1, 0), (0, 0, -1), (-1, 0, 0))          # hub outward (+x)
     add(Placement("sprocket_15_motor", "Drive sprocket 15T on the motor (35BS15H-1/2 bored 14 mm)",
                   T(Rs15 @ Rz(-math.pi / N15), (X_DRV, LOOP_Y, Z_MOTOR)), 6,
-                  STEEL, "drive", (80, 0, -150)))
+                  STEEL, "drive", (60, 0, 0)))
     add(Placement("sprocket_15_shaft", "Drive sprocket 15T on the B+ shaft (35BS15H-5/8)", T(Rs15, (X_DRV, LOOP_Y, Z_BOT)), 6, STEEL,
                   "drive", (80, 0, 0)))
     dp = drive_chain_pins()
