@@ -158,6 +158,18 @@ Figures (all built by `figures/make_figures.py` from `data/`):
 14. **Optional idea (@sgbaird, #124):** estimate in-flight mass and feed factor from a single run by data
    assimilation (JAX), which would turn every dose, not just calibration batteries, into a measurement.
 
+15. **Salt campaign caveats to address or state** (from the #166 records): the BO phase was stopped by a
+   CI deadline after 14 of the 30–40 planned doses and the observed hypervolume did not grow during it;
+   the four hand-tuned doses ran at two different τ_afterflow values (two at 0.30 s, two at 0.834 s), so
+   run a matched 8-dose hand-tuned block at the fitted τ; spills were never observed in unattended runs,
+   so "validated" means no jam or overshoot only; time noise is heavy-tailed (centre point 24–391 s),
+   which argues for a robust or heteroscedastic noise model; the screening boxes were never range-found.
+16. **Expected reviewer question:** why multi-objective BO rather than single-objective constrained BO
+   (an Edison methods check on #124 recommended the latter at about 24 trials)? Answer with the
+   Pareto/repeatability argument, or add a single-objective baseline. Novelty support: the 07-07 Edison
+   query on #124 found no published multi-objective or contextual BO of powder-dosing parameters in an
+   SDL setting.
+
 ### C. Writing and submission
 
 - Author list, order and corresponding author (the draft copies the companion paper's six authors with
