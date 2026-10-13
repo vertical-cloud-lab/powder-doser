@@ -8,3 +8,4 @@
 *.fls
 *.fdb_latexmk
 __pycache__/
+mock_review/inputs/main.pdf
