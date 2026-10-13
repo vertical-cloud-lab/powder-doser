@@ -3,48 +3,48 @@
  "schema_version": 1,
  "powder_id": "salt",
  "latest_campaign": {
-  "campaign_id": "salt-20260929T014732Z",
-  "variant": "three-stage",
+  "campaign_id": "salt-margin-20261013T191339Z",
+  "variant": "three-stage-margin",
   "simulate": false,
   "target_g": 0.5,
-  "status": "validated",
+  "status": "finished",
   "phase": "bo",
-  "iteration": 60,
-  "bo_iteration": 14,
+  "iteration": 27,
+  "bo_iteration": 6,
   "progress": {
    "screen": [
-    22,
-    22
+    16,
+    16
    ],
    "recenter": [
-    6,
-    6
+    0,
+    0
    ],
    "bo": [
-    14,
+    6,
     200
    ],
-   "validation": 18
+   "validation": 0
   },
   "last_dose": {
-   "trial_index": 59,
-   "label": "val-corner-09-07",
-   "mode": "validation",
-   "trial_uuid": "76243c26-df08-4df4-82d5-0d4772ca1017",
-   "status": "ok",
-   "t_total_s": 355.88,
-   "abs_error_mg": 2.8,
-   "jam": false,
+   "trial_index": 26,
+   "label": "bo-005",
+   "mode": "bo",
+   "trial_uuid": "62176669-e3e9-449d-9bc1-b8b8edc50bb9",
+   "status": "stalled",
+   "t_total_s": 472.9,
+   "abs_error_mg": 13.0,
+   "jam": true,
    "spill": null,
    "void": null,
-   "utc": "2026-10-06T04:20:38.188494+00:00"
+   "utc": "2026-10-13T21:22:08.008121+00:00"
   },
   "in_flight": null,
   "tau_afterflow_s": 0.8338,
-  "state_dir": "data/opt/salt-20260929T014732Z",
-  "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-20260929T014732Z --host <user>@<zero-hostname>"
+  "state_dir": "data/opt/salt-margin-20261013T191339Z",
+  "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-margin-20261013T191339Z --host <user>@<zero-hostname>"
  },
- "updated_utc": "2026-10-06T04:20:38.648927+00:00",
+ "updated_utc": "2026-10-13T21:23:27.116413+00:00",
  "tau_afterflow": {
   "tau0_s": 0.8338,
   "tau1_s_per_gps": null,

@@ -1,0 +1,138 @@
+{
+ "campaign_id": "salt-margin-20261013T191339Z",
+ "observed_feasible_front": [
+  {
+   "t_total_s": 28.44,
+   "abs_error_mg": 3.1,
+   "label": "corner-03",
+   "mode": "screen",
+   "params": {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  },
+  {
+   "t_total_s": 53.56,
+   "abs_error_mg": 1.0,
+   "label": "corner-05",
+   "mode": "screen",
+   "params": {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  },
+  {
+   "t_total_s": 91.9,
+   "abs_error_mg": 0.4,
+   "label": "bo-001",
+   "mode": "bo",
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.014172576541771426,
+    "tau_afterflow_s": 0.8338
+   }
+  }
+ ],
+ "model_pareto": [
+  {
+   "trial_index": 33,
+   "label": "salt-20260929T014732Z/bo-005",
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.035
+   },
+   "predicted_means": {
+    "abs_error_mg": 1.7610295554218638,
+    "t_total_s": 129.07659823320563
+   }
+  },
+  {
+   "trial_index": 38,
+   "label": "salt-20260929T014732Z/bo-010",
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "cutoff_margin_g": 0.035
+   },
+   "predicted_means": {
+    "abs_error_mg": 11.108668088362846,
+    "t_total_s": 125.90804381759204
+   }
+  },
+  {
+   "trial_index": 31,
+   "label": "salt-20260929T014732Z/bo-003",
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.035
+   },
+   "predicted_means": {
+    "abs_error_mg": 1.2891857498475083,
+    "t_total_s": 157.44846584010747
+   }
+  },
+  {
+   "trial_index": 6,
+   "label": "salt-20260929T014732Z/corner-05",
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.035
+   },
+   "predicted_means": {
+    "abs_error_mg": 0.8143372356756942,
+    "t_total_s": 159.72585386243216
+   }
+  }
+ ],
+ "baseline": null,
+ "reference": "check point bo-005 at 35 mg",
+ "front_points_beating_baseline": []
+}
