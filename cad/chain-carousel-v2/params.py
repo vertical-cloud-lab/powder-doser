@@ -26,7 +26,7 @@ W_IN = 4.78          # width between inner plates (0.188")
 PLATE_T = 1.27       # 0.050"
 PLATE_H = 9.0        # plate height, 0.354"
 PIN_HEAD = 0.45      # riveted pin end beyond the outer plate
-N_LINKS = 96         # per chain: one 3 ft box each, closed with one of its two connecting links
+N_LINKS = 104        # per chain, cut from a 10 ft roll (two loops use 208 of its 320 links)
 INNER_W = W_IN + 2 * PLATE_T              # 7.32, inner link across the plates
 OUTER_GAP = INNER_W + 0.05                 # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T          # 9.91
@@ -57,11 +57,12 @@ HUB_D = 63.5         # 35B32 hub, 2-1/2 in
 LTB = 25.4           # length through bore, 1 in
 SPROCKET_BORE = 12.7  # 1/2 in finished bore, set screws over a flat
 
-# --- loop: four sprockets on a rectangle, 96 links ---
-LOOP_B = 8 * P       # 76.2  horizontal centre distance (bottom and top runs: 8 links)
-LOOP_A = 24 * P      # 228.6 vertical centre distance (the two sides: 24 links)
-assert 2 * (8 + 24) + N_TEETH == N_LINKS            # closes exactly: 16 + 48 + 32
-LOOP_Y = LOOP_B / 2  # corner shafts at y = +-38.1
+# --- loop: four sprockets on a rectangle, 104 links ---
+LOOP_M, LOOP_N = 12, 24  # links on the bottom/top runs and on each side
+LOOP_B = LOOP_M * P  # 114.3 horizontal centre distance: 32T tips (102.4 OD) clear by 11.9 mm
+LOOP_A = LOOP_N * P  # 228.6 vertical centre distance: room to tilt module 1 to 90 deg
+assert 2 * (LOOP_M + LOOP_N) + N_TEETH == N_LINKS   # closes exactly: 24 + 48 + 32
+LOOP_Y = LOOP_B / 2  # corner shafts at y = +-57.15
 Z_RUN = 210.0        # bottom run's pitch line above the bench: room for the station under it
 Z_BOT = Z_RUN + R    # bottom corner shafts
 Z_TOP = Z_BOT + LOOP_A                               # top corner shafts (as built, before tensioning)
@@ -69,7 +70,7 @@ CHAIN_L = 305.0      # front chain -> back chain, centre plane to centre plane
 
 # --- modules ---
 MODULE_LINKS = 8                                      # 8 pitches = 76.2 mm
-N_MODULES = N_LINKS // MODULE_LINKS                   # 12
+N_MODULES = N_LINKS // MODULE_LINKS                   # 13
 
 # --- the module on a carriage (Sam's Oct 8 mounting plate + the lab auger) ---
 # Sam's studio frame: hinge axis = his y, auger axis = his x at z = 0, the
@@ -85,7 +86,7 @@ AUGER_LEN = 250.0
 # Carriage frame: u along the travel, w radially inward (into the loop), x
 # front -> back. Origin on the front chain's pitch line, mid-way between the
 # A-1 link's pins. The plate sits on the two A-1 tabs, outside the chains.
-CAR_W = 66.0         # along the travel: 10.2 mm between neighbours on the straights
+CAR_W = 60.0         # along the travel: 16.2 mm between neighbours on the straights
 CAR_T = 5.0          # Sam's base plates are 5 mm
 CAR_W0 = -A1_C                                       # plate's inner face (on the tabs)
 CAR_X0, CAR_X1 = -23.0, CHAIN_L + 23.0               # tongue ends, beyond both chains
@@ -94,7 +95,11 @@ TONGUE_L = 16.0      # beyond the chain's outer plates
 RIB = (4.0, 7.0)     # edge ribs on the inside: width, height
 HINGE_W = SAM_DROP + CAR_W0                          # 11.65: hinge axis inside the pitch line
 LUG_U = 25.5         # hinge lug inner faces, 0.5 mm outside Sam's 50 mm knuckle
-LUG_T = 4.0
+LUG_T = 4.0          # lugs end at u = +-29.5, inside the carriage's +-30
+# On a corner two neighbours are 90 deg apart about the sprocket axis, so a
+# point (u, w) on one meets the other unless |u| + w < R (48.6). The lugs are
+# chamfered to |u| + w <= INNER_CORNER and the hinge screws are flush.
+INNER_CORNER = 45.0
 HINGE_D = 5.3        # M5 pin, as in Sam's parts
 # Station reach-through: Sam's electronics carriage (his x 2.3-73.3, y +-18),
 # the gear (his x 78.3-88.3) and the outlet's powder path when tilted.
@@ -107,10 +112,10 @@ SNAP_LAP = 0.8       # overhang onto the plate's top edge
 
 # --- 2020 frame, built vertically ---
 EXT = 20.0
-POST_Y = 95.0        # post centres; clears the motor flange and the bearings
+POST_Y = 112.0       # post centres: clear of the bearings and the motor standoffs; the frame encloses the carriages
 SIDE_GAP = 30.0      # chain centre plane -> side plate's inner face
 PLATE_T_SIDE = 6.35  # 1/4 in 6061 side plates
-SIDE_W = 2 * POST_Y + EXT                             # 210
+SIDE_W = 2 * POST_Y + EXT                             # 244
 SIDE_Z = (180.0, 555.0)                               # side plate bottom, top
 FOOT_H = 15.0        # leveling foot: bench -> underside of the base rails
 Z_BASE = FOOT_H      # base rails' underside

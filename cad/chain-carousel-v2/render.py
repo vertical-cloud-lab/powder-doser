@@ -1,4 +1,4 @@
-"""Renders of the chain-carousel test rig (VTK, offscreen under xvfb-run).
+"""Renders of the chain-carousel test rig v2 (VTK, offscreen under xvfb-run).
 
     xvfb-run -a python render.py            # hero views + one image per assembly step + GIF
     xvfb-run -a python render.py --quick    # hero iso only
@@ -135,15 +135,16 @@ def caption(img: Image.Image, title: str, lines: list[str] = ()) -> Image.Image:
     return out
 
 
-HERO = dict(focal=(60, -60, -90), direction=(0.55, -1.0, 0.75), dist=2050)
+HERO = dict(focal=(150, 0, 300), direction=(-0.9, -1.0, 0.55), dist=1750)
 CAMS = {
     "iso": HERO,
-    "top": dict(focal=(0, 0, 0), direction=(0, -0.0001, 1), dist=2500, up=(0, 1, 0)),
-    "front": dict(focal=(0, 0, -120), direction=(0, -1, 0.0001), dist=2600),
-    "station": dict(focal=(-7, -230, 20), direction=(0.9, -1.0, 0.9), dist=820),
-    "drive": dict(focal=(183, 0, -100), direction=(1.0, -1.3, -0.35), dist=950),
-    "idler": dict(focal=(-190, 0, 0), direction=(-0.6, -1.0, 1.0), dist=520),
-    "chain_detail": dict(focal=(150, -40, 8), direction=(0.3, -1.0, 1.0), dist=260),
+    "back_iso": dict(focal=(200, 0, 290), direction=(1.0, -0.8, 0.5), dist=1850),
+    "front": dict(focal=(150, 0, 330), direction=(-1, 0.0001, 0.0001), dist=1700),
+    "side": dict(focal=(250, 0, 300), direction=(0.0001, -1, 0.0001), dist=1900),
+    "station": dict(focal=(60, 0, 200), direction=(-0.75, -1.0, 0.45), dist=620),
+    "corner": dict(focal=(30, 60, 260), direction=(-1.0, -0.35, 0.25), dist=420),
+    "drive": dict(focal=(420, 30, 260), direction=(0.6, -1.0, 0.35), dist=900),
+    "chain_detail": dict(focal=(5, 20, 205), direction=(-0.8, -1.0, -0.35), dist=230),
 }
 
 
@@ -165,12 +166,10 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
     frames = []
     for s, title in L.STEPS.items():
         view.clear()
-        under_deck = s in (5, 7)                    # new parts go in from below the deck
         for p in pl:
             if p.step < s:
                 faded = tuple(0.55 + 0.45 * c for c in p.color)
-                op = 0.25 if (under_deck and p.key.startswith("deck")) else 1.0
-                view.ren.AddActor(actor(p, faded, opacity=op))
+                view.ren.AddActor(actor(p, faded))
             elif p.step == s:
                 view.ren.AddActor(actor(p, p.color, offset=p.explode))
         cam = step_camera(s)
@@ -186,22 +185,22 @@ def step_images(view: View, pl, bom_items: dict[int, list[str]]):
 
 
 def step_camera(s: int) -> dict:
-    if s in (1, 2):
-        return dict(focal=(0, 0, -120), direction=(0.55, -1.0, 0.6), dist=2100)
-    if s == 3:
-        return dict(focal=(183, 0, -160), direction=(1.0, -1.2, 0.35), dist=1100)
-    if s == 6:
-        return dict(focal=(183, 0, -10), direction=(0.9, -1.0, 0.9), dist=520)
+    if s in (1, 2, 3):
+        return dict(focal=(150, 0, 290), direction=(-0.9, -1.0, 0.6), dist=1900)
+    if s == 4:
+        return dict(focal=(150, 0, 330), direction=(-0.9, -1.0, 0.45), dist=1700)
     if s == 5:
-        return dict(focal=(-190, 0, -20), direction=(-0.7, -1.0, 0.55), dist=560)
-    if s == 7:
-        return dict(focal=(-7, -80, -20), direction=(0.5, -1.0, 0.6), dist=520)
-    if s in (10, 11):
-        return dict(focal=(-7, -200, 30), direction=(0.9, -1.0, 0.9), dist=900)
-    if s == 12:
-        return dict(focal=(150, -450, -200), direction=(0.6, -1.0, 0.8), dist=1600)
-    if s == 8:
-        return dict(focal=(0, 0, 0), direction=(0.45, -1.0, 1.0), dist=1050)
+        return dict(focal=(150, 0, 360), direction=(-0.6, -1.0, 0.35), dist=1500)
+    if s == 6:
+        return dict(focal=(450, 30, 260), direction=(0.7, -1.0, 0.35), dist=1100)
+    if s in (7, 8):
+        return dict(focal=(150, 0, 370), direction=(-0.9, -1.0, 0.45), dist=1650)
+    if s == 9:
+        return dict(focal=(60, 0, 205), direction=(-0.75, -1.0, 0.45), dist=700)
+    if s == 10:
+        return dict(focal=(150, 0, 370), direction=(-0.9, -1.0, 0.45), dist=1650)
+    if s == 11:
+        return dict(focal=(400, 150, 250), direction=(0.3, -1.0, 0.8), dist=2000)
     return HERO
 
 

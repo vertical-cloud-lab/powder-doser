@@ -216,7 +216,7 @@ def tensioner_block() -> cq.Workplane:
     back face on z = 0."""
     b = cq.Workplane("XY").center(0, -9).rect(30, 18).extrude(14).edges("|Z").fillet(2)
     b = b.cut(cq.Workplane("XZ").center(0, 7).circle(2.75).extrude(30))                            # jack screw, along y
-    b = b.cut(cq.Workplane("XY").center(0, -6.2).rect(8.3, 4.4).extrude(11.6).translate((0, 0, 2.5)))  # nut slot, open to the front
+    b = b.cut(cq.Workplane("XY").center(0, -6.2).rect(9.6, 4.4).extrude(12.6).translate((0, 0, 1.5)))  # nut slot, open to the front
     for x in (-10, 10):
         b = b.cut(cq.Workplane("XY").center(x, -12).circle(2.75).extrude(30).translate((0, 0, -1)))
         b = b.cut(cq.Workplane("XY").center(x, -12).circle(4.8).extrude(10.01).translate((0, 0, 4)))
@@ -255,6 +255,8 @@ def carriage() -> cq.Workplane:
                .translate((0, 0, rx0)))
         rib = rib.cut(cq.Workplane("XY").center(su * (u0 - rw / 2), w1 + rh / 2).rect(rw + 1, rh + 1)
                       .extrude(16).translate((0, 0, SNAP_X - 8)))           # room for the snap hook to flex
+        rib = rib.cut(cq.Workplane("XY").center(su * (u0 - rw / 2), w1 + rh / 2).rect(rw + 1, rh + 1)
+                      .extrude(18).translate((0, 0, HINGE_X - 9)))          # the lug takes over here
         plate = plate.union(rib)
     # station window: electronics carriage, gear, outlet's powder path
     win = (cq.Workplane("XY").rect(2 * WIN_U, CAR_T + 2).extrude(WIN_X[1] - WIN_X[0])
@@ -264,18 +266,26 @@ def carriage() -> cq.Workplane:
         lighten = lighten.union(cq.Workplane("XY").rect(36, CAR_T + 2).extrude(34)
                                 .translate((0, (w0 + w1) / 2, xc - 17)).edges("|Y").fillet(6))
     plate = plate.cut(win).cut(lighten)
-    # hinge lugs (merge into the ribs), M5 pin holes with counterbores for button heads
-    lug_top = HINGE_W + 8.0
+    # hinge lugs (merge into the ribs), M5 holes countersunk on the outside for flush flat-head pins
+    lug_top = HINGE_W + 6.0
     for su in (-1, 1):
         lug = (cq.Workplane("YZ").center(w1 + (lug_top - w1) / 2, HINGE_X).rect(lug_top - w1, 16)
-               .extrude(u0 - LUG_U).translate((su * LUG_U if su > 0 else -u0, 0, 0)))
+               .extrude(LUG_T).translate((LUG_U if su > 0 else -LUG_U - LUG_T, 0, 0)))
         lug = lug.edges("|X and >Y").fillet(7.9)
-        plate = plate.union(lug)
+        # chamfer the outer-top corner to |u| + w <= INNER_CORNER (neighbours on a corner)
+        u_out = LUG_U + LUG_T
+        cham = (cq.Workplane("XY").polyline([(su * (INNER_CORNER - lug_top - 0.01), lug_top + 0.01),
+                                             (su * (u_out + 0.01), lug_top + 0.01),
+                                             (su * (u_out + 0.01), INNER_CORNER - u_out)]).close()
+                .extrude(30).translate((0, 0, HINGE_X - 15)))
+        plate = plate.union(lug.cut(cham))
     pin = cq.Workplane("YZ").center(HINGE_W, HINGE_X).circle(HINGE_D / 2).extrude(2 * u0 + 2).translate((-u0 - 1, 0, 0))
     plate = plate.cut(pin)
     for su in (-1, 1):
-        cb = cq.Workplane("YZ").center(HINGE_W, HINGE_X).circle(4.9).extrude(3.0)
-        plate = plate.cut(cb.translate((u0 - 3.0, 0, 0)) if su > 0 else cb.translate((-u0, 0, 0)))
+        u_out = LUG_U + LUG_T
+        csk = cq.Workplane("YZ").center(HINGE_W, HINGE_X).circle(HINGE_D / 2).workplane(offset=2.8).circle(5.1).loft()
+        plate = plate.cut(csk.translate((u_out - 2.8, 0, 0)) if su > 0 else
+                          csk.mirror("YZ").translate((-u_out + 2.8, 0, 0)))
     # snap hooks over the mounting plate's edges (Sam's plate is +-25 wide here, top face at w = -1.35)
     top_face = HINGE_W - SAM_DROP + 5.0
     for su in (-1, 1):
@@ -344,7 +354,7 @@ def auger_blank() -> cq.Workplane:
     end), hollow so it can be filled with salt to working mass. Along +z
     from the outlet end."""
     tube = cq.Workplane("XY").circle(12.5).circle(10.9).extrude(220.0)
-    gear = cq.Workplane("XY").circle(GEAR_R).circle(10.9).extrude(10.0).translate((0, 0, 78.3))
+    gear = cq.Workplane("XY").circle(GEAR_R - 0.6).circle(10.9).extrude(9.6).translate((0, 0, 78.5))    # the gear's teeth, as a disc
     end = cq.Workplane("XY").circle(13.0).circle(10.9).extrude(30.0).translate((0, 0, 220.0))
     floor = cq.Workplane("XY").circle(12.5).extrude(1.6)
     return tube.union(gear).union(end).union(floor)

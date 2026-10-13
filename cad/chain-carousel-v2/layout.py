@@ -1,10 +1,10 @@
 """Where every part goes: the chain solution, the 12 carriages, the frame,
 the station and the assembly steps (v2, vertical twin-chain loop).
 
-Each chain is solved exactly for 96 links on four 32T sprockets on a
-76.2 x 228.6 mm rectangle of centres: with 32 teeth a 90-degree wrap is
+Each chain is solved exactly for 104 links on four 32T sprockets on a
+114.3 x 228.6 mm rectangle of centres: with 32 teeth a 90-degree wrap is
 exactly 8 links, so the pins at every tangent point sit in a tooth gap and
-the straights are whole pitches (bottom 8, sides 24, top 8). The two chains
+the straights are whole pitches (bottom 12, sides 24, top 12). The two chains
 are identical, 305 mm apart in x, and every carriage bolts to the same link
 number on both, so a carriage only ever moves in the y-z plane.
 
@@ -31,25 +31,25 @@ REF = HERE / "reference"            # Sam's Onshape export, the lab auger
 ALPHA = 2 * math.pi / N_TEETH
 CORNERS = {"B+": (LOOP_Y, Z_BOT), "T+": (LOOP_Y, Z_TOP), "T-": (-LOOP_Y, Z_TOP), "B-": (-LOOP_Y, Z_BOT)}
 DRIVE = "B+"                         # NEMA 34 on this shaft, at the back
-CARRIAGE_LINK0 = 4                   # carriage 1's A-1 link: on the bottom straight (links 0-7)
+CARRIAGE_LINK0 = 6                   # carriage 1's A-1 link: on the bottom straight (links 0-11)
 
 
 @lru_cache(None)
 def chain_pins() -> np.ndarray:
-    """96 pin centres (y, z), in loop order, starting at the bottom run's
+    """104 pin centres (y, z), in loop order, starting at the bottom run's
     tangent point under the B- sprocket."""
     b, a = LOOP_B, LOOP_A
     pts = []
     y0, z0 = -b / 2, Z_BOT - R
-    pts += [(y0 + k * P, z0) for k in range(8)]                                       # bottom straight
+    pts += [(y0 + k * P, z0) for k in range(LOOP_M)]                                  # bottom straight
     pts += [(b / 2 + R * math.cos(-math.pi / 2 + j * ALPHA), Z_BOT + R * math.sin(-math.pi / 2 + j * ALPHA))
             for j in range(8)]                                                         # round B+
-    pts += [(b / 2 + R, Z_BOT + k * P) for k in range(24)]                            # up the +y side
+    pts += [(b / 2 + R, Z_BOT + k * P) for k in range(LOOP_N)]                        # up the +y side
     pts += [(b / 2 + R * math.cos(j * ALPHA), Z_TOP + R * math.sin(j * ALPHA)) for j in range(8)]   # round T+
-    pts += [(b / 2 - k * P, Z_TOP + R) for k in range(8)]                             # top straight
+    pts += [(b / 2 - k * P, Z_TOP + R) for k in range(LOOP_M)]                        # top straight
     pts += [(-b / 2 + R * math.cos(math.pi / 2 + j * ALPHA), Z_TOP + R * math.sin(math.pi / 2 + j * ALPHA))
             for j in range(8)]                                                         # round T-
-    pts += [(-b / 2 - R, Z_TOP - k * P) for k in range(24)]                           # down the -y side
+    pts += [(-b / 2 - R, Z_TOP - k * P) for k in range(LOOP_N)]                       # down the -y side
     pts += [(-b / 2 + R * math.cos(math.pi + j * ALPHA), Z_BOT + R * math.sin(math.pi + j * ALPHA))
             for j in range(8)]                                                         # round B-
     pts = np.array(pts)
@@ -460,7 +460,7 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
             add(Placement("auger_blank", f"Auger blank (printed) {k + 1}", Ma, 10, BLANK, "modules", out_dir))
         add(Placement("auger_cap", f"Auger cap (lab) {k + 1}", Ma @ T(None, (0, 0, AUGER_LEN)), 10, WHITE, "modules", out_dir))
         for su in (-1, 1):
-            add(Placement("m5x12_bhcs", f"Hinge pin M5x12 {k + 1}", C @ T(Ry(su * math.pi / 2), (su * (CAR_W / 2 - 3.0), HINGE_W, HINGE_X)),
+            add(Placement("m5x10_fhcs", f"Hinge pin M5x10 flat head {k + 1}", C @ T(Ry(su * math.pi / 2), (su * (LUG_U + LUG_T), HINGE_W, HINGE_X)),
                           10, DARK, "modules", out_dir))
         if k == 0:
             add(Placement("sam_electronics_carriage", "Electronics carriage (Sam, Oct 8), docked at the station",
@@ -505,6 +505,7 @@ BUILDERS = {
     "auger_blank": PT.auger_blank,
     "m25x6_bhcs": lambda: PT.shcs(2.5, 6, "button"),
     "m5x12_bhcs": lambda: PT.shcs(5, 12, "button"),
+    "m5x10_fhcs": lambda: PT.shcs(5, 10, "flat"),
     "m5x12_shcs": lambda: PT.shcs(5, 12),
     "m5x16_shcs": lambda: PT.shcs(5, 16),
     "m5x20_shcs": lambda: PT.shcs(5, 20),
