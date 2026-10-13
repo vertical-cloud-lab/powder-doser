@@ -111,6 +111,20 @@ Figures (all built by `figures/make_figures.py` from `data/`):
 8. **Spreadability.** Blade-spread single 50–100 µm layers of 3–4 deliberately varied batches (sieved vs
    unsieved, dried vs humid, plus commercial AlSi10Mg); measure areal mass and coverage.
 
+9. **Controller housekeeping that affects comparisons across powders** (from the #154/#166/#131
+   records): identify the balance lag τ_bal in the HR-100A's configured response mode (drop tests give
+   0.16 s; the firmware assumes the datasheet's 0.7 s, worth 12 mg at trickle and 50–85 mg at bulk rates)
+   and its data rate (5.1 vs 10.5 Hz seen); run the built-but-unrun margin and bulk→tap campaigns; A/B the
+   refill-tap endgame (taps take a median 76 % of dose time).
+10. **Owed bench items:** dried BaCl₂ closed-loop re-run (caked after humidity cycling); block F
+   (vibration) never ran; CMC 200 mg re-run; T/RH logging; a drawdown test separating fill level from
+   packing (feed factor moved 1.5–1.8× between sessions, #140); wall hold-up of the auger; a calibration
+   weight and the granite-slab comparison for the balance (#147).
+11. **Glove-box and low-inventory requirements** raised by users: 0.1–10 mg at ±0.1 mg for synthetic
+   chemistry (#117), static in argon, and a micro-auger for expensive elements such as Sc (#158; the
+   current auger needs 30–40 g to prime, a 10 mm micro-auger 1–2 g). Hazard review for combustible and
+   pyrophoric fines (Al, Mg, Ti, Zr; #141).
+
 ### B. Analyses and code
 
 1. **Formulation.** Move from \|error\| to a one-sided error with a P(overshoot) constraint, plus
@@ -135,6 +149,15 @@ Figures (all built by `figures/make_figures.py` from `data/`):
 7. **Statistics for Fig. 3.** Bootstrap intervals on the validation-block medians; report the model's
    prediction intervals at `bo-005` before and after dosing.
 
+12. **Reconcile units in older records.** Battery records (#116) store tilt as a servo setting (0/45/90 =
+   0/22.5/45° of auger tilt); early #131 scripts reported per *motor* revolution (×2.2 for the auger). The
+   draft uses auger tilt and auger revolutions throughout; check every number copied from older docs.
+13. **The trim study's "±5 mg is out of reach of any control law" (#154, simulation)** is contradicted by
+   later bench data (16/16 validation doses inside a 3 mg band; AlSi10Mg 1 g doses −2.7, +9.4, −1.1 mg)
+   because taps on a depleted lip free 0.4–3.6 mg rather than the assumed 6.5 mg. Do not cite the claim.
+14. **Optional idea (@sgbaird, #124):** estimate in-flight mass and feed factor from a single run by data
+   assimilation (JAX), which would turn every dose, not just calibration batteries, into a measurement.
+
 ### C. Writing and submission
 
 - Author list, order and corresponding author (the draft copies the companion paper's six authors with
@@ -144,6 +167,9 @@ Figures (all built by `figures/make_figures.py` from `data/`):
 - Replace every orange placeholder and synthetic panel; remove the placeholder conventions from `main.tex`.
 - Supplementary information (list in Section 3).
 - Archive data and code with a DOI (e.g. Zenodo release) and update the data-availability statement.
+- **Overlap with the companion paper.** The 13-powder data in Fig. 2 and Table 1 are already reported in
+  the *Digital Discovery* draft (#97). Either cite them as published there and keep them short (or move
+  them to the SI), or agree which paper reports them first; Elsevier screens for duplicate publication.
 - Relationship to the companion hardware paper (*Digital Discovery*, due 13 Nov): cite it as a preprint
   or published paper; keep enough hardware detail here to stand alone.
 - Suggested reviewers and cover letter from the #91 notes (`17-suggested-reviewers.md`), conflict-screened.

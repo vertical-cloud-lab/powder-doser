@@ -69,10 +69,12 @@ def save(fig, name: str) -> None:
     print("wrote", name)
 
 
-def synthetic(ax, text: str = "SYNTHETIC DATA") -> None:
-    """Diagonal, light watermark: readable, but out of the way of the marks."""
+def synthetic(ax, text: str = "SYNTHETIC DATA", top: bool = False) -> None:
+    """Diagonal, light watermark: readable, but out of the way of the marks.
+    top=True draws it above filled plots (contours, images), where it would be hidden."""
     ax.text(0.5, 0.5, text, transform=ax.transAxes, rotation=28, ha="center", va="center",
-            fontsize=15, fontweight="bold", color="#c0392b", alpha=0.16, zorder=0)
+            fontsize=15, fontweight="bold", color="#c0392b" if not top else "white",
+            alpha=0.16 if not top else 0.55, zorder=10 if top else 0)
 
 
 def panel(ax, letter: str, x: float = -0.16, y: float = 1.04) -> None:
@@ -299,6 +301,11 @@ def fig_powders() -> None:
         if r.doses_1g == 0 or pd.isna(r.min_delivered_g):
             b.text(0.52, yy, "not dosed at 1 g", va="center", fontsize=6.5, color=MUTED, style="italic")
             continue
+        if r.max_delivered_g < 0.5:
+            b.text(0.52, yy, f"delivered < {r.max_delivered_g * 1e3 + 0.5:.0f} mg", va="center", fontsize=6.5,
+                   color=MUTED, style="italic")
+            b.text(1.12, yy, f"{r.within_5pct_1g}/{r.doses_1g}", va="center", fontsize=6.5, color=INK2)
+            continue
         lo, hi = r.min_delivered_g, r.max_delivered_g
         inside = r.within_5pct_1g == r.doses_1g
         b.plot([lo, hi], [yy, yy], color=col[r.track], lw=2.2, solid_capstyle="round", zorder=3)
@@ -319,20 +326,21 @@ def fig_multitask_placeholder() -> None:
     rng = np.random.default_rng(179)
     n = np.arange(1, 41)
     fig, (a, b) = plt.subplots(1, 2, figsize=(DOUBLE, 2.7), gridspec_kw=dict(wspace=0.35))
-    curves = {"single-task (this work, salt)": (MUTED, 22.0), "multi-task, 3 earlier powders": (BLUE, 11.0),
-              "multi-task, 8 earlier powders": (AQUA, 6.0)}
-    for lab, (colr, tau) in curves.items():
-        reps = np.array([0.82 * (1 - np.exp(-n / (tau * rng.uniform(0.8, 1.2)))) + rng.normal(0, 0.02, n.size)
+    curves = {"single-task": (MUTED, 16.0, 0.30), "multi-task, 3 earlier powders": (BLUE, 7.0, 0.55),
+              "multi-task, 8 earlier powders": (AQUA, 3.5, 0.82)}
+    for lab, (colr, tau, ylab) in curves.items():
+        reps = np.array([0.98 * (1 - np.exp(-n / (tau * rng.uniform(0.8, 1.2)))) + rng.normal(0, 0.015, n.size)
                          for _ in range(10)])
         reps = np.maximum.accumulate(np.clip(reps, 0, 1), axis=1)
         mu, sd = reps.mean(0), reps.std(0)
         a.fill_between(n, mu - sd, mu + sd, color=colr, alpha=0.18, lw=0)
-        a.plot(n, mu, color=colr, lw=1.2)
-        a.text(n[-1] + 0.6, mu[-1], lab, color=INK, fontsize=6.5, va="center")
-    a.axhline(0.7, color=INK2, lw=0.6, ls=(0, (3, 2)))
-    a.text(1, 0.72, "target: 70% of the best known hypervolume", fontsize=6.5, color=INK2)
-    a.set_xlim(0, 62)
-    a.set_ylim(0, 1)
+        a.plot(n, mu, color=colr, lw=1.2, label=lab)
+    a.axhline(0.9, color=INK2, lw=0.6, ls=(0, (3, 2)))
+    a.text(40, 0.88, "target: 90% of best known", fontsize=6.5, color=INK2, ha="right", va="top")
+    a.legend(loc="lower right", frameon=False, fontsize=6.5, handlelength=1.5)
+    a.set_xlim(0, 41)
+    a.set_ylim(0, 1.08)
+    a.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
     a.set_xlabel("doses on the new powder")
     ylabel_top(a, "hypervolume, fraction of best known")
     synthetic(a)
@@ -362,20 +370,20 @@ def fig_dem() -> None:
     fig, axs = plt.subplots(1, 3, figsize=(DOUBLE, 2.6), gridspec_kw=dict(wspace=0.45))
     a, b, c = axs
     # (a) real: PR #180 rig validation, 29k salt grains, no calibration
-    tilt = np.array([0.0, 22.5, 27.5, 45.0])
+    xk = np.arange(4)
     sim = np.array([33, 71, 105, 153])
     meas = np.array([28, 108, 105, 195])
     meas_lo = np.array([28, 106, 94, 195])
     meas_hi = np.array([28, 110, 116, 195])
-    a.vlines(tilt, meas_lo, meas_hi, color=ORANGE, lw=1.2)
-    a.scatter(tilt, meas, s=26, c=ORANGE, marker="s", edgecolors="white", linewidths=0.6, zorder=3)
-    a.scatter(tilt, sim, s=26, c=BLUE, marker="o", edgecolors="white", linewidths=0.6, zorder=3)
-    a.text(46.5, 195, "measured", color=ORANGE, fontsize=6.5, va="center")
-    a.text(46.5, 150, "DEM", color=BLUE, fontsize=6.5, va="center")
-    a.set_xlim(-3, 56)
+    a.vlines(xk + 0.08, meas_lo, meas_hi, color=ORANGE, lw=1.2)
+    a.scatter(xk + 0.08, meas, s=26, c=ORANGE, marker="s", edgecolors="white", linewidths=0.6, zorder=3)
+    a.scatter(xk - 0.08, sim, s=26, c=BLUE, marker="o", edgecolors="white", linewidths=0.6, zorder=3)
+    a.text(0.1, 200, "measured", color=ORANGE, fontsize=6.5, va="center")
+    a.text(0.1, 182, "DEM, no fitted\nparameters", color=BLUE, fontsize=6.5, va="top")
+    a.set_xlim(-0.5, 3.5)
     a.set_ylim(0, 220)
-    a.set_xticks([0, 22.5, 27.5, 45], ["0", "22.5", "27.5", "45"])
-    a.set_xlabel("auger tilt (°)")
+    a.set_xticks(xk, ["0°\n60", "22.5°\n90", "27.5°\n60", "45°\n60"], fontsize=6.5)
+    a.set_xlabel("auger tilt and speed (rpm)")
     ylabel_top(a, "salt delivered (mg/rev)")
     panel(a, "a", x=-0.3)
 
@@ -389,9 +397,9 @@ def fig_dem() -> None:
     b.set_xlabel("cohesion energy density (norm.)")
     ylabel_top(b, "sliding friction coefficient")
     cb = fig.colorbar(cs, ax=b, fraction=0.05, pad=0.03)
-    cb.set_label("mg/rev", fontsize=7)
+    cb.ax.set_title("mg/rev", fontsize=6.5, loc="left")
     cb.outline.set_visible(False)
-    synthetic(b)
+    synthetic(b, top=True)
     panel(b, "b", x=-0.3)
 
     # (c) synthetic: posterior for one powder given tilt-sweep data
@@ -433,16 +441,19 @@ def fig_properties() -> None:
         a.scatter(df.loc[m, aor_col], ff[m], s=22, c=colr, marker=mk, edgecolors="white", linewidths=0.6,
                   zorder=3)
     rho, p = spearmanr(df[aor_col], np.log10(ff))
+    offs = {"alsi10mg": (-3, 5, "left"), "silicon-325": (5, 0, "left"), "sodium-alginate": (5, 3, "left"),
+            "brown-rice-flour": (-5, 5, "right")}
     for _, r in df.iterrows():
-        if r.powder_id in ("alsi10mg", "silicon-325", "sodium-alginate", "salt", "brown-rice-flour"):
-            a.annotate(SHORT[r.powder_id], (r[aor_col], max(r.ff90_mg_per_rev, 0.1)), xytext=(4, 2),
-                       textcoords="offset points", fontsize=6.3, color=INK2)
+        if r.powder_id in offs:
+            dx, dy, ha = offs[r.powder_id]
+            a.annotate(SHORT[r.powder_id], (r[aor_col], max(r.ff90_mg_per_rev, 0.1)), xytext=(dx, dy),
+                       textcoords="offset points", fontsize=6.3, color=INK2, ha=ha)
     a.set_yscale("log")
     a.set_ylim(0.08, 800)
     a.set_xlim(27, 50)
     a.set_xlabel("angle of repose, literature value (°)")
     ylabel_top(a, "delivered at 45° tilt (mg/rev)")
-    a.text(0.97, 0.97, f"Spearman ρ = {rho:.2f}\nn = {len(df)}", transform=a.transAxes, ha="right", va="top",
+    a.text(0.04, 0.04, f"Spearman ρ = {rho:.2f}, n = {len(df)}", transform=a.transAxes, ha="left", va="bottom",
            fontsize=6.5, color=INK)
     panel(a, "a", x=-0.32)
 
@@ -511,24 +522,24 @@ def fig_overview() -> None:
 
     s = fig.add_axes([0.47, 0.02, 0.53, 0.94])
     s.axis("off")
-    box(s, (0.00, 0.70), 0.27, 0.20, "auger doser\non a 0.1 mg\nbalance", BLUE_L, bold=True)
+    box(s, (0.02, 0.70), 0.25, 0.20, "auger doser\non a 0.1 mg\nbalance", BLUE_L, bold=True)
     box(s, (0.36, 0.70), 0.28, 0.20, "dose record\ntime, error,\ntaps, mg/rev", "#ffffff")
-    box(s, (0.72, 0.70), 0.28, 0.20, "multi-objective\nBO per powder\n(Sec. 3.2)", BLUE_L)
-    box(s, (0.72, 0.38), 0.28, 0.20, "multi-task BO\nacross powders\n(Sec. 3.3)", "#ffffff", ec=ORANGE)
-    box(s, (0.36, 0.38), 0.28, 0.20, "DEM twin with\nmeasured PSD\n(Sec. 3.4)", BLUE_L)
-    box(s, (0.00, 0.38), 0.27, 0.20, "effective cohesion\nand friction", "#ffffff", ec=ORANGE)
-    box(s, (0.00, 0.06), 0.27, 0.20, "Hall flow,\nshear cell", "#ffffff", ec=ORANGE)
-    box(s, (0.36, 0.06), 0.64, 0.20, "spreading and packing in AM\n(Sec. 3.5, outlook)", "#ffffff", ec=ORANGE)
+    box(s, (0.72, 0.70), 0.26, 0.20, "multi-objective\nBO per powder\n(Sec. 3.2)", BLUE_L)
+    box(s, (0.72, 0.38), 0.26, 0.20, "multi-task BO\nacross powders\n(Sec. 3.3)", "#ffffff", ec=ORANGE)
+    box(s, (0.36, 0.38), 0.28, 0.20, "DEM twin of\nthe auger\n(Sec. 3.4)", BLUE_L)
+    box(s, (0.02, 0.38), 0.25, 0.20, "effective cohesion\nand friction", "#ffffff", ec=ORANGE)
+    box(s, (0.02, 0.06), 0.25, 0.20, "Hall flow,\nshear cell, PSD", "#ffffff", ec=ORANGE)
+    box(s, (0.36, 0.06), 0.62, 0.20, "spreading and packing in AM\n(Sec. 3.5, outlook)", "#ffffff", ec=ORANGE)
     arrow(s, (0.27, 0.80), (0.36, 0.80))
     arrow(s, (0.64, 0.80), (0.72, 0.80))
     arrow(s, (0.86, 0.70), (0.86, 0.58), dashed=True)
     arrow(s, (0.50, 0.70), (0.50, 0.58))
-    arrow(s, (0.36, 0.48), (0.27, 0.48))
+    arrow(s, (0.36, 0.48), (0.27, 0.48), dashed=True)
     arrow(s, (0.135, 0.38), (0.135, 0.26), dashed=True)
     arrow(s, (0.27, 0.16), (0.36, 0.16), dashed=True)
     s.text(0.86, 0.94, "", transform=s.transAxes)
     s.text(0.0, 0.97, "(b)", fontweight="bold", fontsize=9, transform=s.transAxes, va="bottom")
-    s.text(1.0, 0.985, "solid: done   dashed / orange outline: in progress",
+    s.text(0.98, 0.985, "blue / solid: done    orange / dashed: in progress",
            ha="right", va="bottom", fontsize=6.5, color=INK2, transform=s.transAxes)
     s.set_xlim(0, 1)
     s.set_ylim(0, 1)
