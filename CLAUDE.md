@@ -35,6 +35,89 @@ If using Edison Analysis, refer to https://docs.edisonscientific.com/edison-clie
 
 If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, etc.).
 
+### Onshape
+
+There are three ways in. Use the first one that can do the job.
+
+**Accounts.** The API key pair (`ONSHAPE_ACCESS_KEY` / `ONSHAPE_SECRET_KEY`) is Sterling's
+account. The web login (`ONSHAPE_USERNAME` / `ONSHAPE_PASSWORD`) is the BYU VCL account.
+Both should belong to the **Vertical Cloud Lab** Onshape company. Create documents there,
+not in either personal account. In byu-vcl#234, the key could not see or move a document
+the login had made in its own account, so the session had to copy it.
+
+1. **FeatureScript** is the programmatic way to build models.
+   - Write the feature as `.fs` text, push it into a Feature Studio over REST, cut a
+     **version**, and insert the feature into a Part Studio from that version. A custom
+     feature can't be referenced from a workspace.
+   - It regenerates on Onshape's servers as parametric history, so a few API calls build
+     what would otherwise take dozens. See `cad/README.md`, the `fsgen` work in
+     [#171](https://github.com/vertical-cloud-lab/powder-doser/issues/171) and
+     [PR #178](https://github.com/vertical-cloud-lab/powder-doser/pull/178).
+   - Traps, worked through in
+     [tensegrity-optimization#95](https://github.com/vertical-cloud-lab/tensegrity-optimization/issues/95):
+     - **Name clashes with `onshape/std`** (e.g. `BLEND_BOUNDS`) make the compile fail
+       silently: `featureSpecs: []` and no error. Prefix your constants.
+     - **`POST .../features` needs the flattened `btType` form** (`"BTMFeature-134"`).
+     - **Enum parameters need the feature's full `d::v::e::m` namespace.** An empty one is
+       accepted with a 200, then the regen fails.
+     - **REST returns only `featureStatus`, never the regen error text.**
+     - **`fSphere` takes a `Query` centre.** Use `opSphere` for generated geometry.
+     - **Operation ids must be contiguous per parent.**
+   - To debug, send the code to `POST .../partstudios/.../featurescript`. It returns
+     line-numbered errors, but accepts only a single anonymous function: no header, no
+     imports.
+   - Add `regenError` guards and bounds, so a bad input fails with an error instead of
+     building junk geometry.
+2. **REST API** with the key pair
+   ([docs](https://onshape-public.github.io/docs/),
+   [explorer](https://cad.onshape.com/glassworks/explorer/)).
+   - Send the keys as HTTP Basic auth (or HMAC-sign them) to
+     `https://cad.onshape.com/api/v10`. For enterprise-domain documents such as
+     `byudesign.onshape.com`, call that domain instead.
+   - To test a key, request both `users/sessioninfo` and a documents list. A key can pass
+     the first and return 401 on everything else
+     ([PR #7](https://github.com/vertical-cloud-lab/powder-doser/pull/7)).
+   - **Quota: 2,500 API calls a year, shared across the company.** Calls over the cap
+     return HTTP 402. Log each call to `onshape/api_calls.jsonl` and report the count in
+     your reply.
+   - **Import STEP, not STL.** STEP arrives as an editable solid; STL arrives as a mesh.
+     Upload with `POST blobelements/...?translate=true`, export with
+     `POST .../translations`, and poll the translation until it reports `DONE`. STEP
+     carries geometry and part names only; plates and filament settings live only in the
+     `.3mf`.
+   - **A share link doesn't allow export.** An anonymous read share serves features,
+     elements and shaded views, but every geometry or export call returns 401/403 unless
+     export was enabled on the share.
+   - **Check results instead of asserting them.** After driving parameters, render with
+     `shadedviews` and read back `boundingboxes` (they are in mm, not m) and
+     `featureStatus`.
+   - **Commit each document's URL and ids** (did/wid/eid), and post clickable links.
+   - **Make driver scripts idempotent.** Find the document and its studios by name, and
+     replace only the stale feature, so element ids survive a re-run.
+   - **Keep one source of truth.** If a file in git regenerates the document, edits made
+     by hand in Onshape get overwritten. Agree up front which side is the master.
+   - Prefer one document holding all the Part Studios plus the assembly over one document
+     per part ([#128](https://github.com/vertical-cloud-lab/powder-doser/pull/128)).
+3. **Web UI login** with the BYU VCL account.
+   - Use it only for what neither of the above can do. Examples: Share → Public, which the
+     API could not do in
+     [PR #97](https://github.com/vertical-cloud-lab/powder-doser/pull/97#issuecomment-6057439882),
+     or sketching by mouse.
+   - Onshape's Terms of Use (§4(a)(ix)) restrict UI automation, so keep it minimal.
+   - Don't use headless Chrome on the runner: a datacenter IP plus a headless browser is
+     what login bot checks look for. The CAD canvas is also WebGL, so DOM selectors can't
+     reach the geometry.
+   - Instead, run headed Chromium under Xvfb on the doser Pi, driven over Tailscale SSH
+     with xdotool or Playwright's `mouse` API. The Pi already has these in
+     `~/browser-automation/.venv`
+     ([PR #97](https://github.com/vertical-cloud-lab/powder-doser/pull/97#issuecomment-6094389580)).
+   - Send the credentials to the Pi over stdin or as an env var in the SSH command. Never
+     put them in a command-line argument or leave them in a file.
+   - The account has no 2FA. If a CAPTCHA or 2FA prompt appears, stop and report it.
+   - Keep the login form out of screenshots and recordings.
+   - Treat the account as shared. Don't change its settings or password, and don't delete
+     or un-share documents you didn't create.
+
 ## LaTeX
 
 Install MiKTeX instead of TeXLive to reduce download size and time. In the first installation of MiKTeX, download known required packages based on the LaTeX file itself, and install anything else ad-hoc as needed.
@@ -155,6 +238,20 @@ gets that login:
   re-scans it), change the password, then update the three secrets in the `bambu-print`
   environment of every repo that has one: byu-vcl, robot-arms, powder-doser,
   tensegrity-optimization and caliber.
+
+## Adding secrets for @claude sessions
+
+A repo secret reaches a session only if it is listed in the job-level `env:` block of
+`.github/workflows/claude.yml`. Add it there as well as with `gh secret set`. The Claude
+GitHub App can't edit `.github/workflows/`, so that edit is always a human commit.
+
+The exception is a secret that should need a human's approval for each use, such as the
+Bambu login above. Keep it as an environment secret of a protected environment, and keep it
+out of `claude.yml`.
+
+GitHub masks a secret everywhere its value appears as a substring. A very short value, such
+as a 3-character username, would garble the logs, so store it as a repo **variable**
+(`vars.NAME`) instead.
 
 ## Receiving files from other repos (`sgbaird/agent-staging`)
 
