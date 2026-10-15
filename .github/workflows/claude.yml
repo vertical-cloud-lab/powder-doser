@@ -91,6 +91,13 @@ jobs:
       A1_MINI_IP: ${{ secrets.A1_MINI_IP }}
       A1_MINI_ACCESS_CODE: ${{ secrets.A1_MINI_ACCESS_CODE }}
       A1_MINI_SERIAL: ${{ secrets.A1_MINI_SERIAL }}
+      # Zenodo, full scope (deposit:write + deposit:actions). Publishing mints a
+      # permanent DOI, so test against the sandbox. Org secrets, shared with
+      # selected repos only; see CLAUDE.md, "Zenodo".
+      ZENODO_API_TOKEN: ${{ secrets.ZENODO_API_TOKEN }}
+      ZENODO_BASE_URL: ${{ secrets.ZENODO_BASE_URL }}
+      ZENODO_SANDBOX_API_TOKEN: ${{ secrets.ZENODO_SANDBOX_API_TOKEN }}
+      ZENODO_SANDBOX_BASE_URL: ${{ secrets.ZENODO_SANDBOX_BASE_URL }}
       # Allow long-blocking foreground commands (e.g., Edison polling)
       BASH_DEFAULT_TIMEOUT_MS: "900000" # 15 min default per Bash call
       BASH_MAX_TIMEOUT_MS: "3600000" # 60 min ceiling per Bash call
