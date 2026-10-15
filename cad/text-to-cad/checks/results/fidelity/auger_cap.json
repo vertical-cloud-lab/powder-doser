@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/auger_cap.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/auger-cap.step",
+ "volume_new_mm3": 4379.4,
+ "volume_ref_mm3": 4371.2,
+ "volume_intersection_mm3": -93.3,
+ "volume_error_pct": 0.19,
+ "iou": -0.0105,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.653
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  -0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.0011526042204238777,
+  "p95": 0.005590841375640171,
+  "max": 0.011418673121219802
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.001121267150263318,
+  "p95": 0.005432078642649203,
+  "max": 0.01151033169714936
+ },
+ "faces_new": 18,
+ "faces_ref": 52,
+ "seconds": 1783.5
+}

@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/stepper_pinion.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/stepper-pinion.step",
+ "volume_new_mm3": 3168.7,
+ "volume_ref_mm3": 3167.5,
+ "volume_intersection_mm3": 3167.4,
+ "volume_error_pct": 0.04,
+ "iou": 0.9996,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  -0.0,
+  -0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.0007279142785441147,
+  "p95": 0.0034435284440325247,
+  "max": 0.01610958793260698
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.0007145347325344367,
+  "p95": 0.003430622793707259,
+  "max": 0.016122291493161304
+ },
+ "faces_new": 166,
+ "faces_ref": 166,
+ "seconds": 112.1
+}

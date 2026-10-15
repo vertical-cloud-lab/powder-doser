@@ -1,0 +1,2553 @@
+{
+ "generated": "2026-10-03",
+ "task": "issue #172 text-to-cad recreation, fasteners (group hardware)",
+ "api_origin": "https://api.step.parts",
+ "catalog": {
+  "partCount": 16847,
+  "sha256": "36766ef8cf73776fd12d659855ec9de51527e29c4d10d1d752b84df8153a593b"
+ },
+ "downloader": "text-to-cad skills/step-parts/scripts/download_step_part.py (sha256 checked against the record)",
+ "tolerance_mm": 0.2,
+ "tolerance_note": "a measured dimension more than 0.2 mm from McMaster's catalog figure is flagged MISMATCH",
+ "seat_frame": "PR #170 hardware.py: axis +Z through the origin, +Z = insertion direction; screws: bearing face on z=0, head z<0, shank 0..L; flat head: flush head top on z=0, 0..L overall; nuts/standoff: 0..m, bearing face z=0, hex corners on +-X",
+ "module": "src/lib/fasteners.py: fastener(kind) -> bd.Shape; MCMASTER_KIND maps McMaster PN -> kind",
+ "mcmaster_source": "PR #170 components/mcmaster/parts.json + catalog_rows.json (McMaster catalog tables, read 2026-10-02)",
+ "mcmaster_kind": {
+  "92095A223": "bhcs_m5x45",
+  "93625A200": "locknut_m5",
+  "91292A027": "shcs_m3x14",
+  "93625A100": "locknut_m3",
+  "91828A211": "hexnut_m3",
+  "91292A113": "shcs_m3x10",
+  "92095A185": "bhcs_m3x20",
+  "92095A186": "bhcs_m3x25",
+  "92125A140": "fhcs_m3x30",
+  "91292A110": "shcs_m3x5",
+  "91292A012": "shcs_m2p5x8",
+  "93360A609": "wood_10x1p25"
+ },
+ "parts": {
+  "92095A223": {
+   "kind": "bhcs_m5x45",
+   "mcmaster_pn": "92095A223",
+   "description": "M5 x 45 button head hex-drive screw (ISO 7380), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/button_head_screw_m5_l0050_simple.step",
+   "local_sha256": "58a6c26234f4c207211b251ddf97d2eb3772eba15fc13061a37dc31fe6d8ee8d",
+   "source": "step.parts (derived: shank trimmed 50 -> 45 mm)",
+   "step_parts": {
+    "id": "button_head_screw_m5_l0050_simple",
+    "name": "ISO 7380 button head socket screw, M5 x 50 mm",
+    "page_url": "https://www.step.parts/parts/button_head_screw_m5_l0050_simple",
+    "api_url": "https://api.step.parts/v1/parts/button_head_screw_m5_l0050_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/button_head_screw_m5_l0050_simple.step",
+    "sha256": "58a6c26234f4c207211b251ddf97d2eb3772eba15fc13061a37dc31fe6d8ee8d",
+    "byte_size": 32126,
+    "sha256_verified": true,
+    "standard": "ISO 7380",
+    "category": "fastener",
+    "family": "button-head-screw",
+    "attributes": {
+     "thread": "M5",
+     "lengthMm": 50,
+     "nominalSize": "M5 x 50 mm",
+     "headStyle": "button-head",
+     "driveStyle": "hex-socket",
+     "threadRepresentation": "simplified"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": 45.0
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -4.75,
+     -4.75,
+     -2.75
+    ],
+    "bbox_max": [
+     4.75,
+     4.75,
+     45.0
+    ],
+    "volume_mm3": 723.979,
+    "n_solids": 1,
+    "head_dia_mm": 9.5,
+    "head_height_mm": 2.75,
+    "length_mm": 45.0,
+    "shank_dia_mm": 4.134,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 9.5,
+     "mcmaster_mm": 9.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 2.75,
+     "mcmaster_mm": 2.75,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 45.0,
+     "mcmaster_mm": 45,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 4.134,
+     "mcmaster_mm": 5.0,
+     "delta_mm": -0.866,
+     "flag": "MISMATCH",
+     "note": "step.parts '_simple' thread representation: plain shank at the basic minor diameter d1 = d - 1.0825 P"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M5",
+    "length_mm": 45,
+    "head_dia_mm": 9.5,
+    "head_ht_mm": 2.75,
+    "threading": "Fully Threaded",
+    "catalog_url": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/thread-size~m5/",
+    "row": "45 | 9.5 | 2.75 | Fully | Threaded | 70,000 | \u2014 | 25 | 92095A223 | 12.00 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     50,
+     "50 (vendor) -> 45 trimmed"
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.0,
+    "volume_error_pct": -13.71,
+    "bbox_min_delta_mm": [
+     0.0,
+     0.0,
+     -0.222
+    ],
+    "bbox_max_delta_mm": [
+     -0.0,
+     -0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.14351096332712376,
+     "p95": 0.3768104472221267,
+     "max": 0.8779763555164648
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.20447068870731966,
+     "p95": 0.4254549808046157,
+     "max": 0.9508759854116541
+    },
+    "iou_unnudged": 0.8128,
+    "note": "fidelity.py's nudged BRepAlgoAPI_Common (NUDGE ~1.8 um) returns an empty result for this pair although both solids are valid (BRepCheck) with 1e-7 tolerances; the un-nudged common gives the *_unnudged figures (added by the fasteners task, not by fidelity.py).",
+    "result_file": "checks/results/fidelity/fastener_bhcs_m5x45.json"
+   },
+   "rejected_candidates": [
+    {
+     "id": "button_head_screw_m5_l0040_simple",
+     "why": "M5 x 40: 5 mm short"
+    },
+    {
+     "id": "iso7380_hex_socket_button_head_screw_m5xxx_fusion",
+     "why": "length not fixed in the record; the STEP is M5 x 15"
+    }
+   ]
+  },
+  "93625A200": {
+   "kind": "locknut_m5",
+   "mcmaster_pn": "93625A200",
+   "description": "M5 nylon-insert locknut, 18-8 stainless (PR #170 stand-in)",
+   "local_file": "STEP/imported/pr170-hardware/locknut_m5.step",
+   "local_sha256": "08470a479f2132a8c67b2357cc84b173f5d563a64d61f4fc8f2736fd70ac5005",
+   "source": "PR #170 stand-in (ISO/McMaster-dimension model), no usable step.parts match",
+   "pr170_standin": {
+    "from": "PR #170 branch cad/full-assembly/components/hardware/locknut_m5.step",
+    "sha256": "08470a479f2132a8c67b2357cc84b173f5d563a64d61f4fc8f2736fd70ac5005"
+   },
+   "step_parts": null,
+   "reframe": {
+    "flip_about_x_deg": 0,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -4.619,
+     -4.0,
+     0.0
+    ],
+    "bbox_max": [
+     4.619,
+     4.0,
+     5.0
+    ],
+    "volume_mm3": 176.31,
+    "n_solids": 1,
+    "width_across_flats_mm": 8.0,
+    "width_across_corners_mm": 9.238,
+    "height_mm": 5.0,
+    "z_range": [
+     0.0,
+     5.0
+    ],
+    "bore_dia_min_mm": 4.04,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "width_across_flats",
+     "measured_mm": 8.0,
+     "mcmaster_mm": 8,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "height",
+     "measured_mm": 5.0,
+     "mcmaster_mm": 5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M5 x 0.8 mm",
+    "width_mm": 8,
+    "height_mm": 5,
+    "insert_max_temp_F": 185,
+    "catalog_url": "https://www.mcmaster.com/products/nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
+    "row": "M5 | \u00d7 | 0.8 | mm | 8 | 5 | 185 | Material | Certificate | 100 | 93625A200 | 9.02 | 2,000 | 93625A123 | 126.28 |"
+   },
+   "vs_pr170_standin": {
+    "iou": 0.9984,
+    "volume_error_pct": -0.0,
+    "bbox_min_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 2.5469366590820627e-15,
+     "p95": 1.3607542828517103e-14,
+     "max": 4.110906254805721e-13
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 2.4403654215822064e-15,
+     "p95": 1.3309943114092396e-14,
+     "max": 2.7992921253877374e-13
+    },
+    "result_file": "checks/results/fidelity/fastener_locknut_m5.json"
+   },
+   "rejected_candidates": [
+    {
+     "id": "nylon_locknut_m5_simple",
+     "sha256": "1326d3694f12d526ae65e1acd2a2617326ee7fe22e704d89e00e04561a31d91d",
+     "sha256_verified": true,
+     "why": "plain 8 x 4.0 mm hex prism (no nylon-insert crown); McMaster 93625A200 is 8 x 5 mm: height -1.0 mm (-20 %)",
+     "attributes": {
+      "geometryRepresentation": "analytic simplified",
+      "boreMm": 5,
+      "heightMm": 4,
+      "nutStyle": "nylon",
+      "thread": "M5",
+      "widthAcrossFlatsMm": 8,
+      "nominalSize": "M5"
+     }
+    },
+    {
+     "id": "iso_metric_all_metal_locknut_m5_simple",
+     "why": "all-metal locknut, 8 x 4.0 mm"
+    }
+   ]
+  },
+  "91292A027": {
+   "kind": "shcs_m3x14",
+   "mcmaster_pn": "91292A027",
+   "description": "M3 x 14 socket head screw (ISO 4762), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/iso4762_socket_head_cap_screw_m3x14.step",
+   "local_sha256": "98970635098a6489973a7d5622af0c77eab8cbff06dd40dd97e6c0c75b1cbcf6",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4762_socket_head_cap_screw_m3x14",
+    "name": "ISO 4762 hexagon socket head cap screw, M3 x 14",
+    "page_url": "https://www.step.parts/parts/iso4762_socket_head_cap_screw_m3x14",
+    "api_url": "https://api.step.parts/v1/parts/iso4762_socket_head_cap_screw_m3x14",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4762_socket_head_cap_screw_m3x14.step",
+    "sha256": "98970635098a6489973a7d5622af0c77eab8cbff06dd40dd97e6c0c75b1cbcf6",
+    "byte_size": 39496,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 14,
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket",
+     "nominalSize": "M3 x 14"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.75,
+     -2.75,
+     -3.0
+    ],
+    "bbox_max": [
+     2.75,
+     2.75,
+     14.0
+    ],
+    "volume_mm3": 154.655,
+    "n_solids": 1,
+    "head_dia_mm": 5.5,
+    "head_height_mm": 3.0,
+    "length_mm": 14.0,
+    "shank_dia_mm": 3.0,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 14.0,
+     "mcmaster_mm": 14,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3",
+    "length_mm": 14,
+    "head_dia_mm": 5.5,
+    "head_ht_mm": 3,
+    "threading": "Fully Threaded",
+    "thread_spacing": "Coarse",
+    "catalog_url": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+    "row": "14 | 5.5 | 3 | Fully | Threaded | Coarse | 70,000 | Material | Certificate | 100 | 91292A027 | 9.04 | \u2014 | \u2014\u2014\u2014 | \u2014 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     14,
+     14.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8533,
+    "volume_error_pct": 10.24,
+    "bbox_min_delta_mm": [
+     -0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.0797692240987957,
+     "p95": 0.18926563828981463,
+     "max": 0.76
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.09715591130968025,
+     "p95": 0.27694967144816823,
+     "max": 0.76
+    },
+    "result_file": "checks/results/fidelity/fastener_shcs_m3x14.json"
+   },
+   "rejected_candidates": []
+  },
+  "93625A100": {
+   "kind": "locknut_m3",
+   "mcmaster_pn": "93625A100",
+   "description": "M3 nylon-insert locknut, 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/nyloc_nut_m3.step",
+   "local_sha256": "8e7f9a901c5a3fdfdc75969f793101bd653160ee41d7b49a0d510d197f69b3ca",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "nyloc_nut_m3",
+    "name": "Nyloc nut, M3",
+    "page_url": "https://www.step.parts/parts/nyloc_nut_m3",
+    "api_url": "https://api.step.parts/v1/parts/nyloc_nut_m3",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/nyloc_nut_m3.step",
+    "sha256": "8e7f9a901c5a3fdfdc75969f793101bd653160ee41d7b49a0d510d197f69b3ca",
+    "byte_size": 154365,
+    "sha256_verified": true,
+    "standard": null,
+    "category": "fastener",
+    "family": "nyloc-nut",
+    "attributes": {
+     "thread": "M3",
+     "nominalSize": "M3",
+     "nutStyle": "nyloc",
+     "locking": true
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 0,
+    "rot_about_z_deg": 30.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -3.175,
+     -2.75,
+     -0.0
+    ],
+    "bbox_max": [
+     3.175,
+     2.75,
+     3.86
+    ],
+    "volume_mm3": 67.613,
+    "n_solids": 2,
+    "width_across_flats_mm": 5.5,
+    "width_across_corners_mm": 6.35,
+    "height_mm": 3.86,
+    "z_range": [
+     -0.0,
+     3.86
+    ],
+    "bore_dia_min_mm": 2.9,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "width_across_flats",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "height",
+     "measured_mm": 3.86,
+     "mcmaster_mm": 4,
+     "delta_mm": -0.14,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3 x 0.5 mm",
+    "width_mm": 5.5,
+    "height_mm": 4,
+    "insert_max_temp_F": 185,
+    "catalog_url": "https://www.mcmaster.com/products/nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
+    "row": "M3 | \u00d7 | 0.5 | mm | 5.5 | 4 | 185 | Material | Certificate | 100 | 93625A100 | 6.94 | 2,000 | 93625A121 | 97.16 |"
+   },
+   "record_attributes_vs_measured": "record gives thread/size only",
+   "vs_pr170_standin": {
+    "iou": 0.8723,
+    "volume_error_pct": -7.84,
+    "bbox_min_delta_mm": [
+     0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     -0.0,
+     0.0,
+     -0.14
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.05123705684457248,
+     "p95": 0.1747545315426921,
+     "max": 0.4400000000000004
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.0796962266049808,
+     "p95": 0.2714680952958061,
+     "max": 0.5228858749021265
+    },
+    "result_file": "checks/results/fidelity/fastener_locknut_m3.json"
+   },
+   "rejected_candidates": [
+    {
+     "id": "nylon_locknut_m3_simple",
+     "sha256": "a8373048bc6d18a505066e69316fe7895b636a9d27dcda994b75bebffa4f1704",
+     "sha256_verified": true,
+     "why": "plain 5.5 x 2.4 mm hex prism (no crown); nyloc_nut_m3 (5.5 x 3.86 mm, crown + separate nylon ring) is closer to McMaster's 5.5 x 4"
+    }
+   ]
+  },
+  "91828A211": {
+   "kind": "hexnut_m3",
+   "mcmaster_pn": "91828A211",
+   "description": "M3 hex nut (ISO 4032 / DIN 934), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/iso4032_hex_nut_m3.step",
+   "local_sha256": "7de90cc2ca5eb2c38a27e3aee66939f30bdfde4ac47cd6f19f0324fcf93496bd",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4032_hex_nut_m3",
+    "name": "ISO 4032 hex nut, M3",
+    "page_url": "https://www.step.parts/parts/iso4032_hex_nut_m3",
+    "api_url": "https://api.step.parts/v1/parts/iso4032_hex_nut_m3",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4032_hex_nut_m3.step",
+    "sha256": "7de90cc2ca5eb2c38a27e3aee66939f30bdfde4ac47cd6f19f0324fcf93496bd",
+    "byte_size": 117675,
+    "sha256_verified": true,
+    "standard": "ISO 4032",
+    "category": "fastener",
+    "family": "hex-nut",
+    "attributes": {
+     "thread": "M3",
+     "nominalSize": "M3",
+     "nutStyle": "hex"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 0,
+    "rot_about_z_deg": 30.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -3.175,
+     -2.75,
+     -0.0
+    ],
+    "bbox_max": [
+     3.175,
+     2.75,
+     2.4
+    ],
+    "volume_mm3": 45.154,
+    "n_solids": 1,
+    "width_across_flats_mm": 5.5,
+    "width_across_corners_mm": 6.35,
+    "height_mm": 2.4,
+    "z_range": [
+     -0.0,
+     2.4
+    ],
+    "bore_dia_min_mm": 3.0,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "width_across_flats",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "height",
+     "measured_mm": 2.4,
+     "mcmaster_mm": 2.4,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3 x 0.5 mm",
+    "width_mm": 5.5,
+    "height_mm": 2.4,
+    "specs_met": "DIN 934",
+    "catalog_url": "https://www.mcmaster.com/products/hex-nuts/material~stainless-steel-2/system-of-measurement~metric/hex-nuts-3~~/",
+    "row": "M3 | \u00d7 | 0.5 | mm | 5.5 | 2.4 | DIN | 934 | Material | Certificate | 100 | 91828A211 | 5.68 | \u2014 | \u2014 | \u2014\u2014\u2014 | \u2014 |"
+   },
+   "record_attributes_vs_measured": "record gives thread/size only",
+   "vs_pr170_standin": {
+    "iou": 0.9081,
+    "volume_error_pct": -6.81,
+    "bbox_min_delta_mm": [
+     0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     -0.0,
+     0.0,
+     -0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.029095164534886885,
+     "p95": 0.15101094790147326,
+     "max": 0.21747142614394002
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.058119078428761295,
+     "p95": 0.27682496735688167,
+     "max": 0.36067135216971097
+    },
+    "result_file": "checks/results/fidelity/fastener_hexnut_m3.json"
+   },
+   "rejected_candidates": [
+    {
+     "id": "sparkfun_nut_m3",
+     "why": "KiCad library model; ISO 4032 model preferred"
+    },
+    {
+     "id": "thin_jam_nut_m3_simple",
+     "why": "ISO 4035 thin nut"
+    }
+   ]
+  },
+  "91292A113": {
+   "kind": "shcs_m3x10",
+   "mcmaster_pn": "91292A113",
+   "description": "M3 x 10 socket head screw (ISO 4762), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/iso4762_socket_head_cap_screw_m3x10.step",
+   "local_sha256": "9131c5210d88993bbc37b8050cedda590c55f961e6118af749b70b44a0307f2f",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4762_socket_head_cap_screw_m3x10",
+    "name": "ISO 4762 socket head cap screw, M3 x 10",
+    "page_url": "https://www.step.parts/parts/iso4762_socket_head_cap_screw_m3x10",
+    "api_url": "https://api.step.parts/v1/parts/iso4762_socket_head_cap_screw_m3x10",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4762_socket_head_cap_screw_m3x10.step",
+    "sha256": "9131c5210d88993bbc37b8050cedda590c55f961e6118af749b70b44a0307f2f",
+    "byte_size": 58818,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 10,
+     "nominalSize": "M3 x 10",
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.75,
+     -2.75,
+     -3.0
+    ],
+    "bbox_max": [
+     2.75,
+     2.75,
+     10.0
+    ],
+    "volume_mm3": 128.119,
+    "n_solids": 1,
+    "head_dia_mm": 5.5,
+    "head_height_mm": 3.0,
+    "length_mm": 10.0,
+    "shank_dia_mm": 3.0,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 10.0,
+     "mcmaster_mm": 10,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3",
+    "length_mm": 10,
+    "head_dia_mm": 5.5,
+    "head_ht_mm": 3,
+    "threading": "Fully Threaded",
+    "thread_spacing": "Coarse",
+    "catalog_url": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+    "row": "10 | 5.5 | 3 | Fully | Threaded | Coarse | 70,000 | Material | Certificate | 100 | 91292A113 | 7.11 | \u2014 | \u2014\u2014\u2014 | \u2014 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     10,
+     10.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8672,
+    "volume_error_pct": 9.22,
+    "bbox_min_delta_mm": [
+     0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.0710329241014687,
+     "p95": 0.18597024159897624,
+     "max": 0.8830725139119768
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.0884050416374439,
+     "p95": 0.27246826131276686,
+     "max": 0.8246781180401853
+    },
+    "result_file": "checks/results/fidelity/fastener_shcs_m3x10.json"
+   },
+   "rejected_candidates": []
+  },
+  "92095A185": {
+   "kind": "bhcs_m3x20",
+   "mcmaster_pn": "92095A185",
+   "description": "M3 x 20 button head hex-drive screw (ISO 7380), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/button_head_screw_m3_l0020_simple.step",
+   "local_sha256": "886f9b30e8f117f3a1fd3f28caeb8bd8b04d32bbf530d1657679b922fcac5d51",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "button_head_screw_m3_l0020_simple",
+    "name": "ISO 7380 button head socket screw, M3 x 20 mm",
+    "page_url": "https://www.step.parts/parts/button_head_screw_m3_l0020_simple",
+    "api_url": "https://api.step.parts/v1/parts/button_head_screw_m3_l0020_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/button_head_screw_m3_l0020_simple.step",
+    "sha256": "886f9b30e8f117f3a1fd3f28caeb8bd8b04d32bbf530d1657679b922fcac5d51",
+    "byte_size": 32175,
+    "sha256_verified": true,
+    "standard": "ISO 7380",
+    "category": "fastener",
+    "family": "button-head-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 20,
+     "nominalSize": "M3 x 20 mm",
+     "headStyle": "button-head",
+     "driveStyle": "hex-socket",
+     "threadRepresentation": "simplified"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.85,
+     -2.85,
+     -1.65
+    ],
+    "bbox_max": [
+     2.85,
+     2.85,
+     20.0
+    ],
+    "volume_mm3": 118.016,
+    "n_solids": 1,
+    "head_dia_mm": 5.7,
+    "head_height_mm": 1.65,
+    "length_mm": 20.0,
+    "shank_dia_mm": 2.459,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.7,
+     "mcmaster_mm": 5.7,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 1.65,
+     "mcmaster_mm": 1.65,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 20.0,
+     "mcmaster_mm": 20,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 2.459,
+     "mcmaster_mm": 3.0,
+     "delta_mm": -0.541,
+     "flag": "MISMATCH",
+     "note": "step.parts '_simple' thread representation: plain shank at the basic minor diameter d1 = d - 1.0825 P"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3",
+    "length_mm": 20,
+    "head_dia_mm": 5.7,
+    "head_ht_mm": 1.65,
+    "threading": "Fully Threaded",
+    "catalog_url": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
+    "row": "20 | 5.7 | 1.65 | Fully | Threaded | 70,000 | psi | Material | Certificate | 50 | 92095A185 | 5.83 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     20,
+     20.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8487,
+    "volume_error_pct": -15.63,
+    "bbox_min_delta_mm": [
+     0.0,
+     0.0,
+     -0.133
+    ],
+    "bbox_max_delta_mm": [
+     -0.0,
+     -0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.09233554583587332,
+     "p95": 0.27054882109448525,
+     "max": 0.4163704562972799
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.12722610401261242,
+     "p95": 0.26678029368274797,
+     "max": 0.4406211130471558
+    },
+    "result_file": "checks/results/fidelity/fastener_bhcs_m3x20.json"
+   },
+   "rejected_candidates": []
+  },
+  "92095A186": {
+   "kind": "bhcs_m3x25",
+   "mcmaster_pn": "92095A186",
+   "description": "M3 x 25 button head hex-drive screw (ISO 7380), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/button_head_screw_m3_l0025_simple.step",
+   "local_sha256": "8dae5a2cfe58b09784577496d9286d5fad075893505c241d7734cb254be16987",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "button_head_screw_m3_l0025_simple",
+    "name": "ISO 7380 button head socket screw, M3 x 25 mm",
+    "page_url": "https://www.step.parts/parts/button_head_screw_m3_l0025_simple",
+    "api_url": "https://api.step.parts/v1/parts/button_head_screw_m3_l0025_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/button_head_screw_m3_l0025_simple.step",
+    "sha256": "8dae5a2cfe58b09784577496d9286d5fad075893505c241d7734cb254be16987",
+    "byte_size": 32175,
+    "sha256_verified": true,
+    "standard": "ISO 7380",
+    "category": "fastener",
+    "family": "button-head-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 25,
+     "nominalSize": "M3 x 25 mm",
+     "headStyle": "button-head",
+     "driveStyle": "hex-socket",
+     "threadRepresentation": "simplified"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.85,
+     -2.85,
+     -1.65
+    ],
+    "bbox_max": [
+     2.85,
+     2.85,
+     25.0
+    ],
+    "volume_mm3": 141.756,
+    "n_solids": 1,
+    "head_dia_mm": 5.7,
+    "head_height_mm": 1.65,
+    "length_mm": 25.0,
+    "shank_dia_mm": 2.459,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.7,
+     "mcmaster_mm": 5.7,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 1.65,
+     "mcmaster_mm": 1.65,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 25.0,
+     "mcmaster_mm": 25,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 2.459,
+     "mcmaster_mm": 3.0,
+     "delta_mm": -0.541,
+     "flag": "MISMATCH",
+     "note": "step.parts '_simple' thread representation: plain shank at the basic minor diameter d1 = d - 1.0825 P"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3",
+    "length_mm": 25,
+    "head_dia_mm": 5.7,
+    "head_ht_mm": 1.65,
+    "threading": "Fully Threaded",
+    "catalog_url": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
+    "row": "25 | 5.7 | 1.65 | Fully | Threaded | 70,000 | psi | Material | Certificate | 50 | 92095A186 | 6.98 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     25,
+     25.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8442,
+    "volume_error_pct": -15.94,
+    "bbox_min_delta_mm": [
+     0.0,
+     0.0,
+     -0.133
+    ],
+    "bbox_max_delta_mm": [
+     -0.0,
+     -0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.09046978217595908,
+     "p95": 0.26466563243196833,
+     "max": 0.4180864103791208
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.12713783085913308,
+     "p95": 0.2645492272120317,
+     "max": 0.4413798048752424
+    },
+    "result_file": "checks/results/fidelity/fastener_bhcs_m3x25.json"
+   },
+   "rejected_candidates": []
+  },
+  "92125A140": {
+   "kind": "fhcs_m3x30",
+   "mcmaster_pn": "92125A140",
+   "description": "M3 x 30 flat head hex-drive screw, 90 deg (ISO 10642), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/countersunk_socket_screw_m3_l0030_simple.step",
+   "local_sha256": "5adfebc689f82136db6f7740e044e4a4040cbce928a58875bd35e0d24cf88f55",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "countersunk_socket_screw_m3_l0030_simple",
+    "name": "ISO 10642 countersunk socket screw, M3 x 30 mm",
+    "page_url": "https://www.step.parts/parts/countersunk_socket_screw_m3_l0030_simple",
+    "api_url": "https://api.step.parts/v1/parts/countersunk_socket_screw_m3_l0030_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/countersunk_socket_screw_m3_l0030_simple.step",
+    "sha256": "5adfebc689f82136db6f7740e044e4a4040cbce928a58875bd35e0d24cf88f55",
+    "byte_size": 35540,
+    "sha256_verified": true,
+    "standard": "ISO 10642",
+    "category": "fastener",
+    "family": "countersunk-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 30,
+     "nominalSize": "M3 x 30 mm",
+     "headStyle": "countersunk",
+     "driveStyle": "hex-socket",
+     "threadRepresentation": "simplified"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.82,
+     -2.82,
+     -0.0
+    ],
+    "bbox_max": [
+     2.82,
+     2.82,
+     30.0
+    ],
+    "volume_mm3": 155.398,
+    "n_solids": 1,
+    "head_dia_actual_mm": 5.639,
+    "head_top_z_mm": -0.0,
+    "head_cone_half_angle_deg": 45.0,
+    "head_dia_theoretical_at_top_mm": 6.0,
+    "head_height_mm": 1.7,
+    "length_mm": 30.0,
+    "shank_dia_mm": 2.459,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia (cone extended to the top face)",
+     "measured_mm": 6.0,
+     "mcmaster_mm": 6,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_dia (actual, rounded top edge)",
+     "measured_mm": 5.639,
+     "mcmaster_mm": 6,
+     "delta_mm": -0.361,
+     "flag": "MISMATCH",
+     "note": "the 90 deg cone meets the top face at 6.00; the top edge is rounded to 5.64"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 1.7,
+     "mcmaster_mm": 1.7,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 30.0,
+     "mcmaster_mm": 30,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 2.459,
+     "mcmaster_mm": 3.0,
+     "delta_mm": -0.541,
+     "flag": "MISMATCH",
+     "note": "step.parts '_simple' thread representation: plain shank at the basic minor diameter d1 = d - 1.0825 P"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3 x 0.5 mm",
+    "length_mm": 30,
+    "countersink_angle": "90\u00b0",
+    "head_profile": "Standard",
+    "head_dia_mm": 6,
+    "head_ht_mm": 1.7,
+    "threading": "Fully Threaded",
+    "catalog_url": "https://www.mcmaster.com/products/flat-head-screws/stainless-steel-hex-drive-flat-head-screws~~/system-of-measurement~metric/",
+    "row": "30 | 90\u00b0 | Standard | 6 | 1.7 | Fully | Threaded | 70,000 | 25 | 92125A140 | 7.52 | 500 | 92125A711 | 105.28 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     30,
+     30.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8294,
+    "volume_error_pct": -16.13,
+    "bbox_min_delta_mm": [
+     0.18,
+     0.18,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     -0.18,
+     -0.18,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.06871884399473938,
+     "p95": 0.15990252787527176,
+     "max": 0.17305533481855456
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.11423535046072515,
+     "p95": 0.25446710759286406,
+     "max": 0.27049204944376043
+    },
+    "result_file": "checks/results/fidelity/fastener_fhcs_m3x30.json"
+   },
+   "rejected_candidates": []
+  },
+  "91292A110": {
+   "kind": "shcs_m3x5",
+   "mcmaster_pn": "91292A110",
+   "description": "M3 x 5 socket head screw (ISO 4762), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/socket_head_cap_screw_m3_l0005_simple.step",
+   "local_sha256": "e21df3ea29a761f43b77ea55a1274e513f394032975a0af6b4898d0abda411f8",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "socket_head_cap_screw_m3_l0005_simple",
+    "name": "ISO 4762 socket head cap screw, M3 x 5 mm",
+    "page_url": "https://www.step.parts/parts/socket_head_cap_screw_m3_l0005_simple",
+    "api_url": "https://api.step.parts/v1/parts/socket_head_cap_screw_m3_l0005_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/socket_head_cap_screw_m3_l0005_simple.step",
+    "sha256": "e21df3ea29a761f43b77ea55a1274e513f394032975a0af6b4898d0abda411f8",
+    "byte_size": 34248,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 5,
+     "nominalSize": "M3 x 5 mm",
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket",
+     "threadRepresentation": "simplified"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.84,
+     -2.84,
+     -3.0
+    ],
+    "bbox_max": [
+     2.84,
+     2.84,
+     5.0
+    ],
+    "volume_mm3": 92.53,
+    "n_solids": 1,
+    "head_dia_mm": 5.68,
+    "head_height_mm": 3.0,
+    "length_mm": 5.0,
+    "shank_dia_mm": 2.459,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.68,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.18,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 5.0,
+     "mcmaster_mm": 5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 2.459,
+     "mcmaster_mm": 3.0,
+     "delta_mm": -0.541,
+     "flag": "MISMATCH",
+     "note": "step.parts '_simple' thread representation: plain shank at the basic minor diameter d1 = d - 1.0825 P"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M3",
+    "length_mm": 5,
+    "head_dia_mm": 5.5,
+    "head_ht_mm": 3,
+    "threading": "Fully Threaded",
+    "thread_spacing": "Coarse",
+    "catalog_url": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+    "row": "5 | 5.5 | 3 | Fully | Threaded | Coarse | 70,000 | Material | Certificate | 100 | 91292A110 | 7.11 | \u2014 | \u2014\u2014\u2014 | \u2014 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     5,
+     5.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8355,
+    "volume_error_pct": 4.49,
+    "bbox_min_delta_mm": [
+     -0.09,
+     -0.09,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.09,
+     0.09,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.09068977314835422,
+     "p95": 0.2705488210944853,
+     "max": 0.5000000000000002
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.11356488552410583,
+     "p95": 0.27063055067293657,
+     "max": 0.5152333114486046
+    },
+    "result_file": "checks/results/fidelity/fastener_shcs_m3x5.json"
+   },
+   "rejected_candidates": [
+    {
+     "id": "iso4762_socket_head_cap_screw_m3x4 / _m3x6",
+     "why": "wrong length; the only M3 x 5 is the '_simple' one"
+    }
+   ]
+  },
+  "91292A012": {
+   "kind": "shcs_m2p5x8",
+   "mcmaster_pn": "91292A012",
+   "description": "M2.5 x 8 socket head screw (ISO 4762), 18-8 stainless",
+   "local_file": "STEP/imported/step-parts/iso4762_socket_head_cap_screw_m2p5x8.step",
+   "local_sha256": "e76fe2b55f7e76bc0762f8b265ca289fcff3ebe4b027dcdc1919864f18527cfe",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4762_socket_head_cap_screw_m2p5x8",
+    "name": "ISO 4762 hexagon socket head cap screw, M2.5 x 8",
+    "page_url": "https://www.step.parts/parts/iso4762_socket_head_cap_screw_m2p5x8",
+    "api_url": "https://api.step.parts/v1/parts/iso4762_socket_head_cap_screw_m2p5x8",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4762_socket_head_cap_screw_m2p5x8.step",
+    "sha256": "e76fe2b55f7e76bc0762f8b265ca289fcff3ebe4b027dcdc1919864f18527cfe",
+    "byte_size": 39862,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M2.5",
+     "lengthMm": 8,
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket",
+     "nominalSize": "M2.5 x 8"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.25,
+     -2.25,
+     -2.5
+    ],
+    "bbox_max": [
+     2.25,
+     2.25,
+     8.0
+    ],
+    "volume_mm3": 70.757,
+    "n_solids": 1,
+    "head_dia_mm": 4.5,
+    "head_height_mm": 2.5,
+    "length_mm": 8.0,
+    "shank_dia_mm": 2.5,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 4.5,
+     "mcmaster_mm": 4.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 2.5,
+     "mcmaster_mm": 2.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 8.0,
+     "mcmaster_mm": 8,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 2.5,
+     "mcmaster_mm": 2.5,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "M2.5",
+    "length_mm": 8,
+    "head_dia_mm": 4.5,
+    "head_ht_mm": 2.5,
+    "threading": "Fully Threaded",
+    "thread_spacing": "Coarse",
+    "catalog_url": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+    "row": "8 | 4.5 | 2.5 | Fully | Threaded | Coarse | 70,000 | Material | Certificate | 100 | 91292A012 | 7.75 | \u2014 | \u2014\u2014\u2014 | \u2014 |"
+   },
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     8,
+     8.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.8554,
+    "volume_error_pct": 9.59,
+    "bbox_min_delta_mm": [
+     0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.06802746474690241,
+     "p95": 0.21660166963075586,
+     "max": 0.56
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.07775084723763287,
+     "p95": 0.24548351379720884,
+     "max": 0.56
+    },
+    "result_file": "checks/results/fidelity/fastener_shcs_m2p5x8.json"
+   },
+   "rejected_candidates": []
+  },
+  "93360A609": {
+   "kind": "wood_10x1p25",
+   "mcmaster_pn": "93360A609",
+   "description": "#10 x 1-1/4 in pan head Phillips wood screw, 316 stainless (PR #170 stand-in)",
+   "local_file": "STEP/imported/pr170-hardware/wood_10x1p25.step",
+   "local_sha256": "9e2e0fbfa94830141e11b51acce6cd97e32005a074dd98e4733116f6a1f719e3",
+   "source": "PR #170 stand-in (ISO/McMaster-dimension model), no usable step.parts match",
+   "pr170_standin": {
+    "from": "PR #170 branch cad/full-assembly/components/hardware/wood_10x1p25.step",
+    "sha256": "9e2e0fbfa94830141e11b51acce6cd97e32005a074dd98e4733116f6a1f719e3"
+   },
+   "step_parts": null,
+   "reframe": {
+    "flip_about_x_deg": 0,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -4.67,
+     -4.67,
+     -3.251
+    ],
+    "bbox_max": [
+     4.67,
+     4.67,
+     31.75
+    ],
+    "volume_mm3": 606.927,
+    "n_solids": 1,
+    "head_dia_mm": 9.34,
+    "head_height_mm": 3.251,
+    "length_mm": 31.75,
+    "shank_dia_mm": 4.488,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 9.34,
+     "mcmaster_mm": 9.270999999999999,
+     "delta_mm": 0.069,
+     "flag": "ok"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.251,
+     "mcmaster_mm": 3.2512,
+     "delta_mm": -0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 31.75,
+     "mcmaster_mm": 31.75,
+     "delta_mm": 0.0,
+     "flag": "ok"
+    },
+    {
+     "dim": "shank_dia (plain shank under the head)",
+     "measured_mm": 4.488,
+     "mcmaster_mm": 4.826,
+     "delta_mm": -0.338,
+     "flag": "MISMATCH",
+     "note": "stand-in plain shank is 0.93 x the #10 major diameter (0.19 in)"
+    }
+   ],
+   "mcmaster_catalog": {
+    "thread": "#10",
+    "length_mm": 31.75,
+    "head_dia_mm": 9.270999999999999,
+    "head_ht_mm": 3.2512,
+    "threading": "Partially Threaded",
+    "thread_length_mm": 19.049999999999997,
+    "threads_per_inch": 13,
+    "head": "pan",
+    "drive": "Phillips No. 2",
+    "material": "316 stainless steel",
+    "pilot_drill_in": "3/32",
+    "inch": {
+     "length": "1-1/4",
+     "head_dia": "0.365",
+     "head_ht": "0.128",
+     "thread_length": "3/4"
+    },
+    "catalog_url": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+    "row": "1 | 1/4\" | 0.365\" | 0.128\" | 3/32\" | Standard | 13 | Partially | Threaded | Thread | Forming | 50 | 93360A609 | 28.00 |"
+   },
+   "vs_pr170_standin": {
+    "iou": 0.999,
+    "volume_error_pct": -0.0,
+    "bbox_min_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 1.0627808744763135e-13,
+     "p95": 6.400185169833589e-13,
+     "max": 5.9971646498965525e-12
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 1.1426852303911498e-13,
+     "p95": 7.350582455290378e-13,
+     "max": 6.841225948391228e-12
+    },
+    "result_file": "checks/results/fidelity/fastener_wood_10x1p25.json"
+   },
+   "rejected_candidates": []
+  },
+  "shcs_m3x12": {
+   "kind": "shcs_m3x12",
+   "mcmaster_pn": null,
+   "description": "M3 x 12 socket head screw (ISO 4762)",
+   "local_file": "STEP/imported/step-parts/iso4762_socket_head_cap_screw_m3x12.step",
+   "local_sha256": "7720179ea94ed5c4e2b32f6e4c2583a77423240599c602690c5b2b2f5471cc47",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4762_socket_head_cap_screw_m3x12",
+    "name": "ISO 4762 socket head cap screw, M3 x 12",
+    "page_url": "https://www.step.parts/parts/iso4762_socket_head_cap_screw_m3x12",
+    "api_url": "https://api.step.parts/v1/parts/iso4762_socket_head_cap_screw_m3x12",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4762_socket_head_cap_screw_m3x12.step",
+    "sha256": "7720179ea94ed5c4e2b32f6e4c2583a77423240599c602690c5b2b2f5471cc47",
+    "byte_size": 58826,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 12,
+     "nominalSize": "M3 x 12",
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.75,
+     -2.75,
+     -3.0
+    ],
+    "bbox_max": [
+     2.75,
+     2.75,
+     12.0
+    ],
+    "volume_mm3": 142.256,
+    "n_solids": 1,
+    "head_dia_mm": 5.5,
+    "head_height_mm": 3.0,
+    "length_mm": 12.0,
+    "shank_dia_mm": 3.0,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 12.0,
+     "mcmaster_mm": 12.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    }
+   ],
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     12,
+     12.0
+    ]
+   },
+   "vs_pr170_standin": {
+    "iou": 0.9545,
+    "volume_error_pct": -0.95,
+    "bbox_min_delta_mm": [
+     0.0,
+     -0.0,
+     -0.0
+    ],
+    "bbox_max_delta_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "surface_dev_new_to_ref_mm": {
+     "mean": 0.0316615505405042,
+     "p95": 0.124999358906001,
+     "max": 0.8755268037498775
+    },
+    "surface_dev_ref_to_new_mm": {
+     "mean": 0.025375349348011913,
+     "p95": 0.12499935890600122,
+     "max": 0.8181848481978592
+    },
+    "result_file": "checks/results/fidelity/fastener_shcs_m3x12.json"
+   },
+   "rejected_candidates": []
+  },
+  "shcs_m3x6": {
+   "kind": "shcs_m3x6",
+   "mcmaster_pn": null,
+   "description": "M3 x 6 socket head screw (ISO 4762), for the PCB",
+   "local_file": "STEP/imported/step-parts/iso4762_socket_head_cap_screw_m3x6.step",
+   "local_sha256": "f65060b0c2e332c28c942bfa7c4a118a1a1f18d5870f0e9e5a47c2061952c72d",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "iso4762_socket_head_cap_screw_m3x6",
+    "name": "ISO 4762 hexagon socket head cap screw, M3 x 6",
+    "page_url": "https://www.step.parts/parts/iso4762_socket_head_cap_screw_m3x6",
+    "api_url": "https://api.step.parts/v1/parts/iso4762_socket_head_cap_screw_m3x6",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/iso4762_socket_head_cap_screw_m3x6.step",
+    "sha256": "f65060b0c2e332c28c942bfa7c4a118a1a1f18d5870f0e9e5a47c2061952c72d",
+    "byte_size": 39479,
+    "sha256_verified": true,
+    "standard": "ISO 4762",
+    "category": "fastener",
+    "family": "socket-head-cap-screw",
+    "attributes": {
+     "thread": "M3",
+     "lengthMm": 6,
+     "headStyle": "socket-head",
+     "driveStyle": "hex-socket",
+     "nominalSize": "M3 x 6"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 180,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -2.75,
+     -2.75,
+     -3.0
+    ],
+    "bbox_max": [
+     2.75,
+     2.75,
+     6.0
+    ],
+    "volume_mm3": 98.106,
+    "n_solids": 1,
+    "head_dia_mm": 5.5,
+    "head_height_mm": 3.0,
+    "length_mm": 6.0,
+    "shank_dia_mm": 3.0,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "head_dia",
+     "measured_mm": 5.5,
+     "mcmaster_mm": 5.5,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "head_height",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 6.0,
+     "mcmaster_mm": 6.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    },
+    {
+     "dim": "thread/shank dia",
+     "measured_mm": 3.0,
+     "mcmaster_mm": 3.0,
+     "delta_mm": 0.0,
+     "flag": "ok",
+     "reference": "ISO 4762 nominal (no McMaster PN given)"
+    }
+   ],
+   "record_attributes_vs_measured": {
+    "lengthMm": [
+     6,
+     6.0
+    ]
+   },
+   "vs_pr170_standin": "no PR #170 stand-in for this kind",
+   "rejected_candidates": []
+  },
+  "standoff_m3x10_ff": {
+   "kind": "standoff_m3x10_ff",
+   "mcmaster_pn": null,
+   "description": "M3 x 10 mm hex standoff, female-female (7.5 mm across flats), for the PCB",
+   "local_file": "STEP/imported/step-parts/standoff_hex_female_female_m3_l0010_simple.step",
+   "local_sha256": "6bce4099081e527cee321a2f06d0b94c36d7c264e92d53c328293d522efdd4e6",
+   "source": "step.parts",
+   "step_parts": {
+    "id": "standoff_hex_female_female_m3_l0010_simple",
+    "name": "Standoffs and spacers, M3, 10 mm body",
+    "page_url": "https://www.step.parts/parts/standoff_hex_female_female_m3_l0010_simple",
+    "api_url": "https://api.step.parts/v1/parts/standoff_hex_female_female_m3_l0010_simple",
+    "step_url": "https://media.githubusercontent.com/media/earthtojake/step.parts/c6113328a5695b976a010a203a90fe86191769bf/catalog/step/standoff_hex_female_female_m3_l0010_simple.step",
+    "sha256": "6bce4099081e527cee321a2f06d0b94c36d7c264e92d53c328293d522efdd4e6",
+    "byte_size": 51359,
+    "sha256_verified": true,
+    "standard": null,
+    "category": "spacer",
+    "family": "threaded-standoff",
+    "attributes": {
+     "geometryRepresentation": "analytic simplified",
+     "bodyLengthMm": 10,
+     "bodyShape": "hex",
+     "gender": "male_female",
+     "thread": "M3",
+     "nominalSize": "M3"
+    },
+    "license": null,
+    "license_note": "no license field in the step.parts record or catalog schema"
+   },
+   "reframe": {
+    "flip_about_x_deg": 0,
+    "rot_about_z_deg": 0.0,
+    "trim_length_mm": null
+   },
+   "seat_frame_measured": {
+    "bbox_min": [
+     -4.23,
+     -3.75,
+     -0.0
+    ],
+    "bbox_max": [
+     4.23,
+     3.75,
+     10.0
+    ],
+    "volume_mm3": 443.095,
+    "n_solids": 1,
+    "width_across_flats_mm": 7.5,
+    "width_across_corners_mm": 8.46,
+    "height_mm": 10.0,
+    "z_range": [
+     -0.0,
+     10.0
+    ],
+    "bore_dia_min_mm": 2.34,
+    "exported_bbox_ok": true
+   },
+   "vs_mcmaster": [
+    {
+     "dim": "width_across_flats",
+     "measured_mm": 7.5,
+     "mcmaster_mm": null,
+     "flag": "NOTE",
+     "note": "no McMaster PN given; 7.5 mm across flats is large for M3 (common M3 hex standoffs are 5-5.5 mm)"
+    },
+    {
+     "dim": "length",
+     "measured_mm": 10.0,
+     "mcmaster_mm": null,
+     "flag": "ok",
+     "note": "10 mm requested"
+    },
+    {
+     "dim": "bore",
+     "measured_mm": 2.34,
+     "flag": "NOTE",
+     "note": "plain through bore (simplified M3 internal thread), female-female geometry; record attribute gender says 'male_female' while the id says female_female"
+    }
+   ],
+   "record_attributes_vs_measured": {
+    "bodyLengthMm": [
+     10,
+     10.0
+    ]
+   },
+   "vs_pr170_standin": "no PR #170 stand-in for this kind",
+   "rejected_candidates": [
+    {
+     "id": "hex_standoff_m3_12mm_male_female / hex_standoff_m3_15mm_male_female",
+     "why": "male-female, 12/15 mm"
+    },
+    {
+     "id": "standoff_round_female_female_m3_l0010_simple",
+     "why": "round body"
+    }
+   ]
+  }
+ },
+ "queries": [
+  {
+   "q": "M3",
+   "facets": null,
+   "total": 428,
+   "note": "facet discovery"
+  },
+  {
+   "q": null,
+   "facets": {
+    "category": [
+     "fastener"
+    ]
+   },
+   "total": 2118
+  },
+  {
+   "q": null,
+   "facets": {
+    "category": [
+     "spacer"
+    ]
+   },
+   "total": 434
+  },
+  {
+   "q": null,
+   "facets": {
+    "category": [
+     "mechanical-hardware"
+    ]
+   },
+   "total": 826
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "button-head-screw"
+    ]
+   },
+   "total": 65
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "nylon-nut"
+    ]
+   },
+   "total": 7
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "nyloc-nut"
+    ]
+   },
+   "total": 1
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "hex-nut"
+    ]
+   },
+   "total": 8
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "hex-standoff"
+    ]
+   },
+   "total": 2
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "countersunk-screw"
+    ]
+   },
+   "total": 64
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "all-metal-nut"
+    ]
+   },
+   "total": 9
+  },
+  {
+   "q": null,
+   "facets": {
+    "family": [
+     "thin-jam-nut"
+    ]
+   },
+   "total": 7
+  },
+  {
+   "q": "M5 button head 45",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=M5+button+head+45"
+  },
+  {
+   "q": "M5x45 button head",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=M5x45+button+head"
+  },
+  {
+   "q": "M5 45",
+   "facets": {
+    "standard": [
+     "ISO 7380"
+    ]
+   },
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=M5+45&standard=ISO+7380"
+  },
+  {
+   "q": "ISO 7380 M5",
+   "facets": null,
+   "total": 23,
+   "url": "https://api.step.parts/v1/parts?pageSize=40&q=ISO+7380+M5"
+  },
+  {
+   "q": "button head M5x45",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=button+head+M5x45"
+  },
+  {
+   "q": "M5 x 45",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=M5+x+45"
+  },
+  {
+   "q": "lengthMm 45 M5",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=12&q=lengthMm+45+M5"
+  },
+  {
+   "q": "button head",
+   "facets": {
+    "family": [
+     "button-head-screw"
+    ]
+   },
+   "total": 65,
+   "url": "https://api.step.parts/v1/parts?pageSize=1&q=button+head&family=button-head-screw"
+  },
+  {
+   "q": "M5 button head",
+   "facets": null,
+   "total": 14,
+   "url": "https://api.step.parts/v1/parts?pageSize=30&q=M5+button+head"
+  },
+  {
+   "q": "M5",
+   "facets": {
+    "standard": [
+     "ISO 7380"
+    ]
+   },
+   "total": 23,
+   "url": "https://api.step.parts/v1/parts?pageSize=1&q=M5&standard=ISO+7380"
+  },
+  {
+   "q": "button head screw 45",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=button+head+screw+45"
+  },
+  {
+   "q": "lengthMm 45",
+   "facets": {
+    "tag": [
+     "button-head"
+    ]
+   },
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=lengthMm+45&tag=button-head"
+  },
+  {
+   "q": "iso7380 m5",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=iso7380+m5"
+  },
+  {
+   "q": "M3 socket head 14",
+   "facets": null,
+   "total": 3,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+socket+head+14"
+  },
+  {
+   "q": "M3 x 14",
+   "facets": null,
+   "total": 17,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+x+14"
+  },
+  {
+   "q": "M3 14",
+   "facets": {
+    "standard": [
+     "ISO 4762"
+    ]
+   },
+   "total": 3,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+14&standard=ISO+4762"
+  },
+  {
+   "q": "M3 socket head 10",
+   "facets": null,
+   "total": 19,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+socket+head+10"
+  },
+  {
+   "q": "M3 x 10",
+   "facets": {
+    "standard": [
+     "ISO 4762"
+    ]
+   },
+   "total": 4,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+x+10&standard=ISO+4762"
+  },
+  {
+   "q": "M3 socket head 5",
+   "facets": null,
+   "total": 23,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+socket+head+5"
+  },
+  {
+   "q": "M3 x 5",
+   "facets": {
+    "standard": [
+     "ISO 4762"
+    ]
+   },
+   "total": 5,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+x+5&standard=ISO+4762"
+  },
+  {
+   "q": "M3 socket head 12",
+   "facets": null,
+   "total": 6,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+socket+head+12"
+  },
+  {
+   "q": "M3 socket head 6",
+   "facets": null,
+   "total": 61,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+socket+head+6"
+  },
+  {
+   "q": "M3 x 6",
+   "facets": {
+    "standard": [
+     "ISO 4762"
+    ]
+   },
+   "total": 44,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+x+6&standard=ISO+4762"
+  },
+  {
+   "q": "M2.5 socket head 8",
+   "facets": null,
+   "total": 9,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M2.5+socket+head+8"
+  },
+  {
+   "q": "M2.5 x 8",
+   "facets": {
+    "standard": [
+     "ISO 4762"
+    ]
+   },
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M2.5+x+8&standard=ISO+4762"
+  },
+  {
+   "q": "M2.5",
+   "facets": {
+    "family": [
+     "socket-head-cap-screw"
+    ]
+   },
+   "total": 11,
+   "url": "https://api.step.parts/v1/parts?pageSize=30&q=M2.5&family=socket-head-cap-screw"
+  },
+  {
+   "q": "M3",
+   "facets": {
+    "family": [
+     "socket-head-cap-screw"
+    ]
+   },
+   "total": 44,
+   "url": "https://api.step.parts/v1/parts?pageSize=80&q=M3&family=socket-head-cap-screw"
+  },
+  {
+   "q": "M3 button head",
+   "facets": null,
+   "total": 13,
+   "url": "https://api.step.parts/v1/parts?pageSize=40&q=M3+button+head"
+  },
+  {
+   "q": "M3 countersunk 30",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+countersunk+30"
+  },
+  {
+   "q": "M3 flat head 30",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+flat+head+30"
+  },
+  {
+   "q": "M3 x 30",
+   "facets": {
+    "standard": [
+     "ISO 10642"
+    ]
+   },
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+x+30&standard=ISO+10642"
+  },
+  {
+   "q": "ISO 10642 M3",
+   "facets": null,
+   "total": 13,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=ISO+10642+M3"
+  },
+  {
+   "q": "M3 hex nut",
+   "facets": null,
+   "total": 7,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=M3+hex+nut"
+  },
+  {
+   "q": "ISO 4032 M3",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=ISO+4032+M3"
+  },
+  {
+   "q": "DIN 934 M3",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=DIN+934+M3"
+  },
+  {
+   "q": "DIN 934",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=DIN+934"
+  },
+  {
+   "q": "M3",
+   "facets": {
+    "family": [
+     "hex-nut"
+    ]
+   },
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3&family=hex-nut"
+  },
+  {
+   "q": "nut M3",
+   "facets": null,
+   "total": 29,
+   "url": "https://api.step.parts/v1/parts?pageSize=20&q=nut+M3"
+  },
+  {
+   "q": "M3 nylon insert locknut",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+nylon+insert+locknut"
+  },
+  {
+   "q": "M3 nyloc",
+   "facets": null,
+   "total": 2,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+nyloc"
+  },
+  {
+   "q": "M3 lock nut",
+   "facets": null,
+   "total": 3,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3+lock+nut"
+  },
+  {
+   "q": "M3 locknut",
+   "facets": null,
+   "total": 2,
+   "url": "https://api.step.parts/v1/parts?pageSize=8&q=M3+locknut"
+  },
+  {
+   "q": "ISO 10511 M3",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=ISO+10511+M3"
+  },
+  {
+   "q": "ISO 10511",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=ISO+10511"
+  },
+  {
+   "q": "DIN 985 M3",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+985+M3"
+  },
+  {
+   "q": "DIN 985",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+985"
+  },
+  {
+   "q": "ISO 7040",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=ISO+7040"
+  },
+  {
+   "q": "DIN 982",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+982"
+  },
+  {
+   "q": "nyloc",
+   "facets": null,
+   "total": 23,
+   "url": "https://api.step.parts/v1/parts?pageSize=30&q=nyloc"
+  },
+  {
+   "q": "M5 nylon insert locknut",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M5+nylon+insert+locknut"
+  },
+  {
+   "q": "M5 nyloc",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M5+nyloc"
+  },
+  {
+   "q": "M5 locknut",
+   "facets": null,
+   "total": 2,
+   "url": "https://api.step.parts/v1/parts?pageSize=8&q=M5+locknut"
+  },
+  {
+   "q": "M5",
+   "facets": {
+    "family": [
+     "nylon-nut"
+    ]
+   },
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=M5&family=nylon-nut"
+  },
+  {
+   "q": "M5",
+   "facets": {
+    "tag": [
+     "nyloc"
+    ]
+   },
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M5&tag=nyloc"
+  },
+  {
+   "q": "wood screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=wood+screw"
+  },
+  {
+   "q": "#10 wood screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=%2310+wood+screw"
+  },
+  {
+   "q": "pan head",
+   "facets": null,
+   "total": 20,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=pan+head"
+  },
+  {
+   "q": "phillips",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=phillips"
+  },
+  {
+   "q": "pan head phillips",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=pan+head+phillips"
+  },
+  {
+   "q": "tapping screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=tapping+screw"
+  },
+  {
+   "q": "self tapping",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=self+tapping"
+  },
+  {
+   "q": "wood",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=wood"
+  },
+  {
+   "q": "#10",
+   "facets": {
+    "tag": [
+     "screw"
+    ]
+   },
+   "total": 74,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=%2310&tag=screw"
+  },
+  {
+   "q": "No. 10 screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=No.+10+screw"
+  },
+  {
+   "q": "10 x 1-1/4",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=10+x+1-1%2F4"
+  },
+  {
+   "q": "DIN 7996",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+7996"
+  },
+  {
+   "q": "DIN 96",
+   "facets": null,
+   "total": 1,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+96"
+  },
+  {
+   "q": "ISO 7049",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=ISO+7049"
+  },
+  {
+   "q": "DIN 7981",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=DIN+7981"
+  },
+  {
+   "q": "sheet metal screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=sheet+metal+screw"
+  },
+  {
+   "q": "chipboard screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=chipboard+screw"
+  },
+  {
+   "q": "lag screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=3&q=lag+screw"
+  },
+  {
+   "q": "pan head",
+   "facets": null,
+   "total": 20,
+   "url": "https://api.step.parts/v1/parts?pageSize=20&q=pan+head"
+  },
+  {
+   "q": "#10",
+   "facets": {
+    "tag": [
+     "screw"
+    ]
+   },
+   "total": 74,
+   "url": "https://api.step.parts/v1/parts?pageSize=80&q=%2310&tag=screw"
+  },
+  {
+   "q": "1-1/4 #10",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=1-1%2F4+%2310"
+  },
+  {
+   "q": "#10 1.25",
+   "facets": null,
+   "total": 8,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=%2310+1.25"
+  },
+  {
+   "q": "screw",
+   "facets": {
+    "category": [
+     "fastener"
+    ]
+   },
+   "total": 1245,
+   "url": "https://api.step.parts/v1/parts?pageSize=1&q=screw&category=fastener"
+  },
+  {
+   "q": "pan",
+   "facets": {
+    "tag": [
+     "screw"
+    ]
+   },
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=pan&tag=screw"
+  },
+  {
+   "q": "round head screw",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=round+head+screw"
+  },
+  {
+   "q": "truss head",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=truss+head"
+  },
+  {
+   "q": "M3 standoff 10",
+   "facets": null,
+   "total": 21,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=M3+standoff+10"
+  },
+  {
+   "q": "M3 hex standoff female",
+   "facets": null,
+   "total": 26,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=M3+hex+standoff+female"
+  },
+  {
+   "q": "M3 10",
+   "facets": {
+    "family": [
+     "threaded-standoff"
+    ]
+   },
+   "total": 4,
+   "url": "https://api.step.parts/v1/parts?pageSize=20&q=M3+10&family=threaded-standoff"
+  },
+  {
+   "q": "M3 female female",
+   "facets": null,
+   "total": 50,
+   "url": "https://api.step.parts/v1/parts?pageSize=10&q=M3+female+female"
+  },
+  {
+   "q": "standoff female-female",
+   "facets": null,
+   "total": 0,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=standoff+female-female"
+  },
+  {
+   "q": "M3",
+   "facets": {
+    "family": [
+     "hex-standoff"
+    ]
+   },
+   "total": 2,
+   "url": "https://api.step.parts/v1/parts?pageSize=5&q=M3&family=hex-standoff"
+  }
+ ],
+ "query_count": 98
+}

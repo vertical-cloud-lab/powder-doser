@@ -1,0 +1,32 @@
+{
+ "new": "STEP/purchased/solenoid_412.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/purchased/adafruit-412-solenoid.step",
+ "volume_new_mm3": 4995.1,
+ "volume_ref_mm3": 4995.1,
+ "volume_intersection_mm3": 4993.0,
+ "volume_error_pct": 0.0,
+ "iou": 0.9991,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 1.3814636313160348e-13,
+  "p95": 5.898766018586646e-13,
+  "max": 3.487532263580268e-10
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 1.251695797412528e-13,
+  "p95": 5.724450940565707e-13,
+  "max": 2.6436427484327127e-10
+ },
+ "faces_new": 57,
+ "faces_ref": 57,
+ "seconds": 33.0
+}

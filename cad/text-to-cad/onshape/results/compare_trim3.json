@@ -1,0 +1,42 @@
+{
+ "trim_mm": 3.0,
+ "solids_before": 100,
+ "solids_after": 100,
+ "other_solids": {
+  "pairs": 99,
+  "max_centroid_error_mm": 0.46993375501197926,
+  "max_bbox_error_mm": 0.1803662985323058,
+  "max_volume_error_rel": 0.0006090319850662793,
+  "note": "volumes from OCC integration, or from fine meshes where those differ by > 0.1 %"
+ },
+ "baseplate": {
+  "volume_before_mm3": 175485.12819817528,
+  "volume_expected_mm3": 119401.42773148861,
+  "volume_onshape_mm3": 119401.42773147719,
+  "bbox_onshape_mm": [
+   [
+    -95.0,
+    27.3,
+    0.0
+   ],
+   [
+    95.0,
+    170.0,
+    77.66
+   ]
+  ],
+  "bbox_expected_mm": [
+   [
+    -95.0,
+    27.3,
+    0.0
+   ],
+   [
+    95.0,
+    170.0,
+    77.66
+   ]
+  ],
+  "iou_vs_expected": 0.9999999999999991
+ }
+}

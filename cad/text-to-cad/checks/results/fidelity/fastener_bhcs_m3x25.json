@@ -1,0 +1,32 @@
+{
+ "new": "tmp/fasteners/out/bhcs_m3x25.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/bhcs_m3x25.step",
+ "volume_new_mm3": 141.8,
+ "volume_ref_mm3": 168.6,
+ "volume_intersection_mm3": 142.1,
+ "volume_error_pct": -15.94,
+ "iou": 0.8442,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  -0.133
+ ],
+ "bbox_max_delta_mm": [
+  -0.0,
+  -0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.09046978217595908,
+  "p95": 0.26466563243196833,
+  "max": 0.4180864103791208
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.12713783085913308,
+  "p95": 0.2645492272120317,
+  "max": 0.4413798048752424
+ },
+ "faces_new": 12,
+ "faces_ref": 108,
+ "seconds": 36.6
+}

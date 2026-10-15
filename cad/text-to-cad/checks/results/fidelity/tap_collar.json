@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/tap_collar.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/tap-collar.step",
+ "volume_new_mm3": 12937.4,
+ "volume_ref_mm3": 12937.3,
+ "volume_intersection_mm3": 12933.9,
+ "volume_error_pct": 0.0,
+ "iou": 0.9995,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 1.1472799769176442e-05,
+  "p95": 3.874302016981801e-07,
+  "max": 0.0015673944204040197
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 1.3062078979266623e-05,
+  "p95": 3.874302016981801e-07,
+  "max": 0.0014248555024158579
+ },
+ "faces_new": 33,
+ "faces_ref": 33,
+ "seconds": 25.9
+}

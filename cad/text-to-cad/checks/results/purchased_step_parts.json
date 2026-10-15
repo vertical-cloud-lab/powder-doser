@@ -1,0 +1,565 @@
+{
+ "what": "step.parts searches for the purchased parts (MG996R servo, NEMA 11 11HS18-0674S stepper, Adafruit 412 solenoid)",
+ "api": "https://api.step.parts/v1/parts",
+ "date": "2026-10-03",
+ "catalog": {
+  "partCount": 16847,
+  "sha256": "36766ef8cf73776fd12d659855ec9de51527e29c4d10d1d752b84df8153a593b"
+ },
+ "facets_checked": {
+  "categories": {
+   "actuator": 339,
+   "motion": 570
+  },
+  "families": {
+   "generic-servo": 3,
+   "futaba": 1,
+   "emax": 1,
+   "springrc": 1,
+   "feetech": 69,
+   "adafruit": 87,
+   "nema-stepper-motor": 40,
+   "linear-actuator": 12,
+   "spring-ball-indexing-plungers": 18
+  },
+  "tags": {
+   "servo": 114,
+   "rc-servo": 7,
+   "motor": 217,
+   "robotic-actuator": 216,
+   "plunger": 18
+  },
+  "note": "no family or tag contains 'solenoid', 'tower', 'mg99', 'stepperonline' or 'push-pull'"
+ },
+ "searches": {
+  "mg996r": [
+   {
+    "params": {
+     "q": "MG996R"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "MG996"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "996R"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "MG995"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "TowerPro"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "Tower Pro"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "servo"
+    },
+    "total": 123,
+    "ids": [
+     "emax_es08a",
+     "futaba_s3003",
+     "sg90_micro_servo",
+     "springrc_sm_s4303r",
+     "damiao_dm_j3507_2ec",
+     "damiao_dm_j4310_2ec_v1_1",
+     "damiao_dm_j4340_2ec",
+     "damiao_dm_j4340p_2ec",
+     "damiao_dm_j6006_2ec",
+     "damiao_dm_j6248p_2ec",
+     "damiao_dm_j8006_2ec_v1_1",
+     "damiao_dm_j8009_2ec",
+     "damiao_dm_j8009p_2ec",
+     "robstride_00",
+     "robstride_01"
+    ]
+   },
+   {
+    "params": {
+     "q": "standard servo"
+    },
+    "total": 2,
+    "ids": [
+     "servo_standard_rc_servo_envelope",
+     "servo_high_torque_standard_rc_servo_envelope"
+    ]
+   },
+   {
+    "params": {
+     "q": "rc servo"
+    },
+    "total": 10,
+    "ids": [
+     "emax_es08a",
+     "futaba_s3003",
+     "sg90_micro_servo",
+     "springrc_sm_s4303r",
+     "servo_standard_rc_servo_envelope",
+     "servo_high_torque_standard_rc_servo_envelope",
+     "adafruit_2941_micro_dc_motor",
+     "adafruit_2201_submicro_servo",
+     "adafruit_2307_microservo_mg923b",
+     "adafruit_1143_micro_servo_high_torque_metal_gear"
+    ]
+   },
+   {
+    "params": {
+     "q": "metal gear servo"
+    },
+    "total": 1,
+    "ids": [
+     "adafruit_1143_micro_servo_high_torque_metal_gear"
+    ]
+   },
+   {
+    "params": {
+     "tag": "rc-servo"
+    },
+    "total": 7,
+    "ids": [
+     "emax_es08a",
+     "futaba_s3003",
+     "sg90_micro_servo",
+     "springrc_sm_s4303r",
+     "adafruit_2201_submicro_servo",
+     "adafruit_2307_microservo_mg923b",
+     "adafruit_1143_micro_servo_high_torque_metal_gear"
+    ]
+   },
+   {
+    "params": {
+     "family": "generic-servo"
+    },
+    "total": 3,
+    "ids": [
+     "servo_micro_metal_mg90s_envelope",
+     "servo_standard_rc_servo_envelope",
+     "servo_high_torque_standard_rc_servo_envelope"
+    ]
+   },
+   {
+    "params": {
+     "family": "futaba"
+    },
+    "total": 1,
+    "ids": [
+     "futaba_s3003"
+    ]
+   },
+   {
+    "params": {
+     "family": "emax"
+    },
+    "total": 1,
+    "ids": [
+     "emax_es08a"
+    ]
+   },
+   {
+    "params": {
+     "family": "springrc"
+    },
+    "total": 1,
+    "ids": [
+     "springrc_sm_s4303r"
+    ]
+   },
+   {
+    "params": {
+     "q": "servo",
+     "family": "adafruit"
+    },
+    "total": 4,
+    "ids": [
+     "adafruit_2941_micro_dc_motor",
+     "adafruit_2201_submicro_servo",
+     "adafruit_2307_microservo_mg923b",
+     "adafruit_1143_micro_servo_high_torque_metal_gear"
+    ]
+   }
+  ],
+  "nema11": [
+   {
+    "params": {
+     "q": "11HS18-0674S"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "11HS18"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "11HS"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "NEMA 11"
+    },
+    "total": 6,
+    "ids": [
+     "stepper_motor_nema11_l0020_single_shaft",
+     "stepper_motor_nema11_l0028_single_shaft",
+     "stepper_motor_nema11_l0034_single_shaft",
+     "stepper_motor_nema11_l0040_single_shaft",
+     "stepper_motor_nema11_l0048_single_shaft",
+     "stepper_motor_nema11_l0060_single_shaft"
+    ]
+   },
+   {
+    "params": {
+     "q": "NEMA11"
+    },
+    "total": 6,
+    "ids": [
+     "stepper_motor_nema11_l0020_single_shaft",
+     "stepper_motor_nema11_l0028_single_shaft",
+     "stepper_motor_nema11_l0034_single_shaft",
+     "stepper_motor_nema11_l0040_single_shaft",
+     "stepper_motor_nema11_l0048_single_shaft",
+     "stepper_motor_nema11_l0060_single_shaft"
+    ]
+   },
+   {
+    "params": {
+     "q": "28mm stepper"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "stepper"
+    },
+    "total": 57,
+    "ids": [
+     "nema14_l_bracket",
+     "nema14_face_mount_plate",
+     "nema14_adjustable_mount_plate",
+     "nema14_right_angle_mount",
+     "nema17_l_bracket",
+     "nema17_face_mount_plate",
+     "nema17_adjustable_mount_plate",
+     "nema17_right_angle_mount",
+     "nema23_l_bracket",
+     "nema23_face_mount_plate",
+     "nema23_adjustable_mount_plate",
+     "nema23_right_angle_mount",
+     "nema34_l_bracket",
+     "nema34_face_mount_plate",
+     "nema34_adjustable_mount_plate"
+    ]
+   },
+   {
+    "params": {
+     "q": "17HS"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "stepperonline"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "family": "nema-stepper-motor"
+    },
+    "total": 40,
+    "ids": [
+     "stepper_motor_nema08_l0020_single_shaft",
+     "stepper_motor_nema08_l0028_single_shaft",
+     "stepper_motor_nema08_l0034_single_shaft",
+     "stepper_motor_nema08_l0040_single_shaft",
+     "stepper_motor_nema08_l0048_single_shaft",
+     "stepper_motor_nema08_l0060_single_shaft",
+     "stepper_motor_nema11_l0020_single_shaft",
+     "stepper_motor_nema11_l0028_single_shaft",
+     "stepper_motor_nema11_l0034_single_shaft",
+     "stepper_motor_nema11_l0040_single_shaft",
+     "stepper_motor_nema11_l0048_single_shaft",
+     "stepper_motor_nema11_l0060_single_shaft",
+     "stepper_motor_nema14_l0020_single_shaft",
+     "stepper_motor_nema14_l0028_single_shaft",
+     "stepper_motor_nema14_l0034_single_shaft"
+    ]
+   },
+   {
+    "params": {
+     "q": "28",
+     "family": "nema-stepper-motor"
+    },
+    "total": 11,
+    "ids": [
+     "stepper_motor_nema08_l0028_single_shaft",
+     "stepper_motor_nema11_l0020_single_shaft",
+     "stepper_motor_nema11_l0028_single_shaft",
+     "stepper_motor_nema11_l0034_single_shaft",
+     "stepper_motor_nema11_l0040_single_shaft",
+     "stepper_motor_nema11_l0048_single_shaft",
+     "stepper_motor_nema11_l0060_single_shaft",
+     "stepper_motor_nema14_l0028_single_shaft",
+     "stepper_motor_nema17_l0028_single_shaft",
+     "stepper_motor_nema23_l0028_single_shaft",
+     "stepper_motor_nema34_l0028_single_shaft"
+    ]
+   }
+  ],
+  "solenoid_412": [
+   {
+    "params": {
+     "q": "JF-0530B"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "0530B"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "JF0530"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "JF-0530"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "TAU0730TM"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "solenoid"
+    },
+    "total": 1,
+    "ids": [
+     "adafruit_413_large_solenoid"
+    ]
+   },
+   {
+    "params": {
+     "q": "push pull"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "push-pull"
+    },
+    "total": 0,
+    "ids": []
+   },
+   {
+    "params": {
+     "q": "Adafruit 412"
+    },
+    "total": 2,
+    "ids": [
+     "adafruit_5412_mag_connector_usb_connector",
+     "adafruit_5412_mag_connector_usb_to_4_pin"
+    ]
+   },
+   {
+    "params": {
+     "q": "412",
+     "family": "adafruit"
+    },
+    "total": 2,
+    "ids": [
+     "adafruit_5412_mag_connector_usb_connector",
+     "adafruit_5412_mag_connector_usb_to_4_pin"
+    ]
+   },
+   {
+    "params": {
+     "q": "solenoid",
+     "family": "adafruit"
+    },
+    "total": 1,
+    "ids": [
+     "adafruit_413_large_solenoid"
+    ]
+   },
+   {
+    "params": {
+     "tag": "plunger"
+    },
+    "total": 18,
+    "ids": [
+     "spring_plunger_m3",
+     "ball_plunger_m3",
+     "indexing_plunger_m3",
+     "spring_plunger_m4",
+     "ball_plunger_m4",
+     "indexing_plunger_m4",
+     "spring_plunger_m5",
+     "ball_plunger_m5",
+     "indexing_plunger_m5",
+     "spring_plunger_m6",
+     "ball_plunger_m6",
+     "indexing_plunger_m6",
+     "spring_plunger_m8",
+     "ball_plunger_m8",
+     "indexing_plunger_m8"
+    ]
+   },
+   {
+    "params": {
+     "family": "linear-actuator"
+    },
+    "total": 12,
+    "ids": [
+     "linear_actuator_mini_stroke0050_envelope",
+     "linear_actuator_standard_stroke0050_envelope",
+     "linear_actuator_mini_stroke0100_envelope",
+     "linear_actuator_standard_stroke0100_envelope",
+     "linear_actuator_mini_stroke0150_envelope",
+     "linear_actuator_standard_stroke0150_envelope",
+     "linear_actuator_mini_stroke0200_envelope",
+     "linear_actuator_standard_stroke0200_envelope",
+     "linear_actuator_mini_stroke0300_envelope",
+     "linear_actuator_standard_stroke0300_envelope",
+     "linear_actuator_mini_stroke0500_envelope",
+     "linear_actuator_standard_stroke0500_envelope"
+    ]
+   },
+   {
+    "params": {
+     "q": "electromagnet"
+    },
+    "total": 7,
+    "ids": [
+     "electromagnetic_clutch_envelope_bore5",
+     "electromagnetic_clutch_envelope_bore6",
+     "electromagnetic_clutch_envelope_bore8",
+     "electromagnetic_clutch_envelope_bore10",
+     "electromagnetic_clutch_envelope_bore12",
+     "electromagnetic_clutch_envelope_bore15",
+     "electromagnetic_clutch_envelope_bore20"
+    ]
+   }
+  ]
+ },
+ "candidates_downloaded_for_measurement": [
+  {
+   "id": "servo_standard_rc_servo_envelope",
+   "pageUrl": "https://www.step.parts/parts/servo_standard_rc_servo_envelope",
+   "sha256": "59de9f541bfe4d0fdff517bc0f195e9577526593e7106d4386cf4c33632390b0",
+   "checksumVerified": true,
+   "bbox_size_mm": [
+    50.0,
+    20.0,
+    42.0
+   ],
+   "verdict": "generic envelope box, not an MG996R",
+   "kept": false
+  },
+  {
+   "id": "servo_high_torque_standard_rc_servo_envelope",
+   "pageUrl": "https://www.step.parts/parts/servo_high_torque_standard_rc_servo_envelope",
+   "sha256": "e04ceabb48c8496275614f1cecbb3df6159204d65989731b00ccc60503427169",
+   "checksumVerified": true,
+   "bbox_size_mm": [
+    50.0,
+    20.0,
+    42.0
+   ],
+   "verdict": "generic envelope box, not an MG996R",
+   "kept": false
+  },
+  {
+   "id": "futaba_s3003",
+   "pageUrl": "https://www.step.parts/parts/futaba_s3003",
+   "sha256": "b363de67c2155f4a5ffd524fd51534b72a45194df68ae5c307a28b6adc94c66b",
+   "checksumVerified": true,
+   "bbox_size_mm": [
+    57.75,
+    20.0,
+    41.74
+   ],
+   "verdict": "different servo model",
+   "kept": false
+  },
+  {
+   "id": "stepper_motor_nema11_l0048_single_shaft",
+   "pageUrl": "https://www.step.parts/parts/stepper_motor_nema11_l0048_single_shaft",
+   "sha256": "6586ac6ec44f91526e498a9e535a5dfe3eabf5a9ef0d578290857c88abf31811",
+   "checksumVerified": true,
+   "bbox_size_mm": [
+    28.2,
+    28.2,
+    58.0
+   ],
+   "verdict": "generic NEMA 11, 48 mm body (11HS18 is 45 mm); vendor STEP used instead",
+   "kept": false
+  },
+  {
+   "id": "adafruit_413_large_solenoid",
+   "pageUrl": "https://www.step.parts/parts/adafruit_413_large_solenoid",
+   "sha256": "594992ab947dffffc8d554035c0adecb700d69906d6e4a1962122dbb52ddc6a9",
+   "checksumVerified": true,
+   "bbox_size_mm": [
+    29.0,
+    24.0,
+    69.7
+   ],
+   "verdict": "the large solenoid (413), not the 412",
+   "kept": false
+  }
+ ],
+ "decisions": {
+  "mg996r": "no match: no MG996R/MG996/MG995/TowerPro record; the generic standard RC servo envelopes are 50 x 20 x 42 mm boxes and the Futaba S3003 is a different servo (57.75 x 20 x 41.74 mm overall). Recreated PR #170's simplified MG996R parametrically: src/purchased/mg996r.py.",
+  "nema11": "no exact match: only generic 'analytic simplified' NEMA 11 bodies of 20/28/34/40/48/60 mm (28.2 mm frame, no 45 mm). Used the manufacturer's STEP already in the repo (hardware/vendor-files/stepperonline-11hs18-0674s/cad/11HS18-0674S.STEP): src/purchased/nema11.py.",
+  "solenoid_412": "no match: no JF-0530B/0530B/JF0530/TAU0730TM/Adafruit 412 record; the only solenoid is adafruit_413_large_solenoid (Adafruit 413, 29 x 24 x 69.7 mm vs 24.2 x 14 x 51.9 mm). Recreated PR #170's simplified model parametrically: src/purchased/solenoid_412.py."
+ }
+}

@@ -1,0 +1,779 @@
+{
+ "source": "reference",
+ "radii_mm": [
+  10.0,
+  20.0,
+  29.0,
+  42.5,
+  50.0,
+  60.0
+ ],
+ "tilts_deg": [
+  0.0,
+  22.5,
+  45.0
+ ],
+ "configs": {
+  "below": "servos below (current); board edge at the legs, y = 55.4",
+  "below_board_back": "servos below, board edge moved back to y = 100 (legs hang free)",
+  "above": "servos above (variant, 5 mm lower); plate overhangs the board, edge at y = 108"
+ },
+ "rows": [
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 30.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 30.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 81.35,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 81.35,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 81.35,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 81.35,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 27.87,
+   "gap_mm": 11.55,
+   "limited_by": "Auger",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 77.52,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 77.52,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 77.52,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 77.52,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 77.52,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 27.34,
+   "gap_mm": 8.84,
+   "limited_by": "Auger",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 74.28,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 74.28,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 74.28,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -38.1,
+   "gap_mm": 74.28,
+   "limited_by": "Mounting board",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -39.08,
+   "gap_mm": 75.26,
+   "limited_by": "Baseplate",
+   "config": "below",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 30.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 30.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 43.25,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 43.25,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 43.25,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -36.75,
+   "gap_mm": 80.0,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    43.25
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 27.87,
+   "gap_mm": 11.55,
+   "limited_by": "Auger",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 39.42,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 39.42,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 39.42,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 39.42,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -37.36,
+   "gap_mm": 76.78,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    39.42
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 27.34,
+   "gap_mm": 8.84,
+   "limited_by": "Auger",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 36.18,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 36.18,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 36.18,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 36.18,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": -39.08,
+   "gap_mm": 75.26,
+   "limited_by": "Baseplate",
+   "config": "below_board_back",
+   "variant": "below",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    36.18
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 25.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 25.75,
+   "gap_mm": 12.5,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 13.07,
+   "gap_mm": 25.18,
+   "limited_by": "Mounting plate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 38.25,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 38.25,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 38.25,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 0.0,
+   "outlet_mm": [
+    0.0,
+    35.4,
+    38.25
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 22.87,
+   "gap_mm": 11.55,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 22.87,
+   "gap_mm": 11.55,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 22.87,
+   "gap_mm": 11.55,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 34.42,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 34.42,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 34.42,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 22.5,
+   "outlet_mm": [
+    0.0,
+    36.16,
+    34.42
+   ]
+  },
+  {
+   "cup_radius_mm": 10.0,
+   "rim_max_z_mm": 22.34,
+   "gap_mm": 8.84,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  },
+  {
+   "cup_radius_mm": 20.0,
+   "rim_max_z_mm": 22.34,
+   "gap_mm": 8.84,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  },
+  {
+   "cup_radius_mm": 29.0,
+   "rim_max_z_mm": 22.34,
+   "gap_mm": 8.84,
+   "limited_by": "Auger",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  },
+  {
+   "cup_radius_mm": 42.5,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 31.18,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  },
+  {
+   "cup_radius_mm": 50.0,
+   "rim_max_z_mm": -0.0,
+   "gap_mm": 31.18,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  },
+  {
+   "cup_radius_mm": 60.0,
+   "rim_max_z_mm": 0.0,
+   "gap_mm": 31.18,
+   "limited_by": "Baseplate",
+   "config": "above",
+   "variant": "above",
+   "tilt_deg": 45.0,
+   "outlet_mm": [
+    0.0,
+    38.33,
+    31.18
+   ]
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "new": "STEP/purchased/nema11.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/purchased/nema11-11hs18-0674s.step",
+ "volume_new_mm3": 35887.8,
+ "volume_ref_mm3": 35766.8,
+ "volume_intersection_mm3": 34997.5,
+ "volume_error_pct": 0.34,
+ "iou": 0.9547,
+ "bbox_min_delta_mm": [
+  -0.1,
+  -20.1,
+  0.5
+ ],
+ "bbox_max_delta_mm": [
+  0.1,
+  0.1,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.7372247773260202,
+  "p95": 3.1000000000000014,
+  "max": 20.1
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.1866236698985461,
+  "p95": 0.6162860526570598,
+  "max": 3.054985841768537
+ },
+ "faces_new": 291,
+ "faces_ref": 24,
+ "seconds": 83.0
+}

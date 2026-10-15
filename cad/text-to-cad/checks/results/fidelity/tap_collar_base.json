@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/tap_collar_base.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/ai-step/tap-collar-base.step",
+ "volume_new_mm3": 15743.1,
+ "volume_ref_mm3": 15743.1,
+ "volume_intersection_mm3": 15740.8,
+ "volume_error_pct": -0.0,
+ "iou": 0.9997,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  -0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 1.057337967443752e-09,
+  "p95": 2.4894344363701745e-10,
+  "max": 8.738059673170325e-08
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 1.1617074526744684e-09,
+  "p95": 2.3790978076476633e-10,
+  "max": 8.738059686238018e-08
+ },
+ "faces_new": 17,
+ "faces_ref": 17,
+ "seconds": 19.1
+}

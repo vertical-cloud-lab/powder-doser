@@ -1,0 +1,560 @@
+{
+ "assignVariable": {
+  "name": "Variable",
+  "parameters": [
+   {
+    "id": "initEntities",
+    "type": "Query",
+    "name": "Entities"
+   },
+   {
+    "id": "mode",
+    "type": "Enum",
+    "name": "Mode",
+    "enum": "VariableMode",
+    "options": [
+     "ASSIGNED",
+     "MEASURED",
+     "TABLE"
+    ]
+   },
+   {
+    "id": "variableType",
+    "type": "Enum",
+    "name": "Variable type",
+    "enum": "VariableType",
+    "options": [
+     "LENGTH",
+     "ANGLE",
+     "NUMBER",
+     "ANY"
+    ]
+   },
+   {
+    "id": "measurementMode",
+    "type": "Enum",
+    "name": "Measurement",
+    "enum": "VariableMeasurementMode",
+    "options": [
+     "DISTANCE",
+     "LENGTH",
+     "DIAMETER"
+    ]
+   },
+   {
+    "id": "name",
+    "type": "String",
+    "name": "Name"
+   },
+   {
+    "id": "lengthValue",
+    "type": "Quantity",
+    "name": "Value",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "angleValue",
+    "type": "Quantity",
+    "name": "Value",
+    "quantity": "ANGLE"
+   },
+   {
+    "id": "numberValue",
+    "type": "Quantity",
+    "name": "Value",
+    "quantity": "REAL"
+   },
+   {
+    "id": "anyValue",
+    "type": "Quantity",
+    "name": "Value",
+    "quantity": "ANYTHING"
+   },
+   {
+    "id": "value",
+    "type": "Quantity",
+    "name": "value",
+    "quantity": "ANYTHING"
+   },
+   {
+    "id": "csv",
+    "type": "ReferenceTable",
+    "name": "CSV file"
+   },
+   {
+    "id": "rowAccessType",
+    "type": "Enum",
+    "name": "Access type",
+    "enum": "AccessType",
+    "options": [
+     "INDEX",
+     "INDEX_RANGE",
+     "LABEL",
+     "ALL"
+    ]
+   },
+   {
+    "id": "rowIndex",
+    "type": "Quantity",
+    "name": "Index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "rowValue",
+    "type": "String",
+    "name": "Value"
+   },
+   {
+    "id": "rowRegexp",
+    "type": "Boolean",
+    "name": "Regular expression"
+   },
+   {
+    "id": "rowMinIndex",
+    "type": "Quantity",
+    "name": "Min index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "rowMaxIndex",
+    "type": "Quantity",
+    "name": "Max index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "rowResult",
+    "type": "Enum",
+    "name": "Result type",
+    "enum": "ResultType",
+    "options": [
+     "SINGLE",
+     "ARRAY",
+     "MAP"
+    ]
+   },
+   {
+    "id": "rowLabelIndex",
+    "type": "Quantity",
+    "name": "Label column index",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "columnAccessType",
+    "type": "Enum",
+    "name": "Access type",
+    "enum": "AccessType",
+    "options": [
+     "INDEX",
+     "INDEX_RANGE",
+     "LABEL",
+     "ALL"
+    ]
+   },
+   {
+    "id": "columnIndex",
+    "type": "Quantity",
+    "name": "Index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "columnValue",
+    "type": "String",
+    "name": "Value"
+   },
+   {
+    "id": "columnRegexp",
+    "type": "Boolean",
+    "name": "Regular expression"
+   },
+   {
+    "id": "columnMinIndex",
+    "type": "Quantity",
+    "name": "Min index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "columnMaxIndex",
+    "type": "Quantity",
+    "name": "Max index (0-based)",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "columnResult",
+    "type": "Enum",
+    "name": "Result type",
+    "enum": "ResultType",
+    "options": [
+     "SINGLE",
+     "ARRAY",
+     "MAP"
+    ]
+   },
+   {
+    "id": "columnLabelIndex",
+    "type": "Quantity",
+    "name": "Label row index",
+    "quantity": "INTEGER"
+   },
+   {
+    "id": "useConversionFactor",
+    "type": "Boolean",
+    "name": "Conversion factor"
+   },
+   {
+    "id": "conversionFactor",
+    "type": "Quantity",
+    "name": "Conversion factor",
+    "quantity": "ANYTHING"
+   },
+   {
+    "id": "entityCouple",
+    "type": "Query",
+    "name": "Entities to measure between"
+   },
+   {
+    "id": "minmax",
+    "type": "Enum",
+    "name": "Minimum/Maximum",
+    "enum": "VariableMinMaxSelection",
+    "options": [
+     "MINIMUM",
+     "MAXIMUM"
+    ]
+   },
+   {
+    "id": "extendEntities",
+    "type": "Boolean",
+    "name": "Extend entities"
+   },
+   {
+    "id": "measureFromAxis",
+    "type": "Boolean",
+    "name": "Use axis"
+   },
+   {
+    "id": "distance",
+    "type": "Quantity",
+    "name": "Distance",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "xOffset",
+    "type": "Quantity",
+    "name": "Along X",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "yOffset",
+    "type": "Quantity",
+    "name": "Along Y",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "zOffset",
+    "type": "Quantity",
+    "name": "Along Z",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "componentSelector",
+    "type": "Enum",
+    "name": "Value to record",
+    "enum": "AxisWithCustom",
+    "options": [
+     "DISTANCE",
+     "X",
+     "Y",
+     "Z",
+     "CUSTOM"
+    ]
+   },
+   {
+    "id": "customDirection",
+    "type": "Query",
+    "name": "Custom direction"
+   },
+   {
+    "id": "customOffset",
+    "type": "Quantity",
+    "name": "Along custom",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "lengthEntities",
+    "type": "Query",
+    "name": "Entities"
+   },
+   {
+    "id": "radius",
+    "type": "Boolean",
+    "name": "Radius"
+   },
+   {
+    "id": "diameterEntity",
+    "type": "Query",
+    "name": "Entity"
+   },
+   {
+    "id": "description",
+    "type": "String",
+    "name": "Description"
+   }
+  ]
+ },
+ "moveFace": {
+  "name": "Move face",
+  "parameters": [
+   {
+    "id": "outputType",
+    "type": "Enum",
+    "name": "Creation type",
+    "enum": "MoveFaceOutputType",
+    "options": [
+     "MOVE",
+     "CREATE"
+    ]
+   },
+   {
+    "id": "moveFaces",
+    "type": "Query",
+    "name": "Faces to move"
+   },
+   {
+    "id": "surfacesAndFaces",
+    "type": "Query",
+    "name": "Faces, surfaces, and sketch regions to offset"
+   },
+   {
+    "id": "moveFaceType",
+    "type": "Enum",
+    "name": "Move face type",
+    "enum": "MoveFaceType",
+    "options": [
+     "OFFSET",
+     "TRANSLATE",
+     "ROTATE"
+    ]
+   },
+   {
+    "id": "direction",
+    "type": "Query",
+    "name": "Direction"
+   },
+   {
+    "id": "axis",
+    "type": "Query",
+    "name": "Axis"
+   },
+   {
+    "id": "limitType",
+    "type": "Enum",
+    "name": "End type",
+    "enum": "MoveFaceBoundingType",
+    "options": [
+     "BLIND",
+     "UP_TO_ENTITY"
+    ]
+   },
+   {
+    "id": "translationDistance",
+    "type": "Quantity",
+    "name": "Distance",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "angle",
+    "type": "Quantity",
+    "name": "Rotation angle",
+    "quantity": "ANGLE"
+   },
+   {
+    "id": "offsetDistance",
+    "type": "Quantity",
+    "name": "Distance",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "oppositeDirection",
+    "type": "Boolean",
+    "name": "Opposite direction"
+   },
+   {
+    "id": "limitEntity",
+    "type": "Query",
+    "name": "Up to entity"
+   },
+   {
+    "id": "limitQuery",
+    "type": "Query",
+    "name": "Up to entity"
+   },
+   {
+    "id": "hasOffset",
+    "type": "Boolean",
+    "name": "Offset distance"
+   },
+   {
+    "id": "offset",
+    "type": "Quantity",
+    "name": "Offset",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "oppositeOffsetDirection",
+    "type": "Boolean",
+    "name": "Opposite offset direction"
+   },
+   {
+    "id": "reFillet",
+    "type": "Boolean",
+    "name": "Reapply fillet"
+   }
+  ]
+ },
+ "transform": {
+  "name": "Transform",
+  "parameters": [
+   {
+    "id": "entities",
+    "type": "Query",
+    "name": "Entities to transform or copy"
+   },
+   {
+    "id": "transformType",
+    "type": "Enum",
+    "name": "Transform type",
+    "enum": "TransformType",
+    "options": [
+     "TRANSLATION_ENTITY",
+     "TRANSLATION_DISTANCE",
+     "TRANSLATION_3D",
+     "TRANSFORM_MATE_CONNECTORS",
+     "ROTATION",
+     "COPY",
+     "SCALE_UNIFORMLY"
+    ]
+   },
+   {
+    "id": "oppositeDirectionEntity",
+    "type": "Boolean",
+    "name": "Opposite direction"
+   },
+   {
+    "id": "transformLine",
+    "type": "Query",
+    "name": "Line or points"
+   },
+   {
+    "id": "transformAxis",
+    "type": "Query",
+    "name": "Axis"
+   },
+   {
+    "id": "transformDirection",
+    "type": "Query",
+    "name": "Direction"
+   },
+   {
+    "id": "distance",
+    "type": "Quantity",
+    "name": "Distance",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "uniform",
+    "type": "Boolean",
+    "name": "Scale uniformly"
+   },
+   {
+    "id": "scale",
+    "type": "Quantity",
+    "name": "Scale",
+    "quantity": "REAL"
+   },
+   {
+    "id": "scaleX",
+    "type": "Quantity",
+    "name": "X scale",
+    "quantity": "REAL"
+   },
+   {
+    "id": "scaleY",
+    "type": "Quantity",
+    "name": "Y scale",
+    "quantity": "REAL"
+   },
+   {
+    "id": "scaleZ",
+    "type": "Quantity",
+    "name": "Z scale",
+    "quantity": "REAL"
+   },
+   {
+    "id": "baseConnector",
+    "type": "Query",
+    "name": "From mate connector"
+   },
+   {
+    "id": "destinationConnector",
+    "type": "Query",
+    "name": "To mate connector"
+   },
+   {
+    "id": "oppositeDirectionMateAxis",
+    "type": "Boolean",
+    "name": "Flip primary axis"
+   },
+   {
+    "id": "secondaryAxisType",
+    "type": "Enum",
+    "name": "Reorient secondary axis",
+    "enum": "MateConnectorAxisType",
+    "options": [
+     "PLUS_X",
+     "PLUS_Y",
+     "MINUS_X",
+     "MINUS_Y"
+    ]
+   },
+   {
+    "id": "angle",
+    "type": "Quantity",
+    "name": "Angle",
+    "quantity": "ANGLE"
+   },
+   {
+    "id": "oppositeDirection",
+    "type": "Boolean",
+    "name": "Opposite direction"
+   },
+   {
+    "id": "dx",
+    "type": "Quantity",
+    "name": "X translation",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "dy",
+    "type": "Quantity",
+    "name": "Y translation",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "dz",
+    "type": "Quantity",
+    "name": "Z translation",
+    "quantity": "LENGTH"
+   },
+   {
+    "id": "scalePoint",
+    "type": "Query",
+    "name": "Point or mate connector"
+   },
+   {
+    "id": "makeCopy",
+    "type": "Boolean",
+    "name": "Copy part"
+   }
+  ]
+ }
+}
