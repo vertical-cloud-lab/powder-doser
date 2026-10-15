@@ -84,7 +84,8 @@ about eight 1 kg spools for 25 dosers.
    above the baseplate). Before printing more, test-fit it: the 14T and 20T
    pinions should mesh with their 28T and 44T gears without binding, the
    brackets should slide onto the auger tube, and M3 screws should pass
-   their holes.
+   their holes. The mounting plate and its tilt gears and links are
+   already sliced for the A1 mini in [`print-files/`](print-files/).
 2. **Then batch.** The mounting plates are the long pole: one per plate,
    so 25 separate jobs. Keep the A1 mini busy with those during the day
    and run plates of small parts (brackets, collars, bases, caps, pinions)
