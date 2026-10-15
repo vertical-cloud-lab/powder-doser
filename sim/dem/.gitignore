@@ -1,0 +1,7 @@
+# raw LIGGGHTS output stays out of git (hundreds of MB); results/ holds the small summaries
+dump/
+*.stl
+*.vtk
+data.init
+log.*
+screen.txt
