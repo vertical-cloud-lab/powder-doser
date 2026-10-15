@@ -1,0 +1,43 @@
+Category,Item,Part number / source,Per doser,Need for 25,Status in PR #115 (as of 2026-10-02),On hand,Short,Notes
+Printed (A1 mini),Mounting plate (with both 28T tilt gears),Fusion https://a360.co/4xXUj8L,1,25,Print in-house,,,"149.5 x 108.2 x 54.7 mm, one per A1 mini plate"
+Printed (A1 mini),Auger bracket,Fusion https://a360.co/46XtYN1,2,50,Print in-house,,,
+Printed (A1 mini),Tap collar,Fusion https://a360.co/4AIIgyz,1,25,Print in-house,,,
+Printed (A1 mini),Tap-collar base (hard stop),PR #170 components/ai-step/tap-collar-base.step (PR #51),1,25,Print in-house,,,
+Printed (A1 mini),Auger cap,Fusion https://a360.co/4w9kRE5,1,25,Print in-house,,,
+Printed (A1 mini),Servo pinion 14T,Fusion https://a360.co/4dcGSdF,2,50,Print in-house,,,
+Printed (A1 mini),Stepper pinion 20T,Fusion https://a360.co/4yqSHFz,1,25,Print in-house,,,
+Printed (H2D),Baseplate,Fusion https://a360.co/4AOA7sI,1,25,Print in-house,,,"190 mm long, too big for the A1 mini; 2 per H2D plate"
+Printed (H2D),Auger (threaded storage),Fusion https://a360.co/4y1oz2H,1,25,Print in-house,,,"250 mm tall, too big for the A1 mini; label each with a 6-character ID (#134)"
+Printed,PLA filament (1 kg spools),about 274 g per doser,,8,Thought to be on the original order; not on the 2026-09-24 missing list,,,"About 6.9 kg for 25, plus failures"
+Motion,MG996R servo,DigiKey FXX-3037-TOP or TowerPro MG996R,2,50,On the DigiKey re-order (check placed/arrived),,,
+Motion,NEMA-11 stepper,StepperOnline 11HS18-0674S,1,25,Arrived x25 (2026-09-15),,,
+Motion,Push-pull solenoid 12 V,Adafruit 412,1,25,Arrived x25,,,
+Motion,ERM coin vibration motor,Adafruit 1201,1,25,Arrived x25,,,
+Electronics,V2 PCB,hardware/PCBs/POWDER_DOSER_V2.zip (JLCPCB),1,25,4 spare at BYU; 25+ still to order,,,
+Electronics,Raspberry Pi Pico 2 WH,DigiKey SC1634,1,25,On the DigiKey re-order (check placed/arrived),,,RP2350: needs the RP2350 MicroPython build
+Electronics,Waveshare Pico-2CH-RS232,Amazon / PiShop,1,25,Arrived x25,,,
+Electronics,Tic T500 stepper controller,Pololu 3135,1,25,Arrived x25,,,
+Electronics,Shunt regulator 33 V,Pololu 3776,1,25,Arrived x25,,,
+Electronics,DRV8871 motor driver,Adafruit 3190,1,25,Arrived x25,,,
+Electronics,DRV2605L haptic driver,Adafruit 2305,1,25,Arrived x25,,,
+Electronics,5 V buck regulator,Pololu D24V22F5 (2858),1,25,Missing (2026-09-24),,,
+Electronics,PCB-mount 12 V barrel jack 5.5 x 2.1 mm,Match the BYU boards (PR #115 suggested Same Sky PJ-002AH),1,25,Not on any order,,,
+Electronics,Electrolytic capacitor,Values as on the BYU boards (BOM: 100 uF 25 V),4,100,Optional line on the DigiKey re-order (ECA-1EM101B x100),,,"V2 pads are 5.0 mm apart; ECA-1EM101B leads are 2.5 mm"
+Electronics,0.1 in male headers (40-pos breakaway),DigiKey PRPC040SAAN-RC,1,25,On the DigiKey re-order,,,Count strips that came with the breakouts first
+Electronics,12 V 5 A power brick,Mean Well GST60A12-P1J,1,25,On the DigiKey re-order,,,
+Electronics,AC cord for the brick,Mean Well YP12-YC12,1,25,On the DigiKey re-order,,,
+Electronics,Wiring (stepper lead to board; servo/solenoid/ERM leads),Ask William what the BYU boards use,,,Not on any order,,,
+Electronics,USB cable for the Pico,Micro-USB,1,25,Not on any order,,,
+Fasteners,#10 x 1-1/4 in pan head wood screw,McMaster 93360A609,6,150,Not on the 2026-10-02 list,,,Baseplate to the board
+Fasteners,M3 x 14 socket head screw,McMaster 91292A027,10,250,M3/M5 missing (2026-09-24),,,
+Fasteners,M3 nylon-insert locknut,McMaster 93625A100,16,400,M3/M5 missing,,,
+Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,Servo pinions
+Fasteners,M5 x 45 button head screw,McMaster 92095A223,2,50,M3/M5 missing,,,Hinge
+Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,Hinge
+Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,,,Stepper
+Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,,,Tap-collar base
+Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,Tap-collar base
+Fasteners,M3 hex nut,McMaster 91828A211,1,25,M3/M5 missing,,,
+Fasteners,M3 x 20 button head screw,McMaster 92095A185,5,125,M3/M5 missing,,,Brackets and tap-collar clamp
+Fasteners,M3 x 5 socket head screw,McMaster 91292A110,2,50,M3/M5 missing,,,"Solenoid; if its ears are clearance holes use M3 x 8 + locknut"
+Mounting,Board 38 mm (1.5 in) thick,"Any flat board, at least 250 x 220 mm",1,25,Not on any order,,,
