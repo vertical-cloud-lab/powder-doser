@@ -279,6 +279,14 @@ class RefillTapDoser(TrickleTapDoser):
         line goes out once.  (PR #154's build has no RESULT line and
         never calls this.)
         """
+        build = getattr(TrickleTapDoser, "_result_doc", None)
+        if build is not None:     # PR #166 builds from 2026-10-15
+            doc = build(self, res, state, t_marks, settled, error)
+            doc["fw"] = FIRMWARE_ID
+            doc["refill"] = self.refill_summary()
+            self.last_result = doc
+            self._log_result(doc)             # memory-safe (base class)
+            return
         log, held = self.log, []
         self.log = held.append
         try:

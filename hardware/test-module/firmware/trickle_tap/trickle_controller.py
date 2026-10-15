@@ -38,6 +38,7 @@ Pico and under CPython.
 
 import gc
 import json
+import sys
 import time
 
 import main_three_phase as m3
@@ -85,7 +86,7 @@ TELEMETRY_HEADER = ("t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,"
 # line.  The Pico is shared with other sessions' firmware, so the
 # campaign executor refuses to dose unless this matches
 # scripts/opt_common.FIRMWARE_ID -- bump both together.
-FIRMWARE_ID = "trickle_tap/2026-10-09"
+FIRMWARE_ID = "trickle_tap/2026-10-15"
 
 # The searched + campaign-relevant knobs echoed back in every RESULT
 # line (issue #164 section 2.6: parameters *as executed*, not just as
@@ -151,6 +152,16 @@ class TelemetryBuffer:
     def __iter__(self):
         for i in range(self.n):
             yield self._slots[i]
+
+
+class _Pieces:
+    """A write()-only sink for ``json.dump`` (CPython: the sim tests)."""
+
+    def __init__(self):
+        self.parts = []
+
+    def write(self, text):
+        self.parts.append(text)
 
 
 def _round(value, digits):
@@ -291,6 +302,44 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         section 3).  Emitted on EVERY dose exit, aborts included; the
         'res' REPL command reprints the last one.
         """
+        doc = self._result_doc(res, state, t_marks, settled, error)
+        self.last_result = doc
+        self._log_result(doc)
+
+    def _log_result(self, doc, log=None):
+        """Log ``RESULT {json}`` as one line, even on a fragmented heap.
+
+        ``"RESULT " + json.dumps(doc)`` asks for two contiguous ~1.5 kB
+        blocks.  2026-10-13 and 10-15 (PR #166): after long doses the
+        Pico W heap could not supply one (MicroPython had already
+        collected), so doses that had finished -- cycle-budget, and once
+        an ok dose at 0.7 mg -- were reported as fw-error and lost to the
+        campaign.  On MemoryError the json is streamed instead:
+        MicroPython's ``json.dump`` writes to the stream as it goes and
+        needs no large block.  An injected log (the sim) takes whole
+        lines, so there the streamed pieces are joined.
+        """
+        log = log or self.log
+        try:
+            log("RESULT " + json.dumps(doc))
+            return
+        except MemoryError:
+            pass
+        gc.collect()
+        if log is print:
+            out = sys.stdout
+            out.write("RESULT ")
+            try:
+                json.dump(doc, out)
+            finally:
+                out.write("\n")              # never leave a half line
+            return
+        parts = _Pieces()
+        json.dump(doc, parts)
+        log("RESULT " + "".join(parts.parts))
+
+    def _result_doc(self, res, state, t_marks, settled, error=None):
+        """The RESULT document of one dose (``_emit_result`` logs it)."""
         p = self.p
         events = []
         for ev in self.stop_events:
@@ -328,8 +377,7 @@ class TrickleTapDoser(m3.ThreePhaseDoser):
         }
         if error is not None:
             doc["error"] = error
-        self.last_result = doc
-        self.log("RESULT " + json.dumps(doc))
+        return doc
 
     # -- stage parameter dicts (built fresh so live `set` applies) -----
 

@@ -192,8 +192,7 @@ class TrickleRig(m3.Rig):
                 if self.doser is None or self.doser.last_result is None:
                     print("[res] no dose result yet -- run a dose first")
                 else:
-                    import json
-                    print("RESULT " + json.dumps(self.doser.last_result))
+                    self.doser._log_result(self.doser.last_result, print)
             else:
                 m3.Rig.handle(self, line)     # r/t/a/p/w/z/! and errors
         except Exception as exc:

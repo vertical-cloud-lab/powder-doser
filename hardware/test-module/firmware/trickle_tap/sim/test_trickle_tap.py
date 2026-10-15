@@ -702,6 +702,58 @@ def test_telemetry_can_never_abort_a_dose():
           doser.dose(0.2).status == m3.DoseResult.OK)
 
 
+def test_result_line_survives_a_fragmented_heap():
+    # 2026-10-13 and 10-15 (PR #166): after long doses the Pico could
+    # not allocate the ~1.5 kB RESULT string, so finished doses (cycle-
+    # budget, and an ok one at 0.7 mg) went out as fw-error and were
+    # lost to the campaign.  The line must still go out, once, with the
+    # dose's own status -- on the device (log is print: streamed to
+    # stdout) and with an injected log (pieces joined).
+    import contextlib
+    import io
+    real_dumps = json.dumps
+
+    def dumps_oom(obj, *a, **kw):
+        if isinstance(obj, dict) and "stop_events" in obj:
+            raise MemoryError("memory allocation failed, allocating "
+                              "1549 bytes")
+        return real_dumps(obj, *a, **kw)
+
+    out = io.StringIO()
+    doser, stepper, tap, servo, clock = make_doser(Plant(), log=print)
+    json.dumps = dumps_oom
+    try:
+        with contextlib.redirect_stdout(out):
+            res = doser.dose(1.0)
+            doser._log_result(doser.last_result, print)   # 'res' reprint
+    finally:
+        json.dumps = real_dumps
+    lines = [l for l in out.getvalue().splitlines()
+             if l.startswith("RESULT ")]
+    docs = [json.loads(l[len("RESULT "):]) for l in lines]
+    check("streamed RESULT: one line per dose plus the reprint ({})".format(
+        len(lines)), len(lines) == 2)
+    check("streamed RESULT: the dose's own status ({} / {})".format(
+        res.status, docs[0]["status"] if docs else None),
+        res.status == m3.DoseResult.OK and docs
+        and docs[0]["status"] == "ok" and "error" not in docs[0])
+    check("streamed RESULT: same document as last_result (res reprint "
+          "too)", docs and docs[0] == doser.last_result == docs[-1])
+
+    lines = []
+    doser, stepper, tap, servo, clock = make_doser(Plant(),
+                                                   log=lines.append)
+    json.dumps = dumps_oom
+    try:
+        res = doser.dose(1.0)
+    finally:
+        json.dumps = real_dumps
+    lines = [l for l in lines if l.startswith("RESULT ")]
+    check("joined RESULT (injected log): one line, status {}".format(
+        res.status), len(lines) == 1 and json.loads(
+            lines[0][len("RESULT "):])["status"] == res.status == "ok")
+
+
 class CloggedPlant(Plant):
     """2026-09-30 Al 4047 (PR #166): chunks lodged in the tube.  It feeds
     at a steep tilt only, and only above a minimum auger speed; the
@@ -960,7 +1012,8 @@ def main():
                test_bulk_only_clog,
                test_bulk_then_taps,
                test_heap_check_collects_before_truncating,
-               test_cutoff_margin_moves_the_handover):
+               test_cutoff_margin_moves_the_handover,
+               test_result_line_survives_a_fragmented_heap):
         print(fn.__name__)
         fn()
     if _FAILURES:
