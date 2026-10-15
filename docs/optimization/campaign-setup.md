@@ -33,6 +33,12 @@ before code is written:
 > PR #154's refill-tap endgame as an opt-in way to dose a validated profile
 > (`dose.py --endgame refill`), outside any campaign. Firmware `trickle_tap/2026-10-09`.
 
+> **Update 2026-10-15** — firmware `trickle_tap/2026-10-15`: the RESULT line is
+> streamed when the Pico's heap cannot hold it in one piece, so a finished dose is no
+> longer reported as `fw-error` (two in a row had ended the resumed margin campaign).
+> Reporting only; upload `trickle_controller.py`, `main_trickle.py` and `refill_tap.py`
+> to `/trickle_tap` together with the Zero's `git pull`, as with every firmware id bump.
+
 > **Clarification, later the same day** — "run this manually" meant manually
 > *starting* the loop, not hand-running doses: once launched, the campaign is
 > automated end to end (ask → SSH dose → tell → record), and the operator

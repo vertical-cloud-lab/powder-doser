@@ -230,6 +230,17 @@ behaves as before):
   ([§5.9](../../../../docs/optimization/campaign-setup.md#59-production-doses-with-the-refill-tap-endgame)).
   The executor swaps between the two runners by itself when the other
   one sits idle at its prompt.
+- **RESULT line on a fragmented heap** (2026-10-15, firmware
+  `trickle_tap/2026-10-15`) — after long doses the Pico W could not
+  allocate the ~1.5 kB `"RESULT " + json.dumps(...)` string
+  (`MemoryError`, 1549 bytes, with MicroPython's own collection already
+  tried), so doses that had finished were reported as `fw-error`: three
+  on 2026-10-13 and three on 10-15, one of them an `ok` dose at
+  105.5 s / 0.72 mg.  On `MemoryError` the line is now streamed with
+  `json.dump(doc, sys.stdout)`, which MicroPython writes piece by piece;
+  the `res` reprint and the refill runner use the same path.  Reporting
+  only: no dose behavior changes.  The refill runner's line becomes
+  `trickle_tap/2026-10-15+refill-tap/2026-10-06`.
 
 ## Testing without the rig
 

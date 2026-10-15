@@ -5,7 +5,7 @@
  "variant": "three-stage-margin",
  "powder_id": "salt",
  "target_g": 0.5,
- "status": "running",
+ "status": "paused",
  "phase": "bo",
  "created_utc": "2026-10-13T19:13:39.253269+00:00",
  "operator": "claude-unattended",
@@ -400,32 +400,7 @@
   ],
   "resid_rms_mg": 31.57
  },
- "in_flight": {
-  "trial_uuid": "6dd4c585-a36e-4f23-ac28-3eabeaede7e8",
-  "trial_index": 31,
-  "label": "bo-009",
-  "mode": "bo",
-  "params": {
-   "bulk_tap": "2hz",
-   "trim_tap": "off",
-   "bulk_tilt_deg": 40.0,
-   "trickle_tilt_deg": 10.0,
-   "tap_tilt_deg": 15.0,
-   "bulk_rpm": 20.0,
-   "trickle_start_remaining_g": 0.3,
-   "tolerance_g": 0.003,
-   "cutoff_margin_g": 0.0,
-   "tau_afterflow_s": 0.8338
-  },
-  "covariates": {
-   "doses_since_cup_empty": 31,
-   "recycle_count": 0,
-   "hopper_refills": 0,
-   "cup_load_g": 14.4798
-  },
-  "ax_trial_index": 85,
-  "utc": "2026-10-15T20:38:34.131903+00:00"
- },
+ "in_flight": null,
  "generation": {
   "model": "saasbo",
   "sobol_trials": 2,
@@ -452,8 +427,8 @@
   "max_stall_streak": 4,
   "max_jam_streak": 4
  },
- "updated_utc": "2026-10-15T20:38:34.131912+00:00",
- "stop_reason": "deadline: 472 s left before 2026-10-13T21:30Z, the next dose needs about 556 s",
+ "updated_utc": "2026-10-15T22:00:39.066497+00:00",
+ "stop_reason": "paused 2026-10-15 21:59 UTC by the session: bo-017 and bo-018 stalled after 184 and 155 mg, bo-018 at the 40 deg / 20 rpm settings that dosed fine minutes before, so the hopper has probably run out; refill, then --resume",
  "anchor_plan_skipped": {
   "labels": [
    "check-bo-005-00",

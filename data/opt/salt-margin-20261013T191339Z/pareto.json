@@ -56,63 +56,6 @@
  ],
  "model_pareto": [
   {
-   "trial_index": 33,
-   "label": "salt-20260929T014732Z/bo-005",
-   "params": {
-    "bulk_tap": "2hz",
-    "trim_tap": "off",
-    "bulk_tilt_deg": 40.0,
-    "trickle_tilt_deg": 10.0,
-    "tap_tilt_deg": 15.0,
-    "bulk_rpm": 100.0,
-    "trickle_start_remaining_g": 0.3,
-    "tolerance_g": 0.003,
-    "cutoff_margin_g": 0.035
-   },
-   "predicted_means": {
-    "abs_error_mg": 1.7610295554218638,
-    "t_total_s": 129.07659823320563
-   }
-  },
-  {
-   "trial_index": 38,
-   "label": "salt-20260929T014732Z/bo-010",
-   "params": {
-    "bulk_tap": "2hz",
-    "trim_tap": "off",
-    "bulk_tilt_deg": 40.0,
-    "trickle_tilt_deg": 10.0,
-    "tap_tilt_deg": 15.0,
-    "bulk_rpm": 100.0,
-    "trickle_start_remaining_g": 0.3,
-    "tolerance_g": 0.015,
-    "cutoff_margin_g": 0.035
-   },
-   "predicted_means": {
-    "abs_error_mg": 11.108668088362846,
-    "t_total_s": 125.90804381759204
-   }
-  },
-  {
-   "trial_index": 31,
-   "label": "salt-20260929T014732Z/bo-003",
-   "params": {
-    "bulk_tap": "2hz",
-    "trim_tap": "off",
-    "bulk_tilt_deg": 40.0,
-    "trickle_tilt_deg": 30.0,
-    "tap_tilt_deg": 15.0,
-    "bulk_rpm": 100.0,
-    "trickle_start_remaining_g": 0.3,
-    "tolerance_g": 0.003,
-    "cutoff_margin_g": 0.035
-   },
-   "predicted_means": {
-    "abs_error_mg": 1.2891857498475083,
-    "t_total_s": 157.44846584010747
-   }
-  },
-  {
    "trial_index": 6,
    "label": "salt-20260929T014732Z/corner-05",
    "params": {
@@ -127,8 +70,84 @@
     "cutoff_margin_g": 0.035
    },
    "predicted_means": {
-    "abs_error_mg": 0.8143372356756942,
-    "t_total_s": 159.72585386243216
+    "abs_error_mg": 0.6481880209926985,
+    "t_total_s": 92.3453212943163
+   }
+  },
+  {
+   "trial_index": 88,
+   "label": "bo-012",
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.0
+   },
+   "predicted_means": {
+    "abs_error_mg": 2.483243414959574,
+    "t_total_s": 83.99078866142452
+   }
+  },
+  {
+   "trial_index": 33,
+   "label": "salt-20260929T014732Z/bo-005",
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.035
+   },
+   "predicted_means": {
+    "abs_error_mg": 1.6710904953466645,
+    "t_total_s": 88.9351058162975
+   }
+  },
+  {
+   "trial_index": 63,
+   "label": "corner-03",
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.0
+   },
+   "predicted_means": {
+    "abs_error_mg": 4.020955597190792,
+    "t_total_s": 82.36310698886162
+   }
+  },
+  {
+   "trial_index": 77,
+   "label": "bo-001",
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.014172576541771426
+   },
+   "predicted_means": {
+    "abs_error_mg": 0.5927986608986089,
+    "t_total_s": 137.8557470622154
    }
   }
  ],

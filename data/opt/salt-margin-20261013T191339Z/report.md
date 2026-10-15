@@ -1,10 +1,10 @@
 # Campaign salt-margin-20261013T191339Z
 
 - **three-stage + cutoff margin** campaign: the PI trickle's hand-over margin is searched too (0-35 mg); overshoots are scored like jams; warm-started from `salt-20260929T014732Z` (60 of its doses attached at 35 mg)
-- powder `salt`, target 0.5 g, status **finished**; the search loop stopped on: deadline: 472 s left before 2026-10-13T21:30Z, the next dose needs about 556 s
-- 27 doses: 18 screen, 2 recenter, 7 bo
+- powder `salt`, target 0.5 g, status **paused**; the search loop stopped on: paused 2026-10-15 21:59 UTC by the session: bo-017 and bo-018 stalled after 184 and 155 mg, bo-018 at the 40 deg / 20 rpm settings that dosed fine minutes before, so the hopper has probably run out; refill, then --resume
+- 43 doses: 18 screen, 2 recenter, 23 bo
 - tau_afterflow fit: 0.8338 s (linear model, 26 stop events, rates 0.0221-0.1586 g/s)
-- powder in the cup at the end: 12.55 g
+- powder in the cup at the end: 19.71 g
 
 ## Best observed dose (knee of the observed front)
 
@@ -30,10 +30,11 @@ The dose column is the label `--validate-point` takes.
 
 | Ax trial | dose | t_total (s) | abs_error (mg) | taps bulk/trim, bulk tilt, trim tilt, tap tilt, RPM, threshold g, tol mg, margin mg |
 |---|---|---|---|---|
-| 33 | salt-20260929T014732Z/bo-005 | 129.1 | 1.8 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0, 35.0 |
-| 38 | salt-20260929T014732Z/bo-010 | 125.9 | 11.1 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 15.0, 35.0 |
-| 31 | salt-20260929T014732Z/bo-003 | 157.4 | 1.3 | 2hz/off, 40.0, 30.0, 15.0, 100, 0.300, 3.0, 35.0 |
-| 6 | salt-20260929T014732Z/corner-05 | 159.7 | 0.8 | off/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 35.0 |
+| 6 | salt-20260929T014732Z/corner-05 | 92.3 | 0.6 | off/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 35.0 |
+| 88 | bo-012 | 84.0 | 2.5 | 2hz/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 0.0 |
+| 33 | salt-20260929T014732Z/bo-005 | 88.9 | 1.7 | 2hz/off, 40.0, 10.0, 15.0, 100, 0.300, 3.0, 35.0 |
+| 63 | corner-03 | 82.4 | 4.0 | off/off, 15.0, 10.0, 0.0, 20, 0.050, 3.0, 0.0 |
+| 77 | bo-001 | 137.9 | 0.6 | off/off, 15.0, 10.0, 15.0, 20, 0.300, 3.0, 14.2 |
 
 ## Margin: the parent's corners at 35 mg and at 0 mg
 
@@ -117,5 +118,21 @@ The margin's effect split by each other factor's level (a margin x factor intera
 | 24 | bo-003 | 2hz/off, 40.0, 17.9, 15.0, 67, 0.300, 5.7, 35.0 | cycle-budget | 447.3 | -20.3 | 129 |
 | 25 | bo-004 | off/off, 15.0, 10.0, 15.0, 45, 0.300, 3.0, 26.3 | ok | 428.6 | -2.5 | 114 |
 | 26 | bo-005 | off/off, 15.0, 10.0, 15.0, 20, 0.228, 3.0, 0.0 | stalled | 472.9 | -13.0 | 115 |
+| 27 | bo-006 | 2hz/2hz, 40.0, 10.0, 15.0, 20, 0.300, 15.0, 0.0 | ok | 56.8 | -13.7 | 62 |
+| 28 | bo-007 | off/off, 28.4, 10.0, 15.0, 100, 0.300, 3.0, 35.0 | cycle-budget | 459.6 | -21.2 | 120 |
+| 29 | bo-008 | off/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 18.5 | fw-error | 442.4 | -13.2 | 166 |
+| 30 | bo-008 | off/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 18.5 | cycle-budget | 464.2 | -20.5 | 164 |
+| 31 | bo-009 | 2hz/off, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 0.0 | fw-error | 436.3 | -9.2 | 151 |
+| 32 | bo-009 | 2hz/off, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 0.0 | fw-error | 105.5 | -0.7 | 46 |
+| 33 | bo-009 | 2hz/off, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 0.0 | ok | 71.7 | -1.7 | 22 |
+| 34 | bo-010 | 2hz/off, 25.9, 10.0, 3.4, 20, 0.300, 15.0, 0.0 | cycle-budget | 454.1 | -18.8 | 145 |
+| 35 | bo-011 | 2hz/off, 40.0, 10.0, 15.0, 20, 0.300, 15.0, 26.0 | ok | 142.1 | -13.6 | 56 |
+| 36 | bo-012 | 2hz/2hz, 40.0, 10.0, 15.0, 20, 0.300, 3.0, 0.0 | ok | 80.1 | -1.3 | 72 |
+| 37 | bo-013 | off/off, 15.0, 10.0, 0.0, 55, 0.050, 3.0, 12.3 | stalled | 372.0 | -18.7 | 92 |
+| 38 | bo-014 | 2hz/2hz, 40.0, 10.0, 15.0, 20, 0.165, 3.0, 0.0 | ok | 133.4 | -2.9 | 147 |
+| 39 | bo-015 | 2hz/2hz, 40.0, 19.8, 15.0, 20, 0.300, 3.0, 35.0 | stalled | 367.2 | -38.6 | 209 |
+| 40 | bo-016 | 2hz/off, 40.0, 10.0, 15.0, 20, 0.050, 3.0, 0.0 | ok | 267.6 | -2.9 | 209 |
+| 41 | bo-017 | 2hz/off, 15.0, 30.0, 15.0, 100, 0.300, 3.0, 11.6 | stalled | 288.6 | -316.1 | 85 |
+| 42 | bo-018 | 2hz/2hz, 40.0, 10.0, 15.0, 20, 0.300, 15.0, 6.0 | stalled | 427.6 | -345.0 | 397 |
 
 ![overview](campaign_overview.png)

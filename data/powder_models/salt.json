@@ -7,10 +7,10 @@
   "variant": "three-stage-margin",
   "simulate": false,
   "target_g": 0.5,
-  "status": "running",
+  "status": "paused",
   "phase": "bo",
-  "iteration": 31,
-  "bo_iteration": 9,
+  "iteration": 43,
+  "bo_iteration": 19,
   "progress": {
    "screen": [
     16,
@@ -21,34 +21,30 @@
     0
    ],
    "bo": [
-    9,
+    19,
     200
    ],
    "validation": 0
   },
   "last_dose": {
-   "trial_index": 30,
-   "label": "bo-008",
+   "trial_index": 42,
+   "label": "bo-018",
    "mode": "bo",
-   "trial_uuid": "1825f2de-d03a-4107-848f-3460d41605b3",
-   "status": "cycle-budget",
-   "t_total_s": 464.24,
-   "abs_error_mg": 20.54,
+   "trial_uuid": "8722af7b-63b2-4921-a347-335fdfadf281",
+   "status": "stalled",
+   "t_total_s": 427.64,
+   "abs_error_mg": 345.0,
    "jam": true,
    "spill": null,
    "void": null,
-   "utc": "2026-10-15T20:37:04.995774+00:00"
+   "utc": "2026-10-15T21:58:05.023704+00:00"
   },
-  "in_flight": {
-   "label": "bo-009",
-   "trial_uuid": "6dd4c585-a36e-4f23-ac28-3eabeaede7e8",
-   "utc": "2026-10-15T20:38:34.131903+00:00"
-  },
+  "in_flight": null,
   "tau_afterflow_s": 0.8338,
   "state_dir": "data/opt/salt-margin-20261013T191339Z",
   "resume": "python scripts/opt_campaign.py --powder-id salt --resume salt-margin-20261013T191339Z --host <user>@<zero-hostname>"
  },
- "updated_utc": "2026-10-15T20:38:34.368744+00:00",
+ "updated_utc": "2026-10-15T22:00:39.157738+00:00",
  "tau_afterflow": {
   "tau0_s": 0.8338,
   "tau1_s_per_gps": null,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """The cutoff-margin campaign against the three-stage campaign it
-warm-started from (PR #166, 2026-10-13).
+warm-started from (PR #166, 2026-10-13; resumed 2026-10-15).
 
     python3 data/opt/salt-margin-20261013T191339Z/compare_margin.py [out.png]
 
@@ -16,8 +16,9 @@ and ``salt-margin-20261013T191339Z`` (the same 8 knobs plus the margin,
 (b) The 16 screening corners, dosed at 35 mg on 2026-09-29 and again at
     0 mg on 2026-10-13: dose time.  Hollow marks overshot the band.
 (c) Both campaigns in objective space, each with its observed front of
-    clean doses, and the 2026-10-06 validated block of bo-005 (median
-    and range).
+    clean doses (the margin campaign's over both its sessions, 10-13 and
+    the 10-15 resume), and the 2026-10-06 validated block of bo-005
+    (median and range).
 
 Also prints the numbers the PR comment quotes.
 """
@@ -50,6 +51,7 @@ GRID = "#e4e3df"
 GRAY = "#9b9a95"                 # context: the parent campaign
 BLUE = "#2a78d6"                 # slot 1: this campaign
 ORANGE = "#eb6834"               # slot 2: the validated bo-005 block
+AQUA = "#1baf7a"                 # slot 3: the margin campaign resumed 10-15
 
 
 def trial_docs(cdir):
@@ -85,6 +87,7 @@ def doses(cdir, margin_default_mg=None):
             "handover_mg": handover_mg(t),
             "t_tap": (t.get("outcomes") or {}).get("t_tap_s"),
             "taps": (t.get("outcomes") or {}).get("taps"),
+            "day": (t.get("started_utc") or r.get("utc") or "")[:10],
             "trial": t})
     return doc, out, pareto
 
@@ -265,11 +268,11 @@ def traces_figure(pairs, val_block, checks, failed, best, path):
         fontsize=10)
     handles = [plt.Line2D([], [], color=GRAY, lw=1.6, label="35 mg (09-29)"),
                plt.Line2D([], [], color=BLUE, lw=1.6,
-                          label="margin campaign (10-13)"),
+                          label="margin campaign"),
                plt.Line2D([], [], color=ORANGE, lw=1.0, alpha=0.55,
                           label="bo-005 validated block (10-06)"),
                plt.Line2D([], [], color=ORANGE, lw=1.8,
-                          label="bo-005 at 35 mg today (10-13)"),
+                          label="bo-005 at 35 mg on 10-13"),
                plt.Line2D([], [], ls="", marker="o", ms=5, color=INK_2,
                           label="taps take over")]
     fig.legend(handles=handles, loc="lower center", ncol=5, frameon=False,
@@ -315,7 +318,8 @@ def main(argv):
             dx = ((n % 7) - 3) * 0.45 if k in (0.0, 17.5, 35.0) else 0.0
             if group is pdoses:
                 dx -= 1.6
-            aa.scatter(d["margin_mg"] + dx, h, s=22, color=color,
+            c = AQUA if d["day"] > "2026-10-13" else color
+            aa.scatter(d["margin_mg"] + dx, h, s=22, color=c,
                        alpha=0.85, lw=0, zorder=z)
     aa.plot([0, 35], [0, 35], color=INK_2, lw=0.9, ls="--", zorder=1)
     aa.text(35.5, 34, "aim", color=INK_2, fontsize=8, va="center")
@@ -362,16 +366,27 @@ def main(argv):
                                "three-stage campaign, 35 mg (09-29)"),
                               (ndoses, BLUE,
                                "margin campaign, 0-35 mg (10-13)")):
+        if group is ndoses:              # the resumed session, 10-15
+            later = [d for d in group if d["day"] > "2026-10-13"]
+            group_pts = [d for d in group if d not in later]
+        else:
+            later, group_pts = [], group
         cl = [d for d in group if d["clean"]]
-        bad = [d for d in group if not d["clean"]
-               and d["t"] is not None and d["abs_err"] is not None]
-        ac.scatter([d["t"] for d in cl],
-                   [max(d["abs_err"], floor) for d in cl], s=26,
-                   color=color, lw=0, alpha=0.9, zorder=3, label=lab)
-        ac.scatter([d["t"] for d in bad],
-                   [max(d["abs_err"], floor) for d in bad], s=26,
-                   facecolors=SURFACE, edgecolors=color, lw=1.2,
-                   zorder=3)
+        for pts, c, lb in ((group_pts, color, lab),
+                           (later, AQUA, "margin campaign, resumed 10-15")):
+            if not pts:
+                continue
+            ok = [d for d in pts if d["clean"]]
+            bad = [d for d in pts if not d["clean"]
+                   and d["t"] is not None and d["abs_err"] is not None]
+            ac.scatter([d["t"] for d in ok],
+                       [max(d["abs_err"], floor) for d in ok], s=26,
+                       color=c, lw=0, alpha=0.9, zorder=3, label=lb)
+            ac.scatter([d["t"] for d in bad],
+                       [max(d["abs_err"], floor) for d in bad], s=26,
+                       facecolors=SURFACE, edgecolors=c, lw=1.2,
+                       zorder=3)
+        # the line: the whole campaign's front (both sessions)
         fr = front([(d["t"], d["abs_err"]) for d in cl if d["in_box"]])
         if fr:
             xs, ys = step_xy(fr, floor)
@@ -393,8 +408,8 @@ def main(argv):
         ac.scatter([x["t_total_s"] for x in fc],
                    [x["abs_error_mg"] for x in fc], s=70, marker="D",
                    facecolors=SURFACE, edgecolors=ORANGE, linewidths=1.6,
-                   zorder=5, label="bo-005 at 35 mg today: ran out of taps "
-                                   "({} tries)".format(len(fc)))
+                   zorder=5, label="bo-005 at 35 mg on 10-13: ran out of "
+                                   "taps ({} tries)".format(len(fc)))
     ac.axvline(180, color=INK_2, lw=0.8, ls="--")
     ac.axhline(20, color=INK_2, lw=0.8, ls="--")
     log_seconds(ac, "x")
