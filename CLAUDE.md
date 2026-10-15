@@ -35,6 +35,19 @@ If using Edison Analysis, refer to https://docs.edisonscientific.com/edison-clie
 
 If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, etc.).
 
+### Onshape
+
+An Onshape account login is available as `ONSHAPE_USERNAME` and `ONSHAPE_PASSWORD`
+(repo secrets passed into @claude sessions via `claude.yml`). Use them to sign in to
+the web UI at https://cad.onshape.com (e.g., with a headless browser such as Playwright)
+when a task needs something only the UI offers, such as viewing a shared document,
+checking how a model renders, or accepting a share. Prefer the REST API
+(https://onshape-public.github.io/docs/) for anything scriptable. Reference the
+credentials only as `"$ONSHAPE_USERNAME"` / `"$ONSHAPE_PASSWORD"`; never echo, log,
+screenshot, or commit them, and never let a screenshot capture the login form while
+the password field is filled in. Treat the account as shared: don't change its
+settings, password, or 2FA, and don't delete or un-share documents you didn't create.
+
 ## LaTeX
 
 Install MiKTeX instead of TeXLive to reduce download size and time. In the first installation of MiKTeX, download known required packages based on the LaTeX file itself, and install anything else ad-hoc as needed.
