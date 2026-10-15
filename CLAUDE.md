@@ -39,35 +39,71 @@ If you make changes to CAD drawings, recompile/render them (images, GIFs, STLs, 
 
 There are three ways in. Use the first one that can do the job.
 
-1. **FeatureScript**: the programmatic way to build models. Write the feature as `.fs`
-   text, push it into a Feature Studio with the REST API, and add it to a Part Studio. It
-   regenerates on Onshape's servers as real parametric history, so a few API calls build
-   what would otherwise take dozens. See `cad/README.md`, the `fsgen` work in
-   [#171](https://github.com/vertical-cloud-lab/powder-doser/issues/171) and
-   [PR #178](https://github.com/vertical-cloud-lab/powder-doser/pull/178), and the traps
-   recorded in
-   [tensegrity-optimization#95](https://github.com/vertical-cloud-lab/tensegrity-optimization/issues/95):
-   - Feature Studio compile failures are silent.
-   - `POST /features` needs the flattened `btType` format.
-   - Enum parameters need the custom feature's namespace.
-   - Regen error text is not returned over REST.
-2. **REST API** with `ONSHAPE_ACCESS_KEY` / `ONSHAPE_SECRET_KEY`:
-   - Send them as HTTP Basic auth (or HMAC-sign) to `https://cad.onshape.com/api/v10`.
-   - The key pair belongs to Sterling's account, an admin of the "Vertical Cloud Lab"
-     company. Create documents under that company.
-   - The plan allows **2,500 API calls a year, shared across the company**. Calls over the
-     cap return HTTP 402.
-   - Log each call to `onshape/api_calls.jsonl`, report the count in your reply, and post
-     clickable document links.
-   - `boundingboxes` returns millimetres, not metres.
-3. **Web UI login** with `ONSHAPE_USERNAME` / `ONSHAPE_PASSWORD`:
+**Accounts.** The API key pair (`ONSHAPE_ACCESS_KEY` / `ONSHAPE_SECRET_KEY`) is Sterling's
+account. The web login (`ONSHAPE_USERNAME` / `ONSHAPE_PASSWORD`) is the BYU VCL account.
+Both should belong to the **Vertical Cloud Lab** Onshape company. Create documents there,
+not in either personal account. In byu-vcl#234, the key could not see or move a document
+the login had made in its own account, so the session had to copy it.
+
+1. **FeatureScript** is the programmatic way to build models.
+   - Write the feature as `.fs` text, push it into a Feature Studio over REST, cut a
+     **version**, and insert the feature into a Part Studio from that version. A custom
+     feature can't be referenced from a workspace.
+   - It regenerates on Onshape's servers as parametric history, so a few API calls build
+     what would otherwise take dozens. See `cad/README.md`, the `fsgen` work in
+     [#171](https://github.com/vertical-cloud-lab/powder-doser/issues/171) and
+     [PR #178](https://github.com/vertical-cloud-lab/powder-doser/pull/178).
+   - Traps, worked through in
+     [tensegrity-optimization#95](https://github.com/vertical-cloud-lab/tensegrity-optimization/issues/95):
+     - **Name clashes with `onshape/std`** (e.g. `BLEND_BOUNDS`) make the compile fail
+       silently: `featureSpecs: []` and no error. Prefix your constants.
+     - **`POST .../features` needs the flattened `btType` form** (`"BTMFeature-134"`).
+     - **Enum parameters need the feature's full `d::v::e::m` namespace.** An empty one is
+       accepted with a 200, then the regen fails.
+     - **REST returns only `featureStatus`, never the regen error text.**
+     - **`fSphere` takes a `Query` centre.** Use `opSphere` for generated geometry.
+     - **Operation ids must be contiguous per parent.**
+   - To debug, send the code to `POST .../partstudios/.../featurescript`. It returns
+     line-numbered errors, but accepts only a single anonymous function: no header, no
+     imports.
+   - Add `regenError` guards and bounds, so a bad input fails with an error instead of
+     building junk geometry.
+2. **REST API** with the key pair
+   ([docs](https://onshape-public.github.io/docs/),
+   [explorer](https://cad.onshape.com/glassworks/explorer/)).
+   - Send the keys as HTTP Basic auth (or HMAC-sign them) to
+     `https://cad.onshape.com/api/v10`. For enterprise-domain documents such as
+     `byudesign.onshape.com`, call that domain instead.
+   - To test a key, request both `users/sessioninfo` and a documents list. A key can pass
+     the first and return 401 on everything else
+     ([PR #7](https://github.com/vertical-cloud-lab/powder-doser/pull/7)).
+   - **Quota: 2,500 API calls a year, shared across the company.** Calls over the cap
+     return HTTP 402. Log each call to `onshape/api_calls.jsonl` and report the count in
+     your reply.
+   - **Import STEP, not STL.** STEP arrives as an editable solid; STL arrives as a mesh.
+     Upload with `POST blobelements/...?translate=true`, export with
+     `POST .../translations`, and poll the translation until it reports `DONE`. STEP
+     carries geometry and part names only; plates and filament settings live only in the
+     `.3mf`.
+   - **A share link doesn't allow export.** An anonymous read share serves features,
+     elements and shaded views, but every geometry or export call returns 401/403 unless
+     export was enabled on the share.
+   - **Check results instead of asserting them.** After driving parameters, render with
+     `shadedviews` and read back `boundingboxes` (they are in mm, not m) and
+     `featureStatus`.
+   - **Commit each document's URL and ids** (did/wid/eid), and post clickable links.
+   - **Make driver scripts idempotent.** Find the document and its studios by name, and
+     replace only the stale feature, so element ids survive a re-run.
+   - **Keep one source of truth.** If a file in git regenerates the document, edits made
+     by hand in Onshape get overwritten. Agree up front which side is the master.
+   - Prefer one document holding all the Part Studios plus the assembly over one document
+     per part ([#128](https://github.com/vertical-cloud-lab/powder-doser/pull/128)).
+3. **Web UI login** with the BYU VCL account.
    - Use it only for what neither of the above can do. Examples: Share → Public, which the
      API could not do in
      [PR #97](https://github.com/vertical-cloud-lab/powder-doser/pull/97#issuecomment-6057439882),
      or sketching by mouse.
-   - This login may not be the same account as the API key, so it can see different
-     documents.
-   - Onshape's Terms of Use restrict UI automation, so keep it minimal.
+   - Onshape's Terms of Use (§4(a)(ix)) restrict UI automation, so keep it minimal.
    - Don't use headless Chrome on the runner: a datacenter IP plus a headless browser is
      what login bot checks look for. The CAD canvas is also WebGL, so DOM selectors can't
      reach the geometry.
@@ -157,53 +193,61 @@ device's workload is healthy end-to-end afterwards, reporting failures as failur
 Changes made on the Pi (systemd units, cron, scripts, config) do not live in this repo —
 record them in the repo's docs so they can be reproduced or upstreamed.
 
-## Bambu Lab printers (H2D, A1 mini)
+## Printing on the lab's Bambu Lab printers (`@claude-print`)
 
-**LAN access (`H2D_IP` / `H2D_ACCESS_CODE` / `H2D_SERIAL`, and the same for `A1_MINI_*`)**
+A plain `@claude` run cannot log in to the lab's Bambu Lab account, so it cannot send a print.
+While a printer is bound to Bambu's cloud, its firmware refuses LAN start/pause/stop commands
+that Bambu's own apps did not sign (HMS `0500-0500-0001-0007`), so sending a print means Bambu
+Studio logged in as the lab account. Only [`claude-print.yml`](.github/workflows/claude-print.yml)
+gets that login:
 
-- The printers are on the lab LAN, not the tailnet, so reach them from the doser Pi
-  ([PR #23](https://github.com/vertical-cloud-lab/powder-doser/pull/23)).
-- Tunnel through the Pi with `ssh -L` / `-W` and keep TLS end to end to the printer, or
-  pass the access code to the Pi over SSH stdin.
-- Check that the printer certificate's CN matches the `*_SERIAL`.
-- Redact all three values from any file you write. An access code that ends up in a public
-  attachment or comment must be rotated on the printer and in the repo secrets. The H2D's
-  was rotated on 2026-10-11 after it leaked in PR #23.
-- While a printer is bound to the Bambu cloud, LAN status, camera and FTPS upload work, but
-  the firmware refuses start / pause / stop commands that Bambu's own apps did not sign:
-  - H2D raises HMS `0500-0500-0001-0007`.
-  - The A1 mini (firmware 01.08) raises `err_code 84033543`
-    ([PR #181](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6184077134)).
-
-**Cloud login (`BAMBU_USERNAME` / `BAMBU_PASSWORD`)**
-
-To start a print without taking the printer off the cloud, drive Bambu Studio logged in as
-this account. Studio signs its own commands. This is GUI automation: the Studio AppImage
-under Xvfb with xdotool. In byu-vcl it ran on the runner itself, and the cloud login from a
-datacenter IP was accepted (see `bambu/studio/README.md` on byu-vcl's
-`claude/ot2-lid-camera-mount-20260925` branch,
-[byu-vcl#234](https://github.com/vertical-cloud-lab/byu-vcl/pull/234)).
-
-- **Type the credentials from the environment over stdin** (e.g. `xdotool type --file -`).
-  Never pass them as an argument and never print them.
-- **Every new machine gets an emailed 6-digit code.**
-  - Start the login, then ask Sterling in the thread to post the bare code **without
-    `@claude`**, because every mention starts a new run.
-  - Poll the thread for it from a single blocking foreground call, the same pattern as the
-    Edison polling above.
-  - Accept the code only from users with write access, and type it without echoing it.
-- **Codes expire.** One was still valid after about 7 minutes; one posted after 20 minutes
-  was not. If yours has expired, use the dialog's resend link.
-- **Before your final comment:** cut the login stretch out of any recording (the email
-  address is on screen), then sign Studio out.
-- **MakerWorld and bambulab.com return 403 to the runner.** The Pi's IP fares better, but
-  MakerWorld still needs a login.
+- **A person starts it** with `@claude-print` in a comment or a new issue, in place of
+  `@claude`. Claude's own comments can't start it.
+- **A person approves it.** The run waits in the `bambu-print` environment until a member of
+  [`bambu-print-approvers`](https://github.com/orgs/vertical-cloud-lab/teams/bambu-print-approvers)
+  approves it (the run's page → **Review deployments**, or GitHub Mobile). The workflow posts
+  the link in the thread. An approver may approve their own request. Approvers: read the
+  request first, because an approved run holds the whole login.
+- **Its secrets** are `BAMBU_USERNAME`, `BAMBU_PASSWORD` and `BAMBU_TOTP_SEED`, all environment
+  secrets of `bambu-print`. They are not repo secrets and are not in `claude.yml`.
+- **Second factor: an authenticator code, computed on the runner.** The account has
+  authenticator-app 2-step verification, so Studio's login asks for a 6-digit code after the
+  password. The workflow installs `bambu-totp`, which computes the current code from the seed.
+  Type the code and the password through stdin so neither reaches argv, a log or a screenshot:
+  `bambu-totp | DISPLAY=:99 xdotool type --delay 90 --file -`, and
+  `printenv BAMBU_PASSWORD | DISPLAY=:99 xdotool type --delay 90 --file -`. Never print, post,
+  commit or screenshot these values or a code.
+- **Never ask for, relay or post an e-mailed Bambu verification code.** Bambu accepts the
+  account's e-mail address plus a current e-mailed code as a complete login, with no password,
+  even when 2-step verification is on
+  ([robot-arms PR 10](https://github.com/vertical-cloud-lab/robot-arms/pull/10#issuecomment-6140001145),
+  [ha-bambulab PR 2058](https://github.com/greghesp/ha-bambulab/pull/2058)). A code posted in a
+  thread is the account until it expires. If Studio asks for an e-mailed code instead of the
+  authenticator code, stop and say so in the thread.
+- **Prepare in a plain `@claude` run; send in `@claude-print`.** Slicing, plate checks, and
+  status and camera over LAN from a Pi need no login. End the prep run by asking the person to
+  comment `@claude-print` naming the exact file (branch and path) and printer, so the approver
+  can see what they are approving.
+- **Studio GUI details** are in byu-vcl's runbook, `bambu/studio/README.md` on
+  [byu-vcl PR 234](https://github.com/vertical-cloud-lab/byu-vcl/pull/234)'s branch: setup,
+  the login page, Send, and watching a print. Its "e-mail code" section is superseded by this
+  one. The authenticator prompt is a different dialog from the e-mail-code one, so find its
+  field from a screenshot rather than reusing `wait_code.py`'s click positions.
+- **Rotating** (if the seed or password may have leaked): on bambulab.com, turn 2-step
+  verification off and on again to get a new seed (everyone who logs in to the account
+  re-scans it), change the password, then update the three secrets in the `bambu-print`
+  environment of every repo that has one: byu-vcl, robot-arms, powder-doser,
+  tensegrity-optimization and caliber.
 
 ## Adding secrets for @claude sessions
 
 A repo secret reaches a session only if it is listed in the job-level `env:` block of
 `.github/workflows/claude.yml`. Add it there as well as with `gh secret set`. The Claude
 GitHub App can't edit `.github/workflows/`, so that edit is always a human commit.
+
+The exception is a secret that should need a human's approval for each use, such as the
+Bambu login above. Keep it as an environment secret of a protected environment, and keep it
+out of `claude.yml`.
 
 GitHub masks a secret everywhere its value appears as a substring. A very short value, such
 as a 3-character username, would garble the logs, so store it as a repo **variable**
