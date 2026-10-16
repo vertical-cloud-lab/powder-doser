@@ -10,7 +10,7 @@ Eleven steps from bare extrusion to a dosing station; each has a render and the 
 
 Cut the 2020 (80/20 20-2020, or any slot-6 2020): four x-rails of 444 mm, four posts of 710 mm, six cross
 rails of 260 mm, and 200 mm and 170 mm for the two station posts. Lay two x-rails on the bench 280 mm apart
-(centres) and put the two station cross rails between them, at x = 42 and 85 mm from the front chain's
+(centres) and put the two station cross rails between them, at x = 30 and 85 mm from the front chain's
 plane (the vial post and the actuator stand on them). Screw the four M6 leveling feet into T-nuts in the x-rails'
 bottom slots. Every frame screw is an M5 x 10 button head into a drop-in T-nut with a drop of Loctite 243 (T-nuts
 can't take a nylock).
