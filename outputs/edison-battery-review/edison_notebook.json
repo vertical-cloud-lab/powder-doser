@@ -1,0 +1,41 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "metadata": {
+    "kernelspec": {
+      "name": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python"
+    }
+  },
+  "cells": [
+    {
+      "id": "7850fa06",
+      "cell_type": "code",
+      "metadata": {},
+      "execution_count": 1,
+      "source": "import pandas as pd, numpy as np\nfrom scipy import stats\ns=pd.read_csv('/workspace/battery_all_summaries.csv')\nd=pd.read_csv('/workspace/battery_all_doses.csv')\n# Key block C 45 and block E tap 45 associations\nc45=s[(s.block=='C')&(s.tilt_deg==45)].set_index('powder_id')['mean_g']*1000\nt45=s[(s.block=='E')&(s.tilt_deg==45)&(s.phase=='tap')].set_index('powder_id')['mean_g']*1000\ncommon=c45.index.intersection(t45.index)\nprint('feed/tap table mg')\nprint(pd.DataFrame({'feed45_mg_rev':c45[common], 'tap45_mg':t45[common]}).sort_values('feed45_mg_rev'))\nfor kind in ['pearson','spearman']:\n r,p=getattr(stats,kind+'r')(c45[common], t45[common])\n print(kind,r,p)\n# Dose summaries, CI t (descriptive only)\ng=d.groupby('powder_id').agg(mean_error_g=('error_g','mean'),sd_error_g=('error_g','std'),mean_disp=('dispensed_g','mean'),sd_disp=('dispensed_g','std'),n=('error_g','size'))\ng['mean_error_mg']=1000*g.mean_error_g; g['sd_error_mg']=1000*g.sd_error_g\ng['ci_half_mg']=stats.t.ppf(.975,2)*g.sd_error_mg/np.sqrt(3)\ng['rsd_disp_pct']=100*g.sd_disp/g.mean_disp\nprint('\\ndose summary')\nprint(g[['mean_error_mg','sd_error_mg','ci_half_mg','rsd_disp_pct']].round(2))\n# feed vs absolute mean error, excluding brown maybe all\nabs_err=g['mean_error_mg'].abs()\nx=c45.reindex(g.index)\nfor maskname,mask in [('all',np.ones(len(g),dtype=bool)),('excluding brown',g.index!='brown-rice-flour')]:\n print('\\n',maskname)\n for kind in ['pearson','spearman']:\n  r,p=getattr(stats,kind+'r')(x[mask],abs_err[mask]); print(kind,r,p)\n# block C vs E refeed ratios at 45\nref45=s[(s.block=='E')&(s.tilt_deg==45)&(s.phase=='refeed')].set_index('powder_id')['mean_g']*1000\nrat=(ref45/c45).sort_values()\nprint('\\nE/C ratio 45',rat)\n# static upper CI heuristic: each hold one delta only, all zero.\n# Tap t CIs\nrows=[]\nfor _,r in s[(s.block=='E')&(s.phase=='tap')].iterrows():\n half=stats.t.ppf(.975,r['n']-1)*r['sem_g']*1000\n rows.append([r.powder_id,r.tilt_deg,r.mean_g*1000,half,r.rsd_pct])\nprint('\\ntap means CI mg')\nprint(pd.DataFrame(rows,columns=['powder','tilt','mean_mg','cihalf_mg','rsd']).round(3).to_string(index=False))",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "feed/tap table mg\n                         feed45_mg_rev  tap45_mg\npowder_id                                       \nbrown-rice-flour              0.250000    0.1625\nsodium-alginate               9.583333    0.2375\nwhite-rice-flour             12.783333    0.1125\nsalt                         17.100000    3.0500\ncarboxymethyl-cellulose      26.350000    0.1500\nxanthan-gum                 161.183333   13.6125\ncalcium-lactate             198.283333   20.3625\npearson 0.9839503973860186 6.213985322863054e-05\nspearman 0.6071428571428572 0.14823116148116164\n\ndose summary\n                         mean_error_mg  sd_error_mg  ci_half_mg  rsd_disp_pct\npowder_id                                                                    \nbrown-rice-flour               -999.13         0.90        2.24        104.06\ncalcium-lactate                 -26.50         9.95       24.71          1.02\ncarboxymethyl-cellulose         -43.17         5.43       13.49          0.57\nsalt                              0.20         7.47       18.56          0.75\nsodium-alginate                -291.47        18.22       45.27          2.57\nwhite-rice-flour               -137.87        23.54       58.49          2.73\nxanthan-gum                     -32.90         9.61       23.87          0.99\n\n all\npearson -0.43249087486663823 0.332475891235379\nspearman -0.7857142857142859 0.03623846267982715\n\n excluding brown\npearson -0.4576762096276996 0.3614198342212156\nspearman -0.6571428571428573 0.1561749271137024\n\nE/C ratio 45 powder_id\nwhite-rice-flour           0.744133\ncalcium-lactate            0.834664\nxanthan-gum                0.845931\ncarboxymethyl-cellulose    0.909867\nsodium-alginate            1.080000\nsalt                       2.677632\nbrown-rice-flour           4.800000\nName: mean_g, dtype: float64\n\ntap means CI mg\n                 powder  tilt  mean_mg  cihalf_mg     rsd\n       white-rice-flour   0.0    0.088      0.151 206.597\n       white-rice-flour  45.0    0.112      0.170 180.534\n        sodium-alginate   0.0    0.000      0.000     NaN\n        sodium-alginate  45.0    0.238      0.268 134.920\n       brown-rice-flour   0.0    0.050      0.063 151.186\n       brown-rice-flour  45.0    0.162      0.289 213.017\n        calcium-lactate   0.0    2.312      0.266  13.760\n        calcium-lactate  45.0   20.362      2.357  13.845\ncarboxymethyl-cellulose   0.0    0.012      0.030 282.843\ncarboxymethyl-cellulose  45.0    0.150      0.257 204.707\n            xanthan-gum   0.0    0.150      0.257 204.707\n            xanthan-gum  45.0   13.612      2.882  25.328\n                   salt   0.0    1.250      0.355  33.941\n                   salt  45.0    3.050      1.019  39.964\n"
+        }
+      ]
+    },
+    {
+      "id": "f0941ce1",
+      "cell_type": "code",
+      "metadata": {},
+      "execution_count": 2,
+      "source": "# Quantify two additional descriptive contrasts used in the review.\nimport numpy as np\n# CMC 90\u00b0 values supplied in the digest\ncmc90=np.array([39.0,7.4,4.0,1.8,1.4,2.5])\nprint('CMC 90 first mg:',cmc90[0])\nprint('CMC 90 remaining mean mg:',cmc90[1:].mean())\nprint('first/remain ratio:',cmc90[0]/cmc90[1:].mean())\nprint('remaining five SD and RSD:',cmc90[1:].std(ddof=1),100*cmc90[1:].std(ddof=1)/cmc90[1:].mean())\n# Range expressed in decimal orders using observed block-C means.\nmx=232.25; lows=[0.30,0.25,0.20]\nfor lo in lows:\n print(f'{mx}/{lo}={mx/lo:.1f}x, log10={np.log10(mx/lo):.3f}')\n# Exact binomial interval for 0 detectable events in 21 static holds, as a descriptive bound\nfrom scipy.stats import beta\nupper=beta.ppf(.975,1,21) # two-sided CP upper when x=0\nprint('CP two-sided 95% upper event probability, 0/21:',upper)",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "CMC 90 first mg: 39.0\nCMC 90 remaining mean mg: 3.4200000000000004\nfirst/remain ratio: 11.403508771929824\nremaining five SD and RSD: 2.4355697485393435 71.21548972337261\n232.25/0.3=774.2x, log10=2.889\n232.25/0.25=929.0x, log10=2.968\n232.25/0.2=1161.2x, log10=3.065\nCP two-sided 95% upper event probability, 0/21: 0.16109761521907956\n"
+        }
+      ]
+    }
+  ]
+}

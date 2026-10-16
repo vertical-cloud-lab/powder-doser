@@ -1,0 +1,1831 @@
+{
+  "kind": "battery_run",
+  "schema_version": 1,
+  "status": "ok",
+  "started_utc": "2026-08-04T20:43:16.183255+00:00",
+  "ended_utc": "2026-08-04T20:50:20.999936+00:00",
+  "powder_id": "brown-rice-flour",
+  "powder": "brown rice flour (food-safe batch)",
+  "operator": "swcharles",
+  "notes": "issue #116 first uniform battery run; food-safe batch; storage auger, H2D print",
+  "git_commit": "1a835938c59adab95850969582a7a804dee33852",
+  "parameters": {
+    "powder_id": "brown-rice-flour",
+    "battery_version": "1",
+    "blocks": "ABCDEFG",
+    "tilts_deg": "0.0;45.0;90.0",
+    "baseline_reads": "8",
+    "hold_s": "15",
+    "rotation_trials": "6",
+    "rotation_step_deg": "360.0",
+    "rotation_rpm": "30.0",
+    "speed_rpms": "15.0;45.0;90.0",
+    "speed_revs": "3.0",
+    "tap_tilts": "0.0;45.0",
+    "tap_trials": "8",
+    "taps_per_point": "1",
+    "refeed_deg": "360.0",
+    "vib_bursts": "3",
+    "dose_repeats": "3",
+    "dose_target_g": "1.0",
+    "settle_ms": "2000",
+    "min_flow_g": "0.0005",
+    "attended": "0",
+    "config.SCALE_BAUD": "19200",
+    "config.SCALE_BITS": "8",
+    "config.SCALE_PARITY": "0",
+    "config.SCALE_STABLE_TIMEOUT_MS": "10000",
+    "config.SCALE_STOP": "1",
+    "config.SERVO_SPEED_DEG_PER_S": "60",
+    "config.STEPPER_ACCEL_REV_PER_S2": "4.0",
+    "config.STEPPER_FULL_STEPS_REV": "200",
+    "config.STEPPER_MICROSTEPS": "8",
+    "config.STEPPER_SPEED_RPM": "60",
+    "config.TAP_OFF_MS": "150",
+    "config.TAP_ON_MS": "60",
+    "config.TAP_PWM_DUTY": "1.0",
+    "vib": "unavailable"
+  },
+  "trials": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 0,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 7540
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 1,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 9635
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 2,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 11750
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 3,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 13844
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 4,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 15959
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 5,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 18053
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 6,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 20154
+    },
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "trial": 7,
+      "action": "",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 22269
+    },
+    {
+      "block": "B",
+      "tilt_deg": 0.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 42726
+    },
+    {
+      "block": "B",
+      "tilt_deg": 45.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 63191
+    },
+    {
+      "block": "B",
+      "tilt_deg": 90.0,
+      "phase": "hold",
+      "trial": 0,
+      "action": "15",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 83656
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 96087
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0004,
+      "delta_g": 0.0004,
+      "flag": "lowflow",
+      "t_ms": 102876
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0004,
+      "after_g": 0.0012,
+      "delta_g": 0.0008,
+      "flag": "",
+      "t_ms": 112153
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0012,
+      "after_g": 0.0012,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 119516
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0012,
+      "after_g": 0.0012,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 125924
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0011,
+      "after_g": 0.0012,
+      "delta_g": 0.0001,
+      "flag": "lowflow",
+      "t_ms": 132522
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0006,
+      "delta_g": 0.0006,
+      "flag": "",
+      "t_ms": 144193
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0006,
+      "after_g": 0.0006,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 150601
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0006,
+      "after_g": 0.0007,
+      "delta_g": 0.0001,
+      "flag": "lowflow",
+      "t_ms": 157007
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0007,
+      "after_g": 0.001,
+      "delta_g": 0.0003,
+      "flag": "lowflow",
+      "t_ms": 163415
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.001,
+      "after_g": 0.0012,
+      "delta_g": 0.0002,
+      "flag": "lowflow",
+      "t_ms": 169821
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0012,
+      "after_g": 0.0012,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 176231
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 187893
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 194301
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 200709
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0007,
+      "delta_g": 0.0007,
+      "flag": "",
+      "t_ms": 207117
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0007,
+      "after_g": 0.0007,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 213523
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0007,
+      "after_g": 0.0006,
+      "delta_g": -0.0001,
+      "flag": "lowflow",
+      "t_ms": 219931
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 0,
+      "action": "3.0",
+      "rpm": 15.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 241169
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 1,
+      "action": "3.0",
+      "rpm": 45.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 248044
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "trial": 2,
+      "action": "3.0",
+      "rpm": 90.0,
+      "before_g": 0.0,
+      "after_g": 0.0018,
+      "delta_g": 0.0018,
+      "flag": "",
+      "t_ms": 253303
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 264976
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 0,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 267372
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 273777
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 1,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 276160
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 282566
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 2,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 284962
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "lowflow",
+      "t_ms": 291368
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 3,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 293767
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 300171
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 4,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 302553
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0001,
+      "delta_g": 0.0001,
+      "flag": "",
+      "t_ms": 308962
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 5,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0001,
+      "after_g": 0.0,
+      "delta_g": -0.0001,
+      "flag": "",
+      "t_ms": 311358
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 6,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 317763
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 6,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 320159
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "trial": 7,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 326564
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "trial": 7,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0,
+      "after_g": 0.0,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 328947
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 0,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0,
+      "after_g": 0.0006,
+      "delta_g": 0.0006,
+      "flag": "",
+      "t_ms": 340618
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 0,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0006,
+      "after_g": 0.0006,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 343014
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 1,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0006,
+      "after_g": 0.0009,
+      "delta_g": 0.0003,
+      "flag": "lowflow",
+      "t_ms": 349421
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 1,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0009,
+      "after_g": 0.0009,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 351805
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 2,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0009,
+      "after_g": 0.0011,
+      "delta_g": 0.0002,
+      "flag": "lowflow",
+      "t_ms": 358212
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 2,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0011,
+      "after_g": 0.0011,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 360609
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 3,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0011,
+      "after_g": 0.0018,
+      "delta_g": 0.0007,
+      "flag": "",
+      "t_ms": 367014
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 3,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0018,
+      "after_g": 0.0019,
+      "delta_g": 0.0001,
+      "flag": "",
+      "t_ms": 370740
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 4,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0019,
+      "after_g": 0.0021,
+      "delta_g": 0.0002,
+      "flag": "lowflow",
+      "t_ms": 377147
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 4,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0021,
+      "after_g": 0.0022,
+      "delta_g": 0.0001,
+      "flag": "",
+      "t_ms": 379545
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 5,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0022,
+      "after_g": 0.0024,
+      "delta_g": 0.0002,
+      "flag": "lowflow",
+      "t_ms": 385951
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 5,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0024,
+      "after_g": 0.0024,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 388348
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 6,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0024,
+      "after_g": 0.0023,
+      "delta_g": -0.0001,
+      "flag": "lowflow",
+      "t_ms": 394743
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 6,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0023,
+      "after_g": 0.0023,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 397140
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "trial": 7,
+      "action": "360.0",
+      "rpm": 30.0,
+      "before_g": 0.0023,
+      "after_g": 0.0024,
+      "delta_g": 0.0001,
+      "flag": "lowflow",
+      "t_ms": 403544
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "trial": 7,
+      "action": "1",
+      "rpm": null,
+      "before_g": 0.0024,
+      "after_g": 0.0024,
+      "delta_g": 0.0,
+      "flag": "",
+      "t_ms": 405932
+    }
+  ],
+  "polls": [
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 225570,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 225857,
+      "grams": 0.0001,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226143,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226431,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 226717,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227005,
+      "grams": 0.0001,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227291,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227577,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 227865,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228152,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228438,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 228725,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229013,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229298,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229586,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 229873,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230159,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230447,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 230734,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231019,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231307,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231595,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 231880,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232168,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232455,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 232741,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233028,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233316,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233601,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 233889,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234176,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234464,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 234749,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 235037,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 235325,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 235610,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 235898,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 236185,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 236471,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 236758,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 237046,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 237331,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 237619,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 237906,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 238192,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 238479,
+      "grams": 0.0005,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 238767,
+      "grams": -0.0095,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 15.0,
+      "t_ms": 239052,
+      "grams": 0.0034,
+      "stable": 0
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 241634,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 241921,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 242209,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 242494,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 242782,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 243069,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 243357,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 243643,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 243930,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 244218,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 244504,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 244791,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 245079,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 245364,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 245652,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 45.0,
+      "t_ms": 245940,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 248426,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 248711,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 248999,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 249286,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 249574,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 249859,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 250147,
+      "grams": 0.0,
+      "stable": 1
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "rpm": 90.0,
+      "t_ms": 250434,
+      "grams": 0.0,
+      "stable": 1
+    }
+  ],
+  "doses": [
+    {
+      "n": 0,
+      "target_g": 1.0,
+      "dispensed_g": 0.0008,
+      "error_g": -0.9992,
+      "status": "stalled",
+      "elapsed_s": 6.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:15",
+      "t_ms": 411685
+    },
+    {
+      "n": 1,
+      "target_g": 1.0,
+      "dispensed_g": 0.0,
+      "error_g": -1.0,
+      "status": "stalled",
+      "elapsed_s": 5.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:16",
+      "t_ms": 416846
+    },
+    {
+      "n": 2,
+      "target_g": 1.0,
+      "dispensed_g": 0.0011,
+      "error_g": -0.9989,
+      "status": "stalled",
+      "elapsed_s": 5.0,
+      "auger_rev": 4.58,
+      "taps": 0,
+      "phase_cycles": "bulk:15",
+      "t_ms": 421725
+    }
+  ],
+  "dose_summary": {
+    "n": 3,
+    "ok": 0,
+    "mean_error_g": -0.9993666666666666,
+    "std_error_g": 0.000568624070307732,
+    "max_abs_error_g": 1.0,
+    "mean_elapsed_s": 5.333333333333333
+  },
+  "device_summary": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0002,
+      "std_g": 0.0003,
+      "sem_g": 0.0001,
+      "min_g": 0.0,
+      "max_g": 0.0008
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0002,
+      "std_g": 0.0002,
+      "sem_g": 0.0001,
+      "min_g": 0.0,
+      "max_g": 0.0006
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.0001,
+      "std_g": 0.0003,
+      "sem_g": 0.0001,
+      "min_g": -0.0001,
+      "max_g": 0.0007
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "n": 3,
+      "mean_g": 0.0006,
+      "std_g": 0.001,
+      "sem_g": 0.0006,
+      "min_g": 0.0,
+      "max_g": 0.0018
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0001
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": -0.0001,
+      "max_g": 0.0
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.0003,
+      "std_g": 0.0003,
+      "sem_g": 0.0001,
+      "min_g": -0.0001,
+      "max_g": 0.0007
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0001
+    }
+  ],
+  "host_summary": [
+    {
+      "block": "A",
+      "tilt_deg": 45.0,
+      "phase": "baseline",
+      "n": 8,
+      "mean_g": 0.0,
+      "std_g": 0.0,
+      "sem_g": 0.0,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 0.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 45.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "B",
+      "tilt_deg": 90.0,
+      "phase": "hold",
+      "n": 1,
+      "mean_g": 0.0,
+      "std_g": null,
+      "sem_g": null,
+      "min_g": 0.0,
+      "max_g": 0.0,
+      "rsd_pct": null
+    },
+    {
+      "block": "C",
+      "tilt_deg": 0.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.00021666666666666668,
+      "std_g": 0.00032506409624359726,
+      "sem_g": 0.00013270686158262923,
+      "min_g": 0.0,
+      "max_g": 0.0008,
+      "rsd_pct": 150.02958288166025
+    },
+    {
+      "block": "C",
+      "tilt_deg": 45.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 0.00019999999999999998,
+      "std_g": 0.00022803508501982757,
+      "sem_g": 9.309493362512628e-05,
+      "min_g": 0.0,
+      "max_g": 0.0006,
+      "rsd_pct": 114.0175425099138
+    },
+    {
+      "block": "C",
+      "tilt_deg": 90.0,
+      "phase": "rotation",
+      "n": 6,
+      "mean_g": 9.999999999999999e-05,
+      "std_g": 0.00029664793948382654,
+      "sem_g": 0.00012110601416389968,
+      "min_g": -0.0001,
+      "max_g": 0.0007,
+      "rsd_pct": 296.6479394838266
+    },
+    {
+      "block": "D",
+      "tilt_deg": 45.0,
+      "phase": "speed",
+      "n": 3,
+      "mean_g": 0.0006,
+      "std_g": 0.0010392304845413265,
+      "sem_g": 0.0006000000000000001,
+      "min_g": 0.0,
+      "max_g": 0.0018,
+      "rsd_pct": 173.20508075688778
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 1.25e-05,
+      "std_g": 3.535533905932738e-05,
+      "sem_g": 1.2499999999999999e-05,
+      "min_g": 0.0,
+      "max_g": 0.0001,
+      "rsd_pct": 282.842712474619
+    },
+    {
+      "block": "E",
+      "tilt_deg": 0.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": -1.25e-05,
+      "std_g": 3.535533905932738e-05,
+      "sem_g": 1.2499999999999999e-05,
+      "min_g": -0.0001,
+      "max_g": 0.0,
+      "rsd_pct": 282.842712474619
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "refeed",
+      "n": 8,
+      "mean_g": 0.000275,
+      "std_g": 0.0002604940361258638,
+      "sem_g": 9.209854970162589e-05,
+      "min_g": -0.0001,
+      "max_g": 0.0007,
+      "rsd_pct": 94.72510404576865
+    },
+    {
+      "block": "E",
+      "tilt_deg": 45.0,
+      "phase": "tap",
+      "n": 8,
+      "mean_g": 2.5e-05,
+      "std_g": 4.629100498862758e-05,
+      "sem_g": 1.636634176769943e-05,
+      "min_g": 0.0,
+      "max_g": 0.0001,
+      "rsd_pct": 185.1640199545103
+    }
+  ],
+  "batch": "food-safe-2026-08",
+  "qc": {
+    "valid_for_cross_powder_comparison": false,
+    "verdict": "no-conveyance-auger-suspect",
+    "reason": "Rotation conveyed essentially zero mass at every tilt (total ~5 mg over 64 trials). Outlet tape and coupler slip are both ruled out by operator video and bench observation; an off-rig hand test of the same flour delivered 0.0019 g over 20 rotations, reproducing the result with no rig involved. The measurement is sound; the open question is powder-vs-auger-print, so it stays out of the cross-powder comparison pending a re-test in a fresh auger.",
+    "diagnostic": {
+      "tilt_deg": 90.0,
+      "rotation_rpm": 60,
+      "rotation_rev_total": 20,
+      "rotation_delta_g": 0.0,
+      "taps_total": 30,
+      "taps_delta_g": 0.0051,
+      "combined_rev_plus_tap_delta_g": 0.0051
+    },
+    "hardware_checks_passed": [
+      "balance streams stable readings at 0.1 mg resolution",
+      "servo sweeps plate 0->22.5->45 deg",
+      "stepper enables and rotates (4.58 rev in 5.0 s at 55 auger RPM, as commanded)",
+      "tap solenoid fires and is detected on the balance"
+    ],
+    "known_unavailable": "DRV2605L vibration driver reports [Errno 5] EIO; block F self-skipped",
+    "next_action": "bench check: outlet cap removed? auger seated in the drive coupler? powder reaching the delivery end? then re-run the battery",
+    "assessed_utc": "2026-08-04T20:56:04.704288+00:00",
+    "last_amended_utc": "2026-08-05T14:59:25.392985+00:00"
+  },
+  "amendments": [
+    {
+      "amended_utc": "2026-08-05T14:59:25.392985+00:00",
+      "author": "swcharles",
+      "summary": "Operator video confirms the delivery-end tape was OFF for this run, and the auger tube rotates with the coupler; the original suspect-no-feed (taped outlet) attribution is withdrawn.",
+      "detail": "The flat-zero result stands as measured, but its cause is not a capped outlet or a slipping coupler. An off-rig hand test on 2026-08-05 (20 rotations, balance zeroed) delivered 0.0019 g of the same flour -- 0.095 mg/rev with no rig in the loop -- which reproduces the rig's near-zero conveyance. What remains unresolved is whether the cause is the powder itself or this specific auger print; the operator will re-test the same flour in a newly printed auger before any cross-powder number is published.",
+      "evidence": {
+        "operator": "swcharles",
+        "reported_in": "https://github.com/vertical-cloud-lab/powder-doser/issues/116",
+        "delivery_end_tape": {
+          "state": "removed",
+          "source": "bench camera video of the run reviewed by the operator",
+          "supersedes": "the original assessment, which attributed the flat-zero result to a capped/taped outlet"
+        },
+        "auger_coupler": {
+          "state": "auger tube confirmed rotating with the drive coupler in all trials",
+          "source": "operator observation at the bench",
+          "supersedes": "the open coupler-slip hypothesis raised in the re-run notes"
+        },
+        "operator_hand_test": {
+          "date_utc": "2026-08-05",
+          "powder": "brown rice flour",
+          "method": "auger removed from the rig, balance zeroed, 20 full rotations turned by hand over the dish",
+          "rotations": 20,
+          "delivered_g": 0.0019,
+          "mg_per_rev": 0.095,
+          "interpretation": "off-rig control with no coupler, no cap and no drive train; the same near-zero conveyance the rig measured"
+        },
+        "reference_mg_per_rev_at_90deg": {
+          "white-rice-flour": 37.15,
+          "sodium-alginate": 3.52,
+          "brown-rice-flour-rig": 0.03,
+          "brown-rice-flour-hand": 0.095
+        },
+        "remaining_open_question": "whether the near-zero conveyance is the powder (cohesion/clumping) or this particular auger print; operator will reload the same flour into a freshly printed auger and re-run"
+      },
+      "qc_change": {
+        "verdict": {
+          "from": "suspect-no-feed",
+          "to": "no-conveyance-auger-suspect"
+        },
+        "valid_for_cross_powder_comparison": {
+          "from": false,
+          "to": false
+        },
+        "reason": {
+          "from": "Rotation conveyed essentially zero mass at every tilt. Total mass moved across the whole battery was ~5 mg over 64 measured trials plus ~14 auger revolutions in block G. A follow-up bench diagnostic run immediately after (20 continuous auger revolutions at tilt 90 deg, 60 RPM) delivered exactly 0.0000 g, while 30 solenoid taps at the same tilt delivered 5.1 mg (~0.17 mg/tap). Rotation contributing nothing while tapping shakes out fines is a no-feed signature (outlet capped/blocked, auger not coupled to the drive, or no powder in the delivery flights) rather than powder cohesion -- manual tests in issue #116 showed brown rice flour does move under tapping.",
+          "to": "Rotation conveyed essentially zero mass at every tilt (total ~5 mg over 64 trials). Outlet tape and coupler slip are both ruled out by operator video and bench observation; an off-rig hand test of the same flour delivered 0.0019 g over 20 rotations, reproducing the result with no rig involved. The measurement is sound; the open question is powder-vs-auger-print, so it stays out of the cross-powder comparison pending a re-test in a fresh auger."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+[    1.9s] REPL up
+[    3.9s]   | >>>
+[    7.9s]   | [rig] bringing up powder-doser test module (three-phase alternative main; no haptics)
+[    7.9s]   | [rig] ready -- type 'h' for help
+[    7.9s]   | >>>
+[   10.9s]   | stepper: 60 auger rpm (gear 2.20:1, max 109), microsteps=1/8, usteps/auger-rev=3520, dispense_deg=360.0 auger deg
+[   10.9s]   | tap: count=3, on=60ms, off=150ms, duty=1.0
+[   10.9s]   | plate: angle=0.0 plate deg (gear 2:1), range=[0..90], presets={'tip': 67.5, 'tilt': 22.5, 'horizontal': 0.0, 'vertical': 45.0}
+[   10.9s]   | scale: UART0 @ 19200 (GP12/GP13)
+[   10.9s]   | thresholds (g until goal): t1 bulk->fine: 0.2500, t2 fine->tap: 0.0250, t3 tap->done: 0.0010
+[   10.9s]   | phase 1 'bulk': angle 25.0 plate deg, rot 360 auger deg @ 55 rpm CONTINUOUS (poll 250 ms, anticipation 0.0000 g), taps 2 (60on/150off ms), settle 800 ms, min_gain 0.0020 g, nudge 0 deg x0, max 100 cycles
+[   10.9s]   | phase 2 'fine': angle 22.5 plate deg, rot 180 auger deg @ 30 rpm, taps 2 (60on/150off ms), settle 1500 ms, min_gain 0.0005 g, nudge 0 deg x0, max 150 cycles
+[   10.9s]   | phase 3 'tap': angle 0.0 plate deg, rot 15 auger deg @ 0 rpm, taps 1 (60on/150off ms), settle 1500 ms, min_gain 0.0002 g, nudge 5 deg x10, max 150 cycles
+[   10.9s]   | >>>
+[   13.4s] weigh -> 0.491 g
+[   14.6s]   | [set] phase 1 'bulk' continuous = 1.0
+[   14.6s]   | >>>
+[   15.8s]   | [set] phase 1 'bulk' anticipation_g = 0.15
+[   15.8s]   | >>>
+[   17.1s]   | [set] threshold t1 = 0.1000 g until goal
+[   17.1s]   | >>>
+[   18.3s]   | [set] phase 2 'fine' rotation_deg = 30.0
+[   18.3s]   | >>>
+[   19.5s]   | [set] threshold t2 = 0.0060 g until goal
+[   19.5s]   | >>>
+[   20.7s]   | [set] phase 3 'tap' angle_deg = 17.0
+[   20.7s]   | >>>
+[   21.9s]   | [set] phase 3 'tap' taps_per_cycle = 2.0
+[   21.9s]   | >>>
+[   23.1s]   | [set] phase 3 'tap' max_cycles = 40.0
+[   23.1s]   | >>>
+[   24.3s]   | [set] phase 3 'tap' max_nudges = 15.0
+[   24.3s]   | >>>
+[   24.3s] === starting three-phase dose g 0.5000 ===
+[   24.3s]   | rig.handle("g 0.5000")
+[   24.3s]   | [dose] three-phase dose to 0.5000 g; taring scale
+[   24.9s]   | === phase 1/3 'bulk' start: 0.5000 g to go, exit at 0.1000 g to go; angle 25.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1500 g), settle 800 ms
+[   26.0s]   | [phase 1 bulk] poll 1: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 1.0 s
+[   26.3s]   | [phase 1 bulk] poll 2: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 1.0 s
+[   26.6s]   | [phase 1 bulk] poll 3: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[   26.8s]   | [phase 1 bulk] poll 4 (unstable): mass 0.0005 / 0.5000 g (0.4995 g to go, +0.0005 g this poll), elapsed 2.0 s
+[   27.1s]   | [phase 1 bulk] poll 5 (unstable): mass 0.0101 / 0.5000 g (0.4899 g to go, +0.0096 g this poll), elapsed 2.0 s
+[   27.4s]   | [phase 1 bulk] poll 6 (unstable): mass 0.0425 / 0.5000 g (0.4575 g to go, +0.0324 g this poll), elapsed 3.0 s
+[   27.8s]   | [phase 1 bulk] poll 7 (unstable): mass 0.1227 / 0.5000 g (0.3773 g to go, +0.0802 g this poll), elapsed 3.0 s
+[   28.0s]   | [phase 1 bulk] poll 8 (unstable): mass 0.1964 / 0.5000 g (0.3036 g to go, +0.0737 g this poll), elapsed 3.0 s
+[   28.3s]   | [phase 1 bulk] poll 9 (unstable): mass 0.2089 / 0.5000 g (0.2911 g to go, +0.0125 g this poll), elapsed 3.0 s
+[   28.6s]   | [phase 1 bulk] poll 10 (unstable): mass 0.2445 / 0.5000 g (0.2555 g to go, +0.0356 g this poll), elapsed 4.0 s
+[   28.9s]   | [phase 1 bulk] poll 11 (unstable): mass 0.3315 / 0.5000 g (0.1685 g to go, +0.0870 g this poll), elapsed 4.0 s
+[   28.9s]   | [phase 1 bulk] auger halted at 0.1685 g to go (halt threshold 0.2500 g); settling 800 ms
+[   31.5s]   | [phase 1 bulk] settled: mass 0.4989 / 0.5000 g (0.0011 g to go, +0.1674 g while settling), elapsed 7.0 s
+[   31.5s]   | === phase 1/3 'bulk' end (11 cycles): mass 0.4989 / 0.5000 g (0.0011 g to go, +0.4989 g this phase), elapsed 7.0 s
+[   31.5s]   | === phase 2/3 'fine' skipped (0.0011 g to go is already <= 0.0060 g threshold)
+[   31.5s]   | === phase 3/3 'tap' start: 0.0011 g to go, exit at 0.0010 g to go; angle 17.0 plate deg, 15 auger deg/cycle @ 0 rpm, 2.0 taps/cycle, settle 1500 ms
+[   36.0s]   | [phase 3 tap] cycle 1: mass 0.5237 / 0.5000 g (0.0000 g to go, +0.0248 g this cycle), elapsed 11.0 s
+[   36.0s]   | === phase 3/3 'tap' end (1 cycles): mass 0.5237 / 0.5000 g (0.0000 g to go, +0.0248 g this phase), elapsed 11.0 s
+[   36.0s]   | [dose] done: DoseResult(overshoot: 0.5237/0.5000 g in 11.0s; cycles bulk:11, fine:0, tap:1; 2.79 auger rev, 2 taps)
+[   36.0s] dose stream result: done
+[   40.5s] weigh -> 0.5237 g
+[   40.5s] overshoot by 23.7 mg -- leaving as-is
+[   45.0s] weigh -> 0.5237 g
+[   45.0s] FINAL: 0.5237 g (target 0.5000)
+[   50.5s]   boot| MPY: soft reboot
+[   50.5s]   boot| [rig] bringing up powder-doser test module
+[   50.5s]   boot| [vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+[   50.5s]   boot| [rig] ready -- type 'h' for help
+[   50.5s]   boot| stepper: rpm=60, microsteps=1/8, steps/rev=1600, dispense_deg=360.0
+[   50.5s]   boot| vib: effect=14 (lib=1), duration=0.6s
+[   50.5s]   boot| tap: count=3, on=60ms, off=150ms, duty=1.0
+[   50.5s]   boot| servo: angle=0.0, range=[0..180], speed=60 deg/s, dual (GP15+GP2, invert=True), presets=['vertical', 'tilt', 'tip', 'horizontal']
+[   50.5s]   boot| scale: UART0 @ 19200 8N1 (GP12/GP13), dose: coarse to 90%, tol +/-0.005 g, 2 taps/burst
+[   50.5s] DONE
