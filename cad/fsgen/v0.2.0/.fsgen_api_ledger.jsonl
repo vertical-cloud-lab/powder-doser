@@ -1,0 +1,39 @@
+{"t": "2026-10-10T15:02:03", "run": "20261010-150203", "purpose": "onshape_doc create", "call": "GET companies", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:03", "run": "20261010-150203", "purpose": "onshape_doc create", "call": "POST documents", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:08", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:08", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST variables/d/{id}/w/{id}/variablestudio", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:08", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST variables/d/{id}/w/{id}/e/{id}/variables", "status": 204, "counted": true}
+{"t": "2026-10-10T15:02:08", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST variables/d/{id}/w/{id}/e/{id}/variablestudioreferences", "status": 204, "counted": true}
+{"t": "2026-10-10T15:02:09", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:10", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:10", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:10", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:10", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:10", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:11", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:11", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:11", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:11", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:11", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:12", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:12", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:12", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:12", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:02:12", "run": "20261010-150207", "purpose": "studio push baseplate_servos_above.fs", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:51", "run": "20261010-150351", "purpose": "onshape_doc tree", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:53", "run": "20261010-150352", "purpose": "onshape_doc views", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/shadedviews", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:53", "run": "20261010-150352", "purpose": "onshape_doc views", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/shadedviews", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:55", "run": "20261010-150354", "purpose": "onshape_doc export", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/translations", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:58", "run": "20261010-150354", "purpose": "onshape_doc export", "call": "GET translations/{tid}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:03:59", "run": "20261010-150354", "purpose": "onshape_doc export", "call": "GET documents/d/{id}/externaldata/{xid}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:24", "run": "20261010-150424", "purpose": "onshape_doc version", "call": "POST documents/d/{id}/versions", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:49", "run": "20261010-150449", "purpose": "onshape_doc branch", "call": "POST documents/d/{id}/workspaces", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:51", "run": "20261010-150450", "purpose": "studio push baseplate_thinner_table.fs", "call": "POST variables/d/{id}/w/{id}/e/{id}/variables", "status": 204, "counted": true}
+{"t": "2026-10-10T15:04:52", "run": "20261010-150450", "purpose": "studio push baseplate_thinner_table.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:52", "run": "20261010-150450", "purpose": "studio push baseplate_thinner_table.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:52", "run": "20261010-150450", "purpose": "studio push baseplate_thinner_table.fs", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/featurescript", "status": 200, "counted": true}
+{"t": "2026-10-10T15:04:53", "run": "20261010-150450", "purpose": "studio push baseplate_thinner_table.fs", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true}
+{"t": "2026-10-10T15:05:58", "run": "20261010-150558", "purpose": "onshape_doc branch", "call": "POST documents/d/{id}/workspaces", "status": 200, "counted": true}
+{"t": "2026-10-10T15:05:59", "run": "20261010-150559", "purpose": "onshape_doc setvars (hinge 5 mm lower, Variable Studio only (hingeDrop 10 mm))", "call": "POST variables/d/{id}/w/{id}/e/{id}/variables", "status": 204, "counted": true}
+{"t": "2026-10-10T15:06:02", "run": "20261010-150600", "purpose": "onshape_doc mass (hinge 5 mm lower, Variable Studio only (hingeDrop 10 mm))", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true}
+{"t": "2026-10-10T15:06:03", "run": "20261010-150602", "purpose": "onshape_doc views (hinge 5 mm lower, Variable Studio only (hingeDrop 10 mm))", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/shadedviews", "status": 200, "counted": true}

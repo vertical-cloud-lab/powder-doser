@@ -1,0 +1,41 @@
+  newSketch        Plate sketch
+  extrude          Plate
+  cPlane           Relief floor plane
+  newSketch        Relief sketch
+  extrude          Relief
+  newSketch        Slot and notch sketch
+  extrude          Cup slot and head notches
+  cPlane           Tower plane
+  newSketch        Tower sketch
+  extrude          Hinge tower
+  cPlane           Cradle plane
+  newSketch        Cradle sketch
+  extrude          Servo cradle
+  mirror           Mirror tower and cradle
+push to "Baseplate (servos above)" (new): estimated Onshape API calls: 19 (new Part Studio 1, Variable Studio 3, features 14, volume check 1) = 0.8% of the 2498 left (0.8% of the yearly 2500)
+  OK      variableStudio   7 variables
+  OK      newSketch        Plate sketch
+  OK      extrude          Plate
+  OK      cPlane           Relief floor plane
+  OK      newSketch        Relief sketch
+  OK      extrude          Relief
+  OK      newSketch        Slot and notch sketch
+  OK      extrude          Cup slot and head notches
+  OK      cPlane           Tower plane
+  OK      newSketch        Tower sketch
+  OK      extrude          Hinge tower
+  OK      cPlane           Cradle plane
+  OK      newSketch        Cradle sketch
+  OK      extrude          Servo cradle
+  OK      mirror           Mirror tower and cradle
+built 14, reused 0: https://cad.onshape.com/documents/57bb938243b883c7bdad1045/w/363b7f98896e7b44dab64f48/e/90ab6355538f5d532922ca60
+warning: sketch "Tower sketch": constraints gave WARNING, kept geometry without dimensions (now OK)
+{'parts': 1, 'volume_mm3': 137660.976, 'area_mm2': 62530.046}
+Onshape API calls this run: 20
+    14  POST partstudios/d/{id}/w/{id}/e/{id}/features
+     1  POST partstudios/d/{id}/w/{id}
+     1  POST variables/d/{id}/w/{id}/variablestudio
+     1  POST variables/d/{id}/w/{id}/e/{id}/variables
+     1  POST variables/d/{id}/w/{id}/e/{id}/variablestudioreferences
+     1  POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}
+     1  GET partstudios/d/{id}/w/{id}/e/{id}/massproperties

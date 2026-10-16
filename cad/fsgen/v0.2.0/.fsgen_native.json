@@ -1,0 +1,332 @@
+{
+  "Baseplate (servos above)@363b7f98896e7b44dab64f48": {
+    "did": "57bb938243b883c7bdad1045",
+    "wid": "363b7f98896e7b44dab64f48",
+    "eid": "90ab6355538f5d532922ca60",
+    "name": "Baseplate (servos above)",
+    "features": [
+      {
+        "name": "Plate sketch",
+        "type": "newSketch",
+        "hash": "cea7183847629831",
+        "fid": "FL13d0cub1noYOw_0",
+        "status": "OK"
+      },
+      {
+        "name": "Plate",
+        "type": "extrude",
+        "hash": "30bdd0cc16324286",
+        "fid": "F8QxmGhlvQZTeIN_0",
+        "status": "OK"
+      },
+      {
+        "name": "Relief floor plane",
+        "type": "cPlane",
+        "hash": "9b090b7532411b91",
+        "fid": "FekalT9w6ZRJJWj_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief sketch",
+        "type": "newSketch",
+        "hash": "4a9df2147ac9a510",
+        "fid": "F8DZaKdP6kGNtAo_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief",
+        "type": "extrude",
+        "hash": "671bff9f107223b4",
+        "fid": "FAZqApVnRrktV1u_1",
+        "status": "OK"
+      },
+      {
+        "name": "Slot and notch sketch",
+        "type": "newSketch",
+        "hash": "2d7a0cfc57ee4005",
+        "fid": "FE7VLMkEubu67Kr_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cup slot and head notches",
+        "type": "extrude",
+        "hash": "39996ff2e2784746",
+        "fid": "Fs7wqA7DHIOhgi6_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower plane",
+        "type": "cPlane",
+        "hash": "079fd9e525e3f45e",
+        "fid": "FcBvAr3poq56PAW_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower sketch",
+        "type": "newSketch",
+        "hash": "e9511b1840357934",
+        "fid": "FiaSrilbyIRzggv_1",
+        "status": "OK"
+      },
+      {
+        "name": "Hinge tower",
+        "type": "extrude",
+        "hash": "5a8fd7e0630faa78",
+        "fid": "FkoXjAbHyyWR6Dc_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle plane",
+        "type": "cPlane",
+        "hash": "41d73f90d8901e68",
+        "fid": "F7l2UAXKpAF2Oi9_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle sketch",
+        "type": "newSketch",
+        "hash": "d213a7722b4a6cab",
+        "fid": "FQRBezAxoDTQLX4_1",
+        "status": "OK"
+      },
+      {
+        "name": "Servo cradle",
+        "type": "extrude",
+        "hash": "759b38356f8e6917",
+        "fid": "Fi5PQMwaqwN82fw_1",
+        "status": "OK"
+      },
+      {
+        "name": "Mirror tower and cradle",
+        "type": "mirror",
+        "hash": "b0433982c26ebdc5",
+        "fid": "F2Cl4ycCMxIPKPi_1",
+        "status": "OK"
+      }
+    ],
+    "vs_eid": "364eccf08394f1f306d8d663",
+    "vs_hash": "de08959b2d78e828",
+    "vs_referenced": true,
+    "key": "Baseplate (servos above)@363b7f98896e7b44dab64f48"
+  },
+  "Baseplate (servos above)@ad5c3faacfea2bbf8b231a69": {
+    "did": "57bb938243b883c7bdad1045",
+    "wid": "ad5c3faacfea2bbf8b231a69",
+    "eid": "90ab6355538f5d532922ca60",
+    "name": "Baseplate (servos above)",
+    "features": [
+      {
+        "name": "Plate sketch",
+        "type": "newSketch",
+        "hash": "cea7183847629831",
+        "fid": "FL13d0cub1noYOw_0",
+        "status": "OK"
+      },
+      {
+        "name": "Plate",
+        "type": "extrude",
+        "hash": "30bdd0cc16324286",
+        "fid": "F8QxmGhlvQZTeIN_0",
+        "status": "OK"
+      },
+      {
+        "name": "Relief floor plane",
+        "type": "cPlane",
+        "hash": "9b090b7532411b91",
+        "fid": "FekalT9w6ZRJJWj_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief sketch",
+        "type": "newSketch",
+        "hash": "4a9df2147ac9a510",
+        "fid": "F8DZaKdP6kGNtAo_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief",
+        "type": "extrude",
+        "hash": "671bff9f107223b4",
+        "fid": "FAZqApVnRrktV1u_1",
+        "status": "OK"
+      },
+      {
+        "name": "Slot and notch sketch",
+        "type": "newSketch",
+        "hash": "2d7a0cfc57ee4005",
+        "fid": "FE7VLMkEubu67Kr_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cup slot and head notches",
+        "type": "extrude",
+        "hash": "39996ff2e2784746",
+        "fid": "Fs7wqA7DHIOhgi6_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower plane",
+        "type": "cPlane",
+        "hash": "079fd9e525e3f45e",
+        "fid": "FcBvAr3poq56PAW_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower sketch",
+        "type": "newSketch",
+        "hash": "4a7b849c6b9d3402",
+        "fid": "FiaSrilbyIRzggv_1",
+        "status": "OK"
+      },
+      {
+        "name": "Hinge tower",
+        "type": "extrude",
+        "hash": "5a8fd7e0630faa78",
+        "fid": "FkoXjAbHyyWR6Dc_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle plane",
+        "type": "cPlane",
+        "hash": "41d73f90d8901e68",
+        "fid": "F7l2UAXKpAF2Oi9_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle sketch",
+        "type": "newSketch",
+        "hash": "d213a7722b4a6cab",
+        "fid": "FQRBezAxoDTQLX4_1",
+        "status": "OK"
+      },
+      {
+        "name": "Servo cradle",
+        "type": "extrude",
+        "hash": "759b38356f8e6917",
+        "fid": "Fi5PQMwaqwN82fw_1",
+        "status": "OK"
+      },
+      {
+        "name": "Mirror tower and cradle",
+        "type": "mirror",
+        "hash": "b0433982c26ebdc5",
+        "fid": "F2Cl4ycCMxIPKPi_1",
+        "status": "OK"
+      }
+    ],
+    "vs_eid": "364eccf08394f1f306d8d663",
+    "vs_hash": "d0246a7c11586dbe",
+    "vs_referenced": true,
+    "key": "Baseplate (servos above)@ad5c3faacfea2bbf8b231a69"
+  },
+  "Baseplate (servos above)@86882f77405eeea74b4ff776": {
+    "did": "57bb938243b883c7bdad1045",
+    "wid": "86882f77405eeea74b4ff776",
+    "eid": "90ab6355538f5d532922ca60",
+    "name": "Baseplate (servos above)",
+    "features": [
+      {
+        "name": "Plate sketch",
+        "type": "newSketch",
+        "hash": "cea7183847629831",
+        "fid": "FL13d0cub1noYOw_0",
+        "status": "OK"
+      },
+      {
+        "name": "Plate",
+        "type": "extrude",
+        "hash": "30bdd0cc16324286",
+        "fid": "F8QxmGhlvQZTeIN_0",
+        "status": "OK"
+      },
+      {
+        "name": "Relief floor plane",
+        "type": "cPlane",
+        "hash": "9b090b7532411b91",
+        "fid": "FekalT9w6ZRJJWj_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief sketch",
+        "type": "newSketch",
+        "hash": "4a9df2147ac9a510",
+        "fid": "F8DZaKdP6kGNtAo_1",
+        "status": "OK"
+      },
+      {
+        "name": "Relief",
+        "type": "extrude",
+        "hash": "671bff9f107223b4",
+        "fid": "FAZqApVnRrktV1u_1",
+        "status": "OK"
+      },
+      {
+        "name": "Slot and notch sketch",
+        "type": "newSketch",
+        "hash": "2d7a0cfc57ee4005",
+        "fid": "FE7VLMkEubu67Kr_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cup slot and head notches",
+        "type": "extrude",
+        "hash": "39996ff2e2784746",
+        "fid": "Fs7wqA7DHIOhgi6_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower plane",
+        "type": "cPlane",
+        "hash": "079fd9e525e3f45e",
+        "fid": "FcBvAr3poq56PAW_1",
+        "status": "OK"
+      },
+      {
+        "name": "Tower sketch",
+        "type": "newSketch",
+        "hash": "e9511b1840357934",
+        "fid": "FiaSrilbyIRzggv_1",
+        "status": "OK"
+      },
+      {
+        "name": "Hinge tower",
+        "type": "extrude",
+        "hash": "5a8fd7e0630faa78",
+        "fid": "FkoXjAbHyyWR6Dc_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle plane",
+        "type": "cPlane",
+        "hash": "41d73f90d8901e68",
+        "fid": "F7l2UAXKpAF2Oi9_1",
+        "status": "OK"
+      },
+      {
+        "name": "Cradle sketch",
+        "type": "newSketch",
+        "hash": "d213a7722b4a6cab",
+        "fid": "FQRBezAxoDTQLX4_1",
+        "status": "OK"
+      },
+      {
+        "name": "Servo cradle",
+        "type": "extrude",
+        "hash": "759b38356f8e6917",
+        "fid": "Fi5PQMwaqwN82fw_1",
+        "status": "OK"
+      },
+      {
+        "name": "Mirror tower and cradle",
+        "type": "mirror",
+        "hash": "b0433982c26ebdc5",
+        "fid": "F2Cl4ycCMxIPKPi_1",
+        "status": "OK"
+      }
+    ],
+    "vs_eid": "364eccf08394f1f306d8d663",
+    "vs_hash": "de08959b2d78e828",
+    "vs_referenced": true,
+    "key": "Baseplate (servos above)@86882f77405eeea74b4ff776"
+  }
+}
