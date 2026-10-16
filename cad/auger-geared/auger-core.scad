@@ -1,0 +1,246 @@
+// ================================================================
+// Powder Excavator - Geared Archimedes Auger CORE  v3
+// ================================================================
+//
+// Shared parametric geometry for the geared auger.  Both
+// `archimedes-auger-geared.scad`        (full-length, total_h = 250)
+// and
+// `archimedes-auger-geared-short.scad`  (alternate, total_h = 180)
+// `include` this file and then call `archimedes_auger_geared(...)`
+// with their own height parameters.  Keeping all the geometry in one
+// place means the two variants cannot drift apart -- the only thing
+// that differs is the body length above the gear band.
+//
+// History (full chronology in archimedes-auger-geared.scad header):
+//   v1 of cad/auger-geared/  Copied PR #16 v5 internals verbatim;
+//                            v5 had stripped the helix + central
+//                            shaft, so the geared auger was a hollow
+//                            cup with no Archimedean lift.  Gear was
+//                            also a solid disc, sealing the bore.
+//   v2                       Fixed the gear: annular band via
+//                            spur_gear_2d(..., inner_r=inner_r); also
+//                            resized to Z_g=48 / Z_p=16, C=32 mm so
+//                            the NEMA 11 body clears the auger.  Bore
+//                            is now open through the band, but the
+//                            helix was still missing -- print
+//                            confirmed by @williamulbz reveals an
+//                            empty tube with no auger surface.
+//   v3 (here)                Re-add the central shaft + helical fin
+//                            from PR #16's v4.1 era (Ø8 mm shaft,
+//                            10 mm pitch, 2 mm fin) -- the geometry
+//                            that successfully metered powder before
+//                            v5's print test removed it.  Helix is
+//                            CONTINUOUS from the funnel up to just
+//                            below the top cap, so both the standard
+//                            and the shorter variant have an
+//                            unbroken Archimedean surface across the
+//                            gear band.  See ./README.md "v3"
+//                            section for the rationale.
+//
+// Parameter naming
+// ----------------
+// Constants that are physical traits of the printed part (wall
+// thickness, fin pitch, gear module, etc.) are declared here at
+// file scope.  Two values that change between variants -- the total
+// length of the part and the axial centre of the gear band -- are
+// passed as arguments to `archimedes_auger_geared(total_h,
+// gear_center_z)`.
+//
+// ================================================================
+
+include <gear-teeth.scad>;
+
+// ----------------------------------------------------------------
+// Tube / funnel / cap parameters  (identical to PR #16 v4.1/v5)
+// ----------------------------------------------------------------
+outer_diameter  = 25;    // mm
+wall_thickness  = 2;     // mm
+
+m3_pilot_d      = 2.5;
+top_cap_height  = 6;
+m3_boss_r       = 4;
+m3_boss_h       = 6;
+
+exit_hole_d     = 3.0;
+bottom_cap_h    = 12;
+
+slot_count      = 4;
+slot_width      = 4;
+slot_length     = 7;
+slot_radius     = 6.5;
+
+inner_d         = outer_diameter - 2 * wall_thickness;
+inner_r         = inner_d / 2;       // 10.5 mm
+outer_r         = outer_diameter / 2; // 12.5 mm
+m3_pilot_depth  = top_cap_height + m3_boss_h;
+
+// ----------------------------------------------------------------
+// Inner Archimedean screw parameters (re-introduced in v3)
+// ----------------------------------------------------------------
+//   shaft_r            radius of the central support shaft (Ø8 mm).
+//                      Sits in the centre of the bore; powder is
+//                      lifted by the helical fin wrapped around it.
+//   fin_thickness      radial-cross-section thickness of the helical
+//                      fin (2 mm -- a 5x perimeter at 0.4 mm nozzle).
+//   fin_pitch          axial rise per 360 deg of helix (10 mm, same
+//                      as PR #16 v2.1/v4.1).
+//   fin_inner_sink     overlap of the fin inner edge into the shaft
+//                      (0.4 mm, keeps the union() CGAL-manifold).
+//   fin_outer_sink     overlap of the fin outer edge into the inside
+//                      of the tube wall (0.2 mm, same reason).
+shaft_r         = 4;
+fin_thickness   = 2;
+fin_pitch       = 10;
+fin_inner_sink  = 0.4;
+fin_outer_sink  = 0.2;
+
+// Z range over which the central shaft + helix exist.  Bottom is the
+// height inside the funnel where the cone's inner radius equals
+// shaft_r -- so the shaft fuses to the funnel cone wall with no
+// floating tip.  Top is the underside of the top cap, so the shaft
+// fuses into the cap and the M3 boss above it.
+//
+//   funnel cone interior radius at z  =  exit_hole_d/2 +
+//          (inner_r - 0.5 - exit_hole_d/2) * z / bottom_cap_h
+//   solve for z when that = shaft_r:
+shaft_bottom_z  = bottom_cap_h *
+                    (shaft_r - exit_hole_d / 2) /
+                    (inner_r - 0.5 - exit_hole_d / 2);
+                  // = 12 * (4 - 1.5) / (10 - 1.5) ~= 3.53 mm
+
+// ----------------------------------------------------------------
+// External gear-band parameters  (unchanged from v2)
+// ----------------------------------------------------------------
+gear_module        = 1.0;
+gear_teeth         = 48;
+pressure_angle     = 20;
+gear_face_width    = 10;
+
+gear_pitch_r   = gear_module * gear_teeth / 2;          // 24.0 mm
+gear_addendum  = gear_module;                            //  1.0 mm
+gear_dedendum  = 1.25 * gear_module;                     //  1.25 mm
+gear_tip_r     = gear_pitch_r + gear_addendum;           // 25.0 mm
+gear_root_r    = gear_pitch_r - gear_dedendum;           // 22.75 mm
+
+$fn = 96;
+
+// ================================================================
+// Modules (parameterised by total_h)
+// ================================================================
+
+module tube_walls(total_h) {
+    difference() {
+        cylinder(r=outer_r, h=total_h);
+        translate([0, 0, -0.1])
+            cylinder(r=inner_r, h=total_h + 0.2);
+    }
+}
+
+module bottom_funnel() {
+    difference() {
+        cylinder(r=outer_r, h=bottom_cap_h);
+        translate([0, 0, -0.1])
+            cylinder(
+                r1 = exit_hole_d / 2,
+                r2 = inner_r - 0.5,
+                h  = bottom_cap_h + 0.2
+            );
+    }
+}
+
+module top_cap(total_h) {
+    difference() {
+        union() {
+            translate([0, 0, total_h - top_cap_height])
+                cylinder(r=outer_r, h=top_cap_height);
+            translate([0, 0, total_h - top_cap_height - m3_boss_h])
+                cylinder(r=m3_boss_r, h=m3_boss_h);
+        }
+        translate([0, 0, total_h - m3_pilot_depth - 0.1])
+            cylinder(d=m3_pilot_d, h=m3_pilot_depth + 0.2);
+
+        for (i = [0 : slot_count - 1]) {
+            angle = i * (360 / slot_count);
+            translate([0, 0, total_h - top_cap_height / 2])
+            rotate([0, 0, angle])
+            translate([slot_radius, 0, 0])
+                cube([slot_length, slot_width, top_cap_height + 0.2], center=true);
+        }
+    }
+}
+
+// Central support shaft -- runs from where it kisses the funnel cone
+// wall (shaft_bottom_z) up to the underside of the top cap, so it
+// fuses into both ends of the assembly with no floating geometry.
+module central_shaft(total_h) {
+    h = total_h - top_cap_height - shaft_bottom_z;
+    translate([0, 0, shaft_bottom_z])
+        cylinder(r = shaft_r, h = h);
+}
+
+// Helical fin -- a flat radial blade swept around the shaft with a
+// fin_pitch mm axial rise per turn.  Same z range as the shaft so
+// the auger surface is CONTINUOUS from the funnel mouth to the top
+// cap (no gap at the gear band).  Inner edge sinks `fin_inner_sink`
+// into the shaft, outer edge sinks `fin_outer_sink` into the inside
+// of the tube wall, both for manifold safety.
+module helical_fin(total_h) {
+    h = total_h - top_cap_height - shaft_bottom_z;
+    turns = h / fin_pitch;
+    twist = -360 * turns;
+    // Slices: 4 per mm gives a smooth printed surface without
+    // exploding render time at OpenSCAD's default $fn.
+    slices = max(120, ceil(h * 4));
+    inner_edge = shaft_r - fin_inner_sink;       // 3.6 mm
+    outer_edge = inner_r + fin_outer_sink;       // 10.7 mm
+    fin_radial = outer_edge - inner_edge;        // 7.1 mm
+    translate([0, 0, shaft_bottom_z])
+        linear_extrude(height = h, twist = twist, slices = slices, convexity = 4)
+            translate([inner_edge, -fin_thickness / 2])
+                square([fin_radial, fin_thickness]);
+}
+
+// External spur-tooth band.  ANNULAR (inner_r passed through to
+// spur_gear_2d) so the bore stays open through the band's axial
+// slice -- otherwise the gear's root-circle disc would seal the
+// bore.  See cad/auger-geared/gear-teeth.scad for the helper.
+module spur_gear_band(Z, m, PA, face_w, root_r, pitch_r, tip_r, inner_r_param) {
+    linear_extrude(height = face_w, convexity = 2 * Z)
+        spur_gear_2d(Z, m, PA, root_r, pitch_r, tip_r, inner_r_param);
+}
+
+module gear_band(gear_center_z) {
+    translate([0, 0, gear_center_z - gear_face_width / 2])
+        spur_gear_band(
+            Z              = gear_teeth,
+            m              = gear_module,
+            PA             = pressure_angle,
+            face_w         = gear_face_width,
+            root_r         = gear_root_r,
+            pitch_r        = gear_pitch_r,
+            tip_r          = gear_tip_r,
+            inner_r_param  = inner_r
+        );
+}
+
+// ================================================================
+// Top-level assembly module
+// ================================================================
+//
+// Caller picks a length (`total_h`) and a gear-band axial position
+// (`gear_center_z`).  The standard variant uses 250 mm / 83.33 mm;
+// the short alternate uses 180 mm / 83.33 mm so the gear sits at
+// the same distance from the dispensing end and the body above it
+// is shortened by 70 mm.
+
+module archimedes_auger_geared(total_h, gear_center_z) {
+    color("#5B9BD5", 0.9)
+    union() {
+        tube_walls(total_h);
+        bottom_funnel();
+        top_cap(total_h);
+        central_shaft(total_h);   // <-- v3: re-added (was stripped in v1/v2)
+        helical_fin(total_h);     // <-- v3: re-added (was stripped in v1/v2)
+        gear_band(gear_center_z); // <-- v2: annular band, bore stays open
+    }
+}
