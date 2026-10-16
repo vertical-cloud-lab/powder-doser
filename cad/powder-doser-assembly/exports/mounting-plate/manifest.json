@@ -1,0 +1,27 @@
+{
+  "name": "mounting-plate",
+  "prompt_file": "06-mounting-plate.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -54.1,
+      -15.0,
+      0.0
+    ],
+    "max": [
+      54.1,
+      123.225,
+      54.475
+    ],
+    "size": [
+      108.2,
+      138.225,
+      54.475
+    ]
+  }
+}

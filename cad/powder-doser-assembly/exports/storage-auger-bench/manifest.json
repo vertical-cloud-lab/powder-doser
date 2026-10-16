@@ -1,0 +1,27 @@
+{
+  "name": "storage-auger-bench",
+  "prompt_file": "02-storage-auger-bench.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -12.5,
+      -12.5,
+      0.0
+    ],
+    "max": [
+      12.5,
+      12.5,
+      94.0
+    ],
+    "size": [
+      25.0,
+      25.0,
+      94.0
+    ]
+  }
+}
