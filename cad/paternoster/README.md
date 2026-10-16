@@ -29,7 +29,7 @@ The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (po
 | Station | P16-150-22-12-P: base pin 57 mm above the bench, rod end pinned 40 mm behind / 72 mm below the hinge. **20 mm approach** in a printed fork, then **tilt to 90° using 134 of 150 mm** | Both ends are pinned, so the actuator is a two-force member (its side-load limit is 10 N). MuJoCo force: 8.0 N at 0° falling to 1.5 N at 90° (14.8 N transient peak), against 50 N available |
 | Chain hold-down | **UHMW strips 0.5 mm over each chain's bottom run at the station** | MuJoCo: below about 40° of tilt the actuator's 8 N on a 40 mm lever is more than the 5 N module + carriage, and the extra 3 N lifts the front pivot. The strips hold the chain to their 0.5 mm gap (up to 7.8 N on the strip) |
 | Dispense | 20 mL vial on a 100 g load cell, **D-shaped catch funnel** ahead of the docked carriage | Particle sim: at steep tilt 21% of grains miss a bare vial |
-| Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet; footprint about 450 x 320 mm plus the motor out the back; 765 mm tall | Every T-nut screw takes blue Loctite (T-nuts can't take a nylock); every other nut on the machine is a nylock |
+| Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet; footprint 444 x 320 mm, plus 232 mm of motor out the back; 765 mm tall | Every T-nut screw takes blue Loctite (T-nuts can't take a nylock); every other nut on the machine is a nylock |
 | Cost | **$1,652 total, $1,526 without test gear** ([BOM.md](BOM.md)) | Prices read on the vendors' pages on 2026-10-16 unless marked |
 
 ## What the simulations found, and what changed
