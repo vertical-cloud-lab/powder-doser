@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""Submit the data-assimilation Edison query for issue #123 / PR #124 (submit-only).
+
+sgbaird asked (PR #124, 2026-07-23): "what about data assimilation? (maybe works
+well for handling hyperparameters of noisy, dynamical systems). Send your own
+musings to edison for feedback."
+
+The query below therefore contains the agent's own position ("musings") on where
+data assimilation fits this rig, and asks Edison to critique it with citations.
+Writes query_out/data_assimilation.task.json. Fetch later with
+fetch_data_assimilation_result.py (high-effort; allow ~15-30 min)."""
+import json
+import os
+from pathlib import Path
+
+from edison_client import EdisonClient, JobNames
+from edison_client.models.app import TaskRequest
+
+HERE = Path(__file__).parent
+OUT = HERE / "query_out"
+OUT.mkdir(exist_ok=True)
+
+
+def _api_key() -> str:
+    key = os.environ.get("EDISON_API_KEY") or os.environ.get("EDISON_PLATFORM_API_KEY")
+    if not key:
+        raise SystemExit(
+            "Edison API key is not set (EDISON_API_KEY / EDISON_PLATFORM_API_KEY)."
+        )
+    return key
+
+
+RIG_CONTEXT = """Context: we are building an open-source, low-cost powder doser for \
+gravimetric metering of dry powders (ultimately metal additive-manufacturing \
+feedstocks such as AlSi10Mg, silicon, stainless steel; salt and similar surrogates \
+during development) inside an autonomous self-driving-lab alloy-discovery loop. The \
+rig is an Archimedean auger in a tilted tube driven by a stepper motor (44:20 gear), \
+a solenoid tapper that strikes the tube, and a servo-controlled tilt of the whole \
+assembly (0-45 degrees from horizontal), dispensing into a vial on an analytical \
+balance (A&D HR-100A, ~1 mg readability, ~1 s settling; readings during actuation \
+are vibration-corrupted). Current controller: a deterministic three-phase policy \
+(bulk feed at steep tilt -> fine incremental rotations -> tap-until-tolerance at \
+shallow tilt), with per-phase parameters (tilt angle, rotation increment/speed, taps \
+per cycle, settle time, gram-based phase-switch thresholds) intended to be tuned by \
+contextual multi-objective Bayesian optimization. Objectives: absolute mass error \
+(target +/- 1 mg, stretch +/- 0.1 mg) and dose time, with no-overshoot as a hard \
+asymmetric constraint (powder cannot be removed). Context variables: hopper fill \
+level, powder humidity-exposure history, ambient temperature. Empirically observed \
+interactions: (a) tapping or rotating at steeper tilt dispenses far more per action \
+than at shallow tilt; (b) a tap immediately after an auger rotation dispenses more \
+than repeated taps alone, because taps deplete the loose powder near the tube lip \
+while rotation replenishes it - i.e., the state includes an unobserved "lip \
+reservoir" that actuators couple through. We also have a control-oriented stochastic \
+compartment-model digital twin (hopper -> auger transport delay -> lip reservoir -> \
+in-flight -> vial, plus a first-order balance model), with multiplicative feed-factor \
+physics (fill^0.7, tilt gain, moisture-driven cohesion, densification), Poisson clump \
+discharge for cohesive powders, and cohesive arching as a discrete zero-flow regime. \
+Prior reviews in this project recommended: a 2-state (mass, rate) switching-covariance \
+Kalman filter on the balance signal; an EWMA feed-factor correction dose-to-dose; \
+contextual BO over the policy parameters with fill/humidity-history/temperature as \
+GP context inputs; and (from an MPC deep-dive) a rate-PI trickle phase with \
+predictive cutoff rather than full MPC at this stage."""
+
+
+MUSINGS = """
+This is a request for CRITIQUE. Below are our own musings on applying DATA \
+ASSIMILATION (DA) to this rig - prompted by the observation that DA may work well \
+for handling hyperparameters of noisy dynamical systems. Please review these ideas \
+against the literature: confirm or refute each numbered claim, correct \
+misconceptions, supply the standard vocabulary and citations for whatever we are \
+reinventing, and answer the explicit questions at the end.
+
+OUR MUSINGS:
+
+M1. Framing. What we previously scoped as "a Kalman filter on the mass signal" is \
+the smallest member of a bigger DA family. The DA framing that seems genuinely new \
+for us is JOINT STATE-PARAMETER ESTIMATION via state augmentation: append the \
+slowly-varying, powder-dependent model parameters - feed factor (g/rev), lip-drain \
+coefficient, tap ejection fraction, effective cohesion - to the state vector as \
+random-walk states, and let the filter estimate them online alongside the fast \
+states (dispensed mass, dose rate, lip mass, in-flight mass). These parameters are \
+exactly the "hyperparameters of a noisy dynamical system": they are not directly \
+measurable, they drift within and between doses (densification, moisture uptake, \
+fill-level decline), and every control layer we have planned (predictive cutoff, \
+rate-PI gains, BO priors) consumes estimates of them.
+
+M2. Ensemble methods fit our nonlinearity better than the EKF. The augmented \
+dynamics are bilinear/multiplicative (rate = feed_factor x fill^0.7 x tilt_gain x \
+omega; tap ejection = fraction x lip_mass), so an EKF needs Jacobians of a model we \
+would rather keep as simulation code. An Ensemble Kalman Filter (EnKF) needs only \
+forward rollouts: our digital twin IS the forecast model, ensemble members are twin \
+rollouts with perturbed parameters/noise, and the analysis step corrects them \
+against each settled balance reading. State dimension is tiny (4-8), so ensembles \
+of 50-200 members run in milliseconds - none of the localization machinery that \
+geoscience DA needs at dimension 10^7 should be necessary, though covariance \
+inflation probably still is.
+
+M3. Within-dose vs dose-to-dose assimilation split. Within a dose we get only \
+~30-60 usable observations (1 Hz effective, vibration-corrupted during actuation), \
+so within-dose DA should estimate at most the fast states plus MAYBE one parameter \
+(feed factor). The heavier parameter learning belongs BETWEEN doses: treat each \
+completed dose log as a batch and run an iterative ensemble smoother (ES-MDA style, \
+as used in petroleum reservoir history matching) or a short-window 4D-Var to \
+calibrate the full parameter set of the compartment model per powder. Each dose is \
+short, cheap, and repeated - closer to reservoir history matching or hydrology \
+(GLUE/EnKF streamflow calibration) than to weather forecasting.
+
+M4. DA-estimated parameters as LATENT CONTEXT for the BO layer. Our contextual-BO \
+plan currently uses raw context variables (humidity-exposure history, fill level, \
+temperature), some of which are unobservable or confounded (we previously concluded \
+particle-size distribution and humidity history are NOT separately identifiable \
+from the mass signal). The DA view suggests a cleaner interface: stop feeding raw, \
+possibly-unmeasurable context into the GP and instead feed the FILTER'S ESTIMATES \
+of the identifiable lumped parameters (feed factor, cohesion index, lip-drain \
+rate). These absorb the combined effect of PSD + humidity + densification in \
+exactly the combination that matters for control. The BO kernel then conditions on \
+"the powder as it behaves today" rather than on proxies for why it behaves that \
+way. Downside we see: the context input becomes endogenous (estimated from the \
+same data the policy generated), with its own uncertainty - the GP would need to \
+handle noisy/uncertain inputs, and there may be feedback pathologies (policy \
+affects excitation affects parameter identifiability affects policy).
+
+M5. Noise hyperparameters themselves are DA targets. The switching-covariance \
+measurement model (inflate R ~10x during actuation) currently has hand-picked \
+inflation factors; process noise Q for powder discharge is avalanche-y, \
+non-Gaussian, and powder-dependent. Adaptive filtering (innovation-based Q/R \
+estimation, autocovariance least squares) and the DA community's adaptive \
+inflation methods (Anderson-style) could tune these online instead of by hand. \
+More ambitiously, the Poisson clump size and arching probability in our twin are \
+noise-model hyperparameters that dose-to-dose assimilation could update per powder.
+
+M6. Where we suspect DA is OVERKILL or fragile, and want honest pushback: \
+(a) With ONE scalar observation channel (vial mass), how many augmented parameters \
+are simultaneously identifiable in practice? We suspect 2-3 at most within a dose, \
+and that trying more just re-labels model error as parameter drift (compensation \
+bias). \
+(b) Non-Gaussianity: clumped discharge and arching are jump processes; EnKF \
+analysis steps assume Gaussian-ish innovations. Do we need a particle filter, a \
+Gaussian-mixture/rank-histogram filter, or is EnKF-with-inflation empirically fine \
+at this scale? \
+(c) The fixed-gain scalar limit: our previously-planned EWMA feed-factor update IS \
+a steady-state scalar KF. Is full sequential DA measurably better than \
+RLS-with-forgetting or EWMA for a 4-8 state, 1-sensor, 60-observation problem, or \
+is the marginal value mostly the UNCERTAINTY quantification (which BO and the \
+predictive cutoff would consume)? \
+(d) Observability during quiet phases: when actuators are off and flow is zero, \
+parameters are unobservable; the filter should freeze them (no innovation, no \
+update) - is explicit handling needed beyond the natural behavior? \
+(e) Runtime split: within-dose EnKF on the host PC at 1 Hz is trivial \
+computationally, but the MicroPython inner loop cannot run it - so DA lives \
+host-side, advising cutoff thresholds and next-dose parameters, never in the \
+~10 ms actuation path. Sanity-check this architecture.
+
+EXPLICIT QUESTIONS (please answer with citations):
+
+Q1. Precedents: published applications of EnKF / ensemble smoothers / MHE / joint \
+state-parameter estimation to powder feeders, loss-in-weight feeders, granular \
+flow, filling/checkweighing, or comparable small mechatronic dosing systems. If \
+none, the nearest analogues (chemical process DA, crystallization, granulation, \
+twin-screw extrusion, digital-twin updating for small devices).
+
+Q2. Identifiability: theory or practice on how many augmented parameters a \
+single-channel, short-window assimilation can support; design of the EXCITATION \
+(dose profiles that make parameters identifiable - relation to optimal input \
+design); and diagnosing when parameter estimates are compensating for structural \
+model error.
+
+Q3. Method selection for a 4-8 dimensional, bilinear, jump-noise system observed \
+through a 1 Hz low-pass sensor: EnKF vs UKF vs particle filter vs moving-horizon \
+estimation - what does the small-system DA/estimation literature actually \
+recommend, and what ensemble/particle sizes and inflation settings are typical?
+
+Q4. Dose-to-dose batch calibration: is ES-MDA / iterative ensemble smoothing / \
+Bayesian calibration (Kennedy-O'Hagan style) the right tool for updating a \
+stochastic compartment model from accumulating dose logs, and how does it compare \
+with simply refitting by maximum likelihood every N doses? How should the \
+KOH "model discrepancy" term be handled so parameters stay physical?
+
+Q5. DA + BO coupling: precedents for using online-estimated latent parameters as \
+GP context inputs in contextual Bayesian optimization (latent-context BO, \
+uncertain-input GPs), and known failure modes of closing that loop (endogeneity, \
+excitation collapse).
+
+Q6. Adaptive noise estimation: practical methods for online Q/R (and \
+regime-switching R) estimation in low-dimensional mechatronic filters, and whether \
+Anderson-style adaptive inflation transfers to systems this small.
+
+Q7. Verdict: for THIS rig, rank the DA program's components by value-per-effort - \
+(i) within-dose 2-state KF (already planned), (ii) within-dose augmented EnKF with \
+feed factor, (iii) dose-to-dose ES-MDA calibration of the twin, (iv) DA-estimated \
+latent context for BO, (v) online Q/R adaptation - and state which you would NOT \
+build, with reasons grounded in the literature."""
+
+
+def main() -> None:
+    client = EdisonClient(api_key=_api_key())
+    query = RIG_CONTEXT + "\n" + MUSINGS
+    task = TaskRequest(name=JobNames.LITERATURE_HIGH, query=query)
+    tid = client.create_task(task)
+    print(f"data_assimilation: trajectory_id {tid}", flush=True)
+    (OUT / "data_assimilation.task.json").write_text(
+        json.dumps(
+            {"trajectory_id": str(tid), "job": str(JobNames.LITERATURE_HIGH), "query": query},
+            indent=2,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()
