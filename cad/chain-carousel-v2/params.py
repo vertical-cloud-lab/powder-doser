@@ -158,4 +158,15 @@ Z_MOTOR = Z_BOT - C_DRIVE                            # 120.46: motor axis, under
 
 # --- station test fixtures ---
 HOLD_DOWN_GAP = 0.5
+# The foot under the tongue was 2 mm below it. The physics sim (sim/carousel_sim.py) found that a tongue's leading
+# corner dips about 1.2 mm below the run line while its carriage swings off the B- sprocket, and that corner then
+# hit the foot's end face and stalled the drive. 4 mm clears it with the lead-in chamfer to spare.
+HOLD_DOWN_FOOT_GAP = 4.0
+# Slider rails under the station carriage: two UHMW-topped bars along the travel, just under the carriage plate, so
+# the plate rides on them at the station and its height no longer depends on how much the bottom run sags
+# (the sim showed 2-4 mm of sag at 40 N chain tension, enough to hang a tongue on the hold-down foot).
+SLIDER_GAP = 0.3                 # rail top below the plate's nominal outer face
+SLIDER_X = ((130.0, 137.0), (266.0, 284.0))   # between the window and the first lightening hole; behind the last one
+SLIDER_HALF_L = 25.0             # along the travel, about the station: a carriage corner swinging off a sprocket dips below the run line beyond this
+SLIDER_RAMP, SLIDER_RAMP_L = 3.0, 10.0   # lead-in at each end of a rail: drop, length
 MAGNET_D, MAGNET_H = 6.35, 3.18                       # K&J D42-N52, 1/4 x 1/8 in

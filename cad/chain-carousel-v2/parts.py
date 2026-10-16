@@ -308,7 +308,7 @@ def carriage() -> cq.Workplane:
 def hold_down() -> cq.Workplane:
     """Printed hold-down at the station, on a side plate's inner face. It
     wraps the carriage tongue like a C: a lip 0.5 mm over the tongue reacts
-    the station's upward push, a foot 2 mm under it catches a downward pull,
+    the station's upward push, a foot HOLD_DOWN_FOOT_GAP (4 mm) under it catches a downward pull,
     and a pocket in the lip holds a hall switch over the tongue's magnet.
     Frame: X = u (along the travel), Y = w (inward from the chain's pitch
     line), Z = distance from the side plate's inner face toward the chain.

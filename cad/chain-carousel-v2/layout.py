@@ -147,7 +147,7 @@ def side_holes(back: bool) -> list[tuple]:
         for z in zs:
             out.append(("circle", (sy * POST_Y, z), (5.5,)))
     for dy in (-12.0, 12.0):                                                        # hold-down, into its inserts:
-        out.append(("slot", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - 2.0 - 11.0), (5.5, 9.5)))   # +-2 mm to set the lip gap
+        out.append(("slot", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0), (5.5, 9.5)))   # +-2 mm to set the lip gap
     if back:                                                                        # NEMA 34, slotted to tension the drive chain
         out.append(("slot", (LOOP_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
         for dy in (-1, 1):
@@ -477,11 +477,11 @@ def placements(tilt_deg: float = 0.0) -> list[Placement]:
         add(Placement("hall_switch", f"Hall switch US5881 ({nm.split(', ')[1]})", HD @ T(Rsw, (0, tz + 0.8, zc)), 9, DARK, "station",
                       (0, 0, 90)))
         for dy in (-12.0, 12.0):
-            p = to_world(HD, (dy, CAR_W0 - CAR_T - 2.0 - 11.0, 0.0))
+            p = to_world(HD, (dy, CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0, 0.0))
             xo = X_BACK_OUT if sgn > 0 else X_FRONT_OUT
             add(Placement("m5x16_shcs", "Hold-down screw M5x16", T(Ry(sgn * math.pi / 2), (xo, p[1], p[2])), 9, DARK, "station",
                           (sgn * 60, 0, 0)))
-            add(Placement("insert_m5", "M5 heat-set insert (hold-down)", HD @ T(None, (dy, CAR_W0 - CAR_T - 2.0 - 11.0, 0.0)), 9, BRASS,
+            add(Placement("insert_m5", "M5 heat-set insert (hold-down)", HD @ T(None, (dy, CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0, 0.0)), 9, BRASS,
                           "station", (0, 0, 60)))
     # 10. modules: module 1 is the lab's (real auger); 2-12 carry a printed auger blank
     for k, li in enumerate(carriage_links()):
