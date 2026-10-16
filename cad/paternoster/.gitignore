@@ -1,0 +1,4 @@
+.cache/
+__pycache__/
+sim/out/**/frames/
+vendor/
