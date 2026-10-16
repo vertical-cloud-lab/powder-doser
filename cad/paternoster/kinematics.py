@@ -60,33 +60,32 @@ def _seat(c: int, ang: float) -> np.ndarray:
 
 
 def pin_positions(shift: float) -> np.ndarray:
-    """(N_LINKS, 2) array of pin centres (y, z); pin j at u = j + shift."""
+    """(N_LINKS, 2) array of pin centres (y, z); pin j at u = j + shift.
+
+    All four sprockets turn together, so every free span leaves one sprocket and
+    meets the next at the same tooth phase g in [-1/2, 1/2) of a tooth: its end pins
+    sit at (departure angle + g*DELTA) and (arrival angle + g*DELTA), exactly a
+    whole number of pitches apart, and the span rides up and down by
+    R(1 - cos(DELTA/2)). When g passes +1/2 the next pin takes over as the end pin;
+    at that instant it is already on both the span and the seat, so nothing jumps."""
     f = shift - math.floor(shift)
-    u = (np.arange(N_LINKS) + shift) % N_LINKS
+    g = f if f < 0.5 else f - 1.0
     out = np.zeros((N_LINKS, 2))
     for j in range(N_LINKS):
-        uj = u[j]
+        v = (j + shift - g) % N_LINKS              # pin's place in the nominal (g = 0) layout
         for k in range(4):
-            a = SEG_START[k]                     # straight k starts at a, its corner at a + n
-            n = STRAIGHTS[k]
-            prev_c = (k - 1) % 4                 # corner before straight k
-            if a - 1e-9 <= uj < a + n + 1e-9 or (k == 0 and uj > N_LINKS - 1e-9):
-                # on straight k (or on its end pins): between the last pin seated on prev_c
-                # and the first pin seated on corner k
-                if f < 1e-9:
-                    ua, ub = a, a + n
-                else:
-                    ua, ub = a - (1 - f), a + n + f
-                pa = _seat(prev_c, CORNERS[prev_c][1] + math.pi / 2 - (a - ua) * DELTA)
-                pb = _seat(k, CORNERS[k][1] + (ub - (a + n)) * DELTA)
-                t = (uj - ua) / (ub - ua)
-                out[j] = pa + t * (pb - pa)
+            a, n = SEG_START[k], STRAIGHTS[k]
+            prev_c = (k - 1) % 4
+            if a - 1e-9 <= v <= a + n + 1e-9:
+                pa = _seat(prev_c, CORNERS[prev_c][1] + math.pi / 2 + g * DELTA)
+                pb = _seat(k, CORNERS[k][1] + g * DELTA)
+                out[j] = pa + (v - a) / n * (pb - pa)
                 break
-            if a + n <= uj < a + n + WRAP:
-                out[j] = _seat(k, CORNERS[k][1] + (uj - (a + n)) * DELTA)
+            if a + n < v < a + n + WRAP + 1e-9:
+                out[j] = _seat(k, CORNERS[k][1] + (v - (a + n) + g) * DELTA)
                 break
         else:
-            raise RuntimeError(f"pin {j} at u={uj} not placed")
+            raise RuntimeError(f"pin {j} at v={v} not placed")
     return out
 
 

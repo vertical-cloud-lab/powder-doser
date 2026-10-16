@@ -36,7 +36,7 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("idler_axle", "bearing_6202"), ("bearing_6202", "sprocket_32_idler"), ("idler_axle", "side_plate_front"),
         ("idler_axle", "side_plate_back"), ("idler_axle", "nut_m10"), ("coupling", "shaft_drive"), ("coupling", "nema34"),
         ("foot", "ext_x"), ("flange_bearing", "side_plate_front"), ("flange_bearing", "side_plate_back"),
-        ("sam_electronics_carriage", "station_yoke")}
+        ("sam_electronics_carriage", "station_yoke"), ("vial", "vial_funnel")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
 CHAIN = ("chain_inner", "chain_outer", "chain_sa1")
 
@@ -127,7 +127,7 @@ def sweep(step: float = 0.5) -> list:
     return hits
 
 
-def tilt(angles=(5, 15, 30, 45, 60, 75, 90), exts=(0.0, 10.0, 20.0, 30.0)) -> list:
+def tilt(angles=(5, 15, 30, 45, 60, 75, 90), exts=(0.0, 5.0, 10.0, 15.0, 19.5)) -> list:
     """Station: the electronics carriage rising (ext 0 -> docked), then module 1 + carriage
     tilting 5-90 deg, against everything else."""
     hits = []

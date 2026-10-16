@@ -235,13 +235,15 @@ def locknut(m: float = 3.0) -> cq.Workplane:
 
 
 def thrust_washer() -> cq.Workplane:
-    return cq.Workplane("XY").circle(4.5).circle(2.1).extrude(WASHER_T)
+    """McMaster 95630A630 PTFE washer, 4.3 x 9 x 0.8."""
+    return cq.Workplane("XY").circle(4.5).circle(2.15).extrude(WASHER_T)
 
 
 def sleeve_bearing() -> cq.Workplane:
-    """Flanged sleeve bearing 4 ID x 6 OD x 6 long, 8 mm flange x 0.8: flange face at z = 0, sleeve along -z."""
-    fl = cq.Workplane("XY").circle(4.0).circle(2.0).extrude(0.8)
-    sl = cq.Workplane("XY").circle(3.0).circle(2.0).extrude(-END_T + 0.8)
+    """McMaster 6659K65 flanged bronze bushing, 4 ID x 7.02 OD x 6, flange 10 x 1.5:
+    flange's outer face at z = +1.5 ... seat face at z = 0, sleeve along -z."""
+    fl = cq.Workplane("XY").circle(5.0).circle(2.0).extrude(1.5)
+    sl = cq.Workplane("XY").circle(3.51).circle(2.0).extrude(-4.5)
     return fl.union(sl)
 
 
@@ -330,63 +332,73 @@ def gondola() -> cq.Workplane:
 # ---------------------------------------------------------------- printed: station
 def station_yoke() -> cq.Workplane:
     """Printed yoke bolted under Sam's electronics carriage: a clevis for the actuator's
-    rod end (pin along y) and a guide tongue that rides the approach fork.
+    rod end (pin along y) and a guide tongue at y = TONGUE_Y that rides the approach fork.
     Frame: Sam's studio frame (the carriage's underside is at his z = -60.75)."""
     zt = -60.75
-    plate = cq.Workplane("XY").box(44.0, 34.0, 5.0, centered=False).translate((YOKE_X - 22.0, -17.0, zt - 5.0))
+    plate = cq.Workplane("XY").box(44.0, 36.0, 5.0, centered=False).translate((YOKE_X - 22.0, -17.0, zt - 5.0))
     cheeks = None
-    for y0 in (-9.0, 4.0):
+    for y0 in (-10.5, 5.5):
         c = (cq.Workplane("XZ").center(YOKE_X, YOKE_Z).circle(6.0).extrude(-5.0)
              .union(cq.Workplane("XY").box(12.0, 5.0, zt - 5.0 - YOKE_Z, centered=False).translate((YOKE_X - 6.0, 0, YOKE_Z))))
         c = c.translate((0, y0, 0))
         cheeks = c if cheeks is None else cheeks.union(c)
     y = plate.union(cheeks)
     y = y.cut(cq.Workplane("XZ").center(YOKE_X, YOKE_Z).circle(ACT_CLEVIS_D / 2 + 0.1).extrude(40, both=True))
-    tongue = cq.Workplane("XY").box(6.0, 30.0, 25.0, centered=False).translate((TONGUE_X - 3.0, -15.0, zt - 25.0))
-    tongue = tongue.union(cq.Workplane("XY").box(TONGUE_X - 3.0 - (YOKE_X + 22.0) + 0.5, 30.0, 5.0, centered=False)
-                          .translate((YOKE_X + 22.0 - 0.5, -15.0, zt - 5.0)))
+    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((TONGUE_X - 15.0, TONGUE_Y - 3.0, zt - 25.0))
     return y.union(tongue)
 
 
 def approach_fork() -> cq.Workplane:
-    """Fixed printed fork that keeps the electronics carriage square while the
-    actuator lifts it to the module (bottom 30 mm of the stroke). Frame: world,
-    built in place by layout.py (x, z of its slot)."""
+    """Fixed printed fork that keeps the electronics carriage square while the actuator
+    lifts it to the module (the first DOCK_EXT of the stroke); the tongue leaves its top
+    as the carriage docks, so it is free to tilt. Frame: slot centred on the origin
+    (x along the auger, y across), bottom at z = 0. It sits beside the actuator's swing plane."""
     h = FORK_H
-    body = cq.Workplane("XY").box(20.0, 50.0, h, centered=False).translate((-10.0, -25.0, 0))
-    slot = cq.Workplane("XY").box(6.6, 31.0, h + 2, centered=False).translate((-3.3, -15.5, -1))
-    lead = (cq.Workplane("YZ").polyline([(-15.5, h - 6), (-19.0, h + 0.1), (19.0, h + 0.1), (15.5, h - 6)]).close()
-            .extrude(6.6).translate((-3.3, 0, 0)))
+    body = cq.Workplane("XY").box(50.0, 19.0, h, centered=False).translate((-25.0, -4.5, 0))
+    slot = cq.Workplane("XY").box(31.0, 6.6, h + 2, centered=False).translate((-15.5, -3.3, -1))
+    lead = (cq.Workplane("XZ").polyline([(-15.5, h - 6), (-19.0, h + 0.1), (19.0, h + 0.1), (15.5, h - 6)]).close()
+            .extrude(3.3, both=True))
     return body.cut(slot).cut(lead)
 
 
+def vial_funnel() -> cq.Workplane:
+    """Printed catch funnel on the vial: 36 mm mouth, 18 mm spout into the vial, mouth cut flat
+    at x = FUNNEL x_max (world) so it stays ahead of the docked electronics carriage. Frame:
+    vial axis, spout bottom at z = 0."""
+    f = FUNNEL
+    outer = cq.Solid.makeCone(f["spout_d"] / 2 + 1.6, f["top_d"] / 2 + 1.6, f["h"])
+    inner = cq.Solid.makeCone(f["spout_d"] / 2, f["top_d"] / 2, f["h"])
+    cone = cq.Workplane("XY").add(outer).cut(cq.Workplane("XY").add(inner))
+    clip = cq.Workplane("XY").box(200, 200, 100, centered=(True, True, False)).translate((f["x_max"] - VIAL_X - 100, 0, -1))
+    return cone.intersect(clip)
+
+
 def actuator_p16() -> tuple[cq.Workplane, cq.Workplane]:
-    """Actuonix P16-P envelope, in its own frame: rear clevis hole on the z axis at z = 0,
-    rod along +z. Returns (body, rod at full retraction; the rod is translated by the extension)."""
-    bw, bd = ACT_BODY
-    body = (cq.Workplane("XY").box(bd, bw, ACT_BODY_L, centered=(True, True, False)).translate((0, 0, ACT_REAR))
-            .edges("|Z").fillet(3.0))
-    lug = (cq.Workplane("XZ").circle(5.5).extrude(4.0, both=True)
-           .union(cq.Workplane("XY").box(11.0, 8.0, ACT_REAR + 1.0, centered=(True, True, False))))
-    body = body.union(lug).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2).extrude(20, both=True))
-    rod = cq.Workplane("XY").circle(ACT_ROD_D / 2).extrude(ACT_RETRACTED - ACT_REAR - ACT_BODY_L + 8.0).translate((0, 0, ACT_REAR + ACT_BODY_L - 8.0))
-    eye = (cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(4.5).extrude(2.5, both=True)
-           .cut(cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(ACT_CLEVIS_D / 2).extrude(5, both=True)))
-    return body, rod.union(eye)
+    """Actuonix P16-150-22-12-P, modelled from Actuonix's STEP: rear clevis hole on the
+    y axis at the origin, rod along +z. Motor/gear block 36 x 20 x 79 (rod axis 10.5 mm
+    from one end of the 36), 12 x 12 tube, 9 mm rod, 9 x 9 rod-end plug.
+    Returns (body, rod at full retraction; the layout slides the rod by the extension)."""
+    block = cq.Workplane("XY").box(36.0, 20.0, 79.0, centered=False).translate((-25.5, -10.0, -4.5))
+    tube = cq.Workplane("XY").box(12.0, 12.0, 167.0, centered=False).translate((-6.0, -6.0, 23.4))
+    body = block.union(tube).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2).extrude(20, both=True))
+    rod = cq.Workplane("XY").circle(4.5).extrude(43.4).translate((0, 0, 150.0))
+    plug = cq.Workplane("XY").box(9.0, 9.0, 14.0, centered=False).translate((-4.5, -4.5, ACT_RETRACTED - 10.0))
+    rod = rod.union(plug).cut(cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(ACT_CLEVIS_D / 2).extrude(10, both=True))
+    return body, rod
 
 
 def clevis_bracket() -> cq.Workplane:
-    """Printed (or 6061) base clevis for the actuator's rear lug: two cheeks on a foot,
-    pin along y at z = 0 (frame origin on the pin axis)."""
-    foot = cq.Workplane("XY").box(40.0, 40.0, 6.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
+    """Base clevis for the actuator's 20 mm block (printed PETG or the Actuonix bracket):
+    two 5 mm cheeks 21 mm apart on a foot, pin along y at the frame origin."""
+    foot = cq.Workplane("XY").box(44.0, 40.0, 6.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
     cheeks = None
-    for y0 in (-9.5, 4.5):
+    for y0 in (-15.5, 10.5):
         c = (cq.Workplane("XZ").circle(7.0).extrude(-5.0)
              .union(cq.Workplane("XY").box(14.0, 5.0, CLEVIS_H, centered=(True, False, False)).translate((0, 0, -CLEVIS_H))))
         c = c.translate((0, y0, 0))
         cheeks = c if cheeks is None else cheeks.union(c)
     b = foot.union(cheeks).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 + 0.1).extrude(30, both=True))
-    return b.cut(cq.Workplane("XY").pushPoints([(-14, 0), (14, 0)]).circle(2.75).extrude(10).translate((0, 0, -CLEVIS_H - 1)))
+    return b.cut(cq.Workplane("XY").pushPoints([(-16, 0), (16, 0)]).circle(2.75).extrude(10).translate((0, 0, -CLEVIS_H - 1)))
 
 
 def vial() -> cq.Workplane:
@@ -439,3 +451,20 @@ def motor_plate() -> cq.Workplane:
 def standoff(length: float) -> cq.Workplane:
     """Round aluminium standoff, 10 mm OD, M6 both ends, along +z."""
     return cq.Workplane("XY").circle(5.0).extrude(length).cut(cq.Workplane("XY").circle(2.5).extrude(length))
+
+
+def hold_down_strip() -> cq.Workplane:
+    """UHMW-PE bar 10 x 12 x 120 mm over the chain's bottom run (centred on the chain plane,
+    underside at z = 0, along y), two M4 holes for the brackets."""
+    sx, sy, sz = HOLD_STRIP
+    b = cq.Workplane("XY").box(sx, sy, sz, centered=(True, True, False))
+    return b.cut(cq.Workplane("XZ").pushPoints([(0, sz / 2)]).circle(2.1).extrude(sy, both=True).translate((0, 0, 0))
+                 .intersect(cq.Workplane("XY").box(sx + 2, 2 * HOLD_BRACKET_Y + 8, sz, centered=(True, True, False))
+                            .cut(cq.Workplane("XY").box(sx + 4, 2 * HOLD_BRACKET_Y - 8, sz + 2, centered=(True, True, False)))))
+
+
+def hold_down_bracket() -> cq.Workplane:
+    """Printed PETG block from the side plate's inner face (x = 0) to the strip (along +x),
+    12 wide (y), 9 tall (z, bottom at 0)."""
+    L = -SIDE_IN - HOLD_STRIP[0] / 2
+    return cq.Workplane("XY").box(L, 12.0, 9.0, centered=(False, True, False))

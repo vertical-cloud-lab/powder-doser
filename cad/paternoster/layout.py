@@ -313,7 +313,8 @@ def placements(state: State | None = None) -> list[Placement]:
             def at(x):
                 return np.array([x if not back else CHAIN_L - x, p0[1], p0[2]])
             add("thrust_washer", f"PTFE washer {k + 1}{'b' if back else 'f'}", T(Rp, at(TAB_X1)), 8, WHITE, "gondolas", (0, 0, 60), k)
-            add("sleeve_bearing", f"Sleeve bearing {k + 1}{'b' if back else 'f'}", T(Rp, at(END_X1)), 8, BRONZE, "gondolas", (0, 0, 60), k)
+            add("sleeve_bearing", f"Flanged bronze bushing {k + 1}{'b' if back else 'f'}", T(Rp, at(END_X1)), 8, BRONZE, "gondolas", (0, 0, 60), k)
+            add("thrust_washer", f"PTFE washer (head) {k + 1}{'b' if back else 'f'}", T(Rp, at(END_X1 + 1.5)), 8, WHITE, "gondolas", (0, 0, 60), k)
             add("shoulder_screw", f"Shoulder screw M3x4x8 {k + 1}{'b' if back else 'f'}", T(Rp, at(TAB_X1 + SHOULDER_L)), 8, STEEL, "gondolas", (0, 0, 60), k)
             add("nut_m3", f"M3 nylon-insert locknut {k + 1}{'b' if back else 'f'}", T(Rn, at(TAB_X0)), 8, STEEL, "gondolas", (0, 0, 60), k)
 
@@ -359,13 +360,25 @@ def placements(state: State | None = None) -> list[Placement]:
     add("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 10, DARK, "station", (0, 0, -60))
     add("pinion", "20T pinion", C @ T(Ry(math.pi / 2), (NEMA11_X + 5.0, 0, NEMA11_Z)), 10, ORANGE, "station", (0, 0, -60))
     add("solenoid", "Solenoid (Adafruit 412)", C @ T(None, (SOL_X, 0, SOL_Z)), 10, DARK, "station", (0, 0, -60))
-    add("fork", "Approach fork (printed)", T(None, (HINGE_X + TONGUE_X, 0.0, FORK_Z)), 10, PETG, "station", (0, 0, -40))
+    add("fork", "Approach fork (printed)", T(None, (HINGE_X + TONGUE_X, TONGUE_Y, FORK_Z)), 10, PETG, "station", (0, 0, -40))
     add("ext_station_post", "Station post (fork)", T(None, (STATION_RAIL_X[1], FORK_POST_Y, BASE_Z + EXT)), 10, ALU, "station", (0, 0, -40))
-    add("fork_arm", "Fork arm (printed)", T(None, (HINGE_X + TONGUE_X, 0.0, FORK_Z)), 10, PETG, "station", (0, 0, -40))
+    add("fork_arm", "Fork arm (printed)", T(None, (HINGE_X + TONGUE_X, TONGUE_Y, FORK_Z)), 10, PETG, "station", (0, 0, -40))
+
+    # station chain hold-down strips (front and back chain), from the side plates
+    for back in (False, True):
+        xc = 0.0 if not back else CHAIN_L
+        add("hold_strip", f"Chain hold-down strip {'back' if back else 'front'} (UHMW)", T(None, (xc, 0.0, HOLD_Z0)), 10, WHITE, "station", ((30 if back else -30), 0, 0))
+        for sy in (-1, 1):
+            if not back:
+                M = T(None, (SIDE_IN, sy * HOLD_BRACKET_Y, HOLD_Z0 + HOLD_STRIP[2] - 9.0))
+            else:
+                M = T(Rz(math.pi), (CHAIN_L - SIDE_IN, sy * HOLD_BRACKET_Y, HOLD_Z0 + HOLD_STRIP[2] - 9.0))
+            add("hold_bracket", f"Hold-down bracket {'back' if back else 'front'} {sy:+d}", M, 10, PETG, "station", ((30 if back else -30), 0, 0))
 
     # 11. dispense + sensors ----------------------------------------------------
     zv = (pv[k_st][1] if k_st >= 0 else K.pivots(K.HOME_SHIFT)[0][1]) + GON_Z0 - VIAL_GAP - VIAL_H
     add("vial", "Vial, 20 mL", T(None, (VIAL_X, 0.0, zv)), 11, GLASS, "dispense", (0, 0, 60))
+    add("vial_funnel", "Catch funnel on the vial (printed)", T(None, (VIAL_X, 0.0, zv + VIAL_H - 4.0)), 11, PETG, "dispense", (0, 0, 60))
     add("vial_cup", "Vial cup on the load cell (printed)", T(Rz(math.pi / 2), (VIAL_X, 0.0, zv - 3.0)), 11, PETG, "dispense", (0, 0, 40))
     add("load_cell", "Load cell 100 g", T(Rz(math.pi / 2), (VIAL_X, -125.0, zv - 3.0 - 12.7)), 11, (0.7, 0.7, 0.75), "dispense", (0, -30, 0))
     add("ext_vial_post", "Station post (vial)", T(None, (VIAL_X, VIAL_POST_Y, BASE_Z + EXT)), 11, ALU, "dispense", (0, 0, -40))
@@ -385,9 +398,9 @@ def _px():
 
 
 def _fork_arm() -> cq.Workplane:
-    """Printed arm from the fork post (x = STATION_RAIL_X[1], y = FORK_POST_Y) to the fork (frame at the fork)."""
-    dx = STATION_RAIL_X[1] - (HINGE_X + TONGUE_X)
-    return cq.Workplane("XY").box(10.0 - (dx - 10.0), 10.0, 12.0, centered=False).translate((dx - 10.0, -35.0, 0.0))
+    """Printed arm from the fork post (x = STATION_RAIL_X[1], y = FORK_POST_Y) to the fork (frame at the fork's slot centre)."""
+    y0, y1 = 14.5, FORK_POST_Y - TONGUE_Y - 10.0
+    return cq.Workplane("XY").box(20.0, y1 - y0, 12.0, centered=False).translate((STATION_RAIL_X[1] - (HINGE_X + TONGUE_X) - 10.0, y0, 0.0))
 
 
 SHAPES = {
@@ -437,8 +450,11 @@ SHAPES = {
     "fork_arm": _fork_arm,
     "vial": PT.vial,
     "vial_cup": PT.vial_cup,
+    "vial_funnel": PT.vial_funnel,
     "load_cell": PT.load_cell,
     "hall": PT.hall_switch,
+    "hold_strip": PT.hold_down_strip,
+    "hold_bracket": PT.hold_down_bracket,
 }
 
 

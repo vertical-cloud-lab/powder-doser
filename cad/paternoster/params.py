@@ -32,22 +32,23 @@ PIN_D = 3.58         # 0.141 in
 W_IN = 4.78          # between inner plates, 0.188 in
 PLATE_T = 1.27       # 0.050 in
 PLATE_H = 9.0        # 0.354 in
-PIN_HEAD = 0.45
+PIN_HEAD = 0.95       # pin heads stand 0.95 mm proud of the tab plate (McMaster 7321K31 STEP)
 INNER_W = W_IN + 2 * PLATE_T                 # 7.32
 OUTER_GAP = INNER_W + 0.05                   # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T            # 9.91
 PIN_LEN = OUTER_W + 2 * PIN_HEAD
 
 # SA-1 attachment connecting link (straight tab in the plane of one outer
-# plate, one hole). Tsubaki RS35 SA-1: C1 = 0.375 in (pitch line -> hole),
-# N = 0.311 in (tab width), O = 0.102 in (hole), Xs = 0.573 in (pitch line ->
-# tab end). The tab points out of the loop and sits on the outer plate on the
+# plate, one hole): McMaster 7321K31, measured from McMaster's STEP and drawing:
+# C1 = 0.375 in (pitch line -> hole), tab 0.312 in wide, hole 0.134 in, tab end
+# 0.578 in from the pitch line. The tab is on the pressed plate; the clip goes on
+# the other side, away from the gondola. The tab points out of the loop and sits on the outer plate on the
 # gondola's side, so the hole's axis runs along x, parallel to the chain pins.
 SA1_C = 9.525
 SA1_N = 7.9
-SA1_HOLE = 2.6       # opened to 3.4 mm (No. 29 drill) for an M3 shoulder screw thread
+SA1_HOLE = 3.4       # McMaster 7321K31 / Nitro CL35-SA1: 0.134 in, M3 passes (Tsubaki's 0.102 in would need a No. 29 drill)
 SA1_HOLE_DRILLED = 3.4
-SA1_XS = 14.55
+SA1_XS = 14.68
 TAB_X0 = OUTER_GAP / 2                       # tab's inner face (toward the chain)
 TAB_X1 = OUTER_GAP / 2 + PLATE_T             # tab's outer face (toward the gondola)
 
@@ -84,11 +85,11 @@ LOAD_U = STATION_U + 3 * MODULE_LINKS        # loading position: right side, mid
 # --- pivot: M3 shoulder screw (4 mm shoulder) through the SA-1 tab ---
 PIV_R = R * math.cos(math.pi / N_TEETH) + SA1_C    # pivot radius round a corner (link midpoint + C1)
 SHOULDER_D = 4.0
-SHOULDER_L = 8.0
-SHOULDER_HEAD_D, SHOULDER_HEAD_H = 7.0, 3.0
-WASHER_T = 0.8       # PTFE thrust washer between the tab and the gondola
-BUSHING_FLANGE = (6.0, 0.8)   # flanged sleeve bearing in the gondola: (flange OD rim, flange thickness) -- see BOM
-END_X0 = TAB_X1 + WASHER_T + 0.1             # gondola end plate's outer face
+SHOULDER_L = 10.0    # McMaster 90265A121: 18-8, 4 x 10 mm shoulder, M3 x 5 thread (reaches the nylock's ring)
+SHOULDER_HEAD_D, SHOULDER_HEAD_H = 6.0, 3.0
+WASHER_T = 0.8       # PTFE thrust washers (95630A630, 4.3 x 9 x 0.8): one on the tab, one under the head
+BUSHING_FLANGE = (10.0, 1.5)  # McMaster 6659K65 bronze: 4 ID x 7.02 OD x 6, flange 10 x 1.5
+END_X0 = TAB_X1 + WASHER_T + 0.6             # gondola end plate's outer face: 0.75 mm clear of the pin heads
 END_T = 6.0
 END_X1 = END_X0 + END_T
 
@@ -116,7 +117,7 @@ LUG_T = 5.5          # |y| 25.5-31: holds a short M5 heat-set insert
 HINGE_PIN_D = 5.0    # M5 thumb screw tips are the hinge pins (Sam's knuckle holes are 5.3, at |y| 15-25)
 KNUCKLE_IN = 15.0    # Sam's knuckles' inner faces
 THUMB_L = 16.0       # M5 x 16 knurled thumb screw: from the lug's outer face (|y| = 31) to the knuckle's inner face
-THUMB_HEAD = (11.0, 4.5)   # knurled head dia, height
+THUMB_HEAD = (11.0, 5.0)   # McMaster 92545A179 low-profile knurled head
 INSERT_D = 6.4       # M5 heat-set insert hole in the lug
 
 # Station reach-through for Sam's electronics carriage (his x 2.3-73.3, y +-18).
@@ -149,9 +150,9 @@ STEPS_PER_MODULE = STEPS_PER_REV * MODULE_LINKS // N_TEETH   # 1250: direct driv
 
 # --- station: Actuonix P16-P feedback actuator tilts the module ---
 ACT_STROKE = 150.0
-ACT_RETRACTED = 197.0        # hole to hole, retracted (P16-P, 150 mm stroke)
-ACT_BODY = (37.0, 26.0)      # body cross-section (envelope)
-ACT_CLEVIS_D = 4.1
+ACT_RETRACTED = 197.4        # hole to hole, retracted: P16-150-22-12-P (Actuonix STEP), stroke + 47
+ACT_BODY = (36.0, 20.0)      # motor/gear block, 79 long; rod axis 10.5 mm from one 20 mm face
+ACT_CLEVIS_D = 4.25          # both clevis holes, for M4 or #8-32 pins
 TILT_MAX = 90.0
 
 MAGNET_D, MAGNET_H = 6.35, 3.18
@@ -162,10 +163,10 @@ IDLER_AXLE_L = 31.0          # bearing seat from the shoulder (on the plate's in
 SPROCKET_FACE = TOOTH_W / 2  # tooth ring's inner face, x = +2.13 at the front chain: nothing on the axis goes further in
 
 # --- jaw coupling, NEMA 34 (14 mm) to the 5/8 in drive shaft: Lovejoy L-075 class ---
-CPL_OD, CPL_L = 44.5, 52.3
+CPL_OD, CPL_L = 53.6, 54.8   # L090 (two 6408K14 hubs + 6408K75 spider): the L075's spider is rated 10.2 N*m, under the motor's 12
 
 # --- gondola details ---
-BUSHING_OD = 6.0             # flanged sleeve bearing 4 x 6 x 6 pressed into the end plates
+BUSHING_OD = 7.0             # 6659K65 pressed into a 7.0 mm printed bore
 HINGE_HOLE = 5.3
 HINGE_PIN_GRIP = 62.0
 SADDLE_XS = 190.0            # saddle under the auger tube, in Sam's x from the hinge
@@ -173,16 +174,16 @@ AUGER_R_TUBE = 12.5          # the auger's tube is 25 mm across (44T gear 46 mm)
 
 # --- station geometry (Sam's studio frame at the station; actuator rod end pinned under his carriage) ---
 YOKE_X, YOKE_Z = 40.0, -72.0 # clevis pin under the electronics carriage, Sam's x, z
-TONGUE_X = YOKE_X + 25.0     # guide tongue (rides the approach fork), Sam's x
-DOCK_EXT = 30.0              # actuator extension when the carriage meets the plate (approach = DOCK_EXT)
+TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue (rides the approach fork): beside the actuator's swing plane, inside the floor window
+DOCK_EXT = 20.0              # actuator extension when the carriage meets the plate (approach = DOCK_EXT)
 ACT_REAR = 8.0               # rear clevis hole -> body start
 ACT_BODY_L = 175.0
 ACT_ROD_D = 10.0
-CLEVIS_H = 12.0
+CLEVIS_H = 21.7              # pin above the bracket's foot (foot on the station rail)
 FORK_H = 36.0
 VIAL_H = 61.0
 LC_L = 80.0
-VIAL_X = HINGE_X - 3.0       # vial under the outlet
+VIAL_X = 30.0                # vial ahead of the docked carriage's front face (x 47.3); a D-funnel catches the stream
 
 # --- frame layout ---
 SIDE_HALF_W = 160.0
@@ -212,7 +213,7 @@ MODULE_SLIDE = 70.0          # ...then slide it out sideways (+y) from the loadi
 NEMA11_X, NEMA11_Z = 73.3, -32.0   # NEMA 11 face on the carriage's back face, 32 mm under the auger axis (20T:44T, m1)
 SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up
 STATION_RAIL_X = (VIAL_X, HINGE_X + YOKE_X)   # base cross rails under the vial post and the actuator
-FORK_POST_Y = -45.0
+FORK_POST_Y = 45.0
 VIAL_POST_Y = -120.0
 VIAL_GAP = 32.0              # vial mouth below the gondolas' lowest point: clear of the docked electronics carriage
 HALL_X = (130.0, 160.0)      # INDEX magnet (every gondola) and HOME magnet (gondola 1), under the -y rail
@@ -223,3 +224,12 @@ FORK_Z = _HINGE_W - 60.75 - 25.0 - 1.0 - FORK_H                     # fork botto
 STATION_POST_H = FORK_Z + 12.0 - (BASE_Z + EXT)
 VIAL_Z = _PIV0 + GON_Z0 - VIAL_GAP - VIAL_H                         # vial base
 VIAL_POST_H = VIAL_Z - 3.0 - 12.7 - (BASE_Z + EXT)
+
+# --- station chain hold-down strips (added after the MuJoCo station run: tilting lifts the chain) ---
+# UHMW-PE bar over each chain's bottom run at the station, 0.5 mm above the link plates' top edge;
+# the chain only touches it if the module's tilt tries to lift the pivot.
+HOLD_STRIP = (10.0, 100.0, 12.0)    # x (across the chain), y (along the run), z: ends clear the 32T tooth tips by 2 mm
+HOLD_GAP = 0.5
+HOLD_Z0 = Z_BOT - R * math.cos(math.pi / N_TEETH) + PLATE_H / 2 + HOLD_GAP   # underside (span at its highest)
+HOLD_BRACKET_Y = 38.0
+FUNNEL = dict(top_d=36.0, spout_d=18.0, x_max=46.0, h=22.0)   # printed D-funnel on the vial: mouth cut flat at x = 46
