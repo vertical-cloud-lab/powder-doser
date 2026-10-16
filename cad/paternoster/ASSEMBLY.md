@@ -160,7 +160,7 @@ hanging straight down: if it sticks off-vertical by more than about half a degre
 
 Modules: slide an auger (lab design, PR #170) into Sam's mounting plate and screw on the cap. Index the
 carousel until an empty gondola is at the loading position (right side, mid-height; module k+3 is there when
-module k is at the station). Hold the module with the auger's outlet toward the front, lower it 16 mm
+module k is at the station). Hold the module with the auger's outlet toward the front, lower it 22 mm
 above the floor and slide it in from the right (70 mm), lower it onto the floor between the lugs, and
 turn the two M5 x 16 thumb screws in from outside: their tips are the hinge pins in Sam's 5.3 mm knuckle holes.
 Index one module (1250 steps) and load the next. To swap a module, reverse it: two thumb screws out, lift, slide out.
@@ -190,12 +190,12 @@ carriage clears the passing gondolas.
 | 24 | 70 | M5 drop-in T-nut for 2020 (brackets, side plates, station) |
 | 25 | 70 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock) |
 | 39 | 1 | Actuonix P16-150-22-12-P linear actuator, 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, includes #8-32 pins and brackets |
-| 55 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock |
-| 56 | 1 | Shoulder screw 4 x 20 mm, M3 (rod end in the yoke; cheeks 19.8 mm over) + M3 nylock |
 | 40 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB/RC/PWM/0-3.3 V in) |
 | 41 | 1 | 12 V supply for the LAC and actuator (Actuonix) |
 | 42 | 5 | Station printed parts, PETG: yoke under the electronics carriage, approach fork + arm, base clevis, vial cup |
 | 43 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11, 20T pinion and 12 V solenoid |
+| 55 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock |
+| 56 | 1 | Shoulder screw 4 x 20 mm, M3 (rod end in the yoke; cheeks 19.8 mm over) + M3 nylock |
 
 ## Step 11: Dispense
 

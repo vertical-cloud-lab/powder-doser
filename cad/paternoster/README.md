@@ -2,7 +2,7 @@
 
 A second, independent multi-doser design next to the [chain carousel v2](../chain-carousel-v2/README.md). Two #35 chains run in vertical planes at the front and back of the modules, each round four 32T corner sprockets. Every 10th pitch an **SA-1 attachment link carries a shoulder-screw pivot, and a printed gondola hangs between the front and back pivots**. Gravity keeps each gondola, and the doser module in it, upright all the way round: on the straights, over the top and round the corners. **No hinge, flap or outlet is ever sideways or upside down**, so nothing on a module needs latching against gravity. v2's modules roll a full turn per lap and need snap hooks to stay shut upside down.
 
-The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (potentiometer feedback, on an Actuonix LAC board) lifts Sam's electronics carriage through the gondola's floor, docks it under Sam's mounting plate and tilts plate and carriage together about the hinge, cap end up into the empty middle of the loop. Modules come out sideways at a loading position on the right side, held only by two thumb screws.
+The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (potentiometer feedback, on an Actuonix LAC board) lifts Sam's electronics carriage through the gondola's floor, docks it under Sam's mounting plate and tilts plate and carriage together about the hinge, cap end up into the empty middle of the loop. Modules come out sideways at a loading position on the right side: undo two thumb screws, lift 22 mm, slide out.
 
 | Home: 12 gondolas, module 1 at the station | Station: module 1 tilted 30° (cutaway) |
 |---|---|
@@ -50,12 +50,24 @@ Two MuJoCo models ([sim/README.md](sim/README.md), [sim/AUGER-SIM.md](sim/AUGER-
 
 ## Checks
 
-[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks).
+[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks). **All four come out at 0 clashes:**
 
-- **Home** (all instances).
-- **`--sweep`**: the chain indexed one full module in half-link steps, so all 12 gondolas together pass every point of the loop, including all four corners.
-- **`--tilt`**: the station's approach (actuator 0-19.5 mm) and tilt 5-90°.
-- **`--swap`**: a module lifted and slid out at the loading position.
+| Check | What moves | Result |
+|---|---|---|
+| Home | Nothing: every pair of the 545 instances | **0** |
+| `--sweep` | The chain indexed one full module in half-link steps (21 poses). The 12 gondolas together pass every point of the loop, including all four corners, against the frame, shafts, sprockets, idlers, station and each other | **0** |
+| `--tilt` | The electronics carriage rising 0-19.5 mm in the fork, then module + carriage + actuator tilting 5-90°, against everything | **0** |
+| `--swap` | A module lifted 22 mm and slid 70 mm out at the loading position | **0** |
+
+On the way they caught, and the design now fixes:
+- the hold-down strips' ends touching the 32T tooth tips (shortened to 100 mm);
+- the retracted carriage hitting the vial (vial moved, D-funnel);
+- the swinging actuator hitting the fork (fork moved off its plane);
+- the motor standoffs hitting a post, and the posts hitting the bottom bearings (moved);
+- the 44T gear hitting the gondola floor (window lengthened);
+- a module lifted only 16 mm catching its auger on the hinge lug while sliding out (lift is now 22 mm, leaving 18 mm under the gondola above).
+
+The MuJoCo model covers clearance with swing: the 12-index lap's tightest gap is 11.0 mm.
 
 ## Parts, OEM data and cost
 

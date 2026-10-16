@@ -166,7 +166,7 @@ def rows() -> list[dict]:
             q += 2                     # spares
         out.append(dict(item=item, qty=q, desc=desc, vendor=vendor, pn=pn, url=url, unit=price, ext=round(q * price, 2),
                         note=note, steps=steps, cat=cat))
-    return out
+    return sorted(out, key=lambda r: r["item"])
 
 
 def totals(rs: list[dict]) -> dict:

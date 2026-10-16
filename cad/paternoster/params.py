@@ -208,7 +208,7 @@ if __name__ == "__main__":
 
 # --- placement details (layout.py) ---
 DRIVE_EXT = 28.0             # drive shaft runs on past the back bearing into the coupling
-MODULE_LIFT = 16.0           # swap: lift the module clear of the lugs and rails...
+MODULE_LIFT = 22.0           # swap: lift the module so the auger clears the +y lug and the gear the rail...
 MODULE_SLIDE = 70.0          # ...then slide it out sideways (+y) from the loading position
 NEMA11_X, NEMA11_Z = 73.3, -32.0   # NEMA 11 face on the carriage's back face, 32 mm under the auger axis (20T:44T, m1)
 SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up

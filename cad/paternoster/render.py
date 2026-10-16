@@ -392,7 +392,7 @@ def movie(fast: bool = False) -> None:
                  cam=load_cam)
     for i in range(sec(1.6)):
         f = ease(i / (sec(1.6) - 1))
-        mv.frame(L.placements(L.State(shift=s_to, loaded=allm, ext=0.0, out_module=k_sw, out_frac=f)), "Swap: lift 16 mm, slide out sideways",
+        mv.frame(L.placements(L.State(shift=s_to, loaded=allm, ext=0.0, out_module=k_sw, out_frac=f)), "Swap: lift 22 mm, slide out sideways",
                  "the gondola stays on the chain", cam=load_cam)
     new_col = {}
     for i in range(sec(1.6)):

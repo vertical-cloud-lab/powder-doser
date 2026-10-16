@@ -333,7 +333,9 @@ def placements(state: State | None = None) -> list[Placement]:
         add("auger_cap", f"Auger cap {k + 1}", A @ T(None, (0, 0, AUGER_LEN)), 9, WHITE, "modules", (0, 0, 80), k)
         for sy in (-1, 1):
             add("insert_m5", f"M5 heat-set insert {k + 1}{'+' if sy > 0 else '-'}", G @ T(rot((1, 0, 0), (0, sy, 0)), (HINGE_X, sy * GON_W / 2, HINGE_Z)), 8, BRONZE, "gondolas", (0, 0, 60), k)
-            back_out = THUMB_L + 4.0 if (k == st.out_module and st.out_frac > 0) else st.thumb_out.get(k, 0.0)
+            if k == st.out_module and st.out_frac > 0:
+                continue                 # thumb screws are out (in the operator's hand) while the module moves
+            back_out = st.thumb_out.get(k, 0.0)
             add("thumb_screw", f"M5 x 16 thumb screw (hinge pin) {k + 1}{'+' if sy > 0 else '-'}",
                 G @ T(rot((1, 0, 0), (0, sy, 0)), (HINGE_X, sy * (GON_W / 2 + back_out), HINGE_Z)), 9, STEEL, "modules", (0, sy * 40, 0), k)
 
