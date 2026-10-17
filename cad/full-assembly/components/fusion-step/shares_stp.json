@@ -1,0 +1,90 @@
+[
+  {
+    "name": "baseplate",
+    "url": "https://a360.co/4AOA7sI",
+    "shareId": "SH90d2dQT28d5b602811c4719e5ee360928c",
+    "title": "Baseplate",
+    "version": "2",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.6BwtF_YuQE2c2SxfvRf4TA?version=2",
+    "downloadEnabled": "true",
+    "bytes": 97912,
+    "file": "baseplate.step"
+  },
+  {
+    "name": "brackets",
+    "url": "https://a360.co/46XtYN1",
+    "shareId": "SH90d2dQT28d5b60281104224ba193b089bb",
+    "title": "Auger Bracket Recorded",
+    "version": "1",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.AQX2hG9qQAS-eaiTLerbfA?version=1",
+    "downloadEnabled": "true",
+    "bytes": 45913,
+    "file": "brackets.step"
+  },
+  {
+    "name": "mounting-plate",
+    "url": "https://a360.co/4xXUj8L",
+    "shareId": "SH90d2dQT28d5b602811ba1a5561983c7746",
+    "title": "mountingplate",
+    "version": "2",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.2Cxe5k03TgSFqddNM6MJIg?version=2",
+    "downloadEnabled": "true",
+    "bytes": 2901192,
+    "file": "mounting-plate.step"
+  },
+  {
+    "name": "servo-pinion",
+    "url": "https://a360.co/4dcGSdF",
+    "shareId": "SH90d2dQT28d5b602811f2e10c315821d093",
+    "title": "Servo_pinion",
+    "version": "1",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.jeltv_izSWObRNObzwZTYQ?version=1",
+    "downloadEnabled": "true",
+    "bytes": 1041520,
+    "file": "servo-pinion.step"
+  },
+  {
+    "name": "stepper-pinion",
+    "url": "https://a360.co/4yqSHFz",
+    "shareId": "SH90d2dQT28d5b602811472d9bc1272863c1",
+    "title": "stepper_pinion",
+    "version": "1",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.2blr1Bj-QbSM7hiz27NUaw?version=1",
+    "downloadEnabled": "true",
+    "bytes": 1488831,
+    "file": "stepper-pinion.step"
+  },
+  {
+    "name": "tap-collar",
+    "url": "https://a360.co/4AIIgyz",
+    "shareId": "SH90d2dQT28d5b602811c2c7ad0119f2e2d0",
+    "title": "tapcollar",
+    "version": "1",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.iV25YIFQSneB68V_h7u-HQ?version=1",
+    "downloadEnabled": "true",
+    "bytes": 50250,
+    "file": "tap-collar.step"
+  },
+  {
+    "name": "auger",
+    "url": "https://a360.co/4y1oz2H",
+    "shareId": "SH90d2dQT28d5b602811ebae801ace0f14f4",
+    "title": "Auger Threaded Storage",
+    "version": "1",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.g62pT_q9So2a2DxQ5xF8tg?version=1",
+    "downloadEnabled": "true",
+    "bytes": 5429313,
+    "file": "auger.step"
+  },
+  {
+    "name": "auger-cap",
+    "url": "https://a360.co/4w9kRE5",
+    "shareId": "SH90d2dQT28d5b602811a77aa2de92a68fb6",
+    "title": "Cap Threaded",
+    "version": "2",
+    "versionUrn": "urn:adsk.wipprod:fs.file:vf.rY53oDneQxGfgyFAnWEx5w?version=2",
+    "downloadEnabled": "true",
+    "bytes": 1164743,
+    "file": "auger-cap.step"
+  }
+]
