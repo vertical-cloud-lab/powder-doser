@@ -177,6 +177,23 @@ the tap-collar clamp follow as steps 16 and 17.
 | Screws and nuts | 52 | McMaster-Carr, see [Fasteners](#fasteners) |
 | Mounting board, 38 mm (1.5 in) thick | 1 | any flat board or bench top (yours); drawn 250 x 220 mm by `onshape/purchased_parts.py` |
 
+**The brackets are the old style.** The bracket share above is Fusion's
+*Auger Bracket Recorded*, which has only ever had version 1: the bolted
+split clamp from the #120 recreation video. Ethan pointed out on PR #170
+(Oct 17) that this isn't the current bracket. Since at least Aug 4 the
+rig's bracket behind the 44T gear has been a white open C-clip, Sam's
+"flexible bracket" (#117; item 5 in PR #176's rig comparison). Its file
+isn't in this repo, in any of the 12 Fusion share links posted in it, or
+in the lab's Onshape documents, as of Oct 17. The closest CAD is the
+three C-clips built into Sam's Oct 13 multi-doser mounting plate
+(Onshape *Multi-Doser*, exported on the #128 branch as
+`cad/paternoster/reference/sam-oct13-mounting-plate-and-carriage.step`):
+a Ø25.1 mm bore, a 17.0 mm opening with flared lips, 2 mm wall, 10 mm
+wide. A Fusion share of the C-clip with *Allow download* on would let
+`onshape/fetch_fusion_shares.py` export it like the others.
+
+![Old bracket vs the rig's C-clip](reference/bracket_old_vs_current.png)
+
 **The board underneath.** The baseplate is drawn to be screwed down to a
 flat board. Its rear 60 mm (y = 55.4 to 115 mm) sits flat on top. Two legs
 hang over the board's front edge, with their back faces against it. The

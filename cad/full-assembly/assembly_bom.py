@@ -293,7 +293,9 @@ def write_bom(rows, order) -> None:
              "`assembly/bom.csv`.  Electronics, wiring and the balance are not in the CAD;",
              "see the SI bill of materials in PR #97.  Item 1 is whatever the doser is",
              "screwed down to: any flat board or bench top 38 mm (1.5 in) thick, which is",
-             "the depth the baseplate's legs are made for.", "",
+             "the depth the baseplate's legs are made for.  Item 20 is the old-style",
+             "split clamp: the rig's bracket is now an open C-clip whose file hasn't been",
+             "shared yet (see the README's *What is in the assembly*).", "",
              "| No. | Part | Qty | Type | Source | Step |", "|---:|---|---:|---|---|---:|"]
     for r in rows:
         src = f"[{r['source']}]({r['link']})" if r["link"].startswith("http") else (
