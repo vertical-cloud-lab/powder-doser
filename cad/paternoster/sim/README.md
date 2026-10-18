@@ -36,7 +36,7 @@ The first run builds `out/pivot_table.npz` from `kinematics.pivots` (about 3 s).
 | drive torque | tau = sum_k F_k . dP_k/ds / (2 pi/32) + J_drive * alpha (virtual work of the pivot forces). J_drive = 5.2e-3 kg*m^2: two chains (0.75 kg) at R, eight 32T sprockets, and the NEMA 34 rotor. Chain and bearing friction are not included. The rigid chain turns every chordal kink into a short force spike, so the peak is reported raw and as a 25 ms moving average (closer to what a real, slightly elastic chain passes to the motor). |
 | chain tension | Tension step across the drive sprocket per chain = tau / (2R). The rise along a strand is the sum of the tangential pivot forces (front-chain share). |
 | integrator | MuJoCo 3.16, `implicitfast`, dt = 0.5 ms, elliptic cones |
-| station rig | Current CAD: rod-end pin at Sam's (YOKE_X, YOKE_Z) = (40, -72) mm from the hinge; base clevis at hinge + (40, -289.4) mm. Actuonix P16-150-22-12-P: 197.4 mm retracted, 150 mm stroke, 50 N limit, run at 40 mm/s (46 mm/s no-load); DOCK_EXT = 20 mm. Modelled as clevis (hinge y, plus a 150 N*m/rad roll spring for clevis play/compliance) -> slide (position servo 3e4 N/m) -> rod-end pin (hinge y) -> carriage 0.25 kg. The carriage docks to the mounting plate with a weld (soft for 0.25 s while the cones seat, then rigid). The module hinges on the gondola about y at (HINGE_X, HINGE_Z) and rests on a stop at 0 deg. The auger turns on its own joint: velocity servo, 0.18 N*m limit (NEMA 11 x 44/20), 0.03 N*m powder drag. Taps are 3 N for 10 ms at the collar (20 mm from the outlet): four sideways (y), then four normal to the plate. |
+| station rig | Current CAD: carriage stub pins at Sam's (32, -33.1) mm from the hinge (docked); base clevis at hinge + (32, -310.5) mm. Actuonix P16-150-22-12-P + 60 mm U-yoke: 257.4 mm retracted, 150 mm stroke, 50 N limit, run at 40 mm/s (46 mm/s no-load); DOCK_EXT = 20 mm. Modelled as clevis (hinge y, plus a 150 N*m/rad roll spring for clevis play/compliance) -> slide (position servo 3e4 N/m) -> stub-pin axis (hinge y) -> carriage 0.285 kg (with the dock magnet). The carriage docks to the mounting plate with a weld (soft for 0.25 s while the cones seat, then rigid). The module hinges on the gondola about y at (HINGE_X, HINGE_Z) and rests on a stop at 0 deg. The auger turns on its own joint: velocity servo, 0.18 N*m limit (NEMA 11 x 44/20), 0.03 N*m powder drag. Taps are 3 N for 10 ms at the collar (20 mm from the outlet): four sideways (y), then four normal to the plate. |
 | chain at the station | Either rigid (the reference), or compliant: each pivot hangs from a tab spring (2 N/mm as specified, 50 N/mm as a stiffer check) in series with its chain's bottom-run span (4T/L = 840 N/m per chain at an assumed 40 N tension, massless). The UHMW-PE hold-down strip is a rigid one-sided stop on the chain, 0.5 mm above the link plates' top edge. The station gondola gets an extra pitch joint so that its front and back pivots rise separately. |
 
 ### `kinematics.py`: the bug and the fix
@@ -165,51 +165,55 @@ hits its neighbour and a shaft.
 
 ### Station: dock, tilt to 90 deg, taps and auger, with the CAD rig (`station.png`, `station.mp4`)
 
-The docked pin sits 217.4 mm above the base (197.4 retracted + DOCK_EXT 20 mm). Docking uses 20 mm of
-stroke and 90 deg needs 134 of 150 mm. The coordinator described the base as "289.4 mm below the
-docked pin"; I used B = hinge + (40, -289.4), the version that agrees with DOCK_EXT.
+Since the gear-mesh study (`../../gear-mesh/README.md`) the carriage pivots on stub pins at its
+centre-of-mass height, Sam's (32, -33.1) docked, carried by a U-yoke rigid on the P16's rod. The P16 + yoke is
+one two-force link, 257.4 mm retracted (197.4 + 60), with its base clevis 277.4 mm under the docked pins. Docking
+uses 20 mm of stroke; 90 deg needs 85 of 150 mm. The shorter lever about the hinge (32 mm at 0 deg, against
+40 mm before) raises the actuator force at low tilt, and with it the pull on the station gondola's front pivot.
+The dock is welded here, as before. `cad/gear-mesh/mesh_mujoco.py` models the dock itself: tooth contact, the
+magnet, the locating pins.
 
 <!-- T:station -->
 | station run | chain model | static pivot Fz front / back (N) | min pivot Fz front / back (N) | pivot rise max front / back (mm) | chain rise max front / back (mm) | strip force max front / back (N) | swing docked (deg) | actuator peak while tilting (N) | tilt reached (deg) |
 |---|---|---|---|---|---|---|---|---|---|
-| `station_cad_rigidchain` | rigid chain (reference) | 2.09 / 1.64 | -6.21 / -0.51 | 0.00 / 0.00 | 0.00 / 0.00 | 0.00 / 0.00 | 0.012 | 14.8 | 90.1 |
-| `station_cad_chain_nostrip` | 40 N chain span + 2 N/mm tab, no strip | 2.08 / 1.65 | -3.40 / -0.05 | 9.14 / 2.84 | 6.44 / 2.00 | 0.00 / 0.00 | 0.012 | 9.9 | 91.7 |
-| `station_cad_strip` | hold-down strip, gap 0.5 mm, tab 2 N/mm | 2.08 / 1.65 | -4.29 / -0.18 | 3.67 / 1.41 | 0.50 / 0.50 | 5.91 / 1.40 | 0.012 | 11.2 | 91.8 |
-| `station_cad_strip_tab50` | hold-down strip, gap 0.5 mm, tab 50 N/mm | 2.08 / 1.65 | -6.09 / -0.45 | 0.66 / 0.54 | 0.50 / 0.50 | 7.76 / 1.61 | 0.012 | 14.1 | 91.0 |
+| `station_cad_rigidchain` | rigid chain (reference) | 2.09 / 1.64 | -9.57 / -1.03 | 0.00 / 0.00 | 0.00 / 0.00 | 0.00 / 0.00 | 0.012 | 19.3 | 90.5 |
+| `station_cad_chain_nostrip` | 40 N chain span + 2 N/mm tab, no strip | 2.08 / 1.65 | -5.52 / -0.39 | 12.75 / 3.42 | 8.98 / 2.41 | 0.00 / 0.00 | 0.012 | 12.8 | 92.6 |
+| `station_cad_strip` | hold-down strip, gap 0.5 mm, tab 2 N/mm | 2.08 / 1.65 | -6.71 / -0.58 | 4.88 / 1.61 | 0.50 / 0.50 | 8.34 / 1.80 | 0.012 | 14.5 | 92.7 |
+| `station_cad_strip_tab50` | hold-down strip, gap 0.5 mm, tab 50 N/mm | 2.08 / 1.65 | -9.16 / -1.09 | 0.73 / 0.56 | 0.50 / 0.50 | 10.85 / 2.72 | 0.012 | 18.6 | 91.0 |
 
 Pivot loads during the tilt, `station_cad_rigidchain` (median over +-2.5 deg; N, mm):
 
 | tilt (deg) | 0 | 15 | 30 | 45 | 60 | 75 | 90 |
 |---|---|---|---|---|---|---|---|
-| front pivot Fz (N) | -4.02 | -0.04 | 1.06 | 1.71 | 2.23 | 2.78 | 3.40 |
-| back pivot Fz (N) | -0.15 | 0.46 | 0.63 | 0.73 | 0.82 | 0.92 | 1.02 |
+| front pivot Fz (N) | -7.45 | -2.84 | -1.83 | -1.07 | -0.34 | 0.47 | 1.38 |
+| back pivot Fz (N) | -0.70 | 0.02 | 0.18 | 0.30 | 0.42 | 0.55 | 0.70 |
 
 Pivot loads during the tilt, `station_cad_strip` (median over +-2.5 deg; N, mm):
 
 | tilt (deg) | 0 | 15 | 30 | 45 | 60 | 75 | 90 |
 |---|---|---|---|---|---|---|---|
-| front pivot Fz (N) | -2.53 | -0.10 | 1.06 | 1.69 | 2.23 | 2.79 | 3.44 |
-| back pivot Fz (N) | 0.07 | 0.45 | 0.63 | 0.73 | 0.82 | 0.92 | 1.03 |
-| front pivot rise (mm) | 2.56 | 1.61 | 1.02 | 0.68 | -0.22 | -1.15 | -2.23 |
-| front strip force (N) | 3.69 | 1.79 | 0.61 | 0.00 | 0.00 | 0.00 | 0.00 |
+| front pivot Fz (N) | -3.67 | -3.16 | -1.78 | -1.07 | -0.36 | 0.44 | 1.25 |
+| back pivot Fz (N) | -0.03 | -0.03 | 0.18 | 0.30 | 0.42 | 0.55 | 0.68 |
+| front pivot rise (mm) | 3.12 | 3.09 | 2.44 | 2.09 | 1.73 | 1.33 | 0.93 |
+| front strip force (N) | 4.83 | 4.75 | 3.47 | 2.75 | 2.03 | 1.25 | 0.44 |
 
 Pivot loads during the tilt, `station_cad_strip_tab50` (median over +-2.5 deg; N, mm):
 
 | tilt (deg) | 0 | 15 | 30 | 45 | 60 | 75 | 90 |
 |---|---|---|---|---|---|---|---|
-| front pivot Fz (N) | -3.42 | -0.03 | 1.06 | 1.70 | 2.23 | 2.78 | 3.43 |
-| back pivot Fz (N) | 0.10 | 0.46 | 0.63 | 0.73 | 0.82 | 0.92 | 1.03 |
-| front pivot rise (mm) | 0.59 | 0.54 | 0.52 | 0.50 | -0.09 | -0.75 | -1.48 |
-| front strip force (N) | 4.30 | 1.70 | 0.60 | 0.00 | 0.00 | 0.00 | 0.00 |
+| front pivot Fz (N) | -6.61 | -2.83 | -1.83 | -1.06 | -0.34 | 0.46 | 1.34 |
+| back pivot Fz (N) | -0.56 | 0.02 | 0.18 | 0.30 | 0.42 | 0.55 | 0.70 |
+| front pivot rise (mm) | 0.67 | 0.60 | 0.58 | 0.56 | 0.55 | 0.53 | 0.52 |
+| front strip force (N) | 8.13 | 4.50 | 3.50 | 2.73 | 2.01 | 1.21 | 0.33 |
 
 Actuator force against tilt (CAD rig, rigid chain):
 
 | tilt (deg) | 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| stroke used (mm) | 20 | 28 | 39 | 52 | 65 | 79 | 94 | 108 | 121 | 134 |
-| lever arm about hinge (mm) | 40 | 55 | 67 | 75 | 80 | 82 | 82 | 79 | 74 | 68 |
-| force, static estimate (N) | 8.04 | 6.05 | 5.02 | 4.36 | 3.87 | 3.44 | 3.03 | 2.59 | 2.08 | 1.48 |
-| force, simulation (N) | 11.26 | 6.64 | 5.44 | 4.72 | 4.20 | 3.76 | 3.36 | 2.93 | 2.45 | 1.95 |
+| stroke used (mm) | 20 | 26 | 33 | 41 | 49 | 57 | 64 | 72 | 79 | 85 |
+| lever arm about hinge (mm) | 32 | 38 | 42 | 45 | 46 | 46 | 44 | 42 | 38 | 33 |
+| force, static estimate (N) | 10.45 | 9.24 | 8.39 | 7.73 | 7.15 | 6.58 | 5.98 | 5.30 | 4.48 | 3.40 |
+| force, simulation (N) | 16.03 | 9.97 | 9.10 | 8.37 | 7.77 | 7.20 | 6.63 | 6.02 | 5.32 | 4.60 |
 <!-- /T -->
 
 The peaks (the minimum pivot Fz, the largest strip force, the largest rise) happen in the first 0.2 s

@@ -21,11 +21,11 @@ def load(name):
 
 def stall_figure():
     import matplotlib.pyplot as plt
-    rows = load("stall_sweep")
+    rows = load("stall_sweep") + load("stall_sweep_final")
     if not rows:
         return
     show = [("as drawn", "Sam's carriage as drawn (gravity only)"), ("magnet + steel pinion", "+ magnet + steel pinion (old pin)"),
-            ("pin (48,-58)", "+ pin moved to (48, -58)"), ("proposed", "proposed: pin at the carriage's COM height")]
+            ("pin (48,-58)", "+ pin moved to (48, -58)"), ("final", "as built: stub pins at COM height, 32.25 mm")]
     fig, ax = plt.subplots(figsize=(7.8, 4.6))
     ax.axhline(0.1 * C.Z2 / C.Z1, color=V.INK2, lw=0.8)
     ax.text(1, 0.1 * C.Z2 / C.Z1 + 0.006, "motor holding torque at the auger (0.22 N·m)", fontsize=8, color=V.INK2)
@@ -48,7 +48,7 @@ def stall_figure():
     ax.set_xticks(range(0, 91, 15))
     ax.set_xlabel("module tilt at the station (deg)")
     ax.set_ylabel("auger load when something gave (N·m)")
-    ax.set_title("Load ramp at 30 rpm: only the proposed station holds the mesh at every tilt")
+    ax.set_title("Load ramp at 30 rpm: only the as-built station holds the mesh at every tilt")
     ax.legend(loc="center left", fontsize=7.8, bbox_to_anchor=(0.0, 0.42))
     fig.tight_layout()
     fig.savefig(C.OUT / "mujoco_stall_vs_tilt.png", dpi=150)

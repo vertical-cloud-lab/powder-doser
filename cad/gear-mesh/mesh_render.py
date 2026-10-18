@@ -33,8 +33,27 @@ def frames_for(config, tilt, rpm, t_run, load, ecc, perr, tag):
     return r, S, z["frames"], z["log"]
 
 
+def tilt_camera(S, cam="side", centre=(0.105, 0.0, -0.11), dist=0.62):
+    """Point a camera along +y and roll it with the station tilt, so the world's vertical is vertical in the image
+    (the model keeps Sam's frame fixed and turns gravity instead)."""
+    m = S.m
+    th = math.radians(S.info["tilt"])
+    right = np.array([math.cos(th), 0.0, -math.sin(th)])
+    up = np.array([math.sin(th), 0.0, math.cos(th)])
+    zc = np.cross(right, up)
+    q = np.zeros(4)
+    mujoco.mju_mat2Quat(q, np.column_stack([right, up, zc]).flatten())
+    i = m.camera(cam).id
+    m.cam_quat[i] = q
+    m.cam_pos[i] = np.array(centre) + zc * dist
+    m.cam_fovy[i] = 38.0
+    m.cam_mode[i] = 0
+
+
 def render_frames(S, frames, cam, label, sub, every=1):
     m, d = S.m, S.d
+    if cam == "side":
+        tilt_camera(S)
     rnd = mujoco.Renderer(m, H, W)
     opt = mujoco.MjvOption()
     out = []
@@ -56,8 +75,8 @@ def render_frames(S, frames, cam, label, sub, every=1):
 def compare(tilt=30.0, rpm=60.0, t_run=1.0, slow=4.0):
     import imageio.v2 as imageio
     runs = []
-    for cfg, label in (("as drawn", "Sam's carriage as drawn: gravity holds the plate"),
-                       ("proposed", "Proposed: magnet, steel pinion, pin at the carriage COM")):
+    for cfg, label in (("as drawn", "Sam's carriage as drawn: weight holds the plate"),
+                       ("final", "As built: magnet, steel pinion, pivot at the carriage's COM")):
         tag = f"video_{cfg.replace(' ', '_')}_t{tilt:g}_r{rpm:g}"
         r, S, fr, log = frames_for(cfg, tilt, rpm, t_run, 0.03, 0.05, 0.0006, tag)
         runs.append((cfg, label, r, S, fr, log))
@@ -71,9 +90,10 @@ def compare(tilt=30.0, rpm=60.0, t_run=1.0, slow=4.0):
         def sub(k, log=log, t=t, r=r):
             tk = t[0] + k / fps_rec
             i = min(np.searchsorted(t, tk), len(t) - 1)
-            return (f"{tilt:g} deg tilt, auger {rpm:g} rpm, 0.03 N*m + 0.05 mm runout | t {tk - t[0]:.2f} s | "
-                    f"centre distance {log[i, 5]:.2f} mm | tooth jumps {int(abs(round(log[i, 3])))}")
-        tiles.append(render_frames(S, fr[:n], "mesh", label, sub, every))
+            cd = log[i, 5]
+            return (f"{tilt:g} deg, auger {rpm:g} rpm, 0.05 mm runout | t {tk - t[0]:.2f} s | "
+                    + (f"centre distance {cd:.2f} mm" if cd < 40 else "carriage off the plate") + f" | jumps {int(abs(round(log[i, 3])))}")
+        tiles.append(render_frames(S, fr[:n], "side", label, sub, every))
     frames = [np.concatenate([a, b], axis=1) for a, b in zip(*tiles)]
     out_mp4 = M.OUT / f"compare_t{tilt:g}_r{rpm:g}.mp4"
     fps = fps_rec / slow

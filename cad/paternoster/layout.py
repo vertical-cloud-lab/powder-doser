@@ -370,13 +370,14 @@ def placements(state: State | None = None) -> list[Placement]:
     for sy in (-1, 1):
         Rm = T(None) if sy > 0 else T(Rz(math.pi))   # part's +y outward
         add("uyoke_arm", f"U-yoke arm {'+' if sy > 0 else '-'}y, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 10, STEEL, "station", (0, 0, -60))
-        add("yoke_stop", f"Yoke stop block {'+' if sy > 0 else '-'}y (printed)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm @ T(None, (4.0, 0.0, YOKE_STOP_Z)),
+        add("yoke_stop" if sy > 0 else "yoke_stop_m", f"Yoke stop block {'+' if sy > 0 else '-'}y (printed)", Y @ T(None, (0, sy * UFORK_Y[0], 0)),
             10, PETG, "station", (0, 0, -60))
     C = electronics_frame(st, k_st, pv)
     add("sam_electronics_carriage", "Electronics carriage (Sam, Oct 13)", C, 10, (0.20, 0.45, 0.95), "station", (0, 0, -60))
     for sy in (-1, 1):
         Rq = T(Rz(math.pi)) if sy < 0 else T(None)
-        add("pin_boss", f"Stub-pin boss {'+' if sy > 0 else '-'}y (printed)", C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)) @ Rq, 10, PETG, "station", (0, 0, -60))
+        add("pin_boss" if sy > 0 else "pin_boss_m", f"Stub-pin plate with tail {'+' if sy > 0 else '-'}y (printed)", C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)),
+            10, PETG, "station", (0, 0, -60))
         add("stub_pin", f"Stub pin {'+' if sy > 0 else '-'}y, 4 mm steel", C @ T(None, (YOKE_X, sy * 15.3, YOKE_Z)) @ Rq, 10, STEEL, "station", (0, 0, -60))
         add("eclip", f"E-clip DIN 6799 {'+' if sy > 0 else '-'}y", C @ T(None, (YOKE_X, sy * 22.3, YOKE_Z)) @ T(Rx(-sy * math.pi / 2)), 10, DARK, "station", (0, 0, -60))
     add("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 10, DARK, "station", (0, 0, -60))
@@ -472,6 +473,8 @@ SHAPES = {
     "uyoke_base": PT.uyoke_base,
     "uyoke_arm": PT.uyoke_arm,
     "yoke_stop": PT.yoke_stop,
+    "yoke_stop_m": PT.yoke_stop_m,
+    "pin_boss_m": PT.pin_boss_m,
     "stub_pin": PT.stub_pin,
     "pin_boss": PT.pin_boss,
     "eclip": PT.eclip,

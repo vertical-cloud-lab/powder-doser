@@ -17,6 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 V = "verified 2026-10-16"
+V18 = "verified 2026-10-18"
 V13 = "verified 2026-10-13 (v2 BoM)"
 V10 = "verified 2026-10-10 (v1 BoM)"
 E = "estimate, not verified"
@@ -116,16 +117,46 @@ ITEMS = [
      "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-p", 90.0, 1, V, (10,), "Station"),
     (55, None, 1, "Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock", "McMaster-Carr", "90265A992",
      f"{MC}/90265A992/", 5.11, 1, V, (10,), "Station"),
-    (56, None, 1, "Shoulder screw 4 x 20 mm, M3 (rod end in the yoke; cheeks 19.8 mm over) + M3 nylock", "McMaster-Carr", "90265A124",
-     f"{MC}/90265A124/", 5.68, 1, V, (10,), "Station"),
+    (56, None, 1, "M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16 rod-end plug in the U-yoke's square socket (makes the yoke rigid on the rod)",
+     "BelMetric", "M4 x 25 + M4 nylock", "https://www.belmetric.com/", 0.45, 1, E, (10,), "Station"),
     (40, None, 1, "Actuonix LAC linear actuator control board (closed-loop position from the pot; USB/RC/PWM/0-3.3 V in)", "Actuonix", "LAC",
      "https://www.actuonix.com/lac", 30.0, 1, V, (10,), "Station"),
     (41, None, 1, "12 V supply for the LAC and actuator (Actuonix)", "Actuonix", "12V PSU", "https://www.actuonix.com/lac", 10.0, 1, V, (10,), "Station"),
-    (42, ("station_yoke", "fork", "fork_arm", "clevis_bracket", "vial_cup"), None,
-     "Station printed parts, PETG: yoke under the electronics carriage, approach fork + arm, base clevis, vial cup", "printed", "stl/", "", 0.60, 1,
-     "filament", (10, 11), "Printed"),
-    (43, ("sam_electronics_carriage",), None, "Electronics carriage (Sam's Oct 13) with the doser's NEMA 11, 20T pinion and 12 V solenoid", "lab",
-     "Onshape 581956d5", "", 0.0, 1, "existing (doser parts)", (10,), "Station"),
+    (42, ("uyoke_base", "yoke_stop", "yoke_stop_m", "pin_boss", "pin_boss_m", "magnet_bracket", "fork", "fork_arm", "clevis_bracket", "vial_cup"), None,
+     "Station printed parts, PETG: U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, dock magnet bracket, approach fork + arm, "
+     "base clevis, vial cup", "printed", "stl/", "", 0.50, 1, "filament", (10, 11), "Printed"),
+    (43, ("sam_electronics_carriage",), None, "Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 (mounted on the back wall's inner face) "
+     "and 12 V solenoid", "lab", "Onshape 581956d5", "", 0.0, 1, "existing (doser parts)", (10,), "Station"),
+    # ---- station: gear-mesh preload and carriage pivot (cad/gear-mesh)
+    (57, ("dock_magnet",), None, "Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: preloads the dock so the 20T:44T mesh "
+     "can't lift the plate at any tilt; on only while docked", "Adafruit", "3872", "https://www.adafruit.com/product/3872", 7.50, 1, V18, (10,), "Station"),
+    (58, None, 1, "N-channel logic-level MOSFET (switches the dock magnet from the carriage board): IRLB8721, or any logic-level N-MOSFET",
+     "Adafruit", "355", "https://www.adafruit.com/product/355", 2.25, 1, V18, (10,), "Station"),
+    (59, None, 1, "1N4001 diode, 10-pack (flyback across the magnet coil)", "Adafruit", "755", "https://www.adafruit.com/product/755", 1.50, 1, V18,
+     (10,), "Station"),
+    (60, ("armature_tab",), None, "Armature tab, low-carbon steel 2 mm, 22 x 28 mm, two countersunk M3 holes, laser cut (one per module, under the "
+     "plate's back strip; dxf/armature_tab.dxf)", "SendCutSend", "dxf/armature_tab.dxf", "https://sendcutsend.com/", 3.50, 1,
+     "estimate (SendCutSend quotes on upload)", (9,), "Modules"),
+    (61, None, 24, "M3 x 6 flat head screw, 18-8 (armature tabs to the plates)", "BelMetric", "M3 x 6 FHCS", "https://www.belmetric.com/", 0.10, 1, E,
+     (9,), "Modules"),
+    (62, None, 28, "M3 x 4 short heat-set insert (two per plate for the tab; four in the U-yoke crossbar)", "West3D", "CNC Kitchen M3 short",
+     "https://west3d.com/products/cnc-kitchen-heat-set-inserts-various-sizes", 0.15, 1, E, (9, 10), "Modules"),
+    (63, ("pinion",), None, "Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond to "
+     "the NEMA 11 shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping", "KHK (ibspot.com)", "SS1-20A",
+     "https://www.ibspot.com/", 40.20, 1, "verified 2026-10-18 (v2 BoM)", (10,), "Station"),
+    (64, ("stub_pin",), None, "Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed through "
+     "the carriage's side post: the carriage's pivot at its centre-of-mass height", "McMaster-Carr", "4 mm dowel pins", f"{MC}/dowel-pins/", 1.00, 1, E,
+     (10,), "Station"),
+    (65, ("loc_pin",), None, "Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot "
+     "in each plate", "McMaster-Carr", "4 mm dowel pins", f"{MC}/dowel-pins/", 0.50, 1, E, (10,), "Station"),
+    (66, ("eclip",), 4, "E-clip DIN 6799 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare)", "McMaster-Carr",
+     "e-style retaining rings, metric", f"{MC}/e-style-retaining-rings/", 0.10, 1, E, (10,), "Station"),
+    (67, ("uyoke_arm",), None, "U-yoke arm, 2 mm steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its side walls",
+     "SendCutSend", "dxf/uyoke_arm.dxf", "https://sendcutsend.com/", 4.00, 1, "estimate (SendCutSend quotes on upload)", (10,), "Station"),
+    (68, None, 4, "M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243", "BelMetric", "M3 x 8 BHCS",
+     "https://www.belmetric.com/", 0.12, 1, E, (10,), "Station"),
+    (69, None, 1, "Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load)", "McMaster-Carr",
+     "dry-film PTFE lubricant", f"{MC}/dry-lubricants/", 12.0, 1, E, (10,), "Station"),
     (44, ("load_cell",), None, "Load cell 100 g (TAL221) under the vial", "SparkFun", "SEN-14727", "https://www.sparkfun.com/products/14727", 14.50, 1, V,
      (11,), "Station"),
     (45, None, 1, "HX711 load-cell amplifier", "SparkFun", "SEN-13879", "https://www.sparkfun.com/products/13879", 4.95, 1, V, (11,), "Station"),

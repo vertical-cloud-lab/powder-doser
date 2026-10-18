@@ -5,12 +5,12 @@
  "seek_rps": 0.25,
  "drag_Nm": 0.02,
  "push_N": 15.0,
- "seated": false,
- "seated_after_s": null,
- "final_centre_distance_mm": 356.7183284248014,
+ "seated": true,
+ "seated_after_s": -0.062360000000026755,
+ "final_centre_distance_mm": 32.20559554342938,
  "final_rim_gaps_mm": [
-  347.1136494479703,
-  329.3688698884317
+  0.19118318699682574,
+  0.0075646680415898835
  ],
- "peak_actuator_N": 15.0
+ "peak_actuator_N": 12.411892483730853
 }

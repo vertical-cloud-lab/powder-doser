@@ -64,16 +64,26 @@ tab, end plate, PTFE washer under the head, and the 4 x 10 mm shoulder screw fro
 bushing and the tab, with an M3 nylon-insert locknut on the chain side. Tighten the screw to the shoulder (the
 shoulder clamps on the tab; the gondola turns on the shoulder). The gondola must swing freely and come back to
 hanging straight down: if it sticks off-vertical by more than about half a degree, the bushing is too tight.""",
-    9: f"""Modules: slide an auger (lab design, PR #170) into Sam's mounting plate and screw on the cap. Index the
+    9: f"""Modules: in each of Sam's mounting plates heat-set two M3 inserts in the back strip and screw a 2 mm steel
+armature tab under it (two M3 x 6 flat heads): the dock magnet pulls on it. The plate also needs the 4.2 mm hole and
+4.2 x 6 mm slot for the carriage's locating pins (print them in, or drill 3.5 mm deep). Slide an auger (lab design,
+PR #170) into the plate and screw on the cap. Index the
 carousel until an empty gondola is at the loading position (right side, mid-height; module k+3 is there when
 module k is at the station). Hold the module with the auger's outlet toward the front, lower it {MODULE_LIFT:.0f} mm
 above the floor and slide it in from the right ({MODULE_SLIDE:.0f} mm), lower it onto the floor between the lugs, and
 turn the two M5 x {THUMB_L:.0f} thumb screws in from outside: their tips are the hinge pins in Sam's 5.3 mm knuckle holes.
 Index one module ({STEPS_PER_MODULE} steps) and load the next. To swap a module, reverse it: two thumb screws out, lift, slide out.""",
-    10: f"""Station. Bolt the base clevis to the actuator cross rail under the hinge line and pin the Actuonix
-P16-150-22-12-P's rear lug in it ({ACT_RETRACTED:.1f} mm hole to hole retracted). Bolt the printed yoke under Sam's
-electronics carriage (with its NEMA 11, 20T pinion and solenoid), pin the rod end in the yoke, and set the
-approach fork on its post so the yoke's tongue rides in it for the first {DOCK_EXT:.0f} mm. Screw the two UHMW hold-down
+    10: f"""Station (cad/gear-mesh has the reasons). Bolt the base clevis to the actuator cross rail and pin the Actuonix
+P16-150-22-12-P's rear lug in it ({ACT_RETRACTED:.1f} mm hole to hole retracted). Sam's electronics carriage: mount the NEMA 11
+on the inner face of its back wall, bond the steel KHK SS1-20A pinion (hub faced off) on the shaft's last 10 mm with
+Loctite 638, screw the printed magnet bracket on the two upper motor screws and bond the Adafruit 3872 electromagnet in
+its cup, press the two 4 mm locating dowels into the rim and the two 4 mm stub pins through the side posts (with the
+printed pin plates bonded on). The U-yoke: push the P16's rod-end plug into the printed crossbar's square socket and
+bolt it rigid (M4 x 25 + nylock), screw the two 2 mm steel arms to the crossbar, slide them over the stub pins and fit
+the e-clips. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
+carriage's centre-of-mass height, so the carriage can't tip off the plate when it tilts. Set the approach fork on its
+post so the crossbar's tongue rides in it for the first {DOCK_EXT:.0f} mm. Wire the magnet through a logic-level MOSFET
+with a 1N4001 across the coil, and set the Tic's current limit to 450 mA. Screw the two UHMW hold-down
 strips to their brackets on the side plates' inner faces, 0.5 mm above the chains' bottom runs at the station:
 when the module tilts, the gondola's front pivot is pulled upward (MuJoCo run, sim/README.md), and the strips stop the
 chain from lifting. Wire the LAC board (12 V) to the actuator's motor and pot and set its limits so the retracted

@@ -4,6 +4,16 @@ A second, independent multi-doser design next to the [chain carousel v2](../chai
 
 The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (potentiometer feedback, on an Actuonix LAC board) lifts Sam's electronics carriage through the gondola's floor, docks it under Sam's mounting plate and tilts plate and carriage together about the hinge, cap end up into the empty middle of the loop. Modules come out sideways at a loading position on the right side: undo two thumb screws, lift 22 mm, slide out.
 
+**Station update (2026-10-18), shared with [chain carousel v2](../chain-carousel-v2/README.md).** The [gear-mesh study](../gear-mesh/README.md) found that the module's weight can't keep the auger's 44T gear in mesh with the NEMA 11's pinion, and that Sam's carriage tips off the plate once tilted. The station therefore now has:
+- a **dock electromagnet** (Adafruit 3872), pulling a 2 mm steel tab under each plate;
+- the carriage **pivoting at its centre-of-mass height** on two stub pins, carried by a U-yoke on the P16;
+- a **steel pinion** (KHK SS1-20A);
+- **locating pins**;
+- a **32.25 mm centre distance**;
+- a **docking seek**.
+
+The [leakage study](../auger-leakage/README.md) found no benefit in storing modules nozzle-up, so the gondolas stay level. After each dose the module holds 0.5 s at the dose tilt, tilts back, then reverses the auger one turn at rest.
+
 | Home: 12 gondolas, module 1 at the station | Station: module 1 tilted 30° (cutaway) |
 |---|---|
 | ![](renders/rig_iso.png) | ![](renders/rig_station_tilt30.png) |
@@ -26,11 +36,12 @@ The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (po
 | Bottom corners | Two 5/8 in keyed **through shafts** in SBSFL202-10 flange bearings: they keep the chains in phase; B+ is the drive | The gondolas hang below the bottom run, so nothing passes over these shafts |
 | Top corners | **Idlers on fixed 15 mm stub axles** (35BS32 re-bored for two 6202-2RS), flush with the sprocket face, tensioned in slots | A gondola going over the top passes within 2 mm of the corner's axis, so a through shaft there is impossible |
 | Drive | NEMA 34 34HS59-6004D-E1000 (**StepperOnline's own STEP**, PR #115) **direct** on B+ through an **L090 jaw coupling** | The L075's spider is rated 10.2 N·m, under the motor's 12 N·m. MuJoCo drive torque is 0.26-0.31 N·m averaged over 25 ms, 1.56 N·m raw peak on a 10 s lap |
-| Station | P16-150-22-12-P: base pin 57 mm above the bench, rod end pinned 40 mm behind / 72 mm below the hinge. **20 mm approach** in a printed fork, then **tilt to 90° using 134 of 150 mm** | Both ends are pinned, so the actuator is a two-force member (its side-load limit is 10 N). MuJoCo force: 8.0 N at 0° falling to 1.5 N at 90° (14.8 N transient peak), against 50 N available |
-| Chain hold-down | **UHMW strips 0.5 mm over each chain's bottom run at the station** | MuJoCo: below about 40° of tilt the actuator's 8 N on a 40 mm lever is more than the 5 N module + carriage, and the extra 3 N lifts the front pivot. The strips hold the chain to their 0.5 mm gap (up to 7.8 N on the strip) |
+| Station | P16-150-22-12-P with a U-yoke rigid on its rod: the yoke's 2 mm steel arms carry the carriage's two 4 mm stub pins, 32 mm behind / 33 mm below the hinge (the carriage's centre-of-mass height). Base pin 48 mm above the bench. **20 mm approach** in a printed fork, then **tilt to 90° using 85 of 150 mm** | Both ends pinned, so P16 + yoke is a two-force member (side-load limit 10 N). The old pin under the carriage made it an inverted pendulum that fell off the plate once tilted ([gear-mesh](../gear-mesh/README.md)). MuJoCo force: 10.5 N at 0° falling to 1.4 N at 90° (19.3 N transient peak), against 50 N available |
+| Gear mesh | NEMA 11 on the inner face of the carriage's back wall; **steel 20T pinion KHK SS1-20A** on the 44T printed gear at **32.25 mm** (0.18 mm backlash), PTFE dry lube; **Adafruit 3872 electromagnet** behind the pinion pulls a **2 mm steel tab** under each plate; two locating pins in a hole and a slot in each plate; Tic current limit 450 mA | The module's weight holds only 1.1 N at the gear (0 at 90°) against 3.6-6.6 N of separating force at stall. With these changes the mesh carries the motor's full torque at every tilt 0-90° in MuJoCo. At 32.1 mm, printed-gear runout and the magnet's bending of the plate (78 µm, FEA) made the mesh bind |
+| Chain hold-down | **UHMW strips 0.5 mm over each chain's bottom run at the station** | MuJoCo: below about 60° of tilt the actuator's push behind the hinge is more than the module + carriage weigh, and the front pivot is pulled up (7.5 N at 0°). The strips hold the chain to their 0.5 mm gap (up to 10.9 N on the strip with the stiff tab) |
 | Dispense | 20 mL vial on a 100 g load cell, **D-shaped catch funnel** ahead of the docked carriage | Particle sim: at steep tilt 21% of grains miss a bare vial |
 | Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet; footprint 444 x 320 mm, plus 232 mm of motor out the back; 765 mm tall | Every T-nut screw takes blue Loctite (T-nuts can't take a nylock); every other nut on the machine is a nylock |
-| Cost | **$1,652 total, $1,526 without test gear** ([BOM.md](BOM.md)) | Prices read on the vendors' pages on 2026-10-16 unless marked |
+| Cost | **$1,773 total, $1,647 without test gear** ([BOM.md](BOM.md)) | Prices read on the vendors' pages on 2026-10-16 (station additions 2026-10-18) unless marked |
 
 ## What the simulations found, and what changed
 
@@ -43,6 +54,10 @@ Two MuJoCo models ([sim/README.md](sim/README.md), [sim/AUGER-SIM.md](sim/AUGER-
 | Fast laps: 6 s per lap swings 36° (7.2 mm gap); at 4 s a gondola flips over | Continuous moves capped at 130 mm/s (a lap of 10 s or more): 9.9° swing, 10.5 mm minimum gap, 14 mm to the shafts |
 | Tilting pulls the station gondola's front pivot up (about 2.7 N quasi-static), which lifts the chain 6.4 mm at 40 N tension | UHMW chain hold-down strips at the station: the chain stays at 0.5 mm, and the plate rises 0.66 mm with a 50 N/mm tab/end-plate stack. A guide channel inside the gondola can't be supported clear of the passing gondolas, and the sim showed it does nothing for swing. Docked, taps and the turning auger move the gondola 0.012° or less |
 | Dose per revolution peaks near 15° and collapses toward 90°: the powder rides round on the flight | Station default **20-40° tilt**. 90° is kept for cleaning and access |
+| Gear mesh ([gear-mesh](../gear-mesh/README.md)): the plate lifts at stall at any tilt, and Sam's carriage falls off the plate at 30° and above. The rod-end pin made it an inverted pendulum | Dock electromagnet + steel tab, carriage pivot at its COM height (stub pins + U-yoke), steel pinion, locating pins. MuJoCo: the motor stalls (0.22 N·m at the auger) before any tooth jumps, at every tilt, and 0 jumps at 30-240 rpm |
+| At 32.1 mm a 0.05 mm gear runout bound the mesh and jumped teeth; the magnet bends Sam's plate 78 µm toward the pinion (3D FEA) | Centre distance 32.25 mm: clean with up to 0.1 mm runout |
+| Docking with the pinion held: half the starting phases park the gear on the pinion's tooth tips | Turn the pinion at 0.25 rev/s through the last 3 mm, magnet on: seated from every phase |
+| Leakage ([auger-leakage](../auger-leakage/README.md)): nozzle-up storage (5-15°) changed nothing; a still auger doesn't leak. Reversing while tilted adds dose | Gondolas stay level. After a dose: hold 0.5 s, tilt back, reverse 1 auger revolution at rest (73 % less powder at the exit) |
 | At 60°, 21% of grains miss a Ø24 vial 35 mm below; and the retracted carriage sat where the vial was | Vial moved 12 mm forward with a printed D-funnel whose mouth stops 1.3 mm ahead of the docked carriage |
 | The actuator swings about 9° as the module tilts and hit the approach fork | Guide tongue and fork moved to y = 15 mm, beside the actuator's swing plane but still inside the floor window |
 | A through quick-release hinge pin would hit the auger: the outlet sits on the hinge axis between Sam's knuckles (\|y\| 15-25) | Two **M5 x 16 knurled thumb screws** in heat-set inserts in the gondola's lugs; their tips are the hinge pins. Tool-free swap, Sam's part unchanged |

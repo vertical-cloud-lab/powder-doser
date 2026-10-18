@@ -22,7 +22,9 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("gondola", "station_yoke", "fork", "fork_arm", "clevis_bracket", "vial_cup", "vial_funnel", "hold_bracket")
+PRINTED = ("gondola", "uyoke_base", "yoke_stop", "yoke_stop_m", "pin_boss", "pin_boss_m", "magnet_bracket", "fork", "fork_arm",
+           "clevis_bracket", "vial_cup", "vial_funnel", "hold_bracket")
+LASER = ("armature_tab", "uyoke_arm")      # 2 mm steel, laser cut: flat profiles to dxf/
 SKIP_COMPONENT = ("auger", "auger_cap", "sam_mounting_plate", "sam_electronics_carriage", "nema34")   # already in reference/
 
 
@@ -68,6 +70,14 @@ def main() -> None:
         sec = cq.Workplane("YZ").add(face)
         cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"), cq.exporters.ExportTypes.DXF)
         print(f"  dxf/{k}.dxf  ({bb.ylen:.1f} x {bb.zlen:.1f} mm, 1/4 in 6061)")
+
+    for k in LASER:                                   # the steel parts' flat profile (largest planar face)
+        s = L.shape(k)
+        face = max(s.Faces(), key=lambda f: f.Area() if f.geomType() == "PLANE" else 0.0)
+        n = face.normalAt()
+        wp = "XZ" if abs(n.y) > 0.9 else ("YZ" if abs(n.x) > 0.9 else "XY")
+        cq.exporters.export(cq.Workplane(wp).add(face), str(HERE / "dxf" / f"{k}.dxf"), cq.exporters.ExportTypes.DXF)
+        print(f"  dxf/{k}.dxf  (2 mm low-carbon steel)")
 
     rec = [{"name": p.name, "key": p.key, "step": p.step, "module": p.module, "M": np.round(p.M, 5).tolist()} for p in pl]
     (HERE / "placements.json").write_text(json.dumps(rec) + "\n")

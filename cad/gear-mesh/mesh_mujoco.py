@@ -53,7 +53,7 @@ CONFIGS = {
     "proposed": dict(magnet=True, pinion="steel", mu=0.10, pin=(45.0, -34.0), locpins=True, a_dock=32.25),
     "proposed at 32.1 mm": dict(magnet=True, pinion="steel", mu=0.10, pin=(45.0, -34.0), locpins=True, a_dock=32.1),
     # as built in both designs: stub pins through the carriage's solid side posts (x 29-37)
-    "final": dict(magnet=True, pinion="steel", mu=0.10, pin=(32.0, -34.0), locpins=True, a_dock=32.25),
+    "final": dict(magnet=True, pinion="steel", mu=0.10, pin=(32.0, -33.1), locpins=True, a_dock=32.25, stops=True),
 }
 
 
@@ -155,11 +155,14 @@ def build(tilt=30.0, config="proposed", powder=0.0, ecc=0.0, pitch_err=0.0, seed
     X.append(f"""<mujoco model="station-mesh">
   <compiler angle="radian" autolimits="true"/>
   <option timestep="{DT}" gravity="{gx:.5f} {gy:.5f} {gz:.5f}" integrator="implicitfast" cone="elliptic" impratio="1"
-          noslip_iterations="0" iterations="60" tolerance="1e-10"/>
+          noslip_iterations="0" iterations="60" tolerance="1e-10">
+    <flag filterparent="disable"/>
+  </option>
   <size memory="50M"/>
   <visual><global offwidth="1280" offheight="720"/><quality shadowsize="2048" offsamples="8"/>
     <headlight ambient="0.4 0.4 0.4" diffuse="0.6 0.6 0.6"/><map znear="0.001" zfar="5"/></visual>
   <asset>
+    <texture name="sky" type="skybox" builtin="flat" rgb1="0.99 0.99 0.98" rgb2="0.99 0.99 0.98" width="64" height="64"/>
     <mesh name="gtooth" vertex="{prism_vertices(gpoly, *GEAR_FACE)}"/>
     <mesh name="ptooth" vertex="{prism_vertices(ppoly, *PINION_FACE)}"/>
     <material name="plate" rgba="0.10 0.25 0.85 1"/><material name="steel" rgba="0.60 0.62 0.66 1"/>
@@ -203,16 +206,31 @@ def build(tilt=30.0, config="proposed", powder=0.0, ecc=0.0, pitch_err=0.0, seed
     X.append("      </body>\n    </body>")
     # actuator + carriage
     ang = math.atan2(d[0], d[1])
+    stops_xml = ""
+    if cfg.get("stops"):
+        # yoke frame: z along the actuator (d), x = y_hat x z; the stop blocks sit on the arms' inner faces
+        zh = np.array([d[0], 0.0, d[1]])
+        xh = np.cross(np.array([0.0, 1.0, 0.0]), zh)
+        for sy in (-1, 1):
+            c = np.array([px - bx, 0.0, pz - bz]) + 14.0 * xh + sy * 18.85 * np.array([0, 1.0, 0]) - 13.3 * zh
+            qa = math.atan2(xh[2], xh[0])
+            stops_xml += (f'<geom class="dock" type="box" pos="{c[0] * MM:.5f} {c[1] * MM:.5f} {c[2] * MM:.5f}" euler="0 {-qa:.5f} 0" '
+                          f'size="{3.0 * MM:.5f} {0.65 * MM:.5f} {2.0 * MM:.5f}" contype="256" conaffinity="128" rgba="0.95 0.55 0.2 1"/>')
     X.append(f"""    <body name="act" pos="{bx * MM:.5f} 0 {bz * MM:.5f}">
       <joint name="act_pivot" type="hinge" axis="0 1 0" damping="0.002"/>
       <geom type="box" pos="{d[0] * 0.09:.5f} 0 {d[1] * 0.09:.5f}" size="0.0105 0.0105 0.085" euler="0 {ang:.5f} 0" mass="0.06" material="act"/>
       <body name="rod" pos="0 0 0">
         <joint name="act_slide" type="slide" axis="{d[0]:.6f} 0 {d[1]:.6f}" damping="5"/>
         <geom type="capsule" fromto="{d[0] * 0.12:.5f} 0 {d[1] * 0.12:.5f} {d[0] * L * MM:.5f} 0 {d[1] * L * MM:.5f}" size="0.004" mass="0.02" material="steel"/>
+        {stops_xml}
         <body name="carriage" pos="{(px - bx) * MM:.5f} 0 {(pz - bz) * MM:.5f}">
           <joint name="car_pin" type="hinge" axis="0 1 0" damping="0.0005"/>
           <inertial pos="{(cx_car - px) * MM:.5f} 0 {(cz_car - pz) * MM:.5f}" mass="{m_car:.4f}" diaginertia="1.2e-4 2.0e-4 1.2e-4"/>
           <geom type="box" pos="{(37.8 - px) * MM:.5f} 0 {(-39.4 - pz) * MM:.5f}" size="{35.5 * MM:.5f} {18 * MM:.5f} {21.0 * MM:.5f}" material="carr" rgba="0.2 0.7 0.4 0.35"/>""")
+    if cfg.get("stops"):
+        for sy in (-1, 1):
+            X.append(f'          <geom class="dock" type="box" pos="{14.0 * MM:.5f} {sy * 18.85 * MM:.5f} {-9.5 * MM:.5f}" '
+                     f'size="{3.0 * MM:.5f} {0.65 * MM:.5f} {1.5 * MM:.5f}" contype="128" conaffinity="256" material="carr"/>')
     for (x0, x1) in ((25.0, 29.0), (69.3, 73.3)):
         for sy in (-1, 1):
             X.append(f'          <geom class="dock" type="box" pos="{((x0 + x1) / 2 - px) * MM:.5f} {sy * 16 * MM:.5f} {(-19.0 - pz) * MM:.5f}" '
@@ -379,8 +397,8 @@ def run(tilt=30.0, rpm=60.0, config="proposed", powder=0.0, t_run=0.6, load=0.03
                 skip_t = S.d.time
             if stall_t is None and abs(e) > math.pi:
                 stall_t = S.d.time
-            if record and i % int(1 / 240 / DT) == 0:
-                frames.append(S.d.qpos.copy())
+        if record and i % int(round(1 / 240 / DT)) == 0:
+            frames.append(S.d.qpos.copy())
         if ramp_load is not None and (skip_t is not None or stall_t is not None) and S.d.time > (skip_t or stall_t or 0) + 0.05:
             break
     A = np.array(log)
@@ -485,7 +503,7 @@ def speed_sweep(tilts=(0, 30, 60, 90), rpms=(30, 60, 120, 240), configs=("as dra
 
 
 def engage(config="proposed", tilt=0.0, phase=0.5, seek_rps=0.0, approach_mm=3.0, v_mm_s=10.0, drag=0.02, f_push=15.0,
-           record=False, tag=None):
+           record=False, tag=None, magnet_during=None):
     """Docking: the carriage rises the last approach_mm onto the plate with the pinion at a phase offset (fraction of a
     pinion pitch; 0.5 = tooth tip on tooth tip). The pinion is held, or turns slowly (seek) until the plate seats on the
     rim. The auger has its powder/bearing drag. The LAC pushes with at most f_push (its current limit) during the dock.
@@ -494,7 +512,11 @@ def engage(config="proposed", tilt=0.0, phase=0.5, seek_rps=0.0, approach_mm=3.0
     m = S.m
     m.actuator_forcerange[0] = (-f_push, f_push)
     kp = 2.0e5
-    S.magnet_on = False
+    # with the pins ahead of the carriage's COM (the as-built station) the carriage hangs back-down on its stops during
+    # the approach, and the magnet is what pulls its back up onto the plate: switch it on for the approach
+    if magnet_during is None:
+        magnet_during = bool(CONFIGS[config].get("stops"))
+    S.magnet_on = CONFIGS[config]["magnet"] and magnet_during
     S.d.qpos[S.qa["act_slide"]] = -approach_mm * MM
     S.d.qpos[S.qa["motor"]] = phase * 2 * math.pi / C.Z1
     S.theta_cmd = S.d.qpos[S.qa["motor"]]
@@ -516,7 +538,7 @@ def engage(config="proposed", tilt=0.0, phase=0.5, seek_rps=0.0, approach_mm=3.0
             cd = S.centre_distance()
             log.append((S.d.time, S.d.qpos[S.qa["act_slide"]] / MM, cd, rg[0], rg[1], S.d.actuator_force[0],
                         S.d.qpos[S.qa["motor"]], S.d.qpos[S.qa["spin"]]))
-            ok = i > n_app * 0.5 and abs(cd - S.info["a_dock_mm"]) < 0.08 and max(rg) < 0.15
+            ok = i > n_app * 0.5 and cd < S.info["a_dock_mm"] + 0.03 and rg[1] < 0.1
             if seated_t is None:
                 if ok:
                     ok_since = ok_since if ok_since is not None else S.d.time

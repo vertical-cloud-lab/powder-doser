@@ -7,11 +7,10 @@ At the station, Sam's electronics carriage docks under the module's plate. Its N
 
 The answer changed the station of both designs. The [paternoster](../paternoster/README.md) and [chain carousel v2](../chain-carousel-v2/README.md) now share it.
 
-| Proposed station, 30 deg, auger 60 rpm, 0.05 mm gear runout | Sam's carriage as drawn, same run |
-|---|---|
-| ![](out/mujoco/compare_t30_r60_still.png) | |
+![Sam's carriage as drawn (left) against the station as built (right): 30 deg tilt, auger 60 rpm, 0.05 mm gear runout, slowed 4x](out/mujoco/compare_t30_r60.gif)
 
-![Comparison: as drawn (left) against the proposed station (right), slowed 4x](out/mujoco/compare_t30_r60.gif)
+*Left: the carriage, an inverted pendulum on its rod-end pin, tips off the plate and the gear runs free. Right: the
+station as built holds the 32.21 mm centre distance. Full-resolution MP4: [`out/mujoco/compare_t30_r60.mp4`](out/mujoco/compare_t30_r60.mp4).*
 
 ## The answer
 
@@ -36,7 +35,7 @@ The answer changed the station of both designs. The [paternoster](../paternoster
 | **Steel pinion**, KHK SS1-20A (m1, 20T, 5 mm bore), hub faced off, PTFE dry lube | Friction raises the separating force from 0.37 W<sub>t</sub> to 0.67 W<sub>t</sub> on dry PETG; about 0.47 lubricated. A printed pinion also chattered and lost steps at a low load in one MuJoCo run |
 | **Two locating pins** on the carriage rim, in a hole and a slot in each plate | Carry the along-plate load when tilted, so friction doesn't have to |
 | **Centre distance 32.25 mm** instead of 32.1 (NEMA 11 axis 0.15 mm lower in the carriage). Backlash 0.18 mm, contact ratio 1.40 | At 32.1 mm a 0.05 mm runout made the mesh bind, stall the motor and jump teeth. The magnet also bends Sam's plate 78 µm toward the pinion (FEA) |
-| **Docking "seek"**: turn the pinion at 0.25 rev/s during the last 3 mm of the approach. Magnet on only after the plate seats | Pinion held: 2 of 6 starting phases seated, the rest parked the gear on the tooth tips 2 mm high. Seeking: 6 of 6 seated |
+| **Docking "seek"**: turn the pinion at 0.25 rev/s during the last 3 mm of the approach, with the magnet on (it lifts the hanging carriage's back onto the plate) | Pinion held: about half the starting phases park the gear on the pinion's tooth tips 2 mm high. Seeking: every phase seated |
 | **Driver current 0.45 A** (DRV8825 Vref 0.225 V): 0.067 N·m stall at the pinion, 0.15 N·m at the auger | A second safety. Stall stays below the dock's opening torque at every tilt, with margin (v2 station sim). That is still 5 times the estimated running torque |
 
 ## 1. Hand calculations ([`shigley.py`](shigley.py), [`out/shigley.json`](out/shigley.json))
@@ -138,18 +137,28 @@ Values are N·m at the auger; the motor's ceiling is 0.22. "Falls off" means the
 
 **Runout** (30 deg, 60 rpm, proposed pin): clean up to 0.1 mm eccentricity at both 32.1 and 32.25 mm. At 0 deg and 30 rpm, though, 32.1 mm stalled the motor and jumped teeth with 0.05 mm runout (two seeds: 129 and 170 jumps); 32.25 mm stayed clean. A 10 µs time step reproduced the failure.
 
-**Docking engagement** (the carriage rises the last 3 mm at 10 mm/s, the LAC pushing at most 15 N, auger drag 0.02 N·m, magnet off until seated):
+**Docking engagement** ("proposed" pin; the carriage rises the last 3 mm at 10 mm/s, the LAC pushing at most 15 N, auger drag 0.02 N·m, magnet off until seated):
 
 | Pinion's starting phase (fraction of a tooth) | 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 (tip on tip) |
 |---|---|---|---|---|---|---|
 | Pinion held | seated | seated | parked 2 mm high | parked | parked | parked |
 | Pinion seeking at 0.25 rev/s | seated | seated | seated | seated | seated | seated |
 
-The as-built pin position, (32, -34) through the side posts, is in `out/mujoco/*_final.json`. Its results are summarised in the [final pass](#final-pass-as-built-pin).
-
 ### Final pass (as-built pin)
 
-FINAL_PASS_PLACEHOLDER
+The station as both designs build it ("final" in `mesh_mujoco.py`) differs from "proposed" in two ways:
+- the stub pins sit at (32, -33.1) docked, through the carriage's solid side posts, 20 mm ahead of its COM;
+- yoke stops catch the hanging carriage's pin plates during the approach.
+
+| Study | Result |
+|---|---|
+| Load ramp at 30 rpm, 0-90 deg | Motor stalls at 0.219 N·m (auger) at every tilt; no tooth jump; centre distance 32.21 mm throughout ([`stall_sweep_final.json`](out/mujoco/stall_sweep_final.json)) |
+| Running, 0/30/60/90 deg x 30/60/120/240 rpm, 0.05 mm runout + 13 µm pitch error | 0 tooth jumps, no stall in all 16 runs ([`speed_sweep_final.json`](out/mujoco/speed_sweep_final.json)) |
+| Runout 0-0.1 mm (30 deg, 60 rpm) | Clean; the centre distance never leaves 32.21-32.22 mm ([`runout_sweep_final.json`](out/mujoco/runout_sweep_final.json)) |
+| Docking, pinion held | Seated from phases 0-0.2; at 0.3-0.5 the gear parks on the pinion's tips 1.9 mm high ([`engage_final.json`](out/mujoco/engage_final.json)) |
+| Docking with the seek | Seated from phases 0-0.4. The tip-on-tip phase (0.5) seated with a 10 µs time step; at 20 µs the contact solver blew up and threw the auger, which a real dock can't do |
+
+With these pins the carriage hangs back-down on its stops while it approaches. So the magnet goes on at the start of the last 3 mm, not after the plate seats: its pull is what lifts the carriage's back onto the plate.
 
 ## 4. Limits
 

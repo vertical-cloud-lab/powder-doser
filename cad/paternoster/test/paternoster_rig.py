@@ -6,7 +6,22 @@ Hardware (BOM.md): CL86T closed-loop driver on step/dir/enable through a
 in every gondola's -y rail, HOME only gondola 1's second magnet); the
 Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms
 pulses = 0-150 mm), with the pot fed back inside the LAC; an HX711 on the
-100 g load cell under the vial.
+100 g load cell under the vial; the dock electromagnet (Adafruit 3872) on a
+logic-level MOSFET; the auger's NEMA 11 on the doser's Tic T500 (ticcmd over USB).
+
+Station sequence (cad/gear-mesh/README.md, cad/auger-leakage/README.md):
+  dock    approach in the fork, magnet ON for the last 3 mm, the pinion turning
+          slowly (seek) until the LAC reaches the dock position: the gear finds a
+          tooth space instead of parking on the pinion's tips
+  tilt    to the dose angle (20-40 deg by default)
+  dose    auger forward, stop, hold 0.5 s at the dose tilt (the tail of the dose
+          falls into the vial), taps
+  return  tilt back to 0, then reverse 1 auger revolution (2.2 NEMA 11 revs) at
+          rest: takes 73 % of the powder off the exit's last 15 mm. Never reverse
+          while tilted (it adds dose)
+  undock  magnet OFF, lower
+The Tic's current limit is set to 450 mA: a jam then stalls the motor (<= 0.067 N*m
+at the pinion) before it can open the dock.
 
 Geometry: one module = 10 pitches = 95.25 mm = 10/32 of a turn of the 32T drive
 sprocket = 1250 steps at 4000 pulses/rev (direct drive, no ratio). Targets are
@@ -42,21 +57,27 @@ MM_PER_REV = TEETH * PITCH_MM
 PENDULUM_HZ = 2.54                   # loaded gondola, from the MuJoCo model
 INDEX_S = 1.5                        # seconds per index
 ACT_STROKE = 150.0
-DOCK_MM, MAX_TILT_MM = 20.0, 133.6   # actuator extension at docking and at 90 deg (layout.actuator_pose)
+DOCK_MM, MAX_TILT_MM = 20.0, 85.1    # actuator extension at docking and at 90 deg (layout.actuator_pose)
+SEEK_MM = 3.0                        # last part of the approach: magnet on, pinion seeking
+AUGER_RATIO = 44 / 20                # NEMA 11 revs per auger rev
+TIC_STEPS_PER_REV = 200 * 8          # Tic T500 at 1/8 step
+TIC_CURRENT_MA = 450                 # stall at or below 0.067 N*m at the pinion
 
 PIN_STEP, PIN_DIR, PIN_ENA = 17, 27, 22
 PIN_INDEX, PIN_HOME, PIN_ALARM = 23, 24, 25
 PIN_LAC = 18                          # RC pulse to the LAC (hardware PWM pin)
 PIN_HX_DT, PIN_HX_SCK = 5, 6
 PIN_TAP = 12                          # DRV8871 IN1 for the tap solenoid
+PIN_MAG = 16                          # MOSFET gate for the dock electromagnet
 
 
 def tilt_to_ext(tilt_deg: float) -> float:
-    """Actuator extension (mm) for a module tilt, from the station linkage in layout.py:
-    rod-end pin 40 mm behind and 72 mm below the hinge, base pin 289.4 mm under the docked pin."""
+    """Actuator extension (mm) for a module tilt, from the station linkage in layout.py: the carriage's stub pins
+    32 mm behind and 33.1 mm below the hinge when docked; the P16 (197.4 mm retracted) plus the 60 mm U-yoke is one
+    two-force link from its base pin, 277.4 mm under the docked pins."""
     a = math.radians(tilt_deg)
-    px, pz = 40 * math.cos(a) + 72 * math.sin(a), 40 * math.sin(a) - 72 * math.cos(a)
-    return math.hypot(px - 40.0, pz + 289.4) - 197.4
+    px, pz = 32 * math.cos(a) + 33.1 * math.sin(a), 32 * math.sin(a) - 33.1 * math.cos(a)
+    return math.hypot(px - 32.0, pz + 310.5) - 257.4
 
 
 def trapezoid(n_steps: int, t_total: float = INDEX_S, t_acc: float = 1 / PENDULUM_HZ) -> list[float]:
@@ -92,7 +113,7 @@ class Rig:
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise SystemExit("pigpiod is not running (sudo pigpiod)")
-        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_TAP, PIN_HX_SCK):
+        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_TAP, PIN_HX_SCK, PIN_MAG):
             self.pi.set_mode(p, pigpio.OUTPUT)
             self.pi.write(p, 0)
         for p in (PIN_INDEX, PIN_HOME, PIN_ALARM, PIN_HX_DT):
@@ -150,12 +171,44 @@ class Rig:
         if wait:
             time.sleep(0.2 + ext_mm / 35.0 if not self.sim else 0.01)   # ~35 mm/s under load
 
+    def magnet(self, on: bool) -> None:
+        if not self.sim:
+            self.pi.write(PIN_MAG, 1 if on else 0)
+
+    def tic(self, *args: str) -> None:
+        """The doser's Tic T500 (ticcmd): the auger's NEMA 11."""
+        if self.sim:
+            return
+        import subprocess
+        subprocess.run(["ticcmd", *args], check=True)
+
+    def auger_revs(self, revs: float, rps: float = 1.0) -> None:
+        """Turn the auger (positive = dosing direction) at rps auger revolutions per second, and wait."""
+        steps = int(round(revs * AUGER_RATIO * TIC_STEPS_PER_REV))
+        self.tic("--exit-safe-start", "--max-speed", str(int(rps * AUGER_RATIO * TIC_STEPS_PER_REV * 10000)),
+                 "--position-relative", str(steps))
+        time.sleep(abs(revs) / rps + 0.2 if not self.sim else 0.01)
+
+    def dock(self) -> None:
+        """Approach in the fork; magnet on and the pinion seeking (0.25 rev/s) for the last SEEK_MM."""
+        self.tic("--current", str(TIC_CURRENT_MA))
+        self.actuator(DOCK_MM - SEEK_MM)
+        self.magnet(True)
+        self.tic("--exit-safe-start", "--velocity", str(int(0.25 * TIC_STEPS_PER_REV * 10000)))
+        self.actuator(DOCK_MM)
+        time.sleep(0.4 if not self.sim else 0.0)
+        self.tic("--velocity", "0")
+
     def tilt(self, deg: float) -> None:
-        self.actuator(DOCK_MM)                     # approach in the fork, dock under the plate
+        self.dock()
         self.actuator(tilt_to_ext(deg))
 
-    def lower(self) -> None:
+    def lower(self, reverse_revs: float = 1.0) -> None:
+        """Back to 0 deg, reverse the auger at rest, release the magnet, lower."""
         self.actuator(DOCK_MM)
+        if reverse_revs:
+            self.auger_revs(-reverse_revs, rps=0.5)
+        self.magnet(False)
         self.actuator(0.0)
 
     def tap(self, n: int = 1, ms: int = 10, hz: float = 2.0) -> None:
@@ -209,6 +262,8 @@ def main() -> None:
     p = sub.add_parser("dose")
     p.add_argument("--tilt", type=float, default=30.0)
     p.add_argument("--revs", type=float, default=2.0)
+    p.add_argument("--rps", type=float, default=1.0, help="auger revolutions per second")
+    p.add_argument("--reverse-revs", type=float, default=1.0, help="auger revolutions reversed at rest after the dose")
     a = ap.parse_args()
     rig = Rig(sim=a.sim)
     t0 = time.time()
@@ -229,13 +284,11 @@ def main() -> None:
     elif a.cmd == "dose":
         rig.tilt(a.tilt)
         g0 = rig.grams()
-        print(f"tilted to {a.tilt} deg; turn the auger {a.revs} rev with the doser's Tic T500 (ticcmd), then press Enter")
-        if not a.sim:
-            input()
+        rig.auger_revs(a.revs, a.rps)
+        time.sleep(0.5)                           # hold at the dose tilt: the tail of the dose falls into the vial
         rig.tap(4)
-        time.sleep(0.6)                           # the auger sim: 70-100 mg trickles out for ~0.6 s after it stops
         log({"t": round(time.time() - t0, 3), "cmd": "dose", "tilt": a.tilt, "revs": a.revs, "grams": round(rig.grams() - g0, 4)})
-        rig.lower()
+        rig.lower(reverse_revs=a.reverse_revs)
     log({"t": round(time.time() - t0, 3), "cmd": a.cmd, "pos": rig.pos, "edges": len(rig.edges)})
 
 

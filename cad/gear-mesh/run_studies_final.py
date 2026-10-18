@@ -13,7 +13,7 @@ if __name__ == "__main__":
     rows = []
     for phase in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5):
         for seek in (0.0, 0.25):
-            r, _ = M.engage("final", 0.0, phase, seek, tag=f"engage_final_p{phase:g}_s{seek:g}")
+            r, _ = M.engage("final", 0.0, phase, seek, tag=f"engage_final_p{phase:g}_s{seek:g}")   # magnet on for the approach
             rows.append(r)
             print(r, flush=True)
     (M.OUT / "engage_final.json").write_text(json.dumps(rows, indent=1))

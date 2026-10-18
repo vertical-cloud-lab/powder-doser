@@ -410,14 +410,34 @@ def stub_pin() -> cq.Workplane:
 
 
 def yoke_stop() -> cq.Workplane:
-    """Printed stop block on a yoke arm's inner face: the hanging carriage rests its back section on it during the
-    approach (its COM is 20 mm behind the pins); docked, it is 1 mm clear."""
-    return cq.Workplane("XY").box(8.0, 4.0, 3.0, centered=False).translate((0.0, -4.0, 0.0))
+    """Printed stop block on a yoke arm's inner face (yoke frame: origin on the stub-pin axis, arm face at y = 0, block
+    toward -y, 1.3 mm thick, outside the carriage's |y| 18). The pin plate's tail rests on it while the carriage hangs
+    during the approach (its COM is 20 mm behind the pins); the tilt turns the tail up and away, and nothing on the
+    carriage reaches the |y| 18.2-19.5 layer, so the carriage can turn through 92 deg in the yoke."""
+    return cq.Workplane("XY").box(6.0, 1.3, 4.0, centered=False).translate((11.0, -1.3, YOKE_STOP_Z))
 
 
 def pin_boss() -> cq.Workplane:
-    """Printed boss bonded to the carriage's side post: 10 mm round, 1.5 mm thick, along +y from y = 0."""
-    return cq.Workplane("XZ").circle(5.0).circle(2.0).extrude(-1.5)
+    """Printed pin plate bonded to the carriage's side post (along +y from y = 0, 1.5 mm thick): a 10 mm boss round the
+    stub pin and a tail down and back to (14, -8) from the pin, which rests on the yoke's stop block during the approach."""
+    boss = cq.Workplane("XZ").circle(5.0).extrude(-1.5)
+    d = (14.0, -8.0)
+    ln = math.hypot(*d)
+    ang = math.degrees(math.atan2(d[1], d[0]))
+    tail = (cq.Workplane("XZ").center(ln / 2, 0).rect(ln, 6.0).extrude(-1.5)
+            .union(cq.Workplane("XZ").center(ln, 0).circle(3.0).extrude(-1.5))
+            .rotate((0, 0, 0), (0, 1, 0), -ang))
+    return boss.union(tail).cut(cq.Workplane("XZ").circle(2.0).extrude(-2.0))
+
+
+def yoke_stop_m() -> cq.Workplane:
+    """The -y arm's stop block: yoke_stop mirrored in y (a turn about z would also swap it to ahead of the pins)."""
+    return yoke_stop().mirror("XZ")
+
+
+def pin_boss_m() -> cq.Workplane:
+    """The -y side's pin plate: pin_boss mirrored in y, so its tail also points back and down."""
+    return pin_boss().mirror("XZ")
 
 
 def loc_pin() -> cq.Workplane:

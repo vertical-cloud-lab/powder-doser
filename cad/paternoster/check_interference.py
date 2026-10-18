@@ -32,8 +32,8 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("shoulder_screw", "chain_sa1"), ("gondola", "sleeve_bearing"), ("gondola", "insert_m5"), ("insert_m5", "thumb_screw"), ("gondola", "thumb_screw"),
         ("nema11", "sam_electronics_carriage"), ("solenoid", "sam_electronics_carriage"), ("pinion", "sam_electronics_carriage"),
         ("nema11", "pinion"), ("actuator_body", "actuator_rod"), ("actuator_body", "clevis_bracket"), ("actuator_rod", "uyoke_base"),
-        ("uyoke_arm", "uyoke_base"), ("uyoke_arm", "yoke_stop"), ("stub_pin", "uyoke_arm"), ("stub_pin", "sam_electronics_carriage"),
-        ("stub_pin", "pin_boss"), ("pin_boss", "sam_electronics_carriage"), ("eclip", "stub_pin"), ("magnet_bracket", "sam_electronics_carriage"),
+        ("uyoke_arm", "uyoke_base"), ("uyoke_arm", "yoke_stop"), ("uyoke_arm", "yoke_stop_m"), ("stub_pin", "uyoke_arm"), ("stub_pin", "sam_electronics_carriage"),
+        ("stub_pin", "pin_boss"), ("pin_boss", "sam_electronics_carriage"), ("stub_pin", "pin_boss_m"), ("pin_boss_m", "sam_electronics_carriage"), ("eclip", "stub_pin"), ("magnet_bracket", "sam_electronics_carriage"),
         ("dock_magnet", "magnet_bracket"), ("loc_pin", "sam_electronics_carriage"), ("armature_tab", "sam_mounting_plate"),
         ("shaft_idle", "sprocket_32"), ("shaft_drive", "sprocket_32"), ("shaft_idle", "flange_bearing"), ("shaft_drive", "flange_bearing"),
         ("idler_axle", "bearing_6202"), ("bearing_6202", "sprocket_32_idler"), ("idler_axle", "side_plate_front"),
@@ -135,8 +135,8 @@ def tilt(angles=(5, 15, 30, 45, 60, 75, 90), exts=(0.0, 5.0, 10.0, 15.0, 19.5)) 
     tilting 5-90 deg, against everything else."""
     hits = []
     moving_keys = ("sam_mounting_plate", "auger", "auger_cap", "armature_tab", "sam_electronics_carriage", "nema11",
-                   "pinion", "solenoid", "actuator_rod", "actuator_body", "uyoke_base", "uyoke_arm", "yoke_stop", "stub_pin",
-                   "pin_boss", "eclip", "magnet_bracket", "dock_magnet", "loc_pin")
+                   "pinion", "solenoid", "actuator_rod", "actuator_body", "uyoke_base", "uyoke_arm", "yoke_stop", "yoke_stop_m",
+                   "stub_pin", "pin_boss", "pin_boss_m", "eclip", "magnet_bracket", "dock_magnet", "loc_pin")
     for kind, vals in (("ext", exts), ("tilt", angles)):
         for v in vals:
             st = L.State(ext=v) if kind == "ext" else L.State(tilt=v)
