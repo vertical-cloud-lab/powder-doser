@@ -168,17 +168,20 @@ def nema34() -> cq.Workplane:
 
 
 def nema11_envelope() -> cq.Workplane:
-    """11HS18-0674S on Sam's electronics carriage: 28 mm square, 45 mm body, 5 mm shaft.
-    Mounting face at z = 0, shaft +z."""
+    """11HS18-0674S on Sam's electronics carriage: 28 mm square, 45 mm body, 22 mm boss, 5 mm x 20 mm shaft.
+    Mounting face at z = 0, shaft +z. On the inner face of the carriage's back wall, the shaft ends at the pinion's
+    back face."""
     body = cq.Workplane("XY").rect(28, 28).extrude(-45.0).edges("|Z").chamfer(2.5)
     boss = cq.Workplane("XY").circle(11).extrude(1.5)
-    sh = cq.Workplane("XY").circle(2.5).extrude(18)
+    sh = cq.Workplane("XY").circle(2.5).extrude(20.0)
     return body.union(boss).union(sh)
 
 
 def pinion_20t() -> cq.Workplane:
-    """Printed 20T module-1 pinion (stepper side of the 20:44 auger drive), 21 OD, 10 wide."""
-    return cq.Workplane("XY").polygon(20, 21.0).extrude(10.0).cut(cq.Workplane("XY").circle(2.55).extrude(10))
+    """Steel 20T module-1 pinion: KHK SS1-20A (S45C, 5 mm H7 bore, 10 mm face) with its 10 mm hub faced off so it
+    fits in front of the dock magnet's bracket; bonded to the shaft (Loctite 638). 22 OD, 10 wide. A printed pinion
+    is softer and rubs at about mu 0.3, which raises the separating force (cad/gear-mesh)."""
+    return cq.Workplane("XY").polygon(20, 21.6).extrude(10.0).cut(cq.Workplane("XY").circle(2.5).extrude(10))
 
 
 def solenoid_412() -> cq.Workplane:
@@ -329,23 +332,103 @@ def gondola() -> cq.Workplane:
     return g
 
 
-# ---------------------------------------------------------------- printed: station
-def station_yoke() -> cq.Workplane:
-    """Printed yoke bolted under Sam's electronics carriage: a clevis for the actuator's
-    rod end (pin along y) and a guide tongue at y = TONGUE_Y that rides the approach fork.
-    Frame: Sam's studio frame (the carriage's underside is at his z = -60.75)."""
-    zt = -60.75
-    plate = cq.Workplane("XY").box(44.0, 36.0, 5.0, centered=False).translate((YOKE_X - 22.0, -17.0, zt - 5.0))
-    cheeks = None
-    for y0 in (-10.5, 5.5):
-        c = (cq.Workplane("XZ").center(YOKE_X, YOKE_Z).circle(6.0).extrude(-5.0)
-             .union(cq.Workplane("XY").box(12.0, 5.0, zt - 5.0 - YOKE_Z, centered=False).translate((YOKE_X - 6.0, 0, YOKE_Z))))
-        c = c.translate((0, y0, 0))
-        cheeks = c if cheeks is None else cheeks.union(c)
-    y = plate.union(cheeks)
-    y = y.cut(cq.Workplane("XZ").center(YOKE_X, YOKE_Z).circle(ACT_CLEVIS_D / 2 + 0.1).extrude(40, both=True))
-    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((TONGUE_X - 15.0, TONGUE_Y - 3.0, zt - 25.0))
-    return y.union(tongue)
+# ---------------------------------------------------------------- station: dock magnet, U-yoke, locating pins
+# The same station as chain carousel v2 (cad/chain-carousel-v2/parts.py), all in Sam's studio frame.
+def dock_magnet() -> cq.Workplane:
+    """Adafruit 3872 holding electromagnet P20/15 (20 x 15 mm pot magnet): face up at z = 0, body along -z."""
+    body = cq.Workplane("XY").circle(DOCK_MAG_D / 2).extrude(-DOCK_MAG_H)
+    groove = cq.Workplane("XY").circle(DOCK_MAG_D * 0.32).circle(DOCK_MAG_D * 0.22).extrude(-0.3)
+    return body.cut(groove).union(cq.Workplane("XY").pushPoints([(-2, 0), (2, 0)]).circle(0.6).extrude(-8).translate((0, 0, -DOCK_MAG_H)))
+
+
+def magnet_bracket() -> cq.Workplane:
+    """Printed PETG bracket for the dock magnet, Sam's frame (carriage as drawn): a foot on the carriage's back face
+    (x 73.33) on the NEMA 11's two upper M2.5 screws, two arms back beside the pinion at |y| 12-18, and a cup round the
+    magnet at (x 99.5, y 0), open on the pinion side; the magnet is bonded in."""
+    x0, t = 73.33, 3.0
+    mx, my = DOCK_MAG_XY
+    zfoot = -19.9
+    ztop = DOCK_MAG_FACE_Z - 0.3
+    zbot = DOCK_MAG_FACE_Z - DOCK_MAG_H - 2.0
+    foot = cq.Workplane("XY").box(t, 36.0, zfoot - (-26.5), centered=False).translate((x0, -18.0, -26.5))
+    foot = foot.cut(cq.Workplane("YZ").pushPoints([(-11.5, -21.5), (11.5, -21.5)]).circle(1.4).extrude(t + 2).translate((x0 - 1, 0, 0)))
+    arms = None
+    for s in (-1, 1):
+        a = cq.Workplane("XY").box(mx + DOCK_MAG_D / 2 + 2.0 - x0, 6.0, ztop - zbot, centered=False).translate((x0, 12.0 if s > 0 else -18.0, zbot))
+        arms = a if arms is None else arms.union(a)
+    cup = cq.Workplane("XY").circle(DOCK_MAG_D / 2 + 2.0).extrude(ztop - zbot).translate((mx, my, zbot))
+    b = foot.union(arms).union(cup)
+    b = b.cut(cq.Workplane("XY").circle(DOCK_MAG_D / 2 + 0.1).extrude(ztop - zbot + 5).translate((mx, my, zbot + 2.0)))
+    return b.cut(cq.Workplane("XY").box(89.5 - 76.5, 24.0, 40.0, centered=False).translate((76.5, -12.0, zbot - 5.0)))
+
+
+def armature_tab() -> cq.Workplane:
+    """Low-carbon steel armature, 2 mm, laser cut, Sam's frame: top face on the plate's underside (z -18), x 89-111,
+    |y| <= 14; two countersunk M3 holes into heat-set inserts in the plate's back strip."""
+    x0, x1 = ARMATURE_X
+    t = cq.Workplane("XY").box(x1 - x0, 2 * ARMATURE_HW, ARMATURE_T, centered=False).translate((x0, -ARMATURE_HW, -18.0 - ARMATURE_T))
+    t = t.edges("|Z").fillet(2.0)
+    for x, y in ARMATURE_SCREWS:
+        t = t.cut(cq.Workplane("XY").center(x, y).circle(1.7).extrude(5).translate((0, 0, -21)))
+        t = t.cut(cq.Solid.makeCone(3.0, 1.6, 1.4, cq.Vector(x, y, -18.0 - ARMATURE_T), cq.Vector(0, 0, 1)))
+    return t
+
+
+def uyoke_base() -> cq.Workplane:
+    """Printed crossbar of the U-yoke on the P16's rod end, yoke frame: origin on the stub-pin axis, z along the
+    actuator (toward the carriage). The rod end's 9 mm square plug goes into a socket and an M4 bolt through its hole
+    makes it rigid; the steel arms bolt to its sides; the approach-guide tongue hangs under it at y = TONGUE_Y."""
+    zr = -UFORK_L
+    hw = UFORK_Y[0]
+    b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
+    b = b.cut(cq.Workplane("XY").box(9.3, 9.3, 10.0, centered=(True, True, False)).translate((0, 0, zr - 6.01)))
+    b = b.cut(cq.Workplane("XZ").center(0, zr).circle(2.15).extrude(30, both=True))
+    for x in (-5.0, 5.0):
+        b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))
+    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
+    return b.union(tongue)
+
+
+def uyoke_arm() -> cq.Workplane:
+    """2 mm steel arm of the U-yoke (laser cut), yoke frame, at y in [0, 2] (placed at |y| 19.5-21.5): a 4.1 mm hole
+    for the stub pin at the origin, R6 end, two 3.4 mm holes into the crossbar."""
+    zr = -UFORK_L
+    t = UFORK_Y[1] - UFORK_Y[0]
+    prof = cq.Workplane("XZ").moveTo(-6.0, 0).lineTo(-10.0, zr - 4.0).lineTo(10.0, zr - 4.0).lineTo(6.0, 0).close()
+    arm = prof.extrude(-t).union(cq.Workplane("XZ").circle(6.0).extrude(-t))
+    arm = arm.cut(cq.Workplane("XZ").circle(2.05).extrude(-t - 1))
+    for x in (-5.0, 5.0):
+        arm = arm.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(1.7).extrude(-t - 1))
+    return arm
+
+
+def stub_pin() -> cq.Workplane:
+    """4 mm steel stub pin along +y from y = 0 (pressed through the carriage's side post and the printed boss) to 7.5 mm,
+    with a DIN 6799 groove just outside the yoke arm."""
+    p = cq.Workplane("XZ").circle(2.0).extrude(-7.5).edges().chamfer(0.3)
+    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.6).translate((0, 6.4, 0)))
+
+
+def yoke_stop() -> cq.Workplane:
+    """Printed stop block on a yoke arm's inner face: the hanging carriage rests its back section on it during the
+    approach (its COM is 20 mm behind the pins); docked, it is 1 mm clear."""
+    return cq.Workplane("XY").box(8.0, 4.0, 3.0, centered=False).translate((0.0, -4.0, 0.0))
+
+
+def pin_boss() -> cq.Workplane:
+    """Printed boss bonded to the carriage's side post: 10 mm round, 1.5 mm thick, along +y from y = 0."""
+    return cq.Workplane("XZ").circle(5.0).circle(2.0).extrude(-1.5)
+
+
+def loc_pin() -> cq.Workplane:
+    """Steel dowel locating pin, LOCPIN_D x 8 mm, 1 mm 45 deg cone on top: bottom at z = 0 (5 mm in the rim wall)."""
+    return cq.Workplane("XY").circle(LOCPIN_D / 2).extrude(5.0 + LOCPIN_PROUD).faces(">Z").chamfer(1.0)
+
+
+def eclip() -> cq.Workplane:
+    """DIN 6799 e-clip on a stub pin's groove: 9 OD, 0.6 thick, open on one side. Face at z = 0, along -z."""
+    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(2.0).extrude(-ECLIP[1])
+    return c.cut(cq.Workplane("XY").center(0, -3.5).rect(3.4, 4.0).extrude(-2).translate((0, 0, 0.5)))
 
 
 def approach_fork() -> cq.Workplane:

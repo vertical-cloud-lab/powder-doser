@@ -35,7 +35,7 @@ M_FLOOR = 0.050                 # printed floor/rails
 M_PLATE = 0.070                 # Sam's mounting plate
 M_BRKT = 0.030                  # brackets, knuckles, fasteners
 M_AUG_NOM = 0.16                # auger + powder (0.12-0.20)
-M_CARR = 0.25                   # Sam's electronics carriage (NEMA 11 + solenoid + print)
+M_CARR = 0.285                  # Sam's electronics carriage: NEMA 11, solenoid, print, dock magnet + bracket, pins
 J_DRIVE = 5.2e-3                # chain (2 x 1.14 m x 0.33 kg/m at R) + 8 sprockets + NEMA 34 rotor, kg*m^2
 
 # ------------------------------------------------------------------ pivot table
@@ -332,7 +332,7 @@ def build_xml(shift0, damping=1e-4, fric=0.0, aug_mass=M_AUG_NOM, station=None, 
         d0 = pin_dock - base
         L0 = float(np.linalg.norm(d0))
         d0 /= L0
-        ret = PR.ACT_RETRACTED * MM
+        ret = (PR.ACT_RETRACTED + PR.UFORK_L) * MM     # P16 retracted + the U-yoke, base clevis to the stub-pin axis
         pin_ret = base + ret * d0
         car_org = pin_ret - np.array([a, b])          # carriage frame (= hinge frame when docked), world-aligned
         info["station"] = dict(L0=L0, d0=d0.tolist(), base=base.tolist(), hinge=[hxw, hzw], ret=ret)

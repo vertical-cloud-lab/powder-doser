@@ -1,0 +1,22 @@
+{
+ "check": "home",
+ "clashes": [
+  {
+   "a": "Actuonix rod",
+   "b": "U-yoke crossbar with guide tongue (printed)",
+   "mm3": 0.54
+  },
+  {
+   "a": "Electronics carriage (Sam, Oct 13)",
+   "b": "Stub pin 4 mm, steel, e-clip groove",
+   "mm3": 33.39
+  },
+  {
+   "a": "Electronics carriage (Sam, Oct 13)",
+   "b": "Stub pin 4 mm, steel, e-clip groove",
+   "mm3": 33.39
+  }
+ ],
+ "instances": 701,
+ "seconds": 199
+}

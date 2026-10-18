@@ -131,7 +131,8 @@ def tooth_outline_pieces(n_sub: int = 1):
 
 class Carousel:
     def __init__(self, dt=1e-3, hook_N=10.0, salt_g=100.0, bearing_drag=0.02, station_docked=False, tension_N=80.0,
-                 erp=0.2, iters=150):
+                 erp=0.2, iters=150, sliders=False):
+        self.sliders = sliders
         self.dt = dt
         self.hook_N = hook_N
         self.salt_g = salt_g
@@ -209,9 +210,10 @@ class Carousel:
         for nm, (x0, x1), (xa, xb_) in (("hold-down front", (-SIDE_GAP, -7.0), (-SIDE_GAP, -SIDE_GAP + 16)),
                                         ("hold-down back", (CHAIN_L + 7.0, CHAIN_L + SIDE_GAP), (CHAIN_L + SIDE_GAP - 16, CHAIN_L + SIDE_GAP))):
             # lip and foot as prisms with the printed part's 2.5 mm lead-in chamfers over the last 7 mm (eroded by the margin)
-            lip = [(sy - 20 + m, tz + 2.5 + m), (sy - 13, tz + m), (sy + 13, tz + m), (sy + 20 - m, tz + 2.5 + m),
+            ld = HOLD_DOWN_LEAD
+            lip = [(sy - 20 + m, tz + ld + m), (sy - 13, tz + m), (sy + 13, tz + m), (sy + 20 - m, tz + ld + m),
                    (sy + 20 - m, tz + 9 - m), (sy - 20 + m, tz + 9 - m)]
-            foot = [(sy - 20 + m, w_foot - 2.5 - m), (sy - 13, w_foot - m), (sy + 13, w_foot - m), (sy + 20 - m, w_foot - 2.5 - m),
+            foot = [(sy - 20 + m, w_foot - ld - m), (sy - 13, w_foot - m), (sy + 13, w_foot - m), (sy + 20 - m, w_foot - ld - m),
                     (sy + 20 - m, w_foot - 22 + m), (sy - 20 + m, w_foot - 22 + m)]
             shapes = [self._mesh([(x0 + m, y, z) for y, z in lip] + [(x1 - m, y, z) for y, z in lip]),
                       self._mesh([(xa + m, y, z) for y, z in foot] + [(xb_ - m, y, z) for y, z in foot])]
@@ -219,7 +221,7 @@ class Carousel:
         # slider rails under the station carriage (UHMW on aluminium bars): the carriage plate rides on them, so the
         # station height does not depend on chain sag
         z_rail = Z_RUN + CAR_W0 - CAR_T - SLIDER_GAP
-        for nm, (x0, x1) in (("slider rail front", SLIDER_X[0]), ("slider rail back", SLIDER_X[1])):
+        for nm, (x0, x1) in ((("slider rail front", SLIDER_X[0]), ("slider rail back", SLIDER_X[1])) if self.sliders else ()):
             # UHMW strip with lead-in ramps (SLIDER_RAMP mm drop over SLIDER_RAMP_L mm at each end)
             hl, rd, rl = SLIDER_HALF_L, SLIDER_RAMP, SLIDER_RAMP_L
             prof = [(sy - hl + m, z_rail - rd - m), (sy - hl + rl, z_rail - m), (sy + hl - rl, z_rail - m), (sy + hl - m, z_rail - rd - m),
@@ -390,7 +392,7 @@ class Carousel:
 
     def _build_carriages(self):
         col_car, col_mod = self._compound(self._carriage_shapes()), self._compound(self._module_shapes())
-        m_plate, m_auger, m_cap = 0.0345, 0.0662, 0.0054
+        m_plate, m_auger, m_cap = 0.0345 + 0.0092 + 0.0035, 0.0662, 0.0054   # plate + steel armature tab + pins/e-clips/screws
         m_salt = self.salt_g / 1000.0
         m_mod = m_plate + m_auger + m_cap + m_salt
         com_x = (m_plate * 52.2 + (m_auger + m_salt) * (103.0 + AUGER_Z0_XS) + m_cap * 262.0) / m_mod
@@ -553,9 +555,9 @@ class Carousel:
         return out
 
 
-def speed_profile(kind: str, v_mm_s: float, moves: int, accel: float = 250.0, dwell: float = 1.0):
-    """Chain speed (mm/s) vs time: trapezoids of one module (index) or one lap, with dwells."""
-    dist = MODULE_LINKS * P if kind == "index" else N_LINKS * P
+def speed_profile(kind: str, v_mm_s: float, moves: int, accel: float = 250.0, dwell: float = 1.0, links: float | None = None):
+    """Chain speed (mm/s) vs time: trapezoids of one module (index), one lap, or `links` links, with dwells."""
+    dist = (links if links else (MODULE_LINKS if kind == "index" else N_LINKS)) * P
     t_acc = v_mm_s / accel
     d_acc = 0.5 * accel * t_acc ** 2
     if 2 * d_acc > dist:
@@ -585,11 +587,12 @@ def speed_profile(kind: str, v_mm_s: float, moves: int, accel: float = 250.0, dw
 
 
 def run(args) -> dict:
-    sim = Carousel(hook_N=args.hook, salt_g=args.salt, dt=args.dt, tension_N=args.tension, erp=args.erp, iters=args.iters)
+    sim = Carousel(hook_N=args.hook, salt_g=args.salt, dt=args.dt, tension_N=args.tension, erp=args.erp, iters=args.iters,
+                   sliders=args.sliders)
     sim.settle()
     out_dir = HERE / "results" / args.run
     out_dir.mkdir(parents=True, exist_ok=True)
-    v_of_t, total, segs = speed_profile("index" if args.kind == "index" else "lap", args.speed, args.moves)
+    v_of_t, total, segs = speed_profile("index" if args.kind == "index" else "lap", args.speed, args.moves, links=args.links)
     estop_at = None
     if args.kind == "estop":
         estop_at = segs[0][1] + 0.5 * (segs[0][2] - segs[0][1])
@@ -606,7 +609,7 @@ def run(args) -> dict:
         t = n * args.dt
         if estop_at is not None and t >= estop_at:
             coasting = True
-        v = 0.0 if coasting else v_of_t(t)
+        v = 0.0 if coasting else args.direction * v_of_t(t)
         y_cmd += v * args.dt
         sim.drive(v / R, torque_Nm=0.0 if coasting else 12.0)
         sim.apply_hooks()
@@ -649,6 +652,7 @@ def run(args) -> dict:
                    chain_commanded_mm=round(cmd_total, 2),
                    carriage1_travel_mm=round(rows[-1]["c1_travel_mm"], 2),
                    carriage1_position_error_mm=round(rows[-1]["c1_travel_mm"] - cmd_total, 3) if args.kind == "index" else None,
+                   run_direction=args.direction, sliders=bool(args.sliders),
                    carriage1_x_drift_mm=round(max(abs(r["c1_x_mm"] - rows[0]["c1_x_mm"]) for r in rows), 3),
                    speed_error_rms_mm_s=round(float(np.sqrt(np.mean([(r["v_chain"] - r["v_cmd"]) ** 2 for r in rows]))), 2),
                    module_max_tilt_deg=[round(x, 3) for x in sim.module_max_tilt],
@@ -675,6 +679,9 @@ def main():
     ap.add_argument("--erp", type=float, default=0.2)
     ap.add_argument("--iters", type=int, default=150)
     ap.add_argument("--fps", type=float, default=30.0)
+    ap.add_argument("--sliders", action="store_true", help="add the Oct 16 slider rails under the station carriage")
+    ap.add_argument("--direction", type=int, default=RUN_DIRECTION, help="+1: bottom run toward +y; -1 (default): toward -y")
+    ap.add_argument("--links", type=float, default=None, help="move this many links instead of one module / one lap")
     ap.add_argument("--run", default=None)
     a = ap.parse_args()
     if a.run is None:

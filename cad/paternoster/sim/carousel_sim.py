@@ -282,9 +282,13 @@ def free_decay(cfg, theta0_deg=3.0, T=6.0):
 
 
 # ------------------------------------------------------------------ station run
-# current CAD (params.py): rod-end pin at Sam's (YOKE_X, YOKE_Z) = (40, -72) mm from the hinge, base clevis
-# at hinge + (40, -289.4) mm (DOCK_EXT = 20 mm above the 197.4 mm retracted length), P16-150-22-12-P
-STATION_BASE = dict(a=PR.YOKE_X * MM, b=PR.YOKE_Z * MM, base_rel=(PR.YOKE_X * MM, (PR.YOKE_Z - PR.ACT_RETRACTED - PR.DOCK_EXT) * MM),
+# current CAD (params.py): the carriage pivots on stub pins at Sam's (YOKE_X, YOKE_Z + DOCK_RISE) = (32, -33.1) mm
+# from the hinge when docked (its centre-of-mass height; cad/gear-mesh). The U-yoke is rigid on the P16's rod, so the
+# P16 + yoke is one two-force link from the base clevis to the stub-pin axis: retracted length 197.4 + UFORK_L 60 mm,
+# base clevis directly under the docked pins at hinge + (32, -310.5) mm (DOCK_EXT = 20 mm), P16-150-22-12-P.
+_PIN_Z = PR.YOKE_Z + PR.DOCK_RISE
+STATION_BASE = dict(a=PR.YOKE_X * MM, b=_PIN_Z * MM,
+                    base_rel=(PR.YOKE_X * MM, (_PIN_Z - PR.ACT_RETRACTED - PR.DOCK_EXT - PR.UFORK_L) * MM),
                     v_act=0.040, fmax=50.0)
 K_TAB = 2000.0            # SA-1 tab + pivot compliance per pivot, N/m (coordinator's 2 N/mm)
 T_CHAIN = 40.0                                  # assumed static tension per chain on the bottom run, N
@@ -308,7 +312,7 @@ def station_geometry(st, z_piv):
         mod_x = 0.0897 * math.cos(q) - (-0.0051) * math.sin(q)
         car_x = rot(0.0378, -0.0355)[0]
         tq = (M.M_PLATE + M.M_BRKT + M.M_AUG_NOM) * G * mod_x + M.M_CARR * G * car_x
-        out.append(dict(tilt_deg=deg, length_mm=Lact / MM, stroke_mm=(Lact - PR.ACT_RETRACTED * MM) / MM,
+        out.append(dict(tilt_deg=deg, length_mm=Lact / MM, stroke_mm=(Lact - (PR.ACT_RETRACTED + PR.UFORK_L) * MM) / MM,
                         arm_mm=arm / MM, force_N=tq / arm, line_angle_deg=math.degrees(math.atan2(dvec[0], dvec[1]))))
     return out
 

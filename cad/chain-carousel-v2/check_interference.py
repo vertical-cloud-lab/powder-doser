@@ -1,40 +1,60 @@
-"""Pairwise interference check of the assembled rig v2 (OCC booleans).
+"""Pairwise interference checks of the v2 rig (OCC booleans), in frame coordinates.
 
-    python check_interference.py           # home pose: every pair overlapping by more than 0.5 mm^3
-    python check_interference.py --sweep   # index the chain 8 pitches (one module) round all four corners
-    python check_interference.py --tilt    # module 1 tilted 0-90 deg at the station, against everything
+    python check_interference.py            # home pose (station docked), every pair
+    python check_interference.py --sweep    # chain indexed one module (8 pitches) in half-link steps the way it runs;
+                                            #   all 13 carriages together pass every point of the loop
+    python check_interference.py --tilt     # station: electronics carriage rising (approach), then module +
+                                            #   carriage + actuator tilting to the hinge's travel limit
+    python check_interference.py --swap     # loading position: a carriage's screws out, slid 10 mm, lifted out
 
-Pairs that touch by design (screw in its hole, carriage on its A-1 tab,
-chain links on their pins) share faces but no volume, so they don't show
-up; anything listed is a real clash. Threads are modelled as plain
-cylinders, so a screw in a tapped hole, insert or T-nut overlaps by design
-and those pairs are skipped.
+A pair is reported when the two solids share more than 0.5 mm^3. Pairs that touch by design (pin in its bore,
+screw in its insert or nut, bearing on its shaft, gear mesh) are skipped by part key in SKIP; anything listed is a
+real clash. The frame pitch is a rigid rotation of everything (and is 0), so the checks run in frame coordinates.
+Results go to checks/*.json.
 """
 from __future__ import annotations
 
 import itertools
-import math
+import json
+import sys
 import time
-
-import numpy as np
+from pathlib import Path
 
 import layout as L
+from params import DOCK_EXT, MODULE_LINKS, RUN_DIRECTION, TILT_MAX_FRAME, HOOK_SLIDE
 
-SKIP = {("chain_inner", "chain_outer"), ("chain_a1", "chain_inner"), ("auger", "auger_cap"), ("auger_blank", "auger_cap"),
-        ("carriage", "insert_m3"), ("insert_m3", "m3x6_bhcs"), ("carriage", "m3x6_bhcs"),
-        ("m5x10_fhcs", "sam_mounting_plate"),                       # hinge pin in Sam's knuckle
+OUT = Path(__file__).resolve().parent / "checks"
+
+SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pinion"),
+        ("carriage", "nut_m3"), ("carriage", "m3x12_bhcs"), ("m3x12_bhcs", "nut_m3"), ("chain_a1", "m3x12_bhcs"),
+        ("carriage", "clevis_pin"), ("clevis_pin", "sam_mounting_plate"), ("clevis_pin", "eclip"),
+        ("armature_tab", "m3x6_fhcs"), ("insert_m3", "m3x6_fhcs"), ("insert_m3", "sam_mounting_plate"), ("m3x6_fhcs", "sam_mounting_plate"),
         ("m5x12_bhcs", "tnut_m5"), ("ext_post", "tnut_m5"), ("ext_x", "tnut_m5"), ("ext_post", "m5x12_bhcs"),
-        ("bolt_m6x25", "nut_m6"), ("m5x25_shcs", "nut_m5"), ("nema34", "sprocket_15_motor"),   # key in its keyway
-        ("nema34", "nut_m5"),                                       # the modelled body's corner chamfer is a little full
-        ("m5x30_shcs", "nut_m5"), ("m5x10_shcs", "side_plate_front"), ("m5x10_shcs", "side_plate_back"),
-        ("hold_down", "insert_m5"), ("insert_m5", "m5x16_shcs"), ("foot", "tnut_m5"), ("ext_x", "foot")}
+        ("bolt_m6x25", "nut_m6"), ("m5x25_shcs", "nut_m5"), ("nema34", "sprocket_15_motor"),
+        ("nema34", "nut_m5"), ("m5x30_shcs", "nut_m5"), ("m5x10_shcs", "side_plate_front"), ("m5x10_shcs", "side_plate_back"),
+        ("hold_down", "insert_m5"), ("insert_m5", "m5x16_shcs"), ("foot", "tnut_m5"), ("ext_x", "foot"), ("foot", "riser"),
+        ("shaft", "sprocket_32"), ("shaft_drive", "sprocket_32"), ("shaft", "flange_bearing"), ("shaft_drive", "flange_bearing"),
+        ("shaft_drive", "sprocket_15_shaft"),
+        ("nema11", "sam_electronics_carriage"), ("solenoid", "sam_electronics_carriage"), ("pinion", "sam_electronics_carriage"),
+        ("nema11", "pinion"), ("actuator_body", "actuator_rod"), ("actuator_body", "clevis_bracket"), ("actuator_rod", "station_yoke"),
+        ("sam_electronics_carriage", "station_yoke"), ("magnet_bracket", "sam_electronics_carriage"), ("dock_magnet", "magnet_bracket"),
+        ("magnet_bracket", "nema11"), ("vial", "vial_funnel"), ("vial", "vial_cup"), ("load_cell", "vial_cup"), ("level_wedge", "load_cell"),
+        ("ext_vial_post", "level_wedge"), ("ext_vial_post", "ext_x"), ("ext_fork_post", "ext_y"), ("fork", "fork_arm"), ("ext_fork_post", "fork_arm"),
+        ("clevis_bracket", "ext_y"), ("corner_bracket", "ext_y"), ("corner_bracket", "ext_x"), ("corner_bracket", "ext_post"),
+        ("loc_pin", "sam_electronics_carriage"), ("loc_pin", "sam_mounting_plate"),
+        ("sam_electronics_carriage", "stub_pin"), ("pin_boss", "stub_pin"), ("eclip", "stub_pin"), ("actuator_rod", "uyoke_base"),
+        ("uyoke_arm", "uyoke_base"), ("uyoke_arm", "yoke_stop"), ("pin_boss", "sam_electronics_carriage")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
-
-MOVING = ("carriage", "sam_mounting_plate", "auger", "auger_blank", "auger_cap", "m5x10_fhcs", "m3x6_bhcs", "insert_m3",
-          "magnet", "sam_electronics_carriage")
+CHAIN = ("chain_inner", "chain_outer", "chain_a1")
 
 
-def _overlaps(objs: list, pairs=None, min_vol: float = 0.5) -> list:
+def _skip(ka: str, kb: str) -> bool:
+    if ka in CHAIN and kb in CHAIN:
+        return True                      # links share pins and plates by design
+    return tuple(sorted((ka, kb))) in SKIP
+
+
+def overlaps(objs: list, pairs=None, min_vol: float = 0.5) -> list:
     boxes = [s.BoundingBox() for _, _, s in objs]
     hits = []
     it = pairs if pairs is not None else itertools.combinations(range(len(objs)), 2)
@@ -43,92 +63,130 @@ def _overlaps(objs: list, pairs=None, min_vol: float = 0.5) -> list:
         a, b = boxes[i], boxes[j]
         if a.xmax < b.xmin or b.xmax < a.xmin or a.ymax < b.ymin or b.ymax < a.ymin or a.zmax < b.zmin or b.zmax < a.zmin:
             continue
-        if tuple(sorted((ka, kb))) in SKIP:
+        if _skip(ka, kb):
             continue
         v = sa.intersect(sb).Volume()
         if v > min_vol:
-            hits.append((na, nb, round(v, 1)))
+            hits.append((na, nb, round(v, 2)))
     return hits
 
 
-def main(min_vol: float = 0.5) -> list:
+def objects(pl) -> list:
+    return [(p.key, p.name, L.moved(p.key, p.M)) for p in pl]
+
+
+def _report(tag: str, hits: list, extra: dict | None = None) -> None:
+    OUT.mkdir(exist_ok=True)
+    rec = {"check": tag, "clashes": [{"a": a, "b": b, "mm3": v} for a, b, v in hits], **(extra or {})}
+    (OUT / f"{tag}.json").write_text(json.dumps(rec, indent=1) + "\n")
+    print(f"{tag}: {len(hits)} clash(es) over 0.5 mm^3")
+    for a, b, v in sorted(hits, key=lambda h: -h[2])[:40]:
+        print(f"  {v:9.2f} mm^3  {a}  x  {b}")
+
+
+def home() -> list:
     pl = L.placements()
-    objs = [(p.key, p.name, L.moved(p.key, p.M)) for p in pl]
     t0 = time.time()
-    hits = _overlaps(objs, min_vol=min_vol)
-    print(f"home pose: {len(pl)} instances, {time.time() - t0:.0f} s; {len(hits)} clash(es) over {min_vol} mm^3")
-    for h in sorted(hits, key=lambda h: -h[2]):
-        print(f"  {h[2]:9.1f} mm^3  {h[0]}  x  {h[1]}")
+    hits = overlaps(objects(pl))
+    _report("home", hits, {"instances": len(pl), "seconds": round(time.time() - t0)})
     return hits
 
 
-def _static(base) -> list:
-    """Everything that doesn't move with the chain."""
-    return [(p.key, p.name, L.moved(p.key, p.M)) for p in base if p.key not in MOVING and not p.key.startswith("chain")]
+ROT = ("sprocket_32", "shaft", "shaft_drive", "sprocket_15_shaft", "sprocket_15_motor")
 
 
-def sweep(steps: int = 8) -> list:
-    """Index the chain 0..steps-1 pitches past home. Every carriage and its
-    module is checked against the other carriages and modules and against
-    everything static (shafts, sprockets, bearings, plates, frame,
-    hold-downs, motor). One module pitch takes each module a quarter of the
-    way round, so 8 steps cover every corner position."""
-    base = L.placements()
-    static = _static(base)
+def sweep(step: float = 0.5) -> list:
+    """Chain travel 0 .. one module (8 links) the way the machine runs (RUN_DIRECTION), in half-link steps.
+    Movers: carriages and everything on them, and the chain links (exact polygonal kinematics). The station is
+    retracted (actuator at 0) as it is whenever the chain moves."""
     hits = []
-    for k in range(steps):
-        movers = []
-        for ci, li in enumerate(L.carriage_links()):
-            D = L.carriage_frame(li + k) @ np.linalg.inv(L.carriage_frame(li))
-            for p in base:
-                if p.key in MOVING and p.name.split()[-1] == str(ci + 1) and p.key != "sam_electronics_carriage":
-                    movers.append((p.key, f"{p.name} [c{ci + 1}]", L.moved(p.key, D @ p.M)))
-                elif ci == 0 and p.name in ("Home magnet", "Auger, threaded storage (lab) 1"):
-                    movers.append((p.key, f"{p.name} [c1]", L.moved(p.key, D @ p.M)))
-        objs = movers + static
-        n = len(movers)
-        pairs = [(i, j) for i in range(n) for j in range(i + 1, len(objs))
-                 if not (j < n and movers[i][1].split(" [")[1] == movers[j][1].split(" [")[1])]
-        h = _overlaps(objs, pairs)
-        hits += [(k, *x) for x in h]
-        print(f"  step {k}: {len(movers)} moving parts, {len(h)} clash(es)", flush=True)
-    print(f"sweep over {steps} pitch steps: {len(hits)} clash(es)")
-    for h in hits:
-        print(f"  step {h[0]}: {h[3]} mm^3  {h[1]}  x  {h[2]}")
+    n = int(round(MODULE_LINKS / step))
+    static = None
+    for i in range(n + 1):
+        s = RUN_DIRECTION * i * step
+        st = L.State(shift=s, ext=0.0)
+        pl = L.placements(st)
+        mv = [p for p in pl if p.module >= 0 or p.key in CHAIN and p.group == "chain"]
+        mv_ids = {id(p) for p in mv}
+        if static is None:
+            static_pl = [p for p in pl if id(p) not in mv_ids and p.key not in ROT and p.group != "drive"]
+            static = objects(static_pl)
+        rot = [p for p in pl if p.key in ROT or p.group == "drive"]
+        mo = objects(mv)
+        objs = mo + static + objects(rot)
+        nm = len(mo)
+        pairs = []
+        for a in range(nm):
+            for b in range(a + 1, len(objs)):
+                if b < nm and mv[a].module == mv[b].module and mv[a].module >= 0:
+                    continue             # parts of one carriage move together
+                if b < nm and mv[a].key in CHAIN and mv[b].key in CHAIN:
+                    continue
+                pairs.append((a, b))
+        h = overlaps(objs, pairs)
+        hits += [(f"{a} @{s:+.1f}", b, v) for a, b, v in h]
+        print(f"  shift {s:+5.1f} links: {len(h)} clash(es)", flush=True)
+    _report("sweep", hits, {"step_links": step, "poses": n + 1, "direction": RUN_DIRECTION})
     return hits
 
 
-def tilt(angles=(15, 30, 45, 60, 75, 90)) -> list:
-    """Module 1 (Sam's plate, auger, cap) tilted about its hinge at the
-    station, against every other part in the rig. The snap hooks are what
-    the plate pushes past, so carriage 1 itself is left out."""
+MOVING_STATION = ("sam_mounting_plate", "auger", "auger_cap", "armature_tab", "m3x6_fhcs", "insert_m3",
+                  "sam_electronics_carriage", "nema11", "pinion", "solenoid", "magnet_bracket", "dock_magnet",
+                  "loc_pin", "stub_pin", "pin_boss", "eclip", "uyoke_base", "uyoke_arm", "yoke_stop", "actuator_rod", "actuator_body")
+
+
+def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 5.0, 10.0, 15.0, 19.5, DOCK_EXT)) -> list:
+    """Station: the electronics carriage rising (ext 0 -> docked), then module 1 + carriage + actuator tilting about
+    the hinge, against everything else (carriage 1 itself included: its window, snap hooks and lugs)."""
     hits = []
-    base = L.placements()
-    others = [(p.key, p.name, L.moved(p.key, p.M)) for p in base
-              if not (p.step == 10 and p.name.endswith(" 1")) and p.name != "Carriage 1"
-              and p.key != "sam_electronics_carriage"]
-    for a in angles:
-        Ms = L.sam_frame(L.station_frame(), a)
-        Ma = Ms @ L.T(L.Ry(math.pi / 2), (L.AUGER_Z0_XS, 0, 0))
-        mod = [("sam_mounting_plate", f"Mounting plate 1 @{a}", L.moved("sam_mounting_plate", Ms)),
-               ("auger", f"Auger 1 @{a}", L.moved("auger", Ma)),
-               ("auger_cap", f"Cap 1 @{a}", L.moved("auger_cap", Ma @ L.T(None, (0, 0, L.AUGER_LEN))))]
-        objs = mod + others
-        pairs = [(i, j) for i in range(len(mod)) for j in range(len(mod), len(objs))]
-        h = _overlaps(objs, pairs)
-        hits += h
-        print(f"  tilt {a:2d} deg: {len(h)} clash(es)", flush=True)
-    print(f"tilt sweep: {len(hits)} clash(es)")
-    for h in hits:
-        print(f"  {h[2]} mm^3  {h[0]}  x  {h[1]}")
+    for kind, vals in (("ext", exts), ("tilt", angles)):
+        for v in vals:
+            st = L.State(ext=v) if kind == "ext" else L.State(tilt=float(v))
+            pl = L.placements(st)
+            mv = [p for p in pl if p.key in MOVING_STATION and p.module in (0, -1) and (p.group in ("station", "modules"))]
+            ids = {id(p) for p in mv}
+            rest = [p for p in pl if id(p) not in ids]
+            mo, ro = objects(mv), objects(rest)
+            objs = mo + ro
+            pairs = [(a, b) for a in range(len(mo)) for b in range(len(mo), len(objs))]
+            pairs += [(a, b) for a in range(len(mo)) for b in range(a + 1, len(mo))]
+            h = overlaps(objs, pairs)
+            hits += [(f"{a} @{kind}{v:g}", b, x) for a, b, x in h]
+            print(f"  {kind} {v:5.1f}: {len(h)} clash(es)", flush=True)
+    _report("tilt", hits)
+    return hits
+
+
+def swap() -> list:
+    """Loading position (+y side, carriage 4 at home): screws backed out, the carriage slid HOOK_SLIDE along the
+    run to free its hooks, then lifted out sideways (+y) with its module."""
+    hits = []
+    k = 3
+    so = 8.0                              # screws backed out until their tips clear the tabs (they stay in the plate)
+    seq = [(3.0, 0.0, 0.0), (so, 0.0, 0.0), (so, HOOK_SLIDE / 2, 0.0), (so, HOOK_SLIDE, 0.0), (so, HOOK_SLIDE, 2.0),
+           (so, HOOK_SLIDE, 10.0), (so, HOOK_SLIDE, 30.0), (so, HOOK_SLIDE, 60.0), (so, HOOK_SLIDE, 100.0), (so, HOOK_SLIDE, 150.0)]
+    for so, sl, lf in seq:
+        st = L.State(out_carriage=k, screws_out=so, out_slide=sl, out_lift=lf)
+        pl = L.placements(st)
+        mv = [p for p in pl if p.module == k]
+        ids = {id(p) for p in mv}
+        rest = [p for p in pl if id(p) not in ids]
+        mo, ro = objects(mv), objects(rest)
+        objs = mo + ro
+        pairs = [(a, b) for a in range(len(mo)) for b in range(len(mo), len(objs))]
+        h = overlaps(objs, pairs)
+        hits += [(f"{a} @screws{so:g}/slide{sl:g}/lift{lf:g}", b, x) for a, b, x in h]
+        print(f"  screws {so:4.1f} slide {sl:4.1f} lift {lf:5.1f}: {len(h)} clash(es)", flush=True)
+    _report("swap", hits)
     return hits
 
 
 if __name__ == "__main__":
-    import sys
     if "--sweep" in sys.argv:
         sweep()
     elif "--tilt" in sys.argv:
         tilt()
+    elif "--swap" in sys.argv:
+        swap()
     else:
-        main()
+        home()

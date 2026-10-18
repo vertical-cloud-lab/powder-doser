@@ -1,0 +1,32 @@
+{
+ "tilt": 45.0,
+ "rpm": 30.0,
+ "config": "as drawn",
+ "a_dock_mm": 32.1,
+ "i_set_A": 0.95,
+ "powder_g": 0.0,
+ "load_Nm": null,
+ "ecc_mm": 0.0,
+ "pitch_err_rad": 0.0,
+ "v_supply": 24.0,
+ "tooth_jumps": 2,
+ "first_jump_s": 0.1802999999999955,
+ "stall_s": null,
+ "centre_distance_mm": {
+  "mean": 76.11560012283796,
+  "max": 131.6581663177813,
+  "min": 37.34772404169295
+ },
+ "rim_gap_front_mm_max": 119.69774795357534,
+ "rim_gap_back_mm_max": 125.34243911226011,
+ "mag_gap_mm_max": null,
+ "lift_deg_max": 0.020217361083434443,
+ "actuator_N": {
+  "min": 1.283312653533449,
+  "max": 11.401587445905326
+ },
+ "wall_s": 0.7,
+ "sim_s": 0.2303199999999761,
+ "mode": "tooth jump",
+ "load_at_failure_Nm": 0.0
+}

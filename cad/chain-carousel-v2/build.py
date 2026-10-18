@@ -22,7 +22,9 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("carriage", "hold_down", "tensioner_block", "auger_blank")
+PRINTED = ("carriage", "hold_down", "tensioner_block", "uyoke_base", "magnet_bracket", "clevis_bracket", "fork", "fork_arm",
+           "vial_cup", "vial_funnel", "level_wedge", "pin_boss", "yoke_stop")
+LASER = ("armature_tab", "uyoke_arm")         # 2 mm low-carbon steel, laser cut (SendCutSend): DXF outlines
 STEP_FILE = "chain_carousel_rig_v2.step"
 
 
@@ -74,6 +76,11 @@ def main() -> None:
     for k, z in (("side_plate_front", -PLATE_T_SIDE / 2), ("side_plate_back", PLATE_T_SIDE / 2)):
         sec = cq.Workplane("XY").add(L.shape(k)).section(z)
         cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
+    # laser-cut steel parts: outlines in their own plane
+    tab = cq.Workplane("XY").add(L.shape("armature_tab")).section(-18.0 - 1.0)          # tab: plane z = -19 (Sam's frame)
+    cq.exporters.export(tab, str(HERE / "dxf" / "armature_tab.dxf"))
+    arm = cq.Workplane("XY").add(L.shape("uyoke_arm").rotate((0, 0, 0), (1, 0, 0), -90)).section(1.0)   # arm: x-z plane
+    cq.exporters.export(arm, str(HERE / "dxf" / "uyoke_arm.dxf"))
     asm = assembly()
     asm.save(str(HERE / "step" / STEP_FILE), exportType="STEP")
     pl = [dict(key=p.key, name=p.name, step=p.step, M=np.round(p.M, 6).tolist()) for p in L.placements()]

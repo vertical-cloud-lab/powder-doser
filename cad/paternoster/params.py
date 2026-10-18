@@ -71,7 +71,8 @@ N_LINKS = 2 * (LOOP_M + LOOP_N) + N_TEETH   # 120: each 90 deg wrap is exactly 8
 LOOP_B = LOOP_M * P
 LOOP_A = LOOP_N * P
 CORNER_Y = LOOP_B / 2                        # corner shafts at y = +-95.25
-Z_BOT = 420.0        # bottom corner shafts above the bench: room for the station under the bottom run
+Z_BOT = 432.0        # bottom corner shafts above the bench: room for the station under the bottom run (+12 mm for the
+                     # U-yoke's 60 mm reach below the carriage's stub pins, so the P16's base clevis still sits on its rail)
 Z_TOP = Z_BOT + LOOP_A
 CHAIN_L = 325.0      # front chain -> back chain, centre plane to centre plane
 
@@ -121,8 +122,8 @@ THUMB_HEAD = (11.0, 5.0)   # McMaster 92545A179 low-profile knurled head
 INSERT_D = 6.4       # M5 heat-set insert hole in the lug
 
 # Station reach-through for Sam's electronics carriage (his x 2.3-73.3, y +-18).
-WIN_X = (HINGE_X + 0.5, HINGE_X + 100.0)   # to the 44T gear's far side and the carriage's tilt sweep
-WIN_Y = 21.0
+WIN_X = (HINGE_X + 0.5, HINGE_X + 116.0)   # to the dock magnet's bracket (Sam's x 111) and the carriage's tilt sweep
+WIN_Y = 23.5         # the U-yoke's steel arms (|y| 19.5-21.5) rise through the window as the module tilts
 
 # --- frame: 2020 extrusion, built vertically, with 1/4 in 6061 side plates ---
 EXT = 20.0
@@ -173,13 +174,33 @@ SADDLE_XS = 190.0            # saddle under the auger tube, in Sam's x from the 
 AUGER_R_TUBE = 12.5          # the auger's tube is 25 mm across (44T gear 46 mm)
 
 # --- station geometry (Sam's studio frame at the station; actuator rod end pinned under his carriage) ---
-YOKE_X, YOKE_Z = 40.0, -72.0 # clevis pin under the electronics carriage, Sam's x, z
-TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue (rides the approach fork): beside the actuator's swing plane, inside the floor window
+# Carriage pivot at the carriage's centre-of-mass height (cad/gear-mesh/README.md). The P16 is pinned at both ends,
+# so only the dock holds the carriage's attitude on the plate. With the old pin under the carriage at (40, -72) the
+# carriage was an inverted pendulum (COM 39 mm above the pin) and fell off the plate once tilted, even unloaded.
+# Now two 4 mm steel stub pins go through the carriage's solid side posts (x 29-37), and a U-yoke on the P16's rod
+# end carries them, its 2 mm steel arms outside the carriage's |y| 18. The same station is used in chain carousel v2.
+YOKE_X, YOKE_Z = 32.0, -34.0 # stub-pin axis, Sam's frame, carriage as drawn (docked it rises DOCK_RISE)
+UFORK_L = 60.0               # stub-pin axis -> the P16's rod-end hole: the crossbar clears the carriage's front-bottom corner
+UFORK_Y = (19.5, 21.5)       # the yoke's steel arms, |y|; printed boss on the post at |y| 18-19.5; e-clip outside
+TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue under the yoke's crossbar, rides the approach fork
+YOKE_STOP_Z = -52.6 - 0.3 - 3.0 - YOKE_Z   # stop blocks on the arms under the carriage's back bottom (yoke frame z)
+DOCK_RISE = 0.9              # Sam's Part Studio leaves the carriage 0.9 mm under the plate; docked, they touch
+ECLIP = (9.0, 0.6)           # DIN 6799 e-clip on each stub pin, outside the arm
+LOCPIN_D, LOCPIN_PROUD = 4.0, 3.0    # steel dowels on the carriage rim into a hole and a slot in the plate
+LOCPIN_XY = ((30.0, 16.0), (70.0, -16.0))
+LOCPIN_HOLE, LOCPIN_SLOT = 4.2, 6.0
+SEP_RATIO_STEEL = 0.55       # separating / tangential mesh force, steel pinion on the printed gear, dry PTFE lube
+# Dock electromagnet behind the pinion pulls a steel tab on each plate (cad/gear-mesh): Adafruit 3872 P20/15
+DOCK_MAG_D, DOCK_MAG_H = 20.0, 15.0
+DOCK_MAG_XY = (99.5, 0.0)
+DOCK_MAG_FACE_Z = -18.0 - 2.0 - 0.15 - DOCK_RISE  # -21.05 as drawn: 0.15 mm under the tab when docked
+ARMATURE_X = (89.0, 111.0)   # 2 mm low-carbon steel tab under each plate's back strip, |y| <= 14
+ARMATURE_HW, ARMATURE_T = 14.0, 2.0
+ARMATURE_SCREWS = ((94.0, -10.0), (94.0, 10.0))   # M3 x 6 flat heads into M3 heat-set inserts in the plate
 DOCK_EXT = 20.0              # actuator extension when the carriage meets the plate (approach = DOCK_EXT)
 ACT_REAR = 8.0               # rear clevis hole -> body start
 ACT_BODY_L = 175.0
 ACT_ROD_D = 10.0
-CLEVIS_H = 21.7              # pin above the bracket's foot (foot on the station rail)
 FORK_H = 36.0
 VIAL_H = 61.0
 LC_L = 80.0
@@ -210,7 +231,10 @@ if __name__ == "__main__":
 DRIVE_EXT = 28.0             # drive shaft runs on past the back bearing into the coupling
 MODULE_LIFT = 22.0           # swap: lift the module so the auger clears the +y lug and the gear the rail...
 MODULE_SLIDE = 70.0          # ...then slide it out sideways (+y) from the loading position
-NEMA11_X, NEMA11_Z = 73.3, -32.0   # NEMA 11 face on the carriage's back face, 32 mm under the auger axis (20T:44T, m1)
+NEMA11_X, NEMA11_Z = 68.3, -33.15  # NEMA 11 face on the inner face of the carriage's 5 mm back wall (boss in Sam's pilot
+                                   # recess, screws from outside), as drawn; docked its axis is 32.25 mm under
+                                   # the auger's (20T:44T, m1): 0.18 mm backlash for printed-gear runout and the plate's
+                                   # bending under the magnet (cad/gear-mesh); Sam's pilot sits at -33.0, so -0.15 mm
 SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up
 STATION_RAIL_X = (VIAL_X, HINGE_X + YOKE_X)   # base cross rails under the vial post and the actuator
 FORK_POST_Y = 45.0
@@ -220,7 +244,10 @@ HALL_X = (130.0, 160.0)      # INDEX magnet (every gondola) and HOME magnet (gon
 HALL_GAP = 3.0
 _PIV0 = Z_BOT - R * math.cos(math.pi / N_TEETH) - SA1_C            # station pivot height (polygonal: f = 0.5)
 _HINGE_W = _PIV0 + HINGE_Z
-FORK_Z = _HINGE_W - 60.75 - 25.0 - 1.0 - FORK_H                     # fork bottom; its top is 1 mm under the docked tongue
+_TONGUE_BOT = YOKE_Z + DOCK_RISE - UFORK_L - 6.0 - 25.0            # docked tongue's bottom (Sam's z): under the crossbar
+FORK_Z = _HINGE_W + _TONGUE_BOT - 1.0 - FORK_H                     # fork bottom; its top is 1 mm under the docked tongue
+_BASE_PIN_Z = _HINGE_W + YOKE_Z + DOCK_RISE - (ACT_RETRACTED + DOCK_EXT + UFORK_L)   # P16 base pin (world z)
+CLEVIS_H = _BASE_PIN_Z - (BASE_Z + EXT)                            # pin above the bracket's foot (foot on the station rail)
 STATION_POST_H = FORK_Z + 12.0 - (BASE_Z + EXT)
 VIAL_Z = _PIV0 + GON_Z0 - VIAL_GAP - VIAL_H                         # vial base
 VIAL_POST_H = VIAL_Z - 3.0 - 12.7 - (BASE_Z + EXT)

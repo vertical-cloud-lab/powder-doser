@@ -64,7 +64,10 @@ LOOP_B = LOOP_M * P  # 114.3 horizontal centre distance: 32T tips (102.4 OD) cle
 LOOP_A = LOOP_N * P  # 228.6 vertical centre distance: room to tilt module 1 to 90 deg
 assert 2 * (LOOP_M + LOOP_N) + N_TEETH == N_LINKS   # closes exactly: 24 + 48 + 32
 LOOP_Y = LOOP_B / 2  # corner shafts at y = +-57.15
-Z_RUN = 210.0        # bottom run's pitch line above the bench: room for the station under it
+# Raised from 210 mm (Oct 13) so the station's Actuonix P16-150 fits under the hinge standing upright, as in the
+# paternoster: rod end 72 mm under the hinge, 197.4 mm retracted + 20 mm docking stroke, 21.7 mm base clevis on a
+# base rail (top at 35 mm). That needs the hinge at 351 mm or more; Z_RUN 345 puts it at 356.65.
+Z_RUN = 345.0        # bottom run's pitch line above the bench
 Z_BOT = Z_RUN + R    # bottom corner shafts
 Z_TOP = Z_BOT + LOOP_A                               # top corner shafts (as built, before tensioning)
 CHAIN_L = 305.0      # front chain -> back chain, centre plane to centre plane
@@ -101,11 +104,20 @@ LUG_T = 4.0          # lugs end at u = +-29.5, inside the carriage's +-30
 # point (u, w) on one meets the other unless |u| + w < R (48.6). The lugs are
 # chamfered to |u| + w <= INNER_CORNER and the hinge screws are flush.
 INNER_CORNER = 45.0
-HINGE_D = 5.3        # M5 pin, as in Sam's parts
+HINGE_D = 5.3        # Sam's knuckle holes (5.3 mm) and the lugs' pin holes
+# Hinge pins: 5 mm clevis pins with a retaining-ring groove, head flush in a counterbore on the lug's outer
+# face, an e-clip on the inner end between Sam's knuckle (|u| 15) and the auger tube (|u| 12.5). A threaded
+# pin would loosen with the vibration and the roll over the top; a protruding thumb screw hits the next
+# carriage on a corner (the |u| + w <= INNER_CORNER rule).
+PIN_D = 5.0
+PIN_HEAD = (8.0, 1.6)                                 # head diameter, height
+PIN_CBORE = (8.6, 1.8)                                # counterbore in the lug for the head
+PIN_GROOVE_U = 14.4                                   # e-clip groove (outer face), from the carriage centre along u: 0.6 mm inside the knuckle face
+ECLIP = (9.0, 0.6)                                    # DIN 6799 size 4 (4 mm groove on a 5 mm pin): OD, thickness
 # Station reach-through: Sam's electronics carriage (his x 2.3-73.3, y +-18),
 # the gear (his x 78.3-88.3) and the outlet's powder path when tilted.
-WIN_X = (HINGE_X - 14.0, HINGE_X + 92.0)
-WIN_U = 21.0
+WIN_X = (HINGE_X - 14.0, HINGE_X + 116.0)             # 130 mm: the docked electronics carriage sweeps the window's back edge at about 28 deg of tilt
+WIN_U = 23.5                 # the U-yoke's steel arms pass at |y| 19.5-21.5 and their e-clips at 22.3
 # Snap hooks that keep Sam's plate shut upside down (top of the loop): they
 # overhang the plate's edge where it is 50 mm wide (his x 40-65).
 SNAP_X = HINGE_X + 52.0
@@ -117,11 +129,12 @@ POST_Y = 112.0       # post centres: clear of the bearings and the motor standof
 SIDE_GAP = 30.0      # chain centre plane -> side plate's inner face
 PLATE_T_SIDE = 6.35  # 1/4 in 6061 side plates
 SIDE_W = 2 * POST_Y + EXT                             # 244
-SIDE_Z = (180.0, 555.0)                               # front side plate bottom, top
-SIDE_Z_BACK = (70.0, 555.0)                           # the back plate runs down to carry the motor
+_DZ = Z_RUN - 210.0                                   # everything above the bench moved up with the loop (Oct 18)
+SIDE_Z = (180.0 + _DZ, 555.0 + _DZ)                   # front side plate bottom, top
+SIDE_Z_BACK = (70.0 + _DZ, 555.0 + _DZ)               # the back plate runs down to carry the motor
 FOOT_H = 15.0        # leveling foot: bench -> underside of the base rails
 Z_BASE = FOOT_H      # base rails' underside
-Z_TOP_RAIL = 576.0   # top rails' underside, above the side plates and the post-head brackets
+Z_TOP_RAIL = 576.0 + _DZ   # top rails' underside, above the side plates and the post-head brackets
 TENSION_TRAVEL = (-6.0, 8.0)  # top shafts' slot travel about nominal: down to fit the chain, up to tension it
 DRIVE_TRAVEL = 4.0   # motor slides +-4 mm in its slots to tension the drive chain
 
@@ -157,7 +170,8 @@ C_DRIVE = (DRIVE_LINKS - N15) / 2 * P                # 138.11: closes exactly wi
 Z_MOTOR = Z_BOT - C_DRIVE                            # 120.46: motor axis, under the B+ shaft
 
 # --- station test fixtures ---
-HOLD_DOWN_GAP = 0.5
+HOLD_DOWN_GAP = 2.0          # lip above the tongue (was 0.5): the PyBullet runs showed tongues snagging on a 0.5 mm lip
+HOLD_DOWN_LEAD = 3.0         # lead-in chamfers on the lip and the foot, 3 mm deep
 # The foot under the tongue was 2 mm below it. The physics sim (sim/carousel_sim.py) found that a tongue's leading
 # corner dips about 1.2 mm below the run line while its carriage swings off the B- sprocket, and that corner then
 # hit the foot's end face and stalled the drive. 4 mm clears it with the lead-in chamfer to spare.
@@ -166,7 +180,93 @@ HOLD_DOWN_FOOT_GAP = 4.0
 # the plate rides on them at the station and its height no longer depends on how much the bottom run sags
 # (the sim showed 2-4 mm of sag at 40 N chain tension, enough to hang a tongue on the hold-down foot).
 SLIDER_GAP = 0.3                 # rail top below the plate's nominal outer face
-SLIDER_X = ((130.0, 137.0), (266.0, 284.0))   # between the window and the first lightening hole; behind the last one
+SLIDER_X = ((152.0, 168.0), (256.0, 282.0))   # under solid plate: between the window and the first lightening hole, and behind the last one
+LIGHTEN_XC = (190.0, 232.0)                  # lightening holes in the carriage plate, 34 mm long, 36 wide
 SLIDER_HALF_L = 25.0             # along the travel, about the station: a carriage corner swinging off a sprocket dips below the run line beyond this
 SLIDER_RAMP, SLIDER_RAMP_L = 3.0, 10.0   # lead-in at each end of a rail: drop, length
 MAGNET_D, MAGNET_H = 6.35, 3.18                       # K&J D42-N52, 1/4 x 1/8 in
+
+
+# --- carriage to chain: slide-on hooks with captive locknuts (through-bolted, from the outside) ---
+# Each tab slides into a printed hook under it (between the tab and the chain's pitch line); an M3 nylon-insert
+# locknut sits in a hex pocket in the hook, and an M3 x 12 button head goes in from the carriage's outer face
+# through the plate and the tab into it. To take a carriage off: two screws out, slide it 10 mm along the run so
+# the hooks clear the tabs, lift it out. Nothing has to be reached from inside the loop.
+TAB_SCREW_L = 12.0
+HOOK_SLIDE = 10.0                                     # slide along u to engage / free the hooks
+NUT_AF, NUT_H = 5.5, 4.0                              # M3 nylon-insert locknut (DIN 985)
+
+# --- chain tension and speeds (sim and test plan) ---
+CHAIN_TENSION_N = 80.0       # per chain: 3-4 mm under a 5 N side push on a 228.6 mm side
+
+# --- frame pitch (evaluated and rejected, kept as a parameter) ---
+# Pitching the whole frame outlet-end up would keep every outlet up all the way round (each module rolls about an
+# axis parallel to its auger). The auger-leakage study (../auger-leakage/) found no measurable difference at 0, 5,
+# 10 and 15 deg: the only afterflow leaves while the module is still above 10 deg on the way back from the dose,
+# where no rest pitch can catch it. A pitch also makes the dose stream drift back into the docked electronics
+# carriage's footprint (layout.stream_check): the fixed D-funnel catches it only up to about 2.4 deg. So 0.
+FRAME_PITCH_DEG = 0.0
+# Run direction. Each lap turns every module once about its own axis, which acts like one auger turn. With the
+# bottom run travelling toward +y (counter-clockwise seen from the back) that turn is a forward one and a primed
+# auger pumped about one revolution's dose out during a lap (proxy sim); the other way it retracts powder from the
+# exit. So v2 runs with the bottom run travelling toward -y. kinematics.py keeps +shift = toward +y; the
+# machine's normal travel is RUN_DIRECTION * shift.
+RUN_DIRECTION = -1           # -1: bottom run toward -y (clockwise seen from the back)
+
+# --- station: Actuonix P16-150-22-12-P, pinned at both ends (as the paternoster) ---
+ACT_STROKE = 150.0
+ACT_RETRACTED = 197.4        # hole to hole, retracted (Actuonix STEP): stroke + 47.4
+ACT_CLEVIS_D = 4.25          # both clevis holes
+# Carriage pin at the carriage's centre-of-mass height. The P16 is pinned at both ends, so it gives the carriage no
+# moment: the dock (rim + locating pins + magnet face) has to hold the carriage's attitude. With the pin under the
+# carriage (the paternoster's (40, -72)) the carriage is an inverted pendulum on it, COM 39 mm above, and the dock opens
+# at a few newtons of gear load once tilted (station sim + the main session's tooth-contact model). At COM height the
+# carriage hangs balanced: two 4 mm steel stub pins pressed through the carriage's solid side post (x 29-35) and a
+# printed boss, a U-yoke on the rod end with 2 mm steel arms up both sides (outside the carriage's |y| 18), so the
+# carriage can turn freely in it. Station sim, dock-opening separating force at 30 deg: 13.3 N here, 10.2 N at
+# (45, -34), 6.1 N for the old pin, 0.4 N with the pin on the mesh line (83.4, -52).
+YOKE_X, YOKE_Z = 32.0, -34.0 # carriage stub-pin axis, Sam's frame (carriage as drawn)
+UFORK_L = 60.0               # stub-pin axis -> the P16's rod-end hole, along the actuator: the crossbar clears the carriage's
+                             # front-bottom corner (51 mm from the pins) as the carriage turns 92 deg in the yoke
+UFORK_Y = (19.5, 21.5)       # steel arm, |y| (2 mm); printed boss on the post |y| 18-19.5; e-clip outside at 21.7-22.3
+TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue under the yoke's crossbar, rides the approach fork
+YOKE_STOP_Z = -52.6 - 0.3 - 3.0 - YOKE_Z   # stop blocks on the arms, 0.3 mm under the carriage's back bottom (yoke frame z)
+DOCK_EXT = 20.0              # actuator extension when the carriage meets the plate; 90 deg needs 282.5 of the P16's 347.4 mm
+# Locating pins on the carriage rim (steel dowels, conical tips) into a hole and a slot in the plate's underside: they
+# carry the along-plate load at tilt instead of friction; the slot runs along x for the 32.1 mm stack tolerance.
+LOCPIN_D, LOCPIN_PROUD = 4.0, 3.0    # dowel diameter; protrudes 3 mm above the rim (2.1 mm into the plate when docked)
+LOCPIN_XY = ((30.0, 16.0), (70.0, -16.0))   # Sam's frame; the first goes in a 4.2 mm hole, the second in a 4.2 x 6 slot
+LOCPIN_HOLE, LOCPIN_SLOT = 4.2, 6.0
+SEP_RATIO_STEEL = 0.55       # separating / tangential force at the mesh with the steel pinion and dry PTFE lube
+DOCK_RISE = 0.9              # Sam's Part Studio leaves the carriage 0.9 mm under the plate; docked, they touch
+CLEVIS_H = 21.7              # base clevis pin above its foot
+FORK_H = 36.0
+TILT_DOSE_WORLD = 30.0       # default dose tilt, degrees from horizontal in the world (frame tilt = this + pitch)
+TILT_MAX_FRAME = 90.0        # hinge travel limit (the P16-150 reaches 90 deg with 65 mm of stroke to spare)
+NEMA11_X, NEMA11_Z = 68.3, -33.15  # NEMA 11 mounting face on the inside of Sam's carriage's back wall (x 68.3-73.3), boss in his
+                                   # pilot recess, M2.5 screws from outside; its 20 mm shaft ends at x 88.3, the pinion's back face.
+                                   # Pinion axis 32.25 mm under the auger axis when docked (Sam's pilot is at -33.0: the motor sits
+                                   # 0.15 mm low in the 22.1 mm recess); 32.25 mm leaves 0.12 mm of backlash after the plate bends
+                                   # under the magnet (gear-mesh study: 32.1 mm jammed with printed-gear runout)
+PINION_X0 = NEMA11_X + 10.0        # pinion's motor-side face: 78.3-88.3, on the shaft's last 10 mm
+SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up
+GEAR_X = 78.4                # the auger's 44T gear face nearest the outlet, in Sam's x (gear 10 mm wide)
+
+# Dock electromagnet behind the pinion + steel armature tab under each plate's back strip (the gear-mesh
+# preload: the module's weight alone can't hold the 20T:44T mesh against the NEMA 11, see cad/gear-mesh/).
+# Adafruit 3872 P20/15: 20 x 15 mm, 5 V, 0.22 A, about 24.5 N holding at zero gap. Sam's frame, carriage as
+# drawn (top face z -18.9; docked it rises DOCK_RISE so the rim touches the plate and sets the 32.1 mm centre
+# distance). The face sits 0.15 mm under the armature when docked, so the rim, not the magnet, locates.
+DOCK_MAG_D, DOCK_MAG_H = 20.0, 15.0
+DOCK_MAG_XY = (99.5, 0.0)
+DOCK_MAG_FACE_Z = -18.0 - 2.0 - 0.15 - DOCK_RISE  # -21.05 as drawn
+ARMATURE_X = (89.0, 111.0)   # low-carbon steel tab, 2 mm, |y| <= 14, top face on the plate's underside (z -18)
+ARMATURE_HW, ARMATURE_T = 14.0, 2.0
+ARMATURE_SCREWS = ((94.0, -10.0), (94.0, 10.0))   # M3 x 6 flat heads into M3 inserts in the plate's back strip
+
+# vial on a 100 g load cell (gravity-referenced: plumb in the world)
+VIAL_H = 61.0
+VIAL_D = 28.0
+LC_L = 80.0
+VIAL_DROP = 30.0             # outlet to funnel mouth, world vertical
+FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)

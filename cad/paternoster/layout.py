@@ -89,7 +89,14 @@ def reference_parts() -> dict[str, cq.Workplane]:
     sam = read_step_parts(REF / "sam-oct13-mounting-plate-and-carriage.step")
     aug = read_step_parts(REF / "auger-threaded-storage.step")
     cap = read_step_parts(REF / "auger-cap-threaded.step")
-    return {"sam_mounting_plate": cq.Workplane("XY").add(sam["Mounting Plate"]),
+    plate = cq.Workplane("XY").add(sam["Mounting Plate"])
+    (x1, y1), (x2, y2) = LOCPIN_XY
+    depth = 3.5
+    plate = plate.cut(cq.Workplane("XY").center(x1, y1).circle(LOCPIN_HOLE / 2).extrude(depth).translate((0, 0, -18.0)))
+    plate = plate.cut(cq.Workplane("XY").center(x2, y2).slot2D(LOCPIN_SLOT, LOCPIN_HOLE, 0).extrude(depth).translate((0, 0, -18.0)))
+    for (x, y) in ARMATURE_SCREWS:                    # M3 heat-set inserts for the steel tab
+        plate = plate.cut(cq.Workplane("XY").center(x, y).circle(2.0).extrude(4.0).translate((0, 0, -18.0)))
+    return {"sam_mounting_plate": plate,
             "sam_electronics_carriage": cq.Workplane("XY").add(sam["Carriage"]),
             "auger": cq.Workplane("XY").add(next(iter(aug.values()))),
             "auger_cap": cq.Workplane("XY").add(next(iter(cap.values())))}
@@ -173,7 +180,7 @@ STEP_TITLES = {
     7: "Drive: jaw coupling, motor plate on standoffs, NEMA 34",
     8: "Gondolas: hang each one on its two SA-1 pivots (shoulder screw, PTFE washer, bushing, locknut)",
     9: "Modules: auger into Sam's mounting plate, then into a gondola at the loading position, pinned",
-    10: "Station: actuator on its clevis, yoke + Sam's electronics carriage (NEMA 11, pinion, solenoid), approach fork",
+    10: "Station: actuator on its clevis, U-yoke on the rod, Sam's electronics carriage on its stub pins (NEMA 11, steel pinion, solenoid, dock magnet, locating pins), approach fork",
     11: "Dispense: vial on the load cell, hall switches (INDEX, HOME)",
 }
 
@@ -193,22 +200,28 @@ def station_module(state: State) -> int:
     return -1
 
 
-def actuator_pose(state: State, k_station: int, pv: np.ndarray) -> tuple[np.ndarray, np.ndarray, float]:
-    """(base pin B, rod-end pin P, length) in world for the station state."""
+def electronics_frame(state: State, k_station: int, pv: np.ndarray) -> np.ndarray:
+    """Sam's carriage frame (his studio frame as drawn; docked it rises DOCK_RISE): tilting with the module, or
+    lowered by the actuator's remaining approach."""
     hinge = np.array([HINGE_X, 0.0, (pv[k_station][1] if k_station >= 0 else K.pivots(K.HOME_SHIFT)[0][1]) + HINGE_Z])
-    pin_dock = hinge + np.array([YOKE_X, 0.0, YOKE_Z])
-    B = pin_dock - np.array([0, 0, ACT_RETRACTED + DOCK_EXT])
     if state.tilt > 0:
-        a = math.radians(state.tilt)
-        P_ = hinge + np.array([YOKE_X * math.cos(a) - YOKE_Z * math.sin(a), 0.0, YOKE_X * math.sin(a) + YOKE_Z * math.cos(a)])
-    else:
-        P_ = pin_dock - np.array([0, 0, DOCK_EXT - state.ext])
+        return T(None, hinge) @ T(Ry(-math.radians(state.tilt))) @ T(None, (0, 0, DOCK_RISE))
+    return T(None, hinge - np.array([0, 0, DOCK_EXT - state.ext - DOCK_RISE]))
+
+
+def actuator_pose(state: State, k_station: int, pv: np.ndarray) -> tuple[np.ndarray, np.ndarray, float]:
+    """(base pin B, stub-pin axis P, base-to-P length) in world for the station state. The P16's rod-end hole is
+    UFORK_L short of P on the same axis (the U-yoke is rigid on the rod); B sits directly under the docked P."""
+    docked = State(shift=state.shift, tilt=0.0, ext=DOCK_EXT)
+    P_dock = (electronics_frame(docked, k_station, pv) @ np.array([YOKE_X, 0.0, YOKE_Z, 1.0]))[:3]
+    B = P_dock - np.array([0, 0, ACT_RETRACTED + DOCK_EXT + UFORK_L])
+    P_ = (electronics_frame(state, k_station, pv) @ np.array([YOKE_X, 0.0, YOKE_Z, 1.0]))[:3]
     return B, P_, float(np.linalg.norm(P_ - B))
 
 
 def station_base_z() -> float:
     pv0 = K.pivots(K.HOME_SHIFT)[0][1]
-    return pv0 + HINGE_Z + YOKE_Z - ACT_RETRACTED - DOCK_EXT
+    return pv0 + HINGE_Z + YOKE_Z + DOCK_RISE - ACT_RETRACTED - DOCK_EXT - UFORK_L
 
 
 def placements(state: State | None = None) -> list[Placement]:
@@ -329,6 +342,7 @@ def placements(state: State | None = None) -> list[Placement]:
         S = G @ slide @ sam_in_gondola(tilt)
         add("sam_mounting_plate", f"Mounting plate (Sam, Oct 13) {k + 1}", S, 9, SAM, "modules", (0, 0, 80), k)
         A = S @ AUGER_IN_SAM
+        add("armature_tab", f"Steel armature tab {k + 1} (2 mm, laser cut)", S, 9, STEEL, "modules", (0, 0, 80), k)
         add("auger", f"Auger, threaded storage {k + 1}", A, 9, WHITE, "modules", (0, 0, 80), k)
         add("auger_cap", f"Auger cap {k + 1}", A @ T(None, (0, 0, AUGER_LEN)), 9, WHITE, "modules", (0, 0, 80), k)
         for sy in (-1, 1):
@@ -350,18 +364,29 @@ def placements(state: State | None = None) -> list[Placement]:
     Ract = cols(xdir, ydir, zdir)
     add("clevis_bracket", "Actuator base clevis", T(None, B), 10, ALU, "station", (0, 0, -40))
     add("actuator_body", "Actuonix P16-P 150 mm (feedback)", T(Ract, B), 10, (0.25, 0.25, 0.28), "station", (0, 0, -40))
-    add("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - ACT_RETRACTED)), 10, (0.7, 0.7, 0.72), "station", (0, 0, -40))
-    # carriage frame: Sam's frame of the station gondola (tilting), or lowered for the approach
-    hinge_world = np.array([HINGE_X, 0.0, (pv[k_st][1] if k_st >= 0 else K.pivots(K.HOME_SHIFT)[0][1]) + HINGE_Z])
-    if st.tilt > 0:
-        C = T(None, hinge_world) @ T(Ry(-math.radians(st.tilt)))
-    else:
-        C = T(None, hinge_world - np.array([0, 0, DOCK_EXT - st.ext]))
+    add("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 10, (0.7, 0.7, 0.72), "station", (0, 0, -40))
+    Y = T(Ract, Pp)                                   # yoke frame: on the stub-pin axis, z along the actuator
+    add("uyoke_base", "U-yoke crossbar with guide tongue (printed)", Y, 10, PETG, "station", (0, 0, -60))
+    for sy in (-1, 1):
+        Rm = T(None) if sy > 0 else T(Rz(math.pi))   # part's +y outward
+        add("uyoke_arm", f"U-yoke arm {'+' if sy > 0 else '-'}y, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 10, STEEL, "station", (0, 0, -60))
+        add("yoke_stop", f"Yoke stop block {'+' if sy > 0 else '-'}y (printed)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm @ T(None, (4.0, 0.0, YOKE_STOP_Z)),
+            10, PETG, "station", (0, 0, -60))
+    C = electronics_frame(st, k_st, pv)
     add("sam_electronics_carriage", "Electronics carriage (Sam, Oct 13)", C, 10, (0.20, 0.45, 0.95), "station", (0, 0, -60))
-    add("station_yoke", "Yoke under the electronics carriage (printed)", C, 10, PETG, "station", (0, 0, -60))
+    for sy in (-1, 1):
+        Rq = T(Rz(math.pi)) if sy < 0 else T(None)
+        add("pin_boss", f"Stub-pin boss {'+' if sy > 0 else '-'}y (printed)", C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)) @ Rq, 10, PETG, "station", (0, 0, -60))
+        add("stub_pin", f"Stub pin {'+' if sy > 0 else '-'}y, 4 mm steel", C @ T(None, (YOKE_X, sy * 15.3, YOKE_Z)) @ Rq, 10, STEEL, "station", (0, 0, -60))
+        add("eclip", f"E-clip DIN 6799 {'+' if sy > 0 else '-'}y", C @ T(None, (YOKE_X, sy * 22.3, YOKE_Z)) @ T(Rx(-sy * math.pi / 2)), 10, DARK, "station", (0, 0, -60))
     add("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 10, DARK, "station", (0, 0, -60))
-    add("pinion", "20T pinion", C @ T(Ry(math.pi / 2), (NEMA11_X + 5.0, 0, NEMA11_Z)), 10, ORANGE, "station", (0, 0, -60))
+    add("pinion", "20T steel pinion (KHK SS1-20A)", C @ T(Ry(math.pi / 2), (NEMA11_X + 10.0, 0, NEMA11_Z)), 10, ORANGE, "station", (0, 0, -60))
     add("solenoid", "Solenoid (Adafruit 412)", C @ T(None, (SOL_X, 0, SOL_Z)), 10, DARK, "station", (0, 0, -60))
+    add("magnet_bracket", "Dock magnet bracket (printed)", C, 10, PETG, "station", (0, 0, -60))
+    add("dock_magnet", "Dock electromagnet Adafruit 3872 (P20/15)", C @ T(None, (DOCK_MAG_XY[0], DOCK_MAG_XY[1], DOCK_MAG_FACE_Z)), 10,
+        (0.75, 0.15, 0.15), "station", (0, 0, -60))
+    for i, (x, y) in enumerate(LOCPIN_XY):
+        add("loc_pin", f"Locating pin {i + 1}, 4 mm (carriage rim)", C @ T(None, (x, y, -18.9 - 5.0)), 10, STEEL, "station", (0, 0, -60))
     add("fork", "Approach fork (printed)", T(None, (HINGE_X + TONGUE_X, TONGUE_Y, FORK_Z)), 10, PETG, "station", (0, 0, -40))
     add("ext_station_post", "Station post (fork)", T(None, (STATION_RAIL_X[1], FORK_POST_Y, BASE_Z + EXT)), 10, ALU, "station", (0, 0, -40))
     add("fork_arm", "Fork arm (printed)", T(None, (HINGE_X + TONGUE_X, TONGUE_Y, FORK_Z)), 10, PETG, "station", (0, 0, -40))
@@ -444,7 +469,16 @@ SHAPES = {
     "clevis_bracket": PT.clevis_bracket,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],
-    "station_yoke": PT.station_yoke,
+    "uyoke_base": PT.uyoke_base,
+    "uyoke_arm": PT.uyoke_arm,
+    "yoke_stop": PT.yoke_stop,
+    "stub_pin": PT.stub_pin,
+    "pin_boss": PT.pin_boss,
+    "eclip": PT.eclip,
+    "magnet_bracket": PT.magnet_bracket,
+    "dock_magnet": PT.dock_magnet,
+    "armature_tab": PT.armature_tab,
+    "loc_pin": PT.loc_pin,
     "nema11": PT.nema11_envelope,
     "pinion": PT.pinion_20t,
     "solenoid": PT.solenoid_412,

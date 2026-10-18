@@ -1,0 +1,75 @@
+{
+ "magnet only (12 N)": {
+  "f_mag_N": 12.0,
+  "f_sep_N": 0.0,
+  "E_MPa": 2000.0,
+  "nodes": 11780,
+  "tets": 42876,
+  "dofs": 226752,
+  "loaded_dofs": {
+   "magnet": 119,
+   "seat": 1260
+  },
+  "fixed_dofs": 3076,
+  "gear_seat_dz_um": -77.77,
+  "screw_boss_dz_um": -153.77,
+  "back_end_dz_um": -174.28,
+  "max_von_mises_MPa": 2.263,
+  "wall_s": 176.4
+ },
+ "magnet + stall separating force": {
+  "f_mag_N": 12.0,
+  "f_sep_N": 5.5,
+  "E_MPa": 2000.0,
+  "nodes": 11780,
+  "tets": 42876,
+  "dofs": 226752,
+  "loaded_dofs": {
+   "magnet": 119,
+   "seat": 1260
+  },
+  "fixed_dofs": 3076,
+  "gear_seat_dz_um": -59.76,
+  "screw_boss_dz_um": -119.61,
+  "back_end_dz_um": -135.94,
+  "max_von_mises_MPa": 1.778,
+  "wall_s": 189.4
+ },
+ "magnet 20 N (touching) + stall": {
+  "f_mag_N": 20.0,
+  "f_sep_N": 5.5,
+  "E_MPa": 2000.0,
+  "nodes": 11780,
+  "tets": 42876,
+  "dofs": 226752,
+  "loaded_dofs": {
+   "magnet": 119,
+   "seat": 1260
+  },
+  "fixed_dofs": 3076,
+  "gear_seat_dz_um": -109.45,
+  "screw_boss_dz_um": -218.03,
+  "back_end_dz_um": -247.53,
+  "max_von_mises_MPa": 3.221,
+  "wall_s": 175.1
+ },
+ "no magnet, stall separating force": {
+  "f_mag_N": 0.0,
+  "f_sep_N": 5.5,
+  "E_MPa": 2000.0,
+  "nodes": 11780,
+  "tets": 42876,
+  "dofs": 226752,
+  "loaded_dofs": {
+   "magnet": 119,
+   "seat": 1260
+  },
+  "fixed_dofs": 3076,
+  "gear_seat_dz_um": 14.76,
+  "screw_boss_dz_um": 28.01,
+  "back_end_dz_um": 31.44,
+  "max_von_mises_MPa": 0.413,
+  "wall_s": 227.6
+ },
+ "note": "PETG E 2000 MPa (printed, conservative for the 5 mm plate's perimeters); z fixed at the carriage rim pads, knuckle bores pinned; loads as nodal patches. Negative dz = toward the carriage (closes the gear centre distance); the gear seat dz is the mean over the two clamp rings beside the gear"
+}

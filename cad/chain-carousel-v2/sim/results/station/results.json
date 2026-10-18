@@ -1,0 +1,37 @@
+{
+ "cycle": [
+  {
+   "magnet": true,
+   "powder_g": 50.0,
+   "tilt_world": 30.0,
+   "tilt_frame": 30.0,
+   "tilt_reached": 30.32,
+   "F_act_peak_N": 26.09,
+   "F_act_dock_N": 7.48,
+   "F_act_dose_N": 7.59,
+   "dock_gap_dose_max_mm": -0.119,
+   "dock_gap_stall_max_mm": -0.097,
+   "magnet_force_dose_N": 20.0,
+   "hinge_up_peak_N": 4.83,
+   "hinge_down_peak_N": -20.37,
+   "lip_force_peak_N": 11.18,
+   "foot_force_peak_N": 0.0,
+   "tab_lift_peak_mm": 1.988,
+   "tab_drop_peak_mm": -0.908,
+   "relatched": true,
+   "tilt_end": -0.003,
+   "dock_holds_dose": true,
+   "dock_N_min_dose": 19.03,
+   "dock_cp_margin_min_dose_mm": 6.87,
+   "dock_holds_stall": true,
+   "dock_N_min_stall": 18.31,
+   "dock_cp_margin_min_stall_mm": 21.82,
+   "dock_holds_tilt": true,
+   "dock_N_min_tilt": 22.14,
+   "dock_cp_margin_min_tilt_mm": 18.3,
+   "dock_holds_back": true,
+   "dock_N_min_back": 16.73,
+   "dock_cp_margin_min_back_mm": 0.11
+  }
+ ]
+}
