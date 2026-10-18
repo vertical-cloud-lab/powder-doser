@@ -1,0 +1,32 @@
+{
+ "kind": "v2lap",
+ "seed": 0,
+ "direction": "fwd",
+ "corners": 4,
+ "v2_speed_mm_s": 50.0,
+ "v2_accel_mm_s2": 250.0,
+ "auger_corner_radius_mm": 36.92,
+ "note": "straights between corners compressed to 0.4 s dwells; the tube turns with the module (clamp friction)",
+ "tag": "v2_a10_fwd",
+ "alpha_deg": 10.0,
+ "n_grains": 1100,
+ "rp_mm": 1.0,
+ "z_cut_mm": 8.666666666666666,
+ "m_grain_mg": 9.047786842338606,
+ "exits_by_phase": {
+  "corner 1": 4,
+  "corner 2": 17,
+  "corner 3": 23,
+  "corner 4": 27,
+  "final dwell": 3
+ },
+ "exits_by_phase_mg": {
+  "corner 1": 36.191147369354425,
+  "corner 2": 153.8123763197563,
+  "corner 3": 208.09909737378794,
+  "corner 4": 244.29024474314238,
+  "final dwell": 27.14336052701582
+ },
+ "n_out_total": 74,
+ "near_exit_final": 199
+}

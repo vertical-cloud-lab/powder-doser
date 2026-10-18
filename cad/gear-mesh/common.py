@@ -65,7 +65,7 @@ M_CARR = 0.25                           # Sam's electronics carriage with the NE
 # Horizontal, a partial fill lies along the whole bore (flight section 12-83 mm, storage 83-250 mm);
 # tilted cap-end up it slides down onto the flights, so the tilted cases use a lower centroid.
 POWDER_ROLL_X = 150.0                   # level module
-POWDER_TILT_X = 110.0                   # tilted module (powder slid toward the flights)
+POWDER_TILT_X = 110.0                   # tilted 15 deg or more (powder slid toward the flights)
 FILLS = {"empty": 0.0, "20 g": 0.020, "60 g": 0.060, "150 g (dense metal)": 0.150}
 
 # Dock: the carriage's top rim meets the plate underside over x = 25-73 mm (Sam's STEP).
@@ -85,7 +85,10 @@ MU = {"PETG on PETG, dry": 0.30, "steel on PETG, dry": 0.20, "steel on PETG, PTF
 def weight_moment(m_powder: float, world_tilt_deg: float, x_powder: float | None = None) -> float:
     """Gravity moment (N*mm) that holds the plate down on the carriage at a world tilt (cap end up)."""
     a = math.radians(world_tilt_deg)
-    xp = x_powder if x_powder is not None else (POWDER_ROLL_X if world_tilt_deg <= 1.0 else POWDER_TILT_X)
+    if x_powder is not None:
+        xp = x_powder
+    else:   # the powder slides toward the flights as the cap end rises (all of it by 15 deg)
+        xp = POWDER_ROLL_X + (POWDER_TILT_X - POWDER_ROLL_X) * min(1.0, max(world_tilt_deg, 0.0) / 15.0)
     m_mod = M_MOD * G * (X_COM * math.cos(a) - Z_COM * math.sin(a))
     m_pow = m_powder * G * xp * math.cos(a)
     return m_mod + m_pow
