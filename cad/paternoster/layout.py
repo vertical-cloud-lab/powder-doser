@@ -180,7 +180,7 @@ STEP_TITLES = {
     7: "Drive: jaw coupling, motor plate on standoffs, NEMA 34",
     8: "Gondolas: hang each one on its two SA-1 pivots (shoulder screw, PTFE washer, bushing, locknut)",
     9: "Modules: auger into Sam's mounting plate, then into a gondola at the loading position, pinned",
-    10: "Station: actuator on its clevis, U-yoke on the rod, Sam's electronics carriage on its stub pins (NEMA 11, steel pinion, solenoid, dock magnet, locating pins), approach fork",
+    10: "Station: actuator on its clevis, U-yoke on the rod, electronics carriage on stub pins (NEMA 11, steel pinion, solenoid, dock magnet), approach fork",
     11: "Dispense: vial on the load cell, hall switches (INDEX, HOME)",
 }
 

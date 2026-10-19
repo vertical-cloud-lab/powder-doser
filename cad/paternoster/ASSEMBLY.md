@@ -10,7 +10,7 @@ Eleven steps from bare extrusion to a dosing station; each has a render and the 
 
 Cut the 2020 (80/20 20-2020, or any slot-6 2020): four x-rails of 444 mm, four posts of 710 mm, six cross
 rails of 260 mm, and 200 mm and 170 mm for the two station posts. Lay two x-rails on the bench 280 mm apart
-(centres) and put the two station cross rails between them, at x = 30 and 85 mm from the front chain's
+(centres) and put the two station cross rails between them, at x = 30 and 77 mm from the front chain's
 plane (the vial post and the actuator stand on them). Screw the four M6 leveling feet into T-nuts in the x-rails'
 bottom slots. Every frame screw is an M5 x 10 button head into a drop-in T-nut with a drop of Loctite 243 (T-nuts
 can't take a nylock).
@@ -158,7 +158,10 @@ hanging straight down: if it sticks off-vertical by more than about half a degre
 
 ![Step 9](renders/steps/step_09.png)
 
-Modules: slide an auger (lab design, PR #170) into Sam's mounting plate and screw on the cap. Index the
+Modules: in each of Sam's mounting plates heat-set two M3 inserts in the back strip and screw a 2 mm steel
+armature tab under it (two M3 x 6 flat heads): the dock magnet pulls on it. The plate also needs the 4.2 mm hole and
+4.2 x 6 mm slot for the carriage's locating pins (print them in, or drill 3.5 mm deep). Slide an auger (lab design,
+PR #170) into the plate and screw on the cap. Index the
 carousel until an empty gondola is at the loading position (right side, mid-height; module k+3 is there when
 module k is at the station). Hold the module with the auger's outlet toward the front, lower it 22 mm
 above the floor and slide it in from the right (70 mm), lower it onto the floor between the lugs, and
@@ -170,15 +173,25 @@ Index one module (1250 steps) and load the next. To swap a module, reverse it: t
 | 35 | 24 | M5 x 16 knurled low-profile thumb screw, 18-8, 11 x 5 mm head: its tip is the module's hinge pin in Sam's 5.3 mm knuckle hole (tool-free swap; Loctite 222) |
 | 37 | 12 | Mounting plate (Sam's Oct 13 Onshape part), PETG/PLA, about 70 g |
 | 38 | 12 | Auger (threaded storage, 44T) + cap, lab design (PR #170): from the #134 batch of 16 |
+| 60 | 12 | Armature tab, low-carbon steel 2 mm, 22 x 28 mm, two countersunk M3 holes, laser cut (one per module, under the plate's back strip; dxf/armature_tab.dxf) |
+| 61 | 24 | M3 x 6 flat head screw, 18-8 (armature tabs to the plates) |
+| 62 | 28 | M3 x 4 short heat-set insert (two per plate for the tab; four in the U-yoke crossbar) |
 
 ## Step 10: Station
 
 ![Step 10](renders/steps/step_10.png)
 
-Station. Bolt the base clevis to the actuator cross rail under the hinge line and pin the Actuonix
-P16-150-22-12-P's rear lug in it (197.4 mm hole to hole retracted). Bolt the printed yoke under Sam's
-electronics carriage (with its NEMA 11, 20T pinion and solenoid), pin the rod end in the yoke, and set the
-approach fork on its post so the yoke's tongue rides in it for the first 20 mm. Screw the two UHMW hold-down
+Station (cad/gear-mesh has the reasons). Bolt the base clevis to the actuator cross rail and pin the Actuonix
+P16-150-22-12-P's rear lug in it (197.4 mm hole to hole retracted). Sam's electronics carriage: mount the NEMA 11
+on the inner face of its back wall, bond the steel KHK SS1-20A pinion (hub faced off) on the shaft's last 10 mm with
+Loctite 638, screw the printed magnet bracket on the two upper motor screws and bond the Adafruit 3872 electromagnet in
+its cup, press the two 4 mm locating dowels into the rim and the two 4 mm stub pins through the side posts (with the
+printed pin plates bonded on). The U-yoke: push the P16's rod-end plug into the printed crossbar's square socket and
+bolt it rigid (M4 x 25 + nylock), screw the two 2 mm steel arms to the crossbar, slide them over the stub pins and fit
+the e-clips. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
+carriage's centre-of-mass height, so the carriage can't tip off the plate when it tilts. Set the approach fork on its
+post so the crossbar's tongue rides in it for the first 20 mm. Wire the magnet through a logic-level MOSFET
+with a 1N4001 across the coil, and set the Tic's current limit to 450 mA. Screw the two UHMW hold-down
 strips to their brackets on the side plates' inner faces, 0.5 mm above the chains' bottom runs at the station:
 when the module tilts, the gondola's front pivot is pulled upward (MuJoCo run, sim/README.md), and the strips stop the
 chain from lifting. Wire the LAC board (12 V) to the actuator's motor and pot and set its limits so the retracted
@@ -192,10 +205,21 @@ carriage clears the passing gondolas.
 | 39 | 1 | Actuonix P16-150-22-12-P linear actuator, 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, includes #8-32 pins and brackets |
 | 40 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB/RC/PWM/0-3.3 V in) |
 | 41 | 1 | 12 V supply for the LAC and actuator (Actuonix) |
-| 42 | 5 | Station printed parts, PETG: yoke under the electronics carriage, approach fork + arm, base clevis, vial cup |
-| 43 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11, 20T pinion and 12 V solenoid |
+| 42 | 10 | Station printed parts, PETG: U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, dock magnet bracket, approach fork + arm, base clevis, vial cup |
+| 43 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 (mounted on the back wall's inner face) and 12 V solenoid |
 | 55 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock |
-| 56 | 1 | Shoulder screw 4 x 20 mm, M3 (rod end in the yoke; cheeks 19.8 mm over) + M3 nylock |
+| 56 | 1 | M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16 rod-end plug in the U-yoke's square socket (makes the yoke rigid on the rod) |
+| 57 | 1 | Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: preloads the dock so the 20T:44T mesh can't lift the plate at any tilt; on only while docked |
+| 58 | 1 | N-channel logic-level MOSFET (switches the dock magnet from the carriage board): IRLB8721, or any logic-level N-MOSFET |
+| 59 | 1 | 1N4001 diode, 10-pack (flyback across the magnet coil) |
+| 62 | 28 | M3 x 4 short heat-set insert (two per plate for the tab; four in the U-yoke crossbar) |
+| 63 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond to the NEMA 11 shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping |
+| 64 | 2 | Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height |
+| 65 | 2 | Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot in each plate |
+| 66 | 6 | E-clip DIN 6799 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare) |
+| 67 | 2 | U-yoke arm, 2 mm steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its side walls |
+| 68 | 4 | M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243 |
+| 69 | 1 | Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load) |
 
 ## Step 11: Dispense
 
@@ -213,7 +237,7 @@ Dispense: screw the load cell to the vial post and the cup to its free end, and 
 | 22 | 1 | 80/20 20-2020 extrusion, cut to length: 4 x 444 (x-rails), 4 x 710 (posts), 6 x 260 (cross and station rails), 1 x 200 (fork post), 1 x 170 (vial post); $0.0131/mm + $3 per cut |
 | 24 | 70 | M5 drop-in T-nut for 2020 (brackets, side plates, station) |
 | 25 | 70 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock) |
-| 42 | 5 | Station printed parts, PETG: yoke under the electronics carriage, approach fork + arm, base clevis, vial cup |
+| 42 | 10 | Station printed parts, PETG: U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, dock magnet bracket, approach fork + arm, base clevis, vial cup |
 | 44 | 1 | Load cell 100 g (TAL221) under the vial |
 | 45 | 1 | HX711 load-cell amplifier |
 | 46 | 1 | 20 mL glass scintillation vial (lab stock; Wheaton 986546 is $383.77 per 500) |

@@ -14,13 +14,23 @@ The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (po
 
 The [leakage study](../auger-leakage/README.md) found no benefit in storing modules nozzle-up, so the gondolas stay level. After each dose the module holds 0.5 s at the dose tilt, tilts back, then reverses the auger one turn at rest.
 
+![Station docked: U-yoke on stub pins at the carriage's COM height, dock magnet under the steel tab, steel pinion](renders/rig_station_dock.png)
+
 | Home: 12 gondolas, module 1 at the station | Station: module 1 tilted 30° (cutaway) |
 |---|---|
 | ![](renders/rig_iso.png) | ![](renders/rig_station_tilt30.png) |
 | **Front loop (front plate hidden): upright all the way round** | **Loading position: module 4 lifted and slid out** |
 | ![](renders/rig_loop.png) | ![](renders/rig_load.png) |
 
-**Animation** ([MP4](renders/paternoster.mp4)): assembly from scratch, then an auger going into Sam's mounting plate, all 12 modules loaded one index at a time, a full lap, a dose at the station and a module swap. Every frame uses the exact chain kinematics.
+**Animation** ([MP4](renders/paternoster.mp4)). It runs in this order:
+1. Assembly from scratch.
+2. An auger goes into Sam's mounting plate, and the steel tab onto the plate.
+3. All 12 modules are loaded one index at a time, then the carousel runs a full lap.
+4. The station is built under the loaded carousel.
+5. A dose: dock with the magnet on and the pinion seeking, tilt to 30°, dose with taps, hold 0.5 s, tilt back, reverse the auger one turn at rest, undock.
+6. A module swap.
+
+Every frame uses the exact chain kinematics.
 
 ![Animation](renders/paternoster.gif)
 
@@ -65,14 +75,14 @@ Two MuJoCo models ([sim/README.md](sim/README.md), [sim/AUGER-SIM.md](sim/AUGER-
 
 ## Checks
 
-[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks). **All four come out at 0 clashes:**
+[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks), re-run on 2026-10-19 with the ported station. **All four come out at 0 clashes:**
 
 | Check | What moves | Result |
 |---|---|---|
-| Home | Nothing: every pair of the 545 instances | **0** |
+| Home | Nothing: every pair of the 571 instances | **0** |
 | `--sweep` | The chain indexed one full module in half-link steps (21 poses). The 12 gondolas together pass every point of the loop, including all four corners, against the frame, shafts, sprockets, idlers, station and each other | **0** |
-| `--tilt` | The electronics carriage rising 0-19.5 mm in the fork, then module + carriage + actuator tilting 5-90°, against everything | **0** |
-| `--swap` | A module lifted 22 mm and slid 70 mm out at the loading position | **0** |
+| `--tilt` | The electronics carriage rising 0-19.5 mm in the fork, then module + carriage + U-yoke + actuator tilting 5-90°, against everything | **0** |
+| `--swap` | A module (with its steel tab) lifted 22 mm and slid 70 mm out at the loading position | **0** |
 
 On the way they caught, and the design now fixes:
 - the hold-down strips' ends touching the 32T tooth tips (shortened to 100 mm);
@@ -80,7 +90,8 @@ On the way they caught, and the design now fixes:
 - the swinging actuator hitting the fork (fork moved off its plane);
 - the motor standoffs hitting a post, and the posts hitting the bottom bearings (moved);
 - the 44T gear hitting the gondola floor (window lengthened);
-- a module lifted only 16 mm catching its auger on the hinge lug while sliding out (lift is now 22 mm, leaving 18 mm under the gondola above).
+- a module lifted only 16 mm catching its auger on the hinge lug while sliding out (lift is now 22 mm, leaving 18 mm under the gondola above);
+- in the station port, the -y yoke stop and stub-pin plate turned 180° instead of mirrored, which put them ahead of the pins (now mirrored parts).
 
 The MuJoCo model covers clearance with swing: the 12-index lap's tightest gap is 11.0 mm.
 

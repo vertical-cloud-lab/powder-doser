@@ -326,8 +326,8 @@ that. With the bronze pivot friction the residual is gone within 0.03 s.
 | `station.png` | 321 kB | station with the CAD rig: tilt/stroke, actuator force vs tilt, pivot rise, pivot forces, strip force, docked swing |
 | `lap_index.mp4` | 8.0 MB | 12 indexes with the recommended profile (trapezoid, accel = one pendulum period, 1.5 s per index), labelled. Side view along x (left), 3/4 view (right). 1280x720 H.264 30 fps, 24.3 s, rendered at 15 fps without shadows |
 | `lap_index.gif` | 9.8 MB | the same, 720 px wide, 10 fps |
-| `station.mp4` | 839 kB | station sequence with the CAD rig and the hold-down strips: dock, tilt to 90 deg, auger + taps, tilt back, undock. Side view along y and 3/4 view; other gondolas see-through. 1280x720 H.264 30 fps, 11.3 s |
-| `station.gif` | 1.0 MB | the same, 720 px wide, 10 fps |
+| `station.mp4` | 677 kB | station sequence with the CAD rig as ported on 2026-10-18 (stub pins at the carriage's COM height, U-yoke) and the hold-down strips: dock, tilt to 90 deg, auger + taps, tilt back, undock. Side view along y and 3/4 view; other gondolas see-through. 1280x720 H.264 30 fps, 8.9 s |
+| `station.gif` | 0.83 MB | the same, 720 px wide, 10 fps |
 <!-- /T -->
 
 `out/pivot_table.npz` is a cache, rebuilt in about 3 s; it does not need committing. `out/auger/` belongs to the separate auger study.
