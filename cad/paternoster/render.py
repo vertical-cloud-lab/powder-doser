@@ -246,7 +246,7 @@ class Movie:
     """Frames stream straight into the MP4 (a 2000-frame movie held in memory would be about 5.5 GB); only every
     gif_every-th frame is kept, already shrunk and palettised, for the GIF."""
 
-    def __init__(self, mp4: Path, w=1280, h=720, fps=24, gif_every=2, gif_size=(640, 360)):
+    def __init__(self, mp4: Path, w=1280, h=720, fps=24, gif_every=4, gif_size=(640, 360)):
         import imageio.v2 as iio
         self.v = View(w, h)
         self.fps = fps
@@ -260,7 +260,7 @@ class Movie:
     def _add(self, img: Image.Image) -> None:
         self.writer.append_data(np.asarray(img))
         if self.n % self.gif_every == 0:
-            self.gif.append(img.resize(self.gif_size, Image.LANCZOS).convert("P", palette=Image.ADAPTIVE, colors=96))
+            self.gif.append(img.resize(self.gif_size, Image.LANCZOS).quantize(colors=64, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE))
         self.n += 1
         self.last = img
 
