@@ -166,12 +166,12 @@ def build(powder_g: float = 50.0):
         <joint name="act_slide" type="slide" axis="{_f(*axis)}" range="0 {ACT_STROKE * MM}" limited="true" damping="30"/>
         <inertial pos="{_f(*(axis * 0.15))}" mass="0.02" diaginertia="1e-5 1e-5 1e-7"/>
         <geom name="tongue" type="box" pos="{_f(*(P0 - B + (np.array([TONGUE[0] - YOKE[0], TONGUE[1], TONGUE[2] - YOKE[1] + 12.5]) * MM)))}" size="{_f(15.0 * MM, 3.0 * MM, 12.5 * MM)}" contype="1" conaffinity="1" rgba="0.95 0.55 0.1 1"/>
-        <geom name="ystop" type="box" pos="{_f(*(P0 - B + (np.array([8.0, 0, YOKE_STOP_Z + 1.5]) * MM)))}" size="{_f(4.0 * MM, 17.5 * MM, 1.5 * MM)}" contype="16" conaffinity="16" rgba="0.95 0.55 0.1 1"/>
+        <geom name="ystop" type="box" pos="{_f(*(P0 - B + (np.array([14.0, 0, YOKE_STOP_Z + 2.0]) * MM)))}" size="{_f(3.0 * MM, 19.5 * MM, 2.0 * MM)}" contype="16" conaffinity="16" rgba="0.95 0.55 0.1 1"/>
         <body name="ecar" pos="{_f(*(P0 - B))}">
           <joint name="ecar_pin" type="hinge" axis="0 1 0" damping="0.0002"/>
           <inertial pos="{_f(*((COM_ECAR * MM) - pin_rel))}" mass="{M_ECAR}" diaginertia="0.00008 0.00015 0.00012"/>
           <geom name="rim" type="box" pos="{_f(*((np.array([40.55, 0, -19.9]) * MM) - pin_rel))}" size="{_f(32.75 * MM, 18.0 * MM, 1.0 * MM)}" contype="4" conaffinity="4" rgba="0.2 0.45 0.95 1"/>
-          <geom name="car_bottom" type="box" pos="{_f(*((np.array([40.0, 0, -52.6 + 0.5]) * MM) - pin_rel))}" size="{_f(8.0 * MM, 17.5 * MM, 0.5 * MM)}" contype="16" conaffinity="16" rgba="0.2 0.45 0.95 1"/>
+          <geom name="tail" type="box" pos="{_f(14.0 * MM, 0, -9.5 * MM)}" size="{_f(3.0 * MM, 19.5 * MM, 1.5 * MM)}" contype="16" conaffinity="16" rgba="0.95 0.55 0.1 1"/>
 {locpins}
           <site name="magnet" pos="{_f(*((np.array([DOCK_MAG_XY[0], 0, DOCK_MAG_FACE_Z]) * MM) - pin_rel))}"/>
           <geom name="magnet_g" type="box" pos="{_f(*((np.array([DOCK_MAG_XY[0], 0, DOCK_MAG_FACE_Z - 1.0]) * MM) - pin_rel))}" size="{_f(9.0 * MM, 9.0 * MM, 1.0 * MM)}" contype="4" conaffinity="4" rgba="0.75 0.15 0.12 1"/>
@@ -337,7 +337,7 @@ class Station:
         for g in ("rim", "plate_under", "armature_g", "magnet_g"):
             m.geom_contype[self.g[g]] = 0 if on else 4
             m.geom_conaffinity[self.g[g]] = 0 if on else 4
-        for g in ("car_bottom", "ystop"):
+        for g in ("tail", "ystop"):
             m.geom_contype[m.geom(g).id] = 0 if on else 16
             m.geom_conaffinity[m.geom(g).id] = 0 if on else 16
         self.welded = on

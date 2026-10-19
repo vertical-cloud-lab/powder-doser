@@ -8,9 +8,11 @@ the straights are whole pitches (bottom 12, sides 24, top 12). The two chains
 are identical, 305 mm apart in x, and every carriage bolts to the same link
 number on both, so a carriage only ever moves in the y-z plane.
 
-The loop runs counter-clockwise seen from the back (+x looking toward -x):
-along the bottom toward +y, up the +y side, back along the top, down the -y
-side. Carriage 1 sits at the station on the bottom straight at home.
+A positive shift moves the loop counter-clockwise seen from the back (+x
+looking toward -x): along the bottom toward +y, up the +y side, back along
+the top, down the -y side. The machine runs the other way (RUN_DIRECTION = -1,
+the auger-leakage study), so its moves are negative shifts. Carriage 1 sits at
+the station on the bottom straight at home.
 
 ``placements(state)`` places the whole rig for a machine state (chain
 travel with the exact polygonal kinematics of kinematics.py, which
@@ -622,7 +624,7 @@ def placements(state: State | float | None = None) -> list[Placement]:
         add(Placement("carriage", f"Carriage {k + 1}", C, 10, PETG, "carriages", out_dir, k))
         for xa in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
             so = st.screws_out if k == st.out_carriage else 0.0
-            add(Placement("m3x12_bhcs", f"Tab screw M3x12 button head {k + 1}", C @ T(Rx(math.pi / 2), (0, CAR_W0 - CAR_T - so, xa)), 10, DARK,
+            add(Placement("m3x12_bhcs", f"Tab screw M3x12 button head {k + 1}", C @ T(Rx(math.pi / 2), (0, CAR_W0 - CAR_T + TAB_SCREW_CB - so, xa)), 10, DARK,
                           "carriages", out_dir, k))
             add(Placement("nut_m3", f"Tab locknut M3 (in the hook) {k + 1}", C @ T(Rx(-math.pi / 2), (0, CAR_W0 + PLATE_T + 0.28, xa)), 10, STEEL,
                           "carriages", out_dir, k))
@@ -697,16 +699,16 @@ def _station(st: State, add) -> None:
     for sy in (-1, 1):
         Rm = T(None) if sy > 0 else T(Rz(math.pi))           # part's +y outward
         add(Placement("uyoke_arm", "U-yoke arm, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 8, STEEL, "station", (0, 0, -60)))
-        add(Placement("yoke_stop", "Yoke stop block (printed, on the arm)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm @ T(None, (4.0, 0.0, YOKE_STOP_Z)),
-                      8, ORANGE, "station", (0, 0, -60)))
+        add(Placement("yoke_stop" if sy > 0 else "yoke_stop_m", f"Yoke stop block {'+' if sy > 0 else '-'}y (printed, on the arm)",
+                      Y @ T(None, (0, sy * UFORK_Y[0], 0)), 8, ORANGE, "station", (0, 0, -60)))
     C = electronics_frame(st.tilt, st.ext)
     add(Placement("sam_electronics_carriage", "Electronics carriage (Sam, Oct 13)", C, 8, ELEC, "station", (0, 0, -60)))
     for sy in (-1, 1):
         Rq = T(Rz(math.pi)) if sy < 0 else T(None)          # part's +y outward
-        add(Placement("pin_boss", "Stub-pin boss (printed, bonded to the side post)", C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)) @ Rq, 8, ORANGE,
-                      "station", (0, 0, -60)))
+        add(Placement("pin_boss" if sy > 0 else "pin_boss_m", f"Stub-pin plate with tail {'+' if sy > 0 else '-'}y (printed, bonded to the side post)",
+                      C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)), 8, ORANGE, "station", (0, 0, -60)))
         add(Placement("stub_pin", "Stub pin 4 mm, steel, e-clip groove", C @ T(None, (YOKE_X, sy * 15.3, YOKE_Z)) @ Rq, 8, STEEL, "station", (0, 0, -60)))
-        add(Placement("eclip", "E-clip DIN 6799-3 (stub pin)", C @ T(None, (YOKE_X, sy * 22.3, YOKE_Z)) @ T(Rx(-sy * math.pi / 2)), 8, DARK,
+        add(Placement("eclip_stub", "E-clip DIN 6799-3.2 (stub pin)", C @ T(None, (YOKE_X, sy * 22.3, YOKE_Z)) @ T(Rx(-sy * math.pi / 2)), 8, DARK,
                       "station", (0, 0, -60)))
     add(Placement("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 8, DARK, "station", (0, 0, -60)))
     pin_ang = -st.spin * 44.0 / 20.0
@@ -765,6 +767,7 @@ BUILDERS = {
     "nut_m3": lambda: PT.locknut(3.0),
     "clevis_pin": PT.clevis_pin,
     "eclip": PT.eclip,
+    "eclip_stub": PT.eclip_stub,
     "m5x12_bhcs": lambda: PT.shcs(5, 12, "button"),
     "m5x16_shcs": lambda: PT.shcs(5, 16),
     "m5x30_shcs": lambda: PT.shcs(5, 30),
@@ -793,7 +796,9 @@ BUILDERS = {
     "uyoke_arm": PT.uyoke_arm,
     "stub_pin": PT.stub_pin,
     "yoke_stop": PT.yoke_stop,
+    "yoke_stop_m": PT.yoke_stop_m,
     "pin_boss": PT.pin_boss,
+    "pin_boss_m": PT.pin_boss_m,
     "nema11": PT.nema11_envelope,
     "pinion": PT.pinion_20t,
     "solenoid": PT.solenoid_412,

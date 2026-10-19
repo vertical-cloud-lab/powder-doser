@@ -90,11 +90,13 @@ because the top shafts are still at the bottom of their slots.""",
 3. Electronics carriage (Sam's): face the KHK SS1-20A pinion's hub off and bond it onto the NEMA 11's shaft with
    Loctite 638, flush with the shaft end (the motor sits inside the carriage on its back wall, boss in the recess). Bond the dock electromagnet (Adafruit 3872) into the
    printed bracket and fix the bracket with the NEMA 11's two upper M2.5 screws (lengthened by 3 mm). Press two 4 mm
-   steel locating pins into the rim at Sam's ({30}, 16) and (70, -16). Bond a printed boss to each side post and press
-   a 4 mm stub pin through post and boss at Sam's ({YOKE_X:.0f}, {YOKE_Z:.0f}).
-4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 into inserts), glue a stop block inside each
-   arm, push the P16's rod-end plug into the crossbar's square socket and bolt it with an M4. Hang the carriage on
-   the stub pins in the arms and fit an e-clip on each pin.
+   steel locating pins into the rim at Sam's ({30}, 16) and (70, -16). Bond a printed stub-pin plate to each side post
+   (mirror-image pair, tails pointing back and down) and press a 4 mm stub pin through post and plate at Sam's
+   ({YOKE_X:.0f}, {YOKE_Z:.0f}).
+4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 x 8 into inserts), glue a stop block inside each
+   arm under the pin plate's tail (mirror-image pair), push the P16's rod-end plug into the crossbar's square socket
+   and bolt it with an M4 x 25. Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
+   pin. Set the NEMA 11's DRV8825 to 450 mA (Vref 0.225 V) before the first dock.
 5. Approach fork on its post on the station rail, the tongue under the crossbar in its slot.
 6. Vial post on the -y base rail, the level wedge, the load cell, the vial cup, the vial and the D-cut funnel.""",
     9: f"""Modules on the bench (one per carriage, {N_MODULES} in all):

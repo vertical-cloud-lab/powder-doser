@@ -1,25 +1,12 @@
 {
  "check": "tilt",
- "clashes": [
+ "clashes": [],
+ "snap_lip_contacts_by_design": [
   {
-   "a": "Mounting plate (Sam, Oct 13) 1 @tilt5",
+   "pose": "tilt5",
+   "a": "Mounting plate (Sam, Oct 13) 1",
    "b": "Carriage 1",
    "mm3": 17.28
-  },
-  {
-   "a": "Yoke stop block (printed, on the arm) @tilt75",
-   "b": "Electronics carriage (Sam, Oct 13)",
-   "mm3": 2.57
-  },
-  {
-   "a": "Yoke stop block (printed, on the arm) @tilt90",
-   "b": "Electronics carriage (Sam, Oct 13)",
-   "mm3": 39.12
-  },
-  {
-   "a": "Yoke stop block (printed, on the arm) @tilt90",
-   "b": "Electronics carriage (Sam, Oct 13)",
-   "mm3": 39.12
   }
  ]
 }

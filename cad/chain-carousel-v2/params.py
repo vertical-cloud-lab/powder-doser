@@ -11,8 +11,9 @@ between the chains. The station is on the bottom straight.
 One place for every number the model uses. Purchased-part dimensions come
 from the vendor's own tables (sources in BOM.md); printed-part numbers are
 design choices. World frame: x along the augers (front chain's centre plane
-at x = 0, back chain's at x = CHAIN_L), y across the loop (the bottom run
-travels toward +y), z up, bench top at z = 0.
+at x = 0, back chain's at x = CHAIN_L), y across the loop (a positive chain
+shift moves the bottom run toward +y; the machine runs the other way,
+RUN_DIRECTION = -1), z up, bench top at z = 0.
 """
 from __future__ import annotations
 
@@ -193,6 +194,8 @@ MAGNET_D, MAGNET_H = 6.35, 3.18                       # K&J D42-N52, 1/4 x 1/8 i
 # through the plate and the tab into it. To take a carriage off: two screws out, slide it 10 mm along the run so
 # the hooks clear the tabs, lift it out. Nothing has to be reached from inside the loop.
 TAB_SCREW_L = 12.0
+TAB_SCREW_CB = 1.8                                    # counterbore for its head in the plate's outer face: the head sits flush
+SCREW_OUT = 10.0                                      # backed out this far to swap, the tips clear the tabs and stay in the plate
 HOOK_SLIDE = 10.0                                     # slide along u to engage / free the hooks
 NUT_AF, NUT_H = 5.5, 4.0                              # M3 nylon-insert locknut (DIN 985)
 
@@ -230,10 +233,13 @@ UFORK_L = 60.0               # stub-pin axis -> the P16's rod-end hole, along th
                              # front-bottom corner (51 mm from the pins) as the carriage turns 92 deg in the yoke
 UFORK_Y = (19.5, 21.5)       # steel arm, |y| (2 mm); printed boss on the post |y| 18-19.5; e-clip outside at 21.7-22.3
 TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue under the yoke's crossbar, rides the approach fork
-YOKE_STOP_Z = -52.6 - 0.3 - 3.0 - YOKE_Z   # stop blocks on the arms, 0.3 mm under the carriage's back bottom (yoke frame z)
+YOKE_STOP_Z = -11.0 - 0.3 - 4.0     # stop blocks on the arms (yoke frame z of the block's bottom): 0.3 mm under the pin plate's
+                                    # tail. Was a block under the carriage's back bottom (|y| 15.5-19.5), which the carriage's
+                                    # front-bottom corner swept into past 70 deg of tilt (check_interference --tilt); now, as the
+                                    # paternoster, the stop and the tail sit at |y| 18.2-19.5, outside the carriage's |y| 18
 DOCK_EXT = 20.0              # actuator extension when the carriage meets the plate; 90 deg needs 282.5 of the P16's 347.4 mm
 # Locating pins on the carriage rim (steel dowels, conical tips) into a hole and a slot in the plate's underside: they
-# carry the along-plate load at tilt instead of friction; the slot runs along x for the 32.1 mm stack tolerance.
+# carry the along-plate load at tilt instead of friction; the slot runs along x to take the 40 mm pin spacing's tolerance.
 LOCPIN_D, LOCPIN_PROUD = 4.0, 3.0    # dowel diameter; protrudes 3 mm above the rim (2.1 mm into the plate when docked)
 LOCPIN_XY = ((30.0, 16.0), (70.0, -16.0))   # Sam's frame; the first goes in a 4.2 mm hole, the second in a 4.2 x 6 slot
 LOCPIN_HOLE, LOCPIN_SLOT = 4.2, 6.0
@@ -255,7 +261,7 @@ GEAR_X = 78.4                # the auger's 44T gear face nearest the outlet, in 
 # Dock electromagnet behind the pinion + steel armature tab under each plate's back strip (the gear-mesh
 # preload: the module's weight alone can't hold the 20T:44T mesh against the NEMA 11, see cad/gear-mesh/).
 # Adafruit 3872 P20/15: 20 x 15 mm, 5 V, 0.22 A, about 24.5 N holding at zero gap. Sam's frame, carriage as
-# drawn (top face z -18.9; docked it rises DOCK_RISE so the rim touches the plate and sets the 32.1 mm centre
+# drawn (top face z -18.9; docked it rises DOCK_RISE so the rim touches the plate and sets the 32.25 mm centre
 # distance). The face sits 0.15 mm under the armature when docked, so the rim, not the magnet, locates.
 DOCK_MAG_D, DOCK_MAG_H = 20.0, 15.0
 DOCK_MAG_XY = (99.5, 0.0)

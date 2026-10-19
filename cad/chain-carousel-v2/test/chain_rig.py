@@ -10,9 +10,10 @@ Hardware (see BOM.md):
   fed back inside the LAC. Its U-yoke holds Sam's electronics carriage on two stub pins at the carriage's
   centre-of-mass height.
 * On the electronics carriage: the doser's NEMA 11 (20T steel pinion -> the auger's 44T gear, 2.2:1) on a DRV8825
-  set to 0.45 A (Vref 0.225 V on Pololu's board): 0.067 N*m holding, under the 0.105 N*m that opens the dock at
-  30 deg (station sim, SF 1.6); the 12 V tap solenoid on a DRV8871; the dock electromagnet (Adafruit 3872) on a
-  logic-level MOSFET with a flyback diode, energized only while docked.
+  whose current limit is set to AUGER_CURRENT_MA = 450 mA (Vref 0.225 V on Pololu's carrier; set it with the pot
+  before the first dock, the Pi can't): 0.067 N*m stall at the pinion, 0.15 N*m at the auger, so a jam stalls the
+  motor before the mesh can open the dock (gear-mesh study); the 12 V tap solenoid on a DRV8871; the dock
+  electromagnet (Adafruit 3872) on a logic-level MOSFET with a flyback diode, on only while docked.
 * HX711 on the 100 g load cell under the vial.
 
 Geometry: one module = 8 pitches = 76.2 mm = 8/32 of a turn of the 32T drive sprocket, so at 4000 pulses/rev a
@@ -23,8 +24,11 @@ each module once about its own axis, which acts like an auger turn; this way it 
 the other way it pumps about one revolution's dose out (../auger-leakage/README.md). A positive index here always
 means "the way the machine runs".
 
-Docking: lift to 3 mm short of the plate, then finish while the pinion turns at 0.25 rev/s so it finds the gear's
-gaps (gear-mesh study), then the magnet on.
+Docking (gear-mesh study, final pass): lift to 3 mm short of the plate, switch the dock magnet on, then finish the
+last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps. The carriage hangs back-down on
+the yoke stops during the approach; the magnet's pull is what lifts its back onto the plate, so it goes on before
+the last 3 mm, not after the plate seats. With the pinion held, about half the starting phases park the gear on
+the pinion's tips 2 mm high.
 
 Dose protocol (auger-leakage study): dock, magnet on, tilt to the dose angle, turn the auger, stop, hold 0.5 s at
 the dose tilt (the tail falls into the vial), tilt back to level, then reverse the auger 1 revolution at rest
@@ -65,6 +69,10 @@ UFORK_L, ACT_RETRACTED, ACT_STROKE = 60.0, 197.4, 150.0
 DOCK_EXT = 20.0
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
+AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
+SEEK_MM, SEEK_REV_S = 3.0, 0.25                    # docking seek: last 3 mm of the approach, pinion at 0.25 rev/s
+DOSE_HOLD_S = 0.5                                  # at the dose tilt after the auger stops (the tail falls)
+REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the tilt back
 
 # BCM pin numbers (the interface board's screw terminals)
 PIN_STEP, PIN_DIR, PIN_ENA = 17, 27, 22
@@ -209,18 +217,23 @@ class Rig:
             self.pi.write(PIN_MAGNET, 1 if on else 0)
         time.sleep(0.15 if on else 0.05)
 
-    def dock(self, seek_rev_s: float = 0.25):
-        """Lift to 3 mm short of the plate, then finish the last 3 mm while the pinion turns slowly so its teeth find
-        the gear's gaps (held still, it parked the gear on its tips in 4 of 6 phases in the gear-mesh study); magnet on
-        only once seated."""
-        self.actuator(DOCK_EXT - 3.0)
+    def dock(self, seek_rev_s: float = SEEK_REV_S):
+        """Lift to SEEK_MM short of the plate, magnet on, then finish the last SEEK_MM while the pinion turns slowly so
+        its teeth find the gear's gaps (held still, it parked the gear on its tips from half the starting phases in the
+        gear-mesh study). The magnet goes on first: its pull lifts the hanging carriage's back off the yoke stops
+        and onto the plate (gear-mesh final pass)."""
+        if not self.sim and not getattr(self, "_current_noted", False):
+            print(f"NEMA 11 driver: DRV8825 current limit must be {AUGER_CURRENT_MA} mA "
+                  f"(Vref {AUGER_CURRENT_MA / 2000:.3f} V) before docking")
+            self._current_noted = True
+        self.actuator(DOCK_EXT - SEEK_MM)
+        self.magnet(True)                            # pulls the carriage onto the locating pins and the rim
         if self.pi:
             self.pi.write(PIN_AUG_DIR, 1)
             self.pi.hardware_PWM(PIN_AUG_STEP, int(seek_rev_s * NEMA11_USTEPS), 500000)
         self.actuator(DOCK_EXT + 1.2)                # 1.2 mm past the nominal dock takes up the carriage's sag
         if self.pi:
             self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
-        self.magnet(True)                            # pulls the carriage up onto the locating pins and the rim
 
     def tilt(self, deg: float):
         self.actuator(tilt_to_ext(deg) + 1.2)
@@ -281,11 +294,17 @@ def _profile(n: int, v: float, a: float) -> list[int]:
     return out
 
 
+LOG_COLUMNS = ["run", "utc", "cmd", "module", "target_steps", "pos_steps", "move_s", "index_edge_steps", "alarm", "dial_mm",
+               "tilt", "revs", "rpm", "taps", "hold_s", "reverse_revs", "auger_current_ma", "dose_g"]
+
+
 def log_row(path: Path, row: dict):
+    """Append one row; every command writes the same columns (blank where they don't apply), so one CSV holds a
+    whole session."""
     path.parent.mkdir(parents=True, exist_ok=True)
     new = not path.exists()
     with path.open("a", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(row))
+        w = csv.DictWriter(f, fieldnames=LOG_COLUMNS, restval="")
         if new:
             w.writeheader()
         w.writerow(row)
@@ -313,12 +332,13 @@ def main():
     p.add_argument("--tilt", type=float, default=30.0, help="hinge angle, deg (frame = bench, the frame is not pitched)")
     p.add_argument("--hold", type=float, default=2.0)
     p = sub.add_parser("dose")
-    p.add_argument("--tilt", type=float, default=30.0, help="dose tilt, deg; keep it at 45 or less with the 0.45 A current limit")
+    p.add_argument("--tilt", type=float, default=30.0, help="dose tilt, deg (20-40 doses best; at 450 mA the motor stalls before the dock "
+                   "opens at every tilt to 90, station sim)")
     p.add_argument("--revs", type=float, default=2.0, help="auger revolutions forward")
     p.add_argument("--rpm", type=float, default=30.0, help="auger rpm")
     p.add_argument("--taps", type=int, default=0, help="solenoid taps after the auger stops")
-    p.add_argument("--hold", type=float, default=0.5, help="s at the dose tilt after the auger stops (the tail falls)")
-    p.add_argument("--reverse-revs", type=float, default=1.0,
+    p.add_argument("--hold", type=float, default=DOSE_HOLD_S, help="s at the dose tilt after the auger stops (the tail falls)")
+    p.add_argument("--reverse-revs", type=float, default=REVERSE_REVS,
                    help="auger revolutions backwards after the return to level (never while tilted); 0 to skip")
     a = ap.parse_args()
 
@@ -377,11 +397,11 @@ def main():
         time.sleep(a.hold)                          # tail into the vial before the tilt back
         rig.tilt(0.0)
         if a.reverse_revs:
-            rig.auger_revs(-a.reverse_revs, a.rpm)  # at rest only: pulls powder back from the exit
+            rig.auger_revs(-abs(a.reverse_revs), a.rpm)   # level and at rest only: pulls powder back from the exit
         rig.undock()
         g1 = rig.grams()
-        record("dose", rig.module, t0, tilt=a.tilt, revs=a.revs, rpm=a.rpm, taps=a.taps, reverse_revs=a.reverse_revs,
-               dose_g=round(g1 - g0, 4))
+        record("dose", rig.module, t0, tilt=a.tilt, revs=a.revs, rpm=a.rpm, taps=a.taps, hold_s=a.hold, reverse_revs=a.reverse_revs,
+               auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g1 - g0, 4))
     rig.enable(False)
 
 

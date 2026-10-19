@@ -24,7 +24,12 @@ import vtk.util.numpy_support  # noqa: F401
 from PIL import Image, ImageDraw, ImageFont
 
 import layout as L
-from params import (CHAIN_L, DOCK_EXT, HOOK_SLIDE, MODULE_LINKS, N_LINKS, N_MODULES, RUN_DIRECTION, TILT_DOSE_WORLD)
+from params import (CHAIN_L, DOCK_EXT, HOOK_SLIDE, MODULE_LINKS, N_LINKS, N_MODULES, RUN_DIRECTION, SCREW_OUT, TILT_DOSE_WORLD)
+
+SEEK_MM, SEEK_REV_S = 3.0, 0.25          # docking seek (gear-mesh study): pinion turning through the last 3 mm, magnet on
+MAG_GAP_DESIGN = 0.15                    # mm, dock magnet face under the steel tab when docked
+MAG_F_DESIGN = 20.0 / (1 + MAG_GAP_DESIGN / 0.4) ** 2   # 10.6 N: the gear-mesh study's law for the P20/15 on a 2 mm tab
+CENTRE_DIST = 32.25                      # pinion to 44T gear when docked (params.NEMA11_Z)
 
 HERE = Path(__file__).resolve().parent
 CACHE = HERE / ".cache"
@@ -75,14 +80,14 @@ def keyed(pl: list) -> list:
 
 
 class View:
-    def __init__(self, w=1600, h=1000, bg=(1, 1, 1)):
+    def __init__(self, w=1600, h=1000, bg=(1, 1, 1), samples=8):
         self.ren = vtk.vtkRenderer()
         self.ren.SetBackground(*bg)
         self.win = vtk.vtkRenderWindow()
         self.win.SetOffScreenRendering(1)
         self.win.AddRenderer(self.ren)
         self.win.SetSize(w, h)
-        self.win.SetMultiSamples(8)
+        self.win.SetMultiSamples(samples)
         light = vtk.vtkLight()
         light.SetLightTypeToCameraLight()
         light.SetPosition(0.4, 0.6, 1)
@@ -203,11 +208,12 @@ def station_cut(p: L.Placement) -> bool:
 
 
 H = L.HINGE_STATION
-HERO = ((150, 0, 420), (-0.9, -1.0, 0.55), 2000)
+HERO = ((160, 0, 390), (-0.9, -1.0, 0.55), 1700)
 LOOP = ((120, 0, 510), (-1.0, -0.42, 0.22), 1400)
 STATION = ((H[0] + 40, H[1], H[2] - 50), (-0.55, -1.0, 0.25), 620)
 STATION_TILT = ((H[0] + 60, H[1], H[2] + 10), (-0.35, -1.0, 0.2), 760)
-LOADC = ((150, 120, 470), (0.35, 1.0, 0.35), 950)
+LOADC = ((150, 120, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 950)
+TAB = tuple(L.to_world(L.load_frame(), (0.0, L.CAR_W0, L.A1_HOLE_C)))    # carriage 4's front A-1 tab hole at the loading position
 YOKE = ((H[0] + 32, H[1] + 10, H[2] - 60), (-0.8, -1.0, 0.25), 330)
 
 
@@ -230,9 +236,9 @@ def stills(quick: bool = False) -> None:
              "Module 1 at 90 deg (cleaning and access; the P16-150 reaches it with 65 mm of stroke to spare)"),
             ("rig_retracted", L.State(ext=0.0), STATION, station_cut, "Station retracted: the electronics carriage waits 20 mm under the passing carriages"),
             ("rig_yoke", L.State(), YOKE, station_cut, "U-yoke: 2 mm steel arms outside the carriage, stub pins, stop blocks, tongue in the fork"),
-            ("rig_load", L.State(out_carriage=3, screws_out=8.0, out_slide=HOOK_SLIDE, out_lift=150.0), LOADC, None,
+            ("rig_load", L.State(out_carriage=3, screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=150.0), LOADC, None,
              "Swap at the loading position: two screws out, slide 10 mm, the carriage and its module come out sideways"),
-            ("rig_hook", L.State(), ((9.5, 112.0, 470.0), (-0.6, 1.0, -0.5), 120), front_open,
+            ("rig_hook", L.State(), (TAB, (-0.6, 1.0, -0.5), 120), front_open,
              "Carriage on an A-1 tab: M3 x 12 from outside, through the tab into a locknut in the printed hook"),
             ("rig_back_iso", L.State(), ((230, 0, 420), (1.0, 0.75, 0.45), 1800), None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft through a #35 drive chain"),
             ("rig_corner", L.State(shift=-4.0), ((70, 80, 380), (-1.0, 0.28, 0.1), 520), front_open, "Bottom +y corner, mid-index"),
@@ -292,25 +298,45 @@ def cam_lerp(a, b, t):
 
 
 class Movie:
-    def __init__(self, w=1280, h=720, fps=24):
-        self.v = View(w, h)
+    """Streams every frame into the MP4 as it is made (nothing full-size is kept: 2000 frames would hold 5.5 GB) and keeps
+    only the GIF's frames, every GIF_EVERY-th one, already shrunk to 560 x 315 and palettized (keeps the GIF under 10 MB)."""
+    GIF_EVERY = 3
+
+    def __init__(self, mp4: Path, w=1280, h=720, fps=15):
+        import imageio.v2 as iio
+        self.v = View(w, h, samples=4)             # 4x MSAA: half the software-rendering time of the stills' 8x
         self.fps = fps
-        self.frames: list[Image.Image] = []
+        self.writer = iio.get_writer(mp4, fps=fps, codec="libx264", quality=7, macro_block_size=8, ffmpeg_params=["-pix_fmt", "yuv420p"])
+        self.n = 0
+        self.last: Image.Image | None = None
+        self.gif: list[Image.Image] = []
+
+    def _emit(self, img: Image.Image) -> None:
+        self.writer.append_data(np.asarray(img))
+        if self.n % self.GIF_EVERY == 0:
+            self.gif.append(img.resize((560, 315), Image.LANCZOS).convert("P", palette=Image.ADAPTIVE, colors=80))
+        self.n += 1
+        self.last = img
 
     def frame(self, pl, title, sub="", colors=None, offsets=None, cam=HERO, hide_fn=None, hide=()):
         hs = set(hide) | hidden(pl, hide_fn)
         self.v.show(pl, colors=colors, offsets=offsets, hide=hs)
         self.v.camera(*cam)
-        self.frames.append(caption(self.v.image(), title, sub, "chain carousel v2, #128"))
+        self._emit(caption(self.v.image(), title, sub, "chain carousel v2, #128"))
 
     def hold(self, n):
-        if self.frames:
-            self.frames += [self.frames[-1]] * n
+        if self.last is not None:
+            for _ in range(n):
+                self._emit(self.last)
+
+    def close(self) -> None:
+        self.writer.close()
 
 
 def movie(fast: bool = False) -> None:
     OUT.mkdir(exist_ok=True)
-    mv = Movie()
+    mp4 = OUT / "chain_carousel_v2.mp4"
+    mv = Movie(mp4)
     fps = mv.fps
     sec = (lambda s: max(2, int(s * fps * (0.5 if fast else 1.0))))
     dirn = RUN_DIRECTION
@@ -326,18 +352,34 @@ def movie(fast: bool = False) -> None:
             cur = [p for p in pl_all if p.step <= s]
             offs = {k: np.asarray(p.explode, float) * 3.0 * (1 - t) for k, p in keyed(cur) if p.step == s}
             cols = {k: (0.75, 0.75, 0.78) for k, p in keyed(cur) if p.step < s}
-            mv.frame(cur, f"Assembly {s}/11: {L.STEPS[s]}", "", colors=cols, offsets=offs, cam=cam)
+            title, _, sub = L.STEPS[s].partition(": ")
+            mv.frame(cur, f"Assembly {s}/11: {title}", sub, colors=cols, offsets=offs, cam=cam)
         mv.hold(sec(0.4))
 
-    # 2. a module on the bench: the auger into Sam's plate (the carrier), the steel tab, the plate pinned onto a carriage
+    # 2. a module on the bench: the auger into Sam's plate (the carrier) and the steel tab, away from the carriage; then the
+    #    plate onto the carriage between its hinge lugs, and the two hinge pins
     k0 = 3                                                     # carriage at the loading position at home
-    bench = dict(carriages=(k0,), modules=(k0,), ext=0.0, out_carriage=k0, out_slide=HOOK_SLIDE, out_lift=170.0, screws_out=8.0)
+    bench = dict(carriages=(k0,), modules=(k0,), ext=0.0, out_carriage=k0, out_slide=HOOK_SLIDE, out_lift=170.0, screws_out=SCREW_OUT)
+    pl_b = L.placements(L.State(**bench))
+    Cb = next(p.M for p in pl_b if p.key == "carriage" and p.module == k0)
+    u_dir, w_dir = Cb[:3, 0], Cb[:3, 1]
+    away = w_dir * 110.0                                       # the module is put together 110 mm off the carriage's inner face
+    module_keys = ("sam_mounting_plate", "armature_tab", "m3x6_fhcs", "insert_m3", "auger", "auger_cap")
+
+    def pins_out(p, t):                                        # hinge pins and e-clips 40 mm out along their own axis
+        su = 1.0 if float(u_dir @ (p.M[:3, 3] - Cb[:3, 3])) > 0 else -1.0
+        return su * u_dir * 40.0 * (1 - t)
+
     beats = [("Module: slide the lab auger into Sam's mounting plate (the carrier)", "threaded-storage auger and cap (PR #170); Sam's Oct 13 plate",
-              lambda p, t: np.array([-170.0 * (1 - t), 0, 0]) if p.key in ("auger", "auger_cap") else None),
+              lambda p, t: (away + (np.array([-170.0 * (1 - t), 0, 0]) if p.key in ("auger", "auger_cap") else 0.0)) if p.key in module_keys
+              else pins_out(p, 0.0)),
              ("Module: steel armature tab under the plate's back strip, two M3 flat heads", "the dock magnet pulls on it",
-              lambda p, t: np.array([0, 0, -40.0 * (1 - t)]) if p.key in ("armature_tab", "m3x6_fhcs") else None),
-             ("Module: hinge the plate on a carriage with two 5 mm clevis pins and e-clips, press it into the snap hooks", "",
-              lambda p, t: np.array([0, 60.0 * (1 - t), 0]) * (1 if p.M[1, 3] > 0 else 1) if p.key in ("clevis_pin", "eclip") else None)]
+              lambda p, t: (away - (w_dir * 30.0 * (1 - t) if p.key in ("armature_tab", "m3x6_fhcs") else 0.0)) if p.key in module_keys
+              else pins_out(p, 0.0)),
+             ("Module: the plate goes onto a carriage, its hinge knuckles between the carriage's lugs", "the carriage is the module's mount on the chain",
+              lambda p, t: away * (1 - t) if p.key in module_keys else pins_out(p, 0.0)),
+             ("Module: two 5 mm clevis pins through the lugs into Sam's knuckles, e-clips on", "the plate's free end snaps under the carriage's two hooks",
+              lambda p, t: pins_out(p, t) if p.key in ("clevis_pin", "eclip") else None)]
     for title, sub, off_fn in beats:
         n = sec(1.6)
         for i in range(n):
@@ -345,10 +387,10 @@ def movie(fast: bool = False) -> None:
             pl = L.placements(L.State(**bench))
             offs = {}
             for k, p in keyed(pl):
-                if p.module == k0:
+                if p.module == k0 and (p.key in module_keys or p.key in ("clevis_pin", "eclip")):
                     o = off_fn(p, t)
                     if o is not None:
-                        offs[k] = o
+                        offs[k] = np.asarray(o, float)
             mv.frame(pl, title, sub, offsets=offs, cam=LOADC)
         mv.hold(sec(0.3))
 
@@ -363,14 +405,14 @@ def movie(fast: bool = False) -> None:
         for i in range(n_in):                               # in sideways, 10 mm off position
             f = 1.0 - ease(i / (n_in - 1))
             st = L.State(shift=shift, carriages=tuple(loaded + [k]), modules=tuple(loaded + [k]), ext=0.0, station=True,
-                         out_carriage=k, out_slide=HOOK_SLIDE, out_lift=170.0 * f, screws_out=8.0)
+                         out_carriage=k, out_slide=HOOK_SLIDE, out_lift=170.0 * f, screws_out=SCREW_OUT)
             mv.frame(L.placements(st), f"Carriage {j + 1} of 13 onto the chain at the loading position",
                      "in sideways beside the two A-1 tabs", cam=cam)
         n_s = sec(0.8 if slow else 0.3)
         for i in range(n_s):                                # slide onto the tabs, screws in
             t = ease(i / (n_s - 1))
             st = L.State(shift=shift, carriages=tuple(loaded + [k]), modules=tuple(loaded + [k]), ext=0.0,
-                         out_carriage=k, out_slide=HOOK_SLIDE * (1 - min(1, 2 * t)), out_lift=0.0, screws_out=8.0 * (1 - max(0, 2 * t - 1)))
+                         out_carriage=k, out_slide=HOOK_SLIDE * (1 - min(1, 2 * t)), out_lift=0.0, screws_out=SCREW_OUT * (1 - max(0, 2 * t - 1)))
             mv.frame(L.placements(st), f"Carriage {j + 1} of 13 onto the chain at the loading position",
                      "slide 10 mm so the hooks take the tabs, then two M3 x 12 into the captive locknuts", cam=cam)
         loaded.append(k)
@@ -403,53 +445,63 @@ def movie(fast: bool = False) -> None:
         mv.frame(L.placements(L.State(ext=0.0)), "Station: carriage 1 at the hold-downs", "", cam=cam_lerp(LOOP, STATION, i / (sec(1.2) - 1)),
                  hide_fn=station_cut)
     for i in range(sec(1.4)):
-        e = DOCK_EXT * ease(i / (sec(1.4) - 1))
+        e = (DOCK_EXT - SEEK_MM) * ease(i / (sec(1.4) - 1))
         mv.frame(L.placements(L.State(ext=e)), "Actuonix P16-P lifts the electronics carriage through the carriage window",
-                 f"approach {e:4.1f} mm, tongue in the fork; locating pins enter the plate", cam=STATION, hide_fn=station_cut)
-    for i in range(sec(0.6)):
-        mv.frame(L.placements(L.State(magnet_on=True)), "Dock magnet on: 16 N pull on the steel tab", "the rim sets the 32.1 mm centre distance",
-                 cam=STATION, hide_fn=station_cut)
+                 f"approach {e:4.1f} mm, the yoke's tongue in the fork", cam=STATION, hide_fn=station_cut)
+    n_s = sec(1.6)
+    for i in range(n_s):
+        f = i / (n_s - 1)
+        e = DOCK_EXT - SEEK_MM * (1 - f)
+        seek = 2 * math.pi * SEEK_REV_S * 1.6 * f * 20.0 / 44.0      # auger angle once the pinion's teeth find the gaps
+        mv.frame(L.placements(L.State(ext=e, magnet_on=True, spin=seek)),
+                 f"Docking seek: magnet on, the pinion turns at {SEEK_REV_S} rev/s through the last {SEEK_MM:.0f} mm",
+                 "its teeth find the 44T gear's gaps; the locating pins enter the plate", cam=STATION, hide_fn=station_cut)
+    seek_end = 2 * math.pi * SEEK_REV_S * 1.6 * 20.0 / 44.0
+    for i in range(sec(0.8)):
+        mv.frame(L.placements(L.State(magnet_on=True, spin=seek_end)),
+                 f"Docked: the magnet pulls the steel tab with about {MAG_F_DESIGN:.1f} N at the {MAG_GAP_DESIGN} mm design gap",
+                 f"the rim sets the {CENTRE_DIST} mm centre distance", cam=STATION, hide_fn=station_cut)
     for i in range(sec(2.2)):
         a = tf * ease(i / (sec(2.2) - 1))
-        mv.frame(L.placements(L.State(tilt=a, magnet_on=True)), "Tilt: the plate leaves the snap hooks, module and carriage turn together",
+        mv.frame(L.placements(L.State(tilt=a, magnet_on=True, spin=seek_end)), "Tilt: the plate leaves the snap hooks, module and carriage turn together",
                  f"tilt {a:4.1f} deg", cam=cam_lerp(STATION, STATION_TILT, i / (sec(2.2) - 1)), hide_fn=station_cut)
     n_d = sec(2.4)
     for i in range(n_d):
-        spin = 2 * math.pi * 1.0 * i / (n_d - 1)
+        spin = seek_end + 2 * math.pi * 1.0 * i / (n_d - 1)
         tap = 2.0 if (i // max(1, fps // 4)) % 2 == 0 and i > n_d * 0.6 else 0.0
         mv.frame(L.placements(L.State(tilt=tf, magnet_on=True, spin=spin, tap=tap)),
                  f"Dosing at {TILT_DOSE_WORLD:.0f} deg: NEMA 11 turns the auger through the steel 20T pinion and the 44T gear",
-                 f"auger {spin / (2 * math.pi):4.2f} rev", cam=STATION_TILT, hide_fn=station_cut)
+                 f"auger {(spin - seek_end) / (2 * math.pi):4.2f} rev", cam=STATION_TILT, hide_fn=station_cut)
     mv.hold(sec(0.5))
     for i in range(sec(1.6)):
         a = tf * (1 - ease(i / (sec(1.6) - 1)))
-        mv.frame(L.placements(L.State(tilt=a, magnet_on=True, spin=2 * math.pi)), "Hold 0.5 s, then tilt back to level", f"tilt {a:4.1f} deg",
+        mv.frame(L.placements(L.State(tilt=a, magnet_on=True, spin=seek_end + 2 * math.pi)), "Hold 0.5 s, then tilt back to level", f"tilt {a:4.1f} deg",
                  cam=cam_lerp(STATION_TILT, STATION, i / (sec(1.6) - 1)), hide_fn=station_cut)
     n_r = sec(1.6)
     for i in range(n_r):
-        spin = 2 * math.pi * (1 - i / (n_r - 1))
+        spin = seek_end + 2 * math.pi * (1 - i / (n_r - 1))
         mv.frame(L.placements(L.State(magnet_on=True, spin=spin)), "At rest: reverse the auger one turn",
                  "pulls powder back from the exit (auger-leakage study); never while tilted", cam=STATION, hide_fn=station_cut)
     for i in range(sec(1.2)):
         e = DOCK_EXT - DOCK_EXT * ease(i / (sec(1.2) - 1))
-        mv.frame(L.placements(L.State(ext=e, magnet_on=e > DOCK_EXT - 2.0)), "Undock: press the plate into the snap hooks, magnet off, retract",
+        mv.frame(L.placements(L.State(ext=e, magnet_on=e > DOCK_EXT - 2.0, spin=seek_end)), "Undock: press the plate into the snap hooks, magnet off, retract",
                  "", cam=STATION, hide_fn=station_cut)
 
     # 6. swap the module at the loading position
     k_sw = k0
     for i in range(sec(1.2)):
         mv.frame(L.placements(L.State(ext=0.0)), "Swap a module at the loading position", "", cam=cam_lerp(STATION, LOADC, i / (sec(1.2) - 1)))
-    for title, sub, fn in (("Swap: two M3 screws out", "", lambda t: dict(screws_out=8.0 * t)),
-                           ("Swap: slide the carriage 10 mm so its hooks clear the tabs", "", lambda t: dict(screws_out=8.0, out_slide=HOOK_SLIDE * t)),
+    for title, sub, fn in (("Swap: two M3 screws out", "", lambda t: dict(screws_out=SCREW_OUT * t)),
+                           ("Swap: slide the carriage 10 mm so its hooks clear the tabs", "", lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE * t)),
                            ("Swap: carriage and module come out sideways", "the module stays on its own carriage",
-                            lambda t: dict(screws_out=8.0, out_slide=HOOK_SLIDE, out_lift=170.0 * t))):
+                            lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=170.0 * t))):
         n = sec(1.1)
         for i in range(n):
             t = ease(i / (n - 1))
             mv.frame(L.placements(L.State(ext=0.0, out_carriage=k_sw, **fn(t))), title, sub, cam=LOADC)
     new_col = None
-    for title, fn in (("Swap: a different powder's carriage goes in", lambda t: dict(screws_out=8.0, out_slide=HOOK_SLIDE, out_lift=170.0 * (1 - t))),
-                      ("Swap: slide onto the tabs, screws in. Done", lambda t: dict(screws_out=8.0 * (1 - t), out_slide=HOOK_SLIDE * (1 - t)))):
+    for title, fn in (("Swap: a different powder's carriage goes in", lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=170.0 * (1 - t))),
+                      ("Swap: slide onto the tabs, screws in. Done", lambda t: dict(screws_out=SCREW_OUT * (1 - t), out_slide=HOOK_SLIDE * (1 - t)))):
         n = sec(1.1)
         for i in range(n):
             t = ease(i / (n - 1))
@@ -458,16 +510,10 @@ def movie(fast: bool = False) -> None:
             mv.frame(pl, title, "", colors=new_col, cam=LOADC)
     mv.hold(sec(1.5))
 
-    import imageio.v2 as iio
-    mp4 = OUT / "chain_carousel_v2.mp4"
-    w = iio.get_writer(mp4, fps=fps, codec="libx264", quality=7, macro_block_size=8, ffmpeg_params=["-pix_fmt", "yuv420p"])
-    for im in mv.frames:
-        w.append_data(np.asarray(im))
-    w.close()
+    mv.close()
     gif = OUT / "chain_carousel_v2.gif"
-    gif_frames = [im.resize((640, 360), Image.LANCZOS).convert("P", palette=Image.ADAPTIVE, colors=96) for im in mv.frames[::3]]
-    gif_frames[0].save(gif, save_all=True, append_images=gif_frames[1:], duration=int(3000 / fps), loop=0, optimize=True)
-    print(f"  {len(mv.frames)} frames -> {mp4.name} ({mp4.stat().st_size / 1e6:.1f} MB), {gif.name} ({gif.stat().st_size / 1e6:.1f} MB)")
+    mv.gif[0].save(gif, save_all=True, append_images=mv.gif[1:], duration=int(1000 * Movie.GIF_EVERY / fps), loop=0, optimize=True)
+    print(f"  {mv.n} frames ({mv.n / fps:.1f} s) -> {mp4.name} ({mp4.stat().st_size / 1e6:.1f} MB), {gif.name} ({gif.stat().st_size / 1e6:.1f} MB)")
 
 
 def main():

@@ -1,7 +1,8 @@
 """Exact chain kinematics for the v2 loop (both chains identical and in step).
 
-The loop runs counter-clockwise in (y, z): bottom run toward +y, up the +y
-side, top run toward -y, down the -y side. At home (shift 0) the 104 pins
+A positive shift runs the loop counter-clockwise in (y, z): bottom run toward
++y, up the +y side, top run toward -y, down the -y side. The machine runs the
+other way (params.RUN_DIRECTION = -1), i.e. negative shifts. At home (shift 0) the 104 pins
 sit where ``home_pins()`` puts them: pin 0 at the bottom-left tangent point,
 12 links along the bottom, 8 round B+, 24 up the side, 8 round T+, 12 along
 the top, 8 round T-, 24 down the side and 8 round B-.

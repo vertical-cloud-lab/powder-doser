@@ -6,8 +6,8 @@
 Every part keeps the look of render.py. Static parts sit where layout.py
 puts them; the chains, carriages, modules, shafts and sprockets follow the
 simulated poses in poses.npz; the drive chain and the motor sprocket turn
-with the drive shaft. The electronics carriage is drawn retracted (35 mm
-down) because the chain only moves with the station clear.
+with the drive shaft. The station is drawn retracted (layout.State(ext=0)),
+as it is whenever the chain moves.
 """
 from __future__ import annotations
 
@@ -27,6 +27,24 @@ sys.path.insert(0, str(HERE.parent))
 import layout as L  # noqa: E402
 import render as RD  # noqa: E402
 from params import *  # noqa: E402,F401,F403
+
+def _actor(pz) -> vtk.vtkActor:
+    """A VTK actor for a placement, with render.py's tessellation cache and material."""
+    if pz.key not in RD._PD:
+        RD._PD[pz.key] = RD.polydata(pz.key)
+    m = vtk.vtkPolyDataMapper()
+    m.SetInputData(RD._PD[pz.key])
+    a = vtk.vtkActor()
+    a.SetMapper(m)
+    pr = a.GetProperty()
+    pr.SetAmbient(0.25)
+    pr.SetDiffuse(0.75)
+    pr.SetSpecular(0.15)
+    pr.SetSpecularPower(20)
+    pr.SetColor(*pz.color)
+    a.SetUserMatrix(RD.vmat(pz.M))
+    return a
+
 
 C_FRONT = L.T(L.cols((-1, 0, 0), (0, -1, 0), (0, 0, 1)))     # parts.py link frame relative to the sim link frame
 C_BACK = L.T(L.cols((1, 0, 0), (0, -1, 0), (0, 0, -1)))
@@ -52,7 +70,7 @@ class SimScene:
         self.data = np.load(run_dir / "poses.npz")
         self.t = self.data["t"]
         self.hide = hide
-        pl = L.placements()
+        pl = L.placements(L.State(ext=0.0))             # the station retracted, as it is whenever the chain moves
         self.view = RD.View(w=1600, h=1000)
         self.static = []
         self.dyn = []                        # (actor, kind, index, rel)
@@ -63,40 +81,30 @@ class SimScene:
         chain_i = {False: 0, True: 0}
         self.drive_links = []
         for pz in pl:
+            name, key = pz.name, pz.key
+            chain_idx = None
+            if pz.group == "chain":                            # main chain links, in placement order (front 0-103, then back)
+                back = "(back)" in name or pz.M[0, 3] > CHAIN_L / 2
+                chain_idx = (back, chain_i[back])
+                chain_i[back] += 1
             if hide is not None and hide(pz):
                 continue
-            a = RD.actor(pz, pz.color)
+            a = _actor(pz)
             self.view.ren.AddActor(a)
-            name, key = pz.name, pz.key
-            if pz.step == 7:                                   # main chain links, in placement order
-                back = "(back)" in name or pz.M[0, 3] > CHAIN_L / 2
-                i = chain_i[back]
-                chain_i[back] += 1
+            if chain_idx is not None:
+                back, i = chain_idx
                 self.dyn.append((a, "chain_back" if back else "chain_front", i, C_BACK if back else C_FRONT))
-            elif pz.step == 8:
-                k = int(name.split()[-1]) - 1 if name.split()[-1].isdigit() else 0
-                rel = np.linalg.inv(carriages[k]) @ pz.M
-                self.dyn.append((a, "carriages", k, rel))
-            elif pz.step == 10:
-                if key == "sam_electronics_carriage":
-                    M = pz.M.copy()
-                    if not docked:
-                        M[2, 3] -= 35.0
-                    a.SetUserMatrix(self._vm(M))
-                    continue
-                k = int(name.split()[-1]) - 1
-                if key == "m5x10_fhcs":
-                    rel = np.linalg.inv(carriages[k]) @ pz.M
-                    self.dyn.append((a, "carriages", k, rel))
-                else:
-                    rel = np.linalg.inv(sams[k]) @ pz.M
-                    self.dyn.append((a, "modules", k, rel))
+            elif pz.module >= 0 and (pz.group == "carriages" or key in ("clevis_pin", "eclip")):
+                rel = np.linalg.inv(carriages[pz.module]) @ pz.M        # carriage, tab screws, nuts, magnets, hinge pins
+                self.dyn.append((a, "carriages", pz.module, rel))
+            elif pz.module >= 0 and pz.group == "modules":
+                rel = np.linalg.inv(sams[pz.module]) @ pz.M             # plate, steel tab, auger, cap: turn on the hinge
+                self.dyn.append((a, "modules", pz.module, rel))
             elif pz.step == 5 and (key.startswith("sprocket_32") or key.startswith("shaft")):
                 cn = name.split()[2] if key.startswith("sprocket") else name.split()[1]
                 rel = np.linalg.inv(corners[cn]) @ pz.M
                 self.dyn.append((a, "corner", self.corner_names.index(cn), rel))
             elif pz.step == 6 and key in ("sprocket_15_shaft", "sprocket_15_motor"):
-                cn = L.DRIVE
                 centre = L.T(None, (pz.M[0, 3], LOOP_Y, Z_BOT if key == "sprocket_15_shaft" else Z_MOTOR))
                 rel = np.linalg.inv(centre) @ pz.M
                 self.dyn.append((a, "spin", (centre, 1.0), rel))
@@ -149,12 +157,13 @@ class SimScene:
         return img
 
 
+_DZ = Z_RUN - 210.0                          # the cameras were set up with the bottom run at 210 mm; the loop was raised
 CAMS = {
-    "loop": dict(focal=(120, 0, 370), direction=(-1.0, -0.42, 0.22), dist=1250),
-    "iso": dict(focal=(150, 0, 330), direction=(-0.9, -1.0, 0.55), dist=1600),
-    "station": dict(focal=(90, 0, 215), direction=(-1.0, -0.65, -0.25), dist=620),
-    "corner": dict(focal=(70, 80, 245), direction=(-1.0, 0.28, 0.1), dist=470),
-    "top": dict(focal=(120, 0, 520), direction=(-1.0, -0.3, 0.35), dist=600),
+    "loop": dict(focal=(120, 0, 370 + _DZ), direction=(-1.0, -0.42, 0.22), dist=1250),
+    "iso": dict(focal=(150, 0, 330 + _DZ), direction=(-0.9, -1.0, 0.55), dist=1600),
+    "station": dict(focal=(90, 0, 215 + _DZ), direction=(-1.0, -0.65, -0.25), dist=620),
+    "corner": dict(focal=(70, 80, 245 + _DZ), direction=(-1.0, 0.28, 0.1), dist=470),
+    "top": dict(focal=(120, 0, 520 + _DZ), direction=(-1.0, -0.3, 0.35), dist=600),
 }
 
 

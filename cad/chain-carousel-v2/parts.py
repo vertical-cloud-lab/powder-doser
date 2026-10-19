@@ -319,7 +319,7 @@ def carriage() -> cq.Workplane:
     # HOOK_SLIDE off position and slides -u onto both tabs at once.
     for x in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(3.4 / 2).extrude(CAR_T + 2).translate((0, w1 + 1, 0)))
-        plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(6.4 / 2).extrude(1.8).translate((0, w0 + 1.8, 0)))   # head flush
+        plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(6.4 / 2).extrude(TAB_SCREW_CB).translate((0, w0 + TAB_SCREW_CB, 0)))   # head flush
         plate = plate.union(tab_hook(x > CHAIN_L / 2).translate((0, 0, x)))
     # magnet pockets from the inner face of the tongues
     for x in (CAR_X0 + 7.0, CAR_X1 - 7.0):
@@ -330,13 +330,13 @@ def carriage() -> cq.Workplane:
 
 def hold_down() -> cq.Workplane:
     """Printed hold-down at the station, on a side plate's inner face. It
-    wraps the carriage tongue like a C: a lip 0.5 mm over the tongue reacts
+    wraps the carriage tongue like a C: a lip HOLD_DOWN_GAP (2 mm) over the tongue reacts
     the station's upward push, a foot HOLD_DOWN_FOOT_GAP (4 mm) under it catches a downward pull,
     and a pocket in the lip holds a hall switch over the tongue's magnet.
     Frame: X = u (along the travel), Y = w (inward from the chain's pitch
     line), Z = distance from the side plate's inner face toward the chain.
     Two M5 screws come through the side plate into heat-set inserts."""
-    tz = CAR_W0 + HOLD_DOWN_GAP                          # lip underside, 0.5 mm above the tongue
+    tz = CAR_W0 + HOLD_DOWN_GAP                          # lip underside, HOLD_DOWN_GAP above the tongue
     tongue_end = SIDE_GAP + CAR_X0                       # 7: tongue tip's distance from the plate
     z_lip1 = SIDE_GAP - 7.0                              # lip stops 7 mm short of the chain's centre plane
     w_foot = CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP         # foot top, 4 mm under the tongue
@@ -466,10 +466,15 @@ def clevis_pin() -> cq.Workplane:
     return head.union(shank).cut(groove)
 
 
-def eclip() -> cq.Workplane:
-    """DIN 6799 e-clip for a 4 mm groove (5 mm pin): 9 OD, 0.6 thick, open on one side. Face at z = 0, along -z."""
-    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(2.0).extrude(-ECLIP[1])
-    return c.cut(cq.Workplane("XY").center(0, -3.5).rect(3.4, 4.0).extrude(-2).translate((0, 0, 0.5)))
+def eclip(od: float = ECLIP[0], groove_d: float = 4.0, t: float = ECLIP[1]) -> cq.Workplane:
+    """DIN 6799 e-clip, open on one side; face at z = 0, along -z. Default: size 4 (4 mm groove, 5 mm pin), 9 OD, 0.6 thick."""
+    c = cq.Workplane("XY").circle(od / 2).circle(groove_d / 2).extrude(-t)
+    return c.cut(cq.Workplane("XY").center(0, -od * 0.39).rect(groove_d * 0.85, od * 0.45).extrude(-2).translate((0, 0, 0.5)))
+
+
+def eclip_stub() -> cq.Workplane:
+    """DIN 6799 size 3.2 e-clip for the 4 mm stub pins' 3.2 mm groove: 7.3 OD, 0.6 thick."""
+    return eclip(7.3, 3.2, 0.6)
 
 
 def locknut(m: float = 3.0) -> cq.Workplane:
@@ -585,15 +590,34 @@ def stub_pin() -> cq.Workplane:
 
 
 def yoke_stop() -> cq.Workplane:
-    """Printed stop block on a yoke arm's inner face (yoke frame, arm face at y = 0, block toward -y): the hanging
-    carriage rests its back section on it during the approach (its COM is 20 mm behind the pins); docked, the dock
-    lifts it 1 mm clear, and the tilt turns the carriage's back up and away from it."""
-    return cq.Workplane("XY").box(8.0, 4.0, 3.0, centered=False).translate((0.0, -4.0, 0.0))
+    """Printed stop block on a yoke arm's inner face (yoke frame: origin on the stub-pin axis, arm face at y = 0, block
+    toward -y, 1.3 mm thick, outside the carriage's |y| 18). The pin plate's tail rests on it while the carriage hangs
+    during the approach (its COM is 20 mm behind the pins); the tilt turns the tail up and away, and nothing on the
+    carriage reaches the |y| 18.2-19.5 layer, so the carriage can turn through 92 deg in the yoke (as the paternoster)."""
+    return cq.Workplane("XY").box(6.0, 1.3, 4.0, centered=False).translate((11.0, -1.3, YOKE_STOP_Z))
+
+
+def yoke_stop_m() -> cq.Workplane:
+    """The -y arm's stop block: yoke_stop mirrored in y (a turn about z would also swap it to ahead of the pins)."""
+    return yoke_stop().mirror("XZ")
 
 
 def pin_boss() -> cq.Workplane:
-    """Printed boss bonded to the carriage's side post: 10 mm round, 1.5 mm thick, along +y from y = 0."""
-    return cq.Workplane("XZ").circle(5.0).circle(2.0).extrude(-1.5)
+    """Printed pin plate bonded to the carriage's side post (along +y from y = 0, 1.5 mm thick): a 10 mm boss round the
+    stub pin and a tail down and back to (14, -8) from the pin, which rests on the yoke's stop block during the approach."""
+    boss = cq.Workplane("XZ").circle(5.0).extrude(-1.5)
+    d = (14.0, -8.0)
+    ln = math.hypot(*d)
+    ang = math.degrees(math.atan2(d[1], d[0]))
+    tail = (cq.Workplane("XZ").center(ln / 2, 0).rect(ln, 6.0).extrude(-1.5)
+            .union(cq.Workplane("XZ").center(ln, 0).circle(3.0).extrude(-1.5))
+            .rotate((0, 0, 0), (0, 1, 0), -ang))
+    return boss.union(tail).cut(cq.Workplane("XZ").circle(2.0).extrude(-2.0))
+
+
+def pin_boss_m() -> cq.Workplane:
+    """The -y side's pin plate: pin_boss mirrored in y, so its tail also points back and down."""
+    return pin_boss().mirror("XZ")
 
 
 def loc_pin() -> cq.Workplane:

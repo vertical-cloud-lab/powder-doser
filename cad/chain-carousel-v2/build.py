@@ -23,7 +23,7 @@ import layout as L
 
 HERE = Path(__file__).resolve().parent
 PRINTED = ("carriage", "hold_down", "tensioner_block", "uyoke_base", "magnet_bracket", "clevis_bracket", "fork", "fork_arm",
-           "vial_cup", "vial_funnel", "level_wedge", "pin_boss", "yoke_stop")
+           "vial_cup", "vial_funnel", "level_wedge", "pin_boss", "pin_boss_m", "yoke_stop", "yoke_stop_m")
 LASER = ("armature_tab", "uyoke_arm")         # 2 mm low-carbon steel, laser cut (SendCutSend): DXF outlines
 STEP_FILE = "chain_carousel_rig_v2.step"
 

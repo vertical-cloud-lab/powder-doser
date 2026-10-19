@@ -10,7 +10,7 @@ Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop o
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 194 + vial post 197 from a seventh bar |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 155 + vial post 197 from a seventh bar |
 | 19 | 20 | 2020 90-degree corner bracket (+2 for the fork and vial posts) |
 | 20 | 50 | M5 x 10 button head screw, with blue threadlocker (brackets and station parts; T-nuts can't take a nylock) |
 | 21 | 74 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet, station) |
@@ -32,7 +32,7 @@ screw that goes into a T-nut.
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 194 + vial post 197 from a seventh bar |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 155 + vial post 197 from a seventh bar |
 | 19 | 20 | 2020 90-degree corner bracket (+2 for the fork and vial posts) |
 | 20 | 50 | M5 x 10 button head screw, with blue threadlocker (brackets and station parts; T-nuts can't take a nylock) |
 | 21 | 74 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet, station) |
@@ -158,26 +158,33 @@ because the top shafts are still at the bottom of their slots.
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 194 + vial post 197 from a seventh bar |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), 4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 155 + vial post 197 from a seventh bar |
 | 19 | 20 | 2020 90-degree corner bracket (+2 for the fork and vial posts) |
 | 20 | 50 | M5 x 10 button head screw, with blue threadlocker (brackets and station parts; T-nuts can't take a nylock) |
 | 21 | 74 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet, station) |
 | 32 | 4 | M5 x 16 socket head screw (hold-downs, through the side plates), with blue threadlocker |
 | 33 | 1 | M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs) |
 | 37 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
-| 38 | 6 | Station parts, PETG: actuator base clevis, yoke, approach fork and arm, vial cup, D-cut funnel, dock magnet bracket |
+| 38 | 12 | Station parts, PETG: actuator base clevis, U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, approach fork and arm, vial cup, D-cut funnel, level wedge, dock magnet bracket |
 | 40 | 1 | Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N |
 | 41 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in) |
 | 42 | 1 | 12 V supply for the LAC and actuator |
 | 43 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis) + M3 locknut |
-| 44 | 1 | Shoulder screw 4 x 20 mm, M3 (rod end in the yoke) + M3 locknut |
+| 44 | 1 | M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16's rod-end plug in the U-yoke crossbar's square socket (makes the yoke rigid on the rod) |
 | 45 | 1 | Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: the dock's mesh preload |
 | 46 | 1 | N-channel logic-level MOSFET IRLB8721 (switches the dock magnet from the carriage board; out of stock on 2026-10-18, any logic-level N-MOSFET such as FQP30N06L works) |
 | 47 | 1 | 1N4001 diode, 10-pack (flyback across the magnet coil) |
 | 49 | 1 | Load cell 100 g (TAL221) under the vial |
 | 50 | 1 | HX711 load-cell amplifier |
 | 51 | 1 | 20 mL glass scintillation vial (lab stock; Wheaton 986546 is $383.77 per 500) |
-| 52 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 (shaft trimmed to 15 mm), 20T pinion and 12 V solenoid |
+| 52 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 and 12 V solenoid |
+| 66 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping |
+| 67 | 2 | Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height |
+| 68 | 2 | Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot in each plate |
+| 69 | 6 | E-clip DIN 6799-3.2 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare) |
+| 70 | 2 | U-yoke arm, 2 mm low-carbon steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its side walls |
+| 71 | 4 | M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243 |
+| 72 | 1 | Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load) |
 | 53 | 2 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME |
 
 The station, under the bottom run:
@@ -187,14 +194,16 @@ The station, under the bottom run:
    carriage tongue, the foot 4 mm under it; both have 3 mm lead-ins.
 2. Actuator: the printed base clevis on the station rail (two M5 into T-nuts), the P16-150's rear clevis on a
    4 x 30 mm shoulder screw and M3 locknut.
-3. Electronics carriage (Sam's): trim the NEMA 11's shaft to 15 mm, face the KHK SS1-20A pinion's hub off and bond
-   the pinion on with Loctite 638, flush with the shaft end. Bond the dock electromagnet (Adafruit 3872) into the
+3. Electronics carriage (Sam's): face the KHK SS1-20A pinion's hub off and bond it onto the NEMA 11's shaft with
+   Loctite 638, flush with the shaft end (the motor sits inside the carriage on its back wall, boss in the recess). Bond the dock electromagnet (Adafruit 3872) into the
    printed bracket and fix the bracket with the NEMA 11's two upper M2.5 screws (lengthened by 3 mm). Press two 4 mm
-   steel locating pins into the rim at Sam's (30, 16) and (70, -16). Bond a printed boss to each side post and press
-   a 4 mm stub pin through post and boss at Sam's (32, -34).
-4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 into inserts), glue a stop block inside each
-   arm, push the P16's rod-end plug into the crossbar's square socket and bolt it with an M4. Hang the carriage on
-   the stub pins in the arms and fit an e-clip on each pin.
+   steel locating pins into the rim at Sam's (30, 16) and (70, -16). Bond a printed stub-pin plate to each side post
+   (mirror-image pair, tails pointing back and down) and press a 4 mm stub pin through post and plate at Sam's
+   (32, -34).
+4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 x 8 into inserts), glue a stop block inside each
+   arm under the pin plate's tail (mirror-image pair), push the P16's rod-end plug into the crossbar's square socket
+   and bolt it with an M4 x 25. Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
+   pin. Set the NEMA 11's DRV8825 to 450 mA (Vref 0.225 V) before the first dock.
 5. Approach fork on its post on the station rail, the tongue under the crossbar in its slot.
 6. Vial post on the -y base rail, the level wedge, the load cell, the vial cup, the vial and the D-cut funnel.
 
@@ -206,9 +215,9 @@ The station, under the bottom run:
 |---|---|---|
 | 27 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the actuator's clevis pins) |
 | 28 | 30 | Clevis pin 5 mm with retaining-ring groove, steel, about 14 mm usable length (module hinge pins, 2 per module; 4 spare) |
-| 29 | 38 | E-clip DIN 6799 for a 4 mm groove (5 mm pin), steel (on the hinge pins; 10 spare) |
+| 29 | 36 | E-clip DIN 6799-4 for a 4 mm groove (5 mm pin), steel (on the hinge pins; 10 spare) |
 | 30 | 26 | M3 x 6 flat head screw (steel armature tab to the plate) |
-| 31 | 26 | M3 x 4 heat-set insert (CNC Kitchen short): two per mounting plate, for the armature tab |
+| 31 | 30 | M3 x 4 heat-set insert (CNC Kitchen short): two per mounting plate for the armature tab, four in the U-yoke crossbar |
 | 39 | 12 | Mounting plate (Sam's Oct 13 Onshape part), printed for modules 2-13 (module 1 exists) |
 | 48 | 13 | Armature tab, low-carbon steel 2 mm (14 ga), 22 x 28 mm, two countersunk M3 holes: laser cut |
 | 61 | 13 | Auger, threaded storage (44T gear), and cap, lab design (PR #170): 13 from #134's batch of 16 |
@@ -254,6 +263,8 @@ bearings' bolts.
 |---|---|---|
 | 14 | 1 | Closed-loop stepper driver CL86T V4.1 (lab has one from the UofU order) |
 | 15 | 1 | Power supply Mean Well LRS-350-48 (48 V, 7.3 A) |
+| 73 | 1 | Stepper driver carrier DRV8825 for the NEMA 11 (current limit set to 450 mA: Vref 0.225 V), 100 uF across VMOT |
+| 74 | 1 | DC motor driver DRV8871 breakout (the 12 V tap solenoid) |
 | 55 | 1 | Raspberry Pi Zero 2 W (or any spare Pi that runs pigpio) |
 | 56 | 1 | Interface board: 74AHCT125 (3.3 V GPIO to 5 V step/dir/enable), 3 x 10k pull-ups, screw terminals, perfboard |
 | 57 | 1 | E-stop GCX1136 (22 mm, NC, twist to release) + enclosure; breaks the 48 V feed to the driver |
@@ -275,7 +286,7 @@ The electronics board sits on the bench behind the rig. Wire it like this:
 | CL86T PUL- / DIR- / ENA- | Pi GND |
 | Pi 3.3 V via 10k | GPIO 23 (INDEX), GPIO 24 (HOME), GPIO 25 (CL86T ALM+; ALM- to GND) |
 | Pi GPIO 18 | LAC RC input (1.0-2.0 ms = 0-150 mm); LAC on its 12 V supply |
-| Pi GPIO 20 / 21 | DRV8825 STEP / DIR for the NEMA 11 (current limit 0.45 A: Vref 0.225 V) |
+| Pi GPIO 13 / 21 | DRV8825 STEP / DIR for the NEMA 11 (current limit 0.45 A: Vref 0.225 V) |
 | Pi GPIO 16 | Dock magnet MOSFET gate (IRLB8721), 1N4001 across the coil, 5 V supply |
 | Pi GPIO 12 | DRV8871 IN1 for the tap solenoid |
 | Pi GPIO 5 / 6 | HX711 DT / SCK |
