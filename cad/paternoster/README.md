@@ -106,7 +106,7 @@ Every purchased part is a catalogue part with its number, link and price in [BOM
   - The envelope here is modelled from Actuonix's STEP: a 36 x 20 x 79 block with the rod axis 10.5 mm from one end, a 12 x 12 tube and a 9 mm rod.
   - The LAC board ($30) closes the loop on the pot.
 - **Surplus Center** (sprockets, flange bearings, keyed shaft), **Nitro** (chain roll), **80/20**, **SparkFun**, **TRC**, **BelMetric**, **VXB**: verified on 2026-10-16.
-- **Already in the lab, $0:** the NEMA 34 and CL86T, module 1, the augers (#134's batch of 16), and the electronics carriage's NEMA 11, pinion and solenoid.
+- **Already in the lab, $0:** the NEMA 34 and CL86T, module 1, the augers (#134's batch of 16), and the electronics carriage's NEMA 11 and solenoid. The steel pinion that replaces the printed one is bought.
 - **Doser CAD:** the auger and cap are PR #170's current-design STEPs (the same ones v1/v2 use). Sam's mounting plate and electronics carriage are **his Oct 13 Part Studio**, exported for this design: it changed after the Oct 8 export that v1 and v2 still use.
 
 ## Files
