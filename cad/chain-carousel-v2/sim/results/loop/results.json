@@ -1,0 +1,71 @@
+{
+ "coastdown_100": {
+  "v_mm_s": 100.0,
+  "J_total_kgm2": 0.01629,
+  "J_carriages_modules": 0.00973,
+  "J_chain": 0.00206,
+  "J_sprockets_shafts": 0.0041,
+  "J_motor": 0.0004,
+  "friction_Nm": 0.23,
+  "coast_time_s": 0.146,
+  "coast_distance_mm": 7.29
+ },
+ "coastdown_50": {
+  "v_mm_s": 50.0,
+  "J_total_kgm2": 0.01629,
+  "J_carriages_modules": 0.00973,
+  "J_chain": 0.00206,
+  "J_sprockets_shafts": 0.0041,
+  "J_motor": 0.0004,
+  "friction_Nm": 0.23,
+  "coast_time_s": 0.073,
+  "coast_distance_mm": 1.82
+ },
+ "index_50": {
+  "hook_force_max_N": 5.1,
+  "hook_module": 8,
+  "module_opening_max_deg": 0.076,
+  "drive_torque_peak_Nm": 0.515,
+  "drive_torque_load_peak_Nm": 0.255,
+  "speed_peak_mm_s": 50.0
+ },
+ "index_100": {
+  "hook_force_max_N": 5.6,
+  "hook_module": 8,
+  "module_opening_max_deg": 0.083,
+  "drive_torque_peak_Nm": 1.012,
+  "drive_torque_load_peak_Nm": 0.734,
+  "speed_peak_mm_s": 100.0
+ },
+ "lap_50": {
+  "hook_force_max_N": 5.1,
+  "hook_module": 11,
+  "module_opening_max_deg": 0.076,
+  "drive_torque_peak_Nm": 0.455,
+  "drive_torque_load_peak_Nm": 0.431,
+  "speed_peak_mm_s": 50.0
+ },
+ "lap_100": {
+  "hook_force_max_N": 5.62,
+  "hook_module": 3,
+  "module_opening_max_deg": 0.084,
+  "drive_torque_peak_Nm": 1.37,
+  "drive_torque_load_peak_Nm": 1.33,
+  "speed_peak_mm_s": 100.0
+ },
+ "hardstop_100": {
+  "hook_force_max_N": 5.6,
+  "hook_module": 8,
+  "module_opening_max_deg": 0.083,
+  "drive_torque_peak_Nm": 1.629,
+  "drive_torque_load_peak_Nm": 0.132,
+  "speed_peak_mm_s": 100.0
+ },
+ "hook_static_top_run_N": 4.44,
+ "module_mass_kg": 0.2188,
+ "module_com_sam_mm": [
+  107.5,
+  0.0,
+  -4.4
+ ]
+}

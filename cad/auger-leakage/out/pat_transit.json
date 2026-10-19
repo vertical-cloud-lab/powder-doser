@@ -1,0 +1,22 @@
+{
+ "pendulum": {
+  "mass_kg": 0.38,
+  "com_below_pivot_mm": 24.013157894736793,
+  "com_x_mm": 143.45789473684215,
+  "I_pivot_kgmm2": 350.9333333333345,
+  "f_Hz": 2.541901755850495,
+  "period_s": 0.3934062351931497
+ },
+ "profile": "trapezoid, 1.5 s per index, ramps = one pendulum period, mu 0.1 pivots",
+ "index_link": 10,
+ "dt_s": 0.0004999999999999449,
+ "first_index": {
+  "swing_max_deg": 1.7080507395215108,
+  "accel_max_mm_s2": 3210.235199420825,
+  "accel_rms_mm_s2": 449.7794853201075
+ },
+ "three_indexes": {
+  "swing_max_deg": 2.146895524610928,
+  "accel_max_mm_s2": 3460.15411569339
+ }
+}

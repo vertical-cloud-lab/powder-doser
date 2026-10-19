@@ -1,0 +1,85 @@
+{
+ "centre_distance_mm": 32.1,
+ "line_of_action": {
+  "T1T2": 11.2337,
+  "T1A": 1.1531,
+  "T1E": 5.7182,
+  "hpstc_pinion_r": 10.2545,
+  "hpstc_gear_r": 22.3402
+ },
+ "mesh_stiffness_single_pair_N_per_um": {
+  "PETG pinion / PETG gear": 0.8669,
+  "steel pinion / PETG gear": 1.5937
+ },
+ "teeth": {
+  "gear44": {
+   "tip": {
+    "r_load_mm": 22.94,
+    "Wn_N": 10.642,
+    "contact_half_width_mm": 0.0364,
+    "root_tension_MPa": 3.601,
+    "root_compression_MPa": -4.38,
+    "nodes": 12115,
+    "elements": 23660,
+    "applied_check_N": 10.642,
+    "solve_s": 6.0,
+    "compliance_um_per_N, PETG (printed)": 0.90699,
+    "stiffness_N_per_um, PETG (printed)": 1.1025,
+    "compliance_um_per_N, steel": 0.00907,
+    "stiffness_N_per_um, steel": 110.2543
+   },
+   "HPSTC": {
+    "r_load_mm": 22.34,
+    "Wn_N": 10.642,
+    "contact_half_width_mm": 0.0492,
+    "root_tension_MPa": 2.594,
+    "root_compression_MPa": -3.133,
+    "nodes": 12219,
+    "elements": 23875,
+    "applied_check_N": 10.642,
+    "solve_s": 5.9,
+    "compliance_um_per_N, PETG (printed)": 0.62218,
+    "stiffness_N_per_um, PETG (printed)": 1.6073,
+    "compliance_um_per_N, steel": 0.00622,
+    "stiffness_N_per_um, steel": 160.7253
+   },
+   "lewis_tip_MPa": 2.508,
+   "fea_tip_over_lewis": 1.436
+  },
+  "pinion20": {
+   "tip": {
+    "r_load_mm": 10.94,
+    "Wn_N": 10.642,
+    "contact_half_width_mm": 0.0571,
+    "root_tension_MPa": 4.977,
+    "root_compression_MPa": -6.133,
+    "nodes": 10061,
+    "elements": 19591,
+    "applied_check_N": 10.642,
+    "solve_s": 4.1,
+    "compliance_um_per_N, PETG (printed)": 0.84862,
+    "stiffness_N_per_um, PETG (printed)": 1.1784,
+    "compliance_um_per_N, steel": 0.00849,
+    "stiffness_N_per_um, steel": 117.8383
+   },
+   "HPSTC": {
+    "r_load_mm": 10.255,
+    "Wn_N": 10.642,
+    "contact_half_width_mm": 0.055,
+    "root_tension_MPa": 3.535,
+    "root_compression_MPa": -4.207,
+    "nodes": 10155,
+    "elements": 19786,
+    "applied_check_N": 10.642,
+    "solve_s": 4.2,
+    "compliance_um_per_N, PETG (printed)": 0.5314,
+    "stiffness_N_per_um, PETG (printed)": 1.8818,
+    "compliance_um_per_N, steel": 0.00531,
+    "stiffness_N_per_um, steel": 188.1837
+   },
+   "lewis_tip_MPa": 3.106,
+   "fea_tip_over_lewis": 1.603
+  }
+ },
+ "note": "plane stress, face 10 mm, load 10 N tangential (10.64 N normal) along the line of action over the PETG/PETG Hertz width; three-tooth sectors clamped on an inner arc; compliance includes bending, shear, rim and local contact deformation of each tooth; solved with E = 1 MPa and scaled"
+}

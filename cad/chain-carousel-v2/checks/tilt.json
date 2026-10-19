@@ -1,0 +1,12 @@
+{
+ "check": "tilt",
+ "clashes": [],
+ "snap_lip_contacts_by_design": [
+  {
+   "pose": "tilt5",
+   "a": "Mounting plate (Sam, Oct 13) 1",
+   "b": "Carriage 1",
+   "mm3": 17.28
+  }
+ ]
+}
