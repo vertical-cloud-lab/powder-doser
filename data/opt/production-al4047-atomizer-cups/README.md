@@ -1,5 +1,100 @@
 # Al 4047 doses into atomizer cups (byu-vcl composition spread)
 
+## 2026-10-20, 22:11–22:22 UTC: the 15 wt% cup finished at 6.5676 g of powder (target 6.5674 g)
+
+@williamulbz cleared the auger of large particles after the third session, weighed the cup with its
+plug and the powder in it at 42.5053 g, and asked in issue #186 to continue the dose.
+
+**Target.** 42.5053 − 37.2151 = **5.2902 g** of powder was in the cup, 21.8 mg less than the 5.3120 g
+the balance had counted (left on the funnel or lost while handling). The 15 wt% target is still
+0.15 / 0.85 × 37.2151 = 6.5674 g, so **1.2772 g** was left to add.
+
+**The balance already read a stable 0.0760 g, then 0.0765 g, before any dose.** It had been
+re-zeroed since the third session, which ended at 0.3901 g. A reading this small means the pan held
+the load it was zeroed on, plus 76.5 mg. I counted that as powder that fell into the cup or funnel
+after the zero, most likely when the cleared auger was refitted. That left **1.2007 g** to add. The
+livestream still showed 21:12 UTC, so I couldn't check.
+
+- This is the safer reading. If the 76.5 mg is something else, such as debris on the pan outside the
+  cup, the cup is 76.5 mg short (14.85 wt%), and a top-up can fix that. Had I ignored it and been
+  wrong, the cup would be 76.5 mg over, with no easy way back.
+
+![bulk dose 5851b6d6 and the stepwise top-up](dose_15wt_finish.png)
+
+| UTC | | reading |
+|---|---|---|
+| 22:11–22:12 | Zero idle since the third session's handback, nothing on the Pico's port, checkout at `306bbee`. Livestream frozen at 21:12:39 UTC. Rig notice up | |
+| 22:12 | `--takeover` of the power-on `main.py`, `/trickle_tap` runner booted at 0° | stable 0.0760 g |
+| 22:15:22 | stable read just before the dose | 0.0765 g |
+| 22:15:23–22:16:30 | **`5851b6d6`**: `bulk_only` at 40°, 100 rpm, 2 Hz cadence taps (`a5fdadaa`'s settings), aimed at 1.1012 g (100 mg short). **`ok` in 48 s**, 1.6 mg over its aim | 1.1028 g |
+| 22:17:30–22:19:20 | `topup.py`: 22 forward steps at 40° (20–342°), a stable read after each, aimed at 1.2007 g with a 2 mg tolerance | 1.1023 → 1.1996 g |
+| 22:19:50 | stable read 30 s after the last step | 1.2014 g |
+| 22:20 | plate eased 40→0° in 10° steps | stable 1.2012 g |
+| 22:20:50–22:21:36 | three stable reads at 0° | 1.2007, 1.2007, 1.2009 g |
+| 22:21:38 | Pico soft-rebooted into its power-on `main.py` | |
+
+### State after this session
+
+| | g |
+|---|---|
+| weighed by the operator: 42.5053 − 37.2151 | 5.2902 |
+| on the balance before the dose, over the operator's zero (stable, 22:15:22) | 0.0765 |
+| `5851b6d6` and the top-up, over its tare (stable, 22:21:36) | 1.2009 |
+| **powder in the cup, or on the funnel** | **6.5676** |
+| target for 15 wt% | 6.5674 |
+
+- That is 15.000 wt%: 6.5676 / (37.2151 + 6.5676).
+- The last five reads stayed within 1.2007–1.2014 g, so nothing was still falling once the plate was
+  level.
+- The rig is free: the plate is at 0° and the Pico is on its power-on `main.py`. `/trickle_tap`,
+  `config.py` and the Zero's checkout (`306bbee`) are unchanged.
+  `~/RIG-NOTICE-20261020d-atomizer-cup-15wt-finish.txt` on the Zero records the session.
+
+### What the cleared tube did
+
+- **It fed without stalling.** The third session's three doses each slowed to about 1 mg/s within
+  2–3 minutes. This one fed about 25 mg/s at 86–100 rpm after its first few seconds, and slowed only
+  because its rpm tapers over the last 0.5 g.
+- **The first 0.594 g came out in 4.3 s** (138 mg/s), as soon as the auger started. It was probably
+  loose powder near the outlet, a bigger version of 10-19's 86 mg in the first 6 s. The 100 mg short
+  aim covered it. But with a freshly cleared or refilled tube, a closed-loop dose shorter than
+  about 0.6 g could overshoot at the start.
+- **The top-up fed about half as much per turn.** After its first burst, the bulk dose fed about
+  21 mg per auger turn (0.509 g in about 24.6 turns), at 16–100 rpm with 2 Hz taps. The top-up's
+  forward steps ran at 60 rpm with no taps during a turn, and fed 11.2 mg per turn (97.3 mg in
+  8.65 turns). Steps added 1.1–9.7 mg each.
+- **Powder creeps at 40°.** The reading rose 1.8 mg in the 30 s after the last step, with the auger
+  stopped. Once the plate was level, it stopped rising.
+
+### Before plugging the cup
+
+1. Tap the funnel clean into the cup, then weigh the cup with its plug. It should read
+   37.2151 + 6.5676 = **43.7827 g**.
+2. **If it reads about 76 mg low, the 0.0765 g on the balance before the dose was not powder in
+   the cup.** Add the difference by hand, or comment `@claude` with the new mass.
+3. If it reads high, the funnel was still holding some of the 21.8 mg when the balance was zeroed.
+
+### How it was run
+
+- The bulk dose: `scripts/opt_dose_capture.py` at `306bbee`, `--mode production`, started detached on
+  the Zero (`zero/dose_20261020d/launch.sh`), with the third session's frozen values (`frozen_F`,
+  `dose_timeout_s` 300) and parameters. The document is in MongoDB `opt_trials` and in `zero/`.
+  `mon2.py` followed its raw serial log.
+- The top-up: `topup.py` (written in the third session but not run then), started detached. Each
+  forward step was sized to add at most half of what remained, at the steepest flow seen so far.
+  That was seeded at 52 mg per turn, about 2× what the bulk dose fed per turn at 45 rpm.
+- The plate moves, the reads and the handback: `rig_cmd.py`.
+
+### Files (2026-10-20, fourth session)
+
+- `zero/trial_5851b6d6-….json`: the `opt_trials` document. `zero/serial_5851b6d6-….log`: its raw
+  serial session. `zero/run_G_5851b6d6.out`: the executor's summary lines.
+- `zero/serial_readback_20261020d.log`: every `rig_cmd.py` and `topup.py` command, scale read and the
+  handback, raw. `zero/topup_20261020d.out`: each top-up step's mass, with its UTC time.
+- `zero/dose_20261020d/`: the launch script and the dose's parameters, frozen values and covariates.
+  `zero/trials.jsonl`: the spool index, now seven trials. Home paths are scrubbed to `~`.
+- `dose_15wt_finish.png`, made by `plot_finish.py`.
+
 ## 2026-10-20, 21:03–21:41 UTC: a new cup at the 15 wt% point. 5.3120 g of the 6.5674 g went in before the tube stopped feeding
 
 @williamulbz asked in issue #186 for the next point of
