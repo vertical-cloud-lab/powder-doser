@@ -1,0 +1,233 @@
+[scale] ST 1.2869 g
+[scale] ST 1.2869 g
+[scale] ST 1.2869 g
+STABLE 1.2869
+[scale] ST 1.2869 g
+[scale] ST 1.2869 g
+[scale] ST 1.2869 g
+STABLE 1.2869
+[scale] ST 1.3315 g
+[scale] ST 1.3315 g
+[scale] ST 1.3314 g
+[scale] ST 1.3314 g
+STABLE 1.3314
+DOSE step 0 -180.0 deg: 1.2869 -> 1.3314 g (+44.5 mg)
+[scale] ST 1.3688 g
+[scale] ST 1.3688 g
+[scale] ST 1.3688 g
+[scale] ST 1.3688 g
+STABLE 1.3688
+DOSE step 1 -180.0 deg: 1.3314 -> 1.3688 g (+37.4 mg)
+[scale] ST 1.4219 g
+[scale] ST 1.4218 g
+[scale] US 1.4216 g
+[scale] ST 1.4216 g
+[scale] ST 1.4216 g
+[scale] ST 1.4216 g
+STABLE 1.4216
+DOSE step 2 -180.0 deg: 1.3688 -> 1.4216 g (+52.8 mg)
+[scale] ST 1.4737 g
+[scale] ST 1.4737 g
+[scale] ST 1.4737 g
+[scale] ST 1.4736 g
+STABLE 1.4736
+DOSE step 3 -180.0 deg: 1.4216 -> 1.4736 g (+52.0 mg)
+[scale] ST 1.5237 g
+[scale] ST 1.5237 g
+[scale] ST 1.5237 g
+[scale] ST 1.5238 g
+STABLE 1.5238
+DOSE step 4 -180.0 deg: 1.4736 -> 1.5238 g (+50.2 mg)
+[scale] ST 1.5784 g
+[scale] ST 1.5784 g
+[scale] ST 1.5784 g
+[scale] ST 1.5783 g
+STABLE 1.5783
+DOSE step 5 -180.0 deg: 1.5238 -> 1.5783 g (+54.5 mg)
+[scale] US 1.6417 g
+[scale] ST 1.6417 g
+[scale] ST 1.6417 g
+[scale] US 1.6473 g
+[scale] ST 1.6474 g
+[scale] ST 1.6474 g
+[scale] ST 1.6474 g
+STABLE 1.6474
+DOSE step 6 -180.0 deg: 1.5783 -> 1.6474 g (+69.1 mg)
+[scale] ST 1.6919 g
+[scale] ST 1.6919 g
+[scale] ST 1.6918 g
+[scale] ST 1.6918 g
+STABLE 1.6918
+DOSE step 7 -180.0 deg: 1.6474 -> 1.6918 g (+44.4 mg)
+[scale] ST 1.7576 g
+[scale] ST 1.7576 g
+[scale] ST 1.7576 g
+[scale] ST 1.7576 g
+STABLE 1.7576
+DOSE step 8 -180.0 deg: 1.6918 -> 1.7576 g (+65.8 mg)
+[scale] ST 1.7904 g
+[scale] ST 1.7904 g
+[scale] ST 1.7903 g
+[scale] ST 1.7903 g
+STABLE 1.7903
+DOSE step 9 -180.0 deg: 1.7576 -> 1.7903 g (+32.7 mg)
+[scale] US 1.8586 g
+[scale] ST 1.8586 g
+[scale] ST 1.8586 g
+[scale] US 1.8592 g
+[scale] US 1.8602 g
+[scale] US 1.8613 g
+[scale] US 1.862 g
+[scale] ST 1.862 g
+[scale] ST 1.862 g
+[scale] ST 1.862 g
+STABLE 1.8620
+DOSE step 10 -180.0 deg: 1.7903 -> 1.8620 g (+71.7 mg)
+[scale] ST 1.897 g
+[scale] ST 1.897 g
+[scale] ST 1.897 g
+[scale] ST 1.897 g
+STABLE 1.8970
+DOSE step 11 -180.0 deg: 1.8620 -> 1.8970 g (+35.0 mg)
+[scale] ST 1.9588 g
+[scale] ST 1.9588 g
+[scale] ST 1.9588 g
+[scale] ST 1.9588 g
+STABLE 1.9588
+DOSE step 12 -180.0 deg: 1.8970 -> 1.9588 g (+61.8 mg)
+[scale] ST 2.0044 g
+[scale] ST 2.0044 g
+[scale] ST 2.0044 g
+[scale] ST 2.0044 g
+STABLE 2.0044
+DOSE step 13 -180.0 deg: 1.9588 -> 2.0044 g (+45.6 mg)
+[scale] US 2.0517 g
+[scale] ST 2.0517 g
+[scale] ST 2.0516 g
+[scale] ST 2.0516 g
+STABLE 2.0516
+DOSE step 14 -180.0 deg: 2.0044 -> 2.0516 g (+47.2 mg)
+[scale] ST 2.105 g
+[scale] ST 2.105 g
+[scale] ST 2.105 g
+[scale] ST 2.1049 g
+STABLE 2.1049
+DOSE step 15 -180.0 deg: 2.0516 -> 2.1049 g (+53.3 mg)
+[scale] US 2.1611 g
+[scale] ST 2.1611 g
+[scale] ST 2.161 g
+[scale] ST 2.161 g
+STABLE 2.1610
+DOSE step 16 -180.0 deg: 2.1049 -> 2.1610 g (+56.1 mg)
+[scale] ST 2.2133 g
+[scale] ST 2.2133 g
+[scale] ST 2.2132 g
+[scale] ST 2.2132 g
+STABLE 2.2132
+DOSE step 17 -180.0 deg: 2.1610 -> 2.2132 g (+52.2 mg)
+[scale] ST 2.2678 g
+[scale] ST 2.2677 g
+[scale] ST 2.2677 g
+[scale] US 2.2679 g
+[scale] ST 2.268 g
+[scale] US 2.2684 g
+[scale] ST 2.2686 g
+[scale] ST 2.2686 g
+[scale] ST 2.2686 g
+STABLE 2.2686
+DOSE step 18 -180.0 deg: 2.2132 -> 2.2686 g (+55.4 mg)
+[scale] ST 2.3069 g
+[scale] ST 2.3069 g
+[scale] ST 2.3069 g
+[scale] ST 2.3069 g
+STABLE 2.3069
+DOSE step 19 -180.0 deg: 2.2686 -> 2.3069 g (+38.3 mg)
+[scale] US 2.3918 g
+[scale] US 2.3917 g
+[scale] ST 2.3915 g
+[scale] ST 2.3915 g
+[scale] ST 2.3916 g
+STABLE 2.3916
+DOSE step 20 -180.0 deg: 2.3069 -> 2.3916 g (+84.7 mg)
+[scale] ST 2.4228 g
+[scale] ST 2.4228 g
+[scale] ST 2.4229 g
+[scale] ST 2.4229 g
+STABLE 2.4229
+DOSE step 21 -180.0 deg: 2.3916 -> 2.4229 g (+31.3 mg)
+[scale] US 2.4712 g
+[scale] ST 2.4712 g
+[scale] ST 2.4712 g
+[scale] ST 2.4712 g
+STABLE 2.4712
+DOSE step 22 -180.0 deg: 2.4229 -> 2.4712 g (+48.3 mg)
+[scale] ST 2.5132 g
+[scale] ST 2.5132 g
+[scale] ST 2.5132 g
+[scale] ST 2.5132 g
+STABLE 2.5132
+DOSE step 23 -180.0 deg: 2.4712 -> 2.5132 g (+42.0 mg)
+[scale] ST 2.5609 g
+[scale] ST 2.5609 g
+[scale] ST 2.5608 g
+[scale] ST 2.5608 g
+STABLE 2.5608
+DOSE step 24 -180.0 deg: 2.5132 -> 2.5608 g (+47.6 mg)
+[scale] ST 2.6017 g
+[scale] ST 2.6017 g
+[scale] ST 2.6017 g
+[scale] ST 2.6017 g
+STABLE 2.6017
+DOSE step 25 -180.0 deg: 2.5608 -> 2.6017 g (+40.9 mg)
+[scale] ST 2.6802 g
+[scale] ST 2.6802 g
+[scale] ST 2.6804 g
+[scale] ST 2.6804 g
+STABLE 2.6804
+DOSE step 26 -180.0 deg: 2.6017 -> 2.6804 g (+78.7 mg)
+[scale] ST 2.7221 g
+[scale] ST 2.7222 g
+[scale] ST 2.7223 g
+[scale] ST 2.7224 g
+STABLE 2.7224
+DOSE step 27 -90.0 deg: 2.6804 -> 2.7224 g (+42.0 mg)
+[scale] ST 2.7346 g
+[scale] ST 2.7346 g
+[scale] ST 2.7346 g
+[scale] ST 2.7347 g
+STABLE 2.7347
+DOSE step 28 -90.0 deg: 2.7224 -> 2.7347 g (+12.3 mg)
+[scale] ST 2.7449 g
+[scale] ST 2.7449 g
+[scale] ST 2.7449 g
+[scale] ST 2.7449 g
+STABLE 2.7449
+DOSE step 29 -90.0 deg: 2.7347 -> 2.7449 g (+10.2 mg)
+[scale] ST 2.7898 g
+[scale] ST 2.7898 g
+[scale] ST 2.7899 g
+[scale] ST 2.79 g
+STABLE 2.7900
+DOSE step 30 -84.8 deg: 2.7449 -> 2.7900 g (+45.1 mg)
+[scale] ST 2.7983 g
+[scale] ST 2.7983 g
+[scale] ST 2.7983 g
+[scale] ST 2.7982 g
+STABLE 2.7982
+DOSE step 31 -32.6 deg: 2.7900 -> 2.7982 g (+8.2 mg)
+[scale] US 2.8269 g
+[scale] US 2.8268 g
+[scale] ST 2.8269 g
+[scale] ST 2.827 g
+[scale] ST 2.827 g
+STABLE 2.8270
+DOSE step 32 -24.9 deg: 2.7982 -> 2.8270 g (+28.8 mg)
+DOSE over target: +2.3 mg
+[scale] ST 2.8271 g
+[scale] ST 2.8271 g
+[scale] ST 2.8271 g
+STABLE 2.8271
+[scale] ST 2.8271 g
+[scale] ST 2.8271 g
+[scale] ST 2.8272 g
+STABLE 2.8272

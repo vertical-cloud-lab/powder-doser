@@ -1,5 +1,125 @@
 # Al 4047 doses into atomizer cups (byu-vcl composition spread)
 
+## 2026-10-20, 02:30–02:50 UTC: reversing at 0° freed the outlet. The cup was dosed to 3.0432 g (target 3.0407 g)
+
+@sgbaird asked in issue #186 to try reversing the auger "a bunch" at 0° tilt, tapping as well. They
+also asked to compare the mass dosed so far with the mass loaded, in case the auger had run out
+or was the wrong one.
+
+![reverse turns, A/B test and stepwise dose](reverse_trace.png)
+
+| UTC | | balance over `f6a3403f`'s tare |
+|---|---|---|
+| 02:33 | `--takeover`, `/trickle_tap` runner booted at 0° plate and 60 auger rpm | stable 0.0080 g |
+| 02:34 | ¼ and ½ turn in reverse (`r -90`, `r -180`) | 0.0083, 0.0081 g |
+| 02:34:55–02:35:38 | 10 × (½ turn in reverse + one `t`, 3 taps): 5 turns | 0.0082 → 0.0099 g |
+| 02:36:51–02:38:48 | 30 × (½ turn in reverse + 3 taps): 15 turns. The first 7 added 5 mg; **then the outlet freed** and the last 8 turns added 662 mg | 0.0099 → 0.0152 → 0.6769 g |
+| 02:40:58–02:42:20 | A/B test at 0° (table below) | 0.6765 → 1.2873 g |
+| 02:45:32–02:48:30 | stepwise reverse dose to a reading of 2.8247 g: 27 half turns, then 6 smaller steps | 1.2873 → 2.8270 g |
+| 02:49 | stable read after 30 s; then the Pico was soft-rebooted into its power-on `main.py` | **2.8272 g** |
+
+**Twelve and three-quarter reverse turns added only 7 mg. Then each half turn added roughly 30–65 mg,
+and the livestream shows a thin stream from the outlet into the funnel on every step.**
+
+| A/B test at 0° | turns | added | per half turn |
+|---|---|---|---|
+| 4 tap bursts (12 taps), no rotation | 0 | 0.0 mg | |
+| forward + one tap burst per half turn | 2 | 100.9 mg | 28.7, 39.6, 21.9, 10.7 mg |
+| reverse + one tap burst per half turn | 3 | 183.5 mg | 9.9, 13.0, 62.5, 30.1, 22.5, 45.5 mg |
+| forward, no taps | 2 | 122.5 mg | 17.7, 46.4, 33.0, 25.4 mg |
+| reverse, no taps | 3 | 204.1 mg | 16.3, 30.2, 47.8, 34.8, 35.7, 39.3 mg |
+
+- **The outlet was blocked. The auger was not empty and not pumping backwards.** Once the outlet
+  freed, the tube fed 60–80 mg per turn in either direction. Taps without rotation moved nothing.
+- About 13 reverse turns at 0° cleared what about 300 forward turns at 40–75° on 10-19 and 10-20
+  (198 + 29 + 73 turns) could not.
+  The 09-30 doses fed 11–17 mg/s at 40° and 100 rpm, which is only 7–10 mg per turn. So the
+  chunks were probably already throttling the outlet then.
+- Whether forward rotation packs the chunks back into the outlet over a longer dose is untested.
+  If a dose stalls again, try a few reverse turns at 0° first.
+
+![before, during and after the stepwise dose](livestream_reverse.jpg)
+
+### The stepwise dose
+
+The firmware's closed-loop dose only turns the auger forward, and nothing on the Pico was changed.
+So `rig_cmd.py dose:2.8247:0.002` dosed with the runner's own `r <deg>` (60 auger rpm, reverse),
+taking a stable read (three agreeing ST reads) after every step:
+
+- Half turns while more than 150 mg remained. Smaller steps after that, each sized so that, at the
+  steepest flow seen so far, it would add at most half of what remained. One step can't overshoot
+  unless the flow suddenly jumps.
+- Half turns added 31–85 mg (median 50 mg). The flow is lumpy: one 90° step added 42 mg and the
+  next added 12 mg.
+- **The last step overshot.** At 26.5 mg to go, a 24.9° step added 28.8 mg (1.2 mg per degree, more
+  than twice the steepest half turn), which left the reading 2.3 mg over its target.
+- The reading stayed at 2.8271–2.8272 g for over a minute afterwards, so nothing was still falling.
+
+### State after this session
+
+| | g |
+|---|---|
+| leaked into the cup when the auger was fitted on 10-19 (operator) | 0.0103 |
+| `a5fdadaa`, over its tare | 0.2028 |
+| `b13e5997`, over its tare | 0.0029 |
+| `f6a3403f` plus today, over `f6a3403f`'s tare (stable, 02:49 UTC) | 2.8272 |
+| **powder in the cup, or on the funnel** | **3.0432** |
+| target for 7.5 wt% | 3.0407 |
+| **difference** | **+2.5 mg** |
+
+- **That is 7.5056 wt%:** 3.0432 / (32.5074 + 4.995 + 3.0432). The 4.995 g plug is still PR #232's
+  computed value. Each 0.1 g error in it moves the composition by 0.019 wt%, far more than the
+  2.5 mg overshoot.
+- Some powder may sit on the funnel. Tap it into the cup before removing the funnel.
+- The rig is free: the plate is at 0° and the Pico is on its power-on `main.py`. `/trickle_tap`,
+  `config.py` and the Zero's checkout (`306bbee`) are unchanged.
+  `~/RIG-NOTICE-20261020b-atomizer-cup-reverse.txt` on the Zero records the session.
+
+### Mass dosed vs. mass loaded, and which auger this is
+
+- **The loaded mass was never recorded.** Not in PR #166, the trial documents, PR #174's video notes
+  or the byu-vcl threads. The 4047 was loaded on 09-30 into an empty tube: video
+  [QXSj0j1OqL8](https://youtu.be/QXSj0j1OqL8?t=349), filling at 5:49–16:39.
+  sgbaird said during the 09-30 dose: "Unless I didn't load enough in"
+  ([dXRB7c6GeDw at 1:31](https://youtu.be/dXRB7c6GeDw?t=91)).
+- **If this is the 09-30 tube, 11.044 g has come out of it so far:**
+  - 09-30: 8.0010 g
+  - 10-19 and 10-20: 0.0103 + 0.2028 + 0.0029 + 2.8272 g
+  
+  It still gave about 50 mg per half turn at the end, so it isn't close to empty.
+- **The livestream DVR shows when the auger went in** (local time is UTC−6):
+  - From 13:00 until 16:33 on 10-19, no auger was on the rig. A white auger with a white gear lay on
+    the bench beside it.
+  - 16:30: the cup went on the balance (32.508 g). By 16:32, with the funnel, it read 32.717 g.
+  - 16:34: the auger was fitted. The balance, tared with the cup and funnel, then read 0.0107 g,
+    settling to 0.0103 g. That is the leak in the issue.
+  - 16:49: re-tared with that leak in the cup.
+  
+  The filling itself is not on the stream, which reaches back only to 13:00.
+- **It is probably not a salt auger.** This one is white. The augers printed from about 10-01, before
+  the salt runs of 10-06 to 10-15, are black (PR #176's as-built notes). The 09-30 4047 tube was
+  white with a red band (PR #174's storyboard). No log records which tube held which powder, so the
+  only real check is to look at the powder in the cup.
+
+![auger fitted on 10-19, from the livestream DVR](livestream_auger_install.jpg)
+
+### How it was run
+
+`rig_cmd.py` gained three commands: `rot<deg>` (the runner's signed `r`), `tap<n>` (the runner's
+`t`, 3 taps at 60/150 ms) and `dose:<g>:<tol>` (the stepwise dose above). They reuse the executor's
+serial session class, with the same port lock and raw-log format. The commands ran from `/tmp` on
+the Zero, and the dose ran detached so a dropped SSH session couldn't stop it halfway. The executor
+(`opt_dose_capture.py`) was not used, so there is no `opt_trials` document for this session; the
+raw serial log is the record. Livestream frames are from the `picam-d1pr` stream's DVR, fetched
+through the Zero by HLS media-sequence number (2 s segments).
+
+### Files (2026-10-20, second session)
+
+- `zero/serial_readback_20261020b.log`: every command, scale read and the handback, raw.
+- `zero/dose_rev_20261020b.out`: `rig_cmd.py`'s output for the stepwise dose (each step's mass).
+- `reverse_trace.png` (made by `plot_reverse.py` from the raw log), `livestream_reverse.jpg`,
+  `livestream_auger_install.jpg`.
+
 ## 2026-10-20: steeper tilt, 109 rpm and faster taps all at once. Both tries stalled (2.9 mg and 8.3 mg)
 
 @sgbaird asked in issue #186 to retry with a higher tilt, fast rotation and frequent tapping all at

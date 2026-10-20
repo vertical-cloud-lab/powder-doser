@@ -10,6 +10,13 @@ CMD is one of
   wst          read until 3 consecutive ST reads agree within 0.3 mg
   a<deg>       plate angle (blocking smooth move), e.g. a45
   wait<s>      pause, e.g. wait5
+  rot<deg>     the runner's signed 'r <deg>' (auger degrees; negative =
+               reverse), e.g. rot-180, then one scale read
+  tap<n>       n x the runner's 't' (3 solenoid taps each), then one
+               scale read
+  dose:<g>:<tol_g>  reverse-rotation steps at the current plate angle
+               until a stable read is within tol_g below <g> (the
+               balance reading, not the cup total); see stepwise_dose
   handback     ctrl-C the runner and soft-reboot into the power-on main.py
   s            the runner's state listing
 """
@@ -21,10 +28,13 @@ import time
 sys.path.insert(0, os.path.expanduser("~/powder-doser/scripts"))
 import opt_dose_capture as odc                               # noqa: E402
 
+RUNNER_RPM = 60.0       # config.STEPPER_SPEED_RPM: what 'r' runs at after boot
 
-def read_scale(sess):
+
+def read_scale(sess, timeout_s=6):
     sess.send("w")
-    line, _ = sess.collect_until(lambda l: l.startswith("[scale]"), 6)
+    line, _ = sess.collect_until(lambda l: l.startswith("[scale]"),
+                                 timeout_s)
     print(line, flush=True)
     if not line:
         return None, None
@@ -50,6 +60,59 @@ def read_stable(sess, n_agree=3, tol_g=0.0003, max_reads=20):
         time.sleep(0.5)
     print("UNSTABLE", flush=True)
     return None
+
+
+def stepwise_dose(sess, target_g, tol_g, fine_g=0.15, worst_g_per_deg=4e-4,
+                  max_steps=300, stall_steps=20):
+    """Dose by reverse auger steps with a stable read after each.
+
+    Half turns while more than ``fine_g`` remains; then each step is
+    sized so that, at the steepest flow seen so far (seeded above the
+    10-20 A/B test's 62.5 mg per half turn), it adds at most half of
+    what remains, so no single step can overshoot.  A step that adds
+    under 2 mg is followed by a tap burst; ``stall_steps`` steps in a
+    row adding under 5 mg in all stop the dose.
+    """
+    g = read_stable(sess)
+    if g is None:
+        print("DOSE abort: no stable read", flush=True)
+        return None
+    worst = worst_g_per_deg
+    slow = []
+    for i in range(max_steps):
+        rem = target_g - g
+        if rem <= tol_g:
+            print("DOSE done {:.4f} g ({:+.1f} mg vs {:.4f} g)".format(
+                g, (g - target_g) * 1e3, target_g), flush=True)
+            return g
+        if rem > fine_g:
+            deg = 180.0
+        else:
+            deg = max(5.0, min(90.0, 0.5 * rem / worst))
+        sess.send("r {:.1f}".format(-deg))
+        read_scale(sess, deg / 360.0 * 60.0 / RUNNER_RPM + 8.0)
+        g2 = read_stable(sess)
+        if g2 is None:
+            print("DOSE abort: no stable read after step", flush=True)
+            return None
+        added = g2 - g
+        worst = max(worst, added / deg)
+        print("DOSE step {} -{:.1f} deg: {:.4f} -> {:.4f} g ({:+.1f} mg)"
+              .format(i, deg, g, g2, added * 1e3), flush=True)
+        g = g2
+        if g > target_g:
+            print("DOSE over target: {:+.1f} mg".format(
+                (g - target_g) * 1e3), flush=True)
+            return g
+        if added < 0.002:
+            sess.send("t")
+        slow = (slow + [added])[-stall_steps:]
+        if len(slow) == stall_steps and sum(slow) < 0.005:
+            print("DOSE abort: {} steps added {:.1f} mg".format(
+                stall_steps, sum(slow) * 1e3), flush=True)
+            return g
+    print("DOSE abort: step budget", flush=True)
+    return g
 
 
 def main():
@@ -95,6 +158,24 @@ def main():
                         break
                     prev = ang
                     ang += step
+            elif cmd.startswith("rot"):
+                # 'r' blocks the runner until the move (plus its 2.2 s
+                # pad) ends, so the read queued behind it marks the end.
+                deg = float(cmd[3:])
+                sess.send("r {}".format(deg))
+                st, g = read_scale(
+                    sess, abs(deg) / 360.0 * 60.0 / RUNNER_RPM + 8.0)
+                print("ROT {:+.0f} deg -> {} {}".format(deg, st, g),
+                      flush=True)
+            elif cmd.startswith("dose:"):
+                target, tol = [float(x) for x in cmd.split(":")[1:]]
+                stepwise_dose(sess, target, tol)
+            elif cmd.startswith("tap"):
+                n = int(cmd[3:] or 1)
+                for _ in range(n):
+                    sess.send("t")
+                st, g = read_scale(sess, 6.0 + n)
+                print("TAP x{} -> {} {}".format(n, st, g), flush=True)
             elif cmd.startswith("a"):
                 sess.send("a {}".format(float(cmd[1:])))
                 sess.drain(quiet_s=0.5, max_s=4.0)
