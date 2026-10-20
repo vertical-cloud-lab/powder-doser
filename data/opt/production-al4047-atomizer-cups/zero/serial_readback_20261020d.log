@@ -1,0 +1,740 @@
+--- session 2026-10-20T22:12:16.520182+00:00 ---
+--- rig_cmd wst s ---
+>> 
+>> s
+stepper: rpm=60, microsteps=1/8, steps/rev=1600, dispense_deg=360.0
+vib: effect=14 (lib=1), duration=0.6s
+tap: count=3, on=60ms, off=150ms, duty=1.0
+servo: angle=0.0, range=[0..180], speed=60 deg/s, dual (GP15+GP2, invert=True), presets=['vertical', 'tilt', 'tip', 'horizontal']
+scale: UART0 @ 19200 8N1 (GP12/GP13), dose: coarse to 90%, tol +/-0.005 g, 2 taps/burst
+Traceback (most recent call last):
+  File "main.py", line 585, in <module>
+  File "main.py", line 581, in main
+KeyboardInterrupt: 
+MicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040
+Type "help()" for more information.
+>>> 
+MicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040
+Type "help()" for more information.
+>>> 
+>>> 
+raw REPL; CTRL-B to exit
+>OK
+MPY: soft reboot
+raw REPL; CTRL-B to exit
+>
+MicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040
+Type "help()" for more information.
+>>> 
+>> import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()
+import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()
+[rig] bringing up powder-doser test module (TRICKLE-TAP manual runner, PR #154; no haptics)
+[rig] ready -- 'h' for help, 'g' doses 0.75 g
+firmware: trickle_tap/2026-10-15
+heap: 121152 bytes free, 84288 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 55.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 30.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = True
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 10.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.005
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.25
+  trickle_tap = False
+  trickle_tilt_deg = 15.0
+>> w
+[scale] ST 0.076 g
+>> w
+[scale] ST 0.076 g
+>> w
+[scale] ST 0.076 g
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 120960 bytes free, 84480 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 55.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 30.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = True
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 10.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.005
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.25
+  trickle_tap = False
+  trickle_tilt_deg = 15.0
+--- session 2026-10-20T22:15:18.722937+00:00 ---
+--- rig_cmd wst ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 120960 bytes free, 84480 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 55.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 30.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = True
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 10.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.005
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.25
+  trickle_tap = False
+  trickle_tilt_deg = 15.0
+>> w
+[scale] ST 0.0764 g
+>> w
+[scale] ST 0.0765 g
+>> w
+[scale] ST 0.0765 g
+--- session 2026-10-20T22:17:25.395393+00:00 ---
+--- topup 1.2007 0.002 ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 109728 bytes free, 95712 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 40.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 1
+  bulk_min_rpm = 15.0
+  bulk_only = True
+  bulk_poll_ms = 250
+  bulk_rpm = 100.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = True
+  bulk_taper_start_g = 0.5
+  bulk_tilt_deg = 40.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 300
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = False
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.02
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 40.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.8338
+  tau_bal_s = 0.7
+  tolerance_g = 0.003
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.3
+  trickle_tap = False
+  trickle_tilt_deg = 40.0
+>> w
+[scale] ST 1.1023 g
+>> w
+[scale] ST 1.1023 g
+>> w
+[scale] ST 1.1023 g
+>> r 341.7
+>> w
+[scale] US 1.109 g
+>> w
+[scale] US 1.1092 g
+>> w
+[scale] US 1.1097 g
+>> w
+[scale] ST 1.1097 g
+>> w
+[scale] ST 1.1097 g
+>> w
+[scale] ST 1.1097 g
+>> r 316.0
+>> w
+[scale] ST 1.1176 g
+>> w
+[scale] ST 1.1176 g
+>> w
+[scale] ST 1.1176 g
+>> w
+[scale] ST 1.1176 g
+>> r 288.5
+>> w
+[scale] ST 1.1262 g
+>> w
+[scale] ST 1.1262 g
+>> w
+[scale] ST 1.1262 g
+>> w
+[scale] ST 1.1262 g
+>> r 258.7
+>> w
+[scale] ST 1.1348 g
+>> w
+[scale] ST 1.1348 g
+>> w
+[scale] ST 1.1348 g
+>> w
+[scale] ST 1.1348 g
+>> r 228.8
+>> w
+[scale] US 1.1379 g
+>> w
+[scale] US 1.138 g
+>> w
+[scale] US 1.1383 g
+>> w
+[scale] ST 1.1384 g
+>> w
+[scale] ST 1.1384 g
+>> w
+[scale] ST 1.1384 g
+>> r 216.3
+>> w
+[scale] ST 1.143 g
+>> w
+[scale] ST 1.143 g
+>> w
+[scale] ST 1.143 g
+>> w
+[scale] ST 1.143 g
+>> r 200.3
+>> w
+[scale] US 1.1482 g
+>> w
+[scale] US 1.1486 g
+>> w
+[scale] US 1.1507 g
+>> w
+[scale] US 1.1521 g
+>> w
+[scale] US 1.1525 g
+>> w
+[scale] ST 1.1526 g
+>> w
+[scale] ST 1.1526 g
+>> w
+[scale] ST 1.1527 g
+>> r 166.7
+>> w
+[scale] ST 1.1578 g
+>> w
+[scale] ST 1.1578 g
+>> w
+[scale] ST 1.1578 g
+>> w
+[scale] ST 1.1578 g
+>> r 149.0
+>> w
+[scale] US 1.1593 g
+>> w
+[scale] US 1.1593 g
+>> w
+[scale] ST 1.1595 g
+>> w
+[scale] ST 1.1595 g
+>> w
+[scale] ST 1.1594 g
+>> t
+>> r 143.4
+>> w
+[scale] ST 1.1664 g
+>> w
+[scale] ST 1.1664 g
+>> w
+[scale] ST 1.1664 g
+>> w
+[scale] ST 1.1664 g
+>> r 119.1
+>> w
+[scale] US 1.1681 g
+>> w
+[scale] US 1.1682 g
+>> w
+[scale] US 1.1684 g
+>> w
+[scale] ST 1.1684 g
+>> w
+[scale] ST 1.1684 g
+>> w
+[scale] ST 1.1684 g
+>> r 112.2
+>> w
+[scale] US 1.1697 g
+>> w
+[scale] US 1.1698 g
+>> w
+[scale] ST 1.1698 g
+>> w
+[scale] ST 1.1698 g
+>> w
+[scale] ST 1.1697 g
+>> t
+>> r 107.6
+>> w
+[scale] US 1.1738 g
+>> w
+[scale] US 1.1739 g
+>> w
+[scale] US 1.1743 g
+>> w
+[scale] ST 1.1744 g
+>> w
+[scale] ST 1.1744 g
+>> w
+[scale] ST 1.1744 g
+>> r 91.3
+>> w
+[scale] US 1.1761 g
+>> w
+[scale] US 1.1762 g
+>> w
+[scale] ST 1.1764 g
+>> w
+[scale] ST 1.1764 g
+>> w
+[scale] ST 1.1764 g
+>> t
+>> r 84.4
+>> w
+[scale] US 1.1808 g
+>> w
+[scale] US 1.1809 g
+>> w
+[scale] US 1.1812 g
+>> w
+[scale] ST 1.1812 g
+>> w
+[scale] ST 1.1812 g
+>> w
+[scale] ST 1.1812 g
+>> r 67.7
+>> w
+[scale] US 1.1823 g
+>> w
+[scale] US 1.1824 g
+>> w
+[scale] US 1.1826 g
+>> w
+[scale] ST 1.1825 g
+>> w
+[scale] ST 1.1826 g
+>> w
+[scale] ST 1.1826 g
+>> t
+>> r 62.8
+>> w
+[scale] US 1.1857 g
+>> w
+[scale] US 1.1857 g
+>> w
+[scale] US 1.186 g
+>> w
+[scale] ST 1.186 g
+>> w
+[scale] ST 1.1861 g
+>> w
+[scale] ST 1.1861 g
+>> r 50.7
+>> w
+[scale] US 1.1875 g
+>> w
+[scale] US 1.1876 g
+>> w
+[scale] US 1.1879 g
+>> w
+[scale] ST 1.1879 g
+>> w
+[scale] ST 1.1879 g
+>> w
+[scale] ST 1.188 g
+>> t
+>> r 44.1
+>> w
+[scale] US 1.1937 g
+>> w
+[scale] US 1.1938 g
+>> w
+[scale] ST 1.194 g
+>> w
+[scale] ST 1.1939 g
+>> w
+[scale] ST 1.1937 g
+>> r 24.3
+>> w
+[scale] US 1.1945 g
+>> w
+[scale] US 1.1945 g
+>> w
+[scale] US 1.1948 g
+>> w
+[scale] ST 1.1948 g
+>> w
+[scale] ST 1.1948 g
+>> w
+[scale] ST 1.1948 g
+>> t
+>> r 20.5
+>> w
+[scale] US 1.1981 g
+>> w
+[scale] US 1.1982 g
+>> w
+[scale] ST 1.1984 g
+>> w
+[scale] ST 1.1984 g
+>> w
+[scale] ST 1.1984 g
+>> r 20.0
+>> w
+[scale] US 1.1994 g
+>> w
+[scale] US 1.1994 g
+>> w
+[scale] ST 1.1996 g
+>> w
+[scale] ST 1.1996 g
+>> w
+[scale] ST 1.1996 g
+>> t
+>> w
+[scale] ST 1.2015 g
+>> w
+[scale] ST 1.2015 g
+>> w
+[scale] ST 1.2014 g
+--- session 2026-10-20T22:20:05.307565+00:00 ---
+--- rig_cmd wst a30 wait1 a20 wait1 a10 wait1 a0 wait3 wst wait30 wst ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 109728 bytes free, 95712 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 40.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 1
+  bulk_min_rpm = 15.0
+  bulk_only = True
+  bulk_poll_ms = 250
+  bulk_rpm = 100.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = True
+  bulk_taper_start_g = 0.5
+  bulk_tilt_deg = 40.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 300
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = False
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.02
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 40.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.8338
+  tau_bal_s = 0.7
+  tolerance_g = 0.003
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.3
+  trickle_tap = False
+  trickle_tilt_deg = 40.0
+>> w
+[scale] ST 1.2011 g
+>> w
+[scale] ST 1.2011 g
+>> w
+[scale] ST 1.2012 g
+>> a 30.0
+>> a 20.0
+>> a 10.0
+>> a 0.0
+>> w
+[scale] ST 1.2012 g
+>> w
+[scale] ST 1.2012 g
+>> w
+[scale] ST 1.2012 g
+>> w
+[scale] ST 1.2007 g
+>> w
+[scale] ST 1.2007 g
+>> w
+[scale] ST 1.2007 g
+--- session 2026-10-20T22:21:02.466874+00:00 ---
+--- rig_cmd wait15 wst wait15 wst ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 109728 bytes free, 95712 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 1
+  bulk_min_rpm = 15.0
+  bulk_only = True
+  bulk_poll_ms = 250
+  bulk_rpm = 100.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = True
+  bulk_taper_start_g = 0.5
+  bulk_tilt_deg = 40.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 300
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = False
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.02
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 40.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.8338
+  tau_bal_s = 0.7
+  tolerance_g = 0.003
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.3
+  trickle_tap = False
+  trickle_tilt_deg = 40.0
+>> w
+[scale] ST 1.2007 g
+>> w
+[scale] ST 1.2007 g
+>> w
+[scale] ST 1.2007 g
+>> w
+[scale] ST 1.2009 g
+>> w
+[scale] ST 1.2009 g
+>> w
+[scale] ST 1.2009 g
+--- session 2026-10-20T22:21:38.927901+00:00 ---
+--- handback 2026-10-20T22:21:38.928076+00:00 ---
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/trickle_tap/main_trickle.py", line 209, in main
+KeyboardInterrupt: 
+>>> 
+
+MPY: soft reboot
+[rig] bringing up powder-doser test module
+[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+[rig] ready -- type 'h' for help
