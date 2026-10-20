@@ -77,11 +77,23 @@ taking a stable read (three agreeing ST reads) after every step:
 
 ### Mass dosed vs. mass loaded, and which auger this is
 
-- **The loaded mass was never recorded.** Not in PR #166, the trial documents, PR #174's video notes
-  or the byu-vcl threads. The 4047 was loaded on 09-30 into an empty tube: video
-  [QXSj0j1OqL8](https://youtu.be/QXSj0j1OqL8?t=349), filling at 5:49–16:39.
-  sgbaird said during the 09-30 dose: "Unless I didn't load enough in"
+- **The loaded mass was never recorded.** It isn't in PR #166, the trial documents, PR #174's video notes
+  or the byu-vcl threads. sgbaird said during the 09-30 dose: "Unless I didn't load enough in"
   ([dXRB7c6GeDw at 1:31](https://youtu.be/dXRB7c6GeDw?t=91)).
+- **The loading video doesn't show it either.** In [QXSj0j1OqL8](https://youtu.be/QXSj0j1OqL8?t=349),
+  the tube is filled at the back of the bench (5:49–16:39) and fitted straight onto the doser. It
+  never goes on the balance. I read the balance display in the 720p stream wherever someone
+  touches the balance (3:00–4:52, 17:09–17:46, 20:38–21:40, from a pass over the whole video at
+  one frame per 10 s):
+
+  | time | reading |
+  |---|---|
+  | 3:41–4:10 | a blue-capped item, 48.1–48.4 g |
+  | 4:15–4:29, again at 17:30 and 20:40 | 35.885 g, probably the cup that took the 09-30 dose |
+  | 4:38–4:48 | a 36.713 g item |
+  | 21:10–21:40 | about 86.76 g |
+
+  None of these is the tube or the powder jar weighed before and after filling.
 - **If this is the 09-30 tube, 11.044 g has come out of it so far:**
   - 09-30: 8.0010 g
   - 10-19 and 10-20: 0.0103 + 0.2028 + 0.0029 + 2.8272 g
@@ -90,7 +102,7 @@ taking a stable read (three agreeing ST reads) after every step:
 - **The livestream DVR shows when the auger went in** (local time is UTC−6):
   - From 13:00 until 16:33 on 10-19, no auger was on the rig. A white auger with a white gear lay on
     the bench beside it.
-  - 16:30: the cup went on the balance (32.508 g). By 16:32, with the funnel, it read 32.717 g.
+  - 16:30: the cup went on the balance (about 32.508 g). By 16:32, with the funnel, it read 32.717 g.
   - 16:34: the auger was fitted. The balance, tared with the cup and funnel, then read 0.0107 g,
     settling to 0.0103 g. That is the leak in the issue.
   - 16:49: re-tared with that leak in the cup.
