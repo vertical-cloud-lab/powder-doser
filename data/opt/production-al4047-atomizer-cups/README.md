@@ -1,5 +1,101 @@
 # Al 4047 doses into atomizer cups (byu-vcl composition spread)
 
+## 2026-10-20, 21:03–21:41 UTC: a new cup at the 15 wt% point. 5.3120 g of the 6.5674 g went in before the tube stopped feeding
+
+@williamulbz asked in issue #186 for the next point of
+[byu-vcl PR #232](https://github.com/vertical-cloud-lab/byu-vcl/pull/232#issuecomment-6032144024), 15 wt%,
+in a new, empty, as-made cup weighed with its plug (37.2151 g). If it clogged, the 10-20 protocol was to be
+used.
+
+**Target.** PR #232 defines the point as powder / (cup + plug + powder) = 15 wt% and gets its 6.8 g from a
+computed 38.71 g cup and plug. With the weighed 37.2151 g, the powder target is
+0.15 / 0.85 × 37.2151 = **6.5674 g**. No powder was in the cup beforehand, and the plug was weighed, so
+nothing in this target is estimated.
+
+![three 40 deg bulk doses and the 0 deg steps between them](dose_15wt_trace.png)
+
+| UTC | | reading |
+|---|---|---|
+| 21:03–21:05 | Zero idle since the 10-20 handback, nothing held the Pico's port, checkout at `306bbee`. Livestream: the new cup and a funnel on the pan under the outlet, the plug on the wipe, balance at 0.0000 g. | |
+| 21:07 | `--takeover` of the power-on `main.py`, `/trickle_tap` runner booted | stable 0.0000 g at 0° |
+| 21:07:48–21:12:08 | **`cb3096e9`**: `bulk_only` at 40°, 100 rpm, 2 Hz cadence taps (`a5fdadaa`'s settings), aimed at 6.4674 g (100 mg short). **`stalled` after 261 s** | 2.2421 g |
+| 21:13 | plate eased 40→0° in 10° steps | stable 2.2428–2.2430 g |
+| 21:13:40 | 10 × (½ turn in reverse + one `t`, 3 taps) at 0° | 2.2445 g |
+| 21:18–21:26 | `unclog_dose.py`: 99 reverse steps at 0°, mostly ½ turns, with a stable read after each and a tap burst after any step that added under 2 mg | 2.2445 → 2.5716 g |
+| 21:27–21:29 | at 0°: 4 forward ½ turns (+6.1 mg); 8 × (½ turn forward, ½ turn back, `t`) (+33.1 mg) | 2.5745 → 2.6137 g |
+| 21:29 | plate stepped up 5° at a time with a stable read at each step. At 30° the reading rose 5.2 mg and stayed there when the plate went back to 25°, so powder was shaken loose (contact would have reversed). Then 4 forward turns at 25°, a `t` after each two | 2.6187 → 2.6723 g |
+| 21:31:05–21:36:05 | **`d737cec5`**: the same settings with a 300 s dose timeout, aimed at 3.7951 g (100 mg short of the 3.8951 g still needed). **`timeout`** | 2.2429 g; stable 2.2496 g at 21:36:30 |
+| 21:37:09–21:39:56 | **`9480b818`**: the same, aimed at 1.5455 g. **`stalled` after 168 s** | 0.3896 g |
+| 21:40–21:41 | plate eased 40→0°; Pico soft-rebooted into its power-on `main.py` | stable 0.3898–0.3901 g |
+
+### State after this session
+
+| | g |
+|---|---|
+| `cb3096e9`, then the 0° steps and the 25° turns, over `cb3096e9`'s tare (stable, 21:29:58) | 2.6723 |
+| `d737cec5`, over its tare (stable, 21:36:30) | 2.2496 |
+| `9480b818`, over its tare (stable, 21:40:55) | 0.3901 |
+| **powder in the cup, or on the funnel** | **5.3120** |
+| target for 15 wt% | 6.5674 |
+| **still to dispense** | **1.2554** |
+
+- That is 12.49 wt% now: 5.3120 / (37.2151 + 5.3120).
+- Every dose tared before it started, and the plate only moved after a tare, so nothing that fell while the
+  plate moved was lost from the sum.
+- The rig is free: the plate is at 0° and the Pico is on its power-on `main.py`. `/trickle_tap`, `config.py`
+  and the Zero's checkout (`306bbee`) are unchanged.
+  `~/RIG-NOTICE-20261020c-atomizer-cup-15wt.txt` on the Zero records the session.
+
+### What the tube did
+
+- **Each 40° dose started slower than the last:** about 48, 18 and 4 mg/s in its first 20 s. Each then fell
+  toward 1 mg/s within 2–3 minutes (right panel above).
+- **Reversing at 0° did not free it this time.** 10-20's 13 reverse turns with taps took the flow from
+  nothing to 30–65 mg per half turn. Today about 50 reverse turns, and then rocking, fed a steady 2–4 mg per
+  half turn and never jumped. Forward ½ turns at 0° fed 1.5 mg each.
+- **Tilt mattered more than direction.** Forward turns at 25° fed about 13 mg per turn, against 3–8 mg per
+  turn at 0° either way.
+- **So this looks more like the tube running low, or powder hung up in the hopper above the flights, than
+  the hard outlet blockage of 10-19 and 10-20.** A blocked outlet doesn't explain why every restart began
+  lower. I couldn't look: the powder-doser livestream (`picam-d1pr`, video `3CvBrmkv2xE`) served no new
+  segments after 21:12:40 UTC, although YouTube still listed it as live.
+- **Unless it was refilled after 10-20, this tube has now delivered 8.3552 g since it was fitted on 10-19:**
+  3.0432 g into the 7.5 wt% cup and 5.3120 g today. If it is also the 09-30 tube, that is 16.356 g in all.
+  The fill mass was never recorded (see the 10-20 section below).
+
+### Before the next try
+
+1. Look in the hopper. If it is empty or nearly so, refill it, ideally sieving out the bigger chunks.
+2. Take the cup and funnel off the pan together while refilling, so that nothing spilled lands in them, then put them back
+   under the outlet. The next dose tares first, so its target is simply the **1.2554 g** still needed.
+3. Or weigh the last 1.2554 g in by hand.
+4. Before plugging the cup, tap the funnel clean into it. The cup with its plug should then weigh
+   37.2151 + 6.5674 = 43.7825 g.
+
+### How it was run
+
+- The three bulk doses: `scripts/opt_dose_capture.py` at `306bbee`, `--mode production`, started detached on
+  the Zero (`zero/dose_20261020c/launch.sh`). `--frozen` was `a5fdadaa`'s push (bo-005's bulk settings,
+  `log_to_flash 0`), with `dose_timeout_s` cut from 1200 to 300 s for the second and third doses. The
+  documents are in MongoDB `opt_trials` and in `zero/`.
+- The 0° steps: `unclog_dose.py`, the stepwise method of `rig_cmd.py dose:` (10-20) with full turns once a
+  step fed over 10 mg (it never did) and a 60-step no-flow budget. It ran detached. The first launch copied
+  and started the script in one backgrounded shell list, so `cat` read `/dev/null` and Python ran an empty
+  file; nothing moved. The job was stopped with SIGTERM because a background job ignores SIGINT.
+- The tilt test, the rocking test, the plate moves and the handback: `rig_cmd.py`.
+
+### Files (2026-10-20, third session)
+
+- `zero/trial_cb3096e9-….json`, `zero/trial_d737cec5-….json`, `zero/trial_9480b818-….json`: the `opt_trials`
+  documents. `zero/serial_<uuid>.log`: their raw serial sessions. `zero/run_{D,E,F}_<uuid8>.out`: the
+  executor's summary lines.
+- `zero/serial_readback_20261020c.log`: every `rig_cmd.py` and `unclog_dose.py` command, scale read and the
+  handback, raw. `zero/unclog_dose_20261020c.out`: each 0° step's mass, with its UTC time.
+- `zero/dose_20261020c/`: the launch script and the parameters, frozen values and covariates of each bulk
+  dose. `zero/trials.jsonl`: the spool index, now six trials. Home paths are scrubbed to `~`.
+- `dose_15wt_trace.png`, made by `plot_15wt.py`.
+
+
 ## 2026-10-20, 02:30–02:50 UTC: reversing at 0° freed the outlet. The cup was dosed to 3.0432 g (target 3.0407 g)
 
 @sgbaird asked in issue #186 to try reversing the auger "a bunch" at 0° tilt, tapping as well. They
