@@ -110,6 +110,16 @@ device's workload is healthy end-to-end afterwards, reporting failures as failur
 Changes made on the Pi (systemd units, cron, scripts, config) do not live in this repo —
 record them in the repo's docs so they can be reproduced or upstreamed.
 
+## MongoDB: log every rig session
+
+Log everything done on the rig to MongoDB `powder_doser`, always, not only what the dose executor
+(`opt_dose_capture.py`) uploads. Hand-driven steps (reads, tilt steps, unclog turns, stepwise doses,
+top-ups) go to `opt_trials` as `mode: "manual"` documents under the session's campaign id, built from
+the raw serial log. Read them back before the final comment.
+[`log_manual_to_mongo.py`](data/opt/production-al4047-atomizer-cups/log_manual_to_mongo.py) is a
+template. The schema helpers (`scripts/opt_common.py`) are on the PR #166 branch. The runner reaches the
+cluster with `$MONGODB_URI` or `$PI_MONGODB_URI` after `pip install pymongo`; never print either.
+
 ## Printing on the lab's Bambu Lab printers (`@claude-print`)
 
 A plain `@claude` run cannot log in to the lab's Bambu Lab account, so it cannot send a print.
