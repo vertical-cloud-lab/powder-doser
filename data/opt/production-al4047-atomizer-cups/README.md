@@ -6,7 +6,9 @@ The powder-doser camera (`picam-d1pr`) stopped sending at 21:12:42 UTC and sent 
 YouTube kept [`3CvBrmkv2xE`](https://www.youtube.com/watch?v=3CvBrmkv2xE) listed as live, because the
 streaming Lambda creates broadcasts that don't end on their own. Its upload had stalled four times since
 19:16 UTC, and it stopped within seconds of the Zero, on the same bench, being knocked off its Wi-Fi
-access point. The other two lab cameras stayed live. Details, evidence and what to check are in
+access point. The other two lab cameras stayed live. It came back by itself when the camera Pi's
+scheduled reboot started [`UgADayIM87s`](https://www.youtube.com/watch?v=UgADayIM87s) at 03:01 UTC on
+10-21, after 5 h 48 min down. Details, evidence and what to check are in
 [`livestream/README.md`](livestream/README.md).
 
 ## 2026-10-21: the hand-driven steps are in MongoDB `opt_trials` now too

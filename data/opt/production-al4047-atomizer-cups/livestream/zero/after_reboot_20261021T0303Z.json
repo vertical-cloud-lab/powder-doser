@@ -1,0 +1,33 @@
+{
+ "checked_utc": "2026-10-21T03:03Z to 03:07Z",
+ "ended_broadcast": {
+  "video": "3CvBrmkv2xE",
+  "live_status": "post_live",
+  "duration_reported_s": 28777,
+  "dash_fragments_listed": 3612,
+  "segment_probes_144p": {
+   "3613": "Ingestion-Walltime 21:12:40 UTC, X-Head-Seqnum 3613",
+   "3614": "timed out",
+   "3615": "empty, no metadata",
+   "3616": "empty, no metadata",
+   "3700": "HTTP 404",
+   "5000": "HTTP 404",
+   "8000": "HTTP 404",
+   "12000": "HTTP 404",
+   "14380": "HTTP 404"
+  }
+ },
+ "new_broadcast": {
+  "video": "UgADayIM87s",
+  "title": "powder doser stream picam-d1pr, 2026-10-21 UTC 03:00",
+  "live_status": "is_live",
+  "release_utc": "2026-10-21T03:01:11Z",
+  "playlist_at_03:06:56Z": {
+   "window_start_utc": "2026-10-21T03:01:06Z",
+   "window_end_utc": "2026-10-21T03:06:53Z",
+   "behind_now_s": 3,
+   "discontinuity_sequence": 0,
+   "x_head_seqnum": "174"
+  }
+ }
+}

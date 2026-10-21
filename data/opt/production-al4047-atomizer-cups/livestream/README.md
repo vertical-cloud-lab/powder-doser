@@ -3,7 +3,7 @@
 @sgbaird asked in issue #186 what was going on with the powder-doser livestream, which the third and
 fourth 10-20 sessions found frozen at 21:12 UTC while YouTube still listed it as live, and noted that
 [`3CvBrmkv2xE`](https://www.youtube.com/watch?v=3CvBrmkv2xE) looked to be the latest broadcast.
-Everything here was read on 2026-10-21 between 01:38 and 02:01 UTC, through the Zero, because YouTube
+Everything here was read on 2026-10-21 between 01:38 and 03:07 UTC, through the Zero, because YouTube
 refuses the Actions runner.
 
 ## Short answer
@@ -28,20 +28,41 @@ refuses the Actions runner.
   camera has had the watchdog from
   [streamingLambda #9](https://github.com/vertical-cloud-lab/streamingLambda/issues/9). It restarts the
   stream after 3 minutes without RTMP progress, and retries once YouTube's RTMP server is reachable
-  again. Every restart starts a new broadcast, and none has appeared in 4.5 hours. So the Pi is most
-  likely off the network (its Wi-Fi never came back), hung, or unpowered, rather than holding a dead
-  ffmpeg socket. I couldn't look: the camera Pi isn't on this repo's tailnet, and its login is a
-  streamingLambda secret.
+  again. Every restart starts a new broadcast, and none appeared for almost 6 hours. I couldn't look at
+  the Pi itself: it isn't on this repo's tailnet, and its login is a streamingLambda secret.
+- **It came back by itself at the scheduled 03:00 UTC reboot** (below), as
+  [`UgADayIM87s`](https://www.youtube.com/watch?v=UgADayIM87s), live from 03:01:06 UTC. So the Pi was
+  running the whole time, most likely off the Wi-Fi. The stream was down for 5 h 48 min.
 
 ![video missing from each camera's 19:00 UTC broadcast, with the Zero's Wi-Fi events](livestream_stalls_20261020.png)
 
-## What happens next
+## It came back at the 03:00 UTC reboot
 
 The camera Pi reboots on a schedule at 05:00, 13:00 and 21:00 MDT (03:00, 11:00 and 19:00 UTC), which
-is where the 8-hour broadcasts come from ([streamingLambda #9](https://github.com/vertical-cloud-lab/streamingLambda/issues/9)). A reboot resets the Wi-Fi, so **if the Pi is still
-running, a new broadcast titled *powder doser stream picam-d1pr, 2026-10-21 UTC 03:00* should start
-around 03:01 UTC.** If none does, the Pi is hung or unpowered and needs a power cycle at the bench,
-or a look from an `@claude` session in streamingLambda, which has the Pi's login.
+is where the 8-hour broadcasts come from ([streamingLambda #9](https://github.com/vertical-cloud-lab/streamingLambda/issues/9)).
+I waited for the 03:00 UTC one:
+
+- **At 03:02 UTC the channel listed a new live broadcast,
+  [`UgADayIM87s`](https://www.youtube.com/watch?v=UgADayIM87s), *powder doser stream picam-d1pr,
+  2026-10-21 UTC 03:00*.** Its first segment arrived at 03:01:06 UTC, and at 03:06:56 its playlist was
+  3 s behind real time with no reconnects. So the Pi had been running all along, and the stream was
+  down for **5 h 48 min** (21:12:42 to 03:01:06 UTC).
+- **Starting it ended `3CvBrmkv2xE`,** which is now `post_live`. YouTube gives it a duration of
+  28,777 s, but that is just the time from its start to its end: the archive lists 3,612 segments,
+  the last one received at 21:12:40, and segment numbers after 3616 return 404
+  (`zero/after_reboot_20261021T0303Z.json`). The camera really sent nothing between 21:12:42 and the
+  reboot.
+- The new stream shows the bench normally at 21:06:54 MDT. The pan is empty (the balance reads
+  −39.0661 g against its last zero) and the auger tube is out of the doser, lying on the bench.
+
+![first frame of the new broadcast, 21:06:54 MDT](frame_UgADayIM87s_20261021T030654Z.jpg)
+
+**So a running Pi went almost 6 hours without streaming and without its watchdog starting a new
+broadcast.** That fits a Pi that dropped off the Wi-Fi at 21:12 and didn't rejoin until the reboot:
+the watchdog only retries once YouTube's RTMP server is reachable. It would also fit a watchdog that
+wasn't running. The camera Pi's journal from the previous boot (`journalctl -b -1`, from 15:12 MDT on,
+for NetworkManager, `wpa_supplicant`, `device.service` and `stream-watchdog`) would say which. Its login
+is a streamingLambda secret, so that check needs an `@claude` run there.
 
 ## Evidence
 
@@ -123,10 +144,10 @@ run every minute:
   03:00/11:00/19:00 schedule appears in the channel's list since 10-17, so restarts that made it
   as far as a broadcast didn't use that up.
 
-So a Pi that was up and online would have been streaming again by about 21:17. Nothing appeared, so
-the Pi was either offline the whole time (no route to YouTube, so the watchdog keeps waiting), or not
-running. If its Wi-Fi simply didn't rejoin, a reboot normally fixes that, which is why the 03:00 UTC
-reboot is the test.
+So a Pi that was up and online would have been streaming again by about 21:17. Nothing appeared until
+the 03:00 UTC reboot, and the Pi was running (it streamed within a minute of the reboot). So either it
+was off the network the whole time (no route to YouTube, so the watchdog kept waiting), or the watchdog
+wasn't running. The Pi's journal from the previous boot would tell which.
 
 ## Files
 
@@ -138,6 +159,9 @@ reboot is the test.
 - `zero/channel_streams_20261021T0142Z.csv`, `zero/playlist_3CvBrmkv2xE_20261021T0139Z.json`,
   `zero/zero_wifi_journal_20261020.txt`: described above.
 - `last_frame_3CvBrmkv2xE_sq3613.jpg`: the first frame of segment 3613 at 720p.
+- `zero/channel_check_20261021T0302Z.jsonl`: the channel's 8 newest streams at 03:02 UTC.
+- `zero/after_reboot_20261021T0303Z.json`: the ended broadcast's archive probe and the new broadcast's
+  live edge. `frame_UgADayIM87s_20261021T030654Z.jpg`: the new broadcast at 03:06:54 UTC.
 
 Nothing on the Zero, the rig or any camera was changed. All YouTube requests went through the Zero:
 about 20 yt-dlp page loads (1–2 MB each, not rate-capped), four 720p and 144p segments for frames,
