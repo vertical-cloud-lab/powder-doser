@@ -139,5 +139,7 @@ reboot is the test.
   `zero/zero_wifi_journal_20261020.txt`: described above.
 - `last_frame_3CvBrmkv2xE_sq3613.jpg`: the first frame of segment 3613 at 720p.
 
-Nothing on the Zero, the rig or any camera was changed. The fetches went through the Zero at under
-100 kB/s (about 4 MB in all) and were deleted from its `/tmp` afterwards.
+Nothing on the Zero, the rig or any camera was changed. All YouTube requests went through the Zero:
+about 20 yt-dlp page loads (1–2 MB each, not rate-capped), four 720p and 144p segments for frames,
+and about 1,600 reads of 2 kB segment headers, spaced at least 0.15 s apart. Its `/tmp` copies were
+deleted afterwards.
