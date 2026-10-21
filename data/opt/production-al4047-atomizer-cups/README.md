@@ -1,5 +1,39 @@
 # Al 4047 doses into atomizer cups (byu-vcl composition spread)
 
+## 2026-10-21: the hand-driven steps are in MongoDB `opt_trials` now too
+
+The executor (`opt_dose_capture.py`) uploads only its own doses. The rest of each session ran through
+`rig_cmd.py`, `unclog_dose.py` and `topup.py`, which wrote raw serial logs only: the reads, tilt steps,
+reverse unclog turns, the stepwise dose of the 7.5 wt% cup and the top-up of the 15 wt% cup. @sgbaird
+asked in issue #186 that everything go to MongoDB. So `log_manual_to_mongo.py` builds one `opt_trials`
+document per session from the committed logs and upserts it by `trial_uuid`, the same way the executor
+uploads.
+
+| session | `trial_uuid` | what | `flags.status` | added by hand |
+|---|---|---|---|---|
+| 10-19 | `b2f9dbde-8cf7-535b-bfd9-1123eca67918` | reads before and after `a5fdadaa`, handback | `reads-only` | 0 |
+| 10-20 | `02b88275-6451-5697-b1f1-dcc43f59246c` | guarded tilt steps to 60° and 75° with the auger stopped, reads, handback | `reads-only` | 0 |
+| 10-20b | `45994cff-3837-573a-a7c5-37e2df81293d` | 0° reverse unclog, the A/B test, the stepwise reverse dose to a 2.8247 g reading | `overshoot` (+2.5 mg) | 2.8192 g |
+| 10-20c | `575889c6-e0aa-5a39-b342-f021d9227831` | 0° reverse steps, `unclog_dose.py`, rocking, the 25° test | `stopped` | 0.4302 g |
+| 10-20d | `9e0d068c-c904-5b67-8568-60595777abf0` | reads before `5851b6d6`, `topup.py` at 40°, reads, handback | `ok` (+0.2 mg) | 0.0981 g |
+
+- **Same campaign id, `mode: "manual"`.** `{campaign_id: "production-al4047-atomizer-cups"}` now returns
+  both cups' whole history: 12 documents. Queries on `mode: "production"` still see only the executor's 7.
+- **What each document holds:**
+  - `parameters_executed.invocations`: the commands as run.
+  - `manual.segments`: one entry per command batch, with its tare basis, the first and last stable
+    reading, the auger turns each way, the `t` commands and the plate angles.
+  - `manual.steps`: each stepwise step's mass.
+  - `telemetry`: every command and scale read in order (`seq,session_utc,kind,cmd,flag,g`).
+  - `manual.raw_logs`: the full raw serial log and step output, each with its sha256 and commit.
+  - `covariates.cup_ledger_after`: the cup's mass accounting after the session, from the sections below.
+- **`settled_final_g` and `error_mg` are on the tare of the dose they continue,** for example 10-20b's
+  readings are over `f6a3403f`'s tare. `outcomes.hand_added_g` is the mass the hand-driven steps added,
+  and `hand_added_note` says how it was computed.
+- **Re-running the script replaces the same five documents.** Each `trial_uuid` is a uuid5 of the issue
+  URL and the session tag. The script never touches the executor's documents. The local copies are
+  `zero/manual_trial_<tag>.json`.
+
 ## 2026-10-20, 22:11–22:22 UTC: the 15 wt% cup finished at 6.5676 g of powder (target 6.5674 g)
 
 @williamulbz cleared the auger of large particles after the third session, weighed the cup with its
@@ -312,8 +346,9 @@ taking a stable read (three agreeing ST reads) after every step:
 `t`, 3 taps at 60/150 ms) and `dose:<g>:<tol>` (the stepwise dose above). They reuse the executor's
 serial session class, with the same port lock and raw-log format. The commands ran from `/tmp` on
 the Zero, and the dose ran detached so a dropped SSH session couldn't stop it halfway. The executor
-(`opt_dose_capture.py`) was not used, so there is no `opt_trials` document for this session; the
-raw serial log is the record. Livestream frames are from the `picam-d1pr` stream's DVR, fetched
+(`opt_dose_capture.py`) was not used, so nothing reached MongoDB at the time. Since 2026-10-21 the
+session is in `opt_trials` as manual document `45994cff-3837-573a-a7c5-37e2df81293d`, built from the raw
+serial log (see the top section). Livestream frames are from the `picam-d1pr` stream's DVR, fetched
 through the Zero by HLS media-sequence number (2 s segments).
 
 ### Files (2026-10-20, second session)

@@ -1,0 +1,191 @@
+{
+ "kind": "opt_trial",
+ "schema_version": 1,
+ "campaign_id": "production-al4047-atomizer-cups",
+ "trial_uuid": "b2f9dbde-8cf7-535b-bfd9-1123eca67918",
+ "trial_index": -1,
+ "powder_id": "al4047",
+ "target_g": null,
+ "mode": "manual",
+ "started_utc": "2026-10-19T23:17:14.950603+00:00",
+ "ended_utc": "2026-10-19T23:30:22.999130+00:00",
+ "operator": "claude-for-sgbaird",
+ "git_commit": "3550541d7d591cdca557ea068964c73cc58e15ba",
+ "parameters": {
+  "method": "readback in the executor's serial session (5 x 'w' each time)"
+ },
+ "parameters_executed": {
+  "invocations": [
+   "readback",
+   "readback",
+   "handback"
+  ]
+ },
+ "outcomes": {
+  "t_total_s": 788.0,
+  "settled_final_g": 0.2035,
+  "error_mg": null,
+  "abs_error_mg": null,
+  "overshoot": false,
+  "taps": 0,
+  "t_cmds": 0,
+  "r_cmds": 0,
+  "auger_rev_fwd": 0.0,
+  "auger_rev_rev": 0.0,
+  "plate_deg": [],
+  "hand_added_g": 0.0,
+  "hand_added_note": "no auger or plate commands",
+  "steps": 0
+ },
+ "stop_events": [],
+ "flags": {
+  "status": "reads-only",
+  "status_note": null,
+  "jam": false,
+  "jam_reason": null,
+  "infra_error": false,
+  "spill": null,
+  "aborted": false
+ },
+ "covariates": {
+  "requested_by": "sgbaird (issue #186 body, 2026-10-19): dose the 7.5 wt% point of byu-vcl PR #232 into the weighed 32.5074 g cup, with 0.0103 g already in it",
+  "purpose": "byu-vcl atomizer composition spread (byu-vcl PR #232): Al 4047 powder in as-made 6063 cups",
+  "activity": "scale reads before and after executor dose a5fdadaa, then the handback to the power-on main.py; no auger or plate commands",
+  "cup": {
+   "label": "7.5 wt% cup",
+   "cup_mass_g": 32.5074,
+   "cup_mass_note": "as-made (thick-wall) cup weighed without its plug (operator, issue #186 body)",
+   "plug_mass_g": 4.995,
+   "plug_note": "not weighed; byu-vcl PR #232's computed .508 x .5625 in plug with a #60 vent",
+   "target_wt_pct": 7.5,
+   "powder_target_g": 3.0407,
+   "target_note": "byu-vcl PR #232: powder / (cup + plug + powder) = 7.5 wt% -> 0.075/0.925 x (32.5074 + 4.995) g"
+  },
+  "funnel": "a funnel in the cup mouth under the auger outlet; the balance counts powder on it",
+  "target_note": null,
+  "initial_tare_basis": "the operator's tare (cup and funnel on the pan)",
+  "related_trials": [
+   "a5fdadaa-d609-40bf-9316-af67b75a9b1f"
+  ],
+  "cup_ledger_after": [
+   {
+    "item": "leaked into the cup when the auger was fitted on 10-19 (operator)",
+    "g": 0.0103
+   },
+   {
+    "item": "a5fdadaa, stable over its tare (23:30 UTC)",
+    "g": 0.2035
+   }
+  ],
+  "in_cup_after_g": 0.2138,
+  "still_to_dispense_g": 2.8269,
+  "result_note": null,
+  "zero_checkout": "306bbee"
+ },
+ "device": {
+  "log_path": "data/opt/production-al4047-atomizer-cups/zero/serial_readback_20261019.log",
+  "firmware": "trickle_tap/2026-10-15",
+  "runner": "/trickle_tap main_trickle.main() (manual runner), driven over USB serial by the Zero"
+ },
+ "manual": {
+  "why": "hand-driven steps outside opt_dose_capture.py, which uploads only its own doses; added 2026-10-21 after sgbaird asked in issue #186 that everything go to MongoDB",
+  "issue": "https://github.com/vertical-cloud-lab/powder-doser/issues/186",
+  "scripts": [],
+  "segments": [
+   {
+    "utc": "2026-10-19T23:17:25.517833+00:00",
+    "invocation": "readback",
+    "tare_basis": "the operator's tare (cup and funnel on the pan)",
+    "n_reads": 5,
+    "first_st_g": 0.0,
+    "last_st_g": 0.0,
+    "r_cmds": 0,
+    "auger_deg_fwd": 0.0,
+    "auger_deg_rev": 0.0,
+    "t_cmds": 0,
+    "plate_deg": [],
+    "taps": 0,
+    "auger_turns_fwd": 0.0,
+    "auger_turns_rev": 0.0
+   },
+   {
+    "utc": "2026-10-19T23:30:17.636232+00:00",
+    "invocation": "readback",
+    "tare_basis": "a5fdadaa's tare",
+    "n_reads": 5,
+    "first_st_g": 0.2035,
+    "last_st_g": 0.2035,
+    "r_cmds": 0,
+    "auger_deg_fwd": 0.0,
+    "auger_deg_rev": 0.0,
+    "t_cmds": 0,
+    "plate_deg": [],
+    "taps": 0,
+    "auger_turns_fwd": 0.0,
+    "auger_turns_rev": 0.0
+   },
+   {
+    "utc": "2026-10-19T23:30:22.999130+00:00",
+    "invocation": "handback",
+    "tare_basis": "a5fdadaa's tare",
+    "n_reads": 0,
+    "first_st_g": null,
+    "last_st_g": null,
+    "r_cmds": 0,
+    "auger_deg_fwd": 0.0,
+    "auger_deg_rev": 0.0,
+    "t_cmds": 0,
+    "plate_deg": [],
+    "taps": 0,
+    "auger_turns_fwd": 0.0,
+    "auger_turns_rev": 0.0
+   }
+  ],
+  "steps": [],
+  "raw_logs": [
+   {
+    "name": "serial_readback_20261019.log",
+    "path": "data/opt/production-al4047-atomizer-cups/zero/serial_readback_20261019.log",
+    "sha256": "2b930573b1903fee0d55e4b54f0dec5f51d865686f306897d513db0880d75484",
+    "bytes": 5463,
+    "commit": "3550541d7d591cdca557ea068964c73cc58e15ba",
+    "text": "--- session 2026-10-19T23:17:14.950603+00:00 ---\n>> \n>> s\nstepper: rpm=60, microsteps=1/8, steps/rev=1600, dispense_deg=360.0\nvib: effect=14 (lib=1), duration=0.6s\ntap: count=3, on=60ms, off=150ms, duty=1.0\nservo: angle=0.0, range=[0..180], speed=60 deg/s, dual (GP15+GP2, invert=True), presets=['vertical', 'tilt', 'tip', 'horizontal']\nscale: UART0 @ 19200 8N1 (GP12/GP13), dose: coarse to 90%, tol +/-0.005 g, 2 taps/burst\nTraceback (most recent call last):\n  File \"main.py\", line 585, in <module>\n  File \"main.py\", line 581, in main\nKeyboardInterrupt: \nMicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040\nType \"help()\" for more information.\n>>> \nMicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040\nType \"help()\" for more information.\n>>> \n>>> \nraw REPL; CTRL-B to exit\n>OK\nMPY: soft reboot\nraw REPL; CTRL-B to exit\n>\nMicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040\nType \"help()\" for more information.\n>>> \n>> import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()\nimport sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()\n[rig] bringing up powder-doser test module (TRICKLE-TAP manual runner, PR #154; no haptics)\n[rig] ready -- 'h' for help, 'g' doses 0.75 g\nfirmware: trickle_tap/2026-10-15\nheap: 121152 bytes free, 84288 used\nstepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200\ntrickle parameters ('set <key> <value>' to change):\n  bulk_anticipation_g = 0.05\n  bulk_boost_s = 3.0\n  bulk_enabled = True\n  bulk_halt_kf = False\n  bulk_max_passes = 8\n  bulk_min_rpm = 20.0\n  bulk_only = False\n  bulk_poll_ms = 250\n  bulk_rpm = 55.0\n  bulk_settle_ms = 1500\n  bulk_stop_margin_g = 0.01\n  bulk_tap = False\n  bulk_taper_start_g = 0.1\n  bulk_tilt_deg = 30.0\n  cutoff_margin_g = 0.035\n  dose_timeout_s = 600\n  ff_prior_g_per_rev = 0.35\n  final_settle_ms = 2000\n  goal_mass_g = 0.75\n  k_sigma = 1.0\n  kf_q_var = 0.0002\n  log_max_rows = 1200\n  log_min_free_bytes = 24000\n  log_to_flash = True\n  max_poll_misses = 10\n  noisy_sd_g = 0.008\n  overshoot_abort_g = 0.1\n  post_trickle_settle_ms = 1200\n  print_every_n_polls = 2\n  quiet_sd_g = 0.0005\n  rate_tau_s = 0.5\n  stall_bail_s = 8.0\n  tap_burst_above_g = 0.0\n  tap_burst_taps = 2\n  tap_cadence_off_ms = 440\n  tap_cadence_on_ms = 60\n  tap_max_cycles = 120\n  tap_max_nudges = 20\n  tap_nudge_deg = 5.0\n  tap_settle_ms = 1500\n  tap_tilt_deg = 10.0\n  taps_per_cycle = 1\n  tau_afterflow_s = 0.3\n  tau_bal_s = 0.7\n  tolerance_g = 0.005\n  trickle_dt_s = 0.25\n  trickle_enabled = True\n  trickle_integ_clamp = 0.5\n  trickle_ki = 120.0\n  trickle_kp = 250.0\n  trickle_max_rate_gps = 0.05\n  trickle_min_rate_gps = 0.003\n  trickle_rpm_cap = 45.0\n  trickle_start_remaining_g = 0.25\n  trickle_tap = False\n  trickle_tilt_deg = 15.0\n--- readback 2026-10-19T23:17:25.517833+00:00 ---\n>> w\n[scale] ST 0.0 g\n>> w\n[scale] ST 0.0 g\n>> w\n[scale] ST 0.0 g\n>> w\n[scale] ST 0.0 g\n>> w\n[scale] ST 0.0 g\n--- session 2026-10-19T23:30:14.519277+00:00 ---\n>> \n>> s\nfirmware: trickle_tap/2026-10-15\nheap: 88832 bytes free, 116608 used\nstepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 40.0 deg; scale UART0 @ 19200\ntrickle parameters ('set <key> <value>' to change):\n  bulk_anticipation_g = 0.05\n  bulk_boost_s = 3.0\n  bulk_enabled = True\n  bulk_halt_kf = False\n  bulk_max_passes = 1\n  bulk_min_rpm = 15.0\n  bulk_only = True\n  bulk_poll_ms = 250\n  bulk_rpm = 100.0\n  bulk_settle_ms = 1500\n  bulk_stop_margin_g = 0.01\n  bulk_tap = True\n  bulk_taper_start_g = 0.5\n  bulk_tilt_deg = 40.0\n  cutoff_margin_g = 0.035\n  dose_timeout_s = 1200\n  ff_prior_g_per_rev = 0.35\n  final_settle_ms = 2000\n  goal_mass_g = 0.75\n  k_sigma = 1.0\n  kf_q_var = 0.0002\n  log_max_rows = 1200\n  log_min_free_bytes = 24000\n  log_to_flash = False\n  max_poll_misses = 10\n  noisy_sd_g = 0.008\n  overshoot_abort_g = 0.02\n  post_trickle_settle_ms = 1200\n  print_every_n_polls = 2\n  quiet_sd_g = 0.0005\n  rate_tau_s = 0.5\n  stall_bail_s = 8.0\n  tap_burst_above_g = 0.0\n  tap_burst_taps = 2\n  tap_cadence_off_ms = 440\n  tap_cadence_on_ms = 60\n  tap_max_cycles = 120\n  tap_max_nudges = 20\n  tap_nudge_deg = 5.0\n  tap_settle_ms = 1500\n  tap_tilt_deg = 40.0\n  taps_per_cycle = 1\n  tau_afterflow_s = 0.8338\n  tau_bal_s = 0.7\n  tolerance_g = 0.003\n  trickle_dt_s = 0.25\n  trickle_enabled = True\n  trickle_integ_clamp = 0.5\n  trickle_ki = 120.0\n  trickle_kp = 250.0\n  trickle_max_rate_gps = 0.05\n  trickle_min_rate_gps = 0.003\n  trickle_rpm_cap = 45.0\n  trickle_start_remaining_g = 0.3\n  trickle_tap = False\n  trickle_tilt_deg = 40.0\n--- readback 2026-10-19T23:30:17.636232+00:00 ---\n>> w\n[scale] ST 0.2035 g\n>> w\n[scale] ST 0.2035 g\n>> w\n[scale] ST 0.2035 g\n>> w\n[scale] ST 0.2035 g\n>> w\n[scale] ST 0.2035 g\n--- handback 2026-10-19T23:30:22.999130+00:00 ---\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/trickle_tap/main_trickle.py\", line 209, in main\nKeyboardInterrupt: \n>>> \n\nMPY: soft reboot\n[rig] bringing up powder-doser test module\n[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init\n[rig] ready -- type 'h' for help\nstepper: rpm=60, microsteps=1/8, steps/rev=1600, dispense_deg=360.0\nvib: effect=14 (lib=1), duration=0.6s\ntap: count=3, on=60ms, off=150ms, duty=1.0\nservo: angle=0.0, range=[0..180], speed=60 deg/s, dual (GP15+GP2, invert=True), presets=['vertical', 'tilt', 'tip', 'horizontal']\nscale: UART0 @ 19200 8N1 (GP12/GP13), dose: coarse to 90%, tol +/-0.005 g, 2 taps/burst\n"
+   }
+  ],
+  "uploaded_by": "log_manual_to_mongo.py",
+  "uploaded_utc": "2026-10-21T01:42:55.679764+00:00"
+ },
+ "telemetry": {
+  "header": "seq,session_utc,kind,cmd,flag,g",
+  "rows": [
+   "0,2026-10-19T23:17:14.950603+00:00,session,,,",
+   "1,2026-10-19T23:17:14.950603+00:00,cmd,s,,",
+   "2,2026-10-19T23:17:14.950603+00:00,cmd,\"import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()\",,",
+   "3,2026-10-19T23:17:25.517833+00:00,readback,,,",
+   "4,2026-10-19T23:17:25.517833+00:00,cmd,w,,",
+   "5,2026-10-19T23:17:25.517833+00:00,scale,,ST,0.0",
+   "6,2026-10-19T23:17:25.517833+00:00,cmd,w,,",
+   "7,2026-10-19T23:17:25.517833+00:00,scale,,ST,0.0",
+   "8,2026-10-19T23:17:25.517833+00:00,cmd,w,,",
+   "9,2026-10-19T23:17:25.517833+00:00,scale,,ST,0.0",
+   "10,2026-10-19T23:17:25.517833+00:00,cmd,w,,",
+   "11,2026-10-19T23:17:25.517833+00:00,scale,,ST,0.0",
+   "12,2026-10-19T23:17:25.517833+00:00,cmd,w,,",
+   "13,2026-10-19T23:17:25.517833+00:00,scale,,ST,0.0",
+   "14,2026-10-19T23:30:14.519277+00:00,session,,,",
+   "15,2026-10-19T23:30:14.519277+00:00,cmd,s,,",
+   "16,2026-10-19T23:30:17.636232+00:00,readback,,,",
+   "17,2026-10-19T23:30:17.636232+00:00,cmd,w,,",
+   "18,2026-10-19T23:30:17.636232+00:00,scale,,ST,0.2035",
+   "19,2026-10-19T23:30:17.636232+00:00,cmd,w,,",
+   "20,2026-10-19T23:30:17.636232+00:00,scale,,ST,0.2035",
+   "21,2026-10-19T23:30:17.636232+00:00,cmd,w,,",
+   "22,2026-10-19T23:30:17.636232+00:00,scale,,ST,0.2035",
+   "23,2026-10-19T23:30:17.636232+00:00,cmd,w,,",
+   "24,2026-10-19T23:30:17.636232+00:00,scale,,ST,0.2035",
+   "25,2026-10-19T23:30:17.636232+00:00,cmd,w,,",
+   "26,2026-10-19T23:30:17.636232+00:00,scale,,ST,0.2035",
+   "27,2026-10-19T23:30:22.999130+00:00,handback,,,"
+  ]
+ }
+}
