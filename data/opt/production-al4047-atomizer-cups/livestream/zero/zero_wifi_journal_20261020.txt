@@ -1,0 +1,90 @@
+2026-10-20T13:12:06.297632-06:00 NetworkManager[548]: <info>  [1792523526.2975] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T13:34:23.152399-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T13:34:23.236227-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T13:34:23.249563-06:00 NetworkManager[548]: <info>  [1792524863.2495] dhcp4 (wlan0): state changed no lease
+2026-10-20T13:34:23.327597-06:00 NetworkManager[548]: <info>  [1792524863.3274] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T13:34:23.328510-06:00 NetworkManager[548]: <info>  [1792524863.3284] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T14:03:15.822532-06:00 tailscaled[854]: magicsock: [0x7f423fe580] derp.Recv(derp-13): derp.Recv: read tcp4 <ip>-><ip>: read: connection reset by peer
+2026-10-20T14:04:57.194310-06:00 tailscaled[854]: magicsock: [0x7f423fe580] derp.Recv(derp-13): derp.Recv: read tcp4 <ip>-><ip>: read: connection reset by peer
+2026-10-20T14:05:23.292951-06:00 NetworkManager[548]: <info>  [1792526723.2928] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T14:35:23.318713-06:00 NetworkManager[548]: <info>  [1792528523.3185] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T14:44:33.574939-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T14:44:43.597535-06:00 wpa_supplicant[549]: wlan0: Authentication with <mac> timed out.
+2026-10-20T14:44:43.598739-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-DISCONNECTED bssid=<mac> reason=3 locally_generated=1
+2026-10-20T14:44:44.197886-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T14:44:44.276317-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T14:44:44.299517-06:00 NetworkManager[548]: <info>  [1792529084.2994] dhcp4 (wlan0): state changed no lease
+2026-10-20T14:44:44.311292-06:00 NetworkManager[548]: <info>  [1792529084.3111] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T14:44:44.312352-06:00 NetworkManager[548]: <info>  [1792529084.3122] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T14:52:24.557367-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-DISCONNECTED bssid=<mac> reason=0 locally_generated=1
+2026-10-20T14:52:24.566520-06:00 NetworkManager[548]: <info>  [1792529544.5664] dhcp4 (wlan0): state changed no lease
+2026-10-20T14:52:24.813741-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T14:52:24.978653-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T14:52:25.014498-06:00 NetworkManager[548]: <info>  [1792529545.0144] dhcp4 (wlan0): state changed no lease
+2026-10-20T14:52:25.032308-06:00 NetworkManager[548]: <info>  [1792529545.0321] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T14:52:25.033304-06:00 NetworkManager[548]: <info>  [1792529545.0332] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:12:27.948441-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:12:28.089161-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:12:28.106049-06:00 NetworkManager[548]: <info>  [1792530748.1060] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:12:28.137020-06:00 NetworkManager[548]: <info>  [1792530748.1369] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:12:28.138382-06:00 NetworkManager[548]: <info>  [1792530748.1382] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:12:52.837219-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-DISCONNECTED bssid=<mac> reason=6
+2026-10-20T15:12:52.844029-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:12:52.847035-06:00 NetworkManager[548]: <info>  [1792530772.8469] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:12:53.774584-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T15:12:53.932000-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:12:53.962457-06:00 NetworkManager[548]: <info>  [1792530773.9624] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:12:53.973745-06:00 NetworkManager[548]: <info>  [1792530773.9736] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:12:53.974726-06:00 NetworkManager[548]: <info>  [1792530773.9746] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:17:30.069012-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:17:30.255434-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:17:30.271461-06:00 NetworkManager[548]: <info>  [1792531050.2714] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:17:30.282004-06:00 NetworkManager[548]: <info>  [1792531050.2818] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:17:30.283089-06:00 NetworkManager[548]: <info>  [1792531050.2830] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:18:00.992933-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T15:18:01.132150-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:18:01.143723-06:00 NetworkManager[548]: <info>  [1792531081.1436] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:18:01.153071-06:00 NetworkManager[548]: <info>  [1792531081.1529] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:18:01.153915-06:00 NetworkManager[548]: <info>  [1792531081.1538] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:19:02.518043-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:19:02.619607-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:19:02.635230-06:00 NetworkManager[548]: <info>  [1792531142.6351] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:19:02.649176-06:00 NetworkManager[548]: <info>  [1792531142.6490] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:19:02.650056-06:00 NetworkManager[548]: <info>  [1792531142.6499] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:23:39.210910-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T15:23:39.363573-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:23:39.378945-06:00 NetworkManager[548]: <info>  [1792531419.3789] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:23:39.388971-06:00 NetworkManager[548]: <info>  [1792531419.3888] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:23:39.389864-06:00 NetworkManager[548]: <info>  [1792531419.3897] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:25:42.107630-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:25:42.183200-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:25:42.199341-06:00 NetworkManager[548]: <info>  [1792531542.1992] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:25:42.209759-06:00 NetworkManager[548]: <info>  [1792531542.2096] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:25:42.210865-06:00 NetworkManager[548]: <info>  [1792531542.2107] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:26:43.677808-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T15:26:43.889152-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:26:43.905482-06:00 NetworkManager[548]: <info>  [1792531603.9054] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:26:43.916967-06:00 NetworkManager[548]: <info>  [1792531603.9168] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:26:43.918121-06:00 NetworkManager[548]: <info>  [1792531603.9180] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:31:50.726077-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T15:31:50.827412-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:31:50.841414-06:00 NetworkManager[548]: <info>  [1792531910.8413] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:31:50.852698-06:00 NetworkManager[548]: <info>  [1792531910.8525] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:31:50.853758-06:00 NetworkManager[548]: <info>  [1792531910.8536] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T15:42:29.624738-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2412 MHz)
+2026-10-20T15:42:29.749643-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T15:42:29.763739-06:00 NetworkManager[548]: <info>  [1792532549.7637] dhcp4 (wlan0): state changed no lease
+2026-10-20T15:42:29.773332-06:00 NetworkManager[548]: <info>  [1792532549.7732] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T15:42:29.774278-06:00 NetworkManager[548]: <info>  [1792532549.7741] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T16:07:10.290242-06:00 NetworkManager[548]: <info>  [1792534030.2900] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T16:33:13.429399-06:00 wpa_supplicant[549]: wlan0: Trying to associate with <mac> (SSID=<ssid> freq=2437 MHz)
+2026-10-20T16:33:13.535900-06:00 wpa_supplicant[549]: wlan0: CTRL-EVENT-CONNECTED - Connection to <mac> completed [id=0 id_str=]
+2026-10-20T16:33:13.550923-06:00 NetworkManager[548]: <info>  [1792535593.5508] dhcp4 (wlan0): state changed no lease
+2026-10-20T16:33:13.561971-06:00 NetworkManager[548]: <info>  [1792535593.5618] dhcp4 (wlan0): state changed new lease, address=<ip>, acd pending
+2026-10-20T16:33:13.562965-06:00 NetworkManager[548]: <info>  [1792535593.5628] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T17:03:13.577984-06:00 NetworkManager[548]: <info>  [1792537393.5778] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T17:33:13.582129-06:00 NetworkManager[548]: <info>  [1792539193.5820] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T18:03:13.577988-06:00 NetworkManager[548]: <info>  [1792540993.5778] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T18:33:13.579404-06:00 NetworkManager[548]: <info>  [1792542793.5792] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T19:03:13.577910-06:00 NetworkManager[548]: <info>  [1792544593.5777] dhcp4 (wlan0): state changed new lease, address=<ip>
+2026-10-20T19:33:13.576837-06:00 NetworkManager[548]: <info>  [1792546393.5767] dhcp4 (wlan0): state changed new lease, address=<ip>

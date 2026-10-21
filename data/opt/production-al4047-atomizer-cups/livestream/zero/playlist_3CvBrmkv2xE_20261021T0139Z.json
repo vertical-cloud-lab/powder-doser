@@ -1,0 +1,21 @@
+{
+ "video": "3CvBrmkv2xE",
+ "itag": 232,
+ "fetched_utc": "2026-10-21T01:39:40Z",
+ "tags": [
+  "#EXT-X-VERSION:3",
+  "#EXT-X-TARGETDURATION:2",
+  "#EXT-X-MEDIA-SEQUENCE:3164",
+  "#EXT-X-DISCONTINUITY-SEQUENCE:7",
+  "#EXT-X-PROGRAM-DATE-TIME:2026-10-20T20:57:41.954+00:00"
+ ],
+ "n_segments": 450,
+ "first_sq": 3164,
+ "last_sq": 3613,
+ "extinf_total_s": 900.033333,
+ "endlist": false,
+ "last_segment_response_headers_at_01:40:33Z": {
+  "X-Head-Seqnum": "3615",
+  "X-Head-Time-Sec": "7226"
+ }
+}

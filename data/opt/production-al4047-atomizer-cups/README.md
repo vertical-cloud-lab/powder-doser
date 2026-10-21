@@ -1,5 +1,14 @@
 # Al 4047 doses into atomizer cups (byu-vcl composition spread)
 
+## 2026-10-21: why the livestream froze at 21:12 UTC on 10-20
+
+The powder-doser camera (`picam-d1pr`) stopped sending at 21:12:42 UTC and sent nothing more, while
+YouTube kept [`3CvBrmkv2xE`](https://www.youtube.com/watch?v=3CvBrmkv2xE) listed as live, because the
+streaming Lambda creates broadcasts that don't end on their own. Its upload had stalled four times since
+19:16 UTC, and it stopped within seconds of the Zero, on the same bench, being knocked off its Wi-Fi
+access point. The other two lab cameras stayed live. Details, evidence and what to check are in
+[`livestream/README.md`](livestream/README.md).
+
 ## 2026-10-21: the hand-driven steps are in MongoDB `opt_trials` now too
 
 The executor (`opt_dose_capture.py`) uploads only its own doses. The rest of each session ran through
@@ -47,7 +56,7 @@ the balance had counted (left on the funnel or lost while handling). The 15 wt% 
 re-zeroed since the third session, which ended at 0.3901 g. A reading this small means the pan held
 the load it was zeroed on, plus 76.5 mg. I counted that as powder that fell into the cup or funnel
 after the zero, most likely when the cleared auger was refitted. That left **1.2007 g** to add. The
-livestream still showed 21:12 UTC, so I couldn't check.
+livestream still showed 21:12 UTC, so I couldn't check (see [`livestream/README.md`](livestream/README.md)).
 
 - This is the safer reading. If the 76.5 mg is something else, such as debris on the pan outside the
   cup, the cup is 76.5 mg short (14.85 wt%), and a top-up can fix that. Had I ignored it and been
@@ -187,7 +196,8 @@ nothing in this target is estimated.
 - **So this looks more like the tube running low, or powder hung up in the hopper above the flights, than
   the hard outlet blockage of 10-19 and 10-20.** A blocked outlet doesn't explain why every restart began
   lower. I couldn't look: the powder-doser livestream (`picam-d1pr`, video `3CvBrmkv2xE`) served no new
-  segments after 21:12:40 UTC, although YouTube still listed it as live.
+  segments after 21:12:40 UTC, although YouTube still listed it as live
+  ([why](livestream/README.md)).
 - **Unless it was refilled after 10-20, this tube has now delivered 8.3552 g since it was fitted on 10-19:**
   3.0432 g into the 7.5 wt% cup and 5.3120 g today. If it is also the 09-30 tube, that is 16.356 g in all.
   The fill mass was never recorded (see the 10-20 section below).
