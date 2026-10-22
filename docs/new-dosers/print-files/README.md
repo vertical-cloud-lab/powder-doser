@@ -100,3 +100,51 @@ for the real send:
   packages in 4 s.
 - The job name defaults to `doser1_mounting_plate.gcode`. It has no spaces,
   so it doesn't need renaming.
+
+## First print: the mounting plate on Thumbelina (22 Oct 2026)
+
+Requested on PR #181 with `@claude-print` ("Print a plate on the A1 mini")
+and approved in `bambu-print`. "A plate" was taken to mean this mounting
+plate, the file prepared for that request.
+
+- **Setup.** Studio 02.08.02.61 from the AppImage. With the apt mirror
+  switched as above, its packages installed in 51 s. byu-vcl's first-run
+  steps and click positions held, including the login and authenticator
+  boxes.
+- **Login.** Studio asked for the authenticator code, not an e-mailed one,
+  and the first code from `bambu-totp` worked (22:57 UTC). Thumbelina was
+  already the selected printer.
+- **Pre-flight, from Studio's Device page.** This run had no Pi or tailnet
+  access, so the Device page was the only check.
+  - Thumbelina was idle, with nozzle and bed at 23 °C, no HMS alerts and
+    black PLA in slot A3.
+  - The last job, `deck_key_fit_test`, showed *Finished*.
+  - The live view at 23:03:27 UTC showed the plate clear. The gantry was
+    parked high, so the camera looked down on the whole plate (frame
+    below, with the room blurred).
+  - A small red box sits on the bench behind the plate's corner. Something
+    red is in the same place in byu-vcl's 2 Oct frames, from a 2.5 h print
+    that finished normally.
+- **Settings.** The GUI kept the patched settings
+  (`* 0.20mm Standard @BBL A1M`, 3 walls, 25 % infill, `tree(auto)`
+  supports on the build plate only). Its slice matched the committed one:
+  46.78 g, 267 layers, 1 h 36 min.
+- **Send print job.** Thumbelina, PEI plate, PLA → A3, timelapse off, bed
+  levelling and flow calibration on.
+
+![Thumbelina's plate at 23:03 UTC, before Send](thumbelina_bed_before_send_2026-10-22.jpg)
+
+| UTC | Step |
+|---|---|
+| 23:04:25 | *Send* |
+| 23:05:20 | Job downloaded; heating and loading PLA from A3 |
+| 23:08:59 | Auto bed levelling |
+| 23:10:05 | Flow dynamics calibration |
+| 23:11:11 | Layer 1 of 267 |
+| 23:16:52 | Layer 2. The first layer took 5.7 min |
+
+The print was watched from the Device page. A copy of byu-vcl's
+`watch_studio.py` with the A1 mini's screen regions read the screen every
+10 s, saved a camera frame every minute and never clicked. On this layout,
+the nozzle temperature is at (1348, 160)–(1425, 192) and the bed's at
+(1348, 215)–(1425, 247).
