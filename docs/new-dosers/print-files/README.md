@@ -20,6 +20,12 @@
 > They aren't sliced yet. On the A1 mini, lay the plate flat and use tree
 > supports from the build plate only, as before.
 
+![The one-piece mounting plate, as in Ethan's Onshape plate](mounting_plate_one_piece_onshape.png)
+
+*The one-piece plate, rendered from Ethan's Onshape
+[Mounting plate](https://cad.onshape.com/documents/53e9cce7f09a50f89c120028)
+(16 Oct). Each sector gear joins the plate through its link.*
+
 Ready-to-print `.gcode.3mf` files for the A1 mini ("Thumbelina"), made from
 the PR #170 STEP export
 [`mounting-plate.step`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/components/fusion-step/mounting-plate.step).
