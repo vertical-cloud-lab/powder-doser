@@ -119,8 +119,10 @@ help that check:
     of the link overlapping.
 
   The 22–23 Oct prints split the STEP's five bodies into separate parts, so
-  the gears and links can't be fitted back on as designed. Merge the five
-  bodies and print them as one part.
+  the gears and links can't be fitted back on as designed. Print them as one
+  part from
+  [`mounting-plate-one-piece.step`](print-files/mounting-plate-one-piece.step),
+  which fuses the five bodies and changes nothing else.
 - **Other differences:**
 
 | Part | PR #170 (printed) | Team's Onshape | So |

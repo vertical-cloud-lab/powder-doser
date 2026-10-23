@@ -5,9 +5,20 @@
 > slicer sheet, and one solid in the team's Onshape plate. In the STEP, each
 > link's end sits inside its gear's hub. These files print them as five
 > separate parts, which is a likely cause of Brandon's report that "the
-> baseplate and gears were not printed correctly". Merge the five bodies and
-> print them as one piece; see the
+> baseplate and gears were not printed correctly". Print them as one piece
+> instead; see the
 > [guide's §2.2](../README.md#22-print-order-non-auger-parts-first).
+>
+> [`mounting-plate-one-piece.step`](mounting-plate-one-piece.step) and
+> [`.stl`](mounting-plate-one-piece.stl) are that piece. They fuse the
+> PR #170 STEP's five bodies with OpenCASCADE and make no other change:
+> - one solid, 91,524 mm³, against 93,669 mm³ for the five bodies, because
+>   their overlaps are counted once;
+> - 149.5 × 108.2 × 54.7 mm, the same envelope as before;
+> - Ethan's Onshape plate is 91,686 mm³.
+>
+> They aren't sliced yet. On the A1 mini, lay the plate flat and use tree
+> supports from the build plate only, as before.
 
 Ready-to-print `.gcode.3mf` files for the A1 mini ("Thumbelina"), made from
 the PR #170 STEP export
