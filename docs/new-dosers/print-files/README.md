@@ -275,8 +275,20 @@ used the Device page only.
 | 04:59 | Logged in |
 | 05:18–05:27 | GUI slice of the 25 augers (9 min) |
 | 05:33:25 | H2D *Send*; uploaded through the cloud by 05:34 |
-| 05:39:51 | H2D: nozzle at 221 °C, bed at 55 °C, calibrating dynamic flow |
 | 05:38:35 | Thumbelina *Send* |
+| 05:39:51 | H2D: nozzle at 221 °C, bed at 55 °C, calibrating dynamic flow |
+| 05:41:52 | H2D: auto bed levelling |
+| 05:46 | Both printers on layer 1. Thumbelina: nozzle 220 °C, bed 65 °C |
+| 06:10 | Thumbelina: layer 4 of 135, every part's first layer flat |
+| 06:13 | H2D: layer 2 of 1041. The first layer took about 27 min for 25 bases, their brims and the support pads |
+
+![The H2D at layer 2, 06:14 UTC](h2d_first_layer_2026-10-23.jpg)
+
+![Thumbelina at layer 4, 06:10 UTC, with the room blurred](thumbelina_layer4_2026-10-23.jpg)
+
+The H2D's camera sits low at the front left, so the near bases look large
+and the far ones are foreshortened. Thumbelina's camera was level with the
+bed during these layers.
 
 **What was sent.** In both sent files, the plate G-code is byte-identical
 to Studio's slice:
