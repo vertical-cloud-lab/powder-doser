@@ -281,14 +281,36 @@ used the Device page only.
 | 05:46 | Both printers on layer 1. Thumbelina: nozzle 220 °C, bed 65 °C |
 | 06:10 | Thumbelina: layer 4 of 135, every part's first layer flat |
 | 06:13 | H2D: layer 2 of 1041. The first layer took about 27 min for 25 bases, their brims and the support pads |
+| 06:58 | H2D: layer 14, all 25 tubes and their support rings standing |
+| 07:04 | Thumbelina: layer 18 of 135, 24 % |
+| 07:05 | Studio logged out, quit, and its config and cache deleted. Both prints left running |
 
 ![The H2D at layer 2, 06:14 UTC](h2d_first_layer_2026-10-23.jpg)
 
+![The H2D at layer 14, 06:58 UTC](h2d_layer14_2026-10-23.jpg)
+
 ![Thumbelina at layer 4, 06:10 UTC, with the room blurred](thumbelina_layer4_2026-10-23.jpg)
+
+![Thumbelina at layer 18, 07:04 UTC, with the room blurred](thumbelina_layer18_2026-10-23.jpg)
 
 The H2D's camera sits low at the front left, so the near bases look large
 and the far ones are foreshortened. Thumbelina's camera was level with the
 bed during these layers.
+
+While the session watched, there were no HMS alerts or dialogs, and both
+nozzles and beds held their targets. The session's 180 min limit ends long
+before either print does, so neither finish was watched. byu-vcl's
+`watch_studio.py` read the Device page every 10 s, switching between the
+two printers, and never clicked.
+
+**Times to check on the H2D.** These come from the M73 progress marks in the
+sent G-code, counted from the job's start at 05:35 UTC.
+- **About 04:00 UTC Saturday** (22.5 h in), the 44T gears start at 80 mm,
+  over their tree supports. If anything goes wrong there, it's most likely
+  to show up then.
+- **The filament runs out before the end** wherever it happens. By the gears
+  the plate has used a little over 800 g.
+- **About 21:15 UTC Saturday**, Studio's finish time if nothing stops it.
 
 **What was sent.** In both sent files, the plate G-code is byte-identical
 to Studio's slice:
