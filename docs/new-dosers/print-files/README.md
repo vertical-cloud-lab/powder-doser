@@ -321,3 +321,34 @@ The committed Thumbelina file is the one Studio uploaded, with the account's
 `DesignerUserId` blanked. The H2D's uploaded file is 50 MB, so the project it
 was sliced from is committed instead. Opening it in Studio and slicing gives
 the same 1,680 g plate.
+
+### The H2D paused at layer 75 (checked 23 Oct 2026, 23:15 UTC)
+
+Read over LAN from the tailnet Pi in a plain `@claude` run: one MQTT status
+read and one camera frame. Nothing was sent to the printer.
+
+- `doser_augers_x25_H2D` is **paused at layer 75 of 1041** (11 %, 18 mm up).
+  - Print error `0300-801E`: "The extrusion motor is overloaded, please
+    check the Assistant for details."
+  - HMS `0300_0900_0002_0001`: "The extrusion motor is overloaded. The
+    extruder may be clogged or the filament may be stuck in the tool head."
+  - The only other HMS entry is the rail-lubrication reminder from before
+    the send.
+- The nozzle had cooled to 40 °C and the bed was holding 55 °C, so the parts
+  are still stuck down. The printer reported 2,096 min left of Studio's
+  2,375, so the pause came about 4.7 h into the job, probably around
+  10:15 UTC.
+- The camera shows all 25 augers and their support trunks standing, with no
+  spaghetti and nothing knocked loose.
+- A likely cause is slot A2's black PLA, the spool without an RFID tag,
+  reaching the end of its spool or tangling. A clog in the 0.6 mm nozzle is
+  the other possibility.
+
+![The H2D paused at layer 75, 23:16 UTC](h2d_paused_layer75_2026-10-23.jpg)
+
+It needs a person at the printer, who can do one of two things:
+- **Resume:** check A2 and the toolhead, load fresh black PLA, then press
+  *Resume* on the screen. About 1.5 kg and 35 h remain, so also load a
+  second matching spool for auto-refill.
+- **Cancel** and give the H2D to the non-auger parts, which now come first
+  ([guide §2](../README.md#2-printing)).
