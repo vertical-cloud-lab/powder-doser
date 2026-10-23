@@ -142,9 +142,34 @@ plate, the file prepared for that request.
 | 23:10:05 | Flow dynamics calibration |
 | 23:11:11 | Layer 1 of 267 |
 | 23:16:52 | Layer 2. The first layer took 5.7 min |
+| 23:38–23:52 | Layers 26–30, the slowest of the print at about 3 min each. They're the solid top of the 6 mm plate |
+| 00:16:38 | Layer 142. The hinge knuckles start on their tree supports at layer 140 (28.0 mm) |
+| 00:39:28 | *Finished*, 95 min after Send (Studio's estimate was 1 h 36 min). The last *Printing* read was at 00:38:44 |
+
+While printing, the nozzle and bed stayed within 1 °C of their 220 and
+65 °C targets. There was no HMS alert and no dialog. After the print, the gantry parked high and the camera showed the
+finished plate from above.
+
+![The finished mounting plate at 00:56 UTC, still on its supports](thumbelina_mounting_plate_finished_2026-10-23.jpg)
+
+**What was sent.** At Send, Studio writes the 3MF it uploads to
+`/tmp/bamboo_model/.../Metadata/.<pid>.0.3mf`. Its plate G-code was
+byte-identical to Studio's slice, and its config block matched the
+committed file's:
+- 3 walls, 25 % infill;
+- `tree(auto)` supports, on the build plate only;
+- textured PEI at 65 °C, nozzle at 220 °C;
+- 46.78 g, against 46.77 g committed.
 
 The print was watched from the Device page. A copy of byu-vcl's
 `watch_studio.py` with the A1 mini's screen regions read the screen every
-10 s, saved a camera frame every minute and never clicked. On this layout,
-the nozzle temperature is at (1348, 160)–(1425, 192) and the bed's at
-(1348, 215)–(1425, 247).
+10 s, saved a camera frame every 1–3 min and never clicked. On this layout:
+- the nozzle temperature is at (1348, 160)–(1425, 192);
+- the bed's is at (1348, 215)–(1425, 247).
+
+Its finish check missed the end, because OCR read "100%" as "100«". Look for
+*Finished* with both heater targets at 0 instead.
+
+The run outlived the session's one-hour GitHub token.
+`scripts/refresh_github_app_token.py` re-minted it from `/proc`, because
+`claude-print.yml` has no stash step.
