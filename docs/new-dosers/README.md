@@ -228,6 +228,10 @@ Two things to check with William against the boards BYU already built:
 
 Each doser needs one V2 board. **Order 30.** That covers 25 dosers plus
 spares for soldering mistakes, even if no spare boards are left at BYU.
+This assumes standalone dosers that each carry their own electronics, which
+is what PR #115 bought for. In #128's 21 Aug carousel pitch, the carriages
+were passive and one powered station did the dosing, which needs only a
+board or two. Settle open question 2 ([§7](#7-open-questions)) first.
 
 How many spares there are isn't clear. This guide has said 4, from a 25 Sep
 note that "we have four extra of these"
@@ -236,8 +240,9 @@ But that note answered a question about the 5 V buck converter, so it may
 mean 4 spare bucks instead. Count the spare boards at BYU before ordering.
 
 **What to upload:** [`hardware/PCBs/POWDER_DOSER_V2.zip`](../../hardware/PCBs/POWDER_DOSER_V2.zip),
-as is. William posted this EasyEDA Pro export on 29 Sep as the design his
-team ordered from JLCPCB, and said the boards "turned out great"
+as is, once William confirms it's the design that was built (question 1
+below). He posted this EasyEDA Pro export on 29 Sep, noting that his team
+had ordered from JLCPCB and the boards "turned out great"
 ([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5897474320)).
 Read from the gerbers:
 
@@ -262,11 +267,17 @@ cart.
 
 **Before ordering, check with William and Luke:**
 
-1. **Tweaks.** On 25 Sep the plan was "slight improvements to the existing
+1. **Which zip was built.** The committed zip differs from the one William
+   posted on 21 Aug
+   ([PR #76](https://github.com/vertical-cloud-lab/powder-doser/pull/76#issuecomment-5374281620)):
+   three added mounting holes, the buck, DRV8871 and Tic moved by a few
+   millimetres, and new polarity marks. If BYU's boards came from the
+   21 Aug files, the committed zip has never been made.
+2. **Tweaks.** On 25 Sep the plan was "slight improvements to the existing
    one" in time for a new order. If those aren't ready in a few days, it may
    be better to order V2 as is, since any spares cover only the first few
    dosers.
-2. **What to order with it.** Neither of these has been ordered yet
+3. **What to order with it.** Neither of these has been ordered yet
    ([§3.3](#33-what-goes-on-each-v2-pcb)):
    - 1 barrel jack and 4 electrolytic caps per board;
    - header strips, if the BYU boards socket the Pico and the RS-232 module
@@ -284,36 +295,163 @@ cart.
    ([Sterling, 23 Oct](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376590117)).
    William has also wanted to film a full assembly for a video tutorial
    (PR #115, 18 Sep).
-2. **Firmware.** The Pico 2 WH is an RP2350, so it needs the RP2350 build
-   of MicroPython, not the RP2040 one. The documented firmware is
-   `hardware/test-module/firmware/` on the PR #100 branch
-   ([`d3a42d7`](https://github.com/vertical-cloud-lab/powder-doser/tree/d3a42d7/hardware/test-module/firmware));
-   the code on the current rig was backed up in PR #166
-   ([`data/trickle-tap/2026-09_pico-flash-backup/`](https://github.com/vertical-cloud-lab/powder-doser/tree/4de0faa/data/trickle-tap/2026-09_pico-flash-backup/pico-root-code)).
-   Ask William which one to flash.
+2. **Electronics and software for every doser:** [§5](#5-electronics-and-software-setup).
+   Doser #1 will also be the first time the firmware runs on a Pico 2.
 3. **Write down every snag** with a photo: wrong screw length, a part that
    needed sanding, a step that was out of order. Post them on issue #121;
    they are what turns the July draft into working build instructions.
 4. **Then batch** the rest. Keep a one-line record per doser (auger ID,
    date built, anything unusual).
 
-## 5. Who to ask
+## 5. Electronics and software setup
+
+This is as big a job as the printing
+([Sterling, 23 Oct](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376545121)).
+Each doser needs a board soldered, three things configured (the Tic, the
+Pico and its balance link), a bench test and a record.
+
+### 5.1 What the bench rig runs (23 Oct)
+
+| Layer | What | Where |
+|---|---|---|
+| Firmware | `trickle_tap/2026-10-15`: 12 files in the Pico's `/trickle_tap` folder | [`trickle_tap/`](https://github.com/vertical-cloud-lab/powder-doser/tree/306bbee/hardware/test-module/firmware/trickle_tap) on PR #166's branch; install steps in its [README](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/hardware/test-module/firmware/trickle_tap/README.md#quick-start) |
+| Power-on program | PR #100's `main.py` and modules at the flash root. Its REPL has the vibration test (`v`) | [`d3a42d7`](https://github.com/vertical-cloud-lab/powder-doser/tree/d3a42d7/hardware/test-module/firmware) |
+| MicroPython | v1.28.0, **RP2040 build**: the bench Pico is an original Pico W | [boot log](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/data/opt/salt-margin-20261013T191339Z/zero/serial_2be4f941-6ea7-4ac2-a762-b27ccb20cf5c.log#L13) |
+| Host | A Pi Zero 2 W beside the balance, reached over Tailscale SSH, with the Pico on USB serial (`/dev/ttyACM0`) | [campaign setup §1.1](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/docs/optimization/campaign-setup.md#11-four-layers-four-jobs) |
+| Host programs | On the Pi: `scripts/dose.py` and `opt_dose_capture.py`. On a laptop: `opt_campaign.py`, `fit_tau_afterflow.py` and `check_mongo.py`. Results go to MongoDB | PR #166 |
+
+The host sends one command per line, e.g. `g 0.5` to dose 0.5 g, `set k v`
+or `s`. Every dose ends with one `RESULT {json}` line. The pin map in
+[`config.py`](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/hardware/test-module/firmware/trickle_tap/config.py)
+matches the V2 board's nets:
+
+| Pins | Use |
+|---|---|
+| GP0 / GP1, GP14 | DRV2605L I²C (SDA / SCL), enable |
+| GP4 → Tic RX, GP5 | Tic, UART1, 9600 baud |
+| GP15, GP2 | Tilt servos 1 and 2 (2 is mirrored) |
+| GP10, GP11 | DRV8871 IN1, IN2 (solenoid) |
+| GP12, GP13 | Balance, UART0, Waveshare channel 0 |
+
+### 5.2 Per doser, in order
+
+1. **Solder the board** ([§3.3](#33-what-goes-on-each-v2-pcb)). Before
+   plugging anything in, power it from the 12 V brick alone and meter the
+   12 V, 5 V and 3.3 V rails. Before soldering 25 servo headers, check
+   them against a working BYU board. Read from the gerbers, the "−" mark
+   seems to sit beside the signal pad, so it's worth a second look.
+2. **Set up the Tic T500** over USB in Pololu's Tic Control Center:
+   - control mode "Serial / I²C / USB", 9600 baud;
+   - current limit 670 mA, the NEMA-11's rating;
+   - 1/8 step, command timeout 0
+     ([PR #100](https://github.com/vertical-cloud-lab/powder-doser/blob/d3a42d7/hardware/test-module/README.md#L190-L200)).
+
+   The firmware sets step mode, speed and acceleration at boot, but not the
+   current limit. The bench Tic's own settings were never written down, so
+   save doser #1's to a file (`ticcmd --get-settings`) and load that file on
+   the other 24 (`ticcmd --settings`).
+3. **Flash the Pico 2 WH.**
+   - Hold BOOTSEL while plugging in USB, then copy over MicroPython's
+     [`RPI_PICO2_W`](https://micropython.org/download/RPI_PICO2_W/) build.
+     Use the standard build, not the RISC-V one, and not the RP2040 build
+     on the bench Pico.
+   - Copy the 12 `trickle_tap` files into `/trickle_tap` with `mpremote`,
+     following the README.
+   - The code uses only pins, PWM, UART and I²C, so it should port, but it
+     has never run on an RP2350. Doser #1 is the test.
+4. **Set the per-doser values in `config.py`:**
+   - `SERVO_DEFAULT_DEG = 0`, as on the rig. The repo's 90 can tip a loaded
+     tube ([campaign setup](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/docs/optimization/campaign-setup.md#L472-L479)).
+   - Check `SERVO2_INVERT` and `STEPPER_DIRECTION` on each doser.
+   - The servo pulse range (500–2400 µs) is labelled for an HD-1810MG.
+     Check it against doser #1's MG996Rs before copying it to the rest.
+5. **The balance link,** for a doser that gets a balance:
+   - Waveshare channel 0, 19200 8N1. A new A&D balance starts at its
+     factory 2400 7E1. Set it as listed in
+     [the tests README](https://github.com/vertical-cloud-lab/powder-doser/blob/d3a42d7/hardware/test-module/firmware/tests/README.md#L59-L96),
+     or let `test_scale_contact.py` find either.
+   - The bench balance shows grains by default, so press MODE for grams.
+   - The crossover is in the DB9 cable, so meter its pinout first.
+6. **Bench-test every channel:**
+   - the auger both ways and both tilt servos. Watch the servos move:
+     nothing reads their position, and on 11 Aug a dead one went unnoticed
+     for a whole run;
+   - the solenoid tap and the vibration motor (`v` in PR #100's REPL; the
+     dosing firmware never starts the haptic driver);
+   - balance readings;
+   - one `g` dose of salt.
+7. **Record** one line per doser: doser number, auger ID (#134), the Pico's
+   USB serial (from `/dev/serial/by-id/`), the Tic's serial number,
+   MicroPython version, firmware ID and the test results.
+
+### 5.3 Known problems
+
+- **Plug in the 12 V brick before USB.** With it unplugged, the rig ran
+  off the Pi's USB supply
+  ([#138](https://github.com/vertical-cloud-lab/powder-doser/issues/138#issuecomment-5134871005)).
+  The Pico has also dropped off USB under heavy actuation
+  ([PR #131](https://github.com/vertical-cloud-lab/powder-doser/pull/131#issuecomment-5274021640)),
+  and the 5 V buck is marginal when both servos stall.
+- **The haptic driver's I²C pins died on the bench Pico**
+  ([#142](https://github.com/vertical-cloud-lab/powder-doser/issues/142#issuecomment-5221745010)),
+  and the coin motor never moved powder.
+- **Every dose writes a log file to the Pico's flash.** The bench flash
+  filled up on 13 Oct, so clear the logs between campaigns.
+- **The Tic's TX line isn't wired back to the Pico,** so the firmware can't
+  read the Tic's status.
+
+### 5.4 Running more than one doser: not built yet
+
+Everything so far drives one doser.
+- The scripts take one `--port`
+  ([`dose.py`](https://github.com/vertical-cloud-lab/powder-doser/blob/306bbee/scripts/dose.py#L111)).
+- The `RESULT` line carries the firmware ID but no doser ID.
+- Dosing profiles are stored per powder, not per doser.
+
+Before two dosers share a computer, someone needs to:
+- give each Pico an ID it reports, and map `/dev/serial/by-id/` names to
+  doser numbers. PR #45 sketched a `whoami` command for this
+  ([§7](https://github.com/vertical-cloud-lab/powder-doser/blob/2da362e/design/electrical-software-brainstorming.md#L823-L847));
+- add that ID to the `RESULT` line and the logs;
+- choose the host: one Pi per doser, as on the bench, or one computer with
+  powered USB hubs. The hubs were in PR #115's June plan but aren't on the
+  25-doser carts;
+- plan the balances: 2 were ordered for 25 dosers.
+
+How much of this is needed depends on open question 2 in [§7](#7-open-questions).
+
+### 5.5 Other docs
+
+- **July build draft** ([`BUILD-INSTRUCTIONS.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/8ec8956/BUILD-INSTRUCTIONS.md), #121):
+  - still right: the pin map, the Tic setup, the pre-power checks and the
+    channel tests;
+  - out of date: breadboard wiring, a 5 V solenoid, the balance at
+    2400 7E1, the Pico W (RP2040) UF2, and uploading to the flash root.
+- **#144** has the rules for using the shared rig.
+
+## 6. Who to ask
 
 | Person | For |
 |---|---|
 | Sam Charles (@swcharles) | Printed parts, Fusion files, print settings, the H2D-saving baseplate idea |
-| William Mulberry (@williamulbz) | Electronics, the V2 PCB, firmware |
+| William Mulberry (@williamulbz) | Electronics, the V2 PCB and its re-order, firmware |
+| Brandon Munk (@brandonmunk) | Which Onshape files are current for the printed parts (checking since 23 Oct) |
 | Luke Winters (@lbwinters) | PCB design |
 | @kinstonwithoutg, @Dila-Kandel | Purchased parts and orders at the U |
 | Sterling Baird (@sgbaird) | Priorities and anything blocked |
 
-## 6. Open questions
+## 7. Open questions
 
 1. How many dosers are in this first batch, and where are they assembled
    (BYU, the U, or both)?
 2. Standalone dosers like the bench rig (this page), or modules for the
    multi-doser carousel (#128)? Sam's 8 Oct carriage changes the mounting
-   plate, so confirm before printing 25 mounting plates.
+   plate, so confirm before printing 25 mounting plates. The answer also
+   sets how many PCBs to order ([§3.4](#34-ordering-more-v2-pcbs)) and how
+   the dosers are hosted ([§5.4](#54-running-more-than-one-doser-not-built-yet)).
 3. Has the DigiKey re-order (Pico 2 WH, servos, bricks) been placed?
-4. Are V2 PCB tweaks planned before the order of 25 or more?
+4. Were BYU's V2 boards made from the committed zip, and are tweaks
+   planned before ordering 30?
 5. Can the baseplate be trimmed to 180 mm so it prints on the A1 mini?
+6. What exactly was wrong with the first prints' "baseplate and gears"
+   (Brandon, 23 Oct), and which files replace them?
