@@ -1,5 +1,14 @@
 # Sliced A1 mini files for doser #1
 
+> **Don't reprint these as they are (23 Oct 2026).** The mounting plate, its
+> two 28T tilt gears and its two links are one part: one 70 g item on Sam's
+> slicer sheet, and one solid in the team's Onshape plate. In the STEP, each
+> link's end sits inside its gear's hub. These files print them as five
+> separate parts, which is a likely cause of Brandon's report that "the
+> baseplate and gears were not printed correctly". Merge the five bodies and
+> print them as one piece; see the
+> [guide's §2.2](../README.md#22-print-order-non-auger-parts-first).
+
 Ready-to-print `.gcode.3mf` files for the A1 mini ("Thumbelina"), made from
 the PR #170 STEP export
 [`mounting-plate.step`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/components/fusion-step/mounting-plate.step).

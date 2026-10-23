@@ -92,7 +92,7 @@ For each doser, in this order:
 
 | # | Parts | Printer | Done so far (23 Oct) |
 |---|---|---|---|
-| 1 | Mounting plate, both 28T tilt gears, both links | Plate: A1 mini, or the H2D 4 at a time. Gears and links: A1 mini | Doser #1's set, under review (below) |
+| 1 | Mounting plate with both 28T tilt gears and both links, **as one piece** | A1 mini one at a time, or the H2D 4 at a time | Doser #1's, but printed as 5 separate parts (below) |
 | 2 | 2 servo pinions (14T), 1 stepper pinion (20T) | A1 mini, for the 0.4 mm nozzle on small teeth | Doser #1's set, under review (below) |
 | 3 | Tap collar, tap-collar base | A1 mini | Doser #1's set |
 | 4 | Auger cap | A1 mini | 12 |
@@ -104,6 +104,37 @@ For each doser, in this order:
 and is checking them against the team's Onshape files. Print doser #2
 onward only from files he confirms. Then update the File column in
 [§2.1](#21-what-fits-where) to match.
+
+**What a read-only check of the lab's Onshape files found (23 Oct),** to
+help that check:
+
+- **A likely cause: the mounting plate is one part, and it was printed as
+  five.** The plate, its two 28T tilt gears and its two links belong
+  together:
+  - Sam's slicer sheet lists them as one 70 g item.
+  - Ethan's Onshape
+    [Mounting plate](https://cad.onshape.com/documents/53e9cce7f09a50f89c120028)
+    is one solid.
+  - In PR #170's STEP, each link's end sits inside its gear's hub, with 39 %
+    of the link overlapping.
+
+  The 22–23 Oct prints split the STEP's five bodies into separate parts, so
+  the gears and links can't be fitted back on as designed. Merge the five
+  bodies and print them as one part.
+- **Other differences:**
+
+| Part | PR #170 (printed) | Team's Onshape | So |
+|---|---|---|---|
+| Mounting plate | Motor holes on a 23 mm square | Ethan, 16 Oct: holes 24.4 × 23.0 mm apart, and one edge 0.55 mm proud. Otherwise within about 0.1 mm | The NEMA-11's holes are on a 23 mm square, so merge PR #170's bodies rather than export Ethan's |
+| Stepper pinion | 20T, module 1.0, Ø22 | [Jacob, 21 Oct](https://cad.onshape.com/documents/0401d55bca2deb006cc69926): 20T, module 1.3, Ø28.6 | The 44T gear on the augers now printing is module 1.0, so only PR #170's pinion meshes with it |
+| Servo pinion | 14T, module 1.3 | [Brandon and Jacob, 15–21 Oct](https://cad.onshape.com/documents/35ecacf511109e3b823b3ed0): root Ø14.95 vs 15.17, tip Ø20.80 vs 20.77 | A small change. Its rollback bar sits after the first feature, so roll it forward before exporting |
+| Tap collar | Split ring | [Brandon, 13 Oct](https://cad.onshape.com/documents/b0b9aed3e11591e566530a68): the clamp slot stops 4 mm short of the bore, so the ring isn't split | Print PR #170's, or extend the slot |
+| Tap-collar base, cap | | No lab version | |
+| Brackets | Split clamp | [Ethan, 17 Oct](https://cad.onshape.com/documents/75b7ccc08f0d064ab66dc3d3): the same split clamp | The C-clip exists only inside Sam's [Multi-Doser](https://cad.onshape.com/documents/581956d5528927957a4c0b98) plate |
+| Baseplate | Fusion v2, 190 × 115 mm | Ethan's stand ([Assembly](https://cad.onshape.com/documents/f866631c78fbefd61e6856e4)): a 190 × 190 mm [Base](https://cad.onshape.com/documents/68b18e694d8672d95f496279), brackets and wood legs, edited 23 Oct. One side bracket is V4, the other V2 | Still the open choice in row 5 |
+
+Nothing in these files had changed since 04:52 UTC on 23 Oct, checked at
+23:50 UTC. The check could only see documents shared with Sam's account.
 
 **The H2D's auger job.** The 25-auger plate stopped at layer 75 of 1041 on
 an extruder overload (error `0300-801E`), probably around 10:15 UTC on
@@ -125,12 +156,11 @@ through Studio. Either way, someone has to clear the plate by hand.
    pinions should mesh with their 28T and 44T gears without binding, the
    brackets should slide onto the auger tube, and M3 screws should pass
    their holes. This is where Brandon's check comes in.
-2. **Then gears, pinions, links, collars and bases, one doser's set per
-   plate.** Small teeth come out better from the A1 mini's 0.4 mm nozzle
-   than from the H2D's 0.6 mm. Doser #1's plate
-   ([`print-files/`](print-files/)) is the template.
-3. **Mounting plates fill the gaps:** one per plate, 1 h 36 min and 47 g
-   each. If the H2D is free, it does them 4 at a time ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
+2. **Then pinions, collars and bases, one doser's set per plate.** Small
+   teeth come out better from the A1 mini's 0.4 mm nozzle than from the
+   H2D's 0.6 mm.
+3. **Mounting plates, gears and links as one piece:** one per plate, about
+   70 g each by Sam's sheet. If the H2D is free, it does them 4 at a time ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
 4. **Settings.** Use what the print files use: PLA, 0.4 mm nozzle, 0.20 mm
    layers, 3 walls, 25 % infill, and supports only where a part needs them.
    Print gears with their axis vertical. Sam's Bambu Studio project files
@@ -140,7 +170,7 @@ through Studio. Either way, someone has to clear the plate by hand.
 
 - **Mounting plates:** 4 per plate. A 2 × 2 grid of 149.5 × 108.2 mm plates
   fits the left nozzle's 325 × 320 mm area with room to spare. Fill the
-  leftover strip with tap collars and bases, but leave the gears to the
+  leftover strip with tap collars and bases, but leave the pinions to the
   A1 mini.
 - **Baseplates or stands,** once one is chosen: two Fusion v2 baseplates
   fit per plate side by side (2 × 115 mm across, 190 mm deep).
