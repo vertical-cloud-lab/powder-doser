@@ -92,8 +92,8 @@ For each doser, in this order:
 
 | # | Parts | Printer | Done so far (23 Oct) |
 |---|---|---|---|
-| 1 | Mounting plate, both 28T tilt gears, both links | Plate: A1 mini, or the H2D 4 at a time. Gears and links: A1 mini | Doser #1's set |
-| 2 | 2 servo pinions (14T), 1 stepper pinion (20T) | A1 mini, for the 0.4 mm nozzle on small teeth | Doser #1's set |
+| 1 | Mounting plate, both 28T tilt gears, both links | Plate: A1 mini, or the H2D 4 at a time. Gears and links: A1 mini | Doser #1's set, under review (below) |
+| 2 | 2 servo pinions (14T), 1 stepper pinion (20T) | A1 mini, for the 0.4 mm nozzle on small teeth | Doser #1's set, under review (below) |
 | 3 | Tap collar, tap-collar base | A1 mini | Doser #1's set |
 | 4 | Auger cap | A1 mini | 12 |
 | 5 | 2 auger brackets; the baseplate or stand | Brackets: A1 mini. Base: H2D | None: waiting on Sam's C-clip file, and on a choice between the Fusion v2 baseplate and William's Onshape stand |
@@ -113,8 +113,8 @@ around **10:30 UTC on Sun 25 Oct**
 Until then the non-auger parts go on the A1 mini.
 
 If the team wants the H2D for mounting plates sooner, the job can still be
-cancelled. That costs the augers printed so far, about 5 h of printing and
-a couple of hundred grams. A plain `@claude` run can't cancel or resume
+cancelled. That costs the augers printed so far: at least 5 h of printing
+and a couple of hundred grams, and more the longer it runs. A plain `@claude` run can't cancel or resume
 it, because over LAN the printer only takes those commands from Bambu's own
 apps. Bambu Handy on the lab account can, and so can a `@claude-print` run
 through Studio. Either way, someone has to clear the plate by hand.
