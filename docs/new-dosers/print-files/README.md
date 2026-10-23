@@ -346,9 +346,15 @@ read and one camera frame. Nothing was sent to the printer.
 
 ![The H2D paused at layer 75, 23:16 UTC](h2d_paused_layer75_2026-10-23.jpg)
 
-It needs a person at the printer, who can do one of two things:
-- **Resume:** check A2 and the toolhead, load fresh black PLA, then press
-  *Resume* on the screen. About 1.5 kg and 35 h remain, so also load a
-  second matching spool for auto-refill.
-- **Cancel** and give the H2D to the non-auger parts, which now come first
-  ([guide §2](../README.md#2-printing)).
+**Resumed about 23:35 UTC.** Someone at the printer heated the nozzle
+(210 °C at 23:28) and resumed the job. At 23:37 it was *Printing* at
+layer 75 with no error, the nozzle at 220 °C, and 2,093 min left. At that
+rate it finishes around **10:30 UTC on Sun 25 Oct**, if nothing else stops
+it. The AMS read afterwards:
+- A2: black PLA, the active slot;
+- A3: newly loaded blue PLA;
+- A4: light blue PLA.
+
+About 1.5 kg remains. If A2 can't supply that, the job will stop again,
+because auto-refill only switches to a matching spool, and neither A3 nor
+A4 is black.

@@ -97,7 +97,7 @@ For each doser, in this order:
 | 3 | Tap collar, tap-collar base | A1 mini | Doser #1's set |
 | 4 | Auger cap | A1 mini | 12 |
 | 5 | 2 auger brackets; the baseplate or stand | Brackets: A1 mini. Base: H2D | None: waiting on Sam's C-clip file, and on a choice between the Fusion v2 baseplate and William's Onshape stand |
-| 6 | Auger | H2D | 25 on one H2D plate, paused at 11 % |
+| 6 | Auger | H2D | 25 on one H2D plate, due Sun 25 Oct |
 
 **Hold the batch until Brandon's file check.** On 23 Oct Brandon found that
 "the baseplate and gears were not printed correctly" in the first prints,
@@ -105,24 +105,19 @@ and is checking them against the team's Onshape files. Print doser #2
 onward only from files he confirms. Then update the File column in
 [§2.1](#21-what-fits-where) to match.
 
-**The paused auger job.** The H2D's 25-auger plate stopped at layer 75 of
-1041 on an extruder overload (error `0300-801E`), probably around 10:15 UTC
-on 23 Oct. All 25 augers are still standing
+**The H2D's auger job.** The 25-auger plate stopped at layer 75 of 1041 on
+an extruder overload (error `0300-801E`), probably around 10:15 UTC on
+23 Oct. Someone resumed it at about 23:35 UTC, so the H2D is busy until
+around **10:30 UTC on Sun 25 Oct**
 ([record](print-files/README.md#the-h2d-paused-at-layer-75-checked-23-oct-2026-2315-utc)).
-Someone at the printer has to choose:
+Until then the non-auger parts go on the A1 mini.
 
-- **Resume:** fix the filament feed (slot A2), then about 35 h and 1.5 kg
-  more for 25 augers.
-- **Cancel:** this loses about 4.7 h of printing and a couple of hundred
-  grams, but frees the H2D for mounting plates now. That fits the priority
-  above, unless the dosers being built are short of augers.
-
-A plain `@claude` run can't resume or cancel the job, because over LAN the
-printer only takes those commands from Bambu's own apps. Bambu Handy on the
-lab account can cancel it remotely, and so can a `@claude-print` run through
-Studio. Either way, someone still has to clear the plate by hand. Resuming
-needs someone at the AMS. #134's 16-auger batch also stopped twice, for a
-spool that wobbled in the AMS.
+If the team wants the H2D for mounting plates sooner, the job can still be
+cancelled. That costs the augers printed so far, about 5 h of printing and
+a couple of hundred grams. A plain `@claude` run can't cancel or resume
+it, because over LAN the printer only takes those commands from Bambu's own
+apps. Bambu Handy on the lab account can, and so can a `@claude-print` run
+through Studio. Either way, someone has to clear the plate by hand.
 
 ### 2.3 A1 mini queue
 
