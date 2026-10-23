@@ -10,16 +10,22 @@ per doser and for 25. If you're building fewer to start with, scale down.
 
 **Your first week, in order:**
 
-1. **Start the A1 mini now.** Every printed part except the baseplate and
-   the auger fits on it ([§2](#2-printing)).
-2. **Use the H2D slots for baseplates and augers only.** Nothing else needs
-   the big printer ([§2.3](#23-h2d-slots-baseplates-and-augers-only)).
+1. **Print the non-auger parts first.** They're what gets assembled, so
+   augers go last ([§2.2](#22-print-order-non-auger-parts-first)). Every
+   printed part except the baseplate and the auger fits on the A1 mini.
+2. **Give H2D slots to mounting plates (4 per plate) before augers**
+   ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
 3. **Do the inventory count** with
    [`inventory-checklist.csv`](inventory-checklist.csv) and post the
    shortfalls on your PR ([§3](#3-inventory-check)).
-4. **Build doser #1 end to end** with Sam and William nearby, writing down
-   every snag ([§4](#4-build-order)).
-5. Then build the rest in batches.
+4. **Order the PCBs.** There are 4 spare V2 boards for 25 dosers
+   ([§3.4](#34-ordering-more-v2-pcbs)).
+5. **Build doser #1 end to end**, mechanics and electronics, with Sam and
+   William nearby. Write down every snag, and film the first few assemblies
+   on the lab phone ([§4](#4-build-order)).
+6. **Set up each doser's electronics and software.** This is as big a job
+   as the printing ([§5](#5-electronics-and-software-setup)).
+7. Then build the rest in batches.
 
 ## 1. What you're building
 
@@ -78,44 +84,73 @@ That splits as **about 121 g per doser on the A1 mini (3.0 kg for 25)** and
 **153 g per doser on the H2D (3.8 kg for 25)**. With failed prints, plan on
 about eight 1 kg spools for 25 dosers.
 
-### 2.2 A1 mini queue (start now)
+### 2.2 Print order: non-auger parts first
 
-1. **One full A1 mini set for doser #1 first** (everything in the table
-   above the baseplate). Before printing more, test-fit it: the 14T and 20T
+The parts being assembled now come first, so augers go last
+([Sterling, 23 Oct](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376545121)).
+For each doser, in this order:
+
+| # | Parts | Printer | Done so far (23 Oct) |
+|---|---|---|---|
+| 1 | Mounting plate, both 28T tilt gears, both links | Plate: A1 mini, or the H2D 4 at a time. Gears and links: A1 mini | Doser #1's set |
+| 2 | 2 servo pinions (14T), 1 stepper pinion (20T) | A1 mini, for the 0.4 mm nozzle on small teeth | Doser #1's set |
+| 3 | Tap collar, tap-collar base | A1 mini | Doser #1's set |
+| 4 | Auger cap | A1 mini | 12 |
+| 5 | 2 auger brackets; the baseplate or stand | Brackets: A1 mini. Base: H2D | None: waiting on Sam's C-clip file, and on a choice between the Fusion v2 baseplate and William's Onshape stand |
+| 6 | Auger | H2D | 25 on one H2D plate, paused at 11 % |
+
+**Hold the batch until Brandon's file check.** On 23 Oct Brandon found that
+"the baseplate and gears were not printed correctly" in the first prints,
+and is checking them against the team's Onshape files. Print doser #2
+onward only from files he confirms. Then update the File column in
+[§2.1](#21-what-fits-where) to match.
+
+**The paused auger job.** The H2D's 25-auger plate stopped at layer 75 of
+1041 on an extruder overload (error `0300-801E`), probably around 10:15 UTC
+on 23 Oct. All 25 augers are still standing
+([record](print-files/README.md#the-h2d-paused-at-layer-75-checked-23-oct-2026-2315-utc)).
+Someone at the printer has to choose:
+
+- **Resume:** fix the filament feed (slot A2), then about 35 h and 1.5 kg
+  more for 25 augers.
+- **Cancel:** this loses about 4.7 h of printing and a couple of hundred
+  grams, but frees the H2D for mounting plates now. That fits the priority
+  above, unless the dosers being built are short of augers.
+
+An agent can't resume or cancel the job over LAN. The printer firmware
+rejects those commands unless they come from Bambu's own apps.
+
+### 2.3 A1 mini queue
+
+1. **Test-fit doser #1's set before printing more.** The 14T and 20T
    pinions should mesh with their 28T and 44T gears without binding, the
    brackets should slide onto the auger tube, and M3 screws should pass
-   their holes. The mounting plate and its tilt gears and links are
-   already sliced for the A1 mini in [`print-files/`](print-files/).
-2. **Then batch.** The mounting plates are the long pole: one per plate,
-   so 25 separate jobs. Keep the A1 mini busy with those during the day
-   and run plates of small parts (brackets, collars, bases, caps, pinions)
-   overnight. Group small parts by type so one failed plate doesn't cost a
-   whole doser set.
-3. **Settings.** Ask Sam for his Bambu Studio project files: they carry the
-   orientation and the profile his gram counts came from. If they aren't
-   handy, PLA with a 0.4 mm nozzle, 0.2 mm layers, 3 to 4 walls and 25 to
-   30 % infill is what the July draft used. Print gears with their axis
-   vertical.
+   their holes. This is where Brandon's check comes in.
+2. **Then gears, pinions, links, collars and bases, one doser's set per
+   plate.** Small teeth come out better from the A1 mini's 0.4 mm nozzle
+   than from the H2D's 0.6 mm. Doser #1's plate
+   ([`print-files/`](print-files/)) is the template.
+3. **Mounting plates fill the gaps:** one per plate, 1 h 36 min and 47 g
+   each. If the H2D is free, it does them 4 at a time ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
+4. **Settings.** Use what the print files use: PLA, 0.4 mm nozzle, 0.20 mm
+   layers, 3 walls, 25 % infill, and supports only where a part needs them.
+   Print gears with their axis vertical. Sam's Bambu Studio project files
+   would also carry his orientations, if he has them.
 
-### 2.3 H2D slots (baseplates and augers only)
+### 2.4 H2D slots: mounting plates first, then baseplates and augers
 
-Only the baseplate and the auger are too big for the A1 mini, so put every
-H2D slot toward those two.
-
-- **Baseplates:** two fit per plate side by side (2 × 115 mm across, 190 mm
-  deep).
-- **Augers:** stand them on end, as in the 16-auger batch in #134, which ran
-  for several days. Print their caps on the A1 mini to fit more augers per
-  plate (#134 did the same).
-- **If you only get one slot soon,** make it count toward complete dosers:
-  2 baseplates plus 2 or more augers lets you build and test doser #1 (and #2)
-  while the A1 mini works through the rest.
+- **Mounting plates:** 4 per plate. A 2 × 2 grid of 149.5 × 108.2 mm plates
+  fits the left nozzle's 325 × 320 mm area with room to spare. Fill the
+  leftover strip with tap collars and bases, but leave the gears to the
+  A1 mini.
+- **Baseplates or stands,** once one is chosen: two Fusion v2 baseplates
+  fit per plate side by side (2 × 115 mm across, 190 mm deep).
+- **Augers last:** stand them on end, as in the 16-auger batch in #134 and
+  the 25 now on the H2D. Print their caps on the A1 mini.
 - **Label every auger** with a unique 6-character ID (lowercase), as set up
   in #134.
-- **Started on 23 Oct 2026:** the H2D is printing all 25 augers in one
-  plate, and Thumbelina is printing doser #1's remaining A1 mini parts with
-  12 caps. Settings, files and the filament note are in
-  [`print-files/`](print-files/README.md#second-batch-25-augers-on-the-h2d-doser-1s-parts-and-caps-on-thumbelina-23-oct-2026).
+- **Printed so far:** settings, files and timelines for the 22 and 23 Oct
+  prints are in [`print-files/`](print-files/README.md).
 
 Two ways to free up the H2D, worth raising with Sam:
 
@@ -141,7 +176,7 @@ yourself and merge the two.
 | **Arrived, 25 of each** (15 Sep) | Tic T500, Pololu #3776 shunt regulator, NEMA-11 11HS18-0674S, Adafruit 412 solenoid (12 V), DRV8871, DRV2605L, ERM vibration disc, Waveshare Pico-2CH-RS232. Also 1 Raspberry Pi 5 kit, the carousel's NEMA 34 + CL86T, and 2 balances. |
 | **On the DigiKey re-order** (cancelled order, cart re-cut 18 Sep) | 25 Pico 2 WH, 50 MG996R servos, 25 × 12 V/5 A bricks + AC cords, 0.1″ headers, optional 100 µF caps. **Whether it has been placed or arrived isn't recorded in the PR yet; check first.** |
 | **Still missing** (@Dila-Kandel, 24 Sep) | 25 Pololu D24V22F5 5 V bucks, M3/M5 fasteners, the 48 V carousel PSU (not needed for the dosers themselves) |
-| **PCBs** | 4 spare V2 boards at BYU. At least 25 plus spares still to order from JLCPCB, possibly after small design tweaks. |
+| **PCBs** | 4 spare V2 boards at BYU. At least 25 plus spares still to order from JLCPCB, possibly after small design tweaks ([§3.4](#34-ordering-more-v2-pcbs)). |
 | **Not on any list yet** | PCB-mount 12 V barrel jack (1 per board), 38 mm mounting boards and #10 wood screws, stepper/servo/solenoid wiring, USB cables |
 
 ### 3.2 Check the fastener order against PR #170 before buying
@@ -189,6 +224,50 @@ Two things to check with William against the boards BYU already built:
   have to be bent out to fit. Use the values and parts on the BYU boards.
 - **Barrel jack:** match the jack used on the BYU boards. PR #115 suggested
   Same Sky PJ-002AH.
+
+### 3.4 Ordering more V2 PCBs
+
+Each doser needs one V2 board. BYU had 4 spares on 25 Sep
+([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5828345601)),
+so 25 dosers are 21 boards short. **Order 30.** That leaves spares for soldering mistakes and
+a board or two for test rigs.
+
+**What to upload:** [`hardware/PCBs/POWDER_DOSER_V2.zip`](../../hardware/PCBs/POWDER_DOSER_V2.zip),
+as is. It's the EasyEDA Pro export (29 Sep) that William ordered from
+JLCPCB, and he reported the boards "turned out great"
+([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5897474320)).
+Read from the gerbers:
+
+| | |
+|---|---|
+| Layers | 2 |
+| Size | 101.6 × 76.2 mm (4 × 3 in) |
+| Mounting holes | 3, 4.06 mm, unplated |
+| Smallest drill | 0.305 mm (vias) |
+| Narrowest trace | 0.254 mm (10 mil) |
+| Slots | 3 routed slots for the barrel jack |
+
+That's all within JLCPCB's standard options, so the defaults work: FR-4,
+1.6 mm, 1 oz copper, HASL, any colour. **Order bare boards, not assembly.**
+Every part is a module or connector soldered by hand
+([§3.3](#33-what-goes-on-each-v2-pcb)).
+
+**Price:** get it from JLCPCB's instant quote with the zip and quantity 30,
+or ask William what the first order cost. On a small order, shipping and US
+import duties can cost more than the boards, so check those lines in the
+cart.
+
+**Before ordering, check with William and Luke:**
+
+1. **Tweaks.** On 25 Sep the plan was "slight improvements to the existing
+   one" in time for a new order. If those aren't ready in a few days, it may
+   be better to order V2 as is. The 4 spares cover the first 4 dosers, not
+   25.
+2. **What to order with it.** Neither of these has been ordered yet
+   ([§3.3](#33-what-goes-on-each-v2-pcb)):
+   - 1 barrel jack and 4 electrolytic caps per board;
+   - header strips, if the BYU boards socket the Pico and the RS-232 module
+     rather than soldering them down.
 
 ## 4. Build order
 
