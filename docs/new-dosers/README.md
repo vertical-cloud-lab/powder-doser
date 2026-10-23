@@ -18,8 +18,8 @@ per doser and for 25. If you're building fewer to start with, scale down.
 3. **Do the inventory count** with
    [`inventory-checklist.csv`](inventory-checklist.csv) and post the
    shortfalls on your PR ([§3](#3-inventory-check)).
-4. **Order the PCBs.** There are 4 spare V2 boards for 25 dosers
-   ([§3.4](#34-ordering-more-v2-pcbs)).
+4. **Order the PCBs.** 25 dosers need 25 V2 boards, and BYU has 4 spares
+   at most ([§3.4](#34-ordering-more-v2-pcbs)).
 5. **Build doser #1 end to end**, mechanics and electronics, with Sam and
    William nearby. Write down every snag, and film the first few assemblies
    on the lab phone ([§4](#4-build-order)).
@@ -117,8 +117,12 @@ Someone at the printer has to choose:
   grams, but frees the H2D for mounting plates now. That fits the priority
   above, unless the dosers being built are short of augers.
 
-An agent can't resume or cancel the job over LAN. The printer firmware
-rejects those commands unless they come from Bambu's own apps.
+A plain `@claude` run can't resume or cancel the job, because over LAN the
+printer only takes those commands from Bambu's own apps. Bambu Handy on the
+lab account can cancel it remotely, and so can a `@claude-print` run through
+Studio. Either way, someone still has to clear the plate by hand. Resuming
+needs someone at the AMS. #134's 16-auger batch also stopped twice, for a
+spool that wobbled in the AMS.
 
 ### 2.3 A1 mini queue
 
@@ -176,7 +180,7 @@ yourself and merge the two.
 | **Arrived, 25 of each** (15 Sep) | Tic T500, Pololu #3776 shunt regulator, NEMA-11 11HS18-0674S, Adafruit 412 solenoid (12 V), DRV8871, DRV2605L, ERM vibration disc, Waveshare Pico-2CH-RS232. Also 1 Raspberry Pi 5 kit, the carousel's NEMA 34 + CL86T, and 2 balances. |
 | **On the DigiKey re-order** (cancelled order, cart re-cut 18 Sep) | 25 Pico 2 WH, 50 MG996R servos, 25 × 12 V/5 A bricks + AC cords, 0.1″ headers, optional 100 µF caps. **Whether it has been placed or arrived isn't recorded in the PR yet; check first.** |
 | **Still missing** (@Dila-Kandel, 24 Sep) | 25 Pololu D24V22F5 5 V bucks, M3/M5 fasteners, the 48 V carousel PSU (not needed for the dosers themselves) |
-| **PCBs** | 4 spare V2 boards at BYU. At least 25 plus spares still to order from JLCPCB, possibly after small design tweaks ([§3.4](#34-ordering-more-v2-pcbs)). |
+| **PCBs** | Possibly 4 spare V2 boards at BYU (or 4 spare bucks; see §3.4). At least 25 plus spares still to order from JLCPCB, possibly after small design tweaks ([§3.4](#34-ordering-more-v2-pcbs)). |
 | **Not on any list yet** | PCB-mount 12 V barrel jack (1 per board), 38 mm mounting boards and #10 wood screws, stepper/servo/solenoid wiring, USB cables |
 
 ### 3.2 Check the fastener order against PR #170 before buying
@@ -227,14 +231,18 @@ Two things to check with William against the boards BYU already built:
 
 ### 3.4 Ordering more V2 PCBs
 
-Each doser needs one V2 board. BYU had 4 spares on 25 Sep
-([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5828345601)),
-so 25 dosers are 21 boards short. **Order 30.** That leaves spares for soldering mistakes and
-a board or two for test rigs.
+Each doser needs one V2 board. **Order 30.** That covers 25 dosers plus
+spares for soldering mistakes, even if no spare boards are left at BYU.
+
+How many spares there are isn't clear. This guide has said 4, from a 25 Sep
+note that "we have four extra of these"
+([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5828345601)).
+But that note answered a question about the 5 V buck converter, so it may
+mean 4 spare bucks instead. Count the spare boards at BYU before ordering.
 
 **What to upload:** [`hardware/PCBs/POWDER_DOSER_V2.zip`](../../hardware/PCBs/POWDER_DOSER_V2.zip),
-as is. It's the EasyEDA Pro export (29 Sep) that William ordered from
-JLCPCB, and he reported the boards "turned out great"
+as is. William posted this EasyEDA Pro export on 29 Sep as the design his
+team ordered from JLCPCB, and said the boards "turned out great"
 ([PR #115](https://github.com/vertical-cloud-lab/powder-doser/pull/115#issuecomment-5897474320)).
 Read from the gerbers:
 
@@ -261,8 +269,8 @@ cart.
 
 1. **Tweaks.** On 25 Sep the plan was "slight improvements to the existing
    one" in time for a new order. If those aren't ready in a few days, it may
-   be better to order V2 as is. The 4 spares cover the first 4 dosers, not
-   25.
+   be better to order V2 as is, since any spares cover only the first few
+   dosers.
 2. **What to order with it.** Neither of these has been ordered yet
    ([§3.3](#33-what-goes-on-each-v2-pcb)):
    - 1 barrel jack and 4 electrolytic caps per board;
@@ -276,9 +284,11 @@ cart.
    [BOM.md](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/BOM.md#build-steps)
    and the GIFs. Then electronics with William: solder the V2 PCB, flash
    the Pico, and bench-test the stepper, both servos, the solenoid tap, the
-   vibration motor and the RS-232 link to a balance. William has wanted to
-   film a full assembly for a video tutorial (PR #115, 18 Sep), so doser #1
-   is a good one to record.
+   vibration motor and the RS-232 link to a balance.
+   **Record the first few assemblies on the lab phone**
+   ([Sterling, 23 Oct](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376590117)).
+   William has also wanted to film a full assembly for a video tutorial
+   (PR #115, 18 Sep).
 2. **Firmware.** The Pico 2 WH is an RP2350, so it needs the RP2350 build
    of MicroPython, not the RP2040 one. The documented firmware is
    `hardware/test-module/firmware/` on the PR #100 branch

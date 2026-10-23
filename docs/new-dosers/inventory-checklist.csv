@@ -13,14 +13,14 @@ Motion,MG996R servo,DigiKey FXX-3037-TOP or TowerPro MG996R,2,50,On the DigiKey 
 Motion,NEMA-11 stepper,StepperOnline 11HS18-0674S,1,25,Arrived x25 (2026-09-15),,,
 Motion,Push-pull solenoid 12 V,Adafruit 412,1,25,Arrived x25,,,
 Motion,ERM coin vibration motor,Adafruit 1201,1,25,Arrived x25,,,
-Electronics,V2 PCB,hardware/PCBs/POWDER_DOSER_V2.zip (JLCPCB),1,25,4 spare at BYU; 25+ still to order,,,
+Electronics,V2 PCB,hardware/PCBs/POWDER_DOSER_V2.zip (JLCPCB),1,25,Still to order; spares at BYU unclear,,,"Order 30 bare boards (guide 3.4); count BYU's spares first"
 Electronics,Raspberry Pi Pico 2 WH,DigiKey SC1634,1,25,On the DigiKey re-order (check placed/arrived),,,RP2350: needs the RP2350 MicroPython build
 Electronics,Waveshare Pico-2CH-RS232,Amazon / PiShop,1,25,Arrived x25,,,
 Electronics,Tic T500 stepper controller,Pololu 3135,1,25,Arrived x25,,,
 Electronics,Shunt regulator 33 V,Pololu 3776,1,25,Arrived x25,,,
 Electronics,DRV8871 motor driver,Adafruit 3190,1,25,Arrived x25,,,
 Electronics,DRV2605L haptic driver,Adafruit 2305,1,25,Arrived x25,,,
-Electronics,5 V buck regulator,Pololu D24V22F5 (2858),1,25,Missing (2026-09-24),,,
+Electronics,5 V buck regulator,Pololu D24V22F5 (2858),1,25,Missing (2026-09-24),,,"A 25 Sep note (""four extra of these"") may mean 4 spares at BYU"
 Electronics,PCB-mount 12 V barrel jack 5.5 x 2.1 mm,Match the BYU boards (PR #115 suggested Same Sky PJ-002AH),1,25,Not on any order,,,
 Electronics,Electrolytic capacitor,Values as on the BYU boards (BOM: 100 uF 25 V),4,100,Optional line on the DigiKey re-order (ECA-1EM101B x100),,,"V2 pads are 5.0 mm apart; ECA-1EM101B leads are 2.5 mm"
 Electronics,0.1 in male headers (40-pos breakaway),DigiKey PRPC040SAAN-RC,1,25,On the DigiKey re-order,,,Count strips that came with the breakouts first
