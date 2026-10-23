@@ -335,11 +335,14 @@ matches the V2 board's nets:
 
 ### 5.2 Per doser, in order
 
-1. **Solder the board** ([§3.3](#33-what-goes-on-each-v2-pcb)). Before
-   plugging anything in, power it from the 12 V brick alone and meter the
-   12 V, 5 V and 3.3 V rails. Before soldering 25 servo headers, check
-   them against a working BYU board. Read from the gerbers, the "−" mark
-   seems to sit beside the signal pad, so it's worth a second look.
+1. **Solder the board** ([§3.3](#33-what-goes-on-each-v2-pcb)), power
+   parts first.
+   - Fit the barrel jack, the caps and the 5 V buck, power the board from
+     the 12 V brick, and meter 12 V and 5 V before adding anything else.
+   - The 3.3 V rail comes from the Pico, so meter it once the Pico is in.
+   - Before soldering 25 servo headers, check them against a working BYU
+     board. Read from the gerbers, the "−" mark seems to sit beside the
+     signal pad, so it's worth a second look.
 2. **Set up the Tic T500** over USB in Pololu's Tic Control Center:
    - control mode "Serial / I²C / USB", 9600 baud;
    - current limit 670 mA, the NEMA-11's rating;
@@ -397,8 +400,6 @@ matches the V2 board's nets:
   and the coin motor never moved powder.
 - **Every dose writes a log file to the Pico's flash.** The bench flash
   filled up on 13 Oct, so clear the logs between campaigns.
-- **The Tic's TX line isn't wired back to the Pico,** so the firmware can't
-  read the Tic's status.
 
 ### 5.4 Running more than one doser: not built yet
 
@@ -411,7 +412,7 @@ Everything so far drives one doser.
 Before two dosers share a computer, someone needs to:
 - give each Pico an ID it reports, and map `/dev/serial/by-id/` names to
   doser numbers. PR #45 sketched a `whoami` command for this
-  ([§7](https://github.com/vertical-cloud-lab/powder-doser/blob/2da362e/design/electrical-software-brainstorming.md#L823-L847));
+  ([design notes](https://github.com/vertical-cloud-lab/powder-doser/blob/2da362e/design/electrical-software-brainstorming.md#L823-L847));
 - add that ID to the `RESULT` line and the logs;
 - choose the host: one Pi per doser, as on the bench, or one computer with
   powered USB hubs. The hubs were in PR #115's June plan but aren't on the
