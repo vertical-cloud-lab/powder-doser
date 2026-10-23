@@ -173,3 +173,117 @@ Its finish check missed the end, because OCR read "100%" as "100«". Look for
 The run outlived the session's one-hour GitHub token.
 `scripts/refresh_github_app_token.py` re-minted it from `/proc`, because
 `claude-print.yml` has no stash step.
+
+## Second batch: 25 augers on the H2D, doser #1's parts and caps on Thumbelina (23 Oct 2026)
+
+Requested on PR #181 with `@claude-print`: "if the H2D is available, fill
+the plate with whatever you can and print it. The A1 mini is free". Both
+printers were idle with clear plates, so both got a full plate.
+
+| File | Printer | Contents | PLA | Studio's estimate |
+|---|---|---|---:|---:|
+| [`doser_augers_x25_H2D.3mf`](doser_augers_x25_H2D.3mf) | H2D (Théoden) | 25 augers, 5 × 5 | 1,680 g | 1 d 15 h 35 min |
+| [`doser1_parts_and_caps_A1mini.gcode.3mf`](doser1_parts_and_caps_A1mini.gcode.3mf) | Thumbelina | The rest of doser #1's A1 mini parts, plus 12 auger caps | 110.7 g | 5 h 32 min |
+
+![The 25-auger H2D plate](doser_augers_x25_H2D_preview.png) ![Doser #1's parts and 12 caps](doser1_parts_and_caps_A1mini_preview.png)
+
+**What went on which plate.** All parts come from the PR #170 STEP
+exports.
+- **H2D: augers only.** The auger is the only current part too big for the
+  A1 mini.
+  - The baseplate is left out because the choice between the Fusion v2
+    plate and William's Onshape stand is still open.
+  - The brackets are left out because the rig's rear bracket is Sam's C-clip,
+    which has no CAD file yet.
+  - Twenty-five augers is one per doser for the 25 in PR #115.
+- **Thumbelina: everything else doser #1 needs from the A1 mini:**
+  - both 28T tilt gears and both links;
+  - the tap collar and the tap-collar base;
+  - both 14T servo pinions and the 20T stepper pinion;
+  - 12 auger caps, one for doser #1 and 11 toward the 25.
+
+  The mounting plate printed on 22 Oct. The brackets are still waiting on
+  Sam's C-clip.
+
+**H2D settings.**
+- **Printer and profile.** Both nozzles were 0.6 mm hardened steel: the left
+  is standard flow, the right TPU high flow (Studio's *Printer Parts*).
+  Sliced on `0.24mm Balanced Strength @BBL H2D 0.6 nozzle` with
+  `Bambu PLA Basic @BBL H2D 0.6 nozzle` (220 °C, textured PEI at 55 °C).
+- **Changed from stock:** 3 walls, 25 % infill, `tree(auto)` supports on the
+  build plate only, and a 5 mm outer brim. These five keys are listed in
+  `different_settings_to_system`, so the GUI kept them.
+- **Orientation.** Each auger stands on its outlet end, where the STEP has
+  z = 0. That end is a near-solid 25 mm disc, against a 2 mm ring at the
+  threaded end.
+  - The 44T gear's underside is a flat ring 10.5 mm wide, 80 mm up, so it
+    needs supports either way up. The tree supports come up from the bed
+    around each tube.
+  - The internal flight prints without supports, inside the tube.
+- **Layout.** A 5 × 5 grid on a 60 mm pitch (14 mm between gears), centred
+  at (162.5, 160) inside the left nozzle's 325 × 320 mm area. The arrange
+  tool put only 15 per plate at its default spacing.
+- **Layer height.** 0.24 mm, for the 3.5 mm-pitch cap thread and the flight
+  overhangs. On its own, an auger slices to 2 h 00 min at 0.24 mm and
+  1 h 39 min at 0.30 mm.
+- **Labels.** Label each auger with its 6-character ID (#134) when it comes
+  off the plate.
+
+**Filament on the H2D.** The plate needs 1.68 kg, more than one spool, and
+the black PLA in A2 isn't an RFID spool, so how much is left is unknown. A2
+will run out partway through, and the H2D will pause until someone loads
+more. To avoid the stop, load a second spool of the same black PLA into
+empty slot A1 or A3, set to the same type and colour, so AMS auto-refill
+takes over. The other PLA on that side (light blue in A4, pink on the
+external spool) doesn't count as a backup, since auto-refill needs a match.
+
+**Thumbelina settings.** The same as the mounting plate: stock A1 mini
+`0.20mm Standard`, 3 walls, 25 % infill, and `tree(auto)` supports on the
+build plate only, which only add support where a part needs it (31 s of
+support in the CLI slice). Each part lies on the flat face with the least
+overhang. The caps sit closed end down, with the thread going up.
+
+**Pre-flight, from Studio's Device page.** There was no Pi, so these checks
+used the Device page only.
+- **H2D, 05:31 UTC:** idle, heaters off, plate clear. The only HMS entry was
+  a maintenance reminder: "Please clean and lubricate the X-axis linear
+  rail, YZ-axis linear rods, and the extruder lift linear rail." It doesn't
+  block a print, but it is due.
+- **Thumbelina, 05:37 UTC:** idle, no HMS alerts, and the 22 Oct mounting
+  plate was off the bed.
+- **Logins.** Studio logged in at 04:59 on the first authenticator code, with
+  no e-mailed code.
+
+![The H2D's plate at 05:31 UTC, before Send](h2d_bed_before_send_2026-10-23.jpg)
+
+![Thumbelina's plate at 05:37 UTC, before Send](thumbelina_bed_before_send_2026-10-23.jpg)
+
+**Send.**
+- **H2D:** PLA → A2 on the left nozzle; textured PEI; timelapse off; bed
+  levelling and flow calibration on; nozzle offset calibration off. The H2D
+  dialog defaults to timelapse on and to *Auto* for the two calibrations.
+  Filament grouping was set to *Convenience mode*.
+- **Thumbelina:** PLA → A3; PEI; timelapse off; bed levelling and flow
+  calibration on. These were the dialog's defaults.
+- **Driving the dialog.** With the 25-auger preview loaded, Studio used
+  9 GB of RAM and redrew slowly under software GL. The dialog's toggles
+  ignored `ui.py`'s smooth pointer moves, and plain
+  `xdotool mousemove X Y click 1` worked.
+
+| UTC | Step |
+|---|---|
+| 04:59 | Logged in |
+| 05:18–05:27 | GUI slice of the 25 augers (9 min) |
+| 05:33:25 | H2D *Send*; uploaded through the cloud by 05:34 |
+| 05:39:51 | H2D: nozzle at 221 °C, bed at 55 °C, calibrating dynamic flow |
+| 05:38:35 | Thumbelina *Send* |
+
+**What was sent.** In both sent files, the plate G-code is byte-identical
+to Studio's slice:
+- H2D: MD5 `8516b26f…`;
+- Thumbelina: MD5 `5d9a502a…`.
+
+The committed Thumbelina file is the one Studio uploaded, with the account's
+`DesignerUserId` blanked. The H2D's uploaded file is 50 MB, so the project it
+was sliced from is committed instead. Opening it in Studio and slicing gives
+the same 1,680 g plate.

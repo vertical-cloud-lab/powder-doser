@@ -112,6 +112,10 @@ H2D slot toward those two.
   while the A1 mini works through the rest.
 - **Label every auger** with a unique 6-character ID (lowercase), as set up
   in #134.
+- **Started on 23 Oct 2026:** the H2D is printing all 25 augers in one
+  plate, and Thumbelina is printing doser #1's remaining A1 mini parts with
+  12 caps. Settings, files and the filament note are in
+  [`print-files/`](print-files/README.md#second-batch-25-augers-on-the-h2d-doser-1s-parts-and-caps-on-thumbelina-23-oct-2026).
 
 Two ways to free up the H2D, worth raising with Sam:
 
