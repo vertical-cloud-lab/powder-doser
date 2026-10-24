@@ -31,8 +31,10 @@
 > - Until `76c35c4` this file was PR #170's five bodies fused with
 >   OpenCASCADE, which is the same part apart from those points.
 >
-> They aren't sliced yet. On the A1 mini, lay the plate flat and use tree
-> supports from the build plate only, as before.
+> **Sliced and sent to Thumbelina on 24 Oct 2026** as
+> [`mounting_plate_one_piece_A1mini.gcode.3mf`](mounting_plate_one_piece_A1mini.gcode.3mf):
+> the plate lies flat, with tree supports from the build plate only. See
+> [the third print](#third-print-the-one-piece-mounting-plate-on-thumbelina-24-oct-2026).
 
 ![The one-piece mounting plate in Onshape](mounting_plate_onshape_iso.png)
 
@@ -400,3 +402,123 @@ it. The AMS read afterwards:
 About 1.5 kg remains. If A2 can't supply that, the job will stop again,
 because auto-refill only switches to a matching spool, and neither A3 nor
 A4 is black.
+
+## Third print: the one-piece mounting plate on Thumbelina (24 Oct 2026)
+
+Requested on PR #181 with `@claude-print`: "any printers available with a
+clear plate? If so, send the updated print if you can". The run was approved
+in `bambu-print`. "The updated print" was taken to be the one-piece mounting
+plate at the top of this page, with its motor holes fixed in Onshape. No
+earlier run had sliced it.
+
+| File | Printer | Contents | PLA | Studio's estimate |
+|---|---|---|---:|---:|
+| [`mounting_plate_one_piece_A1mini.gcode.3mf`](mounting_plate_one_piece_A1mini.gcode.3mf) | Thumbelina | The mounting plate, both 28T tilt gears and both links as one piece, with tree supports | 68.71 g | 2 h 32 min |
+
+![The sliced one-piece plate in Studio's preview](mounting_plate_one_piece_A1mini_preview.png)
+
+**The plate check.** This was the first print under the 23 Oct rule: no
+`plate clear` reply. Instead the run posts a frame first, reads the plate
+itself, and leaves at least 5 minutes for anyone to object. There was no Pi,
+so every check used Studio's Device page.
+- **Thumbelina, 05:36:59 UTC:** idle with no job loaded. Nozzle 22 °C and
+  bed 21 °C, both targets 0, and an empty HMS list. AMS lite: blue PLA in
+  A1, black PLA in A3, PETG in A4.
+  - The gantry was parked low, so the camera sat level with the bed and saw
+    it from the side. The textured plate showed from its front edge to its
+    back edge, apart from a strip at the far left, and nothing was on it.
+  - The 23 Oct parts had been taken off. The room lights were on, so the
+    frame was bright enough to judge.
+- **H2D, 05:38:39 UTC: not used.** It was paused on the 25-auger job (next
+  section).
+- **The wait.** The frame was posted at the top of the thread's comment at
+  05:39:30 UTC. The wait ended at 05:44:30, and there were still no replies
+  at 05:47:50.
+- **Second frame, 05:47:00 UTC, just before Send:** unchanged. The plate
+  area differed from the first frame by 1 % (ImageMagick MAE), which is
+  sensor noise.
+- **Working hours.** The request came at 11:22 pm in Utah, and the print ran
+  overnight. It went ahead because the requester asked for it then. It was
+  watched from the Device page, where Studio's Pause and Stop work.
+
+![Thumbelina's plate at 05:36:59 UTC, the frame posted before Send](thumbelina_bed_frame1_2026-10-24.jpg)
+
+![Thumbelina's plate at 05:47:00 UTC, just before Send](thumbelina_bed_frame2_2026-10-24.jpg)
+
+**Slicing, in the GUI.**
+- **Printer.** The Prepare page started on "Bambu Lab A1". *Sync info* set it
+  to the connected A1 mini, 0.4 mm nozzle, textured PEI plate.
+- **Import.** The STEP went into a fresh project. The import dialog's angle
+  deflection went from 0.5 to 0.2, with linear deflection 0.003 and *Split
+  compound* unticked. That gave one object of 15,652 triangles:
+  108.2 × 149.47 × 54.72 mm and 91,683 mm³, against 91,686 mm³ measured on
+  the STEP above.
+- **Orientation.** As the STEP has it: the plate flat on its 7,759 mm²
+  underside, with the stepper block standing up.
+- **Settings.** Stock `0.20mm Standard @BBL A1M` and
+  `Bambu PLA Basic @BBL A1M`, plus 3 walls, 25 % infill, and `tree(auto)`
+  supports on the build plate only (30° threshold), the same as the 22 Oct
+  plate. Studio listed the changes in `different_settings_to_system` itself:
+  `enable_support;skeleton_infill_density;skin_infill_density;sparse_infill_density;support_on_build_plate_only;wall_loops`.
+  The slice's config block confirmed each one, with textured PEI at 65 °C and
+  the nozzle at 220 °C.
+- **Supports.** Trees come up from the bed under both gears and both hinge
+  knuckles, and one reaches into the 22 mm stepper bore. Take that one out
+  with care, because the motor's boss sits in the bore.
+- **The result.** 274 layers to 54.8 mm. 68.71 g, of which 5.66 g is support.
+  Model time 2 h 26 min 18 s, total 2 h 32 min 17 s, with a first layer of
+  6.4 min. The 22 Oct plate (46.78 g) plus the gears and links (19.20 g)
+  came to 65.98 g, so printing them together costs about 2.7 g more, mostly
+  in supports under the gears.
+
+**Send.** PLA → A3 (black), PEI plate, timelapse off, bed levelling and flow
+calibration on. These were the dialog's defaults. The job name was
+`mounting-plate-one-piece`.
+
+**What was sent.** At Send, Studio wrote its upload copy to
+`/tmp/bamboo_model`. Its plate G-code is byte-identical to Studio's slice
+(MD5 `fa542299…`). The committed file is that copy, with the account's
+`DesignerUserId` blanked. The file holds no printer serials.
+
+| UTC | Step |
+|---|---|
+| 05:21:47 | Request |
+| 05:28:30 | Run approved and started |
+| 05:31:25 | Screen recording started, then Studio's first run |
+| 05:35:01–05:36:06 | Login: e-mail and password, then the authenticator code from `bambu-totp` at 05:35:48, on the first try. No e-mailed code |
+| 05:36:59 | Thumbelina's frame: idle, plate clear |
+| 05:38:39 | The H2D's frame: paused at layer 147 |
+| 05:39:30 | Both frames posted at the top of the thread's comment |
+| 05:41–05:45 | *Sync info*, STEP import, settings, slice |
+| 05:44:30 | The 5-minute wait ended, with no replies |
+| 05:47:00 | Second frame: unchanged |
+| 05:47:55 | *Send* |
+| 05:48:52 | Heatbed preheating |
+| 05:49–05:55 | Filament load from A3, vibration compensation, nozzle cleaning, bed levelling, flow calibration |
+| 05:55:35 | Layer 1 of 274 |
+| about 06:01:45 | Layer 2. The first layer took about 6 min |
+
+![Layer 1 at 05:57 UTC, with the room blurred](thumbelina_one_piece_layer1_2026-10-24.jpg)
+
+The camera was level with the bed for the first layers, so they show only as
+dark patches on the textured plate.
+
+### The H2D paused again, at layer 147 (24 Oct 2026, 05:38 UTC)
+
+Read from Studio's Device page in this run. Nothing on the H2D was clicked.
+
+- `doser_augers_x25_H2D` is **paused at layer 147 of 1041** (20 %, about
+  35 mm up), with `0700-8011`: "AMS filament ran out. Please insert a new
+  filament into the same AMS slot."
+- The AMS shows A1 and A2 empty, blue PLA in A3 and light blue PLA in A4. So
+  A2's black PLA ran out, and auto-refill had no matching spool to switch to.
+- The left nozzle was holding 42 °C and the bed 55 °C, so the parts stay stuck
+  down. Studio showed 1 d 7 h 34 min left.
+- The camera showed all 25 augers and their support trunks standing, with no
+  spaghetti.
+- **To continue:** load black PLA Basic into A2 at the printer, then press
+  *Resume (problem solved)* on the touchscreen or in Studio or Handy. Most
+  of the plate's 1.68 kg is still to print, so one spool may not finish it:
+  a second black spool in A1 lets auto-refill take over.
+
+![The H2D paused at layer 147, 05:38 UTC](h2d_paused_layer147_2026-10-24.jpg)
