@@ -1,0 +1,161 @@
+% Cover letter for Digital Discovery (Royal Society of Chemistry), article type: Full paper.
+% Manuscript: paper/main.tex, "An open-source, 3D-printed auger powder doser designed with
+% generative artificial intelligence".
+%
+% FORMAT. This follows Sterling G. Baird's own submitted cover letter for the interp5DOF paper
+% (Computational Materials Science, 2021): https://github.com/sgbaird/interp5DOF-paper, branch
+% main, submission/cms/cover-letter.docx and .pdf, commit df720ff. That letter is one page of
+% 10 pt Times New Roman on BYU Mechanical Engineering letterhead: addressee and date; salutation;
+% a paragraph giving the title, the authors and the journal; an "In this work, we present ..."
+% paragraph with the key numbers and the expected impact; a paragraph certifying that the work
+% is unpublished, not under consideration elsewhere and approved by all co-authors and relevant
+% authorities, leading into a list of suggested reviewers; "We are looking forward to a review
+% of this paper. Please advise if you require anything to proceed."; "Sincerely,", a scanned
+% signature, and name, title, department and university.
+%
+% DEPARTURES, all required by the Digital Discovery author guidelines (saved copy in
+% paper/guidelines/; see also paper/submission/GUIDELINES-AUDIT.md, items B6 and B10):
+%   - No suggested reviewers in the letter: "Don't include preferred/non-preferred reviewers in
+%     your letter as these should be entered in the manuscript submission system only." The
+%     letter is also sent to the reviewers. The block is kept, commented out, near the end.
+%   - Added the generative-AI declaration (RSC: GenAI use "must be declared at submission within
+%     the cover letter"), the co-corresponding authors, and disclosure of earlier public posting.
+%
+% Every number in the letter is stated in main.tex. Uses only standard packages (pdflatex).
+%
+% Items for a person are marked "TODO (human)" in comments. Visible [TODO: ...] text in the PDF:
+% the two signatures, the Zenodo DOI and the preprint status.
+
+\documentclass[11pt]{letter}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% Visible placeholder for things only a person can supply.
+\newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
+
+% TODO (human): letterhead (optional). The example letter was printed on BYU Mechanical
+% Engineering letterhead. To do the same, save the letterhead as a full-page image in this
+% folder, add \usepackage{eso-pic} above (not yet in the runner's MiKTeX; install it with
+% "miktex packages install eso-pic"), put the line below right after \begin{document},
+% delete the \address{...} block, and set top=1.9in,bottom=1.3in in the geometry options so
+% the text clears the seal and the footer.
+%   \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=\paperheight]{byu-me-letterhead}}
+
+\address{Department of Mechanical Engineering\\
+Brigham Young University\\
+Provo, UT 84602, USA}
+
+% TODO (human): \today prints the date of compilation. Replace it with the submission date if
+% you compile on another day.
+\date{\today}
+
+% TODO (human): decide who signs. Both co-corresponding authors are listed; to sign alone, delete
+% the other column. For a scanned signature (as in the example), replace \TODO{signature} with,
+% for example, \includegraphics[height=1.2cm]{signature-sgb}.
+% TODO (human): confirm the title line (the BYU ME faculty directory lists S.G.B. as an assistant
+% professor) and add one for S.C. if wanted.
+\signature{%
+\begin{tabular}[t]{@{}l@{\hspace{3em}}l@{}}
+\TODO{signature} & \TODO{signature}\\[1ex]
+Sam Charles & Sterling G.\ Baird\\
+Department of Mechanical Engineering & Assistant Professor of Mechanical Engineering\\
+Brigham Young University & Brigham Young University\\
+\href{mailto:samuelwcharles@gmail.com}{samuelwcharles@gmail.com} & Acceleration Consortium, University of Toronto\\
+ & \href{mailto:sterling.baird@byu.edu}{sterling.baird@byu.edu}
+\end{tabular}}
+
+\begin{document}
+
+% The letter class sizes the closing block when it loads, before geometry changes the text
+% width. Reset it so the closing starts at the left margin and the signatures can use the full
+% width.
+\setlength{\longindentation}{0pt}
+\setlength{\indentedwidth}{\textwidth}
+
+% TODO (human): addressee. The RSC "Meet the Digital Discovery team" page (checked 10 Oct 2026)
+% lists Prof. Alan Aspuru-Guzik as Editor-in-Chief and Anna Rulka as Executive Editor. Two
+% reasons to consider addressing the Executive Editor (or a relevant Associate Editor) instead:
+% the DD guidelines say "Address your letter to the relevant Associate Editor or Executive
+% Editor", and Prof. Aspuru-Guzik directs the Acceleration Consortium, which main.tex now lists
+% as S.G.B.'s second affiliation. Alternative recipient block (check her title for the
+% salutation):
+%   Anna Rulka\\ Executive Editor, \textit{Digital Discovery}\\ Royal Society of Chemistry
+\begin{letter}{Prof.\ Al\'an Aspuru-Guzik\\
+Editor-in-Chief, \textit{Digital Discovery}\\
+Royal Society of Chemistry}
+
+\opening{Dear Professor Aspuru-Guzik,}
+
+On behalf of all authors, we submit the manuscript entitled ``An open-source, 3D-printed auger powder doser designed with generative artificial intelligence,'' by Sam Charles, Will Mulberry, Luke Winters, Carl Robison, Gage Erickson, and Sterling G.\ Baird, for consideration in \textit{Digital Discovery} as a Full paper describing open-source scientific hardware, and ask that it be considered for the journal's New Hardware Developments collection.
+% TODO (human): confirm the collection's exact title and deadline (13 Nov 2026) from the
+% invitation or call. On 10 Oct 2026 no public Digital Discovery page (journal home, news blog,
+% July 2026 newsletter) listed it; the open calls shown were the 2026 AI4X - Accelerate
+% Conference collection (closes 31 Oct 2026) and General purpose models (closed 31 Aug 2026).
+% Select the collection in the submission system as well as naming it here.
+
+In this work, we present a single-channel powder doser that a laboratory can print, build, and modify for under \$200, plus an analytical balance. A \$6 microcontroller turns, tilts, and taps a printed auger (a tube with a spiral inside) until the balance reads the requested mass. We tested 13 powders, seven food-safe and six relevant to alloy discovery. With one fixed set of settings, ten moved 10--231~mg per auger revolution, and three moved no measurable amount. With the balance in the loop, 24 of 39 doses of 1~g finished within $\pm$5\% of the target, including every dose on the seven fastest-flowing powders dosed; the nine doses on three alloy-relevant powders were all within 1\%. Smaller doses were less reliable (14 of 30 at 50~mg and 18 of 30 at 200~mg met their limits), and a typical dose took minutes rather than seconds. The Supplementary Information (SI) accounts for every dose attempt, failures included.
+
+The second contribution is a documented case study of AI-assisted hardware design. AI coding agents and a chat-driven CAD tool first modelled the mechanical parts, while the team made every design decision and reviewed, printed, and tested every part. Asking for the whole assembly at once failed repeatedly; asking for one part at a time, against dimensioned drawings, worked better. We judged every AI route to be slower than an experienced engineer using conventional CAD, and its geometry poorer. The team later redrew the parts in Fusion~360, and the tested doser uses some of them, including the auger and its drive gear. What the AI route gave us instead was a public, written record of every design decision.
+
+We believe the paper suits \textit{Digital Discovery} and this collection for two reasons. First, it brings open-source hardware to a step that most self-driving laboratories either avoid or leave to people, in part because commercial dosing systems cost tens to hundreds of thousands of dollars. Built for alloy discovery by metal 3D printing, the doser is already in use beyond the tests reported, for example weighing AlSi10Mg for a charge that our ultrasonic atomizer turned into new powder. Second, its design record, including a 128-entry design log, shows where generative AI helped and where it did not, although it comes from one team and one project rather than a controlled comparison.
+
+Referees can check everything now, without requesting access. The SI gives the bill of materials and a construction guide, and the repository at \url{https://github.com/vertical-cloud-lab/powder-doser} holds the design files, firmware, raw test records, analysis scripts, design log, and the dated prompts and responses exchanged with the AI tools. A tagged release is archived on Zenodo (\TODO{Zenodo DOI}). The manuscript and SI have been publicly visible in this repository while we drafted them; \TODO{preprint status, e.g.\ ``a preprint is on ChemRxiv (DOI)'' or ``no preprint has been posted''}.
+% TODO (human): before submission, merge PR #74 (design log) and PR #170 (Fusion 360 STEP
+% files), since the letter says the repository holds them (SUBMISSION-DECISIONS.md, item 10).
+% TODO (human): if the Onshape document is made public (it was private on 8 Oct), you may add
+% after "Zenodo (...)": ", and the current assembly is a public Onshape document
+% (\url{https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f})".
+% TODO (human): once the hardware licence is chosen (SUBMISSION-DECISIONS.md, item 5), consider
+% naming it here; DD states "a strong preference for open-source hardware licenses".
+% TODO (human): disclose any earlier talk or poster on this work here if you consider it public
+% presentation (the README links a "Presentation at POSE 2026" slide deck).
+
+As RSC policy requires, we declare that generative AI was both a subject of this study and an assistant in it. AI coding agents running Anthropic's Claude models (GitHub Copilot and Claude Code) wrote CAD code, firmware, and analysis and figure scripts, and drafted and revised the manuscript, the SI, and this letter. Edison Scientific searched the literature, compiled references, and ran mock reviews, and CADSmith and Zoo Design Studio served as text-to-CAD tools. The authors reviewed and edited all output and take full responsibility for the content; the Experimental section, the Acknowledgements, and the SI give the tools, models, and dates.
+% TODO (human): keep this paragraph in step with the final Acknowledgements and Experimental
+% section. DD also asks: "If using AI tools to help create figures, authors must confirm that
+% the AI tool has been trained using fully licensed datasets and the terms of the licence to use
+% the AI output allow commercial reuse" (GUIDELINES-AUDIT.md, item R13). If that applies (for
+% example to Fig. 2), check the tools' terms, then un-comment and adapt:
+% We confirm that the AI tools used to help create figures were trained on fully licensed data,
+% that their terms allow commercial reuse of their output, and that no photograph was altered
+% with AI tools.
+
+We certify that this manuscript is original, has not been published previously, and is not under consideration for publication elsewhere. It has been approved by all authors and by any relevant authorities at the locations where the work was performed. The authors declare no conflicts of interest. Sam Charles and Sterling G.\ Baird are co-corresponding authors.
+% TODO (human): confirm that all six authors have approved the final version, and update the
+% author list above if it changes (SUBMISSION-DECISIONS.md, item 1).
+% TODO (human): confirm there are no conflicts, including free credits or early access from
+% Edison Scientific, Zoo, CADSmith, GitHub or Anthropic (SUBMISSION-DECISIONS.md, item 14), and
+% that no related manuscript is under consideration elsewhere; if either exists, say so here.
+% TODO (human, optional): given the Acceleration Consortium affiliation, you could add:
+% Because S.G.B. is also affiliated with the Acceleration Consortium at the University of
+% Toronto, we would be grateful if the manuscript were handled by an editor without ties to the
+% Consortium.
+%
+% --- Suggested reviewers: deliberately commented out (Digital Discovery rule, see header). ---
+% TODO (human): enter 4-6 vetted reviewers, with institutional e-mail addresses, in the
+% submission system instead. RSC: no close collaborators and nobody from the authors'
+% institutions. AI-scouted, unvetted pool: paper/mock_review/inputs/17-suggested-reviewers.md.
+% Problems found in that pool (10 Oct 2026): Milad Abolhasani and Joshua Schrier are Digital
+% Discovery Associate Editors (RSC team page), and Keith A. Brown and Joshua Schrier have
+% co-authored with S.G.B. (GUIDELINES-AUDIT.md, item R12). Remaining names by topic: J. G.
+% Khinast and F. J. Muzzio (powder feeding); W. Chen and D. J. Thoma (alloy discovery by
+% additive manufacturing); W. Matusik and A. Schulz (AI and CAD); R. W. Bowman or J. M. Pearce
+% (open hardware); B. Maruyama (autonomous experimentation). Check each for recent co-authorship.
+% In the example letter's format:
+% Below are the names and contact information for [number] suitable reviewers:
+%
+% Dr.\ [Name] ([Institution]): [institutional e-mail]
+% Dr.\ [Name] ([Institution]): [institutional e-mail]
+% Dr.\ [Name] ([Institution]): [institutional e-mail]
+
+We look forward to a review of this paper. Please advise if you require anything to proceed.
+
+\closing{Sincerely,}
+
+\end{letter}
+
+\end{document}
