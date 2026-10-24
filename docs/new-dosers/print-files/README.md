@@ -4,27 +4,43 @@
 > two 28T tilt gears and its two links are one part: one 70 g item on Sam's
 > slicer sheet, and one solid in the team's Onshape plate. In the STEP, each
 > link's end sits inside its gear's hub. These files print them as five
-> separate parts, which is a likely cause of Brandon's report that "the
-> baseplate and gears were not printed correctly". Print them as one piece
-> instead; see the
+> separate parts. That was the fault in the first prints: Brandon found
+> [the gears and arms printed as separate parts instead of attached](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376796564).
+> Fusion's STEP holds them as five bodies, and these files split them. Print
+> them as one piece instead; see the
 > [guide's §2.2](../README.md#22-print-order-non-auger-parts-first).
 >
 > [`mounting-plate-one-piece.step`](mounting-plate-one-piece.step) and
-> [`.stl`](mounting-plate-one-piece.stl) are that piece. They fuse the
-> PR #170 STEP's five bodies with OpenCASCADE and make no other change:
-> - one solid, 91,524 mm³, against 93,669 mm³ for the five bodies, because
->   their overlaps are counted once;
-> - 149.5 × 108.2 × 54.7 mm, the same envelope as before;
-> - Ethan's Onshape plate is 91,686 mm³.
+> [`.stl`](mounting-plate-one-piece.stl) are that piece, exported from Ethan's
+> Onshape [Mounting plate](https://cad.onshape.com/documents/53e9cce7f09a50f89c120028),
+> version "Motor holes on 23 mm square (PR #181)", 24 Oct 2026:
+> - Ethan drew the plate, gears and links as one part, so the slicer can't
+>   split it.
+> - On 24 Oct its NEMA-11 holes were moved onto the motor's 23 mm square, in
+>   Onshape, by [`fix_motor_holes.py`](../onshape/fix_motor_holes.py). They
+>   were 24.4 × 23.0 mm apart: in the "Stepper mount holes sketch", one hole
+>   line was 6 mm from the block's edge instead of 6.6 mm, and the bore's
+>   centreline 18 mm from the other edge instead of 18.1 mm. Onshape keeps
+>   Ethan's original as version "Ethan 16 Oct (before motor-hole fix)".
+> - Checked against PR #170's five bodies fused into one: one solid,
+>   91,686 mm³, 149.5 × 108.2 × 54.7 mm, with the holes, bore and hinge in the
+>   same places. The gear teeth agree to within 0.06 mm. The one other
+>   difference is the angled plate edge by the gear arm on the stepper side:
+>   PR #170's sits 0.57 mm further in than the same edge on the other side,
+>   and Ethan's two sides match.
+> - Until `76c35c4` this file was PR #170's five bodies fused with
+>   OpenCASCADE, which is the same part apart from those points.
 >
 > They aren't sliced yet. On the A1 mini, lay the plate flat and use tree
 > supports from the build plate only, as before.
 
-![The one-piece mounting plate, as in Ethan's Onshape plate](mounting_plate_one_piece_onshape.png)
+![The one-piece mounting plate in Onshape](mounting_plate_onshape_iso.png)
 
-*The one-piece plate, rendered from Ethan's Onshape
-[Mounting plate](https://cad.onshape.com/documents/53e9cce7f09a50f89c120028)
-(16 Oct). Each sector gear joins the plate through its link.*
+![The stepper block's NEMA-11 face: four holes on a 23 mm square around the 22 mm bore](mounting_plate_onshape_stepper_face.png)
+
+*The one-piece plate, rendered by Onshape from the fixed version. Each sector
+gear joins the plate through its link. Below, the stepper block seen from
+behind: the four holes now sit on a 23 mm square around the bore.*
 
 Ready-to-print `.gcode.3mf` files for the A1 mini ("Thumbelina"), made from
 the PR #170 STEP export

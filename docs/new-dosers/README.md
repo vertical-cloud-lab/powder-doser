@@ -119,15 +119,18 @@ help that check:
     of the link overlapping.
 
   The 22–23 Oct prints split the STEP's five bodies into separate parts, so
-  the gears and links can't be fitted back on as designed. Print them as one
-  part from
+  the gears and links can't be fitted back on as designed. Brandon
+  [confirmed](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376796564)
+  that this was the fault. Print them as one part from
   [`mounting-plate-one-piece.step`](print-files/mounting-plate-one-piece.step),
-  which fuses the five bodies and changes nothing else.
+  exported from Ethan's Onshape plate after its motor holes were fixed in
+  Onshape on 24 Oct (next table, and the
+  [print record](print-files/README.md)).
 - **Other differences:**
 
 | Part | PR #170 (printed) | Team's Onshape | So |
 |---|---|---|---|
-| Mounting plate | Motor holes on a 23 mm square | Ethan, 16 Oct: holes 24.4 × 23.0 mm apart, and one edge 0.55 mm proud. Otherwise within about 0.1 mm | The NEMA-11's holes are on a 23 mm square, so merge PR #170's bodies rather than export Ethan's |
+| Mounting plate | Motor holes on a 23 mm square | Ethan, 16 Oct: holes 24.4 × 23.0 mm apart. **Fixed in Onshape on 24 Oct**: version "Motor holes on 23 mm square (PR #181)". Its angled edge by the stepper-side gear arm matches the other side, where PR #170's sits 0.57 mm in. Teeth within 0.06 mm | Print the Onshape plate: it's [`mounting-plate-one-piece.step`](print-files/mounting-plate-one-piece.step) now |
 | Stepper pinion | 20T, module 1.0, Ø22 | [Jacob, 21 Oct](https://cad.onshape.com/documents/0401d55bca2deb006cc69926): 20T, module 1.3, Ø28.6 | The 44T gear on the augers now printing is module 1.0, so only PR #170's pinion meshes with it |
 | Servo pinion | 14T, module 1.3 | [Brandon and Jacob, 15–21 Oct](https://cad.onshape.com/documents/35ecacf511109e3b823b3ed0): root Ø14.95 vs 15.17, tip Ø20.80 vs 20.77 | A small change. Its rollback bar sits after the first feature, so roll it forward before exporting |
 | Tap collar | Split ring | [Brandon, 13 Oct](https://cad.onshape.com/documents/b0b9aed3e11591e566530a68): the clamp slot stops 4 mm short of the bore, so the ring isn't split | Print PR #170's, or extend the slot |
