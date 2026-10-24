@@ -529,6 +529,45 @@ so AMS lite auto-refill had nothing to switch to.
 
 ![Paused at layer 29, 06:49 UTC](thumbelina_paused_layer29_2026-10-24.jpg)
 
+**When the session ended, it was still paused.** Nobody replied in the
+thread, so the print was left as it was:
+
+| UTC | Step |
+|---|---|
+| 06:51:02 | The pause and the two ways to finish posted in the thread: black PLA in A3 and *Resume*, or a `blue` reply to finish in A1's blue PLA |
+| 06:51–07:58 | Read the job panel every 30 s and polled the thread every 2 min. Layer 29 the whole time, nozzle 41/42 °C, bed 64–65/65 °C, no replies |
+| 07:58:30 | Last check: still paused at layer 29 |
+| 07:58:45 | Live view stopped |
+| 07:59:33 | Logged out of the Bambu account. Studio quit without saving, then its config, its cache and `/tmp/bamboo_model` were deleted |
+
+The print stays paused on Thumbelina, with the bed held at 65 °C, until
+someone resumes or stops it at the printer, in Handy or in Studio.
+
+**Watching.** `watch_studio.py` (byu-vcl, `WATCH_LAYOUT=a1mini BED_TARGET=65`)
+read the Device page every 10 s from 05:49 to the pause, 261 samples. While
+printing, the nozzle read 218–222 °C. It stopped on the warning window, as
+designed (exit 20). From 06:51, a simpler read-only loop took over, since the
+warning stayed open. Both logs are in
+[`mounting_plate_one_piece_watch.jsonl.gz`](mounting_plate_one_piece_watch.jsonl.gz).
+
+**Recording.** [`mounting_plate_one_piece_recording_2026-10-24.mp4`](mounting_plate_one_piece_recording_2026-10-24.mp4)
+(6.5 min, 9.2 MB) is cut by wall-clock time from the screen recording, which
+ran from 05:31:25 to 08:00. The login (05:35:01–05:36:06) and the logout are
+not in it. The camera pane's top band and the box labels at its left are
+blurred wherever the pane can show the room. It isn't on YouTube yet, because
+a print run has no YouTube token. Chapters:
+
+```
+0:00 Bambu Studio's first run on the runner (4x)
+0:53 Device page: Thumbelina idle with a clear plate; the H2D paused on filament runout (4x)
+2:08 Sync info, STEP import, 3 walls, 25 % infill, tree supports, slice (4x)
+3:31 Second plate frame, just before Send (2x)
+3:44 Send print job (real time)
+4:30 Heating, filament load, levelling, flow calibration (8x)
+5:27 Layers 1-29 (60x)
+6:09 Paused at layer 29: AMS lite slot A3 out of black PLA (240x)
+```
+
 ### The H2D paused again, at layer 147 (24 Oct 2026, 05:38 UTC)
 
 Read from Studio's Device page in this run. Nothing on the H2D was clicked.

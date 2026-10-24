@@ -1,6 +1,6 @@
 {
  "what": "The doser mounting plate with both 28T tilt gears and both links as one piece, from Ethan Webster's Onshape 'Mounting plate' after its NEMA-11 holes were moved onto the motor's 23 mm square (version 'Motor holes on 23 mm square (PR #181)')",
- "result": "paused at layer 29/274 (31 %, 5.8 mm) at about 2026-10-24T06:37:24Z: 1200-8011 'AMS lite filament has run out. Please insert a new filament into the same AMS slot.' (A3's black PLA used up; no matching spool for auto-refill). Not resumed by this session; the bed was holding 65 C",
+ "result": "paused at layer 29/274 (31 %, 5.8 mm) from about 2026-10-24T06:37:24Z: 1200-8011 'AMS lite filament has run out. Please insert a new filament into the same AMS slot.' (A3's black PLA used up; no matching spool for auto-refill). Still paused, bed held at 65 C, when the session logged out at 07:59:33Z; not resumed or stopped by this session",
  "printer": {
   "model": "Bambu Lab A1 mini",
   "name_in_studio": "Thumbelina, the A1 Mini",
@@ -73,7 +73,7 @@
   "own_read": "clear: camera level with the bed (gantry parked low); the textured plate visible from its front edge to its back edge apart from a strip at the far left, nothing on it; bright (room lights on)",
   "frame_posted": "2026-10-24T05:39:30Z",
   "wait_ended": "2026-10-24T05:44:30Z",
-  "replies": "none (thread polled at 05:45:58 and 05:47:50 UTC)",
+  "replies": "none before Send (thread polled at 05:45:58 and 05:47:50 UTC), and none after the pause was posted at 06:51:02 (polled every 2 min to 07:58)",
   "second_frame": "docs/new-dosers/print-files/thumbelina_bed_frame2_2026-10-24.jpg (05:47:00 UTC): unchanged, plate-area MAE 1.0 % against the first",
   "working_hours": "requested at 23:21 MDT and sent at 23:47 MDT, outside working hours, at the requester's ask; watched from Studio's Device page with Pause and Stop available"
  },
@@ -100,7 +100,13 @@
   "layer 29": "2026-10-24T06:35:39Z",
   "paused_filament_runout": "about 2026-10-24T06:37:24Z (watcher exit on the Warning window at 06:37:31Z)",
   "pause_seen": "2026-10-24T06:48Z",
-  "pause_posted": "2026-10-24T06:51:02Z"
+  "pause_posted": "2026-10-24T06:51:02Z",
+  "pause_monitor": "2026-10-24T06:51Z to 07:58Z, job panel every 30 s, thread every 2 min: layer 29 throughout, no replies",
+  "last_check": "2026-10-24T07:58:30Z: paused at layer 29, nozzle 41/42 C, bed 64/65 C",
+  "live_view_stopped": "2026-10-24T07:58:45Z",
+  "logged_out": "2026-10-24T07:59:33Z",
+  "studio_quit_config_deleted": "2026-10-24T08:00-08:01Z (project not saved; ~/.config/BambuStudio and /tmp/bamboo_model deleted)",
+  "recording_stopped": "2026-10-24T08:00:25Z"
  },
  "pause": {
   "error": "1200-8011 AMS lite filament has run out; HMS 'AMS lite Slot 3 filament has run out; please insert a new filament.'",
@@ -108,5 +114,18 @@
   "part": "plate slab (5.8 mm), tree trunks and the stepper block's base flat and stuck down",
   "filament_by_gcode": "27.2 g through layer 28, 40.4 g left (of 67.6 g by summed E; Studio says 68.71 g)",
   "not_clicked": "the Warning dialog's Resume (problem solved) and Check Assistant; it was moved aside with wmctrl"
- }
+ },
+ "monitor": {
+  "how": "byu-vcl bambu/studio/watch_studio.py with WATCH_LAYOUT=a1mini BED_TARGET=65: an OCR of Studio's Device page every 10 s, a camera frame every 120 s; then, from 06:51, a read-only loop OCRing the job panel every 30 s",
+  "samples": 261,
+  "while_printing": 226,
+  "nozzle_c": [
+   218,
+   222
+  ],
+  "bed_c": "65 (OCR often reads the target as 165 or the line as '1 64')",
+  "ended": "exit 20 at 06:37:31Z on the new Warning window (the filament-runout dialog); the session's own loop matched the watcher with pgrep -f against the launching shell and so only noticed at 06:48",
+  "log": "docs/new-dosers/print-files/mounting_plate_one_piece_watch.jsonl.gz"
+ },
+ "recording": "docs/new-dosers/print-files/mounting_plate_one_piece_recording_2026-10-24.mp4 (6.5 min, 9.2 MB; cut by wall-clock time from the 05:31:25-08:00 screen recording; the login 05:35:01-05:36:06 and the logout are cut; the camera pane's top band and left box labels blurred; not yet on YouTube: claude-print.yml has no YouTube token)"
 }
