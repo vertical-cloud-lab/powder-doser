@@ -587,3 +587,66 @@ Read from Studio's Device page in this run. Nothing on the H2D was clicked.
   a second black spool in A1 lets auto-refill take over.
 
 ![The H2D paused at layer 147, 05:38 UTC](h2d_paused_layer147_2026-10-24.jpg)
+
+## Resuming the one-piece plate from another slot: Studio can't (24 Oct 2026)
+
+Requested on PR #181 with `@claude-print` at 19:38:50 UTC ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6388660320)): "switch to another
+available PLA on another slot and resume the print". The run was approved,
+and its job started at 19:39:09. "The print" was taken to be Thumbelina's
+one-piece plate, paused at layer 29 since 06:37 (above). The H2D's auger job
+was left alone.
+
+- **Setup and login.** Studio 02.08.02.61 as before, with the apt mirror
+  switched, so its packages installed in 56 s. Bambu asked for the
+  authenticator code, and the first code from `bambu-totp` worked. No
+  e-mailed code was asked for.
+- **The frame, 19:48:19 UTC** (below). Thumbelina was still paused at 31 %,
+  layer 29 of 274, with warning `1200-8011`. Nozzle 41 °C (target 42), bed
+  64 °C (target 65).
+  - AMS lite: A1 Bambu PLA Basic, blue, A2 empty, A3 empty, A4 PETG. So the
+    only other PLA was A1's.
+  - The part looked as it did at 06:49: flat and stuck down, with nothing
+    else on the plate.
+  - The frame was posted at the top of the thread's comment at 19:48:42.
+    The wait ended at 19:53:42 with no replies.
+- **Studio won't load an AMS slot while a print is paused.** With A1
+  selected, *Load* and *Unload* stay grey. Their tooltip says "When printing
+  is paused, filament loading and unloading are only supported for external
+  slots". The check is `sGetSwitchInfo` in Studio's
+  `src/slic3r/GUI/StatusPanel.cpp` (tag `v02.08.02.61`):
+  `if (obj->can_resume() && !devPrinterUtil::IsVirtualSlot(ams_id))`.
+  - The one workaround in reach was to relabel A1 as black PLA Basic, so
+    that auto-refill would count it as A3's backup. Auto-refill only takes
+    "identical filament: same brand, type and color". But A1's spool is
+    RFID-tagged (*Materials Setting* showed its serial), and Studio doesn't
+    let you change an RFID spool's type or color. The dialog was closed
+    without *Confirm*.
+  - *Resume (problem solved)* sends `resume` for the error, which would make
+    the AMS lite feed A3 again, and A3 is empty. It wasn't pressed.
+- **Nothing was sent to the printer.** The warning was moved aside with
+  `wmctrl`, and nothing in it was clicked.
+
+![Load and Unload greyed out while paused, with Studio's tooltip](studio_load_blocked_while_paused_2026-10-24.png)
+
+![Thumbelina at 19:48:19 UTC, still paused at layer 29](thumbelina_resume_frame1_2026-10-24.jpg)
+
+**To finish the plate, at the printer:** move the blue spool from A1 into A3,
+or put any PLA in A3. Let the AMS lite pull it in, then press *Resume
+(problem solved)*. About 40 g and 1 h 45 min of printing are left. The H2D's
+auger job is in the same position: a runout there also needs filament in
+the same slot, put in by hand.
+
+| UTC | Step |
+|---|---|
+| 19:38:50 | Request |
+| 19:39:09 | Run approved and started |
+| 19:42–19:43 | AppImage downloaded; packages installed in 56 s |
+| 19:43:12 | Screen recording started, then Studio's first run |
+| 19:45:47–19:46:23 | Login: e-mail and password, then the authenticator code at 19:46:07, on the first try |
+| 19:46:48 | Device page, Thumbelina selected, live view started |
+| 19:48:19 | Frame: still paused at layer 29 |
+| 19:48:42 | Frame posted at the top of the thread's comment |
+| 19:50:36 | A1 selected: *Load* and *Unload* grey, with the tooltip above |
+| 19:53:12–19:53:33 | A1's *Materials Setting* opened and closed: RFID spool, read-only |
+| 19:53:42 | The 5-minute wait ended, with no replies |
+| 19:54:09 | The blocked switch and the steps for a person posted in the thread |

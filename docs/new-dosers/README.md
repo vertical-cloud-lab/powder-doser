@@ -92,7 +92,7 @@ For each doser, in this order:
 
 | # | Parts | Printer | Done so far (23 Oct) |
 |---|---|---|---|
-| 1 | Mounting plate with both 28T tilt gears and both links, **as one piece** | A1 mini one at a time, or the H2D 4 at a time | Doser #1's, but printed as 5 separate parts (below). The first one-piece plate, from the fixed Onshape file, went to the A1 mini on 24 Oct ([record](print-files/README.md#third-print-the-one-piece-mounting-plate-on-thumbelina-24-oct-2026)) |
+| 1 | Mounting plate with both 28T tilt gears and both links, **as one piece** | A1 mini one at a time, or the H2D 4 at a time | Doser #1's, but printed as 5 separate parts (below). The first one-piece plate, from the fixed Onshape file, went to the A1 mini on 24 Oct ([record](print-files/README.md#third-print-the-one-piece-mounting-plate-on-thumbelina-24-oct-2026)). It paused at layer 29 when A3's black PLA ran out, and needs PLA put in A3 at the printer ([why](print-files/README.md#resuming-the-one-piece-plate-from-another-slot-studio-cant-24-oct-2026)) |
 | 2 | 2 servo pinions (14T), 1 stepper pinion (20T) | A1 mini, for the 0.4 mm nozzle on small teeth | Doser #1's set, under review (below) |
 | 3 | Tap collar, tap-collar base | A1 mini | Doser #1's set |
 | 4 | Auger cap | A1 mini | 12 |
@@ -150,6 +150,14 @@ because A2's black PLA ran out** (`0700-8011`). It needs black PLA loaded
 into A2 and *Resume* pressed. Studio then showed 1 d 7 h 34 min still to print
 ([record](print-files/README.md#the-h2d-paused-again-at-layer-147-24-oct-2026-0538-utc)).
 Until then the non-auger parts go on the A1 mini.
+
+**A runout has to be fixed at the printer.** While a print is paused,
+Studio only loads filament from the external spool, not from an AMS slot,
+so a `@claude-print` run can't move a paused job to another slot. It can
+only press *Resume* once someone has put filament back in the same slot
+([24 Oct](print-files/README.md#resuming-the-one-piece-plate-from-another-slot-studio-cant-24-oct-2026)).
+Load a second spool of the same filament before a long job, so auto-refill
+can take over.
 
 If the team wants the H2D for mounting plates sooner, the job can still be
 cancelled. That costs the augers printed so far: at least 5 h of printing

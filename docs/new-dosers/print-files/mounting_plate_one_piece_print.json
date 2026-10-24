@@ -127,5 +127,22 @@
   "ended": "exit 20 at 06:37:31Z on the new Warning window (the filament-runout dialog); the session's own loop matched the watcher with pgrep -f against the launching shell and so only noticed at 06:48",
   "log": "docs/new-dosers/print-files/mounting_plate_one_piece_watch.jsonl.gz"
  },
- "recording": "docs/new-dosers/print-files/mounting_plate_one_piece_recording_2026-10-24.mp4 (6.5 min, 9.2 MB; cut by wall-clock time from the 05:31:25-08:00 screen recording; the login 05:35:01-05:36:06 and the logout are cut; the camera pane's top band and left box labels blurred; not yet on YouTube: claude-print.yml has no YouTube token)"
+ "recording": "docs/new-dosers/print-files/mounting_plate_one_piece_recording_2026-10-24.mp4 (6.5 min, 9.2 MB; cut by wall-clock time from the 05:31:25-08:00 screen recording; the login 05:35:01-05:36:06 and the logout are cut; the camera pane's top band and left box labels blurred; not yet on YouTube: claude-print.yml has no YouTube token)",
+ "resume_request_2026-10-24": {
+  "request": "sgbaird, 2026-10-24T19:38:50Z, @claude-print: 'switch to another available PLA on another slot and resume the print' (taken as Thumbelina's one-piece plate; the H2D's paused auger job was left alone)",
+  "request_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6388660320",
+  "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/40126249295 (job started 2026-10-24T19:39:09Z)",
+  "login": "authenticator code from bambu-totp, first try: Log In 19:45:53Z, code 19:46:07Z, confirmed 19:46:08Z; no e-mailed code asked for",
+  "frame": "docs/new-dosers/print-files/thumbelina_resume_frame1_2026-10-24.jpg (19:48:19Z, Studio live view), committed in 1f2073a",
+  "state": "paused at 31 %, layer 29/274, warning 1200-8011; nozzle 41/42 C, bed 64/65 C; AMS lite A1 Bambu PLA Basic blue (RFID), A2 empty, A3 empty, A4 PETG",
+  "own_read": "the part (5.8 mm slab, tree trunks, base of the stepper block) unchanged since 06:49: flat and stuck down, nothing else on the plate; frame bright (room lights on)",
+  "frame_posted": "2026-10-24T19:48:42Z",
+  "wait_ended": "2026-10-24T19:53:42Z",
+  "replies": "none (thread polled at 19:48:54, 19:52:12 and 19:53:35, then every 2 min while watching)",
+  "outcome": "not resumed and not switched: nothing was sent to the printer",
+  "why": "Studio 02.08.02.61 disables Load/Unload for AMS slots while a print is paused: tooltip 'When printing is paused, filament loading and unloading are only supported for external slots.' (sGetSwitchInfo in src/slic3r/GUI/StatusPanel.cpp: if (obj->can_resume() && !devPrinterUtil::IsVirtualSlot(ams_id))). Relabelling A1 as black PLA Basic so that auto-refill (identical brand, type and color only) takes it as A3's backup was not possible: A1 is an RFID spool, so Materials Setting doesn't allow changing its type or color; the dialog was closed without Confirm. Resume (problem solved) was not pressed, since A3 is empty",
+  "evidence": "docs/new-dosers/print-files/studio_load_blocked_while_paused_2026-10-24.png (19:50:42Z), committed in 4125a4e",
+  "to_finish": "at the printer: put PLA in A3 (for example the blue spool from A1), let the AMS lite pull it in, press Resume (problem solved); about 40 g and 1 h 45 min left",
+  "thread_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6388665714"
+ }
 }
