@@ -497,11 +497,37 @@ calibration on. These were the dialog's defaults. The job name was
 | 05:49–05:55 | Filament load from A3, vibration compensation, nozzle cleaning, bed levelling, flow calibration |
 | 05:55:35 | Layer 1 of 274 |
 | about 06:01:45 | Layer 2. The first layer took about 6 min |
+| 06:19:51 | Layer 20 (4 mm), 19 %, about 45 s a layer. Nozzle 220 °C, bed 65 °C |
+| 06:24–06:37 | Layers 26–29, the plate's solid top, about 3 min each, as on 22 Oct |
+| about 06:37:24 | **Paused at layer 29 of 274** (31 %, 5.8 mm): `1200-8011`, "AMS lite filament has run out". A3's black PLA was used up |
+| 06:48 | The pause seen. The watcher had stopped on the warning dialog at 06:37:31, but the session's loop checked for the watcher with `pgrep -f`, which matched the shell that started it |
 
 ![Layer 1 at 05:57 UTC, with the room blurred](thumbelina_one_piece_layer1_2026-10-24.jpg)
 
 The camera was level with the bed for the first layers, so they show only as
 dark patches on the textured plate.
+
+![Layer 20 at 06:19 UTC](thumbelina_one_piece_layer20_2026-10-24.jpg)
+
+**Paused: A3 ran out of black PLA.** The A1 mini has no second black spool,
+so AMS lite auto-refill had nothing to switch to.
+- **The state at 06:49 UTC.** The bed was holding 65 °C and the nozzle had
+  dropped to 42 °C. The HMS list had one entry: "AMS lite Slot 3 filament has
+  run out; please insert a new filament." AMS lite showed blue PLA in A1, A2
+  and A3 empty, and PETG in A4.
+- **The part so far** (the plate's solid 5.8 mm slab, the tree trunks and the
+  base of the stepper block) was flat and stuck down.
+- **Not resumed.** Nobody had loaded a spool, and the only PLA left on the
+  AMS lite was blue. The warning dialog was moved aside with `wmctrl` and
+  nothing in it was clicked.
+- **To finish:** put black PLA into A3, let the AMS lite pull it in, and press
+  *Resume (problem solved)* on the touchscreen, in Handy or in Studio. By
+  the G-code, 27 g was printed through layer 28 and about 40 g is left, so a
+  part-used spool will do. Studio then shows 1 h 45 min left.
+- **Both printers ran out of black PLA overnight:** the H2D's A2 (next
+  section) and Thumbelina's A3.
+
+![Paused at layer 29, 06:49 UTC](thumbelina_paused_layer29_2026-10-24.jpg)
 
 ### The H2D paused again, at layer 147 (24 Oct 2026, 05:38 UTC)
 

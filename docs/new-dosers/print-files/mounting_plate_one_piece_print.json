@@ -1,6 +1,6 @@
 {
  "what": "The doser mounting plate with both 28T tilt gears and both links as one piece, from Ethan Webster's Onshape 'Mounting plate' after its NEMA-11 holes were moved onto the motor's 23 mm square (version 'Motor holes on 23 mm square (PR #181)')",
- "result": "printing; sent 2026-10-24T05:47:55Z, layer 1 at 05:55:35Z (to be completed)",
+ "result": "paused at layer 29/274 (31 %, 5.8 mm) at about 2026-10-24T06:37:24Z: 1200-8011 'AMS lite filament has run out. Please insert a new filament into the same AMS slot.' (A3's black PLA used up; no matching spool for auto-refill). Not resumed by this session; the bed was holding 65 C",
  "printer": {
   "model": "Bambu Lab A1 mini",
   "name_in_studio": "Thumbelina, the A1 Mini",
@@ -94,6 +94,19 @@
   "send": "2026-10-24T05:47:55Z",
   "heatbed_preheating": "2026-10-24T05:48:52Z",
   "layer 1": "2026-10-24T05:55:35Z",
-  "layer 2": "about 2026-10-24T06:01:45Z"
+  "layer 2": "about 2026-10-24T06:01:45Z",
+  "layer 20": "2026-10-24T06:19:51Z",
+  "layer 26": "2026-10-24T06:24:41Z",
+  "layer 29": "2026-10-24T06:35:39Z",
+  "paused_filament_runout": "about 2026-10-24T06:37:24Z (watcher exit on the Warning window at 06:37:31Z)",
+  "pause_seen": "2026-10-24T06:48Z",
+  "pause_posted": "2026-10-24T06:51:02Z"
+ },
+ "pause": {
+  "error": "1200-8011 AMS lite filament has run out; HMS 'AMS lite Slot 3 filament has run out; please insert a new filament.'",
+  "state_0649Z": "bed 64-65/65 C, nozzle 41-50 C (target 42), AMS lite A1 blue PLA, A2 empty, A3 empty, A4 PETG",
+  "part": "plate slab (5.8 mm), tree trunks and the stepper block's base flat and stuck down",
+  "filament_by_gcode": "27.2 g through layer 28, 40.4 g left (of 67.6 g by summed E; Studio says 68.71 g)",
+  "not_clicked": "the Warning dialog's Resume (problem solved) and Check Assistant; it was moved aside with wmctrl"
  }
 }
