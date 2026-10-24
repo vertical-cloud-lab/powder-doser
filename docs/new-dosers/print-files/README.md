@@ -650,3 +650,52 @@ the same slot, put in by hand.
 | 19:53:12–19:53:33 | A1's *Materials Setting* opened and closed: RFID spool, read-only |
 | 19:53:42 | The 5-minute wait ended, with no replies |
 | 19:54:09 | The blocked switch and the steps for a person posted in the thread |
+| 19:54–20:59 | Device page read every 30 s and the thread polled every 2 min (126 reads, 33 polls). No change on the printer and no replies |
+| 20:59:43 | Last frame: unchanged (below) |
+| 21:00:11–21:00:24 | The H2D selected, read only: still paused at layer 147 (below) |
+| 21:00:43 | Live view stopped |
+| 21:01:07 | Logged out of the Bambu account |
+| 21:01:23 | Studio quit, then its config and cache deleted |
+| 21:01:31 | Screen recording stopped |
+
+**When the session ended, Thumbelina was still paused** at layer 29, with the
+bed held at 64–65 °C and the nozzle at 41 °C. The watcher compared the job
+panel and the A1 and A3 slots with the 19:54 screen, and nothing moved.
+Nobody replied in the thread. Its log is
+[`thumbelina_resume_attempt_watch.jsonl.gz`](thumbelina_resume_attempt_watch.jsonl.gz).
+
+![Thumbelina at 20:59:43 UTC, still paused at layer 29](thumbelina_resume_last_frame_2026-10-24.jpg)
+
+**The H2D at 21:00 UTC.** Selecting it popped up its warning
+(`0700-8011`, "AMS filament ran out. Please insert a new filament into the
+same AMS slot."), which was moved aside without a click.
+- `doser_augers_x25_H2D` was still paused at layer 147 of 1041 (20 %), with
+  1 d 7 h 34 min left.
+- Left nozzle 42 °C (target 42), bed 55 °C (target 55).
+- AMS: A1 and A2 empty, blue PLA in A3, light blue PLA in A4. The second AMS
+  had nothing loaded, and the external spool showed TPU.
+- The camera showed all 25 augers and their support trunks standing. The
+  chamber window, where the room shows, is blurred in the frame.
+
+![The H2D at 21:00 UTC, still paused at layer 147](h2d_still_paused_layer147_2026-10-24_2100.jpg)
+
+**Recording.** [`thumbelina_resume_attempt_recording_2026-10-24.mp4`](thumbelina_resume_attempt_recording_2026-10-24.mp4)
+(4.1 min, 2.3 MB) was cut by wall-clock time with byu-vcl's
+`cut_recording.py`. Its blur box was moved to where the low camera view
+shows the room and box labels: (274, 136), 370 × 240. Three stretches are
+cut:
+- the login, 19:45:45–19:46:28;
+- *Materials Setting*, 19:53:05–19:53:40, which shows the spool's serial;
+- everything from 20:59:50, which covers the H2D, whose camera sees the room
+  through its window, and the logout.
+
+Chapters:
+
+```
+0:00 Bambu Studio's first run on the runner (4x)
+0:38 Device page: Thumbelina still paused at layer 29; live view and the frame (2x)
+1:46 Waiting for replies (8x)
+1:59 A1 selected: Load and Unload stay grey while the print is paused (real time)
+2:29 Waiting for replies (8x)
+2:44 Watching the paused printer and the thread until 21:00 UTC (240x)
+```

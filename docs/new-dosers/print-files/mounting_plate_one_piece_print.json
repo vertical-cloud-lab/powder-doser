@@ -143,6 +143,11 @@
   "why": "Studio 02.08.02.61 disables Load/Unload for AMS slots while a print is paused: tooltip 'When printing is paused, filament loading and unloading are only supported for external slots.' (sGetSwitchInfo in src/slic3r/GUI/StatusPanel.cpp: if (obj->can_resume() && !devPrinterUtil::IsVirtualSlot(ams_id))). Relabelling A1 as black PLA Basic so that auto-refill (identical brand, type and color only) takes it as A3's backup was not possible: A1 is an RFID spool, so Materials Setting doesn't allow changing its type or color; the dialog was closed without Confirm. Resume (problem solved) was not pressed, since A3 is empty",
   "evidence": "docs/new-dosers/print-files/studio_load_blocked_while_paused_2026-10-24.png (19:50:42Z), committed in 4125a4e",
   "to_finish": "at the printer: put PLA in A3 (for example the blue spool from A1), let the AMS lite pull it in, press Resume (problem solved); about 40 g and 1 h 45 min left",
-  "thread_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6388665714"
+  "thread_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6388665714",
+  "watch": "2026-10-24T19:54Z to 20:59Z: Device page read every 30 s (126 reads), thread polled every 2 min (33 polls); no change in the job panel or the A1/A3 slots, no replies. Log: docs/new-dosers/print-files/thumbelina_resume_attempt_watch.jsonl.gz",
+  "last_frame": "docs/new-dosers/print-files/thumbelina_resume_last_frame_2026-10-24.jpg (20:59:43Z): still paused at layer 29",
+  "h2d_2100Z": "read only: doser_augers_x25_H2D still paused at layer 147/1041 (20 %), 0700-8011, 1 d 7 h 34 min left; left nozzle 42/42 C, bed 55/55 C; AMS A1 and A2 empty, A3 blue PLA, A4 light blue PLA; all 25 augers standing. Frame: docs/new-dosers/print-files/h2d_still_paused_layer147_2026-10-24_2100.jpg (chamber window blurred)",
+  "session_end": "live view stopped 21:00:43Z; logged out 21:01:07Z; Studio quit 21:01:23Z, then ~/.config/BambuStudio and its cache deleted; recording stopped 21:01:31Z",
+  "recording": "docs/new-dosers/print-files/thumbelina_resume_attempt_recording_2026-10-24.mp4 (4.1 min, 2.3 MB; cut by wall-clock time; the login 19:45:45-19:46:28, Materials Setting 19:53:05-19:53:40 and everything from 20:59:50 are cut; the room and box labels above the bed blurred)"
  }
 }
