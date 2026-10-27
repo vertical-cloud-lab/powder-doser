@@ -1,0 +1,90 @@
+[
+ {
+  "key": "nema11_11HS18-0674S",
+  "kind": "datasheet_screenshot",
+  "file": "files/stepperonline/11HS18-0674S_Full_Datasheet.tab.png",
+  "page": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s",
+  "url": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-9-5ncm-13-5oz-in-0-67a-4-6v-28x28x45mm-4-wires-11hs18-0674s",
+  "sha256": "cf50a0d8d847385be615eba7bcd22a32f220963a7976565a0d6d17ae62bda3a8",
+  "bytes": 283062,
+  "retrieved": "2026-10-27",
+  "note": "the tab the link opened"
+ },
+ {
+  "key": "nema11_11HS18-0674S",
+  "kind": "screenshot",
+  "file": "files/stepperonline/nema11_11HS18-0674S.png",
+  "page": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-6ncm-8-5oz-in-0-67a-6-2v-28x28x45mm-4-wires-11hs18-0674s",
+  "url": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-6ncm-8-5oz-in-0-67a-6-2v-28x28x45mm-4-wires-11hs18-0674s",
+  "sha256": "8911a0dd841f519a0971f31ee7fcf3343046fd072f783e5dd33a3c87a9d1ae08",
+  "bytes": 156788,
+  "retrieved": "2026-10-27",
+  "note": "The page you requested cannot be found!"
+ },
+ {
+  "key": "nema11_11HS18-0674S",
+  "kind": "text",
+  "file": "files/stepperonline/nema11_11HS18-0674S.txt",
+  "page": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-6ncm-8-5oz-in-0-67a-6-2v-28x28x45mm-4-wires-11hs18-0674s",
+  "url": "https://www.omc-stepperonline.com/nema-11-bipolar-1-8deg-6ncm-8-5oz-in-0-67a-6-2v-28x28x45mm-4-wires-11hs18-0674s",
+  "sha256": "bb29f7aeafe050b87f789b8794295f3c43d81cc2ad5d87909cfa3125229c7753",
+  "bytes": 1177,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "nema11_search",
+  "kind": "screenshot",
+  "file": "files/stepperonline/nema11_search.png",
+  "page": "https://www.omc-stepperonline.com/search/11HS18-0674S",
+  "url": "https://www.omc-stepperonline.com/search/11HS18-0674S",
+  "sha256": "d7bc80e0ea007a9ec8e3b13d272a075261117e73f24f69ad2f1134d8b9f94770",
+  "bytes": 287465,
+  "retrieved": "2026-10-27",
+  "note": "Search - 11HS18-0674S"
+ },
+ {
+  "key": "nema11_search",
+  "kind": "text",
+  "file": "files/stepperonline/nema11_search.txt",
+  "page": "https://www.omc-stepperonline.com/search/11HS18-0674S",
+  "url": "https://www.omc-stepperonline.com/search/11HS18-0674S",
+  "sha256": "7bc80eafaf9511ad7569e921612846f0d9444c70e548312c37f8f86f93b181a3",
+  "bytes": 2168,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "nema34_34HS59-6004D-E1000",
+  "kind": "datasheet_screenshot",
+  "file": "files/stepperonline/34HS59-6004D-E1000_Full_Datasheet.tab.png",
+  "page": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "url": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "sha256": "c79beb66941192218c7ae0a413244a5b9b7f0f6132b0b1d5320ed436d36edd13",
+  "bytes": 292047,
+  "retrieved": "2026-10-27",
+  "note": "the tab the link opened"
+ },
+ {
+  "key": "nema34_34HS59-6004D-E1000",
+  "kind": "screenshot",
+  "file": "files/stepperonline/nema34_34HS59-6004D-E1000.png",
+  "page": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "url": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "sha256": "67986493ddd302954b76e78a0cb273210ef3f686c3d6658e3dc13b23d6df5748",
+  "bytes": 880531,
+  "retrieved": "2026-10-27",
+  "note": "S Series Nema 34 Closed Loop Stepper Motor 12.0Nm(1699.34oz.in) Encoder 1000PPR(4000CPR) - 34HS59-60"
+ },
+ {
+  "key": "nema34_34HS59-6004D-E1000",
+  "kind": "text",
+  "file": "files/stepperonline/nema34_34HS59-6004D-E1000.txt",
+  "page": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "url": "https://www.omc-stepperonline.com/s-series-nema-34-closed-loop-stepper-motor-12-0-nm-1699-68oz-in-encoder-1000ppr-4000cpr-34hs59-6004d-e1000",
+  "sha256": "4b3eadc10c62d01472f56b6b1b2cec506af718de8f79ade4b8abcb09c6dc5310",
+  "bytes": 4640,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

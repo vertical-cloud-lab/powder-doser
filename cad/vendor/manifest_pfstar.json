@@ -1,0 +1,24 @@
+[
+ {
+  "key": "vial_986546",
+  "kind": "screenshot",
+  "file": "files/pfstar/vial_986546.png",
+  "page": "https://www.pfstar.com/986546-20-mL-LS-Vial-22-400-Urea-Cap-PE-Cone-Ln",
+  "url": "https://www.pfstar.com/986546-20-mL-LS-Vial-22-400-Urea-Cap-PE-Cone-Ln",
+  "sha256": "f4c4b668a2146966c2f58a140887168cf7d2250c39f9098b64afef90f72a5b13",
+  "bytes": 281534,
+  "retrieved": "2026-10-27",
+  "note": "986546 Wheaton 20 mL LS Vial 22-400 Urea Cap PE Cone Ln 353558"
+ },
+ {
+  "key": "vial_986546",
+  "kind": "text",
+  "file": "files/pfstar/vial_986546.txt",
+  "page": "https://www.pfstar.com/986546-20-mL-LS-Vial-22-400-Urea-Cap-PE-Cone-Ln",
+  "url": "https://www.pfstar.com/986546-20-mL-LS-Vial-22-400-Urea-Cap-PE-Cone-Ln",
+  "sha256": "e12a31d3cd483c37cc6df9b06d772512817c02221915e9cd593e36b13feb8e9f",
+  "bytes": 1909,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

@@ -1,0 +1,46 @@
+[
+ {
+  "key": "a1_CL35-A1",
+  "kind": "screenshot",
+  "file": "files/nitro/a1_CL35-A1.png",
+  "page": "https://www.nitrochain.com/35-a1-standard-attachment-connecting-link",
+  "url": "https://www.nitrochain.com/35-a1-standard-attachment-connecting-link",
+  "sha256": "9da716a0ae033dc2f8b189d9215e15f3ed9fc21d270d99a549cd07b3c8234cdf",
+  "bytes": 473789,
+  "retrieved": "2026-10-27",
+  "note": "#35 A-1 Attachment Connecting Link - A1 Attahment Link (One Bent Tab) For ANSI #35 Roller Chain - It"
+ },
+ {
+  "key": "a1_CL35-A1",
+  "kind": "text",
+  "file": "files/nitro/a1_CL35-A1.txt",
+  "page": "https://www.nitrochain.com/35-a1-standard-attachment-connecting-link",
+  "url": "https://www.nitrochain.com/35-a1-standard-attachment-connecting-link",
+  "sha256": "d3af55ecec4b55089ed85a93ba27e4d8bec2b75addf1af1bda3f72042e5004b0",
+  "bytes": 3247,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "chain_RC35",
+  "kind": "screenshot",
+  "file": "files/nitro/chain_RC35.png",
+  "page": "https://www.nitrochain.com/35-roller-chain-10ft",
+  "url": "https://www.nitrochain.com/35-roller-chain-10ft",
+  "sha256": "eea362cf60b47c2b5d793463c5d498fbf79ccf230c7ef12e0277593fed9bb4fd",
+  "bytes": 747812,
+  "retrieved": "2026-10-27",
+  "note": "ANSI #35 Roller Chain - 10ft Roll - #35 Single Strand Chain"
+ },
+ {
+  "key": "chain_RC35",
+  "kind": "text",
+  "file": "files/nitro/chain_RC35.txt",
+  "page": "https://www.nitrochain.com/35-roller-chain-10ft",
+  "url": "https://www.nitrochain.com/35-roller-chain-10ft",
+  "sha256": "6e9a2bc3e48fa15fab9b07c22535c95829a6035ad684b84c8f0aa9073a7da85e",
+  "bytes": 5094,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]
