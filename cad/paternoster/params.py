@@ -136,8 +136,14 @@ FOOT_H = 15.0
 
 # --- shafts and bearings ---
 SHAFT_D = 15.875     # 5/8 in
-# SBSFL202-10 2-bolt stamped-steel flange unit (3.189 x 2.3125 x 0.875 in, 2-1/2 in bolt centres)
-BRG = dict(L=81.0, W=58.7, J=63.5, T=3.0, OUT=12.6, IN=9.6, DOME_D=47.0, RING_D=24.0, BOLT_D=6.35, HOLE=49.0)
+# SBSFL202-10 = SBPFL202-10 2-bolt pressed-steel flangette, 5/8 in SB insert. USA Bearings & Belts' SBPFL202-10 table
+# and drawing (read 2026-10-27; Surplus Center's own page is behind a bot check): a 3-3/16 (81.0), e 2-1/2 (63.5),
+# B 2-5/16 (58.7), t 0.079 (2.0 mm sheet: two halves, so 4.0 at the bolt lobes), b 5/8 (15.9 dome to dome),
+# S 9/32 (7.1 bolt hole), L .8661 (22.0 inner ring), n .236, k 1-1/4. The bearing's centre plane is one sheet (2.0)
+# above the mounting face, the housing +-7.95 about it, and the inner ring runs from flush with the rear dome to 6.1 mm
+# beyond the front one (set-screw collar outward). Was T 3.0, OUT 12.6, IN 9.6 (domes 10.6 / 8.6). cad/vendor/AUDIT_other.md
+BRG = dict(L=81.0, W=58.7, J=63.5, T=4.0, OUT=16.05, IN=5.95, DOME_D=47.0, DOME_OUT=9.95, DOME_IN=5.95, RING_D=24.0,
+           BOLT_D=6.35, HOLE=49.0)
 TENSION_TRAVEL = (-6.0, 8.0)  # top stub shafts slide in slots: down to fit the chain, up to tension it
 
 # --- StepperOnline 34HS59-6004D-E1000 (NEMA 34, 12 N*m, 1000-line encoder) ---
@@ -208,7 +214,7 @@ ACT_BODY_L = 175.0
 ACT_ROD_D = 10.0
 FORK_H = 36.0
 VIAL_H = 61.0
-LC_L = 80.0
+LC_L = 47.0                  # TAL221 (SparkFun SEN-14727) is 47 x 12 x 6 (datasheet); was 80, the TAL220's length
 VIAL_X = 30.0                # vial ahead of the docked carriage's front face (x 47.3); a D-funnel catches the stream
 
 # --- frame layout ---

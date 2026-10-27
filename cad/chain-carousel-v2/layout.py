@@ -692,10 +692,16 @@ def _station(st: State, add) -> None:
     Ract = cols(xdir, ydir, zdir)
     Lact = float(np.linalg.norm(Pp - B))
     add(Placement("clevis_bracket", "Actuator base clevis (printed)", T(None, B), 8, ORANGE, "station", (0, 0, -40)))
+    y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2                # head on the -y cheek's outer face, shoulder through cheek, tab, cheek
+    add(Placement("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, y_head, 0])), 8, STEEL,
+                  "station", (0, -30, -40)))
+    add(Placement("nut_m3", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 8, STEEL,
+                  "station", (0, 30, -40)))
     add(Placement("actuator_body", "Actuonix P16-150-22-12-P (pot feedback)", T(Ract, B), 8, (0.25, 0.25, 0.28), "station", (0, 0, -40)))
     add(Placement("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 8, (0.7, 0.7, 0.72), "station", (0, 0, -40)))
     Y = T(Ract, Pp)                                     # yoke frame: on the carriage pins' axis, along the actuator
     add(Placement("uyoke_base", "U-yoke crossbar with guide tongue (printed)", Y, 8, ORANGE, "station", (0, 0, -60)))
+    add(Placement("yoke_pin", "Dowel pin 4 x 38 mm (P16 rod end in the U-yoke)", Y @ T(None, (0, 0, -UFORK_L)), 8, STEEL, "station", (0, 0, -60)))
     for sy in (-1, 1):
         Rm = T(None) if sy > 0 else T(Rz(math.pi))           # part's +y outward
         add(Placement("uyoke_arm", "U-yoke arm, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 8, STEEL, "station", (0, 0, -60)))
@@ -790,6 +796,8 @@ BUILDERS = {
     "auger_cap": lambda: reference_parts()["auger_cap"],
     "armature_tab": PT.armature_tab,
     "clevis_bracket": lambda: PT.clevis_bracket(CLEVIS_RISE),
+    "clevis_screw": PT.clevis_shoulder_screw,
+    "yoke_pin": PT.yoke_pin,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],
     "uyoke_base": PT.uyoke_base,

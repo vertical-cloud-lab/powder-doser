@@ -18,6 +18,7 @@ HERE = Path(__file__).resolve().parent
 # (item, keys counted from the CAD or None, qty if not counted, description,
 #  vendor, part number, url, unit price USD, price source, steps, category)
 V = "verified 2026-10-18"
+V27 = "verified 2026-10-27"
 V16 = "verified 2026-10-16 (paternoster BoM)"
 V13 = "verified 2026-10-13"
 V10 = "verified 2026-10-10 (v1 BoM)"
@@ -125,13 +126,14 @@ ITEMS = [
      "Onshape 581956d5", "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
      1.40, "filament at $20/kg", (9,), "Printed"),
     # ---- station
-    (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N",
-     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-p", 90.0, V16, (8,), "Station"),
+    (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side "
+     "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP)",
+     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-150-22-12-p", 90.0, V27, (8,), "Station"),
     (41, None, 1, "Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in)", "Actuonix", "LAC",
      "https://www.actuonix.com/lac", 30.0, V16, (8,), "Station"),
     (42, None, 1, "12 V supply for the LAC and actuator", "Actuonix", "12V PSU", "https://www.actuonix.com/lac", 10.0, V16, (8,), "Station"),
-    (43, None, 1, "Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis) + M3 locknut", "McMaster-Carr", "90265A992", f"{MC}/90265A992/", 5.11, V16,
-     (8,), "Station"),
+    (43, ("clevis_screw",), None, "Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread (the P16's base pin: cheek, 8 mm rear tab, "
+     "cheek) + an M3 nylock from item 27", "McMaster-Carr", "90265A123", f"{MC}/90265A123/", 4.40, V27, (8,), "Station"),
     (44, None, 1, "M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16's rod-end plug in the U-yoke crossbar's square socket "
      "(makes the yoke rigid on the rod)", "BelMetric", "M4 x 25 + M4 nylock", "https://www.belmetric.com/", 0.45, E, (8,), "Station"),
     (45, ("dock_magnet",), None, "Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: the dock's mesh preload", "Adafruit", "3872",

@@ -19,23 +19,15 @@ from common import VENDOR, human_move, open_browser, pause  # noqa: E402
 
 OUT = VENDOR / "mcmaster_catalog_rows.json"
 CAT = "https://www.mcmaster.com/products/"
-PAGES = {
-    "shoulder_4mm": CAT + "shoulder-screws/system-of-measurement~metric/shoulder-diameter~4-mm/",
-    "dowel_4mm": CAT + "dowel-pins/system-of-measurement~metric/diameter~4-mm/",
-    "ring_groove_pins": CAT + "retaining-ring-groove-pins/",
-    "e_rings_metric": CAT + "e-style-retaining-rings/system-of-measurement~metric/",
-    "clevis_pins_metric": CAT + "clevis-pins/system-of-measurement~metric/",
-    "standoffs_m6": CAT + "standoffs/system-of-measurement~metric/thread-size~m6/",
-    "dry_lube": CAT + "dry-film-lubricants/",
-    "threadlocker": CAT + "threadlockers/",
-    "retaining_compound": CAT + "retaining-compounds/",
-    "bhcs_metric_ss": CAT + "button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
-    "shcs_metric_ss": CAT + "socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
-    "fhcs_metric_ss": CAT + "flat-head-screws/stainless-steel-hex-drive-flat-head-screws~~/system-of-measurement~metric/",
-    "nylock_metric_ss": CAT + "nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
-    "hex_bolts_metric": CAT + "hex-head-screws/system-of-measurement~metric/",
-    "washers_metric": CAT + "washers/system-of-measurement~metric/",
-    "unthreaded_spacers_m4": CAT + "unthreaded-spacers/system-of-measurement~metric/",
+PAGES = {   # McMaster's family pages (https://www.mcmaster.com/<family prefix>/) list every size with its part number
+    "90265A": "https://www.mcmaster.com/90265A/",   # 18-8 hex-drive shoulder screws, metric (4 x 16 for the P16 clevis)
+    "91585A": "https://www.mcmaster.com/91585A/",   # 18-8 dowel pins, metric
+    "91595A": "https://www.mcmaster.com/91595A/",   # hardened dowel pins, metric
+    "6408K": "https://www.mcmaster.com/6408K/",     # spider coupling hubs and spiders (L090 bores)
+    "92095A": "https://www.mcmaster.com/92095A/",   # 18-8 button head hex drive screws, metric
+    "91292A": "https://www.mcmaster.com/91292A/",   # 18-8 socket head screws, metric
+    "92125A": "https://www.mcmaster.com/92125A/",   # 18-8 flat head hex drive screws, metric
+    "e_rings_metric": "https://www.mcmaster.com/products/e-style-retaining-rings/system-of-measurement~metric/",
 }
 PN_RE = re.compile(r"\b\d{4,5}[A-Z]\d{1,4}\b")
 ROWS_JS = """() => [...document.querySelectorAll('tr')].map(r => {

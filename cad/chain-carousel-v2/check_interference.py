@@ -30,6 +30,8 @@ from params import DOCK_EXT, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, S
 OUT = Path(__file__).resolve().parent / "checks"
 
 SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pinion"),
+        ("clevis_screw", "clevis_bracket"), ("clevis_screw", "actuator_body"), ("clevis_screw", "nut_m3"),
+        ("yoke_pin", "uyoke_base"), ("yoke_pin", "actuator_rod"), ("yoke_pin", "uyoke_arm"),
         ("carriage", "nut_m3"), ("carriage", "m3x12_bhcs"), ("m3x12_bhcs", "nut_m3"), ("chain_a1", "m3x12_bhcs"),
         ("carriage", "clevis_pin"), ("clevis_pin", "sam_mounting_plate"), ("clevis_pin", "eclip"),
         ("armature_tab", "m3x6_fhcs"), ("insert_m3", "m3x6_fhcs"), ("insert_m3", "sam_mounting_plate"), ("m3x6_fhcs", "sam_mounting_plate"),

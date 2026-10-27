@@ -28,6 +28,8 @@ from params import MODULE_LINKS, N_MODULES
 OUT = Path(__file__).resolve().parent / "checks"
 
 SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pinion"),
+        ("clevis_screw", "clevis_bracket"), ("clevis_screw", "actuator_body"), ("clevis_screw", "nut_m3"),
+        ("yoke_pin", "uyoke_base"), ("yoke_pin", "actuator_rod"), ("yoke_pin", "uyoke_arm"),
         ("shoulder_screw", "nut_m3"), ("shoulder_screw", "sleeve_bearing"), ("shoulder_screw", "thrust_washer"),
         ("shoulder_screw", "chain_sa1"), ("gondola", "sleeve_bearing"), ("gondola", "insert_m5"), ("insert_m5", "thumb_screw"), ("gondola", "thumb_screw"),
         ("nema11", "sam_electronics_carriage"), ("solenoid", "sam_electronics_carriage"), ("pinion", "sam_electronics_carriage"),

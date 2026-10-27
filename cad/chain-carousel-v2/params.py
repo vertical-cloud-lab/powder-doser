@@ -142,10 +142,15 @@ DRIVE_TRAVEL = 4.0   # motor slides +-4 mm in its slots to tension the drive cha
 
 # --- shafts and bearings (all four corners alike) ---
 SHAFT_D = 15.875     # 5/8 in keyed shafting (the sprockets' bore)
-# SBSFL202-10 2-bolt stamped-steel flange unit (Surplus Center 600174): 3.189 x
-# 2.3125 x 0.875 in, 2-1/2 in bolt centres, 1/4 in bolts, 7/8 in through the
-# insert. Its rear dome sits in a 49 mm hole in the plate (FYH catalogue).
-BRG = dict(L=81.0, W=58.7, J=63.5, T=3.0, OUT=12.6, IN=9.6, DOME_D=47.0, RING_D=24.0, BOLT_D=6.35, HOLE=49.0)
+# Surplus Center 600174. Its rear dome sits in a 49 mm hole in the plate (FYH catalogue).
+# SBSFL202-10 = SBPFL202-10 2-bolt pressed-steel flangette, 5/8 in SB insert. USA Bearings & Belts' SBPFL202-10 table
+# and drawing (read 2026-10-27; Surplus Center's own page is behind a bot check): a 3-3/16 (81.0), e 2-1/2 (63.5),
+# B 2-5/16 (58.7), t 0.079 (2.0 mm sheet: two halves, so 4.0 at the bolt lobes), b 5/8 (15.9 dome to dome),
+# S 9/32 (7.1 bolt hole), L .8661 (22.0 inner ring), n .236, k 1-1/4. The bearing's centre plane is one sheet (2.0)
+# above the mounting face, the housing +-7.95 about it, and the inner ring runs from flush with the rear dome to 6.1 mm
+# beyond the front one (set-screw collar outward). Was T 3.0, OUT 12.6, IN 9.6 (domes 10.6 / 8.6). cad/vendor/AUDIT_other.md
+BRG = dict(L=81.0, W=58.7, J=63.5, T=4.0, OUT=16.05, IN=5.95, DOME_D=47.0, DOME_OUT=9.95, DOME_IN=5.95, RING_D=24.0,
+           BOLT_D=6.35, HOLE=49.0)
 SHAFT_CLEAR = R - HINGE_W - GEAR_R - SHAFT_D / 2     # 6.0: gear past a corner shaft
 
 # --- StepperOnline 34HS59-6004D-E1000 (NEMA 34, 12 N*m, 1000-line encoder) ---
@@ -153,7 +158,7 @@ M34_FLANGE = 86.0
 M34_BOLT_SQ = 69.58
 M34_HOLE_D = 5.5
 M34_PILOT_D = 73.0
-M34_PILOT_H = 1.6
+M34_PILOT_H = 2.0      # StepperOnline STEP (paternoster/reference): 73 x 2.0 (was 1.6); its holes are 6.5 (M34_HOLE_D is our plate's slot)
 M34_SHAFT_D = 14.0
 M34_SHAFT_L = 37.0   # 25 mm of it keyed
 M34_KEY_W = 5.0
@@ -276,6 +281,6 @@ ARMATURE_SCREWS = ((94.0, -10.0), (94.0, 10.0))   # M3 x 6 flat heads into M3 in
 # vial on a 100 g load cell (gravity-referenced: plumb in the world)
 VIAL_H = 61.0
 VIAL_D = 28.0
-LC_L = 80.0
+LC_L = 47.0                  # TAL221 (SparkFun SEN-14727) is 47 x 12 x 6 (datasheet); was 80, the TAL220's length
 VIAL_DROP = 30.0             # outlet to funnel mouth, world vertical
 FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)

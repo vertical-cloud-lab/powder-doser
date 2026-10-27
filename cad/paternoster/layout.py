@@ -363,10 +363,14 @@ def placements(state: State | None = None) -> list[Placement]:
     xdir = np.cross(ydir, zdir)
     Ract = cols(xdir, ydir, zdir)
     add("clevis_bracket", "Actuator base clevis", T(None, B), 10, ALU, "station", (0, 0, -40))
+    y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2           # head on the -y cheek's outer face, shoulder through cheek, tab, cheek
+    add("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, y_head, 0])), 10, STEEL, "station", (0, -30, -40))
+    add("nut_m3", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 10, STEEL, "station", (0, 30, -40))
     add("actuator_body", "Actuonix P16-P 150 mm (feedback)", T(Ract, B), 10, (0.25, 0.25, 0.28), "station", (0, 0, -40))
     add("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 10, (0.7, 0.7, 0.72), "station", (0, 0, -40))
     Y = T(Ract, Pp)                                   # yoke frame: on the stub-pin axis, z along the actuator
     add("uyoke_base", "U-yoke crossbar with guide tongue (printed)", Y, 10, PETG, "station", (0, 0, -60))
+    add("yoke_pin", "Dowel pin 4 x 38 mm (P16 rod end in the U-yoke)", Y @ T(None, (0, 0, -UFORK_L)), 10, STEEL, "station", (0, 0, -60))
     for sy in (-1, 1):
         Rm = T(None) if sy > 0 else T(Rz(math.pi))   # part's +y outward
         add("uyoke_arm", f"U-yoke arm {'+' if sy > 0 else '-'}y, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 10, STEEL, "station", (0, 0, -60))
@@ -468,6 +472,8 @@ SHAPES = {
     "auger": lambda: reference_parts()["auger"],
     "auger_cap": lambda: reference_parts()["auger_cap"],
     "clevis_bracket": PT.clevis_bracket,
+    "clevis_screw": PT.clevis_shoulder_screw,
+    "yoke_pin": PT.yoke_pin,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],
     "uyoke_base": PT.uyoke_base,

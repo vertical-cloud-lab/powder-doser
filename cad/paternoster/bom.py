@@ -17,6 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 V = "verified 2026-10-16"
+V27 = "verified 2026-10-27"
 V18 = "verified 2026-10-18"
 V13 = "verified 2026-10-13 (v2 BoM)"
 V10 = "verified 2026-10-10 (v1 BoM)"
@@ -113,10 +114,11 @@ ITEMS = [
     (38, ("auger",), None, "Auger (threaded storage, 44T) + cap, lab design (PR #170): from the #134 batch of 16", "lab", "reference/auger-*.step", "",
      0.0, 1, "existing", (9,), "Modules"),
     # ---- station
-    (39, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator, 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, includes #8-32 pins and brackets",
-     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-p", 90.0, 1, V, (10,), "Station"),
-    (55, None, 1, "Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock", "McMaster-Carr", "90265A992",
-     f"{MC}/90265A992/", 5.11, 1, V, (10,), "Station"),
+    (39, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side load, "
+     "197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP)",
+     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-150-22-12-p", 90.0, 1, V27, (10,), "Station"),
+    (55, ("clevis_screw",), None, "Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread (the P16's base pin: cheek, 8 mm rear tab, cheek) "
+     "+ an M3 nylock from item 33", "McMaster-Carr", "90265A123", f"{MC}/90265A123/", 4.40, 1, V27, (10,), "Station"),
     (56, None, 1, "M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16 rod-end plug in the U-yoke's square socket (makes the yoke rigid on the rod)",
      "BelMetric", "M4 x 25 + M4 nylock", "https://www.belmetric.com/", 0.45, 1, E, (10,), "Station"),
     (40, None, 1, "Actuonix LAC linear actuator control board (closed-loop position from the pot; USB/RC/PWM/0-3.3 V in)", "Actuonix", "LAC",
