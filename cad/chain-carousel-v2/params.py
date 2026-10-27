@@ -115,7 +115,7 @@ PIN_D = 5.0
 PIN_HEAD = (8.0, 1.6)                                 # head diameter, height
 PIN_CBORE = (8.6, 1.8)                                # counterbore in the lug for the head
 PIN_GROOVE_U = 14.4                                   # e-clip groove (outer face), from the carriage centre along u: 0.6 mm inside the knuckle face
-ECLIP = (9.0, 0.6)                                    # DIN 6799 size 4 (4 mm groove on a 5 mm pin): OD, thickness
+ECLIP = (8.85, 0.7)                                   # DIN 6799-4 (4 mm groove, 0.74 wide, on a 5 mm pin): McMaster 98543A112, OD 8.85, 0.7 thick
 # Station reach-through: Sam's electronics carriage (his x 2.3-73.3, y +-18),
 # the gear (his x 78.3-88.3) and the outlet's powder path when tilted.
 WIN_X = (HINGE_X - 14.0, HINGE_X + 116.0)             # 130 mm: the docked electronics carriage sweeps the window's back edge at about 28 deg of tilt
@@ -282,5 +282,6 @@ ARMATURE_SCREWS = ((94.0, -10.0), (94.0, 10.0))   # M3 x 6 flat heads into M3 in
 VIAL_H = 61.0
 VIAL_D = 28.0
 LC_L = 47.0                  # TAL221 (SparkFun SEN-14727) is 47 x 12 x 6 (datasheet); was 80, the TAL220's length
+CUP_ARM = 63.0               # vial cup's arm (printed): 33 mm longer than with the 80 mm stand-in, so the real 47 mm cell's fixed end stays on the level wedge
 VIAL_DROP = 30.0             # outlet to funnel mouth, world vertical
 FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)

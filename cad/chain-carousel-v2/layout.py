@@ -339,7 +339,7 @@ VIAL_Z = FUNNEL_SPOUT_Z + 5.0 - VIAL_H             # spout 5 mm into the vial's 
 CUP_Z = VIAL_Z - 3.0
 LC_TOP = CUP_Z
 VIAL_POST_Y = -POST_Y + 2.0                        # post on the -y base rail
-LC_Y0 = VIAL_XY[1] - (30.0 + VIAL_D / 2 + 1) - LC_L   # load cell's fixed end (y), cup arm toward +y
+LC_Y0 = VIAL_XY[1] - (CUP_ARM + VIAL_D / 2 + 1) - LC_L + 7.0   # load cell's fixed end (y); the cup arm overlaps its 7 mm free-end pad (M3 x 2)
 WEDGE_Z = LC_TOP - 12.7 - 6.0 - 40.0 * math.tan(math.radians(FRAME_PITCH_DEG)) / 2   # top of the vial post
 VIAL_PIVOT = np.array([VIAL_XY[0], VIAL_POST_Y, WEDGE_Z])   # the gravity-referenced group turns about the wedge
 
@@ -824,10 +824,15 @@ BUILDERS = {
 
 
 def _fork_arm() -> cq.Workplane:
-    """Printed arm from the fork post (x = STATION_RAIL_X, y = FORK_POST_Y) to the fork (frame at the fork's slot centre)."""
-    y0, y1 = 14.5, FORK_POST_Y - (STATION_Y + TONGUE_Y) - 10.0
+    """Printed arm from the fork post (x = STATION_RAIL_X, y = FORK_POST_Y) to the fork (frame at the fork's slot centre):
+    a 6 mm plate on the post's top end (M6 into the tapped 5 mm centre bore) running under the fork's +y half, which
+    sits on it (two M3 into heat-set inserts). It was a 20 x 0.5 x 12 mm sliver in the 0.5 mm gap between the fork's
+    side and the post, too thin to print (under two line widths; cad/print). Stays clear of the tongue's slot (|y| < 3.3)."""
+    y_post0 = FORK_POST_Y - (STATION_Y + TONGUE_Y) - 10.0         # the post's -y face, fork frame
     x0 = STATION_RAIL_X - (HINGE_STATION[0] + TONGUE_X) - 10.0
-    return cq.Workplane("XY").box(20.0, y1 - y0, 12.0, centered=False).translate((x0, y0, -6.0))
+    plate = cq.Workplane("XY").box(20.0, y_post0 + 20.0 - 5.5, 6.0, centered=False).translate((x0, 5.5, -6.0))
+    plate = plate.cut(cq.Workplane("XY").center(x0 + 10.0, y_post0 + 10.0).circle(3.3).extrude(10).translate((0, 0, -8)))
+    return plate.cut(cq.Workplane("XY").pushPoints([(x0 + 5.0, 10.0), (x0 + 15.0, 10.0)]).circle(2.0).extrude(5).translate((0, 0, -5.0)))
 
 
 @lru_cache(None)

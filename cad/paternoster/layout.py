@@ -282,9 +282,16 @@ def placements(state: State | None = None) -> list[Placement]:
             xs = SIDE_IN if not back else CHAIN_L - SIDE_IN
             Rz_ = rot((0, 1, 0), (1, 0, 0)) if not back else rot((0, 1, 0), (-1, 0, 0))
             add("idler_axle", f"Idler axle {'back' if back else 'front'} {sy:+d}y", T(Rz_, (xs, sy * CORNER_Y, zc)), 5, STEEL, "idlers", ((40 if back else -40), 0, 0))
-            for kb, xb in enumerate((-14.6, -3.6)):
+            for kb, xb in enumerate(IDLER_BRG_X):
                 xw = xb if not back else CHAIN_L - xb
                 add("bearing_6202", f"6202-2RS {'back' if back else 'front'} {sy:+d}y {kb}", T(Rz_, (xw, sy * CORNER_Y, zc)), 5, DARK, "idlers", ((30 if back else -30), 0, 0))
+            sgn = 1.0 if not back else -1.0
+            x_sp = xs + sgn * 4.0                                   # spacer from the washer shoulder
+            add("idler_spacer", f"Idler spacer {'back' if back else 'front'} {sy:+d}y", T(Rz_, (x_sp, sy * CORNER_Y, zc)), 5, ALU, "idlers",
+                ((35 if back else -35), 0, 0))
+            x_cl = xs + sgn * IDLER_AXLE_L                            # circlip on the inner bearing's face
+            add("idler_circlip", f"Circlip DIN 471-15 {'back' if back else 'front'} {sy:+d}y", T(Rz_, (x_cl, sy * CORNER_Y, zc)), 5, STEEL, "idlers",
+                ((20 if back else -20), 0, 0))
             add("sprocket_32_idler", f"Idler 32T {'back' if back else 'front'} {sy:+d}y", sprocket_frame((sy * CORNER_Y, zc), phi, back), 5, STEEL, "idlers",
                 ((25 if back else -25), 0, 0))
             xn = (SIDE_IN - PLATE_T_SIDE) if not back else (CHAIN_L - SIDE_IN + PLATE_T_SIDE)
@@ -412,7 +419,7 @@ def placements(state: State | None = None) -> list[Placement]:
     add("vial", "Vial, 20 mL", T(None, (VIAL_X, 0.0, zv)), 11, GLASS, "dispense", (0, 0, 60))
     add("vial_funnel", "Catch funnel on the vial (printed)", T(None, (VIAL_X, 0.0, zv + VIAL_H - 4.0)), 11, PETG, "dispense", (0, 0, 60))
     add("vial_cup", "Vial cup on the load cell (printed)", T(Rz(math.pi / 2), (VIAL_X, 0.0, zv - 3.0)), 11, PETG, "dispense", (0, 0, 40))
-    add("load_cell", "Load cell 100 g", T(Rz(math.pi / 2), (VIAL_X, -125.0, zv - 3.0 - 12.7)), 11, (0.7, 0.7, 0.75), "dispense", (0, -30, 0))
+    add("load_cell", "Load cell 100 g (TAL221)", T(Rz(math.pi / 2), (VIAL_X, LC_Y0, zv - 3.0 - 12.7)), 11, (0.7, 0.7, 0.75), "dispense", (0, -30, 0))
     add("ext_vial_post", "Station post (vial)", T(None, (VIAL_X, VIAL_POST_Y, BASE_Z + EXT)), 11, ALU, "dispense", (0, 0, -40))
     for nm, xh in (("INDEX", HALL_X[0]), ("HOME", HALL_X[1])):
         zh = (pv[k_st][1] if k_st >= 0 else K.pivots(K.HOME_SHIFT)[0][1]) + GON_Z0 - HALL_GAP - 7.5
@@ -446,6 +453,8 @@ SHAPES = {
     "flange_bearing": PT.flange_bearing,
     "bearing_6202": PT.bearing_6202,
     "idler_axle": PT.idler_axle,
+    "idler_spacer": PT.idler_spacer,
+    "idler_circlip": PT.idler_circlip,
     "coupling": PT.jaw_coupling,
     "nema34": PT.nema34,
     "motor_plate": PT.motor_plate,

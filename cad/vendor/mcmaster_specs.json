@@ -116,6 +116,51 @@
   "title": "Shaft Collars and Connectors / Flexible Shaft Couplings / Spider Couplings",
   "url": "https://www.mcmaster.com/6408K14/"
  },
+ "6408K147": {
+  "drawing": {
+   "bytes": 118133,
+   "file": "files/mcmaster/6408K147.pdf",
+   "sha256": "d368ee3d8f5505f53c75b0f2723ee2f0d5d0897dea7bd8eaefb4c1fb543d94aa"
+  },
+  "pn": "6408K147",
+  "price": "",
+  "read": "2026-10-27",
+  "specs": {
+   "Component": "Hub",
+   "Construction": "Multipiece",
+   "Country of Origin": "United States",
+   "DFARS Compliance": "Specialty Metals COTS-Exempt",
+   "Drive Style": "Hex",
+   "Export Control Classification Number (ECCN)": "EAR99",
+   "Flexible Shaft Coupling Type": "Spider",
+   "For Rotary Motion": "Forward/Reverse, Start/Stop",
+   "For Shaft Diameter": "5/8\"",
+   "For Shaft Misalignment Type": "Angular, Parallel",
+   "For Shaft Type": "Keyed",
+   "Hub Material": "Iron",
+   "Keyway Depth": "3/32\"",
+   "Keyway Width": "3/16\"",
+   "Material": "Steel",
+   "Number Incldued": "1",
+   "OD": "2 7/64\"",
+   "Overall Length": "2 5/32\"",
+   "Performance": "Torque Limiting",
+   "RoHS Compliance": "RoHS 3 (2015/863/EU) Compliant",
+   "Schedule B Number": "848390.8010",
+   "Shaft Coupling Flexibility": "Flexible",
+   "Shaft Coupling Trade Size": "L090",
+   "Shaft Mount Type": "Set Screw",
+   "System of Measurement": "Inch",
+   "U.S.\u2013Mexico\u2013Canada Agreement (USMCA) Qualifying": "Yes"
+  },
+  "step": {
+   "bytes": 724487,
+   "file": "files/mcmaster/6408K147.step",
+   "sha256": "b7f4c26c8a57b31ee5bb8b760d5ee4b4c602faa371bcd5b0e833d25f7696b0bc"
+  },
+  "title": "",
+  "url": "https://www.mcmaster.com/6408K147/"
+ },
  "6408K75": {
   "drawing": {
    "bytes": 136611,
@@ -154,6 +199,51 @@
   },
   "title": "Shaft Collars and Connectors / Flexible Shaft Couplings / Spider Couplings",
   "url": "https://www.mcmaster.com/6408K75/"
+ },
+ "6413K145": {
+  "drawing": {
+   "bytes": 117719,
+   "file": "files/mcmaster/6413K145.pdf",
+   "sha256": "c886908b9b492b19b12a4283ae87011bd3b92d5e1c35b74bcd27824e3d2b0693"
+  },
+  "pn": "6413K145",
+  "price": "",
+  "read": "2026-10-27",
+  "specs": {
+   "Component": "Hub",
+   "Construction": "Multipiece",
+   "Country of Origin": "United States",
+   "DFARS Compliance": "Specialty Metals COTS-Exempt",
+   "Drive Style": "Hex",
+   "Export Control Classification Number (ECCN)": "EAR99",
+   "Flexible Shaft Coupling Type": "Spider",
+   "For Rotary Motion": "Forward/Reverse, Start/Stop",
+   "For Shaft Diameter": "14 mm",
+   "For Shaft Misalignment Type": "Angular, Parallel",
+   "For Shaft Type": "Keyed",
+   "Hub Material": "Iron",
+   "Keyway Depth": "2.3 mm",
+   "Keyway Width": "5 mm",
+   "Material": "Steel",
+   "Number Incldued": "1",
+   "OD": "2 7/64\"",
+   "Overall Length": "2 5/32\"",
+   "Performance": "Torque Limiting",
+   "RoHS Compliance": "RoHS 3 (2015/863/EU) Compliant",
+   "Schedule B Number": "848390.8010",
+   "Shaft Coupling Flexibility": "Flexible",
+   "Shaft Coupling Trade Size": "L090",
+   "Shaft Mount Type": "Set Screw",
+   "System of Measurement": "Metric",
+   "U.S.\u2013Mexico\u2013Canada Agreement (USMCA) Qualifying": "Yes"
+  },
+  "step": {
+   "bytes": 858975,
+   "file": "files/mcmaster/6413K145.step",
+   "sha256": "379df386f87d3d815a760b0efd5ba48c9dc11c53914db995684bd998ff409eea"
+  },
+  "title": "",
+  "url": "https://www.mcmaster.com/6413K145/"
  },
  "6659K65": {
   "drawing": {
@@ -1192,5 +1282,95 @@
   },
   "title": "Washers, Lock Washers, and More / Washers / Plastic Washers",
   "url": "https://www.mcmaster.com/95630A630/"
+ },
+ "98543A103": {
+  "drawing": {
+   "bytes": 95586,
+   "file": "files/mcmaster/98543A103.pdf",
+   "sha256": "38379152cb61cdabd7e36513a2420066b1f7143ff89552b516af15cb7f92a82e"
+  },
+  "pn": "98543A103",
+  "price": "$3.80 per pack of 100",
+  "read": "2026-10-27",
+  "specs": {
+   "Color": "Black",
+   "Country of Origin": "United States",
+   "DFARS Compliance": "Specialty Metals COTS-Exempt",
+   "Diameter": "3.2 mm",
+   "Diameter Tolerance": "-0.075 mm to 0 mm",
+   "Export Control Classification Number (ECCN)": "EAR99",
+   "For OD": "4 mm to 5 mm",
+   "Magnetic Properties": "Magnetic",
+   "Material": "Phosphate-Coated Carbon Steel",
+   "Minimum Hardness": "Rockwell C46",
+   "OD": "6.9 mm",
+   "REACH Compliance": "REACH (EC 1907/2006) (02/04/2026, 253 SVHC) Compliant",
+   "Related Product": "Pliers",
+   "Retaining Ring Style": "Side Mount",
+   "Retaining Ring Type": "External",
+   "RoHS Compliance": "RoHS 3 (2015/863/EU) Compliant",
+   "Schedule B Number": "731824.0000",
+   "Side-Mount Retaining Ring Style": "E",
+   "Specifications Met": "DIN 6799",
+   "System of Measurement": "Metric",
+   "Thk.": "0.6 mm",
+   "Thk. Tolerance": "-0.02 mm to 0.02 mm",
+   "Thrust Load Capacity": "140 lbf",
+   "U.S.\u2013Mexico\u2013Canada Agreement (USMCA) Qualifying": "Yes",
+   "Width": "0.64 mm",
+   "Width Tolerance": "0 mm to 0.05 mm"
+  },
+  "step": {
+   "bytes": 56926,
+   "file": "files/mcmaster/98543A103.step",
+   "sha256": "2480a6417e31447514cf3c16352a51f5def81953e4fdf5683773688a8891af20"
+  },
+  "title": "Fastening / Retaining Rings / Side-Mount External Retaining Rings",
+  "url": "https://www.mcmaster.com/98543A103/"
+ },
+ "98543A112": {
+  "drawing": {
+   "bytes": 95743,
+   "file": "files/mcmaster/98543A112.pdf",
+   "sha256": "ed56eff107059c775924a1efb6eff6ba5640f340676c71536fc028d2423cfeb9"
+  },
+  "pn": "98543A112",
+  "price": "$4.25 per pack of 100",
+  "read": "2026-10-27",
+  "specs": {
+   "Color": "Black",
+   "Country of Origin": "United States",
+   "DFARS Compliance": "Specialty Metals COTS-Exempt",
+   "Diameter": "4 mm",
+   "Diameter Tolerance": "-0.075 mm to 0 mm",
+   "Export Control Classification Number (ECCN)": "EAR99",
+   "For OD": "5 mm to 7 mm",
+   "Magnetic Properties": "Magnetic",
+   "Material": "Phosphate-Coated Carbon Steel",
+   "Minimum Hardness": "Rockwell C46",
+   "OD": "8.85 mm",
+   "REACH Compliance": "REACH (EC 1907/2006) (02/04/2026, 253 SVHC) Compliant",
+   "Related Product": "Pliers",
+   "Retaining Ring Style": "Side Mount",
+   "Retaining Ring Type": "External",
+   "RoHS Compliance": "RoHS 3 (2015/863/EU) Compliant",
+   "Schedule B Number": "731824.0000",
+   "Side-Mount Retaining Ring Style": "E",
+   "Specifications Met": "DIN 6799",
+   "System of Measurement": "Metric",
+   "Thk.": "0.7 mm",
+   "Thk. Tolerance": "-0.02 mm to 0.02 mm",
+   "Thrust Load Capacity": "210 lbf",
+   "U.S.\u2013Mexico\u2013Canada Agreement (USMCA) Qualifying": "Yes",
+   "Width": "0.74 mm",
+   "Width Tolerance": "0 mm to 0.05 mm"
+  },
+  "step": {
+   "bytes": 56910,
+   "file": "files/mcmaster/98543A112.step",
+   "sha256": "ba5883ff81c528a66a13fd55e52617350f43511d38955f2fc8fc9fb537c75143"
+  },
+  "title": "Fastening / Retaining Rings / Side-Mount External Retaining Rings",
+  "url": "https://www.mcmaster.com/98543A112/"
  }
 }

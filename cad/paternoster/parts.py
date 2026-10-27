@@ -154,11 +154,28 @@ def bearing_6202() -> cq.Workplane:
 def idler_axle() -> cq.Workplane:
     """Fixed axle for a top idler: 15 mm shaft (h6) with an M10 threaded stem
     through the side plate's slot. Shoulder face (on the plate's inner face) at z = 0,
-    bearing seat along +z, stem along -z."""
-    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L).edges(">Z").chamfer(0.6)
+    bearing seat along +z to the inner bearing's face, with the circlip's groove at its end,
+    stem along -z (3 mm past the nylock and its washer, chamfered)."""
+    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L + IDLER_CIRCLIP[1]).edges(">Z").chamfer(0.5)
+    groove = (cq.Workplane("XY").circle(7.6).circle(IDLER_CIRCLIP[0] / 2).extrude(IDLER_CIRCLIP[1] + 0.1)
+              .translate((0, 0, IDLER_AXLE_L)))
     shoulder = cq.Workplane("XY").circle(11.0).extrude(4.0)
-    stem = cq.Workplane("XY").circle(5.0).extrude(-(PLATE_T_SIDE + 12.0))
-    return seat.union(shoulder).union(stem)
+    stem = cq.Workplane("XY").circle(5.0).extrude(-(PLATE_T_SIDE + 15.0)).faces("<Z").chamfer(0.8)
+    return seat.cut(groove).union(shoulder).union(stem)
+
+
+def idler_spacer() -> cq.Workplane:
+    """Aluminium spacer between the axle's washer shoulder and the outer 6202's inner ring (shop: cut from 3/4 in
+    tube and bored to 15.2): z 0 .. length, on the axle."""
+    i, o, l = IDLER_SPACER
+    return cq.Workplane("XY").circle(o / 2).circle(i / 2).extrude(l)
+
+
+def idler_circlip() -> cq.Workplane:
+    """DIN 471 external retaining ring for a 15 mm shaft, 1.0 thick, in the seat's groove: face on the bearing at
+    z = 0, along +z (simplified: a split ring with two lug holes)."""
+    r = cq.Workplane("XY").circle(10.4).circle(IDLER_CIRCLIP[0] / 2).extrude(IDLER_CIRCLIP[1])
+    return r.cut(cq.Workplane("XY").center(0, 9.0).rect(3.0, 4.0).extrude(3).translate((0, 0, -1)))
 
 
 def jaw_coupling() -> cq.Workplane:
@@ -501,10 +518,12 @@ def uyoke_arm() -> cq.Workplane:
 
 
 def stub_pin() -> cq.Workplane:
-    """4 mm steel stub pin along +y from y = 0 (pressed through the carriage's side post and the printed boss) to 7.5 mm,
-    with a DIN 6799 groove just outside the yoke arm."""
-    p = cq.Workplane("XZ").circle(2.0).extrude(-7.5).edges().chamfer(0.3)
-    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.6).translate((0, 6.4, 0)))
+    """4 mm stub pin along +y from y = 0 (pressed through the carriage's side post and the printed boss) to 8.0 mm, with a
+    DIN 6799-3.2 groove (0.64 wide, dia 3.2) just outside the yoke arm, 0.96 mm from the end. Turned from 4 mm h8 303
+    stainless rod: a hardened dowel can't be grooved with HSS, and the old 0.6 mm groove 0.5 mm from the end was
+    narrower than DIN 6799 asks and left no wall behind it (cad/shop/README.md)."""
+    p = cq.Workplane("XZ").circle(2.0).extrude(-8.0).edges().chamfer(0.3)
+    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.64).translate((0, 6.4, 0)))
 
 
 def yoke_stop() -> cq.Workplane:
@@ -548,7 +567,7 @@ def loc_pin() -> cq.Workplane:
 
 def eclip() -> cq.Workplane:
     """DIN 6799 e-clip on a stub pin's groove: 9 OD, 0.6 thick, open on one side. Face at z = 0, along -z."""
-    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(2.0).extrude(-ECLIP[1])
+    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(1.6).extrude(-ECLIP[1])     # sits in the stub pin's 3.2 mm groove
     return c.cut(cq.Workplane("XY").center(0, -3.5).rect(3.4, 4.0).extrude(-2).translate((0, 0, 0.5)))
 
 

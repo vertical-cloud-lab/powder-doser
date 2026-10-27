@@ -349,6 +349,11 @@ def carriage(print_web: bool = False) -> cq.Workplane:
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(3.4 / 2).extrude(CAR_T + 2).translate((0, w1 + 1, 0)))
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(6.4 / 2).extrude(TAB_SCREW_CB).translate((0, w0 + TAB_SCREW_CB, 0)))   # head flush
         plate = plate.union(tab_hook(x > CHAIN_L / 2, print_web).translate((0, 0, x)))
+    # relief for the A-1 links' pin ends: Nitro's pins stand 1.24 mm proud of the plates (12.40 overall, cad/vendor/AUDIT_other.md),
+    # 0.8 mm more than drawn before, and reached 0.4 mm into each hook's inner face
+    pin_end = CHAIN_PIN_LEN / 2 if "CHAIN_PIN_LEN" in globals() else PIN_LEN / 2
+    for z0 in (pin_end - 0.8, CHAIN_L - pin_end - 0.8):
+        plate = plate.cut(cq.Workplane("XY").center(0.0, 0.0).rect(14.6, 4.8).extrude(1.6).translate((0, 0, z0)))
     # magnet pockets from the inner face of the tongues
     for x in (CAR_X0 + 7.0, CAR_X1 - 7.0):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(MAGNET_D / 2 + 0.15).extrude(MAGNET_H + 0.3)
@@ -495,7 +500,7 @@ def clevis_pin() -> cq.Workplane:
     grip = LUG_U + LUG_T - PIN_CBORE[1] - PIN_GROOVE_U       # from under the head to the e-clip's outer face
     head = cq.Workplane("XY").circle(PIN_HEAD[0] / 2).extrude(PIN_HEAD[1]).edges(">Z").chamfer(0.4)
     shank = cq.Workplane("XY").circle(PIN_D / 2).extrude(-(grip + ECLIP[1] + 0.8)).edges("<Z").chamfer(0.4)
-    groove = cq.Workplane("XY").circle(PIN_D / 2 + 0.1).circle(2.0).extrude(-ECLIP[1]).translate((0, 0, -grip))
+    groove = cq.Workplane("XY").circle(PIN_D / 2 + 0.1).circle(2.0).extrude(-(ECLIP[1] + 0.04)).translate((0, 0, -grip))   # DIN 6799: 0.74 wide
     return head.union(shank).cut(groove)
 
 
@@ -506,8 +511,8 @@ def eclip(od: float = ECLIP[0], groove_d: float = 4.0, t: float = ECLIP[1]) -> c
 
 
 def eclip_stub() -> cq.Workplane:
-    """DIN 6799 size 3.2 e-clip for the 4 mm stub pins' 3.2 mm groove: 7.3 OD, 0.6 thick."""
-    return eclip(7.3, 3.2, 0.6)
+    """DIN 6799-3.2 e-clip for the 4 mm stub pins' 3.2 mm groove: McMaster 98543A103, 6.9 OD, 0.6 thick."""
+    return eclip(6.9, 3.2, 0.6)
 
 
 def locknut(m: float = 3.0) -> cq.Workplane:
@@ -668,10 +673,12 @@ def uyoke_arm() -> cq.Workplane:
 
 
 def stub_pin() -> cq.Workplane:
-    """4 mm steel stub pin (dowel with an e-clip groove), along +y from y = 0 (pressed through the carriage's 2.8 mm side
-    post and the 1.5 mm printed boss) to 7.5 mm; groove for a DIN 6799-3 e-clip just outside the yoke arm."""
-    p = cq.Workplane("XZ").circle(2.0).extrude(-7.5).edges().chamfer(0.3)
-    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.6).translate((0, 6.4, 0)))
+    """4 mm stub pin along +y from y = 0 (pressed through the carriage's 2.8 mm side post and the 1.5 mm printed boss) to
+    8.0 mm, with a DIN 6799-3.2 groove (0.64 wide, dia 3.2) just outside the yoke arm, 0.96 mm from the end. Turned
+    from 4 mm h8 303 stainless rod: a hardened dowel can't be grooved with HSS, and the old 0.6 mm groove 0.5 mm from
+    the end was narrower than DIN 6799 asks and left no wall behind it (cad/shop/README.md)."""
+    p = cq.Workplane("XZ").circle(2.0).extrude(-8.0).edges().chamfer(0.3)
+    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.64).translate((0, 6.4, 0)))
 
 
 def yoke_stop() -> cq.Workplane:
@@ -803,7 +810,7 @@ def load_cell() -> cq.Workplane:
 def vial_cup() -> cq.Workplane:
     """Printed cup on the load cell's free end that holds the vial (cup axis at the origin, arm toward -x)."""
     cup = cq.Workplane("XY").circle(VIAL_D / 2 + 3).extrude(18.0).cut(cq.Workplane("XY").circle(VIAL_D / 2 + 0.3).extrude(18).translate((0, 0, 3)))
-    arm = cq.Workplane("XY").box(30.0, 12.7, 3.0, centered=(False, True, False)).translate((-30.0 - VIAL_D / 2 - 1, 0, 0))
+    arm = cq.Workplane("XY").box(CUP_ARM, 12.7, 3.0, centered=(False, True, False)).translate((-CUP_ARM - VIAL_D / 2 - 1, 0, 0))
     return cup.union(arm)
 
 

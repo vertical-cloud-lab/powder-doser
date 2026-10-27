@@ -171,7 +171,15 @@ MAGNET_D, MAGNET_H = 6.35, 3.18
 
 # --- top idlers: 35BS32 re-bored to 35 mm H7 for two 6202-2RS, on a fixed 15 mm axle stud ---
 IDLER_BORE = 35.0
-IDLER_AXLE_L = 31.0          # bearing seat from the shoulder (on the plate's inner face) to flush with the sprocket face
+IDLER_AXLE_L = 33.9          # bearing seat from the shoulder (on the plate's inner face) to the inner bearing's face
+# Idler stack on the axle, from the plate (x = SIDE_IN, front): 22 mm washer as the shoulder (4), spacer (IDLER_SPACER),
+# two 6202-2RS (2 x 11), then a DIN 471-15 circlip (1.0) in a groove at the seat's end, so nothing passes the sprocket's
+# tooth face. Was a 31 mm seat that stopped 3.9 mm short of the inner bearing, with an 8.9 mm gap and nothing locating
+# the bearings (cad/shop/README.md). The pair sits 1.0 mm out of the hub (outer ring on 10 of its 11 mm) to make room
+# for the circlip; Loctite 641 holds the outer rings in the 35 H7 bore, which they would otherwise creep in.
+IDLER_BRG_X = (-15.6, -4.6)  # bearing centres, x from the front chain plane (back side mirrored)
+IDLER_SPACER = (15.2, 19.0, 7.9)   # aluminium spacer ID, OD, length: bears on the inner ring only
+IDLER_CIRCLIP = (14.3, 1.0)  # DIN 471-15 groove diameter and ring thickness
 SPROCKET_FACE = TOOTH_W / 2  # tooth ring's inner face, x = +2.13 at the front chain: nothing on the axis goes further in
 
 # --- jaw coupling, NEMA 34 (14 mm) to the 5/8 in drive shaft: Lovejoy L-075 class ---
@@ -196,7 +204,7 @@ UFORK_Y = (19.5, 21.5)       # the yoke's steel arms, |y|; printed boss on the p
 TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue under the yoke's crossbar, rides the approach fork
 YOKE_STOP_Z = -11.0 - 0.3 - 4.0     # stop blocks on the arms (yoke frame z of the block's bottom): 0.3 mm under the pin plate's tail
 DOCK_RISE = 0.9              # Sam's Part Studio leaves the carriage 0.9 mm under the plate; docked, they touch
-ECLIP = (9.0, 0.6)           # DIN 6799 e-clip on each stub pin, outside the arm
+ECLIP = (6.9, 0.6)           # DIN 6799-3.2 e-clip on each stub pin, outside the arm: McMaster 98543A103 (OD 6.9, 0.6 thick, groove 3.2 x 0.64)
 LOCPIN_D, LOCPIN_PROUD = 4.0, 3.0    # steel dowels on the carriage rim into a hole and a slot in the plate
 LOCPIN_XY = ((30.0, 16.0), (70.0, -16.0))
 LOCPIN_HOLE, LOCPIN_SLOT = 4.2, 6.0
@@ -249,7 +257,8 @@ NEMA11_X, NEMA11_Z = 68.3, -33.15  # NEMA 11 face on the inner face of the carri
 SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up
 STATION_RAIL_X = (VIAL_X, HINGE_X + YOKE_X)   # base cross rails under the vial post and the actuator
 FORK_POST_Y = 45.0
-VIAL_POST_Y = -120.0
+LC_Y0 = -92.0                # load cell's fixed end (y): the real 47 mm TAL221 reaches 7 mm under the cup arm's end (-52)
+VIAL_POST_Y = -87.0          # post under the cell's fixed end (was -120 with the 80 mm stand-in cell)
 VIAL_GAP = 32.0              # vial mouth below the gondolas' lowest point: clear of the docked electronics carriage
 HALL_X = (130.0, 160.0)      # INDEX magnet (every gondola) and HOME magnet (gondola 1), under the -y rail
 HALL_GAP = 3.0
