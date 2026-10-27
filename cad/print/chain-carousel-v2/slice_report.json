@@ -950,7 +950,8 @@
    ],
    "gcode_3mf": "plates/station.gcode.3mf",
    "gcode_3mf_mb": 1.26,
-   "studio_png": "plates/station.png"
+   "studio_png": "plates/station.png",
+   "toolpath_png": "plates/station_toolpath.png"
   },
   {
    "plate": "hold_downs_tensioners",

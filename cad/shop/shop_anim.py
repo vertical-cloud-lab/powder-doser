@@ -186,7 +186,12 @@ def box(x0, x1, y0, y1, z0, z1):
 
 def turned(profile, x0=0.0):
     """Revolve an (x, r) half-profile about the x axis (x along the lathe axis)."""
-    pts = [(x0 + x, r) for x, r in profile]
+    pts = []
+    for x, r in profile:                    # drop repeated points: a zero-length edge breaks the polyline
+        if not pts or abs(x0 + x - pts[-1][0]) > 1e-6 or abs(r - pts[-1][1]) > 1e-6:
+            pts.append((x0 + x, r))
+    if abs(pts[0][0] - pts[-1][0]) < 1e-6 and abs(pts[0][1] - pts[-1][1]) < 1e-6:
+        pts.pop()
     w = cq.Workplane("XY").polyline(pts).close()
     return solid(w.revolve(360, (0, 0, 0), (1, 0, 0)))
 
@@ -792,35 +797,43 @@ def pat_sprocket():
     ref = lathe_pose(final, 2.0)
     dv = abs(s.Volume() - ref.Volume())
     print(f"pat_sprocket: lathe result vs CAD idler volume diff {dv:.1f} mm3 (of {ref.Volume():.0f})", flush=True)
-    # 4: press two bearings in, sprocket hub-down on the press plate
-    spr = mesh(halve(final.translate(cq.Vector(0, 0, P.LTB - P.TOOTH_W / 2))), section_y=0.0)
+    # 4: press two bearings in, sprocket hub-down on the press plate; the pair's position comes from the layout
+    hub0 = P.LTB - P.TOOTH_W / 2                                   # hub face -> tooth-ring centre plane
+    zc = [x + hub0 for x in getattr(P, "IDLER_BRG_X", (5.5 - hub0, 16.5 - hub0))]   # bearing centres above the hub face
+    prot = max(0.0, 5.5 - zc[0])                                   # the pair stands this far out of the hub face
+    spr = mesh(halve(final.translate(cq.Vector(0, 0, hub0 + prot))), section_y=0.0)
+    shim = (mesh(halve(cyl_z(P.HUB_D / 2, 0, prot).cut(cyl_z(18.5, -1, prot + 1))), section_y=0.0)
+            if prot > 0.05 else None)
     bm = mesh(halve(brg), section_y=0.0)
     drv = mesh(halve(cyl_z(17.0, 0, 10).fuse(cyl_z(12, 10, 30))), section_y=0.0)
     cam_p = ((0, 0, 40), (0.35, -0.9, 0.42), 105)
-    cap4 = ("Arbor press, sprocket hub-down on a flat plate. Push on the outer ring only (a 34 mm driver). The first "
-            "bearing stops on the plate, flush with the hub face; the second stops on the first. H7 is a slip fit and "
-            "the outer ring turns with the load: put Loctite 641 on the outer rings (see README).")
+    cap4 = (f"Arbor press, sprocket hub-down on a {prot:.1f} mm ring shim (ID over 35 mm) on a flat plate. Loctite 641 "
+            "on the outer rings; push on the outer ring only (a 34 mm driver). The first bearing stops on the plate, "
+            f"{prot:.1f} mm out of the hub face as drawn; the second stops on the first." if prot > 0.05 else
+            "Arbor press, sprocket hub-down on a flat plate. Loctite 641 on the outer rings; push on the outer ring only "
+            "(a 34 mm driver). The first bearing stops on the plate, flush with the hub face; the second on the first.")
     placed = []
     for b, zf in enumerate((5.5, 16.5)):
         for i in range(6):
             z = 70 - (70 - zf) * ease(i, 6)
-            items = [(spr, STEEL)] + [(bm.move((0, 0, zz)), BEARING) for zz in placed] + [(bm.move((0, 0, z)), BEARING),
-                                                                                           (drv.move((0, 0, z + 5.5)), DARKSTEEL)]
+            items = [(spr, STEEL)] + ([(shim, BRASS)] if shim is not None else [])
+            items += [(bm.move((0, 0, zz)), BEARING) for zz in placed] + [(bm.move((0, 0, z)), BEARING),
+                                                                         (drv.move((0, 0, z + 5.5)), DARKSTEEL)]
             press_frame(sc, z + 35.5, items, cam_p, step=4, title=f"Press in two 6202-2RS ({b + 1} of 2)", caption=cap4,
                         note="cut in half so you can see in", hold=1.0 if i < 5 else 2)
         placed.append(zf)
     # 5: finished part
-    fin = mesh(final.translate(cq.Vector(0, 0, P.LTB - P.TOOTH_W / 2)), tol=0.08)
+    fin = mesh(final.translate(cq.Vector(0, 0, hub0)), tol=0.08)
     bw = mesh(brg)
     for i in range(8):
         sc.clear()
         sc.add(fin.rot("z", 6 * i), STEEL, lw=0.9)
-        for zz in (5.5, 16.5):
+        for zz in zc:
             sc.add(bw.move((0, 0, zz)), BEARING, lw=0.7)
         sc.camera((0, 0, 11), (0.3, -0.75, 0.6), 62)
-        sc.grab(5, "The idler sprocket", "32T #35, 35 H7 bore, two 6202-2RS (15 x 35 x 11) side by side in the 22.2 mm "
-                "hub. Rides on the fixed 15 mm idler axle (process 3). Make four. About 1 h each on a manual lathe.",
-                hold=1.0 if i < 7 else 8, key=False)
+        sc.grab(5, "The idler sprocket", "32T #35, 35 H7 bore, two 6202-2RS (15 x 35 x 11) side by side, standing "
+                f"{prot:.1f} mm out of the hub so the axle's circlip stays inside the tooth face. Rides on the fixed 15 mm "
+                "idler axle (process 3). Make four. About 1 h each on a manual lathe.", hold=1.0 if i < 7 else 8)
     sc.save("pat_sprocket")
 
 
@@ -959,26 +972,40 @@ def pat_axle():
     D = design("paternoster")
     P = D.P
     axle = solid(D.L.shape("idler_axle"))
-    turned_part = axle.intersect(cyl_z(7.5, -60, 60))          # seat + stem: what comes off the lathe
-    washer = axle.cut(cyl_z(7.5, -60, 60))                      # 22 mm x 4 mm ring: the shoulder
-    L_stem = P.PLATE_T_SIDE + 12.0
-    L_tot = L_stem + P.IDLER_AXLE_L
-    sc = Scene("Paternoster: idler axle from 15 mm 1045 rod (x4)", 6)
+    turned_part = axle.intersect(cyl_z(7.5, -80, 80))          # seat + stem: what comes off the lathe
+    washer = axle.cut(cyl_z(7.5, -80, 80))                      # 22 mm x 4 mm ring: the shoulder
+    spacer = solid(D.PT.idler_spacer())
+    clip = solid(D.PT.idler_circlip())
+    brg = solid(D.L.shape("bearing_6202"))
+    bb = axle.BoundingBox()
+    L_stem, L_seat = -bb.zmin, bb.zmax                          # from the CAD: 21.35 stem, 34.9 seat
+    L_tot = L_stem + L_seat
+    g_d = P.IDLER_CIRCLIP[0]                                    # circlip groove diameter
+    gfaces = [q.BoundingBox() for q in axle.Faces() if q.geomType() == "CYLINDER" and abs(q.BoundingBox().xlen - g_d) < 0.01]
+    g_at, g_end = min(q.zmin for q in gfaces), max(q.zmax for q in gfaces)   # groove from the shoulder (32.7 .. 33.8)
+    land = L_seat - g_end
+    zc = [x - P.SIDE_IN for x in P.IDLER_BRG_X]                 # bearing centres from the shoulder face
+    prot = 5.5 - (P.LTB - P.TOOTH_W / 2) - P.IDLER_BRG_X[0]     # the pair stands this far out of the hub face (2.2)
+    sp_i, sp_o, sp_l = P.IDLER_SPACER
+    sc = Scene("Paternoster: idler axle from 15 mm 1045 rod (x4) + spacer", 8)
     coll = cached("collet15", lambda: collet_chuck(7.5))
     hold = [(coll, CHUCK)]
-    xe = 14 + L_tot + 6.0                                       # free end of the bar
-    x_stem = xe - 0.3 - L_stem
-    cam = ((45, 0, 0), LATHE_DIR, 40)
+    xe = 14 + L_tot + 6.0                                       # free end of the bar (the stem end)
+    x_sh = xe - L_stem                                          # the shoulder face
+    cam = ((52, 0, 0), LATHE_DIR, 46)
     tip, holder = (mesh(m) for m in turning_tool())
     spin = 0.0
 
-    def bar(end, stem_r=7.5, stem_from=None, groove=None):
+    def bar(end, stem_r=7.5, stem_from=None, ch=0.0, groove=None, part=None):
         prof = [(-40, 0), (-40, 7.5)]
+        if part is not None:
+            p0, pr = part
+            prof += [(p0 - 2.2, 7.5), (p0 - 2.2, pr), (p0, pr), (p0, 7.5)]
         if groove is not None:
             g0, g1, gr = groove
             prof += [(g0, 7.5), (g0, gr), (g1, gr), (g1, 7.5)]
         if stem_from is not None and stem_r < 7.5:
-            prof += [(stem_from, 7.5), (stem_from, stem_r), (end, stem_r)]
+            prof += [(stem_from, 7.5), (stem_from, stem_r), (end - ch, stem_r), (end, stem_r - ch)]
         else:
             prof += [(end, 7.5)]
         prof += [(end, 0)]
@@ -986,7 +1013,7 @@ def pat_axle():
 
     for i in range(3):
         lathe_frame(sc, hold, mesh(bar(xe + 0.3)), spin, cam=cam, step=1, title="Chuck the 15 mm rod",
-                    caption="1045 rod, 15 mm -0.013/0 (McMaster 5615N15), in a 15 mm ER collet, about 60 mm out. Leave the "
+                    caption="1045 rod, 15 mm -0.013/0 (McMaster 5615N15), in a 15 mm ER collet, about 65 mm out. Leave the "
                             "OD alone: the bar's own ground finish is the 6202 seat (h6-h7).", hold=1 if i < 2 else 3)
         spin += 33
     for f in range(3):
@@ -997,56 +1024,106 @@ def pat_axle():
         spin += 33
     for pi, r in enumerate((6.5, 5.5, 4.95)):
         for f in range(3):
-            xt = xe - (xe - x_stem) * (f + 1) / 3
-            prof_r = r
-            b = bar(xe, stem_r=prof_r, stem_from=xt)
-            lathe_frame(sc, hold, mesh(b), spin, tools=[(tip.move((xt, -prof_r, 0)), CARBIDE),
-                                                        (holder.move((xt, -prof_r, 0)), TOOL)],
+            xt = xe - (xe - x_sh) * (f + 1) / 3
+            lathe_frame(sc, hold, mesh(bar(xe, stem_r=r, stem_from=xt)), spin,
+                        tools=[(tip.move((xt, -r, 0)), CARBIDE), (holder.move((xt, -r, 0)), TOOL)],
                         cam=cam, step=3, title="Turn the M10 stem",
-                        caption=f"Down to 9.85-9.95 mm (just under M10 major) over {L_stem:.2f} mm: 1000 rpm, 0.1 mm/rev, "
-                                f"1 mm a side, then a 0.1 mm finish pass. Now {2 * prof_r:.1f} mm.",
+                        caption=f"Down to 9.85-9.95 mm (just under M10 major) over {L_stem:.2f} mm (plate + 15: 3 mm past the "
+                                f"nylock and its washer). 1000 rpm, 0.1 mm/rev, 1 mm a side, then a 0.1 mm finish. Now {2 * r:.1f} mm.",
                         hold=1 if f < 2 else 1.4, key=(pi == 1 and f == 1))
             spin += 33
     dh = cached("die", die_holder)
-    b = mesh(bar(xe, 5.0, x_stem))
+    b = mesh(bar(xe, 5.0, x_sh, ch=0.8))
     for f in range(6):
-        xd = xe + 3 - (xe + 3 - x_stem - 2) * f / 5
-        th = helix_lines(xd, xe, 5.05, 1.5)
-        lathe_frame(sc, hold, b, spin, tools=[(dh.move((xd, 0, 0)), DARKSTEEL)], cam=cam, lines=[th], step=4,
-                    title="Thread M10 x 1.5",
-                    caption="Round die in a tailstock die holder, lathe in neutral, turn the chuck by hand; cutting oil, back "
-                            "off half a turn every turn. (Or single-point at 150 rpm.) Check: an M10 nut runs on by hand "
-                            "to the shoulder. Break the end 1 mm x 45 deg first (not drawn in the CAD).",
-                    hold=1.2, work_spins=False)
+        xd = xe + 3 - (xe + 3 - x_sh - 2) * f / 5
+        lathe_frame(sc, hold, b, spin, tools=[(dh.move((xd, 0, 0)), DARKSTEEL)], cam=cam,
+                    lines=[helix_lines(xd, xe - 0.8, 5.05, 1.5)], step=4, title="Chamfer 0.8 mm, thread M10 x 1.5",
+                    caption="Chamfer the end 0.8 x 45 deg so the die starts. Round die in a tailstock die holder, lathe in "
+                            "neutral, turn the chuck by hand; cutting oil, back off half a turn every turn. (Or single-point at "
+                            "150 rpm.) Check: an M10 nut runs on by hand to the shoulder.", hold=1.2, work_spins=False)
         spin += 10
-    th = helix_lines(x_stem + 1.5, xe, 5.05, 1.5)
+    th = helix_lines(x_sh + 1.5, xe - 0.8, 5.05, 1.5)
+    xg1 = x_sh - g_at                                           # groove's bearing-side wall
+    xg0 = x_sh - g_end                                          # groove's outer wall (the land beyond it)
+    xp = x_sh - L_seat                                          # seat end = cut-off line
+    gblade = cached("gblade11", lambda: box(-0.55, 0.55, -30, 0, -6, 6))
+    for f in range(3):
+        gr = 7.5 - (7.5 - g_d / 2) * (f + 1) / 3
+        lathe_frame(sc, hold, mesh(bar(xe, 5.0, x_sh, ch=0.8, groove=(xg0, xg1, gr))), spin,
+                    tools=[(gblade.move(((xg0 + xg1) / 2, -gr, 0)), TOOL)], cam=cam, lines=[th], step=5,
+                    title="Groove for the DIN 471-15 circlip",
+                    caption=f"1.1 mm grooving insert, 500 rpm, oil: to {g_d:.1f} mm across (-0.1/0), {g_at:.1f}-{g_end:.1f} mm "
+                            f"from the shoulder, leaving a {land:.1f} mm full-diameter land beyond it for the ring to bear on. "
+                            "Check: the circlip snaps in and sits square.", hold=1.3, work_spins=False)
     blade = cached("blade", parting_blade)
-    xp = xe - L_tot
     for f in range(4):
         r = 7.5 - 7.3 * (f + 1) / 4
-        g = (xp - 2.2, xp, r)
-        lathe_frame(sc, hold, mesh(bar(xe, 5.0, x_stem, groove=g)), spin, tools=[(blade.move((xp - 1.1, -r, 0)), TOOL)],
-                    cam=cam, lines=[th], step=5, title=f"Part off at {L_tot:.2f} mm",
-                    caption=f"2.2 mm parting blade, 400 rpm, steady feed, oil: {P.IDLER_AXLE_L:.0f} mm seat + {L_stem:.2f} mm "
-                            "stem. Catch the part.", hold=1.2, work_spins=False)
-    # 6: flip, face, chamfer, washer: finished part (the CAD idler_axle = turned part + washer)
-    tp = mesh(lathe_pose(turned_part, 0.0))
-    wm = mesh(lathe_pose(washer, 0.0).translate(cq.Vector(0, 0, 0)))
-    # lathe_pose puts the part's lowest z (stem end) at x = 0; the washer's own lowest z is the shoulder face at z = 0
-    shift = L_stem
-    for i in range(6):
+        lathe_frame(sc, hold, mesh(bar(xe, 5.0, x_sh, ch=0.8, groove=(xg0, xg1, g_d / 2), part=(xp, r))), spin,
+                    tools=[(blade.move((xp - 1.1, -r, 0)), TOOL)], cam=cam, lines=[th], step=6,
+                    title=f"Part off at {L_tot:.2f} mm",
+                    caption=f"2.2 mm parting blade, 400 rpm, steady feed, oil: {L_seat:.1f} mm seat + {L_stem:.2f} mm stem. "
+                            "Catch the part; flip it in the collet (wrap the thread), face to length, break the edge 0.5 mm.",
+                    hold=1.2, work_spins=False)
+    # 7: the spacer, from 3/4 in 6061 tube (0.125 in wall, 12.7 bore) bored to 15.2 and parted at 7.9
+    coll2 = cached("collet19", lambda: collet_chuck(19.05 / 2))
+    te = 14 + sp_l + 12.0
+    ro = 19.05 / 2
+
+    def tube(ri, end, ri_to=None, part=None):
+        x_in = end - 30 if ri_to is None else ri_to
+        prof = [(-30, 6.35), (-30, ro)]
+        if part is not None:
+            p0, pr = part
+            prof += [(p0 - 2.2, ro), (p0 - 2.2, pr), (p0, pr), (p0, ro)]
+        prof += [(end, ro), (end, ri), (x_in, ri), (x_in, 6.35)]
+        return turned(prof)
+
+    bbar_tip, bbar = (mesh(m) for m in boring_bar(3.0, 40))
+    cam2 = ((te - 12, 0, 0), LATHE_DIR, 30)
+    for f in range(4):
+        xt = te + 2 - (sp_l + 4) * (f + 1) / 4
+        cur = tube(sp_i / 2, te, ri_to=max(xt, te - sp_l - 3))
+        lathe_frame(sc, [(coll2, CHUCK)], mesh(halve(cur), section_y=0.0), 0.0,
+                    tools=[(bbar_tip.move((xt, sp_i / 2, 0)), CARBIDE), (bbar.move((xt, sp_i / 2, 0)), TOOL)],
+                    cam=cam2, step=7, title=f"Spacer: bore 3/4 in tube to {sp_i:.1f} mm",
+                    note="cut in half so you can see in",
+                    caption=f"3/4 in 6061 tube, 1/8 in wall (1/2 in bore), in a 3/4 in collet. Small boring bar, 1200 rpm, "
+                            f"0.08 mm/rev, to {sp_i:.2f} mm (+0.05/0): it slides on the 15 mm seat. The OD stays as bought "
+                            f"(19.05; the CAD says {sp_o:.0f}): it bears on the 6202's inner ring only.", hold=1.2,
+                    work_spins=False, steel=False)
+    for f in range(3):
+        r = ro - (ro - sp_i / 2 + 0.3) * (f + 1) / 3
+        cur = tube(sp_i / 2, te, ri_to=te - sp_l - 3, part=(te - sp_l, max(r, sp_i / 2 + 0.05)))
+        if f == 2:
+            cur = tube(sp_i / 2, te - sp_l - 2.2, ri_to=te - sp_l - 3)
+        lathe_frame(sc, [(coll2, CHUCK)], mesh(cur), 0.0, tools=[(blade.move((te - sp_l - 1.1, -r, 0)), TOOL)],
+                    cam=cam2, step=7, title=f"Spacer: part off at {sp_l:.1f} mm",
+                    caption=f"Part off {sp_l:.1f} mm long (+-0.05: it sets where the bearing pair sits), deburr both ends. "
+                            "Make four.", hold=1.2, work_spins=False, steel=False)
+    # 8: the stack on the axle as drawn: washer, spacer, 2 x 6202 (in the sprocket), circlip
+    pose = lambda s, z0=0.0: solid(s).rotate((0, 0, 0), (0, 1, 0), 90).translate(cq.Vector(L_stem + z0, 0, 0))
+    tp = mesh(pose(turned_part))
+    parts_ = [(mesh(pose(washer)), DARKSTEEL, 0.0), (mesh(pose(spacer, 4.0)), ALU, 0.0)]
+    parts_ += [(mesh(pose(brg, zc[0])), BEARING, 0.0), (mesh(pose(brg, zc[1])), BEARING, 0.0)]
+    parts_ += [(mesh(pose(clip, g_at)), "#2c3e50", 0.0)]
+    for i in range(7):
         sc.clear()
         sc.add(tp, STEEL, lw=0.9)
-        sc.add(wm.move((shift + 60 * (1 - ease(i, 6)), 0, 0)), DARKSTEEL, lw=0.8)
-        sc.lines(helix_lines(1.0, L_stem, 5.05, 1.5), "#30343a", 1.3)
-        sc.camera((25, 0, 0), (0.35, -0.85, 0.45), 26)
-        labels = [("15 mm seat, bar OD as bought:\n2 x 6202-2RS ride here", (L_stem + 25, 0, 7.5), (0.62, 0.22)),
-                  ("M10 x 1.5 stem through\nthe side plate's slot", (6, 0, 5), (0.08, 0.22)),
-                  ("22 x 4 mm washer\n= the shoulder", (L_stem + 2, 0, -11), (0.10, 0.72))] if i == 5 else ()
-        sc.grab(6, "Flip, face to length, chamfer; add the washer",
-                f"Flip in the collet (wrap the thread), face to {L_tot:.2f} mm and chamfer the seat end 0.6 mm. The 22 mm "
-                "washer is the shoulder. Make four (about 40 min each). See README: stem length vs the nylock.",
-                hold=1 if i < 5 else 8, labels=labels)
+        sc.lines(helix_lines(1.0, L_stem - 0.8, 5.05, 1.5), "#30343a", 1.3)
+        for k, (m, c, _) in enumerate(parts_):
+            dx = 70 * (1 - ease(min(i, 5), 6)) * (1 + 0.3 * k)
+            sc.add(m.move((dx, 0, 0)), c, lw=0.7)
+        sc.camera((L_stem + 12, 0, 0), (0.35, -0.85, 0.45), 34)
+        labels = [("M10 x 1.5 stem,\n0.8 chamfer", (6, 0, 5), (0.04, 0.24)),
+                  ("22 x 4 washer\n= the shoulder", (L_stem + 2, 0, -11), (0.10, 0.76)),
+                  (f"spacer {sp_i:.1f} x {sp_o:.0f} x {sp_l:.1f}\n(6061 tube)", (L_stem + 4 + sp_l / 2, 0, -sp_o / 2),
+                   (0.36, 0.80)),
+                  ("2 x 6202-2RS\n(in the sprocket)", (L_stem + zc[0] + 5.5, 0, 17.5), (0.50, 0.20)),
+                  (f"DIN 471-15 circlip;\n{land:.1f} mm land beyond it", (L_stem + g_at + 0.5, 0, 10.4), (0.76, 0.32))] \
+            if i == 6 else ()
+        sc.grab(8, "The idler axle stack", f"Shoulder washer, spacer, the sprocket's two 6202s, circlip: the bearing pair "
+                f"stands {prot:.1f} mm out of the sprocket hub, so the axle's end stays inside the tooth face. About 50 min "
+                "per axle and spacer; make four.", hold=1 if i < 6 else 8, labels=labels)
     sc.save("pat_axle")
 
 
@@ -1314,14 +1391,19 @@ def stub_pin_plate():
     D = design("chain-carousel-v2")
     P, L = D.P, D.L
     pin = solid(L.shape("stub_pin"))
+    pin_len = pin.BoundingBox().ylen                                 # 8.0
+    gf = [f.BoundingBox() for f in pin.Faces() if f.geomType() == "CYLINDER" and abs(f.BoundingBox().xlen - 3.2) < 0.01]
+    g0, g1 = min(b.ymin for b in gf), max(b.ymax for b in gf)       # groove 6.4 .. 7.04 from the pressed end
     sc = Scene("Station: 4 mm stub pins (2 per design) + module 1's printed plate", 6)
     coll = cached("collet4", lambda: collet_chuck(2.0))
     hold = [(coll, CHUCK)]
-    xe = 14 + 7.5 + 3.5
+    xe = 14 + pin_len + 3.5
     cam = ((14, 0, 0), LATHE_DIR, 14)
     tip, holder = (mesh(m) for m in turning_tool())
-    gblade = cached("gblade", lambda: box(-0.3, 0.3, -20, 0, -3, 3))
+    gw = g1 - g0
+    gblade = cached(("gblade", round(gw, 3)), lambda: box(-gw / 2, gw / 2, -20, 0, -3, 3))
     pblade = cached("pblade", lambda: box(-0.75, 0.75, -20, 0, -4, 4))
+    ga, gb = xe - (pin_len - g0), xe - (pin_len - g1)               # groove on the bar, the free end is the pin's outer end
 
     def rod(end, ch_end=0.0, groove=None, part=None):
         prof = [(-40, 0), (-40, 2.0)]
@@ -1329,34 +1411,35 @@ def stub_pin_plate():
             p0, pr = part
             prof += [(p0 - 1.5, 2.0), (p0 - 1.5, pr), (p0, pr), (p0, 2.0)]
         if groove is not None:
-            g0, g1, gr = groove
-            prof += [(g0, 2.0), (g0, gr), (g1, gr), (g1, 2.0)]
+            a_, b_, gr = groove
+            prof += [(a_, 2.0), (a_, gr), (b_, gr), (b_, 2.0)]
         prof += [(end - ch_end, 2.0), (end, 2.0 - ch_end), (end, 0)]
         return turned(prof)
 
     spin = 0.0
-    cap1 = ("4 mm ground rod, NOT a hardened dowel: a hardened (60 HRC) dowel can't be grooved or parted with HSS. Use "
-            "unhardened 1045 / silver steel, or buy a 4 mm clevis pin with an e-clip groove. 4 mm ER collet, 2500 rpm; "
-            "face and chamfer 0.3 mm.")
+    cap1 = ("4 mm h8 303 stainless rod (free-machining; not a hardened dowel, which HSS can't groove) in a 4 mm ER "
+            "collet, 2000 rpm, 0.03 mm/rev. Face and chamfer the end 0.3 mm.")
     for f in range(3):
         lathe_frame(sc, hold, mesh(rod(xe, 0.3 * (f + 1) / 3), tol=0.01), spin,
                     tools=[(tip.move((xe, -1.7, 0)), CARBIDE), (holder.move((xe, -1.7, 0)), TOOL)], cam=cam, step=1,
                     title="Face and chamfer the 4 mm rod", caption=cap1, hold=1.3)
         spin += 33
-    cap2 = ("0.6 mm grooving insert (an e-clip grooving tool), 800 rpm, slow feed, to 3.2 mm across, 0.5 mm from the end "
-            "as drawn. DIN 6799-3.2 asks for a 0.64 mm groove and at least about 1 mm of pin beyond it (see README).")
+    cap2 = (f"{gw:.2f} mm grooving insert (DIN 6799-3.2 groove), 600 rpm, slow feed, oil: to 3.2 mm across (-0.06/0), "
+            f"{pin_len - g1:.2f} mm from the end, so a full-diameter wall stays outside the e-clip. Check: the clip snaps in "
+            "and can't be pulled off.")
     for f in range(4):
         gr = 2.0 - 0.4 * (f + 1) / 4
-        lathe_frame(sc, hold, mesh(rod(xe, 0.3, groove=(xe - 1.1, xe - 0.5, gr)), tol=0.01), spin,
-                    tools=[(gblade.move((xe - 0.8, -gr, 0)), TOOL)], cam=cam, step=2, title="Cut the e-clip groove",
+        lathe_frame(sc, hold, mesh(rod(xe, 0.3, groove=(ga, gb, gr)), tol=0.01), spin,
+                    tools=[(gblade.move(((ga + gb) / 2, -gr, 0)), TOOL)], cam=cam, step=2, title="Cut the e-clip groove",
                     caption=cap2, hold=1.3, key=(f == 3))
         spin += 33
-    cap3 = "1.5 mm parting blade, 800 rpm, at 7.5 mm + 0.3 mm to face. Flip, face to 7.5 mm, chamfer 0.3 mm. Make 4 (2 spare)."
-    xp = xe - 7.5
+    cap3 = (f"1.5 mm parting blade, 600 rpm, at {pin_len:.1f} mm + 0.3 mm to face. Flip, face to {pin_len:.1f} mm, chamfer "
+            "0.3 mm. Make 6 (2 per design + 2 spare).")
+    xp = xe - pin_len
     for f in range(4):
         pr = 2.0 - 1.9 * (f + 1) / 4
-        lathe_frame(sc, hold, mesh(rod(xe, 0.3, groove=(xe - 1.1, xe - 0.5, 1.6), part=(xp, pr)), tol=0.01), spin,
-                    tools=[(pblade.move((xp - 0.75, -pr, 0)), TOOL)], cam=cam, step=3, title="Part off at 7.5 mm",
+        lathe_frame(sc, hold, mesh(rod(xe, 0.3, groove=(ga, gb, 1.6), part=(xp, pr)), tol=0.01), spin,
+                    tools=[(pblade.move((xp - 0.75, -pr, 0)), TOOL)], cam=cam, step=3, title=f"Part off at {pin_len:.1f} mm",
                     caption=cap3, hold=1.3)
         spin += 33
     # 4-6: module 1's existing plate: raw print from Sam's STEP -> CAD plate (hole, slot, two insert holes)

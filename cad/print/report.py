@@ -154,7 +154,7 @@ def main() -> None:
             warn = "; ".join(s.get("slicer_warnings") or []) or "no warnings"
             note = NOTES[d].get(k) or COMMON.get(k, "")
             sz = " x ".join(f"{x:g}" for x in m["size_mm"])
-            w(f"| {k} | {v['qty']} | {orient_txt(v['orientation'])}: {v['why']} | {sz} | {m.get('first_layer_mm2', '-')} mm2 | "
+            w(f"| {k} | {v['qty']} | {v['why'] if v['why'].startswith('as ') else orient_txt(v['orientation']) + ': ' + v['why']} | {sz} | {m.get('first_layer_mm2', '-')} mm2 | "
               f"{m['overhang_area_mm2']} mm2 | {m.get('n_floating_islands', '-')} | {m.get('thin_wall_layers', '-')} | {warn} | "
               f"{s.get('print_time')}, {s.get('filament_g')} g | {note} |")
         w("")

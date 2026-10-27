@@ -86,7 +86,7 @@ ORIENT = {
 
 # Where a design's part differs from its namesake in the other design
 ORIENT_DESIGN = {
-    ("chain-carousel-v2", "fork_arm"): ([], "as drawn: the 6 mm plate flat on the bed, M6 clearance and insert holes vertical"),
+    ("chain-carousel-v2", "fork_arm"): ([], "the 6 mm plate flat on the bed, M6 clearance and insert holes vertical"),
 }
 
 

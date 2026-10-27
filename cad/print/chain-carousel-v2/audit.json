@@ -419,7 +419,7 @@
  "fork_arm": {
   "qty": 1,
   "orientation": [],
-  "why": "as drawn: the 6 mm plate flat on the bed, M6 clearance and insert holes vertical",
+  "why": "the 6 mm plate flat on the bed, M6 clearance and insert holes vertical",
   "mesh": {
    "overhang_area_mm2": 0.0,
    "flat_ceiling_area_mm2": 0.0,

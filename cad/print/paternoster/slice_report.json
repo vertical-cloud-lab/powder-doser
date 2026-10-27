@@ -418,7 +418,8 @@
    ],
    "gcode_3mf": "plates/station.gcode.3mf",
    "gcode_3mf_mb": 1.24,
-   "studio_png": "plates/station.png"
+   "studio_png": "plates/station.png",
+   "toolpath_png": "plates/station_toolpath.png"
   },
   {
    "plate": "mounting_plates_1",
