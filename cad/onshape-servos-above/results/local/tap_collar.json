@@ -31,5 +31,16 @@
  ],
  "candidate_solids": 1,
  "reference_solids": 1,
- "iou": 0.999996
+ "iou": 0.999996,
+ "precise_volumes_mm3": {
+  "candidate": 12937.34548,
+  "reference": 12937.34549,
+  "note": "BRepGProp with eps 1e-9; the 0.026 mm3 in volume_diff_pct is the default integration's error on the reference"
+ },
+ "faces": {
+  "candidate": 69,
+  "reference": 33,
+  "note": "same surfaces: the local build leaves coplanar faces of the multi-region Collar extrude split; Onshape merges them"
+ },
+ "local_build": "fsgen 0.2.0 studio build (stock local builder): 1 solid, 11 features, 0 Onshape calls"
 }

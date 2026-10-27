@@ -54,5 +54,31 @@
  },
  "lines_skipped_odd_crossings": 2,
  "parity_vs_classifier_mismatches": "0 of 80",
- "seconds": 146.7
+ "seconds": 146.7,
+ "volume_method": "BRepGProp volume integration with eps 1e-9 (the default integration is off by up to 0.03 mm3 here)",
+ "exact_volume_mm3": 4379.4407,
+ "exact_volume_note": "analytic: blank (cylinder + 45 deg chamfered end wall) - bore - groove, the groove being screw-symmetric over the whole 25 mm wall: (25 / 3.5) * 2 pi * integral of r * width(r) dr over the groove section outside the bore. Candidate +0.0014 mm3, reference +0.0141 mm3: the remaining difference is the reference's own sweep approximation",
+ "point_iou_classifier": {
+  "points": 3000,
+  "inside_both": 532,
+  "disagreeing": 0,
+  "iou": 1.0,
+  "method": "BRepClass3d_SolidClassifier, uniform points in the union box (seeds 11, 12)"
+ },
+ "thread_fit": {
+  "method": "cap placed at auger z = 250 (inner end face on the tube end), turned about Z; overlap volume from 1500 random lines along X through z = 222..252",
+  "vs_reference_auger_step": {
+   "turned_180_deg_mm3": 0.0,
+   "lines_with_overlap_180": "0 of 1500",
+   "turned_0_deg_mm3": 526.45
+  },
+  "vs_parts_auger_fs_thread": {
+   "turned_180_deg_mm3": 0.0,
+   "lines_with_overlap_180": "0 of 1500",
+   "turned_0_deg_mm3": 528.46,
+   "note": "local fsgen build of a copy of parts/auger.fs reduced to tube + thread; lines up to z = 249.95 because the local build leaves the thread untrimmed above the tube end"
+  },
+  "conclusion": "mates with no overlap when turned 180 deg about Z (frames.py CAP_TURN_DEG), as the reference does; unturned it overlaps (frames.py notes 546 mm3)"
+ },
+ "local_build": "fsgen 0.2.0 studio build (stock local builder): 1 solid, 11 features, 0 Onshape calls"
 }
