@@ -131,6 +131,30 @@ feature list, so the auger is updated in place rather than duplicated. Each part
 Studio in the same document. Placing the parts in an Onshape Assembly is cheaper by hand: browser use is free.
 Over the API it would cost about 2 calls per instance.
 
+### What might go wrong in the push
+
+The local build can't catch everything; PR #178's mirror was the example. These features have not yet gone
+through an fsgen push:
+
+- **Mounting plate:** an INTERSECT extrude, through-all REMOVE cuts in both directions inside the reapplied ×28
+  tooth pattern, and a mirrored NEW extrude.
+- **Stepper pinion:** a sketch region picked with `qContainsPoint` (the D bore).
+- **Bracket and tap-collar base:** fillet and chamfer edges picked with `qAdjacent`, `qIntersection`,
+  `qFarthestAlong` and `qGeometry`.
+- **Tap collar:** an expression of the form `0 mm - -#earLength`.
+
+Fixing a failed feature in place costs 1 call, and `push_all.py` stops at the first part that fails. Every
+offset plane uses a non-negative offset, with `oppositeDirection` for planes below their base. Onshape's own
+`cplane.fs` bounds the offset at ≥ 0, so the cap's thread plane (−28.4 mm) was rewritten that way; the result
+is identical.
+
+Not every dimension follows the Variable Studio. fsgen dimensions arcs only at their ends, and the gear
+outlines are fixed numbers, so the safe way to edit is to change the `.fs` and push again (as PR #178 found).
+The mounting plate has no tooth-sector variable, because fsgen's `sin` and `cos` return plain numbers;
+`gear_gap_mounting_plate.py --turn` regenerates the sector. In an assembly, the cap goes on turned 180° about
+the auger's axis, as text-to-cad places it. That puts its groove on the auger's thread with no overlap; unturned,
+they overlap by 526 mm³ (`results/local/auger_cap.json`).
+
 ## fsgen patches
 
 [`fsgen_patches.diff`](fsgen_patches.diff), on top of fsgen 0.2.0 (`eabcc02`):

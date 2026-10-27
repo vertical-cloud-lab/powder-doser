@@ -9,8 +9,8 @@ import(path : "onshape/std/common.fs", version : "3083.0");
 //   internal thread: the auger's thread tooth (parts/auger.fs: 3.5 mm pitch, right-handed, 26 / 23 mm) grown by
 //   #threadClearance normal to its flanks, cut as a helical groove around the plain #capMinorDiameter bore; it
 //   runs out through the rim and stops at the inner end face. A groove centre lies on +X at z = #threadPhase
-//   (mod #threadPitch). In the doser the cap sits on the tube end (auger z = #tubeLength) turned 180 deg about Z
-//   (text-to-cad frames.py, CAP_TURN_DEG), which puts this groove on the auger's thread.
+//   (mod #threadPitch). In the doser the cap sits on the tube end (z = 250 mm in parts/auger.fs) turned 180 deg
+//   about Z (text-to-cad frames.py, CAP_TURN_DEG), which puts this groove on the auger's thread.
 // Order: solid blank, groove, end wall added back where the groove's run-out cut it, then the bore. (Cutting the
 // groove into an already bored cup is the same part, but the local OpenCascade build fails on it.)
 export function build(context is Context, id is Id)
@@ -51,10 +51,11 @@ export function build(context is Context, id is Id)
 
     // ---------- internal thread: groove swept along a right-handed helix from below the rim to above the top ----------
     // The helix starts on +X, 8 pitches below #threadPhase (below the rim for a cap up to 26 mm deep), and makes
-    // 10 turns, ending above the cap: the groove has no end inside the part. (9 turns reach far enough too, but
-    // then the local OpenCascade build fails where the sweep ends just above the inner end face.)
+    // 10 turns, so the groove's far end lies above the cap: no groove end inside the part.
     const zGroove = #threadPhase - 8 * #threadPitch;
-    cPlane(context, id + "Thread plane", { "entities" : topPlane, "offset" : zGroove });
+    // Onshape's offset plane takes a non-negative offset (std cplane.fs); "oppositeDirection" flips it below Top
+    cPlane(context, id + "Thread plane", { "entities" : topPlane, "offset" : 8 * #threadPitch - #threadPhase,
+            "oppositeDirection" : true });
     var helixSk = newSketch(context, id + "Thread helix sketch", { "sketchPlane" : qCreatedBy(id + "Thread plane", EntityType.FACE) });
     skCircle(helixSk, "circle", { "center" : vector(zero, zero), "radius" : rBore });
     skSolve(helixSk);

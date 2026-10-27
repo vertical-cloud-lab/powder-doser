@@ -48,7 +48,7 @@ export const augerCap = defineFeature(function(context is Context, id is Id, def
     opRevolve(context, id + "cap" + "tool", { "entities" : qSketchRegion(id + "capSketch"), "axis" : line(vector(0, 0, 0) * millimeter, vector(0, 0, 1)), "angleForward" : 360 * degree });
     // Thread plane
     // Thread helix sketch
-    var threadHelixSketchSk = newSketchOnPlane(context, id + "threadHelixSketch", { "sketchPlane" : plane(vector(0, 0, 0) * millimeter + (definition.threadPhase - (8 * definition.threadPitch)) * vector(0, 0, 1), vector(0, 0, 1), vector(1, 0, 0)) });
+    var threadHelixSketchSk = newSketchOnPlane(context, id + "threadHelixSketch", { "sketchPlane" : plane(vector(0, 0, 0) * millimeter + -(8 * definition.threadPitch - definition.threadPhase) * vector(0, 0, 1), vector(0, 0, 1), vector(1, 0, 0)) });
     skCircle(threadHelixSketchSk, "circle", { "center" : vector(0, 0) * millimeter, "radius" : definition.capMinorDiameter / 2 });
     skSolve(threadHelixSketchSk);
     // Thread helix
