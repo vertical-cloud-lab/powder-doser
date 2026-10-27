@@ -1,0 +1,45 @@
+{
+ "candidate": "stepper_pinion.step",
+ "reference": "stepper_pinion.step",
+ "reference_dz_mm": 0.0,
+ "candidate_volume_mm3": 3168.836,
+ "reference_volume_mm3": 3168.728,
+ "volume_diff_pct": 0.00342,
+ "candidate_bbox_mm": [
+  [
+   -11.0,
+   -11.0,
+   0.0
+  ],
+  [
+   11.0,
+   11.0,
+   16.1
+  ]
+ ],
+ "reference_bbox_mm": [
+  [
+   -11.0,
+   -11.0,
+   -0.0
+  ],
+  [
+   11.0,
+   11.0,
+   16.1
+  ]
+ ],
+ "candidate_solids": 1,
+ "reference_solids": 1,
+ "iou": 0.999783,
+ "script": "cad/onshape-servos-above/parts/stepper_pinion.fs",
+ "part_studio": "Stepper pinion",
+ "features": 7,
+ "push_estimate_calls": 11,
+ "flank_arcs": 2,
+ "flank_arc_max_dev_um": 1.58,
+ "symdiff_mm3": 0.688,
+ "predicted_flank_symdiff_mm3": 0.716,
+ "predicted_flank_net_mm3": 0.08,
+ "note": "fsgen 0.2.0 local build vs text-to-cad STEP. The only modelled difference is the involute flank: a 2-arc chain from gear_gap.py instead of the reference's spline (which is within 0.02 um of the involute); integrating that deviation over the flanks predicts the symmetric difference and net volume above. Blank, hub and bore are exact."
+}
