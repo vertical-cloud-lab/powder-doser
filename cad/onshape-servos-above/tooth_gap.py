@@ -24,7 +24,7 @@ from pathlib import Path
 MODULE, TEETH, PRESSURE_ANGLE = 1.0, 44, 20.0
 ADDENDUM, DEDENDUM, ROOT_FILLET = 1.0, 1.157, 0.5
 OVERCUT = 0.5          # flank arcs run this far past the tip circle, so the cut crosses it cleanly
-FS = Path(__file__).resolve().parent / "auger.fs"
+FS = Path(__file__).resolve().parent / "parts" / "auger.fs"
 
 
 def inv(a: float) -> float:

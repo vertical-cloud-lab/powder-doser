@@ -1,0 +1,4 @@
+out/
+__pycache__/
+# the root .gitignore ignores parts/ (Python packaging template); these are the part scripts
+!parts/

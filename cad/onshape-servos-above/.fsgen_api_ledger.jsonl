@@ -1,0 +1,44 @@
+{"t": "2026-10-20T22:30:33", "run": "20261020-223031", "purpose": "onshape_doc create", "call": "GET companies", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:30:33", "run": "20261020-223031", "purpose": "onshape_doc create", "call": "POST documents", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:30:45", "run": "20261020-223043", "purpose": "onshape_doc elements", "call": "GET documents/d/{id}/w/{id}/elements", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST variables/d/{id}/w/{id}/variablestudio", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST variables/d/{id}/w/{id}/e/{id}/variables", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST variables/d/{id}/w/{id}/e/{id}/variablestudioreferences", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:02", "run": "20261020-223049", "purpose": "studio push Auger", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:31:28", "run": "20261020-223126", "purpose": "onshape_doc views", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/shadedviews", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:32:01", "run": "20261020-223159", "purpose": "onshape_doc tree", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/features", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:16", "run": "20261020-223311", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:16", "run": "20261020-223311", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features/featureid/{fid}", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:16", "run": "20261020-223311", "purpose": "studio push Auger", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/featurescript", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:16", "run": "20261020-223311", "purpose": "studio push Auger", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:29", "run": "20261020-223326", "purpose": "onshape_doc mass", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:58", "run": "20261020-223353", "purpose": "onshape_doc export", "call": "POST partstudios/d/{id}/w/{id}/e/{id}/translations", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:58", "run": "20261020-223353", "purpose": "onshape_doc export", "call": "GET translations/{tid}", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:33:58", "run": "20261020-223353", "purpose": "onshape_doc export", "call": "GET documents/d/{id}/externaldata/{xid}", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:45:50", "run": "20261020-224549", "purpose": "onshape_doc share", "call": "GET companies", "status": 200, "counted": true, "reconstructed": true}
+{"t": "2026-10-20T22:45:50", "run": "20261020-224549", "purpose": "onshape_doc share", "call": "POST documents/{id}/share", "status": 400, "counted": false, "reconstructed": true}
+{"t": "2026-10-27T03:23:06", "run": "20261027-032306", "purpose": "onshape_doc adopt", "call": "GET documents/d/{id}/w/{id}/elements", "status": 402, "counted": false}
+{"t": "2026-10-27T03:23:12", "run": "20261027-032311", "purpose": "quota check", "call": "GET users/sessioninfo", "status": 200, "counted": true}
+{"t": "2026-10-27T03:23:19", "run": "20261027-032319", "purpose": "quota check (plan)", "call": "GET users/sessioninfo", "status": 200, "counted": true}
+{"t": "2026-10-27T03:24:11", "run": "20261027-032410", "purpose": "quota check (another document)", "call": "GET documents/{id}", "status": 402, "counted": false}
