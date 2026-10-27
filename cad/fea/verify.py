@@ -160,8 +160,8 @@ def extrusion_2020():
 
 def buckling(L=200.0, dia=6.0):
     """Cantilever column, 6 mm steel rod, 200 mm, load on the free end's face: K = 2 Euler load.
-    (With *RIGID BODY end patches CalculiX's *BUCKLE returned nonsense, about 1 N against 3218 N for a pinned
-    rod: its rigid bodies are nonlinear MPCs. So no rigid patches in a buckling step.)"""
+    Run with 4 OpenMP threads this build of CalculiX 2.21 returned 0.98 N (and 19.7 N with default Lanczos
+    settings) for this 805 N column; single-threaded it is right, so fem.Deck.solve runs ccx on one thread."""
     def rod(g):
         return [g.model.occ.addCylinder(0, 0, 0, 0, 0, L, dia / 2)]
     m = fem.mesh_parts([fem.Part("rod", rod, material="STEEL1018")], size=1.5, size_min=0.8, curv=12)

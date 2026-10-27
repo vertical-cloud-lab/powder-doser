@@ -253,8 +253,53 @@ def mesh_parts(parts: list[Part], size: float, size_min: float | None = None, cu
     remap = np.full(len(xyz_all), -1, np.int64)
     remap[used] = np.arange(len(used))
     surf = {k: remap[v] for k, v in surf.items() if (remap[v] >= 0).all()}
-    return Mesh(xyz_all[used], remap[tet], tp, [p.name for p in parts], [p.material for p in parts],
-                [p.orient for p in parts], surf, surf_part, size)
+    xyz = xyz_all[used].copy()
+    tet = remap[tet]
+    nfix = straighten_bad(xyz, tet)
+    m = Mesh(xyz, tet, tp, [p.name for p in parts], [p.material for p in parts], [p.orient for p in parts],
+             surf, surf_part, size)
+    m.straightened = nfix
+    return m
+
+
+def _tet10_dets(xyz: np.ndarray, tet: np.ndarray) -> np.ndarray:
+    """Jacobian determinants of each C3D10 at its 4 corners and its 4 integration points: (E, 8)."""
+    a, b = 0.1381966011250105, 0.5854101966249685
+    pts = [(1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1),
+           (b, a, a, a), (a, b, a, a), (a, a, b, a), (a, a, a, b)]
+    dL = np.array([[-1, -1, -1], [1, 0, 0], [0, 1, 0], [0, 0, 1]], float)
+    edges = [(0, 1), (1, 2), (2, 0), (0, 3), (1, 3), (2, 3)]
+    X = xyz[tet]                                             # (E, 10, 3)
+    out = np.zeros((len(tet), len(pts)))
+    for k, L in enumerate(pts):
+        dN = np.zeros((10, 3))
+        for i in range(4):
+            dN[i] = (4 * L[i] - 1) * dL[i]
+        for e, (i, j) in enumerate(edges):
+            dN[4 + e] = 4 * (L[j] * dL[i] + L[i] * dL[j])
+        J = np.einsum("eni,nj->eij", X, dN)                  # dx_i / dxi_j
+        out[:, k] = np.linalg.det(J)
+    return out
+
+
+def straighten_bad(xyz: np.ndarray, tet: np.ndarray) -> int:
+    """gmsh curves second-order nodes onto the CAD surfaces; on thin curved features that sometimes folds an
+    element (CalculiX stops: 'nonpositive jacobian'). Put the mid-side nodes of every such element back on its
+    straight edges (always valid when the linear tet is) and repeat until none is left. Returns the count."""
+    edges = [(0, 1), (1, 2), (2, 0), (0, 3), (1, 3), (2, 3)]
+    total = 0
+    for _ in range(5):
+        d = _tet10_dets(xyz, tet)
+        lin = np.abs(d[:, :4]).mean(1)
+        bad = np.where((d <= 1e-3 * lin[:, None]).any(1))[0]
+        if len(bad) == 0:
+            break
+        total += len(bad)
+        for e in bad:
+            t = tet[e]
+            for k, (i, j) in enumerate(edges):
+                xyz[t[4 + k]] = 0.5 * (xyz[t[i]] + xyz[t[j]])
+    return total
 
 
 # ----------------------------------------------------------------------------------------------- deck
@@ -483,8 +528,6 @@ class Deck:
         elif kind == "frequency":
             w(f"*STEP\n*FREQUENCY, STORAGE=NO\n{opt['n']}")
         elif kind == "buckle":
-            # ARPACK needs more Lanczos vectors than CalculiX's default (4 per factor): with the default, a 6 mm
-            # rod returned 19.7 N for an 805 N Euler load (verify.py); with these it returns 805 N.
             w(f"*STEP\n*BUCKLE\n{opt['n']}, 1e-5, {max(4 * opt['n'], 24)}, 2000")
         if self.cloads:
             w("*CLOAD")
@@ -508,7 +551,10 @@ class Deck:
         w("*END STEP")
         path.write_text("\n".join(L) + "\n")
 
-    def solve(self, job: str, threads: int = 4, keep: bool = False) -> "Result":
+    def solve(self, job: str, threads: int = 1, keep: bool = False) -> "Result":
+        """Run ccx single-threaded: this CalculiX 2.21 build returns wrong *BUCKLE factors with 4 OpenMP threads
+        (0.98 N for an 805 N Euler load; right with 1 or 2), so nothing here trusts its threading. Cases run in
+        parallel processes instead (run_all.py)."""
         d = WORK / job
         d.mkdir(parents=True, exist_ok=True)
         inp = d / "job.inp"
