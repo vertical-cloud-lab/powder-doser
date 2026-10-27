@@ -4,11 +4,11 @@ its 3-D STEP and 2-D PDF drawing, logged out, through the doser Pi.
 Since mid-October 2026 a logged-out browser on a residential IP sees product pages again, with the
 CAD menu (on 2 Oct they needed a login; see cad/full-assembly/README.md). mcmaster.com refuses
 datacenter IPs, so this drives a headed Chromium on the runner whose traffic leaves through the
-Pi (SOCKS5 on 127.0.0.1:1080, opened by /tmp/pi_socks.sh), throttled to 400 kB/s, one page at a
+Pi (SOCKS5 on 127.0.0.1:1080, opened by ./pi_socks.sh), throttled to 400 kB/s, one page at a
 time with pauses. For each part number it moves the pointer to the CAD menu, picks "3-D STEP",
 clicks Download, then does the same for "2-D PDF". It never logs in.
 
-    /tmp/pi_socks.sh
+    ./pi_socks.sh
     xvfb-run -a python fetch_mcmaster.py                 # every part in PARTS
     xvfb-run -a python fetch_mcmaster.py 7321K31 6659K65  # just these
 

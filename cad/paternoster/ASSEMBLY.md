@@ -56,13 +56,13 @@ rear dome in the 49 mm hole, with 1/4-20 x 1 in bolts and nylon-insert locknuts.
 | 14 | 1 | 1/4-20 nylon-insert locknuts, pack of 100 |
 | 24 | 70 | M5 drop-in T-nut for 2020 (brackets, side plates, station) |
 | 25 | 70 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock) |
-| 28 | 3 | 6061-T6 1/4 in plate, laser cut from dxf/: two side plates 320 x 345 mm and the 120 mm motor plate (SendCutSend quotes on upload) |
+| 28 | 3 | 6061-T6 1/4 in plate, laser or waterjet cut from dxf/: two side plates 320 x 345 mm and the 120 mm motor plate; a 14 x 36 in plate holds all three (a 12 x 24 in plate can't fit even one side plate; cad/shop). Order the 4.2 mm tap holes drilled, not cut |
 
 ## Step 4: Bottom through shafts with their 32T sprockets (front keyed, back set after phasing)
 
 ![Step 4](renders/steps/step_04.png)
 
-Cut the keyed bar into 435 mm (B-) and 463 mm (B+, the drive shaft, which runs on into the coupling).
+Cut the keyed bar into 441.8 mm (B-) and 469.8 mm (B+, the drive shaft, which runs on into the coupling).
 Feed each shaft through its front bearing, slide on the front 32T with its hub toward the front plate, then
 the back 32T with its hub toward the back plate, and on through the back bearing. Key the front sprockets.
 Leave the back sprockets' set screws loose until step 6: both chains have to hang in phase, so the back
@@ -71,7 +71,7 @@ sprockets are set from the gondolas, not from their keyways.
 | # | Qty | Part |
 |---:|---:|---|
 | 5 | 8 | Sprocket 35BS32-5/8: 32T, 2 in hub, 7/8 in through the bore. 4 for the bottom shafts (keyed); 4 re-bored to 35 mm H7 by the shop for two 6202s (top idlers) |
-| 6 | 1 | Keyed shafting 5/8 in x 72 in, 3/16 in keyway: cut 1 x 435 mm and 1 x 463 mm (drive) |
+| 6 | 1 | Keyed shafting 5/8 in x 72 in, 3/16 in keyway: cut 1 x 441.8 mm and 1 x 469.8 mm (drive); lengths from the CAD after the flange bearing's real 16.05 mm stand-off (was 435 / 463) |
 | 8 | 1 | Key stock 3/16 x 3/16 in, 12 in (front sprockets keyed; back ones locked by set screws after phasing) |
 
 ## Step 5: Top idlers
@@ -89,8 +89,11 @@ the gondolas pass 6-odd mm from the axle's end when they go over the top.
 |---:|---:|---|
 | 5 | 8 | Sprocket 35BS32-5/8: 32T, 2 in hub, 7/8 in through the bore. 4 for the bottom shafts (keyed); 4 re-bored to 35 mm H7 by the shop for two 6202s (top idlers) |
 | 10 | 1 | Deep-groove ball bearing 6202-2RS, 15 x 35 x 11, 10-pack (two per top idler; McMaster 5972K368 is $8.46 each) |
-| 11 | 1 | 1045 steel rod, 15 mm (-0.013/0), 1 ft: the shop turns four idler axles (31 mm seat, M10 stem; shoulder from a 22 mm washer) |
+| 11 | 1 | 1045 steel rod, 15 mm (-0.013/0), 1 ft: the shop turns four idler axles (35.0 mm seat: a DIN 471 groove 1.1 wide at 32.7 mm, then a 1.2 mm land; M10 stem 21 mm; shoulder from a 22 mm washer; cad/shop) |
 | 12 | 4 | M10 nylon-insert locknut + DIN 125A washer (idler axles, outside the side plates) |
+| 71 | 4 | Idler spacer, 15.2 ID x 19 OD x 6.7 mm, aluminium: cut from 3/4 in OD tube and bored on the lathe (axle shoulder to the outer 6202's inner ring; cad/shop) |
+| 72 | 4 | External retaining ring DIN 471 for a 15 mm shaft, 1.0 thick: holds each idler's bearing pair on the axle without passing the sprocket's tooth face |
+| 73 | 1 | Loctite 641 bearing retainer, 10 mL: the 6202 outer rings in the re-bored 35 H7 sprockets (they turn with the load and would creep) |
 
 ## Step 6: Chains
 
@@ -126,11 +129,12 @@ The motor drives the bottom +y shaft directly: one module (95.25 mm of chain) is
 |---:|---:|---|
 | 9 | 1 | Metric key 5 x 5 mm (NEMA 34 shaft into the coupling hub) |
 | 15 | 1 | NEMA 34 closed-loop stepper 34HS59-6004D-E1000, 12 N*m, 14 mm keyed shaft (StepperOnline STEP from PR #115) |
-| 16 | 2 | Jaw coupling hub L090, iron, keyed: one 14 mm bore (5 mm keyway), one 5/8 in bore (3/16 keyway) |
-| 17 | 1 | Jaw coupling spider L090, Buna-N, 15.8 N*m (the L075's 10.2 N*m is under the motor's 12) |
-| 18 | 4 | Round standoff 10 mm OD x 79 mm, M6 female both ends, aluminium (motor plate to the back plate) + 2 M6 x 12 screws each |
-| 19 | 4 | M5 x 16 socket head screw + M5 nylon-insert locknut (NEMA 34 flange to the motor plate) |
-| 28 | 3 | 6061-T6 1/4 in plate, laser cut from dxf/: two side plates 320 x 345 mm and the 120 mm motor plate (SendCutSend quotes on upload) |
+| 16 | 1 | Jaw coupling hub L090, iron, keyed, 14 mm bore (NEMA 34 side). McMaster's family page 6408K14 lists the bores; this is the 14 mm one |
+| 17 | 1 | Jaw coupling spider L090, Buna-N, 140 in-lbf (15.8 N*m; the L075's 10.2 N*m is under the motor's 12) |
+| 18 | 4 | Round standoff 10 mm OD x 82.5 mm, M6 female both ends, aluminium (motor plate to the back plate; 82.5 mm since the flange bearing's real stand-off moved the coupling 3.45 mm: not a stock length, so an 80 mm standoff + a 2.5 mm M6 washer) + 2 M6 x 12 screws each |
+| 19 | 1 | M5 x 16 socket head screw 91292A126 ($16.05 per 100) + M5 nylon-insert locknut 93625A200 ($9.02 per 100): 4 each, NEMA 34 flange to the motor plate |
+| 28 | 3 | 6061-T6 1/4 in plate, laser or waterjet cut from dxf/: two side plates 320 x 345 mm and the 120 mm motor plate; a 14 x 36 in plate holds all three (a 12 x 24 in plate can't fit even one side plate; cad/shop). Order the 4.2 mm tap holes drilled, not cut |
+| 70 | 1 | Jaw coupling hub L090, iron, keyed, 5/8 in bore (drive shaft side) |
 
 ## Step 8: Gondolas
 
@@ -146,8 +150,8 @@ hanging straight down: if it sticks off-vertical by more than about half a degre
 
 | # | Qty | Part |
 |---:|---:|---|
-| 29 | 12 | Gondola, PETG, 313 x 62 x 55 mm, about 90 g (H2D only: 350 x 320 bed) |
-| 30 | 24 | Shoulder screw, 18-8, 4 mm x 10 mm shoulder, M3 x 5 thread (the gondola pivots) |
+| 29 | 12 | Gondola, PETG, 313 x 62 x 55 mm, 85.2 g and 2 h 30 min each in Bambu Studio (H2D only: 4 per plate, 3 plates; cad/print) |
+| 30 | 24 | Shoulder screw, 18-8, 4 mm x 10 mm shoulder, M3 x 5 thread (the gondola pivots; $3.66 each below 5) |
 | 31 | 24 | Flanged bushing, oil-embedded 841 bronze, 4 ID x 7.02 OD x 6, flange 10 x 1.5 (pressed into the end plates) |
 | 32 | 1 | PTFE washer M4, 4.3 x 9 x 0.8, pack of 50 (two per pivot: on the tab and under the head; 48 used) |
 | 33 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (pivots) |
@@ -171,10 +175,10 @@ Index one module (1250 steps) and load the next. To swap a module, reverse it: t
 | # | Qty | Part |
 |---:|---:|---|
 | 35 | 24 | M5 x 16 knurled low-profile thumb screw, 18-8, 11 x 5 mm head: its tip is the module's hinge pin in Sam's 5.3 mm knuckle hole (tool-free swap; Loctite 222) |
-| 37 | 12 | Mounting plate (Sam's Oct 13 Onshape part), PETG/PLA, about 70 g |
+| 37 | 12 | Mounting plate (Sam's Oct 13 Onshape part), PETG, 21.7 g each in Bambu Studio (6 per H2D plate) |
 | 38 | 12 | Auger (threaded storage, 44T) + cap, lab design (PR #170): from the #134 batch of 16 |
-| 60 | 12 | Armature tab, low-carbon steel 2 mm, 22 x 28 mm, two countersunk M3 holes, laser cut (one per module, under the plate's back strip; dxf/armature_tab.dxf) |
-| 61 | 24 | M3 x 6 flat head screw, 18-8 (armature tabs to the plates) |
+| 60 | 12 | Armature tab, low-carbon steel 14 ga (0.075 in, 1.9 mm; '2 mm' isn't a stock gauge), 22 x 28 mm, two M3 holes countersunk 90 deg to 6.3 mm so McMaster's flat heads sit flush, laser cut (one per module, under the plate's back strip; dxf/armature_tab.dxf) |
+| 61 | 1 | M3 x 6 flat head screw, 18-8, 90 deg, pack of 100 (24 used: armature tabs to the plates) |
 | 62 | 28 | M3 x 4 short heat-set insert (two per plate for the tab; four in the U-yoke crossbar) |
 
 ## Step 10: Station
@@ -186,9 +190,10 @@ P16-150-22-12-P's rear lug in it (197.4 mm hole to hole retracted). Sam's electr
 on the inner face of its back wall, bond the steel KHK SS1-20A pinion (hub faced off) on the shaft's last 10 mm with
 Loctite 638, screw the printed magnet bracket on the two upper motor screws and bond the Adafruit 3872 electromagnet in
 its cup, press the two 4 mm locating dowels into the rim and the two 4 mm stub pins through the side posts (with the
-printed pin plates bonded on). The U-yoke: push the P16's rod-end plug into the printed crossbar's square socket and
-bolt it rigid (M4 x 25 + nylock), screw the two 2 mm steel arms to the crossbar, slide them over the stub pins and fit
-the e-clips. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
+printed pin plates bonded on). The U-yoke: seat the P16's rod end (a 9 x 6 tab on a 9 mm collar) in the printed
+crossbar's slot and press the 4 x 38 mm dowel (McMaster 91595A128) through crossbar and tab; then screw the two steel
+arms to the crossbar's sides, which covers both ends of the dowel, slide them over the stub pins and fit the e-clips.
+The P16's rear tab goes between the base clevis's cheeks on a 4 x 16 mm shoulder screw (90265A123) and an M3 nylock. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
 carriage's centre-of-mass height, so the carriage can't tip off the plate when it tilts. Set the approach fork on its
 post so the crossbar's tongue rides in it for the first 20 mm. Wire the magnet through a logic-level MOSFET
 with a 1N4001 across the coil, and set the Tic's current limit to 450 mA. Screw the two UHMW hold-down
@@ -202,23 +207,23 @@ carriage clears the passing gondolas.
 | 22 | 1 | 80/20 20-2020 extrusion, cut to length: 4 x 444 (x-rails), 4 x 710 (posts), 6 x 260 (cross and station rails), 1 x 200 (fork post), 1 x 170 (vial post); $0.0131/mm + $3 per cut |
 | 24 | 70 | M5 drop-in T-nut for 2020 (brackets, side plates, station) |
 | 25 | 70 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock) |
-| 39 | 1 | Actuonix P16-150-22-12-P linear actuator, 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, includes #8-32 pins and brackets |
+| 39 | 1 | Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP) |
 | 40 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB/RC/PWM/0-3.3 V in) |
 | 41 | 1 | 12 V supply for the LAC and actuator (Actuonix) |
 | 42 | 10 | Station printed parts, PETG: U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, dock magnet bracket, approach fork + arm, base clevis, vial cup |
 | 43 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 (mounted on the back wall's inner face) and 12 V solenoid |
-| 55 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis; cheeks 29.8 mm over) + M3 nylock |
-| 56 | 1 | M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16 rod-end plug in the U-yoke's square socket (makes the yoke rigid on the rod) |
+| 55 | 1 | Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread (the P16's base pin: cheek, 8 mm rear tab, cheek) + an M3 nylock from item 33 |
+| 56 | 1 | Dowel pin, 4 mm x 38 mm, hardened 4140: through the U-yoke crossbar and the P16 rod end's 4.25 mm hole, held in by the two steel arms (the M4 bolt there had no room for its head or nut) |
 | 57 | 1 | Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: preloads the dock so the 20T:44T mesh can't lift the plate at any tilt; on only while docked |
 | 58 | 1 | N-channel logic-level MOSFET (switches the dock magnet from the carriage board): IRLB8721, or any logic-level N-MOSFET |
 | 59 | 1 | 1N4001 diode, 10-pack (flyback across the magnet coil) |
 | 62 | 28 | M3 x 4 short heat-set insert (two per plate for the tab; four in the U-yoke crossbar) |
-| 63 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond to the NEMA 11 shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping |
-| 64 | 2 | Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height |
-| 65 | 2 | Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot in each plate |
-| 66 | 6 | E-clip DIN 6799 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare) |
+| 63 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H8 bore, 10 mm face (S45C). Face the 10 mm hub off and bond to the NEMA 11 shaft with Loctite 638; replaces the printed 20T. KHK USA lists it at $14.77 (10 on hand), plus shipping |
+| 64 | 2 | Stub pin, 4 x 8 mm, turned from 4 mm h8 303 stainless rod with a DIN 6799-3.2 groove (0.64 wide, 0.96 mm from the end; cad/shop), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height. A hardened dowel can't be grooved with HSS |
+| 65 | 2 | Dowel pin, 4 x 8 mm, hardened 52100, both ends rounded: two on the carriage rim, into a hole and a slot in each plate (pack of 50) |
+| 66 | 2 | E-clip DIN 6799-3.2 (4-5 mm shaft, 3.2 mm groove x 0.64), spring steel, 6.9 OD, 0.6 thick: on the stub pins outside the yoke arms (pack of 100) |
 | 67 | 2 | U-yoke arm, 2 mm steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its side walls |
-| 68 | 4 | M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243 |
+| 68 | 1 | M3 x 8 button head screw, 18-8, pack of 100 (4 used: yoke arms into the crossbar's inserts), Loctite 243 |
 | 69 | 1 | Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load) |
 
 ## Step 11: Dispense
@@ -247,4 +252,5 @@ Dispense: screw the load cell to the vial post and the cup to its free end, and 
 | 50 | 1 | E-stop GCX1136 (22 mm, NC) + enclosure; breaks the 48 V feed to the driver |
 | 51 | 1 | IEC C14 inlet with switch + fuse drawer |
 | 52 | 1 | 18 AWG stranded hook-up wire, 25 ft |
+| 74 | 2 | Load-cell spacer, 12 x 7 x 3.35 mm, printed PETG (under the TAL221's fixed end and on its free end: the bar is 6 mm tall, not 12.7, and needs room to bend) |
 

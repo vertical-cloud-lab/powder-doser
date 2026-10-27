@@ -8,7 +8,7 @@ dimension-table stand-in when the file is missing; `report_missing()` lists whic
 parts used a stand-in, and build.py prints it.
 
 Browsing: headed Chromium (Playwright, under Xvfb) whose traffic leaves through the
-doser Pi as a SOCKS5 proxy (`/tmp/pi_socks.sh` opens it on 127.0.0.1:1080), with real
+doser Pi as a SOCKS5 proxy (`pi_socks.sh` here opens it on 127.0.0.1:1080), with real
 mouse moves and clicks, throttled to 400 kB/s for the Pi's Wi-Fi.
 """
 from __future__ import annotations

@@ -17,7 +17,7 @@ manifest_<vendor>.json with its sha256. Vendor material is not committed.
     ... fetch_other.py --clicks                   # files a server only gives to a clicked link (StepperOnline, KHK)
     ... fetch_other.py --adafruit-cad             # list Adafruit_CAD_Parts for 3872 / 412 / 158 (none there)
     ... fetch_other.py --search                   # the DuckDuckGo searches that found the makers' pages
-Run /tmp/pi_socks.sh first (SOCKS tunnel through the Pi). AUDIT_other.md records what each source gave.
+Run ./pi_socks.sh first (SOCKS tunnel through the Pi). AUDIT_other.md records what each source gave.
 """
 from __future__ import annotations
 

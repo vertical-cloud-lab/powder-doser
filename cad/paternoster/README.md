@@ -16,6 +16,25 @@ The [leakage study](../auger-leakage/README.md) found no benefit in storing modu
 
 ![Station docked: U-yoke on stub pins at the carriage's COM height, dock magnet under the steel tab, steel pinion](renders/rig_station_dock.png)
 
+**Real parts, shop work and printing (2026-10-27).** Every bought part was checked against its vendor's drawing, spec
+sheet or CAD ([`../vendor/`](../vendor/README.md)), every part we make or modify has an animated shop process
+([`../shop/`](../shop/README.md)), and every printed part is sliced in Bambu Studio ([`../print/`](../print/README.md)).
+What that changed here:
+- **The P16 and every McMaster part are now the vendors' own STEP files.** Actuonix's drawing showed the rod end is a
+  9 x 6 tab and the rear clevis an 8 mm tab, so the U-yoke's socket and the base clevis were refitted; the yoke's M4
+  cross bolt (no room for its head or nut between the steel arms) is now a captured 4 x 38 dowel; the base pin is a
+  4 x 16 shoulder screw (90265A123), now in the assembly.
+- **The top idlers' bearings weren't located.** The axle's seat stopped 3.9 mm short of the inner 6202 and nothing held
+  either bearing in place. The seat now carries both, with an aluminium spacer from the washer shoulder and a DIN 471-15
+  circlip in a real groove (1.2 mm land beyond it) that stays inside the sprocket's tooth face; Loctite 641 holds the outer rings in the re-bored sprockets.
+- **Real dimensions moved things:** the flange bearings stand 3.45 mm further off the plates (shafts now 441.8 and
+  469.8 mm, standoffs 82.5 mm), the TAL221 load cell is 47 mm long, not 80 (the cell and the vial post moved under the
+  cup's arm), and the 80/20 profile, corner brackets, magnet, solenoid, pinion and foot follow their drawings.
+- **Stub pins** are turned from 303 stainless (a hardened dowel can't be grooved with HSS), with a DIN 6799 groove.
+- **The BoM names a real part number for every McMaster line**, at today's pack prices, and the L090 coupling has its
+  two real hubs (6413K145 and 6408K147) instead of one family number.
+
+
 | Home: 12 gondolas, module 1 at the station | Station: module 1 tilted 30° (cutaway) |
 |---|---|
 | ![](renders/rig_iso.png) | ![](renders/rig_station_tilt30.png) |
@@ -51,7 +70,7 @@ Every frame uses the exact chain kinematics.
 | Chain hold-down | **UHMW strips 0.5 mm over each chain's bottom run at the station** | MuJoCo: below about 60° of tilt the actuator's push behind the hinge is more than the module + carriage weigh, and the front pivot is pulled up (7.5 N at 0°). The strips hold the chain to their 0.5 mm gap (up to 10.9 N on the strip with the stiff tab) |
 | Dispense | 20 mL vial on a 100 g load cell, **D-shaped catch funnel** ahead of the docked carriage | Particle sim: at steep tilt 21% of grains miss a bare vial |
 | Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet; footprint 444 x 320 mm, plus 232 mm of motor out the back; 765 mm tall | Every T-nut screw takes blue Loctite (T-nuts can't take a nylock); every other nut on the machine is a nylock |
-| Cost | **$1,773 total, $1,647 without test gear** ([BOM.md](BOM.md)) | Prices read on the vendors' pages on 2026-10-16 (station additions 2026-10-18) unless marked |
+| Cost | **$1,829 total, $1,703 without test gear** ([BOM.md](BOM.md)) | Prices read on the vendors' pages on 2026-10-16 to 2026-10-27 (each line has its date); McMaster lines are McMaster's pack prices read 2026-10-27 |
 
 ## What the simulations found, and what changed
 
@@ -97,15 +116,12 @@ The MuJoCo model covers clearance with swing: the 12-index lap's tightest gap is
 
 ## Parts, OEM data and cost
 
-Every purchased part is a catalogue part with its number, link and price in [BOM.md](BOM.md) / [bom.csv](bom.csv). Quantities are counted from the CAD.
+Every purchased part is a catalogue part with its number, link and price in [BOM.md](BOM.md) / [bom.csv](bom.csv). Quantities are counted from the CAD. [`../vendor/README.md`](../vendor/README.md) has the audit; its `compare/` images put each model next to the vendor's drawing.
 
-- **McMaster-Carr**, read through the doser Pi (residential IP), logged out. Product pages and CAD downloads now work without a login, so the lab account wasn't used.
-  - Dimensions measured from McMaster's own STEP files and drawings: SA-1 link 7321K31, shoulder screws 90265A, bushing 6659K65, PTFE washer 95630A630, locknuts, L090 hubs 6408K14 and spider 6408K75, thumb screw 92545A179.
-  - The vendor CAD isn't committed: it has no redistribution licence. The models here match its dimensions.
-- **Actuonix** (through the Pi; actuonix.com refuses datacenter IPs): P16-150-22-12-P, $90, 150 mm stroke, 46 mm/s no-load, 50 N lift, 75 N back-drive, 4.25 mm clevis holes, 197.4 mm retracted.
-  - The envelope here is modelled from Actuonix's STEP: a 36 x 20 x 79 block with the rod axis 10.5 mm from one end, a 12 x 12 tube and a 9 mm rod.
-  - The LAC board ($30) closes the loop on the pot.
-- **Surplus Center** (sprockets, flange bearings, keyed shaft), **Nitro** (chain roll), **80/20**, **SparkFun**, **TRC**, **BelMetric**, **VXB**: verified on 2026-10-16.
+- **McMaster-Carr** (read logged out through the doser Pi on 2026-10-27, no account): the SA-1 links, shoulder screws, bushings, PTFE washers, nylocks, inserts, thumb screws, dowels and screws are **McMaster's own STEP files**, placed in our builders' frames ([`../vendor/mcmaster.py`](../vendor/mcmaster.py)). Prices and specs are from each part's page.
+- **Actuonix:** **Actuonix's own STEP** of the P16-150-22-12-P and its datasheet ([`../vendor/actuonix.py`](../vendor/actuonix.py)): $90, 50 N, 46 mm/s, 10 N side load, 20 % duty cycle. The LAC board ($30) closes the loop on the pot.
+- **Everything else** (sprockets, flange bearings, chain, pinion, magnet, solenoid, NEMA 11/34, extrusion, brackets, foot, load cell) is modelled from the maker's drawing or table: [`../vendor/AUDIT_other.md`](../vendor/AUDIT_other.md). The NEMA 34 is StepperOnline's STEP (PR #115). Surplus Center's pages sit behind a bot check, so their sprockets and bearings were checked against the makers' (Martin, the SBPFL202-10 table).
+- The vendor files aren't committed (no redistribution licence; this repo is public). `manifest_*.json` pins them by sha256 and the `fetch_*.py` scripts download them again; without them the builders fall back to their stand-ins.
 - **Already in the lab, $0:** the NEMA 34 and CL86T, module 1, the augers (#134's batch of 16), and the electronics carriage's NEMA 11 and solenoid. The steel pinion that replaces the printed one is bought.
 - **Doser CAD:** the auger and cap are PR #170's current-design STEPs (the same ones v1/v2 use). Sam's mounting plate and electronics carriage are **his Oct 13 Part Studio**, exported for this design: it changed after the Oct 8 export that v1 and v2 still use.
 

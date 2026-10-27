@@ -114,10 +114,11 @@ ITEMS = [
     (35, ("m5x30_shcs",), None, "M5 x 30 socket head screw (tensioner jack screws)", "BelMetric", "M5 x 30 SHCS", "https://www.belmetric.com/",
      0.25, E, (4,), "Fasteners"),
     # ---- printed parts
-    (36, ("carriage",), None, "Carriage, PETG, with the two tab hooks (H2D, on the bed's diagonal; about 100 g each)", "printed", "stl/carriage.stl",
-     "", 2.0, "filament at $20/kg", (10,), "Printed"),
+    (36, ("carriage",), None, "Carriage, PETG, with the two tab hooks: 58.6 g and 1 h 53 min each in Bambu Studio, one per H2D plate on the bed's "
+     "diagonal (351 mm > 325); break-off webs under the hooks' fingers (cad/print)", "printed", "stl/carriage.stl",
+     "", 1.17, "filament at $20/kg (sliced weight)", (10,), "Printed"),
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
-     "", 0.4, "filament", (4, 8), "Printed"),
+     "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
     (38, ("clevis_bracket", "uyoke_base", "yoke_stop", "yoke_stop_m", "pin_boss", "pin_boss_m", "fork", "fork_arm", "vial_cup", "vial_funnel",
           "level_wedge", "magnet_bracket"), None,
      "Station parts, PETG: actuator base clevis, U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, approach fork and arm, "
@@ -125,7 +126,7 @@ ITEMS = [
      "", 0.5, "filament", (8,), "Printed"),
     (39, ("sam_mounting_plate",), -1, "Mounting plate (Sam's Oct 13 Onshape part), printed for modules 2-13 (module 1 exists)", "printed",
      "Onshape 581956d5", "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
-     1.40, "filament at $20/kg", (9,), "Printed"),
+     0.43, "filament at $20/kg (21.8 g each, sliced)", (9,), "Printed"),
     # ---- station
     (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side "
      "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP)",
@@ -232,10 +233,12 @@ Screws into T-nuts, heat-set inserts and tapped holes get Loctite 243; the hinge
 **Shop work:** cut and drill the two side plates from `dxf/` (or upload the DXFs to SendCutSend for a quote); re-bore the
 motor's 15T sprocket from 1/2 in to 14 mm H7 and broach a 5 mm keyway; tap the eight M5 holes for the tensioner blocks;
 face the steel pinion's hub off (KHK SS1-20A) so it fits in front of the dock magnet; laser cut the 13 steel armature tabs
-and the two yoke arms.
+(14 ga) and the two yoke arms; turn the two stub pins from 4 mm 303 stainless. Each job is animated, with tools, speeds and
+checks, in [../shop/README.md](../shop/README.md).
 
-**Prices** are as listed on the date shown on each line. McMaster asked for a login on 2026-10-18, so McMaster lines are
-carried from the paternoster BoM (read logged out on 2026-10-16) or marked estimate. Generic hardware is `estimate`."""
+**Prices** are as listed on the date shown on each line. Every McMaster line was read on McMaster's own page on 2026-10-27,
+logged out, through the doser Pi, and is McMaster's pack price; each part's STEP is in the CAD ([../vendor/](../vendor/README.md)).
+What is still generic is marked `estimate`."""
 
 
 def counted() -> Counter:

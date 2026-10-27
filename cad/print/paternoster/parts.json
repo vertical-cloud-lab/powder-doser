@@ -1,0 +1,142 @@
+{
+ "gondola": {
+  "qty": 12,
+  "source": "layout.shape('gondola')",
+  "bbox_mm": [
+   312.3,
+   62.0,
+   55.0
+  ],
+  "volume_mm3": 99943.1
+ },
+ "uyoke_base": {
+  "qty": 1,
+  "source": "layout.shape('uyoke_base')",
+  "bbox_mm": [
+   30.0,
+   39.0,
+   39.0
+  ],
+  "volume_mm3": 13441.7
+ },
+ "yoke_stop": {
+  "qty": 1,
+  "source": "layout.shape('yoke_stop')",
+  "bbox_mm": [
+   6.0,
+   1.3,
+   4.0
+  ],
+  "volume_mm3": 31.2
+ },
+ "yoke_stop_m": {
+  "qty": 1,
+  "source": "layout.shape('yoke_stop_m')",
+  "bbox_mm": [
+   6.0,
+   1.3,
+   4.0
+  ],
+  "volume_mm3": 31.2
+ },
+ "pin_boss": {
+  "qty": 1,
+  "source": "layout.shape('pin_boss')",
+  "bbox_mm": [
+   22.0,
+   1.5,
+   16.0
+  ],
+  "volume_mm3": 223.2
+ },
+ "pin_boss_m": {
+  "qty": 1,
+  "source": "layout.shape('pin_boss_m')",
+  "bbox_mm": [
+   22.0,
+   1.5,
+   16.0
+  ],
+  "volume_mm3": 223.2
+ },
+ "magnet_bracket": {
+  "qty": 1,
+  "source": "layout.shape('magnet_bracket')",
+  "bbox_mm": [
+   38.17,
+   36.0,
+   18.15
+  ],
+  "volume_mm3": 10691.7
+ },
+ "fork": {
+  "qty": 1,
+  "source": "layout.shape('fork')",
+  "bbox_mm": [
+   50.0,
+   19.0,
+   36.0
+  ],
+  "volume_mm3": 26698.1
+ },
+ "fork_arm": {
+  "qty": 1,
+  "source": "layout.shape('fork_arm')",
+  "bbox_mm": [
+   20.0,
+   5.5,
+   12.0
+  ],
+  "volume_mm3": 1320.0
+ },
+ "clevis_bracket": {
+  "qty": 1,
+  "source": "layout.shape('clevis_bracket')",
+  "bbox_mm": [
+   44.0,
+   40.0,
+   16.62
+  ],
+  "volume_mm3": 10752.7
+ },
+ "vial_cup": {
+  "qty": 1,
+  "source": "layout.shape('vial_cup')",
+  "bbox_mm": [
+   69.01,
+   34.01,
+   18.01
+  ],
+  "volume_mm3": 8055.1
+ },
+ "vial_funnel": {
+  "qty": 1,
+  "source": "layout.shape('vial_funnel')",
+  "bbox_mm": [
+   35.75,
+   39.34,
+   22.15
+  ],
+  "volume_mm3": 3014.5
+ },
+ "hold_bracket": {
+  "qty": 4,
+  "source": "layout.shape('hold_bracket')",
+  "bbox_mm": [
+   28.0,
+   12.0,
+   9.0
+  ],
+  "volume_mm3": 3024.0
+ },
+ "sam_mounting_plate": {
+  "qty": 12,
+  "source": "layout.shape('sam_mounting_plate')",
+  "bbox_mm": [
+   103.84,
+   54.05,
+   32.56
+  ],
+  "volume_mm3": 27431.7
+ }
+}

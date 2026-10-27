@@ -2,7 +2,7 @@
 the families the carousels still had as "estimate", logged out, through the doser Pi, so every
 McMaster line in the BoMs can name a real part number. Writes mcmaster_catalog_rows.json.
 
-    /tmp/pi_socks.sh && xvfb-run -a python mcmaster_catalog.py
+    ./pi_socks.sh && xvfb-run -a python mcmaster_catalog.py
 """
 from __future__ import annotations
 

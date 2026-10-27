@@ -18,6 +18,25 @@ v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a cop
 
 ![Animation](renders/chain_carousel_v2.gif)
 
+**Real parts, shop work and printing (2026-10-27).** Every bought part was checked against its vendor's drawing, spec
+sheet or CAD ([`../vendor/`](../vendor/README.md)), every part we make or modify has an animated shop process
+([`../shop/`](../shop/README.md)), and every printed part is sliced in Bambu Studio ([`../print/`](../print/README.md)).
+What that changed here:
+- **The P16 and the McMaster fasteners, dowels and e-clips are now the vendors' own STEP files.** Actuonix's drawing
+  showed the rod end is a 9 x 6 tab and the rear clevis an 8 mm tab, so the U-yoke's socket and the base clevis were
+  refitted; the yoke's M4 cross bolt (no room for its head or nut between the steel arms) is now a captured 4 x 38 dowel;
+  the base pin is a 4 x 16 shoulder screw (90265A123), now in the assembly.
+- **The chain was drawn with 5 mm pins:** the hinge pin's `PIN_D = 5.0` overrode the chain's 3.58 mm in `params.py`.
+  Nitro's table also gives longer pins (12.40 mm overall) and lower plates (8.79 mm); the carriages got a 1.6 mm relief
+  for the A-1 links' pin ends.
+- **Real dimensions moved things:** the flange bearings stand 3.45 mm further off the plates (shafts now 3 x 409.8 and
+  434.2 mm), the TAL221 load cell is 47 mm long, not 80 (the vial cup's arm is now 63 mm), and the VEVOR bore, magnet,
+  solenoid, pinion, hall switch and foot follow their drawings. The NEMA 34 is StepperOnline's STEP.
+- **Not printable as drawn:** the fork arm was a 20 x 0.5 x 12 mm sliver (now a 6 mm plate on the post's top), and the
+  carriage's tab-slot fingers print as bridges only with a break-off web (`carriage(print_web=True)`, used for the STL).
+- **The hinge pins' e-clip groove was 0.6 mm wide** for a DIN 6799-4 clip that is 0.7 thick (McMaster 98543A112): now 0.74.
+- **The BoM names a real part number for every McMaster line**, at today's pack prices.
+
 ## What Sam asked for, and what the model does
 
 | Ask (2026-10-13) | In v2 |
@@ -51,7 +70,7 @@ v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a cop
 | Dispense | 20 mL vial on a 100 g load cell under a printed D-cut funnel whose flat stops 1 mm ahead of the docked carriage | At 30° the dose stream's centre line lands 1.0 mm inside the cut's edge (`layout.stream_check`); no frame pitch, since a pitch moves the stream out of the funnel |
 | Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet | Every T-nut screw takes blue Loctite; every other nut is a nylock |
 | Clearance | **0 clashes over 0.5 mm³** in all four checks: 701 instances at home, the chain swept through a full module, the station's approach and tilt to 90°, and a swap ([`checks/`](checks)) | See [Checks](#checks) |
-| Cost | **$1,374.75; $1,233.36 without test gear** ([BOM.md](BOM.md)) | Prices checked 2026-10-10 to 2026-10-18 (each line has its date); lines marked estimate add up to $164.94. The NEMA 34, CL86T, module 1, the augers and Sam's electronics carriage with its NEMA 11 and solenoid are already in the lab |
+| Cost | **$1,415.35; $1,273.96 without test gear** ([BOM.md](BOM.md)) | Prices checked 2026-10-10 to 2026-10-27 (each line has its date); every McMaster line is McMaster's pack price read 2026-10-27; lines marked estimate add up to $147.90 |
 
 ## What the studies found, and what changed
 

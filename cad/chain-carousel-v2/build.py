@@ -67,7 +67,8 @@ def main() -> None:
         cq.exporters.export(cq.Workplane("XY").add(L.shape(k)), str(HERE / "step" / "components" / f"{k}.step"))
     for k in PRINTED:
         s = L.shape(k)
-        if k == "carriage":                         # outer face down on the bed
+        if k == "carriage":                         # outer face down on the bed, with the break-off webs that let the
+            s = L.PT.carriage(print_web=True).val()  # tab-slot fingers print as bridges (cad/print); snap them off after
             s = s.rotate((0, 0, 0), (1, 0, 0), 90)
         bb = s.BoundingBox()
         s = s.translate((0, 0, -bb.zmin))

@@ -154,10 +154,10 @@ def bearing_6202() -> cq.Workplane:
 def idler_axle() -> cq.Workplane:
     """Fixed axle for a top idler: 15 mm shaft (h6) with an M10 threaded stem
     through the side plate's slot. Shoulder face (on the plate's inner face) at z = 0,
-    bearing seat along +z to the inner bearing's face, with the circlip's groove at its end,
+    bearing seat along +z to the inner bearing's face, then the circlip's 1.1 mm groove and a 1.2 mm land,
     stem along -z (3 mm past the nylock and its washer, chamfered)."""
-    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L + IDLER_CIRCLIP[1]).edges(">Z").chamfer(0.5)
-    groove = (cq.Workplane("XY").circle(7.6).circle(IDLER_CIRCLIP[0] / 2).extrude(IDLER_CIRCLIP[1] + 0.1)
+    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L + 1.1 + 1.2).edges(">Z").chamfer(0.4)   # groove + DIN 471 land
+    groove = (cq.Workplane("XY").circle(7.6).circle(IDLER_CIRCLIP[0] / 2).extrude(1.1)
               .translate((0, 0, IDLER_AXLE_L)))
     shoulder = cq.Workplane("XY").circle(11.0).extrude(4.0)
     stem = cq.Workplane("XY").circle(5.0).extrude(-(PLATE_T_SIDE + 15.0)).faces("<Z").chamfer(0.8)

@@ -51,14 +51,14 @@ ITEMS = [
      "https://paulbhardware.com/metric-key-stock", 1.09, 1, V, (7,), "Shafts"),
     (10, None, 1, "Deep-groove ball bearing 6202-2RS, 15 x 35 x 11, 10-pack (two per top idler; McMaster 5972K368 is $8.46 each)", "VXB",
      "6202-2RS 10-pack", "https://www.vxb.com/", 29.99, 1, V, (5,), "Shafts"),
-    (11, None, 1, "1045 steel rod, 15 mm (-0.013/0), 1 ft: the shop turns four idler axles (34.9 mm seat with a DIN 471 groove at its end, "
-     "M10 stem 21 mm; shoulder from a 22 mm washer; cad/shop)", "McMaster-Carr", "5615N15", f"{MC}/5615N15/", 25.12, 1, V, (5,), "Shafts"),
+    (11, None, 1, "1045 steel rod, 15 mm (-0.013/0), 1 ft: the shop turns four idler axles (35.0 mm seat: a DIN 471 groove 1.1 wide at 32.7 mm, then a "
+     "1.2 mm land; M10 stem 21 mm; shoulder from a 22 mm washer; cad/shop)", "McMaster-Carr", "5615N15", f"{MC}/5615N15/", 25.12, 1, V, (5,), "Shafts"),
     (12, ("nut_m10",), None, "M10 nylon-insert locknut + DIN 125A washer (idler axles, outside the side plates)", "BelMetric", "M10 nylock + washer",
      "https://www.belmetric.com/", 0.38, 1, V, (5,), "Shafts"),
     (13, None, 8, "Hex bolt 1/4-20 x 1 in, Grade 5 (flange bearings to the side plates)", "PaulB Hardware", "H5C14X1",
      "https://paulbhardware.com/hex-cap-screw-1-4-20x1-gr5-zinc-h5c14x1", 0.15, 1, V, (3,), "Shafts"),
     (14, None, 1, "1/4-20 nylon-insert locknuts, pack of 100", "McMaster-Carr", "95615A120", f"{MC}/95615A120/", 7.46, 1, V, (3,), "Shafts"),
-    (71, ("idler_spacer",), None, "Idler spacer, 15.2 ID x 19 OD x 7.9 mm, aluminium: cut from 3/4 in OD tube and bored on the lathe (axle "
+    (71, ("idler_spacer",), None, "Idler spacer, 15.2 ID x 19 OD x 6.7 mm, aluminium: cut from 3/4 in OD tube and bored on the lathe (axle "
      "shoulder to the outer 6202's inner ring; cad/shop)", "shop", "", "", 0.50, 1, "estimate (offcut)", (5,), "Shafts"),
     (72, ("idler_circlip",), None, "External retaining ring DIN 471 for a 15 mm shaft, 1.0 thick: holds each idler's bearing pair on the axle "
      "without passing the sprocket's tooth face", "McMaster-Carr", "DIN 471, 15 mm", f"{MC}/external-retaining-rings/", 0.30, 1, E, (5,), "Shafts"),
@@ -103,8 +103,8 @@ ITEMS = [
      "three (a 12 x 24 in plate can't fit even one side plate; cad/shop). Order the 4.2 mm tap holes drilled, not cut",
      "SendCutSend", "dxf/*.dxf", "https://sendcutsend.com/", 65.0, 1, "estimate (SendCutSend quotes on upload)", (3, 7), "Frame"),
     # ---- gondolas and pivots
-    (29, ("gondola",), None, "Gondola, PETG, 313 x 62 x 55 mm, about 90 g (H2D only: 350 x 320 bed)", "printed", "stl/gondola.stl", "", 1.80, 1,
-     "filament at $20/kg", (8,), "Printed"),
+    (29, ("gondola",), None, "Gondola, PETG, 313 x 62 x 55 mm, 85.2 g and 2 h 30 min each in Bambu Studio (H2D only: 4 per plate, 3 plates; "
+     "cad/print)", "printed", "stl/gondola.stl", "", 1.70, 1, "filament at $20/kg (sliced weight)", (8,), "Printed"),
     (30, ("shoulder_screw",), None, "Shoulder screw, 18-8, 4 mm x 10 mm shoulder, M3 x 5 thread (the gondola pivots; $3.66 each below 5)",
      "McMaster-Carr", "90265A121", f"{MC}/90265A121/", 3.14, 1, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Gondolas"),
     (31, ("sleeve_bearing",), None, "Flanged bushing, oil-embedded 841 bronze, 4 ID x 7.02 OD x 6, flange 10 x 1.5 (pressed into the end plates)",
@@ -119,9 +119,9 @@ ITEMS = [
     (36, None, 13, "Neodymium disc magnet 1/4 x 1/8 in N52 (12 INDEX in the gondola rails + 1 HOME)", "K&J Magnetics", "D42-N52",
      "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet", 0.52, 1, V10, (8,), "Gondolas"),
     # ---- modules
-    (37, ("sam_mounting_plate",), None, "Mounting plate (Sam's Oct 13 Onshape part), PETG/PLA, about 70 g", "printed",
+    (37, ("sam_mounting_plate",), None, "Mounting plate (Sam's Oct 13 Onshape part), PETG, 21.7 g each in Bambu Studio (6 per H2D plate)", "printed",
      "Onshape 581956d5 (Part Studio 1)", "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
-     1.40, 1, "filament at $20/kg", (9,), "Modules"),
+     0.43, 1, "filament at $20/kg (sliced weight)", (9,), "Modules"),
     (38, ("auger",), None, "Auger (threaded storage, 44T) + cap, lab design (PR #170): from the #134 batch of 16", "lab", "reference/auger-*.step", "",
      0.0, 1, "existing", (9,), "Modules"),
     # ---- station

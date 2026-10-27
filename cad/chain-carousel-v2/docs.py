@@ -86,16 +86,17 @@ because the top shafts are still at the bottom of their slots.""",
    HOME back), and screw them to the plates' inner faces with two M5 x 16 (blue Loctite). The lip sits 2 mm over the
    carriage tongue, the foot 4 mm under it; both have 3 mm lead-ins.
 2. Actuator: the printed base clevis on the station rail (two M5 into T-nuts), the P16-150's rear clevis on a
-   4 x 30 mm shoulder screw and M3 locknut.
+   4 x 16 mm shoulder screw (McMaster 90265A123) and an M3 locknut: the P16's 8 mm rear tab sits between the cheeks.
 3. Electronics carriage (Sam's): face the KHK SS1-20A pinion's hub off and bond it onto the NEMA 11's shaft with
    Loctite 638, flush with the shaft end (the motor sits inside the carriage on its back wall, boss in the recess). Bond the dock electromagnet (Adafruit 3872) into the
    printed bracket and fix the bracket with the NEMA 11's two upper M2.5 screws (lengthened by 3 mm). Press two 4 mm
    steel locating pins into the rim at Sam's ({30}, 16) and (70, -16). Bond a printed stub-pin plate to each side post
    (mirror-image pair, tails pointing back and down) and press a 4 mm stub pin through post and plate at Sam's
    ({YOKE_X:.0f}, {YOKE_Z:.0f}).
-4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 x 8 into inserts), glue a stop block inside each
-   arm under the pin plate's tail (mirror-image pair), push the P16's rod-end plug into the crossbar's square socket
-   and bolt it with an M4 x 25. Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
+4. U-yoke: seat the P16's rod end (a 9 x 6 tab on a 9 mm collar) in the printed crossbar's slot and press the 4 x 38 mm
+   dowel (McMaster 91595A128) through crossbar and tab. Then screw the two steel arms to the crossbar's sides (M3 x 8 into
+   inserts), which covers both ends of the dowel, and glue a stop block inside each arm under the pin plate's tail
+   (mirror-image pair). Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
    pin. Set the NEMA 11's DRV8825 to 450 mA (Vref 0.225 V) before the first dock.
 5. Approach fork on its post on the station rail, the tongue under the crossbar in its slot.
 6. Vial post on the -y base rail, the level wedge, the load cell, the vial cup, the vial and the D-cut funnel.""",

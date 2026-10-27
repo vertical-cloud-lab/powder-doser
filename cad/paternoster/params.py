@@ -171,15 +171,16 @@ MAGNET_D, MAGNET_H = 6.35, 3.18
 
 # --- top idlers: 35BS32 re-bored to 35 mm H7 for two 6202-2RS, on a fixed 15 mm axle stud ---
 IDLER_BORE = 35.0
-IDLER_AXLE_L = 33.9          # bearing seat from the shoulder (on the plate's inner face) to the inner bearing's face
+IDLER_AXLE_L = 32.7          # bearing seat from the shoulder (on the plate's inner face) to the inner bearing's face
 # Idler stack on the axle, from the plate (x = SIDE_IN, front): 22 mm washer as the shoulder (4), spacer (IDLER_SPACER),
-# two 6202-2RS (2 x 11), then a DIN 471-15 circlip (1.0) in a groove at the seat's end, so nothing passes the sprocket's
-# tooth face. Was a 31 mm seat that stopped 3.9 mm short of the inner bearing, with an 8.9 mm gap and nothing locating
-# the bearings (cad/shop/README.md). The pair sits 1.0 mm out of the hub (outer ring on 10 of its 11 mm) to make room
-# for the circlip; Loctite 641 holds the outer rings in the 35 H7 bore, which they would otherwise creep in.
-IDLER_BRG_X = (-15.6, -4.6)  # bearing centres, x from the front chain plane (back side mirrored)
-IDLER_SPACER = (15.2, 19.0, 7.9)   # aluminium spacer ID, OD, length: bears on the inner ring only
-IDLER_CIRCLIP = (14.3, 1.0)  # DIN 471-15 groove diameter and ring thickness
+# two 6202-2RS (2 x 11), a DIN 471-15 circlip (1.0) in a 1.1 mm groove, then a 1.2 mm full-diameter land (DIN 471's
+# minimum beyond the groove for a 15 mm shaft) ending at x = +2.0, inside the sprocket's tooth face (+2.13). Was a 31 mm
+# seat that stopped 3.9 mm short of the inner bearing, with an 8.9 mm gap and nothing locating the bearings
+# (cad/shop/README.md). The pair sits 2.2 mm out of the hub (outer ring on 8.8 of its 11 mm) to make room for the ring
+# and its land; Loctite 641 holds the outer rings in the 35 H7 bore, which they would otherwise creep in.
+IDLER_BRG_X = (-16.8, -5.8)  # bearing centres, x from the front chain plane (back side mirrored)
+IDLER_SPACER = (15.2, 19.0, 6.7)   # aluminium spacer ID, OD, length: bears on the inner ring only
+IDLER_CIRCLIP = (14.3, 1.0)  # DIN 471-15 groove diameter and ring thickness (groove 1.1 wide, land 1.2 beyond it)
 SPROCKET_FACE = TOOTH_W / 2  # tooth ring's inner face, x = +2.13 at the front chain: nothing on the axis goes further in
 
 # --- jaw coupling, NEMA 34 (14 mm) to the 5/8 in drive shaft: Lovejoy L-075 class ---

@@ -56,7 +56,7 @@ def p16_figure() -> Path:
     dwg = _rot_drawing()
 
     fig = plt.figure(figsize=(19, 7.2), dpi=105)
-    gs = fig.add_gridspec(1, 4, width_ratios=[0.8, 0.9, 1.5, 1.05])
+    gs = fig.add_gridspec(1, 4, width_ratios=[0.75, 0.85, 1.45, 1.25])
     axs = [fig.add_subplot(gs[i]) for i in range(4)]
     for a in axs:
         a.set_axis_off()
@@ -82,8 +82,8 @@ def p16_figure() -> Path:
     y = 0.98
     for i, r in enumerate(rows):
         w = "bold" if i == 0 else "normal"
-        for x, t in zip((0.0, 0.33, 0.62, 0.84), r):
-            axs[3].text(x, y, t, fontsize=8.6, weight=w, va="top")
+        for x, t in zip((0.0, 0.30, 0.56, 0.80), r):
+            axs[3].text(x, y, t, fontsize=8.0, weight=w, va="top")
         y -= 0.066
     axs[3].text(0.0, y - 0.01, "* no room for its head or nut: the yoke's steel\n  arms sit flat on both ends of the hole",
                 fontsize=8.6, va="top")

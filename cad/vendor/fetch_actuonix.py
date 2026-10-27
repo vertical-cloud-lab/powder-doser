@@ -4,7 +4,7 @@ Opens actuonix.com/datasheets in a headed Chromium whose traffic leaves through 
 (actuonix.com refuses datacenter IPs), moves the pointer to each link and clicks it, and
 records each file in manifest_actuonix.json with its sha256.
 
-    /tmp/pi_socks.sh                      # SOCKS5 tunnel through the Pi on 127.0.0.1:1080
+    ./pi_socks.sh                         # SOCKS5 tunnel through the Pi on 127.0.0.1:1080
     xvfb-run -a python fetch_actuonix.py
 """
 from __future__ import annotations
