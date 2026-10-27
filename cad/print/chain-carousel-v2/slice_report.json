@@ -60,6 +60,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -70,10 +71,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6764,
-   "print_time": "1h 52m 44s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6748,
+   "print_time": "1h 52m 28s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -82,29 +83,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1327,
-    "Internal solid infill": 1000,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1001,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_01.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_01.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_01_toolpath.png"
   },
   {
@@ -119,6 +113,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -129,10 +124,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6764,
-   "print_time": "1h 52m 44s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6748,
+   "print_time": "1h 52m 28s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -141,29 +136,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1327,
-    "Internal solid infill": 1000,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1001,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_02.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_02.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_02_toolpath.png"
   },
   {
@@ -178,6 +166,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -188,10 +177,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6763,
-   "print_time": "1h 52m 43s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6749,
+   "print_time": "1h 52m 29s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -200,29 +189,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 999,
-    "Outer wall": 958,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1002,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_03.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_03.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_03_toolpath.png"
   },
   {
@@ -237,6 +219,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -247,10 +230,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6763,
-   "print_time": "1h 52m 43s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6753,
+   "print_time": "1h 52m 33s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -259,29 +242,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 999,
-    "Outer wall": 958,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1005,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_04.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_04.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_04_toolpath.png"
   },
   {
@@ -296,6 +272,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -306,10 +283,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6790,
-   "print_time": "1h 53m 10s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6777,
+   "print_time": "1h 52m 57s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -318,29 +295,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1323,
-    "Internal solid infill": 1026,
-    "Outer wall": 958,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1029,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_05.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_05.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_05_toolpath.png"
   },
   {
@@ -355,6 +325,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -365,10 +336,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6762,
-   "print_time": "1h 52m 42s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6744,
+   "print_time": "1h 52m 24s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -377,29 +348,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1328,
-    "Internal solid infill": 997,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 901
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 996,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_06.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_06.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_06_toolpath.png"
   },
   {
@@ -414,6 +378,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -424,10 +389,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6763,
-   "print_time": "1h 52m 43s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6774,
+   "print_time": "1h 52m 54s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -436,29 +401,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 999,
-    "Outer wall": 958,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1027,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_07.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_07.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_07_toolpath.png"
   },
   {
@@ -473,6 +431,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -483,10 +442,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6784,
-   "print_time": "1h 53m 4s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6744,
+   "print_time": "1h 52m 24s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -495,29 +454,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 1021,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 914,
-    "Undefined": 906
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 996,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_08.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_08.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_08_toolpath.png"
   },
   {
@@ -532,6 +484,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -542,10 +495,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6766,
-   "print_time": "1h 52m 46s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6778,
+   "print_time": "1h 52m 58s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -554,29 +507,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1327,
-    "Internal solid infill": 1003,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1320,
+    "Internal solid infill": 1030,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_09.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_09.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_09_toolpath.png"
   },
   {
@@ -591,6 +537,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -601,10 +548,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6766,
-   "print_time": "1h 52m 46s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6749,
+   "print_time": "1h 52m 29s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -613,29 +560,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1328,
+    "Gap infill": 50,
+    "Inner wall": 1319,
     "Internal solid infill": 1002,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_10.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_10.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_10_toolpath.png"
   },
   {
@@ -650,6 +590,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -660,10 +601,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6766,
-   "print_time": "1h 52m 46s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6753,
+   "print_time": "1h 52m 33s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -672,29 +613,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1327,
-    "Internal solid infill": 1003,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 909,
-    "Undefined": 900
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1005,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_11.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_11.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_11_toolpath.png"
   },
   {
@@ -709,6 +643,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -719,10 +654,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6762,
-   "print_time": "1h 52m 42s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6753,
+   "print_time": "1h 52m 33s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -731,29 +666,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 999,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 914,
-    "Undefined": 905
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 1005,
+    "Outer wall": 956,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 901,
+    "Undefined": 892
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_12.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_12.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_12_toolpath.png"
   },
   {
@@ -768,6 +696,7 @@
     "carriage": 1
    },
    "support": false,
+   "brim_mm": 0.0,
    "positions": [
     [
      "carriage",
@@ -778,10 +707,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 6762,
-   "print_time": "1h 52m 42s",
-   "filament_g": 58.62,
-   "filament_m": 19.5,
+   "print_time_s": 6744,
+   "print_time": "1h 52m 24s",
+   "filament_g": 58.57,
+   "filament_m": 19.48,
    "layers": 145,
    "max_z_mm": 29.0,
    "toolpath_outside_bed": false,
@@ -790,29 +719,22 @@
    "gcode_warnings": [],
    "feature_time_s": {
     "Bottom surface": 298,
-    "Bridge": 471,
+    "Bridge": 472,
     "Custom": 304,
     "Flush": 26,
-    "Gap infill": 51,
-    "Inner wall": 1322,
-    "Internal solid infill": 999,
-    "Outer wall": 953,
-    "Overhang wall": 30,
-    "Sparse infill": 1177,
-    "Top surface": 228,
-    "Travel": 914,
-    "Undefined": 905
+    "Gap infill": 50,
+    "Inner wall": 1319,
+    "Internal solid infill": 996,
+    "Outer wall": 951,
+    "Overhang wall": 29,
+    "Sparse infill": 1175,
+    "Top surface": 229,
+    "Travel": 906,
+    "Undefined": 897
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/carriage_13.gcode.3mf",
-   "gcode_3mf_mb": 0.98,
-   "studio_png": "plates/carriage_13.png",
+   "gcode_3mf_mb": 0.94,
    "toolpath_png": "plates/carriage_13_toolpath.png"
   },
   {
@@ -904,10 +826,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 8473,
-   "print_time": "2h 21m 13s",
-   "filament_g": 65.39,
-   "filament_m": 21.75,
+   "print_time_s": 8437,
+   "print_time": "2h 20m 37s",
+   "filament_g": 65.03,
+   "filament_m": 21.63,
    "layers": 195,
    "max_z_mm": 39.0,
    "toolpath_outside_bed": false,
@@ -927,30 +849,23 @@
    ],
    "feature_time_s": {
     "Bottom surface": 301,
-    "Bridge": 363,
+    "Bridge": 364,
     "Brim": 205,
     "Custom": 353,
     "Flush": 28,
     "Gap infill": 182,
-    "Inner wall": 1866,
-    "Internal solid infill": 858,
-    "Outer wall": 1223,
+    "Inner wall": 1861,
+    "Internal solid infill": 855,
+    "Outer wall": 1219,
     "Overhang wall": 36,
-    "Sparse infill": 1625,
+    "Sparse infill": 1607,
     "Top surface": 271,
-    "Travel": 1179,
-    "Undefined": 1160
+    "Travel": 1173,
+    "Undefined": 1154
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/station.gcode.3mf",
-   "gcode_3mf_mb": 1.26,
-   "studio_png": "plates/station.png",
+   "gcode_3mf_mb": 1.21,
    "toolpath_png": "plates/station_toolpath.png"
   },
   {
@@ -1219,5 +1134,5 @@
   }
  ],
  "total_print_time_h": 38.6,
- "total_filament_g": 1136.8
+ "total_filament_g": 1135.8
 }

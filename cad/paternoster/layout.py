@@ -372,7 +372,7 @@ def placements(state: State | None = None) -> list[Placement]:
     add("clevis_bracket", "Actuator base clevis", T(None, B), 10, ALU, "station", (0, 0, -40))
     y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2           # head on the -y cheek's outer face, shoulder through cheek, tab, cheek
     add("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, y_head, 0])), 10, STEEL, "station", (0, -30, -40))
-    add("nut_m3", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 10, STEEL, "station", (0, 30, -40))
+    add("nut_m3_clevis", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 10, STEEL, "station", (0, 30, -40))
     add("actuator_body", "Actuonix P16-P 150 mm (feedback)", T(Ract, B), 10, (0.25, 0.25, 0.28), "station", (0, 0, -40))
     add("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 10, (0.7, 0.7, 0.72), "station", (0, 0, -40))
     Y = T(Ract, Pp)                                   # yoke frame: on the stub-pin axis, z along the actuator
@@ -482,6 +482,7 @@ SHAPES = {
     "auger_cap": lambda: reference_parts()["auger_cap"],
     "clevis_bracket": PT.clevis_bracket,
     "clevis_screw": PT.clevis_shoulder_screw,
+    "nut_m3_clevis": lambda: PT.locknut(3.0),          # its own key: "nut_m3" moves with the chain in --sweep
     "yoke_pin": PT.yoke_pin,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],

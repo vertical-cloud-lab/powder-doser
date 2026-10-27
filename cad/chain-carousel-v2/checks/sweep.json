@@ -1,7 +1,7 @@
 {
  "check": "sweep",
  "clashes": [],
- "step_links": 0.5,
- "poses": 17,
+ "step_links": 2.0,
+ "poses": 5,
  "direction": -1
 }

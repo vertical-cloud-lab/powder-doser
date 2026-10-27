@@ -52,11 +52,11 @@ On top of the presets: 3 walls and 25% sparse infill (functional parts), Texture
 | gondolas_1 | Bambu Lab H2D (left nozzle) | gondola x4 | 8 h 45 min | 340.88 g | 275 | [3mf](paternoster/plates/gondolas_1.gcode.3mf) [Studio](paternoster/plates/gondolas_1.png) [toolpaths](paternoster/plates/gondolas_1_toolpath.png) |
 | gondolas_2 | Bambu Lab H2D (left nozzle) | gondola x4 | 8 h 45 min | 340.88 g | 275 | [3mf](paternoster/plates/gondolas_2.gcode.3mf) [Studio](paternoster/plates/gondolas_2.png) [toolpaths](paternoster/plates/gondolas_2_toolpath.png) |
 | gondolas_3 | Bambu Lab H2D (left nozzle) | gondola x4 | 8 h 46 min | 340.88 g | 275 | [3mf](paternoster/plates/gondolas_3.gcode.3mf) [Studio](paternoster/plates/gondolas_3.png) [toolpaths](paternoster/plates/gondolas_3_toolpath.png) |
-| station | Bambu Lab A1 mini | uyoke_base x1, yoke_stop x1, yoke_stop_m x1, pin_boss x1, pin_boss_m x1, magnet_bracket x1, fork x1, fork_arm x1, clevis_bracket x1, vial_cup x1, vial_funnel x1, hold_bracket x4 | 2 h 22 min | 65.06 g | 195 | [3mf](paternoster/plates/station.gcode.3mf) [Studio](paternoster/plates/station.png) [toolpaths](paternoster/plates/station_toolpath.png) |
+| station | Bambu Lab A1 mini | uyoke_base x1, yoke_stop x1, yoke_stop_m x1, pin_boss x1, pin_boss_m x1, magnet_bracket x1, fork x1, fork_arm x1, clevis_bracket x1, vial_cup x1, vial_funnel x1, hold_bracket x4 | 2 h 21 min | 64.71 g | 195 | [3mf](paternoster/plates/station.gcode.3mf) [toolpaths](paternoster/plates/station_toolpath.png) |
 | mounting_plates_1 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x6 | 4 h 55 min | 131.36 g | 163 | [3mf](paternoster/plates/mounting_plates_1.gcode.3mf) [Studio](paternoster/plates/mounting_plates_1.png) [toolpaths](paternoster/plates/mounting_plates_1_toolpath.png) |
 | mounting_plates_2 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x6 | 4 h 55 min | 131.35 g | 163 | [3mf](paternoster/plates/mounting_plates_2.gcode.3mf) [Studio](paternoster/plates/mounting_plates_2.png) [toolpaths](paternoster/plates/mounting_plates_2_toolpath.png) |
 
-Totals: Bambu Lab H2D (left nozzle): 5 plates, 36 h 06 min, 1285 g; Bambu Lab A1 mini: 1 plate, 2 h 22 min, 65 g; all: 38.5 h of printing, 1350 g of PETG.
+Totals: Bambu Lab H2D (left nozzle): 5 plates, 36 h 06 min, 1285 g; Bambu Lab A1 mini: 1 plate, 2 h 21 min, 65 g; all: 38.5 h of printing, 1350 g of PETG.
 
 The station plates (A1 mini) get a 3 mm outer brim for the small parts; everything else prints without brim or support.
 
@@ -64,25 +64,25 @@ The station plates (A1 mini) get a 3 mm outer brim for the small parts; everythi
 
 | Plate | Printer | Parts (quantity) | Time | PETG | Layers | Files |
 |---|---|---|---|---|---|---|
-| carriage_01 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_01.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_01.png) [toolpaths](chain-carousel-v2/plates/carriage_01_toolpath.png) |
-| carriage_02 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_02.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_02.png) [toolpaths](chain-carousel-v2/plates/carriage_02_toolpath.png) |
-| carriage_03 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_03.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_03.png) [toolpaths](chain-carousel-v2/plates/carriage_03_toolpath.png) |
-| carriage_04 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_04.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_04.png) [toolpaths](chain-carousel-v2/plates/carriage_04_toolpath.png) |
-| carriage_05 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_05.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_05.png) [toolpaths](chain-carousel-v2/plates/carriage_05_toolpath.png) |
-| carriage_06 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_06.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_06.png) [toolpaths](chain-carousel-v2/plates/carriage_06_toolpath.png) |
-| carriage_07 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_07.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_07.png) [toolpaths](chain-carousel-v2/plates/carriage_07_toolpath.png) |
-| carriage_08 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_08.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_08.png) [toolpaths](chain-carousel-v2/plates/carriage_08_toolpath.png) |
-| carriage_09 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_09.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_09.png) [toolpaths](chain-carousel-v2/plates/carriage_09_toolpath.png) |
-| carriage_10 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_10.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_10.png) [toolpaths](chain-carousel-v2/plates/carriage_10_toolpath.png) |
-| carriage_11 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_11.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_11.png) [toolpaths](chain-carousel-v2/plates/carriage_11_toolpath.png) |
-| carriage_12 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_12.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_12.png) [toolpaths](chain-carousel-v2/plates/carriage_12_toolpath.png) |
-| carriage_13 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.62 g | 145 | [3mf](chain-carousel-v2/plates/carriage_13.gcode.3mf) [Studio](chain-carousel-v2/plates/carriage_13.png) [toolpaths](chain-carousel-v2/plates/carriage_13_toolpath.png) |
-| station | Bambu Lab A1 mini | uyoke_base x1, yoke_stop x1, yoke_stop_m x1, pin_boss x1, pin_boss_m x1, magnet_bracket x1, fork x1, fork_arm x1, clevis_bracket x1, vial_cup x1, vial_funnel x1, level_wedge x1 | 2 h 21 min | 65.39 g | 195 | [3mf](chain-carousel-v2/plates/station.gcode.3mf) [Studio](chain-carousel-v2/plates/station.png) [toolpaths](chain-carousel-v2/plates/station_toolpath.png) |
+| carriage_01 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_01.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_01_toolpath.png) |
+| carriage_02 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_02.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_02_toolpath.png) |
+| carriage_03 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_03.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_03_toolpath.png) |
+| carriage_04 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_04.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_04_toolpath.png) |
+| carriage_05 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_05.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_05_toolpath.png) |
+| carriage_06 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_06.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_06_toolpath.png) |
+| carriage_07 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_07.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_07_toolpath.png) |
+| carriage_08 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_08.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_08_toolpath.png) |
+| carriage_09 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_09.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_09_toolpath.png) |
+| carriage_10 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_10.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_10_toolpath.png) |
+| carriage_11 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_11.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_11_toolpath.png) |
+| carriage_12 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 53 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_12.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_12_toolpath.png) |
+| carriage_13 | Bambu Lab H2D (left nozzle) | carriage x1 | 1 h 52 min | 58.57 g | 145 | [3mf](chain-carousel-v2/plates/carriage_13.gcode.3mf) [toolpaths](chain-carousel-v2/plates/carriage_13_toolpath.png) |
+| station | Bambu Lab A1 mini | uyoke_base x1, yoke_stop x1, yoke_stop_m x1, pin_boss x1, pin_boss_m x1, magnet_bracket x1, fork x1, fork_arm x1, clevis_bracket x1, vial_cup x1, vial_funnel x1, level_wedge x1 | 2 h 21 min | 65.03 g | 195 | [3mf](chain-carousel-v2/plates/station.gcode.3mf) [toolpaths](chain-carousel-v2/plates/station_toolpath.png) |
 | hold_downs_tensioners | Bambu Lab A1 mini | hold_down x2, tensioner_block x4 | 2 h 00 min | 46.51 g | 115 | [3mf](chain-carousel-v2/plates/hold_downs_tensioners.gcode.3mf) [Studio](chain-carousel-v2/plates/hold_downs_tensioners.png) [toolpaths](chain-carousel-v2/plates/hold_downs_tensioners_toolpath.png) |
 | mounting_plates_1 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x6 | 4 h 55 min | 131.44 g | 163 | [3mf](chain-carousel-v2/plates/mounting_plates_1.gcode.3mf) [Studio](chain-carousel-v2/plates/mounting_plates_1.png) [toolpaths](chain-carousel-v2/plates/mounting_plates_1_toolpath.png) |
 | mounting_plates_2 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x6 | 4 h 55 min | 131.44 g | 163 | [3mf](chain-carousel-v2/plates/mounting_plates_2.gcode.3mf) [Studio](chain-carousel-v2/plates/mounting_plates_2.png) [toolpaths](chain-carousel-v2/plates/mounting_plates_2_toolpath.png) |
 
-Totals: Bambu Lab H2D (left nozzle): 15 plates, 34 h 16 min, 1025 g; Bambu Lab A1 mini: 2 plates, 4 h 21 min, 112 g; all: 38.6 h of printing, 1137 g of PETG.
+Totals: Bambu Lab H2D (left nozzle): 15 plates, 34 h 13 min, 1024 g; Bambu Lab A1 mini: 2 plates, 4 h 21 min, 112 g; all: 38.6 h of printing, 1136 g of PETG.
 
 The station plates (A1 mini) get a 3 mm outer brim for the small parts; everything else prints without brim or support.
 

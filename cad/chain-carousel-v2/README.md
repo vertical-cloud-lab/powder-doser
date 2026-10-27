@@ -98,14 +98,16 @@ Three v2 simulations ([sim/README.md](sim/README.md)), the [gear-mesh study](../
 
 ## Checks
 
-[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Pairs that touch by design (a pin in its bore, a screw in its nut or insert, a bearing on its shaft, the gear mesh) are skipped by part key. The one by-design contact that can't be skipped by key is the plate's edge passing the carriage's two snap-hook lips (0.8 mm overlap, the hooks flex) while the station tilts it: the overlap inside the lips is logged in `checks/tilt.json` and anything else between plate and carriage still counts. Results are in [`checks/`](checks). **All four come out at 0 clashes:**
+[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Pairs that touch by design (a pin in its bore, a screw in its nut or insert, a bearing on its shaft, the gear mesh) are skipped by part key. The one by-design contact that can't be skipped by key is the plate's edge passing the carriage's two snap-hook lips (0.8 mm overlap, the hooks flex) while the station tilts it: the overlap inside the lips is logged in `checks/tilt.json` and anything else between plate and carriage still counts. Results are in [`checks/`](checks). **Re-run on 2026-10-27 with the vendors' own geometry** (Actuonix's P16, McMaster's screws, nuts, dowels and e-clips, StepperOnline's NEMA 34, Nitro's chain dimensions):
 
 | Check | What moves | Result |
 |---|---|---|
-| Home | Nothing: every pair of the 701 instances | **0** |
-| `--sweep` | The chain indexed one full module the machine's way in half-link steps (17 poses). The 13 carriages together pass every point of the loop, including all four corners, against the frame, shafts, sprockets, drive, station and each other | **0** |
-| `--tilt` | The electronics carriage rising 0-20 mm in the fork, then module 1 + electronics carriage + actuator tilting 5-90°, against everything, carriage 1 included | **0** (the plate passing the snap lips, by design, logged at 5°: up to 17.3 mm³) |
-| `--swap` | Carriage 4 at the loading position: screws backed out 10 mm, slid 10 mm, lifted 150 mm out with its module | **0** |
+| Home | Nothing: every pair of the 704 instances | **0**, after a relief in each carriage for the A-1 links' real pin ends (Nitro: 1.24 mm proud, 0.8 mm more than drawn); they reached 0.4 mm into all 26 hooks |
+| `--tilt` | The electronics carriage rising 0-20 mm in the fork, then module 1 + electronics carriage + actuator tilting 5-90° | **1, fixed:** the same P16 tube end against the U-yoke crossbar at full retraction as in the paternoster (65.6 mm³); the crossbar's underside is now 1.5 mm higher and re-checked clean at every pose. The plate passing the snap lips, by design, is logged at 5° (17.3 mm³) |
+| `--swap` | Carriage 4 at the loading position: screws backed out 10 mm, slid 10 mm, lifted 150 mm out | **2 touches of 0.61 mm³, fixed:** half-way through the slide the next link's (longer) pin end brushed the hook. The relief now runs along the slide's path; carriage 4 against the chain at 9 swap poses, including the in-between slides: 0 |
+| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses; the 17-pose half-link sweep of 2026-10-19 is too slow with the vendors' geometry for this run) | **0** |
+
+New contacts that are meant to be there (skipped by part key): the 15T drive sprockets on the drive chain (0.3-0.7 mm slivers where the simplified tooth form meets a link with Nitro's real plate height), the clevis screw in its cheeks and nut, and the yoke dowel pressed in the crossbar.
 
 ## Things to look at before ordering or printing
 

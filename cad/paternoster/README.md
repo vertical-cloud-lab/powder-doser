@@ -94,14 +94,16 @@ Two MuJoCo models ([sim/README.md](sim/README.md), [sim/AUGER-SIM.md](sim/AUGER-
 
 ## Checks
 
-[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks), re-run on 2026-10-19 with the ported station. **All four come out at 0 clashes:**
+[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Results are in [`checks/`](checks). **Re-run on 2026-10-27 with the vendors' own geometry** (Actuonix's P16, McMaster's fasteners, bushings and links, the corrected bearings, chain and load cell):
 
 | Check | What moves | Result |
 |---|---|---|
-| Home | Nothing: every pair of the 571 instances | **0** |
-| `--sweep` | The chain indexed one full module in half-link steps (21 poses). The 12 gondolas together pass every point of the loop, including all four corners, against the frame, shafts, sprockets, idlers, station and each other | **0** |
-| `--tilt` | The electronics carriage rising 0-19.5 mm in the fork, then module + carriage + U-yoke + actuator tilting 5-90°, against everything | **0** |
+| Home | Nothing: every pair of the 582 instances | **0** |
+| `--tilt` | The electronics carriage rising 0-19.5 mm in the fork, then module + carriage + U-yoke + actuator tilting 5-90°, against everything | **1, fixed:** fully retracted, Actuonix's real tube end (2 mm longer than the old stand-in) met the U-yoke crossbar's underside (65.6 mm³). The underside is now 1.5 mm higher. The new crossbar is a subset of the old one, and the crossbar re-checked against the actuator, rod, pin, arms, carriage, fork and rails at all 12 poses is clean |
 | `--swap` | A module (with its steel tab) lifted 22 mm and slid 70 mm out at the loading position | **0** |
+| `--sweep --step 2.5` | The chain indexed one module in 2.5-link steps (5 poses: the 21-pose half-link sweep of 2026-10-19 is too slow with the vendors' threads and knurls for this run). The 12 gondolas pass the frame, shafts, sprockets, idlers and station | **0** (a first run paired the P16 base-pin nut with itself: it shared the gondolas' `nut_m3` key, which the sweep moves; it has its own key now) |
+
+New contacts that are meant to be there (skipped by part key): the PTFE washer bearing on the SA-1 tab (McMaster's tab face is 0.016 mm proud of the old model), the idler spacer and circlip on their axle, the clevis screw in its cheeks and nut, and the yoke dowel pressed in the crossbar.
 
 On the way they caught, and the design now fixes:
 - the hold-down strips' ends touching the 32T tooth tips (shortened to 100 mm);

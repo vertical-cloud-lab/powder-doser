@@ -350,10 +350,11 @@ def carriage(print_web: bool = False) -> cq.Workplane:
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(6.4 / 2).extrude(TAB_SCREW_CB).translate((0, w0 + TAB_SCREW_CB, 0)))   # head flush
         plate = plate.union(tab_hook(x > CHAIN_L / 2, print_web).translate((0, 0, x)))
     # relief for the A-1 links' pin ends: Nitro's pins stand 1.24 mm proud of the plates (12.40 overall, cad/vendor/AUDIT_other.md),
-    # 0.8 mm more than drawn before, and reached 0.4 mm into each hook's inner face
+    # 0.8 mm more than drawn before, and reached 0.4 mm into each hook's inner face; the pocket runs on along +u over the
+    # path the next link's pin ends take while the carriage slides HOOK_SLIDE off its tabs (swap check)
     pin_end = CHAIN_PIN_LEN / 2 if "CHAIN_PIN_LEN" in globals() else PIN_LEN / 2
     for z0 in (pin_end - 0.8, CHAIN_L - pin_end - 0.8):
-        plate = plate.cut(cq.Workplane("XY").center(0.0, 0.0).rect(14.6, 4.8).extrude(1.6).translate((0, 0, z0)))
+        plate = plate.cut(cq.Workplane("XY").center(4.6, 0.0).rect(23.8, 4.8).extrude(1.6).translate((0, 0, z0)))   # + the swap slide's path
     # magnet pockets from the inner face of the tongues
     for x in (CAR_X0 + 7.0, CAR_X1 - 7.0):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(MAGNET_D / 2 + 0.15).extrude(MAGNET_H + 0.3)
@@ -635,16 +636,18 @@ def uyoke_base() -> cq.Workplane:
     inserts). The guide tongue for the approach fork hangs under it at y = TONGUE_Y."""
     zr = -UFORK_L
     hw = UFORK_Y[0]
-    b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
+    # underside 4.5 mm below the rod-end hole (was 6): fully retracted, the P16's square tube ends 5.0 mm below the hole
+    # (Actuonix STEP; the old stand-in tube ended 2 mm lower), so the crossbar now clears it by 0.5 mm
+    b = cq.Workplane("XY").box(20.0, 2 * hw, 12.5, centered=(True, True, False)).translate((0, 0, zr - 4.5))
     # socket for the P16's real rod end (datasheet + Actuonix STEP): the dia 8.94 rod tube and the rod end's dia 9 x 1 mm
     # collar sit in a dia 9.3 counterbore (collar face 3 mm below the hole), and the 9 x 6 tab (hole at zr, tip 4 mm
     # above) fits a 9.3 x 6.3 slot, so it can't rock (the old 9.3 mm square socket fitted a 9 x 9 plug the P16 doesn't have)
-    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(3.11).translate((0, 0, zr - 6.01)))
+    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(1.61).translate((0, 0, zr - 4.51)))
     b = b.cut(cq.Workplane("XY").box(9.3, 6.3, 7.2, centered=(True, True, False)).translate((0, 0, zr - 2.9)))
     b = b.cut(cq.Workplane("XZ").center(0, zr).circle(1.98).extrude(30, both=True))                              # 4 mm dowel, light press
     for x in (-5.0, 5.0):
         b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))                     # arm screws
-    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
+    tongue = cq.Workplane("XY").box(30.0, 6.0, 26.5, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
     return b.union(tongue)
 
 

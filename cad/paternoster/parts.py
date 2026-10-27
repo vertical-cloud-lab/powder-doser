@@ -480,16 +480,18 @@ def uyoke_base() -> cq.Workplane:
     makes it rigid; the steel arms bolt to its sides; the approach-guide tongue hangs under it at y = TONGUE_Y."""
     zr = -UFORK_L
     hw = UFORK_Y[0]
-    b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
+    # underside 4.5 mm below the rod-end hole (was 6): fully retracted, the P16's square tube ends 5.0 mm below the hole
+    # (Actuonix STEP; the old stand-in tube ended 2 mm lower), so the crossbar now clears it by 0.5 mm
+    b = cq.Workplane("XY").box(20.0, 2 * hw, 12.5, centered=(True, True, False)).translate((0, 0, zr - 4.5))
     # socket for the P16's real rod end (datasheet + Actuonix STEP): the dia 8.94 rod tube and the rod end's dia 9 x 1 mm
     # collar sit in a dia 9.3 counterbore (collar face 3 mm below the hole), and the 9 x 6 tab (hole at zr, tip 4 mm
     # above) fits a 9.3 x 6.3 slot, so it can't rock (the old 9.3 mm square socket fitted a 9 x 9 plug the P16 doesn't have)
-    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(3.11).translate((0, 0, zr - 6.01)))
+    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(1.61).translate((0, 0, zr - 4.51)))
     b = b.cut(cq.Workplane("XY").box(9.3, 6.3, 7.2, centered=(True, True, False)).translate((0, 0, zr - 2.9)))
     b = b.cut(cq.Workplane("XZ").center(0, zr).circle(1.98).extrude(30, both=True))   # 4 mm dowel, light press
     for x in (-5.0, 5.0):
         b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))
-    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
+    tongue = cq.Workplane("XY").box(30.0, 6.0, 26.5, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
     return b.union(tongue)
 
 

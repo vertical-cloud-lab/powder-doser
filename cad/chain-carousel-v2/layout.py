@@ -695,7 +695,7 @@ def _station(st: State, add) -> None:
     y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2                # head on the -y cheek's outer face, shoulder through cheek, tab, cheek
     add(Placement("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, y_head, 0])), 8, STEEL,
                   "station", (0, -30, -40)))
-    add(Placement("nut_m3", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 8, STEEL,
+    add(Placement("nut_m3_clevis", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 8, STEEL,
                   "station", (0, 30, -40)))
     add(Placement("actuator_body", "Actuonix P16-150-22-12-P (pot feedback)", T(Ract, B), 8, (0.25, 0.25, 0.28), "station", (0, 0, -40)))
     add(Placement("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 8, (0.7, 0.7, 0.72), "station", (0, 0, -40)))
@@ -797,6 +797,7 @@ BUILDERS = {
     "armature_tab": PT.armature_tab,
     "clevis_bracket": lambda: PT.clevis_bracket(CLEVIS_RISE),
     "clevis_screw": PT.clevis_shoulder_screw,
+    "nut_m3_clevis": lambda: PT.locknut(3.0),          # its own key: "nut_m3" moves with the chain in --sweep
     "yoke_pin": PT.yoke_pin,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],

@@ -372,10 +372,10 @@
    "cli_exit": 0,
    "return_code": 0,
    "error": "Success.",
-   "print_time_s": 8512,
-   "print_time": "2h 21m 52s",
-   "filament_g": 65.06,
-   "filament_m": 21.64,
+   "print_time_s": 8475,
+   "print_time": "2h 21m 15s",
+   "filament_g": 64.71,
+   "filament_m": 21.52,
    "layers": 195,
    "max_z_mm": 39.0,
    "toolpath_outside_bed": false,
@@ -399,26 +399,19 @@
     "Brim": 220,
     "Custom": 354,
     "Flush": 28,
-    "Gap infill": 179,
-    "Inner wall": 1949,
-    "Internal solid infill": 786,
-    "Outer wall": 1266,
+    "Gap infill": 180,
+    "Inner wall": 1941,
+    "Internal solid infill": 782,
+    "Outer wall": 1263,
     "Overhang wall": 36,
-    "Sparse infill": 1646,
+    "Sparse infill": 1628,
     "Top surface": 255,
-    "Travel": 1209,
-    "Undefined": 1190
+    "Travel": 1202,
+    "Undefined": 1183
    },
-   "pngs_in_3mf": [
-    "Metadata/plate_1.png",
-    "Metadata/plate_1_small.png",
-    "Metadata/plate_no_light_1.png",
-    "Metadata/top_1.png",
-    "Metadata/pick_1.png"
-   ],
+   "pngs_in_3mf": [],
    "gcode_3mf": "plates/station.gcode.3mf",
-   "gcode_3mf_mb": 1.24,
-   "studio_png": "plates/station.png",
+   "gcode_3mf_mb": 1.19,
    "toolpath_png": "plates/station_toolpath.png"
   },
   {
@@ -591,5 +584,5 @@
   }
  ],
  "total_print_time_h": 38.5,
- "total_filament_g": 1350.4
+ "total_filament_g": 1350.1
 }
