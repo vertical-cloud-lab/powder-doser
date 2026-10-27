@@ -3,8 +3,11 @@
     python assemble_paste.py           # paste/<part>.fs for every part script in parts/, and
                                        # paste/powder_doser_servos_above.fs: all of them in one Feature Studio,
                                        # plus "Powder doser, servos above (printed parts)"
-    python assemble_paste.py --check   # also runs that feature with fsgen's local FeatureScript interpreter at
-                                       # a few tilts and writes results/paste_assembly.json and a STEP per tilt
+    python assemble_paste.py --check [--ref-dir DIR]
+                                       # also runs that feature with fsgen's local FeatureScript interpreter at
+                                       # tilt 0 and 45 deg: results/paste_assembly.json, a STEP per tilt, a render,
+                                       # and each placed part's box vs. text-to-cad's STEP of it (DIR: PR #176's
+                                       # cad/text-to-cad/STEP/parts)
 
 fsgen's paste export turns a part script into one custom feature whose dialog holds the part's variables.
 In Onshape: create a Feature Studio, select all, paste the file, commit; then in a Part Studio insert a feature
@@ -66,6 +69,11 @@ ASSEMBLY_FN = "powderDoserServosAbove"
 def ident(name: str) -> str:
     words = "".join(c if c.isalnum() else " " for c in name).split()
     return (words[0].lower() + "".join(w[:1].upper() + w[1:] for w in words[1:])) if words else "part"
+
+
+def sub_id(name: str) -> str:
+    """Instance name -> the assembly feature's sub-feature id (unique: ident() alone drops the +/-)."""
+    return ident(name.replace("+X", "pos").replace("-X", "neg"))
 
 
 def fs_num(v: float) -> str:
@@ -177,7 +185,7 @@ def assembly_feature(defaults: dict[str, str], fn_of: dict[str, str], pl: dict) 
          f"        const pinionSpin = rotationAround(line({fs_vec(S[:3, 3], 'millimeter')}, {fs_vec(S[:3, 2])}), "
          f"-{fs_num(stepper)} * definition.augerTurn);"]
     for name, stem in INSTANCES.items():
-        sub = ident(name)
+        sub = sub_id(name)
         L.append(f"        // {name}: {TITLES[stem]}")
         L.append(f'        {fn_of[stem]}(context, id + "{sub}", {defaults[stem]});')
         place = fs_placement(P[name])
@@ -198,7 +206,7 @@ def assembly_feature(defaults: dict[str, str], fn_of: dict[str, str], pl: dict) 
     return "\n".join(L)
 
 
-def build(check: bool) -> None:
+def build(check: bool, ref_dir: Path | None = None) -> None:
     from fsgen.fslite.runner import run_source
     from fsgen.fslite.values import mk
     pl = json.loads(PLACEMENTS.read_text())
@@ -246,11 +254,52 @@ def build(check: bool) -> None:
         res["assembly"][f"tilt_{int(tilt)}"] = m
         print(f"assembly at tilt {tilt:g} deg: {m['bodies']} bodies, {m['volume_mm3']} mm3, box {m['bbox_mm']}")
         write_step(run, HERE / "results" / f"paste_assembly_tilt{int(tilt)}.step")
+        if ref_dir:
+            boxes = placement_check(run, tilt, pl, ref_dir)
+            res["assembly"][f"tilt_{int(tilt)}"]["box_vs_text_to_cad_max_mm"] = boxes
+            print("   box vs text-to-cad, max deviation per part (mm):", boxes)
         runs.append(run)
     render(runs, HERE / "renders" / "paste_assembly_local.png",
            [f"{ASSEMBLY_TITLE}: tilt {t} deg" for t in (0, 45)])
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / "paste_assembly.json").write_text(json.dumps(res, indent=1) + "\n")
+
+
+def tight_box(shape) -> np.ndarray:
+    from OCP.Bnd import Bnd_Box
+    from OCP.BRepBndLib import BRepBndLib
+    b = Bnd_Box()
+    BRepBndLib.AddOptimal_s(shape, b, False, False)
+    lo, hi = b.CornerMin(), b.CornerMax()
+    return np.array([lo.X(), lo.Y(), lo.Z(), hi.X(), hi.Y(), hi.Z()])
+
+
+def placement_check(run, tilt: float, pl: dict, ref_dir: Path) -> dict:
+    """Each solid the assembly feature left vs. text-to-cad's STEP of that part moved by the same 4x4
+    (and, at a tilt, by the hinge rotation or the pinion's spin): the boxes should agree."""
+    from OCP.BRepBuilderAPI import BRepBuilderAPI_Transform
+    from OCP.gp import gp_Trsf
+    from build123d import import_step
+    hinge = rot((1, 0, 0), tilt, pl["hinge_point_mm"])
+    by_sub = {sub_id(name): name for name in INSTANCES}
+    out, refs = {}, {}
+    for creator, shape in solids_mm(run):
+        sub = creator.split(".")[1] if "." in creator else creator
+        name = by_sub[sub]
+        stem = INSTANCES[name]
+        M = np.array(pl["parts"][name]["matrix"])
+        if name.startswith("Servo pinion"):
+            M = M @ rot((0, 0, 1), (-1 if "+X" in name else 1) * pl["servo_ratio"] * tilt)
+        elif name in pl["tilting"]:
+            M = hinge @ M
+        if stem not in refs:
+            refs[stem] = import_step(str(ref_dir / f"{stem}.step")).wrapped
+        tr = gp_Trsf()
+        tr.SetValues(*M[0, :4], *M[1, :4], *M[2, :4])
+        ref = BRepBuilderAPI_Transform(refs[stem], tr, True).Shape()
+        d = float(np.abs(tight_box(shape) - tight_box(ref)).max())
+        out[name] = round(d, 4)
+    return out
 
 
 def solids_mm(run) -> list:
@@ -355,6 +404,8 @@ def re_part(sub: str) -> str:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--ref-dir", type=Path, help="--check: text-to-cad's part STEPs (PR #176's STEP/parts), "
+                                                 "to compare each placed part's box")
     a = ap.parse_args()
     sys.setrecursionlimit(10000)
-    build(a.check)
+    build(a.check, a.ref_dir)

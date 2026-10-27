@@ -8,7 +8,8 @@ The 2026-10-27 run could not push: every document request returned HTTP 402 "API
 company's yearly allowance). This script is the push it would have made. Order:
 
 1. ``onshape_doc.py adopt --studio Auger`` (2 calls). The 2026-10-20 run pushed the auger but its fsgen state
-   was lost with the runner; without it fsgen would build a second auger instead of updating the first.
+   was lost with the runner; without it fsgen would build a second auger instead of updating the first. The
+   auger's push then re-sends what fsgen_patches.diff changed (about 5 calls), and its tab gets renamed (1).
 2. ``fsgen studio push parts/<stem>.fs --name <title> --document <url> --metrics``, one Part Studio per part,
    each with a hard budget of its estimate + 3. It stops at the first part that fails or overspends.
 3. ``onshape_doc.py rename-doc`` and ``share`` (1 call each).
@@ -37,8 +38,19 @@ def doc_url() -> str:
     return json.loads((HERE / "onshape_document.json").read_text())["url"]
 
 
+def adopted(stem: str) -> bool:
+    rec = json.loads((HERE / "onshape_document.json").read_text())
+    state = HERE / ".fsgen_native.json"
+    return state.exists() and f"{TITLES[stem]}@{rec['workspaceId']}" in json.loads(state.read_text())
+
+
 def estimate(stem: str) -> tuple[int, str]:
     """fsgen's own estimate for pushing this part into the document (0 calls: the keys are removed)."""
+    if stem == "auger" and not adopted(stem):
+        # already in Onshape; fsgen can't see that until adopt has rebuilt its state. Counted offline with
+        # onshape_doc._num_020: the push then re-sends 2 sketches whose expressions gain digits, the variables,
+        # and checks the reused features' status and the volume
+        return 5, "push to \"Auger\" (update, after adopt): 2 sketches + variables 1 + status check 1 + volume check 1"
     env = {k: v for k, v in os.environ.items() if k not in ("ONSHAPE_ACCESS_KEY", "ONSHAPE_SECRET_KEY")}
     out = subprocess.run([FSGEN, "studio", "check", str(HERE / "parts" / f"{stem}.fs"), "--name", TITLES[stem],
                           "--document", doc_url()], cwd=HERE, env=env, capture_output=True, text=True,
@@ -72,8 +84,10 @@ def main() -> None:
         n, line = estimate(stem)
         plan[stem] = n
         print(f"{stem:30s} {line}")
-    total = sum(plan.values()) + 2 + 2          # + adopt (2) + rename and share (2)
-    print(f"total: {sum(plan.values())} for the parts + 4 (adopt the auger, rename, share) = {total} calls")
+    extra = (3 if "auger" in stems else 0) + 2   # adopt (2) and rename the auger's tab (1); rename doc, share
+    total = sum(plan.values()) + extra
+    print(f"total: {sum(plan.values())} for the parts + {extra} (adopt the auger and rename its tab, rename the "
+          f"document, share) = {total} calls")
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / "push_plan.json").write_text(json.dumps({"calls_per_part": plan, "total": total}, indent=1)
                                                      + "\n")
@@ -86,6 +100,9 @@ def main() -> None:
     for stem in stems:
         run([FSGEN, "studio", "push", f"parts/{stem}.fs", "--name", TITLES[stem], "--document", doc_url(),
              "--metrics", "--budget", str(plan[stem] + 3)], HERE / "results" / "push_logs" / f"{stem}.log")
+        if stem == "auger":     # the 2026-10-20 push built in the default tab, "Part Studio 1"
+            run([py, "onshape_doc.py", "rename", "--studio", TITLES[stem], "--budget", "1"],
+                HERE / "results" / "push_logs" / "rename_auger.log")
     run([py, "onshape_doc.py", "rename-doc", "--budget", "1"], HERE / "results" / "push_logs" / "rename_doc.log")
     run([py, "onshape_doc.py", "share", "--budget", "1"], HERE / "results" / "push_logs" / "share.log")
 

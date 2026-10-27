@@ -119,12 +119,29 @@ def cmd_share(o: Onshape, rec: dict) -> None:
     print("shared with", COMPANY, perms)
 
 
+def _num_020(v: float) -> str:
+    """fsgen 0.2.0's number format for expressions (6 significant digits), before fsgen_patches.diff."""
+    if abs(v - round(v)) < 1e-9 and abs(v) < 1e15:
+        return str(int(round(v)))
+    return f"{v:.6g}"
+
+
 def cmd_adopt(o: Onshape, rec: dict, name: str, script: str) -> None:
     """Rebuild fsgen's state for a Part Studio that was pushed before but whose .fsgen_native.json was lost
-    (2 calls). Features are matched to the script's trace by name and hashed from the script, so the next
-    push re-sends nothing that Onshape already has."""
+    (2 calls). Features are matched to the script's trace by name. The hashes are those of what was pushed:
+    the 2026-10-20 push used fsgen 0.2.0's 6-digit expressions, so the next push re-sends the variables and
+    exactly the features whose expressions gain digits from fsgen_patches.diff."""
+    import fsgen.fslite.values as fsv
     from fsgen.native.script import trace
-    tr = trace(Path(script).read_text())
+    patched = fsv._num
+    fsv._num = _num_020
+    try:
+        tr = trace(Path(script).read_text())
+        hashes = [nb.feature_hash(f) for f in tr.features]
+        import hashlib
+        vh_pushed = hashlib.sha1(json.dumps(tr.variable_list, sort_keys=True).encode()).hexdigest()[:16]
+    finally:
+        fsv._num = patched
     els = o.get(f"documents/d/{rec['documentId']}/w/{rec['workspaceId']}/elements")
     by_name = {e["name"]: e for e in els}
     ps = by_name.get(name) or (by_name.get("Part Studio 1") if name == STUDIO else None)
@@ -135,15 +152,14 @@ def cmd_adopt(o: Onshape, rec: dict, name: str, script: str) -> None:
     states = feats.get("featureStates", {})
     onshape = [(f["name"], f["featureId"], f["featureType"]) for f in feats["features"]]
     entries = []
-    for rec_f, (oname, fid, ftype) in zip(tr.features, onshape):
+    for rec_f, h, (oname, fid, ftype) in zip(tr.features, hashes, onshape):
         if rec_f.name != oname:
             raise SystemExit(f"tree differs at {rec_f.name!r} (Onshape: {oname!r}); not adopting")
-        entries.append({"name": rec_f.name, "type": rec_f.feature_type, "hash": nb.feature_hash(rec_f),
+        entries.append({"name": rec_f.name, "type": rec_f.feature_type, "hash": h,
                         "fid": fid, "status": states.get(fid, {}).get("featureStatus", "OK")})
     if len(onshape) != len(tr.features):
         raise SystemExit(f"Onshape has {len(onshape)} features, the script {len(tr.features)}; not adopting")
-    import hashlib
-    vh = hashlib.sha1(json.dumps(tr.variable_list, sort_keys=True).encode()).hexdigest()[:16] if vs else None
+    vh = vh_pushed if vs else None
     st = nb.StudioState(rec["documentId"], rec["workspaceId"], ps["id"], name, features=entries,
                         vs_eid=vs["id"] if vs else None, vs_hash=vh, vs_referenced=bool(vs),
                         key=f"{name}@{rec['workspaceId']}")

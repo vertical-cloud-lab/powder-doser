@@ -1,0 +1,46 @@
+{
+ "candidate": "mounting_plate_servos_above.step",
+ "reference": "mounting_plate_servos_above.step",
+ "reference_solids_fused": 5,
+ "candidate_volume_mm3": 91263.867,
+ "reference_volume_mm3": 91263.83,
+ "volume_diff_pct": 4e-05,
+ "candidate_bbox_mm": [
+  [
+   -130.0,
+   -35.25,
+   -95.9
+  ],
+  [
+   16.6356,
+   19.47,
+   12.3
+  ]
+ ],
+ "reference_bbox_mm": [
+  [
+   -130.0,
+   -35.25,
+   -95.9
+  ],
+  [
+   16.6355,
+   19.47,
+   12.3
+  ]
+ ],
+ "candidate_solids": 1,
+ "reference_solids": 1,
+ "intersection_mm3": 91263.312,
+ "candidate_only_mm3": 0.554,
+ "reference_only_mm3": 0.518,
+ "iou": 0.9999883,
+ "script": "parts/mounting_plate_servos_above.fs",
+ "part_studio_name": "Mounting plate (servos above)",
+ "features": 22,
+ "variables": 17,
+ "fsgen_push_estimate_calls": 26,
+ "local_build_onshape_calls": 0,
+ "compared_with": "reference STEP's 5 solids (plate, gear_pos, gear_neg, block_pos, block_neg) fused into one",
+ "residual": "um-level slivers only: involute flanks as 3 arcs (max 0.88 um from the involute) vs the reference's 16-point spline (r 17.1-19.5), root lands as chords (1.3 um sagitta, r 16.7), and the knuckle boss and turned-down rim arcs drawn with their centre 0.1 um off the hinge axis"
+}
