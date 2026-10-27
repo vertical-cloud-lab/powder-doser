@@ -16,6 +16,10 @@ import cadquery as cq
 
 from params import *  # noqa: F401,F403
 
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "vendor"))
+import actuonix  # noqa: E402  (Actuonix's STEP, shared with the other carousel)
+
 HERE = Path(__file__).resolve().parent
 REF = HERE / "reference"
 
@@ -44,8 +48,9 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
     z0 = OUTER_GAP / 2
     top = _plate(PLATE_T, PIN_D).translate((0, 0, z0))
     bot = _plate(PLATE_T, PIN_D).translate((0, 0, -z0 - PLATE_T))
+    pl = PIN_LEN if clip else PIN_LEN_RC35          # SA-1 connecting link (McMaster STEP) / plain riveted link (Nitro L)
     pins = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(PIN_D / 2)
-            .extrude(PIN_LEN).translate((0, 0, -PIN_LEN / 2)))
+            .extrude(pl).translate((0, 0, -pl / 2)))
     link = top.union(bot).union(pins)
     if clip:
         c = (cq.Workplane("XY").rect(P + 2.6, 5.2).extrude(0.5)
@@ -93,14 +98,17 @@ def _ring32():
 
 def sprocket_32(bore: float = SPROCKET_BORE, keyed: bool = True) -> cq.Workplane:
     """35BS32: 32T, 2 in hub toward -z (out of the loop), 7/8 in through the bore.
-    Tooth ring centred on z = 0; the ring's inner face (+z) is the flush face."""
+    Tooth ring centred on z = 0; the ring's inner face (+z) is the flush face. Martin 35BS32 5/8 (catalog data, the
+    maker's table that distributors quote): 4.032 in OD, 3.826 in PD, 2 in hub, 7/8 in LTB, 3/16 x 3/32 keyway,
+    two set screws, one over the keyway and one at 90 deg (was one)."""
     hub = cq.Workplane("XY").circle(HUB_D / 2).extrude(LTB - TOOTH_W).translate((0, 0, -LTB + TOOTH_W / 2))
     s = _ring32().union(hub)
     s = s.cut(cq.Workplane("XY").circle(bore / 2).extrude(60).translate((0, 0, -30)))
     if keyed:
         s = s.cut(cq.Workplane("XY").center(0, bore / 2).rect(KEYWAY[0], 2 * KEYWAY[1]).extrude(60).translate((0, 0, -30)))
     zs = -LTB + TOOTH_W / 2 + (LTB - TOOTH_W) / 2
-    return s.cut(cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40))
+    return s.cut(cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40)
+                 .union(cq.Workplane("YZ").center(0, zs).circle(3.0).extrude(40)))
 
 
 def sprocket_32_idler() -> cq.Workplane:
@@ -177,11 +185,33 @@ def nema11_envelope() -> cq.Workplane:
     return body.union(boss).union(sh)
 
 
+def _spur_outline(z: int, m: float, alpha_deg: float = 20.0, n_inv: int = 7) -> list[tuple[float, float]]:
+    """Standard full-depth involute spur gear outline (addendum m, dedendum 1.25 m, zero shift) as a closed polyline,
+    a tooth centred on +x. The flank runs radially below the base circle (no undercut detail)."""
+    a = math.radians(alpha_deg)
+    r, ra, rf = m * z / 2, m * z / 2 + m, m * z / 2 - 1.25 * m
+    rb = r * math.cos(a)
+    inv = lambda t: math.tan(t) - t  # noqa: E731
+    half = math.pi / (2 * z) + inv(a)               # tooth half-angle at the base circle
+    rs = [max(rb, rf) + (ra - max(rb, rf)) * i / n_inv for i in range(n_inv + 1)]
+    flank = [(rr, half - inv(math.acos(min(1.0, rb / rr)))) for rr in rs]   # (radius, half-angle) up one flank
+    pts: list[tuple[float, float]] = []
+    for k in range(z):
+        c = 2 * math.pi * k / z
+        tooth = [(rf, c - half - 0.6 * (math.pi / z - half))] + [(rr, c - th) for rr, th in flank]
+        tooth += [(rr, c + th) for rr, th in reversed(flank)] + [(rf, c + half + 0.6 * (math.pi / z - half))]
+        pts += [(rr * math.cos(t), rr * math.sin(t)) for rr, t in tooth]
+    return pts
+
+
 def pinion_20t() -> cq.Workplane:
     """Steel 20T module-1 pinion: KHK SS1-20A (S45C, 5 mm H7 bore, 10 mm face) with its 10 mm hub faced off so it
     fits in front of the dock magnet's bracket; bonded to the shaft (Loctite 638). 22 OD, 10 wide. A printed pinion
-    is softer and rubs at about mu 0.3, which raises the separating force (cad/gear-mesh)."""
-    return cq.Workplane("XY").polygon(20, 21.6).extrude(10.0).cut(cq.Workplane("XY").circle(2.5).extrude(10))
+    is softer and rubs at about mu 0.3, which raises the separating force (cad/gear-mesh). KHK catalog (SS1-20A,
+    2026-10-27): bore 5, hub 16 x 10 (faced off here), PD 20, OD 22, face 10, standard full depth, 20 deg: now an
+    involute tooth form (was a 20-gon of 21.6 mm). Face toward the motor at z = 0, a tooth on +x."""
+    return (cq.Workplane("XY").polyline(_spur_outline(20, 1.0)).close().extrude(10.0)
+            .cut(cq.Workplane("XY").circle(2.5).extrude(10)))
 
 
 def solenoid_412() -> cq.Workplane:
@@ -213,9 +243,15 @@ def corner_bracket() -> cq.Workplane:
 
 
 def leveling_foot() -> cq.Workplane:
-    stud = cq.Workplane("XY").circle(2.5).extrude(FOOT_H + 6)
-    pad = cq.Workplane("XY").circle(15).extrude(6).union(cq.Workplane("XY").polygon(6, 9.2).extrude(FOOT_H - 1))
-    return pad.union(stud)
+    """TNUTZ LF-020-A: M6 x 40 stud on a dia 10 ball end in a dia 20 black nylon base, with a hex nut (TNUTZ product page,
+    2026-10-27; the base's 9 mm height and taper are read off its photo, cad/vendor/AUDIT_other.md). Pad on z = 0, stud
+    up through a jam nut under the rail into the rail's T-nut: the 40 mm stud is cut to FOOT_H + 6 (a 2020 slot is
+    about 6 mm deep). Was an M5 stud on a dia 30 pad."""
+    pad = cq.Workplane("XY").add(cq.Solid.makeCone(10.0, 7.5, 9.0))
+    ball = cq.Workplane("XY").sphere(5.0).translate((0, 0, 9.0))
+    stud = cq.Workplane("XY").circle(3.0).extrude(FOOT_H + 6)
+    nut = cq.Workplane("XY").polygon(6, 10.0 / math.cos(math.pi / 6)).extrude(5.0).translate((0, 0, FOOT_H - 5.2))
+    return pad.union(ball).union(stud).union(nut)
 
 
 # ---------------------------------------------------------------- fasteners
@@ -321,11 +357,12 @@ def gondola() -> cq.Workplane:
         g = g.union(lug)
     g = g.cut(cq.Workplane("XZ").center(HINGE_X, HINGE_Z).circle(INSERT_D / 2).extrude(GON_W + 2, both=True)
               .cut(cq.Workplane("XY").box(30, 2 * LUG_IN, 30).translate((HINGE_X, 0, HINGE_Z))))
-    # saddle under the auger near the cap end: a cross bar with a V seat 0.6 mm below the tube
+    # saddle under the auger near the cap end: a cross bar with a seat 0.6 mm below the tube. The seat's cheeks
+    # (|y| 12-18) stand on the bar: as a V (apex down) they started 8 mm up in mid-air and would not print unsupported
     sx = HINGE_X + SADDLE_XS
     tube_bot = HINGE_Z - AUGER_R_TUBE
     bar = cq.Workplane("XY").box(10.0, GON_W, tube_bot - 0.6 - zb, centered=False).translate((sx - 5.0, -GON_W / 2, zb))
-    vee = (cq.Workplane("YZ").polyline([(-18, tube_bot - 0.6 + 12), (0, tube_bot - 0.6), (18, tube_bot - 0.6 + 12)])
+    vee = (cq.Workplane("YZ").polyline([(-18, tube_bot - 0.6 + 12), (-18, tube_bot - 0.6), (18, tube_bot - 0.6), (18, tube_bot - 0.6 + 12)])
            .close().extrude(10.0).translate((sx - 5.0, 0, 0)))
     g = g.union(bar).union(vee.intersect(cq.Workplane("XY").box(10, GON_W, 40, centered=False).translate((sx - 5.0, -GON_W / 2, tube_bot - 0.6))))
     g = g.cut(cq.Workplane("YZ").center(0, HINGE_Z).circle(AUGER_R_TUBE + 0.6).extrude(12).translate((sx - 6.0, 0, 0)))
@@ -376,12 +413,16 @@ def armature_tab() -> cq.Workplane:
 
 def uyoke_base() -> cq.Workplane:
     """Printed crossbar of the U-yoke on the P16's rod end, yoke frame: origin on the stub-pin axis, z along the
-    actuator (toward the carriage). The rod end's 9 mm square plug goes into a socket and an M4 bolt through its hole
+    actuator (toward the carriage). The P16's rod end (a 9 x 6 tab) goes into a fitted slot and an M4 bolt through its hole
     makes it rigid; the steel arms bolt to its sides; the approach-guide tongue hangs under it at y = TONGUE_Y."""
     zr = -UFORK_L
     hw = UFORK_Y[0]
     b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
-    b = b.cut(cq.Workplane("XY").box(9.3, 9.3, 10.0, centered=(True, True, False)).translate((0, 0, zr - 6.01)))
+    # socket for the P16's real rod end (datasheet + Actuonix STEP): the dia 8.94 rod tube's end face seats 2 mm up a
+    # dia 9.3 counterbore, and the 9 x 6 tab (hole at zr, tip 4 mm above) fits a 9.3 x 6.3 slot, so the cross bolt
+    # clamps it without play (the old 9.3 mm square socket fitted a 9 x 9 plug the P16 doesn't have)
+    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(2.01).translate((0, 0, zr - 6.01)))
+    b = b.cut(cq.Workplane("XY").box(9.3, 6.3, 8.4, centered=(True, True, False)).translate((0, 0, zr - 4.1)))
     b = b.cut(cq.Workplane("XZ").center(0, zr).circle(2.15).extrude(30, both=True))
     for x in (-5.0, 5.0):
         b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))
@@ -477,30 +518,28 @@ def vial_funnel() -> cq.Workplane:
 
 
 def actuator_p16() -> tuple[cq.Workplane, cq.Workplane]:
-    """Actuonix P16-150-22-12-P, modelled from Actuonix's STEP: rear clevis hole on the
-    y axis at the origin, rod along +z. Motor/gear block 36 x 20 x 79 (rod axis 10.5 mm
-    from one end of the 36), 12 x 12 tube, 9 mm rod, 9 x 9 rod-end plug.
-    Returns (body, rod at full retraction; the layout slides the rod by the extension)."""
-    block = cq.Workplane("XY").box(36.0, 20.0, 79.0, centered=False).translate((-25.5, -10.0, -4.5))
-    tube = cq.Workplane("XY").box(12.0, 12.0, 167.0, centered=False).translate((-6.0, -6.0, 23.4))
-    body = block.union(tube).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2).extrude(20, both=True))
-    rod = cq.Workplane("XY").circle(4.5).extrude(43.4).translate((0, 0, 150.0))
-    plug = cq.Workplane("XY").box(9.0, 9.0, 14.0, centered=False).translate((-4.5, -4.5, ACT_RETRACTED - 10.0))
-    rod = rod.union(plug).cut(cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(ACT_CLEVIS_D / 2).extrude(10, both=True))
-    return body, rod
+    """Actuonix P16-150-22-12-P: Actuonix's own STEP (cad/vendor/actuonix.py) when it is on disk, else the same
+    envelope from the datasheet drawing. Rear clevis hole on the y axis at the origin, rod along +z: 36 x 20 x 70
+    housing from z 4.5 (rod axis 10.5 mm from one end of the 36), rear tab 8 thick, 12 x 12 tube, dia 8.94 rod,
+    rod end a 9 x 6 tab (hole 4 mm from its tip). Returns (body, rod at full retraction; the layout slides the rod)."""
+    real = actuonix.p16_150()
+    return real if real is not None else actuonix.p16_150_standin(ACT_CLEVIS_D, ACT_RETRACTED)
 
 
 def clevis_bracket() -> cq.Workplane:
-    """Base clevis for the actuator's 20 mm block (printed PETG or the Actuonix bracket):
-    two 5 mm cheeks 21 mm apart on a foot, pin along y at the frame origin."""
+    """Printed base clevis for the P16's rear tab (8 mm thick, dia 4.25 hole 4.5 mm behind the housing): two cheeks
+    CLEVIS_GAP apart straddle the tab on a foot, pin along y at the frame origin. The cheeks end in R4 round the pin,
+    so the 20 mm housing (its face 4.5 mm from the pin) swings over them. A 4 x 16 mm shoulder screw is the pin."""
+    t = (SHOULDER_CLEVIS_L - CLEVIS_GAP - 0.2) / 2
     foot = cq.Workplane("XY").box(44.0, 40.0, 6.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
     cheeks = None
-    for y0 in (-15.5, 10.5):
-        c = (cq.Workplane("XZ").circle(7.0).extrude(-5.0)
-             .union(cq.Workplane("XY").box(14.0, 5.0, CLEVIS_H, centered=(True, False, False)).translate((0, 0, -CLEVIS_H))))
+    for y0 in (-CLEVIS_GAP / 2 - t, CLEVIS_GAP / 2):
+        c = (cq.Workplane("XZ").circle(4.0).extrude(-t)
+             .union(cq.Workplane("XY").box(8.0, t, CLEVIS_H, centered=(True, False, False)).translate((0, 0, -CLEVIS_H))))
         c = c.translate((0, y0, 0))
         cheeks = c if cheeks is None else cheeks.union(c)
-    b = foot.union(cheeks).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 + 0.1).extrude(30, both=True))
+    web = cq.Workplane("XY").box(8.0, CLEVIS_GAP + 2 * t, CLEVIS_H - 9.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
+    b = foot.union(cheeks).union(web).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 - 0.05).extrude(30, both=True))
     return b.cut(cq.Workplane("XY").pushPoints([(-16, 0), (16, 0)]).circle(2.75).extrude(10).translate((0, 0, -CLEVIS_H - 1)))
 
 

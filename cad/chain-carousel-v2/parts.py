@@ -14,6 +14,11 @@ import cadquery as cq
 
 from params import *  # noqa: F401,F403  (one dimension table for the whole rig)
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "vendor"))
+import actuonix  # noqa: E402  (Actuonix's STEP, shared with the paternoster)
+
 
 # ---------------------------------------------------------------- chain
 def _plate(t: float, hole_d: float) -> cq.Workplane:
@@ -34,7 +39,7 @@ def chain_inner_link() -> cq.Workplane:
     top = _plate(PLATE_T, BUSH_D).translate((0, 0, z0))
     bot = _plate(PLATE_T, BUSH_D).translate((0, 0, -z0 - PLATE_T))
     bush = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(BUSH_D / 2)
-            .circle(PIN_D / 2 + 0.01).extrude(INNER_W).translate((0, 0, -INNER_W / 2)))
+            .circle(CHAIN_PIN_D / 2 + 0.01).extrude(INNER_W).translate((0, 0, -INNER_W / 2)))
     return top.union(bot).union(bush)
 
 
@@ -42,14 +47,14 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
     """Two outer plates and two pins. clip=True adds a connecting link's
     spring clip on the -z plate (the A-1 tab is on the +z plate)."""
     z0 = OUTER_GAP / 2
-    top = _plate(PLATE_T, PIN_D).translate((0, 0, z0))
-    bot = _plate(PLATE_T, PIN_D).translate((0, 0, -z0 - PLATE_T))
-    pins = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(PIN_D / 2)
+    top = _plate(PLATE_T, CHAIN_PIN_D).translate((0, 0, z0))
+    bot = _plate(PLATE_T, CHAIN_PIN_D).translate((0, 0, -z0 - PLATE_T))
+    pins = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(CHAIN_PIN_D / 2)
             .extrude(PIN_LEN).translate((0, 0, -PIN_LEN / 2)))
     link = top.union(bot).union(pins)
     if clip:
         c = (cq.Workplane("XY").rect(P + 2.6, 5.2).extrude(0.5)
-             .faces(">Z").workplane().pushPoints([(-P / 2, 0), (P / 2, 0)]).hole(PIN_D)
+             .faces(">Z").workplane().pushPoints([(-P / 2, 0), (P / 2, 0)]).hole(CHAIN_PIN_D)
              .translate((0, 0, -z0 - PLATE_T - 0.5)))
         link = link.union(c)
     return link
@@ -192,10 +197,15 @@ def corner_bracket() -> cq.Workplane:
 
 
 def leveling_foot() -> cq.Workplane:
-    """M5 leveling foot, pad on z = 0, stud up."""
-    stud = cq.Workplane("XY").circle(2.5).extrude(FOOT_H + 6)
-    pad = cq.Workplane("XY").circle(15).extrude(6).union(cq.Workplane("XY").polygon(6, 9.2).extrude(FOOT_H - 1))
-    return pad.union(stud)
+    """TNUTZ LF-020-A: M6 x 40 stud on a dia 10 ball end in a dia 20 black nylon base, with a hex nut (TNUTZ product page,
+    2026-10-27; the base's 9 mm height and taper are read off its photo, cad/vendor/AUDIT_other.md). Pad on z = 0, stud
+    up through a jam nut under the rail into the rail's T-nut: the 40 mm stud is cut to FOOT_H + 6 (a 2020 slot is
+    about 6 mm deep). Was an M5 stud on a dia 30 pad."""
+    pad = cq.Workplane("XY").add(cq.Solid.makeCone(10.0, 7.5, 9.0))
+    ball = cq.Workplane("XY").sphere(5.0).translate((0, 0, 9.0))
+    stud = cq.Workplane("XY").circle(3.0).extrude(FOOT_H + 6)
+    nut = cq.Workplane("XY").polygon(6, 10.0 / math.cos(math.pi / 6)).extrude(5.0).translate((0, 0, FOOT_H - 5.2))
+    return pad.union(ball).union(stud).union(nut)
 
 
 def side_plate(back: bool) -> cq.Workplane:
@@ -224,11 +234,14 @@ def tensioner_block() -> cq.Workplane:
 
 
 # ---------------------------------------------------------------- carriage
-def tab_hook(back: bool) -> cq.Workplane:
+def tab_hook(back: bool, print_web: bool = False) -> cq.Workplane:
     """Printed hook under an A-1 tab, in the carriage frame with x measured from the tab's hole (x = 0).
     A finger under the tab (radially inward of it) holds an M3 nylon-insert locknut in a hex pocket; a spine on
     the +u side joins it to the plate. The tab slides into the 1.55 mm slot between plate and finger from -u.
-    The finger stays 0.4 mm clear of the chain's plates and pin heads (x <= 5.4 from the chain's centre plane)."""
+    The finger stays 0.4 mm clear of the chain's plates and pin heads (x <= 5.4 from the chain's centre plane).
+    print_web: the print file's 0.8 mm break-off web across the slot's -u mouth. Printed plate-down, the finger
+    is otherwise a 9.2 mm cantilever over the slot (Bambu Studio: "floating cantilever"); the web makes it a
+    bridge. Cut it off flush after printing; the assembly (print_web=False) is drawn without it."""
     tab_in = CAR_W0 + PLATE_T                          # tab's inner face (w)
     f0, f1 = tab_in + 0.28, tab_in + 0.28 + NUT_H + 1.0  # finger: w range
     sgn = -1.0 if back else 1.0                        # x away from the chain, toward the modules
@@ -240,10 +253,12 @@ def tab_hook(back: bool) -> cq.Workplane:
     h = finger.union(spine)
     nut = cq.Workplane("XZ").polygon(6, NUT_AF / math.cos(math.pi / 6)).extrude(-(NUT_H + 0.2)).translate((0, f0 - 0.01, 0))
     h = h.cut(nut).cut(cq.Workplane("XZ").circle(1.7).extrude(-(f1 - f0 + 2)).translate((0, f0 - 1, 0)))
+    if print_web:
+        h = h.union(cq.Workplane("XY").box(0.8, f0 - CAR_W0 + 0.02, xb - xa, centered=False).translate((-4.6, CAR_W0 - 0.01, xa)))
     return h
 
 
-def carriage() -> cq.Workplane:
+def carriage(print_web: bool = False) -> cq.Workplane:
     """Printed (PETG) carriage in the carriage frame: X = u (along the
     travel), Y = w (radially inward, into the loop), Z = x (front -> back).
 
@@ -320,7 +335,7 @@ def carriage() -> cq.Workplane:
     for x in (A1_HOLE_C, CHAIN_L - A1_HOLE_C):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(3.4 / 2).extrude(CAR_T + 2).translate((0, w1 + 1, 0)))
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(6.4 / 2).extrude(TAB_SCREW_CB).translate((0, w0 + TAB_SCREW_CB, 0)))   # head flush
-        plate = plate.union(tab_hook(x > CHAIN_L / 2).translate((0, 0, x)))
+        plate = plate.union(tab_hook(x > CHAIN_L / 2, print_web).translate((0, 0, x)))
     # magnet pockets from the inner face of the tongues
     for x in (CAR_X0 + 7.0, CAR_X1 - 7.0):
         plate = plate.cut(cq.Workplane("XZ").center(0, x).circle(MAGNET_D / 2 + 0.15).extrude(MAGNET_H + 0.3)
@@ -361,8 +376,9 @@ def hold_down() -> cq.Workplane:
 
 
 def hall_switch() -> cq.Workplane:
-    """US5881 in TO-92: body face down at z = 0, leads up."""
-    body = cq.Workplane("XY").rect(4.0, 3.0).extrude(1.5)
+    """US5881LUA (TO-92 'UA'): body face down at z = 0, leads up. Body 4.08 x 3.00 x 1.51 (Adafruit 158 page and the
+    Melexis datasheet; was 4.0 x 3.0 x 1.5), leads on 1.27 mm."""
+    body = cq.Workplane("XY").rect(4.08, 3.0).extrude(1.51)
     legs = cq.Workplane("XY").pushPoints([(-1.27, 0), (0, 0), (1.27, 0)]).rect(0.4, 0.4).extrude(6).translate((0, 0, 1.5))
     return body.union(legs)
 
@@ -494,10 +510,32 @@ def nema11_envelope() -> cq.Workplane:
     return body.union(boss).union(sh)
 
 
+def _spur_outline(z: int, m: float, alpha_deg: float = 20.0, n_inv: int = 7) -> list[tuple[float, float]]:
+    """Standard full-depth involute spur gear outline (addendum m, dedendum 1.25 m, zero shift) as a closed polyline,
+    a tooth centred on +x. The flank runs radially below the base circle (no undercut detail)."""
+    a = math.radians(alpha_deg)
+    r, ra, rf = m * z / 2, m * z / 2 + m, m * z / 2 - 1.25 * m
+    rb = r * math.cos(a)
+    inv = lambda t: math.tan(t) - t  # noqa: E731
+    half = math.pi / (2 * z) + inv(a)               # tooth half-angle at the base circle
+    rs = [max(rb, rf) + (ra - max(rb, rf)) * i / n_inv for i in range(n_inv + 1)]
+    flank = [(rr, half - inv(math.acos(min(1.0, rb / rr)))) for rr in rs]   # (radius, half-angle) up one flank
+    pts: list[tuple[float, float]] = []
+    for k in range(z):
+        c = 2 * math.pi * k / z
+        tooth = [(rf, c - half - 0.6 * (math.pi / z - half))] + [(rr, c - th) for rr, th in flank]
+        tooth += [(rr, c + th) for rr, th in reversed(flank)] + [(rf, c + half + 0.6 * (math.pi / z - half))]
+        pts += [(rr * math.cos(t), rr * math.sin(t)) for rr, t in tooth]
+    return pts
+
+
 def pinion_20t() -> cq.Workplane:
     """Steel 20T module-1 pinion on the NEMA 11: KHK SS1-20A (S45C, 5 mm H7 bore, 10 mm face) with its 10 mm hub
-    faced off so it fits in front of the dock magnet; bonded to the shaft (Loctite 638). 22 OD, 10 wide."""
-    return cq.Workplane("XY").polygon(20, 21.6).extrude(10.0).cut(cq.Workplane("XY").circle(2.5).extrude(10))
+    faced off so it fits in front of the dock magnet; bonded to the shaft (Loctite 638). 22 OD, 10 wide. KHK catalog
+    (SS1-20A, 2026-10-27): bore 5, hub 16 x 10 (faced off here), PD 20, OD 22, face 10, standard full depth, 20 deg:
+    now an involute tooth form (was a 20-gon of 21.6 mm). Face toward the motor at z = 0, a tooth on +x."""
+    return (cq.Workplane("XY").polyline(_spur_outline(20, 1.0)).close().extrude(10.0)
+            .cut(cq.Workplane("XY").circle(2.5).extrude(10)))
 
 
 def solenoid_412() -> cq.Workplane:
@@ -555,13 +593,17 @@ def armature_tab() -> cq.Workplane:
 
 def uyoke_base() -> cq.Workplane:
     """Printed crossbar of the U-yoke on the P16's rod end, in the yoke frame: origin on the carriage pins' axis,
-    z along the actuator (toward the carriage), y across. The rod end's 9 mm square plug goes into a socket from below
-    and an M4 bolt through the plug's hole makes it rigid; the steel arms bolt to its sides (M3 into heat-set
+    z along the actuator (toward the carriage), y across. The P16's rod end (a 9 x 6 tab on the rod tube) goes into a fitted slot from below
+    and an M4 bolt through the tab's hole makes it rigid; the steel arms bolt to its sides (M3 into heat-set
     inserts). The guide tongue for the approach fork hangs under it at y = TONGUE_Y."""
     zr = -UFORK_L
     hw = UFORK_Y[0]
     b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
-    b = b.cut(cq.Workplane("XY").box(9.3, 9.3, 10.0, centered=(True, True, False)).translate((0, 0, zr - 6.01)))   # plug socket
+    # socket for the P16's real rod end (datasheet + Actuonix STEP): the dia 8.94 rod tube's end face seats 2 mm up a
+    # dia 9.3 counterbore, and the 9 x 6 tab (hole at zr, tip 4 mm above) fits a 9.3 x 6.3 slot, so the cross bolt
+    # clamps it without play (the old 9.3 mm square socket fitted a 9 x 9 plug the P16 doesn't have)
+    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(2.01).translate((0, 0, zr - 6.01)))
+    b = b.cut(cq.Workplane("XY").box(9.3, 6.3, 8.4, centered=(True, True, False)).translate((0, 0, zr - 4.1)))
     b = b.cut(cq.Workplane("XZ").center(0, zr).circle(2.15).extrude(30, both=True))                              # M4 cross bolt
     for x in (-5.0, 5.0):
         b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))                     # arm screws
@@ -638,29 +680,29 @@ def approach_fork() -> cq.Workplane:
 
 
 def actuator_p16() -> tuple[cq.Workplane, cq.Workplane]:
-    """Actuonix P16-150-22-12-P from Actuonix's STEP dimensions: rear clevis hole on the y axis at the origin,
-    rod along +z; 36 x 20 x 79 motor/gear block (rod axis 10.5 mm from one end), 12 x 12 tube, 9 mm rod.
-    Returns (body, rod at full retraction)."""
-    block = cq.Workplane("XY").box(36.0, 20.0, 79.0, centered=False).translate((-25.5, -10.0, -4.5))
-    tube = cq.Workplane("XY").box(12.0, 12.0, 167.0, centered=False).translate((-6.0, -6.0, 23.4))
-    body = block.union(tube).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2).extrude(20, both=True))
-    rod = cq.Workplane("XY").circle(4.5).extrude(43.4).translate((0, 0, 150.0))
-    plug = cq.Workplane("XY").box(9.0, 9.0, 14.0, centered=False).translate((-4.5, -4.5, ACT_RETRACTED - 10.0))
-    rod = rod.union(plug).cut(cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(ACT_CLEVIS_D / 2).extrude(10, both=True))
-    return body, rod
+    """Actuonix P16-150-22-12-P: Actuonix's own STEP (cad/vendor/actuonix.py) when it is on disk, else the same
+    envelope from the datasheet drawing. Rear clevis hole on the y axis at the origin, rod along +z: 36 x 20 x 70
+    housing from z 4.5 (rod axis 10.5 mm from one end of the 36), rear tab 8 thick, 12 x 12 tube, dia 8.94 rod,
+    rod end a 9 x 6 tab (hole 4 mm from its tip). Returns (body, rod at full retraction)."""
+    real = actuonix.p16_150()
+    return real if real is not None else actuonix.p16_150_standin(ACT_CLEVIS_D, ACT_RETRACTED)
 
 
 def clevis_bracket(h: float = CLEVIS_H) -> cq.Workplane:
-    """Printed base clevis for the actuator's 20 mm block: two 5 mm cheeks 21 mm apart on a foot that sits on the
-    station rail (two M5 into T-nuts), pin along y at the frame origin, h above the foot's underside."""
+    """Printed base clevis for the P16's rear tab (8 mm thick, dia 4.25 hole 4.5 mm behind the housing): two cheeks
+    CLEVIS_GAP apart straddle the tab on a foot that sits on the station rail (two M5 into T-nuts), pin along y at the
+    frame origin, h above the foot's underside. The cheeks end in R4 round the pin, so the 20 mm housing (its face
+    4.5 mm from the pin) swings over them. A 4 x 16 mm shoulder screw is the pin."""
+    t = (SHOULDER_CLEVIS_L - CLEVIS_GAP - 0.2) / 2
     foot = cq.Workplane("XY").box(44.0, 40.0, 6.0, centered=(True, True, False)).translate((0, 0, -h))
     cheeks = None
-    for y0 in (-15.5, 10.5):
-        c = (cq.Workplane("XZ").circle(7.0).extrude(-5.0)
-             .union(cq.Workplane("XY").box(14.0, 5.0, h, centered=(True, False, False)).translate((0, 0, -h))))
+    for y0 in (-CLEVIS_GAP / 2 - t, CLEVIS_GAP / 2):
+        c = (cq.Workplane("XZ").circle(4.0).extrude(-t)
+             .union(cq.Workplane("XY").box(8.0, t, h, centered=(True, False, False)).translate((0, 0, -h))))
         c = c.translate((0, y0, 0))
         cheeks = c if cheeks is None else cheeks.union(c)
-    b = foot.union(cheeks).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 + 0.1).extrude(30, both=True))
+    web = cq.Workplane("XY").box(8.0, CLEVIS_GAP + 2 * t, h - 9.0, centered=(True, True, False)).translate((0, 0, -h))
+    b = foot.union(cheeks).union(web).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 - 0.05).extrude(30, both=True))
     return b.cut(cq.Workplane("XY").pushPoints([(-16, 0), (16, 0)]).circle(2.75).extrude(10).translate((0, 0, -h - 1)))
 
 

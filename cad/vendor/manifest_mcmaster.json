@@ -1,0 +1,68 @@
+[
+ {
+  "key": "5501N12",
+  "kind": "drawing",
+  "file": "files/mcmaster/5501N12.pdf",
+  "page": "https://www.mcmaster.com/5501N12/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260118/A067C0CC/5501N12_ANSI%20Roller%20Chain%20Spring%20Clips.PDF",
+  "sha256": "362ee1defa0843a9b9e2c6ffc9e771328cb3b2abe4abefdb58750a776fe37118",
+  "bytes": 92430,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "5501N12",
+  "kind": "step",
+  "file": "files/mcmaster/5501N12.step",
+  "page": "https://www.mcmaster.com/5501N12/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260118/F4AD47C3/5501N12_ANSI%20Roller%20Chain%20Spring%20Clips.STEP",
+  "sha256": "cf6e1829037ec2923481602edcfa787a54ee5bea4c98bac31463ab5354e33ac9",
+  "bytes": 52532,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "7321K31",
+  "kind": "drawing",
+  "file": "files/mcmaster/7321K31.pdf",
+  "page": "https://www.mcmaster.com/7321K31/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260118/D5E56B0C/7321K31_Roller%20Chain%20Attachment%20Link.PDF",
+  "sha256": "4ced005cb51de9322f0f9faf6cb6f24bdd498e080726c75ae78d6db78e83c0fe",
+  "bytes": 102981,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "7321K31",
+  "kind": "step",
+  "file": "files/mcmaster/7321K31.step",
+  "page": "https://www.mcmaster.com/7321K31/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260118/EE7B76B7/7321K31_Roller%20Chain%20Attachment%20Link.STEP",
+  "sha256": "61d6d83bc1c3482b943a11da171d2441f53c4f716bcbbe6259ae697eb9e7a592",
+  "bytes": 136810,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "95615A120",
+  "kind": "drawing",
+  "file": "files/mcmaster/95615A120.pdf",
+  "page": "https://www.mcmaster.com/95615A120/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260506/F3E99BF7/95615A120_Medium-Strength%20Steel%20Nylon-Insert%20Locknut.PDF",
+  "sha256": "0dde6ee9556f8f618b961bea2159f240719abb7d858ea2bf59a4e2faa7bd0f31",
+  "bytes": 89488,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "95615A120",
+  "kind": "step",
+  "file": "files/mcmaster/95615A120.step",
+  "page": "https://www.mcmaster.com/95615A120/",
+  "url": "https://www.mcmaster.com/mvC/Library/CAD2/20260506/1B79E9BC/95615A120_Medium-Strength%20Steel%20Nylon-Insert%20Locknut.STEP",
+  "sha256": "8a870ac7f19ef03849929e3ff22b74f4e76f3a54914ff87244bf41e12b0295d2",
+  "bytes": 304038,
+  "retrieved": "2026-10-27",
+  "note": ""
+ }
+]

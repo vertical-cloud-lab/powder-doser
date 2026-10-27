@@ -20,18 +20,19 @@ from __future__ import annotations
 import math
 
 # --- ANSI #35 roller chain (ASME B29.1; the Aobbmok listing on the ME order) ---
+# Checked against Nitro's RC35 dimension table (nitrochain.com/35-roller-chain-10ft, read 2026-10-27; cad/vendor/AUDIT_other.md):
+# P 3/8, b1 3/16, d1 (bushing) 0.200, L 0.488, d2 0.141, h2 0.346, T 0.050 in.
 P = 9.525            # pitch (3/8")
 BUSH_D = 5.08        # #35 is rollerless: the bushing (0.200") is what the teeth seat on
-PIN_D = 3.58         # 0.141"
+CHAIN_PIN_D = 3.58   # 0.141". Was PIN_D, which the 5 mm hinge pin further down overrode: the chain was drawn with 5 mm pins
 W_IN = 4.78          # width between inner plates (0.188")
 PLATE_T = 1.27       # 0.050"
-PLATE_H = 9.0        # plate height, 0.354"
-PIN_HEAD = 0.45      # riveted pin end beyond the outer plate
+PLATE_H = 8.79       # plate height, 0.346" (Nitro h2; was 9.0 = 0.354")
 N_LINKS = 104        # per chain, cut from a 10 ft roll (two loops use 208 of its 320 links)
 INNER_W = W_IN + 2 * PLATE_T              # 7.32, inner link across the plates
 OUTER_GAP = INNER_W + 0.05                 # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T          # 9.91
-PIN_LEN = OUTER_W + 2 * PIN_HEAD
+PIN_LEN = 0.488 * 25.4                     # 12.40: Nitro's overall width L, riveted pin ends 1.24 mm proud (was 0.45 mm proud)
 
 # A-1 attachment connecting link (bent tab, one hole): Nitro CL35-A1, which
 # matches Tsubaki's RS35 A-1 table: S = 0.250 in pitch line -> tab face,
@@ -219,6 +220,8 @@ RUN_DIRECTION = -1           # -1: bottom run toward -y (clockwise seen from the
 # --- station: Actuonix P16-150-22-12-P, pinned at both ends (as the paternoster) ---
 ACT_STROKE = 150.0
 ACT_RETRACTED = 197.4        # hole to hole, retracted (Actuonix STEP): stroke + 47.4
+CLEVIS_GAP = 8.4             # between the base clevis cheeks: the P16's rear tab is 8 thick (datasheet)
+SHOULDER_CLEVIS_L = 16.0     # McMaster 4 x 16 mm shoulder screw (M3 thread) through cheek, tab, cheek
 ACT_CLEVIS_D = 4.25          # both clevis holes
 # Carriage pin at the carriage's centre-of-mass height. The P16 is pinned at both ends, so it gives the carriage no
 # moment: the dock (rim + locating pins + magnet face) has to hold the carriage's attitude. With the pin under the

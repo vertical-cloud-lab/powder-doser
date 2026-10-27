@@ -26,17 +26,20 @@ from __future__ import annotations
 import math
 
 # --- ANSI #35 roller chain (ASME B29.1; rollerless) ---
+# Checked against Nitro's RC35 dimension table (nitrochain.com/35-roller-chain-10ft, read 2026-10-27; cad/vendor/AUDIT_other.md):
+# P 3/8, b1 3/16, d1 (bushing) 0.200, L 0.488, d2 0.141, h2 0.346, T 0.050 in.
 P = 9.525            # pitch, 3/8 in
 BUSH_D = 5.08        # bushing (0.200 in), what the teeth seat on
 PIN_D = 3.58         # 0.141 in
 W_IN = 4.78          # between inner plates, 0.188 in
 PLATE_T = 1.27       # 0.050 in
-PLATE_H = 9.0        # 0.354 in
+PLATE_H = 8.79       # 0.346 in, Nitro h2 (was 9.0 = 0.354 in)
 PIN_HEAD = 0.95       # pin heads stand 0.95 mm proud of the tab plate (McMaster 7321K31 STEP)
 INNER_W = W_IN + 2 * PLATE_T                 # 7.32
 OUTER_GAP = INNER_W + 0.05                   # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T            # 9.91
-PIN_LEN = OUTER_W + 2 * PIN_HEAD
+PIN_LEN = OUTER_W + 2 * PIN_HEAD             # the SA-1 connecting link's pins (McMaster STEP)
+PIN_LEN_RC35 = 0.488 * 25.4                  # 12.40: Nitro's overall width L, the plain links' riveted pins (1.24 mm proud)
 
 # SA-1 attachment connecting link (straight tab in the plane of one outer
 # plate, one hole): McMaster 7321K31, measured from McMaster's STEP and drawing:
@@ -153,6 +156,8 @@ STEPS_PER_MODULE = STEPS_PER_REV * MODULE_LINKS // N_TEETH   # 1250: direct driv
 ACT_STROKE = 150.0
 ACT_RETRACTED = 197.4        # hole to hole, retracted: P16-150-22-12-P (Actuonix STEP), stroke + 47
 ACT_BODY = (36.0, 20.0)      # motor/gear block, 79 long; rod axis 10.5 mm from one 20 mm face
+CLEVIS_GAP = 8.4             # between the base clevis cheeks: the P16's rear tab is 8 thick (datasheet)
+SHOULDER_CLEVIS_L = 16.0     # McMaster 4 x 16 mm shoulder screw (M3 thread) through cheek, tab, cheek
 ACT_CLEVIS_D = 4.25          # both clevis holes, for M4 or #8-32 pins
 TILT_MAX = 90.0
 
