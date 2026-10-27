@@ -1,0 +1,28 @@
+diff --git a/fsgen/fslite/values.py b/fsgen/fslite/values.py
+index f265e55..897a3fb 100644
+--- a/fsgen/fslite/values.py
++++ b/fsgen/fslite/values.py
+@@ -333,7 +333,7 @@ def type_name(x) -> str:
+ def _num(v: float) -> str:
+     if abs(v - round(v)) < 1e-9 and abs(v) < 1e15:
+         return str(int(round(v)))
+-    return f"{v:.6g}"
++    return f"{v:.10g}"   # was .6g: Onshape got 10.4162 mm for 10.41625 mm (variables, dimensions, paste defaults)
+ 
+ 
+ def fmt(x) -> str:
+diff --git a/fsgen/native/build.py b/fsgen/native/build.py
+index 04cfe8a..ff5cfcc 100644
+--- a/fsgen/native/build.py
++++ b/fsgen/native/build.py
+@@ -151,8 +151,8 @@ def sketch_json(sk: SketchRec, ids: dict[str, str], with_dims: bool = True, fram
+                          "startParam": g["t0"] + rot, "endParam": g["t1"] + rot,
+                          "geometry": {"btType": "BTCurveGeometryCircle-115", "radius": g["r"], "xCenter": acx,
+                                       "yCenter": acy, "xDir": 1.0, "yDir": 0.0, "clockwise": False}})
+-            for pid, t in ((f"{e.name}.start", g["t0"]), (f"{e.name}.end", g["t1"])):
+-                points.append((pid, g["cx"] + g["r"] * math.cos(t), g["cy"] + g["r"] * math.sin(t)))
++            for pid, ang in ((f"{e.name}.start", g["t0"]), (f"{e.name}.end", g["t1"])):
++                points.append((pid, g["cx"] + g["r"] * math.cos(ang), g["cy"] + g["r"] * math.sin(ang)))
+             points.append((f"{e.name}.center", g["cx"], g["cy"]))
+     cons = []
+     # coincident points -> COINCIDENT chains
