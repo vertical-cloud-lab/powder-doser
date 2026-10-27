@@ -53,7 +53,7 @@ def estimate(stem: str) -> tuple[int, str]:
         return 5, "push to \"Auger\" (update, after adopt): 2 sketches + variables 1 + status check 1 + volume check 1"
     env = {k: v for k, v in os.environ.items() if k not in ("ONSHAPE_ACCESS_KEY", "ONSHAPE_SECRET_KEY")}
     out = subprocess.run([FSGEN, "studio", "check", str(HERE / "parts" / f"{stem}.fs"), "--name", TITLES[stem],
-                          "--document", doc_url()], cwd=HERE, env=env, capture_output=True, text=True,
+                          "--document", doc_url(), "--metrics"], cwd=HERE, env=env, capture_output=True, text=True,
                          timeout=1800).stdout
     m = EST.search(out)
     if not m:

@@ -1,0 +1,35 @@
+{
+ "candidate": "tap_collar.step",
+ "reference": "tap_collar.step",
+ "reference_dz_mm": 0.0,
+ "candidate_volume_mm3": 12937.346,
+ "reference_volume_mm3": 12937.372,
+ "volume_diff_pct": -0.0002,
+ "candidate_bbox_mm": [
+  [
+   -26.0,
+   -0.0,
+   -16.75
+  ],
+  [
+   19.95,
+   17.0,
+   53.35
+  ]
+ ],
+ "reference_bbox_mm": [
+  [
+   -26.0,
+   -0.0,
+   -16.75
+  ],
+  [
+   19.95,
+   17.0,
+   53.35
+  ]
+ ],
+ "candidate_solids": 1,
+ "reference_solids": 1,
+ "iou": 0.999996
+}

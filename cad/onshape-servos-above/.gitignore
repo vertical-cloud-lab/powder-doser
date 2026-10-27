@@ -2,3 +2,5 @@ out/
 __pycache__/
 # the root .gitignore ignores parts/ (Python packaging template); these are the part scripts
 !parts/
+# assemble_paste.py --check writes these (about 8 MB each); regenerate them rather than commit them
+results/paste_assembly_tilt*.step

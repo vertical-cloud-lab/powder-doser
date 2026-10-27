@@ -351,6 +351,7 @@ def render(runs: list, path: Path, titles: list[str]) -> None:
     for k, (run, title) in enumerate(zip(runs, titles)):
         ax = fig.add_subplot(1, len(runs), k + 1, projection="3d")
         lo, hi = np.full(3, np.inf), np.full(3, -np.inf)
+        all_tris, all_cols = [], []
         for creator, shape in solids_mm(run):
             part = creator.split(".")[1] if "." in creator else creator
             base = re_part(part)
@@ -376,8 +377,11 @@ def render(runs: list, path: Path, titles: list[str]) -> None:
             n /= np.maximum(np.linalg.norm(n, axis=1, keepdims=True), 1e-12)
             shade = 0.45 + 0.55 * np.clip(n @ light, 0, 1)
             rgb = np.array(matplotlib.colors.to_rgb(COLORS.get(base, "#999999")))
-            ax.add_collection3d(Poly3DCollection(tris, facecolors=np.clip(rgb * shade[:, None], 0, 1),
-                                                 edgecolors="none"))
+            all_tris.append(tris)
+            all_cols.append(np.clip(rgb * shade[:, None], 0, 1))
+        # one collection, so matplotlib depth-sorts the triangles of all parts together
+        ax.add_collection3d(Poly3DCollection(np.concatenate(all_tris), facecolors=np.concatenate(all_cols),
+                                             edgecolors="none"))
         ctr, span = (lo + hi) / 2, (hi - lo).max() / 2 * 1.02
         ax.set_xlim(ctr[0] - span, ctr[0] + span)
         ax.set_ylim(ctr[1] - span, ctr[1] + span)

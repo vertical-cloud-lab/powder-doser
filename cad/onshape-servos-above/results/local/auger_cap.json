@@ -1,0 +1,58 @@
+{
+ "candidate": "auger_cap.step",
+ "reference": "auger_cap.step",
+ "candidate_volume_mm3": 4379.4421,
+ "reference_volume_mm3": 4379.4547,
+ "volume_diff_pct": -0.00029,
+ "candidate_bbox_mm": [
+  [
+   -14.5,
+   -14.5,
+   -25.0
+  ],
+  [
+   14.5,
+   14.5,
+   2.0
+  ]
+ ],
+ "reference_bbox_mm": [
+  [
+   -14.5,
+   -14.5,
+   -25.0
+  ],
+  [
+   14.5,
+   14.5,
+   2.0
+  ]
+ ],
+ "candidate_solids": 1,
+ "reference_solids": 1,
+ "iou_method": "ray sampling: 1000 random axis-parallel lines per axis (X, Y, Z), exact in/out intervals per line",
+ "iou": 0.999995,
+ "iou_per_axis": {
+  "x": {
+   "lines": 998,
+   "iou": 0.999995,
+   "cand_volume_est": 4693.77,
+   "ref_volume_est": 4693.77
+  },
+  "y": {
+   "lines": 1000,
+   "iou": 0.999994,
+   "cand_volume_est": 4452.77,
+   "ref_volume_est": 4452.78
+  },
+  "z": {
+   "lines": 1000,
+   "iou": 0.999996,
+   "cand_volume_est": 4410.61,
+   "ref_volume_est": 4410.61
+  }
+ },
+ "lines_skipped_odd_crossings": 2,
+ "parity_vs_classifier_mismatches": "0 of 80",
+ "seconds": 146.7
+}
