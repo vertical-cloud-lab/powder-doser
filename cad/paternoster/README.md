@@ -41,7 +41,7 @@ What that changed here:
 | **Front loop (front plate hidden): upright all the way round** | **Loading position: module 4 lifted and slid out** |
 | ![](renders/rig_loop.png) | ![](renders/rig_load.png) |
 
-**Animation** ([MP4](renders/paternoster.mp4)). It runs in this order:
+**Animation** ([MP4](renders/paternoster.mp4), 34.6 s; re-rendered 2026-10-27 with the vendors' parts at half length and 12 fps, since their threads and knurls make each frame several times slower). It runs in this order:
 1. Assembly from scratch.
 2. An auger goes into Sam's mounting plate, and the steel tab onto the plate.
 3. All 12 modules are loaded one index at a time, then the carousel runs a full lap.

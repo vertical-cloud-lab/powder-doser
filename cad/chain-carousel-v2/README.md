@@ -14,7 +14,7 @@ v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a cop
 | **Swap at the loading position: two screws out, slide 10 mm, out sideways** | **Back: the NEMA 34 inside the frame drives the bottom +y shaft through a #35 chain** |
 | ![](renders/rig_load.png) | ![](renders/rig_back_iso.png) |
 
-**Animation** ([MP4](renders/chain_carousel_v2.mp4), 70 s): assembly from scratch; an auger going into Sam's mounting plate and the plate onto a carriage; all 13 carriages loaded onto the chain one index at a time; a full lap; at the station the approach, the docking seek with the magnet on, the tilt to 30°, the dose, the 0.5 s hold, the tilt back, one reverse auger turn at rest and the undock; and a module swap. Every frame uses the exact chain kinematics and the real station linkage.
+**Animation** ([MP4](renders/chain_carousel_v2.mp4), 36.5 s; re-rendered 2026-10-27 with the vendors' parts at half length and 8 fps, since their threads and knurls make each frame several times slower): assembly from scratch; an auger going into Sam's mounting plate and the plate onto a carriage; all 13 carriages loaded onto the chain one index at a time; a full lap; at the station the approach, the docking seek with the magnet on, the tilt to 30°, the dose, the 0.5 s hold, the tilt back, one reverse auger turn at rest and the undock; and a module swap. Every frame uses the exact chain kinematics and the real station linkage.
 
 ![Animation](renders/chain_carousel_v2.gif)
 
