@@ -29,6 +29,7 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "animations"
 W, H = 1280, 720
 FPS = 24
+GIF_MAX = 4_800_000    # bytes; GitHub's camo proxy refuses images over 5 MiB
 G_VIS = 9810.0 / 14.0  # "visual" gravity (mm/s^2) so falling grains stay on screen for a few frames
 
 _FONT_DIR = Path(matplotlib.__file__).parent / "mpl-data" / "fonts" / "ttf"
@@ -574,10 +575,16 @@ class Movie:
         poster = OUT / f"{self.name}_poster.png"
         subprocess.run([ff, "-y", "-loglevel", "error", *src, "-c:v", "libx264", "-preset", "slow", "-crf", "23",
                         "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(mp4)], check=True)
-        vf = (f"fps={gif_fps},scale={gif_width}:-1:flags=lanczos,split[a][b];"
-              f"[a]palettegen=max_colors={gif_colors}:stats_mode=full[p];"
-              f"[b][p]paletteuse=dither=bayer:bayer_scale=4")
-        subprocess.run([ff, "-y", "-loglevel", "error", *src, "-vf", vf, "-loop", "0", str(gif)], check=True)
+        # GitHub's image proxy will not show GIFs over 5 MiB, so step the frame rate down until it fits
+        while True:
+            vf = (f"fps={gif_fps},scale={gif_width}:-1:flags=lanczos,split[a][b];"
+                  f"[a]palettegen=max_colors={gif_colors}:stats_mode=full[p];"
+                  f"[b][p]paletteuse=dither=bayer:bayer_scale=5")
+            subprocess.run([ff, "-y", "-loglevel", "error", *src, "-vf", vf, "-loop", "0", str(gif)], check=True)
+            if gif.stat().st_size <= GIF_MAX or gif_fps <= 6:
+                break
+            gif_fps -= 1
+        print(self.name, "gif fps", gif_fps, flush=True)
         last = sorted(self.dir.glob("f*.png"))[-1]
         Image.open(last).save(poster, optimize=True)
         sizes = {p.name: f"{p.stat().st_size / 1e6:.2f} MB" for p in (mp4, gif, poster)}
