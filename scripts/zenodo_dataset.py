@@ -21,11 +21,15 @@ Usage (run from the repo root):
 
     python scripts/zenodo_dataset.py build                 # bundle into build/zenodo-dataset/
     python scripts/zenodo_dataset.py upload --sandbox      # create and PUBLISH on sandbox
+    python scripts/zenodo_dataset.py upload --sandbox --draft
+                                                           # DRAFT on sandbox, as production does
     python scripts/zenodo_dataset.py upload --production --license cc-by-4.0
                                                            # DRAFT on zenodo.org, DOI reserved
 
 Production uploads are never published by this script. A person publishes the draft in
-the Zenodo web interface, because a published DOI cannot be withdrawn. Each target keeps
+the Zenodo web interface, because a published DOI cannot be withdrawn. The draft's DOI is
+reserved through the InvenioRDM API, because Zenodo's deposit API ignores
+``prereserve_doi``; later uploads to the same draft keep it. Each target keeps
 its deposition id in ``paper/zenodo/dataset_<target>.json``. A later upload to the same
 target rewrites the metadata and files of the unpublished draft, or opens a new version if
 the record is already published, and records the id it actually wrote to.
@@ -287,7 +291,6 @@ def metadata(license_id: str, production: bool) -> dict:
                 "scheme": "url",
             }
         ],
-        "prereserve_doi": True,
     }
     if production:
         md["communities"] = [{"identifier": "vcl"}]
@@ -328,8 +331,9 @@ class Client:
                 self.call("PUT", f"{bucket}/{p.name}", data=f, timeout=600)
 
 
-def upload(production: bool, license_id: str | None) -> None:
-    target = "production" if production else "sandbox"
+def upload(production: bool, license_id: str | None, draft: bool = False) -> None:
+    publish = not (production or draft)
+    target = "production" if production else "sandbox-draft" if draft else "sandbox"
     if production and (not license_id or license_id.upper().startswith("TODO")):
         sys.exit("production upload needs --license (SUBMISSION-DECISIONS.md item 5)")
     var = "ZENODO_API_TOKEN" if production else "ZENODO_SANDBOX_API_TOKEN"
@@ -349,17 +353,19 @@ def upload(production: bool, license_id: str | None) -> None:
                 # Published: open a new version and work on its draft.
                 nv = client.call("POST", f"/deposit/depositions/{dep_id}/actions/newversion")
                 dep = client.call("GET", nv["links"]["latest_draft"])
-            # Keep a DOI the draft already reserved.
-            md["metadata"]["prereserve_doi"] = dep.get("metadata", {}).get("prereserve_doi", True)
             dep = client.call("PUT", f"/deposit/depositions/{dep['id']}", json=md)
         else:
             dep = client.call("POST", "/deposit/depositions", json=md)
         client.upload_files(dep, files)
-        # Production stays a draft; a person publishes it on zenodo.org.
-        if not production:
+        if publish:
             dep = client.call("POST", f"/deposit/depositions/{dep['id']}/actions/publish")
         else:
+            # Production (and --draft) stays a draft; a person publishes it on zenodo.org.
+            # Reserve its DOI unless an earlier run did; the reservation survives the PUT above.
             dep = client.call("GET", f"/deposit/depositions/{dep['id']}")
+            if not dep.get("doi"):
+                client.call("POST", f"/records/{dep['id']}/draft/pids/doi")
+                dep = client.call("GET", f"/deposit/depositions/{dep['id']}")
     except ZenodoError as e:
         sys.exit(f"Zenodo request failed: {e}")
     md = dep.get("metadata", {})
@@ -367,7 +373,7 @@ def upload(production: bool, license_id: str | None) -> None:
         "target": target,
         "deposition_id": dep["id"],
         "concept_id": dep.get("conceptrecid"),
-        "doi": dep.get("doi") or md.get("doi") or md.get("prereserve_doi", {}).get("doi"),
+        "doi": dep.get("doi") or md.get("doi"),
         "concept_doi": dep.get("conceptdoi"),
         "state": dep.get("state"),
         "submitted": dep.get("submitted"),
@@ -389,11 +395,15 @@ def main() -> None:
     g.add_argument("--sandbox", action="store_true", help="create and publish on sandbox.zenodo.org")
     g.add_argument("--production", action="store_true", help="draft on zenodo.org, DOI reserved, not published")
     up.add_argument("--license", help="Zenodo licence id, e.g. cc-by-4.0 or cc0-1.0 (required for production)")
+    up.add_argument("--draft", action="store_true", help="with --sandbox: leave an unpublished draft, as "
+                    "production does (state in dataset_sandbox-draft.json)")
     args = ap.parse_args()
     if args.cmd == "build":
         build()
+    elif args.draft and args.production:
+        up.error("--draft goes with --sandbox; production uploads are always drafts")
     else:
-        upload(args.production, args.license)
+        upload(args.production, args.license, args.draft)
 
 
 if __name__ == "__main__":
