@@ -13,6 +13,8 @@ MASS = 50.0
 T_HALL = 15.8          # s/50 g, illustrative free-flowing 316L
 T_CARNEY = 7.6         # s/50 g, illustrative AlSi10Mg in the Carney funnel
 SPEED = 2.0            # flow shown at 2x real time
+TC0 = 22.1             # release of the Carney run (animation time)
+COL_316, COL_ALSI = "#6b7178", "#9ea4ab"
 TAN_HEAP = math.tan(math.radians(31))
 
 Z_BASE = 14.0          # top of the stand's base plate
@@ -30,9 +32,9 @@ TL = Timeline([
     Step(7.2, 15.1, "Powder runs out through the 2.54 mm orifice"),
     Step(15.1, 16.8, "Stop when the last powder leaves the orifice: report s/50 g"),
     Step(16.8, 19.6, "A cohesive powder (e.g. AlSi10Mg) arches over the orifice: no flow"),
-    Step(19.6, 21.4, "Swap in the Carney funnel (5.08 mm orifice, ASTM B964)"),
-    Step(21.4, 25.6, "Release and time 50 g through the larger orifice"),
-    Step(25.6, 29.0, "Report both: 'no flow' in Hall is a result, not a missing value"),
+    Step(19.6, 22.0, "Swap in the Carney funnel (5.08 mm orifice, ASTM B964); refill"),
+    Step(22.0, 26.2, "Release and time 50 g through the larger orifice"),
+    Step(26.2, 29.6, "Report both: 'no flow' in Hall is a result, not a missing value"),
 ])
 
 st = Stage()
@@ -70,7 +72,7 @@ def flow_state(t):
     """Mass in funnel/receiver for each run at animation time t."""
     pour = lin(t, 4.6, 6.4)
     run1 = lin(t, 7.0, 7.0 + T_HALL / SPEED)
-    carney = lin(t, 21.6, 21.6 + T_CARNEY / SPEED)
+    carney = lin(t, TC0, TC0 + T_CARNEY / SPEED)
     return pour, run1, carney
 
 
@@ -97,7 +99,7 @@ def frame(t):
 
     # ---- finger: in for the pour, out at release; again for the cohesive and Carney runs
     f_in = ramp(t, 3.9, 4.5) * (1 - ramp(t, 6.6, 7.0)) + ramp(t, 16.9, 17.3) * (1 - ramp(t, 17.6, 18.0)) \
-        + ramp(t, 20.9, 21.2) * (1 - ramp(t, 21.3, 21.6))
+        + ramp(t, 21.0, 21.3) * (1 - ramp(t, 22.0, 22.3))
     st.pose("finger", matrix(translate=(-90 * (1 - f_in), -50 * (1 - f_in), -20 * (1 - f_in))), f_in > 0.01)
 
     # ---- pan pours the sample (twice)
@@ -108,44 +110,43 @@ def frame(t):
         return M, (t0 - 0.5) <= t <= (t1 + 0.5)
     if t < 12:
         M, vis = pan_pose(4.6, 6.4)
-    else:
+    elif t < 20:
         M, vis = pan_pose(17.0, 17.5)
+    else:
+        M, vis = pan_pose(21.4, 21.9)
     st.pose("pan", M, vis)
 
     # ---- powder in funnel / receiver and the falling stream
-    hall_present = t < 19.7
-    g_act = HG if t < 20.4 else CG
     a0, a1 = CUT
+    # Hall funnel contents (316L run, then the AlSi10Mg that will not flow; leaves with the funnel)
     if t < 16.8:
-        V_f = MASS / RHO_316L * (pour - run1)
-        V_r = MASS / RHO_316L * run1
-        cols = COLS_316
-        flowing = 7.0 <= t <= 7.0 + T_HALL / SPEED
-    elif t < 21.6:
-        V_f = MASS / RHO_ALSI * ramp(t, 17.0, 17.6)
-        V_r = 0.0
-        cols = COLS_ALSI
-        flowing = False
+        V_h, col_h = MASS / RHO_316L * (pour - run1), COL_316
     else:
-        V_f = MASS / RHO_ALSI * (1 - run2)
-        V_r = MASS / RHO_ALSI * run2
-        cols = COLS_ALSI
-        flowing = t <= 21.6 + T_CARNEY / SPEED
-    # emptied receiver between runs
-    if 16.3 <= t < 16.8:
-        V_r *= 1 - ramp(t, 16.3, 16.8)
-    dip = 4.0 * (run1 if t < 16.8 else run2)
-    M_f = st.pl.actors["hall"].user_matrix if (hall_present and t >= 19.7) else np.eye(4)
-    fill = funnel_fill(V_f, g_act, dip=dip, a0=a0, a1=a1) if t >= 4.6 else None
+        V_h, col_h = MASS / RHO_ALSI * ramp(t, 17.0, 17.6), COL_ALSI
+    fill = funnel_fill(V_h, HG, dip=4.0 * run1 if t < 16.8 else 0.0, a0=a0, a1=a1) if 4.6 <= t < 20.6 else None
     if fill is not None:
-        st.add("fill", fill, "powder", color="#7c838b" if t < 16.8 else "#aeb3b9")
-        st.pose("fill", np.asarray(M_f) if t < 20.4 else matrix(translate=(-170 * (1 - inn), 0, 140 * (1 - inn))))
+        st.add("fill", fill, "powder", color=col_h)
+        st.pose("fill", matrix(translate=(170 * out, 0, 140 * out)))
     else:
         st.remove("fill")
+    # Carney funnel contents (refilled once it is in the holder)
+    V_c = MASS / RHO_ALSI * ramp(t, 21.45, 21.85) * (1 - run2)
+    fill_c = funnel_fill(V_c, CG, dip=4.0 * run2, a0=a0, a1=a1) if t >= 21.45 else None
+    if fill_c is not None:
+        st.add("fill_c", fill_c, "powder", color=COL_ALSI)
+    else:
+        st.remove("fill_c")
+    # receiver: 316L heap, emptied between runs, then the Carney run
+    if t < 16.8:
+        V_r, col_r, cols = MASS / RHO_316L * run1 * (1 - ramp(t, 16.3, 16.8)), COL_316, COLS_316
+    else:
+        V_r, col_r, cols = MASS / RHO_ALSI * run2, COL_ALSI, COLS_ALSI
+    V_f = V_h if t < 20.6 else V_c
+    g_act = HG if t < 20.6 else CG
     apex = heap_apex(V_r, CUP_R - 1.6, TAN_HEAP)
     hs = heap_solid(CUP_R - 1.6, apex, TAN_HEAP, Z_BASE + 2.0)
     if hs is not None and t >= 7.0:
-        st.add("heap", hs, "powder", color="#7c838b" if t < 16.8 else "#aeb3b9", opacity=1.0)
+        st.add("heap", hs, "powder", color=col_r, opacity=1.0)
     else:
         st.remove("heap")
 
@@ -165,15 +166,18 @@ def frame(t):
     if 18.0 <= t <= 18.9:   # a few grains, then the arch holds
         p, _ = stream(t, 18.0, 18.25, 250, (0, 0, Z_O), HG["r_o"] * 0.8, v0=90, floor=floor_r, max_fall=Z_O - Z_BASE, seed=8)
         pts.append(p)
-    if t >= 21.6:
-        p, _ = stream(t, 21.6, 21.6 + T_CARNEY / SPEED, 1500, (0, 0, Z_O), CG["r_o"] * 0.8, v0=110, floor=floor_r,
+    if 21.45 <= t <= 22.2:
+        p, _ = stream(t, 21.45, 21.85, 700, POUR_O, 2.0, v0=40, floor=lambda x, y: funnel_level(V_c, CG) + 0 * x, seed=10)
+        pts.append(p)
+    if t >= TC0:
+        p, _ = stream(t, TC0, TC0 + T_CARNEY / SPEED, 1500, (0, 0, Z_O), CG["r_o"] * 0.8, v0=110, floor=floor_r,
                       max_fall=Z_O - Z_BASE, seed=9)
         pts.append(p)
     P = np.vstack(pts) if pts else np.empty((0, 3))
     st.grains("stream", P, cols[: len(P)] if len(P) <= len(cols) else None, size=3.2)
 
     # ---- camera: slow orbit
-    az = -34 + 24 * ramp(t, 0, 6) + 18 * ramp(t, 15, 29)
+    az = -34 + 24 * ramp(t, 0, 6) + 18 * ramp(t, 15, 29.6)
     dist = 600 - 110 * ramp(t, 2.5, 6.5) + 40 * ramp(t, 19, 21) - 40 * ramp(t, 21.5, 23)
     st.orbit((0, 10, 88), dist, az, 20 - 4 * ramp(t, 4, 8))
     st.pl.camera.SetWindowCenter(0.28, -0.06)
@@ -190,26 +194,28 @@ def frame(t):
     lab("Dry finger seals the orifice", (0, -8, Z_O - 9), (-70, 70), 4.4, 6.8)
     lab("Timer runs from release to last grain", (0, 0, Z_O - 6), (70, 70), 7.2, 11.0)
     lab("Arch over the orifice: no flow", (0, 0, Z_O + 4), (80, 70), 18.3, 19.7)
-    lab("Carney funnel, 5.08 mm orifice", (-CG["r_lip"], 0, CG["lip_top"] - 2), (-30, -62), 20.9, 24.0)
+    lab("Carney funnel, 5.08 mm orifice", (-CG["r_lip"], 0, CG["lip_top"] - 2), (-30, -62), 21.0, 24.6)
 
     # ---- readouts
     if t < 16.8:
         tim = min(max(0.0, (t - 7.0) * SPEED), T_HALL)
         col = "#7CFC9A" if t < 7.0 + T_HALL / SPEED else "#FFD166"
-    elif t < 21.6:
+    elif t < 21.0:
         tim = min(max(0.0, (t - 18.0) * SPEED), 3.0) if t >= 18.0 else 0.0
         col = "#FF6B6B"
+    elif t < TC0:
+        tim, col = 0.0, "#7CFC9A"
     else:
-        tim = min(max(0.0, (t - 21.6) * SPEED), T_CARNEY)
-        col = "#7CFC9A" if t < 21.6 + T_CARNEY / SPEED else "#FFD166"
-    no_flow = 18.9 <= t < 21.6
+        tim = min(max(0.0, (t - TC0) * SPEED), T_CARNEY)
+        col = "#7CFC9A" if t < TC0 + T_CARNEY / SPEED else "#FFD166"
+    no_flow = 18.9 <= t < 21.0
     readouts.append(Readout("TIMER", "  ---" if no_flow else f"{tim:5.1f} s", col))
     readouts.append(Readout("SAMPLE", "50.00 g"))
     if t >= 15.1:
         readouts.append(Readout("HALL, 316L", f"{T_HALL:.1f} s/50 g", "#FFD166"))
     if t >= 19.0:
         readouts.append(Readout("HALL, AlSi10Mg", "no flow", "#FF6B6B"))
-    if t >= 25.3:
+    if t >= TC0 + T_CARNEY / SPEED:
         readouts.append(Readout("CARNEY, AlSi10Mg", f"{T_CARNEY:.1f} s/50 g", "#FFD166"))
 
     # ---- chart: mass collected vs real time
@@ -224,8 +230,8 @@ def frame(t):
         if t >= 18.0:
             x = tt[tt <= min((t - 18.0) * SPEED, 6.0)]
             ax.plot(x, np.minimum(0.4, 0.4 * x / 0.5), color=C["red"], lw=2.4, ls="--", label="AlSi10Mg · Hall (no flow)")
-        if t >= 21.6:
-            x = tt[tt <= min((t - 21.6) * SPEED, T_CARNEY)]
+        if t >= TC0:
+            x = tt[tt <= min((t - TC0) * SPEED, T_CARNEY)]
             ax.plot(x, MASS * x / T_CARNEY, color=C["orange"], lw=2.4, label="AlSi10Mg · Carney")
         ax.set_xlim(0, 20)
         ax.set_ylim(0, 55)
@@ -237,7 +243,7 @@ def frame(t):
     ov = Overlay("Hall flowmeter & Carney funnel", "Flow rate of metal powders: seconds for 50 g to run out",
                  "ASTM B213", "ASTM B964", labels=labels, readouts=readouts, chart=img,
                  step_idx=i, n_steps=len(TL.steps), step_text=step.text,
-                 speed_note="flow shown at 2× speed" if 7.0 <= t <= 25.6 else "",
+                 speed_note="flow shown at 2× speed" if 7.0 <= t <= 26.2 else "",
                  footer="Schematic; dimensions approximate; values illustrative")
     return compose(rgb, ov, st)
 
