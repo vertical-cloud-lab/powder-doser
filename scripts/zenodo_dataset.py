@@ -8,12 +8,14 @@ Zenodo account, following the pattern of sparks-baird/matsci-opt-benchmarks
 - ``powder-doser-raw-runs.zip``: every raw run directory (``data/battery/<run>/``) the
   paper uses, taken from the issue #116 campaign branch at a pinned commit, because
   these files are not on ``main``;
-- ``powder-doser-tidy-data.zip``: the tidy CSVs in ``paper/figures/data/`` behind the
-  figures and SI tables;
+- ``powder-doser-tidy-data.zip``: the tidy CSVs behind the figures and SI tables, from
+  ``paper/figures/data/`` and, for the open-loop protocols, ``paper/figures/candidates/data/``
+  (stored under ``round1-protocols/``);
 - ``README.md`` and ``DATA-DICTIONARY.md``, which are also uploaded as plain files.
 
 Tokens come from the environment: ``ZENODO_API_TOKEN`` (production) and
-``ZENODO_SANDBOX_API_TOKEN`` (sandbox). Never print them.
+``ZENODO_SANDBOX_API_TOKEN`` (sandbox). Never print them. Requests send the token in an
+``Authorization`` header, never in a URL, so error messages cannot leak it.
 
 Usage (run from the repo root):
 
@@ -24,8 +26,9 @@ Usage (run from the repo root):
 
 Production uploads are never published by this script. A person publishes the draft in
 the Zenodo web interface, because a published DOI cannot be withdrawn. Each target keeps
-its deposition id in ``paper/zenodo/dataset_<target>.json``; a later upload to the same
-target adds a new version instead of a new record.
+its deposition id in ``paper/zenodo/dataset_<target>.json``. A later upload to the same
+target rewrites the metadata and files of the unpublished draft, or opens a new version if
+the record is already published, and records the id it actually wrote to.
 """
 
 from __future__ import annotations
@@ -46,6 +49,7 @@ REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "build" / "zenodo-dataset"
 STATE_DIR = REPO / "paper" / "zenodo"
 TIDY_DIR = REPO / "paper" / "figures" / "data"
+ROUND1_DIR = REPO / "paper" / "figures" / "candidates" / "data"  # Figs. 3, 4 and S2
 RUNS_CSV = TIDY_DIR / "runs_all.csv"
 
 # Issue #116 campaign branch holding all 37 raw run directories listed in runs_all.csv.
@@ -83,7 +87,12 @@ RAW_FILES = {
     "timeline_<powder>.csv": "Start time and elapsed time of each protocol block.",
     "raw_serial_<powder>.log": "Verbatim serial transcript between the host and the "
     "Raspberry Pi Pico W firmware.",
+    "retries_<powder>.csv": "Balance reads that were retried after a disturbance (6 runs).",
+    "preflight.json, raw_preflight.log": "Result and serial transcript of a preflight-only "
+    "run, in the directories whose `kind` in `runs_all.csv` is `preflight-only`.",
     "*.png": "Quick-look plots written by the host during the run.",
+    "other *.log, *.json, *.txt": "Occasional diagnostics kept from single runs (feed "
+    "diagnostics, preflight and capture logs, terminal scrollback).",
 }
 
 
@@ -119,15 +128,19 @@ def build_raw_zip(dest: Path) -> list[str]:
     missing = [d for d in wanted if d not in have]
     if missing:
         sys.exit(f"raw runs missing at {ref[:7]}: {missing}")
-    git("archive", "--format=zip", f"--prefix=powder-doser-raw-runs/", "-o", str(dest), ref, *wanted)
+    git("archive", "--format=zip", "--prefix=powder-doser-raw-runs/", "-o", str(dest), ref, *wanted)
     return wanted
 
 
+def tidy_name(p: Path) -> str:
+    return f"round1-protocols/{p.name}" if p.parent == ROUND1_DIR else p.name
+
+
 def build_tidy_zip(dest: Path) -> list[Path]:
-    csvs = sorted(TIDY_DIR.glob("*.csv"))
+    csvs = sorted(TIDY_DIR.glob("*.csv")) + sorted(ROUND1_DIR.glob("*.csv"))
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
         for p in csvs:
-            z.write(p, f"powder-doser-tidy-data/{p.name}")
+            z.write(p, f"powder-doser-tidy-data/{tidy_name(p)}")
     return csvs
 
 
@@ -153,11 +166,14 @@ def data_dictionary(csvs: list[Path]) -> str:
         "",
         "## Raw run directories (`powder-doser-raw-runs.zip`)",
         "",
-        "Each directory is named `<UTC start>_<powder id>` and holds the files below. "
-        "Masses are in grams and firmware times (`t_ms`) in milliseconds. **Tilt in the raw "
-        "records is the servo setting; the tube angle is half of it** (2:1 tilt gear), so the "
-        "settings 0, 45 and 90 are tube angles of 0, 22.5 and 45 degrees. The block letter is "
-        "the test protocol (A-H) of the paper's Table 2.",
+        "Each directory is named `<UTC start>_<powder id>`. Of the 37 directories, most are "
+        "full test runs; the `kind` column of `runs_all.csv` marks the preflight-only and "
+        "demonstration runs. Not every directory has every file below: some runs stopped "
+        "early or predate a file. Masses are in grams and firmware times (`t_ms`) in "
+        "milliseconds. **Tilt in the raw records is the servo setting; the tube angle is half "
+        "of it** (2:1 tilt gear), so the settings 0, 45 and 90 are tube angles of 0, 22.5 and "
+        "45 degrees. The block letter is the test protocol (A-H) of the paper's "
+        "test-protocol table.",
         "",
         "| File | Contents |",
         "|---|---|",
@@ -165,11 +181,14 @@ def data_dictionary(csvs: list[Path]) -> str:
         "",
         "## Tidy tables (`powder-doser-tidy-data.zip`)",
         "",
-        "Built by the scripts in `paper/figures/data/` of the software release, mostly from "
-        "the raw runs; `ai_*`, `auger_comparison` and `design_log_cad` instead summarize the "
-        "AI-tool usage and design log. Types are inferred from the values. Tilt values copied "
-        "from the raw records, such as `preflight_tilt_deg` in `runs_all.csv`, are servo "
-        "settings too.",
+        "Built from the raw runs by scripts in the software release. Files at the top level "
+        "come from `paper/figures/data/` (closed-loop doses, run inventory, SI tables); "
+        "`ai_*`, `auger_comparison` and `design_log_cad` instead summarize the AI-tool usage "
+        "and design log. Files in `round1-protocols/` come from "
+        "`paper/figures/candidates/data/` and hold the open-loop protocol results behind "
+        "Figs. 3, 4 and S2. Types are inferred from the values. Tilt values copied from the "
+        "raw records (`tilt_deg` in `round1-protocols/`, `preflight_tilt_deg` in "
+        "`runs_all.csv`) are servo settings too.",
         "",
     ]
     for p in csvs:
@@ -178,7 +197,7 @@ def data_dictionary(csvs: list[Path]) -> str:
         if not rows:
             continue
         header, body = rows[0], rows[1:]
-        lines += [f"### `{p.name}` ({len(body)} rows)", "", "| Column | Type | Example |", "|---|---|---|"]
+        lines += [f"### `{tidy_name(p)}` ({len(body)} rows)", "", "| Column | Type | Example |", "|---|---|---|"]
         for i, col in enumerate(header):
             vals = [r[i] for r in body if i < len(r)]
             example = next((v for v in vals if v != ""), "").replace("|", "\\|").replace("\n", " ")
@@ -213,7 +232,8 @@ screening; `runs_all.csv` in the tidy tables gives each run's screening verdict 
 ## Provenance
 
 - Raw runs: branch `{RAW_BRANCH}` at commit `{RAW_COMMIT}` (issue #116).
-- Tidy tables: `paper/figures/data/` at commit `{head}`.
+- Tidy tables: `paper/figures/data/` and `paper/figures/candidates/data/` at commit
+  `{head}`.
 - Bundle built {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
   `scripts/zenodo_dataset.py`.
 
@@ -230,7 +250,7 @@ def build() -> list[Path]:
     csvs = build_tidy_zip(tidy_zip)
     dd = OUT / "DATA-DICTIONARY.md"
     dd.write_text(data_dictionary(csvs), encoding="utf-8")
-    head = git("rev-parse", "--short=7", "HEAD").strip()
+    head = git("rev-parse", "HEAD").strip()
     rd = OUT / "README.md"
     rd.write_text(readme(runs, [raw_zip, tidy_zip, dd], head), encoding="utf-8")
     files = [rd, dd, raw_zip, tidy_zip]
@@ -274,9 +294,41 @@ def metadata(license_id: str, production: bool) -> dict:
     return {"metadata": md}
 
 
-def upload(production: bool, license_id: str | None) -> None:
-    from zenodo_client import Zenodo
+class ZenodoError(RuntimeError):
+    pass
 
+
+class Client:
+    """Minimal Zenodo deposit client; the token travels only in the Authorization header."""
+
+    def __init__(self, token: str, production: bool) -> None:
+        import requests
+
+        self.api = "https://zenodo.org/api" if production else "https://sandbox.zenodo.org/api"
+        self.session = requests.Session()
+        self.session.headers["Authorization"] = f"Bearer {token}"
+
+    def call(self, method: str, url: str, **kwargs) -> dict:
+        import requests
+
+        if not url.startswith("http"):
+            url = self.api + url
+        try:
+            res = self.session.request(method, url, timeout=kwargs.pop("timeout", 60), **kwargs)
+        except requests.RequestException as e:  # message holds the URL only, never the token
+            raise ZenodoError(f"{method} {url}: {type(e).__name__}") from None
+        if not res.ok:
+            raise ZenodoError(f"{method} {url}: HTTP {res.status_code}: {res.text[:500]}")
+        return res.json() if res.content else {}
+
+    def upload_files(self, dep: dict, files: list[Path]) -> None:
+        bucket = dep["links"]["bucket"]
+        for p in files:  # same name replaces the file in an unpublished draft
+            with p.open("rb") as f:
+                self.call("PUT", f"{bucket}/{p.name}", data=f, timeout=600)
+
+
+def upload(production: bool, license_id: str | None) -> None:
     target = "production" if production else "sandbox"
     if production and (not license_id or license_id.upper().startswith("TODO")):
         sys.exit("production upload needs --license (SUBMISSION-DECISIONS.md item 5)")
@@ -286,17 +338,30 @@ def upload(production: bool, license_id: str | None) -> None:
         sys.exit(f"{var} is not set")
 
     files = build()
-    client = Zenodo(access_token=token, sandbox=not production)
+    client = Client(token, production)
     state_file = STATE_DIR / f"dataset_{target}.json"
-    # Production stays a draft; a person publishes it on zenodo.org.
-    publish = not production
-    if state_file.exists():
-        dep_id = json.loads(state_file.read_text(encoding="utf-8"))["deposition_id"]
-        res = client.update(str(dep_id), files, publish=publish)
-    else:
-        res = client.create(metadata(license_id or SANDBOX_LICENSE, production), files, publish=publish)
-    res.raise_for_status()
-    dep = res.json()
+    md = metadata(license_id or SANDBOX_LICENSE, production)
+    try:
+        if state_file.exists():
+            dep_id = json.loads(state_file.read_text(encoding="utf-8"))["deposition_id"]
+            dep = client.call("GET", f"/deposit/depositions/{dep_id}")
+            if dep.get("submitted"):
+                # Published: open a new version and work on its draft.
+                nv = client.call("POST", f"/deposit/depositions/{dep_id}/actions/newversion")
+                dep = client.call("GET", nv["links"]["latest_draft"])
+            # Keep a DOI the draft already reserved.
+            md["metadata"]["prereserve_doi"] = dep.get("metadata", {}).get("prereserve_doi", True)
+            dep = client.call("PUT", f"/deposit/depositions/{dep['id']}", json=md)
+        else:
+            dep = client.call("POST", "/deposit/depositions", json=md)
+        client.upload_files(dep, files)
+        # Production stays a draft; a person publishes it on zenodo.org.
+        if not production:
+            dep = client.call("POST", f"/deposit/depositions/{dep['id']}/actions/publish")
+        else:
+            dep = client.call("GET", f"/deposit/depositions/{dep['id']}")
+    except ZenodoError as e:
+        sys.exit(f"Zenodo request failed: {e}")
     md = dep.get("metadata", {})
     state = {
         "target": target,
