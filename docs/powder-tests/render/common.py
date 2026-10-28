@@ -461,6 +461,8 @@ class Overlay:
     step_text: str = ""
     speed_note: str = ""
     footer: str = ""
+    readout_y: float | None = None
+    readout_row_px: float = 520.0
 
 
 def compose(rgb: np.ndarray, ov: Overlay, stage: Stage | None = None) -> Image.Image:
@@ -501,16 +503,29 @@ def compose(rgb: np.ndarray, ov: Overlay, stage: Stage | None = None) -> Image.I
         cx, cy = ov.chart_pos
         cw, ch = ov.chart.size
         _rrect(d, (cx - 10, cy - 8, cx + cw + 6, cy + ch + 6), 12, (255, 255, 255, 222), outline=(0, 0, 0, 30))
-    # readouts
-    f_rt, f_rv = font(13, bold=True), font(26, bold=True, mono=True)
-    ry = (ov.chart_pos[1] + (ov.chart.size[1] if ov.chart is not None else 0) + 18)
-    rx = W - 16
-    for ro in reversed(ov.readouts):
-        rw = max(d.textlength(ro.value, font=f_rv), d.textlength(ro.title, font=f_rt)) + 28
-        _rrect(d, (rx - rw, ry, rx, ry + 62), 10, (22, 30, 26, 235))
-        d.text((rx - rw + 14, ry + 6), ro.title, font=f_rt, fill=(180, 196, 186, 255))
-        d.text((rx - rw + 14, ry + 24), ro.value, font=f_rv, fill=tuple(hex_rgb(ro.color).astype(int).tolist() + [255]))
-        rx -= rw + 10
+    # readouts: right-aligned rows under the chart, wrapping at READOUT_ROW_PX
+    f_rt, f_rv = font(13, bold=True), font(24, bold=True, mono=True)
+    ry = ov.readout_y if ov.readout_y is not None else (
+        ov.chart_pos[1] + (ov.chart.size[1] if ov.chart is not None else 0) + 18)
+    rows, row, row_w = [], [], 0.0
+    for ro in ov.readouts:
+        rw = max(d.textlength(ro.value, font=f_rv), d.textlength(ro.title, font=f_rt)) + 26
+        if row and row_w + rw > ov.readout_row_px:
+            rows.append(row)
+            row, row_w = [], 0.0
+        row.append((ro, rw))
+        row_w += rw + 10
+    if row:
+        rows.append(row)
+    for r_i, row in enumerate(rows):
+        rx = W - 16
+        y = ry + r_i * 68
+        for ro, rw in reversed(row):
+            _rrect(d, (rx - rw, y, rx, y + 60), 10, (22, 30, 26, 235))
+            d.text((rx - rw + 13, y + 6), ro.title, font=f_rt, fill=(180, 196, 186, 255))
+            d.text((rx - rw + 13, y + 24), ro.value, font=f_rv,
+                   fill=tuple(hex_rgb(ro.color).astype(int).tolist() + [255]))
+            rx -= rw + 10
     # step caption
     if ov.step_text:
         f_k, f_c = font(14, bold=True), font(21)
@@ -577,8 +592,10 @@ def frame_range(duration, fps=FPS):
     return [i / fps for i in range(n)]
 
 
-def run(scene_fn, name, duration):
-    """Render every frame of scene_fn(t) -> PIL image and encode; PREVIEW renders stills only."""
+def run(scene_fn, name, duration, **encode_kw):
+    """Render every frame of scene_fn(t) -> PIL image and encode; PREVIEW renders stills only.
+
+    encode_kw go to Movie.encode (gif_width, gif_fps, gif_colors) to keep GIFs small."""
     times = frame_range(duration)
     if os.environ.get("PREVIEW"):
         outdir = Path(os.environ.get("PREVIEW_DIR", "/tmp/preview"))
@@ -592,7 +609,7 @@ def run(scene_fn, name, duration):
         mv.add(scene_fn(t))
         if i % 48 == 0:
             print(name, f"{i}/{len(times)}", flush=True)
-    mv.encode()
+    mv.encode(**encode_kw)
 
 
 if __name__ == "__main__":

@@ -42,19 +42,24 @@ for i, a in enumerate((90, 210, 330)):
     x, y = 58 * math.cos(math.radians(a)), 58 * math.sin(math.radians(a))
     st.add(f"foot{i}", disc(7, 0, 4).translate((x, y, 0), inplace=False), "rubber")
 st.add("level", disc(7, Z_BASE, Z_BASE + 3).translate((-45, -40, 0), inplace=False), "glass", opacity=0.6, color="#9be39b")
-st.add("column", rod((0, 62, Z_BASE), (0, 62, 190), 7), "steel")
+COL_XY = np.array([-62.0, 48.0])
+st.add("column", rod((COL_XY[0], COL_XY[1], Z_BASE), (COL_XY[0], COL_XY[1], HG["lip_top"] + 30), 7), "steel")
 ring_z = HG["z_ct"] - 7.0
 st.add("ring", tube(HG["r_lip"] - 2.0, HG["r_lip"] + 6.0, ring_z, HG["z_ct"] - 1.0), "steel_dark")
-st.add("arm", box(-7, 7, HG["r_lip"] + 4, 62, ring_z, ring_z + 6), "steel_dark")
+_u = COL_XY / np.linalg.norm(COL_XY)
+st.add("arm", rod((*(_u * (HG["r_lip"] + 4)), ring_z + 3), (COL_XY[0], COL_XY[1], ring_z + 3), 4.5), "steel_dark")
+st.add("clamp", disc(11, ring_z - 4, ring_z + 10).translate((COL_XY[0], COL_XY[1], 0), inplace=False), "steel_dark")
 st.add("hall", lathe(HALL_PROF, a0=CUT[0], a1=CUT[1]), "steel")
 st.add("carney", lathe(CARN_PROF, a0=CUT[0], a1=CUT[1]), "brass")
 st.add("cup", lathe([(0, Z_BASE), (CUP_R, Z_BASE), (CUP_R, Z_BASE + CUP_H), (CUP_R - 1.6, Z_BASE + CUP_H),
                      (CUP_R - 1.6, Z_BASE + 2.0), (0, Z_BASE + 2.0)]), "glass")
-st.add("finger", rod((-110, 0, Z_O - 16), (0, 0, Z_O - 7.5), 7.5).merge(pv.Sphere(7.5, (0, 0, Z_O - 7.5))), "blue",
-       color="#5b8fd6")
+st.add("finger", rod((-44, -26, Z_O - 17), (0, 0, Z_O - 7.5), 7.5).merge(pv.Sphere(radius=7.5, center=(0, 0, Z_O - 7.5))),
+       "blue", color="#5b8fd6")
 pan = lathe([(0, 0), (26, 0), (30, 8), (28.6, 8), (24.8, 1.4), (0, 1.4)])
 st.add("pan", pan, "alu")
-st.shadow("sh_base", (0, 10), 95, 85, 0.35)
+st.shadow("sh_base", (0, 6), 98, 92, 0.38)
+PAN_XY = (-48.0, 6.0)
+POUR_O = (PAN_XY[0] + 29.5, PAN_XY[1], HG["lip_top"] + 14.0)   # pan lip when tilted
 
 COLS_316 = grain_colors(6000, "#7c838b", 0.12, seed=1)
 COLS_ALSI = grain_colors(6000, "#b2b7bd", 0.10, seed=2)
@@ -93,13 +98,13 @@ def frame(t):
     # ---- finger: in for the pour, out at release; again for the cohesive and Carney runs
     f_in = ramp(t, 3.9, 4.5) * (1 - ramp(t, 6.6, 7.0)) + ramp(t, 16.9, 17.3) * (1 - ramp(t, 17.6, 18.0)) \
         + ramp(t, 20.9, 21.2) * (1 - ramp(t, 21.3, 21.6))
-    st.pose("finger", matrix(translate=(-120 * (1 - f_in), 0, 0)), f_in > 0.01)
+    st.pose("finger", matrix(translate=(-90 * (1 - f_in), -50 * (1 - f_in), -20 * (1 - f_in))), f_in > 0.01)
 
     # ---- pan pours the sample (twice)
     def pan_pose(t0, t1):
         s_in, s_out, tilt = ramp(t, t0 - 0.5, t0), ramp(t, t1, t1 + 0.5), ramp(t, t0, t0 + 0.4) * (1 - ramp(t, t1 - 0.2, t1))
-        M = matrix(translate=(-60, -10, HG["lip_top"] + 34)) @ matrix(rot_deg=-38 * tilt, axis=(0, 1, 0), origin=(26, 0, 6))
-        M = matrix(translate=(-160 * (1 - s_in) + 160 * s_out, 0, 0)) @ M
+        M = matrix(translate=(PAN_XY[0], PAN_XY[1], HG["lip_top"] + 26)) @ matrix(rot_deg=-40 * tilt, axis=(0, 1, 0), origin=(26, 0, 6))
+        M = matrix(translate=(-140 * (1 - s_in) - 140 * s_out, 0, 30 * (1 - s_in) + 30 * s_out)) @ M
         return M, (t0 - 0.5) <= t <= (t1 + 0.5)
     if t < 12:
         M, vis = pan_pose(4.6, 6.4)
@@ -148,10 +153,10 @@ def frame(t):
     floor_r = lambda x, y: Z_BASE + 2.0 + np.maximum(0.05, apex - np.hypot(x, y) * TAN_HEAP)  # noqa: E731
     pts = []
     if 4.7 <= t <= 6.6:
-        p, _ = stream(t, 4.7, 6.3, 700, (-30, -10, HG["lip_top"] + 30), 2.0, v0=40, floor=lambda x, y: funnel_level(V_f, g_act) + 0 * x, seed=5)
+        p, _ = stream(t, 4.7, 6.3, 700, POUR_O, 2.0, v0=40, floor=lambda x, y: funnel_level(V_f, g_act) + 0 * x, seed=5)
         pts.append(p)
     if 17.0 <= t <= 17.9:
-        p, _ = stream(t, 17.05, 17.55, 700, (-30, -10, HG["lip_top"] + 30), 2.0, v0=40, floor=lambda x, y: funnel_level(V_f, g_act) + 0 * x, seed=6)
+        p, _ = stream(t, 17.05, 17.55, 700, POUR_O, 2.0, v0=40, floor=lambda x, y: funnel_level(V_f, g_act) + 0 * x, seed=6)
         pts.append(p)
     if t >= 7.0 and t < 16.0:
         p, _ = stream(t, 7.0, 7.0 + T_HALL / SPEED, 900, (0, 0, Z_O), HG["r_o"] * 0.8, v0=90, floor=floor_r,
@@ -168,10 +173,10 @@ def frame(t):
     st.grains("stream", P, cols[: len(P)] if len(P) <= len(cols) else None, size=3.2)
 
     # ---- camera: slow orbit
-    az = -32 + 22 * ramp(t, 0, 6) + 16 * ramp(t, 15, 29)
-    dist = 420 - 70 * ramp(t, 2.5, 6.5) + 30 * ramp(t, 19, 21) - 30 * ramp(t, 21.5, 23)
-    st.orbit((0, 18, 92), dist, az, 21 - 4 * ramp(t, 4, 8))
-    st.pl.camera.SetWindowCenter(0.30, -0.02)
+    az = -34 + 24 * ramp(t, 0, 6) + 18 * ramp(t, 15, 29)
+    dist = 600 - 110 * ramp(t, 2.5, 6.5) + 40 * ramp(t, 19, 21) - 40 * ramp(t, 21.5, 23)
+    st.orbit((0, 10, 88), dist, az, 20 - 4 * ramp(t, 4, 8))
+    st.pl.camera.SetWindowCenter(0.28, -0.06)
     rgb = st.render()
 
     # ---- labels
@@ -179,13 +184,13 @@ def frame(t):
         a = ramp(t, t0, t0 + 0.4) * (1 - ramp(t, t1 - 0.4, t1))
         if a > 0:
             labels.append(Label(text, xyz, off, a))
-    lab("Hall funnel: 60° cone, 2.54 mm orifice", (HG["r_lip"], 0, HG["lip_top"] - 3), (95, -40), 1.6, 6.0)
-    lab("Stand with spirit level", (-45, -40, Z_BASE + 3), (-60, 60), 0.4, 4.2)
-    lab("Receiver", (CUP_R, -6, Z_BASE + 30), (90, 40), 2.4, 6.2)
-    lab("Dry finger seals the orifice", (0, -8, Z_O - 9), (-90, 55), 4.4, 6.8)
-    lab("Timer runs from release to last grain", (0, 0, Z_O - 6), (110, 60), 7.2, 11.0)
-    lab("Arch over the orifice: no flow", (0, 0, Z_O + 4), (110, 50), 18.3, 19.7)
-    lab("Carney funnel: 5.08 mm orifice", (CG["r_lip"], 0, CG["lip_top"] - 3), (95, -40), 20.9, 24.0)
+    lab("Hall funnel, 2.54 mm orifice", (-HG["r_lip"], 0, HG["lip_top"] - 2), (-30, -62), 1.6, 6.0)
+    lab("Stand with spirit level", (-45, -40, Z_BASE + 3), (-70, 45), 0.4, 4.2)
+    lab("Receiver", (CUP_R, -6, Z_BASE + 30), (80, 30), 2.4, 6.2)
+    lab("Dry finger seals the orifice", (0, -8, Z_O - 9), (-70, 70), 4.4, 6.8)
+    lab("Timer runs from release to last grain", (0, 0, Z_O - 6), (70, 70), 7.2, 11.0)
+    lab("Arch over the orifice: no flow", (0, 0, Z_O + 4), (80, 70), 18.3, 19.7)
+    lab("Carney funnel, 5.08 mm orifice", (-CG["r_lip"], 0, CG["lip_top"] - 2), (-30, -62), 20.9, 24.0)
 
     # ---- readouts
     if t < 16.8:
@@ -197,7 +202,8 @@ def frame(t):
     else:
         tim = min(max(0.0, (t - 21.6) * SPEED), T_CARNEY)
         col = "#7CFC9A" if t < 21.6 + T_CARNEY / SPEED else "#FFD166"
-    readouts.append(Readout("TIMER", f"{tim:5.1f} s", col))
+    no_flow = 18.9 <= t < 21.6
+    readouts.append(Readout("TIMER", "  ---" if no_flow else f"{tim:5.1f} s", col))
     readouts.append(Readout("SAMPLE", "50.00 g"))
     if t >= 15.1:
         readouts.append(Readout("HALL, 316L", f"{T_HALL:.1f} s/50 g", "#FFD166"))
