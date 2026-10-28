@@ -14,6 +14,8 @@ effective cohesion and friction, checked against standard flow tests). Target: *
 | [`data/README.md`](data/README.md) | Provenance of every data file (source branch, commit, PR) |
 | [`scripts/validate_refs.py`](scripts/validate_refs.py) | Re-runs the reference check |
 | [`mock_review/`](mock_review/) | Edison mock editor/reviewer pass on the draft |
+| [`tms-2027/`](tms-2027/) | TMS 2027 abstract, submitted and revised (28 Oct 2026), and that session's transcript |
+| [`meetings/`](meetings/) | Corrected transcripts of author meetings (28 Oct 2026: Sterling and Will), with the raw Whisper output |
 
 Placeholders: orange bracketed text in the PDF marks values that wait on data; figure panels from
 invented numbers carry a diagonal "SYNTHETIC DATA" mark and a caption starting "[Placeholder: synthetic

@@ -47,3 +47,5 @@ response to these properties may anticipate downstream behavior such as spreadab
 uniformity.
 
 Session transcript: [`session-2026-10-28.md`](session-2026-10-28.md).
+Transcript of the recording of the same meeting (49 min, corrected Whisper large-v3):
+[`../meetings/2026-10-28-sterling-will.md`](../meetings/2026-10-28-sterling-will.md).
