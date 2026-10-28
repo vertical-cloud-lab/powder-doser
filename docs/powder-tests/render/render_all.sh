@@ -15,4 +15,7 @@ if [ -z "${DISPLAY:-}" ]; then
   export DISPLAY=:97
   sleep 1
 fi
+# Several software-GL renders at once can crash llvmpipe ("Hardware does not support the number
+# of textures defined"); two rasterizer threads per process avoided it on a 4-core runner.
+export LP_NUM_THREADS=${LP_NUM_THREADS:-2}
 printf '%s\n' "${scenes[@]}" | xargs -P "${JOBS:-3}" -I{} "$PY" {}.py
