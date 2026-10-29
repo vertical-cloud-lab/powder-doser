@@ -11,7 +11,7 @@
  "nodes": 75136,
  "elements": 47567,
  "mesh_mm": 3.0,
- "wall_s": 33.7,
+ "wall_s": 25.4,
  "parts": [
   {
    "part": "shaft",
@@ -59,10 +59,10 @@
   "Kf": 1.74,
   "Kfs": 2.05,
   "sigma_a_MPa": 22.86,
-  "sigma_m_MPa": 7.7,
-  "n_goodman": 5.83
+  "sigma_m_MPa": 0.0,
+  "n_goodman": 6.5
  },
- "torsion_nominal_MPa": 2.16,
+ "torsion_nominal_MPa": 0.0,
  "bearings_x": [
   -41.4,
   346.4
