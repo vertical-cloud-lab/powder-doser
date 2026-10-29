@@ -10,65 +10,65 @@
   "drive chain": "534 N between the 15T sprockets (12.0 N*m)",
   "motor torque": "12.0 N*m reaction on the motor body; 123 N more tension in each chain's bottom run (B+ and B- pulled together)"
  },
- "nodes": 229851,
- "elements": 119294,
+ "nodes": 229836,
+ "elements": 119244,
  "mesh_mm": 12.0,
- "wall_s": 73.7,
+ "wall_s": 72.6,
  "parts": [
   {
    "part": "side_plate_front",
    "material": "6061-T6 plate",
-   "umax_mm": 0.14399,
-   "vm_max_MPa": 4.002,
+   "umax_mm": 0.14481,
+   "vm_max_MPa": 3.983,
    "vm_max_at": [
-    -36.4,
-    81.7,
-    659.7
+    -30.0,
+    -7.2,
+    363.4
    ],
-   "vm_excl_MPa": 4.002,
+   "vm_excl_MPa": 3.983,
    "vm_excl_at": [
-    -36.4,
-    81.7,
-    659.7
+    -30.0,
+    -7.2,
+    363.4
    ],
    "allow_MPa": 241.0,
-   "sf": 60.21
+   "sf": 60.5
   },
   {
    "part": "side_plate_back",
    "material": "6061-T6 plate",
-   "umax_mm": 0.14508,
-   "vm_max_MPa": 13.839,
+   "umax_mm": 0.14607,
+   "vm_max_MPa": 12.848,
    "vm_max_at": [
-    341.4,
-    97.7,
-    404.2
+    335.0,
+    100.2,
+    254.6
    ],
-   "vm_excl_MPa": 13.839,
+   "vm_excl_MPa": 12.848,
    "vm_excl_at": [
-    341.4,
-    97.7,
-    404.2
+    335.0,
+    100.2,
+    254.6
    ],
    "allow_MPa": 241.0,
-   "sf": 17.41
+   "sf": 18.76
   }
  ],
  "key_disp": {
-  "motor COM dz": -0.12655,
-  "motor encoder end dz": -0.25685,
-  "motor shaft tip dz": 0.11039,
-  "motor shaft tip dy": 0.00641,
-  "motor face centre dx": -0.01554,
-  "motor axis tilt (mrad, vertical plane)": 1.78272
+  "motor COM dz": -0.10338,
+  "motor encoder end dz": -0.20538,
+  "motor shaft tip dz": 0.10022,
+  "motor shaft tip dy": 0.00396,
+  "motor face centre dx": -0.05148,
+  "motor axis tilt (mrad, vertical plane)": 1.4835
  },
  "notes": "plate-to-post joint: motorpost",
- "mass_kg": 31.7007,
+ "mass_kg": 31.7279,
  "feet_reaction_N": [
-  5.682184e-08,
-  -2.330509e-06,
-  317.7561
+  -7.978616e-08,
+  -3.97739e-06,
+  317.9019
  ],
- "total_mass_kg": 31.701,
+ "total_mass_kg": 31.728,
  "png": "out/frame/chain-carousel-v4_motorpost_jam.png"
 }

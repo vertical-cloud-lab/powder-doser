@@ -44,6 +44,8 @@ MODULE = "frame"
 MOTOR_POST_Y = 120.0            # variant "motorpost": a 2020 post on the back plate's outer face at y +120 (clear of the drive
 MOTOR_POST_Z_TOP = 520.0        # chain and the B+ bearing's flange), base cross rail to z 520, screwed to the plate level with the
                                 # motor's screws and 110 mm above
+MOTOR_POST2_Y = -2.0            # "motorpost2" adds a second, at y -2 (between the motor's -y screws at 22.4 and the B- bearing's
+MOTOR_POST2_Z_TOP = 395.0       # flange, y -97.7 .. -16.6 from z 404 up), base cross rail to z 395
 GAP = 0.3                       # plate-to-post gap outside the screw pads
 PAD_R = 7.0                     # clamped zone round each M5 side-plate screw
 
@@ -198,7 +200,7 @@ def build(design: str, variant: str = "pads", h: float = 12.0, motor_refine: flo
     ext_len = 0.0
     for key, name, M in D["ext"]:
         a, b = box_from_step(design, key, M)
-        if key == "ext_post" and variant in ("pads", "motorpost"):
+        if key == "ext_post" and variant in ("pads", "motorpost", "motorpost2"):
             for pk, (x0, x1) in plate_x.items():
                 if abs(a[0] - x1) < 0.05:            # post's inner face on the plate's outer face (+x side)
                     a = a.copy(); a[0] += GAP
@@ -226,16 +228,19 @@ def build(design: str, variant: str = "pads", h: float = 12.0, motor_refine: flo
         ext_key = e.key
     # screw pads between the plates and the posts
     pads = []
-    if variant == "motorpost":                       # design change under test: a third back post beside the motor
+    if variant in ("motorpost", "motorpost2"):       # design change under test: back posts beside the motor
         xs, outward = post_side["side_plate_back"]
-        y_p, z_top = MOTOR_POST_Y, MOTOR_POST_Z_TOP
         z_bot = min(np.array(pp["M"])[2, 3] for pp in D["pl"] if pp["key"] == "ext_y") + 10.0   # on the base cross rail's top
-        parts.append(fem.Part("Motor post (2020, added)", gbox((xs + outward * GAP, y_p - 10, z_bot), (xs + outward * 20.0, y_p + 10, z_top)),
-                              material=ext_key, orient=((0, 0, 1), (1, 0, 0))))
         zm = D["motor"][2, 3]
-        for z in (zm - 34.79, zm + 34.79, zm + 110.0):
-            D["screws"].append(np.array([xs, y_p, z]))
-    if variant in ("pads", "motorpost"):
+        posts = [(MOTOR_POST_Y, MOTOR_POST_Z_TOP, (zm - 34.79, zm + 34.79, zm + 110.0))]
+        if variant == "motorpost2":                  # and a short one on the motor's -y side, under the B- bearing's flange
+            posts.append((MOTOR_POST2_Y, MOTOR_POST2_Z_TOP, (zm - 34.79, zm + 34.79)))
+        for k, (y_p, z_top, zs) in enumerate(posts):
+            parts.append(fem.Part(f"Motor post {k + 1} (2020, added)", gbox((xs + outward * GAP, y_p - 10, z_bot), (xs + outward * 20.0, y_p + 10, z_top)),
+                                  material=ext_key, orient=((0, 0, 1), (1, 0, 0))))
+            for z in zs:
+                D["screws"].append(np.array([xs, y_p, z]))
+    if variant in ("pads", "motorpost", "motorpost2"):
         for s in D["screws"]:
             for pk, (x0, x1) in plate_x.items():
                 if x0 - 1.0 <= s[0] <= x1 + 1.0:
@@ -674,6 +679,8 @@ for _d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster"):
     CASES[f"{_d}_mass"] = (lambda d=_d: mass_props(d))
     CASES[f"{_d}_motorpost_modes"] = (lambda d=_d: solve_modes(d, "motorpost"))
     CASES[f"{_d}_motorpost_jam"] = (lambda d=_d: solve_static(d, "motorpost", "jam"))
+    CASES[f"{_d}_motorpost2_modes"] = (lambda d=_d: solve_modes(d, "motorpost2"))
+    CASES[f"{_d}_motorpost2_jam"] = (lambda d=_d: solve_static(d, "motorpost2", "jam"))
     CASES[f"{_d}_motor_view"] = (lambda d=_d: motor_view(d, "jam"))
     CASES[f"{_d}_motor_view_gravity"] = (lambda d=_d: motor_view(d, "gravity"))
 

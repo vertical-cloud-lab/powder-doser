@@ -15,31 +15,124 @@
 
 | design | case | part | max displacement (mm) | peak von Mises (MPa) | allowable (MPa) | safety factor | functional numbers |
 |---|---|---|---|---|---|---|---|
+| v3 | gravity | side_plate_front | 0.0541 | 1.02 | 241 | 236 | motor COM dz -0.0261; motor encoder end dz -0.0512; motor shaft tip dz 0.0057; motor shaft tip dy 0.00377; motor face centre dx -0.0143; motor axis tilt (mrad, vertical plane) 0.276 |
+| v3 | gravity | side_plate_back | 0.0541 | 2.33 | 241 | 103 |  |
 | v3 | gravity | side_plate_front | 0.058 | 1.03 | 241 | 235 | motor COM dz -0.0319; motor encoder end dz -0.0614; motor shaft tip dz 0.00736; motor shaft tip dy 0.00458; motor face centre dx -0.0132; motor axis tilt (mrad, vertical plane) 0.334 |
 | v3 | gravity | side_plate_back | 0.058 | 3.13 | 241 | 77 |  |
-| v3 | jam | side_plate_front | 0.125 | 4.44 | 241 | 54.3 | motor COM dz -0.0938; motor encoder end dz -0.185; motor shaft tip dz 0.0953; motor shaft tip dy 0.0125; motor face centre dx -0.0458; motor axis tilt (mrad, vertical plane) 1.36 |
-| v3 | jam | side_plate_back | 0.129 | 12.3 | 241 | 19.6 |  |
+| v3 | jam | side_plate_front | 0.125 | 4.45 | 241 | 54.1 | motor COM dz -0.094; motor encoder end dz -0.185; motor shaft tip dz 0.0957; motor shaft tip dy 0.0127; motor face centre dx -0.0475; motor axis tilt (mrad, vertical plane) 1.37 |
+| v3 | jam | side_plate_back | 0.129 | 12.3 | 241 | 19.7 |  |
+| v3 | lean_x | side_plate_front | 0.511 | 5.29 | 241 | 45.6 | motor COM dz 0.0657; motor encoder end dz 0.127; motor shaft tip dz -0.0162; motor shaft tip dy -0.0307; motor face centre dx 0.175; motor axis tilt (mrad, vertical plane) -0.695 |
+| v3 | lean_x | side_plate_back | 0.504 | 6.02 | 241 | 40 |  |
+| v3 | lean_y | side_plate_front | 0.209 | 2.16 | 241 | 111 | motor COM dz -0.0334; motor encoder end dz -0.0654; motor shaft tip dz 0.00936; motor shaft tip dy -0.0607; motor face centre dx -0.0219; motor axis tilt (mrad, vertical plane) 0.363 |
+| v3 | lean_y | side_plate_back | 0.118 | 3.35 | 241 | 71.9 |  |
 | v3 | running | side_plate_front | 0.0645 | 3.84 | 241 | 62.7 | motor COM dz -0.0396; motor encoder end dz -0.0769; motor shaft tip dz 0.0209; motor shaft tip dy 0.0057; motor face centre dx -0.0222; motor axis tilt (mrad, vertical plane) 0.475 |
 | v3 | running | side_plate_back | 0.0689 | 4.52 | 241 | 53.3 |  |
-| v4 | jam | side_plate_front | 0.153 | 4.01 | 241 | 60.1 | motor COM dz -0.168; motor encoder end dz -0.336; motor shaft tip dz 0.126; motor shaft tip dy 0.0078; motor face centre dx -0.00927; motor axis tilt (mrad, vertical plane) 2.24 |
-| v4 | jam | side_plate_back | 0.154 | 15.3 | 241 | 15.8 |  |
+| v4 | jam | side_plate_front | 0.145 | 3.98 | 241 | 60.5 | motor COM dz -0.103; motor encoder end dz -0.205; motor shaft tip dz 0.1; motor shaft tip dy 0.00396; motor face centre dx -0.0515; motor axis tilt (mrad, vertical plane) 1.48 |
+| v4 | jam | side_plate_back | 0.146 | 12.8 | 241 | 18.8 |  |
+| v4 | gravity | side_plate_front | 0.07 | 0.798 | 241 | 302 | motor COM dz -0.0527; motor encoder end dz -0.103; motor shaft tip dz 0.0152; motor shaft tip dy 0.00326; motor face centre dx -0.0019; motor axis tilt (mrad, vertical plane) 0.574 |
+| v4 | gravity | side_plate_back | 0.0697 | 3.4 | 241 | 70.9 |  |
+| v4 | jam | side_plate_front | 0.152 | 4.01 | 241 | 60.1 | motor COM dz -0.162; motor encoder end dz -0.334; motor shaft tip dz 0.125; motor shaft tip dy 0.00764; motor face centre dx -0.00934; motor axis tilt (mrad, vertical plane) 2.23 |
+| v4 | jam | side_plate_back | 0.153 | 15.1 | 241 | 16 |  |
+| v4 | lean_x | side_plate_front | 0.842 | 5.95 | 241 | 40.5 | motor COM dz 0.0653; motor encoder end dz 0.123; motor shaft tip dz -0.0121; motor shaft tip dy -0.0742; motor face centre dx 0.332; motor axis tilt (mrad, vertical plane) -0.655 |
+| v4 | lean_x | side_plate_back | 0.827 | 6.55 | 241 | 36.8 |  |
+| v4 | lean_y | side_plate_front | 0.265 | 2.18 | 241 | 111 | motor COM dz -0.0577; motor encoder end dz -0.114; motor shaft tip dz 0.0176; motor shaft tip dy -0.102; motor face centre dx -0.00838; motor axis tilt (mrad, vertical plane) 0.638 |
+| v4 | lean_y | side_plate_back | 0.169 | 3.55 | 241 | 67.9 |  |
 | v4 | running | side_plate_front | 0.0733 | 3.53 | 241 | 68.3 | motor COM dz -0.0643; motor encoder end dz -0.127; motor shaft tip dz 0.0308; motor shaft tip dy 0.00314; motor face centre dx -0.00982; motor axis tilt (mrad, vertical plane) 0.767 |
 | v4 | running | side_plate_back | 0.0811 | 5.58 | 241 | 43.2 |  |
+| paternoster | gravity | side_plate_front | 0.0875 | 1.99 | 241 | 121 | motor COM dz -0.104; motor encoder end dz -0.14; motor shaft tip dz -0.0544; motor shaft tip dy -0.0108; motor face centre dx 0.0355; motor axis tilt (mrad, vertical plane) 0.414 |
+| paternoster | gravity | side_plate_back | 0.0954 | 6.16 | 241 | 39.1 |  |
+| paternoster | gravity | motor plate | 0.0958 | 6.39 | 241 | 37.7 |  |
+| paternoster | gravity | standoff 1 | 0.0697 | 7.85 | 241 | 30.7 |  |
+| paternoster | gravity | standoff 2 | 0.0897 | 8.85 | 241 | 27.2 |  |
+| paternoster | gravity | standoff 3 | 0.0702 | 8.68 | 241 | 27.8 |  |
+| paternoster | gravity | standoff 4 | 0.092 | 9.19 | 241 | 26.2 |  |
+| paternoster | jam | side_plate_front | 0.0843 | 8.89 | 241 | 27.1 | motor COM dz -0.116; motor encoder end dz -0.159; motor shaft tip dz -0.0575; motor shaft tip dy 0.00087; motor face centre dx 0.0326; motor axis tilt (mrad, vertical plane) 0.492 |
+| paternoster | jam | side_plate_back | 0.0981 | 19.3 | 241 | 12.5 |  |
+| paternoster | jam | motor plate | 0.204 | 23 | 241 | 10.5 |  |
+| paternoster | jam | standoff 1 | 0.0932 | 21.7 | 241 | 11.1 |  |
+| paternoster | jam | standoff 2 | 0.117 | 21.3 | 241 | 11.3 |  |
+| paternoster | jam | standoff 3 | 0.15 | 29.8 | 241 | 8.1 |  |
+| paternoster | jam | standoff 4 | 0.165 | 31.9 | 241 | 7.54 |  |
+| paternoster | lean_x | side_plate_front | 1.12 | 9.22 | 241 | 26.1 | motor COM dz -0.274; motor encoder end dz -0.397; motor shaft tip dz -0.102; motor shaft tip dy -0.18; motor face centre dx 0.589; motor axis tilt (mrad, vertical plane) 1.43 |
+| paternoster | lean_x | side_plate_back | 1.13 | 8.19 | 241 | 29.4 |  |
+| paternoster | lean_x | motor plate | 0.766 | 9.13 | 241 | 26.4 |  |
+| paternoster | lean_x | standoff 1 | 0.56 | 11.6 | 241 | 20.8 |  |
+| paternoster | lean_x | standoff 2 | 0.698 | 10.7 | 241 | 22.5 |  |
+| paternoster | lean_x | standoff 3 | 0.598 | 7.83 | 241 | 30.8 |  |
+| paternoster | lean_x | standoff 4 | 0.74 | 6.46 | 241 | 37.3 |  |
+| paternoster | lean_y | side_plate_front | 0.266 | 2.35 | 241 | 102 | motor COM dz -0.104; motor encoder end dz -0.141; motor shaft tip dz -0.0529; motor shaft tip dy -0.261; motor face centre dx 0.0347; motor axis tilt (mrad, vertical plane) 0.426 |
+| paternoster | lean_y | side_plate_back | 0.283 | 6 | 241 | 40.2 |  |
+| paternoster | lean_y | motor plate | 0.28 | 6.25 | 241 | 38.6 |  |
+| paternoster | lean_y | standoff 1 | 0.269 | 7.97 | 241 | 30.2 |  |
+| paternoster | lean_y | standoff 2 | 0.279 | 8.98 | 241 | 26.8 |  |
+| paternoster | lean_y | standoff 3 | 0.269 | 8.54 | 241 | 28.2 |  |
+| paternoster | lean_y | standoff 4 | 0.279 | 9.07 | 241 | 26.6 |  |
+| paternoster | running | side_plate_front | 0.0904 | 8.86 | 241 | 27.2 | motor COM dz -0.118; motor encoder end dz -0.16; motor shaft tip dz -0.0576; motor shaft tip dy -0.00299; motor face centre dx 0.0348; motor axis tilt (mrad, vertical plane) 0.499 |
+| paternoster | running | side_plate_back | 0.0994 | 9.27 | 241 | 26 |  |
+| paternoster | running | motor plate | 0.108 | 8.63 | 241 | 27.9 |  |
+| paternoster | running | standoff 1 | 0.0697 | 6.72 | 241 | 35.9 |  |
+| paternoster | running | standoff 2 | 0.0945 | 7.65 | 241 | 31.5 |  |
+| paternoster | running | standoff 3 | 0.0807 | 11.1 | 241 | 21.7 |  |
+| paternoster | running | standoff 4 | 0.101 | 11 | 241 | 21.9 |  |
 
 ### Natural frequencies
 
 | design | joint | f1-f6 (Hz) | what moves in modes 1-3 |
 |---|---|---|---|
+| v3 | bonded | 20.0, 30.4, 41.9, 80.5, 87.2, 105.6 | sprocket 42 %/side plates 17 %; sprocket 42 %/side plates 19 %; sprocket 29 %/nema 34 28 % |
 | v3 | pads | 19.4, 27.8, 37.8, 74.1, 84.2, 96.5 | sprocket 42 %/shaft 17 %; sprocket 42 %/side plates 16 %; sprocket 29 %/nema 34 27 % |
+| v4 | motorpost | 15.4, 23.2, 33.6, 62.3, 82.3, 86.9 | sprocket 35 %/side plates 21 %; sprocket 35 %/side plates 24 %; nema 34 24 %/sprocket 23 % |
+| v4 | pads | 15.2, 22.9, 29.7, 50.6, 80.3, 81.1 | sprocket 36 %/side plates 21 %; sprocket 35 %/side plates 23 %; sprocket 24 %/side plates 23 % |
+| paternoster | pads | 15.5, 16.5, 24.9, 47.5, 60.0, 69.3 | idler 30 %/nema 34 26 %; nema 34 60 %/idler 13 %; idler 30 %/sprocket 26 % |
 
 Step rates of the NEMA 34 (one 32T revolution per motor revolution in all three designs, 200 full steps per revolution):
 
-| chain speed (mm/s) | full-step rate (Hz) | electrical frequency (Hz) |
-|---|---|---|
-| 25 | 16.4 | 4.1 |
-| 50 | 32.8 | 8.2 |
-| 100 | 65.6 | 16.4 |
-| 130 | 85.3 | 21.3 |
+| chain speed (mm/s) | full-step rate (Hz) | electrical frequency (Hz) | 32T tooth mesh (Hz) |
+|---|---|---|---|
+| 25 | 16.4 | 4.1 | 2.6 |
+| 50 | 32.8 | 8.2 | 5.2 |
+| 100 | 65.6 | 16.4 | 10.5 |
+| 130 | 85.3 | 21.3 | 13.6 |
+
+Chain speeds (mm/s) at which each excitation lands on a mode under 120 Hz (v3/v4 run up to 100 mm/s, the paternoster up to 130). A mode is only excited near these speeds, and microstepping weakens the full-step excitation a lot:
+
+| design | joint | mode (Hz) | full-step rate at | electrical frequency at | 32T tooth mesh at |
+|---|---|---|---|---|---|
+| v3 | bonded | 20.0 | **30** | 122 | 190 |
+| v3 | bonded | 30.4 | **46** | 185 | 290 |
+| v3 | bonded | 41.9 | **64** | 256 | 399 |
+| v3 | bonded | 80.5 | 123 | 491 | 767 |
+| v3 | bonded | 87.2 | 133 | 532 | 831 |
+| v3 | bonded | 105.6 | 161 | 644 | 1006 |
+| v3 | pads | 19.4 | **29** | 118 | 184 |
+| v3 | pads | 27.8 | **42** | 169 | 265 |
+| v3 | pads | 37.8 | **58** | 230 | 360 |
+| v3 | pads | 74.1 | 113 | 452 | 706 |
+| v3 | pads | 84.2 | 128 | 513 | 802 |
+| v3 | pads | 96.5 | 147 | 589 | 920 |
+| v4 | motorpost | 15.4 | **23** | **94** | 146 |
+| v4 | motorpost | 23.2 | **35** | 142 | 221 |
+| v4 | motorpost | 33.6 | **51** | 205 | 320 |
+| v4 | motorpost | 62.3 | **95** | 380 | 593 |
+| v4 | motorpost | 82.3 | 125 | 502 | 784 |
+| v4 | motorpost | 86.9 | 132 | 530 | 828 |
+| v4 | motorpost | 120.0 | 183 | 731 | 1143 |
+| v4 | pads | 15.2 | **23** | **93** | 145 |
+| v4 | pads | 22.9 | **35** | 140 | 218 |
+| v4 | pads | 29.7 | **45** | 181 | 283 |
+| v4 | pads | 50.6 | **77** | 308 | 482 |
+| v4 | pads | 80.3 | 122 | 489 | 764 |
+| v4 | pads | 81.1 | 124 | 494 | 772 |
+| v4 | pads | 119.0 | 181 | 725 | 1133 |
+| paternoster | pads | 15.5 | **24** | **94** | 147 |
+| paternoster | pads | 16.5 | **25** | **101** | 157 |
+| paternoster | pads | 24.9 | **38** | 152 | 237 |
+| paternoster | pads | 47.5 | **72** | 290 | 453 |
+| paternoster | pads | 60.0 | **91** | 366 | 572 |
+| paternoster | pads | 69.3 | **106** | 423 | 660 |
+| paternoster | pads | 83.6 | **127** | 510 | 796 |
+
+Bold: inside the design's speed range.
 
 ### Tipping
 
@@ -72,7 +165,7 @@ Step rates of the NEMA 34 (one 32T revolution per motor revolution in all three 
 | v4 | running | shaft T+ | 0.15 | 14.1 | 370 | 26.3 | Sprocket 35BS32 T+ front: deflection (mm) 0.0532; Sprocket 35BS32 T+ back: deflection (mm) 0.0532; bearing 1 slope (mrad) 1.31; bearing 2 slope (mrad) 1.31 |
 | paternoster | jam | shaft drive | 0.253 | 30.4 | 370 | 12.2 | Sprocket 32T bottom front +1y: deflection (mm) 0.0846; Sprocket 32T bottom back +1y: deflection (mm) 0.0847; jaw coupling: deflection (mm) 0.0664; bearing 1 slope (mrad) 1.95; bearing 2 slope (mrad) 1.95 |
 | paternoster | running | shaft drive | 0.0938 | 8.16 | 370 | 45.3 | Sprocket 32T bottom front +1y: deflection (mm) 0.0328; Sprocket 32T bottom back +1y: deflection (mm) 0.0328; jaw coupling: deflection (mm) 0.0258; bearing 1 slope (mrad) 0.756; bearing 2 slope (mrad) 0.758 |
-| paternoster | running | shaft idle | 0.0719 | 6.38 | 370 | 58 | Sprocket 32T bottom front -1y: deflection (mm) 0.0258; Sprocket 32T bottom back -1y: deflection (mm) 0.0258; bearing 1 slope (mrad) 0.594; bearing 2 slope (mrad) 0.595 |
+| paternoster | running | shaft idle | 0.0719 | 6.31 | 370 | 58.7 | Sprocket 32T bottom front -1y: deflection (mm) 0.0258; Sprocket 32T bottom back -1y: deflection (mm) 0.0258; bearing 1 slope (mrad) 0.594; bearing 2 slope (mrad) 0.595 |
 | paternoster | running | idler axle back +1y | 0.00161 | 7.81 | 310 | 39.7 | axle end deflection (mm) 0.00158 |
 | paternoster | running | idler axle front +1y | 0.00167 | 8.06 | 310 | 38.5 | axle end deflection (mm) 0.00164 |
 
@@ -88,29 +181,51 @@ Step rates of the NEMA 34 (one 32T revolution per motor revolution in all three 
 | v3 | running | shaft T- | 5.19 | 175.3 | 13.2 | 0.0 | 13.2 | 14.2 | 6.46 |
 | v4 | jam | shaft B+ | 14.83 | 305.0 | 37.8 | 15.3 | 46.1 | 44.6 | 1.77 |
 | v4 | running | shaft B+ | 6.26 | 305.0 | 15.9 | 2.2 | 16.4 | 16.8 | 4.9 |
-| v4 | running | shaft T+ | 5.16 | 207.4 | 13.1 | 2.2 | 13.7 | 14.1 | 5.83 |
+| v4 | running | shaft T+ | 5.16 | 207.4 | 13.1 | 0.0 | 13.1 | 14.1 | 6.5 |
 | paternoster | jam | shaft drive | 7.44 | 325.0 | 18.9 | 15.3 | 32.6 | 30.4 | 2.89 |
 | paternoster | running | shaft drive | 3.00 | 325.0 | 7.6 | 2.0 | 8.4 | 8.2 | 9.43 |
-| paternoster | running | shaft idle | 2.43 | 325.0 | 6.2 | 2.0 | 7.1 | 6.4 | 11.25 |
+| paternoster | running | shaft idle | 2.43 | 325.0 | 6.2 | 0.0 | 6.2 | 6.3 | 13.8 |
 
 ## Carriages, hinges, latches, side tabs
 
 | design | case | part | max displacement (mm) | peak von Mises (MPa) | allowable (MPa) | safety factor | functional numbers |
 |---|---|---|---|---|---|---|---|
-| v3 | bottom run, gravity (creep E) | carriage v3 | 0.424 | 0.678 | 8 | 11.8 | hinge lug -u dw (mm) -0.0945; hinge lug +u dw (mm) -0.096; latch housing mouth dw (mm) -0.398; mid-span outer face dw (mm) -0.396; auger cap end dw from carriage bending (mm) -0.841; short-term factor on these (E 1810 vs 1000) 0.552 |
-| v3 | loading: 40 N auger pull at Sam x 102 (latch closed), tongues in the side tabs | carriage v3 | 4.91 | 14.5 | 23 | 1.59 | hinge lug -u dw (mm) 1.28; hinge lug +u dw (mm) 0.677; latch housing mouth dw (mm) 4.62; mid-span edge strips dw (mm) 3.5; auger cap end dw from carriage bending (mm) 9.96; side tabs reaction w (N) -40 |
-| v3 | loading: 40 N auger pull at Sam x 50 (latch closed), tongues in the side tabs | carriage v3 | 2.9 | 13.4 | 23 | 1.72 | hinge lug -u dw (mm) 1.04; hinge lug +u dw (mm) 0.808; latch housing mouth dw (mm) 2.75; mid-span edge strips dw (mm) 2.19; auger cap end dw from carriage bending (mm) 5.43; side tabs reaction w (N) -40 |
-| v3 | station: P16 stall 50 N through the hinge, carriage in the hold-down lips | carriage v3 | 1.01 | 14.9 | 23 | 1.54 | hinge lug -u dw (mm) 0.777; hinge lug +u dw (mm) 0.774; latch housing mouth dw (mm) 0.744; mid-span edge strips dw (mm) 0.687; auger cap end dw from carriage bending (mm) 0.699; lips reaction w (N) -46.8 |
-| v4 | loading: 40 N auger pull at Sam x 102 (latch closed), tongues in the side tabs | carriage v4 | 10.6 | 28.3 | 23 | 0.81 | hinge lug -u dw (mm) -1.81; hinge lug +u dw (mm) -0.378; latch housing mouth dw (mm) -8.96; mid-span edge strips dw (mm) -0.382; auger cap end dw from carriage bending (mm) -20; side tabs reaction w (N) 40.2 |
-| v4 | station: P16 stall 50 N through the hinge, carriage in the hold-down lips | carriage v4 | 1.24 | 8.47 | 23 | 2.71 | hinge lug -u dw (mm) 0.573; hinge lug +u dw (mm) 0.661; latch housing mouth dw (mm) 0.589; mid-span edge strips dw (mm) 1.12; auger cap end dw from carriage bending (mm) 0.55; lips reaction w (N) -47.1 |
+| v3 | bottom run, gravity (creep E) | carriage v3 | 0.424 | 0.676 | 8 | 11.8 | hinge lug -u dw (mm) -0.0941; hinge lug +u dw (mm) -0.0961; latch housing mouth dw (mm) -0.398; mid-span edge strips dw (mm) -0.393; auger cap end dw from carriage bending (mm) -0.841; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v3 | down run, gravity (creep E) | carriage v3 | 0.412 | 2.8 | 8 | 2.86 | hinge lug -u dw (mm) 0.0186; hinge lug +u dw (mm) -0.0593; latch housing mouth dw (mm) 0.0658; mid-span edge strips dw (mm) -0.014; auger cap end dw from carriage bending (mm) 0.192; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v3 | keeper pushes the bolt's lap with 40.0 N | latch bolt (printed) | 0.0986 | 10.4 | 34 | 3.28 | bolt tip dz (mm) 0.0977; hand: 6 F a / (b h^2) at the mouth (MPa) 11.3; mouth reaction (N) -43.2 |
+| v3 | keeper pushes the bolt's lap with 2.9 N | latch bolt (printed) | 0.00727 | 0.785 | 34 | 43.3 | bolt tip dz (mm) 0.00722; hand: 6 F a / (b h^2) at the mouth (MPa) 0.832; mouth reaction (N) -3.18 |
+| v3 | loading: 40 N auger pull at Sam x 102 (latch closed), tongues in the side tabs | carriage v3 | 5.92 | 22.3 | 23 | 1.03 | hinge lug -u dw (mm) 1.77; hinge lug +u dw (mm) 1.14; latch housing mouth dw (mm) 5.64; mid-span edge strips dw (mm) 4.52; auger cap end dw from carriage bending (mm) 11.8; side tabs reaction w (N) -40 |
+| v3 | loading: 40 N auger pull at Sam x 50 (latch closed), tongues in the side tabs | carriage v3 | 3.59 | 19.5 | 23 | 1.18 | hinge lug -u dw (mm) 1.37; hinge lug +u dw (mm) 1.52; latch housing mouth dw (mm) 3.49; mid-span edge strips dw (mm) 3; auger cap end dw from carriage bending (mm) 6.48; side tabs reaction w (N) -40 |
+| v3 | tongue pushes the lip with 25.0 N (auger pull) | side tab (front, printed) | 0.385 | 64.6 | 23 | 0.36 | lip tip dw (mm) 0.34; von Mises 1 mm off the sharp root corner (MPa) 12.4; beam estimate 6 F a / (b h^2) at the root (MPa) 11.8 |
+| v3 | station: P16 stall 50 N through the hinge, carriage in the hold-down lips | carriage v3 | 1.22 | 16.1 | 23 | 1.43 | hinge lug -u dw (mm) 0.937; hinge lug +u dw (mm) 0.937; latch housing mouth dw (mm) 0.969; mid-span edge strips dw (mm) 0.902; auger cap end dw from carriage bending (mm) 1.01; lips reaction w (N) -46.8 |
+| v3 | top run, gravity (creep E) | carriage v3 | 0.802 | 1.33 | 8 | 5.99 | hinge lug -u dw (mm) 0.166; hinge lug +u dw (mm) 0.0211; latch housing mouth dw (mm) 0.658; mid-span edge strips dw (mm) 0.395; auger cap end dw from carriage bending (mm) 1.48; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v3 | top run, gravity (creep E) | carriage v3 | 1.02 | 1.7 | 8 | 4.71 | hinge lug -u dw (mm) 0.211; hinge lug +u dw (mm) 0.0268; latch housing mouth dw (mm) 0.838; mid-span edge strips dw (mm) 0.502; auger cap end dw from carriage bending (mm) 1.89; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v3 | up run, gravity (creep E) | carriage v3 | 0.411 | 2.71 | 8 | 2.95 | hinge lug -u dw (mm) -0.0595; hinge lug +u dw (mm) 0.0197; latch housing mouth dw (mm) -0.0945; mid-span edge strips dw (mm) -0.0168; auger cap end dw from carriage bending (mm) -0.204; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v4 | bottom run, gravity (creep E) | carriage v4 | 1.13 | 1.64 | 8 | 4.88 | hinge lug -u dw (mm) -0.206; hinge lug +u dw (mm) 0.00637; latch housing mouth dw (mm) -1.06; mid-span edge strips dw (mm) 0.152; auger cap end dw from carriage bending (mm) -2.4; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v4 | bottom run, gravity (creep E) | carriage v4 | 1.44 | 2.09 | 8 | 3.83 | hinge lug -u dw (mm) -0.263; hinge lug +u dw (mm) 0.00811; latch housing mouth dw (mm) -1.34; mid-span edge strips dw (mm) 0.193; auger cap end dw from carriage bending (mm) -3.05; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v4 | down run, gravity (creep E) | carriage v4 | 0.42 | 2.15 | 8 | 3.73 | hinge lug -u dw (mm) -0.0127; hinge lug +u dw (mm) 0.0359; latch housing mouth dw (mm) -0.0212; mid-span edge strips dw (mm) 0.0986; auger cap end dw from carriage bending (mm) -0.0673; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v4 | loading: 40 N auger pull at Sam x 102 (latch closed), tongues in the side tabs | carriage v4 | 11.5 | 29.8 | 23 | 0.77 | hinge lug -u dw (mm) -2.29; hinge lug +u dw (mm) -0.439; latch housing mouth dw (mm) -9.85; mid-span edge strips dw (mm) -1.11; auger cap end dw from carriage bending (mm) -21.8; side tabs reaction w (N) 40.2 |
+| v4 | loading: 40 N auger pull at Sam x 50 (latch closed), tongues in the side tabs | carriage v4 | 6.37 | 17.9 | 23 | 1.28 | hinge lug -u dw (mm) -1.48; hinge lug +u dw (mm) -1.05; latch housing mouth dw (mm) -5.54; mid-span edge strips dw (mm) -1.57; auger cap end dw from carriage bending (mm) -11.5; side tabs reaction w (N) 40.1 |
+| v4 | tongue pushes the foot with 25.0 N (auger pull) | side tab (front, printed) | 0.456 | 86.5 | 23 | 0.27 | foot tip dw (mm) -0.409; von Mises 1 mm off the sharp root corner (MPa) 14; beam estimate 6 F a / (b h^2) at the root (MPa) 11.8 |
+| v4 | station: P16 stall 50 N through the hinge, carriage in the hold-down lips | carriage v4 | 1.45 | 10.7 | 23 | 2.15 | hinge lug -u dw (mm) 0.668; hinge lug +u dw (mm) 0.782; latch housing mouth dw (mm) 0.753; mid-span edge strips dw (mm) 1.3; auger cap end dw from carriage bending (mm) 0.793; lips reaction w (N) -47.1 |
+| v4 | top run, gravity (creep E) | carriage v4 | 1.1 | 1.51 | 8 | 5.29 | hinge lug -u dw (mm) 0.208; hinge lug +u dw (mm) -0.0076; latch housing mouth dw (mm) 1.04; mid-span edge strips dw (mm) -0.161; auger cap end dw from carriage bending (mm) 2.37; short-term factor on these (E 1810 vs 1000) 0.552 |
+| v4 | up run, gravity (creep E) | carriage v4 | 0.423 | 2.17 | 8 | 3.68 | hinge lug -u dw (mm) 0.0372; hinge lug +u dw (mm) -0.0132; latch housing mouth dw (mm) 0.00112; mid-span edge strips dw (mm) -0.0701; auger cap end dw from carriage bending (mm) -0.0142; short-term factor on these (E 1810 vs 1000) 0.552 |
 
 ## Station
 
 | design | case | part | max displacement (mm) | peak von Mises (MPa) | allowable (MPa) | safety factor | functional numbers |
 |---|---|---|---|---|---|---|---|
-| v3 | lift_gear at 30 deg, mesh load 0.123 x the NEMA 11 stall (the seated limit) | electronics carriage (printed PETG) | 0.174 | 2.07 | 23 | 11.1 | cone A |u| 0.082; vee B |u| 0.0638; flat C |u| 0.158; motor face |u| 0.0521; centre-distance change at the mesh (mm, + opens) 0.0756 |
-| v3 | lift_gear at 30 deg, gear reversed | electronics carriage (printed PETG) | 1.07 | 11.5 | 23 | 1.99 | cone A |u| 0.871; vee B |u| 0.713; flat C |u| 0.823; motor face |u| 0.543; centre-distance change at the mesh (mm, + opens) -0.0341 |
+| v3 | 75 N along the P16 at 30 deg (backdrive_t30) | P16 base clevis bracket (printed PETG) | 0.0592 | 5.18 | 23 | 4.44 | pin hole |u| 0.0555 |
+| v3 | 50 N along the P16 at 0 deg (stall_t0) | P16 base clevis bracket (printed PETG) | 0.013 | 3.33 | 23 | 6.91 | pin hole |u| 0.0124 |
+| v3 | parked | guide cradle (printed PETG) | 0.133 | 1.64 | 23 | 14.1 | cone seat dz (mm, toward the floor -) -0.0805; vee seat dz -0.00397; flat seat dz -0.0432; worst seat dz -0.0805 |
+| v3 | retract_stall | guide cradle (printed PETG) | 2.23 | 25.6 | 23 | 0.9 | cone seat dz (mm, toward the floor -) -1.4; vee seat dz -0.0824; flat seat dz -0.667; worst seat dz -1.4 |
+| v4 | retract_stall | guide cradle (printed PETG) | 2.28 | 26.6 | 23 | 0.87 | cone seat dz (mm, toward the floor -) -1.56; vee seat dz -0.0794; flat seat dz -0.684; worst seat dz -1.56 |
+| v3 | lift_gear at 30 deg, mesh load 0.123 x the NEMA 11 stall (the seated limit) | electronics carriage (printed PETG) | 0.168 | 2.04 | 23 | 11.2 | cone A |u| 0.0802; vee B |u| 0.0598; flat C |u| 0.151; motor face |u| 0.0489; centre-distance change at the mesh (mm, + opens) 0.0739 |
 | v3 | stall at 0 deg | electronics carriage (printed PETG) | 0.623 | 19.8 | 23 | 1.16 | cone A |u| 0.378; vee B |u| 0.317; flat C |u| 0.468; motor face |u| 0.128; centre-distance change at the mesh (mm, + opens) 0.335 |
 | v4 | lift at 0 deg | electronics carriage (printed PETG) | 0.212 | 2.98 | 23 | 7.72 | cone A |u| 0.197; vee B |u| 0.208; flat C |u| 0.18; motor face |u| 0.0553; centre-distance change at the mesh (mm, + opens) 0.00136 |
 | v4 | stall at 0 deg | electronics carriage (printed PETG) | 1.18 | 26.6 | 23 | 0.86 | cone A |u| 0.938; vee B |u| 1.14; flat C |u| 0.924; motor face |u| 0.215; centre-distance change at the mesh (mm, + opens) 0.176 |
+| chain-carousel-v3 / v4 | 25 N up on the lip from the carriage tongue | hold-down (printed PETG) | 0.0134 | 6.53 | 23 | 3.52 | lip max |u| (mm) 0.0134; lip gap (mm) 2 |
+| v3 | unit | latch rail (printed PETG) | 0.00189 | 0.654 | 23 | 35.2 | max |u| (mm) 0.00189; ramp normal force N 10 |
+| v4 | tube | latch rail + tube rest (printed PETG) | 0.0214 | 0.421 | 23 | 54.6 | max |u| (mm) 0.0214; ramp normal force N 3.31 |
+| v4 | unit | latch rail + tube rest (printed PETG) | 0.00275 | 0.807 | 23 | 28.5 | max |u| (mm) 0.00275; ramp normal force N 10 |
 

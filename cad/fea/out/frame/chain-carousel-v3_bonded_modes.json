@@ -1,0 +1,239 @@
+{
+ "module": "frame",
+ "case": "chain-carousel-v3_bonded_modes",
+ "design": "chain-carousel-v3",
+ "part": "frame + NEMA 34",
+ "load_case": "modes",
+ "freqs_Hz": [
+  19.98,
+  30.41,
+  41.93,
+  80.48,
+  87.22,
+  105.63,
+  163.45,
+  196.13,
+  248.62,
+  262.29,
+  269.52,
+  270.89
+ ],
+ "nodes": 143584,
+ "elements": 76032,
+ "total_mass_kg": 27.894,
+ "wall_s": 102.1,
+ "notes": "plate-to-post joint: bonded",
+ "modes": [
+  {
+   "top": [
+    [
+     "sprocket",
+     0.42
+    ],
+    [
+     "side plates",
+     0.17
+    ],
+    [
+     "shaft",
+     0.17
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "sprocket",
+     0.42
+    ],
+    [
+     "side plates",
+     0.19
+    ],
+    [
+     "shaft",
+     0.16
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "sprocket",
+     0.29
+    ],
+    [
+     "nema 34",
+     0.28
+    ],
+    [
+     "side plates",
+     0.18
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.64
+    ],
+    [
+     "sprocket",
+     0.14
+    ],
+    [
+     "side plates",
+     0.08
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.68
+    ],
+    [
+     "sprocket",
+     0.12
+    ],
+    [
+     "posts",
+     0.08
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.62
+    ],
+    [
+     "sprocket",
+     0.17
+    ],
+    [
+     "shaft",
+     0.07
+    ]
+   ],
+   "direction": "z"
+  },
+  {
+   "top": [
+    [
+     "sprocket",
+     0.34
+    ],
+    [
+     "rails",
+     0.2
+    ],
+    [
+     "posts",
+     0.19
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.3
+    ],
+    [
+     "sprocket",
+     0.23
+    ],
+    [
+     "posts",
+     0.17
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "sprocket",
+     0.26
+    ],
+    [
+     "posts",
+     0.26
+    ],
+    [
+     "shaft",
+     0.2
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.32
+    ],
+    [
+     "sprocket",
+     0.26
+    ],
+    [
+     "shaft",
+     0.25
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.67
+    ],
+    [
+     "posts",
+     0.36
+    ],
+    [
+     "sprocket",
+     0.01
+    ]
+   ],
+   "direction": "z"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.49
+    ],
+    [
+     "sprocket",
+     0.19
+    ],
+    [
+     "shaft",
+     0.16
+    ]
+   ],
+   "direction": "y"
+  }
+ ],
+ "png": [
+  "out/frame/chain-carousel-v3_bonded_mode1.png",
+  "out/frame/chain-carousel-v3_bonded_mode2.png",
+  "out/frame/chain-carousel-v3_bonded_mode3.png",
+  "out/frame/chain-carousel-v3_bonded_mode4.png"
+ ],
+ "gif": "out/frame/chain-carousel-v3_bonded_mode1.gif"
+}
