@@ -247,6 +247,13 @@ class Movie:
     gif_every-th frame is kept, already shrunk and palettised, for the GIF."""
 
     def __init__(self, mp4: Path, w=1280, h=720, fps=24, gif_every=4, gif_size=(640, 360)):
+        # MOVIE_FPS / MOVIE_SCALE: a cheaper render of the same sequence (the vendor STEPs have threads and knurls,
+        # so a frame costs several times what the stand-ins did); the GIF keeps 6 frames per second
+        import os
+        fps = int(os.environ.get("MOVIE_FPS", fps))
+        sc = float(os.environ.get("MOVIE_SCALE", 1.0))
+        w, h = int(w * sc) // 8 * 8, int(h * sc) // 8 * 8
+        gif_every = max(1, round(fps / 6))
         import imageio.v2 as iio
         self.v = View(w, h)
         self.fps = fps

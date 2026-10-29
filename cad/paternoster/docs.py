@@ -33,7 +33,7 @@ diagonals (equal within 1 mm). Keep the posts' inner faces clear between {L.SIDE
 button heads into T-nuts, so the plates' inner faces are {CHAIN_L - 2 * SIDE_IN:.0f} mm apart, {-SIDE_IN:.0f} mm outside each chain.
 Bolt the four SBSFL202-10 flange bearings to the plates' outer faces at the two bottom corners, bolt line vertical,
 rear dome in the 49 mm hole, with 1/4-20 x 1 in bolts and nylon-insert locknuts.""",
-    4: f"""Cut the keyed bar into 435 mm (B-) and 463 mm (B+, the drive shaft, which runs on into the coupling).
+    4: f"""Cut the keyed bar into 441.8 mm (B-) and 469.8 mm (B+, the drive shaft, which runs on into the coupling).
 Feed each shaft through its front bearing, slide on the front 32T with its hub toward the front plate, then
 the back 32T with its hub toward the back plate, and on through the back bearing. Key the front sprockets.
 Leave the back sprockets' set screws loose until step 6: both chains have to hang in phase, so the back
@@ -78,9 +78,10 @@ P16-150-22-12-P's rear lug in it ({ACT_RETRACTED:.1f} mm hole to hole retracted)
 on the inner face of its back wall, bond the steel KHK SS1-20A pinion (hub faced off) on the shaft's last 10 mm with
 Loctite 638, screw the printed magnet bracket on the two upper motor screws and bond the Adafruit 3872 electromagnet in
 its cup, press the two 4 mm locating dowels into the rim and the two 4 mm stub pins through the side posts (with the
-printed pin plates bonded on). The U-yoke: push the P16's rod-end plug into the printed crossbar's square socket and
-bolt it rigid (M4 x 25 + nylock), screw the two 2 mm steel arms to the crossbar, slide them over the stub pins and fit
-the e-clips. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
+printed pin plates bonded on). The U-yoke: seat the P16's rod end (a 9 x 6 tab on a 9 mm collar) in the printed
+crossbar's slot and press the 4 x 38 mm dowel (McMaster 91595A128) through crossbar and tab; then screw the two steel
+arms to the crossbar's sides, which covers both ends of the dowel, slide them over the stub pins and fit the e-clips.
+The P16's rear tab goes between the base clevis's cheeks on a 4 x 16 mm shoulder screw (90265A123) and an M3 nylock. The P16 + yoke is then one two-force link from the base clevis to the stub pins, which sit at the
 carriage's centre-of-mass height, so the carriage can't tip off the plate when it tilts. Set the approach fork on its
 post so the crossbar's tongue rides in it for the first {DOCK_EXT:.0f} mm. Wire the magnet through a logic-level MOSFET
 with a 1N4001 across the coil, and set the Tic's current limit to 450 mA. Screw the two UHMW hold-down
@@ -114,8 +115,11 @@ def bom_md(rs, t) -> str:
     lines += ["", "## Shop work", "",
               "- Cut the two side plates and the motor plate from `dxf/` (1/4 in 6061).",
               "- Re-bore four 35BS32 sprockets to 35 mm H7 for two 6202-2RS each (top idlers).",
-              "- Turn four idler axles: 15 mm h6 seat (31 mm), 22 mm shoulder, M10 stem through the side plate.",
-              "- Cut the keyed bar to 435 mm and 463 mm.", ""]
+              "- Turn four idler axles: 15 mm h6 seat 35.0 mm with a DIN 471-15 groove (1.1 wide at 32.7 mm, 1.2 mm land beyond it), "
+              "22 mm washer as the shoulder, M10 stem through the side plate; cut four 6.7 mm aluminium spacers (15.2 ID x 19 OD).",
+              "- Cut the keyed bar to 441.8 mm and 469.8 mm.",
+              "- Turn the two stub pins from 4 mm 303 stainless (DIN 6799-3.2 groove); face the KHK pinion's hub off.",
+              "- Animated walk-throughs of each job, with tools, speeds and checks: ../shop/README.md.", ""]
     return "\n".join(lines) + "\n"
 
 

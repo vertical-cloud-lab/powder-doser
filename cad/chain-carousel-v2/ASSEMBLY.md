@@ -52,7 +52,7 @@ Don't put brackets on the posts' inner x faces between 205 and 690 mm: the side 
 |---|---|---|
 | 21 | 74 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet, station) |
 | 23 | 2 | Side plates, 1/4 in 6061: front 244 x 375 mm, back 244 x 485 mm, both from one 12 x 36 in plate; cut and drilled from dxf/ (BYU shop, or SendCutSend: price on upload) |
-| 24 | 20 | M5 x 12 button head screw (side plates to the posts' T-nuts), with blue threadlocker |
+| 24 | 1 | M5 x 12 button head screw, 18-8, pack of 50 (20 used: side plates to the posts' T-nuts), with blue threadlocker |
 
 Have the two side plates cut from one 12 x 36 in sheet of 1/4 in 6061 (`dxf/side_plate_front.dxf`,
 `dxf/side_plate_back.dxf`, by the BYU shop or SendCutSend). The front plate is 244 x 375 mm. The back
@@ -72,8 +72,8 @@ faces end up 365 mm apart, 30 mm outside each chain.
 | 9 | 8 | 2-bolt stamped-steel flange bearing SBSFL202-10: 5/8 in bore, set screws, 2-1/2 in bolt centres |
 | 11 | 16 | Hex bolt 1/4-20 x 1 in, Grade 5 (flange bearings to the side plates) |
 | 12 | 1 | 1/4-20 nylon-insert locknuts, pack of 100 (16 used on the bearings) |
-| 17 | 8 | M5 nylon-insert locknut (4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts) |
-| 34 | 8 | M5 x 10 socket head screw (tensioner blocks, into tapped holes in the plates) |
+| 17 | 1 | M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts) |
+| 34 | 1 | M5 x 10 socket head screw, 18-8, pack of 100 (8 used: tensioner blocks, into tapped holes in the plates) |
 | 35 | 4 | M5 x 30 socket head screw (tensioner jack screws) |
 | 37 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
 
@@ -93,10 +93,10 @@ touches the underside of the bearing's front dome. The locknut keeps the jack sc
 | # | Qty | Part |
 |---|---|---|
 | 5 | 8 | Sprocket 35BS32-5/8: 32T, type B, 2 in hub, 7/8 in through the bore, 5/8 in bore, 3/16 in keyway, 2 set screws |
-| 8 | 1 | Keyed shafting, 5/8 in x 72 in, 1018, 3/16 in keyway: cut 3 x 403 mm + 1 x 427 mm (the drive shaft) |
+| 8 | 1 | Keyed shafting, 5/8 in x 72 in, 1018, 3/16 in keyway: cut 3 x 409.8 mm + 1 x 434.2 mm (the drive shaft); lengths from the CAD after the flange bearing's real 16.05 mm stand-off (was 403 / 427) |
 | 10 | 1 | Key stock 3/16 x 3/16 in, 12 in (front sprockets and the 15T on the shaft; back sprockets locked by set screws after phasing) |
 
-Cut the 72 in keyed bar into three shafts of 402.9 mm and one of 427.3 mm. The long
+Cut the 72 in keyed bar into three shafts of 409.8 mm and one of 434.2 mm. The long
 one is the drive shaft and goes in the bottom +y corner (B+). Each shaft carries two sprockets. Feed it through the
 front bearing, slide on the front sprocket with its hub toward the front, then the back sprocket with its hub toward
 the back, and push the shaft on through the back bearing.
@@ -117,8 +117,8 @@ the carriages set its phase in step 10. Tighten the bearings' set screws on the 
 | 7 | 1 | Sprocket 35BS15H-1/2: 15T, 1/2 in bore; shop re-bores it to 14 mm H7 with a 5 mm keyway for the NEMA 34 |
 | 10 | 1 | Key stock 3/16 x 3/16 in, 12 in (front sprockets and the 15T on the shaft; back sprockets locked by set screws after phasing) |
 | 13 | 1 | NEMA 34 closed-loop stepper 34HS59-6004D-E1000, 12 N*m, 14 mm x 37 mm keyed shaft |
-| 16 | 4 | M5 x 25 socket head screw (motor flange to the back plate, in slots) |
-| 17 | 8 | M5 nylon-insert locknut (4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts) |
+| 16 | 1 | M5 x 25 socket head screw, 18-8, pack of 50 (4 used: motor flange to the back plate, in slots) |
+| 17 | 1 | M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts) |
 
 Have the shop re-bore the 35BS15H-1/2 sprocket to 14 mm H7 with a 5 mm keyway, then slide it onto the NEMA 34's
 shaft, hub outward, over the key. Offer the motor up to the back plate's inner face from inside the frame, with its
@@ -162,15 +162,15 @@ because the top shafts are still at the bottom of their slots.
 | 19 | 20 | 2020 90-degree corner bracket (+2 for the fork and vial posts) |
 | 20 | 50 | M5 x 10 button head screw, with blue threadlocker (brackets and station parts; T-nuts can't take a nylock) |
 | 21 | 74 | M5 drop-in T-nut, 2020 slot 6 (brackets, side plates, feet, station) |
-| 32 | 4 | M5 x 16 socket head screw (hold-downs, through the side plates), with blue threadlocker |
+| 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (4 used: hold-downs, through the side plates), with blue threadlocker |
 | 33 | 1 | M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs) |
 | 37 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
 | 38 | 12 | Station parts, PETG: actuator base clevis, U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, approach fork and arm, vial cup, D-cut funnel, level wedge, dock magnet bracket |
-| 40 | 1 | Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N |
+| 40 | 1 | Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP) |
 | 41 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in) |
 | 42 | 1 | 12 V supply for the LAC and actuator |
-| 43 | 1 | Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis) + M3 locknut |
-| 44 | 1 | M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16's rod-end plug in the U-yoke crossbar's square socket (makes the yoke rigid on the rod) |
+| 43 | 1 | Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread (the P16's base pin: cheek, 8 mm rear tab, cheek) + an M3 nylock from item 27 |
+| 44 | 1 | Dowel pin, 4 mm x 38 mm, hardened 4140: through the U-yoke crossbar and the P16 rod end's 4.25 mm hole, held in by the two steel arms (an M4 bolt there had no room for its head or nut) |
 | 45 | 1 | Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: the dock's mesh preload |
 | 46 | 1 | N-channel logic-level MOSFET IRLB8721 (switches the dock magnet from the carriage board; out of stock on 2026-10-18, any logic-level N-MOSFET such as FQP30N06L works) |
 | 47 | 1 | 1N4001 diode, 10-pack (flyback across the magnet coil) |
@@ -178,13 +178,15 @@ because the top shafts are still at the bottom of their slots.
 | 50 | 1 | HX711 load-cell amplifier |
 | 51 | 1 | 20 mL glass scintillation vial (lab stock; Wheaton 986546 is $383.77 per 500) |
 | 52 | 1 | Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 and 12 V solenoid |
-| 66 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping |
-| 67 | 2 | Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height |
-| 68 | 2 | Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot in each plate |
-| 69 | 6 | E-clip DIN 6799-3.2 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare) |
+| 66 | 1 | Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H8 bore, 10 mm face (S45C). Face the 10 mm hub off and bond it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. KHK USA lists it at $14.77 (10 on hand), plus shipping |
+| 67 | 2 | Stub pin, 4 x 8 mm, turned from 4 mm h8 303 stainless rod with a DIN 6799-3.2 groove (0.64 wide, 0.96 mm from the end; cad/shop), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height. A hardened dowel can't be grooved with HSS |
+| 68 | 1 | Dowel pin, 4 x 8 mm, hardened 52100, pack of 50 (2 used: locating pins on the carriage rim, into a hole and a slot in each plate) |
+| 69 | 1 | E-clip DIN 6799-3.2 (4-5 mm shaft, 3.2 mm groove x 0.64), spring steel, 6.9 OD, 0.6 thick, pack of 100 (2 used on the stub pins) |
 | 70 | 2 | U-yoke arm, 2 mm low-carbon steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its side walls |
-| 71 | 4 | M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243 |
+| 71 | 1 | M3 x 8 button head screw, 18-8, pack of 100 (4 used: yoke arms into the crossbar's inserts), Loctite 243 |
 | 72 | 1 | Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load) |
+| 75 | 2 | Load-cell spacer, 12 x 7 x 3.35 mm, printed PETG (one under the TAL221's fixed end, one on its free end: the bar is 6 mm tall, not 12.7, and needs room to bend) |
+| 76 | 1 | M6 x 12 socket head screw + 2 x M3 x 8 button head (fork arm to the fork post's tapped end and to the fork's inserts) |
 | 53 | 2 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME |
 
 The station, under the bottom run:
@@ -193,16 +195,17 @@ The station, under the bottom run:
    HOME back), and screw them to the plates' inner faces with two M5 x 16 (blue Loctite). The lip sits 2 mm over the
    carriage tongue, the foot 4 mm under it; both have 3 mm lead-ins.
 2. Actuator: the printed base clevis on the station rail (two M5 into T-nuts), the P16-150's rear clevis on a
-   4 x 30 mm shoulder screw and M3 locknut.
+   4 x 16 mm shoulder screw (McMaster 90265A123) and an M3 locknut: the P16's 8 mm rear tab sits between the cheeks.
 3. Electronics carriage (Sam's): face the KHK SS1-20A pinion's hub off and bond it onto the NEMA 11's shaft with
    Loctite 638, flush with the shaft end (the motor sits inside the carriage on its back wall, boss in the recess). Bond the dock electromagnet (Adafruit 3872) into the
    printed bracket and fix the bracket with the NEMA 11's two upper M2.5 screws (lengthened by 3 mm). Press two 4 mm
    steel locating pins into the rim at Sam's (30, 16) and (70, -16). Bond a printed stub-pin plate to each side post
    (mirror-image pair, tails pointing back and down) and press a 4 mm stub pin through post and plate at Sam's
    (32, -34).
-4. U-yoke: screw the two 2 mm steel arms to the printed crossbar (M3 x 8 into inserts), glue a stop block inside each
-   arm under the pin plate's tail (mirror-image pair), push the P16's rod-end plug into the crossbar's square socket
-   and bolt it with an M4 x 25. Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
+4. U-yoke: seat the P16's rod end (a 9 x 6 tab on a 9 mm collar) in the printed crossbar's slot and press the 4 x 38 mm
+   dowel (McMaster 91595A128) through crossbar and tab. Then screw the two steel arms to the crossbar's sides (M3 x 8 into
+   inserts), which covers both ends of the dowel, and glue a stop block inside each arm under the pin plate's tail
+   (mirror-image pair). Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
    pin. Set the NEMA 11's DRV8825 to 450 mA (Vref 0.225 V) before the first dock.
 5. Approach fork on its post on the station rail, the tongue under the crossbar in its slot.
 6. Vial post on the -y base rail, the level wedge, the load cell, the vial cup, the vial and the D-cut funnel.
@@ -213,13 +216,13 @@ The station, under the bottom run:
 
 | # | Qty | Part |
 |---|---|---|
-| 27 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the actuator's clevis pins) |
-| 28 | 30 | Clevis pin 5 mm with retaining-ring groove, steel, about 14 mm usable length (module hinge pins, 2 per module; 4 spare) |
-| 29 | 36 | E-clip DIN 6799-4 for a 4 mm groove (5 mm pin), steel (on the hinge pins; 10 spare) |
-| 30 | 26 | M3 x 6 flat head screw (steel armature tab to the plate) |
+| 27 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the P16 base pin) |
+| 28 | 30 | Clevis pin 5 mm with a DIN 6799-4 groove (4 mm dia, 0.74 wide), steel, about 14 mm usable length (module hinge pins, 2 per module; 4 spare) |
+| 29 | 1 | E-clip DIN 6799-4 (5-7 mm shaft, 4 mm groove x 0.74), spring steel, 8.85 OD, 0.7 thick, pack of 100 (26 used on the hinge pins) |
+| 30 | 1 | M3 x 6 flat head screw, 18-8, 90 deg, pack of 100 (26 used: steel armature tab to the plate) |
 | 31 | 30 | M3 x 4 heat-set insert (CNC Kitchen short): two per mounting plate for the armature tab, four in the U-yoke crossbar |
 | 39 | 12 | Mounting plate (Sam's Oct 13 Onshape part), printed for modules 2-13 (module 1 exists) |
-| 48 | 13 | Armature tab, low-carbon steel 2 mm (14 ga), 22 x 28 mm, two countersunk M3 holes: laser cut |
+| 48 | 13 | Armature tab, low-carbon steel 14 ga (0.075 in, 1.9 mm; '2 mm' isn't a stock gauge), 22 x 28 mm, two M3 holes countersunk 90 deg to 6.3 mm so McMaster's flat heads sit flush: laser cut |
 | 61 | 13 | Auger, threaded storage (44T gear), and cap, lab design (PR #170): 13 from #134's batch of 16 |
 
 Modules on the bench (one per carriage, 13 in all):
@@ -240,9 +243,9 @@ The carriage and its module now come on and off the chain as one unit.
 
 | # | Qty | Part |
 |---|---|---|
-| 26 | 26 | M3 x 12 button head screw (carriage to each A-1 tab, from the outside) |
-| 27 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the actuator's clevis pins) |
-| 36 | 13 | Carriage, PETG, with the two tab hooks (H2D, on the bed's diagonal; about 100 g each) |
+| 26 | 1 | M3 x 12 button head screw, 18-8, pack of 100 (26 used: carriage to each A-1 tab, from the outside) |
+| 27 | 1 | M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the P16 base pin) |
+| 36 | 13 | Carriage, PETG, with the two tab hooks: 58.6 g and 1 h 53 min each in Bambu Studio, one per H2D plate on the bed's diagonal (351 mm > 325); break-off webs under the hooks' fingers (cad/print) |
 | 54 | 14 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home) |
 
 At the loading position (the +y side, mid-height): hold the unit beside the two A-1 tabs, 10 mm

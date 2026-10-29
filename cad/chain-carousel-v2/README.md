@@ -14,9 +14,28 @@ v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a cop
 | **Swap at the loading position: two screws out, slide 10 mm, out sideways** | **Back: the NEMA 34 inside the frame drives the bottom +y shaft through a #35 chain** |
 | ![](renders/rig_load.png) | ![](renders/rig_back_iso.png) |
 
-**Animation** ([MP4](renders/chain_carousel_v2.mp4), 70 s): assembly from scratch; an auger going into Sam's mounting plate and the plate onto a carriage; all 13 carriages loaded onto the chain one index at a time; a full lap; at the station the approach, the docking seek with the magnet on, the tilt to 30°, the dose, the 0.5 s hold, the tilt back, one reverse auger turn at rest and the undock; and a module swap. Every frame uses the exact chain kinematics and the real station linkage.
+**Animation** ([MP4](renders/chain_carousel_v2.mp4), 36.5 s; re-rendered 2026-10-27 with the vendors' parts at half length and 8 fps, since their threads and knurls make each frame several times slower): assembly from scratch; an auger going into Sam's mounting plate and the plate onto a carriage; all 13 carriages loaded onto the chain one index at a time; a full lap; at the station the approach, the docking seek with the magnet on, the tilt to 30°, the dose, the 0.5 s hold, the tilt back, one reverse auger turn at rest and the undock; and a module swap. Every frame uses the exact chain kinematics and the real station linkage.
 
 ![Animation](renders/chain_carousel_v2.gif)
+
+**Real parts, shop work and printing (2026-10-27).** Every bought part was checked against its vendor's drawing, spec
+sheet or CAD ([`../vendor/`](../vendor/README.md)), every part we make or modify has an animated shop process
+([`../shop/`](../shop/README.md)), and every printed part is sliced in Bambu Studio ([`../print/`](../print/README.md)).
+What that changed here:
+- **The P16 and the McMaster fasteners, dowels and e-clips are now the vendors' own STEP files.** Actuonix's drawing
+  showed the rod end is a 9 x 6 tab and the rear clevis an 8 mm tab, so the U-yoke's socket and the base clevis were
+  refitted; the yoke's M4 cross bolt (no room for its head or nut between the steel arms) is now a captured 4 x 38 dowel;
+  the base pin is a 4 x 16 shoulder screw (90265A123), now in the assembly.
+- **The chain was drawn with 5 mm pins:** the hinge pin's `PIN_D = 5.0` overrode the chain's 3.58 mm in `params.py`.
+  Nitro's table also gives longer pins (12.40 mm overall) and lower plates (8.79 mm); the carriages got a 1.6 mm relief
+  for the A-1 links' pin ends.
+- **Real dimensions moved things:** the flange bearings stand 3.45 mm further off the plates (shafts now 3 x 409.8 and
+  434.2 mm), the TAL221 load cell is 47 mm long, not 80 (the vial cup's arm is now 63 mm), and the VEVOR bore, magnet,
+  solenoid, pinion, hall switch and foot follow their drawings. The NEMA 34 is StepperOnline's STEP.
+- **Not printable as drawn:** the fork arm was a 20 x 0.5 x 12 mm sliver (now a 6 mm plate on the post's top), and the
+  carriage's tab-slot fingers print as bridges only with a break-off web (`carriage(print_web=True)`, used for the STL).
+- **The hinge pins' e-clip groove was 0.6 mm wide** for a DIN 6799-4 clip that is 0.7 thick (McMaster 98543A112): now 0.74.
+- **The BoM names a real part number for every McMaster line**, at today's pack prices.
 
 ## What Sam asked for, and what the model does
 
@@ -51,7 +70,7 @@ v1 (`cad/chain-carousel/`, the flat loop) is unchanged. Everything here is a cop
 | Dispense | 20 mL vial on a 100 g load cell under a printed D-cut funnel whose flat stops 1 mm ahead of the docked carriage | At 30° the dose stream's centre line lands 1.0 mm inside the cut's edge (`layout.stream_check`); no frame pitch, since a pitch moves the stream out of the funnel |
 | Frame | 80/20 20-2020, 1/4 in 6061 side plates (DXF), 4 leveling feet | Every T-nut screw takes blue Loctite; every other nut is a nylock |
 | Clearance | **0 clashes over 0.5 mm³** in all four checks: 701 instances at home, the chain swept through a full module, the station's approach and tilt to 90°, and a swap ([`checks/`](checks)) | See [Checks](#checks) |
-| Cost | **$1,374.75; $1,233.36 without test gear** ([BOM.md](BOM.md)) | Prices checked 2026-10-10 to 2026-10-18 (each line has its date); lines marked estimate add up to $164.94. The NEMA 34, CL86T, module 1, the augers and Sam's electronics carriage with its NEMA 11 and solenoid are already in the lab |
+| Cost | **$1,415.35; $1,273.96 without test gear** ([BOM.md](BOM.md)) | Prices checked 2026-10-10 to 2026-10-27 (each line has its date); every McMaster line is McMaster's pack price read 2026-10-27; lines marked estimate add up to $147.90 |
 
 ## What the studies found, and what changed
 
@@ -79,14 +98,16 @@ Three v2 simulations ([sim/README.md](sim/README.md)), the [gear-mesh study](../
 
 ## Checks
 
-[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Pairs that touch by design (a pin in its bore, a screw in its nut or insert, a bearing on its shaft, the gear mesh) are skipped by part key. The one by-design contact that can't be skipped by key is the plate's edge passing the carriage's two snap-hook lips (0.8 mm overlap, the hooks flex) while the station tilts it: the overlap inside the lips is logged in `checks/tilt.json` and anything else between plate and carriage still counts. Results are in [`checks/`](checks). **All four come out at 0 clashes:**
+[`check_interference.py`](check_interference.py): OCC boolean volume of every pair of instances, reporting anything over 0.5 mm³. Pairs that touch by design (a pin in its bore, a screw in its nut or insert, a bearing on its shaft, the gear mesh) are skipped by part key. The one by-design contact that can't be skipped by key is the plate's edge passing the carriage's two snap-hook lips (0.8 mm overlap, the hooks flex) while the station tilts it: the overlap inside the lips is logged in `checks/tilt.json` and anything else between plate and carriage still counts. Results are in [`checks/`](checks). **Re-run on 2026-10-27 with the vendors' own geometry** (Actuonix's P16, McMaster's screws, nuts, dowels and e-clips, StepperOnline's NEMA 34, Nitro's chain dimensions):
 
 | Check | What moves | Result |
 |---|---|---|
-| Home | Nothing: every pair of the 701 instances | **0** |
-| `--sweep` | The chain indexed one full module the machine's way in half-link steps (17 poses). The 13 carriages together pass every point of the loop, including all four corners, against the frame, shafts, sprockets, drive, station and each other | **0** |
-| `--tilt` | The electronics carriage rising 0-20 mm in the fork, then module 1 + electronics carriage + actuator tilting 5-90°, against everything, carriage 1 included | **0** (the plate passing the snap lips, by design, logged at 5°: up to 17.3 mm³) |
-| `--swap` | Carriage 4 at the loading position: screws backed out 10 mm, slid 10 mm, lifted 150 mm out with its module | **0** |
+| Home | Nothing: every pair of the 704 instances | **0**, after a relief in each carriage for the A-1 links' real pin ends (Nitro: 1.24 mm proud, 0.8 mm more than drawn); they reached 0.4 mm into all 26 hooks |
+| `--tilt` | The electronics carriage rising 0-20 mm in the fork, then module 1 + electronics carriage + actuator tilting 5-90° | **1, fixed:** the same P16 tube end against the U-yoke crossbar at full retraction as in the paternoster (65.6 mm³); the crossbar's underside is now 1.5 mm higher and re-checked clean at every pose. The plate passing the snap lips, by design, is logged at 5° (17.3 mm³) |
+| `--swap` | Carriage 4 at the loading position: screws backed out 10 mm, slid 10 mm, lifted 150 mm out | **2 touches of 0.61 mm³, fixed:** half-way through the slide the next link's (longer) pin end brushed the hook. The relief now runs along the slide's path; carriage 4 against the chain at 9 swap poses, including the in-between slides: 0 |
+| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses; the 17-pose half-link sweep of 2026-10-19 is too slow with the vendors' geometry for this run) | **0** |
+
+New contacts that are meant to be there (skipped by part key): the 15T drive sprockets on the drive chain (0.3-0.7 mm slivers where the simplified tooth form meets a link with Nitro's real plate height), the clevis screw in its cheeks and nut, and the yoke dowel pressed in the crossbar.
 
 ## Things to look at before ordering or printing
 

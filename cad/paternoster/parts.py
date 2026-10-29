@@ -16,6 +16,11 @@ import cadquery as cq
 
 from params import *  # noqa: F401,F403
 
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "vendor"))
+import actuonix  # noqa: E402  (Actuonix's STEP, shared with the other carousel)
+import mcmaster  # noqa: E402  (McMaster's own STEPs, placed in these builders' frames)
+
 HERE = Path(__file__).resolve().parent
 REF = HERE / "reference"
 
@@ -44,8 +49,9 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
     z0 = OUTER_GAP / 2
     top = _plate(PLATE_T, PIN_D).translate((0, 0, z0))
     bot = _plate(PLATE_T, PIN_D).translate((0, 0, -z0 - PLATE_T))
+    pl = PIN_LEN if clip else PIN_LEN_RC35          # SA-1 connecting link (McMaster STEP) / plain riveted link (Nitro L)
     pins = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(PIN_D / 2)
-            .extrude(PIN_LEN).translate((0, 0, -PIN_LEN / 2)))
+            .extrude(pl).translate((0, 0, -pl / 2)))
     link = top.union(bot).union(pins)
     if clip:
         c = (cq.Workplane("XY").rect(P + 2.6, 5.2).extrude(0.5)
@@ -58,7 +64,11 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
 def chain_sa1_link() -> cq.Workplane:
     """#35 SA-1 attachment connecting link: the +z outer plate runs on past
     its edge as a straight tab (toward -y, out of the loop), one hole at C1
-    from the pitch line, opened to 3.4 mm for the pivot screw's M3 thread."""
+    from the pitch line, opened to 3.4 mm for the pivot screw's M3 thread.
+    McMaster 7321K31's own STEP when it is on disk (cad/vendor/mcmaster.py)."""
+    real = mcmaster.mcm("7321K31")
+    if real is not None:
+        return real
     link = chain_outer_link(clip=True)
     z0 = OUTER_GAP / 2
     tab = (cq.Workplane("XY").center(0, -(SA1_XS + PLATE_H / 2 - 1) / 2).rect(SA1_N, SA1_XS - PLATE_H / 2 + 1)
@@ -93,14 +103,17 @@ def _ring32():
 
 def sprocket_32(bore: float = SPROCKET_BORE, keyed: bool = True) -> cq.Workplane:
     """35BS32: 32T, 2 in hub toward -z (out of the loop), 7/8 in through the bore.
-    Tooth ring centred on z = 0; the ring's inner face (+z) is the flush face."""
+    Tooth ring centred on z = 0; the ring's inner face (+z) is the flush face. Martin 35BS32 5/8 (catalog data, the
+    maker's table that distributors quote): 4.032 in OD, 3.826 in PD, 2 in hub, 7/8 in LTB, 3/16 x 3/32 keyway,
+    two set screws, one over the keyway and one at 90 deg (was one)."""
     hub = cq.Workplane("XY").circle(HUB_D / 2).extrude(LTB - TOOTH_W).translate((0, 0, -LTB + TOOTH_W / 2))
     s = _ring32().union(hub)
     s = s.cut(cq.Workplane("XY").circle(bore / 2).extrude(60).translate((0, 0, -30)))
     if keyed:
         s = s.cut(cq.Workplane("XY").center(0, bore / 2).rect(KEYWAY[0], 2 * KEYWAY[1]).extrude(60).translate((0, 0, -30)))
     zs = -LTB + TOOTH_W / 2 + (LTB - TOOTH_W) / 2
-    return s.cut(cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40))
+    return s.cut(cq.Workplane("XZ").center(0, zs).circle(3.0).extrude(-40)
+                 .union(cq.Workplane("YZ").center(0, zs).circle(3.0).extrude(40)))
 
 
 def sprocket_32_idler() -> cq.Workplane:
@@ -117,14 +130,14 @@ def flange_bearing() -> cq.Workplane:
     """SBSFL202-10 2-bolt stamped-steel flange unit. Mounting plane z = 0,
     insert toward +z, rear dome toward -z (into the plate's 49 mm hole), bolt line along y."""
     b = BRG
-    lobe_r = 9.0
+    lobe_r = (b["L"] - b["J"]) / 2               # 8.75: 81 long over the lobes (was 9.0)
     lobes = cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(lobe_r).extrude(b["T"])
     hull = (cq.Workplane("XY").polyline([(-lobe_r, -b["J"] / 2), (-b["W"] / 2, -6), (-b["W"] / 2, 6), (-lobe_r, b["J"] / 2),
                                          (lobe_r, b["J"] / 2), (b["W"] / 2, 6), (b["W"] / 2, -6), (lobe_r, -b["J"] / 2)])
             .close().extrude(b["T"]))
     flange = lobes.union(hull).union(cq.Workplane("XY").circle(b["W"] / 2 - 4).extrude(b["T"]))
-    front = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(b["OUT"] - 2.0).edges(">Z").chamfer(4)
-    rear = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(-(b["IN"] - 1.0)).edges("<Z").chamfer(4)
+    front = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(b["DOME_OUT"]).edges(">Z").chamfer(4)
+    rear = cq.Workplane("XY").circle(b["DOME_D"] / 2).extrude(-b["DOME_IN"]).edges("<Z").chamfer(4)
     ring = cq.Workplane("XY").circle(b["RING_D"] / 2).extrude(b["OUT"] + b["IN"]).translate((0, 0, -b["IN"]))
     body = flange.union(front).union(rear).union(ring)
     body = body.cut(cq.Workplane("XY").pushPoints([(0, -b["J"] / 2), (0, b["J"] / 2)]).circle(b["BOLT_D"] / 2 + 0.4)
@@ -141,11 +154,28 @@ def bearing_6202() -> cq.Workplane:
 def idler_axle() -> cq.Workplane:
     """Fixed axle for a top idler: 15 mm shaft (h6) with an M10 threaded stem
     through the side plate's slot. Shoulder face (on the plate's inner face) at z = 0,
-    bearing seat along +z, stem along -z."""
-    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L).edges(">Z").chamfer(0.6)
+    bearing seat along +z to the inner bearing's face, then the circlip's 1.1 mm groove and a 1.2 mm land,
+    stem along -z (3 mm past the nylock and its washer, chamfered)."""
+    seat = cq.Workplane("XY").circle(7.5).extrude(IDLER_AXLE_L + 1.1 + 1.2).edges(">Z").chamfer(0.4)   # groove + DIN 471 land
+    groove = (cq.Workplane("XY").circle(7.6).circle(IDLER_CIRCLIP[0] / 2).extrude(1.1)
+              .translate((0, 0, IDLER_AXLE_L)))
     shoulder = cq.Workplane("XY").circle(11.0).extrude(4.0)
-    stem = cq.Workplane("XY").circle(5.0).extrude(-(PLATE_T_SIDE + 12.0))
-    return seat.union(shoulder).union(stem)
+    stem = cq.Workplane("XY").circle(5.0).extrude(-(PLATE_T_SIDE + 15.0)).faces("<Z").chamfer(0.8)
+    return seat.cut(groove).union(shoulder).union(stem)
+
+
+def idler_spacer() -> cq.Workplane:
+    """Aluminium spacer between the axle's washer shoulder and the outer 6202's inner ring (shop: cut from 3/4 in
+    tube and bored to 15.2): z 0 .. length, on the axle."""
+    i, o, l = IDLER_SPACER
+    return cq.Workplane("XY").circle(o / 2).circle(i / 2).extrude(l)
+
+
+def idler_circlip() -> cq.Workplane:
+    """DIN 471 external retaining ring for a 15 mm shaft, 1.0 thick, in the seat's groove: face on the bearing at
+    z = 0, along +z (simplified: a split ring with two lug holes)."""
+    r = cq.Workplane("XY").circle(10.4).circle(IDLER_CIRCLIP[0] / 2).extrude(IDLER_CIRCLIP[1])
+    return r.cut(cq.Workplane("XY").center(0, 9.0).rect(3.0, 4.0).extrude(3).translate((0, 0, -1)))
 
 
 def jaw_coupling() -> cq.Workplane:
@@ -173,55 +203,102 @@ def nema11_envelope() -> cq.Workplane:
     back face."""
     body = cq.Workplane("XY").rect(28, 28).extrude(-45.0).edges("|Z").chamfer(2.5)
     boss = cq.Workplane("XY").circle(11).extrude(1.5)
-    sh = cq.Workplane("XY").circle(2.5).extrude(20.0)
+    # StepperOnline 11HS18-0674S spec (product page, 2026-10-27): 28 x 28, body 45, shaft 5 x 20, D-cut 15 long (added,
+    # 0.5 deep on +x); its drawing PDF and STEP need the page's own download (403 to a plain request, STEP needs a login)
+    sh = cq.Workplane("XY").circle(2.5).extrude(20.0).cut(cq.Workplane("XY").center(2.5, 0).rect(1.0, 6.0).extrude(15.0)
+                                                         .translate((0, 0, 5.0)))
     return body.union(boss).union(sh)
+
+
+def _spur_outline(z: int, m: float, alpha_deg: float = 20.0, n_inv: int = 7) -> list[tuple[float, float]]:
+    """Standard full-depth involute spur gear outline (addendum m, dedendum 1.25 m, zero shift) as a closed polyline,
+    a tooth centred on +x. The flank runs radially below the base circle (no undercut detail)."""
+    a = math.radians(alpha_deg)
+    r, ra, rf = m * z / 2, m * z / 2 + m, m * z / 2 - 1.25 * m
+    rb = r * math.cos(a)
+    inv = lambda t: math.tan(t) - t  # noqa: E731
+    half = math.pi / (2 * z) + inv(a)               # tooth half-angle at the base circle
+    rs = [max(rb, rf) + (ra - max(rb, rf)) * i / n_inv for i in range(n_inv + 1)]
+    flank = [(rr, half - inv(math.acos(min(1.0, rb / rr)))) for rr in rs]   # (radius, half-angle) up one flank
+    pts: list[tuple[float, float]] = []
+    for k in range(z):
+        c = 2 * math.pi * k / z
+        tooth = [(rf, c - half - 0.6 * (math.pi / z - half))] + [(rr, c - th) for rr, th in flank]
+        tooth += [(rr, c + th) for rr, th in reversed(flank)] + [(rf, c + half + 0.6 * (math.pi / z - half))]
+        pts += [(rr * math.cos(t), rr * math.sin(t)) for rr, t in tooth]
+    return pts
 
 
 def pinion_20t() -> cq.Workplane:
     """Steel 20T module-1 pinion: KHK SS1-20A (S45C, 5 mm H7 bore, 10 mm face) with its 10 mm hub faced off so it
     fits in front of the dock magnet's bracket; bonded to the shaft (Loctite 638). 22 OD, 10 wide. A printed pinion
-    is softer and rubs at about mu 0.3, which raises the separating force (cad/gear-mesh)."""
-    return cq.Workplane("XY").polygon(20, 21.6).extrude(10.0).cut(cq.Workplane("XY").circle(2.5).extrude(10))
+    is softer and rubs at about mu 0.3, which raises the separating force (cad/gear-mesh). KHK catalog (SS1-20A,
+    2026-10-27): bore 5, hub 16 x 10 (faced off here), PD 20, OD 22, face 10, standard full depth, 20 deg: now an
+    involute tooth form (was a 20-gon of 21.6 mm). Face toward the motor at z = 0, a tooth on +x."""
+    return (cq.Workplane("XY").polyline(_spur_outline(20, 1.0)).close().extrude(10.0)
+            .cut(cq.Workplane("XY").circle(2.5).extrude(10)))
 
 
 def solenoid_412() -> cq.Workplane:
-    """Adafruit 412 12 V push-pull solenoid, envelope 32 x 15 x 12 frame + 4.5 mm plunger, plunger along +z."""
-    frame = cq.Workplane("XY").rect(15.0, 12.0).extrude(-32.0)
-    plunger = cq.Workplane("XY").circle(2.25).extrude(8.0)
+    """Adafruit 412 12 V push-pull solenoid, plunger along +z. Adafruit's drawing (product-files/412/412_C514-B_diagram.PDF,
+    TAU0730TM, 2026-10-27): U-frame 17 x 14 across, 29.7 long, plunger 5 mm (brass tip 5 x 10), 51.9 overall, 4.9 mm
+    stroke, push end 15.4 out of the frame when energised (20.3 at rest). Was a 15 x 12 x 32 frame and a 4.5 mm plunger.
+    The plunger is still drawn 8 mm out (where the layout's SOL_Z puts its tip under the auger tube): the real one
+    stands 7.4 mm further out energised, see cad/vendor/AUDIT_other.md."""
+    frame = cq.Workplane("XY").rect(17.0, 14.0).extrude(-29.7)
+    plunger = cq.Workplane("XY").circle(2.5).extrude(8.0)
     return frame.union(plunger)
 
 
 # ---------------------------------------------------------------- frame
 def extrusion_2020(length: float) -> cq.Workplane:
-    s = 20.0
+    """80/20 20-2020 along +z, from 80/20's profile drawing (8020.net/20-2020, gallery image 2, 2026-10-27): 20.00
+    square, slot opening 5.26, lips 1.50, slot 11.99 wide under the lips, narrowing at 45 deg to the 7.32 core
+    (6.34 from a face), 4.19 bore through. Was a Misumi-style slot-6 profile (6.2 opening, 1.8 lips, 11.0 x 6.1 slot,
+    4.2 bore). Note 80/20's 5.26 opening is narrower than a generic 2020 slot 6 (cad/vendor/AUDIT_other.md)."""
+    s, op, lip, w, depth, web, bore = 20.0, 5.26, 1.50, 11.99, 6.34, 1.50, 4.19
+    h, g = s / 2, web / math.sqrt(2)            # cavity walls run parallel to the 45 deg corner webs, a web apart
+    pts = [(h + 0.01, op / 2), (h - lip, op / 2), (h - lip, w / 2), (w / 2 + g, w / 2), (h - depth, h - depth - g),
+           (h - depth, -(h - depth - g)), (w / 2 + g, -w / 2), (h - lip, -w / 2), (h - lip, -op / 2), (h + 0.01, -op / 2)]
+    slot = cq.Workplane("XY").polyline(pts).close().extrude(length)
     prof = cq.Workplane("XY").rect(s, s).extrude(length)
-    slot_open, lip, cav_w, cav_d = 6.2, 1.8, 11.0, 6.1
     for ang in (0, 90, 180, 270):
-        slot = (cq.Workplane("XY").center(s / 2 - lip / 2, 0).rect(lip + 0.02, slot_open).extrude(length)
-                .union(cq.Workplane("XY").center(s / 2 - lip - (cav_d - lip) / 2, 0).rect(cav_d - lip, cav_w).extrude(length)))
         prof = prof.cut(slot.rotate((0, 0, 0), (0, 0, 1), ang))
-    return prof.cut(cq.Workplane("XY").circle(4.2 / 2).extrude(length))
+    return prof.cut(cq.Workplane("XY").circle(bore / 2).extrude(length))
 
 
 def corner_bracket() -> cq.Workplane:
-    t = 3.5
-    b = cq.Workplane("XZ").polyline([(0, 0), (20, 0), (20, t), (t, 20), (0, 20)]).close().extrude(9, both=True)
-    b = b.union(cq.Workplane("XZ").polyline([(t, t), (16, t), (t, 16)]).close().extrude(1, both=True))
-    holes = (cq.Workplane("XY").center(12, 0).circle(2.75).extrude(t + 1)
-             .union(cq.Workplane("YZ").center(0, 12).circle(2.75).extrude(t + 1)))
-    return b.cut(holes)
+    """80/20 14059, 2-hole 18 mm slotted inside corner bracket with dual support (8020.net/14059 table, 2026-10-27):
+    A = B = K = 18 (legs and width), F 3.0 legs, H 2.0 side walls, slots J 5.3 wide x G 7.0 long centred D 10.5 from
+    the corner. Legs along +x and +z, back faces on x = 0 and z = 0, centred on y. Was a solid 20 x 20 x 18 wedge, 3.5
+    legs, 5.5 holes 12 from the corner."""
+    a, t, w, sw = 18.0, 3.0, 18.0, 2.0
+    b = cq.Workplane("XZ").polyline([(0, 0), (a, 0), (a, t), (t, a), (0, a)]).close().extrude(w / 2, both=True)
+    b = b.cut(cq.Workplane("XY").box(a, w - 2 * sw, a, centered=(False, True, False)).translate((t, 0, t)))
+    slot_x = cq.Workplane("XY").center(10.5, 0).slot2D(7.0, 5.3, 0).extrude(t + 2).translate((0, 0, -1))
+    slot_z = cq.Workplane("YZ").center(0, 10.5).slot2D(7.0, 5.3, 90).extrude(t + 2).translate((-1, 0, 0))
+    return b.cut(slot_x).cut(slot_z)
 
 
 def leveling_foot() -> cq.Workplane:
-    stud = cq.Workplane("XY").circle(2.5).extrude(FOOT_H + 6)
-    pad = cq.Workplane("XY").circle(15).extrude(6).union(cq.Workplane("XY").polygon(6, 9.2).extrude(FOOT_H - 1))
-    return pad.union(stud)
+    """TNUTZ LF-020-A: M6 x 40 stud on a dia 10 ball end in a dia 20 black nylon base, with a hex nut (TNUTZ product page,
+    2026-10-27; the base's 9 mm height and taper are read off its photo, cad/vendor/AUDIT_other.md). Pad on z = 0, stud
+    up through a jam nut under the rail into the rail's T-nut: the 40 mm stud is cut to FOOT_H + 6 (a 2020 slot is
+    about 6 mm deep). Was an M5 stud on a dia 30 pad."""
+    pad = cq.Workplane("XY").add(cq.Solid.makeCone(10.0, 7.5, 9.0))
+    ball = cq.Workplane("XY").sphere(5.0).translate((0, 0, 9.0))
+    stud = cq.Workplane("XY").circle(3.0).extrude(FOOT_H + 6)
+    nut = cq.Workplane("XY").polygon(6, 10.0 / math.cos(math.pi / 6)).extrude(5.0).translate((0, 0, FOOT_H - 5.2))
+    return pad.union(ball).union(stud).union(nut)
 
 
 # ---------------------------------------------------------------- fasteners
 def shoulder_screw() -> cq.Workplane:
-    """M3 thread, 4 mm x 8 mm shoulder (ISO 7379 style). Head face (under the head) at z = 0,
-    shoulder along -z, thread beyond it."""
+    """McMaster 90265A121: 4 mm x 10 mm shoulder, M3 x 5 thread, 6 x 3 head. Head face (under the head) at z = 0,
+    shoulder along -z, thread beyond it. McMaster's STEP when on disk."""
+    real = mcmaster.mcm("90265A121")
+    if real is not None:
+        return real
     head = cq.Workplane("XY").circle(SHOULDER_HEAD_D / 2).extrude(SHOULDER_HEAD_H)
     head = head.cut(cq.Workplane("XY").polygon(6, 2.5 / math.cos(math.pi / 6)).extrude(2.0).translate((0, 0, SHOULDER_HEAD_H - 2.0)))
     sh = cq.Workplane("XY").circle(SHOULDER_D / 2).extrude(-SHOULDER_L)
@@ -230,7 +307,11 @@ def shoulder_screw() -> cq.Workplane:
 
 
 def locknut(m: float = 3.0) -> cq.Workplane:
-    """Nylon-insert locknut (DIN 985), bearing face at z = 0, crown toward +z."""
+    """Nylon-insert locknut (DIN 985), bearing face at z = 0, crown toward +z. McMaster's STEP for the M3 (93625A100),
+    M5 (93625A200) and 1/4-20 (95615A120) when on disk."""
+    real = mcmaster.mcm({3.0: "93625A100", 5.0: "93625A200", 6.35: "95615A120"}.get(m, ""))
+    if real is not None:
+        return real
     af, h = {3.0: (5.5, 4.0), 5.0: (8.0, 5.0), 6.35: (11.1, 7.1), 10.0: (16.0, 10.0)}[m]
     nut = cq.Workplane("XY").polygon(6, af / math.cos(math.pi / 6)).extrude(h * 0.7)
     crown = cq.Workplane("XY").circle(af / 2 * 0.95).extrude(h * 0.3).translate((0, 0, h * 0.7))
@@ -238,13 +319,19 @@ def locknut(m: float = 3.0) -> cq.Workplane:
 
 
 def thrust_washer() -> cq.Workplane:
-    """McMaster 95630A630 PTFE washer, 4.3 x 9 x 0.8."""
+    """McMaster 95630A630 PTFE washer, 4.3 x 9 x 0.8 (McMaster's STEP when on disk)."""
+    real = mcmaster.mcm("95630A630")
+    if real is not None:
+        return real
     return cq.Workplane("XY").circle(4.5).circle(2.15).extrude(WASHER_T)
 
 
 def sleeve_bearing() -> cq.Workplane:
     """McMaster 6659K65 flanged bronze bushing, 4 ID x 7.02 OD x 6, flange 10 x 1.5:
-    flange's outer face at z = +1.5 ... seat face at z = 0, sleeve along -z."""
+    flange's outer face at z = +1.5 ... seat face at z = 0, sleeve along -z. McMaster's STEP when on disk."""
+    real = mcmaster.mcm("6659K65")
+    if real is not None:
+        return real
     fl = cq.Workplane("XY").circle(5.0).circle(2.0).extrude(1.5)
     sl = cq.Workplane("XY").circle(3.51).circle(2.0).extrude(-4.5)
     return fl.union(sl)
@@ -252,13 +339,20 @@ def sleeve_bearing() -> cq.Workplane:
 
 def thumb_screw() -> cq.Workplane:
     """M5 x 16 knurled-head thumb screw: underside of the head at z = 0, shank along -z.
-    Its tip is the module's hinge pin in Sam's knuckle."""
+    Its tip is the module's hinge pin in Sam's knuckle. McMaster 92545A179's STEP when on disk."""
+    real = mcmaster.mcm("92545A179")
+    if real is not None:
+        return real
     head = cq.Workplane("XY").polygon(24, THUMB_HEAD[0]).extrude(THUMB_HEAD[1])
     return head.union(cq.Workplane("XY").circle(HINGE_PIN_D / 2).extrude(-THUMB_L).edges("<Z").chamfer(0.5))
 
 
 def heat_set_insert_m5() -> cq.Workplane:
-    """M5 brass heat-set insert, short (5.8 mm), 6.4 OD; top face at z = 0, body along -z."""
+    """M5 brass heat-set insert, McMaster 94459A774 (5.7 long, 7.1 knurl OD into a 6.4 hole); top face at z = 0, body
+    along -z. McMaster's STEP when on disk; the stand-in is the hole it melts into."""
+    real = mcmaster.mcm("94459A774")
+    if real is not None:
+        return real
     return cq.Workplane("XY").circle(INSERT_D / 2).circle(2.5).extrude(-5.5)
 
 
@@ -321,11 +415,12 @@ def gondola() -> cq.Workplane:
         g = g.union(lug)
     g = g.cut(cq.Workplane("XZ").center(HINGE_X, HINGE_Z).circle(INSERT_D / 2).extrude(GON_W + 2, both=True)
               .cut(cq.Workplane("XY").box(30, 2 * LUG_IN, 30).translate((HINGE_X, 0, HINGE_Z))))
-    # saddle under the auger near the cap end: a cross bar with a V seat 0.6 mm below the tube
+    # saddle under the auger near the cap end: a cross bar with a seat 0.6 mm below the tube. The seat's cheeks
+    # (|y| 12-18) stand on the bar: as a V (apex down) they started 8 mm up in mid-air and would not print unsupported
     sx = HINGE_X + SADDLE_XS
     tube_bot = HINGE_Z - AUGER_R_TUBE
     bar = cq.Workplane("XY").box(10.0, GON_W, tube_bot - 0.6 - zb, centered=False).translate((sx - 5.0, -GON_W / 2, zb))
-    vee = (cq.Workplane("YZ").polyline([(-18, tube_bot - 0.6 + 12), (0, tube_bot - 0.6), (18, tube_bot - 0.6 + 12)])
+    vee = (cq.Workplane("YZ").polyline([(-18, tube_bot - 0.6 + 12), (-18, tube_bot - 0.6), (18, tube_bot - 0.6), (18, tube_bot - 0.6 + 12)])
            .close().extrude(10.0).translate((sx - 5.0, 0, 0)))
     g = g.union(bar).union(vee.intersect(cq.Workplane("XY").box(10, GON_W, 40, centered=False).translate((sx - 5.0, -GON_W / 2, tube_bot - 0.6))))
     g = g.cut(cq.Workplane("YZ").center(0, HINGE_Z).circle(AUGER_R_TUBE + 0.6).extrude(12).translate((sx - 6.0, 0, 0)))
@@ -335,10 +430,15 @@ def gondola() -> cq.Workplane:
 # ---------------------------------------------------------------- station: dock magnet, U-yoke, locating pins
 # The same station as chain carousel v2 (cad/chain-carousel-v2/parts.py), all in Sam's studio frame.
 def dock_magnet() -> cq.Workplane:
-    """Adafruit 3872 holding electromagnet P20/15 (20 x 15 mm pot magnet): face up at z = 0, body along -z."""
+    """Adafruit 3872 holding electromagnet P20/15: face up at z = 0, body along -z. Adafruit's diagram
+    (cdn-shop.adafruit.com/product-files/3872/3872_diagram.png, 2026-10-27): 20 dia x 15, an 8 mm centre pole in the
+    face, an M4 x 10 tapped hole in the back's centre; leads out of the back beside it. (Was: a ring mark at 8.8-12.8
+    and the leads from the centre.)"""
     body = cq.Workplane("XY").circle(DOCK_MAG_D / 2).extrude(-DOCK_MAG_H)
-    groove = cq.Workplane("XY").circle(DOCK_MAG_D * 0.32).circle(DOCK_MAG_D * 0.22).extrude(-0.3)
-    return body.cut(groove).union(cq.Workplane("XY").pushPoints([(-2, 0), (2, 0)]).circle(0.6).extrude(-8).translate((0, 0, -DOCK_MAG_H)))
+    epoxy = cq.Workplane("XY").circle(8.5).circle(4.0).extrude(-0.3)            # coil's potting between the pole and the shell
+    tap = cq.Workplane("XY").circle(3.3 / 2).extrude(10.0).translate((0, 0, -DOCK_MAG_H))   # M4 x 10 (tap drill 3.3)
+    leads = cq.Workplane("XY").pushPoints([(-1.5, 6.0), (1.5, 6.0)]).circle(0.6).extrude(-8).translate((0, 0, -DOCK_MAG_H))
+    return body.cut(epoxy).cut(tap).union(leads)
 
 
 def magnet_bracket() -> cq.Workplane:
@@ -376,17 +476,34 @@ def armature_tab() -> cq.Workplane:
 
 def uyoke_base() -> cq.Workplane:
     """Printed crossbar of the U-yoke on the P16's rod end, yoke frame: origin on the stub-pin axis, z along the
-    actuator (toward the carriage). The rod end's 9 mm square plug goes into a socket and an M4 bolt through its hole
+    actuator (toward the carriage). The P16's rod end (a 9 x 6 tab) goes into a fitted slot and a 4 mm dowel through its hole
     makes it rigid; the steel arms bolt to its sides; the approach-guide tongue hangs under it at y = TONGUE_Y."""
     zr = -UFORK_L
     hw = UFORK_Y[0]
-    b = cq.Workplane("XY").box(20.0, 2 * hw, 14.0, centered=(True, True, False)).translate((0, 0, zr - 6.0))
-    b = b.cut(cq.Workplane("XY").box(9.3, 9.3, 10.0, centered=(True, True, False)).translate((0, 0, zr - 6.01)))
-    b = b.cut(cq.Workplane("XZ").center(0, zr).circle(2.15).extrude(30, both=True))
+    # underside 4.5 mm below the rod-end hole (was 6): fully retracted, the P16's square tube ends 5.0 mm below the hole
+    # (Actuonix STEP; the old stand-in tube ended 2 mm lower), so the crossbar now clears it by 0.5 mm
+    b = cq.Workplane("XY").box(20.0, 2 * hw, 12.5, centered=(True, True, False)).translate((0, 0, zr - 4.5))
+    # socket for the P16's real rod end (datasheet + Actuonix STEP): the dia 8.94 rod tube and the rod end's dia 9 x 1 mm
+    # collar sit in a dia 9.3 counterbore (collar face 3 mm below the hole), and the 9 x 6 tab (hole at zr, tip 4 mm
+    # above) fits a 9.3 x 6.3 slot, so it can't rock (the old 9.3 mm square socket fitted a 9 x 9 plug the P16 doesn't have)
+    b = b.cut(cq.Workplane("XY").circle(4.65).extrude(1.61).translate((0, 0, zr - 4.51)))
+    b = b.cut(cq.Workplane("XY").box(9.3, 6.3, 7.2, centered=(True, True, False)).translate((0, 0, zr - 2.9)))
+    b = b.cut(cq.Workplane("XZ").center(0, zr).circle(1.98).extrude(30, both=True))   # 4 mm dowel, light press
     for x in (-5.0, 5.0):
         b = b.cut(cq.Workplane("XZ").center(x, zr + 4.0).circle(2.0).extrude(30, both=True))
-    tongue = cq.Workplane("XY").box(30.0, 6.0, 25.0, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
+    tongue = cq.Workplane("XY").box(30.0, 6.0, 26.5, centered=False).translate((-15.0, TONGUE_Y - 3.0, zr - 6.0 - 25.0))
     return b.union(tongue)
+
+
+def yoke_pin() -> cq.Workplane:
+    """McMaster 91595A128: hardened steel dowel pin, 4 mm x 38 mm (m6, read 2026-10-27). Pressed through the U-yoke
+    crossbar and the P16 rod end's dia 4.25 hole; the two steel arms cover both ends, so it can't walk out (an M4 bolt
+    there had no room for its head or nut: the arms sit flat on the crossbar's sides). Yoke frame: along y, centred
+    on the origin. McMaster's STEP when on disk."""
+    real = mcmaster.mcm("91595A128")
+    if real is not None:
+        return real
+    return cq.Workplane("XZ").circle(2.0).extrude(19.0, both=True).edges().chamfer(0.4)
 
 
 def uyoke_arm() -> cq.Workplane:
@@ -403,10 +520,12 @@ def uyoke_arm() -> cq.Workplane:
 
 
 def stub_pin() -> cq.Workplane:
-    """4 mm steel stub pin along +y from y = 0 (pressed through the carriage's side post and the printed boss) to 7.5 mm,
-    with a DIN 6799 groove just outside the yoke arm."""
-    p = cq.Workplane("XZ").circle(2.0).extrude(-7.5).edges().chamfer(0.3)
-    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.6).translate((0, 6.4, 0)))
+    """4 mm stub pin along +y from y = 0 (pressed through the carriage's side post and the printed boss) to 8.0 mm, with a
+    DIN 6799-3.2 groove (0.64 wide, dia 3.2) just outside the yoke arm, 0.96 mm from the end. Turned from 4 mm h8 303
+    stainless rod: a hardened dowel can't be grooved with HSS, and the old 0.6 mm groove 0.5 mm from the end was
+    narrower than DIN 6799 asks and left no wall behind it (cad/shop/README.md)."""
+    p = cq.Workplane("XZ").circle(2.0).extrude(-8.0).edges().chamfer(0.3)
+    return p.cut(cq.Workplane("XZ").circle(2.1).circle(1.6).extrude(-0.64).translate((0, 6.4, 0)))
 
 
 def yoke_stop() -> cq.Workplane:
@@ -442,12 +561,15 @@ def pin_boss_m() -> cq.Workplane:
 
 def loc_pin() -> cq.Workplane:
     """Steel dowel locating pin, LOCPIN_D x 8 mm, 1 mm 45 deg cone on top: bottom at z = 0 (5 mm in the rim wall)."""
+    real = mcmaster.mcm("91595A150")   # McMaster 4 x 8 mm hardened dowel (52100), both ends rounded
+    if real is not None:
+        return real
     return cq.Workplane("XY").circle(LOCPIN_D / 2).extrude(5.0 + LOCPIN_PROUD).faces(">Z").chamfer(1.0)
 
 
 def eclip() -> cq.Workplane:
     """DIN 6799 e-clip on a stub pin's groove: 9 OD, 0.6 thick, open on one side. Face at z = 0, along -z."""
-    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(2.0).extrude(-ECLIP[1])
+    c = cq.Workplane("XY").circle(ECLIP[0] / 2).circle(1.6).extrude(-ECLIP[1])     # sits in the stub pin's 3.2 mm groove
     return c.cut(cq.Workplane("XY").center(0, -3.5).rect(3.4, 4.0).extrude(-2).translate((0, 0, 0.5)))
 
 
@@ -477,31 +599,42 @@ def vial_funnel() -> cq.Workplane:
 
 
 def actuator_p16() -> tuple[cq.Workplane, cq.Workplane]:
-    """Actuonix P16-150-22-12-P, modelled from Actuonix's STEP: rear clevis hole on the
-    y axis at the origin, rod along +z. Motor/gear block 36 x 20 x 79 (rod axis 10.5 mm
-    from one end of the 36), 12 x 12 tube, 9 mm rod, 9 x 9 rod-end plug.
-    Returns (body, rod at full retraction; the layout slides the rod by the extension)."""
-    block = cq.Workplane("XY").box(36.0, 20.0, 79.0, centered=False).translate((-25.5, -10.0, -4.5))
-    tube = cq.Workplane("XY").box(12.0, 12.0, 167.0, centered=False).translate((-6.0, -6.0, 23.4))
-    body = block.union(tube).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2).extrude(20, both=True))
-    rod = cq.Workplane("XY").circle(4.5).extrude(43.4).translate((0, 0, 150.0))
-    plug = cq.Workplane("XY").box(9.0, 9.0, 14.0, centered=False).translate((-4.5, -4.5, ACT_RETRACTED - 10.0))
-    rod = rod.union(plug).cut(cq.Workplane("XZ").center(0, ACT_RETRACTED).circle(ACT_CLEVIS_D / 2).extrude(10, both=True))
-    return body, rod
+    """Actuonix P16-150-22-12-P: Actuonix's own STEP (cad/vendor/actuonix.py) when it is on disk, else the same
+    envelope from the datasheet drawing. Rear clevis hole on the y axis at the origin, rod along +z: 36 x 20 x 70
+    housing from z 4.5 (rod axis 10.5 mm from one end of the 36), rear tab 8 thick, 12 x 12 tube, dia 8.94 rod,
+    rod end a 9 x 6 tab (hole 4 mm from its tip). Returns (body, rod at full retraction; the layout slides the rod)."""
+    real = actuonix.p16_150()
+    return real if real is not None else actuonix.p16_150_standin(ACT_CLEVIS_D, ACT_RETRACTED)
 
 
 def clevis_bracket() -> cq.Workplane:
-    """Base clevis for the actuator's 20 mm block (printed PETG or the Actuonix bracket):
-    two 5 mm cheeks 21 mm apart on a foot, pin along y at the frame origin."""
+    """Printed base clevis for the P16's rear tab (8 mm thick, dia 4.25 hole 4.5 mm behind the housing): two cheeks
+    CLEVIS_GAP apart straddle the tab on a foot, pin along y at the frame origin. The cheeks end in R4 round the pin,
+    so the 20 mm housing (its face 4.5 mm from the pin) swings over them. A 4 x 16 mm shoulder screw is the pin."""
+    t = (SHOULDER_CLEVIS_L - CLEVIS_GAP - 0.2) / 2
     foot = cq.Workplane("XY").box(44.0, 40.0, 6.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
     cheeks = None
-    for y0 in (-15.5, 10.5):
-        c = (cq.Workplane("XZ").circle(7.0).extrude(-5.0)
-             .union(cq.Workplane("XY").box(14.0, 5.0, CLEVIS_H, centered=(True, False, False)).translate((0, 0, -CLEVIS_H))))
+    for y0 in (-CLEVIS_GAP / 2 - t, CLEVIS_GAP / 2):
+        c = (cq.Workplane("XZ").circle(4.0).extrude(-t)
+             .union(cq.Workplane("XY").box(8.0, t, CLEVIS_H, centered=(True, False, False)).translate((0, 0, -CLEVIS_H))))
         c = c.translate((0, y0, 0))
         cheeks = c if cheeks is None else cheeks.union(c)
-    b = foot.union(cheeks).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 + 0.1).extrude(30, both=True))
+    web = cq.Workplane("XY").box(8.0, CLEVIS_GAP + 2 * t, CLEVIS_H - 9.0, centered=(True, True, False)).translate((0, 0, -CLEVIS_H))
+    b = foot.union(cheeks).union(web).cut(cq.Workplane("XZ").circle(ACT_CLEVIS_D / 2 - 0.05).extrude(30, both=True))
     return b.cut(cq.Workplane("XY").pushPoints([(-16, 0), (16, 0)]).circle(2.75).extrude(10).translate((0, 0, -CLEVIS_H - 1)))
+
+
+def clevis_shoulder_screw() -> cq.Workplane:
+    """McMaster 90265A123: 18-8 shoulder screw, 4 mm x 16 mm shoulder, M3 x 0.5 x 5 mm thread, 6 x 3 mm head (McMaster's
+    family table, read 2026-10-27). The P16's base pin through the clevis cheeks and the rear tab. Underside of the head at
+    z = 0, shoulder along -z. McMaster's STEP when on disk."""
+    real = mcmaster.mcm("90265A123")
+    if real is not None:
+        return real
+    head = cq.Workplane("XY").circle(3.0).extrude(3.0).cut(cq.Workplane("XY").polygon(6, 2.0 / math.cos(math.pi / 6)).extrude(1.5).translate((0, 0, 1.5)))
+    sh = cq.Workplane("XY").circle(2.0).extrude(-SHOULDER_CLEVIS_L)
+    th = cq.Workplane("XY").circle(1.5).extrude(-5.0).translate((0, 0, -SHOULDER_CLEVIS_L))
+    return head.union(sh).union(th)
 
 
 def vial() -> cq.Workplane:
@@ -511,9 +644,22 @@ def vial() -> cq.Workplane:
 
 
 def load_cell() -> cq.Workplane:
-    """100 g bar load cell (TAL221 class): 47.5 x 6 x 6 mm... envelope of the 80 x 12.7 x 12.7 class.
-    Fixed end at x = 0, free end toward +x, bottom at z = 0."""
-    return cq.Workplane("XY").box(LC_L, 12.7, 12.7, centered=(False, True, False))
+    """SparkFun SEN-14727, TAL221 100 g straight-bar (parallel-beam) load cell, from the TAL221 datasheet (HTC Sensor,
+    cdn.sparkfun.com/assets/9/9/a/f/3/TAL221.pdf, 2026-10-27): 47 x 12 x 6 mm (SparkFun: 47 x 12 x 6), two M3 tapped
+    holes at the fixed end and two 3.2 mm holes at the free end, 6 mm apart across the bar and 40 mm apart along it,
+    and a 20 mm binocular hole through the 12 mm side. Was an 80 x 12.7 x 12.7 block (the TAL220's size). Fixed end at
+    x = 0, free end toward +x, bottom at z = 0: the bar sits on a 3.35 mm spacer under its fixed end and carries one on
+    its free end, so the stack is still 12.7 tall (the vial cup and post heights) and the beam is clear to bend."""
+    L, W, H, sp, e = LC_L, 12.0, 6.0, (12.7 - 6.0) / 2, 3.5
+    bar = cq.Workplane("XY").box(L, W, H, centered=(False, True, False)).translate((0, 0, sp))
+    bar = bar.cut(cq.Workplane("XZ").pushPoints([(L / 2 - 8.0, sp + H / 2), (L / 2 + 8.0, sp + H / 2)]).circle(2.0)
+                  .extrude(W, both=True))
+    bar = bar.cut(cq.Workplane("XZ").center(L / 2, sp + H / 2).rect(16.0, 1.6).extrude(W, both=True))
+    pads = (cq.Workplane("XY").box(2 * e, W, sp, centered=(False, True, False))
+            .union(cq.Workplane("XY").box(2 * e, W, sp, centered=(False, True, False)).translate((L - 2 * e, 0, sp + H))))
+    holes = (cq.Workplane("XY").pushPoints([(e, -3.0), (e, 3.0)]).circle(1.25).extrude(20).translate((0, 0, -1))
+             .union(cq.Workplane("XY").pushPoints([(L - e, -3.0), (L - e, 3.0)]).circle(1.6).extrude(20).translate((0, 0, -1))))
+    return bar.union(pads).cut(holes)
 
 
 def vial_cup() -> cq.Workplane:

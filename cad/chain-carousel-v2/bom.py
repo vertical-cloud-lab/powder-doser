@@ -18,6 +18,7 @@ HERE = Path(__file__).resolve().parent
 # (item, keys counted from the CAD or None, qty if not counted, description,
 #  vendor, part number, url, unit price USD, price source, steps, category)
 V = "verified 2026-10-18"
+V27 = "verified 2026-10-27"
 V16 = "verified 2026-10-16 (paternoster BoM)"
 V13 = "verified 2026-10-13"
 V10 = "verified 2026-10-10 (v1 BoM)"
@@ -42,7 +43,8 @@ ITEMS = [
     (7, ("sprocket_15_motor",), None, "Sprocket 35BS15H-1/2: 15T, 1/2 in bore; shop re-bores it to 14 mm H7 with a 5 mm keyway for the NEMA 34",
      "Surplus Center", "601077", f"{SC}/15t-1-2-bore-35p-sprocket/", 6.65, V13, (6,), "Chain"),
     # ---- shafts & bearings
-    (8, None, 1, "Keyed shafting, 5/8 in x 72 in, 1018, 3/16 in keyway: cut 3 x 403 mm + 1 x 427 mm (the drive shaft)",
+    (8, None, 1, "Keyed shafting, 5/8 in x 72 in, 1018, 3/16 in keyway: cut 3 x 409.8 mm + 1 x 434.2 mm (the drive shaft); lengths from "
+     "the CAD after the flange bearing's real 16.05 mm stand-off (was 403 / 427)",
      "Surplus Center", "601881", f"{SC}/5-8-x-72-keyed-shafting-3-16-wide-keyway/", 43.90, V16, (5,), "Shafts"),
     (9, ("flange_bearing",), None, "2-bolt stamped-steel flange bearing SBSFL202-10: 5/8 in bore, set screws, 2-1/2 in bolt centres",
      "Surplus Center", "600174", f"{SC}/5-8-2-bolt-stamped-steel-flange-bearing/", 11.30, V16, (4,), "Shafts"),
@@ -62,10 +64,10 @@ ITEMS = [
      "in the lab (47.43 new, verified 2026-10-16)", (11,), "Drive"),
     (15, ("lrs350",), None, "Power supply Mean Well LRS-350-48 (48 V, 7.3 A)", "TRC Electronics", "LRS-350-48",
      "https://www.trcelectronics.com/products/mean-well-lrs-350-48", 36.11, V16, (11,), "Drive"),
-    (16, ("m5x25_shcs",), None, "M5 x 25 socket head screw (motor flange to the back plate, in slots)", "BelMetric", "M5 x 25 SHCS",
-     "https://www.belmetric.com/", 0.20, E, (6,), "Drive"),
-    (17, ("nut_m5",), None, "M5 nylon-insert locknut (4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts)", "McMaster-Carr",
-     "93625A200", f"{MC}/93625A200/", 0.12, E, (4, 6), "Drive"),
+    (16, None, 1, "M5 x 25 socket head screw, 18-8, pack of 50 (4 used: motor flange to the back plate, in slots)", "McMaster-Carr", "91292A129",
+     f"{MC}/91292A129/", 10.96, "verified 2026-10-27 (McMaster page, logged out)", (6,), "Drive"),
+    (17, None, 1, "M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts)",
+     "McMaster-Carr", "93625A200", f"{MC}/93625A200/", 9.02, "verified 2026-10-27 (McMaster page, logged out)", (4, 6), "Drive"),
     # ---- frame
     (18, None, 1, "2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), "
      "4 long rails of 417.7 mm (2 per bar), station rail 204 + fork post 155 + vial post 197 from a seventh bar",
@@ -85,37 +87,38 @@ ITEMS = [
      "(BYU shop, or SendCutSend: price on upload)", "FixSupply (thyssenkrupp)", "SHT-6061-0.25X12-36",
      "https://fixsupply.com/1248-12-36-6061-aluminum-plate-t651-1-4-thick-x-12-wide-x-36-long", 104.89 / 2,
      f"one plate $104.89 for both; {V13}", (3,), "Frame"),
-    (24, ("m5x12_bhcs",), None, "M5 x 12 button head screw (side plates to the posts' T-nuts), with blue threadlocker", "BelMetric", "M5 x 12 BHCS",
-     "https://www.belmetric.com/", 0.12, E, (3,), "Frame"),
+    (24, None, 1, "M5 x 12 button head screw, 18-8, pack of 50 (20 used: side plates to the posts' T-nuts), with blue threadlocker",
+     "McMaster-Carr", "92095A210", f"{MC}/92095A210/", 10.91, "verified 2026-10-27 (McMaster page, logged out)", (3,), "Frame"),
     (25, None, 1, "Loctite 243 (blue, medium strength) for T-nut screws, set screws and the tensioner blocks' screws; Loctite 222 "
      "(purple, low strength) where a part is meant to come apart", "McMaster-Carr", "Loctite 243", f"{MC}/loctite/", 27.25, V16, (1,), "Frame"),
     # ---- fasteners
-    (26, ("m3x12_bhcs",), None, "M3 x 12 button head screw (carriage to each A-1 tab, from the outside)", "BelMetric", "M3 x 12 BHCS",
-     "https://www.belmetric.com/", 0.10, E, (10,), "Fasteners"),
-    (27, None, 1, "M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the actuator's clevis pins)", "McMaster-Carr",
-     "93625A100", f"{MC}/93625A100/", 6.94, V16, (9, 10), "Fasteners"),
-    (28, ("clevis_pin",), 4, "Clevis pin 5 mm with retaining-ring groove, steel, about 14 mm usable length (module hinge pins, 2 per module; 4 spare)",
-     "McMaster-Carr", "clevis pins, metric", f"{MC}/clevis-pins/", 0.65, E, (9,), "Fasteners"),
-    (29, ("eclip",), 10, "E-clip DIN 6799-4 for a 4 mm groove (5 mm pin), steel (on the hinge pins; 10 spare)", "McMaster-Carr",
-     "e-style retaining rings, metric", f"{MC}/e-style-retaining-rings/", 0.10, E, (9,), "Fasteners"),
-    (30, ("m3x6_fhcs",), None, "M3 x 6 flat head screw (steel armature tab to the plate)", "BelMetric", "M3 x 6 FHCS", "https://www.belmetric.com/",
-     0.10, E, (9,), "Fasteners"),
+    (26, None, 1, "M3 x 12 button head screw, 18-8, pack of 100 (26 used: carriage to each A-1 tab, from the outside)", "McMaster-Carr",
+     "92095A183", f"{MC}/92095A183/", 8.17, "verified 2026-10-27 (McMaster page, logged out)", (10,), "Fasteners"),
+    (27, None, 1, "M3 nylon-insert locknut, 18-8, pack of 100 (one in each carriage hook; the P16 base pin)", "McMaster-Carr",
+     "93625A100", f"{MC}/93625A100/", 6.94, "verified 2026-10-27 (McMaster page, logged out)", (9, 10), "Fasteners"),
+    (28, ("clevis_pin",), 4, "Clevis pin 5 mm with a DIN 6799-4 groove (4 mm dia, 0.74 wide), steel, about 14 mm usable length (module hinge "
+     "pins, 2 per module; 4 spare)", "McMaster-Carr", "clevis pins, metric", f"{MC}/clevis-pins/", 0.65, E, (9,), "Fasteners"),
+    (29, None, 1, "E-clip DIN 6799-4 (5-7 mm shaft, 4 mm groove x 0.74), spring steel, 8.85 OD, 0.7 thick, pack of 100 (26 used on the hinge "
+     "pins)", "McMaster-Carr", "98543A112", f"{MC}/98543A112/", 4.25, "verified 2026-10-27 (McMaster page, logged out)", (9,), "Fasteners"),
+    (30, None, 1, "M3 x 6 flat head screw, 18-8, 90 deg, pack of 100 (26 used: steel armature tab to the plate)", "McMaster-Carr", "92125A126",
+     f"{MC}/92125A126/", 7.46, "verified 2026-10-27 (McMaster page, logged out)", (9,), "Fasteners"),
     (31, ("insert_m3",), 4, "M3 x 4 heat-set insert (CNC Kitchen short): two per mounting plate for the armature tab, four in the U-yoke crossbar",
      "West3D", "",
      "https://west3d.com/products/cnc-kitchen-heat-set-inserts-various-sizes", 0.15, E, (9,), "Fasteners"),
-    (32, ("m5x16_shcs",), None, "M5 x 16 socket head screw (hold-downs, through the side plates), with blue threadlocker", "BelMetric",
-     "M5 x 16 SHCS", "https://www.belmetric.com/", 0.20, E, (8,), "Fasteners"),
+    (32, None, 1, "M5 x 16 socket head screw, 18-8, pack of 100 (4 used: hold-downs, through the side plates), with blue threadlocker",
+     "McMaster-Carr", "91292A126", f"{MC}/91292A126/", 16.05, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Fasteners"),
     (33, None, 1, "M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs)", "McMaster-Carr", "94459A774", f"{MC}/94459A774/",
-     7.27, V16, (8,), "Fasteners"),
-    (34, ("m5x10_shcs",), None, "M5 x 10 socket head screw (tensioner blocks, into tapped holes in the plates)", "BelMetric", "M5 x 10 SHCS",
-     "https://www.belmetric.com/", 0.15, E, (4,), "Fasteners"),
+     7.27, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Fasteners"),
+    (34, None, 1, "M5 x 10 socket head screw, 18-8, pack of 100 (8 used: tensioner blocks, into tapped holes in the plates)", "McMaster-Carr",
+     "91292A124", f"{MC}/91292A124/", 13.07, "verified 2026-10-27 (McMaster page, logged out)", (4,), "Fasteners"),
     (35, ("m5x30_shcs",), None, "M5 x 30 socket head screw (tensioner jack screws)", "BelMetric", "M5 x 30 SHCS", "https://www.belmetric.com/",
      0.25, E, (4,), "Fasteners"),
     # ---- printed parts
-    (36, ("carriage",), None, "Carriage, PETG, with the two tab hooks (H2D, on the bed's diagonal; about 100 g each)", "printed", "stl/carriage.stl",
-     "", 2.0, "filament at $20/kg", (10,), "Printed"),
+    (36, ("carriage",), None, "Carriage, PETG, with the two tab hooks: 58.6 g and 1 h 53 min each in Bambu Studio, one per H2D plate on the bed's "
+     "diagonal (351 mm > 325); break-off webs under the hooks' fingers (cad/print)", "printed", "stl/carriage.stl",
+     "", 1.17, "filament at $20/kg (sliced weight)", (10,), "Printed"),
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
-     "", 0.4, "filament", (4, 8), "Printed"),
+     "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
     (38, ("clevis_bracket", "uyoke_base", "yoke_stop", "yoke_stop_m", "pin_boss", "pin_boss_m", "fork", "fork_arm", "vial_cup", "vial_funnel",
           "level_wedge", "magnet_bracket"), None,
      "Station parts, PETG: actuator base clevis, U-yoke crossbar with guide tongue, 2 yoke stops, 2 stub-pin plates, approach fork and arm, "
@@ -123,25 +126,28 @@ ITEMS = [
      "", 0.5, "filament", (8,), "Printed"),
     (39, ("sam_mounting_plate",), -1, "Mounting plate (Sam's Oct 13 Onshape part), printed for modules 2-13 (module 1 exists)", "printed",
      "Onshape 581956d5", "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
-     1.40, "filament at $20/kg", (9,), "Printed"),
+     0.43, "filament at $20/kg (21.8 g each, sliced)", (9,), "Printed"),
     # ---- station
-    (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N",
-     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-p", 90.0, V16, (8,), "Station"),
+    (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side "
+     "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP)",
+     "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-150-22-12-p", 90.0, V27, (8,), "Station"),
     (41, None, 1, "Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in)", "Actuonix", "LAC",
      "https://www.actuonix.com/lac", 30.0, V16, (8,), "Station"),
     (42, None, 1, "12 V supply for the LAC and actuator", "Actuonix", "12V PSU", "https://www.actuonix.com/lac", 10.0, V16, (8,), "Station"),
-    (43, None, 1, "Shoulder screw 4 x 30 mm, M3 (actuator's rear clevis) + M3 locknut", "McMaster-Carr", "90265A992", f"{MC}/90265A992/", 5.11, V16,
+    (43, ("clevis_screw",), None, "Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread (the P16's base pin: cheek, 8 mm rear tab, "
+     "cheek) + an M3 nylock from item 27", "McMaster-Carr", "90265A123", f"{MC}/90265A123/", 4.40, V27, (8,), "Station"),
+    (44, ("yoke_pin",), None, "Dowel pin, 4 mm x 38 mm, hardened 4140: through the U-yoke crossbar and the P16 rod end's 4.25 mm hole, held in by "
+     "the two steel arms (an M4 bolt there had no room for its head or nut)", "McMaster-Carr", "91595A128", f"{MC}/91595A128/", 2.96, "verified 2026-10-27 (McMaster page, logged out)",
      (8,), "Station"),
-    (44, None, 1, "M4 x 25 hex bolt + M4 nylon-insert locknut: through the P16's rod-end plug in the U-yoke crossbar's square socket "
-     "(makes the yoke rigid on the rod)", "BelMetric", "M4 x 25 + M4 nylock", "https://www.belmetric.com/", 0.45, E, (8,), "Station"),
     (45, ("dock_magnet",), None, "Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: the dock's mesh preload", "Adafruit", "3872",
      "https://www.adafruit.com/product/3872", 7.50, V, (8,), "Station"),
     (46, None, 1, "N-channel logic-level MOSFET IRLB8721 (switches the dock magnet from the carriage board; out of stock on 2026-10-18, any "
      "logic-level N-MOSFET such as FQP30N06L works)", "Adafruit", "355", "https://www.adafruit.com/product/355", 2.25, V, (8,), "Station"),
     (47, None, 1, "1N4001 diode, 10-pack (flyback across the magnet coil)", "Adafruit", "755", "https://www.adafruit.com/product/755", 1.50, V, (8,),
      "Station"),
-    (48, ("armature_tab",), None, "Armature tab, low-carbon steel 2 mm (14 ga), 22 x 28 mm, two countersunk M3 holes: laser cut", "SendCutSend",
-     "dxf (from parts.armature_tab)", "https://sendcutsend.com/", 3.50, "estimate (SendCutSend quotes on upload)", (9,), "Station"),
+    (48, ("armature_tab",), None, "Armature tab, low-carbon steel 14 ga (0.075 in, 1.9 mm; '2 mm' isn't a stock gauge), 22 x 28 mm, two M3 "
+     "holes countersunk 90 deg to 6.3 mm so McMaster's flat heads sit flush: laser cut", "SendCutSend", "dxf (from parts.armature_tab)",
+     "https://sendcutsend.com/", 3.50, "estimate (SendCutSend quotes on upload)", (9,), "Station"),
     (49, ("load_cell",), None, "Load cell 100 g (TAL221) under the vial", "SparkFun", "SEN-14727", "https://www.sparkfun.com/products/14727", 14.50,
      V16, (8,), "Station"),
     (50, None, 1, "HX711 load-cell amplifier", "SparkFun", "SEN-13879", "https://www.sparkfun.com/products/13879", 4.95, V16, (8,), "Station"),
@@ -150,20 +156,21 @@ ITEMS = [
     (52, ("sam_electronics_carriage",), None, "Electronics carriage (Sam's Oct 13) with the doser's NEMA 11 and 12 V solenoid", "lab",
      "Onshape 581956d5", "", 0.0, "existing (doser parts)", (8,), "Station"),
     # ---- station: gear-mesh preload and the carriage's pivot at its COM height (cad/gear-mesh), as the paternoster's BoM
-    (66, ("pinion",), None, "Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H7 bore, 10 mm face (S45C). Face the 10 mm hub off and bond "
-     "it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. $27.21 + $12.99 shipping", "KHK (ibspot.com)", "SS1-20A",
-     "https://www.ibspot.com/", 40.20, V, (8,), "Station"),
-    (67, ("stub_pin",), None, "Stub pin 4 x 7.5 mm, hardened steel dowel with a DIN 6799 groove (shop: cut a 4 mm dowel and groove it), pressed "
-     "through the carriage's side post: the carriage's pivot at its centre-of-mass height", "McMaster-Carr", "4 mm dowel pins", f"{MC}/dowel-pins/",
-     1.00, E, (8,), "Station"),
-    (68, ("loc_pin",), None, "Locating pin, 4 x 8 mm hardened steel dowel with the tip chamfered: two on the carriage rim, into a hole and a slot in "
-     "each plate", "McMaster-Carr", "4 mm dowel pins", f"{MC}/dowel-pins/", 0.50, E, (8,), "Station"),
-    (69, ("eclip_stub",), 4, "E-clip DIN 6799-3.2 for a 3.2 mm groove (4 mm pin), steel: on the stub pins outside the yoke arms (4 spare)",
-     "McMaster-Carr", "e-style retaining rings, metric", f"{MC}/e-style-retaining-rings/", 0.10, E, (8,), "Station"),
+    (66, ("pinion",), None, "Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H8 bore, 10 mm face (S45C). Face the 10 mm hub off and bond "
+     "it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. KHK USA lists it at $14.77 (10 on hand), plus shipping", "KHK USA",
+     "SS1-20A", "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a", 14.77, "KHK USA catalog, read 2026-10-27 (cad/shop)",
+     (8,), "Station"),
+    (67, ("stub_pin",), None, "Stub pin, 4 x 8 mm, turned from 4 mm h8 303 stainless rod with a DIN 6799-3.2 groove (0.64 wide, 0.96 mm from "
+     "the end; cad/shop), pressed through the carriage's side post: the carriage's pivot at its centre-of-mass height. A hardened dowel can't be "
+     "grooved with HSS", "McMaster-Carr", "303 stainless rod, 4 mm", f"{MC}/stainless-steel-rods/", 1.00, E, (8,), "Station"),
+    (68, None, 1, "Dowel pin, 4 x 8 mm, hardened 52100, pack of 50 (2 used: locating pins on the carriage rim, into a hole and a slot in each "
+     "plate)", "McMaster-Carr", "91595A150", f"{MC}/91595A150/", 12.10, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Station"),
+    (69, None, 1, "E-clip DIN 6799-3.2 (4-5 mm shaft, 3.2 mm groove x 0.64), spring steel, 6.9 OD, 0.6 thick, pack of 100 (2 used on the "
+     "stub pins)", "McMaster-Carr", "98543A103", f"{MC}/98543A103/", 3.80, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Station"),
     (70, ("uyoke_arm",), None, "U-yoke arm, 2 mm low-carbon steel, laser cut (dxf/uyoke_arm.dxf): carries the carriage's stub pins outside its "
      "side walls", "SendCutSend", "dxf/uyoke_arm.dxf", "https://sendcutsend.com/", 4.00, "estimate (SendCutSend quotes on upload)", (8,), "Station"),
-    (71, None, 4, "M3 x 8 button head screw + washer (yoke arms into the crossbar's inserts), Loctite 243", "BelMetric", "M3 x 8 BHCS",
-     "https://www.belmetric.com/", 0.12, E, (8,), "Station"),
+    (71, None, 1, "M3 x 8 button head screw, 18-8, pack of 100 (4 used: yoke arms into the crossbar's inserts), Loctite 243", "McMaster-Carr",
+     "92095A181", f"{MC}/92095A181/", 8.80, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Station"),
     (72, None, 1, "Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load)", "McMaster-Carr",
      "dry-film PTFE lubricant", f"{MC}/dry-lubricants/", 12.0, E, (8,), "Station"),
     (73, None, 1, "Stepper driver carrier DRV8825 for the NEMA 11 (current limit set to 450 mA: Vref 0.225 V), 100 uF across VMOT", "Pololu",
@@ -171,6 +178,10 @@ ITEMS = [
      (11,), "Electronics"),
     (74, None, 1, "DC motor driver DRV8871 breakout (the 12 V tap solenoid)", "Adafruit", "3190", "https://www.adafruit.com/product/3190", 7.50,
      "estimate (list price in hardware/vibration-motor-and-solenoid.md, not re-checked)", (11,), "Electronics"),
+    (75, None, 2, "Load-cell spacer, 12 x 7 x 3.35 mm, printed PETG (one under the TAL221's fixed end, one on its free end: the bar is 6 mm "
+     "tall, not 12.7, and needs room to bend)", "printed", "", "", 0.05, "filament", (8,), "Printed"),
+    (76, None, 1, "M6 x 12 socket head screw + 2 x M3 x 8 button head (fork arm to the fork post's tapped end and to the fork's inserts)",
+     "BelMetric", "M6 x 12 SHCS", "https://www.belmetric.com/", 0.45, E, (8,), "Station"),
     # ---- sensing & electronics
     (53, ("hall_switch",), None, "Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME", "Adafruit", "158",
      "https://www.adafruit.com/product/158", 2.00, V10, (8,), "Electronics"),
@@ -222,10 +233,12 @@ Screws into T-nuts, heat-set inserts and tapped holes get Loctite 243; the hinge
 **Shop work:** cut and drill the two side plates from `dxf/` (or upload the DXFs to SendCutSend for a quote); re-bore the
 motor's 15T sprocket from 1/2 in to 14 mm H7 and broach a 5 mm keyway; tap the eight M5 holes for the tensioner blocks;
 face the steel pinion's hub off (KHK SS1-20A) so it fits in front of the dock magnet; laser cut the 13 steel armature tabs
-and the two yoke arms.
+(14 ga) and the two yoke arms; turn the two stub pins from 4 mm 303 stainless. Each job is animated, with tools, speeds and
+checks, in [../shop/README.md](../shop/README.md).
 
-**Prices** are as listed on the date shown on each line. McMaster asked for a login on 2026-10-18, so McMaster lines are
-carried from the paternoster BoM (read logged out on 2026-10-16) or marked estimate. Generic hardware is `estimate`."""
+**Prices** are as listed on the date shown on each line. Every McMaster line was read on McMaster's own page on 2026-10-27,
+logged out, through the doser Pi, and is McMaster's pack price; each part's STEP is in the CAD ([../vendor/](../vendor/README.md)).
+What is still generic is marked `estimate`."""
 
 
 def counted() -> Counter:

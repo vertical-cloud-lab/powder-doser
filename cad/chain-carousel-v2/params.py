@@ -20,18 +20,19 @@ from __future__ import annotations
 import math
 
 # --- ANSI #35 roller chain (ASME B29.1; the Aobbmok listing on the ME order) ---
+# Checked against Nitro's RC35 dimension table (nitrochain.com/35-roller-chain-10ft, read 2026-10-27; cad/vendor/AUDIT_other.md):
+# P 3/8, b1 3/16, d1 (bushing) 0.200, L 0.488, d2 0.141, h2 0.346, T 0.050 in.
 P = 9.525            # pitch (3/8")
 BUSH_D = 5.08        # #35 is rollerless: the bushing (0.200") is what the teeth seat on
-PIN_D = 3.58         # 0.141"
+CHAIN_PIN_D = 3.58   # 0.141". Was PIN_D, which the 5 mm hinge pin further down overrode: the chain was drawn with 5 mm pins
 W_IN = 4.78          # width between inner plates (0.188")
 PLATE_T = 1.27       # 0.050"
-PLATE_H = 9.0        # plate height, 0.354"
-PIN_HEAD = 0.45      # riveted pin end beyond the outer plate
+PLATE_H = 8.79       # plate height, 0.346" (Nitro h2; was 9.0 = 0.354")
 N_LINKS = 104        # per chain, cut from a 10 ft roll (two loops use 208 of its 320 links)
 INNER_W = W_IN + 2 * PLATE_T              # 7.32, inner link across the plates
 OUTER_GAP = INNER_W + 0.05                 # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T          # 9.91
-PIN_LEN = OUTER_W + 2 * PIN_HEAD
+PIN_LEN = 0.488 * 25.4                     # 12.40: Nitro's overall width L, riveted pin ends 1.24 mm proud (was 0.45 mm proud)
 
 # A-1 attachment connecting link (bent tab, one hole): Nitro CL35-A1, which
 # matches Tsubaki's RS35 A-1 table: S = 0.250 in pitch line -> tab face,
@@ -114,7 +115,7 @@ PIN_D = 5.0
 PIN_HEAD = (8.0, 1.6)                                 # head diameter, height
 PIN_CBORE = (8.6, 1.8)                                # counterbore in the lug for the head
 PIN_GROOVE_U = 14.4                                   # e-clip groove (outer face), from the carriage centre along u: 0.6 mm inside the knuckle face
-ECLIP = (9.0, 0.6)                                    # DIN 6799 size 4 (4 mm groove on a 5 mm pin): OD, thickness
+ECLIP = (8.85, 0.7)                                   # DIN 6799-4 (4 mm groove, 0.74 wide, on a 5 mm pin): McMaster 98543A112, OD 8.85, 0.7 thick
 # Station reach-through: Sam's electronics carriage (his x 2.3-73.3, y +-18),
 # the gear (his x 78.3-88.3) and the outlet's powder path when tilted.
 WIN_X = (HINGE_X - 14.0, HINGE_X + 116.0)             # 130 mm: the docked electronics carriage sweeps the window's back edge at about 28 deg of tilt
@@ -141,10 +142,15 @@ DRIVE_TRAVEL = 4.0   # motor slides +-4 mm in its slots to tension the drive cha
 
 # --- shafts and bearings (all four corners alike) ---
 SHAFT_D = 15.875     # 5/8 in keyed shafting (the sprockets' bore)
-# SBSFL202-10 2-bolt stamped-steel flange unit (Surplus Center 600174): 3.189 x
-# 2.3125 x 0.875 in, 2-1/2 in bolt centres, 1/4 in bolts, 7/8 in through the
-# insert. Its rear dome sits in a 49 mm hole in the plate (FYH catalogue).
-BRG = dict(L=81.0, W=58.7, J=63.5, T=3.0, OUT=12.6, IN=9.6, DOME_D=47.0, RING_D=24.0, BOLT_D=6.35, HOLE=49.0)
+# Surplus Center 600174. Its rear dome sits in a 49 mm hole in the plate (FYH catalogue).
+# SBSFL202-10 = SBPFL202-10 2-bolt pressed-steel flangette, 5/8 in SB insert. USA Bearings & Belts' SBPFL202-10 table
+# and drawing (read 2026-10-27; Surplus Center's own page is behind a bot check): a 3-3/16 (81.0), e 2-1/2 (63.5),
+# B 2-5/16 (58.7), t 0.079 (2.0 mm sheet: two halves, so 4.0 at the bolt lobes), b 5/8 (15.9 dome to dome),
+# S 9/32 (7.1 bolt hole), L .8661 (22.0 inner ring), n .236, k 1-1/4. The bearing's centre plane is one sheet (2.0)
+# above the mounting face, the housing +-7.95 about it, and the inner ring runs from flush with the rear dome to 6.1 mm
+# beyond the front one (set-screw collar outward). Was T 3.0, OUT 12.6, IN 9.6 (domes 10.6 / 8.6). cad/vendor/AUDIT_other.md
+BRG = dict(L=81.0, W=58.7, J=63.5, T=4.0, OUT=16.05, IN=5.95, DOME_D=47.0, DOME_OUT=9.95, DOME_IN=5.95, RING_D=24.0,
+           BOLT_D=6.35, HOLE=49.0)
 SHAFT_CLEAR = R - HINGE_W - GEAR_R - SHAFT_D / 2     # 6.0: gear past a corner shaft
 
 # --- StepperOnline 34HS59-6004D-E1000 (NEMA 34, 12 N*m, 1000-line encoder) ---
@@ -152,7 +158,7 @@ M34_FLANGE = 86.0
 M34_BOLT_SQ = 69.58
 M34_HOLE_D = 5.5
 M34_PILOT_D = 73.0
-M34_PILOT_H = 1.6
+M34_PILOT_H = 2.0      # StepperOnline STEP (paternoster/reference): 73 x 2.0 (was 1.6); its holes are 6.5 (M34_HOLE_D is our plate's slot)
 M34_SHAFT_D = 14.0
 M34_SHAFT_L = 37.0   # 25 mm of it keyed
 M34_KEY_W = 5.0
@@ -219,6 +225,8 @@ RUN_DIRECTION = -1           # -1: bottom run toward -y (clockwise seen from the
 # --- station: Actuonix P16-150-22-12-P, pinned at both ends (as the paternoster) ---
 ACT_STROKE = 150.0
 ACT_RETRACTED = 197.4        # hole to hole, retracted (Actuonix STEP): stroke + 47.4
+CLEVIS_GAP = 8.4             # between the base clevis cheeks: the P16's rear tab is 8 thick (datasheet)
+SHOULDER_CLEVIS_L = 16.0     # McMaster 4 x 16 mm shoulder screw (M3 thread) through cheek, tab, cheek
 ACT_CLEVIS_D = 4.25          # both clevis holes
 # Carriage pin at the carriage's centre-of-mass height. The P16 is pinned at both ends, so it gives the carriage no
 # moment: the dock (rim + locating pins + magnet face) has to hold the carriage's attitude. With the pin under the
@@ -273,6 +281,7 @@ ARMATURE_SCREWS = ((94.0, -10.0), (94.0, 10.0))   # M3 x 6 flat heads into M3 in
 # vial on a 100 g load cell (gravity-referenced: plumb in the world)
 VIAL_H = 61.0
 VIAL_D = 28.0
-LC_L = 80.0
+LC_L = 47.0                  # TAL221 (SparkFun SEN-14727) is 47 x 12 x 6 (datasheet); was 80, the TAL220's length
+CUP_ARM = 63.0               # vial cup's arm (printed): 33 mm longer than with the 80 mm stand-in, so the real 47 mm cell's fixed end stays on the level wedge
 VIAL_DROP = 30.0             # outlet to funnel mouth, world vertical
 FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)

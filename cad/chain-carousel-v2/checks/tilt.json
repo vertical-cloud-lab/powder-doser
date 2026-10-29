@@ -1,6 +1,12 @@
 {
  "check": "tilt",
- "clashes": [],
+ "clashes": [
+  {
+   "a": "Actuonix P16-150-22-12-P (pot feedback) @ext0",
+   "b": "U-yoke crossbar with guide tongue (printed)",
+   "mm3": 65.58
+  }
+ ],
  "snap_lip_contacts_by_design": [
   {
    "pose": "tilt5",

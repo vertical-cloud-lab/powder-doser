@@ -30,6 +30,12 @@ from params import DOCK_EXT, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, S
 OUT = Path(__file__).resolve().parent / "checks"
 
 SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pinion"),
+        ("clevis_screw", "clevis_bracket"), ("clevis_screw", "actuator_body"), ("clevis_screw", "nut_m3_clevis"),
+        ("yoke_pin", "uyoke_base"), ("yoke_pin", "actuator_rod"), ("yoke_pin", "uyoke_arm"),
+        # the 15T drive sprockets mesh with the drive chain: 0.3-0.7 mm slivers where the simplified tooth form meets a link as
+        # it wraps on or off (0.50 mm3 with Nitro's real plate height); only the drive chain reaches these sprockets
+        ("sprocket_15_motor", "chain_inner"), ("sprocket_15_motor", "chain_outer"), ("sprocket_15_shaft", "chain_inner"),
+        ("sprocket_15_shaft", "chain_outer"),
         ("carriage", "nut_m3"), ("carriage", "m3x12_bhcs"), ("m3x12_bhcs", "nut_m3"), ("chain_a1", "m3x12_bhcs"),
         ("carriage", "clevis_pin"), ("clevis_pin", "sam_mounting_plate"), ("clevis_pin", "eclip"),
         ("armature_tab", "m3x6_fhcs"), ("insert_m3", "m3x6_fhcs"), ("insert_m3", "sam_mounting_plate"), ("m3x6_fhcs", "sam_mounting_plate"),
@@ -223,7 +229,8 @@ def swap() -> list:
 
 if __name__ == "__main__":
     if "--sweep" in sys.argv:
-        sweep()
+        # --step N: a coarser sweep (N links per pose) when time is short; the JSON records the step and pose count
+        sweep(float(sys.argv[sys.argv.index("--step") + 1])) if "--step" in sys.argv else sweep()
     elif "--tilt" in sys.argv:
         tilt()
     elif "--swap" in sys.argv:

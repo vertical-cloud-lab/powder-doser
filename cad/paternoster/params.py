@@ -26,17 +26,20 @@ from __future__ import annotations
 import math
 
 # --- ANSI #35 roller chain (ASME B29.1; rollerless) ---
+# Checked against Nitro's RC35 dimension table (nitrochain.com/35-roller-chain-10ft, read 2026-10-27; cad/vendor/AUDIT_other.md):
+# P 3/8, b1 3/16, d1 (bushing) 0.200, L 0.488, d2 0.141, h2 0.346, T 0.050 in.
 P = 9.525            # pitch, 3/8 in
 BUSH_D = 5.08        # bushing (0.200 in), what the teeth seat on
 PIN_D = 3.58         # 0.141 in
 W_IN = 4.78          # between inner plates, 0.188 in
 PLATE_T = 1.27       # 0.050 in
-PLATE_H = 9.0        # 0.354 in
+PLATE_H = 8.79       # 0.346 in, Nitro h2 (was 9.0 = 0.354 in)
 PIN_HEAD = 0.95       # pin heads stand 0.95 mm proud of the tab plate (McMaster 7321K31 STEP)
 INNER_W = W_IN + 2 * PLATE_T                 # 7.32
 OUTER_GAP = INNER_W + 0.05                   # outer plates' inside faces
 OUTER_W = OUTER_GAP + 2 * PLATE_T            # 9.91
-PIN_LEN = OUTER_W + 2 * PIN_HEAD
+PIN_LEN = OUTER_W + 2 * PIN_HEAD             # the SA-1 connecting link's pins (McMaster STEP)
+PIN_LEN_RC35 = 0.488 * 25.4                  # 12.40: Nitro's overall width L, the plain links' riveted pins (1.24 mm proud)
 
 # SA-1 attachment connecting link (straight tab in the plane of one outer
 # plate, one hole): McMaster 7321K31, measured from McMaster's STEP and drawing:
@@ -133,8 +136,14 @@ FOOT_H = 15.0
 
 # --- shafts and bearings ---
 SHAFT_D = 15.875     # 5/8 in
-# SBSFL202-10 2-bolt stamped-steel flange unit (3.189 x 2.3125 x 0.875 in, 2-1/2 in bolt centres)
-BRG = dict(L=81.0, W=58.7, J=63.5, T=3.0, OUT=12.6, IN=9.6, DOME_D=47.0, RING_D=24.0, BOLT_D=6.35, HOLE=49.0)
+# SBSFL202-10 = SBPFL202-10 2-bolt pressed-steel flangette, 5/8 in SB insert. USA Bearings & Belts' SBPFL202-10 table
+# and drawing (read 2026-10-27; Surplus Center's own page is behind a bot check): a 3-3/16 (81.0), e 2-1/2 (63.5),
+# B 2-5/16 (58.7), t 0.079 (2.0 mm sheet: two halves, so 4.0 at the bolt lobes), b 5/8 (15.9 dome to dome),
+# S 9/32 (7.1 bolt hole), L .8661 (22.0 inner ring), n .236, k 1-1/4. The bearing's centre plane is one sheet (2.0)
+# above the mounting face, the housing +-7.95 about it, and the inner ring runs from flush with the rear dome to 6.1 mm
+# beyond the front one (set-screw collar outward). Was T 3.0, OUT 12.6, IN 9.6 (domes 10.6 / 8.6). cad/vendor/AUDIT_other.md
+BRG = dict(L=81.0, W=58.7, J=63.5, T=4.0, OUT=16.05, IN=5.95, DOME_D=47.0, DOME_OUT=9.95, DOME_IN=5.95, RING_D=24.0,
+           BOLT_D=6.35, HOLE=49.0)
 TENSION_TRAVEL = (-6.0, 8.0)  # top stub shafts slide in slots: down to fit the chain, up to tension it
 
 # --- StepperOnline 34HS59-6004D-E1000 (NEMA 34, 12 N*m, 1000-line encoder) ---
@@ -153,6 +162,8 @@ STEPS_PER_MODULE = STEPS_PER_REV * MODULE_LINKS // N_TEETH   # 1250: direct driv
 ACT_STROKE = 150.0
 ACT_RETRACTED = 197.4        # hole to hole, retracted: P16-150-22-12-P (Actuonix STEP), stroke + 47
 ACT_BODY = (36.0, 20.0)      # motor/gear block, 79 long; rod axis 10.5 mm from one 20 mm face
+CLEVIS_GAP = 8.4             # between the base clevis cheeks: the P16's rear tab is 8 thick (datasheet)
+SHOULDER_CLEVIS_L = 16.0     # McMaster 4 x 16 mm shoulder screw (M3 thread) through cheek, tab, cheek
 ACT_CLEVIS_D = 4.25          # both clevis holes, for M4 or #8-32 pins
 TILT_MAX = 90.0
 
@@ -160,7 +171,16 @@ MAGNET_D, MAGNET_H = 6.35, 3.18
 
 # --- top idlers: 35BS32 re-bored to 35 mm H7 for two 6202-2RS, on a fixed 15 mm axle stud ---
 IDLER_BORE = 35.0
-IDLER_AXLE_L = 31.0          # bearing seat from the shoulder (on the plate's inner face) to flush with the sprocket face
+IDLER_AXLE_L = 32.7          # bearing seat from the shoulder (on the plate's inner face) to the inner bearing's face
+# Idler stack on the axle, from the plate (x = SIDE_IN, front): 22 mm washer as the shoulder (4), spacer (IDLER_SPACER),
+# two 6202-2RS (2 x 11), a DIN 471-15 circlip (1.0) in a 1.1 mm groove, then a 1.2 mm full-diameter land (DIN 471's
+# minimum beyond the groove for a 15 mm shaft) ending at x = +2.0, inside the sprocket's tooth face (+2.13). Was a 31 mm
+# seat that stopped 3.9 mm short of the inner bearing, with an 8.9 mm gap and nothing locating the bearings
+# (cad/shop/README.md). The pair sits 2.2 mm out of the hub (outer ring on 8.8 of its 11 mm) to make room for the ring
+# and its land; Loctite 641 holds the outer rings in the 35 H7 bore, which they would otherwise creep in.
+IDLER_BRG_X = (-16.8, -5.8)  # bearing centres, x from the front chain plane (back side mirrored)
+IDLER_SPACER = (15.2, 19.0, 6.7)   # aluminium spacer ID, OD, length: bears on the inner ring only
+IDLER_CIRCLIP = (14.3, 1.0)  # DIN 471-15 groove diameter and ring thickness (groove 1.1 wide, land 1.2 beyond it)
 SPROCKET_FACE = TOOTH_W / 2  # tooth ring's inner face, x = +2.13 at the front chain: nothing on the axis goes further in
 
 # --- jaw coupling, NEMA 34 (14 mm) to the 5/8 in drive shaft: Lovejoy L-075 class ---
@@ -185,7 +205,7 @@ UFORK_Y = (19.5, 21.5)       # the yoke's steel arms, |y|; printed boss on the p
 TONGUE_X, TONGUE_Y = YOKE_X, 15.0   # guide tongue under the yoke's crossbar, rides the approach fork
 YOKE_STOP_Z = -11.0 - 0.3 - 4.0     # stop blocks on the arms (yoke frame z of the block's bottom): 0.3 mm under the pin plate's tail
 DOCK_RISE = 0.9              # Sam's Part Studio leaves the carriage 0.9 mm under the plate; docked, they touch
-ECLIP = (9.0, 0.6)           # DIN 6799 e-clip on each stub pin, outside the arm
+ECLIP = (6.9, 0.6)           # DIN 6799-3.2 e-clip on each stub pin, outside the arm: McMaster 98543A103 (OD 6.9, 0.6 thick, groove 3.2 x 0.64)
 LOCPIN_D, LOCPIN_PROUD = 4.0, 3.0    # steel dowels on the carriage rim into a hole and a slot in the plate
 LOCPIN_XY = ((30.0, 16.0), (70.0, -16.0))
 LOCPIN_HOLE, LOCPIN_SLOT = 4.2, 6.0
@@ -203,7 +223,7 @@ ACT_BODY_L = 175.0
 ACT_ROD_D = 10.0
 FORK_H = 36.0
 VIAL_H = 61.0
-LC_L = 80.0
+LC_L = 47.0                  # TAL221 (SparkFun SEN-14727) is 47 x 12 x 6 (datasheet); was 80, the TAL220's length
 VIAL_X = 30.0                # vial ahead of the docked carriage's front face (x 47.3); a D-funnel catches the stream
 
 # --- frame layout ---
@@ -238,7 +258,8 @@ NEMA11_X, NEMA11_Z = 68.3, -33.15  # NEMA 11 face on the inner face of the carri
 SOL_X, SOL_Z = 12.0, -24.0   # solenoid under the auger tube near the outlet, plunger up
 STATION_RAIL_X = (VIAL_X, HINGE_X + YOKE_X)   # base cross rails under the vial post and the actuator
 FORK_POST_Y = 45.0
-VIAL_POST_Y = -120.0
+LC_Y0 = -92.0                # load cell's fixed end (y): the real 47 mm TAL221 reaches 7 mm under the cup arm's end (-52)
+VIAL_POST_Y = -87.0          # post under the cell's fixed end (was -120 with the 80 mm stand-in cell)
 VIAL_GAP = 32.0              # vial mouth below the gondolas' lowest point: clear of the docked electronics carriage
 HALL_X = (130.0, 160.0)      # INDEX magnet (every gondola) and HOME magnet (gondola 1), under the -y rail
 HALL_GAP = 3.0

@@ -303,7 +303,14 @@ class Movie:
     GIF_EVERY = 3
 
     def __init__(self, mp4: Path, w=1280, h=720, fps=15):
+        import os
         import imageio.v2 as iio
+        # MOVIE_FPS / MOVIE_SCALE: a cheaper render of the same sequence (the vendor STEPs have threads and knurls, so a
+        # frame costs several times what the stand-ins did); the GIF keeps about 5 frames per second
+        fps = int(os.environ.get("MOVIE_FPS", fps))
+        sc = float(os.environ.get("MOVIE_SCALE", 1.0))
+        w, h = int(w * sc) // 8 * 8, int(h * sc) // 8 * 8
+        self.GIF_EVERY = max(1, round(fps / 5))
         self.v = View(w, h, samples=4)             # 4x MSAA: half the software-rendering time of the stills' 8x
         self.fps = fps
         self.writer = iio.get_writer(mp4, fps=fps, codec="libx264", quality=7, macro_block_size=8, ffmpeg_params=["-pix_fmt", "yuv420p"])

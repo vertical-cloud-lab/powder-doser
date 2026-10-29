@@ -1,4 +1,15 @@
 {
  "check": "swap",
- "clashes": []
+ "clashes": [
+  {
+   "a": "Carriage 4 @screws10/slide5/lift0",
+   "b": "Outer link",
+   "mm3": 0.61
+  },
+  {
+   "a": "Carriage 4 @screws10/slide5/lift0",
+   "b": "Outer link",
+   "mm3": 0.61
+  }
+ ]
 }
