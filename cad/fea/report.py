@@ -151,7 +151,8 @@ def main():
               f"| 2020 section (webbed) second moment | {v['extrusion_2020']['Ixx_mm4']:.0f} mm^4 | 7200 mm^4 (catalogue) | "
               f"{100 * (v['extrusion_2020']['Ixx_mm4'] / 7200 - 1):+.1f} % |", ""]
     for module, title in (("frame", "Frames and the motor on the wall"), ("shafts", "Shafts and idler axles"),
-                          ("carriage", "Carriages, hinges, latches, side tabs"), ("station", "Station")):
+                          ("carriage", "Carriages, hinges, latches, side tabs"), ("station", "Station"),
+                          ("gondola", "Paternoster gondola")):
         recs = [r for r in load(module) if r.get("load_case") != "modes"]
         if not recs:
             continue

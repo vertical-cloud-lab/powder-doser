@@ -19,20 +19,22 @@
 | v3 | gravity | side_plate_back | 0.0541 | 2.33 | 241 | 103 |  |
 | v3 | gravity | side_plate_front | 0.058 | 1.03 | 241 | 235 | motor COM dz -0.0319; motor encoder end dz -0.0614; motor shaft tip dz 0.00736; motor shaft tip dy 0.00458; motor face centre dx -0.0132; motor axis tilt (mrad, vertical plane) 0.334 |
 | v3 | gravity | side_plate_back | 0.058 | 3.13 | 241 | 77 |  |
-| v3 | jam | side_plate_front | 0.125 | 4.45 | 241 | 54.1 | motor COM dz -0.094; motor encoder end dz -0.185; motor shaft tip dz 0.0957; motor shaft tip dy 0.0127; motor face centre dx -0.0475; motor axis tilt (mrad, vertical plane) 1.37 |
-| v3 | jam | side_plate_back | 0.129 | 12.3 | 241 | 19.7 |  |
+| v3 | jam | side_plate_front | 0.126 | 4.45 | 241 | 54.2 | motor COM dz -0.0937; motor encoder end dz -0.186; motor shaft tip dz 0.0955; motor shaft tip dy 0.0127; motor face centre dx -0.0458; motor axis tilt (mrad, vertical plane) 1.36 |
+| v3 | jam | side_plate_back | 0.129 | 12.3 | 241 | 19.6 |  |
 | v3 | lean_x | side_plate_front | 0.511 | 5.29 | 241 | 45.6 | motor COM dz 0.0657; motor encoder end dz 0.127; motor shaft tip dz -0.0162; motor shaft tip dy -0.0307; motor face centre dx 0.175; motor axis tilt (mrad, vertical plane) -0.695 |
 | v3 | lean_x | side_plate_back | 0.504 | 6.02 | 241 | 40 |  |
 | v3 | lean_y | side_plate_front | 0.209 | 2.16 | 241 | 111 | motor COM dz -0.0334; motor encoder end dz -0.0654; motor shaft tip dz 0.00936; motor shaft tip dy -0.0607; motor face centre dx -0.0219; motor axis tilt (mrad, vertical plane) 0.363 |
 | v3 | lean_y | side_plate_back | 0.118 | 3.35 | 241 | 71.9 |  |
 | v3 | running | side_plate_front | 0.0645 | 3.84 | 241 | 62.7 | motor COM dz -0.0396; motor encoder end dz -0.0769; motor shaft tip dz 0.0209; motor shaft tip dy 0.0057; motor face centre dx -0.0222; motor axis tilt (mrad, vertical plane) 0.475 |
 | v3 | running | side_plate_back | 0.0689 | 4.52 | 241 | 53.3 |  |
+| v4 | jam | side_plate_front | 0.143 | 4.03 | 241 | 59.8 | motor COM dz -0.0852; motor encoder end dz -0.169; motor shaft tip dz 0.0933; motor shaft tip dy 0.00178; motor face centre dx -0.0717; motor axis tilt (mrad, vertical plane) 1.28 |
+| v4 | jam | side_plate_back | 0.148 | 11.9 | 241 | 20.2 |  |
 | v4 | jam | side_plate_front | 0.145 | 3.98 | 241 | 60.5 | motor COM dz -0.103; motor encoder end dz -0.205; motor shaft tip dz 0.1; motor shaft tip dy 0.00396; motor face centre dx -0.0515; motor axis tilt (mrad, vertical plane) 1.48 |
 | v4 | jam | side_plate_back | 0.146 | 12.8 | 241 | 18.8 |  |
 | v4 | gravity | side_plate_front | 0.07 | 0.798 | 241 | 302 | motor COM dz -0.0527; motor encoder end dz -0.103; motor shaft tip dz 0.0152; motor shaft tip dy 0.00326; motor face centre dx -0.0019; motor axis tilt (mrad, vertical plane) 0.574 |
 | v4 | gravity | side_plate_back | 0.0697 | 3.4 | 241 | 70.9 |  |
-| v4 | jam | side_plate_front | 0.152 | 4.01 | 241 | 60.1 | motor COM dz -0.162; motor encoder end dz -0.334; motor shaft tip dz 0.125; motor shaft tip dy 0.00764; motor face centre dx -0.00934; motor axis tilt (mrad, vertical plane) 2.23 |
-| v4 | jam | side_plate_back | 0.153 | 15.1 | 241 | 16 |  |
+| v4 | jam | side_plate_front | 0.152 | 4.01 | 241 | 60.2 | motor COM dz -0.164; motor encoder end dz -0.334; motor shaft tip dz 0.125; motor shaft tip dy 0.0079; motor face centre dx -0.00932; motor axis tilt (mrad, vertical plane) 2.23 |
+| v4 | jam | side_plate_back | 0.153 | 15.2 | 241 | 15.8 |  |
 | v4 | lean_x | side_plate_front | 0.842 | 5.95 | 241 | 40.5 | motor COM dz 0.0653; motor encoder end dz 0.123; motor shaft tip dz -0.0121; motor shaft tip dy -0.0742; motor face centre dx 0.332; motor axis tilt (mrad, vertical plane) -0.655 |
 | v4 | lean_x | side_plate_back | 0.827 | 6.55 | 241 | 36.8 |  |
 | v4 | lean_y | side_plate_front | 0.265 | 2.18 | 241 | 111 | motor COM dz -0.0577; motor encoder end dz -0.114; motor shaft tip dz 0.0176; motor shaft tip dy -0.102; motor face centre dx -0.00838; motor axis tilt (mrad, vertical plane) 0.638 |
@@ -46,13 +48,13 @@
 | paternoster | gravity | standoff 2 | 0.0897 | 8.85 | 241 | 27.2 |  |
 | paternoster | gravity | standoff 3 | 0.0702 | 8.68 | 241 | 27.8 |  |
 | paternoster | gravity | standoff 4 | 0.092 | 9.19 | 241 | 26.2 |  |
-| paternoster | jam | side_plate_front | 0.0843 | 8.89 | 241 | 27.1 | motor COM dz -0.116; motor encoder end dz -0.159; motor shaft tip dz -0.0575; motor shaft tip dy 0.00087; motor face centre dx 0.0326; motor axis tilt (mrad, vertical plane) 0.492 |
-| paternoster | jam | side_plate_back | 0.0981 | 19.3 | 241 | 12.5 |  |
-| paternoster | jam | motor plate | 0.204 | 23 | 241 | 10.5 |  |
-| paternoster | jam | standoff 1 | 0.0932 | 21.7 | 241 | 11.1 |  |
-| paternoster | jam | standoff 2 | 0.117 | 21.3 | 241 | 11.3 |  |
-| paternoster | jam | standoff 3 | 0.15 | 29.8 | 241 | 8.1 |  |
-| paternoster | jam | standoff 4 | 0.165 | 31.9 | 241 | 7.54 |  |
+| paternoster | jam | side_plate_front | 0.0846 | 8.87 | 241 | 27.2 | motor COM dz -0.112; motor encoder end dz -0.159; motor shaft tip dz -0.0576; motor shaft tip dy 0.00089; motor face centre dx 0.0327; motor axis tilt (mrad, vertical plane) 0.492 |
+| paternoster | jam | side_plate_back | 0.0983 | 19.3 | 241 | 12.5 |  |
+| paternoster | jam | motor plate | 0.204 | 22.7 | 241 | 10.6 |  |
+| paternoster | jam | standoff 1 | 0.0933 | 21.7 | 241 | 11.1 |  |
+| paternoster | jam | standoff 2 | 0.117 | 21.6 | 241 | 11.2 |  |
+| paternoster | jam | standoff 3 | 0.15 | 29.5 | 241 | 8.16 |  |
+| paternoster | jam | standoff 4 | 0.165 | 31.4 | 241 | 7.67 |  |
 | paternoster | lean_x | side_plate_front | 1.12 | 9.22 | 241 | 26.1 | motor COM dz -0.274; motor encoder end dz -0.397; motor shaft tip dz -0.102; motor shaft tip dy -0.18; motor face centre dx 0.589; motor axis tilt (mrad, vertical plane) 1.43 |
 | paternoster | lean_x | side_plate_back | 1.13 | 8.19 | 241 | 29.4 |  |
 | paternoster | lean_x | motor plate | 0.766 | 9.13 | 241 | 26.4 |  |
@@ -81,8 +83,11 @@
 |---|---|---|---|
 | v3 | bonded | 20.0, 30.4, 41.9, 80.5, 87.2, 105.6 | sprocket 42 %/side plates 17 %; sprocket 42 %/side plates 19 %; sprocket 29 %/nema 34 28 % |
 | v3 | pads | 19.4, 27.8, 37.8, 74.1, 84.2, 96.5 | sprocket 42 %/shaft 17 %; sprocket 42 %/side plates 16 %; sprocket 29 %/nema 34 27 % |
+| v4 | bonded | 15.6, 24.9, 32.5, 52.8, 81.9, 83.0 | sprocket 36 %/side plates 23 %; sprocket 35 %/side plates 26 %; side plates 26 %/sprocket 24 % |
+| v4 | motorpost2 | 15.4, 23.5, 37.2, 68.6, 83.2, 92.8 | sprocket 35 %/side plates 20 %; sprocket 35 %/side plates 24 %; nema 34 26 %/sprocket 22 % |
 | v4 | motorpost | 15.4, 23.2, 33.6, 62.3, 82.3, 86.9 | sprocket 35 %/side plates 21 %; sprocket 35 %/side plates 24 %; nema 34 24 %/sprocket 23 % |
 | v4 | pads | 15.2, 22.9, 29.7, 50.6, 80.3, 81.1 | sprocket 36 %/side plates 21 %; sprocket 35 %/side plates 23 %; sprocket 24 %/side plates 23 % |
+| paternoster | bonded | 16.3, 18.1, 27.8, 51.6, 61.6, 72.2 | idler 32 %/nema 34 23 %; nema 34 64 %/idler 11 %; idler 30 %/sprocket 26 % |
 | paternoster | pads | 15.5, 16.5, 24.9, 47.5, 60.0, 69.3 | idler 30 %/nema 34 26 %; nema 34 60 %/idler 13 %; idler 30 %/sprocket 26 % |
 
 Step rates of the NEMA 34 (one 32T revolution per motor revolution in all three designs, 200 full steps per revolution):
@@ -110,6 +115,18 @@ Chain speeds (mm/s) at which each excitation lands on a mode under 120 Hz (v3/v4
 | v3 | pads | 74.1 | 113 | 452 | 706 |
 | v3 | pads | 84.2 | 128 | 513 | 802 |
 | v3 | pads | 96.5 | 147 | 589 | 920 |
+| v4 | bonded | 15.6 | **24** | **95** | 149 |
+| v4 | bonded | 24.9 | **38** | 152 | 237 |
+| v4 | bonded | 32.5 | **50** | 198 | 310 |
+| v4 | bonded | 52.8 | **80** | 322 | 503 |
+| v4 | bonded | 81.9 | 125 | 499 | 780 |
+| v4 | bonded | 83.0 | 126 | 506 | 791 |
+| v4 | motorpost2 | 15.4 | **23** | **94** | 147 |
+| v4 | motorpost2 | 23.5 | **36** | 143 | 224 |
+| v4 | motorpost2 | 37.2 | **57** | 227 | 354 |
+| v4 | motorpost2 | 68.6 | 105 | 418 | 654 |
+| v4 | motorpost2 | 83.2 | 127 | 507 | 793 |
+| v4 | motorpost2 | 92.8 | 141 | 565 | 883 |
 | v4 | motorpost | 15.4 | **23** | **94** | 146 |
 | v4 | motorpost | 23.2 | **35** | 142 | 221 |
 | v4 | motorpost | 33.6 | **51** | 205 | 320 |
@@ -124,6 +141,13 @@ Chain speeds (mm/s) at which each excitation lands on a mode under 120 Hz (v3/v4
 | v4 | pads | 80.3 | 122 | 489 | 764 |
 | v4 | pads | 81.1 | 124 | 494 | 772 |
 | v4 | pads | 119.0 | 181 | 725 | 1133 |
+| paternoster | bonded | 16.3 | **25** | **100** | 156 |
+| paternoster | bonded | 18.1 | **28** | **110** | 172 |
+| paternoster | bonded | 27.8 | **42** | 169 | 264 |
+| paternoster | bonded | 51.6 | **79** | 314 | 491 |
+| paternoster | bonded | 61.6 | **94** | 375 | 586 |
+| paternoster | bonded | 72.2 | **110** | 440 | 688 |
+| paternoster | bonded | 91.1 | 139 | 555 | 868 |
 | paternoster | pads | 15.5 | **24** | **94** | 147 |
 | paternoster | pads | 16.5 | **25** | **101** | 157 |
 | paternoster | pads | 24.9 | **38** | 152 | 237 |
@@ -228,4 +252,12 @@ Bold: inside the design's speed range.
 | v3 | unit | latch rail (printed PETG) | 0.00189 | 0.654 | 23 | 35.2 | max |u| (mm) 0.00189; ramp normal force N 10 |
 | v4 | tube | latch rail + tube rest (printed PETG) | 0.0214 | 0.421 | 23 | 54.6 | max |u| (mm) 0.0214; ramp normal force N 3.31 |
 | v4 | unit | latch rail + tube rest (printed PETG) | 0.00275 | 0.807 | 23 | 28.5 | max |u| (mm) 0.00275; ramp normal force N 10 |
+
+## Paternoster gondola
+
+| design | case | part | max displacement (mm) | peak von Mises (MPa) | allowable (MPa) | safety factor | functional numbers |
+|---|---|---|---|---|---|---|---|
+| paternoster | hanging: own weight + module on the floor | gondola (printed PETG) | 0.159 | 0.487 | 23 | 47.2 | floor sag, worst (mm) 0.15 |
+| paternoster | hanging: own weight + module on the floor | gondola (printed PETG) | 0.288 | 0.487 | 8 | 16.4 | floor sag, worst (mm) 0.271 |
+| paternoster | station: P16 stall (50 N) up through the hinge | gondola (printed PETG) | 1.51 | 8.72 | 23 | 2.64 | floor sag, worst (mm) -0.461; hinge lugs lift (mm) 0.532 |
 

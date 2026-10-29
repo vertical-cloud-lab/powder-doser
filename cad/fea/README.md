@@ -21,10 +21,11 @@ rails at z 755 instead of 721), and its loop and motor sit 40 mm higher. What ea
 | `loads.py` | every load in one table, with its source (the designs' simulations, datasheets, the STEP volumes) |
 | `verify.py` | checks against hand solutions, below |
 | `export_design.py` | builds a design's parts and placements from its source into `$FEA_WORK/designs/<design>/` |
-| `cases/frame.py` | whole frames with the NEMA 34 on its wall |
+| `cases/frame.py` | whole frames with the NEMA 34 on its wall, the motor close-ups, mass and centre of mass for tipping, and the v4 fix (variants `motorpost` and `motorpost2`: one or two 2020 posts screwed to the back plate beside the motor) |
 | `cases/shafts.py` | corner shafts, the paternoster's idler stub axles, the printed tensioner block |
 | `cases/carriage.py` | carriages (v3 inside the loop, v4 outside) at each orientation, hinge lugs and pins, plate latches, side tabs |
-| `cases/station.py` | the station: kinematic dock (Hertz), electronics carriage seat and arms, guide cradle, clevis and P16 bracket, latch rail, rests, hold-downs |
+| `cases/station.py` | the station: kinematic dock (Hertz), electronics carriage seat and arms, guide cradle, clevis and P16 bracket, latch rail, rests, hold-downs (`station_geo_dump.py` dumps the station's frames and pins first) |
+| `cases/gondola.py` | the paternoster's printed gondola (hanging, creep, a P16 stall through its hinge) and its shoulder-screw pivots |
 | `report.py` | collects every case into `out/SUMMARY.md`, plus the tipping check, the motor screws' slip check, and the modes against the stepper's step rates |
 
 ### Checks against hand solutions (`verify.py`, rerun on this runner)
@@ -73,5 +74,6 @@ python cases/frame.py            # or name cases: python cases/frame.py chain-ca
 python cases/shafts.py
 python cases/carriage.py
 python cases/station.py
+python cases/gondola.py
 python report.py                 # out/SUMMARY.md
 ```

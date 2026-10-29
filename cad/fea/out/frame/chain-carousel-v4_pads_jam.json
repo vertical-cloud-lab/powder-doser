@@ -10,64 +10,64 @@
   "drive chain": "534 N between the 15T sprockets (12.0 N*m)",
   "motor torque": "12.0 N*m reaction on the motor body; 123 N more tension in each chain's bottom run (B+ and B- pulled together)"
  },
- "nodes": 222731,
- "elements": 115463,
+ "nodes": 223032,
+ "elements": 115696,
  "mesh_mm": 12.0,
- "wall_s": 71.3,
+ "wall_s": 39.2,
  "parts": [
   {
    "part": "side_plate_front",
    "material": "6061-T6 plate",
-   "umax_mm": 0.152,
-   "vm_max_MPa": 4.012,
+   "umax_mm": 0.15176,
+   "vm_max_MPa": 4.006,
    "vm_max_at": [
     -36.4,
     81.7,
     659.7
    ],
-   "vm_excl_MPa": 4.012,
+   "vm_excl_MPa": 4.006,
    "vm_excl_at": [
     -36.4,
     81.7,
     659.7
    ],
    "allow_MPa": 241.0,
-   "sf": 60.07
+   "sf": 60.16
   },
   {
    "part": "side_plate_back",
    "material": "6061-T6 plate",
-   "umax_mm": 0.15339,
-   "vm_max_MPa": 15.078,
+   "umax_mm": 0.15316,
+   "vm_max_MPa": 15.219,
    "vm_max_at": [
     341.3,
     89.6,
     335.6
    ],
-   "vm_excl_MPa": 15.078,
+   "vm_excl_MPa": 15.219,
    "vm_excl_at": [
     341.3,
     89.6,
     335.6
    ],
    "allow_MPa": 241.0,
-   "sf": 15.98
+   "sf": 15.84
   }
  ],
  "key_disp": {
-  "motor COM dz": -0.16223,
-  "motor encoder end dz": -0.33441,
-  "motor shaft tip dz": 0.12455,
-  "motor shaft tip dy": 0.00764,
-  "motor face centre dx": -0.00934,
-  "motor axis tilt (mrad, vertical plane)": 2.22797
+  "motor COM dz": -0.16387,
+  "motor encoder end dz": -0.3343,
+  "motor shaft tip dz": 0.12482,
+  "motor shaft tip dy": 0.0079,
+  "motor face centre dx": -0.00932,
+  "motor axis tilt (mrad, vertical plane)": 2.22872
  },
  "notes": "plate-to-post joint: pads",
  "mass_kg": 31.1317,
  "feet_reaction_N": [
-  5.986714e-08,
-  6.752039e-06,
-  311.974
+  5.921838e-08,
+  -1.204562e-05,
+  311.9766
  ],
  "total_mass_kg": 31.132,
  "png": "out/frame/chain-carousel-v4_pads_jam.png"

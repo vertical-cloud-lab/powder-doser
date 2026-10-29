@@ -9,160 +9,160 @@
   "chain tension": "40 N per chain",
   "drive torque": "12.0 N*m: reaction on the motor, out through both drive sprockets"
  },
- "nodes": 139898,
- "elements": 70614,
+ "nodes": 139953,
+ "elements": 70664,
  "mesh_mm": 12.0,
- "wall_s": 28.2,
+ "wall_s": 17.7,
  "parts": [
   {
    "part": "side_plate_front",
    "material": "6061-T6 plate",
-   "umax_mm": 0.08435,
-   "vm_max_MPa": 8.887,
+   "umax_mm": 0.08457,
+   "vm_max_MPa": 8.873,
    "vm_max_at": [
     -33.0,
     -93.1,
     649.8
    ],
-   "vm_excl_MPa": 8.887,
+   "vm_excl_MPa": 8.873,
    "vm_excl_at": [
     -33.0,
     -93.1,
     649.8
    ],
    "allow_MPa": 241.0,
-   "sf": 27.12
+   "sf": 27.16
   },
   {
    "part": "side_plate_back",
    "material": "6061-T6 plate",
-   "umax_mm": 0.09807,
-   "vm_max_MPa": 19.263,
+   "umax_mm": 0.09829,
+   "vm_max_MPa": 19.318,
    "vm_max_at": [
     364.4,
     118.6,
     485.9
    ],
-   "vm_excl_MPa": 19.263,
+   "vm_excl_MPa": 19.318,
    "vm_excl_at": [
     364.4,
     118.6,
     485.9
    ],
    "allow_MPa": 241.0,
-   "sf": 12.51
+   "sf": 12.48
   },
   {
    "part": "motor plate",
    "material": "6061-T6 plate",
-   "umax_mm": 0.20402,
-   "vm_max_MPa": 22.971,
+   "umax_mm": 0.20441,
+   "vm_max_MPa": 22.743,
    "vm_max_at": [
     446.9,
     125.2,
     384.6
    ],
-   "vm_excl_MPa": 22.971,
+   "vm_excl_MPa": 22.743,
    "vm_excl_at": [
     446.9,
     125.2,
     384.6
    ],
    "allow_MPa": 241.0,
-   "sf": 10.49
+   "sf": 10.6
   },
   {
    "part": "standoff 1",
    "material": "6061-T6 plate",
-   "umax_mm": 0.09317,
-   "vm_max_MPa": 21.675,
+   "umax_mm": 0.09333,
+   "vm_max_MPa": 21.743,
    "vm_max_at": [
     366.0,
     72.2,
     379.0
    ],
-   "vm_excl_MPa": 21.675,
+   "vm_excl_MPa": 21.743,
    "vm_excl_at": [
     366.0,
     72.2,
     379.0
    ],
    "allow_MPa": 241.0,
-   "sf": 11.12
+   "sf": 11.08
   },
   {
    "part": "standoff 2",
    "material": "6061-T6 plate",
-   "umax_mm": 0.11715,
-   "vm_max_MPa": 21.344,
+   "umax_mm": 0.1174,
+   "vm_max_MPa": 21.567,
    "vm_max_at": [
     445.2,
     63.1,
     481.2
    ],
-   "vm_excl_MPa": 21.344,
+   "vm_excl_MPa": 21.567,
    "vm_excl_at": [
     445.2,
     63.1,
     481.2
    ],
    "allow_MPa": 241.0,
-   "sf": 11.29
+   "sf": 11.17
   },
   {
    "part": "standoff 3",
    "material": "6061-T6 plate",
-   "umax_mm": 0.15005,
-   "vm_max_MPa": 29.765,
+   "umax_mm": 0.15032,
+   "vm_max_MPa": 29.542,
    "vm_max_at": [
     445.0,
     127.4,
     382.8
    ],
-   "vm_excl_MPa": 29.765,
+   "vm_excl_MPa": 29.542,
    "vm_excl_at": [
     445.0,
     127.4,
     382.8
    ],
    "allow_MPa": 241.0,
-   "sf": 8.1
+   "sf": 8.16
   },
   {
    "part": "standoff 4",
    "material": "6061-T6 plate",
-   "umax_mm": 0.1647,
-   "vm_max_MPa": 31.95,
+   "umax_mm": 0.16502,
+   "vm_max_MPa": 31.417,
    "vm_max_at": [
-    445.4,
-    126.4,
-    480.1
+    445.3,
+    127.4,
+    481.2
    ],
-   "vm_excl_MPa": 31.95,
+   "vm_excl_MPa": 31.417,
    "vm_excl_at": [
-    445.4,
-    126.4,
-    480.1
+    445.3,
+    127.4,
+    481.2
    ],
    "allow_MPa": 241.0,
-   "sf": 7.54
+   "sf": 7.67
   }
  ],
  "key_disp": {
-  "motor COM dz": -0.11559,
-  "motor encoder end dz": -0.15895,
-  "motor shaft tip dz": -0.05754,
-  "motor shaft tip dy": 0.00087,
-  "motor face centre dx": 0.03256,
-  "motor axis tilt (mrad, vertical plane)": 0.49231,
-  "coupling parallel offset (mm)": 0.03603
+  "motor COM dz": -0.11232,
+  "motor encoder end dz": -0.15901,
+  "motor shaft tip dz": -0.05765,
+  "motor shaft tip dy": 0.00089,
+  "motor face centre dx": 0.03269,
+  "motor axis tilt (mrad, vertical plane)": 0.49208,
+  "coupling parallel offset (mm)": 0.03614
  },
  "notes": "plate-to-post joint: pads",
  "mass_kg": 23.8152,
  "feet_reaction_N": [
-  3.193443e-08,
-  -6.612847e-06,
-  238.6734
+  4.602514e-08,
+  -2.05604e-06,
+  238.6691
  ],
  "total_mass_kg": 23.815,
  "png": "out/frame/paternoster_pads_jam.png"
