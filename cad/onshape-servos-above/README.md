@@ -268,8 +268,8 @@ The 2026-10-27 run made 4 requests:
 - 2 × `GET users/sessioninfo` (200, counted);
 - 2 × document reads that returned HTTP 402 (failed requests aren't counted).
 
-The 2026-10-29 run made 3 requests, all HTTP 402, so none counted: a read of the auger's document, a document
-list, and the auger's feature list. The 2026-10-20 run made 39 counted calls. Every request is in
+The 2026-10-29 run made 4 requests, all HTTP 402, so none counted: two reads of the auger's document (18:23 and
+18:41 UTC), a document list, and the auger's feature list. The 2026-10-20 run made 39 counted calls. Every request is in
 [`.fsgen_api_ledger.jsonl`](.fsgen_api_ledger.jsonl).
 
 ## Files

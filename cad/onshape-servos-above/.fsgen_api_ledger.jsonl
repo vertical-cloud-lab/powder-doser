@@ -45,3 +45,4 @@
 {"t": "2026-10-29T18:23:35", "run": "20261029-182335", "purpose": "quota check (auger document read, 2026-10-29)", "call": "GET documents/{id}", "status": 402, "counted": false}
 {"t": "2026-10-29T18:26:29", "run": "20261029-182629", "purpose": "quota check (list documents, 2026-10-29)", "call": "GET documents", "status": 402, "counted": false}
 {"t": "2026-10-29T18:26:29", "run": "20261029-182629", "purpose": "quota check (auger feature list, 2026-10-29)", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/features", "status": 402, "counted": false}
+{"t": "2026-10-29T18:41:57", "run": "20261029-184157", "purpose": "quota check before the final reply (auger document read, 2026-10-29)", "call": "GET documents/{id}", "status": 402, "counted": false}
