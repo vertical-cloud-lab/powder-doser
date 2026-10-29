@@ -420,8 +420,8 @@ STEPS = {
     5: "Corner shafts with their sprockets (back set screws loose)",
     6: "NEMA 34 on the back plate, 15T sprockets, drive chain",
     7: "Chains: 13 A-1 links per chain, close both loops",
-    8: "Station: hold-downs, hall switches, the P16, the guide cradle on its post, the electronics carriage v3 (dock seats, magnets, balls), the latch rail, the side tabs",
-    9: "Modules on the bench: auger into the v3 plate, dock balls, steel armature, outlet door; plate pinned onto a carriage, latch closed",
+    8: "Station: hold-downs, hall switches, the P16, the guide cradle on its post, the electronics carriage v4 (arms round the auger, dock seats, magnets, balls), the latch rail and tube rest, the side tabs",
+    9: "Modules on the bench: auger into the v4 plate, auger-side dock balls and steel washer, outlet door; plate pinned onto a carriage's outer face, latch pin in",
     10: "Carriages onto the chain at the loading position, one index at a time; phase and tension",
     11: "Electronics board: supply, driver, Pi, interface board, LAC, e-stop",
     12: "Enclosure: acrylic panels on standoffs, the front hatch (scale) and the side hatch (swaps); the HR-100A",
@@ -781,7 +781,7 @@ def _station(st: State, add) -> None:
                   T(Rpin, Pp) @ T(Rx(math.pi / 2), (0, -8.2, 0)), 8, STEEL, "station_ec", (0, -30, -60)))
     add(Placement("nut_m3_clevis", "M3 locknut (EC clevis pin)", T(Rpin, Pp) @ T(Rx(-math.pi / 2), (0, -8.2 + SHOULDER_CLEVIS_L, 0)), 8, STEEL,
                   "station_ec", (0, 30, -60)))
-    add(Placement("sam_electronics_carriage", "Electronics carriage v3 (Sam's Oct 13 + dock, base, clevis, door finger; printed)", C, 8, ELEC,
+    add(Placement("sam_electronics_carriage", "Electronics carriage v4 (Sam's Oct 13 turned over + arms round the auger, dock, base, clevis, door finger; printed)", C, 8, ELEC,
                   "station_ec", (0, 0, -60)))
     add(Placement("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, -NEMA11_Z)), 8, DARK, "station_ec", (0, 0, -60)))
     pin_ang = st.spin * 44.0 / 20.0

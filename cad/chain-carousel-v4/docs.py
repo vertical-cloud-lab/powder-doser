@@ -163,8 +163,8 @@ loading position) each get a door 4 mm larger all round on two stainless butt hi
 button.
 
 The HR-100A: v4 draws the balance where it has to stand, its pan under the dose point. It doesn't fit there yet: the
-SCALE_BLOCKERS stand inside its breeze break's footprint (`check_interference.py --scale`,
-`renders/features/scale_fit.gif`). Until the station is moved, test doses go into a beaker on a bench balance placed
+guide cradle, EC v4 and the P16 stand inside its breeze break's footprint (`check_interference.py --scale`,
+`checks/scale.json`, README item 6). Until the station is moved, test doses go into a beaker on a bench balance placed
 by hand under the dose point with the station parked.""",
 }
 

@@ -180,7 +180,7 @@ Sam ruled out a funnel, because it cross-contaminates. He asked for the scale to
 | 32-43 mm | the station rail, the cradle post, their corner brackets, the P16's base pin |
 | 8 mm | the steel pinion |
 
-That is 19 kinds of part (27 instances). Even the parts nearest the dose point stop it 8 mm short.
+That is 19 kinds of part (27 instances), plus a leveling foot it reaches only in the last millimetre. Even the parts nearest the dose point stop it 8 mm short.
 
 ![Scale fit](renders/features/scale_fit.gif)
 
@@ -241,7 +241,7 @@ That is 19 kinds of part (27 instances). Even the parts nearest the dose point s
 | Home | Nothing: every pair of the 877 instances (the HR-100A left out, see `--scale`) | **0** |
 | `--tilt` | The EC rising out of the cradle (0-20 mm, the door opening over the last 6), then module 1 + EC + P16 tilting 5-90° | **0** |
 | `--swap` | Carriage 4 at the loading position, side hatch open: screws out 10 mm, slid 10 mm up, lifted 150 mm out | **0** |
-| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses). Every latch rides the station's rail; the modules pass over the parked EC | **0**. A ±4-link, half-link sweep round the station (17 poses) is also clean |
+| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses). Every latch rides the station's rail; the modules pass over the parked EC | **0** |
 | `--scale` | The HR-100A with its pan at the dose point | 27 instances of 19 parts in its way (item 6) |
 
 What the checks found and changed this round:
