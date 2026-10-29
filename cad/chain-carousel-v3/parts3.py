@@ -126,7 +126,7 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
     ztop = mag_face - 0.3
     zbot = mag_face - 15.0 - 2.0
     foot = _box(73.33, 76.33, -18.0, 18.0, -26.5, -19.9 - EC_RIM_CUT)
-    arms = _box(73.33, PAD_X0_V3 - 0.5, 12.0, 18.0, zbot, ztop).union(_box(73.33, PAD_X0_V3 - 0.5, -18.0, -12.0, zbot, ztop))
+    arms = _box(73.33, PAD_X0_V3 - 0.5, 12.0, 15.0, zbot, ztop).union(_box(73.33, PAD_X0_V3 - 0.5, -15.0, -12.0, zbot, ztop))
     cup = _cyl(12.0, ztop - zbot, mx, my, zbot)
     cx, cy = KC_C
     c_ball_z = -18.0 - 2.0 - KC_BALL_D / 2 - DR               # ball C's centre (as drawn), its top on the armature
@@ -141,8 +141,9 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
         for y in (-12.5, 12.5):
             base = base.union(_box(x - 2.0, x + 2.0, y - 2.0, y + 2.0, zb1 - 0.01, -52.6))
     px, pz = EC_PIN
+    c0, c1 = EC_CHEEK_Y
     for sy in (-1, 1):
-        cheek = _box(px - 5.0, px + 5.0, 3.2 if sy > 0 else -8.2, 8.2 if sy > 0 else -3.2, pz - 5.0, zb0 + 0.01)
+        cheek = _box(px - 5.0, px + 5.0, c0 if sy > 0 else -c1, c1 if sy > 0 else -c0, pz - 4.6, zb0 + 0.01)
         base = base.union(cheek)
     add = add.union(base)
     # ---- door finger: a post in front of the auger's end face, under the push rod
@@ -180,7 +181,7 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
     for (x, y) in EC_BALLS:
         cut = cut.union(_cyl(3.125, 2.6, x, y, zb0 - 0.01))
     cut = cut.union(cq.Workplane("XZ").center(px, pz).slot2D(4.1 + EC_SLOT, 4.1, 90).extrude(10.0, both=True))
-    cut = cut.union(_box(px - 6.0, px + 6.0, -3.2, 3.2, pz - 6.0, zb0 - 0.6))       # room for the rod end's tab between the cheeks
+
     return add, cut
 
 
@@ -249,7 +250,8 @@ def cradle() -> cq.Workplane:
     c = c.cut(_cyl(4.1, floor_top - (ball_z - KC_BALL_D / 2) + 0.5, x3, y3, ball_z - KC_BALL_D / 2))
     # the P16's rod and rod end pass up through the floor to the clevis
     px, pz = EC_PIN
-    c = c.cut(_box(px - 5.5, px + 5.5, -8.7, 8.7, f0 - 1.0, floor_top + 1.0))
+    c = c.cut(_box(px - 5.5, px + 5.5, -13.5, 13.5, f0 - 1.0, floor_top + 5.0))    # the rod, the clevis cheeks, the pin's head and nut
+    c = c.cut(_box(px, xb + 10.0, -5.5, 5.5, f0 - 1.0, floor_top + 5.0))          # the rod's path backward as the station tilts
     # foot: a tab off the -y wall onto the post (two M5 into the 2020's end: tapped centre bore and a T-nut bracket)
     return c
 
@@ -330,9 +332,9 @@ def latch_bolt() -> cq.Workplane:
 
 
 def latch_follower() -> cq.Workplane:
-    """3 mm x 20 mm dowel pin pressed into the bolt's tail, down through the carriage plate's slot; tip
-    LATCH_FOLLOW_PROUD below the carriage's outer face (Sam's z -23). Along z, in Sam's frame at the follower's x, y."""
-    L = 20.0
+    """3 mm x 18 mm dowel pin pressed into the bolt's tail, down through the carriage plate's slot; its tip 5.1 mm below
+    the carriage's outer face (Sam's z -23), 1.5 mm clear of the rail's post. Along z, in Sam's frame at its x, y."""
+    L = 18.0
     zt = -9.6 - 0.5
     return _cyl(1.5, L, 0, 0, zt - L).edges().chamfer(0.3)
 
@@ -342,7 +344,7 @@ def latch_housing() -> cq.Workplane:
     a channel on the carriage's inner face (z -18) behind the plate, the bolt in a 0.2 mm clearance slot, a spring
     pocket behind it, a slot down through the carriage for the follower."""
     k1 = LATCH_KEEPER_X[1]
-    x0, x1 = k1 + 0.5, LATCH_FOLLOW_X + 16.0
+    x0, x1 = k1 + 2.5, LATCH_FOLLOW_X + 16.0              # 2.5 mm behind the keeper: its corner swings back 1.3 mm in the first 6 deg of tilt
     y0, y1 = LATCH_Y - LATCH_W / 2 - 2.5, LATCH_Y + LATCH_W / 2 + 2.5
     h = _box(x0, x1, y0, y1, -18.0, -7.0)
     h = h.cut(_box(x0 - 1, x1 - 3.0, LATCH_Y - LATCH_W / 2 - 0.2, LATCH_Y + LATCH_W / 2 + 0.2, -12.8, -9.4))
@@ -359,7 +361,7 @@ def latch_rail() -> cq.Workplane:
     xf = LATCH_FOLLOW_X + 1.5 + LATCH_TRAVEL          # rail face: follower's back edge when open
     zt = -23.0 - 0.6                                  # 0.6 mm under the carriage's outer face
     zb = zt - 6.0
-    half = 22.0
+    half = LATCH_RAIL_FLAT
     ramp = LATCH_TRAVEL / math.tan(math.radians(25))
     pts = [(xf, -half), (xf, half), (xf + LATCH_TRAVEL, half + ramp), (xf + 10.0, half + ramp), (xf + 10.0, -half - ramp),
            (xf + LATCH_TRAVEL, -half - ramp)]
@@ -386,8 +388,8 @@ def carriage_v3(print_web: bool = False) -> cq.Workplane:
               .translate((-13.0, w0 - 1.0, WIN_X[1] - 1.0)))
     xs0, xs1 = HINGE_X + PAD_X0_V3, WIN_X[1]
     for su in (-1, 1):
-        c = c.union(cq.Workplane("XY").box(23.5 - 13.0, CAR_T, xs1 - xs0, centered=False)
-                    .translate((13.0 if su > 0 else -23.5, w0, xs0)))
+        c = c.union(cq.Workplane("XY").box(23.5 - PAD_U0_V3, CAR_T, xs1 - xs0, centered=False)
+                    .translate((PAD_U0_V3 if su > 0 else -23.5, w0, xs0)))
     # latch housing (Sam's frame -> carriage frame: x_c = x_s + HINGE_X, u = y_s, w = z_s + HINGE_W)
     h = latch_housing()
     h = h.rotate((0, 0, 0), (1, 1, 1), -120)         # (x, y, z) -> (y, z, x): Sam x -> carriage z, y -> u (X), z -> w (Y)
@@ -456,8 +458,8 @@ def side_tab() -> cq.Workplane:
     tz = CAR_W0 + HOLD_DOWN_GAP                          # lip's underside (w)
     wf = CAR_W0 - CAR_T - SIDE_TAB_FOOT_GAP             # foot's top (w)
     tongue_end = SIDE_GAP + CAR_X0                       # 7: tongue tip's distance from the plate
-    z_in = SIDE_GAP - 7.0                                # lip and foot reach to 7 mm short of the chain's centre plane
-    u0, u1 = -24.0, -12.0
+    z_in = SIDE_GAP - 9.0                                # lip and foot stop 1 mm short of the carriage's full-width body (x -8):
+    u0, u1 = -24.0, -12.0                                # its corner would catch the foot as the carriage comes out
     lip = _box(u0, u1, tz, tz + 3.0, tongue_end - 1.5, z_in)
     foot = _box(u0, u1, wf - 3.0, wf, tongue_end - 1.5, z_in)
     web = _box(u0, u1 + 10.0, wf - 3.0, tz + 3.0 + 14.0, 0.0, tongue_end - 1.5)
@@ -535,8 +537,8 @@ def latch_rail_with_arm(post_x: float, post_y: float) -> cq.Workplane:
     r = latch_rail()
     xf = LATCH_FOLLOW_X + 1.5 + LATCH_TRAVEL
     zt = -23.0 - 0.6
-    y_end = LATCH_Y - 22.0 - LATCH_TRAVEL / math.tan(math.radians(25))
-    arm = _box(xf + 2.0, max(xf + 10.0, post_x + 10.0), post_y - 10.0, y_end + 1.0, LATCH_RAIL_Z0, zt)
+    y_end = LATCH_Y - LATCH_RAIL_FLAT - LATCH_TRAVEL / math.tan(math.radians(25))
+    arm = _box(xf + 2.0, max(xf + 10.0, post_x + 10.0), min(post_y - 10.0, y_end + 1.0), max(post_y + 10.0, y_end + 1.0), LATCH_RAIL_Z0, zt)
     pad = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, post_y + 10.0, LATCH_RAIL_Z0, zt)
     arm = arm.union(pad).cut(_cyl(3.3, 8.0, post_x, post_y, LATCH_RAIL_Z0 - 1.0))
     return r.union(arm)
@@ -548,3 +550,13 @@ def hinge_leaf() -> cq.Workplane:
     leaf = _box(0.0, 19.0, -19.0, 19.0, 0.0, 1.0)
     barrel = cq.Workplane("XZ").circle(2.0).extrude(19.0, both=True).translate((0, 0, 1.0))
     return leaf.union(barrel)
+
+
+def shoulder_screw_4x20() -> cq.Workplane:
+    """18-8 shoulder screw, 4 mm x 20 mm shoulder, M3 x 5 thread, 6 x 3 head (the family of McMaster 90265A123): the EC's
+    clevis pin through cheek, washers, the P16 rod end's tab, washers, cheek. Underside of the head at z = 0, shoulder
+    along -z."""
+    head = cq.Workplane("XY").circle(3.0).extrude(3.0).cut(cq.Workplane("XY").polygon(6, 2.0 / math.cos(math.pi / 6)).extrude(1.5).translate((0, 0, 1.5)))
+    sh = cq.Workplane("XY").circle(2.0).extrude(-20.0)
+    th = cq.Workplane("XY").circle(1.5).extrude(-5.0).translate((0, 0, -20.0))
+    return head.union(sh).union(th)

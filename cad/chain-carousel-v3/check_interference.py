@@ -27,7 +27,7 @@ from pathlib import Path
 import cadquery as cq
 
 import layout as L
-from params import PARK_DROP, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, TILT_MAX_FRAME
+from params import PARK_DROP, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, TILT_MAX_FRAME, HATCH_OPEN_DEG
 
 OUT = Path(__file__).resolve().parent / "checks"
 
@@ -62,7 +62,8 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("kc_ball", "cradle"), ("kc_ball", "flat_pad"), ("vee_dowel", "sam_electronics_carriage"), ("vee_dowel", "cradle"),
         ("flat_pad", "cradle"), ("kc_magnet", "sam_electronics_carriage"), ("dock_magnet", "sam_electronics_carriage"),
         ("armature_v3", "m3x6_fhcs"), ("armature_v3", "sam_mounting_plate"),
-        ("door_shutter", "door_housing"), ("door_spring", "door_housing"), ("door_spring", "door_shutter"), ("door_shutter", "sam_electronics_carriage"),
+        ("door_shutter", "door_housing"), ("door_spring", "door_housing"), ("door_spring", "door_shutter"),
+        ("door_spring_open", "door_housing"), ("door_spring_open", "door_shutter"), ("door_shutter", "sam_electronics_carriage"),
         ("m2x8_shcs", "door_housing"), ("m2x8_shcs", "sam_mounting_plate"),
         ("latch_bolt", "carriage"), ("latch_follower", "latch_bolt"), ("latch_follower", "carriage"), ("latch_spring", "carriage"),
         ("latch_spring", "latch_bolt"), ("latch_follower", "latch_rail"),
@@ -77,7 +78,8 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("panel_front_hatch", "panel_side_hatch"), ("panel_back", "panel_side"), ("panel_back", "panel_side_hatch"),
         ("hr100a_body", "hr100a_glass"), ("hr100a_body", "hr100a_pan"), ("beaker", "hr100a_pan"), ("hinge_leaf", "hinge_leaf"),
         ("side_tab", "m5x8_shcs"), ("side_tab_m", "m5x8_shcs"), ("m5x8_shcs", "side_plate_front"), ("m5x8_shcs", "side_plate_back"),
-        ("catch", "hatch_front"), ("catch", "hatch_side")}
+        ("catch", "hatch_front"), ("catch", "hatch_side"), ("ec_pin_screw", "sam_electronics_carriage"), ("ec_pin_screw", "actuator_rod"),
+        ("ec_pin_screw", "nut_m3_clevis"), ("ec_pin_screw", "ptfe_washer"), ("actuator_rod", "ptfe_washer"), ("ptfe_washer", "sam_electronics_carriage")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
 CHAIN = ("chain_inner", "chain_outer", "chain_a1")
 
@@ -166,7 +168,7 @@ def sweep(step: float = 0.5) -> list:
     static = None
     for i in range(n + 1):
         s = RUN_DIRECTION * i * step
-        st = L.State(shift=s, ext=0.0)
+        st = L.State(shift=s, ext=0.0, scale=False, enclosure=False)
         pl = L.placements(st)
         mv = [p for p in pl if p.module >= 0 or p.key in CHAIN and p.group == "chain"]
         mv_ids = {id(p) for p in mv}
@@ -201,7 +203,7 @@ def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 
     hits = []
     for kind, vals in (("ext", exts), ("tilt", angles)):
         for v in vals:
-            st = L.State(ext=v) if kind == "ext" else L.State(tilt=float(v))
+            st = L.State(ext=v, scale=False) if kind == "ext" else L.State(tilt=float(v), scale=False)
             pl = L.placements(st)
             k_st = L.carriage_at(L.CARRIAGE_LINK0, 0.0)
             mv = [p for p in pl if p.group in MOVING_GROUPS or (p.group == "modules" and p.module == k_st)]
@@ -219,15 +221,15 @@ def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 
 
 
 def swap() -> list:
-    """Loading position (+y side, carriage 4 at home): screws backed out, the carriage slid HOOK_SLIDE along the
-    run to free its hooks, then lifted out sideways (+y) with its module."""
+    """Loading position (+y side, carriage 4 at home), the side hatch open: screws backed out, the carriage slid HOOK_SLIDE
+    along the run to free its hooks and leave the side tabs, then lifted out sideways (+y) with its module through the hatch."""
     hits = []
     k = 3
     so = SCREW_OUT                        # screws backed out until their tips clear the tabs (they stay in the plate)
     seq = [(3.0, 0.0, 0.0), (so, 0.0, 0.0), (so, HOOK_SLIDE / 2, 0.0), (so, HOOK_SLIDE, 0.0), (so, HOOK_SLIDE, 2.0),
            (so, HOOK_SLIDE, 10.0), (so, HOOK_SLIDE, 30.0), (so, HOOK_SLIDE, 60.0), (so, HOOK_SLIDE, 100.0), (so, HOOK_SLIDE, 150.0)]
     for so, sl, lf in seq:
-        st = L.State(out_carriage=k, screws_out=so, out_slide=sl, out_lift=lf)
+        st = L.State(out_carriage=k, screws_out=so, out_slide=sl, out_lift=lf, scale=False, hatch_side=HATCH_OPEN_DEG)
         pl = L.placements(st)
         mv = [p for p in pl if p.module == k]
         ids = {id(p) for p in mv}

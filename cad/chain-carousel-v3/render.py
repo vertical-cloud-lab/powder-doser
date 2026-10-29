@@ -66,15 +66,34 @@ _PD: dict[str, vtk.vtkPolyData] = {}
 
 
 def default_opacity(p) -> float:
-    """Acrylic and glass are see-through; the HR-100A is drawn as a ghost where it has to stand (it collides with the
-    station there: see the scale-fit study)."""
+    """Acrylic and glass are see-through (and outlined); the HR-100A is drawn as a ghost where it has to stand (it collides
+    with the station there: see the scale-fit study)."""
     if p.key.startswith(("panel_", "hatch_")):
-        return 0.16
-    if p.key == "hr100a_body":
-        return 0.30
-    if p.key in ("hr100a_glass", "beaker"):
         return 0.22
+    if p.key == "hr100a_body":
+        return 0.40
+    if p.key in ("hr100a_glass", "beaker"):
+        return 0.25
     return 1.0
+
+
+OUTLINED = ("panel_", "hatch_", "hr100a_body", "hr100a_glass")
+TINT = {"hr100a_body": (0.50, 0.56, 0.68), "hr100a_glass": (0.55, 0.75, 0.90)}
+for _k in ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side"):
+    TINT[_k] = (0.60, 0.76, 0.90)
+
+
+def outline(pd: vtk.vtkPolyData) -> vtk.vtkPolyData:
+    """Boundary and sharp-feature edges of a part, for drawing see-through parts' outlines."""
+    fe = vtk.vtkFeatureEdges()
+    fe.SetInputData(pd)
+    fe.BoundaryEdgesOn()
+    fe.FeatureEdgesOn()
+    fe.SetFeatureAngle(40)
+    fe.ManifoldEdgesOff()
+    fe.NonManifoldEdgesOff()
+    fe.Update()
+    return fe.GetOutput()
 
 
 def vmat(M: np.ndarray) -> vtk.vtkMatrix4x4:
@@ -114,6 +133,7 @@ class View:
         self.ren.SetMaximumNumberOfPeels(6)
         self.win.SetAlphaBitPlanes(1)
         self.actors: dict[str, vtk.vtkActor] = {}
+        self.outlines: dict[str, vtk.vtkActor] = {}
 
     def show(self, pl, colors=None, offsets=None, hide=(), opacity=None, pitch=0.0):
         W = L.world_matrix(pitch)
@@ -143,12 +163,31 @@ class View:
                 M = M.copy()
                 M[:3, 3] += np.asarray(offsets.get(k, offsets.get(p.name)), float)
             a.SetUserMatrix(vmat(M))
-            col = colors.get(k, colors.get(p.name, p.color)) if colors else p.color
+            op_k = (opacity.get(k, opacity.get(p.name, default_opacity(p))) if opacity else default_opacity(p))
+            if p.key.startswith(OUTLINED) or op_k < 0.9:
+                ol = self.outlines.get(k)
+                if ol is None:
+                    om = vtk.vtkPolyDataMapper()
+                    om.SetInputData(outline(_PD[p.key]))
+                    om.ScalarVisibilityOff()
+                    ol = vtk.vtkActor()
+                    ol.SetMapper(om)
+                    ol.GetProperty().SetColor(0.35, 0.42, 0.5)
+                    ol.GetProperty().SetLineWidth(1.4)
+                    ol.GetProperty().SetLighting(False)
+                    self.outlines[k] = ol
+                    self.ren.AddActor(ol)
+                ol.SetUserMatrix(vmat(M))
+                ol.VisibilityOn()
+            col = colors.get(k, colors.get(p.name, TINT.get(p.key, p.color))) if colors else TINT.get(p.key, p.color)
             a.GetProperty().SetColor(*col)
             a.GetProperty().SetOpacity(opacity.get(k, opacity.get(p.name, default_opacity(p))) if opacity else default_opacity(p))
             a.VisibilityOn()
             seen.add(k)
         for k, a in self.actors.items():
+            if k not in seen:
+                a.VisibilityOff()
+        for k, a in self.outlines.items():
             if k not in seen:
                 a.VisibilityOff()
 
@@ -246,15 +285,45 @@ HERO = ((160, 0, 390), (-0.9, -1.0, 0.55), 1950)
 LOOP = ((120, 0, 510), (-1.0, -0.42, 0.22), 1400)
 STATION = ((H[0] + 45, H[1], H[2] - 55), (-0.5, -1.0, 0.18), 560)
 STATION_TILT = ((H[0] + 70, H[1], H[2] + 5), (-0.35, -1.0, 0.2), 740)
-DOCK = ((H[0] + 40, H[1], H[2] - 28), (-0.55, -1.0, 0.32), 290)
+DOCK = ((H[0] + 50, H[1], H[2] - 24), (-0.25, -1.0, 0.30), 260)
 DOOR = ((D[0] - 2, D[1] + 4, D[2] - 8), (-1.0, -0.75, 0.25), 150)
-LATCH = ((H[0] + 115, H[1] + 19, H[2] - 22), (0.45, -1.0, -0.55), 190)
+LATCH = ((H[0] + 112, H[1] + 19, H[2] - 12), (0.55, 0.75, 0.75), 200)
+LATCH_BELOW = ((H[0] + 126, H[1] + 22, H[2] - 27), (-0.2, 1.0, -0.75), 170)
 CRADLE = ((H[0] + 40, H[1], H[2] - 78), (-0.5, -1.0, 0.45), 340)
 LOADC = ((150, 120, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 1000)
 SIDE_HATCH = ((150, 130, float(L.load_frame()[2, 3]) - 30.0), (0.25, 1.0, 0.3), 1300)
 FRONT_HATCH = ((-60, 5, 200), (-1.0, -0.55, 0.3), 1250)
 SCALE = ((D[0] - 30, D[1], 230), (-0.75, -1.0, 0.35), 950)
 TAB = tuple(L.to_world(L.load_frame(), (0.0, L.CAR_W0, L.A1_HOLE_C)))
+
+
+def dock_cut(p: L.Placement) -> bool:
+    """Dock and door close-ups: station_cut, plus the cradle, the front hold-down, the sprockets and shafts, the front chain,
+    and the station carriage itself (it sits over the dock)."""
+    if station_cut(p):
+        return True
+    if p.key in ("carriage", "m3x12_bhcs", "nut_m3", "magnet", "latch_bolt", "latch_follower", "latch_spring") and p.module == 0:
+        return True
+    if p.key in ("cradle", "hold_down", "hall_switch", "sprocket_32", "shaft", "shaft_drive", "flange_bearing", "ext_cradle_post", "vee_dowel") and \
+            not (p.key == "vee_dowel" and p.group == "station_ec"):
+        return True
+    if p.key in ("m5x16_shcs", "insert_m5") and p.M[0, 3] < 0:
+        return True
+    return p.key.startswith("chain") and p.M[0, 3] < 20
+
+
+def latch_cut(p: L.Placement) -> bool:
+    return station_cut(p) or p.key in ("ext_latch_post", "ext_cradle_post", "cradle", "sprocket_32", "shaft", "shaft_drive", "auger", "auger_cap",
+                                       "nema34", "m5x25_shcs", "nut_m5", "sprocket_15_motor", "sprocket_15_shaft", "lrs350", "cl86t") or p.group == "drive"
+
+
+def ghost_plate(pl, op=0.35):
+    """Module 1's plate, auger and door housing see-through, so the dock's balls and seats show."""
+    return {k: op for k, p in keyed(pl) if p.module == 0 and p.key in ("sam_mounting_plate", "auger", "door_housing", "auger_cap")}
+
+
+def ghost_cradle(pl, op=0.35):
+    return {k: op for k, p in keyed(pl) if p.key == "cradle"}
 
 
 def hidden(pl, fn) -> set:
@@ -272,17 +341,23 @@ def stills(quick: bool = False) -> None:
         views += [
             ("rig_open", L.State(enclosure=False), HERO, None, "v3 without its enclosure: 13 carriages, module 1 docked at the station"),
             ("rig_loop", L.State(), LOOP, front_open, "Front chain loop (front plate and enclosure hidden)"),
-            ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v3 on the plate's kinematic dock, the door open, the latch open"),
-            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v3 sits in its guide cradle 20 mm under the passing carriages"),
+            ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v3 on the plate's kinematic dock, the door open, the latch open",
+             ghost_cradle),
+            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v3 sits in its guide cradle 20 mm under the passing carriages",
+             ghost_cradle),
             ("rig_tilt30", L.State(tilt=tf), STATION_TILT, station_cut, f"Dosing at {TILT_DOSE_WORLD:.0f} deg: module and EC tilt together, out of the cradle"),
             ("rig_tilt90", L.State(tilt=90.0), ((H[0] + 60, H[1], H[2] + 80), (-0.35, -1.0, 0.2), 950), station_cut,
              "Module 1 at 90 deg (cleaning and access)"),
-            ("rig_dock", L.State(), DOCK, station_cut, "Kinematic dock: plate balls in the EC's cone (+y) and vee (-y), ball C on the steel armature"),
-            ("rig_cradle", L.State(ext=0.0), CRADLE, station_cut, "Guide: the parked EC on its own cone-vee-flat seat in the cradle"),
-            ("rig_door_open", L.State(), DOOR, station_cut, "Outlet door open: the EC's finger holds the shutter up 8.5 mm"),
-            ("rig_door_closed", L.State(ext=0.0), DOOR, station_cut, "Outlet door closed: the spring holds the shutter over the 3 mm exit"),
-            ("rig_latch", L.State(), LATCH, station_cut, "Plate latch at the station: the rail draws the bolt back off the plate's keeper"),
-            ("rig_latch_closed", L.State(shift=RUN_DIRECTION * 4.0, ext=0.0), LATCH, station_cut,
+            ("rig_dock", L.State(magnet_on=True), DOCK, dock_cut,
+             "Kinematic dock: plate balls in the EC's cone (+y) and vee (-y), ball C on the steel armature (plate see-through)", ghost_plate),
+            ("rig_dock_open", L.State(ext=8.0), DOCK, dock_cut, "Kinematic dock, 12 mm before seating: the balls over the cone and the vee", ghost_plate),
+            ("rig_cradle", L.State(ext=0.0), CRADLE, station_cut, "Guide: the parked EC on its own cone-vee-flat seat in the cradle (cradle see-through)",
+             ghost_cradle),
+            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter up 8.5 mm"),
+            ("rig_door_closed", L.State(ext=0.0), DOOR, dock_cut, "Outlet door closed: the spring holds the shutter over the 3 mm exit"),
+            ("rig_latch", L.State(), LATCH, latch_cut, "Plate latch at the station: the rail has drawn the bolt back off the plate's keeper"),
+            ("rig_latch_rail", L.State(), LATCH_BELOW, latch_cut, "Latch rail under the bottom run: it pushes each carriage's follower back at the station"),
+            ("rig_latch_closed", L.State(shift=RUN_DIRECTION * 4.0, ext=0.0), LATCH, latch_cut,
              "Plate latch half an index from the station: the bolt is home over the keeper"),
             ("rig_hatches", L.State(hatch_front=HATCH_OPEN_DEG, hatch_side=HATCH_OPEN_DEG), ((200, 40, 420), (-0.75, 1.0, 0.45), 2000), None,
              "Enclosure: the front hatch (the scale) and the side hatch (swaps) open"),
@@ -292,9 +367,11 @@ def stills(quick: bool = False) -> None:
             ("rig_scale", L.State(ext=0.0), SCALE, lambda p: p.group == "enclosure", "The HR-100A where it has to stand: its breeze break would hold the guide, the EC and the P16"),
             ("rig_back_iso", L.State(), ((230, 0, 420), (1.0, 0.75, 0.45), 1900), None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft"),
         ]
-    for name, st, cam, hide_fn, title in views:
+    for item in views:
+        name, st, cam, hide_fn, title = item[:5]
+        op_fn = item[5] if len(item) > 5 else None
         pl = L.placements(st)
-        v.show(pl, hide=hidden(pl, hide_fn))
+        v.show(pl, hide=hidden(pl, hide_fn), opacity=op_fn(pl) if op_fn else None)
         v.camera(*cam)
         caption(v.image(), title).save(OUT / f"{name}.png")
         print("  wrote", name, flush=True)
@@ -652,14 +729,13 @@ class Clip(Movie):
 def features(only: str = "") -> None:
     sec = lambda s: max(2, int(s * 12))  # noqa: E731
     tf = L.frame_dose_tilt(TILT_DOSE_WORLD)
-    plate_ghost = lambda pl: {k: 0.35 for k, p in keyed(pl) if p.key in ("sam_mounting_plate", "auger", "door_housing") and p.module == 0}  # noqa: E731
 
     if not only or only == "dock":
         c = Clip("dock_kinematic_coupling")
         for i in range(sec(4.0)):
             e = DOCK_EXT * ease(i / (sec(4.0) - 1))
             pl = L.placements(L.State(ext=e, magnet_on=e > DOCK_EXT - 2))
-            c.v.show(pl, hide=hidden(pl, station_cut), opacity=plate_ghost(pl))
+            c.v.show(pl, hide=hidden(pl, dock_cut), opacity=ghost_plate(pl))
             c.v.camera(*DOCK)
             c._emit(caption(c.v.image(), "Kinematic dock (item 1): the EC rises onto the plate's two balls and its own third ball",
                             f"cone (+y) and vee (-y) with N52 magnets under them, ball C on the steel armature; {DOCK_EXT - e:4.1f} mm to go", TAG))
@@ -671,14 +747,14 @@ def features(only: str = "") -> None:
         for i in range(sec(2.5)):
             e = DOCK_EXT * (1 - ease(i / (sec(2.5) - 1)))
             pl = L.placements(L.State(ext=e))
-            c.v.show(pl, hide=hidden(pl, station_cut))
+            c.v.show(pl, hide=hidden(pl, station_cut), opacity=ghost_cradle(pl))
             c.v.camera(*CRADLE)
             c._emit(caption(c.v.image(), "Guide (item 2): the EC drops back into its cradle and onto its own cone-vee-flat seat",
                             "side walls 0.3 mm off its body, a front wall it leans on; no back wall, so the tilt carries it out backward", TAG))
         for i in range(sec(3.0)):
             s_ = RUN_DIRECTION * MODULE_LINKS * scurve(i, sec(3.0) - 1)
             pl = L.placements(L.State(shift=s_, ext=0.0))
-            c.v.show(pl, hide=hidden(pl, station_cut))
+            c.v.show(pl, hide=hidden(pl, station_cut), opacity=ghost_cradle(pl))
             c.v.camera(*cam_lerp(CRADLE, STATION, 0.6))
             c._emit(caption(c.v.image(), "Parked 20 mm under the carriages, the EC lets them index past", "", TAG))
         c.done()
@@ -690,7 +766,7 @@ def features(only: str = "") -> None:
                 t = ease(i / (n - 1))
                 st = L.State(**fn(t))
                 pl = L.placements(st)
-                c.v.show(pl, hide=hidden(pl, station_cut), opacity={k: 0.45 for k, p in keyed(pl) if p.key == "door_housing" and p.module == 0})
+                c.v.show(pl, hide=hidden(pl, dock_cut), opacity={k: 0.45 for k, p in keyed(pl) if p.key == "door_housing" and p.module == 0})
                 c.v.camera(*DOOR)
                 c._emit(caption(c.v.image(), "Outlet door (item 4): the docked EC's finger lifts the shutter; its spring shuts it",
                                 f"door {L.door_open(st):4.1f} of {DOOR_TRAVEL} mm open: only while the EC holds the module", TAG))
@@ -703,7 +779,7 @@ def features(only: str = "") -> None:
             st = L.State(shift=s_, ext=0.0)
             pl = L.placements(st)
             k = L.carriage_at(L.CARRIAGE_LINK0, 0.0)
-            c.v.show(pl, hide=hidden(pl, station_cut))
+            c.v.show(pl, hide=hidden(pl, latch_cut))
             c.v.camera(*LATCH)
             lo = L.latch_open(k, st)
             c._emit(caption(c.v.image(), "Plate latch (item 4a): the station's rail draws the bolt back as the carriage arrives",
@@ -753,6 +829,92 @@ def features(only: str = "") -> None:
         c.done()
 
 
+def scale_contacts(dxs=None) -> dict:
+    """For every part the HR-100A meets with its pan under the dose point (checks/scale.json), how far in front of the
+    dose point (mm, along -x) the balance first touches it when it slides in from the front. Bisection on the OCC
+    common volume; cached in checks/scale_contacts.json."""
+    import json
+    import check_interference as CI
+    cache = HERE / "checks" / "scale_contacts.json"
+    if cache.exists():
+        return json.loads(cache.read_text())
+    rec = json.loads((HERE / "checks" / "scale.json").read_text())
+    names = sorted({h["b"] for h in rec["clashes"]})
+    pl = L.placements(L.State(ext=0.0))
+    by_name: dict[str, list] = {}
+    for p in pl:
+        if p.name in names:
+            by_name.setdefault(p.name, []).append(p)
+    sc = [p for p in pl if p.group == "scale" and p.key != "beaker"]
+
+    def hits(name, dx):
+        objs = CI.objects([L.Placement(p.key, p.name, L.T(None, (dx, 0, 0)) @ p.M, p.step) for p in sc]) + CI.objects(by_name[name])
+        n = len(sc)
+        pairs = [(a, b) for a in range(n) for b in range(n, len(objs))]
+        return bool(CI.overlaps(objs, pairs, min_vol=0.5))
+    out = {}
+    for nm in names:
+        lo, hi = -500.0, 0.0                       # no contact at lo (balance 500 mm in front), contact at hi
+        if hits(nm, lo):
+            out[nm] = lo
+            continue
+        for _ in range(9):
+            mid = (lo + hi) / 2
+            if hits(nm, mid):
+                hi = mid
+            else:
+                lo = mid
+        out[nm] = round(hi, 1)
+        print(f"  {nm}: first touched {-hi:.0f} mm before the dose point", flush=True)
+    cache.write_text(json.dumps(out, indent=1) + "\n")
+    return out
+
+
+def scale_fit() -> None:
+    """Item 6's GIF: the HR-100A slides in from the front toward the dose point; every part it would have to pass
+    through turns red when it first touches it; then the list of what is in the way."""
+    contacts = scale_contacts()
+    c = Clip("scale_fit")
+    cam = ((L.DOSE_POINT[0] - 90, L.DOSE_POINT[1] + 10, 200), (-1.0, -0.62, 0.38), 1150)
+    hide_fn = lambda p: (p.group == "enclosure" or (p.group in ("frame", "plates", "elec") and p.M[1, 3] < -60 and p.key not in ("ext_y",))  # noqa: E731
+                         or p.group == "elec" or (p.module >= 0 and abs(p.M[1, 3] - L.STATION_Y) > 60))
+    bal = {"hr100a_body": (0.55, 0.62, 0.72), "hr100a_glass": (0.70, 0.85, 0.95), "hr100a_pan": (0.6, 0.6, 0.62)}
+    n = sec_ = 12 * 7
+    first = min(contacts.values()) if contacts else -100.0
+    for i in range(n + 1):
+        dx = -460.0 * (1 - ease(i / n))
+        st = L.State(ext=0.0, scale_offset=(dx, 0.0))
+        pl = L.placements(st)
+        red = {k: (0.9, 0.12, 0.1) for k, p in keyed(pl) if p.name in contacts and dx >= contacts[p.name]}
+        red.update({k: bal[p.key] for k, p in keyed(pl) if p.key in bal})
+        op = {k: (0.75 if p.key == "hr100a_body" else 0.35) for k, p in keyed(pl) if p.group == "scale"}
+        c.v.show(pl, colors=red, hide=hidden(pl, hide_fn), opacity=op)
+        c.v.camera(*cam)
+        hit = sum(1 for nm, v in contacts.items() if dx >= v)
+        c._emit(caption(c.v.image(), "Scale (item 6): the A&D HR-100A slides in toward the dose point",
+                        f"pan centre {-dx:5.0f} mm in front of the dose point; {hit} parts in its way (red)", TAG))
+    c.hold(12)
+    groups = [("the EC, its guide cradle and the P16 under the station", ("Electronics carriage", "NEMA 11", "pinion", "Guide cradle", "Cradle post",
+                                                                         "Actuonix", "Actuator base clevis", "Station rail", "Dowel", "Magnet",
+                                                                         "Shoulder screw", "M3 locknut")),
+              ("the frame's front base rail, a post and its brackets", ("Base cross rail front", "Base rail", "Post", "Corner bracket", "Leveling foot")),
+              ("the front hold-down", ("Hold-down",))]
+    pl = L.placements(L.State(ext=0.0))
+    red = {k: (0.9, 0.12, 0.1) for k, p in keyed(pl) if p.name in contacts}
+    red.update({k: bal[p.key] for k, p in keyed(pl) if p.key in bal})
+    op = {k: (0.5 if p.key == "hr100a_body" else 0.3) for k, p in keyed(pl) if p.group == "scale"}
+    for title, keys in groups:
+        near = min((v for nm, v in contacts.items() if nm.startswith(keys) or any(k in nm for k in keys)), default=0.0)
+        for _ in range(30):
+            c.v.show(pl, colors=red, hide=hidden(pl, hide_fn), opacity=op)
+            c.v.camera(*cam)
+            c._emit(caption(c.v.image(), f"In the way: {title}", f"the balance first meets it {-near:.0f} mm before the dose point", TAG))
+    for _ in range(48):
+        c._emit(caption(c.v.image(), "The EC docks 2 mm behind the outlet and its guide and P16 stand under it: inside the breeze break's 86 mm radius",
+                        "fitting the HR-100A means moving that column, opening the frame's front, raising the hold-down: see README, scale fit", TAG))
+    c.done()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
@@ -760,8 +922,11 @@ def main():
     ap.add_argument("--movie", action="store_true")
     ap.add_argument("--features", nargs="?", const="all", default=None)
     ap.add_argument("--fast", action="store_true", help="half-length movie (for checking)")
+    ap.add_argument("--scale-fit", action="store_true")
     a = ap.parse_args()
-    if a.movie:
+    if a.scale_fit:
+        scale_fit()
+    elif a.movie:
         movie(a.fast)
     elif a.features:
         features("" if a.features == "all" else a.features)

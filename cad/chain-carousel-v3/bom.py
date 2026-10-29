@@ -181,7 +181,7 @@ ITEMS = [
     (85, ("m2x8_shcs",), 4, "M2 x 8 socket head screw, 18-8 (door housing to the plate) + M2 brass heat-set insert in the plate", "McMaster-Carr",
      "M2 x 8 SHCS + M2 insert", f"{MC}/", 0.25, "estimate (v3 part, McMaster lookup pending)", (9,), "Doors"),
     (86, ("latch_bolt",), None, "Latch bolt, PETG (one per carriage)", "printed", "stl/latch_bolt.stl", "", 0.03, "filament", (10,), "Printed"),
-    (87, ("latch_follower",), 3, "Dowel pin, hardened steel, 3 x 20 mm: the latch bolt's follower", "McMaster-Carr", "3 x 20 dowel",
+    (87, ("latch_follower",), 3, "Dowel pin, hardened steel, 3 x 18 mm: the latch bolt's follower", "McMaster-Carr", "3 x 18 dowel",
      f"{MC}/dowel-pins/", 0.30, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),
     (88, ("latch_spring",), 3, "Compression spring, stainless, 3 mm OD, about 12.7 mm free, about 0.25 N/mm (latch: 0.7 N home, 1.8 N open)",
      "McMaster-Carr", "3 mm OD compression spring", f"{MC}/compression-springs/", 0.80, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),

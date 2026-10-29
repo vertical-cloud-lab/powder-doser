@@ -335,7 +335,10 @@ EC_BASE_T = 3.0                      # printed base under Sam's carriage (as dra
 EC_BASE_Z = -60.8                    # base's top face, as drawn
 EC_BALLS = ((69.0, 11.5), (69.0, -11.5), (40.0, 0.0))   # cone, vee (along y), flat, under the base: the EC's centre of mass
                                                      # (x 52) is inside their triangle and clear of the clevis
-EC_PIN = (58.0, -70.0)               # clevis pin (x, z), as drawn: 6 mm behind the EC's centre of mass, so it leans forward
+EC_PIN = (58.0, -76.0)               # clevis pin (x, z), as drawn: 6 mm behind the EC's centre of mass, so it leans forward;
+                                     # 12 mm under the base, so at 90 deg the P16's rod passes under the flat ball
+EC_CHEEK_Y = (4.8, 9.8)              # clevis cheeks: 9.6 mm apart, the rod (8.94) swings between them at any tilt; two 0.8 mm
+                                     # PTFE washers each side take up the gap round the rod end's 6 mm tab
 EC_SLOT = 2.0                        # lost motion in the clevis slots
 GUIDE_CLEAR = 0.3                    # side and front walls off the EC's lower body
 GUIDE_WALL_T = 2.5
@@ -349,24 +352,28 @@ PARK_DROP = 20.0                     # parked EC sits this far below its docked 
 DOOR_GAP = 0.3                       # shutter's back face to the auger's end face
 DOOR_T = 1.5                         # shutter thickness
 DOOR_W = 10.0                        # shutter width (y)
-DOOR_CLOSED_Z = (-6.0, 4.0)          # shutter's bottom and top edges, closed (covers the exit, z -1.5..1.5, by 2.5-4.5 mm)
-DOOR_TRAVEL = 8.5                    # open: bottom edge at +2.5, 1 mm above the exit
+DOOR_CLOSED_Z = (-3.5, 4.0)          # shutter's bottom and top edges, closed (covers the exit, z -1.5..1.5, by 2-2.5 mm)
+DOOR_TRAVEL = 6.0                    # open: bottom edge at +2.5, 1 mm above the exit
 DOOR_ROD_Y = 7.5                     # push strip beside the exit (y 6-9)
 DOOR_ROD_D = 3.0                     # push strip width (it is the shutter's own +y strip, 1.5 thick)
 DOOR_ROD_BOTTOM = -22.0              # rod's lower end, closed (inside the carriage window, above its outer face)
-DOOR_SPRING = (3.0, 16.0, 0.06)      # OD, free length, rate N/mm (stainless): fitted at 13 mm, 0.18 N closed, 0.69 N open
+DOOR_SPRING = (3.0, 16.0, 0.06)      # OD, free length, rate N/mm (stainless): 11.5 mm fitted shut (0.27 N), 5.5 open (0.63 N)
 DOOR_TOP = 19.5                      # housing's top (z): |u| 13 + w 31.2 = 44.2, inside the 45 mm corner rule
+DOOR_SPRING_SEAT = DOOR_TOP - 3.0    # the cap's underside, where the spring's fixed end sits
+DOOR_SPRING_SHUT = DOOR_SPRING_SEAT - (DOOR_CLOSED_Z[1] + 1.0)   # 11.5: seat to the shutter's boss, door shut
 
 # --- 4a. the plate latch: holds the plate on its carriage upside down; a cam at the station opens it ------------------------
 # A printed bolt slides along x in a housing on the carriage's inner face behind the plate, at y = LATCH_Y (beside the auger
 # tube). A spring pushes it forward over a keeper on the plate's back end. Its follower pin runs down through a slot in the
 # carriage plate; at the station a fixed rail along the travel pushes the follower back LATCH_TRAVEL, so every carriage's
 # latch is open while it sits at the station (module right side up, resting on the carriage) and closes as it leaves.
-LATCH_Y = 19.0
+LATCH_Y = -19.0                      # the -y side: the station's rail has to stay within +-28 mm of the station, where no carriage
+                                     # tips (beyond that they start round the corners and dip up to 7 mm)
 LATCH_W = 8.0                        # bolt width (y)
 LATCH_KEEPER_X = (98.0, 103.0)       # keeper block on the plate's back end, |y| 14-24, top face z -13
 LATCH_LAP = 3.0                      # bolt over the keeper when closed
 LATCH_TRAVEL = 4.5                   # bolt stroke: open leaves 1.5 mm between the bolt and the keeper's back edge
+LATCH_RAIL_FLAT = 4.0                # rail flat, +- about the station follower (the index repeats to +-0.5 mm)
 LATCH_FOLLOW_X = 120.0               # follower pin (closed), x
 LATCH_FOLLOW_PROUD = 4.0             # follower tip below the carriage's outer face
 LATCH_SPRING = (4.0, 12.7, 0.25)     # OD, free length, rate N/mm: 0.9 N closed, 2.0 N open
@@ -376,6 +383,8 @@ ACRYLIC_T = 3.0                      # 1/8 in cast acrylic (actual 0.118 in)
 PANEL_STANDOFF = 6.0                 # panels on spacers outside the frame: the side runs' carriages reach y +-117, the side tabs +-124
 WIN_BACK_V3 = 125.0                  # v3 carriage window's back edge (Sam's x): EC v3's flat ball and boss reach x 119
 PAD_X0_V3 = 90.5                     # pads under the plate's back corners start here (EC v3's bracket arms end at x 90)
+PAD_U0_V3 = 15.5                     # pads at |u| 15.5-23.5: the EC's base and its seat balls sweep |y| <= 14.7 through the
+                                     # carriage's plane at 30-35 deg of tilt
 SIDE_TAB_FOOT_GAP = 4.0              # side tab foot outside the tongue (v4 makes it 1 mm: the auger pull goes through it)
 HATCH_FRONT = (180.0, 230.0)         # front hatch (y width, z height), centred on the station, bottom at the base rail
 HATCH_SIDE = (330.0, 230.0)          # side hatch on +y (x width, z height), centred on the loading position

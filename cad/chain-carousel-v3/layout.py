@@ -160,6 +160,8 @@ def side_holes(back: bool) -> list[tuple]:
                 out.append(("tap", (y + dy, z - BRG["DOME_D"] / 2 - 6.0 - 12.0), (5.0,)))
     zb0 = SIDE_Z_BACK[0] if back else SIDE_Z[0]
     zs = [zb0 + 20.0 + k * (SIDE_Z[1] - 15.0 - zb0 - 20.0) / (5 if back else 3) for k in range(6 if back else 4)]
+    zl = float(load_frame()[2, 3])                                                  # keep the post screws' heads off the side tabs
+    zs = [zl - 34.0 if zl - 34.0 < z < zl + 8.0 else z for z in zs]
     for sy in (-1, 1):                                                              # to the posts' slots
         for z in zs:
             out.append(("circle", (sy * POST_Y, z), (5.5,)))
@@ -321,7 +323,8 @@ CRADLE_FLOOR = _ZB0 + 2.6 - KC_BALL_D / 2 - 1.0 - 6.0      # cradle floor's unde
 CRADLE_FLOOR_Z = float(to_world(CRADLE_M, (0, 0, CRADLE_FLOOR))[2])
 CRADLE_POST = (STATION_RAIL_X, STATION_Y - 32.0)  # 2020 post on the station rail beside the P16, under the cradle's arm
 LATCH_RAIL_M = None                                # set below: the station carriage's Sam frame at tilt 0
-LATCH_RAIL_POST = (HINGE_X + LATCH_FOLLOW_X + 11.0, STATION_Y - 32.0)   # on the second station rail
+LATCH_RAIL_POST = (HINGE_X + LATCH_FOLLOW_X + 11.0, STATION_Y + LATCH_Y)   # on the second station rail, under the rail's middle
+                                                                          # (beyond +-28 mm of the station, carriages round the corners dip)
 LATCH_RAIL_X = LATCH_RAIL_POST[0]                  # second station rail (along y)
 
 
@@ -636,7 +639,7 @@ def placements(state: State | float | None = None) -> list[Placement]:
         lo = latch_open(k, st)
         Ml = sam_frame(C, 0.0)
         add(Placement("latch_bolt", f"Latch bolt (printed) {k + 1}", Ml @ T(None, (lo, 0, 0)), 10, ORANGE, "carriages", out_dir, k))
-        add(Placement("latch_follower", f"Latch follower, dowel 3 x 20 {k + 1}", Ml @ T(None, (LATCH_FOLLOW_X + lo, LATCH_Y, 0)), 10, STEEL,
+        add(Placement("latch_follower", f"Latch follower, dowel 3 x 18 {k + 1}", Ml @ T(None, (LATCH_FOLLOW_X + lo, LATCH_Y, 0)), 10, STEEL,
                       "carriages", out_dir, k))
         xs0 = LATCH_FOLLOW_X + 3.0 + lo
         add(Placement("latch_spring", f"Latch spring {k + 1}", Ml @ T(Ry(math.pi / 2), (xs0, LATCH_Y, -11.1)), 10, STEEL, "carriages", out_dir, k))
@@ -656,8 +659,8 @@ def placements(state: State | float | None = None) -> list[Placement]:
         dz = door_open(st) if on_station else 0.0
         add(Placement("door_housing", f"Outlet door housing (printed) {k + 1}", Ms, 9, ORANGE, "modules", out_dir, k))
         add(Placement("door_shutter", f"Outlet door shutter (printed) {k + 1}", Ms @ T(None, (0, 0, dz)), 9, DARK, "modules", out_dir, k))
-        zs = DOOR_CLOSED_Z[1] + 2.0 + dz
-        add(Placement("door_spring", f"Outlet door spring {k + 1}", Ms @ T(None, (P3.DOOR_SPRING_X, 0.0, zs)), 9, STEEL, "modules", out_dir, k))
+        sk = "door_spring_open" if dz > 0.5 else "door_spring"
+        add(Placement(sk, f"Outlet door spring {k + 1}", Ms @ T(Rx(math.pi), (P3.DOOR_SPRING_X, 0.0, DOOR_SPRING_SEAT)), 9, STEEL, "modules", out_dir, k))
         for sy in (-1, 1):
             add(Placement("m2x8_shcs", f"Door housing screw M2x8 {k + 1}", Ms @ T(None, (18.5, sy * 13.7, -8.0)), 9, DARK, "modules", out_dir, k))
         spin = st.spin if on_station else 0.0
@@ -689,10 +692,10 @@ def placements(state: State | float | None = None) -> list[Placement]:
 
 
 def latch_open(k: int, st: State) -> float:
-    """How far carriage k's latch bolt is drawn back (mm): the station's rail has a flat +-22 mm about the station and
-    25 deg ramps at both ends, and only bottom-run carriages near the station reach it."""
+    """How far carriage k's latch bolt is drawn back (mm): the station's rail has a flat +-LATCH_RAIL_FLAT about the station
+    and 25 deg ramps at both ends, and only bottom-run carriages near the station reach it."""
     d = ((slot_of(k, st.shift) - CARRIAGE_LINK0 + N_LINKS / 2) % N_LINKS - N_LINKS / 2) * P
-    flat, ramp = 22.0, LATCH_TRAVEL / math.tan(math.radians(25.0))
+    flat, ramp = LATCH_RAIL_FLAT, LATCH_TRAVEL / math.tan(math.radians(25.0))
     if abs(d) >= flat + ramp:
         return 0.0
     return LATCH_TRAVEL * min(1.0, (flat + ramp - abs(d)) / ramp)
@@ -905,6 +908,8 @@ BUILDERS = {
     "m5x25_shcs": lambda: PT.shcs(5, 25),
     "m5x10_shcs": lambda: PT.shcs(5, 10),
     "m5x8_shcs": lambda: PT.shcs(5, 8),
+    "ec_pin_screw": lambda: P3.shoulder_screw_4x20(),
+    "ptfe_washer": lambda: cq.Workplane("XY").circle(4.5).circle(2.15).extrude(0.8),
     "nut_m5": lambda: PT.locknut(5.0),
     "tnut_m5": PT.tnut_m5,
     "board_panel": PT.board_panel,
@@ -942,7 +947,8 @@ BUILDERS = {
     "latch_spring": lambda: P3.spring(LATCH_SPRING[0], LATCH_SPRING[1] - 2.7, 0.3, 6),
     "door_housing": P3.door_housing,
     "door_shutter": P3.door_shutter,
-    "door_spring": lambda: P3.spring(DOOR_SPRING[0], 13.0, 0.3, 7),
+    "door_spring": lambda: P3.spring(DOOR_SPRING[0], DOOR_SPRING_SHUT, 0.3, 7),
+    "door_spring_open": lambda: P3.spring(DOOR_SPRING[0], DOOR_SPRING_SHUT - DOOR_TRAVEL, 0.25, 7),
     "m2x8_shcs": lambda: PT.shcs(2, 8),
     "side_tab": P3.side_tab,
     "side_tab_m": lambda: P3.side_tab().mirror("YZ"),
