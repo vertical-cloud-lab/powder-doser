@@ -1,0 +1,13 @@
+powder_id,bulk_density_g_ml,tapped_density_g_ml,hausner_ratio,d50_um,angle_repose_deg,true_density_g_cm3,moisture_pct,hygroscopicity,shape,hr_provenance
+salt,1.19,1.28,1.08,425,32,2.165,0.05,low (deliquesces above 75% RH),cubic crystals,class-band
+white-rice-flour,0.68,0.80,1.18,100,45,1.45,11.7,moderate,polygonal starch granules,measured-class
+brown-rice-flour,0.68,0.82,1.20,130,47,1.45,11.5,moderate,granules + bran flakes,class-band
+sodium-alginate,0.55,0.70,1.27,120,42,1.65,12,high,fibrous/granular,assumed-circular
+calcium-lactate,0.40,0.55,1.375,220,40,1.494,0.5,low (22-27% bound crystal water),crystalline ground,assumed-circular
+carboxymethyl-cellulose,0.60,0.80,1.33,60,41,1.60,15,high,fibrous,aor-anchored-band
+xanthan-gum,0.62,0.77,1.24,90,35,1.52,12,high,milled irregular,measured-analog
+sodium-sulfate,1.40,1.68,1.13,135,32,2.664,0.06,low at 40-60% RH (hydrates at 85%+ RH),granular crystalline,measured-product
+silicon-110-200,1.25,1.45,1.16,106,36,2.33,0.05,low,angular crushed,assumed-circular
+silicon-325,0.77,1.00,1.30,25,43,2.33,0.1,low,angular fines,assumed-circular
+alsi10mg,1.35,1.60,1.19,42,30,2.67,0.03,low,spherical gas-atomized,measured-product
+barium-chloride,1.30,1.50,1.15,300,34,3.097,0.02,low at ambient (stable dihydrate below 90% RH),rhomboidal crystals,assumed-circular

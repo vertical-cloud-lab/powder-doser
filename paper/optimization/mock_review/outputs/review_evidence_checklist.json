@@ -1,0 +1,52 @@
+{
+  "inputs_read": [
+    "main.pdf (all 34 pages, extracted text)",
+    "OUTLINE.md",
+    "16-journal-editors.md",
+    "17-suggested-reviewers.md",
+    "08-powder-properties-experts.md"
+  ],
+  "figures_visually_inspected": [
+    "Fig. 1",
+    "Fig. 2",
+    "Fig. 3",
+    "Fig. 4 (design only)",
+    "Fig. 5a (real); 5b/c (design only)",
+    "Fig. 6a/b (real); 6c (design only)"
+  ],
+  "persona_selection": {
+    "editor": "Ryan R. Wicker (scouting-note persona; live board lists Emeritus Editor-in-Chief, A. T. Clare as current Editor-in-Chief)",
+    "R1": "Laura Cordova",
+    "R2": "Hongyang Cheng",
+    "R3": "Keith A. Brown",
+    "R4": "Johannes G. Khinast"
+  },
+  "verified_publications": {
+    "Cordova": "10.1016/j.addma.2020.101082",
+    "Cheng": "10.1016/j.cma.2019.01.027",
+    "Brown": [
+      "10.1038/s41524-021-00656-9",
+      "10.1126/sciadv.aaz1708"
+    ],
+    "Khinast": "10.1208/s12249-020-01835-5",
+    "closest_auger_calibration_precedent": "10.14356/kona.2021010"
+  },
+  "confirmed_numeric_consistency": [
+    "231/9.6=24.0625",
+    "245/78=3.1410",
+    "AlSi10Mg: -0.0875 percent",
+    "Fig.2b endpoints agree with text",
+    "4+16+4+4+14=42, with four post-refit repeats inferred from reported 28 pre-BO doses"
+  ],
+  "confirmed_or_unresolved_conflicts": [
+    "Fig.6a fine silicon point ~1.2 mg/rev, caption says 0.1",
+    "screening overshoot counts 2+5=7 versus six screening overshoots",
+    "Fig.5a 22.5-degree point corresponds to 90rpm in text; caption generically says simulated 60rpm"
+  ],
+  "limitations": [
+    "No raw dose tables or simulation outputs attached: cannot independently refit statistics or verify trial classifications",
+    "Seven of twelve AoR values are estimates",
+    "Synthetic panels excluded from factual result audit"
+  ],
+  "figure6a_fine_silicon_marker_mg_per_rev_from_vector_axis": 1.2000161575863235
+}

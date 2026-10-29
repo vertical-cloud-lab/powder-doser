@@ -1,0 +1,753 @@
+# Raw Whisper large-v3 output (faster-whisper 1.2.1, int8 CPU, beam 5, VAD, language=en),
+# uncorrected. One line per segment: [start-end] text, times from the start of the recording.
+# Lines marked (unreliable) were decoded at a fallback temperature >= 0.6 with mean token
+# log-probability < -1.0, which in this recording means little or no clear speech.
+
+[00:03.4-00:11.6] 124 which is like when we first defined the optimization and like yeah what we I just have
+[00:11.6-00:16.1] been talking to Claude with about like what parameters we should optimize what
+[00:16.1-00:20.0] what are things we can just manually to yeah that makes sense
+[00:20.0-00:39.3] go do something here what's your schedule like 330 I am free until
+[00:39.3-00:40.3] four okay
+[00:40.3-02:07.0] okay so I'm gonna pull up the TMS title in abstracts and we'll kind of start
+[02:07.0-02:15.5] there I did grab us with one things I should write here I've got the
+[02:15.5-02:26.8] We've got the outline of what Claude has summarized as well, the different tasks for this paper, or what it thinks the task should be.
+[02:39.1-02:44.2] So auger-based powder dosing as a mechanistic probe of powder flow behavior
+[02:44.2-02:48.7] multi-task Bayesian calibration, and physics-based property inference.
+[02:50.7-02:54.2] Dispensed math. How do you feel about the title?
+[02:56.8-03:04.6] I definitely, like, I understand the part about the auger-based powder dosing
+[03:05.3-03:11.2] as a probe of powder flow behavior and the multi-task Bayesian calibration.
+[03:11.7-03:14.2] I just don't really know what the physics-based property inference is.
+[03:14.2-03:20.8] Yeah, physics-based property inference, and we could rephrase this, it's essentially saying
+[03:20.8-03:33.8] we'll run simulations with the data we've collected to try to help us infer what the properties would are
+[03:33.8-03:39.6] if we were to run it on some big test equipment, all these standard powder properties.
+[03:41.1-03:42.2] Sorry, can you...
+[03:42.2-03:43.9] Yeah, yeah, so let's see.
+[03:51.2-03:55.9] So is it, like, to impact future powders behavior?
+[03:56.6-04:01.3] What would some of the powder properties that were talked about...
+[04:01.3-04:04.0] I just need one, like, does one come to mind?
+[04:05.9-04:08.0] I had it listed out.
+[04:12.5-04:17.0] One example would be hydro...
+[04:17.9-04:19.0] Okay, here we go.
+[04:19.2-04:21.4] So we've got bolt.
+[04:22.7-04:24.0] Yeah, just all of these.
+[04:24.1-04:27.1] Yeah, so let's go with Hall flow.
+[04:29.3-04:34.3] So for Hall flow, you can...
+[04:36.2-04:39.3] No, actually, let's talk about moisture for a second.
+[04:39.4-04:44.2] So hygroscopic powders.
+[04:44.3-04:49.8] Let's say with the powder doser you run a test where it's in a semi-humid environment,
+[04:49.8-04:57.5] and you dose it before it had a chance to uptake moisture, and then you dose it afterwards.
+[04:59.6-05:05.6] You could do that kind of...
+[05:09.7-05:17.1] Like, you wouldn't necessarily have to run an official hygroscopic, like, powder moisture sensitivity test.
+[05:17.8-05:19.7] Like, putting it...
+[05:20.5-05:22.5] Yeah, like what it's saying here.
+[05:23.0-05:24.2] So you...
+[05:25.6-05:30.1] Basically try to get it to uptake some water, and then you put it in an oven to dry it.
+[05:30.2-05:30.7] Yeah.
+[05:30.8-05:32.4] And then you measure the weight again.
+[05:32.5-05:42.9] Not like that's super difficult, but just that if we took our auger, and we got the data,
+[05:43.0-05:52.1] and we're running a simulation, like, the particles go in, and we try to have some physics-based interaction with the moisture,
+[05:52.4-05:54.5] like, the moisture affecting the powder.
+[05:54.7-05:55.1] Okay.
+[05:55.1-06:04.1] But we get the same, like, the same moisture property out as if we had done, like, this full oven drying cycle.
+[06:05.1-06:06.1] Oh, okay.
+[06:06.3-06:15.7] By using, like, our experimental data and some physics-based simulation where it says, well, if the moisture, if the hygroscopicity...
+[06:15.7-06:16.6] Ah, man.
+[06:18.9-06:19.4] Hygroscopicity.
+[06:19.8-06:20.6] It's gonna come up.
+[06:23.2-06:23.8] Hygroscopicity.
+[06:25.1-06:25.6] Hygroscopicity.
+[06:29.6-06:30.0] Hygroscopicity.
+[06:30.3-06:30.7] Hygroscopicity.
+[06:31.2-06:31.9] Here we go.
+[06:32.2-06:36.5] It's a minute long.
+[06:38.3-06:39.1] Let's take a while.
+[06:45.0-06:45.5] Hygroscopicity.
+[06:46.1-06:46.6] Hygroscopicity.
+[06:46.7-06:47.2] Hygroscopicity.
+[06:47.4-06:47.6] Okay.
+[06:48.5-06:49.5] Sounds like I'm...
+[06:51.7-06:52.3] All right.
+[06:52.3-06:54.7] So that, that thing, hygroscopicity.
+[06:57.1-06:58.6] Where was I even going with that?
+[06:59.7-07:02.6] In the physics-based simulation, let's say there's a parameter.
+[07:02.6-07:02.7] Yeah.
+[07:02.7-07:04.7] There's a parameter that is tied to hygroscopicity.
+[07:06.0-07:06.5] Okay.
+[07:06.8-07:08.4] We have our experimental results.
+[07:08.9-07:14.3] We can say, okay, what parameter here makes it match our experimental results that we're
+[07:14.3-07:15.0] getting with the auger?
+[07:15.7-07:21.9] Does that value match what we would get if we had run this other, more complicated test?
+[07:22.1-07:22.5] Okay.
+[07:22.7-07:25.2] Does that make sense for the physics-based inference?
+[07:25.7-07:25.7] Yes.
+[07:25.7-07:31.9] And so you're saying we wouldn't necessarily have to measure the physical hygroscopicity?
+[07:32.0-07:32.2] Mm-hmm.
+[07:32.2-07:32.6] Okay.
+[07:32.7-07:32.7] Yeah.
+[07:33.7-07:34.1] Yeah.
+[07:34.3-07:40.9] And then maybe, maybe scroll down a little bit.
+[07:41.0-07:41.3] Yeah.
+[07:42.1-07:42.6] Yeah.
+[07:42.6-07:54.0] So shear, I guess this is maybe phrased another way, by just knowing a few things about the
+[07:54.0-08:03.4] powder that we put in, could we autonomously predict what, could we basically say, okay,
+[08:03.4-08:05.6] run a bunch of experiments on the auger?
+[08:05.6-08:09.8] I thought I was touching it, to predict what all these values would be if we had run these
+[08:10.7-08:12.8] official ASTM measurements for all these.
+[08:12.8-08:13.2] Oh, okay.
+[08:13.5-08:14.2] I see.
+[08:15.0-08:16.2] Does that make sense?
+[08:16.7-08:17.1] Yeah.
+[08:17.4-08:17.8] So...
+[08:19.6-08:26.9] So these would be proxy measurements for these, these higher fidelity tests.
+[08:27.4-08:27.7] Okay.
+[08:28.0-08:32.0] I think I'm understanding you now.
+[08:32.0-08:32.3] I'm sorry.
+[08:32.5-08:32.7] It's...
+[08:32.7-08:33.1] No, no, no.
+[08:33.2-08:33.5] It's okay.
+[08:34.4-08:34.9] So...
+[08:36.4-08:37.3] I've been, like, breathing.
+[08:37.4-08:37.5] Yeah.
+[08:37.5-08:40.0] I've been doing inference and Bayesian and other stuff for a few years.
+[08:40.8-08:43.5] So we are hoping to make a physics simulation.
+[08:44.2-08:44.4] Yeah.
+[08:46.6-08:49.4] And I don't know exactly what those, all of those are.
+[08:49.5-08:49.6] Yeah.
+[08:49.6-08:51.4] That's some of the less defined part.
+[08:51.5-08:57.8] We're hoping to make it accurate enough that if we were to put some new powder in, we could
+[08:57.8-09:02.1] get the results and infer what these differ in.
+[09:02.2-09:02.7] Mm-hmm.
+[09:02.9-09:03.4] Okay.
+[09:03.5-09:03.7] Yeah.
+[09:05.2-09:06.5] Qualities are in the powder.
+[09:07.8-09:08.4] All right.
+[09:09.3-09:16.3] As I've been drafting it, it's been, especially with making the Bayesian optimization campaign,
+[09:16.5-09:27.9] it talks a lot about if powders have a similar value in any of these properties, it can reduce
+[09:27.9-09:30.0] the amount of iterations of the Bayesian optimization.
+[09:31.0-09:31.4] Yeah.
+[09:31.5-09:32.2] That makes sense.
+[09:32.4-09:32.5] Yeah.
+[09:33.7-09:37.4] So if you could, if you had a powder and you knew some of these values...
+[09:37.5-09:40.7] You could use that as a starting point for your dosing, right?
+[09:40.7-09:41.0] Yes.
+[09:41.2-09:43.6] So that, I like that, that that kind of goes both ways.
+[09:43.7-09:49.7] You could use the dosing to help you, like for an unknown powder, which is very relevant
+[09:49.7-09:53.1] to us with discovering new alloys, running our own atomization.
+[09:54.6-09:59.5] So we could figure things out about our unknown powders, or we could take a known powder and
+[09:59.5-10:04.4] quickly get the right parameters on the auger to do fast, accurate dosing.
+[10:05.1-10:05.5] Yeah.
+[10:06.6-10:07.5] That's what it's been like.
+[10:07.5-10:08.0] That's what I've been talking about.
+[10:08.2-10:11.8] And that's, of course, I don't know how to implement that.
+[10:14.2-10:21.3] I guess looking at the properties and I had it, you know, try to find like just standard
+[10:21.3-10:27.4] values for a lot of these, one of the biggest predictors of if it's going to just flow well
+[10:27.4-10:32.5] or not flow well is the envelope repos, which seems like a pretty simple one.
+[10:32.6-10:33.1] It's just...
+[10:33.1-10:33.3] Yeah.
+[10:34.3-10:37.4] The slope you get to before it like ablates.
+[10:37.4-10:37.4] Yeah.
+[10:37.4-10:37.7] It's just like inches.
+[10:37.8-10:38.2] Yeah.
+[10:38.2-10:38.6] Yeah.
+[10:38.6-10:39.4] Which is pretty interesting.
+[10:39.6-10:45.0] And so a steeper angle means it's harder to...
+[10:45.0-10:45.6] Yeah.
+[10:45.8-10:46.3] Exactly.
+[10:46.6-10:46.8] Gotcha.
+[10:49.0-10:55.9] Which is interesting too, because we can get that with the doser as well.
+[10:56.4-10:56.8] Yes.
+[10:56.9-10:57.3] True.
+[10:57.5-10:58.1] You're right.
+[10:58.2-11:02.8] It's like we can literally measure the angle of repose just with the right camera.
+[11:03.3-11:04.1] That's a good point.
+[11:04.2-11:05.0] I didn't think about that.
+[11:05.2-11:08.7] As long as it's into a glass or something like that.
+[11:08.7-11:09.8] Yeah.
+[11:10.9-11:14.4] I don't think for any of these other ones.
+[11:15.5-11:18.1] How much the powder compacts when tapped?
+[11:23.6-11:29.0] That one is also technically something we could...
+[11:30.3-11:33.0] Actually, we can do bulk and tap density.
+[11:33.1-11:33.6] Right.
+[11:33.8-11:40.5] Like we could make a different vessel that doesn't have a screw in it and we could...
+[11:40.5-11:41.5] So that...
+[11:41.5-11:42.2] Yeah.
+[11:42.2-11:42.3] Yeah.
+[11:42.3-11:44.1] We could hold it vertically and then...
+[11:44.1-11:44.5] Yeah.
+[11:44.7-11:49.1] And we could use the SLA auger.
+[11:49.4-11:49.9] Yeah.
+[11:50.6-11:53.2] And we could make it really thin walled.
+[11:54.0-11:56.1] And so, yeah.
+[11:57.7-11:59.9] So I guess, yeah, we could run our own tests.
+[12:00.0-12:00.2] Yeah.
+[12:00.6-12:06.1] I mean, this one too is just ran through a funnel.
+[12:09.2-12:10.2] Which one?
+[12:10.5-12:11.5] The Hall Carnival.
+[12:11.5-12:12.0] Oh, okay.
+[12:12.0-12:12.3] Yeah.
+[12:13.0-12:13.6] Which one?
+[12:13.6-12:13.8] Because it's...
+[12:13.8-12:17.6] How many seconds does it take for 50 grams to run through a standard funnel?
+[12:20.7-12:22.8] It's additive manufacturing's default.
+[12:22.9-12:23.2] Okay.
+[12:23.7-12:24.1] So...
+[12:25.2-12:25.6] Okay.
+[12:25.6-12:27.1] So you buy these special funnels.
+[12:28.9-12:29.3] Yeah.
+[12:34.1-12:38.0] And for that one, that does sound like you just buy the funnel set.
+[12:40.0-12:40.4] Yeah.
+[12:40.4-12:41.1] I don't think we...
+[12:41.1-12:42.6] 50 grams in there or something.
+[12:42.9-12:43.0] Yeah.
+[12:43.0-12:44.4] I don't think we'd be doing...
+[12:46.9-12:50.0] I don't think we'd be trying to force the powder doser to do that.
+[12:50.1-12:50.4] Yeah.
+[12:50.5-12:50.6] Yeah.
+[12:50.6-12:50.8] For sure.
+[12:50.9-13:07.6] But I do imagine all that data we collected about this much powder gets dosed per revolution
+[13:07.6-13:12.1] will be correlated with this Hall flow.
+[13:12.8-13:17.5] I would imagine those two things being correlated with each other.
+[13:17.7-13:18.3] That's true.
+[13:19.2-13:20.4] And something...
+[13:20.4-13:22.4] So what they...
+[13:22.4-13:25.8] It's been calling that as the feed factor, which is...
+[13:25.8-13:26.1] Yeah.
+[13:26.2-13:26.7] Yeah.
+[13:27.6-13:27.8] Yeah.
+[13:27.8-13:29.5] The dispensing per revolution.
+[13:29.6-13:38.7] And that actually makes things complicated because it's not standard for powder.
+[13:39.0-13:42.5] It's a function of probably other things like moisture.
+[13:42.8-13:43.2] Yeah.
+[13:43.7-13:47.2] And also how full is the auger seems to be a big...
+[13:47.2-13:47.5] Yeah.
+[13:47.7-13:48.3] Absolutely.
+[13:48.8-13:50.9] ...impact on the feed factor.
+[13:51.0-13:51.3] So...
+[13:51.3-13:51.8] Yeah.
+[13:52.0-13:52.6] Yeah.
+[13:52.6-13:53.8] There's a lot coming to that.
+[13:53.8-13:55.1] Can you scroll down a little bit to the shear?
+[13:55.6-13:56.1] Okay.
+[13:56.6-14:06.1] So then a measure of cohesion, a shear cell, or a Schultz ring shear tester.
+[14:07.8-14:10.3] I'm going to do something real quick.
+[14:10.4-14:11.6] This is 179.
+[14:11.7-14:12.1] Is that right?
+[14:13.4-14:14.0] 184.
+[14:14.2-14:14.7] Oh, 184.
+[14:16.0-14:16.6] Okay.
+[14:17.8-14:18.0] Okay.
+[14:19.1-14:19.2] Okay.
+[14:21.4-14:21.9] Okay.
+[14:21.9-14:23.6] So, still showing that it's...
+[14:23.6-14:24.8] I'm going to do 3D.
+[14:25.4-14:25.9] .
+[14:50.0-14:51.4] E7A that one...
+[15:40.2-15:40.7] 515...
+[15:43.6-15:44.1] Yeah.
+[15:44.3-15:44.8] All.
+[16:03.6-16:05.6] Have you been listening to one sentence?
+[16:07.7-16:08.3] Hilarious.
+[16:08.5-16:14.9] It seems to listen to me, but then it does always listen to the other lab members.
+[16:15.1-16:15.5] That's funny.
+[16:15.7-16:19.7] And I'm like, this is like a teacher's pet thing going on.
+[16:19.9-16:24.0] I saw one time where you told it two sentences and it was just a little bit less than 20.
+[16:24.0-16:28.1] It did two sentences, but the sentence was like, it had like five sentences.
+[16:30.0-16:34.3] Sometimes I'll do, like, max 300 characters, and that one I just can't get around.
+[16:35.3-16:37.1] Like, max 300 characters.
+[16:39.6-16:52.9] When I saw somebody else's, and they didn't use the same wording as I did, like, max two sentences, they said, like, they had some other wording, and it completely didn't respect that.
+[16:52.9-16:55.9] And gave a regular response.
+[16:56.7-17:02.0] Okay, I think this will help for kind of visualizing what some of those other ones are like.
+[17:08.0-17:12.8] Is that kind of making sense of, like, here we've got this auger, and we do a bunch of things with it.
+[17:13.3-17:17.1] And we have all these properties that can be measured in all sorts of different ways.
+[17:19.0-17:20.7] And we can kind of go back and forth.
+[17:23.4-17:23.9] Yes.
+[17:25.7-17:34.2] And so, I guess, and I'll probably have to ask later again for clarification on what direction we're going with this.
+[17:34.5-17:38.6] And this might be a broad question, but where should I start?
+[17:39.1-17:41.8] This is a good transition. Let's read the abstract.
+[17:42.3-17:42.7] Okay.
+[17:42.8-17:46.7] Is that okay?
+[17:46.8-17:47.0] Yeah.
+[17:47.1-17:47.5] Okay.
+[17:48.8-17:53.6] Dispensed mass from an auger-based powder doser depends on actuator settings and powder properties.
+[17:53.6-17:59.6] So, every calibration curve doubles as a compact probe of cohesion, friction, and packing behavior.
+[18:00.1-18:02.5] I feel like it might need a...
+[18:12.2-18:17.4] So, every calibration curve doubles as a compact probe of cohesion, friction, and packing behavior.
+[18:17.7-18:34.0] We frame calibration of an open source doser as an AI-driven, multi-objective, multi-task Bayesian optimization.
+[18:34.9-18:35.4] Oh, oh.
+[18:35.7-18:36.6] No, that was sweet.
+[18:37.7-18:38.7] It just sounds weird.
+[18:38.7-18:50.0] We frame calibration of an open source doser as AI-driven, multi-objective, multi-task Bayesian optimization with objectives of dose accuracy, repeatability, dispensing time, and accessible dose range.
+[18:50.0-19:09.3] Each powder is a related task, primarily alloy precursors in elemental or master alloy form, depending on handling constraints and hazards dosed under inert atmosphere alongside feedstocks such as AlSi10Mg and stainless steel.
+[19:10.7-19:15.3] And multi-task models share information across powders to cut per powder calibration effort.
+[19:16.0-19:16.8] Okay.
+[19:16.9-19:17.1] Okay.
+[19:18.0-19:22.4] Alongside gravimetric parameter sweeps, we are exploring discrete element modeling.
+[19:22.6-19:23.8] That's DEM.
+[19:24.4-19:25.0] Okay.
+[19:25.6-19:27.1] That'll get used a lot, I think.
+[19:27.2-19:27.4] Yeah.
+[19:27.5-19:29.7] With cohesive frictional contact laws.
+[19:30.1-19:32.3] That's like the physics-based series.
+[19:32.6-19:32.8] Yeah.
+[19:33.0-19:42.7] And measured particle size distributions, enabling inference of effective cohesion and friction from dosing data to be checked against shear-Hall and Hall flow measurements.
+[19:42.9-19:44.3] And that's this...
+[19:44.3-19:45.9] That's where I think it would be received.
+[19:46.5-19:47.1] Yeah.
+[19:47.1-19:48.0] That's where I think it would be received relatively well.
+[19:49.4-19:58.2] By others, where they're like, oh, okay, you ran the same powder through these as a ground truth.
+[19:58.4-19:58.9] Okay.
+[19:59.3-20:00.1] Validation for it.
+[20:01.2-20:06.3] And then vice versa, it's like, if somebody measures this and knows the values, could
+[20:06.3-20:09.7] we show that it helps speed up our calibration?
+[20:10.2-20:10.7] Yes.
+[20:10.7-20:11.1] Okay.
+[20:11.3-20:11.7] Okay.
+[20:13.8-20:14.4] Okay.
+[20:14.4-20:19.3] So, thinking dosing response to these properties may anticipate downstream behavior such as spreadability and packing uniformly.
+[20:27.5-20:29.8] On one hand, the abstract got accepted.
+[20:30.0-20:30.5] Yeah.
+[20:30.6-20:34.0] So, obviously, people, whoever read it, they're like, sweet.
+[21:09.0-21:12.4] Oh, yeah, powder materials processing and fundamental understanding.
+[21:12.8-21:18.8] It was probably...
+[21:18.8-21:19.2] Yeah.
+[21:19.5-21:19.9] Yeah.
+[21:20.0-21:20.2] Yeah.
+[21:20.2-21:27.2] It would probably be worth reaching out to some of these people as well and getting
+[21:28.3-21:29.1] on calls with them.
+[21:29.2-21:34.2] Like, of anything you do, kind of spend your time on, getting on calls with this list
+[21:34.2-21:35.8] of people would...
+[21:37.7-21:44.5] I would put that as a 10x multiplier in terms of, like, I could spend 30 minutes on just,
+[21:44.5-21:47.9] like, reading through the manuscript and doing clock pings, just, like, copying all of these
+[21:47.9-21:48.2] calls.
+[21:48.8-21:50.1] So, I think it would be worth...
+[21:58.7-21:59.3] ी  (unreliable)
+[22:02.5-22:40.9] Anyone else?  (unreliable)
+[22:41.2-22:41.7] Yeah.  (unreliable)
+[22:47.8-22:50.1] I'll pick up a crack.  (unreliable)
+[22:50.1-22:50.2] I'm sorry.  (unreliable)
+[22:50.3-22:51.1] Thank you very much for coming to this meeting.  (unreliable)
+[22:51.1-23:01.4] This is a really good meeting, caretakers.  (unreliable)
+[23:05.5-23:05.7] Yeah.  (unreliable)
+[23:06.0-23:18.7] For laser powder bed fusion, because you literally have a wiper spreading the powder over a bed, and so poor spreadability means, well, you didn't get your layer right.
+[23:19.9-23:25.9] Okay, so it's saying we can, based on how it doses, we could maybe see how well it would spread.
+[23:26.1-23:36.8] Yeah, and there are some, I think it'd be worth trying to do some of our own experiments on spreadability.
+[23:36.8-23:43.0] I think we could, we could give that, we could give you something like that.
+[23:43.4-23:43.7] Yeah.
+[24:35.6-25:13.3] So at this point, I think it might be worth thinking through what figures, so actually maybe going back to your outline, like the outline.md, what would you say?
+[25:16.1-25:32.7] Yeah, so this is saying, sorry, you were saying, okay, figure plan.
+[25:33.9-25:34.3] Yeah.
+[25:34.3-25:35.3] I think this too.
+[25:36.2-25:36.7] Okay.
+[25:40.5-25:59.5] So, yeah, so basically saying we ran one, like we have the one campaign, or one powder, accuracy, this is time and error were optimized, repeatability was measured after the fact.
+[25:59.9-26:03.9] Yeah, it's just it validating, doing it a bunch of times.
+[26:04.2-26:04.4] Yeah.
+[26:05.3-26:09.0] And then the dose ranges is that instead of 0.5 grams, we're going to do 0.5 grams.
+[26:09.1-26:19.1] We want, like some people might want 0.2 grams, others 1 gram, and so depending on the target dose, that one gets complicated.
+[26:19.8-26:27.7] Especially the lower bound, I think the upper bound probably could put me fine because it does the same thing all the way up until it gets close.
+[26:28.0-26:28.1] Yeah.
+[26:29.9-26:32.5] Maybe except for the time.
+[26:32.9-26:33.8] What was that?
+[26:37.9-26:40.5] You want to really speed things up at the beginning.
+[26:40.5-26:41.3] Yeah.
+[26:41.3-26:42.4] But not overshoot.
+[26:42.7-26:43.6] Well, I don't know.
+[26:43.6-26:44.0] Oh, okay.
+[26:44.1-26:44.3] Yeah.
+[26:45.3-26:45.9] So, yeah.
+[26:45.9-26:49.9] But it is easier, I would say, like 1 gram versus saying I want 0.05.
+[26:50.8-26:51.7] Yeah, for sure.
+[26:52.9-27:01.2] I did, yeah, I think that was another thing I wanted to make sure is that, are these all things that you want me to work on?
+[27:01.3-27:03.0] Is anything out of scope?
+[27:03.3-27:05.3] I think we, yeah, let's go one by one.
+[27:05.5-27:05.9] Okay.
+[27:05.9-27:06.4] With that.
+[27:06.4-27:06.7] Right.
+[27:06.8-27:07.2] Okay.
+[27:08.0-27:23.3] So, I do think repeatability, we could leave out and just do that sort of ad hoc, just sort of retroactive.
+[27:23.3-27:23.7] Yeah.
+[27:23.9-27:25.2] And this is repeatable.
+[27:26.0-27:38.3] I think the dose range, we do need to bring in, let's say, like in terms of somebody looking to quickly get their own calibration parameters.
+[27:43.0-27:49.0] Like the parameters that we would use are going to be different probably based on.
+[27:49.0-27:49.9] How much we're trying to dose.
+[27:51.8-27:52.2] Okay.
+[27:52.4-27:53.2] Does that make sense?
+[27:53.3-27:57.8] Like you, I forget how many parameters we're optimizing, like six or something.
+[27:58.3-27:58.7] Yeah.
+[27:59.7-28:00.6] Eight, I think.
+[28:00.6-28:00.7] Eight.
+[28:00.9-28:01.1] Okay.
+[28:01.2-28:01.4] Yeah.
+[28:01.4-28:01.6] Yeah.
+[28:01.6-28:10.8] Is that if we're only doing, dosing 0.1 grams, we would take some of those parameters and kind of scale them down.
+[28:11.0-28:11.2] Right.
+[28:11.3-28:12.3] If we're dosing one gram.
+[28:12.3-28:12.5] Right.
+[28:12.5-28:32.6] So, there's this question of optimal parameters as a function of powder type, like what the powder is and how full the auger is, things like that.
+[28:32.8-28:40.4] And what we're actually trying to dispense, the amount.
+[28:40.5-28:42.0] Our target dose.
+[28:43.1-28:44.1] That makes sense.
+[28:44.1-28:59.9] But I do think the dose in the data Sam was focusing on collecting, and maybe you were collecting some of that data too.
+[29:00.1-29:00.8] I forgot.
+[29:02.9-29:06.5] Were you collecting that data, like massive campaign of things?
+[29:06.8-29:07.9] I thought you guys were.
+[29:09.1-29:11.1] For like all the different powders?
+[29:11.4-29:11.8] Yeah.
+[29:11.9-29:13.1] Like the 13 powders.
+[29:14.1-29:17.3] And by data, you just mean what the dosing looked like?
+[29:17.6-29:18.3] It was like, okay.
+[29:18.3-29:23.1] Run all these tests for this powder without any optimization.
+[29:23.5-29:25.7] It was just like a bunch of tests to check.
+[29:26.4-29:28.0] I think you guys had split off.
+[29:28.1-29:28.2] Yeah.
+[29:28.4-29:29.3] I think that might have been Sam.
+[29:29.5-29:29.5] Yeah.
+[29:29.5-29:29.6] That's right.
+[29:29.7-29:46.4] So, in that data he collected, I think he had 50, 200, and 1,000 milligrams.
+[29:46.7-29:47.3] Oh, okay.
+[29:47.5-29:48.9] The target dosing.
+[29:48.9-29:52.4] So, it would run with each of those three as targets.
+[29:52.5-29:52.8] Oh.
+[29:53.2-29:57.7] So, for accessible dose range, it would kind of be like that.
+[30:05.5-30:09.5] That's more on the optimization side and maybe ties less into the powder properties.
+[30:11.4-30:22.6] I'm not really sure if that is something people would care about from the powder property side
+[30:22.6-30:22.9] of things.
+[30:23.3-30:23.7] Okay.
+[30:23.9-30:27.8] It's definitely somebody who cares about if they have the doser and they want to spend
+[30:27.8-30:30.1] some amount and not have to calibrate it.
+[30:30.2-30:31.1] Okay.
+[30:31.5-30:33.4] Not spend as much time calibrating.
+[30:33.7-30:34.1] Yeah.
+[30:34.5-30:37.7] That's another thing I've been thinking about is there's two sides to this.
+[30:37.8-30:45.4] One is the research for the paper and the other is to make this open source and usable.
+[30:45.8-30:45.9] Yeah.
+[30:46.4-30:47.1] Okay.
+[30:49.1-30:56.6] Every calibration curve is a probe of cohesion, friction, packing, 24-fold delivery range,
+[30:57.0-30:59.5] no flow powders, silicon size pair.
+[30:59.7-31:00.1] Yeah.
+[31:00.1-31:11.0] So, delivery ranks like literature angle of repose, per powder, shear after flow, tap
+[31:11.0-31:13.2] quantum, speed, exponent.
+[31:14.5-31:19.4] So, it's just, yeah, this is what I was saying earlier is it seems like its ability
+[31:19.4-31:22.5] to dose is very correlated to the angle of repose.
+[31:22.5-31:22.8] Okay.
+[31:22.8-31:22.9] Gotcha.
+[31:23.1-31:23.6] Okay.
+[31:23.6-31:24.1] Cool.
+[31:24.6-31:25.3] That's cool.
+[31:26.5-31:28.1] I guess, yeah, I don't know.
+[31:28.2-31:28.3] Yeah.
+[31:30.2-31:30.8] Yeah.
+[31:30.9-31:31.1] Yeah.
+[31:31.9-31:32.5] Yeah.
+[31:32.5-31:32.9] Yeah.
+[31:35.5-31:39.9] And then, yeah, measured properties of the same lots, batch to batch resolution.
+[31:40.2-31:46.7] So, I think for that one, run the official test for it, actually do an angle of repose
+[31:46.7-31:47.2] test.
+[31:47.5-31:47.9] Oh, okay.
+[31:47.9-31:48.1] Yeah.
+[31:52.9-31:58.3] Each powder is a related task, multi-task models cut to calibration effort.
+[32:02.2-32:05.2] The salt settings carrying over to AlSi10Mg.
+[32:05.2-32:17.3] I mean, I guess saying like the salt settings were fine for another material, but they weren't.
+[32:17.6-32:20.4] They're certainly not going to be the optimal one.
+[32:20.7-32:21.3] Yeah.
+[32:21.3-32:28.2] And like salt and the AlSi10Mg had similar flow behavior.
+[32:28.6-32:29.0] Yeah.
+[32:29.2-32:30.5] Like both were very easy.
+[32:31.1-32:31.6] Yes.
+[32:31.6-32:32.0] Okay.
+[32:32.1-32:32.9] Very easily flowed.
+[32:33.0-32:34.3] So, maybe that's kind of what it's.
+[32:34.5-32:35.0] Yeah.
+[32:35.1-32:39.0] I think maybe it's like if these have similar like, you know, like, you know, like, you
+[32:40.0-32:50.7] know, like properties or even they, they flow similarly from like just a very initial test, like we can shorten the search space for the new powder.
+[32:50.9-32:51.2] Yeah.
+[32:51.4-32:51.7] Okay.
+[32:53.1-32:59.4] Alloy precursors, elemental or master alloy under inert atmosphere, AlSi10Mg and stainless
+[32:59.4-32:59.8] steel.
+[33:02.0-33:07.6] So, we've done those doses, those two doses in air, not with steel.
+[33:07.6-33:18.3] And then we did those, you guys have them in the university of Utah?
+[33:20.1-33:20.7] Oh yeah.
+[33:20.9-33:21.4] They, it was.
+[33:21.5-33:21.7] Yeah.
+[33:21.7-33:21.8] Yeah.
+[33:21.8-33:23.1] So, that's, that's what this is referring to.
+[33:23.2-33:23.7] Okay.
+[33:24.0-33:25.9] Salt and then these other two things.
+[33:26.0-33:26.4] Yeah.
+[33:26.5-33:27.2] That's right in there.
+[33:27.4-33:27.9] Okay.
+[33:27.9-33:29.0] With it shaking itself apart.
+[33:29.3-33:29.5] Yeah.
+[33:30.8-33:31.2] Yeah.
+[33:34.7-33:40.2] In terms of the glove box, we really don't have a go-to here.
+[33:40.2-33:47.1] I think Phillip would be down to have us like, to let us use that glove box back at the U for testing.
+[33:48.6-33:53.1] Maybe somebody would let us bring something to one of their glove boxes, but people are
+[33:53.1-33:56.9] very cautious and for good reason about what they let into the glove box.
+[33:57.5-34:04.2] They're often doing things that require a high level of control in terms of oxygen and
+[34:04.2-34:07.0] moisture and like purity of things.
+[34:07.1-34:10.0] And so it's like, oh, well you just introduced something to the glove box.
+[34:10.0-34:12.1] But now it has contaminated all of it.
+[34:12.2-34:14.8] You've got this powder that's just flowing open.
+[34:15.1-34:15.4] Yeah.
+[34:15.8-34:15.9] Yeah.
+[34:18.0-34:21.6] But it sounds like we could still do some things with that at the U.
+[34:22.2-34:29.3] I don't think it's reasonable to say let's do everything under an Earth atmosphere at
+[34:29.3-34:29.8] this stage.
+[34:29.9-34:30.1] Yeah.
+[34:30.1-34:30.9] I don't think we're going to get.
+[34:31.2-34:31.6] Okay.
+[34:32.3-34:39.8] I think we're just going to stick with air, but we can do it in the enclosure where
+[34:40.0-34:44.9] it's hopefully drier than other places.
+[34:45.2-34:51.4] So it's like when we want, instead of an urge, it'll just do sort of like a dehumidified
+[34:51.4-34:51.9] enclosure.
+[34:52.2-34:52.8] Okay.
+[34:53.0-34:58.6] So that one's basically saying doing the optimization campaign with the metal.
+[34:59.2-34:59.8] Okay.
+[34:59.8-35:00.2] Yeah.
+[35:00.2-35:00.4] That's right.
+[35:00.5-35:00.6] Right.
+[35:00.7-35:07.5] I think the more we lean into metals, the more people from this symposium and from
+[35:07.5-35:10.4] additive manufacturing in general are going to care.
+[35:10.5-35:11.1] Okay.
+[35:11.2-35:11.5] Yeah.
+[35:11.8-35:13.4] They're going to care about the metals.
+[35:13.5-35:19.0] And so like the 630 bronze, the Al4047, 6663 custom.
+[35:19.6-35:20.4] That's up to you.
+[35:21.3-35:21.8] Yes.
+[35:23.3-35:24.7] Discrete element modeling.
+[35:24.9-35:26.7] I think that's what that stands for.
+[35:27.0-35:30.6] With cohesive frictional contacts and measured particle size distributions.
+[35:33.6-35:38.4] It's just a ridiculous name for a package of lights.
+[35:40.6-35:41.0] Yeah.
+[35:41.1-35:41.6] What is that?
+[35:41.7-35:43.4] It's just like, oh, I don't know.
+[35:43.4-35:43.7] I don't know.
+[35:43.7-35:44.6] My key got stuck.
+[35:44.8-35:52.8] It's a package for running certain kinds of simulations.
+[35:57.1-36:00.5] But it seems like it found a good package.
+[36:00.7-36:05.9] I think I told it to run some things with it, which is why it's saying forward model
+[36:05.9-36:06.2] done.
+[36:06.9-36:07.3] Okay.
+[36:08.1-36:09.7] This is the simulation.
+[36:10.2-36:10.5] Yeah.
+[36:10.6-36:11.1] That's right.
+[36:11.2-36:11.3] Okay.
+[36:12.2-36:13.5] Which I could probably pull up.
+[36:15.0-36:15.4] Another.
+[36:17.9-36:21.9] Checked against shear cell, shear cell and hall flow measurements.
+[36:23.6-36:28.9] And then, yeah, we can probably run our own hall flow just fine.
+[36:30.0-36:34.0] We'll need to find somebody with the shear cell stuff.
+[36:34.1-36:36.6] I don't know how complicated that's going to be.
+[36:36.9-36:37.3] Okay.
+[36:37.6-36:40.8] And then may anticipate spreadability and packing uniformity.
+[36:43.9-36:44.8] Blade spread.
+[36:44.8-36:46.8] Single layers on three to four.
+[36:47.5-36:49.2] Deliberately varied batches.
+[36:50.7-37:00.7] So that's one where we maybe decide, do we use something like the CubXL or one of the
+[37:00.7-37:07.3] 3D printers with a wiper attachment and we're running some of our own spreadability tests
+[37:07.3-37:07.5] and everything?
+[37:07.5-37:07.8] Oh, okay.
+[37:08.0-37:08.2] Yeah.
+[37:08.6-37:14.0] I think we could get creative and run some of our own tests without having to take
+[37:14.0-37:19.6] into some fancy laser powder bed fusion spreadability estimate.
+[37:20.0-37:20.4] Okay.
+[37:22.4-37:22.9] Yeah.
+[37:23.0-37:25.1] I think we can get a quick cut.
+[37:25.4-37:25.9] Yeah.
+[37:29.3-37:29.8] Okay.
+[37:30.8-37:33.3] I think that's making more sense to me.
+[37:34.0-37:41.2] I think for these ones or sorry, this one especially is one I would want to consult
+[37:41.2-37:42.2] with a lot with.
+[37:44.2-37:45.2] Like you said.
+[37:45.2-37:45.4] Yeah.
+[37:45.4-37:47.4] Like talking to the people from the-
+[37:47.4-37:47.7] Yeah.
+[37:47.9-37:48.4] That would be.
+[37:48.5-37:48.9] Yeah.
+[37:49.0-37:49.9] I agree.
+[37:50.1-37:52.0] I think that'd be really good.
+[37:54.3-37:54.9] I guess.
+[37:55.0-38:00.9] Like you could even reach out to the people that are heavy users or were developers
+[38:00.9-38:02.2] for that particular package.
+[38:03.1-38:09.8] Look at other people who, that's a good symposium for people who really care about powder properties.
+[38:10.3-38:10.7] Okay.
+[38:10.7-38:11.0] Reach out.
+[38:11.1-38:16.3] So probably we can get another pull request kind of tied to that.
+[38:18.5-38:18.9] Yeah.
+[38:20.2-38:21.4] I think that makes-
+[38:21.4-38:23.3] Should we reach out to one of their emails?
+[38:23.4-38:23.7] Okay.
+[38:23.7-38:25.2] Let's start sending some.
+[38:27.7-38:29.6] If we go down a little bit.
+[38:30.1-38:30.8] What did you say?
+[38:31.0-38:51.4] I think this is maybe a good point to brainstorm some figures and this was me brainstorming
+[38:51.4-38:51.7] with Sam.
+[38:51.9-38:52.5] Oh, okay.
+[38:53.8-38:55.1] Different figures we do.
+[38:55.3-38:56.4] That one.
+[39:10.7-39:11.7] Speaking of which.
+[39:12.3-39:13.0] Do you want to?
+[39:50.6-39:53.8] I think an overview figure is going to be pretty important here.
+[39:53.9-39:54.2] Yeah.
+[39:54.2-40:00.6] Just to help the audience, the readers or the audience for the symposium.
+[40:01.9-40:03.2] Make the connection.
+[40:05.0-40:25.3] Like here's our powder doser and we could maybe have a couple things here like transparent.
+[40:41.6-40:42.4] Yeah.
+[40:42.5-40:43.2] The ghost.
+[40:43.6-40:44.6] Ghost dose.
+[40:46.1-41:08.1] That's one I think we can get.
+[41:08.8-41:09.5] Yeah.
+[41:09.5-41:10.1] Yeah.
+[41:10.1-41:27.8] We can kind of do Hall flow, AlSi, different, I don't know, like we were talking about it, a lot of things factor into how that thing is actually going to be.
+[41:28.1-41:35.1] So we have this as, I guess, different angles.
+[41:43.9-41:47.9] Oh yeah, so tapping here, so we can close that off.
+[41:48.1-41:56.6] And then we have, that's right, angle of repose.
+[41:56.6-42:04.6] In which case, do you think we would want to have it at a 90 degree angle?
+[42:05.3-42:13.8] Or just, I guess if we do like a really low angle, but either way, we're going to do something where...
+[42:13.8-42:17.8] You mean like testing the angle of repose?
+[42:18.1-42:19.1] Yeah, is that what we have.
+[42:58.6-42:59.7] Oh, okay, I see.
+[43:01.6-43:17.1] What were some of the other ones we talked about where like we can directly measure it versus like...
+[43:18.0-43:18.8] Here's a...
+[43:21.7-43:25.4] Well, Claude told us that we can test in-house the moisture.
+[43:25.5-43:27.4] I don't know how we would, but...
+[43:29.3-43:39.4] Yeah, oh, so for the moisture, we can basically just let the powder sit out and then do runs.
+[43:40.7-43:41.8] Oh, okay, yeah.
+[43:42.7-43:47.9] Before it's been exposed to air and after it's been exposed to humid air.
+[43:51.4-43:54.0] Now that one's a little harder to control for.
+[43:54.2-43:54.6] Yeah.
+[43:55.7-44:04.9] It's like, well, do you stick it next to a humidifier and then spread the powder out and then take a little spray bottle and then...
+[44:04.9-44:07.5] Do you need some sort of gauge that's reading the humidity?
+[44:08.1-44:08.3] Yeah.
+[44:10.5-44:12.9] Let's see, bolt, angle of repose.
+[44:12.9-44:15.7] There's the particle size distribution, which...
+[44:17.6-44:19.6] Now that would be pretty interesting.
+[44:20.0-44:20.4] Yeah.
+[44:20.4-44:27.1] Because we can get that through a couple methods, but one would be...
+[44:30.2-44:32.1] Let's see, let's be at PSD.
+[44:34.6-44:36.1] We do that through SEM images.
+[44:38.5-44:39.5] Oh, okay, yeah.
+[44:44.9-44:47.2] That's what Ronnie does a lot of, right?
+[44:47.2-44:47.7] Yeah, that's right.
+[44:47.8-44:47.8] Okay.
+[44:48.1-45:05.7] So there are also some other things like laser and...
+[45:14.4-45:15.9] Is that starting to make sense?
+[45:15.9-45:16.2] Yeah.
+[45:16.8-45:21.8] Could we use all this stuff and actually predict what the particle size distribution
+[45:21.8-45:22.2] is?
+[45:22.4-45:23.3] That would be kind of...
+[45:23.9-45:24.9] Oh, okay, I see.
+[45:25.1-45:25.5] Yeah.
+[45:25.8-45:26.9] If you imagine...
+[45:26.9-45:32.0] We got this without having to take it to very expensive equipment.
+[45:33.7-45:35.3] But we've got the...
+[45:35.3-45:43.3] Gear cell, which...
+[45:43.3-45:44.4] Let's see, this is...
+[45:44.4-45:45.6] Oh, okay, yeah.
+[45:45.9-45:46.3] Feed.
+[45:46.7-45:47.8] Was that feed factor?
+[45:48.3-45:49.3] Yeah, yeah.
+[45:49.7-45:50.5] Feed factor.
+[45:55.7-45:56.3] And then...
+[45:56.3-45:57.2] And then the Hall...
+[46:24.5-46:24.9] Hygroscale.
+[46:36.1-46:37.1] It's Hall flow, right?
+[46:38.5-46:39.3] What do they call that?
+[46:39.6-46:40.6] Oh, sorry, what time is it?
+[46:40.8-46:41.4] I don't know.
+[46:41.7-46:42.4] Oh, 56.
+[46:42.6-46:42.9] Okay.
+[46:44.6-46:45.5] So let me just...
+[46:45.9-46:46.3] Hall.
+[46:48.9-46:49.7] We've got the shear.
+[46:50.0-46:51.7] I don't know what that looks like at all.
+[46:51.9-46:52.1] Yeah.
+[46:53.0-46:53.8] Well, it's...
+[46:55.5-46:56.3] We have...
+[46:57.5-46:58.6] Yeah, it's like normal.
+[47:01.9-47:02.3] And...
+[47:17.2-47:18.4] So you're kind of seeing what...
+[47:19.2-47:19.9] And over...
+[47:19.9-47:20.0] Yeah.
+[47:20.0-47:20.3] Overview figure.
+[47:20.6-47:23.5] It's like, we can do these very cheaply.
+[47:23.5-47:23.8] Yeah.
+[47:24.1-47:25.4] You know, some of these are cheap.
+[47:25.5-47:26.7] Some of these are more expensive.
+[47:26.9-47:27.9] Can we get like...
+[47:27.9-47:28.6] Yeah.
+[47:39.3-47:42.0] And kind of relational matrix of...
+[47:42.0-47:42.4] Yeah.
+[47:42.9-47:43.3] Great.
+[47:48.3-47:51.2] And this would be the objective of the simulation?
+[47:51.8-47:52.2] This...
+[47:53.5-47:58.0] The simulations and the machine learning, like the Bayesian observation models...
+[47:58.0-47:58.2] Okay.
+[47:58.3-48:04.4] The circuit models and the physics-based simulations would help us to find correlations
+[48:04.4-48:05.0] between these.
+[48:05.0-48:05.8] Okay.
+[48:06.0-48:09.9] So it's like, if we know all of this, could that help us know what this is?
+[48:10.6-48:15.7] And there's a lot of contextual things too, like this is all about like the actual experiments,
+[48:15.9-48:24.8] but there's the like things we know about like state and history.
+[48:33.5-48:35.6] So like, what's the composition of it?
+[48:35.9-48:38.5] And like, what do we know about the powder already?
+[48:39.1-48:40.9] Could we use what we know about this?
+[48:40.9-48:48.0] And these simple, kind of easy to run tests to help predict some of these things that
+[48:48.0-48:50.8] people are often measuring and care about.
+[48:51.1-48:51.5] Yeah.
+[48:51.8-48:52.2] Okay.
+[48:52.4-48:52.8] Yeah.
+[48:52.8-48:53.6] That's just one figure.
+[48:54.0-48:59.4] Maybe another time we can go through the rest of the figures that we try to look at.
+[48:59.9-49:07.2] I don't know if you have time, but if you could throw that at Claude, throw that picture
+[49:07.2-49:09.6] at Claude, it could probably make a pretty decent...
+[49:09.6-49:10.0] Yeah.
+[49:10.4-49:10.9] This one.
+[49:11.2-49:12.2] Yeah, I can do that.
+[49:13.1-49:13.5] Cool.
+[49:13.8-49:14.2] Yeah.
+[49:14.2-49:14.7] I might not...
+[49:14.7-49:16.7] Well, actually, I'll have time again later.
+[49:16.9-49:17.2] Okay.
+[49:17.4-49:17.8] Very good.
+[49:17.9-49:18.0] That's fine.
+[49:22.3-49:23.8] I'm sure this will just take a while for me to...
+
+# Second pass over two quiet stretches: Whisper large-v3, same model, no VAD filter,
+# condition_on_previous_text=False, temperature 0. Uncorrected; the run of one-word lines
+# near 00:40-00:53 is Whisper filling silence.
+
+## 00:00-02:45
+[00:00.0-00:11.8] 124 which is like when we first defined the optimization and like yeah what we i just have
+[00:11.8-00:17.0] been talking to claude with about like what parameters we should optimize what what are
+[00:17.0-00:30.0] things we can just manually to do yeah that makes sense and go through our
+[00:30.0-00:40.4] thing here oh what's your schedule like all right 3 30 I am free until 4 okay
+[00:40.4-00:41.4] Okay.
+[00:41.4-00:42.4] Same.
+[00:42.4-00:43.4] Okay.
+[00:43.4-00:44.4] Okay.
+[00:44.4-00:45.4] Powder Doser.
+[00:45.4-00:46.4] Okay.
+[00:46.4-00:47.4] Okay.
+[00:47.4-00:48.4] Okay.
+[00:48.4-00:49.4] Okay.
+[00:49.4-00:50.4] Okay.
+[00:50.4-00:51.4] Okay.
+[00:51.4-00:53.4] Hello.
+[01:51.4-02:08.4] So I'm going to pull up the TMS title in abstract, and we'll kind of start there.
+[02:08.4-02:11.4] Try to ground us in some things.
+[02:11.4-02:14.4] That should pull up.
+[02:14.4-02:20.4] Right here I've got the outline of what Claude has summarized as well.
+[02:20.4-02:25.6] The different tasks over this paper, or what it thinks.
+[02:28.5-02:33.2] I guess it's got it right there.
+[02:34.3-02:34.7] I know.
+[02:36.4-02:38.0] From outline.md.
+[02:39.4-02:44.4] So, auger-based powder dosing as a mechanistic probe of powder flow behavior.
+
+## 21:40-23:12
+[21:40.0-21:45.9] supplier in terms of like i could spend 30 minutes on it's like reading through the manuscript
+[21:45.9-21:59.2] and doing clock pings just like copying all these calls so i think it would be worth
+[21:59.2-22:00.2] contact me before the meeting
+[22:30.2-22:51.2] I guess that last part where it's talking about downstream behavior,
+[22:51.2-22:58.2] predictability, and typing uniformly, I don't...are we doing things to validate that?
+[22:58.2-23:06.6] That's a good point, and could be nice too, because that spreadability is very important
+[23:06.6-23:11.7] for laser palette diffusion, because you literally have a wiper spreading.
