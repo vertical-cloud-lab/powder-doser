@@ -483,7 +483,7 @@ def _bench_module(mv, sec, k0, cam):
         su = 1.0 if float(u_dir @ (p.M[:3, 3] - Cb[:3, 3])) > 0 else -1.0
         return su * u_dir * 40.0 * (1 - t)
 
-    beats = [("Module: the lab auger into the v3 mounting plate (Sam's Oct 13 plate + dock balls, keeper)", "threaded-storage auger and cap (PR #170)",
+    beats = [("Module: the lab auger into the v4 mounting plate (Sam's Oct 13 plate + auger-side dock balls, keeper)", "threaded-storage auger and cap (PR #170)",
               lambda p, t: (away + (np.array([-170.0 * (1 - t), 0, 0]) if p.key in ("auger", "auger_cap") else 0.0)) if p.key in module_keys
               else pins_out(p, 0.0)),
              ("Module: two 1/4 in steel balls pressed into the plate's auger side, a steel washer flush beside them",
@@ -639,7 +639,7 @@ def movie(fast: bool = False) -> None:
     n_lap = sec(5.0)
     for i in range(n_lap):
         s_ = dirn * N_LINKS * scurve(i, n_lap - 1)
-        mv.frame(L.placements(L.State(shift=s_, ext=0.0, **base)), "A full lap: every module rolls once, its latch holding the plate on the top run",
+        mv.frame(L.placements(L.State(shift=s_, ext=0.0, **base)), "A full lap: every module rolls once; under the bottom run its latch pin holds the plate",
                  "each latch opens only while its carriage passes the station's rail", cam=cam_lerp(HERO, LOOP, i / (n_lap - 1)), hide_fn=front_open)
 
     # 5. the enclosure and the balance (step 12)
@@ -663,7 +663,7 @@ def movie(fast: bool = False) -> None:
     for i in range(n):
         a = HATCH_OPEN_DEG * ease(i / (n - 1))
         mv.frame(L.placements(L.State(ext=0.0, hatch_front=a)), "Front hatch open: put a beaker on the scale's pan, close it",
-                 "v3 can't put the HR-100A under the dose point yet: see scale_fit.gif", cam=FRONT_HATCH)
+                 "v4 can't put the HR-100A under the dose point yet either (README, item 6)", cam=FRONT_HATCH)
     for i in range(n):
         a = HATCH_OPEN_DEG * (1 - ease(i / (n - 1)))
         mv.frame(L.placements(L.State(ext=0.0, hatch_front=a)), "Front hatch closed", "", cam=FRONT_HATCH)

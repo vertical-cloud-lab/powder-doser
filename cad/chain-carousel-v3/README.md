@@ -134,7 +134,7 @@ Sam loves the form factor and wants clear walls on the 8020 frame against drafts
   - At the back the spacers are **30 mm**, to clear the drive sprocket.
   - Outside: **455 x 262 x 740 mm**. The frame is 418 x 244.
 - **Front hatch:** 180 x 230 mm, under the station, where the beaker goes in.
-- **Side hatch:** 360 x 150 mm on +y, at the loading position. It is wide enough for a whole carriage.
+- **Side hatch:** 330 x 230 mm on +y, at the loading position. It is wide enough for a whole carriage.
 - **Doors:** 4 mm larger than their openings all round, each on two stainless butt hinges, with a printed knob and a turn button.
 - **Panels:** cut from `dxf/panel_*.dxf` and `dxf/hatch_*.dxf`.
 
@@ -227,7 +227,7 @@ That is 19 kinds of part (27 instances). Even the parts nearest the dose point s
 | Actuator link | Pin 4 x 20 shoulder screw at Sam's (58, -76), in 2 mm slots; cheeks 9.6 mm apart with PTFE washers | Lost motion, so the P16 never forces the dock or the seat; the rod swings between the cheeks at any tilt |
 | Door | 1.5 mm PETG shutter 0.3 mm off the auger face; 6 mm travel; 3 mm stainless spring at 0.06 N/mm | Opens only while docked; shuts before undock |
 | Latch | Bolt 3 mm over the plate's keeper; 4.5 mm stroke; rail flat ±4 mm + 25° ramps on the -y side | Holds the plate upside down; opens only at the station |
-| Enclosure | 3 mm cast acrylic on 6 mm (back 30 mm) spacers; 455 x 262 x 740 mm; hatches 180 x 230 (front) and 360 x 150 (side) | Drafts off the balance and the powder; the side hatch passes a whole carriage |
+| Enclosure | 3 mm cast acrylic on 6 mm (back 30 mm) spacers; 455 x 262 x 740 mm; hatches 180 x 230 (front) and 330 x 230 (side) | Drafts off the balance and the powder; the side hatch passes a whole carriage |
 | Side tabs | Lips over the tongues' bottom 8 mm, foot 4 mm outside, two M5 x 8 into tapped side plates | The swap's pushes go to the frame; the swap slide frees them |
 | Scale | A&D HR-100A, drawn at the dose point | Collides with the station (item 6) |
 | Cost | BOM_TOTAL ([BOM.md](BOM.md)) | Lines still marked estimate add up to BOM_EST |
