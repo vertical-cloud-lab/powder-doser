@@ -1,0 +1,1879 @@
+{
+ "assumptions": {
+  "seat_magnet_pull_N": {
+   "gap 0.0 mm": 7.51,
+   "gap 0.3 mm": 5.72,
+   "gap 0.6 mm": 4.33,
+   "gap 1.0 mm": 2.99,
+   "gap 2.3 mm": 0.93
+  },
+  "electromagnet_N": 10.6,
+  "gear_sep_N": 3.7,
+  "gear_tangential_N": 10.17,
+  "module_kg": {
+   "v3": 0.226,
+   "v4": 0.218
+  },
+  "ec_kg": {
+   "v3": 0.33,
+   "v4": 0.31
+  },
+  "P16_stall_N": 50.0,
+  "allowables_MPa": {
+   "petg_line": 73.47999999999999,
+   "hardened": 4000.0,
+   "mild_steel": 288.0,
+   "case_hardened": 960.0
+  },
+  "E_star_steel_petg": 2095.7,
+  "E_star_steel_petg_creep": 1162.7
+ },
+ "states": [
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "float",
+   "P16_N": 0.0,
+   "normal_N": {
+    "A": 4.09,
+    "B": 0.61,
+    "C": 7.86
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 9.3,
+    "half_width_mm": 0.028,
+    "axial_approach_um": 0.99,
+    "axial_approach_creep_um": 1.69,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 7.92
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.43,
+     0.43
+    ],
+    "p0_MPa": 699.0,
+    "approach_um": 0.16,
+    "sf": 5.72
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1236.0,
+    "radius_mm": 0.0551,
+    "approach_um": 0.96,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "float_tap",
+   "P16_N": 0.0,
+   "normal_N": {
+    "A": 2.27,
+    "B": -1.21,
+    "C": 8.5
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 6.9,
+    "half_width_mm": 0.021,
+    "axial_approach_um": 0.58,
+    "axial_approach_creep_um": 0.99,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 10.64
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.86,
+     -0.86
+    ],
+    "p0_MPa": 9.0,
+    "approach_um": 0.0,
+    "sf": 432.07
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1269.0,
+    "radius_mm": 0.0566,
+    "approach_um": 1.01,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "float_gear",
+   "P16_N": 0.0,
+   "normal_N": {
+    "A": 4.41,
+    "B": -1.08,
+    "C": 5.53
+   },
+   "A_lateral_N": 17.83,
+   "B_lateral_N": 14.64,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.0,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.72,
+    "axial_approach_creep_um": 12.99,
+    "lateral_over_axial": 4.05,
+    "one_side_lifts": true,
+    "sf": 2.53
+   },
+   "vee": {
+    "N_per_dowel": [
+     9.59,
+     -11.12
+    ],
+    "p0_MPa": 1967.0,
+    "approach_um": 1.29,
+    "sf": 2.03
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1099.0,
+    "radius_mm": 0.049,
+    "approach_um": 0.76,
+    "sf": 0.26
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "float_gear (gear reversed)",
+   "P16_N": 0.0,
+   "normal_N": {
+    "A": 2.4,
+    "B": 0.93,
+    "C": 5.53
+   },
+   "A_lateral_N": 17.83,
+   "B_lateral_N": 14.64,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.3,
+    "half_width_mm": 0.086,
+    "axial_approach_um": 7.37,
+    "axial_approach_creep_um": 12.42,
+    "lateral_over_axial": 7.43,
+    "one_side_lifts": true,
+    "sf": 2.6
+   },
+   "vee": {
+    "N_per_dowel": [
+     -9.7,
+     11.01
+    ],
+    "p0_MPa": 2060.0,
+    "approach_um": 1.41,
+    "sf": 1.94
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1099.0,
+    "radius_mm": 0.049,
+    "approach_um": 0.76,
+    "sf": 0.26
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "lift",
+   "P16_N": 7.12,
+   "normal_N": {
+    "A": 6.47,
+    "B": 2.99,
+    "C": 10.22
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 11.7,
+    "half_width_mm": 0.035,
+    "axial_approach_um": 1.5,
+    "axial_approach_creep_um": 2.55,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 6.3
+   },
+   "vee": {
+    "N_per_dowel": [
+     2.11,
+     2.11
+    ],
+    "p0_MPa": 1188.0,
+    "approach_um": 0.47,
+    "sf": 3.37
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1349.0,
+    "radius_mm": 0.0601,
+    "approach_um": 1.14,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "lift_tap",
+   "P16_N": 7.12,
+   "normal_N": {
+    "A": 4.65,
+    "B": 1.17,
+    "C": 10.86
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 9.9,
+    "half_width_mm": 0.03,
+    "axial_approach_um": 1.11,
+    "axial_approach_creep_um": 1.9,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 7.43
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.83,
+     0.83
+    ],
+    "p0_MPa": 869.0,
+    "approach_um": 0.25,
+    "sf": 4.6
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1377.0,
+    "radius_mm": 0.0614,
+    "approach_um": 1.19,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "lift_gear",
+   "P16_N": 7.12,
+   "normal_N": {
+    "A": 6.79,
+    "B": 1.3,
+    "C": 7.89
+   },
+   "A_lateral_N": 17.83,
+   "B_lateral_N": 14.64,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.9,
+    "half_width_mm": 0.091,
+    "axial_approach_um": 8.12,
+    "axial_approach_creep_um": 13.67,
+    "lateral_over_axial": 2.63,
+    "one_side_lifts": true,
+    "sf": 2.46
+   },
+   "vee": {
+    "N_per_dowel": [
+     11.28,
+     -9.43
+    ],
+    "p0_MPa": 2076.0,
+    "approach_um": 1.43,
+    "sf": 1.93
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1238.0,
+    "radius_mm": 0.0552,
+    "approach_um": 0.96,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 7.12,
+   "normal_N": {
+    "A": 4.78,
+    "B": 3.31,
+    "C": 7.89
+   },
+   "A_lateral_N": 17.83,
+   "B_lateral_N": 14.64,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.2,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.78,
+    "axial_approach_creep_um": 13.1,
+    "lateral_over_axial": 3.73,
+    "one_side_lifts": true,
+    "sf": 2.52
+   },
+   "vee": {
+    "N_per_dowel": [
+     -8.01,
+     12.69
+    ],
+    "p0_MPa": 2160.0,
+    "approach_um": 1.55,
+    "sf": 1.85
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1238.0,
+    "radius_mm": 0.0552,
+    "approach_um": 0.96,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 15.0,
+   "case": "lift",
+   "P16_N": 5.42,
+   "normal_N": {
+    "A": 5.32,
+    "B": 1.84,
+    "C": 10.62
+   },
+   "A_lateral_N": 0.47,
+   "B_lateral_N": 0.47,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 11.5,
+    "half_width_mm": 0.035,
+    "axial_approach_um": 1.46,
+    "axial_approach_creep_um": 2.48,
+    "lateral_over_axial": 0.09,
+    "one_side_lifts": false,
+    "sf": 6.39
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.64,
+     0.97
+    ],
+    "p0_MPa": 1091.0,
+    "approach_um": 0.4,
+    "sf": 3.66
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1367.0,
+    "radius_mm": 0.0609,
+    "approach_um": 1.17,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 15.0,
+   "case": "lift_tap",
+   "P16_N": 5.42,
+   "normal_N": {
+    "A": 3.5,
+    "B": 0.02,
+    "C": 11.26
+   },
+   "A_lateral_N": 0.47,
+   "B_lateral_N": 0.47,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 9.7,
+    "half_width_mm": 0.029,
+    "axial_approach_um": 1.07,
+    "axial_approach_creep_um": 1.82,
+    "lateral_over_axial": 0.14,
+    "one_side_lifts": false,
+    "sf": 7.59
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.35,
+     -0.32
+    ],
+    "p0_MPa": 654.0,
+    "approach_um": 0.14,
+    "sf": 6.12
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1394.0,
+    "radius_mm": 0.0621,
+    "approach_um": 1.21,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 15.0,
+   "case": "lift_gear",
+   "P16_N": 5.42,
+   "normal_N": {
+    "A": 5.64,
+    "B": 0.16,
+    "C": 8.29
+   },
+   "A_lateral_N": 17.44,
+   "B_lateral_N": 15.12,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.2,
+    "half_width_mm": 0.089,
+    "axial_approach_um": 7.79,
+    "axial_approach_creep_um": 13.12,
+    "lateral_over_axial": 3.09,
+    "one_side_lifts": true,
+    "sf": 2.52
+   },
+   "vee": {
+    "N_per_dowel": [
+     10.8,
+     -10.58
+    ],
+    "p0_MPa": 2046.0,
+    "approach_um": 1.39,
+    "sf": 1.95
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1258.0,
+    "radius_mm": 0.0561,
+    "approach_um": 0.99,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 15.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 5.42,
+   "normal_N": {
+    "A": 3.63,
+    "B": 2.16,
+    "C": 8.29
+   },
+   "A_lateral_N": 18.22,
+   "B_lateral_N": 14.17,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.1,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.72,
+    "axial_approach_creep_um": 12.99,
+    "lateral_over_axial": 5.01,
+    "one_side_lifts": true,
+    "sf": 2.53
+   },
+   "vee": {
+    "N_per_dowel": [
+     -8.49,
+     11.55
+    ],
+    "p0_MPa": 2093.0,
+    "approach_um": 1.46,
+    "sf": 1.91
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1258.0,
+    "radius_mm": 0.0561,
+    "approach_um": 0.99,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 30.0,
+   "case": "lift",
+   "P16_N": 4.59,
+   "normal_N": {
+    "A": 4.72,
+    "B": 1.24,
+    "C": 10.72
+   },
+   "A_lateral_N": 0.56,
+   "B_lateral_N": 0.56,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 11.1,
+    "half_width_mm": 0.034,
+    "axial_approach_um": 1.37,
+    "axial_approach_creep_um": 2.33,
+    "lateral_over_axial": 0.12,
+    "one_side_lifts": false,
+    "sf": 6.63
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.27,
+     0.48
+    ],
+    "p0_MPa": 1003.0,
+    "approach_um": 0.33,
+    "sf": 3.99
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1371.0,
+    "radius_mm": 0.0611,
+    "approach_um": 1.18,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 30.0,
+   "case": "lift_tap",
+   "P16_N": 4.59,
+   "normal_N": {
+    "A": 2.9,
+    "B": -0.58,
+    "C": 11.36
+   },
+   "A_lateral_N": 0.56,
+   "B_lateral_N": 0.56,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 9.2,
+    "half_width_mm": 0.028,
+    "axial_approach_um": 0.97,
+    "axial_approach_creep_um": 1.66,
+    "lateral_over_axial": 0.19,
+    "one_side_lifts": false,
+    "sf": 7.99
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.02,
+     -0.81
+    ],
+    "p0_MPa": 9.0,
+    "approach_um": 0.0,
+    "sf": 432.07
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1398.0,
+    "radius_mm": 0.0623,
+    "approach_um": 1.22,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 30.0,
+   "case": "lift_gear",
+   "P16_N": 4.59,
+   "normal_N": {
+    "A": 5.03,
+    "B": -0.45,
+    "C": 8.39
+   },
+   "A_lateral_N": 17.37,
+   "B_lateral_N": 15.2,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.9,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.67,
+    "axial_approach_creep_um": 12.91,
+    "lateral_over_axial": 3.45,
+    "one_side_lifts": true,
+    "sf": 2.54
+   },
+   "vee": {
+    "N_per_dowel": [
+     10.43,
+     -11.07
+    ],
+    "p0_MPa": 2023.0,
+    "approach_um": 1.36,
+    "sf": 1.98
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1263.0,
+    "radius_mm": 0.0563,
+    "approach_um": 1.0,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 30.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 4.59,
+   "normal_N": {
+    "A": 3.03,
+    "B": 1.56,
+    "C": 8.39
+   },
+   "A_lateral_N": 18.29,
+   "B_lateral_N": 14.08,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.9,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.64,
+    "axial_approach_creep_um": 12.86,
+    "lateral_over_axial": 6.04,
+    "one_side_lifts": true,
+    "sf": 2.54
+   },
+   "vee": {
+    "N_per_dowel": [
+     -8.86,
+     11.06
+    ],
+    "p0_MPa": 2063.0,
+    "approach_um": 1.42,
+    "sf": 1.94
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1263.0,
+    "radius_mm": 0.0563,
+    "approach_um": 1.0,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 45.0,
+   "case": "lift",
+   "P16_N": 4.0,
+   "normal_N": {
+    "A": 4.41,
+    "B": 0.93,
+    "C": 10.61
+   },
+   "A_lateral_N": 0.44,
+   "B_lateral_N": 0.44,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 10.5,
+    "half_width_mm": 0.032,
+    "axial_approach_um": 1.25,
+    "axial_approach_creep_um": 2.13,
+    "lateral_over_axial": 0.1,
+    "one_side_lifts": false,
+    "sf": 6.97
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.97,
+     0.35
+    ],
+    "p0_MPa": 915.0,
+    "approach_um": 0.28,
+    "sf": 4.37
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1366.0,
+    "radius_mm": 0.0609,
+    "approach_um": 1.17,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 45.0,
+   "case": "lift_tap",
+   "P16_N": 4.0,
+   "normal_N": {
+    "A": 2.59,
+    "B": -0.89,
+    "C": 11.25
+   },
+   "A_lateral_N": 0.44,
+   "B_lateral_N": 0.44,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 8.5,
+    "half_width_mm": 0.026,
+    "axial_approach_um": 0.85,
+    "axial_approach_creep_um": 1.45,
+    "lateral_over_axial": 0.17,
+    "one_side_lifts": false,
+    "sf": 8.6
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.32,
+     -0.94
+    ],
+    "p0_MPa": 9.0,
+    "approach_um": 0.0,
+    "sf": 432.07
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1393.0,
+    "radius_mm": 0.0621,
+    "approach_um": 1.21,
+    "sf": 0.21
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 45.0,
+   "case": "lift_gear",
+   "P16_N": 4.0,
+   "normal_N": {
+    "A": 4.73,
+    "B": -0.76,
+    "C": 8.28
+   },
+   "A_lateral_N": 17.47,
+   "B_lateral_N": 15.08,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.9,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.65,
+    "axial_approach_creep_um": 12.88,
+    "lateral_over_axial": 3.7,
+    "one_side_lifts": true,
+    "sf": 2.54
+   },
+   "vee": {
+    "N_per_dowel": [
+     10.13,
+     -11.2
+    ],
+    "p0_MPa": 2003.0,
+    "approach_um": 1.34,
+    "sf": 2.0
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1258.0,
+    "radius_mm": 0.0561,
+    "approach_um": 0.99,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 45.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 4.0,
+   "normal_N": {
+    "A": 2.72,
+    "B": 1.25,
+    "C": 8.28
+   },
+   "A_lateral_N": 18.19,
+   "B_lateral_N": 14.21,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.7,
+    "half_width_mm": 0.087,
+    "axial_approach_um": 7.55,
+    "axial_approach_creep_um": 12.72,
+    "lateral_over_axial": 6.68,
+    "one_side_lifts": true,
+    "sf": 2.56
+   },
+   "vee": {
+    "N_per_dowel": [
+     -9.16,
+     10.93
+    ],
+    "p0_MPa": 2054.0,
+    "approach_um": 1.4,
+    "sf": 1.95
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1258.0,
+    "radius_mm": 0.0561,
+    "approach_um": 0.99,
+    "sf": 0.23
+   }
+  },
+  {
+   "design": "v3",
+   "tilt_deg": 0.0,
+   "case": "stall",
+   "P16_N": 50.0,
+   "normal_N": {
+    "A": 20.8,
+    "B": 17.32,
+    "C": 24.43
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 20.9,
+    "half_width_mm": 0.063,
+    "axial_approach_um": 4.3,
+    "axial_approach_creep_um": 7.27,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 3.51
+   },
+   "vee": {
+    "N_per_dowel": [
+     12.25,
+     12.25
+    ],
+    "p0_MPa": 2134.0,
+    "approach_um": 1.52,
+    "sf": 1.87
+   },
+   "flat": {
+    "material": "low-carbon steel armature",
+    "p0_MPa": 1804.0,
+    "radius_mm": 0.0804,
+    "approach_um": 2.04,
+    "sf": 0.16
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 0.0,
+   "case": "lift",
+   "P16_N": 6.8,
+   "normal_N": {
+    "A": 2.98,
+    "B": 2.83,
+    "C": 5.24
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": true,
+   "cone": {
+    "p0_MPa": 7.9,
+    "half_width_mm": 0.024,
+    "axial_approach_um": 0.74,
+    "axial_approach_creep_um": 1.27,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 9.28
+   },
+   "vee": {
+    "N_per_dowel": [
+     2.0,
+     2.0
+    ],
+    "p0_MPa": 1166.0,
+    "approach_um": 0.45,
+    "sf": 3.43
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1080.0,
+    "radius_mm": 0.0481,
+    "approach_um": 0.73,
+    "sf": 0.89
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 0.0,
+   "case": "lift_tap",
+   "P16_N": 6.8,
+   "normal_N": {
+    "A": -3.32,
+    "B": 1.33,
+    "C": 10.04
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 0.0,
+    "half_width_mm": 0.0,
+    "axial_approach_um": 0.0,
+    "axial_approach_creep_um": 0.0,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 16010.38
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.94,
+     0.94
+    ],
+    "p0_MPa": 906.0,
+    "approach_um": 0.27,
+    "sf": 4.41
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1341.0,
+    "radius_mm": 0.0598,
+    "approach_um": 1.13,
+    "sf": 0.72
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 0.0,
+   "case": "lift_gear",
+   "P16_N": 6.8,
+   "normal_N": {
+    "A": 17.43,
+    "B": -8.06,
+    "C": -2.03
+   },
+   "A_lateral_N": 14.43,
+   "B_lateral_N": 10.24,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 31.2,
+    "half_width_mm": 0.095,
+    "axial_approach_um": 8.77,
+    "axial_approach_creep_um": 14.75,
+    "lateral_over_axial": 0.83,
+    "one_side_lifts": true,
+    "sf": 2.35
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.54,
+     -12.94
+    ],
+    "p0_MPa": 1070.0,
+    "approach_um": 0.38,
+    "sf": 3.74
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 6.0,
+    "radius_mm": 0.0003,
+    "approach_um": 0.0,
+    "sf": 154.39
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 0.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 6.8,
+   "normal_N": {
+    "A": -0.64,
+    "B": 10.02,
+    "C": -2.03
+   },
+   "A_lateral_N": 14.43,
+   "B_lateral_N": 10.24,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 24.7,
+    "half_width_mm": 0.075,
+    "axial_approach_um": 5.76,
+    "axial_approach_creep_um": 9.73,
+    "lateral_over_axial": 14431823.23,
+    "one_side_lifts": true,
+    "sf": 2.98
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.16,
+     14.33
+    ],
+    "p0_MPa": 2248.0,
+    "approach_um": 1.68,
+    "sf": 1.78
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 6.0,
+    "radius_mm": 0.0003,
+    "approach_um": 0.0,
+    "sf": 154.39
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 15.0,
+   "case": "lift",
+   "P16_N": 5.1,
+   "normal_N": {
+    "A": -2.12,
+    "B": 1.89,
+    "C": 9.4
+   },
+   "A_lateral_N": 0.45,
+   "B_lateral_N": 0.45,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 4.3,
+    "half_width_mm": 0.013,
+    "axial_approach_um": 0.25,
+    "axial_approach_creep_um": 0.42,
+    "lateral_over_axial": 447872.02,
+    "one_side_lifts": true,
+    "sf": 16.92
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.65,
+     1.02
+    ],
+    "p0_MPa": 1095.0,
+    "approach_um": 0.4,
+    "sf": 3.65
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1312.0,
+    "radius_mm": 0.0585,
+    "approach_um": 1.08,
+    "sf": 0.73
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 15.0,
+   "case": "lift_tap",
+   "P16_N": 5.1,
+   "normal_N": {
+    "A": -8.42,
+    "B": 0.39,
+    "C": 14.2
+   },
+   "A_lateral_N": 0.45,
+   "B_lateral_N": 0.45,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 4.3,
+    "half_width_mm": 0.013,
+    "axial_approach_um": 0.25,
+    "axial_approach_creep_um": 0.42,
+    "lateral_over_axial": 447872.02,
+    "one_side_lifts": true,
+    "sf": 16.92
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.59,
+     -0.04
+    ],
+    "p0_MPa": 778.0,
+    "approach_um": 0.2,
+    "sf": 5.14
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1506.0,
+    "radius_mm": 0.0671,
+    "approach_um": 1.42,
+    "sf": 0.64
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 15.0,
+   "case": "lift_gear",
+   "P16_N": 5.1,
+   "normal_N": {
+    "A": 12.34,
+    "B": -9.0,
+    "C": 2.13
+   },
+   "A_lateral_N": 14.12,
+   "B_lateral_N": 10.69,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 29.2,
+    "half_width_mm": 0.089,
+    "axial_approach_um": 7.8,
+    "axial_approach_creep_um": 13.14,
+    "lateral_over_axial": 1.14,
+    "one_side_lifts": true,
+    "sf": 2.51
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.2,
+     -13.92
+    ],
+    "p0_MPa": 983.0,
+    "approach_um": 0.32,
+    "sf": 4.07
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 800.0,
+    "radius_mm": 0.0356,
+    "approach_um": 0.4,
+    "sf": 1.2
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 15.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 5.1,
+   "normal_N": {
+    "A": -5.74,
+    "B": 9.08,
+    "C": 2.13
+   },
+   "A_lateral_N": 14.75,
+   "B_lateral_N": 9.8,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 24.9,
+    "half_width_mm": 0.076,
+    "axial_approach_um": 5.88,
+    "axial_approach_creep_um": 9.92,
+    "lateral_over_axial": 14753101.07,
+    "one_side_lifts": true,
+    "sf": 2.95
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.51,
+     13.35
+    ],
+    "p0_MPa": 2196.0,
+    "approach_um": 1.6,
+    "sf": 1.82
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 800.0,
+    "radius_mm": 0.0356,
+    "approach_um": 0.4,
+    "sf": 1.2
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 30.0,
+   "case": "lift",
+   "P16_N": 4.27,
+   "normal_N": {
+    "A": -3.88,
+    "B": 1.35,
+    "C": 10.61
+   },
+   "A_lateral_N": 0.51,
+   "B_lateral_N": 0.51,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 4.6,
+    "half_width_mm": 0.014,
+    "axial_approach_um": 0.28,
+    "axial_approach_creep_um": 0.48,
+    "lateral_over_axial": 513087.19,
+    "one_side_lifts": true,
+    "sf": 15.8
+   },
+   "vee": {
+    "N_per_dowel": [
+     1.31,
+     0.59
+    ],
+    "p0_MPa": 1014.0,
+    "approach_um": 0.34,
+    "sf": 3.94
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1366.0,
+    "radius_mm": 0.0609,
+    "approach_um": 1.17,
+    "sf": 0.7
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 30.0,
+   "case": "lift_tap",
+   "P16_N": 4.27,
+   "normal_N": {
+    "A": -10.18,
+    "B": -0.15,
+    "C": 15.41
+   },
+   "A_lateral_N": 0.51,
+   "B_lateral_N": 0.51,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 4.6,
+    "half_width_mm": 0.014,
+    "axial_approach_um": 0.28,
+    "axial_approach_creep_um": 0.48,
+    "lateral_over_axial": 513087.19,
+    "one_side_lifts": true,
+    "sf": 15.8
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.25,
+     -0.47
+    ],
+    "p0_MPa": 586.0,
+    "approach_um": 0.11,
+    "sf": 6.82
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1547.0,
+    "radius_mm": 0.069,
+    "approach_um": 1.5,
+    "sf": 0.62
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 30.0,
+   "case": "lift_gear",
+   "P16_N": 4.27,
+   "normal_N": {
+    "A": 10.58,
+    "B": -9.54,
+    "C": 3.34
+   },
+   "A_lateral_N": 14.07,
+   "B_lateral_N": 10.76,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.6,
+    "half_width_mm": 0.087,
+    "axial_approach_um": 7.49,
+    "axial_approach_creep_um": 12.61,
+    "lateral_over_axial": 1.33,
+    "one_side_lifts": true,
+    "sf": 2.57
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.86,
+     -14.35
+    ],
+    "p0_MPa": 880.0,
+    "approach_um": 0.26,
+    "sf": 4.55
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 930.0,
+    "radius_mm": 0.0414,
+    "approach_um": 0.54,
+    "sf": 1.03
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 30.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 4.27,
+   "normal_N": {
+    "A": -7.5,
+    "B": 8.53,
+    "C": 3.34
+   },
+   "A_lateral_N": 14.8,
+   "B_lateral_N": 9.73,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 25.0,
+    "half_width_mm": 0.076,
+    "axial_approach_um": 5.89,
+    "axial_approach_creep_um": 9.95,
+    "lateral_over_axial": 14800431.44,
+    "one_side_lifts": true,
+    "sf": 2.94
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.85,
+     12.92
+    ],
+    "p0_MPa": 2172.0,
+    "approach_um": 1.57,
+    "sf": 1.84
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 930.0,
+    "radius_mm": 0.0414,
+    "approach_um": 0.54,
+    "sf": 1.03
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 50.0,
+   "case": "lift",
+   "P16_N": 3.47,
+   "normal_N": {
+    "A": -3.27,
+    "B": 0.91,
+    "C": 9.57
+   },
+   "A_lateral_N": 0.29,
+   "B_lateral_N": 0.29,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 3.5,
+    "half_width_mm": 0.011,
+    "axial_approach_um": 0.17,
+    "axial_approach_creep_um": 0.29,
+    "lateral_over_axial": 294033.96,
+    "one_side_lifts": true,
+    "sf": 20.88
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.85,
+     0.44
+    ],
+    "p0_MPa": 878.0,
+    "approach_um": 0.26,
+    "sf": 4.56
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1320.0,
+    "radius_mm": 0.0588,
+    "approach_um": 1.09,
+    "sf": 0.73
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 50.0,
+   "case": "lift_tap",
+   "P16_N": 3.47,
+   "normal_N": {
+    "A": -9.57,
+    "B": -0.59,
+    "C": 14.37
+   },
+   "A_lateral_N": 0.29,
+   "B_lateral_N": 0.29,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 3.5,
+    "half_width_mm": 0.011,
+    "axial_approach_um": 0.17,
+    "axial_approach_creep_um": 0.29,
+    "lateral_over_axial": 294033.96,
+    "one_side_lifts": true,
+    "sf": 20.88
+   },
+   "vee": {
+    "N_per_dowel": [
+     -0.21,
+     -0.62
+    ],
+    "p0_MPa": 9.0,
+    "approach_um": 0.0,
+    "sf": 432.07
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 1512.0,
+    "radius_mm": 0.0674,
+    "approach_um": 1.43,
+    "sf": 0.64
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 50.0,
+   "case": "lift_gear",
+   "P16_N": 3.47,
+   "normal_N": {
+    "A": 11.19,
+    "B": -9.98,
+    "C": 2.3
+   },
+   "A_lateral_N": 14.22,
+   "B_lateral_N": 10.54,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.9,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.64,
+    "axial_approach_creep_um": 12.87,
+    "lateral_over_axial": 1.27,
+    "one_side_lifts": true,
+    "sf": 2.54
+   },
+   "vee": {
+    "N_per_dowel": [
+     0.4,
+     -14.51
+    ],
+    "p0_MPa": 680.0,
+    "approach_um": 0.15,
+    "sf": 5.88
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 821.0,
+    "radius_mm": 0.0366,
+    "approach_um": 0.42,
+    "sf": 1.17
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 50.0,
+   "case": "lift_gear (gear reversed)",
+   "P16_N": 3.47,
+   "normal_N": {
+    "A": -6.89,
+    "B": 8.1,
+    "C": 2.3
+   },
+   "A_lateral_N": 14.64,
+   "B_lateral_N": 9.95,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 24.8,
+    "half_width_mm": 0.075,
+    "axial_approach_um": 5.84,
+    "axial_approach_creep_um": 9.85,
+    "lateral_over_axial": 14641996.64,
+    "one_side_lifts": true,
+    "sf": 2.96
+   },
+   "vee": {
+    "N_per_dowel": [
+     -1.31,
+     12.76
+    ],
+    "p0_MPa": 2163.0,
+    "approach_um": 1.56,
+    "sf": 1.85
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 821.0,
+    "radius_mm": 0.0366,
+    "approach_um": 0.42,
+    "sf": 1.17
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 0.0,
+   "case": "stall",
+   "P16_N": 50.0,
+   "normal_N": {
+    "A": -5.67,
+    "B": 24.43,
+    "C": 35.48
+   },
+   "A_lateral_N": 0.0,
+   "B_lateral_N": 0.0,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 0.0,
+    "half_width_mm": 0.0,
+    "axial_approach_um": 0.0,
+    "axial_approach_creep_um": 0.0,
+    "lateral_over_axial": 0.0,
+    "one_side_lifts": false,
+    "sf": 16010.38
+   },
+   "vee": {
+    "N_per_dowel": [
+     17.27,
+     17.27
+    ],
+    "p0_MPa": 2393.0,
+    "approach_um": 1.91,
+    "sf": 1.67
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 2043.0,
+    "radius_mm": 0.0911,
+    "approach_um": 2.61,
+    "sf": 0.47
+   }
+  },
+  {
+   "design": "v4",
+   "tilt_deg": 50.0,
+   "case": "stall",
+   "P16_N": 50.0,
+   "normal_N": {
+    "A": -179.6,
+    "B": 13.49,
+    "C": 198.48
+   },
+   "A_lateral_N": 19.87,
+   "B_lateral_N": 19.87,
+   "dock_closed": false,
+   "cone": {
+    "p0_MPa": 28.9,
+    "half_width_mm": 0.088,
+    "axial_approach_um": 7.66,
+    "axial_approach_creep_um": 12.9,
+    "lateral_over_axial": 19865304.81,
+    "one_side_lifts": true,
+    "sf": 2.54
+   },
+   "vee": {
+    "N_per_dowel": [
+     23.59,
+     -4.51
+    ],
+    "p0_MPa": 2655.0,
+    "approach_um": 2.35,
+    "sf": 1.51
+   },
+   "flat": {
+    "material": "case-hardened M5 washer",
+    "p0_MPa": 3627.0,
+    "radius_mm": 0.1616,
+    "approach_um": 8.23,
+    "sf": 0.26
+   }
+  }
+ ],
+ "gear_capacity": {
+  "note": "fraction of the NEMA 11 stall mesh load (3.7 N separating + 10.2 N tangential, about 0.10 N*m at the 20T pinion) at which the first ball leaves its seat; 0 = unseated with the motor idle. For scale (cad/gear-mesh): heavy running, 0.03 N*m at the auger = 0.0136 N*m at the pinion = 0.134; the DRV8825 0.45 A stall, 0.067 N*m at the pinion = 0.66",
+  "heavy_running": 0.134,
+  "driver_stall": 0.66,
+  "cases": {
+   "v3 float_gear 0 deg": {
+    "frictionless": 0.037,
+    "mu_0p15": 0.198,
+    "mu_0p3": 0.336
+   },
+   "v3 lift_gear 0 deg": {
+    "frictionless": 0.183,
+    "mu_0p15": 0.426,
+    "mu_0p3": 0.573
+   },
+   "v3 lift_gear 15 deg": {
+    "frictionless": 0.084,
+    "mu_0p15": 0.319,
+    "mu_0p3": 0.453
+   },
+   "v3 lift_gear 30 deg": {
+    "frictionless": 0.041,
+    "mu_0p15": 0.27,
+    "mu_0p3": 0.396
+   },
+   "v3 lift_gear 45 deg": {
+    "frictionless": 0.03,
+    "mu_0p15": 0.251,
+    "mu_0p3": 0.373
+   },
+   "v4 lift_gear 0 deg": {
+    "frictionless": 0.134,
+    "mu_0p15": 0.166,
+    "mu_0p3": 0.192
+   },
+   "v4 lift_gear 15 deg": {
+    "frictionless": 0.0,
+    "mu_0p15": 0.0,
+    "mu_0p3": 0.0
+   },
+   "v4 lift_gear 30 deg": {
+    "frictionless": 0.0,
+    "mu_0p15": 0.0,
+    "mu_0p3": 0.0
+   },
+   "v4 lift_gear 50 deg": {
+    "frictionless": 0.0,
+    "mu_0p15": 0.0,
+    "mu_0p3": 0.0
+   }
+  }
+ },
+ "unseated_states": [
+  "v3 0 deg float_tap",
+  "v3 0 deg float_gear",
+  "v3 0 deg float_gear (gear reversed)",
+  "v3 0 deg lift_gear",
+  "v3 0 deg lift_gear (gear reversed)",
+  "v3 15 deg lift_tap",
+  "v3 15 deg lift_gear",
+  "v3 15 deg lift_gear (gear reversed)",
+  "v3 30 deg lift_tap",
+  "v3 30 deg lift_gear",
+  "v3 30 deg lift_gear (gear reversed)",
+  "v3 45 deg lift_tap",
+  "v3 45 deg lift_gear",
+  "v3 45 deg lift_gear (gear reversed)",
+  "v4 0 deg lift_tap",
+  "v4 0 deg lift_gear",
+  "v4 0 deg lift_gear (gear reversed)",
+  "v4 15 deg lift",
+  "v4 15 deg lift_tap",
+  "v4 15 deg lift_gear",
+  "v4 15 deg lift_gear (gear reversed)",
+  "v4 30 deg lift",
+  "v4 30 deg lift_tap",
+  "v4 30 deg lift_gear",
+  "v4 30 deg lift_gear (gear reversed)",
+  "v4 50 deg lift",
+  "v4 50 deg lift_tap",
+  "v4 50 deg lift_gear",
+  "v4 50 deg lift_gear (gear reversed)",
+  "v4 0 deg stall",
+  "v4 50 deg stall"
+ ],
+ "variants": {
+  "v3 as drawn": {
+   "min_normal_N": {
+    "A": 2.27,
+    "B": -1.21,
+    "C": 7.86
+   },
+   "seated_everywhere": false,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.251,
+   "unseated": [
+    "0 deg float_tap",
+    "15 deg lift_tap",
+    "30 deg lift_tap",
+    "30 deg P16 stall",
+    "45 deg lift_tap",
+    "45 deg P16 stall"
+   ]
+  },
+  "v3, vee magnet 0.6 mm under its ball (as the cone's)": {
+   "min_normal_N": {
+    "A": 2.27,
+    "B": 2.27,
+    "C": 7.86
+   },
+   "seated_everywhere": true,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.278,
+   "unseated": [
+    "30 deg P16 stall",
+    "45 deg P16 stall"
+   ]
+  },
+  "v4 as drawn": {
+   "min_normal_N": {
+    "A": -10.18,
+    "B": -0.59,
+    "C": 5.24
+   },
+   "seated_everywhere": false,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.0,
+   "unseated": [
+    "0 deg lift_tap",
+    "0 deg P16 stall",
+    "15 deg lift",
+    "15 deg lift_tap",
+    "15 deg P16 stall",
+    "30 deg lift",
+    "30 deg lift_tap",
+    "30 deg P16 stall",
+    "50 deg lift",
+    "50 deg lift_tap",
+    "50 deg P16 stall"
+   ]
+  },
+  "v4, clevis pin at x 48 (inside the contact triangle)": {
+   "min_normal_N": {
+    "A": -9.44,
+    "B": -0.53,
+    "C": 2.12
+   },
+   "seated_everywhere": false,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.0,
+   "unseated": [
+    "15 deg lift",
+    "15 deg lift_tap",
+    "15 deg P16 stall",
+    "30 deg lift",
+    "30 deg lift_tap",
+    "30 deg P16 stall",
+    "50 deg lift",
+    "50 deg lift_tap",
+    "50 deg P16 stall"
+   ]
+  },
+  "v4, vee moved to (64, -19.5), its groove toward the cone": {
+   "min_normal_N": {
+    "A": -11.29,
+    "B": -0.59,
+    "C": 3.36
+   },
+   "seated_everywhere": false,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.0,
+   "unseated": [
+    "0 deg lift_tap",
+    "15 deg lift",
+    "15 deg lift_tap",
+    "15 deg P16 stall",
+    "30 deg lift",
+    "30 deg lift_tap",
+    "30 deg P16 stall",
+    "50 deg lift",
+    "50 deg lift_tap",
+    "50 deg P16 stall"
+   ]
+  },
+  "v4, vee to (64, -19.5) + magnets at 0.6 mm": {
+   "min_normal_N": {
+    "A": -11.29,
+    "B": 2.8,
+    "C": 3.36
+   },
+   "seated_everywhere": false,
+   "seated_at_P16_stall": false,
+   "gear_capacity_mu015": 0.0,
+   "unseated": [
+    "0 deg lift_tap",
+    "15 deg lift",
+    "15 deg lift_tap",
+    "15 deg P16 stall",
+    "30 deg lift",
+    "30 deg lift_tap",
+    "30 deg P16 stall",
+    "50 deg lift",
+    "50 deg lift_tap",
+    "50 deg P16 stall"
+   ]
+  }
+ },
+ "worst": {
+  "v3 cone_p0 operating": {
+   "value": 29.9,
+   "tilt": 0.0,
+   "case": "lift_gear"
+  },
+  "v3 cone_p0 P16 stall": {
+   "value": 20.9,
+   "tilt": 0.0,
+   "case": "stall"
+  },
+  "v3 flat_p0 operating": {
+   "value": 1398.0,
+   "tilt": 30.0,
+   "case": "lift_tap"
+  },
+  "v3 flat_p0 P16 stall": {
+   "value": 1804.0,
+   "tilt": 0.0,
+   "case": "stall"
+  },
+  "v3 vee_p0 operating": {
+   "value": 2160.0,
+   "tilt": 0.0,
+   "case": "lift_gear (gear reversed)"
+  },
+  "v3 vee_p0 P16 stall": {
+   "value": 2134.0,
+   "tilt": 0.0,
+   "case": "stall"
+  },
+  "v4 cone_p0 operating": {
+   "value": 31.2,
+   "tilt": 0.0,
+   "case": "lift_gear"
+  },
+  "v4 cone_p0 P16 stall": {
+   "value": 28.9,
+   "tilt": 50.0,
+   "case": "stall"
+  },
+  "v4 flat_p0 operating": {
+   "value": 1547.0,
+   "tilt": 30.0,
+   "case": "lift_tap"
+  },
+  "v4 flat_p0 P16 stall": {
+   "value": 3627.0,
+   "tilt": 50.0,
+   "case": "stall"
+  },
+  "v4 vee_p0 operating": {
+   "value": 2248.0,
+   "tilt": 0.0,
+   "case": "lift_gear (gear reversed)"
+  },
+  "v4 vee_p0 P16 stall": {
+   "value": 2655.0,
+   "tilt": 50.0,
+   "case": "stall"
+  }
+ },
+ "armature_dent": {
+  "W_N": 11.36,
+  "radius_mm": 0.0818,
+  "depth_um": 1.05,
+  "note": "mean pressure 3Y over the dent; after it forms, repeat docks at the same spot are elastic"
+ },
+ "cradle_seats": {
+  "v3": {
+   "parked (EC weight)": {
+    "cone_N": 0.78,
+    "vee_N": 0.78,
+    "flat_N": 1.67,
+    "cone_p0_MPa": 4.1,
+    "cone_axial_approach_um": 0.22,
+    "cone_axial_approach_creep_um": 0.37,
+    "vee_p0_MPa": 760.0,
+    "flat_p0_MPa": 738.0,
+    "flat_sf_plain_washer": 0.54
+   },
+   "P16 retract stall + weight": {
+    "cone_N": 16.3,
+    "vee_N": 16.3,
+    "flat_N": 20.64,
+    "cone_p0_MPa": 18.5,
+    "cone_axial_approach_um": 3.45,
+    "cone_axial_approach_creep_um": 5.85,
+    "vee_p0_MPa": 2091.0,
+    "flat_p0_MPa": 1706.0,
+    "flat_sf_plain_washer": 0.23
+   }
+  },
+  "v4": {
+   "parked (EC weight)": {
+    "cone_N": 0.73,
+    "vee_N": 0.73,
+    "flat_N": 1.57,
+    "cone_p0_MPa": 3.9,
+    "cone_axial_approach_um": 0.2,
+    "cone_axial_approach_creep_um": 0.35,
+    "vee_p0_MPa": 744.0,
+    "flat_p0_MPa": 723.0,
+    "flat_sf_plain_washer": 0.55
+   },
+   "P16 retract stall + weight": {
+    "cone_N": 16.25,
+    "vee_N": 16.25,
+    "flat_N": 20.54,
+    "cone_p0_MPa": 18.5,
+    "cone_axial_approach_um": 3.45,
+    "cone_axial_approach_creep_um": 5.84,
+    "vee_p0_MPa": 2089.0,
+    "flat_p0_MPa": 1703.0,
+    "flat_sf_plain_washer": 0.23
+   }
+  }
+ }
+}

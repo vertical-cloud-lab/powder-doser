@@ -229,7 +229,7 @@ def build(design: str, variant: str = "pads", h: float = 12.0, motor_refine: flo
     if variant == "motorpost":                       # design change under test: a third back post beside the motor
         xs, outward = post_side["side_plate_back"]
         y_p, z_top = MOTOR_POST_Y, MOTOR_POST_Z_TOP
-        z_bot = min(np.array(pp["M"])[2, 3] for pp in D["pl"] if pp["key"] == "ext_y") + 20.0
+        z_bot = min(np.array(pp["M"])[2, 3] for pp in D["pl"] if pp["key"] == "ext_y") + 10.0   # on the base cross rail's top
         parts.append(fem.Part("Motor post (2020, added)", gbox((xs + outward * GAP, y_p - 10, z_bot), (xs + outward * 20.0, y_p + 10, z_top)),
                               material=ext_key, orient=((0, 0, 1), (1, 0, 0))))
         zm = D["motor"][2, 3]
@@ -589,11 +589,10 @@ def motor_view(design: str, case: str = "jam", variant: str = "pads", h: float =
     axis = D["motor"][:3, 2]
     side = np.cross(axis, (0, 0, 1.0))
     v = -0.9 * axis + 1.0 * side + 0.35 * np.array([0, 0, 1.0])     # from the motor's body side, across its axis
+    c = 0.6 * c + 0.4 * mp["face"]
     pl.camera.focal_point = c
-    pl.camera.position = c + v / np.linalg.norm(v) * 900.0
+    pl.camera.position = c + v / np.linalg.norm(v) * 620.0
     pl.camera.up = (0, 0, 1)
-    pl.reset_camera()
-    pl.camera.zoom(1.35)
     kd = rec["key_disp"]
     pl.add_text(f"{design}: the NEMA 34 on its wall, {case}\nmotor centre of mass {1000 * kd['motor COM dz']:.0f} um, encoder end "
                 f"{1000 * kd['motor encoder end dz']:.0f} um vertically; axis tilt {kd['motor axis tilt (mrad, vertical plane)']:.2f} mrad"

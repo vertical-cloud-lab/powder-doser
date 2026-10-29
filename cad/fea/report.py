@@ -77,10 +77,23 @@ def frame_modes() -> list[str]:
         rows.append(f"| {LABEL.get(r['design'], r['design'])} | {r['notes'].split(': ')[-1]} | {', '.join(f'{x:.1f}' for x in f)} | "
                     f"{'; '.join(tops)} |")
     rows += ["", "Step rates of the NEMA 34 (one 32T revolution per motor revolution in all three designs, 200 full steps per revolution):", "",
-             "| chain speed (mm/s) | full-step rate (Hz) | electrical frequency (Hz) |", "|---|---|---|"]
+             "| chain speed (mm/s) | full-step rate (Hz) | electrical frequency (Hz) | 32T tooth mesh (Hz) |", "|---|---|---|---|"]
     for v in v_list:
         fs = LD.full_step_hz(v)
-        rows.append(f"| {v:.0f} | {fs:.1f} | {fs / 4:.1f} |")
+        rows.append(f"| {v:.0f} | {fs:.1f} | {fs / 4:.1f} | {fs * 32 / 200:.1f} |")
+    rows += ["", "Chain speeds (mm/s) at which each excitation lands on a mode under 120 Hz (v3/v4 run up to 100 mm/s, the paternoster "
+             "up to 130). A mode is only excited near these speeds, and microstepping weakens the full-step excitation a lot:", "",
+             "| design | joint | mode (Hz) | full-step rate at | electrical frequency at | 32T tooth mesh at |", "|---|---|---|---|---|---|"]
+    rev = LD.SPROCKET_CIRC_MM
+    for r in recs:
+        vmax = LD.V_MAX_MM_S if r["design"] == "paternoster" else 100.0
+        for f in r.get("freqs_Hz", []):
+            if f > 120:
+                break
+            vs = [f / n * rev for n in (LD.FULL_STEPS_PER_REV, LD.FULL_STEPS_PER_REV / 4, 32)]
+            cell = [f"**{v:.0f}**" if v <= vmax else f"{v:.0f}" for v in vs]
+            rows.append(f"| {LABEL.get(r['design'], r['design'])} | {r['notes'].split(': ')[-1]} | {f:.1f} | {cell[0]} | {cell[1]} | {cell[2]} |")
+    rows += ["", "Bold: inside the design's speed range."]
     return rows
 
 

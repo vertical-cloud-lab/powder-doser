@@ -1,0 +1,169 @@
+{
+ "module": "frame",
+ "case": "paternoster_pads_running",
+ "design": "paternoster",
+ "part": "frame + NEMA 34",
+ "load_case": "running",
+ "loads": {
+  "gravity": "all parts, motor 5.6 kg, loop 5.31 kg on the 8 sprockets, enclosure 0.00 kg",
+  "chain tension": "40 N per chain",
+  "drive torque": "1.6 N*m: reaction on the motor, out through both drive sprockets"
+ },
+ "nodes": 139939,
+ "elements": 70639,
+ "mesh_mm": 12.0,
+ "wall_s": 29.1,
+ "parts": [
+  {
+   "part": "side_plate_front",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.09036,
+   "vm_max_MPa": 8.861,
+   "vm_max_at": [
+    -33.0,
+    -93.1,
+    649.8
+   ],
+   "vm_excl_MPa": 8.861,
+   "vm_excl_at": [
+    -33.0,
+    -93.1,
+    649.8
+   ],
+   "allow_MPa": 241.0,
+   "sf": 27.2
+  },
+  {
+   "part": "side_plate_back",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.09944,
+   "vm_max_MPa": 9.274,
+   "vm_max_at": [
+    358.0,
+    -93.1,
+    649.8
+   ],
+   "vm_excl_MPa": 9.274,
+   "vm_excl_at": [
+    358.0,
+    -93.1,
+    649.8
+   ],
+   "allow_MPa": 241.0,
+   "sf": 25.99
+  },
+  {
+   "part": "motor plate",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.10762,
+   "vm_max_MPa": 8.633,
+   "vm_max_at": [
+    446.9,
+    125.2,
+    384.6
+   ],
+   "vm_excl_MPa": 8.633,
+   "vm_excl_at": [
+    446.9,
+    125.2,
+    384.6
+   ],
+   "allow_MPa": 241.0,
+   "sf": 27.92
+  },
+  {
+   "part": "standoff 1",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.06973,
+   "vm_max_MPa": 6.72,
+   "vm_max_at": [
+    445.1,
+    70.0,
+    384.2
+   ],
+   "vm_excl_MPa": 6.72,
+   "vm_excl_at": [
+    445.1,
+    70.0,
+    384.2
+   ],
+   "allow_MPa": 241.0,
+   "sf": 35.86
+  },
+  {
+   "part": "standoff 2",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.09455,
+   "vm_max_MPa": 7.651,
+   "vm_max_at": [
+    366.0,
+    64.5,
+    488.2
+   ],
+   "vm_excl_MPa": 7.651,
+   "vm_excl_at": [
+    366.0,
+    64.5,
+    488.2
+   ],
+   "allow_MPa": 241.0,
+   "sf": 31.5
+  },
+  {
+   "part": "standoff 3",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.08069,
+   "vm_max_MPa": 11.092,
+   "vm_max_at": [
+    445.3,
+    124.1,
+    384.9
+   ],
+   "vm_excl_MPa": 11.092,
+   "vm_excl_at": [
+    445.3,
+    124.1,
+    384.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 21.73
+  },
+  {
+   "part": "standoff 4",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.10088,
+   "vm_max_MPa": 11.002,
+   "vm_max_at": [
+    366.0,
+    122.3,
+    488.9
+   ],
+   "vm_excl_MPa": 11.002,
+   "vm_excl_at": [
+    366.0,
+    122.3,
+    488.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 21.9
+  }
+ ],
+ "key_disp": {
+  "motor COM dz": -0.1179,
+  "motor encoder end dz": -0.16036,
+  "motor shaft tip dz": -0.05761,
+  "motor shaft tip dy": -0.00299,
+  "motor face centre dx": 0.03481,
+  "motor axis tilt (mrad, vertical plane)": 0.49875,
+  "coupling parallel offset (mm)": 0.03602
+ },
+ "notes": "plate-to-post joint: pads",
+ "mass_kg": 23.8152,
+ "feet_reaction_N": [
+  -3.889446e-08,
+  -5.092612e-06,
+  238.6701
+ ],
+ "total_mass_kg": 23.815,
+ "png": "out/frame/paternoster_pads_running.png"
+}

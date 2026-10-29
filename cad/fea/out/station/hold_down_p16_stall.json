@@ -1,0 +1,47 @@
+{
+ "module": "station",
+ "case": "hold_down_p16_stall",
+ "design": "chain-carousel-v3 / v4",
+ "part": "hold-down (printed PETG)",
+ "load_case": "25 N up on the lip from the carriage tongue",
+ "loads": {
+  "F_N": 25.0,
+  "insert_reaction": [
+   -0.0,
+   -25.0,
+   6.74
+  ]
+ },
+ "nodes": 38641,
+ "elements": 23793,
+ "mesh_mm": 1.8,
+ "wall_s": 18.9,
+ "parts": [
+  {
+   "part": "hold-down",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.01335,
+   "vm_max_MPa": 6.533,
+   "vm_max_at": [
+    -13.0,
+    -4.4,
+    5.5
+   ],
+   "vm_excl_MPa": 6.533,
+   "vm_excl_at": [
+    -13.0,
+    -4.4,
+    5.5
+   ],
+   "allow_MPa": 23.0,
+   "sf": 3.52
+  }
+ ],
+ "key_disp": {
+  "lip max |u| (mm)": 0.01335,
+  "lip gap (mm)": 2.0
+ },
+ "notes": "inserts bonded; the face on the side plate held normal to it (it can't lift off in this linear model)",
+ "mass_kg": 0.0296,
+ "png": "out/station/hold_down_p16_stall.png"
+}
