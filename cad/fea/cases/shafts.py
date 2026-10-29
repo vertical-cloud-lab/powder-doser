@@ -224,7 +224,7 @@ def corner_shaft(design: str, which: str, case: str) -> dict:
     bc = beam_check(xb, bl, P.SHAFT_D)
     excl = np.concatenate([d.nsets[n] - 1 for n in d.nsets if n.startswith(("BRG", "LD"))])
     vm_x, at = res.vm_max("shaft", exclude=excl, exclude_r=2.5)
-    tau = 16 * torque * 1000.0 / (math.pi * P.SHAFT_D ** 3)
+    tau = 16 * torque * 1000.0 / (math.pi * P.SHAFT_D ** 3) if is_drive else 0.0
     fat = fatigue(bc["sigma_nominal_MPa"], tau, P.SHAFT_D)
     rec = common.record(MODULE, f"{design}_{which}_{case}", design=design, part=f"shaft {which}", load_case=case, res=res,
                         exclude=excl, exclude_r=2.5, key_disp=kd,
@@ -287,6 +287,42 @@ def idler_axle(case: str = "running", where: str = "front +1y") -> dict:
     return rec
 
 
+# --------------------------------------------------------------------------------------------- printed tensioner block
+def tensioner_block(design: str = "chain-carousel-v3", material: str = "PETG_CREEP") -> dict:
+    """The printed jack block under each top bearing (parts.tensioner_block): if the bearing's two flange bolts slip, its jack
+    screw carries the top corner's whole vertical chain load, through the trapped M5 nut into the block and out through its
+    two M5 screws into the plate. Block frame: x across (world y), y up, its back face (on the plate) at z = 0."""
+    P = design_params(design)
+    S = spans(design, P)
+    F_top = -corner_force("top", 1.0, S["T"], S["front"])[2]              # N, down, at one top sprocket
+    # the front bearing carries the front sprocket's load times its share of the span (sprocket at x 0, bearings 387.8 apart)
+    xa, xb = -41.4, 346.4
+    F = F_top * (xb - 0.0) / (xb - xa) + F_top * (xb - 305.0) / (xb - xa)  # and the back sprocket's small share
+    m = fem.mesh_parts([fem.Part("tensioner block", fem.step_path(design, "tensioner_block"), None, material)], size=1.2,
+                       size_min=0.4, curv=12)
+    d = fem.Deck(m)
+    # held: the M5 screws' heads (counterbore floors, z = 4) and shanks, and the back face round each screw (clamped)
+    held = m.nodes_where(lambda q: ((np.hypot(q[:, 0] - 10, q[:, 1] + 12) < 4.85) | (np.hypot(q[:, 0] + 10, q[:, 1] + 12) < 4.85))
+                         & ((np.abs(q[:, 2] - 4.0) < 1e-3) | (q[:, 2] < 1e-3) |
+                            ((np.minimum(np.hypot(q[:, 0] - 10, q[:, 1] + 12), np.hypot(q[:, 0] + 10, q[:, 1] + 12)) < 2.8) & (q[:, 2] < 4.0))))
+    d.fix(held, name="SCREWS")
+    d.print_reactions("SCREWS")
+    nut = m.faces_where(lambda c, n: abs(c[1] - (-6.2 - 2.7)) < 0.05 and n[1] > 0.9 and abs(c[0]) < 4.8 and c[2] > 1.5)
+    d.traction(nut, (0.0, -F, 0.0))
+    res = d.solve(f"{MODULE}/{design}_tensioner_{material}")
+    excl = d.nsets["SCREWS"] - 1
+    vm, at = res.vm_max("tensioner block", exclude=excl, exclude_r=0.8)
+    nut_n = np.unique(np.concatenate([f[2] for f in nut]))
+    rec = common.record(MODULE, f"{design}_tensioner_block_{material}", design=design, part="tensioner block (printed)",
+                        load_case="top bearing's flange bolts slipped: the jack screw carries it", res=res, exclude=excl, exclude_r=0.8,
+                        key_disp={"nut seat drop (mm)": float(np.abs(res.U[nut_n, 1]).mean())},
+                        loads_desc={"jack screw": f"{F:.1f} N down on the nut's seat"},
+                        extra=dict(screw_reaction_N=res.reactions("SCREWS").tolist()),
+                        notes="sustained (chain tension): PETG creep modulus and allowable",
+                        png_kw=dict(field="vm", view=(0.6, -0.4, 1.0), up=(0, 1, 0), zoom=1.2))
+    return rec
+
+
 CASES = {}
 for _d, _ws in (("chain-carousel-v3", ("B+", "B-", "T+", "T-")), ("chain-carousel-v4", ("B+", "T+")), ("paternoster", ("drive", "idle"))):
     for _w in _ws:
@@ -296,6 +332,7 @@ for _d, _ws in (("chain-carousel-v3", ("B+", "B-", "T+", "T-")), ("chain-carouse
         CASES[f"{_d}_B+_jam_side"] = (lambda d=_d: corner_shaft(d, "B+", "jam_side"))
 CASES["paternoster_idler_front"] = lambda: idler_axle("running", "front +1y")
 CASES["paternoster_idler_back"] = lambda: idler_axle("running", "back +1y")
+CASES["chain-carousel-v3_tensioner"] = lambda: tensioner_block("chain-carousel-v3", "PETG_CREEP")
 
 
 if __name__ == "__main__":

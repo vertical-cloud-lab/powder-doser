@@ -467,6 +467,7 @@ def solve_static(design, variant, case, h=12.0):
         d.force(sel, F)
         desc["push"] = f"{LD.LEAN_N:.0f} N on the +y top rail's middle, {'toward -y' if case == 'lean_y' else 'toward +x'}"
     res = d.solve(f"frame/{design}_{variant}_{case}_h{h}")
+    _LAST["res"] = res
     # function: motor sag and tilt, drive-chain / coupling alignment
     U = res.U
     i_com, i_enc, i_face, i_sh = (nearest(m, mp[k], "NEMA 34") for k in ("com", "enc", "face", "shaft"))
@@ -540,6 +541,76 @@ def solve_modes(design, variant="pads", h=12.0, n=12):
     return out
 
 
+def motor_view(design: str, case: str = "jam", variant: str = "pads", h: float = 12.0):
+    """Close-up of the motor on its wall: the back side plate, the motor (or the paternoster's motor plate and standoffs) and
+    the posts beside them, coloured by displacement in micrometres, seen from inside the frame and across the motor's axis."""
+    import pyvista as pv
+    rec = solve_static(design, variant, case, h)
+    D, m, pads = frame_mesh(design, variant, h)
+    res = _LAST["res"]
+    keep_names = [n for n in m.names if n in ("side_plate_back", "NEMA 34", "motor plate") or n.startswith("standoff")]
+    keep = np.isin(m.part, [m.names.index(n) for n in keep_names])
+    U = res.U
+    umag = np.linalg.norm(U, axis=1) * 1000.0
+    sub_tet = m.tet[keep]
+    used = np.unique(sub_tet)
+    remap = -np.ones(m.n, int)
+    remap[used] = np.arange(len(used))
+    cells = np.hstack([np.full((len(sub_tet), 1), 10), remap[sub_tet]]).ravel()
+    L = 400.0
+    scale = 0.04 * L / max(np.linalg.norm(U[used], axis=1).max(), 1e-12)
+    g = pv.UnstructuredGrid(cells, np.full(len(sub_tet), 24, np.uint8), m.xyz[used] + scale * U[used])
+    g0 = pv.UnstructuredGrid(cells, np.full(len(sub_tet), 24, np.uint8), m.xyz[used])
+    g["v"] = umag[used]
+    pl = pv.Plotter(off_screen=True, window_size=(1400, 1000))
+    pl.set_background("white")
+    pl.add_mesh(g0.extract_surface(algorithm="dataset_surface").extract_feature_edges(35), color="#9aa0a6", line_width=1, opacity=0.6)
+    surf = g.extract_surface(algorithm="dataset_surface", nonlinear_subdivision=2)
+    pl.add_mesh(surf, scalars="v", cmap="viridis", smooth_shading=True,
+                scalar_bar_args=dict(title="displacement (um)", color="black", vertical=True, position_x=0.86, position_y=0.2,
+                                     height=0.6, width=0.05, fmt="%.0f", title_font_size=16, label_font_size=14))
+    pl.add_mesh(surf.extract_feature_edges(35), color="black", line_width=1)
+    mp = motor_points(D)
+    c = 0.5 * (mp["face"] + mp["enc"])
+    axis = D["motor"][:3, 2]
+    side = np.cross(axis, (0, 0, 1.0))
+    v = -0.9 * axis + 1.0 * side + 0.35 * np.array([0, 0, 1.0])     # from the motor's body side, across its axis
+    pl.camera.focal_point = c
+    pl.camera.position = c + v / np.linalg.norm(v) * 900.0
+    pl.camera.up = (0, 0, 1)
+    pl.reset_camera()
+    pl.camera.zoom(1.35)
+    kd = rec["key_disp"]
+    pl.add_text(f"{design}: the NEMA 34 on its wall, {case}\nmotor centre of mass {1000 * kd['motor COM dz']:.0f} um, encoder end "
+                f"{1000 * kd['motor encoder end dz']:.0f} um vertically; axis tilt {kd['motor axis tilt (mrad, vertical plane)']:.2f} mrad"
+                f"\ndeformation x{scale:.0f}", position="upper_left", font_size=11, color="black")
+    out = common.OUT / MODULE / f"{design}_{variant}_{case}_motor.png"
+    pl.screenshot(str(out))
+    pl.close()
+    return dict(png=str(out))
+
+
+_LAST = {}
+
+
+def mass_props(design, variant="pads", h=12.0):
+    """Total mass and centre of mass of the frame model (everything the feet carry), for the tipping check."""
+    D, m, pads = frame_mesh(design, variant, h)
+    vol = m.volumes()
+    rho = np.array([MAT.get(mt).rho for mt in m.materials])[m.part]
+    c = m.xyz[m.tet[:, :4]].mean(1)
+    w = vol * rho
+    com = (w[:, None] * c).sum(0) / w.sum()
+    feet = np.array(D["feet"])
+    top = max(np.array(p["M"])[2, 3] for p in D["pl"] if p["key"] == "ext_x") + 20.0
+    out = dict(module=MODULE, kind="mass", design=design, mass_kg=round(float(w.sum()) * 1000, 3), com_mm=np.round(com, 1).tolist(),
+               feet_xy=np.round(feet[:, :2], 1).tolist(), top_rail_z=round(float(top), 1))
+    d_out = common.OUT / MODULE
+    d_out.mkdir(parents=True, exist_ok=True)
+    (d_out / f"{design}_mass.json").write_text(json.dumps(out, indent=1))
+    return out
+
+
 def _group(name: str) -> str:
     n = name.lower()
     for k in ("nema 34", "motor plate", "standoff", "side_plate", "post", "rail", "shaft", "sprocket", "idler", "bearing", "pad"):
@@ -587,6 +658,9 @@ for _d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster"):
     CASES[f"{_d}_bonded_gravity"] = (lambda d=_d: solve_static(d, "bonded", "gravity"))
     CASES[f"{_d}_pads_modes"] = (lambda d=_d: solve_modes(d, "pads"))
     CASES[f"{_d}_bonded_modes"] = (lambda d=_d: solve_modes(d, "bonded"))
+    CASES[f"{_d}_mass"] = (lambda d=_d: mass_props(d))
+    CASES[f"{_d}_motor_view"] = (lambda d=_d: motor_view(d, "jam"))
+    CASES[f"{_d}_motor_view_gravity"] = (lambda d=_d: motor_view(d, "gravity"))
 
 
 ORDER = [f"{d}_{c}" for d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster")
