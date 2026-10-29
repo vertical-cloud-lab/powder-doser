@@ -42,3 +42,6 @@
 {"t": "2026-10-27T03:23:12", "run": "20261027-032311", "purpose": "quota check", "call": "GET users/sessioninfo", "status": 200, "counted": true}
 {"t": "2026-10-27T03:23:19", "run": "20261027-032319", "purpose": "quota check (plan)", "call": "GET users/sessioninfo", "status": 200, "counted": true}
 {"t": "2026-10-27T03:24:11", "run": "20261027-032410", "purpose": "quota check (another document)", "call": "GET documents/{id}", "status": 402, "counted": false}
+{"t": "2026-10-29T18:23:35", "run": "20261029-182335", "purpose": "quota check (auger document read, 2026-10-29)", "call": "GET documents/{id}", "status": 402, "counted": false}
+{"t": "2026-10-29T18:26:29", "run": "20261029-182629", "purpose": "quota check (list documents, 2026-10-29)", "call": "GET documents", "status": 402, "counted": false}
+{"t": "2026-10-29T18:26:29", "run": "20261029-182629", "purpose": "quota check (auger feature list, 2026-10-29)", "call": "GET partstudios/d/{id}/w/{id}/e/{id}/features", "status": 402, "counted": false}

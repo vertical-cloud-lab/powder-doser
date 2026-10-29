@@ -1,0 +1,26 @@
+{
+ "recipe_corners_mm": {
+  "A": [
+   11.25,
+   -29.9486
+  ],
+  "B": [
+   13.5,
+   -29.5736
+  ],
+  "C": [
+   13.5,
+   -27.2264
+  ],
+  "D": [
+   11.25,
+   -26.8514
+  ]
+ },
+ "fillet_mm": 1.0,
+ "thread_plane_offset_below_top_mm": 28.4,
+ "recipe_volume_mm3": 4379.45,
+ "script_volume_mm3": 4379.45,
+ "iou": 1.000003,
+ "solids": 1
+}

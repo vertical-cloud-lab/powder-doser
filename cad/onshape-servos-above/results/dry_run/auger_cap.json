@@ -1,0 +1,2917 @@
+{
+ "part": "auger_cap",
+ "studio": "Auger cap",
+ "document": "https://cad.onshape.com/documents/9662f77daa4bfa384f3ad49c/w/029e33c837c7bbdfeb9227a7",
+ "ok": true,
+ "billable_calls": 16,
+ "estimate": 16,
+ "requests": [
+  {
+   "call": "POST partstudios/d/{id}/w/{id}",
+   "body": {
+    "name": "Auger cap"
+   }
+  },
+  {
+   "call": "POST variables/d/{id}/w/{id}/variablestudio",
+   "body": {
+    "name": "Auger cap variables"
+   }
+  },
+  {
+   "call": "POST variables/d/{id}/w/{id}/e/{id}/variables",
+   "body": [
+    {
+     "name": "capDiameter",
+     "expression": "29 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "capDepth",
+     "expression": "25 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "endWall",
+     "expression": "2 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "capMinorDiameter",
+     "expression": "23.5 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "threadPitch",
+     "expression": "3.5 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "threadMajorDiameter",
+     "expression": "26 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "threadMinorDiameter",
+     "expression": "23 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "threadClearance",
+     "expression": "0.5 mm",
+     "type": "LENGTH",
+     "description": ""
+    },
+    {
+     "name": "threadPhase",
+     "expression": "-0.4 mm",
+     "type": "LENGTH",
+     "description": ""
+    }
+   ]
+  },
+  {
+   "call": "POST variables/d/{id}/w/{id}/e/{id}/variablestudioreferences",
+   "body": {
+    "references": [
+     {
+      "referenceElementId": "000000000000000000000002",
+      "entireVariableStudio": true
+     }
+    ]
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMSketch-151",
+     "featureType": "newSketch",
+     "name": "Cap sketch",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "sketchPlane",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"Front\"), EntityType.FACE);"
+        }
+       ]
+      }
+     ],
+     "entities": [
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.0",
+       "isConstruction": false,
+       "startPointId": "outline.0.start",
+       "endPointId": "outline.0.end",
+       "startParam": 0.0,
+       "endParam": 0.0145,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0,
+        "pntY": -0.025,
+        "dirX": 1.0,
+        "dirY": 0.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.1",
+       "isConstruction": false,
+       "startPointId": "outline.1.start",
+       "endPointId": "outline.1.end",
+       "startParam": 0.0,
+       "endParam": 0.025,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0145,
+        "pntY": -0.025,
+        "dirX": 0.0,
+        "dirY": 1.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.2",
+       "isConstruction": false,
+       "startPointId": "outline.2.start",
+       "endPointId": "outline.2.end",
+       "startParam": 0.0,
+       "endParam": 0.00282842712474619,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0145,
+        "pntY": 0.0,
+        "dirX": -0.7071067811865476,
+        "dirY": 0.7071067811865476
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.3",
+       "isConstruction": false,
+       "startPointId": "outline.3.start",
+       "endPointId": "outline.3.end",
+       "startParam": 0.0,
+       "endParam": 0.0125,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0125,
+        "pntY": 0.002,
+        "dirX": -1.0,
+        "dirY": 0.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.4",
+       "isConstruction": false,
+       "startPointId": "outline.4.start",
+       "endPointId": "outline.4.end",
+       "startParam": 0.0,
+       "endParam": 0.027000000000000003,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0,
+        "pntY": 0.002,
+        "dirX": 0.0,
+        "dirY": -1.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "axis",
+       "isConstruction": true,
+       "startPointId": "axis.start",
+       "endPointId": "axis.end",
+       "startParam": 0.0,
+       "endParam": 0.01,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0,
+        "pntY": 0.0,
+        "dirX": 0.0,
+        "dirY": 1.0
+       }
+      }
+     ],
+     "constraints": [
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.0.start_outline.4.end",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.start"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.4.end"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.0.end_outline.1.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.1.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.1.end_outline.2.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.2.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.2.end_outline.3.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.3.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.3.end_outline.4.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.3.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.4.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "origin_axis.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "axis.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "VERTICAL",
+       "entityId": "vtx_outline.0.start_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.0.start_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDepth"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.0.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDiameter / 2"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.0.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDepth"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.1.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDiameter / 2"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "HORIZONTAL",
+       "entityId": "vtx_outline.1.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.2.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDiameter / 2 - #endWall"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.2.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#endWall"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "VERTICAL",
+       "entityId": "vtx_outline.3.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.3.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.3.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.3.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#endWall"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "VERTICAL",
+       "entityId": "v_axis",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "axis"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "revolve",
+     "name": "Cap",
+     "parameters": [
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "ExtendedToolBodyType",
+       "value": "SOLID",
+       "parameterId": "bodyType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "NewBodyOperationType",
+       "value": "NEW",
+       "parameterId": "operationType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "NewSurfaceOperationType",
+       "value": "NEW",
+       "parameterId": "surfaceOperationType"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "entities",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qSketchRegion(makeId(\"F3\"));"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "surfaceEntities"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "wallShape"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "midplane"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness1",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipWall"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness2",
+       "expression": "0 mm"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "axis",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=sketchEntityQuery(makeId(\"F3\"), EntityType.EDGE, \"axis\");"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "fullRevolve",
+       "value": true
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "RevolveBoundingType",
+       "value": "BLIND",
+       "parameterId": "endBound"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "oppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angle",
+       "expression": "30 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "symmetric"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "endBoundHasOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "endBoundOffset",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "endBoundOffsetFlip"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasStartBound"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "RevolveBoundingType",
+       "value": "BLIND",
+       "parameterId": "startBound"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angleBack",
+       "expression": "330 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startBoundHasOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "startBoundOffset",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startBoundOffsetFlip"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "defaultScope"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "booleanScope"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "defaultSurfaceScope"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "booleanSurfaceScope"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "cPlane",
+     "name": "Thread plane",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "entities",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"Top\"), EntityType.FACE);"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "CPlaneType",
+       "value": "OFFSET",
+       "parameterId": "cplaneType"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "offset",
+       "expression": "8 * #threadPitch - #threadPhase"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angle",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "oppositeDirection",
+       "value": true
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipAlignment"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipNormal"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "width",
+       "expression": "150 mm"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "height",
+       "expression": "150 mm"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMSketch-151",
+     "featureType": "newSketch",
+     "name": "Thread helix sketch",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "sketchPlane",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"F5\"), EntityType.FACE);"
+        }
+       ]
+      }
+     ],
+     "entities": [
+      {
+       "btType": "BTMSketchCurve-4",
+       "entityId": "circle",
+       "centerId": "circle.center",
+       "isConstruction": false,
+       "geometry": {
+        "btType": "BTCurveGeometryCircle-115",
+        "radius": 0.01175,
+        "xCenter": 0.0,
+        "yCenter": 0.0,
+        "xDir": 1.0,
+        "yDir": 0.0,
+        "clockwise": false
+       }
+      }
+     ],
+     "constraints": [
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "origin_circle.center",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "circle.center"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DIAMETER",
+       "entityId": "dim0",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "circle"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "2 * (#capMinorDiameter / 2)"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "helix",
+     "name": "Thread helix",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "initEntities"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "axisType",
+       "enumName": "AxisType",
+       "value": "CIRCLE"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "entities"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "axis"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "edge",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=sketchEntityQuery(makeId(\"F6\"), EntityType.EDGE, \"circle\");"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "pathType",
+       "enumName": "PathType",
+       "value": "TURNS_PITCH"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "oppositeDirection"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "StartType",
+       "value": "START_ANGLE",
+       "parameterId": "startType"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "oppositeOrigin"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "startAngle",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "startRadius",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startPoint"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "EndType",
+       "value": "HEIGHT",
+       "parameterId": "endType"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "height",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "endRadToggle"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "endRadius",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endPoint"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "revolutions",
+       "expression": "10"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "actualRevolutions",
+       "expression": "4"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "roundUpTurns"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "helicalPitch",
+       "expression": "#threadPitch"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "actualPitch",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "roundUpPitch"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "handedness",
+       "enumName": "Direction",
+       "value": "CW"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "showStartEndProfiles"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMSketch-151",
+     "featureType": "newSketch",
+     "name": "Thread groove profile",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "sketchPlane",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"Front\"), EntityType.FACE);"
+        }
+       ]
+      }
+     ],
+     "entities": [
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "lowerFlank",
+       "isConstruction": false,
+       "startPointId": "lowerFlank.start",
+       "endPointId": "lowerFlank.end",
+       "startParam": 0.0,
+       "endParam": 0.0014339089555481252,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.01125,
+        "pntY": -0.029948563666666667,
+        "dirX": 0.9863938672865981,
+        "dirY": 0.1643993265782717
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "lowerRound",
+       "isConstruction": false,
+       "startPointId": "lowerRound.start",
+       "endPointId": "lowerRound.end",
+       "centerId": "lowerRound.center",
+       "startParam": -1.4056477180966493,
+       "endParam": 1.5986969881254254e-07,
+       "geometry": {
+        "btType": "BTCurveGeometryCircle-115",
+        "radius": 0.0009999999036908855,
+        "xCenter": 0.012500000096309178,
+        "yCenter": -0.028726436159869684,
+        "xDir": 1.0,
+        "yDir": 0.0,
+        "clockwise": false
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "bottom",
+       "isConstruction": false,
+       "startPointId": "bottom.start",
+       "endPointId": "bottom.end",
+       "startParam": 0.0,
+       "endParam": 0.0006528719999999988,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.013500000000000002,
+        "pntY": -0.028726436,
+        "dirX": 0.0,
+        "dirY": 1.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "upperRound",
+       "isConstruction": false,
+       "startPointId": "upperRound.start",
+       "endPointId": "upperRound.end",
+       "centerId": "upperRound.center",
+       "startParam": -1.5986986539410196e-07,
+       "endParam": 1.4056477180966545,
+       "geometry": {
+        "btType": "BTCurveGeometryCircle-115",
+        "radius": 0.000999999903690803,
+        "xCenter": 0.012500000096309211,
+        "yCenter": -0.028073563840130152,
+        "xDir": 1.0,
+        "yDir": 0.0,
+        "clockwise": false
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "upperFlank",
+       "isConstruction": false,
+       "startPointId": "upperFlank.start",
+       "endPointId": "upperFlank.end",
+       "startParam": 0.0,
+       "endParam": 0.0014339089555481252,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.012664399000000002,
+        "pntY": -0.02708717,
+        "dirX": -0.9863938672865981,
+        "dirY": 0.1643993265782717
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "inner",
+       "isConstruction": false,
+       "startPointId": "inner.start",
+       "endPointId": "inner.end",
+       "startParam": 0.0,
+       "endParam": 0.0030971273333333313,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.01125,
+        "pntY": -0.026851436333333336,
+        "dirX": 0.0,
+        "dirY": -1.0
+       }
+      }
+     ],
+     "constraints": [
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_lowerFlank.start_inner.end",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.start"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "inner.end"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_lowerFlank.end_lowerRound.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "lowerRound.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_lowerRound.end_bottom.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerRound.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "bottom.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_bottom.end_upperRound.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "bottom.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "upperRound.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_upperRound.end_upperFlank.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperRound.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "upperFlank.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_upperFlank.end_inner.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperFlank.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "inner.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerFlank.start_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capMinorDiameter / 2 - 0.5 mm"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerFlank.start_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) - (1 mm + (#threadMinorDiameter / 2 - (#capMinorDiameter / 2 - 0.5 mm)) / 6 + 1.013794 * #threadClearance))"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerFlank.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#threadMajorDiameter / 2 - 0.5 mm + 0.164399 * (0.5 mm + #threadClearance)"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerFlank.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerFlank.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) - (0.576436 mm - ((#threadMajorDiameter - #threadMinorDiameter) / 12)) - (0.986394 * (0.5 mm + #threadClearance)))"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerRound.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerRound.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#threadMajorDiameter / 2 + #threadClearance"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_lowerRound.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "lowerRound.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) - (0.576436 mm - ((#threadMajorDiameter - #threadMinorDiameter) / 12)))"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_bottom.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "bottom.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#threadMajorDiameter / 2 + #threadClearance"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_bottom.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "bottom.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) + 0.576436 mm - ((#threadMajorDiameter - #threadMinorDiameter) / 12))"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_upperRound.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperRound.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#threadMajorDiameter / 2 - 0.5 mm + 0.164399 * (0.5 mm + #threadClearance)"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_upperRound.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperRound.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) + 0.576436 mm - ((#threadMajorDiameter - #threadMinorDiameter) / 12) + 0.986394 * (0.5 mm + #threadClearance))"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_upperFlank.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperFlank.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capMinorDiameter / 2 - 0.5 mm"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_upperFlank.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "upperFlank.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "-(#threadPhase - (8 * #threadPitch) + 1 mm + (#threadMinorDiameter / 2 - (#capMinorDiameter / 2 - 0.5 mm)) / 6 + 1.013794 * #threadClearance)"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "sweep",
+     "name": "Thread groove",
+     "parameters": [
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "ExtendedToolBodyType",
+       "value": "SOLID",
+       "parameterId": "bodyType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "operationType",
+       "enumName": "NewBodyOperationType",
+       "value": "REMOVE"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "NewSurfaceOperationType",
+       "value": "NEW",
+       "parameterId": "surfaceOperationType"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "profiles",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qSketchRegion(makeId(\"F8\"));"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "surfaceProfiles"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "wallShape"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "midplane"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness1",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipWall"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness2",
+       "expression": "0 mm"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "path",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"F7\"), EntityType.EDGE);"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "pathOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "extendToFullPath"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "ProfileControlMode",
+       "value": "NONE",
+       "parameterId": "profileControl"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "lockFaces"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "lockDirectionQuery"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasTwist"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "SweepTwistType",
+       "value": "TURNS",
+       "parameterId": "twistType"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "turns",
+       "expression": "1"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angle",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "pitch",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "ccw"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasScale"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "scaleFactor",
+       "expression": "1"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "trimEnds"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "defaultScope",
+       "value": false
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "booleanScope",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"F4\"), EntityType.BODY);"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "defaultSurfaceScope"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "booleanSurfaceScope"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMSketch-151",
+     "featureType": "newSketch",
+     "name": "End wall sketch",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "sketchPlane",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"Front\"), EntityType.FACE);"
+        }
+       ]
+      }
+     ],
+     "entities": [
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.0",
+       "isConstruction": false,
+       "startPointId": "outline.0.start",
+       "endPointId": "outline.0.end",
+       "startParam": 0.0,
+       "endParam": 0.0145,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0,
+        "pntY": 0.0,
+        "dirX": 1.0,
+        "dirY": 0.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.1",
+       "isConstruction": false,
+       "startPointId": "outline.1.start",
+       "endPointId": "outline.1.end",
+       "startParam": 0.0,
+       "endParam": 0.00282842712474619,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0145,
+        "pntY": 0.0,
+        "dirX": -0.7071067811865476,
+        "dirY": 0.7071067811865476
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.2",
+       "isConstruction": false,
+       "startPointId": "outline.2.start",
+       "endPointId": "outline.2.end",
+       "startParam": 0.0,
+       "endParam": 0.0125,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0125,
+        "pntY": 0.002,
+        "dirX": -1.0,
+        "dirY": 0.0
+       }
+      },
+      {
+       "btType": "BTMSketchCurveSegment-155",
+       "entityId": "outline.3",
+       "isConstruction": false,
+       "startPointId": "outline.3.start",
+       "endPointId": "outline.3.end",
+       "startParam": 0.0,
+       "endParam": 0.002,
+       "geometry": {
+        "btType": "BTCurveGeometryLine-117",
+        "pntX": 0.0,
+        "pntY": 0.002,
+        "dirX": 0.0,
+        "dirY": -1.0
+       }
+      }
+     ],
+     "constraints": [
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.0.start_outline.3.end",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.start"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.3.end"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.0.end_outline.1.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.1.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.1.end_outline.2.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.2.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "co_outline.2.end_outline.3.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localSecond",
+         "value": "outline.3.start"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "origin_outline.0.start",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.start"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.0.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDiameter / 2"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "HORIZONTAL",
+       "entityId": "vtx_outline.0.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.0.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.1.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "HORIZONTAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#capDiameter / 2 - #endWall"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.1.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.1.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#endWall"
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "VERTICAL",
+       "entityId": "vtx_outline.2.end_x",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DISTANCE",
+       "entityId": "vtx_outline.2.end_y",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "outline.2.end"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        },
+        {
+         "btType": "BTMParameterEnum-145",
+         "parameterId": "direction",
+         "enumName": "DimensionDirection",
+         "value": "VERTICAL"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "#endWall"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "revolve",
+     "name": "End wall",
+     "parameters": [
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "ExtendedToolBodyType",
+       "value": "SOLID",
+       "parameterId": "bodyType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "operationType",
+       "enumName": "NewBodyOperationType",
+       "value": "ADD"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "NewSurfaceOperationType",
+       "value": "NEW",
+       "parameterId": "surfaceOperationType"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "entities",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qSketchRegion(makeId(\"F10\"));"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "surfaceEntities"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "wallShape"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "midplane"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness1",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipWall"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness2",
+       "expression": "0 mm"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "axis",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=sketchEntityQuery(makeId(\"F3\"), EntityType.EDGE, \"axis\");"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "fullRevolve",
+       "value": true
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "RevolveBoundingType",
+       "value": "BLIND",
+       "parameterId": "endBound"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "oppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angle",
+       "expression": "30 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "symmetric"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "endBoundHasOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "endBoundOffset",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "endBoundOffsetFlip"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasStartBound"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "RevolveBoundingType",
+       "value": "BLIND",
+       "parameterId": "startBound"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "angleBack",
+       "expression": "330 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startBoundHasOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "startBoundOffset",
+       "expression": "0 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startBoundOffsetFlip"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "defaultScope",
+       "value": false
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "booleanScope",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"F4\"), EntityType.BODY);"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "defaultSurfaceScope"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "booleanSurfaceScope"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMSketch-151",
+     "featureType": "newSketch",
+     "name": "Bore sketch",
+     "parameters": [
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "sketchPlane",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"Top\"), EntityType.FACE);"
+        }
+       ]
+      }
+     ],
+     "entities": [
+      {
+       "btType": "BTMSketchCurve-4",
+       "entityId": "bore",
+       "centerId": "bore.center",
+       "isConstruction": false,
+       "geometry": {
+        "btType": "BTCurveGeometryCircle-115",
+        "radius": 0.01175,
+        "xCenter": 0.0,
+        "yCenter": 0.0,
+        "xDir": 1.0,
+        "yDir": 0.0,
+        "clockwise": false
+       }
+      }
+     ],
+     "constraints": [
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "COINCIDENT",
+       "entityId": "origin_bore.center",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "bore.center"
+        },
+        {
+         "btType": "BTMParameterQueryList-148",
+         "parameterId": "externalSecond",
+         "queries": [
+          {
+           "btType": "BTMIndividualQuery-138",
+           "queryString": "query=qCreatedBy(makeId(\"Origin\"), EntityType.VERTEX);"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "btType": "BTMSketchConstraint-2",
+       "constraintType": "DIAMETER",
+       "entityId": "dim0",
+       "parameters": [
+        {
+         "btType": "BTMParameterString-149",
+         "parameterId": "localFirst",
+         "value": "bore"
+        },
+        {
+         "btType": "BTMParameterQuantity-147",
+         "parameterId": "length",
+         "expression": "2 * (#capMinorDiameter / 2)"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "POST partstudios/d/{id}/w/{id}/e/{id}/features",
+   "body": {
+    "feature": {
+     "btType": "BTMFeature-134",
+     "featureType": "extrude",
+     "name": "Bore",
+     "parameters": [
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "OperationDomain",
+       "value": "MODEL",
+       "parameterId": "domain"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "ExtendedToolBodyType",
+       "value": "SOLID",
+       "parameterId": "bodyType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "operationType",
+       "enumName": "NewBodyOperationType",
+       "value": "REMOVE"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "NewSurfaceOperationType",
+       "value": "NEW",
+       "parameterId": "surfaceOperationType"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "FlatOperationType",
+       "value": "REMOVE",
+       "parameterId": "flatOperationType"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "entities",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qSketchRegion(makeId(\"F12\"));"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "surfaceEntities"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "wallShape"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "midplane"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness1",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "flipWall"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness2",
+       "expression": "0 mm"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "thickness",
+       "expression": "5 mm"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "parameterId": "endBound",
+       "enumName": "BoundingType",
+       "value": "THROUGH_ALL"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "oppositeDirection",
+       "value": true
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "depth",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "endBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "offsetDistance",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "offsetOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasExtrudeDirection"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "extrudeDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startOffset"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "StartOffsetType",
+       "value": "BLIND",
+       "parameterId": "startOffsetBound"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "startOffsetDistance",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "startOffsetOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "startOffsetEntity"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "symmetric"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasDraft"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "draftAngle",
+       "expression": "3 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "draftPullDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasSecondDirection"
+      },
+      {
+       "btType": "BTMParameterEnum-145",
+       "enumName": "BoundingType",
+       "value": "BLIND",
+       "parameterId": "secondDirectionBound"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "secondDirectionOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "secondDirectionDepth",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "secondDirectionBoundEntityFace"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "secondDirectionBoundEntityBody"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "secondDirectionBoundEntityVertex"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasSecondDirectionOffset"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "secondDirectionOffsetDistance",
+       "expression": "25 mm"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "secondDirectionOffsetOppositeDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "hasSecondDirectionDraft"
+      },
+      {
+       "btType": "BTMParameterQuantity-147",
+       "parameterId": "secondDirectionDraftAngle",
+       "expression": "3 deg"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": false,
+       "parameterId": "secondDirectionDraftPullDirection"
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "parameterId": "defaultScope",
+       "value": false
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "parameterId": "booleanScope",
+       "queries": [
+        {
+         "btType": "BTMIndividualQuery-138",
+         "queryString": "query=qCreatedBy(makeId(\"F4\"), EntityType.BODY);"
+        }
+       ]
+      },
+      {
+       "btType": "BTMParameterBoolean-144",
+       "value": true,
+       "parameterId": "defaultSurfaceScope"
+      },
+      {
+       "btType": "BTMParameterQueryList-148",
+       "queries": [],
+       "filter": null,
+       "parameterId": "booleanSurfaceScope"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "call": "GET partstudios/d/{id}/w/{id}/e/{id}/massproperties",
+   "body": null
+  }
+ ]
+}
