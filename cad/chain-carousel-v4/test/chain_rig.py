@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v3 from a Raspberry Pi (issue #128).
+"""Drive and log the chain-carousel test rig v4 (the augers outside the loop) from a Raspberry Pi (issue #128).
 
 Hardware (see BOM.md):
 * CL86T closed-loop driver for the NEMA 34 on step/dir/enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to
   PUL+/DIR+/ENA+, the minus terminals to ground).
 * Two US5881 hall switches in the station hold-downs (open drain, 10k pull-ups to 3.3 V): INDEX, in the front
   hold-down, sees the magnet in every carriage's front tongue; HOME, in the back hold-down, only carriage 1's.
-* Station (v3): Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms pulses = 0-150 mm); the pot is
-  fed back inside the LAC. Its rod end pushes the electronics carriage v3 (EC) through a pin in 2 mm slots under the
-  EC's back half. Parked, the EC sits on its own three-ball seat in the guide cradle, 20 mm under the passing carriages;
-  docked, the plate's two balls sit in the EC's cone and vee and the EC's third ball on the plate's armature (a Kelvin
-  clamp), held by an N52 magnet under each seat and the switchable dock electromagnet. The last 8.5 mm of the dock
-  lift the module's outlet door; the station's rail opens the carriage's plate latch whenever it is at the station.
+* Station (v4): Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms pulses = 0-150 mm); the pot is
+  fed back inside the LAC. Its rod end pushes the electronics carriage v4 (EC) up through a pin in 2 mm slots. Parked,
+  the EC sits on its own three-ball seat in the guide cradle, 20 mm below the passing augers; docked, its two arms
+  reach round the auger and the plate's two balls sit in the EC's cone and vee and the EC's third ball on the plate's
+  steel washer (a Kelvin clamp), held by the module's own weight (it rests on the EC) and an N52 magnet behind each
+  contact. There is no dock electromagnet in v4. The last 6 mm of the dock open the module's outlet door; the
+  station's rail opens the carriage's plate latch whenever it is at the station, and the module rests on the tube
+  rest until the EC lifts it off.
 * On the electronics carriage: the doser's NEMA 11 (20T steel pinion -> the auger's 44T gear, 2.2:1) on a DRV8825
   whose current limit is set to AUGER_CURRENT_MA = 450 mA (Vref 0.225 V on Pololu's carrier; set it with the pot
   before the first dock, the Pi can't): 0.067 N*m stall at the pinion, 0.15 N*m at the auger, so a jam stalls the
-  motor before the mesh can open the dock (gear-mesh study); the 12 V tap solenoid on a DRV8871; the dock
-  electromagnet (Adafruit 3872) on a logic-level MOSFET with a flyback diode, on only while docked.
-* The scale: the lab's A&D HR-100A on RS-232 through a MAX3232 (Pi UART, 2400 baud 7E1, A&D's "Q" command). v3
+  motor before the mesh can open the dock (gear-mesh study); the 12 V tap solenoid on a DRV8871.
+* The scale: the lab's A&D HR-100A on RS-232 through a MAX3232 (Pi UART, 2400 baud 7E1, A&D's "Q" command). v4
   can't stand it under the dose point yet (README, scale fit): place a bench balance there by hand for T7.
 
 Geometry: one module = 8 pitches = 76.2 mm = 8/32 of a turn of the 32T drive sprocket, so at 4000 pulses/rev a
@@ -28,15 +29,14 @@ each module once about its own axis, which acts like an auger turn; this way it 
 the other way it pumps about one revolution's dose out (../auger-leakage/README.md). A positive index here always
 means "the way the machine runs".
 
-Docking (v3): lift to 3 mm short of the plate (the guide's walls keep the EC square), switch the dock electromagnet
-on, then finish the last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps (gear-mesh
+Docking (v4): lift to 3 mm short of the plate (the guide's walls keep the EC square), then finish the last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps (gear-mesh
 study: with the pinion held, about half the starting phases park the gear on the pinion's tips). The balls seat in
 the cone and the vee; the actuator stops with its pin mid-slot, so the magnets, not the actuator, hold the dock.
 
-Dose protocol (auger-leakage study): dock, magnet on, tilt to the dose angle, turn the auger, stop, hold 0.5 s at
+Dose protocol (auger-leakage study): dock, tilt to the dose angle, turn the auger, stop, hold 0.5 s at
 the dose tilt (the tail falls into the vial), tilt back to level, then reverse the auger 1 revolution at rest
 (--reverse-revs, auger revolutions; 2.2 NEMA 11 revolutions each). Never reverse while tilted: it adds dose.
-Then magnet off and retract: the pin pulls the EC off the seat magnets (the plate rests on its carriage), the door
+Then retract: the pin pulls the EC off the seat magnets (the module settles on the tube rest), the door
 shuts, and the EC settles back on its cradle seat. The latch closes by itself as the carriage leaves the station.
 
     sudo pigpiod
@@ -68,9 +68,11 @@ MM_PER_REV = TEETH * PITCH_MM                      # 304.8
 RUN_DIRECTION = -1                                 # -1: bottom run toward -y
 
 # station linkage (Sam's frame, mm; params.py / layout.actuator_pins)
-YOKE_X, YOKE_Z, DOCK_RISE = 32.0, -34.0, 0.9      # carriage stub-pin axis, as drawn; docked it rises 0.9
-UFORK_L, ACT_RETRACTED, ACT_STROKE = 60.0, 197.4, 150.0
-DOCK_EXT = 20.0
+EC_PIN_X, EC_PIN_Z, DOCK_RISE = 58.0, 76.0, -0.9   # EC v4's clevis pin, Sam's frame (z outward: down at the station);
+                                                   # docked it moves 0.9 toward the plate
+ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
+DOCK_EXT = 20.0                                    # PARK_DROP: the parked EC sits 20 mm below its docked position
+TILT_MAX = 50.0                                    # v4: at about 55 deg the module's cap reaches the top run
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
@@ -84,18 +86,20 @@ PIN_INDEX, PIN_HOME, PIN_ALARM = 23, 24, 25
 PIN_LAC = 18                                       # RC pulse to the LAC (hardware PWM pin)
 PIN_AUG_STEP, PIN_AUG_DIR = 13, 21                 # DRV8825 for the NEMA 11 (STEP on a hardware-PWM pin for the docking seek)
 PIN_TAP = 12                                       # DRV8871 IN1, tap solenoid
-PIN_MAGNET = 16                                    # MOSFET gate, dock electromagnet
 PIN_HX_DT, PIN_HX_SCK = 5, 6
 
 
 def tilt_to_ext(tilt_deg: float) -> float:
-    """P16 extension (mm from fully retracted) for a hinge angle: the stub-pin axis turns about the hinge, the base
-    pin sits UFORK_L + ACT_RETRACTED + DOCK_EXT under the docked stub pins, and the rod end is UFORK_L short of them."""
-    x0, z0 = YOKE_X, YOKE_Z + DOCK_RISE
+    """P16 extension (mm from fully retracted) for a hinge angle (layout.actuator_pins): the EC's clevis pin turns about
+    the hinge with the docked EC (the module swings up into the loop), and the base pin sits ACT_RETRACTED below the
+    parked EC's clevis pin, DOCK_EXT below the docked one. 30 deg needs 60.8 mm, 50 deg 93.6."""
+    if tilt_deg > TILT_MAX:
+        raise SystemExit(f"v4 tilts to {TILT_MAX:.0f} deg at most (the cap reaches the top run at about 55)")
+    x0, z0 = EC_PIN_X, EC_PIN_Z + DOCK_RISE
     a = math.radians(tilt_deg)
-    px, pz = x0 * math.cos(a) - z0 * math.sin(a), x0 * math.sin(a) + z0 * math.cos(a)
-    bx, bz = x0, z0 - (ACT_RETRACTED + DOCK_EXT + UFORK_L)
-    return math.hypot(px - bx, pz - bz) - UFORK_L - ACT_RETRACTED
+    px, pz = x0 * math.cos(a) + z0 * math.sin(a), -x0 * math.sin(a) + z0 * math.cos(a)
+    bx, bz = x0, z0 + DOCK_EXT + ACT_RETRACTED
+    return math.hypot(px - bx, pz - bz) - ACT_RETRACTED
 
 
 @dataclass
@@ -115,7 +119,7 @@ class Rig:
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise SystemExit("pigpiod is not running (sudo pigpiod)")
-        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_AUG_STEP, PIN_AUG_DIR, PIN_TAP, PIN_MAGNET):
+        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_AUG_STEP, PIN_AUG_DIR, PIN_TAP):
             self.pi.set_mode(p, pigpio.OUTPUT)
             self.pi.write(p, 0)
         for p in (PIN_INDEX, PIN_HOME, PIN_ALARM):
@@ -216,22 +220,15 @@ class Rig:
             time.sleep(abs(ext - self.ext) / 30.0 + 0.3)     # about 30 mm/s loaded (46 no-load)
         self.ext = ext
 
-    def magnet(self, on: bool):
-        if self.pi:
-            self.pi.write(PIN_MAGNET, 1 if on else 0)
-        time.sleep(0.15 if on else 0.05)
-
     def dock(self, seek_rev_s: float = SEEK_REV_S):
-        """Lift to SEEK_MM short of the plate, magnet on, then finish the last SEEK_MM while the pinion turns slowly so
-        its teeth find the gear's gaps (held still, it parked the gear on its tips from half the starting phases in the
-        gear-mesh study). The magnet goes on first: its pull lifts the hanging carriage's back off the yoke stops
-        and onto the plate (gear-mesh final pass)."""
+        """Lift to SEEK_MM short of the plate, then finish the last SEEK_MM while the pinion turns slowly so its teeth
+        find the gear's gaps (held still, it parked the gear on its tips from half the starting phases in the gear-mesh
+        study). The EC lifts the module off the tube rest as its balls seat; the module's weight holds the dock."""
         if not self.sim and not getattr(self, "_current_noted", False):
             print(f"NEMA 11 driver: DRV8825 current limit must be {AUGER_CURRENT_MA} mA "
                   f"(Vref {AUGER_CURRENT_MA / 2000:.3f} V) before docking")
             self._current_noted = True
         self.actuator(DOCK_EXT - SEEK_MM)
-        self.magnet(True)                            # pulls the carriage onto the locating pins and the rim
         if self.pi:
             self.pi.write(PIN_AUG_DIR, 1)
             self.pi.hardware_PWM(PIN_AUG_STEP, int(seek_rev_s * NEMA11_USTEPS), 500000)
@@ -246,7 +243,6 @@ class Rig:
     def undock(self):
         self.actuator(DOCK_EXT)                      # level, pin mid-slot, the module back on its carriage
         time.sleep(0.3)
-        self.magnet(False)
         self.actuator(0.0)                           # the pin pulls the EC off the seat magnets; the EC parks in its cradle
 
     def auger_revs(self, revs: float, rpm: float = 30.0):

@@ -1,9 +1,9 @@
-"""Renders and animations of the chain-carousel test rig v3 (VTK, offscreen under xvfb-run).
+"""Renders and animations of the chain-carousel test rig v4 (VTK, offscreen under xvfb-run).
 
     xvfb-run -a python render.py --stills      # hero views, feature close-ups, one image per assembly step + the steps GIF
     xvfb-run -a python render.py --movie       # assembly from scratch, modules onto carriages, carriages onto the chain
                                                #   one index at a time, a lap, the station cycle, the hatches, a swap
-                                               #   -> renders/chain_carousel_v3.mp4 and .gif
+                                               #   -> renders/chain_carousel_v4.mp4 and .gif
     xvfb-run -a python render.py --features    # one short GIF + MP4 per new feature (renders/features/)
     xvfb-run -a python render.py --quick       # hero iso only
 
@@ -281,17 +281,17 @@ def station_cut_y(p: L.Placement) -> bool:
 
 H = L.HINGE_STATION
 D = L.DOSE_POINT
-HERO = ((160, 0, 390), (-0.9, -1.0, 0.55), 1950)
+HERO = ((160, 0, 430), (-0.9, -1.0, 0.55), 2250)
 LOOP = ((120, 0, 510), (-1.0, -0.42, 0.22), 1400)
-STATION = ((H[0] + 45, H[1], H[2] - 55), (-0.5, -1.0, 0.18), 560)
-STATION_TILT = ((H[0] + 70, H[1], H[2] + 5), (-0.35, -1.0, 0.2), 740)
-DOCK = ((H[0] + 50, H[1], H[2] - 24), (-0.25, -1.0, 0.30), 260)
-DOOR = ((D[0] - 2, D[1] + 4, D[2] - 8), (-1.0, -0.75, 0.25), 150)
-LATCH = ((H[0] + 112, H[1] + 19, H[2] - 12), (0.55, 0.75, 0.75), 200)
-LATCH_BELOW = ((H[0] + 126, H[1] + 22, H[2] - 27), (-0.2, 1.0, -0.75), 170)
-CRADLE = ((H[0] + 40, H[1], H[2] - 78), (-0.5, -1.0, 0.45), 340)
-LOADC = ((150, 120, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 1000)
-SIDE_HATCH = ((150, 130, float(L.load_frame()[2, 3]) - 30.0), (0.25, 1.0, 0.3), 1300)
+STATION = ((H[0] + 45, H[1], H[2] - 40), (-0.5, -1.0, 0.05), 600)
+STATION_TILT = ((H[0] + 70, H[1], H[2] + 25), (-0.35, -1.0, 0.2), 780)
+DOCK = ((H[0] + 50, H[1], H[2] - 20), (-0.25, -1.0, -0.30), 270)
+DOOR = ((D[0] - 2, D[1] - 4, D[2] - 4), (-1.0, -0.75, -0.25), 150)
+LATCH = ((H[0] + 112, H[1] - 19, H[2] + 12), (0.55, -0.75, -0.75), 200)
+LATCH_BELOW = ((H[0] + 126, H[1] - 22, H[2] - 18), (-0.2, -1.0, -0.6), 190)
+CRADLE = ((H[0] + 40, H[1], H[2] - 85), (-0.5, -1.0, 0.25), 360)
+LOADC = ((150, 140, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 1050)
+SIDE_HATCH = ((150, 170, float(L.load_frame()[2, 3]) - 30.0), (0.25, 1.0, 0.3), 1350)
 FRONT_HATCH = ((-60, 5, 200), (-1.0, -0.55, 0.3), 1250)
 SCALE = ((D[0] - 30, D[1], 230), (-0.75, -1.0, 0.35), 950)
 TAB = tuple(L.to_world(L.load_frame(), (0.0, L.CAR_W0, L.A1_HOLE_C)))
@@ -319,7 +319,7 @@ def latch_cut(p: L.Placement) -> bool:
 
 def ghost_plate(pl, op=0.35):
     """Module 1's plate, auger and door housing see-through, so the dock's balls and seats show."""
-    return {k: op for k, p in keyed(pl) if p.module == 0 and p.key in ("sam_mounting_plate", "auger", "door_housing", "auger_cap")}
+    return {k: op for k, p in keyed(pl) if p.module == 0 and p.key in ("sam_mounting_plate", "auger", "door_housing", "auger_cap", "carriage")}
 
 
 def ghost_cradle(pl, op=0.35):
@@ -336,34 +336,34 @@ def stills(quick: bool = False) -> None:
     v = View()
     tf = L.frame_dose_tilt(TILT_DOSE_WORLD)
     views = [("rig_iso", L.State(), HERO, None,
-              "Chain carousel v3: acrylic enclosure, kinematic dock, guide, outlet doors, latches; the HR-100A where it has to stand")]
+              "Chain carousel v4: the augers outside the loop, in the acrylic enclosure; the HR-100A where it has to stand")]
     if not quick:
         views += [
-            ("rig_open", L.State(enclosure=False), HERO, None, "v3 without its enclosure: 13 carriages, module 1 docked at the station"),
+            ("rig_open", L.State(enclosure=False), HERO, None, "v4 without its enclosure: 13 modules on the outside of the loop, module 1 docked at the station"),
             ("rig_loop", L.State(), LOOP, front_open, "Front chain loop (front plate and enclosure hidden)"),
-            ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v3 on the plate's kinematic dock, the door open, the latch open",
+            ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v4 reaches round the auger to the plate's kinematic dock",
              ghost_cradle),
-            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v3 sits in its guide cradle 20 mm under the passing carriages",
+            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v4 sits in its guide cradle 20 mm under the passing modules",
              ghost_cradle),
-            ("rig_tilt30", L.State(tilt=tf), STATION_TILT, station_cut, f"Dosing at {TILT_DOSE_WORLD:.0f} deg: module and EC tilt together, out of the cradle"),
-            ("rig_tilt90", L.State(tilt=90.0), ((H[0] + 60, H[1], H[2] + 80), (-0.35, -1.0, 0.2), 950), station_cut,
-             "Module 1 at 90 deg (cleaning and access)"),
+            ("rig_tilt30", L.State(tilt=tf), STATION_TILT, station_cut, f"Dosing at {TILT_DOSE_WORLD:.0f} deg: module and EC tilt up through the carriage's opening"),
+            ("rig_tilt50", L.State(tilt=50.0), ((H[0] + 70, H[1], H[2] + 80), (-0.35, -1.0, 0.2), 950), station_cut,
+             "Module 1 at 50 deg, v4's limit (by 55 deg its cap would reach the top run)"),
             ("rig_dock", L.State(magnet_on=True), DOCK, dock_cut,
-             "Kinematic dock: plate balls in the EC's cone (+y) and vee (-y), ball C on the steel armature (plate see-through)", ghost_plate),
-            ("rig_dock_open", L.State(ext=8.0), DOCK, dock_cut, "Kinematic dock, 12 mm before seating: the balls over the cone and the vee", ghost_plate),
+             "Kinematic dock on the auger's side: plate balls in the EC's cone and vee, its ball C on a steel washer (plate see-through)", ghost_plate),
+            ("rig_dock_open", L.State(ext=8.0), DOCK, dock_cut, "Kinematic dock, 12 mm before seating: the arms reach past the auger", ghost_plate),
             ("rig_cradle", L.State(ext=0.0), CRADLE, station_cut, "Guide: the parked EC on its own cone-vee-flat seat in the cradle (cradle see-through)",
              ghost_cradle),
-            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter up 8.5 mm"),
+            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter 6 mm toward the plate"),
             ("rig_door_closed", L.State(ext=0.0), DOOR, dock_cut, "Outlet door closed: the spring holds the shutter over the 3 mm exit"),
-            ("rig_latch", L.State(), LATCH, latch_cut, "Plate latch at the station: the rail has drawn the bolt back off the plate's keeper"),
-            ("rig_latch_rail", L.State(), LATCH_BELOW, latch_cut, "Latch rail under the bottom run: it pushes each carriage's follower back at the station"),
+            ("rig_latch", L.State(), LATCH, latch_cut, "Plate latch v4: a pin in the keeper's hole, drawn back by the station's rail"),
+            ("rig_latch_rail", L.State(), LATCH_BELOW, latch_cut, "Latch rail and tube rest at the station: the module rests on its tube while its latch is open"),
             ("rig_latch_closed", L.State(shift=RUN_DIRECTION * 4.0, ext=0.0), LATCH, latch_cut,
              "Plate latch half an index from the station: the bolt is home over the keeper"),
             ("rig_hatches", L.State(hatch_front=HATCH_OPEN_DEG, hatch_side=HATCH_OPEN_DEG), ((200, 40, 420), (-0.75, 1.0, 0.45), 2000), None,
              "Enclosure: the front hatch (the scale) and the side hatch (swaps) open"),
-            ("rig_load", L.State(out_carriage=3, screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=150.0, hatch_side=HATCH_OPEN_DEG), LOADC,
-             None, "Swap through the side hatch: two screws out, slide 10 mm clear of the hooks and the side tabs, out sideways"),
-            ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 160), front_open, "Side tab at the loading position round the carriage's front tongue"),
+            ("rig_load", L.State(out_auger=3, auger_out=120.0, hatch_side=HATCH_OPEN_DEG), LOADC,
+             None, "Swap through the side hatch: the auger comes straight off its plate; the side tabs take the pull"),
+            ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 160), front_open, "Side tab at the loading position: its foot 1 mm outside the tongue"),
             ("rig_scale", L.State(ext=0.0), SCALE, lambda p: p.group == "enclosure", "The HR-100A where it has to stand: its breeze break would hold the guide, the EC and the P16"),
             ("rig_back_iso", L.State(), ((230, 0, 420), (1.0, 0.75, 0.45), 1900), None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft"),
         ]
@@ -476,8 +476,8 @@ def _bench_module(mv, sec, k0, cam):
     Cb = next(p.M for p in pl_b if p.key == "carriage" and p.module == k0)
     u_dir, w_dir = Cb[:3, 0], Cb[:3, 1]
     away = w_dir * 110.0
-    module_keys = ("sam_mounting_plate", "armature_v3", "m3x6_fhcs", "insert_m3", "auger", "auger_cap", "kc_ball", "door_housing", "door_shutter",
-                   "door_spring", "m2x8_shcs")
+    module_keys = ("sam_mounting_plate", "flat_pad_v4", "auger", "auger_cap", "kc_ball", "door_housing", "door_shutter", "door_spring",
+                   "m2x8_shcs")
 
     def pins_out(p, t):
         su = 1.0 if float(u_dir @ (p.M[:3, 3] - Cb[:3, 3])) > 0 else -1.0
@@ -486,14 +486,14 @@ def _bench_module(mv, sec, k0, cam):
     beats = [("Module: the lab auger into the v3 mounting plate (Sam's Oct 13 plate + dock balls, keeper)", "threaded-storage auger and cap (PR #170)",
               lambda p, t: (away + (np.array([-170.0 * (1 - t), 0, 0]) if p.key in ("auger", "auger_cap") else 0.0)) if p.key in module_keys
               else pins_out(p, 0.0)),
-             ("Module: two 1/4 in steel balls pressed into the plate's underside, steel armature on its back strip",
-              "the plate's half of the kinematic dock: the EC's cone and vee take the balls, its third ball sits on the armature",
-              lambda p, t: (away - (w_dir * 25.0 * (1 - t) if p.key in ("kc_ball", "armature_v3", "m3x6_fhcs") else 0.0)) if p.key in module_keys
+             ("Module: two 1/4 in steel balls pressed into the plate's auger side, a steel washer flush beside them",
+              "the plate's half of the kinematic dock: the EC's cone and vee take the balls, its third ball sits on the washer",
+              lambda p, t: (away - (w_dir * 25.0 * (1 - t) if p.key in ("kc_ball", "flat_pad_v4") else 0.0)) if p.key in module_keys
               else pins_out(p, 0.0)),
              ("Module: the outlet door: housing, shutter and spring on the plate's front", "the spring holds the shutter over the 3 mm exit",
               lambda p, t: (away + (np.array([-40.0 * (1 - t), 0, 0]) if p.key in ("door_housing", "door_shutter", "door_spring", "m2x8_shcs") else 0.0))
               if p.key in module_keys else pins_out(p, 0.0)),
-             ("Module: onto a carriage, between its hinge lugs; the latch bolt slides over the plate's keeper",
+             ("Module: onto a carriage's OUTER face, between its hinge lugs; the latch's pin slides into the plate's keeper",
               "the carriage is the module's mount on the chain", lambda p, t: away * (1 - t) if p.key in module_keys else pins_out(p, 0.0)),
              ("Module: two 5 mm clevis pins through the lugs into the plate's knuckles, e-clips on", "",
               lambda p, t: pins_out(p, t) if p.key in ("clevis_pin", "eclip") else None)]
@@ -526,8 +526,8 @@ def _station_cycle(mv, sec, cam=None, title_prefix="Station", spin0=0.0, extra_s
         return L.State(**d)
     n = sec(1.0)
     for i in range(n):
-        mv.frame(L.placements(S(ext=0.0)), f"{title_prefix}: the EC parked in its guide cradle, 20 mm under the passing carriages",
-                 "carriage 1 in the hold-downs; the station's rail has drawn its latch bolt back", cam=cam_s, hide_fn=hide)
+        mv.frame(L.placements(S(ext=0.0)), f"{title_prefix}: the EC parked in its guide cradle, 20 mm under the passing modules",
+                 "the station's rail has drawn carriage 1's latch pin back; its module rests 0.5 mm down on the tube rest", cam=cam_s, hide_fn=hide)
     n = sec(2.4)
     for i in range(n):
         e = DOCK_EXT * ease(i / (n - 1))
@@ -537,12 +537,13 @@ def _station_cycle(mv, sec, cam=None, title_prefix="Station", spin0=0.0, extra_s
                  cam=cam_s, hide_fn=hide)
     n = sec(1.0)
     for i in range(n):
-        mv.frame(L.placements(S(magnet_on=True)), f"{title_prefix}: seated on the kinematic dock, magnets on",
-                 "plate balls in the cone and the vee, the EC's ball on the armature; the door is open", cam=cam_s, hide_fn=hide)
+        mv.frame(L.placements(S(magnet_on=True)), f"{title_prefix}: seated on the kinematic dock, round the auger",
+                 "plate balls in the cone and the vee, the EC's ball C on the washer; the door is open; the module is off its tube rest", cam=cam_s,
+                 hide_fn=hide)
     n = sec(2.0)
     for i in range(n):
         a = tf * ease(i / (n - 1))
-        mv.frame(L.placements(S(tilt=a, magnet_on=True, spin=spin0)), f"{title_prefix}: tilt; module and EC turn together out of the cradle",
+        mv.frame(L.placements(S(tilt=a, magnet_on=True, spin=spin0)), f"{title_prefix}: tilt; module and EC turn up through the carriage's opening",
                  f"tilt {a:4.1f} deg", cam=cam_lerp(cam_s, STATION_TILT, i / (n - 1)) if cam is None else cam_s, hide_fn=hide)
     n = sec(2.2)
     for i in range(n):
@@ -567,13 +568,13 @@ def _station_cycle(mv, sec, cam=None, title_prefix="Station", spin0=0.0, extra_s
     for i in range(n):
         e = DOCK_EXT * (1 - ease(i / (n - 1)))
         door = max(0.0, DOOR_TRAVEL - (DOCK_EXT - e))
-        mv.frame(L.placements(S(ext=e, spin=spin0)), f"{title_prefix}: magnet off, the P16 pulls the EC off the dock and parks it",
-                 f"the door shuts first ({door:4.1f} mm open), then the EC settles on the cradle's seat", cam=cam_s, hide_fn=hide)
+        mv.frame(L.placements(S(ext=e, spin=spin0)), f"{title_prefix}: the P16 lowers the module back onto its tube rest and parks the EC",
+                 f"the door shuts first ({door:4.1f} mm open); the latch closes as the carriage leaves", cam=cam_s, hide_fn=hide)
 
 
 def movie(fast: bool = False) -> None:
     OUT.mkdir(exist_ok=True)
-    mp4 = OUT / "chain_carousel_v3.mp4"
+    mp4 = OUT / "chain_carousel_v4.mp4"
     mv = Movie(mp4)
     fps = mv.fps
     sec = (lambda s: max(2, int(s * fps * (0.5 if fast else 1.0))))
@@ -619,7 +620,7 @@ def movie(fast: bool = False) -> None:
             st = L.State(shift=shift, carriages=tuple(loaded + [k]), modules=tuple(loaded + [k]), ext=0.0, out_carriage=k,
                          out_slide=HOOK_SLIDE * (1 - min(1, 2 * t)), out_lift=0.0, screws_out=SCREW_OUT * (1 - max(0, 2 * t - 1)), **base)
             mv.frame(L.placements(st), f"Carriage {j + 1} of 13 onto the chain at the loading position",
-                     "slide 10 mm down: the hooks take the A-1 tabs and the tongues go under the side tabs; two M3 screws", cam=cam)
+                     "slide 10 mm down: the hooks take the A-1 tabs and the tongues go into the side tabs; two M3 screws", cam=cam)
         loaded.append(k)
         if j == N_MODULES - 1:
             break
@@ -671,30 +672,26 @@ def movie(fast: bool = False) -> None:
     for i in range(n):
         a = HATCH_OPEN_DEG * ease(i / (n - 1))
         mv.frame(L.placements(L.State(ext=0.0, hatch_side=a)), "Side hatch open", "", cam=SIDE_HATCH)
-    hs = dict(ext=0.0, hatch_side=HATCH_OPEN_DEG, out_carriage=k0)
-    for title, sub, fn in (("Swap: two M3 screws out", "the side tabs hold the tongues: pushes go to the frame", lambda t: dict(screws_out=SCREW_OUT * t)),
-                           ("Swap: slide the carriage 10 mm up", "its hooks leave the A-1 tabs and its tongues leave the side tabs together",
-                            lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE * t)),
-                           ("Swap: carriage and module out through the hatch", "in v3 the auger faces into the loop, so the carriage comes out whole",
-                            lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=170.0 * t))):
-        nn = sec(1.1)
+    hs = dict(ext=0.0, hatch_side=HATCH_OPEN_DEG, out_auger=k0)
+    for title, sub, fn in (("Swap: pull the auger straight off its plate, through the hatch", "the side tabs take the pull, not the chain",
+                            lambda t: dict(auger_out=140.0 * t)),):
+        nn = sec(1.6)
         for i in range(nn):
             t = ease(i / (nn - 1))
             mv.frame(L.placements(L.State(**hs, **fn(t))), title, sub, cam=SIDE_HATCH)
-    for title, fn in (("Swap: a different powder's carriage goes in", lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=170.0 * (1 - t))),
-                      ("Swap: slide down onto the tabs, screws in, hatch shut", lambda t: dict(screws_out=SCREW_OUT * (1 - t), out_slide=HOOK_SLIDE * (1 - t)))):
-        nn = sec(1.1)
+    for title in ("Swap: a different powder's auger clips into the same plate",):
+        nn = sec(1.6)
         for i in range(nn):
             t = ease(i / (nn - 1))
-            pl = L.placements(L.State(**hs, **fn(t)))
-            new_col = {k: (0.1, 0.65, 0.35) for k, p in keyed(pl) if p.module == k0 and p.key in ("sam_mounting_plate", "auger_cap", "carriage")}
-            mv.frame(pl, title, "", colors=new_col, cam=SIDE_HATCH)
+            pl = L.placements(L.State(**hs, auger_out=140.0 * (1 - t)))
+            new_col = {k: (0.1, 0.65, 0.35) for k, p in keyed(pl) if p.module == k0 and p.key in ("auger", "auger_cap")}
+            mv.frame(pl, title, "door, plate and carriage stay on the chain", colors=new_col, cam=SIDE_HATCH)
     for i in range(n):
         a = HATCH_OPEN_DEG * (1 - ease(i / (n - 1)))
         mv.frame(L.placements(L.State(ext=0.0, hatch_side=a)), "Side hatch closed", "", cam=SIDE_HATCH)
     mv.hold(sec(1.2))
     mv.close()
-    gif = OUT / "chain_carousel_v3.gif"
+    gif = OUT / "chain_carousel_v4.gif"
     mv.gif[0].save(gif, save_all=True, append_images=mv.gif[1:], duration=int(1000 * mv.GIF_EVERY / fps), loop=0, optimize=True)
     print(f"  {mv.n} frames ({mv.n / fps:.1f} s) -> {mp4.name} ({mp4.stat().st_size / 1e6:.1f} MB), {gif.name} ({gif.stat().st_size / 1e6:.1f} MB)")
 
@@ -737,8 +734,8 @@ def features(only: str = "") -> None:
             pl = L.placements(L.State(ext=e, magnet_on=e > DOCK_EXT - 2))
             c.v.show(pl, hide=hidden(pl, dock_cut), opacity=ghost_plate(pl))
             c.v.camera(*DOCK)
-            c._emit(caption(c.v.image(), "Kinematic dock (item 1): the EC rises onto the plate's two balls and its own third ball",
-                            f"cone (+y) and vee (-y) with N52 magnets under them, ball C on the steel armature; {DOCK_EXT - e:4.1f} mm to go", TAG))
+            c._emit(caption(c.v.image(), "Kinematic dock (item 1, v4): the EC's arms reach past the auger to the plate's balls",
+                            f"cone and vee with N52 magnets behind them, ball C on a steel washer; {DOCK_EXT - e:4.1f} mm to go", TAG))
         for i in range(sec(1.0)):
             c._emit(c.last)
         c.done()
@@ -768,11 +765,11 @@ def features(only: str = "") -> None:
                 pl = L.placements(st)
                 c.v.show(pl, hide=hidden(pl, dock_cut), opacity={k: 0.45 for k, p in keyed(pl) if p.key == "door_housing" and p.module == 0})
                 c.v.camera(*DOOR)
-                c._emit(caption(c.v.image(), "Outlet door (item 4): the docked EC's finger lifts the shutter; its spring shuts it",
+                c._emit(caption(c.v.image(), "Outlet door (item 4): the docked EC's finger pushes the shutter toward the plate; its spring shuts it",
                                 f"door {L.door_open(st):4.1f} of {DOOR_TRAVEL} mm open: only while the EC holds the module", TAG))
         c.done()
     if not only or only == "latch":
-        c = Clip("plate_latch")
+        c = Clip("plate_latch_v4")
         n = sec(5.0)
         for i in range(n):
             s_ = RUN_DIRECTION * (-6.0 + 12.0 * i / (n - 1))
@@ -782,15 +779,15 @@ def features(only: str = "") -> None:
             c.v.show(pl, hide=hidden(pl, latch_cut))
             c.v.camera(*LATCH)
             lo = L.latch_open(k, st)
-            c._emit(caption(c.v.image(), "Plate latch (item 4a): the station's rail draws the bolt back as the carriage arrives",
-                            f"bolt {lo:3.1f} of {LATCH_TRAVEL} mm back; it is home again before the carriage leaves the bottom run", TAG))
+            c._emit(caption(c.v.image(), "Plate latch (item 4a): the station's rail draws the pin out of the keeper as the carriage arrives",
+                            f"pin {lo:3.1f} of {LATCH_TRAVEL} mm back; the module rests on the tube rest meanwhile", TAG))
         topcam = ((150, 0, float(L.Z_TOP) + 40), (-0.5, -1.0, 0.1), 650)
         for i in range(sec(3.0)):
             s_ = RUN_DIRECTION * (N_LINKS / 2 - 4 + 8 * i / (sec(3.0) - 1))
             pl = L.placements(L.State(shift=s_, ext=0.0))
             c.v.show(pl, hide=hidden(pl, front_open))
             c.v.camera(*topcam)
-            c._emit(caption(c.v.image(), "On the top run the modules hang upside down from their hinges and latches", "", TAG))
+            c._emit(caption(c.v.image(), "On the top run the modules sit on top of the loop, held by their hinges and latch pins", "", TAG))
         c.done()
     if not only or only == "hatches":
         c = Clip("enclosure_hatches")
@@ -808,20 +805,33 @@ def features(only: str = "") -> None:
         c.done()
     if not only or only == "swap":
         c = Clip("side_tabs_swap")
-        hs = dict(ext=0.0, hatch_side=HATCH_OPEN_DEG, out_carriage=3)
-        for title, fn in (("Side tabs (item 5a) hold the tongues at the loading position", lambda t: dict()),
-                          ("Two M3 screws out: the push goes into the side tabs, not the chain", lambda t: dict(screws_out=SCREW_OUT * t)),
-                          ("Slide 10 mm up: the hooks leave the A-1 tabs and the tongues leave the side tabs",
-                           lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE * t)),
-                          ("Out through the side hatch (v3: the auger faces into the loop, so the carriage comes out whole)",
-                           lambda t: dict(screws_out=SCREW_OUT, out_slide=HOOK_SLIDE, out_lift=170.0 * t))):
-            n = sec(1.6)
+        for title, fn in (("Side tabs (item 5a): the tongues sit 1 mm inside their feet at the loading position", lambda t: dict()),
+                          ("Pull the auger off its plate: the clamps let go, the tabs take the pull (item 7)", lambda t: dict(auger_out=140.0 * t)),
+                          ("A different powder's auger clips onto the same plate", lambda t: dict(auger_out=140.0 * (1 - t)))):
+            n = sec(1.8)
             for i in range(n):
                 t = ease(i / (n - 1))
-                pl = L.placements(L.State(**hs, **fn(t)))
+                pl = L.placements(L.State(ext=0.0, hatch_side=HATCH_OPEN_DEG, out_auger=3, **fn(t)))
                 c.v.show(pl)
                 c.v.camera(*LOADC)
                 c._emit(caption(c.v.image(), title, "", TAG))
+        c.done()
+    if not only or only == "outside":
+        c = Clip("outside_loop")
+        n = sec(5.0)
+        for i in range(n):
+            s_ = RUN_DIRECTION * N_LINKS / 4 * scurve(i, n - 1)
+            pl = L.placements(L.State(shift=s_, ext=0.0, enclosure=False, scale=False))
+            c.v.show(pl, hide=hidden(pl, front_open))
+            c.v.camera(*LOOP)
+            c._emit(caption(c.v.image(), "Item 7: the augers ride outside the loop, on their carriages' outer faces",
+                            "the chain side of each carriage is v3's; the module, its hinge lugs and latch are on the other face", TAG))
+        for i in range(sec(1.0)):
+            pl = L.placements(L.State(ext=0.0, enclosure=False, scale=False))
+            c.v.show(pl, hide=hidden(pl, station_cut))
+            c.v.camera(*cam_lerp(LOOP, STATION, i / (sec(1.0) - 1)))
+            c._emit(caption(c.v.image(), "At the station the module hangs under the bottom run", "", TAG))
+        _station_cycle(c, sec)
         c.done()
     if not only or only == "cycle":
         c = Clip("how_it_works_station")

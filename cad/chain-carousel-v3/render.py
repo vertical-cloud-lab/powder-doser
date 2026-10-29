@@ -287,8 +287,8 @@ STATION = ((H[0] + 45, H[1], H[2] - 55), (-0.5, -1.0, 0.18), 560)
 STATION_TILT = ((H[0] + 70, H[1], H[2] + 5), (-0.35, -1.0, 0.2), 740)
 DOCK = ((H[0] + 50, H[1], H[2] - 24), (-0.25, -1.0, 0.30), 260)
 DOOR = ((D[0] - 2, D[1] + 4, D[2] - 8), (-1.0, -0.75, 0.25), 150)
-LATCH = ((H[0] + 112, H[1] + 19, H[2] - 12), (0.55, 0.75, 0.75), 200)
-LATCH_BELOW = ((H[0] + 126, H[1] + 22, H[2] - 27), (-0.2, 1.0, -0.75), 170)
+LATCH = ((H[0] + 106, H[1] - 19, H[2] - 14), (0.6, -1.0, 0.8), 135)              # the latch is on the -y side
+LATCH_BELOW = ((H[0] + 124, H[1] - 19, H[2] - 30), (-0.35, -1.0, -0.6), 150)
 CRADLE = ((H[0] + 40, H[1], H[2] - 78), (-0.5, -1.0, 0.45), 340)
 LOADC = ((150, 120, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 1000)
 SIDE_HATCH = ((150, 130, float(L.load_frame()[2, 3]) - 30.0), (0.25, 1.0, 0.3), 1300)
@@ -353,7 +353,7 @@ def stills(quick: bool = False) -> None:
             ("rig_dock_open", L.State(ext=8.0), DOCK, dock_cut, "Kinematic dock, 12 mm before seating: the balls over the cone and the vee", ghost_plate),
             ("rig_cradle", L.State(ext=0.0), CRADLE, station_cut, "Guide: the parked EC on its own cone-vee-flat seat in the cradle (cradle see-through)",
              ghost_cradle),
-            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter up 8.5 mm"),
+            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter up 6 mm"),
             ("rig_door_closed", L.State(ext=0.0), DOOR, dock_cut, "Outlet door closed: the spring holds the shutter over the 3 mm exit"),
             ("rig_latch", L.State(), LATCH, latch_cut, "Plate latch at the station: the rail has drawn the bolt back off the plate's keeper"),
             ("rig_latch_rail", L.State(), LATCH_BELOW, latch_cut, "Latch rail under the bottom run: it pushes each carriage's follower back at the station"),

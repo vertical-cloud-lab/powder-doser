@@ -142,13 +142,13 @@ EXT = 20.0
 POST_Y = 180.0       # post centres (v4): the side runs' modules reach y +-161 outside the loop
 SIDE_GAP = 30.0      # chain centre plane -> side plate's inner face
 PLATE_T_SIDE = 6.35  # 1/4 in 6061 side plates
-SIDE_W = 2 * POST_Y + EXT                             # 244
+SIDE_W = 2 * POST_Y + EXT                             # 380 (v4)
 _DZ = Z_RUN - 210.0                                   # everything above the bench moved up with the loop (Oct 18)
 SIDE_Z = (180.0 + _DZ, 555.0 + _DZ)                   # front side plate bottom, top
 SIDE_Z_BACK = (70.0 + _DZ, 555.0 + _DZ)               # the back plate runs down to carry the motor
 FOOT_H = 15.0        # leveling foot: bench -> underside of the base rails
 Z_BASE = FOOT_H      # base rails' underside
-Z_TOP_RAIL = 745.0   # top rails' underside (v4): the top run's modules stand on top of the loop, their gears to z 763
+Z_TOP_RAIL = 576.0 + _DZ   # 751 (v4): top rails' underside, 21 mm over the side plates as v3; the top run's gears reach z 763
 TENSION_TRAVEL = (-6.0, 8.0)  # top shafts' slot travel about nominal: down to fit the chain, up to tension it
 DRIVE_TRAVEL = 4.0   # motor slides +-4 mm in its slots to tension the drive chain
 
@@ -409,6 +409,8 @@ BEAKER_D, BEAKER_H = 38.0, 49.0              # 25 mL low-form beaker (DWK/Kimble
 # =====================================================================================================================
 OPEN_U = 25.8                        # the carriage's opening: the module (plate +-25, gear +-23) swings up through it into the loop
 OPEN_X = (HINGE_X - 14.0, HINGE_X + 255.0)   # carriage x 19-288: from in front of the hinge to past the cap (Sam x 252.4)
+OPEN_U_BACK = 27.6                   # wider over Sam's x 52-104, where his plate is +-27.02 (its back strip)
+OPEN_BACK_X = (52.0, 104.0)          # Sam's x (carriage x = HINGE_X + these), ahead of the latch housing
 LUG_U4 = 26.0                        # hinge lugs on the outer face, |u| 26-30, round the plate's knuckles (|u| 15-25)
 TILT_MAX_V4 = 50.0                   # the module swings into the loop; at about 55 deg its cap reaches the top run
 # kinematic dock on the plate's auger side (the EC docks from outside, round the auger): the side strips between the clamps

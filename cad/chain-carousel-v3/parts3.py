@@ -377,8 +377,8 @@ def carriage_v3(print_web: bool = False) -> cq.Workplane:
     c = PT.carriage(print_web)
     u0 = CAR_W / 2
     w0, w1 = CAR_W0 - CAR_T, CAR_W0
-    # remove the snap hooks: everything above the ribs at the snap position
-    snap = (cq.Workplane("XY").rect(2 * u0 + 2, 30.0).extrude(14).translate((0, w1 + 7.0 + 15.0 + 0.01, SNAP_X - 7.0)))
+    # remove the snap hooks (arms and lips): everything on the inner face at the snap position; the ribs go back below
+    snap = (cq.Workplane("XY").rect(2 * u0 + 2, 30.0).extrude(14).translate((0, w1 + 15.0 + 0.01, SNAP_X - 7.0)))
     c = c.cut(snap)
     for su in (-1, 1):                          # rebuild the ribs where v2 cut them for the hooks to flex
         rw, rh = RIB

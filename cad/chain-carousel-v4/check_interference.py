@@ -27,7 +27,7 @@ from pathlib import Path
 import cadquery as cq
 
 import layout as L
-from params import PARK_DROP, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, TILT_MAX_FRAME
+from params import PARK_DROP, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, TILT_MAX_FRAME, HATCH_OPEN_DEG
 
 OUT = Path(__file__).resolve().parent / "checks"
 
@@ -198,7 +198,7 @@ def sweep(step: float = 0.5) -> list:
 MOVING_GROUPS = ("station_ec", "station_act")            # the EC and its parts, the P16; plus the station module (below)
 
 
-def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
+def tilt(angles=(5, 10, 15, 20, 25, 30, 38, 45, 50), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
     """Station: the EC rising out of its cradle (ext 0 -> docked; the door opens over the last 8.5 mm), then module 1 + EC
     + actuator tilting about the hinge, against everything else (carriage 1 included: its window, pads, latch, lugs)."""
     hits = []
@@ -222,15 +222,26 @@ def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 
 
 
 def swap() -> list:
-    """Loading position (+y side, carriage 4 at home): screws backed out, the carriage slid HOOK_SLIDE along the
-    run to free its hooks, then lifted out sideways (+y) with its module."""
+    """v4: at the loading position (+y side, module 4 at home), the side hatch open, the auger pulled straight off its plate
+    (out of the loop, through the hatch) in steps, against everything else; then the carriage's own removal as v3 (screws
+    out, slid 10 mm, lifted out) for completeness."""
     hits = []
     k = 3
-    so = SCREW_OUT                        # screws backed out until their tips clear the tabs (they stay in the plate)
-    seq = [(3.0, 0.0, 0.0), (so, 0.0, 0.0), (so, HOOK_SLIDE / 2, 0.0), (so, HOOK_SLIDE, 0.0), (so, HOOK_SLIDE, 2.0),
-           (so, HOOK_SLIDE, 10.0), (so, HOOK_SLIDE, 30.0), (so, HOOK_SLIDE, 60.0), (so, HOOK_SLIDE, 100.0), (so, HOOK_SLIDE, 150.0)]
-    for so, sl, lf in seq:
-        st = L.State(out_carriage=k, screws_out=so, out_slide=sl, out_lift=lf, scale=False)
+    for ao in (5.0, 15.0, 30.0, 60.0, 100.0, 140.0):
+        st = L.State(out_auger=k, auger_out=ao, scale=False, hatch_side=HATCH_OPEN_DEG)
+        pl = L.placements(st)
+        mv = [p for p in pl if p.module == k and p.key in ("auger", "auger_cap")]
+        ids = {id(p) for p in mv}
+        rest = [p for p in pl if id(p) not in ids]
+        mo, ro = objects(mv), objects(rest)
+        objs = mo + ro
+        pairs = [(a, b) for a in range(len(mo)) for b in range(len(mo), len(objs))]
+        h = overlaps(objs, pairs)
+        hits += [(f"{a} @auger_out{ao:g}", b, x) for a, b, x in h]
+        print(f"  auger out {ao:5.1f}: {len(h)} clash(es)", flush=True)
+    so = SCREW_OUT
+    for so_, sl, lf in [(so, HOOK_SLIDE, 0.0), (so, HOOK_SLIDE, 30.0), (so, HOOK_SLIDE, 100.0)]:
+        st = L.State(out_carriage=k, screws_out=so_, out_slide=sl, out_lift=lf, scale=False, hatch_side=HATCH_OPEN_DEG)
         pl = L.placements(st)
         mv = [p for p in pl if p.module == k]
         ids = {id(p) for p in mv}
@@ -239,8 +250,8 @@ def swap() -> list:
         objs = mo + ro
         pairs = [(a, b) for a in range(len(mo)) for b in range(len(mo), len(objs))]
         h = overlaps(objs, pairs)
-        hits += [(f"{a} @screws{so:g}/slide{sl:g}/lift{lf:g}", b, x) for a, b, x in h]
-        print(f"  screws {so:4.1f} slide {sl:4.1f} lift {lf:5.1f}: {len(h)} clash(es)", flush=True)
+        hits += [(f"{a} @carriage slide{sl:g}/lift{lf:g}", b, x) for a, b, x in h]
+        print(f"  carriage slide {sl:4.1f} lift {lf:5.1f}: {len(h)} clash(es)", flush=True)
     _report("swap", hits)
     return hits
 
