@@ -1,0 +1,248 @@
+{
+ "parts": {
+  "baseplate_servos_above": {
+   "feature": "baseplateServosAbove",
+   "title": "Baseplate (servos above)",
+   "parameters": [
+    "plateThickness",
+    "hingeDrop",
+    "slotWidth",
+    "reliefSkin",
+    "screwHoleDiameter",
+    "hingeHoleDiameter",
+    "cradleHoleDiameter"
+   ],
+   "paste_volume_mm3": 137661.0083,
+   "native_volume_mm3": 137661.0083,
+   "paste_matches_native_local_build": true
+  },
+  "mounting_plate_servos_above": {
+   "feature": "mountingPlateServosAbove",
+   "title": "Mounting plate (servos above)",
+   "parameters": [
+    "floorThickness",
+    "hingeHoleDiameter",
+    "knuckleGap",
+    "knuckleWidth",
+    "towerSlot",
+    "gearWidth",
+    "floorHoleDiameter",
+    "floorHoleSpacing",
+    "rearBracketHoles",
+    "frontBracketHoles",
+    "collarBaseHoles",
+    "stepperPlateBack",
+    "stepperPlateThickness",
+    "stepperOffset",
+    "pilotDiameter",
+    "motorScrewSpacing",
+    "motorScrewDiameter"
+   ],
+   "paste_volume_mm3": 91263.8666,
+   "native_volume_mm3": 91263.8665,
+   "paste_matches_native_local_build": true
+  },
+  "auger": {
+   "feature": "auger",
+   "title": "Auger",
+   "parameters": [
+    "tubeLength",
+    "tubeDiameter",
+    "wallThickness",
+    "funnelLength",
+    "outletDiameter",
+    "coreDiameter",
+    "coreTipDiameter",
+    "flightPitch",
+    "flightTurns",
+    "flightThickness",
+    "gearCenter",
+    "gearWidth",
+    "threadLength",
+    "threadPitch",
+    "threadMajorDiameter",
+    "threadMinorDiameter"
+   ],
+   "paste_volume_mm3": 48287.1427,
+   "native_volume_mm3": 48287.1427,
+   "paste_matches_native_local_build": true
+  },
+  "auger_cap": {
+   "feature": "augerCap",
+   "title": "Auger cap",
+   "parameters": [
+    "capDiameter",
+    "capDepth",
+    "endWall",
+    "capMinorDiameter",
+    "threadPitch",
+    "threadMajorDiameter",
+    "threadMinorDiameter",
+    "threadClearance",
+    "threadPhase"
+   ],
+   "paste_volume_mm3": 4379.4465,
+   "native_volume_mm3": 4379.4465,
+   "paste_matches_native_local_build": true
+  },
+  "bracket": {
+   "feature": "bracket",
+   "title": "Bracket",
+   "parameters": [
+    "thickness",
+    "baseLength",
+    "footHeight",
+    "pedestalWidth",
+    "pedestalHeight",
+    "boreHeight",
+    "boreDiameter",
+    "ringWall",
+    "slotWidth",
+    "earThickness",
+    "earTopHeight",
+    "screwHoleDiameter",
+    "clampHoleHeight",
+    "mountHoleSpacing",
+    "webFilletRadius",
+    "earRoundRadius"
+   ],
+   "paste_volume_mm3": 13123.9006,
+   "native_volume_mm3": 13123.9006,
+   "paste_matches_native_local_build": true
+  },
+  "tap_collar_base": {
+   "feature": "tapCollarBase",
+   "title": "Tap collar base",
+   "parameters": [
+    "length",
+    "depth",
+    "blockHeight",
+    "cradleDiameter",
+    "cradleHeight",
+    "towerStop",
+    "towerWidth",
+    "towerHeight",
+    "towerFilletRadius",
+    "holeDiameter",
+    "holeSpacing",
+    "countersinkDiameter"
+   ],
+   "paste_volume_mm3": 15743.0614,
+   "native_volume_mm3": 15743.0614,
+   "paste_matches_native_local_build": true
+  },
+  "tap_collar": {
+   "feature": "tapCollar",
+   "title": "Tap collar",
+   "parameters": [
+    "collarDepth",
+    "boreDiameter",
+    "ringDiameter",
+    "blockWidth",
+    "blockHeight",
+    "plateThickness",
+    "plateTop",
+    "solenoidHeight",
+    "plateHoleDiameter",
+    "tapHoleDiameter",
+    "earLength",
+    "earHeight",
+    "splitWidth",
+    "clampHoleOffset",
+    "clampHoleDiameter",
+    "tabLength",
+    "tabHeight",
+    "pocketDiameter",
+    "pocketDepth"
+   ],
+   "paste_volume_mm3": 12937.3453,
+   "native_volume_mm3": 12937.3453,
+   "paste_matches_native_local_build": true
+  },
+  "stepper_pinion": {
+   "feature": "stepperPinion",
+   "title": "Stepper pinion",
+   "parameters": [
+    "gearWidth",
+    "pinionLength",
+    "outsideDiameter",
+    "hubDiameter",
+    "boreDiameter",
+    "flatOffset"
+   ],
+   "paste_volume_mm3": 3168.8363,
+   "native_volume_mm3": 3168.8363,
+   "paste_matches_native_local_build": true
+  },
+  "servo_pinion": {
+   "feature": "servoPinion",
+   "title": "Servo pinion",
+   "parameters": [
+    "gearWidth",
+    "outsideDiameter",
+    "splineSocketDiameter",
+    "splineSocketDepth",
+    "screwHoleDiameter",
+    "headRecessDiameter",
+    "headRecessDepth"
+   ],
+   "paste_volume_mm3": 2906.1015,
+   "native_volume_mm3": 2906.1015,
+   "paste_matches_native_local_build": true
+  }
+ },
+ "assembly": {
+  "tilt_0": {
+   "bodies": 11,
+   "volume_mm3": 345500.7112,
+   "area_mm2": 183424.0081,
+   "bbox_mm": [
+    -95.0,
+    27.3,
+    0.0,
+    95.0,
+    287.4001,
+    90.8025
+   ],
+   "box_vs_text_to_cad_max_mm": {
+    "Baseplate": 0.0,
+    "Mounting plate": 0.0001,
+    "Auger": 0.0,
+    "Auger cap": 0.0,
+    "Bracket (rear)": 0.0,
+    "Bracket (front)": 0.0,
+    "Tap collar base": 0.0,
+    "Tap collar": 0.0,
+    "Stepper pinion": 0.0,
+    "Servo pinion (+X)": 0.0,
+    "Servo pinion (-X)": 0.0
+   }
+  },
+  "tilt_45": {
+   "bodies": 11,
+   "volume_mm3": 345500.7112,
+   "area_mm2": 183424.0081,
+   "bbox_mm": [
+    -95.0,
+    27.3,
+    0.0,
+    95.0,
+    225.3588,
+    218.2088
+   ],
+   "box_vs_text_to_cad_max_mm": {
+    "Baseplate": 0.0,
+    "Mounting plate": 0.0004,
+    "Auger": 1.1741,
+    "Auger cap": 0.0,
+    "Bracket (rear)": 0.0,
+    "Bracket (front)": 0.0,
+    "Tap collar base": 0.0,
+    "Tap collar": 0.0,
+    "Stepper pinion": 0.0,
+    "Servo pinion (+X)": 0.0,
+    "Servo pinion (-X)": 0.0
+   }
+  }
+ }
+}

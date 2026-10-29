@@ -1,0 +1,14 @@
+{
+ "calls_per_part": {
+  "baseplate_servos_above": 19,
+  "mounting_plate_servos_above": 27,
+  "auger": 5,
+  "auger_cap": 16,
+  "bracket": 17,
+  "tap_collar_base": 13,
+  "tap_collar": 16,
+  "stepper_pinion": 12,
+  "servo_pinion": 10
+ },
+ "total": 140
+}
