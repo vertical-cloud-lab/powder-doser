@@ -233,6 +233,8 @@ z = 0.
 | 10 | Sketch on **Top** | Circle Ø23.5 at the origin |
 | 11 | Extrude "Bore" | Solid, Remove, Through all, downward; merge scope: the cap |
 
+![The cap cut through its axis, with the step 6 sketch](renders/local/auger_cap_section.png)
+
 The order is the script's: the groove runs out through the top, the end wall puts the top back, and the bore
 comes last. The result should be one part of 4,379.4 mm³. To drive the tree from variables as the push would,
 make the 9 variables first and type expressions instead of numbers.
@@ -281,6 +283,7 @@ list, and the auger's feature list. The 2026-10-20 run made 39 counted calls. Ev
 | [`push_all.py`](push_all.py) | The native-tree push and its plan; `--document` for any other document |
 | [`dry_run_push.py`](dry_run_push.py) | One part's push against fsgen's fake Onshape: every request and the count, 0 calls ([`results/dry_run/`](results/dry_run)) |
 | [`recipe_check.py`](recipe_check.py) | Builds the cap's by-hand recipe and compares it with the script's build |
+| [`cap_section.py`](cap_section.py) | The cap cut through its axis, with the recipe's groove sketch ([`renders/local/auger_cap_section.png`](renders/local/auger_cap_section.png)) |
 | [`onshape_doc.py`](onshape_doc.py) | Document-level calls: create, adopt, rename, share, mass, views, tree, export, version |
 | [`assembly/placements_servos_above.json`](assembly/placements_servos_above.json) | Where each part goes, from text-to-cad |
 | [`paste/`](paste) | The paste-in custom features (generated) |
