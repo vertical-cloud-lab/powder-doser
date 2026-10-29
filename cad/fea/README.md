@@ -2,7 +2,9 @@
 
 FEA of the chain carousels v3 and v4 and of the paternoster, as they stand on #185 at
 [`45e9740`](https://github.com/vertical-cloud-lab/powder-doser/tree/45e9740), for deflection, stress, safety factor and
-natural frequency. Every model is meshed with gmsh (second-order tetrahedra, C3D10) from the designs' own CadQuery
+natural frequency. The carriages were rerun on [`add2640`](https://github.com/vertical-cloud-lab/powder-doser/tree/add2640),
+which widened v4's carriage opening. Its other change, v4's top rail 6 mm higher, doesn't affect the frame results
+noticeably. Every model is meshed with gmsh (second-order tetrahedra, C3D10) from the designs' own CadQuery
 parts and solved with CalculiX 2.21 (`ccx`). v3 and v4 are still changing on #185 and their builds aren't committed,
 so `export_design.py` builds their parts and placements from source first.
 

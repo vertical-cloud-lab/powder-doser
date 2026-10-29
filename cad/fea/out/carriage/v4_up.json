@@ -14,39 +14,39 @@
   "pads (N, w)": 0.0,
   "latch (N, w)": 0.0
  },
- "nodes": 131831,
- "elements": 74688,
+ "nodes": 132142,
+ "elements": 74757,
  "mesh_mm": 2.2,
- "wall_s": 40.2,
+ "wall_s": 25.2,
  "parts": [
   {
    "part": "carriage",
    "material": "PETG (printed, 1000 h creep)",
-   "umax_mm": 0.42344,
-   "vm_max_MPa": 2.174,
+   "umax_mm": 0.42469,
+   "vm_max_MPa": 2.201,
    "vm_max_at": [
     -24.9,
     -11.3,
     19.9
    ],
-   "vm_excl_MPa": 2.174,
+   "vm_excl_MPa": 2.201,
    "vm_excl_at": [
     -24.9,
     -11.3,
     19.9
    ],
    "allow_MPa": 8.0,
-   "sf": 3.68
+   "sf": 3.63
   }
  ],
  "key_disp": {
-  "hinge lug -u dw (mm)": 0.03723,
-  "hinge lug +u dw (mm)": -0.01315,
-  "latch housing mouth dw (mm)": 0.00112,
-  "mid-span edge strips dw (mm)": -0.07006,
-  "auger cap end dw from carriage bending (mm)": -0.01421,
+  "hinge lug -u dw (mm)": 0.03792,
+  "hinge lug +u dw (mm)": -0.01324,
+  "latch housing mouth dw (mm)": 0.00401,
+  "mid-span edge strips dw (mm)": -0.04354,
+  "auger cap end dw from carriage bending (mm)": -0.00768,
   "short-term factor on these (E 1810 vs 1000)": 0.55249
  },
  "notes": "",
- "mass_kg": 0.0837
+ "mass_kg": 0.0826
 }

@@ -1,8 +1,9 @@
 # What the FEA says about the designs
 
 These are CalculiX results for chain carousels v3 and v4 and the paternoster, as they stand on #185 at
-[`45e9740`](https://github.com/vertical-cloud-lab/powder-doser/tree/45e9740). Nothing is built yet, so every number is
-a prediction. Every case is in [out/SUMMARY.md](out/SUMMARY.md), and the method and the checks against hand solutions
+[`45e9740`](https://github.com/vertical-cloud-lab/powder-doser/tree/45e9740). The carriages were rerun on
+[`add2640`](https://github.com/vertical-cloud-lab/powder-doser/tree/add2640), after #185 widened v4's carriage opening.
+Nothing is built yet, so every number is a prediction. Every case is in [out/SUMMARY.md](out/SUMMARY.md), and the method and the checks against hand solutions
 are in [README.md](README.md). The station and carriage results have their own write-ups in
 [out/station/SUMMARY.md](out/station/SUMMARY.md) and [out/carriage/SUMMARY.md](out/carriage/SUMMARY.md).
 
@@ -20,7 +21,9 @@ are in [README.md](README.md). The station and carriage results have their own w
    both ways.
    - With the housing bridged to the -u side strip (the smallest fix), the module hangs on that one 7.2 mm strip. Its
      cap end sags 1.7 mm short-term and 3.1 mm with creep.
-   - A 40 N pull on the auger at the loading position then gives a safety factor of 0.77.
+   - A 40 N pull on the auger at the loading position then gives a safety factor of 0.73. `add2640` widened the opening
+     beside the plate's back strip, which thins that strip from 7.2 to 5.4 mm over Sam's x 52-104 and makes this
+     slightly worse (it was 0.77).
    - v4 needs a latch on each strip (two pins, one each side of the tube), or a deeper strip or rib under the housing.
 3. **v4's kinematic dock tips open as the module tilts.** From 15° the cone ball goes into tension: -2 to -4 N with the
    motor idle, -8 to -10 N during a solenoid tap.
@@ -52,7 +55,7 @@ are in [README.md](README.md). The station and carriage results have their own w
 7. **v3's electronics carriage has a loose piece in the CAD.** The electromagnet cup and ball C's boss are a separate
    solid, 3.6 mm from the bracket arms. The station FEA bridged them with two ribs (x 88-99.5, |y| 10.4-12.4).
 8. **v3's hinge lugs sit in a 1 mm notch at each end,** inherited from v2: the edge rib is cut 18 mm for a 16 mm lug.
-   The notch is the carriage's peak at a P16 stall (safety factor 1.4) and on the vertical runs (2.9 against creep).
+   The notch is the carriage's peak at a P16 stall (safety factor 1.5) and on the vertical runs (2.6 against creep).
    Cut the rib 16 mm or make the lug 18 mm.
 9. **Limit the P16's retract into the guide cradle,** using its feedback pot in firmware, or add a 2-3 mm fillet or
    gusset at the cradle's arm or a second post. At a 50 N retract stall the single-post arm reaches a safety factor of
@@ -86,7 +89,7 @@ are in [README.md](README.md). The station and carriage results have their own w
 - the tensioner blocks and the paternoster gondola;
 - the clevis bracket, the clevis pins and the hinge pins;
 - the latch bolt and the latch rails in normal running, and the hold-downs;
-- the carriages under gravity at every orientation, after creep. Their lowest safety factor is 2.9, at the v3 notch
+- the carriages under gravity at every orientation, after creep. Their lowest safety factor is 2.6, at the v3 notch
   (change 8).
 
 ## The motor on the wall
@@ -177,12 +180,12 @@ use the creep modulus; the loop's peak loads are 1.27x static (the v2 loop simul
 
 | case | v3: peak (MPa), safety factor | v3: what moves | v4 (latch bridged): peak, safety factor | v4: what moves |
 |---|---|---|---|---|
-| bottom run, creep | 0.68, 12 | mid-span 0.39 mm, cap end 0.84 mm | 2.09, 3.8 (x1.27) | cap end 3.1 mm |
-| top run (upside down, on the latch), creep, x1.27 | 1.70, 4.7 | latch 0.84 mm, cap end 1.9 mm | 1.51, 5.3 (x1.0) | cap end 2.4 mm |
-| vertical runs, creep | 2.80, 2.9 (at the lug notch) | under 0.2 mm | 2.17, 3.7 | under 0.1 mm |
-| station: 50 N P16 stall through the hinge, carriage in the hold-down lips | 16.1, 1.4 (2.1 along the layers) | lugs rise 0.94 mm | 10.7, 2.2 | 0.67-0.78 mm |
-| loading position: 40 N auger pull at the latch | 22.3, 1.0 (1.5 along) | latch 5.6 mm | 29.8, **0.77** | latch 9.8 mm |
-| loading position: 40 N pull at mid-plate | 19.5, 1.2 | latch 3.5 mm | 17.9, 1.3 | latch 5.5 mm |
+| bottom run, creep | 0.68, 12 | mid-span 0.39 mm, cap end 0.84 mm | 2.18, 3.7 (x1.27) | cap end 3.1 mm |
+| top run (upside down, on the latch), creep, x1.27 | 1.71, 4.7 | latch 0.84 mm, cap end 1.9 mm | 1.58, 5.1 (x1.0) | cap end 2.4 mm |
+| vertical runs, creep | 3.04, 2.6 (at the lug notch) | under 0.2 mm | 2.20, 3.6 | under 0.1 mm |
+| station: 50 N P16 stall through the hinge, carriage in the hold-down lips | 15.8, 1.5 (2.2 along the layers) | lugs rise 0.94 mm | 10.6, 2.2 | 0.68-0.79 mm |
+| loading position: 40 N auger pull at the latch | 22.2, 1.0 (1.5 along) | latch 5.6 mm | 31.4, **0.73** | latch 10.1 mm |
+| loading position: 40 N pull at mid-plate | 19.4, 1.2 | latch 3.5 mm | 18.7, 1.2 | latch 5.7 mm |
 
 - **Latch bolt (v3):** 10.4 MPa at a 40 N pull (hand: 11.3), safety factor 3.3. Holding the module upside down at
   1.27x it sees 0.79 MPa.

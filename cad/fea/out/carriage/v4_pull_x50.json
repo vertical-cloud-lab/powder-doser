@@ -12,39 +12,39 @@
    0.0
   ]
  },
- "nodes": 131656,
- "elements": 74544,
+ "nodes": 132030,
+ "elements": 74660,
  "mesh_mm": 2.2,
- "wall_s": 27.3,
+ "wall_s": 25.8,
  "parts": [
   {
    "part": "carriage",
    "material": "PETG (printed, short-term)",
-   "umax_mm": 6.36941,
-   "vm_max_MPa": 21.216,
+   "umax_mm": 6.50647,
+   "vm_max_MPa": 19.577,
    "vm_max_at": [
     -12.6,
     -11.3,
     -9.0
    ],
-   "vm_excl_MPa": 17.946,
+   "vm_excl_MPa": 18.696,
    "vm_excl_at": [
-    -19.7,
-    -6.3,
-    -8.0
+    -19.8,
+    -6.7,
+    -8.2
    ],
    "allow_MPa": 23.0,
-   "sf": 1.28
+   "sf": 1.23
   }
  ],
  "key_disp": {
-  "hinge lug -u dw (mm)": -1.4814,
-  "hinge lug +u dw (mm)": -1.04708,
-  "latch housing mouth dw (mm)": -5.53709,
-  "mid-span edge strips dw (mm)": -1.57179,
-  "auger cap end dw from carriage bending (mm)": -11.53552,
+  "hinge lug -u dw (mm)": -1.51636,
+  "hinge lug +u dw (mm)": -1.06139,
+  "latch housing mouth dw (mm)": -5.69094,
+  "mid-span edge strips dw (mm)": -1.50097,
+  "auger cap end dw from carriage bending (mm)": -11.87077,
   "side tabs reaction w (N)": 40.14927
  },
  "notes": "",
- "mass_kg": 0.0837
+ "mass_kg": 0.0826
 }
