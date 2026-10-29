@@ -198,7 +198,7 @@ MOVING_GROUPS = ("station_ec", "station_act")            # the EC and its parts,
 
 
 def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
-    """Station: the EC rising out of its cradle (ext 0 -> docked; the door opens over the last 8.5 mm), then module 1 + EC
+    """Station: the EC rising out of its cradle (ext 0 -> docked; the door opens over the last 6 mm), then module 1 + EC
     + actuator tilting about the hinge, against everything else (carriage 1 included: its window, pads, latch, lugs)."""
     hits = []
     for kind, vals in (("ext", exts), ("tilt", angles)):

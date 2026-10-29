@@ -181,6 +181,11 @@ def carriage_v4(print_web: bool = False) -> cq.Workplane:
     ox0, ox1 = OPEN_X
     opening = (cq.Workplane("XY").rect(2 * OPEN_U, CAR_T + 2).extrude(ox1 - ox0).translate((0, (w0 + w1) / 2, ox0)).edges("|Y").fillet(3))
     plate = plate.cut(opening)
+    # Sam's plate is +-27.02 wide from his x 60 to 100 (his back strip): the opening widens to OPEN_U_BACK there, so that
+    # strip passes through the carriage plate when the module swings up (it touched the 25.8 mm edges at 5-10 deg)
+    bx0, bx1 = OPEN_BACK_X
+    plate = plate.cut(cq.Workplane("XY").rect(2 * OPEN_U_BACK, CAR_T + 2).extrude(bx1 - bx0).translate((0, (w0 + w1) / 2, HINGE_X + bx0))
+                      .edges("|Y").fillet(1.5))
     # hinge lugs on the outer face: from w0 out past the hinge axis (w = HINGE_W), |u| LUG_U4..LUG_U4 + LUG_T
     lug_out = HINGE_W - 8.0
     for su in (-1, 1):

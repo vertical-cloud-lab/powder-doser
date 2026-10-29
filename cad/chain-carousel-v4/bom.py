@@ -1,4 +1,4 @@
-"""Bill of materials for the chain-carousel test rig v3 (v2 + Sam's 2026-10-29 critiques).
+"""Bill of materials for the chain-carousel test rig v4 (v3 with the augers outside the loop, Sam's item 7 of 2026-10-29).
 
 ITEMS is the single table: item number, what, where to buy it, price, and
 which assembly step uses it. Quantities of modelled parts are counted from
@@ -70,8 +70,8 @@ ITEMS = [
     (17, None, 1, "M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts)",
      "McMaster-Carr", "93625A200", f"{MC}/93625A200/", 9.02, "verified 2026-10-27 (McMaster page, logged out)", (4, 6), "Drive"),
     # ---- frame
-    (18, None, 1, "2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 676 mm (each offcut gives a 204 mm cross rail), "
-     "4 long rails of 417.7 mm (2 per bar), two station rails of 204 + the cradle post 231 + the latch-rail post 286 from a seventh bar",
+    (18, None, 1, "2020 T-slot extrusion, 10 x 1000 mm pack: 4 posts of 716 mm (offcuts: the cradle post 224, the station-rails post 255), "
+     "4 long rails of 417.7 mm (2 per bar), 4 cross rails and 2 station rails of 340 mm (2 per bar): nine bars",
      "VEVOR", "2020OBLXC10JMQNSK001V0",
      "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
      66.90, f"{V13}; the page shows both in and out of stock", (1, 2, 8), "Frame"),
@@ -84,10 +84,9 @@ ITEMS = [
     (22, ("foot",), None, "Leveling foot, M6 x 40 stud, into a T-nut in the base rail", "TNUTZ", "LF-020-A", "https://www.tnutz.com/product/lf-020-a/",
      1.85, V16, (1,), "Frame"),
     (23, ("side_plate_front", "side_plate_back"), None,
-     "Side plates, 1/4 in 6061: front 244 x 375 mm, back 244 x 485 mm, both from one 12 x 36 in plate; cut and drilled from dxf/ "
-     "(BYU shop, or SendCutSend: price on upload)", "FixSupply (thyssenkrupp)", "SHT-6061-0.25X12-36",
-     "https://fixsupply.com/1248-12-36-6061-aluminum-plate-t651-1-4-thick-x-12-wide-x-36-long", 104.89 / 2,
-     f"one plate $104.89 for both; {V13}", (3,), "Frame"),
+     "Side plates, 1/4 in 6061: front 380 x 375 mm, back 380 x 485 mm (v4's frame is 136 mm wider than v3's), both from one 24 x 36 in "
+     "plate; cut and drilled from dxf/ (BYU shop, or SendCutSend: price on upload)", "FixSupply (thyssenkrupp)", "SHT-6061-0.25X24-36",
+     "https://fixsupply.com/", 210.0 / 2, "estimate (v3's 12 x 36 in plate was $104.89; twice the area)", (3,), "Frame"),
     (24, None, 1, "M5 x 12 button head screw, 18-8, pack of 50 (20 used: side plates to the posts' T-nuts), with blue threadlocker",
      "McMaster-Carr", "92095A210", f"{MC}/92095A210/", 10.91, "verified 2026-10-27 (McMaster page, logged out)", (3,), "Frame"),
     (25, None, 1, "Loctite 243 (blue, medium strength) for T-nut screws, set screws and the tensioner blocks' screws; Loctite 222 "
@@ -101,11 +100,6 @@ ITEMS = [
      "pins, 2 per module; 4 spare)", "McMaster-Carr", "clevis pins, metric", f"{MC}/clevis-pins/", 0.65, E, (9,), "Fasteners"),
     (29, None, 1, "E-clip DIN 6799-4 (5-7 mm shaft, 4 mm groove x 0.74), spring steel, 8.85 OD, 0.7 thick, pack of 100 (26 used on the hinge "
      "pins)", "McMaster-Carr", "98543A112", f"{MC}/98543A112/", 4.25, "verified 2026-10-27 (McMaster page, logged out)", (9,), "Fasteners"),
-    (30, None, 1, "M3 x 6 flat head screw, 18-8, 90 deg, pack of 100 (26 used: steel armature tab to the plate)", "McMaster-Carr", "92125A126",
-     f"{MC}/92125A126/", 7.46, "verified 2026-10-27 (McMaster page, logged out)", (9,), "Fasteners"),
-    (31, ("insert_m3",), 4, "M3 x 4 heat-set insert (CNC Kitchen short): two per mounting plate for the steel armature",
-     "West3D", "",
-     "https://west3d.com/products/cnc-kitchen-heat-set-inserts-various-sizes", 0.15, E, (9,), "Fasteners"),
     (32, None, 1, "M5 x 16 socket head screw, 18-8, pack of 100 (8 used: hold-downs and side tabs, through the side plates), with blue threadlocker",
      "McMaster-Carr", "91292A126", f"{MC}/91292A126/", 16.05, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Fasteners"),
     (33, None, 1, "M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs and side tabs)", "McMaster-Carr", "94459A774", f"{MC}/94459A774/",
@@ -115,16 +109,18 @@ ITEMS = [
     (35, ("m5x30_shcs",), None, "M5 x 30 socket head screw (tensioner jack screws)", "BelMetric", "M5 x 30 SHCS", "https://www.belmetric.com/",
      0.25, E, (4,), "Fasteners"),
     # ---- printed parts
-    (36, ("carriage",), None, "Carriage v3, PETG: v2's carriage without the snap hooks, a longer station window with pads under the plate's "
-     "back corners, and the latch housing; one per H2D plate on the bed's diagonal (351 mm > 325); break-off webs under the hooks' fingers",
-     "printed", "stl/carriage.stl", "", 1.25, "filament at $20/kg (v2's sliced 58.6 g + the latch housing)", (10,), "Printed"),
+    (36, ("carriage",), None, "Carriage v4, PETG: 66 mm wide, the module on its outer face: a 51.6 mm opening from in front of the hinge to "
+     "past the cap (the module swings up through it into the loop to dose), the hinge lugs and the latch housing on the outer face; one per "
+     "H2D plate on the bed's diagonal; break-off webs under the hooks' fingers", "printed", "stl/carriage.stl", "", 1.20,
+     "filament at $20/kg (about 60 g)", (10,), "Printed"),
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
      "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
     (38, ("clevis_bracket", "cradle", "latch_rail", "side_tab", "side_tab_m", "catch"), None,
-     "Station and enclosure parts, PETG: actuator base clevis, guide cradle with its arm, latch rail with its arm, 2 side tabs, 2 turn buttons",
+     "Station and enclosure parts, PETG: actuator base clevis, guide cradle with its arm, latch rail and tube rest (one part) with their "
+     "arm, 2 side tabs, 2 turn buttons",
      "printed", "stl/", "", 0.6, "filament", (8, 12), "Printed"),
-    (39, ("sam_mounting_plate",), None, "Mounting plate v3: Sam's Oct 13 plate with two dock-ball pockets, two armature inserts, the latch "
-     "keeper and a 1 mm relief over the NEMA 11 (stl/mounting_plate_v3.stl): print all 13 (module 1's existing plate has none of these)",
+    (39, ("sam_mounting_plate",), None, "Mounting plate v4: Sam's Oct 13 plate with two dock-ball pockets and a washer pocket on its auger "
+     "side (the dock), the latch keeper with its 4.2 mm pin hole, and the door housing's inserts (stl/mounting_plate_v4.stl): print all 13",
      "printed", "Onshape 581956d5 + parts3.plate_additions",
      "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
      0.48, "filament at $20/kg (Sam's 21.8 g + the keeper)", (9,), "Printed"),
@@ -138,13 +134,6 @@ ITEMS = [
     (43, ("clevis_screw",), None, "Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread: the P16's base pin (cheek, 8 mm rear tab, "
      "cheek) and the EC's clevis pin (cheek, rod-end tab, cheek, in 2 mm slots) + an M3 nylock each from item 27", "McMaster-Carr", "90265A123",
      f"{MC}/90265A123/", 4.40, V27, (8,), "Station"),
-    (45, ("dock_magnet",), None, "Holding electromagnet P20/15, 5 V, 0.22 A, 2.5 kg (24.5 N) at zero gap: the dock's switchable preload, 12 mm "
-     "ahead of the flat contact", "Adafruit", "3872",
-     "https://www.adafruit.com/product/3872", 7.50, V, (8,), "Station"),
-    (46, None, 1, "N-channel logic-level MOSFET IRLB8721 (switches the dock magnet from the carriage board; out of stock on 2026-10-18, any "
-     "logic-level N-MOSFET such as FQP30N06L works)", "Adafruit", "355", "https://www.adafruit.com/product/355", 2.25, V, (8,), "Station"),
-    (47, None, 1, "1N4001 diode, 10-pack (flyback across the magnet coil)", "Adafruit", "755", "https://www.adafruit.com/product/755", 1.50, V, (8,),
-     "Station"),
     # ---- station: gear-mesh preload and the carriage's pivot at its COM height (cad/gear-mesh), as the paternoster's BoM
     (66, ("pinion",), None, "Steel spur gear KHK SS1-20A: module 1, 20T, 20 deg, 5 mm H8 bore, 10 mm face (S45C). Face the 10 mm hub off and bond "
      "it to the NEMA 11's shaft with Loctite 638; replaces the printed 20T. KHK USA lists it at $14.77 (10 on hand), plus shipping", "KHK USA",
@@ -158,21 +147,20 @@ ITEMS = [
     (74, None, 1, "DC motor driver DRV8871 breakout (the 12 V tap solenoid)", "Adafruit", "3190", "https://www.adafruit.com/product/3190", 7.50,
      "estimate (list price in hardware/vibration-motor-and-solenoid.md, not re-checked)", (11,), "Electronics"),
     # ---- v3: kinematic dock and guide (items 1-2 of Sam's 2026-10-29 review)
-    (77, ("sam_electronics_carriage",), None, "Electronics carriage v3: Sam's Oct 13 carriage printed with the dock ears (cone seat, vee), the "
-     "back bracket (dock electromagnet, ball C), the base (three seat balls) and the slotted clevis (stl/electronics_carriage_v3.stl); the "
-     "doser's NEMA 11 and 12 V solenoid move into it", "printed", "stl/electronics_carriage_v3.stl", "", 1.10, "filament (about 55 g)", (8,),
-     "Printed"),
+    (77, ("sam_electronics_carriage",), None, "Electronics carriage v4: Sam's Oct 13 carriage printed upside down (mirrored), with two arms "
+     "that reach round the auger to the plate's auger side (the cone and ball C on one, the dowel vee on the other, an N52 behind each), "
+     "the base (three seat balls) and the slotted clevis (stl/electronics_carriage_v4.stl); the doser's NEMA 11 and 12 V solenoid move into it",
+     "printed", "stl/electronics_carriage_v4.stl", "", 1.15, "filament (about 58 g)", (8,), "Printed"),
     (78, ("kc_ball",), 6, "Precision ball, 1/4 in, hardened 52100 chrome steel, grade 25: 2 per mounting plate (the dock), 4 on the EC (the flat "
      "and the parking seat), 6 spare", "McMaster-Carr", "1/4 in 52100 ball", f"{MC}/precision-balls/", 0.30, "estimate (v3 part, McMaster lookup pending)", (8, 9), "Station"),
     (79, ("vee_dowel",), 2, "Dowel pin, hardened steel, 1/8 x 5/16 in: two per vee groove (the EC's dock vee and the cradle's), 2 spare",
      "McMaster-Carr", "1/8 x 5/16 dowel", f"{MC}/dowel-pins/", 0.25, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
-    (80, ("kc_magnet",), None, "Neodymium magnet D44-N52, 1/4 x 1/4 in: under the EC's cone and vee, pulls each plate ball into its seat",
+    (80, ("kc_magnet",), None, "Neodymium magnet D44-N52, 1/4 x 1/4 in: behind the EC's cone, vee and ball C (no electromagnet in v4)",
      "K&J Magnetics", "D44-N52", "https://www.kjmagnetics.com/d44-n52-neodymium-cylinder-magnet", 1.10, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
     (81, ("flat_pad",), None, "Steel flat washer, M4, case-hardened if available, bonded in the cradle floor (the parking seat's flat)",
      "McMaster-Carr", "M4 washer", f"{MC}/washers/", 0.20, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
-    (82, ("armature_v3",), None, "Armature, low-carbon steel 14 ga (1.9 mm), 31.5 x 22 mm, two countersunk M3 holes (dxf/armature_v3.dxf): "
-     "the flat of the dock and the electromagnet's target", "SendCutSend", "dxf/armature_v3.dxf", "https://sendcutsend.com/", 3.50,
-     "estimate (SendCutSend quotes on upload)", (9,), "Station"),
+    (97, ("flat_pad_v4",), 2, "Steel flat washer, M5 (10 mm OD, 1 mm), case-hardened, bonded flush in each plate's auger-side face at C: the "
+     "dock's flat", "McMaster-Carr", "M5 washer", f"{MC}/washers/", 0.20, "estimate (v4 part)", (9,), "Station"),
     # ---- v3: outlet doors (item 4) and plate latches (item 4a)
     (83, ("door_housing", "door_shutter"), None, "Outlet door housing and shutter, PETG (one pair per module)", "printed",
      "stl/door_housing.stl, stl/door_shutter.stl", "", 0.10, "filament", (9,), "Printed"),
@@ -180,8 +168,10 @@ ITEMS = [
      "McMaster-Carr", "3 mm OD compression spring", f"{MC}/compression-springs/", 0.80, "estimate (v3 part, McMaster lookup pending)", (9,), "Doors"),
     (85, ("m2x8_shcs",), 4, "M2 x 8 socket head screw, 18-8 (door housing to the plate) + M2 brass heat-set insert in the plate", "McMaster-Carr",
      "M2 x 8 SHCS + M2 insert", f"{MC}/", 0.25, "estimate (v3 part, McMaster lookup pending)", (9,), "Doors"),
-    (86, ("latch_bolt",), None, "Latch bolt, PETG (one per carriage)", "printed", "stl/latch_bolt.stl", "", 0.03, "filament", (10,), "Printed"),
-    (87, ("latch_follower",), 3, "Dowel pin, hardened steel, 3 x 20 mm: the latch bolt's follower", "McMaster-Carr", "3 x 20 dowel",
+    (86, ("latch_bolt",), None, "Latch bolt v4: a printed PETG carrier (stl/latch_bolt.stl) with a 4 x 24 mm hardened dowel pressed in, "
+     "its tip 4 mm into the keeper's hole (one per carriage)", "McMaster-Carr + printed", "4 x 24 dowel", f"{MC}/dowel-pins/", 0.40,
+     "estimate (v4 part)", (10,), "Doors"),
+    (87, ("latch_follower",), 3, "Dowel pin, hardened steel, 3 x 40 mm: the latch bolt's follower (out past the auger to the station's rail)", "McMaster-Carr", "3 x 20 dowel",
      f"{MC}/dowel-pins/", 0.30, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),
     (88, ("latch_spring",), 3, "Compression spring, stainless, 3 mm OD, about 12.7 mm free, about 0.25 N/mm (latch: 0.7 N home, 1.8 N open)",
      "McMaster-Carr", "3 mm OD compression spring", f"{MC}/compression-springs/", 0.80, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),
@@ -197,7 +187,7 @@ ITEMS = [
     (93, ("hatch_front", "hatch_side"), None, "Hatch door knob (printed, bonded to the acrylic)", "printed", "", "", 0.05, "filament", (12,),
      "Printed"),
     # ---- v3: the scale (item 6)
-    (94, None, 1, "A&D HR-100A analytical balance (102 g x 0.1 mg, RS-232): the lab's, modelled from A&D's manual section 22; v3 can't put it "
+    (94, None, 1, "A&D HR-100A analytical balance (102 g x 0.1 mg, RS-232): the lab's, modelled from A&D's manual section 22; v4 can't put it "
      "under the dose point yet (scale_fit)", "lab", "HR-100A", "https://weighing.andonline.com/product/hr-a-series/", 0.0, "existing", (12,),
      "Station"),
     (95, None, 1, "RS-232 to 3.3 V level shifter (MAX3232 breakout) for the HR-100A's serial port", "SparkFun", "BOB-11189",
@@ -234,7 +224,7 @@ ITEMS = [
 ]
 
 # lines you can only buy in packs larger than the rig uses: what you actually pay
-BUY = {23: 104.89}
+BUY = {23: 210.0}
 
 NOTES = """**Before cutting the chain, measure it.** ANSI #35 has a 0.200 in (5.08 mm) bushing and 0.188 in (4.78 mm) between the
 inner plates. ISO 06B has the same 3/8 in pitch but a 6.35 mm roller and 5.72 mm between the plates, and the two don't mix.
@@ -253,9 +243,9 @@ Screws into T-nuts, heat-set inserts and tapped holes get Loctite 243; the hinge
 
 **Shop work:** cut and drill the two side plates from `dxf/` (or upload the DXFs to SendCutSend for a quote); re-bore the
 motor's 15T sprocket from 1/2 in to 14 mm H7 and broach a 5 mm keyway; tap the eight M5 holes for the tensioner blocks;
-face the steel pinion's hub off (KHK SS1-20A) so it fits in front of the dock magnet; laser cut the 13 steel armatures
-(14 ga) and the acrylic panels. v2's yoke arms and stub pins are gone. v2's shop animations are in
-[../shop/README.md](../shop/README.md); the v3 jobs (armatures, acrylic) are flat laser cuts.
+face the steel pinion's hub off (KHK SS1-20A); laser cut the acrylic panels. v2's yoke arms and stub pins are gone, and v4
+has no armatures (its flat is a washer) and no dock electromagnet. v2's shop animations are in
+[../shop/README.md](../shop/README.md).
 
 **Prices** are as listed on the date shown on each line. Every McMaster line was read on McMaster's own page on 2026-10-27,
 logged out, through the doser Pi, and is McMaster's pack price; each part's STEP is in the CAD ([../vendor/](../vendor/README.md)).

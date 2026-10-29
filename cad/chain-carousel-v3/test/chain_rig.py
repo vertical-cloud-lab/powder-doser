@@ -10,7 +10,7 @@ Hardware (see BOM.md):
   fed back inside the LAC. Its rod end pushes the electronics carriage v3 (EC) through a pin in 2 mm slots under the
   EC's back half. Parked, the EC sits on its own three-ball seat in the guide cradle, 20 mm under the passing carriages;
   docked, the plate's two balls sit in the EC's cone and vee and the EC's third ball on the plate's armature (a Kelvin
-  clamp), held by an N52 magnet under each seat and the switchable dock electromagnet. The last 8.5 mm of the dock
+  clamp), held by an N52 magnet under each seat and the switchable dock electromagnet. The last 6 mm of the dock
   lift the module's outlet door; the station's rail opens the carriage's plate latch whenever it is at the station.
 * On the electronics carriage: the doser's NEMA 11 (20T steel pinion -> the auger's 44T gear, 2.2:1) on a DRV8825
   whose current limit is set to AUGER_CURRENT_MA = 450 mA (Vref 0.225 V on Pololu's carrier; set it with the pot
@@ -68,9 +68,9 @@ MM_PER_REV = TEETH * PITCH_MM                      # 304.8
 RUN_DIRECTION = -1                                 # -1: bottom run toward -y
 
 # station linkage (Sam's frame, mm; params.py / layout.actuator_pins)
-YOKE_X, YOKE_Z, DOCK_RISE = 32.0, -34.0, 0.9      # carriage stub-pin axis, as drawn; docked it rises 0.9
-UFORK_L, ACT_RETRACTED, ACT_STROKE = 60.0, 197.4, 150.0
-DOCK_EXT = 20.0
+EC_PIN_X, EC_PIN_Z, DOCK_RISE = 58.0, -76.0, 0.9   # the EC's clevis pin, Sam's frame as drawn (params.EC_PIN); docked it rises 0.9
+ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
+DOCK_EXT = 20.0                                    # PARK_DROP: the parked EC sits 20 mm under its docked position
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
@@ -89,13 +89,14 @@ PIN_HX_DT, PIN_HX_SCK = 5, 6
 
 
 def tilt_to_ext(tilt_deg: float) -> float:
-    """P16 extension (mm from fully retracted) for a hinge angle: the stub-pin axis turns about the hinge, the base
-    pin sits UFORK_L + ACT_RETRACTED + DOCK_EXT under the docked stub pins, and the rod end is UFORK_L short of them."""
-    x0, z0 = YOKE_X, YOKE_Z + DOCK_RISE
+    """P16 extension (mm from fully retracted) for a hinge angle (layout.actuator_pins): the EC's clevis pin turns about
+    the hinge with the docked EC, and the base pin sits ACT_RETRACTED under the parked EC's clevis pin, DOCK_EXT under
+    the docked one. 30 deg needs 60.8 mm; the 150 mm stroke (+1 mm in the slots) reaches 86.5 deg."""
+    x0, z0 = EC_PIN_X, EC_PIN_Z + DOCK_RISE
     a = math.radians(tilt_deg)
     px, pz = x0 * math.cos(a) - z0 * math.sin(a), x0 * math.sin(a) + z0 * math.cos(a)
-    bx, bz = x0, z0 - (ACT_RETRACTED + DOCK_EXT + UFORK_L)
-    return math.hypot(px - bx, pz - bz) - UFORK_L - ACT_RETRACTED
+    bx, bz = x0, z0 - DOCK_EXT - ACT_RETRACTED
+    return math.hypot(px - bx, pz - bz) - ACT_RETRACTED
 
 
 @dataclass
