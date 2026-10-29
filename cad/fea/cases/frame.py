@@ -1,19 +1,25 @@
-"""Whole frames of both carousels, with the NEMA 34 hanging off the back side plate.
+"""Whole frames of the chain carousels v3 and v4 and of the paternoster, with the NEMA 34 hanging off the back side plate.
 
-What is in the model (both designs, positions from each design's placements.json):
+v3's frame, motor mount and shafts are v2's; v3 adds the acrylic enclosure (4.0 kg of panels and hatch doors on nylon
+standoffs). v4 is wider (posts at y +-180 instead of +-112) and taller (top rails at z 755 instead of 721), with the loop
+and the motor 40 mm higher and a 5.1 kg enclosure.
+
+What is in the model (positions from each design's placements.json):
 * the two 1/4 in 6061 side plates, as cut (every hole and slot, from step/components/side_plate_*.step);
 * every 2020 member as an equivalent 20 x 20 bar (materials.equivalent_bar: the bending stiffness, torsional
   stiffness and mass per length of a webbed 2020 section, from verify.py), bonded where members butt;
 * each side plate joined to its two posts only at its M5 screws: a 14 mm pad (the clamped zone under a screw
   head and T-nut) bridging a 0.3 mm gap, so the plate can lift off the post between screws as a real one can
   (variant "bonded": the whole overlap glued, a stiff bound);
-* the NEMA 34 as its CAD envelope (86 mm flange, 150 + 19 mm body) with its density set to 5.6 kg, bonded to
+* the NEMA 34 as its envelope (86 mm flange, 150 + 19 mm body, 14 mm shaft) with its density set to 5.6 kg, bonded to
   its mount where the flange face touches it (preloaded M5s keep that joint shut: the weight moment changes
   each bolt's load by about 70 N against a few kN of preload); paternoster: the 120 mm motor plate on four
   10 mm aluminium standoffs as drawn (tubes, 5 mm bore: conservative for M6-tapped standoffs);
 * four shafts (5/8 in steel) in bearing proxies (the stamped flange and the insert's hub), sprocket discs
   carrying the mass of their sprocket and their share of the loop (chains, carriages or gondolas, modules);
   paternoster: the two through shafts below and the four stub idler axles above;
+* the enclosure (v3, v4): its mass smeared along the 2020 members (it hangs on them on standoffs); its stiffness is left
+  out, which makes the frame look a little softer and its modes a little lower than they are;
 * the bench: the four feet's pads held.
 
 Load cases: gravity; gravity + chain tension + the drive in normal running; gravity + a jam at the NEMA 34's
@@ -132,7 +138,7 @@ def design_data(design: str) -> dict:
     d["shafts"] = [(p["key"], p["name"], np.array(p["M"])) for p in pl if p["key"] in ("shaft", "shaft_drive", "shaft_idle")]
     d["sprockets"] = [(p["key"], p["name"], np.array(p["M"])) for p in pl if p["key"] in ("sprocket_32", "sprocket_32_idler")]
     d["idlers"] = [(p["name"], np.array(p["M"])) for p in pl if p["key"] == "idler_axle"]
-    d["standoffs"] = [np.array(p["M"]) for p in pl if p["key"] == "standoff"]
+    d["standoffs"] = [np.array(p["M"]) for p in pl if p["key"] == "standoff"] if design == "paternoster" else []
     d["motor_plate"] = [np.array(p["M"]) for p in pl if p["key"] == "motor_plate"]
     d["screws"] = [np.array(p["M"])[:3, 3] for p in pl if p["name"].startswith("Side plate screw")]
     if design == "paternoster":                      # paternoster's placements carry no side-plate screws: holes
@@ -145,20 +151,26 @@ def design_data(design: str) -> dict:
                     scr.append(np.array([x_out, y, z]))
         d["screws"] = scr
     # loop mass per sprocket (8 of them), kg
+    chains = 2 * LD.CHAIN_KG_M * P.N_LINKS * P.P / 1000
     if design == "chain-carousel-v2":
-        loop = LD.V2_N_MODULES * (LD.V2_MODULE_KG + LD.V2_CARRIAGE_KG) + 2 * LD.CHAIN_KG_M * P.N_LINKS * P.P / 1000
+        loop = LD.V2_N_MODULES * (LD.V2_MODULE_KG + LD.V2_CARRIAGE_KG) + chains
+    elif design == "chain-carousel-v3":
+        loop = LD.V2_N_MODULES * (LD.V3_MODULE_KG + LD.V3_CARRIAGE_KG) + chains
+    elif design == "chain-carousel-v4":
+        loop = LD.V2_N_MODULES * (LD.V4_MODULE_KG + LD.V4_CARRIAGE_KG) + chains
     else:
-        loop = LD.PAT_N_MODULES * LD.PAT_LOADED_KG + 2 * LD.CHAIN_KG_M * P.N_LINKS * P.P / 1000
+        loop = LD.PAT_N_MODULES * LD.PAT_LOADED_KG + chains
     d["loop_kg"] = loop
+    d["enclosure_kg"] = {"chain-carousel-v3": LD.V3_ENCLOSURE_KG, "chain-carousel-v4": LD.V4_ENCLOSURE_KG}.get(design, 0.0)
     return d
 
 
-def build(design: str, variant: str = "pads", h: float = 8.0, motor_refine: float = 2.5):
+def build(design: str, variant: str = "pads", h: float = 12.0, motor_refine: float = 4.0):
     """Parts list + named locations for one design's frame."""
     D = design_data(design)
     P = D["P"]
-    ext_material()
-    add_material("MOTOR", 70000.0, 0.3, LD.M_NEMA34 * 1e-3 / 1108.5e3, 1e9, "NEMA 34 envelope (5.6 kg)")
+    ext = ext_material()
+    add_material("MOTOR", 70000.0, 0.3, LD.M_NEMA34 * 1e-3 / _motor_volume(P), 1e9, "NEMA 34 envelope (5.6 kg)")
     add_material("BEARING", 200000.0, 0.29, 7.85e-9, 1e9, "flange bearing proxy")
     sp_kg = 0.49 + D["loop_kg"] / 8.0                 # sprocket 35BS32 (62.4 cm^3 of steel) + loop share
     parts = []
@@ -180,6 +192,7 @@ def build(design: str, variant: str = "pads", h: float = 8.0, motor_refine: floa
                 post_side[pk] = (x0, -1.0)
             if abs(a[0] - x1) < 0.05:
                 post_side[pk] = (x1, +1.0)
+    ext_len = 0.0
     for key, name, M in D["ext"]:
         a, b = box_from_step(design, key, M)
         if key == "ext_post" and variant == "pads":
@@ -198,6 +211,14 @@ def build(design: str, variant: str = "pads", h: float = 8.0, motor_refine: floa
             nm = f"{name} ({k})"; k += 1
         names.add(nm)
         parts.append(fem.Part(nm, gbox(a, b), material="EXT2020", orient=(tuple(ax), tuple(other))))
+        ext_len += L[axis]
+    if D["enclosure_kg"] > 0:                        # the panels' mass on the members, per mm of 2020
+        e = MAT.equivalent_bar("EXT2020E", ext.ortho["E1"] * 20.0 ** 4 / 12.0, ext.ortho["G12"] * 0.1406 * 20.0 ** 4,
+                               ext.rho * 400.0 + D["enclosure_kg"] * 1e-3 / ext_len,
+                               label="2020 extrusion (equivalent bar) + enclosure mass")
+        for pt in parts:
+            if pt.material == "EXT2020":
+                pt.material = e.key
     # screw pads between the plates and the posts
     pads = []
     if variant == "pads":
@@ -211,7 +232,7 @@ def build(design: str, variant: str = "pads", h: float = 8.0, motor_refine: floa
                     pads.append((nm, np.array(p0)))
     # motor
     Mm = D["motor"]
-    parts.append(fem.Part("NEMA 34", fem.step_path("chain-carousel-v2", "nema34"), Mm, "MOTOR"))
+    parts.append(fem.Part("NEMA 34", _motor_envelope(Mm, P), None, "MOTOR"))
     if design == "paternoster":
         Mp = D["motor_plate"][0]
         parts.append(fem.Part("motor plate", fem.step_path(design, "motor_plate"), Mp, "AL6061"))
@@ -233,19 +254,53 @@ def build(design: str, variant: str = "pads", h: float = 8.0, motor_refine: floa
     # mesh refinement: round the motor's bolts/slots and the standoffs
     refine = []
     o = Mm[:3, 3]
-    if design == "chain-carousel-v2":
+    if design.startswith("chain-carousel"):
         for dy in (-1, 1):
             for dz in (-1, 1):
                 refine.append(((o[0], o[1] + dy * P.M34_BOLT_SQ / 2, o[2] + dz * P.M34_BOLT_SQ / 2), 9.0, motor_refine))
-        refine.append(((o[0], o[1], o[2]), 48.0, 4.0))
+        refine.append(((o[0], o[1], o[2]), 48.0, 6.0))
     else:
         for Ms in D["standoffs"]:
             t = Ms[:3, 3]
             refine.append(((t[0], t[1], t[2]), 8.0, motor_refine))
             refine.append(((t[0] + 79.0, t[1], t[2]), 8.0, motor_refine))
     for nm, p0 in pads:
-        refine.append((tuple(p0), PAD_R + 2.0, 3.0))
+        refine.append((tuple(p0), PAD_R + 2.0, 4.0))
     return D, parts, refine, pads
+
+
+def _motor_boxes(P):
+    """The NEMA 34 as boxes in its own frame (mounting face z = 0, shaft +z): flange, body, encoder, shaft. The vendor
+    STEP (StepperOnline's, in v2's build) is 200k nodes of detail that carries no load; its envelope is what matters."""
+    f = P.M34_FLANGE
+    return [(-f / 2, -f / 2, -12.0, f, f, 12.0), (-(f - 1) / 2, -(f - 1) / 2, -P.M34_BODY_L, f - 1, f - 1, P.M34_BODY_L - 12.0),
+            (-(f - 6) / 2, -(f - 6) / 2, -P.M34_BODY_L - P.M34_ENC_L, f - 6, f - 6, P.M34_ENC_L)]
+
+
+def _motor_volume(P) -> float:
+    return sum(b[3] * b[4] * b[5] for b in _motor_boxes(P)) + math.pi * (P.M34_SHAFT_D / 2) ** 2 * P.M34_SHAFT_L
+
+
+def _motor_envelope(M, P):
+    def f(g):
+        tags = [g.model.occ.addBox(*b) for b in _motor_boxes(P)]
+        tags.append(g.model.occ.addCylinder(0, 0, 0, 0, 0, P.M34_SHAFT_L, P.M34_SHAFT_D / 2))
+        out, _ = g.model.occ.fuse([(3, tags[0])], [(3, t) for t in tags[1:]])
+        tt = [t for d, t in out if d == 3]
+        g.model.occ.affineTransform([(3, t) for t in tt], list(np.asarray(M)[:3, :].ravel()))
+        return tt
+    return f
+
+
+def _volume(path) -> float:
+    import gmsh
+    gmsh.initialize()
+    gmsh.option.setNumber("General.Terminal", 0)
+    t = gmsh.model.occ.importShapes(str(path))
+    gmsh.model.occ.synchronize()
+    v = sum(gmsh.model.occ.getMass(dd, tt) for dd, tt in t if dd == 3)
+    gmsh.finalize()
+    return v
 
 
 def _plate_x(design, key, M):
@@ -291,11 +346,11 @@ def _sprocket_disc(M, P):
 _MESH = {}
 
 
-def frame_mesh(design: str, variant: str = "pads", h: float = 8.0):
+def frame_mesh(design: str, variant: str = "pads", h: float = 12.0):
     k = (design, variant, h)
     if k not in _MESH:
         D, parts, refine, pads = build(design, variant, h)
-        m = fem.mesh_parts(parts, size=h, size_min=1.2, curv=8, refine=refine)
+        m = fem.mesh_parts(parts, size=h, size_min=3.0, curv=4, refine=refine)
         _MESH[k] = (D, m, pads)
     return _MESH[k]
 
@@ -342,7 +397,7 @@ def chain_tension_loads(d: fem.Deck, D: dict, T: float):
         d.force(nodes, T * math.sqrt(2) * v)
 
 
-def solve_static(design, variant, case, h=8.0):
+def solve_static(design, variant, case, h=12.0):
     D, m, pads = frame_mesh(design, variant, h)
     P = D["P"]
     d = fem.Deck(m)
@@ -352,13 +407,14 @@ def solve_static(design, variant, case, h=8.0):
     desc = {}
     if case in ("gravity", "running", "jam"):
         d.gravity()
-        desc["gravity"] = "all parts, motor 5.6 kg, loop %.2f kg on the 8 sprockets" % D["loop_kg"]
+        desc["gravity"] = "all parts, motor 5.6 kg, loop %.2f kg on the %d sprockets, enclosure %.2f kg" % (
+            D["loop_kg"], len(D["sprockets"]), D["enclosure_kg"])
     if case in ("running", "jam"):
-        T = LD.V2_TENSION_N if design == "chain-carousel-v2" else LD.PAT_TENSION_N
+        T = LD.V2_TENSION_N if design.startswith("chain-carousel") else LD.PAT_TENSION_N
         chain_tension_loads(d, D, T)
         desc["chain tension"] = f"{T:.0f} N per chain"
     if case in ("running", "jam"):
-        if design == "chain-carousel-v2":
+        if design.startswith("chain-carousel"):
             torque = LD.V2_DRIVE_NM if case == "running" else LD.NEMA34_HOLD_NM
             F = torque * 1000.0 / LD.V2_R15_MM + 10.0          # tight side + 10 N slack side
             # the drive chain pulls the motor's shaft up toward the B+ shaft and the B+ shaft down
@@ -372,6 +428,23 @@ def solve_static(design, variant, case, h=8.0):
             d.force(tip, (0, 0, +F))
             d.force(sh, (0, 0, -F))
             desc["drive chain"] = f"{F:.0f} N between the 15T sprockets ({torque} N*m)"
+            # the stator's reaction torque goes into the back plate through the flange: a moment on a slice of the body
+            ax = D["motor"][:3, 2]
+            face = D["motor"][:3, 3]
+            ax_c = (m.xyz[mo] - face) @ ax
+            body = mo[(ax_c > -100.0) & (ax_c < -60.0)]
+            r, q = d.rigid_patch(body, "MOTORBODY")
+            d.node_load(r, M=tuple(torque * 1000.0 * ax), rot=q)
+            # the loop chains' tight side: (torque / 2) / R32 more tension in each chain's bottom run, pulling the B+ and B-
+            # sprockets toward each other (the loop held at B-: the worst place, it puts the whole pull through the plates)
+            dT = 0.5 * torque * 1000.0 / P.R
+            for k2, n2, M2 in D["sprockets"]:
+                if "B+" in n2:
+                    d.force(m.nodes_of(n2), (0, -dT, 0))
+                if "B-" in n2:
+                    d.force(m.nodes_of(n2), (0, +dT, 0))
+            desc["motor torque"] = (f"{torque} N*m reaction on the motor body; {dT:.0f} N more tension in each chain's bottom run "
+                                    "(B+ and B- pulled together)")
         else:
             torque = LD.PAT_DRIVE_NM if case == "running" else LD.NEMA34_HOLD_NM
             r, q = d.rigid_patch(m.nodes_of("NEMA 34"), "MOTORBODY")
@@ -423,7 +496,7 @@ def solve_static(design, variant, case, h=8.0):
     return rec
 
 
-def solve_modes(design, variant="pads", h=8.0, n=12):
+def solve_modes(design, variant="pads", h=12.0, n=12):
     D, m, pads = frame_mesh(design, variant, h)
     d = fem.Deck(m)
     feet_fix(d, D)
@@ -508,7 +581,7 @@ def mode_gif(res, path, i, title, frames=24):
 
 
 CASES = {}
-for _d in ("chain-carousel-v2", "paternoster"):
+for _d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster"):
     for _c in ("gravity", "running", "jam", "lean_y", "lean_x"):
         CASES[f"{_d}_pads_{_c}"] = (lambda d=_d, c=_c: solve_static(d, "pads", c))
     CASES[f"{_d}_bonded_gravity"] = (lambda d=_d: solve_static(d, "bonded", "gravity"))
@@ -516,9 +589,14 @@ for _d in ("chain-carousel-v2", "paternoster"):
     CASES[f"{_d}_bonded_modes"] = (lambda d=_d: solve_modes(d, "bonded"))
 
 
+ORDER = [f"{d}_{c}" for d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster")
+         for c in ("pads_jam", "pads_running", "pads_modes", "pads_gravity")] + \
+        [f"{d}_{c}" for d in ("chain-carousel-v3", "chain-carousel-v4", "paternoster")
+         for c in ("pads_lean_y", "pads_lean_x", "bonded_gravity", "bonded_modes")]
+
 if __name__ == "__main__":
     import time
-    which = sys.argv[1:] or list(CASES)
+    which = sys.argv[1:] or ORDER
     for k in which:
         t0 = time.time()
         r = CASES[k]()

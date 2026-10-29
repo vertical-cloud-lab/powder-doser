@@ -1,0 +1,121 @@
+{
+ "cantilever": [
+  {
+   "h": 10.0,
+   "nodes": 1005,
+   "elems": 440,
+   "tip_mm": 0.09741835,
+   "exact_mm": 0.09831609756097562,
+   "err_pct": -0.9131236727727421,
+   "sx_mid_MPa": 7.480230000000001,
+   "sx_exact_MPa": 7.5,
+   "rf_z": 100.0,
+   "wall_s": 0.2310786247253418
+  },
+  {
+   "h": 5.0,
+   "nodes": 6914,
+   "elems": 3808,
+   "tip_mm": 0.09759013,
+   "exact_mm": 0.09831609756097562,
+   "err_pct": -0.7384015222180462,
+   "sx_mid_MPa": 7.500392307692308,
+   "sx_exact_MPa": 7.5,
+   "rf_z": 100.0,
+   "wall_s": 0.6961925029754639
+  },
+  {
+   "h": 2.5,
+   "nodes": 36530,
+   "elems": 22597,
+   "tip_mm": 0.09765178,
+   "exact_mm": 0.09831609756097562,
+   "err_pct": -0.6756956159326921,
+   "sx_mid_MPa": 7.470480416666668,
+   "sx_exact_MPa": 7.5,
+   "rf_z": 100.0,
+   "wall_s": 7.929744243621826
+  }
+ ],
+ "cantilever_modes": {
+  "h": 5.0,
+  "fem_Hz": [
+   411.0084,
+   411.0163,
+   2465.594,
+   2465.679,
+   3661.712,
+   6398.022
+  ],
+  "euler_bernoulli_Hz": [
+   412.2284344064759,
+   2583.412471815855
+  ],
+  "note": "modes 1-2 bend (two equal planes), mode 3-4 second bending or torsion; EB ignores shear and rotary inertia"
+ },
+ "plate_strip": [
+  {
+   "elems_through_t": 1,
+   "size_mm": 10.16,
+   "nodes": 1942,
+   "tip_mm": 0.7027498,
+   "beam_mm": 0.7255537178868605,
+   "plate_mm": 0.6465409180089814,
+   "err_vs_beam_pct": -3.1429675466726037
+  },
+  {
+   "elems_through_t": 2,
+   "size_mm": 5.08,
+   "nodes": 6714,
+   "tip_mm": 0.7056973,
+   "beam_mm": 0.7255537178868605,
+   "plate_mm": 0.6465409180089814,
+   "err_vs_beam_pct": -2.7367260889643585
+  },
+  {
+   "elems_through_t": 3,
+   "size_mm": 3.3866666666666667,
+   "nodes": 18181,
+   "tip_mm": 0.7063298,
+   "beam_mm": 0.7255537178868605,
+   "plate_mm": 0.6465409180089814,
+   "err_vs_beam_pct": -2.6495512893034645
+  }
+ ],
+ "extrusion_2020": {
+  "A_mm2": 176.36659279376423,
+  "Ixx_mm4": 7486.499214794487,
+  "Iyy_mm4": 7486.499214794487,
+  "catalogue_I_mm4": 7200.0,
+  "catalogue_mass_kg_m": 0.5,
+  "mass_per_m_kg": 0.4761898005431634,
+  "nodes": 106963,
+  "cad_profile_note": "the CAD's own 2020 profile (no webs) bent 3.4x more than this in the same test: its core and corners are disconnected",
+  "EI_fem": 466934500.2960365,
+  "I_fem_mm4": 6776.988393266131,
+  "GJ_fem": 29131858.95053061,
+  "J_fem_mm4": 1124.684249759237,
+  "equivalent_bar": {
+   "E1": 35020.08752220273,
+   "E2": 35020.08752220273,
+   "E3": 35020.08752220273,
+   "nu12": 0.3,
+   "nu13": 0.3,
+   "nu23": 0.3,
+   "G12": 1294.9795052689637,
+   "G13": 1294.9795052689637,
+   "G23": 13469.264431616435
+  },
+  "eqbar_tip_mm": 0.09320495,
+  "profile_tip_mm": 0.0713876,
+  "eqbar_twist_rad": 0.003314948,
+  "profile_twist_rad": 0.003432668
+ },
+ "buckling": {
+  "fem_N": [
+   805.1172,
+   805.1231
+  ],
+  "euler_N": 804.4675379318413
+ }
+}

@@ -52,19 +52,24 @@ class Part:
     orient: tuple | None = None                # (a, b): local x along a, local y in the a-b plane (orthotropic parts)
 
 
+def exported(design: str) -> Path:
+    """Where export_design.py puts a design built from source (v3 and v4: their builds are not committed)."""
+    return WORK / "designs" / design
+
+
 def step_path(design: str, key: str) -> Path:
-    """A component STEP from a design's build (cad/<design>/step/components/<key>.step) or its reference/ folder."""
-    p = CAD / design / "step" / "components" / f"{key}.step"
-    if p.exists():
-        return p
-    p = CAD / design / "reference" / key
-    if p.exists():
-        return p
+    """A component STEP: export_design.py's copy if there is one, else the design's own build
+    (cad/<design>/step/components/<key>.step) or its reference/ folder."""
+    for p in (exported(design) / "components" / f"{key}.step", CAD / design / "step" / "components" / f"{key}.step",
+              CAD / design / "reference" / key):
+        if p.exists():
+            return p
     raise FileNotFoundError(f"{design}/{key}")
 
 
 def placements(design: str) -> list[dict]:
-    return json.loads((CAD / design / "placements.json").read_text())
+    p = exported(design) / "placements.json"
+    return json.loads((p if p.exists() else CAD / design / "placements.json").read_text())
 
 
 def placement(design: str, name: str) -> np.ndarray:
@@ -554,16 +559,20 @@ class Deck:
     def solve(self, job: str, threads: int = 1, keep: bool = False) -> "Result":
         """Run ccx single-threaded: this CalculiX 2.21 build returns wrong *BUCKLE factors with 4 OpenMP threads
         (0.98 N for an 805 N Euler load; right with 1 or 2), so nothing here trusts its threading. Cases run in
-        parallel processes instead (run_all.py)."""
+        parallel processes instead, at most CCX_SLOTS ccx at once machine-wide, each under a CCX_MEM_GB address-space
+        cap: an over-big model then fails on its own instead of exhausting the runner's memory."""
         d = WORK / job
         d.mkdir(parents=True, exist_ok=True)
         inp = d / "job.inp"
         self.write(inp)
         env = dict(os.environ, OMP_NUM_THREADS=str(threads), CCX_NPROC_EQUATION_SOLVER=str(threads))
         t0 = time.time()
-        p = subprocess.run([CCX, "-i", "job"], cwd=d, env=env, capture_output=True, text=True)
+        with _slot():
+            p = subprocess.run([CCX, "-i", "job"], cwd=d, env=env, capture_output=True, text=True, preexec_fn=_mem_cap)
         wall = time.time() - t0
-        (d / "ccx.log").write_text(p.stdout + p.stderr)
+        import resource
+        self.maxrss_mb = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss / 1024.0
+        (d / "ccx.log").write_text(p.stdout + p.stderr + f"\nwall {wall:.1f} s, peak child RSS so far {self.maxrss_mb:.0f} MB\n")
         if p.returncode != 0 or "*ERROR" in p.stdout:
             err = [l for l in p.stdout.splitlines() if "ERROR" in l][:5]
             raise RuntimeError(f"ccx failed in {d}: {err or p.stdout[-800:]}")
@@ -572,6 +581,35 @@ class Deck:
             for f in ("job.inp",):
                 pass
         return r
+
+
+def _mem_cap():
+    import resource
+    gb = float(os.environ.get("CCX_MEM_GB", "4.5"))
+    resource.setrlimit(resource.RLIMIT_AS, (int(gb * 2 ** 30), int(gb * 2 ** 30)))
+
+
+class _slot:
+    """One of CCX_SLOTS machine-wide ccx slots (flock on /tmp/fea-slots/<i>), waited for in turn."""
+
+    def __enter__(self):
+        import fcntl
+        n = int(os.environ.get("CCX_SLOTS", "3"))
+        d = Path("/tmp/fea-slots")
+        d.mkdir(exist_ok=True)
+        while True:
+            for i in range(n):
+                f = open(d / str(i), "w")
+                try:
+                    fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    self.f = f
+                    return self
+                except OSError:
+                    f.close()
+            time.sleep(0.5)
+
+    def __exit__(self, *a):
+        self.f.close()
 
 
 # ----------------------------------------------------------------------------------------------- results

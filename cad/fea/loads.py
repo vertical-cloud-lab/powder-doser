@@ -33,6 +33,18 @@ V2_HOOK_MAX_N = 5.6            # ... worst case in the loop runs (100 mm/s)
 V2_HOOK_RELEASE_N = 8.0        # station sim: force to pull the plate past both hooks
 V2_N_MODULES = 13
 
+# --- v3 and v4 (#185 at 45e9740): v2's module and carriage plus Sam's 2026-10-29 additions, from the STEP volumes
+# (export_design.py): door housing + shutter 2.1 cm^3 PETG, two 1/4 in balls 2.0 g, armature 1.32 cm^3 steel (v2's
+# 1.17), latch bolt + follower 0.65 / 0.96 cm^3 PETG; carriage 81.2 cm^3 (v3) and 63.7 cm^3 (v4) of PETG at 1.27 g/cm^3
+V3_MODULE_KG = 0.225
+V3_CARRIAGE_KG = 0.104
+V4_MODULE_KG = 0.224
+V4_CARRIAGE_KG = 0.082
+# acrylic enclosure (1.19 g/cm^3): five panels and two hatch doors, 3365 cm^3 (v3) and 4313 cm^3 (v4), on nylon
+# standoffs on the 2020 frame
+V3_ENCLOSURE_KG = 4.00
+V4_ENCLOSURE_KG = 5.13
+
 # --- paternoster gondola and module (paternoster/sim/README.md) -----------------------------------------------
 PAT_GONDOLA_KG = 0.12          # two end plates 0.035 kg + floor/rails 0.05 kg
 PAT_MODULE_KG = 0.26           # plate 0.07 + brackets 0.03 + auger with powder 0.16 (0.12-0.20 tested)
