@@ -309,7 +309,7 @@ FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)
 KC_BALL_D = 6.35                     # McMaster 9642K23-class 52100 chrome steel ball, 1/4 in (grade 25)
 KC_A = (30.0, 18.5)                  # plate ball over the EC's cone seat (x, y): the cone stays 1 mm off the NEMA 11 (|y| 14)
 KC_B = (30.0, -18.5)                 # plate ball over the EC's vee (8 mm dowels: y -22.5..-14.5)
-KC_C = (112.0, 0.0)                  # EC ball under the plate's armature (the flat)
+KC_C = (114.5, 0.0)                  # EC ball under the plate's armature (the flat), 0.8 mm behind the electromagnet
 KC_BALL_Z = -18.6                    # plate balls' centres: 3.8 mm proud of the underside (pressed 2.6 mm into the plate)
 KC_SEAT_TOP = -19.6                  # top of the EC's seat ears when docked: 1.6 mm under the plate
 KC_CONE_HALF = 45.0                  # cone seat half-angle (printed, line contact: about 11 MPa at 5 N)
@@ -319,7 +319,7 @@ KC_MAG_D, KC_MAG_H = 6.35, 6.35      # K&J D44-N52 (1/4 x 1/4 in) under the cone
 KC_MAG_GAP = 0.6                     # magnet face below the seated ball's lowest point
 DOCK_RISE_V3 = 0.9                   # EC as drawn -> docked: the pinion's centre distance stays 32.25 mm (v2)
 EC_RIM_CUT = 1.8                     # Sam's carriage top rim cut down 1.8 mm (to 0.2 under the seat ears): only the three contacts touch the plate
-ARMATURE_X3 = (86.0, 118.0)          # steel armature (2 mm, |y| <= ARMATURE_HW3): from under the back strip out past the plate
+ARMATURE_X3 = (89.5, 121.0)          # steel armature (2 mm, |y| <= ARMATURE_HW3): from behind the 44T gear's slot out past the plate
 ARMATURE_HW3 = 11.0
 ARMATURE_SCREWS3 = ((92.0, -7.0), (92.0, 7.0))   # M3 flat heads into heat-set inserts in the plate's back strip
 DOCK_MAG_XY3 = (100.0, 0.0)          # Adafruit 3872 face 0.15 mm under the armature (as v2), 12 mm ahead of the flat
@@ -333,8 +333,9 @@ DOCK_MAG_XY3 = (100.0, 0.0)          # Adafruit 3872 face 0.15 mm under the arma
 # forcing either: the magnets hold the dock, the EC's weight holds the seat.
 EC_BASE_T = 3.0                      # printed base under Sam's carriage (as drawn its bottom is at z -60.8)
 EC_BASE_Z = -60.8                    # base's top face, as drawn
-EC_BALLS = ((12.0, 9.0), (12.0, -9.0), (68.0, 0.0))   # cone, vee (along y), flat, under the base
-EC_PIN = (60.0, -70.0)               # clevis pin (x, z), as drawn: 8 mm behind the EC's centre of mass
+EC_BALLS = ((69.0, 11.5), (69.0, -11.5), (40.0, 0.0))   # cone, vee (along y), flat, under the base: the EC's centre of mass
+                                                     # (x 52) is inside their triangle and clear of the clevis
+EC_PIN = (58.0, -70.0)               # clevis pin (x, z), as drawn: 6 mm behind the EC's centre of mass, so it leans forward
 EC_SLOT = 2.0                        # lost motion in the clevis slots
 GUIDE_CLEAR = 0.3                    # side and front walls off the EC's lower body
 GUIDE_WALL_T = 2.5
@@ -353,7 +354,7 @@ DOOR_TRAVEL = 8.5                    # open: bottom edge at +2.5, 1 mm above the
 DOOR_ROD_Y = 7.5                     # push strip beside the exit (y 6-9)
 DOOR_ROD_D = 3.0                     # push strip width (it is the shutter's own +y strip, 1.5 thick)
 DOOR_ROD_BOTTOM = -22.0              # rod's lower end, closed (inside the carriage window, above its outer face)
-DOOR_SPRING = (4.0, 16.0, 0.06)      # OD, free length, rate N/mm (stainless): fitted at 13 mm, 0.18 N closed, 0.69 N open
+DOOR_SPRING = (3.0, 16.0, 0.06)      # OD, free length, rate N/mm (stainless): fitted at 13 mm, 0.18 N closed, 0.69 N open
 DOOR_TOP = 19.5                      # housing's top (z): |u| 13 + w 31.2 = 44.2, inside the 45 mm corner rule
 
 # --- 4a. the plate latch: holds the plate on its carriage upside down; a cam at the station opens it ------------------------
@@ -372,7 +373,10 @@ LATCH_SPRING = (4.0, 12.7, 0.25)     # OD, free length, rate N/mm: 0.9 N closed,
 
 # --- 5. enclosure: clear acrylic on the 2020 frame, a front hatch for the scale, a side hatch for swaps -------------------
 ACRYLIC_T = 3.0                      # 1/8 in cast acrylic (actual 0.118 in)
-PANEL_STANDOFF = 6.0                 # panels on spacers outside the frame: the side runs' carriages reach y +-117, the side tabs +-123
+PANEL_STANDOFF = 6.0                 # panels on spacers outside the frame: the side runs' carriages reach y +-117, the side tabs +-124
+WIN_BACK_V3 = 125.0                  # v3 carriage window's back edge (Sam's x): EC v3's flat ball and boss reach x 119
+PAD_X0_V3 = 90.5                     # pads under the plate's back corners start here (EC v3's bracket arms end at x 90)
+SIDE_TAB_FOOT_GAP = 4.0              # side tab foot outside the tongue (v4 makes it 1 mm: the auger pull goes through it)
 HATCH_FRONT = (180.0, 230.0)         # front hatch (y width, z height), centred on the station, bottom at the base rail
 HATCH_SIDE = (330.0, 230.0)          # side hatch on +y (x width, z height), centred on the loading position
 HATCH_OPEN_DEG = 110.0

@@ -1,16 +1,18 @@
-"""Pairwise interference checks of the v2 rig (OCC booleans), in frame coordinates.
+"""Pairwise interference checks of the v3 rig (OCC booleans), in frame coordinates.
 
     python check_interference.py            # home pose (station docked), every pair
     python check_interference.py --sweep    # chain indexed one module (8 pitches) in half-link steps the way it runs;
                                             #   all 13 carriages together pass every point of the loop
     python check_interference.py --tilt     # station: electronics carriage rising (approach), then module +
                                             #   carriage + actuator tilting to the hinge's travel limit
-    python check_interference.py --swap     # loading position: a carriage's screws out, slid 10 mm, lifted out
+    python check_interference.py --swap     # loading position: a carriage's screws out, slid 10 mm, lifted out past the side tabs
+    python check_interference.py --scale    # the HR-100A with its pan at the dose point, against everything (the open item)
 
 A pair is reported when the two solids share more than 0.5 mm^3. Pairs that touch by design (pin in its bore,
 screw in its insert or nut, bearing on its shaft, gear mesh) are skipped by part key in SKIP; anything listed is a
-real clash. One by-design contact can't be skipped by key: the mounting plate's edge passing the carriage's snap-hook
-lips while the station tilts it; that part of the overlap is logged in checks/tilt.json, not counted (see overlaps). The frame pitch is a rigid rotation of everything (and is 0), so the checks run in frame coordinates.
+real clash. v3 has no snap hooks (the latch replaced them), so nothing is logged as a by-design flex any more. The HR-100A is
+left out of the home check and checked on its own (--scale): with its pan under the dose point it meets the station, which is
+the open item Sam asked to see before the electronics carriage changes. The frame pitch is 0, so the checks run in frame coordinates.
 Results go to checks/*.json.
 """
 from __future__ import annotations
@@ -25,7 +27,7 @@ from pathlib import Path
 import cadquery as cq
 
 import layout as L
-from params import DOCK_EXT, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, SNAP_LAP, SNAP_X, TILT_MAX_FRAME
+from params import PARK_DROP, HINGE_W, HOOK_SLIDE, MODULE_LINKS, RUN_DIRECTION, SAM_DROP, SCREW_OUT, TILT_MAX_FRAME
 
 OUT = Path(__file__).resolve().parent / "checks"
 
@@ -54,7 +56,28 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("loc_pin", "sam_electronics_carriage"), ("loc_pin", "sam_mounting_plate"),
         ("sam_electronics_carriage", "stub_pin"), ("pin_boss", "stub_pin"), ("eclip_stub", "stub_pin"), ("actuator_rod", "uyoke_base"),
         ("uyoke_arm", "uyoke_base"), ("uyoke_arm", "yoke_stop"), ("pin_boss", "sam_electronics_carriage"),
-        ("uyoke_arm", "yoke_stop_m"), ("pin_boss_m", "stub_pin"), ("pin_boss_m", "sam_electronics_carriage")}
+        ("uyoke_arm", "yoke_stop_m"), ("pin_boss_m", "stub_pin"), ("pin_boss_m", "sam_electronics_carriage"),
+        # ---- v3: pressed, bonded or seated by design
+        ("kc_ball", "sam_mounting_plate"), ("kc_ball", "sam_electronics_carriage"), ("kc_ball", "vee_dowel"), ("kc_ball", "armature_v3"),
+        ("kc_ball", "cradle"), ("kc_ball", "flat_pad"), ("vee_dowel", "sam_electronics_carriage"), ("vee_dowel", "cradle"),
+        ("flat_pad", "cradle"), ("kc_magnet", "sam_electronics_carriage"), ("dock_magnet", "sam_electronics_carriage"),
+        ("armature_v3", "m3x6_fhcs"), ("armature_v3", "sam_mounting_plate"),
+        ("door_shutter", "door_housing"), ("door_spring", "door_housing"), ("door_spring", "door_shutter"), ("door_shutter", "sam_electronics_carriage"),
+        ("m2x8_shcs", "door_housing"), ("m2x8_shcs", "sam_mounting_plate"),
+        ("latch_bolt", "carriage"), ("latch_follower", "latch_bolt"), ("latch_follower", "carriage"), ("latch_spring", "carriage"),
+        ("latch_spring", "latch_bolt"), ("latch_follower", "latch_rail"),
+        ("clevis_screw", "sam_electronics_carriage"), ("clevis_screw", "actuator_rod"), ("nut_m3_clevis", "sam_electronics_carriage"),
+        ("ext_cradle_post", "cradle"), ("ext_cradle_post", "ext_y"), ("ext_latch_post", "latch_rail"), ("ext_latch_post", "ext_y"),
+        ("side_tab", "insert_m5"), ("side_tab_m", "insert_m5"),
+        ("standoff", "ext_post"), ("standoff", "ext_x"), ("standoff", "ext_y"), ("standoff_back", "ext_post"),
+        ("standoff", "panel_side"), ("standoff", "panel_side_hatch"), ("standoff", "panel_front_hatch"), ("standoff_back", "panel_back"),
+        ("hinge_leaf", "panel_side_hatch"), ("hinge_leaf", "panel_front_hatch"), ("hinge_leaf", "hatch_front"), ("hinge_leaf", "hatch_side"),
+        ("catch", "panel_side_hatch"), ("catch", "panel_front_hatch"), ("panel_top", "panel_side"), ("panel_top", "panel_side_hatch"),
+        ("panel_top", "panel_front_hatch"), ("panel_top", "panel_back"), ("panel_front_hatch", "panel_side"),
+        ("panel_front_hatch", "panel_side_hatch"), ("panel_back", "panel_side"), ("panel_back", "panel_side_hatch"),
+        ("hr100a_body", "hr100a_glass"), ("hr100a_body", "hr100a_pan"), ("beaker", "hr100a_pan"), ("hinge_leaf", "hinge_leaf"),
+        ("side_tab", "m5x8_shcs"), ("side_tab_m", "m5x8_shcs"), ("m5x8_shcs", "side_plate_front"), ("m5x8_shcs", "side_plate_back"),
+        ("catch", "hatch_front"), ("catch", "hatch_side")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
 CHAIN = ("chain_inner", "chain_outer", "chain_a1")
 
@@ -105,12 +128,6 @@ def overlaps(objs: list, pairs=None, min_vol: float = 0.5, tag: str = "") -> lis
             continue
         common = sa.intersect(sb)
         v = common.Volume()
-        if v > min_vol and {ka, kb} == {"carriage", "sam_mounting_plate"}:
-            lips = _moved(_snap_lips(), Ma if ka == "carriage" else Mb)
-            v_lip = common.intersect(lips).Volume()
-            if v_lip > 0.01:
-                SNAP_LOG.append((tag, na, nb, round(v_lip, 2)))
-            v -= v_lip
         if v > min_vol:
             hits.append((na, nb, round(v, 2)))
     return hits
@@ -130,7 +147,7 @@ def _report(tag: str, hits: list, extra: dict | None = None) -> None:
 
 
 def home() -> list:
-    pl = L.placements()
+    pl = L.placements(L.State(scale=False))
     t0 = time.time()
     hits = overlaps(objects(pl))
     _report("home", hits, {"instances": len(pl), "seconds": round(time.time() - t0)})
@@ -175,21 +192,19 @@ def sweep(step: float = 0.5) -> list:
     return hits
 
 
-MOVING_STATION = ("sam_mounting_plate", "auger", "auger_cap", "armature_tab", "m3x6_fhcs", "insert_m3",
-                  "sam_electronics_carriage", "nema11", "pinion", "solenoid", "magnet_bracket", "dock_magnet",
-                  "loc_pin", "stub_pin", "pin_boss", "pin_boss_m", "eclip_stub", "uyoke_base", "uyoke_arm", "yoke_stop", "yoke_stop_m",
-                  "actuator_rod", "actuator_body")
+MOVING_GROUPS = ("station_ec", "station_act")            # the EC and its parts, the P16; plus the station module (below)
 
 
-def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 5.0, 10.0, 15.0, 19.5, DOCK_EXT)) -> list:
-    """Station: the electronics carriage rising (ext 0 -> docked), then module 1 + carriage + actuator tilting about
-    the hinge, against everything else (carriage 1 itself included: its window, snap hooks and lugs)."""
+def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
+    """Station: the EC rising out of its cradle (ext 0 -> docked; the door opens over the last 8.5 mm), then module 1 + EC
+    + actuator tilting about the hinge, against everything else (carriage 1 included: its window, pads, latch, lugs)."""
     hits = []
     for kind, vals in (("ext", exts), ("tilt", angles)):
         for v in vals:
             st = L.State(ext=v) if kind == "ext" else L.State(tilt=float(v))
             pl = L.placements(st)
-            mv = [p for p in pl if p.key in MOVING_STATION and p.module in (0, -1) and (p.group in ("station", "modules"))]
+            k_st = L.carriage_at(L.CARRIAGE_LINK0, 0.0)
+            mv = [p for p in pl if p.group in MOVING_GROUPS or (p.group == "modules" and p.module == k_st)]
             ids = {id(p) for p in mv}
             rest = [p for p in pl if id(p) not in ids]
             mo, ro = objects(mv), objects(rest)
@@ -199,7 +214,7 @@ def tilt(angles=(5, 15, 25, 30, 38, 45, 60, 75, 90, TILT_MAX_FRAME), exts=(0.0, 
             h = overlaps(objs, pairs, tag=f"{kind}{v:g}")
             hits += [(f"{a} @{kind}{v:g}", b, x) for a, b, x in h]
             print(f"  {kind} {v:5.1f}: {len(h)} clash(es)", flush=True)
-    _report("tilt", hits, {"snap_lip_contacts_by_design": [{"pose": t, "a": a, "b": b, "mm3": x} for t, a, b, x in SNAP_LOG]})
+    _report("tilt", hits)
     return hits
 
 
@@ -227,6 +242,21 @@ def swap() -> list:
     return hits
 
 
+def scale() -> list:
+    """The HR-100A with its pan centre under the dose point (where it has to stand to take the dose without a funnel),
+    against everything else. Every hit is a part that would have to move for the balance to fit (scale_fit.gif)."""
+    pl = L.placements(L.State(ext=0.0))
+    sc = [p for p in pl if p.group == "scale"]
+    rest = [p for p in pl if p.group != "scale" and p.group != "enclosure"]
+    so, ro = objects(sc), objects(rest)
+    objs = so + ro
+    pairs = [(a, b) for a in range(len(so)) for b in range(len(so), len(objs))]
+    hits = overlaps(objs, pairs, min_vol=0.0)
+    _report("scale", hits, {"pan_centre": [round(float(v), 2) for v in L.scale_pan_target()[:2]],
+                            "note": "the balance at the dose point, the station parked; these parts are in its way"})
+    return hits
+
+
 if __name__ == "__main__":
     if "--sweep" in sys.argv:
         # --step N: a coarser sweep (N links per pose) when time is short; the JSON records the step and pose count
@@ -235,5 +265,7 @@ if __name__ == "__main__":
         tilt()
     elif "--swap" in sys.argv:
         swap()
+    elif "--scale" in sys.argv:
+        scale()
     else:
         home()

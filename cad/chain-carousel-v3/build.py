@@ -1,14 +1,15 @@
-"""Export the chain-carousel test rig v2.
+"""Export the chain-carousel test rig v3.
 
     python build.py
 
-* step/chain_carousel_rig_v2.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v3.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
 * step/components/<key>.step     every unique part on its own (reference parts: reference/).
 * stl/<part>.stl                 the printed parts, print-ready orientation.
-* dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1).
+* dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1); the armature; the acrylic
+  panels and hatch doors (laser cut from 1/8 in cast acrylic).
 * placements.json                every instance: key, name, step, 4x4 transform.
 """
 from __future__ import annotations
@@ -22,10 +23,11 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("carriage", "hold_down", "tensioner_block", "uyoke_base", "magnet_bracket", "clevis_bracket", "fork", "fork_arm",
-           "vial_cup", "vial_funnel", "level_wedge", "pin_boss", "pin_boss_m", "yoke_stop", "yoke_stop_m")
-LASER = ("armature_tab", "uyoke_arm")         # 2 mm low-carbon steel, laser cut (SendCutSend): DXF outlines
-STEP_FILE = "chain_carousel_rig_v2.step"
+PRINTED = ("carriage", "hold_down", "tensioner_block", "clevis_bracket", "cradle", "latch_rail", "latch_bolt", "door_housing", "door_shutter",
+           "side_tab", "side_tab_m", "catch")
+PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v3", "sam_mounting_plate": "mounting_plate_v3"}   # Sam's parts + v3 features
+ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side")
+STEP_FILE = "chain_carousel_rig_v3.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -38,7 +40,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v2")
+    asm = cq.Assembly(name="Chain carousel test rig v3")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
@@ -65,23 +67,29 @@ def main() -> None:
         if k in ("auger", "auger_cap") or k.startswith("sam_"):
             continue                                # already in reference/
         cq.exporters.export(cq.Workplane("XY").add(L.shape(k)), str(HERE / "step" / "components" / f"{k}.step"))
-    for k in PRINTED:
+    for k in PRINTED + tuple(PRINTED_REF):
         s = L.shape(k)
         if k == "carriage":                         # outer face down on the bed, with the break-off webs that let the
-            s = L.PT.carriage(print_web=True).val()  # tab-slot fingers print as bridges (cad/print); snap them off after
+            s = L.P3.carriage_v3(print_web=True).val()  # tab-slot fingers print as bridges (cad/print); snap them off after
             s = s.rotate((0, 0, 0), (1, 0, 0), 90)
+        if k == "sam_mounting_plate":               # underside down (balls go in after printing)
+            pass
+        if k == "door_shutter":                     # flat on the bed
+            s = s.rotate((0, 0, 0), (0, 1, 0), 90)
         bb = s.BoundingBox()
         s = s.translate((0, 0, -bb.zmin))
-        cq.exporters.export(cq.Workplane("XY").add(s), str(HERE / "stl" / f"{k}.stl"), tolerance=0.02, angularTolerance=0.1)
+        cq.exporters.export(cq.Workplane("XY").add(s), str(HERE / "stl" / f"{PRINTED_REF.get(k, k)}.stl"), tolerance=0.02, angularTolerance=0.1)
     # 1:1 drilling templates for the two side plates (outer-face view, world y across, z up)
     for k, z in (("side_plate_front", -PLATE_T_SIDE / 2), ("side_plate_back", PLATE_T_SIDE / 2)):
         sec = cq.Workplane("XY").add(L.shape(k)).section(z)
         cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
-    # laser-cut steel parts: outlines in their own plane
-    tab = cq.Workplane("XY").add(L.shape("armature_tab")).section(-18.0 - 1.0)          # tab: plane z = -19 (Sam's frame)
-    cq.exporters.export(tab, str(HERE / "dxf" / "armature_tab.dxf"))
-    arm = cq.Workplane("XY").add(L.shape("uyoke_arm").rotate((0, 0, 0), (1, 0, 0), -90)).section(1.0)   # arm: x-z plane
-    cq.exporters.export(arm, str(HERE / "dxf" / "uyoke_arm.dxf"))
+    # laser-cut steel armature: outline in its own plane (Sam's frame, z = -19)
+    tab = cq.Workplane("XY").add(L.shape("armature_v3")).section(-18.0 - 1.0)
+    cq.exporters.export(tab, str(HERE / "dxf" / "armature_v3.dxf"))
+    # acrylic panels and hatch doors: outlines at mid-thickness (their own frame, z 0..3)
+    for k in ACRYLIC:
+        sec = cq.Workplane("XY").add(L.shape(k)).section(L.ACRYLIC_T / 2)
+        cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
     asm = assembly()
     asm.save(str(HERE / "step" / STEP_FILE), exportType="STEP")
     pl = [dict(key=p.key, name=p.name, step=p.step, M=np.round(p.M, 6).tolist()) for p in L.placements()]
@@ -89,7 +97,7 @@ def main() -> None:
     print("exported", len(keys), "unique parts,", len(pl), "instances")
 
 
-PLATE_T_SIDE = L.PLATE_T_SIDE
+PLATE_T_SIDE = L.PLATE_T_SIDE  # noqa
 
 if __name__ == "__main__":
     main()

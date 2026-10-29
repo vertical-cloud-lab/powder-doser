@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v2 from a Raspberry Pi (issue #128).
+"""Drive and log the chain-carousel test rig v3 from a Raspberry Pi (issue #128).
 
 Hardware (see BOM.md):
 * CL86T closed-loop driver for the NEMA 34 on step/dir/enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to
   PUL+/DIR+/ENA+, the minus terminals to ground).
 * Two US5881 hall switches in the station hold-downs (open drain, 10k pull-ups to 3.3 V): INDEX, in the front
   hold-down, sees the magnet in every carriage's front tongue; HOME, in the back hold-down, only carriage 1's.
-* Station: Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms pulses = 0-150 mm); the pot is
-  fed back inside the LAC. Its U-yoke holds Sam's electronics carriage on two stub pins at the carriage's
-  centre-of-mass height.
+* Station (v3): Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms pulses = 0-150 mm); the pot is
+  fed back inside the LAC. Its rod end pushes the electronics carriage v3 (EC) through a pin in 2 mm slots under the
+  EC's back half. Parked, the EC sits on its own three-ball seat in the guide cradle, 20 mm under the passing carriages;
+  docked, the plate's two balls sit in the EC's cone and vee and the EC's third ball on the plate's armature (a Kelvin
+  clamp), held by an N52 magnet under each seat and the switchable dock electromagnet. The last 8.5 mm of the dock
+  lift the module's outlet door; the station's rail opens the carriage's plate latch whenever it is at the station.
 * On the electronics carriage: the doser's NEMA 11 (20T steel pinion -> the auger's 44T gear, 2.2:1) on a DRV8825
   whose current limit is set to AUGER_CURRENT_MA = 450 mA (Vref 0.225 V on Pololu's carrier; set it with the pot
   before the first dock, the Pi can't): 0.067 N*m stall at the pinion, 0.15 N*m at the auger, so a jam stalls the
   motor before the mesh can open the dock (gear-mesh study); the 12 V tap solenoid on a DRV8871; the dock
   electromagnet (Adafruit 3872) on a logic-level MOSFET with a flyback diode, on only while docked.
-* HX711 on the 100 g load cell under the vial.
+* The scale: the lab's A&D HR-100A on RS-232 through a MAX3232 (Pi UART, 2400 baud 7E1, A&D's "Q" command). v3
+  can't stand it under the dose point yet (README, scale fit): place a bench balance there by hand for T7.
 
 Geometry: one module = 8 pitches = 76.2 mm = 8/32 of a turn of the 32T drive sprocket, so at 4000 pulses/rev a
 module is exactly 1000 steps. Targets are absolute step counts, so rounding never accumulates.
@@ -24,16 +28,16 @@ each module once about its own axis, which acts like an auger turn; this way it 
 the other way it pumps about one revolution's dose out (../auger-leakage/README.md). A positive index here always
 means "the way the machine runs".
 
-Docking (gear-mesh study, final pass): lift to 3 mm short of the plate, switch the dock magnet on, then finish the
-last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps. The carriage hangs back-down on
-the yoke stops during the approach; the magnet's pull is what lifts its back onto the plate, so it goes on before
-the last 3 mm, not after the plate seats. With the pinion held, about half the starting phases park the gear on
-the pinion's tips 2 mm high.
+Docking (v3): lift to 3 mm short of the plate (the guide's walls keep the EC square), switch the dock electromagnet
+on, then finish the last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps (gear-mesh
+study: with the pinion held, about half the starting phases park the gear on the pinion's tips). The balls seat in
+the cone and the vee; the actuator stops with its pin mid-slot, so the magnets, not the actuator, hold the dock.
 
 Dose protocol (auger-leakage study): dock, magnet on, tilt to the dose angle, turn the auger, stop, hold 0.5 s at
 the dose tilt (the tail falls into the vial), tilt back to level, then reverse the auger 1 revolution at rest
 (--reverse-revs, auger revolutions; 2.2 NEMA 11 revolutions each). Never reverse while tilted: it adds dose.
-Then the actuator pulls the plate back past the snap hooks through the magnet, magnet off, retract.
+Then magnet off and retract: the pin pulls the EC off the seat magnets (the plate rests on its carriage), the door
+shuts, and the EC settles back on its cradle seat. The latch closes by itself as the carriage leaves the station.
 
     sudo pigpiod
     python3 chain_rig.py home
@@ -42,7 +46,7 @@ Then the actuator pulls the plate back past the snap hooks through the magnet, m
     python3 chain_rig.py lap                          # 13 modules, log every index edge
     python3 chain_rig.py endurance --moves 2000
     python3 chain_rig.py station --tilt 30            # dock, tilt, hold, back, undock (no auger)
-    python3 chain_rig.py dose --tilt 30 --revs 2      # the full dose protocol, logs the load cell
+    python3 chain_rig.py dose --tilt 30 --revs 2      # the full dose protocol, logs the balance
     python3 chain_rig.py --sim dose --revs 1          # no hardware: simulated pins
 
 Every move is appended to a CSV (default runs/<date>.csv).
@@ -231,18 +235,19 @@ class Rig:
         if self.pi:
             self.pi.write(PIN_AUG_DIR, 1)
             self.pi.hardware_PWM(PIN_AUG_STEP, int(seek_rev_s * NEMA11_USTEPS), 500000)
-        self.actuator(DOCK_EXT + 1.2)                # 1.2 mm past the nominal dock takes up the carriage's sag
+        self.actuator(DOCK_EXT + 1.0)                # pin at the slots' top: seats the balls, lifts the door
         if self.pi:
             self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
+        self.actuator(DOCK_EXT)                      # pin back to mid-slot: the magnets hold the dock
 
     def tilt(self, deg: float):
-        self.actuator(tilt_to_ext(deg) + 1.2)
+        self.actuator(tilt_to_ext(deg) + (1.0 if deg > 0 else 0.0))    # pin at the slots' top while it pushes
 
     def undock(self):
-        self.actuator(DOCK_EXT - 1.5)                # pull the plate back past the snap hooks through the magnet
+        self.actuator(DOCK_EXT)                      # level, pin mid-slot, the module back on its carriage
         time.sleep(0.3)
         self.magnet(False)
-        self.actuator(0.0)
+        self.actuator(0.0)                           # the pin pulls the EC off the seat magnets; the EC parks in its cradle
 
     def auger_revs(self, revs: float, rpm: float = 30.0):
         """Turn the auger (positive = toward the outlet) through the 20T:44T pinion."""
@@ -265,22 +270,22 @@ class Rig:
             time.sleep(max(0.0, 1.0 / hz - ms / 1000))
 
     def grams(self) -> float:
-        """HX711 raw read, averaged (calibrate with a 20 g weight; TEST-PLAN.md T9)."""
+        """A&D HR-100A over RS-232 (A&D standard format, 2400 baud 7E1 by default): send "Q", read "ST,+00012.3456  g".
+        Returns nan when the balance answers unstable (US) or not at all."""
         if self.pi is None:
             return 0.0
-        vals = []
-        for _ in range(10):
-            while self.pi.read(PIN_HX_DT):
-                time.sleep(0.001)
-            v = 0
-            for _ in range(24):
-                self.pi.write(PIN_HX_SCK, 1)
-                v = (v << 1) | self.pi.read(PIN_HX_DT)
-                self.pi.write(PIN_HX_SCK, 0)
-            self.pi.write(PIN_HX_SCK, 1)
-            self.pi.write(PIN_HX_SCK, 0)
-            vals.append(v - (1 << 24) if v & (1 << 23) else v)
-        return sum(vals) / len(vals) / 420.0          # counts per gram: replace with the calibration
+        import serial                                  # pyserial
+        if not hasattr(self, "_bal"):
+            self._bal = serial.Serial("/dev/serial0", 2400, bytesize=7, parity="E", stopbits=1, timeout=1.0)
+        self._bal.reset_input_buffer()
+        self._bal.write(b"Q\r\n")
+        line = self._bal.readline().decode("ascii", "replace").strip()
+        if not line.startswith("ST,"):
+            return float("nan")
+        try:
+            return float(line[3:].split()[0])
+        except ValueError:
+            return float("nan")
 
 
 def _profile(n: int, v: float, a: float) -> list[int]:

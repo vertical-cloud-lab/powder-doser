@@ -126,7 +126,7 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
     ztop = mag_face - 0.3
     zbot = mag_face - 15.0 - 2.0
     foot = _box(73.33, 76.33, -18.0, 18.0, -26.5, -19.9 - EC_RIM_CUT)
-    arms = _box(73.33, mx + 12.0, 12.0, 18.0, zbot, ztop).union(_box(73.33, mx + 12.0, -18.0, -12.0, zbot, ztop))
+    arms = _box(73.33, PAD_X0_V3 - 0.5, 12.0, 18.0, zbot, ztop).union(_box(73.33, PAD_X0_V3 - 0.5, -18.0, -12.0, zbot, ztop))
     cup = _cyl(12.0, ztop - zbot, mx, my, zbot)
     cx, cy = KC_C
     c_ball_z = -18.0 - 2.0 - KC_BALL_D / 2 - DR               # ball C's centre (as drawn), its top on the armature
@@ -142,7 +142,7 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
             base = base.union(_box(x - 2.0, x + 2.0, y - 2.0, y + 2.0, zb1 - 0.01, -52.6))
     px, pz = EC_PIN
     for sy in (-1, 1):
-        cheek = _box(px - 6.0, px + 6.0, 3.2 if sy > 0 else -6.2, 6.2 if sy > 0 else -3.2, pz - 5.0, zb0 + 0.01)
+        cheek = _box(px - 5.0, px + 5.0, 3.2 if sy > 0 else -8.2, 8.2 if sy > 0 else -3.2, pz - 5.0, zb0 + 0.01)
         base = base.union(cheek)
     add = add.union(base)
     # ---- door finger: a post in front of the auger's end face, under the push rod
@@ -180,7 +180,7 @@ def ec_additions() -> tuple[cq.Workplane, cq.Workplane]:
     for (x, y) in EC_BALLS:
         cut = cut.union(_cyl(3.125, 2.6, x, y, zb0 - 0.01))
     cut = cut.union(cq.Workplane("XZ").center(px, pz).slot2D(4.1 + EC_SLOT, 4.1, 90).extrude(10.0, both=True))
-    cut = cut.union(_box(px - 7.0, px + 7.0, -3.2, 3.2, pz - 6.0, zb0 - 0.6))       # room for the rod end's tab between the cheeks
+    cut = cut.union(_box(px - 6.0, px + 6.0, -3.2, 3.2, pz - 6.0, zb0 - 0.6))       # room for the rod end's tab between the cheeks
     return add, cut
 
 
@@ -231,6 +231,7 @@ def cradle() -> cq.Workplane:
     front = _box(xf - GUIDE_WALL_T, xf, -15.0 - GUIDE_CLEAR - GUIDE_WALL_T, 15.0 + GUIDE_CLEAR + GUIDE_WALL_T, f0, -29.5)
     lip = _box(xb, xb + 3.0, -15.0, 15.0, f0, floor_top + 4.0)
     c = floor_.union(walls).union(front).union(lip)
+    c = c.cut(_box(23.5, 39.4, -25.0, 25.0, floor_top + 1.0, 0.0))      # notch: Sam's side posts (x 29-39, |y| 18) and the dock ears pass
     # lead-in chamfers on the walls' tops (the EC re-enters from above and behind after a tilt)
     c = c.edges(">Z").chamfer(1.0)
     # seats: cone (front +y), vee (front -y), flat pocket (back)
@@ -248,7 +249,7 @@ def cradle() -> cq.Workplane:
     c = c.cut(_cyl(4.1, floor_top - (ball_z - KC_BALL_D / 2) + 0.5, x3, y3, ball_z - KC_BALL_D / 2))
     # the P16's rod and rod end pass up through the floor to the clevis
     px, pz = EC_PIN
-    c = c.cut(_box(px - 7.5, px + 7.5, -7.0, 7.0, f0 - 1.0, floor_top + 1.0))
+    c = c.cut(_box(px - 5.5, px + 5.5, -8.7, 8.7, f0 - 1.0, floor_top + 1.0))
     # foot: a tab off the -y wall onto the post (two M5 into the 2020's end: tapped centre bore and a T-nut bracket)
     return c
 
@@ -267,6 +268,7 @@ def cradle_seat_centres() -> list:
 DOOR_XB = 0.4 - DOOR_GAP                 # shutter's back face (the auger's end face is at x 0.4)
 DOOR_XF = DOOR_XB - DOOR_T               # shutter's front face
 DOOR_Y = (-5.0, DOOR_ROD_Y + DOOR_ROD_D / 2)   # shutter's edges: -5 .. 9 (the +y strip is the push strip)
+DOOR_SPRING_X = DOOR_XF - DOOR_SPRING[0] / 2 + 0.05   # spring axis: in front of the shutter, clear of the auger's end face
 
 
 def door_shutter() -> cq.Workplane:
@@ -276,7 +278,7 @@ def door_shutter() -> cq.Workplane:
     z0, z1 = DOOR_CLOSED_Z
     s = _box(DOOR_XF, DOOR_XB, DOOR_Y[0], DOOR_Y[1], z0, z1)
     strip = _box(DOOR_XF, DOOR_XB, DOOR_ROD_Y - DOOR_ROD_D / 2, DOOR_ROD_Y + DOOR_ROD_D / 2, DOOR_ROD_BOTTOM, z0 + 0.01)
-    boss = _box(DOOR_XF, DOOR_XB, -1.5, 1.5, z1, z1 + 2.0)
+    boss = _box(DOOR_XF - 1.8, DOOR_XB, -1.5, 1.5, z1 - 1.0, z1 + 1.0)
     return s.union(strip).union(boss).edges("|X").fillet(0.4)
 
 
@@ -291,13 +293,15 @@ def door_housing() -> cq.Workplane:
     xl = DOOR_XF - 1.6                                       # front lips' front face
     yl, yr = DOOR_Y
     h = None
-    for (y0, y1) in ((-13.0, yl + 1.5), (yr - 1.5, 13.0)):
+    for (y0, y1) in ((-12.5, yl + 1.5), (yr - 1.5, 12.5)):
         r = _box(xl, DOOR_XB, y0, y1, z0 - 1.0, top)
         h = r if h is None else h.union(r)
-    h = h.union(_box(xl, DOOR_XB, -13.0, 13.0, top - 3.0, top))
+    h = h.union(_box(DOOR_XF - 3.2, DOOR_XB, -12.5, 12.5, top - 3.0, top))
+    h = h.union(_box(DOOR_XF - 3.2, xl, -4.0, 4.0, z1 - 1.0, top))           # spring tower in front of the shutter's top
     # groove for the shutter: its thickness + 0.2, its width + 0.4, from below up to the cap
     h = h.cut(_box(DOOR_XF - 0.1, DOOR_XB + 0.1, yl - 0.2, yr + 0.2, z0 - 2.0, top - 3.0))
-    h = h.cut(_cyl(2.2, 2.0, (DOOR_XF + DOOR_XB) / 2, 0.0, top - 3.5))   # spring seat (4 mm spring) in the cap's underside
+    h = h.cut(_box(DOOR_XF - 1.9, DOOR_XB + 0.1, -2.0, 2.0, z1 - 1.5, top - 3.0))   # the boss and spring run in the tower
+    h = h.cut(_cyl(DOOR_SPRING[0] / 2 + 0.2, 2.0, DOOR_SPRING_X, 0.0, top - 3.5))    # spring seat in the cap's underside
     # bush for the push strip, below the auger's end face (its bottom at z -12.5) and above the EC's finger (-12 open)
     bush = _box(xl, DOOR_XB, DOOR_ROD_Y - DOOR_ROD_D / 2 - 1.5, DOOR_ROD_Y + DOOR_ROD_D / 2 + 1.5, -11.6, -8.0)
     bush = bush.cut(_box(DOOR_XF - 0.15, DOOR_XB + 0.15, DOOR_ROD_Y - DOOR_ROD_D / 2 - 0.2, DOOR_ROD_Y + DOOR_ROD_D / 2 + 0.2, -12.0, -7.0))
@@ -377,18 +381,20 @@ def carriage_v3(print_web: bool = False) -> cq.Workplane:
     for su in (-1, 1):                          # rebuild the ribs where v2 cut them for the hooks to flex
         rw, rh = RIB
         c = c.union(cq.Workplane("XY").center(su * (u0 - rw / 2), w1 + rh / 2).rect(rw, rh).extrude(16).translate((0, 0, SNAP_X - 8)))
-    # pads under the plate's back corners: fill the window behind Sam x 88 outside |u| 13
-    xs0, xs1 = HINGE_X + 88.0, WIN_X[1]
+    # the window runs on to Sam x WIN_BACK_V3 (EC v3's flat ball) at |u| <= 13; pads fill it under the plate's back corners
+    c = c.cut(cq.Workplane("XY").box(26.0, CAR_T + 2, HINGE_X + WIN_BACK_V3 - WIN_X[1] + 1.0, centered=False)
+              .translate((-13.0, w0 - 1.0, WIN_X[1] - 1.0)))
+    xs0, xs1 = HINGE_X + PAD_X0_V3, WIN_X[1]
     for su in (-1, 1):
         c = c.union(cq.Workplane("XY").box(23.5 - 13.0, CAR_T, xs1 - xs0, centered=False)
                     .translate((13.0 if su > 0 else -23.5, w0, xs0)))
     # latch housing (Sam's frame -> carriage frame: x_c = x_s + HINGE_X, u = y_s, w = z_s + HINGE_W)
     h = latch_housing()
-    h = h.rotate((0, 0, 0), (1, 1, 1), 120)          # (x, y, z) -> (z, x, y): Sam x -> carriage z, y -> u (x), z -> w (y)
+    h = h.rotate((0, 0, 0), (1, 1, 1), -120)         # (x, y, z) -> (y, z, x): Sam x -> carriage z, y -> u (X), z -> w (Y)
     c = c.union(h.translate((0, HINGE_W, HINGE_X)))
     slot = (cq.Workplane("XY").center(LATCH_FOLLOW_X + LATCH_TRAVEL / 2, LATCH_Y).slot2D(LATCH_TRAVEL + 3.4, 3.4, 0)
             .extrude(30.0).translate((0, 0, -40.0)))
-    c = c.cut(slot.rotate((0, 0, 0), (1, 1, 1), 120).translate((0, HINGE_W, HINGE_X)))
+    c = c.cut(slot.rotate((0, 0, 0), (1, 1, 1), -120).translate((0, HINGE_W, HINGE_X)))
     return c
 
 
@@ -426,22 +432,47 @@ def magnetic_catch() -> cq.Workplane:
     return _box(-10.0, 10.0, -6.0, 6.0, -8.0, 0.0)
 
 
+def turn_button() -> cq.Workplane:
+    """Printed turn button that holds a hatch shut: a 3 mm spacer on the panel and a 24 x 10 x 3 tab on an M4 screw that
+    turns over the door's edge; frame: panel face at z = 0, tab toward +x (over the door when locked), z up from the panel."""
+    spacer = _cyl(5.0, ACRYLIC_T + 0.2, 0, 0, 0)
+    tab = _box(-6.0, 18.0, -5.0, 5.0, ACRYLIC_T + 0.2, ACRYLIC_T + 3.2).edges("|Z").fillet(2.0)
+    return spacer.union(tab).cut(_cyl(2.1, 10.0, 0, 0, -1.0))
+
+
 def standoff(L: float = PANEL_STANDOFF) -> cq.Workplane:
     """Nylon spacer, 10 OD x L, M5 clearance: along +z from z = 0."""
     return cq.Workplane("XY").circle(5.0).circle(2.75).extrude(L)
 
 
 def side_tab() -> cq.Workplane:
-    """5a: printed tab at the loading position, on a side plate's inner face (same frame as parts.hold_down): a C round
-    the carriage's tongue whose lip covers only the tongue's -u 8 mm, so the carriage's own swap slide (+u 10 mm, which
-    frees its hooks from the A-1 tabs) also frees it from the tab. While the tongue is in it, a pull or push on the module
-    goes into the frame, not the chain."""
-    b = PT.hold_down()
-    # trim the lip and the foot to u in [-20, -12]: the tongue (u -20..20) is covered 8 mm
-    keep = _box(-20.0, -12.0, -60.0, 60.0, -10.0, 60.0)
-    lip_zone = _box(-12.0, 20.0, CAR_W0 + HOLD_DOWN_GAP - 1.0, 60.0, SIDE_GAP + CAR_X0 - 1.6, 60.0)
-    b = b.cut(lip_zone)
-    return b.union(keep.intersect(PT.hold_down()))
+    """5a: printed tab at the loading position, on a side plate's inner face (parts.hold_down's frame: X = u along the
+    travel, Y = w inward, Z = from the side plate's inner face toward the chain). A thin C round the carriage's tongue:
+    a 3 mm lip HOLD_DOWN_GAP inside its inner face and a 3 mm foot SIDE_TAB_FOOT_GAP outside its outer face, both over
+    only the tongue's -u 8 mm, so the carriage's own swap slide (+u 10 mm, which frees its hooks from the A-1 tabs) frees
+    it from the tab too. Kept within 7 mm of the tongue outward, inside the enclosure's panels. Its web runs inward past
+    the tongue's tip and takes two M5 x 10 from inside into tapped holes in the side plate (the frame's posts are right
+    behind the plate here, so screws from outside had no room for their heads)."""
+    tz = CAR_W0 + HOLD_DOWN_GAP                          # lip's underside (w)
+    wf = CAR_W0 - CAR_T - SIDE_TAB_FOOT_GAP             # foot's top (w)
+    tongue_end = SIDE_GAP + CAR_X0                       # 7: tongue tip's distance from the plate
+    z_in = SIDE_GAP - 7.0                                # lip and foot reach to 7 mm short of the chain's centre plane
+    u0, u1 = -24.0, -12.0
+    lip = _box(u0, u1, tz, tz + 3.0, tongue_end - 1.5, z_in)
+    foot = _box(u0, u1, wf - 3.0, wf, tongue_end - 1.5, z_in)
+    web = _box(u0, u1 + 10.0, wf - 3.0, tz + 3.0 + 14.0, 0.0, tongue_end - 1.5)
+    t = lip.union(foot).union(web)
+    for (y0, dy) in ((tz, 1.5), (wf, -1.5)):                  # lead-ins at the open (-u) end
+        t = t.cut(cq.Workplane("XY").polyline([(u0 - 0.01, y0 - 0.01 * dy / abs(dy)), (u0 + 3.0, y0 - 0.01 * dy / abs(dy)), (u0 - 0.01, y0 + dy)])
+                  .close().extrude(z_in + 1).translate((0, 0, -0.5)))
+    for (u, w) in SIDE_TAB_INSERTS:
+        t = t.cut(_cyl(2.75, 10.0, u, w, -1.0))                                # clearance (M5 x 8)
+        t = t.cut(_cyl(4.6, 10.0, u, w, SIDE_TAB_CB_Z))                        # counterbore for the head, from the chain side
+    return t
+
+
+SIDE_TAB_INSERTS = ((-20.0, CAR_W0 + HOLD_DOWN_GAP + 14.0), (-8.0, CAR_W0 + HOLD_DOWN_GAP + 14.0))   # (u, w): M5 x 8 into the tapped plate, 6 mm clear of the post
+SIDE_TAB_CB_Z = 1.5                                       # counterbore floor: 1.5 mm of web under the head, 6.35 mm of thread in the plate
 
 
 # ---------------------------------------------------------------- 6. scale
@@ -481,3 +512,39 @@ def beaker(d: float = BEAKER_D, h: float = BEAKER_H) -> cq.Workplane:
     """Low-form glass beaker with a spout lip, base at z = 0."""
     b = _cyl(d / 2, h).cut(_cyl(d / 2 - 1.2, h, 0, 0, 1.2))
     return b.union(_cyl(d / 2 + 1.0, 1.5, 0, 0, h - 1.5).cut(_cyl(d / 2 - 1.2, 2, 0, 0, h - 1.6)))
+
+
+def cradle_with_arm(post_x: float, post_y: float) -> cq.Workplane:
+    """The cradle plus a 6 mm arm from its -y wall to a 2020 post at (post_x, post_y) (Sam's x, y), resting on the post's
+    top (an M6 into the post's tapped centre bore). Same frame as cradle()."""
+    c = cradle()
+    zb0 = EC_BASE_Z - EC_BASE_T
+    f0 = zb0 + 2.6 - KC_BALL_D / 2 - 1.0 - 6.0
+    y_wall = -(15.0 + GUIDE_CLEAR + GUIDE_WALL_T)
+    arm = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, y_wall + 0.5, f0, f0 + 6.0)
+    arm = arm.cut(_cyl(3.3, 8.0, post_x, post_y, f0 - 1.0))
+    return c.union(arm)
+
+
+LATCH_RAIL_Z0 = -23.0 - 0.6 - 6.0             # rail's underside, Sam's z at the station (rail 6 mm tall)
+
+
+def latch_rail_with_arm(post_x: float, post_y: float) -> cq.Workplane:
+    """The latch rail plus its arm to a 2020 post at (post_x, post_y), Sam's frame at the station. The arm runs behind the
+    rail's working face (x >= the face + 2), so the followers, which pass in front of that face, never meet it."""
+    r = latch_rail()
+    xf = LATCH_FOLLOW_X + 1.5 + LATCH_TRAVEL
+    zt = -23.0 - 0.6
+    y_end = LATCH_Y - 22.0 - LATCH_TRAVEL / math.tan(math.radians(25))
+    arm = _box(xf + 2.0, max(xf + 10.0, post_x + 10.0), post_y - 10.0, y_end + 1.0, LATCH_RAIL_Z0, zt)
+    pad = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, post_y + 10.0, LATCH_RAIL_Z0, zt)
+    arm = arm.union(pad).cut(_cyl(3.3, 8.0, post_x, post_y, LATCH_RAIL_Z0 - 1.0))
+    return r.union(arm)
+
+
+def hinge_leaf() -> cq.Workplane:
+    """One leaf of a small stainless butt hinge (1-1/2 in, McMaster 1549A-class): 19 x 38 x 1 mm, the knuckle along y
+    at x = 0, the leaf toward +x, z 0..1."""
+    leaf = _box(0.0, 19.0, -19.0, 19.0, 0.0, 1.0)
+    barrel = cq.Workplane("XZ").circle(2.0).extrude(19.0, both=True).translate((0, 0, 1.0))
+    return leaf.union(barrel)

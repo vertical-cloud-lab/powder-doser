@@ -1,5 +1,6 @@
 """Where every part goes: the chain solution, the 13 carriages, the frame,
-the station and the assembly steps (v2, vertical twin-chain loop).
+the station and the assembly steps (v3: v2's loop with Sam's 2026-10-29 critiques applied: the kinematic dock and
+guide, the outlet doors, the plate latches, the acrylic enclosure and its hatches, the side tabs and the HR-100A).
 
 Each chain is solved exactly for 104 links on four 32T sprockets on a
 114.3 x 228.6 mm rectangle of centres: with 32 teeth a 90-degree wrap is
@@ -32,6 +33,7 @@ import numpy as np
 
 from params import *  # noqa: F401,F403
 import parts as PT
+import parts3 as P3
 import kinematics as K
 
 HERE = Path(__file__).resolve().parent
@@ -163,6 +165,12 @@ def side_holes(back: bool) -> list[tuple]:
             out.append(("circle", (sy * POST_Y, z), (5.5,)))
     for dy in (-12.0, 12.0):                                                        # hold-down, into its inserts:
         out.append(("slot", (STATION_Y + dy, Z_RUN + CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0), (5.5, 9.5)))   # +-2 mm to set the lip gap
+    Lf = load_frame()                                                               # side tabs at the loading position (5a)
+    for (du, dw) in P3.SIDE_TAB_INSERTS:
+        du = -du if back else du
+        uu = Lf[:3, 0] * (-1 if back else 1)
+        p = Lf[:3, 3] + uu * du + Lf[:3, 1] * dw
+        out.append(("tap", (float(p[1]), float(p[2])), (5.0,)))
     if back:                                                                        # NEMA 34, slotted to tension the drive chain
         out.append(("slot", (LOOP_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
         for dy in (-1, 1):
@@ -233,20 +241,15 @@ def _read_step_parts(path: Path) -> dict[str, cq.Shape]:
 
 @lru_cache(None)
 def reference_parts() -> dict[str, cq.Workplane]:
-    """Sam's Oct 13 mounting plate and electronics carriage (his Onshape Part Studio, the latest), and the lab's
-    threaded-storage auger + cap (PR #170). Sam's parts are in his studio frame (hinge axis = his y axis at
-    x = z = 0); the auger runs along +z from its outlet end. The plate gets the two M3 insert holes for the
-    dock magnet's steel armature in its back strip."""
+    """v3's mounting plate and electronics carriage (Sam's Oct 13 Part Studio with parts3's additions and cuts) and the
+    lab's threaded-storage auger + cap (PR #170). Sam's parts are in his studio frame (hinge axis = his y axis at
+    x = z = 0); the auger runs along +z from its outlet end."""
     out = {}
     sam = _read_step_parts(REF / "sam-oct13-mounting-plate-and-carriage.step")
-    plate = cq.Workplane("XY").add(sam["Mounting Plate"])
-    for x, y in ARMATURE_SCREWS:
-        plate = plate.cut(cq.Workplane("XY").center(x, y).circle(2.0).extrude(4.5).translate((0, 0, -18.01)))
-    (hx, hy), (sx, sy) = LOCPIN_XY                     # locating-pin hole and slot (along x) in the underside
-    plate = plate.cut(cq.Workplane("XY").center(hx, hy).circle(LOCPIN_HOLE / 2).extrude(3.5).translate((0, 0, -18.01)))
-    plate = plate.cut(cq.Workplane("XY").center(sx, sy).slot2D(LOCPIN_SLOT, LOCPIN_HOLE, 0).extrude(3.5).translate((0, 0, -18.01)))
-    out["sam_mounting_plate"] = plate
-    out["sam_electronics_carriage"] = cq.Workplane("XY").add(sam["Carriage"])
+    a, c = P3.plate_additions()                         # v3 plate: dock balls, armature inserts, latch keeper, motor relief
+    out["sam_mounting_plate"] = cq.Workplane("XY").add(sam["Mounting Plate"]).union(a).cut(c)
+    a, c = P3.ec_additions()                            # EC v3: dock seats + magnets, back bracket, base seat balls, clevis, finger
+    out["sam_electronics_carriage"] = cq.Workplane("XY").add(sam["Carriage"]).union(a).cut(c)
     aug = _read_step_parts(REF / "auger-threaded-storage.step")
     out["auger"] = cq.Workplane("XY").add(next(iter(aug.values())))
     cap = _read_step_parts(REF / "auger-cap-threaded.step")
@@ -290,68 +293,51 @@ def frame_dose_tilt(world_tilt: float = TILT_DOSE_WORLD, pitch_deg: float = FRAM
 
 # ---------------------------------------------------------------- station geometry (frame coordinates)
 def electronics_frame(tilt_frame: float, ext: float) -> np.ndarray:
-    """Sam's frame of the electronics carriage: docked (rim on the plate) and tilting with the module, or lowered
-    by DOCK_EXT - ext on the approach."""
+    """EC v3's as-drawn frame: docked (its three dock contacts on the plate) and tilting with the module, or lowered by
+    PARK_DROP - ext on the approach (ext 0: parked on the cradle's seat)."""
     H = T(None, HINGE_STATION)
-    if tilt_frame > 0 or ext >= DOCK_EXT:
-        return H @ T(Ry(-math.radians(tilt_frame))) @ T(None, (0, 0, DOCK_RISE))
-    return H @ T(None, (0, 0, DOCK_RISE - (DOCK_EXT - ext)))
+    if tilt_frame > 0 or ext >= PARK_DROP:
+        return H @ T(Ry(-math.radians(tilt_frame))) @ T(None, (0, 0, DOCK_RISE_V3))
+    return H @ T(None, (0, 0, DOCK_RISE_V3 - (PARK_DROP - ext)))
 
 
 def actuator_pins(tilt_frame: float, ext: float) -> tuple[np.ndarray, np.ndarray]:
-    """(base pin B, carriage pin P) of the P16 and its U-yoke, frame coordinates. The P16's rod-end hole is UFORK_L
-    short of P on the same axis; B sits directly under the docked carriage pin, so the approach is vertical."""
-    pin_dock = to_world(electronics_frame(0.0, DOCK_EXT), (YOKE_X, 0.0, YOKE_Z))
-    B = pin_dock - np.array([0.0, 0.0, ACT_RETRACTED + DOCK_EXT + UFORK_L])
-    Pp = to_world(electronics_frame(tilt_frame, ext), (YOKE_X, 0.0, YOKE_Z))
-    return B, Pp
+    """(base pin B, rod-end pin P) of the P16, frame coordinates. B is directly under the parked EC's clevis pin, so the
+    approach is vertical. The pin rides in the EC's 2 mm slots: fully retracted it floats mid-slot under the parked EC,
+    and the LAC targets +1 mm to lift, mid-slot again at the dock (the magnets hold it), +1 mm while tilting. The CAD
+    draws it mid-slot."""
+    pin = (EC_PIN[0], 0.0, EC_PIN[1])
+    B = to_world(electronics_frame(0.0, 0.0), pin) - np.array([0.0, 0.0, ACT_RETRACTED])
+    return B, to_world(electronics_frame(tilt_frame, ext), pin)
 
 
-STATION_RAIL_X = HINGE_X + YOKE_X                  # 2020 cross rail under the actuator (along y)
-_B0 = actuator_pins(0.0, DOCK_EXT)[0]
+STATION_RAIL_X = HINGE_X + EC_PIN[0]               # 2020 cross rail under the actuator (along y)
+_B0 = actuator_pins(0.0, 0.0)[0]
 CLEVIS_PIN_Z = float(_B0[2])
 CLEVIS_RISE = CLEVIS_PIN_Z - (Z_BASE + EXT)        # base clevis pin above the station rail's top
-FORK_POST_Y = STATION_Y + 40.0
-TONGUE_Z0 = YOKE_Z - UFORK_L - 6.0 - 25.0          # tongue's bottom (Sam's frame, docked actuator vertical)
-FORK_TOP = float(to_world(electronics_frame(0.0, DOCK_EXT), (TONGUE_X, 0, TONGUE_Z0))[2]) - 1.0   # 1 mm under the docked tongue
-FORK_Z = FORK_TOP - FORK_H
+CRADLE_M = electronics_frame(0.0, 0.0)             # the cradle is drawn in the parked EC's frame
+_ZB0 = EC_BASE_Z - EC_BASE_T
+CRADLE_FLOOR = _ZB0 + 2.6 - KC_BALL_D / 2 - 1.0 - 6.0      # cradle floor's underside (its frame)
+CRADLE_FLOOR_Z = float(to_world(CRADLE_M, (0, 0, CRADLE_FLOOR))[2])
+CRADLE_POST = (STATION_RAIL_X, STATION_Y - 32.0)  # 2020 post on the station rail beside the P16, under the cradle's arm
+LATCH_RAIL_M = None                                # set below: the station carriage's Sam frame at tilt 0
+LATCH_RAIL_POST = (HINGE_X + LATCH_FOLLOW_X + 11.0, STATION_Y - 32.0)   # on the second station rail
+LATCH_RAIL_X = LATCH_RAIL_POST[0]                  # second station rail (along y)
 
 
 def exit_point(tilt_frame: float) -> np.ndarray:
-    """Auger exit (the Ø3 hole on the axis at the outlet plane), frame coordinates."""
+    """Auger exit (the 3 mm hole on the axis at the outlet plane), frame coordinates: on the hinge axis, so it doesn't
+    move with the tilt."""
     return to_world(sam_frame(station_frame(), tilt_frame), (AUGER_Z0_XS, 0.0, 0.0))
 
 
-def stream_point(z: float, tilt_frame: float, pitch_deg: float = FRAME_PITCH_DEG) -> np.ndarray:
-    """Where the falling powder crosses frame height z: it falls along the bench's vertical, which in the
-    pitched frame leans toward +x by tan(pitch)."""
-    e = exit_point(tilt_frame)
-    a = math.radians(pitch_deg)
-    return np.array([e[0] + (e[2] - z) * math.tan(a), e[1], z])
+DOSE_POINT = exit_point(0.0)                       # where the dose leaves the module, at every tilt
+CARR_FRONT_X = float(HINGE_STATION[0] + 2.33)      # docked/approaching EC's front face (Sam x 2.33)
 
 
-CARR_FRONT_X = float(HINGE_STATION[0] + 2.33)      # docked/approaching electronics carriage's front face (Sam x 2.33)
-FUNNEL_TOP = Z_RUN + CAR_W0 - CAR_T - 1.5          # under every passing carriage plate
-FUNNEL_CUT_X = CARR_FRONT_X - 1.0                  # D-cut mouth, 1 mm ahead of the docked electronics carriage
-VIAL_XY = (FUNNEL_CUT_X - 16.0, STATION_Y)
-FUNNEL_SPOUT_Z = FUNNEL_TOP - FUNNEL["h"]
-VIAL_Z = FUNNEL_SPOUT_Z + 5.0 - VIAL_H             # spout 5 mm into the vial's mouth
-CUP_Z = VIAL_Z - 3.0
-LC_TOP = CUP_Z
-VIAL_POST_Y = -POST_Y + 2.0                        # post on the -y base rail
-LC_Y0 = VIAL_XY[1] - (CUP_ARM + VIAL_D / 2 + 1) - LC_L + 7.0   # load cell's fixed end (y); the cup arm overlaps its 7 mm free-end pad (M3 x 2)
-WEDGE_Z = LC_TOP - 12.7 - 6.0 - 40.0 * math.tan(math.radians(FRAME_PITCH_DEG)) / 2   # top of the vial post
-VIAL_PIVOT = np.array([VIAL_XY[0], VIAL_POST_Y, WEDGE_Z])   # the gravity-referenced group turns about the wedge
-
-
-def stream_check(pitch_deg: float = FRAME_PITCH_DEG, world_tilt: float = TILT_DOSE_WORLD) -> dict:
-    """Does the dose stream land inside the funnel's D-cut mouth? (frame coordinates)"""
-    tf = frame_dose_tilt(world_tilt, pitch_deg)
-    s = stream_point(FUNNEL_TOP, tf, pitch_deg)
-    r = FUNNEL["top_d"] / 2
-    inside = (s[0] <= FUNNEL_CUT_X - 0.5) and math.hypot(s[0] - VIAL_XY[0], s[1] - VIAL_XY[1]) < r - 1.0
-    return dict(pitch=pitch_deg, frame_tilt=tf, stream_x=round(float(s[0]), 2), cut_x=round(FUNNEL_CUT_X, 2),
-                margin_mm=round(FUNNEL_CUT_X - 0.5 - float(s[0]), 2), inside=bool(inside))
+def scale_pan_target() -> np.ndarray:
+    """Where the HR-100A's pan centre has to be: under the dose point (world x, y; the bench at z = 0)."""
+    return np.array([DOSE_POINT[0], DOSE_POINT[1], 0.0])
 
 
 # ---------------------------------------------------------------- placements
@@ -373,7 +359,7 @@ class State:
     carriages: tuple = tuple(range(N_MODULES))    # carriages on the chain
     modules: tuple = tuple(range(N_MODULES))      # carriages that carry a module (plate, auger, cap)
     tilt: float = 0.0                     # station module's hinge angle in the frame, deg (cap end up)
-    ext: float = DOCK_EXT                 # actuator extension at tilt 0 (0 retracted, DOCK_EXT docked)
+    ext: float = PARK_DROP                # actuator extension at tilt 0 (0 parked on the cradle, PARK_DROP docked)
     station: bool = True
     spin: float = 0.0                     # auger turn at the station, rad (pinion turns -spin * 44/20)
     tap: float = 0.0                      # solenoid plunger travel, mm
@@ -383,6 +369,14 @@ class State:
     out_lift: float = 0.0                 # mm outward, away from the loop
     screws_out: float = 0.0               # its two tab screws backed out by (mm)
     tension: float = 0.0                  # top shafts' offset, mm
+    door: float = -1.0                    # station module's outlet door opening, mm (-1: set by the EC's position)
+    hatch_front: float = 0.0              # front hatch opening angle, deg
+    hatch_side: float = 0.0               # side hatch opening angle, deg
+    enclosure: bool = True                # acrylic panels, hatches, standoffs
+    scale: bool = True                    # the HR-100A, its pan centre at the dose point + scale_offset
+    scale_offset: tuple = (0.0, 0.0)      # (x, y) mm, for the scale-fit study
+    beaker: bool = True
+    side_tabs: bool = True
     extra: list = field(default_factory=list)     # extra placements (animation props)
 
 
@@ -404,18 +398,21 @@ ELEC = (0.20, 0.45, 0.95)
 MAGNET_RED = (0.75, 0.15, 0.12)
 
 STEPS = {
-    1: "Base frame: rails, station rail, corner brackets, leveling feet and front risers",
+    1: "Base frame: rails, two station rails, corner brackets, leveling feet",
     2: "Posts and top frame",
     3: "Side plates onto the posts",
     4: "Flange bearings and top-shaft tensioners on the side plates",
     5: "Corner shafts with their sprockets (back set screws loose)",
     6: "NEMA 34 on the back plate, 15T sprockets, drive chain",
     7: "Chains: 13 A-1 links per chain, close both loops",
-    8: "Station: hold-downs, hall switches, actuator, electronics carriage with dock magnet, approach fork, vial on the load cell",
-    9: "Modules on the bench: auger into Sam's plate (the carrier), steel armature tab, plate pinned onto a carriage",
+    8: "Station: hold-downs, hall switches, the P16, the guide cradle on its post, the electronics carriage v3 (dock seats, magnets, balls), the latch rail, the side tabs",
+    9: "Modules on the bench: auger into the v3 plate, dock balls, steel armature, outlet door; plate pinned onto a carriage, latch closed",
     10: "Carriages onto the chain at the loading position, one index at a time; phase and tension",
     11: "Electronics board: supply, driver, Pi, interface board, LAC, e-stop",
+    12: "Enclosure: acrylic panels on standoffs, the front hatch (scale) and the side hatch (swaps); the HR-100A",
 }
+SCALE_GHOST = (0.93, 0.93, 0.95)
+ACRYL = (0.80, 0.90, 0.98)
 
 X_DRV = X_BACK_OUT + BRG["OUT"] + 7.5            # drive chain's centre plane, 2 mm clear of the bearing
 SHAFT_X0 = X_FRONT_OUT - BRG["OUT"]
@@ -503,9 +500,12 @@ def placements(state: State | float | None = None) -> list[Placement]:
                       T(Rx(-math.pi / 2), (xp, -L_y / 2, (zr0 + zr1) / 2)), 1, ALU, "frame", (0, 0, -60)))
     add(Placement("ext_y", "Station rail (actuator)", T(Rx(-math.pi / 2), (STATION_RAIL_X, -L_y / 2, (zr0 + zr1) / 2)), 1, ALU, "frame",
                   (0, 0, -60)))
-    for sy in (-1, 1):
-        add(Placement("corner_bracket", "Corner bracket (station rail)",
-                      bracket((STATION_RAIL_X + EXT / 2, sy * (POST_Y - EXT / 2), zr1), (0, 0, 1), (0, -sy, 0)), 1, ALU, "frame", (0, 0, 40)))
+    add(Placement("ext_y", "Station rail (latch-rail post)", T(Rx(-math.pi / 2), (LATCH_RAIL_X, -L_y / 2, (zr0 + zr1) / 2)), 1, ALU, "frame",
+                  (0, 0, -60)))
+    for xr in (STATION_RAIL_X, LATCH_RAIL_X):
+        for sy in (-1, 1):
+            add(Placement("corner_bracket", "Corner bracket (station rail)",
+                          bracket((xr + EXT / 2, sy * (POST_Y - EXT / 2), zr1), (0, 0, 1), (0, -sy, 0)), 1, ALU, "frame", (0, 0, 40)))
     for xf in FOOT_X:
         front = xf < 0
         for sy in (-1, 1):
@@ -632,17 +632,35 @@ def placements(state: State | float | None = None) -> list[Placement]:
         add(Placement("magnet", f"Index magnet {k + 1}", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X0 + 7.0)), 10, STEEL, "carriages", out_dir, k))
         if k == 0:
             add(Placement("magnet", "Home magnet", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X1 - 7.0)), 10, STEEL, "carriages", out_dir, k))
+        # 4a. the plate latch rides on the carriage: the station's rail draws the bolt back while the carriage is there
+        lo = latch_open(k, st)
+        Ml = sam_frame(C, 0.0)
+        add(Placement("latch_bolt", f"Latch bolt (printed) {k + 1}", Ml @ T(None, (lo, 0, 0)), 10, ORANGE, "carriages", out_dir, k))
+        add(Placement("latch_follower", f"Latch follower, dowel 3 x 20 {k + 1}", Ml @ T(None, (LATCH_FOLLOW_X + lo, LATCH_Y, 0)), 10, STEEL,
+                      "carriages", out_dir, k))
+        xs0 = LATCH_FOLLOW_X + 3.0 + lo
+        add(Placement("latch_spring", f"Latch spring {k + 1}", Ml @ T(Ry(math.pi / 2), (xs0, LATCH_Y, -11.1)), 10, STEEL, "carriages", out_dir, k))
         if k not in st.modules:
             continue
-        tilt = st.tilt if (k == k_st and st.station) else 0.0
+        on_station = (k == k_st and st.station)
+        tilt = st.tilt if on_station else 0.0
         Ms = sam_frame(C, tilt)
-        add(Placement("sam_mounting_plate", f"Mounting plate (Sam, Oct 13) {k + 1}", Ms, 9, SAM, "modules", out_dir, k))
-        add(Placement("armature_tab", f"Armature tab, 2 mm steel {k + 1}", Ms, 9, STEEL, "modules", out_dir, k))
-        for x, y in ARMATURE_SCREWS:
-            add(Placement("m3x6_fhcs", f"Armature screw M3x6 flat head {k + 1}", Ms @ T(Rx(math.pi), (x, y, -18.0 - ARMATURE_T)), 9, DARK,
+        add(Placement("sam_mounting_plate", f"Mounting plate v3 (Sam's Oct 13 + dock balls, keeper) {k + 1}", Ms, 9, SAM, "modules", out_dir, k))
+        add(Placement("armature_v3", f"Armature, 2 mm steel {k + 1}", Ms, 9, STEEL, "modules", out_dir, k))
+        for x, y in ARMATURE_SCREWS3:
+            add(Placement("m3x6_fhcs", f"Armature screw M3x6 flat head {k + 1}", Ms @ T(Rx(math.pi), (x, y, -18.0 - 2.0)), 9, DARK,
                           "modules", out_dir, k))
             add(Placement("insert_m3", f"M3 heat-set insert (plate) {k + 1}", Ms @ T(None, (x, y, -18.0)), 9, BRASS, "modules", out_dir, k))
-        spin = st.spin if (k == k_st and st.station) else 0.0
+        for (x, y) in (KC_A, KC_B):
+            add(Placement("kc_ball", f"Dock ball 1/4in chrome steel (plate) {k + 1}", Ms @ T(None, (x, y, KC_BALL_Z)), 9, STEEL, "modules", out_dir, k))
+        dz = door_open(st) if on_station else 0.0
+        add(Placement("door_housing", f"Outlet door housing (printed) {k + 1}", Ms, 9, ORANGE, "modules", out_dir, k))
+        add(Placement("door_shutter", f"Outlet door shutter (printed) {k + 1}", Ms @ T(None, (0, 0, dz)), 9, DARK, "modules", out_dir, k))
+        zs = DOOR_CLOSED_Z[1] + 2.0 + dz
+        add(Placement("door_spring", f"Outlet door spring {k + 1}", Ms @ T(None, (P3.DOOR_SPRING_X, 0.0, zs)), 9, STEEL, "modules", out_dir, k))
+        for sy in (-1, 1):
+            add(Placement("m2x8_shcs", f"Door housing screw M2x8 {k + 1}", Ms @ T(None, (18.5, sy * 13.7, -8.0)), 9, DARK, "modules", out_dir, k))
+        spin = st.spin if on_station else 0.0
         Ma = Ms @ AUGER_IN_SAM @ T(Rz(spin))
         add(Placement("auger", f"Auger, threaded storage {k + 1}", Ma, 9, WHITE, "modules", out_dir, k))
         add(Placement("auger_cap", f"Auger cap {k + 1}", Ma @ T(None, (0, 0, AUGER_LEN)), 9, WHITE, "modules", out_dir, k))
@@ -661,30 +679,75 @@ def placements(state: State | float | None = None) -> list[Placement]:
     add(Placement("perfboard", "Interface board (74AHCT125, pull-ups)", T(None, (bx - 20, by - 85, 6.35 + 6)), 11, GREEN, "elec", (0, 80, 60)))
     add(Placement("lac", "Actuonix LAC board", T(None, (bx + 60, by - 85, 6.35)), 11, GREEN, "elec", (0, 80, 60)))
     add(Placement("estop", "E-stop", T(None, (bx + 150, by - 90, 6.35)), 11, RED, "elec", (0, 80, 60)))
+    # 12. enclosure and the scale
+    if st.enclosure:
+        _enclosure(st, add)
+    if st.scale:
+        _scale(st, add)
     out += st.extra
     return out
 
 
-def _station(st: State, add) -> None:
-    """Hold-downs and hall switches at the station tongues, the P16 on its clevis, Sam's electronics carriage on
-    the yoke with the NEMA 11, pinion, solenoid and dock magnet, the approach fork, and the vial on its load cell
-    (the vial group stays plumb: it is turned back by the frame pitch about the wedge on the post)."""
-    S = station_frame()
-    HDf = T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (-SIDE_GAP, STATION_Y, Z_RUN))
-    HDb = T(cols((0, -1, 0), (0, 0, 1), (-1, 0, 0)), (CHAIN_L + SIDE_GAP, STATION_Y, Z_RUN))
+def latch_open(k: int, st: State) -> float:
+    """How far carriage k's latch bolt is drawn back (mm): the station's rail has a flat +-22 mm about the station and
+    25 deg ramps at both ends, and only bottom-run carriages near the station reach it."""
+    d = ((slot_of(k, st.shift) - CARRIAGE_LINK0 + N_LINKS / 2) % N_LINKS - N_LINKS / 2) * P
+    flat, ramp = 22.0, LATCH_TRAVEL / math.tan(math.radians(25.0))
+    if abs(d) >= flat + ramp:
+        return 0.0
+    return LATCH_TRAVEL * min(1.0, (flat + ramp - abs(d)) / ramp)
+
+
+def door_open(st: State) -> float:
+    """The station module's door opening (mm): the EC's finger lifts the push strip in the last DOOR_TRAVEL of the dock."""
+    if st.door >= 0:
+        return st.door
+    if not st.station:
+        return 0.0
+    if st.tilt > 0 or st.ext >= PARK_DROP:
+        return DOOR_TRAVEL
+    return max(0.0, DOOR_TRAVEL - (PARK_DROP - st.ext))
+
+
+def _hold_downs(add, frame_y, frame_z, u_axis, w_axis, label, key="hold_down", key_m=None, step=8, switches=True, inserts=None):
+    """A pair of tongue tabs (front and back side plates) for a carriage frame on a straight: v2's hold-downs at the
+    station, v3's side tabs at the loading position. `inserts`: (u, w) of the screws in the front tab's frame (the back
+    tab, mirrored in u when key_m is given, gets (-u, w))."""
+    u, w = np.asarray(u_axis, float), np.asarray(w_axis, float)
+    ins = inserts or [(dy, CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0) for dy in (-12.0, 12.0)]
+    HDf = T(cols(u, w, (1, 0, 0)), (-SIDE_GAP, frame_y, frame_z))
+    HDb = T(cols(-u, w, (-1, 0, 0)), (CHAIN_L + SIDE_GAP, frame_y, frame_z))
     tz = CAR_W0 + HOLD_DOWN_GAP
     zc = SIDE_GAP + CAR_X0 + 7.0
     Rsw = cols((1, 0, 0), (0, 0, -1), (0, 1, 0))
-    for HD, nm, sgn in ((HDf, "front, INDEX", -1), (HDb, "back, HOME", 1)):
-        add(Placement("hold_down", f"Hold-down ({nm.split(',')[0]}, printed)", HD, 8, ORANGE, "station", (0, 0, 60)))
-        add(Placement("hall_switch", f"Hall switch US5881 ({nm.split(', ')[1]})", HD @ T(Rsw, (0, tz + 0.8, zc)), 8, DARK, "station", (0, 0, 90)))
-        for dy in (-12.0, 12.0):
-            p = to_world(HD, (dy, CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0, 0.0))
-            xo = X_BACK_OUT if sgn > 0 else X_FRONT_OUT
-            add(Placement("m5x16_shcs", "Hold-down screw M5x16", T(Ry(sgn * math.pi / 2), (xo, p[1], p[2])), 8, DARK, "station", (sgn * 60, 0, 0)))
-            add(Placement("insert_m5", "M5 heat-set insert (hold-down)", HD @ T(None, (dy, CAR_W0 - CAR_T - HOLD_DOWN_FOOT_GAP - 11.0, 0.0)), 8, BRASS,
-                          "station", (0, 0, 60)))
-    # actuator, pinned at both ends
+    for HD, nm, sgn, kk in ((HDf, "front, INDEX", -1, key), (HDb, "back, HOME", 1, key_m or key)):
+        add(Placement(kk, f"{label} ({nm.split(',')[0]}, printed)", HD, step, ORANGE, "station", (0, 0, 60)))
+        if switches:
+            add(Placement("hall_switch", f"Hall switch US5881 ({nm.split(', ')[1]})", HD @ T(Rsw, (0, tz + 0.8, zc)), step, DARK, "station", (0, 0, 90)))
+        for (du, dw) in ins:
+            du = -du if (sgn > 0 and key_m) else du
+            if inserts is None:                     # hold-downs: M5 x 16 from outside the side plate into inserts in the foot
+                p = to_world(HD, (du, dw, 0.0))
+                xo = X_BACK_OUT if sgn > 0 else X_FRONT_OUT
+                add(Placement("m5x16_shcs", f"{label} screw M5x16", T(Ry(sgn * math.pi / 2), (xo, p[1], p[2])), step, DARK, "station", (sgn * 60, 0, 0)))
+                add(Placement("insert_m5", f"M5 heat-set insert ({label.lower()})", HD @ T(None, (du, dw, 0.0)), step, BRASS, "station", (0, 0, 60)))
+            else:                                   # side tabs: M5 x 10 from the tab's counterbore into the plate's tapped hole
+                add(Placement("m5x8_shcs", f"{label} screw M5x8 (into the tapped plate)", HD @ T(None, (du, dw, P3.SIDE_TAB_CB_Z)), step, DARK,
+                              "station", (0, 0, 60)))
+
+
+def _station(st: State, add) -> None:
+    """v3 station: hold-downs and hall switches (v2's), the P16 pinned at both ends, the guide cradle on its post with its
+    Kelvin seat, EC v3 (Sam's carriage + the dock: cone and vee seats with magnets, the flat ball, the dock electromagnet;
+    the base balls and the slotted clevis), the NEMA 11, pinion and solenoid, the latch rail on its post; the side tabs at
+    the loading position. No fork, no funnel, no load cell: the HR-100A is placed by _scale."""
+    S = station_frame()
+    _hold_downs(add, STATION_Y, Z_RUN, (0, 1, 0), (0, 0, 1), "Hold-down")
+    if st.side_tabs:                                    # 5a: the loading position's tabs (+y side, the run goes up there)
+        Lf = load_frame()
+        _hold_downs(add, float(Lf[1, 3]), float(Lf[2, 3]), Lf[:3, 0], Lf[:3, 1], "Side tab", key="side_tab", key_m="side_tab_m",
+                    switches=False, inserts=list(P3.SIDE_TAB_INSERTS))
+    # actuator, pinned at both ends; its rod end's hole is on the EC's clevis pin
     B, Pp = actuator_pins(st.tilt, st.ext)
     zdir = (Pp - B) / np.linalg.norm(Pp - B)
     ydir = np.array([0.0, 1.0, 0.0])
@@ -692,60 +755,121 @@ def _station(st: State, add) -> None:
     Ract = cols(xdir, ydir, zdir)
     Lact = float(np.linalg.norm(Pp - B))
     add(Placement("clevis_bracket", "Actuator base clevis (printed)", T(None, B), 8, ORANGE, "station", (0, 0, -40)))
-    y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2                # head on the -y cheek's outer face, shoulder through cheek, tab, cheek
+    y_head = -(SHOULDER_CLEVIS_L - 0.2) / 2
     add(Placement("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, y_head, 0])), 8, STEEL,
                   "station", (0, -30, -40)))
     add(Placement("nut_m3_clevis", "M3 locknut (P16 base pin)", T(Rx(-math.pi / 2), B + np.array([0, y_head + SHOULDER_CLEVIS_L, 0])), 8, STEEL,
                   "station", (0, 30, -40)))
-    add(Placement("actuator_body", "Actuonix P16-150-22-12-P (pot feedback)", T(Ract, B), 8, (0.25, 0.25, 0.28), "station", (0, 0, -40)))
-    add(Placement("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - UFORK_L - ACT_RETRACTED)), 8, (0.7, 0.7, 0.72), "station", (0, 0, -40)))
-    Y = T(Ract, Pp)                                     # yoke frame: on the carriage pins' axis, along the actuator
-    add(Placement("uyoke_base", "U-yoke crossbar with guide tongue (printed)", Y, 8, ORANGE, "station", (0, 0, -60)))
-    add(Placement("yoke_pin", "Dowel pin 4 x 38 mm (P16 rod end in the U-yoke)", Y @ T(None, (0, 0, -UFORK_L)), 8, STEEL, "station", (0, 0, -60)))
-    for sy in (-1, 1):
-        Rm = T(None) if sy > 0 else T(Rz(math.pi))           # part's +y outward
-        add(Placement("uyoke_arm", "U-yoke arm, 2 mm steel (laser cut)", Y @ T(None, (0, sy * UFORK_Y[0], 0)) @ Rm, 8, STEEL, "station", (0, 0, -60)))
-        add(Placement("yoke_stop" if sy > 0 else "yoke_stop_m", f"Yoke stop block {'+' if sy > 0 else '-'}y (printed, on the arm)",
-                      Y @ T(None, (0, sy * UFORK_Y[0], 0)), 8, ORANGE, "station", (0, 0, -60)))
+    add(Placement("actuator_body", "Actuonix P16-150-22-12-P (pot feedback)", T(Ract, B), 8, (0.25, 0.25, 0.28), "station_act", (0, 0, -40)))
+    add(Placement("actuator_rod", "Actuonix rod", T(Ract, B + zdir * (Lact - ACT_RETRACTED)), 8, (0.7, 0.7, 0.72), "station_act", (0, 0, -40)))
     C = electronics_frame(st.tilt, st.ext)
-    add(Placement("sam_electronics_carriage", "Electronics carriage (Sam, Oct 13)", C, 8, ELEC, "station", (0, 0, -60)))
-    for sy in (-1, 1):
-        Rq = T(Rz(math.pi)) if sy < 0 else T(None)          # part's +y outward
-        add(Placement("pin_boss" if sy > 0 else "pin_boss_m", f"Stub-pin plate with tail {'+' if sy > 0 else '-'}y (printed, bonded to the side post)",
-                      C @ T(None, (YOKE_X, sy * 18.0, YOKE_Z)), 8, ORANGE, "station", (0, 0, -60)))
-        add(Placement("stub_pin", "Stub pin 4 mm, steel, e-clip groove", C @ T(None, (YOKE_X, sy * 15.3, YOKE_Z)) @ Rq, 8, STEEL, "station", (0, 0, -60)))
-        add(Placement("eclip_stub", "E-clip DIN 6799-3.2 (stub pin)", C @ T(None, (YOKE_X, sy * 22.3, YOKE_Z)) @ T(Rx(-sy * math.pi / 2)), 8, DARK,
-                      "station", (0, 0, -60)))
-    add(Placement("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 8, DARK, "station", (0, 0, -60)))
+    Rpin = C[:3, :3]
+    add(Placement("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (EC clevis pin, in its slots)",
+                  T(Rpin, Pp) @ T(Rx(math.pi / 2), (0, -8.2, 0)), 8, STEEL, "station_ec", (0, -30, -60)))
+    add(Placement("nut_m3_clevis", "M3 locknut (EC clevis pin)", T(Rpin, Pp) @ T(Rx(-math.pi / 2), (0, -8.2 + SHOULDER_CLEVIS_L, 0)), 8, STEEL,
+                  "station_ec", (0, 30, -60)))
+    add(Placement("sam_electronics_carriage", "Electronics carriage v3 (Sam's Oct 13 + dock, base, clevis, door finger; printed)", C, 8, ELEC,
+                  "station_ec", (0, 0, -60)))
+    add(Placement("nema11", "NEMA 11 11HS18-0674S (auger drive)", C @ T(Ry(math.pi / 2), (NEMA11_X, 0, NEMA11_Z)), 8, DARK, "station_ec", (0, 0, -60)))
     pin_ang = -st.spin * 44.0 / 20.0
     add(Placement("pinion", "20T steel pinion (KHK SS1-20A, hub faced off)", C @ T(Ry(math.pi / 2), (PINION_X0, 0, NEMA11_Z)) @ T(Rz(pin_ang)), 8, ORANGE,
-                  "station", (0, 0, -60)))
-    add(Placement("solenoid", "Solenoid (Adafruit 412)", C @ T(None, (SOL_X, 0, SOL_Z + st.tap * 0.0)), 8, DARK, "station", (0, 0, -60)))
-    add(Placement("magnet_bracket", "Dock magnet bracket (printed)", C, 8, ORANGE, "station", (0, 0, -60)))
-    for (x, y) in LOCPIN_XY:
-        add(Placement("loc_pin", "Locating pin 4 mm, conical tip (carriage rim)", C @ T(None, (x, y, -18.9 - 5.0)), 8, STEEL, "station", (0, 0, -60)))
-    add(Placement("dock_magnet", "Dock electromagnet Adafruit 3872 (P20/15)", C @ T(None, (DOCK_MAG_XY[0], DOCK_MAG_XY[1], DOCK_MAG_FACE_Z)), 8,
-                  MAGNET_RED if st.magnet_on else DARK, "station", (0, 0, -60)))
-    # approach fork on its post
-    add(Placement("fork", "Approach fork (printed)", T(None, (HINGE_STATION[0] + TONGUE_X, STATION_Y + TONGUE_Y, FORK_Z)), 8, ORANGE, "station", (0, 0, -40)))
-    add(Placement("ext_fork_post", "Fork post (2020)", T(None, (STATION_RAIL_X, FORK_POST_Y, Z_BASE + EXT)), 8, ALU, "station", (0, 0, -40)))
-    add(Placement("fork_arm", "Fork arm (printed)", T(None, (HINGE_STATION[0] + TONGUE_X, STATION_Y + TONGUE_Y, FORK_Z)), 8, ORANGE, "station", (0, 0, -40)))
-    # vial, funnel, cup and load cell: plumb on the bench, so turned back by the pitch about the wedge on the post
-    G = T(None, VIAL_PIVOT) @ T(Ry(-math.radians(FRAME_PITCH_DEG))) @ T(None, -VIAL_PIVOT)
-    add(Placement("ext_vial_post", "Vial post (2020)", T(None, (VIAL_XY[0], VIAL_POST_Y, Z_BASE + EXT)), 8, ALU, "dispense", (0, 0, -40)))
-    add(Placement("level_wedge", "Level wedge on the vial post (printed)", T(None, VIAL_PIVOT), 8, ORANGE, "dispense", (0, 0, -40)))
-    add(Placement("load_cell", "Load cell 100 g (TAL221)", G @ T(Rz(math.pi / 2), (VIAL_XY[0], LC_Y0, LC_TOP - 12.7)), 8, (0.7, 0.7, 0.75), "dispense", (0, -30, 0)))
-    add(Placement("vial_cup", "Vial cup on the load cell (printed)", G @ T(Rz(math.pi / 2), (VIAL_XY[0], VIAL_XY[1], CUP_Z)), 8, ORANGE, "dispense", (0, 0, 40)))
-    add(Placement("vial", "Vial, 20 mL", G @ T(None, (VIAL_XY[0], VIAL_XY[1], VIAL_Z)), 8, GLASS, "dispense", (0, 0, 60)))
-    add(Placement("vial_funnel", "Catch funnel, D-cut (printed)", G @ T(None, (VIAL_XY[0], VIAL_XY[1], FUNNEL_SPOUT_Z)), 8, ORANGE, "dispense", (0, 0, 60)))
+                  "station_ec", (0, 0, -60)))
+    add(Placement("solenoid", "Solenoid (Adafruit 412)", C @ T(None, (SOL_X, 0, SOL_Z)), 8, DARK, "station_ec", (0, 0, -60)))
+    mag_face = -18.0 - 2.0 - 0.15 - DOCK_RISE_V3
+    add(Placement("dock_magnet", "Dock electromagnet Adafruit 3872 (P20/15)", C @ T(None, (DOCK_MAG_XY3[0], DOCK_MAG_XY3[1], mag_face)), 8,
+                  MAGNET_RED if st.magnet_on else DARK, "station_ec", (0, 0, -60)))
+    for nm, c in P3.ec_ball_centres().items():
+        add(Placement("kc_ball", f"Ball 1/4in chrome steel (EC, {nm})", C @ T(None, c), 8, STEEL, "station_ec", (0, 0, -60)))
+    for c in P3.vee_dowel_centres():
+        add(Placement("vee_dowel", "Dowel 1/8 x 5/16in (EC dock vee)", C @ T(None, c), 8, STEEL, "station_ec", (0, 0, -60)))
+    for (x, y, zt) in P3.kc_magnet_tops():
+        add(Placement("kc_magnet", "Magnet D44-N52 (under an EC dock seat)", C @ T(None, (x, y, zt)), 8, MAGNET_RED, "station_ec", (0, 0, -60)))
+    # 2. the guide cradle and its post
+    add(Placement("cradle", "Guide cradle with the EC's parking seat (printed)", CRADLE_M, 8, ORANGE, "station", (0, 0, -40)))
+    for kind, x, y, z in P3.cradle_seat_centres():
+        if kind == "dowel":
+            add(Placement("vee_dowel", "Dowel 1/8 x 5/16in (cradle vee)", CRADLE_M @ T(None, (x, y, z)), 8, STEEL, "station", (0, 0, -40)))
+        else:
+            add(Placement("flat_pad", "Flat pad: M4 steel washer (cradle)", CRADLE_M @ T(None, (x, y, z)), 8, STEEL, "station", (0, 0, -40)))
+    add(Placement("ext_cradle_post", "Cradle post (2020)", T(None, (CRADLE_POST[0], CRADLE_POST[1], Z_BASE + EXT)), 8, ALU, "station", (0, 0, -40)))
+    # 4a. the latch rail on its post
+    LR = sam_frame(S, 0.0)
+    add(Placement("latch_rail", "Latch rail with its arm (printed)", LR, 8, ORANGE, "station", (0, 0, -40)))
+    add(Placement("ext_latch_post", "Latch-rail post (2020)", T(None, (LATCH_RAIL_POST[0], LATCH_RAIL_POST[1], Z_BASE + EXT)), 8, ALU, "station",
+                  (0, 0, -40)))
+
+
+def _enclosure(st: State, add) -> None:
+    """5. Clear acrylic on nylon standoffs outside the 2020 frame: both sides, front, back (deeper standoffs: the drive
+    sprockets stand past the back posts) and top. The front hatch (under the station, for the scale) and the side hatch
+    (+y, at the loading position) are hinged acrylic doors with magnetic catches."""
+    x0, x1 = RAIL_X0, RAIL_X1
+    yo = POST_Y + EXT / 2
+    zt = Z_TOP_RAIL + EXT
+    so = PANEL_STANDOFF
+    back_so = X_DRV + LTB15 + 3.0 - x1            # past the drive sprocket's hub
+    yp = yo + so + ACRYLIC_T                      # side panels' outer faces
+    zl = load_frame()[2, 3]
+    hs_w, hs_h = HATCH_SIDE
+    hf_w, hf_h = HATCH_FRONT
+    side_cut = (CHAIN_L / 2 - x0 - hs_w / 2, zl - hs_h / 2 - 1.0, CHAIN_L / 2 - x0 + hs_w / 2, zl + hs_h / 2 - 1.0)
+    front_cut = (STATION_Y + yp - hf_w / 2, 40.0 - 1.0, STATION_Y + yp + hf_w / 2, 40.0 + hf_h - 1.0)
+    add(Placement("panel_side_hatch", "Side panel +y with the swap hatch (3 mm acrylic)", T(cols((1, 0, 0), (0, 0, 1), (0, -1, 0)), (x0, yp, 1.0)), 12,
+                  ACRYL, "enclosure", (0, 120, 0)))
+    add(Placement("panel_side", "Side panel -y (3 mm acrylic)", T(cols((1, 0, 0), (0, 0, 1), (0, -1, 0)), (x0, -yo - so, 1.0)), 12, ACRYL, "enclosure",
+                  (0, -120, 0)))
+    xf = x0 - so - ACRYLIC_T
+    add(Placement("panel_front_hatch", "Front panel with the scale hatch (3 mm acrylic)", T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (xf, -yp, 1.0)), 12,
+                  ACRYL, "enclosure", (-120, 0, 0)))
+    xb = x1 + back_so
+    add(Placement("panel_back", "Back panel (3 mm acrylic)", T(cols((0, 1, 0), (0, 0, 1), (1, 0, 0)), (xb, -yp, 1.0)), 12, ACRYL, "enclosure", (120, 0, 0)))
+    add(Placement("panel_top", "Top panel (3 mm acrylic)", T(None, (xf, -yp, zt + so)), 12, ACRYL, "enclosure", (0, 0, 120)))
+    # standoffs: along the posts and rails, every face
+    for (xs, ys) in ((X_POST[0], -1), (X_POST[1], -1), (X_POST[0], 1), (X_POST[1], 1)):
+        for z in (40.0, zt - 40.0, (zt) / 2):
+            add(Placement("standoff", "Panel standoff, nylon 10 x 6", T(Rx(-ys * math.pi / 2), (xs, ys * yo, z)), 12, WHITE, "enclosure", (0, ys * 100, 0)))
+    for ys in (-1, 1):
+        for z in (40.0, zt - 40.0, zt / 2):
+            add(Placement("standoff", "Panel standoff, nylon 10 x 6", T(Ry(-math.pi / 2), (x0, ys * POST_Y, z)), 12, WHITE, "enclosure", (-100, 0, 0)))
+            add(Placement("standoff_back", "Panel standoff, nylon 10 x 30", T(Ry(math.pi / 2), (x1, ys * POST_Y, z)), 12, WHITE, "enclosure", (100, 0, 0)))
+    # hatches: doors 4 mm over their openings, hinged on one edge, opening outward
+    hf = T(cols((0, -1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y + hf_w / 2 + 4.0, 40.0 - 4.0)) @ T(Ry(-math.radians(st.hatch_front)))
+    add(Placement("hatch_front", "Front hatch door (3 mm acrylic, knob)", hf, 12, ACRYL, "enclosure", (-160, 0, 0)))
+    hs = T(cols((0, 0, -1), (-1, 0, 0), (0, 1, 0)), (CHAIN_L / 2 + hs_w / 2 + 4.0, yp, zl + hs_h / 2 + 4.0)) @ T(Ry(-math.radians(st.hatch_side)))
+    add(Placement("hatch_side", "Side hatch door (3 mm acrylic, knob)", hs, 12, ACRYL, "enclosure", (0, 160, 0)))
+    for M, L_, nm in ((hf, hf_h + 8.0, "front"), (hs, hs_w + 8.0, "side")):
+        for f in (0.2, 0.8):
+            add(Placement("hinge_leaf", f"Hinge leaf (door, {nm} hatch)", M @ T(None, (0.0, f * L_, ACRYLIC_T)), 12, STEEL, "enclosure", (0, 0, 0)))
+    for f in (0.2, 0.8):
+        add(Placement("hinge_leaf", "Hinge leaf (panel, front hatch)", T(cols((0, 1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y + hf_w / 2 + 4.0, 36.0 + f * (hf_h + 8.0))),
+                      12, STEEL, "enclosure", (-160, 0, 0)))
+        add(Placement("hinge_leaf", "Hinge leaf (panel, side hatch)",
+                      T(cols((0, 0, 1), (1, 0, 0), (0, 1, 0)), (CHAIN_L / 2 + hs_w / 2 + 4.0 - f * (hs_w + 8.0), yp, zl + hs_h / 2 + 4.0)), 12, STEEL,
+                      "enclosure", (0, 160, 0)))
+    add(Placement("catch", "Turn button (front hatch)", T(cols((0, 1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y - hf_w / 2 - 4.0 - 7.0, 40.0 + hf_h / 2)),
+                  12, DARK, "enclosure", (-160, 0, 0)))
+    add(Placement("catch", "Turn button (side hatch)", T(cols((1, 0, 0), (0, 0, -1), (0, 1, 0)), (CHAIN_L / 2, yp, zl - hs_h / 2 - 4.0 - 7.0)), 12,
+                  DARK, "enclosure", (0, 160, 0)))
+
+
+def _scale(st: State, add) -> None:
+    """6. The A&D HR-100A with a beaker on its pan: its pan centre at the dose point + st.scale_offset, the display toward
+    the front (-x). At the dose point itself it collides with the station (see the scale-fit study); layout draws it there
+    because that is where it has to go, and render.py draws it as a ghost."""
+    px, py, _ = scale_pan_target()
+    ox, oy = st.scale_offset
+    M = T(None, (px + ox, py + oy, 0.0))
+    add(Placement("hr100a_body", "A&D HR-100A balance (body)", M, 12, SCALE_GHOST, "scale", (-200, 0, 0)))
+    add(Placement("hr100a_glass", "A&D HR-100A breeze break (glass)", M, 12, GLASS, "scale", (-200, 0, 0)))
+    add(Placement("hr100a_pan", "A&D HR-100A pan", M, 12, STEEL, "scale", (-200, 0, 0)))
+    if st.beaker:
+        add(Placement("beaker", "Beaker, 25 mL low form", M @ T(None, (0, 0, HR_PAN_Z)), 12, GLASS, "scale", (-200, 0, 60)))
 
 
 BUILDERS = {
     "ext_x": lambda: PT.extrusion_2020(RAIL_X1 - RAIL_X0),
     "ext_y": lambda: PT.extrusion_2020(2 * POST_Y - EXT),
     "ext_post": lambda: PT.extrusion_2020(Z_TOP_RAIL - Z_BASE - EXT),
-    "ext_fork_post": lambda: PT.extrusion_2020(FORK_Z - 6.0 - (Z_BASE + EXT)),
-    "ext_vial_post": lambda: PT.extrusion_2020(WEDGE_Z - (Z_BASE + EXT)),
     "riser": lambda: PT.extrusion_2020(RISER_H),
     "corner_bracket": PT.corner_bracket,
     "foot": PT.leveling_foot,
@@ -762,7 +886,7 @@ BUILDERS = {
     "chain_a1": PT.chain_a1_link,
     "chain_outer": PT.chain_outer_link,
     "chain_inner": PT.chain_inner_link,
-    "carriage": PT.carriage,
+    "carriage": P3.carriage_v3,
     "insert_m3": PT.heat_insert_m3,
     "insert_m5": lambda: cq.Workplane("XY").circle(3.5).circle(2.5).extrude(7.0),
     "magnet": PT.magnet,
@@ -773,7 +897,6 @@ BUILDERS = {
     "nut_m3": lambda: PT.locknut(3.0),
     "clevis_pin": PT.clevis_pin,
     "eclip": PT.eclip,
-    "eclip_stub": PT.eclip_stub,
     "m5x12_bhcs": lambda: PT.shcs(5, 12, "button"),
     "m5x16_shcs": lambda: PT.shcs(5, 16),
     "m5x30_shcs": lambda: PT.shcs(5, 30),
@@ -781,6 +904,7 @@ BUILDERS = {
     "nut_m6": lambda: PT.locknut(6.35),
     "m5x25_shcs": lambda: PT.shcs(5, 25),
     "m5x10_shcs": lambda: PT.shcs(5, 10),
+    "m5x8_shcs": lambda: PT.shcs(5, 8),
     "nut_m5": lambda: PT.locknut(5.0),
     "tnut_m5": PT.tnut_m5,
     "board_panel": PT.board_panel,
@@ -794,50 +918,89 @@ BUILDERS = {
     "sam_electronics_carriage": lambda: reference_parts()["sam_electronics_carriage"],
     "auger": lambda: reference_parts()["auger"],
     "auger_cap": lambda: reference_parts()["auger_cap"],
-    "armature_tab": PT.armature_tab,
     "clevis_bracket": lambda: PT.clevis_bracket(CLEVIS_RISE),
     "clevis_screw": PT.clevis_shoulder_screw,
     "nut_m3_clevis": lambda: PT.locknut(3.0),          # its own key: "nut_m3" moves with the chain in --sweep
-    "yoke_pin": PT.yoke_pin,
     "actuator_body": lambda: PT.actuator_p16()[0],
     "actuator_rod": lambda: PT.actuator_p16()[1],
-    "uyoke_base": PT.uyoke_base,
-    "uyoke_arm": PT.uyoke_arm,
-    "stub_pin": PT.stub_pin,
-    "yoke_stop": PT.yoke_stop,
-    "yoke_stop_m": PT.yoke_stop_m,
-    "pin_boss": PT.pin_boss,
-    "pin_boss_m": PT.pin_boss_m,
     "nema11": PT.nema11_envelope,
     "pinion": PT.pinion_20t,
     "solenoid": PT.solenoid_412,
-    "magnet_bracket": PT.magnet_bracket,
-    "loc_pin": PT.loc_pin,
     "dock_magnet": PT.dock_magnet,
-    "fork": PT.approach_fork,
-    "fork_arm": lambda: _fork_arm(),
-    "vial": PT.vial,
-    "vial_cup": PT.vial_cup,
-    "vial_funnel": lambda: PT.vial_funnel(FUNNEL_CUT_X - VIAL_XY[0]),
-    "load_cell": PT.load_cell,
-    "level_wedge": PT.level_wedge,
+    # ---- v3
+    "armature_v3": P3.armature_v3,
+    "kc_ball": P3.kc_ball,
+    "vee_dowel": lambda: P3.dowel(L=7.94),
+    "kc_magnet": P3.disc_magnet,
+    "flat_pad": P3.steel_washer_flat,
+    "cradle": lambda: P3.cradle_with_arm(CRADLE_POST[0] - HINGE_STATION[0], CRADLE_POST[1] - STATION_Y),
+    "ext_cradle_post": lambda: PT.extrusion_2020(CRADLE_FLOOR_Z - (Z_BASE + EXT)),
+    "latch_rail": lambda: P3.latch_rail_with_arm(LATCH_RAIL_POST[0] - HINGE_STATION[0], LATCH_RAIL_POST[1] - STATION_Y),
+    "ext_latch_post": lambda: PT.extrusion_2020(P3.LATCH_RAIL_Z0 + HINGE_STATION[2] - (Z_BASE + EXT)),
+    "latch_bolt": P3.latch_bolt,
+    "latch_follower": P3.latch_follower,
+    "latch_spring": lambda: P3.spring(LATCH_SPRING[0], LATCH_SPRING[1] - 2.7, 0.3, 6),
+    "door_housing": P3.door_housing,
+    "door_shutter": P3.door_shutter,
+    "door_spring": lambda: P3.spring(DOOR_SPRING[0], 13.0, 0.3, 7),
+    "m2x8_shcs": lambda: PT.shcs(2, 8),
+    "side_tab": P3.side_tab,
+    "side_tab_m": lambda: P3.side_tab().mirror("YZ"),
+    "panel_side": lambda: P3.acrylic_panel(RAIL_X1 - RAIL_X0, Z_TOP_RAIL + EXT - 1.0),
+    "panel_side_hatch": lambda: P3.acrylic_panel(RAIL_X1 - RAIL_X0, Z_TOP_RAIL + EXT - 1.0, cut=side_hatch_cut()),
+    "panel_front_hatch": lambda: P3.acrylic_panel(2 * ENC_YP, Z_TOP_RAIL + EXT - 1.0, cut=front_hatch_cut()),
+    "panel_back": lambda: P3.acrylic_panel(2 * ENC_YP, Z_TOP_RAIL + EXT - 1.0),
+    "panel_top": lambda: P3.acrylic_panel(ENC_XB + ACRYLIC_T - ENC_XF, 2 * ENC_YP),
+    "standoff": lambda: P3.standoff(PANEL_STANDOFF),
+    "standoff_back": lambda: P3.standoff(ENC_BACK_SO),
+    "hatch_front": lambda: P3.hatch_door(HATCH_FRONT[0] + 8.0, HATCH_FRONT[1] + 8.0),
+    "hatch_side": lambda: P3.hatch_door(HATCH_SIDE[1] + 8.0, HATCH_SIDE[0] + 8.0),
+    "hinge_leaf": P3.hinge_leaf,
+    "catch": P3.turn_button,
+    "hr100a_body": lambda: P3.hr100a()[0],
+    "hr100a_glass": lambda: P3.hr100a()[1],
+    "hr100a_pan": lambda: P3.hr100a()[2],
+    "beaker": P3.beaker,
 }
 
 
-def _fork_arm() -> cq.Workplane:
-    """Printed arm from the fork post (x = STATION_RAIL_X, y = FORK_POST_Y) to the fork (frame at the fork's slot centre):
-    a 6 mm plate on the post's top end (M6 into the tapped 5 mm centre bore) running under the fork's +y half, which
-    sits on it (two M3 into heat-set inserts). It was a 20 x 0.5 x 12 mm sliver in the 0.5 mm gap between the fork's
-    side and the post, too thin to print (under two line widths; cad/print). Stays clear of the tongue's slot (|y| < 3.3)."""
-    y_post0 = FORK_POST_Y - (STATION_Y + TONGUE_Y) - 10.0         # the post's -y face, fork frame
-    x0 = STATION_RAIL_X - (HINGE_STATION[0] + TONGUE_X) - 10.0
-    plate = cq.Workplane("XY").box(20.0, y_post0 + 20.0 - 5.5, 6.0, centered=False).translate((x0, 5.5, -6.0))
-    plate = plate.cut(cq.Workplane("XY").center(x0 + 10.0, y_post0 + 10.0).circle(3.3).extrude(10).translate((0, 0, -8)))
-    return plate.cut(cq.Workplane("XY").pushPoints([(x0 + 5.0, 10.0), (x0 + 15.0, 10.0)]).circle(2.0).extrude(5).translate((0, 0, -5.0)))
+# enclosure geometry shared by _enclosure and the panel builders
+ENC_YP = POST_Y + EXT / 2 + PANEL_STANDOFF + ACRYLIC_T          # side panels' outer faces
+ENC_XF = RAIL_X0 - PANEL_STANDOFF - ACRYLIC_T                   # front panel's outer face
+ENC_BACK_SO = X_DRV + LTB15 + 3.0 - RAIL_X1                     # back standoffs: past the drive sprocket's hub
+ENC_XB = RAIL_X1 + ENC_BACK_SO                                  # back panel's inner face
+
+
+def side_hatch_cut() -> tuple:
+    """The +y panel's swap opening, panel coordinates (x from RAIL_X0, y from z = 1)."""
+    zl = load_frame()[2, 3]
+    w, h = HATCH_SIDE
+    return (CHAIN_L / 2 - RAIL_X0 - w / 2, zl - h / 2 - 1.0, CHAIN_L / 2 - RAIL_X0 + w / 2, zl + h / 2 - 1.0)
+
+
+def front_hatch_cut() -> tuple:
+    """The front panel's scale opening, panel coordinates (x from y = -ENC_YP, y from z = 1)."""
+    w, h = HATCH_FRONT
+    return (STATION_Y + ENC_YP - w / 2, 40.0 - 1.0, STATION_Y + ENC_YP + w / 2, 40.0 + h - 1.0)
+
+
+# The vendors' own STEP files (McMaster screws and nuts, Actuonix's P16, StepperOnline's NEMA 34) are git-ignored
+# (cad/vendor/files/, no licence to redistribute); v2's committed per-part STEPs carry the same geometry in the same
+# builder frames, so v3 reads those when cad/vendor/files/ isn't on disk.
+V2_COMPONENTS = HERE.parent / "chain-carousel-v2" / "step" / "components"
+VENDOR_KEYS = ("actuator_body", "actuator_rod", "nema34", "m3x12_bhcs", "m3x6_fhcs", "m5x10_shcs", "m5x12_bhcs", "m5x16_shcs", "m5x25_shcs",
+               "nut_m3", "nut_m5", "nut_m6", "clevis_screw")
+VENDOR_FILES = HERE.parent / "vendor" / "files"
 
 
 @lru_cache(None)
 def shape(key: str) -> cq.Shape:
+    if key in VENDOR_KEYS or key == "nut_m3_clevis":
+        src = V2_COMPONENTS / f"{'nut_m3' if key == 'nut_m3_clevis' else key}.step"
+        if not VENDOR_FILES.exists() and src.exists():
+            s = cq.importers.importStep(str(src))
+            vals = s.vals()
+            return vals[0] if len(vals) == 1 else cq.Compound.makeCompound(vals)
     w = BUILDERS[key]()
     vals = w.vals()
     return vals[0] if len(vals) == 1 else cq.Compound.makeCompound(vals)
@@ -857,9 +1020,7 @@ if __name__ == "__main__":
     print("loop pitch-line box: y +-%.1f, z %.1f-%.1f" % (LOOP_Y + R, Z_BOT - R, Z_TOP + R))
     print("shaft clearance to the gear: %.2f mm" % SHAFT_CLEAR)
     print("station hinge", np.round(HINGE_STATION, 2), "base clevis pin z %.2f (rise above rail %.2f)" % (CLEVIS_PIN_Z, CLEVIS_RISE))
-    print("fork z %.1f-%.1f; funnel top %.2f cut x %.2f; vial base z %.2f; riser %.1f mm" % (FORK_Z, FORK_TOP, FUNNEL_TOP, FUNNEL_CUT_X, VIAL_Z, RISER_H))
-    for pd in (0.0, 2.0, 2.5, 5.0, 8.0):
-        print("stream", stream_check(pd))
+    print("cradle floor z %.1f; dose point %s; scale pan target %s" % (CRADLE_FLOOR_Z, np.round(DOSE_POINT, 2), np.round(scale_pan_target(), 2)))
     pl = placements()
     from collections import Counter
     print(len(pl), "placements;", Counter(x.key for x in pl).most_common(16))

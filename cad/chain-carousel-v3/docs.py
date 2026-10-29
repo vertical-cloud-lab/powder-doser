@@ -12,23 +12,26 @@ from pathlib import Path
 
 import bom
 import layout as L
-from params import (BRG, CHAIN_L, DOCK_EXT, DRIVE_LINKS, DRIVE_TRAVEL, EXT, HINGE_W, HINGE_X, HOOK_SLIDE, N_LINKS, N_MODULES, POST_Y,
-                    SIDE_Z, SIDE_Z_BACK, TENSION_TRAVEL, YOKE_X, YOKE_Z, Z_BASE, Z_BOT, Z_MOTOR, Z_TOP, Z_TOP_RAIL)
+from params import (BRG, CHAIN_L, DRIVE_LINKS, DRIVE_TRAVEL, EXT, HINGE_W, HINGE_X, HOOK_SLIDE, N_LINKS, N_MODULES, POST_Y,
+                    SIDE_Z, SIDE_Z_BACK, TENSION_TRAVEL, Z_BASE, Z_BOT, Z_MOTOR, Z_TOP, Z_TOP_RAIL, PARK_DROP, DOOR_TRAVEL, LATCH_TRAVEL,
+                    EC_PIN, KC_A, KC_B, KC_C, EC_BALLS, ACRYLIC_T, PANEL_STANDOFF, HATCH_FRONT, HATCH_SIDE)
 
 HERE = Path(__file__).resolve().parent
 L_LONG = L.RAIL_X1 - L.RAIL_X0
 L_CROSS = 2 * POST_Y - EXT
 L_POST = Z_TOP_RAIL - Z_BASE - EXT
-L_FORK = L.FORK_Z - 6.0 - (Z_BASE + EXT)
-L_VIAL = L.WEDGE_Z - (Z_BASE + EXT)
+L_CRADLE = L.CRADLE_FLOOR_Z - (Z_BASE + EXT)
+L_LATCH = L.P3.LATCH_RAIL_Z0 + L.HINGE_STATION[2] - (Z_BASE + EXT)
 
 STEP_TEXT = {
     1: f"""The frame uses seven bars of one VEVOR 10-pack of 1000 mm 2020. Cut four posts of {L_POST:.0f} mm (each
 offcut gives a {L_CROSS:.0f} mm cross rail), four long rails of {L_LONG:.1f} mm (two per bar), and from a seventh bar
-the station rail ({L_CROSS:.0f} mm), the fork post ({L_FORK:.0f} mm) and the vial post ({L_VIAL:.0f} mm). Square every cut.
+two station rails ({L_CROSS:.0f} mm each), the cradle post ({L_CRADLE:.0f} mm) and the latch-rail post ({L_LATCH:.0f} mm).
+Square every cut.
 
 Lay two long rails on the bench, {2 * POST_Y:.0f} mm apart centre to centre, with a cross rail between them at each
-end and the station rail {L.STATION_RAIL_X:.0f} mm behind the front chain's plane (two corner brackets). Screw the
+end, the actuator's station rail {L.STATION_RAIL_X:.0f} mm behind the front chain's plane and the latch-rail post's station
+rail at {L.LATCH_RAIL_X:.0f} mm (two corner brackets each). Screw the
 four leveling feet up into T-nuts in the long rails' bottom slots, 15 mm in from each end. Blue Loctite on every
 screw that goes into a T-nut.""",
     2: f"""Stand a post on each end of the long rails. Each post gets four corner brackets: at its foot, one on the
@@ -82,40 +85,48 @@ link. Each spring clip's closed end points the way the chain travels (bottom run
 because the top shafts are still at the bottom of their slots.""",
     8: f"""The station, under the bottom run:
 
-1. Hold-downs: melt two M5 inserts into each printed hold-down, push a US5881 into each lip's pocket (INDEX front,
-   HOME back), and screw them to the plates' inner faces with two M5 x 16 (blue Loctite). The lip sits 2 mm over the
-   carriage tongue, the foot 4 mm under it; both have 3 mm lead-ins.
-2. Actuator: the printed base clevis on the station rail (two M5 into T-nuts), the P16-150's rear clevis on a
-   4 x 16 mm shoulder screw (McMaster 90265A123) and an M3 locknut: the P16's 8 mm rear tab sits between the cheeks.
-3. Electronics carriage (Sam's): face the KHK SS1-20A pinion's hub off and bond it onto the NEMA 11's shaft with
-   Loctite 638, flush with the shaft end (the motor sits inside the carriage on its back wall, boss in the recess). Bond the dock electromagnet (Adafruit 3872) into the
-   printed bracket and fix the bracket with the NEMA 11's two upper M2.5 screws (lengthened by 3 mm). Press two 4 mm
-   steel locating pins into the rim at Sam's ({30}, 16) and (70, -16). Bond a printed stub-pin plate to each side post
-   (mirror-image pair, tails pointing back and down) and press a 4 mm stub pin through post and plate at Sam's
-   ({YOKE_X:.0f}, {YOKE_Z:.0f}).
-4. U-yoke: seat the P16's rod end (a 9 x 6 tab on a 9 mm collar) in the printed crossbar's slot and press the 4 x 38 mm
-   dowel (McMaster 91595A128) through crossbar and tab. Then screw the two steel arms to the crossbar's sides (M3 x 8 into
-   inserts), which covers both ends of the dowel, and glue a stop block inside each arm under the pin plate's tail
-   (mirror-image pair). Hang the carriage on the stub pins in the arms and fit a DIN 6799-3.2 e-clip on each
-   pin. Set the NEMA 11's DRV8825 to 450 mA (Vref 0.225 V) before the first dock.
-5. Approach fork on its post on the station rail, the tongue under the crossbar in its slot.
-6. Vial post on the -y base rail, the level wedge, the load cell, the vial cup, the vial and the D-cut funnel.""",
+1. Hold-downs: as v2. Melt two M5 inserts into each printed hold-down, push a US5881 into each lip's pocket (INDEX
+   front, HOME back) and screw them to the plates' inner faces with two M5 x 16 (blue Loctite).
+2. Side tabs (item 5a) at the loading position (+y side, mid-height): the same way, two M5 inserts each, on the plates'
+   inner faces. Their lips cover only the bottom 8 mm of a tongue, so a carriage slid {HOOK_SLIDE:.0f} mm up comes out.
+3. Actuator: the printed base clevis on the actuator's station rail (two M5 into T-nuts); the P16-150's rear tab on a
+   4 x 16 mm shoulder screw (McMaster 90265A123) and an M3 locknut.
+4. Electronics carriage v3 (print `stl/electronics_carriage_v3.stl`, Sam's carriage with the new features):
+   - press the four 1/4 in steel balls into the base's three pockets and the back boss (ball C), 3.8 mm proud;
+   - push a D44-N52 magnet into the pocket under the cone seat (+y ear) and one under the vee (-y ear), then press
+     the vee's two 1/8 x 5/16 in dowels in over the second magnet;
+   - bond the dock electromagnet (Adafruit 3872) into the back bracket's cup, face 0.15 mm under the armature's plane
+     (shim with a feeler gauge on a flat plate);
+   - fit the NEMA 11 on the back wall and the solenoid in the front bay, as Sam's carriage; bond the KHK SS1-20A pinion
+     (hub faced off) onto the motor shaft with Loctite 638;
+   - put the P16's rod-end tab between the clevis cheeks under the base and push a 4 x 16 mm shoulder screw through
+     cheeks and tab; M3 locknut. The pin rides in 2 mm slots, so the actuator can stop short of the dock or the seat
+     without forcing either.
+5. Guide cradle (`stl/cradle.stl`): press its two vee dowels in, bond the M4 washer into the flat pocket, bolt the cradle's
+   arm onto the cradle post's top end (M6 into the tapped centre bore) and the post onto the station rail beside the P16.
+   Lower the EC into it: its three balls sit in the cone, the vee and on the washer, its body 0.3 mm inside the side
+   walls, its front face 0.3 mm behind the front wall. It parks {PARK_DROP:.0f} mm under the passing carriages.
+6. Latch rail (`stl/latch_rail.stl`) on its post on the second station rail: its working face runs along the travel
+   {LATCH_TRAVEL} mm behind the carriages' latch followers, with 25 degree ramps at both ends.""",
     9: f"""Modules on the bench (one per carriage, {N_MODULES} in all):
 
-1. Plate: melt two M3 inserts into the back strip of Sam's plate, and drill or print the locating hole (4.2 mm) and
-   slot (4.2 x 6 mm) in its underside. Screw the 2 mm steel armature tab on with two M3 x 6 flat heads.
-2. Slide the lab auger into the plate's clamp rings (the 44T gear between the second and third), outlet at the hinge,
-   and screw on the cap.
-3. Put the plate between a carriage's lugs, hinge end at the front, and push a 5 mm clevis pin through each lug into
-   Sam's knuckle; e-clip on each pin's inner end (before the auger goes in, if you do it the other way round). Press
-   the plate's free end down past the two snap hooks: they hold it shut on the top run, where it hangs upside down.
-
-The carriage and its module now come on and off the chain as one unit.""",
+1. Plate v3 (`stl/mounting_plate_v3.stl`: Sam's plate with two ball pockets, two insert holes, the latch keeper on its back
+   end, a 1 mm relief over the NEMA 11). Press two 1/4 in balls into the pockets at Sam's ({KC_A[0]:.0f}, +-{KC_A[1]:.1f}), 3.8 mm proud.
+   Melt two M3 inserts into the back strip and screw the steel armature on with two M3 x 6 flat heads: it runs from
+   behind the 44T gear's slot out past the plate's back edge, under the EC's flat ball.
+2. Outlet door: melt two M2 inserts into the plate's top face beside the tube, drop the shutter into the printed housing
+   with the spring above it, and screw the housing's two arms to the plate (M2 x 8). The shutter covers the 3 mm exit;
+   its +y strip hangs below the plate, where the EC's finger meets it.
+3. Slide the lab auger into the plate's clamp rings (the 44T gear behind the rear ring), outlet against the door's
+   housing, and screw on the cap.
+4. Put the plate between a carriage v3's lugs, hinge end at the front, and push a 5 mm clevis pin through each lug into
+   the plate's knuckles; e-clip on each pin's inner end. Press the latch bolt back with a finger, lay the plate's back
+   end down and let go: the bolt springs over the keeper and holds the plate shut on the top run.""",
     10: f"""At the loading position (the +y side, mid-height): hold the unit beside the two A-1 tabs, {HOOK_SLIDE:.0f} mm
-off along the run, push it in until the carriage plate touches the tabs, slide it {HOOK_SLIDE:.0f} mm so the printed hooks
-take the tabs, and drive an M3 x 12 button head from outside through the plate and each tab into the locknut in
-the hook. Index one module (bottom run toward -y) and fit the next. After 13, tighten the back sprockets' set screws
-on the round of the shaft and spot a dimple under each.
+up from position, push it in until the carriage plate touches the tabs, slide it {HOOK_SLIDE:.0f} mm down so the printed hooks
+take the tabs and the tongues go under the side tabs' lips, and drive an M3 x 12 button head from outside through the
+plate and each tab into the locknut in the hook. Index one module (bottom run toward -y) and fit the next. After 13,
+tighten the back sprockets' set screws on the round of the shaft and spot a dimple under each.
 
 To tension, turn the four jack screws the same amount until each long side deflects 3-4 mm under a 5 N side push at
 mid-span (about 80 N per chain). Do the front and back together, so the top shafts stay level, then tighten the top
@@ -137,21 +148,32 @@ bearings' bolts.""",
 | Pi GPIO 13 / 21 | DRV8825 STEP / DIR for the NEMA 11 (current limit 0.45 A: Vref 0.225 V) |
 | Pi GPIO 16 | Dock magnet MOSFET gate (IRLB8721), 1N4001 across the coil, 5 V supply |
 | Pi GPIO 12 | DRV8871 IN1 for the tap solenoid |
-| Pi GPIO 5 / 6 | HX711 DT / SCK |
+| Pi UART RX/TX (GPIO 15 / 14) | MAX3232 -> HR-100A RS-232 (DB-9) |
 
 Set the CL86T DIP switches to 4000 pulses/rev and the motor current to 6.0 A. Run `sudo pigpiod`, then
 `python3 test/chain_rig.py --sim lap` to check the software and `python3 test/chain_rig.py home` to check the
 hardware. At 4000 pulses/rev one module is exactly 1000 steps.""",
+    12: f"""Enclosure (item 5): laser-cut the panels and the two hatch doors from 1/8 in clear cast acrylic (`dxf/panel_*.dxf`,
+`dxf/hatch_*.dxf`). Each panel stands {PANEL_STANDOFF:.0f} mm off the frame on nylon spacers (M5 x 16 button heads into T-nuts), so it
+clears the side runs' carriages and the side tabs; the back panel's spacers are 30 mm, past the drive sprocket. The front
+panel's hatch ({HATCH_FRONT[0]:.0f} x {HATCH_FRONT[1]:.0f} mm, under the station) and the +y panel's hatch ({HATCH_SIDE[0]:.0f} x {HATCH_SIDE[1]:.0f} mm, at the
+loading position) each get a door 4 mm larger all round on two stainless butt hinges, a printed knob and a turn
+button.
+
+The HR-100A: v3 draws the balance where it has to stand, its pan under the dose point. It doesn't fit there yet: the
+guide cradle, the EC and the P16 stand inside its breeze break's footprint (`check_interference.py --scale`,
+`renders/features/scale_fit.gif`). Until the station is moved, test doses go into a beaker on a bench balance placed
+by hand under the dose point with the station parked.""",
 }
 
 
-CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", "Electronics", "Module", "Tools", "Test")
+CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", "Doors", "Enclosure", "Electronics", "Module", "Tools", "Test")
 
 
 def write_bom(rs: list[dict]) -> None:
     rs = sorted(rs, key=lambda r: (CATS.index(r["category"]), r["item"]))
     t = bom.totals(rs)
-    lines = ["# Bill of materials: chain-carousel test rig v2 (vertical twin chain)", "",
+    lines = ["# Bill of materials: chain-carousel test rig v3", "",
              "Every line is a real, orderable part (or one of the lab's own). Quantities of modelled parts are "
              "counted from the CAD (`layout.placements()`). Prices are USD on the date shown on each line and will "
              "drift. **Step** is the assembly step that uses the line ([ASSEMBLY.md](ASSEMBLY.md)). `bom.csv` has the "
@@ -180,11 +202,11 @@ def write_assembly(rs: list[dict]) -> None:
     for r in rs:
         for s in map(int, r["steps"].split(",")):
             by_step.setdefault(s, []).append(r)
-    out = ["# Assembly: chain-carousel test rig v2 (vertical twin chain)", "",
-           "Eleven steps in build order, then the test set-up. In each render the parts from earlier steps are "
+    out = ["# Assembly: chain-carousel test rig v3", "",
+           "Twelve steps in build order, then the test set-up. In each render the parts from earlier steps are "
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
            "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The animation "
-           "([MP4](renders/chain_carousel_v2.mp4)) shows the same sequence moving.", "",
+           "([MP4](renders/chain_carousel_v3.mp4)) shows the same sequence moving.", "",
            "Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for "
            "the 2020 and the shafts, soldering iron, heat-set insert tip, e-clip pliers, feeler gauges.", ""]
     for s, title in L.STEPS.items():
@@ -193,8 +215,8 @@ def write_assembly(rs: list[dict]) -> None:
         for r in by_step.get(s, []):
             out.append(f"| {r['item']} | {r['qty']} | {r['description']} |")
         out += ["", STEP_TEXT[s], ""]
-    out += ["## Step 12. Test set-up (not in the CAD)", "", "| # | Qty | Part |", "|---|---|---|"]
-    for r in by_step.get(12, []):
+    out += ["## Step 13. Test set-up (not in the CAD)", "", "| # | Qty | Part |", "|---|---|---|"]
+    for r in by_step.get(13, []):
         out.append(f"| {r['item']} | {r['qty']} | {r['description']} |")
     out += ["", "Fill the augers to a working mass with salt (or the powder under test). Clamp the dial indicator's "
             "magnetic base to a steel plate screwed to the front side plate's inner face beside the station, and stick "
