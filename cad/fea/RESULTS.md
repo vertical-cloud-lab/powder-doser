@@ -84,7 +84,7 @@ are in [README.md](README.md). The station and carriage results have their own w
     Microstepping weakens the excitation a lot. These modes come out low because the model leaves out the acrylic
     panels' stiffness and holds the feet; clamping the frame and screwing the panels on tight both raise them.
 
-**Strong enough:** everything else has a safety factor of 3 or more and moves a few tenths of a millimetre at most:
+**Strong enough:** everything else has a safety factor of 2.5 or more and moves a few tenths of a millimetre at most:
 - the shafts, bearings and idler axles, and the side plates;
 - the tensioner blocks and the paternoster gondola;
 - the clevis bracket, the clevis pins and the hinge pins;
