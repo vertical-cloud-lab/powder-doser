@@ -307,8 +307,8 @@ FUNNEL = dict(top_d=36.0, spout_d=18.0, h=22.0)
 # ball on the EC presses on the plate's steel armature (the flat, C). Preload: a small N52 magnet under the cone and
 # under the vee (each pulls its ball in) and v2's switchable dock electromagnet, now just in front of the flat.
 KC_BALL_D = 6.35                     # McMaster 9642K23-class 52100 chrome steel ball, 1/4 in (grade 25)
-KC_A = (30.0, 19.5)                  # plate ball over the EC's cone seat (x, y)
-KC_B = (30.0, -19.5)                 # plate ball over the EC's vee
+KC_A = (30.0, 18.5)                  # plate ball over the EC's cone seat (x, y): the cone stays 1 mm off the NEMA 11 (|y| 14)
+KC_B = (30.0, -18.5)                 # plate ball over the EC's vee (8 mm dowels: y -22.5..-14.5)
 KC_C = (112.0, 0.0)                  # EC ball under the plate's armature (the flat)
 KC_BALL_Z = -18.6                    # plate balls' centres: 3.8 mm proud of the underside (pressed 2.6 mm into the plate)
 KC_SEAT_TOP = -19.6                  # top of the EC's seat ears when docked: 1.6 mm under the plate
@@ -318,7 +318,7 @@ VEE_SPACING = 2 * (KC_BALL_D / 2 + VEE_DOWEL_D / 2) * math.sin(math.radians(45.0
 KC_MAG_D, KC_MAG_H = 6.35, 6.35      # K&J D44-N52 (1/4 x 1/4 in) under the cone and under the vee
 KC_MAG_GAP = 0.6                     # magnet face below the seated ball's lowest point
 DOCK_RISE_V3 = 0.9                   # EC as drawn -> docked: the pinion's centre distance stays 32.25 mm (v2)
-EC_RIM_CUT = 1.0                     # Sam's carriage top rim cut down 1 mm: the coupling, not the rim, now sets the height
+EC_RIM_CUT = 1.8                     # Sam's carriage top rim cut down 1.8 mm (to 0.2 under the seat ears): only the three contacts touch the plate
 ARMATURE_X3 = (86.0, 118.0)          # steel armature (2 mm, |y| <= ARMATURE_HW3): from under the back strip out past the plate
 ARMATURE_HW3 = 11.0
 ARMATURE_SCREWS3 = ((92.0, -7.0), (92.0, 7.0))   # M3 flat heads into heat-set inserts in the plate's back strip
@@ -348,12 +348,13 @@ PARK_DROP = 20.0                     # parked EC sits this far below its docked 
 DOOR_GAP = 0.3                       # shutter's back face to the auger's end face
 DOOR_T = 1.5                         # shutter thickness
 DOOR_W = 10.0                        # shutter width (y)
-DOOR_CLOSED_Z = (-6.0, 8.0)          # shutter's bottom and top edges, closed (covers z -1.5..1.5 by 4.5 mm)
-DOOR_TRAVEL = 10.0                   # open: bottom edge at +4.0, 2.5 mm above the exit
-DOOR_ROD_Y = 7.5                     # push rod beside the exit
-DOOR_ROD_D = 3.0
+DOOR_CLOSED_Z = (-6.0, 4.0)          # shutter's bottom and top edges, closed (covers the exit, z -1.5..1.5, by 2.5-4.5 mm)
+DOOR_TRAVEL = 8.5                    # open: bottom edge at +2.5, 1 mm above the exit
+DOOR_ROD_Y = 7.5                     # push strip beside the exit (y 6-9)
+DOOR_ROD_D = 3.0                     # push strip width (it is the shutter's own +y strip, 1.5 thick)
 DOOR_ROD_BOTTOM = -22.0              # rod's lower end, closed (inside the carriage window, above its outer face)
-DOOR_SPRING = (4.0, 19.0, 0.08)      # OD, free length, rate N/mm (McMaster 9657K-class stainless): 0.6 N closed, 1.4 N open
+DOOR_SPRING = (4.0, 16.0, 0.06)      # OD, free length, rate N/mm (stainless): fitted at 13 mm, 0.18 N closed, 0.69 N open
+DOOR_TOP = 19.5                      # housing's top (z): |u| 13 + w 31.2 = 44.2, inside the 45 mm corner rule
 
 # --- 4a. the plate latch: holds the plate on its carriage upside down; a cam at the station opens it ------------------------
 # A printed bolt slides along x in a housing on the carriage's inner face behind the plate, at y = LATCH_Y (beside the auger
