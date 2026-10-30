@@ -1,0 +1,32 @@
+{
+ "tilt": 60.0,
+ "rpm": 30.0,
+ "config": "magnet + steel pinion",
+ "a_dock_mm": 32.1,
+ "i_set_A": 0.95,
+ "powder_g": 0.0,
+ "load_Nm": null,
+ "ecc_mm": 0.0,
+ "pitch_err_rad": 0.0,
+ "v_supply": 24.0,
+ "tooth_jumps": 2,
+ "first_jump_s": 0.1802999999999955,
+ "stall_s": null,
+ "centre_distance_mm": {
+  "mean": 57.66892410180432,
+  "max": 95.7738513859951,
+  "min": 40.30437682687619
+ },
+ "rim_gap_front_mm_max": 129.1404585170366,
+ "rim_gap_back_mm_max": 97.14928479221794,
+ "mag_gap_mm_max": 73.29746308984508,
+ "lift_deg_max": 0.0,
+ "actuator_N": {
+  "min": 0.8281861809575843,
+  "max": 14.32276778084051
+ },
+ "wall_s": 0.8,
+ "sim_s": 0.2303199999999761,
+ "mode": "tooth jump",
+ "load_at_failure_Nm": 0.0
+}

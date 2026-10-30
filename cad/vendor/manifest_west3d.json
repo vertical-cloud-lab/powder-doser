@@ -1,0 +1,46 @@
+[
+ {
+  "key": "bracket_NA0394",
+  "kind": "screenshot",
+  "file": "files/west3d/bracket_NA0394.png",
+  "page": "https://west3d.com/products/angle-corner-connector-90-degree-like-openbuilds",
+  "url": "https://west3d.com/products/angle-corner-connector-90-degree-like-openbuilds",
+  "sha256": "7b48539a5c0cc3ee8a2f7ae60352febbf1191db930f40624d12b2f3c341d6fe6",
+  "bytes": 706937,
+  "retrieved": "2026-10-27",
+  "note": "Angle Corner Connector 90 degree (Like OpenBuilds)"
+ },
+ {
+  "key": "bracket_NA0394",
+  "kind": "text",
+  "file": "files/west3d/bracket_NA0394.txt",
+  "page": "https://west3d.com/products/angle-corner-connector-90-degree-like-openbuilds",
+  "url": "https://west3d.com/products/angle-corner-connector-90-degree-like-openbuilds",
+  "sha256": "97a65fe3a5f400bd73da07321b49d3a3cb66b56f2ddeced6692003025122bf86",
+  "bytes": 4952,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "tnut_WES5240M5",
+  "kind": "screenshot",
+  "file": "files/west3d/tnut_WES5240M5.png",
+  "page": "https://west3d.com/products/roll-in-drop-in-t-nuts-for-2020-extrusions-m3-3mm-and-m5-5mm-threads",
+  "url": "https://west3d.com/products/roll-in-drop-in-t-nuts-for-2020-extrusions-m3-3mm-and-m5-5mm-threads",
+  "sha256": "9873cd962b139d71940113dc0c552d9b340e3b00829db164aa12130ddd864770",
+  "bytes": 753073,
+  "retrieved": "2026-10-27",
+  "note": "Roll-In / Drop-In T-Nuts for 2020 Extrusions M3 3mm and M5 5mm threads"
+ },
+ {
+  "key": "tnut_WES5240M5",
+  "kind": "text",
+  "file": "files/west3d/tnut_WES5240M5.txt",
+  "page": "https://west3d.com/products/roll-in-drop-in-t-nuts-for-2020-extrusions-m3-3mm-and-m5-5mm-threads",
+  "url": "https://west3d.com/products/roll-in-drop-in-t-nuts-for-2020-extrusions-m3-3mm-and-m5-5mm-threads",
+  "sha256": "9d05cdd78f7719d8c5be9b4fb23c5036b7447ecedbf73e3203d4d15e3dc84fa9",
+  "bytes": 4623,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

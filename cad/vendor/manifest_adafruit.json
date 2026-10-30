@@ -1,0 +1,134 @@
+[
+ {
+  "key": "electromagnet_3872",
+  "kind": "drawing",
+  "file": "files/adafruit/3872_diagram.png",
+  "page": "https://www.adafruit.com/product/3872",
+  "url": "https://cdn-shop.adafruit.com/product-files/3872/3872_diagram.png",
+  "sha256": "cf7a0819f71ed6f15eac4835ac7115f02e20340e9e638d80a172b5e187c54b03",
+  "bytes": 144550,
+  "retrieved": "2026-10-27",
+  "note": "3872_diagram.png"
+ },
+ {
+  "key": "electromagnet_3872",
+  "kind": "screenshot",
+  "file": "files/adafruit/electromagnet_3872.png",
+  "page": "https://www.adafruit.com/product/3872",
+  "url": "https://www.adafruit.com/product/3872",
+  "sha256": "69e9bc6865ddaf6bafd47cc14b89a1f245712aea1f4248d1f349465da6bf675a",
+  "bytes": 2109134,
+  "retrieved": "2026-10-27",
+  "note": "5V Electromagnet - 2.5 Kg Holding Force [P20/15] : Adafruit Industries, Unique & fun DIY electronics"
+ },
+ {
+  "key": "electromagnet_3872",
+  "kind": "text",
+  "file": "files/adafruit/electromagnet_3872.txt",
+  "page": "https://www.adafruit.com/product/3872",
+  "url": "https://www.adafruit.com/product/3872",
+  "sha256": "dbd578d5f60b657e3040bb3543d4cc9665af7a096ddcd6fe44d5a5b9b45700d7",
+  "bytes": 3309,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "electromagnet_3872_links",
+  "kind": "screenshot",
+  "file": "files/adafruit/electromagnet_3872_links.png",
+  "page": "https://www.adafruit.com/product/3872",
+  "url": "https://www.adafruit.com/product/3872",
+  "sha256": "c3b9784cafd25698762621f024d6ac1abd236c06ab92b2c05249afd55754afac",
+  "bytes": 2092447,
+  "retrieved": "2026-10-27",
+  "note": "5V Electromagnet - 2.5 Kg Holding Force [P20/15] : Adafruit Industries, Unique & fun DIY electronics"
+ },
+ {
+  "key": "electromagnet_3872_links",
+  "kind": "text",
+  "file": "files/adafruit/electromagnet_3872_links.txt",
+  "page": "https://www.adafruit.com/product/3872",
+  "url": "https://www.adafruit.com/product/3872",
+  "sha256": "b634664db81550eaa31c496cf6671ecbd900b319bf494698e7409abf204edf57",
+  "bytes": 3283,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "hall_158",
+  "kind": "datasheet",
+  "file": "files/adafruit/US5881_rev007.pdf",
+  "page": "https://www.adafruit.com/product/158",
+  "url": "https://www.adafruit.com/datasheets/US5881_rev007.pdf",
+  "sha256": "cab939705cf39191042c58bd11b9c287439b810399a5332a8c6fd0a1fdabe963",
+  "bytes": 451510,
+  "retrieved": "2026-10-27",
+  "note": "US5881_rev007.pdf"
+ },
+ {
+  "key": "hall_158",
+  "kind": "screenshot",
+  "file": "files/adafruit/hall_158.png",
+  "page": "https://www.adafruit.com/product/158",
+  "url": "https://www.adafruit.com/product/158",
+  "sha256": "493fc7a4b2791936e690ff8663769706fddb0dfdcda285e673b09209ebca1b94",
+  "bytes": 1850225,
+  "retrieved": "2026-10-27",
+  "note": "Hall effect sensor [US5881LUA] : Adafruit Industries, Unique & fun DIY electronics and kits"
+ },
+ {
+  "key": "hall_158",
+  "kind": "text",
+  "file": "files/adafruit/hall_158.txt",
+  "page": "https://www.adafruit.com/product/158",
+  "url": "https://www.adafruit.com/product/158",
+  "sha256": "6edfccdebb7c1287ee5ba298c3521ffe5cef1c0818b083d8925d1416d2dc15e7",
+  "bytes": 2743,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ },
+ {
+  "key": "solenoid_412",
+  "kind": "datasheet",
+  "file": "files/adafruit/412_C514-datasheet.pdf",
+  "page": "https://www.adafruit.com/product/412",
+  "url": "https://cdn-shop.adafruit.com/product-files/412/C514-datasheet.pdf",
+  "sha256": "6fd2bac2a24fcabca3323469fcf3e8f76f449f0e073a1b01f2e041d73a2cf808",
+  "bytes": 279400,
+  "retrieved": "2026-10-27",
+  "note": "412_C514-datasheet.pdf"
+ },
+ {
+  "key": "solenoid_412",
+  "kind": "drawing",
+  "file": "files/adafruit/412_C514-B_diagram.pdf",
+  "page": "https://www.adafruit.com/product/412",
+  "url": "https://cdn-shop.adafruit.com/product-files/412/412_C514-B_diagram.PDF",
+  "sha256": "adaa02703b1129b36f8a01174592ff464a68cc1a7ad1c7628bd83b9f47b44574",
+  "bytes": 320419,
+  "retrieved": "2026-10-27",
+  "note": "412_C514-B_diagram.pdf"
+ },
+ {
+  "key": "solenoid_412",
+  "kind": "screenshot",
+  "file": "files/adafruit/solenoid_412.png",
+  "page": "https://www.adafruit.com/product/412",
+  "url": "https://www.adafruit.com/product/412",
+  "sha256": "3b6acea449d6bb0d79810cdf54f45d0516e106a2c9d529f02d1b1f499e534f33",
+  "bytes": 1960431,
+  "retrieved": "2026-10-27",
+  "note": "Small Push-Pull Solenoid - 12VDC : Adafruit Industries, Unique & fun DIY electronics and kits"
+ },
+ {
+  "key": "solenoid_412",
+  "kind": "text",
+  "file": "files/adafruit/solenoid_412.txt",
+  "page": "https://www.adafruit.com/product/412",
+  "url": "https://www.adafruit.com/product/412",
+  "sha256": "3f29f5eeb80669990a64cf15a303de996bd35e1767382c798adccc4c4ab6126f",
+  "bytes": 3499,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

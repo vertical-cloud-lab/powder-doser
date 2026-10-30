@@ -1,0 +1,35 @@
+[
+ {
+  "key": "gear_SS1-20A",
+  "kind": "drawing_screenshot",
+  "file": "files/khk/SS1-20A_2D_sales_drawing.tab.png",
+  "page": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a",
+  "url": "https://khkgears.co.jp/khkweb/zout/FFcreateWK.do?catalogno=SS1-20A&lang=en",
+  "sha256": "aad9e49cee65363b1b42e5137fbfea05eadbbb3b16335422ccc8554d23461dde",
+  "bytes": 76727,
+  "retrieved": "2026-10-27",
+  "note": "the tab the link opened"
+ },
+ {
+  "key": "gear_SS1-20A",
+  "kind": "screenshot",
+  "file": "files/khk/gear_SS1-20A.png",
+  "page": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a",
+  "url": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a",
+  "sha256": "3a71d93a9014fedcd8c1327df1afe11f76409f0804cc8e7a6357321496d282df",
+  "bytes": 472804,
+  "retrieved": "2026-10-27",
+  "note": "SS1-20A, KHK SS1-20A, Module 1, 20 Tooth, Carbon Steel Spur Gears On KHK Gears"
+ },
+ {
+  "key": "gear_SS1-20A",
+  "kind": "text",
+  "file": "files/khk/gear_SS1-20A.txt",
+  "page": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a",
+  "url": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-20a",
+  "sha256": "664e87785dc2f93b72faf925a595404655e8483db8f565de4cf6382753449384",
+  "bytes": 2910,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

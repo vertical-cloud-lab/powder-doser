@@ -1,0 +1,30 @@
+{
+ "check": "tilt",
+ "clashes": [],
+ "poses": {
+  "ext_mm": [
+   0,
+   5,
+   10,
+   11.5,
+   15,
+   19.5,
+   23,
+   27.5,
+   28
+  ],
+  "tilt_deg": [
+   5,
+   10,
+   15,
+   20,
+   25,
+   30,
+   38,
+   45,
+   50
+  ]
+ },
+ "park_drop_mm": 28.0,
+ "note": "2026-10-30, at the 28 mm park: the rise (ext, 0 parked to 28 docked) and the tilt angles ran as three processes (check_interference.tilt with subsets), all clean."
+}
