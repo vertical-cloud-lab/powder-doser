@@ -165,10 +165,13 @@ The module swings up through the carriage's opening into the loop. At about 55°
 | Home | Nothing: every pair of the 825 instances (the HR-100A left out, see `--scale`) | **0** |
 | `--tilt` | The EC rising out of the cradle (0-20 mm, the door opening over the last 6), then module 1 + EC + P16 tilting 5-50° (16 poses) | **0** |
 | `--swap` | Module 4's auger pulled 5-140 mm straight off its plate, out through the open side hatch; then the whole carriage out as in v3 | **0** |
-| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses); every latch rides the station's rail and every module its tube rest | @@SWEEP_V4@@ |
+| `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses); every latch rides the station's rail and every module its tube rest | **6 clashes, not fixed:** the augers passing the station hit the parked EC's arms, ball C, a magnet and the vee's dowels, 2 links either side of it (up to 242 mm³). Parked 20 mm under its dock, the EC's arms still straddle the auger. Parking 8 mm deeper clears every pose (`checks/sweep.json`) |
 | `--scale` | The HR-100A with its pan at the dose point | 14 instances of 11 parts in its way (item 6) |
 
-What the checks found and changed while v4 was drawn:
+What the checks found:
+- **Not fixed: the passing augers hit the parked EC (sweep, above).** v3's 20 mm park was copied, but v4's EC reaches round the auger, so its arms still straddle the auger when parked. Moving the parked EC's parts a further 4 mm out leaves 0-17 mm³; 8 mm clears every pose tried (shifts of 1-3 and 5-7 links). So v4 should park 28-30 mm under its dock, which lowers the P16's base pin by the same amount (to about 20 mm above its rail) and costs 8-10 mm of stroke (50° then needs about 102-104 mm of the 150). That needs the checks and renders rerun, which didn't fit this round, so the movie and GIFs show the arms brushing the passing augers.
+
+Changed while v4 was drawn:
 - **The top rail's post-head brackets hit the side plates.** The top rail moved up to 751 mm.
 - **The plate's back strip grazed the carriage's opening at 5-10° of tilt.** The opening widens to ±27.6 mm over Sam's x 52-104.
 - **The latch pin ran through its own follower** (26 mm³). The checks skip that pair by design, so the BoM lookup found it, when it priced the pin at the drawn 22 mm. The pin is now 4 x 14 mm and its carrier block starts at Sam's x 110, 2.5 mm clear of the follower.
@@ -177,13 +180,14 @@ What the checks found and changed while v4 was drawn:
 
 1. **The dock has no electromagnet, and the simulations say the module's weight and three magnets aren't enough** (item 3): a ball lifts at 2.3-3.2 N, under the motor's 3.7 N stall, and the EC slides on its seats once tilted. Give each ball about 8 N of preload (or find room for a coil) before printing the plates, then check it with T6a and T6c.
 2. **The station also needs v3's simulated fixes:** the P16's base stop and spring, and the door finger's overlap.
-3. **Print EC v4 and the cradle and try the arms round a real auger** before buying the rest. The arms pass 1 mm from the plate's clamp rings.
-4. **Reprint all 13 mounting plates:** v4's plate has the auger-side ball pockets, the washer pocket and a keeper with a pin hole.
-5. **The carriage is 351 mm long** and prints only on the H2D (on the bed's diagonal), as v2's.
-6. **The frame is bigger:** the side plates are 380 mm wide (v3: 244). Both still come out of one 24 x 36 in sheet.
-7. **The scale doesn't fit** (item 6), as in v3.
-8. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29), with v3's caveats: the door and latch springs McMaster sells need longer pockets than the CAD draws, and the 1/4 in balls come in packs of 2 ($113 for 36; see v3's README).
-9. **The latch pin is 4 x 14 mm** (McMaster 91595A158). The BoM lookup found the 22 mm pin first drawn ran straight through the 3 mm follower (26 mm³); the pin is now shorter and its carrier block starts 8 mm further forward, inside the same housing.
+3. **Park the EC 28-30 mm under its dock, not 20** (Checks): at 20 mm its arms hit the augers passing the station.
+4. **Print EC v4 and the cradle and try the arms round a real auger** before buying the rest. The arms pass 1 mm from the plate's clamp rings.
+5. **Reprint all 13 mounting plates:** v4's plate has the auger-side ball pockets, the washer pocket and a keeper with a pin hole.
+6. **The carriage is 351 mm long** and prints only on the H2D (on the bed's diagonal), as v2's.
+7. **The frame is bigger:** the side plates are 380 mm wide (v3: 244). Both still come out of one 24 x 36 in sheet.
+8. **The scale doesn't fit** (item 6), as in v3.
+9. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29), with v3's caveats: the door and latch springs McMaster sells need longer pockets than the CAD draws, and the 1/4 in balls come in packs of 2 ($113 for 36; see v3's README).
+10. **The latch pin is 4 x 14 mm** (McMaster 91595A158). The BoM lookup found the 22 mm pin first drawn ran straight through the 3 mm follower (26 mm³); the pin is now shorter and its carrier block starts 8 mm further forward, inside the same housing.
 
 ## How it goes together
 
@@ -221,6 +225,7 @@ xvfb-run -a python render.py --stills && xvfb-run -a python render.py --movie &&
 ## Not done
 
 - **Not built.** Every number is a prediction until the test plan runs.
+- **The park depth (28-30 mm), the P16's base stop and spring, the door finger's overlap and the dock's preload** are measured or simulated fixes, not drawn yet.
 - **Onshape:** no document was created or updated (the company's API calls for the year are used up; see v3's `onshape/`).
 - **The scale doesn't fit** (item 6), as in v3.
 - **The vendors' own CAD:** as v3, the P16, the NEMA 34 and the McMaster screws and nuts are v2's vendor geometry; the new McMaster parts are drawn from their catalogue dimensions.

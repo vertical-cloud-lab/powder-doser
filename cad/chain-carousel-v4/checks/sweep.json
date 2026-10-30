@@ -1,0 +1,73 @@
+{
+ "check": "sweep",
+ "clashes": [
+  {
+   "a": "Auger, threaded storage 1 @-2.0",
+   "b": "Electronics carriage v4 (Sam's Oct 13 turned over + arms round the auger, dock, base, clevis, door finger; printed)",
+   "mm3": 241.51
+  },
+  {
+   "a": "Auger, threaded storage 1 @-2.0",
+   "b": "Ball 1/4in chrome steel (EC, C)",
+   "mm3": 53.38
+  },
+  {
+   "a": "Auger, threaded storage 1 @-2.0",
+   "b": "Magnet D44-N52 (behind an EC dock contact)",
+   "mm3": 32.94
+  },
+  {
+   "a": "Auger, threaded storage 2 @-6.0",
+   "b": "Electronics carriage v4 (Sam's Oct 13 turned over + arms round the auger, dock, base, clevis, door finger; printed)",
+   "mm3": 149.28
+  },
+  {
+   "a": "Auger, threaded storage 2 @-6.0",
+   "b": "Dowel 1/8 x 5/16in (EC dock vee)",
+   "mm3": 45.1
+  },
+  {
+   "a": "Auger, threaded storage 2 @-6.0",
+   "b": "Dowel 1/8 x 5/16in (EC dock vee)",
+   "mm3": 48.25
+  }
+ ],
+ "step_links": 2.0,
+ "poses": 5,
+ "direction": -1,
+ "park_drop_test": {
+  "note": "2026-10-30: the station's EC parts moved a further d mm out (down), against the modules' auger, cap, door and plate within 80 mm of the station, at these chain shifts (links); total overlap mm3. 8 mm more (a 28 mm park instead of 20) clears every pose.",
+  "shift_links": [
+   -1,
+   -2,
+   -3,
+   -5,
+   -6,
+   -7
+  ],
+  "extra_drop_0mm": [
+   92.2,
+   327.8,
+   148.8,
+   52.2,
+   242.6,
+   32.6
+  ],
+  "extra_drop_4mm": [
+   1.6,
+   17.2,
+   1.6,
+   1.6,
+   0.0,
+   1.6
+  ],
+  "extra_drop_8mm": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   null,
+   0.0
+  ]
+ }
+}
