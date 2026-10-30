@@ -343,7 +343,7 @@ def stills(quick: bool = False) -> None:
             ("rig_loop", L.State(), LOOP, front_open, "Front chain loop (front plate and enclosure hidden)"),
             ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v4 reaches round the auger to the plate's kinematic dock",
              ghost_cradle),
-            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v4 sits in its guide cradle 20 mm under the passing modules",
+            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v4 sits in its guide cradle 28 mm under its dock, clear of the passing augers",
              ghost_cradle),
             ("rig_tilt30", L.State(tilt=tf), STATION_TILT, station_cut, f"Dosing at {TILT_DOSE_WORLD:.0f} deg: module and EC tilt up through the carriage's opening"),
             ("rig_tilt50", L.State(tilt=50.0), ((H[0] + 70, H[1], H[2] + 80), (-0.35, -1.0, 0.2), 950), station_cut,
@@ -526,7 +526,7 @@ def _station_cycle(mv, sec, cam=None, title_prefix="Station", spin0=0.0, extra_s
         return L.State(**d)
     n = sec(1.0)
     for i in range(n):
-        mv.frame(L.placements(S(ext=0.0)), f"{title_prefix}: the EC parked in its guide cradle, 20 mm under the passing modules",
+        mv.frame(L.placements(S(ext=0.0)), f"{title_prefix}: the EC parked in its guide cradle, {PARK_DROP:.0f} mm under its dock",
                  "the station's rail has drawn carriage 1's latch pin back; its module rests 0.5 mm down on the tube rest", cam=cam_s, hide_fn=hide)
     n = sec(2.4)
     for i in range(n):
@@ -753,7 +753,7 @@ def features(only: str = "") -> None:
             pl = L.placements(L.State(shift=s_, ext=0.0))
             c.v.show(pl, hide=hidden(pl, station_cut), opacity=ghost_cradle(pl))
             c.v.camera(*cam_lerp(CRADLE, STATION, 0.6))
-            c._emit(caption(c.v.image(), "Parked 20 mm under the carriages, the EC lets them index past", "", TAG))
+            c._emit(caption(c.v.image(), f"Parked {PARK_DROP:.0f} mm under its dock, the EC lets the modules index past", "", TAG))
         c.done()
     if not only or only == "door":
         c = Clip("outlet_door")

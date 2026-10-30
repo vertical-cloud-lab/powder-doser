@@ -14,7 +14,7 @@
   {
    "a": "A&D HR-100A balance (body)",
    "b": "Actuator base clevis (printed)",
-   "mm3": 12555.75
+   "mm3": 11544.55
   },
   {
    "a": "A&D HR-100A balance (body)",
@@ -29,32 +29,37 @@
   {
    "a": "A&D HR-100A balance (body)",
    "b": "Actuonix P16-150-22-12-P (pot feedback)",
-   "mm3": 9452.67
+   "mm3": 15212.67
   },
   {
    "a": "A&D HR-100A balance (body)",
    "b": "Electronics carriage v4 (Sam's Oct 13 turned over + arms round the auger, dock, base, clevis, door finger; printed)",
-   "mm3": 10556.94
+   "mm3": 8126.56
   },
   {
    "a": "A&D HR-100A balance (body)",
    "b": "NEMA 11 11HS18-0674S (auger drive)",
-   "mm3": 22732.02
+   "mm3": 22129.1
   },
   {
    "a": "A&D HR-100A balance (body)",
    "b": "20T steel pinion (KHK SS1-20A, hub faced off)",
-   "mm3": 2311.31
+   "mm3": 2310.74
   },
   {
    "a": "A&D HR-100A balance (body)",
    "b": "Guide cradle with the EC's parking seat (printed)",
-   "mm3": 475.06
+   "mm3": 303.06
   },
   {
    "a": "A&D HR-100A balance (body)",
    "b": "Cradle post (2020)",
    "mm3": 7884.91
+  },
+  {
+   "a": "A&D HR-100A breeze break (glass)",
+   "b": "20T steel pinion (KHK SS1-20A, hub faced off)",
+   "mm3": 0.21
   },
   {
    "a": "A&D HR-100A breeze break (glass)",
@@ -64,7 +69,7 @@
   {
    "a": "A&D HR-100A breeze break (glass)",
    "b": "Cradle post (2020)",
-   "mm3": 491.97
+   "mm3": 469.25
   },
   {
    "a": "A&D HR-100A pan",

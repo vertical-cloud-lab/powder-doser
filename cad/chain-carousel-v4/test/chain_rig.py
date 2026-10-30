@@ -8,7 +8,7 @@ Hardware (see BOM.md):
   hold-down, sees the magnet in every carriage's front tongue; HOME, in the back hold-down, only carriage 1's.
 * Station (v4): Actuonix P16-150-22-12-P on an Actuonix LAC board in RC mode (1.0-2.0 ms pulses = 0-150 mm); the pot is
   fed back inside the LAC. Its rod end pushes the electronics carriage v4 (EC) up through a pin in 2 mm slots. Parked,
-  the EC sits on its own three-ball seat in the guide cradle, 20 mm below the passing augers; docked, its two arms
+  the EC sits on its own three-ball seat in the guide cradle, 28 mm below its dock (clear of the passing augers); docked, its two arms
   reach round the auger and the plate's two balls sit in the EC's cone and vee and the EC's third ball on the plate's
   steel washer (a Kelvin clamp), held by the module's own weight (it rests on the EC) and an N52 magnet behind each
   contact. There is no dock electromagnet in v4. The last 6 mm of the dock open the module's outlet door; the
@@ -71,7 +71,7 @@ RUN_DIRECTION = -1                                 # -1: bottom run toward -y
 EC_PIN_X, EC_PIN_Z, DOCK_RISE = 58.0, 76.0, -0.9   # EC v4's clevis pin, Sam's frame (z outward: down at the station);
                                                    # docked it moves 0.9 toward the plate
 ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
-DOCK_EXT = 20.0                                    # PARK_DROP: the parked EC sits 20 mm below its docked position
+DOCK_EXT = 28.0                                    # PARK_DROP: the parked EC sits 28 mm below its docked position
 TILT_MAX = 50.0                                    # v4: at about 55 deg the module's cap reaches the top run
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16

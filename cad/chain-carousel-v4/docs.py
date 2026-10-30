@@ -105,7 +105,7 @@ because the top shafts are still at the bottom of their slots.""",
      or the seat without forcing either.
 5. Guide cradle (`stl/cradle.stl`, v3's turned over): press its two vee dowels in, bond the M4 washer into the flat pocket,
    bolt the cradle's arm onto the cradle post's top end and the post onto the station rail beside the P16. Lower the EC
-   into it: its three balls sit in the cone, the vee and on the washer. It parks {PARK_DROP:.0f} mm below the passing augers.
+   into it: its three balls sit in the cone, the vee and on the washer. It parks {PARK_DROP:.0f} mm below its dock, clear of the passing augers.
 6. Station rails (`stl/latch_rail.stl`, one part on its own post on the second station rail): the latch rail, whose face
    runs along the travel {LATCH_TRAVEL} mm inside the carriages' latch followers' tips with 25 degree ramps at both ends,
    and the tube rest, 0.5 mm under the passing augers' tubes behind the keeper. At the station the rail holds the latch

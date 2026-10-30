@@ -19,7 +19,7 @@ Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop o
 
 The frame uses nine bars of one VEVOR 10-pack of 1000 mm 2020 (v4's frame is wider and taller than v3's, because
 the modules ride outside the loop). Cut four posts of 716 mm (one bar each; two of the offcuts give the cradle post,
-224 mm, and the station-rails post, 255 mm), four long rails of 417.7 mm (two per bar), and six rails of
+216 mm, and the station-rails post, 255 mm), four long rails of 417.7 mm (two per bar), and six rails of
 340 mm (two per bar): four cross rails and the two station rails. Square every cut.
 
 Lay two long rails on the bench, 360 mm apart centre to centre, with a cross rail between them at each
@@ -202,7 +202,7 @@ The station, under the bottom run:
      or the seat without forcing either.
 5. Guide cradle (`stl/cradle.stl`, v3's turned over): press its two vee dowels in, bond the M4 washer into the flat pocket,
    bolt the cradle's arm onto the cradle post's top end and the post onto the station rail beside the P16. Lower the EC
-   into it: its three balls sit in the cone, the vee and on the washer. It parks 20 mm below the passing augers.
+   into it: its three balls sit in the cone, the vee and on the washer. It parks 28 mm below its dock, clear of the passing augers.
 6. Station rails (`stl/latch_rail.stl`, one part on its own post on the second station rail): the latch rail, whose face
    runs along the travel 4.5 mm inside the carriages' latch followers' tips with 25 degree ramps at both ends,
    and the tube rest, 0.5 mm under the passing augers' tubes behind the keeper. At the station the rail holds the latch

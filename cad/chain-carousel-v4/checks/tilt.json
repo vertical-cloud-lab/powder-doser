@@ -3,13 +3,15 @@
  "clashes": [],
  "poses": {
   "ext_mm": [
-   0.0,
-   5.0,
-   10.0,
+   0,
+   5,
+   10,
    11.5,
-   15.0,
+   15,
    19.5,
-   20.0
+   23,
+   27.5,
+   28
   ],
   "tilt_deg": [
    5,
@@ -23,5 +25,6 @@
    50
   ]
  },
- "note": "2026-10-29/30: the rise (ext) poses ran first and all were clean, but that run was stopped at the agent's 30-minute background limit before the tilt angles; the tilt angles then ran on their own (check_interference.tilt(exts=())), also clean. clashes lists both runs."
+ "park_drop_mm": 28.0,
+ "note": "2026-10-30, at the 28 mm park: the rise (ext, 0 parked to 28 docked) and the tilt angles ran as three processes (check_interference.tilt with subsets), all clean."
 }

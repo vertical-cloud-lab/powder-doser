@@ -436,3 +436,8 @@ SIDE_TAB_FOOT_GAP_V4 = 1.0           # v4's side tabs: the foot 1 mm outside the
 SIDE_TAB_FOOT_GAP = SIDE_TAB_FOOT_GAP_V4
 LUG_U = LUG_U4                       # parts.clevis_pin sizes the hinge pins' grip from LUG_U
 TUBE_REST_X = (106.0, 116.0)         # the station's rest under the auger tube (Sam's x, behind the keeper), face 0.5 mm off the tube
+
+# Park depth (2026-10-30, check_interference --sweep): at v3's 20 mm the parked EC v4's arms still straddle the auger, and
+# the augers passing the station hit them 2 links either side of it (up to 242 mm3). 8 mm deeper cleared every pose tried
+# (checks/sweep.json, park_drop_test). The P16's base pin drops with it (the base clevis rises 20.2 mm above its rail).
+PARK_DROP = 28.0
