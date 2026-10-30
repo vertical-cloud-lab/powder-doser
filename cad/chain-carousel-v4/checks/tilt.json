@@ -1,0 +1,27 @@
+{
+ "check": "tilt",
+ "clashes": [],
+ "poses": {
+  "ext_mm": [
+   0.0,
+   5.0,
+   10.0,
+   11.5,
+   15.0,
+   19.5,
+   20.0
+  ],
+  "tilt_deg": [
+   5,
+   10,
+   15,
+   20,
+   25,
+   30,
+   38,
+   45,
+   50
+  ]
+ },
+ "note": "2026-10-29/30: the rise (ext) poses ran first and all were clean, but that run was stopped at the agent's 30-minute background limit before the tilt angles; the tilt angles then ran on their own (check_interference.tilt(exts=())), also clean. clashes lists both runs."
+}

@@ -163,7 +163,7 @@ The module swings up through the carriage's opening into the loop. At about 55°
 | Check | What moves | Result |
 |---|---|---|
 | Home | Nothing: every pair of the 825 instances (the HR-100A left out, see `--scale`) | **0** |
-| `--tilt` | The EC rising out of the cradle (0-20 mm, the door opening over the last 6), then module 1 + EC + P16 tilting 5-50° | @@TILT_V4@@ |
+| `--tilt` | The EC rising out of the cradle (0-20 mm, the door opening over the last 6), then module 1 + EC + P16 tilting 5-50° (16 poses) | **0** |
 | `--swap` | Module 4's auger pulled 5-140 mm straight off its plate, out through the open side hatch; then the whole carriage out as in v3 | **0** |
 | `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses); every latch rides the station's rail and every module its tube rest | @@SWEEP_V4@@ |
 | `--scale` | The HR-100A with its pan at the dose point | 14 instances of 11 parts in its way (item 6) |
