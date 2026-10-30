@@ -907,13 +907,14 @@ def scale_fit() -> None:
     groups = [("the EC, its guide cradle and the P16 under the station", ("Electronics carriage", "NEMA 11", "pinion", "Guide cradle", "Cradle post",
                                                                          "Actuonix", "Actuator base clevis", "Station rail", "Dowel", "Magnet",
                                                                          "Shoulder screw", "M3 locknut")),
-              ("the frame's front base rail, a post and its brackets", ("Base cross rail front", "Base rail", "Post", "Corner bracket", "Leveling foot")),
-              ("the front hold-down", ("Hold-down",))]
+              ("the frame's front base cross rail", ("Base cross rail front",))]   # v4's wider frame clears the posts and the hold-down
     pl = L.placements(L.State(ext=0.0))
     red = {k: (0.9, 0.12, 0.1) for k, p in keyed(pl) if p.name in contacts}
     red.update({k: bal[p.key] for k, p in keyed(pl) if p.key in bal})
     op = {k: (0.5 if p.key == "hr100a_body" else 0.3) for k, p in keyed(pl) if p.group == "scale"}
     for title, keys in groups:
+        if not any(nm.startswith(keys) or any(k in nm for k in keys) for nm in contacts):
+            continue
         near = min((v for nm, v in contacts.items() if nm.startswith(keys) or any(k in nm for k in keys)), default=0.0)
         for _ in range(30):
             c.v.show(pl, colors=red, hide=hidden(pl, hide_fn), opacity=op)
@@ -921,7 +922,7 @@ def scale_fit() -> None:
             c._emit(caption(c.v.image(), f"In the way: {title}", f"the balance first meets it {-near:.0f} mm before the dose point", TAG))
     for _ in range(48):
         c._emit(caption(c.v.image(), "The EC docks 2 mm behind the outlet and its guide and P16 stand under it: inside the breeze break's 86 mm radius",
-                        "fitting the HR-100A means moving that column, opening the frame's front, raising the hold-down: see README, scale fit", TAG))
+                        "fitting the HR-100A means moving that column and opening the frame's front base rail: see README, item 6", TAG))
     c.done()
 
 

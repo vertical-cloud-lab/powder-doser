@@ -162,38 +162,53 @@ ITEMS = [
      "back bracket (dock electromagnet, ball C), the base (three seat balls) and the slotted clevis (stl/electronics_carriage_v3.stl); the "
      "doser's NEMA 11 and 12 V solenoid move into it", "printed", "stl/electronics_carriage_v3.stl", "", 1.10, "filament (about 55 g)", (8,),
      "Printed"),
-    (78, ("kc_ball",), 6, "Precision ball, 1/4 in, hardened 52100 chrome steel, grade 25: 2 per mounting plate (the dock), 4 on the EC (the flat "
-     "and the parking seat), 6 spare", "McMaster-Carr", "1/4 in 52100 ball", f"{MC}/precision-balls/", 0.30, "estimate (v3 part, McMaster lookup pending)", (8, 9), "Station"),
-    (79, ("vee_dowel",), 2, "Dowel pin, hardened steel, 1/8 x 5/16 in: two per vee groove (the EC's dock vee and the cradle's), 2 spare",
-     "McMaster-Carr", "1/8 x 5/16 dowel", f"{MC}/dowel-pins/", 0.25, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
-    (80, ("kc_magnet",), None, "Neodymium magnet D44-N52, 1/4 x 1/4 in: under the EC's cone and vee, pulls each plate ball into its seat",
-     "K&J Magnetics", "D44-N52", "https://www.kjmagnetics.com/d44-n52-neodymium-cylinder-magnet", 1.10, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
-    (81, ("flat_pad",), None, "Steel flat washer, M4, case-hardened if available, bonded in the cradle floor (the parking seat's flat)",
-     "McMaster-Carr", "M4 washer", f"{MC}/washers/", 0.20, "estimate (v3 part, McMaster lookup pending)", (8,), "Station"),
+    (78, None, 18, "Precision ball, 1/4 in, hardened 52100 chrome steel (Rockwell C60, ground and polished, diameter +/-0.00005 in; "
+     "McMaster gives no ABMA grade), pack of 2: 36 used (2 per mounting plate for the dock, 4 on the EC for the flat and the parking "
+     "seat, 6 spare). The only 1/4 in 52100 ball McMaster lists; its 6 mm 52100 balls are $5.87 per 50 (9292K41) if the seats are "
+     "redrawn for 6 mm", "McMaster-Carr", "9528K53", f"{MC}/9528K53/", 6.28, "verified 2026-10-29 (McMaster page, logged out)", (8, 9), "Station"),
+    (79, None, 1, "Dowel pin, hardened alloy steel (Rockwell C47 min.), 1/8 x 5/16 in, pack of 100: 6 used (two per vee groove, the "
+     "EC's dock vee and the cradle's, 2 spare)", "McMaster-Carr", "98381A216", f"{MC}/98381A216/", 16.11, "verified 2026-10-29 (McMaster page, logged out)", (8,), "Station"),
+    (80, ("kc_magnet",), None, "Neodymium magnet D44-N52, 1/4 x 1/4 in, axially magnetized, Ni-Cu-Ni: under the EC's cone and vee, pulls "
+     "each plate ball into its seat ($0.86 each below 25)", "K&J Magnetics", "D44-N52",
+     "https://www.kjmagnetics.com/d44-n52-neodymium-cylinder-magnet", 0.86, "verified 2026-10-29 (K&J page)", (8,), "Station"),
+    (81, None, 1, "Steel flat washer, M4, 4.3 x 9 x 0.8 mm (0.7 to 0.9), black super-corrosion-resistant coated steel, Rockwell B75, "
+     "pack of 10: 1 used, bonded in the cradle floor (the parking seat's flat). Not hardened: McMaster's general-purpose metric washers "
+     "include no case-hardened steel. The CAD draws an 8 x 1 mm pad, so the pocket needs 9.2 x 0.8", "McMaster-Carr", "93413A120",
+     f"{MC}/93413A120/", 9.42, "verified 2026-10-29 (McMaster page, logged out)", (8,), "Station"),
     (82, ("armature_v3",), None, "Armature, low-carbon steel 14 ga (1.9 mm), 31.5 x 22 mm, two countersunk M3 holes (dxf/armature_v3.dxf): "
      "the flat of the dock and the electromagnet's target", "SendCutSend", "dxf/armature_v3.dxf", "https://sendcutsend.com/", 3.50,
      "estimate (SendCutSend quotes on upload)", (9,), "Station"),
     # ---- v3: outlet doors (item 4) and plate latches (item 4a)
     (83, ("door_housing", "door_shutter"), None, "Outlet door housing and shutter, PETG (one pair per module)", "printed",
      "stl/door_housing.stl, stl/door_shutter.stl", "", 0.10, "filament", (9,), "Printed"),
-    (84, ("door_spring",), 3, "Compression spring, stainless, 3 mm OD, about 16 mm free, about 0.06 N/mm (door: 0.18 N shut, 0.69 N open)",
-     "McMaster-Carr", "3 mm OD compression spring", f"{MC}/compression-springs/", 0.80, "estimate (v3 part, McMaster lookup pending)", (9,), "Doors"),
-    (85, ("m2x8_shcs",), 4, "M2 x 8 socket head screw, 18-8 (door housing to the plate) + M2 brass heat-set insert in the plate", "McMaster-Carr",
-     "M2 x 8 SHCS + M2 insert", f"{MC}/", 0.25, "estimate (v3 part, McMaster lookup pending)", (9,), "Doors"),
+    (84, None, 15, "Compression spring, 316 stainless, 3 mm OD, 15 mm free, 0.25 mm wire, 0.03 lbf/mm (0.13 N/mm), 7.3 mm long at its "
+     "0.2 lb max. load, pack of 1: 15 used (13 doors + 2 spare). Nearest McMaster spring to the 16 mm, 0.06 N/mm drawn, which no "
+     "listed spring matches (none reaches the 5.5 mm open length): lengthen the spring pocket 2 mm (13.5 shut, 7.5 open: about "
+     "0.2 N shut, 0.9 N open); OD +/-0.4 mm, so a bore of about 3.6 mm", "McMaster-Carr", "8969T21", f"{MC}/8969T21/", 4.88, "verified 2026-10-29 (McMaster page, logged out)", (9,), "Doors"),
+    (85, None, 1, "M2 x 8 socket head screw, 18-8, pack of 100 (91292A832, $7.74) + M2 brass heat-set insert, 3.2 mm long for a 3.2 mm "
+     "hole, pack of 50 (94459A767, $7.73): 26 of each used (door housing to the plate)", "McMaster-Carr", "91292A832 + 94459A767",
+     f"{MC}/91292A832/", 15.47, "verified 2026-10-29 (McMaster page, logged out)", (9,), "Doors"),
     (86, ("latch_bolt",), None, "Latch bolt, PETG (one per carriage)", "printed", "stl/latch_bolt.stl", "", 0.03, "filament", (10,), "Printed"),
-    (87, ("latch_follower",), 3, "Dowel pin, hardened steel, 3 x 18 mm: the latch bolt's follower", "McMaster-Carr", "3 x 18 dowel",
-     f"{MC}/dowel-pins/", 0.30, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),
-    (88, ("latch_spring",), 3, "Compression spring, stainless, 3 mm OD, about 12.7 mm free, about 0.25 N/mm (latch: 0.7 N home, 1.8 N open)",
-     "McMaster-Carr", "3 mm OD compression spring", f"{MC}/compression-springs/", 0.80, "estimate (v3 part, McMaster lookup pending)", (10,), "Doors"),
+    (87, None, 1, "Dowel pin, hardened 52100 alloy steel, 3 x 18 mm, pack of 50: 16 used (the latch bolt's follower, 13 + 3 spare)",
+     "McMaster-Carr", "91595A118", f"{MC}/91595A118/", 12.10, "verified 2026-10-29 (McMaster page, logged out)", (10,), "Doors"),
+    (88, None, 16, "Compression spring, 316 stainless, 3 mm OD, 15 mm free, 0.3 mm wire, 0.06 lbf/mm (0.27 N/mm), 8.2 mm long at its "
+     "0.4 lb max. load, pack of 1: 16 used (13 + 3 spare). Nearest McMaster spring to the 4 mm OD x 12.7 mm, 0.25 N/mm drawn (it lists "
+     "no 4 mm OD metric compression spring, and none reaches the 5.5 mm open length): pocket 3 mm longer (13 home, 8.5 open: about "
+     "0.5 N home, 1.75 N open), bore about 3.6 mm (OD +/-0.4 mm)", "McMaster-Carr", "8969T261", f"{MC}/8969T261/", 4.88, "verified 2026-10-29 (McMaster page, logged out)", (10,), "Doors"),
     # ---- v3: enclosure (item 5) and side tabs (5a)
-    (89, None, 2, "Clear cast acrylic sheet, 1/8 in, 24 x 48 in: two side panels, front, back, top and the two hatch doors (1.25 m^2), "
-     "laser cut from dxf/", "McMaster-Carr", "1/8 in clear cast acrylic 24 x 48", f"{MC}/acrylic/", 75.0, "estimate (v3 part, McMaster lookup pending)", (12,), "Enclosure"),
-    (90, ("standoff", "standoff_back"), 4, "Nylon spacer for M5: 10 mm OD x 6 mm (24) and x 30 mm (6, the back panel, past the drive sprocket)",
-     "McMaster-Carr", "M5 nylon spacers", f"{MC}/spacers/", 0.35, "estimate (v3 part, McMaster lookup pending)", (12,), "Enclosure"),
+    (89, None, 2, "Clear cast acrylic sheet, 1/8 in (-0.025/+0.015 in), 24 x 48 in, scratch and UV resistant: two side panels, front, "
+     "back, top and the two hatch doors (1.25 m^2), laser cut from dxf/", "McMaster-Carr", "8560K262", f"{MC}/8560K262/", 70.99, "verified 2026-10-29 (McMaster page, logged out)",
+     (12,), "Enclosure"),
+    (90, None, 1, "Nylon spacers for M5, 10 mm OD: 20 x 6 mm (93657A075, $0.89 each at 10 or more; 18 used) and 8 x 25 mm (93657A093, "
+     "$1.78 each; 6 used, the back panel past the drive sprocket). The CAD's back standoff is 25.6 mm (this line said 30): 25 mm leaves "
+     "2.4 mm to the sprocket's hub instead of 3", "McMaster-Carr", "93657A075 + 93657A093", f"{MC}/93657A075/", 32.04, "verified 2026-10-29 (McMaster page, logged out)", (12,),
+     "Enclosure"),
     (91, None, 30, "M5 x 16 button head screw + T-nut (item 21) per standoff (panels to the frame), with blue threadlocker", "BelMetric",
      "M5 x 16 BHCS", "https://www.belmetric.com/", 0.15, E, (12,), "Enclosure"),
-    (92, None, 4, "Stainless butt hinge, 1-1/2 x 1-1/2 in (hatch doors) + 8 M3 x 8 screws and nylocks", "McMaster-Carr", "1-1/2 in butt hinge",
-     f"{MC}/hinges/", 4.50, "estimate (v3 part, McMaster lookup pending)", (12,), "Enclosure"),
+    (92, None, 4, "Butt hinge, polished 304 stainless, 1-1/2 in tall, 5/8 in leaves (1-1/4 in open), 0.060 in thick, fixed pin, two "
+     "countersunk holes per leaf for No. 8 screws (hatch doors) + 16 M4 flat head screws and nylocks (the line had 8 M3): the nearest "
+     "McMaster stainless hinge to the 1-1/2 x 1-1/2 in noted", "McMaster-Carr", "1586A22", f"{MC}/1586A22/", 12.29, "verified 2026-10-29 (McMaster page, logged out)", (12,),
+     "Enclosure"),
     (93, ("hatch_front", "hatch_side"), None, "Hatch door knob (printed, bonded to the acrylic)", "printed", "", "", 0.05, "filament", (12,),
      "Printed"),
     # ---- v3: the scale (item 6)

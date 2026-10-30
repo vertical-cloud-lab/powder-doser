@@ -104,9 +104,11 @@ The plate now hangs under the carriage on the bottom run, and nothing is under i
 
 ### 6, in v4: the scale still doesn't fit
 
-The dose point is still on the hinge axis, now under the bottom run, and EC v4's column (the cradle, the P16 and the EC) stands right under it, inside the HR-100A's breeze break. [`checks/scale.json`](checks/scale.json) lists every part in the balance's way: @@SCALE_V4@@ So v4 doesn't solve item 6 either. The fixes v3's README lists (move the EC's column out of the breeze break, open the frame's front, drop the dose through the breeze break's top door) apply to both.
+The dose point is still on the hinge axis, now under the bottom run, and EC v4's column (the cradle, the P16 and the EC) stands right under it, inside the HR-100A's breeze break. [`checks/scale.json`](checks/scale.json) lists every part in the balance's way: the front base cross rail, the station rail, the P16 with its base clevis, pin and locknut, EC v4 with its NEMA 11 and pinion, and the guide cradle on its post. That is 11 kinds of part (14 instances), against v3's 19. v4's wider frame clears the posts, the +y base rail and the front hold-down, which stopped v3's balance 150-180 mm out; what is left in the way is the EC's column. So v4 doesn't solve item 6 either. The fixes v3's README lists (move the EC's column out of the breeze break, open the frame's front, drop the dose through the breeze break's top door) apply to both.
 
-![The HR-100A where it has to stand](renders/rig_scale.png)
+Sliding the balance in from the front (`render.py --scale-fit`), it first meets the front base cross rail 181 mm before the dose point, then EC v4 (89 mm), the guide cradle (86), the NEMA 11 (62), the P16 and its base clevis (59, 55), the cradle post and station rail (43), the P16's base pin (36) and the pinion (8): the same column, at the same distances, as v3.
+
+![Scale fit](renders/features/scale_fit.gif)
 
 ### Tilt: 50° at most
 
@@ -147,7 +149,7 @@ The module swings up through the carriage's opening into the loop. At about 55°
 | Side tabs | Feet 1 mm outside the tongues | 4 mm | The auger's pull goes into the frame |
 | Frame | 418 x 380 mm, top rail at 751 | 418 x 244, 711 | The loop's envelope carries the modules |
 | Enclosure | 455 x 398 x 780 mm | 455 x 262 x 740 | |
-| Cost | @@BOM_TOTAL_V4@@ ([BOM.md](BOM.md)) | @@BOM_TOTAL_V3@@ | Lines still marked estimate add up to @@BOM_EST_V4@@ |
+| Cost | $1,983.89, or $1,842.50 without test gear ([BOM.md](BOM.md)) | $1,920.33 | Lines still marked estimate add up to $306.45 |
 
 ## Checks
 
@@ -159,11 +161,12 @@ The module swings up through the carriage's opening into the loop. At about 55°
 | `--tilt` | The EC rising out of the cradle (0-20 mm, the door opening over the last 6), then module 1 + EC + P16 tilting 5-50° | @@TILT_V4@@ |
 | `--swap` | Module 4's auger pulled 5-140 mm straight off its plate, out through the open side hatch; then the whole carriage out as in v3 | **0** |
 | `--sweep --step 2` | The chain indexed one module the machine's way in 2-link steps (5 poses); every latch rides the station's rail and every module its tube rest | @@SWEEP_V4@@ |
-| `--scale` | The HR-100A with its pan at the dose point | @@SCALE_CHECK_V4@@ |
+| `--scale` | The HR-100A with its pan at the dose point | 14 instances of 11 parts in its way (item 6) |
 
 What the checks found and changed while v4 was drawn:
 - **The top rail's post-head brackets hit the side plates.** The top rail moved up to 751 mm.
 - **The plate's back strip grazed the carriage's opening at 5-10° of tilt.** The opening widens to ±27.6 mm over Sam's x 52-104.
+- **The latch pin ran through its own follower** (26 mm³). The checks skip that pair by design, so the BoM lookup found it, when it priced the pin at the drawn 22 mm. The pin is now 4 x 14 mm and its carrier block starts at Sam's x 110, 2.5 mm clear of the follower.
 
 ## Things to look at before ordering or printing
 
@@ -173,7 +176,8 @@ What the checks found and changed while v4 was drawn:
 4. **The carriage is 351 mm long** and prints only on the H2D (on the bed's diagonal), as v2's.
 5. **The frame is bigger:** the side plates are 380 mm wide (v3: 244). Both still come out of one 24 x 36 in sheet.
 6. **The scale doesn't fit** (item 6), as in v3.
-7. **The new hardware:** McMaster's part numbers and prices are in BOM.md where the lookup found them; the rest are marked estimate.
+7. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29), with v3's caveats: the door and latch springs McMaster sells need longer pockets than the CAD draws, and the 1/4 in balls come in packs of 2 ($113 for 36; see v3's README).
+8. **The latch pin is 4 x 14 mm** (McMaster 91595A158). The BoM lookup found the 22 mm pin first drawn ran straight through the 3 mm follower (26 mm³); the pin is now shorter and its carrier block starts 8 mm further forward, inside the same housing.
 
 ## How it goes together
 

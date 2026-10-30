@@ -90,7 +90,10 @@ def door_shutter_v4() -> cq.Workplane:
 
 
 # ---------------------------------------------------------------- latch v4 (a pin in the keeper's hole)
-LATCH4_TAIL = (118.0, 129.0)          # the bolt's printed carrier block (x), round the pin's tail and the follower
+LATCH4_TAIL = (110.0, 129.0)          # the bolt's printed carrier block (x), round the pin's tail and the follower. It starts at
+                                      # 110 (was 118): the 22 mm pin ran through the follower at x 120 (26 mm3, found by the BoM
+                                      # lookup); the pin is now 4 x 14, its tail pressed 6 mm into the block, 2.5 mm short of the follower
+LATCH4_PIN_L = 14.0                   # McMaster 91595A-series 4 x 14 mm dowel
 
 
 def latch_bolt_v4() -> cq.Workplane:
@@ -99,7 +102,7 @@ def latch_bolt_v4() -> cq.Workplane:
     kx1 = LATCH4_KEEPER_X[1]
     tip = kx1 - LATCH4_ENGAGE
     d, zp = LATCH4_PIN
-    pin = cq.Workplane("YZ").center(LATCH_Y, zp).circle(d / 2).extrude(LATCH4_TAIL[0] + 6.0 - tip).translate((tip, 0, 0)).edges("<X").chamfer(0.5)
+    pin = cq.Workplane("YZ").center(LATCH_Y, zp).circle(d / 2).extrude(LATCH4_PIN_L).translate((tip, 0, 0)).edges("<X").chamfer(0.5)
     blk = _box(LATCH4_TAIL[0], LATCH4_TAIL[1], LATCH_Y - 4.0, LATCH_Y + 4.0, zp - 2.8, zp + 2.8)
     blk = blk.cut(_cyl(1.5, 10.0, LATCH_FOLLOW_X, LATCH_Y, zp - 5.0))
     return pin.union(blk)

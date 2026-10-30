@@ -230,7 +230,7 @@ That is 19 kinds of part (27 instances), plus a leveling foot it reaches only in
 | Enclosure | 3 mm cast acrylic on 6 mm (back 30 mm) spacers; 455 x 262 x 740 mm; hatches 180 x 230 (front) and 330 x 230 (side) | Drafts off the balance and the powder; the side hatch passes a whole carriage |
 | Side tabs | Lips over the tongues' bottom 8 mm, foot 4 mm outside, two M5 x 8 into tapped side plates | The swap's pushes go to the frame; the swap slide frees them |
 | Scale | A&D HR-100A, drawn at the dose point | Collides with the station (item 6) |
-| Cost | BOM_TOTAL ([BOM.md](BOM.md)) | Lines still marked estimate add up to BOM_EST |
+| Cost | $1,920.33, or $1,778.94 without test gear ([BOM.md](BOM.md)) | Lines still marked estimate add up to $146.45 |
 
 ## Checks
 
@@ -261,7 +261,12 @@ What the checks found and changed this round:
 3. **Reprint all 13 mounting plates.** v3's plate has pockets and a keeper that Sam's existing plate doesn't.
 4. **The scale doesn't fit (item 6).** Weighed doses wait for the station that makes room for the balance (T8).
 5. **The acrylic panels are laser cut** (SendCutSend or the BYU shop), from `dxf/`.
-6. **The new McMaster parts:** McMaster's own part numbers and prices are in BOM.md where the lookup found them; the rest are marked estimate.
+6. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29). Three differ from the CAD, and the balls are dear:
+   - **Door spring:** McMaster has no 3 mm OD spring that compresses to the door's 5.5 mm open length. Its nearest, 8969T21 (15 mm free, 0.13 N/mm), needs the spring pocket 2 mm longer (13.5 mm shut, 7.5 open: about 0.2 N shut, 0.9 N open), and the housing has only 0.8 mm left under the 45 mm corner rule. Either rework the housing or buy a 16 mm, 0.06 N/mm spring from a spring maker.
+   - **Latch spring:** McMaster lists no 4 mm OD metric spring. Its 3 mm 8969T261 (15 mm free, 0.27 N/mm) needs the pocket 3 mm longer and a 3.6 mm bore.
+   - **Parking-seat flat:** the M4 washer is 9 x 0.8 mm and not hardened (McMaster's metric washers include no case-hardened one); the cradle's pocket needs to be 9.2 x 0.8, not 8 x 1.
+   - **Balls:** McMaster's only 1/4 in 52100 ball (9528K53) comes in packs of 2, so the 36 balls cost $113. Its 6 mm 52100 ball (9292K41) is $5.87 per 50; the seats are drawn from `KC_BALL_D`, so switching is one parameter and a re-run of the checks.
+   - The hatch hinges are 1-1/4 in open, not 1-1/2, with No. 8 holes (16 M4 flat heads).
 
 ## How it goes together
 
@@ -312,5 +317,5 @@ xvfb-run -a python render.py --stills && xvfb-run -a python render.py --movie &&
 - **Not built.** Every number is a prediction until the test plan runs.
 - **Onshape:** no document was created or updated. The company's API calls for the year are used up (402 on the first call, logged in `onshape/api_calls.jsonl`). Sam's Aug 27 carriage came from his video, so its cone sizes are read off the frames, not measured.
 - **The scale doesn't fit** (item 6). Sam asked to see why before the station moves.
-- **The vendors' own CAD:** the P16, the NEMA 34 and the McMaster screws and nuts are v2's vendor geometry (v2's committed component STEPs). The new McMaster parts (balls, dowels, springs, spacers, hinges) are drawn from their catalogue dimensions.
+- **The vendors' own CAD:** the P16, the NEMA 34 and the McMaster screws and nuts are v2's vendor geometry (v2's committed component STEPs). The new McMaster parts (balls, dowels, springs, spacers, hinges) are drawn from their catalogue dimensions; the three that differ from the CAD are listed under "Things to look at".
 - **Not sliced in Bambu Studio this round.** The STLs are exported for the new printed parts (EC v3, plate v3, cradle, door, latch, rail, side tabs, turn buttons). EC v3's ears need a 45° chamfer under them, which they have; nothing else overhangs.
