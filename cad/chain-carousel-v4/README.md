@@ -44,7 +44,7 @@ Sam asked for a version of the auger carriage that holds the augers on the outsi
 The EC now docks from outside the loop, so it meets the auger before the plate.
 
 - **EC v4** is Sam's Oct 13 carriage turned over (mirrored through the auger's axis), so its NEMA 11 and pinion sit 32.25 mm beyond the auger, as in v2 and v3.
-- **Two arms reach past the auger** (|y| 15.5-23.5, between the plate's clamp rings) to the plate's auger-side face:
+- **Two arms reach past the auger** (|y| 15.5-23.5: about 1 mm outside the clamp rings, inside the plate's ±25 mm edge) to the plate's auger-side face:
   - the +y arm carries the **cone** (A) and **ball C**;
   - the -y arm carries the **vee** of two dowels (B);
   - a D44-N52 magnet sits behind each of the three.
@@ -127,7 +127,7 @@ The module swings up through the carriage's opening into the loop. At about 55°
    - Its tongues enter the hold-downs (v2's).
    - The station's rail draws its latch pin back, and the module drops 0.5 mm onto the tube rest.
 2. **Rise.** The P16 lifts EC v4 out of its cradle.
-   - The guide walls keep it square; its arms pass either side of the auger.
+   - The guide walls keep it square (with the P16 base stop v3's simulations call for); its arms pass either side of the auger.
    - In the last 6 mm its finger pushes the outlet door open.
    - In the last 3 mm the pinion turns slowly, so its teeth find the 44T gear's gaps (v2's docking seek).
 3. **Seat.** The plate's balls seat in the cone and the vee, and ball C seats on the washer. The EC lifts the module 0.5 mm off its rest, so the module's weight now sits on the dock. The P16 backs off so its pin floats in the slots.

@@ -216,7 +216,7 @@ That is 19 kinds of part (27 instances), plus a leveling foot it reaches only in
    - Its tongues enter the hold-downs (v2's).
    - The station's rail draws its latch bolt back. The plate is free, resting on the carriage.
 2. **Rise.** The P16 lifts the EC out of its cradle.
-   - The guide walls keep it square while it leans on the front wall.
+   - The guide walls keep it square while it leans on the front wall. (The simulations say this needs a stop and spring at the P16's base too: item 3.)
    - In the last 6 mm its finger lifts the outlet door.
    - In the last 3 mm the dock electromagnet comes on and the pinion turns slowly, so its teeth find the 44T gear's gaps (v2's docking seek).
 3. **Seat.** The plate's balls seat in the cone and the vee, and ball C seats on the armature. The P16 backs off 1 mm so its pin floats in the slots; the magnets hold the dock.
