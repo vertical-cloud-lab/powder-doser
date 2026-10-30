@@ -70,6 +70,7 @@ Sam's original intent: the EC has a guide, almost like kinematic couplings on th
   - The EC parks on that seat 20 mm under the passing carriages, so its parked position repeats as well as the dock does.
   - Side walls run 0.3 mm off the EC's body, with a front wall 0.3 mm ahead of it.
 - **The rise.** The P16 lifts the EC through a pin under its back half, 6 mm behind its centre of mass. The EC leans on the front wall while it rises, and the walls hold it square until its balls are inside the dock's cone and vee.
+- **The simulations show the front wall isn't enough on its own** (item 3). The P16 swings freely on its base pin, so the EC pivots on the wall's top edge and topples. A stop with a 0.3 N·m spring at the P16's base, holding it vertical while the EC rises, fixes it in the model; it isn't drawn yet.
 - **No back wall.** The tilt carries the EC backward and up out of the cradle, parallel to the side walls.
 - **What replaced v2's U-yoke.** v2's U-yoke with stub pins at the EC's centre-of-mass height, and its approach fork, are gone. The guide does their job: the EC is never balanced on its pin unsupported.
 - **The pin rides in 2 mm slots (lost motion).** The P16 can stop anywhere near the dock or the seat without pushing on either. The magnets hold the dock and gravity holds the seat.
@@ -83,7 +84,21 @@ Sam's original intent: the EC has a guide, almost like kinematic couplings on th
 
 ### 3. Simulations of the new interface
 
-See [sim/README.md](sim/README.md), which has the model, each run, the plots, the video and what it changed. SIM_SUMMARY
+Sam asked for simulations of how the new interface would go. [sim/README.md](sim/README.md) has the models (Kelvin-clamp statics with friction, a magnetostatic model of the seat magnets, and a MuJoCo model of the EC rising, capturing, seating, tilting, dosing and parking), each run, the plots and the video. **As drawn, the station doesn't work yet: the simulations found three problems and a fix for each, and the fixes work in the model. They are not in the CAD yet; they are the first changes for the next round.**
+
+- **As drawn, the EC topples in its guide.** The P16 is pinned at both ends and swings freely, so nothing holds the EC's bottom. It leans onto the front wall's top edge and pivots there (28°, the P16 at its 50 N limit). The fix that works in the model is a stop at the P16's base that holds it vertical, with a 0.3 N·m torsion spring. A back guide under the EC's base for the first 15 mm of the rise would also work.
+- **The door finger overlaps the push strip by only 0.8 mm.** A leaning EC wedged the finger against the strip's face (7.9 N), and the door opened only 1 mm. A 1.5 mm foot on the strip and the finger extended to x 0 give 2.9 mm of overlap.
+- **With both fixes, the full cycle works** with the carriage 1 mm off its index: the EC seats, tilts to 29.7°, stays within 0.0003 mm of its seat while dosing, comes back, undocks and parks. The P16 peaks at 9.2 N (rated 50 N).
+- **Capture range: ±0.5 mm along the run as drawn**, which covers the index's ±0.5 mm; ±1.2 mm if the EC can float ±3 mm along the run. Beyond 1.25 mm the ball lands on the cone's rim, whose 3.49 mm mouth can't grow under a plate 1.6 mm away.
+- **Dock holding: the motor stalls before a ball lifts.** With the seat magnets and the coil, a ball lifts only at 13.9-14.7 N of separating force at the mesh, against the NEMA 11's 3.7 N at 450 mA (v2: 7.0 N at 90°).
+- **But the dock slides sideways before the motor stalls.** The mesh's tangential force slides ball B in its lightly loaded vee at 1.3-1.7 N. Dosing needs 0.75 N, so dosing is fine; a jam is not. About 8 N on each seat ball (a bigger magnet under the cone, and the vee's magnet moved from under the dowels to under the ball) raises that to 3.8-4.6 N, above the stall.
+- **Seat magnets (for T6a):** 3.6 N on the cone's ball (±40 %), but only 0.7 N on the vee's, through its dowels. Coil off, the EC tips back off ball C, so the coil stays on whenever the EC is docked, as `test/chain_rig.py` already does.
+- **The door** opens only in the dock's last 6 mm (0.65 N on the finger), stays open through the tilt, and shuts 14 mm before the EC parks. That is about 4 mm after the balls leave their seats, not before. Upside down, it would take 83 g to open.
+- **The latch** carries 1.7 N upside down (2.2 N on laps), square to its travel, so nothing pushes it back. The rail drags the chain with at most 2.5 N (0.12 N·m at the sprocket).
+
+![Station cycle in MuJoCo, with the fixes](sim/results/station_v3_cycle.gif)
+
+*MuJoCo, with the fixes, carriage 1 mm off its index: the EC rises in its cradle (orange), seats under the plate (blue), tilts with the module to 30°, doses, comes back and parks.*
 
 ### 4. A door on every auger's outlet that the station opens
 
@@ -256,12 +271,13 @@ What the checks found and changed this round:
 
 ## Things to look at before ordering or printing
 
-1. **Measure the seat magnets (T6a) first.** Their pull on a 1/4 in ball through a printed cone, or through two dowels, is an estimate.
-2. **Print EC v3 and the cradle, and check the guide by hand,** before buying the rest. The guide's 0.3 mm clearances need a calibrated printer.
-3. **Reprint all 13 mounting plates.** v3's plate has pockets and a keeper that Sam's existing plate doesn't.
-4. **The scale doesn't fit (item 6).** Weighed doses wait for the station that makes room for the balance (T8).
-5. **The acrylic panels are laser cut** (SendCutSend or the BYU shop), from `dxf/`.
-6. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29). Three differ from the CAD, and the balls are dear:
+1. **The station needs the simulations' three fixes before it is printed** (item 3): the P16's base stop and spring, the door finger's overlap, and about 8 N on each seat ball. They are proposals, simulated but not drawn.
+2. **Measure the seat magnets (T6a) first.** Their pull on a 1/4 in ball through a printed cone, or through two dowels, is an estimate: the model gives 3.6 N at the cone and only 0.7 N at the vee.
+3. **Print EC v3 and the cradle, and check the guide by hand,** before buying the rest. The guide's 0.3 mm clearances need a calibrated printer.
+4. **Reprint all 13 mounting plates.** v3's plate has pockets and a keeper that Sam's existing plate doesn't.
+5. **The scale doesn't fit (item 6).** Weighed doses wait for the station that makes room for the balance (T8).
+6. **The acrylic panels are laser cut** (SendCutSend or the BYU shop), from `dxf/`.
+7. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29). Three differ from the CAD, and the balls are dear:
    - **Door spring:** McMaster has no 3 mm OD spring that compresses to the door's 5.5 mm open length. Its nearest, 8969T21 (15 mm free, 0.13 N/mm), needs the spring pocket 2 mm longer (13.5 mm shut, 7.5 open: about 0.2 N shut, 0.9 N open), and the housing has only 0.8 mm left under the 45 mm corner rule. Either rework the housing or buy a 16 mm, 0.06 N/mm spring from a spring maker.
    - **Latch spring:** McMaster lists no 4 mm OD metric spring. Its 3 mm 8969T261 (15 mm free, 0.27 N/mm) needs the pocket 3 mm longer and a 3.6 mm bore.
    - **Parking-seat flat:** the M4 washer is 9 x 0.8 mm and not hardened (McMaster's metric washers include no case-hardened one); the cradle's pocket needs to be 9.2 x 0.8, not 8 x 1.

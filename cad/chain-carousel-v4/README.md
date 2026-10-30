@@ -49,7 +49,7 @@ The EC now docks from outside the loop, so it meets the auger before the plate.
   - the -y arm carries the **vee** of two dowels (B);
   - a D44-N52 magnet sits behind each of the three.
 - **Plate v4:** two 1/4 in balls pressed into the auger side at Sam's (44, ±19.5), and an **M5 steel washer** bonded flush at (64, 19.5) as the flat. It is still exactly six contacts.
-- **No dock electromagnet.** There is no room for v3's Adafruit 3872 beside the tube. At the station the module hangs under the bottom run and **rests on the EC**, so its weight presses the dock shut, and the three magnets add to it. The simulations check whether that is enough (item 3).
+- **No dock electromagnet.** There is no room for v3's Adafruit 3872 beside the tube. At the station the module hangs under the bottom run and **rests on the EC**, so its weight presses the dock shut, and the three magnets add to it. **The simulations say that isn't enough** (item 3): it needs about 8 N on each ball, or a coil.
 
 | Docked (plate see-through) | 12 mm before seating: the arms pass either side of the auger |
 |---|---|
@@ -65,7 +65,12 @@ v3's cradle, turned over and notched where EC v4's arms pass. The EC parks on it
 
 ### 3. Simulations
 
-See [sim/README.md](sim/README.md). @@SIM_SUMMARY_V4@@
+v4's guide, door and latch are v3's turned over, so v3's simulations ([v3's sim/README.md](../chain-carousel-v3/sim/README.md)) apply to them: **as drawn, the EC topples in its guide** until the P16's base gets a stop and a 0.3 N·m spring, and the door finger needs more overlap with its push strip. v4's own run ([sim/README.md](sim/README.md), statics) is about its dock, which has no coil:
+
+- **The P16 lifts the module off its tube rest** with 4.3 N; the module's 1.25 N weight presses the plate onto the EC's seats.
+- **The motor doesn't stall first.** A ball lifts off at 2.3-3.2 N of separating force at the mesh (0.7-1.5 N if ball C's magnet pulls less than assumed), under the NEMA 11's 3.7 N at 450 mA.
+- **Sideways it holds almost nothing once tilted.** With friction, the EC slides on its seats at 0.5 N at tilt 0 and at about 0 N once tilted: the magnets alone can't carry the along-plate share of the P16's push and the EC's weight.
+- **So v4's dock needs a real preload:** about 8 N on each ball (v3's run shows that holds to 3.8-4.6 N), or a coil after all, and a lower motor current while dosing. This is v4's biggest open question. The MuJoCo docking round the auger was not run.
 
 ### 4, in v4: the outlet door turned over
 
@@ -141,7 +146,7 @@ The module swings up through the carriage's opening into the loop. At about 55°
 | Augers | Outside the loop, on the carriage's outer face | Inside | Item 7: swap an auger without taking its carriage off |
 | Carriage | v2's chain side; a 51.6 mm opening (±27.6 at the plate's back strip), lugs and latch housing on the outer face | v2's with a longer window, pads, a bolt latch | The module tilts up through the carriage |
 | Dock | Kelvin clamp on the plate's auger side: balls at Sam's (44, ±19.5), M5 washer flat at (64, 19.5) | Underside: balls at (30, ±18.5), armature flat | The EC reaches round the auger |
-| Dock preload | The module's weight (it rests on the EC) and three D44-N52 | Two D44-N52 and the Adafruit 3872 electromagnet | No room for the electromagnet beside the tube |
+| Dock preload | The module's weight (it rests on the EC) and three D44-N52: too little, per the simulations | Two D44-N52 and the Adafruit 3872 electromagnet | No room for the electromagnet beside the tube |
 | Latch | 4 mm pin, 4 mm into a 4.2 mm hole; 4.5 mm stroke | Bolt 3 mm over a keeper | The plate hangs under the bottom run |
 | Station rest | Tube rest, 0.5 mm under the tube | None (the module rests on its carriage) | Holds the module while its latch is open |
 | Door | v3's turned over: opens toward the plate | Opens away from the plate | The EC's finger comes from the auger's side |
@@ -170,14 +175,15 @@ What the checks found and changed while v4 was drawn:
 
 ## Things to look at before ordering or printing
 
-1. **The dock has no electromagnet.** Its preload is the module's weight plus three magnets. Measure the seat magnets (T6a) and jam the auger at 30° and 50° (T6c) before anything else: if the dock opens before the NEMA 11 stalls, v4 needs a stronger preload (see sim/README.md).
-2. **Print EC v4 and the cradle and try the arms round a real auger** before buying the rest. The arms pass 1 mm from the plate's clamp rings.
-3. **Reprint all 13 mounting plates:** v4's plate has the auger-side ball pockets, the washer pocket and a keeper with a pin hole.
-4. **The carriage is 351 mm long** and prints only on the H2D (on the bed's diagonal), as v2's.
-5. **The frame is bigger:** the side plates are 380 mm wide (v3: 244). Both still come out of one 24 x 36 in sheet.
-6. **The scale doesn't fit** (item 6), as in v3.
-7. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29), with v3's caveats: the door and latch springs McMaster sells need longer pockets than the CAD draws, and the 1/4 in balls come in packs of 2 ($113 for 36; see v3's README).
-8. **The latch pin is 4 x 14 mm** (McMaster 91595A158). The BoM lookup found the 22 mm pin first drawn ran straight through the 3 mm follower (26 mm³); the pin is now shorter and its carrier block starts 8 mm further forward, inside the same housing.
+1. **The dock has no electromagnet, and the simulations say the module's weight and three magnets aren't enough** (item 3): a ball lifts at 2.3-3.2 N, under the motor's 3.7 N stall, and the EC slides on its seats once tilted. Give each ball about 8 N of preload (or find room for a coil) before printing the plates, then check it with T6a and T6c.
+2. **The station also needs v3's simulated fixes:** the P16's base stop and spring, and the door finger's overlap.
+3. **Print EC v4 and the cradle and try the arms round a real auger** before buying the rest. The arms pass 1 mm from the plate's clamp rings.
+4. **Reprint all 13 mounting plates:** v4's plate has the auger-side ball pockets, the washer pocket and a keeper with a pin hole.
+5. **The carriage is 351 mm long** and prints only on the H2D (on the bed's diagonal), as v2's.
+6. **The frame is bigger:** the side plates are 380 mm wide (v3: 244). Both still come out of one 24 x 36 in sheet.
+7. **The scale doesn't fit** (item 6), as in v3.
+8. **The new hardware is now real part numbers** (McMaster and K&J, read logged out through the Pi on 2026-10-29), with v3's caveats: the door and latch springs McMaster sells need longer pockets than the CAD draws, and the 1/4 in balls come in packs of 2 ($113 for 36; see v3's README).
+9. **The latch pin is 4 x 14 mm** (McMaster 91595A158). The BoM lookup found the 22 mm pin first drawn ran straight through the 3 mm follower (26 mm³); the pin is now shorter and its carrier block starts 8 mm further forward, inside the same housing.
 
 ## How it goes together
 

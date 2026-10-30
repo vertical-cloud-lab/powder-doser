@@ -1,0 +1,1326 @@
+{
+ "note": "Simulated, not built: predictions. See README.md for what each run models.",
+ "masses": {
+  "module_v3_dry_kg": 0.1271,
+  "module_v3_com_mm": [
+   90.1,
+   0.0,
+   -5.1
+  ],
+  "ec_v3_kg": 0.3111,
+  "ec_v3_com_docked_mm": [
+   51.9,
+   -0.1,
+   -34.2
+  ]
+ },
+ "run1_dock_vs_tilt": {
+  "rows": [
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 0.0,
+    "pin": "floating in its slot",
+    "F_open_liftoff_N": 11.79,
+    "F_open_friction_N": 0.61,
+    "F_open_frictionless_N": 0.06,
+    "F_act_N": 0.0,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 0.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.73,
+    "F_open_friction_N": 1.72,
+    "F_open_frictionless_N": 0.57,
+    "F_act_N": 4.62,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 15.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.58,
+    "F_open_friction_N": 1.42,
+    "F_open_frictionless_N": 0.28,
+    "F_act_N": 3.65,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 30.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.46,
+    "F_open_friction_N": 1.3,
+    "F_open_frictionless_N": 0.17,
+    "F_act_N": 3.17,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 45.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.33,
+    "F_open_friction_N": 1.28,
+    "F_open_frictionless_N": 0.17,
+    "F_act_N": 2.84,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 60.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.18,
+    "F_open_friction_N": 1.33,
+    "F_open_frictionless_N": 0.15,
+    "F_act_N": 2.52,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 75.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.02,
+    "F_open_friction_N": 1.33,
+    "F_open_frictionless_N": 0.11,
+    "F_act_N": 2.11,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 86.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 13.9,
+    "F_open_friction_N": 1.34,
+    "F_open_frictionless_N": 0.11,
+    "F_act_N": 1.69,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets + coil",
+    "tilt_deg": 90.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 13.87,
+    "F_open_friction_N": 1.34,
+    "F_open_frictionless_N": 0.11,
+    "F_act_N": 1.54,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 0.0,
+    "pin": "floating in its slot",
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 0.0,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 0.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 1.59,
+    "F_open_friction_N": 0.43,
+    "F_open_frictionless_N": 0.27,
+    "F_act_N": 4.62,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 15.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 2.02,
+    "F_open_friction_N": 0.13,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.65,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 30.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 2.18,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.17,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 45.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 2.15,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.84,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 60.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 1.95,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.52,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 75.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 1.58,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.11,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 86.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 1.2,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 1.69,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets only (coil off)",
+    "tilt_deg": 90.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 1.07,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 1.54,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 0.0,
+    "pin": "floating in its slot",
+    "F_open_liftoff_N": 9.26,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 0.0,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 0.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 12.2,
+    "F_open_friction_N": 1.19,
+    "F_open_frictionless_N": 0.2,
+    "F_act_N": 4.62,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 15.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 12.05,
+    "F_open_friction_N": 0.23,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.65,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 30.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.93,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.17,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 45.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.8,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.84,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 60.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.65,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.52,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 75.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.49,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.11,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 86.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.37,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 1.69,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "coil only (no seat magnets)",
+    "tilt_deg": 90.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 11.34,
+    "F_open_friction_N": 0.13,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 1.54,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 0.0,
+    "pin": "floating in its slot",
+    "F_open_liftoff_N": 12.99,
+    "F_open_friction_N": 3.77,
+    "F_open_frictionless_N": 1.94,
+    "F_act_N": 0.0,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 0.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 15.46,
+    "F_open_friction_N": 4.55,
+    "F_open_frictionless_N": 2.34,
+    "F_act_N": 4.62,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 15.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 15.88,
+    "F_open_friction_N": 4.27,
+    "F_open_frictionless_N": 2.11,
+    "F_act_N": 3.65,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 30.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 16.05,
+    "F_open_friction_N": 4.15,
+    "F_open_frictionless_N": 2.02,
+    "F_act_N": 3.17,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 45.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 16.02,
+    "F_open_friction_N": 4.1,
+    "F_open_frictionless_N": 2.02,
+    "F_act_N": 2.84,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 60.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 15.81,
+    "F_open_friction_N": 4.13,
+    "F_open_frictionless_N": 2.08,
+    "F_act_N": 2.52,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 75.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 15.45,
+    "F_open_friction_N": 4.21,
+    "F_open_frictionless_N": 2.16,
+    "F_act_N": 2.11,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 86.5,
+    "pin": "pushing",
+    "F_open_liftoff_N": 15.07,
+    "F_open_friction_N": 4.32,
+    "F_open_frictionless_N": 2.16,
+    "F_act_N": 1.69,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   },
+   {
+    "case": "fix: seat magnets 8 N per ball + coil",
+    "tilt_deg": 90.0,
+    "pin": "pushing",
+    "F_open_liftoff_N": 14.93,
+    "F_open_friction_N": 4.37,
+    "F_open_frictionless_N": 2.16,
+    "F_act_N": 1.54,
+    "motor_stalls_first_liftoff": true,
+    "motor_stalls_first_friction": true
+   }
+  ],
+  "detail_30deg_dosing": {
+   "tilt_deg": 30.0,
+   "F_sep_N": 0.75,
+   "contact_forces_frictionless_N": {
+    "cone_A": 3.99,
+    "vee_B": [
+     1.83,
+     -1.21
+    ],
+    "flat_C": 9.67
+   },
+   "F_act_N": 3.17
+  },
+  "F_stall_sep_N": 3.69,
+  "sep_ratio": 0.55,
+  "seat_pulls_used_N": {
+   "A": 3.58,
+   "B": 0.72
+  },
+  "coil_N": 10.58,
+  "door_finger_N": 0.63,
+  "fix_c_pull_N": 3.0
+ },
+ "run2_seat_magnets": {
+  "model": "D44-N52 as two charged discs (Br 1.45 T); ball cells magnetised M = 3 H (high-permeability sphere), capped at Js 1.7 T; pull = d(co-energy)/dz",
+  "case1_ideal_N": 22.3,
+  "case1_kj_N": 18.46,
+  "kj_over_model": 0.828,
+  "cone_A": [
+   {
+    "shim_mm": 0.0,
+    "gap_mm": 0.6,
+    "pull_N": 4.33,
+    "pull_central_N": 3.58
+   },
+   {
+    "shim_mm": 0.25,
+    "gap_mm": 0.85,
+    "pull_N": 3.43,
+    "pull_central_N": 2.84
+   },
+   {
+    "shim_mm": 0.5,
+    "gap_mm": 1.1,
+    "pull_N": 2.73,
+    "pull_central_N": 2.26
+   }
+  ],
+  "vee_B_bare": [
+   {
+    "shim_mm": 0.0,
+    "gap_mm": 2.38,
+    "pull_N": 0.87,
+    "pull_central_N": 0.72
+   },
+   {
+    "shim_mm": 0.25,
+    "gap_mm": 2.63,
+    "pull_N": 0.71,
+    "pull_central_N": 0.58
+   },
+   {
+    "shim_mm": 0.5,
+    "gap_mm": 2.88,
+    "pull_N": 0.57,
+    "pull_central_N": 0.48
+   }
+  ],
+  "cone_A_dipole_low_N": [
+   2.4,
+   1.93,
+   1.55
+  ],
+  "vee_B_dipole_low_N": [
+   0.55,
+   0.45,
+   0.37
+  ],
+  "hold_at_tilt0_coil_off": {
+   "ec_weight_N": 3.05,
+   "ec_com_x_mm": 51.9,
+   "moment_about_AB_Nmm": 67.0,
+   "pull_needed_at_C_N": 0.79,
+   "seat_magnets_sum_N": 4.3,
+   "coil_off_pin_floating_flat_C_N": -0.55,
+   "holds": false
+  },
+  "curve": [
+   {
+    "gap_mm": 0.0,
+    "pull_N": 7.453,
+    "pull_kj_scaled_N": 6.171
+   },
+   {
+    "gap_mm": 0.25,
+    "pull_N": 5.971,
+    "pull_kj_scaled_N": 4.944
+   },
+   {
+    "gap_mm": 0.5,
+    "pull_N": 4.746,
+    "pull_kj_scaled_N": 3.93
+   },
+   {
+    "gap_mm": 0.6,
+    "pull_N": 4.328,
+    "pull_kj_scaled_N": 3.583
+   },
+   {
+    "gap_mm": 0.85,
+    "pull_N": 3.434,
+    "pull_kj_scaled_N": 2.844
+   },
+   {
+    "gap_mm": 1.1,
+    "pull_N": 2.727,
+    "pull_kj_scaled_N": 2.258
+   },
+   {
+    "gap_mm": 1.5,
+    "pull_N": 1.892,
+    "pull_kj_scaled_N": 1.566
+   },
+   {
+    "gap_mm": 2.0,
+    "pull_N": 1.211,
+    "pull_kj_scaled_N": 1.003
+   },
+   {
+    "gap_mm": 2.38,
+    "pull_N": 0.872,
+    "pull_kj_scaled_N": 0.722
+   },
+   {
+    "gap_mm": 2.63,
+    "pull_N": 0.706,
+    "pull_kj_scaled_N": 0.585
+   },
+   {
+    "gap_mm": 2.88,
+    "pull_N": 0.575,
+    "pull_kj_scaled_N": 0.476
+   },
+   {
+    "gap_mm": 3.5,
+    "pull_N": 0.352,
+    "pull_kj_scaled_N": 0.291
+   },
+   {
+    "gap_mm": 4.5,
+    "pull_N": 0.169,
+    "pull_kj_scaled_N": 0.14
+   },
+   {
+    "gap_mm": 6.0,
+    "pull_N": 0.064,
+    "pull_kj_scaled_N": 0.053
+   }
+  ]
+ },
+ "run3_asdrawn": {
+  "capture": [
+   {
+    "off_mm": 0.0,
+    "seated": false,
+    "dock_error_mm": [
+     44.396,
+     -0.0,
+     0.922
+    ],
+    "dock_error_deg": 28.098,
+    "F_act_peak_N": 50.0,
+    "carriage_pulled_back_mm": -0.0,
+    "carriage_y_end_mm": 0.0,
+    "module_lift_peak_deg": 5.782,
+    "contact_A_N": 0.0,
+    "contact_B_N": 0.0,
+    "contact_C_N": 0.0,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.0,
+     0.0
+    ],
+    "coil_N": 20.0,
+    "coil_gap_mm": -14.077,
+    "wall_force_peak_N": 3.25,
+    "door_open_mm": -0.0,
+    "finger_force_N": 0.0,
+    "ec_lean_deg": -41.938
+   },
+   {
+    "off_mm": 1.0,
+    "seated": false,
+    "dock_error_mm": [
+     44.396,
+     -1.0,
+     0.922
+    ],
+    "dock_error_deg": 28.098,
+    "F_act_peak_N": 50.0,
+    "carriage_pulled_back_mm": -0.0,
+    "carriage_y_end_mm": 1.0,
+    "module_lift_peak_deg": 5.782,
+    "contact_A_N": 0.0,
+    "contact_B_N": 0.0,
+    "contact_C_N": 0.0,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.0,
+     0.0
+    ],
+    "coil_N": 20.0,
+    "coil_gap_mm": -14.077,
+    "wall_force_peak_N": 3.25,
+    "door_open_mm": -0.0,
+    "finger_force_N": 0.0,
+    "ec_lean_deg": -41.938
+   },
+   {
+    "off_mm": 2.0,
+    "seated": false,
+    "dock_error_mm": [
+     44.396,
+     -2.0,
+     0.922
+    ],
+    "dock_error_deg": 28.098,
+    "F_act_peak_N": 50.0,
+    "carriage_pulled_back_mm": 0.0,
+    "carriage_y_end_mm": 2.0,
+    "module_lift_peak_deg": 5.782,
+    "contact_A_N": 0.0,
+    "contact_B_N": 0.0,
+    "contact_C_N": 0.0,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.0,
+     0.0
+    ],
+    "coil_N": 20.0,
+    "coil_gap_mm": -14.077,
+    "wall_force_peak_N": 3.25,
+    "door_open_mm": -0.0,
+    "finger_force_N": 0.0,
+    "ec_lean_deg": -41.938
+   },
+   {
+    "off_mm": 3.0,
+    "seated": false,
+    "dock_error_mm": [
+     44.396,
+     -3.0,
+     0.922
+    ],
+    "dock_error_deg": 28.098,
+    "F_act_peak_N": 50.0,
+    "carriage_pulled_back_mm": 0.0,
+    "carriage_y_end_mm": 3.0,
+    "module_lift_peak_deg": 5.782,
+    "contact_A_N": 0.0,
+    "contact_B_N": 0.0,
+    "contact_C_N": 0.0,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.0,
+     0.0
+    ],
+    "coil_N": 20.0,
+    "coil_gap_mm": -14.077,
+    "wall_force_peak_N": 3.25,
+    "door_open_mm": -0.0,
+    "finger_force_N": 0.0,
+    "ec_lean_deg": -41.924
+   }
+  ],
+  "settings": {
+   "base_dx": 0.0,
+   "swing_preload_Nm": 0.0,
+   "finger_fix": false
+  }
+ },
+ "run3_fixed": {
+  "capture": [
+   {
+    "off_mm": 0.0,
+    "seated": true,
+    "dock_error_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "dock_error_deg": 0.0,
+    "F_act_peak_N": 4.56,
+    "carriage_pulled_back_mm": 0.0,
+    "carriage_y_end_mm": -0.0,
+    "module_lift_peak_deg": -0.0,
+    "contact_A_N": 2.37,
+    "contact_B_N": 1.01,
+    "contact_C_N": 7.92,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     3.58,
+     0.72
+    ],
+    "coil_N": 10.59,
+    "coil_gap_mm": 0.15,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 6.0,
+    "finger_force_N": 0.649,
+    "ec_lean_deg": -3.309
+   },
+   {
+    "off_mm": 0.5,
+    "seated": true,
+    "dock_error_mm": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "dock_error_deg": 0.0,
+    "F_act_peak_N": 4.56,
+    "carriage_pulled_back_mm": 0.2,
+    "carriage_y_end_mm": 0.3,
+    "module_lift_peak_deg": -0.0,
+    "contact_A_N": 2.62,
+    "contact_B_N": 0.91,
+    "contact_C_N": 7.91,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     3.58,
+     0.72
+    ],
+    "coil_N": 10.59,
+    "coil_gap_mm": 0.15,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 6.0,
+    "finger_force_N": 0.65,
+    "ec_lean_deg": -3.306
+   },
+   {
+    "off_mm": 1.0,
+    "seated": false,
+    "dock_error_mm": [
+     0.005,
+     -0.434,
+     -0.39
+    ],
+    "dock_error_deg": 0.397,
+    "F_act_peak_N": 4.89,
+    "carriage_pulled_back_mm": 0.266,
+    "carriage_y_end_mm": 0.734,
+    "module_lift_peak_deg": -0.0,
+    "contact_A_N": 2.24,
+    "contact_B_N": 0.0,
+    "contact_C_N": 4.69,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     2.05,
+     0.44
+    ],
+    "coil_N": 7.57,
+    "coil_gap_mm": 0.25,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 5.21,
+    "finger_force_N": 0.602,
+    "ec_lean_deg": -3.308
+   },
+   {
+    "off_mm": 2.0,
+    "seated": false,
+    "dock_error_mm": [
+     0.304,
+     -1.851,
+     -1.196
+    ],
+    "dock_error_deg": 1.225,
+    "F_act_peak_N": 7.98,
+    "carriage_pulled_back_mm": -0.001,
+    "carriage_y_end_mm": 2.001,
+    "module_lift_peak_deg": 0.236,
+    "contact_A_N": 1.42,
+    "contact_B_N": 0.0,
+    "contact_C_N": 3.54,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.53,
+     0.15
+    ],
+    "coil_N": 4.32,
+    "coil_gap_mm": 0.461,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 3.55,
+    "finger_force_N": 0.503,
+    "ec_lean_deg": -3.314
+   },
+   {
+    "off_mm": 3.0,
+    "seated": false,
+    "dock_error_mm": [
+     0.419,
+     -2.884,
+     -1.415
+    ],
+    "dock_error_deg": 1.452,
+    "F_act_peak_N": 8.57,
+    "carriage_pulled_back_mm": 0.004,
+    "carriage_y_end_mm": 2.996,
+    "module_lift_peak_deg": 0.545,
+    "contact_A_N": 1.83,
+    "contact_B_N": 0.0,
+    "contact_C_N": 3.35,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.3,
+     0.11
+    ],
+    "coil_N": 3.8,
+    "coil_gap_mm": 0.518,
+    "wall_force_peak_N": 11.53,
+    "door_open_mm": 3.1,
+    "finger_force_N": 0.476,
+    "ec_lean_deg": -3.306
+   }
+  ],
+  "settings": {
+   "base_dx": 0.0,
+   "swing_preload_Nm": 0.3,
+   "finger_fix": true,
+   "ey_free_mm": 0.0
+  }
+ },
+ "run3_fixed_yfree": {
+  "capture": [
+   {
+    "off_mm": 0.0,
+    "seated": true,
+    "dock_error_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "dock_error_deg": 0.0,
+    "F_act_peak_N": 4.56,
+    "carriage_pulled_back_mm": 0.0,
+    "carriage_y_end_mm": -0.0,
+    "module_lift_peak_deg": -0.0,
+    "contact_A_N": 2.37,
+    "contact_B_N": 1.01,
+    "contact_C_N": 7.92,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     3.58,
+     0.72
+    ],
+    "coil_N": 10.59,
+    "coil_gap_mm": 0.15,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 6.0,
+    "finger_force_N": 0.649,
+    "ec_lean_deg": -3.309
+   },
+   {
+    "off_mm": 1.0,
+    "seated": true,
+    "dock_error_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "dock_error_deg": 0.0,
+    "F_act_peak_N": 4.64,
+    "carriage_pulled_back_mm": 0.001,
+    "carriage_y_end_mm": 0.999,
+    "module_lift_peak_deg": 0.0,
+    "contact_A_N": 2.37,
+    "contact_B_N": 1.01,
+    "contact_C_N": 7.92,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     3.58,
+     0.72
+    ],
+    "coil_N": 10.59,
+    "coil_gap_mm": 0.15,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 6.0,
+    "finger_force_N": 0.649,
+    "ec_lean_deg": -3.308
+   },
+   {
+    "off_mm": 2.0,
+    "seated": false,
+    "dock_error_mm": [
+     0.304,
+     -1.851,
+     -1.196
+    ],
+    "dock_error_deg": 1.225,
+    "F_act_peak_N": 7.98,
+    "carriage_pulled_back_mm": -0.001,
+    "carriage_y_end_mm": 2.001,
+    "module_lift_peak_deg": 0.236,
+    "contact_A_N": 1.42,
+    "contact_B_N": 0.0,
+    "contact_C_N": 3.54,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.53,
+     0.15
+    ],
+    "coil_N": 4.32,
+    "coil_gap_mm": 0.461,
+    "wall_force_peak_N": 10.9,
+    "door_open_mm": 3.55,
+    "finger_force_N": 0.503,
+    "ec_lean_deg": -3.314
+   },
+   {
+    "off_mm": 3.0,
+    "seated": false,
+    "dock_error_mm": [
+     0.419,
+     -2.884,
+     -1.415
+    ],
+    "dock_error_deg": 1.452,
+    "F_act_peak_N": 8.57,
+    "carriage_pulled_back_mm": 0.004,
+    "carriage_y_end_mm": 2.996,
+    "module_lift_peak_deg": 0.545,
+    "contact_A_N": 1.83,
+    "contact_B_N": 0.0,
+    "contact_C_N": 3.35,
+    "coil_face_N": 0.0,
+    "seat_pulls_N": [
+     0.3,
+     0.11
+    ],
+    "coil_N": 3.8,
+    "coil_gap_mm": 0.518,
+    "wall_force_peak_N": 11.53,
+    "door_open_mm": 3.1,
+    "finger_force_N": 0.476,
+    "ec_lean_deg": -3.306
+   }
+  ],
+  "settings": {
+   "base_dx": 0.0,
+   "swing_preload_Nm": 0.3,
+   "finger_fix": true,
+   "ey_free_mm": 3.0
+  }
+ },
+ "run3_fixed_yfree_cycle": {
+  "cycle": {
+   "off_mm": 1.0,
+   "seated": true,
+   "dock_error_mm": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "dock_error_deg": 0.0,
+   "F_act_peak_N": 4.64,
+   "carriage_pulled_back_mm": 0.001,
+   "carriage_y_end_mm": 0.999,
+   "module_lift_peak_deg": 0.0,
+   "contact_A_N": 2.37,
+   "contact_B_N": 1.01,
+   "contact_C_N": 7.92,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    3.58,
+    0.72
+   ],
+   "coil_N": 10.59,
+   "coil_gap_mm": 0.15,
+   "wall_force_peak_N": 10.9,
+   "door_open_mm": 6.0,
+   "finger_force_N": 0.649,
+   "ec_lean_deg": -3.308,
+   "tilt_reached": 29.72,
+   "F_act_peak_cycle_N": 9.15,
+   "F_act_pull_off_N": -0.38,
+   "dock_error_dose_max_mm": 0.0003,
+   "door_open_during_tilt_min_mm": 6.0,
+   "door_shut_at_ext_mm": 15.56,
+   "balls_leave_at_ext_mm": 18.19,
+   "parked_on_seat_end": true,
+   "seat_force_end_N": 3.38,
+   "module_back_down_deg": -0.0
+  },
+  "cycle_T": {
+   "rise0": 0.3,
+   "rise1": 1.4666666666666668,
+   "coil": 1.3,
+   "float": 1.7666666666666668,
+   "seat_end": 2.166666666666667,
+   "tilt0": 2.166666666666667,
+   "tilt1": 4.432480610485251,
+   "dose0": 4.732480610485251,
+   "dose1": 5.732480610485251,
+   "back0": 5.932480610485251,
+   "back1": 8.198294554303835,
+   "float2": 8.498294554303836,
+   "coiloff": 8.698294554303835,
+   "down0": 8.898294554303835,
+   "down1": 10.0649612209705,
+   "end": 10.5649612209705
+  },
+  "settings": {
+   "base_dx": 0.0,
+   "swing_preload_Nm": 0.3,
+   "finger_fix": true,
+   "ey_free_mm": 3.0
+  }
+ },
+ "run4_door": {
+  "spring_shut_N": 0.27,
+  "spring_open_N": 0.63,
+  "shutter_mass_g": 0.33,
+  "shutter_weight_N": 0.0032,
+  "finger_meets_strip_at_rise_mm": 14.0,
+  "open_from_mm_before_dock": 6.0,
+  "shut_after_descent_mm": 6.0,
+  "loop_accel_m_s2": {
+   "index": 0.5,
+   "corner_centripetal": 0.12,
+   "hard_stop": 0.685
+  },
+  "shut_margin_upside_down": 77.7,
+  "accel_to_open_g": 83.2,
+  "finger_force_max_N": 0.63,
+  "finger_force_with_groove_friction_N": 0.819
+ },
+ "run5_latch": {
+  "module_kg": 0.1771,
+  "module_com_x_mm": 100.0,
+  "latch_arm_mm": 100.5,
+  "latch_load_static_N": 1.73,
+  "latch_load_peak_100mm_s_N": 2.19,
+  "bolt_axial_load_N": 0.0,
+  "bolt_back_off": "none: the keeper presses the bolt square to its travel (along z, the bolt slides along x); x is across the loop, so neither gravity nor the chain's accelerations push along the bolt",
+  "spring_N": {
+   "closed": 0.9,
+   "open": 2.025
+  },
+  "ramp_deg": 25.0,
+  "ramp_length_mm": 9.65,
+  "mu": 0.3,
+  "drag_peak_N": 2.46,
+  "drag_peak_no_slot_friction_N": 1.8,
+  "drive_torque_peak_Nm": 0.12,
+  "work_per_opening_mJ": 17.16,
+  "drive_torque_vs_motor": "0.120 of the NEMA 34's 12 N*m; v2's index peaked at 0.52-1.37 N*m"
+ },
+ "run6_v4": {
+  "ec_v4_kg": 0.2986,
+  "ec_v4_com_mm": [
+   47.2,
+   0.4,
+   32.4
+  ],
+  "ec_parts": [
+   [
+    "EC v3 (dock_statics.py), mirrored",
+    0.3111,
+    [
+     51.9,
+     -0.1,
+     34.2
+    ]
+   ],
+   [
+    "minus the coil and its bracket (v2's 27 g)",
+    -0.027,
+    [
+     100.0,
+     0.0,
+     28.0
+    ]
+   ],
+   [
+    "minus v3's ears and ball C boss",
+    -0.0038,
+    [
+     60.0,
+     0.0,
+     27.0
+    ]
+   ],
+   [
+    "two arms past the auger, 13.2 cm^3 PETG",
+    0.0168,
+    [
+     47.0,
+     8.0,
+     10.0
+    ]
+   ],
+   [
+    "third D44-N52 (behind ball C)",
+    0.0015,
+    [
+     64.0,
+     19.5,
+     -2.0
+    ]
+   ]
+  ],
+  "module_kg": 0.1271,
+  "seat_gaps_mm": {
+   "A": 0.6,
+   "B": 2.28,
+   "C": 0.6
+  },
+  "seat_pulls_N": {
+   "A": 3.58,
+   "B": 0.8,
+   "C": 3.58
+  },
+  "F_stall_sep_N": 3.69,
+  "lift_off_rest": {
+   "F_act_N": 4.32,
+   "module_weight_N": 1.25,
+   "note": "the P16 lifts the EC and the module 0.5 mm off the tube rest; the module's weight presses the plate onto the EC's seats"
+  },
+  "rows": [
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 0.0,
+    "F_open_liftoff_N": 3.15,
+    "F_open_friction_N": 0.52,
+    "F_open_frictionless_N": 0.39,
+    "F_act_N": 4.32,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 10.0,
+    "F_open_liftoff_N": 3.1,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.57,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 20.0,
+    "F_open_liftoff_N": 2.51,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.15,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 30.0,
+    "F_open_liftoff_N": 2.27,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.86,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 40.0,
+    "F_open_liftoff_N": 2.29,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.63,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "seat magnets (A, B, C)",
+    "tilt_deg": 50.0,
+    "F_open_liftoff_N": 2.52,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.42,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 0.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 4.32,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 10.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.57,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 20.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.15,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 30.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.86,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 40.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.63,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "no seat magnets (weight only)",
+    "tilt_deg": 50.0,
+    "F_open_liftoff_N": 0.0,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.42,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 0.0,
+    "F_open_liftoff_N": 1.34,
+    "F_open_friction_N": 0.47,
+    "F_open_frictionless_N": 0.39,
+    "F_act_N": 4.32,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 10.0,
+    "F_open_liftoff_N": 1.49,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.57,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 20.0,
+    "F_open_liftoff_N": 0.91,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 3.15,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 30.0,
+    "F_open_liftoff_N": 0.66,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.86,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 40.0,
+    "F_open_liftoff_N": 0.68,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.63,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   },
+   {
+    "case": "ball C's magnet doubtful (C 0 N)",
+    "tilt_deg": 50.0,
+    "F_open_liftoff_N": 0.92,
+    "F_open_friction_N": 0.0,
+    "F_open_frictionless_N": 0.0,
+    "F_act_N": 2.42,
+    "motor_stalls_first_liftoff": false,
+    "motor_stalls_first_friction": false
+   }
+  ]
+ }
+}
