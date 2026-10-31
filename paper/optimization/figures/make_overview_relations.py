@@ -15,23 +15,33 @@ the corrected transcript of that meeting
   and DEM simulations) learns which doser measurements predict which standard
   property, with the state and history of the powder as extra inputs.
 
+Each card carries a 3D still (``figures/stills/``, made by
+``figures/render3d/render_stills.py``): the standard tests are stills from the
+animated walkthroughs of PR #190, and the three doser measurements are new scenes
+built with the same toolkit around the doser's CAD from PR #170. ``--flat`` draws
+the earlier flat icons instead.
+
 The figure is a schematic; it shows no data.
 
 Usage (from paper/optimization/):
     python3 figures/make_overview_relations.py           # every link (default)
     python3 figures/make_overview_relations.py --board   # only the links drawn on the board
-Writes figures/fig_overview_relations.{pdf,png}
-(or figures/fig_overview_relations_board.{pdf,png} with --board).
+    python3 figures/make_overview_relations.py --flat    # flat icons instead of 3D stills
+Writes figures/fig_overview_relations{_board}{_flat}.{pdf,png}.
 """
 from __future__ import annotations
 
+import json
 import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Circle, Ellipse, FancyArrowPatch, FancyBboxPatch, Polygon, Rectangle
 
 from make_figures import AQUA, BLUE, DOUBLE, INK, INK2, MUTED, ORANGE, save
+
+STILLS = Path(__file__).resolve().parent / "stills"
 
 # ------------------------------------------------------------------ colours
 SAND, SAND_D = "#d9c49a", "#9c8456"           # powder and its grains
@@ -75,6 +85,8 @@ ICON_DY = 2.8  # top-row icons are drawn for y 46-58, then lifted by this much
 SIDE_W = 15.4
 BOT_X = {k: 10.0 + 20.0 * i for i, (k, *_) in enumerate(STANDARD)}
 BOT_W, BOT_Y, BOT_H = 17.8, 0.4, 22.0
+STILL_DH = 4.6    # extra card height when the cards carry 3D stills
+STILL_DPI = 450   # the stills are resampled to this, so the PDF stays small
 
 
 def lifted(ax, dy, draw, *args):
@@ -372,13 +384,64 @@ def icon_context(ax, cx, y):
                 va="bottom" if above else "top", zorder=5)
 
 
+# -------------------------------------------------------------- 3D stills
+def place_still(ax, key, x0, y0, w, h):
+    """Draw stills/<key>.png fitted (aspect kept) and centred in the box; return its extent."""
+    from PIL import Image
+    im = Image.open(STILLS / f"{key}.png").convert("RGB")
+    aspect = im.width / im.height
+    ew, eh = (h * aspect, h) if w / h > aspect else (w, w / aspect)
+    ex0, ey0 = x0 + (w - ew) / 2, y0 + (h - eh) / 2
+    px_h = int(round(eh / W * DOUBLE * STILL_DPI))
+    if px_h < im.height:
+        im = im.resize((max(1, int(round(px_h * aspect))), px_h), Image.LANCZOS)
+    ax.imshow(np.asarray(im), extent=(ex0, ex0 + ew, ey0, ey0 + eh), zorder=2, interpolation="antialiased")
+    return ex0, ey0, ew, eh
+
+
+def anchor(ext, info, name):
+    """Where a labelled feature of a still lands, in data units."""
+    ex0, ey0, ew, eh = ext
+    u, v = info["anchors"][name]
+    return np.array([ex0 + u * ew, ey0 + (1 - v) * eh])
+
+
+def label_ghost_dose(ax, ext, info):
+    for name, ls in (("bulk", (0, (2, 1.4))), ("tapped", "-")):
+        x, y = anchor(ext, info, name)
+        ax.plot([x - 1.9, x - 0.1], [y, y], color=BLUE, lw=0.8, ls=ls, zorder=7)
+        ax.text(x - 2.1, y, name, fontsize=5.6, color=BLUE, ha="right", va="center", zorder=7)
+    x, y = anchor(ext, info, "tap")
+    ax.text(x - 0.4, y + 1.0, "tap", fontsize=5.6, color=INK2, ha="center", va="bottom", zorder=7)
+    x, y = anchor(ext, info, "closed")
+    ax.plot([x + 0.1, x + 1.6], [y, y], color=INK2, lw=0.5, zorder=7)
+    ax.text(x + 1.8, y, "closed", fontsize=5.6, color=INK2, ha="left", va="center", zorder=7)
+
+
+def label_angle(ax, ext, info):
+    """The angle of repose, drawn at the right foot of the pile's outline."""
+    foot, along, apex = (anchor(ext, info, k) for k in ("foot", "along", "apex"))
+    a0 = np.degrees(np.arctan2(*(along - foot)[::-1]))
+    a1 = np.degrees(np.arctan2(*(apex - foot)[::-1]))
+    a1 = a0 + (a1 - a0 + 180.0) % 360.0 - 180.0  # the short way round, from the base up to the slope
+    r = 3.0
+    th = np.radians(np.linspace(a0, a1, 24))
+    ax.plot(foot[0] + r * np.cos(th), foot[1] + r * np.sin(th), color=BLUE, lw=0.9, zorder=7)
+    ax.plot(*np.c_[foot, foot + 2.6 * (along - foot) / np.linalg.norm(along - foot)], color=BLUE, lw=0.6,
+            ls=(0, (1.6, 1.0)), zorder=7)
+    ax.text(foot[0] + 0.7, foot[1] + 0.9, "θ", fontsize=6.8, color=BLUE, ha="left", va="center", zorder=7)
+
+
+LABELS = {"gd": label_ghost_dose, "aor": label_angle}
+
+
 # ------------------------------------------------------------------- links
-def draw_links(ax, links):
+def draw_links(ax, links, top_y=TOP_Y, bot_top=BOT_Y + BOT_H):
     tops = {k: TOP_X[k] for k, *_ in DOSER}
     bots = BOT_X
     out = {k: sorted([b for (a, b) in links if a == k], key=lambda b: bots[b]) for k in tops}
     inn = {k: sorted([a for (a, b) in links if b == k], key=lambda a: tops[a]) for k in bots}
-    y_top, y_bot = TOP_Y - 0.25, BOT_Y + BOT_H + 0.25
+    y_top, y_bot = top_y - 0.25, bot_top + 0.25
 
     def spread(n, half):
         return [0.0] if n == 1 else list(np.linspace(-half, half, n))
@@ -393,38 +456,51 @@ def draw_links(ax, links):
 
 
 # ------------------------------------------------------------------ figure
-def fig_overview_relations(links=ALL_LINKS, name="fig_overview_relations"):
+def fig_overview_relations(links=ALL_LINKS, name="fig_overview_relations", stills=True):
     rng = np.random.default_rng(7)
-    fig = plt.figure(figsize=(DOUBLE, DOUBLE * (Y1 - Y0) / W))
+    dh = STILL_DH if stills else 0.0              # 3D stills get taller cards
+    top_y, top_h, bot_h, y1 = TOP_Y + dh, TOP_H + dh, BOT_H + dh, Y1 + 2 * dh
+    bot_top = BOT_Y + bot_h
+    info = json.loads((STILLS / "anchors.json").read_text()) if stills else {}
+    fig = plt.figure(figsize=(DOUBLE, DOUBLE * (y1 - Y0) / W))
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, W)
-    ax.set_ylim(Y0, Y1)
+    ax.set_ylim(Y0, y1)
     ax.set_aspect("equal")
+    ax.set_autoscale_on(False)
     ax.axis("off")
 
     # row headers
-    ax.text(50, Y1 - 1.6, "Cheap: measured on the doser itself", fontsize=8.2, fontweight="bold",
+    ax.text(50, y1 - 1.6, "Cheap: measured on the doser itself", fontsize=8.2, fontweight="bold",
             color=BLUE_D, ha="center", va="center")
     ax.text(50, Y0 + 1.5, "Standard tests: a separate instrument for each, some only in outside labs",
             fontsize=8.2, fontweight="bold", color=ORANGE_D, ha="center", va="center")
 
     # links first, so the cards sit on top of their ends
-    draw_links(ax, links)
+    draw_links(ax, links, top_y, bot_top)
 
     for key, title, sub, status in DOSER:
         cx = TOP_X[key]
-        card(ax, cx, TOP_Y, TOP_W, TOP_H, TOP_FC, BLUE)
-        lifted(ax, ICON_DY, {"ff": icon_feed_factor, "gd": icon_ghost_dose,
-                             "aor": icon_angle_of_repose}[key], cx, rng)
-        ax.text(cx, TOP_Y + 7.9, title, fontsize=7.6, fontweight="bold", color=INK, ha="center", va="center")
-        ax.text(cx, TOP_Y + 4.9, sub, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.15)
-        ax.text(cx, TOP_Y + 1.6, status, fontsize=5.7, color=BLUE_D, ha="center", va="center", style="italic")
+        card(ax, cx, top_y, TOP_W, top_h, TOP_FC, BLUE)
+        if stills:
+            ext = place_still(ax, key, cx - TOP_W / 2 + 0.6, top_y + 9.5, TOP_W - 1.2, top_h - 10.1)
+            if key in LABELS:
+                LABELS[key](ax, ext, info[key])
+        else:
+            lifted(ax, ICON_DY, {"ff": icon_feed_factor, "gd": icon_ghost_dose,
+                                 "aor": icon_angle_of_repose}[key], cx, rng)
+        ax.text(cx, top_y + 7.9, title, fontsize=7.6, fontweight="bold", color=INK, ha="center", va="center")
+        ax.text(cx, top_y + 4.9, sub, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.15)
+        ax.text(cx, top_y + 1.6, status, fontsize=5.7, color=BLUE_D, ha="center", va="center", style="italic")
 
     for key, title, sub, route in STANDARD:
         cx = BOT_X[key]
-        card(ax, cx, BOT_Y, BOT_W, BOT_H, BOT_FC, ORANGE)
-        {"hall": icon_hall, "psd": icon_psd, "shear": icon_shear, "tap": icon_tap,
-         "moist": icon_moisture}[key](ax, cx, rng)
+        card(ax, cx, BOT_Y, BOT_W, bot_h, BOT_FC, ORANGE)
+        if stills:
+            place_still(ax, key, cx - BOT_W / 2 + 0.6, BOT_Y + 9.6, BOT_W - 1.2, bot_h - 10.2)
+        else:
+            {"hall": icon_hall, "psd": icon_psd, "shear": icon_shear, "tap": icon_tap,
+             "moist": icon_moisture}[key](ax, cx, rng)
         ax.text(cx, BOT_Y + 8.0, title, fontsize=7.4, fontweight="bold", color=INK, ha="center", va="center")
         ax.text(cx, BOT_Y + 5.0, sub, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.15)
         ax.text(cx, BOT_Y + 1.6, route, fontsize=5.7, color=ORANGE_D, ha="center", va="center",
@@ -433,31 +509,33 @@ def fig_overview_relations(links=ALL_LINKS, name="fig_overview_relations"):
     # side boxes: what finds the links, and what else goes in
     for cx, title, body, draw in (
         (8.2, "Physics-based ML", "surrogate models and\nDEM simulations\nfind the links",
-         lambda c: icon_ml(ax, c, 55.6, rng)),
+         lambda c: icon_ml(ax, c, 55.6 + 0.55 * dh, rng)),
         (91.8, "State and history\nof the powder", "composition; how it was\nmade, sieved, dried,\n"
-         "stored or reused", lambda c: icon_context(ax, c, 55.4)),
+         "stored or reused", lambda c: icon_context(ax, c, 55.4 + 0.55 * dh)),
     ):
-        card(ax, cx, TOP_Y, SIDE_W, TOP_H, ML_FC, AQUA)
+        card(ax, cx, top_y, SIDE_W, top_h, ML_FC, AQUA)
         draw(cx)
-        ax.text(cx, TOP_Y + 11.2, title, fontsize=7.4, fontweight="bold", color=AQUA_D, ha="center",
-                va="center", linespacing=1.1)
-        ax.text(cx, TOP_Y + 4.6, body, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.15)
+        ax.text(cx, top_y + 11.2 + 0.25 * dh, title, fontsize=7.4, fontweight="bold", color=AQUA_D,
+                ha="center", va="center", linespacing=1.1)
+        ax.text(cx, top_y + 4.6, body, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.15)
 
     # the two directions (transcript 09:41)
-    ax.add_patch(FancyArrowPatch((2.6, 36.6), (2.6, 23.6), arrowstyle="-|>", mutation_scale=9,
+    lo, hi = bot_top + 1.2, top_y - 2.0
+    ax.add_patch(FancyArrowPatch((2.6, hi), (2.6, lo), arrowstyle="-|>", mutation_scale=9,
                                  color=AQUA_D, lw=1.2, zorder=6))
-    ax.text(3.6, 34.6, "infer the\nproperties of\na new powder", fontsize=5.8, color=AQUA_D, ha="left",
+    ax.text(3.6, hi - 2.0, "infer the\nproperties of\na new powder", fontsize=5.8, color=AQUA_D, ha="left",
             va="top", linespacing=1.1, zorder=6)
-    ax.add_patch(FancyArrowPatch((97.4, 23.6), (97.4, 36.6), arrowstyle="-|>", mutation_scale=9,
+    ax.add_patch(FancyArrowPatch((97.4, lo), (97.4, hi), arrowstyle="-|>", mutation_scale=9,
                                  color=AQUA_D, lw=1.2, zorder=6))
-    ax.text(96.4, 25.6, "known\nproperties\nspeed up\ncalibration", fontsize=5.8, color=AQUA_D, ha="right",
+    ax.text(96.4, lo + 2.0, "known\nproperties\nspeed up\ncalibration", fontsize=5.8, color=AQUA_D, ha="right",
             va="bottom", linespacing=1.1, zorder=6)
 
     save(fig, name)
 
 
 if __name__ == "__main__":
-    if "--board" in sys.argv[1:]:
-        fig_overview_relations(BOARD_LINKS, "fig_overview_relations_board")
-    else:
-        fig_overview_relations()
+    args = sys.argv[1:]
+    board, flat = "--board" in args, "--flat" in args
+    fig_overview_relations(BOARD_LINKS if board else ALL_LINKS,
+                           "fig_overview_relations" + ("_board" if board else "") + ("_flat" if flat else ""),
+                           stills=not flat)
