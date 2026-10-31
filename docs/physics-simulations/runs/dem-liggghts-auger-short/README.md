@@ -37,17 +37,36 @@ sudo apt-get install -y liggghts openmpi-bin
 (or `run.sh`, which does all three).
 
 ## Runtime
-COH_RUNTIME
+* Dry: 573 s wall clock (467 s CPU), 1 core.
+* Cohesive: 482 s active wall clock (370 s CPU), 1 core. It was paused with SIGSTOP for 31 min while the shared
+  runner was oversubscribed, so it shows 2352 s elapsed.
+* About 29–30 k grains, 0.37 s of physical time (18 k steps).
+* The rotating phase costs roughly 30 min per revolution on one core, as #180 reported.
 
 ## Result
 ![auger short](auger_short.png)
 
-COH_RESULT
+| variant | salt delivered in 0.25 rev (90°) after the exit opened | grains | as mg/rev (rough, see Limitations) | grains in the domain at the end |
+|---|---|---|---|---|
+| non-cohesive | **16.7 mg** | 182 | about 67 | 29 776 |
+| cohesive, SJKR 6 kJ/m³ (Bo ≈ 5) | **0.13 mg** | 1 | about 0.5 | 30 015 |
+
+* **The #180 twin regenerates and reruns from that branch's scripts.**
+  * The non-cohesive quarter revolution gives 16.7 mg.
+  * #180 reported 12 mg for the first quarter revolution of the same case, and 105 mg/rev (116 ± 20 after the
+    first quarter) over 1.5 revolutions.
+  * The difference is within the pulsed, per-quarter scatter #180 describes (its CV of a 15° nudge was 0.62).
+* **With Bo ≈ 5 cohesion the auger stalls.** One grain left the exit in the first quarter revolution, against
+  182 dry: a 99 % drop. The cohesive bed does not get through the 1.07 mm annulus (about 2.5 grain diameters)
+  between the core tip and the Ø3 mm exit. Where exactly it arches was not inspected.
+  * This matches #180's `micro_cohesive` case (SJKR 20 kJ/m³ "shuts everything down"). Here a 3× smaller
+    cohesion energy density, Bo ≈ 5 instead of about 180, is already enough.
+  * This is consistent with the rig's Si −325 mesh giving 0 mg/rev (#180).
 
 Animation of the dry run (slice |y| < 1 mm through the auger axis, coloured by speed): [auger_short.gif](auger_short.gif), [auger_short.mp4](auger_short.mp4).
 
 ## Status
-COH_STATUS
+**Ran** (both variants, the full 0.25 revolution planned). It is a short smoke test, not a per-revolution calibration.
 
 ## Limitations
 * **Short window.** A quarter revolution is not a per-revolution dose. #180 found strong pulsing within each

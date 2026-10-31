@@ -51,30 +51,33 @@ order = np.argsort(T); T, wc = T[order], wc[order]; frames = [frames[i] for i in
 late = T > 0.8 * T.max()
 w_late = float(wc[late].mean()) if late.any() else float('nan')
 imin = int(np.argmin(wc))
+after = T > T[imin]
+zc = T[after][np.argmax(wc[after] > 0)] if (wc[after] > 0).any() else float('nan')
 res = dict(t_end=float(T.max()), n_frames=len(T), w_centre_min_mm=float(wc.min() * 1e3), t_at_min_ms=float(T[imin] * 1e3),
-           w_centre_late_mean_mm=w_late * 1e3,
-           overshoot_ratio=float(wc.min() / w_late) if w_late == w_late and w_late != 0 else None,
-           n_particles=int(len(frames[-1][2])))
+           w_centre_max_up_mm=float(wc.max() * 1e3), t_at_max_up_ms=float(T[int(np.argmax(wc))] * 1e3),
+           t_first_upward_ms=float(zc * 1e3), n_particles=int(len(frames[-1][2])))
 fig, ax = plt.subplots(1, 2, figsize=(10, 3.8))
 ax[0].plot(1e3 * T, 1e3 * wc, 'o-', ms=3)
-ax[0].axhline(w_late * 1e3, color='k', ls='--', lw=0.8, label='late-time mean (%.3f mm)' % (w_late * 1e3))
+ax[0].axvline(23.8, color='k', ls=':', lw=0.8, label='first grain contact (free fall, 23.8 ms)')
+ax[0].axhline(0, color='0.6', lw=0.6)
 ax[0].set_xlabel('time (ms)'); ax[0].set_ylabel('membrane centre deflection w (mm)')
 ax[0].set_title('4C PASI: 11 mg NaCl dose dropped 3 mm onto a membrane'); ax[0].grid(alpha=0.3); ax[0].legend(fontsize=8)
 t, XS, PP = frames[imin]
-sel = np.abs(XS[:, 1] - XS[np.argmin(np.abs(XS[:, 1])), 1]) < 1e-6
+sel = np.abs(XS[:, 1] - XS[np.argmin(np.abs(XS[:, 1])), 1]) < 1e-4
 xs = XS[sel]; o = np.argsort(xs[:, 0])
 ax[1].plot(1e3 * xs[o, 0], 1e3 * xs[o, 2], 'k.-', label='membrane (row of nodes nearest y=0)')
 if len(PP):
     ax[1].scatter(1e3 * PP[:, 0], 1e3 * PP[:, 2], s=6, c='tab:orange', label='grains (all, projected)')
-ax[1].set_xlabel('x (mm)'); ax[1].set_ylabel('z (mm)'); ax[1].set_title('state at max deflection, t = %.1f ms' % (1e3 * t))
-ax[1].legend(fontsize=7); ax[1].set_aspect('equal'); ax[1].grid(alpha=0.3)
+ax[1].set_xlabel('x (mm)'); ax[1].set_ylabel('z (mm), vertical exaggeration'); ax[1].set_title('state at max deflection, t = %.1f ms' % (1e3 * t))
+ax[1].set_ylim(1e3 * xs[:, 2].min() - 0.15, (1e3 * PP[:, 2].max() + 0.4) if len(PP) else 1.0)
+ax[1].legend(fontsize=7, loc='upper right'); ax[1].grid(alpha=0.3)
 fig.tight_layout(); fig.savefig(os.path.join(OUT, 'dem_fem_membrane.png'), dpi=110)
 
 import imageio.v2 as imageio
 imgs = []
 for (t, XS, PP) in frames:
     f, a = plt.subplots(figsize=(6.4, 3.2), dpi=100)
-    sel = np.abs(XS[:, 1] - XS[np.argmin(np.abs(XS[:, 1])), 1]) < 1e-6
+    sel = np.abs(XS[:, 1] - XS[np.argmin(np.abs(XS[:, 1])), 1]) < 1e-4
     xs = XS[sel]; o = np.argsort(xs[:, 0])
     a.plot(1e3 * xs[o, 0], 1e3 * xs[o, 2], 'k-', lw=2)
     if len(PP):

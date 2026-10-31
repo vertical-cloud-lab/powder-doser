@@ -1,5 +1,5 @@
 # Yade periodic triaxial compression of salt-sized spheres with cohesive-frictional contacts (CohFrictMat).
-# Usage: yadedaily -n -x peri_triax.py <sigma3_Pa> <outdir> [N]
+# Usage: yadedaily -n -x peri_triax.py <sigma3_Pa> <outdir> [N] [Bo] [mu_compaction]
 import sys, os, json, time, math
 import numpy as np
 from yade import *
@@ -7,15 +7,16 @@ from yade import utils, pack
 
 s3 = float(sys.argv[1]) if len(sys.argv) > 1 else 100.0
 outdir = sys.argv[2] if len(sys.argv) > 2 else '/tmp/sims-scratch/dem-yade-directshear'
-N = int(sys.argv[3]) if len(sys.argv) > 3 else 1000
+N = int(sys.argv[3]) if len(sys.argv) > 3 else 600
+Bo = float(sys.argv[4]) if len(sys.argv) > 4 else 5.0
+mu_compact = float(sys.argv[5]) if len(sys.argv) > 5 else 0.0
 os.makedirs(outdir, exist_ok=True)
 
 d = np.array([0.361, 0.425, 0.489]) * 1e-3     # real salt diameters (no coarse graining)
 nfrac = np.array([0.3, 0.4, 0.3])
 rho, E, nu = 2165.0, 2.0e5, 0.3
-mu_pp, mu_compact = 0.5, 0.1                    # friction while shearing / during compaction (denser sample)
+mu_pp = 0.5                                      # friction while shearing (compaction uses mu_compact -> denser sample)
 eta_roll = 0.3                                   # rolling friction: M_max = eta_roll * R * Fn
-Bo = 5.0                                         # granular Bond number of the mean particle (adhesion / weight)
 m_mean = rho * math.pi / 6 * (0.425e-3) ** 3
 F_adh = Bo * m_mean * 9.81                       # N, bond strength of a mean-size contact
 coh = F_adh / (0.425e-3 / 2) ** 2                # Pa; Yade: normalAdhesion = normalCohesion * min(R1,R2)^2
@@ -94,11 +95,11 @@ n_shear_max = int(1.3 * eps_max / rate / O.dt)
 O.run(n_shear_max, True)
 wall = time.time() - t0
 rows = np.array(rows)
-np.savetxt(os.path.join(outdir, 's3_%04d.csv' % s3), rows, delimiter=',',
+np.savetxt(os.path.join(outdir, 's3_%04d_Bo%g.csv' % (s3, Bo)), rows, delimiter=',',
            header='trsf_zz_minus1,eps_axial_log,sxx_Pa,syy_Pa,szz_Pa,eps_vol_log_compr_pos,n_cohesive,n_contacts,phi', comments='')
 meta = dict(sigma3_Pa=s3, N=N, L_m=L, d_m=d.tolist(), nfrac=nfrac.tolist(), rho=rho, young=E, poisson=nu, mu_pp=mu_pp,
             mu_compaction=mu_compact, eta_roll=eta_roll, Bo=Bo, F_adh_N=F_adh, normalCohesion_Pa=coh,
             I_target=I_target, axial_rate_1_s=rate, eps_max=eps_max, dt=O.dt, compaction_done=compacted,
             iter_compaction=it_comp, iter_total=O.iter, phi_after_compaction=phi0, wall_s=wall, final_phase=phase['p'])
-json.dump(meta, open(os.path.join(outdir, 's3_%04d_meta.json' % s3), 'w'), indent=1)
+json.dump(meta, open(os.path.join(outdir, 's3_%04d_Bo%g_meta.json' % (s3, Bo)), 'w'), indent=1)
 print(json.dumps(meta), flush=True)

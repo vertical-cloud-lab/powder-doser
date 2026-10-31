@@ -2,7 +2,7 @@
 time stepping, NLGS contact solver, IQS_CLB: inelastic quasi-shock + Coulomb friction).
 Rigid discs, mean diameter d = 1 mm (radii uniform in [0.4, 0.6] mm).  Rigid NSCD has no
 stiffness scale, so results scale with d and sqrt(d/g): read W/d and Q*sqrt(d/g).
-Usage: python silo_lmgc90.py <W_over_d> <workdir> [nsteps] [snap_every]
+Usage: python silo_lmgc90.py <W_over_d> <workdir> [nsteps] [snap_every] [seed]
 """
 import os, sys, json, math, time
 import numpy as np
@@ -11,6 +11,7 @@ WD = float(sys.argv[1])
 work = sys.argv[2]
 nsteps = int(sys.argv[3]) if len(sys.argv) > 3 else 6000
 snap_every = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+seed = int(sys.argv[5]) if len(sys.argv) > 5 else 1
 os.makedirs(work, exist_ok=True)
 os.chdir(work)
 
@@ -43,7 +44,7 @@ wallm = pre.material(name='TWALL', materialType='RIGID', density=rho)
 mats.addMaterial(grain, wallm)
 mod = pre.model(name='rigid', physics='MECAx', element='Rxx2D', dimension=dim)
 mods.addModel(mod)
-radii = pre.granulo_Random(N, rmin, rmax, seed=1)
+radii = pre.granulo_Random(N, rmin, rmax, seed=seed)
 Hbox = 2.2 * N * math.pi * (0.5 * dmean) ** 2 / (0.8 * Ls)
 nb, coor, radii = pre.depositInBox2D(radii, Ls, Hbox)
 coor = np.asarray(coor).reshape(-1, 2)

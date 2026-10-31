@@ -4,21 +4,9 @@
  "code": "LIGGGHTS-PUBLIC",
  "version": "3.8.0 (Debian package liggghts, compiled 2024-03-31)",
  "status": "ran",
- "wall_s": {
-  "dry": 96.3,
-  "coh": 87.1
- },
+ "wall_s": 183.4,
  "cores": 1,
- "particles": {
-  "dry": {
-   "poured": 4000,
-   "on_base_at_end": 2530
-  },
-  "coh": {
-   "poured": 4000,
-   "on_base_at_end": 3431
-  }
- },
+ "particles": 4000,
  "key_results": {
   "dry": {
    "repose_angle_profile_fit_deg": 21.9,
@@ -33,5 +21,19 @@
    "apex_height_mm": 6.86
   }
  },
- "notes": "Real-size salt grains (no coarse-graining), E reduced to 2e5 Pa. Profile-fit angle = slope of the sector-averaged heap surface for 1.0 < r < 5.2 mm; apex angle = atan(apex height / base radius) as in ISO 4324."
+ "notes": "Real-size salt grains (no coarse-graining), E reduced to 2e5 Pa. Profile-fit angle = slope of the sector-averaged heap surface for 1.0 < r < 5.2 mm; apex angle = atan(apex height / base radius) as in ISO 4324.",
+ "wall_s_by_variant": {
+  "dry": 96.3,
+  "coh": 87.1
+ },
+ "particles_detail": {
+  "dry": {
+   "poured": 4000,
+   "on_base_at_end": 2530
+  },
+  "coh": {
+   "poured": 4000,
+   "on_base_at_end": 3431
+  }
+ }
 }

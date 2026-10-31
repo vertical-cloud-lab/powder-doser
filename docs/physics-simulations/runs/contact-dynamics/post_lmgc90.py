@@ -13,6 +13,14 @@ runs = []
 for f in sorted(glob.glob(os.path.join(S, 'W*', 'result.json'))):
     r = json.load(open(f)); r['dir'] = os.path.dirname(f); runs.append(r)
 runs.sort(key=lambda r: r['W_over_d'])
+for r in runs:
+    t_, n_ = np.array(r['t']), np.array(r['n_out'])
+    # clogged = no grain left during the last 0.3 s while < 90 % of the silo had drained
+    last = t_ > t_[-1] - 0.3
+    r['clogged'] = bool(n_[-1] < 0.9 * r['n_discs'] and n_[last].max() == n_[last].min())
+    if r['clogged']:
+        r['rate_discs_per_s'] = r['rate_dimless'] = r['mass_rate_per_m_kg_s'] = float('nan')
+        r['clog_time_s'] = float(t_[np.argmax(n_ == n_[-1])])
 W = np.array([r['W_over_d'] for r in runs]); Q = np.array([r['rate_dimless'] for r in runs])
 ok = np.isfinite(Q)
 fit = None
@@ -23,10 +31,14 @@ if ok.sum() >= 2:
     fit = dict(C=float(C), k=float(k))
 fig, ax = plt.subplots(1, 2, figsize=(10, 3.8))
 for r in runs:
-    ax[0].plot(r['t'], r['n_out'], label='W/d = %g' % r['W_over_d'])
+    ax[0].plot(r['t'], r['n_out'], label='W/d = %g%s' % (r['W_over_d'], ' (clogged)' if r['clogged'] else ''))
 ax[0].set_xlabel('time (s)  [d = 1 mm; scale by sqrt(d/g)]'); ax[0].set_ylabel('discs discharged (-)')
 ax[0].set_title('LMGC90 NSCD: 2D silo discharge, %d discs' % runs[0]['n_discs']); ax[0].legend(fontsize=8); ax[0].grid(alpha=0.3)
-ax[1].plot(W, Q, 'ko', label='LMGC90 (steady rate)')
+ax[1].plot(W[ok], Q[ok], 'ko', label='LMGC90 (steady rate)')
+for r in runs:
+    if r['clogged']:
+        ax[1].plot(r['W_over_d'], 0, 'rx', ms=9)
+        ax[1].annotate('clogged after %d grains' % r['n_out_final'], (r['W_over_d'], 0), textcoords='offset points', xytext=(5, 8), fontsize=7, color='r')
 if fit:
     ww = np.linspace(max(fit['k'], 0) + 0.01, W.max() * 1.1, 100)
     ax[1].plot(ww, fit['C'] * (ww - fit['k']) ** 1.5, 'r-', label='Beverloo 2D fit: C=%.2f, k=%.2f' % (fit['C'], fit['k']))

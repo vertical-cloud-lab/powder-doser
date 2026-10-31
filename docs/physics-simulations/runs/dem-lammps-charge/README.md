@@ -57,7 +57,7 @@ python analyze.py $OUT .     # charge_settling.png, analysis_summary.json, charg
 
 ## Runtime
 
-Each case ran on 1 core: A 41 s, B 44 s, C 26 s, D 36 s, Clong 68 s (0.6 s simulated). These are
+Each case ran on 1 core: A 41 s, B 44 s, C 26 s, D 21 s, Clong 68 s (0.6 s simulated). These are
 wall-clock times on an oversubscribed runner.
 
 ## Result

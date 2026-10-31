@@ -722,7 +722,112 @@ def _relax(pos, a, L, max_it, tol, cap):
 
 
 @nb.njit(cache=True)
-def compress(rad, phi0, seed, ds0, ds_min, max_it, tol, cap, nsnap):
+def _build_pairs(pos, a, L, skin, pi, pj):
+    N = a.size
+    n = 0
+    for i in range(N):
+        for j in range(i + 1, N):
+            dx = mi(pos[j, 0] - pos[i, 0], L)
+            dy = mi(pos[j, 1] - pos[i, 1], L)
+            dz = mi(pos[j, 2] - pos[i, 2], L)
+            R = a[i] + a[j] + skin
+            if dx * dx + dy * dy + dz * dz < R * R:
+                if n < pi.size:
+                    pi[n] = i
+                    pj[n] = j
+                    n += 1
+    return n
+
+
+@nb.njit(cache=True)
+def _relax_verlet(pos, a, L, max_it, tol, cap):
+    # same FIRE minimisation as _relax, but with a Verlet pair list (skin = 0.3 mean radius)
+    N = a.size
+    skin = 0.3 * a.mean()
+    pi = np.empty(N * 60, np.int64)
+    pj = np.empty(N * 60, np.int64)
+    acc = np.zeros((N, 3))
+    npair = _build_pairs(pos, a, L, skin, pi, pj)
+    F = np.zeros((N, 3))
+    v = np.zeros((N, 3))
+    dt = 0.05
+    dtmax = 0.3
+    alpha0 = 0.1
+    alpha = alpha0
+    npos = 0
+    maxov = 0.0
+    for it in range(max_it):
+        F[:] = 0.0
+        maxov = 0.0
+        for q in range(npair):
+            i = pi[q]
+            j = pj[q]
+            dx = mi(pos[j, 0] - pos[i, 0], L)
+            dy = mi(pos[j, 1] - pos[i, 1], L)
+            dz = mi(pos[j, 2] - pos[i, 2], L)
+            R = a[i] + a[j]
+            d2 = dx * dx + dy * dy + dz * dz
+            if d2 < R * R:
+                d = math.sqrt(d2)
+                ov = R - d
+                if ov / R > maxov:
+                    maxov = ov / R
+                if d < 1e-12:
+                    dx = 1.0
+                    dy = 0.0
+                    dz = 0.0
+                    d = 1.0
+                s = ov / d
+                F[i, 0] -= s * dx
+                F[i, 1] -= s * dy
+                F[i, 2] -= s * dz
+                F[j, 0] += s * dx
+                F[j, 1] += s * dy
+                F[j, 2] += s * dz
+        if maxov < tol:
+            return True, maxov, it
+        P = 0.0
+        fn = 0.0
+        vn = 0.0
+        for i in range(N):
+            for c in range(3):
+                P += F[i, c] * v[i, c]
+                fn += F[i, c] * F[i, c]
+                vn += v[i, c] * v[i, c]
+        fn = math.sqrt(fn)
+        vn = math.sqrt(vn)
+        if P > 0.0:
+            for i in range(N):
+                for c in range(3):
+                    v[i, c] = (1.0 - alpha) * v[i, c] + alpha * vn * F[i, c] / fn
+            npos += 1
+            if npos > 5:
+                dt = min(dt * 1.1, dtmax)
+                alpha *= 0.99
+        else:
+            v[:] = 0.0
+            dt *= 0.5
+            alpha = alpha0
+            npos = 0
+        dmax = 0.0
+        for i in range(N):
+            dd = 0.0
+            for c in range(3):
+                v[i, c] += F[i, c] * dt
+                step = v[i, c] * dt
+                pos[i, c] = (pos[i, c] + step) % L
+                acc[i, c] += step
+                dd += acc[i, c] * acc[i, c]
+            if dd > dmax:
+                dmax = dd
+        if math.sqrt(dmax) > 0.5 * skin:
+            npair = _build_pairs(pos, a, L, skin, pi, pj)
+            acc[:] = 0.0
+    return False, maxov, max_it
+
+
+@nb.njit(cache=True)
+def compress(rad, phi0, seed, ds0, ds_min, max_it, tol, cap, nsnap, verlet=False):
     np.random.seed(seed)
     N = rad.size
     v = 0.0
@@ -736,7 +841,10 @@ def compress(rad, phi0, seed, ds0, ds_min, max_it, tol, cap, nsnap):
     s = 1.0
     ds = ds0
     a = rad * s
-    ok, mo, it = _relax(pos, a, L, 20 * max_it, tol, cap)
+    if verlet:
+        ok, mo, it = _relax_verlet(pos, a, L, 20 * max_it, tol, cap)
+    else:
+        ok, mo, it = _relax(pos, a, L, 20 * max_it, tol, cap)
     good = pos.copy()
     s_good = s
     phis = np.empty(10000)
@@ -749,7 +857,10 @@ def compress(rad, phi0, seed, ds0, ds_min, max_it, tol, cap, nsnap):
         s_try = s_good * (1.0 + ds)
         pos[:] = good
         a = rad * s_try
-        ok, mo, it = _relax(pos, a, L, max_it, tol, cap)
+        if verlet:
+            ok, mo, it = _relax_verlet(pos, a, L, max_it, tol, cap)
+        else:
+            ok, mo, it = _relax(pos, a, L, max_it, tol, cap)
         if ok:
             good[:] = pos
             s_good = s_try

@@ -57,13 +57,12 @@ def draw_cut(ax, pos, rad, L, scale, color, zmax_mm, idx=None):
 
 def main():
     R = load()
-    fig = plt.figure(figsize=(12.5, 8.2), dpi=100)
-    gs = fig.add_gridspec(2, 4, width_ratios=[1.25, 1.25, 0.55, 0.55], hspace=0.38, wspace=0.42)
+    fig = plt.figure(figsize=(14.5, 8.6), dpi=100)
+    gs = fig.add_gridspec(2, 4, width_ratios=[1.2, 1.2, 0.62, 0.62], hspace=0.42, wspace=0.38)
 
     # (a) packing fraction by algorithm
     ax = fig.add_subplot(gs[0, 0])
-    algs = ["RSA\n(no gravity)", "sticky BD\n(p_stick=1)", "drop-and-roll\n(p_stick=0)",
-            "force-biased\ncompression"]
+    algs = ["RSA\nno gravity", "sticky\nBD", "drop-\nand-roll", "force-\nbiased\ncompr."]
     lit = [0.384, None, 0.582, 0.64]
     for si, name in enumerate(["mono", "salt", "alsi10mg"]):
         dep = R["deposit"][name]["runs"]
@@ -83,7 +82,7 @@ def main():
     ax.set_ylabel("packing fraction  φ  (-)")
     ax.set_ylim(0.0, 0.75)
     ax.grid(axis="y", color="#e6e5e1", lw=0.6)
-    ax.legend(fontsize=7, loc="upper left", frameon=False)
+    ax.legend(fontsize=7, loc="center right", bbox_to_anchor=(1.0, 0.42), frameon=False)
     ax.set_title("(a) 3D packing fraction by algorithm", loc="left", fontsize=10)
 
     # (b) loose packing vs stickiness
@@ -96,7 +95,7 @@ def main():
         ax.axhline(R["compress"][name]["phi"], color=C[name], lw=1.2, ls="--")
         ax.text(1.0, R["compress"][name]["phi"] + 0.006, "compression (dense)", color="#52514e",
                 fontsize=7, ha="right", va="bottom")
-    ax.set_xlabel("stick probability per contact  p_stick  (cohesion proxy, -)")
+    ax.set_xlabel("stick probability per contact  p_stick  (-)\n(cohesion proxy)")
     ax.set_ylabel("loose (poured) packing fraction  φ  (-)")
     ax.set_ylim(0.0, 0.75)
     ax.grid(color="#e6e5e1", lw=0.6)
@@ -108,7 +107,7 @@ def main():
     for thr, lab in [(1.11, "excellent"), (1.18, "good"), (1.25, "fair"), (1.34, "passable"),
                      (1.45, "poor"), (1.59, "very poor")]:
         ax.axhline(thr, color="#c3c2b7", lw=0.8)
-        ax.text(1.02, thr, f"{lab} < {thr}", fontsize=6.5, color="#52514e", va="center",
+        ax.text(0.98, thr, f"{lab} < {thr}", fontsize=6.5, color="#52514e", va="bottom", ha="right",
                 transform=ax.get_yaxis_transform())
     for name in ("salt", "alsi10mg"):
         runs = R["deposit"][name]["runs"]
@@ -124,7 +123,7 @@ def main():
     ax.set_xlabel("stick probability per contact  p_stick  (-)")
     ax.set_ylabel("Hausner-ratio analog  φ_dense / φ_loose  (-)")
     ax.legend(fontsize=7, loc="upper left", frameon=False)
-    ax.set_title("(c) Hausner analog (USP <1174> classes at right)", loc="left", fontsize=10)
+    ax.set_title("(c) Hausner analog, USP <1174> flow classes", loc="left", fontsize=10)
 
     # (d) density profiles
     ax = fig.add_subplot(gs[1, 1])
@@ -136,13 +135,13 @@ def main():
         # profile vs z / d_ref so both fit one axis
         ax.plot(z["zb"] + 0.125, z["prof"], ls, color=C[name], lw=1.2, label=NAMES[name] + ", p_stick = 0")
         ax.axvspan(r0["z_window"][0], r0["z_window"][1], color=C[name], alpha=0.08)
-    ax.set_xlabel("height above floor  z / d_ref  (d_ref = 0.425 mm NaCl, 35 um AlSi10Mg)")
+    ax.set_xlabel("height above floor  z / d_ref  (-)\n(d_ref = 0.425 mm NaCl, 35 um AlSi10Mg)")
     ax.set_ylabel("slice packing fraction  φ(z)  (-)")
     ax.set_xlim(0, 32)
     ax.set_ylim(0, 1.0)
     ax.grid(color="#e6e5e1", lw=0.6)
     ax.legend(fontsize=7, loc="upper right", frameon=False)
-    ax.set_title("(d) layering at the floor; shaded = measurement window", loc="left", fontsize=10)
+    ax.set_title("(d) slice φ(z) at p_stick = 0; shaded = window", loc="left", fontsize=10)
 
     # (e,f) cut planes, salt
     for col, ps, title in ((2, "0.0", "(e) NaCl, drop-and-roll"), (3, "1.0", "(f) NaCl, sticky")):
@@ -213,6 +212,12 @@ def write_result(extra_wall=0.0):
     import numba
     R = load()
     kr = {"units": "packing fraction phi (solid volume / total volume), dimensionless"}
+    sim_wall = sum(v["wall_s"] for v in R["rsa"].values()) + sum(v["wall_s"] for v in R["compress"].values()) + \
+        sum(r["wall_s"] for v in R["deposit"].values() for r in v["runs"].values())
+    kr["wall_s_breakdown"] = {"rsa": {k: round(v["wall_s"], 1) for k, v in R["rsa"].items()},
+                              "deposition_all_runs": round(sum(r["wall_s"] for v in R["deposit"].values() for r in v["runs"].values()), 2),
+                              "compression": {k: round(v["wall_s"], 1) for k, v in R["compress"].items()},
+                              "plots_animation_numba_compile": round(extra_wall, 1)}
     for name in ("mono", "salt", "alsi10mg"):
         dep = R["deposit"][name]["runs"]
         d = {"rsa_phi_at_1e7_attempts": round(R["rsa"][name]["phi"], 4),
@@ -239,7 +244,7 @@ def write_result(extra_wall=0.0):
            "cohesion proxy, force-biased (FIRE overlap-removal) compression",
            "code": "own Python + numba (packing_kernels.py)",
            "version": f"python {platform.python_version()}, numpy {np.__version__}, numba {numba.__version__}",
-           "status": "ran", "wall_s": round(R["wall_s_total"] + extra_wall, 1), "cores": 1,
+           "status": "ran", "wall_s": round(sim_wall + extra_wall, 1), "cores": 1,
            "key_results": kr,
            "notes": "3D, periodic in x-y (deposition: flat floor, phi measured in a bulk slab 3 d_max above the floor "
                     "to 2 d_max below the 10th-percentile surface height; RSA and compression: fully periodic cube). "

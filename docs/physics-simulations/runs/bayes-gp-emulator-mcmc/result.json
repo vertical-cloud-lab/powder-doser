@@ -4,7 +4,7 @@
  "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
  "version": "scikit-learn 1.9.1, emcee 3.1.6",
  "status": "ran",
- "wall_s": 218.4,
+ "wall_s": 202.3,
  "cores": 1,
  "key_results": {
   "design_points": 48,
@@ -61,132 +61,132 @@
   "posterior": {
    "dosing_only": {
     "mean": {
-     "mu_s": 0.5667,
-     "mu_r": 0.21,
-     "Bo": 0.1302
+     "mu_s": 0.5651,
+     "mu_r": 0.2093,
+     "Bo": 0.1271
     },
     "sd": {
-     "mu_s": 0.1146,
-     "mu_r": 0.1426,
-     "Bo": 0.1075
+     "mu_s": 0.1141,
+     "mu_r": 0.1447,
+     "Bo": 0.103
     },
     "p05_p95": {
      "mu_s": [
-      0.3253,
-      0.7085
+      0.3447,
+      0.7139
      ],
      "mu_r": [
-      0.0339,
-      0.4893
+      0.032,
+      0.4922
      ],
      "Bo": [
-      0.0099,
-      0.343
+      0.0102,
+      0.335
      ]
     },
-    "corr_mu_s_mu_r": -0.464,
-    "corr_mu_s_Bo": -0.546,
-    "corr_mu_r_Bo": -0.254,
-    "acceptance": 0.54,
+    "corr_mu_s_mu_r": -0.468,
+    "corr_mu_s_Bo": -0.541,
+    "corr_mu_r_Bo": -0.252,
+    "acceptance": 0.543,
     "autocorr_time": [
-     46.91912406760703,
-     43.526701718317106,
-     53.2142878113691
+     40.74653590435177,
+     46.4419331596513,
+     35.01477508927166
     ],
     "n_samples": 4800,
     "standin_at_posterior_mean_mg_per_rev": [
      26.3,
-     103.7,
-     118.4,
-     155.2
+     104.3,
+     119.0,
+     155.7
     ],
-    "standin_AoR_at_posterior_mean_deg": 31.18
+    "standin_AoR_at_posterior_mean_deg": 31.09
    },
    "dosing_plus_AoR": {
     "mean": {
-     "mu_s": 0.5541,
-     "mu_r": 0.2201,
-     "Bo": 0.1175
+     "mu_s": 0.5651,
+     "mu_r": 0.2127,
+     "Bo": 0.1144
     },
     "sd": {
-     "mu_s": 0.1154,
-     "mu_r": 0.1325,
-     "Bo": 0.0854
+     "mu_s": 0.112,
+     "mu_r": 0.1305,
+     "Bo": 0.0836
     },
     "p05_p95": {
      "mu_s": [
-      0.3594,
-      0.7152
+      0.3655,
+      0.7165
      ],
      "mu_r": [
-      0.0764,
-      0.5024
+      0.0744,
+      0.5038
      ],
      "Bo": [
-      0.0104,
-      0.2794
+      0.0102,
+      0.2714
      ]
     },
-    "corr_mu_s_mu_r": -0.827,
-    "corr_mu_s_Bo": -0.405,
-    "corr_mu_r_Bo": -0.021,
-    "acceptance": 0.555,
+    "corr_mu_s_mu_r": -0.83,
+    "corr_mu_s_Bo": -0.45,
+    "corr_mu_r_Bo": 0.046,
+    "acceptance": 0.556,
     "autocorr_time": [
-     52.14627853401567,
-     51.3090226596839,
-     32.8150137936785
+     47.558718259945806,
+     44.232939379667386,
+     39.5619039441129
     ],
     "n_samples": 4800,
     "standin_at_posterior_mean_mg_per_rev": [
      26.5,
-     105.9,
-     120.3,
-     156.4
+     105.3,
+     120.0,
+     156.8
     ],
-    "standin_AoR_at_posterior_mean_deg": 30.95
+    "standin_AoR_at_posterior_mean_deg": 31.02
    },
    "dosing_plus_wall_friction": {
     "mean": {
-     "mu_s": 0.5174,
-     "mu_r": 0.2334,
-     "Bo": 0.161
+     "mu_s": 0.51,
+     "mu_r": 0.2462,
+     "Bo": 0.1606
     },
     "sd": {
-     "mu_s": 0.0501,
-     "mu_r": 0.1447,
-     "Bo": 0.1007
+     "mu_s": 0.0517,
+     "mu_r": 0.1472,
+     "Bo": 0.0968
     },
     "p05_p95": {
      "mu_s": [
-      0.4352,
-      0.5988
+      0.4239,
+      0.5941
      ],
      "mu_r": [
-      0.0381,
-      0.4956
+      0.038,
+      0.5074
      ],
      "Bo": [
-      0.0178,
-      0.3391
+      0.0205,
+      0.3307
      ]
     },
-    "corr_mu_s_mu_r": -0.248,
-    "corr_mu_s_Bo": -0.226,
-    "corr_mu_r_Bo": -0.629,
-    "acceptance": 0.591,
+    "corr_mu_s_mu_r": -0.325,
+    "corr_mu_s_Bo": -0.14,
+    "corr_mu_r_Bo": -0.631,
+    "acceptance": 0.589,
     "autocorr_time": [
-     33.79100969845025,
-     37.45126838303167,
-     37.497364902348956
+     27.421966460252843,
+     34.39363711891352,
+     35.268242350992836
     ],
     "n_samples": 4800,
     "standin_at_posterior_mean_mg_per_rev": [
      25.9,
-     105.3,
-     118.6,
-     152.3
+     105.4,
+     118.5,
+     151.5
     ],
-    "standin_AoR_at_posterior_mean_deg": 30.77
+    "standin_AoR_at_posterior_mean_deg": 30.84
    }
   },
   "equivalent_DEM_cost": {

@@ -4,26 +4,9 @@
  "code": "LIGGGHTS-PUBLIC",
  "version": "3.8.0 (Debian package liggghts), cohesion model easo/capillary/viscous",
  "status": "ran",
- "wall_s": {
-  "dry": 96.3,
-  "cap_low": 60.8,
-  "cap_high": 81.5
- },
+ "wall_s": 238.6,
  "cores": 1,
- "particles": {
-  "dry": {
-   "poured": 4000,
-   "on_base_at_end": 2530
-  },
-  "cap_low": {
-   "poured": 4000,
-   "on_base_at_end": 2173
-  },
-  "cap_high": {
-   "poured": 4000,
-   "on_base_at_end": 2488
-  }
- },
+ "particles": 4000,
  "key_results": {
   "dry": {
    "surfaceLiquidContentInitial": 0.0,
@@ -47,5 +30,24 @@
    "apex_height_mm": 9.39
   }
  },
- "notes": "Dry baseline = the dry run of dem-liggghts-aor (identical setup). Liquid: surface tension 0.072 N/m, viscosity 1 mPa s, contact angle 20 deg, bridge rupture at 1.1 x contact distance (maxSeparationDistanceRatio), min separation ratio 1.01; grain-wall contacts dry."
+ "notes": "Dry baseline = the dry run of dem-liggghts-aor (identical setup). Liquid: surface tension 0.072 N/m, viscosity 1 mPa s, contact angle 20 deg, bridge rupture at 1.1 x contact distance (maxSeparationDistanceRatio), min separation ratio 1.01; grain-wall contacts dry.",
+ "wall_s_by_variant": {
+  "dry": 96.3,
+  "cap_low": 60.8,
+  "cap_high": 81.5
+ },
+ "particles_detail": {
+  "dry": {
+   "poured": 4000,
+   "on_base_at_end": 2530
+  },
+  "cap_low": {
+   "poured": 4000,
+   "on_base_at_end": 2173
+  },
+  "cap_high": {
+   "poured": 4000,
+   "on_base_at_end": 2488
+  }
+ }
 }

@@ -10,7 +10,7 @@ CPU-only Chrono build reproduces that scaling with the paper's salt parameters. 
 ## Code and version
 * PyChrono **10.0.0, conda-forge build `py312h3a49c4c_0`**, Python 3.12, in its own env:
   `conda create -p /tmp/sims-scratch/dem-chrono-cpu/env -c conda-forge --override-channels python=3.12 pychrono=10.0.0 numpy`.
-  The install took about 1 min.
+  The install took 1-2 min.
 * Solver: core `ChSystemSMC` with Hertz contact, `MultiStep` tangential history and material-based coefficients, on 1
   thread.
 * Collision: Bullet (`ChCollisionSystem.Type_BULLET`). This conda-forge build has no multicore collision (no Thrust),
@@ -41,13 +41,49 @@ bash run.sh [scratch_dir]   # rolling-friction check, four orifice sizes, then a
 ```
 
 ## Runtime
-RESULTS_RUNTIME
+Single core on a shared, oversubscribed 4-core runner. Each case was 16,000 steps (0.8 s simulated):
+
+| Orifice L | Wall time | Speed (M particle-steps/s) |
+|---|---|---|
+| 5.5 mm | 168 s | 0.14 |
+| 7 mm | 138 s | 0.17 |
+| 8.5 mm | 102 s | 0.24 |
+| 10 mm | 54 s | 0.44 |
+| Total | 462 s | |
+
+Discharged grains are parked, so the runs with larger orifices get cheaper as they go. The rolling check takes about
+2 s.
 
 ## Result
-RESULTS_TABLE
+![silo discharge and Beverloo fit](chrono_silo_beverloo.png)
+
+| L (mm) | L/d | Mass flow W (g/s) | Grains out in 0.6 s (of 1500) |
+|---|---|---|---|
+| 5.5 | 3.2 | 1.89 | 196 (slow, intermittent; near jamming) |
+| 7.0 | 4.1 | 4.70 | 462 |
+| 8.5 | 5.0 | 9.20 | 926 |
+| 10.0 | 5.9 | 15.0 | 1363 (60 % of the inventory gone 0.35 s after opening, so the fit window is 0.1-0.35 s) |
+
+* **Bulk density** of the settled fill: rho_b = 1381 kg/m3 (solid fraction 0.64).
+* **Beverloo fit** of all four points: C_sq = **0.61**, k = **1.18**. The circular-equivalent C is C_sq x pi/4 =
+  **0.48**. With k fixed at 1.5, C_sq = 0.81, so the circular-equivalent C is 0.64.
+* **Comparison with the textbook values.** C = 0.58 and k = 1.5 (dotted line) lie close to the DEM points. The
+  W ~ (L - k d)^2.5 scaling holds over a 3x range in L and an 8x range in W, even at L/d = 3.2-5.9 in a small silo.
+* **Rolling-friction check** (`rolling_check.json`). A sphere rolling at 0.1 m/s still rolls at 0.10001 m/s after
+  0.5 s, with both mu_roll = 0 and mu_roll = 0.3. Core `ChSystemSMC` ignores rolling friction, which confirms the PR
+  #180 finding.
+
+Animation of the L = 8.5 mm run (slice |y| < 3 mm): [GIF](chrono_silo_discharge.gif),
+[MP4](chrono_silo_discharge.mp4).
 
 ## Status
-RESULTS_STATUS
+**Ran at reduced scale** (coarse-grained 4x, N = 1500, 0.6 s of discharge per orifice). All four orifice sizes
+ran to the end (no timeouts).
+
+The first attempt, with Bullet collision and SI units, failed. Grains were ejected at about 700 m/s within 0.02 s
+(`vmax=721 m/s`, 355 of 900 grains "out" in 0.02 s). A lower Bullet contact-breaking threshold (1e-5 m) gave
+identical numbers. Running Chrono internally in millimetres fixed it: vmax stayed below 1 m/s during settling, and a
+rolling sphere kept its speed, whereas in metres it decelerated spuriously from 0.1 m/s to 1.3e-4 m/s.
 
 ## Limitations
 * **Domain size.** The silo is small: the box is only 1.6-2.9 orifice widths across and the fill only 24 mm deep.

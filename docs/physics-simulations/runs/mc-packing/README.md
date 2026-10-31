@@ -35,10 +35,11 @@ imageio 2.38.1 with imageio-ffmpeg. Everything is 3D.
 
 - **PSDs** (lengths are dimensionless in units of `d_ref` in the code):
   - NaCl: diameter uniform by number on 0.36-0.49 mm, so the number median is 0.425 mm
-    (`d_ref` = 0.425 mm). The generated sample has volume d10/d50/d90 = 0.379/0.436/0.481 mm.
+    (`d_ref` = 0.425 mm). The generated deposition sample has volume d10/d50/d90 = 0.381/0.440/0.481 mm.
   - AlSi10Mg-like: log-normal with volume median 35 µm and sigma_ln = asinh(0.5)/1.2816 = 0.3755,
     so span (d90-d10)/d50 = 1. It is truncated at 35 µm × exp(±2.5 sigma) = 13.7-89.5 µm and
-    sampled by number (number median 22.9 µm). `d_ref` = 35 µm, size ratio 6.5.
+    sampled by number (number median 22.9 µm). `d_ref` = 35 µm, size ratio 6.5. The generated
+    deposition sample has volume d10/d50/d90 = 21.6/34.3/54.3 µm.
   - Monodisperse spheres, for validation against literature values.
   - Solid densities: NaCl 2165 kg/m3, AlSi10Mg 2670 kg/m3 (lead's brief).
 - **RSA:** fully periodic cube of side 12 `d_ref`. Each attempt draws a new size from the PSD
@@ -67,12 +68,26 @@ python3 -m venv /tmp/venv-continuum
 /tmp/venv-continuum/bin/pip install numpy numba matplotlib imageio imageio-ffmpeg
 cd docs/physics-simulations/runs/mc-packing
 OMP_NUM_THREADS=1 NUMBA_NUM_THREADS=1 /tmp/venv-continuum/bin/python run.py        # sim + plot + anim + result.json
-# or by stage: run.py sim | plot | anim | result   (raw data go to /tmp/sims-scratch/mc-packing)
+# or by stage: run.py sim | plot | anim | result   (raw data go to /tmp/sims-scratch/mc-packing;
+# finished cases are cached there as JSON, so set FORCE=1 to recompute them)
 ```
 
 ## Runtime
 
-RUNTIME_PLACEHOLDER
+All runs were single-threaded on 1 core of the 4-core runner, which was shared with other jobs.
+The production runs took 583 s of compute in total:
+
+- RSA: 5 s (monodisperse), 9 s (NaCl), 289 s (AlSi10Mg; many small accepted grains).
+- All 14 deposition runs: 1.8 s together.
+- Compression: 121 s (monodisperse), 117 s (NaCl), 24 s (AlSi10Mg, Verlet list).
+- Figure, animation and numba compilation: 18 s.
+
+The first AlSi10Mg compression attempt used the cell-list version. Its cells spanned the whole
+box, which made every step O(N^2), so it was killed after about 8 min and rerun with a Verlet pair
+list (same FIRE algorithm and tolerances). Before production, smoke tests found a bug in the
+three-contact rule that let grains pass through neighbours (maximum relative overlap 1.0). It was
+fixed, and every packing reported below has a maximum relative overlap of 1e-14 (deposition, RSA)
+or less than 2e-4 (compression tolerance).
 
 ## Result
 
@@ -81,11 +96,44 @@ RUNTIME_PLACEHOLDER
 Animation: [GIF](mc_packing_deposition.gif), [MP4](mc_packing_deposition.mp4). Both show NaCl
 deposition in a vertical cut plane, cohesionless and sticky, frames matched by bed height.
 
-RESULT_PLACEHOLDER
+Packing fraction phi (solid volume fraction). All values come from the runs in this folder
+(`result.json`).
+
+| algorithm | monodisperse | NaCl PSD | AlSi10Mg PSD | monodisperse literature |
+|---|---|---|---|---|
+| RSA, 10^7 attempts (n^-1/3 extrapolation) | 0.365 (0.380) | 0.392 (0.415) | 0.416 (0.452) | 0.3841 saturation (Torquato et al. 2006) |
+| sticky ballistic deposition, `p_stick` = 1 | 0.162 | 0.159 | 0.153 | about 0.15, ballistic deposition without restructuring (Jullien and Meakin 1987) |
+| drop-and-roll deposition, `p_stick` = 0 | 0.581 | 0.583 | 0.608 | 0.582 (Visscher and Bolsterli 1972) |
+| force-biased compression (jammed) | 0.632 | 0.633 | 0.666 | about 0.64, random close packing |
+
+- **Validation.** The monodisperse drop-and-roll (0.581) and compression (0.632) results match
+  the literature values to within 0.001 and 0.01. Compression comes out slightly low because each
+  growth step gets a finite relaxation budget.
+- **NaCl, implied densities.** Poured: 0.583 × 2165 = **1262 kg/m3**, inside the 1200-1300
+  kg/m3 assumed for the rig's salt. Dense (compression): **1370 kg/m3**. Hausner analog:
+  **1.085**, "excellent" flow in the USP <1174> classes, as expected for coarse free-flowing salt.
+- **AlSi10Mg, cohesionless geometry only.** Poured 0.608 (1624 kg/m3), dense 0.666
+  (1779 kg/m3), Hausner analog **1.095**. The wider PSD packs denser in both states but leaves
+  the ratio almost unchanged. Without cohesion, PSD width alone cannot produce the larger Hausner
+  ratios of fine metal powders.
+- **Stickiness knob** (loose phi, then Hausner analog, at `p_stick` = 0 / 0.1 / 0.25 / 0.5 /
+  0.75 / 1):
+  - NaCl: phi = 0.583 / 0.531 / 0.417 / 0.263 / 0.193 / 0.159, H = 1.09 / 1.19 / 1.52 / 2.40 /
+    3.28 / 3.97.
+  - AlSi10Mg: phi = 0.608 / 0.551 / 0.398 / 0.271 / 0.180 / 0.153, H = 1.10 / 1.21 / 1.67 /
+    2.46 / 3.69 / 4.35.
+
+  The range of real powders (H about 1.1-1.6) maps onto `p_stick` of roughly 0 to 0.25. Even
+  small per-contact stickiness strongly lowers the poured density. Panel (d) shows the layered
+  zone within about 2 grain diameters of the floor, which the measurement window excludes.
+  Mean supporting contacts per grain drop from 2.95 (`p_stick` = 0) to 1.0 (`p_stick` = 1).
 
 ## Status
 
-STATUS_PLACEHOLDER
+**ran** (full scale for this method, 3D). All three algorithms ran for all three PSDs, plus
+the six-value stickiness sweep for NaCl and AlSi10Mg. No deposition grain hit the
+state-transition cap (0 of 80,000 grains) and no cell-list overflow occurred. One process was killed and
+rerun (see Runtime).
 
 ## Limitations
 

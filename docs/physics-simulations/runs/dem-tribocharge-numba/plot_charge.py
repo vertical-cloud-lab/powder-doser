@@ -93,7 +93,7 @@ for k in range(nfr):
     plt.close(f)
 h, w = frames[0].shape[:2]
 frames = [fr[:h - h % 2, :w - w % 2] for fr in frames]
-imageio.mimsave(os.path.join(OUT, "tribocharge.gif"), frames, duration=1 / 12, loop=0)
+imageio.mimsave(os.path.join(OUT, "tribocharge.gif"), frames, duration=1000 / 12, loop=0)  # imageio>=2.28 pillow plugin: ms
 os.environ.setdefault("IMAGEIO_FFMPEG_EXE", imageio_ffmpeg.get_ffmpeg_exe())
 wr = imageio.get_writer(os.path.join(OUT, "tribocharge.mp4"), fps=12, codec="libx264", pixelformat="yuv420p",
                         macro_block_size=1, ffmpeg_params=["-crf", "28"])

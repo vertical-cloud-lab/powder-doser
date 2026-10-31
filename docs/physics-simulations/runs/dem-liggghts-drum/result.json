@@ -4,14 +4,9 @@
  "code": "LIGGGHTS-PUBLIC",
  "version": "3.8.0 (Debian package liggghts)",
  "status": "ran",
- "wall_s": {
-  "dry": 239.1
- },
+ "wall_s": 412.0,
  "cores": 1,
- "particles": {
-  "grains": 2400,
-  "wall_spheres": 2030
- },
+ "particles": 4430,
  "key_results": {
   "dry": {
    "dynamic_angle_mean_deg": 39.2,
@@ -28,8 +23,35 @@
     32.0,
     34.3
    ]
+  },
+  "coh": {
+   "dynamic_angle_mean_deg": 39.4,
+   "dynamic_angle_std_deg": 12.4,
+   "averaging_window_s": [
+    0.6,
+    1.2
+   ],
+   "local_max_angles_deg": [
+    29.8,
+    37.2,
+    53.6,
+    22.2
+   ],
+   "local_min_angles_deg": [
+    25.3,
+    28.2,
+    36.0,
+    13.4
+   ]
   }
  },
- "notes": "Angle = slope of a line fitted to the top of the bed over the central 60 % of the drum width, per 0.02 s dump, averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate. Non-cohesive run only unless a \"coh\" entry is present (cohesive run was optional).",
- "froude": 0.003577158691073274
+ "notes": "Angle = slope of a line fitted to the top of the bed over the central 60 % of the drum width, per 0.02 s dump, averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate. Cohesive run: major avalanches from 62.0 deg (t=0.59 s) to 25.3 deg (0.71 s) and from 53.6 deg (1.07 s) into a slump at 1.11-1.19 s; fitted angles of 13-22 deg during the slump are artifacts (surface not straight). Local extrema lists include small wiggles.",
+ "wall_s_by_variant": {
+  "dry": 239.1,
+  "coh": 172.9
+ },
+ "particles_detail": {
+  "grains": 2400,
+  "wall_spheres": 2030
+ }
 }

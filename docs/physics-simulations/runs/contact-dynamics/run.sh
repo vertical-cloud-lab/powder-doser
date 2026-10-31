@@ -11,7 +11,7 @@ cd "$S/build" && PYTHONNOUSERSITE=1 cmake "$S/src/lmgc90_user_2025" -DPython_EXE
    -DLMGC90_WITH_HDF5=OFF -DLMGC90_SPARSE_LIBRARY=none -DLMGC90_MATLIB_VERSION=none \
    -DLMGC90_ENABLE_TESTING=OFF -DLMGC90_ENABLE_DOC=OFF -DCMAKE_BUILD_TYPE=Release && make -j1 && make install
 export OMP_NUM_THREADS=1 PYTHONNOUSERSITE=1
-for w in 6 4 8; do
+for w in 6 4 8 10 7 5; do
   snap=0; [ "$w" = "6" ] && snap=100
   "$S/venv/bin/python" "$HERE/silo_lmgc90.py" $w "$S/W$w" 6000 $snap > "$S/log_W$w.txt" 2>&1
 done

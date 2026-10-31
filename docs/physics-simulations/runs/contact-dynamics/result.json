@@ -1,0 +1,61 @@
+{
+ "id": "contact-dynamics",
+ "method": "non-smooth contact dynamics (Moreau-Jean, NLGS), 2D rigid discs, flat-bottomed silo discharge vs outlet width",
+ "code": "LMGC90 (user version, built from source)",
+ "version": "2025 (pyproject 2025.rc3)",
+ "status": "partial",
+ "wall_s": 279.0,
+ "cores": 1,
+ "particles": 600,
+ "key_results": {
+  "rates": [
+   {
+    "W_over_d": 4.0,
+    "clogged": true,
+    "rate_discs_per_s_d1mm": null,
+    "Q_dimless": null,
+    "n_out_final": 64
+   },
+   {
+    "W_over_d": 5.0,
+    "clogged": false,
+    "rate_discs_per_s_d1mm": 657.4,
+    "Q_dimless": 6.638,
+    "n_out_final": 551
+   },
+   {
+    "W_over_d": 6.0,
+    "clogged": false,
+    "rate_discs_per_s_d1mm": 822.1,
+    "Q_dimless": 8.301,
+    "n_out_final": 569
+   },
+   {
+    "W_over_d": 7.0,
+    "clogged": false,
+    "rate_discs_per_s_d1mm": 1277.5,
+    "Q_dimless": 12.898,
+    "n_out_final": 574
+   },
+   {
+    "W_over_d": 8.0,
+    "clogged": false,
+    "rate_discs_per_s_d1mm": 1508.0,
+    "Q_dimless": 15.226,
+    "n_out_final": 582
+   },
+   {
+    "W_over_d": 10.0,
+    "clogged": false,
+    "rate_discs_per_s_d1mm": 2239.6,
+    "Q_dimless": 22.611,
+    "n_out_final": 592
+   }
+  ],
+  "beverloo_2D_fit": {
+   "C": 0.8725615618849542,
+   "k": 1.2269987705544168
+  }
+ },
+ "notes": "2D, 600 discs (d_mean = 1 mm, scale-free in NSCD), dt=2e-4 s, 1.2 s per width; build ~11 min. No pip/conda package: source build; np.cross 2-vector shim for NumPy 2.5."
+}

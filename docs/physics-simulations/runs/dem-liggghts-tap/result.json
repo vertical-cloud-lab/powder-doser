@@ -4,11 +4,7 @@
  "code": "LIGGGHTS-PUBLIC",
  "version": "3.8.0 (Debian package liggghts)",
  "status": "ran",
- "wall_s": {
-  "dry": 182.1,
-  "coh": 246.1,
-  "dry_rain": 235.0
- },
+ "wall_s": 663.2,
  "cores": 1,
  "particles": 2500,
  "key_results": {
@@ -43,5 +39,10 @@
    "hausner_from_whole_bed": 0.978
   }
  },
- "notes": "30 taps only (ASTM B527 uses up to 3000); the tapped value is the mean of the last 5 taps. Packing fraction in a slab 1 mm above the floor to 1 mm below the free surface; no side walls (periodic)."
+ "notes": "30 taps only (ASTM B527 uses up to 3000); the tapped value is the mean of the last 5 taps. Packing fraction in a slab 1 mm above the floor to 1 mm below the free surface; no side walls (periodic).",
+ "wall_s_by_variant": {
+  "dry": 182.1,
+  "coh": 246.1,
+  "dry_rain": 235.0
+ }
 }

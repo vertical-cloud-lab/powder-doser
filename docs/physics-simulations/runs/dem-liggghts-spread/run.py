@@ -6,7 +6,7 @@ at 50 mm/s with its lower edge GAP above the plate and leaves a layer behind it.
 The layer's packing fraction (grain volume inside 0 < z < GAP per plate area x GAP) and the
 plate coverage (projected area of layer grains) are measured in 2 mm bins along the plate.
 
-usage: python run.py VARIANT [--analyze-only]    VARIANT = dry | coh
+usage: python run.py VARIANT [--analyze-only]    VARIANT = dry | coh | coh_sub (cohesive grains + cohesive plate)
 """
 import argparse
 import json
@@ -35,9 +35,10 @@ X_MEAS = (12e-3, 32e-3)
 
 def build(variant, wd):
     os.makedirs(os.path.join(wd, "dump"), exist_ok=True)
-    ced = L.CED_COHESIVE if variant == "coh" else 0.0
+    ced = L.CED_COHESIVE if variant in ("coh", "coh_sub") else 0.0
     box = (0.0, LXB, 0.0, W, -0.5e-3, 12e-3)
-    head, wall_model, dt = L.header(box, periodic="f p f", ced=ced)
+    # coh_sub: the plate is cohesive too (SJKR grain-plate), standing in for a powder substrate
+    head, wall_model, dt = L.header(box, periodic="f p f", ced=ced, cohesion_walls=(variant == "coh_sub"))
     steps = lambda s: int(round(s / dt))  # noqa: E731
     ny = int(round(W / SB))
     sy = W / ny

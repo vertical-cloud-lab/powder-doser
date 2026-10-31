@@ -159,7 +159,7 @@ def save_animation(frames, gif_path, mp4_path, fps=10, max_width=640):
             h = int(round(im.height * max_width / im.width))
             im = im.resize((max_width, h), Image.LANCZOS)
         gif_frames.append(np.asarray(im.convert("P", palette=Image.ADAPTIVE, colors=128).convert("RGB")))
-    imageio.mimsave(gif_path, gif_frames, duration=1.0 / fps, loop=0)
+    imageio.mimsave(gif_path, gif_frames, duration=1000.0 / fps, loop=0)  # ms per frame (pillow plugin)
     # even dims for yuv420p
     h, w = frames[0].shape[:2]
     h2, w2 = h - h % 2, w - w % 2

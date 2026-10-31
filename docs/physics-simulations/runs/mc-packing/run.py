@@ -12,6 +12,8 @@ import time
 
 os.environ.setdefault("NUMBA_NUM_THREADS", "1")
 os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("NUMBA_CACHE_DIR", "/tmp/sims-scratch/mc-packing/numba_cache")
+sys.dont_write_bytecode = True
 import numpy as np  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -76,7 +78,8 @@ def run_sims():
     # warm-up compile on tiny problems
     pk.deposit(np.full(50, 0.5), 6.0, 0.0, 1, 64, 300)
     pk.rsa_run(0, 0.5, 0, 0, 0, 0.5, 6.0, 1000, np.array([1000], np.int64), 1, 64)
-    pk.compress(np.full(200, 0.5), 0.3, 1, 0.02, 1e-2, 50, 1e-3, 64, 2)
+    pk.compress(np.full(200, 0.5), 0.3, 1, 0.02, 1e-2, 50, 1e-3, 64, 2, False)
+    pk.compress(np.full(200, 0.5), 0.3, 1, 0.02, 1e-2, 50, 1e-3, 64, 2, True)
     pk.max_overlap(np.zeros((2, 3)), np.ones(2), 5.0, False)
 
     # ---------------- RSA (fully periodic cube, sizes drawn per attempt)
@@ -85,6 +88,10 @@ def run_sims():
     for name in ("mono", "salt", "alsi10mg"):
         P = PSD[name]
         L = 12.0
+        cj = f"{SCR}/rsa_{name}.json"
+        if os.path.exists(cj) and not os.environ.get("FORCE"):
+            res["rsa"][name] = json.load(open(cj))
+            continue
         t0 = time.time()
         pos, rad, hist, ovf = pk.rsa_run(P["kind"], *P["p"], P["dmax"] / 2, L, n_att, ck, 11, 512)
         dt = time.time() - t0
@@ -97,6 +104,7 @@ def run_sims():
                                 N_accepted=int(rad.size), mean_d_accepted=float(2 * rad.mean()),
                                 L=L, wall_s=dt, max_rel_overlap=float(mo), cap_overflow=int(ovf))
         np.savez_compressed(f"{SCR}/rsa_{name}.npz", pos=pos, rad=rad, hist=hist, ck=ck)
+        json.dump(res["rsa"][name], open(cj, "w"))
         print("RSA", name, res["rsa"][name], flush=True)
 
     # ---------------- deposition with stickiness knob
@@ -109,6 +117,10 @@ def run_sims():
         rad = 0.5 * d
         res["deposit"][name] = {"N": N, "L": L, "d_vol_10_50_90": vol_percentiles(d), "runs": {}}
         for ps in plist:
+            cj = f"{SCR}/dep_{name}_p{ps}.json"
+            if os.path.exists(cj) and not os.environ.get("FORCE"):
+                res["deposit"][name]["runs"][str(ps)] = json.load(open(cj))
+                continue
             t0 = time.time()
             pos, ncon, stuck, ovf = pk.deposit(rad, L, ps, 3, 512, 400)
             dt = time.time() - t0
@@ -120,22 +132,31 @@ def run_sims():
                      max_rel_overlap=float(mo),
                      mean_support_contacts=float(ok.mean()) if ok.size else float("nan"))
             res["deposit"][name]["runs"][str(ps)] = r
+            json.dump(r, open(cj, "w"))
             np.savez_compressed(f"{SCR}/dep_{name}_p{ps}.npz", pos=pos, rad=rad, ncon=ncon, zb=zb,
                                 prof=prof, L=L)
             print("DEP", name, r, flush=True)
 
     # ---------------- force-biased compression (fully periodic cube)
     for name in ("mono", "salt", "alsi10mg"):
+        cj = f"{SCR}/cmp_{name}.json"
+        if os.path.exists(cj) and not os.environ.get("FORCE"):
+            res["compress"][name] = json.load(open(cj))
+            continue
         d = sample_diam(name, 2000, 5)
         t0 = time.time()
+        # wide PSD: the cell list would span the whole box, so use the Verlet-list variant
+        verlet = name == "alsi10mg"
         pos, a, L, phiJ, phis, its, snaps, snap_s = pk.compress(0.5 * d, 0.45, 9, 0.01, 1e-4,
-                                                                4000, 2e-4, 512, 40)
+                                                                4000, 2e-4, 512, 40, verlet)
         dt = time.time() - t0
         mo = pk.max_overlap(pos, a, L, True)
         res["compress"][name] = dict(phi=float(phiJ), N=2000, L=float(L), growth_steps=int(phis.size),
                                      wall_s=dt, max_rel_overlap=float(mo),
                                      d_vol_10_50_90=vol_percentiles(d))
+        res["compress"][name]["neighbour_search"] = "verlet list" if verlet else "cell list"
         np.savez_compressed(f"{SCR}/cmp_{name}.npz", pos=pos, a=a, L=L, phis=phis, its=its)
+        json.dump(res["compress"][name], open(cj, "w"))
         print("CMP", name, res["compress"][name], flush=True)
     res["wall_s_total"] = time.time() - t_all
     with open(f"{SCR}/raw_results.json", "w") as f:

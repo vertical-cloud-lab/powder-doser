@@ -52,7 +52,7 @@ def main():
         ax.set_ylim(-8.8, 8.8)
         ax.set_xlabel("x (mm)")
         ax.set_ylabel("z (mm)")
-        ax.set_title(f"{LABEL[v]}: end of run (all y)", fontsize=9)
+        ax.set_title(f"{LABEL[v].split(' (')[0]}: end of run (all y)", fontsize=9)
     cb = fig.colorbar(ec, ax=list(axs[1:]), shrink=0.85, pad=0.02)
     cb.set_label("grain speed (m/s)", fontsize=8)
     fig.suptitle(f"dem-liggghts-drum: 16 mm rotating drum, {R.RPM:.0f} rpm, salt grains (LIGGGHTS-PUBLIC 3.8)", fontsize=10)
@@ -106,7 +106,10 @@ def main():
            "wall_s": {v: round(res[v].get("wall_s", float("nan")), 1) for v in VARS}, "cores": 1,
            "particles": {"grains": R.N, "wall_spheres": res[VARS[0]]["n_wall_spheres"]}, "key_results": kr,
            "notes": "Angle = slope of a line fitted to the top of the bed over the central 60 % of the drum width, per 0.02 s dump, "
-                    "averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate."}
+                    "averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate. Cohesive run: major "
+                    "avalanches from 62.0 deg (t=0.59 s) to 25.3 deg (0.71 s) and from 53.6 deg (1.07 s) into a slump at 1.11-1.19 s; "
+                    "fitted angles of 13-22 deg during the slump are artifacts (surface not straight). Local extrema lists include small "
+                    "wiggles."}
     L.write_json(os.path.join(HERE, "result.json"), out)
     print(json.dumps(kr, indent=1))
 

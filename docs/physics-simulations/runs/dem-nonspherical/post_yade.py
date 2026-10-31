@@ -1,4 +1,6 @@
-"""Figure + animation for the Yade heap runs.  Usage: python post_yade.py <run out dir> <repo out dir>"""
+"""Figure + animation for the Yade heap runs.
+Usage: python post_yade.py <run dir seed 1>[,<run dir seed 2>...] <repo out dir>
+Profiles and animation from the first dir; bars = mean over dirs, dots = individual seeds."""
 import os, sys, json
 import numpy as np
 import matplotlib
@@ -7,7 +9,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.collections import PatchCollection
 
-D, OUT = sys.argv[1], sys.argv[2]
+DS, OUT = sys.argv[1].split(','), sys.argv[2]
+D = DS[0]
 cases = [('sphere', 'spheres, no rolling resistance', '#7f7f7f'),
          ('sphere_rr', 'spheres + rolling resistance', '#1f77b4'),
          ('cube8', '8-sphere cube clumps', '#d62728')]
@@ -20,15 +23,20 @@ for c, lab, col in cases:
     ax[0].plot(r['profile_r_mm'], r['profile_h_mm'], 'o-', ms=3, color=col,
                label='%s: fit %.0f deg, h/r %.0f deg' % (lab, r['angle_of_repose_deg'], r['aor_from_height_over_foot_deg']))
 ax[0].set_xlabel('radial distance from heap axis r (mm)'); ax[0].set_ylabel('heap surface height h (mm)')
-ax[0].set_title('Heap profiles after lifting the cylinder (Yade)'); ax[0].legend(fontsize=7); ax[0].grid(alpha=0.3)
+ax[0].set_title('Heap profiles after lifting the cylinder (Yade, seed 1)'); ax[0].legend(fontsize=7); ax[0].grid(alpha=0.3)
 names = [c for c, _, _ in cases if c in R]
 x = np.arange(len(names))
-ax[1].bar(x - 0.2, [R[c]['angle_of_repose_deg'] for c in names], 0.4, label='flank fit', color='#9ecae1')
-ax[1].bar(x + 0.2, [R[c]['aor_from_height_over_foot_deg'] for c in names], 0.4, label='atan(h / r_foot)', color='#3182bd')
+RS = {c: [json.load(open(os.path.join(dd, 'result_%s.json' % c))) for dd in DS] for c in names}
+mfit = [np.mean([r['angle_of_repose_deg'] for r in RS[c]]) for c in names]
+mhr = [np.mean([r['aor_from_height_over_foot_deg'] for r in RS[c]]) for c in names]
+ax[1].bar(x - 0.2, mfit, 0.4, label='flank fit (mean of %d seeds)' % len(DS), color='#9ecae1')
+ax[1].bar(x + 0.2, mhr, 0.4, label='atan(h / r_foot) (mean)', color='#3182bd')
 for i, c in enumerate(names):
-    ax[1].text(i, 2, 'phi=%.3f\nN=%d' % (R[c]['packing_fraction_column'], R[c]['n_particles']), ha='center', fontsize=8, color='w')
+    ax[1].plot([i - 0.2] * len(DS), [r['angle_of_repose_deg'] for r in RS[c]], 'k.', ms=5)
+    ax[1].plot([i + 0.2] * len(DS), [r['aor_from_height_over_foot_deg'] for r in RS[c]], 'k.', ms=5)
+    ax[1].text(i, 2, 'phi=%.3f\nN=%d' % (np.mean([r['packing_fraction_column'] for r in RS[c]]), R[c]['n_particles']), ha='center', fontsize=8, color='w')
 ax[1].set_xticks(x); ax[1].set_xticklabels(names); ax[1].set_ylabel('angle of repose (deg)')
-ax[1].set_title('Angle of repose and column packing fraction phi'); ax[1].legend(fontsize=8); ax[1].grid(alpha=0.3, axis='y')
+ax[1].set_title('Angle of repose; mean column packing fraction phi'); ax[1].legend(fontsize=8); ax[1].grid(alpha=0.3, axis='y')
 fig.tight_layout(); fig.savefig(os.path.join(OUT, 'dem_nonspherical_heaps.png'), dpi=110)
 
 import imageio.v2 as imageio

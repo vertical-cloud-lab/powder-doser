@@ -13,13 +13,21 @@ sys.path.insert(0, HERE)
 import ligcommon as L  # noqa: E402
 import run as R  # noqa: E402
 
-VARS = [v for v in ("dry", "coh") if os.path.exists(os.path.join(R.SCRATCH, v, "run.json"))]
-LABEL = {"dry": "non-cohesive", "coh": "cohesive (SJKR 6 kJ/m³, Bo≈5)"}
+VARS = [v for v in ("dry", "coh", "coh_sub") if os.path.exists(os.path.join(R.SCRATCH, v, "run.json"))]
+LABEL = {"dry": "non-cohesive", "coh": "cohesive (SJKR 6 kJ/m³, Bo≈5)", "coh_sub": "cohesive + cohesive plate"}
+L.COLORS["coh_sub"] = L.COLORS["cap_low"]
+
+
+def n_inserted(v):
+    import re
+    txt = open(os.path.join(R.SCRATCH, v, "screen.txt")).read()
+    m = re.findall(r"a total of (\d+) particle templates", txt)
+    return int(m[-1]) if m else None
 
 
 def main():
     res = {v: json.load(open(os.path.join(R.SCRATCH, v, "run.json"))) for v in VARS}
-    fig = plt.figure(figsize=(12, 5.2))
+    fig = plt.figure(figsize=(12, 1.6 + 1.6 * len(VARS)))
     fig.patch.set_facecolor(L.SURF)
     gs = fig.add_gridspec(len(VARS), 2, width_ratios=[1, 1.6])
     ax = fig.add_subplot(gs[:, 0])
@@ -48,7 +56,7 @@ def main():
         ax.set_aspect("equal")
         ax.set_xlabel("x (mm)")
         ax.set_ylabel("y (mm)")
-        ax.set_title(f"{LABEL[v]}: top view of grains in the layer (centre below the gap); grey = measured zone", fontsize=8)
+        ax.set_title(f"{LABEL[v]}: top view of layer grains (centre below the gap); grey = measured zone", fontsize=8)
     fig.suptitle("dem-liggghts-spread: blade recoating of salt grains (LIGGGHTS-PUBLIC 3.8)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(HERE, "spread.png"), dpi=110, facecolor=L.SURF)
@@ -59,7 +67,7 @@ def main():
     frames = []
     cmap = L.speed_cmap()
     for i in range(0, nfr):
-        fig, axs = plt.subplots(len(VARS), 1, figsize=(8, 1.6 + 1.5 * len(VARS)))
+        fig, axs = plt.subplots(len(VARS), 1, figsize=(8, 1.6 + 1.4 * len(VARS)))
         fig.patch.set_facecolor(L.SURF)
         axs = np.atleast_1d(axs)
         for k, v in enumerate(VARS):
@@ -90,7 +98,7 @@ def main():
     out = {"id": "dem-liggghts-spread", "method": "blade recoating, gap 2.5 mean diameters (1.06 mm), 50 mm/s, y-periodic 4.25 mm slice",
            "code": "LIGGGHTS-PUBLIC", "version": "3.8.0 (Debian package liggghts)", "status": "ran",
            "wall_s": {v: round(res[v].get("wall_s", float("nan")), 1) for v in VARS}, "cores": 1,
-           "particles": {"grains": R.N_HEAP, "blade_spheres": res[VARS[0]]["n_blade"]}, "key_results": kr,
+           "particles": {"grains": n_inserted(VARS[0]), "blade_spheres": res[VARS[0]]["n_blade"]}, "key_results": kr,
            "notes": "Measured over x = 12-32 mm in 2 mm bins. Layer packing fraction = grain volume inside 0<z<gap / (bin area x gap). "
                     "Coverage = projected area of grains whose centre is below the gap / bin area."}
     L.write_json(os.path.join(HERE, "result.json"), out)

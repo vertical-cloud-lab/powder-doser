@@ -1,0 +1,65 @@
+{
+ "id": "dem-liggghts-hall",
+ "method": "Hall (2.54 mm) and Carney (5.08 mm) 60-degree funnel discharge, reduced funnel height",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": 465.7,
+ "cores": 1,
+ "particles": 12000,
+ "key_results": {
+  "hall": {
+   "mass_flow_g_s": 0.363,
+   "time_per_50g_s_extrapolated": 137.9,
+   "jammed_at_end": false,
+   "zero_flow_25ms_windows": 0,
+   "discharged_g": 0.222,
+   "orifice_over_mean_d": 5.98,
+   "beverloo_g_s": {
+    "k=1.5": 0.358,
+    "k=2.0": 0.266,
+    "k=2.9": 0.14
+   },
+   "beverloo_rho_b_kg_m3": 1249.0
+  },
+  "carney": {
+   "mass_flow_g_s": 2.873,
+   "time_per_50g_s_extrapolated": 17.4,
+   "jammed_at_end": false,
+   "zero_flow_25ms_windows": 0,
+   "discharged_g": 0.842,
+   "orifice_over_mean_d": 11.95,
+   "beverloo_g_s": {
+    "k=1.5": 2.985,
+    "k=2.0": 2.64,
+    "k=2.9": 2.083
+   },
+   "beverloo_rho_b_kg_m3": 1249.0
+  },
+  "hall_coh": {
+   "mass_flow_g_s": 0.0,
+   "time_per_50g_s_extrapolated": null,
+   "jammed_at_end": true,
+   "zero_flow_25ms_windows": null,
+   "discharged_g": 0.005,
+   "orifice_over_mean_d": 5.98,
+   "beverloo_g_s": {
+    "k=1.5": 0.358,
+    "k=2.0": 0.266,
+    "k=2.9": 0.14
+   },
+   "beverloo_rho_b_kg_m3": 1249.0
+  }
+ },
+ "notes": "Mass flow = linear fit to discharged mass from 0.05 s after opening to the end of the run. Beverloo: W = C rho_b sqrt(g) (D0 - k d)^2.5 with C = 0.58, d = 0.425 mm, rho_b from the poured packing fraction of dem-liggghts-tap.",
+ "wall_s_by_variant": {
+  "hall": 171.9,
+  "carney": 178.1,
+  "hall_coh": 115.7
+ },
+ "particles_detail": {
+  "hall": 5000,
+  "carney": 12000,
+  "hall_coh": 5000
+ }
+}

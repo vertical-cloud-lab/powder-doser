@@ -27,7 +27,7 @@ two liquid contents. Column collapse is a cheap numerical stand-in for an angle-
   the column collapses onto a smooth floor (an infinite plane) for 0.4 s.
 * **Contact.** Linear spring-dashpot with the stiffness set by the contact time: tc = 5e-4 s, giving kn of about
   120 N/m for a mean pair. Normal and tangential restitution 0.5. Sliding friction 0.5 between particles and 0.4
-  against the floor and wall. dt = tc/20 = 2.5e-5 s. Overlaps at the column base stay below 1 % of d.
+  against the floor and wall. dt = tc/20 = 2.5e-5 s. The estimated overlap at the column base (column weight against kn) is below 1 % of d.
 * **Liquid bridges.** Water, surface tension 0.072 N/m, contact angle 0. A bridge forms when two grains touch and
   breaks at Willett's rupture distance. Each bridge has volume V_b = W V_p,mean / 3, assuming about 3 bridges per
   particle (coordination about 6).
