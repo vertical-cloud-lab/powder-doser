@@ -1,0 +1,51 @@
+{
+ "id": "dem-liggghts-capillary",
+ "method": "angle of repose (dem-liggghts-aor setup) with liquid-bridge cohesion, dry vs two liquid contents",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts), cohesion model easo/capillary/viscous",
+ "status": "ran",
+ "wall_s": {
+  "dry": 96.3,
+  "cap_low": 60.8,
+  "cap_high": 81.5
+ },
+ "cores": 1,
+ "particles": {
+  "dry": {
+   "poured": 4000,
+   "on_base_at_end": 2530
+  },
+  "cap_low": {
+   "poured": 4000,
+   "on_base_at_end": 2173
+  },
+  "cap_high": {
+   "poured": 4000,
+   "on_base_at_end": 2488
+  }
+ },
+ "key_results": {
+  "dry": {
+   "surfaceLiquidContentInitial": 0.0,
+   "repose_angle_profile_fit_deg": 21.9,
+   "repose_angle_sector_std_deg": 1.4,
+   "repose_angle_apex_iso_deg": 27.5,
+   "apex_height_mm": 3.13
+  },
+  "cap_low": {
+   "surfaceLiquidContentInitial": 0.5,
+   "repose_angle_profile_fit_deg": 37.1,
+   "repose_angle_sector_std_deg": 10.5,
+   "repose_angle_apex_iso_deg": 54.0,
+   "apex_height_mm": 8.26
+  },
+  "cap_high": {
+   "surfaceLiquidContentInitial": 2.0,
+   "repose_angle_profile_fit_deg": 48.0,
+   "repose_angle_sector_std_deg": 16.2,
+   "repose_angle_apex_iso_deg": 57.4,
+   "apex_height_mm": 9.39
+  }
+ },
+ "notes": "Dry baseline = the dry run of dem-liggghts-aor (identical setup). Liquid: surface tension 0.072 N/m, viscosity 1 mPa s, contact angle 20 deg, bridge rupture at 1.1 x contact distance (maxSeparationDistanceRatio), min separation ratio 1.01; grain-wall contacts dry."
+}

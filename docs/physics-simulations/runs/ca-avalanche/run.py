@@ -512,7 +512,11 @@ result = {
     "cores": 1,
     "key_results": res,
     "notes": "Lattice toy models: lengths in sites/cells, mass in parcels. Timings: "
-             + json.dumps({k: round(v, 1) for k, v in tim.items()}),
+             + json.dumps({k: round(v, 1) for k, v in tim.items()})
+             + " Feeder rule: only a column that itself toppled is 'moving' (needs s_f) for 3 sweeps; an earlier "
+               "version that also activated neighbours made c irrelevant and was discarded. I_stop ~ 1 - inflow/mean "
+               "burst in incremental mode, so absolute I_stop depends on parcel size; trends with c, tilt and drive "
+               "rate are the result.",
 }
 with open(os.path.join(OUT, "result.json"), "w") as f:
     json.dump(result, f, indent=1)

@@ -55,13 +55,18 @@ def metrics(d):
     prof = np.array([vol[bulk & (z >= a) & (z < b)].sum() / (area * dz) for a, b in zip(edges[:-1], edges[1:])])
     zc = 0.5 * (edges[:-1] + edges[1:])
     plateau = np.median(prof[(zc > 0.6e-3) & (zc < 1.6e-3)])
-    above = np.where((prof < 0.5 * plateau) & (zc > 1e-3))[0]
-    h = zc[above[0]] if len(above) else float("nan")
-    core = (zc > 0.6e-3) & (zc < h - 0.6e-3)
-    phi = float(prof[core].mean()) if core.any() else float("nan")
+    if plateau < 0.4:   # no dense bed formed: report the mean solid fraction of the column instead
+        h = float("nan")
+        phi = float(prof[(zc > 0.5e-3) & (zc < 8e-3)].mean())
+    else:
+        above = np.where((prof < 0.5 * plateau) & (zc > 1e-3))[0]
+        h = zc[above[0]] if len(above) else float("nan")
+        core = (zc > 0.6e-3) & (zc < h - 0.6e-3)
+        phi = float(prof[core].mean()) if core.any() else float("nan")
     # grains touching the charged wall layer (centre within r + a/2 + 5 um of x = 0)
     touch = x < r + A / 2 + 5e-6
-    stuck_above = int((touch & (z > h + A)).sum())
+    # "above the bed": higher than the uncharged bed (3.38 mm) plus one grain diameter
+    stuck_above = int((touch & (z > 3.375e-3 + A)).sum())
     wall_touch = int(touch.sum())
     lost = int(((z > 0.0185) | (z < 0)).sum())
     return dict(bed_height_mm=float(h * 1e3), phi_bulk=phi, grains_touching_wall=wall_touch,
@@ -114,9 +119,9 @@ for i, tag in enumerate(present):
     ax.set_xlabel("x (mm)")
     if i == 0:
         ax.set_ylabel("z (mm)")
-    ax.set_title(f"{tag}: {lab}\nbed {m['bed_height_mm']:.2f} mm, "
-                 f"$\\phi$ {m['phi_bulk']:.3f}, on wall above bed: {m['grains_on_wall_above_bed']}",
-                 fontsize=7)
+    bed = "no dense bed" if not np.isfinite(m["bed_height_mm"]) else f"bed {m['bed_height_mm']:.2f} mm"
+    ax.set_title(f"case {tag} (t = {step*1e-5:.1f} s)\n{bed}, $\\phi$ = {m['phi_bulk']:.2f}\n"
+                 f"on wall above 3.8 mm: {m['grains_on_wall_above_bed']}", fontsize=8)
     axp.plot(prof, zc * 1e3, "-", color=colors[tag], label=f"{tag}: {lab}")
 axp.set_xlabel("solid fraction in bulk, x > 1 mm (-)")
 axp.set_ylabel("height z (mm)")
@@ -127,8 +132,9 @@ fig.suptitle("LAMMPS granular + coul/cut: 800 salt grains poured beside a charge
              "(green = charged wall layer, slice |y - y_c| < 1.2 mm)", fontsize=9)
 fig.tight_layout()
 fig.savefig(HERE / "charge_settling.png", dpi=100)
-json.dump(res, open(HERE / "analysis_summary.json", "w"), indent=1)
-print(json.dumps(res, indent=1))
+clean = {t: {k: (None if isinstance(v, float) and not math.isfinite(v) else v) for k, v in m.items()} for t, m in res.items()}
+json.dump(clean, open(HERE / "analysis_summary.json", "w"), indent=1)
+print(json.dumps(clean, indent=1))
 
 # animation of the strongest case
 tag = "Clong" if (OUT / "dump_Clong.lammpstrj").exists() else ("C" if (OUT / "dump_C.lammpstrj").exists() else None)

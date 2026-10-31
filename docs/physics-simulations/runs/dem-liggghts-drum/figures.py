@@ -87,8 +87,20 @@ def main():
         frames.append(L.fig_to_array(fig))
         plt.close(fig)
     L.save_animation(frames, os.path.join(HERE, "drum.gif"), os.path.join(HERE, "drum.mp4"), fps=10)
-    kr = {v: {"dynamic_angle_mean_deg": round(res[v]["dyn_angle_mean_deg"], 1), "dynamic_angle_std_deg": round(res[v]["dyn_angle_std_deg"], 1),
-              "averaging_window_s": [R.T_AVG0, R.T_ROT]} for v in VARS}
+    def extrema(v):
+        t = np.array(res[v]["t_rot"])
+        a = np.array([np.nan if q is None else q for q in res[v]["angle_deg"]])
+        m = t > R.T_AVG0 - 0.1
+        t, a = t[m], a[m]
+        mx = [a[i] for i in range(1, len(a) - 1) if a[i] >= a[i - 1] and a[i] > a[i + 1] and t[i] >= R.T_AVG0]
+        mn = [a[i] for i in range(1, len(a) - 1) if a[i] <= a[i - 1] and a[i] < a[i + 1] and t[i] >= R.T_AVG0]
+        return mx, mn
+    kr = {}
+    for v in VARS:
+        mx, mn = extrema(v)
+        kr[v] = {"dynamic_angle_mean_deg": round(res[v]["dyn_angle_mean_deg"], 1), "dynamic_angle_std_deg": round(res[v]["dyn_angle_std_deg"], 1),
+                 "averaging_window_s": [R.T_AVG0, R.T_ROT],
+                 "local_max_angles_deg": [round(float(x), 1) for x in mx], "local_min_angles_deg": [round(float(x), 1) for x in mn]}
     out = {"id": "dem-liggghts-drum", "method": "rotating drum, 16 mm diameter, 2.55 mm periodic slice, 20 rpm (Froude 0.0036)",
            "code": "LIGGGHTS-PUBLIC", "version": "3.8.0 (Debian package liggghts)", "status": "ran",
            "wall_s": {v: round(res[v].get("wall_s", float("nan")), 1) for v in VARS}, "cores": 1,

@@ -151,30 +151,41 @@ Z_COUNT = -0.004
 n_settle = int(round(a.t_settle / a.dt)); n_flow = int(round(a.t_flow / a.dt))
 check = int(round(0.005 / a.dt)); snap_every = int(round(a.snap_every / a.dt))
 fill_h = None
+import signal
+class _Stop(Exception):
+    pass
+def _on_term(signum, frame):
+    raise _Stop()
+signal.signal(signal.SIGTERM, _on_term)   # a timeout still writes what was simulated
+stopped_early = False
 t0 = time.time()
-for step in range(1, n_settle + n_flow + 1):
-    if step == n_settle + 1:
-        zs = np.array([bodies[i].GetPos().z / LU for i in range(n)])
-        fill_h = float(np.percentile(zs + diam / 2, 98))
-        plug.SetPos(chrono.ChVector3d(0, 0, -0.05 * LU))
-        print('t=%.3f s: plug removed; fill height %.2f mm' % (s.GetChTime(), fill_h * 1e3), flush=True)
-    s.DoStepDynamics(a.dt)
-    if step % check == 0:
-        for i in np.flatnonzero(active):
-            if bodies[i].GetPos().z / LU < Z_COUNT:
-                active[i] = False; n_out += 1; m_out += masses[i]
-                b = bodies[i]
-                b.SetFixed(True); b.EnableCollision(False)
-                b.SetPos(chrono.ChVector3d(LU * (-0.5 + 0.003 * (park_i % 300)), LU * 0.5, LU * (-0.5 - 0.003 * (park_i // 300))))
-                park_i += 1
-        vmax = max((bodies[i].GetPosDt().Length() for i in np.flatnonzero(active)), default=0.0) / LU
-        rows.append((s.GetChTime(), n_out, m_out, s.GetNumContacts(), time.time() - t0, vmax))
-    if step % snap_every == 0 or step == 1:
-        snaps.append(np.array([[bodies[i].GetPos().x / LU, bodies[i].GetPos().y / LU, bodies[i].GetPos().z / LU, diam[i] / 2,
-                                float(active[i])] for i in range(n)], dtype=np.float32))
-        snap_t.append(s.GetChTime())
-    if step % (4 * check) == 0:
-        print('t=%.3f s  out=%d  contacts=%d  vmax=%.3g m/s  wall=%.0f s' % (s.GetChTime(), n_out, s.GetNumContacts(), rows[-1][5], time.time() - t0), flush=True)
+try:
+  for step in range(1, n_settle + n_flow + 1):
+      if step == n_settle + 1:
+          zs = np.array([bodies[i].GetPos().z / LU for i in range(n)])
+          fill_h = float(np.percentile(zs + diam / 2, 98))
+          plug.SetPos(chrono.ChVector3d(0, 0, -0.05 * LU))
+          print('t=%.3f s: plug removed; fill height %.2f mm' % (s.GetChTime(), fill_h * 1e3), flush=True)
+      s.DoStepDynamics(a.dt)
+      if step % check == 0:
+          for i in np.flatnonzero(active):
+              if bodies[i].GetPos().z / LU < Z_COUNT:
+                  active[i] = False; n_out += 1; m_out += masses[i]
+                  b = bodies[i]
+                  b.SetFixed(True); b.EnableCollision(False)
+                  b.SetPos(chrono.ChVector3d(LU * (-0.5 + 0.003 * (park_i % 300)), LU * 0.5, LU * (-0.5 - 0.003 * (park_i // 300))))
+                  park_i += 1
+          vmax = max((bodies[i].GetPosDt().Length() for i in np.flatnonzero(active)), default=0.0) / LU
+          rows.append((s.GetChTime(), n_out, m_out, s.GetNumContacts(), time.time() - t0, vmax))
+      if step % snap_every == 0 or step == 1:
+          snaps.append(np.array([[bodies[i].GetPos().x / LU, bodies[i].GetPos().y / LU, bodies[i].GetPos().z / LU, diam[i] / 2,
+                                  float(active[i])] for i in range(n)], dtype=np.float32))
+          snap_t.append(s.GetChTime())
+      if step % (4 * check) == 0:
+          print('t=%.3f s  out=%d  contacts=%d  vmax=%.3g m/s  wall=%.0f s' % (s.GetChTime(), n_out, s.GetNumContacts(), rows[-1][5], time.time() - t0), flush=True)
+except _Stop:
+    stopped_early = True
+    print('SIGTERM: stopping early at t=%.3f s' % s.GetChTime(), flush=True)
 wall = time.time() - t0
 rows = np.array(rows)
 tag = 'L%04.1f' % a.L
@@ -184,6 +195,6 @@ meta = dict(L_mm=a.L, n=n, box_mm=a.box, cg=a.cg, d_m=d_ref.tolist(), nfrac=p_re
             poisson=NU, restitution=EN, mu_pp=MU_PP, mu_pw=MU_PW, mu_roll_set=MU_ROLL, dt=a.dt,
             t_settle=a.t_settle, t_flow=a.t_flow, fill_height_m=fill_h, total_mass_kg=float(masses.sum()),
             n_out=int(n_out), m_out_kg=float(m_out), wall_s=wall, particle_steps=float(n) * (n_settle + n_flow),
-            chrono_version='10.0.0 (conda-forge)', contact_breaking_threshold=a.cbt, length_unit_factor=LU)
+            chrono_version='10.0.0 (conda-forge)', contact_breaking_threshold=a.cbt, length_unit_factor=LU, stopped_early=stopped_early, t_end=s.GetChTime())
 json.dump(meta, open(os.path.join(a.out, tag + '_meta.json'), 'w'), indent=1)
 print(json.dumps(meta), flush=True)

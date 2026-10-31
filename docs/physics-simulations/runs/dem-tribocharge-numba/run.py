@@ -64,7 +64,7 @@ def paschen_field(A, B, gap_m, gamma=0.01, p_torr=760.0):
 # Townsend coefficients (Raizer, Gas Discharge Physics, 1991, Table 4.1)
 EB_AIR, VB_AIR = paschen_field(15.0, 365.0, D_MEAN)
 EB_AR, VB_AR = paschen_field(12.0, 180.0, D_MEAN)
-SIG_CAP = {"air": EPS0 * EB_AIR, "argon": EPS0 * EB_AR}
+SIG_CAP = {"air": EPS0 * EB_AIR, "argon": EPS0 * EB_AR, "uncharged": 0.0}  # "uncharged" = control run, no charge transfer
 
 CELL = 2 * RMAX
 NC = int(np.ceil(2 * RD / CELL)) + 2

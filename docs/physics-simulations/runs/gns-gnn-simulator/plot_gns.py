@@ -54,25 +54,30 @@ fig.suptitle("gns-gnn-simulator: geoelements/gns LearnedSimulator (reduced: late
 fig.tight_layout()
 fig.savefig(os.path.join(OUT, "gns_rollout.png"), dpi=95)
 
-# ---------- animation: test case with the tallest column ----------
-k_anim = max(cases, key=lambda k: summ["cases"][k]["H0"] / summ["cases"][k]["W"])
-z = np.load(os.path.join(SCR, f"rollout_{k_anim}.npz"))
-tr, pr = z["true"], z["pred"]
+# ---------- animation: one in-range column (test_0) and the out-of-range tall column ----------
+k_tall = max(cases, key=lambda k: summ["cases"][k]["H0"] / summ["cases"][k]["W"])
+anim_cases = [cases[0], k_tall] if k_tall != cases[0] else [cases[0]]
+zz = {k: np.load(os.path.join(SCR, f"rollout_{k}.npz")) for k in anim_cases}
+nt = min(z["true"].shape[0] for z in zz.values())
 frames = []
-for k in range(0, tr.shape[0], 2):
-    f, a = plt.subplots(1, 2, figsize=(6.4, 2.9), dpi=100)
-    for aa, p, ttl, col in ((a[0], tr, "DEM (numba, ground truth)", "C0"), (a[1], pr, "GNS rollout", "C1")):
-        aa.scatter(p[k, :, 0], p[k, :, 1], s=5, c=col)
-        aa.set_xlim(0, 0.45); aa.set_ylim(0, 0.38); aa.set_aspect("equal")
-        aa.set_title(ttl, fontsize=8); aa.tick_params(labelsize=6)
-        aa.set_xlabel("x (box units)", fontsize=7)
-    a[0].set_ylabel("y (box units)", fontsize=7)
-    f.suptitle(f"gns-gnn-simulator (geoelements/gns): {k_anim}, t = {k * DT_FRAME:.2f}", fontsize=8)
+for k in range(0, nt, 2):
+    f, a = plt.subplots(len(anim_cases), 2, figsize=(6.4, 2.6 * len(anim_cases)), dpi=100, squeeze=False)
+    for row, kc in enumerate(anim_cases):
+        tr, pr = zz[kc]["true"], zz[kc]["pred"]
+        tag = "in training range" if kc != k_tall else "taller than any training column"
+        for aa, p, ttl, col in ((a[row, 0], tr, f"{kc} DEM ({tag})", "C0"), (a[row, 1], pr, f"{kc} GNS rollout", "C1")):
+            aa.scatter(p[k, :, 0], p[k, :, 1], s=4, c=col)
+            aa.set_xlim(0, 0.45); aa.set_ylim(0, 0.33); aa.set_aspect("equal")
+            aa.set_title(ttl, fontsize=7); aa.tick_params(labelsize=6)
+        a[row, 0].set_ylabel("y (box units)", fontsize=7)
+    a[-1, 0].set_xlabel("x (box units)", fontsize=7); a[-1, 1].set_xlabel("x (box units)", fontsize=7)
+    f.suptitle(f"gns-gnn-simulator (geoelements/gns) vs numba DEM, t = {k * DT_FRAME:.2f}", fontsize=8)
     f.tight_layout()
     f.canvas.draw()
     img = np.asarray(f.canvas.buffer_rgba())[:, :, :3].copy()
     frames.append(img)
     plt.close(f)
+k_anim = ",".join(anim_cases)
 h, w = frames[0].shape[:2]
 h2, w2 = h - h % 2, w - w % 2
 frames = [fr[:h2, :w2] for fr in frames]

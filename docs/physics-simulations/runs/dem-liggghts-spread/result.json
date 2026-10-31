@@ -1,0 +1,25 @@
+{
+ "id": "dem-liggghts-spread",
+ "method": "blade recoating, gap 2.5 mean diameters (1.06 mm), 50 mm/s, y-periodic 4.25 mm slice",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": {
+  "dry": 120.6
+ },
+ "cores": 1,
+ "particles": {
+  "grains": 2500,
+  "blade_spheres": 875
+ },
+ "key_results": {
+  "dry": {
+   "phi_layer_mean": 0.337,
+   "phi_layer_std_between_bins": 0.026,
+   "coverage_mean": 0.898,
+   "coverage_min_bin": 0.874,
+   "mass_per_area_cv": 0.076
+  }
+ },
+ "notes": "Measured over x = 12-32 mm in 2 mm bins. Layer packing fraction = grain volume inside 0<z<gap / (bin area x gap). Coverage = projected area of grains whose centre is below the gap / bin area."
+}

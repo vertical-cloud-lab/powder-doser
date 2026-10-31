@@ -21,7 +21,7 @@ intercept of the τ–P line is the cohesion c that sets the unconfined yield st
 | Item | Value |
 |---|---|
 | Particles | 1500 spheres: 450 × 0.361 mm, 600 × 0.425 mm, 450 × 0.489 mm (number fractions 0.3/0.4/0.3), ρp = 2165 kg/m³ |
-| Box | fully periodic triclinic cell, about 4.6–4.8 mm on a side (about 11 grain diameters) |
+| Box | fully periodic triclinic cell: x = z = 4.85 mm (11.4 grain diameters); y, the gradient direction, adjusts with the pressure (4.6–6.1 mm) |
 | Normal contact | `hertz/material`: E = 2×10⁵ Pa (the reduced modulus of the PR #180 LIGGGHTS twin), ν = 0.3, restitution 0.5 through Tsuji damping |
 | Tangential, rolling, twisting | Mindlin, μs = 0.5; SDS rolling resistance μr = 0.3 (k_roll = 1 N/m, no rolling damping); Marshall twisting. There are no walls, so the particle–wall friction (0.4) does not enter. |
 | Cohesive variant | `jkr` with γ = 8.5 mJ/m². The nominal pull-off force 3πγR* is 8.5 µN for two 0.425 mm grains, 10 times the grain weight, so the **granular Bond number Bo_g ≈ 10**. The cohesion number F/(P d²) is 0.24 at 200 Pa, 0.47 at 100 Pa and 1.9 at 25 Pa. LAMMPS refuses Tsuji damping with JKR (`ERROR: Cannot use tsuji model with a cohesive normal model, jkr`, the first JKR attempt), so this case uses `damping mass_velocity` with η_n0 = 3500 s⁻¹, which gives e ≈ 0.5 for a 4×10⁻⁴ s contact. |
@@ -45,8 +45,10 @@ python analyze.py /tmp/x .     # writes analysis_summary.json, shear_mu_I.png, s
 
 ## Runtime
 
-Non-cohesive: 654 s wall clock, 1 core, 337,500 steps. The 4-core runner was heavily
-oversubscribed by other jobs (load average 9–14) during the run. JKR: see Status.
+* Non-cohesive: 654 s wall clock, 1 core, 337,500 steps. The 4-core runner was heavily
+  oversubscribed by other jobs (load average 9–14) during this run.
+* JKR: 293 s wall clock, 1 core, 180,700 steps (reduced stage list).
+* The first JKR attempt stopped at the `pair_coeff` line (the Tsuji error) after 0 steps.
 
 ## Result
 
@@ -71,13 +73,33 @@ coloured red to show the shear): [GIF](shear_animation.gif), [MP4](shear_animati
   intercept is zero within the noise, as expected without cohesion. The steady-state internal
   friction angle is atan 0.495 = 26.3°.
 
-JKR results: see Status.
+**JKR, γ = 8.5 mJ/m² (Bo_g ≈ 10):**
+
+| γ̇ (1/s) | P target (Pa) | Pyy measured (Pa) | I | μ = τ/P | φ |
+|---|---|---|---|---|---|
+| 2.5 | 100 | 99.1 | 0.0050 | 0.580 ± 0.009 | 0.494 |
+| 25 | 100 | 104.4 | 0.048 | 0.622 ± 0.014 | 0.492 |
+| 150 | 100 | 102.5 | 0.293 | 0.682 ± 0.010 | 0.490 |
+| 2.5 | 200 | 199.5 | 0.0035 | 0.553 ± 0.014 | 0.536 |
+| 2.5 | 25 | 34.4 (target not reached) | 0.0084 | 0.776 ± 0.021 | 0.445 |
+
+* At P = 100 Pa, cohesion shifts the whole μ(I) curve up by Δμ = 0.09–0.11, and the packing is much
+  looser: φ = 0.49 against 0.54–0.56 without cohesion. The shift grows as the cohesion number
+  F/(P d²) grows: μ = 0.553 at 200 Pa (Coh 0.24), 0.580 at 100 Pa (Coh 0.47), and 0.776 at 34 Pa.
+* Yield line at γ̇ = 2.5 s⁻¹ (3 points): **τ = 0.508 P + 8.4 Pa**, so a cohesion intercept of
+  **c ≈ 8.4 Pa** against 0.85 Pa without cohesion. The slope (friction) is almost unchanged.
+* For illustration, Mohr–Coulomb with c = 8.4 Pa and φ = atan 0.508 = 26.9° gives an unconfined
+  yield strength σc = 2c cos φ/(1 − sin φ) ≈ 27 Pa. This number links the simulation to the
+  shear-cell ffc, but it comes from steady-flow points, not from an incipient-failure yield locus.
+* No μ(I) fit was attempted for JKR (3 points at 100 Pa).
 
 ## Status
 
-Non-cohesive: **ran**, at the scale above. JKR: first attempt **failed** (Tsuji damping refused
-with JKR, see Setup); rerun queued with mass_velocity damping (this section is updated below if it
-completed).
+**Ran** at small scale (1500 grains). Non-cohesive: the full stage list. JKR: the first attempt
+**failed** with `ERROR: Cannot use tsuji model with a cohesive normal model, jkr`. The rerun with
+mass_velocity damping completed with a reduced stage list. Its 25 Pa stage did not reach the target
+pressure in its 1.0 strain: Pyy fell from about 40 to 33 Pa and φ was still decreasing, so that
+point is a transient (P, τ) pair, not steady state.
 
 ## Limitations
 

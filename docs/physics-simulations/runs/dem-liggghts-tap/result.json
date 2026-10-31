@@ -1,0 +1,47 @@
+{
+ "id": "dem-liggghts-tap",
+ "method": "poured (apparent) and tapped density, laterally periodic column, 3 mm taps",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": {
+  "dry": 182.1,
+  "coh": 246.1,
+  "dry_rain": 235.0
+ },
+ "cores": 1,
+ "particles": 2500,
+ "key_results": {
+  "dry": {
+   "phi_bulk_poured": 0.577,
+   "phi_tapped_mean_last5": 0.6174,
+   "taps": 30,
+   "hausner": 1.07,
+   "carr_index_pct": 6.5,
+   "bulk_density_kg_m3": 1249.0,
+   "tapped_density_kg_m3": 1337.0,
+   "hausner_from_whole_bed": 1.058
+  },
+  "coh": {
+   "phi_bulk_poured": 0.4724,
+   "phi_tapped_mean_last5": 0.5477,
+   "taps": 30,
+   "hausner": 1.16,
+   "carr_index_pct": 13.8,
+   "bulk_density_kg_m3": 1023.0,
+   "tapped_density_kg_m3": 1186.0,
+   "hausner_from_whole_bed": 1.171
+  },
+  "dry_rain": {
+   "phi_bulk_poured": 0.632,
+   "phi_tapped_mean_last5": 0.6202,
+   "taps": 30,
+   "hausner": 0.981,
+   "carr_index_pct": -1.9,
+   "bulk_density_kg_m3": 1368.0,
+   "tapped_density_kg_m3": 1343.0,
+   "hausner_from_whole_bed": 0.978
+  }
+ },
+ "notes": "30 taps only (ASTM B527 uses up to 3000); the tapped value is the mean of the last 5 taps. Packing fraction in a slab 1 mm above the floor to 1 mm below the free surface; no side walls (periodic)."
+}

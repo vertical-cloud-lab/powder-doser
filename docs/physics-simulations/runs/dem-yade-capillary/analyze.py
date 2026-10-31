@@ -31,16 +31,13 @@ for c, lab in cases:
     rc, h = np.array(rc), np.array(h)
     Hf = float(top[r < 2.5e-3].max()) if np.any(r < 2.5e-3) else float(top.max())
     Rf = float(np.percentile(r, 99) + dmean / 2)
-    sel = (h > 0.15 * Hf) & (h < 0.85 * Hf) & (rc > 1e-3)
-    if sel.sum() >= 3:
-        k, b0 = np.polyfit(rc[sel], h[sel], 1)
-        ang = float(np.degrees(np.arctan(-k)))
-    else:
-        k = b0 = np.nan; ang = float('nan')
+    # deposit aspect angle: angle of a cone with the deposit's height and runout (the deposits are flat-topped,
+    # so a straight-line fit of the flank is not well defined at this particle count)
+    ang = float(np.degrees(np.arctan(Hf / Rf)))
+    k = b0 = np.nan; sel = np.zeros_like(rc, bool)
     H0, R0 = meta['H0'], meta['R0']
     res[c] = dict(label=lab, W=meta['W'], Vb_m3=meta['Vb'], H0_mm=H0 * 1e3, R0_mm=R0 * 1e3, Hf_mm=Hf * 1e3,
-                  Hf_over_H0=Hf / H0, Rf_mm=Rf * 1e3, Rf_over_R0=Rf / R0, slope_angle_deg=ang,
-                  n_fit_bins=int(sel.sum()), final_liquid_bridges=meta['final_bridges'],
+                  Hf_over_H0=Hf / H0, Rf_mm=Rf * 1e3, Rf_over_R0=Rf / R0, aspect_angle_atan_Hf_Rf_deg=ang, final_liquid_bridges=meta['final_bridges'],
                   t_end_s=meta['t_end'], wall_s=meta['wall_s'], steps=meta['steps'])
     data[c] = dict(rc=rc, h=h, k=k, b0=b0, sel=sel, snaps=snaps, t=t, meta=meta, lab=lab)
     print(c, json.dumps(res[c]))
@@ -72,7 +69,7 @@ for c, lab in cases:
     if c not in data: continue
     dd = data[c]
     ax.plot(dd['rc'] * 1e3, dd['h'] * 1e3, 'o-', ms=3, color=colors[c],
-            label='%s: slope %.0f deg, H_f/H_0 = %.2f, R_f/R_0 = %.2f' % (lab, res[c]['slope_angle_deg'], res[c]['Hf_over_H0'], res[c]['Rf_over_R0']))
+            label='%s: H_f/H_0 = %.2f, R_f/R_0 = %.1f, atan(H_f/R_f) = %.0f deg' % (lab, res[c]['Hf_over_H0'], res[c]['Rf_over_R0'], res[c]['aspect_angle_atan_Hf_Rf_deg']))
     if np.isfinite(dd['k']):
         rr = dd['rc'][dd['sel']]
         ax.plot(rr * 1e3, (dd['k'] * rr + dd['b0']) * 1e3, '-', color='k', lw=1)

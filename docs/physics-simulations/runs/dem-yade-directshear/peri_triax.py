@@ -59,7 +59,7 @@ O.engines = [
                         maxStrainRate=(5, 5, 5), maxUnbalanced=0.02, relStressTol=1e-2, doneHook='compDone()'),
     NewtonIntegrator(damping=0.2),
 ]
-O.dt = 0.5 * PWaveTimeStep()
+O.dt = 0.5 * utils.PWaveTimeStep()
 phase = {'p': 'compact'}
 def compDone():
     phase['p'] = 'compacted'

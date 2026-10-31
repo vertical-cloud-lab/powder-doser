@@ -21,7 +21,7 @@ mu_pp, mu_pw = 0.5, 0.4
 dmin, dmax = 0.36e-3, 0.49e-3      # sieve range, d50 = 0.425 mm
 d50 = 0.425e-3
 Rc = float(os.environ.get('RC', '1.6e-3'))   # cylinder radius (m); column H/R ~ 2 so it collapses
-Hcloud = 1.2 * N * (math.pi / 6 * d50 ** 3) / (0.28 * (2 * 0.95 * Rc / math.sqrt(2)) ** 2)  # loose-cloud height (m)
+Hcloud = float(os.environ.get('HCLOUD_FAC', '1.0')) * 1.2 * N * (math.pi / 6 * d50 ** 3) / (0.28 * (2 * 0.95 * Rc / math.sqrt(2)) ** 2)  # loose-cloud height (m)
 Hcyl = Hcloud + 2e-3
 VLIFT = 0.05           # m/s cylinder lift speed
 damp = 0.3             # Cundall non-viscous damping (stands in for restitution)

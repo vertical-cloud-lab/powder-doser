@@ -24,7 +24,8 @@ def section(md: str, name: str) -> str:
 
 
 def first_para(text: str, n: int = 700) -> str:
-    para = text.strip().split("\n\n")[0].strip()
+    paras = [p.strip() for p in text.strip().split("\n\n") if p.strip() and not p.strip().startswith("![")]
+    para = " ".join(paras[0].split()) if paras else ""
     return para if len(para) <= n else para[:n].rsplit(" ", 1)[0] + " …"
 
 

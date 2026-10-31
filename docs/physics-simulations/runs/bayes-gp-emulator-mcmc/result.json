@@ -4,7 +4,7 @@
  "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
  "version": "scikit-learn 1.9.1, emcee 3.1.6",
  "status": "ran",
- "wall_s": 178.2,
+ "wall_s": 218.4,
  "cores": 1,
  "key_results": {
   "design_points": 48,
@@ -56,92 +56,137 @@
   ],
   "synthetic_AoR_obs_deg": 29.69,
   "AoR_sd_deg": 1.5,
+  "synthetic_wall_friction_obs": 0.4,
+  "wall_friction_sd": 0.04,
   "posterior": {
    "dosing_only": {
     "mean": {
-     "mu_s": 0.5633,
-     "mu_r": 0.2066,
-     "Bo": 0.1347
+     "mu_s": 0.5667,
+     "mu_r": 0.21,
+     "Bo": 0.1302
     },
     "sd": {
-     "mu_s": 0.1149,
-     "mu_r": 0.1427,
-     "Bo": 0.1054
+     "mu_s": 0.1146,
+     "mu_r": 0.1426,
+     "Bo": 0.1075
     },
     "p05_p95": {
      "mu_s": [
-      0.3273,
-      0.7139
+      0.3253,
+      0.7085
      ],
      "mu_r": [
-      0.0341,
-      0.484
+      0.0339,
+      0.4893
      ],
      "Bo": [
-      0.0113,
-      0.3395
+      0.0099,
+      0.343
      ]
     },
-    "corr_mu_s_mu_r": -0.471,
-    "corr_mu_s_Bo": -0.554,
-    "corr_mu_r_Bo": -0.243,
-    "acceptance": 0.548,
+    "corr_mu_s_mu_r": -0.464,
+    "corr_mu_s_Bo": -0.546,
+    "corr_mu_r_Bo": -0.254,
+    "acceptance": 0.54,
     "autocorr_time": [
-     43.41802233079085,
-     39.53918932638577,
-     39.35535796311182
+     46.91912406760703,
+     43.526701718317106,
+     53.2142878113691
     ],
     "n_samples": 4800,
     "standin_at_posterior_mean_mg_per_rev": [
      26.3,
-     103.9,
-     118.6,
+     103.7,
+     118.4,
      155.2
     ],
-    "standin_AoR_at_posterior_mean_deg": 31.06
+    "standin_AoR_at_posterior_mean_deg": 31.18
    },
    "dosing_plus_AoR": {
     "mean": {
-     "mu_s": 0.5502,
-     "mu_r": 0.2219,
-     "Bo": 0.1282
+     "mu_s": 0.5541,
+     "mu_r": 0.2201,
+     "Bo": 0.1175
     },
     "sd": {
-     "mu_s": 0.1128,
-     "mu_r": 0.1337,
-     "Bo": 0.089
+     "mu_s": 0.1154,
+     "mu_r": 0.1325,
+     "Bo": 0.0854
     },
     "p05_p95": {
      "mu_s": [
-      0.3617,
-      0.7126
+      0.3594,
+      0.7152
      ],
      "mu_r": [
-      0.0774,
-      0.5094
+      0.0764,
+      0.5024
      ],
      "Bo": [
-      0.0118,
-      0.295
+      0.0104,
+      0.2794
      ]
     },
-    "corr_mu_s_mu_r": -0.816,
-    "corr_mu_s_Bo": -0.392,
-    "corr_mu_r_Bo": -0.053,
+    "corr_mu_s_mu_r": -0.827,
+    "corr_mu_s_Bo": -0.405,
+    "corr_mu_r_Bo": -0.021,
     "acceptance": 0.555,
     "autocorr_time": [
-     43.675815435274046,
-     42.152287801166054,
-     36.16947929165844
+     52.14627853401567,
+     51.3090226596839,
+     32.8150137936785
     ],
     "n_samples": 4800,
     "standin_at_posterior_mean_mg_per_rev": [
-     26.3,
-     105.2,
-     119.5,
-     155.2
+     26.5,
+     105.9,
+     120.3,
+     156.4
     ],
-    "standin_AoR_at_posterior_mean_deg": 31.02
+    "standin_AoR_at_posterior_mean_deg": 30.95
+   },
+   "dosing_plus_wall_friction": {
+    "mean": {
+     "mu_s": 0.5174,
+     "mu_r": 0.2334,
+     "Bo": 0.161
+    },
+    "sd": {
+     "mu_s": 0.0501,
+     "mu_r": 0.1447,
+     "Bo": 0.1007
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.4352,
+      0.5988
+     ],
+     "mu_r": [
+      0.0381,
+      0.4956
+     ],
+     "Bo": [
+      0.0178,
+      0.3391
+     ]
+    },
+    "corr_mu_s_mu_r": -0.248,
+    "corr_mu_s_Bo": -0.226,
+    "corr_mu_r_Bo": -0.629,
+    "acceptance": 0.591,
+    "autocorr_time": [
+     33.79100969845025,
+     37.45126838303167,
+     37.497364902348956
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     25.9,
+     105.3,
+     118.6,
+     152.3
+    ],
+    "standin_AoR_at_posterior_mean_deg": 30.77
    }
   },
   "equivalent_DEM_cost": {
@@ -151,5 +196,5 @@
    "wall_hours_on_4_cores": 24.0
   }
  },
- "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg). GP predictive variance is added to the likelihood variance."
+ "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg); the wall-friction observation is also synthetic (mu_w = 0.4 +/- 0.04, model mu_w = 0.8 mu_s). GP predictive variance is added to the likelihood variance."
 }

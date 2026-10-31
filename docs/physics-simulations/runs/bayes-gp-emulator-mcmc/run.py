@@ -103,6 +103,7 @@ for case, use_aor, use_wall in (("dosing_only", False, False), ("dosing_plus_AoR
     nw, nsteps, burn = 24, 1500, 500
     p0 = rng.random((nw, 3))
     sampler = emcee.EnsembleSampler(nw, 3, log_prob, args=(use_aor, use_wall))
+    sampler.random_state = np.random.RandomState(42 + len(chains)).get_state()   # reproducible chains
     sampler.run_mcmc(p0, nsteps, progress=False)
     flat = sampler.get_chain(discard=burn, thin=5, flat=True)
     chains[case] = {"u": flat, "x": LO + flat * (HI - LO),
@@ -113,6 +114,8 @@ for case, use_aor, use_wall in (("dosing_only", False, False), ("dosing_plus_AoR
         chains[case]["tau"] = str(e)
     print(case, "done", "acc %.2f" % chains[case]["acc"], flush=True)
 
+np.savez_compressed(os.path.join(os.environ.get("GP_SCRATCH", "/tmp"), "gp_emcee_chains.npz"),
+                    **{case: c["x"] for case, c in chains.items()}, x_train=x_train, y_train=y_train)
 summ = {}
 for case, c in chains.items():
     x = c["x"]
@@ -148,9 +151,12 @@ for a, (i, j) in zip(ax[0], pairs):
                   + "  (r = %.2f)" % np.corrcoef(x[:, i], x[:, j])[0, 1])
     a.scatter(x_train[:, i], x_train[:, j], marker="x", s=14, color="k", lw=0.8, label="Sobol design (48)")
     a.plot(*[TRUTH_AOR[q] for q in (i, j)], "k*", ms=12, label="nominal DEM set (synthetic truth)")
+    a.plot([], [], " ", label="r = posterior correlation")
     a.set_xlim(LO[i], HI[i]); a.set_ylim(LO[j], HI[j])
     a.set_xlabel(NAMES[i] + " (-)"); a.set_ylabel(NAMES[j] + " (-)")
-    leg = a.legend(fontsize=7, loc="upper right", markerscale=4)
+    leg = a.legend(fontsize=7, loc="upper right", framealpha=0.85)
+    for hnd in leg.legend_handles[:3]:
+        hnd.set_sizes([25]); hnd.set_alpha(0.9)
 ax[0, 0].set_title("posterior samples (emcee on GP emulator)")
 
 # emulator parity on held-out points

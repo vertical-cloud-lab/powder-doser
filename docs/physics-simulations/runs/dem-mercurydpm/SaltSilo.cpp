@@ -2,7 +2,7 @@
 // cylindrical silo through a central circular orifice; writes the mass left in the silo vs time
 // (SaltSilo_D<mm>.flow) so the discharge rate can be compared with the Beverloo correlation.
 // Build: copy into MercuryDPM/Drivers/MercurySimpleDemos/, re-run cmake, `make SaltSilo`.
-// Run:   SILO_D_MM=10 SILO_N=2500 ./SaltSilo
+// Run:   SILO_D_MM=10 SILO_N=2500 ./SaltSilo   (optional: SILO_RS_MM=12.5 SILO_T_DISCHARGE=0.5)
 #include "Mercury3D.h"
 #include "Walls/AxisymmetricIntersectionOfWalls.h"
 #include "Walls/InfiniteWall.h"
@@ -112,9 +112,13 @@ int main(int argc, char* argv[])
     SaltSilo silo;
     const char* sD = std::getenv("SILO_D_MM");
     const char* sN = std::getenv("SILO_N");
+    const char* sR = std::getenv("SILO_RS_MM");      // silo radius (mm), default 12.5
+    const char* sT = std::getenv("SILO_T_DISCHARGE"); // simulated time after opening (s), default 0.5
     const Mdouble Dmm = sD ? std::atof(sD) : 10.0;
     silo.Ro = 0.5e-3 * Dmm;
     if (sN) silo.N = (unsigned) std::atoi(sN);
+    if (sR) silo.Rs = 1e-3 * std::atof(sR);
+    const Mdouble tDis = sT ? std::atof(sT) : 0.5;
     silo.setName("SaltSilo_D" + std::to_string((int) std::lround(Dmm)));
 
     const Mdouble rho = 2165.0, e = 0.5, tc = 1.0e-3;
@@ -139,7 +143,7 @@ int main(int argc, char* argv[])
     const Mdouble tcMin = ps->getCollisionTime(mMin);
     logger(INFO, "k = % N/m, tc(mean) = % s, tc(min) = % s", ps->getStiffness(), tc, tcMin);
     silo.setTimeStep(tcMin / 25.0); // tc/25 (MercuryDPM suggests tc/50) to fit the shared runner's time budget
-    silo.setTimeMax(silo.tOpen + 0.5);
+    silo.setTimeMax(silo.tOpen + tDis);
     silo.setGravity(Vec3D(0, 0, -9.81));
     silo.setXMin(-silo.Rs); silo.setXMax(silo.Rs);
     silo.setYMin(-silo.Rs); silo.setYMax(silo.Rs);

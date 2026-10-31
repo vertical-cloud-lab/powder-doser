@@ -11,7 +11,7 @@ import sys
 import yaml
 
 src, dst = sys.argv[1], sys.argv[2]
-numstep = int(sys.argv[3]) if len(sys.argv) > 3 else 24000
+numstep = int(sys.argv[3]) if len(sys.argv) > 3 else 14000
 d = yaml.safe_load(open(src))
 
 L = 0.01          # mesh scale: test coordinates (+-0.875) -> +-8.75 mm
@@ -23,9 +23,13 @@ d['BINNING STRATEGY'] = {'BIN_SIZE_LOWER_BOUND': 0.0006,
                          'DOMAINBOUNDINGBOX': '-0.0095 -0.0095 -0.006 0.0095 0.0095 0.006'}
 d['PASI DYNAMIC'] = {'RESULTSEVERY': 400, 'RESTARTEVERY': 100000, 'TIMESTEP': dt,
                      'NUMSTEP': numstep, 'MAXTIME': dt * numstep,
-                     'COUPLING': 'partitioned_twowaycoup_disprelaxaitken', 'ITEMAX': 20,
-                     'CONVTOLSCALEDDISP': 1e-6, 'CONVTOLRELATIVEDISP': 1e-5,
-                     'CONVTOLSCALEDFORCE': 1e-6, 'CONVTOLRELATIVEFORCE': 1e-5}
+                     # fixed under-relaxation 0.5; displacement-based convergence only.
+                     # Aitken + 1e-6 tolerances stalled at grain impact in 4 attempts (README);
+                     # IGNORE_CONV_CHECK lets the run continue and non-converged steps are counted.
+                     'COUPLING': 'partitioned_twowaycoup_disprelax', 'STARTOMEGA': 0.5, 'ITEMAX': 50,
+                     'CONVTOLSCALEDDISP': 1e-5, 'CONVTOLRELATIVEDISP': 1e-4,
+                     'CONVTOLSCALEDFORCE': -1.0, 'CONVTOLRELATIVEFORCE': -1.0,
+                     'IGNORE_CONV_CHECK': True}
 d['IO/RUNTIME VTK OUTPUT'] = {'INTERVAL_STEPS': 400, 'OUTPUT_DATA_FORMAT': 'ascii'}
 d['IO/RUNTIME VTK OUTPUT/STRUCTURE'] = {'OUTPUT_STRUCTURE': True, 'DISPLACEMENT': True}
 pd = d['PARTICLE DYNAMIC']

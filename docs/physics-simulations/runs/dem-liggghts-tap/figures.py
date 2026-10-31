@@ -14,22 +14,25 @@ import ligcommon as L  # noqa: E402
 import run as R  # noqa: E402
 
 VARS = [v for v in ("dry", "coh") if os.path.exists(os.path.join(R.SCRATCH, v, "run.json"))]
-LABEL = {"dry": "non-cohesive", "coh": "cohesive (SJKR 6 kJ/m³, Bo≈5)"}
+EXTRA = [v for v in ("dry_rain",) if os.path.exists(os.path.join(R.SCRATCH, v, "run.json"))]
+LABEL = {"dry": "non-cohesive", "coh": "cohesive (SJKR 6 kJ/m³, Bo≈5)", "dry_rain": "non-cohesive, slow rain fill"}
+L.COLORS["dry_rain"] = L.COLORS["cap_low"]
 
 
 def main():
-    res = {v: json.load(open(os.path.join(R.SCRATCH, v, "run.json"))) for v in VARS}
+    res = {v: json.load(open(os.path.join(R.SCRATCH, v, "run.json"))) for v in VARS + EXTRA}
     fig, axs = plt.subplots(1, 3, figsize=(12, 3.8), gridspec_kw=dict(width_ratios=[1.3, 1, 1]))
     fig.patch.set_facecolor(L.SURF)
     ax = axs[0]
     L.style_axes(ax)
-    for v in VARS:
+    for v in VARS + EXTRA:
         r = res[v]
         phis = [r["poured"]["phi_slab"]] + [t["phi_slab"] for t in r["taps"]]
         ax.plot(range(len(phis)), phis, "o-", color=L.COLORS[v], ms=4, lw=1.5,
                 label=f"{LABEL[v]}: Hausner {r.get('hausner', float('nan')):.3f}")
     ax.set_xlabel("number of 3 mm taps (0 = as poured)")
     ax.set_ylabel("packing fraction φ (slab, no walls)")
+    ax.set_ylim(0.45, 0.65)
     ax.legend(fontsize=7.5, frameon=False, loc="lower right")
     ax.set_title("Poured → tapped packing fraction", fontsize=9, color=L.INK)
     for k, v in enumerate(VARS):
@@ -45,9 +48,9 @@ def main():
             ax.text(off + 2.55, -0.9, "poured" if j == 0 else f"after {R.NTAP} taps", ha="center", fontsize=8, color=L.INK2)
         ax.plot([-0.3, 11.4], [0, 0], color=L.INK, lw=2)
         ax.set_xlim(-0.5, 11.6)
-        ax.set_ylim(-1.5, 8)
+        ax.set_ylim(-1.5, 9.5)
         ax.set_aspect("equal")
-        ax.set_xlabel("x (mm), periodic cell 5.1 mm (two copies side by side)")
+        ax.set_xlabel("x (mm); left: poured, right: tapped")
         ax.set_ylabel("z (mm)")
         ax.set_title(f"{LABEL[v]}: slice 0<y<1.2 mm", fontsize=9, color=L.INK)
     fig.suptitle("dem-liggghts-tap: apparent and tapped density of salt grains (LIGGGHTS-PUBLIC 3.8)", fontsize=10)
@@ -88,10 +91,10 @@ def main():
               "taps": len(res[v]["taps"]), "hausner": round(res[v]["hausner"], 3), "carr_index_pct": round(res[v]["carr_index_pct"], 1),
               "bulk_density_kg_m3": round(res[v]["phi_bulk"] * L.SALT["density"], 0),
               "tapped_density_kg_m3": round(res[v]["phi_tapped_last5"] * L.SALT["density"], 0),
-              "hausner_from_whole_bed": round(res[v]["hausner_overall"], 3)} for v in VARS}
+              "hausner_from_whole_bed": round(res[v]["hausner_overall"], 3)} for v in VARS + EXTRA}
     out = {"id": "dem-liggghts-tap", "method": "poured (apparent) and tapped density, laterally periodic column, 3 mm taps",
            "code": "LIGGGHTS-PUBLIC", "version": "3.8.0 (Debian package liggghts)", "status": "ran",
-           "wall_s": {v: round(res[v].get("wall_s", float("nan")), 1) for v in VARS}, "cores": 1,
+           "wall_s": {v: round(res[v].get("wall_s", float("nan")), 1) for v in VARS + EXTRA}, "cores": 1,
            "particles": R.N, "key_results": kr,
            "notes": f"{R.NTAP} taps only (ASTM B527 uses up to 3000); the tapped value is the mean of the last 5 taps. "
                     "Packing fraction in a slab 1 mm above the floor to 1 mm below the free surface; no side walls (periodic)."}

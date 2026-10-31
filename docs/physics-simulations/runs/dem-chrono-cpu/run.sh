@@ -7,7 +7,7 @@ OUT=${1:-/tmp/sims-scratch/dem-chrono-cpu}
 mkdir -p "$OUT"
 export OMP_NUM_THREADS=1
 $PY "$HERE/silo_discharge.py" --rolling-check --out "$OUT"
-for L in 5.5 7 8.5; do
-  $PY "$HERE/silo_discharge.py" --L $L --n 900 --box 14 --t-settle 0.2 --t-flow 0.5 --out "$OUT" > "$OUT/L$L.log" 2>&1
+for L in 5.5 7 8.5 10; do
+  $PY "$HERE/silo_discharge.py" --L $L --n 1500 --box 16 --t-settle 0.2 --t-flow 0.6 --out "$OUT" > "$OUT/L$L.log" 2>&1
 done
 /tmp/venv-dem2/bin/python "$HERE/analyze.py" "$OUT" "$HERE" L08.5
