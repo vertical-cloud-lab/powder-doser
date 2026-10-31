@@ -38,7 +38,7 @@ attempt to run **all** of the methods found.
 | 17 | CFD–DEM | [`cfd-dem`](runs/cfd-dem) | OpenFOAM v1912 DPMFoam | partial | MFiX not installable. A 100 µm AlSi10Mg plug falls 28 mm in 80 ms with air (76 ms vacuum, 93 ms for one isolated grain) |
 | 18 | DEM–FEM | [`dem-fem-coupling`](runs/dem-fem-coupling) | 4C (Docker) | partial | An 11 mg dose hitting a compliant pan: 0.38 mm sag at 28 ms, then rebound above flat. Stopped at 48 of 70 ms |
 | 19 | DEM: tribocharging | [`dem-tribocharge-numba`](runs/dem-tribocharge-numba) | own numba DEM | ran | Charge saturates in 0.75 rev: 27.5 µC/kg in dry air, 14.2 in argon; 5.2 % vs 4.0 % of grains held on the wall |
-| 20 | MPM | [`mpm-taichi`](runs/mpm-taichi) | Taichi 1.7.4 | ran | Column runout 3.06 (c = 0) vs 1.11 (c = 100 Pa). The silo did **not** follow the 3/2 law at this resolution |
+| 20 | MPM | [`mpm-taichi`](runs/mpm-taichi) | Taichi 1.7.4 | ran | Column runout 3.06 (c = 0) vs 1.11 (c = 100 Pa). The silo did **not** follow the 3/2 law at this resolution (a finer grid more than doubled the flow) |
 | 21 | SPH | [`sph-granular`](runs/sph-granular) | own numba WCSPH | ran | Runout 4.23 vs 1.35; agrees with MPM. PySPH 1.0b2 built but has no granular scheme |
 | 22 | FEM plasticity | [`fem-druckerprager`](runs/fem-druckerprager) | own Q8 FEM | ran | An arch over a 3 mm slot holds above c ≈ 13.5 Pa (φ 34°), i.e. *ff*<sub>c</sub> below about 7.9 at 400 Pa |
 | 23 | μ(I) and non-local | [`mui-rheology`](runs/mui-rheology) | own numpy | ran | Bagnold profiles to 10⁻⁵. Non-local model: a 2.5 d layer of salt-like powder stops at 37.4°, a 15 d layer at 34.1° |
