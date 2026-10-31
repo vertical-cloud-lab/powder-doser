@@ -33,7 +33,7 @@ rails at z 755 instead of 721), and its loop and motor sit 40 mm higher. What ea
 | `cases/thermal.py` | heat transfer (DC3D10, natural convection and radiation on every exposed face): the NEMA 34 on its wall at 25-100 % current, coupled to the acrylic enclosure's energy balance; the warm-up; the station's electronics carriage with its NEMA 11 and dock electromagnet |
 | `cases/vibration.py` | forced response of each frame to the NEMA 34's torque ripple (`*STEADY STATE DYNAMICS`), the bolted joints' slip (self-loosening), plate fatigue, settling time, the acrylic panels' modes, the chain strands |
 | `cases/materials_study.py` | material selection: each printed part's strength need, creep at its temperature, v4's back plate in steel |
-| `cases/mvh_fill.py` | fills [MATERIALS-VIBRATION-HEAT.md](MATERIALS-VIBRATION-HEAT.md)'s tables from the JSON |
+| `cases/mvh_fill.py` | writes [MATERIALS-VIBRATION-HEAT.md](MATERIALS-VIBRATION-HEAT.md) from `cases/mvh_template.md`, its tables filled from the JSON |
 
 ### Checks against hand solutions (`verify.py`, rerun on this runner)
 

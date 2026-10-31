@@ -1,4 +1,5 @@
-"""Fill MATERIALS-VIBRATION-HEAT.md's tables from the cases' JSON (run after thermal.py, vibration.py, materials_study.py).
+"""Write MATERIALS-VIBRATION-HEAT.md from cases/mvh_template.md, its tables filled from the cases' JSON (run after
+thermal.py, vibration.py and materials_study.py).
 
     python cases/mvh_fill.py
 """
@@ -13,6 +14,7 @@ from cases import common  # noqa: E402
 
 OUT = common.OUT
 DOC = OUT.parent / "MATERIALS-VIBRATION-HEAT.md"
+TEMPLATE = Path(__file__).resolve().with_name("mvh_template.md")
 NAMES = {"chain-carousel-v3_pads": "v3", "chain-carousel-v4_pads": "v4", "chain-carousel-v4_motorpost2": "v4 + two motor posts",
          "paternoster_pads": "paternoster"}
 
@@ -41,7 +43,10 @@ def joints_table() -> tuple:
             plate.append(r["dynamic_MPa"])
     txt = "\n".join(("   " + x) if i else x for i, x in enumerate(rows))
     by = {r["design"]: r["slips_at_ripple_Nm"] for r in jj["joints"] if r["joint"].startswith("side")}
-    sl = ", ".join(f"{v:.1f} N*m in {NAMES.get(k, k)}" for k, v in sorted(by.items(), key=lambda kv: kv[1]))
+    items = [f"{v:.1f} N*m ({'the ' if k.startswith('paternoster') else ''}{NAMES.get(k, k)})" if v < 20 else
+             f"{v:.0f} N*m ({'the ' if k.startswith('paternoster') else ''}{NAMES.get(k, k)})"
+             for k, v in sorted(by.items(), key=lambda kv: kv[1])]
+    sl = ", ".join(items[:-1]) + " or " + items[-1] if len(items) > 1 else "".join(items)
     return txt, sl, f"{max(plate):.1f}" if plate else "?"
 
 
@@ -132,8 +137,8 @@ def warmup() -> str:
     if not out:
         return ""
     return ("**Warm-up** (v3, transient, from cold, with the enclosure air held at its steady value): " + "; ".join(out) +
-            ". The enclosure's air follows on a similar time scale, so allow about an hour after power-up before taring the "
-            "balance for a precise run.\n\n![v3 warm-up](out/thermal/chain-carousel-v3_warmup_100.png)")
+            ". The enclosure's air follows on a similar or slower time scale, so allow an hour or two after power-up before "
+            "taring the balance for a precise run.\n\n![v3 warm-up](out/thermal/chain-carousel-v3_warmup_100.png)")
 
 
 def steel_thermal() -> str:
@@ -153,7 +158,7 @@ def materials_table() -> str:
 
 
 def main():
-    s = DOC.read_text()
+    s = TEMPLATE.read_text()
     jt, slip, plate = joints_table()
     rep = {"VIBRATION_JOINTS_TABLE": jt, "VIB_SLIP_MIN": slip, "VIB_PLATE_MAX": plate, "PANEL_SENTENCE": panels(),
            "STEEL_THERMAL": steel_thermal(), "THERMAL_TABLE": thermal_table(), "WARMUP_SENTENCE": warmup(),

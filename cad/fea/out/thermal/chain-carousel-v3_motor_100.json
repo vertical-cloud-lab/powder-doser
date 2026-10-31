@@ -64,7 +64,7 @@
    "shed_W": 64.55
   }
  ],
- "nodes": 133448,
- "wall_s": 22.2,
+ "nodes": 133172,
+ "wall_s": 23.4,
  "png": "out/thermal/chain-carousel-v3_motor_100.png"
 }

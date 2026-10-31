@@ -1,6 +1,6 @@
 # Materials, vibration and heat
 
-Asked for on [#188](https://github.com/vertical-cloud-lab/powder-doser/pull/188): material selection, vibration
+Asked for on [#188](https://github.com/vertical-cloud-lab/powder-doser/pull/188#issuecomment-6536556686): material selection, vibration
 tolerance (does the rig shake itself apart?), and heat buildup and transfer. These runs use the same models, designs and
 commits as [RESULTS.md](RESULTS.md) (v3, v4 and the paternoster on #185). They add three new kinds of CalculiX analysis:
 - heat transfer: DC3D10 elements with convection and radiation, coupled to an energy balance of the acrylic enclosure;
@@ -52,9 +52,10 @@ is `cases/thermal.py`, `cases/vibration.py` and `cases/materials_study.py`.
    - The NEMA 11 next to it, at its 450 mA DRV8825 limit (1.4-1.5 W), stays at 39-43 °C. Disable it between doses
      anyway: a warm auger motor warms the powder and the air over the beaker.
 3. **The balance shares the enclosure with the motor.** The HR-100A sits under the station, inside the acrylic. The
-   enclosure air warms from the room's temperature to its steady value over about an hour after power-up: 3.5 K at
-   half current, 17 K at full. A beaker brought in from the room is then colder than the air and reads heavy until it
-   catches up. NIST's [GMP 10](https://www.nist.gov/document/gmp-10-weighing-operation-factors-20190506pdf) cites errors
+   enclosure air warms from the room's temperature to its steady value over one to two hours after power-up: 3.5 K at
+   half current, 17 K at full. The motor and its plate alone take 36 min to get 63 % of the way and 79 min to get 90 %
+   (the warm-up run below), and the enclosure's own mass slows the air further. A beaker brought in from the room is
+   then colder than the air and reads heavy until it catches up. NIST's [GMP 10](https://www.nist.gov/document/gmp-10-weighing-operation-factors-20190506pdf) cites errors
    of up to 0.2 mg for a 4 °C difference between weights and the balance, two counts on the HR-100A.
    - Keep the motor's hold current low (change 1).
    - Let the rig warm up before taring or calibrating.
@@ -85,8 +86,8 @@ is `cases/thermal.py`, `cases/vibration.py` and `cases/materials_study.py`.
    | paternoster | side plate's M5 T-nut screws (2.5 N*m) | 1.4 N at 92 mm/s | 375 N | 277 | 110.7 N*m |
 
    The side plates' T-nut screws come closest: at v3's first sway mode (30 mm/s) and at v4's motor mode (77 mm/s). They
-   would slip at a ripple of 3.3 N*m in v4, 6.7 N*m in v3, 8.8 N*m in v4 + two motor posts, 110.7 N*m in paternoster. Full-stepping can produce ripples that size, since every step is then an
-   impulse. So:
+   would slip only at a ripple of 3.3 N*m (v4), 6.7 N*m (v3), 8.8 N*m (v4 + two motor posts) or 111 N*m (the paternoster). Full-stepping can reach the lowest of these, since every step is then
+   an impulse. So:
    - keep microstepping on (the docs' 4000 pulses/rev);
    - keep the blue threadlocker on the T-nut screws;
    - don't cruise in the sway band (RESULTS.md change 15).
@@ -191,7 +192,9 @@ The station's electronics carriage (v3), in still air:
 ![v3: NEMA 34 at 6.0 A in its enclosure](out/thermal/chain-carousel-v3_motor_100.png)
 ![v3 electronics carriage: NEMA 11 and dock electromagnet](out/thermal/ec_v3_n11_em.png)
 
+**Warm-up** (v3, transient, from cold, with the enclosure air held at its steady value): at 100 % current the motor gets 63 % of the way to its steady temperature in 36 min and 95 % in 97 min. The enclosure's air follows on a similar or slower time scale, so allow an hour or two after power-up before taring the balance for a precise run.
 
+![v3 warm-up](out/thermal/chain-carousel-v3_warmup_100.png)
 
 ## Vibration in detail
 

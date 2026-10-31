@@ -22,6 +22,8 @@ Room 22 °C. The NEMA 34's loss is 2 I^2 R with R 0.7 ohm per phase at 20 °C, r
 | paternoster | 3.0 | 13.5 | 36 | 38 | 36 | 27 | - | room |
 | paternoster | 1.5 | 3.2 | 26 | 26 | 26 | 24 | - | room |
 
+**Warm-up** (chain-carousel-v3_warmup_100, 65 W): the motor gets 63 % of the way to its steady temperature in 36.0 min, 90 % in 79.2 min and 95 % in 97.2 min.
+
 ## The station's electronics carriage (printed PETG) with its NEMA 11 and dock electromagnet
 
 | case | air (°C) | NEMA 11 (W) | electromagnet (W) | NEMA 11, hottest (°C) | electromagnet (°C) | PETG next to the NEMA 11 (°C) | PETG next to the electromagnet (°C) | the electromagnet's pull, of cold |
