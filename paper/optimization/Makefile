@@ -15,6 +15,7 @@ main.pdf: main.tex refs.bib $(wildcard figures/*.pdf)
 
 figures:
 	python3 figures/make_figures.py
+	python3 figures/make_overview_relations.py
 
 refs:
 	python3 scripts/validate_refs.py refs.bib

@@ -11,6 +11,7 @@ effective cohesion and friction, checked against standard flow tests). Target: *
 | [`OUTLINE.md`](OUTLINE.md) | Outline, claim-by-claim status, and **everything that still needs to be prepared** |
 | [`refs.bib`](refs.bib), [`references_validation.md`](references_validation.md) | Bibliography (DOI entries built from Crossref metadata) and the per-entry check |
 | [`figures/make_figures.py`](figures/make_figures.py) | Builds every figure from [`data/`](data/) |
+| [`figures/make_overview_relations.py`](figures/make_overview_relations.py) | Overview schematic from the 28 Oct whiteboard sketch: cheap doser measurements related to standard powder tests (no data) |
 | [`data/README.md`](data/README.md) | Provenance of every data file (source branch, commit, PR) |
 | [`scripts/validate_refs.py`](scripts/validate_refs.py) | Re-runs the reference check |
 | [`mock_review/`](mock_review/) | Edison mock editor/reviewer pass on the draft |
