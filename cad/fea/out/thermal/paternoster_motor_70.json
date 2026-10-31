@@ -1,0 +1,66 @@
+{
+ "module": "thermal",
+ "case": "paternoster_motor_70",
+ "design": "paternoster",
+ "current_A": 4.2,
+ "current_frac": 0.7,
+ "P_motor_W": 27.87,
+ "plate": "AL6061",
+ "plate_finish": "al_mill",
+ "T_room": 22.0,
+ "T_enclosure_air": null,
+ "T_enclosure_walls": null,
+ "motor_case_max": 48.5,
+ "motor_case_mean": 47.2,
+ "winding_est": 52.7,
+ "encoder_end": 48.3,
+ "plate_max": 31.5,
+ "plate_mean": 28.6,
+ "printed_parts_on_back_plate_max_C": {},
+ "shed_conv_W": 15.93,
+ "shed_rad_W": 11.92,
+ "by_group": {
+  "motor": {
+   "conv": 8.98,
+   "rad": 10.56,
+   "area": 0.07,
+   "T_surface_mean": 47.15
+  },
+  "plate": {
+   "conv": 6.96,
+   "rad": 1.36,
+   "area": 0.26,
+   "T_surface_mean": 30.43
+  }
+ },
+ "iterations": [
+  {
+   "P_W": 26.79,
+   "T_air": 22.0,
+   "motor_max": 48.7,
+   "shed_W": 26.77
+  },
+  {
+   "P_W": 27.87,
+   "T_air": 22.0,
+   "motor_max": 48.5,
+   "shed_W": 27.85
+  },
+  {
+   "P_W": 27.87,
+   "T_air": 22.0,
+   "motor_max": 48.5,
+   "shed_W": 27.85
+  },
+  {
+   "P_W": 27.87,
+   "T_air": 22.0,
+   "motor_max": 48.5,
+   "shed_W": 27.85
+  }
+ ],
+ "nodes": 111595,
+ "wall_s": 238.1,
+ "standoffs_max": 43.6,
+ "png": "out/thermal/paternoster_motor_70.png"
+}

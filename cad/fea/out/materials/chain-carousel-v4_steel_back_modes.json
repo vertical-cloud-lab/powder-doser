@@ -1,0 +1,30 @@
+{
+ "module": "materials",
+ "case": "chain-carousel-v4_steel_back_modes",
+ "freqs_Hz": [
+  14.9,
+  22.53,
+  27.16,
+  59.72,
+  86.78,
+  96.94,
+  124.8,
+  172.01
+ ],
+ "aluminium_Hz": [
+  15.23,
+  22.91,
+  29.7,
+  50.59,
+  80.26,
+  81.09,
+  118.97,
+  160.14
+ ],
+ "plate_mass_kg": {
+  "steel": 8.46,
+  "aluminium": 2.9
+ },
+ "full_step_reaches_mode4_at_mm_s": 91.0,
+ "png": "out/materials/chain-carousel-v4_steel_back_mode4.png"
+}

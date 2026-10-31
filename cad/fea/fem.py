@@ -592,8 +592,6 @@ class Deck:
             w(f"*STEP\n*STEADY STATE DYNAMICS\n{f * 0.9999:.6f}, {f * 1.0001:.6f}, 2, 1.")
             w(f"*MODAL DAMPING\n1, {opt['n_modes']}, {opt['zeta']}")
             self._loads(w)
-            for s in opt["prints"]:
-                w(f"*NODE PRINT, NSET={s}\nU")
             w("*NODE FILE\nU\n*EL FILE\nS\n*END STEP")
 
     def solve(self, job: str, threads: int = 1, keep: bool = False) -> "Result":
@@ -812,6 +810,9 @@ def _ssd_prints(dat: str) -> dict:
         key = (name, f)
         part = seen.get(key, 0)                    # 0: real, 1: imaginary
         seen[key] = part + 1
+        if part > 1:                               # an eigenfrequency ends one interval and starts the next: printed twice
+            i = j
+            continue
         d = out.setdefault(name, {})
         rec = d.setdefault(f, {})
         for nid, v in vals.items():
