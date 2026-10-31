@@ -1001,6 +1001,12 @@ class HeatDeck:
         w("*PHYSICAL CONSTANTS, ABSOLUTE ZERO=-273.15, STEFAN BOLTZMANN=5.669E-11")
         w(f"*INITIAL CONDITIONS, TYPE=TEMPERATURE\nNALL, {self.T0}")
         kind, opt = self.step
+        if kind == "transient":                    # probes every 2 % of the run (.dat), the whole field only at its end (.frd)
+            tp = np.linspace(opt["t_end"] / 50.0, opt["t_end"], 50)
+            w("*TIME POINTS, NAME=TPP")
+            for i in range(0, len(tp), 8):
+                w(", ".join(f"{t:.3f}" for t in tp[i:i + 8]))
+
         if kind == "steady":
             w("*STEP, INC=200\n*HEAT TRANSFER, STEADY STATE\n1., 1.")
         else:
@@ -1022,8 +1028,9 @@ class HeatDeck:
             for e, lab, T, eps in self.rads:
                 w(f"{e}, R{lab}, {T}, {eps}")
         for name in self.prints:
-            w(f"*NODE PRINT, NSET={name}\nNT")
-        w("*NODE FILE" + (", FREQUENCY=10000" if kind == "transient" else "") + "\nNT")
+            w(f"*NODE PRINT, NSET={name}" + (", TIME POINTS=TPP" if kind == "transient" else "") + "\nNT")
+        if kind != "transient":                    # CalculiX applies one set of output times to a whole step, so a transient
+            w("*NODE FILE\nNT")                    # writes only its probes (.dat); the steady runs give the fields
         w("*END STEP")
         path.write_text("\n".join(L) + "\n")
 

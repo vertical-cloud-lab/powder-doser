@@ -1,0 +1,77 @@
+{
+ "panel_side": {
+  "size_mm": [
+   418,
+   730
+  ],
+  "standoffs": 12,
+  "freqs_Hz": [
+   22.9,
+   25.7,
+   38.3,
+   41.8,
+   46.6,
+   48.9,
+   56.9,
+   74.5
+  ],
+  "full_step_rate_reaches_mode1_at_mm_s": 35.0
+ },
+ "panel_side_hatch": {
+  "size_mm": [
+   418,
+   730
+  ],
+  "standoffs": 12,
+  "freqs_Hz": [
+   23.0,
+   28.9,
+   37.6,
+   46.8,
+   47.1,
+   48.7,
+   52.5,
+   72.8
+  ],
+  "full_step_rate_reaches_mode1_at_mm_s": 35.0
+ },
+ "panel_front_hatch": {
+  "size_mm": [
+   262,
+   730
+  ],
+  "standoffs": 12,
+  "freqs_Hz": [
+   39.4,
+   51.1,
+   57.8,
+   62.4,
+   83.0,
+   94.1,
+   101.2,
+   107.2
+  ],
+  "full_step_rate_reaches_mode1_at_mm_s": 60.0
+ },
+ "panel_back": {
+  "size_mm": [
+   262,
+   730
+  ],
+  "standoffs": 12,
+  "freqs_Hz": [
+   38.4,
+   42.2,
+   61.2,
+   63.1,
+   92.1,
+   94.0,
+   96.4,
+   115.0
+  ],
+  "full_step_rate_reaches_mode1_at_mm_s": 59.0
+ },
+ "panel_top": {
+  "error": "no standoffs found on it"
+ }
+}

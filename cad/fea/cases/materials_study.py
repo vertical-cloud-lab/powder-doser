@@ -54,13 +54,13 @@ CASES = [
     ("v4 electronics carriage: P16 stall", "station/ec_v4_stall_t0.json", "EC", "ec"),
     ("v3 electronics carriage: P16 stall", "station/ec_v3_stall_t0.json", "EC", "ec"),
     ("v3 carriage: P16 stall at the station", "carriage/v3_station_p16.json", "carriage", "air"),
-    ("v4 side tab foot: 25 N", "carriage/v4_side_tab.json", None, "back"),
-    ("v3 side tab lip: 25 N", "carriage/v3_side_tab.json", None, "back"),
+    ("v4 side tab foot: 25 N (1 mm off its sharp corner)", "carriage/v4_side_tab.json", None, "back"),
+    ("v3 side tab lip: 25 N (1 mm off its sharp corner)", "carriage/v3_side_tab.json", None, "back"),
     ("hold-down: half a P16 stall", "station/hold_down_p16_stall.json", None, "back"),
 ]
 SUSTAINED = [
     ("v3 carriage, vertical runs, creep", 3.04, "air"),
-    ("tensioner block, bearing bolts slipped", 3.1, "back"),
+    ("tensioner block, bearing bolts slipped", 3.1, "tensioner"),
     ("A-1 screw head on its printed seat (snug)", 18.0, "air"),
     ("A-1 screw head with a DIN 433 washer", 15.0, "air"),
     ("paternoster gondola, hanging", 0.49, "room"),
@@ -70,6 +70,9 @@ CREEP_RT = 8.0                       # PETG, 1000 h at room temperature (materia
 
 def peak(path: str, part: str | None) -> float:
     j = json.loads((OUT / path).read_text())
+    k1 = "von Mises 1 mm off the sharp root corner (MPa)"     # the side tabs: their corner itself is singular
+    if k1 in j.get("key_disp", {}):
+        return j["key_disp"][k1]
     rows = j["parts"]
     if part:
         rows = [r for r in rows if r["part"] == part] or rows
@@ -84,7 +87,9 @@ def temps() -> dict:
         if not f.exists():
             continue
         r = json.loads(f.read_text())
-        t[frac] = dict(air=r["T_enclosure_air"], back=max(r["printed_parts_on_back_plate_max_C"].values()), room=r["T_room"])
+        pp = r["printed_parts_on_back_plate_max_C"]
+        t[frac] = dict(air=r["T_enclosure_air"], back=max(pp.values()), room=r["T_room"],
+                       tensioner=max(v for k, v in pp.items() if k.startswith("Tensioner")))
     for tag, key in (("ec_v3_n11_em", "ec_room"),):
         f = OUT / "thermal" / f"{tag}.json"
         if f.exists():

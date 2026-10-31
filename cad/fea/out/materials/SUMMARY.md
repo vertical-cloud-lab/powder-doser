@@ -13,8 +13,8 @@ Stresses are the FEA's; for one material under applied loads they don't depend o
 | v4 electronics carriage: P16 stall | 26.6 | 0.86 | 1.77 | 53 |
 | v3 electronics carriage: P16 stall | 19.8 | 1.16 | 2.37 | 40 |
 | v3 carriage: P16 stall at the station | 15.8 | 1.46 | 2.98 | 32 |
-| v4 side tab foot: 25 N | 86.5 | 0.27 | 0.54 | 173 |
-| v3 side tab lip: 25 N | 64.6 | 0.36 | 0.73 | 129 |
+| v4 side tab foot: 25 N (1 mm off its sharp corner) | 14.0 | 1.65 | 3.36 | 28 |
+| v3 side tab lip: 25 N (1 mm off its sharp corner) | 12.4 | 1.86 | 3.80 | 25 |
 | hold-down: half a P16 stall | 6.5 | 3.52 | 7.19 | 13 |
 
 ## Sustained loads: creep, and the temperature each part runs at
@@ -22,7 +22,7 @@ Stresses are the FEA's; for one material under applied loads they don't depend o
 | part | sustained stress (MPa) | where | at 50 % current: °C, PETG creep allowable (MPa), safety factor | at 100 % current: °C, PETG creep allowable (MPa), safety factor |
 |---|---|---|---|---|
 | v3 carriage, vertical runs, creep | 3.04 | air | 26, 7.6, 2.49 | 39, 5.3, 1.73 |
-| tensioner block, bearing bolts slipped | 3.10 | back | 33, 6.3, 2.03 | 65, 0.8, 0.25 |
+| tensioner block, bearing bolts slipped | 3.10 | tensioner | 30, 6.7, 2.16 | 54, 2.6, 0.82 |
 | A-1 screw head on its printed seat (snug) | 18.00 | air | 26, 7.6, 0.42 | 39, 5.3, 0.29 |
 | A-1 screw head with a DIN 433 washer | 15.00 | air | 26, 7.6, 0.50 | 39, 5.3, 0.35 |
 | paternoster gondola, hanging | 0.49 | room | 22, 8.2, 16.68 | 22, 8.2, 16.68 |

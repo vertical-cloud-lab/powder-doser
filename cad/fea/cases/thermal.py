@@ -250,7 +250,7 @@ def solve_motor(design: str, frac: float, plate_mat: str = "AL6061", finish: str
     return rec
 
 
-def warmup(design: str = "chain-carousel-v3", frac: float = 1.0, hours: float = 4.0, h: float = 7.0) -> dict:
+def warmup(design: str = "chain-carousel-v3", frac: float = 1.0, hours: float = 3.0, h: float = 10.0) -> dict:
     """Transient: the motor switched on at frac x 6.0 A in a cold rig; the enclosure air follows its own lumped balance
     (taken from the steady result), so this is the motor and plate warming toward the steady state."""
     ss = json.loads((common.OUT / MODULE / f"{design}_motor_{int(frac * 100)}.json").read_text())

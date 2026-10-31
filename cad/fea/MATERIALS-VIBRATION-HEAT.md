@@ -63,8 +63,9 @@ is `cases/thermal.py`, `cases/vibration.py` and `cases/materials_study.py`.
    - The station's own heat (2.4 W at the electronics carriage) rises away from the pan below it; the carriage's
      surfaces at 40-66 °C above the beaker are still a reason for change 2.
 4. **Black-anodise or paint v3's and v4's back side plates.** Mill-finish 6061 radiates almost nothing (emissivity
-   about 0.1, against 0.85 black). At half current a black plate runs the motor 2.5 K cooler and the printed parts on
-   it 3-4 K cooler. At full current it's worth more.
+   about 0.1, against 0.85 black). At half current in v3 a black plate runs the motor 2.5 K cooler and the printed
+   parts on it 3-4 K cooler. At full current in v4 it takes 8 K off the motor (76 to 68 °C) and 12 K off those parts
+   (56 to 45 °C at the hottest).
 
 **Vibration**
 
@@ -72,19 +73,29 @@ is `cases/thermal.py`, `cases/vibration.py` and `cases/materials_study.py`.
    holding torque, 0.4 N*m) drives each frame through its modes. At the worst speed each bolted joint's sideways load
    stays far below what friction holds, and a joint that doesn't slip can't self-loosen:
 
-   VIBRATION_JOINTS_TABLE
+   | frame | joint | sideways load at the worst speed | friction holds | safety factor | slips at a ripple of |
+   |---|---|---|---|---|---|
+   | v3 | motor's 4 M5s (3 N*m) | 6.6 N at 113 mm/s | 450 N | 69 | 27.4 N*m |
+   | v3 | side plate's M5 T-nut screws (2.5 N*m) | 22.4 N at 30 mm/s | 375 N | 17 | 6.7 N*m |
+   | v4 | motor's 4 M5s (3 N*m) | 11.3 N at 77 mm/s | 450 N | 40 | 16.0 N*m |
+   | v4 | side plate's M5 T-nut screws (2.5 N*m) | 45.9 N at 77 mm/s | 375 N | 8 | 3.3 N*m |
+   | v4 + two motor posts | motor's 4 M5s (3 N*m) | 6.4 N at 24 mm/s | 450 N | 70 | 28.1 N*m |
+   | v4 + two motor posts | side plate's M5 T-nut screws (2.5 N*m) | 17.1 N at 24 mm/s | 375 N | 22 | 8.8 N*m |
+   | paternoster | motor's 4 M5s (3 N*m) | 2.2 N at 92 mm/s | 450 N | 206 | 82.4 N*m |
+   | paternoster | side plate's M5 T-nut screws (2.5 N*m) | 1.4 N at 92 mm/s | 375 N | 277 | 110.7 N*m |
 
-   The side plates' T-nut screws come closest, at the frames' first sway mode. They would slip at a ripple of
-   VIB_SLIP_MIN N*m, which full-stepping can produce, since every step is then an impulse. So:
+   The side plates' T-nut screws come closest: at v3's first sway mode (30 mm/s) and at v4's motor mode (77 mm/s). They
+   would slip at a ripple of 3.3 N*m in v4, 6.7 N*m in v3, 8.8 N*m in v4 + two motor posts, 110.7 N*m in paternoster. Full-stepping can produce ripples that size, since every step is then an
+   impulse. So:
    - keep microstepping on (the docs' 4000 pulses/rev);
    - keep the blue threadlocker on the T-nut screws;
    - don't cruise in the sway band (RESULTS.md change 15).
 
-   Plate fatigue is no concern: the stress amplitude is VIB_PLATE_MAX MPa at most, against 6061-T6's 96 MPa endurance.
+   Plate fatigue is no concern: the stress amplitude is 4.3 MPa at most, against 6061-T6's 96 MPa endurance.
 6. **Let the frame settle before reading the balance.** At 2 % damping the slowest sway mode (15-19 Hz) decays to
    0.1 % in 2.8-3.6 s after a stop, and in 5.7-7.2 s at 1 %. So wait 3-7 s, plus the HR-100A's own settling time, and
    keep the solenoid and the ERM off while it reads.
-7. **The acrylic panels resonate inside the step-rate band** PANEL_SENTENCE Cast acrylic cracks from its screw holes
+7. **The acrylic panels resonate inside the step-rate band** (v3's panels' first modes are 23-39 Hz; v4's panels' first modes are 22-26 Hz, and each has more modes up to 75 Hz). The full-step rate reaches the lowest at 34 mm/s and crosses more of them all the way to 100 mm/s, so some panel will buzz at most speeds. Cast acrylic cracks from its screw holes
    under vibration or overtightening. Put rubber or nylon shoulder washers under the panel screws and don't overtighten
    them, or cut the panels from polycarbonate.
 8. **The chain's vertical runs** (228.6 mm between sprockets, 80 N, carrying the carriages) have their first
@@ -113,7 +124,8 @@ is `cases/thermal.py`, `cases/vibration.py` and `cases/materials_study.py`.
 12. **Don't make v4's back plate steel to stiffen it.** Steel is 3x stiffer but also 2.9x heavier. In 1/4 in steel the
     plate weighs 8.5 kg instead of 2.9 kg, and the motor mode only rises from 50.6 to 59.7 Hz. The full-step rate
     still reaches that at 91 mm/s, inside v4's range. The two 2020 posts of RESULTS.md change 5 reach 68.6 Hz for
-    about 0.4 kg. A steel plate also spreads the motor's heat worse: STEEL_THERMAL
+    about 0.4 kg. Thermally steel is a wash: at full current the motor runs at 76 °C on steel against 76 °C on 6061, and the plate's hottest point is 67 °C against 66 °C. Steel conducts a third as well as 6061, but bare steel
+    radiates far better than mill-finish aluminium.
 13. **Static.** PETG and acrylic are insulators that charge when powder slides over them or someone wipes a panel.
     Charged powder clings to the module's printed walls, and a charged beaker, pan or nearby panel pulls on the
     balance. Options:
@@ -149,12 +161,37 @@ or 1.44 m^2 (v4) of 3 mm acrylic, by convection and radiation outside, with no l
 The back side plate is modelled on its own, without the posts it's screwed to, which would carry some heat away, so the
 plate temperatures are upper bounds.
 
-THERMAL_TABLE
+| design | NEMA 34 current | loss | motor case | back plate, hottest | printed parts on it | enclosure air |
+|---|---|---|---|---|---|---|
+| v3 | 6.0 A | 65 W | 83 °C | 75 °C | 54-65 °C | 38.7 °C |
+| v3 | 4.2 A | 28 W | 52 °C | 48 °C | 38-43 °C | 29.4 °C |
+| v3 | 3.0 A | 14 W | 37 °C | 35 °C | 30-33 °C | 25.5 °C |
+| v3 | 1.5 A | 3 W | 26 °C | 26 °C | 24-25 °C | 22.8 °C |
+| v4 | 6.0 A | 63 W | 76 °C | 66 °C | 48-56 °C | 35.3 °C |
+| v4 | 4.2 A | 28 W | 48 °C | 43 °C | 35-39 °C | 27.9 °C |
+| v4 | 3.0 A | 13 W | 36 °C | 33 °C | 29-31 °C | 24.8 °C |
+| v4 | 1.5 A | 3 W | 26 °C | 25 °C | 24-24 °C | 22.6 °C |
+| paternoster | 6.0 A | 63 W | 75 °C | 40 °C (motor plate and standoffs 65 °C) | - | room (22 °C) |
+| paternoster | 4.2 A | 28 W | 48 °C | 32 °C (motor plate and standoffs 44 °C) | - | room (22 °C) |
+| paternoster | 3.0 A | 13 W | 36 °C | 27 °C (motor plate and standoffs 34 °C) | - | room (22 °C) |
+| paternoster | 1.5 A | 3 W | 26 °C | 24 °C (motor plate and standoffs 25 °C) | - | room (22 °C) |
+| v3, black back plate | 3.0 A | 13 W | 35 °C | 32 °C | 26-29 °C | 24.7 °C |
+| v4, black back plate | 6.0 A | 62 W | 68 °C | 55 °C | 36-45 °C | 31.6 °C |
+| v4, steel back plate | 6.0 A | 63 W | 76 °C | 67 °C | 33-49 °C | 32.5 °C |
+
+The station's electronics carriage (v3), in still air:
+
+| case | NEMA 11 | electromagnet | PETG next to the NEMA 11 | PETG next to the electromagnet | electromagnet's pull |
+|---|---|---|---|---|---|
+| v3, air 22.0 °C | 40 °C (1.50 W) | off | 39.1 °C | 22.2 °C | - |
+| v3, air 22.0 °C | 39 °C (1.50 W) | 63 °C (0.94 W) | 39.0 °C | 62.6 °C | 73 % of cold |
+| v3, air 25.5 °C | 43 °C (1.52 W) | 66 °C (0.93 W) | 42.5 °C | 65.5 °C | 72 % of cold |
+| v4, air 22.0 °C | 40 °C (1.50 W) | off | 39.2 °C | - | - |
 
 ![v3: NEMA 34 at 6.0 A in its enclosure](out/thermal/chain-carousel-v3_motor_100.png)
 ![v3 electronics carriage: NEMA 11 and dock electromagnet](out/thermal/ec_v3_n11_em.png)
 
-WARMUP_SENTENCE
+
 
 ## Vibration in detail
 
@@ -169,7 +206,19 @@ The frames are frame.py's screw-pad models, feet held, at 2 % damping in every m
 screws come from the shear stress in each screw pad times its area. The motor's screws carry its inertial force, the
 drive chain's pull and the ripple torque.
 
-VIBRATION_DETAIL
+| frame | resonance | chain speed | motor's encoder end moves | top rail moves | peak plate stress | worst side-plate screw, sideways |
+|---|---|---|---|---|---|---|
+| v3 | 19.3 Hz | 30 mm/s | 38 µm | 65 µm | 0.7 MPa | 22 N |
+| v3 | 74.1 Hz | 113 mm/s | 25 µm | 10 µm | 1.2 MPa | 21 N |
+| v4 | 15.2 Hz | 23 mm/s | 45 µm | 71 µm | 0.6 MPa | 18 N |
+| v4 | 50.6 Hz | 77 mm/s | 131 µm | 31 µm | 4.3 MPa | 46 N |
+| v4 + two motor posts | 15.4 Hz | 24 mm/s | 47 µm | 77 µm | 0.7 MPa | 17 N |
+| v4 + two motor posts | 68.6 Hz | 105 mm/s | 7 µm | 4 µm | 0.4 MPa | 7 N |
+| paternoster | 16.5 Hz | 25 mm/s | 7 µm | 2 µm | 0.9 MPa | 1 N |
+| paternoster | 47.6 Hz | 72 mm/s | 1 µm | 0 µm | 0.9 MPa | 1 N |
+| paternoster | 60.0 Hz | 92 mm/s | 1 µm | 0 µm | 1.0 MPa | 1 N |
+
+Amplitudes at a 0.4 N*m ripple and 2 % damping; at 1 % damping the resonant peaks double. Each frame's whole sweep (5-140 Hz) is in `out/vibration/<frame>_frf.json` and the plot below.
 
 ![FRF against chain speed](out/vibration/frf_vs_speed.png)
 
@@ -179,7 +228,35 @@ In a linear model of one material with applied loads, the stresses don't depend 
 safety factor is its strength over the FEA's peak, and its deflection scales with 1 / E. Where one part's stiffness
 against another's decides the answer (v4's back plate under the motor), the FEA was rerun.
 
-MATERIALS_TABLE
+### Printed parts against their worst short-term load
+
+| part and case | peak (MPa) | PETG HF safety factor (23 MPa across layers) | PAHT-CF (47 MPa) | across-layer strength for a safety factor of 2 (MPa) |
+|---|---|---|---|---|
+| v4 carriage, latch bridged: 40 N auger pull | 31.4 | 0.73 | 1.49 | 63 |
+| v3 carriage: 40 N auger pull | 22.2 | 1.04 | 2.12 | 44 |
+| v4 guide cradle: P16 retract stall | 26.6 | 0.87 | 1.77 | 53 |
+| v3 guide cradle: P16 retract stall | 25.6 | 0.90 | 1.83 | 51 |
+| v4 electronics carriage: P16 stall | 26.6 | 0.86 | 1.77 | 53 |
+| v3 electronics carriage: P16 stall | 19.8 | 1.16 | 2.37 | 40 |
+| v3 carriage: P16 stall at the station | 15.8 | 1.46 | 2.98 | 32 |
+| v4 side tab foot: 25 N (1 mm off its sharp corner) | 14.0 | 1.65 | 3.36 | 28 |
+| v3 side tab lip: 25 N (1 mm off its sharp corner) | 12.4 | 1.86 | 3.80 | 25 |
+| hold-down: half a P16 stall | 6.5 | 3.52 | 7.19 | 13 |
+
+### Sustained loads: creep, and the temperature each part runs at
+
+| part | sustained stress (MPa) | where | at 50 % current: °C, PETG creep allowable (MPa), safety factor | at 100 % current: °C, PETG creep allowable (MPa), safety factor |
+|---|---|---|---|---|
+| v3 carriage, vertical runs, creep | 3.04 | air | 26, 7.6, 2.49 | 39, 5.3, 1.73 |
+| tensioner block, bearing bolts slipped | 3.10 | tensioner | 30, 6.7, 2.16 | 54, 2.6, 0.82 |
+| A-1 screw head on its printed seat (snug) | 18.00 | air | 26, 7.6, 0.42 | 39, 5.3, 0.29 |
+| A-1 screw head with a DIN 433 washer | 15.00 | air | 26, 7.6, 0.50 | 39, 5.3, 0.35 |
+| paternoster gondola, hanging | 0.49 | room | 22, 8.2, 16.68 | 22, 8.2, 16.68 |
+
+PETG's 8 MPa (1000 h, room temperature) is derated here in proportion to how far the part sits below PETG HF's 69 °C HDT, falling to zero at it. That is a rule of thumb, not creep data. The practical rule is to keep a part under sustained load 20 K or more below its HDT: about 49 °C for PETG, 80 °C for ASA, 97 °C for PC and over 150 °C for the CF nylons and PET-CF.
+
+
+The candidates (HDT, cost, moisture, notes) and v4's steel back plate: [out/materials/SUMMARY.md](out/materials/SUMMARY.md).
 
 Sources:
 - PETG HF: Bambu's TDS (as in materials.py).

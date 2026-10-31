@@ -7,6 +7,9 @@ Nothing is built yet, so every number is a prediction. Every case is in [out/SUM
 are in [README.md](README.md). The station and carriage results have their own write-ups in
 [out/station/SUMMARY.md](out/station/SUMMARY.md) and [out/carriage/SUMMARY.md](out/carriage/SUMMARY.md).
 
+Material selection, vibration (does the rig shake itself apart?) and heat are in
+[MATERIALS-VIBRATION-HEAT.md](MATERIALS-VIBRATION-HEAT.md).
+
 ## Design changes the results call for
 
 **Fix before building:**

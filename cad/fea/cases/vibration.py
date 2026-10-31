@@ -292,8 +292,8 @@ def joints(frfs: dict) -> dict:
             Fd2 = pw["pad_transverse_per_Nm_N"] * RIPPLE_NM
             rows.append(dict(design=c, joint="side plate to post, M5 x 12 into a T-nut, 2.5 N*m, blue threadlocker",
                              preload_N=round(Fp2), friction_cap_N=round(cap2), dynamic_N=round(Fd2, 3), at_Hz=pw["f_Hz"],
-                             at_mm_s=pw["speed_mm_s"], sf=round(cap2 / max(Fd2, 1e-9), 0),
-                             slips_at_ripple_Nm=round(cap2 / max(pw["pad_transverse_per_Nm_N"], 1e-9), 0), worst_pad=pw.get("pad_worst")))
+                             at_mm_s=pw["speed_mm_s"], sf=round(cap2 / max(Fd2, 1e-9), 1),
+                             slips_at_ripple_Nm=round(cap2 / max(pw["pad_transverse_per_Nm_N"], 1e-9), 1), worst_pad=pw.get("pad_worst")))
         pv = max(r["resonances"], key=lambda x: x["plate_vm_per_Nm"])
         rows.append(dict(design=c, joint="plate fatigue (6061-T6, 96.5 MPa fully reversed at 5e8 cycles)",
                          dynamic_MPa=round(pv["plate_vm_per_Nm"] * RIPPLE_NM, 3), at_Hz=pv["f_Hz"], at_mm_s=pv["speed_mm_s"],
@@ -357,8 +357,11 @@ def panel_modes(design: str = "chain-carousel-v3", n: int = 8) -> dict:
         d.frequency(n)
         res = d.solve(f"vibration/panel_{design}_{key}")
         bb = np.ptp(m.xyz, axis=0)
-        n_st = sum(1 for S in st if (np.linalg.norm((m.xyz - S[:3, 3]) - np.outer((m.xyz - S[:3, 3]) @ S[:3, 2], S[:3, 2]), axis=1)
-                                     < 5.0).any())
+        n_st = 0
+        for S in st:
+            rel = m.xyz - S[:3, 3]
+            al = rel @ S[:3, 2]
+            n_st += int(((np.linalg.norm(rel - np.outer(al, S[:3, 2]), axis=1) < 5.0) & (np.abs(al) < 40.0)).any())
         out[key] = dict(size_mm=sorted([round(float(x)) for x in bb])[1:], standoffs=n_st,
                         freqs_Hz=[round(f, 1) for f in res.freqs],
                         full_step_rate_reaches_mode1_at_mm_s=round(speed_of(res.freqs[0]), 0) if res.freqs else None)
@@ -439,10 +442,10 @@ def summary() -> str:
         if f.exists():
             pj = json.loads(f.read_text())
             L += ["", f"## {des}: the 3 mm acrylic panels on their standoffs", "",
-                  "| panel | size (mm) | standoffs | modes (Hz) | full-step rate reaches mode 1 at (mm/s) |", "|---|---|---|---|---|"]
+                  "| panel | size (mm) | modes (Hz) | full-step rate reaches mode 1 at (mm/s) |", "|---|---|---|---|"]
             for k, v in pj.items():
                 if "freqs_Hz" in v:
-                    L.append(f"| {k} | {' x '.join(str(x) for x in v['size_mm'])} | {v['standoffs']} | {', '.join(f'{x:.0f}' for x in v['freqs_Hz'][:6])} | "
+                    L.append(f"| {k} | {' x '.join(str(x) for x in v['size_mm'])} | {', '.join(f'{x:.0f}' for x in v['freqs_Hz'][:6])} | "
                              f"{v['full_step_rate_reaches_mode1_at_mm_s']:.0f} |")
     txt = "\n".join(L) + "\n"
     (d / "SUMMARY.md").write_text(txt)

@@ -12,13 +12,23 @@ Room 22 °C. The NEMA 34's loss is 2 I^2 R with R 0.7 ohm per phase at 20 °C, r
 | v3 (black-anodised back plate) | 3.0 | 13.4 | 35 | 37 | 35 | 32 | 29 (Hold-down (back, printed)) | 24.7 |
 | v3 | 1.5 | 3.2 | 26 | 27 | 26 | 26 | 25 (Hold-down (back, printed)) | 22.8 |
 | v4 | 6.0 | 63.2 | 76 | 86 | 76 | 66 | 56 (Hold-down (back, printed)) | 35.3 |
+| v4 (black-anodised back plate) | 6.0 | 61.6 | 68 | 78 | 68 | 55 | 45 (Hold-down (back, printed)) | 31.6 |
+| v4 (steel back plate) | 6.0 | 63.3 | 76 | 86 | 76 | 67 | 49 (Hold-down (back, printed)) | 32.5 |
 | v4 | 4.2 | 27.8 | 48 | 52 | 48 | 43 | 39 (Hold-down (back, printed)) | 27.9 |
 | v4 | 3.0 | 13.5 | 36 | 38 | 35 | 33 | 31 (Hold-down (back, printed)) | 24.8 |
+| v4 | 1.5 | 3.2 | 26 | 26 | 26 | 25 | 24 (Hold-down (back, printed)) | 22.6 |
 | paternoster | 6.0 | 63.2 | 75 | 85 | 75 | 40 | - | room |
 | paternoster | 4.2 | 27.9 | 48 | 53 | 48 | 32 | - | room |
+| paternoster | 3.0 | 13.5 | 36 | 38 | 36 | 27 | - | room |
+| paternoster | 1.5 | 3.2 | 26 | 26 | 26 | 24 | - | room |
 
 ## The station's electronics carriage (printed PETG) with its NEMA 11 and dock electromagnet
 
 | case | air (°C) | NEMA 11 (W) | electromagnet (W) | NEMA 11, hottest (°C) | electromagnet (°C) | PETG next to the NEMA 11 (°C) | PETG next to the electromagnet (°C) | the electromagnet's pull, of cold |
 |---|---|---|---|---|---|---|---|---|
-| ec_v3_n11_em | 25.5 | 1.52 | 0.93 | 43 | 65.6 | 42.5 | 65.5 | 0.719 |
+| ec_v3_n11 | 22.0 | 1.50 | 0.00 | 40 | - | 39.1 | 22.2 | - |
+| ec_v3_n11_em | 22.0 | 1.50 | 0.94 | 39 | 62.7 | 39.0 | 62.6 | 0.733 |
+| ec_v3_n11_em_air26 | 25.5 | 1.52 | 0.93 | 43 | 65.6 | 42.5 | 65.5 | 0.719 |
+| ec_v4_n11 | 22.0 | 1.50 | 0.00 | 40 | - | 39.2 | - | - |
+
+**After 30 minutes switched on** (from cold, air 22 °C): NEMA 11 37 °C, electromagnet 62 °C, PETG 62 °C.
