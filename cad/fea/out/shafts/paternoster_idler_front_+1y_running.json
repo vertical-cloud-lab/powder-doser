@@ -1,0 +1,62 @@
+{
+ "module": "shafts",
+ "case": "paternoster_idler_front_+1y_running",
+ "design": "paternoster",
+ "part": "idler axle front +1y",
+ "load_case": "running",
+ "loads": {
+  "chain on the idler": "69.8 N (world y, z = -47.7, -51.0)",
+  "bearing shares": [
+   -0.527,
+   1.527
+  ]
+ },
+ "nodes": 17707,
+ "elements": 10707,
+ "mesh_mm": 1.6,
+ "wall_s": 5.4,
+ "parts": [
+  {
+   "part": "idler axle",
+   "material": "1045 steel",
+   "umax_mm": 0.00167,
+   "vm_max_MPa": 8.063,
+   "vm_max_at": [
+    -5.3,
+    -5.3,
+    4.5
+   ],
+   "vm_excl_MPa": 8.063,
+   "vm_excl_at": [
+    -5.3,
+    -5.3,
+    4.5
+   ],
+   "allow_MPa": 310.0,
+   "sf": 38.45
+  }
+ ],
+ "key_disp": {
+  "axle end deflection (mm)": 0.00164
+ },
+ "notes": "shoulder face and stem held (nut preload); 6202 loads as cosine pressures",
+ "mass_kg": 0.0674,
+ "hand_sigma_root_MPa": 6.11,
+ "tooth_plane_z": 33.0,
+ "seats": [
+  [
+   10.7,
+   21.7
+  ],
+  [
+   21.7,
+   32.7
+  ]
+ ],
+ "clamp_reaction_N": [
+  47.37573,
+  51.31612,
+  8.734136e-05
+ ],
+ "png": "out/shafts/paternoster_idler_front_+1y_running.png"
+}

@@ -1,0 +1,16 @@
+{
+ "hanging (front pivot, 56 %)": {
+  "F_N": 2.09,
+  "arm_mm": 4.3999999999999995,
+  "sigma_MPa": 1.46,
+  "sf_vs_205": 140.2,
+  "bushing_pressure_MPa": 0.087
+ },
+ "P16 stall, half at each pivot": {
+  "F_N": 25.0,
+  "arm_mm": 4.3999999999999995,
+  "sigma_MPa": 17.51,
+  "sf_vs_205": 11.7,
+  "bushing_pressure_MPa": 1.042
+ }
+}

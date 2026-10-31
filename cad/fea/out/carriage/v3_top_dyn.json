@@ -1,0 +1,52 @@
+{
+ "module": "carriage",
+ "case": "v3_top_dyn",
+ "design": "chain-carousel-v3",
+ "part": "carriage v3",
+ "load_case": "top run, gravity (creep E)",
+ "loads": {
+  "gravity": "carriage + module 222 g at Sam x 107.4, x1.27",
+  "hinge on carriage (N)": [
+   0.0,
+   -0.085,
+   0.0
+  ],
+  "pads (N, w)": 0.0,
+  "latch (N, w)": 2.938
+ },
+ "nodes": 153657,
+ "elements": 87592,
+ "mesh_mm": 2.2,
+ "wall_s": 36.1,
+ "parts": [
+  {
+   "part": "carriage",
+   "material": "PETG (printed, 1000 h creep)",
+   "umax_mm": 1.02677,
+   "vm_max_MPa": 2.922,
+   "vm_max_at": [
+    -4.2,
+    -6.3,
+    13.9
+   ],
+   "vm_excl_MPa": 1.707,
+   "vm_excl_at": [
+    -23.4,
+    -11.3,
+    21.2
+   ],
+   "allow_MPa": 8.0,
+   "sf": 4.69
+  }
+ ],
+ "key_disp": {
+  "hinge lug -u dw (mm)": 0.21318,
+  "hinge lug +u dw (mm)": 0.02662,
+  "latch housing mouth dw (mm)": 0.84234,
+  "mid-span edge strips dw (mm)": 0.50328,
+  "auger cap end dw from carriage bending (mm)": 1.8993,
+  "short-term factor on these (E 1810 vs 1000)": 0.55249
+ },
+ "notes": "",
+ "mass_kg": 0.103
+}

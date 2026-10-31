@@ -1,0 +1,46 @@
+{
+ "module": "shafts",
+ "case": "chain-carousel-v3_tensioner_block_PETG_CREEP",
+ "design": "chain-carousel-v3",
+ "part": "tensioner block (printed)",
+ "load_case": "top bearing's flange bolts slipped: the jack screw carries it",
+ "loads": {
+  "jack screw": "89.8 N down on the nut's seat"
+ },
+ "nodes": 30525,
+ "elements": 17805,
+ "mesh_mm": 1.2,
+ "wall_s": 13.0,
+ "parts": [
+  {
+   "part": "tensioner block",
+   "material": "PETG (printed, 1000 h creep)",
+   "umax_mm": 0.03826,
+   "vm_max_MPa": 5.375,
+   "vm_max_at": [
+    5.2,
+    -12.3,
+    4.5
+   ],
+   "vm_excl_MPa": 3.08,
+   "vm_excl_at": [
+    -5.3,
+    -11.2,
+    4.8
+   ],
+   "allow_MPa": 8.0,
+   "sf": 2.6
+  }
+ ],
+ "key_disp": {
+  "nut seat drop (mm)": 0.01982
+ },
+ "notes": "sustained (chain tension): PETG creep modulus and allowable",
+ "mass_kg": 0.0063,
+ "screw_reaction_N": [
+  -3.788636e-15,
+  89.76724,
+  -2.08867e-12
+ ],
+ "png": "out/shafts/chain-carousel-v3_tensioner_block_PETG_CREEP.png"
+}

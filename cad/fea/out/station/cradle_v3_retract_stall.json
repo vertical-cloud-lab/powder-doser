@@ -1,0 +1,51 @@
+{
+ "module": "station",
+ "case": "cradle_v3_retract_stall",
+ "design": "chain-carousel-v3",
+ "part": "guide cradle (printed PETG)",
+ "load_case": "retract_stall",
+ "loads": {
+  "cone_N": 16.3,
+  "vee_N": 16.3,
+  "flat_N": 20.64,
+  "post_reaction_N": [
+   1.89,
+   -0.0,
+   53.36
+  ]
+ },
+ "nodes": 98807,
+ "elements": 58122,
+ "mesh_mm": 2.2,
+ "wall_s": 60.4,
+ "parts": [
+  {
+   "part": "cradle",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 2.23241,
+   "vm_max_MPa": 25.636,
+   "vm_max_at": [
+    48.6,
+    -18.4,
+    -65.4
+   ],
+   "vm_excl_MPa": 25.636,
+   "vm_excl_at": [
+    48.6,
+    -18.4,
+    -65.4
+   ],
+   "allow_MPa": 23.0,
+   "sf": 0.9
+  }
+ ],
+ "key_disp": {
+  "cone seat dz (mm, toward the floor -)": -1.40487,
+  "vee seat dz": -0.08239,
+  "flat seat dz": -0.66712,
+  "worst seat dz": -1.40487
+ },
+ "notes": "arm pad bonded to the post's top (an M6 into its centre bore); ball loads from the parked EC + P16",
+ "mass_kg": 0.0377,
+ "png": "out/station/cradle_v3_retract_stall.png"
+}
