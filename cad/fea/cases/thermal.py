@@ -365,7 +365,8 @@ def solve_ec(v: str = "v3", n11_on: bool = True, em_on: bool = True, T_air: floa
                 hd.probe("EM", m.nodes_of("electromagnet"))
             hd.probe("ECP", m.nodes_of("EC"))
             hd.transient(transient_min * 60.0, dt0=5.0, dt_max=60.0)
-        tag = f"ec_{v}_{'n11' if n11_on else ''}{'_em' if em_on else ''}" + (f"_{int(transient_min)}min" if transient_min else "")
+        tag = (f"ec_{v}_{'n11' if n11_on else ''}{'_em' if em_on else ''}" + (f"_{int(transient_min)}min" if transient_min else "")
+               + (f"_air{T_air:.0f}" if abs(T_air - T_ROOM) > 0.05 else ""))
         res = hd.solve(f"thermal/{tag}")
         q = face_heat(res, faces, part_of, eps_of, L_of, T_air, T_air, T_guess)
         T_guess = {g: o["T_surface_mean"] for g, o in q.items()}

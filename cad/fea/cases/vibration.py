@@ -340,7 +340,7 @@ def panel_modes(design: str = "chain-carousel-v3", n: int = 8) -> dict:
         M = [np.array(p["M"]) for p in pl if p["key"] == key]
         if not M:
             continue
-        m = fem.mesh_parts([fem.Part(key, fem.step_path(design, key), M[0], "ACRYLIC")], size=12.0, size_min=3.0, curv=4)
+        m = fem.mesh_parts([fem.Part(key, fem.step_path(design, key), M[0], "ACRYLIC")], size=7.0, size_min=1.5, curv=0)
         idx = []
         for S in st:
             o, a = S[:3, 3], S[:3, 2]
