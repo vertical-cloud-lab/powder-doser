@@ -5,7 +5,9 @@ of PR #184 and the 28 Oct meeting: inferring cohesion and friction from dosing d
 (shear cell, Hall/Carney, angle of repose, bulk and tapped density), moisture, static, and spreadability.
 
 **How it was gathered.** The nine Edison queries in [`edison/run_queries.py`](edison/run_queries.py) could not be
-sent: every login returned 403 ([`edison/STATUS.md`](edison/STATUS.md)). In their place:
+sent from the session that wrote this survey: every login returned 403 ([`edison/STATUS.md`](edison/STATUS.md)).
+After the key was rotated, a session on PR #196 sent them at 03:00 UTC, and their answers go in `edison/`. The
+catalog below was built without them, from:
 
 - web searches on each query's topic, and
 - **15 open-access full texts read (16 attempted) in a headed Chrome whose traffic left through the doser Pi**, with real pointer

@@ -30,14 +30,18 @@ for (tag, (t, m)), c in zip(P["silo_curves"].items(), ["#1f6fb4", "#2a9d5c", "#d
     ax[1].plot(t, m, color=c, label=f"D = {tag[1:]} mm")
 ax[1].axvspan(0.08, 0.25, color="0.9", zorder=0, label="fit window")
 ax[1].set_xlabel("time after opening (s)"); ax[1].set_ylabel("discharged mass (kg per m depth)")
-ax[1].set_title("(b) flat-bottomed silo discharge"); ax[1].legend(fontsize=8)
+ax[1].set_title("(b) flat-bottomed silo discharge (128² grid)"); ax[1].legend(fontsize=8)
 DD = np.linspace(0.004, 0.018, 100)
 ax[2].plot(Ds * 1e3, Ws, "o", color="#1f6fb4", ms=8, label="MPM (Taichi)")
 ax[2].plot(DD * 1e3, 1.03 * rho_b * np.sqrt(g) * DD ** 1.5, "k--", lw=1, label="plane Beverloo, C=1.03, k·d=0")
 ax[2].plot(DD * 1e3, Cb * rho_b * np.sqrt(g) * np.clip(DD - D0, 0, None) ** 1.5, color="#d9622b",
            label=f"3/2 law through 12,16 mm: C={Cb:.2f}, D0={D0*1e3:.1f} mm")
+fine_p = f"{SCR}/raw_results_silo_n256.json"
+FINE = json.load(open(fine_p)) if os.path.exists(fine_p) else []
+for fr_ in FINE:
+    ax[2].plot(fr_["D_m"] * 1e3, fr_["W_kg_per_m_s"], "s", color="#2a9d5c", ms=8, label=f"MPM, 256² grid (dx = {0.2/256*1e3:.2f} mm)")
 ax[2].set_xlabel("slot width D (mm)"); ax[2].set_ylabel("mass flow W (kg s$^{-1}$ per m depth)")
-ax[2].set_title(f"(c) W vs D; dx = {dx*1e3:.2f} mm"); ax[2].legend(fontsize=7.5)
+ax[2].set_title(f"(c) W vs D; circles: dx = {dx*1e3:.2f} mm"); ax[2].legend(fontsize=7.5)
 fig.suptitle("MPM (MLS-MPM, Drucker–Prager, Klar et al. 2016) in Taichi 1.7.4, 2D plane strain", fontsize=10)
 fig.tight_layout(); fig.savefig(f"{OUT}/mpm_taichi.png", dpi=110); plt.close(fig)
 
@@ -59,7 +63,7 @@ for k in range(nf):
     fig.suptitle("MPM (MLS-MPM + Drucker–Prager), Taichi 1.7.4 — colour = speed 0–1 m/s", fontsize=8)
     fig.tight_layout(); fig.canvas.draw()
     frames.append(np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()); plt.close(fig)
-imageio.mimsave(f"{OUT}/mpm_taichi.gif", frames, duration=1 / 12, loop=0)
+imageio.mimsave(f"{OUT}/mpm_taichi.gif", frames, duration=1000 / 12, loop=0)  # ms per frame (imageio>=2.28 pillow plugin)
 os.environ["IMAGEIO_FFMPEG_EXE"] = imageio_ffmpeg.get_ffmpeg_exe()
 H, W = frames[0].shape[:2]; frames2 = [f[: H - H % 2, : W - W % 2] for f in frames]
 imageio.mimsave(f"{OUT}/mpm_taichi.mp4", frames2, fps=12, codec="libx264", pixelformat="yuv420p", macro_block_size=1)
@@ -67,7 +71,7 @@ imageio.mimsave(f"{OUT}/mpm_taichi.mp4", frames2, fps=12, codec="libx264", pixel
 col = {c["cohesion_Pa"]: c for c in R["columns"]}
 res = {"id": "mpm-taichi", "method": "Material Point Method (MLS-MPM) with Drucker-Prager elastoplasticity (Klar et al. 2016)",
        "code": "Taichi (self-written MLS-MPM kernel, run.py)", "version": "taichi 1.7.4 (LLVM 15), python 3.12",
-       "status": "ran", "wall_s": R["total_wall_s"], "cores": 1,
+       "status": "ran", "wall_s": round(R["total_wall_s"] + sum(f_["wall_s"] for f_ in FINE), 1), "cores": 1,
        "key_results": {
            "column_c0": {k: col[0.0][k] for k in ["runout_ratio", "height_ratio", "mean_slope_deg", "fitted_mid_slope_deg", "runout_Linf_m"]},
            "column_c100Pa": {k: col[100.0][k] for k in ["runout_ratio", "height_ratio", "mean_slope_deg", "fitted_mid_slope_deg", "runout_Linf_m"]},
@@ -76,7 +80,8 @@ res = {"id": "mpm-taichi", "method": "Material Point Method (MLS-MPM) with Druck
            "three_halves_law_through_12_16mm": {"C": float(Cb), "D0_mm": float(D0 * 1e3), "D0_over_dx": float(D0 / dx),
                                                  "predicted_W_8mm": float(pred_small), "MPM_W_8mm": float(Ws[0])},
            "beverloo_C1p03_k0_W": {f"D{int(d*1e3)}mm": float(w) for d, w in zip(Ds, Wbev103)},
-           "free_3param_fit_attempt": R["beverloo_fit"]},
+           "free_3param_fit_attempt": R["beverloo_fit"],
+           "resolution_check_256grid": [{k: f_[k] for k in ["D_m", "D_over_dx", "n_particles", "wall_s", "W_kg_per_m_s"]} for f_ in FINE]},
        "notes": "2D plane strain, per metre depth; rho_bulk 1250 kg/m3 assumed; E=0.3 MPa (soft for speed); no grain size in the continuum, so the k*d term becomes a grid-scale offset."}
 json.dump(res, open(f"{OUT}/result.json", "w"), indent=1)
 print(json.dumps(res["key_results"], indent=1))

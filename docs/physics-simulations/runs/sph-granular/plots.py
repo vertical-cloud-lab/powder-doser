@@ -43,7 +43,7 @@ for k in range(nf):
     fig.suptitle("SPH (Drucker–Prager, Bui-type), self-written numba WCSPH — colour = speed 0–1 m/s", fontsize=8)
     fig.tight_layout(); fig.canvas.draw()
     frames.append(np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()); plt.close(fig)
-imageio.mimsave(f"{OUT}/sph_granular.gif", frames, duration=1 / 12, loop=0)
+imageio.mimsave(f"{OUT}/sph_granular.gif", frames, duration=1000 / 12, loop=0)  # ms per frame (imageio>=2.28 pillow plugin)
 os.environ["IMAGEIO_FFMPEG_EXE"] = imageio_ffmpeg.get_ffmpeg_exe()
 H, W = frames[0].shape[:2]; frames2 = [f[: H - H % 2, : W - W % 2] for f in frames]
 imageio.mimsave(f"{OUT}/sph_granular.mp4", frames2, fps=12, codec="libx264", pixelformat="yuv420p", macro_block_size=1)

@@ -1,25 +1,61 @@
 {
+ "dem-liggghts-auger-short": {
+  "id": "dem-liggghts-auger-short",
+  "method": "smoke-test rerun of PR #180 rig auger case rig_t27p5_r60: 0.12 s settle + 0.25 rev, dry vs SJKR cohesion",
+  "code": "LIGGGHTS-PUBLIC",
+  "version": "3.8.0 (Debian package liggghts)",
+  "status": "ran",
+  "wall_s": 1054.8,
+  "cores": 1,
+  "particles": 30015,
+  "key_results": {
+   "dry": {
+    "t_end_s": 0.3699,
+    "revolutions_simulated": 0.25,
+    "mg_delivered_after_settle": 16.71,
+    "mg_leaked_during_settle": 0.0,
+    "grains_delivered": 182,
+    "grains_in_domain_end": 29776,
+    "complete": true,
+    "wall_s": 572.8,
+    "mg_per_rev_equivalent": 66.8
+   },
+   "coh": {
+    "t_end_s": 0.3699,
+    "revolutions_simulated": 0.25,
+    "mg_delivered_after_settle": 0.13,
+    "mg_leaked_during_settle": 0.0,
+    "grains_delivered": 1,
+    "grains_in_domain_end": 30015,
+    "complete": true,
+    "wall_s": 482.0,
+    "mg_per_rev_equivalent": 0.5,
+    "elapsed_including_pause_s": 2351.8
+   }
+  },
+  "notes": "Geometry/inputs regenerated with the #180 branch's geometry.py + run_case.py (STL meshes, np=1). PR #180 reported 12 mg in the first quarter revolution for this case. The cohesive run was paused (SIGSTOP) from 02:26:14 to 02:57:24 UTC when the shared runner was oversubscribed; its active wall time is 2352 s elapsed minus 1870 s paused = 482 s (370 s CPU).",
+  "cpu_user_s": {
+   "dry": 467.2,
+   "coh": 369.5
+  },
+  "wall_s_by_variant": {
+   "dry": 572.8,
+   "coh": 482.0
+  },
+  "particles_detail": {
+   "dry": 29776,
+   "coh": 30015
+  }
+ },
  "dem-liggghts-aor": {
   "id": "dem-liggghts-aor",
   "method": "angle of repose, poured heap on a fixed 12 mm base (ISO 4324 style, reduced scale)",
   "code": "LIGGGHTS-PUBLIC",
   "version": "3.8.0 (Debian package liggghts, compiled 2024-03-31)",
   "status": "ran",
-  "wall_s": {
-   "dry": 96.3,
-   "coh": 87.1
-  },
+  "wall_s": 183.4,
   "cores": 1,
-  "particles": {
-   "dry": {
-    "poured": 4000,
-    "on_base_at_end": 2530
-   },
-   "coh": {
-    "poured": 4000,
-    "on_base_at_end": 3431
-   }
-  },
+  "particles": 4000,
   "key_results": {
    "dry": {
     "repose_angle_profile_fit_deg": 21.9,
@@ -34,7 +70,21 @@
     "apex_height_mm": 6.86
    }
   },
-  "notes": "Real-size salt grains (no coarse-graining), E reduced to 2e5 Pa. Profile-fit angle = slope of the sector-averaged heap surface for 1.0 < r < 5.2 mm; apex angle = atan(apex height / base radius) as in ISO 4324."
+  "notes": "Real-size salt grains (no coarse-graining), E reduced to 2e5 Pa. Profile-fit angle = slope of the sector-averaged heap surface for 1.0 < r < 5.2 mm; apex angle = atan(apex height / base radius) as in ISO 4324.",
+  "wall_s_by_variant": {
+   "dry": 96.3,
+   "coh": 87.1
+  },
+  "particles_detail": {
+   "dry": {
+    "poured": 4000,
+    "on_base_at_end": 2530
+   },
+   "coh": {
+    "poured": 4000,
+    "on_base_at_end": 3431
+   }
+  }
  },
  "dem-liggghts-drum": {
   "id": "dem-liggghts-drum",
@@ -42,14 +92,9 @@
   "code": "LIGGGHTS-PUBLIC",
   "version": "3.8.0 (Debian package liggghts)",
   "status": "ran",
-  "wall_s": {
-   "dry": 239.1
-  },
+  "wall_s": 412.0,
   "cores": 1,
-  "particles": {
-   "grains": 2400,
-   "wall_spheres": 2030
-  },
+  "particles": 4430,
   "key_results": {
    "dry": {
     "dynamic_angle_mean_deg": 39.2,
@@ -66,10 +111,150 @@
      32.0,
      34.3
     ]
+   },
+   "coh": {
+    "dynamic_angle_mean_deg": 39.4,
+    "dynamic_angle_std_deg": 12.4,
+    "averaging_window_s": [
+     0.6,
+     1.2
+    ],
+    "local_max_angles_deg": [
+     29.8,
+     37.2,
+     53.6,
+     22.2
+    ],
+    "local_min_angles_deg": [
+     25.3,
+     28.2,
+     36.0,
+     13.4
+    ]
    }
   },
-  "notes": "Angle = slope of a line fitted to the top of the bed over the central 60 % of the drum width, per 0.02 s dump, averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate. Non-cohesive run only unless a \"coh\" entry is present (cohesive run was optional).",
-  "froude": 0.003577158691073274
+  "notes": "Angle = slope of a line fitted to the top of the bed over the central 60 % of the drum width, per 0.02 s dump, averaged over the window. Rough wall: frozen 0.3 mm spheres rotated with fix move rotate. Cohesive run: major avalanches from 62.0 deg (t=0.59 s) to 25.3 deg (0.71 s) and from 53.6 deg (1.07 s) into a slump at 1.11-1.19 s; fitted angles of 13-22 deg during the slump are artifacts (surface not straight). Local extrema lists include small wiggles.",
+  "wall_s_by_variant": {
+   "dry": 239.1,
+   "coh": 172.9
+  },
+  "particles_detail": {
+   "grains": 2400,
+   "wall_spheres": 2030
+  }
+ },
+ "dem-liggghts-hall": {
+  "id": "dem-liggghts-hall",
+  "method": "Hall (2.54 mm) and Carney (5.08 mm) 60-degree funnel discharge, reduced funnel height",
+  "code": "LIGGGHTS-PUBLIC",
+  "version": "3.8.0 (Debian package liggghts)",
+  "status": "ran",
+  "wall_s": 465.7,
+  "cores": 1,
+  "particles": 12000,
+  "key_results": {
+   "hall": {
+    "mass_flow_g_s": 0.363,
+    "time_per_50g_s_extrapolated": 137.9,
+    "jammed_at_end": false,
+    "zero_flow_25ms_windows": 0,
+    "discharged_g": 0.222,
+    "orifice_over_mean_d": 5.98,
+    "beverloo_g_s": {
+     "k=1.5": 0.358,
+     "k=2.0": 0.266,
+     "k=2.9": 0.14
+    },
+    "beverloo_rho_b_kg_m3": 1249.0
+   },
+   "carney": {
+    "mass_flow_g_s": 2.873,
+    "time_per_50g_s_extrapolated": 17.4,
+    "jammed_at_end": false,
+    "zero_flow_25ms_windows": 0,
+    "discharged_g": 0.842,
+    "orifice_over_mean_d": 11.95,
+    "beverloo_g_s": {
+     "k=1.5": 2.985,
+     "k=2.0": 2.64,
+     "k=2.9": 2.083
+    },
+    "beverloo_rho_b_kg_m3": 1249.0
+   },
+   "hall_coh": {
+    "mass_flow_g_s": 0.0,
+    "time_per_50g_s_extrapolated": null,
+    "jammed_at_end": true,
+    "zero_flow_25ms_windows": null,
+    "discharged_g": 0.005,
+    "orifice_over_mean_d": 5.98,
+    "beverloo_g_s": {
+     "k=1.5": 0.358,
+     "k=2.0": 0.266,
+     "k=2.9": 0.14
+    },
+    "beverloo_rho_b_kg_m3": 1249.0
+   }
+  },
+  "notes": "Mass flow = linear fit to discharged mass from 0.05 s after opening to the end of the run. Beverloo: W = C rho_b sqrt(g) (D0 - k d)^2.5 with C = 0.58, d = 0.425 mm, rho_b from the poured packing fraction of dem-liggghts-tap.",
+  "wall_s_by_variant": {
+   "hall": 171.9,
+   "carney": 178.1,
+   "hall_coh": 115.7
+  },
+  "particles_detail": {
+   "hall": 5000,
+   "carney": 12000,
+   "hall_coh": 5000
+  }
+ },
+ "dem-liggghts-tap": {
+  "id": "dem-liggghts-tap",
+  "method": "poured (apparent) and tapped density, laterally periodic column, 3 mm taps",
+  "code": "LIGGGHTS-PUBLIC",
+  "version": "3.8.0 (Debian package liggghts)",
+  "status": "ran",
+  "wall_s": 663.2,
+  "cores": 1,
+  "particles": 2500,
+  "key_results": {
+   "dry": {
+    "phi_bulk_poured": 0.577,
+    "phi_tapped_mean_last5": 0.6174,
+    "taps": 30,
+    "hausner": 1.07,
+    "carr_index_pct": 6.5,
+    "bulk_density_kg_m3": 1249.0,
+    "tapped_density_kg_m3": 1337.0,
+    "hausner_from_whole_bed": 1.058
+   },
+   "coh": {
+    "phi_bulk_poured": 0.4724,
+    "phi_tapped_mean_last5": 0.5477,
+    "taps": 30,
+    "hausner": 1.16,
+    "carr_index_pct": 13.8,
+    "bulk_density_kg_m3": 1023.0,
+    "tapped_density_kg_m3": 1186.0,
+    "hausner_from_whole_bed": 1.171
+   },
+   "dry_rain": {
+    "phi_bulk_poured": 0.632,
+    "phi_tapped_mean_last5": 0.6202,
+    "taps": 30,
+    "hausner": 0.981,
+    "carr_index_pct": -1.9,
+    "bulk_density_kg_m3": 1368.0,
+    "tapped_density_kg_m3": 1343.0,
+    "hausner_from_whole_bed": 0.978
+   }
+  },
+  "notes": "30 taps only (ASTM B527 uses up to 3000); the tapped value is the mean of the last 5 taps. Packing fraction in a slab 1 mm above the floor to 1 mm below the free surface; no side walls (periodic).",
+  "wall_s_by_variant": {
+   "dry": 182.1,
+   "coh": 246.1,
+   "dry_rain": 235.0
+  }
  },
  "dem-liggghts-shear": {
   "id": "dem-liggghts-shear",
@@ -77,15 +262,9 @@
   "code": "LIGGGHTS-PUBLIC",
   "version": "3.8.0 (Debian package liggghts)",
   "status": "ran",
-  "wall_s": {
-   "dry": 193.6,
-   "coh": 145.7
-  },
+  "wall_s": 339.3,
   "cores": 1,
-  "particles": {
-   "grains": 1800,
-   "wall_grains": 256
-  },
+  "particles": 2056,
   "key_results": {
    "dry": {
     "cohesion_Pa": 6.55,
@@ -134,7 +313,15 @@
     ]
    }
   },
-  "notes": "Real-size salt, E = 2e5 Pa, so normal stresses are kept at 50-200 Pa (overlaps < ~3 % of d); this is the stress range of a few mm to cm of powder head, i.e. the doser's, far below FT4/Schulze test stresses (kPa). Gravity off during shearing. ffc from Mohr circles on a straight yield locus through the three peak points."
+  "notes": "Real-size salt, E = 2e5 Pa, so normal stresses are kept at 50-200 Pa (overlaps < ~3 % of d); this is the stress range of a few mm to cm of powder head, i.e. the doser's, far below FT4/Schulze test stresses (kPa). Gravity off during shearing. ffc from Mohr circles on a straight yield locus through the three peak points.",
+  "wall_s_by_variant": {
+   "dry": 193.6,
+   "coh": 145.7
+  },
+  "particles_detail": {
+   "grains": 1800,
+   "wall_grains": 256
+  }
  },
  "dem-liggghts-spread": {
   "id": "dem-liggghts-spread",
@@ -142,14 +329,9 @@
   "code": "LIGGGHTS-PUBLIC",
   "version": "3.8.0 (Debian package liggghts)",
   "status": "ran",
-  "wall_s": {
-   "dry": 120.6
-  },
+  "wall_s": 301.3,
   "cores": 1,
-  "particles": {
-   "grains": 2500,
-   "blade_spheres": 875
-  },
+  "particles": 3166,
   "key_results": {
    "dry": {
     "phi_layer_mean": 0.337,
@@ -157,9 +339,811 @@
     "coverage_mean": 0.898,
     "coverage_min_bin": 0.874,
     "mass_per_area_cv": 0.076
+   },
+   "coh": {
+    "phi_layer_mean": 0.001,
+    "phi_layer_std_between_bins": 0.001,
+    "coverage_mean": 0.003,
+    "coverage_min_bin": 0.0,
+    "mass_per_area_cv": 2.071
+   },
+   "coh_sub": {
+    "phi_layer_mean": 0.258,
+    "phi_layer_std_between_bins": 0.029,
+    "coverage_mean": 0.723,
+    "coverage_min_bin": 0.65,
+    "mass_per_area_cv": 0.115
    }
   },
-  "notes": "Measured over x = 12-32 mm in 2 mm bins. Layer packing fraction = grain volume inside 0<z<gap / (bin area x gap). Coverage = projected area of grains whose centre is below the gap / bin area."
+  "notes": "Measured over x = 12-32 mm in 2 mm bins. Layer packing fraction = grain volume inside 0<z<gap / (bin area x gap). Coverage = projected area of grains whose centre is below the gap / bin area.",
+  "wall_s_by_variant": {
+   "dry": 120.6,
+   "coh": 112.9,
+   "coh_sub": 67.8
+  },
+  "particles_detail": {
+   "grains": 2291,
+   "blade_spheres": 875
+  }
+ },
+ "dem-liggghts-capillary": {
+  "id": "dem-liggghts-capillary",
+  "method": "angle of repose (dem-liggghts-aor setup) with liquid-bridge cohesion, dry vs two liquid contents",
+  "code": "LIGGGHTS-PUBLIC",
+  "version": "3.8.0 (Debian package liggghts), cohesion model easo/capillary/viscous",
+  "status": "ran",
+  "wall_s": 238.6,
+  "cores": 1,
+  "particles": 4000,
+  "key_results": {
+   "dry": {
+    "surfaceLiquidContentInitial": 0.0,
+    "repose_angle_profile_fit_deg": 21.9,
+    "repose_angle_sector_std_deg": 1.4,
+    "repose_angle_apex_iso_deg": 27.5,
+    "apex_height_mm": 3.13
+   },
+   "cap_low": {
+    "surfaceLiquidContentInitial": 0.5,
+    "repose_angle_profile_fit_deg": 37.1,
+    "repose_angle_sector_std_deg": 10.5,
+    "repose_angle_apex_iso_deg": 54.0,
+    "apex_height_mm": 8.26
+   },
+   "cap_high": {
+    "surfaceLiquidContentInitial": 2.0,
+    "repose_angle_profile_fit_deg": 48.0,
+    "repose_angle_sector_std_deg": 16.2,
+    "repose_angle_apex_iso_deg": 57.4,
+    "apex_height_mm": 9.39
+   }
+  },
+  "notes": "Dry baseline = the dry run of dem-liggghts-aor (identical setup). Liquid: surface tension 0.072 N/m, viscosity 1 mPa s, contact angle 20 deg, bridge rupture at 1.1 x contact distance (maxSeparationDistanceRatio), min separation ratio 1.01; grain-wall contacts dry.",
+  "wall_s_by_variant": {
+   "dry": 96.3,
+   "cap_low": 60.8,
+   "cap_high": 81.5
+  },
+  "particles_detail": {
+   "dry": {
+    "poured": 4000,
+    "on_base_at_end": 2530
+   },
+   "cap_low": {
+    "poured": 4000,
+    "on_base_at_end": 2173
+   },
+   "cap_high": {
+    "poured": 4000,
+    "on_base_at_end": 2488
+   }
+  }
+ },
+ "dem-lammps-shear-mui": {
+  "id": "dem-lammps-shear-mui",
+  "method": "DEM periodic simple shear (Lees-Edwards) at constant normal stress -> mu(I), cohesive yield line",
+  "code": "LAMMPS (GRANULAR package)",
+  "version": "7 Feb 2024 Update 1 (Ubuntu lammps 20240207+dfsg-1.1build3)",
+  "status": "ran",
+  "wall_s": 947,
+  "cores": 1,
+  "particles": 1500,
+  "key_results": {
+   "noncohesive_mu_I_points": [
+    {
+     "rate_per_s": 2.5,
+     "I": 0.005,
+     "mu": 0.4928,
+     "mu_err": 0.0104,
+     "phi": 0.5613,
+     "Pyy_Pa": 99.7
+    },
+    {
+     "rate_per_s": 7.5,
+     "I": 0.015,
+     "mu": 0.4982,
+     "mu_err": 0.0071,
+     "phi": 0.561,
+     "Pyy_Pa": 97.9
+    },
+    {
+     "rate_per_s": 25.0,
+     "I": 0.0504,
+     "mu": 0.5137,
+     "mu_err": 0.0033,
+     "phi": 0.5562,
+     "Pyy_Pa": 96.3
+    },
+    {
+     "rate_per_s": 75.0,
+     "I": 0.1476,
+     "mu": 0.5535,
+     "mu_err": 0.0069,
+     "phi": 0.5514,
+     "Pyy_Pa": 100.9
+    },
+    {
+     "rate_per_s": 150.0,
+     "I": 0.2753,
+     "mu": 0.5684,
+     "mu_err": 0.0047,
+     "phi": 0.5427,
+     "Pyy_Pa": 116.1
+    }
+   ],
+   "noncohesive_jop_fit": {
+    "mu_s": 0.4877576254980586,
+    "mu_2": 0.624620141459258,
+    "I0": 0.18123435922195552
+   },
+   "noncohesive_yield_line": {
+    "slope": 0.4954,
+    "intercept_Pa": 0.85
+   },
+   "jkr_gamma_J_m2": 0.0085,
+   "jkr_Bo_g": 9.97,
+   "jkr_mu_I_points": [
+    {
+     "rate_per_s": 2.5,
+     "I": 0.005,
+     "mu": 0.5803,
+     "mu_err": 0.0087,
+     "phi": 0.4941,
+     "Pyy_Pa": 99.1
+    },
+    {
+     "rate_per_s": 25.0,
+     "I": 0.0484,
+     "mu": 0.6222,
+     "mu_err": 0.0137,
+     "phi": 0.492,
+     "Pyy_Pa": 104.4
+    },
+    {
+     "rate_per_s": 150.0,
+     "I": 0.293,
+     "mu": 0.6819,
+     "mu_err": 0.0095,
+     "phi": 0.4899,
+     "Pyy_Pa": 102.5
+    }
+   ],
+   "jkr_yield_line": {
+    "slope": 0.5084,
+    "intercept_Pa": 8.41,
+    "points": [
+     {
+      "Pyy": 34.390167999999996,
+      "tau": 26.67057
+     },
+     {
+      "Pyy": 99.09917999999999,
+      "tau": 57.508007
+     },
+     {
+      "Pyy": 199.45379,
+      "tau": 110.30502000000003
+     }
+    ]
+   }
+  },
+  "notes": "Non-cohesive: full stage list ran. JKR (gamma 8.5 mJ/m^2, Bo_g ~10) ran with a reduced stage list and mass_velocity damping (first attempt failed: 'Cannot use tsuji model with a cohesive normal model, jkr'). JKR 25 Pa stage did not reach its target (Pyy 34 Pa, still dilating): transient point. Pyy held by change_box feedback because fix press/berendsen refuses triclinic boxes. E reduced to 2e5 Pa as in the PR #180 twin.",
+  "wall_s_per_case": {
+   "noncoh": 654,
+   "jkr": 293
+  }
+ },
+ "dem-lammps-charge": {
+  "id": "dem-lammps-charge",
+  "method": "DEM pour of unipolar tribocharged grains beside an oppositely charged wall (coul/cut)",
+  "code": "LAMMPS (GRANULAR + coul/cut, atom_style hybrid sphere charge)",
+  "version": "7 Feb 2024 Update 1 (Ubuntu lammps 20240207+dfsg-1.1build3)",
+  "status": "ran",
+  "wall_s": 200,
+  "cores": 1,
+  "particles": 800,
+  "key_results": {
+   "A": {
+    "bed_height_mm": 3.375,
+    "phi_bulk": 0.6268,
+    "grains_touching_wall": 60,
+    "grains_on_wall_above_bed": 1,
+    "n_mobile": 800,
+    "grains_near_lid": 0,
+    "final_time_s": 0.2,
+    "final_kinetic_energy_J": 3.574e-14,
+    "q_over_m_C_per_kg": 0.0,
+    "wall_sigma_C_per_m2": 0.0
+   },
+   "B": {
+    "bed_height_mm": 3.375,
+    "phi_bulk": 0.6119,
+    "grains_touching_wall": 69,
+    "grains_on_wall_above_bed": 2,
+    "n_mobile": 800,
+    "grains_near_lid": 0,
+    "final_time_s": 0.2,
+    "final_kinetic_energy_J": 1.232e-12,
+    "q_over_m_C_per_kg": -1e-05,
+    "wall_sigma_C_per_m2": 1e-05
+   },
+   "C": {
+    "bed_height_mm": null,
+    "phi_bulk": 0.167,
+    "grains_touching_wall": 210,
+    "grains_on_wall_above_bed": 136,
+    "n_mobile": 800,
+    "grains_near_lid": 0,
+    "final_time_s": 0.2,
+    "final_kinetic_energy_J": 7.217e-08,
+    "q_over_m_C_per_kg": -0.0001,
+    "wall_sigma_C_per_m2": 1e-05
+   },
+   "D": {
+    "bed_height_mm": null,
+    "phi_bulk": 0.1683,
+    "grains_touching_wall": 156,
+    "grains_on_wall_above_bed": 88,
+    "n_mobile": 800,
+    "grains_near_lid": 0,
+    "final_time_s": 0.2,
+    "final_kinetic_energy_J": 6.288e-08,
+    "q_over_m_C_per_kg": -0.0001,
+    "wall_sigma_C_per_m2": 0.0
+   },
+   "Clong": {
+    "bed_height_mm": null,
+    "phi_bulk": 0.1628,
+    "grains_touching_wall": 210,
+    "grains_on_wall_above_bed": 135,
+    "n_mobile": 800,
+    "grains_near_lid": 0,
+    "final_time_s": 0.6,
+    "final_kinetic_energy_J": 2.756e-08,
+    "q_over_m_C_per_kg": -0.0001,
+    "wall_sigma_C_per_m2": 1e-05
+   }
+  },
+  "notes": "800 mobile grains + 300 frozen charged wall spheres. q/m values: 0, -1e-5 (task-brief range), -1e-4 C/kg (near the 1.7e-4 C/kg Gauss limit of a 0.425 mm grain); wall sigma 1e-5 C/m^2 (assumed, below the 2.7e-5 C/m^2 breakdown limit). coul/cut 1.2 mm, no image charges, fixed charges.",
+  "wall_s_per_case": {
+   "A": 41,
+   "B": 44,
+   "C": 26,
+   "D": 21,
+   "Clong": 68
+  }
+ },
+ "dem-yade-capillary": {
+  "id": "dem-yade-capillary",
+  "method": "DEM column collapse of coarse-grained salt with pendular liquid bridges (Willett 2000 capillary force), dry vs two liquid contents",
+  "code": "Yade (ViscElCapMat + Law2_ScGeom_ViscElCapPhys_Basic, CapillarType Willett_numeric)",
+  "version": "yadedaily 20261024-9637~157eec7~noble1 (upstream .deb for Ubuntu 24.04 from yade-dem.org/packages)",
+  "status": "partial",
+  "wall_s": 485.7,
+  "cores": 1,
+  "particles": 1200,
+  "key_results": {
+   "bond_number_mean_particle": 7.04,
+   "H0_mm": {
+    "dry": 27.25,
+    "wet01": 28.37,
+    "wet1": 28.13
+   },
+   "Hf_over_H0": {
+    "dry": 0.072,
+    "wet01": 0.247,
+    "wet1": 0.33
+   },
+   "runout_Rf_over_R0": {
+    "dry": 13.44,
+    "wet01": 3.33,
+    "wet1": 2.25
+   },
+   "aspect_angle_atan_Hf_over_Rf_deg": {
+    "dry": 1.0,
+    "wet01": 13.9,
+    "wet1": 25.9
+   },
+   "separated_liquid_bridges_at_end": {
+    "dry": 0,
+    "wet01": 406,
+    "wet1": 868
+   },
+   "liquid_content_W_vol_per_vol_solid": {
+    "dry": 0.0,
+    "wet01": 0.001,
+    "wet1": 0.01
+   },
+   "bridge_volume_m3": {
+    "dry": 0.0,
+    "wet01": 8.924811222495762e-13,
+    "wet1": 8.924811222495762e-12
+   },
+   "kinetic_energy_at_end_J": {
+    "dry": 3.7e-05,
+    "wet01": 7.95e-07,
+    "wet1": 6.15e-09
+   }
+  },
+  "notes": "Ran as intended at reduced scale (diameters coarse-grained x4, N=1200, 0.4 s after release). Marked partial because the dry baseline has no rolling resistance on a smooth floor and spreads into a monolayer, so no repose angle could be measured. The trend with liquid content is clear, but the dry-to-wet contrast is larger than real salt would show. Yade's ViscEl rolling resistance is viscous as coded (M = -mR*|Fn|*omega_rel), so mR was set to 0. Only the W=1% case was at rest at the 0.4 s cap; the dry runout is a lower bound (grains still rolling), and W=0.1% was still creeping (KE 8e-7 J)."
+ },
+ "dem-yade-directshear": {
+  "id": "dem-yade-directshear",
+  "method": "DEM periodic triaxial compression with cohesive-frictional (brittle, re-forming) contacts at 3 confining stresses and 2 Bond numbers; Mohr-Coulomb fits of peak and residual states",
+  "code": "Yade (CohFrictMat, Law2_ScGeom6D_CohFrictPhys_CohesionMoment, PeriTriaxController)",
+  "version": "yadedaily 20261024-9637~157eec7~noble1 (upstream .deb for Ubuntu 24.04 from yade-dem.org/packages)",
+  "status": "ran",
+  "wall_s": 202.7,
+  "cores": 1,
+  "particles": 600,
+  "key_results": {
+   "Bo=5": {
+    "peak_friction_angle_deg": 46.9,
+    "peak_cohesion_Pa": 6.1,
+    "residual_friction_angle_deg": 44.5,
+    "residual_cohesion_Pa": -19.0,
+    "normalCohesion_Pa": 94.5,
+    "F_adh_N": 4.268372614689661e-06,
+    "per_sigma3": {
+     "50 Pa": {
+      "sigma1_peak_Pa": 308.0,
+      "eps_axial_at_peak": 0.022,
+      "sigma1_residual_Pa": 255.0,
+      "solid_fraction_after_compaction": 0.635,
+      "fraction_contacts_bonded_start_end": [
+       0.062,
+       0.032
+      ]
+     },
+     "150 Pa": {
+      "sigma1_peak_Pa": 1060.0,
+      "eps_axial_at_peak": 0.038,
+      "sigma1_residual_Pa": 681.0,
+      "solid_fraction_after_compaction": 0.642,
+      "fraction_contacts_bonded_start_end": [
+       0.016,
+       0.012
+      ]
+     },
+     "400 Pa": {
+      "sigma1_peak_Pa": 2579.0,
+      "eps_axial_at_peak": 0.076,
+      "sigma1_residual_Pa": 2199.0,
+      "solid_fraction_after_compaction": 0.651,
+      "fraction_contacts_bonded_start_end": [
+       0.002,
+       0.001
+      ]
+     }
+    }
+   },
+   "Bo=50": {
+    "peak_friction_angle_deg": 46.7,
+    "peak_cohesion_Pa": -4.7,
+    "residual_friction_angle_deg": 43.6,
+    "residual_cohesion_Pa": -11.4,
+    "normalCohesion_Pa": 945.2,
+    "F_adh_N": 4.2683726146896605e-05,
+    "per_sigma3": {
+     "50 Pa": {
+      "sigma1_peak_Pa": 259.0,
+      "eps_axial_at_peak": 0.121,
+      "sigma1_residual_Pa": 249.0,
+      "solid_fraction_after_compaction": 0.571,
+      "fraction_contacts_bonded_start_end": [
+       0.415,
+       0.254
+      ]
+     },
+     "150 Pa": {
+      "sigma1_peak_Pa": 982.0,
+      "eps_axial_at_peak": 0.041,
+      "sigma1_residual_Pa": 725.0,
+      "solid_fraction_after_compaction": 0.621,
+      "fraction_contacts_bonded_start_end": [
+       0.184,
+       0.101
+      ]
+     },
+     "400 Pa": {
+      "sigma1_peak_Pa": 2504.0,
+      "eps_axial_at_peak": 0.071,
+      "sigma1_residual_Pa": 2139.0,
+      "solid_fraction_after_compaction": 0.641,
+      "fraction_contacts_bonded_start_end": [
+       0.093,
+       0.049
+      ]
+     }
+    }
+   },
+   "earlier_set_mu_compaction_0p1_Bo5": {
+    "peak_friction_angle_deg": 41.5,
+    "peak_cohesion_Pa": -1.6,
+    "residual_friction_angle_deg": 41.2,
+    "residual_cohesion_Pa": -5.1,
+    "solid_fraction_after_compaction": [
+     0.59,
+     0.594,
+     0.604
+    ]
+   }
+  },
+  "notes": "Real salt size (no coarse-graining), E=2e5 Pa, mu=0.5, etaRoll=0.3, sigma3 = 50/150/400 Pa (doser-hopper range), I=2.5e-3. Neither Bo=5 nor Bo=50 gives a Mohr-Coulomb cohesion intercept that stands out from the scatter (|c| < 20 Pa at N=600): the brittle bonds break as soon as a contact slides, and at Bo=50 the cohesion mainly loosens the compacted packing (solid fraction 0.571 vs 0.635 at 50 Pa), which lowers the peak. wall_s includes an earlier 3-run set compacted with mu=0.1 (looser samples; peak phi 41.5 deg, c -1.6 Pa)."
+ },
+ "dem-mercurydpm": {
+  "id": "dem-mercurydpm",
+  "method": "DEM flat-bottomed silo discharge through a circular orifice vs Beverloo",
+  "code": "MercuryDPM (custom driver SaltSilo.cpp, Mercury3D, LinearViscoelasticFrictionSpecies)",
+  "version": "git master c801fe682cb3 (2026-10-13), bitbucket.org/mercurydpm/mercurydpm",
+  "status": "partial",
+  "wall_s": 399,
+  "cores": 1,
+  "particles": 3000,
+  "wall_s_per_run": {
+   "D10": 213,
+   "D14": 186
+  },
+  "key_results": {
+   "SaltSilo_D10": {
+    "D_mm": 10.0,
+    "D_over_d": 5.882,
+    "silo_radius_mm": 12.5,
+    "N": 2500,
+    "fill_mass_g": 14.45,
+    "fill_height_mm": 25.5,
+    "phi_fill": 0.5333,
+    "bulk_density_kg_m3": 1155.0,
+    "W_beverloo_g_s": 10.05,
+    "clogged": true,
+    "grains_discharged": 112,
+    "mass_discharged_g": 0.6372,
+    "sim_time_after_opening_s": 0.499,
+    "time_of_last_exit_s": 0.5518,
+    "W_sim_g_s": 0.0
+   },
+   "SaltSilo_D14": {
+    "D_mm": 14.0,
+    "D_over_d": 8.235,
+    "silo_radius_mm": 15.0,
+    "N": 3000,
+    "fill_mass_g": 17.34,
+    "fill_height_mm": 21.14,
+    "phi_fill": 0.536,
+    "bulk_density_kg_m3": 1161.0,
+    "W_beverloo_g_s": 29.58,
+    "clogged": false,
+    "grains_discharged": 1169,
+    "mass_discharged_g": 7.743,
+    "sim_time_after_opening_s": 0.3496,
+    "W_sim_g_s": 24.87,
+    "W_sim_over_W_bev": 0.8408,
+    "C_fitted_with_k1p5": 0.4877,
+    "window_s": [
+     0.330791,
+     0.599558
+    ]
+   }
+  },
+  "notes": "github.com/MercuryDPM/MercuryDPM does not exist (HTTP 404; git clone asked for credentials); cloned the official Bitbucket repo instead. Library + one demo built with make -j2 in 185 s. Grains coarse-grained x4 (1.44-1.96 mm). Linear spring-dashpot, tc = 1 ms, dt = tc_min/25. First attempt (tc/50, 0.9 s) was stopped as too slow for the 8 min budget. Status 'partial' = ran at reduced scale (coarse-grained x4, 2500-3000 grains, sub-second discharge windows). D=10 mm (D/d 5.9) clogged; D=14 mm (D/d 8.2) flowed at 0.84 x Beverloo."
+ },
+ "dem-chrono-cpu": {
+  "id": "dem-chrono-cpu",
+  "method": "DEM silo discharge through a square orifice at four sizes, with a Beverloo fit",
+  "code": "Project Chrono / PyChrono core ChSystemSMC (Hertz, MultiStep tangential), Bullet collision, CPU, 1 thread",
+  "version": "PyChrono 10.0.0 conda-forge build py312h3a49c4c_0 (Python 3.12)",
+  "status": "ran",
+  "wall_s": 462.4,
+  "cores": 1,
+  "particles": 1500,
+  "key_results": {
+   "mass_flow_g_s": {
+    "L=5.5 mm": 1.89,
+    "L=7.0 mm": 4.7,
+    "L=8.5 mm": 9.2,
+    "L=10.0 mm": 15.03
+   },
+   "L_over_d": {
+    "L=5.5 mm": 3.24,
+    "L=7.0 mm": 4.12,
+    "L=8.5 mm": 5.0,
+    "L=10.0 mm": 5.88
+   },
+   "grains_discharged_in_0p6s": {
+    "L=5.5 mm": 196,
+    "L=7.0 mm": 462,
+    "L=8.5 mm": 926,
+    "L=10.0 mm": 1363
+   },
+   "bulk_density_kg_m3": 1381.0,
+   "beverloo_fit_square_orifice": {
+    "C_sq": 0.614,
+    "C_circular_equivalent": 0.482,
+    "k": 1.18
+   },
+   "beverloo_C_sq_with_k_fixed_1p5": 0.813,
+   "rolling_friction_check": {
+    "v_after_0p5s_mu_roll_0_m_s": 0.10001,
+    "v_after_0p5s_mu_roll_0p3_m_s": 0.10001,
+    "v0_m_s": 0.1
+   },
+   "speed_M_particle_steps_per_s_wall": {
+    "L=5.5 mm": 0.143,
+    "L=7.0 mm": 0.174,
+    "L=8.5 mm": 0.236,
+    "L=10.0 mm": 0.441
+   }
+  },
+  "notes": "Coarse-grained 4x (mean d 1.70 mm), E=2e5 Pa, 16 mm silo, 0.2 s settle + 0.6 s discharge per orifice. Bullet with SI (metre) units blew up (grains ejected at about 700 m/s within 0.02 s, as PR #180 also saw), so Chrono runs internally in millimetres. SetRollingFriction has no effect in core ChSystemSMC (identical rolling-sphere speed with mu_roll 0 and 0.3). The L=5.5 mm (L/d=3.2) flow was slow and intermittent, near jamming."
+ },
+ "dem-tribocharge-numba": {
+  "id": "dem-tribocharge-numba",
+  "method": "Self-written quasi-2D DEM (numba) of salt in a rotating PLA tube cross-section with condenser-model contact charging, Coulomb + image forces, gas-breakdown charge caps (air vs dry argon)",
+  "code": "self-written Python/numba (run.py)",
+  "version": "numba 0.68.1, numpy 1.26.4",
+  "status": "ran",
+  "wall_s": 278.8,
+  "cores": 1,
+  "key_results": {
+   "N_grains": 600,
+   "revolutions_charged": 6.0,
+   "time_compression_K_ACC": 1.0,
+   "breakdown_field_V_per_m": {
+    "air": 5975943.2841914985,
+    "argon": 3095862.1209625606
+   },
+   "sigma_cap_C_per_m2": {
+    "air": 5.291100183823152e-05,
+    "argon": 2.741076321900251e-05
+   },
+   "q_over_m_cap_single_grain_uC_per_kg_d042": {
+    "air": 349.13231170063693,
+    "argon": 180.86943727484334
+   },
+   "air": {
+    "q_over_m_saturated_uC_per_kg": 27.476,
+    "rev_to_95pct_saturation": 0.75,
+    "stuck_top_pct_mean_sd_rev1to6": [
+     5.16,
+     0.61
+    ],
+    "wall_contact_pct_mean_sd_rev1to6": [
+     19.34,
+     0.44
+    ],
+    "frac_grains_at_cap_end": 0.0,
+    "wall_patches_at_cap_end": 1.0,
+    "charge_conservation_error_C": 3.7223127564886245e-24,
+    "wall_s": 101.2
+   },
+   "argon": {
+    "q_over_m_saturated_uC_per_kg": 14.235,
+    "rev_to_95pct_saturation": 0.6666666666666666,
+    "stuck_top_pct_mean_sd_rev1to6": [
+     4.0,
+     0.97
+    ],
+    "wall_contact_pct_mean_sd_rev1to6": [
+     17.12,
+     0.99
+    ],
+    "frac_grains_at_cap_end": 0.02,
+    "wall_patches_at_cap_end": 1.0,
+    "charge_conservation_error_C": 2.0679515313825692e-25,
+    "wall_s": 108.3
+   },
+   "uncharged_control": {
+    "stuck_top_pct_mean_sd": [
+     0.0,
+     0.0
+    ],
+    "wall_contact_pct_mean_sd": [
+     8.55,
+     0.32
+    ],
+    "revolutions": 3.0,
+    "wall_s": 69.4
+   },
+   "argon_over_air_q_over_m": 0.518
+  },
+  "notes": "Quasi-2D monolayer, 600 grains, soft contacts (k_n = 5 N/m), no grain rotation, no humidity leakage. Wall counter-charge capped at the same breakdown density over patch area (arc x one grain diameter); this wall capacity, not the per-grain cap, limits q/m. No time compression (K_ACC = 1)."
+ },
+ "mpm-taichi": {
+  "id": "mpm-taichi",
+  "method": "Material Point Method (MLS-MPM) with Drucker-Prager elastoplasticity (Klar et al. 2016)",
+  "code": "Taichi (self-written MLS-MPM kernel, run.py)",
+  "version": "taichi 1.7.4 (LLVM 15), python 3.12",
+  "status": "ran",
+  "wall_s": 234.5,
+  "cores": 1,
+  "key_results": {
+   "column_c0": {
+    "runout_ratio": 3.0625000000000004,
+    "height_ratio": 0.5514518668254216,
+    "mean_slope_deg": 15.188794910144715,
+    "fitted_mid_slope_deg": 18.46565273523645,
+    "runout_Linf_m": 0.16250000000000003
+   },
+   "column_c100Pa": {
+    "runout_ratio": 1.109375,
+    "height_ratio": 0.5273125444849331,
+    "mean_slope_deg": 26.563694972157716,
+    "fitted_mid_slope_deg": 13.897988913844518,
+    "runout_Linf_m": 0.084375
+   },
+   "silo_W_kg_per_m_s": {
+    "D8mm": 0.6372593333968822,
+    "D12mm": 2.0223771511617965,
+    "D16mm": 7.23359903674099
+   },
+   "loglog_exponent_W_vs_D": 3.46166893447276,
+   "three_halves_law_through_12_16mm": {
+    "C": 3.1630484073750247,
+    "D0_mm": 9.012271041059474,
+    "D0_over_dx": 5.767853466278063,
+    "predicted_W_8mm": 0.0,
+    "MPM_W_8mm": 0.6372593333968822
+   },
+   "beverloo_C1p03_k0_W": {
+    "D8mm": 2.885471053398388,
+    "D12mm": 5.300948811297841,
+    "D16mm": 8.161344595101962
+   },
+   "free_3param_fit_attempt": {
+    "C": 3.163048407374992,
+    "D0_m": 0.009012271041059705,
+    "D0_over_dx": 5.76785346627821,
+    "loglog_exponent_no_offset": 3.46166893447276,
+    "residuals_rel": [
+     0.9999999993854826,
+     1.262629453250568e-13,
+     5.979635976461835e-14
+    ]
+   },
+   "resolution_check_256grid": [
+    {
+     "D_m": 0.012,
+     "D_over_dx": 15.36,
+     "n_particles": 41205,
+     "wall_s": 130.4,
+     "W_kg_per_m_s": 4.463408682537418
+    }
+   ]
+  },
+  "notes": "2D plane strain, per metre depth; rho_bulk 1250 kg/m3 assumed; E=0.3 MPa (soft for speed); no grain size in the continuum, so the k*d term becomes a grid-scale offset. Resolution check: 12 mm slot on a 256^2 grid gives W = 4.46 kg/(m s) vs 2.02 on 128^2 (Beverloo C=1.03: 5.30), so low W at small D/dx is mostly a resolution artefact."
+ },
+ "sph-granular": {
+  "id": "sph-granular",
+  "method": "SPH, elastic-perfectly plastic Drucker-Prager (Bui et al. 2008 type), 2D plane strain",
+  "code": "self-written numba SPH (run.py); PySPH 1.0b2 installed but has no granular/Drucker-Prager scheme",
+  "version": "numba 0.68.1, numpy 2.5.4, python 3.12 (PySPH 1.0b2 built from PyPI sdist in a separate venv)",
+  "status": "ran",
+  "wall_s": 138.4,
+  "cores": 1,
+  "key_results": {
+   "column_c0": {
+    "runout_ratio": 4.2250000000000005,
+    "height_ratio": 0.5750091772386089,
+    "mean_slope_deg": 12.41284012321223,
+    "fitted_mid_slope_deg": 19.520749900916798,
+    "runout_Linf_m": 0.20900000000000002,
+    "max_speed_end_mps": 0.21739476183565282,
+    "density_ratio_min_max": [
+     0.3522646529975428,
+     1.018272386309626
+    ]
+   },
+   "column_c100Pa": {
+    "runout_ratio": 1.3499999999999999,
+    "height_ratio": 0.6269397630580851,
+    "mean_slope_deg": 28.08285370642701,
+    "fitted_mid_slope_deg": 42.22843389800683,
+    "runout_Linf_m": 0.094,
+    "max_speed_end_mps": 0.1256620646897255,
+    "density_ratio_min_max": [
+     0.35670192813589424,
+     1.0065056263414605
+    ]
+   },
+   "params": {
+    "rho0": 1250.0,
+    "E": 300000.0,
+    "nu": 0.3,
+    "dp": 0.001,
+    "h": 0.0013000000000000002,
+    "dt": 1.446506464686886e-05,
+    "alpha_Pi": 0.5,
+    "kernel": "Wendland C2",
+    "a0": 0.04,
+    "H0": 0.08,
+    "phi_deg": 34.0
+   }
+  },
+  "notes": "First attempt with artificial viscosity alpha=0.1 blew up at t=0.02 s (particles ejected at 10 m/s); final runs use alpha=0.5. PySPH 1.0b2 built from the PyPI sdist (about 5 min) and its stock elliptical_drop example ran (exit 0, 5025 particles, setup 11.7 s, run 4.3 s), but PySPH has no granular/Drucker-Prager scheme, so the granular runs use the self-written numba code."
+ },
+ "fem-druckerprager": {
+  "id": "fem-druckerprager",
+  "method": "2D plane-strain small-strain elastoplastic FEM, associated Drucker-Prager (Mohr-Coulomb plane-strain match), trapdoor/arching collapse by gravity increase",
+  "code": "self-written numpy/scipy FEM (run.py): Q8 serendipity, 2x2 reduced integration, closed-form DP return mapping, modified Newton with factorised elastic stiffness",
+  "version": "numpy 2.5.4, scipy 1.18.1, python 3.12",
+  "status": "ran",
+  "wall_s": 69.8,
+  "cores": 1,
+  "key_results": {
+   "cases": [
+    {
+     "cohesion_Pa": 10.0,
+     "phi_deg": 34.0,
+     "B_m": 0.003,
+     "Hs_m": 0.009,
+     "half_width_m": 0.009,
+     "elements": 1296,
+     "dofs": 8066,
+     "gauss_points": 5184,
+     "last_converged_lam": 0.71875,
+     "first_failed_lam": 0.75,
+     "lam_collapse": 0.734375,
+     "stability_number_N": 2.70158203125,
+     "c_crit_at_1g_Pa": 13.617021276595745,
+     "wall_s": 17.1
+    },
+    {
+     "cohesion_Pa": 20.0,
+     "phi_deg": 34.0,
+     "B_m": 0.003,
+     "Hs_m": 0.009,
+     "half_width_m": 0.009,
+     "elements": 1296,
+     "dofs": 8066,
+     "gauss_points": 5184,
+     "last_converged_lam": 1.46875,
+     "first_failed_lam": 1.5,
+     "lam_collapse": 1.484375,
+     "stability_number_N": 2.730322265625,
+     "c_crit_at_1g_Pa": 13.473684210526317,
+     "wall_s": 15.3
+    },
+    {
+     "cohesion_Pa": 40.0,
+     "phi_deg": 34.0,
+     "B_m": 0.003,
+     "Hs_m": 0.009,
+     "half_width_m": 0.009,
+     "elements": 1296,
+     "dofs": 8066,
+     "gauss_points": 5184,
+     "last_converged_lam": 2.96875,
+     "first_failed_lam": 3.0,
+     "lam_collapse": 2.984375,
+     "stability_number_N": 2.7446923828125,
+     "c_crit_at_1g_Pa": 13.403141361256544,
+     "wall_s": 21.1
+    },
+    {
+     "cohesion_Pa": 20.0,
+     "phi_deg": 25.0,
+     "B_m": 0.003,
+     "Hs_m": 0.009,
+     "half_width_m": 0.009,
+     "elements": 1296,
+     "dofs": 8066,
+     "gauss_points": 5184,
+     "last_converged_lam": 1.34375,
+     "first_failed_lam": 1.375,
+     "lam_collapse": 1.359375,
+     "stability_number_N": 2.5004003906250003,
+     "c_crit_at_1g_Pa": 14.712643678160918,
+     "wall_s": 16.3
+    }
+   ],
+   "stability_number_phi34_mean": 2.7255322265625,
+   "stability_number_phi34_spread": 0.04311035156249998,
+   "c_crit_3mm_slot_phi34_Pa": 13.497363796133568,
+   "sigma_c_crit_3mm_slot_phi34_Pa": 50.76969860759167,
+   "ffc_threshold_at_sigma1_400Pa": 7.8787152764422235,
+   "jenike_type_c_crit_3mm_phi34_Pa": 9.780130358623325
+  },
+  "notes": "Collapse = no convergence (residual 1e-4) within 800 modified-Newton iterations, bracketed by 4 bisections; sigma1 = 400 Pa is an assumed consolidation stress taken from the Janssen estimate in analytic-orifice-screw."
  },
  "mui-rheology": {
   "id": "mui-rheology",
@@ -1645,6 +2629,114 @@
   },
   "notes": "Lattice toy models: lengths in sites/cells, mass in parcels. Timings: {\"oslo_s\": 72.6, \"feeder_scan_s\": 33.2, \"feeder_kscan_s\": 44.0, \"animation_s\": 31.9} Feeder rule: only a column that itself toppled is 'moving' (needs s_f) for 3 sweeps; an earlier version that also activated neighbours made c irrelevant and was discarded. I_stop ~ 1 - inflow/mean burst in incremental mode, so absolute I_stop depends on parcel size; trends with c, tilt and drive rate are the result."
  },
+ "mc-packing": {
+  "id": "mc-packing",
+  "method": "Monte Carlo / geometric sphere packing: random sequential addition, sequential drop-and-roll deposition (Visscher-Bolsterli / Jullien-Meakin) with a stick-probability cohesion proxy, force-biased (FIRE overlap-removal) compression",
+  "code": "own Python + numba (packing_kernels.py)",
+  "version": "python 3.12.3, numpy 2.5.4, numba 0.68.1",
+  "status": "ran",
+  "wall_s": 583.4,
+  "cores": 1,
+  "key_results": {
+   "units": "packing fraction phi (solid volume / total volume), dimensionless",
+   "wall_s_breakdown": {
+    "rsa": {
+     "mono": 4.6,
+     "salt": 8.7,
+     "alsi10mg": 288.6
+    },
+    "deposition_all_runs": 1.84,
+    "compression": {
+     "mono": 121.0,
+     "salt": 117.4,
+     "alsi10mg": 23.8
+    },
+    "plots_animation_numba_compile": 17.4
+   },
+   "mono": {
+    "rsa_phi_at_1e7_attempts": 0.3654,
+    "rsa_phi_feder_extrapolated": 0.3795,
+    "drop_and_roll_phi_loose": 0.5809,
+    "sticky_ballistic_phi": 0.1624,
+    "compression_phi_dense": 0.632,
+    "hausner_analog_cohesionless": 1.088,
+    "hausner_analog_sticky": 3.891,
+    "max_rel_overlap_any_packing": 0.00019955043202567535,
+    "deposition_particles_hitting_transition_cap": 0
+   },
+   "salt": {
+    "rsa_phi_at_1e7_attempts": 0.3922,
+    "rsa_phi_feder_extrapolated": 0.4151,
+    "drop_and_roll_phi_loose": 0.5827,
+    "sticky_ballistic_phi": 0.1594,
+    "compression_phi_dense": 0.6326,
+    "hausner_analog_cohesionless": 1.0855,
+    "hausner_analog_sticky": 3.968,
+    "phi_loose_vs_p_stick": {
+     "0.0": 0.5827,
+     "0.1": 0.5313,
+     "0.25": 0.4174,
+     "0.5": 0.2633,
+     "0.75": 0.1931,
+     "1.0": 0.1594
+    },
+    "hausner_vs_p_stick": {
+     "0.0": 1.085,
+     "0.1": 1.19,
+     "0.25": 1.515,
+     "0.5": 2.403,
+     "0.75": 3.275,
+     "1.0": 3.968
+    },
+    "implied_bulk_density_kg_m3_drop_and_roll": 1262.0,
+    "implied_dense_density_kg_m3_compression": 1370.0,
+    "implied_bulk_density_kg_m3_sticky": 345.0,
+    "generated_volume_d10_d50_d90_mm": [
+     0.381,
+     0.4398,
+     0.4811
+    ],
+    "max_rel_overlap_any_packing": 0.00019931511320335596,
+    "deposition_particles_hitting_transition_cap": 0
+   },
+   "alsi10mg": {
+    "rsa_phi_at_1e7_attempts": 0.416,
+    "rsa_phi_feder_extrapolated": 0.4524,
+    "drop_and_roll_phi_loose": 0.6083,
+    "sticky_ballistic_phi": 0.153,
+    "compression_phi_dense": 0.6662,
+    "hausner_analog_cohesionless": 1.0952,
+    "hausner_analog_sticky": 4.354,
+    "phi_loose_vs_p_stick": {
+     "0.0": 0.6083,
+     "0.1": 0.5508,
+     "0.25": 0.3981,
+     "0.5": 0.2709,
+     "0.75": 0.1804,
+     "1.0": 0.153
+    },
+    "hausner_vs_p_stick": {
+     "0.0": 1.095,
+     "0.1": 1.209,
+     "0.25": 1.674,
+     "0.5": 2.459,
+     "0.75": 3.694,
+     "1.0": 4.354
+    },
+    "implied_bulk_density_kg_m3_drop_and_roll": 1624.0,
+    "implied_dense_density_kg_m3_compression": 1779.0,
+    "implied_bulk_density_kg_m3_sticky": 409.0,
+    "generated_volume_d10_d50_d90_mm": [
+     0.0216,
+     0.0343,
+     0.0543
+    ],
+    "max_rel_overlap_any_packing": 0.00019995828201393269,
+    "deposition_particles_hitting_transition_cap": 0
+   }
+  },
+  "notes": "3D, periodic in x-y (deposition: flat floor, phi measured in a bulk slab 3 d_max above the floor to 2 d_max below the 10th-percentile surface height; RSA and compression: fully periodic cube). Geometric packings are scale-free, so NaCl vs AlSi10Mg differ only through PSD shape; cohesion enters only through p_stick. Monodisperse runs are validation against literature."
+ },
  "moisture-sorption": {
   "id": "moisture-sorption",
   "method": "GAB isotherm + Fickian vapour diffusion + Kelvin brine bridges + Rabinovich capillary force -> Bond number -> Rumpf/Mohr-Coulomb/Jenike flow prediction",
@@ -2302,7 +3394,7 @@
   "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
   "version": "scikit-learn 1.9.1, emcee 3.1.6",
   "status": "ran",
-  "wall_s": 178.2,
+  "wall_s": 202.3,
   "cores": 1,
   "key_results": {
    "design_points": 48,
@@ -2354,92 +3446,137 @@
    ],
    "synthetic_AoR_obs_deg": 29.69,
    "AoR_sd_deg": 1.5,
+   "synthetic_wall_friction_obs": 0.4,
+   "wall_friction_sd": 0.04,
    "posterior": {
     "dosing_only": {
      "mean": {
-      "mu_s": 0.5633,
-      "mu_r": 0.2066,
-      "Bo": 0.1347
+      "mu_s": 0.5651,
+      "mu_r": 0.2093,
+      "Bo": 0.1271
      },
      "sd": {
-      "mu_s": 0.1149,
-      "mu_r": 0.1427,
-      "Bo": 0.1054
+      "mu_s": 0.1141,
+      "mu_r": 0.1447,
+      "Bo": 0.103
      },
      "p05_p95": {
       "mu_s": [
-       0.3273,
+       0.3447,
        0.7139
       ],
       "mu_r": [
-       0.0341,
-       0.484
+       0.032,
+       0.4922
       ],
       "Bo": [
-       0.0113,
-       0.3395
+       0.0102,
+       0.335
       ]
      },
-     "corr_mu_s_mu_r": -0.471,
-     "corr_mu_s_Bo": -0.554,
-     "corr_mu_r_Bo": -0.243,
-     "acceptance": 0.548,
+     "corr_mu_s_mu_r": -0.468,
+     "corr_mu_s_Bo": -0.541,
+     "corr_mu_r_Bo": -0.252,
+     "acceptance": 0.543,
      "autocorr_time": [
-      43.41802233079085,
-      39.53918932638577,
-      39.35535796311182
+      40.74653590435177,
+      46.4419331596513,
+      35.01477508927166
      ],
      "n_samples": 4800,
      "standin_at_posterior_mean_mg_per_rev": [
       26.3,
-      103.9,
-      118.6,
-      155.2
+      104.3,
+      119.0,
+      155.7
      ],
-     "standin_AoR_at_posterior_mean_deg": 31.06
+     "standin_AoR_at_posterior_mean_deg": 31.09
     },
     "dosing_plus_AoR": {
      "mean": {
-      "mu_s": 0.5502,
-      "mu_r": 0.2219,
-      "Bo": 0.1282
+      "mu_s": 0.5651,
+      "mu_r": 0.2127,
+      "Bo": 0.1144
      },
      "sd": {
-      "mu_s": 0.1128,
-      "mu_r": 0.1337,
-      "Bo": 0.089
+      "mu_s": 0.112,
+      "mu_r": 0.1305,
+      "Bo": 0.0836
      },
      "p05_p95": {
       "mu_s": [
-       0.3617,
-       0.7126
+       0.3655,
+       0.7165
       ],
       "mu_r": [
-       0.0774,
-       0.5094
+       0.0744,
+       0.5038
       ],
       "Bo": [
-       0.0118,
-       0.295
+       0.0102,
+       0.2714
       ]
      },
-     "corr_mu_s_mu_r": -0.816,
-     "corr_mu_s_Bo": -0.392,
-     "corr_mu_r_Bo": -0.053,
-     "acceptance": 0.555,
+     "corr_mu_s_mu_r": -0.83,
+     "corr_mu_s_Bo": -0.45,
+     "corr_mu_r_Bo": 0.046,
+     "acceptance": 0.556,
      "autocorr_time": [
-      43.675815435274046,
-      42.152287801166054,
-      36.16947929165844
+      47.558718259945806,
+      44.232939379667386,
+      39.5619039441129
      ],
      "n_samples": 4800,
      "standin_at_posterior_mean_mg_per_rev": [
-      26.3,
-      105.2,
-      119.5,
-      155.2
+      26.5,
+      105.3,
+      120.0,
+      156.8
      ],
      "standin_AoR_at_posterior_mean_deg": 31.02
+    },
+    "dosing_plus_wall_friction": {
+     "mean": {
+      "mu_s": 0.51,
+      "mu_r": 0.2462,
+      "Bo": 0.1606
+     },
+     "sd": {
+      "mu_s": 0.0517,
+      "mu_r": 0.1472,
+      "Bo": 0.0968
+     },
+     "p05_p95": {
+      "mu_s": [
+       0.4239,
+       0.5941
+      ],
+      "mu_r": [
+       0.038,
+       0.5074
+      ],
+      "Bo": [
+       0.0205,
+       0.3307
+      ]
+     },
+     "corr_mu_s_mu_r": -0.325,
+     "corr_mu_s_Bo": -0.14,
+     "corr_mu_r_Bo": -0.631,
+     "acceptance": 0.589,
+     "autocorr_time": [
+      27.421966460252843,
+      34.39363711891352,
+      35.268242350992836
+     ],
+     "n_samples": 4800,
+     "standin_at_posterior_mean_mg_per_rev": [
+      25.9,
+      105.4,
+      118.5,
+      151.5
+     ],
+     "standin_AoR_at_posterior_mean_deg": 30.84
     }
    },
    "equivalent_DEM_cost": {
@@ -2449,6 +3586,342 @@
     "wall_hours_on_4_cores": 24.0
    }
   },
-  "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg). GP predictive variance is added to the likelihood variance."
+  "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg); the wall-friction observation is also synthetic (mu_w = 0.4 +/- 0.04, model mu_w = 0.8 mu_s). GP predictive variance is added to the likelihood variance."
+ },
+ "gns-gnn-simulator": {
+  "id": "gns-gnn-simulator",
+  "method": "Learned graph-network simulator (GNS, Sanchez-Gonzalez et al. 2020; Kumar & Vantassel 2023) trained on a self-generated 2D numba-DEM granular column-collapse dataset; rollout vs DEM on held-out columns",
+  "code": "geoelements/gns LearnedSimulator (own training loop with the gns loss/noise) + self-written numba DEM",
+  "version": "gns commit 3b8fb5c, torch 2.5.1+cpu, torch_geometric 2.6.1, torch_cluster 1.6.3",
+  "status": "partial",
+  "wall_s": 857.5,
+  "cores": 1,
+  "key_results": {
+   "route": "self-generated dataset (no small pretrained 2D sand GNS model available; gns-sample has only WaterDropSample data, no checkpoint)",
+   "dataset": {
+    "train": 40,
+    "valid": 2,
+    "test": 3,
+    "frames": 151,
+    "N_train_range": [
+     36,
+     264
+    ],
+    "train_aspect_H_over_W_requested": [
+     0.73,
+     2.39
+    ],
+    "datagen_wall_s": 68.6
+   },
+   "model": {
+    "latent": 64,
+    "mlp_hidden": 64,
+    "message_passing_steps": 5,
+    "connectivity_radius": 0.035,
+    "params": 215250,
+    "noise_std": 0.0002504167496226728
+   },
+   "training": {
+    "steps": 5148,
+    "train_s": 780.1,
+    "batch": "2 windows",
+    "lr": "1e-3 -> 1e-4 exponential"
+   },
+   "rollout_s_3_cases": 8.8,
+   "test_cases": {
+    "test_0": {
+     "N": 145,
+     "W": 0.1628,
+     "H0": 0.2133,
+     "rms_err_final_over_d": 2.1616,
+     "rms_err_mid_over_d": 1.3242,
+     "runout_true_final": 0.3239,
+     "runout_gns_final": 0.3143,
+     "runout_rel_err": -0.06,
+     "height_true_final": 0.2007,
+     "height_gns_final": 0.1999
+    },
+    "test_1": {
+     "N": 161,
+     "W": 0.1325,
+     "H0": 0.2913,
+     "rms_err_final_over_d": 9.9045,
+     "rms_err_mid_over_d": 4.9698,
+     "runout_true_final": 0.3144,
+     "runout_gns_final": 0.7487,
+     "runout_rel_err": 2.3816,
+     "height_true_final": 0.2233,
+     "height_gns_final": 0.1133
+    },
+    "test_2": {
+     "N": 120,
+     "W": 0.1926,
+     "H0": 0.1521,
+     "rms_err_final_over_d": 0.4896,
+     "rms_err_mid_over_d": 0.5551,
+     "runout_true_final": 0.2818,
+     "runout_gns_final": 0.2997,
+     "runout_rel_err": 0.2007,
+     "height_true_final": 0.1499,
+     "height_gns_final": 0.1428
+    }
+   }
+  },
+  "notes": "Reduced GNS (5 message-passing steps, latent 64) trained ~5000 steps on 1 CPU thread, versus ~1e6+ steps in the papers. Rollouts track the DEM for the two in-range columns (runout within -6 % and +20 % of the DEM runout distance) and blow up for the taller, out-of-range column (test_1, H/W 2.6)."
+ },
+ "cfd-dem": {
+  "id": "cfd-dem",
+  "method": "coupled CFD-DEM (unresolved, volume-averaged gas + soft-sphere DEM, two-way momentum coupling)",
+  "code": "OpenFOAM DPMFoam (MFiX attempted: not installable from public conda channels)",
+  "version": "OpenFOAM v1912 (Ubuntu 24.04 package 1912.200626-2build3)",
+  "status": "partial",
+  "wall_s": 417,
+  "cores": 1,
+  "particles": 846,
+  "key_results": {
+   "vacuum_t50_ms": 76.0,
+   "twoway_t10_ms": 78.0,
+   "twoway_t50_ms": 80.0,
+   "twoway_t90_ms": 84.0,
+   "twoway_spread_10_90_ms": 6.0,
+   "oneway_t50_ms_all_particles": 104.0,
+   "oneway_fraction_crossed_by_130ms": 0.85,
+   "isolated_100um_ode_arrival_ms": 93.1,
+   "isolated_35um_ode_arrival_ms": 307.1,
+   "point_free_fall_ms": 75.6,
+   "max_entrained_air_downflow_m_s": 0.59,
+   "arrival_definition": "first crossing of y = 3 mm (plug released at y = 31 mm); output every 2 ms"
+  },
+  "notes": "Reduced scale: AlSi10Mg coarse-grained 35->100 um, 846 particles, E=1e4 Pa, 0.13 s. MFiX failed: PackagesNotFoundInChannelsError for 'mfix' on conda-forge/mfix channels. One-way reference has contacts off (DPM)."
+ },
+ "contact-dynamics": {
+  "id": "contact-dynamics",
+  "method": "non-smooth contact dynamics (Moreau-Jean, NLGS), 2D rigid discs, flat-bottomed silo discharge vs outlet width",
+  "code": "LMGC90 (user version, built from source)",
+  "version": "2025 (pyproject 2025.rc3)",
+  "status": "partial",
+  "wall_s": 437.0,
+  "cores": 1,
+  "particles": 600,
+  "key_results": {
+   "rates": [
+    {
+     "W_over_d": 4.0,
+     "clogged": true,
+     "rate_discs_per_s_d1mm": null,
+     "Q_dimless": null,
+     "n_out_final": 64
+    },
+    {
+     "W_over_d": 5.0,
+     "clogged": false,
+     "rate_discs_per_s_d1mm": 657.4,
+     "Q_dimless": 6.638,
+     "n_out_final": 551
+    },
+    {
+     "W_over_d": 6.0,
+     "clogged": false,
+     "rate_discs_per_s_d1mm": 822.1,
+     "Q_dimless": 8.301,
+     "n_out_final": 569
+    },
+    {
+     "W_over_d": 7.0,
+     "clogged": false,
+     "rate_discs_per_s_d1mm": 1277.5,
+     "Q_dimless": 12.898,
+     "n_out_final": 574
+    },
+    {
+     "W_over_d": 8.0,
+     "clogged": false,
+     "rate_discs_per_s_d1mm": 1508.0,
+     "Q_dimless": 15.226,
+     "n_out_final": 582
+    },
+    {
+     "W_over_d": 10.0,
+     "clogged": false,
+     "rate_discs_per_s_d1mm": 2239.6,
+     "Q_dimless": 22.611,
+     "n_out_final": 592
+    }
+   ],
+   "beverloo_2D_fit": {
+    "C": 0.8725615618849542,
+    "k": 1.2269987705544168
+   },
+   "clogging_replicates": {
+    "W_over_d_4": {
+     "seeds": [
+      1,
+      2,
+      3
+     ],
+     "clogged": [
+      true,
+      true,
+      true
+     ],
+     "discs_out_before_clog": [
+      64,
+      12,
+      7
+     ]
+    },
+    "W_over_d_5": {
+     "seeds": [
+      1,
+      2,
+      3
+     ],
+     "clogged": [
+      false,
+      false,
+      false
+     ],
+     "rate_discs_per_s_d1mm": [
+      657.4,
+      589.7,
+      628.3
+     ]
+    }
+   }
+  },
+  "notes": "2D, 600 discs (d_mean = 1 mm, scale-free in NSCD), dt=2e-4 s, 1.2 s per width; build ~11 min. No pip/conda package: source build; np.cross 2-vector shim for NumPy 2.5."
+ },
+ "dem-fem-coupling": {
+  "id": "dem-fem-coupling",
+  "method": "two-way partitioned DEM-FEM coupling (4C PASI): DEM grains falling onto a clamped nonlinear neo-Hookean membrane",
+  "code": "4C (open-source successor of BACI), Docker image ghcr.io/4c-multiphysics/4c:main",
+  "version": "2026.4.0-dev (git 1f2ed686d9)",
+  "status": "partial",
+  "wall_s": 698.7,
+  "cores": 1,
+  "particles": 128,
+  "key_results": {
+   "regression_test_pasi_twoway_disprelax": "OK (9/9 checks)",
+   "dose_mass_mg": 11.1,
+   "drop_height_mm": 3.0,
+   "first_contact_ms": 24,
+   "peak_centre_deflection_mm_negative_down": -0.3794,
+   "t_peak_ms": 28.0,
+   "max_upward_rebound_mm": 0.1385,
+   "t_max_upward_ms": 48.0,
+   "t_first_upward_ms": 42.0,
+   "simulated_ms": 48.0,
+   "steps_done": 9627,
+   "steps_planned": 14000,
+   "steps_not_converged": 1,
+   "mean_coupling_iterations_in_contact": 11.9
+  },
+  "notes": "4 earlier attempts with Aitken relaxation/tight tolerances aborted at impact with 'The partitioned PASI solver did not converge in ITEMAX steps!'; final run uses fixed relaxation 0.5, disp tol 1e-5 m, IGNORE_CONV_CHECK."
+ },
+ "dem-nonspherical": {
+  "id": "dem-nonspherical",
+  "method": "non-spherical DEM: 8-sphere rigid clumps (rounded cubes) vs spheres with/without rolling resistance; lifted-cylinder heap",
+  "code": "Yade (yadedaily); LIGGGHTS 3.8 superquadric availability checked",
+  "version": "yadedaily 20261024-9637~157eec7~noble1; liggghts 3.8.0+repack1-9.1build2",
+  "status": "partial",
+  "wall_s": 181.1,
+  "cores": 1,
+  "particles": {
+   "per_case": 361,
+   "cube8_member_spheres": 2888
+  },
+  "key_results": {
+   "aor_h_over_rfoot_deg_seed1_seed2_mean": {
+    "sphere": [
+     24.9,
+     32.1,
+     28.5
+    ],
+    "sphere_rr_eta0.15": [
+     40.0,
+     35.4,
+     37.7
+    ],
+    "cube8": [
+     38.1,
+     42.4,
+     40.3
+    ]
+   },
+   "aor_flank_fit_deg_seed1_seed2_mean": {
+    "sphere": [
+     10.1,
+     10.8,
+     10.5
+    ],
+    "sphere_rr_eta0.15": [
+     37.4,
+     33.6,
+     35.5
+    ],
+    "cube8": [
+     32.7,
+     43.4,
+     38.1
+    ]
+   },
+   "column_packing_fraction_seed1_seed2_mean": {
+    "sphere": [
+     0.556,
+     0.548,
+     0.552
+    ],
+    "sphere_rr_eta0.15": [
+     0.521,
+     0.532,
+     0.527
+    ],
+    "cube8": [
+     0.56,
+     0.538,
+     0.549
+    ]
+   },
+   "liggghts_superquadric": "atom_style superquadric present but no fix nve/superquadric or particletemplate/superquadric -> not runnable; multisphere styles present"
+  },
+  "notes": "Reduced scale (361 particles/heap, heaps 4-6 grains tall); two seeds; AoR estimates noisy (up to 7-11 deg seed-to-seed). wall_s = in-script time of the six main-set runs."
+ },
+ "surrogate-pinn": {
+  "id": "surrogate-pinn",
+  "method": "Physics-informed neural networks for the Janssen powder-column stress: parametric forward surrogate over K*mu_w and inverse inference of K*mu_w from noisy stress readings",
+  "code": "self-written PyTorch PINN (run.py)",
+  "version": "torch 2.5.1+cpu",
+  "status": "ran",
+  "wall_s": 46.8,
+  "cores": 1,
+  "key_results": {
+   "forward_max_abs_err_over_max_stress": 0.03257,
+   "forward_rel_L2_err": 0.00771,
+   "forward_train_s": 12.1,
+   "forward_iterations": 4500,
+   "lambda_true": 0.2,
+   "inverse_lambda_pinn_per_seed": [
+    0.1933,
+    0.1984,
+    0.1961,
+    0.206,
+    0.2012
+   ],
+   "inverse_lambda_pinn_mean_sd": [
+    0.199,
+    0.0044
+   ],
+   "inverse_lambda_exact_lsq_per_seed": [
+    0.1946,
+    0.1985,
+    0.1967,
+    0.2069,
+    0.2018
+   ],
+   "noise": "3 % multiplicative, 8 readings at z = 6-63 mm",
+   "stress_scale_Pa_per_unit_s": 257.52,
+   "sigma_v_at_63mm_true_Pa": 292.69
+  },
+  "notes": "Janssen ODE is a 1D continuum stand-in for the hopper/inlet stress, not a doser model; the PINN is compared with the closed-form solution and with a least-squares fit of that solution to the same data."
  }
 }

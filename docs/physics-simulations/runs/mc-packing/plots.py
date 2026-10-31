@@ -192,7 +192,7 @@ def animate():
         frames.append(img)
     frames += [frames[-1]] * 12
     gif = os.path.join(HERE, "mc_packing_deposition.gif")
-    imageio.mimsave(gif, frames, duration=1 / 12, loop=0)
+    imageio.mimsave(gif, frames, duration=1000 / 12, loop=0)  # ms per frame (imageio>=2.28 pillow plugin)
     mp4 = os.path.join(HERE, "mc_packing_deposition.mp4")
     w = imageio.get_writer(mp4, fps=12, codec="libx264", pixelformat="yuv420p", quality=7,
                            macro_block_size=16)

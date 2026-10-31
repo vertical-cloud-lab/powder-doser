@@ -45,5 +45,5 @@
    "phi_deg": 34.0
   }
  },
- "notes": "First attempt with artificial viscosity alpha=0.1 blew up at t=0.02 s (particles ejected at 10 m/s); final runs use alpha=0.5."
+ "notes": "First attempt with artificial viscosity alpha=0.1 blew up at t=0.02 s (particles ejected at 10 m/s); final runs use alpha=0.5. PySPH 1.0b2 built from the PyPI sdist (about 5 min) and its stock elliptical_drop example ran (exit 0, 5025 particles, setup 11.7 s, run 4.3 s), but PySPH has no granular/Drucker-Prager scheme, so the granular runs use the self-written numba code."
 }

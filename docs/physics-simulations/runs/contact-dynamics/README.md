@@ -28,7 +28,7 @@ pre-processor still calls, so `silo_lmgc90.py` installs a small 2-vector shim be
 `bash run.sh` (downloads and builds LMGC90 2025, then runs the widths one after another, then `post_lmgc90.py`).
 
 ## Runtime
-Build: about 11 min on the shared runner (first minute with `make -j2`, the rest with `-j1`). Simulations: 1 core each, 279 s in total for 6 widths (per-run wall times in the table).
+Build: about 11 min on the shared runner (first minute with `make -j2`, the rest with `-j1`). Simulations: 1 core each, 279 s in total for 6 widths (per-run wall times in the table), plus 158 s for the 4 clogging replicates.
 
 ## Result
 ![silo](contact_dynamics_silo.png)
@@ -49,11 +49,15 @@ side of the exit annulus (0.43 mm, about 1 salt diameter) cannot pass salt on it
 In these 2D runs, openings of about 4 d or less were prone to arching, so the exit probably operates near the intermittent-flow range.
 That is a hypothesis to test against measured dose-to-dose noise, not a result.
 
+Clogging replicates (two more random packings each, `seed` 2 and 3): **W/d = 4 clogged in 3 of 3 packings**, after 64, 12 and 7 discs.
+**W/d = 5 flowed in 3 of 3**, at 657, 590 and 628 discs/s (mean 625, so seed-to-seed scatter is about 5 %). In this 2D disc system the
+clogging transition therefore lies between 4 and 5 grain diameters.
+
 ## Status
-**Ran at reduced scale** (2D, 600 discs, one realisation per width).
+**Ran at reduced scale** (2D, 600 discs; one packing per width, plus two extra packings at W/d = 4 and 5).
 
 ## Limitations
 - 2D discs are not 3D cubes. 2D Beverloo constants (C, k) do not transfer quantitatively, and discs arch more easily than spheres.
-- One random packing per width, so the clogging threshold is statistical and needs many realisations to pin down. The silo is small (about 20 d fill),
+- Three packings at W/d = 4 and 5 and one elsewhere; a clogging probability curve needs many more. The silo is small (about 20 d fill),
   so the rate drops as it empties, and the fit window covers only part of the discharge.
 - The NLGS tolerance (1e-3, at most 200 iterations) was loosened for speed. Rigid grains with no cohesion, humidity or air.

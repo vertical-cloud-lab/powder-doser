@@ -4,7 +4,7 @@
  "code": "LMGC90 (user version, built from source)",
  "version": "2025 (pyproject 2025.rc3)",
  "status": "partial",
- "wall_s": 279.0,
+ "wall_s": 437.0,
  "cores": 1,
  "particles": 600,
  "key_results": {
@@ -55,6 +55,42 @@
   "beverloo_2D_fit": {
    "C": 0.8725615618849542,
    "k": 1.2269987705544168
+  },
+  "clogging_replicates": {
+   "W_over_d_4": {
+    "seeds": [
+     1,
+     2,
+     3
+    ],
+    "clogged": [
+     true,
+     true,
+     true
+    ],
+    "discs_out_before_clog": [
+     64,
+     12,
+     7
+    ]
+   },
+   "W_over_d_5": {
+    "seeds": [
+     1,
+     2,
+     3
+    ],
+    "clogged": [
+     false,
+     false,
+     false
+    ],
+    "rate_discs_per_s_d1mm": [
+     657.4,
+     589.7,
+     628.3
+    ]
+   }
   }
  },
  "notes": "2D, 600 discs (d_mean = 1 mm, scale-free in NSCD), dt=2e-4 s, 1.2 s per width; build ~11 min. No pip/conda package: source build; np.cross 2-vector shim for NumPy 2.5."

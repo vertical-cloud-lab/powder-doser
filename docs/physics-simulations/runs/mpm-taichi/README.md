@@ -32,12 +32,14 @@ Self-written MLS-MPM kernel (`run.py`) in Taichi 1.7.4 (LLVM 15), on CPU with
 ```
 python3 -m venv /tmp/venv-continuum && /tmp/venv-continuum/bin/pip install taichi numpy scipy matplotlib imageio imageio-ffmpeg
 OMP_NUM_THREADS=1 /tmp/venv-continuum/bin/python run.py     # raw output in /tmp/sims-scratch/mpm-taichi
+MPM_NGRID=256 MPM_MAXP=45000 /tmp/venv-continuum/bin/python run.py silo 0.012   # resolution check
 /tmp/venv-continuum/bin/python plots.py                      # figure, GIF, MP4, result.json
 ```
 
 ## Runtime
-104 s wall clock on 1 core of a shared 4-core runner. Each column took 17–19 s, each silo 22–23 s,
-plus about 3 s of JIT compile.
+104 s wall clock on 1 core of a shared 4-core runner for the main run. Each column took 17–19 s, each
+silo 22–23 s, plus about 3 s of JIT compile. The resolution check (one silo on a 256² grid, 41 205
+particles) took another 130 s.
 
 ## Result
 ![MPM results](mpm_taichi.png)
@@ -62,11 +64,16 @@ Animation: [mpm_taichi.gif](mpm_taichi.gif) / [mpm_taichi.mp4](mpm_taichi.mp4) (
 | 8 mm (5.1 dx) | 0.64 | 2.89 |
 | 12 mm (7.7 dx) | 2.02 | 5.30 |
 | 16 mm (10.2 dx) | 7.23 | 8.16 |
+| 12 mm on the 256² grid (15.4 dx) | 4.46 | 5.30 |
 
 - **Scaling:** over 5–10 grid cells, W grows as D^3.46, not as D^1.5.
 - **Beverloo fit:** a 3/2-power law through the 12 and 16 mm points needs an offset D0 = 9.0 mm (5.8 dx)
   and C = 3.2. That is unphysical, and it predicts zero flow at 8 mm. So **the run is not yet in the
   Beverloo regime**. Only the widest slot (10 dx) comes within 11 % of the plane Beverloo law.
+- **Resolution check:** we reran the 12 mm slot on a 256² grid (dx = 0.78 mm, D = 15.4 dx). W rose from
+  2.02 to **4.46 kg s⁻¹ m⁻¹**, from 38 % to 84 % of the plane Beverloo value of 5.30. So the suppressed
+  flow at small D/dx is mainly a resolution artefact, and the discharge approaches Beverloo magnitudes as
+  the slot is resolved by more cells. It is not converged at 15 cells.
 - **Why:** in a continuum there is no grain size. The k·d "empty annulus" is replaced by a grid-scale
   offset, set by the sticky floor nodes and the B-spline support of about 1.5 dx on each side.
 - **For the doser:** the outlet annulus is only about 2.5 grains wide. A continuum MPM cannot predict the
@@ -74,7 +81,7 @@ Animation: [mpm_taichi.gif](mpm_taichi.gif) / [mpm_taichi.mp4](mpm_taichi.mp4) (
   physics. MPM is better suited to the stress and velocity fields in the reservoir and the 37° funnel.
 
 ## Status
-**Ran.** All five cases (2 columns, 3 silos) completed. The Beverloo comparison is a negative result at
+**Ran.** All five cases (2 columns, 3 silos) completed, plus a one-case resolution check. The Beverloo comparison is a negative result at
 this resolution: the 3/2 law did not fit, and a free 2-parameter fit through all three points failed
 (the 8 mm residual is 100 %). That is recorded in `result.json` under `free_3param_fit_attempt`.
 
@@ -85,5 +92,5 @@ this resolution: the 3/2 law did not fit, and a free 2-parameter fit through all
   Cohesion enters only as an apex shift; there is no softening and no moisture.
 - **Elasticity and resolution:** a soft E was used for speed, and the resolution is coarse
   (dx = 1.56 mm, more than three salt grain diameters).
-- **Not run:** convergence was not tested, and runs at other aspect ratios or friction angles were not
-  done for lack of time. Treat the numbers as a first pass, not a validated result.
+- **Not run:** only one resolution check was done (silo, 12 mm). The column collapses were not
+  resolution-tested, and runs at other aspect ratios or friction angles were not done for lack of time. Treat the numbers as a first pass, not a validated result.

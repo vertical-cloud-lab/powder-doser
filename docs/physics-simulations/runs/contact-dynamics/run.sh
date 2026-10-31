@@ -15,4 +15,8 @@ for w in 6 4 8 10 7 5; do
   snap=0; [ "$w" = "6" ] && snap=100
   "$S/venv/bin/python" "$HERE/silo_lmgc90.py" $w "$S/W$w" 6000 $snap > "$S/log_W$w.txt" 2>&1
 done
+# clogging replicates (other random packings) at W/d = 4 and 5
+for s in 2 3; do for w in 5 4; do
+  "$S/venv/bin/python" "$HERE/silo_lmgc90.py" $w "$S/clog_W${w}_s$s" 6000 0 $s > "$S/log_clog_W${w}_s$s.txt" 2>&1
+done; done
 "$S/venv/bin/python" "$HERE/post_lmgc90.py" "$S" "$HERE"

@@ -14,7 +14,7 @@ os.makedirs(SCR, exist_ok=True)
 ti.init(arch=ti.cpu, cpu_max_num_threads=1, default_fp=ti.f32, random_seed=1)
 
 # ---------------- parameters (SI units, 2D plane strain, per metre depth) ----------------
-L = 0.2; n_grid = 128; dx = L / n_grid; inv_dx = 1.0 / dx
+L = 0.2; n_grid = int(os.environ.get("MPM_NGRID", 128)); dx = L / n_grid; inv_dx = 1.0 / dx
 rho_b = 1250.0            # bulk density of salt bed, kg/m^3 (assumed; measured 1200-1300)
 E, nu = 3.0e5, 0.3        # deliberately soft (rigid limit: rho g h/E < 0.4 %)
 mu0 = E / (2 * (1 + nu)); lam0 = E * nu / ((1 + nu) * (1 - 2 * nu))
@@ -23,7 +23,7 @@ p_vol = (dx * 0.5) ** 2   # 2x2 particles per cell
 p_mass = rho_b * p_vol
 cwave = np.sqrt((lam0 + 2 * mu0) / rho_b)
 DT = 0.35 * dx / cwave
-max_p = 30000
+max_p = int(os.environ.get("MPM_MAXP", 30000))
 
 x = ti.Vector.field(2, ti.f32, max_p); v = ti.Vector.field(2, ti.f32, max_p)
 C = ti.Matrix.field(2, 2, ti.f32, max_p); F = ti.Matrix.field(2, 2, ti.f32, max_p)
@@ -183,6 +183,15 @@ def run_silo(D, phi=34.0, coh=0.0, W=0.08, H=0.08, t_settle=0.05, t_dis=0.25, nf
     np.savez_compressed(f"{SCR}/silo_{tag}.npz", t=ts, m=ms)
     return dict(D_m=D, D_over_dx=D / dx, n_particles=int(n), wall_s=round(wall, 1),
                 W_kg_per_m_s=float(Wrate), discharged_kg_per_m=float(ms[-1])), frames, (ts, ms)
+
+if __name__ == "__main__" and len(sys.argv) > 2 and sys.argv[1] == "silo":
+    # resolution check: e.g. MPM_NGRID=256 MPM_MAXP=45000 python run.py silo 0.012
+    T0 = time.time(); out = []
+    for D in [float(a) for a in sys.argv[2:]]:
+        r, fr, cur = run_silo(D, tag=f"D{int(D*1e3)}_n{n_grid}"); r["n_grid"] = n_grid; out.append(r)
+        print("silo", r, flush=True)
+    json.dump(out, open(f"{SCR}/raw_results_silo_n{n_grid}.json", "w"), indent=1)
+    print("DONE", round(time.time() - T0, 1)); sys.exit(0)
 
 if __name__ == "__main__":
     T0 = time.time()
