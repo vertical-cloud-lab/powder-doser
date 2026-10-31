@@ -48,10 +48,12 @@ PAPERS = {
         "method parameters for cohesive materials using dynamic-yield-strength and shear-cell experiments. "
         "Processes 7(5):278", "https://www.mdpi.com/2227-9717/7/5/278/htm", ("html", "article, .html-body, body")),
     "processes2021_9_1715": (
-        "Processes 9(10):1715 (2021), MDPI (DEM calibration, cohesive powder)",
+        "Lupo, Barletta, Sofia, Poletto (2021) Calibration of DEM for cohesive particles in the SLS powder spreading "
+        "process. Processes 9(10):1715",
         "https://www.mdpi.com/2227-9717/9/10/1715/htm", ("html", "article, .html-body, body")),
     "scirep2024_feeder_dem": (
-        "Scientific Reports (2024) doi:10.1038/s41598-024-72288-0 (DEM of a powder feeder, Ghent University)",
+        "Naranjo Gomez, Matsunami, Van Liedekerke, De Beer, Kumar (2024) Investigating screw-agitator speed ratio "
+        "impact on feeding performance in pharmaceutical manufacturing using DEM. Sci. Rep. 14:21234",
         "https://www.nature.com/articles/s41598-024-72288-0", ("html", "article, main, body")),
     "cheng2024_grainlearning_joss": (
         "Cheng, Orozco, Lubbe, Jansen, Hartmann, Thoeni (2024) GrainLearning: a Bayesian uncertainty "
@@ -62,25 +64,26 @@ PAPERS = {
         "arXiv:2512.08685 (Powder Technology 476:122404)", "https://arxiv.org/abs/2512.08685",
         ("pdf", "a.download-pdf")),
     "haeri2018_cohesion_powder_bed": (
-        "Haeri, Wang, Ghita, Sun (2018) On the impact of powder cohesion on the bulk properties of a powder bed in "
-        "additive manufacturing (Strathprints accepted manuscript)", "https://strathprints.strath.ac.uk/64501/",
+        "Haeri, Bailey, Calder, Clark, Rogalsky, Toyserkani (2018) On the impact of cohesion on the bulk properties of "
+        "a powder bed in additive manufacturing using DEM simulations. ECCM 6 / ECFD 7 (Strathprints)", "https://strathprints.strath.ac.uk/64501/",
         ("pdf", "a[href$='.pdf']")),
     "weissbach2023_roller_spreading": (
         "Weissbach, Praegla, Wall, Hart, Meier (2023) Exploration of improved, roller-based spreading strategies "
         "for cohesive powders in additive manufacturing via coupled DEM-FEM simulations. arXiv:2306.06013",
         "https://arxiv.org/abs/2306.06013", ("pdf", "a.download-pdf")),
-    "lambert2014_capillary_models": (
-        "Comparison of different capillary bridge models for application in the discrete element method. "
-        "arXiv:1403.7926", "https://arxiv.org/abs/1403.7926", ("pdf", "a.download-pdf")),
+    "gladkyy2014_capillary_models": (
+        "Gladkyy, Schwarze (2014) Comparison of different capillary bridge models for application in the discrete "
+        "element method. Granular Matter 16:911. arXiv:1403.7926", "https://arxiv.org/abs/1403.7926", ("pdf", "a.download-pdf")),
     "mercurydpm2024_capillary": (
         "Discrete element simulations of particles interacting via capillary forces using MercuryDPM. "
         "arXiv:2411.02042", "https://arxiv.org/abs/2411.02042", ("pdf", "a.download-pdf")),
     "epjconf2017_caking_dem": (
         "EPJ Web of Conferences 140, 13003 (2017): DEM of caking by capillary condensation under humidity cycles",
         "https://www.epj-conferences.org/articles/epjconf/abs/2017/09/epjconf161905/epjconf161905.html",
-        ("pdf", "a[href$='.pdf']")),
+        ("pdf", "a[href*='/pdf/2017/09/epjconf161905.pdf']")),
     "nasa2013_tribocharging": (
-        "NASA NTRS 20130010420 (tribocharging / electrostatics of granular materials)",
+        "Hogue, Calle, Weitzman, Curry: Discrete element modeling of triboelectrically charged particles "
+        "(NASA KSC with DEM Solutions, NTRS 20130010420)",
         "https://ntrs.nasa.gov/citations/20130010420", ("pdf", "a[href*='downloads'], a:has-text('Download')")),
     "staron2014_silo_mui": (
         "Staron, Lagree, Popinet (2014) Continuum simulation of the discharge of the granular silo: a validation "
@@ -162,27 +165,39 @@ def fetch_one(page, ctx, key: str, landing: str, how: tuple) -> dict:
         pdf_url = urljoin(page.url, href)
     captured: dict = {}
 
-    def on_response(r):
-        ct = (r.headers.get("content-type") or "").lower()
-        if "pdf" in ct and "data" not in captured:
+    def on_route(route):
+        # Chrome's built-in PDF viewer swallows the body, so take it on the way in and pass it on unchanged.
+        req = route.request
+        if not req.is_navigation_request() or "data" in captured:
+            route.continue_()
+            return
+        try:
+            r = route.fetch(timeout=90000)
+            body = r.body()
+            if body.startswith(b"%PDF"):
+                captured["data"] = body
+                captured["url"] = req.url
+            route.fulfill(response=r, body=body)
+        except Exception as exc:  # noqa: BLE001
+            captured["err"] = repr(exc)[:200]
             try:
-                captured["data"] = r.body()
-                captured["url"] = r.url
-            except Exception as exc:  # noqa: BLE001
-                captured["err"] = repr(exc)
+                route.continue_()
+            except Exception:  # noqa: BLE001
+                pass
 
-    page.on("response", on_response)
+    ctx.route("**/*", on_route)
+    tab = None
     try:
         with ctx.expect_page(timeout=8000) as newp:
             human_click(page, link)
         tab = newp.value
         tab.wait_for_load_state("domcontentloaded", timeout=90000)
-    except Exception:  # noqa: BLE001 - link opened in the same tab, or as a download
-        tab = None
+    except Exception:  # noqa: BLE001 - link opened in the same tab
+        pass
     t0 = time.time()
-    while "data" not in captured and time.time() - t0 < 12:
-        time.sleep(0.5)
-    page.remove_listener("response", on_response)
+    while "data" not in captured and time.time() - t0 < 45:
+        page.wait_for_timeout(500)
+    ctx.unroute("**/*", on_route)
     if "data" not in captured:
         # same browser context and proxy; small files only
         r = ctx.request.get(pdf_url, timeout=90000)
@@ -196,7 +211,7 @@ def fetch_one(page, ctx, key: str, landing: str, how: tuple) -> dict:
     if not data.startswith(b"%PDF"):
         raise RuntimeError(f"no PDF captured (status {status}, {captured.get('err', '')})")
     return dict(kind="pdf", status=status, url=captured["url"], bytes=len(data), sha256=sha256(data),
-                text=pdf_text(data), pdf=data, via=captured.get("via", "page response after click"))
+                text=pdf_text(data), pdf=data, via=captured.get("via", "PDF taken from the routed navigation after the click"))
 
 
 def main(keys: list[str]) -> None:
@@ -209,6 +224,8 @@ def main(keys: list[str]) -> None:
         for key, (cite, landing, how) in PAPERS.items():
             if keys and key not in keys:
                 continue
+            if not keys and manifest.get(key, {}).get("ok"):
+                continue  # already read; name it on the command line to read it again
             t0 = time.time()
             try:
                 res = fetch_one(page, ctx, key, landing, how)
