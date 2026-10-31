@@ -1,0 +1,1305 @@
+{
+ "mui-rheology": {
+  "id": "mui-rheology",
+  "method": "local mu(I) rheology (Jop et al. 2006) and non-local granular fluidity (Henann & Kamrin 2013; dynamic form, Kamrin & Henann 2015) for inclined-plane flow",
+  "code": "self-written Python (numpy, scipy.linalg.solve_banded, numba)",
+  "version": "numpy 2.5.4",
+  "status": "ran",
+  "wall_s": 99.9,
+  "cores": 1,
+  "key_results": {
+   "local_muI": {
+    "22deg": {
+     "u_surface_numerical_sqrt_gd": 1.1486553758983875,
+     "u_surface_bagnold_sqrt_gd": 1.1485540645381325,
+     "u_surface_numerical_m_per_s": 0.08044688925935051,
+     "rms_error_rel_to_surface_velocity": 1.0026285624164943e-05,
+     "residual_max_accel_g": 7.188694084447889e-14,
+     "t95_startup_s": 0.9863709719082714,
+     "dt_dimensionless": 0.0015385564941259708
+    },
+    "24deg": {
+     "u_surface_numerical_sqrt_gd": 3.9373259089595622,
+     "u_surface_bagnold_sqrt_gd": 3.9369786371138558,
+     "u_surface_numerical_m_per_s": 0.2757533965557843,
+     "rms_error_rel_to_surface_velocity": 1.0026275930811728e-05,
+     "residual_max_accel_g": 1.4310774787418268e-13,
+     "t95_startup_s": 1.3787954369593927,
+     "dt_dimensionless": 0.0015499985670277348
+    },
+    "26deg": {
+     "u_surface_numerical_sqrt_gd": 8.30587295974088,
+     "u_surface_bagnold_sqrt_gd": 8.30514038241265,
+     "u_surface_numerical_m_per_s": 0.5817076698673956,
+     "rms_error_rel_to_surface_velocity": 1.00262747042782e-05,
+     "residual_max_accel_g": 5.660472091051361e-13,
+     "t95_startup_s": 2.1286053693270612,
+     "dt_dimensionless": 0.001562666437000473
+    },
+    "28deg": {
+     "u_surface_numerical_sqrt_gd": 16.236925349293077,
+     "u_surface_bagnold_sqrt_gd": 16.235493374243557,
+     "u_surface_numerical_m_per_s": 1.1371645167858173,
+     "rms_error_rel_to_surface_velocity": 1.002394096485864e-05,
+     "residual_max_accel_g": 5.476356590428111e-10,
+     "t95_startup_s": 3.914794690518549,
+     "dt_dimensionless": 0.0015766268360190507
+    }
+   },
+   "ngf_h20": {
+    "22deg": {
+     "u_surface_ngf_sqrt_gd": 0.7133579609707484,
+     "u_surface_linear_bagnold_sqrt_gd": 1.0512479540166721,
+     "ratio_ngf_to_linear_bagnold": 0.6785820207736024
+    },
+    "24deg": {
+     "u_surface_ngf_sqrt_gd": 2.4256355969665067,
+     "u_surface_linear_bagnold_sqrt_gd": 2.983367743135211,
+     "ratio_ngf_to_linear_bagnold": 0.8130528335127115
+    },
+    "26deg": {
+     "u_surface_ngf_sqrt_gd": 4.232336469001766,
+     "u_surface_linear_bagnold_sqrt_gd": 4.944114571569688,
+     "ratio_ngf_to_linear_bagnold": 0.8560352734014531
+    },
+    "28deg": {
+     "u_surface_ngf_sqrt_gd": 6.0986506332311645,
+     "u_surface_linear_bagnold_sqrt_gd": 6.935869556191366,
+     "ratio_ngf_to_linear_bagnold": 0.8792914260890546
+    }
+   },
+   "ngf_hstop": {
+    "theta_deg": [
+     20.95,
+     21.0,
+     21.2,
+     21.5,
+     22.0,
+     23.0,
+     24.0,
+     25.0,
+     26.0,
+     28.0,
+     30.0,
+     32.0
+    ],
+    "hstop_over_d_simulated": [
+     23.83987156801255,
+     16.854517410421508,
+     9.724428117903583,
+     6.869222870954371,
+     5.064542688594673,
+     3.652517624474428,
+     2.995232193434523,
+     2.5946069971208185,
+     2.3172459506832443,
+     1.947756315734252,
+     1.7052915051445767,
+     1.5294986020451504
+    ],
+    "hstop_over_d_linear_stability": [
+     23.84003795353355,
+     16.854636133720636,
+     9.724497133961513,
+     6.869271738351407,
+     5.064578762771374,
+     3.652543662465739,
+     2.995253552785286,
+     2.5946255028781167,
+     2.3172624800687442,
+     1.9477702113411872,
+     1.7053036718965904,
+     1.5295095150888327
+    ],
+    "max_rel_diff_sim_vs_analytic": 7.134995614332951e-06,
+    "hstop_24deg_N60_N120_N480": [
+     2.9951680394323033,
+     2.995232193434523,
+     2.995252241633664
+    ],
+    "pouliquen_hstop_over_d_same_angles": [
+     430.56237831734586,
+     214.3826976304779,
+     70.26254465996138,
+     34.23195764200412,
+     17.85361983568589,
+     8.493001429238456,
+     5.170074708678963,
+     3.467015810030359,
+     2.430960551947272,
+     1.2325279269322336,
+     0.5589370858713237,
+     0.12648345901313707
+    ],
+    "L_pouliquen_over_d": 1.6525752067355113
+   },
+   "finite_amplitude_check": [
+    {
+     "theta_deg": 21.5,
+     "h_over_d": 4.121563043010844,
+     "h_over_hstop": 0.6,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 21.5,
+     "h_over_d": 5.838880977598696,
+     "h_over_hstop": 0.85,
+     "final_max_fluidity": 3.06e-322,
+     "flowing": false
+    },
+    {
+     "theta_deg": 21.5,
+     "h_over_d": 7.899662499104117,
+     "h_over_hstop": 1.15,
+     "final_max_fluidity": 0.006861420971319544,
+     "flowing": true
+    },
+    {
+     "theta_deg": 21.5,
+     "h_over_d": 10.990834781362253,
+     "h_over_hstop": 1.6000000000000003,
+     "final_max_fluidity": 0.02079138744368971,
+     "flowing": true
+    },
+    {
+     "theta_deg": 22.0,
+     "h_over_d": 3.0387472576628243,
+     "h_over_hstop": 0.6,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 22.0,
+     "h_over_d": 4.304891948355668,
+     "h_over_hstop": 0.8500000000000001,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 22.0,
+     "h_over_d": 5.82426557718708,
+     "h_over_hstop": 1.15,
+     "final_max_fluidity": 0.010548654535147913,
+     "flowing": true
+    },
+    {
+     "theta_deg": 22.0,
+     "h_over_d": 8.1033260204342,
+     "h_over_hstop": 1.6,
+     "final_max_fluidity": 0.03196439401789311,
+     "flowing": true
+    },
+    {
+     "theta_deg": 24.0,
+     "h_over_d": 1.7971521316711716,
+     "h_over_hstop": 0.6,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 24.0,
+     "h_over_d": 2.545965519867493,
+     "h_over_hstop": 0.85,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 24.0,
+     "h_over_d": 3.4445415857030786,
+     "h_over_hstop": 1.15,
+     "final_max_fluidity": 0.020891529964817357,
+     "flowing": true
+    },
+    {
+     "theta_deg": 24.0,
+     "h_over_d": 4.792405684456457,
+     "h_over_hstop": 1.5999999999999999,
+     "final_max_fluidity": 0.06330523890103694,
+     "flowing": true
+    },
+    {
+     "theta_deg": 26.0,
+     "h_over_d": 1.3903574880412466,
+     "h_over_hstop": 0.6,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 26.0,
+     "h_over_d": 1.9696731080584327,
+     "h_over_hstop": 0.85,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 26.0,
+     "h_over_d": 2.664851852079056,
+     "h_over_hstop": 1.15,
+     "final_max_fluidity": 0.027798679370208794,
+     "flowing": true
+    },
+    {
+     "theta_deg": 26.0,
+     "h_over_d": 3.707619968109991,
+     "h_over_hstop": 1.6,
+     "final_max_fluidity": 0.08423519204328318,
+     "flowing": true
+    },
+    {
+     "theta_deg": 28.0,
+     "h_over_d": 1.1686621268047124,
+     "h_over_hstop": 0.6,
+     "final_max_fluidity": 0.0,
+     "flowing": false
+    },
+    {
+     "theta_deg": 28.0,
+     "h_over_d": 1.655604679640009,
+     "h_over_hstop": 0.85,
+     "final_max_fluidity": 1.5e-323,
+     "flowing": false
+    },
+    {
+     "theta_deg": 28.0,
+     "h_over_d": 2.239935743042365,
+     "h_over_hstop": 1.15,
+     "final_max_fluidity": 0.03279632717571381,
+     "flowing": true
+    },
+    {
+     "theta_deg": 28.0,
+     "h_over_d": 3.1164323381459,
+     "h_over_hstop": 1.6,
+     "final_max_fluidity": 0.09937899859089058,
+     "flowing": true
+    }
+   ],
+   "ngf_thick_layer_h200_surface_velocity_ratio_to_linear_bagnold": 0.981761549916138,
+   "flow_rule_fit": {
+    "beta": 0.05262648401122367,
+    "intercept": -0.07236420868757552,
+    "r2": 0.780815452032438,
+    "n_points": 42,
+    "pouliquen_beta_glass_beads": 0.136
+   },
+   "salt_like_whatif_mu_s_tan34": {
+    "h=2.5d": {
+     "theta_stop_ngf_deg": 37.432856337813995,
+     "theta_stop_pouliquen_deg": 37.90496996728099
+    },
+    "h=7.0d": {
+     "theta_stop_ngf_deg": 34.454421115909966,
+     "theta_stop_pouliquen_deg": 35.92232094303021
+    },
+    "h=15.0d": {
+     "theta_stop_ngf_deg": 34.09938067323868,
+     "theta_stop_pouliquen_deg": 35.01008300607183
+    }
+   }
+  },
+  "notes": "Glass-bead parameters (d=0.5 mm): mu_s=tan20.9, mu_2=tan32.76, I0=0.279, b=(mu_2-mu_s)/I0, A=0.48, phi=0.6. NGF BCs: g=0 at rough base, dg/dz=0 at free surface. Timings: {\"local_transient_s\": 40.1, \"ngf_hstop_bisection_s\": 49.3, \"ngf_phase_check_s\": 2.1, \"ngf_profiles_flowrule_s\": 0.3}"
+ },
+ "analytic-orifice-screw": {
+  "id": "analytic-orifice-screw",
+  "method": "Beverloo/Hagen-type orifice discharge, Jenike arching, Janssen, screw volumetric model",
+  "code": "custom Python (numpy/scipy/matplotlib)",
+  "version": "python 3.12.3, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2",
+  "status": "ran",
+  "wall_s": 4.72,
+  "cores": 1,
+  "key_results": {
+   "assumptions": {
+    "rho_b_salt": 1250.0,
+    "d50_salt_mm": 0.425,
+    "C": 0.58,
+    "k": 1.5,
+    "k_band": [
+     1.4,
+     1.6
+    ],
+    "C_slot": 1.03,
+    "rho_b_AlSi10Mg_assumed": 1350.0
+   },
+   "beverloo_table": [
+    {
+     "orifice": "salt, exit 3.00 mm (no core tip)",
+     "W_g_s": 0.616,
+     "W_g_s_k1p6": 0.5887,
+     "W_g_s_k1p4": 0.6441,
+     "W_g_s_k0_hagen_type": 1.1194,
+     "mg_per_rev_60rpm": 616.0303,
+     "s_per_50g": 81.1648
+    },
+    {
+     "orifice": "salt, core-tip annulus, slot",
+     "W_g_s": 0.2199,
+     "W_g_s_k1p6": 0.1883,
+     "W_g_s_k1p4": 0.2531,
+     "W_g_s_k0_hagen_type": 0.8558,
+     "mg_per_rev_60rpm": 219.9217,
+     "s_per_50g": 227.3536
+    },
+    {
+     "orifice": "salt, core-tip annulus, hydraulic",
+     "W_g_s": 0.223,
+     "W_g_s_k1p6": 0.1909,
+     "W_g_s_k1p4": 0.2567,
+     "W_g_s_k0_hagen_type": 0.8677,
+     "mg_per_rev_60rpm": 222.9893,
+     "s_per_50g": 224.226
+    },
+    {
+     "orifice": "salt, core-tip annulus, area-equiv.",
+     "W_g_s": 0.5372,
+     "W_g_s_k1p6": 0.512,
+     "W_g_s_k1p4": 0.5631,
+     "W_g_s_k0_hagen_type": 1.0056,
+     "mg_per_rev_60rpm": 537.2037,
+     "s_per_50g": 93.0746
+    },
+    {
+     "orifice": "salt, Hall 2.54 mm",
+     "W_g_s": 0.3585,
+     "W_g_s_k1p6": 0.3388,
+     "W_g_s_k1p4": 0.3789,
+     "W_g_s_k0_hagen_type": 0.7383,
+     "mg_per_rev_60rpm": 358.4959,
+     "s_per_50g": 139.4716
+    },
+    {
+     "orifice": "salt, Carney 5.08 mm",
+     "W_g_s": 2.987,
+     "W_g_s_k1p6": 2.9161,
+     "W_g_s_k1p4": 3.059,
+     "W_g_s_k0_hagen_type": 4.1767,
+     "mg_per_rev_60rpm": 2987.0404,
+     "s_per_50g": 16.739
+    },
+    {
+     "orifice": "AlSi10Mg, Hall 2.54 mm",
+     "W_g_s": 0.7568,
+     "W_g_s_k1p6": 0.7542,
+     "W_g_s_k1p4": 0.7595,
+     "W_g_s_k0_hagen_type": 0.7974,
+     "mg_per_rev_60rpm": 756.8398,
+     "s_per_50g": 66.0642
+    },
+    {
+     "orifice": "AlSi10Mg, Carney 5.08 mm",
+     "W_g_s": 4.3952,
+     "W_g_s_k1p6": 4.3875,
+     "W_g_s_k1p4": 4.4028,
+     "W_g_s_k0_hagen_type": 4.5108,
+     "mg_per_rev_60rpm": 4395.178,
+     "s_per_50g": 11.3761
+    }
+   ],
+   "annulus_gap_mm": 1.07,
+   "annulus_gap_over_d50": 2.52,
+   "annulus_slot_capacity_mg_rev_vs_d_and_rho_b": {
+    "d=0.360mm,rho_b=1200": 286.4,
+    "d=0.360mm,rho_b=1250": 298.3,
+    "d=0.360mm,rho_b=1300": 310.3,
+    "d=0.425mm,rho_b=1200": 211.1,
+    "d=0.425mm,rho_b=1250": 219.9,
+    "d=0.425mm,rho_b=1300": 228.7,
+    "d=0.490mm,rho_b=1200": 143.9,
+    "d=0.490mm,rho_b=1250": 149.9,
+    "d=0.490mm,rho_b=1300": 155.9
+   },
+   "outlet_limited_mg_rev_at_measured_tilts_no_fit": {
+    "0.0": 0.0,
+    "22.5": 136.0,
+    "27.5": 149.4,
+    "45.0": 184.9
+   },
+   "volumetric_full_fill_mg_rev": 3630.0,
+   "swept_volume_per_pitch_mm3": 2904.0,
+   "effective_fill_fraction_measured_pct": [
+    0.77,
+    2.98,
+    2.89,
+    5.37
+   ],
+   "effective_fill_fraction_DEM_pct": [
+    0.91,
+    1.96,
+    2.89,
+    4.22
+   ],
+   "fill_law_A_fit": {
+    "form": "m = a + b sin(tilt) [mg/rev] == rho_b V_p (phi0 + phi1 sin tilt)",
+    "a_mg_rev": 20.9,
+    "b_mg_rev": 227.2,
+    "phi0_pct": 0.575,
+    "phi1_pct": 6.26,
+    "pred_at_measured_tilts": [
+     20.9,
+     107.8,
+     125.8,
+     181.5
+    ],
+    "residuals_mg_rev": [
+     7.1,
+     0.2,
+     -20.8,
+     13.5
+    ],
+    "rmse_mg_rev": 12.9,
+    "residual_vs_DEM_mg_rev": [
+     12.1,
+     -36.8,
+     -20.8,
+     -28.5
+    ],
+    "fitted_parameters": 2,
+    "data_points": 4
+   },
+   "fill_law_B_fit": {
+    "form": "m = a + b sqrt(sin tilt)",
+    "a_mg_rev": 18.5,
+    "b_mg_rev": 169.2,
+    "pred_at_measured_tilts": [
+     18.5,
+     123.2,
+     133.5,
+     160.8
+    ],
+    "residuals_mg_rev": [
+     9.5,
+     -15.2,
+     -28.5,
+     34.2
+    ],
+    "rmse_mg_rev": 24.0,
+    "b_vs_beverloo_annulus_full_g": 0.769
+   },
+   "law_A_refit_to_DEM": {
+    "a": 25.2,
+    "b": 168.4,
+    "rmse_mg_rev": 11.1
+   },
+   "jenike": {
+    "H_cone": 2.617,
+    "sigma_ref_Pa": 3000.0,
+    "n": 0.6,
+    "ff": 1.5,
+    "table": {
+     "ffc=1": {
+      "Bc_mm": 1176.055,
+      "sigma_c_crit_Pa": 5511.35,
+      "Bc_mm_range": [
+       762.5229,
+       6720.2
+      ]
+     },
+     "ffc=2": {
+      "Bc_mm": 207.899,
+      "sigma_c_crit_Pa": 974.28,
+      "Bc_mm_range": [
+       57.1366,
+       298.4
+      ]
+     },
+     "ffc=4": {
+      "Bc_mm": 36.752,
+      "sigma_c_crit_Pa": 172.23,
+      "Bc_mm_range": [
+       1.7855,
+       94.0
+      ]
+     },
+     "ffc=10": {
+      "Bc_mm": 3.719,
+      "sigma_c_crit_Pa": 17.43,
+      "Bc_mm_range": [
+       0.0183,
+       20.4
+      ]
+     }
+    },
+    "stress_in_arch_over_3mm_exit_Pa": 14.1,
+    "stress_in_arch_over_annulus_gap_Pa": 10.9,
+    "mass_flow_limit_half_angle_deg": {
+     "delta=40,phi_w=15": 33.7,
+     "delta=40,phi_w=20": 27.0,
+     "delta=40,phi_w=25": 20.0
+    }
+   },
+   "janssen": {
+    "K": 0.4,
+    "table": {
+     "mu_w=0.3": {
+      "sigma_inf_Pa": 533.9,
+      "length_scale_mm": 43.5,
+      "sigma_at_50mm_Pa": 364.6
+     },
+     "mu_w=0.4": {
+      "sigma_inf_Pa": 400.4,
+      "length_scale_mm": 32.7,
+      "sigma_at_50mm_Pa": 313.8
+     },
+     "mu_w=0.5": {
+      "sigma_inf_Pa": 320.4,
+      "length_scale_mm": 26.1,
+      "sigma_at_50mm_Pa": 273.1
+     }
+    },
+    "hydrostatic_at_50mm_Pa": 613.1
+   }
+  },
+  "notes": "Closed-form models; fill laws A and B have 2 parameters each fitted to the 4 measured points (stated, with residuals). Outlet-limited curve and all Beverloo/Jenike/Janssen numbers are not fitted."
+ },
+ "moisture-sorption": {
+  "id": "moisture-sorption",
+  "method": "GAB isotherm + Fickian vapour diffusion + Kelvin brine bridges + Rabinovich capillary force -> Bond number -> Rumpf/Mohr-Coulomb/Jenike flow prediction",
+  "code": "custom Python (numpy/scipy solve_ivp BDF/matplotlib)",
+  "version": "python 3.12.3, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2",
+  "status": "ran",
+  "wall_s": 7.26,
+  "cores": 1,
+  "key_results": {
+   "inputs": {
+    "NaCl": {
+     "rho_p": 2165.0,
+     "d": 0.000425,
+     "rho_b": 1250.0,
+     "DRH": 0.753,
+     "gamma": 0.082,
+     "brine_vol_per_kg_water": 0.001135701316005257,
+     "eps": 0.42263279445727486,
+     "R": 0.0002125,
+     "m_p": 8.70208484136526e-08,
+     "W_p": 8.536745229379321e-07,
+     "SSA": 6.520853144953132,
+     "X_m": 1.9497350903409864e-06,
+     "D_eff": 7.012025672527218e-06
+    },
+    "BaCl2.2H2O": {
+     "rho_p": 3097.0,
+     "d": 0.000425,
+     "rho_b": 1788.1062355658198,
+     "DRH": 0.9,
+     "gamma": 0.076,
+     "brine_vol_per_kg_water": 0.0010702054794520547,
+     "eps": 0.42263279445727486,
+     "R": 0.0002125,
+     "m_p": 1.2448201733814415e-07,
+     "W_p": 1.2211685900871942e-06,
+     "SSA": 4.558491139432848,
+     "X_m": 1.3629888506904215e-06,
+     "D_eff": 7.012025672527218e-06
+    }
+   },
+   "D_vapour_air_m2_s": 2.5521059932553944e-05,
+   "c_sat_kg_m3": 0.023036201137696343,
+   "H_asperity_gap_nm": [
+    50,
+    200,
+    1000
+   ],
+   "F_asperity_scale_N": 4.836393421169301e-08,
+   "Bo_dry_baseline_NaCl": 0.05665383341328718,
+   "Bo_max_full_bridge_NaCl": 128.2508743505803,
+   "bridging_threshold_RH": {
+    "NaCl,H=50nm": 0.7352099750366305,
+    "NaCl,H=200nm": 0.7485125387331755,
+    "NaCl,H=1000nm": 0.7521003606428202,
+    "BaCl2.2H2O,H=50nm": 0.8802756700192081,
+    "BaCl2.2H2O,H=200nm": 0.8950278655148415,
+    "BaCl2.2H2O,H=1000nm": 0.8990033682685333
+   },
+   "kelvin_radius_nm_NaCl": {
+    "RH=40": 0.9448728792787927,
+    "RH=60": 2.6315879093694243,
+    "RH=75": 149.73047141814138
+   },
+   "V_kelvin_75pct_H200_um3": 16.58184746787734,
+   "willett_over_rabinovich_at_VK75": 0.9925995686669692,
+   "time_dependent_cases": {
+    "NaCl_RH40_L10mm": {
+     "Bo_bed_t0": 0.05665383341328718,
+     "Bo_bed_10min": 0.05665383341328718,
+     "Bo_bed_1h": 0.05665383341328718,
+     "mean_RH_1h": 0.40000000000002356,
+     "t_mean_RH_within_1pct_of_top_s": 12.82032420404088,
+     "adsorbed_water_1h_ppm": 2.586617896973718,
+     "bridging_threshold_RH": 0.7485125387331755,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.19803644955034502,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl_RH60_L10mm": {
+     "Bo_bed_t0": 0.05665383341328718,
+     "Bo_bed_10min": 0.05665383341328718,
+     "Bo_bed_1h": 0.05665383341328718,
+     "mean_RH_1h": 0.6000000000000799,
+     "t_mean_RH_within_1pct_of_top_s": 18.224067394510566,
+     "adsorbed_water_1h_ppm": 3.905835245527235,
+     "bridging_threshold_RH": 0.7485125387331755,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.19803644955034502,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl_RH75_L10mm": {
+     "Bo_bed_t0": 0.05665383341328718,
+     "Bo_bed_10min": 42.59638037671344,
+     "Bo_bed_1h": 42.596382566270485,
+     "mean_RH_1h": 0.7500000000002597,
+     "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+     "adsorbed_water_1h_ppm": 5.723603961864319,
+     "bridging_threshold_RH": 0.7485125387331755,
+     "t_half_bed_bridged_s": 36.824590210056094,
+     "t_full_bed_bridged_s": 39.508194543709735,
+     "sigma_t_Pa": 275.0274855154771,
+     "sigma_c_Pa": 697.7810446817629,
+     "ffc_at_400Pa": 0.5732457237820613,
+     "ffc_at_3kPa": 4.299342928365459,
+     "Bc_mm": 148.89789196743018,
+     "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl_RH75_L40mm": {
+     "Bo_bed_t0": 0.05665383341328718,
+     "Bo_bed_10min": 12.109121666840242,
+     "Bo_bed_1h": 42.59642415307631,
+     "mean_RH_1h": 0.7500000014539087,
+     "t_mean_RH_within_1pct_of_top_s": 375.2006094190625,
+     "adsorbed_water_1h_ppm": 5.723603986472609,
+     "bridging_threshold_RH": 0.7485125387331755,
+     "t_half_bed_bridged_s": 613.9151656980346,
+     "t_full_bed_bridged_s": 658.6544388240947,
+     "sigma_t_Pa": 275.027754024537,
+     "sigma_c_Pa": 697.7817259247009,
+     "ffc_at_400Pa": 0.5732451641233792,
+     "ffc_at_3kPa": 4.299338730925344,
+     "Bc_mm": 148.89803733629364,
+     "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl_RH80_L10mm": {
+     "Bo_bed_t0": 0.05665383341328718,
+     "Bo_bed_10min": 128.2508743505803,
+     "Bo_bed_1h": 128.2508743505803,
+     "mean_RH_1h": 0.7530000000006517,
+     "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+     "adsorbed_water_1h_ppm": 5.77480414137334,
+     "bridging_threshold_RH": 0.7485125387331755,
+     "t_half_bed_bridged_s": 0.1,
+     "t_full_bed_bridged_s": 0.1,
+     "vapour_flux_g_m2_h": 49.73703962960747,
+     "pore_saturation_1h": 0.013365366365875138,
+     "t_to_pore_saturation_10pct_h": 7.482024604676985,
+     "sigma_t_Pa": 828.0636373975025,
+     "sigma_c_Pa": 2100.9067834919856,
+     "ffc_at_400Pa": 0.19039397803987618,
+     "ffc_at_3kPa": 1.4279548352990714,
+     "Bc_mm": 448.3076656585005,
+     "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "BaCl2.2H2O_RH40_L10mm": {
+     "Bo_bed_t0": 0.03960463330312132,
+     "Bo_bed_10min": 0.03960463330312132,
+     "Bo_bed_1h": 0.03960463330312132,
+     "mean_RH_1h": 0.40000000000002356,
+     "t_mean_RH_within_1pct_of_top_s": 12.82032420404088,
+     "adsorbed_water_1h_ppm": 1.808210444607071,
+     "bridging_threshold_RH": 0.8950278655148415,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.1384400753233765,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O_RH60_L10mm": {
+     "Bo_bed_t0": 0.03960463330312132,
+     "Bo_bed_10min": 0.03960463330312132,
+     "Bo_bed_1h": 0.03960463330312132,
+     "mean_RH_1h": 0.6000000000000799,
+     "t_mean_RH_within_1pct_of_top_s": 18.224067394510566,
+     "adsorbed_water_1h_ppm": 2.730427286589107,
+     "bridging_threshold_RH": 0.8950278655148415,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.1384400753233765,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O_RH75_L10mm": {
+     "Bo_bed_t0": 0.03960463330312132,
+     "Bo_bed_10min": 0.03960463330312132,
+     "Bo_bed_1h": 0.03960463330312132,
+     "mean_RH_1h": 0.7500000000002597,
+     "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+     "adsorbed_water_1h_ppm": 4.001163247476994,
+     "bridging_threshold_RH": 0.8950278655148415,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.1384400753233765,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O_RH80_L10mm": {
+     "Bo_bed_t0": 0.03960463330312132,
+     "Bo_bed_10min": 0.03960463330312132,
+     "Bo_bed_1h": 0.03960463330312132,
+     "mean_RH_1h": 0.8000000000044449,
+     "t_mean_RH_within_1pct_of_top_s": 27.793348861256298,
+     "adsorbed_water_1h_ppm": 4.685599563177299,
+     "bridging_threshold_RH": 0.8950278655148415,
+     "t_half_bed_bridged_s": null,
+     "t_full_bed_bridged_s": null,
+     "sigma_t_Pa": 0.36579071765608184,
+     "sigma_c_Pa": 0.9280593487685754,
+     "ffc_at_400Pa": 431.0069183945537,
+     "ffc_at_3kPa": 3232.5518879591523,
+     "Bc_mm": 0.1384400753233765,
+     "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    }
+   },
+   "equilibrium_table": {
+    "NaCl,H=50nm,RH=30": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=50nm,RH=40": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=50nm,RH=60": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=50nm,RH=75": {
+     "Bo": 106.8373,
+     "sigma_c_Pa": 1750.125,
+     "ffc_at_400Pa": 0.229,
+     "Bc_mm": 373.4552,
+     "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl,H=50nm,RH=80": {
+     "Bo": 128.2509,
+     "sigma_c_Pa": 2100.907,
+     "ffc_at_400Pa": 0.19,
+     "Bc_mm": 448.3077,
+     "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl,H=200nm,RH=30": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=200nm,RH=40": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=200nm,RH=60": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=200nm,RH=75": {
+     "Bo": 42.5964,
+     "sigma_c_Pa": 697.781,
+     "ffc_at_400Pa": 0.573,
+     "Bc_mm": 148.8979,
+     "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl,H=200nm,RH=80": {
+     "Bo": 128.2509,
+     "sigma_c_Pa": 2100.907,
+     "ffc_at_400Pa": 0.19,
+     "Bc_mm": 448.3077,
+     "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "NaCl,H=1000nm,RH=30": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=1000nm,RH=40": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=1000nm,RH=60": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=1000nm,RH=75": {
+     "Bo": 0.0567,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.198,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "NaCl,H=1000nm,RH=80": {
+     "Bo": 128.2509,
+     "sigma_c_Pa": 2100.907,
+     "ffc_at_400Pa": 0.19,
+     "Bc_mm": 448.3077,
+     "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+    },
+    "BaCl2.2H2O,H=50nm,RH=30": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=50nm,RH=40": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=50nm,RH=60": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=50nm,RH=75": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=50nm,RH=80": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=200nm,RH=30": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=200nm,RH=40": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=200nm,RH=60": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=200nm,RH=75": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=200nm,RH=80": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=1000nm,RH=30": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=1000nm,RH=40": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=1000nm,RH=60": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=1000nm,RH=75": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    },
+    "BaCl2.2H2O,H=1000nm,RH=80": {
+     "Bo": 0.0396,
+     "sigma_c_Pa": 0.928,
+     "ffc_at_400Pa": 431.007,
+     "Bc_mm": 0.1384,
+     "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+    }
+   },
+   "pde_rhs_evaluations": 6928
+  },
+  "notes": "Many inputs are assumed (GAB C, K; asperity height and radius; Hamaker constant; coordination; boundary layer; wicking above DRH; BaCl2.2H2O DRH and brine surface tension). See README."
+ },
+ "bayes-grainlearning": {
+  "id": "bayes-grainlearning",
+  "method": "Iterative Bayesian filtering (sequential Monte Carlo + GMM resampling) calibrating (mu_s, Bo) of a stand-in doser model against measured salt mg/rev vs tilt",
+  "code": "GrainLearning (pip grainlearning)",
+  "version": "2.0.5",
+  "status": "ran",
+  "wall_s": 1.0,
+  "cores": 1,
+  "key_results": {
+   "iterations_run": 6,
+   "samples_per_iteration": 40,
+   "model_evaluations": 240,
+   "posterior_mean": {
+    "mu_s": 0.62,
+    "Bo": 0.0172
+   },
+   "posterior_sd": {
+    "mu_s": 0.0209,
+    "Bo": 0.0129
+   },
+   "most_probable_sample": {
+    "mu_s": 0.622,
+    "Bo": 0.0017
+   },
+   "final_sigma_normalized": 0.00039955096550300603,
+   "fit_at_posterior_mean_mg_per_rev": {
+    "0.0": 27.7,
+    "22.5": 102.6,
+    "27.5": 117.9,
+    "45.0": 155.6
+   },
+   "fit_at_most_probable_mg_per_rev": {
+    "0.0": 27.9,
+    "22.5": 103.9,
+    "27.5": 119.3,
+    "45.0": 157.3
+   },
+   "standin_at_nominal_dem_params_mg_per_rev": {
+    "0.0": 27.9,
+    "22.5": 118.5,
+    "27.5": 131.5,
+    "45.0": 165.0
+   },
+   "measured_mg_per_rev": {
+    "0.0": 28.0,
+    "22.5": 108.0,
+    "27.5": 105.0,
+    "45.0": 195.0
+   },
+   "per_iteration": [
+    {
+     "iter": 0,
+     "mean": [
+      0.5058278969621415,
+      0.3523297920883731
+     ],
+     "sd": [
+      0.19377016402006714,
+      0.2858291220510969
+     ],
+     "best": [
+      0.6062500000000001,
+      0.07407407407407407
+     ],
+     "sigma": 0.18479980870203389,
+     "ess": 0.2987239850802605
+    },
+    {
+     "iter": 1,
+     "mean": [
+      0.520864643828045,
+      0.14493923286667798
+     ],
+     "sd": [
+      0.1124433349238987,
+      0.1181726927260801
+     ],
+     "best": [
+      0.5707693721900713,
+      0.0060848186757640685
+     ],
+     "sigma": 0.030296116562283464,
+     "ess": 0.3036963344415085
+    },
+    {
+     "iter": 2,
+     "mean": [
+      0.5596083363999154,
+      0.07938038822117559
+     ],
+     "sd": [
+      0.07344166703893604,
+      0.06702020803488276
+     ],
+     "best": [
+      0.6037107412624374,
+      0.003314605419659476
+     ],
+     "sigma": 0.007152706894978638,
+     "ess": 0.30270107370657967
+    },
+    {
+     "iter": 3,
+     "mean": [
+      0.5951856873157817,
+      0.04405487161735322
+     ],
+     "sd": [
+      0.04694084878210472,
+      0.03795947488011705
+     ],
+     "best": [
+      0.6491726479225459,
+      0.007110683489358043
+     ],
+     "sigma": 0.0027327089563048646,
+     "ess": 0.32102011852316603
+    },
+    {
+     "iter": 4,
+     "mean": [
+      0.6150334241056806,
+      0.02127914266574627
+     ],
+     "sd": [
+      0.025923163376152723,
+      0.016961817766092777
+     ],
+     "best": [
+      0.621858752697553,
+      0.010864319578442657
+     ],
+     "sigma": 0.0010444199739359566,
+     "ess": 0.23406360375146823
+    },
+    {
+     "iter": 5,
+     "mean": [
+      0.6200291405048387,
+      0.017194765307593955
+     ],
+     "sd": [
+      0.020927808869025104,
+      0.012892331943418142
+     ],
+     "best": [
+      0.622013933342443,
+      0.001687734598761344
+     ],
+     "sigma": 0.00039955096550300603,
+     "ess": 0.5825581453171014
+    }
+   ]
+  },
+  "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold), not DEM. GrainLearning's likelihood uses a relative (obs-scaled) Gaussian whose width sigma is tuned each iteration to an effective sample size of 0.3, so the posterior width reflects that annealing scheme rather than the measurement error bars."
+ },
+ "bayes-gp-emulator-mcmc": {
+  "id": "bayes-gp-emulator-mcmc",
+  "method": "Gaussian-process emulator on a 48-point Sobol design over (mu_s, mu_r, Bo) of a stand-in doser model + emcee posterior; identifiability with and without an angle-of-repose observable",
+  "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
+  "version": "scikit-learn 1.9.1, emcee 3.1.6",
+  "status": "ran",
+  "wall_s": 178.2,
+  "cores": 1,
+  "key_results": {
+   "design_points": 48,
+   "prior_box": {
+    "mu_s": [
+     0.1,
+     1.0
+    ],
+    "mu_r": [
+     0.02,
+     0.6
+    ],
+    "Bo": [
+     0.0,
+     1.5
+    ]
+   },
+   "emulator_validation_400_heldout": [
+    {
+     "output": "mg@0",
+     "rmse": 2.119379736542014,
+     "r2": 0.9788975710045201,
+     "kernel": "1.92**2 * Matern(length_scale=[0.25, 4.72, 1.51], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+    },
+    {
+     "output": "mg@22.5",
+     "rmse": 2.47975470576337,
+     "r2": 0.9951873310779576,
+     "kernel": "1.8**2 * Matern(length_scale=[0.676, 4.43, 1.13], nu=2.5) + WhiteKernel(noise_level=0.00212)"
+    },
+    {
+     "output": "mg@27.5",
+     "rmse": 2.571951120717182,
+     "r2": 0.9953492258650324,
+     "kernel": "2.23**2 * Matern(length_scale=[1.4, 4.36, 1.24], nu=2.5) + WhiteKernel(noise_level=0.00356)"
+    },
+    {
+     "output": "mg@45",
+     "rmse": 0.08404595770555258,
+     "r2": 0.9999955105262346,
+     "kernel": "31.6**2 * Matern(length_scale=[14.3, 12.3, 10.8], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+    },
+    {
+     "output": "AoR",
+     "rmse": 0.23941940995938055,
+     "r2": 0.9994849480626304,
+     "kernel": "7.73**2 * Matern(length_scale=[2.92, 2.19, 8.04], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+    }
+   ],
+   "synthetic_AoR_obs_deg": 29.69,
+   "AoR_sd_deg": 1.5,
+   "posterior": {
+    "dosing_only": {
+     "mean": {
+      "mu_s": 0.5633,
+      "mu_r": 0.2066,
+      "Bo": 0.1347
+     },
+     "sd": {
+      "mu_s": 0.1149,
+      "mu_r": 0.1427,
+      "Bo": 0.1054
+     },
+     "p05_p95": {
+      "mu_s": [
+       0.3273,
+       0.7139
+      ],
+      "mu_r": [
+       0.0341,
+       0.484
+      ],
+      "Bo": [
+       0.0113,
+       0.3395
+      ]
+     },
+     "corr_mu_s_mu_r": -0.471,
+     "corr_mu_s_Bo": -0.554,
+     "corr_mu_r_Bo": -0.243,
+     "acceptance": 0.548,
+     "autocorr_time": [
+      43.41802233079085,
+      39.53918932638577,
+      39.35535796311182
+     ],
+     "n_samples": 4800,
+     "standin_at_posterior_mean_mg_per_rev": [
+      26.3,
+      103.9,
+      118.6,
+      155.2
+     ],
+     "standin_AoR_at_posterior_mean_deg": 31.06
+    },
+    "dosing_plus_AoR": {
+     "mean": {
+      "mu_s": 0.5502,
+      "mu_r": 0.2219,
+      "Bo": 0.1282
+     },
+     "sd": {
+      "mu_s": 0.1128,
+      "mu_r": 0.1337,
+      "Bo": 0.089
+     },
+     "p05_p95": {
+      "mu_s": [
+       0.3617,
+       0.7126
+      ],
+      "mu_r": [
+       0.0774,
+       0.5094
+      ],
+      "Bo": [
+       0.0118,
+       0.295
+      ]
+     },
+     "corr_mu_s_mu_r": -0.816,
+     "corr_mu_s_Bo": -0.392,
+     "corr_mu_r_Bo": -0.053,
+     "acceptance": 0.555,
+     "autocorr_time": [
+      43.675815435274046,
+      42.152287801166054,
+      36.16947929165844
+     ],
+     "n_samples": 4800,
+     "standin_at_posterior_mean_mg_per_rev": [
+      26.3,
+      105.2,
+      119.5,
+      155.2
+     ],
+     "standin_AoR_at_posterior_mean_deg": 31.02
+    }
+   },
+   "equivalent_DEM_cost": {
+    "runs": 192,
+    "note": "48 parameter sets x 4 tilts, one 30-CPU-min revolution each",
+    "cpu_hours": 96.0,
+    "wall_hours_on_4_cores": 24.0
+   }
+  },
+  "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg). GP predictive variance is added to the likelihood variance."
+ }
+}

@@ -1,0 +1,156 @@
+{
+ "id": "bayes-grainlearning",
+ "method": "Iterative Bayesian filtering (sequential Monte Carlo + GMM resampling) calibrating (mu_s, Bo) of a stand-in doser model against measured salt mg/rev vs tilt",
+ "code": "GrainLearning (pip grainlearning)",
+ "version": "2.0.5",
+ "status": "ran",
+ "wall_s": 1.0,
+ "cores": 1,
+ "key_results": {
+  "iterations_run": 6,
+  "samples_per_iteration": 40,
+  "model_evaluations": 240,
+  "posterior_mean": {
+   "mu_s": 0.62,
+   "Bo": 0.0172
+  },
+  "posterior_sd": {
+   "mu_s": 0.0209,
+   "Bo": 0.0129
+  },
+  "most_probable_sample": {
+   "mu_s": 0.622,
+   "Bo": 0.0017
+  },
+  "final_sigma_normalized": 0.00039955096550300603,
+  "fit_at_posterior_mean_mg_per_rev": {
+   "0.0": 27.7,
+   "22.5": 102.6,
+   "27.5": 117.9,
+   "45.0": 155.6
+  },
+  "fit_at_most_probable_mg_per_rev": {
+   "0.0": 27.9,
+   "22.5": 103.9,
+   "27.5": 119.3,
+   "45.0": 157.3
+  },
+  "standin_at_nominal_dem_params_mg_per_rev": {
+   "0.0": 27.9,
+   "22.5": 118.5,
+   "27.5": 131.5,
+   "45.0": 165.0
+  },
+  "measured_mg_per_rev": {
+   "0.0": 28.0,
+   "22.5": 108.0,
+   "27.5": 105.0,
+   "45.0": 195.0
+  },
+  "per_iteration": [
+   {
+    "iter": 0,
+    "mean": [
+     0.5058278969621415,
+     0.3523297920883731
+    ],
+    "sd": [
+     0.19377016402006714,
+     0.2858291220510969
+    ],
+    "best": [
+     0.6062500000000001,
+     0.07407407407407407
+    ],
+    "sigma": 0.18479980870203389,
+    "ess": 0.2987239850802605
+   },
+   {
+    "iter": 1,
+    "mean": [
+     0.520864643828045,
+     0.14493923286667798
+    ],
+    "sd": [
+     0.1124433349238987,
+     0.1181726927260801
+    ],
+    "best": [
+     0.5707693721900713,
+     0.0060848186757640685
+    ],
+    "sigma": 0.030296116562283464,
+    "ess": 0.3036963344415085
+   },
+   {
+    "iter": 2,
+    "mean": [
+     0.5596083363999154,
+     0.07938038822117559
+    ],
+    "sd": [
+     0.07344166703893604,
+     0.06702020803488276
+    ],
+    "best": [
+     0.6037107412624374,
+     0.003314605419659476
+    ],
+    "sigma": 0.007152706894978638,
+    "ess": 0.30270107370657967
+   },
+   {
+    "iter": 3,
+    "mean": [
+     0.5951856873157817,
+     0.04405487161735322
+    ],
+    "sd": [
+     0.04694084878210472,
+     0.03795947488011705
+    ],
+    "best": [
+     0.6491726479225459,
+     0.007110683489358043
+    ],
+    "sigma": 0.0027327089563048646,
+    "ess": 0.32102011852316603
+   },
+   {
+    "iter": 4,
+    "mean": [
+     0.6150334241056806,
+     0.02127914266574627
+    ],
+    "sd": [
+     0.025923163376152723,
+     0.016961817766092777
+    ],
+    "best": [
+     0.621858752697553,
+     0.010864319578442657
+    ],
+    "sigma": 0.0010444199739359566,
+    "ess": 0.23406360375146823
+   },
+   {
+    "iter": 5,
+    "mean": [
+     0.6200291405048387,
+     0.017194765307593955
+    ],
+    "sd": [
+     0.020927808869025104,
+     0.012892331943418142
+    ],
+    "best": [
+     0.622013933342443,
+     0.001687734598761344
+    ],
+    "sigma": 0.00039955096550300603,
+    "ess": 0.5825581453171014
+   }
+  ]
+ },
+ "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold), not DEM. GrainLearning's likelihood uses a relative (obs-scaled) Gaussian whose width sigma is tuned each iteration to an effective sample size of 0.3, so the posterior width reflects that annealing scheme rather than the measurement error bars."
+}

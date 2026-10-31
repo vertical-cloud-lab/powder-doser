@@ -1,0 +1,37 @@
+{
+ "id": "dem-liggghts-aor",
+ "method": "angle of repose, poured heap on a fixed 12 mm base (ISO 4324 style, reduced scale)",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts, compiled 2024-03-31)",
+ "status": "ran",
+ "wall_s": {
+  "dry": 96.3,
+  "coh": 87.1
+ },
+ "cores": 1,
+ "particles": {
+  "dry": {
+   "poured": 4000,
+   "on_base_at_end": 2530
+  },
+  "coh": {
+   "poured": 4000,
+   "on_base_at_end": 3431
+  }
+ },
+ "key_results": {
+  "dry": {
+   "repose_angle_profile_fit_deg": 21.9,
+   "repose_angle_sector_std_deg": 1.4,
+   "repose_angle_apex_iso_deg": 27.5,
+   "apex_height_mm": 3.13
+  },
+  "coh": {
+   "repose_angle_profile_fit_deg": 39.3,
+   "repose_angle_sector_std_deg": 3.6,
+   "repose_angle_apex_iso_deg": 48.8,
+   "apex_height_mm": 6.86
+  }
+ },
+ "notes": "Real-size salt grains (no coarse-graining), E reduced to 2e5 Pa. Profile-fit angle = slope of the sector-averaged heap surface for 1.0 < r < 5.2 mm; apex angle = atan(apex height / base radius) as in ISO 4324."
+}

@@ -1,0 +1,155 @@
+{
+ "id": "bayes-gp-emulator-mcmc",
+ "method": "Gaussian-process emulator on a 48-point Sobol design over (mu_s, mu_r, Bo) of a stand-in doser model + emcee posterior; identifiability with and without an angle-of-repose observable",
+ "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
+ "version": "scikit-learn 1.9.1, emcee 3.1.6",
+ "status": "ran",
+ "wall_s": 178.2,
+ "cores": 1,
+ "key_results": {
+  "design_points": 48,
+  "prior_box": {
+   "mu_s": [
+    0.1,
+    1.0
+   ],
+   "mu_r": [
+    0.02,
+    0.6
+   ],
+   "Bo": [
+    0.0,
+    1.5
+   ]
+  },
+  "emulator_validation_400_heldout": [
+   {
+    "output": "mg@0",
+    "rmse": 2.119379736542014,
+    "r2": 0.9788975710045201,
+    "kernel": "1.92**2 * Matern(length_scale=[0.25, 4.72, 1.51], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   },
+   {
+    "output": "mg@22.5",
+    "rmse": 2.47975470576337,
+    "r2": 0.9951873310779576,
+    "kernel": "1.8**2 * Matern(length_scale=[0.676, 4.43, 1.13], nu=2.5) + WhiteKernel(noise_level=0.00212)"
+   },
+   {
+    "output": "mg@27.5",
+    "rmse": 2.571951120717182,
+    "r2": 0.9953492258650324,
+    "kernel": "2.23**2 * Matern(length_scale=[1.4, 4.36, 1.24], nu=2.5) + WhiteKernel(noise_level=0.00356)"
+   },
+   {
+    "output": "mg@45",
+    "rmse": 0.08404595770555258,
+    "r2": 0.9999955105262346,
+    "kernel": "31.6**2 * Matern(length_scale=[14.3, 12.3, 10.8], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   },
+   {
+    "output": "AoR",
+    "rmse": 0.23941940995938055,
+    "r2": 0.9994849480626304,
+    "kernel": "7.73**2 * Matern(length_scale=[2.92, 2.19, 8.04], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   }
+  ],
+  "synthetic_AoR_obs_deg": 29.69,
+  "AoR_sd_deg": 1.5,
+  "posterior": {
+   "dosing_only": {
+    "mean": {
+     "mu_s": 0.5633,
+     "mu_r": 0.2066,
+     "Bo": 0.1347
+    },
+    "sd": {
+     "mu_s": 0.1149,
+     "mu_r": 0.1427,
+     "Bo": 0.1054
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.3273,
+      0.7139
+     ],
+     "mu_r": [
+      0.0341,
+      0.484
+     ],
+     "Bo": [
+      0.0113,
+      0.3395
+     ]
+    },
+    "corr_mu_s_mu_r": -0.471,
+    "corr_mu_s_Bo": -0.554,
+    "corr_mu_r_Bo": -0.243,
+    "acceptance": 0.548,
+    "autocorr_time": [
+     43.41802233079085,
+     39.53918932638577,
+     39.35535796311182
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     26.3,
+     103.9,
+     118.6,
+     155.2
+    ],
+    "standin_AoR_at_posterior_mean_deg": 31.06
+   },
+   "dosing_plus_AoR": {
+    "mean": {
+     "mu_s": 0.5502,
+     "mu_r": 0.2219,
+     "Bo": 0.1282
+    },
+    "sd": {
+     "mu_s": 0.1128,
+     "mu_r": 0.1337,
+     "Bo": 0.089
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.3617,
+      0.7126
+     ],
+     "mu_r": [
+      0.0774,
+      0.5094
+     ],
+     "Bo": [
+      0.0118,
+      0.295
+     ]
+    },
+    "corr_mu_s_mu_r": -0.816,
+    "corr_mu_s_Bo": -0.392,
+    "corr_mu_r_Bo": -0.053,
+    "acceptance": 0.555,
+    "autocorr_time": [
+     43.675815435274046,
+     42.152287801166054,
+     36.16947929165844
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     26.3,
+     105.2,
+     119.5,
+     155.2
+    ],
+    "standin_AoR_at_posterior_mean_deg": 31.02
+   }
+  },
+  "equivalent_DEM_cost": {
+   "runs": 192,
+   "note": "48 parameter sets x 4 tilts, one 30-CPU-min revolution each",
+   "cpu_hours": 96.0,
+   "wall_hours_on_4_cores": 24.0
+  }
+ },
+ "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg). GP predictive variance is added to the likelihood variance."
+}

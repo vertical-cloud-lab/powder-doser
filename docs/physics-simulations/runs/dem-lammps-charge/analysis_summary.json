@@ -1,0 +1,38 @@
+{
+ "A": {
+  "bed_height_mm": 3.3750000000000004,
+  "phi_bulk": 0.626805512648875,
+  "grains_touching_wall": 60,
+  "grains_on_wall_above_bed": 1,
+  "n_mobile": 800,
+  "grains_near_lid": 0,
+  "final_time_s": 0.2,
+  "final_kinetic_energy_J": 3.5739271e-14,
+  "q_over_m_C_per_kg": 0.0,
+  "wall_sigma_C_per_m2": 0.0
+ },
+ "B": {
+  "bed_height_mm": 3.3750000000000004,
+  "phi_bulk": 0.6119108801371851,
+  "grains_touching_wall": 69,
+  "grains_on_wall_above_bed": 2,
+  "n_mobile": 800,
+  "grains_near_lid": 0,
+  "final_time_s": 0.2,
+  "final_kinetic_energy_J": 1.2317663e-12,
+  "q_over_m_C_per_kg": -1e-05,
+  "wall_sigma_C_per_m2": 1e-05
+ },
+ "C": {
+  "bed_height_mm": 5.375,
+  "phi_bulk": 0.19812720485617502,
+  "grains_touching_wall": 210,
+  "grains_on_wall_above_bed": 100,
+  "n_mobile": 800,
+  "grains_near_lid": 0,
+  "final_time_s": 0.2,
+  "final_kinetic_energy_J": 7.2173872e-08,
+  "q_over_m_C_per_kg": -0.0001,
+  "wall_sigma_C_per_m2": 1e-05
+ }
+}
