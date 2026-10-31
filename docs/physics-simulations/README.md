@@ -53,6 +53,28 @@ attempt to run **all** of the methods found.
 
 One family has no run of its own: **coarse-grained DEM** (family 5). It is used inside runs 11, 13, 14 and 17, where grains were scaled up 2.9–4×.
 
+## What the Edison answers add
+
+All nine tasks succeeded. A session on PR #196 fetched and committed them at 03:34 UTC ([`edison/`](edison): one `.answer.md` and one `.task.json` per query, and the status note). They arrived after the runs above were built, so here is how they line up with them.
+
+- **Precedent (q6): "No."** Edison found no verified publication that does all three steps: infer cohesive and frictional DEM parameters from a small screw doser's *own* response, check them against a shear cell, and predict spreadability from them ([answer](edison/q6_precedent_feeder_as_instrument.answer.md)). It calls this a qualified finding. The closest work:
+  - DEM of paracetamol screw feeding, where adhesion changed the output (López et al.);
+  - friction inferred from a *separate* drawdown test, then used in a cohesionless feeder model (Bhalode 2022);
+  - a 30°-inclined micro-feeder alongside shear-cell flow functions, without DEM inversion (Hou 2024);
+  - two El-Kassem auger-dosing papers, whose full texts it couldn't verify.
+
+  This supports the paper's novelty claim, and it matches what the full texts showed.
+- **Ranking (q1).** Its first choice for this doser is the existing LIGGGHTS DEM, with SJKR/JKR cohesion, as the primary calibration model plus a surrogate for Bayesian inference. Second is EDEM or Rocky as a commercial JKR cross-check. Third is reduced-order feed-factor models, which are fast enough for control loops and sampling ([answer](edison/q1_feeder_simulation_methods.answer.md)).
+- **Calibration (q2).** Calibrate in stages: first the dry parameters (restitution from drop tests, wall friction from a Jenike or inclined-wall test, modulus from the literature), then cohesion with those held fixed. Single tests can't identify the parameters uniquely ([answer](edison/q2_dem_calibration_standard_tests.answer.md)). This agrees with run 29, where a wall-friction observable broke the degeneracy that the tilt sweep left.
+- **Effective parameters (q7, q8).** Treat what the fingerprint gives as *effective, device- and condition-dependent* parameters. A model has to match several responses at once: mg/rev, zero-flow events, release per tap, afterflow, and packing under a stated protocol. Matching salt at one point doesn't identify other powders. Edison suggests a calibrated screw-capacity model for the mean, plus a separate probabilistic model for outlet arching, afterflow and taps ([q7](edison/q7_continuum_reduced_order.answer.md), [q8](edison/q8_tapping_packing_shape.answer.md)). Runs 24 and 25 are first versions of those two pieces.
+- **Spreading (q3).** Parameters calibrated on consolidation have produced an overly cohesive spread layer when transferred (Katagiri et al. 2025). So doser-calibrated parameters need their own spreading check ([answer](edison/q3_spreadability_simulation.answer.md)), as run 7's substrate sensitivity also suggests.
+- **Moisture (q4).** Pendular-bridge DEM predicts forces for an assigned liquid volume. Whether humid air supplies that volume, and whether salt recrystallizes into solid bridges, needs separate sorption, transport and phase-change models ([answer](edison/q4_moisture_capillary.answer.md)). That is the split between run 27 and runs 8 and 11. No run here models solid-bridge caking.
+- **Static (q5).** Keep the mechanical model and add charging only where measured outlet charge-to-mass and wall deposition show it matters. Humidity can push charge generation and decay in opposite directions ([answer](edison/q5_electrostatics.answer.md)).
+- **Learned simulators (q9).** Start with a probabilistic emulator of DEM outputs (GP or a small network), not a pretrained particle simulator. No published checkpoint covers a tapped, intermittently flowing, cohesive auger ([answer](edison/q9_ml_surrogate_simulators.answer.md)). That matches runs 29 and 30.
+- **New methods.** The answers name no method family outside [`LITERATURE.md`](LITERATURE.md). Two things they stress have no run here:
+  - solid-bridge (dissolution–recrystallization) caking of salts;
+  - a commercial EDEM or Rocky cross-check, which needs a licence.
+
 ## What this suggests for the paper (PR #184)
 
 These are smoke tests and small studies, not calibrated predictions. Still, several points bear directly on the plan in `OUTLINE.md` §4A and §2.6 of the draft.

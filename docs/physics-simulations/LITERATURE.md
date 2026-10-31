@@ -6,8 +6,8 @@ of PR #184 and the 28 Oct meeting: inferring cohesion and friction from dosing d
 
 **How it was gathered.** The nine Edison queries in [`edison/run_queries.py`](edison/run_queries.py) could not be
 sent from the session that wrote this survey: every login returned 403 ([`edison/STATUS.md`](edison/STATUS.md)).
-After the key was rotated, a session on PR #196 sent them at 03:00 UTC, and their answers go in `edison/`. The
-catalog below was built without them, from:
+After the key was rotated, a session on PR #196 sent them at 03:00 UTC; all nine succeeded and their answers are in
+[`edison/`](edison/). The catalog below was built before they arrived, from:
 
 - web searches on each query's topic, and
 - **15 open-access full texts read (16 attempted) in a headed Chrome whose traffic left through the doser Pi**, with real pointer
@@ -42,6 +42,16 @@ snippet only.
 | 19 | **Bayesian calibration with sequential Monte Carlo** | Posterior over contact parameters | GrainLearning: iterative Bayesian filtering, RNN surrogates; used against angle of repose, shear cell and sintering in particle technology: Cheng et al. 2024 (**FT**) and 2019 (*abs.*) | The inference step itself (§2.6 of the draft) | GrainLearning |
 | 20 | **Surrogate (emulator) + MCMC or Bayesian optimization** | Cheap stand-in for DEM | Surface energy and rolling resistance by Bayesian optimization against void ratio (Katagiri et al., *abs.*); surrogate optimization on ring shear and consolidation (Mohajeri et al. 2021, *abs.*); regression surrogates over ≥ 10 parameters (Forgber, Khinast & Fink, *abs.*) | Same, with fewer 30-min DEM runs | scikit-learn, GPyTorch, BoTorch, emcee |
 | 21 | **Learned graph-network simulators** | Particle trajectories from data | Differentiable GNS (reverse-mode autodiff through the learned simulator) inverts material properties and boundary conditions from a target runout, with orders of magnitude faster convergence than finite-difference gradients: Choi & Kumar 2024 (**FT**); multi-layer slopes, up to 145× faster than MPM: Choi, Macedo & Liu 2025 (*abs.*) | Fast, differentiable doser surrogate (future) | GNS (PyTorch) |
+
+## What the Edison answers add
+
+They name no method family missing from the table above. The precedent query
+([q6](edison/q6_precedent_feeder_as_instrument.answer.md)) found no verified publication that infers cohesive and
+frictional DEM parameters from a small screw doser's own response and checks them against a shear cell. Its closest
+precedents are López et al. (adhesion changes DEM screw output), Bhalode 2022 (friction from a separate drawdown test,
+then a cohesionless feeder model), Hou 2024 (30°-inclined micro-feeder alongside shear-cell flow functions, no DEM
+inversion) and two El-Kassem auger-dosing papers it could not verify. [`README.md`](README.md) sets the other eight
+answers beside the runs.
 
 ## What the full texts add for this project
 
