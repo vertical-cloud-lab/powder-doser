@@ -37,7 +37,7 @@ This is a transcript of Sterling's phone recording "Oct 28 at 3-09 PM Will - pow
 8. **Figures:** start with an overview figure, sketched in the meeting.
    - It links the cheap doser measurements (feed factor, tapping, angle of repose) to the standard tests (Hall flow, shear cell, PSD, moisture) as a relational matrix.
    - Surrogate models and physics-based simulations find the correlations. Context such as composition and powder history are extra inputs.
-   - Will is to give Claude a photo of the sketch. The other figures wait for another meeting.
+   - Will is to give Claude a photo of the sketch. The other figures wait for another meeting. The photo is in [`2026-10-28-whiteboard.jpg`](2026-10-28-whiteboard.jpg), and [`../figures/make_overview_relations.py`](../figures/make_overview_relations.py) draws the figure from it.
 9. **Side request:** 3D animations of the property tests, with approximate costs (requested at 14:21, now PR #190).
 
 ## Transcript
