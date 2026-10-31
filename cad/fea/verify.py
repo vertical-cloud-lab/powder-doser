@@ -12,6 +12,13 @@
    then the equivalent solid bar (materials.equivalent_bar) used in the frame models must give the same tip
    deflection and twist.
 5. Euler buckling of a pinned 6 mm steel rod (the *BUCKLE step).
+6. Harmonic response (the *STEADY STATE DYNAMICS step used by cases/vibration.py): the cantilever of check 1 under
+   a 100 N harmonic tip load, 2 % modal damping. Well below its first mode it must give the static deflection; at
+   the mode, the static deflection's first-mode share times 1 / (2 zeta).
+7. Heat transfer (the DC3D10 *HEAT TRANSFER step used by cases/thermal.py): a 20 x 20 x 200 mm 6061 pin fin, its
+   base held at 80 C, convection of 10 W/(m^2 K) to 20 C on its sides and tip: the fin equation (with the tip
+   convection) for the tip temperature and the heat it sheds; and a 6061 slab heated through its volume between
+   two faces held at 20 C, against q L^2 / (8 k).
 """
 from __future__ import annotations
 
@@ -175,6 +182,52 @@ def buckling(L=200.0, dia=6.0):
     return dict(fem_N=res.factors[:2], euler_N=math.pi ** 2 * E * I / (4 * L ** 2))
 
 
+def harmonic(h: float = 5.0, L=200.0, b=20.0, P=100.0, zeta=0.02):
+    m = fem.mesh_parts([fem.Part("bar", box(0, -b / 2, -b / 2, L, b, b), material="STEEL1018")], size=h, size_min=h / 2, curv=0)
+    d = fem.Deck(m)
+    d.fix(m.nodes_where(lambda p: p[:, 0] < 1e-6), name="ROOT")
+    r, q = d.rigid_patch(m.nodes_where(lambda p: p[:, 0] > L - 1e-6), "TIP", at=(L, 0, 0))
+    d.node_load(r, F=(0, 0, -P))
+    d.steady_state(5.0, 600.0, 6, zeta=zeta, n_modes=10, prints=["R_TIP"])
+    res = d.solve("verify/harmonic")
+    H = res.harmonic["R_TIP"]
+    f, u = H["f"], np.abs(H[r][:, 2])
+    E, nu = MAT.get("STEEL1018").E, MAT.get("STEEL1018").nu
+    I = b ** 4 / 12
+    G = E / (2 * (1 + nu))
+    static = P * L ** 3 / (3 * E * I) + P * L / (5 / 6 * G * b * b)
+    f1 = res.freqs[0]
+    k_res = int(np.argmin(np.abs(f - f1)))
+    share = 0.9707                                            # first-mode share of a cantilever's static tip deflection
+    return dict(static_exact_mm=static, at_5Hz_mm=float(u[0]), f1_Hz=f1, at_f1_mm=float(u[k_res]),
+                at_f1_expected_mm=static * share / (2 * zeta), amplification=float(u[k_res] / u[0]))
+
+
+def heat_fin(h: float = 4.0, L=200.0, b=20.0, Tb=80.0, Tinf=20.0, hc=10.0):
+    m = fem.mesh_parts([fem.Part("fin", box(0, -b / 2, -b / 2, L, b, b), material="AL6061")], size=h, size_min=h / 2, curv=0)
+    k = 167.0
+    hd = fem.HeatDeck(m, k={"fin": k}, cp={"fin": 896.0}, T0=Tinf)
+    hd.fix_T(m.nodes_where(lambda p: p[:, 0] < 1e-6), Tb, name="BASE")
+    hd.film(m.faces_where(lambda c, n: c[0] > 1e-6), hc, Tinf)
+    res = hd.solve("verify/heat_fin")
+    tip = res.T[m.nodes_where(lambda p: p[:, 0] > L - 1e-6)].mean()
+    A, Pm = (b / 1000) ** 2, 4 * b / 1000
+    mm = math.sqrt(hc * Pm / (k * A))
+    Lm = L / 1000
+    r_ = hc / (mm * k)
+    th_tip = (Tb - Tinf) / (math.cosh(mm * Lm) + r_ * math.sinh(mm * Lm))
+    Q = math.sqrt(hc * Pm * k * A) * (Tb - Tinf) * (math.sinh(mm * Lm) + r_ * math.cosh(mm * Lm)) / (math.cosh(mm * Lm) + r_ * math.sinh(mm * Lm))
+    # slab: 6061, 50 mm thick (x), faces x = 0 and 50 at 20 C, 1 W in 50 x 40 x 40 mm: q = 1e3 mW / 8e4 mm^3
+    ms = fem.mesh_parts([fem.Part("slab", box(0, 0, 0, 50.0, 40.0, 40.0), material="AL6061")], size=4.0, size_min=2.0, curv=0)
+    hs = fem.HeatDeck(ms, k={"slab": k}, cp={"slab": 896.0}, T0=20.0)
+    hs.fix_T(ms.nodes_where(lambda p: (p[:, 0] < 1e-6) | (p[:, 0] > 50 - 1e-6)), 20.0, name="FACES")
+    hs.source("slab", 1000.0)                                  # 1 kW, so the rise is large enough to read
+    rs = hs.solve("verify/heat_slab")
+    q = 1000.0 / (0.05 * 0.04 * 0.04)                         # W/m^3
+    return dict(fin_tip_fem_C=float(tip), fin_tip_exact_C=Tinf + th_tip, fin_heat_exact_W=Q,
+                slab_peak_rise_fem_K=float(np.nanmax(rs.T) - 20.0), slab_peak_rise_exact_K=q * 0.05 ** 2 / (8 * k))
+
+
 def main():
     out = {}
     out["cantilever"] = [cantilever(h) for h in (10.0, 5.0, 2.5)]
@@ -185,6 +238,8 @@ def main():
         out["buckling"] = buckling()
     except Exception as e:                                    # noqa: BLE001
         out["buckling"] = {"error": str(e)}
+    out["harmonic"] = harmonic()
+    out["heat"] = heat_fin()
     OUT.mkdir(exist_ok=True)
     (OUT / "verify.json").write_text(json.dumps(out, indent=1, default=float))
     print(json.dumps(out, indent=1, default=float))

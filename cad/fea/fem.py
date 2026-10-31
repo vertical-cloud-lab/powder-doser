@@ -458,6 +458,16 @@ class Deck:
     def buckle(self, n: int = 3):
         self.step = ("buckle", {"n": n})
 
+    def steady_state(self, f_lo: float, f_hi: float, n_pts: int = 40, zeta: float = 0.02, n_modes: int = 30,
+                     bias: float = 1.0, prints=(), field_at=()):
+        """Harmonic response by modal superposition: a *FREQUENCY step (n_modes, stored), then a *STEADY STATE
+        DYNAMICS sweep f_lo..f_hi (CalculiX adds points round each eigenfrequency) with modal damping zeta, the
+        loads (cloads/dloads/rigid-patch loads) as the harmonic amplitudes. prints: node sets whose U (real and
+        imaginary parts) go to the .dat at every frequency; field_at: frequencies at which the whole U and S field
+        goes to the .frd (one narrow step each)."""
+        self.step = ("ssd", dict(f_lo=f_lo, f_hi=f_hi, n=n_pts, zeta=zeta, n_modes=n_modes, bias=bias,
+                                 prints=list(prints), field_at=list(field_at)))
+
     def print_reactions(self, name: str):
         self.print_sets.append(name)
 
@@ -519,11 +529,15 @@ class Deck:
         for name, r, q in self.rigid:
             w(f"*RIGID BODY, NSET={name}, REF NODE={r}, ROT NODE={q}")
             w(f"*NSET, NSET=R_{name}\n{r}, {q}")
-        if self.bc and self.step[0] in ("frequency", "buckle"):
+        if self.bc and self.step[0] in ("frequency", "buckle", "ssd"):
             w("*BOUNDARY")
             for name, d0, d1, v in self.bc:
                 w(f"{name}, {d0}, {d1}")
         kind, opt = self.step
+        if kind == "ssd":
+            self._write_ssd(w, opt)
+            path.write_text("\n".join(L) + "\n")
+            return
         if kind == "static":
             w("*STEP" + (", NLGEOM" if opt.get("nlgeom") else "") + "\n*STATIC")
             if self.bc:
@@ -555,6 +569,32 @@ class Deck:
                 w(f"*NODE PRINT, NSET=R_{name}\nU, RF")
         w("*END STEP")
         path.write_text("\n".join(L) + "\n")
+
+    def _loads(self, w):
+        if self.cloads:
+            w("*CLOAD")
+            for nid, d, v in self.cloads:
+                w(f"{nid}, {d}, {v:.6e}")
+        if self.dloads:
+            w("*DLOAD")
+            for e, lab, p in self.dloads:
+                w(f"{e}, P{lab}, {p:.6e}")
+
+    def _write_ssd(self, w, opt):
+        w(f"*STEP\n*FREQUENCY, STORAGE=YES\n{opt['n_modes']}\n*END STEP")
+        w(f"*STEP\n*STEADY STATE DYNAMICS\n{opt['f_lo']}, {opt['f_hi']}, {opt['n']}, {opt['bias']}")
+        w(f"*MODAL DAMPING\n1, {opt['n_modes']}, {opt['zeta']}")
+        self._loads(w)
+        for s in opt["prints"]:
+            w(f"*NODE PRINT, NSET={s}\nU")
+        w("*END STEP")
+        for f in opt["field_at"]:
+            w(f"*STEP\n*STEADY STATE DYNAMICS\n{f * 0.9999:.6f}, {f * 1.0001:.6f}, 2, 1.")
+            w(f"*MODAL DAMPING\n1, {opt['n_modes']}, {opt['zeta']}")
+            self._loads(w)
+            for s in opt["prints"]:
+                w(f"*NODE PRINT, NSET={s}\nU")
+            w("*NODE FILE\nU\n*EL FILE\nS\n*END STEP")
 
     def solve(self, job: str, threads: int = 1, keep: bool = False) -> "Result":
         """Run ccx single-threaded: this CalculiX 2.21 build returns wrong *BUCKLE factors with 4 OpenMP threads
@@ -682,6 +722,29 @@ class Result:
             self.freqs = _eigen(self.dat)
         if deck.step[0] == "buckle":
             self.factors = _buckle(self.dat)
+        if deck.step[0] == "ssd":
+            self.freqs = _eigen(self.dat)
+            self.harmonic = _ssd_prints(self.dat)
+            self.fields = {}                       # frequency -> (U complex (n, 3), S complex (n, 6))
+            byf = {}
+            for b in blocks:
+                if b["name"] in ("DISP", "DISPI", "STRESS", "STRESSI") and b["value"] > 0:
+                    byf.setdefault(round(b["value"], 4), {})[b["name"]] = b
+            for f, bb in byf.items():
+                if "DISP" not in bb or "STRESS" not in bb:
+                    continue
+                Uc = np.zeros((n, 3), complex)
+                Sc = np.zeros((n, 6), complex)
+                for nm, arr, k, im in (("DISP", Uc, 3, False), ("DISPI", Uc, 3, True), ("STRESS", Sc, 6, False),
+                                       ("STRESSI", Sc, 6, True)):
+                    if nm in bb:
+                        ok = bb[nm]["ids"] <= n
+                        v = bb[nm]["vals"][ok][:, :k]
+                        if im:
+                            arr[bb[nm]["ids"][ok] - 1] += 1j * v
+                        else:
+                            arr[bb[nm]["ids"][ok] - 1] += v
+                self.fields[f] = (Uc, Sc)
         self.vm = von_mises(self.S)
 
     # summaries -------------------------------------------------------------------------------------
@@ -724,6 +787,52 @@ class Result:
             if len(parts) >= 4 and parts[0].isdigit():
                 out[int(parts[0])] = np.array([float(v) for v in parts[1:4]])
         return np.concatenate([out.get(r, np.zeros(3)), out.get(q, np.zeros(3))])
+
+
+def _ssd_prints(dat: str) -> dict:
+    """*NODE PRINT U of a steady-state-dynamics step: {set: {"f": (F,), node id: (F, 3) complex}}; the .dat gives the
+    real part, then the imaginary part, per frequency."""
+    out = {}
+    pat = re.compile(r"displacements \(vx,vy,vz\) for set (\S+) and time\s+(\S+)")
+    lines = dat.splitlines()
+    seen = {}
+    i = 0
+    while i < len(lines):
+        mt = pat.search(lines[i])
+        if not mt:
+            i += 1
+            continue
+        name, f = mt.group(1), float(mt.group(2))
+        vals = {}
+        j = i + 2
+        while j < len(lines) and lines[j].strip():
+            p = lines[j].split()
+            vals[int(p[0])] = np.array([float(v) for v in p[1:4]])
+            j += 1
+        key = (name, f)
+        part = seen.get(key, 0)                    # 0: real, 1: imaginary
+        seen[key] = part + 1
+        d = out.setdefault(name, {})
+        rec = d.setdefault(f, {})
+        for nid, v in vals.items():
+            rec[nid] = rec.get(nid, 0) + (v if part % 2 == 0 else 1j * v)
+        i = j
+    res = {}
+    for name, d in out.items():
+        fs = sorted(d)
+        ids = sorted(d[fs[0]])
+        res[name] = {"f": np.array(fs)}
+        for nid in ids:
+            res[name][nid] = np.array([d[f].get(nid, np.zeros(3)) for f in fs])
+    return res
+
+
+def harmonic_vm(Sc: np.ndarray, n_phase: int = 24) -> np.ndarray:
+    """Peak von Mises over one cycle of a harmonic stress field S(t) = Re(Sc e^{i w t})."""
+    best = np.zeros(len(Sc))
+    for ph in np.linspace(0, np.pi, n_phase, endpoint=False):
+        best = np.maximum(best, von_mises((Sc * np.exp(1j * ph)).real))
+    return best
 
 
 def _eigen(dat: str) -> list:
@@ -805,3 +914,198 @@ def render(res: Result, png: Path, field: str = "vm", title: str = "", view=(1, 
     pl.screenshot(str(png))
     pl.close()
     return scale
+
+
+# ----------------------------------------------------------------------------------------------- heat transfer
+SIGMA_MW = 5.669e-11                           # Stefan-Boltzmann, mW / (mm^2 K^4)
+
+
+class HeatDeck:
+    """Steady or transient heat conduction on a Mesh (DC3D10, the C3D10 node order), with body heat sources,
+    convection (*FILM) and radiation (*RADIATE) to a sink temperature on chosen faces, and fixed temperatures.
+
+    Units: mm, t, s, mW, deg C. A conductivity in W/(m K) is the same number in mW/(mm K); a film coefficient in
+    W/(m^2 K) is h * 1e-3 here; a specific heat in J/(kg K) is cp * 1e6; watts are * 1000.
+        hd = HeatDeck(m, k={"plate": 167.0, ...}, cp={"plate": 896.0, ...})
+        hd.source("NEMA 34", watts=12.0); hd.film(faces, h=5.0, T=25.0); hd.radiate(faces, eps=0.9, T=25.0)
+        r = hd.solve("thermal/x"); r.T (n,) nodal temperatures, r.T_of("plate")
+    """
+
+    def __init__(self, mesh: Mesh, k: dict, cp: dict, T0: float = 20.0):
+        self.m, self.k, self.cp, self.T0 = mesh, k, cp, T0
+        self.sources: list = []                # (part index, mW/mm^3)
+        self.films: list = []                  # (elem id, face label, T sink, h mW/(mm^2 K))
+        self.rads: list = []                   # (elem id, face label, T sink, emissivity)
+        self.fixed: list = []                  # (nset name, ids, T)
+        self.step = ("steady", {})
+        self.prints: dict = {}
+
+    def source(self, part: str, watts: float):
+        ip = self.m.names.index(part)
+        vol = self.m.volumes()[self.m.part == ip].sum()
+        self.sources.append((ip, watts * 1000.0 / vol))
+
+    def film(self, faces, h: float, T: float):
+        for f in faces:
+            self.films.append((f[0] + 1, f[1], T, h * 1e-3))
+
+    def radiate(self, faces, eps: float, T: float):
+        for f in faces:
+            self.rads.append((f[0] + 1, f[1], T, eps))
+
+    def fix_T(self, idx, T: float, name: str | None = None):
+        name = name or f"TFIX{len(self.fixed)}"
+        self.fixed.append((name, np.unique(np.asarray(idx, np.int64)) + 1, T))
+
+    def probe(self, name: str, idx):
+        self.prints[name] = np.unique(np.asarray(idx, np.int64)) + 1
+
+    def steady(self):
+        self.step = ("steady", {})
+
+    def transient(self, t_end: float, dt0: float = 10.0, dt_max: float = 300.0):
+        self.step = ("transient", dict(t_end=t_end, dt0=dt0, dt_max=dt_max))
+
+    def write(self, path: Path):
+        m = self.m
+        L = []
+        w = L.append
+        w("*HEADING\nwritten by cad/fea/fem.py (heat transfer)")
+        w("*NODE, NSET=NALL")
+        for i, p in enumerate(m.xyz):
+            w(f"{i + 1}, {p[0]:.6f}, {p[1]:.6f}, {p[2]:.6f}")
+        for ip in range(len(m.names)):
+            idx = np.where(m.part == ip)[0]
+            if len(idx) == 0:
+                continue
+            w(f"*ELEMENT, TYPE=DC3D10, ELSET=P{ip}")
+            for e in idx:
+                w(f"{e + 1}, " + ", ".join(str(int(v) + 1) for v in m.tet[e]))
+        for name, ids, T in self.fixed:
+            w(f"*NSET, NSET={name}")
+            s = [str(int(i)) for i in ids]
+            for i in range(0, len(s), 12):
+                w(", ".join(s[i:i + 12]))
+        for name, ids in self.prints.items():
+            w(f"*NSET, NSET={name}")
+            s = [str(int(i)) for i in ids]
+            for i in range(0, len(s), 12):
+                w(", ".join(s[i:i + 12]))
+        for ip, name in enumerate(m.names):
+            if not (m.part == ip).any():
+                continue
+            mt = MAT.get(m.materials[ip])
+            w(f"*MATERIAL, NAME=H{ip}\n*CONDUCTIVITY\n{self.k[name]}\n*SPECIFIC HEAT\n{self.cp[name] * 1e6:.6e}")
+            w(f"*DENSITY\n{mt.rho:.4e}\n*SOLID SECTION, ELSET=P{ip}, MATERIAL=H{ip}")
+        w("*PHYSICAL CONSTANTS, ABSOLUTE ZERO=-273.15, STEFAN BOLTZMANN=5.669E-11")
+        w(f"*INITIAL CONDITIONS, TYPE=TEMPERATURE\nNALL, {self.T0}")
+        kind, opt = self.step
+        if kind == "steady":
+            w("*STEP, INC=200\n*HEAT TRANSFER, STEADY STATE\n1., 1.")
+        else:
+            w(f"*STEP, INC=2000\n*HEAT TRANSFER\n{opt['dt0']}, {opt['t_end']}, 1e-3, {opt['dt_max']}")
+        if self.fixed:
+            w("*BOUNDARY")
+            for name, ids, T in self.fixed:
+                w(f"{name}, 11, 11, {T}")
+        if self.sources:
+            w("*DFLUX")
+            for ip, q in self.sources:
+                w(f"P{ip}, BF, {q:.6e}")
+        if self.films:
+            w("*FILM")
+            for e, lab, T, h in self.films:
+                w(f"{e}, F{lab}, {T}, {h:.6e}")
+        if self.rads:
+            w("*RADIATE")
+            for e, lab, T, eps in self.rads:
+                w(f"{e}, R{lab}, {T}, {eps}")
+        for name in self.prints:
+            w(f"*NODE PRINT, NSET={name}\nNT")
+        w("*NODE FILE" + (", FREQUENCY=10000" if kind == "transient" else "") + "\nNT")
+        w("*END STEP")
+        path.write_text("\n".join(L) + "\n")
+
+    def solve(self, job: str) -> "HeatResult":
+        d = WORK / job
+        d.mkdir(parents=True, exist_ok=True)
+        self.write(d / "job.inp")
+        env = dict(os.environ, OMP_NUM_THREADS="1", CCX_NPROC_EQUATION_SOLVER="1")
+        t0 = time.time()
+        with _slot():
+            p = subprocess.run([CCX, "-i", "job"], cwd=d, env=env, capture_output=True, text=True, preexec_fn=_mem_cap)
+        wall = time.time() - t0
+        (d / "ccx.log").write_text(p.stdout + p.stderr + f"\nwall {wall:.1f} s\n")
+        if p.returncode != 0 or "*ERROR" in p.stdout:
+            err = [l for l in p.stdout.splitlines() if "ERROR" in l][:5]
+            raise RuntimeError(f"ccx failed in {d}: {err or p.stdout[-800:]}")
+        return HeatResult(self, d, wall)
+
+
+class HeatResult:
+    def __init__(self, deck: HeatDeck, d: Path, wall: float):
+        self.deck, self.dir, self.wall = deck, d, wall
+        m = deck.m
+        self.T = np.full(m.n, np.nan)
+        for b in read_frd(d / "job.frd"):
+            if b["name"] == "NDTEMP":
+                ok = b["ids"] <= m.n
+                self.T[b["ids"][ok] - 1] = b["vals"][ok][:, 0]
+        self.dat = (d / "job.dat").read_text() if (d / "job.dat").exists() else ""
+        self.history = _temp_prints(self.dat)
+
+    def T_of(self, part: str) -> tuple:
+        """(min, mean, max) nodal temperature of a part."""
+        t = self.T[self.deck.m.nodes_of(part)]
+        return float(np.nanmin(t)), float(np.nanmean(t)), float(np.nanmax(t))
+
+
+def _temp_prints(dat: str) -> dict:
+    """*NODE PRINT NT blocks: {set: [(time, mean T, max T)]}."""
+    out = {}
+    pat = re.compile(r"temperatures for set (\S+) and time\s+(\S+)")
+    lines = dat.splitlines()
+    i = 0
+    while i < len(lines):
+        mt = pat.search(lines[i])
+        if not mt:
+            i += 1
+            continue
+        vals = []
+        j = i + 2
+        while j < len(lines) and lines[j].strip():
+            p = lines[j].split()
+            vals.append(float(p[1]))
+            j += 1
+        if vals:
+            out.setdefault(mt.group(1), []).append((float(mt.group(2)), float(np.mean(vals)), float(np.max(vals))))
+        i = j
+    return out
+
+
+def render_T(res: HeatResult, png: Path, title: str = "", view=(1, -1, 0.8), up=(0, 0, 1), clim=None, size=(1400, 1000),
+             zoom: float = 1.0):
+    """Temperature field on the surface (deg C)."""
+    import pyvista as pv
+    m = res.deck.m
+    g = grid(m)
+    g["T"] = res.T
+    L = float(np.ptp(m.xyz, axis=0).max())
+    pl = pv.Plotter(off_screen=True, window_size=size)
+    pl.set_background("white")
+    surf = g.extract_surface(nonlinear_subdivision=1)
+    pl.add_mesh(surf, scalars="T", cmap="inferno", clim=clim, smooth_shading=True,
+                scalar_bar_args=dict(title="temperature (°C)", color="black", vertical=True, position_x=0.86, position_y=0.2,
+                                     height=0.6, width=0.05, fmt="%.0f", title_font_size=16, label_font_size=14))
+    pl.add_mesh(surf.extract_feature_edges(35), color="black", line_width=1)
+    c = m.xyz.mean(0)
+    v = np.asarray(view, float)
+    pl.camera.focal_point = c
+    pl.camera.position = c + v / np.linalg.norm(v) * L * 2.2
+    pl.camera.up = up
+    pl.reset_camera()
+    pl.camera.zoom(zoom)
+    pl.add_text(title, position="upper_left", font_size=11, color="black")
+    png.parent.mkdir(parents=True, exist_ok=True)
+    pl.screenshot(str(png))
+    pl.close()
