@@ -1,0 +1,251 @@
+{
+ "id": "analytic-orifice-screw",
+ "method": "Beverloo/Hagen-type orifice discharge, Jenike arching, Janssen, screw volumetric model",
+ "code": "custom Python (numpy/scipy/matplotlib)",
+ "version": "python 3.12.3, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2",
+ "status": "ran",
+ "wall_s": 4.72,
+ "cores": 1,
+ "key_results": {
+  "assumptions": {
+   "rho_b_salt": 1250.0,
+   "d50_salt_mm": 0.425,
+   "C": 0.58,
+   "k": 1.5,
+   "k_band": [
+    1.4,
+    1.6
+   ],
+   "C_slot": 1.03,
+   "rho_b_AlSi10Mg_assumed": 1350.0
+  },
+  "beverloo_table": [
+   {
+    "orifice": "salt, exit 3.00 mm (no core tip)",
+    "W_g_s": 0.616,
+    "W_g_s_k1p6": 0.5887,
+    "W_g_s_k1p4": 0.6441,
+    "W_g_s_k0_hagen_type": 1.1194,
+    "mg_per_rev_60rpm": 616.0303,
+    "s_per_50g": 81.1648
+   },
+   {
+    "orifice": "salt, core-tip annulus, slot",
+    "W_g_s": 0.2199,
+    "W_g_s_k1p6": 0.1883,
+    "W_g_s_k1p4": 0.2531,
+    "W_g_s_k0_hagen_type": 0.8558,
+    "mg_per_rev_60rpm": 219.9217,
+    "s_per_50g": 227.3536
+   },
+   {
+    "orifice": "salt, core-tip annulus, hydraulic",
+    "W_g_s": 0.223,
+    "W_g_s_k1p6": 0.1909,
+    "W_g_s_k1p4": 0.2567,
+    "W_g_s_k0_hagen_type": 0.8677,
+    "mg_per_rev_60rpm": 222.9893,
+    "s_per_50g": 224.226
+   },
+   {
+    "orifice": "salt, core-tip annulus, area-equiv.",
+    "W_g_s": 0.5372,
+    "W_g_s_k1p6": 0.512,
+    "W_g_s_k1p4": 0.5631,
+    "W_g_s_k0_hagen_type": 1.0056,
+    "mg_per_rev_60rpm": 537.2037,
+    "s_per_50g": 93.0746
+   },
+   {
+    "orifice": "salt, Hall 2.54 mm",
+    "W_g_s": 0.3585,
+    "W_g_s_k1p6": 0.3388,
+    "W_g_s_k1p4": 0.3789,
+    "W_g_s_k0_hagen_type": 0.7383,
+    "mg_per_rev_60rpm": 358.4959,
+    "s_per_50g": 139.4716
+   },
+   {
+    "orifice": "salt, Carney 5.08 mm",
+    "W_g_s": 2.987,
+    "W_g_s_k1p6": 2.9161,
+    "W_g_s_k1p4": 3.059,
+    "W_g_s_k0_hagen_type": 4.1767,
+    "mg_per_rev_60rpm": 2987.0404,
+    "s_per_50g": 16.739
+   },
+   {
+    "orifice": "AlSi10Mg, Hall 2.54 mm",
+    "W_g_s": 0.7568,
+    "W_g_s_k1p6": 0.7542,
+    "W_g_s_k1p4": 0.7595,
+    "W_g_s_k0_hagen_type": 0.7974,
+    "mg_per_rev_60rpm": 756.8398,
+    "s_per_50g": 66.0642
+   },
+   {
+    "orifice": "AlSi10Mg, Carney 5.08 mm",
+    "W_g_s": 4.3952,
+    "W_g_s_k1p6": 4.3875,
+    "W_g_s_k1p4": 4.4028,
+    "W_g_s_k0_hagen_type": 4.5108,
+    "mg_per_rev_60rpm": 4395.178,
+    "s_per_50g": 11.3761
+   }
+  ],
+  "annulus_gap_mm": 1.07,
+  "annulus_gap_over_d50": 2.52,
+  "annulus_slot_capacity_mg_rev_vs_d_and_rho_b": {
+   "d=0.360mm,rho_b=1200": 286.4,
+   "d=0.360mm,rho_b=1250": 298.3,
+   "d=0.360mm,rho_b=1300": 310.3,
+   "d=0.425mm,rho_b=1200": 211.1,
+   "d=0.425mm,rho_b=1250": 219.9,
+   "d=0.425mm,rho_b=1300": 228.7,
+   "d=0.490mm,rho_b=1200": 143.9,
+   "d=0.490mm,rho_b=1250": 149.9,
+   "d=0.490mm,rho_b=1300": 155.9
+  },
+  "outlet_limited_mg_rev_at_measured_tilts_no_fit": {
+   "0.0": 0.0,
+   "22.5": 136.0,
+   "27.5": 149.4,
+   "45.0": 184.9
+  },
+  "volumetric_full_fill_mg_rev": 3630.0,
+  "swept_volume_per_pitch_mm3": 2904.0,
+  "effective_fill_fraction_measured_pct": [
+   0.77,
+   2.98,
+   2.89,
+   5.37
+  ],
+  "effective_fill_fraction_DEM_pct": [
+   0.91,
+   1.96,
+   2.89,
+   4.22
+  ],
+  "fill_law_A_fit": {
+   "form": "m = a + b sin(tilt) [mg/rev] == rho_b V_p (phi0 + phi1 sin tilt)",
+   "a_mg_rev": 20.9,
+   "b_mg_rev": 227.2,
+   "phi0_pct": 0.575,
+   "phi1_pct": 6.26,
+   "pred_at_measured_tilts": [
+    20.9,
+    107.8,
+    125.8,
+    181.5
+   ],
+   "residuals_mg_rev": [
+    7.1,
+    0.2,
+    -20.8,
+    13.5
+   ],
+   "rmse_mg_rev": 12.9,
+   "residual_vs_DEM_mg_rev": [
+    12.1,
+    -36.8,
+    -20.8,
+    -28.5
+   ],
+   "fitted_parameters": 2,
+   "data_points": 4
+  },
+  "fill_law_B_fit": {
+   "form": "m = a + b sqrt(sin tilt)",
+   "a_mg_rev": 18.5,
+   "b_mg_rev": 169.2,
+   "pred_at_measured_tilts": [
+    18.5,
+    123.2,
+    133.5,
+    160.8
+   ],
+   "residuals_mg_rev": [
+    9.5,
+    -15.2,
+    -28.5,
+    34.2
+   ],
+   "rmse_mg_rev": 24.0,
+   "b_vs_beverloo_annulus_full_g": 0.769
+  },
+  "law_A_refit_to_DEM": {
+   "a": 25.2,
+   "b": 168.4,
+   "rmse_mg_rev": 11.1
+  },
+  "jenike": {
+   "H_cone": 2.617,
+   "sigma_ref_Pa": 3000.0,
+   "n": 0.6,
+   "ff": 1.5,
+   "table": {
+    "ffc=1": {
+     "Bc_mm": 1176.055,
+     "sigma_c_crit_Pa": 5511.35,
+     "Bc_mm_range": [
+      762.5229,
+      6720.2
+     ]
+    },
+    "ffc=2": {
+     "Bc_mm": 207.899,
+     "sigma_c_crit_Pa": 974.28,
+     "Bc_mm_range": [
+      57.1366,
+      298.4
+     ]
+    },
+    "ffc=4": {
+     "Bc_mm": 36.752,
+     "sigma_c_crit_Pa": 172.23,
+     "Bc_mm_range": [
+      1.7855,
+      94.0
+     ]
+    },
+    "ffc=10": {
+     "Bc_mm": 3.719,
+     "sigma_c_crit_Pa": 17.43,
+     "Bc_mm_range": [
+      0.0183,
+      20.4
+     ]
+    }
+   },
+   "stress_in_arch_over_3mm_exit_Pa": 14.1,
+   "stress_in_arch_over_annulus_gap_Pa": 10.9,
+   "mass_flow_limit_half_angle_deg": {
+    "delta=40,phi_w=15": 33.7,
+    "delta=40,phi_w=20": 27.0,
+    "delta=40,phi_w=25": 20.0
+   }
+  },
+  "janssen": {
+   "K": 0.4,
+   "table": {
+    "mu_w=0.3": {
+     "sigma_inf_Pa": 533.9,
+     "length_scale_mm": 43.5,
+     "sigma_at_50mm_Pa": 364.6
+    },
+    "mu_w=0.4": {
+     "sigma_inf_Pa": 400.4,
+     "length_scale_mm": 32.7,
+     "sigma_at_50mm_Pa": 313.8
+    },
+    "mu_w=0.5": {
+     "sigma_inf_Pa": 320.4,
+     "length_scale_mm": 26.1,
+     "sigma_at_50mm_Pa": 273.1
+    }
+   },
+   "hydrostatic_at_50mm_Pa": 613.1
+  }
+ },
+ "notes": "Closed-form models; fill laws A and B have 2 parameters each fitted to the 4 measured points (stated, with residuals). Outlet-limited curve and all Beverloo/Jenike/Janssen numbers are not fitted."
+}

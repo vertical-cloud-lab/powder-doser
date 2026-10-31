@@ -1,0 +1,114 @@
+{
+ "id": "dem-lammps-shear-mui",
+ "method": "DEM periodic simple shear (Lees-Edwards) at constant normal stress -> mu(I), cohesive yield line",
+ "code": "LAMMPS (GRANULAR package)",
+ "version": "7 Feb 2024 Update 1 (Ubuntu lammps 20240207+dfsg-1.1build3)",
+ "status": "ran",
+ "wall_s": 947,
+ "cores": 1,
+ "particles": 1500,
+ "key_results": {
+  "noncohesive_mu_I_points": [
+   {
+    "rate_per_s": 2.5,
+    "I": 0.005,
+    "mu": 0.4928,
+    "mu_err": 0.0104,
+    "phi": 0.5613,
+    "Pyy_Pa": 99.7
+   },
+   {
+    "rate_per_s": 7.5,
+    "I": 0.015,
+    "mu": 0.4982,
+    "mu_err": 0.0071,
+    "phi": 0.561,
+    "Pyy_Pa": 97.9
+   },
+   {
+    "rate_per_s": 25.0,
+    "I": 0.0504,
+    "mu": 0.5137,
+    "mu_err": 0.0033,
+    "phi": 0.5562,
+    "Pyy_Pa": 96.3
+   },
+   {
+    "rate_per_s": 75.0,
+    "I": 0.1476,
+    "mu": 0.5535,
+    "mu_err": 0.0069,
+    "phi": 0.5514,
+    "Pyy_Pa": 100.9
+   },
+   {
+    "rate_per_s": 150.0,
+    "I": 0.2753,
+    "mu": 0.5684,
+    "mu_err": 0.0047,
+    "phi": 0.5427,
+    "Pyy_Pa": 116.1
+   }
+  ],
+  "noncohesive_jop_fit": {
+   "mu_s": 0.4877576254980586,
+   "mu_2": 0.624620141459258,
+   "I0": 0.18123435922195552
+  },
+  "noncohesive_yield_line": {
+   "slope": 0.4954,
+   "intercept_Pa": 0.85
+  },
+  "jkr_gamma_J_m2": 0.0085,
+  "jkr_Bo_g": 9.97,
+  "jkr_mu_I_points": [
+   {
+    "rate_per_s": 2.5,
+    "I": 0.005,
+    "mu": 0.5803,
+    "mu_err": 0.0087,
+    "phi": 0.4941,
+    "Pyy_Pa": 99.1
+   },
+   {
+    "rate_per_s": 25.0,
+    "I": 0.0484,
+    "mu": 0.6222,
+    "mu_err": 0.0137,
+    "phi": 0.492,
+    "Pyy_Pa": 104.4
+   },
+   {
+    "rate_per_s": 150.0,
+    "I": 0.293,
+    "mu": 0.6819,
+    "mu_err": 0.0095,
+    "phi": 0.4899,
+    "Pyy_Pa": 102.5
+   }
+  ],
+  "jkr_yield_line": {
+   "slope": 0.5084,
+   "intercept_Pa": 8.41,
+   "points": [
+    {
+     "Pyy": 34.390167999999996,
+     "tau": 26.67057
+    },
+    {
+     "Pyy": 99.09917999999999,
+     "tau": 57.508007
+    },
+    {
+     "Pyy": 199.45379,
+     "tau": 110.30502000000003
+    }
+   ]
+  }
+ },
+ "notes": "Non-cohesive: full stage list ran. JKR (gamma 8.5 mJ/m^2, Bo_g ~10) ran with a reduced stage list and mass_velocity damping (first attempt failed: 'Cannot use tsuji model with a cohesive normal model, jkr'). JKR 25 Pa stage did not reach its target (Pyy 34 Pa, still dilating): transient point. Pyy held by change_box feedback because fix press/berendsen refuses triclinic boxes. E reduced to 2e5 Pa as in the PR #180 twin.",
+ "wall_s_per_case": {
+  "noncoh": 654,
+  "jkr": 293
+ }
+}

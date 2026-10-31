@@ -1,0 +1,200 @@
+{
+ "id": "bayes-gp-emulator-mcmc",
+ "method": "Gaussian-process emulator on a 48-point Sobol design over (mu_s, mu_r, Bo) of a stand-in doser model + emcee posterior; identifiability with and without an angle-of-repose observable",
+ "code": "scikit-learn GaussianProcessRegressor + emcee + scipy.stats.qmc.Sobol",
+ "version": "scikit-learn 1.9.1, emcee 3.1.6",
+ "status": "ran",
+ "wall_s": 202.3,
+ "cores": 1,
+ "key_results": {
+  "design_points": 48,
+  "prior_box": {
+   "mu_s": [
+    0.1,
+    1.0
+   ],
+   "mu_r": [
+    0.02,
+    0.6
+   ],
+   "Bo": [
+    0.0,
+    1.5
+   ]
+  },
+  "emulator_validation_400_heldout": [
+   {
+    "output": "mg@0",
+    "rmse": 2.119379736542014,
+    "r2": 0.9788975710045201,
+    "kernel": "1.92**2 * Matern(length_scale=[0.25, 4.72, 1.51], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   },
+   {
+    "output": "mg@22.5",
+    "rmse": 2.47975470576337,
+    "r2": 0.9951873310779576,
+    "kernel": "1.8**2 * Matern(length_scale=[0.676, 4.43, 1.13], nu=2.5) + WhiteKernel(noise_level=0.00212)"
+   },
+   {
+    "output": "mg@27.5",
+    "rmse": 2.571951120717182,
+    "r2": 0.9953492258650324,
+    "kernel": "2.23**2 * Matern(length_scale=[1.4, 4.36, 1.24], nu=2.5) + WhiteKernel(noise_level=0.00356)"
+   },
+   {
+    "output": "mg@45",
+    "rmse": 0.08404595770555258,
+    "r2": 0.9999955105262346,
+    "kernel": "31.6**2 * Matern(length_scale=[14.3, 12.3, 10.8], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   },
+   {
+    "output": "AoR",
+    "rmse": 0.23941940995938055,
+    "r2": 0.9994849480626304,
+    "kernel": "7.73**2 * Matern(length_scale=[2.92, 2.19, 8.04], nu=2.5) + WhiteKernel(noise_level=1e-08)"
+   }
+  ],
+  "synthetic_AoR_obs_deg": 29.69,
+  "AoR_sd_deg": 1.5,
+  "synthetic_wall_friction_obs": 0.4,
+  "wall_friction_sd": 0.04,
+  "posterior": {
+   "dosing_only": {
+    "mean": {
+     "mu_s": 0.5651,
+     "mu_r": 0.2093,
+     "Bo": 0.1271
+    },
+    "sd": {
+     "mu_s": 0.1141,
+     "mu_r": 0.1447,
+     "Bo": 0.103
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.3447,
+      0.7139
+     ],
+     "mu_r": [
+      0.032,
+      0.4922
+     ],
+     "Bo": [
+      0.0102,
+      0.335
+     ]
+    },
+    "corr_mu_s_mu_r": -0.468,
+    "corr_mu_s_Bo": -0.541,
+    "corr_mu_r_Bo": -0.252,
+    "acceptance": 0.543,
+    "autocorr_time": [
+     40.74653590435177,
+     46.4419331596513,
+     35.01477508927166
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     26.3,
+     104.3,
+     119.0,
+     155.7
+    ],
+    "standin_AoR_at_posterior_mean_deg": 31.09
+   },
+   "dosing_plus_AoR": {
+    "mean": {
+     "mu_s": 0.5651,
+     "mu_r": 0.2127,
+     "Bo": 0.1144
+    },
+    "sd": {
+     "mu_s": 0.112,
+     "mu_r": 0.1305,
+     "Bo": 0.0836
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.3655,
+      0.7165
+     ],
+     "mu_r": [
+      0.0744,
+      0.5038
+     ],
+     "Bo": [
+      0.0102,
+      0.2714
+     ]
+    },
+    "corr_mu_s_mu_r": -0.83,
+    "corr_mu_s_Bo": -0.45,
+    "corr_mu_r_Bo": 0.046,
+    "acceptance": 0.556,
+    "autocorr_time": [
+     47.558718259945806,
+     44.232939379667386,
+     39.5619039441129
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     26.5,
+     105.3,
+     120.0,
+     156.8
+    ],
+    "standin_AoR_at_posterior_mean_deg": 31.02
+   },
+   "dosing_plus_wall_friction": {
+    "mean": {
+     "mu_s": 0.51,
+     "mu_r": 0.2462,
+     "Bo": 0.1606
+    },
+    "sd": {
+     "mu_s": 0.0517,
+     "mu_r": 0.1472,
+     "Bo": 0.0968
+    },
+    "p05_p95": {
+     "mu_s": [
+      0.4239,
+      0.5941
+     ],
+     "mu_r": [
+      0.038,
+      0.5074
+     ],
+     "Bo": [
+      0.0205,
+      0.3307
+     ]
+    },
+    "corr_mu_s_mu_r": -0.325,
+    "corr_mu_s_Bo": -0.14,
+    "corr_mu_r_Bo": -0.631,
+    "acceptance": 0.589,
+    "autocorr_time": [
+     27.421966460252843,
+     34.39363711891352,
+     35.268242350992836
+    ],
+    "n_samples": 4800,
+    "standin_at_posterior_mean_mg_per_rev": [
+     25.9,
+     105.4,
+     118.5,
+     151.5
+    ],
+    "standin_AoR_at_posterior_mean_deg": 30.84
+   }
+  },
+  "equivalent_DEM_cost": {
+   "runs": 192,
+   "note": "48 parameter sets x 4 tilts, one 30-CPU-min revolution each",
+   "cpu_hours": 96.0,
+   "wall_hours_on_4_cores": 24.0
+  }
+ },
+ "notes": "Forward model is a stand-in (screw push + Beverloo annulus + tilt threshold; Zhou-form AoR), not DEM. The AoR observation is synthetic (stand-in evaluated at the DEM twin's nominal set mu_s=0.5, mu_r=0.3, Bo=0, sd 1.5 deg); the wall-friction observation is also synthetic (mu_w = 0.4 +/- 0.04, model mu_w = 0.8 mu_s). GP predictive variance is added to the likelihood variance."
+}

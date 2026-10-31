@@ -1,0 +1,47 @@
+atom_style      granular
+atom_modify     map array
+boundary        f f f
+newton          off
+communicate     single vel yes
+units           si
+soft_particles  yes
+region          domain block -9.000000e-03 9.000000e-03 -9.000000e-03 9.000000e-03 -3.000000e-03 1.600000e-02 units box
+create_box      2 domain
+neighbor        2.1250e-04 bin
+neigh_modify    delay 0
+
+fix m1 all property/global youngsModulus peratomtype 2.0000e+05 2.0000e+05
+fix m2 all property/global poissonsRatio peratomtype 0.3 0.3
+fix m3 all property/global coefficientRestitution peratomtypepair 2 0.5 0.5 0.5 0.5
+fix m4 all property/global coefficientFriction peratomtypepair 2 0.5 0.4 0.4 0.4
+fix m5 all property/global coefficientRollingFriction peratomtypepair 2 0.3 0.3 0.3 0.3
+fix m7 all property/global surfaceTension scalar 0.072
+fix m8 all property/global fluidViscosity scalar 0.001
+fix m9 all property/global contactAngle peratomtype 20.0 20.0
+fix m10 all property/global maxSeparationDistanceRatio scalar 1.1
+fix m11 all property/global minSeparationDistanceRatio scalar 1.01
+fix m12 all property/global surfaceLiquidContentInitial scalar 2.0
+
+pair_style gran model hertz tangential history cohesion easo/capillary/viscous rolling_friction epsd2
+pair_coeff * *
+timestep 2.0557e-05
+fix gravi all gravity 9.81 vector 0.0 0.0 -1.0
+
+fix pts1 all particletemplate/sphere 15485863 atom_type 1 density constant 2165.0 radius constant 1.805000e-04
+fix pts2 all particletemplate/sphere 15485867 atom_type 1 density constant 2165.0 radius constant 2.125000e-04
+fix pts3 all particletemplate/sphere 32452843 atom_type 1 density constant 2165.0 radius constant 2.445000e-04
+fix pdd  all particledistribution/discrete/numberbased 49979687 3 pts1 0.3 pts2 0.4 pts3 0.3
+
+fix base all mesh/surface file base.stl type 2
+fix walls all wall/gran model hertz tangential history  rolling_friction epsd2 mesh n_meshes 1 meshes base
+region pour cylinder z 0. 0. 1.5e-3 1.0e-2 1.4e-2 units box
+fix ins all insert/rate/region seed 86028157 distributiontemplate pdd nparticles 4000 particlerate 8000 insert_every 486 overlapcheck yes all_in yes vel constant 0. 0. -0.1 region pour ntry_mc 5000
+fix integr all nve/sphere
+variable t equal time
+variable n equal atoms
+thermo_style custom step time atoms ke
+thermo 2432
+thermo_modify lost ignore norm no flush yes
+fix logn all print 486 "${t} ${n}" file natoms.txt screen no
+dump dmp all custom 1216 dump/p.*.txt id type radius x y z vx vy vz
+run 41348

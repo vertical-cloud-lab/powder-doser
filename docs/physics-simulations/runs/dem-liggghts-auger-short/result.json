@@ -1,0 +1,48 @@
+{
+ "id": "dem-liggghts-auger-short",
+ "method": "smoke-test rerun of PR #180 rig auger case rig_t27p5_r60: 0.12 s settle + 0.25 rev, dry vs SJKR cohesion",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": 1054.8,
+ "cores": 1,
+ "particles": 30015,
+ "key_results": {
+  "dry": {
+   "t_end_s": 0.3699,
+   "revolutions_simulated": 0.25,
+   "mg_delivered_after_settle": 16.71,
+   "mg_leaked_during_settle": 0.0,
+   "grains_delivered": 182,
+   "grains_in_domain_end": 29776,
+   "complete": true,
+   "wall_s": 572.8,
+   "mg_per_rev_equivalent": 66.8
+  },
+  "coh": {
+   "t_end_s": 0.3699,
+   "revolutions_simulated": 0.25,
+   "mg_delivered_after_settle": 0.13,
+   "mg_leaked_during_settle": 0.0,
+   "grains_delivered": 1,
+   "grains_in_domain_end": 30015,
+   "complete": true,
+   "wall_s": 482.0,
+   "mg_per_rev_equivalent": 0.5,
+   "elapsed_including_pause_s": 2351.8
+  }
+ },
+ "notes": "Geometry/inputs regenerated with the #180 branch's geometry.py + run_case.py (STL meshes, np=1). PR #180 reported 12 mg in the first quarter revolution for this case. The cohesive run was paused (SIGSTOP) from 02:26:14 to 02:57:24 UTC when the shared runner was oversubscribed; its active wall time is 2352 s elapsed minus 1870 s paused = 482 s (370 s CPU).",
+ "cpu_user_s": {
+  "dry": 467.2,
+  "coh": 369.5
+ },
+ "wall_s_by_variant": {
+  "dry": 572.8,
+  "coh": 482.0
+ },
+ "particles_detail": {
+  "dry": 29776,
+  "coh": 30015
+ }
+}

@@ -1,0 +1,301 @@
+{
+ "id": "mui-rheology",
+ "method": "local mu(I) rheology (Jop et al. 2006) and non-local granular fluidity (Henann & Kamrin 2013; dynamic form, Kamrin & Henann 2015) for inclined-plane flow",
+ "code": "self-written Python (numpy, scipy.linalg.solve_banded, numba)",
+ "version": "numpy 2.5.4",
+ "status": "ran",
+ "wall_s": 99.9,
+ "cores": 1,
+ "key_results": {
+  "local_muI": {
+   "22deg": {
+    "u_surface_numerical_sqrt_gd": 1.1486553758983875,
+    "u_surface_bagnold_sqrt_gd": 1.1485540645381325,
+    "u_surface_numerical_m_per_s": 0.08044688925935051,
+    "rms_error_rel_to_surface_velocity": 1.0026285624164943e-05,
+    "residual_max_accel_g": 7.188694084447889e-14,
+    "t95_startup_s": 0.9863709719082714,
+    "dt_dimensionless": 0.0015385564941259708
+   },
+   "24deg": {
+    "u_surface_numerical_sqrt_gd": 3.9373259089595622,
+    "u_surface_bagnold_sqrt_gd": 3.9369786371138558,
+    "u_surface_numerical_m_per_s": 0.2757533965557843,
+    "rms_error_rel_to_surface_velocity": 1.0026275930811728e-05,
+    "residual_max_accel_g": 1.4310774787418268e-13,
+    "t95_startup_s": 1.3787954369593927,
+    "dt_dimensionless": 0.0015499985670277348
+   },
+   "26deg": {
+    "u_surface_numerical_sqrt_gd": 8.30587295974088,
+    "u_surface_bagnold_sqrt_gd": 8.30514038241265,
+    "u_surface_numerical_m_per_s": 0.5817076698673956,
+    "rms_error_rel_to_surface_velocity": 1.00262747042782e-05,
+    "residual_max_accel_g": 5.660472091051361e-13,
+    "t95_startup_s": 2.1286053693270612,
+    "dt_dimensionless": 0.001562666437000473
+   },
+   "28deg": {
+    "u_surface_numerical_sqrt_gd": 16.236925349293077,
+    "u_surface_bagnold_sqrt_gd": 16.235493374243557,
+    "u_surface_numerical_m_per_s": 1.1371645167858173,
+    "rms_error_rel_to_surface_velocity": 1.002394096485864e-05,
+    "residual_max_accel_g": 5.476356590428111e-10,
+    "t95_startup_s": 3.914794690518549,
+    "dt_dimensionless": 0.0015766268360190507
+   }
+  },
+  "ngf_h20": {
+   "22deg": {
+    "u_surface_ngf_sqrt_gd": 0.7133579609707484,
+    "u_surface_linear_bagnold_sqrt_gd": 1.0512479540166721,
+    "ratio_ngf_to_linear_bagnold": 0.6785820207736024
+   },
+   "24deg": {
+    "u_surface_ngf_sqrt_gd": 2.4256355969665067,
+    "u_surface_linear_bagnold_sqrt_gd": 2.983367743135211,
+    "ratio_ngf_to_linear_bagnold": 0.8130528335127115
+   },
+   "26deg": {
+    "u_surface_ngf_sqrt_gd": 4.232336469001766,
+    "u_surface_linear_bagnold_sqrt_gd": 4.944114571569688,
+    "ratio_ngf_to_linear_bagnold": 0.8560352734014531
+   },
+   "28deg": {
+    "u_surface_ngf_sqrt_gd": 6.0986506332311645,
+    "u_surface_linear_bagnold_sqrt_gd": 6.935869556191366,
+    "ratio_ngf_to_linear_bagnold": 0.8792914260890546
+   }
+  },
+  "ngf_hstop": {
+   "theta_deg": [
+    20.95,
+    21.0,
+    21.2,
+    21.5,
+    22.0,
+    23.0,
+    24.0,
+    25.0,
+    26.0,
+    28.0,
+    30.0,
+    32.0
+   ],
+   "hstop_over_d_simulated": [
+    23.83987156801255,
+    16.854517410421508,
+    9.724428117903583,
+    6.869222870954371,
+    5.064542688594673,
+    3.652517624474428,
+    2.995232193434523,
+    2.5946069971208185,
+    2.3172459506832443,
+    1.947756315734252,
+    1.7052915051445767,
+    1.5294986020451504
+   ],
+   "hstop_over_d_linear_stability": [
+    23.84003795353355,
+    16.854636133720636,
+    9.724497133961513,
+    6.869271738351407,
+    5.064578762771374,
+    3.652543662465739,
+    2.995253552785286,
+    2.5946255028781167,
+    2.3172624800687442,
+    1.9477702113411872,
+    1.7053036718965904,
+    1.5295095150888327
+   ],
+   "max_rel_diff_sim_vs_analytic": 7.134995614332951e-06,
+   "hstop_24deg_N60_N120_N480": [
+    2.9951680394323033,
+    2.995232193434523,
+    2.995252241633664
+   ],
+   "pouliquen_hstop_over_d_same_angles": [
+    430.56237831734586,
+    214.3826976304779,
+    70.26254465996138,
+    34.23195764200412,
+    17.85361983568589,
+    8.493001429238456,
+    5.170074708678963,
+    3.467015810030359,
+    2.430960551947272,
+    1.2325279269322336,
+    0.5589370858713237,
+    0.12648345901313707
+   ],
+   "L_pouliquen_over_d": 1.6525752067355113
+  },
+  "finite_amplitude_check": [
+   {
+    "theta_deg": 21.5,
+    "h_over_d": 4.121563043010844,
+    "h_over_hstop": 0.6,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 21.5,
+    "h_over_d": 5.838880977598696,
+    "h_over_hstop": 0.85,
+    "final_max_fluidity": 3.06e-322,
+    "flowing": false
+   },
+   {
+    "theta_deg": 21.5,
+    "h_over_d": 7.899662499104117,
+    "h_over_hstop": 1.15,
+    "final_max_fluidity": 0.006861420971319544,
+    "flowing": true
+   },
+   {
+    "theta_deg": 21.5,
+    "h_over_d": 10.990834781362253,
+    "h_over_hstop": 1.6000000000000003,
+    "final_max_fluidity": 0.02079138744368971,
+    "flowing": true
+   },
+   {
+    "theta_deg": 22.0,
+    "h_over_d": 3.0387472576628243,
+    "h_over_hstop": 0.6,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 22.0,
+    "h_over_d": 4.304891948355668,
+    "h_over_hstop": 0.8500000000000001,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 22.0,
+    "h_over_d": 5.82426557718708,
+    "h_over_hstop": 1.15,
+    "final_max_fluidity": 0.010548654535147913,
+    "flowing": true
+   },
+   {
+    "theta_deg": 22.0,
+    "h_over_d": 8.1033260204342,
+    "h_over_hstop": 1.6,
+    "final_max_fluidity": 0.03196439401789311,
+    "flowing": true
+   },
+   {
+    "theta_deg": 24.0,
+    "h_over_d": 1.7971521316711716,
+    "h_over_hstop": 0.6,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 24.0,
+    "h_over_d": 2.545965519867493,
+    "h_over_hstop": 0.85,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 24.0,
+    "h_over_d": 3.4445415857030786,
+    "h_over_hstop": 1.15,
+    "final_max_fluidity": 0.020891529964817357,
+    "flowing": true
+   },
+   {
+    "theta_deg": 24.0,
+    "h_over_d": 4.792405684456457,
+    "h_over_hstop": 1.5999999999999999,
+    "final_max_fluidity": 0.06330523890103694,
+    "flowing": true
+   },
+   {
+    "theta_deg": 26.0,
+    "h_over_d": 1.3903574880412466,
+    "h_over_hstop": 0.6,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 26.0,
+    "h_over_d": 1.9696731080584327,
+    "h_over_hstop": 0.85,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 26.0,
+    "h_over_d": 2.664851852079056,
+    "h_over_hstop": 1.15,
+    "final_max_fluidity": 0.027798679370208794,
+    "flowing": true
+   },
+   {
+    "theta_deg": 26.0,
+    "h_over_d": 3.707619968109991,
+    "h_over_hstop": 1.6,
+    "final_max_fluidity": 0.08423519204328318,
+    "flowing": true
+   },
+   {
+    "theta_deg": 28.0,
+    "h_over_d": 1.1686621268047124,
+    "h_over_hstop": 0.6,
+    "final_max_fluidity": 0.0,
+    "flowing": false
+   },
+   {
+    "theta_deg": 28.0,
+    "h_over_d": 1.655604679640009,
+    "h_over_hstop": 0.85,
+    "final_max_fluidity": 1.5e-323,
+    "flowing": false
+   },
+   {
+    "theta_deg": 28.0,
+    "h_over_d": 2.239935743042365,
+    "h_over_hstop": 1.15,
+    "final_max_fluidity": 0.03279632717571381,
+    "flowing": true
+   },
+   {
+    "theta_deg": 28.0,
+    "h_over_d": 3.1164323381459,
+    "h_over_hstop": 1.6,
+    "final_max_fluidity": 0.09937899859089058,
+    "flowing": true
+   }
+  ],
+  "ngf_thick_layer_h200_surface_velocity_ratio_to_linear_bagnold": 0.981761549916138,
+  "flow_rule_fit": {
+   "beta": 0.05262648401122367,
+   "intercept": -0.07236420868757552,
+   "r2": 0.780815452032438,
+   "n_points": 42,
+   "pouliquen_beta_glass_beads": 0.136
+  },
+  "salt_like_whatif_mu_s_tan34": {
+   "h=2.5d": {
+    "theta_stop_ngf_deg": 37.432856337813995,
+    "theta_stop_pouliquen_deg": 37.90496996728099
+   },
+   "h=7.0d": {
+    "theta_stop_ngf_deg": 34.454421115909966,
+    "theta_stop_pouliquen_deg": 35.92232094303021
+   },
+   "h=15.0d": {
+    "theta_stop_ngf_deg": 34.09938067323868,
+    "theta_stop_pouliquen_deg": 35.01008300607183
+   }
+  }
+ },
+ "notes": "Glass-bead parameters (d=0.5 mm): mu_s=tan20.9, mu_2=tan32.76, I0=0.279, b=(mu_2-mu_s)/I0, A=0.48, phi=0.6. NGF BCs: g=0 at rough base, dg/dz=0 at free surface. Timings: {\"local_transient_s\": 40.1, \"ngf_hstop_bisection_s\": 49.3, \"ngf_phase_check_s\": 2.1, \"ngf_profiles_flowrule_s\": 0.3}"
+}

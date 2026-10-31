@@ -1,0 +1,49 @@
+{
+ "id": "dem-chrono-cpu",
+ "method": "DEM silo discharge through a square orifice at four sizes, with a Beverloo fit",
+ "code": "Project Chrono / PyChrono core ChSystemSMC (Hertz, MultiStep tangential), Bullet collision, CPU, 1 thread",
+ "version": "PyChrono 10.0.0 conda-forge build py312h3a49c4c_0 (Python 3.12)",
+ "status": "ran",
+ "wall_s": 462.4,
+ "cores": 1,
+ "particles": 1500,
+ "key_results": {
+  "mass_flow_g_s": {
+   "L=5.5 mm": 1.89,
+   "L=7.0 mm": 4.7,
+   "L=8.5 mm": 9.2,
+   "L=10.0 mm": 15.03
+  },
+  "L_over_d": {
+   "L=5.5 mm": 3.24,
+   "L=7.0 mm": 4.12,
+   "L=8.5 mm": 5.0,
+   "L=10.0 mm": 5.88
+  },
+  "grains_discharged_in_0p6s": {
+   "L=5.5 mm": 196,
+   "L=7.0 mm": 462,
+   "L=8.5 mm": 926,
+   "L=10.0 mm": 1363
+  },
+  "bulk_density_kg_m3": 1381.0,
+  "beverloo_fit_square_orifice": {
+   "C_sq": 0.614,
+   "C_circular_equivalent": 0.482,
+   "k": 1.18
+  },
+  "beverloo_C_sq_with_k_fixed_1p5": 0.813,
+  "rolling_friction_check": {
+   "v_after_0p5s_mu_roll_0_m_s": 0.10001,
+   "v_after_0p5s_mu_roll_0p3_m_s": 0.10001,
+   "v0_m_s": 0.1
+  },
+  "speed_M_particle_steps_per_s_wall": {
+   "L=5.5 mm": 0.143,
+   "L=7.0 mm": 0.174,
+   "L=8.5 mm": 0.236,
+   "L=10.0 mm": 0.441
+  }
+ },
+ "notes": "Coarse-grained 4x (mean d 1.70 mm), E=2e5 Pa, 16 mm silo, 0.2 s settle + 0.6 s discharge per orifice. Bullet with SI (metre) units blew up (grains ejected at about 700 m/s within 0.02 s, as PR #180 also saw), so Chrono runs internally in millimetres. SetRollingFriction has no effect in core ChSystemSMC (identical rolling-sphere speed with mu_roll 0 and 0.3). The L=5.5 mm (L/d=3.2) flow was slow and intermittent, near jamming."
+}

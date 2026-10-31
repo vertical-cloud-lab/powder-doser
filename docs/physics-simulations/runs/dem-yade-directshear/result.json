@@ -1,0 +1,104 @@
+{
+ "id": "dem-yade-directshear",
+ "method": "DEM periodic triaxial compression with cohesive-frictional (brittle, re-forming) contacts at 3 confining stresses and 2 Bond numbers; Mohr-Coulomb fits of peak and residual states",
+ "code": "Yade (CohFrictMat, Law2_ScGeom6D_CohFrictPhys_CohesionMoment, PeriTriaxController)",
+ "version": "yadedaily 20261024-9637~157eec7~noble1 (upstream .deb for Ubuntu 24.04 from yade-dem.org/packages)",
+ "status": "ran",
+ "wall_s": 202.7,
+ "cores": 1,
+ "particles": 600,
+ "key_results": {
+  "Bo=5": {
+   "peak_friction_angle_deg": 46.9,
+   "peak_cohesion_Pa": 6.1,
+   "residual_friction_angle_deg": 44.5,
+   "residual_cohesion_Pa": -19.0,
+   "normalCohesion_Pa": 94.5,
+   "F_adh_N": 4.268372614689661e-06,
+   "per_sigma3": {
+    "50 Pa": {
+     "sigma1_peak_Pa": 308.0,
+     "eps_axial_at_peak": 0.022,
+     "sigma1_residual_Pa": 255.0,
+     "solid_fraction_after_compaction": 0.635,
+     "fraction_contacts_bonded_start_end": [
+      0.062,
+      0.032
+     ]
+    },
+    "150 Pa": {
+     "sigma1_peak_Pa": 1060.0,
+     "eps_axial_at_peak": 0.038,
+     "sigma1_residual_Pa": 681.0,
+     "solid_fraction_after_compaction": 0.642,
+     "fraction_contacts_bonded_start_end": [
+      0.016,
+      0.012
+     ]
+    },
+    "400 Pa": {
+     "sigma1_peak_Pa": 2579.0,
+     "eps_axial_at_peak": 0.076,
+     "sigma1_residual_Pa": 2199.0,
+     "solid_fraction_after_compaction": 0.651,
+     "fraction_contacts_bonded_start_end": [
+      0.002,
+      0.001
+     ]
+    }
+   }
+  },
+  "Bo=50": {
+   "peak_friction_angle_deg": 46.7,
+   "peak_cohesion_Pa": -4.7,
+   "residual_friction_angle_deg": 43.6,
+   "residual_cohesion_Pa": -11.4,
+   "normalCohesion_Pa": 945.2,
+   "F_adh_N": 4.2683726146896605e-05,
+   "per_sigma3": {
+    "50 Pa": {
+     "sigma1_peak_Pa": 259.0,
+     "eps_axial_at_peak": 0.121,
+     "sigma1_residual_Pa": 249.0,
+     "solid_fraction_after_compaction": 0.571,
+     "fraction_contacts_bonded_start_end": [
+      0.415,
+      0.254
+     ]
+    },
+    "150 Pa": {
+     "sigma1_peak_Pa": 982.0,
+     "eps_axial_at_peak": 0.041,
+     "sigma1_residual_Pa": 725.0,
+     "solid_fraction_after_compaction": 0.621,
+     "fraction_contacts_bonded_start_end": [
+      0.184,
+      0.101
+     ]
+    },
+    "400 Pa": {
+     "sigma1_peak_Pa": 2504.0,
+     "eps_axial_at_peak": 0.071,
+     "sigma1_residual_Pa": 2139.0,
+     "solid_fraction_after_compaction": 0.641,
+     "fraction_contacts_bonded_start_end": [
+      0.093,
+      0.049
+     ]
+    }
+   }
+  },
+  "earlier_set_mu_compaction_0p1_Bo5": {
+   "peak_friction_angle_deg": 41.5,
+   "peak_cohesion_Pa": -1.6,
+   "residual_friction_angle_deg": 41.2,
+   "residual_cohesion_Pa": -5.1,
+   "solid_fraction_after_compaction": [
+    0.59,
+    0.594,
+    0.604
+   ]
+  }
+ },
+ "notes": "Real salt size (no coarse-graining), E=2e5 Pa, mu=0.5, etaRoll=0.3, sigma3 = 50/150/400 Pa (doser-hopper range), I=2.5e-3. Neither Bo=5 nor Bo=50 gives a Mohr-Coulomb cohesion intercept that stands out from the scatter (|c| < 20 Pa at N=600): the brittle bonds break as soon as a contact slides, and at Bo=50 the cohesion mainly loosens the compacted packing (solid fraction 0.571 vs 0.635 at 50 Pa), which lowers the peak. wall_s includes an earlier 3-run set compacted with mu=0.1 (looser samples; peak phi 41.5 deg, c -1.6 Pa)."
+}
