@@ -1,0 +1,52 @@
+{
+  "request": {
+    "issue": "https://github.com/vertical-cloud-lab/powder-doser/issues/197#issuecomment-6591022955",
+    "by": "brandonmunk",
+    "text": "Start a print of the Baseplate file found in issue #193 on the A1 mini",
+    "requested_utc": "2026-11-02T23:21:56Z",
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/41544866804",
+    "run_started_utc": "2026-11-02T23:22:41Z"
+  },
+  "file": {
+    "source": "https://cad.onshape.com/documents/68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
+    "listed_in": "https://github.com/vertical-cloud-lab/powder-doser/issues/193",
+    "onshape_document": "Baseplate (owner Vertical Cloud Lab, public, modified 2026-11-01T02:10:28Z)",
+    "part_studio": "Base, one part ('Part 1')",
+    "outline_mm": [190.0, 190.0],
+    "smallest_square_over_all_rotations_mm": 190.0,
+    "exported": false,
+    "why_not_exported": "claude-print.yml has no ONSHAPE_ACCESS_KEY/ONSHAPE_SECRET_KEY; anonymous requests get the feature list and a thumbnail but 401 for parts, bounding boxes and STL export"
+  },
+  "printer": {
+    "name": "Thumbelina, the A1 Mini",
+    "selected_in_studio_matches_A1_MINI_SERIAL": true,
+    "bed_mm": [180, 180, 180],
+    "state_utc": "2026-11-02T23:28:01Z",
+    "state": "idle; last job compact_stirrer_parts_2 at 100 %, 'Finished'",
+    "nozzle": {"diameter_mm": 0.4, "type": "stainless steel", "flow": "standard", "read_from": "Studio Device page, Printer Parts"},
+    "temperatures_c": {"nozzle": 21, "bed": 21, "targets": 0},
+    "hms_alerts": "none (Assistant (HMS) page empty)",
+    "ams_lite": {"A1": "PLA, blue", "A2": "empty or unknown", "A3": "PLA, black", "A4": "PETG, white"}
+  },
+  "plate_check": {
+    "frame": null,
+    "camera_attempts_utc": ["23:28:24", "23:30:42", "23:33:09", "23:36:46", "23:40:57 (after restarting Studio)"],
+    "camera_result": "every attempt ended 'Loading failed. Please check the network and try again. [2:2]' (Studio's 15 s loading timeout); Studio opened connections to the relay for about a second and then dropped them",
+    "plate_read": "unknown: no frame; the previous job finished, so its parts may still be on the plate",
+    "replies": []
+  },
+  "go": null,
+  "sent": false,
+  "why_not_sent": [
+    "The Baseplate's outline is 190 x 190 mm and the A1 mini's plate is 180 x 180 mm; no rotation fits (bed_fit_check.py)",
+    "This run cannot export the current Onshape geometry (no Onshape keys in claude-print.yml), and the issue asks for the updated Onshape files only, not older exports on other branches",
+    "No camera frame of the plate could be taken"
+  ],
+  "studio": {
+    "version": "02.08.02.61",
+    "login": "password, then the authenticator code from bambu-totp; first code accepted (Log In 23:27:25, Confirm 23:27:45 UTC)",
+    "signed_out_and_config_deleted": true,
+    "signed_out_utc": "2026-11-02T23:47:03Z",
+    "recording": "raw recording deleted unpublished: nothing was printed, and it showed the login"
+  }
+}
