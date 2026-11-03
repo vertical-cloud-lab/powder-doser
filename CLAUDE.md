@@ -126,7 +126,9 @@ gets that login:
   the link in the thread. An approver may approve their own request. Approvers: read the
   request first, because an approved run holds the whole login.
 - **Its secrets** are `BAMBU_USERNAME`, `BAMBU_PASSWORD` and `BAMBU_TOTP_SEED`, all environment
-  secrets of `bambu-print`. They are not repo secrets and are not in `claude.yml`.
+  secrets of `bambu-print`. They are not repo secrets and are not in `claude.yml`. The print
+  run also gets the repo's `ONSHAPE_ACCESS_KEY` and `ONSHAPE_SECRET_KEY`, so it can export the
+  current part from Onshape itself instead of needing an STL attached.
 - **Second factor: an authenticator code, computed on the runner.** The account has
   authenticator-app 2-step verification, so Studio's login asks for a 6-digit code after the
   password. The workflow installs `bambu-totp`, which computes the current code from the seed.
