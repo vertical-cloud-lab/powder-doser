@@ -11,7 +11,7 @@ effective cohesion and friction, checked against standard flow tests). Target: *
 | [`OUTLINE.md`](OUTLINE.md) | Outline, claim-by-claim status, and **everything that still needs to be prepared** |
 | [`refs.bib`](refs.bib), [`references_validation.md`](references_validation.md) | Bibliography (DOI entries built from Crossref metadata) and the per-entry check |
 | [`figures/make_figures.py`](figures/make_figures.py) | Builds every figure from [`data/`](data/) |
-| [`figures/make_overview_relations.py`](figures/make_overview_relations.py) | Overview schematic from the 28 Oct whiteboard sketch: cheap doser measurements related to standard powder tests (no data). Each card carries a 3D still from [`figures/stills/`](figures/stills/); `--flat` draws the earlier flat icons, `--board` only the links on the sketch |
+| [`figures/make_overview_relations.py`](figures/make_overview_relations.py) | Overview schematic from the 28 Oct whiteboard sketch (no data): (a) cheap doser measurements, (b) the relational matrix that physics-based ML learns, with the powder's state and history as inputs, (c) the standard powder tests. Each card carries a 3D still from [`figures/stills/`](figures/stills/) |
 | [`figures/render3d/render_stills.py`](figures/render3d/render_stills.py) | Renders those stills (PyVista/VTK): the standard tests from the PR #190 powder-test animations, the doser measurements as new scenes around the doser CAD from PR #170 |
 | [`data/README.md`](data/README.md) | Provenance of every data file (source branch, commit, PR) |
 | [`scripts/validate_refs.py`](scripts/validate_refs.py) | Re-runs the reference check |

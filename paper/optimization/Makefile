@@ -16,8 +16,6 @@ main.pdf: main.tex refs.bib $(wildcard figures/*.pdf)
 figures:
 	python3 figures/make_figures.py
 	python3 figures/make_overview_relations.py
-	python3 figures/make_overview_relations.py --board
-	python3 figures/make_overview_relations.py --flat
 
 # 3D stills for the overview figure.  Needs pyvista, vtk, cadquery and an X display, plus the
 # PR #190 render scripts and the PR #170 doser CAD (POWDER_TESTS, DOSER_CAD; see the script).
