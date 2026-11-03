@@ -13,6 +13,7 @@ effective cohesion and friction, checked against standard flow tests). Target: *
 | [`figures/make_figures.py`](figures/make_figures.py) | Builds every figure from [`data/`](data/) |
 | [`data/README.md`](data/README.md) | Provenance of every data file (source branch, commit, PR) |
 | [`scripts/validate_refs.py`](scripts/validate_refs.py) | Re-runs the reference check |
+| [`contact_sheet.png`](contact_sheet.png), [`scripts/contact_sheet.py`](scripts/contact_sheet.py) | Every page of `main.pdf` on one sheet, for a quick look at the layout (`make contact`) |
 | [`mock_review/`](mock_review/) | Edison mock editor/reviewer pass on the draft |
 | [`tms-2027/`](tms-2027/) | TMS 2027 abstract, submitted and revised (28 Oct 2026), and that session's transcript |
 | [`meetings/`](meetings/) | Corrected transcripts of author meetings (28 Oct 2026: Sterling and Will), with the raw Whisper output |
@@ -28,4 +29,5 @@ cd paper/optimization
 make figures   # python3 figures/make_figures.py
 make           # pdflatex + bibtex
 make refs      # python3 scripts/validate_refs.py refs.bib (network)
+make contact   # contact sheet of main.pdf (pdftoppm + Pillow)
 ```

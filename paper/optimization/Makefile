@@ -3,7 +3,7 @@
 LATEX ?= pdflatex
 FLAGS  = -interaction=nonstopmode -halt-on-error
 
-.PHONY: all figures refs clean
+.PHONY: all figures refs contact clean
 
 all: main.pdf
 
@@ -18,6 +18,10 @@ figures:
 
 refs:
 	python3 scripts/validate_refs.py refs.bib
+
+# Contact sheet of every page of main.pdf (needs pdftoppm from poppler-utils and Pillow)
+contact: main.pdf
+	python3 scripts/contact_sheet.py main.pdf contact_sheet.png --cols 6 --dpi 50
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.out *.spl *.toc *.fls *.fdb_latexmk
