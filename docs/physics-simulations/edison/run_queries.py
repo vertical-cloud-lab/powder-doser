@@ -9,8 +9,8 @@ moisture, static, spreadability).
 Usage (from docs/physics-simulations/):
   python edison/run_queries.py dispatch        # create every task, record ids in edison/_task_ids.json
   python edison/run_queries.py status          # one status line per task (no waiting)
-  python edison/run_queries.py wait            # poll in the foreground until all finish, then fetch
-  python edison/run_queries.py fetch           # write edison/<key>.{task.json,answer.md}
+  python edison/run_queries.py wait [max_s] [key ...]   # poll in the foreground until done, then fetch
+  python edison/run_queries.py fetch [key ...]           # write edison/<key>.{task.json,answer.md}
 
 The API key is read from EDISON_PLATFORM_API_KEY and is never printed.
 """
@@ -124,6 +124,43 @@ QUERIES = {
         "outputs), how are they trained from DEM data, how well do they generalize to new geometries and contact "
         "parameters, and have they been used for inverse problems such as estimating friction or cohesion from "
         "observed flow? Which open-source implementations and pretrained models exist?")),
+    # Asked on PR #196 (2026-11-03) by the paper's lead author: how would the simulator help optimize new
+    # powders and infer their properties, and how do we test whether that is feasible within the project?
+    "q10_simulator_workflow_feasibility": ("LITERATURE_HIGH", (
+        "Project scope: the work is one manuscript for the journal Additive Manufacturing with a conference "
+        "talk in mid-March 2027, one graduate student plus AI agents, one doser, and simulation compute of a "
+        "4-core cloud runner (a 48-run DEM design costs about 96 CPU-hours). Calibration today is "
+        "multi-objective Bayesian optimization (Ax; Sobol screening, then SAASBO with qNEHVI) of eight "
+        "controller settings (bulk and trickle tilt, tap tilt, bulk speed, two tap on/off choices, the switch "
+        "point to trickle feeding and the stopping band) to minimize dose time and error; salt took 42 doses "
+        "(20 screening, 14 chosen by the optimizer, 8 validation) and gave 0.5 g in a median 78 s with 1.8 mg "
+        "error, against 245 s hand-tuned. A multi-task Gaussian process across powders (a task-index kernel "
+        "plus a descriptor kernel built from the dosing fingerprint) is planned for metal powders (AlSi10Mg, "
+        "Al 4047, 316L, 630 bronze, Al 6063 and lab-atomized custom alloys). In-house tests are angle of "
+        "repose, bulk and tapped density, Hall and Carney funnels, moisture sensitivity by dosing before and "
+        "after exposure to humid air, and PSD from SEM or laser diffraction; shear-cell ffc has to be "
+        "outsourced. Our team needs a clear, step-by-step picture of how a physics-based simulator would help "
+        "us (a) infer the properties of a new powder from its dosing data and (b) calibrate the doser's "
+        "settings for a new powder with fewer doses. Lay out such a workflow end to end and, for each step, "
+        "cite published examples and give typical numbers of simulations and experiments: (1) which simulator "
+        "parameters stand for which powder properties (sliding and rolling friction, surface energy or "
+        "granular Bond number, capillary or moisture terms) and how each maps to measurable quantities "
+        "(angle of repose, Hausner ratio, shear-cell ffc, Hall flow, moisture content); (2) designing the "
+        "simulation runs and building an emulator of the dosing fingerprint (Gaussian process, polynomial "
+        "chaos, neural network); (3) Bayesian calibration of a new powder's parameters from its measured "
+        "fingerprint, with a model-discrepancy term (Kennedy-O'Hagan) and identifiability checks, including "
+        "synthetic recovery of known parameters; (4) using the calibrated parameters to predict the powder's "
+        "behaviour in standard tests and in blade spreading, and how that has been validated; (5) using the "
+        "simulator to speed up Bayesian optimization of feeder or dosing settings for a new material, for "
+        "example as a prior mean function, as a low-fidelity source in multi-fidelity BO, as physics-based "
+        "task descriptors in multi-task or transfer-learning BO, or to narrow the search space, with any "
+        "published evidence of how many experiments this saves compared with single-task BO or with carrying "
+        "over the settings of the most similar material. Then propose a feasibility test that fits our scope: "
+        "the smallest set of simulations, powders and measurements that would show whether the simulator "
+        "adds value, explicit go/no-go criteria, the simplest baselines it must beat (for example a direct "
+        "statistical mapping from the dosing fingerprint to measured properties with no simulator, a "
+        "closed-form Beverloo outlet model, and single-task BO), and which results would tell us to drop the "
+        "simulator from the paper.")),
 }
 
 
@@ -199,10 +236,12 @@ def _dump(task) -> dict:
     return json.loads(json.dumps(task, default=str))
 
 
-def fetch() -> None:
+def fetch(keys: list[str] | None = None) -> None:
     client = _client_retry()
     ids = json.loads(IDS.read_text())
     for key, ent in ids.items():
+        if keys and key not in keys:
+            continue
         task = client.get_task(task_id=ent["task_id"], verbose=True)
         data = _dump(task)
         st = str(task.status)
@@ -234,9 +273,9 @@ def fetch() -> None:
     IDS.write_text(json.dumps(ids, indent=2) + "\n")
 
 
-def wait(poll_s: int = 120, max_s: int = 3300) -> None:
+def wait(poll_s: int = 120, max_s: int = 3300, keys: list[str] | None = None) -> None:
     client = _client_retry()
-    ids = json.loads(IDS.read_text())
+    ids = {k: v for k, v in json.loads(IDS.read_text()).items() if not keys or k in keys}
     start = time.time()
     while True:
         states = {}
@@ -253,7 +292,7 @@ def wait(poll_s: int = 120, max_s: int = 3300) -> None:
             print("not all finished; fetching what is there", flush=True)
             break
         time.sleep(poll_s)
-    fetch()
+    fetch(keys)
 
 
 if __name__ == "__main__":
@@ -262,9 +301,10 @@ if __name__ == "__main__":
         dispatch(sys.argv[2:] or None)
     elif cmd == "status":
         status()
-    elif cmd == "wait":
-        wait(max_s=int(sys.argv[2]) if len(sys.argv) > 2 else 3300)
-    elif cmd == "fetch":
-        fetch()
+    elif cmd == "wait":  # wait [max_s] [key ...]
+        nums = [a for a in sys.argv[2:] if a.isdigit()]
+        wait(max_s=int(nums[0]) if nums else 3300, keys=[a for a in sys.argv[2:] if not a.isdigit()] or None)
+    elif cmd == "fetch":  # fetch [key ...]
+        fetch(sys.argv[2:] or None)
     else:
         raise SystemExit(__doc__)
