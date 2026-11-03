@@ -214,6 +214,17 @@ fill in `Short`. Most purchased parts were delivered to the U (ask
 @kinstonwithoutg / @Dila-Kandel for their counts), so count what's at BYU
 yourself and merge the two.
 
+**Counts in MongoDB.** Posted counts also go to the lab's Atlas cluster
+(`Cluster0`), database `powder_doser`. Each row is one document in
+`parts_inventory`, and the file itself, with its sha256 and where it was
+posted, is in `parts_inventory_snapshots`. The first one there is
+@brandonmunk's 3 Nov count
+([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)),
+snapshot `2026-11-03-7f9e6475`. In Atlas: *Browse Collections* →
+`powder_doser` → `parts_inventory`, filter `{snapshot_id: "2026-11-03-7f9e6475"}`.
+Send a new count with [`inventory_to_mongo.py`](inventory_to_mongo.py):
+`python inventory_to_mongo.py <file>.csv --source-url <comment URL> --author <login> --taken-at <UTC time>`.
+
 ### 3.1 Where things stood in PR #115 (as of 2 Oct)
 
 | Status | Items |
