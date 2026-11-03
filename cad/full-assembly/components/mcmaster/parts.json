@@ -1,0 +1,204 @@
+{
+  "source": "McMaster-Carr catalog tables (logged out), read through the doser Pi on 2026-10-02",
+  "retrieved_utc": "2026-10-02T01:49Z/02:01Z; 93360A609: 2026-10-02T04:58Z/05:02Z",
+  "method": "Headed Chromium on the runner, all traffic through an ssh -D SOCKS tunnel to the doser Pi (residential IP), throttled to 400 kB/s, no login. Product pages (mcmaster.com/<PN>/) answer 'Log in to view Product Detail', so no STEP files; the catalog pages' product tables and family images are open.",
+  "families": {
+    "shcs": {
+      "family": "18-8 Stainless Steel Socket Head Screws",
+      "catalog": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+      "image": "92185a516-_2x_637619381570046397.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/921/92185a516-@2x_637619381570046397.png",
+      "image_alt": "Image of Product. Fully Threaded. Front orientation. Socket Head Screws. Stainless Steel Socket Head Screws, Fully Threaded.",
+      "image_sha256": "d8f78c1d959fef70feae530d7a53e1e10007881933c08e29f902181713f10da9"
+    },
+    "bhcs": {
+      "family": "18-8 Stainless Steel Button Head Hex-Drive Screws",
+      "catalog": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
+      "image": "91306a379-_2x_637079549909992330.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/913/91306a379-@2x_637079549909992330.png",
+      "image_alt": "Image of Product. Front orientation. Rounded Head Screws. Stainless Steel Button Head Hex-Drive Screws.",
+      "image_sha256": "1b590434b6bdc9fa9418460e6eace315d48a9f90932807b1fd6a27db543d7660"
+    },
+    "fhcs": {
+      "family": "18-8 Stainless Steel Hex-Drive Flat Head Screws",
+      "catalog": "https://www.mcmaster.com/products/flat-head-screws/stainless-steel-hex-drive-flat-head-screws~~/system-of-measurement~metric/",
+      "image": "91263a559-_1x_66ahk_1750365632.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/912/91263a559-@1x_66ahk_1750365632.png",
+      "image_alt": "Image of Product. Front orientation. Flat Head Screws. Stainless Steel Hex-Drive Flat Head Screws.",
+      "image_sha256": "9d9f833eca07a14bc6cec83be6eb3c1749791262d04566f8e1d4797f60489023"
+    },
+    "nut": {
+      "family": "18-8 Stainless Steel Hex Nuts (metric)",
+      "catalog": "https://www.mcmaster.com/products/hex-nuts/material~stainless-steel-2/system-of-measurement~metric/hex-nuts-3~~/",
+      "image": "91828A211_703e7d6f-1f71-4f2b-8917-78ba12ba97c81785458655_2x_xtm98_1785458660.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/918/91828A211_703e7d6f-1f71-4f2b-8917-78ba12ba97c81785458655@2x_xtm98_1785458660.png",
+      "image_alt": "Hex Nuts (tile image of 91828A211 on the stainless-steel metric hex nut page)",
+      "image_sha256": "0d923ff52280670a2086c4a1d3ae47ac003becaf4f2dcb020e93521ab2583785"
+    },
+    "locknut": {
+      "family": "18-8 Stainless Steel Nylon-Insert Locknuts",
+      "catalog": "https://www.mcmaster.com/products/nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
+      "image": "93625A100_f6287b2e-d38f-47a5-9552-494fab634579_2x_1693944172.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/936/93625A100_f6287b2e-d38f-47a5-9552-494fab634579@2x_1693944172.png",
+      "image_alt": "Nylon-Insert Locknuts (tile image of 93625A100, same series, on the stainless-steel metric locknut page)",
+      "image_sha256": "cb7c3a554f8c10c0bb2d93a2bb67890a4db2054ddfbf0c59543712af9260ee68"
+    },
+    "wood": {
+      "family": "Stainless Steel Phillips Rounded Head Screws for Plywood and Oriented Strand Board (316 stainless)",
+      "catalog": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+      "image": "93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410_2x_637499466955352008.png",
+      "image_url": "https://www.mcmaster.com/mvC/Contents/gfx/ImageCache/933/93360A615Polished-Steelnegative_front_negative_right_standard15_1614371439_410@2x_637499466955352008.png",
+      "image_alt": "Image of Product. Front orientation. Wood Screws. Stainless Steel Phillips Rounded Head Screws for Plywood and Oriented Strand Board.",
+      "image_sha256": "fbd88ae4ccbc7f0d1dc3faedf4e0501e014ec6b0454debc5d39c0fb8ade0b9aa"
+    }
+  },
+  "parts": {
+    "92095A223": {
+      "family": "bhcs",
+      "catalog": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/thread-size~m5/",
+      "mcmaster": {
+        "thread": "M5",
+        "length_mm": 45,
+        "head_dia_mm": 9.5,
+        "head_ht_mm": 2.75,
+        "threading": "Fully Threaded"
+      }
+    },
+    "93625A200": {
+      "family": "locknut",
+      "catalog": "https://www.mcmaster.com/products/nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
+      "mcmaster": {
+        "thread": "M5 x 0.8 mm",
+        "width_mm": 8,
+        "height_mm": 5,
+        "insert_max_temp_F": 185
+      }
+    },
+    "91292A027": {
+      "family": "shcs",
+      "catalog": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3",
+        "length_mm": 14,
+        "head_dia_mm": 5.5,
+        "head_ht_mm": 3,
+        "threading": "Fully Threaded",
+        "thread_spacing": "Coarse"
+      }
+    },
+    "91292A113": {
+      "family": "shcs",
+      "catalog": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3",
+        "length_mm": 10,
+        "head_dia_mm": 5.5,
+        "head_ht_mm": 3,
+        "threading": "Fully Threaded",
+        "thread_spacing": "Coarse"
+      }
+    },
+    "93625A100": {
+      "family": "locknut",
+      "catalog": "https://www.mcmaster.com/products/nylon-insert-locknuts/material~stainless-steel-2/system-of-measurement~metric/nylon-insert-locknuts-2~~/",
+      "mcmaster": {
+        "thread": "M3 x 0.5 mm",
+        "width_mm": 5.5,
+        "height_mm": 4,
+        "insert_max_temp_F": 185
+      }
+    },
+    "91292A110": {
+      "family": "shcs",
+      "catalog": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3",
+        "length_mm": 5,
+        "head_dia_mm": 5.5,
+        "head_ht_mm": 3,
+        "threading": "Fully Threaded",
+        "thread_spacing": "Coarse"
+      }
+    },
+    "92095A185": {
+      "family": "bhcs",
+      "catalog": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3",
+        "length_mm": 20,
+        "head_dia_mm": 5.7,
+        "head_ht_mm": 1.65,
+        "threading": "Fully Threaded"
+      }
+    },
+    "92095A186": {
+      "family": "bhcs",
+      "catalog": "https://www.mcmaster.com/products/button-head-screws/stainless-steel-button-head-hex-drive-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3",
+        "length_mm": 25,
+        "head_dia_mm": 5.7,
+        "head_ht_mm": 1.65,
+        "threading": "Fully Threaded"
+      }
+    },
+    "92125A140": {
+      "family": "fhcs",
+      "catalog": "https://www.mcmaster.com/products/flat-head-screws/stainless-steel-hex-drive-flat-head-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M3 x 0.5 mm",
+        "length_mm": 30,
+        "countersink_angle": "90°",
+        "head_profile": "Standard",
+        "head_dia_mm": 6,
+        "head_ht_mm": 1.7,
+        "threading": "Fully Threaded"
+      }
+    },
+    "91828A211": {
+      "family": "nut",
+      "catalog": "https://www.mcmaster.com/products/hex-nuts/material~stainless-steel-2/system-of-measurement~metric/hex-nuts-3~~/",
+      "mcmaster": {
+        "thread": "M3 x 0.5 mm",
+        "width_mm": 5.5,
+        "height_mm": 2.4,
+        "specs_met": "DIN 934"
+      }
+    },
+    "91292A012": {
+      "family": "shcs",
+      "catalog": "https://www.mcmaster.com/products/socket-head-screws/stainless-steel-socket-head-screws~~/system-of-measurement~metric/",
+      "mcmaster": {
+        "thread": "M2.5",
+        "length_mm": 8,
+        "head_dia_mm": 4.5,
+        "head_ht_mm": 2.5,
+        "threading": "Fully Threaded",
+        "thread_spacing": "Coarse"
+      }
+    },
+    "93360A609": {
+      "family": "wood",
+      "catalog": "https://www.mcmaster.com/products/wood-screws/stainless-steel-phillips-rounded-head-screws-for-plywood-and-oriented-strand-board~~/",
+      "mcmaster": {
+        "thread": "#10",
+        "length_mm": 31.75,
+        "head_dia_mm": 9.270999999999999,
+        "head_ht_mm": 3.2512,
+        "threading": "Partially Threaded",
+        "thread_length_mm": 19.049999999999997,
+        "threads_per_inch": 13,
+        "head": "pan",
+        "drive": "Phillips No. 2",
+        "material": "316 stainless steel",
+        "pilot_drill_in": "3/32",
+        "inch": {
+          "length": "1-1/4",
+          "head_dia": "0.365",
+          "head_ht": "0.128",
+          "thread_length": "3/4"
+        }
+      }
+    }
+  }
+}
