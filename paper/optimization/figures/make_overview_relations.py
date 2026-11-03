@@ -59,7 +59,7 @@ F_PANEL, F_TITLE, F_BODY = 9.0, 8.0, 7.0
 # -------------------------------------------------------------------- nodes
 # Doser measurements: (key, title, subtitle, measured?, short name for the matrix)
 DOSER = [
-    ("ff", "Feed factor", "mg per auger revolution at three\ntilts; before and after humid air", True,
+    ("ff", "Feed factor", "mg per auger revolution at several\ntilts; before and after humid air", True,
      "Feed factor"),
     ("gd", "“Ghost dose”", "transparent doser, outlet closed,\ntapped: bulk and tapped density", False,
      "Ghost dose"),
