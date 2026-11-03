@@ -596,6 +596,13 @@ def write_result_json(out, doser, aor):
             "few_shot_45_from_22p5": out.get("few_shot_45_from_22p5"),
         },
     }
+    cg = os.path.join(HERE, "coarse_graining_check.json")   # written by hand from the outflow logs (see README)
+    if os.path.exists(cg):
+        w = json.load(open(cg))
+        res["key_results"]["coarse_graining_check_45deg_mg_rev_0p25_0p49rev"] = {
+            d: {"salt": w[f"d45_P1{s}"]["0.25-0.49"], "k1500": w[f"d45_k1500{s}"]["0.25-0.49"],
+                "ratio": round(w[f"d45_k1500{s}"]["0.25-0.49"] / w[f"d45_P1{s}"]["0.25-0.49"], 3)}
+            for d, s in (("d0.425", ""), ("d0.35", "_d035"))}
     with open(os.path.join(HERE, "result.json"), "w") as f:
         json.dump(res, f, indent=1)
 

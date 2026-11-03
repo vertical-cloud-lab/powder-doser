@@ -131,6 +131,23 @@ With salt-sized grains the 1.07 mm annulus is 2.5 grains wide, and an arch acros
 repose angle meanwhile rises steadily (27.5° → 39.5° over the same range). So the twin acts as a threshold
 detector for cohesion, sitting at the low end of the repose-angle scale.
 
+**Coarse-graining check (0.35 mm grains).** To test whether the early cliff comes from the grain size, salt and
+k = 1.5 kJ/m³ were rerun at 45° with 0.35 mm grains: about 55 k grains, 0.5 revolution, 2 MPI ranks each, about
+20 min. That makes the annulus 3.1 grains wide instead of 2.5. Over the same window (0.25–0.49 revolution,
+[`coarse_graining_check.json`](coarse_graining_check.json)):
+
+| grain d50 | annulus width | salt (k = 0) | k = 1.5 kJ/m³ | cohesive / salt |
+|---|---|---|---|---|
+| 0.425 mm | 2.5 grains | 293 mg/rev | 16 mg/rev | 0.056 |
+| 0.35 mm | 3.1 grains | 543 mg/rev | 104 mg/rev | 0.19 |
+
+Grains 18 % smaller let the cohesive case through 6.4× faster, against 1.85× for salt, even though each pair's Bond
+number rises slightly (0.076 → 0.092). So the twin's cliff position depends strongly on how many grains span the
+annulus. The fine powders, with 4–43 grains across it, should tolerate far more cohesion than the salt-sized twin
+suggests, which is the direction of the fitted offset. Salt's own rate is just as sensitive to grain size, so the
+twin's agreement with salt depends on salt's PSD, which has not been measured (#180). The windows are short (about
+a quarter revolution) and there is one seed per case, so treat the factors as rough.
+
 **Held-out powders.** Predicting each powder from its literature properties alone, leave one out:
 * **With one fitted parameter, the DEM chain is as good as the best regression, not better.**
   * The fitted parameter is the offset Δ between literature and DEM repose angle: 6.25° at 45° and 6.75° at 22.5°,
@@ -260,6 +277,7 @@ Literature AoR redrawn uniformly within each published range (200 draws), LOPO r
 
 ## Status
 **Ran.** Thirteen twin cases and ten repose-angle points; 10 of the 13 twin cases ran the full 0.75 revolution.
+The two 0.35 mm grain cases of the coarse-graining check ran their planned 0.5 revolution.
 * Stopped early to free cores once they had stalled: k = 3 (0.32 rev), 4.5 and 6 kJ/m³ at 45° (0.1 rev).
 * The k = 4.5 and 6 cases are not used.
 * The 22.5° path has only salt, k = 0.75 and k = 1.5; past k = 1.5 its last slope is continued.
@@ -272,7 +290,7 @@ Literature AoR redrawn uniformly within each published range (200 draws), LOPO r
 * **One line through parameter space.** The path ties friction and cohesion together, so the chain is a monotone
   function of the repose angle (times density). It can't rank powders differently from the repose angle itself,
   and the inverse can't separate friction from cohesion (run 29's identifiability result).
-* **Coarse-graining at the exit.** Every powder is simulated with salt-sized grains, so the 1.07 mm annulus is
+* **Coarse-graining at the exit** (see the 0.35 mm check above). Every powder is simulated with salt-sized grains, so the 1.07 mm annulus is
   always about 2.5 grains wide. By literature d50 the other 11 powders are 1.4–17× finer than salt, so their real
   annulus is about 4–43 grains wide (8–43 for the nine finer than 150 µm). Narrow openings jam far more easily, so the coarse-grained twin is probably too
   arch-prone for fine powders. The fitted offset Δ absorbs this.
@@ -294,6 +312,7 @@ sudo apt-get install -y liggghts
 python3 -m venv /tmp/venv && /tmp/venv/bin/pip install numpy scipy matplotlib imageio imageio-ffmpeg pillow
 /tmp/venv/bin/python aor_path.py run P0 P1 k750 k1500 k2250 k3000 k4500 k6000 k7500 k9000   # about 1 min each
 /tmp/venv/bin/python doser_path.py run d45_P1      # one case per process; 13-30 min each when 4 run at once
+/tmp/venv/bin/python doser_path.py run d45_P1_d035 d45_k1500_d035   # coarse-graining check (2 MPI ranks each)
 /tmp/venv/bin/python aor_path.py summarize && /tmp/venv/bin/python doser_path.py summarize
 /tmp/venv/bin/python predict.py                    # LOPO comparison, correlations.md, predictions.json
 /tmp/venv/bin/python figures.py                    # figures and the animation (reads the scratch dumps)

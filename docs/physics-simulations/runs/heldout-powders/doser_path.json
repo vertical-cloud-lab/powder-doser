@@ -4,6 +4,7 @@
   "path_point": "P0",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.3,
    "mu_pw": 0.4,
@@ -32,6 +33,7 @@
   "path_point": "P1",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -60,6 +62,7 @@
   "path_point": "k3000",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -86,6 +89,7 @@
   "path_point": "k4500",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -108,6 +112,7 @@
   "path_point": "k6000",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -130,6 +135,7 @@
   "path_point": "P1",
   "tilt_deg": 22.5,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -158,6 +164,7 @@
   "path_point": "k750",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -186,6 +193,7 @@
   "path_point": "k1500",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -214,6 +222,7 @@
   "path_point": "k2250",
   "tilt_deg": 45.0,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -242,6 +251,7 @@
   "path_point": "k750",
   "tilt_deg": 22.5,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -270,6 +280,7 @@
   "path_point": "k1500",
   "tilt_deg": 22.5,
   "rpm": 30,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -298,6 +309,7 @@
   "path_point": "P1",
   "tilt_deg": 22.5,
   "rpm": 90,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -326,6 +338,7 @@
   "path_point": "k750",
   "tilt_deg": 22.5,
   "rpm": 90,
+  "d_mean_mm": 0.425,
   "params": {
    "mu_pp": 0.5,
    "mu_pw": 0.4,
@@ -348,5 +361,59 @@
   "grains_total_after_open": 311,
   "mg_per_rev_whole": 35.83,
   "mg_per_rev_after_quarter": 47.13
+ },
+ {
+  "case": "d45_P1_d035",
+  "path_point": "P1",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "d_mean_mm": 0.35,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 0.0
+  },
+  "dt_s": 2.5411963790337917e-05,
+  "n_init": 54826,
+  "wall_s": 1209.2818083763123,
+  "revs_simulated": 0.498,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [
+   22.222,
+   50.651,
+   61.896
+  ],
+  "mg_total_after_open": 209.139,
+  "grains_total_after_open": 4141,
+  "mg_per_rev_whole": 419.8,
+  "mg_per_rev_after_quarter": 549.05
+ },
+ {
+  "case": "d45_k1500_d035",
+  "path_point": "k1500",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "d_mean_mm": 0.35,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 1500.0
+  },
+  "dt_s": 2.5411963790337917e-05,
+  "n_init": 54826,
+  "wall_s": 1212.591304063797,
+  "revs_simulated": 0.498,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [
+   6.024,
+   2.497,
+   19.762
+  ],
+  "mg_total_after_open": 33.892,
+  "grains_total_after_open": 668,
+  "mg_per_rev_whole": 68.03,
+  "mg_per_rev_after_quarter": 102.23
  }
 ]

@@ -4,12 +4,13 @@
  "code": "LIGGGHTS-PUBLIC + numpy/scipy",
  "version": "3.8.0 (Debian package liggghts)",
  "status": "ran",
- "wall_s": 18503.1,
+ "wall_s": 20925.0,
  "cores": 4,
  "key_results": {
   "twin_salt_mg_rev": {
    "d45_P1": 285.81,
-   "d22_P1": 138.39
+   "d22_P1": 138.39,
+   "d45_P1_d035": 549.05
   },
   "lopo_45deg": {
    "mean": {
@@ -177,6 +178,18 @@
     "wilcoxon_p": 0.064,
     "a_better": 2,
     "b_better": 10
+   }
+  },
+  "coarse_graining_check_45deg_mg_rev_0p25_0p49rev": {
+   "d0.425": {
+    "salt": 293.1,
+    "k1500": 16.3,
+    "ratio": 0.056
+   },
+   "d0.35": {
+    "salt": 543.0,
+    "k1500": 103.8,
+    "ratio": 0.191
    }
   }
  }

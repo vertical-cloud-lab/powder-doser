@@ -77,6 +77,8 @@ Details, tables and figures: [`runs/heldout-powders/`](runs/heldout-powders/).
   baselines.
 - **What would change that:** inputs measured on the same jars instead of handbook values, a second observable
   that separates friction from cohesion, and grains fine enough at the exit for the fine powders.
+  A check of the last point with 0.35 mm instead of 0.425 mm grains (annulus 3.1 instead of 2.5 grains wide) let
+  the k = 1.5 kJ/m³ case through 6.4× faster, against 1.85× for salt.
 
 ## What the Edison answers add
 

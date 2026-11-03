@@ -59,7 +59,7 @@ Literature AoR redrawn uniformly within each published range (200 draws), LOPO r
 
 | model | RMSE (deg) | MAE (deg) | ρ |
 |---|---|---|---|
-| training mean | 5.9 | 5.4 | +nan |
+| training mean | 5.9 | 5.4 | – |
 | linear in log mg/rev at 45° | 3.5 | 2.9 | +0.70 |
 | DEM path, both tilts, mean offset | 7.0 | 5.7 | +0.64 |
 | DEM path, no offset | 10.5 | 8.4 | +0.64 |

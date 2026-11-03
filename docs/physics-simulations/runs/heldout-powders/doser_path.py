@@ -122,7 +122,7 @@ def summarize_case(case):
     if revs_done > 0.05:
         out["mg_per_rev_whole"] = round(out["mg_total_after_open"] / revs_done, 2)
     # steady window: drop the first quarter revolution (start-up transient, as in #180)
-    if revs_done >= 0.5:
+    if revs_done >= 0.49:   # 0.5-rev runs end a log interval short of 0.5
         a = t0 + 0.25 * T
         out["mg_per_rev_after_quarter"] = round(float(m[-1] - np.interp(a, t, m)) / (revs_done - 0.25), 2)
     elif revs_done >= 0.2:
