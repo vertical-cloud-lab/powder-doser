@@ -15,7 +15,7 @@ attempt to run **all** of the methods found.
 
 ## Results
 
-31 runs, 24 ran and 7 partly (reduced scale or one part failing). Animations and figures are in each folder; the PR description (#196) shows them all.
+31 runs, 24 ran and 7 partly (reduced scale or one part failing), plus run 32, a follow-up on held-out powders (below). Animations and figures are in each folder; the PR description (#196) shows them all.
 
 | # | Family ([catalog](LITERATURE.md)) | Run | Code | Status | Headline |
 |---|---|---|---|---|---|
@@ -50,8 +50,33 @@ attempt to run **all** of the methods found.
 | 29 | Emulator + MCMC | [`bayes-gp-emulator-mcmc`](runs/bayes-gp-emulator-mcmc) | scikit-learn + emcee | ran | The tilt sweep alone leaves rolling friction unidentified; a wall-friction test fixes μ<sub>s</sub> to ± 0.05 |
 | 30 | Learned simulator | [`gns-gnn-simulator`](runs/gns-gnn-simulator) | GNS (PyTorch) | partial | Trained 13 min on 45 DEM runs: runout −6 % / +20 % in range; blew up out of range |
 | 31 | PINN (extra) | [`surrogate-pinn`](runs/surrogate-pinn) | PyTorch | ran | Janssen stress: forward error ≤ 3.3 %; inverse K·μ<sub>w</sub> 0.199 ± 0.004 (truth 0.2) |
+| 32 | Follow-up: held-out powders | [`heldout-powders`](runs/heldout-powders) | LIGGGHTS 3.8 + numpy | ran | #180 twin vs Sam's salt with no fit: 286 vs 265 mg/rev (45°), 138 vs 146 (22.5°). Literature AoR → DEM path → mg/rev predicts held-out powders as well as an AoR regression (RMSE 0.71 vs 0.74 log₁₀), not better |
 
 One family has no run of its own: **coarse-grained DEM** (family 5). It is used inside runs 11, 13, 14 and 17, where grains were scaled up 2.9–4×.
+
+## Follow-up: can the simulations predict powders held out of Sam's battery? (run 32)
+
+Asked on #196 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/196#issuecomment-6616177989)).
+Details, tables and figures: [`runs/heldout-powders/`](runs/heldout-powders/).
+
+- **Data.** The 12 powders of the #116 battery (Sam's paper) that have #163 literature properties. Each is
+  predicted leave-one-out from those properties: mg/rev at 45 and 22.5° (protocol C), plus correlations with the
+  1 g doses and the speed exponent.
+- **Correlations.** The literature angle of repose is the one strong predictor: ρ = −0.84 with mg/rev at 45°, +0.92
+  with 1 g dose time, +0.76 with the speed exponent. Grain size, and closed-form physics built on it (Bond number,
+  Beverloo through the annulus), show nothing.
+- **The twin.** With salt's parameters and no fitting, the #180 twin reproduces protocol C: 286 vs 265 mg/rev at
+  45°, 138 vs 146 at 22.5°, and speed exponent 0.82 vs 0.78. With salt-sized grains it stalls at very weak cohesion
+  (Bo ≈ 0.08 already cuts the flow 10×), because the exit annulus is only 2.5 grains wide.
+- **Held-out prediction.** Literature AoR → position on a DEM repose-angle path → the twin's mg/rev there ×
+  density. With one fitted offset (about 6°, stable across folds and tilts), it is as accurate as a two-parameter
+  regression on the repose angle, but not better (RMSE 0.71 vs 0.74 log₁₀ at 45°; Wilcoxon p = 0.79). Without the
+  offset it ranks the powders well (ρ = 0.84) but under-predicts the finer free-flowing ones.
+- **What the simulations don't add yet.** The inverse (repose angle from the dosing fingerprint), a few-shot tilt
+  transfer, and the speed response of the cohesive powders all come out worse with the DEM than with simple
+  baselines.
+- **What would change that:** inputs measured on the same jars instead of handbook values, a second observable
+  that separates friction from cohesion, and grains fine enough at the exit for the fine powders.
 
 ## What the Edison answers add
 

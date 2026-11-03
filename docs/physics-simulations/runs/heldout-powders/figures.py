@@ -182,7 +182,7 @@ def fig_lopo(per_powder, summary):
     plt.close(fig)
 
 
-def animation(cases=("d45_P1", "d45_k1500", "d45_k3000")):
+def animation(cases=("d45_P1", "d45_k750", "d45_k1500", "d45_k2250")):
     labels = {c: c for c in cases}
     for c in cases:
         f = os.path.join(SCRATCH, c, "case.json")

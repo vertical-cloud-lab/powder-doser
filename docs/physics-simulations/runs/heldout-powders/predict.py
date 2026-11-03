@@ -214,7 +214,7 @@ def isotonic_decreasing(x, y):
     return lambda xq: float(np.interp(xq, knots_x, knots_y))
 
 
-def lopo(powders, key, chain):
+def lopo(powders, key, chain, models=None):
     y = np.array([logy(p["mg_rev"][key]) for p in powders])
     aor = np.array([p["aor"] for p in powders])
     lrho = np.log10([p["rho_p"] for p in powders])
@@ -228,8 +228,17 @@ def lopo(powders, key, chain):
         for m in ("dem0", "dem0_bulk", "dem_shift", "dem_shift_scale"):
             preds[m] = np.full(len(powders), np.nan)
     shifts = np.arange(-10.0, 15.01, 0.25)
+    if models is not None:
+        preds = {m: v for m, v in preds.items() if m in models}
     for i in range(len(powders)):
         tr = np.array([j for j in range(len(powders)) if j != i])
+        if models is not None:
+            if "aor_ols" in preds:
+                b = ols(aor[tr], y[tr]); preds["aor_ols"][i] = b[0] + b[1] * aor[i]
+            if "dem_shift" in preds:
+                sse = [np.sum((np.array([chain.predict(powders[j], key, shift=s)[0] for j in tr]) - y[tr]) ** 2) for s in shifts]
+                preds["dem_shift"][i] = chain.predict(powders[i], key, shift=float(shifts[int(np.argmin(sse))]))[0]
+            continue
         preds["mean"][i] = y[tr].mean()
         b = ols(aor[tr], y[tr]); preds["aor_ols"][i] = b[0] + b[1] * aor[i]
         b = ols(np.column_stack([aor[tr], lrho[tr]]), y[tr]); preds["aor_rho_ols"][i] = b[0] + b[1] * aor[i] + b[2] * lrho[i]
@@ -308,6 +317,64 @@ def inverse(powders, chain):
                    "mae_deg": round(float(np.mean(np.abs(base - aor))), 2)}
     return res, out, uh
 
+# ----------------------------------------------------------------------- robustness and few-shot
+
+
+def paired_test(y, a, b):
+    """Wilcoxon signed-rank test on per-powder absolute LOPO errors of models a and b."""
+    ea, eb = np.abs(a - y), np.abs(b - y)
+    d = ea - eb
+    if np.allclose(d, 0):
+        return {"median_abs_err_diff_log10": 0.0, "wilcoxon_p": 1.0, "a_better": 0, "b_better": 0}
+    res = stats.wilcoxon(ea, eb)
+    return {"median_abs_err_diff_log10": round(float(np.median(d)), 3), "wilcoxon_p": round(float(res.pvalue), 3),
+            "a_better": int(np.sum(d < 0)), "b_better": int(np.sum(d > 0))}
+
+
+def aor_range_sensitivity(powders, key, chain, n_rep=200, seed=0):
+    """Redraw every literature repose angle uniformly within its published range and redo the LOPO comparison
+    of the AoR regression and the one-parameter DEM chain."""
+    rng = np.random.default_rng(seed)
+    out = {"aor_ols": [], "dem_shift": [], "aor_ols_class": [], "dem_shift_class": []}
+    for _ in range(n_rep):
+        pw = [{**p, "aor": float(rng.uniform(p["aor_lo"], p["aor_hi"]))} for p in powders]
+        y, preds, _ = lopo(pw, key, chain, models=("aor_ols", "dem_shift"))
+        for m in ("aor_ols", "dem_shift"):
+            s = score(y, preds[m])
+            out[m].append(s["rmse_log10"])
+            out[m + "_class"].append(s["flow_class_correct"])
+    res = {m: {"rmse_median": round(float(np.median(out[m])), 3),
+               "rmse_p10_p90": [round(float(np.percentile(out[m], 10)), 3), round(float(np.percentile(out[m], 90)), 3)],
+               "class_correct_median": float(np.median(out[m + "_class"]))} for m in ("aor_ols", "dem_shift")}
+    res["dem_shift_rmse_lower_fraction"] = round(float(np.mean(np.array(out["dem_shift"]) < np.array(out["aor_ols"]))), 3)
+    res["n_rep"] = n_rep
+    return res
+
+
+def few_shot_tilt(powders, chain):
+    """Given a held-out powder's measured mg/rev at 22.5 deg, predict 45 deg.
+    DEM: path position matching the (density-corrected) 22.5 deg value -> twin's 45 deg value.
+    Baseline: the training powders' median log ratio 45/22.5."""
+    if not ("45" in chain.doser and "22p5" in chain.doser):
+        return None
+    ugrid = np.linspace(chain.aor_u[0], chain.aor_u[-1], 801)
+    y22 = np.array([logy(p["mg_rev"]["22p5"]) for p in powders])
+    y45 = np.array([logy(p["mg_rev"]["45"]) for p in powders])
+    pred_dem, pred_ratio = np.zeros(len(powders)), np.zeros(len(powders))
+    for i, p in enumerate(powders):
+        lr = math.log10(p["rho_p"] / RHO_SALT)
+        err = np.array([(chain.logmg(u, "22p5") - (y22[i] - lr)) ** 2 for u in ugrid])
+        m = np.isclose(err, err.min(), atol=1e-4)
+        u = float(np.median(ugrid[m]))
+        pred_dem[i] = chain.logmg(u, "45") + lr
+        tr = [j for j in range(len(powders)) if j != i]
+        pred_ratio[i] = y22[i] + float(np.median(y45[tr] - y22[tr]))
+    return {"dem": score(y45, pred_dem), "median_ratio": score(y45, pred_ratio),
+            "paired_dem_vs_ratio": paired_test(y45, pred_dem, pred_ratio),
+            "per_powder": {p["powder_id"]: {"measured_45": p["mg_rev"]["45"], "dem": round(10 ** pd_, 2),
+                                            "median_ratio": round(10 ** pr, 2)}
+                           for p, pd_, pr in zip(powders, pred_dem, pred_ratio)}}
+
 # --------------------------------------------------------------------------- correlation table
 
 
@@ -367,6 +434,170 @@ def correlations(powders, chain):
         fh.write("\n".join(lines) + "\n")
     return table, n_tests
 
+# ------------------------------------------------------------------------------- speed check
+
+
+def speed_check(doser, powders):
+    """Effective speed exponent a (mg/s ~ rpm^a) of the twin at 22.5 deg from 30 and 90 rpm, against protocol D."""
+    rows = {}
+    for r in doser:
+        if r.get("tilt_deg") == 22.5 and dem_rate(r) is not None:
+            rows[(r["path_point"], r.get("rpm", 30))] = dem_rate(r)
+    out = {}
+    for pt in ("P1", "k750", "k1500"):
+        if (pt, 30) in rows and (pt, 90) in rows and rows[(pt, 30)] > 0 and rows[(pt, 90)] > 0:
+            a = 1 + math.log(rows[(pt, 90)] / rows[(pt, 30)]) / math.log(3)
+            out[pt] = {"mg_rev_30rpm": rows[(pt, 30)], "mg_rev_90rpm": rows[(pt, 90)], "speed_exponent": round(a, 3)}
+    meas = {p["powder_id"]: p["speed_alpha"] for p in powders if np.isfinite(p["speed_alpha"])}
+    flow = [v for k, v in meas.items() if next(p for p in powders if p["powder_id"] == k)["mg_rev"]["45"] >= FLOW_THRESHOLD]
+    noflow = [v for k, v in meas.items() if next(p for p in powders if p["powder_id"] == k)["mg_rev"]["45"] < FLOW_THRESHOLD]
+    out["measured_speed_exponent"] = {"conveying_powders_median": round(float(np.median(flow)), 3) if flow else None,
+                                      "conveying_range": [round(min(flow), 3), round(max(flow), 3)] if flow else None,
+                                      "poor_powders_median": round(float(np.median(noflow)), 3) if noflow else None,
+                                      "poor_range": [round(min(noflow), 3), round(max(noflow), 3)] if noflow else None,
+                                      "per_powder": meas}
+    return out
+
+# ----------------------------------------------------------------------------- markdown tables
+
+MODEL_LABEL = {
+    "mean": "training mean (no information)",
+    "aor_ols": "log mg/rev linear in literature AoR (2 fitted)",
+    "aor_rho_ols": "… plus log particle density (3 fitted)",
+    "aor_iso": "monotone (isotonic) fit on AoR",
+    "bond_ols": "linear in log Bond number from d50 (2 fitted)",
+    "bev0": "Beverloo through the core-tip annulus, no fit",
+    "bev_scale": "Beverloo, fitted log offset (1 fitted)",
+    "dem0": "**DEM chain, no fitted parameter**",
+    "dem0_bulk": "DEM chain, no fit, bulk-density scaling",
+    "dem_shift": "**DEM chain, fitted AoR offset (1 fitted)**",
+    "dem_shift_scale": "DEM chain, fitted offset and log scale (2 fitted)",
+}
+
+
+def write_tables(out, per_powder):
+    L = []
+    L.append("### Leave-one-powder-out scores (12 powders)\n")
+    L.append("RMSE and median error are in log<sub>10</sub>(mg/rev) and as a factor; ρ is the Spearman rank correlation of "
+             "the held-out predictions with the measurements; the last column counts powders put on the right side of "
+             f"{FLOW_THRESHOLD:g} mg/rev at 45° (7 convey, 5 do not).\n")
+    L.append("| model | 45°: RMSE | median error | ρ | flow class | 22.5°: RMSE | median error | ρ | flow class |")
+    L.append("|---|---|---|---|---|---|---|---|---|")
+    for m, lab in MODEL_LABEL.items():
+        a, b = out["tilts"]["45"]["scores"].get(m), out["tilts"]["22p5"]["scores"].get(m)
+        if a is None:
+            continue
+        cell = lambda s: (f"{s['rmse_log10']:.2f} | {s['median_fold_error']:.1f}× | {s['spearman_rho']:+.2f} | {s['flow_class_correct']}/{s['n']}"
+                          if s else "– | – | – | –")
+        L.append(f"| {lab} | {cell(a)} | {cell(b)} |")
+    L.append("")
+    fits = out["tilts"]["45"]["fitted"].get("dem_shift")
+    if fits:
+        f22 = out["tilts"]["22p5"]["fitted"].get("dem_shift") or []
+        L.append(f"Fitted AoR offset Δ across the 12 folds: median {np.median(fits):g}° (range {min(fits):g}–{max(fits):g}°) at 45°"
+                 + (f", median {np.median(f22):g}° (range {min(f22):g}–{max(f22):g}°) at 22.5°." if f22 else ".") + "\n")
+    pt = out.get("paired_tests", {})
+    if pt:
+        L.append("Paired comparison of per-powder absolute errors (Wilcoxon signed-rank, 12 powders):\n")
+        L.append("| tilt | comparison | powders where the first is better / worse | median difference (log<sub>10</sub>) | p |")
+        L.append("|---|---|---|---|---|")
+        for key, d in pt.items():
+            for comp, v in d.items():
+                L.append(f"| {'45°' if key == '45' else '22.5°'} | {comp.replace('_vs_', ' vs ')} | {v['a_better']} / {v['b_better']} | "
+                         f"{v['median_abs_err_diff_log10']:+.2f} | {v['wilcoxon_p']:.2f} |")
+        L.append("")
+    sens = out.get("aor_range_sensitivity", {})
+    if sens:
+        L.append("Literature AoR redrawn uniformly within each published range (200 draws), LOPO repeated:\n")
+        L.append("| tilt | model | median RMSE | 10–90 % | median flow class | DEM chain better in |")
+        L.append("|---|---|---|---|---|---|")
+        for key, d in sens.items():
+            for m in ("aor_ols", "dem_shift"):
+                L.append(f"| {'45°' if key == '45' else '22.5°'} | {m} | {d[m]['rmse_median']:.2f} | {d[m]['rmse_p10_p90'][0]:.2f}–{d[m]['rmse_p10_p90'][1]:.2f} | "
+                         f"{d[m]['class_correct_median']:g}/12 | {'' if m == 'aor_ols' else f'{100 * d['dem_shift_rmse_lower_fraction']:.0f} % of draws'} |")
+        L.append("")
+    L.append("### Per powder at 45° (mg/rev; held-out predictions)\n")
+    L.append("| powder | literature AoR (range) | measured | DEM chain, no fit | DEM chain, fitted offset | AoR regression | DEM no-fit over the AoR range |")
+    L.append("|---|---|---|---|---|---|---|")
+    rows = sorted(per_powder.items(), key=lambda kv: -kv[1]["measured"]["45"])
+    for pid, r in rows:
+        lp = r["lopo_log10_pred"]["45"]
+        f = lambda v: "–" if v is None else (f"{10 ** v:.3g}")
+        rng = r.get("dem0_mg_rev_range_over_aor_range", {}).get("45")
+        L.append(f"| {r['display']} | {r['aor_lit']:g}° | {r['measured']['45']:.3g} | {f(lp.get('dem0'))} | {f(lp.get('dem_shift'))} | "
+                 f"{f(lp.get('aor_ols'))} | {'' if not rng else f'{rng[0]:.3g}–{rng[1]:.3g}'} |")
+    L.append("")
+    inv = out.get("inverse_aor")
+    if inv:
+        L.append("### Inverse: each held-out powder's literature AoR from its measured mg/rev\n")
+        L.append("| model | RMSE (deg) | MAE (deg) | ρ |")
+        L.append("|---|---|---|---|")
+        names = {"mean": "training mean", "inv_ols": "linear in log mg/rev at 45°", "inv_dem": "DEM path, both tilts, mean offset",
+                 "inv_dem_noshift": "DEM path, no offset"}
+        for m in ("mean", "inv_ols", "inv_dem", "inv_dem_noshift"):
+            v = inv[m]
+            rho_s = "–" if "spearman_rho" not in v else f"{v['spearman_rho']:+.2f}"
+            L.append(f"| {names[m]} | {v['rmse_deg']:.1f} | {v['mae_deg']:.1f} | {rho_s} |")
+        L.append("")
+    fs = out.get("few_shot_45_from_22p5")
+    if fs:
+        L.append("### Few-shot: 45° from the same powder's measured 22.5° value\n")
+        L.append("| model | RMSE | median error | ρ |")
+        L.append("|---|---|---|---|")
+        for m, lab in (("median_ratio", "training powders' median 45/22.5 ratio"), ("dem", "DEM path (22.5° → position → 45°)")):
+            v = fs[m]
+            L.append(f"| {lab} | {v['rmse_log10']:.2f} | {v['median_fold_error']:.2f}× | {v['spearman_rho']:+.2f} |")
+        L.append("")
+    sp = out.get("speed_check")
+    if sp:
+        L.append("### Speed: effective exponent a (mg/s ∝ rpm<sup>a</sup>) at 22.5°\n")
+        L.append("| | 30 rpm (mg/rev) | 90 rpm (mg/rev) | a |")
+        L.append("|---|---|---|---|")
+        for k in ("P1", "k750", "k1500"):
+            if k in sp:
+                L.append(f"| DEM {k} | {sp[k]['mg_rev_30rpm']:.1f} | {sp[k]['mg_rev_90rpm']:.1f} | {sp[k]['speed_exponent']:.2f} |")
+        m = sp["measured_speed_exponent"]
+        L.append(f"| measured, the 7 powders that convey (protocol D, 15–90 rpm) | | | {m['conveying_powders_median']:.2f} (range {m['conveying_range'][0]:.2f}–{m['conveying_range'][1]:.2f}) |")
+        L.append(f"| measured, the 4 poor powders with an exponent | | | {m['poor_powders_median']:.2f} (range {m['poor_range'][0]:.2f}–{m['poor_range'][1]:.2f}) |")
+        L.append("")
+    with open(os.path.join(HERE, "tables.md"), "w") as fh:
+        fh.write("\n".join(L) + "\n")
+
+# ------------------------------------------------------------------------------- result.json
+
+
+def write_result_json(out, doser, aor):
+    sc = {k: v["scores"] for k, v in out["tilts"].items()}
+    pick = ("mean", "aor_ols", "aor_iso", "bev0", "bond_ols", "dem0", "dem_shift")
+    walls = [r.get("wall_s") for r in doser if r.get("wall_s")] + [r.get("wall_s") for r in aor if r.get("wall_s")]
+    complete = [r for r in doser if r.get("mg_per_rev_after_quarter") is not None]
+    res = {
+        "id": "heldout-powders",
+        "method": "Leave-one-powder-out prediction of Sam's #116 battery (12 powders) from literature properties: "
+                  "DEM repose-angle path + #180 auger twin along the same path (protocol C, 30 rpm) vs. "
+                  "no-simulation baselines; correlations; inverse (AoR from the dosing fingerprint)",
+        "code": "LIGGGHTS-PUBLIC + numpy/scipy",
+        "version": "3.8.0 (Debian package liggghts)",
+        "status": "ran" if len(complete) >= 6 else "partial",
+        "wall_s": round(float(sum(walls)), 1) if walls else None,
+        "cores": 4,
+        "key_results": {
+            "twin_salt_mg_rev": {r["case"]: r.get("mg_per_rev_after_quarter") for r in doser
+                                 if r.get("path_point") == "P1" and r.get("rpm", 30) == 30},
+            "lopo_45deg": {m: {k: sc["45"][m][k] for k in ("rmse_log10", "median_fold_error", "spearman_rho", "flow_class_correct")}
+                           for m in pick if m in sc["45"]},
+            "lopo_22p5deg": {m: {k: sc["22p5"][m][k] for k in ("rmse_log10", "median_fold_error", "spearman_rho", "flow_class_correct")}
+                             for m in pick if m in sc["22p5"]},
+            "spearman_aor_vs_log_mg_rev_45": out["spearman_raw"]["45"]["aor_lit"],
+            "inverse_aor": out.get("inverse_aor"),
+            "fitted_aor_offset_deg_45": out["tilts"]["45"]["fitted"].get("dem_shift"),
+            "speed_check": {k: v for k, v in (out.get("speed_check") or {}).items() if k != "measured_speed_exponent"},
+            "few_shot_45_from_22p5": out.get("few_shot_45_from_22p5"),
+        },
+    }
+    with open(os.path.join(HERE, "result.json"), "w") as f:
+        json.dump(res, f, indent=1)
+
 # ------------------------------------------------------------------------------------- main
 
 
@@ -402,6 +633,23 @@ def main():
             out["spearman_raw"][key][f] = {"rho": round(float(r), 3), "p": round(float(pv), 4)}
     out["correlations"], out["n_correlation_tests"] = correlations(powders, chain)
     if chain is not None:
+        out["paired_tests"], out["aor_range_sensitivity"] = {}, {}
+        for key in TILTS:
+            if key not in chain.doser:
+                continue
+            y, preds, _ = lopo(powders, key, chain)
+            out["paired_tests"][key] = {"dem_shift_vs_aor_ols": paired_test(y, preds["dem_shift"], preds["aor_ols"]),
+                                        "dem_shift_vs_aor_iso": paired_test(y, preds["dem_shift"], preds["aor_iso"]),
+                                        "dem0_vs_aor_ols": paired_test(y, preds["dem0"], preds["aor_ols"])}
+            if "--quick" not in sys.argv:
+                out["aor_range_sensitivity"][key] = aor_range_sensitivity(powders, key, chain)
+        out["speed_check"] = speed_check(doser, powders)
+        fs = few_shot_tilt(powders, chain)
+        if fs is not None:
+            out["few_shot_45_from_22p5"] = {k: v for k, v in fs.items() if k != "per_powder"}
+            for pid, v in fs["per_powder"].items():
+                pred_rows[pid]["few_shot_45_from_22p5"] = v
+    if chain is not None:
         # literature AoR ranges pushed through the no-fit chain: how much the handbook spread moves each prediction
         for p in powders:
             rr = {}
@@ -419,6 +667,8 @@ def main():
                                      for k, v in chain.doser.items()}}
     with open(os.path.join(HERE, "predictions.json"), "w") as f:
         json.dump({"summary": out, "per_powder": pred_rows}, f, indent=1)
+    write_result_json(out, doser, aor)
+    write_tables(out, pred_rows)
     for key in TILTS:
         print(f"--- tilt {key}")
         for m, s in out["tilts"][key]["scores"].items():
