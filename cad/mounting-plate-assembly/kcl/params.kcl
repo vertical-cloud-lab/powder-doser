@@ -1,0 +1,338 @@
+// Shared parameter sheet for the powder-doser mounting-plate assembly.
+//
+// COORDINATES: auger long axis = +Y. Dispense tip at +Y, motor end at -Y.
+// +Z is up; powder falls in -Z. All units mm.
+//
+// All upstream-part dimensions are kept in lock-step with the source PRs:
+//
+//   * PR #49 v3 — geared Archimedes auger + 16T stepper pinion + NEMA 11
+//     (cad/auger-geared/)
+//   * PR #51    — split tap collar + mount plate
+//     (design/cad/tap-collar/)
+//   * PR #55    — split shaft-collar auger bracket
+//     (cad/auger-bracket/)
+
+// ============================ IMPORTED PARTS ============================ //
+
+// ---- Geared Archimedes auger + pinion (PR #49) ----
+augerOd                = 25.0
+augerLen               = 250.0
+gearBandFromDispEnd    = augerLen / 3.0       // 83.33 mm
+gearBandFaceW          = 10.0
+gearBandTipDia         = 50.0                 // 48T module-1 tip dia
+pinionTipDia           = 18.0                 // 16T module-1 tip dia
+pinionLen              = 16.0
+gearCentreDistance     = 32.0                 // C = (48+16)*1/2
+
+// ---- NEMA 11 stepper (PR #49 BOM item 10 — 11HS18-0674S) ----
+nema11BodyW            = 28.2                 // square cross-section
+nema11BodyL            = 32.0                 // along motor axis
+nema11FaceHolePitch    = 23.0                 // M2.5 corner pitch (using M3 in our boss)
+nema11PilotDia         = 22.0                 // central pilot
+nema11ShaftDia         = 5.0
+nema11ShaftLen         = 18.0
+
+// ---- Auger bracket (PR #47: 60 × 12 × 14 mm flange, 2 × M3 at X = ±24)
+//      LIFTED variant: 14 mm-thick flange raises the bore axis to 29.25 mm
+//      above the flange bottom, giving the PR #49 Ø50 gear band 4.25 mm of
+//      radial clearance over a flat plate (no slot, no plinth required). ----
+brkFlangeW             = 60.0                 // along X
+brkFlangeD             = 12.0                 // along Y (auger axis)
+brkFlangeT             = 14.0                 // Z (lifted)
+brkMountHoleInsetX     = 6.0                  // → hole centres at X = ±24
+brkMountHoleD          = 3.4                  // M3 clearance
+brkCollarOd            = 33.5                 // outside diameter of the collar ring
+brkCollarPlateOverlap  = 1.5
+brkRingCentreLocalZ    = brkFlangeT + (brkCollarOd / 2.0) - brkCollarPlateOverlap   // 29.25 mm
+
+// ---- Tap-collar mount plate (PR #51 latest: 60 × 18 × 14, 2 × M3 at X = ±24) ----
+tapPlateW              = 60.0                 // along X
+tapPlateD              = 18.0                 // along Y — matches lengthened TC collar
+tapPlateT              = 14.0                 // Z — matches bracket flange thickness
+tapMountHoleInsetX     = 6.0
+tapMountHoleD          = 3.4
+
+// ============================ HARDWARE =================================== //
+m3Clear                = 3.4
+m5Clear                = 5.4
+
+// ============================ THIS PACKAGE =============================== //
+//
+// Layout per the issue #62 third review:
+//   * every component (brackets, tap-collar mount, motor block, front
+//     ramps, hinge eyes) sits on the TOP surface of the mounting plate
+//   * plate is SYMMETRIC about X=0 — auger in the middle, motor mount
+//     extends to one side, opposite side is clear
+//   * brackets bolt DIRECTLY to the plate top (no plinths)
+//   * NO features hang from the plate underside (no actuator lug)
+//   * the two side hinges are EQUAL in size, mirror-symmetric about X=0
+//   * NO holes or gaps other than mounting holes, a single open
+//     U-notch in the +Y edge for the auger overhang, and a minimum
+//     gear-band+pinion clearance cutout under the band
+//   * two SEPARATE side hinges (one each side of the auger), with the
+//     rotation axis 10 mm forward of the baseplate's front edge
+//   * Y order from the hinge end to the motor end:
+//         hinge → front bracket → tap collar → motor (over gear band) →
+//         rear bracket
+
+// Tap-collar bore Z (above the mount-plate bottom).  The PR #51 collar
+// bore is at 29.25 mm — exactly the same as the PR #47 bracket bore —
+// so bracket + tap-collar + auger gear are at the same Z and bolt flat
+// to a flush plate top.
+tapCollarBoreLocalZ    = 29.25
+
+// ---- Mounting plate ----
+plateT                 = 6.0                  // Z thickness
+
+// Brackets bolt directly to the plate top — auger axis sits at the
+// LIFTED bracket's native bore height (29.25 mm) above the plate top,
+// so the Ø50 gear band clears the plate top by 4.25 mm — no plinths
+// and no through-plate slot.
+zAug                   = brkRingCentreLocalZ               // +29.25 mm
+
+// Auger spans Y = [yRear, yDisp]. Dispense end at +Y.
+yDisp                  = +augerLen / 2.0                   // +125 mm
+yRear                  = -augerLen / 2.0                   // -125 mm
+yGearBand              = yDisp - gearBandFromDispEnd       // +41.67 mm
+
+// Component Y positions (hinge end → far end, matching issue #62 drawing).
+// Front bracket / tap collar / gear band are packed flush along Y with
+// only a 1 mm air-clearance gap so gravity holds them against the
+// brackets (per the fifth review).
+packGap                = 1.0
+yTap                   = yGearBand + (gearBandFaceW / 2.0) + packGap + (tapPlateD / 2.0)   // +56.67
+yBrkFront              = yTap + (tapPlateD / 2.0) + packGap + (brkFlangeD / 2.0)           // +72.67
+yBrkRear               = -2.0
+
+// SYMMETRIC plate X envelope (auger centred at X=0, plate mirrored).
+plateXHalf             = +gearCentreDistance + (nema11BodyW / 2.0) + 8.0   // 54.1
+plateXMin              = -plateXHalf
+plateXMax              = +plateXHalf
+plateW                 = plateXMax - plateXMin
+plateXCentre           = 0.0
+
+// Plate Y envelope — plate front edge 10 mm short of the hinge axis.
+plateYFront            = yDisp - 10.0                      // +115
+plateYBack             = yBrkRear - (brkFlangeD / 2.0) - 7.0     // -114.5
+plateL                 = plateYFront - plateYBack
+plateYCentre           = (plateYFront + plateYBack) / 2.0
+
+// Auger gap — open U-notch in the +Y plate edge.  The auger overhangs
+// in mid-air through this gap; the gap is also what separates the two
+// front ramps and the two side hinges.
+augerGapW              = 32.0
+augerGapYBack          = plateYFront - 35.0                // +80
+
+// NEMA-11 motor mount block — sits ON TOP of plate; its +Y face carries
+// the motor face holes; motor body extends in -Y from that face.  The
+// motor face is placed so the pinion centre sits exactly on the gear
+// band centre in Y — no Y-axis offset (per the fifth review).
+xMotor                 = +gearCentreDistance               // +32 mm
+zMotor                 = zAug
+motorFaceY             = yGearBand - (pinionLen / 2.0) - 2.0   // +31.67
+bossW                  = nema11BodyW + 8.0                 // 36.2
+bossH                  = nema11BodyW + 8.0                 // 36.2
+bossT                  = 6.0
+
+// 3-layer sandwich hinges — each side of the auger gap carries
+// {inner mounting-plate lobe, middle baseplate arm, outer mounting-plate
+// lobe} sharing a single M5 pin per side (per the fifth review).  Each
+// lobe takes one third of the ramp half-span.
+hingeEyeOd             = 18.0
+hingeEyeId             = m5Clear
+hingeLayerGap          = 0.4
+rampHalfSpan           = (plateXMax - plateXCentre) - (augerGapW / 2.0)
+hingeLobeW             = rampHalfSpan / 3.0
+hingeX0                = +augerGapW / 2.0
+hingeX1                = hingeX0 + hingeLobeW
+hingeX2                = hingeX0 + 2.0 * hingeLobeW
+hingeX3                = plateXMax
+
+// Front ramps — each is a right-triangle prism (in YZ) extruded along
+// X from the auger-gap edge out to the plate X edge for its side.
+// Together the two ramps cover the entire +Y plate face except for the
+// auger gap.
+rampYBack              = plateYFront - 25.0                // +90
+rampTopZ               = zAug + hingeEyeOd / 2.0           // +36.25
+
+// (No linear-actuator rod-end pivot lug — no underside features.)
+
+// ---- Baseplate (sits on the bench) ----
+// Per Will's review (comment 4721011696) the baseplate is now a
+// small forward-only RECTANGULAR mounting tab — the legs and most of
+// the rear are gone; the part bolts onto a separate frame via four
+// M5 holes in a square pattern at its rear corners.
+baseT                  = 6.0
+
+// Legs removed — kept as 0 for any legacy references.
+baseLegH               = 0.0
+baseLegW               = 0.0
+baseLegInset           = 0.0
+
+// Rectangular forward-only tab (no taper).
+baseFrontHalfW         = 100.0                             // ±100 at front
+baseRearHalfW          = 100.0                             // ±100 at rear (rectangular)
+
+// Baseplate position — front edge 10 mm BEHIND the hinge axis, so the
+// hinge axis sits 10 mm in front of the baseplate's front edge.
+baseYFront             = yDisp - 10.0                      // +115
+// Rear edge pulled forward to +55 — the tab is shortened further per
+// Will's review (pullrequestreview-4509355231); the two rear corners
+// are chamfered 25 mm × 45°.
+baseYRear              = +55.0
+baseRearChamfer        = 25.0
+baseYBack              = baseYRear                          // back-compat alias
+baseYCentre            = (baseYFront + baseYRear) / 2.0
+baseW                  = 2.0 * baseFrontHalfW              // front-edge width
+baseL                  = baseYFront - baseYRear
+
+// zBaseTop is the BOTTOM of the baseplate body; base top = zBaseTop + baseT.
+zBaseTop               = -plateT - 8.0                     // -14
+
+// Four M5 mounting holes near the four tab corners (per Will's review
+// pullrequestreview-4509355231 — "match the green holes in the drawing").
+baseMountHoleDia       = 5.4
+baseMountHoleX         = 80.0                             // ±80 (near corners)
+baseMountHoleYRear     = baseYRear + 13.0                 // +68 (clear of chamfer)
+baseMountHoleYFront    = baseYFront - 10.0                // +105 (front corners)
+
+// Baseplate hinge arms — middle layer of the 3-layer sandwich, one each
+// side of the auger gap.  Each arm occupies the centre third of its
+// ramp half-span between the mounting plate's inner and outer lobes.
+// The arm bottom face extends BACK onto the baseplate top for full
+// contact with the baseplate (per Will's review).
+armThk                 = hingeLobeW - hingeLayerGap
+hingeAxisZLocal        = zAug - zBaseTop
+// Reduced from 40 → 35 per Will's comment 4721011696 (the post depth
+// was interfering with the front bracket).
+armBaseSupportLen      = 35.0
+
+// The arm's BACK (toward -Y, motor) face is sloped from arm_back_y at
+// the baseplate top up to a point near the hinge axis level, giving
+// the mounting plate's underside clearance to sweep through 45° and
+// beyond (per Will's PR #66 review comment on 45° interference).
+armSlopeRun            = 16.0                              // ~58° from horizontal
+
+// ============================ HINGE GEAR + SERVO (issue #63) ========== //
+//
+// Spur gear bands are added to BOTH outer mounting-plate hinge lobes
+// (+X and -X) so a servo on each side of the baseplate can drive the
+// tilt of the mounting plate — dual-servo lift per Will's comment
+// 4721011696.  A 2:1 reduction between hinge gear and pinion keeps
+// the torque load on each MG996R within its 9.4 kgf·cm rating.
+// Module is back-solved from the centre distance so the 28-T hinge
+// gear at Z = zAug meshes with the 14-T pinion at the required Z
+// (= 10 mm above the baseplate top, the centreline of the MG996R's
+// 20 mm-thick body).
+// COARSER MODULE (issue #65, PR #66 comment 4815348177): the original
+// 40-T/20-T gears were m ≈ 0.908 mm — so fine the FDM pinion stripped
+// under repeated loaded cycling.  The centre distance C = 27.25 mm is
+// FIXED (auger/hinge axis vs MG996R spline), and m = 2C/(Nh+Np) with a
+// fixed 2:1 ratio, so coarsening the module means cutting the tooth
+// count.  14-T/28-T (m ≈ 1.298, 25° PA) is the digital-twin-validated
+// choice: +43 % module (≈30 % lower tooth-root stress) yet still meshes
+// cleaner than the old gears.  See cad_model.py + digital_twin.py.
+gearPressureAngle      = 25.0                             // 25° PA → 14-T pinion w/o undercut
+gearBacklash           = 0.40                             // circumferential backlash (mm)
+gearHingeTeeth         = 28
+gearPinionTeeth        = 14
+gearFaceW              = hingeLobeW - hingeLayerGap        // match outer lobe
+pinionZAboveBaseTop    = 10.0                              // MG996R body midline
+gearCentreC            = zAug - (zBaseTop + baseT + pinionZAboveBaseTop)   // 27.25
+gearModule             = (2.0 * gearCentreC) / (gearHingeTeeth + gearPinionTeeth)  // ≈ 1.298
+gearHingePcd           = gearHingeTeeth * gearModule
+gearPinionPcd          = gearPinionTeeth * gearModule
+gearHingeTipD          = gearHingePcd + 2 * gearModule
+gearPinionTipD         = gearPinionPcd + 2 * gearModule
+// +X side hinge-gear band (replaces the cylindrical eye on the +X
+// outer mounting-plate hinge lobe).
+gearXCentre            = (hingeX2 + hingeLayerGap / 2 + hingeX3) / 2.0
+gearXLo                = gearXCentre - gearFaceW / 2.0
+gearXHi                = gearXCentre + gearFaceW / 2.0
+// -X side hinge-gear band (mirror across X = 0).
+gearXCentreNeg         = -gearXCentre
+gearXLoNeg             = -gearXHi          // near face (toward origin) on -X side
+gearXHiNeg             = -gearXLo          // far  face (away from origin) on -X side
+
+// ---- MG996R servo (per the dimensioned drawing on PR #66) ----
+mg996rBodyL            = 40.0     // along spline-perpendicular long axis (Y)
+mg996rBodyT            = 20.0     // body thickness (Z)
+mg996rBodyH            = 36.8     // body height (X — inward from flange face)
+mg996rFlangeL          = 54.5     // flange total length along Y
+mg996rFlangeT          = 2.0      // flange ear thickness along X
+mg996rHoleDia          = 5.0      // Ø5 mounting holes
+mg996rHoleYSpread      = 49.5     // hole pair spread along body length (Y)
+mg996rHoleZSpread      = 10.0     // hole pair spread along body thickness (Z)
+mg996rSplineYOffset    = 10.1     // spline offset from near body-end along Y
+
+// ---- Servo mount — TWO SQUARE posts, mirrored on +X and -X ----
+// Per Will's review (comment 4633722007, revising the earlier 8 mm
+// rule down to 5 mm) the posts sit BEHIND the MG996R mounting holes
+// and the servo is placed so the very TIP of the driving head hangs
+// 5 mm past the baseplate front edge.  The mounting flange (the two
+// ears) sits at the body top, so the flange seating plane = the body
+// top = the baseplate (porch) front edge.  Pure-X move; gears
+// untouched (centre distance + 2:1 ratio live in Z).
+driveHeadOverhang      = 5.0
+servoWallT             = 6.0                               // post thickness along X
+servoWallX             = gearXHi + driveHeadOverhang       // = +59.0 (+X flange/edge plane)
+servoBodyXLo           = servoWallX
+servoBodyXHi           = servoBodyXLo + mg996rBodyH
+servoWallZLo           = baseT                             // baseplate top in local frame
+// -X mirrored servo wall + body extents.
+servoWallXNeg          = -servoWallX                       // = -59.0
+servoBodyXLoNeg        = -servoBodyXHi                     // ≈ -95.8 (far end of -X body)
+servoBodyXHiNeg        = -servoBodyXLo                     // = -59.0 (flange face, inboard)
+
+// Pinions sit at the same X centre as each gear, offset in -Z by the
+// centre distance C so each spline sits exactly 10 mm above the base
+// top (midline of the MG996R's 20 mm-thick body).
+pinionXCentre          = gearXCentre
+pinionXLo              = gearXLo
+pinionXHi              = gearXHi
+pinionXCentreNeg       = gearXCentreNeg
+pinionXLoNeg           = gearXLoNeg
+pinionXHiNeg           = gearXHiNeg
+pinionY                = yDisp                             // parallel to hinge axis
+pinionZ                = zAug - gearCentreC                // = +2.0 mm
+
+// MG996R body extents along Y, and the two square posts that flank it.
+// The body protrudes through the open gap between the posts for proper
+// alignment (per Will's comment 4624739034 — "green dimension").
+servoBodyYLo           = pinionY - mg996rSplineYOffset
+servoBodyYHi           = servoBodyYLo + mg996rBodyL
+servoGapClear          = 0.5                               // per-side body clearance
+servoPostWY            = 14.0                              // post width along Y
+
+// Hole-centre Y offsets from the spline axis — directly annotated on
+// the dimensioned drawing as -14.85 mm and +34.65 mm.
+mg996rHoleYNear        = -(mg996rSplineYOffset + 7.25 - 2.5)              // -14.85
+mg996rHoleYFar         = +(mg996rBodyL - mg996rSplineYOffset + 7.25 - 2.5) // +34.65
+
+// Y spans of the two posts.
+nearPostYLo            = servoBodyYLo - servoGapClear - servoPostWY
+nearPostYHi            = servoBodyYLo - servoGapClear
+farPostYLo             = servoBodyYHi + servoGapClear
+farPostYHi             = servoBodyYHi + servoGapClear + servoPostWY
+
+// Arm-clearance slot through the mounting plate — cut so the baseplate
+// arms pass cleanly through the plate when it folds flush to 0° tilt.
+armSlotYBack           = (baseYFront - armBaseSupportLen) - 2.0   // +78
+armSlotClearance       = 0.5                                       // per side along X
+
+// Cantilever-stiffening flange under the tabletop — mirrored on +X
+// and -X (one per servo).  Per Will's review (pullrequestreview-4509355231)
+// the supportive triangle (gusset) sits right under the servo mount so it
+// intersects both the flange and the baseplate, and the M5 mounting hole
+// is drilled HORIZONTALLY (axis parallel to Y, at the 0° datum) through
+// the gusset rather than through the flange face.
+flangeThk              = 6.0                          // flange rib thickness along X
+flangeDepth            = 40.0                         // drop below the baseplate bottom
+flangeX                = 79.0                         // ±79 in X
+flangeGussetThk        = 10.0                         // gusset thickness along Y
+flangeGussetRun        = 20.0                         // gusset X-run inboard from flange
+flangeHoleDia          = 5.4                          // M5 clearance through the gusset
+flangeHoleZBelowBase   = 15.0                         // hole centre Z below baseplate bottom
+flangeHoleXInboard     = 7.0                          // hole X inboard of the flange face
+
+// (Linear-actuator base clevis removed — no longer using a linear actuator.)
