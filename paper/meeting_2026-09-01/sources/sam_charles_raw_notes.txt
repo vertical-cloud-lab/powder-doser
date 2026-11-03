@@ -1,0 +1,85 @@
+Thoughts about the paper:
+Digital Discovery's parameters, etc.?
+more about what we learned about ai’s limitations?
+less jargon--more easily understandable, more like easy posters'
+
+fewer acronyms
+Graphs from my head:
+• Dispense speed (grams/revolution)
+• What metric are we using to show how "well" it dispesnes things?
+speed?
+accuracy? (that's a control problem)
+• results of each test?
+• Results of each powder after 30 seconds of spinning kind of thing?
+this is the E1 graph
+• time to terminate dose is good.
+• mass v time is good (showing in real time how it dispenses)
+• Several of the graphs are confusing. The first one looks helpful but is frustratingly hard to understand, largely also becasue of jargon and acronyms
+Of what's already on the paper:
+• platform overview is helpful, others are not
+add coordinate frame into picture?
+
+• cross section is helpful
+• design case studies are helpful
+Sterling's Notes:
+
+keep the timeline in it, or # of pings per time, etc. timeline is relevant
+Helpful Graphs:
+A2 - good information to display graphically.
+• keep visual separation between food safe and research relevant
+• no data for the ones that really didn't dispense (negligible amounts)
+• Caption clarificatoins about other factors, i..e fil level, shape, etc., that weren't controlled for here
+what was the fill level for all of these?
+• raw data available where?
+F1:
+
+RSD?
+mes with it, clarify, like the idea
+
+
+E1:
+
+used a simple method, in future work control problem will be sovled
+
+
+we need graphs that show:
+unique powder type (food safe v reserac relevant)
+the ones that flowed fast
+the ones that were accurate when we tried to be accurate (under the same procedure)
+time to get to a dose point (function of dose rate, but still helpful)
+
+what didn't flow well, wy didn't it flow well.
+
+SEM images to characterize
+
+
+---why did they stall???
+
+C2 is good
+
+supplemetnal includes table of test--move to main
+
+What we still need:
+scatterplot of dose error vs time to dose
+
+pull from G
+include the tap vs feed rate (G2?) - same feed rate can mean differetn tap response
+RE-run G for the powders we're missing
+• powders that do work at 90 but not the otehrs, and vice versa
+• 50, 200, 1000 mg (Block H)
+50 is about the noise cieling
+add into the data where everyting was (food safe in lab, research relevant in fume hood)
+
+@the U they're trying to dispense 0.1-10 mg
+
+Future work:
+THis data can charactereize the powders
+
+changing revolution speed, we can tell if it's a cohesive powder or not
+
+
+note that for the ones that didn't dispnse, it's probably a design thing--
+
+Note: we're trying to showcase the powder doser, not the powders
+
+table showing tests we ran (blocks) clearly and succinctly?

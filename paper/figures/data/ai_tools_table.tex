@@ -1,0 +1,54 @@
+% AI tools used in the project (SI Table). Source of every entry, with links and
+% commit hashes: paper/figures/data/ai_tools_timeline.csv. Needs booktabs and array.
+\begin{table}[htbp]
+\centering
+\small
+\caption{AI tools used in this project, the months of 2026 in which the
+repository records their use, and the model names it records. Model names for
+the coding agents come from tags in the requests (\texttt{@copilot+}\emph{model}),
+the history of the Claude Code workflow file, and commit trailers. Requests
+without a tag used a default model that the record does not show. AI tools tried
+for circuit-board layout (issues~\#82, \#94, and \#95) are not listed. Links and
+commit hashes for every entry are in
+\texttt{paper/figures/data/ai\_tools\_timeline.csv}.}
+\label{tbl:aitools}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.5cm}}
+\toprule
+Tool & Role in this project & Months (2026) & Models recorded & Evidence \\
+\midrule
+GitHub Copilot coding agent & Modelled the AI-made parts as CadQuery or
+OpenSCAD code in pull requests, with renders, STL and STEP files, and checks;
+also documents and early drafts & Apr--Jun; once in Jul & Claude Opus~4.7 and
+Opus~4.8 (most tagged requests); Haiku~4.5, Sonnet~4.6, and Fable~5 (a few) &
+Model tags in 233 of 300 requests; PRs~\#47, \#49, \#51, \#66 \\
+\addlinespace[2pt]
+Claude, local session & First auger, written at the April hackathon
+(OpenSCAD) & Apr & Claude Sonnet~4.6 & Commit trailers in PR~\#16 \\
+\addlinespace[2pt]
+Claude Code (GitHub Action) & Test campaign, firmware, analysis, figures, and
+writing; Onshape and text-to-cad recreations of the doser & 30~Jun--Oct &
+Claude Opus~4.8, Fable~5, Opus~5, Opus~5.5, and Fable~5.1 & History of
+\texttt{claude.yml}; commit trailers \\
+\addlinespace[2pt]
+CADSmith & Trial runs on a chassis, the mounting plate and baseplate, and the
+whole doser & May--Jun & Claude Opus~4.7; Sonnet~4.5 with an Opus~4.5 judge;
+Opus~4.5 for all agents & PR~\#59; CADSmith fork PRs~\#2 and \#6 \\
+\addlinespace[2pt]
+Zoo Text-to-CAD API & KCL and STEP parts from text prompts, called by the
+coding agent & May--Jun & Zoo \texttt{kcl} model, version 0.1.0 & PRs~\#7,
+\#49, and \#110 \\
+\addlinespace[2pt]
+Zoo Design Studio (Zookeeper agent) & Modelling by chat in a live CAD view,
+for example the servo pinion and the final tap collar & May--Jul (mainly Jun) &
+Zookeeper; underlying model not recorded & Issues~\#92 and \#104; PR~\#66;
+discussion~\#39 \\
+\addlinespace[2pt]
+Edison Scientific & Literature and prior-art searches; reviews of designs,
+data, and drafts & Apr--Oct & Job types only: Literature, Analysis, and
+Precedent & Query scripts and task records \\
+\addlinespace[2pt]
+GitHub Copilot code review & Automatic pull-request reviews; six suggested
+fixes accepted & Apr--Jun & Not recorded & Actions log; PR~\#35 \\
+\bottomrule
+\end{tabular}
+\end{table}

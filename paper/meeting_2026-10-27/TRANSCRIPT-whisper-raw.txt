@@ -1,0 +1,158 @@
+# Uncorrected Whisper output: 27 Oct 2026 meeting (Sam Charles, Sterling Baird)
+# Whisper large-v3 (faster-whisper 1.2.1, int8, batched, beam 5). Machine speaker clusters: S1 = Sterling (louder, near the phone), S0 = Sam.
+# Times are mm:ss into the 34 min 31 s recording. The corrected version is TRANSCRIPT-corrected.md.
+
+00:03 S1: and open source low-cost powder doser designed with agentic AI and generative CAD for autonomous outlet discovery and
+00:11 S1: then the TMS abstract oh wait reason
+00:21 S1: only gave me the one
+00:27 S1: of the
+00:40 S0: Generative CAD for autonomous alloy discovery. OpenSource 3D printed auger powder doser designed with generative algorithms and intelligence. So this one's got dumbed down. Yeah. I don't want to like dumb it down.
+00:49 S1: Yeah. Yeah. Yeah. Like jargon. Jargon doesn't mean. Yeah. I found it maybe to work okay to say non-domain relevant jargon. I think that's helped out a bit because it's like, oh, the audience is blank. Yeah. And
+01:04 S0: I just lay people in this, but it is like.
+01:07 S1: Yeah. Yeah.
+01:12 S1: and then there's this one oh right that one's more tied to the that one's Luke's agentic systems design with an open source powder coaster this research cat pcb and firmware so I think we can stick with maybe the Utah AI Convergence one yeah
+01:31 S0: this one yeah um the title of that abstract
+01:34 S1: uh the title maybe we read the abstract out of manufacturing of aerospace structural alloys depends on rapid Reproducible exploration of powder feedstocks yet accurately metering and blending dry metal powders remains a large manual bottleneck in research laboratories. Commercial dispensers are often cost prohibitive and poorly matched to alloy focus to many powder workflows and existing open source designs have not been rigorously developed or tested for laser powder bed fusion.
+02:10 S1: We developed an open source low cost modular powder doser for precise metering of metal and feedstock powders intended for integration into a self-drying Bayesian optimization materials discovery loop in which those powders feed ultrasonic atomization and laser powder with fusion aerospace alloys. Hardware targets... Okay, so that's where we can talk. Hardware targets from the project proposal include up to 30 reservoirs, blends up to 250 milliliters per powder, gravimetric accuracy at plus or minus 1 milligram, plus or minus 0.1 milligrams threshold, and cross-contamination characterization across 5 to 7 percent of laser powder diffusion feedstock values. I don't think we need the cross-contamination at all because we're not cross-contaminating. We won't mention, like we'll just point to that we'll be doing a multi-doser. A central research thread of the project is evaluating how far ancient AI and generative tools can carry mechanical design of a real laboratory instrument. we use GitHub Copilot coding agents with multiple large language models to generate and revise parametric CAD directly from engineering requirements this would probably be a good part to say like between these dates and using these models like we use between April like so it also kind of gives a sense of how quickly the project progressed and
+03:58 S1: revise parametric CAD, CADQuery and OpenSCAD directly from engineering requirements We also evaluated host-to-generative CAD services as comparison points. Across these tools, fully AI-generated part designs were not deployment-ready for the doser. We therefore adopted an engineer-led workflow. Engineers design parts and supply exact dimensions, sketches, and manufacturing constraints. AI models those parts as editable parametric scripts, and engineers review the models, 3D print prototypes, and iterate. Throughout, the engineers have not opened a traditional CAD graphical interface.
+04:39 S1: Several lessons have emerged. Specificity improves results.
+04:46 S1: Explicit drawings and constraints produce better models than high-level prompts, but useful geometry still requires many correction cycles. A recurring limitation is weak spatial reasoning. Even near-final AI models frequently introduce hallucinated or unnecessary features that must be removed or, if still functional, tolerated. Most repeated AI sessions are spent correcting and guiding model toward the intended geometry rather than exploring new designs, and AI did not reduce assembly complexity.
+05:47 S1: In our experience today, AI is most effective as a modeling assistant rather than an autonomous design agent. The cluster will present the dosing mechanism and prototypes designed by engineers involved by AI, including the auger, auger bracket, cap collar with vibration motor, and solenoid mounts, and tilting mounting plate alongside a comparison of the AI CAD modeling workflows we tried. Specific failure modes we observed and practical strategies that improved AI-modeled outputs. Open-source deliverables include parametric CAD, billet materials, and control code, supporting the broader role of the doser within an autonomous alloy discovery pipeline relevant to aerospace additive.
+06:25 S1: Nice. Yeah. How do you feel about taking this as a base? Yeah, that went through a little bit of iteration, but yeah, with that, it's a little, yeah.
+06:38 S0: Let's do a
+06:40 S1: couple things. maybe first start
+06:53 S1: with the utah start
+07:06 S1: with the utah ai convergence abstract as our new starting point here period let's
+07:15 S1: update this to be past tense and make sure this is revised according to any recent updates coming but largely we should keep the same structure and flow of that original one and not add unnecessary details i
+07:39 S1: forget
+07:47 S1: I
+07:50 S1: do for most of the time.
+07:57 S1: While that's running, let's kind of go back to brainstorming the figures. We can be a little bit more open on this one.
+08:07 S1: We can just be kind of free-form here right now. What are the figures and tables that we want to show people that we would trust?
+08:24 S1: So, plus the real doser, the
+08:35 S1: assembled one, and like a... Explode it up? Explode it.
+08:41 S0: Blow it up? We didn't blow it up. We don't want to. Yeah.
+08:46 S1: Even though they technically could blow up. They're putting flammable... Sometimes. Yeah. That's the real doser image. We're kind of having that correspondence with these. There's some question of whether or not we want to... Show what we did in the poster. Comparison systems, I don't know if it will be okay to include some of those. Oh, I see what you're saying. You know, like, Mettler, Toledo, and other stuff. We can
+09:11 S0: take their pictures and stuff. We'll leave it out.
+09:14 S1: I think this will be important. Maybe, how do we want to bring the GenithCAD piece in? I
+09:23 S0: think the comparisons between what it brought up and what we did. are helpful um maybe
+09:34 S1: we could well let's see do you have an idea of one of those um i
+09:39 S0: have a couple eggs that yeah they're collecting many forms i think there's the the tap collar is helpful maybe yeah and it's also the version of um um there's the different like the assembly we made with like cad smith and zoo and all those yeah that's right like a bunch of different versions yeah um the there's the mounting plate that like I kept telling it to do a different thing but like my description was wrong because like it was like with the gaps in the mounting plate yeah and we just find something and we just show differences between like how we designed and like the the base plate and the mounting plate both had like serious problems um the
+10:40 S0: So in
+10:41 S1: terms of the figure I could imagine something where if we're looking at the tap collar we could sort of call that out and
+11:03 S1: have and
+11:15 S1: then we have the original
+11:22 S1: I see. And the human redesign, right? Yeah. The idea was when
+11:33 S1: you brought this up, it was the idea that you redesigned it and made it a little bit better, right? Yeah. Or a lot better. Yeah.
+11:39 S0: At this point now, it's very different. Yeah, yeah.
+11:42 S1: All of this is in the context of what we've done so far during the course of the project. Not like, what would happen if we did it today? Right. Or
+11:49 S0: like, because there's a version that's on here. Yeah. Right now, it's a version from like...
+12:09 S0: I think we
+12:13 S1: do oh no that's a good point i think we do want this to be like final version yeah i
+12:23 S0: think so we might do a new real picture picture then yeah Yeah,
+12:30 S1: and that's this issue where is it about the powder doser or is it about the genre of CAD? It's really splitting across two things. And including the final version, well, that's definitely about the powder doser. And including the version that we landed on. In some sense, we could also maybe show a timeline. Yeah.
+13:07 S1: something yeah really just go to that images
+13:18 S1: like characteristic represented things like here was where we're at by this point in this month yeah we
+13:25 S0: even have like uh if it's a line like the top could be AI and the bottom could be engineers oh yeah yeah
+13:32 S1: that's it yeah sorry
+13:36 S0: which one would be um i said yeah on top of it just that one side of the one yeah that would be the other
+13:44 S1: yeah and that could be like kind of key yeah key designs not everything here and that might also be a good point to say okay let's say uh model so agent and model oh yeah they bring in yeah yeah we can have those kind of like a separate there yeah but i think it's so obvious now how important that is yeah it pains me a little bit and i it's like what if we had a prompt A three-shot prompt for a new powder doser. But it's kind of what we're doing with the multi-doser. There's nothing that can replace the fact that we've been testing and putting all this design thinking for nine months into what we want this powder doser to be like and to do. No one can change the fact that we used it in a real workflow.
+15:20 S1: I think this will be good on the generative CAD side. I think this schematic figure, that will primarily be helping out with the powder doser, what we actually did.
+15:36 S1: Maybe, I almost wonder if this one... Could we encapsulate in there? This doesn't necessarily have to be matched up one-to-one. Zoo comparison thing, do you think that's still worthwhile to include? We could
+15:53 S0: just do it more today and just say, like, we tried these three things and this one's the best. And we're not using it anymore, we're using Onshape.
+16:03 S1: I think it might, I don't know, it's almost like a bit of a diss to CadSmith. I was not impressed at all. And I think that might be worth pointing out. A gap in the literature. All of these literature studies that published on Genufacada versus just using frontier models. I think I might still try to include the CADSmith one. Again, I think
+16:31 S1: it's an important point to make. And we don't have to say anything about it. Okay, we did very similar problems for these three things and here are the
+16:40 S0: results. Do you think show the images still? Yeah,
+16:42 S1: I think still show the images. That could go in SI, in Supporting Information. That's actually maybe better.
+16:49 S0: I like having it in words in there.
+16:53 S1: And anything in SI should be referenced in the main screen. Absolutely, so that's where I think that'll work out. The melding plate cap.
+17:05 S0: I think that's just kind of user error with AI. Not user error, but just an interesting case. I think so too, yeah. We include it if we need it, but it's not necessary to the... I don't know, it's kind of fun. It's a good case study, but I don't know if we need to have a case study in there.
+17:23 S1: I could see us having a discussion section that is kind of
+17:34 S1: trying to capture that lesson-centered piece. Manual redesign, is that... Do you think...
+17:43 S1: Should we have like the v0 and the v1? v0 is sort of like the AI generated piece and then okay we did a redesign like would it be worthwhile to show the differences between those
+17:56 S0: things? I think you can show that from in this timeline. I think those pictures in the timeline can be both like full assemblies of like look what AI made it doesn't make any sense. All the way to like look at we both like modeled this in this way.
+18:17 S0: Let's see what ones we're going to have.
+18:32 S0: Potentially like the three-phase, I don't know.
+18:36 S1: Oh, yeah, I think that's the worth, just like showing how we're doing it. I
+18:42 S0: think showing the tilts on the auger I think doesn't really add anything.
+18:47 S1: I think we
+18:51 S1: can show that one of the, sorry, I need to get better at finishing my sentences.
+19:00 S1: I think it may be worthwhile to take some of the videos that we've had.
+19:05 S1: and ask for keyframes to be pulled out from that and we can do these
+19:14 S1: kinds of work flows with keyframes. In terms of that, what are those called?
+19:31 S1: One of
+19:42 S1: those I think would be The dosing stages? Yeah, I like that. I think another one that we could do is, maybe
+20:07 S1: that's the main one. We could
+20:09 S0: talk about how to load the augers and stuff. Oh, yeah. Or like also something like installing and taking them out. We could install an auger on there. Yeah.
+20:37 S0: If
+20:38 S1: we have any other videos.
+20:42 S1: The only other thing I think of is assembly stuff. Yeah.
+20:49 S0: With some of Will's, I guess this might be the same. With Will's new modular design for the stand, just adjusting it. Which might go out for another assembly, but we should make sure of that. Because if we're going to send it out to people, that's... Because
+21:06 S0: that is nice, I'm just realizing, if we're going to send it out to a bunch of people, we can cut his laser-printed, or laser-cut stand things, and just cut that out of a giant sheet of wood.
+21:41 S1: I'm not sure we need to do much more than have something for the dosing stages.
+21:53 S0: we have a real kind of thing along with the feedback stages we have this and the and this little feedback block diagram where's that sorry and this thing oh yeah you'd have like okay you'd have a picture for each of those and see like dose request like going through these yeah they probably feel like it's all my tapping on just a certain image but yeah uh
+22:20 S1: we could kind of that same sense it's like the clawed pings or doser yeah dose x amount yeah
+22:36 S0: that um yeah yeah and you said that could be like you know like how we can have the clawed ping there and then have it with like an image of it are you saying like so i
+22:51 S1: have some i have some videos of me on my phone like a screen recording on my phone It's like, at Claude, I'll say, or you could grab a snapshot from GitHub. Yeah, awesome. Yeah, that's great. Which then gets us into results and data. Yeah.
+23:09 S0: I think somewhere a picture of, like, how we're actually in the desert, like, actually on the scale is nice.
+23:20 S1: Yeah, I guess what you mean. If we wanted a little bit of visual effect.
+23:28 S1: uh grab all the dosers that we currently have and then line them up and then we uh just make little call outs of like what's inside each one that's
+23:37 S0: great i'm going to do another picture
+24:01 S0: in here that i think like like tables and figures and good graphs aside is this one which is my drawing of this and then this but this is um My drawing and my CAD model, like I modeled this. To me this says like, this is the drawing you gave me and this is what CAD, what AI thought. I don't actually know that very much. But we could potentially have like a drawing that I gave it and then.
+24:27 S1: Yeah, I think that could be worthwhile. Or
+24:31 S0: it could be in the timeline. Like on the bottom we'd have like drawings as well as.
+24:45 S0: Yeah, I like
+24:52 S0: that.
+24:55 S0: I like the callouts too. I think you can have like one big image of like one big like figure that's the here or something like that, whatever we have with a bunch of callouts, like have this in a callout and everything. I think that would be really cool.
+25:13 S1: Yeah, that's really great.
+25:27 S1: Green is main manuscript, blue is SI. So, figure
+25:37 S1: one. Yeah. That includes in it all of the callouts and stuff. Yeah.
+25:50 S1: Figure two? Yeah. Yeah,
+25:58 S1: that might.
+26:05 S1: Figure three? Dosing stages?
+26:12 S0: It just depends on how we end up structuring the paper itself. Yeah.
+26:17 S1: But should we say this is definitely the main? and some
+26:29 S1: of these might be and
+26:32 S0: maybe the instructions can be an si and like the swapping can be main like adjusting the height that's not the assembly can be a side yeah yeah like kind of basic like basic usage can be in the figure but background usage can be si or something i think
+27:00 S0: plug things as well can be in figure maybe Sorry, the cloud page can be in the main, just because that's the main way that we get it.
+27:16 S1: Doser's lined up. I think that one we could either have it... I
+27:29 S0: think that one's mainly shock value, where it's meaning like, cool, we say that we dose 13, but we don't have to see them. I think it should be in the main. Okay, sounds good.
+27:38 S1: Yeah, that's the other one. Yeah, and this could maybe be... it might be one that we try to make an insect or we just keep it as like a very small yeah
+27:48 S0: side figure it can be a color on the auger or something yeah um if it's in the main it should be green thank you and then the zoo comparisons
+28:01 S1: is let's
+28:28 S1: go to one fig two and three other figures in the main manuscript and then let's get into make one of those in the result like the dosing
+28:52 S1: How
+28:53 S0: do you feel about these three figures?
+29:09 S0: I like this one okay so um I
+29:13 S1: think this
+29:26 S1: one I think is I think it's helpful it's okay yeah I think it's not
+29:30 S0: like these two are pretty similar but I think it's okay to have both yeah um I
+29:41 S1: think this one um is there really a need to separate out slow versus yeah
+29:49 S0: and this is a variation between revolutions but I don't know oh that's right I'm not sure how helpful that is I think
+30:15 S1: I feel like this
+30:20 S0: is like these are the slow ones and so unless we're like yeah we say we're not gonna look at these and then we look at description like the differences between these like it's not super helpful just to say like yeah three of them are slow over and over again
+30:32 S1: Yeah, I think 4A is better as a table anyway. Yeah.
+30:38 S1: And maybe Si.
+30:46 S1: Mass per solenoid tap versus mass per auger
+30:49 S0: revolution. This is in here. The six powders whose tap increment exceeded twice its standard error. So it's not even all the powders. I like having something for the tap there. Yeah, I
+30:59 S1: think so. It's like three mechanisms for rolling it, and they have interplay with each other.
+31:06 S0: I like having something on there. I think I don't love that it's just these six. I think you could just put all of them on there. Yeah, that is kind of... You know what?
+31:12 S1: I'm not sure. Just like who's... Yeah. Yeah, let me think about it. So 4B is all.
+31:26 S0: Or something, yeah.
+31:32 S0: And this could also just be like a bar graph of like master solenoid tab. Yeah.
+31:39 S0: I like
+31:49 S0: having some kind of error. Yeah, I think that
+31:52 S1: is useful. I think this small thing. And yeah, this was our whole 50-200-1 gram with repeats. And what's this one, D? This
+32:07 S0: is time to finish the dose. I don't know. I like these. This one I feel is not necessarily...
+32:20 S1: And also, it doesn't make sense to put this. It implies that there's some connection to the y-axis here when there is none. Yeah.
+32:31 S0: So it's already bad if we can't tell that but here it's like I don't know what this I don't know what all these boxes are yeah I guess the times to complete for each of these things yeah but if it's not I think per yeah it doesn't like drop it or I think the time isn't really what we're looking for anyways yeah like we can mention it somewhere in there but it doesn't have to be like a major part of this yeah
+33:02 S0: that's that's it
+33:07 S1: Okay, you said five minutes. Yeah,
+33:10 S0: I gotta go now. So is it writing a new one right now? It did write a new abstract. Okay, it wrote
+33:15 S1: a new abstract or did it write a new figure? I haven't picked it for that yet. I think I'll have it start with just trying to make all of these and then we can review and see if the figures look how we want them. And then we'll have it kind of build the paper. So it's running over.
+33:32 S0: Yeah, I think so. I think we have more kind of common rights than we do.
+33:36 S1: And we can always point it back and say, yeah, it's this thing. But I think it's maybe a little bit too locked into its own version. It's exaggerated so much on it. Yeah, models get to, yeah, some, you know, some lost. Yes.
+33:54 S0: I promise I'll be better at editing those. Okay. Let me know.
+34:02 S0: It's done. I'm
+34:05 S1: going to have it go from everything here probably back to maybe a new PR.
+34:12 S0: I'll run these down. And then once we get the manager from there, I'll edit it as well. Perfect. Thank you.

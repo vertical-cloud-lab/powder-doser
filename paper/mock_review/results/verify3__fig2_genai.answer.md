@@ -1,0 +1,65 @@
+Resolved from round-1
+
+- Panel (a) error description is fixed and now matches the review comment. The current caption says panel (a) failed because of “part-to-part interferences, incorrect tolerancing, no clearance for the solenoid and vibration motor it must carry, and a general lack of spatial reasoning—impossible to implement as drawn” (`caption_fig2_genai.md`; repeated in `main.pdf`, Fig. 3 caption, p. 5). That aligns with the round-1 PR comment that the bad tap collar was wrong for those reasons, not because it was “not connected to its own mounting plate” (`pr97_comments.md`, thread at `paper/main.tex line 210 (Fig. 2a)`).
+
+- The caption now explicitly distinguishes HUMAN vs AI roles and says no GUI CAD was used. Exact wording: “All parts here were modelled by AI coding agents (programmatic CAD) and, for the production tap collar, the chat-driven Zoo Design Studio (Zookeeper agent); humans set the requirements and reviewed each iteration. No GUI CAD package was used.” (`caption_fig2_genai.md`; same text in `main.pdf`, Fig. 3 caption, p. 5). This resolves the earlier signposting request and matches the project-wide instruction in `pr97_comments.md` to distinguish HUMAN vs AI and to state that Fusion 360 / SolidWorks were never used.
+
+- The Zoo / Zookeeper wording requested in PR review is now present. `pr97_comments.md` asked to “Mention Zookeeper as a specific LLM used in Zoo Design Studio” (thread at `paper/main.tex line 245`). The revised caption now does that verbatim: “Zoo Design Studio (Zookeeper agent)” (`caption_fig2_genai.md`).
+
+- The caption now makes panel (b) substantially clearer than before by stating that the image shown is from the programmatic workflow and that the production tap collar came later in Zoo: “The same part after iterative review in the programmatic workflow; the production tap collar was subsequently redesigned in Zoo Design Studio (three iterations to a usable part)” (`caption_fig2_genai.md`; `main.pdf` p. 5). That addresses most of the round-1 ambiguity over whether panel (b) was supposed to be the Zoo-derived production part.
+
+- The “three iterations” point for the Zoo redesign is now documented in the caption (`caption_fig2_genai.md`) and is at least directionally supported by the repository note in `pr97_comments.md`: “discussioncomment-17284756 (tap collar redesigned in Zoo Design Studio, three iterations)” under “Resource notes”.
+
+- The figure remains in the main text, as round-1 narrative review recommended. In the compiled manuscript this is still the main-text generative-AI figure, appearing as Fig. 3 (`main.pdf`, p. 5).
+
+Not resolved from round-1
+
+- Figure-numbering drift is still not fixed. The bundle metadata still calls this “Figure 2”: `README.md` line 3 says “Location in manuscript: main.tex, Figure 2 (generative-AI CAD outcomes)”, and `caption_fig2_genai.md` line 1 says “# Caption for fig2_genai (main.tex, Figure 2 (generative-AI CAD outcomes))”. But in the compiled manuscript the same figure is clearly “Fig. 3” (`main.pdf`, p. 5), and the body refers to “Fig. 3a”, “Fig. 3c”, and “Fig. 3e–h” (`main.pdf`, p. 4). This round-1 issue is still open.
+
+- Panel (d) is still not aligned with its claim. The title in `make_figures.py` remains `"Whole-assembly attempt\n(single prompt, v1 module)"` (lines 306–309). The asset is still `assets/single_channel_module_iso.png`, and the rendered panel is a sparse wireframe-like module view in `fig2_genai.pdf`. The caption still claims “interferences and floating components” (`caption_fig2_genai.md`), but those defects are not actually made visible with callouts or a clearer render. Round-1 asked either to replace panel (d) with an actual failure render or rewrite it to match the asset. That has not happened.
+
+- Panel (f) is still the mismatched iteration render. Round-1 flagged that `(f)` should be replaced with the correct mounting-plate iteration render in the same framing as `(e)`, `(g)`, and `(h)`. It has not been. In the revised figure, `(e)`, `(g)`, and `(h)` are top-down/plan-view style images of the vertical mounting-plate geometry (`assets/plate_iter1_hole_top.png`, `plate_iter3_gap_top.png`, `plate_iter4_final_top.png`), while `(f)` is still `assets/plate_iter2_platforms_iso.png`, an isometric scene showing a horizontal auger assembly on a table. The mismatch is also visible in `make_figures.py` lines 311–316.
+
+- The requested callouts/crops for `(e–h)` are still absent. Round-1 asked for visible callouts to the unexplained hole, raised-platform region, and gap. The revised `make_figures.py` simply places the four assets with titles (lines 317–321); there are no arrows, boxes, zooms, or insets. In the exported `fig2_genai.pdf`, the claimed defects are still left to the caption alone.
+
+- The stale-input root-cause statement is still unsourced and still in tension with the body text. The caption still says: “The root cause was stale input files—a human-side error the agent silently designed around” (`caption_fig2_genai.md`; `main.pdf` p. 5). Round-1 said to soften or source that statement. It is still not sourced to any concrete file, issue, or discussion path.
+
+- The body/caption conflict for `(e–h)` is still not resolved. The body says: “the agent proposed the raised-bracket solution to a gear-clearance problem we had misdiagnosed, Fig. 3e–h” (`main.pdf`, p. 4, Section 2.3.0.2). The caption instead says the sequence arose because “The root cause was stale input files—a human-side error the agent silently designed around” (`caption_fig2_genai.md`). Those are not the same story. One frames `(f)` as a useful AI proposal to a misdiagnosed problem; the other frames the sequence as the agent compensating for stale inputs. Round-1 flagged exactly this conflict, and it remains.
+
+- The panel-(d) “v1 module” wording remains unresolved. `make_figures.py` line 309 still labels panel (d) “(single prompt, v1 module)”. Round-1 narrative review flagged this against the manuscript’s generation story and the branch-tree path `origin/copilot/modular-single-channel-powder-doser-design` (`all_branches_file_tree.txt`). The compiled body still describes the whole-assembly single-channel module as the “second generation” (`main.pdf`, p. 2), so “v1 module” remains unaligned with the manuscript narrative.
+
+Remaining concrete inconsistencies / unsupported claims fixable without new bench data
+
+- Panel (b) title is still ambiguous even though the caption is better. The rendered title comes from `make_figures.py` lines 296–299: `"Tap collar after review iterations\n(final part redesigned in Zoo)"`. The actual caption says panel (b) shows “the same part after iterative review in the programmatic workflow” and that the production part was redesigned later in Zoo (`caption_fig2_genai.md`). Those two statements do not say the same thing. The branch tree points to `origin/copilot/design-tap-collar/design/cad/tap-collar/{cad_model.py, render_views.py, renders/tap_collar_iso.png}` plus `paper/figures/assets/tap_collar_final_iso.png` (`all_branches_file_tree.txt`), which supports panel (b) being a programmatic-CAD render, not a Zoo render. Easiest fix: retitle panel (b) so it says the shown render is pre-Zoo or programmatic.
+
+- Panel (d) still overclaims visibility of failure modes. The caption says “interferences and floating components” (`caption_fig2_genai.md`), but the panel has no arrows or annotations and the exported view does not let a reader verify those defects directly (`fig2_genai.pdf`; `make_figures.py` lines 306–309). This can be fixed by either annotating the current panel or softening the caption to “assembly-level failure render from a single-prompt attempt” without naming defects that are not pointed out.
+
+- The `(e–h)` row still mixes viewpoints in a way that weakens the logic of the iteration story. `(e)`, `(g)`, and `(h)` are top-style views of the same mounting-plate context; `(f)` is a completely different isometric context with a table and horizontal auger (`fig2_genai.pdf`; `assets/plate_iter2_platforms_iso.png`). Even if the caption were correct, this interrupts the visual argument. That can be fixed by replacing `(f)` or by explicitly labeling it as a different view.
+
+- The caption’s root-cause claim for `(e–h)` is unsupported by the supplied provenance files. In the branch tree, the only directly matching panel files are the four manuscript assets `paper/figures/assets/plate_iter1_hole_top.png`, `plate_iter2_platforms_iso.png`, `plate_iter3_gap_top.png`, and `plate_iter4_final_top.png` (`all_branches_file_tree.txt`). I do not see per-iteration CAD/source files for iter1–iter4; the nearest related paths are `design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0_*` and `.../mounting_plate_iter0_*`, which do not document the four published states. So “stale input files” is still an unsupported attribution unless you cite the specific issue / discussion / design-log entry.
+
+- The provenance split for panel (b) versus the production tap collar is still not auditable from the figure materials alone. The caption now says the production part was redesigned in Zoo, but the shown asset is still `paper/figures/assets/tap_collar_final_iso.png`, and the branch tree ties that asset to `origin/copilot/design-tap-collar`, i.e. a programmatic-CAD branch (`all_branches_file_tree.txt`). If the production Zoo output is not shown, say so directly in the caption or SI.
+
+- The figure package metadata is still internally inconsistent. `README.md` says this bundle is “Figure 2”; `caption_fig2_genai.md` says “Figure 2”; `make_figures.py` labels the block as “# Figure 2 — generative-AI CAD examples” (line 284); the compiled manuscript uses Fig. 3 (`main.pdf`, pp. 4–5). This is cheap to fix and should be fixed before any more review rounds.
+
+- Panel (a) still depends on caption-only reasoning for the claimed clearance failure. The caption says there was “no clearance for the solenoid and vibration motor it must carry” (`caption_fig2_genai.md`), but the panel itself does not show those omitted components or an overlay indicating where they would collide. The wording is plausible and consistent with `pr97_comments.md`, but if you want the figure to stand on its own, add a simple callout or overlay rather than making the reader trust invisible geometry.
+
+- Scale/context is still absent. Round-1 reviewer comments asked for scale bars or key dimensions for geometry-claim panels. None were added in `make_figures.py`. This is not a hard contradiction, but it is still an implementable weakness.
+
+Prioritized action list
+
+1. Fix the numbering drift everywhere: `README.md`, `caption_fig2_genai.md`, and any related manuscript metadata should match the compiled manuscript’s Fig. 3 (`main.pdf`, pp. 4–5).
+2. Rewrite panel (b) title so it matches the caption and the likely provenance of `paper/figures/assets/tap_collar_final_iso.png`: make clear that the shown render is the reviewed programmatic-CAD tap collar, while the production collar was later redesigned in Zoo Design Studio / Zookeeper and is not necessarily shown.
+3. Replace panel (f) with a mounting-plate iteration render in the same viewpoint/framing as `(e)`, `(g)`, and `(h)`, or explicitly label `(f)` as a different view.
+4. Add visible annotations for panel (d) and for `(e–h)` so the cited defects are actually inspectable in the figure.
+5. Resolve the body/caption story conflict for `(e–h)`: either keep the “raised-bracket solution to a misdiagnosed gear-clearance problem” framing from `main.pdf` p. 4, or keep the “stale input files” framing from the caption, but do not keep both without explanation.
+6. Remove or revise the unsupported “stale input files” root-cause sentence unless you cite the exact provenance source.
+7. Remove or revise “v1 module” in panel (d) so it matches the manuscript’s generation narrative.
+8. Optionally add one short provenance note in the caption or SI naming the relevant branch-tree paths for panel sources, especially `origin/copilot/design-tap-collar/design/cad/tap-collar/...`, `paper/figures/assets/single_channel_module_iso.png`, and the four `paper/figures/assets/plate_iter*.png` files.
+
+- Discretionary analytical decisions made during the analysis
+- Treated the compiled `main.pdf` as the authoritative source for manuscript figure numbering and body-text callouts, even when local bundle filenames still said “Figure 2”.
+- Treated panel titles embedded in the rendered PDF and coded in `make_figures.py` as part of the evidentiary figure content, not just developer-side implementation details.
+- Used `all_branches_file_tree.txt` only to name candidate upstream provenance files and branches; I did not assume the contents of files that were not included in the bundle.
+- Counted an issue as “partially resolved” when the caption fixed the interpretation but the in-panel title or render still pointed readers toward the old ambiguity.
+- Focused only on inconsistencies and unsupported claims that can be repaired without new bench measurements, per your instruction.
