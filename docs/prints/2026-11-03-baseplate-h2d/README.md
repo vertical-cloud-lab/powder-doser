@@ -54,13 +54,16 @@ on other branches weren't used.
 its config. The screen recording was deleted without publishing it, because nothing printed and
 it showed the login.
 
-## Follow-up, 05:45 to 06:10 UTC (plain `@claude` run on PR #200)
+## Follow-up, 05:45 to 06:15 UTC (plain `@claude` run on PR #200)
 
-- **The H2D was still unreachable.** Checked over the LAN from the Pi, which shares a Wi-Fi subnet
-  with both printers. The A1 mini's MQTT port answered in 13 ms, but the H2D's address gave
-  *No route to host*: nothing on the network answered for it. So the H2D is off, off the
-  network, or on a new address. A plain run has no Bambu login, so this is the LAN view, not the
-  cloud one.
+- **The H2D was still unreachable at 05:45 UTC.** Checked over the LAN from the Pi, which shares
+  a Wi-Fi subnet with both printers. The A1 mini's MQTT port answered in 13 ms, but the H2D's
+  address gave *No route to host* on its MQTT, FTPS and camera ports: nothing on the network
+  answered for it. So the H2D is off, off the network, or on a new address. A plain run has no
+  Bambu login, so this is the LAN view, not the cloud one.
+- **No second reading.** The Pi itself went offline on the tailnet at 06:00:00 UTC (23:00 MST),
+  14 minutes after the run's last command on it, and was still offline at 06:12. The run's
+  commands only read status, and nothing on the Pi was changed.
 - **The Onshape keys are capped.** They sign in, but every document request returns HTTP 402
   (the yearly API cap), and anonymous requests can't export geometry. Onshape's own renders,
   feature lists and versions of all ten #193 documents are in
