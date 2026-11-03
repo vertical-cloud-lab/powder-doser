@@ -1,0 +1,609 @@
+{
+ "summary": {
+  "n_powders": 12,
+  "floor_mg_rev": 0.1,
+  "flow_threshold_mg_rev_45": 50.0,
+  "powders": [
+   "salt",
+   "white-rice-flour",
+   "brown-rice-flour",
+   "sodium-alginate",
+   "calcium-lactate",
+   "carboxymethyl-cellulose",
+   "xanthan-gum",
+   "sodium-sulfate",
+   "silicon-110-200",
+   "silicon-325",
+   "alsi10mg",
+   "barium-chloride"
+  ],
+  "tilts": {
+   "45": {
+    "scores": {
+     "mean": {
+      "n": 12,
+      "rmse_log10": 1.125,
+      "mae_log10": 0.956,
+      "median_fold_error": 6.31,
+      "spearman_rho": -1.0,
+      "spearman_p": 0.0,
+      "flow_class_correct": 2
+     },
+     "aor_ols": {
+      "n": 12,
+      "rmse_log10": 0.736,
+      "mae_log10": 0.561,
+      "median_fold_error": 2.48,
+      "spearman_rho": 0.811,
+      "spearman_p": 0.0014,
+      "flow_class_correct": 11
+     },
+     "aor_rho_ols": {
+      "n": 12,
+      "rmse_log10": 0.728,
+      "mae_log10": 0.621,
+      "median_fold_error": 3.69,
+      "spearman_rho": 0.818,
+      "spearman_p": 0.0011,
+      "flow_class_correct": 10
+     },
+     "aor_iso": {
+      "n": 12,
+      "rmse_log10": 0.819,
+      "mae_log10": 0.531,
+      "median_fold_error": 1.37,
+      "spearman_rho": 0.781,
+      "spearman_p": 0.0027,
+      "flow_class_correct": 11
+     },
+     "bond_ols": {
+      "n": 12,
+      "rmse_log10": 1.072,
+      "mae_log10": 0.786,
+      "median_fold_error": 4.5,
+      "spearman_rho": 0.133,
+      "spearman_p": 0.6806,
+      "flow_class_correct": 7
+     },
+     "bev0": {
+      "n": 12,
+      "rmse_log10": 1.562,
+      "mae_log10": 1.172,
+      "median_fold_error": 4.5,
+      "spearman_rho": 0.329,
+      "spearman_p": 0.2969,
+      "flow_class_correct": 7
+     },
+     "bev_scale": {
+      "n": 12,
+      "rmse_log10": 1.127,
+      "mae_log10": 0.933,
+      "median_fold_error": 5.08,
+      "spearman_rho": 0.028,
+      "spearman_p": 0.9312,
+      "flow_class_correct": 6
+     }
+    },
+    "fitted": {
+     "dem_shift": [],
+     "dem_shift_scale": []
+    }
+   },
+   "22p5": {
+    "scores": {
+     "mean": {
+      "n": 12,
+      "rmse_log10": 1.234,
+      "mae_log10": 1.006,
+      "median_fold_error": 7.36,
+      "spearman_rho": -1.0,
+      "spearman_p": 0.0,
+      "flow_class_correct": 4
+     },
+     "aor_ols": {
+      "n": 12,
+      "rmse_log10": 0.838,
+      "mae_log10": 0.655,
+      "median_fold_error": 3.2,
+      "spearman_rho": 0.727,
+      "spearman_p": 0.0074,
+      "flow_class_correct": 11
+     },
+     "aor_rho_ols": {
+      "n": 12,
+      "rmse_log10": 0.851,
+      "mae_log10": 0.725,
+      "median_fold_error": 6.37,
+      "spearman_rho": 0.734,
+      "spearman_p": 0.0065,
+      "flow_class_correct": 9
+     },
+     "aor_iso": {
+      "n": 12,
+      "rmse_log10": 0.881,
+      "mae_log10": 0.524,
+      "median_fold_error": 1.6,
+      "spearman_rho": 0.699,
+      "spearman_p": 0.0114,
+      "flow_class_correct": 11
+     },
+     "bond_ols": {
+      "n": 12,
+      "rmse_log10": 1.213,
+      "mae_log10": 0.955,
+      "median_fold_error": 4.2,
+      "spearman_rho": -0.035,
+      "spearman_p": 0.9141,
+      "flow_class_correct": 7
+     },
+     "bev0": {
+      "n": 12,
+      "rmse_log10": 1.653,
+      "mae_log10": 1.195,
+      "median_fold_error": 4.33,
+      "spearman_rho": 0.427,
+      "spearman_p": 0.1667,
+      "flow_class_correct": 7
+     },
+     "bev_scale": {
+      "n": 12,
+      "rmse_log10": 1.247,
+      "mae_log10": 0.982,
+      "median_fold_error": 5.56,
+      "spearman_rho": 0.028,
+      "spearman_p": 0.9312,
+      "flow_class_correct": 5
+     }
+    },
+    "fitted": {
+     "dem_shift": [],
+     "dem_shift_scale": []
+    }
+   }
+  },
+  "spearman_raw": {
+   "45": {
+    "aor_lit": {
+     "rho": -0.844,
+     "p": 0.0006
+    },
+    "hausner_lit": {
+     "rho": -0.538,
+     "p": 0.0709
+    },
+    "log_bond_vdw": {
+     "rho": -0.259,
+     "p": 0.4168
+    },
+    "beverloo_annulus": {
+     "rho": 0.329,
+     "p": 0.2969
+    },
+    "rho_p": {
+     "rho": 0.53,
+     "p": 0.0764
+    },
+    "rho_b": {
+     "rho": 0.546,
+     "p": 0.066
+    },
+    "d50": {
+     "rho": 0.259,
+     "p": 0.4168
+    },
+    "moisture": {
+     "rho": -0.67,
+     "p": 0.0171
+    }
+   },
+   "22p5": {
+    "aor_lit": {
+     "rho": -0.799,
+     "p": 0.0018
+    },
+    "hausner_lit": {
+     "rho": -0.357,
+     "p": 0.2551
+    },
+    "log_bond_vdw": {
+     "rho": -0.168,
+     "p": 0.6021
+    },
+    "beverloo_annulus": {
+     "rho": 0.427,
+     "p": 0.1667
+    },
+    "rho_p": {
+     "rho": 0.505,
+     "p": 0.0938
+    },
+    "rho_b": {
+     "rho": 0.49,
+     "p": 0.1055
+    },
+    "d50": {
+     "rho": 0.168,
+     "p": 0.6021
+    },
+    "moisture": {
+     "rho": -0.558,
+     "p": 0.0594
+    }
+   }
+  }
+ },
+ "per_powder": {
+  "salt": {
+   "display": "NaCl (control)",
+   "aor_lit": 32.0,
+   "rho_p": 2165.0,
+   "d50_um": 425.0,
+   "measured": {
+    "0": 38.0,
+    "22p5": 146.48,
+    "45": 265.17
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.572,
+     "aor_ols": 2.64,
+     "aor_rho_ols": 2.826,
+     "aor_iso": 2.387,
+     "bond_ols": 2.452,
+     "bev0": 2.547,
+     "bev_scale": 1.28
+    },
+    "22p5": {
+     "mean": 1.426,
+     "aor_ols": 2.566,
+     "aor_rho_ols": 2.876,
+     "aor_iso": 2.319,
+     "bond_ols": 2.666,
+     "bev0": 2.413,
+     "bev_scale": 1.133
+    }
+   }
+  },
+  "white-rice-flour": {
+   "display": "White rice flour",
+   "aor_lit": 45.0,
+   "rho_p": 1450.0,
+   "d50_um": 100.0,
+   "measured": {
+    "0": 3.75,
+    "22p5": 12.78,
+    "45": 37.15
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.65,
+     "aor_ols": 0.269,
+     "aor_rho_ols": 0.353,
+     "aor_iso": -0.31,
+     "bond_ols": 1.518,
+     "bev0": 2.795,
+     "bev_scale": 1.629
+    },
+    "22p5": {
+     "mean": 1.522,
+     "aor_ols": 0.132,
+     "aor_rho_ols": 0.286,
+     "aor_iso": -0.801,
+     "bond_ols": 1.359,
+     "bev0": 2.662,
+     "bev_scale": 1.501
+    }
+   }
+  },
+  "brown-rice-flour": {
+   "display": "Brown rice flour",
+   "aor_lit": 47.0,
+   "rho_p": 1450.0,
+   "d50_um": 130.0,
+   "measured": {
+    "0": 0.3,
+    "22p5": 0.25,
+    "45": 0.2
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.856,
+     "aor_ols": 0.666,
+     "aor_rho_ols": 0.654,
+     "aor_iso": 0.825,
+     "bond_ols": 1.893,
+     "bev0": 2.763,
+     "bev_scale": 1.799
+    },
+    "22p5": {
+     "mean": 1.677,
+     "aor_ols": 0.297,
+     "aor_rho_ols": 0.276,
+     "aor_iso": 0.053,
+     "bond_ols": 1.723,
+     "bev0": 2.629,
+     "bev_scale": 1.621
+    }
+   }
+  },
+  "sodium-alginate": {
+   "display": "Sodium alginate",
+   "aor_lit": 42.0,
+   "rho_p": 1650.0,
+   "d50_um": 120.0,
+   "measured": {
+    "0": 0.75,
+    "22p5": 9.58,
+    "45": 10.87
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.698,
+     "aor_ols": 1.026,
+     "aor_rho_ols": 1.079,
+     "aor_iso": 0.922,
+     "bond_ols": 1.71,
+     "bev0": 2.682,
+     "bev_scale": 1.553
+    },
+    "22p5": {
+     "mean": 1.533,
+     "aor_ols": 0.821,
+     "aor_rho_ols": 0.908,
+     "aor_iso": 0.965,
+     "bond_ols": 1.549,
+     "bev0": 2.548,
+     "bev_scale": 1.388
+    }
+   }
+  },
+  "calcium-lactate": {
+   "display": "Calcium lactate",
+   "aor_lit": 40.0,
+   "rho_p": 1494.0,
+   "d50_um": 220.0,
+   "measured": {
+    "0": 47.32,
+    "22p5": 198.28,
+    "45": 232.25
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.577,
+     "aor_ols": 1.236,
+     "aor_rho_ols": 1.412,
+     "aor_iso": 1.315,
+     "bond_ols": 1.929,
+     "bev0": 2.423,
+     "bev_scale": 1.15
+    },
+    "22p5": {
+     "mean": 1.414,
+     "aor_ols": 1.055,
+     "aor_rho_ols": 1.425,
+     "aor_iso": 1.537,
+     "bond_ols": 1.861,
+     "bev0": 2.29,
+     "bev_scale": 0.986
+    }
+   }
+  },
+  "carboxymethyl-cellulose": {
+   "display": "CMC",
+   "aor_lit": 41.0,
+   "rho_p": 1600.0,
+   "d50_um": 60.0,
+   "measured": {
+    "0": 2.58,
+    "22p5": 26.35,
+    "45": 9.35
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.704,
+     "aor_ols": 1.21,
+     "aor_rho_ols": 1.362,
+     "aor_iso": 1.266,
+     "bond_ols": 1.294,
+     "bev0": 2.782,
+     "bev_scale": 1.669
+    },
+    "22p5": {
+     "mean": 1.494,
+     "aor_ols": 0.957,
+     "aor_rho_ols": 1.185,
+     "aor_iso": 1.16,
+     "bond_ols": 0.912,
+     "bev0": 2.649,
+     "bev_scale": 1.458
+    }
+   }
+  },
+  "xanthan-gum": {
+   "display": "Xanthan gum",
+   "aor_lit": 35.0,
+   "rho_p": 1520.0,
+   "d50_um": 90.0,
+   "measured": {
+    "0": 23.72,
+    "22p5": 161.18,
+    "45": 186.77
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.586,
+     "aor_ols": 2.11,
+     "aor_rho_ols": 2.782,
+     "aor_iso": 2.386,
+     "bond_ols": 1.386,
+     "bev0": 2.766,
+     "bev_scale": 1.532
+    },
+    "22p5": {
+     "mean": 1.422,
+     "aor_ols": 1.97,
+     "aor_rho_ols": 3.101,
+     "aor_iso": 2.247,
+     "bond_ols": 1.172,
+     "bev0": 2.632,
+     "bev_scale": 1.369
+    }
+   }
+  },
+  "sodium-sulfate": {
+   "display": "Sodium sulfate",
+   "aor_lit": 32.0,
+   "rho_p": 2664.0,
+   "d50_um": 135.0,
+   "measured": {
+    "0": 51.2,
+    "22p5": 208.4,
+    "45": 243.55
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.575,
+     "aor_ols": 2.649,
+     "aor_rho_ols": 2.51,
+     "aor_iso": 2.424,
+     "bond_ols": 1.755,
+     "bev0": 3.071,
+     "bev_scale": 1.855
+    },
+    "22p5": {
+     "mean": 1.412,
+     "aor_ols": 2.531,
+     "aor_rho_ols": 2.293,
+     "aor_iso": 2.322,
+     "bond_ols": 1.639,
+     "bev0": 2.937,
+     "bev_scale": 1.691
+    }
+   }
+  },
+  "silicon-110-200": {
+   "display": "Si (110/200 mesh)",
+   "aor_lit": 36.0,
+   "rho_p": 2330.0,
+   "d50_um": 106.0,
+   "measured": {
+    "0": 57.17,
+    "22p5": 210.7,
+    "45": 302.35
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.567,
+     "aor_ols": 1.917,
+     "aor_rho_ols": 1.764,
+     "aor_iso": 2.319,
+     "bond_ols": 1.573,
+     "bev0": 3.053,
+     "bev_scale": 1.827
+    },
+    "22p5": {
+     "mean": 1.411,
+     "aor_ols": 1.779,
+     "aor_rho_ols": 1.536,
+     "aor_iso": 2.07,
+     "bond_ols": 1.419,
+     "bev0": 2.92,
+     "bev_scale": 1.672
+    }
+   }
+  },
+  "silicon-325": {
+   "display": "Si (-325 mesh)",
+   "aor_lit": 43.0,
+   "rho_p": 2330.0,
+   "d50_um": 25.0,
+   "measured": {
+    "0": 0.0,
+    "22p5": 0.0,
+    "45": 1.2
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.785,
+     "aor_ols": 1.013,
+     "aor_rho_ols": 0.72,
+     "aor_iso": 1.047,
+     "bond_ols": 1.247,
+     "bev0": 2.924,
+     "bev_scale": 1.905
+    },
+    "22p5": {
+     "mean": 1.714,
+     "aor_ols": 0.979,
+     "aor_rho_ols": 0.69,
+     "aor_iso": 1.119,
+     "bond_ols": 1.305,
+     "bev0": 2.791,
+     "bev_scale": 1.833
+    }
+   }
+  },
+  "alsi10mg": {
+   "display": "AlSi10Mg",
+   "aor_lit": 30.0,
+   "rho_p": 2670.0,
+   "d50_um": 42.0,
+   "measured": {
+    "0": 48.93,
+    "22p5": 230.95,
+    "45": 338.93
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.562,
+     "aor_ols": 3.056,
+     "aor_rho_ols": 3.012,
+     "aor_iso": 2.424,
+     "bond_ols": 0.809,
+     "bev0": 3.152,
+     "bev_scale": 1.93
+    },
+    "22p5": {
+     "mean": 1.408,
+     "aor_ols": 2.99,
+     "aor_rho_ols": 2.916,
+     "aor_iso": 2.263,
+     "bond_ols": 0.496,
+     "bev0": 3.019,
+     "bev_scale": 1.776
+    }
+   }
+  },
+  "barium-chloride": {
+   "display": "Barium chloride",
+   "aor_lit": 34.0,
+   "rho_p": 3097.0,
+   "d50_um": 300.0,
+   "measured": {
+    "0": 23.28,
+    "22p5": 184.7,
+    "45": 200.38
+   },
+   "lopo_log10_pred": {
+    "45": {
+     "mean": 1.583,
+     "aor_ols": 2.282,
+     "aor_rho_ols": 1.677,
+     "aor_iso": 2.38,
+     "bond_ols": 2.311,
+     "bev0": 2.82,
+     "bev_scale": 1.589
+    },
+    "22p5": {
+     "mean": 1.417,
+     "aor_ols": 2.145,
+     "aor_rho_ols": 1.108,
+     "aor_iso": 2.283,
+     "bond_ols": 2.344,
+     "bev0": 2.686,
+     "bev_scale": 1.422
+    }
+   }
+  }
+ }
+}
