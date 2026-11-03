@@ -120,8 +120,17 @@ def u_of(point):
     return {"P0": -1.0, "P1": 0.0}.get(point, None) if point in ("P0", "P1") else float(point[1:]) / 1000.0
 
 
+def dem_rate(r):
+    """mg/rev of a twin case: after the first quarter revolution, or, for stalled cases stopped early
+    (0.2-0.5 rev simulated), after the opening burst."""
+    if r.get("mg_per_rev_after_quarter") is not None:
+        return r["mg_per_rev_after_quarter"]
+    return r.get("mg_per_rev_after_burst")
+
+
 class DemChain:
     def __init__(self, doser, aor):
+        doser = [r for r in doser if r.get("tilt_deg") is not None and r.get("rpm", 30) == 30]
         self.aor_u = np.array([u_of(r["point"]) for r in aor])
         self.aor_deg = np.array([r["angle_iso_deg"] for r in aor])
         o = np.argsort(self.aor_u)
@@ -130,8 +139,8 @@ class DemChain:
         self.aor_mono = np.maximum.accumulate(self.aor_deg)
         self.doser = {}
         for key, tilt in TILTS.items():
-            pts = sorted((u_of(r["path_point"]), r["mg_per_rev_after_quarter"]) for r in doser
-                         if abs(r["tilt_deg"] - tilt) < 1e-6 and r.get("mg_per_rev_after_quarter") is not None)
+            pts = sorted((u_of(r["path_point"]), dem_rate(r)) for r in doser
+                         if abs(r["tilt_deg"] - tilt) < 1e-6 and dem_rate(r) is not None)
             if pts:
                 self.doser[key] = (np.array([p[0] for p in pts]), np.array([logy(p[1]) for p in pts]))
 
@@ -299,6 +308,65 @@ def inverse(powders, chain):
                    "mae_deg": round(float(np.mean(np.abs(base - aor))), 2)}
     return res, out, uh
 
+# --------------------------------------------------------------------------- correlation table
+
+
+def correlations(powders, chain):
+    """Spearman correlations of every feature with every response (raw, not cross-validated)."""
+    feats = {
+        "AoR (literature)": [p["aor"] for p in powders],
+        "Hausner ratio (literature)": [p["hausner"] for p in powders],
+        "bulk density (literature)": [p["rho_b"] for p in powders],
+        "particle density (literature)": [p["rho_p"] for p in powders],
+        "d50 (literature)": [p["d50_um"] for p in powders],
+        "moisture (literature)": [p["moisture_pct"] for p in powders],
+        "log Bond number, van der Waals (closed form)": [math.log10(bond_number(p["d50_um"], p["rho_p"])) for p in powders],
+        "Beverloo, core-tip annulus, 45 deg (closed form)": [beverloo_annulus_mg_rev(p["d50_um"], p["rho_b"], 45.0) for p in powders],
+    }
+    if chain is not None and "45" in chain.doser:
+        feats["DEM chain, 45 deg, no fit"] = [chain.predict(p, "45")[0] for p in powders]
+    if chain is not None and "22p5" in chain.doser:
+        feats["DEM chain, 22.5 deg, no fit"] = [chain.predict(p, "22p5")[0] for p in powders]
+    resp = {
+        "log mg/rev, 0 deg": [logy(p["mg_rev"]["0"]) for p in powders],
+        "log mg/rev, 22.5 deg": [logy(p["mg_rev"]["22p5"]) for p in powders],
+        "log mg/rev, 45 deg": [logy(p["mg_rev"]["45"]) for p in powders],
+        "speed exponent (mg/s ~ rpm^a)": [p["speed_alpha"] for p in powders],
+        "1 g dose time (s), powders that convey": [p["dose1g"]["mean_time_s"] if ("dose1g" in p and p["mg_rev"]["45"] >= FLOW_THRESHOLD / 10) else float("nan") for p in powders],
+        "1 g doses within 5 %": [p["dose1g"]["pass_5pct"] / p["dose1g"]["n"] if "dose1g" in p else float("nan") for p in powders],
+    }
+    table = {}
+    for f, x in feats.items():
+        table[f] = {}
+        for r, y in resp.items():
+            x_, y_ = np.array(x, float), np.array(y, float)
+            ok = np.isfinite(x_) & np.isfinite(y_)
+            if ok.sum() < 5 or np.ptp(x_[ok]) == 0 or np.ptp(y_[ok]) == 0:
+                table[f][r] = {"n": int(ok.sum()), "rho": None, "p": None}
+                continue
+            rho, pv = stats.spearmanr(x_[ok], y_[ok])
+            table[f][r] = {"n": int(ok.sum()), "rho": round(float(rho), 2), "p": round(float(pv), 4)}
+    n_tests = sum(1 for f in table for r in table[f] if table[f][r]["rho"] is not None)
+    lines = ["# Spearman correlations: features vs. battery responses (12 powders with literature properties)", "",
+             f"Raw correlations, not cross-validated. **Bold**: p < 0.05 uncorrected; † also below the Bonferroni "
+             f"threshold 0.05/{n_tests} = {0.05 / n_tests:.4f} for the {n_tests} tests in this table.", "",
+             "| feature | " + " | ".join(resp) + " |", "|---|" + "---|" * len(resp)]
+    for f in table:
+        cells = []
+        for r in resp:
+            c = table[f][r]
+            if c["rho"] is None:
+                cells.append("–")
+                continue
+            s = f"{c['rho']:+.2f} (n {c['n']}, p {c['p']:.3f})"
+            if c["p"] < 0.05:
+                s = f"**{s}**" + (" †" if c["p"] < 0.05 / n_tests else "")
+            cells.append(s)
+        lines.append(f"| {f} | " + " | ".join(cells) + " |")
+    with open(os.path.join(HERE, "correlations.md"), "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+    return table, n_tests
+
 # ------------------------------------------------------------------------------------- main
 
 
@@ -332,7 +400,15 @@ def main():
         for f, v in feats.items():
             r, pv = stats.spearmanr(v, y)
             out["spearman_raw"][key][f] = {"rho": round(float(r), 3), "p": round(float(pv), 4)}
+    out["correlations"], out["n_correlation_tests"] = correlations(powders, chain)
     if chain is not None:
+        # literature AoR ranges pushed through the no-fit chain: how much the handbook spread moves each prediction
+        for p in powders:
+            rr = {}
+            for key in chain.doser:
+                ys = [chain.predict({**p, "aor": a}, key)[0] for a in (p["aor_lo"], p["aor"], p["aor_hi"]) if np.isfinite(a)]
+                rr[key] = [round(10 ** min(ys), 2), round(10 ** max(ys), 2)]
+            pred_rows[p["powder_id"]]["dem0_mg_rev_range_over_aor_range"] = rr
         inv_scores, inv_pred, uh = inverse(powders, chain)
         out["inverse_aor"] = inv_scores
         for p, a, b, u in zip(powders, inv_pred["inv_ols"], inv_pred["inv_dem"], uh):

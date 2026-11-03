@@ -1,0 +1,202 @@
+[
+ {
+  "case": "d45_P1",
+  "path_point": "P1",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 0.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": 1744.3492641448975,
+  "revs_simulated": 0.75,
+  "mg_leaked_settle": 0.001,
+  "sector_mg": [
+   15.95,
+   14.772,
+   24.709,
+   51.035,
+   40.454
+  ],
+  "mg_total_after_open": 173.575,
+  "grains_total_after_open": 1927,
+  "mg_per_rev_whole": 231.49,
+  "mg_per_rev_after_quarter": 285.81
+ },
+ {
+  "case": "d45_k3000",
+  "path_point": "k3000",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 3000.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": 747.6516816616058,
+  "revs_simulated": 0.317,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [
+   2.117,
+   0.306
+  ],
+  "mg_total_after_open": 2.424,
+  "grains_total_after_open": 26,
+  "mg_per_rev_whole": 7.64,
+  "mg_per_rev_after_burst": 2.21,
+  "stopped_early": true
+ },
+ {
+  "case": "d45_k4500",
+  "path_point": "k4500",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 4500.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": 300.0629241466522,
+  "revs_simulated": 0.102,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [],
+  "mg_total_after_open": 1.307,
+  "grains_total_after_open": 15,
+  "mg_per_rev_whole": 12.76,
+  "stopped_early": true
+ },
+ {
+  "case": "d45_k6000",
+  "path_point": "k6000",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 6000.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": 299.9671049118042,
+  "revs_simulated": 0.1,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [],
+  "mg_total_after_open": 0.334,
+  "grains_total_after_open": 5,
+  "mg_per_rev_whole": 3.34,
+  "stopped_early": true
+ },
+ {
+  "case": "d22_P1",
+  "path_point": "P1",
+  "tilt_deg": 22.5,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 0.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": null,
+  "revs_simulated": 0.38,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [
+   4.51,
+   7.388,
+   22.186
+  ],
+  "mg_total_after_open": 35.006,
+  "grains_total_after_open": 383,
+  "mg_per_rev_whole": 92.15,
+  "mg_per_rev_after_burst": 113.49,
+  "stopped_early": true
+ },
+ {
+  "case": "d45_k750",
+  "path_point": "k750",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 750.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": null,
+  "revs_simulated": 0.542,
+  "mg_leaked_settle": 0.001,
+  "sector_mg": [
+   6.954,
+   14.525,
+   17.706,
+   19.062
+  ],
+  "mg_total_after_open": 59.718,
+  "grains_total_after_open": 669,
+  "mg_per_rev_whole": 110.11,
+  "mg_per_rev_after_quarter": 130.79
+ },
+ {
+  "case": "d45_k1500",
+  "path_point": "k1500",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 1500.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": null,
+  "revs_simulated": 0.47,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [
+   3.821,
+   1.035,
+   1.441
+  ],
+  "mg_total_after_open": 8.029,
+  "grains_total_after_open": 92,
+  "mg_per_rev_whole": 17.09,
+  "mg_per_rev_after_burst": 11.61,
+  "stopped_early": true
+ },
+ {
+  "case": "d45_k2250",
+  "path_point": "k2250",
+  "tilt_deg": 45.0,
+  "rpm": 30,
+  "params": {
+   "mu_pp": 0.5,
+   "mu_pw": 0.4,
+   "mu_roll": 0.3,
+   "ced": 2250.0
+  },
+  "dt_s": 3.085738460255319e-05,
+  "n_init": 28905,
+  "wall_s": null,
+  "revs_simulated": 0.0,
+  "mg_leaked_settle": 0.0,
+  "sector_mg": [],
+  "mg_total_after_open": 0.0,
+  "grains_total_after_open": 0,
+  "stopped_early": true
+ }
+]

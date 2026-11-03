@@ -82,11 +82,109 @@
       "spearman_rho": 0.028,
       "spearman_p": 0.9312,
       "flow_class_correct": 6
+     },
+     "dem0": {
+      "n": 12,
+      "rmse_log10": 1.3,
+      "mae_log10": 1.109,
+      "median_fold_error": 8.09,
+      "spearman_rho": 0.862,
+      "spearman_p": 0.0003,
+      "flow_class_correct": 8
+     },
+     "dem0_bulk": {
+      "n": 12,
+      "rmse_log10": 1.423,
+      "mae_log10": 1.229,
+      "median_fold_error": 11.34,
+      "spearman_rho": 0.862,
+      "spearman_p": 0.0003,
+      "flow_class_correct": 7
+     },
+     "dem_shift": {
+      "n": 12,
+      "rmse_log10": 0.711,
+      "mae_log10": 0.519,
+      "median_fold_error": 2.14,
+      "spearman_rho": 0.804,
+      "spearman_p": 0.0016,
+      "flow_class_correct": 11
+     },
+     "dem_shift_scale": {
+      "n": 12,
+      "rmse_log10": 0.767,
+      "mae_log10": 0.556,
+      "median_fold_error": 2.29,
+      "spearman_rho": 0.776,
+      "spearman_p": 0.003,
+      "flow_class_correct": 11
      }
     },
     "fitted": {
-     "dem_shift": [],
-     "dem_shift_scale": []
+     "dem_shift": [
+      6.75,
+      5.5,
+      8.0,
+      6.75,
+      6.5,
+      6.75,
+      6.75,
+      6.75,
+      6.75,
+      7.5,
+      6.75,
+      6.75
+     ],
+     "dem_shift_scale": [
+      [
+       6.75,
+       0.049
+      ],
+      [
+       2.25,
+       0.604
+      ],
+      [
+       8.0,
+       0.003
+      ],
+      [
+       6.5,
+       0.107
+      ],
+      [
+       6.5,
+       0.005
+      ],
+      [
+       6.5,
+       0.123
+      ],
+      [
+       6.75,
+       0.032
+      ],
+      [
+       6.5,
+       0.093
+      ],
+      [
+       6.75,
+       0.02
+      ],
+      [
+       6.75,
+       0.163
+      ],
+      [
+       6.5,
+       0.089
+      ],
+      [
+       6.5,
+       0.098
+      ]
+     ]
     }
    },
    "22p5": {
@@ -194,6 +292,10 @@
     "moisture": {
      "rho": -0.67,
      "p": 0.0171
+    },
+    "dem0_prediction": {
+     "rho": 0.862,
+     "p": 0.0003
     }
    },
    "22p5": {
@@ -230,6 +332,359 @@
      "p": 0.0594
     }
    }
+  },
+  "correlations": {
+   "AoR (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": -0.75,
+     "p": 0.0047
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": -0.8,
+     "p": 0.0018
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": -0.84,
+     "p": 0.0006
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": 0.76,
+     "p": 0.0065
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": 0.92,
+     "p": 0.0004
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": -0.84,
+     "p": 0.0013
+    }
+   },
+   "Hausner ratio (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": -0.47,
+     "p": 0.1245
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": -0.36,
+     "p": 0.2551
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": -0.54,
+     "p": 0.0709
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": 0.35,
+     "p": 0.2847
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": 0.53,
+     "p": 0.1392
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": -0.18,
+     "p": 0.5979
+    }
+   },
+   "bulk density (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": 0.47,
+     "p": 0.1205
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": 0.49,
+     "p": 0.1055
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": 0.55,
+     "p": 0.066
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": -0.47,
+     "p": 0.142
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": -0.82,
+     "p": 0.0072
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": 0.24,
+     "p": 0.478
+    }
+   },
+   "particle density (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": 0.39,
+     "p": 0.2153
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": 0.51,
+     "p": 0.0938
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": 0.53,
+     "p": 0.0764
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": -0.52,
+     "p": 0.0981
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": -0.78,
+     "p": 0.0125
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": 0.39,
+     "p": 0.2354
+    }
+   },
+   "d50 (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": 0.27,
+     "p": 0.3911
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": 0.17,
+     "p": 0.6021
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": 0.26,
+     "p": 0.4168
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": -0.34,
+     "p": 0.3118
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": 0.07,
+     "p": 0.8647
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": 0.18,
+     "p": 0.5979
+    }
+   },
+   "moisture (literature)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": -0.51,
+     "p": 0.0886
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": -0.56,
+     "p": 0.0594
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": -0.67,
+     "p": 0.0171
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": 0.54,
+     "p": 0.0872
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": 0.8,
+     "p": 0.0099
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": -0.33,
+     "p": 0.3213
+    }
+   },
+   "log Bond number, van der Waals (closed form)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": -0.27,
+     "p": 0.3911
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": -0.17,
+     "p": 0.6021
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": -0.26,
+     "p": 0.4168
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": 0.34,
+     "p": 0.3118
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": -0.07,
+     "p": 0.8647
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": -0.18,
+     "p": 0.5979
+    }
+   },
+   "Beverloo, core-tip annulus, 45 deg (closed form)": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": 0.33,
+     "p": 0.2969
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": 0.43,
+     "p": 0.1667
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": 0.33,
+     "p": 0.2969
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": -0.18,
+     "p": 0.5926
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": -0.58,
+     "p": 0.0992
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": 0.12,
+     "p": 0.7263
+    }
+   },
+   "DEM chain, 45 deg, no fit": {
+    "log mg/rev, 0 deg": {
+     "n": 12,
+     "rho": 0.79,
+     "p": 0.0023
+    },
+    "log mg/rev, 22.5 deg": {
+     "n": 12,
+     "rho": 0.83,
+     "p": 0.0008
+    },
+    "log mg/rev, 45 deg": {
+     "n": 12,
+     "rho": 0.86,
+     "p": 0.0003
+    },
+    "speed exponent (mg/s ~ rpm^a)": {
+     "n": 11,
+     "rho": -0.73,
+     "p": 0.0112
+    },
+    "1 g dose time (s), powders that convey": {
+     "n": 9,
+     "rho": -0.97,
+     "p": 0.0
+    },
+    "1 g doses within 5 %": {
+     "n": 11,
+     "rho": 0.84,
+     "p": 0.0013
+    }
+   }
+  },
+  "n_correlation_tests": 54,
+  "inverse_aor": {
+   "inv_ols": {
+    "rmse_deg": 3.53,
+    "mae_deg": 2.86,
+    "spearman_rho": 0.704,
+    "spearman_p": 0.0106
+   },
+   "inv_dem": {
+    "rmse_deg": 5.38,
+    "mae_deg": 4.53,
+    "spearman_rho": 0.627,
+    "spearman_p": 0.0291
+   },
+   "inv_dem_noshift": {
+    "rmse_deg": 10.34,
+    "mae_deg": 9.09,
+    "spearman_rho": 0.665,
+    "spearman_p": 0.0183
+   },
+   "mean": {
+    "rmse_deg": 5.88,
+    "mae_deg": 5.36
+   }
+  },
+  "dem_path": {
+   "aor_u": [
+    -1.0,
+    0.0,
+    0.75,
+    1.5,
+    2.25,
+    3.0,
+    4.5,
+    6.0,
+    7.5,
+    9.0
+   ],
+   "aor_iso_deg": [
+    15.31,
+    27.54,
+    31.97,
+    35.64,
+    38.33,
+    39.55,
+    42.92,
+    48.83,
+    49.01,
+    48.63
+   ],
+   "doser": {
+    "45": {
+     "u": [
+      0.0,
+      3.0
+     ],
+     "log10_mg_rev": [
+      2.158,
+      0.344
+     ]
+    }
+   }
   }
  },
  "per_powder": {
@@ -251,7 +706,11 @@
      "aor_iso": 2.387,
      "bond_ols": 2.452,
      "bev0": 2.547,
-     "bev_scale": 1.28
+     "bev_scale": 1.28,
+     "dem0": 1.701,
+     "dem0_bulk": 1.68,
+     "dem_shift": 2.272,
+     "dem_shift_scale": 2.32
     },
     "22p5": {
      "mean": 1.426,
@@ -262,6 +721,18 @@
      "bev0": 2.413,
      "bev_scale": 1.133
     }
+   },
+   "dem_u": 0.7562336700000508,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     7.14,
+     80.66
+    ]
+   },
+   "inverse": {
+    "aor_ols": 35.14,
+    "aor_dem": 31.22,
+    "u_from_fingerprint": -0.437
    }
   },
   "white-rice-flour": {
@@ -282,7 +753,11 @@
      "aor_iso": -0.31,
      "bond_ols": 1.518,
      "bev0": 2.795,
-     "bev_scale": 1.629
+     "bev_scale": 1.629,
+     "dem0": -1.0,
+     "dem0_bulk": -1.0,
+     "dem_shift": 0.188,
+     "dem_shift_scale": -0.088
     },
     "22p5": {
      "mean": 1.522,
@@ -293,6 +768,18 @@
      "bev0": 2.662,
      "bev_scale": 1.501
     }
+   },
+   "dem_u": 5.028155323249834,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.1,
+     4.6
+    ]
+   },
+   "inverse": {
+    "aor_ols": 37.79,
+    "aor_dem": 40.3,
+    "u_from_fingerprint": 0.688
    }
   },
   "brown-rice-flour": {
@@ -313,7 +800,11 @@
      "aor_iso": 0.825,
      "bond_ols": 1.893,
      "bev0": 2.763,
-     "bev_scale": 1.799
+     "bev_scale": 1.799,
+     "dem0": -1.0,
+     "dem0_bulk": -1.0,
+     "dem_shift": 0.375,
+     "dem_shift_scale": 0.378
     },
     "22p5": {
      "mean": 1.677,
@@ -324,6 +815,18 @@
      "bev0": 2.629,
      "bev_scale": 1.621
     }
+   },
+   "dem_u": 5.535262470909231,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.1,
+     1.12
+    ]
+   },
+   "inverse": {
+    "aor_ols": 49.37,
+    "aor_dem": 52.31,
+    "u_from_fingerprint": 4.438
    }
   },
   "sodium-alginate": {
@@ -344,7 +847,11 @@
      "aor_iso": 0.922,
      "bond_ols": 1.71,
      "bev0": 2.682,
-     "bev_scale": 1.553
+     "bev_scale": 1.553,
+     "dem0": -0.434,
+     "dem0_bulk": -0.672,
+     "dem_shift": 1.182,
+     "dem_shift_scale": 1.259
     },
     "22p5": {
      "mean": 1.533,
@@ -355,6 +862,18 @@
      "bev0": 2.548,
      "bev_scale": 1.388
     }
+   },
+   "dem_u": 4.091782173991492,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.1,
+     21.7
+    ]
+   },
+   "inverse": {
+    "aor_ols": 40.53,
+    "aor_dem": 45.62,
+    "u_from_fingerprint": 1.663
    }
   },
   "calcium-lactate": {
@@ -375,7 +894,11 @@
      "aor_iso": 1.315,
      "bond_ols": 1.929,
      "bev0": 2.423,
-     "bev_scale": 1.15
+     "bev_scale": 1.15,
+     "dem0": 0.061,
+     "dem0_bulk": -0.272,
+     "dem_shift": 1.355,
+     "dem_shift_scale": 1.36
     },
     "22p5": {
      "mean": 1.414,
@@ -386,6 +909,18 @@
      "bev0": 2.29,
      "bev_scale": 0.986
     }
+   },
+   "dem_u": 3.2014364919619123,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.1,
+     34.68
+    ]
+   },
+   "inverse": {
+    "aor_ols": 34.26,
+    "aor_dem": 28.15,
+    "u_from_fingerprint": -0.613
    }
   },
   "carboxymethyl-cellulose": {
@@ -406,7 +941,11 @@
      "aor_iso": 1.266,
      "bond_ols": 1.294,
      "bev0": 2.782,
-     "bev_scale": 1.669
+     "bev_scale": 1.669,
+     "dem0": -0.178,
+     "dem0_bulk": -0.365,
+     "dem_shift": 1.292,
+     "dem_shift_scale": 1.385
     },
     "22p5": {
      "mean": 1.494,
@@ -417,6 +956,18 @@
      "bev0": 2.649,
      "bev_scale": 1.458
     }
+   },
+   "dem_u": 3.6466093329767024,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.1,
+     5.28
+    ]
+   },
+   "inverse": {
+    "aor_ols": 40.97,
+    "aor_dem": 46.01,
+    "u_from_fingerprint": 1.738
    }
   },
   "xanthan-gum": {
@@ -437,7 +988,11 @@
      "aor_iso": 2.386,
      "bond_ols": 1.386,
      "bev0": 2.766,
-     "bev_scale": 1.532
+     "bev_scale": 1.532,
+     "dem0": 1.177,
+     "dem0_bulk": 1.027,
+     "dem_shift": 1.932,
+     "dem_shift_scale": 1.964
     },
     "22p5": {
      "mean": 1.422,
@@ -448,6 +1003,18 @@
      "bev0": 2.632,
      "bev_scale": 1.369
     }
+   },
+   "dem_u": 1.3684822124760352,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.34,
+     90.75
+    ]
+   },
+   "inverse": {
+    "aor_ols": 35.43,
+    "aor_dem": 30.94,
+    "u_from_fingerprint": -0.437
    }
   },
   "sodium-sulfate": {
@@ -468,7 +1035,11 @@
      "aor_iso": 2.424,
      "bond_ols": 1.755,
      "bev0": 3.071,
-     "bev_scale": 1.855
+     "bev_scale": 1.855,
+     "dem0": 1.791,
+     "dem0_bulk": 1.751,
+     "dem_shift": 2.362,
+     "dem_shift_scale": 2.443
     },
     "22p5": {
      "mean": 1.412,
@@ -479,6 +1050,18 @@
      "bev0": 2.937,
      "bev_scale": 1.691
     }
+   },
+   "dem_u": 0.7562336700000508,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     19.12,
+     99.25
+    ]
+   },
+   "inverse": {
+    "aor_ols": 35.31,
+    "aor_dem": 33.89,
+    "u_from_fingerprint": -0.237
    }
   },
   "silicon-110-200": {
@@ -499,7 +1082,11 @@
      "aor_iso": 2.319,
      "bond_ols": 1.573,
      "bev0": 3.053,
-     "bev_scale": 1.827
+     "bev_scale": 1.827,
+     "dem0": 1.223,
+     "dem0_bulk": 1.192,
+     "dem_shift": 2.015,
+     "dem_shift_scale": 2.035
     },
     "22p5": {
      "mean": 1.411,
@@ -510,6 +1097,18 @@
      "bev0": 2.92,
      "bev_scale": 1.672
     }
+   },
+   "dem_u": 1.5992401973542172,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.52,
+     54.09
+    ]
+   },
+   "inverse": {
+    "aor_ols": 34.24,
+    "aor_dem": 30.19,
+    "u_from_fingerprint": -0.487
    }
   },
   "silicon-325": {
@@ -530,7 +1129,11 @@
      "aor_iso": 1.047,
      "bond_ols": 1.247,
      "bev0": 2.924,
-     "bev_scale": 1.905
+     "bev_scale": 1.905,
+     "dem0": -0.543,
+     "dem0_bulk": -0.785,
+     "dem_shift": 1.301,
+     "dem_shift_scale": 1.344
     },
     "22p5": {
      "mean": 1.714,
@@ -541,6 +1144,18 @@
      "bev0": 2.791,
      "bev_scale": 1.833
     }
+   },
+   "dem_u": 4.521048175590437,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     0.11,
+     7.69
+    ]
+   },
+   "inverse": {
+    "aor_ols": 45.49,
+    "aor_dem": 50.35,
+    "u_from_fingerprint": 3.488
    }
   },
   "alsi10mg": {
@@ -561,7 +1176,11 @@
      "aor_iso": 2.424,
      "bond_ols": 0.809,
      "bev0": 3.152,
-     "bev_scale": 1.93
+     "bev_scale": 1.93,
+     "dem0": 1.998,
+     "dem0_bulk": 1.94,
+     "dem_shift": 2.462,
+     "dem_shift_scale": 2.539
     },
     "22p5": {
      "mean": 1.408,
@@ -572,6 +1191,18 @@
      "bev0": 3.019,
      "bev_scale": 1.776
     }
+   },
+   "dem_u": 0.41646089423667254,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     4.36,
+     237.21
+    ]
+   },
+   "inverse": {
+    "aor_ols": 34.99,
+    "aor_dem": 31.07,
+    "u_from_fingerprint": -0.462
    }
   },
   "barium-chloride": {
@@ -592,7 +1223,11 @@
      "aor_iso": 2.38,
      "bond_ols": 2.311,
      "bev0": 2.82,
-     "bev_scale": 1.589
+     "bev_scale": 1.589,
+     "dem0": 1.61,
+     "dem0_bulk": 1.472,
+     "dem_shift": 2.328,
+     "dem_shift_scale": 2.414
     },
     "22p5": {
      "mean": 1.417,
@@ -603,6 +1238,18 @@
      "bev0": 2.686,
      "bev_scale": 1.422
     }
+   },
+   "dem_u": 1.1643993649840403,
+   "dem0_mg_rev_range_over_aor_range": {
+    "45": [
+     2.39,
+     184.91
+    ]
+   },
+   "inverse": {
+    "aor_ols": 35.42,
+    "aor_dem": 36.95,
+    "u_from_fingerprint": 0.013
    }
   }
  }

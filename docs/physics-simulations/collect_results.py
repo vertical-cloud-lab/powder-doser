@@ -22,7 +22,9 @@ ORDER = [
     # stochastic and moisture
     "ca-avalanche", "mc-packing", "moisture-sorption",
     # inference and learned simulators
-    "bayes-grainlearning", "bayes-gp-emulator-mcmc", "gns-gnn-simulator",
+    "bayes-grainlearning", "bayes-gp-emulator-mcmc", "gns-gnn-simulator", "surrogate-pinn",
+    # follow-up: held-out powders from the #116 battery
+    "heldout-powders",
 ]
 
 

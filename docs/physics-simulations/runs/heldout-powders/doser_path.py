@@ -60,6 +60,8 @@ CASES = {
     # added after the first batch showed the 45 deg twin stalling already at k = 3000 J/m3
     "d45_k750": ("k750", 45.0), "d45_k1500": ("k1500", 45.0), "d45_k2250": ("k2250", 45.0),
     "d22_k750": ("k750", 22.5), "d22_k1500": ("k1500", 22.5),
+    # speed check against protocol D (22.5 deg, 15/45/90 rpm): the same points at 90 rpm
+    "d22_P1_r90": ("P1", 22.5, 90), "d22_k750_r90": ("k750", 22.5, 90),
 }
 
 
@@ -69,8 +71,8 @@ def rayleigh_dt(d, rho, E, nu):
 
 
 def config(case):
-    point, tilt = CASES[case]
-    cfg = {**BASE, **PATH[point], "name": case, "incline_deg": tilt}
+    point, tilt, *rest = CASES[case]
+    cfg = {**BASE, **PATH[point], "name": case, "incline_deg": tilt, "rpm": rest[0] if rest else BASE["rpm"]}
     dmin = cfg["d_mean_mm"] * (1 - cfg["d_spread"]) * 1e-3
     cfg["dt"] = 0.3 * rayleigh_dt(dmin, cfg["density"], cfg["youngs"], cfg["poisson"])
     return cfg
@@ -98,7 +100,7 @@ def summarize_case(case):
     t, m, n = A[:, 0], A[:, 1] * 1e6, A[:, 2]
     T, t0 = meta["period_s"], meta["settle_s"]
     revs_done = max(0.0, (t[-1] - t0) / T)
-    point, tilt = CASES[case]
+    point, tilt, *_ = CASES[case]
     out = {"case": case, "path_point": point, "tilt_deg": tilt, "rpm": meta["cfg"]["rpm"],
            "params": {k: meta["cfg"][k] for k in ("mu_pp", "mu_pw", "mu_roll", "ced")},
            "dt_s": meta["dt"], "n_init": meta["n_init"], "wall_s": meta.get("wall_s"),
@@ -117,6 +119,13 @@ def summarize_case(case):
     if revs_done >= 0.5:
         a = t0 + 0.25 * T
         out["mg_per_rev_after_quarter"] = round(float(m[-1] - np.interp(a, t, m)) / (revs_done - 0.25), 2)
+    elif revs_done >= 0.2:
+        # stalled cases stopped early to free a core: rate after the opening burst (first 0.1 rev)
+        a = t0 + 0.1 * T
+        out["mg_per_rev_after_burst"] = round(float(m[-1] - np.interp(a, t, m)) / (revs_done - 0.1), 2)
+        out["stopped_early"] = True
+    else:
+        out["stopped_early"] = True
     return out
 
 
