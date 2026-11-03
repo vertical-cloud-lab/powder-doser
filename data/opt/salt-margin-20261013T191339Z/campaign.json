@@ -1,0 +1,520 @@
+{
+ "kind": "opt_campaign",
+ "schema_version": 1,
+ "campaign_id": "salt-margin-20261013T191339Z",
+ "variant": "three-stage-margin",
+ "powder_id": "salt",
+ "target_g": 0.5,
+ "status": "paused",
+ "phase": "bo",
+ "created_utc": "2026-10-13T19:13:39.253269+00:00",
+ "operator": "claude-unattended",
+ "git_commit": "930618bb16592376079d5a219aef59f0418f47bf",
+ "simulate": false,
+ "search_space": [
+  {
+   "name": "bulk_tap",
+   "type": "choice",
+   "is_ordered": false,
+   "values": [
+    "off",
+    "2hz"
+   ]
+  },
+  {
+   "name": "trim_tap",
+   "type": "choice",
+   "is_ordered": false,
+   "values": [
+    "off",
+    "2hz"
+   ]
+  },
+  {
+   "name": "bulk_tilt_deg",
+   "type": "range",
+   "bounds": [
+    15.0,
+    40.0
+   ]
+  },
+  {
+   "name": "trickle_tilt_deg",
+   "type": "range",
+   "bounds": [
+    10.0,
+    30.0
+   ]
+  },
+  {
+   "name": "tap_tilt_deg",
+   "type": "range",
+   "bounds": [
+    0.0,
+    15.0
+   ]
+  },
+  {
+   "name": "bulk_rpm",
+   "type": "range",
+   "bounds": [
+    20.0,
+    100.0
+   ]
+  },
+  {
+   "name": "trickle_start_remaining_g",
+   "type": "range",
+   "bounds": [
+    0.05,
+    0.3
+   ]
+  },
+  {
+   "name": "tolerance_g",
+   "type": "range",
+   "bounds": [
+    0.003,
+    0.015
+   ]
+  },
+  {
+   "name": "cutoff_margin_g",
+   "type": "range",
+   "bounds": [
+    0.0,
+    0.035
+   ]
+  }
+ ],
+ "objectives": {
+  "t_total_s": 180.0,
+  "abs_error_mg": 20.0
+ },
+ "frozen_params": {
+  "bulk_anticipation_g": 0.05,
+  "bulk_boost_s": 3.0,
+  "bulk_enabled": true,
+  "bulk_halt_kf": false,
+  "bulk_max_passes": 8,
+  "bulk_min_rpm": 20.0,
+  "bulk_only": false,
+  "bulk_poll_ms": 250,
+  "bulk_rpm": 55.0,
+  "bulk_settle_ms": 1500,
+  "bulk_stop_margin_g": 0.01,
+  "bulk_tap": false,
+  "bulk_taper_start_g": 0.1,
+  "bulk_tilt_deg": 30.0,
+  "cutoff_margin_g": 0.035,
+  "dose_timeout_s": 600,
+  "ff_prior_g_per_rev": 0.35,
+  "final_settle_ms": 2000,
+  "goal_mass_g": 0.75,
+  "kf_q_var": 0.0002,
+  "k_sigma": 1.0,
+  "log_max_rows": 2400,
+  "log_min_free_bytes": 24000,
+  "log_to_flash": true,
+  "max_poll_misses": 10,
+  "noisy_sd_g": 0.008,
+  "overshoot_abort_g": 0.1,
+  "post_trickle_settle_ms": 1200,
+  "print_every_n_polls": 2,
+  "quiet_sd_g": 0.0005,
+  "rate_tau_s": 0.5,
+  "stall_bail_s": 8.0,
+  "taps_per_cycle": 1,
+  "tap_burst_above_g": 0.0,
+  "tap_burst_taps": 2,
+  "tap_cadence_off_ms": 440,
+  "tap_cadence_on_ms": 60,
+  "tap_max_cycles": 120,
+  "tap_max_nudges": 20,
+  "tap_nudge_deg": 5.0,
+  "tap_settle_ms": 1500,
+  "tap_tilt_deg": 10.0,
+  "tau_afterflow_s": 0.3,
+  "tau_bal_s": 0.7,
+  "tolerance_g": 0.005,
+  "trickle_dt_s": 0.25,
+  "trickle_enabled": true,
+  "trickle_integ_clamp": 0.5,
+  "trickle_ki": 120.0,
+  "trickle_kp": 250.0,
+  "trickle_max_rate_gps": 0.05,
+  "trickle_min_rate_gps": 0.003,
+  "trickle_rpm_cap": 45.0,
+  "trickle_start_remaining_g": 0.25,
+  "trickle_tap": false,
+  "trickle_tilt_deg": 15.0
+ },
+ "baseline_params": {
+  "bulk_tap": "off",
+  "trim_tap": "off",
+  "bulk_tilt_deg": 30.0,
+  "trickle_tilt_deg": 15.0,
+  "tap_tilt_deg": 10.0,
+  "bulk_rpm": 55.0,
+  "trickle_start_remaining_g": 0.25,
+  "tolerance_g": 0.005,
+  "cutoff_margin_g": 0.035
+ },
+ "screening_plan": [
+  [
+   "corner-00",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-01",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-02",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-03",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-04",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-05",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-06",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-07",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-08",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-09",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-10",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-11",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-12",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-13",
+   {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.015,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-14",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "cutoff_margin_g": 0.0
+   }
+  ],
+  [
+   "corner-15",
+   {
+    "bulk_tilt_deg": 15.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "cutoff_margin_g": 0.0
+   }
+  ]
+ ],
+ "budget": 200,
+ "tau_afterflow": {
+  "tau0_s": 0.8338,
+  "tau1_s_per_gps": null,
+  "tau1_t_stat": 1.11,
+  "tau0_median_s": 0.8338,
+  "model": "linear",
+  "n_events": 26,
+  "rate_range_gps": [
+   0.0221,
+   0.1586
+  ],
+  "resid_rms_mg": 31.57
+ },
+ "in_flight": null,
+ "generation": {
+  "model": "saasbo",
+  "sobol_trials": 2,
+  "seed": 999,
+  "ax_platform": "0.4.3"
+ },
+ "scoring": {
+  "overshoot": "penalized"
+ },
+ "warm_start": {
+  "campaign_id": "salt-20260929T014732Z",
+  "cutoff_margin_g": 0.035,
+  "check_point": "bo-005",
+  "attached": 60
+ },
+ "anchor_plan": [],
+ "frozen_overrides": {
+  "log_to_flash": false,
+  "log_max_rows": 120
+ },
+ "unattended": {
+  "cup_budget_g": 40.0,
+  "stop_at": "2026-10-15T22:15Z",
+  "max_stall_streak": 4,
+  "max_jam_streak": 4
+ },
+ "updated_utc": "2026-10-15T22:00:39.066497+00:00",
+ "stop_reason": "paused 2026-10-15 21:59 UTC by the session: bo-017 and bo-018 stalled after 184 and 155 mg, bo-018 at the 40 deg / 20 rpm settings that dosed fine minutes before, so the hopper has probably run out; refill, then --resume",
+ "anchor_plan_skipped": {
+  "labels": [
+   "check-bo-005-00",
+   "check-bo-005-01",
+   "center-00",
+   "center-01"
+  ],
+  "utc": "2026-10-13T20:30Z",
+  "why": "check-bo-005-00 ran out its 120-tap budget twice at about 0.2 mg per tap (1.4-2.6 mg on 2026-10-06) and both doses then ended fw-error on a Pico MemoryError at the runner's 17th/18th dose; the remaining checks and centers were skipped so the CI job's time went to BO"
+ },
+ "ax_attached": [
+  "salt-20260929T014732Z/baseline-00",
+  "salt-20260929T014732Z/corner-00",
+  "salt-20260929T014732Z/corner-01",
+  "salt-20260929T014732Z/corner-02",
+  "salt-20260929T014732Z/corner-03",
+  "salt-20260929T014732Z/corner-04",
+  "salt-20260929T014732Z/corner-05",
+  "salt-20260929T014732Z/corner-06",
+  "salt-20260929T014732Z/corner-07",
+  "salt-20260929T014732Z/corner-08",
+  "salt-20260929T014732Z/corner-09",
+  "salt-20260929T014732Z/corner-10",
+  "salt-20260929T014732Z/corner-11",
+  "salt-20260929T014732Z/corner-12",
+  "salt-20260929T014732Z/corner-13",
+  "salt-20260929T014732Z/corner-14",
+  "salt-20260929T014732Z/corner-15",
+  "salt-20260929T014732Z/center-00",
+  "salt-20260929T014732Z/center-01",
+  "salt-20260929T014732Z/center-02",
+  "salt-20260929T014732Z/center-03",
+  "salt-20260929T014732Z/baseline-01",
+  "salt-20260929T014732Z/rebaseline-00",
+  "salt-20260929T014732Z/recenter-00",
+  "salt-20260929T014732Z/recenter-01",
+  "salt-20260929T014732Z/recenter-02",
+  "salt-20260929T014732Z/recenter-03",
+  "salt-20260929T014732Z/rebaseline-01",
+  "salt-20260929T014732Z/bo-000",
+  "salt-20260929T014732Z/bo-001",
+  "salt-20260929T014732Z/bo-002",
+  "salt-20260929T014732Z/bo-003",
+  "salt-20260929T014732Z/bo-004",
+  "salt-20260929T014732Z/bo-005",
+  "salt-20260929T014732Z/bo-006",
+  "salt-20260929T014732Z/bo-007",
+  "salt-20260929T014732Z/bo-008",
+  "salt-20260929T014732Z/bo-009",
+  "salt-20260929T014732Z/bo-010",
+  "salt-20260929T014732Z/bo-011",
+  "salt-20260929T014732Z/bo-012",
+  "salt-20260929T014732Z/bo-013",
+  "salt-20260929T014732Z/val-bo-005-00",
+  "salt-20260929T014732Z/val-bo-005-01",
+  "salt-20260929T014732Z/val-bo-005-00",
+  "salt-20260929T014732Z/val-bo-005-01",
+  "salt-20260929T014732Z/val-bo-005-02",
+  "salt-20260929T014732Z/val-bo-005-03",
+  "salt-20260929T014732Z/val-bo-005-04",
+  "salt-20260929T014732Z/val-bo-005-05",
+  "salt-20260929T014732Z/val-bo-005-06",
+  "salt-20260929T014732Z/val-bo-005-07",
+  "salt-20260929T014732Z/val-corner-09-00",
+  "salt-20260929T014732Z/val-corner-09-01",
+  "salt-20260929T014732Z/val-corner-09-02",
+  "salt-20260929T014732Z/val-corner-09-03",
+  "salt-20260929T014732Z/val-corner-09-04",
+  "salt-20260929T014732Z/val-corner-09-05",
+  "salt-20260929T014732Z/val-corner-09-06",
+  "salt-20260929T014732Z/val-corner-09-07",
+  "corner-00",
+  "corner-01",
+  "corner-02",
+  "corner-03",
+  "corner-04",
+  "corner-05",
+  "corner-06",
+  "corner-07",
+  "corner-08",
+  "corner-09",
+  "corner-10",
+  "corner-11",
+  "corner-12",
+  "corner-13",
+  "corner-14",
+  "corner-15"
+ ]
+}

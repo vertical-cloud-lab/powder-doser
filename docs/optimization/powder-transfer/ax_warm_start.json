@@ -1,0 +1,309 @@
+{
+ "powder": "AlSi10Mg",
+ "model": "moo",
+ "seed": 0,
+ "box": {
+  "variant": "three-stage-margin",
+  "space": [
+   {
+    "name": "bulk_tap",
+    "type": "choice",
+    "is_ordered": false,
+    "values": [
+     "off",
+     "2hz"
+    ]
+   },
+   {
+    "name": "trim_tap",
+    "type": "choice",
+    "is_ordered": false,
+    "values": [
+     "off",
+     "2hz"
+    ]
+   },
+   {
+    "name": "bulk_tilt_deg",
+    "type": "range",
+    "bounds": [
+     15.0,
+     40.0
+    ]
+   },
+   {
+    "name": "trickle_tilt_deg",
+    "type": "range",
+    "bounds": [
+     10.0,
+     30.0
+    ]
+   },
+   {
+    "name": "tap_tilt_deg",
+    "type": "range",
+    "bounds": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "name": "bulk_rpm",
+    "type": "range",
+    "bounds": [
+     20.0,
+     100.0
+    ]
+   },
+   {
+    "name": "trickle_start_remaining_g",
+    "type": "range",
+    "bounds": [
+     0.05,
+     0.3
+    ]
+   },
+   {
+    "name": "tolerance_g",
+    "type": "range",
+    "bounds": [
+     0.003,
+     0.015
+    ]
+   },
+   {
+    "name": "cutoff_margin_g",
+    "type": "range",
+    "bounds": [
+     0.0,
+     0.035
+    ]
+   }
+  ],
+  "constraints": [
+   "0.000737953*bulk_rpm - trickle_start_remaining_g <= -0.0171609"
+  ],
+  "rules": [
+   [
+    "R1",
+    "threshold >= 0.032 g at 20 rpm, 0.091 g at 100 rpm"
+   ]
+  ],
+  "volume_fraction": 0.9413,
+  "context": {
+   "ctx_log10_feed": -1.084,
+   "ctx_log10_tap": -0.1517
+  }
+ },
+ "context_params": [
+  {
+   "name": "ctx_log10_feed",
+   "type": "range",
+   "bounds": [
+    -2.028,
+    -0.984
+   ]
+  },
+  {
+   "name": "ctx_log10_tap",
+   "type": "range",
+   "bounds": [
+    -0.467,
+    0.194
+   ]
+  }
+ ],
+ "contexts": {
+  "salt (09-29, 10-06)": {
+   "ctx_log10_feed": -1.2409,
+   "ctx_log10_tap": 0.0941
+  },
+  "salt (10-13, 10-15)": {
+   "ctx_log10_feed": -1.9278,
+   "ctx_log10_tap": -0.3671
+  },
+  "AlSi10Mg": {
+   "ctx_log10_feed": -1.084,
+   "ctx_log10_tap": -0.1517
+  }
+ },
+ "attached": 95,
+ "attached_outside_box": 10,
+ "gen_seconds": 45.1,
+ "asks": [
+  {
+   "trial_index": 95,
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 35.107,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 41.7726,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.035
+   },
+   "in_box": true,
+   "predicted": {
+    "t_total_s": [
+     217.3,
+     116.7
+    ],
+    "abs_error_mg": [
+     -14.1,
+     16.1
+    ]
+   }
+  },
+  {
+   "trial_index": 96,
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "2hz",
+    "bulk_tilt_deg": 34.8238,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 0.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.0
+   },
+   "in_box": true,
+   "predicted": {
+    "t_total_s": [
+     250.9,
+     129.6
+    ],
+    "abs_error_mg": [
+     -1.4,
+     31.1
+    ]
+   }
+  },
+  {
+   "trial_index": 97,
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 19.5438,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 78.7126,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "cutoff_margin_g": 0.0
+   },
+   "in_box": true,
+   "predicted": {
+    "t_total_s": [
+     258.4,
+     129.3
+    ],
+    "abs_error_mg": [
+     0.0,
+     31.4
+    ]
+   }
+  }
+ ],
+ "probe_predictions": {
+  "bo-005": {
+   "salt (09-29, 10-06)": {
+    "t_total_s": [
+     88.1,
+     22.8
+    ],
+    "abs_error_mg": [
+     1.5,
+     1.1
+    ]
+   },
+   "salt (10-13, 10-15)": {
+    "t_total_s": [
+     406.5,
+     64.7
+    ],
+    "abs_error_mg": [
+     22.4,
+     15.0
+    ]
+   },
+   "AlSi10Mg": {
+    "t_total_s": [
+     209.7,
+     115.8
+    ],
+    "abs_error_mg": [
+     5.1,
+     13.3
+    ]
+   }
+  },
+  "corner-09": {
+   "salt (09-29, 10-06)": {
+    "t_total_s": [
+     202.5,
+     26.6
+    ],
+    "abs_error_mg": [
+     2.4,
+     1.2
+    ]
+   },
+   "salt (10-13, 10-15)": {
+    "t_total_s": [
+     355.9,
+     107.7
+    ],
+    "abs_error_mg": [
+     38.6,
+     16.8
+    ]
+   },
+   "AlSi10Mg": {
+    "t_total_s": [
+     252.2,
+     116.9
+    ],
+    "abs_error_mg": [
+     8.5,
+     13.4
+    ]
+   }
+  },
+  "bo-012 (margin)": {
+   "salt (09-29, 10-06)": {
+    "t_total_s": [
+     258.5,
+     131.1
+    ],
+    "abs_error_mg": [
+     13.8,
+     30.8
+    ]
+   },
+   "salt (10-13, 10-15)": {
+    "t_total_s": [
+     92.1,
+     44.7
+    ],
+    "abs_error_mg": [
+     2.2,
+     2.8
+    ]
+   },
+   "AlSi10Mg": {
+    "t_total_s": [
+     232.5,
+     129.2
+    ],
+    "abs_error_mg": [
+     12.3,
+     28.9
+    ]
+   }
+  }
+ },
+ "note": "model output from salt data only; nothing was dosed"
+}
