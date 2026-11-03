@@ -99,8 +99,8 @@ is the regression of log mg/rev on the repose angle. Blue is the DEM chain at sa
 ![Twin along the path](dem_path_doser.gif)
 
 *The twin at 45° and 30 rpm at four points on the path, slice through the auger axis, coloured by grain speed
-([MP4](dem_path_doser.mp4)). Even the weakest cohesion slows the exit, and from k = 1.5 kJ/m³ the annulus mostly
-holds an arch.*
+([MP4](dem_path_doser.mp4)). Even the weakest cohesion slows the exit, and from k = 1.5 kJ/m³ only a trickle gets
+through.*
 
 **Correlations ([`correlations.md`](correlations.md)).** One property stands out: the **literature angle of repose** correlates with everything Sam's battery measured.
 * mg/rev: ρ = −0.75, −0.80 and −0.84 at 0, 22.5 and 45°.
@@ -124,8 +124,8 @@ chain is a monotone function of it.
 | speed exponent, 22.5° (30 vs 90 rpm) | 0.82 | 0.78 |
 
 Along the path, the twin's output collapses at very weak cohesion. At 45° it gives 400 / 286 / 103 / 26 / 6 / 2 mg/rev
-for smooth grains, salt, and k = 0.75 / 1.5 / 2.25 / 3 kJ/m³ (Bo 0.01–0.6). At k ≥ 4.5 kJ/m³ only the opening burst
-leaves. At 22.5° the k = 0.75 point barely differs from salt (132 vs 138 mg/rev), and k = 1.5 drops to 14.
+for smooth grains, salt, and k = 0.75 / 1.5 / 2.25 / 3 kJ/m³ (Bo 0.01–0.6). The k = 4.5 and 6 kJ/m³ runs were
+stopped after their opening bursts (13 and 5 grains in 0.1 revolution). At 22.5° the k = 0.75 point barely differs from salt (132 vs 138 mg/rev), and k = 1.5 drops to 14.
 
 With salt-sized grains the 1.07 mm annulus is 2.5 grains wide, and an arch across it needs almost no cohesion. The
 repose angle meanwhile rises steadily (27.5° → 39.5° over the same range). So the twin acts as a threshold
