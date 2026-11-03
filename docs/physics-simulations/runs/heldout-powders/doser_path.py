@@ -62,6 +62,9 @@ CASES = {
     "d22_k750": ("k750", 22.5), "d22_k1500": ("k1500", 22.5),
     # speed check against protocol D (22.5 deg, 15/45/90 rpm): the same points at 90 rpm
     "d22_P1_r90": ("P1", 22.5, 90), "d22_k750_r90": ("k750", 22.5, 90),
+    # coarse-graining check: 0.35 mm grains (annulus 3.1 instead of 2.5 grains wide), same k, 0.5 rev, 2 MPI ranks
+    "d45_P1_d035": ("P1", 45.0, 30, {"d_mean_mm": 0.35, "revs": 0.5, "np": 2, "mesh_format": "vtk"}),
+    "d45_k1500_d035": ("k1500", 45.0, 30, {"d_mean_mm": 0.35, "revs": 0.5, "np": 2, "mesh_format": "vtk"}),
 }
 
 
@@ -73,6 +76,8 @@ def rayleigh_dt(d, rho, E, nu):
 def config(case):
     point, tilt, *rest = CASES[case]
     cfg = {**BASE, **PATH[point], "name": case, "incline_deg": tilt, "rpm": rest[0] if rest else BASE["rpm"]}
+    if len(rest) > 1:
+        cfg.update(rest[1])
     dmin = cfg["d_mean_mm"] * (1 - cfg["d_spread"]) * 1e-3
     cfg["dt"] = 0.3 * rayleigh_dt(dmin, cfg["density"], cfg["youngs"], cfg["poisson"])
     return cfg
@@ -102,6 +107,7 @@ def summarize_case(case):
     revs_done = max(0.0, (t[-1] - t0) / T)
     point, tilt, *_ = CASES[case]
     out = {"case": case, "path_point": point, "tilt_deg": tilt, "rpm": meta["cfg"]["rpm"],
+           "d_mean_mm": meta["cfg"]["d_mean_mm"],
            "params": {k: meta["cfg"][k] for k in ("mu_pp", "mu_pw", "mu_roll", "ced")},
            "dt_s": meta["dt"], "n_init": meta["n_init"], "wall_s": meta.get("wall_s"),
            "revs_simulated": round(revs_done, 3), "mg_leaked_settle": round(float(np.interp(t0, t, m)), 3)}

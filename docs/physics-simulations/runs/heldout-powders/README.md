@@ -146,7 +146,7 @@ detector for cohesion, sitting at the low end of the repose-angle scale.
     1–25 mg/rev, against 187–302 measured.
   * The offset of about 6° that the fits find is close to the 4.5° by which the salt twin's repose angle (27.5°) sits
     below salt's handbook value (32°). Most of it is the spheres' lower repose angle.
-  * The rest is probably the coarse-graining: real fine powders see an annulus 10–40 grains wide, not 2.5.
+  * The rest is probably the coarse-graining: the finer powders see an annulus about 4–43 grains wide, not 2.5.
 * **Closed-form physics without cohesion is worse than knowing nothing.** Beverloo through the annulus (RMSE 1.56) and
   the d50 Bond number (1.07) do no better than the training mean (1.12).
 * **Inverse (AoR from the dosing fingerprint), the paper's direction: the DEM is worse than a straight line.**
@@ -273,8 +273,8 @@ Literature AoR redrawn uniformly within each published range (200 draws), LOPO r
   function of the repose angle (times density). It can't rank powders differently from the repose angle itself,
   and the inverse can't separate friction from cohesion (run 29's identifiability result).
 * **Coarse-graining at the exit.** Every powder is simulated with salt-sized grains, so the 1.07 mm annulus is
-  always about 2.5 grains wide. The real powders other than salt, BaCl₂ and Ca lactate are 4–40× finer, so their
-  annulus is 10–40 grains wide. Narrow openings jam far more easily, so the coarse-grained twin is probably too
+  always about 2.5 grains wide. By literature d50 the other 11 powders are 1.4–17× finer than salt, so their real
+  annulus is about 4–43 grains wide (8–43 for the nine finer than 150 µm). Narrow openings jam far more easily, so the coarse-grained twin is probably too
   arch-prone for fine powders. The fitted offset Δ absorbs this.
 * **Short windows and one seed.** 0.75 revolution per case, measured over the last 0.5 revolution. #180 found
   ±15–20 % pulse-to-pulse scatter within a revolution. Rare arch-breaking events that let cohesive powders

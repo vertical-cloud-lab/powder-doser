@@ -130,7 +130,8 @@ def dem_rate(r):
 
 class DemChain:
     def __init__(self, doser, aor):
-        doser = [r for r in doser if r.get("tilt_deg") is not None and r.get("rpm", 30) == 30]
+        doser = [r for r in doser if r.get("tilt_deg") is not None and r.get("rpm", 30) == 30
+                 and r.get("d_mean_mm", 0.425) == 0.425]
         self.aor_u = np.array([u_of(r["point"]) for r in aor])
         self.aor_deg = np.array([r["angle_iso_deg"] for r in aor])
         o = np.argsort(self.aor_u)
