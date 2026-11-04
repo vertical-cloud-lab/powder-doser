@@ -76,7 +76,7 @@ EC_PIN_X, EC_PIN_Z, DOCK_RISE = 58.0, 76.0, -0.9   # EC v4's clevis pin, Sam's f
                                                    # docked it moves 0.9 toward the plate
 ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
 DOCK_EXT = 28.0                                    # PARK_DROP: the parked EC sits 28 mm below its docked position
-TILT_MAX = 50.0                                    # v4: at about 55 deg the module's cap reaches the top run
+TILT_MAX = 40.0                                    # v5: past about 41 deg the lift bar rises into the neighbouring modules (v4: 50)
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
@@ -99,7 +99,7 @@ def tilt_to_ext(tilt_deg: float) -> float:
     the hinge with the docked EC (the module swings up into the loop), and the base pin sits ACT_RETRACTED below the
     parked EC's clevis pin, DOCK_EXT below the docked one. 30 deg needs 60.8 mm, 50 deg 93.6."""
     if tilt_deg > TILT_MAX:
-        raise SystemExit(f"v5 (as v4) tilts to {TILT_MAX:.0f} deg at most (the cap reaches the top run at about 55)")
+        raise SystemExit(f"v5 tilts to {TILT_MAX:.0f} deg at most (past about 41 the lift bar reaches the neighbouring modules)")
     x0, z0 = EC_PIN_X, EC_PIN_Z + DOCK_RISE
     a = math.radians(tilt_deg)
     px, pz = x0 * math.cos(a) + z0 * math.sin(a), -x0 * math.sin(a) + z0 * math.cos(a)

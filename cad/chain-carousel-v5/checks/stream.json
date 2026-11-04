@@ -1,0 +1,21 @@
+{
+ "check": "stream",
+ "column_d_mm": 8.0,
+ "from_z": "6 mm under the exit",
+ "to_z": 289.0,
+ "hits": {
+  "15.0": [
+   [
+    "Auger, threaded storage 1",
+    42.55
+   ]
+  ],
+  "30.0": [
+   [
+    "Auger, threaded storage 1",
+    0.4
+   ]
+  ],
+  "45.0": []
+ }
+}

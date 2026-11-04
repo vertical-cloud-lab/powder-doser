@@ -211,7 +211,7 @@ MOVING_GROUPS = ("station_ec", "station_act")            # the EC, the lift bar 
 TOP_OPEN = 205.0                                          # v5: the HR-202i's top door slid back while the station doses (A&D's DXF)
 
 
-def tilt(angles=(5, 10, 15, 20, 25, 30, 38, 45, 50), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
+def tilt(angles=(5, 10, 15, 20, 25, 30, 38, 40, 45, 50), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:
     """Station: the EC rising out of its cradle (ext 0 -> docked; the door opens over the last 8.5 mm), then module 1 + EC
     + actuator tilting about the hinge, against everything else (carriage 1 included: its window, pads, latch, lugs)."""
     hits = []

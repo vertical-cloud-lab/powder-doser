@@ -18,9 +18,9 @@
  ],
  "poses": [
   "hr202i {'ext': 0.0}",
-  "hr202i {'ext': 28.0, 'top_door': 140.0}",
-  "hr202i {'tilt': 30.0, 'top_door': 140.0}",
-  "hr202i {'tilt': 50.0, 'top_door': 140.0}",
+  "hr202i {'ext': 28.0, 'top_door': 205.0}",
+  "hr202i {'tilt': 30.0, 'top_door': 205.0}",
+  "hr202i {'tilt': 50.0, 'top_door': 205.0}",
   "hr100a {'ext': 0.0}",
   "hr100a {'tilt': 30.0}"
  ],

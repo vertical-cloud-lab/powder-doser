@@ -494,3 +494,5 @@ SHOE = (14.0, 10.0, 20.0)                    # guide shoe on each bar end: x, y,
 GUIDE_SLOT_W = 14.2
 STATION_POST_Y = POST_Y                      # station posts on the side base rails, at the P16s' x
 LATCH_BEAM_Z = 0.0                           # set in layout: the latch rail's pad sits on the beam where v4's post ended
+TILT_MAX_V5 = 40.0                           # v5: the lift bar passes under the neighbouring modules; past about 41 deg it rises into
+                                             # them (check_interference --tilt: 42 deg touches module 13's plate). v4: 50
