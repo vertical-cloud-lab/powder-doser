@@ -1,5 +1,7 @@
 # Multi-doser paternoster carousel (#128)
 
+> **Scale (2026-11-04):** the paternoster doses into a vial on a TAL221 100 g load cell, not onto a balance. The chain carousel's [v5](../chain-carousel-v5/README.md) puts the A&D HR-202i (220 g x 0.1 mg) under its station; the paternoster's station hasn't been checked against a balance.
+
 A second, independent multi-doser design next to the [chain carousel v2](../chain-carousel-v2/README.md). Two #35 chains run in vertical planes at the front and back of the modules, each round four 32T corner sprockets. Every 10th pitch an **SA-1 attachment link carries a shoulder-screw pivot, and a printed gondola hangs between the front and back pivots**. Gravity keeps each gondola, and the doser module in it, upright all the way round: on the straights, over the top and round the corners. **No hinge, flap or outlet is ever sideways or upside down**, so nothing on a module needs latching against gravity. v2's modules roll a full turn per lap and need snap hooks to stay shut upside down.
 
 The station is mid-way along the bottom run. An **Actuonix P16-150-22-12-P** (potentiometer feedback, on an Actuonix LAC board) lifts Sam's electronics carriage through the gondola's floor, docks it under Sam's mounting plate and tilts plate and carriage together about the hinge, cap end up into the empty middle of the loop. Modules come out sideways at a loading position on the right side: undo two thumb screws, lift 22 mm, slide out.

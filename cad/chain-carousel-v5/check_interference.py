@@ -208,7 +208,7 @@ def sweep(step: float = 0.5) -> list:
 
 
 MOVING_GROUPS = ("station_ec", "station_act")            # the EC, the lift bar and its end blocks, the P16s; plus the station module
-TOP_OPEN = 140.0                                          # v5: the HR-202i's top door slid back while the station doses
+TOP_OPEN = 205.0                                          # v5: the HR-202i's top door slid back while the station doses (A&D's DXF)
 
 
 def tilt(angles=(5, 10, 15, 20, 25, 30, 38, 45, 50), exts=(0.0, 5.0, 10.0, 11.5, 15.0, 19.5, PARK_DROP)) -> list:

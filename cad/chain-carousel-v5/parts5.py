@@ -30,15 +30,23 @@ def hr202i(door_left: float = 0.0, door_right: float = 0.0, top_door: float = 0.
     cw, cd, ch = HR2_CH
     cx0 = x0 + HR2_CH_Y                              # chamber's front glass, inside face
     cx1 = cx0 + cd                                   # the tower's front
-    zf = HR2_PAN_TOP - 5.0                           # chamber floor
-    ztop = zf + 5.0 + ch                             # chamber ceiling (inside)
+    zf = HR2_FLOOR                                   # chamber floor and door sills (A&D's DXF: 40)
+    ztop = HR2_PAN_TOP + ch                          # chamber ceiling (inside): 250 over the pan
     hw = cw / 2
     out: dict[str, cq.Workplane] = {}
-    body = _box(x0, x1, -W / 2, W / 2, 0.0, zf).edges("|Z").fillet(6.0)
-    body = body.union(_box(cx1 + g, x1, -W / 2, W / 2, 0.0, H).edges("|Z").fillet(4.0))
+    xs = cx0 - g - 2.0                               # the display section ends at the chamber's front frame
+    body = _box(xs, x1, -W / 2, W / 2, 0.0, zf).edges("|Z").fillet(6.0)
+    # behind the chamber: its back wall and the frame that carries the top door's rails, full height, then the lower rear
+    # housing (A&D's DXF: x 276-428 from the front, its top 244 falling to 221 at the back); the doors slide back over it
+    xr = x0 + HR2_REAR[0]
+    body = body.union(_box(cx1, xr, -W / 2 + 0.5, W / 2 - 0.5, 1.0, H))
+    rear = (cq.Workplane("XZ").polyline([(xr - 1.0, 1.0), (x1 - 0.5, 1.0), (x1 - 0.5, HR2_REAR[2]), (xr - 1.0, HR2_REAR[1])]).close()
+            .extrude(W / 2 - 1.0, both=True))
+    body = body.union(rear)
+    # the display section, 73 deep: its top rises from 28 at the nose to 50 at the glass (A&D's DXF; a 600 mm radius, drawn flat)
     n0, n1 = HR2_NOSE
-    nose = (cq.Workplane("XZ").polyline([(x0, zf), (cx0 - g, zf), (cx0 - g, n1 + 4), (x0 + 8, n0 + 4), (x0, n0)]).close()
-            .extrude(W / 2, both=True))
+    nose = (cq.Workplane("XZ").polyline([(x0, 1.0), (xs + 1.0, 1.0), (xs + 1.0, n1 + 4), (x0 + 6, n0 + 4), (x0, n0)]).close()
+            .extrude(W / 2 - 0.5, both=True))
     body = body.union(nose)
     for sy in (-1, 1):
         ya, yb = sorted((sy * hw, sy * (hw + fr)))
@@ -49,12 +57,12 @@ def hr202i(door_left: float = 0.0, door_right: float = 0.0, top_door: float = 0.
     body = body.union(ring)
     body = body.union(_cyl(HR2_PAN_D / 2 + 7, 4.0, 0, 0, zf).cut(_cyl(HR2_PAN_D / 2 + 3, 6.0, 0, 0, zf - 1)))   # breeze ring
     out["hr202i_body"] = body
-    ang = math.atan2(n1 - n0, cx0 - g - x0 - 8)
-    org = ((x0 + 8 + cx0 - g) / 2, 0.0, (n0 + 4 + n1 + 4) / 2)
+    ang = math.atan2(n1 - n0, xs - x0 - 6)
+    org = ((x0 + 6 + xs) / 2, 0.0, (n0 + 4 + n1 + 4) / 2 + 0.4)
     pl = cq.Plane(origin=org, xDir=(0, 1, 0), normal=(-math.sin(ang), 0, math.cos(ang)))
     out["hr202i_display"] = cq.Workplane(pl).rect(110.0, 30.0).extrude(0.8)
     out["hr202i_front_glass"] = _box(cx0 - g, cx0, -hw, hw, zf, ztop)
-    out["hr202i_pan"] = _cyl(HR2_PAN_D / 2, 2.0, 0.0, 0.0, HR2_PAN_TOP - 2.0).union(_cyl(7.0, HR2_PAN_TOP - 2.0 - zf, 0.0, 0.0, zf))
+    out["hr202i_pan"] = _cyl(HR2_PAN_D / 2, 2.0, 0.0, 0.0, HR2_PAN_TOP - 2.0).union(_cyl(7.0, HR2_PAN_TOP - 2.0 - zf + 0.5, 0.0, 0.0, zf - 0.5))
     dw, dh = HR2_DOOR
     for name, sy, slide in (("hr202i_door_left", -1, door_left), ("hr202i_door_right", 1, door_right)):
         yy = sy * (hw + fr / 2)
@@ -68,8 +76,8 @@ def hr202i(door_left: float = 0.0, door_right: float = 0.0, top_door: float = 0.
     return out
 
 
-HR2_DOOR_OPEN = HR2_DOOR[0] - 20.0       # how far the side doors slide back to open (the opening's front 128 mm)
-HR2_TOP_OPEN = HR2_TOP_DOOR[1] - 8.0     # the top door slides back over the tower
+HR2_DOOR_OPEN = HR2_DOOR_TRAVEL         # the side doors slide straight back, clearing the whole 148.5 mm opening
+HR2_TOP_OPEN = HR2_DOOR_TRAVEL          # the top door too, over the rear housing
 
 
 def hr202i_pan_top() -> float:

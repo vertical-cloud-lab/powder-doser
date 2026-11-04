@@ -463,22 +463,27 @@ PARK_DROP = 28.0
 HR2_W, HR2_W_DOORS = 200.0, 217.0            # body width; over the side doors' grips
 HR2_D, HR2_D_ALL = 428.0, 442.0              # body depth; overall
 HR2_H, HR2_H_ALL = 310.0, 316.0              # body height; over the top door's grip
-HR2_PAN_D, HR2_PAN_Y, HR2_PAN_TOP = 90.0, 163.0, 50.0   # pan dia., its centre behind the front, its top above the bench (read off the drawing)
+HR2_PAN_D, HR2_PAN_Y, HR2_PAN_TOP = 90.0, 163.0, 50.0   # pan dia., its centre behind the front, its top above the bench (all printed on p.60)
 HR2_CH = (183.0, 164.5, 250.0)               # chamber inside: width, depth, height above the pan
 HR2_CH_Y = HR2_PAN_Y - 86.5                  # chamber's front glass behind the front (the pan is 86.5 mm behind it)
 HR2_DOOR = (148.5, 251.0)                    # side doors (depth, height); both slide back
 HR2_TOP_DOOR = (164.0, 148.5)                # top door (width, depth); slides back over the tower
 HR2_FEET_X = 166.0                           # rear feet apart
 HR2_GLASS, HR2_FRAME = 4.0, 7.0
-HR2_NOSE = (22.0, 46.0)                      # display unit: height at the front edge, at the chamber
+HR2_NOSE = (24.0, 46.0)                      # display section's top: 28 at the nose, 50 at the glass (A&D's DXF; + 4 in the builder)
+HR2_FLOOR = 40.0                             # chamber floor and the side doors' sills (A&D's DXF)
 HR2_CAP_G, HR2_READ_MG = 220.0, 0.1
 HR2_FINE = (51.0, 0.01)                      # fine range: g, mg
 HR2_TOP_GAP = 10.0                           # the parked EC, the lift bar and the NEMA 34 stay this far over the balance's top
+HR2_REAR = (276.0, 244.0, 221.0)             # rear housing: starts this far behind the front; its top at its front, at the back (A&D's DXF)
+HR2_DOOR_TRAVEL = 205.0                      # the top and side doors slide straight back about this far (A&D's DXF, open outlines)
+HR2_KG = 7.9
 
 # the beaker on a printed riser, so the dose falls about 150 mm instead of 340 (the beaker's rim stays under the side doors'
 # opening, so it comes out through a side door; the top door is under the station)
 BRISER_FOOT_D, BRISER_TUBE_D, BRISER_WALL = 80.0, 44.0, 1.6
-BEAKER_RIM_Z = 288.0                         # beaker rim above the bench: 14 mm under the side doors' opening's top edge
+BEAKER_RIM_Z = 282.0                         # beaker rim above the bench: 9 mm under the side doors' opening's top (291, A&D's DXF), so
+                                             # it clears it lifted 6 mm out of the riser's cup
 BEAKER_RISER_H = BEAKER_RIM_Z - BEAKER_H - HR2_PAN_TOP + 5.0   # 194: the beaker sits 5 mm down in the riser's cup
 
 # lift bar and the two P16s (v5's station column, moved out of the balance's chamber)

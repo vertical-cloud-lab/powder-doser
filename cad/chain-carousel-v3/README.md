@@ -1,5 +1,7 @@
 # Multi-doser chain carousel v3: kinematic dock, guide, outlet doors, latches, enclosure (#128)
 
+> **Scale (2026-11-04):** v3 draws the HR-100A at the dose point, but it doesn't fit there. [v5](../chain-carousel-v5/README.md) moves the station's column out of the balance and puts the A&D HR-202i under the dose point.
+
 v3 is [v2](../chain-carousel-v2/README.md) with Sam's review of 2026-10-29 applied, items 1-6. **The augers still ride inside the loop.** Its sibling [v4](../chain-carousel-v4/README.md) is the same design with the augers outside the loop (item 7). Everything not listed under "What changed" is v2's: the two #35 chains, the four 32T corners, the 13 carriages on A-1 tabs, the 2020 frame, the NEMA 34 drive and the P16 actuator. v2 and the [paternoster](../paternoster/README.md) are unchanged.
 
 **Nothing here is built yet, so every number is a prediction.**

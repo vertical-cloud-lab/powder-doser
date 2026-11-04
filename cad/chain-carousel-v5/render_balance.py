@@ -41,6 +41,10 @@ def opac(pl, extra=None):
             o[k] = 0.28
         elif p.key.startswith(("panel_", "hatch_")):
             o[k] = 0.18
+        elif p.key == "hr100a_body":
+            o[k] = 0.95                                 # v5: it fits, so it isn't drawn as v3/v4's ghost
+        elif p.key == "hr100a_glass":
+            o[k] = 0.3
         elif extra and p.key in extra:
             o[k] = extra[p.key]
     return o
@@ -141,11 +145,12 @@ def stills() -> None:
          "Section on the station's centre plane: module 1 at 30 deg over the beaker on the HR-202i's pan"),
         ("rig_parked_section", L.State(ext=0.0), cut_section, SECTION,
          "Parked: the EC 28 mm under its dock, 12 mm over the balance's top; the top door shut"),
-        ("rig_hr100a", L.State(scale_model="hr100a"), cut_front, FRONT, "The lab's HR-100A (stock breeze break) in the same place, for comparison"),
+        ("rig_hr100a", L.State(scale_model="hr100a"), cut_front, FRONT,
+         "The lab's HR-100A (stock breeze break) in the same place: nothing in its way but the front hatch door's bottom edge"),
     ]
     for name, st, cut, cam, title in shots:
         pl = L.placements(st)
-        v.show(pl, hide=R.hidden(pl, cut), opacity=opac(pl))
+        v.show(pl, hide=R.hidden(pl, cut), opacity=opac(pl), colors={k: (0.93, 0.93, 0.95) for k, p in R.keyed(pl) if p.key == "hr100a_body"})
         v.camera(*cam)
         img = R.caption(v.image(), title, "", R.TAG)
         img.save(OUT / f"{name}.png")
@@ -175,7 +180,7 @@ def clip() -> None:
     for i in range(sec(2.5)):
         t = R.ease(i / (sec(2.5) - 1))
         st = L.State(ext=0.0, side_door=SIDE_OPEN, beaker=True, beaker_dy=-150.0 * (1 - t), beaker_dz=6.0 * (1 - t))
-        frame(st, "The beaker goes onto its riser on the pan", "lifted 6 mm over the riser's cup, then down into it: rim 288 mm up", FRONT, cut_front)
+        frame(st, "The beaker goes onto its riser on the pan", "lifted 6 mm over the riser's cup, then down into it: rim 282 mm up", FRONT, cut_front)
     for i in range(sec(1.5)):
         t = R.ease(i / (sec(1.5) - 1))
         frame(L.State(ext=0.0, side_door=SIDE_OPEN * (1 - t)), "Side door shut; tare", "", FRONT, cut_front, note="tare")
@@ -198,7 +203,7 @@ def clip() -> None:
         state["t"] += 1 / 12
         state["m"] = dose_rate * state["t"]
         frame(L.State(tilt=TF, top_door=TOP_OPEN, magnet_on=True, spin=state["t"] * 2 * math.pi), "Dosing straight into the beaker on the pan",
-              f"about {D[2] - z_land:.0f} mm of fall; no funnel; the Pi reads the balance over RS-232 ('Q') and stops at the target", SECTION,
+              f"{D[2] - BEAKER_RIM_Z:.0f} mm from the exit to the rim; no funnel; the Pi reads the balance over RS-232 ('Q') and stops at the target", SECTION,
               grains=True, stable=False)
     # 4. back, reverse, park, top door shut
     for i in range(sec(2.0)):
@@ -223,6 +228,14 @@ def clip() -> None:
 
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
+    if "--hr100a" in sys.argv:
+        v = R.View(1600, 1000)
+        pl = L.placements(L.State(scale_model="hr100a"))
+        v.show(pl, hide=R.hidden(pl, cut_front), opacity=opac(pl), colors={k: (0.93, 0.93, 0.95) for k, p in R.keyed(pl) if p.key == "hr100a_body"})
+        v.camera(*FRONT)
+        R.caption(v.image(), "The lab's HR-100A (stock breeze break) in the same place: nothing in its way but the front hatch door's bottom edge",
+                  "", R.TAG).save(OUT / "rig_hr100a.png")
+        sys.exit()
     if "--clip" not in sys.argv:
         stills()
     if "--stills" not in sys.argv:

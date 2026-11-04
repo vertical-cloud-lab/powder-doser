@@ -19,13 +19,14 @@ HERE = Path(__file__).resolve().parent
 # (item, keys counted from the CAD or None, qty if not counted, description,
 #  vendor, part number, url, unit price USD, price source, steps, category)
 V = "verified 2026-10-18"
-# v5: the balance. Filled in from the HR-i check (README, "The balance"); the lab's HR-100A fits in the same place.
-HR202I_DESC = ("A&D HR-202i analytical balance, 220 g x 0.1 mg (51 g x 0.01 mg fine range), RS-232 and USB: under the station, its pan "
-               "under the dose point, on the bench (it touches nothing of the doser). The lab's HR-100A (102 g x 0.1 mg) fits in the same "
-               "place with the beaker straight on its pan (README)")
-HR202I_URL = "https://weighing.andonline.com/product/hr-i-series/"
+# v5: the balance, checked against A&D's HR-i manual (p.59-60) and A&D Japan's DXF on 2026-11-04 (README, "The balance")
+HR202I_DESC = ("A&D HR-202i analytical balance, 220 g x 0.1 mg (51 g x 0.01 mg fine range), RS-232C (2400 7E1; USB only through A&D's "
+               "converter), 7.9 kg: under the station, its pan under the dose point, on the bench (it touches nothing of the doser). Counted "
+               "as the lab's, as asked. A&D has discontinued it: MNM Scales listed it at $2,989 (out of stock, 2026-11-04), replaced by the "
+               "GH-202, which shares its outline drawing. The lab's HR-100A (102 g x 0.1 mg) fits in the same place (README)")
+HR202I_URL = "https://www.aandd.co.jp/products/weighing/balance/bal-analytical/hr/"
 HR202I_USD = 0.0
-HR202I_SRC = "price pending (README)"
+HR202I_SRC = "the lab's (assumed); new: $2,989 at MNM Scales, discontinued"
 V29 = "estimate (v3 part, McMaster lookup pending)"
 V27 = "verified 2026-10-27"
 V16 = "verified 2026-10-16 (paternoster BoM)"
