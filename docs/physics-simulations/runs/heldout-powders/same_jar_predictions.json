@@ -1,0 +1,398 @@
+{
+ "written": "2026-11-04, before any same-jar measurement",
+ "source_data": "data/ (Sam's battery @ 963fdba, #163 handbook values @ e7b7964); doser_path.json, aor_path.json",
+ "handbook_spread": {
+  "range_width_deg": {
+   "salt": 8.0,
+   "white-rice-flour": 14.7,
+   "brown-rice-flour": 15.0,
+   "sodium-alginate": 16.0,
+   "calcium-lactate": 16.0,
+   "carboxymethyl-cellulose": 12.0,
+   "xanthan-gum": 14.0,
+   "sodium-sulfate": 6.0,
+   "silicon-110-200": 10.0,
+   "silicon-325": 12.0,
+   "alsi10mg": 14.0,
+   "barium-chloride": 12.0
+  },
+  "width_min_max_median": [
+   6.0,
+   16.0,
+   13.0
+  ],
+  "rms_sd_uniform_deg": 3.71,
+  "rms_sd_2sigma_deg": 3.21,
+  "step_deg": 40.5,
+  "ranges_straddling_step": [
+   "white-rice-flour",
+   "brown-rice-flour",
+   "sodium-alginate",
+   "calcium-lactate",
+   "carboxymethyl-cellulose",
+   "xanthan-gum",
+   "silicon-110-200",
+   "silicon-325"
+  ],
+  "aor_conveying": [
+   30.0,
+   32.0,
+   32.0,
+   34.0,
+   35.0,
+   36.0,
+   40.0
+  ],
+  "aor_not_conveying": [
+   41.0,
+   42.0,
+   43.0,
+   45.0,
+   47.0
+  ],
+  "reliability_uniform": 0.57,
+  "residual_share_after_spread_uniform": -0.19,
+  "reliability_2sigma": 0.68,
+  "residual_share_after_spread_2sigma": -0.0,
+  "pearson_r_aor_log_mg_rev_45": -0.822,
+  "var_handbook_aor_deg2": 31.7
+ },
+ "inverse_models_all12": {
+  "line": {
+   "a_deg": 45.147,
+   "b_deg_per_decade": -4.299,
+   "in_sample_rmse_deg": 3.07,
+   "lopo_rmse_deg": 3.53
+  },
+  "dem_offset_deg": 8.36
+ },
+ "jar_predictions": [
+  {
+   "powder_id": "alsi10mg",
+   "display": "AlSi10Mg",
+   "aor_handbook": 30.0,
+   "aor_range": [
+    25.0,
+    39.0
+   ],
+   "mg_rev_45_aug": 338.93,
+   "mg_rev_22p5_aug": 230.95,
+   "side_of_step": "below",
+   "aor_line": 34.3,
+   "aor_dem": 31.2
+  },
+  {
+   "powder_id": "silicon-110-200",
+   "display": "Si 75\u2013150 \u00b5m",
+   "aor_handbook": 36.0,
+   "aor_range": [
+    32.0,
+    42.0
+   ],
+   "mg_rev_45_aug": 302.35,
+   "mg_rev_22p5_aug": 210.7,
+   "side_of_step": "below",
+   "aor_line": 34.5,
+   "aor_dem": 29.9
+  },
+  {
+   "powder_id": "salt",
+   "display": "salt",
+   "aor_handbook": 32.0,
+   "aor_range": [
+    30.0,
+    38.0
+   ],
+   "mg_rev_45_aug": 265.17,
+   "mg_rev_22p5_aug": 146.48,
+   "side_of_step": "below",
+   "aor_line": 34.7,
+   "aor_dem": 36.2
+  },
+  {
+   "powder_id": "sodium-sulfate",
+   "display": "Na\u2082SO\u2084",
+   "aor_handbook": 32.0,
+   "aor_range": [
+    30.0,
+    36.0
+   ],
+   "mg_rev_45_aug": 243.55,
+   "mg_rev_22p5_aug": 208.4,
+   "side_of_step": "below",
+   "aor_line": 34.9,
+   "aor_dem": 37.5
+  },
+  {
+   "powder_id": "calcium-lactate",
+   "display": "Ca lactate",
+   "aor_handbook": 40.0,
+   "aor_range": [
+    32.0,
+    48.0
+   ],
+   "mg_rev_45_aug": 232.25,
+   "mg_rev_22p5_aug": 198.28,
+   "side_of_step": "below",
+   "aor_line": 35.0,
+   "aor_dem": 23.8
+  },
+  {
+   "powder_id": "barium-chloride",
+   "display": "BaCl\u2082",
+   "aor_handbook": 34.0,
+   "aor_range": [
+    28.0,
+    40.0
+   ],
+   "mg_rev_45_aug": 200.38,
+   "mg_rev_22p5_aug": 184.7,
+   "side_of_step": "below",
+   "aor_line": 35.3,
+   "aor_dem": 39.0
+  },
+  {
+   "powder_id": "xanthan-gum",
+   "display": "xanthan",
+   "aor_handbook": 35.0,
+   "aor_range": [
+    28.0,
+    42.0
+   ],
+   "mg_rev_45_aug": 186.77,
+   "mg_rev_22p5_aug": 161.18,
+   "side_of_step": "below",
+   "aor_line": 35.4,
+   "aor_dem": 28.0
+  },
+  {
+   "powder_id": "white-rice-flour",
+   "display": "white rice flour",
+   "aor_handbook": 45.0,
+   "aor_range": [
+    38.1,
+    52.8
+   ],
+   "mg_rev_45_aug": 37.15,
+   "mg_rev_22p5_aug": 12.78,
+   "side_of_step": "above",
+   "aor_line": 38.4,
+   "aor_dem": 43.1
+  },
+  {
+   "powder_id": "sodium-alginate",
+   "display": "alginate",
+   "aor_handbook": 42.0,
+   "aor_range": [
+    34.0,
+    50.0
+   ],
+   "mg_rev_45_aug": 10.87,
+   "mg_rev_22p5_aug": 9.58,
+   "side_of_step": "above",
+   "aor_line": 40.7,
+   "aor_dem": 44.5
+  },
+  {
+   "powder_id": "carboxymethyl-cellulose",
+   "display": "CMC",
+   "aor_handbook": 41.0,
+   "aor_range": [
+    38.0,
+    50.0
+   ],
+   "mg_rev_45_aug": 9.35,
+   "mg_rev_22p5_aug": 26.35,
+   "side_of_step": "above",
+   "aor_line": 41.0,
+   "aor_dem": 43.5
+  },
+  {
+   "powder_id": "silicon-325",
+   "display": "Si <44 \u00b5m",
+   "aor_handbook": 43.0,
+   "aor_range": [
+    38.0,
+    50.0
+   ],
+   "mg_rev_45_aug": 1.2,
+   "mg_rev_22p5_aug": 0.0,
+   "side_of_step": "above",
+   "aor_line": 44.8,
+   "aor_dem": 49.1
+  },
+  {
+   "powder_id": "brown-rice-flour",
+   "display": "brown rice flour",
+   "aor_handbook": 47.0,
+   "aor_range": [
+    40.0,
+    55.0
+   ],
+   "mg_rev_45_aug": 0.2,
+   "mg_rev_22p5_aug": 0.25,
+   "side_of_step": "above",
+   "aor_line": 48.2,
+   "aor_dem": 51.4
+  },
+  {
+   "powder_id": "fumed-silica",
+   "display": "fumed silica",
+   "aor_handbook": null,
+   "aor_range": null,
+   "mg_rev_45_aug": 5.57,
+   "mg_rev_22p5_aug": 2.72,
+   "qc_verdict": "no-conveyance-outlet-unverified",
+   "noise_floor_mg": 6.1,
+   "side_of_step": "above",
+   "aor_line": "\u2265 41.8",
+   "aor_dem": null
+  }
+ ],
+ "criteria": {
+  "C1_step": "One AoR threshold separates the jars that convey at 45\u00b0 (\u2265 50 mg/rev: AlSi10Mg, Si 75\u2013150 \u00b5m, salt, Na\u2082SO\u2084, Ca lactate, BaCl\u2082, xanthan) from the rest, fumed silica included (13 of 13).",
+  "C2_rank": "The Spearman \u03c1 between the jars' measured AoR and log10 mg/rev at 45\u00b0 (the 12 jars with August data above the floor) is at least as strong as with the handbook values: \u03c1 \u2264 \u22120.84.",
+  "C3_inverse": "The line AoR = 45.15 \u2212 4.30 log10(mg/rev at 45\u00b0), fitted on the handbook values, predicts the jars' measured AoR with RMSE below 3.5\u00b0 once one common offset (the difference between methods) is removed; refitted leave-one-jar-out on the measured values, also below 3.5\u00b0.",
+  "C4_dem_within_conveying": "Among the 7 jars that convey, the measured AoR rises with the DEM path's value (Spearman \u03c1 \u2265 +0.71, one-sided p < 0.05 for 7 jars). The DEM reads their spread in solid volume per revolution as a spread in friction; the line reads it as noise (it puts all 7 at 34\u201335.5\u00b0)."
+ },
+ "solid_volume": {
+  "solid_mm3_per_rev_45": {
+   "salt": 122.5,
+   "calcium-lactate": 155.5,
+   "xanthan-gum": 122.9,
+   "sodium-sulfate": 91.4,
+   "silicon-110-200": 129.8,
+   "alsi10mg": 126.9,
+   "barium-chloride": 64.7
+  },
+  "handbook_bulk_mm3_per_rev_45": {
+   "salt": 222.8,
+   "calcium-lactate": 580.6,
+   "xanthan-gum": 301.2,
+   "sodium-sulfate": 174.0,
+   "silicon-110-200": 241.9,
+   "alsi10mg": 251.1,
+   "barium-chloride": 154.1
+  },
+  "median_mm3": 122.9,
+  "cv_solid": 0.253,
+  "cv_bulk": 0.521,
+  "within_6pct_of_median": [
+   "salt",
+   "xanthan-gum",
+   "alsi10mg",
+   "silicon-110-200"
+  ],
+  "spearman_solid_volume_vs_d50": -0.393,
+  "twin_solid_mm3_per_rev_45": {
+   "0.425": 135.4,
+   "0.35": 250.8
+  },
+  "twin_ratio_0p35_over_0p425": 1.853,
+  "beverloo_k_through_twin": 1.869,
+  "beverloo_through_twin_mm3": {
+   "0.042": 923.3,
+   "0.09": 800.9,
+   "0.106": 761.4,
+   "0.2": 543.3,
+   "0.3": 339.9,
+   "0.425": 135.4,
+   "0.5": 46.7
+  },
+  "grains_across_annulus_coarse_best_fine": {
+   "salt": [
+    2.1,
+    2.5,
+    3.6
+   ],
+   "white-rice-flour": [
+    5.6,
+    10.7,
+    17.8
+   ],
+   "brown-rice-flour": [
+    4.3,
+    8.2,
+    17.8
+   ],
+   "sodium-alginate": [
+    5.3,
+    8.9,
+    17.8
+   ],
+   "calcium-lactate": [
+    3.6,
+    4.9,
+    7.1
+   ],
+   "carboxymethyl-cellulose": [
+    8.9,
+    17.8,
+    26.8
+   ],
+   "xanthan-gum": [
+    7.1,
+    11.9,
+    17.8
+   ],
+   "sodium-sulfate": [
+    4.3,
+    7.9,
+    14.3
+   ],
+   "silicon-110-200": [
+    7.1,
+    10.1,
+    14.3
+   ],
+   "silicon-325": [
+    30.6,
+    42.8,
+    71.3
+   ],
+   "alsi10mg": [
+    22.3,
+    25.5,
+    26.8
+   ],
+   "barium-chloride": [
+    1.8,
+    3.6,
+    10.7
+   ]
+  }
+ },
+ "never_dosed_example": {
+  "aor": 32.0,
+  "rho": 2.7,
+  "pred": {
+   "45": {
+    "line_mg_rev": 397.4,
+    "monotone_mg_rev": 243.5,
+    "dem_chain_mg_rev": 374.4,
+    "dem_offset_deg": 6.25,
+    "if_it_conveys_solid_volume_rule_mg_rev": 332.0
+   },
+   "22p5": {
+    "line_mg_rev": 309.4,
+    "monotone_mg_rev": 209.9,
+    "dem_chain_mg_rev": 183.8,
+    "dem_offset_deg": 6.75
+   }
+  }
+ },
+ "dem_offsets_all12_deg": {
+  "45": 6.25,
+  "22p5": 6.75
+ },
+ "line_all12_log10_mg_rev": {
+  "45": [
+   7.629040758263097,
+   -0.1571803679728337
+  ],
+  "22p5": [
+   7.766627221843843,
+   -0.16487963712425224
+  ]
+ }
+}

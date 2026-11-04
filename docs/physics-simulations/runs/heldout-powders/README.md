@@ -305,6 +305,17 @@ The two 0.35 mm grain cases of the coarse-graining check ran their planned 0.5 r
 * **Not modelled:** fill level, humidity history (BaCl₂'s caking), electrostatics, particle shape beyond rolling
   friction, and air (which matters for the finest powders, see `../cfd-dem`).
 
+## Next: measure the jars
+[`SAME_JAR.md`](SAME_JAR.md) (from [`same_jar.py`](same_jar.py), no new simulation) ranks the same-jar measurements
+that would replace the handbook inputs. It also writes down, before anyone measures, the angle of repose each model
+needs for each jar, with four pass/fail criteria.
+* **The handbook spread is the bottleneck.** The published angle-of-repose ranges amount to 3.2–3.7° RMS. That is
+  as large as the whole miss of the inverse line, 3.1° in-sample.
+* **8 of the 12 ranges straddle the flow/no-flow step** at 40.5°.
+* **The confound.** Four of the powders that convey deliver the same solid volume per revolution within ±6 %
+  across 42–425 µm. The twin's grain-size effect would predict otherwise, so grain size and cohesion are confounded
+  until PSD, angle of repose and the exit geometry are measured.
+
 
 ## How to rerun
 ```
@@ -316,5 +327,7 @@ python3 -m venv /tmp/venv && /tmp/venv/bin/pip install numpy scipy matplotlib im
 /tmp/venv/bin/python aor_path.py summarize && /tmp/venv/bin/python doser_path.py summarize
 /tmp/venv/bin/python predict.py                    # LOPO comparison, correlations.md, predictions.json
 /tmp/venv/bin/python figures.py                    # figures and the animation (reads the scratch dumps)
+/tmp/venv/bin/python same_jar.py                   # SAME_JAR.md's numbers, tables and figure (about 2 s)
+/tmp/venv/bin/python same_jar.py new 32 2.70       # a never-dosed powder: measured AoR (deg), particle density (g/cm3)
 ```
 `python doser_path.py list` prints every case. Scratch output goes to `/tmp/sims-scratch/heldout-powders/`.
