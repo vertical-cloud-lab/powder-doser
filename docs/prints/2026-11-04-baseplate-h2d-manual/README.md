@@ -55,6 +55,28 @@ The part is black and partway up (layer 112 of 261) on the textured PEI plate. I
 flat base with its rows of holes, the two hinge blocks and the slotted tabs. Nothing is loose or
 stringing that I can see. Mean luma 94/255.
 
+## The finish, about 22:18 UTC
+
+- **Watching.** From 21:55 to 22:18 UTC the run read the Device page every 30 s by OCR and
+  saved a frame every 4 min ([log](watch-log.jsonl), [frames](frames/)). It never clicked, and no
+  dialog appeared. It also polled the thread every 30 s; nobody commented.
+- **Progress.** Layer 147 at 21:55, 188 at 22:03, 229 at 22:11, 254 at 22:16. The estimated
+  finish held at 22:16–22:17 throughout.
+- **Finish.** At 22:17:33 it was at layer 261/261. By 22:18:36 the job panel showed 100 %,
+  *Finished*, and no *Printing* label. The bed and nozzle targets had gone to 0. That's about
+  2 h 40 min from the 19:38 start; Studio's 2 h 32 min estimate leaves out heating and
+  calibration.
+
+**The last frame, 22:18:54 UTC:**
+
+![H2D camera at 22:18:54 UTC](h2d-frame-20261104T221854Z.png)
+
+The part looks complete, with the toolhead parked top left. What looks like a slim support
+stands under each hinge block. Nothing loose or stringy that I can see. The part is still on the
+plate.
+
+![Frames from layer 147 to 254](frames/montage.jpg)
+
 ## Where the file came from
 
 - **Onshape.** The job's name and thumbnail match the "Base" Part Studio of the
@@ -69,3 +91,14 @@ stringing that I can see. Mean luma 94/255.
   visible in Studio (*Print History*) or Bambu Handy when logged in to that account. Bambu gives
   it no shareable URL, and Studio's details view offers none.
 - **Not in this repo.** No STL or 3MF of this print has been committed.
+- **Not readable from here either.** The H2D's *Storage → Model* list holds only five files, all
+  from 2026-08. A job sent from Studio is kept in the printer's cache, which that list doesn't
+  show and which only LAN FTPS can read. A print run has no LAN route. Studio's cloud login is
+  encrypted on disk, so the run didn't fetch the task's file through Bambu's API either.
+- **To keep the exact file,** whoever sliced it can attach the 3MF from Studio (*File → Export →
+  Export plate sliced file*), zipped, to a comment.
+
+## Clean-up
+
+See [`print.json`](print.json): Studio was signed out and closed, and its config deleted, at the
+end of the run. Nothing was recorded, because nothing was to be sent.
