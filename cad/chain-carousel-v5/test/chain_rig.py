@@ -254,6 +254,8 @@ class Rig:
     def auger_revs(self, revs: float, rpm: float = 30.0):
         """Turn the auger (positive = toward the outlet) through the 20T:44T pinion."""
         n = round(abs(revs) * GEAR_RATIO * NEMA11_USTEPS)
+        if self.pi is None and revs > 0:
+            self._sim_g = getattr(self, "_sim_g", 0.0) + 0.105 * revs     # --sim: salt's 105 mg per turn
         if n == 0 or self.pi is None:
             time.sleep(abs(revs) / rpm * 60.0 if self.pi is None else 0)
             return
@@ -271,18 +273,52 @@ class Rig:
                 self.pi.write(PIN_TAP, 0)
             time.sleep(max(0.0, 1.0 / hz - ms / 1000))
 
-    def grams(self) -> float:
+    def dose_to(self, target_g: float, tilt: float, rpm: float = 30.0, step_revs: float = 0.25, slow_frac: float = 0.8,
+                max_revs: float = 40.0) -> tuple[float, float]:
+        """v5: dose by weight. Tare-free: reads the stable mass first, docks, tilts, and turns the auger in step_revs
+        increments (a quarter of that and half the speed past slow_frac of the target), polling the balance after each
+        (the reading is unstable while powder falls, so it takes it as it is); then holds, tilts back, reverses one turn
+        at rest and undocks, and returns (stable dose, auger revs). Shut the balance's top door before the final read."""
+        g0 = self.grams_stable()
+        self.dock()
+        self.tilt(tilt)
+        dosed, revs = 0.0, 0.0
+        while dosed < target_g and revs < max_revs:
+            slow = dosed >= slow_frac * target_g
+            r = step_revs / 4 if slow else step_revs
+            self.auger_revs(r, rpm / 2 if slow else rpm)
+            revs += r
+            time.sleep(0.3)
+            g = self.grams(stable_only=False)
+            if g == g:
+                dosed = g - g0
+        time.sleep(DOSE_HOLD_S)
+        self.tilt(0.0)
+        self.auger_revs(-REVERSE_REVS, rpm)
+        self.undock()
+        return self.grams_stable() - g0, revs
+
+    def grams_stable(self, tries: int = 40) -> float:
+        """The first stable (ST) reading, polling at about 4 Hz for up to tries reads."""
+        for _ in range(tries):
+            g = self.grams()
+            if g == g:
+                return g
+            time.sleep(0.25)
+        return float("nan")
+
+    def grams(self, stable_only: bool = True) -> float:
         """A&D HR-202i (or the HR-100A) over RS-232 (A&D standard format, 2400 baud 7E1): send "Q", read "ST,+00012.3456  g".
         Returns nan when the balance answers unstable (US) or not at all."""
         if self.pi is None:
-            return 0.0
+            return round(getattr(self, "_sim_g", 0.0), 4)
         import serial                                  # pyserial
         if not hasattr(self, "_bal"):
             self._bal = serial.Serial("/dev/serial0", 2400, bytesize=7, parity="E", stopbits=1, timeout=1.0)
         self._bal.reset_input_buffer()
         self._bal.write(b"Q\r\n")
         line = self._bal.readline().decode("ascii", "replace").strip()
-        if not line.startswith("ST,"):
+        if not line.startswith("ST,") and (stable_only or not line.startswith("US,")):
             return float("nan")
         try:
             return float(line[3:].split()[0])
@@ -338,6 +374,10 @@ def main():
     p = sub.add_parser("station")
     p.add_argument("--tilt", type=float, default=30.0, help="hinge angle, deg (frame = bench, the frame is not pitched)")
     p.add_argument("--hold", type=float, default=2.0)
+    p = sub.add_parser("dose-to", help="v5: dose a target mass onto the balance")
+    p.add_argument("grams", type=float)
+    p.add_argument("--tilt", type=float, default=30.0)
+    p.add_argument("--rpm", type=float, default=30.0)
     p = sub.add_parser("dose")
     p.add_argument("--tilt", type=float, default=30.0, help="dose tilt, deg (20-40 doses best; at 450 mA the motor stalls before the dock "
                    "opens at every tilt to 90, station sim)")
@@ -394,6 +434,11 @@ def main():
         rig.tilt(0.0)
         rig.undock()
         record("station", rig.module, t0, tilt=a.tilt)
+    elif a.cmd == "dose-to":
+        t0 = time.time()
+        g, revs = rig.dose_to(a.grams, a.tilt, a.rpm)
+        record("dose-to", rig.module, t0, tilt=a.tilt, revs=round(revs, 3), rpm=a.rpm, reverse_revs=REVERSE_REVS,
+               auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g, 4))
     elif a.cmd == "dose":
         t0 = time.time()
         g0 = rig.grams()

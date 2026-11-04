@@ -175,7 +175,7 @@ CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", 
 def write_bom(rs: list[dict]) -> None:
     rs = sorted(rs, key=lambda r: (CATS.index(r["category"]), r["item"]))
     t = bom.totals(rs)
-    lines = ["# Bill of materials: chain-carousel test rig v4", "",
+    lines = ["# Bill of materials: chain-carousel test rig v5", "",
              "Every line is a real, orderable part (or one of the lab's own). Quantities of modelled parts are "
              "counted from the CAD (`layout.placements()`). Prices are USD on the date shown on each line and will "
              "drift. **Step** is the assembly step that uses the line ([ASSEMBLY.md](ASSEMBLY.md)). `bom.csv` has the "
@@ -204,7 +204,7 @@ def write_assembly(rs: list[dict]) -> None:
     for r in rs:
         for s in map(int, r["steps"].split(",")):
             by_step.setdefault(s, []).append(r)
-    out = ["# Assembly: chain-carousel test rig v4", "",
+    out = ["# Assembly: chain-carousel test rig v5 (v4's steps; v5's station in README)", "",
            "Twelve steps in build order, then the test set-up. In each render the parts from earlier steps are "
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
            "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The animation "
