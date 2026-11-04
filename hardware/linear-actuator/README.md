@@ -26,6 +26,102 @@ Order the part the designs are already drawn around:
   body, ends and stroke, so it swaps in with no CAD change. It is slower (18 mm/s) but has 90 N and 200 N back-drive
   instead of 50 N and 75 N. Testing both on the bench (T6 in the v3/v4 test plans) answers the speed-versus-holding
   question with real parts.
+- **Checked against ac-dev-lab (2026-11-04):** this is the order Sterling placed for the SEM door opener, with a P16
+  in place of the L16 and a USB cable added. Nothing in the order list changes. Three things around it do: v4 needs a
+  stroke limit, the rig scripts need Raspberry Pi OS bookworm, and ac-dev-lab already has working position-readback
+  code. See [Checked against ac-dev-lab](#checked-against-ac-dev-lab).
+
+## Checked against ac-dev-lab
+
+Sterling asked for the pick to be checked against his Actuonix work in
+[AccelerationConsortium/ac-dev-lab](https://github.com/AccelerationConsortium/ac-dev-lab) (read at `ffbbb01`). That
+work is the SEM door opener ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132),
+[#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455)), the position-feedback issue
+([#148](https://github.com/AccelerationConsortium/ac-dev-lab/issues/148)), the tensile tester
+([#140](https://github.com/AccelerationConsortium/ac-dev-lab/issues/140),
+[#351](https://github.com/AccelerationConsortium/ac-dev-lab/issues/351),
+[#352](https://github.com/AccelerationConsortium/ac-dev-lab/issues/352),
+[#353](https://github.com/AccelerationConsortium/ac-dev-lab/issues/353)) and the digital pipette's
+[firmware](https://github.com/AccelerationConsortium/ac-dev-lab/blob/ffbbb01/src/ac_training_lab/picow/digital-pipette/main.py).
+Two repos linked from those issues were read too: Yang Cao's
+[`actuonix_lac`](https://github.com/cyrilcaoyang/actuonix_lac/tree/122a034) and Kelvin Chow's
+[feedback demo](https://github.com/kelvinchow23/actuonix-actuator-feedback-demo/tree/b019148).
+
+**The order list matches what Sterling bought for the SEM door.** On 2025-09-05 he ordered an
+[L16-140-35-12-P](https://www.actuonix.com/l16-140-35-12-p), an LAC, an LAC case and the Actuonix 12 V supply, all
+from Actuonix direct ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3258858134)).
+Kelvin's demo BOM uses the same LAC and supply with an L16-100-150-12-P. The list above swaps in the P16 and adds the
+USB cable.
+
+| | ac-dev-lab | This pick | Result |
+|---|---|---|---|
+| Actuator | Actuonix `-P` (pot feedback), 12 V: L16-140-35-12-P (SEM door), L16-100-150-12-P (feedback demo), T16-P (tensile tester). The pipette's L16-R has its own controller and no readback | P16-150-22-12-P | Same family, connector and controller. The P16 is the pick because the CAD is drawn round it, and it holds 75 N with power off (the L16-140-35 holds 31 N) |
+| Controller, supply, case, vendor | LAC, Actuonix 12 V supply, LAC case, bought from Actuonix | Same | Same |
+| Max force | 50 N. "Probably best to use the lower force actuator" ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-2785084743)); 64:1 is "safer" ([#140](https://github.com/AccelerationConsortium/ac-dev-lab/issues/140#issuecomment-3028308541)), and the 256:1's 300 N is a pinch hazard, which he put at about 150 N ([#140](https://github.com/AccelerationConsortium/ac-dev-lab/issues/140#issuecomment-2609740937)) | 50 N; 100 N or less preferred | Agrees |
+| Stroke | 140 mm, picked just under the door's 170 mm travel "as a built-in safety" ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3114727668)) | 150 mm | Agrees for v3; v4 needs a limit (point 2) |
+| Drive | RC pulses from a Pi Zero 2 W's GPIO 18 through pigpio ([#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3335230218)). The Pi's 3.3 V pulses work, though the LAC datasheet describes 5 V ones | The same, in the #185 rig scripts | Same, so it has the same OS problem (point 3) |
+| Position readback | SEM door: none (fixed waits). Tensile tester: pot wiper into an ADS1115. Feedback demo: a Pico's ADC. Yang: over USB | Wanted, not wired yet | Working code exists for each route (point 4) |
+| Speed | The 32 mm/s door move was slowed to 25% by stepping the RC pulse ([#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3386546161)); Sterling then suggested slowing it about 3x more ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3677049372)) | 46 mm/s, slowed on the LAC | Use the LAC's speed setting, not stepped pulses (point 4) |
+
+**What changes:**
+
+1. **The order list stays the same, but check that the part number ends in `-P`.** Sterling mixed up R and P while
+   planning the SEM door
+   ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3258858134)). The P16 comes
+   only as `-P` or `-S`, and its datasheet says the `-S` can't run on the LAC.
+2. **v4 needs a stroke limit.** Sterling's rule from the SEM door is that the stroke should end just short of the
+   mechanism's travel.
+   - **v3 meets it.** The P16-150 tops out at 87°, before the 90° hinge stop.
+   - **v4 doesn't.** The module's cap reaches the top run at about 55° (110 mm of rod), and the P16-150 has 40 mm of
+     stroke beyond that. The v4 rig script refuses tilts over 50°, but only in software: `actuator()` itself stops
+     at 150 mm.
+   - **Fix for v4:** set the LAC's extend limit to about 700 counts (102.5 mm: 50° plus the 1 mm slot push). Either
+     use the extend-limit pot (the one further from the USB socket, then power-cycle), or set it over USB and save it
+     to EEPROM with `DISABLE_MANUAL`. Check it on the bench in T5.
+   - **Hardware alternative:** a [P16-100-22-12-P](https://www.actuonix.com/p16-100-22-12-p) tops out at 49° in v4, so
+     it can't reach the top run. The frame then has to drop 50 mm.
+   - The angles and counts come from [`stroke_vs_tilt.py`](stroke_vs_tilt.py) (`full_stroke_tilt_*` and `v4_limit`
+     in [`stroke_vs_tilt.json`](stroke_vs_tilt.json)).
+3. **The rig scripts need Raspberry Pi OS bookworm.**
+   - Raspberry Pi's trixie package archive has no `pigpio` or `pigpiod` package; bookworm's has both (arm64 and
+     armhf lists checked 2026-11-04). Debian's own archive has only the client side (`python3-pigpio`, `pigpio-tools`),
+     not the daemon. Imager's default is now trixie.
+   - The SEM rig hit this on its Pi Zero 2 W ("doesn't let me enable pigpio",
+     [#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3564053746)) and fell back
+     to `RPi.GPIO` software PWM.
+   - The #185 scripts need `pigpiod` for the LAC pulses, the CL86T step waves, the auger's hardware PWM and the
+     sensor callbacks.
+   - Flash the station Pi with **Raspberry Pi OS (Legacy) Lite**, which is bookworm, or port the scripts off pigpio.
+4. **Reading the position back: ac-dev-lab has two working routes.**
+   - **USB.** Yang's [`actuonix_lac`](https://github.com/cyrilcaoyang/actuonix_lac/blob/122a034/src/pylac.py) (MIT,
+     pyusb) wraps the LAC's USB commands: `set_position`, `get_feedback`, `set_speed`, the limits and
+     `disable_manual`. Its README covers an L16-P and Windows setup, and confirms the USB ID `04d8:fc5f`. Sterling
+     relayed that Yang thought it could run on Linux or Raspberry Pi OS "with some tweaking"
+     ([#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3312499186)). No one has
+     tried that yet. All-USB control also takes pigpio out of the actuator's path. It lets the rig set a slow speed
+     for the dock and a faster one for the tilt, which RC can't do without stepping the pulses.
+   - **ADC.** The pot's wiper is on the LAC's X4 pin 2: 0-3.3 V, measured against pins 1 and 5. Kelvin read it with
+     a Pico's ADC ([#148](https://github.com/AccelerationConsortium/ac-dev-lab/issues/148#issuecomment-2669931151)).
+     Chance read it with an ADS1115 on a Pi Zero 2 W
+     ([#353](https://github.com/AccelerationConsortium/ac-dev-lab/issues/353#issuecomment-3084437608)) while the Pi
+     drove the LAC from GPIO 18.
+   - **Use one route per power-up.** The LAC locks onto the first valid input it sees after power-up and ignores the
+     others until the next power cycle (LAC datasheet). A USB `SET_POSITION` disables RC until a reboot (advanced
+     configuration guide). Neither document covers driving by RC while reading over USB, and nobody has tried it.
+5. **Measure move times instead of trusting fixed waits.** On Yang's bench, an L16-P at full LAC speed moved about
+   30 mm/s mid-sweep. But it took 6.3 s to retract 97 mm and 10.2 s to extend it, because the LAC slows near the
+   target ([README](https://github.com/cyrilcaoyang/actuonix_lac/blob/122a034/README.md)). The #185 rig waits the
+   move ÷ 30 mm/s + 0.3 s, which is 3.5 s for that move. Time the real moves in T6, or poll the position.
+6. **The bundled screws are #8-32, not M4.**
+   - The P16 and L16 datasheets both say each actuator ships with two brackets and #8-32 hardware. That fits the SEM
+     build, whose bundled screws were too big for M4 inserts
+     ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3307783859)).
+   - The v3/v4 BOMs already pin both ends with 4 mm shoulder screws (item 43), so nothing changes. Just don't swap
+     the bundled screws in.
+7. **Power the LAC from its 12 V supply, even for USB setup.** In #148 the LAC wouldn't connect over USB alone
+   ([#148](https://github.com/AccelerationConsortium/ac-dev-lab/issues/148#issuecomment-2588703099)). The SEM wiring
+   powers the LAC first, then the Pi, with the grounds tied together and no 12 V on the Pi
+   ([#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3335230218)).
 
 ## What the actuator does
 
@@ -106,14 +202,17 @@ The P16 sheet is byte-identical (sha256 `070deb5f…`) to the copy #185 pinned i
 
 - **[Actuonix LAC](https://www.actuonix.com/lac) ($30)** closes the loop on the pot. It takes RC, PWM, 0-3.3 V, 4-20 mA
   or USB input, and has stall detection and soft stroke limits.
-  - The #185 rig scripts already drive it with RC pulses from GPIO 18 through pigpio.
-  - In RC mode the Pi never reads the position. To read it, use the LAC's USB commands (`SET_POSITION` returns the
+  - The #185 rig scripts already drive it with RC pulses from GPIO 18 through pigpio, as ac-dev-lab's SEM door does.
+    pigpio needs Raspberry Pi OS bookworm ([point 3](#checked-against-ac-dev-lab)).
+  - In RC mode the Pi never reads the position. To read it, either drive the LAC over USB (`SET_POSITION` returns the
     current position, `GET_FEEDBACK` is `0x10`), in the 3-byte protocol of the
-    [advanced configuration guide](https://www.actuonix.com/assets/images/datasheets/ActuonixLACAdvancedConfigurationDatasheet.pdf).
-  - Actuonix ships a Windows DLL for USB. It should work from Linux with pyusb (USB ID `04d8:fc5f`, as reported on
-    RobotShop's forum), but that is untested.
+    [advanced configuration guide](https://www.actuonix.com/assets/images/datasheets/ActuonixLACAdvancedConfigurationDatasheet.pdf),
+    or read the pot's wiper on X4 pin 2 with an ADC. ac-dev-lab has working code for both ([point 4](#checked-against-ac-dev-lab)).
+  - Actuonix ships a Windows DLL for USB. ac-dev-lab uses Yang Cao's pyusb package
+    [`actuonix_lac`](https://github.com/cyrilcaoyang/actuonix_lac/tree/122a034) instead (USB ID `04d8:fc5f`). It is
+    untested on Linux.
   - Set the limits 1-2 mm short of the end stops, as Actuonix advises, and keep the stall time short so a jam stops
-    the motor.
+    the motor. In v4, set the extend limit at 50° (about 700 counts), short of where the cap hits the top run.
 - **Alternative: [Pololu Jrk G2 21v3](https://www.pololu.com/product/3142) ($54.95).** It reads the same pot as 0-5 V
   feedback, talks USB, TTL serial or I²C with Linux-supported tools, and reports position and current, with software
   current limiting.
@@ -137,3 +236,5 @@ The P16 sheet is byte-identical (sha256 `070deb5f…`) to the copy #185 pinned i
 - **Any model other than the P16 needs its own STEP** in `cad/vendor/` and redrawn clevises.
 - **Not checked for the PA-MC1:** compatibility with the LAC (on paper, the LAC takes 12 V third-party actuators with
   pot feedback), its side load and its repeatability.
+- **The ac-dev-lab comparison is from its issues, code and linked repos.** Nothing from it was run here. The pigpio
+  finding comes from Raspberry Pi's package lists, not from a Pi.

@@ -16,18 +16,27 @@ kept off the end stop (Actuonix's LAC guide advises setting the limits short of 
 
 Vendor numbers are from the makers' datasheets and product pages, read 2026-11-03 (see README.md).
 
-    python stroke_vs_tilt.py        # writes stroke_vs_tilt.png and stroke_vs_tilt.json next to this file
+The full-stroke tilts and the v4 extend limit (added 2026-11-04) back the README's check against ac-dev-lab: where
+each stroke would stop if nothing else did, set against v3's 90 deg hinge stop and v4's cap contact at about 55 deg.
+
+    python stroke_vs_tilt.py              # writes stroke_vs_tilt.png and stroke_vs_tilt.json next to this file
+    python stroke_vs_tilt.py --json-only  # just the JSON (no matplotlib needed)
 """
 from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RESERVE = 3.0          # mm: 1 mm slot push + 2 mm off the end stop
 DUTY = 0.20            # every candidate's datasheet duty-cycle limit
 HOLD_N = 10.0          # N: about the largest steady load in the MuJoCo station runs (9.2 N peak in v3's cycle)
+SLOT_PUSH = 1.0        # mm the rig pushes past each tilt target to load the 2 mm lost-motion slots
+HINGE_STOP = 90.0      # deg: TILT_MAX_FRAME in v3/v4 params.py, the hinge's own travel limit
+V4_CAP_CONTACT = 55.0  # deg: v4's module cap reaches the top run at about 55 (v4 README; its rig refuses > 50)
+LAC_FULL_SCALE = 1023  # LAC position counts over the full stroke (advanced configuration guide)
 
 DESIGNS = {
     #        rod-end pin (x, z) docked, park/dock travel, yoke length, tilt limit, direction of tilt
@@ -79,6 +88,18 @@ def reach(design: str, closed: float, stroke: float) -> float:
     return lo
 
 
+def full_stroke_tilt(design: str, closed: float, stroke: float) -> float:
+    """Tilt (deg) at full extension with no reserve and no design limit, up to the hinge stop: where the rod would
+    stop if nothing else stopped it."""
+    lo, hi = 0.0, HINGE_STOP
+    if extension(design, closed, hi) <= stroke:
+        return hi
+    for _ in range(60):
+        mid = 0.5 * (lo + hi)
+        lo, hi = (mid, hi) if extension(design, closed, mid) <= stroke else (lo, mid)
+    return lo
+
+
 def dose_travel(design: str, closed: float, deg: float = 30.0) -> float:
     """Rod travel (mm) for one dose in the rig's sequence: lift to 3 mm short, seat (+1), back to the dock, tilt (+1),
     back to level, park = 2 x extension + 4."""
@@ -116,6 +137,8 @@ def table() -> dict:
         r = dict(c)
         for v in ("v3", "v4", "v2"):
             r[f"reach_{v}_deg"] = round(reach(v, c["closed"], c["stroke"]), 1)
+        for v in ("v3", "v4"):
+            r[f"full_stroke_tilt_{v}_deg"] = round(full_stroke_tilt(v, c["closed"], c["stroke"]), 1)
         v = loaded_speed(c)
         r["speed_at_10N_mm_s"] = round(v, 1)
         for d in ("v3", "v4"):
@@ -131,7 +154,19 @@ def table() -> dict:
                 extension_mm_vs_tilt_for_P16_150=curves,
                 stroke_needed_mm={d: {a: round(extension(d, 197.4, a) + RESERVE, 1) for a in (20, 30, 40, 50, 90)
                                       if a <= DESIGNS[d]["tilt_max"]} for d in DESIGNS},
+                v4_limit=v4_limit(),
                 candidates=rows)
+
+
+def v4_limit(closed: float = 197.4, stroke: float = 150.0) -> dict:
+    """Where v4's cap meets the top run, and the LAC extend limit that stops the P16-150 at 50 deg instead."""
+    limit = extension("v4", closed, 50.0) + SLOT_PUSH
+    contact = extension("v4", closed, V4_CAP_CONTACT)
+    return dict(cap_contact_deg=V4_CAP_CONTACT, cap_contact_extension_mm=round(contact, 1),
+                stroke_past_contact_mm=round(stroke - contact, 1),
+                extend_limit_mm=round(limit, 1),
+                extend_limit_lac_counts=round(limit * LAC_FULL_SCALE / stroke),
+                cap_contact_lac_counts=round(contact * LAC_FULL_SCALE / stroke))
 
 
 def plot(path: Path) -> None:
@@ -208,7 +243,8 @@ def plot(path: Path) -> None:
 if __name__ == "__main__":
     out = table()
     (HERE / "stroke_vs_tilt.json").write_text(json.dumps(out, indent=1) + "\n")
-    plot(HERE / "stroke_vs_tilt.png")
+    if "--json-only" not in sys.argv:
+        plot(HERE / "stroke_vs_tilt.png")
     for d, v in out["stroke_needed_mm"].items():
         print(d, v)
     for r in out["candidates"]:
@@ -216,3 +252,6 @@ if __name__ == "__main__":
               f"{r['speed_at_10N_mm_s']:5.1f} mm/s @10 N | 30° dose motion v3 {r['motion_per_30deg_dose_v3_s']:4.1f} s, "
               f"v4 {r['motion_per_30deg_dose_v4_s']:4.1f} s | min spacing v3 {r['min_dose_spacing_v3_s']:3d} s, "
               f"v4 {r['min_dose_spacing_v4_s']:3d} s | arm30 {r['moment_arm_30deg_v3_mm']} | dH {r['frame_height_change_mm']}")
+    for r in out["candidates"]:
+        print(f"{r['short']:18s} full stroke: v3 {r['full_stroke_tilt_v3_deg']:5.1f} deg, v4 {r['full_stroke_tilt_v4_deg']:5.1f} deg")
+    print("v4 limit", out["v4_limit"])
