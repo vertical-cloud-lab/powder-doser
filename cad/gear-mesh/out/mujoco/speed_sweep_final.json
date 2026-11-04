@@ -1,0 +1,482 @@
+[
+ {
+  "tilt": 0.0,
+  "rpm": 30.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.205438642027026,
+   "max": 32.20547174744053,
+   "min": 32.205424458607546
+  },
+  "rim_gap_front_mm_max": 0.1911738816773519,
+  "rim_gap_back_mm_max": 0.007595019708432257,
+  "mag_gap_mm_max": 0.04074051389363734,
+  "lift_deg_max": 0.00014065784701733917,
+  "actuator_N": {
+   "min": 8.047951598875196,
+   "max": 8.05742351181774
+  },
+  "wall_s": 20.4,
+  "sim_s": 2.599940000000098
+ },
+ {
+  "tilt": 0.0,
+  "rpm": 60.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20544007744728,
+   "max": 32.20546822718583,
+   "min": 32.20542514575824
+  },
+  "rim_gap_front_mm_max": 0.19117438831877917,
+  "rim_gap_back_mm_max": 0.007592622423395057,
+  "mag_gap_mm_max": 0.04073478035174209,
+  "lift_deg_max": 0.00013963952960540358,
+  "actuator_N": {
+   "min": 8.049922992526314,
+   "max": 8.056830642536573
+  },
+  "wall_s": 12.2,
+  "sim_s": 1.3999399999988984
+ },
+ {
+  "tilt": 0.0,
+  "rpm": 120.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.205440061143925,
+   "max": 32.205468845316524,
+   "min": 32.205423405316544
+  },
+  "rim_gap_front_mm_max": 0.19117647777784458,
+  "rim_gap_back_mm_max": 0.007592769349862401,
+  "mag_gap_mm_max": 0.040735300057549384,
+  "lift_deg_max": 0.00014408982158343718,
+  "actuator_N": {
+   "min": 8.046746857738967,
+   "max": 8.058360242749991
+  },
+  "wall_s": 6.5,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 0.0,
+  "rpm": 240.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20543979422895,
+   "max": 32.20547072530655,
+   "min": 32.20542171159392
+  },
+  "rim_gap_front_mm_max": 0.1911779300536124,
+  "rim_gap_back_mm_max": 0.007594272733855339,
+  "mag_gap_mm_max": 0.04073848921651282,
+  "lift_deg_max": 0.00014131039649460612,
+  "actuator_N": {
+   "min": 8.047632692090152,
+   "max": 8.059055071244472
+  },
+  "wall_s": 6.4,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 30.0,
+  "rpm": 30.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.205805994182896,
+   "max": 32.20586665955978,
+   "min": 32.20578837611405
+  },
+  "rim_gap_front_mm_max": 0.1926677748668983,
+  "rim_gap_back_mm_max": 0.007938168743022602,
+  "mag_gap_mm_max": 0.040336395616520054,
+  "lift_deg_max": -0.0027247045191912396,
+  "actuator_N": {
+   "min": 6.075960150488872,
+   "max": 6.09179132054661
+  },
+  "wall_s": 21.6,
+  "sim_s": 2.599940000000098
+ },
+ {
+  "tilt": 30.0,
+  "rpm": 60.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20579538756334,
+   "max": 32.20582799296437,
+   "min": 32.20577997433853
+  },
+  "rim_gap_front_mm_max": 0.19267161721322534,
+  "rim_gap_back_mm_max": 0.007921224820990315,
+  "mag_gap_mm_max": 0.040319124253408056,
+  "lift_deg_max": -0.002728989548141834,
+  "actuator_N": {
+   "min": 6.0867404035202135,
+   "max": 6.091942508688982
+  },
+  "wall_s": 11.0,
+  "sim_s": 1.3999399999988984
+ },
+ {
+  "tilt": 30.0,
+  "rpm": 120.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20579260697749,
+   "max": 32.205821337433676,
+   "min": 32.20577572767193
+  },
+  "rim_gap_front_mm_max": 0.19267522017044722,
+  "rim_gap_back_mm_max": 0.007921716670116966,
+  "mag_gap_mm_max": 0.04031909159965701,
+  "lift_deg_max": -0.0027323296628198423,
+  "actuator_N": {
+   "min": 6.085926872818717,
+   "max": 6.093175661449638
+  },
+  "wall_s": 5.0,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 30.0,
+  "rpm": 240.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20579218208492,
+   "max": 32.20582355461523,
+   "min": 32.20577394742851
+  },
+  "rim_gap_front_mm_max": 0.19267760787865987,
+  "rim_gap_back_mm_max": 0.007922860199967862,
+  "mag_gap_mm_max": 0.040322706444216164,
+  "lift_deg_max": -0.0027306653700292015,
+  "actuator_N": {
+   "min": 6.086287454365243,
+   "max": 6.09345740001372
+  },
+  "wall_s": 6.0,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 60.0,
+  "rpm": 30.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20616157175046,
+   "max": 32.206255865059475,
+   "min": 32.20605458344889
+  },
+  "rim_gap_front_mm_max": 0.19367970478955937,
+  "rim_gap_back_mm_max": 0.008144640426984649,
+  "mag_gap_mm_max": 0.04005179638688038,
+  "lift_deg_max": -0.004381553138162786,
+  "actuator_N": {
+   "min": 4.925529756408027,
+   "max": 4.930506491253488
+  },
+  "wall_s": 18.7,
+  "sim_s": 2.599940000000098
+ },
+ {
+  "tilt": 60.0,
+  "rpm": 60.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20610912596241,
+   "max": 32.20619072237859,
+   "min": 32.20605746470678
+  },
+  "rim_gap_front_mm_max": 0.19366514362069862,
+  "rim_gap_back_mm_max": 0.008141021401449062,
+  "mag_gap_mm_max": 0.0400470846986695,
+  "lift_deg_max": -0.004383805752106025,
+  "actuator_N": {
+   "min": 4.925518956926407,
+   "max": 4.926980311843265
+  },
+  "wall_s": 8.8,
+  "sim_s": 1.3999399999988984
+ },
+ {
+  "tilt": 60.0,
+  "rpm": 120.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20608034748001,
+   "max": 32.20613051341132,
+   "min": 32.20605807517695
+  },
+  "rim_gap_front_mm_max": 0.19366883454446526,
+  "rim_gap_back_mm_max": 0.008141303249947142,
+  "mag_gap_mm_max": 0.04004634759808451,
+  "lift_deg_max": -0.004384598712568908,
+  "actuator_N": {
+   "min": 4.925451752124793,
+   "max": 4.926425854709977
+  },
+  "wall_s": 6.5,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 60.0,
+  "rpm": 240.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20607988997061,
+   "max": 32.206127631919166,
+   "min": 32.20604561817912
+  },
+  "rim_gap_front_mm_max": 0.19367149394114172,
+  "rim_gap_back_mm_max": 0.00814250911839643,
+  "mag_gap_mm_max": 0.04004985276725152,
+  "lift_deg_max": -0.004387109214200311,
+  "actuator_N": {
+   "min": 4.925466522076912,
+   "max": 4.926473173402686
+  },
+  "wall_s": 5.4,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 90.0,
+  "rpm": 30.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.205953490874265,
+   "max": 32.20598813200722,
+   "min": 32.205940182450185
+  },
+  "rim_gap_front_mm_max": 0.19405917027001288,
+  "rim_gap_back_mm_max": 0.0082317991844502,
+  "mag_gap_mm_max": 0.03994646616521631,
+  "lift_deg_max": -0.00046207310107790214,
+  "actuator_N": {
+   "min": 3.1354051595175694,
+   "max": 3.1403702908476623
+  },
+  "wall_s": 18.0,
+  "sim_s": 2.599940000000098
+ },
+ {
+  "tilt": 90.0,
+  "rpm": 60.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20595218879818,
+   "max": 32.20598077564437,
+   "min": 32.20593742798707
+  },
+  "rim_gap_front_mm_max": 0.19406010435461488,
+  "rim_gap_back_mm_max": 0.008229462425974355,
+  "mag_gap_mm_max": 0.039940145739465686,
+  "lift_deg_max": -0.0004566456964403687,
+  "actuator_N": {
+   "min": 3.1355905068970706,
+   "max": 3.139023888447364
+  },
+  "wall_s": 11.6,
+  "sim_s": 1.3999399999988984
+ },
+ {
+  "tilt": 90.0,
+  "rpm": 120.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20595091421953,
+   "max": 32.20597938814294,
+   "min": 32.20593419703359
+  },
+  "rim_gap_front_mm_max": 0.19406226628372417,
+  "rim_gap_back_mm_max": 0.008229623028020088,
+  "mag_gap_mm_max": 0.039940514504053434,
+  "lift_deg_max": -0.0004528752540663155,
+  "actuator_N": {
+   "min": 3.134708347974068,
+   "max": 3.1406586535475682
+  },
+  "wall_s": 6.5,
+  "sim_s": 0.7999400000005185
+ },
+ {
+  "tilt": 90.0,
+  "rpm": 240.0,
+  "config": "final",
+  "a_dock_mm": 32.25,
+  "i_set_A": 0.95,
+  "powder_g": 0.0,
+  "load_Nm": 0.03,
+  "ecc_mm": 0.05,
+  "pitch_err_rad": 0.0006,
+  "v_supply": 24.0,
+  "tooth_jumps": 0,
+  "first_jump_s": null,
+  "stall_s": null,
+  "centre_distance_mm": {
+   "mean": 32.20595044033192,
+   "max": 32.2059818656196,
+   "min": 32.20593208413194
+  },
+  "rim_gap_front_mm_max": 0.19406385255690906,
+  "rim_gap_back_mm_max": 0.008230983594665993,
+  "mag_gap_mm_max": 0.03994403123612568,
+  "lift_deg_max": -0.0004596627494155165,
+  "actuator_N": {
+   "min": 3.134387001405918,
+   "max": 3.140161531224755
+  },
+  "wall_s": 6.4,
+  "sim_s": 0.7999400000005185
+ }
+]

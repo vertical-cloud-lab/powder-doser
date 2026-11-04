@@ -1,0 +1,3248 @@
+{
+ "model": {
+  "pendulum_nominal": {
+   "mass_kg": 0.38,
+   "com_below_pivot_mm": 24.013157894736793,
+   "com_x_mm": 143.45789473684215,
+   "I_pivot_kgmm2": 350.9333333333345,
+   "f_Hz": 2.541901755850495,
+   "period_s": 0.3934062351931497
+  },
+  "pendulum_light_aug0.12": {
+   "mass_kg": 0.33999999999999997,
+   "com_below_pivot_mm": 24.95588235294116,
+   "com_x_mm": 140.28823529411767,
+   "I_pivot_kgmm2": 336.7733333333342,
+   "f_Hz": 2.50214060592694,
+   "period_s": 0.39965779606120144
+  },
+  "pendulum_heavy_aug0.20": {
+   "mass_kg": 0.42000000000000004,
+   "com_below_pivot_mm": 23.249999999999936,
+   "com_x_mm": 146.02380952380955,
+   "I_pivot_kgmm2": 365.093333333334,
+   "f_Hz": 2.5780349919186833,
+   "period_s": 0.38789233006327717
+  },
+  "free_decay_from_5deg": {
+   "c=0, mu=0": {
+    "period_s": 0.39365,
+    "settle_from_5deg_s": 8.0
+   },
+   "c=0, mu=0.1": {
+    "period_s": 0.42000000000000004,
+    "settle_from_5deg_s": 0.8985
+   },
+   "c=0.0001, mu=0": {
+    "period_s": 0.393575,
+    "settle_from_5deg_s": 8.0
+   },
+   "c=0.0001, mu=0.1": {
+    "period_s": null,
+    "settle_from_5deg_s": 0.9015
+   },
+   "c=0.001, mu=0": {
+    "period_s": 0.39518421052631575,
+    "settle_from_5deg_s": 1.6005
+   },
+   "c=0.001, mu=0.1": {
+    "period_s": null,
+    "settle_from_5deg_s": 0.5065000000000001
+   }
+  },
+  "pivot_friction_torque_Nm_mu0.1": 0.0007455600000000001
+ },
+ "runs": {
+  "index_trap_1.0s": {
+   "max_swing_deg": 7.029796374129714,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.029796374129714,
+    "BR corner": 6.571901759521182,
+    "right side": 2.87777992708434,
+    "TR corner": 5.194751597612782,
+    "top run": 7.0032369071239025,
+    "TL corner": 6.638144835206655,
+    "left side": 1.8715042851589578,
+    "BL corner": 5.0159629947451885
+   },
+   "min_neighbour_clearance_mm": 9.81984968486555,
+   "min_neighbour_clearance_upright_mm": 11.421372798326232,
+   "min_clearance_where": {
+    "t": 3.5105000000003397,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 110.99909910011236,
+    "swing_deg": [
+     -0.2852001267438758,
+     -5.772263226368402
+    ]
+   },
+   "min_shaft_clearance_mm": 17.663014728376186,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.40697866353486445,
+   "motor_torque_peak_filtered_Nm": 0.26245468793097637,
+   "motor_torque_rms_Nm": 0.10852115890102343,
+   "motor_speed_peak_rpm": 28.132033008268994,
+   "chain_speed_peak_mm_s": 142.91072768200647,
+   "drive_tension_step_per_chain_N_peak": 4.188019398932687,
+   "strand_tension_rise_front_chain_N_max": 10.973098458068677,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 3.473324559074347,
+     "residual_after_0p5s_deg": 3.2156431225281974,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.535320122117948,
+     "residual_after_0p5s_deg": 2.3303704429480154,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.3650276652931423,
+     "residual_after_0p5s_deg": 2.173971539918191,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.473324559074347,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_scurve_1.0s": {
+   "max_swing_deg": 11.749477647924246,
+   "max_swing_by_region_deg": {
+    "bottom run": 11.69706104531653,
+    "BR corner": 9.840625433672102,
+    "right side": 5.695644185496091,
+    "TR corner": 6.87844890945498,
+    "top run": 11.749477647924246,
+    "TL corner": 10.636852400430136,
+    "left side": 5.53336021391677,
+    "BL corner": 6.934526201461907
+   },
+   "min_neighbour_clearance_mm": 9.673660119170453,
+   "min_neighbour_clearance_upright_mm": 11.422478439085964,
+   "min_clearance_where": {
+    "t": 0.5254999999999975,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "left side",
+    "u_k": 111.01232424971792,
+    "swing_deg": [
+     -0.3836472143488032,
+     -6.624542752417414
+    ]
+   },
+   "min_shaft_clearance_mm": 16.066532427233533,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 1.4736645652911213,
+   "motor_torque_peak_filtered_Nm": 0.450776682900276,
+   "motor_torque_rms_Nm": 0.15022411207596667,
+   "motor_speed_peak_rpm": 28.124995621749918,
+   "chain_speed_peak_mm_s": 142.8749777584896,
+   "drive_tension_step_per_chain_N_peak": 15.164764986334987,
+   "strand_tension_rise_front_chain_N_max": 15.581747335594025,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 9.646901614790398,
+     "residual_after_0p5s_deg": 8.893173235781452,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 5.493195283062645,
+     "residual_after_0p5s_deg": 5.050989365700375,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 5.41681794220428,
+     "residual_after_0p5s_deg": 4.9806649772884315,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 9.646901614790398,
+   "station_settle_s_max": null,
+   "profile": "scurve",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_zv_1.0s": {
+   "max_swing_deg": 10.911501997739105,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.246524550927317,
+    "BR corner": 6.3216234978569155,
+    "right side": 4.488577381162012,
+    "TR corner": 10.911501997739105,
+    "top run": 6.343235009019404,
+    "TL corner": 6.563187604867102,
+    "left side": 5.048156684452066,
+    "BL corner": 9.780749246415075
+   },
+   "min_neighbour_clearance_mm": 9.609475410998558,
+   "min_neighbour_clearance_upright_mm": 11.41994984877588,
+   "min_clearance_where": {
+    "t": 6.540499999999095,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.0075944676741,
+    "swing_deg": [
+     -0.38032020660588767,
+     -6.917746514954258
+    ]
+   },
+   "min_shaft_clearance_mm": 17.525608462826884,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.5472952329296047,
+   "motor_torque_peak_filtered_Nm": 0.32398236715652845,
+   "motor_torque_rms_Nm": 0.1227043166874601,
+   "motor_speed_peak_rpm": 35.003087684697505,
+   "chain_speed_peak_mm_s": 177.81568543826333,
+   "drive_tension_step_per_chain_N_peak": 5.63194893939744,
+   "strand_tension_rise_front_chain_N_max": 11.836127747565607,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 0.24444369887409734,
+     "residual_after_0p5s_deg": 0.2311253834179274,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.312079709840135,
+     "residual_after_0p5s_deg": 2.12534198353285,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.235402721857627,
+     "residual_after_0p5s_deg": 2.054817593544216,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 2.312079709840135,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trap_1.5s": {
+   "max_swing_deg": 5.926069293471847,
+   "max_swing_by_region_deg": {
+    "bottom run": 5.250749838946573,
+    "BR corner": 5.876869157088842,
+    "right side": 3.7728301141401,
+    "TR corner": 3.9878992414001027,
+    "top run": 5.243331067594385,
+    "TL corner": 5.926069293471847,
+    "left side": 3.540858175429209,
+    "BL corner": 3.9086223545728664
+   },
+   "min_neighbour_clearance_mm": 10.530453837222705,
+   "min_neighbour_clearance_upright_mm": 11.420252371927143,
+   "min_clearance_where": {
+    "t": 4.995499999999951,
+    "pair": [
+     11,
+     0
+    ],
+    "region_k": "bottom run",
+    "u_k": 19.07432,
+    "swing_deg": [
+     4.839532895069742,
+     2.060086357419505
+    ]
+   },
+   "min_shaft_clearance_mm": 17.391817941125183,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.2212423137558309,
+   "motor_torque_peak_filtered_Nm": 0.14300592709262322,
+   "motor_torque_rms_Nm": 0.05722986817802194,
+   "motor_speed_peak_rpm": 18.750000000011084,
+   "chain_speed_peak_mm_s": 95.25000000005632,
+   "drive_tension_step_per_chain_N_peak": 2.276696998870546,
+   "strand_tension_rise_front_chain_N_max": 9.467397978222639,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 2.979682754098805,
+     "residual_after_0p5s_deg": 2.7394140118432277,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 3.5432203959408417,
+     "residual_after_0p5s_deg": 3.257572542971428,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 3.392915413052218,
+     "residual_after_0p5s_deg": 3.1187050500223292,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.5432203959408417,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_scurve_1.5s": {
+   "max_swing_deg": 4.80134927394247,
+   "max_swing_by_region_deg": {
+    "bottom run": 4.638981584218462,
+    "BR corner": 4.189624768338657,
+    "right side": 3.4440122108704143,
+    "TR corner": 4.80134927394247,
+    "top run": 4.749300663145763,
+    "TL corner": 4.354806719502693,
+    "left side": 3.794037263888271,
+    "BL corner": 4.60176081876828
+   },
+   "min_neighbour_clearance_mm": 10.489773187265328,
+   "min_neighbour_clearance_upright_mm": 11.420545769198553,
+   "min_clearance_where": {
+    "t": 7.640499999998485,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.02865972817013,
+    "swing_deg": [
+     -0.6757742664973898,
+     -3.4900866715597747
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66274435648055,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.8456168306213886,
+   "motor_torque_peak_filtered_Nm": 0.22347583688125608,
+   "motor_torque_rms_Nm": 0.0767117247798882,
+   "motor_speed_peak_rpm": 18.75000000001279,
+   "chain_speed_peak_mm_s": 95.25000000006497,
+   "drive_tension_step_per_chain_N_peak": 8.701831344047761,
+   "strand_tension_rise_front_chain_N_max": 11.97368032970126,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 1.9750756067133552,
+     "residual_after_0p5s_deg": 1.8157529473745053,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 2.9695385670796832,
+     "residual_after_0p5s_deg": 2.729440902695756,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 3.03406430155342,
+     "residual_after_0p5s_deg": 2.788952671864368,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.03406430155342,
+   "station_settle_s_max": null,
+   "profile": "scurve",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_zv_1.5s": {
+   "max_swing_deg": 3.9689243382100714,
+   "max_swing_by_region_deg": {
+    "bottom run": 3.3559537814289158,
+    "BR corner": 2.5664904901888383,
+    "right side": 1.8883246715257282,
+    "TR corner": 3.9670150216883595,
+    "top run": 3.407008906419186,
+    "TL corner": 2.5979953550560864,
+    "left side": 1.9161269003000934,
+    "BL corner": 3.9689243382100714
+   },
+   "min_neighbour_clearance_mm": 10.601380057104729,
+   "min_neighbour_clearance_upright_mm": 11.420541437004289,
+   "min_clearance_where": {
+    "t": 7.670499999998468,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.00947347957799,
+    "swing_deg": [
+     -0.5111719396469,
+     -3.0194633719471
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662777272243687,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.25816096342860384,
+   "motor_torque_peak_filtered_Nm": 0.18155342710204878,
+   "motor_torque_rms_Nm": 0.06250368060196129,
+   "motor_speed_peak_rpm": 21.576524741094545,
+   "chain_speed_peak_mm_s": 109.6087456847603,
+   "drive_tension_step_per_chain_N_peak": 2.6566088587922336,
+   "strand_tension_rise_front_chain_N_max": 9.93220282860064,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.03965472770015982,
+     "residual_after_0p5s_deg": 0.03749425530773284,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.9584606650141675,
+     "residual_after_0p5s_deg": 0.8812521079840636,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.9747116533315422,
+     "residual_after_0p5s_deg": 0.8959682725218496,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 0.9747116533315422,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trap_1.0s_mu0.1": {
+   "max_swing_deg": 5.1580913452178745,
+   "max_swing_by_region_deg": {
+    "bottom run": 4.265464731615006,
+    "BR corner": 4.9719880122396045,
+    "right side": 1.3638325882829085,
+    "TR corner": 4.961016925280189,
+    "top run": 4.257434986001792,
+    "TL corner": 5.1580913452178745,
+    "left side": 1.1739736782564278,
+    "BL corner": 4.816975800847166
+   },
+   "min_neighbour_clearance_mm": 10.25290724720714,
+   "min_neighbour_clearance_upright_mm": 11.421493233210352,
+   "min_clearance_where": {
+    "t": 6.515499999999109,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.04706836379259,
+    "swing_deg": [
+     0.06351001624766006,
+     -3.9898951425309037
+    ]
+   },
+   "min_shaft_clearance_mm": 17.663146331850847,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.40930072466296336,
+   "motor_torque_peak_filtered_Nm": 0.25921259129370655,
+   "motor_torque_rms_Nm": 0.1058984348653853,
+   "motor_speed_peak_rpm": 28.132033008268994,
+   "chain_speed_peak_mm_s": 142.91072768200647,
+   "drive_tension_step_per_chain_N_peak": 4.211914600134438,
+   "strand_tension_rise_front_chain_N_max": 10.909934111297177,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 2.240278389538991,
+     "residual_after_0p5s_deg": 0.4403101427905624,
+     "settle_to_0p5deg_s": 0.465499999999861
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.2239674323179166,
+     "residual_after_0p5s_deg": 0.4450030919865894,
+     "settle_to_0p5deg_s": 0.4605000000000814
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.223951143590059,
+     "residual_after_0p5s_deg": 0.4450067527858617,
+     "settle_to_0p5deg_s": 0.46049999999841873
+    }
+   ],
+   "station_residual_deg_max": 2.240278389538991,
+   "station_settle_s_max": 0.465499999999861,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_scurve_1.0s_mu0.1": {
+   "max_swing_deg": 9.026601072892705,
+   "max_swing_by_region_deg": {
+    "bottom run": 8.838364554865718,
+    "BR corner": 8.361739139147584,
+    "right side": 2.35491757422846,
+    "TR corner": 6.901958682493943,
+    "top run": 8.920541625272643,
+    "TL corner": 9.026601072892705,
+    "left side": 2.013283598571949,
+    "BL corner": 6.621014914232245
+   },
+   "min_neighbour_clearance_mm": 9.805066290323403,
+   "min_neighbour_clearance_upright_mm": 11.422432804256955,
+   "min_clearance_where": {
+    "t": 3.5255000000003447,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.01232424971792,
+    "swing_deg": [
+     -0.14009427587550008,
+     -5.743296089686627
+    ]
+   },
+   "min_shaft_clearance_mm": 17.663161189550067,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 1.4701157187101261,
+   "motor_torque_peak_filtered_Nm": 0.4412250414276612,
+   "motor_torque_rms_Nm": 0.14426356886677671,
+   "motor_speed_peak_rpm": 28.124995621749918,
+   "chain_speed_peak_mm_s": 142.8749777584896,
+   "drive_tension_step_per_chain_N_peak": 15.128245532966222,
+   "strand_tension_rise_front_chain_N_max": 15.64125286413356,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 6.568048409270081,
+     "residual_after_0p5s_deg": 4.368149474046454,
+     "settle_to_0p5deg_s": 1.2105000000000035
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 6.56842250494037,
+     "residual_after_0p5s_deg": 4.368297786578705,
+     "settle_to_0p5deg_s": 1.2104999999996657
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 6.5683330695697935,
+     "residual_after_0p5s_deg": 4.368265770527377,
+     "settle_to_0p5deg_s": 1.210499999998901
+    }
+   ],
+   "station_residual_deg_max": 6.56842250494037,
+   "station_settle_s_max": 1.2105000000000035,
+   "profile": "scurve",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_zv_1.0s_mu0.1": {
+   "max_swing_deg": 9.664408251498367,
+   "max_swing_by_region_deg": {
+    "bottom run": 4.485016454183869,
+    "BR corner": 6.066909496265856,
+    "right side": 4.762288400789524,
+    "TR corner": 9.664408251498367,
+    "top run": 4.488325414502864,
+    "TL corner": 7.136730649620124,
+    "left side": 5.120686471777323,
+    "BL corner": 8.841831740182348
+   },
+   "min_neighbour_clearance_mm": 10.122402879161458,
+   "min_neighbour_clearance_upright_mm": 11.420345777887114,
+   "min_clearance_where": {
+    "t": 6.540499999999095,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.0075944676741,
+    "swing_deg": [
+     -0.056549693057947235,
+     -4.473068382101007
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66376544682701,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.5453860594436671,
+   "motor_torque_peak_filtered_Nm": 0.326247982712794,
+   "motor_torque_rms_Nm": 0.12252351873080347,
+   "motor_speed_peak_rpm": 35.003087684697505,
+   "chain_speed_peak_mm_s": 177.81568543826333,
+   "drive_tension_step_per_chain_N_peak": 5.612302564018478,
+   "strand_tension_rise_front_chain_N_max": 11.864887583020963,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 1.1456202911274767,
+     "residual_after_0p5s_deg": 0.3136699049518308,
+     "settle_to_0p5deg_s": 0.05549999999990618
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 1.1448313313628764,
+     "residual_after_0p5s_deg": 0.3152880513472133,
+     "settle_to_0p5deg_s": 0.05550000000030586
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 1.144825098549211,
+     "residual_after_0p5s_deg": 0.315315876469078,
+     "settle_to_0p5deg_s": 0.05549999999864319
+    }
+   ],
+   "station_residual_deg_max": 1.1456202911274767,
+   "station_settle_s_max": 0.05550000000030586,
+   "profile": "zv",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_trapTn_1.0s_mu0.1": {
+   "max_swing_deg": 6.284886399725743,
+   "max_swing_by_region_deg": {
+    "bottom run": 3.655711275869582,
+    "BR corner": 4.611947591984303,
+    "right side": 2.8474486605060148,
+    "TR corner": 6.284886399725743,
+    "top run": 3.747830317550467,
+    "TL corner": 5.330464855249331,
+    "left side": 2.8532248365396233,
+    "BL corner": 5.865263459327227
+   },
+   "min_neighbour_clearance_mm": 10.394640094087194,
+   "min_neighbour_clearance_upright_mm": 11.420537947969473,
+   "min_clearance_where": {
+    "t": 3.5255000000003447,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.06770050417387,
+    "swing_deg": [
+     0.13152844869076738,
+     -3.4662577424524046
+    ]
+   },
+   "min_shaft_clearance_mm": 17.663248975883015,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.7478298731389452,
+   "motor_torque_peak_filtered_Nm": 0.31261129578618774,
+   "motor_torque_rms_Nm": 0.11325777635122929,
+   "motor_speed_peak_rpm": 30.915086562261248,
+   "chain_speed_peak_mm_s": 157.04863973628716,
+   "drive_tension_step_per_chain_N_peak": 7.69555334573202,
+   "strand_tension_rise_front_chain_N_max": 11.324080008142257,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 1.295418130447413,
+     "residual_after_0p5s_deg": 0.3296942883150973,
+     "settle_to_0p5deg_s": 0.07049999999990453
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 1.2957002170488674,
+     "residual_after_0p5s_deg": 0.33004196746305386,
+     "settle_to_0p5deg_s": 0.07050000000029755
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 1.2956963239475519,
+     "residual_after_0p5s_deg": 0.3300371691396534,
+     "settle_to_0p5deg_s": 0.07049999999863488
+    }
+   ],
+   "station_residual_deg_max": 1.2957002170488674,
+   "station_settle_s_max": 0.07050000000029755,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_trap_1.5s_mu0.1": {
+   "max_swing_deg": 1.76814837126811,
+   "max_swing_by_region_deg": {
+    "bottom run": 1.5595868864533544,
+    "BR corner": 1.7510413629900552,
+    "right side": 1.1449436422410206,
+    "TR corner": 1.76814837126811,
+    "top run": 1.5726163895549112,
+    "TL corner": 1.7586293752481705,
+    "left side": 1.1071453811135485,
+    "BL corner": 1.7677725843370966
+   },
+   "min_neighbour_clearance_mm": 11.062498039650666,
+   "min_neighbour_clearance_upright_mm": 11.420317612603537,
+   "min_clearance_where": {
+    "t": 1.4704999999998936,
+    "pair": [
+     0,
+     1
+    ],
+    "region_k": "bottom run",
+    "u_k": 18.915945,
+    "swing_deg": [
+     1.489475231577587,
+     0.5485022665390296
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662666916990208,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.19287402372876872,
+   "motor_torque_peak_filtered_Nm": 0.10801769045267155,
+   "motor_torque_rms_Nm": 0.05426185584437801,
+   "motor_speed_peak_rpm": 18.750000000011084,
+   "chain_speed_peak_mm_s": 95.25000000005632,
+   "drive_tension_step_per_chain_N_peak": 1.984772729632517,
+   "strand_tension_rise_front_chain_N_max": 9.364638984258555,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.3482124519972408,
+     "residual_after_0p5s_deg": 0.24842619648257033,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.34894059303260055,
+     "residual_after_0p5s_deg": 0.2489885865008638,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.3489276089729869,
+     "residual_after_0p5s_deg": 0.24897857317329586,
+     "settle_to_0p5deg_s": 0.0
+    }
+   ],
+   "station_residual_deg_max": 0.34894059303260055,
+   "station_settle_s_max": 0.0,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_scurve_1.5s_mu0.1": {
+   "max_swing_deg": 2.8662488701677145,
+   "max_swing_by_region_deg": {
+    "bottom run": 2.2509034573449864,
+    "BR corner": 2.753440311905492,
+    "right side": 1.141943661323737,
+    "TR corner": 2.8662488701677145,
+    "top run": 2.2662758225868442,
+    "TL corner": 2.7909082562202254,
+    "left side": 1.0995848498814422,
+    "BL corner": 2.817279674967123
+   },
+   "min_neighbour_clearance_mm": 10.78377202930634,
+   "min_neighbour_clearance_upright_mm": 11.42067672365095,
+   "min_clearance_where": {
+    "t": 4.1555000000004165,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.1475465749767,
+    "swing_deg": [
+     0.39215564714323375,
+     -1.982596682630247
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662664528940827,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.840807428166558,
+   "motor_torque_peak_filtered_Nm": 0.21418510230631563,
+   "motor_torque_rms_Nm": 0.07433012305228205,
+   "motor_speed_peak_rpm": 18.75000000001279,
+   "chain_speed_peak_mm_s": 95.25000000006497,
+   "drive_tension_step_per_chain_N_peak": 8.652340123542094,
+   "strand_tension_rise_front_chain_N_max": 11.893221355540403,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.5642325217711649,
+     "residual_after_0p5s_deg": 0.2550397805919914,
+     "settle_to_0p5deg_s": 0.00549999999985662
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.5651833110816994,
+     "residual_after_0p5s_deg": 0.25560195248388756,
+     "settle_to_0p5deg_s": 0.010499999999776577
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.5651711780200007,
+     "residual_after_0p5s_deg": 0.25559522009636776,
+     "settle_to_0p5deg_s": 0.010499999999275644
+    }
+   ],
+   "station_residual_deg_max": 0.5651833110816994,
+   "station_settle_s_max": 0.010499999999776577,
+   "profile": "scurve",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_zv_1.5s_mu0.1": {
+   "max_swing_deg": 2.6305018838472907,
+   "max_swing_by_region_deg": {
+    "bottom run": 1.9106974298473514,
+    "BR corner": 2.2598466392405068,
+    "right side": 1.2070292138597019,
+    "TR corner": 2.6305018838472907,
+    "top run": 1.9333969645865932,
+    "TL corner": 2.3067335193092564,
+    "left side": 1.058184194504408,
+    "BL corner": 2.6134780015164005
+   },
+   "min_neighbour_clearance_mm": 10.816654095332087,
+   "min_neighbour_clearance_upright_mm": 11.420468587445866,
+   "min_clearance_where": {
+    "t": 0.6904999999999794,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "left side",
+    "u_k": 111.16496798091919,
+    "swing_deg": [
+     0.41838394766701736,
+     -1.8506257218942035
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662621536623305,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.25296979408133685,
+   "motor_torque_peak_filtered_Nm": 0.1777585364349839,
+   "motor_torque_rms_Nm": 0.06186690763430543,
+   "motor_speed_peak_rpm": 21.576524741094545,
+   "chain_speed_peak_mm_s": 109.6087456847603,
+   "drive_tension_step_per_chain_N_peak": 2.6031890609564767,
+   "strand_tension_rise_front_chain_N_max": 9.866540338677025,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.682276442151914,
+     "residual_after_0p5s_deg": 0.10659800133679295,
+     "settle_to_0p5deg_s": 0.040499999999852765
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.6810209499233301,
+     "residual_after_0p5s_deg": 0.10977086067581222,
+     "settle_to_0p5deg_s": 0.04049999999975995
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.6810570307878465,
+     "residual_after_0p5s_deg": 0.10968231942152677,
+     "settle_to_0p5deg_s": 0.04049999999931231
+    }
+   ],
+   "station_residual_deg_max": 0.682276442151914,
+   "station_settle_s_max": 0.040499999999852765,
+   "profile": "zv",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_trapTn_1.5s_mu0.1": {
+   "max_swing_deg": 2.097581488620757,
+   "max_swing_by_region_deg": {
+    "bottom run": 1.7080309368943136,
+    "BR corner": 2.086171556041231,
+    "right side": 0.7962112729323539,
+    "TR corner": 1.7397387373792979,
+    "top run": 1.7020510435749763,
+    "TL corner": 2.097581488620757,
+    "left side": 0.792203689172752,
+    "BL corner": 1.6743423919298581
+   },
+   "min_neighbour_clearance_mm": 11.055799815938116,
+   "min_neighbour_clearance_upright_mm": 11.420551134855666,
+   "min_clearance_where": {
+    "t": 4.125500000000433,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.21854744202417,
+    "swing_deg": [
+     0.5377568340910122,
+     -0.9623444466547
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66245991678046,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.21459622591583224,
+   "motor_torque_peak_filtered_Nm": 0.13285363878724588,
+   "motor_torque_rms_Nm": 0.0539104154555693,
+   "motor_speed_peak_rpm": 16.945323090836837,
+   "chain_speed_peak_mm_s": 86.08224130145113,
+   "drive_tension_step_per_chain_N_peak": 2.208305342759708,
+   "strand_tension_rise_front_chain_N_max": 9.028614934313724,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.6245206404575907,
+     "residual_after_0p5s_deg": 0.09759050923271916,
+     "settle_to_0p5deg_s": 0.025499999999854417
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.6123810027794668,
+     "residual_after_0p5s_deg": 0.1062112094302548,
+     "settle_to_0p5deg_s": 0.025499999999768264
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.6130253974715205,
+     "residual_after_0p5s_deg": 0.10574417827737861,
+     "settle_to_0p5deg_s": 0.025499999999293976
+    }
+   ],
+   "station_residual_deg_max": 0.6245206404575907,
+   "station_settle_s_max": 0.025499999999854417,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_trap_1.0s_c1e-3": {
+   "max_swing_deg": 5.311141631418763,
+   "max_swing_by_region_deg": {
+    "bottom run": 5.311141631418763,
+    "BR corner": 5.171735821836211,
+    "right side": 1.4848387928092102,
+    "TR corner": 4.819130370004471,
+    "top run": 5.297065647475177,
+    "TL corner": 5.273909754318797,
+    "left side": 1.0856667709017493,
+    "BL corner": 4.533414932345979
+   },
+   "min_neighbour_clearance_mm": 10.199280135181652,
+   "min_neighbour_clearance_upright_mm": 11.421517677238972,
+   "min_clearance_where": {
+    "t": 3.5105000000003397,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 110.99909910011236,
+    "swing_deg": [
+     -0.4362149165236991,
+     -4.383349690932084
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66323003146371,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.4066660518404117,
+   "motor_torque_peak_filtered_Nm": 0.2603518023033083,
+   "motor_torque_rms_Nm": 0.10675868925895081,
+   "motor_speed_peak_rpm": 28.132033008268994,
+   "chain_speed_peak_mm_s": 142.91072768200647,
+   "drive_tension_step_per_chain_N_peak": 4.184802464095538,
+   "strand_tension_rise_front_chain_N_max": 10.858366199744085,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 2.0491373783404945,
+     "residual_after_0p5s_deg": 1.1676702086213633,
+     "settle_to_0p5deg_s": 1.1304999999999767
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.0212385193562925,
+     "residual_after_0p5s_deg": 1.1517764518371967,
+     "settle_to_0p5deg_s": 0.975499999999796
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.021209003739971,
+     "residual_after_0p5s_deg": 1.1517595647787207,
+     "settle_to_0p5deg_s": 0.9754999999986138
+    }
+   ],
+   "station_residual_deg_max": 2.0491373783404945,
+   "station_settle_s_max": 1.1304999999999767,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.001,
+    "fric": 0.0
+   }
+  },
+  "index_trap_1.0s_c0": {
+   "max_swing_deg": 8.050965322179824,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.30371249870178,
+    "BR corner": 8.007481462145822,
+    "right side": 4.533533411875067,
+    "TR corner": 5.396176276626354,
+    "top run": 7.276036978190292,
+    "TL corner": 8.050965322179824,
+    "left side": 3.358094683595283,
+    "BL corner": 5.248192129552589
+   },
+   "min_neighbour_clearance_mm": 9.694920122683639,
+   "min_neighbour_clearance_upright_mm": 11.421313592497265,
+   "min_clearance_where": {
+    "t": 3.5105000000003397,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 110.99909910011236,
+    "swing_deg": [
+     -0.18419622126535654,
+     -6.231071834159805
+    ]
+   },
+   "min_shaft_clearance_mm": 17.26522354525742,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.4071273677389899,
+   "motor_torque_peak_filtered_Nm": 0.2642787165154582,
+   "motor_torque_rms_Nm": 0.10889501240191189,
+   "motor_speed_peak_rpm": 28.132033008268994,
+   "chain_speed_peak_mm_s": 142.91072768200647,
+   "drive_tension_step_per_chain_N_peak": 4.189549641540913,
+   "strand_tension_rise_front_chain_N_max": 11.060248682027236,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 3.7715766965593565,
+     "residual_after_0p5s_deg": 3.771149778784282,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.722886828699788,
+     "residual_after_0p5s_deg": 2.7225906547653267,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.3565982932227527,
+     "residual_after_0p5s_deg": 2.3564935803433515,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.7715766965593565,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0,
+    "fric": 0.0
+   }
+  },
+  "index_zv_1.0s_aug0.12": {
+   "max_swing_deg": 11.010048550345791,
+   "max_swing_by_region_deg": {
+    "bottom run": 6.703021375393761,
+    "BR corner": 6.2033635258470365,
+    "right side": 4.512588430352143,
+    "TR corner": 11.010048550345791,
+    "top run": 7.170739087215777,
+    "TL corner": 6.849821375755179,
+    "left side": 5.254417922605238,
+    "BL corner": 9.914560285782466
+   },
+   "min_neighbour_clearance_mm": 9.537868053675378,
+   "min_neighbour_clearance_upright_mm": 11.42021766615145,
+   "min_clearance_where": {
+    "t": 7.0604999999988065,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "bottom run",
+    "u_k": 19.006897561340878,
+    "swing_deg": [
+     6.701651416196275,
+     -0.15003829904260568
+    ]
+   },
+   "min_shaft_clearance_mm": 17.50802547365444,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.4917312549954119,
+   "motor_torque_peak_filtered_Nm": 0.3018078065576545,
+   "motor_torque_rms_Nm": 0.11674098736848215,
+   "motor_speed_peak_rpm": 35.003087684697505,
+   "chain_speed_peak_mm_s": 177.81568543826333,
+   "drive_tension_step_per_chain_N_peak": 5.060167078773358,
+   "strand_tension_rise_front_chain_N_max": 10.858627391762857,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 0.4951133921736108,
+     "residual_after_0p5s_deg": 0.46657525833728053,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.69722316263642,
+     "residual_after_0p5s_deg": 2.5419822887152277,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 2.6496047985816396,
+     "residual_after_0p5s_deg": 2.497030128052554,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 2.69722316263642,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "aug_mass": 0.12
+   }
+  },
+  "index_zv_1.0s_aug0.20": {
+   "max_swing_deg": 10.818009072448286,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.9455893413937915,
+    "BR corner": 6.603643812011789,
+    "right side": 4.641386626580804,
+    "TR corner": 10.818009072448286,
+    "top run": 7.592035485510483,
+    "TL corner": 6.754271159152764,
+    "left side": 4.913976559935703,
+    "BL corner": 9.654223545067271
+   },
+   "min_neighbour_clearance_mm": 9.45090169972479,
+   "min_neighbour_clearance_upright_mm": 11.419863159724445,
+   "min_clearance_where": {
+    "t": 6.5354999999990975,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 110.95965318005625,
+    "swing_deg": [
+     -0.37336021112947265,
+     -7.846419891962126
+    ]
+   },
+   "min_shaft_clearance_mm": 17.50221994124863,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.6040345364196903,
+   "motor_torque_peak_filtered_Nm": 0.34761184086406605,
+   "motor_torque_rms_Nm": 0.1289176672883479,
+   "motor_speed_peak_rpm": 35.003087684697505,
+   "chain_speed_peak_mm_s": 177.81568543826333,
+   "drive_tension_step_per_chain_N_peak": 6.215825503427808,
+   "strand_tension_rise_front_chain_N_max": 12.801836097156755,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 0.45459908398414695,
+     "residual_after_0p5s_deg": 0.4197119510607916,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 2.0391479502349004,
+     "residual_after_0p5s_deg": 1.883301251269311,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 1.9548741375417176,
+     "residual_after_0p5s_deg": 1.8041254911485272,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 2.0391479502349004,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "aug_mass": 0.2
+   }
+  },
+  "index_zv_0.8s": {
+   "max_swing_deg": 17.530271441831854,
+   "max_swing_by_region_deg": {
+    "bottom run": 14.936832616928106,
+    "BR corner": 11.221813981691499,
+    "right side": 10.469884976705538,
+    "TR corner": 17.530271441831854,
+    "top run": 15.668191939362458,
+    "TL corner": 13.237464329508922,
+    "left side": 12.351222154990015,
+    "BL corner": 17.323333191743888
+   },
+   "min_neighbour_clearance_mm": 8.923527678399024,
+   "min_neighbour_clearance_upright_mm": 11.419472764483865,
+   "min_clearance_where": {
+    "t": 6.5304999999991,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "bottom run",
+    "u_k": 19.13915617450374,
+    "swing_deg": [
+     10.668789158763195,
+     -0.1334892160933775
+    ]
+   },
+   "min_shaft_clearance_mm": 13.537069397261902,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.6646584250384999,
+   "motor_torque_peak_filtered_Nm": 0.5220430336832454,
+   "motor_torque_rms_Nm": 0.18787701755028718,
+   "motor_speed_peak_rpm": 46.60112442381319,
+   "chain_speed_peak_mm_s": 236.733712072971,
+   "drive_tension_step_per_chain_N_peak": 6.839676442858098,
+   "strand_tension_rise_front_chain_N_max": 13.350017791521253,
+   "stops": [
+    {
+     "stop_t": 1.1,
+     "module": 11,
+     "residual_deg": 0.028186124570216516,
+     "residual_after_0p5s_deg": 0.025911757133213482,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 3.9,
+     "module": 10,
+     "residual_deg": 6.30685309834468,
+     "residual_after_0p5s_deg": 5.7986791150549015,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 6.7,
+     "module": 9,
+     "residual_deg": 6.141954291187766,
+     "residual_after_0p5s_deg": 5.647037601428421,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 6.30685309834468,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 0.8,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trap_1.0s_channel": {
+   "max_swing_deg": 7.034235922367915,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.034235922367915,
+    "BR corner": 5.767140747425923,
+    "right side": 2.3970521291901443,
+    "TR corner": 5.195165606747794,
+    "top run": 7.007749964706899,
+    "TL corner": 5.976054916710201,
+    "left side": 1.5104629437921553,
+    "BL corner": 4.995823579855712
+   },
+   "min_neighbour_clearance_mm": 10.083092554521787,
+   "min_neighbour_clearance_upright_mm": 11.421453767660283,
+   "min_clearance_where": {
+    "t": 0.5104999999999992,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "left side",
+    "u_k": 110.99909910011236,
+    "swing_deg": [
+     -0.4650827355450743,
+     -4.8341023323455
+    ]
+   },
+   "min_shaft_clearance_mm": 17.664194010116955,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.4102262303298652,
+   "motor_torque_peak_filtered_Nm": 0.2635264464605992,
+   "motor_torque_rms_Nm": 0.1059086551753073,
+   "motor_speed_peak_rpm": 28.132033008255352,
+   "chain_speed_peak_mm_s": 142.91072768193717,
+   "drive_tension_step_per_chain_N_peak": 4.221438528620372,
+   "strand_tension_rise_front_chain_N_max": 10.87923764438749,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 3.4814439292723023,
+     "residual_after_0p5s_deg": 3.2261074270214096,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.4814439292723023,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "channel": true
+   }
+  },
+  "index_trapTn_1.0s": {
+   "max_swing_deg": 7.4503033763604725,
+   "max_swing_by_region_deg": {
+    "bottom run": 5.861236080620066,
+    "BR corner": 5.535617664471717,
+    "right side": 3.204965149517567,
+    "TR corner": 7.4503033763604725,
+    "top run": 5.018924514627382,
+    "TL corner": 5.642893307676126,
+    "left side": 2.7838709068910465,
+    "BL corner": 6.403828154404196
+   },
+   "min_neighbour_clearance_mm": 9.844073221573238,
+   "min_neighbour_clearance_upright_mm": 11.420232982519934,
+   "min_clearance_where": {
+    "t": 3.520500000000343,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.02092850535966,
+    "swing_deg": [
+     -0.3237416739084491,
+     -5.799429813316401
+    ]
+   },
+   "min_shaft_clearance_mm": 17.664325491280113,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.7486791759515609,
+   "motor_torque_peak_filtered_Nm": 0.31855134911045413,
+   "motor_torque_rms_Nm": 0.11318890530314721,
+   "motor_speed_peak_rpm": 30.915086562261248,
+   "chain_speed_peak_mm_s": 157.04863973628716,
+   "drive_tension_step_per_chain_N_peak": 7.704293107723247,
+   "strand_tension_rise_front_chain_N_max": 11.355141706180811,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 0.23865790617476684,
+     "residual_after_0p5s_deg": 0.22139566064981292,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 4.3,
+     "module": 10,
+     "residual_deg": 1.4873673506846894,
+     "residual_after_0p5s_deg": 1.3672218265021516,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 9,
+     "residual_deg": 1.332103267830649,
+     "residual_after_0p5s_deg": 1.2247687307202153,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 1.4873673506846894,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.0,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trapTn_1.2s": {
+   "max_swing_deg": 4.341574210981968,
+   "max_swing_by_region_deg": {
+    "bottom run": 4.248371439009402,
+    "BR corner": 4.1017955546632265,
+    "right side": 2.1767649720570574,
+    "TR corner": 3.907334138388834,
+    "top run": 4.341574210981968,
+    "TL corner": 4.182081264980903,
+    "left side": 2.122107503117274,
+    "BL corner": 3.833988200780972
+   },
+   "min_neighbour_clearance_mm": 10.640360421422848,
+   "min_neighbour_clearance_upright_mm": 11.421096848656667,
+   "min_clearance_where": {
+    "t": 7.645499999998482,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "bottom run",
+    "u_k": 18.98154369950001,
+    "swing_deg": [
+     2.9169822722079073,
+     0.4852856826602288
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662829280548486,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.3232366577746,
+   "motor_torque_peak_filtered_Nm": 0.18076751316011527,
+   "motor_torque_rms_Nm": 0.07818509346777253,
+   "motor_speed_peak_rpm": 23.24860508370847,
+   "chain_speed_peak_mm_s": 118.10291382523903,
+   "drive_tension_step_per_chain_N_peak": 3.3262711648032672,
+   "strand_tension_rise_front_chain_N_max": 10.268245719072683,
+   "stops": [
+    {
+     "stop_t": 1.5,
+     "module": 11,
+     "residual_deg": 0.030558166412871887,
+     "residual_after_0p5s_deg": 0.028873875042734806,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 4.7,
+     "module": 10,
+     "residual_deg": 1.1167720192099782,
+     "residual_after_0p5s_deg": 1.026598504875236,
+     "settle_to_0p5deg_s": 1.9204999999990502
+    },
+    {
+     "stop_t": 7.9,
+     "module": 9,
+     "residual_deg": 1.1385768339999078,
+     "residual_after_0p5s_deg": 1.0600491876494411,
+     "settle_to_0p5deg_s": 1.9305000000005137
+    }
+   ],
+   "station_residual_deg_max": 1.1385768339999078,
+   "station_settle_s_max": 1.9305000000005137,
+   "profile": "trap",
+   "move_time_s": 1.2,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trapTn_1.5s": {
+   "max_swing_deg": 4.011446778771153,
+   "max_swing_by_region_deg": {
+    "bottom run": 3.1003286619501473,
+    "BR corner": 3.0437978293630237,
+    "right side": 1.1851136218273315,
+    "TR corner": 4.011446778771153,
+    "top run": 3.1387415511130543,
+    "TL corner": 3.0497815987807035,
+    "left side": 1.2494481638870338,
+    "BL corner": 3.8375144945066357
+   },
+   "min_neighbour_clearance_mm": 10.997236769915824,
+   "min_neighbour_clearance_upright_mm": 11.420784152590581,
+   "min_clearance_where": {
+    "t": 7.59549999999851,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.00443779422852,
+    "swing_deg": [
+     -1.1312654020289403,
+     -1.9572028615036612
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662514601073337,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.21866946531822035,
+   "motor_torque_peak_filtered_Nm": 0.1401127647733646,
+   "motor_torque_rms_Nm": 0.054100686198952655,
+   "motor_speed_peak_rpm": 16.945323090836837,
+   "chain_speed_peak_mm_s": 86.08224130145113,
+   "drive_tension_step_per_chain_N_peak": 2.250221067494592,
+   "strand_tension_rise_front_chain_N_max": 9.023107661526948,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.0731212318934539,
+     "residual_after_0p5s_deg": 0.06913075421812401,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.4006671359256039,
+     "residual_after_0p5s_deg": 0.37900842911974253,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.5233172242788622,
+     "residual_after_0p5s_deg": 0.49454286676573805,
+     "settle_to_0p5deg_s": 0.3754999999997217
+    }
+   ],
+   "station_residual_deg_max": 0.5233172242788622,
+   "station_settle_s_max": 0.3754999999997217,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trapTn_1.2s_mu0.1": {
+   "max_swing_deg": 3.2071198946964943,
+   "max_swing_by_region_deg": {
+    "bottom run": 2.5201830931005764,
+    "BR corner": 3.1459865257454185,
+    "right side": 0.9376089177590595,
+    "TR corner": 3.2071198946964943,
+    "top run": 2.52824631486083,
+    "TL corner": 3.1805223522559904,
+    "left side": 0.9196081055338318,
+    "BL corner": 3.1659335139815066
+   },
+   "min_neighbour_clearance_mm": 10.772388589619107,
+   "min_neighbour_clearance_upright_mm": 11.421067355730626,
+   "min_clearance_where": {
+    "t": 0.5704999999999926,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "left side",
+    "u_k": 111.1549347699875,
+    "swing_deg": [
+     0.3762822846239326,
+     -2.025629741086191
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66285478828335,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.32834269968513885,
+   "motor_torque_peak_filtered_Nm": 0.18625741561573178,
+   "motor_torque_rms_Nm": 0.07791749939472337,
+   "motor_speed_peak_rpm": 23.24860508370847,
+   "chain_speed_peak_mm_s": 118.10291382523903,
+   "drive_tension_step_per_chain_N_peak": 3.3788149576089266,
+   "strand_tension_rise_front_chain_N_max": 10.230236803918345,
+   "stops": [
+    {
+     "stop_t": 1.5,
+     "module": 11,
+     "residual_deg": 0.9094471226049282,
+     "residual_after_0p5s_deg": 0.05802508046675656,
+     "settle_to_0p5deg_s": 0.0554999999998842
+    },
+    {
+     "stop_t": 4.7,
+     "module": 10,
+     "residual_deg": 0.9408802349668769,
+     "residual_after_0p5s_deg": 0.0924286845905457,
+     "settle_to_0p5deg_s": 0.055500000000083816
+    },
+    {
+     "stop_t": 7.9,
+     "module": 9,
+     "residual_deg": 0.941600785000907,
+     "residual_after_0p5s_deg": 0.09318427093592925,
+     "settle_to_0p5deg_s": 0.05549999999831012
+    }
+   ],
+   "station_residual_deg_max": 0.941600785000907,
+   "station_settle_s_max": 0.055500000000083816,
+   "profile": "trap",
+   "move_time_s": 1.2,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0007455600000000001
+   }
+  },
+  "index_zv_trapbase_1.5s": {
+   "max_swing_deg": 3.75371785304662,
+   "max_swing_by_region_deg": {
+    "bottom run": 2.7836967995182276,
+    "BR corner": 1.8549493188003487,
+    "right side": 1.7450574101354521,
+    "TR corner": 3.6673479090345857,
+    "top run": 2.7417941867547393,
+    "TL corner": 1.764414652098302,
+    "left side": 1.6584047162049957,
+    "BL corner": 3.75371785304662
+   },
+   "min_neighbour_clearance_mm": 10.738651463870594,
+   "min_neighbour_clearance_upright_mm": 11.42086406883838,
+   "min_clearance_where": {
+    "t": 7.655499999998477,
+    "pair": [
+     8,
+     9
+    ],
+    "region_k": "left side",
+    "u_k": 111.0058682850412,
+    "swing_deg": [
+     -0.7685055381382814,
+     -2.6626970977108178
+    ]
+   },
+   "min_shaft_clearance_mm": 17.66293248556071,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 1.0556285938748942,
+   "motor_torque_peak_filtered_Nm": 0.2700921945277283,
+   "motor_torque_rms_Nm": 0.07209286919750524,
+   "motor_speed_peak_rpm": 21.576524741094545,
+   "chain_speed_peak_mm_s": 109.6087456847603,
+   "drive_tension_step_per_chain_N_peak": 10.862960212255352,
+   "strand_tension_rise_front_chain_N_max": 12.86601374118033,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.021464604276574668,
+     "residual_after_0p5s_deg": 0.01973105871500083,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.9567451616521511,
+     "residual_after_0p5s_deg": 0.8796546007830165,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 1.0825033891256999,
+     "residual_after_0p5s_deg": 0.9952642279446657,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 1.0825033891256999,
+   "station_settle_s_max": null,
+   "profile": "zv",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "index_trapTn_1.5s_aug0.12": {
+   "max_swing_deg": 3.8183492375369132,
+   "max_swing_by_region_deg": {
+    "bottom run": 2.9921201101234534,
+    "BR corner": 3.0473505974297828,
+    "right side": 0.9409595564131181,
+    "TR corner": 3.8183492375369132,
+    "top run": 2.9571356527835704,
+    "TL corner": 3.064519768573305,
+    "left side": 1.0087497547484925,
+    "BL corner": 3.6432546398383807
+   },
+   "min_neighbour_clearance_mm": 11.043076526857298,
+   "min_neighbour_clearance_upright_mm": 11.420742003148268,
+   "min_clearance_where": {
+    "t": 4.09550000000045,
+    "pair": [
+     9,
+     10
+    ],
+    "region_k": "left side",
+    "u_k": 111.00443779422852,
+    "swing_deg": [
+     -0.7825154444941512,
+     -1.726670606148632
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662409660593934,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.20820721919344864,
+   "motor_torque_peak_filtered_Nm": 0.1312088521470899,
+   "motor_torque_rms_Nm": 0.05141144224014558,
+   "motor_speed_peak_rpm": 16.945323090836837,
+   "chain_speed_peak_mm_s": 86.08224130145113,
+   "drive_tension_step_per_chain_N_peak": 2.1425591833398254,
+   "strand_tension_rise_front_chain_N_max": 8.167541698975066,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.1571754021648548,
+     "residual_after_0p5s_deg": 0.14692333830041715,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.47196716105693926,
+     "residual_after_0p5s_deg": 0.4317411974904537,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.5183260061108169,
+     "residual_after_0p5s_deg": 0.4742010288529331,
+     "settle_to_0p5deg_s": 0.2754999999995995
+    }
+   ],
+   "station_residual_deg_max": 0.5183260061108169,
+   "station_settle_s_max": 0.2754999999995995,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "aug_mass": 0.12
+   }
+  },
+  "index_trapTn_1.5s_aug0.20": {
+   "max_swing_deg": 3.8401505898881525,
+   "max_swing_by_region_deg": {
+    "bottom run": 3.4035935266852984,
+    "BR corner": 3.085572423366189,
+    "right side": 1.367266118486561,
+    "TR corner": 3.8401505898881525,
+    "top run": 3.322863676848484,
+    "TL corner": 3.0938922759732974,
+    "left side": 1.3660520532737122,
+    "BL corner": 3.678940334792229
+   },
+   "min_neighbour_clearance_mm": 11.060727694126575,
+   "min_neighbour_clearance_upright_mm": 11.420840602906473,
+   "min_clearance_where": {
+    "t": 8.490499999998885,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "bottom run",
+    "u_k": 18.90177081138313,
+    "swing_deg": [
+     1.3050425670967847,
+     -0.051059470844022736
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662546800102202,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.2238603185747616,
+   "motor_torque_peak_filtered_Nm": 0.14460511739154364,
+   "motor_torque_rms_Nm": 0.05678726933367782,
+   "motor_speed_peak_rpm": 16.945323090836837,
+   "chain_speed_peak_mm_s": 86.08224130145113,
+   "drive_tension_step_per_chain_N_peak": 2.3036376125944935,
+   "strand_tension_rise_front_chain_N_max": 9.858478906016213,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.12278062462944316,
+     "residual_after_0p5s_deg": 0.11341242202624294,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 5.3,
+     "module": 10,
+     "residual_deg": 0.6340629190368433,
+     "residual_after_0p5s_deg": 0.5854668318641663,
+     "settle_to_0p5deg_s": 1.635499999998876
+    },
+    {
+     "stop_t": 8.8,
+     "module": 9,
+     "residual_deg": 0.8293160554183319,
+     "residual_after_0p5s_deg": 0.7653817094100884,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 0.8293160554183319,
+   "station_settle_s_max": null,
+   "profile": "trap",
+   "move_time_s": 1.5,
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "aug_mass": 0.2
+   }
+  },
+  "lap12_trap_1.0s": {
+   "max_swing_deg": 7.308085946690062,
+   "max_swing_by_region_deg": {
+    "bottom run": 7.294073481334619,
+    "BR corner": 6.213886981550691,
+    "right side": 2.5911217106409232,
+    "TR corner": 6.068813688853247,
+    "top run": 7.308085946690062,
+    "TL corner": 6.861014921286455,
+    "left side": 3.3102321280012013,
+    "BL corner": 6.097280716831173
+   },
+   "min_neighbour_clearance_mm": 10.08337800615602,
+   "min_neighbour_clearance_upright_mm": 11.42145453004578,
+   "min_clearance_where": {
+    "t": 0.5104999999999992,
+    "pair": [
+     10,
+     11
+    ],
+    "region_k": "left side",
+    "u_k": 110.99909910011236,
+    "swing_deg": [
+     -0.4653130622945023,
+     -4.833158080171265
+    ]
+   },
+   "min_shaft_clearance_mm": 17.663284586526164,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.4102941317696504,
+   "motor_torque_peak_filtered_Nm": 0.26245468793097637,
+   "motor_torque_rms_Nm": 0.1521420939076434,
+   "motor_speed_peak_rpm": 28.13203300832015,
+   "chain_speed_peak_mm_s": 142.91072768226636,
+   "drive_tension_step_per_chain_N_peak": 4.222137269297749,
+   "strand_tension_rise_front_chain_N_max": 11.011875954563848,
+   "stops": [
+    {
+     "stop_t": 1.3,
+     "module": 11,
+     "residual_deg": 3.473324559074347,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 2.8000000000000003,
+     "module": 10,
+     "residual_deg": 2.1421728334663985,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 4.3,
+     "module": 9,
+     "residual_deg": 2.389591650406635,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 5.8,
+     "module": 8,
+     "residual_deg": 2.4423968254329735,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.3,
+     "module": 7,
+     "residual_deg": 2.8960728215003324,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 8.8,
+     "module": 6,
+     "residual_deg": 2.295142957059886,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 10.3,
+     "module": 5,
+     "residual_deg": 1.3127807717225868,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 11.8,
+     "module": 4,
+     "residual_deg": 1.5532354753642994,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 13.3,
+     "module": 3,
+     "residual_deg": 1.4964900753678327,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 14.8,
+     "module": 2,
+     "residual_deg": 1.5196342544078532,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 16.3,
+     "module": 1,
+     "residual_deg": 1.2959670312829576,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 17.8,
+     "module": 0,
+     "residual_deg": 1.6315797154422274,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 3.473324559074347,
+   "station_settle_s_max": null
+  },
+  "lap12_trapTn_1.5s": {
+   "max_swing_deg": 4.371201315625527,
+   "max_swing_by_region_deg": {
+    "bottom run": 4.359707505176704,
+    "BR corner": 3.434556029913166,
+    "right side": 1.9972218592504285,
+    "TR corner": 4.037940046402847,
+    "top run": 4.371201315625527,
+    "TL corner": 3.538831374153365,
+    "left side": 1.89697360509509,
+    "BL corner": 3.8521933079394843
+   },
+   "min_neighbour_clearance_mm": 10.976114069619255,
+   "min_neighbour_clearance_upright_mm": 11.420793606694959,
+   "min_clearance_where": {
+    "t": 23.485499999990616,
+    "pair": [
+     1,
+     2
+    ],
+    "region_k": "bottom run",
+    "u_k": 18.86597103519631,
+    "swing_deg": [
+     1.4949873942447,
+     -0.05156527864075632
+    ]
+   },
+   "min_shaft_clearance_mm": 17.662294313201812,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 0.21535322794316542,
+   "motor_torque_peak_filtered_Nm": 0.1429663309347444,
+   "motor_torque_rms_Nm": 0.07248725413174334,
+   "motor_speed_peak_rpm": 16.945323090870943,
+   "chain_speed_peak_mm_s": 86.08224130162439,
+   "drive_tension_step_per_chain_N_peak": 2.21609528228127,
+   "strand_tension_rise_front_chain_N_max": 9.014660720008948,
+   "stops": [
+    {
+     "stop_t": 1.8,
+     "module": 11,
+     "residual_deg": 0.0731212318934539,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": 0.0
+    },
+    {
+     "stop_t": 3.8000000000000003,
+     "module": 10,
+     "residual_deg": 0.5741274835938183,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": 0.48550000000034865
+    },
+    {
+     "stop_t": 5.8,
+     "module": 9,
+     "residual_deg": 0.8775055411688717,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 7.8,
+     "module": 8,
+     "residual_deg": 1.0842359909472044,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 9.8,
+     "module": 7,
+     "residual_deg": 1.316753200477301,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 11.8,
+     "module": 6,
+     "residual_deg": 1.3269870212100108,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 13.8,
+     "module": 5,
+     "residual_deg": 1.3280499908383985,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 15.8,
+     "module": 4,
+     "residual_deg": 1.4051929797084992,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 17.8,
+     "module": 3,
+     "residual_deg": 1.4570592018796853,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 19.8,
+     "module": 2,
+     "residual_deg": 1.4974290834781518,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 21.8,
+     "module": 1,
+     "residual_deg": 1.546419596649971,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    },
+    {
+     "stop_t": 23.8,
+     "module": 0,
+     "residual_deg": 1.5484746837015726,
+     "residual_after_0p5s_deg": null,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 1.5484746837015726,
+   "station_settle_s_max": null
+  },
+  "fastlap_10s": {
+   "max_swing_deg": 9.857164520156584,
+   "max_swing_by_region_deg": {
+    "bottom run": 8.110518001690748,
+    "BR corner": 8.51566867705219,
+    "right side": 8.656079629862255,
+    "TR corner": 9.857164520156584,
+    "top run": 8.420515675393462,
+    "TL corner": 9.182134130276088,
+    "left side": 8.258911067263423,
+    "BL corner": 9.246278483359278
+   },
+   "min_neighbour_clearance_mm": 10.549667695344976,
+   "min_neighbour_clearance_upright_mm": 11.420427590418019,
+   "min_clearance_where": {
+    "t": 9.895500000000602,
+    "pair": [
+     7,
+     8
+    ],
+    "region_k": "top run",
+    "u_k": 79.34294923588226,
+    "swing_deg": [
+     3.241081579725356,
+     7.421607212092165
+    ]
+   },
+   "min_shaft_clearance_mm": 14.003610598043881,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 1.5557538352832225,
+   "motor_torque_peak_filtered_Nm": 0.3071785820465839,
+   "motor_torque_rms_Nm": 0.14312143998693183,
+   "motor_speed_peak_rpm": 25.000000000042064,
+   "chain_speed_peak_mm_s": 127.00000000021369,
+   "drive_tension_step_per_chain_N_peak": 16.009505720861704,
+   "strand_tension_rise_front_chain_N_max": 15.868467970284179,
+   "stops": [
+    {
+     "stop_t": 10.3,
+     "module": 0,
+     "residual_deg": 6.120243108224943,
+     "residual_after_0p5s_deg": 5.7852462909285345,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 6.120243108224943,
+   "station_settle_s_max": null
+  },
+  "fastlap_6s": {
+   "max_swing_deg": 36.230714267357286,
+   "max_swing_by_region_deg": {
+    "bottom run": 30.486341073169815,
+    "BR corner": 26.85972036631984,
+    "right side": 29.52339770527707,
+    "TR corner": 36.230714267357286,
+    "top run": 33.83063817155513,
+    "TL corner": 26.373640828399203,
+    "left side": 25.68796905594621,
+    "BL corner": 30.305765092946796
+   },
+   "min_neighbour_clearance_mm": 7.1607434422187755,
+   "min_neighbour_clearance_upright_mm": 11.41638379323139,
+   "min_clearance_where": {
+    "t": 5.915499999999441,
+    "pair": [
+     1,
+     2
+    ],
+    "region_k": "bottom run",
+    "u_k": 18.77699918300584,
+    "swing_deg": [
+     17.42441626379921,
+     -7.0985839105437885
+    ]
+   },
+   "min_shaft_clearance_mm": 4.394684884519435,
+   "gondola_contacts": 0,
+   "max_penetration_mm": -0.0,
+   "motor_torque_peak_Nm": 2.7130838434222007,
+   "motor_torque_peak_filtered_Nm": 0.5277266707842349,
+   "motor_torque_rms_Nm": 0.2902433273331818,
+   "motor_speed_peak_rpm": 44.11764705885162,
+   "chain_speed_peak_mm_s": 224.1176470589662,
+   "drive_tension_step_per_chain_N_peak": 27.91902570147795,
+   "strand_tension_rise_front_chain_N_max": 27.15587572754642,
+   "stops": [
+    {
+     "stop_t": 6.3,
+     "module": 0,
+     "residual_deg": 25.510487866158833,
+     "residual_after_0p5s_deg": 24.102543881218597,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 25.510487866158833,
+   "station_settle_s_max": null
+  },
+  "fastlap_4s": {
+   "max_swing_deg": 165.09662907480924,
+   "max_swing_by_region_deg": {
+    "bottom run": 165.09662907480924,
+    "BR corner": 45.36267851915959,
+    "right side": 56.07426697621494,
+    "TR corner": 67.55000461733276,
+    "top run": 67.9445709478473,
+    "TL corner": 67.92564658151578,
+    "left side": 72.71044249813895,
+    "BL corner": 165.09619432642398
+   },
+   "min_neighbour_clearance_mm": -0.650057802158301,
+   "min_neighbour_clearance_upright_mm": 11.414609368267962,
+   "min_clearance_where": {
+    "t": 3.790500000000433,
+    "pair": [
+     6,
+     7
+    ],
+    "region_k": "top run",
+    "u_k": 64.82362040310522,
+    "swing_deg": [
+     -24.068085111935662,
+     25.772208088448842
+    ]
+   },
+   "min_shaft_clearance_mm": -2.113806882117615,
+   "gondola_contacts": 506,
+   "max_penetration_mm": 1.3517650530263863,
+   "motor_torque_peak_Nm": 4.7383319442121925,
+   "motor_torque_peak_filtered_Nm": 1.0949961154358157,
+   "motor_torque_rms_Nm": 0.3832236232232122,
+   "motor_speed_peak_rpm": 70.31250000001364,
+   "chain_speed_peak_mm_s": 357.1875000000693,
+   "drive_tension_step_per_chain_N_peak": 48.759868462350255,
+   "strand_tension_rise_front_chain_N_max": 48.52857191994961,
+   "stops": [
+    {
+     "stop_t": 4.3,
+     "module": 0,
+     "residual_deg": 41.0428285335101,
+     "residual_after_0p5s_deg": 38.68505424721667,
+     "settle_to_0p5deg_s": null
+    }
+   ],
+   "station_residual_deg_max": 41.0428285335101,
+   "station_settle_s_max": null
+  },
+  "station_cad_rigidchain": {
+   "static_pivot_Fz_N": {
+    "front": 2.091374250304973,
+    "back": 1.6405912313989255
+   },
+   "min_pivot_Fz_N": {
+    "front": -9.56820752727454,
+    "back": -1.0312033632562791
+   },
+   "chain_lifted": true,
+   "min_pivot_Fz_tilting_N": {
+    "front": -9.56820752727454,
+    "back": -1.0312033632562791
+   },
+   "actuator_force_peak_tilting_N": 19.292213837849886,
+   "max_pivot_uplift_disp_mm": 0.07099600078240705,
+   "max_swing_docked_deg": 0.011866317560698395,
+   "max_swing_during_taps_auger_deg": 0.011866317560698395,
+   "tilt_reached_deg": 90.45414967922406,
+   "actuator_force_peak_N": 19.292213837849886,
+   "actuator_force_vs_tilt_sim": [
+    {
+     "tilt_deg": 0,
+     "force_sim_N": 16.030916245825438
+    },
+    {
+     "tilt_deg": 10,
+     "force_sim_N": 9.969182984505437
+    },
+    {
+     "tilt_deg": 20,
+     "force_sim_N": 9.09739395197471
+    },
+    {
+     "tilt_deg": 30,
+     "force_sim_N": 8.365576742794133
+    },
+    {
+     "tilt_deg": 40,
+     "force_sim_N": 7.765198287632529
+    },
+    {
+     "tilt_deg": 50,
+     "force_sim_N": 7.203113211212894
+    },
+    {
+     "tilt_deg": 60,
+     "force_sim_N": 6.632704082602459
+    },
+    {
+     "tilt_deg": 70,
+     "force_sim_N": 6.0151238839807775
+    },
+    {
+     "tilt_deg": 80,
+     "force_sim_N": 5.320905058242943
+    },
+    {
+     "tilt_deg": 90,
+     "force_sim_N": 4.603823333983428
+    }
+   ],
+   "actuator_force_vs_tilt_static": [
+    {
+     "tilt_deg": 0,
+     "force_N": 10.45,
+     "stroke_mm": 20.0,
+     "arm_mm": 32.0
+    },
+    {
+     "tilt_deg": 10,
+     "force_N": 9.24,
+     "stroke_mm": 26.1,
+     "arm_mm": 37.8
+    },
+    {
+     "tilt_deg": 20,
+     "force_N": 8.39,
+     "stroke_mm": 33.1,
+     "arm_mm": 42.0
+    },
+    {
+     "tilt_deg": 30,
+     "force_N": 7.73,
+     "stroke_mm": 40.7,
+     "arm_mm": 44.7
+    },
+    {
+     "tilt_deg": 40,
+     "force_N": 7.15,
+     "stroke_mm": 48.6,
+     "arm_mm": 46.0
+    },
+    {
+     "tilt_deg": 50,
+     "force_N": 6.58,
+     "stroke_mm": 56.6,
+     "arm_mm": 45.7
+    },
+    {
+     "tilt_deg": 60,
+     "force_N": 5.98,
+     "stroke_mm": 64.5,
+     "arm_mm": 44.2
+    },
+    {
+     "tilt_deg": 70,
+     "force_N": 5.3,
+     "stroke_mm": 72.0,
+     "arm_mm": 41.5
+    },
+    {
+     "tilt_deg": 80,
+     "force_N": 4.48,
+     "stroke_mm": 78.9,
+     "arm_mm": 37.7
+    },
+    {
+     "tilt_deg": 90,
+     "force_N": 3.4,
+     "stroke_mm": 85.1,
+     "arm_mm": 33.0
+    }
+   ],
+   "stroke_used_mm": {
+    "dock": 20.000000000000018,
+    "tilt90": 85.10176641880263
+   },
+   "rail_force_max_N": 0.0,
+   "pivot_rise_max_mm": {
+    "front": 0.0,
+    "back": 0.0
+   },
+   "chain_rise_max_mm": {
+    "front": 0.0,
+    "back": 0.0
+   },
+   "strip_force_max_N": {
+    "front": 0.0,
+    "back": 0.0
+   },
+   "pivot_Fz_at_tilt": [
+    {
+     "tilt_deg": 0,
+     "front": -7.453019441845799,
+     "back": -0.7020125354529843,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 15,
+     "front": -2.8448761094097503,
+     "back": 0.017765144392560314,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 30,
+     "front": -1.82941865333017,
+     "back": 0.17554913307764622,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 45,
+     "front": -1.066120527647119,
+     "back": 0.29813559723409533,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 60,
+     "front": -0.340981514877358,
+     "back": 0.41839922123449175,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 75,
+     "front": 0.4677595871784115,
+     "back": 0.5539957158980986,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 90,
+     "front": 1.377739085477799,
+     "back": 0.7045719411880312,
+     "rise_front_mm": 0.0,
+     "strip_front_N": 0.0
+    }
+   ],
+   "pivot_Fz_range_during_taps_N": {
+    "front": [
+     1.8791148411858123,
+     3.042403240804197
+    ],
+    "back": [
+     0.7879209697485139,
+     1.0870342580635157
+    ]
+   },
+   "timeline_s": {
+    "dock0": 0.3,
+    "dock1": 0.8,
+    "tilt0": 1.1,
+    "tilt1": 2.728,
+    "work0": 3.228,
+    "work1": 5.628,
+    "back0": 5.928,
+    "back1": 7.555,
+    "undock": 7.855,
+    "ret1": 8.355,
+    "end": 8.855,
+    "stiffen": 1000000000.0,
+    "docked_at": 0.79,
+    "dock_offset_mm": 0.498
+   },
+   "rig": {
+    "a": 0.032,
+    "b": -0.033100000000000004,
+    "base_rel": [
+     0.032,
+     -0.3105
+    ],
+    "v_act": 0.04,
+    "fmax": 50.0
+   },
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0
+   }
+  },
+  "station_cad_chain_nostrip": {
+   "static_pivot_Fz_N": {
+    "front": 2.0824109815120977,
+    "back": 1.6460474910991822
+   },
+   "min_pivot_Fz_N": {
+    "front": -5.521411715412493,
+    "back": -0.38670287997284325
+   },
+   "chain_lifted": true,
+   "min_pivot_Fz_tilting_N": {
+    "front": -5.521411715412493,
+    "back": -0.38670287997284325
+   },
+   "actuator_force_peak_tilting_N": 12.832307803181152,
+   "max_pivot_uplift_disp_mm": 8.084711002698068,
+   "max_swing_docked_deg": 0.011976445704340416,
+   "max_swing_during_taps_auger_deg": 0.011976445704340416,
+   "tilt_reached_deg": 92.6076984195242,
+   "actuator_force_peak_N": 12.832307803181152,
+   "actuator_force_vs_tilt_sim": [
+    {
+     "tilt_deg": 0,
+     "force_sim_N": 9.129395082302779
+    },
+    {
+     "tilt_deg": 10,
+     "force_sim_N": 11.204579647518358
+    },
+    {
+     "tilt_deg": 20,
+     "force_sim_N": 8.79389159726884
+    },
+    {
+     "tilt_deg": 30,
+     "force_sim_N": 8.567604810159537
+    },
+    {
+     "tilt_deg": 40,
+     "force_sim_N": 7.815533820345195
+    },
+    {
+     "tilt_deg": 50,
+     "force_sim_N": 7.264176092602838
+    },
+    {
+     "tilt_deg": 60,
+     "force_sim_N": 6.7022913360181064
+    },
+    {
+     "tilt_deg": 70,
+     "force_sim_N": 6.110654193103528
+    },
+    {
+     "tilt_deg": 80,
+     "force_sim_N": 5.4539538169972275
+    }
+   ],
+   "actuator_force_vs_tilt_static": [
+    {
+     "tilt_deg": 0,
+     "force_N": 10.45,
+     "stroke_mm": 20.0,
+     "arm_mm": 32.0
+    },
+    {
+     "tilt_deg": 10,
+     "force_N": 9.24,
+     "stroke_mm": 26.1,
+     "arm_mm": 37.8
+    },
+    {
+     "tilt_deg": 20,
+     "force_N": 8.39,
+     "stroke_mm": 33.1,
+     "arm_mm": 42.0
+    },
+    {
+     "tilt_deg": 30,
+     "force_N": 7.73,
+     "stroke_mm": 40.7,
+     "arm_mm": 44.7
+    },
+    {
+     "tilt_deg": 40,
+     "force_N": 7.15,
+     "stroke_mm": 48.6,
+     "arm_mm": 46.0
+    },
+    {
+     "tilt_deg": 50,
+     "force_N": 6.58,
+     "stroke_mm": 56.6,
+     "arm_mm": 45.7
+    },
+    {
+     "tilt_deg": 60,
+     "force_N": 5.98,
+     "stroke_mm": 64.5,
+     "arm_mm": 44.2
+    },
+    {
+     "tilt_deg": 70,
+     "force_N": 5.3,
+     "stroke_mm": 72.0,
+     "arm_mm": 41.5
+    },
+    {
+     "tilt_deg": 80,
+     "force_N": 4.48,
+     "stroke_mm": 78.9,
+     "arm_mm": 37.7
+    },
+    {
+     "tilt_deg": 90,
+     "force_N": 3.4,
+     "stroke_mm": 85.1,
+     "arm_mm": 33.0
+    }
+   ],
+   "stroke_used_mm": {
+    "dock": 20.000000000000018,
+    "tilt90": 85.10176641880263
+   },
+   "rail_force_max_N": 0.0,
+   "pivot_rise_max_mm": {
+    "front": 12.749832367927704,
+    "back": 3.4197041350279567
+   },
+   "chain_rise_max_mm": {
+    "front": 8.979087120481434,
+    "back": 2.4083313779032376
+   },
+   "strip_force_max_N": {
+    "front": 0.0,
+    "back": 0.0
+   },
+   "pivot_Fz_at_tilt": [
+    {
+     "tilt_deg": 0,
+     "front": -2.6551892352242543,
+     "back": 0.24516417165956358,
+     "rise_front_mm": 7.0990987704948605,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 15,
+     "front": -3.1538464677648985,
+     "back": -0.03289804903156236,
+     "rise_front_mm": 9.611796466181266,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 30,
+     "front": -1.99555905408863,
+     "back": 0.15014989149749938,
+     "rise_front_mm": 6.966717458115252,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 45,
+     "front": -1.1253925459847747,
+     "back": 0.28956495467839083,
+     "rise_front_mm": 5.507640190642538,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 60,
+     "front": -0.40323200563401385,
+     "back": 0.40805359854745116,
+     "rise_front_mm": 4.292806914867942,
+     "strip_front_N": 0.0
+    },
+    {
+     "tilt_deg": 75,
+     "front": 0.3683253479235057,
+     "back": 0.5363022628229595,
+     "rise_front_mm": 3.0137129064195243,
+     "strip_front_N": 0.0
+    }
+   ],
+   "pivot_Fz_range_during_taps_N": {
+    "front": [
+     1.9435223311279664,
+     2.405140405684163
+    ],
+    "back": [
+     0.8019068190899811,
+     0.9972714420227294
+    ]
+   },
+   "timeline_s": {
+    "dock0": 0.3,
+    "dock1": 0.8,
+    "tilt0": 1.1,
+    "tilt1": 2.728,
+    "work0": 3.228,
+    "work1": 5.628,
+    "back0": 5.928,
+    "back1": 7.555,
+    "undock": 7.855,
+    "ret1": 8.355,
+    "end": 8.855,
+    "stiffen": 1000000000.0,
+    "docked_at": 0.79,
+    "dock_offset_mm": 0.498
+   },
+   "rig": {
+    "a": 0.032,
+    "b": -0.033100000000000004,
+    "base_rel": [
+     0.032,
+     -0.3105
+    ],
+    "v_act": 0.04,
+    "fmax": 50.0
+   },
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "chain": {
+     "k_tab": 2000.0,
+     "k_span": 839.8950131233596,
+     "gap": null
+    }
+   }
+  },
+  "station_cad_strip": {
+   "static_pivot_Fz_N": {
+    "front": 2.0824109815120977,
+    "back": 1.6460474910991822
+   },
+   "min_pivot_Fz_N": {
+    "front": -6.714794794953809,
+    "back": -0.5765184817050681
+   },
+   "chain_lifted": true,
+   "min_pivot_Fz_tilting_N": {
+    "front": -6.714794794953809,
+    "back": -0.5765184817050681
+   },
+   "actuator_force_peak_tilting_N": 14.478082832628843,
+   "max_pivot_uplift_disp_mm": 3.2459211724407635,
+   "max_swing_docked_deg": 0.011968885806793114,
+   "max_swing_during_taps_auger_deg": 0.011968885806793114,
+   "tilt_reached_deg": 92.73471912160035,
+   "actuator_force_peak_N": 14.478082832628843,
+   "actuator_force_vs_tilt_sim": [
+    {
+     "tilt_deg": 0,
+     "force_sim_N": 10.468363137778624
+    },
+    {
+     "tilt_deg": 10,
+     "force_sim_N": 8.62916356018178
+    },
+    {
+     "tilt_deg": 20,
+     "force_sim_N": 8.845402814986983
+    },
+    {
+     "tilt_deg": 30,
+     "force_sim_N": 8.292963228540884
+    },
+    {
+     "tilt_deg": 40,
+     "force_sim_N": 7.779234216126042
+    },
+    {
+     "tilt_deg": 50,
+     "force_sim_N": 7.219312013765716
+    },
+    {
+     "tilt_deg": 60,
+     "force_sim_N": 6.648700661139401
+    },
+    {
+     "tilt_deg": 70,
+     "force_sim_N": 6.045834868497877
+    },
+    {
+     "tilt_deg": 80,
+     "force_sim_N": 5.353477648404578
+    },
+    {
+     "tilt_deg": 90,
+     "force_sim_N": 4.750019889418581
+    }
+   ],
+   "actuator_force_vs_tilt_static": [
+    {
+     "tilt_deg": 0,
+     "force_N": 10.45,
+     "stroke_mm": 20.0,
+     "arm_mm": 32.0
+    },
+    {
+     "tilt_deg": 10,
+     "force_N": 9.24,
+     "stroke_mm": 26.1,
+     "arm_mm": 37.8
+    },
+    {
+     "tilt_deg": 20,
+     "force_N": 8.39,
+     "stroke_mm": 33.1,
+     "arm_mm": 42.0
+    },
+    {
+     "tilt_deg": 30,
+     "force_N": 7.73,
+     "stroke_mm": 40.7,
+     "arm_mm": 44.7
+    },
+    {
+     "tilt_deg": 40,
+     "force_N": 7.15,
+     "stroke_mm": 48.6,
+     "arm_mm": 46.0
+    },
+    {
+     "tilt_deg": 50,
+     "force_N": 6.58,
+     "stroke_mm": 56.6,
+     "arm_mm": 45.7
+    },
+    {
+     "tilt_deg": 60,
+     "force_N": 5.98,
+     "stroke_mm": 64.5,
+     "arm_mm": 44.2
+    },
+    {
+     "tilt_deg": 70,
+     "force_N": 5.3,
+     "stroke_mm": 72.0,
+     "arm_mm": 41.5
+    },
+    {
+     "tilt_deg": 80,
+     "force_N": 4.48,
+     "stroke_mm": 78.9,
+     "arm_mm": 37.7
+    },
+    {
+     "tilt_deg": 90,
+     "force_N": 3.4,
+     "stroke_mm": 85.1,
+     "arm_mm": 33.0
+    }
+   ],
+   "stroke_used_mm": {
+    "dock": 20.000000000000018,
+    "tilt90": 85.10176641880263
+   },
+   "rail_force_max_N": 0.0,
+   "pivot_rise_max_mm": {
+    "front": 4.881366989124058,
+    "back": 1.6088909413241592
+   },
+   "chain_rise_max_mm": {
+    "front": 0.5,
+    "back": 0.5
+   },
+   "strip_force_max_N": {
+    "front": 8.342786471686436,
+    "back": 1.7978343760866387
+   },
+   "pivot_Fz_at_tilt": [
+    {
+     "tilt_deg": 0,
+     "front": -3.6678454331103154,
+     "back": -0.034411555466997534,
+     "rise_front_mm": 3.123428440598569,
+     "strip_front_N": 4.826909374635458
+    },
+    {
+     "tilt_deg": 15,
+     "front": -3.160108390268653,
+     "back": -0.03362979201874254,
+     "rise_front_mm": 3.0873646183611214,
+     "strip_front_N": 4.7547817301605635
+    },
+    {
+     "tilt_deg": 30,
+     "front": -1.7837058116336844,
+     "back": 0.1849000230117569,
+     "rise_front_mm": 2.44317422560153,
+     "strip_front_N": 3.46640094464138
+    },
+    {
+     "tilt_deg": 45,
+     "front": -1.0748078514500083,
+     "back": 0.29719266316982634,
+     "rise_front_mm": 2.0862148974944428,
+     "strip_front_N": 2.7524822884272058
+    },
+    {
+     "tilt_deg": 60,
+     "front": -0.35545864749833045,
+     "back": 0.416006224667197,
+     "rise_front_mm": 1.726602568389135,
+     "strip_front_N": 2.0332576302165903
+    },
+    {
+     "tilt_deg": 75,
+     "front": 0.43542878220015446,
+     "back": 0.5482883739815462,
+     "rise_front_mm": 1.3335377223769318,
+     "strip_front_N": 1.2471279381921838
+    },
+    {
+     "tilt_deg": 90,
+     "front": 1.2499826764994189,
+     "back": 0.6829313025945689,
+     "rise_front_mm": 0.9304566127111835,
+     "strip_front_N": 0.44096571886068725
+    }
+   ],
+   "pivot_Fz_range_during_taps_N": {
+    "front": [
+     2.026142087535422,
+     2.4220827773080145
+    ],
+    "back": [
+     0.8166569975413188,
+     1.0299859142438126
+    ]
+   },
+   "timeline_s": {
+    "dock0": 0.3,
+    "dock1": 0.8,
+    "tilt0": 1.1,
+    "tilt1": 2.728,
+    "work0": 3.228,
+    "work1": 5.628,
+    "back0": 5.928,
+    "back1": 7.555,
+    "undock": 7.855,
+    "ret1": 8.355,
+    "end": 8.855,
+    "stiffen": 1000000000.0,
+    "docked_at": 0.79,
+    "dock_offset_mm": 0.498
+   },
+   "rig": {
+    "a": 0.032,
+    "b": -0.033100000000000004,
+    "base_rel": [
+     0.032,
+     -0.3105
+    ],
+    "v_act": 0.04,
+    "fmax": 50.0
+   },
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "chain": {
+     "k_tab": 2000.0,
+     "k_span": 839.8950131233596,
+     "gap": 0.0005
+    }
+   }
+  },
+  "station_cad_strip_tab50": {
+   "static_pivot_Fz_N": {
+    "front": 2.0830692162293643,
+    "back": 1.6470562393533963
+   },
+   "min_pivot_Fz_N": {
+    "front": -9.160859212029576,
+    "back": -1.0865863205248973
+   },
+   "chain_lifted": true,
+   "min_pivot_Fz_tilting_N": {
+    "front": -9.160859212029576,
+    "back": -1.0865863205248973
+   },
+   "actuator_force_peak_tilting_N": 18.575455604577428,
+   "max_pivot_uplift_disp_mm": 0.6389290600943978,
+   "max_swing_docked_deg": 0.011923254544797795,
+   "max_swing_during_taps_auger_deg": 0.011923254544797795,
+   "tilt_reached_deg": 91.00710754146519,
+   "actuator_force_peak_N": 18.575455604577428,
+   "actuator_force_vs_tilt_sim": [
+    {
+     "tilt_deg": 0,
+     "force_sim_N": 14.861592730439838
+    },
+    {
+     "tilt_deg": 10,
+     "force_sim_N": 9.987360905954347
+    },
+    {
+     "tilt_deg": 20,
+     "force_sim_N": 9.093148119544367
+    },
+    {
+     "tilt_deg": 30,
+     "force_sim_N": 8.369769511311233
+    },
+    {
+     "tilt_deg": 40,
+     "force_sim_N": 7.761094874625542
+    },
+    {
+     "tilt_deg": 50,
+     "force_sim_N": 7.198671106766255
+    },
+    {
+     "tilt_deg": 60,
+     "force_sim_N": 6.635050780145548
+    },
+    {
+     "tilt_deg": 70,
+     "force_sim_N": 6.02657760557895
+    },
+    {
+     "tilt_deg": 80,
+     "force_sim_N": 5.323692993591976
+    },
+    {
+     "tilt_deg": 90,
+     "force_sim_N": 4.652353592285181
+    }
+   ],
+   "actuator_force_vs_tilt_static": [
+    {
+     "tilt_deg": 0,
+     "force_N": 10.45,
+     "stroke_mm": 20.0,
+     "arm_mm": 32.0
+    },
+    {
+     "tilt_deg": 10,
+     "force_N": 9.24,
+     "stroke_mm": 26.1,
+     "arm_mm": 37.8
+    },
+    {
+     "tilt_deg": 20,
+     "force_N": 8.39,
+     "stroke_mm": 33.1,
+     "arm_mm": 42.0
+    },
+    {
+     "tilt_deg": 30,
+     "force_N": 7.73,
+     "stroke_mm": 40.7,
+     "arm_mm": 44.7
+    },
+    {
+     "tilt_deg": 40,
+     "force_N": 7.15,
+     "stroke_mm": 48.6,
+     "arm_mm": 46.0
+    },
+    {
+     "tilt_deg": 50,
+     "force_N": 6.58,
+     "stroke_mm": 56.6,
+     "arm_mm": 45.7
+    },
+    {
+     "tilt_deg": 60,
+     "force_N": 5.98,
+     "stroke_mm": 64.5,
+     "arm_mm": 44.2
+    },
+    {
+     "tilt_deg": 70,
+     "force_N": 5.3,
+     "stroke_mm": 72.0,
+     "arm_mm": 41.5
+    },
+    {
+     "tilt_deg": 80,
+     "force_N": 4.48,
+     "stroke_mm": 78.9,
+     "arm_mm": 37.7
+    },
+    {
+     "tilt_deg": 90,
+     "force_N": 3.4,
+     "stroke_mm": 85.1,
+     "arm_mm": 33.0
+    }
+   ],
+   "stroke_used_mm": {
+    "dock": 20.000000000000018,
+    "tilt90": 85.10176641880263
+   },
+   "rail_force_max_N": 0.0,
+   "pivot_rise_max_mm": {
+    "front": 0.7254676185619036,
+    "back": 0.5628879695947497
+   },
+   "chain_rise_max_mm": {
+    "front": 0.5,
+    "back": 0.5
+   },
+   "strip_force_max_N": {
+    "front": 10.853433421533497,
+    "back": 2.7244509731758066
+   },
+   "pivot_Fz_at_tilt": [
+    {
+     "tilt_deg": 0,
+     "front": -6.613757821075063,
+     "back": -0.5550475262345802,
+     "rise_front_mm": 0.6710112215818076,
+     "strip_front_N": 8.130613572528699
+    },
+    {
+     "tilt_deg": 15,
+     "front": -2.8300010756470924,
+     "back": 0.020325591953380205,
+     "rise_front_mm": 0.5983050411602076,
+     "strip_front_N": 4.4953045514486965
+    },
+    {
+     "tilt_deg": 30,
+     "front": -1.8331635092000829,
+     "back": 0.17501044868696103,
+     "rise_front_mm": 0.5783780860206256,
+     "strip_front_N": 3.4989567944695983
+    },
+    {
+     "tilt_deg": 45,
+     "front": -1.062572806907452,
+     "back": 0.2987585991911392,
+     "rise_front_mm": 0.5629539628641544,
+     "strip_front_N": 2.727750636646042
+    },
+    {
+     "tilt_deg": 60,
+     "front": -0.3430273390703735,
+     "back": 0.4180801813780063,
+     "rise_front_mm": 0.5485671985762108,
+     "strip_front_N": 2.0084124222488615
+    },
+    {
+     "tilt_deg": 75,
+     "front": 0.45696523865620803,
+     "back": 0.552193951011341,
+     "rise_front_mm": 0.5325873428138062,
+     "strip_front_N": 1.2094196341286274
+    },
+    {
+     "tilt_deg": 90,
+     "front": 1.3366518032527024,
+     "back": 0.6978318798228591,
+     "rise_front_mm": 0.5150313213417579,
+     "strip_front_N": 0.33161856052621397
+    }
+   ],
+   "pivot_Fz_range_during_taps_N": {
+    "front": [
+     2.2339661916397078,
+     2.5253545716194075
+    ],
+    "back": [
+     0.821709035053802,
+     1.0749310810775319
+    ]
+   },
+   "timeline_s": {
+    "dock0": 0.3,
+    "dock1": 0.8,
+    "tilt0": 1.1,
+    "tilt1": 2.728,
+    "work0": 3.228,
+    "work1": 5.628,
+    "back0": 5.928,
+    "back1": 7.555,
+    "undock": 7.855,
+    "ret1": 8.355,
+    "end": 8.855,
+    "stiffen": 1000000000.0,
+    "docked_at": 0.79,
+    "dock_offset_mm": 0.498
+   },
+   "rig": {
+    "a": 0.032,
+    "b": -0.033100000000000004,
+    "base_rel": [
+     0.032,
+     -0.3105
+    ],
+    "v_act": 0.04,
+    "fmax": 50.0
+   },
+   "cfg": {
+    "damping": 0.0001,
+    "fric": 0.0,
+    "chain": {
+     "k_tab": 50000.0,
+     "k_span": 839.8950131233596,
+     "gap": 0.0005
+    }
+   }
+  }
+ },
+ "iterations": [],
+ "elapsed_s": 74.69887280464172
+}

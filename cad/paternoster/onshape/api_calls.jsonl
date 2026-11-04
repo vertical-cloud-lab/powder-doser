@@ -1,0 +1,5 @@
+{"run": "check-sam-doc", "n": 1, "method": "GET", "path": "/documents/581956d5528927957a4c0b98", "status": 200, "utc": "2026-10-16T13:32:58Z"}
+{"run": "sam-doc-elements", "n": 1, "method": "GET", "path": "/documents/d/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/elements", "status": 200, "utc": "2026-10-16T13:33:07Z"}
+{"run": "sam-partstudio-export", "n": 1, "method": "POST", "path": "/partstudios/d/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f/translations", "status": 200, "utc": "2026-10-16T13:33:16Z"}
+{"run": "sam-partstudio-export", "n": 2, "method": "GET", "path": "/translations/6ad2279b798239aaade0dbc3", "status": 200, "utc": "2026-10-16T13:33:22Z"}
+{"run": "sam-partstudio-export", "n": 3, "method": "GET", "path": "/documents/d/581956d5528927957a4c0b98/externaldata/6ad2279e728616c72e9d4522", "status": 200, "utc": "2026-10-16T13:33:22Z"}

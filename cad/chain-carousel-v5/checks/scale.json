@@ -1,0 +1,28 @@
+{
+ "check": "scale",
+ "clashes": [
+  {
+   "a": "A&D HR-100A balance (body) @hr100a {'ext': 0.0}",
+   "b": "Front hatch door (3 mm acrylic, knob)",
+   "mm3": 13068.0
+  },
+  {
+   "a": "A&D HR-100A balance (body) @hr100a {'tilt': 30.0}",
+   "b": "Front hatch door (3 mm acrylic, knob)",
+   "mm3": 13068.0
+  }
+ ],
+ "pan_centre": [
+  33.4,
+  4.76
+ ],
+ "poses": [
+  "hr202i {'ext': 0.0}",
+  "hr202i {'ext': 28.0, 'top_door': 205.0}",
+  "hr202i {'tilt': 30.0, 'top_door': 205.0}",
+  "hr202i {'tilt': 50.0, 'top_door': 205.0}",
+  "hr100a {'ext': 0.0}",
+  "hr100a {'tilt': 30.0}"
+ ],
+ "note": "v5: the balance at the dose point; any hit is a part in its way (min volume 0)"
+}

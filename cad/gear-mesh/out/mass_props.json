@@ -1,0 +1,65 @@
+{
+ "plate": {
+  "volume_cm3": 27.656,
+  "solid_fraction": 0.8,
+  "mass_g": 28.1,
+  "com_mm": [
+   52.36,
+   -0.0,
+   -11.33
+  ],
+  "Iy_hinge_gmm2": 104917.0,
+  "Ix_axis_gmm2": 11714.0
+ },
+ "auger": {
+  "volume_cm3": 53.358,
+  "solid_fraction": 1.0,
+  "mass_g": 67.76,
+  "com_mm": [
+   103.38,
+   -0.0,
+   0.0
+  ],
+  "Iy_hinge_gmm2": 1040274.0,
+  "Ix_axis_gmm2": 10569.0
+ },
+ "cap": {
+  "volume_cm3": 4.371,
+  "solid_fraction": 0.9,
+  "mass_g": 5.0,
+  "com_mm": [
+   241.43,
+   -0.01,
+   0.04
+  ],
+  "Iy_hinge_gmm2": 291998.0,
+  "Ix_axis_gmm2": 807.0
+ },
+ "carriage": {
+  "volume_cm3": 18.587,
+  "solid_fraction": 0.75,
+  "mass_g": 17.7,
+  "com_mm": [
+   37.05,
+   -0.0,
+   -41.57
+  ],
+  "Iy_hinge_gmm2": 67605.0,
+  "Ix_axis_gmm2": 35760.0
+ },
+ "module_empty": {
+  "mass_g": 100.86,
+  "com_mm": [
+   96.01,
+   -0.0,
+   -3.15
+  ],
+  "Iy_hinge_gmm2": 1437189.0,
+  "note": "plate + auger + cap, no powder; the auger tube rotates in the plate's clamp rings"
+ },
+ "auger_rotating": {
+  "mass_g": 72.76,
+  "Ix_axis_gmm2": 11376.0,
+  "note": "auger + cap about the auger axis (the cap screws onto the tube and turns with it)"
+ }
+}

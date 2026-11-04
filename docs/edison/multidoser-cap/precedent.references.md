@@ -1,0 +1,9 @@
+1. (penny2019precisionassemblyof pages 1-2): Ryan W. Penny and A. John Hart. Precision assembly of additively manufactured components using integral kinematic couplings. Precision Engineering, 60:104-115, Nov 2019. URL: https://doi.org/10.1016/j.precisioneng.2019.04.011, doi:10.1016/j.precisioneng.2019.04.011. This article has 13 citations.
+
+2. (penny2019precisionassemblyof pages 2-4): Ryan W. Penny and A. John Hart. Precision assembly of additively manufactured components using integral kinematic couplings. Precision Engineering, 60:104-115, Nov 2019. URL: https://doi.org/10.1016/j.precisioneng.2019.04.011, doi:10.1016/j.precisioneng.2019.04.011. This article has 13 citations.
+
+3. (penny2019precisionassemblyof pages 5-6): Ryan W. Penny and A. John Hart. Precision assembly of additively manufactured components using integral kinematic couplings. Precision Engineering, 60:104-115, Nov 2019. URL: https://doi.org/10.1016/j.precisioneng.2019.04.011, doi:10.1016/j.precisioneng.2019.04.011. This article has 13 citations.
+
+4. (penny2019precisionassemblyof pages 6-7): Ryan W. Penny and A. John Hart. Precision assembly of additively manufactured components using integral kinematic couplings. Precision Engineering, 60:104-115, Nov 2019. URL: https://doi.org/10.1016/j.precisioneng.2019.04.011, doi:10.1016/j.precisioneng.2019.04.011. This article has 13 citations.
+
+5. (penny2019precisionassemblyof pages 7-8): Ryan W. Penny and A. John Hart. Precision assembly of additively manufactured components using integral kinematic couplings. Precision Engineering, 60:104-115, Nov 2019. URL: https://doi.org/10.1016/j.precisioneng.2019.04.011, doi:10.1016/j.precisioneng.2019.04.011. This article has 13 citations.

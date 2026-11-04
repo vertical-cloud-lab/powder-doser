@@ -1,0 +1,22 @@
+{
+ "kind": "prefix",
+ "seed": 0,
+ "dose_tilt_world": 15.0,
+ "stop_s": 0.0,
+ "rpm": 60.0,
+ "dose_revs": 2.0,
+ "tag": "prefix15",
+ "alpha_deg": 0.0,
+ "n_grains": 1100,
+ "rp_mm": 1.0,
+ "z_cut_mm": 8.666666666666666,
+ "m_grain_mg": 9.047786842338606,
+ "exits_by_phase": {
+  "dose": 228
+ },
+ "exits_by_phase_mg": {
+  "dose": 2062.895400053202
+ },
+ "n_out_total": 228,
+ "near_exit_final": 150
+}

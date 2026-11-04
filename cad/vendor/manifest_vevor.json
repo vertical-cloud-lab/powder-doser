@@ -1,0 +1,24 @@
+[
+ {
+  "key": "extrusion_vevor2020",
+  "kind": "screenshot",
+  "file": "files/vevor/extrusion_vevor2020.png",
+  "page": "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
+  "url": "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
+  "sha256": "4240fedcfe2682d188844258e013749ef30f70f0dfac532f0468a837ce01a34e",
+  "bytes": 1797431,
+  "retrieved": "2026-10-27",
+  "note": "VEVOR 10PCS 39.4in (1000mm) T Slot 2020 Aluminum Extrusion Profile, European Standard Anodized Linea"
+ },
+ {
+  "key": "extrusion_vevor2020",
+  "kind": "text",
+  "file": "files/vevor/extrusion_vevor2020.txt",
+  "page": "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
+  "url": "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
+  "sha256": "c1cc50d882e98a6384609c24dd9d4aa04b45c35272f3ea0c2417c01352279b9e",
+  "bytes": 7060,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]
