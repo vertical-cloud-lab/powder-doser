@@ -130,6 +130,8 @@
     "login": "password, then the first authenticator code from bambu-totp (Log In 21:45:14, code typed 21:45:38, Confirm 21:45:40 UTC); no e-mailed code asked for",
     "h2d_selected_utc": "2026-11-04T21:46:31Z",
     "clicked": "Device page: printer list, camera play, Status/Storage/Assistant (HMS) tabs, Storage's Model view, Printer Parts (closed without Refresh); home page: Print History and the Base card",
-    "recording": "none: nothing was to be sent"
+    "recording": "none: nothing was to be sent",
+    "signed_out_utc": "2026-11-04T22:20:05Z",
+    "closed_and_config_deleted": true
   }
 }
