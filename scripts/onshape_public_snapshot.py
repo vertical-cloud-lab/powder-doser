@@ -118,6 +118,7 @@ def main(out):
                "owner": doc.get("owner", {}).get("name"), "modifiedAt": doc.get("modifiedAt"),
                "elements": []}
         print(f"{name}: '{doc['name']}' modified {doc.get('modifiedAt')}", flush=True)
+        used = set()
         for e in els:
             erec = {"id": e["id"], "name": e["name"], "type": e.get("elementType"), "linked": e["id"] == linked}
             rec["elements"].append(erec)
@@ -125,7 +126,12 @@ def main(out):
             if e.get("elementType") != "PARTSTUDIO" and not is_main_asm:
                 continue
             kind = "assemblies" if is_main_asm else "partstudios"
-            d = out / slug(name) / slug(e["name"])
+            # Two elements can slug alike ("Stepper Pinion", "stepper_pinion"): keep them apart.
+            es = slug(e["name"])
+            if es in used:
+                es = f"{es}-{e['id'][:6]}"
+            used.add(es)
+            d = out / slug(name) / es
             d.mkdir(parents=True, exist_ok=True)
             if kind == "partstudios":
                 feats = get(f"partstudios/d/{did}/w/{wid}/e/{e['id']}/features")

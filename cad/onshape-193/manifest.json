@@ -1,5 +1,5 @@
 {
- "fetched_utc": "2026-11-03T05:59:02Z",
+ "fetched_utc": "2026-11-04T06:20:53Z",
  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/193",
  "method": "anonymous Onshape REST requests (no API key, no API calls counted)",
  "mm_per_px": 0.2,
@@ -498,7 +498,7 @@
       22.4,
       16.4
      ],
-     "dir": "stepper-pinion/stepper-pinion"
+     "dir": "stepper-pinion/stepper-pinion-34e4bc"
     },
     {
      "id": "91927e93647e1ec507f81d4d",

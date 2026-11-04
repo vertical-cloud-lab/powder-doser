@@ -1,4 +1,4 @@
-# Onshape documents in #193: snapshot without geometry, 2026-11-03
+# Onshape documents in #193: snapshot without geometry, 2026-11-03 (re-checked 2026-11-04)
 
 [#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193) lists the current Onshape
 document for each doser part. On [PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200)
@@ -6,14 +6,29 @@ the request was to download them. **None of their geometry (STL or STEP) could b
 - **API keys: HTTP 402.** `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY` still sign in (`users/sessioninfo` → 200).
   But every document request returns `402 "API limit exceeded"`: the company's yearly API cap
   (2,500 calls, shared), which has refused this repo since 2026-10-29. Refused calls aren't counted.
+
+**Retry on 2026-11-04, 06:17 to 06:5x UTC: still 402.** At 04:42 UTC the limit was reported fixed
+([PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6622749892)).
+The `@claude` run that retried started at 06:15 UTC, so it got the repo secrets as they stood then:
+- **The keys still sign in** as the same kind of account, plan group `EDU Educator`. Onshape caps
+  that plan at [2,500 calls per company per year](https://onshape-public.github.io/docs/auth/limits/).
+- **Every keyed request is still refused with 402:** the Baseplate's document, its STL export and a
+  STEP translation. See [`export.json`](export.json) for the run's retries; it made no counted calls.
+- **The models haven't changed since the 2026-11-03 snapshot.** A fresh anonymous snapshot at 06:20 UTC
+  had the same `sourceMicroversion` and modified time for every element, and the same renders.
+- **One fix to the snapshot:** the Stepper pinion document's two Part Studios, "Stepper Pinion" and
+  "stepper_pinion", slugged to the same folder, so the imported STEP's files had overwritten the
+  native one's. They now have separate folders: `stepper-pinion/stepper-pinion/` (native) and
+  `stepper-pinion/stepper-pinion-34e4bc/` (imported STEP).
 - **Anonymous: no exports.** Without a key, Onshape answers a public (or link-shared) document
   with its metadata, element list, Part Studio feature lists and its own renders. Every
   geometry route refuses: STL, Parasolid, sketches, tessellation and parts return 401, and the
   uploaded STEP blobs return 403.
 
 So this folder holds what Onshape *would* give, fetched by
-[`scripts/onshape_public_snapshot.py`](../../scripts/onshape_public_snapshot.py) at 05:59 UTC
-(136 anonymous requests, all 200, none counted against the cap):
+[`scripts/onshape_public_snapshot.py`](../../scripts/onshape_public_snapshot.py) at 05:59 UTC on
+2026-11-03 and again at 06:20 UTC on 2026-11-04 (136 anonymous requests each time, all 200, none
+counted against the cap):
 
 | File | What it is |
 |---|---|
@@ -22,6 +37,7 @@ So this folder holds what Onshape *would* give, fetched by
 | `<doc>/<element>/iso.png` | Onshape's isometric render |
 | `<doc>/<element>/features.json.gz` | The Part Studio's full feature list as Onshape returned it |
 | [`overview.png`](overview.png) | All of the above on one sheet |
+| [`export.json`](export.json) | The last keyed export attempt by [`scripts/onshape_export.py`](../../scripts/onshape_export.py): every call and its status |
 
 ![Every element listed in #193, as Onshape renders it](overview.png)
 
@@ -52,7 +68,20 @@ Any of these works. The first is the quickest.
    here. A run can then check each STL against these renders:
    `python docs/prints/2026-11-03-baseplate-h2d/check_stl.py PART.stl cad/onshape-193/baseplate/base`.
 2. **More API calls.** Wait for the yearly cap to reset, or ask Onshape for a larger allowance.
-   Exporting every element here as STL and STEP takes under 100 calls.
+   Exporting every element here as STL and STEP takes under 100 calls. Once the keys answer,
+   one command does it all:
+   ```
+   python scripts/onshape_export.py cad/onshape-193            # about 83 counted calls
+   python scripts/onshape_export.py cad/onshape-193 --only Baseplate   # about 6
+   ```
+   It writes one STL per part (mm) to `<doc>/<element>/stl/` and a STEP per Part Studio (and
+   the assembly) next to the renders. It checks each Part Studio's STLs against the renders and
+   logs every call in `export.json`. The Baseplate goes first, and the first 402 stops the run.
+   `--dry-run` lists the plan, and `--wait-until HH:MM` keeps retrying a capped key until then.
+   **If the fix was new keys, or a raised limit on another Onshape account,** replace the
+   repository secrets `ONSHAPE_ACCESS_KEY` and `ONSHAPE_SECRET_KEY` (Settings → Secrets and
+   variables → Actions). An organization secret with the same name is shadowed by the repository
+   one. A run gets the secrets as they stand when it starts, so comment `@claude` again after.
 3. **Rebuild from the feature lists.** The features are plain sketches, extrudes, revolves,
    sweeps, fillets and mirrors, so they could be rebuilt locally and checked against these
    renders. But the result would be a copy, not the Onshape file #197 asks for.
