@@ -6,12 +6,16 @@ the request was to download them. **None of their geometry (STL or STEP) could b
 - **API keys: HTTP 402.** `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY` still sign in (`users/sessioninfo` → 200).
   But every document request returns `402 "API limit exceeded"`: the company's yearly API cap
   (2,500 calls, shared), which has refused this repo since 2026-10-29. Refused calls aren't counted.
+- **Anonymous: no exports.** Without a key, Onshape answers a public (or link-shared) document
+  with its metadata, element list, Part Studio feature lists and its own renders. Every
+  geometry route refuses: STL, Parasolid, sketches, tessellation and parts return 401, and the
+  uploaded STEP blobs return 403.
 
-**Retry on 2026-11-04, 06:17 to 06:5x UTC: still 402.** At 04:42 UTC the limit was reported fixed
+**Retry on 2026-11-04, 06:17 to 06:25 UTC: still 402.** At 04:42 UTC the limit was reported fixed
 ([PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6622749892)).
 The `@claude` run that retried started at 06:15 UTC, so it got the repo secrets as they stood then:
-- **The keys still sign in** as the same kind of account, plan group `EDU Educator`. Onshape caps
-  that plan at [2,500 calls per company per year](https://onshape-public.github.io/docs/auth/limits/).
+- **The keys still sign in**, to an account in plan group `EDU Educator`. Onshape caps that
+  plan at [2,500 calls per company per year](https://onshape-public.github.io/docs/auth/limits/).
 - **Every keyed request is still refused with 402:** the Baseplate's document, its STL export and a
   STEP translation. See [`export.json`](export.json) for the run's retries; it made no counted calls.
 - **The models haven't changed since the 2026-11-03 snapshot.** A fresh anonymous snapshot at 06:20 UTC
@@ -20,10 +24,6 @@ The `@claude` run that retried started at 06:15 UTC, so it got the repo secrets 
   "stepper_pinion", slugged to the same folder, so the imported STEP's files had overwritten the
   native one's. They now have separate folders: `stepper-pinion/stepper-pinion/` (native) and
   `stepper-pinion/stepper-pinion-34e4bc/` (imported STEP).
-- **Anonymous: no exports.** Without a key, Onshape answers a public (or link-shared) document
-  with its metadata, element list, Part Studio feature lists and its own renders. Every
-  geometry route refuses: STL, Parasolid, sketches, tessellation and parts return 401, and the
-  uploaded STEP blobs return 403.
 
 So this folder holds what Onshape *would* give, fetched by
 [`scripts/onshape_public_snapshot.py`](../../scripts/onshape_public_snapshot.py) at 05:59 UTC on
@@ -78,10 +78,15 @@ Any of these works. The first is the quickest.
    the assembly) next to the renders. It checks each Part Studio's STLs against the renders and
    logs every call in `export.json`. The Baseplate goes first, and the first 402 stops the run.
    `--dry-run` lists the plan, and `--wait-until HH:MM` keeps retrying a capped key until then.
-   **If the fix was new keys, or a raised limit on another Onshape account,** replace the
-   repository secrets `ONSHAPE_ACCESS_KEY` and `ONSHAPE_SECRET_KEY` (Settings → Secrets and
-   variables → Actions). An organization secret with the same name is shadowed by the repository
-   one. A run gets the secrets as they stand when it starts, so comment `@claude` again after.
+   **New keys** ([Sterling, 2026-11-04](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6624130267)):
+   someone on the team makes a personal key in Onshape under *My Account → Developer*. Onshape
+   counts those calls against that user's own allowance. Keys made under *Company/Classroom
+   settings → Developer* count against the shared one, which is exhausted
+   ([Onshape: API limits](https://onshape-public.github.io/docs/auth/limits/)).
+   Put the pair in the repository secrets `ONSHAPE_ACCESS_KEY` and `ONSHAPE_SECRET_KEY`
+   (Settings → Secrets and variables → Actions). An organization secret with the same name is
+   shadowed by the repository one. A run gets the secrets as they stand when it starts, so
+   comment `@claude` again afterwards.
 3. **Rebuild from the feature lists.** The features are plain sketches, extrudes, revolves,
    sweeps, fillets and mirrors, so they could be rebuilt locally and checked against these
    renders. But the result would be a copy, not the Onshape file #197 asks for.

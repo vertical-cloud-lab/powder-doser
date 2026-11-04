@@ -98,3 +98,21 @@ Nothing on any printer was changed.
    [`check_stl.py`](../2026-11-03-baseplate-h2d/check_stl.py).
 3. **Then `@claude-print`,** naming the file (branch and path) and the H2D. Ask during working
    hours, with someone who can get to the printer.
+
+## Follow-up, 06:17 to 06:25 UTC: Onshape retried, still 402
+
+A plain `@claude` run ([job](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/41784327623))
+started at 06:15 UTC, after Brandon's 04:42 reply, and retried the download:
+- **Still 402** on the Baseplate's document, its STL export and a STEP translation (not counted).
+  The keys sign in to an account in plan group `EDU Educator`, which Onshape caps at
+  [2,500 calls per company per year](https://onshape-public.github.io/docs/auth/limits/).
+- **The fix, per [Sterling at 06:20](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6624130267):**
+  someone on the team makes a personal key (Onshape *My Account → Developer*, which counts
+  against that user's own allowance, not *Company/Classroom settings → Developer*, which counts
+  against the shared one). Then they replace the repository secrets `ONSHAPE_ACCESS_KEY` and
+  `ONSHAPE_SECRET_KEY` and start a new `@claude` run.
+- **The export is now one command,** [`scripts/onshape_export.py`](../../../scripts/onshape_export.py):
+  `--only Baseplate` takes about 6 calls, and all of #193 about 83. Details are in
+  [`cad/onshape-193/README.md`](../../../cad/onshape-193/README.md).
+- **The models are unchanged** since the 2026-11-03 snapshot (same microversions, re-checked
+  without a key at 06:20 UTC), so the Baseplate is still 190.4 × 190.4 × 52.6 mm.
