@@ -1,4 +1,87 @@
-# powder-excavator
+# powder-doser
+
+**A programmable powder doser with 15+ reservoirs and automated auger
+swapping for AI-enabled alloy-development workflows.** This is the
+feedstock-preparation node of a closed-loop, Bayesian-optimization
+alloy-development pipeline being built by the
+[Vertical Cloud Lab](https://github.com/vertical-cloud-lab) at BYU, with a
+sub-$1,000 bill-of-materials target (commercial dispensers run $10k–30k).
+Per-powder stepper-driven Archimedean augers with solenoid-tap/vibration
+agitation and tilt control dose cohesive, static-prone alloy-precursor
+powders under gravimetric (analytical-balance) feedback; cross-contamination
+between recipes is prevented *by design* with dedicated per-powder augers
+exchanged by an automated auger-swap system (the **multi-doser**). Dosed
+powders will feed ultrasonic atomization and laser powder bed fusion (L-PBF).
+Design targets: 15+ independently addressable reservoirs, 250 mL blends,
+±1 mg per-powder accuracy. See the full working abstract in
+[#160](https://github.com/vertical-cloud-lab/powder-doser/issues/160).
+
+> 🧭 **New to the project? Start with
+> [docs/ORIENTATION.md](docs/ORIENTATION.md)** — project history, who leads
+> what, the multi-doser design conversation, key issues/PRs/videos, and a
+> first-week checklist.
+
+![Autonomous AM-alloy workflow: (a) powder dosing feeds (b) ultrasonic atomization, (c) L-PBF, and (d) part characterization, with Bayesian optimization closing the loop](nasa-space-grant-am-alloy-workflow.png)
+
+**Status (September 2026).** A single-channel bench rig (auger + solenoid
+tap + vibration + tilt over an A&D HR-100A balance, Pico W firmware,
+Raspberry Pi + Tailscale remote control) runs **closed-loop doses within a
+few mg of target on command** — including remotely via `@claude` comments on
+GitHub issues ([#132](https://github.com/vertical-cloud-lab/powder-doser/issues/132),
+[#145](https://github.com/vertical-cloud-lab/powder-doser/issues/145),
+[#148](https://github.com/vertical-cloud-lab/powder-doser/issues/148)) —
+with runs logged to MongoDB and visible on the
+[bench livestream](https://youtube.com/@byu-vcl-hardware-streams). A
+calibration campaign across surrogate and metal powders (incl. AlSi10Mg)
+lives in [#116](https://github.com/vertical-cloud-lab/powder-doser/issues/116);
+the **multi-doser** (roller-chain auger carousel with passive carriages and a
+single docking station) is in active design and printing in
+[#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128).
+
+<img src="cad/auger/archimedes-auger-iso.png" alt="Isometric render of the dispenser tube" width="30%" /> <img src="POSE_tube_xanthan_gum.png" alt="POSE-workshop rotating-tube proof of concept dispensing xanthan gum" width="33%" /> <img src="design/cad/inward-collection-cup/inward_collection_cup_iso.png" alt="Twelve channels aimed at one collection cup" width="30%" />
+
+*Left to right: the current dispenser tube ([`cad/auger/`](cad/auger/)); the
+24-hour POSE-workshop proof of concept dispensing xanthan gum; the
+N-parallel-channels reference architecture from
+[`design/brainstorming.md`](design/brainstorming.md).*
+
+## Quick links
+
+| I want to… | Go to |
+|---|---|
+| Get oriented as a new student | [docs/ORIENTATION.md](docs/ORIENTATION.md) |
+| Understand requirements + architecture choices | [`design/brainstorming.md`](design/brainstorming.md) |
+| Follow the multi-doser design | Issue [#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128) |
+| Build/wire a channel (BOM, schematic, firmware) | [`hardware/`](hardware/), esp. [`vibration-motor-and-solenoid.md`](hardware/vibration-motor-and-solenoid.md) |
+| Print the auger | [`cad/auger/`](cad/auger/) (+ ready H2D G-code in [`cad/auger/slices/`](cad/auger/slices/)) |
+| See calibration data + test runs | [#116](https://github.com/vertical-cloud-lab/powder-doser/issues/116), [#148](https://github.com/vertical-cloud-lab/powder-doser/issues/148), data on `claude/issue-116-*` branches |
+| Know which powders we target | [`docs/candidate-powders.md`](docs/candidate-powders.md) |
+| Read the funding proposal + summer plan | [`proposals/byu-nasa-space-grant-2026/`](proposals/byu-nasa-space-grant-2026/) |
+| Work on the paper | [`paper/`](paper/) (+ literature reviews in [`paper/background/`](paper/background/)) |
+| Operate the physical rig safely | [`CLAUDE.md`](CLAUDE.md), safety [#141](https://github.com/vertical-cloud-lab/powder-doser/issues/141), usage [#144](https://github.com/vertical-cloud-lab/powder-doser/issues/144) |
+
+## See it in action
+
+- 🎥 [Multi-doser prototype pitch (14 min, Aug 2026)](https://www.youtube.com/watch?v=IkjBxqa06u0) · [carriage assembly explainer](https://youtu.be/BSgpeKZgoXU) · [3D-printed prototype](https://www.youtube.com/watch?v=liB6YNSN8-Q)
+- 🎥 [A remote closed-loop 1 g salt dose, live on stream](https://www.youtube.com/live/XJ5TRApc6pI?t=12835) (from [#145](https://github.com/vertical-cloud-lab/powder-doser/issues/145))
+- 🎥 [Manual calibration playlist](https://www.youtube.com/playlist?list=PLZTWCFxzhTQv42fTuW2Tjs9o1KuWA_b-I) — per-powder tilt/rotate/tap tests, incl. [AlSi10Mg](https://www.youtube.com/watch?v=LnQZbVpLXvo)
+- 🎥 [Rolling bench livestream](https://youtube.com/@byu-vcl-hardware-streams)
+- 🖥️ [POSE 2026 slides](https://docs.google.com/presentation/d/1SZyMInTeK6V5QMu_9ptvdzXFou06gq9Mr7xBxdh9StA/edit?usp=sharing) · [excavator-era wrap-up deck](https://vertical-cloud-lab.github.io/powder-doser/)
+
+---
+
+## Historical origin — the "powder-excavator" (April 2026)
+
+> **Heads-up:** everything below this line documents the project's *first*
+> era and the resources that grew alongside it. The project began as a
+> pure-mechanical, gantry-mounted powder scoop before pivoting (May 2026) to
+> the auger-based doser described above — the
+> [orientation](docs/ORIENTATION.md#project-history--how-we-got-here)
+> tells that story. The excavator design work below remains a worked example
+> of the lab's agentic design→review→CAD pipeline (Edison Scientific reviews
+> in [`docs/edison/`](docs/edison/), design-notes manuscript in
+> [`docs/manuscript/`](docs/manuscript/)); later sections (Hardware, Design,
+> Candidate powders, Paper) already belong to the doser era.
 
 A pure-mechanical, gantry-mounted "ladle / trough" for picking up loose
 powder from a bed and depositing it at a target location. The trough is
