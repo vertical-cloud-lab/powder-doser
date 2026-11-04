@@ -1,0 +1,60 @@
+{
+  "request": {
+    "issue": "https://github.com/vertical-cloud-lab/powder-doser/issues/197#issuecomment-6592408544",
+    "by": "brandonmunk",
+    "text": "Print the baseplate on the H2D with the .4mm nozzle",
+    "requested_utc": "2026-11-03T00:50:15Z",
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/41555674109",
+    "run_started_utc": "2026-11-03T00:55:59Z",
+    "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/issues/197#issuecomment-6592492130"
+  },
+  "file": {
+    "source": "https://cad.onshape.com/documents/68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
+    "listed_in": "https://github.com/vertical-cloud-lab/powder-doser/issues/193",
+    "onshape_document": "Baseplate (owner Vertical Cloud Lab, public, modified 2026-11-01T02:10:28Z, unchanged at 2026-11-03T01:05Z)",
+    "part_studio": "Base: Sketch 1-6, extrudes, a 10 mm fillet and three mirrors (20 features)",
+    "extent_mm_from_onshape_renders": [
+      190.4,
+      190.4,
+      52.6
+    ],
+    "extent_method": "Onshape shadedviews (top, front, right) at 0.2 mm/px, alpha-mask bounding boxes; +/- 0.2 mm",
+    "fits_h2d": "yes: the left nozzle's area is 325 x 320 mm, and the part is printed flat side down",
+    "exported": false,
+    "why_not_exported": "claude-print.yml has no ONSHAPE_ACCESS_KEY/ONSHAPE_SECRET_KEY; anonymous requests get the feature list, metadata and shaded views, but 401 for STL, tessellatedfaces, bodydetails, boundingboxes, massproperties and glTF",
+    "older_exports_considered": false
+  },
+  "printer": {
+    "name": "BYU VCL H2D - Théoden",
+    "selected_in_studio_matches_H2D_SERIAL": true,
+    "state": "offline in Bambu's cloud for the whole run: grey offline mark in the printer list; Device page 'Failed to connect to the printer', code -6010, 'Connection to printer failed. Please check the network connection of the printer and Studio'",
+    "first_seen_offline_utc": "2026-11-03T01:03:31Z",
+    "last_seen_offline_utc": "2026-11-03T02:30:06Z",
+    "nozzles": "unknown (printer offline)",
+    "hms_alerts": "unknown (printer offline)",
+    "other_printer_on_account": "Thumbelina (A1 mini): online and idle at 01:02 UTC, last job stub_holder_A1mini_blackPLA at 100 %, Finished",
+    "selected_utc": "2026-11-03T01:03:10Z"
+  },
+  "plate_check": {
+    "frame": null,
+    "why_no_frame": "the H2D never connected",
+    "polling": "the Device page checked every 20 s from 01:06 to 02:30 UTC, with the H2D re-selected every 3 min (24 retries); each retry went from 'Connecting...' back to 'Failed to connect'. One early check at 01:09:55 took the green 'Connecting...' banner for a connection; a screenshot at 01:10:02 showed 'Failed to connect' again and the check was fixed",
+    "thread_polled": "every 60 s from 01:06 to 02:30 UTC; no replies",
+    "replies": []
+  },
+  "go": null,
+  "sent": false,
+  "why_not_sent": [
+    "The H2D was offline in Bambu's cloud (-6010) from 01:03 to 02:30 UTC, so there was no frame, state, HMS or nozzle reading",
+    "This run cannot export the current Onshape geometry (no Onshape keys in claude-print.yml), and the issue asks for the updated Onshape files only"
+  ],
+  "studio": {
+    "version": "02.08.02.61",
+    "setup": "AppImage plus apt packages (mirror switched to mirrors.edge.kernel.org), installed in about 3 min",
+    "login": "password, then the authenticator code from bambu-totp; first code accepted (Log In 01:01:56, Confirm 01:02:17 UTC); no e-mailed code asked for",
+    "signed_out_utc": "2026-11-03T02:30:31Z",
+    "closed_and_config_deleted": true,
+    "recording": "raw recording deleted unpublished: nothing was printed, and it showed the login"
+  },
+  "github_token": "re-minted at 01:48 UTC with scripts/refresh_github_app_token.py"
+}

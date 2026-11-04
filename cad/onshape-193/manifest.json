@@ -1,0 +1,813 @@
+{
+ "fetched_utc": "2026-11-04T06:20:53Z",
+ "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/193",
+ "method": "anonymous Onshape REST requests (no API key, no API calls counted)",
+ "mm_per_px": 0.2,
+ "documents": [
+  {
+   "name": "Baseplate",
+   "document": "Baseplate",
+   "url": "https://cad.onshape.com/documents/68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
+   "did": "68b18e694d8672d95f496279",
+   "wid": "ca6615cd1f43e41c93dbf2f5",
+   "linked_element": "9f7a9b5e682bc05529f15125",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-11-01T02:10:28.945+00:00",
+   "elements": [
+    {
+     "id": "9f7a9b5e682bc05529f15125",
+     "name": "Base",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "2a508062f03fe6fb748aaf74",
+     "features": [
+      "Sketch 1 (newSketch)",
+      "Base shape extrude (extrude)",
+      "Sketch 2 (newSketch)",
+      "Hole extrude (extrude)",
+      "Upright plane (cPlane)",
+      "Sketch 3 (newSketch)",
+      "Extrude 1 (extrude)",
+      "Fillet 1 (fillet)",
+      "Sketch 4 (newSketch)",
+      "Extrude 2 (extrude)",
+      "Mirror 1 (mirror)",
+      "Servo mount plane (cPlane)",
+      "Servo mount plane 2 (cPlane)",
+      "Sketch 5 (newSketch)",
+      "Extrude 3 (extrude)",
+      "Servo mirror plane (cPlane)",
+      "Sketch 6 (newSketch)",
+      "Extrude 4 (extrude)",
+      "Mirror 2 (mirror)",
+      "Mirror 3 (mirror)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 190.4,
+       "h_mm": 190.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 190.4,
+       "h_mm": 52.6
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 190.4,
+       "h_mm": 52.6
+      }
+     },
+     "extent_mm": [
+      190.4,
+      190.4,
+      52.6
+     ],
+     "dir": "baseplate/base"
+    }
+   ]
+  },
+  {
+   "name": "Mounting plate",
+   "document": "Mounting plate",
+   "url": "https://cad.onshape.com/documents/53e9cce7f09a50f89c120028/w/d45f5e9d7335aff0b1f1e88d/e/224d71f16476d8c27dc6e3e0",
+   "did": "53e9cce7f09a50f89c120028",
+   "wid": "d45f5e9d7335aff0b1f1e88d",
+   "linked_element": "224d71f16476d8c27dc6e3e0",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-24T03:41:52.617+00:00",
+   "elements": [
+    {
+     "id": "224d71f16476d8c27dc6e3e0",
+     "name": "Part Studio 1",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "abdcba8fa5eec45fad91fa92",
+     "features": [
+      "Base shape sketch (newSketch)",
+      "Base shape extrude (extrude)",
+      "Edge fillets (fillet)",
+      "Stepper mount sketch (newSketch)",
+      "Stepper mount extrude (extrude)",
+      "Stepper mount holes sketch (newSketch)",
+      "Stepper mount holes extrude (extrude)",
+      "Hinge, gear arms sketch (newSketch)",
+      "Gear arm extrude (extrude)",
+      "Hinge arm sketch (newSketch)",
+      "Hinge arm extrude (extrude)",
+      "Hing arm 2 sketch (newSketch)",
+      "Hinge arm 2 extrude (extrude)",
+      "Gear arm sketch 2 (newSketch)",
+      "Gear arm extrude 2 (extrude)",
+      "Sketch 1 (newSketch, suppressed)",
+      "Extrude 1 (extrude, suppressed)",
+      "Sketch 2 (newSketch)",
+      "Plane 1 (cPlane)",
+      "Extrude 2 (extrude)",
+      "Sketch 3 (newSketch)",
+      "Extrude 3 (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 108.4,
+       "h_mm": 149.8
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 108.6,
+       "h_mm": 55.2
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 149.8,
+       "h_mm": 55.2
+      }
+     },
+     "extent_mm": [
+      108.4,
+      149.8,
+      55.2
+     ],
+     "dir": "mounting-plate/part-studio-1"
+    },
+    {
+     "id": "cf156411729dd9b994c61b4b",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": false
+    },
+    {
+     "id": "ff11573cd218d3cf4687ad4e",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Auger",
+   "document": "Auger",
+   "url": "https://cad.onshape.com/documents/51aa3e7d16cc046d79714a7a/w/e4a7f050613025f7f2cb4fb6/e/3c166b7f26f467535e63234e",
+   "did": "51aa3e7d16cc046d79714a7a",
+   "wid": "e4a7f050613025f7f2cb4fb6",
+   "linked_element": "3c166b7f26f467535e63234e",
+   "public": false,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-29T18:15:38.425+00:00",
+   "elements": [
+    {
+     "id": "3c166b7f26f467535e63234e",
+     "name": "Part Studio 1",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "e7c79c28b4efc1804f70ebe5",
+     "features": [
+      "Core sketch (newSketch)",
+      "Core (revolve)",
+      "Flight helix sketch (newSketch)",
+      "Flight helix (helix)",
+      "Flight profile (newSketch)",
+      "Flight (sweep)",
+      "Tube sketch (newSketch)",
+      "Tube (revolve)",
+      "Gear plane (cPlane)",
+      "Gear blank sketch (newSketch)",
+      "Gear blank (extrude)",
+      "Tooth gap sketch (newSketch)",
+      "Tooth gap (extrude)",
+      "Gear teeth (circularPattern)",
+      "Thread plane (cPlane)",
+      "Thread helix sketch (newSketch)",
+      "Thread helix (helix)",
+      "Thread profile (newSketch)",
+      "Thread (sweep)",
+      "Thread trim sketch (newSketch)",
+      "Thread trim (revolve)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 46.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 250.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 250.4
+      }
+     },
+     "extent_mm": [
+      46.4,
+      46.4,
+      250.4
+     ],
+     "dir": "auger/part-studio-1"
+    },
+    {
+     "id": "a8a1b4904e0f12cc607d16e2",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": false
+    },
+    {
+     "id": "ff5f13328b7bd1b8990e25d1",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    },
+    {
+     "id": "7fcd91b9ef2c6f2a15a97b8a",
+     "name": "Auger variables",
+     "type": "VARIABLESTUDIO",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Tap collar",
+   "document": "tapcollar.stp",
+   "url": "https://cad.onshape.com/documents/b0b9aed3e11591e566530a68/w/7dc93c75a03ccff73030ba25/e/cf844b34a00ef7d2d52191c1",
+   "did": "b0b9aed3e11591e566530a68",
+   "wid": "7dc93c75a03ccff73030ba25",
+   "linked_element": "cf844b34a00ef7d2d52191c1",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-23T04:51:39.400+00:00",
+   "elements": [
+    {
+     "id": "cf844b34a00ef7d2d52191c1",
+     "name": "tapcollar",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "a6489481abd385ea371f62a0",
+     "features": [
+      "Import 1 (importForeign)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 17.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 70.6
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 17.4,
+       "h_mm": 70.6
+      }
+     },
+     "extent_mm": [
+      46.4,
+      17.4,
+      70.6
+     ],
+     "dir": "tap-collar/tapcollar"
+    },
+    {
+     "id": "5698e113586ac646eea0efd1",
+     "name": "Tap Collar Recreation",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "a6489481abd385ea371f62a0",
+     "features": [
+      "Tap Collar (newSketch)",
+      "Collar (extrude)",
+      "Bolt Holes (newSketch)",
+      "Bolt Hole Extrude (extrude)",
+      "Solenoid Block Extrude (extrude)",
+      "Solenoid Hole (newSketch)",
+      "Solenoid Hole Extrude (extrude)",
+      "Solenoid Plate (extrude)",
+      "Solenoid Mount Holes (newSketch)",
+      "Solenoid Mount Holes Extrude (extrude)",
+      "Collar Mount Hole (newSketch)",
+      "Collar Mount Hole Extrude (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 17.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 46.4,
+       "h_mm": 70.6
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 17.4,
+       "h_mm": 70.6
+      }
+     },
+     "extent_mm": [
+      46.4,
+      17.4,
+      70.6
+     ],
+     "dir": "tap-collar/tap-collar-recreation"
+    },
+    {
+     "id": "e64b0cacd262c384f6f768cd",
+     "name": "tapcollar.stp",
+     "type": "BLOB",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Servo pinion",
+   "document": "Servo Pinion",
+   "url": "https://cad.onshape.com/documents/35ecacf511109e3b823b3ed0",
+   "did": "35ecacf511109e3b823b3ed0",
+   "wid": "6070d7c538ec64e1c4815a96",
+   "linked_element": null,
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-27T03:19:34.388+00:00",
+   "elements": [
+    {
+     "id": "ce683b15c3b969067abfe902",
+     "name": "Complete Servo Pinion",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "f9cfc5f98ab823d0599f7bdf",
+     "features": [
+      "Spur gear (#teeth teeth) (SpurGear)",
+      "Hole 1 (newSketch)",
+      "Hole Extrude (extrude)",
+      "Chamfer Hole (newSketch)",
+      "Chamfer Hole Extrude (extrude)",
+      "Chamfer 1 (chamfer)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 20.8,
+       "h_mm": 12.6
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 20.8,
+       "h_mm": 21.2
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 12.6,
+       "h_mm": 21.2
+      }
+     },
+     "extent_mm": [
+      20.8,
+      12.6,
+      21.2
+     ],
+     "dir": "servo-pinion/complete-servo-pinion"
+    },
+    {
+     "id": "925f1d8151cdcbb5fbc3edd8",
+     "name": "Servo_pinion",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "f9cfc5f98ab823d0599f7bdf",
+     "features": [
+      "Import 1 (importForeign)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 21.2,
+       "h_mm": 20.8
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 21.2,
+       "h_mm": 12.6
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 20.8,
+       "h_mm": 12.6
+      }
+     },
+     "extent_mm": [
+      21.2,
+      20.8,
+      12.6
+     ],
+     "dir": "servo-pinion/servo-pinion"
+    },
+    {
+     "id": "5b2452057792f0270b4460a9",
+     "name": "Servo_pinion.stp",
+     "type": "BLOB",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Stepper pinion",
+   "document": "Stepper Pinion",
+   "url": "https://cad.onshape.com/documents/0401d55bca2deb006cc69926",
+   "did": "0401d55bca2deb006cc69926",
+   "wid": "56aa0f2d144e80430400d010",
+   "linked_element": null,
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-21T01:21:29.176+00:00",
+   "elements": [
+    {
+     "id": "5fa50b725c9798e330133171",
+     "name": "Stepper Pinion",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "120eff16b37d4b2f206ebab4",
+     "features": [
+      "Spur gear (#teeth teeth) (SpurGear)",
+      "Sketch 1 (newSketch)",
+      "Extrude 1 (extrude)",
+      "Sketch 2 (newSketch)",
+      "Extrude 2 (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 28.8,
+       "h_mm": 16.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 28.8,
+       "h_mm": 28.8
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 16.4,
+       "h_mm": 28.8
+      }
+     },
+     "extent_mm": [
+      28.8,
+      16.4,
+      28.8
+     ],
+     "dir": "stepper-pinion/stepper-pinion"
+    },
+    {
+     "id": "34e4bc84d0ac2aa4e927b73b",
+     "name": "stepper_pinion",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "120eff16b37d4b2f206ebab4",
+     "features": [
+      "Import 1 (importForeign)",
+      "Sketch 1 (newSketch)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 22.4,
+       "h_mm": 22.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 22.4,
+       "h_mm": 16.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 22.4,
+       "h_mm": 16.4
+      }
+     },
+     "extent_mm": [
+      22.4,
+      22.4,
+      16.4
+     ],
+     "dir": "stepper-pinion/stepper-pinion-34e4bc"
+    },
+    {
+     "id": "91927e93647e1ec507f81d4d",
+     "name": "stepper_pinion.stp",
+     "type": "BLOB",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Stand bracket (back)",
+   "document": "Stand bracket (back)",
+   "url": "https://cad.onshape.com/documents/6cb5182c1e0e0193cfea81bb/w/97676bb10a178925d14f31d1/e/ea82a43a82cf5f861b73a9e3",
+   "did": "6cb5182c1e0e0193cfea81bb",
+   "wid": "97676bb10a178925d14f31d1",
+   "linked_element": "ea82a43a82cf5f861b73a9e3",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-29T23:52:23.879+00:00",
+   "elements": [
+    {
+     "id": "ea82a43a82cf5f861b73a9e3",
+     "name": "Part Studio 1",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "9dbe909f85a53744b81e49b2",
+     "features": [
+      "Back stand bracket shape sketch (newSketch)",
+      "Back stand bracket shape extrude (extrude)",
+      "Wood attachment sketch (newSketch)",
+      "Wood attachment extrude (extrude)",
+      "Wood holes sketch (newSketch)",
+      "Wood holes extrude (extrude)",
+      "Base holes sketch (newSketch)",
+      "Base holes extrude (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 72.4,
+       "h_mm": 207.2
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 72.4,
+       "h_mm": 25.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 207.4,
+       "h_mm": 25.4
+      }
+     },
+     "extent_mm": [
+      72.4,
+      207.2,
+      25.4
+     ],
+     "dir": "stand-bracket-back/part-studio-1"
+    },
+    {
+     "id": "325ddb25ca1c7fcc12f3b628",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": false
+    },
+    {
+     "id": "14310e1af6040e49f573b4c4",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Stand bracket (sides)",
+   "document": "Stand bracket (sides)",
+   "url": "https://cad.onshape.com/documents/3493a07ffbb9b140e0fcdf21/w/50e6d3a1a5f5feadde61da47/e/cbbebd3d1064640d9bce4c7f",
+   "did": "3493a07ffbb9b140e0fcdf21",
+   "wid": "50e6d3a1a5f5feadde61da47",
+   "linked_element": "cbbebd3d1064640d9bce4c7f",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-30T23:43:05.686+00:00",
+   "elements": [
+    {
+     "id": "7c0d89ca7e487cdf4a761fd7",
+     "name": "Left side",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "730cc50c1185626ebd909376",
+     "features": [
+      "Side bracket shape sketch (newSketch)",
+      "Side bracket shape extrude (extrude)",
+      "Wood connector sketch (newSketch)",
+      "Wood connector extrude (extrude)",
+      "Wood holes sketch (newSketch)",
+      "Wood holes extrude cut (extrude)",
+      "Base holes sketch (newSketch)",
+      "Base holes extrude cut (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 116.4,
+       "h_mm": 74.6
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 116.4,
+       "h_mm": 25.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 74.6,
+       "h_mm": 25.4
+      }
+     },
+     "extent_mm": [
+      116.4,
+      74.6,
+      25.4
+     ],
+     "dir": "stand-bracket-sides/left-side"
+    },
+    {
+     "id": "cbbebd3d1064640d9bce4c7f",
+     "name": "Right side",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "730cc50c1185626ebd909376",
+     "features": [
+      "Side bracket shape sketch (newSketch)",
+      "Side bracket shape extrude (extrude)",
+      "Wood connector sketch (newSketch)",
+      "Wood connector extrude (extrude)",
+      "Wood holes sketch (newSketch)",
+      "Wood holes extrude cut (extrude)",
+      "Base holes sketch (newSketch)",
+      "Base holes extrude cut (extrude)",
+      "Plane 1 (cPlane)",
+      "Mirror 1 (mirror)",
+      "Delete part 1 (deleteBodies)",
+      "Sketch 1 (newSketch)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 116.4,
+       "h_mm": 74.6
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 116.4,
+       "h_mm": 25.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 74.6,
+       "h_mm": 25.4
+      }
+     },
+     "extent_mm": [
+      116.4,
+      74.6,
+      25.4
+     ],
+     "dir": "stand-bracket-sides/right-side"
+    },
+    {
+     "id": "8acbaa56f8653e5a2888be81",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": false
+    },
+    {
+     "id": "884b234b7c740c5e9bde0f1b",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Wood leg",
+   "document": "Wood leg",
+   "url": "https://cad.onshape.com/documents/659ee3322c5c9c9ce8146b43/w/f5c8346fbf02967b4d0261a6/e/bbd4667923221cda37cd63e1",
+   "did": "659ee3322c5c9c9ce8146b43",
+   "wid": "f5c8346fbf02967b4d0261a6",
+   "linked_element": "bbd4667923221cda37cd63e1",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-20T22:24:41.901+00:00",
+   "elements": [
+    {
+     "id": "bbd4667923221cda37cd63e1",
+     "name": "Part Studio 1",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "a640cde65fe7736153d61873",
+     "features": [
+      "Sketch 1 (newSketch)",
+      "Extrude 1 (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 59.2,
+       "h_mm": 9.8
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 59.2,
+       "h_mm": 250.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 9.8,
+       "h_mm": 250.4
+      }
+     },
+     "extent_mm": [
+      59.2,
+      9.8,
+      250.4
+     ],
+     "dir": "wood-leg/part-studio-1"
+    },
+    {
+     "id": "cb089f60cff93980fd390831",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": false
+    },
+    {
+     "id": "367253ef6bda0f0416cd375e",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Assembly",
+   "document": "Assembly",
+   "url": "https://cad.onshape.com/documents/f866631c78fbefd61e6856e4/w/043fe020d0194e41cea13bc2/e/3156bac055c13d8160e229b4",
+   "did": "f866631c78fbefd61e6856e4",
+   "wid": "043fe020d0194e41cea13bc2",
+   "linked_element": "3156bac055c13d8160e229b4",
+   "public": true,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-10-30T23:50:37.148+00:00",
+   "elements": [
+    {
+     "id": "b7fe173d0fcdee4c1e00e6e8",
+     "name": "Part Studio 1",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "014223ee356054ab9ad6d0b9",
+     "features": [],
+     "views": {
+      "top": null,
+      "front": null,
+      "right": null
+     },
+     "dir": "assembly/part-studio-1"
+    },
+    {
+     "id": "3156bac055c13d8160e229b4",
+     "name": "Assembly 1",
+     "type": "ASSEMBLY",
+     "linked": true,
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 223.4,
+       "h_mm": 353.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 223.4,
+       "h_mm": 374.2
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 353.4,
+       "h_mm": 374.2
+      }
+     },
+     "extent_mm": [
+      223.4,
+      353.4,
+      374.2
+     ],
+     "dir": "assembly/assembly-1"
+    },
+    {
+     "id": "a76caffa188b1b77fa53caea",
+     "name": "BOM : Assembly 1",
+     "type": "BILLOFMATERIALS",
+     "linked": false
+    }
+   ]
+  }
+ ],
+ "requests": {
+  "total": 136,
+  "by_status": {
+   "200": 136
+  }
+ }
+}

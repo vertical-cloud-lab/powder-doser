@@ -1,0 +1,31 @@
+04:35:49 frame poll_20261104T043542Z.png luma 96.4 plate-diff 5.3 nozzles ['0.6', '0.6']
+04:40:02 frame poll_20261104T043955Z.png luma 85.6 plate-diff 88.4 nozzles ['0.6', '0.6']
+04:44:17 frame poll_20261104T044410Z.png luma 96.4 plate-diff 5.3 nozzles ['0.6', '0.6']
+04:48:34 frame poll_20261104T044827Z.png luma 96.4 plate-diff 5.3 nozzles ['0.6', '0.6']
+04:49:05 onshape keys: HTTP 402
+04:53:03 frame poll_20261104T045256Z.png luma 96.5 plate-diff 5.2 nozzles ['0.6', '0.6']
+04:54:36 onshape keys: HTTP 402
+04:57:18 frame poll_20261104T045711Z.png luma 96.4 plate-diff 5.2 nozzles ['0.6', '0.6']
+04:59:54 onshape keys: HTTP 402
+05:01:47 frame poll_20261104T050140Z.png luma 96.5 plate-diff 5.3 nozzles ['0.6', '0.6']
+05:04:21 chunk over
+05:04:42 onshape keys: HTTP 402
+05:04:50 frame poll_20261104T050443Z.png luma 96.5 plate-diff 5.2 nozzles ['0.6', '0.6']
+05:09:18 frame poll_20261104T050911Z.png luma 96.5 plate-diff 5.1 nozzles ['0.6', '0.6']
+05:09:50 onshape keys: HTTP 402
+05:13:34 frame poll_20261104T051326Z.png luma 96.4 plate-diff 5.3 nozzles ['0.6', '0.6']
+05:14:34 chunk over
+05:14:45 onshape keys: HTTP 402
+05:15:05 frame poll_20261104T051458Z.png luma 96.4 plate-diff 5.2 nozzles ['0.6', '0.6']
+05:19:20 frame poll_20261104T051913Z.png luma 96.5 plate-diff 5.1 nozzles ['0.6', '0.6']
+05:19:51 onshape keys: HTTP 402
+05:23:48 frame poll_20261104T052341Z.png luma 96.4 plate-diff 5.3 nozzles ['0.6', '0.6']
+05:25:21 onshape keys: HTTP 402
+05:28:03 frame poll_20261104T052756Z.png luma 96.4 plate-diff 5.4 nozzles ['0.6', '0.6']
+05:30:38 onshape keys: HTTP 402
+05:32:32 frame poll_20261104T053225Z.png luma 96.5 plate-diff 5.1 nozzles ['0.6', '0.6']
+05:36:09 onshape keys: HTTP 402
+05:36:47 frame poll_20261104T053640Z.png luma 96.5 plate-diff 5.2 nozzles ['0.6', '0.6']
+05:41:15 frame poll_20261104T054108Z.png luma 96.5 plate-diff 5.1 nozzles ['0.6', '0.6']
+05:41:46 onshape keys: HTTP 402
+05:45:22 chunk over

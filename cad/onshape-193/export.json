@@ -1,0 +1,30 @@
+{
+ "started_utc": "2026-11-04T06:25:15Z",
+ "api": "https://cad.onshape.com/api/v6",
+ "snapshot_fetched_utc": "2026-11-04T06:20:53Z",
+ "max_calls": 120,
+ "estimate": 83,
+ "elements": [
+  {
+   "entry": "Baseplate",
+   "element": "Base",
+   "type": "PARTSTUDIO",
+   "id": "9f7a9b5e682bc05529f15125",
+   "dir": "baseplate/base",
+   "snapshot_microversion": "2a508062f03fe6fb748aaf74",
+   "microversion_at_export": "2a508062f03fe6fb748aaf74",
+   "unchanged_since_snapshot": true
+  }
+ ],
+ "stopped": "CapReached at 2026-11-04T06:25:15Z: { \"message\" : \"API limit exceeded\", \"moreInfoUrl\" : \"\", \"status\" : 402, \"code\" : 402 }",
+ "finished_utc": "2026-11-04T06:25:15Z",
+ "calls_counted": 0,
+ "calls": [
+  {
+   "utc": "2026-11-04T06:25:15Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 402
+  }
+ ]
+}
