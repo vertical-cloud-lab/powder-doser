@@ -45,7 +45,8 @@ work is the SEM door opener ([#132](https://github.com/AccelerationConsortium/ac
 [firmware](https://github.com/AccelerationConsortium/ac-dev-lab/blob/ffbbb01/src/ac_training_lab/picow/digital-pipette/main.py).
 Two repos linked from those issues were read too: Yang Cao's
 [`actuonix_lac`](https://github.com/cyrilcaoyang/actuonix_lac/tree/122a034) and Kelvin Chow's
-[feedback demo](https://github.com/kelvinchow23/actuonix-actuator-feedback-demo/tree/b019148).
+[feedback demo](https://github.com/kelvinchow23/actuonix-actuator-feedback-demo/tree/b019148). Issue numbers in this
+section are ac-dev-lab's, except #185 (this repo's carousel PR).
 
 **The order list matches what Sterling bought for the SEM door.** On 2025-09-05 he ordered an
 [L16-140-35-12-P](https://www.actuonix.com/l16-140-35-12-p), an LAC, an LAC case and the Actuonix 12 V supply, all
@@ -118,7 +119,7 @@ USB cable.
      ([#132](https://github.com/AccelerationConsortium/ac-dev-lab/issues/132#issuecomment-3307783859)).
    - The v3/v4 BOMs already pin both ends with 4 mm shoulder screws (item 43), so nothing changes. Just don't swap
      the bundled screws in.
-7. **Power the LAC from its 12 V supply, even for USB setup.** In #148 the LAC wouldn't connect over USB alone
+7. **Power the LAC from its 12 V supply, even for USB setup.** It wouldn't connect over USB alone
    ([#148](https://github.com/AccelerationConsortium/ac-dev-lab/issues/148#issuecomment-2588703099)). The SEM wiring
    powers the LAC first, then the Pi, with the grounds tied together and no 12 V on the Pi
    ([#455](https://github.com/AccelerationConsortium/ac-dev-lab/issues/455#issuecomment-3335230218)).
