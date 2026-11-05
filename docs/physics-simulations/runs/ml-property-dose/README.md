@@ -179,6 +179,38 @@ All numbers are in [`tables.md`](tables.md) and [`result.json`](result.json).
    any property, and it is the descriptor the multi-task GP of the paper plan (§2.5) already uses. Properties are
    most useful for the flow / no-flow call and for picking the search range before the first dose.
 
+## What the literature says (Edison q11)
+Edison q11 ([answer](../../edison/q11_ml_property_dose_models.answer.md)) was sent alongside this run and arrived
+after it. Its points agree with the results above:
+* **The closest precedents are pharmaceutical feeders**, modelled with PLS on material-property libraries:
+  Bostijn et al. (2019: 15 powders, 25 descriptors, a low-rate twin-screw feeder; the feed factor was predicted
+  better than its variability), and the Rutgers/FDA material library of Wang et al. (2017, 2019) and Li (2020: 7–20
+  materials, leave one material out). There the strongest single descriptor is conditioned bulk density. That fits feeders where
+  every powder flows and the screw's volume sets the rate. At this doser's 1.07 mm exit, cohesion decides whether
+  anything flows, and AoR is the strongest descriptor instead; within the 7 powders that convey, handbook bulk
+  density explains nothing (it would need measuring on the jars).
+* **Inverse models in the literature are classifiers**: flow-function class from PSD, shape and bulk density
+  (Diaz et al. 2023, 112 systems, ROC-AUC 0.82, under 45 % right for the middle class; Owasit et al. 2025, 410
+  blends, 81 % for two classes on an unseen API, 46 % for five). Coarse classes are what a dozen powders can support.
+* **How many materials:** PLS models stabilized at about 20 materials in a 45-material library (Cao et al. 2024),
+  with stratified rather than random selection below 15. Random forests from about 30, neural networks high risk
+  below 40–50. That matches the inflation table above.
+* **Model classes:** PLS as the baseline; GPs for few inputs with calibrated uncertainty, but sensitive to regime
+  changes such as flow / no flow (a GP surrogate scored R² 0.38 on silo discharge in one 34-point DEM study,
+  against 0.98 on a smooth belt-conveyor response); a classifier before a regression for censored no-flow
+  responses; material-grouped validation.
+* **Consistency between the two directions:** two separate regressions can contradict each other; Bayesian
+  inversion of one forward model (a DEM surrogate) is consistent by construction; a joint latent-variable model has
+  no published precedent for powder dosing.
+* **Physics with data:** El Kassem et al. (2021) calibrated LIGGGHTS parameters from an auger doser's angle of
+  repose, bulk density and dosing time with 20 DEM runs and regression; DEM-trained surrogates for spreading
+  (Desai and Higgs 2019); multi-fidelity simulation-based inference with coarse DEM as the cheap level (Kim et al.
+  2026, a preprint). A forward model used to start a closed-loop BO for a new material is in Abbas et al.
+  (2025, 2026).
+
+Several sources are theses or 2026 preprints, and for some Edison could not read the error values; treat their
+numbers as indicative.
+
 ## Runtime
 About 85 s on one core (the 400-subset learning curves take most of it).
 

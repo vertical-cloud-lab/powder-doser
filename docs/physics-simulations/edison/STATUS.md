@@ -16,9 +16,12 @@ and the full query text are in [`_task_ids.json`](_task_ids.json).
 | `q8_tapping_packing_shape` | LITERATURE | `5ba96ea1` | success | [answer](q8_tapping_packing_shape.answer.md), [record](q8_tapping_packing_shape.task.json) |
 | `q9_ml_surrogate_simulators` | LITERATURE | `45fcea4f` | success | [answer](q9_ml_surrogate_simulators.answer.md), [record](q9_ml_surrogate_simulators.task.json) |
 | `q10_simulator_workflow_feasibility` | LITERATURE_HIGH | `ef1201e2` | success | [answer](q10_simulator_workflow_feasibility.answer.md), [record](q10_simulator_workflow_feasibility.task.json) |
+| `q11_ml_property_dose_models` | LITERATURE_HIGH | `57e91c6d` | success | [answer](q11_ml_property_dose_models.answer.md), [record](q11_ml_property_dose_models.task.json) |
 
 `<key>.answer.md` holds the formatted answer with its reference list; `<key>.task.json` is the full verbose task
 record (trajectory and evidence) as returned by `get_task(verbose=True)`.
+
+q11 was added on 5 Nov 2026 after another question on PR #196: how to train machine-learning models that predict powder properties from dosing behaviour and, given the properties, the dosing outcome (run 33, [`../runs/ml-property-dose/`](../runs/ml-property-dose/)). It was sent at 21:56 UTC and finished with `success` by 22:19 UTC.
 
 q10 was added on 3 Nov 2026 after a question on PR #196: how the simulator would infer a new powder's
 properties and speed up its calibration, and how to test whether that is feasible within the project. It was sent at
@@ -36,5 +39,5 @@ literature step first used web search plus open-access full texts read through t
 cd docs/physics-simulations
 python edison/run_queries.py dispatch    # skips keys already in _task_ids.json
 python edison/run_queries.py wait        # one foreground call; polls every 2 min, then fetches
-python edison/run_queries.py wait 3300 q10_simulator_workflow_feasibility   # only the named query
+python edison/run_queries.py wait 3300 q11_ml_property_dose_models   # only the named query
 ```
