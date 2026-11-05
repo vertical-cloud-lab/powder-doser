@@ -15,7 +15,7 @@ attempt to run **all** of the methods found.
 
 ## Results
 
-31 runs, 24 ran and 7 partly (reduced scale or one part failing), plus run 32, a follow-up on held-out powders (below). Animations and figures are in each folder; the PR description (#196) shows them all.
+31 runs, 24 ran and 7 partly (reduced scale or one part failing), plus two follow-ups (below): run 32 on held-out powders and run 33 on machine-learning models between properties and dosing. Animations and figures are in each folder; the PR description (#196) shows them all.
 
 | # | Family ([catalog](LITERATURE.md)) | Run | Code | Status | Headline |
 |---|---|---|---|---|---|
@@ -51,6 +51,7 @@ attempt to run **all** of the methods found.
 | 30 | Learned simulator | [`gns-gnn-simulator`](runs/gns-gnn-simulator) | GNS (PyTorch) | partial | Trained 13 min on 45 DEM runs: runout −6 % / +20 % in range; blew up out of range |
 | 31 | PINN (extra) | [`surrogate-pinn`](runs/surrogate-pinn) | PyTorch | ran | Janssen stress: forward error ≤ 3.3 %; inverse K·μ<sub>w</sub> 0.199 ± 0.004 (truth 0.2) |
 | 32 | Follow-up: held-out powders | [`heldout-powders`](runs/heldout-powders) | LIGGGHTS 3.8 + numpy | ran | #180 twin vs Sam's salt with no fit: 286 vs 265 mg/rev (45°), 138 vs 146 (22.5°). Literature AoR → DEM path → mg/rev predicts held-out powders as well as an AoR regression (RMSE 0.71 vs 0.74 log₁₀), not better |
+| 33 | Follow-up: ML, properties ⇄ dosing | [`ml-property-dose`](runs/ml-property-dose) | scikit-learn | ran | Leave one powder out, 12 powders: the fingerprint predicts AoR (RMSE 3.0–3.5°, mean 5.9°) and nothing else; AoR predicts flow / no flow (11/12) and mg/rev within 0.74 log₁₀; adding the other handbook properties makes every model worse |
 
 One family has no run of its own: **coarse-grained DEM** (family 5). It is used inside runs 11, 13, 14 and 17, where grains were scaled up 2.9–4×.
 
@@ -79,6 +80,27 @@ Details, tables and figures: [`runs/heldout-powders/`](runs/heldout-powders/).
   that separates friction from cohesion, and grains fine enough at the exit for the fine powders.
   A check of the last point with 0.35 mm instead of 0.425 mm grains (annulus 3.1 instead of 2.5 grains wide) let
   the k = 1.5 kJ/m³ case through 6.4× faster, against 1.85× for salt.
+
+## Follow-up: machine-learning models from dosing to properties and back (run 33)
+
+Asked on #196 (5 Nov 2026): how to train ML models that predict powder properties from dosing behaviour and, given
+the properties, the dose outcome. Details, tables and figures: [`runs/ml-property-dose/`](runs/ml-property-dose/).
+
+- **What was trained.** Both directions on the 12 battery powders with handbook properties: the training mean, one
+  input fixed in advance, nested input selection, ridge, PLS, a GP with ARD, a random forest, nearest powders, and a
+  joint Gaussian factor model of both blocks that is conditioned either way. All scored leave one powder out.
+- **Inverse.** The fingerprint predicts AoR (joint model 3.0°, line on mg/rev at 45° 3.5°, mean 5.9°), as well as
+  the handbook spread allows (ceiling Q² 0.57). No model predicts density, Hausner ratio, d50 or moisture
+  (Q² ≤ 0.21).
+- **Forward.** AoR predicts flow / no flow (11/12) and mg/rev at 45° within 0.74 log₁₀ (run 32's DEM chain 0.71).
+  Adding the other six handbook properties makes every model worse; within the 7 powders that convey no property
+  explains the rate. Six revolutions of the powder itself predict its other tilts better (0.30–0.47 log₁₀).
+- **What limits it:** handbook labels, 12 powders (6 inputs inflate the held-out error variance 2.7× at n = 12,
+  1.3× at n = 30), and powder classes in which light, hygroscopic and cohesive go together. Simple models win, and
+  their intervals are honest; the ARD GP overfits and is overconfident.
+- **Recipe:** one row per jar with same-jar labels; powders chosen to break the confounds (sieved fractions, one
+  powder dry and humid, metal powders near the flow / no-flow step) up to 25–30 jars; models no bigger than the
+  data; no-flow treated as censored; prospective, pre-registered tests; the DEM as prior or latent model.
 
 ## What the Edison answers add
 

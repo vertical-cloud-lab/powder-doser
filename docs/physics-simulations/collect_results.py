@@ -25,6 +25,8 @@ ORDER = [
     "bayes-grainlearning", "bayes-gp-emulator-mcmc", "gns-gnn-simulator", "surrogate-pinn",
     # follow-up: held-out powders from the #116 battery
     "heldout-powders",
+    # follow-up: machine-learning models between properties and dosing
+    "ml-property-dose",
 ]
 
 
