@@ -102,7 +102,7 @@ All numbers are in [`tables.md`](tables.md) and [`result.json`](result.json).
     1.13.
   * Speed exponent from AoR: RMSE 0.19 (Q² 0.42).
 * **Adding the other six handbook properties makes every model worse.** Ridge on all 7: RMSE 1.15 (Q² −0.24),
-  worse than the mean. GP: 1.00 (Q² 0.00). Random forest: 0.93. The joint model given all 7: 1.06. The same joint
+  worse than the mean. GP: 1.03 (Q² 0.00). Random forest: 0.93. The joint model given all 7: 1.06. The same joint
   model given AoR alone: 0.84. Particle density plus d50 gets flow / no flow right for 6 of 12, below the base rate.
 * **Within the 7 powders that convey, no property explains the rate.** Their spread is only 0.09 decades (SD,
   ±23 %). Every single handbook property but moisture, and a constant-volume × particle-density rule, predicts it
