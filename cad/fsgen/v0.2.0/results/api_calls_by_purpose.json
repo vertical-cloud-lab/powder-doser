@@ -1,0 +1,46 @@
+{
+ "direct_pr176": {
+  "Setup (access, document)": 4,
+  "Build or edit geometry": 14,
+  "Look up ids, faces, features": 8,
+  "Checks (box, volume, status)": 6,
+  "Rendered views": 7,
+  "STEP export": 9,
+  "Versions": 4
+ },
+ "fsgen_0.1": {
+  "Setup (access, document)": 2,
+  "Build or edit geometry": 23,
+  "Look up ids, faces, features": 1,
+  "Checks (box, volume, status)": 4,
+  "Rendered views": 2,
+  "STEP export": 3,
+  "Versions": 1
+ },
+ "fsgen_0.2.0": {
+  "Setup (access, document)": 2,
+  "Build or edit geometry": 23,
+  "Look up ids, faces, features": 1,
+  "Checks (box, volume, status)": 3,
+  "Rendered views": 2,
+  "STEP export": 3,
+  "Versions": 1
+ },
+ "fsgen_0.2.0_extra_test": {
+  "Setup (access, document)": 0,
+  "Build or edit geometry": 2,
+  "Look up ids, faces, features": 0,
+  "Checks (box, volume, status)": 1,
+  "Rendered views": 1,
+  "STEP export": 0,
+  "Versions": 0
+ },
+ "totals": {
+  "direct_pr176_logged": 54,
+  "direct_pr176_counted": 52,
+  "fsgen_0.1_counted": 36,
+  "fsgen_0.2.0_counted": 35,
+  "fsgen_0.2.0_extra_test_counted": 4,
+  "fsgen_0.2.0_logged": 39
+ }
+}
