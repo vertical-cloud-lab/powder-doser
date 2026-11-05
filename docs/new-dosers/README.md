@@ -222,6 +222,17 @@ posted, is in `parts_inventory_snapshots`. The first one there is
 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)),
 snapshot `2026-11-03-7f9e6475`. In Atlas: *Browse Collections* →
 `powder_doser` → `parts_inventory`, filter `{snapshot_id: "2026-11-03-7f9e6475"}`.
+
+**Seeing it in Atlas needs an invite.** A new Atlas login only shows its own
+empty *Project 0*, in an organization of its own. A Project Owner of the lab's
+Atlas project (ask @sgbaird) has to invite your login with at least the
+*Project Data Access Read Only* role. The invite form's default, *Project Read
+Only*, [can't open the Data Explorer](https://www.mongodb.com/docs/atlas/reference/user-roles/).
+Accept the invite from the e-mail or from your account menu → *Invitations*
+(invites expire after 30 days), then choose the lab's organization from the
+*Organizations* menu. Without an Atlas login, ask in an `@claude` comment and
+a run will read the counts back.
+
 Send a new count with [`inventory_to_mongo.py`](inventory_to_mongo.py):
 `python inventory_to_mongo.py <file>.csv --source-url <comment URL> --author <login> --taken-at <UTC time>`.
 
@@ -496,7 +507,7 @@ How much of this is needed depends on open question 2 in [§7](#7-open-questions
 | Brandon Munk (@brandonmunk) | Which Onshape files are current for the printed parts (checking since 23 Oct) |
 | Luke Winters (@lbwinters) | PCB design |
 | @kinstonwithoutg, @Dila-Kandel | Purchased parts and orders at the U |
-| Sterling Baird (@sgbaird) | Priorities and anything blocked |
+| Sterling Baird (@sgbaird) | Priorities, anything blocked, and an invite to the lab's MongoDB Atlas project |
 
 ## 7. Open questions
 

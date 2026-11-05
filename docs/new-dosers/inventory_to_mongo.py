@@ -18,7 +18,9 @@ only) or $MONGODB_URI; choose with --uri-env. It is never printed. --dry-run
 parses the file and prints the first documents without connecting.
 
 In Atlas: Cluster0 -> Browse Collections -> powder_doser -> parts_inventory,
-filter {snapshot_id: "<id this script prints>"}.
+filter {snapshot_id: "<id this script prints>"}. Your Atlas login has to be
+invited to the lab's project with at least the "Project Data Access Read Only"
+role; a new login only sees its own empty "Project 0" (README section 3).
 """
 
 import argparse
