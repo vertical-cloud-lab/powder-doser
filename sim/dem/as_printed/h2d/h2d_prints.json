@@ -1,0 +1,269 @@
+{
+ "source": "H2D SD card over implicit FTPS via the doser Pi, read-only, 2026-10-11. LIST times are UTC; file names are UTC+8.",
+ "job_files": "none for augers: no /cache folder; the root holds 5 LAN-sent .gcode.3mf jobs (Aug 12-21: H2Dtest1, photoa4stand_neg, three t3-prism-bo truss plates)",
+ "camera_clips": "500 ipcam-record clips (about 10 min each) with one thumbnail each, 2026-09-26 08:59 to 2026-10-09 22:11 UTC; the bed holds an auger only from 2026-10-06 17:09 to 2026-10-07 04:42 UTC",
+ "oct7_auger": {
+  "timelapse": "video_2026-10-07_01-11-34.mp4 (3164 frames, one per layer)",
+  "printed_utc": "2026-10-06 17:11 to 2026-10-07 04:49",
+  "layer_height_mm": 0.08,
+  "height_mm": "about 253 (3164 x 0.08); CAD threaded-auger-final is 250",
+  "gear_z_mm": "about 78.4-88.8 (frames about 980-1110); CAD 78.6-88.6",
+  "exit": "cone, as in the CAD: the first 12 mm print as a nearly solid disk (sparse infill across the section at z 1-3 mm) that opens into the tube by z of about 12 mm; an open end would show a thin ring with the bed visible through the bore from the first layer",
+  "figure": "h2d_oct7_exit_evidence.png",
+  "clip": "oct7_first_260_layers.mp4"
+ },
+ "timelapses": [
+  {
+   "timelapse": "video_2026-07-16_04-47-36.mp4",
+   "size_bytes": 4290981,
+   "finished_utc": "2026 Jul 15 22:52",
+   "auger": false,
+   "on_the_bed": "ten short black cylinders in a row, each with a tab on top"
+  },
+  {
+   "timelapse": "video_2026-07-28_04-46-40.mp4",
+   "size_bytes": 2439348,
+   "finished_utc": "2026 Jul 27 21:56",
+   "auger": false,
+   "on_the_bed": "five short closed black cylinders (caps)"
+  },
+  {
+   "timelapse": "video_2026-08-05_02-10-19.mp4",
+   "size_bytes": 3397016,
+   "finished_utc": "2026 Aug 05 01:06",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-05_09-32-41.mp4",
+   "size_bytes": 8268747,
+   "finished_utc": "2026 Aug 05 11:32",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-06_01-47-56.mp4",
+   "size_bytes": 2182187,
+   "finished_utc": "2026 Aug 05 17:55",
+   "auger": false,
+   "on_the_bed": "small part, mostly hidden"
+  },
+  {
+   "timelapse": "video_2026-08-06_02-12-16.mp4",
+   "size_bytes": 1974721,
+   "finished_utc": "2026 Aug 05 20:51",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-06_05-11-56.mp4",
+   "size_bytes": 8370100,
+   "finished_utc": "2026 Aug 06 07:10",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-07_05-22-57.mp4",
+   "size_bytes": 973810,
+   "finished_utc": "2026 Aug 06 22:40",
+   "auger": false,
+   "on_the_bed": "small white/green parts"
+  },
+  {
+   "timelapse": "video_2026-08-07_07-00-25.mp4",
+   "size_bytes": 935273,
+   "finished_utc": "2026 Aug 07 00:27",
+   "auger": false,
+   "on_the_bed": "small black/green parts"
+  },
+  {
+   "timelapse": "video_2026-08-07_08-40-18.mp4",
+   "size_bytes": 8336567,
+   "finished_utc": "2026 Aug 07 10:38",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-08_03-28-43.mp4",
+   "size_bytes": 8626600,
+   "finished_utc": "2026 Aug 10 17:34",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-11_04-22-48.mp4",
+   "size_bytes": 6377357,
+   "finished_utc": "2026 Aug 11 03:35",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-12_08-21-56.mp4",
+   "size_bytes": 1274708,
+   "finished_utc": "2026 Aug 12 00:28",
+   "auger": false,
+   "on_the_bed": "small white part"
+  },
+  {
+   "timelapse": "video_2026-08-13_03-13-27.mp4",
+   "size_bytes": 180979,
+   "finished_utc": "2026 Aug 12 19:14",
+   "auger": false,
+   "on_the_bed": "toolhead in front of the camera"
+  },
+  {
+   "timelapse": "video_2026-08-14_02-34-30.mp4",
+   "size_bytes": 450113,
+   "finished_utc": "2026 Aug 13 19:09",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-14_03-27-23.mp4",
+   "size_bytes": 202090,
+   "finished_utc": "2026 Aug 13 20:28",
+   "auger": false,
+   "on_the_bed": "small white part"
+  },
+  {
+   "timelapse": "video_2026-08-14_05-03-56.mp4",
+   "size_bytes": 573121,
+   "finished_utc": "2026 Aug 13 21:52",
+   "auger": false,
+   "on_the_bed": "hand in front of the camera"
+  },
+  {
+   "timelapse": "video_2026-08-14_06-15-41.mp4",
+   "size_bytes": 260725,
+   "finished_utc": "2026 Aug 14 00:02",
+   "auger": false,
+   "on_the_bed": "small white part"
+  },
+  {
+   "timelapse": "video_2026-08-18_02-32-50.mp4",
+   "size_bytes": 1366500,
+   "finished_utc": "2026 Aug 17 19:07",
+   "auger": false,
+   "on_the_bed": "small blue parts"
+  },
+  {
+   "timelapse": "video_2026-08-18_03-44-45.mp4",
+   "size_bytes": 736243,
+   "finished_utc": "2026 Aug 17 20:00",
+   "auger": false,
+   "on_the_bed": "small blue parts"
+  },
+  {
+   "timelapse": "video_2026-08-18_06-44-33.mp4",
+   "size_bytes": 5896169,
+   "finished_utc": "2026 Aug 18 04:59",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-19_02-37-14.mp4",
+   "size_bytes": 7859282,
+   "finished_utc": "2026 Aug 19 19:09",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-08-22_05-07-01.mp4",
+   "size_bytes": 6460622,
+   "finished_utc": "2026 Aug 22 15:37",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-01_09-06-55.mp4",
+   "size_bytes": 6504971,
+   "finished_utc": "2026 Sep 01 23:10",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-03_01-18-15.mp4",
+   "size_bytes": 6674397,
+   "finished_utc": "2026 Sep 03 15:22",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-10_01-11-16.mp4",
+   "size_bytes": 7644969,
+   "finished_utc": "2026 Sep 10 21:13",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-17_02-20-29.mp4",
+   "size_bytes": 7426781,
+   "finished_utc": "2026 Sep 17 23:23",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-25_08-40-49.mp4",
+   "size_bytes": 6867983,
+   "finished_utc": "2026 Sep 25 17:29",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-09-27_02-11-29.mp4",
+   "size_bytes": 5692657,
+   "finished_utc": "2026 Sep 26 20:06",
+   "auger": false,
+   "on_the_bed": "black flat plate with uprights (fixture)"
+  },
+  {
+   "timelapse": "video_2026-10-03_00-34-26.mp4",
+   "size_bytes": 4280198,
+   "finished_utc": "2026 Oct 02 21:45",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-10-03_06-17-10.mp4",
+   "size_bytes": 6761560,
+   "finished_utc": "2026 Oct 03 15:18",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-10-06_05-51-02.mp4",
+   "size_bytes": 5873971,
+   "finished_utc": "2026 Oct 06 03:31",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-10-07_01-11-34.mp4",
+   "size_bytes": 58119158,
+   "finished_utc": "2026 Oct 07 04:49",
+   "auger": true,
+   "on_the_bed": "AUGER: full-length black threaded auger, gear near the bottom on tree supports, printed with a short black cap-like cylinder"
+  },
+  {
+   "timelapse": "video_2026-10-08_00-33-13.mp4",
+   "size_bytes": 4156419,
+   "finished_utc": "2026 Oct 07 21:21",
+   "auger": false,
+   "on_the_bed": "large perforated black plate (rack) with a round grid insert"
+  },
+  {
+   "timelapse": "video_2026-10-08_07-54-12.mp4",
+   "size_bytes": 4426926,
+   "finished_utc": "2026 Oct 08 16:18",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  },
+  {
+   "timelapse": "video_2026-10-10_00-23-19.mp4",
+   "size_bytes": 5970520,
+   "finished_utc": "2026 Oct 09 22:11",
+   "auger": false,
+   "on_the_bed": "truss/prism prints (another project), sometimes with a prime tower"
+  }
+ ]
+}

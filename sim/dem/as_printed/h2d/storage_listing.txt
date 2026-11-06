@@ -1,0 +1,59 @@
+# H2D storage over implicit FTPS (read-only), listed 2026-10-11 ~02:30 UTC. LIST times are UTC; file names are UTC+8.
+# /cache, /model and the other usual job folders do not exist (CWD 550).
+
+=== /
+-rwxr-xr-x    1 103      107        161694 Aug 12 00:11 H2Dtest1.gcode.3mf
+-rwxr-xr-x    1 103      107        552605 Sep 23  2021 Install SanDisk Software.dmg
+-rwxr-xr-x    1 103      107        707152 Sep 23  2021 Install SanDisk Software.exe
+-rwxr-xr-x    1 103      107        300509 Sep 23  2021 SanDisk Software.pdf
+drwxr-xr-x    2 103      107         65536 Jun 03  2025 System Volume Information
+drwxr-xr-x    3 103      107        131072 Oct 09 22:05 ipcam
+-rwxr-xr-x    1 103      107        904954 Aug 12 19:02 photoa4stand_neg.gcode.3mf
+-rwxr-xr-x    1 103      107       2384554 Aug 13 19:16 t3-prism-bo-batch.H2D-MM-PLAstruts-TPUcables(6)_ebdna8.gcode.3mf
+-rwxr-xr-x    1 103      107      13321059 Aug 18 17:33 t3-prism-bo-batch.H2D-MM-PLAstruts-TPUcables(6)_plate_10.gcode.3mf
+-rwxr-xr-x    1 103      107      15264962 Aug 21 20:51 t3-prism-bo-round1.H2D-MM-PLAstruts-TPUcables_manual-supports (1).gcode.3mf
+drwxr-xr-x    3 103      107         65536 Oct 09 22:11 timelapse
+-rwxr-xr-x    1 103      107            16 Aug 17 22:29 verify_job
+=== /timelapse
+drwxr-xr-x    2 103      107         65536 Oct 09 22:11 thumbnail
+-rwxr-xr-x    1 103      107       4290981 Jul 15 22:52 video_2026-07-16_04-47-36.mp4
+-rwxr-xr-x    1 103      107       2439348 Jul 27 21:56 video_2026-07-28_04-46-40.mp4
+-rwxr-xr-x    1 103      107       3397016 Aug 05 01:06 video_2026-08-05_02-10-19.mp4
+-rwxr-xr-x    1 103      107       8268747 Aug 05 11:32 video_2026-08-05_09-32-41.mp4
+-rwxr-xr-x    1 103      107       2182187 Aug 05 17:55 video_2026-08-06_01-47-56.mp4
+-rwxr-xr-x    1 103      107       1974721 Aug 05 20:51 video_2026-08-06_02-12-16.mp4
+-rwxr-xr-x    1 103      107       8370100 Aug 06 07:10 video_2026-08-06_05-11-56.mp4
+-rwxr-xr-x    1 103      107        973810 Aug 06 22:40 video_2026-08-07_05-22-57.mp4
+-rwxr-xr-x    1 103      107        935273 Aug 07 00:27 video_2026-08-07_07-00-25.mp4
+-rwxr-xr-x    1 103      107       8336567 Aug 07 10:38 video_2026-08-07_08-40-18.mp4
+-rwxr-xr-x    1 103      107       8626600 Aug 10 17:34 video_2026-08-08_03-28-43.mp4
+-rwxr-xr-x    1 103      107       6377357 Aug 11 03:35 video_2026-08-11_04-22-48.mp4
+-rwxr-xr-x    1 103      107       1274708 Aug 12 00:28 video_2026-08-12_08-21-56.mp4
+-rwxr-xr-x    1 103      107        180979 Aug 12 19:14 video_2026-08-13_03-13-27.mp4
+-rwxr-xr-x    1 103      107        450113 Aug 13 19:09 video_2026-08-14_02-34-30.mp4
+-rwxr-xr-x    1 103      107        202090 Aug 13 20:28 video_2026-08-14_03-27-23.mp4
+-rwxr-xr-x    1 103      107        573121 Aug 13 21:52 video_2026-08-14_05-03-56.mp4
+-rwxr-xr-x    1 103      107        260725 Aug 14 00:02 video_2026-08-14_06-15-41.mp4
+-rwxr-xr-x    1 103      107       1366500 Aug 17 19:07 video_2026-08-18_02-32-50.mp4
+-rwxr-xr-x    1 103      107        736243 Aug 17 20:00 video_2026-08-18_03-44-45.mp4
+-rwxr-xr-x    1 103      107       5896169 Aug 18 04:59 video_2026-08-18_06-44-33.mp4
+-rwxr-xr-x    1 103      107       7859282 Aug 19 19:09 video_2026-08-19_02-37-14.mp4
+-rwxr-xr-x    1 103      107       6460622 Aug 22 15:37 video_2026-08-22_05-07-01.mp4
+-rwxr-xr-x    1 103      107       6504971 Sep 01 23:10 video_2026-09-01_09-06-55.mp4
+-rwxr-xr-x    1 103      107       6674397 Sep 03 15:22 video_2026-09-03_01-18-15.mp4
+-rwxr-xr-x    1 103      107       7644969 Sep 10 21:13 video_2026-09-10_01-11-16.mp4
+-rwxr-xr-x    1 103      107       7426781 Sep 17 23:23 video_2026-09-17_02-20-29.mp4
+-rwxr-xr-x    1 103      107       6867983 Sep 25 17:29 video_2026-09-25_08-40-49.mp4
+-rwxr-xr-x    1 103      107       5692657 Sep 26 20:06 video_2026-09-27_02-11-29.mp4
+-rwxr-xr-x    1 103      107       4280198 Oct 02 21:45 video_2026-10-03_00-34-26.mp4
+-rwxr-xr-x    1 103      107       6761560 Oct 03 15:18 video_2026-10-03_06-17-10.mp4
+-rwxr-xr-x    1 103      107       5873971 Oct 06 03:31 video_2026-10-06_05-51-02.mp4
+-rwxr-xr-x    1 103      107      58119158 Oct 07 04:49 video_2026-10-07_01-11-34.mp4
+-rwxr-xr-x    1 103      107       4156419 Oct 07 21:21 video_2026-10-08_00-33-13.mp4
+-rwxr-xr-x    1 103      107       4426926 Oct 08 16:18 video_2026-10-08_07-54-12.mp4
+-rwxr-xr-x    1 103      107       5970520 Oct 09 22:11 video_2026-10-10_00-23-19.mp4
+drwxr-xr-x    2 103      107        131072 Oct 09 22:05 thumbnail
+=== /ipcam  (500 ipcam-record.*.mp4 clips of ~10 min, ~250 MB each; first and last:)
+-rwxr-xr-x    1 103      107      252166003 Sep 26 09:15 ipcam-record.2026-09-26_16-59-56.67.mp4
+-rwxr-xr-x    1 103      107      157088132 Oct 09 22:11 ipcam-record.2026-10-10_06-05-47.66.mp4
+=== /ipcam/thumbnail  (500 jpg, one per clip)

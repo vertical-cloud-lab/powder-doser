@@ -1,0 +1,215 @@
+{
+ "note": "2000 lowest grains of rig_t27p5_r60, 0.01 s plugged settle + 0.01 s at 60 rpm (Bullet runs hit the 120 s wall limit), PyChrono 10.0.0 core ChSystemSMC, 2 threads, wall-clock on a shared runner",
+ "runs": [
+  {
+   "case": "n2000",
+   "setup": "multicore collision, two-sided mesh (9392 facets), default 10x10x10 grid",
+   "n_grains": 2000,
+   "steps": 972,
+   "sim_s": 0.02,
+   "wall_step_s": 17.4,
+   "M_particle_steps_per_s_wall": 0.1115,
+   "n_out": 3,
+   "vmax_m_s": 0.199,
+   "leaks_at_end": {
+    "outside_bore": 0,
+    "outside_cone": 0,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 0
+   },
+   "timers_s": {
+    "step": 17.423,
+    "collision": 16.446,
+    "coll_broad": 13.493,
+    "coll_narrow": 2.262,
+    "update": 0.0,
+    "setup": 0.042,
+    "ls_setup": 0.0,
+    "ls_solve": 0.059,
+    "jacobian": 0.02,
+    "advance": 0.773
+   }
+  },
+  {
+   "case": "n2000_gridsizemm10",
+   "setup": "as above + fixed 1.0 mm bins (ctypes)",
+   "n_grains": 2000,
+   "steps": 972,
+   "sim_s": 0.02,
+   "wall_step_s": 17.8,
+   "M_particle_steps_per_s_wall": 0.1093,
+   "n_out": 3,
+   "vmax_m_s": 0.199,
+   "leaks_at_end": {
+    "outside_bore": 0,
+    "outside_cone": 0,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 0
+   },
+   "timers_s": {
+    "step": 17.766,
+    "collision": 16.776,
+    "coll_broad": 13.7,
+    "coll_narrow": 2.343,
+    "update": 0.0,
+    "setup": 0.042,
+    "ls_setup": 0.0,
+    "ls_solve": 0.056,
+    "jacobian": 0.019,
+    "advance": 0.786
+   }
+  },
+  {
+   "case": "n2000_griddensity4",
+   "setup": "as above + 4 shapes/bin grid density (ctypes)",
+   "n_grains": 2000,
+   "steps": 972,
+   "sim_s": 0.02,
+   "wall_step_s": 12.1,
+   "M_particle_steps_per_s_wall": 0.1606,
+   "n_out": 3,
+   "vmax_m_s": 0.199,
+   "leaks_at_end": {
+    "outside_bore": 0,
+    "outside_cone": 0,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 0
+   },
+   "timers_s": {
+    "step": 12.096,
+    "collision": 11.197,
+    "coll_broad": 8.469,
+    "coll_narrow": 2.083,
+    "update": 0.0,
+    "setup": 0.041,
+    "ls_setup": 0.0,
+    "ls_solve": 0.051,
+    "jacobian": 0.017,
+    "advance": 0.708
+   }
+  },
+  {
+   "case": "n2000_ntheta24",
+   "setup": "two-sided mesh coarsened to n_theta=24 (4712 facets), default grid",
+   "n_grains": 2000,
+   "steps": 972,
+   "sim_s": 0.02,
+   "wall_step_s": 11.9,
+   "M_particle_steps_per_s_wall": 0.1638,
+   "n_out": 4,
+   "vmax_m_s": 0.225,
+   "leaks_at_end": {
+    "outside_bore": 0,
+    "outside_cone": 0,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 0
+   },
+   "timers_s": {
+    "step": 11.862,
+    "collision": 10.981,
+    "coll_broad": 8.939,
+    "coll_narrow": 1.481,
+    "update": 0.0,
+    "setup": 0.034,
+    "ls_setup": 0.0,
+    "ls_solve": 0.054,
+    "jacobian": 0.018,
+    "advance": 0.702
+   }
+  },
+  {
+   "case": "n2000_onesided",
+   "setup": "one-sided mesh as written by geometry.py (4696 facets), default grid",
+   "n_grains": 2000,
+   "steps": 972,
+   "sim_s": 0.02,
+   "wall_step_s": 11.2,
+   "M_particle_steps_per_s_wall": 0.1611,
+   "n_out": 667,
+   "vmax_m_s": 5.356,
+   "leaks_at_end": {
+    "outside_bore": 0,
+    "outside_cone": 174,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 0
+   },
+   "timers_s": {
+    "step": 11.241,
+    "collision": 10.46,
+    "coll_broad": 8.846,
+    "coll_narrow": 1.367,
+    "update": 0.0,
+    "setup": 0.032,
+    "ls_setup": 0.0,
+    "ls_solve": 0.056,
+    "jacobian": 0.011,
+    "advance": 0.673
+   }
+  },
+  {
+   "case": "n2000_collisionbulletmeshstatic",
+   "setup": "Bullet collision, mesh flagged static (BVH)",
+   "n_grains": 2000,
+   "steps": 588,
+   "sim_s": 0.0121,
+   "wall_step_s": 121.9,
+   "M_particle_steps_per_s_wall": 0.0086,
+   "n_out": 953,
+   "vmax_m_s": 14210.235,
+   "leaks_at_end": {
+    "outside_bore": 927,
+    "outside_cone": 102,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 774
+   },
+   "timers_s": {
+    "step": 121.863,
+    "collision": 121.209,
+    "coll_broad": 1.478,
+    "coll_narrow": 88.337,
+    "update": 0.0,
+    "setup": 0.03,
+    "ls_setup": 0.0,
+    "ls_solve": 0.035,
+    "jacobian": 0.005,
+    "advance": 0.584
+   }
+  },
+  {
+   "case": "n2000_collisionbullet",
+   "setup": "Bullet collision, GImpact mesh",
+   "n_grains": 2000,
+   "steps": 686,
+   "sim_s": 0.0141,
+   "wall_step_s": 125.5,
+   "M_particle_steps_per_s_wall": 0.0092,
+   "n_out": 974,
+   "vmax_m_s": 14210.235,
+   "leaks_at_end": {
+    "outside_bore": 954,
+    "outside_cone": 63,
+    "inside_core": 0,
+    "inside_tip": 0,
+    "above_top": 843
+   },
+   "timers_s": {
+    "step": 125.414,
+    "collision": 124.696,
+    "coll_broad": 1.487,
+    "coll_narrow": 91.597,
+    "update": 0.0,
+    "setup": 0.037,
+    "ls_setup": 0.0,
+    "ls_solve": 0.038,
+    "jacobian": 0.006,
+    "advance": 0.636
+   }
+  }
+ ]
+}
