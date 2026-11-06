@@ -211,6 +211,15 @@ after it. Its points agree with the results above:
 Several sources are theses or 2026 preprints, and for some Edison could not read the error values; treat their
 numbers as indicative.
 
+## Follow-up: would optimizing for consistent doses help?
+William asked on #196 (6 Nov) whether the BO should target consistent, predictable doses instead of fast, accurate
+ones. [`CONSISTENCY.md`](CONSISTENCY.md) ([`consistency.py`](consistency.py)) measures it on existing data:
+* repeated doses at one set of salt settings varied up to 16-fold in time, and the campaign's best single dose came
+  from erratic settings, so a repeatability objective would help the BO (it is item B1 of the #179 `OUTLINE.md`);
+* removing all scatter between revolutions would cut the AoR predictor's error only from 3.53° to 3.44°, and the
+  forward error from 0.736 to 0.725 decades; the handbook labels and the 12 powders are the limit;
+* erratic flow at fixed settings goes with cohesion, so the fingerprint stays at fixed settings.
+
 ## Runtime
 About 85 s on one core (the 400-subset learning curves take most of it).
 
