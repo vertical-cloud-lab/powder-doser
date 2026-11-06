@@ -1,0 +1,56 @@
+{
+ "id": "dem-mercurydpm",
+ "method": "DEM flat-bottomed silo discharge through a circular orifice vs Beverloo",
+ "code": "MercuryDPM (custom driver SaltSilo.cpp, Mercury3D, LinearViscoelasticFrictionSpecies)",
+ "version": "git master c801fe682cb3 (2026-10-13), bitbucket.org/mercurydpm/mercurydpm",
+ "status": "partial",
+ "wall_s": 399,
+ "cores": 1,
+ "particles": 3000,
+ "wall_s_per_run": {
+  "D10": 213,
+  "D14": 186
+ },
+ "key_results": {
+  "SaltSilo_D10": {
+   "D_mm": 10.0,
+   "D_over_d": 5.882,
+   "silo_radius_mm": 12.5,
+   "N": 2500,
+   "fill_mass_g": 14.45,
+   "fill_height_mm": 25.5,
+   "phi_fill": 0.5333,
+   "bulk_density_kg_m3": 1155.0,
+   "W_beverloo_g_s": 10.05,
+   "clogged": true,
+   "grains_discharged": 112,
+   "mass_discharged_g": 0.6372,
+   "sim_time_after_opening_s": 0.499,
+   "time_of_last_exit_s": 0.5518,
+   "W_sim_g_s": 0.0
+  },
+  "SaltSilo_D14": {
+   "D_mm": 14.0,
+   "D_over_d": 8.235,
+   "silo_radius_mm": 15.0,
+   "N": 3000,
+   "fill_mass_g": 17.34,
+   "fill_height_mm": 21.14,
+   "phi_fill": 0.536,
+   "bulk_density_kg_m3": 1161.0,
+   "W_beverloo_g_s": 29.58,
+   "clogged": false,
+   "grains_discharged": 1169,
+   "mass_discharged_g": 7.743,
+   "sim_time_after_opening_s": 0.3496,
+   "W_sim_g_s": 24.87,
+   "W_sim_over_W_bev": 0.8408,
+   "C_fitted_with_k1p5": 0.4877,
+   "window_s": [
+    0.330791,
+    0.599558
+   ]
+  }
+ },
+ "notes": "github.com/MercuryDPM/MercuryDPM does not exist (HTTP 404; git clone asked for credentials); cloned the official Bitbucket repo instead. Library + one demo built with make -j2 in 185 s. Grains coarse-grained x4 (1.44-1.96 mm). Linear spring-dashpot, tc = 1 ms, dt = tc_min/25. First attempt (tc/50, 0.9 s) was stopped as too slow for the 8 min budget. Status 'partial' = ran at reduced scale (coarse-grained x4, 2500-3000 grains, sub-second discharge windows). D=10 mm (D/d 5.9) clogged; D=14 mm (D/d 8.2) flowed at 0.84 x Beverloo."
+}

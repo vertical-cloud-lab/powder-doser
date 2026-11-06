@@ -1,0 +1,68 @@
+{
+ "id": "dem-nonspherical",
+ "method": "non-spherical DEM: 8-sphere rigid clumps (rounded cubes) vs spheres with/without rolling resistance; lifted-cylinder heap",
+ "code": "Yade (yadedaily); LIGGGHTS 3.8 superquadric availability checked",
+ "version": "yadedaily 20261024-9637~157eec7~noble1; liggghts 3.8.0+repack1-9.1build2",
+ "status": "partial",
+ "wall_s": 181.1,
+ "cores": 1,
+ "particles": {
+  "per_case": 361,
+  "cube8_member_spheres": 2888
+ },
+ "key_results": {
+  "aor_h_over_rfoot_deg_seed1_seed2_mean": {
+   "sphere": [
+    24.9,
+    32.1,
+    28.5
+   ],
+   "sphere_rr_eta0.15": [
+    40.0,
+    35.4,
+    37.7
+   ],
+   "cube8": [
+    38.1,
+    42.4,
+    40.3
+   ]
+  },
+  "aor_flank_fit_deg_seed1_seed2_mean": {
+   "sphere": [
+    10.1,
+    10.8,
+    10.5
+   ],
+   "sphere_rr_eta0.15": [
+    37.4,
+    33.6,
+    35.5
+   ],
+   "cube8": [
+    32.7,
+    43.4,
+    38.1
+   ]
+  },
+  "column_packing_fraction_seed1_seed2_mean": {
+   "sphere": [
+    0.556,
+    0.548,
+    0.552
+   ],
+   "sphere_rr_eta0.15": [
+    0.521,
+    0.532,
+    0.527
+   ],
+   "cube8": [
+    0.56,
+    0.538,
+    0.549
+   ]
+  },
+  "liggghts_superquadric": "atom_style superquadric present but no fix nve/superquadric or particletemplate/superquadric -> not runnable; multisphere styles present"
+ },
+ "notes": "Reduced scale (361 particles/heap, heaps 4-6 grains tall); two seeds; AoR estimates noisy (up to 7-11 deg seed-to-seed). wall_s = in-script time of the six main-set runs."
+}

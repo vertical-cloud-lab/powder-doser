@@ -1,0 +1,41 @@
+{
+ "SaltSilo_D10": {
+  "D_mm": 10.0,
+  "D_over_d": 5.882352941176471,
+  "silo_radius_mm": 12.5,
+  "N": 2500,
+  "fill_mass_g": 14.450899999999999,
+  "fill_height_mm": 25.49832296693651,
+  "phi_fill": 0.5332813093648185,
+  "bulk_density_kg_m3": 1154.5540347748322,
+  "W_beverloo_g_s": 10.047718111755556,
+  "clogged": true,
+  "grains_discharged": 112,
+  "mass_discharged_g": 0.6371999999999992,
+  "sim_time_after_opening_s": 0.49905,
+  "time_of_last_exit_s": 0.551848,
+  "W_sim_g_s": 0.0
+ },
+ "SaltSilo_D14": {
+  "D_mm": 14.0,
+  "D_over_d": 8.23529411764706,
+  "silo_radius_mm": 15.0,
+  "N": 3000,
+  "fill_mass_g": 17.338800000000003,
+  "fill_height_mm": 21.13661006516299,
+  "phi_fill": 0.5360344041046783,
+  "bulk_density_kg_m3": 1160.5144848866285,
+  "W_beverloo_g_s": 29.57513797472865,
+  "clogged": false,
+  "grains_discharged": 1169,
+  "mass_discharged_g": 7.742850000000001,
+  "sim_time_after_opening_s": 0.34955800000000004,
+  "W_sim_g_s": 24.867018511880612,
+  "W_sim_over_W_bev": 0.8408081995468278,
+  "C_fitted_with_k1p5": 0.48766875573716006,
+  "window_s": [
+   0.330791,
+   0.599558
+  ]
+ }
+}
