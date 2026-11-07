@@ -1,0 +1,27 @@
+{
+  "name": "tap-collar",
+  "prompt_file": "10-tap-collar.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -16.75,
+      -11.0,
+      -16.72
+    ],
+    "max": [
+      24.75,
+      11.0,
+      24.75
+    ],
+    "size": [
+      41.5,
+      22.0,
+      41.47
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "storage-auger-full",
+  "prompt_file": "01-storage-auger-full.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -24.987,
+      -24.987,
+      0.0
+    ],
+    "max": [
+      24.987,
+      24.987,
+      254.0
+    ],
+    "size": [
+      49.974,
+      49.974,
+      254.0
+    ]
+  }
+}

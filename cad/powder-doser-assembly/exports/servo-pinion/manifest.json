@@ -1,0 +1,27 @@
+{
+  "name": "servo-pinion",
+  "prompt_file": "08-servo-pinion.md",
+  "kcl": "source.kcl",
+  "exports": [
+    "step",
+    "glb",
+    "obj"
+  ],
+  "bbox_mm": {
+    "min": [
+      -9.972,
+      -9.972,
+      0.0
+    ],
+    "max": [
+      9.972,
+      9.972,
+      8.0
+    ],
+    "size": [
+      19.944,
+      19.944,
+      8.0
+    ]
+  }
+}
