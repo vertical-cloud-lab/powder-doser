@@ -1,0 +1,235 @@
+{
+ "P0": {
+  "0,0": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  },
+  "30,30": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  },
+  "45,45": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  },
+  "60,60": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  },
+  "90,90": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  },
+  "90,0": {
+   "spacing": 92.9,
+   "limit": "A:Baseplate / B:Baseplate"
+  }
+ },
+ "A1": {
+  "0,0": {
+   "spacing": 41.0,
+   "limit": "A:28T gear +X / B:28T gear -X"
+  },
+  "30,30": {
+   "spacing": 40.9,
+   "limit": "A:28T gear +X / B:28T gear -X"
+  },
+  "45,45": {
+   "spacing": 40.9,
+   "limit": "A:28T gear +X / B:28T gear -X"
+  },
+  "60,60": {
+   "spacing": 40.9,
+   "limit": "A:28T gear +X / B:28T gear -X"
+  },
+  "90,90": {
+   "spacing": 73.0,
+   "limit": "A:Solenoid (Adafruit 412) / B:Tap collar"
+  },
+  "90,0": {
+   "spacing": 41.0,
+   "limit": "A:28T gear +X / B:28T gear -X"
+  }
+ },
+ "A2": {
+  "0,0": {
+   "spacing": 25.3,
+   "limit": "A:Auger / B:Auger"
+  },
+  "30,30": {
+   "spacing": 34.6,
+   "limit": "A:Auger / B:Auger"
+  },
+  "45,45": {
+   "spacing": 36.1,
+   "limit": "A:Auger / B:Auger"
+  },
+  "60,60": {
+   "spacing": 35.3,
+   "limit": "A:Auger / B:Auger"
+  },
+  "90,90": {
+   "spacing": 73.0,
+   "limit": "A:Solenoid (Adafruit 412) / B:Tap collar"
+  },
+  "90,0": {
+   "spacing": 26.1,
+   "limit": "A:Auger / B:Auger"
+  }
+ },
+ "B1": {
+  "0,0": {
+   "spacing": 25.3,
+   "limit": "A:Auger / B:Auger"
+  },
+  "30,30": {
+   "spacing": 34.6,
+   "limit": "A:Auger / B:Auger"
+  },
+  "45,45": {
+   "spacing": 36.1,
+   "limit": "A:Auger / B:Auger"
+  },
+  "60,60": {
+   "spacing": 35.3,
+   "limit": "A:Auger / B:Auger"
+  },
+  "90,90": {
+   "spacing": 73.0,
+   "limit": "A:Solenoid (Adafruit 412) / B:Tap collar"
+  },
+  "90,0": {
+   "spacing": 26.1,
+   "limit": "A:Auger / B:Auger"
+  }
+ },
+ "B2": {
+  "0,0,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "30,30,30": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "45,45,45": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "60,60,60": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "90,90,90": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "90,0,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  }
+ },
+ "A1x3": {
+  "0,0,0": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  },
+  "30,30,30": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  },
+  "45,45,45": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  },
+  "60,60,60": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  },
+  "90,90,90": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  },
+  "90,0,0": {
+   "spacing": 65.8,
+   "limit": "B:MG996R -X / C:MG996R +X"
+  }
+ },
+ "flank": {
+  "A1": {
+   "spacing": 54.0,
+   "limit": "A:Tap collar / B:Tap collar"
+  },
+  "A2": {
+   "spacing": 54.0,
+   "limit": "A:Tap collar / B:Tap collar"
+  },
+  "B1": {
+   "spacing": 54.0,
+   "limit": "A:Tap collar / B:Tap collar"
+  }
+ },
+ "self_check": {
+  "A1": {
+   "min_clearance": 0.6,
+   "between": "A:tower +X / A:28T gear +X",
+   "at_tilt": 0
+  },
+  "A2": {
+   "min_clearance": 0.6,
+   "between": "A:tower +X / A:28T gear +X",
+   "at_tilt": 0
+  },
+  "B1": {
+   "min_clearance": 5.33,
+   "between": "A:tower +X / A:Tap collar base (AI)",
+   "at_tilt": 0
+  }
+ },
+ "p16_stroke": {
+  "0": 5.0,
+  "30": 58.7,
+  "45": 85.4,
+  "60": 109.9,
+  "90": 148.6
+ },
+ "working_spacing": {
+  "P0": 93,
+  "A1": 41,
+  "A2": 37,
+  "B1": 37,
+  "B2": 32,
+  "A1x3": 66
+ },
+ "outlets": {
+  "A1": {
+   "0": 17.8,
+   "45": 24.6,
+   "90": 41.0
+  },
+  "A2": {
+   "0": 13.8,
+   "45": 20.6,
+   "90": 37.0
+  },
+  "B1": {
+   "0": 13.8,
+   "45": 20.6,
+   "90": 37.0
+  },
+  "B2": {
+   "0": 40.8,
+   "45": 47.6,
+   "90": 64.0
+  },
+  "A1x3": {
+   "0": 108.8,
+   "45": 115.6,
+   "90": 132.0
+  }
+ },
+ "current_without_baseplates_at_A1_spacing": [
+  "A:MG996R +X / B:MG996R -X",
+  "A:MG996R -X / B:MG996R +X"
+ ]
+}
