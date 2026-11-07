@@ -1,0 +1,13 @@
+concept 1, tilt 0: no overlaps
+concept 1, tilt 45: no overlaps
+concept 1, auger lifted 5-50 mm: clear at every step
+concept 2, tilt 0: no overlaps
+concept 2, tilt 45: no overlaps
+concept 2, auger lifted 5-50 mm (tower; the clip itself snaps open like any Flexible Bracket): clear at every step
+concept 3, tilt 0: no overlaps
+concept 3, tilt 45: no overlaps
+concept 3, auger lifted 5-50 mm: clear at every step
+concept 4, tilt 0: no overlaps
+concept 4, tilt 45: no overlaps
+concept 4, auger lifted 5-50 mm: blocked, e.g. (5.0, 'Saddle (printed)', 'Auger', 19.44)
+concept 4, saddle flipped open 75 deg, auger lifted 5-50 mm: clear at every step
