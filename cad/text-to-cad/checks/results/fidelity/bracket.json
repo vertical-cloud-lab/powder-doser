@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/bracket.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/brackets.step",
+ "volume_new_mm3": 13123.9,
+ "volume_ref_mm3": 13123.8,
+ "volume_intersection_mm3": 13121.0,
+ "volume_error_pct": 0.0,
+ "iou": 0.9996,
+ "bbox_min_delta_mm": [
+  0.0,
+  -0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  -0.0,
+  0.001
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 1.1783481629105501e-05,
+  "p95": 9.397103437468876e-10,
+  "max": 0.0009370721001288016
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 1.1797859669674587e-05,
+  "p95": 7.805533138368729e-10,
+  "max": 0.0011468570765240764
+ },
+ "faces_new": 34,
+ "faces_ref": 34,
+ "seconds": 19.5
+}

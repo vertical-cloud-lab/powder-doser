@@ -1,0 +1,10 @@
+{
+ "onshape": "/tmp/os/onshape_hinge_drop5_v2.step",
+ "text_to_cad": "../STEP/assembly_servos_above.step",
+ "onshape_solids": 100,
+ "text_to_cad_solids": 401,
+ "paired": 100,
+ "max_centroid_distance_mm": 0.4699337008549475,
+ "max_bbox_difference_mm": 0.1803662985323058,
+ "max_volume_difference_rel": 0.0006088062002953886
+}

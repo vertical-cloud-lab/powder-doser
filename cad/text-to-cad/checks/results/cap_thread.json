@@ -1,0 +1,53 @@
+{
+ "cap_turn_deg_used": 180.0,
+ "rows": [
+  {
+   "cap_turn_deg": 0,
+   "overlap_mm3": 546.42
+  },
+  {
+   "cap_turn_deg": 30,
+   "overlap_mm3": 527.48
+  },
+  {
+   "cap_turn_deg": 60,
+   "overlap_mm3": 434.72
+  },
+  {
+   "cap_turn_deg": 90,
+   "overlap_mm3": 238.7
+  },
+  {
+   "cap_turn_deg": 120,
+   "overlap_mm3": 42.72
+  },
+  {
+   "cap_turn_deg": 150,
+   "overlap_mm3": 0.0
+  },
+  {
+   "cap_turn_deg": 180,
+   "overlap_mm3": 0.0
+  },
+  {
+   "cap_turn_deg": 210,
+   "overlap_mm3": 0.0
+  },
+  {
+   "cap_turn_deg": 240,
+   "overlap_mm3": 42.69
+  },
+  {
+   "cap_turn_deg": 270,
+   "overlap_mm3": 238.72
+  },
+  {
+   "cap_turn_deg": 300,
+   "overlap_mm3": 434.69
+  },
+  {
+   "cap_turn_deg": 330,
+   "overlap_mm3": 527.6
+  }
+ ]
+}

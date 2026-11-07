@@ -1,0 +1,31 @@
+{
+ "recreated": {
+  "solids": 1,
+  "volume_mm3": 53350.8,
+  "bbox_min": [
+   -23.0,
+   -23.0,
+   -0.0
+  ],
+  "bbox_max": [
+   23.0,
+   23.0,
+   250.0
+  ]
+ },
+ "fusion": {
+  "solids": 1,
+  "volume_mm3": 53357.9,
+  "bbox_min": [
+   -23.0,
+   -23.0,
+   -0.0
+  ],
+  "bbox_max": [
+   23.0,
+   23.0,
+   250.0
+  ]
+ },
+ "volume_error_pct": -0.013
+}
