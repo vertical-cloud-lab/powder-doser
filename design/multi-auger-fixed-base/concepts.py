@@ -222,6 +222,10 @@ def sweeps():
         s, a, b = min_spacing(key, (90, 90), roll=ROLL_FLANK)
         res["flank"][key] = dict(spacing=s, limit=f"{a} / {b}")
         print(f"{key} 90/90 tapper on the flank: {s} mm  ({a} / {b})", flush=True)
+    # B2 with the tap collar where it is today (on top), all three at 90
+    s_, a_, b_ = min_spacing("B2", (90, 90, 90), roll=D.L.COLLAR_ROLL_DEG)
+    res["B2_tapper_on_top_90"] = dict(spacing=s_, limit=f"{a_} / {b_}")
+    print(f"B2 90/90/90 tapper on top: {s_} mm ({a_} / {b_})", flush=True)
     res["self_check"] = {}
     for key in ("A1", "A2", "B1"):
         d, a, b, t = self_check(key)

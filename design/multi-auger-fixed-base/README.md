@@ -25,7 +25,7 @@ placeholders sized from the real parts. They are not ready to print.
 
 | | Augers | Spacing ¹ | Outlets apart at 0° / 45° / 90° ² | Beaker | What changes | Tilt drive |
 |---|---|---|---|---|---|---|
-| Current modules, each on its own baseplate | 2 | 93 mm | 70 / 77 / 93 mm | too far apart for one beaker | — | 2 servos each |
+| Current modules, each on its own baseplate | 2 | 93 mm | 70 / 77 / 93 mm | a 1 L beaker (Ø105 mm) to catch both at 90° | — | 2 servos each |
 | **A1** Servos turned end for end | 2 | **41 mm** | 17.8 / 24.6 / 41.0 mm | 100 mL (50 mL up to about 60°) | new shared base only | 2 servos each (as now) |
 | **A2** One gear and servo per module, on opposite flanks | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL (50 mL up to about 70°) | new base; each plate loses one gear | 1 servo each |
 | **B1** Gearless pair, actuator underneath | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL | new base; plate without gears; clevis bracket | 1 linear actuator each |
@@ -34,7 +34,7 @@ placeholders sized from the real parts. They are not ready to print.
 
 ¹ Hinge to hinge for the pairs; hinge to beaker axis for three modules.
 Clears every tilt up to 60° with all modules tilting together, and any one
-module at 90° with the other at 0°. B2 also clears all three at 90° together.
+module at 90° with the others at 0°. B2 also clears all three at 90° together.
 ² Pairs: outlet to outlet. Three modules: diameter of the circle through the outlets.
 ³ Hinge to the beaker axis.
 
@@ -190,7 +190,9 @@ numbers are from #202's write-up.
 - **Spacing 37 mm,** the same as A2 (the tubes are the limit). Outlets 13.8 /
   20.6 / 37 mm apart at 0° / 45° / 90°.
 - **Actuators:** each hangs 113 mm from the beaker axis, outside the HR-100A's
-  Ø172 mm breeze-break housing. Each needs about 210 mm under the shelf.
+  Ø172 mm breeze-break housing. Each needs about 210 mm under the shelf. With
+  the shelf above the balance's 315 mm top, that leaves the actuator's lower
+  end above the balance's 80 mm-tall base.
 - **Self-check:** nothing on the module comes within 5 mm of the towers,
   clevis bracket or actuator over 0–90°.
 
@@ -204,7 +206,7 @@ numbers are from #202's write-up.
 - **Outlets** lie on a Ø40.8 mm circle at 0°, Ø47.6 at 45° and Ø64 at 90°: a
   150 mL beaker (about 57 mm inside) up to 60°, 250 mL for 90°.
 - **All three can be at 90° at once** if the tap collar is rolled 90° onto the
-  module's flank. With the collar on top, as now, 90° on all three needs 56 mm.
+  module's flank. With the collar on top, as now, 90° on all three needs 56.5 mm.
 - **Actuators** hang 127 mm out, again outside the balance's breeze break.
 
 ![B2](renders/b2_concept.png)

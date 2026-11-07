@@ -248,5 +248,9 @@
    "between": "A:MG996R +X / A:28T gear +X",
    "at_tilt": 40
   }
+ },
+ "B2_tapper_on_top_90": {
+  "spacing": 56.5,
+  "limit": "A:Solenoid (Adafruit 412) / C:Tap collar"
  }
 }
