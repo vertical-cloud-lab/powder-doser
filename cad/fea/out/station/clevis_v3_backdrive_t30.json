@@ -1,0 +1,51 @@
+{
+ "module": "station",
+ "case": "clevis_v3_backdrive_t30",
+ "design": "chain-carousel-v3",
+ "part": "P16 base clevis bracket (printed PETG)",
+ "load_case": "75 N along the P16 at 30 deg (backdrive_t30)",
+ "loads": {
+  "F_N": 75.0,
+  "direction": [
+   -0.115,
+   -0.0,
+   -0.993
+  ],
+  "foot_reaction": [
+   8.76,
+   0.0,
+   74.6
+  ]
+ },
+ "nodes": 56714,
+ "elements": 34601,
+ "mesh_mm": 1.6,
+ "wall_s": 24.9,
+ "parts": [
+  {
+   "part": "clevis bracket",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.05925,
+   "vm_max_MPa": 5.18,
+   "vm_max_at": [
+    -0.4,
+    -6.3,
+    -2.0
+   ],
+   "vm_excl_MPa": 5.18,
+   "vm_excl_at": [
+    -0.4,
+    -6.3,
+    -2.0
+   ],
+   "allow_MPa": 23.0,
+   "sf": 4.44
+  }
+ ],
+ "key_disp": {
+  "pin hole |u|": 0.05554
+ },
+ "notes": "foot's underside held (bonded) on the rail; cheeks 3.7 mm, the 4 mm shoulder screw in 4.2 mm holes",
+ "mass_kg": 0.0161,
+ "png": "out/station/clevis_v3_backdrive_t30.png"
+}

@@ -1,0 +1,238 @@
+{
+ "module": "frame",
+ "case": "chain-carousel-v4_motorpost_modes",
+ "design": "chain-carousel-v4",
+ "part": "frame + NEMA 34",
+ "load_case": "modes",
+ "freqs_Hz": [
+  15.36,
+  23.25,
+  33.62,
+  62.29,
+  82.33,
+  86.88,
+  119.97,
+  161.88,
+  164.18,
+  175.29,
+  182.4,
+  195.77
+ ],
+ "nodes": 229836,
+ "elements": 119244,
+ "total_mass_kg": 31.728,
+ "wall_s": 179.1,
+ "notes": "plate-to-post joint: motorpost",
+ "modes": [
+  {
+   "top": [
+    [
+     "sprocket",
+     0.35
+    ],
+    [
+     "side plates",
+     0.21
+    ],
+    [
+     "shaft",
+     0.14
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "sprocket",
+     0.35
+    ],
+    [
+     "side plates",
+     0.24
+    ],
+    [
+     "posts",
+     0.14
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.24
+    ],
+    [
+     "sprocket",
+     0.23
+    ],
+    [
+     "side plates",
+     0.21
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.7
+    ],
+    [
+     "sprocket",
+     0.09
+    ],
+    [
+     "side plates",
+     0.08
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.55
+    ],
+    [
+     "posts",
+     0.15
+    ],
+    [
+     "side plates",
+     0.12
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.49
+    ],
+    [
+     "sprocket",
+     0.2
+    ],
+    [
+     "rails",
+     0.09
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.31
+    ],
+    [
+     "posts",
+     0.2
+    ],
+    [
+     "side plates",
+     0.18
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.26
+    ],
+    [
+     "posts",
+     0.25
+    ],
+    [
+     "nema 34",
+     0.17
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "rails",
+     0.33
+    ],
+    [
+     "posts",
+     0.23
+    ],
+    [
+     "sprocket",
+     0.21
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "posts",
+     0.58
+    ],
+    [
+     "side plates",
+     0.2
+    ],
+    [
+     "nema 34",
+     0.08
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "posts",
+     0.52
+    ],
+    [
+     "rails",
+     0.48
+    ],
+    [
+     "side plates",
+     0.01
+    ]
+   ],
+   "direction": "z"
+  },
+  {
+   "top": [
+    [
+     "posts",
+     0.59
+    ],
+    [
+     "side plates",
+     0.21
+    ],
+    [
+     "nema 34",
+     0.1
+    ]
+   ],
+   "direction": "x"
+  }
+ ],
+ "png": [
+  "out/frame/chain-carousel-v4_motorpost_mode1.png",
+  "out/frame/chain-carousel-v4_motorpost_mode2.png",
+  "out/frame/chain-carousel-v4_motorpost_mode3.png",
+  "out/frame/chain-carousel-v4_motorpost_mode4.png"
+ ]
+}

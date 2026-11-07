@@ -1,0 +1,51 @@
+{
+ "module": "station",
+ "case": "clevis_v3_stall_t0",
+ "design": "chain-carousel-v3",
+ "part": "P16 base clevis bracket (printed PETG)",
+ "load_case": "50 N along the P16 at 0 deg (stall_t0)",
+ "loads": {
+  "F_N": 50.0,
+  "direction": [
+   -0.0,
+   -0.0,
+   -1.0
+  ],
+  "foot_reaction": [
+   -0.13,
+   0.0,
+   50.07
+  ]
+ },
+ "nodes": 56966,
+ "elements": 34777,
+ "mesh_mm": 1.6,
+ "wall_s": 19.2,
+ "parts": [
+  {
+   "part": "clevis bracket",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.01297,
+   "vm_max_MPa": 3.33,
+   "vm_max_at": [
+    -0.2,
+    -5.7,
+    -2.1
+   ],
+   "vm_excl_MPa": 3.33,
+   "vm_excl_at": [
+    -0.2,
+    -5.7,
+    -2.1
+   ],
+   "allow_MPa": 23.0,
+   "sf": 6.91
+  }
+ ],
+ "key_disp": {
+  "pin hole |u|": 0.01244
+ },
+ "notes": "foot's underside held (bonded) on the rail; cheeks 3.7 mm, the 4 mm shoulder screw in 4.2 mm holes",
+ "mass_kg": 0.0161,
+ "png": "out/station/clevis_v3_stall_t0.png"
+}

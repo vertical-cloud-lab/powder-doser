@@ -1,0 +1,238 @@
+{
+ "module": "frame",
+ "case": "paternoster_bonded_modes",
+ "design": "paternoster",
+ "part": "frame + NEMA 34",
+ "load_case": "modes",
+ "freqs_Hz": [
+  16.34,
+  18.08,
+  27.75,
+  51.56,
+  61.56,
+  72.19,
+  91.08,
+  138.95,
+  146.76,
+  160.27,
+  205.75,
+  223.75
+ ],
+ "nodes": 117024,
+ "elements": 58656,
+ "total_mass_kg": 23.837,
+ "wall_s": 63.3,
+ "notes": "plate-to-post joint: bonded",
+ "modes": [
+  {
+   "top": [
+    [
+     "idler",
+     0.32
+    ],
+    [
+     "nema 34",
+     0.23
+    ],
+    [
+     "side plates",
+     0.18
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.64
+    ],
+    [
+     "idler",
+     0.11
+    ],
+    [
+     "side plates",
+     0.09
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.3
+    ],
+    [
+     "sprocket",
+     0.26
+    ],
+    [
+     "side plates",
+     0.24
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.88
+    ],
+    [
+     "sprocket",
+     0.03
+    ],
+    [
+     "idler",
+     0.03
+    ]
+   ],
+   "direction": "z"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.35
+    ],
+    [
+     "idler",
+     0.21
+    ],
+    [
+     "side plates",
+     0.16
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.38
+    ],
+    [
+     "nema 34",
+     0.21
+    ],
+    [
+     "side plates",
+     0.14
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.36
+    ],
+    [
+     "sprocket",
+     0.19
+    ],
+    [
+     "side plates",
+     0.15
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.41
+    ],
+    [
+     "sprocket",
+     0.19
+    ],
+    [
+     "side plates",
+     0.15
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.66
+    ],
+    [
+     "side plates",
+     0.19
+    ],
+    [
+     "sprocket",
+     0.06
+    ]
+   ],
+   "direction": "x"
+  },
+  {
+   "top": [
+    [
+     "nema 34",
+     0.93
+    ],
+    [
+     "motor plate",
+     0.09
+    ],
+    [
+     "standoff",
+     0.01
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.71
+    ],
+    [
+     "side plates",
+     0.14
+    ],
+    [
+     "rails",
+     0.09
+    ]
+   ],
+   "direction": "y"
+  },
+  {
+   "top": [
+    [
+     "idler",
+     0.56
+    ],
+    [
+     "shaft",
+     0.14
+    ],
+    [
+     "side plates",
+     0.13
+    ]
+   ],
+   "direction": "x"
+  }
+ ],
+ "png": [
+  "out/frame/paternoster_bonded_mode1.png",
+  "out/frame/paternoster_bonded_mode2.png",
+  "out/frame/paternoster_bonded_mode3.png",
+  "out/frame/paternoster_bonded_mode4.png"
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "module": "gondola",
+ "case": "hanging_PETG_CREEP",
+ "design": "paternoster",
+ "part": "gondola (printed PETG)",
+ "load_case": "hanging: own weight + module on the floor",
+ "loads": {
+  "module": "2.55 N on the floor strips (1498 mm^2)"
+ },
+ "nodes": 54699,
+ "elements": 27949,
+ "mesh_mm": 3.0,
+ "wall_s": 11.3,
+ "parts": [
+  {
+   "part": "gondola",
+   "material": "PETG (printed, 1000 h creep)",
+   "umax_mm": 0.28807,
+   "vm_max_MPa": 0.487,
+   "vm_max_at": [
+    131.9,
+    -31.0,
+    -42.6
+   ],
+   "vm_excl_MPa": 0.487,
+   "vm_excl_at": [
+    131.9,
+    -31.0,
+    -42.6
+   ],
+   "allow_MPa": 8.0,
+   "sf": 16.42
+  }
+ ],
+ "key_disp": {
+  "floor sag, worst (mm)": 0.27091
+ },
+ "notes": "material PETG_CREEP; pivots pinned, swing held at the front pivot",
+ "mass_kg": 0.1269,
+ "png": "out/gondola/hanging_PETG_CREEP.png"
+}

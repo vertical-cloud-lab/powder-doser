@@ -1,0 +1,73 @@
+{
+ "module": "shafts",
+ "case": "paternoster_drive_running",
+ "design": "paternoster",
+ "part": "shaft drive",
+ "load_case": "running",
+ "loads": {
+  "Sprocket 32T bottom front +1y": "F (y, z) = (-56.5, 36.6) N, Mx = -0.80 N*m",
+  "Sprocket 32T bottom back +1y": "F (y, z) = (-56.5, 37.3) N, Mx = -0.80 N*m",
+  "jaw coupling": "F (y, z) = (0.0, 0.0) N, Mx = 1.60 N*m"
+ },
+ "nodes": 91728,
+ "elements": 58353,
+ "mesh_mm": 3.0,
+ "wall_s": 44.7,
+ "parts": [
+  {
+   "part": "shaft",
+   "material": "1018 CD steel",
+   "umax_mm": 0.09383,
+   "vm_max_MPa": 15.822,
+   "vm_max_at": [
+    2.3,
+    90.1,
+    438.0
+   ],
+   "vm_excl_MPa": 8.164,
+   "vm_excl_at": [
+    320.5,
+    102.3,
+    428.3
+   ],
+   "allow_MPa": 370.0,
+   "sf": 45.32
+  }
+ ],
+ "key_disp": {
+  "Sprocket 32T bottom front +1y: deflection (mm)": 0.0328,
+  "Sprocket 32T bottom back +1y: deflection (mm)": 0.03285,
+  "jaw coupling: deflection (mm)": 0.02577,
+  "bearing 1 slope (mrad)": 0.75639,
+  "bearing 2 slope (mrad)": 0.75779
+ },
+ "notes": "pin-supported at the insert bearings; keyway through Kt (not meshed)",
+ "mass_kg": 0.7232,
+ "beam": {
+  "R_front_N": [
+   56.46,
+   -36.71
+  ],
+  "R_back_N": [
+   56.46,
+   -37.2
+  ],
+  "M_max_Nmm": 3002.3,
+  "at_x": 325.0,
+  "sigma_nominal_MPa": 7.64
+ },
+ "fatigue": {
+  "Se_MPa": 148.5,
+  "Kf": 1.74,
+  "Kfs": 2.05,
+  "sigma_a_MPa": 13.3,
+  "sigma_m_MPa": 7.24,
+  "n_goodman": 9.43
+ },
+ "torsion_nominal_MPa": 2.04,
+ "bearings_x": [
+  -44.4,
+  369.4
+ ],
+ "png": "out/shafts/paternoster_drive_running.png"
+}

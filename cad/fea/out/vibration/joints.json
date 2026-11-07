@@ -1,0 +1,186 @@
+{
+ "ripple_Nm": 0.4,
+ "zeta": 0.02,
+ "mu": 0.15,
+ "joints": [
+  {
+   "design": "chain-carousel-v3_pads",
+   "joint": "NEMA 34 flange, 4 x M5 18-8 in slots, 3 N*m",
+   "preload_N": 3000,
+   "friction_cap_N": 450,
+   "dynamic_N": 6.56,
+   "at_Hz": 74.1026,
+   "at_mm_s": 112.9,
+   "sf": 68.6,
+   "slips_at_ripple_Nm": 27.4
+  },
+  {
+   "design": "chain-carousel-v3_pads",
+   "joint": "side plate to post, M5 x 12 into a T-nut, 2.5 N*m, blue threadlocker",
+   "preload_N": 2500,
+   "friction_cap_N": 375,
+   "dynamic_N": 22.437,
+   "at_Hz": 19.3481,
+   "at_mm_s": 29.5,
+   "sf": 16.7,
+   "slips_at_ripple_Nm": 6.7,
+   "worst_pad": "pad back y+112 z225"
+  },
+  {
+   "design": "chain-carousel-v3_pads",
+   "joint": "plate fatigue (6061-T6, 96.5 MPa fully reversed at 5e8 cycles)",
+   "dynamic_MPa": 1.248,
+   "at_Hz": 74.1026,
+   "at_mm_s": 112.9,
+   "sf": 77.0,
+   "where": "side_plate_back"
+  },
+  {
+   "design": "chain-carousel-v4_pads",
+   "joint": "NEMA 34 flange, 4 x M5 18-8 in slots, 3 N*m",
+   "preload_N": 3000,
+   "friction_cap_N": 450,
+   "dynamic_N": 11.27,
+   "at_Hz": 50.5849,
+   "at_mm_s": 77.1,
+   "sf": 39.9,
+   "slips_at_ripple_Nm": 16.0
+  },
+  {
+   "design": "chain-carousel-v4_pads",
+   "joint": "side plate to post, M5 x 12 into a T-nut, 2.5 N*m, blue threadlocker",
+   "preload_N": 2500,
+   "friction_cap_N": 375,
+   "dynamic_N": 45.944,
+   "at_Hz": 50.5849,
+   "at_mm_s": 77.1,
+   "sf": 8.2,
+   "slips_at_ripple_Nm": 3.3,
+   "worst_pad": "pad back y+180 z355"
+  },
+  {
+   "design": "chain-carousel-v4_pads",
+   "joint": "plate fatigue (6061-T6, 96.5 MPa fully reversed at 5e8 cycles)",
+   "dynamic_MPa": 4.308,
+   "at_Hz": 50.5849,
+   "at_mm_s": 77.1,
+   "sf": 22.0,
+   "where": "side_plate_back"
+  },
+  {
+   "design": "chain-carousel-v4_motorpost2",
+   "joint": "NEMA 34 flange, 4 x M5 18-8 in slots, 3 N*m",
+   "preload_N": 3000,
+   "friction_cap_N": 450,
+   "dynamic_N": 6.41,
+   "at_Hz": 15.3885,
+   "at_mm_s": 23.5,
+   "sf": 70.3,
+   "slips_at_ripple_Nm": 28.1
+  },
+  {
+   "design": "chain-carousel-v4_motorpost2",
+   "joint": "side plate to post, M5 x 12 into a T-nut, 2.5 N*m, blue threadlocker",
+   "preload_N": 2500,
+   "friction_cap_N": 375,
+   "dynamic_N": 17.098,
+   "at_Hz": 15.3885,
+   "at_mm_s": 23.5,
+   "sf": 21.9,
+   "slips_at_ripple_Nm": 8.8,
+   "worst_pad": "pad back y-180 z265"
+  },
+  {
+   "design": "chain-carousel-v4_motorpost2",
+   "joint": "plate fatigue (6061-T6, 96.5 MPa fully reversed at 5e8 cycles)",
+   "dynamic_MPa": 0.704,
+   "at_Hz": 15.3885,
+   "at_mm_s": 23.5,
+   "sf": 137.0,
+   "where": "side_plate_back"
+  },
+  {
+   "design": "paternoster_pads",
+   "joint": "NEMA 34 flange, 4 x M5 18-8 in slots, 3 N*m",
+   "preload_N": 3000,
+   "friction_cap_N": 450,
+   "dynamic_N": 2.19,
+   "at_Hz": 60.036,
+   "at_mm_s": 91.5,
+   "sf": 205.9,
+   "slips_at_ripple_Nm": 82.4
+  },
+  {
+   "design": "paternoster_pads",
+   "joint": "side plate to post, M5 x 12 into a T-nut, 2.5 N*m, blue threadlocker",
+   "preload_N": 2500,
+   "friction_cap_N": 375,
+   "dynamic_N": 1.355,
+   "at_Hz": 60.036,
+   "at_mm_s": 91.5,
+   "sf": 276.7,
+   "slips_at_ripple_Nm": 110.7,
+   "worst_pad": "pad back y+140 z380"
+  },
+  {
+   "design": "paternoster_pads",
+   "joint": "plate fatigue (6061-T6, 96.5 MPa fully reversed at 5e8 cycles)",
+   "dynamic_MPa": 0.991,
+   "at_Hz": 60.036,
+   "at_mm_s": 91.5,
+   "sf": 97.0,
+   "where": "standoff 1"
+  }
+ ],
+ "hand": {
+  "settle_chain-carousel-v3": {
+   "zeta 0.01": {
+    "to_1pct_s": 3.79,
+    "to_0p1pct_s": 5.68
+   },
+   "zeta 0.02": {
+    "to_1pct_s": 1.89,
+    "to_0p1pct_s": 2.84
+   }
+  },
+  "settle_chain-carousel-v4": {
+   "zeta 0.01": {
+    "to_1pct_s": 4.81,
+    "to_0p1pct_s": 7.22
+   },
+   "zeta 0.02": {
+    "to_1pct_s": 2.41,
+    "to_0p1pct_s": 3.61
+   }
+  },
+  "settle_paternoster": {
+   "zeta 0.01": {
+    "to_1pct_s": 4.73,
+    "to_0p1pct_s": 7.1
+   },
+   "zeta 0.02": {
+    "to_1pct_s": 2.37,
+    "to_0p1pct_s": 3.55
+   }
+  },
+  "strand_vertical run (228.6 mm)": {
+   "f1_Hz": 12.4,
+   "mesh_rate_reaches_it_at_mm_s": 118.0,
+   "note": "32T tooth-pass rate = v / 9.525 mm; the chordal rise is 0.23 mm, so a resonant strand swings a few tenths of a mm to about 1 mm"
+  },
+  "strand_horizontal run (114.3 mm)": {
+   "f1_Hz": 24.8,
+   "mesh_rate_reaches_it_at_mm_s": 236.0,
+   "note": "32T tooth-pass rate = v / 9.525 mm; the chordal rise is 0.23 mm, so a resonant strand swings a few tenths of a mm to about 1 mm"
+  },
+  "set_screws": {
+   "torque_capacity_Nm": 34.9,
+   "jam_share_Nm": 6.0,
+   "sf": 5.8,
+   "note": "each start, stop and reversal works a set screw; Loctite 243 and a dimple under each (the BoM) keep it"
+  },
+  "a1_screws": {
+   "note": "the printed seat creeps (18 MPa under the button head at a 300 N snug clamp, RESULTS change 11), so the preload falls over days; the nylon insert stops the nut turning off but the joint can then fret. The DIN 433 washer and a re-check after a week are the fix"
+  }
+ }
+}

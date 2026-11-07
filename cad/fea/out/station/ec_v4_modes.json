@@ -1,0 +1,50 @@
+{
+ "module": "station",
+ "case": "ec_v4_modes",
+ "design": "chain-carousel-v4",
+ "part": "electronics carriage v4 (arms)",
+ "load_case": "modes, held at the clevis pin",
+ "freqs_Hz": [
+  32.8,
+  39.3,
+  73.2,
+  89.8,
+  152.3,
+  169.1
+ ],
+ "nodes": 87698,
+ "elements": 48152,
+ "mode_peak_at": [
+  [
+   -3.6,
+   9.5,
+   16.9
+  ],
+  [
+   38.5,
+   23.5,
+   -10.5
+  ],
+  [
+   38.5,
+   -23.5,
+   -10.5
+  ],
+  [
+   49.5,
+   -23.5,
+   -10.5
+  ],
+  [
+   2.3,
+   -15.0,
+   63.8
+  ],
+  [
+   49.5,
+   -15.5,
+   -10.5
+  ]
+ ],
+ "png": "out/station/ec_v4_mode1.png"
+}

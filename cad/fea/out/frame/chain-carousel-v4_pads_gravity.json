@@ -1,0 +1,71 @@
+{
+ "module": "frame",
+ "case": "chain-carousel-v4_pads_gravity",
+ "design": "chain-carousel-v4",
+ "part": "frame + NEMA 34",
+ "load_case": "gravity",
+ "loads": {
+  "gravity": "all parts, motor 5.6 kg, loop 4.63 kg on the 8 sprockets, enclosure 5.13 kg"
+ },
+ "nodes": 223087,
+ "elements": 115746,
+ "mesh_mm": 12.0,
+ "wall_s": 73.9,
+ "parts": [
+  {
+   "part": "side_plate_front",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.06997,
+   "vm_max_MPa": 1.151,
+   "vm_max_at": [
+    -36.4,
+    185.3,
+    370.4
+   ],
+   "vm_excl_MPa": 0.798,
+   "vm_excl_at": [
+    -36.4,
+    81.7,
+    433.6
+   ],
+   "allow_MPa": 241.0,
+   "sf": 301.9
+  },
+  {
+   "part": "side_plate_back",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.06966,
+   "vm_max_MPa": 3.398,
+   "vm_max_at": [
+    341.3,
+    89.6,
+    335.6
+   ],
+   "vm_excl_MPa": 3.398,
+   "vm_excl_at": [
+    341.3,
+    89.6,
+    335.6
+   ],
+   "allow_MPa": 241.0,
+   "sf": 70.92
+  }
+ ],
+ "key_disp": {
+  "motor COM dz": -0.05265,
+  "motor encoder end dz": -0.10307,
+  "motor shaft tip dz": 0.01523,
+  "motor shaft tip dy": 0.00326,
+  "motor face centre dx": -0.0019,
+  "motor axis tilt (mrad, vertical plane)": 0.57427
+ },
+ "notes": "plate-to-post joint: pads",
+ "mass_kg": 31.1188,
+ "feet_reaction_N": [
+  -1.533517e-08,
+  -1.233271e-09,
+  311.9749
+ ],
+ "total_mass_kg": 31.119,
+ "png": "out/frame/chain-carousel-v4_pads_gravity.png"
+}
