@@ -416,7 +416,8 @@ def collisions(parts: list[Part], skip=()):
 
 
 def render(parts: list[Part], out: Path, view="iso", size=(1400, 1000), az=35.0, el=28.0,
-           dist=1.0, focal=(0, 0, 0), highlight=(), parallel=False, extra_actors=()):
+           dist=1.0, focal=(0, 0, 0), highlight=(), parallel=False, extra_actors=(), clip_x=None,
+           fixed=False):
     import vtk
     from vtkmodules.util.numpy_support import numpy_to_vtk, numpy_to_vtkIdTypeArray
     ren = vtk.vtkRenderer()
@@ -438,6 +439,11 @@ def render(parts: list[Part], out: Path, view="iso", size=(1400, 1000), az=35.0,
         nrm.Update()
         mp = vtk.vtkPolyDataMapper()
         mp.SetInputData(nrm.GetOutput())
+        if clip_x is not None:          # keep x <= clip_x (station frame): a half-section
+            pl = vtk.vtkPlane()
+            pl.SetOrigin(clip_x, 0, 0)
+            pl.SetNormal(-1, 0, 0)
+            mp.AddClippingPlane(pl)
         a = vtk.vtkActor()
         a.SetMapper(mp)
         pr = a.GetProperty()
@@ -461,6 +467,9 @@ def render(parts: list[Part], out: Path, view="iso", size=(1400, 1000), az=35.0,
     elif view == "side":
         cam.SetPosition(focal[0] + 1000, focal[1], focal[2])
         cam.SetViewUp(0, 0, 1)
+    elif view == "side-":
+        cam.SetPosition(focal[0] - 1000, focal[1], focal[2])
+        cam.SetViewUp(0, 0, 1)
     elif view == "front":
         cam.SetPosition(focal[0], focal[1] - 1000, focal[2])
         cam.SetViewUp(0, 0, 1)
@@ -471,7 +480,11 @@ def render(parts: list[Part], out: Path, view="iso", size=(1400, 1000), az=35.0,
         cam.SetViewUp(0, 0, 1)
     if parallel:
         cam.ParallelProjectionOn()
-    ren.ResetCamera()
+    if fixed and parallel:              # same frame for every call: no ResetCamera
+        cam.SetParallelScale(dist)
+        dist = None
+    else:
+        ren.ResetCamera()
     if dist is not None:
         if parallel:
             cam.SetParallelScale(dist)

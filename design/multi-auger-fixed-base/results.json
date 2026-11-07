@@ -231,5 +231,22 @@
  "current_without_baseplates_at_A1_spacing": [
   "A:MG996R +X / B:MG996R -X",
   "A:MG996R -X / B:MG996R +X"
- ]
+ ],
+ "servo_check": {
+  "P0": {
+   "min_clearance": 1.64,
+   "between": "A:MG996R +X / A:28T gear +X",
+   "at_tilt": 40
+  },
+  "A1": {
+   "min_clearance": 1.64,
+   "between": "A:MG996R +X / A:28T gear +X",
+   "at_tilt": 40
+  },
+  "A2": {
+   "min_clearance": 1.64,
+   "between": "A:MG996R +X / A:28T gear +X",
+   "at_tilt": 40
+  }
+ }
 }

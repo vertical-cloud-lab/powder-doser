@@ -227,6 +227,7 @@ def sweeps():
         d, a, b, t = self_check(key)
         res["self_check"][key] = dict(min_clearance=round(d, 2), between=f"{a} / {b}", at_tilt=t)
         print(f"{key} self check 0..90: {d:.2f} mm ({a} / {b} at {t} deg)", flush=True)
+    res["servo_check"] = servo_check()
     # the actuator's stroke over 0..90
     res["p16_stroke"] = {str(t): round(actuator_length(t) - D.P16["closed"], 1) for t in (0, 30, 45, 60, 90)}
     return res
@@ -360,6 +361,53 @@ def figures(res, size=(1500, 1050)):
     return res
 
 
+def servo_check(keys=("P0", "A1", "A2"), tilts=range(0, 91, 10)):
+    """Closest approach of the servos and their posts to anything that tilts
+    (one module, 0..90 deg): turning the servo (A1) must not make it worse."""
+    out = {}
+    for key in keys:
+        worst = (1e9, None, None, None)
+        for t in tilts:
+            parts, _ = layout(key, 200.0, (t, t), extras=False)
+            parts = [p for p in parts if p.name.startswith("A:")]
+            still = [p for p in parts if "MG996R" in p.name or "servo post" in p.name]
+            for a in still:
+                for b in (p for p in parts if p.moving):
+                    a.unit, b.unit = "still", "moving"
+                    d = D.clearance([a, b])[0]
+                    if d < worst[0]:
+                        worst = (d, a.name, b.name, t)
+        out[key] = dict(min_clearance=round(worst[0], 2), between=f"{worst[1]} / {worst[2]}", at_tilt=worst[3])
+        print(f"{key} servo check: {out[key]}", flush=True)
+    return out
+
+
+def actuator_figure(res):
+    """One gearless module (B1/B2) in half-section at 0, 45 and 90 deg: the
+    clevis under the floor, the rod through the shelf slot, the P16 below."""
+    paths = []
+    for t in (0, 45, 90):
+        M = D.place(90, 0.0, 0.0)
+        spec = D.UnitSpec("none")
+        parts = D.unit_parts(spec, t, M, "A") + towers(spec, M, "A") + actuator(M, t, "A")
+        sh = D.box(-100.0, 100.0, -60.0, 190.0, D.BASE_BOT_U, D.BASE_TOP_U).cut(
+            D.box(-12.0, 12.0, 35.0, 110.0, D.BASE_BOT_U - 5, D.BASE_TOP_U + 5))
+        parts.append(D.Part("shelf", sh, np.eye(4), D.COL["base"], "fixed"))
+        fn = OUT / f"_act{t}.png"
+        D.render(parts, fn, view="side", size=(900, 1100), parallel=True, dist=262, focal=(0, 86, -8), clip_x=0.3,
+                 fixed=True)
+        paths.append(fn)
+    st = res["p16_stroke"]
+    side_by_side(paths, OUT / "b_actuator_mount.png",
+                 "Idea B: the actuator mount, half-section through the module's centreline",
+                 [f"Rod-end clevis 95 mm behind and 45 mm below the hinge (under the floor, between the auger brackets);"
+                  f" base clevis straight below, under the shelf.",
+                  f"Rod out from closed: {st['0']} mm at 0 deg, {st['45']} at 45, {st['90']} at 90 (P16-150: 150 mm stroke)."
+                  " The actuator swings at most 8 deg; the load is 4-7 N."],
+                 labels=("0 deg", "45 deg", "90 deg"))
+    print("  -> b_actuator_mount.png", flush=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-sweep", action="store_true")
@@ -370,6 +418,7 @@ def main():
     else:
         res = sweeps()
     res = figures(res)
+    actuator_figure(res)
     rpath.write_text(json.dumps(res, indent=1) + "\n")
     print(json.dumps(res.get("working_spacing"), indent=1))
 

@@ -167,6 +167,8 @@ That is what lets three modules close in on one beaker.
 - **Force:** about 0.4–0.65 N·m about the hinge (module plus powder) over
   95 mm is 4–7 N. Every candidate below is far stronger.
 
+![Actuator mount](renders/b_actuator_mount.png)
+
 | Actuator | Stroke / closed | Range here | Control | Notes |
 |---|---|---|---|---|
 | Actuonix **P16-150-22-12-P** + LAC ([#202](https://github.com/vertical-cloud-lab/powder-doser/issues/202)'s pick) | 150 / 197 mm | 0–90° | LAC board (RC pulse, USB or analogue in), potentiometer feedback | $90 + $30 per module; holds 75 N with the power off |
@@ -263,7 +265,7 @@ between bulk doses. This was not modelled.
 |---|---|
 | [`doserlib.py`](doserlib.py) | Loads PR #170's STEP files and `layout.py` at commit `7f5b3b7` (downloaded once to `~/.cache`). Builds a module with any drive variant, plus the placeholder base, towers, actuator and beaker. Mesh clearance (fcl), VTK renders |
 | [`concepts.py`](concepts.py) | The concepts, the spacing sweeps, the self-checks and the figures |
-| [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the actuator stroke table and the outlet spacings |
+| [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
