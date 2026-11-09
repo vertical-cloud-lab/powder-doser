@@ -15,9 +15,9 @@ per doser and for 25. If you're building fewer to start with, scale down.
    printed part except the baseplate and the auger fits on the A1 mini.
 2. **Give H2D slots to mounting plates (4 per plate) before augers**
    ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
-3. **Do the inventory count** with
-   [`inventory-checklist.csv`](inventory-checklist.csv) and post the
-   shortfalls on your PR ([§3](#3-inventory-check)).
+3. **Keep the inventory count up to date** in
+   [`inventory-checklist.csv`](inventory-checklist.csv). The 3 Nov count is
+   in; upload each new count to GitHub ([§3](#3-inventory-check)).
 4. **Order the PCBs.** 25 dosers need 25 V2 boards, and BYU has 4 spares
    at most ([§3.4](#34-ordering-more-v2-pcbs)).
 5. **Build doser #1 end to end**, mechanics and electronics, with Sam and
@@ -208,20 +208,47 @@ Two ways to free up the H2D, worth raising with Sam:
 ## 3. Inventory check
 
 Purpose: find out what's missing for the repeat dosers **before** assembly
-starts. Open [`inventory-checklist.csv`](inventory-checklist.csv) in Excel or
-Google Sheets, count what's physically on hand into the `On hand` column, and
-fill in `Short`. Most purchased parts were delivered to the U (ask
+starts. [`inventory-checklist.csv`](inventory-checklist.csv) is the master
+copy of the count, and GitHub shows it as a searchable table. It holds the
+count @brandonmunk and @lshuldberg took, as Brandon updated it on 3 Nov
+([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)),
+byte for byte as posted. Most purchased parts were delivered to the U (ask
 @kinstonwithoutg / @Dila-Kandel for their counts), so count what's at BYU
 yourself and merge the two.
 
-**Counts in MongoDB.** Posted counts also go to the lab's Atlas cluster
+**To post a new count:**
+
+1. Open the CSV in Excel or Google Sheets and change the `On hand` and
+   `Short` counts. Keep the columns as they are.
+2. Save it as **CSV UTF-8**, named exactly `inventory-checklist.csv`, so the
+   upload replaces the old version instead of adding a second file.
+3. On GitHub, open [`docs/new-dosers`](https://github.com/vertical-cloud-lab/powder-doser/tree/claude/new-doser-getting-started/docs/new-dosers)
+   on this PR's branch (`main` once it's merged), then *Add file* → *Upload
+   files*. Drop the file in, write what changed as the message, choose
+   *Commit directly to the branch*, and click *Commit changes*. GitHub keeps
+   every version, and each commit shows which counts changed.
+
+**Counts in MongoDB.** Each count also goes to the lab's Atlas cluster
 (`Cluster0`), database `powder_doser`. Each row is one document in
 `parts_inventory`, and the file itself, with its sha256 and where it was
-posted, is in `parts_inventory_snapshots`. The first one there is
-@brandonmunk's 3 Nov count
-([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)),
-snapshot `2026-11-03-7f9e6475`. In Atlas: *Browse Collections* →
-`powder_doser` → `parts_inventory`, filter `{snapshot_id: "2026-11-03-7f9e6475"}`.
+posted, is in `parts_inventory_snapshots`. The first one there is the 3 Nov
+count, snapshot `2026-11-03-7f9e6475`. In Atlas: *Browse Collections* →
+`powder_doser` → `parts_inventory`, then filter
+`{snapshot_id: "2026-11-03-7f9e6475"}` for one count, or sort
+`{taken_at: -1, row: 1}` to see the newest count first. **Change counts in
+the CSV, not in Atlas:** an edit made in Atlas doesn't come back to GitHub,
+and it overwrites that snapshot's record.
+
+**Sending a new version to MongoDB.** [`inventory-to-mongo.yml`](inventory-to-mongo.yml)
+is a GitHub Action that sends each new version of the CSV by itself. It only
+runs once someone with write access copies it, unchanged, to
+`.github/workflows/inventory-to-mongo.yml` on the same branch (*Add file* →
+*Create new file*), because Claude's GitHub App can't write workflow files.
+Until then, comment `@claude send the inventory CSV to MongoDB` after an
+upload. By hand, it's
+[`inventory_to_mongo.py`](inventory_to_mongo.py)
+`<file>.csv --source-url <link> --author <login> --taken-at <UTC time>`.
+If the newest snapshot is already that exact file, nothing is written.
 
 **Seeing it in Atlas needs an invite.** A new Atlas login only shows its own
 empty *Project 0*, in an organization of its own. A Project Owner of the lab's
@@ -232,9 +259,6 @@ Accept the invite from the e-mail or from your account menu → *Invitations*
 (invites expire after 30 days), then choose the lab's organization from the
 *Organizations* menu. Without an Atlas login, ask in an `@claude` comment and
 a run will read the counts back.
-
-Send a new count with [`inventory_to_mongo.py`](inventory_to_mongo.py):
-`python inventory_to_mongo.py <file>.csv --source-url <comment URL> --author <login> --taken-at <UTC time>`.
 
 ### 3.1 Where things stood in PR #115 (as of 2 Oct)
 

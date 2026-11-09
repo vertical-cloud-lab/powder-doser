@@ -4,14 +4,19 @@ Each row of the CSV becomes one document in `powder_doser.parts_inventory`.
 Each upload also gets one document in `powder_doser.parts_inventory_snapshots`,
 holding the CSV text exactly as received, its sha256, and where it came from.
 
-Row documents are keyed by snapshot and row number, so sending the same file
-again replaces its rows instead of adding copies. A new count is a new
-snapshot, and the newest `taken_at` is the current inventory.
+A new count is a new snapshot, and the newest `taken_at` is the current
+inventory. If the newest snapshot is already this exact file (same sha256),
+nothing is written, so re-sending the file adds no copies; --force rewrites
+it. Row documents are keyed by snapshot and row number.
 
     pip install pymongo
     python inventory_to_mongo.py "inventory-checklist (updated).csv" \
         --source-url https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586 \
         --author brandonmunk --taken-at 2026-11-03T20:09:27Z
+
+The master copy is docs/new-dosers/inventory-checklist.csv in this repo, and
+inventory-to-mongo.yml (a GitHub Action, once copied into .github/workflows/)
+runs this script on each new version of it.
 
 The connection string comes from $PI_MONGODB_URI (readWrite on powder_doser
 only) or $MONGODB_URI; choose with --uri-env. It is never printed. --dry-run
@@ -60,6 +65,20 @@ def field_name(header):
     return re.sub(r"[^0-9a-z]+", "_", header.lower()).strip("_") or "column"
 
 
+def hide_hosts(kind, err, tb):
+    """Print an uncaught MongoDB error without the cluster's host names.
+
+    Connection errors list every host of the cluster, and a GitHub Action's
+    log is public in this repo; the rest of the message is kept.
+    """
+    from pymongo.errors import PyMongoError
+    if not isinstance(err, PyMongoError):
+        return sys.__excepthook__(kind, err, tb)
+    text = re.sub(r"mongodb(\+srv)?://\S+", "<connection string>", str(err))
+    text = re.sub(r"[\w.-]+\.mongodb\.net", "<atlas host>", text)
+    print(f"MongoDB error, {kind.__name__}: {text}", file=sys.stderr)
+
+
 def cell(field, text):
     """Blank -> None; whole numbers in the count columns -> int; anything else kept as text."""
     text = text.strip()
@@ -98,6 +117,7 @@ def main():
     ap.add_argument("--snapshot-id", help="default: <taken-at date>-<first 8 of sha256>")
     ap.add_argument("--uploaded-by", help="default: $GITHUB_ACTOR or the local user name")
     ap.add_argument("--uri-env", default=None, help="env var holding the URI (default: PI_MONGODB_URI, then MONGODB_URI)")
+    ap.add_argument("--force", action="store_true", help="write even if the newest snapshot is this same file")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -151,6 +171,13 @@ def main():
     client = MongoClient(os.environ[uri_var], serverSelectionTimeoutMS=20000, appname="inventory_to_mongo")
     db = client[DB]
 
+    newest = db[SNAPSHOTS].find_one({}, {"sha256": 1, "taken_at": 1}, sort=[("taken_at", -1)])
+    if newest and newest["sha256"] == sha and not args.force:
+        print(f"unchanged: the newest snapshot, {newest['_id']} ({newest['taken_at']:%Y-%m-%d %H:%M} UTC), "
+              "is this same file, so nothing was written (--force to rewrite it)")
+        client.close()
+        return
+
     db[SNAPSHOTS].replace_one({"_id": sid}, snapshot, upsert=True)
     res = db[ROWS].bulk_write([ReplaceOne({"_id": d["_id"]}, d, upsert=True) for d in docs])
     stale = db[ROWS].delete_many({"snapshot_id": sid, "_id": {"$nin": [d["_id"] for d in docs]}})
@@ -177,4 +204,5 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.excepthook = hide_hosts
     main()
