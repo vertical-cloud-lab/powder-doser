@@ -23,3 +23,4 @@
 {"run": "create-document-v5", "n": 10, "method": "GET", "path": "/assemblies/d/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0/e/c7483f9da46de0305e71e071/shadedviews", "status": 200, "utc": "2026-11-10T19:00:40Z"}
 {"run": "create-document-v5", "n": 11, "method": "POST", "path": "/documents/d/7781103e41ea031038274d53/versions", "status": 200, "utc": "2026-11-10T19:00:40Z"}
 {"run": "supersede", "n": 1, "method": "POST", "path": "/documents/ff674285e2dcda8b61b9b405", "status": 200, "utc": "2026-11-10T19:00:41Z"}
+{"run": "check-public", "n": 1, "method": "GET", "path": "/documents/7781103e41ea031038274d53", "status": 200, "utc": "2026-11-10T19:03:44Z"}
