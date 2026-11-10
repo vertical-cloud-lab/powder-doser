@@ -1,0 +1,127 @@
+"""Put the chain-carousel test rig v5 into Onshape (issue #128, PR #185).
+
+    python onshape_build.py create      # new public company document + import + views + version
+    python onshape_build.py views       # re-render Onshape's shaded views of the recorded document
+
+v2's route (../../chain-carousel-v2/onshape/onshape_build.py): one composite import of
+../step/chain_carousel_rig_v5.step (flattenAssemblies false) gives an Assembly tab whose tree is
+the build sequence (one sub-assembly per assembly step) plus one Part Studio per unique part, with
+every instance already placed. Ids land in onshape_document.json; every call is in api_calls.jsonl.
+The company's API allowance returned 402 from 2026-10-29 and worked again on 2026-11-10.
+"""
+from __future__ import annotations
+
+import argparse
+import base64
+import json
+import time
+from pathlib import Path
+
+from client import HERE, Onshape
+
+ROOT = HERE.parent
+STEP = ROOT / "step" / "chain_carousel_rig_v5.step"
+DOC_JSON = HERE / "onshape_document.json"
+RENDERS = ROOT / "renders" / "onshape"
+COMPANY_NAME = "Vertical Cloud Lab"
+DOC_NAME = "Multi-doser chain carousel - test rig v5, augers outside the loop, dose onto an A&D HR-202i (#128)"
+DESCRIPTION = ("Two ANSI #35 chains (104 links each) round four 32T corner shafts; 13 carriages with the modules "
+               "(Sam's Oct 13 mounting plate, the lab auger) on their outer faces, each held by two 5 mm hinge pins "
+               "and a spring latch pin; outlet doors; kinematic dock (cone, vee, flat) on the plate's auger side. "
+               "Station on the bottom run: the electronics carriage on an 8 mm lift bar carried by two Actuonix "
+               "P16-150-22-12-P, guide shoes in slots on the station posts, the latch rail and tube rest; the dose "
+               "falls into a beaker on an A&D HR-202i under the station. 2020 frame, acrylic enclosure. Generated "
+               "by vertical-cloud-lab/powder-doser cad/chain-carousel-v5 (CadQuery -> STEP -> REST API). Git is "
+               "the source of truth; edits here come back as reviewed imports.")
+
+
+def company_id(c: Onshape) -> str:
+    for it in c.get("/companies")["items"]:
+        if it["name"] == COMPANY_NAME:
+            return it["id"]
+    raise RuntimeError(f"the API key is not in {COMPANY_NAME}")
+
+
+def import_assembly(c: Onshape, did: str, wid: str) -> dict:
+    data = STEP.read_bytes()
+    fname = STEP.name
+    form = {"encodedFilename": fname, "fileContentLength": str(len(data)), "translate": "true",
+            "flattenAssemblies": "false", "yAxisIsUp": "false", "allowFaultyParts": "true"}
+    res = c.post(f"/blobelements/d/{did}/w/{wid}", files={"file": (fname, data, "application/step")}, data=form)
+    tid = res.get("translationId") or res["id"]
+    print("translation", tid, flush=True)
+    time.sleep(90)
+    for _ in range(30):                          # a 40 MB STEP: up to 30 polls a minute apart
+        st = c.get(f"/translations/{tid}")
+        print("  ", st["requestState"], time.strftime("%H:%M:%S"), flush=True)
+        if st["requestState"] == "DONE":
+            return st
+        if st["requestState"] == "FAILED":
+            raise RuntimeError(f"translation failed: {st.get('failureReason')}")
+        time.sleep(60)
+    raise RuntimeError("translation still running; re-poll /translations/" + tid)
+
+
+def shaded(c: Onshape, rec: dict, name: str, view: str, w: int = 1600, h: int = 1000) -> Path:
+    did, wid, aid = rec["documentId"], rec["workspaceId"], rec["assemblyElementId"]
+    r = c.get(f"/assemblies/d/{did}/w/{wid}/e/{aid}/shadedviews",
+              params={"viewMatrix": view, "outputHeight": h, "outputWidth": w, "pixelSize": 0,
+                      "edges": "show", "useAntiAliasing": "true"})
+    RENDERS.mkdir(parents=True, exist_ok=True)
+    out = RENDERS / f"onshape_{name}.png"
+    out.write_bytes(base64.b64decode(r["images"][0]))
+    return out
+
+
+FRONT_ISO = "0.743,-0.669,0,0,0.339,0.376,0.862,0,-0.577,-0.641,0.507,0"
+
+
+def create() -> dict:
+    c = Onshape(budget=45, run="create-document-v5")
+    cid = company_id(c)
+    doc = c.post("/documents", json={"name": DOC_NAME, "ownerId": cid, "ownerType": 1, "isPublic": True,
+                                     "description": DESCRIPTION})
+    did, wid = doc["id"], doc["defaultWorkspace"]["id"]
+    rec = {"documentId": did, "workspaceId": wid, "owner": COMPANY_NAME, "public": True,
+           "url": f"https://cad.onshape.com/documents/{did}/w/{wid}"}
+    DOC_JSON.write_text(json.dumps(rec, indent=1))
+    print("document", rec["url"], flush=True)
+    st = import_assembly(c, did, wid)
+    rec["translationId"] = st["id"]
+    rec["importedElementIds"] = st.get("resultElementIds", [])
+    els = c.get(f"/documents/d/{did}/w/{wid}/elements")
+    rec["elements"] = [{"id": e["id"], "name": e["name"], "type": e.get("elementType")} for e in els]
+    asm = [e for e in els if e.get("elementType") == "ASSEMBLY"]
+    top = next((e for e in asm if e["name"].startswith("Chain carousel test rig v5")), asm[0] if asm else None)
+    rec["assemblyElementId"] = top["id"] if top else None
+    rec["assemblyUrl"] = f"{rec['url']}/e/{rec['assemblyElementId']}"
+    DOC_JSON.write_text(json.dumps(rec, indent=1))
+    if rec["assemblyElementId"]:
+        for name, view in (("iso", "isometric"), ("front_iso", FRONT_ISO)):
+            try:
+                print("->", shaded(c, rec, name, view), flush=True)
+            except RuntimeError as e:
+                print("view", name, "failed:", str(e)[:200])
+    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v5 HR-202i station",
+                                                      "description": "Import from cad/chain-carousel-v5 (#128, PR #185): 843 instances, "
+                                                                     "98 unique parts; 0 clashes over 0.5 mm^3 at home, over a "
+                                                                     "one-module sweep and tilted to 40 deg"})
+    rec["version"] = {"id": v["id"], "name": v["name"]}
+    rec["api_calls"] = c.calls
+    DOC_JSON.write_text(json.dumps(rec, indent=1))
+    print(json.dumps(rec, indent=1)[:2000])
+    return rec
+
+
+def views() -> None:
+    rec = json.loads(DOC_JSON.read_text())
+    c = Onshape(budget=4, run="views")
+    for name, view in (("iso", "isometric"), ("front_iso", FRONT_ISO)):
+        print("->", shaded(c, rec, name, view))
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("cmd", choices=["create", "views"])
+    a = ap.parse_args()
+    create() if a.cmd == "create" else views()

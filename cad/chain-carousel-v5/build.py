@@ -1,8 +1,8 @@
-"""Export the chain-carousel test rig v4 (the augers outside the loop).
+"""Export the chain-carousel test rig v5 (v4's augers outside the loop; the dose falls onto an A&D HR-202i).
 
     python build.py
 
-* step/chain_carousel_rig_v4.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v5.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
@@ -23,11 +23,11 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("carriage", "hold_down", "tensioner_block", "clevis_bracket", "cradle", "latch_rail", "latch_bolt", "door_housing", "door_shutter",
-           "side_tab", "side_tab_m", "catch")
-PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v4", "sam_mounting_plate": "mounting_plate_v4"}   # Sam's parts + v4 features
+PRINTED = ("carriage", "hold_down", "tensioner_block", "clevis_bracket", "latch_rail", "latch_bolt", "door_housing", "door_shutter",
+           "side_tab", "side_tab_m", "catch", "p16_shelf", "guide_block", "bar_end", "beaker_riser")   # v5: no cradle; shelves, guides, bar ends, riser
+PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v5", "sam_mounting_plate": "mounting_plate_v4"}   # Sam's parts + v4/v5 features
 ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side")
-STEP_FILE = "chain_carousel_rig_v4.step"
+STEP_FILE = "chain_carousel_rig_v5.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -40,7 +40,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v4")
+    asm = cq.Assembly(name="Chain carousel test rig v5")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
