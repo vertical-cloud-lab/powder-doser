@@ -72,8 +72,9 @@ What run 34 adds to this table:
   30 g), and the misfit fell about 8 % per 10 g. The trial documents already have `recycle_count` and
   `doses_since_cup_empty` fields for this; both stayed at 0 for salt.
 * **Powders that barely convey** (under 50 mg/rev at 45° in Sam's battery: CMC, sodium alginate, both rice
-  flours, Si −325 mesh and fumed silica) get steps 0–3 and 8 only. A campaign can't dose them at this exit. Their
-  low or zero flow is a censored result, as run 33 treats it.
+  flours, Si −325 mesh and fumed silica) get steps 0–3 and 8 first. Run a campaign on one only if a few doses at
+  the screen's settings finish inside the time cap; the box stops at 40°, where these deliver even less. Their low
+  or zero flow is a censored result, as run 33 treats it.
 * **The screen's box should stay fixed** across powders for the data's sake, even where a powder's own BO wants
   a different box. If a powder needs a wider box, add its extra doses as BO doses, not screen doses.
 
