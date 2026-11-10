@@ -1,0 +1,198 @@
+{
+ "ai_excavator.png": {
+  "branch": "copilot/initial-prototyping-mini-excavator",
+  "path": "docs/figures/cad/assembly.png",
+  "commit": "f78ec7272f43c55424b42441e845c80c8395e472",
+  "commit_date": "2026-04-24",
+  "note": "PR #2, excavator assembly, Copilot coding agent"
+ },
+ "ai_first_auger.png": {
+  "branch": "feature/archimedes-auger-attachment",
+  "path": "cad/auger/archimedes-auger-iso.png",
+  "commit": "3c4b80f7977e252cafc32ff16333919de6e62839",
+  "commit_date": "2026-05-15",
+  "note": "PR #16, first Archimedes auger"
+ },
+ "ai_whole_module.png": {
+  "branch": "copilot/modular-single-channel-powder-doser-design",
+  "path": "design/cad/single-channel-module/renders/single_channel_module_side.png",
+  "commit": "2ddc6793bf3265bbe1bc5050f9187a40be666e30",
+  "commit_date": "2026-05-13",
+  "note": "PR #35, whole single-channel module"
+ },
+ "ai_cadsmith_plates.png": {
+  "branch": "copilot/design-mounting-plate-cadsmith",
+  "path": "design/cad/mounting-plate-assembly/renders/assembly_45deg_iso.png",
+  "commit": "569e833ac3e9ceb4e002e6ab127e509578edeb38",
+  "commit_date": "2026-05-15",
+  "note": "PR #59, CADSmith-authored hinged plate assembly"
+ },
+ "ai_cadsmith_baseplate.png": {
+  "branch": "copilot/design-mounting-plate-cadsmith",
+  "path": "design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0_render.png",
+  "commit": "0653fc439383f136a8e7376fe28cf477e3a0845c",
+  "commit_date": "2026-05-18",
+  "note": "PR #59, CADSmith baseplate run, iteration 0"
+ },
+ "ai_cadsmith_mounting_plate.png": {
+  "branch": "copilot/design-mounting-plate-cadsmith",
+  "path": "design/cad/mounting-plate-assembly/cadsmith_runs/mounting_plate/mounting_plate_iter0_render.png",
+  "commit": "0653fc439383f136a8e7376fe28cf477e3a0845c",
+  "commit_date": "2026-05-18",
+  "note": "PR #59, CADSmith mounting-plate run, iteration 0"
+ },
+ "ai_zoo_auger.png": {
+  "branch": "copilot/explore-meta-tools-for-cad",
+  "path": "cad/meta-tools/zoo-output/renders/auger_mlephant_iso.png",
+  "commit": "2a03cd656eae64815f3158524ad1deaf20e4f6f3",
+  "commit_date": "2026-05-12",
+  "note": "PR #7, Zoo Text-to-CAD auger"
+ },
+ "ai_zoo_full_system.png": {
+  "branch": "copilot/explore-meta-tools-for-cad",
+  "path": "cad/meta-tools/zoo-output/renders/full_system_zoo.png",
+  "commit": "c48a9d078b05ab42497285d03d69cc3660b31f90",
+  "commit_date": "2026-05-15",
+  "note": "PR #7, Zoo Text-to-CAD whole system"
+ },
+ "ai_zoo_t2c_doser.png": {
+  "branch": "copilot/design-powder-dispensing-system-again",
+  "path": "cad/powder-doser-assembly/assembly/assembly_iso_az090_hires.png",
+  "commit": "12b1ab998374b268e97a0528c6635e61b9dfb3eb",
+  "commit_date": "2026-06-22",
+  "note": "PR #110, all 11 parts via the Zoo Text-to-CAD API"
+ },
+ "ai_bracket.png": {
+  "branch": "copilot/design-bracket-for-auger",
+  "path": "cad/auger-bracket/views/iso.png",
+  "commit": "e455a3a11e94d3875f604ede368854b95c5d98cd",
+  "commit_date": "2026-05-18",
+  "note": "PR #47, auger bracket from the issue #46 drawing"
+ },
+ "ai_cadsmithstyle_bracket.png": {
+  "branch": "copilot/design-simple-bracket-cadsmith",
+  "path": "cad/auger-bracket/views/assembly.png",
+  "commit": "d8a619f56c27d6d7c00baffddf175010fce4e963",
+  "commit_date": "2026-05-18",
+  "note": "PR #55, 'CADSmith-style' bracket written by the coding agent"
+ },
+ "ai_storage_auger.png": {
+  "branch": "copilot/add-new-auger-design",
+  "path": "cad/auger-geared/threaded_archimedes-auger-storage-test-iso.png",
+  "commit": "361314e11a3b30603971d25d67f926299eaf1450",
+  "commit_date": "2026-06-16",
+  "note": "PR #49, threaded storage auger"
+ },
+ "ai_storage_auger_xsec.png": {
+  "branch": "copilot/add-new-auger-design",
+  "path": "cad/auger-geared/threaded-storage-cap-assembly-cross-section.png",
+  "commit": "361314e11a3b30603971d25d67f926299eaf1450",
+  "commit_date": "2026-06-16",
+  "note": "PR #49, storage auger and cap, section"
+ },
+ "ai_tap_collar_v1.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/tap_collar_v1_iso.png",
+  "commit": "c85e55d3579a866801981f577161f290f687a50d",
+  "commit_date": "2026-06-11",
+  "note": "PR #51, first AI tap collar"
+ },
+ "ai_plate_gap.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/plate_iter3_gap_top.png",
+  "commit": "c85e55d3579a866801981f577161f290f687a50d",
+  "commit_date": "2026-06-11",
+  "note": "PR #57, mounting plate iteration 3 (gap)"
+ },
+ "ai_onshape_assembly.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/assembly_iso_final.png",
+  "commit": "c85e55d3579a866801981f577161f290f687a50d",
+  "commit_date": "2026-06-11",
+  "note": "PR #170, the team's parts assembled through the Onshape API by Claude Code"
+ },
+ "eng_hackathon_sketch.jpg": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "powder-excavator-sketch.jpg",
+  "commit": "bf0cc222118e33a083f825a57e955c23324f0833",
+  "commit_date": "2026-04-23",
+  "note": "README / PR #2, hand sketch of the powder excavator"
+ },
+ "eng_hackathon_sketches2.jpg": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "PXL_20260423_231729467.jpg",
+  "commit": "c9e4a33b12b82eb2a85aa16e315b4ca2b46a7f7b",
+  "commit_date": "2026-04-23",
+  "note": "PR #2, sketches 23 Apr"
+ },
+ "eng_pose_tube.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "POSE_tube_xanthan_gum.png",
+  "commit": "d2a17c7654b4e63a5c19fd581ca62dbebe92720d",
+  "commit_date": "2026-05-08",
+  "note": "First printed auger dispensing xanthan gum at POSE"
+ },
+ "eng_bracket_drawing.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/example_drawing.png",
+  "commit": "a5e88177d7af34f570f0a5b857805bb764f97f01",
+  "commit_date": "2026-10-08",
+  "note": "Issue #46, dimensioned bracket drawing given to the agent"
+ },
+ "eng_fusion_auger.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/auger_cutaway.png",
+  "commit": "e451168379e72c21e1a6e1fb7665e7aaf649fc39",
+  "commit_date": "2026-10-08",
+  "note": "Fusion 360 auger with screw-on cap (team), cut-away rendered from STL"
+ },
+ "eng_glovebox_first_dose.jpg": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/as_built_first_dispense.jpg",
+  "commit": "209e25e9c83f81108e8bfcfcba8c66788a995ae1",
+  "commit_date": "2026-09-25",
+  "note": "Issue #165 / #117, first dose in the glove box, 24 Jul"
+ },
+ "eng_multidoser_sketch.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/multidoser_carriage_sketch.png",
+  "commit": "6de7786d7871bf8bf513b3101978f1f230315cb8",
+  "commit_date": "2026-10-01",
+  "note": "Issue #128, hand sketch of the auger carriage"
+ },
+ "eng_multidoser_onshape.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/multidoser_carriages_onshape.png",
+  "commit": "6de7786d7871bf8bf513b3101978f1f230315cb8",
+  "commit_date": "2026-10-01",
+  "note": "Issue #128, Onshape model of the carriages (team)"
+ },
+ "ai_tap_collar_revised.png": {
+  "branch": "copilot/draft-base-manuscript",
+  "path": "paper/figures/assets/tap_collar_final_iso.png",
+  "commit": "c85e55d3579a866801981f577161f290f687a50d",
+  "commit_date": "2026-06-11",
+  "note": "PR #51 tap collar after review iterations (coding agent; render copied on 11 Jun, c85e55d). NOT the Zoo Design Studio collar."
+ },
+ "eng_tapcollar_rig_2026-09-11.jpg": {
+  "branch": "",
+  "path": "assets/photos/rig_2026-09-11.jpg (crop)",
+  "commit": "",
+  "commit_date": "2026-09-11",
+  "note": "Tap collar and solenoid on the rig, crop of the #156 photo"
+ },
+ "eng_tapcollar_new_2026-10-08.jpg": {
+  "branch": "",
+  "path": "assets/photos/tapcollar_new_2026-10-08.jpg (crop)",
+  "commit": "",
+  "commit_date": "2026-10-08",
+  "note": "New tap-collar block and solenoid, #128 photo"
+ },
+ "eng_rig_2026-09-11.jpg": {
+  "branch": "",
+  "path": "assets/photos/rig_2026-09-11.jpg (crop)",
+  "commit": "",
+  "commit_date": "2026-09-11",
+  "note": "The doser as tested, crop of the #156 photo"
+ }
+}

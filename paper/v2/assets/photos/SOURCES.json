@@ -1,0 +1,92 @@
+{
+ "rig_2026-09-11.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/156#issuecomment-5635831808",
+  "author": "swcharles",
+  "date": "2026-09-11",
+  "note": "The doser as tested in round 2, over the beaker on the analytical balance"
+ },
+ "powder_in_beaker_2026-09-10.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/156#issuecomment-5625605700",
+  "author": "swcharles",
+  "date": "2026-09-10",
+  "note": "Calcium lactate in the beaker after a protocol-H dose"
+ },
+ "augers_lineup_2026-09-10.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/144#issuecomment-5625478266",
+  "author": "swcharles",
+  "date": "2026-09-10",
+  "note": "Eight labelled augers of the food-safe set"
+ },
+ "augers_box_2026-08-04.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/134#issuecomment-5183033746",
+  "author": "swcharles",
+  "date": "2026-08-04",
+  "note": "Sixteen capped augers in a box"
+ },
+ "auger_filled_salt_2026-07-29.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/131#issuecomment-5124312018",
+  "author": "swcharles",
+  "date": "2026-07-29",
+  "note": "An auger filled with salt, seen from the open end"
+ },
+ "tapcollar_new_2026-10-08.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6069301669",
+  "author": "swcharles",
+  "date": "2026-10-08",
+  "note": "New tap-collar and solenoid block on an auger (after the tests)"
+ },
+ "salt_demo_before_2026-09-15.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/116#issuecomment-5683919348",
+  "author": "livestream (claude[bot] post)",
+  "date": "2026-09-15",
+  "note": "Livestream still before a 0.5 g salt dose"
+ },
+ "salt_demo_after_2026-09-15.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/116#issuecomment-5683919348",
+  "author": "livestream (claude[bot] post)",
+  "date": "2026-09-15",
+  "note": "Livestream still after the 0.5 g salt dose (0.4963 g)"
+ },
+ "video_fit_auger_t10.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/174 (docs/videos/2026-09-30-al4047-claude-dose, slide video t=10 s)",
+  "author": "slide video",
+  "date": "2026-09-30",
+  "note": "Fitting a filled auger to the doser (phone camera, left; livestream, right)"
+ },
+ "video_fit_auger_t11.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/174 (slide video t=11 s)",
+  "author": "slide video",
+  "date": "2026-09-30",
+  "note": "Fitting a filled auger, a moment later"
+ },
+ "video_loaded_t17.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/174 (slide video t=17 s)",
+  "author": "slide video",
+  "date": "2026-09-30",
+  "note": "Loaded doser over the cup (livestream panel, right)"
+ },
+ "video_claude_checklist_t20p5.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/174 (slide video t=20.5 s)",
+  "author": "slide video",
+  "date": "2026-09-30",
+  "note": "Phone screen: Claude's checklist 'Dispensing 8 g of Al 4047 (9fxeqt)'"
+ },
+ "cad_tilt00.png": {
+  "source": "branch claude/issue-165-20261001-1931 (PR #170), cad/full-assembly/renders/assembly_iso_az090.png",
+  "author": "Claude Code (Onshape-API assembly of the team's parts)",
+  "date": "2026-10-01",
+  "note": "CAD render of the current design at this tilt"
+ },
+ "cad_tilt22p5.png": {
+  "source": "branch claude/issue-165-20261001-1931 (PR #170), cad/full-assembly/renders/assembly_iso_az090_tilt22p5.png",
+  "author": "Claude Code (Onshape-API assembly of the team's parts)",
+  "date": "2026-10-01",
+  "note": "CAD render of the current design at this tilt"
+ },
+ "cad_tilt45.png": {
+  "source": "branch claude/issue-165-20261001-1931 (PR #170), cad/full-assembly/renders/assembly_iso_az090_tilt45.png",
+  "author": "Claude Code (Onshape-API assembly of the team's parts)",
+  "date": "2026-10-01",
+  "note": "CAD render of the current design at this tilt"
+ }
+}
