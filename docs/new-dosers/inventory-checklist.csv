@@ -34,7 +34,7 @@ Fasteners,M3 x 14 socket head screw,McMaster 91292A027,8,200,M3/M5 missing (2026
 Fasteners,M3 nylon-insert locknut,McMaster 93625A100,15,375,M3/M5 missing,95,280,"Every M3 nut is a locknut: servos 8, C-clip brackets 4, tap-collar base 2, tap-collar clamp 1"
 Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,"Servo pinions, into the servo shaft"
 Fasteners,M5 x 40 button head screw,"McMaster 92095A series, M5 x 0.8 x 40 mm (look up the number; the x 45 was 92095A223)",2,50,M3/M5 missing,0,50,Hinge. Was M5 x 45; the 2 x 45 bought before the change aren't counted. Check the locknut grips: the CAD hinge stack is 37.8 mm (assembly/README.md)
-Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,"Hinge, outside each 28T gear"
+Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,"Hinge, on the inside of each plate knuckle: the screw can only go in from outside the 28T gear (assembly/README.md)"
 Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,8,92,Stepper to the plate
 Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,2,23,"Tap-collar base, plain hole"
 Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,"Tap-collar base, countersunk hole"

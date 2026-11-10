@@ -34,6 +34,8 @@ per doser and for 25. If you're building fewer to start with, scale down.
 
 **The current design is the Onshape assembly in #193** (diagram above, and
 [`assembly/README.md`](assembly/README.md) for how each joint is fastened).
+Where each screw, nut and bolt goes is in the
+[hardware diagram](assembly/README.md#where-the-hardware-goes).
 It stands on its own legs: a Base, three printed stand brackets and three
 wood legs replace the Fusion baseplate and the 38 mm board. One doser is
 **14 printed parts, 3 wood legs, 4 purchased motion parts, 42 screws and
