@@ -251,6 +251,66 @@ plunger strikes the side of the tube at hinge height, 46 mm behind the hinge.
 
 ![B2 with the tap bracket, all three at 90°](renders/b2_tap_bracket_90.png)
 
+#### Room under the tri-star (added 10 Nov)
+
+[Philip asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+how much clearance there is under the doser, whether the hinge towers set it,
+and whether a stand could change it. [`clearance.py`](clearance.py) measures it
+on the B2 + tap bracket model above ([`clearance.json`](clearance.json) has
+the numbers).
+
+- **The towers don't set it; a stand does.** The towers put the hinge
+  37.25 mm above the shelf top, so the outlets sit 25.7 mm (90°) to 37.25 mm
+  (0°) above it. The shelf has a window under the outlets, so the vessel
+  comes up through it from below.
+- **The tri-star needs a stand anyway.** Each P16 hangs 208 mm below the
+  shelf (its lower eye; the base pin is 204 mm down). With an 8 mm base
+  clevis under it, the shelf's underside has to be at least **217 mm** above
+  the bench. The outlets are then 249 mm (90°) to 260 mm (0°) up. A taller
+  stand adds room 1:1.
+- **Hang each actuator from the shelf** (the orange hangers in the figure),
+  not from the bench. Then the legs can be any length, and a lab jack under
+  the vessel does the fine adjustment.
+- **How wide a vessel can be:**
+  - **Up to 71 mm** (a 250 mL beaker is 70 mm): rises up between the hinge
+    towers, to 2 mm under the lowest the tubes ever get. That is 24 mm above
+    the shelf's underside, set by the tube's end lip at 45°.
+  - **71–188 mm:** stops under the shelf, 32 mm below the 90° outlets.
+    Below the shelf the actuators leave a 188 mm column (214 mm if no module
+    goes past 60°, because a P16 leans inward near 90°).
+  - **Wider:** has to stay below the actuators' lower ends, or fit between
+    two of them.
+- **Erlenmeyer necks can't catch three outlets.** The outlets lie on a
+  Ø40.8 (0°) to Ø64 mm (90°) circle. DURAN's necks are 34 mm (250 and
+  500 mL), 42 mm (1 L) and 50 mm (wide neck). So an Erlenmeyer needs a
+  funnel in its neck. An 80 mm, 60° powder funnel stands 29–43 mm above the
+  neck, and its mouth is too wide for the window, so it sits under the shelf.
+
+Stand height (bench to the shelf's underside) for some vessels on a 100 mm
+stir plate (a placeholder; add or subtract the difference for yours, and
+take 100 mm off for a vessel on the bench):
+
+| Vessel | Where its top goes | Stand |
+|---|---|---|
+| 100 / 150 / 250 mL beaker (Ø50–70) | between the towers, rim 15 mm under the 90° outlets | 217 mm (the shortest), on a 64 / 54 / 39 mm riser |
+| 400 mL beaker (Ø80 × 110) | rim 2 mm under the shelf | 217 mm, on a 5 mm riser |
+| 600 mL beaker (Ø90 × 125) | rim 2 mm under the shelf | 227 mm |
+| 250 mL Erlenmeyer (Ø85 × 145, 34 mm neck) + funnel | funnel mouth 2 mm under the shelf | 290 mm |
+| 500 mL Erlenmeyer (Ø105 × 180, 34 mm neck) + funnel | as above | 325 mm |
+| 500 mL wide-neck Erlenmeyer (Ø105 × 175, 50 mm neck) + funnel | as above | 306 mm |
+| 1 L Erlenmeyer (Ø131 × 220, 42 mm neck) + funnel | as above | 358 mm |
+
+Erlenmeyer sizes are DURAN's catalogue dimensions (ISO 1773 narrow neck, ISO
+24450 wide neck); beakers are ISO 3819 low form. The stand legs, hangers,
+stir plate (150 × 150 × 100 mm), riser and funnel are placeholders.
+
+![Room under the tri-star](renders/b2_clearance.png)
+
+To put the doser lower than 217 mm, the actuators would have to fold away:
+lie at an angle, or a shorter actuator on a shorter lever, which trades tilt
+range or resolution. That isn't modelled here. To weigh while dosing, the
+shelf has to clear the HR-100A's 315 mm top instead (see below).
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -310,6 +370,7 @@ between bulk doses. This was not modelled.
 | [`tap_bracket.py`](tap_bracket.py) | Exports #203's tap bracket and Ethan's assembly from Onshape (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`), fits it onto PR #170's frame, and writes `tap-bracket/` |
 | [`tap-bracket/`](tap-bracket/) | `tap-bracket-pr170.step`: the bracket and its solenoid (coil, yoke, plunger) in PR #170's frame at 0°, which `doserlib.py` reads. `solenoid-bracket-onshape.step`: the bracket alone, as Onshape exports it. `registration.json`: the fit and its checks |
 | [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
+| [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -318,6 +379,7 @@ xvfb-run -a python concepts.py              # sweeps + figures, about 4 min on 4
 xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
 xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
 python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
+xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
 ```
 
 **Limits.**
