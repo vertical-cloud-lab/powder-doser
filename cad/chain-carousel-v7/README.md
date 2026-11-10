@@ -23,7 +23,7 @@ Nothing is built. Every number here is a prediction from the CAD.
 | 2 | "I like the longer mounting plate" | **v6's plate kept** (Sam's front, clip 2, the cap saddle, the keeper) | Unchanged apart from the dock (row 3) | [plate](renders/v7/plate_v7.gif) |
 | 3 | "raise the kinematic couplings on the mounting plate up so that the electronics carriage can be as short as possible, i.e. they interface on the scale side of the auger" | **Three posts printed on the plate** beside the tube (8 x 8 mm at y +-15.5 to 23.5, 3 mm off it) reach from the plate's face out to 16.4 mm past the auger's axis. A and B carry v6's printed domes and C a flat tip; a D42-N52 sits in each post 1.8 mm under its tip (dropped in at a print pause). **EC v7 is Sam's Oct 13 carriage turned over with no arms**: the cone, the dowel vee and ball C sit on three ears at its rim, with v4's magnets behind them | The EC meets the posts just past the auger instead of reaching round it to the plate's face (v4-v6's arms were 41 mm tall). It parks only **10 mm** under the dock (v6: 28): the passing gears clear its pinion by 8.2 mm, the domes clear its ears by 7.8 mm, and the closed door strips clear its finger by 4 mm. The auger still snaps in and pulls straight out of the clips past the posts | [plate](renders/v7/plate_v7.gif), [EC](renders/v7/ec_v7.gif) |
 | 4 | "The linear actuator on the back doesn't work. I like it the way it was before, underneath ... the cross bars with the hooks doesn't work ... the powder will dose directly onto them ... Try to keep it one actuator" | **One P16-150, pinned at both ends as in v2-v4:** its rod end on a tail behind the EC's back wall (under the 44T gear, 78 mm behind and 54 mm under the hinge axis), its base on a clevis on the P16 cross bar behind the balance. Nothing crosses under the dose point | The draft cage stands right under the EC, so the P16 can't stand straight under it as in v2. It leans 44.5 deg back from the EC, over the cage's back-top corner. Extending it first lifts the EC 10 mm out of its guides onto the posts (1.0 to 8.3 mm of stroke), then turns the docked EC and module about the hinge axis. One LAC | [station](renders/v7/station_v7.gif) |
-| 5 | "For a 90 degree tilt, make a gif that shows exactly where and why it didn't work for v5 ... This design should allow for a 90 degree tilt" | **v5's limits, bisected in its own CAD** (clip and [`checks/v5_why_not_90.json`](checks/v5_why_not_90.json)). **v7 reaches 90 deg with 130 of the P16's 150 mm** and CHECK_TILT_SUMMARY | v5's lift bar turned with the module and climbed into the corner modules from 41.6 deg; its P16s ran out of stroke at 81.3 deg; its plate met its carriage at 84.0 deg. In v7 nothing wide turns with the module, the pin is close to the hinge (so 0-90 deg takes 122 mm of stroke), and v6's longer carriage opening clears the plate | [v5: why not 90](renders/v7/v5_why_not_90.gif), [v7: 0-90 deg](renders/v7/tilt90_v7.gif) |
+| 5 | "For a 90 degree tilt, make a gif that shows exactly where and why it didn't work for v5 ... This design should allow for a 90 degree tilt" | **v5's limits, bisected in its own CAD** (clip and [`checks/v5_why_not_90.json`](checks/v5_why_not_90.json)). **v7 reaches 90 deg with 130 of the P16's 150 mm**, with no clash over 0.5 mm^3 at any of the 12 angles checked | v5's lift bar turned with the module and climbed into the corner modules from 41.6 deg; its P16s ran out of stroke at 81.3 deg; its plate met its carriage at 84.0 deg. In v7 nothing wide turns with the module, the pin is close to the hinge (so 0-90 deg takes 122 mm of stroke), and v6's longer carriage opening clears the plate | [v5: why not 90](renders/v7/v5_why_not_90.gif), [v7: 0-90 deg](renders/v7/tilt90_v7.gif) |
 | 6 | "the ramps for the guides are great! Apply them wherever we move the guides" | **v6's guides moved to the EC's tail:** two printed guides on the guide cross bar, each a vertical channel round one of the tail's two shoes, with v6's 45 deg funnel mouth (4 mm each side), its 0.5 mm relief over the bottom 8 mm and a cone (-y) or a vee (+y) in its floor for the shoe's conical nose | Coming down off line, each shoe meets its funnel, which centres it. Parked, the cone fixes one shoe and the vee only the other's x, so the EC parks in the same place every time. The shoes leave the funnels in the dock's last 4 mm, so the dock, not the guides, decides where the EC seats | [guides](renders/v7/guides_v7.gif) |
 | 7 | "I think your model for the scale is wrong. None of the scales we've seen or used have the large module at the back ... This allows for some more room behind it" | **The balance re-modelled as a weighing base and a draft cage**, with nothing tall behind the cage. The cage keeps v5's HR-202i chamber (183 x 164.5 x 250 mm over the pan), so the pan, the beaker and the 154 mm fall are v5's; 200 wide, 253 deep over the base and 311 tall (the lab's HR-100A is 198 x 253 x 315). **The top door is replaced by a dosing lid**: 3 mm acrylic with a 30 mm hole on the pan's axis | The P16 stands in the room behind the cage. The auger's exit is on the hinge axis, so the stream falls through the same hole at every tilt; the beaker comes out through the -y side door (70 mm of travel, which keeps the door in front of the P16's bar) | [balance](renders/v7/balance_v7.gif) |
 | 8 | "With the pin ... the mounting plate is usually locked in on both sides ... there's another pin on the bottom that can be removed by hand ... Is that right? Show a profile view" | **Nearly right, but there is no second pin.** One spring bolt on the carriage carries both a 4 mm pin and a rest shelf. **v7 keeps v6's latch and fixes its spring pocket** | See "The latch" below | [latch profile](renders/v7/latch_profile_v7.gif) ([v6's, with the fault](renders/v7/latch_profile_v6.gif)) |
@@ -77,7 +77,8 @@ bar at x 250, z 230 (behind and below the balance). The pin swings on a 95 mm ra
 - **Moment arm:** the P16's line passes 21 mm from the hinge axis when docked, rising to 95 mm at 64 deg. At its 50 N that is
   1.05 N·m to start the tilt, three times what the module and the EC need (about 0.35 N·m) (2-D study, not simulated).
 - **Clearances:** at 90 deg the P16 passes behind the EC's far face and through carriage 1's opening; at 0 deg it passes over
-  the draft cage's back-top corner. CHECK_TILT_DETAIL
+  the draft cage's back-top corner. `check_interference.py --tilt` finds no clash at any of the 12 angles from 0 to 90 deg, nor
+  during the 10 mm rise.
 - **What it costs:** the P16 leans 44.5 deg during the lift, so the guides take about 0.7 of its push sideways. TEST-PLAN T6
   checks that the shoes don't bind.
 
@@ -129,7 +130,23 @@ v7's carrier is 8 mm long instead of 12, and its channel runs back to 1.5 mm fro
 Every pair is checked with OCC booleans, and anything over 0.5 mm^3 counts. By-design contacts are skipped by part key
 ([`check_interference.py`](check_interference.py): v7's are at the end of SKIP). The balance is in every check.
 
-CHECKS_TABLE
+| Check | What moves | Result |
+|---|---|---|
+| Home | Every pair of the 851 instances | **0** ([`checks/home.json`](checks/home.json), 243 s) |
+| `--tilt` | The EC rising 0-10 mm (5 poses), then module 1, the EC and the P16 at 0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 85 and 90 deg, against everything else | **0** ([`checks/tilt_a.json`](checks/tilt_a.json), [`tilt_b.json`](checks/tilt_b.json)) |
+| [`sweep_station.py`](sweep_station.py) | Every carriage and module within 2.2 modules of the station (their posts, gears, door strips and latch followers), over one module of travel the way the machine runs, in 1-link steps (9 poses), against the parked station (EC, P16, guides, cross bars, latch cam, hold-downs) and the balance | **0** ([`checks/sweep_station.json`](checks/sweep_station.json)) |
+
+**What the first runs found, all fixed:**
+1. **The P16's tube end against the EC's clevis cheeks** with the EC parked (6.2 mm^3). The cheeks are now rounded, R5 about
+   the pin.
+2. **A false 32,000 mm^3 clash between the EC and the -y guide.** That guide was placed with a mirror matrix, which turns an OCC
+   solid inside out; it is now built mirrored and placed without one.
+3. **The plate's printed dome B on the EC's vee dowels.** OCC returned the whole dowel's volume (62 mm^3) at 30 deg and nothing
+   at 0-5 deg for the same relative position: a sphere tangent to a cylinder. The pair is now skipped as a by-design contact.
+4. **Found in the clips:** the guides' screws were drawn upside down inside the guides. They are now on a tab outboard of each
+   guide, where a hex key reaches them.
+
+The checks skip by-design contacts by part key; v7's are listed at the end of SKIP in `check_interference.py`.
 
 ## Check before building
 
@@ -155,6 +172,7 @@ CHECKS_TABLE
 - **No Bambu slices.** The STLs are exported in `stl/`.
 - **Prices:** the 4 x 20 shoulder screw and the 4 x 12 dowel are estimated from their McMaster families; the latch spring is
   still to be selected.
+- **Onshape** was imported just before the guides' screws moved to their tab; the STEP in `step/` has the tab.
 - **Found in passing, not fixed in v4-v6:** their vee dowels' holes were drawn 8 mm inboard of the dowels (`_cyl`'s "Y" axis
   runs +y from its start point). v7's are centred on the dowels.
 
