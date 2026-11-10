@@ -33,12 +33,12 @@ Electronics,USB cable for the Pico,Micro-USB,1,25,Not on any order,,,
 Fasteners,M3 x 14 socket head screw,McMaster 91292A027,8,200,M3/M5 missing (2026-09-24),20,180,Servos to the base's posts. The old bracket clamps' 2 are gone
 Fasteners,M3 nylon-insert locknut,McMaster 93625A100,15,375,M3/M5 missing,95,280,"Every M3 nut is a locknut: servos 8, C-clip brackets 4, tap-collar base 2, tap-collar clamp 1"
 Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,"Servo pinions, into the servo shaft"
-Fasteners,M5 x 40 button head screw,"McMaster 92095A series, M5 x 0.8 x 40 mm (look up the number; the x 45 was 92095A223)",2,50,M3/M5 missing,0,50,Hinge. Was M5 x 45; the 2 x 45 bought before the change aren't counted
+Fasteners,M5 x 40 button head screw,"McMaster 92095A series, M5 x 0.8 x 40 mm (look up the number; the x 45 was 92095A223)",2,50,M3/M5 missing,0,50,Hinge. Was M5 x 45; the 2 x 45 bought before the change aren't counted. Check the locknut grips: the CAD hinge stack is 37.8 mm (assembly/README.md)
 Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,"Hinge, outside each 28T gear"
 Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,8,92,Stepper to the plate
 Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,2,23,"Tap-collar base, plain hole"
 Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,"Tap-collar base, countersunk hole"
 Fasteners,M3 x 20 button head screw,McMaster 92095A185,5,125,M3/M5 missing,10,115,"C-clip brackets to the plate (4), tap-collar clamp (1)"
 Fasteners,M3 x 5 socket head screw,McMaster 91292A110,2,50,M3/M5 missing,4,46,Solenoid to the tap collar; if its ears are clearance holes use M3 x 8 + locknut
-Fasteners,"Stand bolt with nut, for 7 mm holes (1/4-20 or M6, about 25 mm long)",Size not chosen yet: match what the bench rig's stand uses,11,275,Not on any order,,,"Legs to stand brackets 6, stand brackets to the base 5 (as mated in #193). Each joint clamps 15.5 to 16 mm"
-Mounting,"Wood leg, 9.5 x 59 x 250 mm (3/8 in board)",https://cad.onshape.com/documents/659ee3322c5c9c9ce8146b43 (#193),3,75,Not on any order,,,"Cut in-house. Two 7 mm holes 40 mm apart, 17.5 mm from one end. Replaces the 38 mm board"
+Fasteners,"Stand bolt with nut, for 7 mm holes (1/4-20 or M6, about 25 mm long)",Size not chosen yet: match what the bench rig's stand uses,12,300,Not on any order,,,"Legs to stand brackets 6, stand brackets to the base 6 (2 each; #193 mates only 1 for the back bracket, which would pivot). Each joint clamps 15.5 to 16 mm"
+Mounting,"Wood leg, 9.5 x 59 x 250 mm (3/8 in board)",https://cad.onshape.com/documents/659ee3322c5c9c9ce8146b43 (#193),3,75,Not on any order,,,"Cut in-house. Two columns of eight 7 mm holes, 40 mm apart at 15 mm pitch, the first 17.5 mm from the top (height adjustment). Replaces the 38 mm board"
