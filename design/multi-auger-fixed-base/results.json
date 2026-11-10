@@ -184,6 +184,11 @@
    "min_clearance": 5.33,
    "between": "A:tower +X / A:Tap collar base (AI)",
    "at_tilt": 0
+  },
+  "B2T": {
+   "min_clearance": 8.98,
+   "between": "A:tower -X / A:Tap bracket (#203)",
+   "at_tilt": 0
   }
  },
  "p16_stroke": {
@@ -199,7 +204,8 @@
   "A2": 37,
   "B1": 37,
   "B2": 32,
-  "A1x3": 66
+  "A1x3": 66,
+  "B2T": 32
  },
  "outlets": {
   "A1": {
@@ -226,6 +232,11 @@
    "0": 108.8,
    "45": 115.6,
    "90": 132.0
+  },
+  "B2T": {
+   "0": 40.8,
+   "45": 47.6,
+   "90": 64.0
   }
  },
  "current_without_baseplates_at_A1_spacing": [
@@ -252,5 +263,92 @@
  "B2_tapper_on_top_90": {
   "spacing": 56.5,
   "limit": "A:Solenoid (Adafruit 412) / C:Tap collar"
+ },
+ "B2T": {
+  "0,0,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "30,30,30": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "45,45,45": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "60,60,60": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "90,90,90": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "90,0,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "60,0,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "90,90,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "60,60,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  },
+  "30,60,0": {
+   "spacing": 31.6,
+   "limit": "B:tower -X / C:tower +X"
+  }
+ },
+ "beaker": {
+  "B2T": "250 mL"
+ },
+ "B2T_tap_clearance": {
+  "0,0,0": {
+   "mm": 49.2,
+   "between": "A:Tap bracket (#203) / B:tower +X"
+  },
+  "30,30,30": {
+   "mm": 46.8,
+   "between": "C:Solenoid yoke / B:tower -X"
+  },
+  "45,45,45": {
+   "mm": 43.6,
+   "between": "C:Solenoid yoke / B:tower -X"
+  },
+  "60,60,60": {
+   "mm": 39.6,
+   "between": "C:Solenoid yoke / B:tower -X"
+  },
+  "90,90,90": {
+   "mm": 5.8,
+   "between": "B:Tap bracket (#203) / C:Tap bracket (#203)"
+  },
+  "90,0,0": {
+   "mm": 30.8,
+   "between": "A:Solenoid yoke / C:tower -X"
+  },
+  "60,0,0": {
+   "mm": 39.6,
+   "between": "A:Solenoid yoke / C:tower -X"
+  },
+  "90,90,0": {
+   "mm": 5.8,
+   "between": "A:Tap bracket (#203) / B:Tap bracket (#203)"
+  },
+  "60,60,0": {
+   "mm": 39.6,
+   "between": "B:Solenoid yoke / A:tower -X"
+  },
+  "30,60,0": {
+   "mm": 39.6,
+   "between": "B:Solenoid yoke / A:tower -X"
+  }
  }
 }

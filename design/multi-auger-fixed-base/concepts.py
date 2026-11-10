@@ -3,6 +3,7 @@
     pip install cadquery trimesh python-fcl rtree vtk pillow numpy
     xvfb-run -a python concepts.py            # sweeps + renders (about 5 min)
     xvfb-run -a python concepts.py --no-sweep # renders only, spacings from results.json
+    xvfb-run -a python concepts.py --tap-bracket  # only B2T (#203's tap bracket), merged into results.json
 
 Every unit is the current doser from PR #170 (real STEP files, see
 doserlib.py).  New parts (shared shelf, towers, servo posts, actuator,
@@ -106,7 +107,8 @@ def _mat(M):
     return M
 
 
-BEAKERS = {"100 mL": (50.0, 70.0), "150 mL": (60.0, 80.0)}
+BEAKERS = {"100 mL": (50.0, 70.0), "150 mL": (60.0, 80.0), "250 mL": (70.0, 95.0), "400 mL": (80.0, 110.0),
+           "600 mL": (90.0, 125.0)}   # ISO 3819 low form, outside dia x height
 
 
 def beaker_part(kind, rim_z):
@@ -126,6 +128,14 @@ CONCEPTS = {
                spec=D.UnitSpec("none"), n=2, act=True),
     "B2": dict(title="Idea B2: gearless tri-star (three at 120 deg), a P16 under each plate",
                spec=D.UnitSpec("none", collar_roll=ROLL_FLANK), n=3, act=True),
+    # B2 with #203's tap bracket (Ethan's Onshape part, 9 Nov) in place of the front Flexible Bracket.
+    # Its solenoid lies on each unit's +X flank, so the three make a pinwheel: each solenoid faces the
+    # plain flank of the next unit.  Rotating the station 120 deg maps (a, b, c) to (c, a, b), so the
+    # cases below cover one, two and three units up at once.
+    "B2T": dict(title="Idea B2 with #203's tap bracket: gearless tri-star, a P16 under each plate",
+                spec=D.UnitSpec("none", tapper="bracket"), n=3, act=True,
+                cases=[(0, 0, 0), (30, 30, 30), (45, 45, 45), (60, 60, 60), (90, 90, 90), (90, 0, 0),
+                       (60, 0, 0), (90, 90, 0), (60, 60, 0), (30, 60, 0)]),
     # sweep only: could three servo modules (A1's flipped servos) share a beaker?
     "A1x3": dict(title="Three A1 modules (flipped servos) at 120 deg",
                  spec=D.UnitSpec("dual-flip", collar_roll=ROLL_FLANK), n=3),
@@ -167,7 +177,8 @@ def layout(key, spacing, tilts, extras=True, roll=None):
     """Parts of a concept with hinge spacing (pair: hinge-to-hinge D; star:
     hinge radius R) and per-unit tilts."""
     c = CONCEPTS[key]
-    spec = c["spec"] if roll is None else D.UnitSpec(c["spec"].drive, collar_roll=roll, baseplate=c["spec"].baseplate)
+    spec = c["spec"] if roll is None else D.UnitSpec(c["spec"].drive, collar_roll=roll, baseplate=c["spec"].baseplate,
+                                                      tapper=c["spec"].tapper)
     n = c["n"]
     if n == 2:
         Ms = [D.place(90, spacing / 2, 0), D.place(-90, spacing / 2, 0)]
@@ -207,9 +218,21 @@ TILT_CASES_2 = [(0, 0), (30, 30), (45, 45), (60, 60), (90, 90), (90, 0)]
 TILT_CASES_3 = [(0, 0, 0), (30, 30, 30), (45, 45, 45), (60, 60, 60), (90, 90, 90), (90, 0, 0)]
 
 
+def concept_sweep(key):
+    c = CONCEPTS[key]
+    out = {}
+    for t in c.get("cases") or (TILT_CASES_2 if c["n"] == 2 else TILT_CASES_3):
+        s, a, b = min_spacing(key, t)
+        out[",".join(map(str, t))] = dict(spacing=s, limit=f"{a} / {b}")
+        print(f"{key} tilts {t}: {s} mm  ({a} / {b})", flush=True)
+    return out
+
+
 def sweeps():
     res = {}
     for key, c in CONCEPTS.items():
+        if key == "B2T":
+            continue                     # tap_bracket_sweeps()
         cases = TILT_CASES_2 if c["n"] == 2 else TILT_CASES_3
         res[key] = {}
         for t in cases:
@@ -234,6 +257,39 @@ def sweeps():
     res["servo_check"] = servo_check()
     # the actuator's stroke over 0..90
     res["p16_stroke"] = {str(t): round(actuator_length(t) - D.P16["closed"], 1) for t in (0, 30, 45, 60, 90)}
+    return tap_bracket_sweeps(res)
+
+
+TAP_PARTS = ("Tap bracket", "Solenoid coil", "Solenoid yoke", "Solenoid plunger")
+
+
+def tap_clearance(spacing, tilts):
+    """Closest approach of any unit's tap bracket or solenoid to another unit."""
+    parts, _ = layout("B2T", spacing, tilts, extras=False)
+    best = (1e9, None, None)
+    for a in (p for p in parts if any(t in p.name for t in TAP_PARTS)):
+        for b in parts:
+            if b.unit not in (a.unit, "fixed"):
+                d = D.clearance([a, b])[0]
+                if d < best[0]:
+                    best = (d, a.name, b.name)
+    return best
+
+
+def tap_bracket_sweeps(res):
+    """B2T: the tri-star spacing with #203's tap bracket, the same unit's self
+    check (the bracket and solenoid against the towers and the P16), and how
+    close the brackets come to the other units at the working spacing."""
+    res["B2T"] = concept_sweep("B2T")
+    d, a, b, t = self_check("B2T")
+    res.setdefault("self_check", {})["B2T"] = dict(min_clearance=round(d, 2), between=f"{a} / {b}", at_tilt=t)
+    print(f"B2T self check 0..90: {d:.2f} mm ({a} / {b} at {t} deg)", flush=True)
+    sp = math.ceil(max(v["spacing"] for v in res["B2T"].values()))
+    res["B2T_tap_clearance"] = {}
+    for k in res["B2T"]:
+        d, a, b = tap_clearance(sp, tuple(int(x) for x in k.split(",")))
+        res["B2T_tap_clearance"][k] = dict(mm=round(d, 1), between=f"{a} / {b}")
+        print(f"B2T at {sp} mm, tilts {k}: tap bracket/solenoid {d:.1f} mm from the next unit ({a} / {b})", flush=True)
     return res
 
 
@@ -300,8 +356,7 @@ def figures(res, size=(1500, 1050)):
     # working spacing: clears every case up to 60 deg on all units at once, and one unit at 90
     work = {}
     for key, c in CONCEPTS.items():
-        cases = (["0,0", "30,30", "45,45", "60,60", "90,0"] if c["n"] == 2
-                 else ["0,0,0", "30,30,30", "45,45,45", "60,60,60", "90,90,90", "90,0,0"])
+        cases = ["0,0", "30,30", "45,45", "60,60", "90,0"] if c["n"] == 2 else list(pick[key])
         work[key] = math.ceil(max(pick[key][k]["spacing"] for k in cases))
     res["working_spacing"] = work
     res["outlets"] = {k: {str(t): round(outlet_gap(k, work[k], t), 1) for t in (0, 45, 90)} for k in CONCEPTS if k != "P0"}
@@ -335,6 +390,7 @@ def figures(res, size=(1500, 1050)):
         "B2": ((30, 60, 0), "Idea B2: gearless tri-star, three modules at 120 deg, a P16 under each",
                "Same unit as B1; the tap collar is rolled onto the flank so all three can sit at 90 deg at once."),
     }
+    tap_bracket_figure(res, size)
     for key, (tilts, title, line) in shots.items():
         sp = work[key]
         n = CONCEPTS[key]["n"]
@@ -363,6 +419,69 @@ def figures(res, size=(1500, 1050)):
                      title, lines, labels=("", "plan", "plan, centre"))
         print("  ->", f"{key.lower()}_concept.png", flush=True)
     return res
+
+
+def pick_beaker(res, key):
+    """Smallest ISO 3819 beaker whose rim (inside a 1.5 mm wall) holds the outlet
+    circle at 90 deg, where it is widest."""
+    o90 = res["outlets"][key]["90"]
+    for kind, (d, h) in BEAKERS.items():
+        if d - 2 * 1.5 >= o90:
+            return kind
+    return list(BEAKERS)[-1]
+
+
+def tap_bracket_figure(res, size=(1500, 1050)):
+    """B2 with #203's tap bracket: the tri-star at mixed tilts, the plan, and a
+    close-up of one unit's bracket."""
+    key = "B2T"
+    sp = res["working_spacing"][key]
+    o = res["outlets"][key]
+    kind = pick_beaker(res, key)
+    res.setdefault("beaker", {})[key] = kind
+    bd = BEAKERS[kind][0]
+    rim = -D.OUTLET_AHEAD - 15.0
+    win = bd / 2 + 4.0
+    tilts = (30, 60, 0)
+
+    def station(tl):
+        parts, Ms = layout(key, sp, tl, extras=False)
+        parts.append(D.Part("shelf", shelf(Ms, win, slot=True), np.eye(4), D.COL["base"], "fixed"))
+        parts.append(beaker_part(kind, rim))
+        return parts + outlet_marks(Ms, tl), Ms
+
+    parts, Ms = station(tilts)
+    D.render(parts, OUT / "_iso.png", az=-70, el=28, size=size, dist=1.6)
+    top, _ = station((0, 0, 0))
+    D.render(top, OUT / "_top.png", view="top", size=(1050, 1050), parallel=True, dist=320 + max(0, sp - 32) * 1.5,
+             focal=(0, 60, 0))
+    # close-up: unit A alone at 30 deg, seen from its +X (solenoid) flank, a little ahead of it
+    MA = D.place(90, sp, 0.0)
+    spec = CONCEPTS[key]["spec"]
+    one = D.unit_parts(spec, 30.0, MA, "A") + towers(spec, MA, "A") + actuator(MA, 30.0, "A")
+    c = (MA @ D.W2U @ D.hinge_rot(30.0) @ np.array([22.0, 92.0, 38.0, 1.0]))[:3]
+    D.render(one, OUT / "_close.png", az=-38, el=30, size=(1050, 1050), parallel=True, dist=88, focal=tuple(c),
+             fixed=True)
+    st = res[key]
+    limits = sorted({v["limit"].replace("A:", "").replace("B:", "").replace("C:", "") for v in st.values()})
+    tc = res["B2T_tap_clearance"]
+    tmin = min(tc, key=lambda k: tc[k]["mm"])
+    b2 = res["working_spacing"].get("B2")
+    lines = [
+        "#203's tap bracket (magenta, Ethan's Onshape part of 9 Nov) replaces each front Flexible Bracket; the tap collar,"
+        " its base and the old solenoid are gone.",
+        f"Its Adafruit 412 lies on each unit's +X flank and strikes the tube's side 46 mm behind the hinge;"
+        f" the three solenoids make a pinwheel, each facing the next unit's plain flank.",
+        f"Hinges {sp} mm from the beaker axis, as in B2 ({b2} mm): the neighbouring hinge towers ({' + '.join(limits)}) still set it"
+        f" at every tilt mix; the brackets and solenoids stay at least {tc[tmin]['mm']} mm from the next unit"
+        f" (tilts {tmin.replace(',', '/')}).",
+        f"Outlet circle dia. {o['0']} mm at 0 deg, {o['45']} at 45, {o['90']} at 90.  Left: tilts 30, 60, 0 deg."
+        f"  Middle: plan at 0 deg, red = outlets, blue = {kind} beaker ({bd:.0f} mm).  Right: one unit at 30 deg.",
+    ]
+    side_by_side([OUT / "_iso.png", OUT / "_top.png", OUT / "_close.png"], OUT / "b2_tap_bracket.png",
+                 "Idea B2 with #203's tap bracket: three gearless modules at 120 deg, a P16 under each", lines,
+                 labels=("", "plan", "the tap bracket"))
+    print("  -> b2_tap_bracket.png", flush=True)
 
 
 def servo_check(keys=("P0", "A1", "A2"), tilts=range(0, 91, 10)):
@@ -415,8 +534,19 @@ def actuator_figure(res):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-sweep", action="store_true")
+    ap.add_argument("--tap-bracket", action="store_true", help="only B2T: sweep, figure, merge into results.json")
     a = ap.parse_args()
     rpath = HERE / "results.json"
+    if a.tap_bracket:
+        res = tap_bracket_sweeps(json.loads(rpath.read_text()))
+        key = "B2T"
+        res["working_spacing"][key] = math.ceil(max(v["spacing"] for v in res[key].values()))
+        res["outlets"][key] = {str(t): round(outlet_gap(key, res["working_spacing"][key], t), 1) for t in (0, 45, 90)}
+        OUT.mkdir(exist_ok=True)
+        tap_bracket_figure(res)
+        rpath.write_text(json.dumps(res, indent=1) + "\n")
+        print(json.dumps({k: res[k] for k in ("B2T",)}, indent=1), res["working_spacing"]["B2T"], res["outlets"]["B2T"])
+        return
     if a.no_sweep and rpath.exists():
         res = json.loads(rpath.read_text())
     else:

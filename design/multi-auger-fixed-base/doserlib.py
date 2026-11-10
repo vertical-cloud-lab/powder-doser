@@ -122,6 +122,26 @@ def step_shape(rel: str):
     return _SHAPES[rel]
 
 
+TAP_BRACKET_STEP = Path(__file__).resolve().parent / "tap-bracket" / "tap-bracket-pr170.step"
+
+
+def hinge_rot(tilt: float) -> np.ndarray:
+    """PR #170 world frame: rotation by ``tilt`` about the hinge axis."""
+    return Tt(*HINGE) @ Rx(tilt) @ Tt(*(-HINGE))
+
+
+def tap_bracket_shapes() -> dict:
+    """#203's tap bracket and its Adafruit 412 (coil, yoke, plunger), in PR #170's
+    world frame at tilt 0, as tap_bracket.py fitted them from Ethan's Onshape assembly."""
+    if "tapbracket" not in _SHAPES:
+        sols = sorted(cq.importers.importStep(str(TAP_BRACKET_STEP)).vals()[0].Solids(), key=lambda x: -x.Volume())
+        if len(sols) != 4:
+            raise RuntimeError(f"{TAP_BRACKET_STEP.name}: expected 4 solids, got {len(sols)}")
+        _SHAPES["tapbracket"] = dict(zip(("Tap bracket (#203)", "Solenoid coil", "Solenoid yoke",
+                                          "Solenoid plunger"), sols))
+    return _SHAPES["tapbracket"]
+
+
 def mp_bodies() -> dict:
     """The mounting plate's five STEP bodies, in its own (MP) frame.  MP Z is
     the hinge axis; world x = -MPz - 41.8, so the MP z 0..12.3 bodies are the
@@ -186,7 +206,7 @@ COL = {
     "servo": (0.20, 0.20, 0.22), "solenoid": (0.60, 0.62, 0.66), "gear": (0.86, 0.86, 0.88),
     "actuator": (0.25, 0.27, 0.30), "rod": (0.80, 0.81, 0.84), "glass": (0.70, 0.85, 0.95),
     "balance": (0.88, 0.88, 0.86), "new": (0.95, 0.62, 0.30), "link": (0.95, 0.62, 0.30),
-    "hit": (0.90, 0.15, 0.15),
+    "hit": (0.90, 0.15, 0.15), "tapbracket": (0.85, 0.20, 0.55),
 }
 
 
@@ -214,10 +234,17 @@ class UnitSpec:
     'single-below' one gear + one servo, on the unit's +X side only (the -X knuckle is plain)
     'rear'         both gears; the servos moved behind the hinge (pinion 27.25 mm behind it), case pointing back
     'rear-sector'  as 'rear' with the gears cut to the sector that meshes over 0..90 deg
-    'none'         no gears, no servos (tilt from a linear actuator)"""
+    'none'         no gears, no servos (tilt from a linear actuator)
+
+    tapper:
+    'collar'       PR #170's tap collar on the tube (rolled by ``collar_roll``), its AI base and solenoid,
+                   plus the front Flexible Bracket
+    'bracket'      #203's tap bracket (Ethan's Onshape "Solenoid bracket", 9 Nov) in place of the front
+                   Flexible Bracket, with its Adafruit 412 lying on the unit's +X flank; no collar"""
     drive: str = "dual-below"
     collar_roll: float = L.COLLAR_ROLL_DEG
     baseplate: bool = False           # the current Fusion baseplate (problem figure only)
+    tapper: str = "collar"
 
 
 def unit_parts(spec: UnitSpec, tilt: float, Mst: np.ndarray, tag: str) -> list[Part]:
@@ -234,9 +261,15 @@ def unit_parts(spec: UnitSpec, tilt: float, Mst: np.ndarray, tag: str) -> list[P
         "Tap collar base (AI)": "collar_base", "Tap collar": "collar", "Solenoid (Adafruit 412)": "solenoid",
         "Stepper pinion": "pinion", "Stepper (NEMA 11)": "motor",
     }
+    replaced = ("Bracket (front)", "Tap collar base (AI)", "Tap collar", "Solenoid (Adafruit 412)")
     for n, c in names.items():
+        if spec.tapper == "bracket" and n in replaced:
+            continue
         rel, M = pl[n]
         add(n, step_shape(rel), U @ M, COL[c])
+    if spec.tapper == "bracket":
+        for n, sh in tap_bracket_shapes().items():
+            add(n, sh, U @ hinge_rot(tilt), COL["tapbracket"] if n.startswith("Tap bracket") else COL["solenoid"])
     # mounting plate, by body
     Mmp = U @ pl["Mounting plate"][1]
     b = mp_bodies()

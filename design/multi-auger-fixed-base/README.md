@@ -30,6 +30,7 @@ placeholders sized from the real parts. They are not ready to print.
 | **A2** One gear and servo per module, on opposite flanks | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL (50 mL up to about 70°) | new base; each plate loses one gear | 1 servo each |
 | **B1** Gearless pair, actuator underneath | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL | new base; plate without gears; clevis bracket | 1 linear actuator each |
 | **B2** Gearless tri-star (3 at 120°) | **3** | **32 mm** ³ | Ø40.8 / Ø47.6 / Ø64.0 mm circle | 150 mL up to 60°, 250 mL for 90° | as B1, tapper rolled onto the flank | 1 linear actuator each |
+| **B2 + #203's tap bracket** (10 Nov) | **3** | **32 mm** ³ | Ø40.8 / Ø47.6 / Ø64.0 mm circle | as B2 | as B2; the tap bracket replaces the front bracket and the collar | 1 linear actuator each |
 | Three A1 modules at 120° | 3 | 66 mm ³ | Ø108 mm circle at 0° | none | | |
 
 ¹ Hinge to hinge for the pairs; hinge to beaker axis for three modules.
@@ -211,6 +212,43 @@ numbers are from #202's write-up.
 
 ![B2](renders/b2_concept.png)
 
+#### B2 with #203's tap bracket (added 10 Nov)
+
+[#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203)'s first
+tap bracket ([Ethan's Onshape document](https://cad.onshape.com/documents/3db901b123bbee05f5c196f3/w/71800ea0548acad53e21d816/e/68af1a083e7d90e44c40f87c),
+part studio "Solenoid bracket", exported at workspace microversion `103ac09`)
+is the front C-clip and a solenoid tower as one part. Here it **replaces each
+module's front Flexible Bracket**. The tap collar, its base and the old
+solenoid are gone. The Adafruit 412 lies on the module's +X flank, and its
+plunger strikes the side of the tube at hinge height, 46 mm behind the hinge.
+
+- **Placement comes from Ethan's assembly, not by eye.**
+  [`tap_bracket.py`](tap_bracket.py) exports his "Assembly new solenoid
+  setup" (the whole doser with the bracket in place of the front Flexible
+  Bracket). It fits his mounting plate onto PR #170's (median gap 0.38 mm,
+  95th percentile 0.79 mm). The parts both assemblies share then line up too:
+  auger 0.51 mm, rear bracket 0.19, cap 0.51, stepper 0.23 (medians). The
+  bracket and its solenoid go into every module at the same place relative to
+  the plate ([`tap-bracket/`](tap-bracket/), [`registration.json`](tap-bracket/registration.json)).
+- **Hinges are still 32 mm from the beaker axis, as in B2.** The neighbouring
+  hinge towers set it at all ten tilt mixes swept: all three at 0, 30, 45, 60
+  or 90°, one at 60 or 90°, two at 60 or 90°, and 30/60/0.
+- **The brackets have room.** All three solenoids point the same way round,
+  so each faces the plain flank of the next module. A bracket or solenoid
+  comes no closer than 5.8 mm to another module. That happens when two
+  neighbours are both at 90°, bracket to bracket. In every other mix the gap
+  is 30 mm or more.
+- **All three can be at 90° at once,** as in B2 with the collar on the flank.
+- **Self-check:** each bracket stays at least 9.0 mm from its own module's
+  towers and actuator over 0–90°.
+- **Outlets** are where they were in B2: a Ø40.8 mm circle at 0° and Ø64 at
+  90°. The figure uses a 250 mL beaker (Ø70 mm), which holds the 90° circle.
+- **Strike gap:** in Ethan's assembly the plunger is drawn touching the tube
+  (its tip 0.8 mm inside the tube's surface), so the rest gap can't be read
+  from the model. #203 suggests about 3–4 mm.
+
+![B2 with the tap bracket](renders/b2_tap_bracket.png)
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -267,6 +305,8 @@ between bulk doses. This was not modelled.
 |---|---|
 | [`doserlib.py`](doserlib.py) | Loads PR #170's STEP files and `layout.py` at commit `7f5b3b7` (downloaded once to `~/.cache`). Builds a module with any drive variant, plus the placeholder base, towers, actuator and beaker. Mesh clearance (fcl), VTK renders |
 | [`concepts.py`](concepts.py) | The concepts, the spacing sweeps, the self-checks and the figures |
+| [`tap_bracket.py`](tap_bracket.py) | Exports #203's tap bracket and Ethan's assembly from Onshape (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`), fits it onto PR #170's frame, and writes `tap-bracket/` |
+| [`tap-bracket/`](tap-bracket/) | `tap-bracket-pr170.step`: the bracket and its solenoid (coil, yoke, plunger) in PR #170's frame at 0°, which `doserlib.py` reads. `solenoid-bracket-onshape.step`: the bracket alone, as Onshape exports it. `registration.json`: the fit and its checks |
 | [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
 | [`renders/`](renders/) | The figures above |
 
@@ -274,6 +314,8 @@ between bulk doses. This was not modelled.
 pip install cadquery trimesh python-fcl rtree vtk pillow numpy
 xvfb-run -a python concepts.py              # sweeps + figures, about 4 min on 4 cores
 xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
+xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
+python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
 ```
 
 **Limits.**

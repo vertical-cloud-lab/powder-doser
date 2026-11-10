@@ -1,0 +1,101 @@
+{
+ "document": "https://cad.onshape.com/documents/3db901b123bbee05f5c196f3/w/71800ea0548acad53e21d816",
+ "exports": {
+  "assembly": {
+   "element": "75a706585a5f944cebeab4c6",
+   "microversion": "103ac0979ff11692b6b27fc5",
+   "bytes": 7107267
+  },
+  "bracket": {
+   "element": "68af1a083e7d90e44c40f87c",
+   "microversion": "103ac0979ff11692b6b27fc5",
+   "bytes": 52482
+  }
+ },
+ "ethan_to_pr170_world": [
+  [
+   -1.0,
+   -0.000121,
+   0.000205,
+   -16.233896
+  ],
+  [
+   -0.000173,
+   0.9623,
+   -0.271991,
+   92.166357
+  ],
+  [
+   -0.000165,
+   -0.271991,
+   -0.9623,
+   -8.88026
+  ],
+  [
+   0.0,
+   0.0,
+   0.0,
+   1.0
+  ]
+ ],
+ "fit_mounting_plate_mm": {
+  "median": 0.38,
+  "p95": 0.79
+ },
+ "fit_checks_mm": {
+  "auger -> PR170 Auger": {
+   "median": 0.51,
+   "p95": 1.59
+  },
+  "Flexible Bracket (rear) -> PR170 Bracket (rear)": {
+   "median": 0.19,
+   "p95": 4.21
+  },
+  "auger_cap -> PR170 Auger cap": {
+   "median": 0.51,
+   "p95": 0.94
+  },
+  "stepper_motor -> PR170 Stepper (NEMA 11)": {
+   "median": 0.23,
+   "p95": 2.19
+  },
+  "tap bracket -> PR170 Bracket (front)": {
+   "median": 3.4,
+   "p95": 22.88
+  }
+ },
+ "pr170_world_bounds": {
+  "tap bracket": [
+   -30.0,
+   53.6,
+   82.4,
+   112.8,
+   14.0,
+   63.8
+  ],
+  "solenoid_coil": [
+   27.9,
+   54.6,
+   85.6,
+   96.8,
+   37.1,
+   48.3
+  ],
+  "solenoid_yoke": [
+   25.9,
+   56.1,
+   84.2,
+   98.2,
+   30.6,
+   54.8
+  ],
+  "solenoid_plunger": [
+   11.7,
+   63.6,
+   86.7,
+   95.7,
+   38.2,
+   47.2
+  ]
+ }
+}
