@@ -1,0 +1,47 @@
+row_type,target_mg,powder_id,display,attempts,valid,within_limit,fw_ok,fw_overshoot,fw_stalled,fw_cycle_budget,fw_timeout,excluded,excluded_reasons,not_run_reason,rounds,runs
+powder,50.0,alsi10mg,AlSi10Mg,3,3,1,1,2,0,0,0,0,,,2,20260910T194447Z_alsi10mg
+powder,50.0,silicon-110-200,Si (-110/+200 mesh),3,3,2,2,1,0,0,0,0,,,2,20260915T025556Z_silicon-110-200
+powder,50.0,sodium-sulfate,Sodium sulfate,3,3,0,0,3,0,0,0,0,,,2,20260910T133932Z_sodium-sulfate
+powder,50.0,calcium-lactate,Calcium lactate,3,3,1,1,2,0,0,0,0,,,2,20260909T225206Z_calcium-lactate
+powder,50.0,barium-chloride,Barium chloride,3,0,0,0,0,0,0,0,3,powder caked in the tube (3),,2,20260910T170858Z_barium-chloride
+powder,50.0,xanthan-gum,Xanthan gum,3,3,2,2,1,0,0,0,0,,,2,20260904T203727Z_xanthan-gum
+powder,50.0,salt,NaCl,9,3,2,2,1,0,0,0,6,balance could not be read (6),,2,20260903T163527Z_salt;20260903T170437Z_salt;20260903T214049Z_salt
+powder,50.0,carboxymethyl-cellulose,CMC,6,3,3,3,0,0,0,0,3,outlet misaligned (3),,2,20260908T172730Z_carboxymethyl-cellulose;20260908T194201Z_carboxymethyl-cellulose
+powder,50.0,white-rice-flour,White rice flour,3,3,3,3,0,0,0,0,0,,,2,20260904T190011Z_white-rice-flour
+powder,50.0,sodium-alginate,Sodium alginate,3,3,0,0,0,2,0,1,0,,,2,20260909T185352Z_sodium-alginate
+powder,50.0,silicon-325,Si (-325 mesh),3,3,0,0,0,3,0,0,0,,,2,20260910T212920Z_silicon-325
+powder,50.0,brown-rice-flour,Brown rice flour,0,0,0,0,0,0,0,0,0,,not run: delivered almost nothing in round 1,,
+powder,50.0,fumed-silica,Fumed silica,0,0,0,0,0,0,0,0,0,,not run: delivered almost nothing in round 1,,
+total,50.0,all,"All powders, 50 mg",42,30,14,14,10,5,0,1,12,balance could not be read (6); outlet misaligned (3); powder caked in the tube (3),,2,20260903T163527Z_salt;20260903T170437Z_salt;20260903T214049Z_salt;20260904T190011Z_white-rice-flour;20260904T203727Z_xanthan-gum;20260908T172730Z_carboxymethyl-cellulose;20260908T194201Z_carboxymethyl-cellulose;20260909T185352Z_sodium-alginate;20260909T225206Z_calcium-lactate;20260910T133932Z_sodium-sulfate;20260910T170858Z_barium-chloride;20260910T194447Z_alsi10mg;20260910T212920Z_silicon-325;20260915T025556Z_silicon-110-200
+powder,200.0,alsi10mg,AlSi10Mg,3,3,3,3,0,0,0,0,0,,,2,20260910T194447Z_alsi10mg
+powder,200.0,silicon-110-200,Si (-110/+200 mesh),3,3,2,2,1,0,0,0,0,,,2,20260915T025556Z_silicon-110-200
+powder,200.0,sodium-sulfate,Sodium sulfate,3,3,2,1,2,0,0,0,0,,,2,20260910T133932Z_sodium-sulfate
+powder,200.0,calcium-lactate,Calcium lactate,3,3,2,1,0,1,1,0,0,,,2,20260909T225206Z_calcium-lactate
+powder,200.0,barium-chloride,Barium chloride,3,0,0,0,0,0,0,0,3,powder caked in the tube (3),,2,20260910T170858Z_barium-chloride
+powder,200.0,xanthan-gum,Xanthan gum,3,3,3,3,0,0,0,0,0,,,2,20260904T203727Z_xanthan-gum
+powder,200.0,salt,NaCl,9,3,2,2,1,0,0,0,6,balance could not be read (6),,2,20260903T163527Z_salt;20260903T170437Z_salt;20260903T214049Z_salt
+powder,200.0,carboxymethyl-cellulose,CMC,6,3,1,1,0,0,0,2,3,outlet misaligned (3),,2,20260908T172730Z_carboxymethyl-cellulose;20260908T194201Z_carboxymethyl-cellulose
+powder,200.0,white-rice-flour,White rice flour,3,3,3,3,0,0,0,0,0,,,2,20260904T190011Z_white-rice-flour
+powder,200.0,sodium-alginate,Sodium alginate,3,3,0,0,0,1,0,2,0,,,2,20260909T185352Z_sodium-alginate
+powder,200.0,silicon-325,Si (-325 mesh),3,3,0,0,0,3,0,0,0,,,2,20260910T212920Z_silicon-325
+powder,200.0,brown-rice-flour,Brown rice flour,0,0,0,0,0,0,0,0,0,,not run: delivered almost nothing in round 1,,
+powder,200.0,fumed-silica,Fumed silica,0,0,0,0,0,0,0,0,0,,not run: delivered almost nothing in round 1,,
+total,200.0,all,"All powders, 200 mg",42,30,18,16,4,5,1,4,12,balance could not be read (6); outlet misaligned (3); powder caked in the tube (3),,2,20260903T163527Z_salt;20260903T170437Z_salt;20260903T214049Z_salt;20260904T190011Z_white-rice-flour;20260904T203727Z_xanthan-gum;20260908T172730Z_carboxymethyl-cellulose;20260908T194201Z_carboxymethyl-cellulose;20260909T185352Z_sodium-alginate;20260909T225206Z_calcium-lactate;20260910T133932Z_sodium-sulfate;20260910T170858Z_barium-chloride;20260910T194447Z_alsi10mg;20260910T212920Z_silicon-325;20260915T025556Z_silicon-110-200
+powder,1000.0,alsi10mg,AlSi10Mg,6,3,3,2,1,0,0,0,3,tilt servo failed (3),,"1,2",20260811T183043Z_alsi10mg;20260910T194447Z_alsi10mg
+powder,1000.0,silicon-110-200,Si (-110/+200 mesh),3,3,3,3,0,0,0,0,0,,,2,20260915T025556Z_silicon-110-200
+powder,1000.0,sodium-sulfate,Sodium sulfate,3,3,3,3,0,0,0,0,0,,,2,20260910T133932Z_sodium-sulfate
+powder,1000.0,calcium-lactate,Calcium lactate,3,3,3,0,0,3,0,0,0,,,1,20260805T200002Z_calcium-lactate
+powder,1000.0,barium-chloride,Barium chloride,3,0,0,0,0,0,0,0,3,powder caked in the tube (3),,2,20260910T170858Z_barium-chloride
+powder,1000.0,xanthan-gum,Xanthan gum,3,3,3,0,0,3,0,0,0,,,1,20260806T140254Z_xanthan-gum
+powder,1000.0,salt,NaCl,7,6,6,5,1,0,0,0,1,demonstration run (1),,"1,2",20260806T145120Z_salt;20260812T215154Z_salt;20260904T001821Z_salt
+powder,1000.0,carboxymethyl-cellulose,CMC,3,3,3,0,0,3,0,0,0,,,1,20260805T215252Z_carboxymethyl-cellulose
+powder,1000.0,white-rice-flour,White rice flour,3,3,0,0,0,0,3,0,0,,,1,20260804T211422Z_white-rice-flour
+powder,1000.0,sodium-alginate,Sodium alginate,3,3,0,0,0,0,3,0,0,,,1,20260805T145725Z_sodium-alginate
+powder,1000.0,silicon-325,Si (-325 mesh),6,6,0,0,0,6,0,0,0,,,"1,2",20260821T161838Z_silicon-325;20260910T212920Z_silicon-325
+powder,1000.0,brown-rice-flour,Brown rice flour,9,3,0,0,0,3,0,0,6,"nothing delivered, auger suspected (6)",,1,20260804T204316Z_brown-rice-flour;20260804T224937Z_brown-rice-flour;20260805T185305Z_brown-rice-flour
+powder,1000.0,fumed-silica,Fumed silica,0,0,0,0,0,0,0,0,0,,not run: delivered almost nothing in round 1,,
+total,1000.0,all,"All powders, 1 g",52,39,24,13,2,18,6,0,13,"nothing delivered, auger suspected (6); tilt servo failed (3); powder caked in the tube (3); demonstration run (1)",,"1,2",20260804T204316Z_brown-rice-flour;20260804T211422Z_white-rice-flour;20260804T224937Z_brown-rice-flour;20260805T145725Z_sodium-alginate;20260805T185305Z_brown-rice-flour;20260805T200002Z_calcium-lactate;20260805T215252Z_carboxymethyl-cellulose;20260806T140254Z_xanthan-gum;20260806T145120Z_salt;20260811T183043Z_alsi10mg;20260812T215154Z_salt;20260821T161838Z_silicon-325;20260904T001821Z_salt;20260910T133932Z_sodium-sulfate;20260910T170858Z_barium-chloride;20260910T194447Z_alsi10mg;20260910T212920Z_silicon-325;20260915T025556Z_silicon-110-200
+subset,1000.0,alsi10mg;silicon-110-200;sodium-sulfate;calcium-lactate;xanthan-gum;salt;carboxymethyl-cellulose,seven fastest-flowing,28,24,24,13,2,9,0,0,4,tilt servo failed (3); demonstration run (1),,"1,2",20260805T200002Z_calcium-lactate;20260805T215252Z_carboxymethyl-cellulose;20260806T140254Z_xanthan-gum;20260806T145120Z_salt;20260811T183043Z_alsi10mg;20260812T215154Z_salt;20260904T001821Z_salt;20260910T133932Z_sodium-sulfate;20260910T194447Z_alsi10mg;20260915T025556Z_silicon-110-200
+subset,1000.0,white-rice-flour;sodium-alginate;silicon-325;brown-rice-flour,other four dosed,21,15,0,0,0,9,6,0,6,"nothing delivered, auger suspected (6)",,"1,2",20260804T204316Z_brown-rice-flour;20260804T211422Z_white-rice-flour;20260804T224937Z_brown-rice-flour;20260805T145725Z_sodium-alginate;20260805T185305Z_brown-rice-flour;20260821T161838Z_silicon-325;20260910T212920Z_silicon-325
+other,,salt,NaCl at 0.5 and 2 g,3,0,0,0,0,0,0,0,3,demonstration run (3),,"2,2-pre",20260901T164658Z_salt(#148);20260901T165026Z_salt(#148);20260915T164228Z_salt-demo
+total,,all,All closed-loop attempts,139,99,56,43,16,28,7,5,40,"balance could not be read (12); powder caked in the tube (9); nothing delivered, auger suspected (6); outlet misaligned (6); demonstration run (4); tilt servo failed (3)",,"1,2,2-pre",20260804T204316Z_brown-rice-flour;20260804T211422Z_white-rice-flour;20260804T224937Z_brown-rice-flour;20260805T145725Z_sodium-alginate;20260805T185305Z_brown-rice-flour;20260805T200002Z_calcium-lactate;20260805T215252Z_carboxymethyl-cellulose;20260806T140254Z_xanthan-gum;20260806T145120Z_salt;20260811T183043Z_alsi10mg;20260812T215154Z_salt;20260821T161838Z_silicon-325;20260901T164658Z_salt(#148);20260901T165026Z_salt(#148);20260903T163527Z_salt;20260903T170437Z_salt;20260903T214049Z_salt;20260904T001821Z_salt;20260904T190011Z_white-rice-flour;20260904T203727Z_xanthan-gum;20260908T172730Z_carboxymethyl-cellulose;20260908T194201Z_carboxymethyl-cellulose;20260909T185352Z_sodium-alginate;20260909T225206Z_calcium-lactate;20260910T133932Z_sodium-sulfate;20260910T170858Z_barium-chloride;20260910T194447Z_alsi10mg;20260910T212920Z_silicon-325;20260915T025556Z_silicon-110-200;20260915T164228Z_salt-demo
