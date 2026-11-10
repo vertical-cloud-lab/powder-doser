@@ -133,5 +133,63 @@
     "recording": "none: nothing was to be sent",
     "signed_out_utc": "2026-11-04T22:20:05Z",
     "closed_and_config_deleted": true
+  },
+  "followup_2026_11_10": {
+    "asked": {
+      "by": "sgbaird",
+      "utc": "2026-11-10T01:08:36Z",
+      "url": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6755950292",
+      "text": "how did this print go?"
+    },
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/42733613285",
+    "kind": "plain @claude run, no Bambu login; read only over the LAN from the doser Pi",
+    "reports_since_11_04": "none on #197, #193, #191 or PR #200; PR #181 has 'Started first assembly' (lshuldberg, 2026-11-05T22:32:25Z) without naming the baseplate",
+    "printer_state": {
+      "read_utc": [
+        "2026-11-10T01:13:30Z",
+        "2026-11-10T01:21:02Z"
+      ],
+      "busy": "printing another lab job (layer 2, then 3, of 556; print_error 0), so only folder listings and two small downloads were made",
+      "sent_to_printer": "one MQTT pushall status request per read; nothing else"
+    },
+    "nozzles": {
+      "left": "device nozzle 1: 0.4 mm HS01 (hardened steel, standard flow), 220/220 C for the other job",
+      "right": "device nozzle 0: 0.6 mm HU01 (hardened steel, TPU high flow), cold",
+      "mapping": "Bambu Studio maps DEPUTY_EXTRUDER_ID (1) to the left nozzle and MAIN_EXTRUDER_ID (0) to the right: https://github.com/bambulab/BambuStudio/blob/1ca1aadfc0a4894430194abbe4e51f077288cc02/src/slic3r/GUI/DeviceTab/wgtDeviceNozzleSelect.cpp#L126-L127",
+      "base_print": "same pair as Printer Parts on 11-04, and the Base printed from the left nozzle, so it was printed with 0.4 mm",
+      "claude_print_rule": "the right nozzle is still 0.6 mm, so a @claude-print run would hold an H2D print",
+      "script": "scripts/bambu_lan_status.py"
+    },
+    "timelapse": {
+      "printer_path": "/timelapse/video_2026-11-05_03-49-46.mp4",
+      "printer_mtime_utc": "2026-11-04T22:18Z",
+      "started_utc": "2026-11-04T19:49:46Z (the file name is in the printer's UTC+8 clock)",
+      "bytes": 5309160,
+      "sha256": "5090e7e8de581f7bad416f39d60eb6ea0db57e3c3d1e6ecec810d6803fb0b9f3",
+      "video": "1680x1080 h264, 24 fps, 300 frames, 12.46 s: one frame per layer for 261 layers, then a 39-frame hold",
+      "thumbnail": {
+        "printer_path": "/timelapse/thumbnail/video_2026-11-05_03-49-46.jpg",
+        "bytes": 23963,
+        "sha256": "3b9ab5c4af92ff0d60f7daa70ba0f1965227c73d631146803f736dfb38e894fa"
+      },
+      "download": "FTPS port 990 with curl on the Pi, its config (with the access code) on stdin, limit-rate 400k; 01:14:58-01:15:14 UTC; sizes matched the listing",
+      "committed": [
+        "timelapse/video_2026-11-05_03-49-46.mp4",
+        "timelapse/video_2026-11-05_03-49-46.jpg",
+        "timelapse/timelapse.gif",
+        "timelapse/keyframes.jpg",
+        "timelapse/final-closeups.jpg"
+      ]
+    },
+    "ipcam_recording": {
+      "printer_paths": "/ipcam/ipcam-record.2026-11-05_03-49-14.32.mp4 to .50.mp4",
+      "files": 19,
+      "bytes": 4725397502,
+      "span_utc": "2026-11-04T19:49:14Z to 22:18Z",
+      "downloaded": false,
+      "why": "4.73 GB is too much for the Pi's Wi-Fi"
+    },
+    "sliced_file": "still not readable: the FTPS root has no cache folder, and its only .gcode.3mf files are from 2026-08",
+    "read": "clean from the first layer to the last: flat first layer, no layer shift, no spaghetti, both tree supports under the hinge bosses stood to the end, no corner lift in the last frame. Dimensions, hole sizes, the underside and support removal can't be judged from the camera"
   }
 }

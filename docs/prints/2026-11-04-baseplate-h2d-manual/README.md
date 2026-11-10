@@ -102,3 +102,61 @@ plate.
 
 See [`print.json`](print.json): Studio was signed out and closed, and its config deleted, at the
 end of the run. Nothing was recorded, because nothing was to be sent.
+
+## Follow-up, 2026-11-10: the printer's own timelapse
+
+[Sterling at 01:08 UTC](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6755950292):
+"how did this print go?" Nobody had posted about the part since 11-04: there was nothing on #197,
+#193, #191 or this PR. The closest is
+[a note on #181](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6671271179)
+(2026-11-05 22:32 UTC), "Started first assembly", which doesn't say which baseplate was used. So
+this [plain `@claude` run](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/42733613285)
+read the H2D's storage over the LAN from the doser Pi, read only.
+
+- **The H2D was busy.** At 01:13 UTC it was printing another lab job (layer 2 of 556), so the run
+  only listed folders and downloaded two small files. Each read used FTPS on port 990, with
+  `curl` on the Pi capped at 400 KB/s and the access code passed on stdin. Nothing was sent to
+  the printer, and nothing on the Pi was installed or changed.
+- **The Base job's timelapse was still on the printer:** `/timelapse/video_2026-11-05_03-49-46.mp4`,
+  5,309,160 bytes, last written 2026-11-04 22:18 UTC. Its name is in the printer's UTC+8 clock,
+  so the recording started at **19:49:46 UTC**, 11 minutes after the job started at 19:38, once
+  heating and calibration were done. The video is 1680 × 1080, 24 fps and 300 frames: one per
+  layer for the 261 layers, then a 39-frame hold on the finished part.
+  - [the video, unchanged](timelapse/video_2026-11-05_03-49-46.mp4) (sha256 `5090e7e8…b9f3`) and
+    the printer's [thumbnail](timelapse/video_2026-11-05_03-49-46.jpg);
+  - [a GIF](timelapse/timelapse.gif) of every third frame, cropped to the bed.
+- **The continuous recording is there too, but wasn't downloaded.** It is 19 files in `/ipcam/`,
+  `ipcam-record.2026-11-05_03-49-14.32.mp4` to `….50.mp4`, 4.73 GB in all. The first started at
+  19:49:14 UTC and the last was written at 22:18. That is too much to pull over the Pi's Wi-Fi.
+- **The sliced file still isn't readable.** The FTPS root has no cache folder, and its only
+  `.gcode.3mf` files are from August.
+
+![Key frames from the timelapse](timelapse/keyframes.jpg)
+
+![Close-ups of the finished part, timelapse frame 300](timelapse/final-closeups.jpg)
+
+**What the timelapse shows.** The camera saw a clean print from the first layer to the last:
+- **First layer:** the outline went down flat, with two round support bases inside the C-shaped
+  cut-out. By frame 4 the slab is solid black, and nothing is lifting.
+- **No failures:** no layer shift, no spaghetti and no knocked-over support. The large
+  frame-to-frame jumps (frames 31, 130 and 262) are the toolhead passing through the shot, and
+  parking at the end.
+- **Supports:** each hinge boss has one tree support, standing on the plate inside the cut-out
+  and touching the boss at its pivot hole. Both stood to the end. The pivot holes are where to
+  look for support scars.
+- **Flat:** no corner of any arm or tab is lifted in the last frame.
+- **What a camera can't tell:** the dimensions and hole sizes, the underside, and whether the
+  supports came off cleanly. Only someone holding the part can check those.
+
+**Nozzles, read over LAN MQTT at 01:13 and 01:21 UTC** with
+[`scripts/bambu_lan_status.py`](../../../scripts/bambu_lan_status.py):
+- **Left** (device nozzle 1): **0.4 mm** `HS01`, hardened steel, standard flow, at 220 °C for the
+  other job.
+- **Right** (device nozzle 0): **0.6 mm** `HU01`, hardened steel, TPU high flow, cold.
+
+Bambu Studio shows nozzle 1 as the left one and nozzle 0 as the right one
+([`wgtDeviceNozzleSelect.cpp`](https://github.com/bambulab/BambuStudio/blob/1ca1aadfc0a4894430194abbe4e51f077288cc02/src/slic3r/GUI/DeviceTab/wgtDeviceNozzleSelect.cpp#L126-L127)).
+The pair is the same one *Printer Parts* showed on 11-04, and the Base printed from the left
+nozzle, so it was printed with the 0.4 mm nozzle, as guessed above. The right nozzle is still
+0.6 mm, so under CLAUDE.md a `@claude-print` run would still hold an H2D print until it is
+swapped.
