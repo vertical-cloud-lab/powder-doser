@@ -13,6 +13,72 @@ Nothing is built. Every number here is a prediction from the CAD.
 
 ![The balance-dose cycle](renders/features/balance_dose.gif)
 
+**Onshape (public):** see [`onshape/onshape_document.json`](onshape/onshape_document.json) for the current document's link
+(imported from `step/chain_carousel_rig_v5.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py)). Sam's own
+document for the mounting plate and the electronics carriage is
+[here](https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f).
+
+## How each part works, step by step
+
+Two labelled clips ([`explain.py`](explain.py)), asked for by Sam on 2026-11-10. Every frame is the CAD in the state
+that step describes, moving by the model's own kinematics. The parts each step is about keep their colours, the rest is
+washed out, and the callouts name the parts.
+
+**The dosing station** ([MP4](renders/explain/station_explained.mp4)), in 12 steps:
+1. Where the station is.
+2. The index.
+3. The latch rail opening the plate's clip.
+4. The two P16s lifting the bar.
+5. The guide shoes.
+6. The kinematic dock and its magnets.
+7. The outlet door.
+8. The tilt.
+9. The auger drive.
+10. The dose onto the balance.
+11. Tilting back, reversing and parking.
+12. The clip closing as the carriage leaves.
+
+![The dosing station, step by step](renders/explain/station_explained.gif)
+
+**An auger carriage** ([MP4](renders/explain/carriage_explained.mp4)), in 8 steps:
+1. What it is.
+2. How it hooks over and bolts to both chains.
+3. The module's parts.
+4. The hinge and the opening.
+5. The spring latch pin.
+6. A half lap: hanging, on its side, on top.
+7. The outlet door.
+8. A swap at the side hatch.
+
+![An auger carriage, step by step](renders/explain/carriage_explained.gif)
+
+### The latch rail fix (2026-11-10)
+
+Framing the latch close-up showed that the station's latch rail, inherited from v4, was drawn on the wrong side of the
+followers.
+- **Where it was:** on each follower's +x side, away from the keeper. Its face met a follower only once that follower was
+  already 4.5 mm open, so it could stop a follower there but could never push one there.
+- **Its pad:** the pad on its post stood in the open followers' path.
+- **Why the checks missed it:** every check skips follower/rail pairs, because they touch by design.
+
+In v5 now ([`parts4.latch_rail_v4`](parts4.py)):
+- **The cam is on the followers' -x side**, between them and the keepers, 5 mm off the keepers.
+- **Its profile:** the face is at the closed follower's edge (x 118.5) where its 25 deg ramps end, and 4.5 mm further on
+  the flat, with 1.5 mm lead-ins. That pushes each follower, and the pin with it, out of the keeper by exactly
+  `layout.latch_open`'s schedule.
+- **How it's held:** it hangs from the part's existing web, which passes the followers' tips at z 25-31. The pad on the
+  post is now z 25-31 only.
+
+`check_interference.py --latch` checks the rail against every part over 27 poses:
+- carriage 1 passing it in quarter-link steps over ±2.5 links;
+- the EC rising;
+- the module tilting to 40 deg.
+
+It finds **0 clashes**. The follower rides the cam with at most a 0.57 mm³ sliver on the ramps (round dowel on a 25 deg
+face) and none on the flat ([`checks/latch.json`](checks/latch.json)).
+
+v4's rail has the same fault; v5 supersedes it.
+
 ## What the earlier versions weighed on
 
 | Version | What the dose lands on | Why it isn't a real balance |
@@ -119,6 +185,7 @@ OCC boolean volume between every pair; anything over 0.5 mm³ counts. By-design 
 |---|---|---|
 | Home | Every pair of the 843 instances, the HR-202i and its beaker included | **0** |
 | `--tilt` | The EC rising on its bar (0-28 mm in 7 poses), then module 1, the EC, the bar and both P16s tilting 5-50 deg (9 poses, plus 40 and 42), the balance's top door open | **0 through 40 deg.** At 42 deg the lift bar touches module 13's plate (4.8 mm^3), and at 45 and 50 deg it meets modules 2 and 13 (up to 306 mm^3): the bar passes under the neighbouring modules. So **v5 tilts to 40 deg at most** (v4: 50) |
+| `--latch` | The station's latch rail against every part: carriage 1 passing it (±2.5 links in quarter links), the EC rising, the module tilting to 40 deg (27 poses) | **0** (2026-11-10, after the rail fix). Follower on the cam: at most 0.57 mm^3 on the ramps, none on the flat |
 | `--sweep` | The chain indexing one module the way it runs, 5 poses (2.0-link steps), the EC parked over the balance | **0** |
 | `--scale`, HR-202i | The balance at the dose point against everything: parked, docked, 30 and 50 deg | **0 parts in its way** (v4: 11 kinds of part, v3: 19) |
 | `--scale`, HR-100A | The lab's HR-100A (stock breeze break) in the same place, parked and at 30 deg | 2 hits, both the front hatch door: the HR-100A's base is 80 mm tall where it leaves the enclosure, against the door's 58 mm bottom edge (raise the edge to 92 mm for it) |
@@ -148,10 +215,12 @@ OCC boolean volume between every pair; anything over 0.5 mm³ counts. By-design 
 - **Not regenerated:**
   - The step-by-step ASSEMBLY.md and its renders.
   - The full movie.
-  - The STEP/STL/DXF exports.
   - The Bambu slices.
 
-  The CAD source builds all of them (`build.py`, `docs.py`, `render.py`); this round shows v5 in its stills and the balance-dose GIF.
+  The CAD source builds all of them (`docs.py`, `render.py`). The STEP/STL/DXF exports (`build.py`) were made on 2026-11-10,
+  with the latch rail fix. The stills, the balance-dose GIF and the explainer clips show v5.
+- **The stills and `balance_dose` predate the latch rail fix.** The rail is a small part under the carriage, and those
+  views barely show it.
 - **The balance's top door is opened by hand** in this design. A robot-served station needs a small actuator for it, or a lid with a hole like the single doser's.
 - **Prices:**
   - The new printed parts are filament.
@@ -168,6 +237,9 @@ OCC boolean volume between every pair; anything over 0.5 mm³ counts. By-design 
 | [`check_interference.py`](check_interference.py) | home, `--tilt`, `--sweep`, `--swap`, `--scale` (the HR-202i and the HR-100A) |
 | [`check_stream.py`](check_stream.py) | The dose stream's path from the exit to the beaker |
 | [`render_balance.py`](render_balance.py) | v5's stills and the balance-dose clip |
+| [`explain.py`](explain.py) | The two labelled explainer clips: the dosing station and an auger carriage, step by step |
+| [`onshape/`](onshape) | The public Onshape document's ids, the import script and its API-call ledger |
+| [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs, the side plates' and acrylic's DXFs |
 | [`bom.py`](bom.py) / [`BOM.md`](BOM.md) | The BoM, with the balance, the second P16 and LAC, the bar and the new printed parts |
 | [`TEST-PLAN.md`](TEST-PLAN.md) | v4's tests with T6 and T8 rewritten for the balance |
 | [`test/chain_rig.py`](test/chain_rig.py) | v4's driver with two LACs and the HR-202i |

@@ -2,6 +2,8 @@
 
 > **Scale (2026-11-04):** v4 draws the HR-100A at the dose point, but it doesn't fit there. [v5](../chain-carousel-v5/README.md) is v4 with the station's column moved out of the balance and the A&D HR-202i under the dose point.
 
+> **Latch rail (2026-11-10):** v4's station latch rail sits on the followers' far (+x) side. It can stop a follower once it is open, but it can't push one open, and its pad on the post stands in the open followers' path. [v5](../chain-carousel-v5/README.md#the-latch-rail-fix-2026-11-10) moves the cam to the followers' push side.
+
 v4 is [v3](../chain-carousel-v3/README.md) with Sam's item 7 of 2026-10-29 applied: **every auger rides on the outside of the loop**, so an auger can be pulled off its mounting plate at the side hatch while its carriage stays on the chain. Items 1-6 are v3's (kinematic dock and magnets, guide cradle, outlet doors, plate latches, the enclosure with two hatches, side tabs, the HR-100A in the assembly), each changed only as far as item 7 forces it. Those changes are listed under "What changed from v3". v2, v3 and the [paternoster](../paternoster/README.md) are unchanged.
 
 **Nothing here is built yet, so every number is a prediction.**

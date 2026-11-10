@@ -130,20 +130,24 @@ def latch_housing_v4() -> cq.Workplane:
 
 
 def latch_rail_v4(post_x: float, post_y: float) -> cq.Workplane:
-    """The station's latch rail, Sam's frame at the station: along y, 6.5 mm out from the passing augers' tubes, its face
-    LATCH_TRAVEL behind the closed followers' tips (which reach z +24), 25 deg ramps at both ends; an arm behind the face to
-    a 2020 post."""
-    xf = LATCH_FOLLOW_X + 1.5 + LATCH_TRAVEL
+    """The station's latch rail, Sam's frame at the station: a cam along y on the -x side of the passing followers (between
+    them and the keepers), at z 19-25 where the followers' tips (z up to +24) pass. Its face is at the closed follower's -x
+    edge (x 118.5) where its 25 deg ramps end and LATCH_TRAVEL further +x on the flat, so it pushes each follower, and the
+    pin with it, LATCH_TRAVEL out of the keeper, matching layout.latch_open; 1.5 mm lead-ins beyond the ramps.
+    v5, 2026-11-10: until then the rail was drawn on the followers' +x side, where its face only met a follower that was
+    already open: it could stop a follower at LATCH_TRAVEL but never push it there, and its pad on the post stood in the
+    open followers' path (the check skips follower/rail pairs, so neither showed). The cam now hangs from the part's web
+    (z 25-31, past the followers' tips), and the pad on the post is z 25-31 only (station_rails_v4)."""
+    x_closed = LATCH_FOLLOW_X - 1.5                 # the closed follower's -x edge: 118.5
+    xf = x_closed + LATCH_TRAVEL                    # the face on the flat: 123.0
     z0, z1 = 19.0, 25.0
     half = LATCH_RAIL_FLAT
     ramp = LATCH_TRAVEL / math.tan(math.radians(25))
-    pts = [(xf, -half), (xf, half), (xf + LATCH_TRAVEL, half + ramp), (xf + 10.0, half + ramp), (xf + 10.0, -half - ramp),
-           (xf + LATCH_TRAVEL, -half - ramp)]
-    r = cq.Workplane("XY").polyline(pts).close().extrude(z1 - z0).translate((0, LATCH_Y, z0))
-    y_end = LATCH_Y - half - ramp
-    arm = _box(xf + 2.0, max(xf + 10.0, post_x + 10.0), min(post_y - 10.0, y_end + 1.0), max(post_y + 10.0, y_end + 1.0), z0, z1)
-    pad = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, post_y + 10.0, z0, z1)
-    return r.union(arm).union(pad).cut(_cyl(3.3, 10.0, post_x, post_y, z0 - 1.0))
+    lead = 1.5 / math.tan(math.radians(25))
+    xb = x_closed - 1.5 - 6.0                       # the cam's back face (x 111): 6 mm behind the lead-ins' ends, 5 mm off the keepers
+    pts = [(xf, -half), (xf, half), (x_closed, half + ramp), (x_closed - 1.5, half + ramp + lead), (xb, half + ramp + lead),
+           (xb, -half - ramp - lead), (x_closed - 1.5, -half - ramp - lead), (x_closed, -half - ramp)]
+    return cq.Workplane("XY").polyline(pts).close().extrude(z1 - z0).translate((0, LATCH_Y, z0))
 
 
 # ---------------------------------------------------------------- cap rest at the station
@@ -335,5 +339,5 @@ def station_rails_v4(post_x: float, post_y: float) -> cq.Workplane:
     prof = [(-half - ramp, zf + 2.0), (-half, zf), (half, zf), (half + ramp, zf + 2.0), (half + ramp, STATION_RAILS_OUTER), (-half - ramp, STATION_RAILS_OUTER)]
     rest = cq.Workplane("YZ").polyline(prof).close().extrude(x1 - x0).translate((x0, 0, 0))
     web = _box(x0, max(post_x + 10.0, LATCH_FOLLOW_X + 1.5 + LATCH_TRAVEL + 10.0), post_y - 10.0, post_y + 10.0, 25.0, STATION_RAILS_OUTER)
-    pad = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, post_y + 10.0, 19.0, STATION_RAILS_OUTER)
+    pad = _box(post_x - 10.0, post_x + 10.0, post_y - 10.0, post_y + 10.0, 25.0, STATION_RAILS_OUTER)   # v5: behind the followers' tips
     return r.union(rest).union(web).union(pad).cut(_cyl(3.3, 20.0, post_x, post_y, 18.0))

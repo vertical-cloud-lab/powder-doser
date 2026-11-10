@@ -1,0 +1,50 @@
+{
+ "check": "latch",
+ "clashes": [],
+ "poses": 27,
+ "step_links": 0.25,
+ "span_links": 2.5,
+ "follower_on_cam": [
+  {
+   "shift": -1.25,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.556
+  },
+  {
+   "shift": -1.0,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.57
+  },
+  {
+   "shift": -0.75,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.571
+  },
+  {
+   "shift": -0.5,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.454
+  },
+  {
+   "shift": 0.5,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.454
+  },
+  {
+   "shift": 0.75,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.571
+  },
+  {
+   "shift": 1.0,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.57
+  },
+  {
+   "shift": 1.25,
+   "follower": "Latch follower, dowel 3 x 40 1",
+   "mm3": 0.556
+  }
+ ],
+ "follower_on_cam_max_mm3": 0.571
+}

@@ -5,6 +5,7 @@
                                             #   all 13 carriages together pass every point of the loop
     python check_interference.py --tilt     # station: electronics carriage rising (approach), then module +
                                             #   carriage + actuator tilting to the hinge's travel limit
+    python check_interference.py --latch    # v5: the station's latch rail against everything while carriages pass it, the EC rises and tilts
     python check_interference.py --swap     # loading position: a carriage's screws out, slid 10 mm, lifted out past the side tabs
     python check_interference.py --scale    # v5: the HR-202i (and, as a second check, the lab's HR-100A) at the dose point, against
                                             #   everything; the station parked, then docked and tilted to 30 and 50 deg
@@ -207,6 +208,37 @@ def sweep(step: float = 0.5) -> list:
     return hits
 
 
+def latch(step: float = 0.25, span: float = 2.5) -> list:
+    """v5, 2026-11-10: the station's latch rail, moved to the followers' -x side so that it pushes them open, against every
+    other part while a carriage passes it (quarter-link steps over +-span links, station parked), then with the EC rising and
+    the module tilting at the station. Also reports how much each follower overlaps the rail's cam, a by-design contact that
+    the other checks skip: it should stay a sliver (the round follower on the 25 deg ramp), never a block."""
+    hits, contact = [], []
+    poses = [(-span + i * step, 0.0, 0.0) for i in range(int(round(2 * span / step)) + 1)]
+    poses += [(0.0, e, 0.0) for e in (14.0, PARK_DROP)] + [(0.0, PARK_DROP, a) for a in (10.0, 20.0, 30.0, 40.0)]
+    for s, e, a in poses:
+        st = L.State(shift=s, ext=e, tilt=a, magnet_on=a > 0, enclosure=False)
+        pl = L.placements(st)
+        rail = [p for p in pl if p.key == "latch_rail"]
+        objs = objects(rail) + objects([p for p in pl if p.key != "latch_rail"])
+        h = overlaps(objs, [(0, j) for j in range(1, len(objs))])
+        hits += [(f"{x} @shift {s:+.2f}, ext {e:.0f}, tilt {a:.0f}", y, v) for x, y, v in h]
+        rb = objs[0][2].BoundingBox()
+        for k, nm, sh, M in objs[1:]:
+            if k != "latch_follower":
+                continue
+            b = sh.BoundingBox()
+            if b.xmax < rb.xmin or rb.xmax < b.xmin or b.ymax < rb.ymin or rb.ymax < b.ymin or b.zmax < rb.zmin or rb.zmax < b.zmin:
+                continue
+            v = objs[0][2].intersect(sh).Volume()
+            if v > 1e-4:
+                contact.append({"shift": s, "follower": nm, "mm3": round(v, 3)})
+        print(f"  shift {s:+5.2f}, ext {e:4.1f}, tilt {a:4.1f}: {len(h)} clash(es)", flush=True)
+    _report("latch", hits, {"poses": len(poses), "step_links": step, "span_links": span,
+                            "follower_on_cam": contact, "follower_on_cam_max_mm3": max((c["mm3"] for c in contact), default=0.0)})
+    return hits
+
+
 MOVING_GROUPS = ("station_ec", "station_act")            # the EC, the lift bar and its end blocks, the P16s; plus the station module
 TOP_OPEN = 205.0                                          # v5: the HR-202i's top door slid back while the station doses (A&D's DXF)
 
@@ -298,6 +330,8 @@ if __name__ == "__main__":
     if "--sweep" in sys.argv:
         # --step N: a coarser sweep (N links per pose) when time is short; the JSON records the step and pose count
         sweep(float(sys.argv[sys.argv.index("--step") + 1])) if "--step" in sys.argv else sweep()
+    elif "--latch" in sys.argv:
+        latch()
     elif "--tilt" in sys.argv:
         tilt()
     elif "--swap" in sys.argv:
