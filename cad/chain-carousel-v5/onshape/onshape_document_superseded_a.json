@@ -305,5 +305,6 @@
   "id": "6dbdc20aa5283d3c7ed9a806",
   "name": "v5 HR-202i station"
  },
- "api_calls": 11
+ "api_calls": 11,
+ "superseded_by": "https://cad.onshape.com/documents/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0"
 }

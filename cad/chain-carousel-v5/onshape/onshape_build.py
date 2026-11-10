@@ -105,12 +105,25 @@ def create() -> dict:
     v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v5 HR-202i station",
                                                       "description": "Import from cad/chain-carousel-v5 (#128, PR #185): 843 instances, "
                                                                      "98 unique parts; 0 clashes over 0.5 mm^3 at home, over a "
-                                                                     "one-module sweep and tilted to 40 deg"})
+                                                                     "one-module sweep and tilted to 40 deg; the latch rail's cam "
+                                                                     "on the followers' push side (2026-11-10)"})
     rec["version"] = {"id": v["id"], "name": v["name"]}
     rec["api_calls"] = c.calls
     DOC_JSON.write_text(json.dumps(rec, indent=1))
     print(json.dumps(rec, indent=1)[:2000])
     return rec
+
+
+def supersede(old_json: Path, new: dict) -> None:
+    """Rename an earlier document so nobody edits it by mistake (the API key has no delete scope)."""
+    old = json.loads(old_json.read_text())
+    c = Onshape(budget=2, run="supersede")
+    c.post(f"/documents/{old['documentId']}", json={
+        "name": f"{DOC_NAME} - SUPERSEDED, see {new['documentId'][:8]}",
+        "description": f"Superseded by {new['url']} (the same rig with the station's latch rail cam moved to the followers' "
+                       "push side). Kept because the API key cannot delete documents."})
+    old["superseded_by"] = new["url"]
+    old_json.write_text(json.dumps(old, indent=1))
 
 
 def views() -> None:
@@ -123,5 +136,11 @@ def views() -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["create", "views"])
+    ap.add_argument("--supersede", type=Path, help="earlier onshape_document*.json to mark superseded")
     a = ap.parse_args()
-    create() if a.cmd == "create" else views()
+    if a.cmd == "create":
+        rec = create()
+        if a.supersede:
+            supersede(a.supersede, rec)
+    else:
+        views()
