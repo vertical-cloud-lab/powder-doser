@@ -100,9 +100,9 @@ def latch_bolt_v6() -> cq.Workplane:
 
 
 def latch_follower_v6() -> cq.Workplane:
-    """3 x 40 mm dowel through the carrier, out past the housing to z +24 behind the cap, along z (as parts4's)."""
+    """3 x 25 mm dowel through the carrier, out past the housing to z +10 behind the cap, along z (parts4's was 40 long, to +24)."""
     z0 = LATCH6_PIN[2] - 2.8
-    return _cyl(1.5, 24.0 - z0, 0, 0, z0).edges().chamfer(0.3)
+    return _cyl(1.5, LATCH6_FOLLOW_TIP - z0, 0, 0, z0).edges().chamfer(0.3)
 
 
 def latch_housing_v6() -> cq.Workplane:
@@ -136,7 +136,8 @@ def latch_rail_v6(wall_x: float) -> cq.Workplane:
     back to a foot on the back side plate's inner face (Sam x = wall_x), two M5 through the plate."""
     x_closed = LATCH6_FOLLOW_X - 1.5
     xf = x_closed + LATCH_TRAVEL
-    z0, z1 = 19.0, 25.0
+    z0, z1 = LATCH6_CAM_Z
+    zw0, zw1 = LATCH6_FOLLOW_TIP + 0.5, LATCH6_FOLLOW_TIP + 6.5         # the web, outward of the followers' tips
     half = LATCH_RAIL_FLAT
     ramp = LATCH_TRAVEL / math.tan(math.radians(25))
     lead = 1.5 / math.tan(math.radians(25))
@@ -145,11 +146,16 @@ def latch_rail_v6(wall_x: float) -> cq.Workplane:
            (xb, -half - ramp - lead), (x_closed - 1.5, -half - ramp - lead), (x_closed, -half - ramp)]
     cam = cq.Workplane("XY").polyline(pts).close().extrude(z1 - z0).translate((0, LATCH_Y6, z0))
     yl = half + ramp + lead
-    web = _box(xb, wall_x - 6.0, LATCH_Y6 - yl, LATCH_Y6 + yl, z1 - 0.01, 31.0)
-    foot = _box(wall_x - 6.0, wall_x, LATCH_Y6 - yl, LATCH_Y6 + yl, z1 - 0.01, 45.0)
+    post = _box(xb, x_closed - 2.0, LATCH_Y6 - yl, LATCH_Y6 + yl, z0, zw0 + 0.01)       # the cam's back, behind the followers' path
+    web = _box(xb, wall_x - 6.0, LATCH_Y6 - yl, LATCH_Y6 + yl, zw0, zw1)
+    foot = _box(wall_x - 6.0, wall_x, LATCH_Y6 - yl, LATCH_Y6 + yl, zw0, LATCH6_FOOT_Z1)
     for dy in (-9.0, 9.0):
-        foot = foot.cut(_cyl_x(2.75, wall_x - 7.0, wall_x + 1.0, LATCH_Y6 + dy, 38.0))
-    return cam.union(web).union(foot)
+        foot = foot.cut(_cyl_x(2.75, wall_x - 7.0, wall_x + 1.0, LATCH_Y6 + dy, LATCH6_FOOT_HOLE_Z))
+    return cam.union(post).union(web).union(foot)
+
+
+LATCH6_FOOT_Z1 = 30.0                 # the cam's foot on the back plate, Sam z (world 405.65-425): over the tilt bracket (world z <= 394)
+LATCH6_FOOT_HOLE_Z = 22.0             # its two M5 holes
 
 
 # ---------------------------------------------------------------- 3-4. carriage v6
@@ -291,7 +297,7 @@ def guide_block_v6(z_rung0: float, z_seat: float, z_top: float, vee: bool) -> cq
     parked: one side fixes the frame's end, the other only its x, so the two P16s park it in the same place every time."""
     w = GUIDE_SLOT_W
     yc_shoe = (STATION_POST_Y - EXT / 2) - (P16_Y + LIFT_END_SHOE_YC)    # the shoe's centre from the rung's inner face (10.9)
-    d = yc_shoe + SHOE[1] / 2 + 3.0
+    d = yc_shoe + SHOE[1] / 2 + 1.5                                    # 17.4: the lift P16's tube passes 0.6 mm outside it
     blk = _box(-EXT / 2 - 6.0, EXT / 2 + 6.0, 0.0, d, z_rung0, z_top)
     slot = _box(-w / 2, w / 2, 4.0 - 0.01, d + 0.01, z_seat, z_top + 1)
     rel = _box(-w / 2 - GUIDE6_RELIEF, w / 2 + GUIDE6_RELIEF, 4.0 - 0.01, d + 0.01, z_seat, z_seat + 8.0)
@@ -305,6 +311,8 @@ def guide_block_v6(z_rung0: float, z_seat: float, z_top: float, vee: bool) -> cq
     else:
         seat = cq.Workplane("XY").add(cq.Solid.makeCone(nd / 2 + 0.3, 0.0, nd / 2 + 0.3, cq.Vector(0, yc_shoe, z_seat + 0.01), cq.Vector(0, 0, -1)))
     body = blk.cut(slot).cut(rel).cut(fun).cut(seat)
+    yh = (STATION_POST_Y - EXT / 2) - P16_Y - 10.5                       # the lift P16's 20 mm housing reaches this close to the rung
+    body = body.cut(_box(-30.0, 30.0, yh, d + 1.0, z_rung0 - 1.0, z_seat - nd / 2 - 2.0))   # notch: the housing (top z 309.7) under the seat
     for dx in (-EXT / 2 - 3.0, EXT / 2 + 3.0):                 # two M5 into T-nuts in the rung's inner slot
         body = body.cut(_cyl(2.75, 5.0, dx, -0.5, z_rung0 + EXT / 2, axis="Y"))
     return body

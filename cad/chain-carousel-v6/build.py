@@ -1,8 +1,8 @@
-"""Export the chain-carousel test rig v5 (v4's augers outside the loop; the dose falls onto an A&D HR-202i).
+"""Export the chain-carousel test rig v6 (v5 with Sam's 2026-11-10 changes: longer plate, latch at the back, ladder rungs, 90 deg tilt).
 
     python build.py
 
-* step/chain_carousel_rig_v5.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v6.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
@@ -24,10 +24,10 @@ import layout as L
 
 HERE = Path(__file__).resolve().parent
 PRINTED = ("carriage", "hold_down", "tensioner_block", "clevis_bracket", "latch_rail", "latch_bolt", "door_housing", "door_shutter",
-           "side_tab", "side_tab_m", "catch", "p16_shelf", "guide_block", "bar_end", "beaker_riser")   # v5: no cradle; shelves, guides, bar ends, riser
-PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v5", "sam_mounting_plate": "mounting_plate_v4"}   # Sam's parts + v4/v5 features
+           "side_tab", "side_tab_m", "catch", "lift_shelf", "guide_cone", "guide_vee", "lift_end", "tilt_bracket", "beaker_riser")   # v6: lift shelves, guides, end blocks, tilt bracket
+PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v6", "sam_mounting_plate": "mounting_plate_v6"}   # Sam's parts + v4-v6 features
 ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side")
-STEP_FILE = "chain_carousel_rig_v5.step"
+STEP_FILE = "chain_carousel_rig_v6.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -40,7 +40,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v5")
+    asm = cq.Assembly(name="Chain carousel test rig v6")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
@@ -70,7 +70,7 @@ def main() -> None:
     for k in PRINTED + tuple(PRINTED_REF):
         s = L.shape(k)
         if k == "carriage":                         # v4: the lugs and the latch housing stand on the outer face, so it prints
-            s = L.P4.carriage_v4(print_web=True).val()  # outer face up, on supports under the plate between the ribs
+            s = L.P6.carriage_v6(print_web=True).val()  # outer face up, on supports under the plate between the ribs
             s = s.rotate((0, 0, 0), (1, 0, 0), -90)
         if k == "sam_mounting_plate":               # underside down (balls go in after printing)
             pass

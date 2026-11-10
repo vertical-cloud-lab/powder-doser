@@ -181,7 +181,7 @@ def side_holes(back: bool) -> list[tuple]:
         for dz in (-16.0, 16.0):
             out.append(("circle", (TILT6_Y, TILT6_B[1] + dz), (5.5,)))
         for dy in (-9.0, 9.0):
-            out.append(("circle", (STATION_Y - (LATCH_Y6 + dy), HINGE_Z_STATION - 38.0), (5.5,)))
+            out.append(("circle", (STATION_Y - (LATCH_Y6 + dy), HINGE_Z_STATION - P6.LATCH6_FOOT_HOLE_Z), (5.5,)))
     if back:                                                                        # NEMA 34, slotted to tension the drive chain
         out.append(("slot", (LOOP_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
         for dy in (-1, 1):
@@ -424,6 +424,8 @@ class State:
     scale_offset: tuple = (0.0, 0.0)      # (x, y) mm, for the scale-fit study
     beaker: bool = True
     side_tabs: bool = True
+    latch_manual: float = 0.0             # v6: carriage 1's latch bolt pushed back by hand (mm), as when a module is taken off
+    lift_dx: float = 0.0                  # v6: the lift frame (and the EC on it) off its line along x (mm): the guides' funnels take it out
     extra: list = field(default_factory=list)     # extra placements (animation props)
 
 
@@ -683,6 +685,8 @@ def placements(state: State | float | None = None) -> list[Placement]:
             add(Placement("magnet", "Home magnet", C @ T(Rx(-math.pi / 2), (0, mz, CAR_X1 - 7.0)), 10, STEEL, "carriages", out_dir, k))
         # 4a. the plate latch (v4: a pin in the keeper's hole) rides on the carriage; the station's rail draws it back
         lo = latch_open(k, st)
+        if k == 0 and st.latch_manual > lo:
+            lo = st.latch_manual
         Ml = sam_frame(C, 0.0)
         add(Placement("latch_bolt", f"Latch bolt v6: 4 mm pin and rest shelf on a printed carrier {k + 1}", Ml @ T(None, (lo, 0, 0)), 10, ORANGE, "carriages",
                       out_dir, k))
@@ -799,10 +803,11 @@ def _station(st: State, add) -> None:
     # hangs on the bars in its two hooks; the frame stays at the docked height while the EC and the module tilt.
     ext_l = min(st.ext, PARK_DROP) if st.tilt <= 0 else PARK_DROP
     zb = BAR_PARK_Z + ext_l
+    dxl = np.array([st.lift_dx, 0.0, 0.0])
     for side in (-1, 1):
         nm = "-y" if side < 0 else "+y"
         Bl = np.array([HINGE_X + LIFT6_P16_X, side * P16_Y, BAR_PARK_Z - P16L_RETRACTED])
-        Pl = np.array([Bl[0], Bl[1], zb])
+        Pl = np.array([Bl[0], Bl[1], zb]) + dxl
         Rg = cols((1, 0, 0), (0, 1, 0), (0, 0, 1)) if side < 0 else cols((-1, 0, 0), (0, -1, 0), (0, 0, 1))
         add(Placement("lift_shelf", f"Lift P16 shelf {nm} (printed, on the lower rung)", T(Rg, (Bl[0], side * (POST_Y - EXT / 2), 0.0)), 8, ORANGE, "station",
                       (0, side * 40, -40)))
@@ -827,10 +832,12 @@ def _station(st: State, add) -> None:
         add(Placement("guide_vee" if side > 0 else "guide_cone", f"Lift guide {nm} (printed, on the upper rung: slot, funnel mouth, {'vee' if side > 0 else 'cone'} seat)",
                       T(Rg, (Bl[0], side * (POST_Y - EXT / 2), 0.0)), 8, ORANGE, "station", (0, side * 40, 0)))
     for bx in LIFT6_BARS_X:
-        add(Placement("lift_bar", "Lift bar, 8 mm precision steel shaft x 264 mm", T(None, (HINGE_X + bx, 0.0, zb)), 8, STEEL, "station_lift", (0, 0, -60)))
+        add(Placement("lift_bar", "Lift bar, 8 mm precision steel shaft x 264 mm", T(None, (HINGE_X + bx + st.lift_dx, 0.0, zb)), 8, STEEL, "station_lift", (0, 0, -60)))
     # v6: the tilt. A P16-150 from a bracket on the back side plate to the EC's tilt arm: retracting swings the docked EC and
     # the module about the hinge axis, 0-90 deg; the pin stays 42-60 mm under the axis and outside the EC and the stream.
     C = electronics_frame(st.tilt, st.ext)
+    if st.lift_dx:
+        C = T(None, dxl) @ C
     qx, qz = P6.tilt_pin_ec()
     ys = STATION_Y - TILT6_Y                               # the tilt actuator's plane, Sam y
     Pt = to_world(C, (qx, ys, qz))
@@ -871,7 +878,7 @@ def _station(st: State, add) -> None:
     LR = sam_frame(S, 0.0)
     add(Placement("latch_rail", "Latch cam v6 with its arm to the back side plate (printed)", LR, 8, ORANGE, "station", (0, 0, -40)))
     for dy in (-9.0, 9.0):
-        add(Placement("m5x12_bhcs", "Latch cam screw M5x12 (through the back side plate)", T(Ry(math.pi / 2), (X_BACK_OUT, STATION_Y - (LATCH_Y6 + dy), HINGE_Z_STATION - 38.0)),
+        add(Placement("m5x12_bhcs", "Latch cam screw M5x12 (through the back side plate)", T(Ry(math.pi / 2), (X_BACK_OUT, STATION_Y - (LATCH_Y6 + dy), HINGE_Z_STATION - P6.LATCH6_FOOT_HOLE_Z)),
                       8, DARK, "station", (60, 0, 0)))
     for dz in (-16.0, 16.0):
         add(Placement("m5x12_bhcs", "Tilt bracket screw M5x12 (through the back side plate)", T(Ry(math.pi / 2), (X_BACK_OUT, TILT6_Y, TILT6_B[1] + dz)), 8, DARK,

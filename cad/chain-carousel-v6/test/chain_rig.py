@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v5 (v4 with the A&D HR-202i under the station) from a Raspberry Pi (issue #128).
+"""Drive and log the chain-carousel test rig v6 (v5 with Sam's 2026-11-10 changes) from a Raspberry Pi (issue #128).
 
 Hardware (see BOM.md):
 * CL86T closed-loop driver for the NEMA 34 on step/dir/enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to
   PUL+/DIR+/ENA+, the minus terminals to ground).
 * Two US5881 hall switches in the station hold-downs (open drain, 10k pull-ups to 3.3 V): INDEX, in the front
   hold-down, sees the magnet in every carriage's front tongue; HOME, in the back hold-down, only carriage 1's.
+* Station (v6): the LIFT is two Actuonix P16-50-22-12-P (one each side of the balance on the lower rungs, LACs on PIN_LAC and
+  PIN_LAC_B, always the same target, 1.0-2.0 ms = 0-50 mm) carrying a frame of two 8 mm bars; the EC hangs on the bars in two
+  hooks. They only dock it (DOCK_EXT); the shoes park on the guides' cone and vee. The TILT is a third P16-150-22-12-P on the
+  back side plate (its LAC on PIN_LAC_T, 0-150 mm) pinned to the EC's tilt arm: retracting turns the docked EC and module
+  0-90 deg about the hinge (tilt_to_tilt_ext). The rest of this paragraph is v5's, kept for the history.
 * Station (v5): two Actuonix P16-150-22-12-P, one each side of the balance, each on its own Actuonix LAC board in RC mode
   (1.0-2.0 ms pulses = 0-150 mm; the pot is fed back inside each LAC) and always sent the same target. Their rod ends lift
   an 8 mm bar through 2 mm slots in its end blocks; the electronics carriage (EC v5 = EC v4 on saddles) is clamped to the
@@ -76,7 +81,11 @@ EC_PIN_X, EC_PIN_Z, DOCK_RISE = 58.0, 76.0, -0.9   # EC v4's clevis pin, Sam's f
                                                    # docked it moves 0.9 toward the plate
 ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
 DOCK_EXT = 28.0                                    # PARK_DROP: the parked EC sits 28 mm below its docked position
-TILT_MAX = 40.0                                    # v5: past about 41 deg the lift bar rises into the neighbouring modules (v4: 50)
+TILT_MAX = 90.0                                    # v6: the tilt P16 reaches 90 deg (v5: 40, its lift bar rose into the neighbouring modules)
+LIFT_STROKE = 50.0                                 # v6: the lift P16-50s
+HINGE_XZ = (33.0, 435.65)                          # v6: world x, z of the station's hinge axis (layout.HINGE_STATION)
+TILT_PIN = (60.0, -135.0)                          # v6: the tilt pin's radius from the hinge axis and its angle (deg) at 0 tilt
+TILT_BASE = (318.0, 372.0)                         # v6: the tilt P16's base pin, world x, z (on the back side plate)
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
@@ -89,9 +98,20 @@ PIN_STEP, PIN_DIR, PIN_ENA = 17, 27, 22
 PIN_INDEX, PIN_HOME, PIN_ALARM = 23, 24, 25
 PIN_LAC = 18                                       # RC pulse to the -y P16's LAC
 PIN_LAC_B = 26                                     # v5: RC pulse to the +y P16's LAC (pigpio times servo pulses on any pin)
+PIN_LAC_T = 16                                     # v6: RC pulse to the tilt P16's LAC
 PIN_AUG_STEP, PIN_AUG_DIR = 13, 21                 # DRV8825 for the NEMA 11 (STEP on a hardware-PWM pin for the docking seek)
 PIN_TAP = 12                                       # DRV8871 IN1, tap solenoid
 PIN_HX_DT, PIN_HX_SCK = 5, 6
+
+
+def tilt_to_tilt_ext(tilt_deg: float) -> float:
+    """v6: the tilt P16's extension (mm from fully retracted) for a hinge angle: its pin is TILT_PIN[0] from the hinge axis at
+    TILT_PIN[1] + tilt (world x-z), its base at TILT_BASE. 0 deg: 130.7 mm; 30: 103.2; 45: 87.6; 90: 46.1."""
+    if not 0.0 <= tilt_deg <= TILT_MAX:
+        raise SystemExit(f"v6 tilts 0-{TILT_MAX:.0f} deg")
+    a = math.radians(TILT_PIN[1] + tilt_deg)
+    qx, qz = HINGE_XZ[0] + TILT_PIN[0] * math.cos(a), HINGE_XZ[1] + TILT_PIN[0] * math.sin(a)
+    return math.hypot(qx - TILT_BASE[0], qz - TILT_BASE[1]) - ACT_RETRACTED
 
 
 def tilt_to_ext(tilt_deg: float) -> float:
@@ -218,10 +238,10 @@ class Rig:
 
     # ---- station
     def actuator(self, ext_mm: float, wait: bool = True):
-        ext = max(0.0, min(ACT_STROKE, ext_mm))
+        ext = max(0.0, min(LIFT_STROKE, ext_mm))
         if self.pi:
-            for pin in (PIN_LAC, PIN_LAC_B):         # v5: both P16s, the same target; the bar's 2 mm slots absorb the difference
-                self.pi.set_servo_pulsewidth(pin, 1000 + 1000 * ext / ACT_STROKE)
+            for pin in (PIN_LAC, PIN_LAC_B):         # v6: both lift P16-50s, the same target; the end blocks' 2 mm slots absorb the difference
+                self.pi.set_servo_pulsewidth(pin, 1000 + 1000 * ext / LIFT_STROKE)
         if wait:
             time.sleep(abs(ext - self.ext) / 30.0 + 0.3)     # about 30 mm/s loaded (46 no-load)
         self.ext = ext
@@ -234,6 +254,7 @@ class Rig:
             print(f"NEMA 11 driver: DRV8825 current limit must be {AUGER_CURRENT_MA} mA "
                   f"(Vref {AUGER_CURRENT_MA / 2000:.3f} V) before docking")
             self._current_noted = True
+        self.tilt_actuator(tilt_to_tilt_ext(0.0))   # v6: the tilt P16 holds the EC level while the lift docks it
         self.actuator(DOCK_EXT - SEEK_MM)
         if self.pi:
             self.pi.write(PIN_AUG_DIR, 1)
@@ -243,8 +264,18 @@ class Rig:
             self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
         self.actuator(DOCK_EXT)                      # pin back to mid-slot: the magnets hold the dock
 
+    def tilt_actuator(self, ext_mm: float, wait: bool = True):
+        """v6: the tilt P16-150's LAC. Its 2 mm lost-motion slot at the EC's tilt pin takes up the 0.6 mm the dock's rise asks."""
+        ext = max(0.0, min(ACT_STROKE, ext_mm))
+        if self.pi:
+            self.pi.set_servo_pulsewidth(PIN_LAC_T, 1000 + 1000 * ext / ACT_STROKE)
+        if wait:
+            time.sleep(abs(ext - getattr(self, "text", ext)) / 30.0 + 0.3)
+        self.text = ext
+
     def tilt(self, deg: float):
-        self.actuator(tilt_to_ext(deg) + (1.0 if deg > 0 else 0.0))    # pin at the slots' top while it pushes
+        """v6: only with the EC docked (the lift frame holds DOCK_EXT while the EC leaves its hooks and comes back to them)."""
+        self.tilt_actuator(tilt_to_tilt_ext(deg))
 
     def undock(self):
         self.actuator(DOCK_EXT)                      # level, pin mid-slot, the module back on its carriage

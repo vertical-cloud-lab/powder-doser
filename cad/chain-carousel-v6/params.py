@@ -523,6 +523,9 @@ SHELF6 = (8.0, 2.0)                  # the bolt's rest shelf over the keeper's t
 LATCH6_HOUSING_X = (255.5, 279.0)    # on the carriage's outer face, behind the opening (x 255) and short of the plate's end (x 280)
 LATCH6_FOLLOW_X = 263.0              # follower dowel (3 mm), closed
 LATCH6_MANUAL = 10.0                 # pushed back by hand this far to take a module off: pin and shelf both clear
+LATCH6_FOLLOW_TIP = 10.0             # the follower's tip (Sam z). At v5's +24 the tips of carriages passing over the NEMA 34 (inside the
+                                     # frame under the bottom run's +y half, its top at z 418.5) ran into it now that the latch is at the back
+LATCH6_CAM_Z = (2.0, 8.0)            # the station's cam, Sam z: on the followers' exposed 11.5 mm, clear of the housings (z -1.5)
 # --- 3. carriage v6: the opening 5 mm longer at the front, so the plate's edge clears it at 90 deg -----------------------
 OPEN_X6 = (HINGE_X - 19.0, HINGE_X + 255.0)
 OPEN_U_KEEPER = 27.6                 # wider over the keeper (Sam x 240-255), which swings through it
@@ -538,7 +541,8 @@ HOOK6_W = 8.3                        # the EC's hooks: slot width round the 8 mm
 TILT6_R, TILT6_PHI0 = 60.0, -135.0   # world: the tilt pin's radius from the hinge axis and its angle (deg, from +x toward +z) untilted
 TILT6_Y = -30.0                      # world: the tilt P16's axis (Sam y = STATION_Y - this = 34.76): outside the EC and the stream
 TILT6_B = (318.0, 372.0)             # world (x, z): the tilt P16's base pin, on a bracket on the back side plate
-TILT6_ARM_Y = (25.0, 31.0)           # Sam y of the EC's tilt arm (the rod end's 6 mm tab rides beside it, single shear)
+TILT6_ARM_Y = (23.5, 29.5)           # Sam y of the EC's tilt arm (the rod end's 6 mm tab rides 2.3 mm beside it on a PTFE washer, single shear;
+                                     # at 25-31 the P16's 8.94 mm rod brushed the arm, home check)
 TILT6_SLOT = 2.0                     # lost motion along the actuator at the tilt pin
 TILT_MAX_V6 = 90.0
 # --- 6. the guides' funnel-type kinematic seats --------------------------------------------------------------------------

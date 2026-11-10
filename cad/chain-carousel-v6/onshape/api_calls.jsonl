@@ -1,0 +1,5 @@
+{"run": "create-document-v6", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-10T20:30:45Z"}
+{"run": "create-document-v6", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-10T20:30:46Z"}
+{"run": "create-document-v6", "n": 3, "method": "POST", "path": "/blobelements/d/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2", "status": 200, "utc": "2026-11-10T20:30:49Z"}
+{"run": "create-document-v6", "n": 4, "method": "GET", "path": "/translations/6af37ef9830999c232aaa57f", "status": 200, "utc": "2026-11-10T20:32:19Z"}
+{"run": "create-document-v6", "n": 5, "method": "GET", "path": "/translations/6af37ef9830999c232aaa57f", "status": 200, "utc": "2026-11-10T20:33:19Z"}
