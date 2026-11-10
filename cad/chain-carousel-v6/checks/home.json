@@ -1,17 +1,6 @@
 {
  "check": "home",
- "clashes": [
-  {
-   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y",
-   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
-   "mm3": 75.6
-  },
-  {
-   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y",
-   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
-   "mm3": 50.37
-  }
- ],
+ "clashes": [],
  "instances": 856,
- "seconds": 246
+ "seconds": 181
 }

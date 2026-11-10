@@ -3,3 +3,9 @@
 {"run": "create-document-v6", "n": 3, "method": "POST", "path": "/blobelements/d/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2", "status": 200, "utc": "2026-11-10T20:30:49Z"}
 {"run": "create-document-v6", "n": 4, "method": "GET", "path": "/translations/6af37ef9830999c232aaa57f", "status": 200, "utc": "2026-11-10T20:32:19Z"}
 {"run": "create-document-v6", "n": 5, "method": "GET", "path": "/translations/6af37ef9830999c232aaa57f", "status": 200, "utc": "2026-11-10T20:33:19Z"}
+{"run": "create-document-v6", "n": 6, "method": "GET", "path": "/translations/6af37ef9830999c232aaa57f", "status": 200, "utc": "2026-11-10T20:34:19Z"}
+{"run": "create-document-v6", "n": 7, "method": "GET", "path": "/documents/d/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/elements", "status": 200, "utc": "2026-11-10T20:34:19Z"}
+{"run": "create-document-v6", "n": 8, "method": "GET", "path": "/assemblies/d/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de/shadedviews", "status": 200, "utc": "2026-11-10T20:34:22Z"}
+{"run": "create-document-v6", "n": 9, "method": "GET", "path": "/assemblies/d/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de/shadedviews", "status": 200, "utc": "2026-11-10T20:34:24Z"}
+{"run": "create-document-v6", "n": 10, "method": "POST", "path": "/documents/d/29870b97e25aa1033c07144d/versions", "status": 200, "utc": "2026-11-10T20:34:24Z"}
+{"run": "check-public", "n": 1, "method": "GET", "path": "/documents/29870b97e25aa1033c07144d", "status": 200, "utc": "2026-11-10T20:45:09Z"}

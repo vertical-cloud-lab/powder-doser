@@ -5,7 +5,7 @@ Everything not listed below is v5's: the augers outside the loop, the kinematic 
 enclosure and its hatches, the side tabs, and the dose onto a beaker on an A&D HR-202i. Nothing is built. Every number here
 is a prediction from the CAD.
 
-**Onshape (public):** the document's link is in [`onshape/onshape_document.json`](onshape/onshape_document.json). It was imported from
+**Onshape (public):** [Multi-doser chain carousel, test rig v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json), 10 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl)). It was imported from
 `step/chain_carousel_rig_v6.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py).
 
 ![Overview](renders/v6/overview_v6.gif)
@@ -85,7 +85,7 @@ Every pair is checked with OCC booleans, and anything over 0.5 mm³ counts. By-d
 |---|---|---|
 | Home | Every pair of the 856 instances | **0** ([`checks/home.json`](checks/home.json)). The first run found 5 clashes, all fixed (below) |
 | `--tilt` | The lift frame and EC rising 0-28 mm (4 poses), then module 1, the EC and the tilt P16 at 5, 10, 20, 30, 40, 50, 60, 70, 80 and 90°, with the balance's top door open | **0** apart from the lift P16-50s' tubes touching their guides (0.9 mm, 50-76 mm³; fixed). Rechecked with the lift P16s, guides, shelves, rungs, end blocks and bars at 0, 14 and 28 mm: **0** ([`checks/tilt_a.json`](checks/tilt_a.json), [`tilt_b.json`](checks/tilt_b.json), [`guide_recheck.json`](checks/guide_recheck.json)) |
-| `--sweep` | The chain indexing one module the way it runs, 5 poses (2-link steps), the EC parked | See [`checks/sweep.json`](checks/sweep.json) |
+| `--sweep` | The chain indexing one module the way it runs, 5 poses (2-link steps), the EC parked: every carriage's new latch and longer plate passing the NEMA 34, the tilt P16 and the latch cam | **0** ([`checks/sweep.json`](checks/sweep.json)) |
 
 **The five clashes the first home run found, all fixed:**
 1. **The latch followers on the NEMA 34.** At the plate's back end, the followers' tips (v5: 24 mm out past the plate) passed
