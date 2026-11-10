@@ -16,8 +16,9 @@ per doser and for 25. If you're building fewer to start with, scale down.
 2. **Give H2D slots to mounting plates (4 per plate) before augers**
    ([§2.4](#24-h2d-slots-mounting-plates-first-then-baseplates-and-augers)).
 3. **Keep the inventory count up to date** in
-   [`inventory-checklist.csv`](inventory-checklist.csv). The 3 Nov count is
-   in; upload each new count to GitHub ([§3](#3-inventory-check)).
+   [`inventory-checklist.csv`](inventory-checklist.csv). It lists the #193
+   parts and has the 3 Nov count with the 10 Nov purchases. Upload each new
+   count to GitHub, and it goes to MongoDB by itself ([§3](#3-inventory-check)).
 4. **Order the PCBs.** 25 dosers need 25 V2 boards, and BYU has 4 spares
    at most ([§3.4](#34-ordering-more-v2-pcbs)).
 5. **Build doser #1 end to end**, mechanics and electronics, with Sam and
@@ -29,11 +30,14 @@ per doser and for 25. If you're building fewer to start with, scale down.
 
 ## 1. What you're building
 
-![Exploded view of one doser with numbered parts](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/renders/assembly_exploded_bom.png?raw=true)
+![Exploded view of the current (#193) doser with every part named](assembly/doser_193_exploded.png)
 
-One doser is **11 printed parts, 4 purchased motion parts, 52 screws and nuts,
-and a 38 mm (1.5 in) board** to screw it to, plus the electronics on the
-**V2 PCB**. The motion parts are 2 MG996R tilt servos, a NEMA-11 stepper and a
+**The current design is the Onshape assembly in #193** (diagram above, and
+[`assembly/README.md`](assembly/README.md) for how each joint is fastened).
+It stands on its own legs: a Base, three printed stand brackets and three
+wood legs replace the Fusion baseplate and the 38 mm board. One doser is
+**14 printed parts, 3 wood legs, 4 purchased motion parts, 42 screws and
+nuts plus 12 stand bolts**, and the electronics on the **V2 PCB**. The motion parts are 2 MG996R tilt servos, a NEMA-11 stepper and a
 12 V push-pull solenoid. The electronics are a Pico 2 WH, Tic T500 stepper
 controller, DRV8871 solenoid driver, DRV2605L haptic driver with a coin
 vibration motor, shunt regulator, 5 V buck, Waveshare RS-232 module, and a
@@ -43,7 +47,8 @@ Sources of truth:
 
 | What | Where |
 |---|---|
-| Mechanical parts list and the 19 build steps | [`cad/full-assembly/BOM.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/BOM.md) (PR #170) |
+| **Current parts, files and fasteners (#193)** | [`inventory-checklist.csv`](inventory-checklist.csv) and [`assembly/README.md`](assembly/README.md) |
+| Mechanical parts list and the 19 build steps (older Fusion design, board-mounted) | [`cad/full-assembly/BOM.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/BOM.md) (PR #170) |
 | Step-by-step GIFs | [whole doser](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/renders/assembly_steps.gif), [auger unit](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/renders/auger_unit_steps.gif) |
 | Fastener notes, including where the rig differs from the CAD | [`cad/full-assembly/README.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/README.md#fasteners) |
 | Printed-part files | Sam's Fusion 360 files on the lab account (share links in [§2.1](#21-what-fits-where)); STEP exports in [`components/fusion-step/`](https://github.com/vertical-cloud-lab/powder-doser/tree/ce256c3/cad/full-assembly/components/fusion-step) |
@@ -210,9 +215,12 @@ Two ways to free up the H2D, worth raising with Sam:
 Purpose: find out what's missing for the repeat dosers **before** assembly
 starts. [`inventory-checklist.csv`](inventory-checklist.csv) is the master
 copy of the count, and GitHub shows it as a searchable table. It holds the
-count @brandonmunk and @lshuldberg took, as Brandon updated it on 3 Nov
-([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)),
-byte for byte as posted. Most purchased parts were delivered to the U (ask
+count @brandonmunk and @lshuldberg took on 3 Nov
+([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6614295586)).
+On 10 Nov it was rebuilt for the #193 assembly, with Brandon's fastener
+purchases added
+([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6774592107)).
+Most purchased parts were delivered to the U (ask
 @kinstonwithoutg / @Dila-Kandel for their counts), so count what's at BYU
 yourself and merge the two.
 
@@ -239,13 +247,12 @@ count, snapshot `2026-11-03-7f9e6475`. In Atlas: *Browse Collections* →
 the CSV, not in Atlas:** an edit made in Atlas doesn't come back to GitHub,
 and it overwrites that snapshot's record.
 
-**Sending a new version to MongoDB.** [`inventory-to-mongo.yml`](inventory-to-mongo.yml)
-is a GitHub Action that sends each new version of the CSV by itself. It only
-runs once someone with write access copies it, unchanged, to
-`.github/workflows/inventory-to-mongo.yml` on the same branch (*Add file* →
-*Create new file*), because Claude's GitHub App can't write workflow files.
-Until then, comment `@claude send the inventory CSV to MongoDB` after an
-upload. By hand, it's
+**Sending a new version to MongoDB happens by itself.** The GitHub Action
+[`.github/workflows/inventory-to-mongo.yml`](../../.github/workflows/inventory-to-mongo.yml)
+(switched on by Brandon on 9 Nov) sends each new version of the CSV pushed to
+this branch or `main`. Its first run sent the 10 Nov version. Each run shows
+under the repo's *Actions* tab, with the snapshot ID in its summary. By hand,
+it's
 [`inventory_to_mongo.py`](inventory_to_mongo.py)
 `<file>.csv --source-url <link> --author <login> --taken-at <UTC time>`.
 If the newest snapshot is already that exact file, nothing is written.
@@ -270,17 +277,28 @@ a run will read the counts back.
 | **PCBs** | Possibly 4 spare V2 boards at BYU (or 4 spare bucks; see §3.4). At least 25 plus spares still to order from JLCPCB, possibly after small design tweaks ([§3.4](#34-ordering-more-v2-pcbs)). |
 | **Not on any list yet** | PCB-mount 12 V barrel jack (1 per board), 38 mm mounting boards and #10 wood screws, stepper/servo/solenoid wiring, USB cables |
 
-### 3.2 Check the fastener order against PR #170 before buying
+### 3.2 Fasteners for the #193 design
 
-The fastener list priced on 2 Oct came from the older `BILL-OF-MATERIALS.md`
-§6.2 (M3 × 12 and M3 × 16 socket heads, plain hex nuts, M5 × 20 and M5 × 40).
-The current rig's fasteners are the 52 per doser in PR #170's
-[BOM](https://github.com/vertical-cloud-lab/powder-doser/blob/ce256c3/cad/full-assembly/BOM.md),
-checked joint by joint against the CAD: button heads under the mounting plate
-(only 2 mm of clearance), nylon-insert locknuts on the servos, brackets and
-hinge (the rig's hinge screws were backing out, #116), M5 × 45 hinge screws,
-and #10 wood screws into the board. Those are the lines in the checklist.
-Order from that list, not the 2 Oct one. Two notes from PR #170's README:
+The checklist's fastener lines are the #193 assembly's, joint by joint
+([`assembly/README.md`](assembly/README.md#fasteners-joint-by-joint)): 42
+screws and nuts per doser, plus 12 stand bolts with nuts. They start from
+PR #170's list, which was checked against the CAD one joint at a time, with
+the team's 10 Nov changes:
+
+- **Every M3 nut is a nylon-insert locknut,** including the one under the
+  tap-collar base that used to be a plain hex nut: 15 per doser.
+- **The hinge takes M5 × 40,** not M5 × 45. In the CAD, a 40 leaves only
+  2.2 mm of thread past the gear for a 5 mm locknut, so check the nut grips
+  on doser #1 ([why](assembly/README.md#worth-checking)).
+- **Gone with the old parts:** the split-clamp auger brackets' 2 clamp
+  screws and their locknuts (the C-clips need only the 4 M3 × 20s into the
+  plate), and the board's 6 #10 wood screws.
+- **New with the stand:** bolts and nuts for the 7 mm holes in the stand
+  brackets, Base and legs, 6 into the Base and 6 into the legs. Their size
+  isn't chosen yet (1/4-20 or M6, about 25 mm long): match what the bench
+  rig's stand uses.
+
+Two notes from PR #170's README still apply:
 
 - The rig itself mostly uses zinc-plated Phillips pan heads, so its hardware
   won't match the list exactly. The list is the consistent set.
