@@ -483,6 +483,22 @@ def tap_bracket_figure(res, size=(1500, 1050)):
                  labels=("", "plan", "the tap bracket"))
     print("  -> b2_tap_bracket.png", flush=True)
 
+    # all three at 90 deg: where the brackets come closest to each other
+    up, _ = station((90, 90, 90))
+    D.render(up, OUT / "_iso90.png", az=-70, el=24, size=size, dist=1.5)
+    D.render(up, OUT / "_top90.png", view="top", size=(1050, 1050), parallel=True, dist=150, focal=(0, 0, 0))
+    k90 = tc["90,90,90"]
+    pair = [x.replace(" (#203)", "").lower() for x in
+            k90["between"].replace("A:", "").replace("B:", "").replace("C:", "").split(" / ")]
+    side_by_side([OUT / "_iso90.png", OUT / "_top90.png"], OUT / "b2_tap_bracket_90.png",
+                 "Idea B2 with #203's tap bracket: all three modules at 90 deg at once",
+                 [f"Hinges {sp} mm from the beaker axis. The tap brackets and solenoids come no closer than {k90['mm']} mm"
+                  f" to another module here: {pair[0]} to the next module's {pair[1]} (2 mm needed).",
+                  f"Outlets on a {o['90']} mm circle, inside the {kind} beaker's rim (blue, {bd:.0f} mm)."
+                  "  Left: iso.  Right: plan."],
+                 labels=("", "plan"))
+    print("  -> b2_tap_bracket_90.png", flush=True)
+
 
 def servo_check(keys=("P0", "A1", "A2"), tilts=range(0, 91, 10)):
     """Closest approach of the servos and their posts to anything that tilts

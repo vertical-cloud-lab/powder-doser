@@ -249,6 +249,8 @@ plunger strikes the side of the tube at hinge height, 46 mm behind the hinge.
 
 ![B2 with the tap bracket](renders/b2_tap_bracket.png)
 
+![B2 with the tap bracket, all three at 90°](renders/b2_tap_bracket_90.png)
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
