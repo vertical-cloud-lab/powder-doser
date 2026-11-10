@@ -5,7 +5,7 @@ Everything not listed below is v5's: the augers outside the loop, the kinematic 
 enclosure and its hatches, the side tabs, and the dose onto a beaker on an A&D HR-202i. Nothing is built. Every number here
 is a prediction from the CAD.
 
-**Onshape (public):** [Multi-doser chain carousel, test rig v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json), 10 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl)). It was imported from
+**Onshape (public):** [Multi-doser chain carousel, test rig v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json), 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 10 for the import, 1 to confirm it is public). It was imported from
 `step/chain_carousel_rig_v6.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py).
 
 ![Overview](renders/v6/overview_v6.gif)
