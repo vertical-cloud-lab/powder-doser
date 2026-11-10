@@ -88,9 +88,9 @@ Every pair is checked with OCC booleans, and anything over 0.5 mm³ counts. By-d
 | `--sweep` | The chain indexing one module the way it runs, 5 poses (2-link steps), the EC parked: every carriage's new latch and longer plate passing the NEMA 34, the tilt P16 and the latch cam | **0** ([`checks/sweep.json`](checks/sweep.json)) |
 
 **The five clashes the first home run found, all fixed:**
-1. **The latch followers on the NEMA 34.** At the plate's back end, the followers' tips (v5: 24 mm out past the plate) passed
-   over the NEMA 34, which sits inside the frame under the bottom run's +y half. The follower is now 3 x 25 mm and ends 10 mm
-   out, and the cam sits 2-8 mm out.
+1. **The latch followers on the NEMA 34.** At the plate's back end, the followers' tips (v5's reached Sam z +24, past the
+   auger's axis) passed over the NEMA 34, which sits inside the frame under the bottom run's +y half. The follower is now
+   3 x 25 mm and its tip is at z +10, 14 mm nearer the plate; the cam sits at z 2-8.
 2. **The tilt P16's rod on the EC's tilt arm.** The arm moved 1.5 mm inboard (Sam y 23.5-29.5). The rod-end tab rides 2.3 mm
    off it on a PTFE washer.
 3. **The tilt bracket and the latch cam's foot,** both on the back side plate. The cam's foot moved up and clears
