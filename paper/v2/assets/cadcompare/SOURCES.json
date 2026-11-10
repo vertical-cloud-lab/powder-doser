@@ -1,0 +1,32 @@
+{
+ "prompt104_copilot.png": {
+  "source": "PR #107 (copilot/design-powder-dispensing-system), cad/powder-doser-assembly/exports/img/00_assembly_iso_az090_hires.png",
+  "tool": "GitHub Copilot coding agent, Claude Opus 4.8",
+  "date": "2026-06-22"
+ },
+ "prompt104_cadsmith.png": {
+  "source": "vertical-cloud-lab/CADSmith PR #6 (57313d5), cad/powder-doser/powder_doser_assembly/iso/assembly_iso_az090.png",
+  "tool": "CADSmith, Claude Opus 4.5 for every agent",
+  "date": "2026-06-22"
+ },
+ "prompt104_zoo.png": {
+  "source": "PR #110, cad/powder-doser-assembly/assembly/assembly_iso_az090_hires.png",
+  "tool": "Zoo Text-to-CAD API, 'kcl' model",
+  "date": "2026-06-22"
+ },
+ "cadsmith_mounting_plate.png": {
+  "source": "vertical-cloud-lab/CADSmith PR #6, cad/powder-doser/mounting_plate/render.png",
+  "tool": "CADSmith, Claude Opus 4.5",
+  "date": "2026-06-22"
+ },
+ "cadsmith_baseplate.png": {
+  "source": "vertical-cloud-lab/CADSmith PR #6, cad/powder-doser/baseplate/render.png",
+  "tool": "CADSmith, Claude Opus 4.5",
+  "date": "2026-06-22"
+ },
+ "zoo_tap_collar.png": {
+  "source": "issue #104 attachment \"tap collar 3.zip\" (tap collar 3.stl): https://github.com/user-attachments/files/29216769/tap.collar.3.zip; rendered by make_si_cad_comparison.py",
+  "tool": "Zoo Design Studio, Zookeeper agent (third iteration)",
+  "date": "2026-06-12 (discussion #39); attached to issue #104 on 2026-06-22"
+ }
+}
