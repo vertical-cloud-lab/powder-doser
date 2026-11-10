@@ -1,5 +1,7 @@
 # Chain carousel v6: a longer plate, a ladder frame, and a full 90° tilt
 
+> **Superseded by [v7](../chain-carousel-v7/README.md)** (Sam, 2026-11-10, second note): v7 keeps v6's ladder, long plate and guide funnels, goes back to one P16 under the station (no lift frame, no tilt P16 on the back plate), moves the dock onto posts past the auger and re-models the balance. v6's latch spring pocket is too short (v7 fixes it).
+
 v6 is [v5](../chain-carousel-v5/README.md) with Sam's changes of 2026-11-10 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)).
 Everything not listed below is v5's: the augers outside the loop, the kinematic dock round the auger, the outlet doors, the
 enclosure and its hatches, the side tabs, and the dose onto a beaker on an A&D HR-202i. Nothing is built. Every number here

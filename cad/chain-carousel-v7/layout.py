@@ -877,7 +877,7 @@ def _station(st: State, add) -> None:
         add(Placement("guide7_vee" if side > 0 else "guide7_cone", f"Guide {'+y (vee seat)' if side > 0 else '-y (cone seat)'} (printed: channel, funnel mouth, seat; on the guide cross bar)",
                       Mg, 8, ORANGE, "station", (0, side * 40, -40)))
         for dx in (-6.0, 6.0):
-            add(Placement("m5x12_bhcs", "Guide screw M5x12 (into the cross bar)", T(None, (CROSS7_GUIDE_X + dx, STATION_Y + side * (SHOE7_YC - 7.5 + 9.25), GUIDE7_BAR_TOP + 6.0)) @ T(Rx(math.pi)),
+            add(Placement("m5x12_bhcs", "Guide screw M5x12 (into the cross bar)", T(None, (CROSS7_GUIDE_X + dx, STATION_Y + side * P7.guide7_screw_y(SHOE7_YC), GUIDE7_BAR_TOP + 6.0)),
                           8, DARK, "station", (0, side * 40, -40)))
     # 4a. the latch rail on its post
     LR = sam_frame(S, 0.0)

@@ -1043,7 +1043,7 @@
 -1.0,
 0.0,
 0.0,
-195.0
+199.881783
 ],
 [
 0.0,
@@ -1074,7 +1074,7 @@
 0.0,
 0.0,
 -1.0,
-185.0
+189.881783
 ],
 [
 0.0,
@@ -1105,7 +1105,7 @@
 0.0,
 0.0,
 -1.0,
-185.0
+189.881783
 ],
 [
 0.0,
@@ -1136,7 +1136,7 @@
 -1.0,
 0.0,
 0.0,
-308.0
+310.0
 ],
 [
 0.0,
@@ -1167,7 +1167,7 @@
 0.0,
 0.0,
 -1.0,
-298.0
+300.0
 ],
 [
 0.0,
@@ -1198,7 +1198,7 @@
 0.0,
 0.0,
 -1.0,
-298.0
+300.0
 ],
 [
 0.0,
@@ -1229,7 +1229,7 @@
 -1.0,
 0.0,
 0.0,
-195.0
+199.881783
 ],
 [
 0.0,
@@ -1260,7 +1260,7 @@
 0.0,
 0.0,
 -1.0,
-185.0
+189.881783
 ],
 [
 0.0,
@@ -1291,7 +1291,7 @@
 0.0,
 0.0,
 -1.0,
-185.0
+189.881783
 ],
 [
 0.0,
@@ -1322,7 +1322,7 @@
 -1.0,
 0.0,
 0.0,
-308.0
+310.0
 ],
 [
 0.0,
@@ -1353,7 +1353,7 @@
 0.0,
 0.0,
 -1.0,
-298.0
+300.0
 ],
 [
 0.0,
@@ -1384,7 +1384,317 @@
 0.0,
 0.0,
 -1.0,
-298.0
+300.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "cross7",
+"name": "Cross bar for the P16 (2020, rung to rung)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+250.0
+],
+[
+0.0,
+0.0,
+1.0,
+-170.0
+],
+[
+0.0,
+-1.0,
+0.0,
+199.881783
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the P16)",
+"step": 2,
+"M": [
+[
+-1.0,
+0.0,
+0.0,
+240.0
+],
+[
+0.0,
+1.0,
+0.0,
+-170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+189.881783
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the P16)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+260.0
+],
+[
+0.0,
+-1.0,
+0.0,
+-170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+189.881783
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the P16)",
+"step": 2,
+"M": [
+[
+-1.0,
+0.0,
+0.0,
+240.0
+],
+[
+0.0,
+1.0,
+0.0,
+170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+189.881783
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the P16)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+260.0
+],
+[
+0.0,
+-1.0,
+0.0,
+170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+189.881783
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "cross7",
+"name": "Cross bar for the guide (2020, rung to rung)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+136.4
+],
+[
+0.0,
+0.0,
+1.0,
+-170.0
+],
+[
+0.0,
+-1.0,
+0.0,
+310.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the guide)",
+"step": 2,
+"M": [
+[
+-1.0,
+0.0,
+0.0,
+126.4
+],
+[
+0.0,
+1.0,
+0.0,
+-170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+300.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the guide)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+146.4
+],
+[
+0.0,
+-1.0,
+0.0,
+-170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+300.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the guide)",
+"step": 2,
+"M": [
+[
+-1.0,
+0.0,
+0.0,
+126.4
+],
+[
+0.0,
+1.0,
+0.0,
+170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+300.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "corner_bracket",
+"name": "Corner bracket (cross bar for the guide)",
+"step": 2,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+146.4
+],
+[
+0.0,
+-1.0,
+0.0,
+170.0
+],
+[
+0.0,
+0.0,
+-1.0,
+300.0
 ],
 [
 0.0,
@@ -13702,58 +14012,27 @@
 ]
 },
 {
-"key": "lift_shelf",
-"name": "Lift P16 shelf -y (printed, on the lower rung)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
--170.0
-],
-[
-0.0,
-0.0,
-1.0,
-0.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
 "key": "clevis_bracket",
-"name": "Lift P16 base clevis -y (printed, v4's)",
+"name": "P16 base clevis (printed, v4's, on the P16 cross bar)",
 "step": 8,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-68.0
+250.0
 ],
 [
 0.0,
 1.0,
 0.0,
--146.0
+4.7625
 ],
 [
 0.0,
 0.0,
 1.0,
-235.15
+230.081783
 ],
 [
 0.0,
@@ -13765,26 +14044,26 @@
 },
 {
 "key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (lift P16 base pin -y)",
+"name": "Shoulder screw 4 x 16 mm, M3 (P16 base pin)",
 "step": 8,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-68.0
+250.0
 ],
 [
 0.0,
 0.0,
 -1.0,
--153.9
+-3.1375
 ],
 [
 0.0,
 1.0,
 0.0,
-235.15
+230.081783
 ],
 [
 0.0,
@@ -13796,677 +14075,26 @@
 },
 {
 "key": "nut_m3_clevis",
-"name": "M3 locknut (lift P16 base pin -y)",
+"name": "M3 locknut (P16 base pin)",
 "step": 8,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-68.0
+250.0
 ],
 [
 0.0,
 0.0,
 1.0,
--137.9
+12.8625
 ],
 [
 0.0,
 -1.0,
 0.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "p16l_body",
-"name": "Actuonix P16-50-22-12-P (lift, pot feedback) -y",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
--146.0
-],
-[
-0.0,
-0.0,
-1.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "p16l_rod",
-"name": "Actuonix P16-50 rod (lift) -y",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
--146.0
-],
-[
-0.0,
-0.0,
-1.0,
-263.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "lift_end",
-"name": "Lift frame end block -y (printed: two bar clamps, cheeks, shoe with a conical nose)",
-"step": 8,
-"M": [
-[
--1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
--1.0,
-0.0,
--146.0
-],
-[
-0.0,
-0.0,
-1.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (lift P16 rod end -y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
--1.0,
--154.1
-],
-[
-0.0,
-1.0,
-0.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "nut_m3_clevis",
-"name": "M3 locknut (lift P16 rod end -y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
-1.0,
--138.1
-],
-[
-0.0,
--1.0,
-0.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "guide_cone",
-"name": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
--170.0
-],
-[
-0.0,
-0.0,
-1.0,
-0.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "lift_shelf",
-"name": "Lift P16 shelf +y (printed, on the lower rung)",
-"step": 8,
-"M": [
-[
--1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
--1.0,
-0.0,
-170.0
-],
-[
-0.0,
-0.0,
-1.0,
-0.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "clevis_bracket",
-"name": "Lift P16 base clevis +y (printed, v4's)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
-146.0
-],
-[
-0.0,
-0.0,
-1.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (lift P16 base pin +y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
--1.0,
-138.1
-],
-[
-0.0,
-1.0,
-0.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "nut_m3_clevis",
-"name": "M3 locknut (lift P16 base pin +y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
-1.0,
-154.1
-],
-[
-0.0,
--1.0,
-0.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "p16l_body",
-"name": "Actuonix P16-50-22-12-P (lift, pot feedback) +y",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
-146.0
-],
-[
-0.0,
-0.0,
-1.0,
-235.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "p16l_rod",
-"name": "Actuonix P16-50 rod (lift) +y",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
-146.0
-],
-[
-0.0,
-0.0,
-1.0,
-263.15
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "lift_end",
-"name": "Lift frame end block +y (printed: two bar clamps, cheeks, shoe with a conical nose)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-1.0,
-0.0,
-146.0
-],
-[
-0.0,
-0.0,
-1.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (lift P16 rod end +y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
-1.0,
-154.1
-],
-[
-0.0,
--1.0,
-0.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "nut_m3_clevis",
-"name": "M3 locknut (lift P16 rod end +y)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
-0.0,
--1.0,
-138.1
-],
-[
-0.0,
-1.0,
-0.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "guide_vee",
-"name": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
-"step": 8,
-"M": [
-[
--1.0,
-0.0,
-0.0,
-68.0
-],
-[
-0.0,
--1.0,
-0.0,
-170.0
-],
-[
-0.0,
-0.0,
-1.0,
-0.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "lift_bar",
-"name": "Lift bar, 8 mm precision steel shaft x 264 mm",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-43.0
-],
-[
-0.0,
-1.0,
-0.0,
-0.0
-],
-[
-0.0,
-0.0,
-1.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "lift_bar",
-"name": "Lift bar, 8 mm precision steel shaft x 264 mm",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-93.0
-],
-[
-0.0,
-1.0,
-0.0,
-0.0
-],
-[
-0.0,
-0.0,
-1.0,
-360.55
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "tilt_bracket",
-"name": "Tilt P16 base clevis (printed, on the back side plate)",
-"step": 8,
-"M": [
-[
-0.0,
-0.0,
--1.0,
-318.0
-],
-[
-0.0,
-1.0,
-0.0,
--30.0
-],
-[
-1.0,
-0.0,
-0.0,
-372.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (tilt P16 base pin)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-318.0
-],
-[
-0.0,
-0.0,
--1.0,
--37.9
-],
-[
-0.0,
-1.0,
-0.0,
-372.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "nut_m3_clevis",
-"name": "M3 locknut (tilt P16 base pin)",
-"step": 8,
-"M": [
-[
-1.0,
-0.0,
-0.0,
-318.0
-],
-[
-0.0,
-0.0,
-1.0,
--21.9
-],
-[
-0.0,
--1.0,
-0.0,
-372.0
+230.081783
 ],
 [
 0.0,
@@ -14478,26 +14106,26 @@
 },
 {
 "key": "actuator_body",
-"name": "Actuonix P16-150-22-12-P (tilt, pot feedback)",
+"name": "Actuonix P16-150-22-12-P (lift and tilt, pot feedback)",
 "step": 8,
 "M": [
 [
-0.064684,
+0.737003,
 0.0,
--0.997906,
-318.0
+-0.67589,
+250.0
 ],
 [
 -0.0,
 1.0,
 0.0,
--30.0
+4.7625
 ],
 [
-0.997906,
+0.67589,
 0.0,
-0.064684,
-372.0
+0.737003,
+230.081783
 ],
 [
 0.0,
@@ -14509,26 +14137,26 @@
 },
 {
 "key": "actuator_rod",
-"name": "Actuonix P16-150 rod (tilt)",
+"name": "Actuonix P16-150 rod",
 "step": 8,
 "M": [
 [
-0.064684,
+0.737003,
 0.0,
--0.997906,
-187.560202
+-0.67589,
+244.420621
 ],
 [
 -0.0,
 1.0,
 0.0,
--30.0
+4.7625
 ],
 [
-0.997906,
+0.67589,
 0.0,
-0.064684,
-380.455033
+0.737003,
+236.165644
 ],
 [
 0.0,
@@ -14539,27 +14167,27 @@
 ]
 },
 {
-"key": "clevis_screw",
-"name": "Shoulder screw 4 x 16 mm, M3 (tilt pin, through the rod end and the EC's tilt arm)",
+"key": "ec_pin_screw",
+"name": "Shoulder screw 4 x 20 mm, M3 (rod-end pin, through the EC's tail)",
 "step": 8,
 "M": [
 [
 1.0,
 0.0,
 0.0,
--9.426407
+111.0
 ],
 [
 0.0,
 -0.0,
 1.0,
--37.0
+14.7625
 ],
 [
 0.0,
 -1.0,
 -0.0,
-393.223593
+381.65
 ],
 [
 0.0,
@@ -14571,26 +14199,88 @@
 },
 {
 "key": "nut_m3_clevis",
-"name": "M3 locknut (tilt pin)",
+"name": "M3 locknut (rod-end pin)",
 "step": 8,
 "M": [
 [
 1.0,
 0.0,
 0.0,
--9.426407
+111.0
 ],
 [
 0.0,
 -0.0,
 -1.0,
--21.0
+-5.2375
 ],
 [
 0.0,
 1.0,
 -0.0,
-393.223593
+381.65
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "ptfe_washer",
+"name": "PTFE washer 0.8 mm (rod end)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+111.0
+],
+[
+0.0,
+-0.0,
+1.0,
+7.8125
+],
+[
+0.0,
+-1.0,
+-0.0,
+381.65
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "ptfe_washer",
+"name": "PTFE washer 0.8 mm (rod end)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+111.0
+],
+[
+0.0,
+-0.0,
+1.0,
+0.9125
+],
+[
+0.0,
+-1.0,
+-0.0,
+381.65
 ],
 [
 0.0,
@@ -14602,7 +14292,7 @@
 },
 {
 "key": "sam_electronics_carriage",
-"name": "Electronics carriage v6 (EC v4: Sam's Oct 13 turned over + arms round the auger, dock, door finger; hooks on the lift bars, tilt arm; printed)",
+"name": "Electronics carriage v7 (Sam's Oct 13 turned over: the dock's cone, vee and ball C on ears at its rim, a tail for the P16 and two guide shoes; printed)",
 "step": 8,
 "M": [
 [
@@ -14745,7 +14435,7 @@
 0.0,
 0.0,
 -1.0,
-445.475
+416.05
 ],
 [
 0.0,
@@ -14764,7 +14454,7 @@
 1.0,
 0.0,
 0.0,
-73.632404
+76.132404
 ],
 [
 0.0,
@@ -14776,7 +14466,7 @@
 0.0,
 0.0,
 -1.0,
-444.707404
+415.282404
 ],
 [
 0.0,
@@ -14795,7 +14485,7 @@
 1.0,
 0.0,
 0.0,
-80.367596
+82.867596
 ],
 [
 0.0,
@@ -14807,7 +14497,7 @@
 0.0,
 0.0,
 -1.0,
-444.707404
+415.282404
 ],
 [
 0.0,
@@ -14826,7 +14516,7 @@
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -14838,7 +14528,7 @@
 0.0,
 -0.0,
 1.0,
-444.3
+414.875
 ],
 [
 0.0,
@@ -14857,7 +14547,7 @@
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -14869,7 +14559,7 @@
 0.0,
 -0.0,
 1.0,
-442.619904
+413.194904
 ],
 [
 0.0,
@@ -14900,7 +14590,193 @@
 0.0,
 -0.0,
 1.0,
-441.8
+412.375
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "guide7_cone",
+"name": "Guide -y (cone seat) (printed: channel, funnel mouth, seat; on the guide cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+1.0,
+0.0,
+4.7625
+],
+[
+0.0,
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x12_bhcs",
+"name": "Guide screw M5x12 (into the cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+130.4
+],
+[
+0.0,
+-1.0,
+-0.0,
+-15.4875
+],
+[
+0.0,
+0.0,
+-1.0,
+326.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x12_bhcs",
+"name": "Guide screw M5x12 (into the cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+142.4
+],
+[
+0.0,
+-1.0,
+-0.0,
+-15.4875
+],
+[
+0.0,
+0.0,
+-1.0,
+326.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "guide7_vee",
+"name": "Guide +y (vee seat) (printed: channel, funnel mouth, seat; on the guide cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+1.0,
+0.0,
+4.7625
+],
+[
+0.0,
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x12_bhcs",
+"name": "Guide screw M5x12 (into the cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+130.4
+],
+[
+0.0,
+-1.0,
+-0.0,
+25.0125
+],
+[
+0.0,
+0.0,
+-1.0,
+326.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x12_bhcs",
+"name": "Guide screw M5x12 (into the cross bar)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+142.4
+],
+[
+0.0,
+-1.0,
+-0.0,
+25.0125
+],
+[
+0.0,
+0.0,
+-1.0,
+326.0
 ],
 [
 0.0,
@@ -14994,68 +14870,6 @@
 0.0,
 0.0,
 413.65
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "m5x12_bhcs",
-"name": "Tilt bracket screw M5x12 (through the back side plate)",
-"step": 8,
-"M": [
-[
-0.0,
-0.0,
-1.0,
-341.35
-],
-[
-0.0,
-1.0,
-0.0,
--30.0
-],
-[
--1.0,
-0.0,
-0.0,
-356.0
-],
-[
-0.0,
-0.0,
-0.0,
-1.0
-]
-]
-},
-{
-"key": "m5x12_bhcs",
-"name": "Tilt bracket screw M5x12 (through the back side plate)",
-"step": 8,
-"M": [
-[
-0.0,
-0.0,
-1.0,
-341.35
-],
-[
-0.0,
-1.0,
-0.0,
--30.0
-],
-[
--1.0,
-0.0,
-0.0,
-388.0
 ],
 [
 0.0,
@@ -15284,7 +15098,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 1",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 1",
 "step": 10,
 "M": [
 [
@@ -15315,7 +15129,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 1",
+"name": "Latch follower, dowel 3 x 25 1",
 "step": 10,
 "M": [
 [
@@ -15345,7 +15159,7 @@
 ]
 },
 {
-"key": "latch_spring",
+"key": "latch_spring_cam",
 "name": "Latch spring 1",
 "step": 10,
 "M": [
@@ -15353,7 +15167,7 @@
 1.0,
 0.0,
 0.0,
-37.5
+33.0
 ],
 [
 0.0,
@@ -15377,7 +15191,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 1",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 1",
 "step": 9,
 "M": [
 [
@@ -15408,14 +15222,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 1",
+"name": "Magnet D42-N52 in a dock post (print pause) 1",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -15427,7 +15241,7 @@
 0.0,
 0.0,
 -1.0,
-453.65
+424.205
 ],
 [
 0.0,
@@ -15439,14 +15253,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 1",
+"name": "Magnet D42-N52 in a dock post (print pause) 1",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -15458,7 +15272,7 @@
 0.0,
 0.0,
 -1.0,
-453.65
+424.205
 ],
 [
 0.0,
@@ -15470,7 +15284,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 1",
+"name": "Magnet D42-N52 in a dock post (print pause) 1",
 "step": 9,
 "M": [
 [
@@ -15489,7 +15303,7 @@
 0.0,
 0.0,
 -1.0,
-453.65
+424.205
 ],
 [
 0.0,
@@ -16028,7 +15842,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 2",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 2",
 "step": 10,
 "M": [
 [
@@ -16059,7 +15873,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 2",
+"name": "Latch follower, dowel 3 x 25 2",
 "step": 10,
 "M": [
 [
@@ -16121,7 +15935,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 2",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 2",
 "step": 9,
 "M": [
 [
@@ -16152,26 +15966,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 2",
+"name": "Magnet D42-N52 in a dock post (print pause) 2",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 -0.881921,
 0.471397,
-68.09703
+81.977306
 ],
 [
 0.0,
 -0.471397,
 -0.881921,
-451.741559
+425.773387
 ],
 [
 0.0,
@@ -16183,26 +15997,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 2",
+"name": "Magnet D42-N52 in a dock post (print pause) 2",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 -0.881921,
 0.471397,
-102.491959
+116.372236
 ],
 [
 0.0,
 -0.471397,
 -0.881921,
-470.126032
+444.15786
 ],
 [
 0.0,
@@ -16214,7 +16028,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 2",
+"name": "Magnet D42-N52 in a dock post (print pause) 2",
 "step": 9,
 "M": [
 [
@@ -16227,13 +16041,13 @@
 0.0,
 -0.881921,
 0.471397,
-68.09703
+81.977306
 ],
 [
 0.0,
 -0.471397,
 -0.881921,
-451.741559
+425.773387
 ],
 [
 0.0,
@@ -16772,7 +16586,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 3",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 3",
 "step": 10,
 "M": [
 [
@@ -16803,7 +16617,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 3",
+"name": "Latch follower, dowel 3 x 25 3",
 "step": 10,
 "M": [
 [
@@ -16865,7 +16679,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 3",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 3",
 "step": 9,
 "M": [
 [
@@ -16896,20 +16710,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 3",
+"name": "Magnet D42-N52 in a dock post (print pause) 3",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -16927,20 +16741,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 3",
+"name": "Magnet D42-N52 in a dock post (print pause) 3",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -16958,7 +16772,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 3",
+"name": "Magnet D42-N52 in a dock post (print pause) 3",
 "step": 9,
 "M": [
 [
@@ -16971,7 +16785,7 @@
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -17516,7 +17330,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 4",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 4",
 "step": 10,
 "M": [
 [
@@ -17547,7 +17361,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 4",
+"name": "Latch follower, dowel 3 x 25 4",
 "step": 10,
 "M": [
 [
@@ -17609,7 +17423,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 4",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 4",
 "step": 9,
 "M": [
 [
@@ -17640,20 +17454,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 4",
+"name": "Magnet D42-N52 in a dock post (print pause) 4",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -17671,20 +17485,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 4",
+"name": "Magnet D42-N52 in a dock post (print pause) 4",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -17702,7 +17516,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 4",
+"name": "Magnet D42-N52 in a dock post (print pause) 4",
 "step": 9,
 "M": [
 [
@@ -17715,7 +17529,7 @@
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -18260,7 +18074,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 5",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 5",
 "step": 10,
 "M": [
 [
@@ -18291,7 +18105,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 5",
+"name": "Latch follower, dowel 3 x 25 5",
 "step": 10,
 "M": [
 [
@@ -18353,7 +18167,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 5",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 5",
 "step": 9,
 "M": [
 [
@@ -18384,20 +18198,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 5",
+"name": "Magnet D42-N52 in a dock post (print pause) 5",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -18415,20 +18229,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 5",
+"name": "Magnet D42-N52 in a dock post (print pause) 5",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -18446,7 +18260,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 5",
+"name": "Magnet D42-N52 in a dock post (print pause) 5",
 "step": 9,
 "M": [
 [
@@ -18459,7 +18273,7 @@
 0.0,
 0.0,
 1.0,
-117.088441
+146.533441
 ],
 [
 0.0,
@@ -19004,7 +18818,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 6",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 6",
 "step": 10,
 "M": [
 [
@@ -19035,7 +18849,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 6",
+"name": "Latch follower, dowel 3 x 25 6",
 "step": 10,
 "M": [
 [
@@ -19097,7 +18911,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 6",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 6",
 "step": 9,
 "M": [
 [
@@ -19128,26 +18942,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 6",
+"name": "Magnet D42-N52 in a dock post (print pause) 6",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.471397,
 0.881921,
-118.996882
+144.965053
 ],
 [
 0.0,
 -0.881921,
 0.471397,
-753.13547
+767.015747
 ],
 [
 0.0,
@@ -19159,26 +18973,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 6",
+"name": "Magnet D42-N52 in a dock post (print pause) 6",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.471397,
 0.881921,
-100.612409
+126.58058
 ],
 [
 0.0,
 -0.881921,
 0.471397,
-787.530399
+801.410676
 ],
 [
 0.0,
@@ -19190,7 +19004,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 6",
+"name": "Magnet D42-N52 in a dock post (print pause) 6",
 "step": 9,
 "M": [
 [
@@ -19203,13 +19017,13 @@
 0.0,
 0.471397,
 0.881921,
-118.996882
+144.965053
 ],
 [
 0.0,
 -0.881921,
 0.471397,
-753.13547
+767.015747
 ],
 [
 0.0,
@@ -19748,7 +19562,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 7",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 7",
 "step": 10,
 "M": [
 [
@@ -19779,7 +19593,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 7",
+"name": "Latch follower, dowel 3 x 25 7",
 "step": 10,
 "M": [
 [
@@ -19841,7 +19655,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 7",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 7",
 "step": 9,
 "M": [
 [
@@ -19872,14 +19686,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 7",
+"name": "Magnet D42-N52 in a dock post (print pause) 7",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -19891,7 +19705,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -19903,14 +19717,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 7",
+"name": "Magnet D42-N52 in a dock post (print pause) 7",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -19922,7 +19736,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -19934,7 +19748,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 7",
+"name": "Magnet D42-N52 in a dock post (print pause) 7",
 "step": 9,
 "M": [
 [
@@ -19953,7 +19767,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -20492,7 +20306,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 8",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 8",
 "step": 10,
 "M": [
 [
@@ -20523,7 +20337,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 8",
+"name": "Latch follower, dowel 3 x 25 8",
 "step": 10,
 "M": [
 [
@@ -20585,7 +20399,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 8",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 8",
 "step": 9,
 "M": [
 [
@@ -20616,14 +20430,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 8",
+"name": "Magnet D42-N52 in a dock post (print pause) 8",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -20635,7 +20449,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -20647,14 +20461,14 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 8",
+"name": "Magnet D42-N52 in a dock post (print pause) 8",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
@@ -20666,7 +20480,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -20678,7 +20492,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 8",
+"name": "Magnet D42-N52 in a dock post (print pause) 8",
 "step": 9,
 "M": [
 [
@@ -20697,7 +20511,7 @@
 0.0,
 0.0,
 1.0,
-802.126881
+831.571881
 ],
 [
 0.0,
@@ -21236,7 +21050,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 9",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 9",
 "step": 10,
 "M": [
 [
@@ -21267,7 +21081,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 9",
+"name": "Latch follower, dowel 3 x 25 9",
 "step": 10,
 "M": [
 [
@@ -21329,7 +21143,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 9",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 9",
 "step": 9,
 "M": [
 [
@@ -21360,26 +21174,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 9",
+"name": "Magnet D42-N52 in a dock post (print pause) 9",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.290285,
 -0.95694,
--108.623068
+-136.800176
 ],
 [
 0.0,
 0.95694,
 0.290285,
-778.180071
+786.727503
 ],
 [
 0.0,
@@ -21391,26 +21205,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 9",
+"name": "Magnet D42-N52 in a dock post (print pause) 9",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.290285,
 -0.95694,
--119.944171
+-148.121279
 ],
 [
 0.0,
 0.95694,
 0.290285,
-740.859398
+749.40683
 ],
 [
 0.0,
@@ -21422,7 +21236,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 9",
+"name": "Magnet D42-N52 in a dock post (print pause) 9",
 "step": 9,
 "M": [
 [
@@ -21435,13 +21249,13 @@
 0.0,
 0.290285,
 -0.95694,
--108.623068
+-136.800176
 ],
 [
 0.0,
 0.95694,
 0.290285,
-778.180071
+786.727503
 ],
 [
 0.0,
@@ -21980,7 +21794,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 10",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 10",
 "step": 10,
 "M": [
 [
@@ -22011,7 +21825,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 10",
+"name": "Latch follower, dowel 3 x 25 10",
 "step": 10,
 "M": [
 [
@@ -22073,7 +21887,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 10",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 10",
 "step": 9,
 "M": [
 [
@@ -22104,20 +21918,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 10",
+"name": "Magnet D42-N52 in a dock post (print pause) 10",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -22135,20 +21949,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 10",
+"name": "Magnet D42-N52 in a dock post (print pause) 10",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -22166,7 +21980,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 10",
+"name": "Magnet D42-N52 in a dock post (print pause) 10",
 "step": 9,
 "M": [
 [
@@ -22179,7 +21993,7 @@
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -22724,7 +22538,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 11",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 11",
 "step": 10,
 "M": [
 [
@@ -22755,7 +22569,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 11",
+"name": "Latch follower, dowel 3 x 25 11",
 "step": 10,
 "M": [
 [
@@ -22817,7 +22631,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 11",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 11",
 "step": 9,
 "M": [
 [
@@ -22848,20 +22662,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 11",
+"name": "Magnet D42-N52 in a dock post (print pause) 11",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -22879,20 +22693,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 11",
+"name": "Magnet D42-N52 in a dock post (print pause) 11",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -22910,7 +22724,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 11",
+"name": "Magnet D42-N52 in a dock post (print pause) 11",
 "step": 9,
 "M": [
 [
@@ -22923,7 +22737,7 @@
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -23468,7 +23282,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 12",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 12",
 "step": 10,
 "M": [
 [
@@ -23499,7 +23313,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 12",
+"name": "Latch follower, dowel 3 x 25 12",
 "step": 10,
 "M": [
 [
@@ -23561,7 +23375,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 12",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 12",
 "step": 9,
 "M": [
 [
@@ -23592,20 +23406,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 12",
+"name": "Magnet D42-N52 in a dock post (print pause) 12",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -23623,20 +23437,20 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 12",
+"name": "Magnet D42-N52 in a dock post (print pause) 12",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -23654,7 +23468,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 12",
+"name": "Magnet D42-N52 in a dock post (print pause) 12",
 "step": 9,
 "M": [
 [
@@ -23667,7 +23481,7 @@
 0.0,
 0.0,
 -1.0,
--117.088441
+-146.533441
 ],
 [
 0.0,
@@ -24212,7 +24026,7 @@
 },
 {
 "key": "latch_bolt",
-"name": "Latch bolt v6: 4 mm pin and rest shelf on a printed carrier 13",
+"name": "Latch bolt v7: 4 mm pin and rest shelf on a printed carrier 13",
 "step": 10,
 "M": [
 [
@@ -24243,7 +24057,7 @@
 },
 {
 "key": "latch_follower",
-"name": "Latch follower, dowel 3 x 40 13",
+"name": "Latch follower, dowel 3 x 25 13",
 "step": 10,
 "M": [
 [
@@ -24305,7 +24119,7 @@
 },
 {
 "key": "sam_mounting_plate",
-"name": "Mounting plate v6 (Sam's Oct 13 front, extended to the cap: clip 2, cap saddle, printed dock, keeper at the back) 13",
+"name": "Mounting plate v7 (v6's long plate; the dock on three printed posts past the auger: domes at A and B, a flat at C) 13",
 "step": 9,
 "M": [
 [
@@ -24336,26 +24150,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 13",
+"name": "Magnet D42-N52 in a dock post (print pause) 13",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 -0.95694,
 -0.290285,
--93.141631
+-101.689063
 ],
 [
 0.0,
 0.290285,
 -0.95694,
-462.115372
+433.938264
 ],
 [
 0.0,
@@ -24367,26 +24181,26 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 13",
+"name": "Magnet D42-N52 in a dock post (print pause) 13",
 "step": 9,
 "M": [
 [
 1.0,
 0.0,
 0.0,
-77.0
+79.5
 ],
 [
 0.0,
 -0.95694,
 -0.290285,
--55.820957
+-64.36839
 ],
 [
 0.0,
 0.290285,
 -0.95694,
-450.79427
+422.617162
 ],
 [
 0.0,
@@ -24398,7 +24212,7 @@
 },
 {
 "key": "kc6_magnet",
-"name": "Magnet D42-N52 in the plate under a dock feature 13",
+"name": "Magnet D42-N52 in a dock post (print pause) 13",
 "step": 9,
 "M": [
 [
@@ -24411,13 +24225,13 @@
 0.0,
 -0.95694,
 -0.290285,
--93.141631
+-101.689063
 ],
 [
 0.0,
 0.290285,
 -0.95694,
-462.115372
+433.938264
 ],
 [
 0.0,
@@ -26257,8 +26071,8 @@
 ]
 },
 {
-"key": "hr202i_body",
-"name": "A&D HR-202i balance (body, 220 g x 0.1 mg)",
+"key": "bal7_base",
+"name": "Balance: weighing base (0.1 mg class; v5's HR-202i chamber, no rear module)",
 "step": 12,
 "M": [
 [
@@ -26288,8 +26102,8 @@
 ]
 },
 {
-"key": "hr202i_display",
-"name": "A&D HR-202i display",
+"key": "bal7_display",
+"name": "Balance display",
 "step": 12,
 "M": [
 [
@@ -26319,8 +26133,8 @@
 ]
 },
 {
-"key": "hr202i_front_glass",
-"name": "A&D HR-202i front glass",
+"key": "bal7_frame",
+"name": "Balance draft cage frame",
 "step": 12,
 "M": [
 [
@@ -26350,8 +26164,8 @@
 ]
 },
 {
-"key": "hr202i_pan",
-"name": "A&D HR-202i pan",
+"key": "bal7_glass",
+"name": "Balance draft cage glass (front, back)",
 "step": 12,
 "M": [
 [
@@ -26381,8 +26195,8 @@
 ]
 },
 {
-"key": "hr202i_door_left",
-"name": "A&D HR-202i side door -y",
+"key": "bal7_pan",
+"name": "Balance pan",
 "step": 12,
 "M": [
 [
@@ -26412,8 +26226,8 @@
 ]
 },
 {
-"key": "hr202i_door_right",
-"name": "A&D HR-202i side door +y",
+"key": "bal7_door_left",
+"name": "Balance side door -y",
 "step": 12,
 "M": [
 [
@@ -26443,8 +26257,39 @@
 ]
 },
 {
-"key": "hr202i_top_door",
-"name": "A&D HR-202i top door",
+"key": "bal7_door_right",
+"name": "Balance side door +y",
+"step": 12,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+33.4
+],
+[
+0.0,
+1.0,
+0.0,
+4.7625
+],
+[
+0.0,
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "bal7_lid",
+"name": "Dosing lid (3 mm acrylic, 30 mm hole under the dose point, printed collar; replaces the top door)",
 "step": 12,
 "M": [
 [

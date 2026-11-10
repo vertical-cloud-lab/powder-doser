@@ -1,157 +1,193 @@
-# Chain carousel v6: a longer plate, a ladder frame, and a full 90° tilt
+# Chain carousel v7: one P16 under the station, the dock on posts past the auger, and a balance with no rear module
 
-v6 is [v5](../chain-carousel-v5/README.md) with Sam's changes of 2026-11-10 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)).
-Everything not listed below is v5's: the augers outside the loop, the kinematic dock round the auger, the outlet doors, the
-enclosure and its hatches, the side tabs, and the dose onto a beaker on an A&D HR-202i. Nothing is built. Every number here
-is a prediction from the CAD.
+v7 is a mix of [v6](../chain-carousel-v6/README.md) and [v5](../chain-carousel-v5/README.md), with Sam's second note of
+2026-11-10 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
+- **Kept from v6:** the ladder rungs, the longer mounting plate (clip 2, the cap saddle, the keeper at the back), the latch at
+  the plate's back end, the carriage's longer opening, and the guides' funnel mouths and cone/vee seats.
+- **Back from v2-v5:** one Actuonix P16-150 under the station that both lifts and tilts. v6's lift frame (two P16-50s, two bars,
+  the EC's hooks) and its tilt P16 on the back side plate are gone.
+- **New:** the dock moved to the scale side of the auger, on three posts printed on the plate, so the EC is Sam's compact
+  carriage with no arms; two cross bars between the rungs; the balance re-modelled as a base and a draft cage.
 
-**Onshape (public):** [Multi-doser chain carousel, test rig v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json), 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 10 for the import, 1 to confirm it is public). It was imported from
-`step/chain_carousel_rig_v6.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py).
+Nothing is built. Every number here is a prediction from the CAD.
 
-![Overview](renders/v6/overview_v6.gif)
+**Onshape (public):** [Multi-doser chain carousel, test rig v7](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 10 for the import, 1 to confirm it is public). It was imported from `step/chain_carousel_rig_v7.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions: [v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de), [v5](https://cad.onshape.com/documents/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0/e/c7483f9da46de0305e71e071), [v4](https://cad.onshape.com/documents/07e7ce814d25e75e52c09a86/w/25522f59a0ed7fbbe5b6befb/e/f5263287b1a00de2de17a17c), [v3](https://cad.onshape.com/documents/6b0ba196592dddf4d153b887/w/f8df3cb392da1117da5c65ab/e/16408e631d86575eee2bfeea), [v2](https://cad.onshape.com/documents/5263dae97a3922029b5cccf3/w/30f999cdf6cf5f4014d88b2a/e/f8db64562886e92e866b11ed).
+
+![Overview](renders/v7/overview_v7.gif)
 
 ## What changed, and why
 
-| # | Sam asked | v6 | How it works | Clip |
+| # | Sam asked | v7 | How it works | Clip |
 |---|---|---|---|---|
-| 1 | "extend the mounting plate so it supports more of the auger. Add another clip about halfway between the gear and the cap" | **Mounting plate v6.** Sam's Oct 13 plate is kept from the knuckles to the gear housing (clip 1 and the housing as he drew them), then carried on to the cap's end (Sam x 252; v5 stopped at 106). It adds **clip 2** at x 150-162, halfway between the gear's back face (88.4) and the cap (224.4), and a **saddle under the cap** | Both clips are C-shapes round the 25 mm tube, open away from the plate (mouth 19.6 mm), so the auger still snaps in and pulls straight off at the side hatch | [plate](renders/v6/plate_v6.gif) |
-| 2 | "this mounting plate can rest on the base carriage, and the pin that keeps the mounting plate pinned to the carriage can be moved to the back for maximum support and ease of mounting" | **The latch is at the plate's back end** (keeper at x 244-252, beside the cap; v5's was at x 98-106). One spring bolt on the carriage carries the **4 mm pin and a rest shelf** | Closed: the pin is 4 mm into the keeper's hole (it holds the plate either way up) and the shelf reaches 8 mm under the keeper. At the station the cam draws the bolt back 4.5 mm: the pin is out, but the shelf is still 3.5 mm under the keeper, so **the module rests on its own carriage** (v5 put it on a tube rest on the station). By hand, the bolt goes back 10 mm and both clear: that is how a module comes off | [latch](renders/v6/latch_v6.gif) |
-| 3 | "for the kinematic couplings, alter the mounting plate design to integrate them (no need to use a washer, just add it to the 3D printed part" | **The plate's half of the dock is printed:** two domes at A and B, the shape of v5's balls' exposed caps (3.75 mm proud), and the plate's own face as the flat at C. No balls, no washer | The EC's cone, vee and ball C are unchanged. With no steel left in the plate, a **D42-N52 magnet is pressed into the plate's underside under each feature** (1.8 mm of plastic above it), for the EC's three magnets to pull on | [plate](renders/v6/plate_v6.gif), part 3 |
-| 4 | "the 8020 mounts that come up from the bottom rail should be moved to the sides ... crossbars like a rung of a ladder to mount things to for the base dosing station" | **No posts on the base rails** except the four corner posts. On each side, **two 2020 rungs run between the front and back posts** (a ladder): the lower ones (z 185-205) carry the lift P16s' shelves, the upper ones (z 298-318) the guides. v5's two station posts, latch post and latch beam are gone | The tilt P16's bracket and the latch cam hang on the **back side plate**, which gets four new M5 holes. Both rungs pass under the back plate's bottom edge (325), so it needs no notches | [ladder](renders/v6/ladder_v6.gif) |
-| 5 | "Can the auger go all the way to 90 degrees? If not, adjust the carriage until it can." | **v5 couldn't** (see below). **v6 tilts 0-90°.** The carriage's opening starts 5 mm further forward (Sam x -19), and widens to ±27.6 mm over the keeper. The station's **lift and tilt are separate** | Two P16-50s lift a frame of two 8 mm bars. The EC hangs on them in two hooks, and the frame only docks it (28 mm). A **third P16 (P16-150) on the back side plate**, pinned to an arm on the EC, then turns the docked EC and module about the hinge axis. Its pin stays 42-60 mm under the axis all the way, so nothing wide rises toward the neighbouring modules | [tilt90](renders/v6/tilt90_v6.gif) |
-| 6 | "Add a small funnel-type kinematic coupling to the linear actuators guides so that they can easily return to the same position even if they're a little bit off" | **Funnel mouths and kinematic seats on the guides.** Each guide's slot opens into a 45° funnel, 4 mm each side, at its top. Each shoe has a 90° conical nose, which parks in a **cone** (-y guide) or a **vee along y** (+y guide) in the slot's floor | Coming down off line, the funnel takes each shoe back into its slot. At the bottom, the cone fixes one end of the frame and the vee only the other's x, so the frame and the EC on it park in the same place every time. The slot opens 0.5 mm each side over its bottom 8 mm, so the seats locate the shoes, not the slot walls. The slots' funnels also free the shoes in the dock's last 4 mm, so the dock, not the guides, decides where the EC seats | [guides](renders/v6/guides_v6.gif) |
+| 1 | "I love the ladder rungs ... You can add another cross bar between walls and rungs to attach things to, so you can attach things in the middle" | **v6's rungs kept, plus two 2020 cross bars between them** (340 mm, corner brackets at each end): one on the lower rungs at x 250 for the P16's base clevis, one on the upper rungs at x 136 for the two guides | The lower rungs moved from z 195 to z 200 so the P16's clevis sits on its bar. Both bars run across the frame behind the balance; nothing stands on the base rails but the corner posts | [ladder](renders/v7/ladder_v7.gif) |
+| 2 | "I like the longer mounting plate" | **v6's plate kept** (Sam's front, clip 2, the cap saddle, the keeper) | Unchanged apart from the dock (row 3) | [plate](renders/v7/plate_v7.gif) |
+| 3 | "raise the kinematic couplings on the mounting plate up so that the electronics carriage can be as short as possible, i.e. they interface on the scale side of the auger" | **Three posts printed on the plate** beside the tube (8 x 8 mm at y +-15.5 to 23.5, 3 mm off it) reach from the plate's face out to 16.4 mm past the auger's axis. A and B carry v6's printed domes and C a flat tip; a D42-N52 sits in each post 1.8 mm under its tip (dropped in at a print pause). **EC v7 is Sam's Oct 13 carriage turned over with no arms**: the cone, the dowel vee and ball C sit on three ears at its rim, with v4's magnets behind them | The EC meets the posts just past the auger instead of reaching round it to the plate's face (v4-v6's arms were 41 mm tall). It parks only **10 mm** under the dock (v6: 28): the passing gears clear its pinion by 8.2 mm, the domes clear its ears by 7.8 mm, and the closed door strips clear its finger by 4 mm. The auger still snaps in and pulls straight out of the clips past the posts | [plate](renders/v7/plate_v7.gif), [EC](renders/v7/ec_v7.gif) |
+| 4 | "The linear actuator on the back doesn't work. I like it the way it was before, underneath ... the cross bars with the hooks doesn't work ... the powder will dose directly onto them ... Try to keep it one actuator" | **One P16-150, pinned at both ends as in v2-v4:** its rod end on a tail behind the EC's back wall (under the 44T gear, 78 mm behind and 54 mm under the hinge axis), its base on a clevis on the P16 cross bar behind the balance. Nothing crosses under the dose point | The draft cage stands right under the EC, so the P16 can't stand straight under it as in v2. It leans 44.5 deg back from the EC, over the cage's back-top corner. Extending it first lifts the EC 10 mm out of its guides onto the posts (1.0 to 8.3 mm of stroke), then turns the docked EC and module about the hinge axis. One LAC | [station](renders/v7/station_v7.gif) |
+| 5 | "For a 90 degree tilt, make a gif that shows exactly where and why it didn't work for v5 ... This design should allow for a 90 degree tilt" | **v5's limits, bisected in its own CAD** (clip and [`checks/v5_why_not_90.json`](checks/v5_why_not_90.json)). **v7 reaches 90 deg with 130 of the P16's 150 mm** and CHECK_TILT_SUMMARY | v5's lift bar turned with the module and climbed into the corner modules from 41.6 deg; its P16s ran out of stroke at 81.3 deg; its plate met its carriage at 84.0 deg. In v7 nothing wide turns with the module, the pin is close to the hinge (so 0-90 deg takes 122 mm of stroke), and v6's longer carriage opening clears the plate | [v5: why not 90](renders/v7/v5_why_not_90.gif), [v7: 0-90 deg](renders/v7/tilt90_v7.gif) |
+| 6 | "the ramps for the guides are great! Apply them wherever we move the guides" | **v6's guides moved to the EC's tail:** two printed guides on the guide cross bar, each a vertical channel round one of the tail's two shoes, with v6's 45 deg funnel mouth (4 mm each side), its 0.5 mm relief over the bottom 8 mm and a cone (-y) or a vee (+y) in its floor for the shoe's conical nose | Coming down off line, each shoe meets its funnel, which centres it. Parked, the cone fixes one shoe and the vee only the other's x, so the EC parks in the same place every time. The shoes leave the funnels in the dock's last 4 mm, so the dock, not the guides, decides where the EC seats | [guides](renders/v7/guides_v7.gif) |
+| 7 | "I think your model for the scale is wrong. None of the scales we've seen or used have the large module at the back ... This allows for some more room behind it" | **The balance re-modelled as a weighing base and a draft cage**, with nothing tall behind the cage. The cage keeps v5's HR-202i chamber (183 x 164.5 x 250 mm over the pan), so the pan, the beaker and the 154 mm fall are v5's; 200 wide, 253 deep over the base and 311 tall (the lab's HR-100A is 198 x 253 x 315). **The top door is replaced by a dosing lid**: 3 mm acrylic with a 30 mm hole on the pan's axis | The P16 stands in the room behind the cage. The auger's exit is on the hinge axis, so the stream falls through the same hole at every tilt; the beaker comes out through the -y side door (70 mm of travel, which keeps the door in front of the P16's bar) | [balance](renders/v7/balance_v7.gif) |
+| 8 | "With the pin ... the mounting plate is usually locked in on both sides ... there's another pin on the bottom that can be removed by hand ... Is that right? Show a profile view" | **Nearly right, but there is no second pin.** One spring bolt on the carriage carries both a 4 mm pin and a rest shelf. **v7 keeps v6's latch and fixes its spring pocket** | See "The latch" below | [latch profile](renders/v7/latch_profile_v7.gif) ([v6's, with the fault](renders/v7/latch_profile_v6.gif)) |
 
-| Mounting plate v6 | The latch at the back |
+| The ladder and the two cross bars | Mounting plate v7: the dock on posts |
 |---|---|
-| ![](renders/v6/plate_v6.gif) | ![](renders/v6/latch_v6.gif) |
+| ![](renders/v7/ladder_v7.gif) | ![](renders/v7/plate_v7.gif) |
 
-| The ladder | 0-90° |
+| EC v7 docking on the scale side of the auger | One P16: lift, dock, tilt, dose |
 |---|---|
-| ![](renders/v6/ladder_v6.gif) | ![](renders/v6/tilt90_v6.gif) |
+| ![](renders/v7/ec_v7.gif) | ![](renders/v7/station_v7.gif) |
 
-![The guides' funnels and seats](renders/v6/guides_v6.gif)
+| Why v5 stopped short of 90 deg | v7: 0-90 deg with the same P16 |
+|---|---|
+| ![](renders/v7/v5_why_not_90.gif) | ![](renders/v7/tilt90_v7.gif) |
 
-## Why v5 stopped at 40°, and what reaching 90° took
+| The guides' funnels and seats on the EC's tail | The balance: a base and a draft cage |
+|---|---|
+| ![](renders/v7/guides_v7.gif) | ![](renders/v7/balance_v7.gif) |
 
-v5's module, EC and plate were checked alone at 60°, 75° and 90°, without the lift bar and the P16s. 60° and 75° were clean.
-At 90° the plate's front edge and the outlet door's screws met the carriage's opening (374 mm³). The cap never reaches the
-top run: the module stands 252 mm tall on a hinge 355 mm under the top run's pitch line. Two things in v5's station stopped it
-well before that:
-- **The lift bar.** v5's 264 mm bar was clamped through the EC's base, 76 mm under the hinge axis and 58 mm behind it, so it
-  swung up with the module. At 42° it touched module 13's plate, and at 90° it would sit 58 mm *above* the axis, through
-  modules 2 and 13 on the corner sprockets.
-- **The stroke.** 90° needed 161.5 mm from a 150 mm P16.
+## Why v5 couldn't reach 90 deg
 
-v6 keeps everything wide low:
-- The lift frame never rises past the dock height (its bars at z 360.6, about 50 mm under the neighbouring modules' lowest points).
-- The tilt pin is the only part of the drive that moves round the hinge axis. It starts 60 mm from the axis, in front of and
-  below it (-135°), and ends behind and below it (-45°). It never comes within 42 mm of the axis's height.
-- The tilt P16 lies almost flat at y = -30, outside the EC's arms (Sam y ±23.5) and 35 mm from the dose stream.
+Each first contact below was bisected to 0.25 deg in v5's own CAD (OCC booleans, over 0.5 mm^3 counts), by
+[`../chain-carousel-v5/why_not_90.py`](../chain-carousel-v5/why_not_90.py):
 
-| Tilt | 0° | 30° | 45° | 90° |
-|---|---|---|---|---|
-| Tilt P16, mm out of 150 | 130.7 | 103.2 | 87.6 | 46.1 |
-| Its lever arm about the hinge, mm | 45 | 58 | 60 | 39 |
+| Tilt | What happens in v5 |
+|---|---|
+| 41.6 deg | The lift bar reaches module 13's plate (0.64 mm^3, 86 at 45 deg) |
+| 44.6 deg | The lift bar reaches module 2's plate and module 13's auger |
+| 48.2 deg | The lift bar reaches module 2's auger |
+| 56.1 / 57.0 deg | The lift bar reaches carriages 2 and 13 |
+| 60.9 deg | The lift bar reaches its own carriage 1 |
+| 81.3 deg | The P16-150s run out of stroke (90 deg needs 161.5 mm) |
+| 84.0 deg | Module 1's plate meets carriage 1's opening (374 mm^3 at 90 deg); the door housing's screws at 84.6 deg |
+| 88.1 deg | The lift bar reaches carriage 12 on the -y side run |
 
-At the P16's 50 N, 39 mm is 1.9 N·m about the hinge. That is far more than the module and the EC weigh, but **v6's station
-hasn't been simulated** (below).
+The root cause is the lift bar: clamped through the EC's base 76 mm under the hinge axis and 58 mm behind it, it swung up with
+the module, and at 90 deg it would sit 58 mm above the axis, through the corner modules. v6 fixed the plate-to-carriage contact
+(the opening starts 5 mm further forward), and v7 keeps that.
 
-**Changing the carriage.** Sam's "adjust the carriage" came down to one change. The module's plate stands vertical at 90°,
-13-18 mm in front of the hinge axis, so the opening has to start 19 mm in front of the axis; v5's started at 14. The front A-1
-tab's screw hole (x 9.5) still has 2.8 mm of plastic behind it.
+## How v7 reaches 90 deg with one P16
 
-## How one dose works in v6
+The P16's pin is on the EC's tail, 78 mm behind and 54 mm under the hinge axis when docked, and its base pin is on the P16 cross
+bar at x 250, z 230 (behind and below the balance). The pin swings on a 95 mm radius about the hinge:
 
-1. **Index.** The chain brings the module to the station. The latch cam draws its bolt back 4.5 mm. The pin leaves the keeper,
-   and the module settles 0.2 mm onto the bolt's shelf, on its own carriage.
-2. **Dock.** The tilt P16 holds the EC level (130.7 mm out). The two lift P16-50s raise the frame and the EC on it 28 mm. In
-   the last 4 mm the shoes enter their funnels, so the cone and vee decide where the EC seats. In the last 6 mm the EC's
-   finger opens the outlet door. The domes seat and lift the keeper off the shelf.
-3. **Tilt.** The tilt P16 retracts and the EC and module turn about the hinge. The EC's hooks leave the bars, which stay at
-   the dock height. 30° is the default. Any angle to 90° is available, for the dose-versus-tilt tests or to empty an auger.
-4. **Dose.** The NEMA 11 turns the auger. The dose falls 154 mm into the beaker on the HR-202i, and the Pi doses by weight
-   (`test/chain_rig.py dose-to`).
-5. **Back.** Hold 0.5 s, tilt back (the hooks close round the bars again), reverse the auger one turn at rest, and lower the
-   frame. The bars pull the EC off its magnets, the door shuts, and the shoes come down through the funnels onto their
-   cone and vee.
+| Tilt | 0 (docked) | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 deg |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P16 out, mm of 150 | 8.3 | 13.9 | 23.1 | 35.2 | 49.5 | 65.1 | 81.5 | 98.0 | 114.2 | **129.7** |
+
+- **Stroke:** parked it is 1.0 mm out, docked 8.3, and 90 deg takes 129.7, so 20 mm is left over.
+- **Moment arm:** the P16's line passes 21 mm from the hinge axis when docked, rising to 95 mm at 64 deg. At its 50 N that is
+  1.05 N·m to start the tilt, three times what the module and the EC need (about 0.35 N·m) (2-D study, not simulated).
+- **Clearances:** at 90 deg the P16 passes behind the EC's far face and through carriage 1's opening; at 0 deg it passes over
+  the draft cage's back-top corner. CHECK_TILT_DETAIL
+- **What it costs:** the P16 leans 44.5 deg during the lift, so the guides take about 0.7 of its push sideways. TEST-PLAN T6
+  checks that the shoes don't bind.
+
+## The latch: one bolt, a pin and a shelf (Sam's question)
+
+![The latch in profile](renders/v7/latch_profile_v7.gif)
+
+**Is the plate locked on both sides, with the dosing side released at the station and a second pin by hand? Nearly: there is
+no second pin.** One spring bolt on the carriage, behind the plate's back end, carries two features:
+- **a 4 mm pin** that goes 4 mm into the keeper's hole on the plate. It stops the plate swinging **either way**, which is what
+  holds it upside down on the top run;
+- **a rest shelf** on the keeper's outer face. It stops only the **outward** swing.
+
+| Where | Bolt | Swing in (to dose) | Swing out |
+|---|---|---|---|
+| Anywhere on the loop | Closed | Blocked by the pin | Blocked by the pin and the shelf |
+| At the station | The station's fixed cam (v5's profile: 25 deg ramps) draws it back 4.5 mm as the carriage indexes in, with no human input | **Free**: the pin is out | Blocked: the shelf is still 2.5 mm under the keeper, so the module rests on its own carriage |
+| By hand (maintenance only) | Pushed back 8 mm | Free | Free: the shelf clears by 1 mm |
+
+So the dosing direction is released automatically at the station, as v5's cam did. The outward direction only opens by hand, to
+take a plate off. Since nothing in operation needs the outward swing, the more robust version Sam suggests (a fixed stop instead
+of the hand release) is a one-part change for v8.
+
+**Found while drawing the profile, and fixed in v7:** v6's spring pocket was 6.0 mm long with the bolt closed.
+- At the cam's 4.5 mm the spring would have been 1.5 mm long, i.e. solid.
+- The carrier hit the housing's back wall at 6 mm, so v6's claimed 10 mm hand release was impossible.
+
+v7's carrier is 8 mm long instead of 12, and its channel runs back to 1.5 mm from the housing's end: 11.5 mm of spring closed,
+7.0 at the cam and 3.5 by hand. The shelf reaches 7 mm over the keeper (v6: 8). The spring itself (3 mm OD, about 14 mm free,
+0.3 N/mm) is still to be chosen: none of the McMaster springs read so far compresses that far (TEST-PLAN T4b).
+
+## How one dose works in v7
+
+1. **Index.** The chain brings the module to the station. The latch cam draws its bolt back 4.5 mm: the pin leaves the keeper,
+   and the module settles 0.2 mm onto the bolt's shelf.
+2. **Dock.** The P16 extends from 1.0 to 8.3 mm and lifts the EC 10 mm out of its guides. In the last 4 mm the shoes are free
+   in the funnel mouths, so the posts' domes, the EC's cone and vee and the flat at C decide where it seats. In the last 6 mm
+   the EC's finger opens the outlet door. The domes lift the keeper off the shelf.
+3. **Tilt.** The P16 keeps extending, and the docked EC and module turn about the hinge axis: 35.2 mm out at 30 deg, the
+   default.
+4. **Dose.** The NEMA 11 turns the auger. The dose falls 154 mm through the dosing lid's hole into the beaker, and the Pi doses
+   by weight (`test/chain_rig.py dose-to`).
+5. **Back.** Hold 0.5 s, tilt back, reverse the auger one turn at rest, and retract to 1.0 mm. The EC comes off its magnets, the
+   door shuts, and the shoes come down through the funnels onto their cone and vee.
 6. **Leave.** The next index takes the bolt off the cam. The spring pushes the pin back into the keeper.
 
 ## Checks
 
-Every pair is checked with OCC booleans, and anything over 0.5 mm³ counts. By-design contacts are skipped by part key
-([`check_interference.py`](check_interference.py): v6's are listed at the end of SKIP). The balance is in every check.
+Every pair is checked with OCC booleans, and anything over 0.5 mm^3 counts. By-design contacts are skipped by part key
+([`check_interference.py`](check_interference.py): v7's are at the end of SKIP). The balance is in every check.
 
-| Check | What moves | Result |
-|---|---|---|
-| Home | Every pair of the 856 instances | **0** ([`checks/home.json`](checks/home.json)). The first run found 5 clashes, all fixed (below) |
-| `--tilt` | The lift frame and EC rising 0-28 mm (4 poses), then module 1, the EC and the tilt P16 at 5, 10, 20, 30, 40, 50, 60, 70, 80 and 90°, with the balance's top door open | **0** apart from the lift P16-50s' tubes touching their guides (0.9 mm, 50-76 mm³; fixed). Rechecked with the lift P16s, guides, shelves, rungs, end blocks and bars at 0, 14 and 28 mm: **0** ([`checks/tilt_a.json`](checks/tilt_a.json), [`tilt_b.json`](checks/tilt_b.json), [`guide_recheck.json`](checks/guide_recheck.json)) |
-| `--sweep` | The chain indexing one module the way it runs, 5 poses (2-link steps), the EC parked: every carriage's new latch and longer plate passing the NEMA 34, the tilt P16 and the latch cam | **0** ([`checks/sweep.json`](checks/sweep.json)) |
-
-**The five clashes the first home run found, all fixed:**
-1. **The latch followers on the NEMA 34.** At the plate's back end, the followers' tips (v5's reached Sam z +24, past the
-   auger's axis) passed over the NEMA 34, which sits inside the frame under the bottom run's +y half. The follower is now
-   3 x 25 mm and its tip is at z +10, 14 mm nearer the plate; the cam sits at z 2-8.
-2. **The tilt P16's rod on the EC's tilt arm.** The arm moved 1.5 mm inboard (Sam y 23.5-29.5). The rod-end tab rides 2.3 mm
-   off it on a PTFE washer.
-3. **The tilt bracket and the latch cam's foot,** both on the back side plate. The cam's foot moved up and clears
-   the bracket by 11 mm.
-4. **and 5. The lift P16-50s' housings in the guides' lower blocks.** The guides are notched under their seats, and 1.5 mm
-   shallower so the P16s' tubes pass 0.6 mm outside them.
+CHECKS_TABLE
 
 ## Check before building
 
-1. **The station's mechanics are new and not simulated.** v3-v5's MuJoCo models weren't rerun. Print the EC's hooks, the tilt
-   arm and the end blocks, and check by hand (TEST-PLAN T5):
-   - the hooks release and re-take the bars cleanly at 0°;
-   - the tilt P16 swings the docked module without the dock slipping.
-2. **The printed dock (T6a, T6b).** Printed domes in the EC's printed cone and on the dowel vee repeat less well than ground
-   balls, and the flat at C is the steel ball C on PETG (a few N, so expect a small dent to bed in). Print the plates with
-   0.12 mm layers over the domes.
-   - **Measure the seat magnets' pull plate-magnet to EC-magnet:** about 6 mm separates them, so expect less than v5's
-     3.6 N per seat.
-   - The simulations wanted about 8 N per seat (T6c).
-3. **Two more actuators' worth of wiring.** v6 has three P16s and three LACs. The lift P16-50 is new, and its price ($75)
-   is an estimate.
-4. **The latch shelf.** The module's whole weight hangs on 3.5 mm of printed shelf while it sits at the station (T4). If it
-   creeps, add a 2 mm steel pin across the shelf.
-5. **v5's open items stand:** which balance the lab has, and the 154 mm fall through the open top door.
+1. **The station isn't simulated.** v3-v5's MuJoCo models weren't rerun for one P16 doing the lift and the tilt again. Print the
+   EC, its tail and the two guides first and work them by hand (TEST-PLAN T5, T6).
+2. **The P16 leans 44.5 deg.** During the lift the guides take about 0.7 of its push sideways. If the shoes bind, give the guides
+   PTFE strips, or move the P16's bar back (a steeper actuator has more stroke to spare: 20 mm now).
+3. **The dock is printed.** Printed domes in the EC's printed cone and on the dowel vee repeat less well than ground balls. Each
+   post magnet is 1.8 mm under its tip; measure the pull (T6a). The simulations wanted about 8 N per seat.
+4. **The posts are 30 mm tall, 8 x 8 mm, printed upright.** Check for cracks at their roots after 500 docks (T6a).
+5. **The dosing lid replaces the balance's top door.** Check the hole's draft effect on the reading (T8c).
+6. **The latch spring** is still to be selected (T4b).
+7. **Which balance the lab has** (v5's open item) still stands. The station fits any balance whose draft cage is no taller than
+   311 mm and no deeper than 78 mm behind the pan's centre plus its frame; a shorter balance goes on a block (Sterling,
+   2026-11-05).
 
 ## Not done
 
-- **Not simulated:** v3-v5's MuJoCo station and dock models weren't rerun for v6's hooks, tilt arm or third P16.
-- **Not rerun:** `--swap` and `--latch`. Clip 2, the cap saddle and the keeper are on the plate, which the swap check skips
-  against the auger by design; the latch cam is new, and its follower contact is a by-design pair.
-- **Not regenerated:** the stills, the step-by-step ASSEMBLY renders and the full movie. The six clips above are v6's renders.
+- **Not simulated:** the station's dynamics (one P16, the guides, the dock on posts).
+- **Not rerun:** `--swap` and `--latch`. The posts are on the plate, and the plate against the auger is a by-design pair, so the
+  swap check would skip them; the latch's parts only changed lengths.
+- **Not regenerated:** the stills and the step-by-step ASSEMBLY renders. The clips above are v7's renders.
 - **No Bambu slices.** The STLs are exported in `stl/`.
-- **Prices:** the P16-50 is Actuonix's list price, not re-checked. The 4 x 10 latch dowel and the 3 x 25 follower are priced
-  as their McMaster families' verified packs.
+- **Prices:** the 4 x 20 shoulder screw and the 4 x 12 dowel are estimated from their McMaster families; the latch spring is
+  still to be selected.
+- **Found in passing, not fixed in v4-v6:** their vee dowels' holes were drawn 8 mm inboard of the dowels (`_cyl`'s "Y" axis
+  runs +y from its start point). v7's are centred on the dowels.
 
 ## Cost
 
-**$2,377.50, or $2,236.11 without test gear** ([BOM.md](BOM.md)). v5 was $2,361.63 ($2,220.24).
-- **Added:** two P16-50s and a third LAC for the lift, the second lift bar and 39 plate magnets.
-- **Removed:** 34 of v5's 36 dock balls and the 13 plate washers.
-- **Unchanged:** the P16-150 stays, now as the tilt actuator.
+**$2,213.96, or $2,072.57 without test gear** ([BOM.md](BOM.md)). v6 was $2,377.50 ($2,236.11): $163.54 less.
+- **Removed:** v6's two lift P16-50s, two of its three LACs, the lift bars and the lift frame's printed parts.
+- **Added:** the two cross bars and their corner brackets (the 2020 cut plan now needs 11 bars, so a second pack), the rod-end
+  shoulder screw and PTFE washers, and the dosing lid.
+- **Unchanged:** the P16-150, now the only actuator, and the 39 plate magnets (now in the posts).
 
 ## Files
 
 | File | What |
 |---|---|
-| [`params.py`](params.py) | v5's numbers with v6's at the end |
-| [`parts6.py`](parts6.py) | Mounting plate v6 additions, latch bolt/housing/follower/spring v6, the latch cam, carriage v6, EC v6 (hooks, tilt arm), the lift frame's end blocks, the guides with funnels and seats, the lift shelves, the P16-50, the tilt bracket |
-| [`layout.py`](layout.py) | v5's layout with the rungs, the v6 station and the v6 module |
-| [`check_interference.py`](check_interference.py) | home, `--tilt` (to 90°, with `--angles/--exts/--tag` for parallel subsets), `--sweep`, `--latch`, `--swap`, `--scale` |
-| [`explain6.py`](explain6.py) | The six clips in `renders/v6/` |
-| [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs, the DXFs |
+| [`params.py`](params.py) | v6's numbers with v7's at the end |
+| [`parts7.py`](parts7.py) | Mounting plate v7 (the posts), EC v7 (ears, tail, shoes, clevis), the guides, the balance, the latch with its longer spring pocket, carriage v7 |
+| [`layout.py`](layout.py) | v6's layout with the cross bars, the v7 station (one P16), the v7 balance and the latch spring's three lengths |
+| [`check_interference.py`](check_interference.py) | home, `--tilt` (to 90 deg; `--angles/--exts/--tag` for parallel subsets), `--sweep`, `--latch`, `--swap`, `--scale` |
+| [`explain7.py`](explain7.py) | The eight v7 clips in `renders/v7/` |
+| [`latch_profile.py`](latch_profile.py) | The latch's profile view (a true section on the latch plane, drawn from the CAD) |
+| [`../chain-carousel-v5/why_not_90.py`](../chain-carousel-v5/why_not_90.py) | v5's limits on the way to 90 deg, and its clip |
+| [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs, the DXFs (including the dosing lid) |
 | [`bom.py`](bom.py) / [`BOM.md`](BOM.md) | The BoM |
-| [`TEST-PLAN.md`](TEST-PLAN.md) | v5's tests with T4-T6 rewritten for v6 |
-| [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver: two lift LACs and the tilt LAC (`tilt_to_tilt_ext`), 0-90° |
+| [`TEST-PLAN.md`](TEST-PLAN.md) | v6's tests with T4-T8 rewritten for v7 |
+| [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver: one LAC, tilt to extension from the v7 geometry |
 
 To re-run:
 
 ```
-pip install cadquery vtk pillow imageio imageio-ffmpeg numpy
+pip install cadquery vtk pillow imageio imageio-ffmpeg numpy matplotlib
 python check_interference.py && python check_interference.py --tilt && python check_interference.py --sweep --step 2
-xvfb-run -a python explain6.py plate latch ladder tilt90 guides overview
-python build.py && python docs.py
+xvfb-run -a python explain7.py overview ladder plate ec station tilt90 guides balance
+python latch_profile.py --src .
+python build.py && python bom.py
 ```

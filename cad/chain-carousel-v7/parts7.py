@@ -186,7 +186,7 @@ def guide_v7(z_bar_top: float, z_seat: float, z_top: float, shoe_x: float, shoe_
     xc = shoe_x
     y_in, y_out = shoe_yc - 7.5, shoe_yc + 5.5                 # channel: 0.5 mm outside the shoe's outer face; open inboard
     cheek = _box(xc - w / 2 - 5.0, xc + w / 2 + 5.0, y_in, y_out + 5.0, z_bar_top, z_top)
-    foot = _box(CROSS7_GUIDE_X - 10.0, CROSS7_GUIDE_X + 10.0, y_in, y_out + 5.0, z_bar_top, z_bar_top + 6.0)
+    foot = _box(CROSS7_GUIDE_X - 10.0, CROSS7_GUIDE_X + 10.0, y_in, y_out + 5.0 + GUIDE7_TAB, z_bar_top, z_bar_top + 6.0)   # tab outboard of the cheek
     body = cheek.union(foot)
     body = body.cut(_box(xc - w / 2, xc + w / 2, y_in - 0.01, y_out, z_seat, z_top + 1))
     body = body.cut(_box(xc - w / 2 - GUIDE7_RELIEF, xc + w / 2 + GUIDE7_RELIEF, y_in - 0.01, y_out, z_seat, z_seat + 8.0))
@@ -201,9 +201,17 @@ def guide_v7(z_bar_top: float, z_seat: float, z_top: float, shoe_x: float, shoe_
     else:
         seat = cq.Workplane("XY").add(cq.Solid.makeCone(nd / 2 + 0.3, 0.0, nd / 2 + 0.3, cq.Vector(xc, shoe_yc, z_seat + 0.01), cq.Vector(0, 0, -1)))
     body = body.cut(seat)
-    for dx in (-6.0, 6.0):                                     # two M5 down into T-nuts in the bar's top slot
-        body = body.cut(_cyl(2.75, 8.0, CROSS7_GUIDE_X + dx, (y_in + y_out + 5.0) / 2, z_bar_top - 1.0))
+    for dx in (-6.0, 6.0):                                     # two M5 x 12 through the tab down into T-nuts in the bar's top slot
+        body = body.cut(_cyl(2.75, 8.0, CROSS7_GUIDE_X + dx, guide7_screw_y(shoe_yc), z_bar_top - 1.0))
     return body
+
+
+GUIDE7_TAB = 12.0                     # the guide's foot runs this far outboard of its cheek, where its two screws can be reached
+
+
+def guide7_screw_y(shoe_yc: float) -> float:
+    """|y| (about the station's centre) of a guide's two screws: on the foot's tab, outboard of the cheek."""
+    return shoe_yc + 5.5 + 5.0 + GUIDE7_TAB / 2
 
 
 # ---------------------------------------------------------------- 4. the balance: a base and a draft cage

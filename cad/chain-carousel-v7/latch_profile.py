@@ -50,7 +50,14 @@ from params import (AUGER_LEN, P, CHAIN_L, HINGE_W, HINGE_X, KC4_A, KC4_B, KC4_C
                     LATCH_TRAVEL, LATCH_Y6, LOOP_B, LOOP_Y, LUG_T, LUG_U4, N_LINKS, PIN_CBORE, R, RUN_DIRECTION, SHELF6,
                     SIDE_GAP, Z_BOT, Z_TOP)
 
+V7 = (SRC / "parts7.py").exists()             # v7: the same latch with its spring pocket fixed (carrier 8 mm, channel to x 277.5)
+if V7:
+    import parts7 as P7                       # noqa: E402
+    from params import LATCH7_CARRIER_X1, LATCH7_CHANNEL_X1, LATCH7_MANUAL, LATCH7_SPRING, SHELF7   # noqa: E402
+    LATCH6_MANUAL, SHELF6, LATCH_SPRING = LATCH7_MANUAL, SHELF7, LATCH7_SPRING[:3]   # noqa: F811
+
 OUT = HERE / "renders" / "v7"
+VER = "v7" if (SRC / "parts7.py").exists() else "v6"      # outputs: latch_profile_v7.* (v7's latch) or latch_profile_v6.*
 OUT.mkdir(parents=True, exist_ok=True)
 Y0 = LATCH_Y6                                  # the section plane, Sam y
 K0 = 0                                         # carriage 1
@@ -134,24 +141,26 @@ REF = L.reference_parts()
 SAM_C = np.linalg.inv(L.SAM_IN_CARRIAGE)       # carriage frame -> Sam frame (on the same carriage)
 MOD = {                                        # move with the module (tilt about the hinge)
     "plate": solid_of(REF["sam_mounting_plate"]),
-    "magnet": [xform(solid_of(P6.kc6_magnet()), L.T(None, (x, y, -18.0))) for (x, y) in (KC4_A, KC4_B, KC4_C)],
+    "magnet": ([xform(solid_of(P6.kc6_magnet()), L.T(None, xyz)) for xyz in P7.plate7_magnet_bases()] if V7 else
+               [xform(solid_of(P6.kc6_magnet()), L.T(None, (x, y, -18.0))) for (x, y) in (KC4_A, KC4_B, KC4_C)]),
 }
 AUGER = xform(solid_of(REF["auger"]), L.AUGER_IN_SAM)
 CAP = xform(solid_of(REF["auger_cap"]), L.AUGER_IN_SAM @ L.T(None, (0, 0, AUGER_LEN)))
-CARRIAGE = xform(solid_of(P6.carriage_v6()), SAM_C)
+CARRIAGE = xform(solid_of(P7.carriage_v7() if V7 else P6.carriage_v6()), SAM_C)
 PINS = []
 for su in (-1, 1):
     u_head = su * (LUG_U4 + LUG_T - PIN_CBORE[1])
     PINS.append(xform(solid_of(L.shape("clevis_pin")), SAM_C @ L.T(L.Ry(su * math.pi / 2), (u_head, HINGE_W, HINGE_X))))
-BOLT = solid_of(P6.latch_bolt_v6())
+BOLT = solid_of(P7.latch_bolt_v7() if V7 else P6.latch_bolt_v6())
 k0, k1 = KEEPER6_X
 d_pin, l_pin, z_pin = LATCH6_PIN
+l_pin = (P7.LATCH7_CARRIER[0] + 2.0 - (k1 - LATCH6_ENGAGE)) if V7 else l_pin
 PIN = solid_of(P6._cyl_x(d_pin / 2, k1 - LATCH6_ENGAGE, k1 - LATCH6_ENGAGE + l_pin, LATCH_Y6, z_pin).edges("<X").chamfer(0.5))
 FOLLOWER = solid_of(P6.latch_follower_v6())
 CAM_STATION = solid_of(L.shape("latch_rail"))  # in the station's Sam frame (layout places it at sam_frame(station, 0))
-C1 = P6.LATCH6_CARRIER[1]                      # carrier's back face, closed
-SPRING_SEAT = LATCH6_HOUSING_X[1] - 3.0        # the housing channel's back wall (latch_housing_v6: x1 - 3)
-SPRING_SOLID = 6 * 0.3                         # the stand-in spring (P3.spring(.., 0.3, 5)): 6 rings of 0.3 mm wire
+C1 = LATCH7_CARRIER_X1 if V7 else P6.LATCH6_CARRIER[1]                 # carrier's back face, closed
+SPRING_SEAT = LATCH7_CHANNEL_X1 if V7 else LATCH6_HOUSING_X[1] - 3.0     # the housing channel's back wall
+SPRING_SOLID = LATCH7_SPRING[3] if V7 else 6 * 0.3                       # v6's stand-in spring: 6 rings of 0.3 mm wire
 SPRING_FREE, SPRING_RATE = LATCH_SPRING[1], LATCH_SPRING[2]
 
 
@@ -377,7 +386,7 @@ def render(fr: Frame, path=None):
     fig = plt.figure(figsize=(16, 9), dpi=100)
     fig.patch.set_facecolor("white")
     fig.text(0.012, 0.965, fr.title, fontsize=17, fontweight="bold", va="center")
-    fig.text(0.988, 0.965, "chain carousel v7 latch (unchanged from v6) · PR #185 · section on the latch plane", fontsize=9,
+    fig.text(0.988, 0.965, ("chain carousel v7 latch (v6's, spring pocket fixed)" if V7 else "chain carousel v6 latch") + " · PR #185 · section on the latch plane", fontsize=9,
              color=(0.45, 0.45, 0.45), ha="right", va="center")
     ax_o = fig.add_axes([0.01, 0.50, 0.60, 0.43])
     ax_c = fig.add_axes([0.01, 0.02, 0.60, 0.46])
@@ -502,7 +511,7 @@ def story() -> list:
     hold(Frame(T1 + " (bottom run)", t1b, shift=SHIFT_IN + 3.0, arrows=(False, False)), 3.0)
     T2 = "2. Indexing into the station: the cam opens the latch"
     t2 = wrap("As the carriage indexes in, the follower meets the station's fixed cam (25° ramps) and the bolt is drawn back "
-              "4.5 mm, with no human input. The pin leaves the keeper, but the shelf is still 3.5 mm under it: the module now "
+              f"4.5 mm, with no human input. The pin leaves the keeper, but the shelf is still {SHELF6[0] - LATCH_TRAVEL:.1f} mm under it: the module now "
               "rests on its own carriage.")
     n = int(4.0 * fps)
     for i in range(n + 1):
@@ -528,7 +537,7 @@ def story() -> list:
         hold(Frame(T4, t4, shift=s, lo=lo_at(s), arrows=None), 1 / fps)
     hold(Frame(T4, t4, shift=-(SHIFT_IN + 1.0), lo=0.0, arrows=(False, False)), 1.5)
     T5 = "5. By hand only (maintenance): the shelf clears, the plate can swing OUT"
-    t5 = wrap("The only way the outward direction opens: push the bolt back 10 mm by hand (with the follower) and the shelf "
+    t5 = wrap(f"The only way the outward direction opens: push the bolt back {LATCH6_MANUAL:.0f} mm by hand (with the follower) and the shelf "
               "clears the keeper too, so the plate can swing out, away from the carriage, to come off. It is the same bolt "
               "pushed further, not a second pin.\n\nNothing in normal running needs the outward swing, so a fixed stop in "
               "place of this position would be the more robust choice Sam mentions.")
@@ -563,7 +572,7 @@ def main():
               "station": next(f for f in frames if f.title.startswith("2.") and f.dims),
               "by_hand": [f for f in frames if f.title.startswith("5.") and f.tilt < -7.9][0]}
     for name, f in stills.items():
-        render(f, OUT / f"latch_profile_v7_{name}.png")
+        render(f, OUT / f"latch_profile_{VER}_{name}.png")
         print("still", name, flush=True)
     if ARGS.preview:
         return
@@ -579,7 +588,7 @@ def main():
         last_key, last_img = key, img
         if i % 25 == 0:
             print(f"frame {i}/{len(frames)}", flush=True)
-    mp4 = OUT / "latch_profile_v7.mp4"
+    mp4 = OUT / f"latch_profile_{VER}.mp4"
     with imageio.get_writer(mp4, fps=ARGS.fps, codec="libx264", quality=8, macro_block_size=8, pixelformat="yuv420p") as w:
         for im in imgs:
             w.append_data(im)
@@ -602,7 +611,7 @@ def main():
             continue
         gif_frames.append(im.quantize(palette=pal, dither=Image.Dither.NONE))
         durs.append(1000.0 / ARGS.fps)
-    gif = OUT / "latch_profile_v7.gif"
+    gif = OUT / f"latch_profile_{VER}.gif"
     gif_frames[0].save(gif, save_all=True, append_images=gif_frames[1:], duration=[int(d) for d in durs], loop=0, optimize=True)
     print("wrote", mp4, gif, f"{gif.stat().st_size / 1e6:.1f} MB", flush=True)
 
