@@ -8926,6 +8926,249 @@
   },
   "notes": "Handbook (#163) property values, not same-jar measurements; n = 12; leave-one-powder-out throughout, with selection and tuning nested inside each fold."
  },
+ "campaign-as-data": {
+  "run": "campaign-as-data",
+  "code": "own numpy",
+  "version": "2.5.4",
+  "status": "ran",
+  "wall_s": 1.0,
+  "inputs": {
+   "campaign": "salt-20260929T014732Z",
+   "doses": 60,
+   "modes": {
+    "screen": 22,
+    "recenter": 6,
+    "bo": 14,
+    "validation": 18
+   },
+   "sam_fingerprint_run": "20260821T192031Z_salt"
+  },
+  "campaign_cost": {
+   "first_dose_utc": "2026-09-29T01:47:34.670064+00:00",
+   "last_dose_utc": "2026-10-06T04:20:35.801265+00:00",
+   "sum_dose_time_min": 153.3,
+   "auger_rev_total": 248.8,
+   "dosed_mass_total_g": 30.09,
+   "taps_total": 2467
+  },
+  "bulk_model": {
+   "n_doses": 58,
+   "formula": "log10(mg/rev) = a + b (tilt - 27.5) + c log10(rpm/30) + d [bulk cadence taps]",
+   "coef": {
+    "a": 2.1145191178574816,
+    "b_per_deg": 0.0050139969589244465,
+    "c": -0.4168950380570075,
+    "d_tap": -0.039370990952561635
+   },
+   "se": {
+    "a": 0.01676008883193112,
+    "b_per_deg": 0.0011691968370572037,
+    "c": 0.032802634593825555,
+    "d_tap": 0.0223678180849413
+   },
+   "resid_sd_log10": 0.07634615868029035,
+   "resid_sd_pct": 19.21918776655238,
+   "loo_rmse_log10": 0.08062548336648503,
+   "first_half_predicts_second_rmse_log10": 0.10421594510030174,
+   "first_half_predicts_second_bias_log10": -0.09001934437307715,
+   "resid_slope_per_dose_log10": -0.0017553534965204344,
+   "speed_exponent_alpha": 0.5831049619429924,
+   "speed_exponent_90": [
+    0.5291446280361494,
+    0.6370652958498355
+   ],
+   "predictions": {
+    "tilt22p5_30rpm": {
+     "mg_rev": 122.87092650231897,
+     "mean_90": [
+      114.75557425896007,
+      131.56018500216325
+     ],
+     "single_90": [
+      91.28540502225158,
+      165.38530530546683
+     ]
+    },
+    "tilt45_30rpm_extrapolated": {
+     "mg_rev": 159.31771341753344,
+     "mean_90": [
+      144.50987121191392,
+      175.64290657605073
+     ],
+     "single_90": [
+      117.41433668178364,
+      216.1757629085959
+     ]
+    },
+    "tilt0_30rpm_extrapolated": {
+     "mg_rev": 94.76199636365575,
+     "mean_90": [
+      82.35879411959932,
+      109.03311602383621
+     ],
+     "single_90": [
+      68.71434840418814,
+      130.68356410810688
+     ]
+    },
+    "tilt22p5_15rpm": {
+     "mg_rev": 164.03897410601436,
+     "mean_90": [
+      150.052514515917,
+      179.32911762634455
+     ],
+     "single_90": [
+      121.20737886270673,
+      222.00616231651708
+     ]
+    },
+    "tilt22p5_90rpm": {
+     "mg_rev": 77.72122720510369,
+     "mean_90": [
+      72.30759726161973,
+      83.54017263789852
+     ],
+     "single_90": [
+      57.68928011804756,
+      104.7090403261525
+     ]
+    }
+   }
+  },
+  "sam_salt_fingerprint": {
+   "run_id": "20260821T192031Z_salt",
+   "mg_rev_0": 38.0,
+   "mg_rev_22p5": 146.48,
+   "mg_rev_45": 265.17,
+   "rsd_pct_22p5": 18.3,
+   "mg_rev_15rpm": 159.8,
+   "mg_rev_45rpm": 141.6,
+   "mg_rev_90rpm": 106.4,
+   "speed_exponent": 0.784,
+   "mg_per_tap_0": 8.98,
+   "pooled_mg_rev_0_22p5_45": [
+    36.15,
+    160.92,
+    247.8
+   ],
+   "pooled_mg_per_tap_22p5": 0.91
+  },
+  "comparison": {
+   "mg_rev_22p5_30rpm": {
+    "campaign": 122.87092650231897,
+    "sam": 146.48,
+    "sam_pooled_two_runs": 160.92
+   },
+   "mg_rev_45_30rpm": {
+    "campaign_extrapolated": 159.31771341753344,
+    "sam": 265.17,
+    "sam_pooled_two_runs": 247.8
+   },
+   "mg_rev_0_30rpm": {
+    "campaign_extrapolated": 94.76199636365575,
+    "sam": 38.0
+   },
+   "speed_exponent": {
+    "campaign": 0.5831049619429924,
+    "sam": 0.784
+   }
+  },
+  "interaction_model": {
+   "tilt_x_log10rpm": -0.009652557583157084,
+   "se": 0.0029684389985418767,
+   "resid_sd_log10": 0.0703631375326678,
+   "mg_rev_22p5_30rpm": 116.64656300377962,
+   "speed_exponent_at_15deg": 0.7709452902968197,
+   "speed_exponent_at_40deg": 0.5296313507178927
+  },
+  "fill_level": {
+   "resid_change_log10_per_10g_dosed": -0.0352212372013776,
+   "corr": -0.4171160151346989,
+   "cup_load_max_g": 29.5921
+  },
+  "same_settings_by_day": {
+   "corner-09 settings (40 deg, 20 rpm, bulk taps)": {
+    "2026-09-29": {
+     "n": 3,
+     "mean_mg_rev": 195.0123809024252,
+     "cv_pct": 12.459720053729788
+    },
+    "2026-10-06": {
+     "n": 8,
+     "mean_mg_rev": 161.0889758391749,
+     "cv_pct": 6.455568094896134
+    }
+   },
+   "bo-005 settings (40 deg, 100 rpm, bulk taps)": {
+    "2026-09-29": {
+     "n": 9,
+     "mean_mg_rev": 85.39784471755206,
+     "cv_pct": 10.499642180888708
+    },
+    "2026-10-06": {
+     "n": 8,
+     "mean_mg_rev": 73.67029395925522,
+     "cv_pct": 8.683194212962274
+    }
+   }
+  },
+  "firmware_rev_count": {
+   "note": "rpm x whole seconds of spin (1 s clock)",
+   "median_abs_err_pct": 8.218716934341066,
+   "max_abs_err_pct": 24.67493765586035
+  },
+  "trickle_check": {
+   "n": 37,
+   "tilt_range": [
+    10.0,
+    30.0
+   ],
+   "rpm_range": [
+    3.893098859315592,
+    12.32003009781791
+   ],
+   "median_resid_log10": -0.07154211105371466,
+   "rmse_log10": 0.15716633179362402
+  },
+  "afterflow": {
+   "n_bulk_stops": 58,
+   "tau_median_s": 0.8717895863261567,
+   "tau_iqr_s": [
+    0.7661260344241728,
+    1.151575918379149
+   ],
+   "campaign_refit_tau_s": 0.834
+  },
+  "taps": {
+   "doses_with_tap_phase": 48,
+   "taps_total": 2467,
+   "mg_per_tap_median_over_doses": 1.1180499999999993,
+   "mg_per_tap_range": [
+    0.1832,
+    7.339999999999991
+   ],
+   "zero_release_fraction_median": 0.011111111111111112,
+   "spearman_mg_per_tap_vs_tap_tilt": 0.2542336083369518
+  },
+  "coverage": {
+   "bulk_tilt_range": [
+    15.0,
+    40.0
+   ],
+   "bulk_rpm_range": [
+    20.0,
+    100.0
+   ],
+   "bo_doses": 14,
+   "bo_frac_tilt_ge_38": 0.7857142857142857,
+   "bo_frac_rpm_ge_90": 0.5714285714285714
+  },
+  "key_results": {
+   "campaign mg/rev at 22.5 deg, 30 rpm (Sam: 146)": 122.9,
+   "speed exponent (Sam: 0.78)": 0.58,
+   "bulk points": 58
+  }
+ },
  "cfd-dem": {
   "id": "cfd-dem",
   "method": "coupled CFD-DEM (unresolved, volume-averaged gas + soft-sphere DEM, two-way momentum coupling)",

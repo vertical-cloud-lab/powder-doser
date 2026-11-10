@@ -52,6 +52,7 @@ attempt to run **all** of the methods found.
 | 31 | PINN (extra) | [`surrogate-pinn`](runs/surrogate-pinn) | PyTorch | ran | Janssen stress: forward error ≤ 3.3 %; inverse K·μ<sub>w</sub> 0.199 ± 0.004 (truth 0.2) |
 | 32 | Follow-up: held-out powders | [`heldout-powders`](runs/heldout-powders) | LIGGGHTS 3.8 + numpy | ran | #180 twin vs Sam's salt with no fit: 286 vs 265 mg/rev (45°), 138 vs 146 (22.5°). Literature AoR → DEM path → mg/rev predicts held-out powders as well as an AoR regression (RMSE 0.71 vs 0.74 log₁₀), not better |
 | 33 | Follow-up: ML, properties ⇄ dosing | [`ml-property-dose`](runs/ml-property-dose) | scikit-learn | ran | Leave one powder out, 12 powders: the fingerprint predicts AoR (RMSE 3.0–3.5°, mean 5.9°) and nothing else; AoR predicts flow / no flow (11/12) and mg/rev within 0.74 log₁₀; adding the other handbook properties makes every model worse |
+| 34 | Follow-up: BO campaign doses as data | [`campaign-as-data`](runs/campaign-as-data) | numpy | ran | The 60 salt campaign doses give 58 bulk mg/rev values (15–40°, 20–100 rpm; ±19 % per dose), 2,467 taps and 58 afterflow events. They don't reproduce the August fingerprint (123 vs 146 mg/rev at 22.5°, speed exponent 0.58 vs 0.78), so each campaign needs its own fingerprint block ([`PLAN.md`](runs/campaign-as-data/PLAN.md)) |
 
 One family has no run of its own: **coarse-grained DEM** (family 5). It is used inside runs 11, 13, 14 and 17, where grains were scaled up 2.9–4×.
 
@@ -101,6 +102,25 @@ the properties, the dose outcome. Details, tables and figures: [`runs/ml-propert
 - **Recipe:** one row per jar with same-jar labels; powders chosen to break the confounds (sieved fractions, one
   powder dry and humid, metal powders near the flow / no-flow step) up to 25–30 jars; models no bigger than the
   data; no-flow treated as censored; prospective, pre-registered tests; the DEM as prior or latent model.
+
+## Follow-up: can BO campaigns collect training data too? (run 34)
+
+Asked on #196 (10 Nov 2026): would dosing data from BO campaigns on every powder also serve the simulation and the
+ML models? Details: [`runs/campaign-as-data/`](runs/campaign-as-data/); the draft workflow is
+[`PLAN.md`](runs/campaign-as-data/PLAN.md).
+
+- **The salt campaign's own doses** (#166, 60 doses with telemetry) give 58 bulk-phase mg/rev values over 15–40°
+  and 20–100 rpm, 37 trim-phase values, 2,467 taps and 58 afterflow events, at no extra cost. A four-term model
+  fits them to ±19 % per dose.
+- **They don't stand in for the fingerprint.** 123 mg/rev at 22.5° and 30 rpm against Sam's 146 (August), a speed
+  exponent of 0.58 against 0.78, and wrong extrapolations to 0° and 45°. The same settings delivered 14–17 % less a
+  week later, and the misfit fell about 8 % per 10 g dosed out of the hopper. The BO put 11 of its 14 doses in one
+  corner of the box.
+- **Bug found:** the firmware counts bulk revolutions with a one-second clock (median error 8 %, up to 25 %).
+- **Draft:** run each campaign as a session on one jar: #205 tests, an opening fingerprint, a 22-dose screen that
+  is identical for every powder, the BO, validation repeats, a closing fingerprint and a same-day salt reference.
+  About 5–6 h per jar, half unattended. The fingerprint and tests feed the property predictor, the fixed screen the
+  forward dose-outcome model, the BO doses the multi-task GP, and all of it the DEM.
 
 ## What the Edison answers add
 

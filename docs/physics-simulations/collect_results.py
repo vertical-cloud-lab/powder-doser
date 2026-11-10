@@ -27,6 +27,8 @@ ORDER = [
     "heldout-powders",
     # follow-up: machine-learning models between properties and dosing
     "ml-property-dose",
+    # follow-up: a BO campaign's own doses as training data
+    "campaign-as-data",
 ]
 
 
