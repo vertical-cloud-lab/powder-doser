@@ -587,7 +587,7 @@ GUIDE7_RELIEF = 0.5
 # --- the balance (Sam: "None of the scales we've seen or used have the large module at the back") ---------------------
 # A base and a draft cage, nothing behind the cage over the base's height. The cage keeps v5's HR-202i chamber (183 x 164.5
 # x 250 over the pan, pan 86.5 behind the front glass), so the pan, the beaker and the dose height are v5's; the depth over
-# the base is 253 mm, the HR-100A's. The top door is replaced by a dosing lid with a hole under the dose point (the single
+# the base is 263 mm (the HR-100A's is 253). The top door is replaced by a dosing lid with a hole under the dose point (the single
 # doser's AutoTrickler-lid idea): the exit is on the hinge axis, so the stream falls through the same hole at every tilt.
 BAL7_FRAME, BAL7_GLASS = 7.0, 4.0
 BAL7_BACK_X = 78.0 + BAL7_GLASS + BAL7_FRAME + 3.0      # the base's back, from the pan centre (92)

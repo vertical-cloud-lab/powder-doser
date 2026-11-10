@@ -219,7 +219,7 @@ def balance_v7(door_left: float = 0.0, door_right: float = 0.0) -> dict[str, cq.
     """An analytical balance as Sam describes the lab's (2026-11-10): the weighing base and the draft cage on it, nothing
     behind the cage over the base's height. Frame as parts5.hr202i: origin on the bench under the pan's centre, x from the
     display (front, -x) back, y across, z up. The chamber, pan and display are v5's HR-202i numbers (183 x 164.5 inside, 250
-    over the pan, pan 90 at z 50, 86.5 behind the front glass), so the beaker and the fall are v5's; 200 wide, 253 deep over
+    over the pan, pan 90 at z 50, 86.5 behind the front glass), so the beaker and the fall are v5's; 200 wide, 263 deep over
     the base, 311 tall (the HR-100A is 198 x 253 x 315). The top door is replaced by a dosing lid: 3 mm acrylic with a 30 mm
     hole on the pan's axis and a printed collar. Side doors slide back (+x) by the given mm."""
     W = HR2_W

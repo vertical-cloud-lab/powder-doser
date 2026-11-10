@@ -23,7 +23,7 @@ HERE = Path(__file__).resolve().parent
 V = "verified 2026-10-18"
 # v5: the balance, checked against A&D's HR-i manual (p.59-60) and A&D Japan's DXF on 2026-11-04 (README, "The balance")
 HR202I_DESC = ("Analytical balance, 0.1 mg (v7: drawn as a weighing base and a draft cage with nothing tall behind the cage, as Sam "
-               "describes the lab's balances; v5's HR-202i chamber, pan and dose height, 200 x 253 x 311 mm, about the lab's HR-100A's "
+               "describes the lab's balances; v5's HR-202i chamber, pan and dose height, 200 x 263 x 311 mm, close to the lab's HR-100A's "
                "198 x 253 x 315), RS-232C (2400 7E1): under the station, its pan under the dose point, on the bench (it touches nothing of "
                "the doser). Counted as the lab's, as asked. A new HR-202i (220 g x 0.1 mg) was $2,989 at MNM Scales (out of stock, "
                "2026-11-04; A&D's replacement is the GH-202)")
