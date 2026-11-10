@@ -1,0 +1,6 @@
+Wrote /tmp/meta-cad-eval/trough.3dm: ok=True, size=10335 bytes
+Re-read ok, objects=4
+  - Extrusion       bbox min=-12.0,-40.0,-12.559211202010548  max=12.559211202010548,0.0,1.1762056839547337
+  - Extrusion       bbox min=-10.4,-40.0,-10.884649708409135  max=10.884649708409137,0.0,1.0193782594274232
+  - LineCurve       bbox min=0.0,-2.0,16.0  max=0.0,42.0,16.0
+  - TextDot         bbox min=0.0,20.0,-17.0  max=0.0,20.0,-17.0

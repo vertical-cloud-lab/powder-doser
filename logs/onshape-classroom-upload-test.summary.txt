@@ -1,0 +1,12 @@
+# onshape classroom-upload-test summary  2026-05-20T06:03Z
+BASE                 = https://cad.onshape.com
+target document name : 'Powder Doser — classroom upload test'  (created)
+owner config         : name='Vertical Cloud Lab' type=1
+public config        : True
+verified public      : True
+verified owner.type  : 1
+verified owner.name  : 'Vertical Cloud Lab'
+verified permission  : 'OWNER'
+test STEP            : cad/meta-tools/zoo-output/classroom-upload-test/test_part.step (34485 bytes)
+uploaded element(s)  : 1
+document URL (redacted): https://cad.onshape.com/documents/<did>/w/<wid>
