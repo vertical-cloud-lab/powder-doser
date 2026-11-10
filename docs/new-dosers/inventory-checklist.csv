@@ -1,14 +1,16 @@
 ﻿Category,Item,Part number / source,Per doser,Need for 25,Status in PR #115 (as of 2026-10-02),On hand,Short,Notes
-Printed (A1 mini),Mounting plate (with both 28T tilt gears),Fusion https://a360.co/4xXUj8L,1,25,Print in-house,,,"149.5 x 108.2 x 54.7 mm, one per A1 mini plate"
-Printed (A1 mini),Auger bracket,Fusion https://a360.co/46XtYN1,2,50,Print in-house,,,
-Printed (A1 mini),Tap collar,Fusion https://a360.co/4AIIgyz,1,25,Print in-house,,,
-Printed (A1 mini),Tap-collar base (hard stop),PR #170 components/ai-step/tap-collar-base.step (PR #51),1,25,Print in-house,,,
-Printed (A1 mini),Auger cap,Fusion https://a360.co/4w9kRE5,1,25,Print in-house,,,
-Printed (A1 mini),Servo pinion 14T,Fusion https://a360.co/4dcGSdF,2,50,Print in-house,,,
-Printed (A1 mini),Stepper pinion 20T,Fusion https://a360.co/4yqSHFz,1,25,Print in-house,,,
-Printed (H2D),Baseplate,Fusion https://a360.co/4AOA7sI,1,25,Print in-house,,,"190 mm long, too big for the A1 mini; 2 per H2D plate"
-Printed (H2D),Auger (threaded storage),Fusion https://a360.co/4y1oz2H,1,25,Print in-house,,,"250 mm tall, too big for the A1 mini; label each with a 6-character ID (#134)"
-Printed,PLA filament (1 kg spools),about 274 g per doser,,8,Thought to be on the original order; not on the 2026-09-24 missing list,,,"About 6.9 kg for 25, plus failures"
+Printed (A1 mini),Mounting plate (one piece with both 28T tilt gears and links),https://cad.onshape.com/documents/53e9cce7f09a50f89c120028 (#193),1,25,Print in-house,,,150.4 x 108.2 x 55.3 mm; one per A1 mini plate. Print as one part
+Printed (A1 mini),Flexible bracket (C-clip) for the auger,https://cad.onshape.com/documents/5e6db88e8a8d5328b172ba6d (#193),2,50,Print in-house,,,Replaces the old split-clamp auger bracket
+Printed (A1 mini),Tap collar,https://cad.onshape.com/documents/b0b9aed3e11591e566530a68 (#193),1,25,Print in-house,,,
+Printed (A1 mini),Tap-collar base (hard stop),PR #170 components/ai-step/tap-collar-base.step (PR #51); the #193 assembly uses this file,1,25,Print in-house,,,
+Printed (A1 mini),Auger cap,Fusion https://a360.co/4w9kRE5; the #193 assembly uses this file,1,25,Print in-house,,,
+Printed (A1 mini),Servo pinion 14T,https://cad.onshape.com/documents/35ecacf511109e3b823b3ed0 (#193),2,50,Print in-house,,,
+Printed (A1 mini),Stepper pinion 20T,https://cad.onshape.com/documents/0401d55bca2deb006cc69926 (#193),1,25,Print in-house,,,Check it meshes with the auger's 44T gear before printing 25: in #193 it is module 1.3 (tip 28.7 mm) and the auger gear is module 1.0
+Printed (A1 mini),"Stand bracket, side (1 left + 1 right)",https://cad.onshape.com/documents/3493a07ffbb9b140e0fcdf21 (#193),2,50,Print in-house,,,116 x 74.3 x 25 mm. Left and right are separate tabs (mirror images)
+Printed (H2D),"Stand bracket, back",https://cad.onshape.com/documents/6cb5182c1e0e0193cfea81bb (#193),1,25,Print in-house,,,212.9 x 72 x 25 mm: too long for the A1 mini
+Printed (H2D),Base (stand),https://cad.onshape.com/documents/68b18e694d8672d95f496279 (#193),1,25,Print in-house,,,190 x 190 x 52.2 mm: too big for the A1 mini. Replaces the Fusion baseplate
+Printed (H2D),"Auger (threaded storage, 44T gear)",https://cad.onshape.com/documents/51aa3e7d16cc046d79714a7a (#193),1,25,Print in-house,,,250 mm tall. 0.4 mm nozzle at most (#193). Label each with a 6-character ID (#134)
+Printed,PLA filament (1 kg spools),about 420 g per doser,,12,Thought to be on the original order; not on the 2026-09-24 missing list,,,"About 10.5 kg for the #193 parts x 25, plus failures (estimated from part volumes)"
 Motion,MG996R servo,DigiKey FXX-3037-TOP or TowerPro MG996R,2,50,On the DigiKey re-order (check placed/arrived),,50,
 Motion,NEMA-11 stepper,StepperOnline 11HS18-0674S,1,25,Arrived x25 (2026-09-15),25,,
 Motion,Push-pull solenoid 12 V,Adafruit 412,1,25,Arrived x25,25,,
@@ -28,16 +30,15 @@ Electronics,12 V 5 A power brick,Mean Well GST60A12-P1J,1,25,On the DigiKey re-o
 Electronics,AC cord for the brick,Mean Well YP12-YC12,1,25,On the DigiKey re-order,,,
 Electronics,Wiring (stepper lead to board; servo/solenoid/ERM leads),Ask William what the BYU boards use,,,Not on any order,3,,
 Electronics,USB cable for the Pico,Micro-USB,1,25,Not on any order,,,
-Fasteners,#10 x 1-1/4 in pan head wood screw,McMaster 93360A609,6,150,Not on the 2026-10-02 list,,,Baseplate to the board
-Fasteners,M3 x 14 socket head screw,McMaster 91292A027,10,250,M3/M5 missing (2026-09-24),,,
-Fasteners,M3 nylon-insert locknut,McMaster 93625A100,16,400,M3/M5 missing,95,,
-Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,Servo pinions
-Fasteners,M5 x 45 button head screw,McMaster 92095A223,2,50,M3/M5 missing,,,Hinge
-Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,Hinge
-Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,,,Stepper
-Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,,,Tap-collar base
-Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,Tap-collar base
-Fasteners,M3 hex nut,McMaster 91828A211,1,25,M3/M5 missing,,,
-Fasteners,M3 x 20 button head screw,McMaster 92095A185,5,125,M3/M5 missing,,,Brackets and tap-collar clamp
-Fasteners,M3 x 5 socket head screw,McMaster 91292A110,2,50,M3/M5 missing,,,Solenoid; if its ears are clearance holes use M3 x 8 + locknut
-Mounting,Board 38 mm (1.5 in) thick,"Any flat board, at least 250 x 220 mm",1,25,Not on any order,,,
+Fasteners,M3 x 14 socket head screw,McMaster 91292A027,8,200,M3/M5 missing (2026-09-24),20,180,Servos to the base's posts. The old bracket clamps' 2 are gone
+Fasteners,M3 nylon-insert locknut,McMaster 93625A100,15,375,M3/M5 missing,95,280,"Every M3 nut is a locknut: servos 8, C-clip brackets 4, tap-collar base 2, tap-collar clamp 1"
+Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,"Servo pinions, into the servo shaft"
+Fasteners,M5 x 40 button head screw,"McMaster 92095A series, M5 x 0.8 x 40 mm (look up the number; the x 45 was 92095A223)",2,50,M3/M5 missing,0,50,Hinge. Was M5 x 45; the 2 x 45 bought before the change aren't counted
+Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,"Hinge, outside each 28T gear"
+Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,8,92,Stepper to the plate
+Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,2,23,"Tap-collar base, plain hole"
+Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,"Tap-collar base, countersunk hole"
+Fasteners,M3 x 20 button head screw,McMaster 92095A185,5,125,M3/M5 missing,10,115,"C-clip brackets to the plate (4), tap-collar clamp (1)"
+Fasteners,M3 x 5 socket head screw,McMaster 91292A110,2,50,M3/M5 missing,4,46,Solenoid to the tap collar; if its ears are clearance holes use M3 x 8 + locknut
+Fasteners,"Stand bolt with nut, for 7 mm holes (1/4-20 or M6, about 25 mm long)",Size not chosen yet: match what the bench rig's stand uses,11,275,Not on any order,,,"Legs to stand brackets 6, stand brackets to the base 5 (as mated in #193). Each joint clamps 15.5 to 16 mm"
+Mounting,"Wood leg, 9.5 x 59 x 250 mm (3/8 in board)",https://cad.onshape.com/documents/659ee3322c5c9c9ce8146b43 (#193),3,75,Not on any order,,,"Cut in-house. Two 7 mm holes 40 mm apart, 17.5 mm from one end. Replaces the 38 mm board"
