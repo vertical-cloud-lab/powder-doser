@@ -282,9 +282,11 @@ the numbers).
     two of them.
 - **Erlenmeyer necks can't catch three outlets.** The outlets lie on a
   Ø40.8 (0°) to Ø64 mm (90°) circle. DURAN's necks are 34 mm (250 and
-  500 mL), 42 mm (1 L) and 50 mm (wide neck). So an Erlenmeyer needs a
-  funnel in its neck. An 80 mm, 60° powder funnel stands 29–43 mm above the
-  neck, and its mouth is too wide for the window, so it sits under the shelf.
+  500 mL), 42 mm (1 L) and 50 mm (wide neck). Only the wide neck (about
+  46 mm inside) is wider than the circle, and only up to about 39° of tilt,
+  before allowing for each stream's own width. So plan on a funnel in the
+  neck. An 80 mm, 60° powder funnel stands 29–43 mm above the neck. Its
+  mouth is too wide for the window, so it sits under the shelf.
 
 Stand height (bench to the shelf's underside) for some vessels on a 100 mm
 stir plate (a placeholder; add or subtract the difference for yours, and
@@ -303,6 +305,12 @@ take 100 mm off for a vessel on the bench):
 Erlenmeyer sizes are DURAN's catalogue dimensions (ISO 1773 narrow neck, ISO
 24450 wide neck); beakers are ISO 3819 low form. The stand legs, hangers,
 stir plate (150 × 150 × 100 mm), riser and funnel are placeholders.
+
+**The stir plate on the shortest stand** stands among the actuators' lower
+ends, which come within 99.6 mm of the axis there. So it has to fit in a
+199 mm circle, or between two actuators. The 150 × 150 mm placeholder clears
+them by 6.2 mm (a P16 at 90°). From a 319 mm stand up, the actuators end
+above a 100 mm stir plate, so its footprint no longer matters.
 
 ![Room under the tri-star](renders/b2_clearance.png)
 

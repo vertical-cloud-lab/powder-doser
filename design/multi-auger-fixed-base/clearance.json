@@ -284,5 +284,13 @@
    "funnel_rise": 29.4,
    "gap_to_90deg_outlets": 33.6
   }
- ]
+ ],
+ "stir_plate_check": {
+  "stand": 217.0,
+  "actuators_within_r_below_plate_top": 99.6,
+  "placeholder_gap": 6.2,
+  "between": "stir plate / C:P16 body",
+  "at_tilt": 90,
+  "stand_with_actuators_above_plate": 319.0
+ }
 }

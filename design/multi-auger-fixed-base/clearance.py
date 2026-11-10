@@ -179,6 +179,35 @@ def stir_plate(z_top):
             D.Part("stir plate top", top, np.eye(4), (0.92, 0.92, 0.92), "fixed")]
 
 
+def stir_plate_check(sp, lv, tilts=range(0, 91, 10)):
+    """On the shortest stand the stir plate stands among the actuators' lower ends: how close they
+    come to the axis below the plate's top, and to the placeholder plate itself, over 0..90 deg."""
+    S = lv["S_min"]
+    zb = D.BASE_BOT_U - S
+    rmin, worst = np.inf, (np.inf, None, None, None)
+    for tl in tilts:
+        parts, Ms = C.layout(KEY, sp, (tl,) * 3, extras=False)
+        parts += stand(Ms, S, lv)
+        others = [p for p in parts if "P16" in p.name or p.name.startswith(("hanger", "leg"))]
+        for p in others:
+            p.unit = "doser"
+            v = _samples(p.shape)
+            w = (p.M[:3, :3] @ v.T).T + p.M[:3, 3]
+            sel = w[:, 2] < zb + STIR["h"]
+            if sel.any():
+                rmin = min(rmin, float(np.hypot(w[sel, 0], w[sel, 1]).min()))
+        plate = stir_plate(zb + STIR["h"])
+        for q in plate:
+            q.unit = "stir plate"
+        d, a, b = D.clearance(plate + others)
+        if d < worst[0]:
+            worst = (d, a, b, tl)
+    foot = D.BASE_BOT_U - (lv["p16_bottom"] - FOOT)          # foot of the base clevis, below the shelf underside
+    return dict(stand=S, actuators_within_r_below_plate_top=round(rmin, 1), placeholder_gap=round(worst[0], 1),
+                between=f"{worst[1]} / {worst[2]}", at_tilt=worst[3],
+                stand_with_actuators_above_plate=float(math.ceil(foot + STIR["h"] + GAP)))
+
+
 # --------------------------------------------------------------------------- #
 # figure
 # --------------------------------------------------------------------------- #
@@ -329,6 +358,8 @@ def main():
                ceiling=dict(R=[float(r) for r in R[::4]], z=[round(float(z), 2) if np.isfinite(z) else None for z in env[::4]]),
                stir_plate=STIR, funnel=FUNNEL)
     res["stacks"] = stacks(lv)
+    res["stir_plate_check"] = stir_plate_check(sp, lv)
+    print(res["stir_plate_check"])
     (HERE / "clearance.json").write_text(json.dumps(res, indent=1) + "\n")
     print(json.dumps(lv, indent=1))
     for r in res["stacks"]:
