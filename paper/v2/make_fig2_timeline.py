@@ -238,7 +238,9 @@ def fig2_timeline() -> None:
     for (date, name, crop, title, tool), x in zip(ENG_ITEMS, xs):
         bb = thumb(fig, [x, y_eng, w2, h2], prep(name, crop), ENG_EDGE)
         eboxes.append(bb)
-        stack_label(fig, bb.x0, y_eng - 0.008,
+        # narrow frames: start the label at the slot edge so it clears the next one
+        xl = bb.x0 if (bb.x1 - bb.x0) > 0.5 * w2 else x + 0.004
+        stack_label(fig, xl, y_eng - 0.008,
                     [(title, INK, "normal"), (tool, MODEL_GREY, "italic")], above=False)
     xp = xs[-1]
     over.add_patch(plt.Rectangle((xp, y_eng), w2, h2, fill=False,

@@ -250,8 +250,8 @@ def fig_dosing() -> None:
     axb = fig.add_axes([0.425, 0.615, 0.575, 0.355])
     bare(axb)
     axb.set_xlim(0, 1), axb.set_ylim(0, 1)
-    yb, bw, bh = 0.60, 0.185, 0.34
-    xs_ = [0.10, 0.365, 0.63, 0.895]
+    yb, bw, bh = 0.60, 0.175, 0.34
+    xs_ = [0.115, 0.372, 0.628, 0.877]
     texts = ["Dose request\n(target mass)", "Three-phase\ncontroller\n(microcontroller)",
              "Auger rotation,\nsolenoid taps,\ntilt servos", "Analytical\nbalance"]
     for x_, t_ in zip(xs_, texts):
@@ -260,8 +260,8 @@ def fig_dosing() -> None:
                          (xs_[2], xs_[3], "powder")]:
         arrow(axb, (x0_ + bw / 2 + 0.004, yb), (x1_ - bw / 2 - 0.004, yb))
         if t_:
-            axb.text((x0_ + x1_) / 2, yb + 0.035, t_, transform=axb.transAxes,
-                     fontsize=4.9, color=INK2, ha="center", va="bottom", style="italic")
+            axb.text((x0_ + x1_) / 2, yb + 0.03, t_, transform=axb.transAxes,
+                     fontsize=4.6, color=INK2, ha="center", va="bottom", style="italic")
     yl = 0.17                                   # the loop back, under the row
     axb.plot([xs_[3], xs_[3], xs_[1]], [yb - bh / 2 - 0.01, yl, yl],
              color=INK2, lw=0.8, transform=axb.transAxes, solid_capstyle="butt")
