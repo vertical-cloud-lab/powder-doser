@@ -1,0 +1,7 @@
+powder_id,target_g,trial_uuid8,t_s,phase,mass_g,kf_mass_g,kf_rate_gps,kf_sigma_g,ff_gpr,rate_setpoint_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+salt,0.005,73469530,7.02,trickle,0.00000,0.00000,0.00000,0.01294,0.3500,0.00300,0.01294,-0.03000,10.0,0.00,none,telemetry
+salt,0.005,73469530,9.70,trickle_end,0.00000,,,,,,,,10.0,0.0,none,telemetry
+salt,0.005,73469530,12.86,tap,0.00002,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.005,73469530,16.03,tap,0.00036,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.005,73469530,19.08,tap,0.00112,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.005,73469530,22.05,tap,0.00208,,,,,,,,15.0,0.0,single x1,telemetry
