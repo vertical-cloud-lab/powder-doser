@@ -1,0 +1,19 @@
+% Carried unchanged from paper/main.tex (\label{tbl:aifail}) by make_tables.py.
+\begin{table}[h]
+\small
+  \caption{\ Failure modes of the AI modelling tools observed in this project, and what caught or prevented each one.}
+  \label{tbl:aifail}
+  \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}p{2.3cm}p{2.9cm}p{2.6cm}}
+    \hline
+    Failure & Example & Caught or prevented by \\
+    \hline
+    Parts that do not fit together & Whole-module prompts; first tap collar; bracket with unconnected plates (Fig.~\ref{fgr:genai}a,d) & Asking for one part at a time, with interfaces listed \\
+    Unrequested changes & Fixing one defect altered an unrelated feature & Full re-inspection of rendered views at every iteration \\
+    Mislabelled variants & Two of four test nozzles swapped relative to their documentation & Human cross-check before printing \\
+    Sub-millimetre errors & Height mismatch of one print layer & Only the failed print \\
+    Designing around bad inputs & Out-of-date neighbouring parts led to a hole, platforms, then a gap (Fig.~\ref{fgr:genai}e--h) & Supplying the correct upstream files \\
+    No sense of ``finished'' & Late iterations disturbed features that were already right & The team freezing the geometry \\
+    Wrong orientation & Solenoid mis-oriented on the tap collar over several coding-agent iterations & Switching the part to Zoo Design Studio \\
+    \hline
+  \end{tabular*}
+\end{table}
