@@ -1,0 +1,38 @@
+{
+  "_comment": [
+    "Anchors that map a wall-clock UTC instant to an offset into a bench",
+    "livestream on https://youtube.com/@byu-vcl-hardware-streams.",
+    "",
+    "camera        which rig the stream points at (picam-d1pr = powder doser)",
+    "video_id      YouTube id; share link is https://youtu.be/<video_id>?t=<seconds>",
+    "content_t0    wall-clock UTC of video offset t=0",
+    "",
+    "content_t0 is NOT the same as the startTimestamp reported on the watch",
+    "page. The page timestamp is when the broadcast was accepted; the video",
+    "timeline starts at the first archived fragment, and YouTube's live",
+    "ingest latency (~25 s here) offsets the fragment publish clock from the",
+    "capture clock. Both errors are avoided by calibrating against the",
+    "burned-in timestamp overlay in the top-left of the frame, which is the",
+    "capture clock -- see scripts/battery_stream_links.py --calibrate.",
+    "",
+    "Streams roll over every 8 h at 03:00 / 11:00 / 19:00 UTC."
+  ],
+  "streams": [
+    {
+      "video_id": "w1D5DRiHFWM",
+      "title": "powder doser stream picam-d1pr, 2026-08-04 UTC 19:00",
+      "camera": "picam-d1pr",
+      "content_t0_utc": "2026-08-04T19:01:06+00:00",
+      "content_t0_uncertainty_s": 1,
+      "page_start_timestamp_utc": "2026-08-04T19:01:12+00:00",
+      "calibration": {
+        "method": "burned-in overlay clock read from decoded frames",
+        "samples": [
+          {"pts_s": 8200, "overlay_local": "2026-08-04 15-17-46", "overlay_utc": "2026-08-04T21:17:46+00:00"},
+          {"pts_s": 13900, "overlay_local": "2026-08-04 16-52-45", "overlay_utc": "2026-08-04T22:52:45+00:00"}
+        ],
+        "overlay_timezone": "America/Denver (UTC-6, MDT)"
+      }
+    }
+  ]
+}

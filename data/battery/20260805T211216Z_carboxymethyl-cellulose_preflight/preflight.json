@@ -1,0 +1,55 @@
+{
+  "powder_id": "carboxymethyl-cellulose",
+  "powder": "carboxymethyl cellulose (food-safe batch)",
+  "batch": "food-safe-2026-08",
+  "operator": "swcharles (loaded), claude (remote)",
+  "outcome": "aborted-before-battery",
+  "timezone_note": "MDT is the lab clock (UTC-6); UTC is what the run documents store.",
+  "preflight": {
+    "started_utc": "2026-08-05T21:12:16Z",
+    "started_mdt": "2026-08-05T15:12:16",
+    "ended_utc": "2026-08-05T21:13:01Z",
+    "tilt_deg": 90.0,
+    "rpm": 30.0,
+    "rev_deltas": [0.0, 0.0, 0.0, 0.0, 0.0],
+    "rotation_rev_total": 5,
+    "rotation_delta_g": 0.0,
+    "taps_total": 10,
+    "taps_delta_g": 0.0,
+    "verdict": "empty-or-blocked"
+  },
+  "diagnostic": {
+    "started_utc": "2026-08-05T21:13:14Z",
+    "started_mdt": "2026-08-05T15:13:14",
+    "ended_utc": "2026-08-05T21:15:18Z",
+    "tilt_deg": 90.0,
+    "rotation_rev_total": 25,
+    "rotation_delta_g": 0.0,
+    "taps_total": 60,
+    "taps_delta_g": 0.0,
+    "post_agitation_rotation_delta_g": 0.0,
+    "verdict": "empty-or-fully-blocked"
+  },
+  "camera_evidence": {
+    "source": "picam-d1pr live broadcast",
+    "video_id": "_iDB8z83GdQ",
+    "broadcast": "powder doser stream picam-d1pr, 2026-08-05 UTC 19:00",
+    "frames": [
+      {
+        "file": "docs/battery-runs/frames/2026-08-05T2112Z_cmc-preflight-outlet-taped.png",
+        "overlay_clock_mdt": "2026-08-05 15:12:13",
+        "utc": "2026-08-05T21:12:13Z",
+        "observation": "loaded CMC auger at tilt 90 deg, red tape folded over the delivery end, balance 0.9667 g (residue from the previous run, pre-tare)"
+      },
+      {
+        "file": "docs/battery-runs/frames/2026-08-05T2006Z_calcium-lactate-outlet-open.png",
+        "overlay_clock_mdt": "2026-08-05 14:06:29",
+        "utc": "2026-08-05T20:06:29Z",
+        "observation": "control frame from the calcium lactate run: same rig, same vertical geometry, delivery end bare and open, balance climbing at 0.9235 g"
+      }
+    ]
+  },
+  "verdict": "mechanical-no-feed: delivery end taped",
+  "battery_run": null,
+  "mongodb_document": null
+}

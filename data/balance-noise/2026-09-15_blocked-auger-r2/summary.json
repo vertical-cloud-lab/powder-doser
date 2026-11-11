@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "experiment": "blocked-auger-balance-disturbance",
+    "powder_id": "none-blocked-auger",
+    "poll_ms": "60",
+    "rpm_ladder": "15|30|55|75",
+    "spin_s": "15.0",
+    "n_tap_single": "20",
+    "n_tap_burst": "8",
+    "tap_on_off_ms": "60|150",
+    "n_rot": "10",
+    "rot_deg_rpm": "45|30",
+    "combined_s_rpm": "20|55",
+    "servo_targets": "25|60",
+    "guard_g": "5.0",
+    "note": "no zero(): A&D refuses Z under load; absolute series",
+    "m0_abs_g": "0.4575"
+  },
+  "outcome": "complete",
+  "post_blocks_meaning": "vibration-bias recovery, not mass",
+  "quiet_floor_sigma_datum_mg": 1.4261439097378072,
+  "quiet_windows": [
+    "quiet_pre",
+    "quiet_mid1",
+    "quiet_mid2",
+    "quiet_mid3",
+    "quiet_mid4",
+    "quiet_post"
+  ],
+  "quiet_floor_per_window_mg": [
+    4.497,
+    1.391,
+    0.895,
+    0.296,
+    0.39,
+    1.088
+  ],
+  "quiet_drift_mg_per_min": [
+    -0.65,
+    19.14,
+    2.83,
+    7.51,
+    9.51,
+    9.01
+  ],
+  "quiet_st_frac": [
+    0.637,
+    0.281,
+    0.351,
+    0.904,
+    0.783,
+    0.722
+  ],
+  "deposition_per_actuation": {
+    "single tap (mg/tap)": -0.4,
+    "3-pulse burst (mg/burst)": -0.4,
+    "auger 15 rpm (mg/rev)": -1.7,
+    "auger 30 rpm (mg/rev)": -3.6,
+    "auger 55 rpm (mg/rev)": -2.3,
+    "auger 75 rpm (mg/rev)": -1.3
+  },
+  "afterflow_post_blocks_mg": {
+    "post_auger15_p1": 0.3,
+    "post_auger30_p1": 9.2,
+    "post_auger55_p1": 8.3,
+    "post_auger75_p1": 29.1,
+    "post_auger75_p2": 51.2,
+    "post_auger55_p2": 28.3,
+    "post_auger30_p2": 8.2,
+    "post_auger15_p2": 26.2,
+    "post_combined": 39.9
+  },
+  "total_deposited_mg": -0.400000000000011,
+  "datum_rate_hz": 10.416666666666666,
+  "n_frames": 9451
+}

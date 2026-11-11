@@ -1,0 +1,433 @@
+--- session 2026-10-06T17:11:42.084995+00:00 ---
+>> 
+
+>>> 
+
+>>> 
+raw REPL; CTRL-B to exit
+>OK
+MPY: soft reboot
+raw REPL; CTRL-B to exit
+>
+MicroPython v1.28.0 on 2026-04-06; Raspberry Pi Pico W with RP2040
+Type "help()" for more information.
+>>> 
+>> import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()
+import sys; sys.path.insert(0, '/trickle_tap'); import main_trickle; main_trickle.main()
+[rig] bringing up powder-doser test module (TRICKLE-TAP manual runner, PR #154; no haptics)
+[rig] ready -- 'h' for help, 'g' doses 0.75 g
+firmware: trickle_tap/2026-09-30b
+heap: 123680 bytes free, 81760 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 55.0
+  bulk_settle_ms = 1500
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 30.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = True
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 10.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.005
+  trickle_dt_s = 0.25
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.25
+  trickle_tap = False
+  trickle_tilt_deg = 15.0
+>> set bulk_anticipation_g 0.05
+[set] bulk_anticipation_g = 0.05 (was 0.05)
+>> set bulk_enabled 1
+[set] bulk_enabled = True (was True)
+>> set bulk_poll_ms 250
+[set] bulk_poll_ms = 250 (was 250)
+>> set bulk_rpm 55
+[set] bulk_rpm = 55.0 (was 55.0)
+>> set bulk_settle_ms 1500
+[set] bulk_settle_ms = 1500 (was 1500)
+>> set bulk_tap 0
+[set] bulk_tap = False (was False)
+>> set bulk_tilt_deg 30
+[set] bulk_tilt_deg = 30.0 (was 30.0)
+>> set cutoff_margin_g 0.035
+[set] cutoff_margin_g = 0.035 (was 0.035)
+>> set dose_timeout_s 600
+[set] dose_timeout_s = 600 (was 600)
+>> set ff_prior_g_per_rev 0.35
+[set] ff_prior_g_per_rev = 0.35 (was 0.35)
+>> set final_settle_ms 2000
+[set] final_settle_ms = 2000 (was 2000)
+>> set k_sigma 1
+[set] k_sigma = 1.0 (was 1.0)
+>> set kf_q_var 0.0002
+[set] kf_q_var = 0.0002 (was 0.0002)
+>> set log_max_rows 1200
+[set] log_max_rows = 1200 (was 1200)
+>> set log_to_flash 0
+[set] log_to_flash = False (was True)
+>> set max_poll_misses 10
+[set] max_poll_misses = 10 (was 10)
+>> set noisy_sd_g 0.008
+[set] noisy_sd_g = 0.008 (was 0.008)
+>> set overshoot_abort_g 0.1
+[set] overshoot_abort_g = 0.1 (was 0.1)
+>> set post_trickle_settle_ms 1200
+[set] post_trickle_settle_ms = 1200 (was 1200)
+>> set print_every_n_polls 2
+[set] print_every_n_polls = 2 (was 2)
+>> set quiet_sd_g 0.0005
+[set] quiet_sd_g = 0.0005 (was 0.0005)
+>> set rate_tau_s 0.5
+[set] rate_tau_s = 0.5 (was 0.5)
+>> set stall_bail_s 8
+[set] stall_bail_s = 8.0 (was 8.0)
+>> set tap_cadence_off_ms 440
+[set] tap_cadence_off_ms = 440 (was 440)
+>> set tap_cadence_on_ms 60
+[set] tap_cadence_on_ms = 60 (was 60)
+>> set tap_max_cycles 120
+[set] tap_max_cycles = 120 (was 120)
+>> set tap_max_nudges 20
+[set] tap_max_nudges = 20 (was 20)
+>> set tap_nudge_deg 5
+[set] tap_nudge_deg = 5.0 (was 5.0)
+>> set tap_settle_ms 1500
+[set] tap_settle_ms = 1500 (was 1500)
+>> set tap_tilt_deg 10
+[set] tap_tilt_deg = 10.0 (was 10.0)
+>> set taps_per_cycle 1
+[set] taps_per_cycle = 1 (was 1)
+>> set tau_afterflow_s 0.3
+[set] tau_afterflow_s = 0.3 (was 0.3)
+>> set tau_bal_s 0.7
+[set] tau_bal_s = 0.7 (was 0.7)
+>> set tolerance_g 0.005
+[set] tolerance_g = 0.005 (was 0.005)
+>> set trickle_dt_s 0.25
+[set] trickle_dt_s = 0.25 (was 0.25)
+>> set trickle_integ_clamp 0.5
+[set] trickle_integ_clamp = 0.5 (was 0.5)
+>> set trickle_ki 120
+[set] trickle_ki = 120.0 (was 120.0)
+>> set trickle_kp 250
+[set] trickle_kp = 250.0 (was 250.0)
+>> set trickle_max_rate_gps 0.05
+[set] trickle_max_rate_gps = 0.05 (was 0.05)
+>> set trickle_min_rate_gps 0.003
+[set] trickle_min_rate_gps = 0.003 (was 0.003)
+>> set trickle_rpm_cap 45
+[set] trickle_rpm_cap = 45.0 (was 45.0)
+>> set trickle_start_remaining_g 0.25
+[set] trickle_start_remaining_g = 0.25 (was 0.25)
+>> set trickle_tap 0
+[set] trickle_tap = False (was False)
+>> set trickle_tilt_deg 15
+[set] trickle_tilt_deg = 15.0 (was 15.0)
+>> set bulk_tap 1
+[set] bulk_tap = True (was False)
+>> set trickle_tap 0
+[set] trickle_tap = False (was False)
+>> set bulk_tilt_deg 40
+[set] bulk_tilt_deg = 40.0 (was 30.0)
+>> set trickle_tilt_deg 10
+[set] trickle_tilt_deg = 10.0 (was 15.0)
+>> set tap_tilt_deg 15
+[set] tap_tilt_deg = 15.0 (was 10.0)
+>> set bulk_rpm 100
+[set] bulk_rpm = 100.0 (was 55.0)
+>> set trickle_start_remaining_g 0.3
+[set] trickle_start_remaining_g = 0.3 (was 0.25)
+>> set tolerance_g 0.003
+[set] tolerance_g = 0.003 (was 0.005)
+>> set tau_afterflow_s 0.8338
+[set] tau_afterflow_s = 0.8338 (was 0.3)
+>> g 10.0000
+[dose] trickle-tap dose to 10.0000 g (tol 3.0 mg, trickle tilt 10.0 plate deg); taring scale
+[dose] tared: baseline +0.0 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== stage 1 'bulk': 10.0000 g to go, velocity mode @ 100 rpm until 0.3500 g to go
+[phase 1 bulk] cadence taps on: one 60 ms pulse per 500 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 10.0000 g (10.0000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 10.0000 g (10.0000 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 3 (unstable): mass 0.0253 / 10.0000 g (9.9747 g to go, +0.0253 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 4 (unstable): mass 0.1029 / 10.0000 g (9.8971 g to go, +0.0776 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.1713 / 10.0000 g (9.8287 g to go, +0.0684 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.2286 / 10.0000 g (9.7714 g to go, +0.0573 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.2726 / 10.0000 g (9.7274 g to go, +0.0440 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.3275 / 10.0000 g (9.6725 g to go, +0.0549 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.3876 / 10.0000 g (9.6124 g to go, +0.0601 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.4413 / 10.0000 g (9.5587 g to go, +0.0537 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.4965 / 10.0000 g (9.5035 g to go, +0.0552 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.5552 / 10.0000 g (9.4448 g to go, +0.0587 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.6058 / 10.0000 g (9.3942 g to go, +0.0506 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.6499 / 10.0000 g (9.3501 g to go, +0.0441 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.7052 / 10.0000 g (9.2948 g to go, +0.0553 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.7617 / 10.0000 g (9.2383 g to go, +0.0565 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.8197 / 10.0000 g (9.1803 g to go, +0.0580 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.8778 / 10.0000 g (9.1222 g to go, +0.0581 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.9394 / 10.0000 g (9.0606 g to go, +0.0616 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.9949 / 10.0000 g (9.0051 g to go, +0.0555 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 21 (unstable): mass 1.0466 / 10.0000 g (8.9534 g to go, +0.0517 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 22 (unstable): mass 1.0940 / 10.0000 g (8.9060 g to go, +0.0474 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 23 (unstable): mass 1.1480 / 10.0000 g (8.8520 g to go, +0.0540 g this poll), elapsed 14.0 s
+[phase 1 bulk] poll 24 (unstable): mass 1.2082 / 10.0000 g (8.7918 g to go, +0.0602 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 25 (unstable): mass 1.2643 / 10.0000 g (8.7357 g to go, +0.0561 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 26 (unstable): mass 1.2998 / 10.0000 g (8.7002 g to go, +0.0355 g this poll), elapsed 15.0 s
+[phase 1 bulk] poll 27 (unstable): mass 1.3597 / 10.0000 g (8.6403 g to go, +0.0599 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 28 (unstable): mass 1.4152 / 10.0000 g (8.5848 g to go, +0.0555 g this poll), elapsed 16.0 s
+[phase 1 bulk] poll 29 (unstable): mass 1.4704 / 10.0000 g (8.5296 g to go, +0.0552 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 30 (unstable): mass 1.5325 / 10.0000 g (8.4675 g to go, +0.0621 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 31 (unstable): mass 1.5877 / 10.0000 g (8.4123 g to go, +0.0552 g this poll), elapsed 17.0 s
+[phase 1 bulk] poll 32 (unstable): mass 1.6487 / 10.0000 g (8.3513 g to go, +0.0610 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 33 (unstable): mass 1.6903 / 10.0000 g (8.3097 g to go, +0.0416 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 34 (unstable): mass 1.7481 / 10.0000 g (8.2519 g to go, +0.0578 g this poll), elapsed 18.0 s
+[phase 1 bulk] poll 35 (unstable): mass 1.8097 / 10.0000 g (8.1903 g to go, +0.0616 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 36 (unstable): mass 1.8613 / 10.0000 g (8.1387 g to go, +0.0516 g this poll), elapsed 19.0 s
+[phase 1 bulk] poll 37 (unstable): mass 1.9061 / 10.0000 g (8.0939 g to go, +0.0448 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 38 (unstable): mass 1.9616 / 10.0000 g (8.0384 g to go, +0.0555 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 39 (unstable): mass 2.0170 / 10.0000 g (7.9830 g to go, +0.0554 g this poll), elapsed 20.0 s
+[phase 1 bulk] poll 40 (unstable): mass 2.0737 / 10.0000 g (7.9263 g to go, +0.0567 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 41 (unstable): mass 2.1323 / 10.0000 g (7.8677 g to go, +0.0586 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 42 (unstable): mass 2.1921 / 10.0000 g (7.8079 g to go, +0.0598 g this poll), elapsed 21.0 s
+[phase 1 bulk] poll 43 (unstable): mass 2.2518 / 10.0000 g (7.7482 g to go, +0.0597 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 44 (unstable): mass 2.2931 / 10.0000 g (7.7069 g to go, +0.0413 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 45 (unstable): mass 2.3551 / 10.0000 g (7.6449 g to go, +0.0620 g this poll), elapsed 22.0 s
+[phase 1 bulk] poll 46 (unstable): mass 2.4043 / 10.0000 g (7.5957 g to go, +0.0492 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 47 (unstable): mass 2.4602 / 10.0000 g (7.5398 g to go, +0.0559 g this poll), elapsed 23.0 s
+[phase 1 bulk] poll 48 (unstable): mass 2.5064 / 10.0000 g (7.4936 g to go, +0.0462 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 49 (unstable): mass 2.5634 / 10.0000 g (7.4366 g to go, +0.0570 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 50 (unstable): mass 2.6250 / 10.0000 g (7.3750 g to go, +0.0616 g this poll), elapsed 24.0 s
+[phase 1 bulk] poll 51 (unstable): mass 2.6647 / 10.0000 g (7.3353 g to go, +0.0397 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 52 (unstable): mass 2.7298 / 10.0000 g (7.2702 g to go, +0.0651 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 53 (unstable): mass 2.7851 / 10.0000 g (7.2149 g to go, +0.0553 g this poll), elapsed 25.0 s
+[phase 1 bulk] poll 54 (unstable): mass 2.8353 / 10.0000 g (7.1647 g to go, +0.0502 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 55 (unstable): mass 2.8797 / 10.0000 g (7.1203 g to go, +0.0444 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 56 (unstable): mass 2.9310 / 10.0000 g (7.0690 g to go, +0.0513 g this poll), elapsed 26.0 s
+[phase 1 bulk] poll 57 (unstable): mass 2.9873 / 10.0000 g (7.0127 g to go, +0.0563 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 58 (unstable): mass 3.0444 / 10.0000 g (6.9556 g to go, +0.0571 g this poll), elapsed 27.0 s
+[phase 1 bulk] poll 59 (unstable): mass 3.1020 / 10.0000 g (6.8980 g to go, +0.0576 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 60 (unstable): mass 3.1654 / 10.0000 g (6.8346 g to go, +0.0634 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 61 (unstable): mass 3.2210 / 10.0000 g (6.7790 g to go, +0.0556 g this poll), elapsed 28.0 s
+[phase 1 bulk] poll 62 (unstable): mass 3.2591 / 10.0000 g (6.7409 g to go, +0.0381 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 63 (unstable): mass 3.3165 / 10.0000 g (6.6835 g to go, +0.0574 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 64 (unstable): mass 3.3701 / 10.0000 g (6.6299 g to go, +0.0536 g this poll), elapsed 29.0 s
+[phase 1 bulk] poll 65 (unstable): mass 3.4295 / 10.0000 g (6.5705 g to go, +0.0594 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 66 (unstable): mass 3.4889 / 10.0000 g (6.5111 g to go, +0.0594 g this poll), elapsed 30.0 s
+[phase 1 bulk] poll 67 (unstable): mass 3.5419 / 10.0000 g (6.4581 g to go, +0.0530 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 68 (unstable): mass 3.6003 / 10.0000 g (6.3997 g to go, +0.0584 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 69 (unstable): mass 3.6545 / 10.0000 g (6.3455 g to go, +0.0542 g this poll), elapsed 31.0 s
+[phase 1 bulk] poll 70 (unstable): mass 3.6944 / 10.0000 g (6.3056 g to go, +0.0399 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 71 (unstable): mass 3.7512 / 10.0000 g (6.2488 g to go, +0.0568 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 72 (unstable): mass 3.8084 / 10.0000 g (6.1916 g to go, +0.0572 g this poll), elapsed 32.0 s
+[phase 1 bulk] poll 73 (unstable): mass 3.8714 / 10.0000 g (6.1286 g to go, +0.0630 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 74 (unstable): mass 3.9112 / 10.0000 g (6.0888 g to go, +0.0398 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 75 (unstable): mass 3.9713 / 10.0000 g (6.0287 g to go, +0.0601 g this poll), elapsed 33.0 s
+[phase 1 bulk] poll 76 (unstable): mass 4.0324 / 10.0000 g (5.9676 g to go, +0.0611 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 77 (unstable): mass 4.0878 / 10.0000 g (5.9122 g to go, +0.0554 g this poll), elapsed 34.0 s
+[phase 1 bulk] poll 78 (unstable): mass 4.1509 / 10.0000 g (5.8491 g to go, +0.0631 g this poll), elapsed 35.0 s
+[phase 1 bulk] poll 79 (unstable): mass 4.2090 / 10.0000 g (5.7910 g to go, +0.0581 g this poll), elapsed 35.0 s
+[phase 1 bulk] poll 80 (unstable): mass 4.2654 / 10.0000 g (5.7346 g to go, +0.0564 g this poll), elapsed 35.0 s
+[phase 1 bulk] poll 81 (unstable): mass 4.3133 / 10.0000 g (5.6867 g to go, +0.0479 g this poll), elapsed 36.0 s
+[phase 1 bulk] poll 82 (unstable): mass 4.3717 / 10.0000 g (5.6283 g to go, +0.0584 g this poll), elapsed 36.0 s
+[phase 1 bulk] poll 83 (unstable): mass 4.4330 / 10.0000 g (5.5670 g to go, +0.0613 g this poll), elapsed 36.0 s
+[phase 1 bulk] poll 84 (unstable): mass 4.4891 / 10.0000 g (5.5109 g to go, +0.0561 g this poll), elapsed 37.0 s
+[phase 1 bulk] poll 85 (unstable): mass 4.5448 / 10.0000 g (5.4552 g to go, +0.0557 g this poll), elapsed 37.0 s
+[phase 1 bulk] poll 86 (unstable): mass 4.6042 / 10.0000 g (5.3958 g to go, +0.0594 g this poll), elapsed 37.0 s
+[phase 1 bulk] poll 87 (unstable): mass 4.6612 / 10.0000 g (5.3388 g to go, +0.0570 g this poll), elapsed 38.0 s
+[phase 1 bulk] poll 88 (unstable): mass 4.7195 / 10.0000 g (5.2805 g to go, +0.0583 g this poll), elapsed 38.0 s
+[phase 1 bulk] poll 89 (unstable): mass 4.7864 / 10.0000 g (5.2136 g to go, +0.0669 g this poll), elapsed 39.0 s
+[phase 1 bulk] poll 90 (unstable): mass 4.8473 / 10.0000 g (5.1527 g to go, +0.0609 g this poll), elapsed 39.0 s
+[phase 1 bulk] poll 91 (unstable): mass 4.9051 / 10.0000 g (5.0949 g to go, +0.0578 g this poll), elapsed 39.0 s
+[phase 1 bulk] poll 92 (unstable): mass 4.9664 / 10.0000 g (5.0336 g to go, +0.0613 g this poll), elapsed 40.0 s
+[phase 1 bulk] poll 93 (unstable): mass 5.0086 / 10.0000 g (4.9914 g to go, +0.0422 g this poll), elapsed 40.0 s
+[phase 1 bulk] poll 94 (unstable): mass 5.0694 / 10.0000 g (4.9306 g to go, +0.0608 g this poll), elapsed 40.0 s
+[phase 1 bulk] poll 95 (unstable): mass 5.1246 / 10.0000 g (4.8754 g to go, +0.0552 g this poll), elapsed 41.0 s
+[phase 1 bulk] poll 96 (unstable): mass 5.1837 / 10.0000 g (4.8163 g to go, +0.0591 g this poll), elapsed 41.0 s
+[phase 1 bulk] poll 97 (unstable): mass 5.2351 / 10.0000 g (4.7649 g to go, +0.0514 g this poll), elapsed 42.0 s
+[phase 1 bulk] poll 98 (unstable): mass 5.2926 / 10.0000 g (4.7074 g to go, +0.0575 g this poll), elapsed 42.0 s
+[phase 1 bulk] poll 99 (unstable): mass 5.3380 / 10.0000 g (4.6620 g to go, +0.0454 g this poll), elapsed 42.0 s
+[phase 1 bulk] poll 100 (unstable): mass 5.3771 / 10.0000 g (4.6229 g to go, +0.0391 g this poll), elapsed 43.0 s
+[phase 1 bulk] poll 101 (unstable): mass 5.4391 / 10.0000 g (4.5609 g to go, +0.0620 g this poll), elapsed 43.0 s
+[phase 1 bulk] poll 102 (unstable): mass 5.4954 / 10.0000 g (4.5046 g to go, +0.0563 g this poll), elapsed 43.0 s
+[phase 1 bulk] poll 103 (unstable): mass 5.5489 / 10.0000 g (4.4511 g to go, +0.0535 g this poll), elapsed 44.0 s
+[phase 1 bulk] poll 104 (unstable): mass 5.5945 / 10.0000 g (4.4055 g to go, +0.0456 g this poll), elapsed 44.0 s
+[phase 1 bulk] poll 105 (unstable): mass 5.6510 / 10.0000 g (4.3490 g to go, +0.0565 g this poll), elapsed 44.0 s
+[phase 1 bulk] poll 106 (unstable): mass 5.7135 / 10.0000 g (4.2865 g to go, +0.0625 g this poll), elapsed 45.0 s
+[phase 1 bulk] poll 107 (unstable): mass 5.7683 / 10.0000 g (4.2317 g to go, +0.0548 g this poll), elapsed 45.0 s
+[phase 1 bulk] poll 108 (unstable): mass 5.8223 / 10.0000 g (4.1777 g to go, +0.0540 g this poll), elapsed 46.0 s
+[phase 1 bulk] poll 109 (unstable): mass 5.8856 / 10.0000 g (4.1144 g to go, +0.0633 g this poll), elapsed 46.0 s
+[phase 1 bulk] poll 110 (unstable): mass 5.9409 / 10.0000 g (4.0591 g to go, +0.0553 g this poll), elapsed 46.0 s
+[phase 1 bulk] poll 111 (unstable): mass 5.9799 / 10.0000 g (4.0201 g to go, +0.0390 g this poll), elapsed 47.0 s
+[phase 1 bulk] poll 112 (unstable): mass 6.0413 / 10.0000 g (3.9587 g to go, +0.0614 g this poll), elapsed 47.0 s
+[phase 1 bulk] poll 113 (unstable): mass 6.0980 / 10.0000 g (3.9020 g to go, +0.0567 g this poll), elapsed 47.0 s
+[phase 1 bulk] poll 114 (unstable): mass 6.1637 / 10.0000 g (3.8363 g to go, +0.0657 g this poll), elapsed 48.0 s
+[phase 1 bulk] poll 115 (unstable): mass 6.2084 / 10.0000 g (3.7916 g to go, +0.0447 g this poll), elapsed 48.0 s
+[phase 1 bulk] poll 116 (unstable): mass 6.2681 / 10.0000 g (3.7319 g to go, +0.0597 g this poll), elapsed 48.0 s
+[phase 1 bulk] poll 117 (unstable): mass 6.3266 / 10.0000 g (3.6734 g to go, +0.0585 g this poll), elapsed 49.0 s
+[phase 1 bulk] poll 118 (unstable): mass 6.3830 / 10.0000 g (3.6170 g to go, +0.0564 g this poll), elapsed 49.0 s
+[phase 1 bulk] poll 119 (unstable): mass 6.4454 / 10.0000 g (3.5546 g to go, +0.0624 g this poll), elapsed 50.0 s
+[phase 1 bulk] poll 120 (unstable): mass 6.5043 / 10.0000 g (3.4957 g to go, +0.0589 g this poll), elapsed 50.0 s
+[phase 1 bulk] poll 121 (unstable): mass 6.5601 / 10.0000 g (3.4399 g to go, +0.0558 g this poll), elapsed 50.0 s
+[phase 1 bulk] poll 122 (unstable): mass 6.6108 / 10.0000 g (3.3892 g to go, +0.0507 g this poll), elapsed 51.0 s
+[phase 1 bulk] poll 123 (unstable): mass 6.6686 / 10.0000 g (3.3314 g to go, +0.0578 g this poll), elapsed 51.0 s
+[phase 1 bulk] poll 124 (unstable): mass 6.7337 / 10.0000 g (3.2663 g to go, +0.0651 g this poll), elapsed 51.0 s
+[phase 1 bulk] poll 125 (unstable): mass 6.7913 / 10.0000 g (3.2087 g to go, +0.0576 g this poll), elapsed 52.0 s
+[phase 1 bulk] poll 126 (unstable): mass 6.8327 / 10.0000 g (3.1673 g to go, +0.0414 g this poll), elapsed 52.0 s
+[phase 1 bulk] poll 127 (unstable): mass 6.8922 / 10.0000 g (3.1078 g to go, +0.0595 g this poll), elapsed 52.0 s
+[phase 1 bulk] poll 128 (unstable): mass 6.9439 / 10.0000 g (3.0561 g to go, +0.0517 g this poll), elapsed 53.0 s
+[phase 1 bulk] poll 129 (unstable): mass 7.0034 / 10.0000 g (2.9966 g to go, +0.0595 g this poll), elapsed 53.0 s
+[phase 1 bulk] poll 130 (unstable): mass 7.0676 / 10.0000 g (2.9324 g to go, +0.0642 g this poll), elapsed 54.0 s
+[phase 1 bulk] poll 131 (unstable): mass 7.1245 / 10.0000 g (2.8755 g to go, +0.0569 g this poll), elapsed 54.0 s
+[phase 1 bulk] poll 132 (unstable): mass 7.1879 / 10.0000 g (2.8121 g to go, +0.0634 g this poll), elapsed 54.0 s
+[phase 1 bulk] poll 133 (unstable): mass 7.2519 / 10.0000 g (2.7481 g to go, +0.0640 g this poll), elapsed 55.0 s
+[phase 1 bulk] poll 134 (unstable): mass 7.3103 / 10.0000 g (2.6897 g to go, +0.0584 g this poll), elapsed 55.0 s
+[phase 1 bulk] poll 135 (unstable): mass 7.3730 / 10.0000 g (2.6270 g to go, +0.0627 g this poll), elapsed 55.0 s
+[phase 1 bulk] poll 136 (unstable): mass 7.4316 / 10.0000 g (2.5684 g to go, +0.0586 g this poll), elapsed 56.0 s
+[phase 1 bulk] poll 137 (unstable): mass 7.4929 / 10.0000 g (2.5071 g to go, +0.0613 g this poll), elapsed 56.0 s
+[phase 1 bulk] poll 138 (unstable): mass 7.5444 / 10.0000 g (2.4556 g to go, +0.0515 g this poll), elapsed 57.0 s
+[phase 1 bulk] poll 139 (unstable): mass 7.6043 / 10.0000 g (2.3957 g to go, +0.0599 g this poll), elapsed 57.0 s
+[phase 1 bulk] poll 140 (unstable): mass 7.6632 / 10.0000 g (2.3368 g to go, +0.0589 g this poll), elapsed 57.0 s
+[phase 1 bulk] poll 141 (unstable): mass 7.7131 / 10.0000 g (2.2869 g to go, +0.0499 g this poll), elapsed 58.0 s
+[phase 1 bulk] poll 142 (unstable): mass 7.7631 / 10.0000 g (2.2369 g to go, +0.0500 g this poll), elapsed 58.0 s
+[phase 1 bulk] poll 143 (unstable): mass 7.8205 / 10.0000 g (2.1795 g to go, +0.0574 g this poll), elapsed 58.0 s
+[phase 1 bulk] poll 144 (unstable): mass 7.8789 / 10.0000 g (2.1211 g to go, +0.0584 g this poll), elapsed 59.0 s
+[phase 1 bulk] poll 145 (unstable): mass 7.9374 / 10.0000 g (2.0626 g to go, +0.0585 g this poll), elapsed 59.0 s
+[phase 1 bulk] poll 146 (unstable): mass 8.0015 / 10.0000 g (1.9985 g to go, +0.0641 g this poll), elapsed 60.0 s
+[phase 1 bulk] poll 147 (unstable): mass 8.0578 / 10.0000 g (1.9422 g to go, +0.0563 g this poll), elapsed 60.0 s
+[phase 1 bulk] poll 148 (unstable): mass 8.1204 / 10.0000 g (1.8796 g to go, +0.0626 g this poll), elapsed 60.0 s
+[phase 1 bulk] poll 149 (unstable): mass 8.1811 / 10.0000 g (1.8189 g to go, +0.0607 g this poll), elapsed 61.0 s
+[phase 1 bulk] poll 150 (unstable): mass 8.2249 / 10.0000 g (1.7751 g to go, +0.0438 g this poll), elapsed 61.0 s
+[phase 1 bulk] poll 151 (unstable): mass 8.2893 / 10.0000 g (1.7107 g to go, +0.0644 g this poll), elapsed 61.0 s
+[phase 1 bulk] poll 152 (unstable): mass 8.3479 / 10.0000 g (1.6521 g to go, +0.0586 g this poll), elapsed 62.0 s
+[phase 1 bulk] poll 153 (unstable): mass 8.4079 / 10.0000 g (1.5921 g to go, +0.0600 g this poll), elapsed 62.0 s
+[phase 1 bulk] poll 154 (unstable): mass 8.4709 / 10.0000 g (1.5291 g to go, +0.0630 g this poll), elapsed 63.0 s
+[phase 1 bulk] poll 155 (unstable): mass 8.5277 / 10.0000 g (1.4723 g to go, +0.0568 g this poll), elapsed 63.0 s
+[phase 1 bulk] poll 156 (unstable): mass 8.5894 / 10.0000 g (1.4106 g to go, +0.0617 g this poll), elapsed 63.0 s
+[phase 1 bulk] poll 157 (unstable): mass 8.6291 / 10.0000 g (1.3709 g to go, +0.0397 g this poll), elapsed 64.0 s
+[phase 1 bulk] poll 158 (unstable): mass 8.6905 / 10.0000 g (1.3095 g to go, +0.0614 g this poll), elapsed 64.0 s
+[phase 1 bulk] poll 159 (unstable): mass 8.7480 / 10.0000 g (1.2520 g to go, +0.0575 g this poll), elapsed 64.0 s
+[phase 1 bulk] poll 160 (unstable): mass 8.8024 / 10.0000 g (1.1976 g to go, +0.0544 g this poll), elapsed 65.0 s
+[phase 1 bulk] poll 161 (unstable): mass 8.8510 / 10.0000 g (1.1490 g to go, +0.0486 g this poll), elapsed 65.0 s
+[phase 1 bulk] poll 162 (unstable): mass 8.9114 / 10.0000 g (1.0886 g to go, +0.0604 g this poll), elapsed 65.0 s
+[phase 1 bulk] poll 163 (unstable): mass 8.9737 / 10.0000 g (1.0263 g to go, +0.0623 g this poll), elapsed 66.0 s
+[phase 1 bulk] poll 164 (unstable): mass 9.0192 / 10.0000 g (0.9808 g to go, +0.0455 g this poll), elapsed 66.0 s
+[phase 1 bulk] poll 165 (unstable): mass 9.0780 / 10.0000 g (0.9220 g to go, +0.0588 g this poll), elapsed 66.0 s
+[phase 1 bulk] poll 166 (unstable): mass 9.1423 / 10.0000 g (0.8577 g to go, +0.0643 g this poll), elapsed 67.0 s
+[phase 1 bulk] poll 167 (unstable): mass 9.1980 / 10.0000 g (0.8020 g to go, +0.0557 g this poll), elapsed 67.0 s
+[phase 1 bulk] poll 168 (unstable): mass 9.2428 / 10.0000 g (0.7572 g to go, +0.0448 g this poll), elapsed 68.0 s
+[phase 1 bulk] poll 169 (unstable): mass 9.3023 / 10.0000 g (0.6977 g to go, +0.0595 g this poll), elapsed 68.0 s
+[phase 1 bulk] poll 170 (unstable): mass 9.3618 / 10.0000 g (0.6382 g to go, +0.0595 g this poll), elapsed 68.0 s
+[phase 1 bulk] poll 171 (unstable): mass 9.4291 / 10.0000 g (0.5709 g to go, +0.0673 g this poll), elapsed 69.0 s
+[phase 1 bulk] poll 172 (unstable): mass 9.4897 / 10.0000 g (0.5103 g to go, +0.0606 g this poll), elapsed 69.0 s
+[phase 1 bulk] poll 173 (unstable): mass 9.5456 / 10.0000 g (0.4544 g to go, +0.0559 g this poll), elapsed 69.0 s
+[phase 1 bulk] poll 174 (unstable): mass 9.6049 / 10.0000 g (0.3951 g to go, +0.0593 g this poll), elapsed 70.0 s
+[phase 1 bulk] poll 175 (unstable): mass 9.6658 / 10.0000 g (0.3342 g to go, +0.0609 g this poll), elapsed 70.0 s
+[phase 1 bulk] auger halted at 0.3342 g to go (halt threshold 0.3500 g); settling 1500 ms
+[phase 1 bulk] settled: mass 9.8107 / 10.0000 g (0.1893 g to go, +0.1449 g while settling), elapsed 73.0 s
+[trickle] seeded at 9.8105 g; cutoff when m+r*0.83s+1.0*sigma >= 9.9650 g
+[trickle]  76.8s m 9.8105 r  65.8 mg/s (sp  50.0) rpm  14.7 pred 9.8772/9.9650 sigma 11.8 mg
+[trickle]  77.5s m 9.8423 r  55.4 mg/s (sp  50.0) rpm  11.6 pred 9.8961/9.9650 sigma 7.6 mg
+[trickle]  78.3s m 9.8730 r  57.1 mg/s (sp  50.0) rpm  11.8 pred 9.9294/9.9650 sigma 8.8 mg
+[trickle]  79.0s m 9.8933 r  43.1 mg/s (sp  43.0) rpm  10.1 pred 9.9378/9.9650 sigma 8.5 mg
+[trickle]  79.8s m 9.9047 r  36.5 mg/s (sp  36.2) rpm   6.9 pred 9.9441/9.9650 sigma 9.1 mg
+[trickle]  80.5s m 9.9110 r  32.2 mg/s (sp  32.4) rpm   6.4 pred 9.9470/9.9650 sigma 9.1 mg
+[trickle]  81.2s m 9.9161 r  28.5 mg/s (sp  29.3) rpm   6.0 pred 9.9484/9.9650 sigma 8.5 mg
+[trickle]  81.9s m 9.9293 r  23.9 mg/s (sp  21.4) rpm   5.0 pred 9.9582/9.9650 sigma 8.9 mg
+[trickle]  82.7s m 9.9433 r  18.2 mg/s (sp  13.0) rpm   3.9 pred 9.9675/9.9650 sigma 9.1 mg
+[trickle] predictive cutoff: m 9.9433 + r*tau 0.0151 + k*sigma 0.0091 >= 9.9650 g
+[trickle] halted; settled at 9.9295 g (-13.8 mg vs KF m_hat, 0.0705 g to go), 18 polls, 0 KF clamps, ff 0.258 g/rev
+=== stage 3 'tap': 0.0705 g to go, single taps at 15.0 plate deg
+[phase 3 tap] cycle 1: mass 9.9423 / 10.0000 g (0.0577 g to go, +0.0128 g this cycle), elapsed 89.0 s
+[phase 3 tap] cycle 2: mass 9.9512 / 10.0000 g (0.0488 g to go, +0.0089 g this cycle), elapsed 92.0 s
+[phase 3 tap] cycle 3: mass 9.9565 / 10.0000 g (0.0435 g to go, +0.0053 g this cycle), elapsed 95.0 s
+[phase 3 tap] cycle 4: mass 9.9603 / 10.0000 g (0.0397 g to go, +0.0038 g this cycle), elapsed 98.0 s
+[phase 3 tap] cycle 5: mass 9.9625 / 10.0000 g (0.0375 g to go, +0.0022 g this cycle), elapsed 101.0 s
+[phase 3 tap] cycle 6: mass 9.9648 / 10.0000 g (0.0352 g to go, +0.0023 g this cycle), elapsed 104.0 s
+[phase 3 tap] cycle 7: mass 9.9667 / 10.0000 g (0.0333 g to go, +0.0019 g this cycle), elapsed 107.0 s
+[phase 3 tap] cycle 8: mass 9.9694 / 10.0000 g (0.0306 g to go, +0.0027 g this cycle), elapsed 110.0 s
+[phase 3 tap] cycle 9: mass 9.9706 / 10.0000 g (0.0294 g to go, +0.0012 g this cycle), elapsed 113.0 s
+[phase 3 tap] cycle 10: mass 9.9717 / 10.0000 g (0.0283 g to go, +0.0011 g this cycle), elapsed 116.0 s
+[phase 3 tap] cycle 11: mass 9.9727 / 10.0000 g (0.0273 g to go, +0.0009 g this cycle), elapsed 120.0 s
+[phase 3 tap] cycle 12: mass 9.9740 / 10.0000 g (0.0260 g to go, +0.0013 g this cycle), elapsed 123.0 s
+[phase 3 tap] cycle 13: mass 9.9748 / 10.0000 g (0.0252 g to go, +0.0008 g this cycle), elapsed 126.0 s
+[phase 3 tap] cycle 14: mass 9.9759 / 10.0000 g (0.0241 g to go, +0.0011 g this cycle), elapsed 129.0 s
+[phase 3 tap] cycle 15: mass 9.9773 / 10.0000 g (0.0227 g to go, +0.0014 g this cycle), elapsed 132.0 s
+[phase 3 tap] cycle 16: mass 9.9778 / 10.0000 g (0.0222 g to go, +0.0005 g this cycle), elapsed 135.0 s
+[phase 3 tap] cycle 17: mass 9.9793 / 10.0000 g (0.0207 g to go, +0.0014 g this cycle), elapsed 138.0 s
+[phase 3 tap] cycle 18: mass 9.9797 / 10.0000 g (0.0203 g to go, +0.0005 g this cycle), elapsed 141.0 s
+[phase 3 tap] cycle 19: mass 9.9811 / 10.0000 g (0.0189 g to go, +0.0014 g this cycle), elapsed 144.0 s
+[phase 3 tap] cycle 20: mass 9.9820 / 10.0000 g (0.0180 g to go, +0.0009 g this cycle), elapsed 147.0 s
+[phase 3 tap] cycle 21: mass 9.9828 / 10.0000 g (0.0172 g to go, +0.0007 g this cycle), elapsed 150.0 s
+[phase 3 tap] cycle 22: mass 9.9832 / 10.0000 g (0.0168 g to go, +0.0004 g this cycle), elapsed 153.0 s
+[phase 3 tap] cycle 23: mass 9.9844 / 10.0000 g (0.0156 g to go, +0.0012 g this cycle), elapsed 156.0 s
+[phase 3 tap] cycle 24: mass 9.9851 / 10.0000 g (0.0149 g to go, +0.0007 g this cycle), elapsed 159.0 s
+[phase 3 tap] cycle 25: mass 9.9853 / 10.0000 g (0.0147 g to go, +0.0002 g this cycle), elapsed 163.0 s
+[phase 3 tap] cycle 26: mass 9.9854 / 10.0000 g (0.0146 g to go, +0.0002 g this cycle), elapsed 166.0 s
+[phase 3 tap] cycle 27: mass 9.9862 / 10.0000 g (0.0138 g to go, +0.0008 g this cycle), elapsed 169.0 s
+[phase 3 tap] cycle 28: mass 9.9870 / 10.0000 g (0.0130 g to go, +0.0008 g this cycle), elapsed 172.0 s
+[phase 3 tap] cycle 29: mass 9.9876 / 10.0000 g (0.0124 g to go, +0.0006 g this cycle), elapsed 175.0 s
+[phase 3 tap] cycle 30: mass 9.9880 / 10.0000 g (0.0120 g to go, +0.0004 g this cycle), elapsed 178.0 s
+[phase 3 tap] cycle 31: mass 9.9887 / 10.0000 g (0.0113 g to go, +0.0007 g this cycle), elapsed 181.0 s
+[phase 3 tap] cycle 32: mass 9.9890 / 10.0000 g (0.0110 g to go, +0.0004 g this cycle), elapsed 184.0 s
+[phase 3 tap] cycle 33: mass 9.9894 / 10.0000 g (0.0106 g to go, +0.0004 g this cycle), elapsed 188.0 s
+[phase 3 tap] cycle 34: mass 9.9899 / 10.0000 g (0.0101 g to go, +0.0004 g this cycle), elapsed 191.0 s
+[phase 3 tap] cycle 35: mass 9.9907 / 10.0000 g (0.0093 g to go, +0.0008 g this cycle), elapsed 194.0 s
+[phase 3 tap] cycle 36: mass 9.9912 / 10.0000 g (0.0088 g to go, +0.0005 g this cycle), elapsed 197.0 s
+[phase 3 tap] cycle 37: mass 9.9914 / 10.0000 g (0.0086 g to go, +0.0002 g this cycle), elapsed 200.0 s
+[phase 3 tap] cycle 38: mass 9.9920 / 10.0000 g (0.0080 g to go, +0.0006 g this cycle), elapsed 203.0 s
+[phase 3 tap] cycle 39: mass 9.9923 / 10.0000 g (0.0077 g to go, +0.0003 g this cycle), elapsed 206.0 s
+[phase 3 tap] cycle 40: mass 9.9925 / 10.0000 g (0.0075 g to go, +0.0002 g this cycle), elapsed 209.0 s
+[phase 3 tap] cycle 41: mass 9.9931 / 10.0000 g (0.0069 g to go, +0.0006 g this cycle), elapsed 212.0 s
+[phase 3 tap] cycle 42: mass 9.9934 / 10.0000 g (0.0066 g to go, +0.0003 g this cycle), elapsed 215.0 s
+[phase 3 tap] cycle 43: mass 9.9936 / 10.0000 g (0.0064 g to go, +0.0002 g this cycle), elapsed 218.0 s
+[phase 3 tap] cycle 44: mass 9.9945 / 10.0000 g (0.0055 g to go, +0.0009 g this cycle), elapsed 221.0 s
+[phase 3 tap] cycle 45: mass 9.9948 / 10.0000 g (0.0052 g to go, +0.0003 g this cycle), elapsed 224.0 s
+[phase 3 tap] cycle 46: mass 9.9950 / 10.0000 g (0.0050 g to go, +0.0002 g this cycle), elapsed 227.0 s
+[phase 3 tap] cycle 47: mass 9.9958 / 10.0000 g (0.0042 g to go, +0.0008 g this cycle), elapsed 230.0 s
+[phase 3 tap] cycle 48: mass 9.9960 / 10.0000 g (0.0040 g to go, +0.0002 g this cycle), elapsed 234.0 s
+[phase 3 tap] cycle 49: mass 9.9961 / 10.0000 g (0.0039 g to go, +0.0001 g this cycle), elapsed 237.0 s
+[phase 3 tap] cycle 50: mass 9.9975 / 10.0000 g (0.0025 g to go, +0.0014 g this cycle), elapsed 240.0 s
+[dose] final settle 2000 ms before the scoring reading
+[dose] done: DoseResult(ok: 9.9975/10.0000 g in 243.0s; cycles bulk:175, trickle:18, tap:50; 107.31 auger rev, 178 taps)
+[dose] firmware error MemoryError('memory allocation failed, allocating 1419 bytes',); rig stopped, 9.9975 g delivered so far
+[dose] done: DoseResult(fw-error: 9.9975/10.0000 g in 243.0s; cycles bulk:175, trickle:18, tap:50; 107.31 auger rev, 178 taps)
+RESULT {"t_settle_s": 3.34, "t_total_s": 242.87, "status": "fw-error", "t_trickle_s": 12.62, "target_g": 10.0, "phase_cycles": {"tap": 50, "bulk": 175, "trickle": 18}, "auger_rev": 107.313, "params": {"tau_afterflow_s": 0.8338, "goal_mass_g": 0.75, "taps_per_cycle": 1, "tap_cadence_on_ms": 60, "tap_burst_above_g": 0.0, "bulk_taper_start_g": 0.1, "bulk_boost_s": 3.0, "bulk_max_passes": 8, "final_settle_ms": 2000, "tap_cadence_off_ms": 440, "tap_burst_taps": 2, "tap_tilt_deg": 15.0, "trickle_tilt_deg": 10.0, "trickle_start_remaining_g": 0.3, "bulk_only": false, "bulk_min_rpm": 20.0, "trickle_tap": false, "overshoot_abort_g": 0.1, "bulk_tap": true, "tolerance_g": 0.003, "bulk_rpm": 100.0, "bulk_tilt_deg": 40.0}, "v": 1, "baseline_g": 0.0, "t_bulk_s": 68.37, "telemetry_truncated": 1, "taps": 178, "settled_final": 0, "log_path": null, "error": "MemoryError('memory allocation failed, allocating 1419 bytes',)", "error_mg": -2.48, "telemetry_rows": 0, "final_g": 9.99752, "nudges": 0, "stop_events": [{"settled_g": 9.81066, "rate_slope_gps": 0.15732, "rpm": 100.0, "rate_kf_gps": null, "t_stop_s": 72.76, "m_stop_g": 9.6658, "tau_s": 0.8338, "afterflow_g": 0.14486, "stalled": 0, "phase": "bulk"}, {"phase": "trickle", "rate_kf_gps": 0.01816, "settled_g": 9.9295, "stalled": 0, "tau_s": 0.8338, "m_stop_g": 9.9433, "afterflow_g": -0.0138, "rate_slope_gps": 0.02578, "t_stop_s": 82.71}], "read_retries": 0, "dose_n": 1, "fw": "trickle_tap/2026-09-30b", "ff_g_per_rev": 0.2579, "t_tap_s": 154.06}
+>> log
+[log] no telemetry yet -- run a dose first
