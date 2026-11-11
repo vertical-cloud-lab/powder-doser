@@ -1,0 +1,7 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+salt,0,0.05,0.0589,0.0089,overshoot,17.0,0.25,0,bulk:0;fine:2;tap:0,16428,H
+salt,1,0.05,0.0543,0.0043,ok,22.0,0.13,6,bulk:0;fine:1;tap:3,38434,H
+salt,2,0.05,0.0494,-0.0006,ok,17.0,0.25,0,bulk:0;fine:2;tap:0,55351,H
+salt,3,0.2,0.1987,-0.0013,ok,40.0,0.5,8,bulk:0;fine:4;tap:4,95612,H
+salt,4,0.2,0.2133,0.0133,overshoot,53.0,0.75,10,bulk:0;fine:6;tap:5,148792,H
+salt,5,0.2,0.1963,-0.0037,ok,64.0,0.38,24,bulk:1;fine:3;tap:12,212377,H

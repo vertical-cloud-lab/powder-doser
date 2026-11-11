@@ -1,0 +1,10 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+sodium-sulfate,0,1.0,0.9971,-0.0029,ok,86.0,3.38,28,bulk:10;fine:5;tap:14,86101,G
+sodium-sulfate,1,1.0,0.9953,-0.0047,ok,73.0,3.5,18,bulk:8;fine:6;tap:9,159448,G
+sodium-sulfate,2,1.0,0.9951,-0.0049,ok,175.0,3.25,86,bulk:8;fine:4;tap:43,334356,G
+sodium-sulfate,0,0.05,0.0677,0.0177,overshoot,15.0,0.25,0,bulk:0;fine:2;tap:0,349752,H
+sodium-sulfate,1,0.05,0.0721,0.0221,overshoot,10.0,0.13,0,bulk:0;fine:1;tap:0,359698,H
+sodium-sulfate,2,0.05,0.0969,0.0469,overshoot,10.0,0.13,0,bulk:0;fine:1;tap:0,369164,H
+sodium-sulfate,3,0.2,0.2066,0.0066,overshoot,30.0,0.63,0,bulk:0;fine:5;tap:0,399959,H
+sodium-sulfate,4,0.2,0.2302,0.0302,overshoot,20.0,0.38,0,bulk:0;fine:3;tap:0,419945,H
+sodium-sulfate,5,0.2,0.1955,-0.0045,ok,64.0,0.63,20,bulk:0;fine:5;tap:10,483813,H
