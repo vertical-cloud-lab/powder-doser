@@ -137,7 +137,7 @@ def figS_cad_comparison() -> None:
                     bbox=dict(fc="white", ec="none", alpha=0.8, pad=0.6))
     FIGS.mkdir(exist_ok=True), PREVIEW.mkdir(exist_ok=True)
     fig.savefig(FIGS / "figS_cad_comparison.pdf")
-    fig.savefig(PREVIEW / "figS_cad_comparison.png", dpi=220, facecolor="white")
+    # the PNG preview is rendered from the compiled LaTeX by build_figures.py
     plt.close(fig)
     print("wrote figS_cad_comparison")
 

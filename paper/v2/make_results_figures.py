@@ -56,11 +56,10 @@ REF_TILT = 45.0           # recorded battery tilt; physical tube angle 22.5 deg
 def save(fig, stem: str, tight: bool = True) -> None:
     """PDF for LaTeX.  Panels are saved at their exact print size (tight=False)
     so that subfigures of one row share the same plot area; SI figures keep
-    the tight crop and a PNG preview."""
+    the tight crop.  PNG previews are rendered from the compiled LaTeX by
+    build_figures.py."""
     if tight:
         fig.savefig(FIGS / f"{stem}.pdf", bbox_inches="tight")
-        fig.savefig(PREVIEW / f"{stem}.png", dpi=220, bbox_inches="tight",
-                    facecolor="white")
     else:
         fig.savefig(FIGS / f"{stem}.pdf")
     plt.close(fig)

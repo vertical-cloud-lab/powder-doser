@@ -152,7 +152,7 @@ def fig_doser_panels() -> None:
     save(fig, "doser_b_exploded")
 
     # (c) auger section, larger than in the composite
-    fig = plt.figure(figsize=(1.80, DOSER_LOW_H))
+    fig = plt.figure(figsize=(1.52, DOSER_LOW_H))
     axc = fig.add_axes([0.0, 0.0, 1.0, 1.0])
     mf.auger_cutaway(axc)
     save(fig, "doser_c_auger")
@@ -359,7 +359,7 @@ LINEUP_NAME = ["NaCl (table salt)", "CMC", "Sodium alginate", "Brown rice flour 
                "Brown rice flour (1)", "Xanthan gum", "White rice flour", "Calcium lactate"]
 
 
-USE_H = 2.35            # inches: every panel of the row has this height
+USE_H = 2.15            # inches: every panel of the row has this height
 
 
 def fig_use_panels() -> None:
