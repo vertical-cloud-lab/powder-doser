@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Figs. 1, 3 and 4 (v2): the doser, how a dose runs, and how it is used.
+"""Figs. 1, 4 and 5 (v2): the doser, how a dose runs, and how it is used.
+
+Review of 11 Nov 2026 (paper/review_2026-11-11/NOTES.md): Figs. 1 and 5 are
+written as one PDF per panel, without panel letters, and assembled as LaTeX
+subfigures in figures.tex; Fig. 4 (how a dose runs) stays one image.
 
 From the 27 Oct whiteboard (sources/brainstorm-whiteboard-2026-10-27.png):
 
@@ -77,27 +81,39 @@ def label(ax, letter, x=0.0, y=1.0, color=INK, inside=False):
 
 
 def save(fig, stem):
+    """PDF at print size; figures.tex places it at its natural size."""
     fig.savefig(FIGS / f"{stem}.pdf")
-    fig.savefig(PREVIEW / f"{stem}.png", dpi=220, facecolor="white")
     plt.close(fig)
     print("wrote", stem)
+
+
+def image_panel(w_in: float, h_in: float):
+    fig = plt.figure(figsize=(w_in, h_in))
+    ax = fig.add_axes([0, 0, 1, 1])
+    bare(ax)
+    return fig, ax
 
 
 # ----------------------------------------------------------------------------
 # Fig. 1  the doser
 # ----------------------------------------------------------------------------
-def fig1_doser() -> None:
-    fig = plt.figure(figsize=(W_IN, 4.55))
+# Panel sizes (inches, print size) for the LaTeX layout in figures.tex:
+# (a) on the left; (b) above (c) and (d) on the right.
+DOSER_A_W = 3.45
+DOSER_R_W = W_IN - DOSER_A_W - 0.10
+DOSER_LOW_H = 1.95
 
+
+def fig_doser_panels() -> None:
+    """Fig. 1 as four subfigures (review of 11 Nov 2026: LaTeX subfigures;
+    (d) replaced by the fixed livestream camera's view of the cup)."""
     # (a) photograph with callouts; asset is 1500 x 2000 (3024 x 4032 / 2.016)
     k = 1500 / 3024
     img = photo("rig_2026-09-11.jpg")
-    ax = fig.add_axes([0.0, 0.0, 0.50, 1.0])
-    ax.imshow(img)
     x0, x1, y0, y1 = 120 * k, 2950 * k, 230 * k, 4032 * k
+    fig, ax = image_panel(DOSER_A_W, DOSER_A_W * (y1 - y0) / (x1 - x0))
+    ax.imshow(img)
     ax.set_xlim(x0, x1), ax.set_ylim(y1, y0)
-    bare(ax)
-    # (part, point on the photo in original pixels, label position in original pixels)
     callouts = [
         ("Screw-on cap over\nthe fill opening", (885, 545), (180, 470), "left"),
         ("Stepper motor", (760, 690), (180, 820), "left"),
@@ -113,48 +129,51 @@ def fig1_doser() -> None:
     ]
     for text, (px, py), (tx, ty), side in callouts:
         ax.annotate(text, xy=(px * k, py * k), xytext=(tx * k, ty * k),
-                    fontsize=5.4, color=INK, ha="left" if side == "left" else "right",
-                    va="center", linespacing=1.1,
+                    fontsize=5.6, color=INK, ha="left" if side == "left" else "right",
+                    va="center", linespacing=1.1, multialignment="left",
                     bbox=dict(fc="white", ec="none", alpha=0.85, pad=1.2),
                     arrowprops=dict(arrowstyle="-", lw=0.6, color=CALL,
                                     shrinkA=0, shrinkB=1.5), zorder=5)
         ax.plot(px * k, py * k, "o", ms=2.2, color=CALL, zorder=6)
-    # callout box around the auger, linked to the section view
-    auger_box = Rectangle((1020 * k, 760 * k), 520 * k, 380 * k, fill=False,
-                          lw=0.9, ec=CALL, ls=(0, (3, 1.5)), zorder=7)
-    ax.add_patch(auger_box)
-    label(ax, "a", x=0.01, y=0.99, inside=True)
+    # dashed box: the part drawn in section in (c)
+    ax.add_patch(Rectangle((1020 * k, 760 * k), 520 * k, 380 * k, fill=False,
+                           lw=0.9, ec=CALL, ls=(0, (3, 1.5)), zorder=7))
+    ax.text(1020 * k, 750 * k, "section in (c)", fontsize=5.0, color=CALL,
+            ha="left", va="bottom", style="italic", zorder=7,
+            bbox=dict(fc="white", ec="none", alpha=0.8, pad=0.6))
+    save(fig, "doser_a_photo")
 
     # (b) exploded view (PR #170, the drawing only, BOM table cropped off)
-    axb = fig.add_axes([0.505, 0.47, 0.495, 0.53])
     ex = np.asarray(Image.open(OLD / "assets" / "assembly_exploded_bom.png").convert("RGB"))
     h, w = ex.shape[:2]
-    axb.imshow(ex[:, : int(0.635 * w)])
-    bare(axb)
-    label(axb, "b", x=0.0, y=0.98, inside=True)
+    ex = ex[:, : int(0.635 * w)]
+    fig, ax = image_panel(DOSER_R_W, DOSER_R_W * ex.shape[0] / ex.shape[1])
+    ax.imshow(ex, interpolation="lanczos")
+    save(fig, "doser_b_exploded")
 
-    # (c) auger section view (callout from the photo)
-    axc = fig.add_axes([0.53, 0.0, 0.25, 0.47])
+    # (c) auger section, larger than in the composite
+    fig = plt.figure(figsize=(1.80, DOSER_LOW_H))
+    axc = fig.add_axes([0.0, 0.0, 1.0, 1.0])
     mf.auger_cutaway(axc)
-    label(axc, "c", x=0.0, y=0.98, inside=True)
-    con = ConnectionPatch(xyA=(1540 * k, 950 * k), coordsA=ax.transData,
-                          xyB=(0.12, 0.62), coordsB=axc.transAxes,
-                          arrowstyle="-", lw=0.8, color=CALL, ls=(0, (3, 1.5)),
-                          zorder=8)
-    fig.add_artist(con)
+    save(fig, "doser_c_auger")
 
-    # (d) powder in the beaker after a dose
-    axd = fig.add_axes([0.80, 0.03, 0.195, 0.41])
-    pb = photo("powder_in_beaker_2026-09-10.jpg")
-    H, W = pb.shape[:2]
-    axd.imshow(pb[int(0.36 * H):int(0.78 * H), int(0.12 * W):int(0.84 * W)])
-    bare(axd)
-    label(axd, "d", x=0.02, y=0.98, inside=True)
-    save(fig, "fig1_doser")
+    # (d) the fixed livestream camera, after a 0.5 g NaCl dose (15 Sep 2026)
+    cam = photo("salt_demo_after_2026-09-15.jpg")         # 720 x 1280
+    cam = cam[640:1150, 170:600]
+    fig, ax = image_panel(DOSER_LOW_H * cam.shape[1] / cam.shape[0], DOSER_LOW_H)
+    ax.imshow(cam, interpolation="lanczos")
+    ax.annotate("0.496 g of NaCl", xy=(215, 250), xytext=(215, 470),
+                fontsize=5.6, color=INK, ha="center", va="center",
+                bbox=dict(fc="white", ec="none", alpha=0.85, pad=1.2),
+                arrowprops=dict(arrowstyle="-", lw=0.6, color=CALL, shrinkA=0,
+                                shrinkB=1.5), zorder=5)
+    ax.plot(215, 250, "o", ms=2.2, color=CALL, zorder=6)
+    save(fig, "doser_d_cam")
 
 
 # ----------------------------------------------------------------------------
-# Fig. 3  how a dose runs
+# ----------------------------------------------------------------------------
+# Fig. 4 (was 3)  how a dose runs
 # ----------------------------------------------------------------------------
 REQUEST = ("@claude dispense 8 grams of the AlSi10Mg that we just loaded. You can use the "
            "most recent optimized parameters. It flows pretty well, maybe not quite as good "
@@ -209,49 +228,54 @@ PHASE_TEXT = {
 }
 
 
-def fig3_dosing() -> None:
+def fig_dosing() -> None:
+    """Fig. 4 (was 3): request and reply, the control loop, one dose by phase.
+
+    Review of 11 Nov 2026: the phone-screen snippet is gone, the loop is drawn
+    as one row with a single loop back, and the keyframe leaders are lines.
+    Kept as one image (not subfigures): the leaders cross between panels."""
     import build_dose_traces as bt
-    fig = plt.figure(figsize=(W_IN, 5.0))
+    fig = plt.figure(figsize=(W_IN, 4.75))
 
     # (a) the request and the reply (PR #166, 29 Sep 2026)
-    ax = fig.add_axes([0.0, 0.60, 0.37, 0.40])
+    ax = fig.add_axes([0.0, 0.615, 0.40, 0.355])
     bare(ax)
     ax.set_xlim(0, 1), ax.set_ylim(0, 1)
-    card(ax, 0.02, 0.53, 0.94, 0.40, "sgbaird", "29 Sep 2026, 22:36 UTC", REQUEST, "#4a3aa7")
-    card(ax, 0.02, 0.04, 0.94, 0.40, "claude[bot]", "22:37 UTC", REPLY, "#1baf7a")
+    card(ax, 0.02, 0.53, 0.96, 0.43, "sgbaird", "29 Sep 2026, 22:36 UTC", REQUEST, "#4a3aa7")
+    card(ax, 0.02, 0.02, 0.96, 0.43, "claude[bot]", "22:37 UTC", REPLY, "#1baf7a")
     arrow(ax, (0.5, 0.53), (0.5, 0.445))
-    label(ax, "a", x=0.0, y=0.955)
+    label(ax, "a", x=0.0, y=1.0)
 
-    # phone screen: Claude's checklist for the 30 Sep Al 4047 dose (slide video)
-    axp = fig.add_axes([0.375, 0.66, 0.175, 0.30])
-    ph = photo("video_claude_checklist_t20p5.jpg")
-    H, W = ph.shape[:2]
-    axp.imshow(ph[int(0.0 * H):int(0.46 * H), int(0.05 * W):int(0.78 * W)])
-    bare(axp)
-    for sp in axp.spines.values():
-        sp.set_visible(True), sp.set_color(MUTED), sp.set_linewidth(0.6)
-    axp.text(0.5, -0.02, "Phone, 30 Sep: the agent's\nchecklist for an 8 g dose",
-             transform=axp.transAxes, ha="center", va="top", fontsize=4.9, color=INK2)
-
-    # (b) the feedback loop
-    axb = fig.add_axes([0.56, 0.60, 0.44, 0.40])
+    # (b) the control loop, left to right, with the measurement looping back
+    axb = fig.add_axes([0.425, 0.615, 0.575, 0.355])
     bare(axb)
     axb.set_xlim(0, 1), axb.set_ylim(0, 1)
-    box(axb, (0.2, 0.78), "Dose request\n(target mass)", w=0.3)
-    box(axb, (0.2, 0.36), "Three-phase\ncontroller\n(microcontroller)", w=0.3, h=0.22)
-    box(axb, (0.75, 0.36), "Auger rotation,\nsolenoid taps,\ntilt servos", w=0.34, h=0.22)
-    box(axb, (0.75, 0.78), "Analytical\nbalance", w=0.3)
-    arrow(axb, (0.2, 0.705), (0.2, 0.475))
-    arrow(axb, (0.355, 0.36), (0.575, 0.36))
-    arrow(axb, (0.75, 0.475), (0.75, 0.705), text="powder")
-    arrow(axb, (0.595, 0.76), (0.36, 0.44), text="measured mass")
-    axb.text(0.2, 0.93, "agent or person", ha="center", fontsize=4.9,
+    yb, bw, bh = 0.60, 0.185, 0.34
+    xs_ = [0.10, 0.365, 0.63, 0.895]
+    texts = ["Dose request\n(target mass)", "Three-phase\ncontroller\n(microcontroller)",
+             "Auger rotation,\nsolenoid taps,\ntilt servos", "Analytical\nbalance"]
+    for x_, t_ in zip(xs_, texts):
+        box(axb, (x_, yb), t_, w=bw, h=bh)
+    for x0_, x1_, t_ in [(xs_[0], xs_[1], None), (xs_[1], xs_[2], None),
+                         (xs_[2], xs_[3], "powder")]:
+        arrow(axb, (x0_ + bw / 2 + 0.004, yb), (x1_ - bw / 2 - 0.004, yb))
+        if t_:
+            axb.text((x0_ + x1_) / 2, yb + 0.035, t_, transform=axb.transAxes,
+                     fontsize=4.9, color=INK2, ha="center", va="bottom", style="italic")
+    yl = 0.17                                   # the loop back, under the row
+    axb.plot([xs_[3], xs_[3], xs_[1]], [yb - bh / 2 - 0.01, yl, yl],
+             color=INK2, lw=0.8, transform=axb.transAxes, solid_capstyle="butt")
+    arrow(axb, (xs_[1], yl), (xs_[1], yb - bh / 2 - 0.006))
+    axb.text((xs_[1] + xs_[3]) / 2, yl - 0.035, "measured mass, read after every step",
+             transform=axb.transAxes, fontsize=4.9, color=INK2, ha="center",
+             va="top", style="italic")
+    axb.text(xs_[0], yb + bh / 2 + 0.05, "agent or person", ha="center", fontsize=4.9,
              color=INK2, style="italic", transform=axb.transAxes)
-    label(axb, "b", x=0.0, y=0.955)
+    label(axb, "b", x=0.0, y=1.0)
 
     # (c) one dose, phase by phase
     dose = nacl_trace()
-    axt = fig.add_axes([0.075, 0.07, 0.905, 0.25])
+    axt = fig.add_axes([0.075, 0.075, 0.905, 0.25])
     tt, mm = bt.trace_xy(dose)
     prev, spans = 0.0, {}
     for ph_ in dose["order"]:
@@ -298,20 +322,19 @@ def fig3_dosing() -> None:
         for sp in axk.spines.values():
             sp.set_visible(True), sp.set_color(MUTED), sp.set_linewidth(0.6)
         text = PHASE_TEXT[ph_] if ph_ else cap
-        axk.text(0.5, 1.02, text, transform=axk.transAxes, ha="center",
+        axk.text(0.0, 1.02, text, transform=axk.transAxes, ha="left",
                  va="bottom", fontsize=4.8, color=INK, linespacing=1.1)
-        # leader to the matching stretch of the trace
+        # leader (a line: it only links the frame to its stretch of the trace)
         if ph_:
-            a, b = spans[ph_]
-            tx = (a + b) / 2
+            a_, b_ = spans[ph_]
+            tx = (a_ + b_) / 2
         else:
             tx = tmark
         con = ConnectionPatch(xyA=(0.5, 0.0), coordsA=axk.transAxes,
                               xyB=(tx, 1120), coordsB=axt.transData,
-                              arrowstyle="-|>", mutation_scale=5, lw=0.6,
-                              color=INK2)
+                              arrowstyle="-", lw=0.6, color=INK2)
         fig.add_artist(con)
-    save(fig, "fig3_dosing")
+    save(fig, "dosing")
 
 
 # ----------------------------------------------------------------------------
@@ -336,66 +359,66 @@ LINEUP_NAME = ["NaCl (table salt)", "CMC", "Sodium alginate", "Brown rice flour 
                "Brown rice flour (1)", "Xanthan gum", "White rice flour", "Calcium lactate"]
 
 
-def fig4_use() -> None:
-    FH = 2.8
-    fig = plt.figure(figsize=(W_IN, FH))
+USE_H = 2.35            # inches: every panel of the row has this height
+
+
+def fig_use_panels() -> None:
+    """Fig. 5 (was 4) as four subfigures of one height (review of 11 Nov 2026:
+    aligned panels, a callout for the aluminium cup in (c), no "Label, and
+    delivery..." header in (d), the tilt in the caption with an asterisk)."""
     steps = [
-        ("auger_filled_salt_2026-07-29.jpg", (0.05, 0.25, 0.60, 1.0), "Fill the tube through\nits open end, then cap it"),
-        ("video_fit_auger_t10.jpg", (0.12, 0.0, 0.45, 1.0), "Fit the filled auger\nto the doser"),
-        ("video_loaded_t17.jpg", (0.60, 0.0, 0.93, 1.0), "Ready over the cup"),
+        ("use_a_fill", "auger_filled_salt_2026-07-29.jpg", (0.05, 0.25, 0.60, 1.0)),
+        ("use_b_fit", "video_fit_auger_t10.jpg", (0.12, 0.0, 0.45, 1.0)),
+        ("use_c_ready", "video_loaded_t17.jpg", (0.60, 0.0, 0.93, 1.0)),
     ]
-    hgt, y0 = 0.70, 0.22
-    k = hgt * FH / W_IN
-    x = 0.0
-    for i, (name, crop, cap) in enumerate(steps):
+    for stem, name, crop in steps:
         img = photo(name)
         H, W = img.shape[:2]
         l, t, r, b = crop
         img = img[int(t * H):int(b * H), int(l * W):int(r * W)]
-        w = k * img.shape[1] / img.shape[0]
-        axs = fig.add_axes([x, y0, w, hgt])
-        axs.imshow(img)
-        bare(axs)
-        axs.text(0.5, -0.03, cap, transform=axs.transAxes, ha="center", va="top",
-                 fontsize=5.3, linespacing=1.1)
-        label(axs, "abc"[i], x=0.03, y=0.97, inside=True)
-        if i:
-            fig.text(x - 0.007, y0 + hgt / 2, "→", fontsize=10, ha="center",
-                     va="center", color=INK2)
-        x += w + 0.014
+        fig, ax = image_panel(USE_H * img.shape[1] / img.shape[0], USE_H)
+        ax.imshow(img, interpolation="lanczos")
+        if stem == "use_c_ready":
+            # the aluminium cup that stands in the glass beaker (review, 03:49)
+            ax.annotate("Aluminium cup\n(6063?)", xy=(312, 500), xytext=(600, 760),
+                        fontsize=5.6, color=INK, ha="right", va="center",
+                        multialignment="left",
+                        bbox=dict(fc="white", ec="none", alpha=0.88, pad=1.2),
+                        arrowprops=dict(arrowstyle="-", lw=0.6, color=CALL,
+                                        shrinkA=0, shrinkB=1.5), zorder=5)
+            ax.plot(312, 500, "o", ms=2.2, color=CALL, zorder=6)
+        save(fig, stem)
 
     # (d) one auger per powder, stored filled; callouts from the data
     img = photo("augers_lineup_2026-09-10.jpg", rotate=-27)
     H, W = img.shape[:2]
     img = img[int(0.06 * H):int(0.86 * H), int(0.20 * W):int(0.80 * W)]
     img = img[380 + 280:380 + 1300, 450:]
-    hd = 0.84
-    wd = hd * FH / W_IN * img.shape[1] / img.shape[0]
-    axl = fig.add_axes([x + 0.005, 0.02, wd, hd])
+    w_photo = USE_H * img.shape[1] / img.shape[0]
+    w_text = 0.86
+    fig = plt.figure(figsize=(w_photo + w_text, USE_H))
+    axl = fig.add_axes([0, 0, w_photo / (w_photo + w_text), 1])
     axl.imshow(img)
     bare(axl)
-    label(axl, "d", x=0.02, y=0.98, inside=True)
-    xt = x + 0.005 + wd + 0.012
-    ys = np.linspace(0.84, 0.10, len(LINEUP))
-    for (_, pid), name, (px, py), yy in zip(LINEUP, LINEUP_NAME, LINEUP_XY, ys):
+    xt = (w_photo + 0.06) / (w_photo + w_text)
+    ys = np.linspace(0.93, 0.07, len(LINEUP))
+    for i, ((_, pid), name, (px, py), yy) in enumerate(zip(LINEUP, LINEUP_NAME, LINEUP_XY, ys)):
         if pid in m.DID_NOT_CONVEY:
             val = "none measurable"
         else:
-            val = f"{m.per_turn(m.REP_RUN[pid], 45.0)[0]:.0f} mg per rev."
-        fig.text(xt, yy, f"{name}\n{val}", fontsize=5.1, color=m.colour(pid),
+            val = f"{m.per_turn(m.REP_RUN[pid], 45.0)[0]:.0f} mg per rev." + ("*" if i == 0 else "")
+        fig.text(xt, yy, f"{name}\n{val}", fontsize=5.4, color=m.colour(pid),
                  va="center", linespacing=1.1)
         con = ConnectionPatch(xyA=(px, py), coordsA=axl.transData,
-                              xyB=(xt - 0.004, yy), coordsB=fig.transFigure,
+                              xyB=(xt - 0.01, yy), coordsB=fig.transFigure,
                               arrowstyle="-", lw=0.5, color=CALL)
         fig.add_artist(con)
         axl.plot(px, py, "o", ms=2.2, color=CALL)
-    fig.text(xt, 0.985, "Label, and delivery\nper revolution at 22.5°",
-             fontsize=4.9, color=INK2, va="top", style="italic")
-    save(fig, "fig4_use")
+    save(fig, "use_d_augers")
 
 
 if __name__ == "__main__":
     FIGS.mkdir(exist_ok=True), PREVIEW.mkdir(exist_ok=True)
-    fig1_doser()
-    fig3_dosing()
-    fig4_use()
+    fig_doser_panels()
+    fig_dosing()
+    fig_use_panels()

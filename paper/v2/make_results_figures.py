@@ -4,10 +4,13 @@
 Reworks the measured-data figures of the current draft as decided on the
 whiteboard and in the 27 Oct meeting (paper/meeting_2026-10-27/):
 
-    Fig. 5  open-loop:  keep old 3a (mass per revolution) and 3b (mass-against-
+    Fig. 6  open-loop:  keep old 3a (mass per revolution) and 3b (mass-against-
             time traces); old 4b becomes a bar chart of mass per solenoid tap
-            for ALL powders, with error bars.
-    Fig. 6  closed-loop: old 5a-c; old 5d (time per dose) leaves this figure.
+            for ALL powders, with error bars (standard deviation of one tap).
+            Three separate panel files, assembled as LaTeX subfigures in
+            figures.tex (review of 11 Nov 2026, paper/review_2026-11-11/).
+    Fig. 7  closed-loop: old 5a-c; old 5d (time per dose) leaves this figure.
+            One file (shared powder axis).
     SI      time per dose on its own (old 5d), and the revolution-to-revolution
             variation without the slow / fast shading (old 3c).
     Tables  old 4a (tilt) becomes a per-powder table; the powder table and the
@@ -50,12 +53,28 @@ DNC = m.DID_NOT_CONVEY
 REF_TILT = 45.0           # recorded battery tilt; physical tube angle 22.5 deg
 
 
-def save(fig, stem: str) -> None:
-    fig.savefig(FIGS / f"{stem}.pdf", bbox_inches="tight")
-    fig.savefig(PREVIEW / f"{stem}.png", dpi=220, bbox_inches="tight",
-                facecolor="white")
+def save(fig, stem: str, tight: bool = True) -> None:
+    """PDF for LaTeX.  Panels are saved at their exact print size (tight=False)
+    so that subfigures of one row share the same plot area; SI figures keep
+    the tight crop and a PNG preview."""
+    if tight:
+        fig.savefig(FIGS / f"{stem}.pdf", bbox_inches="tight")
+        fig.savefig(PREVIEW / f"{stem}.png", dpi=220, bbox_inches="tight",
+                    facecolor="white")
+    else:
+        fig.savefig(FIGS / f"{stem}.pdf")
     plt.close(fig)
     print("wrote", stem)
+
+
+def panel_fig(w_in: float, h_in: float, l_in: float, r_in: float,
+              b_in: float = 0.42, t_in: float = 0.08):
+    """A one-axes figure at print size with margins in inches, so panels of
+    the same height have identical plot areas."""
+    fig = plt.figure(figsize=(w_in, h_in))
+    ax = fig.add_axes([l_in / w_in, b_in / h_in, (w_in - l_in - r_in) / w_in,
+                       (h_in - b_in - t_in) / h_in])
+    return fig, ax
 
 
 # ----------------------------------------------------------------------------
@@ -78,19 +97,29 @@ def tap_value(pid: str) -> dict:
     numbers, flagged as not resolved.  Fumed silica's only run failed the
     screening checks and is flagged as such.
     """
+    def sd_n(rid):
+        row = m.FEED[(m.FEED.run_id == rid) & (m.FEED.phase == "tap")
+                     & (m.FEED.tilt_deg == REF_TILT)]
+        if row.empty:
+            return np.nan, 0
+        return float(row.std_g.iloc[0]) * 1000, int(row.n.iloc[0])
+
     best = m.best_tap(pid, REF_TILT)
     if best is not None:
         rid, mg, se = best
-        return dict(run=rid, mg=mg, se=se, resolved=True, screened=True)
+        sd, n = sd_n(rid)
+        return dict(run=rid, mg=mg, se=se, sd=sd, n=n, resolved=True, screened=True)
     rid = m.REP_RUN[pid]
     row = m.FEED[(m.FEED.run_id == rid) & (m.FEED.phase == "tap")
                  & (m.FEED.tilt_deg == REF_TILT)]
     if row.empty:
-        return dict(run=rid, mg=np.nan, se=np.nan, resolved=False, screened=False)
+        return dict(run=rid, mg=np.nan, se=np.nan, sd=np.nan, n=0, resolved=False,
+                    screened=False)
     r = row.iloc[0]
     qc = bool(m.RUNS.loc[m.RUNS.run_id == rid, "qc_valid"].iloc[0])
+    sd, n = sd_n(rid)
     return dict(run=rid, mg=float(r.mean_g) * 1000, se=float(r.sem_g or 0) * 1000,
-                resolved=False, screened=qc)
+                sd=sd, n=n, resolved=False, screened=qc)
 
 
 SHORT = {
@@ -105,19 +134,25 @@ SHORT = {
 
 
 # ----------------------------------------------------------------------------
-# Fig. 5  open-loop: per revolution, per tap, and in time
+# Fig. 6  open-loop: per revolution, per tap, and in time (three subfigures)
 # ----------------------------------------------------------------------------
-def fig5_open_loop() -> None:
+ROW_H = 2.45            # inches; all three open-loop panels share this height
+ROW_B, ROW_T = 0.40, 0.06
+
+
+def open_loop_rows():
     conv, dnc = powder_order()
     rows = dnc + conv                       # bottom -> top
-    y = {p: i for i, p in enumerate(rows)}
-    n_dnc = len(dnc)
+    return rows, {p: i for i, p in enumerate(rows)}, len(dnc)
 
-    fig = plt.figure(figsize=(m.DOUBLE_COL_IN, 2.75))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 0.82, 1.05], wspace=0.09)
+
+def fig_open_loop() -> None:
+    rows, y, n_dnc = open_loop_rows()
+    conv = rows[n_dnc:]
+    ylim = (-0.7, len(rows) - 0.3)
 
     # (a) mass per auger revolution at 22.5 deg (old Fig. 3a)
-    ax = fig.add_subplot(gs[0, 0])
+    fig, ax = panel_fig(2.62, ROW_H, l_in=0.98, r_in=0.08, b_in=ROW_B, t_in=ROW_T)
     ax.axhspan(-0.6, n_dnc - 0.4, color="#f0efec", zorder=0)
     for p in conv:
         mg, se, _ = m.per_turn(m.REP_RUN[p], REF_TILT)
@@ -134,51 +169,52 @@ def fig5_open_loop() -> None:
     ax.set_yticks(range(len(rows)))
     ax.set_yticklabels([SHORT[p] for p in rows], fontsize=5.8)
     for tl, p in zip(ax.get_yticklabels(), rows):
-        tl.set_color(INK2 if p in dnc else m.colour(p))
-        if p in dnc:
+        tl.set_color(INK2 if p in DNC else m.colour(p))
+        if p in DNC:
             tl.set_fontstyle("italic")
     ax.set_xscale("log")
     ax.set_xlim(5, 1500)
-    ax.set_ylim(-0.7, len(rows) - 0.3)
-    ax.set_xlabel("Mass per auger revolution (mg, log scale)")
+    ax.set_ylim(*ylim)
+    ax.set_xlabel("Mass per auger revolution (mg)", labelpad=2)
     ax.grid(axis="x", which="major", alpha=0.8)
-    m.panel_label(ax, "a", x=-0.62)
+    # legend in the empty space right of the slow powders (review, 06:09)
+    y_mid = (y[conv[1]] - ylim[0]) / (ylim[1] - ylim[0])
+    ax.legend(handles=m.track_handles(3.6), loc="center right",
+              bbox_to_anchor=(1.0, y_mid), fontsize=5.4, handletextpad=0.3,
+              borderaxespad=0.3, labelspacing=0.35)
+    save(fig, "openloop_a_rev", tight=False)
 
-    # (b) mass per solenoid tap, every powder (old Fig. 4b reworked)
-    ax = fig.add_subplot(gs[0, 1], sharey=ax)
-    ax.tick_params(labelleft=False)
+    # (b) mass per solenoid tap, every powder, error bar = SD of one tap
+    taps = {}
+    fig, ax = panel_fig(1.80, ROW_H, l_in=0.10, r_in=0.08, b_in=ROW_B, t_in=ROW_T)
     ax.axhspan(-0.6, n_dnc - 0.4, color="#f0efec", zorder=0)
     ax.axvline(0, color=INK2, lw=0.5, zorder=1)
-    taps = {}
     for p in rows:
         t = tap_value(p)
         taps[p] = t
         c = m.colour(p)
         if not np.isfinite(t["mg"]):
             continue
-        ax.barh(y[p], t["mg"], height=0.62, color=c if t["resolved"] else "white",
-                edgecolor=c, linewidth=0.8, zorder=2,
-                hatch="////" if not t["screened"] else None)
-        ax.errorbar(t["mg"], y[p], xerr=t["se"], fmt="none", ecolor=INK2,
+        ax.barh(y[p], t["mg"], height=0.62, color=c, edgecolor=c, linewidth=0.6,
+                zorder=2)
+        ax.errorbar(t["mg"], y[p], xerr=t["sd"], fmt="none", ecolor=INK2,
                     elinewidth=0.6, capsize=1.4, zorder=3)
-        label = f"{t['mg']:.1f} ± {t['se']:.1f}"
-        xr = max(t["mg"] + t["se"], 0) + 0.8
-        ax.text(xr, y[p], label, va="center", ha="left", fontsize=5.0,
-                color=INK if t["resolved"] else INK2)
-    ax.set_xlim(-10, 34)
-    ax.set_xticks([-10, 0, 10, 20, 30])
-    ax.set_xlabel("Mass per solenoid tap (mg)")
+        xr = max(t["mg"] + t["sd"], 0) + 0.9
+        ax.text(xr, y[p], f"{t['mg']:.1f} ± {t['sd']:.1f}".replace("-", "−"), va="center",
+                ha="left", fontsize=5.0, color=INK)
+    ax.set_xlim(-20, 37)
+    ax.set_xticks([-20, -10, 0, 10, 20, 30])
+    ax.set_ylim(*ylim)
+    ax.set_yticks(range(len(rows)))
+    ax.tick_params(axis="y", length=0, labelleft=False)
+    ax.set_xlabel("Mass per solenoid tap (mg)", labelpad=2)
     ax.grid(axis="x", alpha=0.8)
     ax.spines["left"].set_visible(False)
-    ax.tick_params(axis="y", length=0)
-    m.panel_label(ax, "b", x=-0.02)
-    tap_legend = [Patch(facecolor=INK2, edgecolor=INK2, label="Tap resolved (mean > 2 SE)"),
-                  Patch(facecolor="white", edgecolor=INK2, label="Tap within balance noise"),
-                  Patch(facecolor="white", edgecolor=INK2, hatch="////",
-                        label="Run failed screening")]
+    save(fig, "openloop_b_tap", tight=False)
+    fig_open_loop.taps = taps
 
     # (c) mass against time under continuous rotation (old Fig. 3b)
-    ax = fig.add_subplot(gs[0, 2])
+    fig, ax = panel_fig(2.02, ROW_H, l_in=0.50, r_in=0.06, b_in=ROW_B, t_in=ROW_T)
     picks = ["alsi10mg", "salt", "calcium-lactate", "carboxymethyl-cellulose"]
     for p in picks:
         sub = m.POLLS[(m.POLLS.run_id == m.REP_RUN[p]) & (m.POLLS.rpm == 15.0)]
@@ -190,50 +226,46 @@ def fig5_open_loop() -> None:
                 ls="-" if p in ("alsi10mg", "salt") else "--")
         ax.text(t[-1] + 0.4, g[-1], SHORT[p], fontsize=5.4, color=INK2,
                 va="center")
-    ax.set_xlim(0, 25)
-    ax.set_xlabel("Time (s)")
+    ax.set_xlim(0, 27)
+    ax.set_xlabel("Time (s)", labelpad=2)
     ax.set_ylabel("Mass delivered (mg)", labelpad=2)
     ax.grid(alpha=0.8)
-    pos = ax.get_position()
-    ax.set_position([pos.x0 + 0.075, pos.y0, pos.width - 0.075, pos.height])
-    m.panel_label(ax, "c", x=-0.2)
-
-    handles = m.track_handles(3.6) + tap_legend
-    fig.legend(handles=handles, loc="lower center", ncol=5,
-               bbox_to_anchor=(0.5, -0.08), fontsize=5.4, handletextpad=0.3,
-               columnspacing=1.3, handlelength=1.3, handleheight=0.8)
-    save(fig, "fig5_open_loop")
-    fig5_open_loop.taps = taps
+    save(fig, "openloop_c_time", tight=False)
 
 
 # ----------------------------------------------------------------------------
-# Fig. 6  closed-loop dose error (old 5a-c, time per dose removed)
+# Fig. 7  closed-loop dose error (old 5a-c, time per dose removed)
 # ----------------------------------------------------------------------------
-def fig6_closed_loop() -> None:
+def fig_closed_loop() -> None:
     d = m.load_doses()
     targets = [50.0, 200.0, 1000.0]
     rank = {p: (-1 if p in DNC else m.per_turn(m.REP_RUN[p], REF_TILT)[0])
             for p in m.REP.powder_id}
     order = sorted(set(d.powder_id), key=lambda p: rank.get(p, -1))
     ypos = {p: i for i, p in enumerate(order)}
-    lim = 35.0
+    lim, edge = 35.0, 40.0
 
-    fig = plt.figure(figsize=(m.DOUBLE_COL_IN, 2.45))
-    gs = fig.add_gridspec(1, 3, wspace=0.08)
+    fig = plt.figure(figsize=(m.DOUBLE_COL_IN, 2.75))
+    gs = fig.add_gridspec(1, 3, wspace=0.16, left=0.152, right=0.99,
+                          top=0.855, bottom=0.215)
     for k, tgt in enumerate(targets):
         ax = fig.add_subplot(gs[0, k])
         sub = d[d.target_mg == tgt]
         band = m.acceptance_limit_pct(tgt)
-        ax.axvspan(-band, band, color="#e6f4e6", zorder=0)
+        for i in range(len(order)):                 # separate the powders
+            if i % 2 == 0:
+                ax.axhspan(i - 0.5, i + 0.5, color="#f5f4f0", lw=0, zorder=0)
+        ax.axvspan(-band, band, color="#dff0df", zorder=0.5)
         ax.axvline(0, color=INK2, lw=0.5, zorder=1)
         for _, r in sub.iterrows():
-            x = float(np.clip(r.error_pct, -lim, lim))
             clipped = abs(r.error_pct) > lim
+            x = float(np.clip(r.error_pct, -lim, lim)) if not clipped else \
+                (-edge + 1.6 if r.error_pct < 0 else edge - 1.6)
             mk = ("<" if r.error_pct < 0 else ">") if clipped else m.marker(r.powder_id)
             c = m.colour(r.powder_id)
-            ax.scatter(x, ypos[r.powder_id], s=13, marker=mk,
-                       facecolor=c if r.passes else "white", edgecolor=c,
-                       linewidth=0.8, zorder=3, alpha=0.9)
+            ax.scatter(x, ypos[r.powder_id], s=11 if not clipped else 12,
+                       marker=mk, facecolor=c, edgecolor="white",
+                       linewidth=0.35, zorder=3, alpha=0.9)
         ax.set_yticks(range(len(order)))
         if k == 0:
             ax.set_yticklabels([SHORT[p] for p in order], fontsize=5.8)
@@ -241,33 +273,34 @@ def fig6_closed_loop() -> None:
                 tl.set_color(m.colour(p))
         else:
             ax.tick_params(labelleft=False)
+        ax.tick_params(axis="y", length=0)
         n_pass, n = int(sub.passes.sum()), len(sub)
-        ax.set_title(f"{'1 g' if tgt >= 1000 else f'{tgt:.0f} mg'} target\n"
-                     f"{n_pass} of {n} within ±{band:.0f}%", fontsize=6.3,
-                     color=INK, linespacing=1.3)
-        ax.set_ylim(-0.7, len(order) - 0.3)
-        ax.set_xlim(-lim - 4, lim + 4)
+        name = "1 g" if tgt >= 1000 else f"{tgt:.0f} mg"
+        ax.set_title(r"$\mathbf{(" + "abc"[k] + r")}$" + f"  {name} target\n"
+                     f"{n_pass} of {n} doses within ±{band:.0f}%", loc="left",
+                     fontsize=6.3, color=INK, linespacing=1.35, pad=4)
+        ax.set_ylim(-0.5, len(order) - 0.5)
+        ax.set_xlim(-edge, edge)
         ax.set_xticks([-30, -15, 0, 15, 30])
-        ax.set_xlabel("Dose error (% of target)")
+        ax.set_xlabel("Dose error (% of target)", labelpad=2)
         ax.grid(axis="x", alpha=0.8)
-        m.panel_label(ax, "abc"[k], x=-0.03)
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(True)
+            ax.spines[sp].set_color(MUTED)
     handles = [
-        Line2D([], [], marker="o", ls="", ms=3.6, color=SURROGATE,
-               label="Surrogate, within limit"),
-        Line2D([], [], marker="o", ls="", ms=3.6, markerfacecolor="white",
-               markeredgecolor=SURROGATE, label="Surrogate, outside limit"),
-        Line2D([], [], marker="s", ls="", ms=3.6, color=RESEARCH,
-               label="Research-relevant, within limit"),
-        Line2D([], [], marker="s", ls="", ms=3.6, markerfacecolor="white",
-               markeredgecolor=RESEARCH, label="Research-relevant, outside limit"),
-        Line2D([], [], marker="<", ls="", ms=3.6, markerfacecolor="white",
-               markeredgecolor=INK2, label="Off scale (beyond ±35%)"),
+        Line2D([], [], marker="o", ls="", ms=3.4, color=SURROGATE,
+               label="Food-safe surrogate"),
+        Line2D([], [], marker="s", ls="", ms=3.4, color=RESEARCH,
+               label="Research-relevant"),
+        Patch(facecolor="#dff0df", edgecolor="none", label="Acceptance limit"),
+        Line2D([], [], marker="<", ls="", ms=3.6, color=INK2,
+               label="Off scale (beyond ±35%)"),
     ]
-    fig.legend(handles=handles, loc="lower center", ncol=5,
-               bbox_to_anchor=(0.5, -0.09), fontsize=5.3, handletextpad=0.25,
-               columnspacing=1.1)
-    save(fig, "fig6_closed_loop")
-    fig6_closed_loop.doses = d
+    fig.legend(handles=handles, loc="lower center", ncol=4,
+               bbox_to_anchor=(0.56, 0.0), fontsize=5.6, handletextpad=0.3,
+               columnspacing=1.6)
+    save(fig, "closedloop", tight=False)
+    fig_closed_loop.doses = d
 
 
 # ----------------------------------------------------------------------------
@@ -414,7 +447,7 @@ def table_open_loop() -> None:
     variation, and the tap increment, for every powder (SI)."""
     conv, dnc = powder_order()
     rows = list(reversed(conv)) + dnc
-    taps = getattr(fig5_open_loop, "taps", None) or {p: tap_value(p) for p in rows}
+    taps = getattr(fig_open_loop, "taps", None) or {p: tap_value(p) for p in rows}
 
     def cell(mg, se):
         if not np.isfinite(mg):
@@ -499,8 +532,8 @@ def table_closed_loop() -> None:
 
 
 if __name__ == "__main__":
-    fig5_open_loop()
-    fig6_closed_loop()
+    fig_open_loop()
+    fig_closed_loop()
     figS_dose_time()
     figS_rev_variation()
     table_powders()
