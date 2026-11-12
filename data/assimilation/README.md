@@ -207,6 +207,12 @@ times, taps, auger turns, firmware and row counts.
   particles out of the auger. See the
   [9fxeqt notes](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/production-al4047-9fxeqt/README.md)
   and the [atomizer-cup notes](https://github.com/vertical-cloud-lab/powder-doser/blob/5252021/data/opt/production-al4047-atomizer-cups/README.md).
+- **Salt at other masses.** For a salt dose nearer the other powders' masses, the same controller
+  and `bo-005` settings also dosed salt to 0.005, 0.05, 1.5 and 10 g on 2026-10-06, all within
+  3 mg, with tidy series in
+  [`data/opt/production-salt`](https://github.com/vertical-cloud-lab/powder-doser/blob/5bc4cc9/data/opt/production-salt/README.md)
+  on branch `claude/issue-130-20260721-1807`. The 10 g dose is marked `fw-error`: it finished in
+  tolerance, then the Pico ran out of memory, so its series comes from the console log.
 - **AlSi10Mg was dosed once,** with salt's `bo-005` settings unchanged
   ([notes](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/production-alsi10mg/README.md)).
   It is the only non-salt dose where the full controller ran normally.
