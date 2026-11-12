@@ -615,7 +615,7 @@ SHELF7 = (7.0, 2.0)                  # v6: 8 mm. At the cam's 4.5 mm it is still
 # The 44T gear is 78.4-88.4 mm behind the exit and the pinion meshes under it, 32.25 mm below the axis; the cage's back frame is
 # 89.4 mm behind the pan's centre. With the pan centred under the exit, the pinion (and a solenoid just in front of the gear)
 # hang over the cage's back edge, 53-64 mm under the axis once parked, and set the exit at about 370 mm. With the pan's centre
-# 38 mm in FRONT of the exit (the beaker on an offset cup over it), the cage ends 3 mm in front of the EC: nothing of the EC is
+# 38 mm in FRONT of the exit (the beaker on an offset cup over it), the cage ends 2.2 mm in front of the EC: nothing of the EC is
 # over the balance, and the exit can come down until the module's own front (clip 1, the door) clears the lid.
 PAN8_AHEAD = 38.0                    # world: the pan's centre this far in front (-x) of the exit
 H8 = 332.0                           # world: the exit (= hinge axis) height. Limits: clip 1 (R16.5, x 26-42) over the cage's back

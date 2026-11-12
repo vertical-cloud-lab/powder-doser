@@ -109,7 +109,7 @@ def drop(preview=False):
     lab = [("Exit: 332 mm up\n(v7: 436)", world((D[0], D[1], D[2])), "L"),
            ("Beaker rim: 282 mm\n(50 mm under the exit)", world((D[0], D[1], BEAKER_RIM_Z)), "L"),
            ("Lid's hole (30 mm),\nunder the exit", world((D[0] + 15.0, D[1], 303.0)), "R"),
-           ("The cage ends 3 mm in\nfront of the EC", part("bal7_frame", local=(88.0, 0.0, 311.0)), "R"),
+           ("The cage ends 2 mm in\nfront of the EC", part("bal7_frame", local=(88.0, 0.0, 311.0)), "R"),
            ("Pan's centre 38 mm in front\nof the exit; offset riser", part("beaker_riser", local=(0.0, 0.0, 150.0)), "L"),
            ("EC v8: all of it behind\nthe balance", part("sam_electronics_carriage", local=(100.0, 0.0, 45.0)), "R")]
     c.chapter(1, "1. The stream falls at the back of the draft cage")
