@@ -1,0 +1,283 @@
+{
+ "spacing": 32,
+ "stand": 217.0,
+ "p16": {
+  "closed": 197.0,
+  "stroke": 150.0,
+  "preload": 5.0,
+  "lug_t": 8.0,
+  "tab_t": 6.0,
+  "boss": 9.0,
+  "tube": 12.0,
+  "shaft": 8.0,
+  "housing": [
+   20.0,
+   36.0,
+   70.0
+  ],
+  "axis_from_edge": 10.5,
+  "housing_from_hole": 5.0
+ },
+ "u_bracket": {
+  "gap": 11.5,
+  "t": 1.5,
+  "w": 7.5,
+  "h": 9.1
+ },
+ "clevis_block": {
+  "pad": [
+   30.0,
+   24.0,
+   4.0
+  ],
+  "gap": 6.5,
+  "cheek": 4.0,
+  "lug_r": 7.0,
+  "screw_x": 11.0
+ },
+ "shelf_slot": {
+  "x": 17.0,
+  "y0": 33.0,
+  "y1": 120.0
+ },
+ "hanger": {
+  "y0": 128.0,
+  "y1": 134.0,
+  "w": 20.0,
+  "foot": 4.0
+ },
+ "rod_pin_unit_frame": [
+  0.0,
+  95.0,
+  -45.0
+ ],
+ "base_pin_unit_frame": [
+  0.0,
+  95.0,
+  -247.0
+ ],
+ "checks": {
+  "moving_parts_to_shelf": {
+   "mm": 2.0,
+   "between": "A:clevis block / shelf",
+   "at_tilt": 0.0
+  },
+  "rod_end_hub_to_lugs": {
+   "mm": 1.5,
+   "at_tilt": 67.5
+  },
+  "p16_housing_to_hanger": {
+   "mm": 4.35,
+   "at_tilt": 72.5
+  },
+  "p16_closest_to_beaker_axis_below_shelf": 95.0,
+  "block_and_screws_to_module_parts": {
+   "mm": 12.53,
+   "between": "clevis block / Bracket (rear)"
+  },
+  "stroke_from_closed": {
+   "0": 5.0,
+   "30": 58.7,
+   "45": 85.4,
+   "60": 109.9,
+   "90": 148.6
+  }
+ },
+ "catalog": [
+  {
+   "key": "auger",
+   "name": "Auger (tube, flights, 44T gear)",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "PR #170 auger.step",
+   "size_mm": [
+    46.0,
+    250.0,
+    46.0
+   ],
+   "render": "renders/components/auger.png"
+  },
+  {
+   "key": "cap",
+   "name": "Auger cap",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "PR #170 auger-cap.step",
+   "size_mm": [
+    29.0,
+    27.0,
+    28.9
+   ],
+   "render": "renders/components/cap.png"
+  },
+  {
+   "key": "rear",
+   "name": "Rear Flexible Bracket",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "PR #170 brackets.step",
+   "size_mm": [
+    60.0,
+    12.0,
+    53.0
+   ],
+   "render": "renders/components/rear.png"
+  },
+  {
+   "key": "nema",
+   "name": "NEMA 11 stepper 11HS18-0674S",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "bought; as today",
+   "size_mm": [
+    28.0,
+    65.0,
+    28.0
+   ],
+   "render": "renders/components/nema.png"
+  },
+  {
+   "key": "pinion",
+   "name": "20T stepper pinion",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "PR #170 stepper-pinion.step",
+   "size_mm": [
+    21.8,
+    16.1,
+    21.8
+   ],
+   "render": "renders/components/pinion.png"
+  },
+  {
+   "key": "solenoid",
+   "name": "Adafruit 412 solenoid",
+   "qty": 3,
+   "status": "Reused as is",
+   "source": "bought; now held by #203's bracket",
+   "size_mm": [
+    51.9,
+    14.0,
+    24.2
+   ],
+   "render": "renders/components/solenoid.png"
+  },
+  {
+   "key": "plate",
+   "name": "Mounting plate, gearless",
+   "qty": 3,
+   "status": "Modified",
+   "source": "PR #170 plate: both 28T gears and webs off; 2 x M3 holes",
+   "size_mm": [
+    108.2,
+    137.5,
+    53.4
+   ],
+   "render": "renders/components/plate.png"
+  },
+  {
+   "key": "tap",
+   "name": "Tap bracket (#203)",
+   "qty": 3,
+   "status": "New, already drawn",
+   "source": "Ethan's part (9 Nov): front clamp + solenoid",
+   "size_mm": [
+    83.6,
+    30.3,
+    49.8
+   ],
+   "render": "renders/components/tap.png"
+  },
+  {
+   "key": "block",
+   "name": "Rod-end clevis block",
+   "qty": 3,
+   "status": "New, to draw",
+   "source": "printed; 2 x M3 to the floor, M4 pin",
+   "size_mm": [
+    30.0,
+    24.0,
+    16.7
+   ],
+   "render": "renders/components/block.png"
+  },
+  {
+   "key": "tower",
+   "name": "Hinge tower",
+   "qty": 6,
+   "status": "New, to draw",
+   "source": "like the baseplate's towers, 8 mm wide; M5 hinge screw",
+   "size_mm": [
+    8.1,
+    37.0,
+    46.2
+   ],
+   "render": "renders/components/tower.png"
+  },
+  {
+   "key": "shelf",
+   "name": "Shelf (all three modules)",
+   "qty": 1,
+   "status": "New, to draw",
+   "source": "6 mm; 78 mm window, a slot per module",
+   "size_mm": [
+    484.5,
+    419.6,
+    6.0
+   ],
+   "render": "renders/components/shelf.png"
+  },
+  {
+   "key": "hanger",
+   "name": "Actuator hanger",
+   "qty": 3,
+   "status": "New, to draw",
+   "source": "strap + foot under the shelf",
+   "size_mm": [
+    20.0,
+    59.0,
+    216.9
+   ],
+   "render": "renders/components/hanger.png"
+  },
+  {
+   "key": "leg",
+   "name": "Stand leg",
+   "qty": 3,
+   "status": "New, to draw",
+   "source": "217 mm, the shortest stand",
+   "size_mm": [
+    20.0,
+    20.0,
+    217.0
+   ],
+   "render": "renders/components/leg.png"
+  },
+  {
+   "key": "p16",
+   "name": "Actuonix P16-150-22-12-P",
+   "qty": 3,
+   "status": "Bought",
+   "source": "+ an LAC board each; from its drawing",
+   "size_mm": [
+    20.0,
+    36.0,
+    211.2
+   ],
+   "render": "renders/components/p16.png"
+  },
+  {
+   "key": "ubracket",
+   "name": "P16 mounting bracket",
+   "qty": 3,
+   "status": "Bought",
+   "source": "ships with the P16 (2 each; 1 used)",
+   "size_mm": [
+    14.5,
+    7.5,
+    12.8
+   ],
+   "render": "renders/components/ubracket.png"
+  }
+ ]
+}
