@@ -148,7 +148,7 @@ ITEMS = [
     # ---- station
     (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side "
      "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP). v8: the only actuator, under "
-     "the station: pinned to a printed clevis on the P16 cross bar behind the balance (95 mm off the bench; it leans 34 deg back) and "
+     "the station: pinned to a printed clevis on the P16 cross bar behind the balance (95 mm off the bench; it leans 32 deg back) and "
      "to the clevis under EC v8's solenoid cradle. Extending lifts the EC 10 mm out of its guides onto the dock (9.4 mm of stroke), "
      "then turns the docked EC and module 0-90 deg (126 mm at 90 deg, 24 mm spare)",
      "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-150-22-12-p", 90.0, V27, (8,), "Station"),

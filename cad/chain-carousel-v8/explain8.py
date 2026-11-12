@@ -232,8 +232,8 @@ def tilt90(preview=False):
     c.move(5.0, lambda t, i, n: dict(st=L.State(tilt=90.0 * t, **S0), cam=CAM_SIDE90, hide=near_cut, focus=foc, opacity=opac,
                                      labels=lab if t > 0.85 else (), readout=tilt_ro,
                                      text="The P16's pin is under the solenoid's cradle, 66 mm behind and 62 mm under the hinge (91 mm from it; v7: "
-                                          "95). The P16 leans 34 deg back from it to a clevis on a cross bar 95 mm off the bench; 0-90 deg takes "
-                                          "126 mm and leaves 15 mm spare.", save_as="t1" if preview else None))
+                                          "95). The P16 leans 32 deg back from it to a clevis on a cross bar 95 mm off the bench; 0-90 deg takes "
+                                          "126 mm of its 150 and leaves 24 mm spare.", save_as="t1" if preview else None))
     c.hold(1.2)
     c.chapter(2, "2. Back to 0, and down onto the guides' seats")
     c.move(3.0, lambda t, i, n: dict(st=L.State(tilt=90.0 * (1 - t), **S0), cam=CAM_SIDE90, hide=near_cut, focus=foc, opacity=opac, readout=tilt_ro,

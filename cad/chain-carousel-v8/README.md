@@ -12,7 +12,7 @@ v8 is [v7](../chain-carousel-v7/README.md) with Sam's note of 2026-11-12
 
 Nothing is built. Every number here is a prediction from the CAD, except the single doser's, which is estimated from photos.
 
-**Onshape (public):** ONSHAPE_V8_LINK. Earlier versions:
+**Onshape (public):** [Multi-doser chain carousel, test rig v8](https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b) (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 15 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 3 to export Sam's Aug 27 EC, 11 for the import, 1 to confirm it is public). Earlier versions:
 [v7](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6),
 [v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de),
 [v5](https://cad.onshape.com/documents/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0/e/c7483f9da46de0305e71e071).
@@ -150,7 +150,7 @@ part key (v8's are at the end of SKIP in [`check_interference.py`](check_interfe
 
 ## Cost
 
-**BOM_TOTAL** ([BOM.md](BOM.md)). v7 was $2,213.96 ($2,072.57).
+**$2,200.98, or $2,059.59 without test gear** ([BOM.md](BOM.md)). v7 was $2,213.96 ($2,072.57): $12.98 less.
 - **Removed:** the front hatch's hinges and turn button, and the lid's collar.
 - **Added:** longer brush strips for the notch.
 - **The same:** the P16-150 and its one LAC, the NEMA 11, the solenoid and the magnets.

@@ -1,5 +1,7 @@
 # Chain carousel v7: one P16 under the station, the dock on posts past the auger, and a balance with no rear module
 
+> **Superseded by [v8](../chain-carousel-v8/README.md)** (Sam, 2026-11-12): a new EC on his Aug 27 layout, wholly behind the balance, so the exit comes down to 50 mm over the beaker's rim (v7: 154 mm).
+
 v7 is a mix of [v6](../chain-carousel-v6/README.md) and [v5](../chain-carousel-v5/README.md), with Sam's second note of
 2026-11-10 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
 - **Kept from v6:** the ladder rungs, the longer mounting plate (clip 2, the cap saddle, the keeper at the back), the latch at
