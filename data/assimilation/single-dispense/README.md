@@ -93,8 +93,8 @@ reports used, the operator and the run notes.
   `auger_revs_est` in the summary is the corrected figure. The same runs' single-turn trials
   (Block C, same tilt) agree: the 15 rpm mass divided by 4.6 turns is within 10 % of the
   Block C yield per turn for four powders (0.161 vs 0.146 g for salt, 0.232 vs 0.231 g for
-  AlSi10Mg) and 33 % high for sodium sulfate. Divided by 3, all five are 41–103 % high. The run
-  notes' "mg/rev" figures for Block D divide by 3.
+  AlSi10Mg) and 33 % high for sodium sulfate. Divided by 3, all five are 41–103 % high. Where
+  the run notes quote Block D in mg/rev, they divided by 3.
 - **Readings stop when the auger stops.** The firmware streams the balance only while the auger
   turns. It then samples through a 2 s settle and fits a window of 6 readings 0.4 s apart, with
   shocks removed. That fitted level is the `settled_after` row, about 5 s after the last reading.
@@ -105,7 +105,7 @@ reports used, the operator and the run notes.
   at 18–21 mg there. The first readings of some runs dip below zero (salt at 15 rpm reaches
   −31 mg) as the auger starts.
 - **The balance wasn't zeroed between the three speeds.** At the start of Block D the tare was
-  skipped in four of the five runs because the balance was unstable. So `balance_g` still includes
+  skipped in four of the five runs because the balance was unstable (all but barium chloride). So `balance_g` still includes
   the powder from earlier blocks and runs. `mass_g` takes care of this.
 - **AlSi10Mg's raw serial log was never committed.** Its readings and settled values come from
   `run_alsi10mg.json`, which was rebuilt from that log, and match MongoDB.
@@ -118,8 +118,7 @@ reading.
 
 So the CSVs carry the **outdoor** weather instead: hourly reports (METAR) from Provo Municipal
 Airport (KPVU, 1369 m), about 7 km from the BYU campus, interpolated linearly to the start of each
-run.
-They came from the Iowa Environmental Mesonet's ASOS archive. The raw reports are in
+run. They came from the Iowa Environmental Mesonet's ASOS archive. The raw reports are in
 [`weather/`](weather/).
 
 Use them as a covariate, not as the conditions at the balance. It was 27–38 °C and 16–34 % RH
