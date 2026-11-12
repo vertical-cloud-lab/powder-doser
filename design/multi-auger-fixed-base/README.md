@@ -319,6 +319,111 @@ lie at an angle, or a shorter actuator on a shorter lever, which trades tilt
 range or resolution. That isn't modelled here. To weigh while dosing, the
 shelf has to clear the HR-100A's 315 mm top instead (see below).
 
+#### Parts breakdown and the actuator mount (added 12 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for three things: the tri-star broken into its parts with a render of each,
+how the actuator connects to the mounting plate, and which parts are new and
+which come from the current doser unchanged.
+[`components.py`](components.py) uses the same model as above: B2 with #203's
+tap bracket, hinges 32 mm from the beaker axis. It renders every part on its
+own into [`renders/components/`](renders/components/) and writes
+[`parts.json`](parts.json). Nothing was modelled in Onshape.
+
+![The tri-star by where each part comes from](renders/parts_overview.png)
+
+| # | Part | In the station | Status | What it is, what changes |
+|---|---|---|---|---|
+| 1 | Auger (tube, flights, 44T gear) | 3 | reused as is | PR #170 `auger.step` |
+| 2 | Auger cap | 3 | reused as is | |
+| 3 | Rear Flexible Bracket | 3 | reused as is | |
+| 4 | NEMA 11 stepper (11HS18-0674S) | 3 | reused as is | bought |
+| 5 | 20T stepper pinion | 3 | reused as is | |
+| 6 | Adafruit 412 solenoid | 3 | reused as is | bought; held by #203's bracket instead of the tap collar |
+| 7 | Mounting plate, gearless | 3 | **modified** | PR #170's plate without its two 28T gears and their webs, plus two Ø3.4 holes for the clevis block. In PR #170's STEP file the gears and webs are already separate bodies |
+| 8 | Tap bracket (#203) | 3 | new, already drawn | Ethan's part (9 Nov), as drawn. It replaces the front Flexible Bracket, the tap collar and the collar's base |
+| 9 | Rod-end clevis block | 3 | **new** | printed; see below |
+| 10 | Hinge tower | 6 | **new** | like the baseplate's towers, but 8 mm wide (no gear outboard), with the M5 hinge screw on the hinge axis. Could be printed as part of the shelf |
+| 11 | Shelf | 1 | **new** | 6 mm, one piece under all three modules; Ø78 window for a 250 mL beaker; a 34 × 87 mm slot per module |
+| 12 | Actuator hanger | 3 | **new** | a strap from the shelf's underside down behind the P16, with a foot under its rear lug |
+| 13 | Stand leg | 3 | **new** | 217 mm, the shortest stand |
+| 14 | Actuonix P16-150-22-12-P | 3 | bought | plus an LAC board each |
+| 15 | P16 mounting bracket | 3 | bought | ships with the P16 (two per actuator; one is used) |
+| 16 | Screws and pins | a set per module | hardware | M4 × 20 + nyloc (× 25 leaves more thread past the nyloc), 2 × M3 × 10 + nuts, the P16's #8-32 screw |
+
+Per module, six parts come over unchanged (counting the solenoid) and one is
+modified (the plate). One more is #203's bracket. The rest are the new base
+and the actuator with its two mounts.
+
+![Reused parts](renders/parts_reused.png)
+
+![New, modified and bought parts](renders/parts_new.png)
+
+No longer used: the baseplate, both MG996R servos and 14T servo pinions, the
+two 28T gears (cut off the plate), the front Flexible Bracket, the tap collar
+and the collar's base.
+
+![No longer used](renders/parts_removed.png)
+
+![One module, exploded](renders/parts_exploded.png)
+
+##### How the actuator connects to the mounting plate
+
+The P16's dimension drawing (Actuonix, Rev B) gives both ends. The rod end is
+a 6 mm tab and the rear end an 8 mm lug, each with a Ø4.25 hole (M4 or #8),
+197 mm apart when closed. Each P16 ships with two U-brackets (11.5 mm inside,
+holes 9.1 mm above the base) and #8-32 screws.
+
+- **Rod end to the mounting plate: a printed clevis block under the floor.**
+  - The block is a 30 × 24 × 4 mm pad with two 4 mm lugs, 6.5 mm apart. It
+    sits under the plate's floor on the centreline, between the tap bracket
+    and the rear bracket.
+  - Two M3 × 10 screws go down through two new Ø3.4 holes in the floor, 11 mm
+    either side of the centreline and 95 mm behind the hinge. Their nuts sit
+    in pockets in the pad. The floor is clear there on both sides: the screw
+    heads are at least 12.5 mm from the auger, stepper and brackets.
+  - An M4 × 20 screw and a nyloc nut pin the rod-end tab between the lugs.
+    The pin is 95 mm behind and 45 mm below the hinge (9.75 mm under the
+    floor), where it was before, so the stroke table above still holds.
+  - From 0 to 90° the rod end turns 82° relative to the plate: from straight
+    down to nearly along the floor, pointing forward. The lugs are rounded
+    (R7) round the pin. So the rod end's 9 mm hub, which starts 8.5 mm from
+    the pin, swings past them with at least 1.5 mm to spare.
+  - The plate itself only gains two holes. The block prints pad-down.
+  - At 0° the block reaches down through the shelf, so the shelf's slot grows
+    from 24 × 75 mm to 34 × 87 mm (33–120 mm behind the hinge). That leaves
+    2 mm either side of the pad.
+- **Rear lug to the shelf: the P16's own U-bracket, on a hanger.** One of the
+  two brackets that ship with each P16 is screwed to the hanger's foot. The
+  rear lug is pinned in it with the #8-32 screw that ships with the P16. The
+  hanger hangs from the shelf's underside, so the stand can be any height.
+- **The P16's housing faces outward.** It is 36 mm across in the plane of the
+  swing, with the axis 10.5 mm from one side. That narrow side faces the
+  beaker. Under the shelf the actuators then come no closer than 95 mm to the
+  beaker axis: a Ø190 mm column, about what the clearance section found with
+  the old outline (188 mm).
+- **Why not the P16's U-bracket on the plate too?** Its base would sit under
+  the floor, between its cheeks, 9.1 mm from the pin, with its screw's head or
+  nut inside the U. The rod-end tab would then clear that head by under a
+  millimetre (a button head) or hit it (a socket head). The printed block has
+  nothing between its lugs.
+
+![How the actuator connects](renders/actuator_connection.png)
+
+**Checks** over 0–90° in 2.5° steps ([`parts.json`](parts.json)):
+- the block, its screws, the pin and the rod stay at least 2.0 mm from the
+  shelf (the pad in its slot at 0°);
+- the rod end's hub and shaft stay at least 1.5 mm from the lugs (at 67.5°);
+- the actuator stays at least 4.35 mm from its hanger (the rear lug above the
+  foot).
+
+**Limits.**
+- The block, hanger, towers, shelf and legs are placeholders sized for these
+  renders, not drawn parts.
+- The P16 is drawn from its dimension drawing (housing, tube, rod-end tab and
+  rear lug), not from Actuonix's STEP file.
+- Everything else is as in the sections above.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -379,6 +484,7 @@ between bulk doses. This was not modelled.
 | [`tap-bracket/`](tap-bracket/) | `tap-bracket-pr170.step`: the bracket and its solenoid (coil, yoke, plunger) in PR #170's frame at 0°, which `doserlib.py` reads. `solenoid-bracket-onshape.step`: the bracket alone, as Onshape exports it. `registration.json`: the fit and its checks |
 | [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
 | [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
+| [`components.py`](components.py), [`parts.json`](parts.json) | The tri-star's parts: each one rendered alone ([`renders/components/`](renders/components/)), the reused/new/removed sheets, the exploded module, the status-coloured station, the actuator connection and its checks |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -388,6 +494,7 @@ xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
 xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
 python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
 xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
+xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
 ```
 
 **Limits.**
