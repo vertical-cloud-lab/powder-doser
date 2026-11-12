@@ -118,7 +118,11 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         # sometimes returns the whole dowel (62 mm3 at 30 deg, 0 at 0-5 deg for the same relative position), so the pair is skipped
         ("sam_mounting_plate", "vee_dowel"),
         # ---- v8: the EC's finger under the door bar's end (it holds the bar 6 mm up while docked)
-        ("door_shutter", "sam_electronics_carriage")}
+        ("door_shutter", "sam_electronics_carriage"),
+        # the front panel's brush strips: the bristles lie on the balance's draft cage, lid and door grips (that is their job)
+        ("brush_strip_v", "bal7_frame"), ("brush_strip_v", "bal7_door_left"), ("brush_strip_v", "bal7_door_right"), ("brush_strip_v", "brush_strip_h"),
+        ("brush_strip_h", "bal7_frame"), ("brush_strip_h", "bal7_lid"), ("brush_strip_h", "bal7_door_left"), ("brush_strip_h", "bal7_door_right"),
+        ("brush_strip_v", "panel_front_hatch"), ("brush_strip_h", "panel_front_hatch"), ("brush_strip_v", "bal7_glass"), ("brush_strip_h", "bal7_glass")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
 CHAIN = ("chain_inner", "chain_outer", "chain_a1")
 

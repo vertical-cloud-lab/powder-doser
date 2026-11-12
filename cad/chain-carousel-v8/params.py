@@ -621,7 +621,6 @@ PAN8_AHEAD = 38.0                    # world: the pan's centre this far in front
 H8 = 332.0                           # world: the exit (= hinge axis) height. Limits: clip 1 (R16.5, x 26-42) over the cage's back
                                      # frame (311) and the door's push bar (z 22) over the lid (303): 330.5 and 328
 BAL8_COLLAR = 0.0                    # v7's 6 mm collar round the lid's hole is left off: the door's bar passes 7 mm over the hole
-BAL8_DOOR_OPEN = 110.0               # side door slid back this far for the beaker (it now sits 38 mm behind the pan's centre)
 RISER8_ARM = PAN8_AHEAD              # the riser's cup is this far behind its foot's centre (+x), under the exit
 # --- EC v8: Sam's Aug 27 layout (a flat base with the parts standing on it), behind the balance --------------------------
 MOTOR8_FACE_X = 93.8                 # NEMA 11's face, on the motor plate's back; body x 93.8-138.8 BEHIND the gear, shaft forward
@@ -640,7 +639,7 @@ FINGER8_X = (54.0, 58.0)             # the door finger at the EC's front, under 
 # --- the dock: v7's Kelvin clamp (domes on posts on the plate, the EC's cone, vee and ball C), moved behind the gear -------
 KC8_A = (104.0, 19.5)                # post A (dome) over the EC's cone; x 100-108 is behind the gear housing (Sam's plate ends at 98.8)
 KC8_B = (104.0, -19.5)               # post B (dome) over the EC's vee
-KC8_C = (140.0, 19.5)                # post C (flat tip) over ball C; clip 2 starts at 150
+KC8_C = (128.0, 19.5)                # post C (flat tip) over ball C, beside the motor; its ear clears the +y guide (from x 138)
 EC8_EAR_TOP = 31.0                   # the ears' tops (as v7): the cone, the vee and ball C sit in them, |y| 15-25 beside the motor
 # --- the door: its shutter's push strip carries on back under the tube as a bar, so the EC's finger meets it behind the cage --
 DOOR8_BAR = (3.0, 2.0)               # the bar's width (y, at DOOR_ROD_Y) and depth (z): under the strip's end (z 20-22 closed)
@@ -656,3 +655,16 @@ EC8_SHOE_Z = (40.0, 60.0)
 RUNG8_UP_ZC = 205.0                  # world: upper rungs and the guide bar, under the back side plate's bottom edge (222.35)
 PARK_DROP8 = 10.0                    # parked under the dock (v7's 10): the pinion clears the passing gears by 8.25, the ears the
                                      # domes by 7.8, the finger the closed door bars by 4
+# --- the NEMA 34: v2-v7's place under the bottom run, moved 35 mm toward +y. At v7's y (57.15, under its B+ shaft) it stood
+# where EC v8 and its guides now are, behind the balance; inside the loop (tried first) the station module sweeps through it
+# between about 30 and 60 deg of tilt. At y 92 it clears the +y guide by 3 mm and the EC by 19, and the balance's +y door
+# while that is less than 85 mm open. The drive chain to the B+ shaft leans 13.7 deg and has 46 links (v7: 44, plumb).
+DRIVE_LINKS = 46
+C_DRIVE = (DRIVE_LINKS - N15) / 2 * P                # 147.64
+MOTOR8_Y = 92.0
+Z_MOTOR = Z_BOT - math.sqrt(C_DRIVE ** 2 - (MOTOR8_Y - LOOP_Y) ** 2)   # 266.5: its top 5.4 mm lower than v7's under the run
+BAL8_DOOR_OPEN = 85.0                # the balance's side doors open this far (their back edges stay 8 mm in front of the NEMA 34)
+CROSS8_GUIDE_XW = 205.0              # world x of the guide cross bar: behind the guides (their feet reach back to it), clear of the
+                                     # P16, which passes 6 mm in front of the guides' cheeks at every tilt
+RUNG8_LOW_ZC = 65.0                  # world: lower rungs and the P16's cross bar, their corner brackets on top (at 55 the rungs' brackets
+                                     # met the posts' foot brackets)

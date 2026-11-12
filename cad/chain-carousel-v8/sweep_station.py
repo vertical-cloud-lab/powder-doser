@@ -1,4 +1,4 @@
-"""v7: the chain sweep restricted to where v7 changed things: every carriage and module within two modules of the station
+"""v7 (v8: with the NEMA 34, now inside the loop, and the rungs): the chain sweep restricted to where v7 changed things: every carriage and module within two modules of the station
 (their new dock posts, the gears, the door strips, the latch followers) against the parked station (EC v7 and its tail, the
 P16, the two guides and the cross bars, the latch cam, the hold-downs) and the balance, over one module of travel the way the
 machine runs, in 1-link steps. The full --sweep (every pair) takes far longer; v7 left everything else as v6 had it.
@@ -28,7 +28,7 @@ for i in range(MODULE_LINKS + 1):
         d = ((L.slot_of(p.module, s) - L.CARRIAGE_LINK0 + L.N_LINKS / 2) % L.N_LINKS - L.N_LINKS / 2) * P
         if abs(d) <= 2.2 * MODULE_LINKS * P:
             near.append(p)
-    fixed = [p for p in pl if p.group in ("station", "station_ec", "station_act", "scale") or p.key in ("cross7",)]
+    fixed = [p for p in pl if p.group in ("station", "station_ec", "station_act", "scale") or p.key in ("cross7", "rung", "nema34")]
     mo, fo = CI.objects(near), CI.objects(fixed)
     objs = mo + fo
     pairs = [(a, b) for a in range(len(mo)) for b in range(len(mo), len(objs))]

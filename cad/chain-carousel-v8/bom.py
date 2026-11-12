@@ -1,7 +1,8 @@
-"""Bill of materials for the chain-carousel test rig v7 (Sam's second note of 2026-11-10: v6's ladder and long plate kept; the
-dock on three posts printed on the plate past the auger, so the EC has no arms; ONE P16-150 under the station again, behind the
-balance, lifting and tilting the EC 0-90 deg; two cross bars between the rungs; the balance drawn as a base and a draft cage
-with a dosing lid. v6 had two lift P16-50s, a lift frame and a tilt P16 on the back side plate).
+"""Bill of materials for the chain-carousel test rig v8 (Sam's note of 2026-11-12: a new electronics carriage on his Aug 27
+layout, behind the balance, with the solenoid just in front of the gear and the NEMA 11 behind it; the dock's posts and the
+guides moved behind the gear; the door's push strip carried back to the EC; the pan 38 mm in front of the exit on an offset
+riser; the carousel 104 mm lower; the NEMA 34 35 mm toward +y; the front panel notched round the balance, no front hatch door.
+v7 is the line-for-line base).
 
 ITEMS is the single table: item number, what, where to buy it, price, and
 which assembly step uses it. Quantities of modelled parts are counted from
@@ -42,7 +43,8 @@ NITRO_A1 = "https://www.nitrochain.com/35-a1-standard-attachment-connecting-link
 
 ITEMS = [
     # ---- chain & sprockets
-    (1, None, 1, "ANSI #35 roller chain, 10 ft roll (320 pitches): two 104-link loops + the 44-link drive chain",
+    (1, None, 1, "ANSI #35 roller chain, 10 ft roll (320 pitches): two 104-link loops + the 46-link drive chain (v8: 2 more links, the "
+     "NEMA 34 moved 35 mm toward +y)",
      "Nitro Chain", "RC35-1R-10FT", "https://www.nitrochain.com/35-roller-chain-10ft", 23.53, V13, (6, 7), "Chain"),
     (2, ("chain_a1",), None, "#35 A-1 attachment connecting link, spring clip, 0.133 in hole (M3): 13 per chain",
      "Nitro Chain", "CL35-A1", NITRO_A1, 2.55, V13, (7,), "Chain"),
@@ -82,7 +84,7 @@ ITEMS = [
     (17, None, 1, "M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts)",
      "McMaster-Carr", "93625A200", f"{MC}/93625A200/", 9.02, "verified 2026-10-27 (McMaster page, logged out)", (4, 6), "Drive"),
     # ---- frame
-    (18, None, 2, "2020 T-slot extrusion, 10 x 1000 mm pack. v7: 4 posts of 796 mm, 4 long rails of 417.7 mm (2 per bar), 4 rungs of "
+    (18, None, 2, "2020 T-slot extrusion, 10 x 1000 mm pack. v8: 4 posts of 692 mm (v7: 796; the carousel is 104 mm lower), 4 long rails of 417.7 mm (2 per bar), 4 rungs of "
      "377.7 mm (2 per bar), and 3 cross rails plus v7's 2 cross bars of 340 mm (2 per bar; 3 x 340 is 1020): eleven bars, so a "
      "second pack (or any single 2020 x 1000 mm bar) for the 11th; 9 spare",
      "VEVOR", "2020OBLXC10JMQNSK001V0",
@@ -132,23 +134,23 @@ ITEMS = [
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
      "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
     (38, ("clevis_bracket", "guide7_cone", "guide7_vee", "beaker_riser", "latch_rail", "side_tab", "side_tab_m", "catch"), None,
-     "Station and enclosure parts, PETG. v7: the P16's base clevis (v4's, on the P16 cross bar), 2 guides with v6's funnel mouths and a "
-     "cone or vee seat round the EC's tail shoes (on the guide cross bar), the beaker riser, the latch cam with its arm to the back side "
-     "plate, 2 side tabs, 2 turn buttons (v6's lift shelves, lift guides, end blocks and tilt bracket are gone)",
+     "Station and enclosure parts, PETG. v8: the P16's base clevis (v4's, on the P16 cross bar), 2 guides with v6's funnel mouths and a "
+     "cone or vee seat round the EC's back shoes (their feet reach back to the guide cross bar at x 205), the beaker riser v8 (its cup "
+     "on a 38 mm arm, under the exit), the latch cam with its arm to the back side plate, 2 side tabs, 1 turn button (no front hatch)",
      "printed", "stl/", "", 0.6, "filament", (8, 12), "Printed"),
-    (39, ("sam_mounting_plate",), None, "Mounting plate v7: v6's (Sam's Oct 13 plate carried on to the cap's end: clip 2, cap saddle, the "
-     "latch keeper on its back end, the door housing's inserts) with the dock moved onto three 8 x 8 mm posts beside the tube that "
-     "reach past the auger (tips 16.4 mm past its axis): printed domes on A and B, a flat tip on C, and a D42-N52 dropped into each "
-     "post at a print pause, 1.8 mm under its tip (v6: domes on the plate's face, magnets pressed in from underneath). Print all 13 "
-     "flat, posts up", "printed", "Onshape 581956d5 + parts7.plate_additions_v7",
+    (39, ("sam_mounting_plate",), None, "Mounting plate v8: v7's (Sam's Oct 13 plate carried on to the cap's end: clip 2, cap saddle, the "
+     "latch keeper, the door housing's inserts; three 8 x 8 mm dock posts reaching past the auger, printed domes on A and B, a flat "
+     "tip on C, a D42-N52 dropped into each at a print pause) with the posts moved behind the gear (x 104, 104 and 128: over EC v8) "
+     "and a guide lug for the door bar (x 46-52 beside the tube). Print all 13 flat, posts and lug up", "printed",
+     "Onshape 581956d5 + parts8.plate_additions_v8",
      "https://cad.onshape.com/documents/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f",
      1.10, "filament at $20/kg (about 55 g: v6's 48 g + the three posts)", (9,), "Printed"),
     # ---- station
     (40, ("actuator_body",), None, "Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side "
-     "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP). v7: the only actuator, under "
-     "the station: pinned to a printed clevis on the P16 cross bar behind the balance (it leans 44.5 deg, back over the draft cage's "
-     "back-top corner) and to the EC's tail. Extending lifts the EC 10 mm out of its guides onto the dock (8.3 mm of stroke), then turns "
-     "the docked EC and module 0-90 deg (130 mm at 90 deg, 20 mm spare)",
+     "load, 197 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP). v8: the only actuator, under "
+     "the station: pinned to a printed clevis on the P16 cross bar behind the balance (95 mm off the bench; it leans 34 deg back) and "
+     "to the clevis under EC v8's solenoid cradle. Extending lifts the EC 10 mm out of its guides onto the dock (9.4 mm of stroke), "
+     "then turns the docked EC and module 0-90 deg (126 mm at 90 deg, 24 mm spare)",
      "Actuonix", "P16-150-22-12-P", "https://www.actuonix.com/p16-150-22-12-p", 90.0, V27, (8,), "Station"),
     (41, None, 1, "Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in). v7: one, "
      "for the one P16 (v6: three)", "Actuonix", "LAC",
@@ -158,8 +160,8 @@ ITEMS = [
     (43, ("clevis_screw",), None, "Shoulder screw, 18-8, 4 mm x 16 mm shoulder, M3 x 5 thread: the P16's base pin (cheek, 8 mm rear tab, "
      "cheek) + an M3 nylock from item 27. v7: one (v6: six, for three P16s)", "McMaster-Carr", "90265A123",
      f"{MC}/90265A123/", 4.40, V27, (8,), "Station"),
-    (101, ("ec_pin_screw",), None, "Shoulder screw, 18-8, 4 mm x 20 mm shoulder, M3 thread: v7: the P16's rod-end pin through the EC "
-     "tail's two cheeks (19.6 mm over them), the rod end's 6 mm tab and a PTFE washer each side, in the cheeks' 2 mm lost-motion "
+    (101, ("ec_pin_screw",), None, "Shoulder screw, 18-8, 4 mm x 20 mm shoulder, M3 thread: v8: the P16's rod-end pin through the EC "
+     "cradle's two cheeks (19.6 mm over them), the rod end's 6 mm tab and a PTFE washer each side, in the cheeks' 2 mm lost-motion "
      "slots; an M3 nylock from item 27. Same family as item 43 (the 4 x 20 length not looked up)", "McMaster-Carr", "90265A123 family",
      f"{MC}/90265A123/", 4.40, "estimate (the 4 x 16's price, verified 2026-10-27)", (8,), "Station"),
     (102, None, 1, "PTFE washer for M4, 4.3 x 9 x 0.8 mm, pack of 50: v7: 2 used, either side of the P16's rod-end tab in the EC's "
@@ -178,11 +180,12 @@ ITEMS = [
     (74, None, 1, "DC motor driver DRV8871 breakout (the 12 V tap solenoid)", "Adafruit", "3190", "https://www.adafruit.com/product/3190", 7.50,
      "estimate (list price in hardware/vibration-motor-and-solenoid.md, not re-checked)", (11,), "Electronics"),
     # ---- v3: kinematic dock and guide (items 1-2 of Sam's 2026-10-29 review)
-    (77, ("sam_electronics_carriage",), None, "Electronics carriage v7: Sam's Oct 13 carriage printed upside down (mirrored) with no arms "
-     "(v4-v6 reached round the auger to the plate's face): the cone (A), the dowel vee (B) and ball C on three ears at its rim, an N52 "
-     "behind each, v4's door finger, and a tail behind its back wall (under the 44T gear) with the P16's rod-end clevis and two guide "
-     "shoes with conical noses (v6's hooks and tilt arm are gone); the doser's NEMA 11 and 12 V solenoid move into it",
-     "printed", "stl/electronics_carriage_v7.stl", "", 1.3, "filament (about 65 g)", (8,), "Printed"),
+    (77, ("sam_electronics_carriage",), None, "Electronics carriage v8 (new, on Sam's Aug 27 layout): a flat base, 96 x 50 mm, behind "
+     "the balance, with the parts standing on it: the solenoid's cradle just in front of the 44T gear (the solenoid screwed through its "
+     "front wall with 2 M3 x 6, plunger up), the motor plate behind the pinion (the NEMA 11 behind the gear, shaft forward: cut its "
+     "shaft 4.5 mm), the dock's cone (A), dowel vee (B) and ball C on ears beside the motor with an N52 behind each, the door finger at "
+     "the front, the P16's clevis under the cradle and two guide shoes on a neck at the back. Print base down",
+     "printed", "stl/electronics_carriage_v8.stl", "", 1.6, "filament (about 80 g, estimated from its 38 cm3)", (8,), "Printed"),
     (78, None, 1, "Precision ball, 1/4 in, hardened 52100 chrome steel (Rockwell C60, ground and polished, diameter +/-0.00005 in; "
      "McMaster gives no ABMA grade), pack of 2: 1 used, ball C on the EC (v6: the plates' two balls are printed domes; v5 bought 18 "
      "packs). The only 1/4 in 52100 ball McMaster lists; its 6 mm 52100 balls are $5.87 per 50 (9292K41) if the seats are "
@@ -219,21 +222,21 @@ ITEMS = [
      "estimate (the 8969T family's pack-of-1 price, verified 2026-10-29)", (10,), "Doors"),
     # ---- v3: enclosure (item 5) and side tabs (5a)
     (89, None, 5, "Clear cast acrylic sheet, 1/8 in (-0.025/+0.015 in), 24 x 48 in, scratch and UV resistant: two side panels, front, "
-     "back, top and the two hatch doors, laser cut from dxf/. v5: the four walls are 850 mm tall (80 mm more) and 400-418 mm wide, so "
-     "each takes a sheet's length, and the top and the doors a fifth. v7: the balance's dosing lid (item 103) comes from the fifth "
-     "sheet's offcut", "McMaster-Carr", "8560K262", f"{MC}/8560K262/", 70.99, "verified 2026-10-29 (McMaster page, logged out)",
+     "back, top and the side hatch door, laser cut from dxf/. v8: the walls are 746 mm tall (104 mm less than v5-v7) and 400-418 mm "
+     "wide, so each still takes a sheet's length, and the top and the door a fifth; the front panel is notched round the balance "
+     "(225 x 313 mm) and has no hatch door. The balance's dosing lid (item 103) comes from the fifth sheet's offcut", "McMaster-Carr", "8560K262", f"{MC}/8560K262/", 70.99, "verified 2026-10-29 (McMaster page, logged out)",
      (12,), "Enclosure"),
-    (103, ("bal7_lid",), None, "Dosing lid for the balance (v7): replaces the draft cage's top door glass: 3 mm cast acrylic (item 89's "
-     "offcut), laser cut 162.5 x 181 mm with a 30 mm hole on the pan's axis, and a printed PETG collar bonded round the hole. The exit "
-     "stays on the hinge axis, so the stream falls through the same hole at every tilt; the beaker goes in and out through a side door",
-     "laser cut + printed", "", "", 0.30, "estimate (offcut; collar filament)", (12,), "Enclosure"),
+    (103, ("bal7_lid",), None, "Dosing lid for the balance (v8): replaces the draft cage's top door glass: 3 mm cast acrylic (item 89's "
+     "offcut), laser cut 162.5 x 181 mm with a 30 mm hole 38 mm behind the pan's centre (under the exit), no collar (v7's 6 mm collar "
+     "would meet the passing door bars). The exit stays on the hinge axis, so the stream falls through the same hole at every tilt",
+     "laser cut", "", "", 0.25, "estimate (offcut)", (12,), "Enclosure"),
     (90, None, 1, "Nylon spacers for M5, 10 mm OD: 20 x 6 mm (93657A075, $0.89 each at 10 or more; 18 used) and 8 x 25 mm (93657A093, "
      "$1.78 each; 6 used, the back panel past the drive sprocket). The CAD's back standoff is 25.6 mm (this line said 30): 25 mm leaves "
      "2.4 mm to the sprocket's hub instead of 3", "McMaster-Carr", "93657A075 + 93657A093", f"{MC}/93657A075/", 32.04, "verified 2026-10-29 (McMaster page, logged out)", (12,),
      "Enclosure"),
     (91, None, 30, "M5 x 16 button head screw + T-nut (item 21) per standoff (panels to the frame), with blue threadlocker", "BelMetric",
      "M5 x 16 BHCS", "https://www.belmetric.com/", 0.15, E, (12,), "Enclosure"),
-    (92, None, 4, "Butt hinge, polished 304 stainless, 1-1/2 in tall, 5/8 in leaves (1-1/4 in open), 0.060 in thick, fixed pin, two "
+    (92, None, 2, "Butt hinge, polished 304 stainless, v8: the side hatch only (no front hatch door), 1-1/2 in tall, 5/8 in leaves (1-1/4 in open), 0.060 in thick, fixed pin, two "
      "countersunk holes per leaf for No. 8 screws (hatch doors) + 16 M4 flat head screws and nylocks (the line had 8 M3): the nearest "
      "McMaster stainless hinge to the 1-1/2 x 1-1/2 in noted", "McMaster-Carr", "1586A22", f"{MC}/1586A22/", 12.29, "verified 2026-10-29 (McMaster page, logged out)", (12,),
      "Enclosure"),
@@ -241,8 +244,9 @@ ITEMS = [
      "Printed"),
     # ---- v3: the scale (item 6)
     (94, None, 1, HR202I_DESC, "A&D Weighing", "HR-202i", HR202I_URL, HR202I_USD, HR202I_SRC, (12,), "Station"),
-    (99, None, 1, "Brush strip, 1/4 in nylon bristles, self-adhesive, 1 m: closes the gap round the HR-202i's display unit under the front "
-     "hatch door", "McMaster-Carr", "brush strip", f"{MC}/products/brush-strips/", 12.0, E, (12,), "Enclosure"),
+    (99, None, 1, "Brush strip with an aluminium holder, nylon bristles about 9 mm, 1 m (v8: three pieces, 313 + 313 + 249 mm, on "
+     "the front panel's notch round the balance: its sides and top; the bristles lie on the draft cage's frame and let the side doors' "
+     "grips pass)", "McMaster-Carr", "brush strip (to select)", f"{MC}/products/brush-strips/", 24.0, E, (12,), "Enclosure"),
     (95, None, 1, "RS-232 to 3.3 V level shifter (MAX3232 breakout) for the balance's serial port", "SparkFun", "BOB-11189",
      "https://www.sparkfun.com/products/11189", 4.50, E, (11,), "Electronics"),
     (96, None, 1, "Beaker, 25 mL low form, borosilicate (lab stock)", "lab", "", "", 0.0, "existing", (12,), "Station"),

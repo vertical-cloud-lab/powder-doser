@@ -185,10 +185,10 @@ def side_holes(back: bool) -> list[tuple]:
         for dy in (-9.0, 9.0):
             out.append(("circle", (STATION_Y - (LATCH_Y6 + dy), HINGE_Z_STATION - P6.LATCH6_FOOT_HOLE_Z), (5.5,)))
     if back:                                                                        # NEMA 34, slotted to tension the drive chain
-        out.append(("slot", (LOOP_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
+        out.append(("slot", (MOTOR8_Y, Z_MOTOR), (M34_PILOT_D + 0.5, M34_PILOT_D + 0.5 + 2 * DRIVE_TRAVEL)))
         for dy in (-1, 1):
             for dz in (-1, 1):
-                out.append(("slot", (LOOP_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2),
+                out.append(("slot", (MOTOR8_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2),
                             (M34_HOLE_D, M34_HOLE_D + 2 * DRIVE_TRAVEL)))
     return out
 
@@ -420,7 +420,7 @@ def p16_8_ext(tilt_frame: float, ext: float) -> float:
 
 SHOE8_XC = float(HINGE_STATION[0]) + (EC8_SHOE_X[0] + EC8_SHOE_X[1]) / 2
 SHOE8_YC = (EC8_SHOE_Y[0] + EC8_SHOE_Y[1]) / 2
-CROSS8_GUIDE_X = SHOE8_XC
+CROSS8_GUIDE_X = CROSS8_GUIDE_XW
 GUIDE8_BAR_TOP = RUNG8_UP_ZC + EXT / 2
 GUIDE8_SEAT_Z = float(to_world(electronics_frame(0.0, 0.0), (0, 0, EC8_SHOE_Z[1]))[2]) - 0.5   # 0.5 under the parked shoe
 GUIDE8_TOP_Z = float(to_world(electronics_frame(0.0, PARK_DROP8), (0, 0, EC8_SHOE_Z[1]))[2])   # the docked shoe's underside
@@ -542,8 +542,11 @@ def drive_chain_pins() -> np.ndarray:
     pts = np.array(pts)
     gaps = np.linalg.norm(np.roll(pts, -1, axis=0) - pts, axis=1)
     assert len(pts) == DRIVE_LINKS and np.allclose(gaps, P, atol=2e-3), (len(pts), gaps.min(), gaps.max())
-    zc = (Z_BOT + Z_MOTOR) / 2
-    return np.column_stack([LOOP_Y + pts[:, 1], zc + pts[:, 0]])
+    # v8: the motor is above the B+ shaft and 17 mm inboard, so the local frame (x: motor -> stub) is turned into the chain's line
+    c = np.array([(MOTOR8_Y + LOOP_Y) / 2, (Z_MOTOR + Z_BOT) / 2])
+    u = np.array([LOOP_Y - MOTOR8_Y, Z_BOT - Z_MOTOR]) / C_DRIVE
+    v = np.array([u[1], -u[0]])
+    return c + np.outer(pts[:, 0], u) + np.outer(pts[:, 1], v)
 
 
 def drive_chain_pins_at(shift: float) -> np.ndarray:
@@ -632,7 +635,8 @@ def placements(state: State | float | None = None) -> list[Placement]:
             add(Placement("rung", f"Rung {nm} {'-y' if sy < 0 else '+y'} (2020, post to post)", T(Ry(math.pi / 2), (X_POST[0] + EXT / 2, sy * POST_Y, zc)),
                           2, ALU, "frame", (0, sy * 30, 0)))
             for xp, sx in ((X_POST[0], 1), (X_POST[1], -1)):
-                add(Placement("corner_bracket", "Corner bracket (rung)", bracket((xp + sx * EXT / 2, sy * POST_Y, zc - EXT / 2), (0, 0, -1), (sx, 0, 0)), 2,
+                up = 1 if nm == "lower" else -1               # v8: the lower rungs' brackets on top, clear of the posts' foot brackets
+                add(Placement("corner_bracket", "Corner bracket (rung)", bracket((xp + sx * EXT / 2, sy * POST_Y, zc + up * EXT / 2), (0, 0, up), (sx, 0, 0)), 2,
                               ALU, "frame", (0, 0, 0)))
     # v7: cross bars between the rungs (Sam: "You can add another cross bar between walls and rungs to attach things to, so you can
     # attach things in the middle"): the P16's bar on the lower rungs behind the balance, the guides' bar on the upper rungs
@@ -696,15 +700,15 @@ def placements(state: State | float | None = None) -> list[Placement]:
     # 6. NEMA 34 inside the frame on the back plate's inner face; #35 drive chain up to the B+ shaft's stub
     Rm = cols((0, 1, 0), (0, 0, 1), (1, 0, 0))
     xi_b = CHAIN_L + SIDE_GAP
-    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000", T(Rm, (xi_b, LOOP_Y, Z_MOTOR)), 6, DARK, "drive", (-170, 0, 0)))
+    add(Placement("nema34", "NEMA 34 34HS59-6004D-E1000 (v8: inside the loop, above the B+ shaft)", T(Rm, (xi_b, MOTOR8_Y, Z_MOTOR)), 6, DARK, "drive", (-170, 0, 0)))
     for dy in (-1, 1):
         for dz in (-1, 1):
-            pp = (LOOP_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2)
+            pp = (MOTOR8_Y + dy * M34_BOLT_SQ / 2, Z_MOTOR + dz * M34_BOLT_SQ / 2)
             add(Placement("m5x25_shcs", "Motor bolt M5x25", T(Ry(math.pi / 2), (X_BACK_OUT, *pp)), 6, DARK, "drive", (80, 0, 0)))
             add(Placement("nut_m5", "Motor locknut M5 (nylon insert)", T(Ry(-math.pi / 2), (xi_b - 12.0, *pp)), 6, STEEL, "drive", (-120, 0, 0)))
     Rs15 = cols((0, 1, 0), (0, 0, -1), (-1, 0, 0))
     add(Placement("sprocket_15_motor", "Drive sprocket 15T on the motor (35BS15H-1/2 bored 14 mm)",
-                  T(Rs15 @ Rz(-math.pi / N15), (X_DRV, LOOP_Y, Z_MOTOR)) @ T(Rz(-phi)), 6, STEEL, "drive", (60, 0, 0)))
+                  T(Rs15 @ Rz(-math.pi / N15), (X_DRV, MOTOR8_Y, Z_MOTOR)) @ T(Rz(-phi)), 6, STEEL, "drive", (60, 0, 0)))
     add(Placement("sprocket_15_shaft", "Drive sprocket 15T on the B+ shaft (35BS15H-5/8)", T(Rs15, (X_DRV, LOOP_Y, Z_BOT)) @ T(Rz(-phi)), 6, STEEL,
                   "drive", (80, 0, 0)))
     dp = drive_chain_pins_at(st.shift) if st.shift else drive_chain_pins()
@@ -952,21 +956,24 @@ def _enclosure(st: State, add) -> None:
             add(Placement("standoff", "Panel standoff, nylon 10 x 6", T(Ry(-math.pi / 2), (x0, ys * POST_Y, z)), 12, WHITE, "enclosure", (-100, 0, 0)))
             add(Placement("standoff_back", "Panel standoff, nylon 10 x 30", T(Ry(math.pi / 2), (x1, ys * POST_Y, z)), 12, WHITE, "enclosure", (100, 0, 0)))
     # hatches: doors 4 mm over their openings, hinged on one edge, opening outward
-    hf = T(cols((0, -1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y + hf_w / 2 + 4.0, HATCH_DOOR_Z0)) @ T(Ry(-math.radians(st.hatch_front)))
-    add(Placement("hatch_front", "Front hatch door (3 mm acrylic, knob)", hf, 12, ACRYL, "enclosure", (-160, 0, 0)))
+    # v8: no front hatch door. The front panel is notched round the balance (which now stands 110 mm proud of it) from the bench
+    # up to 2 mm over the draft cage, with brush strips on the notch's three edges; the balance's own draft cage closes the
+    # bottom of the front, and its side doors (their grips stay outside the panel) are how the beaker goes in and out.
+    y0n, y1n, z1n = FRONT8_NOTCH                         # world y of the notch's sides, z of its top
+    xb_ = x0 - so                                         # the strips' holders on the panel's inner face (frame side)
+    add(Placement("brush_strip_v", "Brush strip, -y side of the balance notch (nylon bristles in an aluminium holder)", T(None, (xb_, y0n - 12.0, 0.0)),
+                  12, DARK, "enclosure", (-160, 0, 0)))
+    add(Placement("brush_strip_v", "Brush strip, +y side of the balance notch (nylon bristles in an aluminium holder)", T(Rz(math.pi), (xb_ + 8.0, y1n + 12.0, 0.0)),
+                  12, DARK, "enclosure", (-160, 0, 0)))
+    add(Placement("brush_strip_h", "Brush strip, top of the balance notch (nylon bristles in an aluminium holder)", T(None, (xb_, y0n - 12.0, z1n)),
+                  12, DARK, "enclosure", (-160, 0, 0)))
     hs = T(cols((0, 0, -1), (-1, 0, 0), (0, 1, 0)), (CHAIN_L / 2 + hs_w / 2 + 4.0, yp, zl + hs_h / 2 + 4.0)) @ T(Ry(-math.radians(st.hatch_side)))
     add(Placement("hatch_side", "Side hatch door (3 mm acrylic, knob)", hs, 12, ACRYL, "enclosure", (0, 160, 0)))
-    for M, L_, nm in ((hf, HATCH_DOOR_H, "front"), (hs, hs_w + 8.0, "side")):
-        for f in (0.2, 0.8):
-            add(Placement("hinge_leaf", f"Hinge leaf (door, {nm} hatch)", M @ T(None, (0.0, f * L_, ACRYLIC_T)), 12, STEEL, "enclosure", (0, 0, 0)))
     for f in (0.2, 0.8):
-        add(Placement("hinge_leaf", "Hinge leaf (panel, front hatch)", T(cols((0, 1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y + hf_w / 2 + 4.0, HATCH_DOOR_Z0 + f * HATCH_DOOR_H)),
-                      12, STEEL, "enclosure", (-160, 0, 0)))
+        add(Placement("hinge_leaf", "Hinge leaf (door, side hatch)", hs @ T(None, (0.0, f * (hs_w + 8.0), ACRYLIC_T)), 12, STEEL, "enclosure", (0, 0, 0)))
         add(Placement("hinge_leaf", "Hinge leaf (panel, side hatch)",
                       T(cols((0, 0, 1), (1, 0, 0), (0, 1, 0)), (CHAIN_L / 2 + hs_w / 2 + 4.0 - f * (hs_w + 8.0), yp, zl + hs_h / 2 + 4.0)), 12, STEEL,
                       "enclosure", (0, 160, 0)))
-    add(Placement("catch", "Turn button (front hatch)", T(cols((0, 1, 0), (0, 0, 1), (-1, 0, 0)), (xf, STATION_Y - hf_w / 2 - 4.0 - 7.0, HATCH_DOOR_Z0 + HATCH_DOOR_H / 2)),
-                  12, DARK, "enclosure", (-160, 0, 0)))
     add(Placement("catch", "Turn button (side hatch)", T(cols((1, 0, 0), (0, 0, -1), (0, 1, 0)), (CHAIN_L / 2, yp, zl - hs_h / 2 - 4.0 - 7.0)), 12,
                   DARK, "enclosure", (0, 160, 0)))
 
@@ -1101,6 +1108,8 @@ BUILDERS = {
     "standoff": lambda: P3.standoff(PANEL_STANDOFF),
     "standoff_back": lambda: P3.standoff(ENC_BACK_SO),
     "hatch_front": lambda: P3.hatch_door(HATCH_FRONT[0] + 8.0, HATCH_DOOR_H),
+    "brush_strip_v": lambda: P8.brush_strip(FRONT8_NOTCH[2]),          # v8: along the notch's sides (holder 12 x 8, bristles 9 mm into the notch)
+    "brush_strip_h": lambda: P8.brush_strip(FRONT8_NOTCH[1] - FRONT8_NOTCH[0] + 24.0, along_y=True),
     "hatch_side": lambda: P3.hatch_door(HATCH_SIDE[1] + 8.0, HATCH_SIDE[0] + 8.0),
     "hinge_leaf": P3.hinge_leaf,
     "catch": P3.turn_button,
@@ -1163,11 +1172,16 @@ def side_hatch_cut() -> tuple:
     return (CHAIN_L / 2 - RAIL_X0 - w / 2, zl - h / 2 - 1.0, CHAIN_L / 2 - RAIL_X0 + w / 2, zl + h / 2 - 1.0)
 
 
+# v8: the balance notch in the front panel: 4 mm round the draft cage and the doors' grips (+-108.5 about the pan), up to 2 mm
+# over the cage (311); world y of its sides, z of its top
+FRONT8_NOTCH = (PAN8_XY[1] - 112.5, PAN8_XY[1] + 112.5, BAL7_TOP + 2.0)
+
+
 def front_hatch_cut() -> tuple:
     """v5: the front panel's opening, panel coordinates (x from y = -ENC_YP, y from z = 1): from the bench up, so the
     HR-202i's display unit pokes out under the hatch door (a brush strip closes the gap round it)."""
-    w, h = HATCH_FRONT
-    return (STATION_Y + ENC_YP - w / 2, -2.0, STATION_Y + ENC_YP + w / 2, h - 1.0)
+    y0, y1, zt = FRONT8_NOTCH                            # v8: the notch round the balance (no front hatch door)
+    return (y0 + ENC_YP, -2.0, y1 + ENC_YP, zt - 1.0)
 
 
 HATCH_DOOR_Z0 = HR2_NOSE[1] + 12.0                # v5: the front hatch door's bottom edge, over the balance's display unit

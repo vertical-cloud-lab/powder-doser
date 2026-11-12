@@ -61,12 +61,13 @@ def plate_additions_v8() -> tuple[cq.Workplane, cq.Workplane]:
             add = add.union(dome)
         zm = KC7_TIP - KC7_MAG_DEPTH - KC6_MAG[1]
         cut = cut.union(_cyl(KC6_MAG[0] / 2 + 0.05, KC6_MAG[1] + 0.01, x, y, zm))
-    # the door bar's guide lug, hanging from clip 1 beside the tube (the bar slides 6 mm along z through its slot)
-    g0, g1 = DOOR8_GUIDE_X
+    # the door bar's guide lug, hanging from the plate's face beside the tube near the bar's end (it slides 6 mm along z in the slot)
+    g0, g1 = DOOR8_LUG_X
     yb = door8_bar_y()
-    lug = _box(g0, g1, yb[0] - 2.0, yb[1] + 2.0, 6.0, 24.0).cut(_cyl_x(12.6, g0 - 1, g1 + 1))
+    h0, h1 = DOOR8_HIGH
+    lug = _box(g0, g1, yb[0] - 1.5, yb[1] + 2.0, -13.2, h1 + 2.0)
     add = add.union(lug)
-    cut = cut.union(_box(g0 - 0.1, g1 + 0.1, yb[0] - 0.25, yb[1] + 0.25, 13.0, 24.1))
+    cut = cut.union(_box(g0 - 0.1, g1 + 0.1, yb[0] - 0.25, yb[1] + 0.25, h0 - DOOR_TRAVEL - 2.0, h1 + 0.25))
     for sy in (-1, 1):
         cut = cut.union(_cyl(1.6, 4.0, 18.5, sy * 13.7, -17.0))
     return add, cut
@@ -78,20 +79,36 @@ def plate8_magnet_bases() -> list:
 
 
 def door8_bar_y() -> tuple[float, float]:
-    """The bar's y span: beside the tube (y 10.5-13.5), where clip 1's ring is shallow enough for the bar to pass under it open."""
-    return (10.5, 10.5 + DOOR8_BAR[0])
+    """The bar's y span beside the tube, outside clip 1 (R16.5) and the tube."""
+    return (18.0, 18.0 + DOOR8_BAR[0])
+
+
+DOOR8_LOW = (20.0, 22.0)             # the low run (z, closed): under the knuckles, from the strip's end to x 15
+DOOR8_HIGH = (8.0, 10.0)             # the high run (z, closed) beside the tube from x 15 to the EC: it crosses the draft cage's back
+                                     # frame (Sam x 38-51) 10 mm higher than the low run would, and open (6 mm up) it is still 2 mm off
+                                     # the plate's lug slot's top
+DOOR8_STEP_X = 15.0
+DOOR8_LUG_X = (46.0, 52.0)           # the bar's guide lug, hanging from the plate between clip 1 (x 26-42) and the gear housing (66)
+
+
+def door8_bar_z() -> tuple[float, float]:
+    """The high run's z span, closed (the EC's finger meets its end)."""
+    return DOOR8_HIGH
 
 
 def door_shutter_v8() -> cq.Workplane:
-    """v4's shutter (closed, Sam's frame) with its push strip carried on back under the tube: a jog from the strip's end (y 6-9,
-    z 20-22) out to y 10.5-13.5, then a 3 x 2 bar back to x 58, over the EC's finger. Printed in one piece (PETG)."""
+    """v4's shutter (closed, Sam's frame) with its push strip carried on back to the EC as a bar: from the strip's end (y 6-9,
+    z 20-22) a jog out to y 18-21 under the knuckles, a low run to x 15, a riser, and a high run (z 8-10) beside the tube back to
+    x 58, over the EC's finger. 3 x 2 mm, printed in one piece with the shutter (PETG)."""
     s = P4.door_shutter_v4()
-    zb1 = -DOOR_ROD_BOTTOM                                 # 22: the strip's end, closed
-    zb0 = zb1 - DOOR8_BAR[1]
     y0, y1 = door8_bar_y()
-    jog = _box(P3.DOOR_XF, 3.0, DOOR_ROD_Y - DOOR_ROD_D / 2, y1, zb0, zb1)
-    bar = _box(0.0, DOOR8_BAR_X1, y0, y1, zb0, zb1)
-    return s.union(jog).union(bar)
+    l0, l1 = DOOR8_LOW
+    h0, h1 = DOOR8_HIGH
+    jog = _box(P3.DOOR_XF, 3.0, DOOR_ROD_Y - DOOR_ROD_D / 2, y1, l0, l1)
+    low = _box(0.0, DOOR8_STEP_X + DOOR8_BAR[0], y0, y1, l0, l1)
+    riser = _box(DOOR8_STEP_X, DOOR8_STEP_X + DOOR8_BAR[0], y0, y1, h0, l1)
+    high = _box(DOOR8_STEP_X, DOOR8_BAR_X1, y0, y1, h0, h1)
+    return s.union(jog).union(low).union(riser).union(high)
 
 
 # ---------------------------------------------------------------- 2. EC v8: Sam's Aug 27 layout, behind the balance
@@ -114,7 +131,8 @@ def ec_v8() -> cq.Workplane:
     zt, zb, c_face = lv["zt"], lv["zb"], lv["c_face"]
     hw = EC8_HW
     zb0, zb1 = EC8_BASE_Z
-    base = _box(56.0, EC8_BACK, -hw, hw, zb0, zb1).edges("|Z").fillet(4.0)
+    base = _box(56.0, 136.0, -hw, hw, zb0, zb1).edges("|Z").fillet(4.0)          # ends before the guides' cheeks (Sam x 138+)
+    base = base.union(_box(130.0, EC8_BACK, -10.5, 10.5, zb0, zb1))                  # a neck between the guides back to the shoes
     # the solenoid's cradle: front wall, side walls and floor round the frame (x 59-73, |y| 8.5), open at the back (the shaft
     # ends at x 78.3) and at the top (the plunger)
     fx, fy, fz = SOL8_FRAME
@@ -127,9 +145,9 @@ def ec_v8() -> cq.Workplane:
     body = base.union(cradle)
     # the door finger, at the front, under the bar's end (pushes it 6 mm up in the dock's last 6 mm)
     y0, y1 = door8_bar_y()
-    f_top = -DOOR_ROD_BOTTOM - DOOR_TRAVEL                 # 16: the bar's underside when open
+    f_top = door8_bar_z()[1] - DOOR_TRAVEL                 # 4: the high run's underside when open
     body = body.union(_box(FINGER8_X[0], FINGER8_X[1], y0 - 0.5, y1 + 0.5, f_top, SOL8_TOP + 10.0))
-    body = body.union(_box(FINGER8_X[0], 58.0, y0 - 0.5, fy / 2 + 2.0, SOL8_TOP + 4.0, SOL8_TOP + 10.0))
+    body = body.union(_box(FINGER8_X[0], 58.0, fy / 2 + 1.0, y1 + 0.5, SOL8_TOP + 4.0, SOL8_TOP + 10.0))
     # the motor plate: a 22.4 pilot hole for the boss, the 23 mm square of M2.5 clearance holes
     m0, m1 = MOTOR8_PLATE_X
     mp = _box(m0, m1, -14.5, 14.5, 17.5, zb1).cut(cq.Workplane("YZ").center(0, MOTOR8_Z).circle(11.2).extrude(m1 - m0 + 2).translate((m0 - 1, 0, 0)))
@@ -224,7 +242,7 @@ def guide_v8(bar_x: float, z_bar_top: float, z_seat: float, z_top: float, shoe_x
     xc = shoe_x
     y_in, y_out = shoe_yc - 7.5, shoe_yc + 5.5
     cheek = _box(xc - w / 2 - 5.0, xc + w / 2 + 5.0, y_in, y_out + 5.0, z_bar_top, z_top)
-    foot = _box(bar_x - 10.0, bar_x + 10.0, y_in, y_out + 5.0 + GUIDE8_TAB, z_bar_top, z_bar_top + 6.0)
+    foot = _box(min(xc - w / 2 - 5.0, bar_x - 10.0), bar_x + 10.0, y_in, y_out + 5.0 + GUIDE8_TAB, z_bar_top, z_bar_top + 6.0)
     body = cheek.union(foot)
     body = body.cut(_box(xc - w / 2, xc + w / 2, y_in - 0.01, y_out, z_seat, z_top + 1))
     body = body.cut(_box(xc - w / 2 - GUIDE7_RELIEF, xc + w / 2 + GUIDE7_RELIEF, y_in - 0.01, y_out, z_seat, z_seat + 8.0))
@@ -271,3 +289,17 @@ def riser_v8() -> cq.Workplane:
            .extrude(3.0, both=True))
     cup = _cyl(BEAKER_D / 2 + 3.0, 8.0, a, 0, h - 8.0).cut(_cyl(BEAKER_D / 2 + 0.4, 9.0, a, 0, h - 5.0))
     return foot.union(tube).union(arm).union(web).union(_cyl(BEAKER_D / 2 + 3.0, 6.0, a, 0, h - 14.0)).union(cup)
+
+
+# ---------------------------------------------------------------- 5. the front cover: brush strips round the balance's notch
+def brush_strip(length: float, along_y: bool = False) -> cq.Workplane:
+    """A brush strip (nylon bristles in an aluminium holder): the holder 12 wide x 8 deep, the bristles 9 mm on past it, along
+    +z (or +y). Frame: the holder's corner at the origin, x 0-8 (into the frame from the panel), the bristles toward +y (or +z) from
+    y 12 (z 12)."""
+    if along_y:
+        holder = _box(0.0, 8.0, 0.0, length, -12.0, 0.0)
+        bristles = _box(2.0, 6.0, 12.0, length - 12.0, -21.0, -12.0)
+        return holder.union(bristles).translate((0, 0, 12.0))
+    holder = _box(0.0, 8.0, 0.0, 12.0, 0.0, length)
+    bristles = _box(2.0, 6.0, 12.0, 21.0, 0.0, length - 12.0)
+    return holder.union(bristles)
