@@ -1,21 +1,29 @@
 # Powder-doser runs that all dosed the same mass (issue #210)
 
 Issue [#210](https://github.com/vertical-cloud-lab/powder-doser/issues/210) asked for five powder
-runs on the doser that all dosed the same amount, for a data assimilation project. This folder
-has two sets, so you can use either reading of "5 different powder runs":
+runs on the doser that all dosed the same amount, for a data assimilation project, and then for
+five different powders dosed with the new controller. This folder has three sets:
 
 | set | what | target | time series |
 |---|---|---|---|
-| **A** [`salt-0p5g/`](salt-0p5g/) | five replicate doses of **one powder** (table salt) at **identical settings**, back to back on 2026-10-06 | **0.5 g** | balance reading every 0.29–0.40 s while the auger runs (every 3 s during taps), plus the doser's own **Kalman filter** estimates |
-| **B** [`five-powders-0p2g/`](five-powders-0p2g/) | five battery runs, **one per powder** (salt, white rice flour, xanthan gum, sodium sulfate, AlSi10Mg), three doses each | **0.2 g** | one balance reading per poll or control cycle, timestamps in whole seconds, no filter |
+| **A** [`salt-0p5g/`](salt-0p5g/) | five replicate doses of **one powder** (table salt) at **identical settings**, back to back on 2026-10-06, with the new `trickle_tap` controller | **0.5 g** | balance reading every 0.29–0.40 s while the auger runs (every 3 s during taps), plus the doser's own **Kalman filter** estimates |
+| **B** [`five-powders-0p2g/`](five-powders-0p2g/) | five battery runs, **one per powder** (salt, white rice flour, xanthan gum, sodium sulfate, AlSi10Mg), three doses each, with the **older three-phase controller** | **0.2 g** | one balance reading per poll or control cycle, timestamps in whole seconds, no filter |
+| **C** [`new-controller-powders/`](new-controller-powders/) | **every powder the new controller has dosed**: salt (set A), AlSi10Mg (1 dose), Al 4047 (10 doses, 2 finished `ok`), and CMC with a prototype of the controller (6 trials) | 0.1–8 g, mostly different for each powder | the same columns as set A. The filter ran on salt, AlSi10Mg, one Al 4047 dose and CMC |
 
-Set A is the better fit for data assimilation: the same powder, controller, firmware and settings
+**Five different powders dosed with the new controller don't exist yet.** Set C has everything
+there is: three powders, plus a prototype run on a fourth. Only 0.5 g and 8 g were asked of more
+than one powder, and the Al 4047 doses at both of those failed. Getting five needs new doses; see
+[Getting five powders on the new controller](#getting-five-powders-on-the-new-controller).
+
+Set A is the best fit for data assimilation: the same powder, controller, firmware and settings
 every time, back to back in one session, and each run carries a filter you can compare against.
-Use set B if you need different powders.
+Use set B for five powders at one mass with the older controller, and set C for what the new
+controller did on powders other than salt.
 
 The data was already on unmerged branches. Nothing here was re-measured.
-[`extract.py`](extract.py) copies the original files into each set's `source/` folder from pinned
-commits and builds the tidy CSVs and figures from them.
+[`extract.py`](extract.py) (sets A and B) and [`extract_new_controller.py`](extract_new_controller.py)
+(set C) copy the original files into each set's `source/` folder from pinned commits and build the
+tidy CSVs and figures from them.
 
 ## Set A: five 0.5 g salt doses (`salt-0p5g/`)
 
@@ -150,12 +158,119 @@ The same runs are in MongoDB `powder_doser.battery_runs`. Silicon −110/+200 me
 - `source/<run>__raw_serial_<powder>.log` and `source/<run>__doses_<powder>.csv` are the originals.
   `extract.py` checks that its parsed `DOSE` lines match the run's own `doses_*.csv`.
 
+## Set C: every powder the new controller has dosed (`new-controller-powders/`)
+
+![every powder the new controller has dosed](new_controller_powders.png)
+
+*One panel per powder, and the time axes differ. Solid lines are balance readings, dashed lines
+the doser's Kalman-filter mass estimate (trickle stage only), and dots the last reading. Salt is
+set A's run 1.*
+
+The new controller is the `trickle_tap` firmware (PR #154, then PR #166): a bulk stage at a fixed
+tilt and rpm, a trickle stage run by the 3-state Kalman filter described under set A, with PI rate
+control and a predictive cutoff, then single taps. On 2026-11-12 I searched MongoDB
+`powder_doser` (125 `opt_trials`, 17 `dose_runs` and 37 `battery_runs` documents), every branch,
+and the doser Zero's spool (`~/powder-doser/data/opt/`, read-only; it holds the same six campaigns
+as the branches). **Besides salt, the new controller has dosed only AlSi10Mg and Al 4047.** A
+prototype of it also ran on CMC. Every other powder, including all of set B, was dosed with the
+older three-phase controller, which has no filter.
+
+| powder | trial | date (UTC) | target | result | stages | filter ran | file |
+|---|---|---|---|---|---|---|---|
+| salt | `21352011` (and 4 more, set A) | 2026-10-06 | 0.5 g | 0.4980 g, −2.0 mg, `ok`, 70 s | bulk, trickle, taps | yes | [`salt-0p5g/run1_21352011.csv`](salt-0p5g/run1_21352011.csv) |
+| AlSi10Mg | `64714f7c` | 2026-09-29 | 8 g | 7.9928 g, −7.2 mg, `ok`, 315 s | bulk, trickle, taps | yes, 16 steps | [`alsi10mg_8g_64714f7c.csv`](new-controller-powders/alsi10mg_8g_64714f7c.csv) |
+| Al 4047 (9fxeqt) | `3e7490c2` | 2026-09-30 | 8 g | `no-result`: firmware `MemoryError` 100 s into the bulk stage, at 3.47 g | bulk, then the crash | no | [`al4047_8g_3e7490c2.csv`](new-controller-powders/al4047_8g_3e7490c2.csv) |
+| Al 4047 (9fxeqt) | `de4dd913` | 2026-09-30 | 4.5095 g | 4.1899 g, −320 mg, `cycle-budget`, 803 s | bulk, trickle (stalled after 18 s), 120 tap cycles | yes, 35 steps (17 printed) | [`al4047_4p5095g_de4dd913.csv`](new-controller-powders/al4047_4p5095g_de4dd913.csv) |
+| Al 4047 (9fxeqt) | `56a01060` | 2026-09-30 | 0.3189 g | 0.3199 g, +1.0 mg, `ok`, 65 s | `bulk_only` | no | [`al4047_0p3189g_56a01060.csv`](new-controller-powders/al4047_0p3189g_56a01060.csv) |
+| Al 4047 (cups) | `a5fdadaa` | 2026-10-19 | 2.9904 g | `stalled` at 0.203 g, 125 s | `bulk_only` | no | [`al4047_2p9904g_a5fdadaa.csv`](new-controller-powders/al4047_2p9904g_a5fdadaa.csv) |
+| Al 4047 (cups) | `b13e5997` | 2026-10-20 | 0.5 g | `stalled` at 0.003 g, 20 s | `bulk_only` | no | [`al4047_0p5g_b13e5997.csv`](new-controller-powders/al4047_0p5g_b13e5997.csv) |
+| Al 4047 (cups) | `f6a3403f` | 2026-10-20 | 0.5 g | `stalled` at 0.008 g, 45 s | `bulk_only` | no | [`al4047_0p5g_f6a3403f.csv`](new-controller-powders/al4047_0p5g_f6a3403f.csv) |
+| Al 4047 (cups) | `cb3096e9` | 2026-10-20 | 6.4674 g | `stalled` at 2.242 g, 260 s | `bulk_only` | no | [`al4047_6p4674g_cb3096e9.csv`](new-controller-powders/al4047_6p4674g_cb3096e9.csv) |
+| Al 4047 (cups) | `d737cec5` | 2026-10-20 | 3.7951 g | `timeout` at 2.243 g, 301 s | `bulk_only` | no | [`al4047_3p7951g_d737cec5.csv`](new-controller-powders/al4047_3p7951g_d737cec5.csv) |
+| Al 4047 (cups) | `9480b818` | 2026-10-20 | 1.5455 g | `stalled` at 0.390 g, 168 s | `bulk_only` | no | [`al4047_1p5455g_9480b818.csv`](new-controller-powders/al4047_1p5455g_9480b818.csv) |
+| Al 4047 (cups) | `5851b6d6` | 2026-10-20 | 1.1012 g | 1.1028 g, +1.6 mg, `ok`, 48 s | `bulk_only` | no | [`al4047_1p1012g_5851b6d6.csv`](new-controller-powders/al4047_1p1012g_5851b6d6.csv) |
+| CMC (prototype) | `cmc-t1` to `cmc-t6` | 2026-09-08 | 0.2, 0.1, 0.4, 0.2, 0.1, 0.2 g | all six `tap_stalled`: −174, −87, −368, −170, −94, −157 mg, 275–369 s | trickle, taps (no bulk) | yes | `cmc_<target>g_trial<n>.csv` |
+
+[`doses_summary.csv`](new-controller-powders/doses_summary.csv) has one row per dose with the phase
+times, taps, auger turns, firmware and row counts.
+
+- **Shared targets.** 0.5 g (salt, and the Al 4047 doses `b13e5997` and `f6a3403f`) and 8 g
+  (AlSi10Mg, and the Al 4047 dose `3e7490c2`) are the only masses asked of two powders. Those
+  Al 4047 doses stalled at 2.5 mg and 7.9 mg, and crashed at 3.47 g. No two powders here have a
+  clean dose at the same mass.
+- **Al 4047 mostly ran in `bulk_only` mode,** which was added on 2026-09-30 after the trickle
+  stalled on it (`de4dd913`). The whole dose runs at the 40° bulk tilt with cadence taps. The rpm
+  tapers near the target and is raised again when flow stops, and a slope predictor halts the
+  auger. The filter never runs in this mode. The two batches are `al4047-9fxeqt` (freshly atomized
+  sample 9fxeqt) and `al4047` (the atomizer-cup doses of issue #186, whose request didn't name the
+  lot). The cup doses stalled as the tube clogged or ran dry, and the operator later cleared large
+  particles out of the auger. See the
+  [9fxeqt notes](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/production-al4047-9fxeqt/README.md)
+  and the [atomizer-cup notes](https://github.com/vertical-cloud-lab/powder-doser/blob/5252021/data/opt/production-al4047-atomizer-cups/README.md).
+- **AlSi10Mg was dosed once,** with salt's `bo-005` settings unchanged
+  ([notes](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/production-alsi10mg/README.md)).
+  It is the only non-salt dose where the full controller ran normally.
+- **CMC used a prototype,** `pi_trickle_trim.py` (PR #131, run from the Pico's RAM). It has the
+  same 3-state filter, PI law and predictive cutoff, ported from the PR #124 simulator before the
+  `trickle_tap` firmware existed, and no bulk stage. CMC barely conveys at 20–25°, so the trickle
+  stalled or cut off early in every trial and the taps added almost nothing
+  ([run notes](https://github.com/vertical-cloud-lab/powder-doser/blob/5bc4cc9/data/pi-trim/2026-09-08_carboxymethyl-cellulose/README.md)).
+  Its filter used a 0.16 s balance lag and τ = 0.3 s, not the firmware's 0.7 s and 0.8338 s.
+
+### Columns in set C
+
+Each file is one dose, in the columns of set A plus a few more. Empty means not logged for that
+row.
+
+| column | meaning |
+|---|---|
+| `powder_id`, `trial`, `target_g` | the powder as named in MongoDB, the first 8 characters of `trial_uuid` (or `cmc-t<n>`), and the requested mass |
+| `t_s` | seconds since the dose command; the tare takes the first ~6 s. For CMC, seconds since the trial started: a ~15 s quiet window, the baseline read, then the trickle |
+| `phase` | as in set A (`bulk`, `bulk_settled`, `trickle`, `trickle_end`, `tap`, `final_scored`), plus `tap_burst` (two taps per cycle while more than 10 mg is left, `de4dd913`) and `bulk_end` (the settled read after a `bulk_only` halt). CMC adds `pre_drift` (quiet window, stepper off), `baseline`, `preroll` (filter running, auger not yet turning), `final_settle` (stream after the last tap) and `final_settled`; its `final_scored` is the reading the trial was scored on |
+| `mass_g` | **the balance reading** net of the dose's tare. CMC's balance was never tared (the A&D refuses `Z` under load), so its `mass_g` is the reading minus the trial's `baseline` read. Empty in the trickle rows of `de4dd913`, whose console printed only the filter's estimate |
+| `stable` | CMC only: the balance's stable (`S`) or unstable (`U`) flag on that frame |
+| `fresh` | 1 if the balance returned a new reading that step |
+| `kf_mass_g`, `kf_rate_gps`, `kf_sigma_g` | the filter's cup mass, delivery rate and prediction sigma, as in set A. For CMC the mass is over the trial's baseline, and the sigma is for τ = 0.3 s |
+| `kf_balance_g` | CMC only: the filter's third state, the lagged balance reading |
+| `ff_gpr`, `rate_setpoint_gps`, `rate_err_gps`, `pi_integ` | feed factor (g per auger turn), PI set-point, error and integrator, as in set A |
+| `bulk_slope_gps` | `bulk_only` rows: the slope of the reading over the trailing 2 s, which the halt rule uses |
+| `pred_g`, `cutoff_g` | trickle rows: `m + r·τ + 1·σ` and the cutoff it is compared to, as in set A (for CMC, computed from the logged `m + r·τ` and σ so that it matches). `bulk_only` rows: the reading plus slope × 0.8338 s, and the halt threshold, target minus half the 3 mg tolerance |
+| `tilt_deg_cmd`, `auger_rpm_cmd`, `tap_mode` | commanded actuators. The rpm is logged per row in trickle, `bulk_only` and CMC rows; the rest come from the executed settings for that phase |
+| `source` | `telemetry` (the trial document's controller log), `console` (parsed from the serial log), `outcome` (the scored final reading), or `log_D` / `log_P` (CMC stream and settled reads) |
+
+**Time steps.** Telemetry rows are 0.28–0.47 s apart (median 0.38 s), and tap rows about 3 s.
+`3e7490c2` and `de4dd913` come from console lines: their bulk and tap times are whole seconds, so
+2–3 bulk polls share each `t_s`, and their trickle rows are 0.6–0.8 s apart. The first 80 bulk
+polls of `de4dd913` also exist with 0.01 s times in its trial document. CMC frames are about 0.19 s
+apart, 0.19–0.30 s in the trickle.
+
+`source/` holds the originals: `trial_<uuid>.json` (the full `opt_trials` document, also in
+MongoDB), `serial_<uuid>.log` (the raw serial session), and for CMC `cmc_pi_trim_cmc_0908.log`
+(every frame, `M`/`E`/`D`/`P`/`C`/`H`/`T` rows) and `cmc_trials_carboxymethyl-cellulose.csv`.
+`extract_new_controller.py` checks each CMC trial's dispensed mass against that CSV.
+
+### Getting five powders on the new controller
+
+It needs new doses. A person has to load each powder and empty the cup, but the doses themselves
+can run remotely, the way AlSi10Mg and Al 4047 were dosed in PR #166: load the powder, then
+comment something like `@claude dispense 0.5 g of xanthan gum three times with the salt bo-005
+settings` on the issue.
+
+- **Target.** 0.5 g is the mass salt's `bo-005` settings were tuned and validated for, so set A
+  already covers salt.
+- **Powders.** White rice flour, xanthan gum, sodium sulfate and AlSi10Mg all came within −5 to
+  +30 mg of 0.2 g with the older controller in set B, so they convey on this auger.
+- **Expect cohesive powders to need their own settings.** The salt settings stalled on CMC and on
+  the unsieved Al 4047.
+
 ## Rebuilding
 
 ```bash
-git fetch origin                                   # the pinned source commits must be present
-python3 data/assimilation/extract.py --fetch       # recopy source/ from the pinned commits
-python3 data/assimilation/extract.py               # rebuild the CSVs and figures from source/
+git fetch origin                                                # the pinned source commits must be present
+python3 data/assimilation/extract.py --fetch                    # sets A and B: recopy source/ from the pinned commits
+python3 data/assimilation/extract.py                            # sets A and B: rebuild the CSVs and figures
+python3 data/assimilation/extract_new_controller.py --fetch     # set C: recopy source/
+python3 data/assimilation/extract_new_controller.py             # set C: rebuild (reads set A's run 1 too)
 ```
 
 The CSVs need only the Python standard library. The figures need matplotlib.

@@ -1,0 +1,1532 @@
+--- session 2026-10-20T21:07:31.706466+00:00 ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-15
+heap: 120960 bytes free, 84480 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 0.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 55.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 30.0
+  cutoff_margin_g = 0.035
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = True
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 10.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.005
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.25
+  trickle_tap = False
+  trickle_tilt_deg = 15.0
+>> set bulk_anticipation_g 0.05
+[set] bulk_anticipation_g = 0.05 (was 0.05)
+>> set bulk_boost_s 3
+[set] bulk_boost_s = 3.0 (was 3.0)
+>> set bulk_enabled 1
+[set] bulk_enabled = True (was True)
+>> set bulk_halt_kf 0
+[set] bulk_halt_kf = False (was False)
+>> set bulk_max_passes 1
+[set] bulk_max_passes = 1 (was 8)
+>> set bulk_min_rpm 15
+[set] bulk_min_rpm = 15.0 (was 20.0)
+>> set bulk_only 1
+[set] bulk_only = True (was False)
+>> set bulk_poll_ms 250
+[set] bulk_poll_ms = 250 (was 250)
+>> set bulk_settle_ms 1500
+[set] bulk_settle_ms = 1500 (was 1500)
+>> set bulk_stop_margin_g 0.01
+[set] bulk_stop_margin_g = 0.01 (was 0.01)
+>> set bulk_taper_start_g 0.5
+[set] bulk_taper_start_g = 0.5 (was 0.1)
+>> set cutoff_margin_g 0.035
+[set] cutoff_margin_g = 0.035 (was 0.035)
+>> set dose_timeout_s 1200
+[set] dose_timeout_s = 1200 (was 600)
+>> set ff_prior_g_per_rev 0.35
+[set] ff_prior_g_per_rev = 0.35 (was 0.35)
+>> set final_settle_ms 2000
+[set] final_settle_ms = 2000 (was 2000)
+>> set k_sigma 1
+[set] k_sigma = 1.0 (was 1.0)
+>> set kf_q_var 0.0002
+[set] kf_q_var = 0.0002 (was 0.0002)
+>> set log_max_rows 1200
+[set] log_max_rows = 1200 (was 1200)
+>> set log_min_free_bytes 24000
+[set] log_min_free_bytes = 24000 (was 24000)
+>> set log_to_flash 0
+[set] log_to_flash = False (was True)
+>> set max_poll_misses 10
+[set] max_poll_misses = 10 (was 10)
+>> set noisy_sd_g 0.008
+[set] noisy_sd_g = 0.008 (was 0.008)
+>> set overshoot_abort_g 0.02
+[set] overshoot_abort_g = 0.02 (was 0.1)
+>> set post_trickle_settle_ms 1200
+[set] post_trickle_settle_ms = 1200 (was 1200)
+>> set print_every_n_polls 2
+[set] print_every_n_polls = 2 (was 2)
+>> set quiet_sd_g 0.0005
+[set] quiet_sd_g = 0.0005 (was 0.0005)
+>> set rate_tau_s 0.5
+[set] rate_tau_s = 0.5 (was 0.5)
+>> set stall_bail_s 8
+[set] stall_bail_s = 8.0 (was 8.0)
+>> set tap_burst_above_g 0
+[set] tap_burst_above_g = 0.0 (was 0.0)
+>> set tap_burst_taps 2
+[set] tap_burst_taps = 2 (was 2)
+>> set tap_cadence_off_ms 440
+[set] tap_cadence_off_ms = 440 (was 440)
+>> set tap_cadence_on_ms 60
+[set] tap_cadence_on_ms = 60 (was 60)
+>> set tap_max_cycles 120
+[set] tap_max_cycles = 120 (was 120)
+>> set tap_max_nudges 20
+[set] tap_max_nudges = 20 (was 20)
+>> set tap_nudge_deg 5
+[set] tap_nudge_deg = 5.0 (was 5.0)
+>> set tap_settle_ms 1500
+[set] tap_settle_ms = 1500 (was 1500)
+>> set taps_per_cycle 1
+[set] taps_per_cycle = 1 (was 1)
+>> set tau_bal_s 0.7
+[set] tau_bal_s = 0.7 (was 0.7)
+>> set trickle_dt_s 0.25
+[set] trickle_dt_s = 0.25 (was 0.25)
+>> set trickle_integ_clamp 0.5
+[set] trickle_integ_clamp = 0.5 (was 0.5)
+>> set trickle_ki 120
+[set] trickle_ki = 120.0 (was 120.0)
+>> set trickle_kp 250
+[set] trickle_kp = 250.0 (was 250.0)
+>> set trickle_max_rate_gps 0.05
+[set] trickle_max_rate_gps = 0.05 (was 0.05)
+>> set trickle_min_rate_gps 0.003
+[set] trickle_min_rate_gps = 0.003 (was 0.003)
+>> set trickle_rpm_cap 45
+[set] trickle_rpm_cap = 45.0 (was 45.0)
+>> set bulk_tap 1
+[set] bulk_tap = True (was False)
+>> set trickle_tap 0
+[set] trickle_tap = False (was False)
+>> set bulk_tilt_deg 40
+[set] bulk_tilt_deg = 40.0 (was 30.0)
+>> set trickle_tilt_deg 40
+[set] trickle_tilt_deg = 40.0 (was 15.0)
+>> set tap_tilt_deg 40
+[set] tap_tilt_deg = 40.0 (was 10.0)
+>> set bulk_rpm 100
+[set] bulk_rpm = 100.0 (was 55.0)
+>> set trickle_start_remaining_g 0.3
+[set] trickle_start_remaining_g = 0.3 (was 0.25)
+>> set tolerance_g 0.003
+[set] tolerance_g = 0.003 (was 0.005)
+>> set trickle_enabled 1
+[set] trickle_enabled = True (was True)
+>> set tau_afterflow_s 0.8338
+[set] tau_afterflow_s = 0.8338 (was 0.3)
+>> g 6.4674
+[dose] trickle-tap dose to 6.4674 g (tol 3.0 mg, trickle tilt 40.0 plate deg); taring scale
+[dose] tared: baseline +0.0 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== stage 1 'bulk' (bulk_only): 6.4674 g to go at 40.0 plate deg; 100 rpm tapering to 15 over the last 500 mg, x1.5 after 3.0 s without flow; halt when m + slope*0.83s >= 6.4659 g; cadence taps on
+[phase 1 bulk-only] poll 1: mass 0.0005 / 6.4674 g (6.4669 g to go), 100 rpm, 0.0 mg/s, elapsed 6.3 s
+[phase 1 bulk-only] poll 2: mass 0.0148 / 6.4674 g (6.4526 g to go), 100 rpm, 0.0 mg/s, elapsed 6.7 s
+[phase 1 bulk-only] poll 3: mass 0.0329 / 6.4674 g (6.4345 g to go), 100 rpm, 0.0 mg/s, elapsed 6.9 s
+[phase 1 bulk-only] poll 4: mass 0.0644 / 6.4674 g (6.4030 g to go), 100 rpm, 0.0 mg/s, elapsed 7.3 s
+[phase 1 bulk-only] poll 5: mass 0.0956 / 6.4674 g (6.3718 g to go), 100 rpm, 0.0 mg/s, elapsed 7.7 s
+[phase 1 bulk-only] poll 6: mass 0.1319 / 6.4674 g (6.3355 g to go), 100 rpm, 73.7 mg/s, elapsed 8.1 s
+[phase 1 bulk-only] poll 7: mass 0.1553 / 6.4674 g (6.3121 g to go), 100 rpm, 82.9 mg/s, elapsed 8.4 s
+[phase 1 bulk-only] poll 8: mass 0.1827 / 6.4674 g (6.2847 g to go), 100 rpm, 83.7 mg/s, elapsed 8.8 s
+[phase 1 bulk-only] poll 9: mass 0.2081 / 6.4674 g (6.2593 g to go), 100 rpm, 80.3 mg/s, elapsed 9.2 s
+[phase 1 bulk-only] poll 10: mass 0.2233 / 6.4674 g (6.2441 g to go), 100 rpm, 73.9 mg/s, elapsed 9.4 s
+[phase 1 bulk-only] poll 11: mass 0.2435 / 6.4674 g (6.2239 g to go), 100 rpm, 64.6 mg/s, elapsed 9.8 s
+[phase 1 bulk-only] poll 12: mass 0.2603 / 6.4674 g (6.2071 g to go), 100 rpm, 57.7 mg/s, elapsed 10.2 s
+[phase 1 bulk-only] poll 13: mass 0.2765 / 6.4674 g (6.1909 g to go), 100 rpm, 51.0 mg/s, elapsed 10.6 s
+[phase 1 bulk-only] poll 14: mass 0.2896 / 6.4674 g (6.1778 g to go), 100 rpm, 46.8 mg/s, elapsed 10.9 s
+[phase 1 bulk-only] poll 15: mass 0.3057 / 6.4674 g (6.1617 g to go), 100 rpm, 44.7 mg/s, elapsed 11.3 s
+[phase 1 bulk-only] poll 16: mass 0.3226 / 6.4674 g (6.1448 g to go), 100 rpm, 43.5 mg/s, elapsed 11.6 s
+[phase 1 bulk-only] poll 17: mass 0.3345 / 6.4674 g (6.1329 g to go), 100 rpm, 43.3 mg/s, elapsed 12.0 s
+[phase 1 bulk-only] poll 18: mass 0.3494 / 6.4674 g (6.1180 g to go), 100 rpm, 42.7 mg/s, elapsed 12.3 s
+[phase 1 bulk-only] poll 19: mass 0.3630 / 6.4674 g (6.1044 g to go), 100 rpm, 40.8 mg/s, elapsed 12.7 s
+[phase 1 bulk-only] poll 20: mass 0.3742 / 6.4674 g (6.0932 g to go), 100 rpm, 37.9 mg/s, elapsed 13.1 s
+[phase 1 bulk-only] poll 21: mass 0.3832 / 6.4674 g (6.0842 g to go), 100 rpm, 35.0 mg/s, elapsed 13.4 s
+[phase 1 bulk-only] poll 22: mass 0.3948 / 6.4674 g (6.0726 g to go), 100 rpm, 32.7 mg/s, elapsed 13.7 s
+[phase 1 bulk-only] poll 23: mass 0.4084 / 6.4674 g (6.0590 g to go), 100 rpm, 31.9 mg/s, elapsed 14.1 s
+[phase 1 bulk-only] poll 24: mass 0.4197 / 6.4674 g (6.0477 g to go), 100 rpm, 32.8 mg/s, elapsed 14.4 s
+[phase 1 bulk-only] poll 25: mass 0.4333 / 6.4674 g (6.0341 g to go), 100 rpm, 34.4 mg/s, elapsed 14.8 s
+[phase 1 bulk-only] poll 26: mass 0.4464 / 6.4674 g (6.0210 g to go), 100 rpm, 35.3 mg/s, elapsed 15.2 s
+[phase 1 bulk-only] poll 27: mass 0.4568 / 6.4674 g (6.0106 g to go), 100 rpm, 36.1 mg/s, elapsed 15.5 s
+[phase 1 bulk-only] poll 28: mass 0.4692 / 6.4674 g (5.9982 g to go), 100 rpm, 35.2 mg/s, elapsed 15.9 s
+[phase 1 bulk-only] poll 29: mass 0.4812 / 6.4674 g (5.9862 g to go), 100 rpm, 34.0 mg/s, elapsed 16.2 s
+[phase 1 bulk-only] poll 30: mass 0.4937 / 6.4674 g (5.9737 g to go), 100 rpm, 33.1 mg/s, elapsed 16.6 s
+[phase 1 bulk-only] poll 31: mass 0.5063 / 6.4674 g (5.9611 g to go), 100 rpm, 32.6 mg/s, elapsed 17.0 s
+[phase 1 bulk-only] poll 32: mass 0.5196 / 6.4674 g (5.9478 g to go), 100 rpm, 32.6 mg/s, elapsed 17.4 s
+[phase 1 bulk-only] poll 33: mass 0.5323 / 6.4674 g (5.9351 g to go), 100 rpm, 33.1 mg/s, elapsed 17.8 s
+[phase 1 bulk-only] poll 34: mass 0.5449 / 6.4674 g (5.9225 g to go), 100 rpm, 33.4 mg/s, elapsed 18.1 s
+[phase 1 bulk-only] poll 35: mass 0.5551 / 6.4674 g (5.9123 g to go), 100 rpm, 33.8 mg/s, elapsed 18.4 s
+[phase 1 bulk-only] poll 36: mass 0.5678 / 6.4674 g (5.8996 g to go), 100 rpm, 33.8 mg/s, elapsed 18.8 s
+[phase 1 bulk-only] poll 37: mass 0.5809 / 6.4674 g (5.8865 g to go), 100 rpm, 33.8 mg/s, elapsed 19.2 s
+[phase 1 bulk-only] poll 38: mass 0.5927 / 6.4674 g (5.8747 g to go), 100 rpm, 33.4 mg/s, elapsed 19.6 s
+[phase 1 bulk-only] poll 39: mass 0.6057 / 6.4674 g (5.8617 g to go), 100 rpm, 33.3 mg/s, elapsed 20.0 s
+[phase 1 bulk-only] poll 40: mass 0.6186 / 6.4674 g (5.8488 g to go), 100 rpm, 33.1 mg/s, elapsed 20.3 s
+[phase 1 bulk-only] poll 41: mass 0.6307 / 6.4674 g (5.8367 g to go), 100 rpm, 32.8 mg/s, elapsed 20.7 s
+[phase 1 bulk-only] poll 42: mass 0.6425 / 6.4674 g (5.8249 g to go), 100 rpm, 32.4 mg/s, elapsed 21.1 s
+[phase 1 bulk-only] poll 43: mass 0.6517 / 6.4674 g (5.8157 g to go), 100 rpm, 32.4 mg/s, elapsed 21.4 s
+[phase 1 bulk-only] poll 44: mass 0.6637 / 6.4674 g (5.8037 g to go), 100 rpm, 31.8 mg/s, elapsed 21.8 s
+[phase 1 bulk-only] poll 45: mass 0.6761 / 6.4674 g (5.7913 g to go), 100 rpm, 31.6 mg/s, elapsed 22.2 s
+[phase 1 bulk-only] poll 46: mass 0.6868 / 6.4674 g (5.7806 g to go), 100 rpm, 31.2 mg/s, elapsed 22.5 s
+[phase 1 bulk-only] poll 47: mass 0.6979 / 6.4674 g (5.7695 g to go), 100 rpm, 30.4 mg/s, elapsed 22.9 s
+[phase 1 bulk-only] poll 48: mass 0.7099 / 6.4674 g (5.7575 g to go), 100 rpm, 30.2 mg/s, elapsed 23.3 s
+[phase 1 bulk-only] poll 49: mass 0.7202 / 6.4674 g (5.7472 g to go), 100 rpm, 29.6 mg/s, elapsed 23.7 s
+[phase 1 bulk-only] poll 50: mass 0.7306 / 6.4674 g (5.7368 g to go), 100 rpm, 28.8 mg/s, elapsed 24.1 s
+[phase 1 bulk-only] poll 51: mass 0.7411 / 6.4674 g (5.7263 g to go), 100 rpm, 28.4 mg/s, elapsed 24.5 s
+[phase 1 bulk-only] poll 52: mass 0.7509 / 6.4674 g (5.7165 g to go), 100 rpm, 27.5 mg/s, elapsed 24.8 s
+[phase 1 bulk-only] poll 53: mass 0.7614 / 6.4674 g (5.7060 g to go), 100 rpm, 26.9 mg/s, elapsed 25.2 s
+[phase 1 bulk-only] poll 54: mass 0.7714 / 6.4674 g (5.6960 g to go), 100 rpm, 26.8 mg/s, elapsed 25.6 s
+[phase 1 bulk-only] poll 55: mass 0.7785 / 6.4674 g (5.6889 g to go), 100 rpm, 26.5 mg/s, elapsed 25.9 s
+[phase 1 bulk-only] poll 56: mass 0.7881 / 6.4674 g (5.6793 g to go), 100 rpm, 26.0 mg/s, elapsed 26.3 s
+[phase 1 bulk-only] poll 57: mass 0.7977 / 6.4674 g (5.6697 g to go), 100 rpm, 25.7 mg/s, elapsed 26.7 s
+[phase 1 bulk-only] poll 58: mass 0.8051 / 6.4674 g (5.6623 g to go), 100 rpm, 25.2 mg/s, elapsed 26.9 s
+[phase 1 bulk-only] poll 59: mass 0.8148 / 6.4674 g (5.6526 g to go), 100 rpm, 25.1 mg/s, elapsed 27.3 s
+[phase 1 bulk-only] poll 60: mass 0.8244 / 6.4674 g (5.6430 g to go), 100 rpm, 25.3 mg/s, elapsed 27.7 s
+[phase 1 bulk-only] poll 61: mass 0.8339 / 6.4674 g (5.6335 g to go), 100 rpm, 25.2 mg/s, elapsed 28.1 s
+[phase 1 bulk-only] poll 62: mass 0.8423 / 6.4674 g (5.6251 g to go), 100 rpm, 24.7 mg/s, elapsed 28.5 s
+[phase 1 bulk-only] poll 63: mass 0.8513 / 6.4674 g (5.6161 g to go), 100 rpm, 24.1 mg/s, elapsed 28.9 s
+[phase 1 bulk-only] poll 64: mass 0.8611 / 6.4674 g (5.6063 g to go), 100 rpm, 24.0 mg/s, elapsed 29.2 s
+[phase 1 bulk-only] poll 65: mass 0.8703 / 6.4674 g (5.5971 g to go), 100 rpm, 23.9 mg/s, elapsed 29.7 s
+[phase 1 bulk-only] poll 66: mass 0.8803 / 6.4674 g (5.5871 g to go), 100 rpm, 24.4 mg/s, elapsed 30.0 s
+[phase 1 bulk-only] poll 67: mass 0.8893 / 6.4674 g (5.5781 g to go), 100 rpm, 24.7 mg/s, elapsed 30.4 s
+[phase 1 bulk-only] poll 68: mass 0.8989 / 6.4674 g (5.5685 g to go), 100 rpm, 24.9 mg/s, elapsed 30.8 s
+[phase 1 bulk-only] poll 69: mass 0.9087 / 6.4674 g (5.5587 g to go), 100 rpm, 24.8 mg/s, elapsed 31.2 s
+[phase 1 bulk-only] poll 70: mass 0.9178 / 6.4674 g (5.5496 g to go), 100 rpm, 24.8 mg/s, elapsed 31.5 s
+[phase 1 bulk-only] poll 71: mass 0.9277 / 6.4674 g (5.5397 g to go), 100 rpm, 24.7 mg/s, elapsed 31.9 s
+[phase 1 bulk-only] poll 72: mass 0.9368 / 6.4674 g (5.5306 g to go), 100 rpm, 24.9 mg/s, elapsed 32.3 s
+[phase 1 bulk-only] poll 73: mass 0.9450 / 6.4674 g (5.5224 g to go), 100 rpm, 24.2 mg/s, elapsed 32.7 s
+[phase 1 bulk-only] poll 74: mass 0.9528 / 6.4674 g (5.5146 g to go), 100 rpm, 23.3 mg/s, elapsed 33.1 s
+[phase 1 bulk-only] poll 75: mass 0.9583 / 6.4674 g (5.5091 g to go), 100 rpm, 22.2 mg/s, elapsed 33.3 s
+[phase 1 bulk-only] poll 76: mass 0.9657 / 6.4674 g (5.5017 g to go), 100 rpm, 20.8 mg/s, elapsed 33.7 s
+[phase 1 bulk-only] poll 77: mass 0.9738 / 6.4674 g (5.4936 g to go), 100 rpm, 20.2 mg/s, elapsed 34.1 s
+[phase 1 bulk-only] poll 78: mass 0.9791 / 6.4674 g (5.4883 g to go), 100 rpm, 19.9 mg/s, elapsed 34.4 s
+[phase 1 bulk-only] poll 79: mass 0.9869 / 6.4674 g (5.4805 g to go), 100 rpm, 19.8 mg/s, elapsed 34.8 s
+[phase 1 bulk-only] poll 80: mass 0.9947 / 6.4674 g (5.4727 g to go), 100 rpm, 20.0 mg/s, elapsed 35.2 s
+[phase 1 bulk-only] poll 81: mass 1.0007 / 6.4674 g (5.4667 g to go), 100 rpm, 20.3 mg/s, elapsed 35.5 s
+[phase 1 bulk-only] poll 82: mass 1.0086 / 6.4674 g (5.4588 g to go), 100 rpm, 20.3 mg/s, elapsed 35.8 s
+[phase 1 bulk-only] poll 83: mass 1.0158 / 6.4674 g (5.4516 g to go), 100 rpm, 20.3 mg/s, elapsed 36.2 s
+[phase 1 bulk-only] poll 84: mass 1.0234 / 6.4674 g (5.4440 g to go), 100 rpm, 20.1 mg/s, elapsed 36.6 s
+[phase 1 bulk-only] poll 85: mass 1.0301 / 6.4674 g (5.4373 g to go), 100 rpm, 19.4 mg/s, elapsed 37.0 s
+[phase 1 bulk-only] poll 86: mass 1.0370 / 6.4674 g (5.4304 g to go), 100 rpm, 18.9 mg/s, elapsed 37.4 s
+[phase 1 bulk-only] poll 87: mass 1.0444 / 6.4674 g (5.4230 g to go), 100 rpm, 18.6 mg/s, elapsed 37.8 s
+[phase 1 bulk-only] poll 88: mass 1.0511 / 6.4674 g (5.4163 g to go), 100 rpm, 18.4 mg/s, elapsed 38.1 s
+[phase 1 bulk-only] poll 89: mass 1.0586 / 6.4674 g (5.4088 g to go), 100 rpm, 18.4 mg/s, elapsed 38.5 s
+[phase 1 bulk-only] poll 90: mass 1.0658 / 6.4674 g (5.4016 g to go), 100 rpm, 18.7 mg/s, elapsed 38.9 s
+[phase 1 bulk-only] poll 91: mass 1.0729 / 6.4674 g (5.3945 g to go), 100 rpm, 18.8 mg/s, elapsed 39.3 s
+[phase 1 bulk-only] poll 92: mass 1.0808 / 6.4674 g (5.3866 g to go), 100 rpm, 19.0 mg/s, elapsed 39.7 s
+[phase 1 bulk-only] poll 93: mass 1.0885 / 6.4674 g (5.3789 g to go), 100 rpm, 19.4 mg/s, elapsed 40.0 s
+[phase 1 bulk-only] poll 94: mass 1.0963 / 6.4674 g (5.3711 g to go), 100 rpm, 19.7 mg/s, elapsed 40.4 s
+[phase 1 bulk-only] poll 95: mass 1.1048 / 6.4674 g (5.3626 g to go), 100 rpm, 20.4 mg/s, elapsed 40.8 s
+[phase 1 bulk-only] poll 96: mass 1.1123 / 6.4674 g (5.3551 g to go), 100 rpm, 20.6 mg/s, elapsed 41.2 s
+[phase 1 bulk-only] poll 97: mass 1.1197 / 6.4674 g (5.3477 g to go), 100 rpm, 20.5 mg/s, elapsed 41.6 s
+[phase 1 bulk-only] poll 98: mass 1.1267 / 6.4674 g (5.3407 g to go), 100 rpm, 20.1 mg/s, elapsed 42.0 s
+[phase 1 bulk-only] poll 99: mass 1.1331 / 6.4674 g (5.3343 g to go), 100 rpm, 19.2 mg/s, elapsed 42.3 s
+[phase 1 bulk-only] poll 100: mass 1.1401 / 6.4674 g (5.3273 g to go), 100 rpm, 18.4 mg/s, elapsed 42.7 s
+[phase 1 bulk-only] poll 101: mass 1.1472 / 6.4674 g (5.3202 g to go), 100 rpm, 18.1 mg/s, elapsed 43.1 s
+[phase 1 bulk-only] poll 102: mass 1.1542 / 6.4674 g (5.3132 g to go), 100 rpm, 18.0 mg/s, elapsed 43.5 s
+[phase 1 bulk-only] poll 103: mass 1.1611 / 6.4674 g (5.3063 g to go), 100 rpm, 18.1 mg/s, elapsed 43.9 s
+[phase 1 bulk-only] poll 104: mass 1.1669 / 6.4674 g (5.3005 g to go), 100 rpm, 17.8 mg/s, elapsed 44.3 s
+[phase 1 bulk-only] poll 105: mass 1.1729 / 6.4674 g (5.2945 g to go), 100 rpm, 17.1 mg/s, elapsed 44.6 s
+[phase 1 bulk-only] poll 106: mass 1.1798 / 6.4674 g (5.2876 g to go), 100 rpm, 16.8 mg/s, elapsed 45.0 s
+[phase 1 bulk-only] poll 107: mass 1.1864 / 6.4674 g (5.2810 g to go), 100 rpm, 16.6 mg/s, elapsed 45.4 s
+[phase 1 bulk-only] poll 108: mass 1.1938 / 6.4674 g (5.2736 g to go), 100 rpm, 17.2 mg/s, elapsed 45.8 s
+[phase 1 bulk-only] poll 109: mass 1.2001 / 6.4674 g (5.2673 g to go), 100 rpm, 17.6 mg/s, elapsed 46.2 s
+[phase 1 bulk-only] poll 110: mass 1.2062 / 6.4674 g (5.2612 g to go), 100 rpm, 17.5 mg/s, elapsed 46.5 s
+[phase 1 bulk-only] poll 111: mass 1.2130 / 6.4674 g (5.2544 g to go), 100 rpm, 17.3 mg/s, elapsed 46.9 s
+[phase 1 bulk-only] poll 112: mass 1.2195 / 6.4674 g (5.2479 g to go), 100 rpm, 17.2 mg/s, elapsed 47.3 s
+[phase 1 bulk-only] poll 113: mass 1.2250 / 6.4674 g (5.2424 g to go), 100 rpm, 16.5 mg/s, elapsed 47.7 s
+[phase 1 bulk-only] poll 114: mass 1.2323 / 6.4674 g (5.2351 g to go), 100 rpm, 16.0 mg/s, elapsed 48.2 s
+[phase 1 bulk-only] poll 115: mass 1.2366 / 6.4674 g (5.2308 g to go), 100 rpm, 15.8 mg/s, elapsed 48.5 s
+[phase 1 bulk-only] poll 116: mass 1.2421 / 6.4674 g (5.2253 g to go), 100 rpm, 15.1 mg/s, elapsed 48.8 s
+[phase 1 bulk-only] poll 117: mass 1.2481 / 6.4674 g (5.2193 g to go), 100 rpm, 15.0 mg/s, elapsed 49.2 s
+[phase 1 bulk-only] poll 118: mass 1.2547 / 6.4674 g (5.2127 g to go), 100 rpm, 15.4 mg/s, elapsed 49.6 s
+[phase 1 bulk-only] poll 119: mass 1.2619 / 6.4674 g (5.2055 g to go), 100 rpm, 16.1 mg/s, elapsed 50.0 s
+[phase 1 bulk-only] poll 120: mass 1.2693 / 6.4674 g (5.1981 g to go), 100 rpm, 17.1 mg/s, elapsed 50.4 s
+[phase 1 bulk-only] poll 121: mass 1.2766 / 6.4674 g (5.1908 g to go), 100 rpm, 18.2 mg/s, elapsed 50.8 s
+[phase 1 bulk-only] poll 122: mass 1.2843 / 6.4674 g (5.1831 g to go), 100 rpm, 18.9 mg/s, elapsed 51.1 s
+[phase 1 bulk-only] poll 123: mass 1.2917 / 6.4674 g (5.1757 g to go), 100 rpm, 19.4 mg/s, elapsed 51.5 s
+[phase 1 bulk-only] poll 124: mass 1.2991 / 6.4674 g (5.1683 g to go), 100 rpm, 19.4 mg/s, elapsed 51.9 s
+[phase 1 bulk-only] poll 125: mass 1.3067 / 6.4674 g (5.1607 g to go), 100 rpm, 19.6 mg/s, elapsed 52.3 s
+[phase 1 bulk-only] poll 126: mass 1.3150 / 6.4674 g (5.1524 g to go), 100 rpm, 19.9 mg/s, elapsed 52.7 s
+[phase 1 bulk-only] poll 127: mass 1.3229 / 6.4674 g (5.1445 g to go), 100 rpm, 20.3 mg/s, elapsed 53.0 s
+[phase 1 bulk-only] poll 128: mass 1.3308 / 6.4674 g (5.1366 g to go), 100 rpm, 20.5 mg/s, elapsed 53.4 s
+[phase 1 bulk-only] poll 129: mass 1.3372 / 6.4674 g (5.1302 g to go), 100 rpm, 20.3 mg/s, elapsed 53.8 s
+[phase 1 bulk-only] poll 130: mass 1.3433 / 6.4674 g (5.1241 g to go), 100 rpm, 19.3 mg/s, elapsed 54.2 s
+[phase 1 bulk-only] poll 131: mass 1.3496 / 6.4674 g (5.1178 g to go), 100 rpm, 18.0 mg/s, elapsed 54.6 s
+[phase 1 bulk-only] poll 132: mass 1.3556 / 6.4674 g (5.1118 g to go), 100 rpm, 16.9 mg/s, elapsed 55.0 s
+[phase 1 bulk-only] poll 133: mass 1.3614 / 6.4674 g (5.1060 g to go), 100 rpm, 16.0 mg/s, elapsed 55.4 s
+[phase 1 bulk-only] poll 134: mass 1.3676 / 6.4674 g (5.0998 g to go), 100 rpm, 15.8 mg/s, elapsed 55.7 s
+[phase 1 bulk-only] poll 135: mass 1.3735 / 6.4674 g (5.0939 g to go), 100 rpm, 15.7 mg/s, elapsed 56.1 s
+[phase 1 bulk-only] poll 136: mass 1.3803 / 6.4674 g (5.0871 g to go), 100 rpm, 16.0 mg/s, elapsed 56.5 s
+[phase 1 bulk-only] poll 137: mass 1.3869 / 6.4674 g (5.0805 g to go), 100 rpm, 16.3 mg/s, elapsed 56.9 s
+[phase 1 bulk-only] poll 138: mass 1.3930 / 6.4674 g (5.0744 g to go), 100 rpm, 16.7 mg/s, elapsed 57.3 s
+[phase 1 bulk-only] poll 139: mass 1.3997 / 6.4674 g (5.0677 g to go), 100 rpm, 16.8 mg/s, elapsed 57.6 s
+[phase 1 bulk-only] poll 140: mass 1.4058 / 6.4674 g (5.0616 g to go), 100 rpm, 16.9 mg/s, elapsed 58.0 s
+[phase 1 bulk-only] poll 141: mass 1.4121 / 6.4674 g (5.0553 g to go), 100 rpm, 16.6 mg/s, elapsed 58.4 s
+[phase 1 bulk-only] poll 142: mass 1.4186 / 6.4674 g (5.0488 g to go), 100 rpm, 16.6 mg/s, elapsed 58.8 s
+[phase 1 bulk-only] poll 143: mass 1.4243 / 6.4674 g (5.0431 g to go), 100 rpm, 16.4 mg/s, elapsed 59.2 s
+[phase 1 bulk-only] poll 144: mass 1.4304 / 6.4674 g (5.0370 g to go), 100 rpm, 16.1 mg/s, elapsed 59.6 s
+[phase 1 bulk-only] poll 145: mass 1.4361 / 6.4674 g (5.0313 g to go), 100 rpm, 15.8 mg/s, elapsed 60.0 s
+[phase 1 bulk-only] poll 146: mass 1.4404 / 6.4674 g (5.0270 g to go), 100 rpm, 14.9 mg/s, elapsed 60.3 s
+[phase 1 bulk-only] poll 147: mass 1.4454 / 6.4674 g (5.0220 g to go), 100 rpm, 14.0 mg/s, elapsed 60.7 s
+[phase 1 bulk-only] poll 148: mass 1.4510 / 6.4674 g (5.0164 g to go), 100 rpm, 13.7 mg/s, elapsed 61.1 s
+[phase 1 bulk-only] poll 149: mass 1.4564 / 6.4674 g (5.0110 g to go), 100 rpm, 13.4 mg/s, elapsed 61.5 s
+[phase 1 bulk-only] poll 150: mass 1.4622 / 6.4674 g (5.0052 g to go), 100 rpm, 13.8 mg/s, elapsed 61.9 s
+[phase 1 bulk-only] poll 151: mass 1.4680 / 6.4674 g (4.9994 g to go), 100 rpm, 14.5 mg/s, elapsed 62.2 s
+[phase 1 bulk-only] poll 152: mass 1.4739 / 6.4674 g (4.9935 g to go), 100 rpm, 14.9 mg/s, elapsed 62.6 s
+[phase 1 bulk-only] poll 153: mass 1.4804 / 6.4674 g (4.9870 g to go), 100 rpm, 15.4 mg/s, elapsed 63.0 s
+[phase 1 bulk-only] poll 154: mass 1.4873 / 6.4674 g (4.9801 g to go), 100 rpm, 16.0 mg/s, elapsed 63.4 s
+[phase 1 bulk-only] poll 155: mass 1.4945 / 6.4674 g (4.9729 g to go), 100 rpm, 16.9 mg/s, elapsed 63.8 s
+[phase 1 bulk-only] poll 156: mass 1.5011 / 6.4674 g (4.9663 g to go), 100 rpm, 17.5 mg/s, elapsed 64.2 s
+[phase 1 bulk-only] poll 157: mass 1.5069 / 6.4674 g (4.9605 g to go), 100 rpm, 17.5 mg/s, elapsed 64.5 s
+[phase 1 bulk-only] poll 158: mass 1.5127 / 6.4674 g (4.9547 g to go), 100 rpm, 16.9 mg/s, elapsed 64.9 s
+[phase 1 bulk-only] poll 159: mass 1.5190 / 6.4674 g (4.9484 g to go), 100 rpm, 16.4 mg/s, elapsed 65.3 s
+[phase 1 bulk-only] poll 160: mass 1.5246 / 6.4674 g (4.9428 g to go), 100 rpm, 15.7 mg/s, elapsed 65.7 s
+[phase 1 bulk-only] poll 161: mass 1.5305 / 6.4674 g (4.9369 g to go), 100 rpm, 15.4 mg/s, elapsed 66.1 s
+[phase 1 bulk-only] poll 162: mass 1.5363 / 6.4674 g (4.9311 g to go), 100 rpm, 15.4 mg/s, elapsed 66.4 s
+[phase 1 bulk-only] poll 163: mass 1.5415 / 6.4674 g (4.9259 g to go), 100 rpm, 15.1 mg/s, elapsed 66.8 s
+[phase 1 bulk-only] poll 164: mass 1.5471 / 6.4674 g (4.9203 g to go), 100 rpm, 14.7 mg/s, elapsed 67.2 s
+[phase 1 bulk-only] poll 165: mass 1.5526 / 6.4674 g (4.9148 g to go), 100 rpm, 14.6 mg/s, elapsed 67.6 s
+[phase 1 bulk-only] poll 166: mass 1.5583 / 6.4674 g (4.9091 g to go), 100 rpm, 14.4 mg/s, elapsed 68.0 s
+[phase 1 bulk-only] poll 167: mass 1.5647 / 6.4674 g (4.9027 g to go), 100 rpm, 14.8 mg/s, elapsed 68.4 s
+[phase 1 bulk-only] poll 168: mass 1.5710 / 6.4674 g (4.8964 g to go), 100 rpm, 15.4 mg/s, elapsed 68.7 s
+[phase 1 bulk-only] poll 169: mass 1.5777 / 6.4674 g (4.8897 g to go), 100 rpm, 16.0 mg/s, elapsed 69.1 s
+[phase 1 bulk-only] poll 170: mass 1.5842 / 6.4674 g (4.8832 g to go), 100 rpm, 16.6 mg/s, elapsed 69.5 s
+[phase 1 bulk-only] poll 171: mass 1.5902 / 6.4674 g (4.8772 g to go), 100 rpm, 16.7 mg/s, elapsed 69.9 s
+[phase 1 bulk-only] poll 172: mass 1.5971 / 6.4674 g (4.8703 g to go), 100 rpm, 16.9 mg/s, elapsed 70.3 s
+[phase 1 bulk-only] poll 173: mass 1.6034 / 6.4674 g (4.8640 g to go), 100 rpm, 16.9 mg/s, elapsed 70.7 s
+[phase 1 bulk-only] poll 174: mass 1.6095 / 6.4674 g (4.8579 g to go), 100 rpm, 16.7 mg/s, elapsed 71.0 s
+[phase 1 bulk-only] poll 175: mass 1.6152 / 6.4674 g (4.8522 g to go), 100 rpm, 16.3 mg/s, elapsed 71.4 s
+[phase 1 bulk-only] poll 176: mass 1.6197 / 6.4674 g (4.8477 g to go), 100 rpm, 15.6 mg/s, elapsed 71.8 s
+[phase 1 bulk-only] poll 177: mass 1.6246 / 6.4674 g (4.8428 g to go), 100 rpm, 14.3 mg/s, elapsed 72.2 s
+[phase 1 bulk-only] poll 178: mass 1.6306 / 6.4674 g (4.8368 g to go), 100 rpm, 13.4 mg/s, elapsed 72.7 s
+[phase 1 bulk-only] poll 179: mass 1.6340 / 6.4674 g (4.8334 g to go), 100 rpm, 12.7 mg/s, elapsed 72.9 s
+[phase 1 bulk-only] poll 180: mass 1.6391 / 6.4674 g (4.8283 g to go), 100 rpm, 12.5 mg/s, elapsed 73.3 s
+[phase 1 bulk-only] poll 181: mass 1.6446 / 6.4674 g (4.8228 g to go), 100 rpm, 12.9 mg/s, elapsed 73.7 s
+[phase 1 bulk-only] poll 182: mass 1.6500 / 6.4674 g (4.8174 g to go), 100 rpm, 13.3 mg/s, elapsed 74.1 s
+[phase 1 bulk-only] poll 183: mass 1.6551 / 6.4674 g (4.8123 g to go), 100 rpm, 13.6 mg/s, elapsed 74.5 s
+[phase 1 bulk-only] poll 184: mass 1.6606 / 6.4674 g (4.8068 g to go), 100 rpm, 13.9 mg/s, elapsed 74.9 s
+[phase 1 bulk-only] poll 185: mass 1.6655 / 6.4674 g (4.8019 g to go), 100 rpm, 13.8 mg/s, elapsed 75.2 s
+[phase 1 bulk-only] poll 186: mass 1.6712 / 6.4674 g (4.7962 g to go), 100 rpm, 13.8 mg/s, elapsed 75.6 s
+[phase 1 bulk-only] poll 187: mass 1.6765 / 6.4674 g (4.7909 g to go), 100 rpm, 13.9 mg/s, elapsed 76.0 s
+[phase 1 bulk-only] poll 188: mass 1.6814 / 6.4674 g (4.7860 g to go), 100 rpm, 13.8 mg/s, elapsed 76.4 s
+[phase 1 bulk-only] poll 189: mass 1.6866 / 6.4674 g (4.7808 g to go), 100 rpm, 13.7 mg/s, elapsed 76.8 s
+[phase 1 bulk-only] poll 190: mass 1.6925 / 6.4674 g (4.7749 g to go), 100 rpm, 13.9 mg/s, elapsed 77.2 s
+[phase 1 bulk-only] poll 191: mass 1.6987 / 6.4674 g (4.7687 g to go), 100 rpm, 14.3 mg/s, elapsed 77.5 s
+[phase 1 bulk-only] poll 192: mass 1.7050 / 6.4674 g (4.7624 g to go), 100 rpm, 14.9 mg/s, elapsed 77.9 s
+[phase 1 bulk-only] poll 193: mass 1.7114 / 6.4674 g (4.7560 g to go), 100 rpm, 15.8 mg/s, elapsed 78.3 s
+[phase 1 bulk-only] poll 194: mass 1.7178 / 6.4674 g (4.7496 g to go), 100 rpm, 16.4 mg/s, elapsed 78.7 s
+[phase 1 bulk-only] poll 195: mass 1.7218 / 6.4674 g (4.7456 g to go), 100 rpm, 16.4 mg/s, elapsed 79.0 s
+[phase 1 bulk-only] poll 196: mass 1.7274 / 6.4674 g (4.7400 g to go), 100 rpm, 15.9 mg/s, elapsed 79.4 s
+[phase 1 bulk-only] poll 197: mass 1.7324 / 6.4674 g (4.7350 g to go), 100 rpm, 15.1 mg/s, elapsed 79.7 s
+[phase 1 bulk-only] poll 198: mass 1.7369 / 6.4674 g (4.7305 g to go), 100 rpm, 13.9 mg/s, elapsed 80.1 s
+[phase 1 bulk-only] poll 199: mass 1.7429 / 6.4674 g (4.7245 g to go), 100 rpm, 13.6 mg/s, elapsed 80.5 s
+[phase 1 bulk-only] poll 200: mass 1.7490 / 6.4674 g (4.7184 g to go), 100 rpm, 14.0 mg/s, elapsed 80.9 s
+[phase 1 bulk-only] poll 201: mass 1.7545 / 6.4674 g (4.7129 g to go), 100 rpm, 14.3 mg/s, elapsed 81.3 s
+[phase 1 bulk-only] poll 202: mass 1.7598 / 6.4674 g (4.7076 g to go), 100 rpm, 14.6 mg/s, elapsed 81.7 s
+[phase 1 bulk-only] poll 203: mass 1.7646 / 6.4674 g (4.7028 g to go), 100 rpm, 14.5 mg/s, elapsed 82.0 s
+[phase 1 bulk-only] poll 204: mass 1.7698 / 6.4674 g (4.6976 g to go), 100 rpm, 13.9 mg/s, elapsed 82.4 s
+[phase 1 bulk-only] poll 205: mass 1.7751 / 6.4674 g (4.6923 g to go), 100 rpm, 13.5 mg/s, elapsed 82.8 s
+[phase 1 bulk-only] poll 206: mass 1.7798 / 6.4674 g (4.6876 g to go), 100 rpm, 13.2 mg/s, elapsed 83.2 s
+[phase 1 bulk-only] poll 207: mass 1.7849 / 6.4674 g (4.6825 g to go), 100 rpm, 13.2 mg/s, elapsed 83.6 s
+[phase 1 bulk-only] poll 208: mass 1.7902 / 6.4674 g (4.6772 g to go), 100 rpm, 13.3 mg/s, elapsed 83.9 s
+[phase 1 bulk-only] poll 209: mass 1.7949 / 6.4674 g (4.6725 g to go), 100 rpm, 13.2 mg/s, elapsed 84.3 s
+[phase 1 bulk-only] poll 210: mass 1.7993 / 6.4674 g (4.6681 g to go), 100 rpm, 12.8 mg/s, elapsed 84.7 s
+[phase 1 bulk-only] poll 211: mass 1.8032 / 6.4674 g (4.6642 g to go), 100 rpm, 12.3 mg/s, elapsed 85.1 s
+[phase 1 bulk-only] poll 212: mass 1.8066 / 6.4674 g (4.6608 g to go), 100 rpm, 11.4 mg/s, elapsed 85.5 s
+[phase 1 bulk-only] poll 213: mass 1.8105 / 6.4674 g (4.6569 g to go), 100 rpm, 10.5 mg/s, elapsed 85.9 s
+[phase 1 bulk-only] poll 214: mass 1.8144 / 6.4674 g (4.6530 g to go), 100 rpm, 10.0 mg/s, elapsed 86.2 s
+[phase 1 bulk-only] poll 215: mass 1.8179 / 6.4674 g (4.6495 g to go), 100 rpm, 9.7 mg/s, elapsed 86.6 s
+[phase 1 bulk-only] poll 216: mass 1.8214 / 6.4674 g (4.6460 g to go), 100 rpm, 9.6 mg/s, elapsed 87.0 s
+[phase 1 bulk-only] poll 217: mass 1.8250 / 6.4674 g (4.6424 g to go), 100 rpm, 9.6 mg/s, elapsed 87.4 s
+[phase 1 bulk-only] poll 218: mass 1.8288 / 6.4674 g (4.6386 g to go), 100 rpm, 9.5 mg/s, elapsed 87.8 s
+[phase 1 bulk-only] poll 219: mass 1.8322 / 6.4674 g (4.6352 g to go), 100 rpm, 9.3 mg/s, elapsed 88.2 s
+[phase 1 bulk-only] poll 220: mass 1.8350 / 6.4674 g (4.6324 g to go), 100 rpm, 9.1 mg/s, elapsed 88.5 s
+[phase 1 bulk-only] poll 221: mass 1.8381 / 6.4674 g (4.6293 g to go), 100 rpm, 8.7 mg/s, elapsed 88.9 s
+[phase 1 bulk-only] poll 222: mass 1.8405 / 6.4674 g (4.6269 g to go), 100 rpm, 8.1 mg/s, elapsed 89.3 s
+[phase 1 bulk-only] poll 223: mass 1.8420 / 6.4674 g (4.6254 g to go), 100 rpm, 7.0 mg/s, elapsed 89.7 s
+[phase 1 bulk-only] poll 224: mass 1.8429 / 6.4674 g (4.6245 g to go), 100 rpm, 6.0 mg/s, elapsed 90.0 s
+[phase 1 bulk-only] poll 225: mass 1.8477 / 6.4674 g (4.6197 g to go), 100 rpm, 6.3 mg/s, elapsed 90.4 s
+[phase 1 bulk-only] poll 226: mass 1.8502 / 6.4674 g (4.6172 g to go), 100 rpm, 6.6 mg/s, elapsed 90.7 s
+[phase 1 bulk-only] poll 227: mass 1.8535 / 6.4674 g (4.6139 g to go), 100 rpm, 7.5 mg/s, elapsed 91.1 s
+[phase 1 bulk-only] poll 228: mass 1.8566 / 6.4674 g (4.6108 g to go), 100 rpm, 8.3 mg/s, elapsed 91.5 s
+[phase 1 bulk-only] poll 229: mass 1.8599 / 6.4674 g (4.6075 g to go), 100 rpm, 8.6 mg/s, elapsed 91.9 s
+[phase 1 bulk-only] poll 230: mass 1.8632 / 6.4674 g (4.6042 g to go), 100 rpm, 8.2 mg/s, elapsed 92.3 s
+[phase 1 bulk-only] poll 231: mass 1.8661 / 6.4674 g (4.6013 g to go), 100 rpm, 8.4 mg/s, elapsed 92.6 s
+[phase 1 bulk-only] poll 232: mass 1.8682 / 6.4674 g (4.5992 g to go), 100 rpm, 8.2 mg/s, elapsed 92.9 s
+[phase 1 bulk-only] poll 233: mass 1.8704 / 6.4674 g (4.5970 g to go), 100 rpm, 7.7 mg/s, elapsed 93.3 s
+[phase 1 bulk-only] poll 234: mass 1.8715 / 6.4674 g (4.5959 g to go), 100 rpm, 6.5 mg/s, elapsed 93.7 s
+[phase 1 bulk-only] poll 235: mass 1.8756 / 6.4674 g (4.5918 g to go), 100 rpm, 6.4 mg/s, elapsed 94.1 s
+[phase 1 bulk-only] poll 236: mass 1.8774 / 6.4674 g (4.5900 g to go), 100 rpm, 6.2 mg/s, elapsed 94.5 s
+[phase 1 bulk-only] poll 237: mass 1.8809 / 6.4674 g (4.5865 g to go), 100 rpm, 6.6 mg/s, elapsed 94.8 s
+[phase 1 bulk-only] poll 238: mass 1.8844 / 6.4674 g (4.5830 g to go), 100 rpm, 7.5 mg/s, elapsed 95.2 s
+[phase 1 bulk-only] poll 239: mass 1.8875 / 6.4674 g (4.5799 g to go), 100 rpm, 8.2 mg/s, elapsed 95.6 s
+[phase 1 bulk-only] poll 240: mass 1.8908 / 6.4674 g (4.5766 g to go), 100 rpm, 8.2 mg/s, elapsed 96.0 s
+[phase 1 bulk-only] poll 241: mass 1.8935 / 6.4674 g (4.5739 g to go), 100 rpm, 8.4 mg/s, elapsed 96.4 s
+[phase 1 bulk-only] poll 242: mass 1.8968 / 6.4674 g (4.5706 g to go), 100 rpm, 7.6 mg/s, elapsed 96.9 s
+[phase 1 bulk-only] poll 243: mass 1.8997 / 6.4674 g (4.5677 g to go), 100 rpm, 7.4 mg/s, elapsed 97.2 s
+[phase 1 bulk-only] poll 244: mass 1.9021 / 6.4674 g (4.5653 g to go), 100 rpm, 7.0 mg/s, elapsed 97.6 s
+[phase 1 bulk-only] poll 245: mass 1.9030 / 6.4674 g (4.5644 g to go), 100 rpm, 6.6 mg/s, elapsed 97.9 s
+[phase 1 bulk-only] poll 246: mass 1.9043 / 6.4674 g (4.5631 g to go), 100 rpm, 5.8 mg/s, elapsed 98.3 s
+[phase 1 bulk-only] poll 247: mass 1.9054 / 6.4674 g (4.5620 g to go), 100 rpm, 4.6 mg/s, elapsed 98.7 s
+[phase 1 bulk-only] poll 248: mass 1.9066 / 6.4674 g (4.5608 g to go), 100 rpm, 3.6 mg/s, elapsed 99.1 s
+[phase 1 bulk-only] poll 249: mass 1.9077 / 6.4674 g (4.5597 g to go), 100 rpm, 3.1 mg/s, elapsed 99.4 s
+[phase 1 bulk-only] poll 250: mass 1.9160 / 6.4674 g (4.5514 g to go), 100 rpm, 5.7 mg/s, elapsed 99.8 s
+[phase 1 bulk-only] poll 251: mass 1.9188 / 6.4674 g (4.5486 g to go), 100 rpm, 7.9 mg/s, elapsed 100.2 s
+[phase 1 bulk-only] poll 252: mass 1.9218 / 6.4674 g (4.5456 g to go), 100 rpm, 9.5 mg/s, elapsed 100.6 s
+[phase 1 bulk-only] poll 253: mass 1.9246 / 6.4674 g (4.5428 g to go), 100 rpm, 10.1 mg/s, elapsed 101.0 s
+[phase 1 bulk-only] poll 254: mass 1.9273 / 6.4674 g (4.5401 g to go), 100 rpm, 9.5 mg/s, elapsed 101.4 s
+[phase 1 bulk-only] poll 255: mass 1.9300 / 6.4674 g (4.5374 g to go), 100 rpm, 7.4 mg/s, elapsed 101.7 s
+[phase 1 bulk-only] poll 256: mass 1.9332 / 6.4674 g (4.5342 g to go), 100 rpm, 7.4 mg/s, elapsed 102.1 s
+[phase 1 bulk-only] poll 257: mass 1.9361 / 6.4674 g (4.5313 g to go), 100 rpm, 7.5 mg/s, elapsed 102.5 s
+[phase 1 bulk-only] poll 258: mass 1.9389 / 6.4674 g (4.5285 g to go), 100 rpm, 7.6 mg/s, elapsed 102.9 s
+[phase 1 bulk-only] poll 259: mass 1.9415 / 6.4674 g (4.5259 g to go), 100 rpm, 7.5 mg/s, elapsed 103.3 s
+[phase 1 bulk-only] poll 260: mass 1.9430 / 6.4674 g (4.5244 g to go), 100 rpm, 6.9 mg/s, elapsed 103.6 s
+[phase 1 bulk-only] poll 261: mass 1.9440 / 6.4674 g (4.5234 g to go), 100 rpm, 5.8 mg/s, elapsed 104.0 s
+[phase 1 bulk-only] poll 262: mass 1.9449 / 6.4674 g (4.5225 g to go), 100 rpm, 4.5 mg/s, elapsed 104.4 s
+[phase 1 bulk-only] poll 263: mass 1.9458 / 6.4674 g (4.5216 g to go), 100 rpm, 3.4 mg/s, elapsed 104.8 s
+[phase 1 bulk-only] poll 264: mass 1.9468 / 6.4674 g (4.5206 g to go), 100 rpm, 2.7 mg/s, elapsed 105.2 s
+[phase 1 bulk-only] poll 265: mass 1.9484 / 6.4674 g (4.5190 g to go), 100 rpm, 2.7 mg/s, elapsed 105.6 s
+[phase 1 bulk-only] poll 266: mass 1.9502 / 6.4674 g (4.5172 g to go), 100 rpm, 3.2 mg/s, elapsed 105.9 s
+[phase 1 bulk-only] poll 267: mass 1.9520 / 6.4674 g (4.5154 g to go), 100 rpm, 3.8 mg/s, elapsed 106.3 s
+[phase 1 bulk-only] poll 268: mass 1.9538 / 6.4674 g (4.5136 g to go), 100 rpm, 4.3 mg/s, elapsed 106.7 s
+[phase 1 bulk-only] poll 269: mass 1.9555 / 6.4674 g (4.5119 g to go), 100 rpm, 4.6 mg/s, elapsed 107.1 s
+[phase 1 bulk-only] poll 270: mass 1.9572 / 6.4674 g (4.5102 g to go), 100 rpm, 4.6 mg/s, elapsed 107.5 s
+[phase 1 bulk-only] poll 271: mass 1.9589 / 6.4674 g (4.5085 g to go), 100 rpm, 4.5 mg/s, elapsed 107.8 s
+[phase 1 bulk-only] poll 272: mass 1.9606 / 6.4674 g (4.5068 g to go), 100 rpm, 4.5 mg/s, elapsed 108.2 s
+[phase 1 bulk-only] poll 273: mass 1.9622 / 6.4674 g (4.5052 g to go), 100 rpm, 4.4 mg/s, elapsed 108.6 s
+[phase 1 bulk-only] poll 274: mass 1.9639 / 6.4674 g (4.5035 g to go), 100 rpm, 4.4 mg/s, elapsed 109.0 s
+[phase 1 bulk-only] poll 275: mass 1.9656 / 6.4674 g (4.5018 g to go), 100 rpm, 4.4 mg/s, elapsed 109.4 s
+[phase 1 bulk-only] poll 276: mass 1.9672 / 6.4674 g (4.5002 g to go), 100 rpm, 4.3 mg/s, elapsed 109.8 s
+[phase 1 bulk-only] poll 277: mass 1.9688 / 6.4674 g (4.4986 g to go), 100 rpm, 4.3 mg/s, elapsed 110.1 s
+[phase 1 bulk-only] poll 278: mass 1.9699 / 6.4674 g (4.4975 g to go), 100 rpm, 4.3 mg/s, elapsed 110.4 s
+[phase 1 bulk-only] poll 279: mass 1.9715 / 6.4674 g (4.4959 g to go), 100 rpm, 4.2 mg/s, elapsed 110.8 s
+[phase 1 bulk-only] poll 280: mass 1.9729 / 6.4674 g (4.4945 g to go), 100 rpm, 4.0 mg/s, elapsed 111.2 s
+[phase 1 bulk-only] poll 281: mass 1.9744 / 6.4674 g (4.4930 g to go), 100 rpm, 3.9 mg/s, elapsed 111.6 s
+[phase 1 bulk-only] poll 282: mass 1.9758 / 6.4674 g (4.4916 g to go), 100 rpm, 3.9 mg/s, elapsed 112.0 s
+[phase 1 bulk-only] poll 283: mass 1.9773 / 6.4674 g (4.4901 g to go), 100 rpm, 3.8 mg/s, elapsed 112.4 s
+[phase 1 bulk-only] poll 284: mass 1.9787 / 6.4674 g (4.4887 g to go), 100 rpm, 3.8 mg/s, elapsed 112.7 s
+[phase 1 bulk-only] poll 285: mass 1.9801 / 6.4674 g (4.4873 g to go), 100 rpm, 3.8 mg/s, elapsed 113.1 s
+[phase 1 bulk-only] poll 286: mass 1.9815 / 6.4674 g (4.4859 g to go), 100 rpm, 3.7 mg/s, elapsed 113.5 s
+[phase 1 bulk-only] poll 287: mass 1.9828 / 6.4674 g (4.4846 g to go), 100 rpm, 3.7 mg/s, elapsed 113.9 s
+[phase 1 bulk-only] poll 288: mass 1.9841 / 6.4674 g (4.4833 g to go), 100 rpm, 3.6 mg/s, elapsed 114.3 s
+[phase 1 bulk-only] poll 289: mass 1.9853 / 6.4674 g (4.4821 g to go), 100 rpm, 3.5 mg/s, elapsed 114.7 s
+[phase 1 bulk-only] poll 290: mass 1.9865 / 6.4674 g (4.4809 g to go), 100 rpm, 3.3 mg/s, elapsed 115.0 s
+[phase 1 bulk-only] poll 291: mass 1.9876 / 6.4674 g (4.4798 g to go), 100 rpm, 3.2 mg/s, elapsed 115.4 s
+[phase 1 bulk-only] poll 292: mass 1.9887 / 6.4674 g (4.4787 g to go), 100 rpm, 3.1 mg/s, elapsed 115.8 s
+[phase 1 bulk-only] poll 293: mass 1.9897 / 6.4674 g (4.4777 g to go), 100 rpm, 2.9 mg/s, elapsed 116.2 s
+[phase 1 bulk-only] poll 294: mass 1.9908 / 6.4674 g (4.4766 g to go), 100 rpm, 2.9 mg/s, elapsed 116.6 s
+[phase 1 bulk-only] poll 295: mass 1.9921 / 6.4674 g (4.4753 g to go), 100 rpm, 2.9 mg/s, elapsed 116.9 s
+[phase 1 bulk-only] poll 296: mass 1.9934 / 6.4674 g (4.4740 g to go), 100 rpm, 3.0 mg/s, elapsed 117.3 s
+[phase 1 bulk-only] poll 297: mass 1.9949 / 6.4674 g (4.4725 g to go), 100 rpm, 3.2 mg/s, elapsed 117.7 s
+[phase 1 bulk-only] poll 298: mass 1.9964 / 6.4674 g (4.4710 g to go), 100 rpm, 3.5 mg/s, elapsed 118.1 s
+[phase 1 bulk-only] poll 299: mass 1.9975 / 6.4674 g (4.4699 g to go), 100 rpm, 3.7 mg/s, elapsed 118.4 s
+[phase 1 bulk-only] poll 300: mass 1.9990 / 6.4674 g (4.4684 g to go), 100 rpm, 3.8 mg/s, elapsed 118.8 s
+[phase 1 bulk-only] poll 301: mass 2.0006 / 6.4674 g (4.4668 g to go), 100 rpm, 3.9 mg/s, elapsed 119.1 s
+[phase 1 bulk-only] poll 302: mass 2.0018 / 6.4674 g (4.4656 g to go), 100 rpm, 4.0 mg/s, elapsed 119.4 s
+[phase 1 bulk-only] poll 303: mass 2.0036 / 6.4674 g (4.4638 g to go), 100 rpm, 4.2 mg/s, elapsed 119.8 s
+[phase 1 bulk-only] poll 304: mass 2.0055 / 6.4674 g (4.4619 g to go), 100 rpm, 4.4 mg/s, elapsed 120.2 s
+[phase 1 bulk-only] poll 305: mass 2.0075 / 6.4674 g (4.4599 g to go), 100 rpm, 4.7 mg/s, elapsed 120.6 s
+[phase 1 bulk-only] poll 306: mass 2.0093 / 6.4674 g (4.4581 g to go), 100 rpm, 4.8 mg/s, elapsed 120.9 s
+[phase 1 bulk-only] poll 307: mass 2.0110 / 6.4674 g (4.4564 g to go), 100 rpm, 4.9 mg/s, elapsed 121.3 s
+[phase 1 bulk-only] poll 308: mass 2.0126 / 6.4674 g (4.4548 g to go), 100 rpm, 4.7 mg/s, elapsed 121.7 s
+[phase 1 bulk-only] poll 309: mass 2.0140 / 6.4674 g (4.4534 g to go), 100 rpm, 4.4 mg/s, elapsed 122.1 s
+[phase 1 bulk-only] poll 310: mass 2.0154 / 6.4674 g (4.4520 g to go), 100 rpm, 4.1 mg/s, elapsed 122.5 s
+[phase 1 bulk-only] poll 311: mass 2.0169 / 6.4674 g (4.4505 g to go), 100 rpm, 3.9 mg/s, elapsed 122.9 s
+[phase 1 bulk-only] poll 312: mass 2.0184 / 6.4674 g (4.4490 g to go), 100 rpm, 3.8 mg/s, elapsed 123.2 s
+[phase 1 bulk-only] poll 313: mass 2.0199 / 6.4674 g (4.4475 g to go), 100 rpm, 3.8 mg/s, elapsed 123.6 s
+[phase 1 bulk-only] poll 314: mass 2.0215 / 6.4674 g (4.4459 g to go), 100 rpm, 3.9 mg/s, elapsed 124.0 s
+[phase 1 bulk-only] poll 315: mass 2.0230 / 6.4674 g (4.4444 g to go), 100 rpm, 4.0 mg/s, elapsed 124.4 s
+[phase 1 bulk-only] poll 316: mass 2.0245 / 6.4674 g (4.4429 g to go), 100 rpm, 4.0 mg/s, elapsed 124.8 s
+[phase 1 bulk-only] poll 317: mass 2.0259 / 6.4674 g (4.4415 g to go), 100 rpm, 3.9 mg/s, elapsed 125.2 s
+[phase 1 bulk-only] poll 318: mass 2.0273 / 6.4674 g (4.4401 g to go), 100 rpm, 3.9 mg/s, elapsed 125.5 s
+[phase 1 bulk-only] poll 319: mass 2.0287 / 6.4674 g (4.4387 g to go), 100 rpm, 3.7 mg/s, elapsed 125.9 s
+[phase 1 bulk-only] poll 320: mass 2.0300 / 6.4674 g (4.4374 g to go), 100 rpm, 3.7 mg/s, elapsed 126.3 s
+[phase 1 bulk-only] poll 321: mass 2.0315 / 6.4674 g (4.4359 g to go), 100 rpm, 3.6 mg/s, elapsed 126.7 s
+[phase 1 bulk-only] poll 322: mass 2.0336 / 6.4674 g (4.4338 g to go), 100 rpm, 3.8 mg/s, elapsed 127.2 s
+[phase 1 bulk-only] poll 323: mass 2.0348 / 6.4674 g (4.4326 g to go), 100 rpm, 3.9 mg/s, elapsed 127.5 s
+[phase 1 bulk-only] poll 324: mass 2.0366 / 6.4674 g (4.4308 g to go), 100 rpm, 4.2 mg/s, elapsed 127.8 s
+[phase 1 bulk-only] poll 325: mass 2.0384 / 6.4674 g (4.4290 g to go), 100 rpm, 4.4 mg/s, elapsed 128.2 s
+[phase 1 bulk-only] poll 326: mass 2.0400 / 6.4674 g (4.4274 g to go), 100 rpm, 4.5 mg/s, elapsed 128.6 s
+[phase 1 bulk-only] poll 327: mass 2.0417 / 6.4674 g (4.4257 g to go), 100 rpm, 4.5 mg/s, elapsed 129.0 s
+[phase 1 bulk-only] poll 328: mass 2.0432 / 6.4674 g (4.4242 g to go), 100 rpm, 4.4 mg/s, elapsed 129.4 s
+[phase 1 bulk-only] poll 329: mass 2.0446 / 6.4674 g (4.4228 g to go), 100 rpm, 4.2 mg/s, elapsed 129.7 s
+[phase 1 bulk-only] poll 330: mass 2.0458 / 6.4674 g (4.4216 g to go), 100 rpm, 3.9 mg/s, elapsed 130.1 s
+[phase 1 bulk-only] poll 331: mass 2.0470 / 6.4674 g (4.4204 g to go), 100 rpm, 3.6 mg/s, elapsed 130.5 s
+[phase 1 bulk-only] poll 332: mass 2.0480 / 6.4674 g (4.4194 g to go), 100 rpm, 3.3 mg/s, elapsed 130.9 s
+[phase 1 bulk-only] poll 333: mass 2.0491 / 6.4674 g (4.4183 g to go), 100 rpm, 3.1 mg/s, elapsed 131.3 s
+[phase 1 bulk-only] poll 334: mass 2.0501 / 6.4674 g (4.4173 g to go), 100 rpm, 2.9 mg/s, elapsed 131.7 s
+[phase 1 bulk-only] poll 335: mass 2.0512 / 6.4674 g (4.4162 g to go), 100 rpm, 2.8 mg/s, elapsed 132.0 s
+[phase 1 bulk-only] poll 336: mass 2.0523 / 6.4674 g (4.4151 g to go), 100 rpm, 2.8 mg/s, elapsed 132.4 s
+[phase 1 bulk-only] poll 337: mass 2.0535 / 6.4674 g (4.4139 g to go), 100 rpm, 2.9 mg/s, elapsed 132.8 s
+[phase 1 bulk-only] poll 338: mass 2.0548 / 6.4674 g (4.4126 g to go), 100 rpm, 3.0 mg/s, elapsed 133.2 s
+[phase 1 bulk-only] poll 339: mass 2.0560 / 6.4674 g (4.4114 g to go), 100 rpm, 3.1 mg/s, elapsed 133.6 s
+[phase 1 bulk-only] poll 340: mass 2.0573 / 6.4674 g (4.4101 g to go), 100 rpm, 3.2 mg/s, elapsed 134.0 s
+[phase 1 bulk-only] poll 341: mass 2.0586 / 6.4674 g (4.4088 g to go), 100 rpm, 3.3 mg/s, elapsed 134.3 s
+[phase 1 bulk-only] poll 342: mass 2.0599 / 6.4674 g (4.4075 g to go), 100 rpm, 3.3 mg/s, elapsed 134.7 s
+[phase 1 bulk-only] poll 343: mass 2.0612 / 6.4674 g (4.4062 g to go), 100 rpm, 3.4 mg/s, elapsed 135.1 s
+[phase 1 bulk-only] poll 344: mass 2.0625 / 6.4674 g (4.4049 g to go), 100 rpm, 3.4 mg/s, elapsed 135.5 s
+[phase 1 bulk-only] poll 345: mass 2.0637 / 6.4674 g (4.4037 g to go), 100 rpm, 3.3 mg/s, elapsed 135.9 s
+[phase 1 bulk-only] poll 346: mass 2.0648 / 6.4674 g (4.4026 g to go), 100 rpm, 3.3 mg/s, elapsed 136.3 s
+[phase 1 bulk-only] poll 347: mass 2.0660 / 6.4674 g (4.4014 g to go), 100 rpm, 3.2 mg/s, elapsed 136.6 s
+[phase 1 bulk-only] poll 348: mass 2.0672 / 6.4674 g (4.4002 g to go), 100 rpm, 3.1 mg/s, elapsed 137.0 s
+[phase 1 bulk-only] poll 349: mass 2.0685 / 6.4674 g (4.3989 g to go), 100 rpm, 3.1 mg/s, elapsed 137.4 s
+[phase 1 bulk-only] poll 350: mass 2.0698 / 6.4674 g (4.3976 g to go), 100 rpm, 3.2 mg/s, elapsed 137.8 s
+[phase 1 bulk-only] poll 351: mass 2.0712 / 6.4674 g (4.3962 g to go), 100 rpm, 3.3 mg/s, elapsed 138.2 s
+[phase 1 bulk-only] poll 352: mass 2.0726 / 6.4674 g (4.3948 g to go), 100 rpm, 3.5 mg/s, elapsed 138.5 s
+[phase 1 bulk-only] poll 353: mass 2.0739 / 6.4674 g (4.3935 g to go), 100 rpm, 3.5 mg/s, elapsed 139.0 s
+[phase 1 bulk-only] poll 354: mass 2.0757 / 6.4674 g (4.3917 g to go), 100 rpm, 3.6 mg/s, elapsed 139.4 s
+[phase 1 bulk-only] poll 355: mass 2.0770 / 6.4674 g (4.3904 g to go), 100 rpm, 3.6 mg/s, elapsed 139.8 s
+[phase 1 bulk-only] poll 356: mass 2.0785 / 6.4674 g (4.3889 g to go), 100 rpm, 3.6 mg/s, elapsed 140.2 s
+[phase 1 bulk-only] poll 357: mass 2.0799 / 6.4674 g (4.3875 g to go), 100 rpm, 3.7 mg/s, elapsed 140.6 s
+[phase 1 bulk-only] poll 358: mass 2.0813 / 6.4674 g (4.3861 g to go), 100 rpm, 3.7 mg/s, elapsed 140.9 s
+[phase 1 bulk-only] poll 359: mass 2.0828 / 6.4674 g (4.3846 g to go), 100 rpm, 3.7 mg/s, elapsed 141.3 s
+[phase 1 bulk-only] poll 360: mass 2.0845 / 6.4674 g (4.3829 g to go), 100 rpm, 3.9 mg/s, elapsed 141.7 s
+[phase 1 bulk-only] poll 361: mass 2.0863 / 6.4674 g (4.3811 g to go), 100 rpm, 4.1 mg/s, elapsed 142.1 s
+[phase 1 bulk-only] poll 362: mass 2.0880 / 6.4674 g (4.3794 g to go), 100 rpm, 4.3 mg/s, elapsed 142.5 s
+[phase 1 bulk-only] poll 363: mass 2.0899 / 6.4674 g (4.3775 g to go), 100 rpm, 4.5 mg/s, elapsed 142.9 s
+[phase 1 bulk-only] poll 364: mass 2.0915 / 6.4674 g (4.3759 g to go), 100 rpm, 4.6 mg/s, elapsed 143.2 s
+[phase 1 bulk-only] poll 365: mass 2.0931 / 6.4674 g (4.3743 g to go), 100 rpm, 4.5 mg/s, elapsed 143.6 s
+[phase 1 bulk-only] poll 366: mass 2.0945 / 6.4674 g (4.3729 g to go), 100 rpm, 4.3 mg/s, elapsed 144.0 s
+[phase 1 bulk-only] poll 367: mass 2.0958 / 6.4674 g (4.3716 g to go), 100 rpm, 4.1 mg/s, elapsed 144.4 s
+[phase 1 bulk-only] poll 368: mass 2.0971 / 6.4674 g (4.3703 g to go), 100 rpm, 3.8 mg/s, elapsed 144.8 s
+[phase 1 bulk-only] poll 369: mass 2.0984 / 6.4674 g (4.3690 g to go), 100 rpm, 3.6 mg/s, elapsed 145.2 s
+[phase 1 bulk-only] poll 370: mass 2.1001 / 6.4674 g (4.3673 g to go), 100 rpm, 3.4 mg/s, elapsed 145.6 s
+[phase 1 bulk-only] poll 371: mass 2.1015 / 6.4674 g (4.3659 g to go), 100 rpm, 3.5 mg/s, elapsed 146.0 s
+[phase 1 bulk-only] poll 372: mass 2.1030 / 6.4674 g (4.3644 g to go), 100 rpm, 3.6 mg/s, elapsed 146.4 s
+[phase 1 bulk-only] poll 373: mass 2.1045 / 6.4674 g (4.3629 g to go), 100 rpm, 3.8 mg/s, elapsed 146.8 s
+[phase 1 bulk-only] poll 374: mass 2.1060 / 6.4674 g (4.3614 g to go), 100 rpm, 3.8 mg/s, elapsed 147.2 s
+[phase 1 bulk-only] poll 375: mass 2.1074 / 6.4674 g (4.3600 g to go), 100 rpm, 3.9 mg/s, elapsed 147.5 s
+[phase 1 bulk-only] poll 376: mass 2.1088 / 6.4674 g (4.3586 g to go), 100 rpm, 3.8 mg/s, elapsed 147.9 s
+[phase 1 bulk-only] poll 377: mass 2.1101 / 6.4674 g (4.3573 g to go), 100 rpm, 3.7 mg/s, elapsed 148.3 s
+[phase 1 bulk-only] poll 378: mass 2.1114 / 6.4674 g (4.3560 g to go), 100 rpm, 3.6 mg/s, elapsed 148.7 s
+[phase 1 bulk-only] poll 379: mass 2.1127 / 6.4674 g (4.3547 g to go), 100 rpm, 3.5 mg/s, elapsed 149.1 s
+[phase 1 bulk-only] poll 380: mass 2.1136 / 6.4674 g (4.3538 g to go), 100 rpm, 3.4 mg/s, elapsed 149.4 s
+[phase 1 bulk-only] poll 381: mass 2.1149 / 6.4674 g (4.3525 g to go), 100 rpm, 3.4 mg/s, elapsed 149.7 s
+[phase 1 bulk-only] poll 382: mass 2.1161 / 6.4674 g (4.3513 g to go), 100 rpm, 3.3 mg/s, elapsed 150.1 s
+[phase 1 bulk-only] poll 383: mass 2.1170 / 6.4674 g (4.3504 g to go), 100 rpm, 3.3 mg/s, elapsed 150.4 s
+[phase 1 bulk-only] poll 384: mass 2.1182 / 6.4674 g (4.3492 g to go), 100 rpm, 3.2 mg/s, elapsed 150.8 s
+[phase 1 bulk-only] poll 385: mass 2.1195 / 6.4674 g (4.3479 g to go), 100 rpm, 3.2 mg/s, elapsed 151.2 s
+[phase 1 bulk-only] poll 386: mass 2.1207 / 6.4674 g (4.3467 g to go), 100 rpm, 3.2 mg/s, elapsed 151.6 s
+[phase 1 bulk-only] poll 387: mass 2.1220 / 6.4674 g (4.3454 g to go), 100 rpm, 3.2 mg/s, elapsed 151.9 s
+[phase 1 bulk-only] poll 388: mass 2.1234 / 6.4674 g (4.3440 g to go), 100 rpm, 3.3 mg/s, elapsed 152.3 s
+[phase 1 bulk-only] poll 389: mass 2.1247 / 6.4674 g (4.3427 g to go), 100 rpm, 3.4 mg/s, elapsed 152.7 s
+[phase 1 bulk-only] poll 390: mass 2.1260 / 6.4674 g (4.3414 g to go), 100 rpm, 3.4 mg/s, elapsed 153.1 s
+[phase 1 bulk-only] poll 391: mass 2.1274 / 6.4674 g (4.3400 g to go), 100 rpm, 3.5 mg/s, elapsed 153.5 s
+[phase 1 bulk-only] poll 392: mass 2.1287 / 6.4674 g (4.3387 g to go), 100 rpm, 3.5 mg/s, elapsed 153.9 s
+[phase 1 bulk-only] poll 393: mass 2.1299 / 6.4674 g (4.3375 g to go), 100 rpm, 3.4 mg/s, elapsed 154.2 s
+[phase 1 bulk-only] poll 394: mass 2.1310 / 6.4674 g (4.3364 g to go), 100 rpm, 3.3 mg/s, elapsed 154.6 s
+[phase 1 bulk-only] poll 395: mass 2.1321 / 6.4674 g (4.3353 g to go), 100 rpm, 3.2 mg/s, elapsed 155.0 s
+[phase 1 bulk-only] poll 396: mass 2.1331 / 6.4674 g (4.3343 g to go), 100 rpm, 3.0 mg/s, elapsed 155.4 s
+[phase 1 bulk-only] poll 397: mass 2.1341 / 6.4674 g (4.3333 g to go), 100 rpm, 2.8 mg/s, elapsed 155.8 s
+[phase 1 bulk-only] poll 398: mass 2.1351 / 6.4674 g (4.3323 g to go), 100 rpm, 2.7 mg/s, elapsed 156.2 s
+[phase 1 bulk-only] poll 399: mass 2.1361 / 6.4674 g (4.3313 g to go), 100 rpm, 2.7 mg/s, elapsed 156.5 s
+[phase 1 bulk-only] poll 400: mass 2.1371 / 6.4674 g (4.3303 g to go), 100 rpm, 2.6 mg/s, elapsed 156.9 s
+[phase 1 bulk-only] poll 401: mass 2.1381 / 6.4674 g (4.3293 g to go), 100 rpm, 2.6 mg/s, elapsed 157.3 s
+[phase 1 bulk-only] poll 402: mass 2.1391 / 6.4674 g (4.3283 g to go), 100 rpm, 2.6 mg/s, elapsed 157.7 s
+[phase 1 bulk-only] poll 403: mass 2.1399 / 6.4674 g (4.3275 g to go), 100 rpm, 2.6 mg/s, elapsed 158.0 s
+[phase 1 bulk-only] poll 404: mass 2.1409 / 6.4674 g (4.3265 g to go), 100 rpm, 2.6 mg/s, elapsed 158.4 s
+[phase 1 bulk-only] poll 405: mass 2.1419 / 6.4674 g (4.3255 g to go), 100 rpm, 2.7 mg/s, elapsed 158.7 s
+[phase 1 bulk-only] poll 406: mass 2.1429 / 6.4674 g (4.3245 g to go), 100 rpm, 2.6 mg/s, elapsed 159.1 s
+[phase 1 bulk-only] poll 407: mass 2.1439 / 6.4674 g (4.3235 g to go), 100 rpm, 2.6 mg/s, elapsed 159.5 s
+[phase 1 bulk-only] poll 408: mass 2.1448 / 6.4674 g (4.3226 g to go), 100 rpm, 2.6 mg/s, elapsed 159.9 s
+[phase 1 bulk-only] poll 409: mass 2.1458 / 6.4674 g (4.3216 g to go), 100 rpm, 2.6 mg/s, elapsed 160.3 s
+[phase 1 bulk-only] poll 410: mass 2.1468 / 6.4674 g (4.3206 g to go), 100 rpm, 2.5 mg/s, elapsed 160.6 s
+[phase 1 bulk-only] poll 411: mass 2.1478 / 6.4674 g (4.3196 g to go), 100 rpm, 2.6 mg/s, elapsed 161.0 s
+[phase 1 bulk-only] poll 412: mass 2.1488 / 6.4674 g (4.3186 g to go), 100 rpm, 2.6 mg/s, elapsed 161.4 s
+[phase 1 bulk-only] poll 413: mass 2.1498 / 6.4674 g (4.3176 g to go), 100 rpm, 2.6 mg/s, elapsed 161.8 s
+[phase 1 bulk-only] poll 414: mass 2.1508 / 6.4674 g (4.3166 g to go), 100 rpm, 2.6 mg/s, elapsed 162.2 s
+[phase 1 bulk-only] poll 415: mass 2.1519 / 6.4674 g (4.3155 g to go), 100 rpm, 2.7 mg/s, elapsed 162.6 s
+[phase 1 bulk-only] poll 416: mass 2.1530 / 6.4674 g (4.3144 g to go), 100 rpm, 2.7 mg/s, elapsed 162.9 s
+[phase 1 bulk-only] poll 417: mass 2.1540 / 6.4674 g (4.3134 g to go), 100 rpm, 2.7 mg/s, elapsed 163.3 s
+[phase 1 bulk-only] poll 418: mass 2.1551 / 6.4674 g (4.3123 g to go), 100 rpm, 2.8 mg/s, elapsed 163.7 s
+[phase 1 bulk-only] poll 419: mass 2.1561 / 6.4674 g (4.3113 g to go), 100 rpm, 2.8 mg/s, elapsed 164.1 s
+[phase 1 bulk-only] poll 420: mass 2.1570 / 6.4674 g (4.3104 g to go), 100 rpm, 2.7 mg/s, elapsed 164.5 s
+[phase 1 bulk-only] poll 421: mass 2.1579 / 6.4674 g (4.3095 g to go), 100 rpm, 2.6 mg/s, elapsed 164.9 s
+[phase 1 bulk-only] poll 422: mass 2.1588 / 6.4674 g (4.3086 g to go), 100 rpm, 2.5 mg/s, elapsed 165.2 s
+[phase 1 bulk-only] poll 423: mass 2.1597 / 6.4674 g (4.3077 g to go), 100 rpm, 2.4 mg/s, elapsed 165.6 s
+[phase 1 bulk-only] poll 424: mass 2.1607 / 6.4674 g (4.3067 g to go), 100 rpm, 2.4 mg/s, elapsed 166.0 s
+[phase 1 bulk-only] poll 425: mass 2.1616 / 6.4674 g (4.3058 g to go), 100 rpm, 2.4 mg/s, elapsed 166.4 s
+[phase 1 bulk-only] poll 426: mass 2.1625 / 6.4674 g (4.3049 g to go), 100 rpm, 2.4 mg/s, elapsed 166.8 s
+[phase 1 bulk-only] poll 427: mass 2.1633 / 6.4674 g (4.3041 g to go), 100 rpm, 2.4 mg/s, elapsed 167.1 s
+[phase 1 bulk-only] poll 428: mass 2.1639 / 6.4674 g (4.3035 g to go), 100 rpm, 2.2 mg/s, elapsed 167.5 s
+[phase 1 bulk-only] poll 429: mass 2.1645 / 6.4674 g (4.3029 g to go), 100 rpm, 2.0 mg/s, elapsed 167.9 s
+[phase 1 bulk-only] poll 430: mass 2.1650 / 6.4674 g (4.3024 g to go), 100 rpm, 1.8 mg/s, elapsed 168.3 s
+[phase 1 bulk-only] poll 431: mass 2.1654 / 6.4674 g (4.3020 g to go), 100 rpm, 1.5 mg/s, elapsed 168.7 s
+[phase 1 bulk-only] poll 432: mass 2.1657 / 6.4674 g (4.3017 g to go), 100 rpm, 1.3 mg/s, elapsed 169.1 s
+[phase 1 bulk-only] poll 433: mass 2.1661 / 6.4674 g (4.3013 g to go), 100 rpm, 1.1 mg/s, elapsed 169.5 s
+[phase 1 bulk-only] poll 434: mass 2.1665 / 6.4674 g (4.3009 g to go), 100 rpm, 1.0 mg/s, elapsed 169.8 s
+[phase 1 bulk-only] poll 435: mass 2.1669 / 6.4674 g (4.3005 g to go), 100 rpm, 1.0 mg/s, elapsed 170.2 s
+[phase 1 bulk-only] poll 436: mass 2.1672 / 6.4674 g (4.3002 g to go), 100 rpm, 1.0 mg/s, elapsed 170.6 s
+[phase 1 bulk-only] poll 437: mass 2.1674 / 6.4674 g (4.3000 g to go), 100 rpm, 0.9 mg/s, elapsed 170.9 s
+[phase 1 bulk-only] poll 438: mass 2.1677 / 6.4674 g (4.2997 g to go), 100 rpm, 0.9 mg/s, elapsed 171.3 s
+[phase 1 bulk-only] poll 439: mass 2.1680 / 6.4674 g (4.2994 g to go), 100 rpm, 0.8 mg/s, elapsed 171.6 s
+[phase 1 bulk-only] poll 440: mass 2.1682 / 6.4674 g (4.2992 g to go), 100 rpm, 0.8 mg/s, elapsed 171.9 s
+[phase 1 bulk-only] poll 441: mass 2.1685 / 6.4674 g (4.2989 g to go), 100 rpm, 0.8 mg/s, elapsed 172.3 s
+[phase 1 bulk-only] poll 442: mass 2.1688 / 6.4674 g (4.2986 g to go), 100 rpm, 0.8 mg/s, elapsed 172.7 s
+[phase 1 bulk-only] poll 443: mass 2.1691 / 6.4674 g (4.2983 g to go), 100 rpm, 0.8 mg/s, elapsed 173.1 s
+[phase 1 bulk-only] poll 444: mass 2.1693 / 6.4674 g (4.2981 g to go), 100 rpm, 0.7 mg/s, elapsed 173.5 s
+[phase 1 bulk-only] poll 445: mass 2.1696 / 6.4674 g (4.2978 g to go), 100 rpm, 0.7 mg/s, elapsed 173.8 s
+[phase 1 bulk-only] poll 446: mass 2.1699 / 6.4674 g (4.2975 g to go), 100 rpm, 0.7 mg/s, elapsed 174.2 s
+[phase 1 bulk-only] poll 447: mass 2.1703 / 6.4674 g (4.2971 g to go), 100 rpm, 0.8 mg/s, elapsed 174.6 s
+[phase 1 bulk-only] poll 448: mass 2.1706 / 6.4674 g (4.2968 g to go), 100 rpm, 0.8 mg/s, elapsed 175.0 s
+[phase 1 bulk-only] poll 449: mass 2.1709 / 6.4674 g (4.2965 g to go), 100 rpm, 0.8 mg/s, elapsed 175.4 s
+[phase 1 bulk-only] poll 450: mass 2.1712 / 6.4674 g (4.2962 g to go), 100 rpm, 0.8 mg/s, elapsed 175.8 s
+[phase 1 bulk-only] poll 451: mass 2.1715 / 6.4674 g (4.2959 g to go), 100 rpm, 0.7 mg/s, elapsed 176.2 s
+[phase 1 bulk-only] poll 452: mass 2.1717 / 6.4674 g (4.2957 g to go), 100 rpm, 0.7 mg/s, elapsed 176.6 s
+[phase 1 bulk-only] poll 453: mass 2.1720 / 6.4674 g (4.2954 g to go), 100 rpm, 0.7 mg/s, elapsed 177.0 s
+[phase 1 bulk-only] poll 454: mass 2.1723 / 6.4674 g (4.2951 g to go), 100 rpm, 0.7 mg/s, elapsed 177.4 s
+[phase 1 bulk-only] poll 455: mass 2.1726 / 6.4674 g (4.2948 g to go), 100 rpm, 0.7 mg/s, elapsed 177.8 s
+[phase 1 bulk-only] poll 456: mass 2.1730 / 6.4674 g (4.2944 g to go), 100 rpm, 0.8 mg/s, elapsed 178.1 s
+[phase 1 bulk-only] poll 457: mass 2.1732 / 6.4674 g (4.2942 g to go), 100 rpm, 0.8 mg/s, elapsed 178.4 s
+[phase 1 bulk-only] poll 458: mass 2.1735 / 6.4674 g (4.2939 g to go), 100 rpm, 0.8 mg/s, elapsed 178.8 s
+[phase 1 bulk-only] poll 459: mass 2.1738 / 6.4674 g (4.2936 g to go), 100 rpm, 0.8 mg/s, elapsed 179.2 s
+[phase 1 bulk-only] poll 460: mass 2.1740 / 6.4674 g (4.2934 g to go), 100 rpm, 0.8 mg/s, elapsed 179.6 s
+[phase 1 bulk-only] poll 461: mass 2.1742 / 6.4674 g (4.2932 g to go), 100 rpm, 0.7 mg/s, elapsed 179.9 s
+[phase 1 bulk-only] poll 462: mass 2.1745 / 6.4674 g (4.2929 g to go), 100 rpm, 0.7 mg/s, elapsed 180.3 s
+[phase 1 bulk-only] poll 463: mass 2.1749 / 6.4674 g (4.2925 g to go), 100 rpm, 0.7 mg/s, elapsed 180.6 s
+[phase 1 bulk-only] poll 464: mass 2.1753 / 6.4674 g (4.2921 g to go), 100 rpm, 0.8 mg/s, elapsed 181.0 s
+[phase 1 bulk-only] poll 465: mass 2.1758 / 6.4674 g (4.2916 g to go), 100 rpm, 1.0 mg/s, elapsed 181.4 s
+[phase 1 bulk-only] poll 466: mass 2.1764 / 6.4674 g (4.2910 g to go), 100 rpm, 1.1 mg/s, elapsed 181.8 s
+[phase 1 bulk-only] poll 467: mass 2.1769 / 6.4674 g (4.2905 g to go), 100 rpm, 1.3 mg/s, elapsed 182.2 s
+[phase 1 bulk-only] poll 468: mass 2.1775 / 6.4674 g (4.2899 g to go), 100 rpm, 1.4 mg/s, elapsed 182.5 s
+[phase 1 bulk-only] poll 469: mass 2.1780 / 6.4674 g (4.2894 g to go), 100 rpm, 1.4 mg/s, elapsed 182.9 s
+[phase 1 bulk-only] poll 470: mass 2.1786 / 6.4674 g (4.2888 g to go), 100 rpm, 1.4 mg/s, elapsed 183.3 s
+[phase 1 bulk-only] poll 471: mass 2.1791 / 6.4674 g (4.2883 g to go), 100 rpm, 1.4 mg/s, elapsed 183.7 s
+[phase 1 bulk-only] poll 472: mass 2.1795 / 6.4674 g (4.2879 g to go), 100 rpm, 1.4 mg/s, elapsed 184.1 s
+[phase 1 bulk-only] poll 473: mass 2.1798 / 6.4674 g (4.2876 g to go), 100 rpm, 1.3 mg/s, elapsed 184.4 s
+[phase 1 bulk-only] poll 474: mass 2.1801 / 6.4674 g (4.2873 g to go), 100 rpm, 1.2 mg/s, elapsed 184.7 s
+[phase 1 bulk-only] poll 475: mass 2.1804 / 6.4674 g (4.2870 g to go), 100 rpm, 1.0 mg/s, elapsed 185.1 s
+[phase 1 bulk-only] poll 476: mass 2.1807 / 6.4674 g (4.2867 g to go), 100 rpm, 0.9 mg/s, elapsed 185.5 s
+[phase 1 bulk-only] poll 477: mass 2.1811 / 6.4674 g (4.2863 g to go), 100 rpm, 0.8 mg/s, elapsed 185.9 s
+[phase 1 bulk-only] poll 478: mass 2.1814 / 6.4674 g (4.2860 g to go), 100 rpm, 0.8 mg/s, elapsed 186.3 s
+[phase 1 bulk-only] poll 479: mass 2.1817 / 6.4674 g (4.2857 g to go), 100 rpm, 0.9 mg/s, elapsed 186.7 s
+[phase 1 bulk-only] poll 480: mass 2.1821 / 6.4674 g (4.2853 g to go), 100 rpm, 0.9 mg/s, elapsed 187.0 s
+[phase 1 bulk-only] poll 481: mass 2.1823 / 6.4674 g (4.2851 g to go), 100 rpm, 0.8 mg/s, elapsed 187.5 s
+[phase 1 bulk-only] poll 482: mass 2.1826 / 6.4674 g (4.2848 g to go), 100 rpm, 0.8 mg/s, elapsed 187.9 s
+[phase 1 bulk-only] poll 483: mass 2.1828 / 6.4674 g (4.2846 g to go), 100 rpm, 0.7 mg/s, elapsed 188.3 s
+[phase 1 bulk-only] poll 484: mass 2.1831 / 6.4674 g (4.2843 g to go), 100 rpm, 0.7 mg/s, elapsed 188.7 s
+[phase 1 bulk-only] poll 485: mass 2.1832 / 6.4674 g (4.2842 g to go), 100 rpm, 0.6 mg/s, elapsed 188.9 s
+[phase 1 bulk-only] poll 486: mass 2.1835 / 6.4674 g (4.2839 g to go), 100 rpm, 0.6 mg/s, elapsed 189.3 s
+[phase 1 bulk-only] poll 487: mass 2.1837 / 6.4674 g (4.2837 g to go), 100 rpm, 0.6 mg/s, elapsed 189.7 s
+[phase 1 bulk-only] poll 488: mass 2.1840 / 6.4674 g (4.2834 g to go), 100 rpm, 0.6 mg/s, elapsed 190.1 s
+[phase 1 bulk-only] poll 489: mass 2.1843 / 6.4674 g (4.2831 g to go), 100 rpm, 0.7 mg/s, elapsed 190.5 s
+[phase 1 bulk-only] poll 490: mass 2.1846 / 6.4674 g (4.2828 g to go), 100 rpm, 0.7 mg/s, elapsed 190.9 s
+[phase 1 bulk-only] poll 491: mass 2.1849 / 6.4674 g (4.2825 g to go), 100 rpm, 0.7 mg/s, elapsed 191.2 s
+[phase 1 bulk-only] poll 492: mass 2.1852 / 6.4674 g (4.2822 g to go), 100 rpm, 0.8 mg/s, elapsed 191.6 s
+[phase 1 bulk-only] poll 493: mass 2.1856 / 6.4674 g (4.2818 g to go), 100 rpm, 0.8 mg/s, elapsed 192.0 s
+[phase 1 bulk-only] poll 494: mass 2.1860 / 6.4674 g (4.2814 g to go), 100 rpm, 0.9 mg/s, elapsed 192.4 s
+[phase 1 bulk-only] poll 495: mass 2.1863 / 6.4674 g (4.2811 g to go), 100 rpm, 0.9 mg/s, elapsed 192.8 s
+[phase 1 bulk-only] poll 496: mass 2.1867 / 6.4674 g (4.2807 g to go), 100 rpm, 0.9 mg/s, elapsed 193.2 s
+[phase 1 bulk-only] poll 497: mass 2.1871 / 6.4674 g (4.2803 g to go), 100 rpm, 1.0 mg/s, elapsed 193.6 s
+[phase 1 bulk-only] poll 498: mass 2.1874 / 6.4674 g (4.2800 g to go), 100 rpm, 0.9 mg/s, elapsed 193.9 s
+[phase 1 bulk-only] poll 499: mass 2.1877 / 6.4674 g (4.2797 g to go), 100 rpm, 0.9 mg/s, elapsed 194.3 s
+[phase 1 bulk-only] poll 500: mass 2.1880 / 6.4674 g (4.2794 g to go), 100 rpm, 0.9 mg/s, elapsed 194.7 s
+[phase 1 bulk-only] poll 501: mass 2.1883 / 6.4674 g (4.2791 g to go), 100 rpm, 0.8 mg/s, elapsed 195.1 s
+[phase 1 bulk-only] poll 502: mass 2.1884 / 6.4674 g (4.2790 g to go), 100 rpm, 0.7 mg/s, elapsed 195.4 s
+[phase 1 bulk-only] poll 503: mass 2.1887 / 6.4674 g (4.2787 g to go), 100 rpm, 0.7 mg/s, elapsed 195.7 s
+[phase 1 bulk-only] poll 504: mass 2.1889 / 6.4674 g (4.2785 g to go), 100 rpm, 0.7 mg/s, elapsed 196.1 s
+[phase 1 bulk-only] poll 505: mass 2.1891 / 6.4674 g (4.2783 g to go), 100 rpm, 0.6 mg/s, elapsed 196.4 s
+[phase 1 bulk-only] poll 506: mass 2.1894 / 6.4674 g (4.2780 g to go), 100 rpm, 0.6 mg/s, elapsed 196.8 s
+[phase 1 bulk-only] poll 507: mass 2.1896 / 6.4674 g (4.2778 g to go), 100 rpm, 0.7 mg/s, elapsed 197.2 s
+[phase 1 bulk-only] poll 508: mass 2.1897 / 6.4674 g (4.2777 g to go), 100 rpm, 0.6 mg/s, elapsed 197.5 s
+[phase 1 bulk-only] poll 509: mass 2.1899 / 6.4674 g (4.2775 g to go), 100 rpm, 0.6 mg/s, elapsed 197.9 s
+[phase 1 bulk-only] poll 510: mass 2.1901 / 6.4674 g (4.2773 g to go), 100 rpm, 0.5 mg/s, elapsed 198.2 s
+[phase 1 bulk-only] poll 511: mass 2.1903 / 6.4674 g (4.2771 g to go), 100 rpm, 0.5 mg/s, elapsed 198.6 s
+[phase 1 bulk-only] poll 512: mass 2.1905 / 6.4674 g (4.2769 g to go), 100 rpm, 0.5 mg/s, elapsed 199.0 s
+[phase 1 bulk-only] poll 513: mass 2.1908 / 6.4674 g (4.2766 g to go), 100 rpm, 0.6 mg/s, elapsed 199.4 s
+[phase 1 bulk-only] poll 514: mass 2.1911 / 6.4674 g (4.2763 g to go), 100 rpm, 0.6 mg/s, elapsed 199.8 s
+[phase 1 bulk-only] poll 515: mass 2.1914 / 6.4674 g (4.2760 g to go), 100 rpm, 0.7 mg/s, elapsed 200.1 s
+[phase 1 bulk-only] poll 516: mass 2.1916 / 6.4674 g (4.2758 g to go), 100 rpm, 0.7 mg/s, elapsed 200.5 s
+[phase 1 bulk-only] poll 517: mass 2.1919 / 6.4674 g (4.2755 g to go), 100 rpm, 0.7 mg/s, elapsed 200.9 s
+[phase 1 bulk-only] poll 518: mass 2.1922 / 6.4674 g (4.2752 g to go), 100 rpm, 0.7 mg/s, elapsed 201.3 s
+[phase 1 bulk-only] poll 519: mass 2.1925 / 6.4674 g (4.2749 g to go), 100 rpm, 0.7 mg/s, elapsed 201.7 s
+[phase 1 bulk-only] poll 520: mass 2.1927 / 6.4674 g (4.2747 g to go), 100 rpm, 0.7 mg/s, elapsed 202.0 s
+[phase 1 bulk-only] poll 521: mass 2.1930 / 6.4674 g (4.2744 g to go), 100 rpm, 0.8 mg/s, elapsed 202.3 s
+[phase 1 bulk-only] poll 522: mass 2.1934 / 6.4674 g (4.2740 g to go), 100 rpm, 0.8 mg/s, elapsed 202.7 s
+[phase 1 bulk-only] poll 523: mass 2.1937 / 6.4674 g (4.2737 g to go), 100 rpm, 0.8 mg/s, elapsed 203.1 s
+[phase 1 bulk-only] poll 524: mass 2.1940 / 6.4674 g (4.2734 g to go), 100 rpm, 0.8 mg/s, elapsed 203.5 s
+[phase 1 bulk-only] poll 525: mass 2.1943 / 6.4674 g (4.2731 g to go), 100 rpm, 0.8 mg/s, elapsed 203.9 s
+[phase 1 bulk-only] poll 526: mass 2.1946 / 6.4674 g (4.2728 g to go), 100 rpm, 0.8 mg/s, elapsed 204.2 s
+[phase 1 bulk-only] poll 527: mass 2.1948 / 6.4674 g (4.2726 g to go), 100 rpm, 0.7 mg/s, elapsed 204.6 s
+[phase 1 bulk-only] poll 528: mass 2.1951 / 6.4674 g (4.2723 g to go), 100 rpm, 0.7 mg/s, elapsed 205.0 s
+[phase 1 bulk-only] poll 529: mass 2.1954 / 6.4674 g (4.2720 g to go), 100 rpm, 0.7 mg/s, elapsed 205.4 s
+[phase 1 bulk-only] poll 530: mass 2.1957 / 6.4674 g (4.2717 g to go), 100 rpm, 0.7 mg/s, elapsed 205.8 s
+[phase 1 bulk-only] poll 531: mass 2.1959 / 6.4674 g (4.2715 g to go), 100 rpm, 0.7 mg/s, elapsed 206.2 s
+[phase 1 bulk-only] poll 532: mass 2.1962 / 6.4674 g (4.2712 g to go), 100 rpm, 0.8 mg/s, elapsed 206.4 s
+[phase 1 bulk-only] poll 533: mass 2.1965 / 6.4674 g (4.2709 g to go), 100 rpm, 0.8 mg/s, elapsed 206.8 s
+[phase 1 bulk-only] poll 534: mass 2.1969 / 6.4674 g (4.2705 g to go), 100 rpm, 0.8 mg/s, elapsed 207.2 s
+[phase 1 bulk-only] poll 535: mass 2.1973 / 6.4674 g (4.2701 g to go), 100 rpm, 0.9 mg/s, elapsed 207.6 s
+[phase 1 bulk-only] poll 536: mass 2.1976 / 6.4674 g (4.2698 g to go), 100 rpm, 0.9 mg/s, elapsed 208.0 s
+[phase 1 bulk-only] poll 537: mass 2.1979 / 6.4674 g (4.2695 g to go), 100 rpm, 0.9 mg/s, elapsed 208.4 s
+[phase 1 bulk-only] poll 538: mass 2.1982 / 6.4674 g (4.2692 g to go), 100 rpm, 0.9 mg/s, elapsed 208.7 s
+[phase 1 bulk-only] poll 539: mass 2.1985 / 6.4674 g (4.2689 g to go), 100 rpm, 0.8 mg/s, elapsed 209.1 s
+[phase 1 bulk-only] poll 540: mass 2.1988 / 6.4674 g (4.2686 g to go), 100 rpm, 0.8 mg/s, elapsed 209.5 s
+[phase 1 bulk-only] poll 541: mass 2.1991 / 6.4674 g (4.2683 g to go), 100 rpm, 0.8 mg/s, elapsed 209.9 s
+[phase 1 bulk-only] poll 542: mass 2.1995 / 6.4674 g (4.2679 g to go), 100 rpm, 0.8 mg/s, elapsed 210.3 s
+[phase 1 bulk-only] poll 543: mass 2.1999 / 6.4674 g (4.2675 g to go), 100 rpm, 0.9 mg/s, elapsed 210.7 s
+[phase 1 bulk-only] poll 544: mass 2.2004 / 6.4674 g (4.2670 g to go), 100 rpm, 1.0 mg/s, elapsed 211.0 s
+[phase 1 bulk-only] poll 545: mass 2.2010 / 6.4674 g (4.2664 g to go), 100 rpm, 1.1 mg/s, elapsed 211.4 s
+[phase 1 bulk-only] poll 546: mass 2.2015 / 6.4674 g (4.2659 g to go), 100 rpm, 1.3 mg/s, elapsed 211.8 s
+[phase 1 bulk-only] poll 547: mass 2.2020 / 6.4674 g (4.2654 g to go), 100 rpm, 1.3 mg/s, elapsed 212.2 s
+[phase 1 bulk-only] poll 548: mass 2.2024 / 6.4674 g (4.2650 g to go), 100 rpm, 1.3 mg/s, elapsed 212.6 s
+[phase 1 bulk-only] poll 549: mass 2.2028 / 6.4674 g (4.2646 g to go), 100 rpm, 1.3 mg/s, elapsed 213.0 s
+[phase 1 bulk-only] poll 550: mass 2.2030 / 6.4674 g (4.2644 g to go), 100 rpm, 1.1 mg/s, elapsed 213.3 s
+[phase 1 bulk-only] poll 551: mass 2.2033 / 6.4674 g (4.2641 g to go), 100 rpm, 0.9 mg/s, elapsed 213.7 s
+[phase 1 bulk-only] poll 552: mass 2.2035 / 6.4674 g (4.2639 g to go), 100 rpm, 0.8 mg/s, elapsed 214.1 s
+[phase 1 bulk-only] poll 553: mass 2.2037 / 6.4674 g (4.2637 g to go), 100 rpm, 0.7 mg/s, elapsed 214.5 s
+[phase 1 bulk-only] poll 554: mass 2.2040 / 6.4674 g (4.2634 g to go), 100 rpm, 0.6 mg/s, elapsed 214.9 s
+[phase 1 bulk-only] poll 555: mass 2.2043 / 6.4674 g (4.2631 g to go), 100 rpm, 0.7 mg/s, elapsed 215.2 s
+[phase 1 bulk-only] poll 556: mass 2.2046 / 6.4674 g (4.2628 g to go), 100 rpm, 0.7 mg/s, elapsed 215.6 s
+[phase 1 bulk-only] poll 557: mass 2.2049 / 6.4674 g (4.2625 g to go), 100 rpm, 0.7 mg/s, elapsed 216.0 s
+[phase 1 bulk-only] poll 558: mass 2.2053 / 6.4674 g (4.2621 g to go), 100 rpm, 0.8 mg/s, elapsed 216.4 s
+[phase 1 bulk-only] poll 559: mass 2.2057 / 6.4674 g (4.2617 g to go), 100 rpm, 0.9 mg/s, elapsed 216.8 s
+[phase 1 bulk-only] poll 560: mass 2.2061 / 6.4674 g (4.2613 g to go), 100 rpm, 0.9 mg/s, elapsed 217.2 s
+[phase 1 bulk-only] poll 561: mass 2.2065 / 6.4674 g (4.2609 g to go), 100 rpm, 1.0 mg/s, elapsed 217.6 s
+[phase 1 bulk-only] poll 562: mass 2.2070 / 6.4674 g (4.2604 g to go), 100 rpm, 1.1 mg/s, elapsed 217.9 s
+[phase 1 bulk-only] poll 563: mass 2.2075 / 6.4674 g (4.2599 g to go), 100 rpm, 1.1 mg/s, elapsed 218.3 s
+[phase 1 bulk-only] poll 564: mass 2.2080 / 6.4674 g (4.2594 g to go), 100 rpm, 1.2 mg/s, elapsed 218.7 s
+[phase 1 bulk-only] poll 565: mass 2.2086 / 6.4674 g (4.2588 g to go), 100 rpm, 1.3 mg/s, elapsed 219.1 s
+[phase 1 bulk-only] poll 566: mass 2.2092 / 6.4674 g (4.2582 g to go), 100 rpm, 1.4 mg/s, elapsed 219.5 s
+[phase 1 bulk-only] poll 567: mass 2.2097 / 6.4674 g (4.2577 g to go), 100 rpm, 1.4 mg/s, elapsed 219.8 s
+[phase 1 bulk-only] poll 568: mass 2.2103 / 6.4674 g (4.2571 g to go), 100 rpm, 1.5 mg/s, elapsed 220.2 s
+[phase 1 bulk-only] poll 569: mass 2.2110 / 6.4674 g (4.2564 g to go), 100 rpm, 1.5 mg/s, elapsed 220.6 s
+[phase 1 bulk-only] poll 570: mass 2.2118 / 6.4674 g (4.2556 g to go), 100 rpm, 1.6 mg/s, elapsed 221.0 s
+[phase 1 bulk-only] poll 571: mass 2.2127 / 6.4674 g (4.2547 g to go), 100 rpm, 1.8 mg/s, elapsed 221.4 s
+[phase 1 bulk-only] poll 572: mass 2.2138 / 6.4674 g (4.2536 g to go), 100 rpm, 2.1 mg/s, elapsed 221.8 s
+[phase 1 bulk-only] poll 573: mass 2.2149 / 6.4674 g (4.2525 g to go), 100 rpm, 2.4 mg/s, elapsed 222.1 s
+[phase 1 bulk-only] poll 574: mass 2.2158 / 6.4674 g (4.2516 g to go), 100 rpm, 2.6 mg/s, elapsed 222.5 s
+[phase 1 bulk-only] poll 575: mass 2.2166 / 6.4674 g (4.2508 g to go), 100 rpm, 2.6 mg/s, elapsed 222.9 s
+[phase 1 bulk-only] poll 576: mass 2.2171 / 6.4674 g (4.2503 g to go), 100 rpm, 2.3 mg/s, elapsed 223.3 s
+[phase 1 bulk-only] poll 577: mass 2.2175 / 6.4674 g (4.2499 g to go), 100 rpm, 1.9 mg/s, elapsed 223.7 s
+[phase 1 bulk-only] poll 578: mass 2.2178 / 6.4674 g (4.2496 g to go), 100 rpm, 1.4 mg/s, elapsed 224.1 s
+[phase 1 bulk-only] poll 579: mass 2.2181 / 6.4674 g (4.2493 g to go), 100 rpm, 1.1 mg/s, elapsed 224.4 s
+[phase 1 bulk-only] poll 580: mass 2.2185 / 6.4674 g (4.2489 g to go), 100 rpm, 0.9 mg/s, elapsed 224.8 s
+[phase 1 bulk-only] poll 581: mass 2.2191 / 6.4674 g (4.2483 g to go), 100 rpm, 1.0 mg/s, elapsed 225.2 s
+[phase 1 bulk-only] poll 582: mass 2.2197 / 6.4674 g (4.2477 g to go), 100 rpm, 1.2 mg/s, elapsed 225.6 s
+[phase 1 bulk-only] poll 583: mass 2.2202 / 6.4674 g (4.2472 g to go), 100 rpm, 1.3 mg/s, elapsed 226.0 s
+[phase 1 bulk-only] poll 584: mass 2.2207 / 6.4674 g (4.2467 g to go), 100 rpm, 1.4 mg/s, elapsed 226.4 s
+[phase 1 bulk-only] poll 585: mass 2.2210 / 6.4674 g (4.2464 g to go), 100 rpm, 1.3 mg/s, elapsed 226.7 s
+[phase 1 bulk-only] poll 586: mass 2.2213 / 6.4674 g (4.2461 g to go), 100 rpm, 1.1 mg/s, elapsed 227.1 s
+[phase 1 bulk-only] poll 587: mass 2.2217 / 6.4674 g (4.2457 g to go), 100 rpm, 1.0 mg/s, elapsed 227.5 s
+[phase 1 bulk-only] poll 588: mass 2.2222 / 6.4674 g (4.2452 g to go), 100 rpm, 1.0 mg/s, elapsed 227.9 s
+[phase 1 bulk-only] poll 589: mass 2.2226 / 6.4674 g (4.2448 g to go), 100 rpm, 1.0 mg/s, elapsed 228.3 s
+[phase 1 bulk-only] poll 590: mass 2.2231 / 6.4674 g (4.2443 g to go), 100 rpm, 1.1 mg/s, elapsed 228.6 s
+[phase 1 bulk-only] poll 591: mass 2.2236 / 6.4674 g (4.2438 g to go), 100 rpm, 1.2 mg/s, elapsed 229.0 s
+[phase 1 bulk-only] poll 592: mass 2.2239 / 6.4674 g (4.2435 g to go), 100 rpm, 1.2 mg/s, elapsed 229.4 s
+[phase 1 bulk-only] poll 593: mass 2.2242 / 6.4674 g (4.2432 g to go), 100 rpm, 1.1 mg/s, elapsed 229.8 s
+[phase 1 bulk-only] poll 594: mass 2.2246 / 6.4674 g (4.2428 g to go), 100 rpm, 1.0 mg/s, elapsed 230.2 s
+[phase 1 bulk-only] poll 595: mass 2.2248 / 6.4674 g (4.2426 g to go), 100 rpm, 0.9 mg/s, elapsed 230.5 s
+[phase 1 bulk-only] poll 596: mass 2.2252 / 6.4674 g (4.2422 g to go), 100 rpm, 0.9 mg/s, elapsed 230.8 s
+[phase 1 bulk-only] poll 597: mass 2.2256 / 6.4674 g (4.2418 g to go), 100 rpm, 0.9 mg/s, elapsed 231.2 s
+[phase 1 bulk-only] poll 598: mass 2.2260 / 6.4674 g (4.2414 g to go), 100 rpm, 1.0 mg/s, elapsed 231.6 s
+[phase 1 bulk-only] poll 599: mass 2.2263 / 6.4674 g (4.2411 g to go), 100 rpm, 1.0 mg/s, elapsed 232.0 s
+[phase 1 bulk-only] poll 600: mass 2.2266 / 6.4674 g (4.2408 g to go), 100 rpm, 0.9 mg/s, elapsed 232.4 s
+[phase 1 bulk-only] poll 601: mass 2.2270 / 6.4674 g (4.2404 g to go), 100 rpm, 0.9 mg/s, elapsed 232.7 s
+[phase 1 bulk-only] poll 602: mass 2.2274 / 6.4674 g (4.2400 g to go), 100 rpm, 0.9 mg/s, elapsed 233.1 s
+[phase 1 bulk-only] poll 603: mass 2.2279 / 6.4674 g (4.2395 g to go), 100 rpm, 1.0 mg/s, elapsed 233.5 s
+[phase 1 bulk-only] poll 604: mass 2.2285 / 6.4674 g (4.2389 g to go), 100 rpm, 1.1 mg/s, elapsed 233.9 s
+[phase 1 bulk-only] poll 605: mass 2.2291 / 6.4674 g (4.2383 g to go), 100 rpm, 1.3 mg/s, elapsed 234.3 s
+[phase 1 bulk-only] poll 606: mass 2.2296 / 6.4674 g (4.2378 g to go), 100 rpm, 1.4 mg/s, elapsed 234.7 s
+[phase 1 bulk-only] poll 607: mass 2.2301 / 6.4674 g (4.2373 g to go), 100 rpm, 1.4 mg/s, elapsed 235.0 s
+[phase 1 bulk-only] poll 608: mass 2.2304 / 6.4674 g (4.2370 g to go), 100 rpm, 1.3 mg/s, elapsed 235.4 s
+[phase 1 bulk-only] poll 609: mass 2.2308 / 6.4674 g (4.2366 g to go), 100 rpm, 1.2 mg/s, elapsed 235.8 s
+[phase 1 bulk-only] poll 610: mass 2.2310 / 6.4674 g (4.2364 g to go), 100 rpm, 1.0 mg/s, elapsed 236.2 s
+[phase 1 bulk-only] poll 611: mass 2.2312 / 6.4674 g (4.2362 g to go), 100 rpm, 0.8 mg/s, elapsed 236.6 s
+[phase 1 bulk-only] poll 612: mass 2.2313 / 6.4674 g (4.2361 g to go), 100 rpm, 0.6 mg/s, elapsed 237.0 s
+[phase 1 bulk-only] poll 613: mass 2.2315 / 6.4674 g (4.2359 g to go), 100 rpm, 0.5 mg/s, elapsed 237.3 s
+[phase 1 bulk-only] poll 614: mass 2.2317 / 6.4674 g (4.2357 g to go), 100 rpm, 0.5 mg/s, elapsed 237.7 s
+[phase 1 bulk-only] poll 615: mass 2.2319 / 6.4674 g (4.2355 g to go), 100 rpm, 0.5 mg/s, elapsed 238.1 s
+[phase 1 bulk-only] poll 616: mass 2.2322 / 6.4674 g (4.2352 g to go), 100 rpm, 0.5 mg/s, elapsed 238.5 s
+[phase 1 bulk-only] poll 617: mass 2.2326 / 6.4674 g (4.2348 g to go), 100 rpm, 0.7 mg/s, elapsed 238.9 s
+[phase 1 bulk-only] poll 618: mass 2.2329 / 6.4674 g (4.2345 g to go), 100 rpm, 0.7 mg/s, elapsed 239.3 s
+[phase 1 bulk-only] poll 619: mass 2.2331 / 6.4674 g (4.2343 g to go), 100 rpm, 0.8 mg/s, elapsed 239.6 s
+[phase 1 bulk-only] poll 620: mass 2.2334 / 6.4674 g (4.2340 g to go), 100 rpm, 0.8 mg/s, elapsed 240.0 s
+[phase 1 bulk-only] poll 621: mass 2.2337 / 6.4674 g (4.2337 g to go), 100 rpm, 0.8 mg/s, elapsed 240.4 s
+[phase 1 bulk-only] poll 622: mass 2.2339 / 6.4674 g (4.2335 g to go), 100 rpm, 0.7 mg/s, elapsed 240.8 s
+[phase 1 bulk-only] poll 623: mass 2.2342 / 6.4674 g (4.2332 g to go), 100 rpm, 0.7 mg/s, elapsed 241.2 s
+[phase 1 bulk-only] poll 624: mass 2.2344 / 6.4674 g (4.2330 g to go), 100 rpm, 0.7 mg/s, elapsed 241.5 s
+[phase 1 bulk-only] poll 625: mass 2.2346 / 6.4674 g (4.2328 g to go), 100 rpm, 0.6 mg/s, elapsed 242.0 s
+[phase 1 bulk-only] poll 626: mass 2.2349 / 6.4674 g (4.2325 g to go), 100 rpm, 0.6 mg/s, elapsed 242.3 s
+[phase 1 bulk-only] poll 627: mass 2.2351 / 6.4674 g (4.2323 g to go), 100 rpm, 0.6 mg/s, elapsed 242.7 s
+[phase 1 bulk-only] poll 628: mass 2.2354 / 6.4674 g (4.2320 g to go), 100 rpm, 0.6 mg/s, elapsed 243.1 s
+[phase 1 bulk-only] poll 629: mass 2.2356 / 6.4674 g (4.2318 g to go), 100 rpm, 0.7 mg/s, elapsed 243.4 s
+[phase 1 bulk-only] poll 630: mass 2.2359 / 6.4674 g (4.2315 g to go), 100 rpm, 0.7 mg/s, elapsed 243.8 s
+[phase 1 bulk-only] poll 631: mass 2.2363 / 6.4674 g (4.2311 g to go), 100 rpm, 0.8 mg/s, elapsed 244.1 s
+[phase 1 bulk-only] poll 632: mass 2.2365 / 6.4674 g (4.2309 g to go), 100 rpm, 0.8 mg/s, elapsed 244.4 s
+[phase 1 bulk-only] poll 633: mass 2.2367 / 6.4674 g (4.2307 g to go), 100 rpm, 0.8 mg/s, elapsed 244.8 s
+[phase 1 bulk-only] poll 634: mass 2.2369 / 6.4674 g (4.2305 g to go), 100 rpm, 0.7 mg/s, elapsed 245.2 s
+[phase 1 bulk-only] poll 635: mass 2.2370 / 6.4674 g (4.2304 g to go), 100 rpm, 0.6 mg/s, elapsed 245.6 s
+[phase 1 bulk-only] poll 636: mass 2.2371 / 6.4674 g (4.2303 g to go), 100 rpm, 0.4 mg/s, elapsed 245.9 s
+[phase 1 bulk-only] poll 637: mass 2.2372 / 6.4674 g (4.2302 g to go), 100 rpm, 0.4 mg/s, elapsed 246.3 s
+[phase 1 bulk-only] poll 638: mass 2.2373 / 6.4674 g (4.2301 g to go), 100 rpm, 0.3 mg/s, elapsed 246.7 s
+[phase 1 bulk-only] poll 639: mass 2.2375 / 6.4674 g (4.2299 g to go), 100 rpm, 0.3 mg/s, elapsed 247.1 s
+[phase 1 bulk-only] poll 640: mass 2.2376 / 6.4674 g (4.2298 g to go), 100 rpm, 0.3 mg/s, elapsed 247.5 s
+[phase 1 bulk-only] poll 641: mass 2.2378 / 6.4674 g (4.2296 g to go), 100 rpm, 0.4 mg/s, elapsed 247.9 s
+[phase 1 bulk-only] poll 642: mass 2.2380 / 6.4674 g (4.2294 g to go), 100 rpm, 0.4 mg/s, elapsed 248.3 s
+[phase 1 bulk-only] poll 643: mass 2.2381 / 6.4674 g (4.2293 g to go), 100 rpm, 0.4 mg/s, elapsed 248.6 s
+[phase 1 bulk-only] poll 644: mass 2.2382 / 6.4674 g (4.2292 g to go), 100 rpm, 0.4 mg/s, elapsed 248.9 s
+[phase 1 bulk-only] poll 645: mass 2.2383 / 6.4674 g (4.2291 g to go), 100 rpm, 0.4 mg/s, elapsed 249.3 s
+[phase 1 bulk-only] poll 646: mass 2.2384 / 6.4674 g (4.2290 g to go), 100 rpm, 0.3 mg/s, elapsed 249.7 s
+[phase 1 bulk-only] poll 647: mass 2.2384 / 6.4674 g (4.2290 g to go), 100 rpm, 0.2 mg/s, elapsed 250.0 s
+[phase 1 bulk-only] poll 648: mass 2.2384 / 6.4674 g (4.2290 g to go), 100 rpm, 0.2 mg/s, elapsed 250.4 s
+[phase 1 bulk-only] poll 649: mass 2.2385 / 6.4674 g (4.2289 g to go), 100 rpm, 0.1 mg/s, elapsed 250.7 s
+[phase 1 bulk-only] poll 650: mass 2.2385 / 6.4674 g (4.2289 g to go), 100 rpm, 0.1 mg/s, elapsed 251.1 s
+[phase 1 bulk-only] poll 651: mass 2.2386 / 6.4674 g (4.2288 g to go), 100 rpm, 0.1 mg/s, elapsed 251.5 s
+[phase 1 bulk-only] poll 652: mass 2.2388 / 6.4674 g (4.2286 g to go), 100 rpm, 0.2 mg/s, elapsed 251.9 s
+[phase 1 bulk-only] poll 653: mass 2.2389 / 6.4674 g (4.2285 g to go), 100 rpm, 0.3 mg/s, elapsed 252.3 s
+[phase 1 bulk-only] poll 654: mass 2.2389 / 6.4674 g (4.2285 g to go), 100 rpm, 0.3 mg/s, elapsed 252.6 s
+[phase 1 bulk-only] poll 655: mass 2.2390 / 6.4674 g (4.2284 g to go), 100 rpm, 0.3 mg/s, elapsed 253.0 s
+[phase 1 bulk-only] poll 656: mass 2.2390 / 6.4674 g (4.2284 g to go), 100 rpm, 0.2 mg/s, elapsed 253.4 s
+[phase 1 bulk-only] poll 657: mass 2.2394 / 6.4674 g (4.2280 g to go), 100 rpm, 0.3 mg/s, elapsed 253.8 s
+[phase 1 bulk-only] poll 658: mass 2.2396 / 6.4674 g (4.2278 g to go), 100 rpm, 0.4 mg/s, elapsed 254.2 s
+[phase 1 bulk-only] poll 659: mass 2.2398 / 6.4674 g (4.2276 g to go), 100 rpm, 0.5 mg/s, elapsed 254.6 s
+[phase 1 bulk-only] poll 660: mass 2.2400 / 6.4674 g (4.2274 g to go), 100 rpm, 0.6 mg/s, elapsed 255.0 s
+[phase 1 bulk-only] poll 661: mass 2.2401 / 6.4674 g (4.2273 g to go), 100 rpm, 0.6 mg/s, elapsed 255.3 s
+[phase 1 bulk-only] poll 662: mass 2.2402 / 6.4674 g (4.2272 g to go), 100 rpm, 0.4 mg/s, elapsed 255.7 s
+[phase 1 bulk-only] poll 663: mass 2.2404 / 6.4674 g (4.2270 g to go), 100 rpm, 0.4 mg/s, elapsed 256.1 s
+[phase 1 bulk-only] poll 664: mass 2.2406 / 6.4674 g (4.2268 g to go), 100 rpm, 0.4 mg/s, elapsed 256.5 s
+[phase 1 bulk-only] poll 665: mass 2.2407 / 6.4674 g (4.2267 g to go), 100 rpm, 0.4 mg/s, elapsed 256.8 s
+[phase 1 bulk-only] poll 666: mass 2.2409 / 6.4674 g (4.2265 g to go), 100 rpm, 0.4 mg/s, elapsed 257.2 s
+[phase 1 bulk-only] poll 667: mass 2.2410 / 6.4674 g (4.2264 g to go), 100 rpm, 0.4 mg/s, elapsed 257.6 s
+[phase 1 bulk-only] poll 668: mass 2.2411 / 6.4674 g (4.2263 g to go), 100 rpm, 0.4 mg/s, elapsed 258.0 s
+[phase 1 bulk-only] poll 669: mass 2.2412 / 6.4674 g (4.2262 g to go), 100 rpm, 0.3 mg/s, elapsed 258.4 s
+[phase 1 bulk-only] poll 670: mass 2.2414 / 6.4674 g (4.2260 g to go), 100 rpm, 0.3 mg/s, elapsed 258.8 s
+[phase 1 bulk-only] poll 671: mass 2.2416 / 6.4674 g (4.2258 g to go), 100 rpm, 0.4 mg/s, elapsed 259.2 s
+[phase 1 bulk-only] poll 672: mass 2.2418 / 6.4674 g (4.2256 g to go), 100 rpm, 0.4 mg/s, elapsed 259.5 s
+[phase 1 bulk-only] poll 673: mass 2.2420 / 6.4674 g (4.2254 g to go), 100 rpm, 0.5 mg/s, elapsed 259.9 s
+[phase 1 bulk-only] poll 674: mass 2.2421 / 6.4674 g (4.2253 g to go), 100 rpm, 0.5 mg/s, elapsed 260.3 s
+[phase 1 bulk-only] no powder flow for 15.4 s at 100 rpm -- hopper empty or jam
+[dose] done: DoseResult(stalled: 2.2421/6.4674 g in 261.0s; cycles bulk:674; 423.94 auger rev, 508 taps)
+RESULT {"phase_cycles": {"bulk": 674}, "t_total_s": 260.32, "ff_g_per_rev": null, "stop_events": [], "error_mg": -4225.3, "t_settle_s": 0.0, "t_tap_s": 0.0, "nudges": 0, "telemetry_rows": 674, "telemetry_truncated": 0, "fw": "trickle_tap/2026-10-15", "v": 1, "target_g": 6.4674, "status": "stalled", "settled_final": 0, "auger_rev": 423.938, "baseline_g": 0.0, "final_g": 2.2421, "t_bulk_s": 255.74, "read_retries": 0, "dose_n": 1, "params": {"tap_cadence_on_ms": 60, "trickle_start_remaining_g": 0.3, "bulk_min_rpm": 15.0, "bulk_boost_s": 3.0, "tap_burst_taps": 2, "bulk_halt_kf": false, "cutoff_margin_g": 0.035, "k_sigma": 1.0, "bulk_taper_start_g": 0.5, "bulk_max_passes": 1, "taps_per_cycle": 1, "final_settle_ms": 2000, "overshoot_abort_g": 0.02, "tap_cadence_off_ms": 440, "tau_afterflow_s": 0.8338, "trickle_tilt_deg": 40.0, "trickle_enabled": true, "bulk_only": true, "tap_burst_above_g": 0.0, "tap_tilt_deg": 40.0, "trickle_tap": false, "goal_mass_g": 0.75, "bulk_tap": true, "tolerance_g": 0.003, "bulk_rpm": 100.0, "bulk_tilt_deg": 40.0, "bulk_stop_margin_g": 0.01}, "t_trickle_s": 0.0, "taps": 508, "log_path": null}
+>> log
+--- BEGIN trickle telemetry CSV ---
+t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,r_sp_gps,err_gps,integ,rpm_cmd,pred_g,cutoff_g,clamp_hits
+6.28,bulk,0.00050,1,0.00050,0.00000,,,,,,100.00,0.00050,6.46590,0
+6.66,bulk,0.01480,1,0.01480,0.00000,,,,,,100.00,0.01480,6.46590,0
+6.95,bulk,0.03290,1,0.03290,0.00000,,,,,,100.00,0.03290,6.46590,0
+7.34,bulk,0.06440,1,0.06440,0.00000,,,,,,100.00,0.06440,6.46590,0
+7.72,bulk,0.09560,1,0.09560,0.00000,,,,,,100.00,0.09560,6.46590,0
+8.10,bulk,0.13190,1,0.13190,0.07372,,,,,,100.00,0.19337,6.46590,0
+8.38,bulk,0.15530,1,0.15530,0.08288,,,,,,100.00,0.22440,6.46590,0
+8.77,bulk,0.18270,1,0.18270,0.08374,,,,,,100.00,0.25253,6.46590,0
+9.15,bulk,0.20810,1,0.20810,0.08027,,,,,,100.00,0.27503,6.46590,0
+9.44,bulk,0.22330,1,0.22330,0.07393,,,,,,100.00,0.28494,6.46590,0
+9.83,bulk,0.24350,1,0.24350,0.06462,,,,,,100.00,0.29738,6.46590,0
+10.20,bulk,0.26030,1,0.26030,0.05769,,,,,,100.00,0.30840,6.46590,0
+10.59,bulk,0.27650,1,0.27650,0.05103,,,,,,100.00,0.31905,6.46590,0
+10.88,bulk,0.28960,1,0.28960,0.04680,,,,,,100.00,0.32862,6.46590,0
+11.26,bulk,0.30570,1,0.30570,0.04471,,,,,,100.00,0.34298,6.46590,0
+11.63,bulk,0.32260,1,0.32260,0.04350,,,,,,100.00,0.35887,6.46590,0
+11.92,bulk,0.33450,1,0.33450,0.04331,,,,,,100.00,0.37061,6.46590,0
+12.30,bulk,0.34940,1,0.34940,0.04272,,,,,,100.00,0.38502,6.46590,0
+12.70,bulk,0.36300,1,0.36300,0.04076,,,,,,100.00,0.39699,6.46590,0
+13.07,bulk,0.37420,1,0.37420,0.03791,,,,,,100.00,0.40581,6.46590,0
+13.36,bulk,0.38320,1,0.38320,0.03498,,,,,,100.00,0.41236,6.46590,0
+13.75,bulk,0.39480,1,0.39480,0.03275,,,,,,100.00,0.42211,6.46590,0
+14.12,bulk,0.40840,1,0.40840,0.03188,,,,,,100.00,0.43498,6.46590,0
+14.41,bulk,0.41970,1,0.41970,0.03280,,,,,,100.00,0.44705,6.46590,0
+14.80,bulk,0.43330,1,0.43330,0.03437,,,,,,100.00,0.46195,6.46590,0
+15.17,bulk,0.44640,1,0.44640,0.03533,,,,,,100.00,0.47586,6.46590,0
+15.46,bulk,0.45680,1,0.45680,0.03614,,,,,,100.00,0.48693,6.46590,0
+15.85,bulk,0.46920,1,0.46920,0.03520,,,,,,100.00,0.49855,6.46590,0
+16.23,bulk,0.48120,1,0.48120,0.03399,,,,,,100.00,0.50954,6.46590,0
+16.61,bulk,0.49370,1,0.49370,0.03315,,,,,,100.00,0.52134,6.46590,0
+16.99,bulk,0.50630,1,0.50630,0.03262,,,,,,100.00,0.53350,6.46590,0
+17.38,bulk,0.51960,1,0.51960,0.03262,,,,,,100.00,0.54680,6.46590,0
+17.76,bulk,0.53230,1,0.53230,0.03314,,,,,,100.00,0.55993,6.46590,0
+18.14,bulk,0.54490,1,0.54490,0.03345,,,,,,100.00,0.57279,6.46590,0
+18.43,bulk,0.55510,1,0.55510,0.03384,,,,,,100.00,0.58331,6.46590,0
+18.82,bulk,0.56780,1,0.56780,0.03376,,,,,,100.00,0.59595,6.46590,0
+19.19,bulk,0.58090,1,0.58090,0.03384,,,,,,100.00,0.60911,6.46590,0
+19.58,bulk,0.59270,1,0.59270,0.03337,,,,,,100.00,0.62052,6.46590,0
+19.96,bulk,0.60570,1,0.60570,0.03326,,,,,,100.00,0.63343,6.46590,0
+20.34,bulk,0.61860,1,0.61860,0.03305,,,,,,100.00,0.64616,6.46590,0
+20.73,bulk,0.63070,1,0.63070,0.03280,,,,,,100.00,0.65805,6.46590,0
+21.10,bulk,0.64250,1,0.64250,0.03241,,,,,,100.00,0.66953,6.46590,0
+21.39,bulk,0.65170,1,0.65170,0.03240,,,,,,100.00,0.67872,6.46590,0
+21.78,bulk,0.66370,1,0.66370,0.03176,,,,,,100.00,0.69018,6.46590,0
+22.17,bulk,0.67610,1,0.67610,0.03159,,,,,,100.00,0.70244,6.46590,0
+22.54,bulk,0.68680,1,0.68680,0.03119,,,,,,100.00,0.71281,6.46590,0
+22.93,bulk,0.69790,1,0.69790,0.03043,,,,,,100.00,0.72328,6.46590,0
+23.30,bulk,0.70990,1,0.70990,0.03021,,,,,,100.00,0.73509,6.46590,0
+23.69,bulk,0.72020,1,0.72020,0.02956,,,,,,100.00,0.74485,6.46590,0
+24.07,bulk,0.73060,1,0.73060,0.02877,,,,,,100.00,0.75459,6.46590,0
+24.45,bulk,0.74110,1,0.74110,0.02839,,,,,,100.00,0.76477,6.46590,0
+24.84,bulk,0.75090,1,0.75090,0.02754,,,,,,100.00,0.77386,6.46590,0
+25.22,bulk,0.76140,1,0.76140,0.02688,,,,,,100.00,0.78381,6.46590,0
+25.60,bulk,0.77140,1,0.77140,0.02684,,,,,,100.00,0.79378,6.46590,0
+25.89,bulk,0.77850,1,0.77850,0.02650,,,,,,100.00,0.80060,6.46590,0
+26.27,bulk,0.78810,1,0.78810,0.02598,,,,,,100.00,0.80976,6.46590,0
+26.65,bulk,0.79770,1,0.79770,0.02570,,,,,,100.00,0.81913,6.46590,0
+26.94,bulk,0.80510,1,0.80510,0.02525,,,,,,100.00,0.82615,6.46590,0
+27.33,bulk,0.81480,1,0.81480,0.02514,,,,,,100.00,0.83576,6.46590,0
+27.70,bulk,0.82440,1,0.82440,0.02529,,,,,,100.00,0.84549,6.46590,0
+28.09,bulk,0.83390,1,0.83390,0.02523,,,,,,100.00,0.85494,6.46590,0
+28.47,bulk,0.84230,1,0.84230,0.02468,,,,,,100.00,0.86288,6.46590,0
+28.86,bulk,0.85130,1,0.85130,0.02406,,,,,,100.00,0.87136,6.46590,0
+29.23,bulk,0.86110,1,0.86110,0.02398,,,,,,100.00,0.88110,6.46590,0
+29.62,bulk,0.87030,1,0.87030,0.02388,,,,,,100.00,0.89021,6.46590,0
+30.00,bulk,0.88030,1,0.88030,0.02439,,,,,,100.00,0.90063,6.46590,0
+30.39,bulk,0.88930,1,0.88930,0.02470,,,,,,100.00,0.90990,6.46590,0
+30.76,bulk,0.89890,1,0.89890,0.02489,,,,,,100.00,0.91966,6.46590,0
+31.15,bulk,0.90870,1,0.90870,0.02478,,,,,,100.00,0.92936,6.46590,0
+31.53,bulk,0.91780,1,0.91780,0.02483,,,,,,100.00,0.93851,6.46590,0
+31.92,bulk,0.92770,1,0.92770,0.02474,,,,,,100.00,0.94833,6.46590,0
+32.29,bulk,0.93680,1,0.93680,0.02490,,,,,,100.00,0.95756,6.46590,0
+32.68,bulk,0.94500,1,0.94500,0.02422,,,,,,100.00,0.96520,6.46590,0
+33.06,bulk,0.95280,1,0.95280,0.02331,,,,,,100.00,0.97223,6.46590,0
+33.35,bulk,0.95830,1,0.95830,0.02224,,,,,,100.00,0.97684,6.46590,0
+33.74,bulk,0.96570,1,0.96570,0.02084,,,,,,100.00,0.98308,6.46590,0
+34.11,bulk,0.97380,1,0.97380,0.02016,,,,,,100.00,0.99061,6.46590,0
+34.40,bulk,0.97910,1,0.97910,0.01988,,,,,,100.00,0.99568,6.46590,0
+34.79,bulk,0.98690,1,0.98690,0.01979,,,,,,100.00,1.00340,6.46590,0
+35.16,bulk,0.99470,1,0.99470,0.02004,,,,,,100.00,1.01141,6.46590,0
+35.45,bulk,1.00070,1,1.00070,0.02027,,,,,,100.00,1.01760,6.46590,0
+35.83,bulk,1.00860,1,1.00860,0.02033,,,,,,100.00,1.02555,6.46590,0
+36.22,bulk,1.01580,1,1.01580,0.02031,,,,,,100.00,1.03273,6.46590,0
+36.60,bulk,1.02340,1,1.02340,0.02011,,,,,,100.00,1.04017,6.46590,0
+36.99,bulk,1.03010,1,1.03010,0.01942,,,,,,100.00,1.04629,6.46590,0
+37.36,bulk,1.03700,1,1.03700,0.01889,,,,,,100.00,1.05275,6.46590,0
+37.75,bulk,1.04440,1,1.04440,0.01856,,,,,,100.00,1.05987,6.46590,0
+38.13,bulk,1.05110,1,1.05110,0.01843,,,,,,100.00,1.06647,6.46590,0
+38.51,bulk,1.05860,1,1.05860,0.01844,,,,,,100.00,1.07397,6.46590,0
+38.90,bulk,1.06580,1,1.06580,0.01873,,,,,,100.00,1.08142,6.46590,0
+39.28,bulk,1.07290,1,1.07290,0.01878,,,,,,100.00,1.08856,6.46590,0
+39.66,bulk,1.08080,1,1.08080,0.01902,,,,,,100.00,1.09666,6.46590,0
+40.04,bulk,1.08850,1,1.08850,0.01945,,,,,,100.00,1.10472,6.46590,0
+40.43,bulk,1.09630,1,1.09630,0.01972,,,,,,100.00,1.11274,6.46590,0
+40.80,bulk,1.10480,1,1.10480,0.02040,,,,,,100.00,1.12181,6.46590,0
+41.20,bulk,1.11230,1,1.11230,0.02063,,,,,,100.00,1.12950,6.46590,0
+41.57,bulk,1.11970,1,1.11970,0.02053,,,,,,100.00,1.13682,6.46590,0
+41.95,bulk,1.12670,1,1.12670,0.02009,,,,,,100.00,1.14345,6.46590,0
+42.34,bulk,1.13310,1,1.13310,0.01922,,,,,,100.00,1.14912,6.46590,0
+42.72,bulk,1.14010,1,1.14010,0.01837,,,,,,100.00,1.15541,6.46590,0
+43.11,bulk,1.14720,1,1.14720,0.01807,,,,,,100.00,1.16227,6.46590,0
+43.48,bulk,1.15420,1,1.15420,0.01798,,,,,,100.00,1.16919,6.46590,0
+43.87,bulk,1.16110,1,1.16110,0.01808,,,,,,100.00,1.17618,6.46590,0
+44.26,bulk,1.16690,1,1.16690,0.01779,,,,,,100.00,1.18173,6.46590,0
+44.63,bulk,1.17290,1,1.17290,0.01713,,,,,,100.00,1.18718,6.46590,0
+45.01,bulk,1.17980,1,1.17980,0.01681,,,,,,100.00,1.19382,6.46590,0
+45.40,bulk,1.18640,1,1.18640,0.01664,,,,,,100.00,1.20028,6.46590,0
+45.78,bulk,1.19380,1,1.19380,0.01716,,,,,,100.00,1.20811,6.46590,0
+46.17,bulk,1.20010,1,1.20010,0.01762,,,,,,100.00,1.21479,6.46590,0
+46.54,bulk,1.20620,1,1.20620,0.01755,,,,,,100.00,1.22083,6.46590,0
+46.93,bulk,1.21300,1,1.21300,0.01729,,,,,,100.00,1.22742,6.46590,0
+47.31,bulk,1.21950,1,1.21950,0.01715,,,,,,100.00,1.23380,6.46590,0
+47.72,bulk,1.22500,1,1.22500,0.01645,,,,,,100.00,1.23872,6.46590,0
+48.17,bulk,1.23230,1,1.23230,0.01595,,,,,,100.00,1.24560,6.46590,0
+48.46,bulk,1.23660,1,1.23660,0.01576,,,,,,100.00,1.24974,6.46590,0
+48.85,bulk,1.24210,1,1.24210,0.01515,,,,,,100.00,1.25473,6.46590,0
+49.22,bulk,1.24810,1,1.24810,0.01495,,,,,,100.00,1.26057,6.46590,0
+49.61,bulk,1.25470,1,1.25470,0.01538,,,,,,100.00,1.26753,6.46590,0
+49.99,bulk,1.26190,1,1.26190,0.01613,,,,,,100.00,1.27535,6.46590,0
+50.38,bulk,1.26930,1,1.26930,0.01712,,,,,,100.00,1.28357,6.46590,0
+50.75,bulk,1.27660,1,1.27660,0.01820,,,,,,100.00,1.29178,6.46590,0
+51.14,bulk,1.28430,1,1.28430,0.01894,,,,,,100.00,1.30009,6.46590,0
+51.52,bulk,1.29170,1,1.29170,0.01941,,,,,,100.00,1.30788,6.46590,0
+51.91,bulk,1.29910,1,1.29910,0.01944,,,,,,100.00,1.31531,6.46590,0
+52.28,bulk,1.30670,1,1.30670,0.01960,,,,,,100.00,1.32304,6.46590,0
+52.67,bulk,1.31500,1,1.31500,0.01989,,,,,,100.00,1.33159,6.46590,0
+53.05,bulk,1.32290,1,1.32290,0.02025,,,,,,100.00,1.33979,6.46590,0
+53.44,bulk,1.33080,1,1.33080,0.02053,,,,,,100.00,1.34791,6.46590,0
+53.81,bulk,1.33720,1,1.33720,0.02026,,,,,,100.00,1.35409,6.46590,0
+54.19,bulk,1.34330,1,1.34330,0.01925,,,,,,100.00,1.35935,6.46590,0
+54.58,bulk,1.34960,1,1.34960,0.01798,,,,,,100.00,1.36459,6.46590,0
+54.96,bulk,1.35560,1,1.35560,0.01688,,,,,,100.00,1.36968,6.46590,0
+55.35,bulk,1.36140,1,1.36140,0.01601,,,,,,100.00,1.37475,6.46590,0
+55.72,bulk,1.36760,1,1.36760,0.01584,,,,,,100.00,1.38080,6.46590,0
+56.11,bulk,1.37350,1,1.37350,0.01572,,,,,,100.00,1.38661,6.46590,0
+56.51,bulk,1.38030,1,1.38030,0.01596,,,,,,100.00,1.39361,6.46590,0
+56.88,bulk,1.38690,1,1.38690,0.01634,,,,,,100.00,1.40052,6.46590,0
+57.25,bulk,1.39300,1,1.39300,0.01666,,,,,,100.00,1.40689,6.46590,0
+57.64,bulk,1.39970,1,1.39970,0.01682,,,,,,100.00,1.41373,6.46590,0
+58.02,bulk,1.40580,1,1.40580,0.01689,,,,,,100.00,1.41988,6.46590,0
+58.41,bulk,1.41210,1,1.41210,0.01658,,,,,,100.00,1.42592,6.46590,0
+58.78,bulk,1.41860,1,1.41860,0.01660,,,,,,100.00,1.43244,6.46590,0
+59.17,bulk,1.42430,1,1.42430,0.01637,,,,,,100.00,1.43795,6.46590,0
+59.55,bulk,1.43040,1,1.43040,0.01612,,,,,,100.00,1.44384,6.46590,0
+59.94,bulk,1.43610,1,1.43610,0.01580,,,,,,100.00,1.44927,6.46590,0
+60.32,bulk,1.44040,1,1.44040,0.01491,,,,,,100.00,1.45283,6.46590,0
+60.70,bulk,1.44540,1,1.44540,0.01403,,,,,,100.00,1.45709,6.46590,0
+61.09,bulk,1.45100,1,1.45100,0.01365,,,,,,100.00,1.46238,6.46590,0
+61.46,bulk,1.45640,1,1.45640,0.01344,,,,,,100.00,1.46760,6.46590,0
+61.85,bulk,1.46220,1,1.46220,0.01379,,,,,,100.00,1.47370,6.46590,0
+62.23,bulk,1.46800,1,1.46800,0.01451,,,,,,100.00,1.48010,6.46590,0
+62.62,bulk,1.47390,1,1.47390,0.01487,,,,,,100.00,1.48630,6.46590,0
+62.99,bulk,1.48040,1,1.48040,0.01536,,,,,,100.00,1.49321,6.46590,0
+63.38,bulk,1.48730,1,1.48730,0.01603,,,,,,100.00,1.50067,6.46590,0
+63.76,bulk,1.49450,1,1.49450,0.01689,,,,,,100.00,1.50859,6.46590,0
+64.15,bulk,1.50110,1,1.50110,0.01745,,,,,,100.00,1.51565,6.46590,0
+64.52,bulk,1.50690,1,1.50690,0.01752,,,,,,100.00,1.52151,6.46590,0
+64.91,bulk,1.51270,1,1.51270,0.01691,,,,,,100.00,1.52680,6.46590,0
+65.29,bulk,1.51900,1,1.51900,0.01637,,,,,,100.00,1.53265,6.46590,0
+65.68,bulk,1.52460,1,1.52460,0.01566,,,,,,100.00,1.53766,6.46590,0
+66.05,bulk,1.53050,1,1.53050,0.01545,,,,,,100.00,1.54338,6.46590,0
+66.44,bulk,1.53630,1,1.53630,0.01541,,,,,,100.00,1.54915,6.46590,0
+66.83,bulk,1.54150,1,1.54150,0.01508,,,,,,100.00,1.55408,6.46590,0
+67.20,bulk,1.54710,1,1.54710,0.01471,,,,,,100.00,1.55937,6.46590,0
+67.59,bulk,1.55260,1,1.55260,0.01456,,,,,,100.00,1.56474,6.46590,0
+67.96,bulk,1.55830,1,1.55830,0.01444,,,,,,100.00,1.57034,6.46590,0
+68.35,bulk,1.56470,1,1.56470,0.01477,,,,,,100.00,1.57702,6.46590,0
+68.73,bulk,1.57100,1,1.57100,0.01542,,,,,,100.00,1.58386,6.46590,0
+69.12,bulk,1.57770,1,1.57770,0.01598,,,,,,100.00,1.59102,6.46590,0
+69.50,bulk,1.58420,1,1.58420,0.01663,,,,,,100.00,1.59806,6.46590,0
+69.89,bulk,1.59020,1,1.59020,0.01673,,,,,,100.00,1.60415,6.46590,0
+70.26,bulk,1.59710,1,1.59710,0.01690,,,,,,100.00,1.61119,6.46590,0
+70.65,bulk,1.60340,1,1.60340,0.01686,,,,,,100.00,1.61746,6.46590,0
+71.03,bulk,1.60950,1,1.60950,0.01674,,,,,,100.00,1.62346,6.46590,0
+71.42,bulk,1.61520,1,1.61520,0.01635,,,,,,100.00,1.62883,6.46590,0
+71.79,bulk,1.61970,1,1.61970,0.01556,,,,,,100.00,1.63268,6.46590,0
+72.18,bulk,1.62460,1,1.62460,0.01431,,,,,,100.00,1.63653,6.46590,0
+72.65,bulk,1.63060,1,1.63060,0.01340,,,,,,100.00,1.64178,6.46590,0
+72.94,bulk,1.63400,1,1.63400,0.01271,,,,,,100.00,1.64460,6.46590,0
+73.33,bulk,1.63910,1,1.63910,0.01250,,,,,,100.00,1.64952,6.46590,0
+73.70,bulk,1.64460,1,1.64460,0.01290,,,,,,100.00,1.65536,6.46590,0
+74.09,bulk,1.65000,1,1.65000,0.01331,,,,,,100.00,1.66110,6.46590,0
+74.47,bulk,1.65510,1,1.65510,0.01363,,,,,,100.00,1.66647,6.46590,0
+74.86,bulk,1.66060,1,1.66060,0.01391,,,,,,100.00,1.67219,6.46590,0
+75.23,bulk,1.66550,1,1.66550,0.01385,,,,,,100.00,1.67705,6.46590,0
+75.63,bulk,1.67120,1,1.67120,0.01378,,,,,,100.00,1.68269,6.46590,0
+76.00,bulk,1.67650,1,1.67650,0.01388,,,,,,100.00,1.68807,6.46590,0
+76.39,bulk,1.68140,1,1.68140,0.01377,,,,,,100.00,1.69289,6.46590,0
+76.76,bulk,1.68660,1,1.68660,0.01369,,,,,,100.00,1.69802,6.46590,0
+77.15,bulk,1.69250,1,1.69250,0.01388,,,,,,100.00,1.70407,6.46590,0
+77.53,bulk,1.69870,1,1.69870,0.01427,,,,,,100.00,1.71060,6.46590,0
+77.92,bulk,1.70500,1,1.70500,0.01495,,,,,,100.00,1.71746,6.46590,0
+78.29,bulk,1.71140,1,1.71140,0.01583,,,,,,100.00,1.72460,6.46590,0
+78.68,bulk,1.71780,1,1.71780,0.01638,,,,,,100.00,1.73146,6.46590,0
+78.96,bulk,1.72180,1,1.72180,0.01635,,,,,,100.00,1.73543,6.46590,0
+79.35,bulk,1.72740,1,1.72740,0.01586,,,,,,100.00,1.74062,6.46590,0
+79.73,bulk,1.73240,1,1.73240,0.01510,,,,,,100.00,1.74499,6.46590,0
+80.12,bulk,1.73690,1,1.73690,0.01394,,,,,,100.00,1.74853,6.46590,0
+80.49,bulk,1.74290,1,1.74290,0.01360,,,,,,100.00,1.75424,6.46590,0
+80.88,bulk,1.74900,1,1.74900,0.01396,,,,,,100.00,1.76064,6.46590,0
+81.26,bulk,1.75450,1,1.75450,0.01432,,,,,,100.00,1.76644,6.46590,0
+81.65,bulk,1.75980,1,1.75980,0.01459,,,,,,100.00,1.77196,6.46590,0
+82.02,bulk,1.76460,1,1.76460,0.01455,,,,,,100.00,1.77673,6.46590,0
+82.41,bulk,1.76980,1,1.76980,0.01389,,,,,,100.00,1.78138,6.46590,0
+82.79,bulk,1.77510,1,1.77510,0.01354,,,,,,100.00,1.78639,6.46590,0
+83.18,bulk,1.77980,1,1.77980,0.01324,,,,,,100.00,1.79084,6.46590,0
+83.55,bulk,1.78490,1,1.78490,0.01321,,,,,,100.00,1.79591,6.46590,0
+83.95,bulk,1.79020,1,1.79020,0.01326,,,,,,100.00,1.80125,6.46590,0
+84.32,bulk,1.79490,1,1.79490,0.01316,,,,,,100.00,1.80587,6.46590,0
+84.70,bulk,1.79930,1,1.79930,0.01283,,,,,,100.00,1.81000,6.46590,0
+85.09,bulk,1.80320,1,1.80320,0.01233,,,,,,100.00,1.81348,6.46590,0
+85.47,bulk,1.80660,1,1.80660,0.01136,,,,,,100.00,1.81607,6.46590,0
+85.86,bulk,1.81050,1,1.81050,0.01050,,,,,,100.00,1.81925,6.46590,0
+86.23,bulk,1.81440,1,1.81440,0.01004,,,,,,100.00,1.82277,6.46590,0
+86.62,bulk,1.81790,1,1.81790,0.00974,,,,,,100.00,1.82602,6.46590,0
+87.00,bulk,1.82140,1,1.82140,0.00964,,,,,,100.00,1.82944,6.46590,0
+87.39,bulk,1.82500,1,1.82500,0.00956,,,,,,100.00,1.83297,6.46590,0
+87.76,bulk,1.82880,1,1.82880,0.00948,,,,,,100.00,1.83671,6.46590,0
+88.15,bulk,1.83220,1,1.83220,0.00934,,,,,,100.00,1.83999,6.46590,0
+88.54,bulk,1.83500,1,1.83500,0.00911,,,,,,100.00,1.84259,6.46590,0
+88.91,bulk,1.83810,1,1.83810,0.00873,,,,,,100.00,1.84538,6.46590,0
+89.30,bulk,1.84050,1,1.84050,0.00807,,,,,,100.00,1.84723,6.46590,0
+89.68,bulk,1.84200,1,1.84200,0.00701,,,,,,100.00,1.84785,6.46590,0
+89.96,bulk,1.84290,1,1.84290,0.00600,,,,,,100.00,1.84790,6.46590,0
+90.35,bulk,1.84770,1,1.84770,0.00629,,,,,,100.00,1.85294,6.46590,0
+90.73,bulk,1.85020,1,1.85020,0.00664,,,,,,100.00,1.85573,6.46590,0
+91.11,bulk,1.85350,1,1.85350,0.00753,,,,,,100.00,1.85978,6.46590,0
+91.50,bulk,1.85660,1,1.85660,0.00830,,,,,,100.00,1.86352,6.46590,0
+91.87,bulk,1.85990,1,1.85990,0.00860,,,,,,100.00,1.86707,6.46590,0
+92.27,bulk,1.86320,1,1.86320,0.00820,,,,,,100.00,1.87004,6.46590,0
+92.64,bulk,1.86610,1,1.86610,0.00838,,,,,,100.00,1.87308,6.46590,0
+92.93,bulk,1.86820,1,1.86820,0.00818,,,,,,100.00,1.87502,6.46590,0
+93.32,bulk,1.87040,1,1.87040,0.00769,,,,,,100.00,1.87681,6.46590,0
+93.69,bulk,1.87150,1,1.87150,0.00652,,,,,,100.00,1.87693,6.46590,0
+94.08,bulk,1.87560,1,1.87560,0.00636,,,,,,100.00,1.88090,6.46590,0
+94.46,bulk,1.87740,1,1.87740,0.00617,,,,,,100.00,1.88255,6.46590,0
+94.85,bulk,1.88090,1,1.88090,0.00661,,,,,,100.00,1.88641,6.46590,0
+95.22,bulk,1.88440,1,1.88440,0.00749,,,,,,100.00,1.89064,6.46590,0
+95.61,bulk,1.88750,1,1.88750,0.00820,,,,,,100.00,1.89434,6.46590,0
+95.99,bulk,1.89080,1,1.89080,0.00822,,,,,,100.00,1.89765,6.46590,0
+96.38,bulk,1.89350,1,1.89350,0.00845,,,,,,100.00,1.90054,6.46590,0
+96.85,bulk,1.89680,1,1.89680,0.00764,,,,,,100.00,1.90317,6.46590,0
+97.24,bulk,1.89970,1,1.89970,0.00737,,,,,,100.00,1.90585,6.46590,0
+97.61,bulk,1.90210,1,1.90210,0.00701,,,,,,100.00,1.90794,6.46590,0
+97.90,bulk,1.90300,1,1.90300,0.00660,,,,,,100.00,1.90851,6.46590,0
+98.29,bulk,1.90430,1,1.90430,0.00578,,,,,,100.00,1.90912,6.46590,0
+98.66,bulk,1.90540,1,1.90540,0.00462,,,,,,100.00,1.90925,6.46590,0
+99.06,bulk,1.90660,1,1.90660,0.00361,,,,,,100.00,1.90961,6.46590,0
+99.43,bulk,1.90770,1,1.90770,0.00308,,,,,,100.00,1.91027,6.46590,0
+99.82,bulk,1.91600,1,1.91600,0.00570,,,,,,100.00,1.92075,6.46590,0
+100.19,bulk,1.91880,1,1.91880,0.00789,,,,,,100.00,1.92538,6.46590,0
+100.59,bulk,1.92180,1,1.92180,0.00947,,,,,,100.00,1.92969,6.46590,0
+100.96,bulk,1.92460,1,1.92460,0.01012,,,,,,100.00,1.93304,6.46590,0
+101.35,bulk,1.92730,1,1.92730,0.00945,,,,,,100.00,1.93518,6.46590,0
+101.72,bulk,1.93000,1,1.93000,0.00736,,,,,,100.00,1.93613,6.46590,0
+102.11,bulk,1.93320,1,1.93320,0.00741,,,,,,100.00,1.93938,6.46590,0
+102.49,bulk,1.93610,1,1.93610,0.00749,,,,,,100.00,1.94234,6.46590,0
+102.87,bulk,1.93890,1,1.93890,0.00757,,,,,,100.00,1.94521,6.46590,0
+103.26,bulk,1.94150,1,1.94150,0.00752,,,,,,100.00,1.94777,6.46590,0
+103.64,bulk,1.94300,1,1.94300,0.00692,,,,,,100.00,1.94877,6.46590,0
+104.02,bulk,1.94400,1,1.94400,0.00579,,,,,,100.00,1.94883,6.46590,0
+104.41,bulk,1.94490,1,1.94490,0.00453,,,,,,100.00,1.94868,6.46590,0
+104.79,bulk,1.94580,1,1.94580,0.00341,,,,,,100.00,1.94865,6.46590,0
+105.18,bulk,1.94680,1,1.94680,0.00267,,,,,,100.00,1.94903,6.46590,0
+105.55,bulk,1.94840,1,1.94840,0.00271,,,,,,100.00,1.95066,6.46590,0
+105.94,bulk,1.95020,1,1.95020,0.00317,,,,,,100.00,1.95284,6.46590,0
+106.32,bulk,1.95200,1,1.95200,0.00376,,,,,,100.00,1.95514,6.46590,0
+106.71,bulk,1.95380,1,1.95380,0.00427,,,,,,100.00,1.95736,6.46590,0
+107.08,bulk,1.95550,1,1.95550,0.00460,,,,,,100.00,1.95933,6.46590,0
+107.47,bulk,1.95720,1,1.95720,0.00459,,,,,,100.00,1.96103,6.46590,0
+107.85,bulk,1.95890,1,1.95890,0.00455,,,,,,100.00,1.96269,6.46590,0
+108.24,bulk,1.96060,1,1.96060,0.00448,,,,,,100.00,1.96433,6.46590,0
+108.61,bulk,1.96220,1,1.96220,0.00442,,,,,,100.00,1.96588,6.46590,0
+108.99,bulk,1.96390,1,1.96390,0.00439,,,,,,100.00,1.96756,6.46590,0
+109.38,bulk,1.96560,1,1.96560,0.00438,,,,,,100.00,1.96925,6.46590,0
+109.76,bulk,1.96720,1,1.96720,0.00435,,,,,,100.00,1.97082,6.46590,0
+110.14,bulk,1.96880,1,1.96880,0.00432,,,,,,100.00,1.97240,6.46590,0
+110.43,bulk,1.96990,1,1.96990,0.00425,,,,,,100.00,1.97345,6.46590,0
+110.82,bulk,1.97150,1,1.97150,0.00416,,,,,,100.00,1.97497,6.46590,0
+111.19,bulk,1.97290,1,1.97290,0.00404,,,,,,100.00,1.97627,6.46590,0
+111.58,bulk,1.97440,1,1.97440,0.00394,,,,,,100.00,1.97768,6.46590,0
+111.96,bulk,1.97580,1,1.97580,0.00386,,,,,,100.00,1.97902,6.46590,0
+112.35,bulk,1.97730,1,1.97730,0.00383,,,,,,100.00,1.98049,6.46590,0
+112.72,bulk,1.97870,1,1.97870,0.00378,,,,,,100.00,1.98186,6.46590,0
+113.11,bulk,1.98010,1,1.98010,0.00376,,,,,,100.00,1.98323,6.46590,0
+113.49,bulk,1.98150,1,1.98150,0.00372,,,,,,100.00,1.98461,6.46590,0
+113.88,bulk,1.98280,1,1.98280,0.00365,,,,,,100.00,1.98584,6.46590,0
+114.25,bulk,1.98410,1,1.98410,0.00357,,,,,,100.00,1.98708,6.46590,0
+114.64,bulk,1.98530,1,1.98530,0.00345,,,,,,100.00,1.98818,6.46590,0
+115.03,bulk,1.98650,1,1.98650,0.00334,,,,,,100.00,1.98928,6.46590,0
+115.40,bulk,1.98760,1,1.98760,0.00320,,,,,,100.00,1.99027,6.46590,0
+115.79,bulk,1.98870,1,1.98870,0.00308,,,,,,100.00,1.99127,6.46590,0
+116.17,bulk,1.98970,1,1.98970,0.00294,,,,,,100.00,1.99215,6.46590,0
+116.55,bulk,1.99080,1,1.99080,0.00286,,,,,,100.00,1.99319,6.46590,0
+116.94,bulk,1.99210,1,1.99210,0.00288,,,,,,100.00,1.99450,6.46590,0
+117.31,bulk,1.99340,1,1.99340,0.00301,,,,,,100.00,1.99591,6.46590,0
+117.70,bulk,1.99490,1,1.99490,0.00324,,,,,,100.00,1.99760,6.46590,0
+118.08,bulk,1.99640,1,1.99640,0.00351,,,,,,100.00,1.99933,6.46590,0
+118.37,bulk,1.99750,1,1.99750,0.00371,,,,,,100.00,2.00060,6.46590,0
+118.76,bulk,1.99900,1,1.99900,0.00383,,,,,,100.00,2.00219,6.46590,0
+119.13,bulk,2.00060,1,2.00060,0.00394,,,,,,100.00,2.00389,6.46590,0
+119.42,bulk,2.00180,1,2.00180,0.00401,,,,,,100.00,2.00514,6.46590,0
+119.80,bulk,2.00360,1,2.00360,0.00416,,,,,,100.00,2.00707,6.46590,0
+120.19,bulk,2.00550,1,2.00550,0.00439,,,,,,100.00,2.00916,6.46590,0
+120.57,bulk,2.00750,1,2.00750,0.00469,,,,,,100.00,2.01141,6.46590,0
+120.95,bulk,2.00930,1,2.00930,0.00484,,,,,,100.00,2.01334,6.46590,0
+121.34,bulk,2.01100,1,2.01100,0.00485,,,,,,100.00,2.01504,6.46590,0
+121.71,bulk,2.01260,1,2.01260,0.00473,,,,,,100.00,2.01654,6.46590,0
+122.10,bulk,2.01400,1,2.01400,0.00444,,,,,,100.00,2.01770,6.46590,0
+122.48,bulk,2.01540,1,2.01540,0.00412,,,,,,100.00,2.01883,6.46590,0
+122.87,bulk,2.01690,1,2.01690,0.00392,,,,,,100.00,2.02017,6.46590,0
+123.24,bulk,2.01840,1,2.01840,0.00383,,,,,,100.00,2.02160,6.46590,0
+123.63,bulk,2.01990,1,2.01990,0.00381,,,,,,100.00,2.02308,6.46590,0
+124.01,bulk,2.02150,1,2.02150,0.00393,,,,,,100.00,2.02477,6.46590,0
+124.40,bulk,2.02300,1,2.02300,0.00397,,,,,,100.00,2.02631,6.46590,0
+124.77,bulk,2.02450,1,2.02450,0.00400,,,,,,100.00,2.02783,6.46590,0
+125.16,bulk,2.02590,1,2.02590,0.00394,,,,,,100.00,2.02918,6.46590,0
+125.54,bulk,2.02730,1,2.02730,0.00387,,,,,,100.00,2.03053,6.46590,0
+125.93,bulk,2.02870,1,2.02870,0.00375,,,,,,100.00,2.03182,6.46590,0
+126.30,bulk,2.03000,1,2.03000,0.00367,,,,,,100.00,2.03306,6.46590,0
+126.69,bulk,2.03150,1,2.03150,0.00364,,,,,,100.00,2.03453,6.46590,0
+127.16,bulk,2.03360,1,2.03360,0.00380,,,,,,100.00,2.03677,6.46590,0
+127.45,bulk,2.03480,1,2.03480,0.00394,,,,,,100.00,2.03808,6.46590,0
+127.84,bulk,2.03660,1,2.03660,0.00416,,,,,,100.00,2.04007,6.46590,0
+128.22,bulk,2.03840,1,2.03840,0.00439,,,,,,100.00,2.04206,6.46590,0
+128.61,bulk,2.04000,1,2.04000,0.00447,,,,,,100.00,2.04373,6.46590,0
+128.98,bulk,2.04170,1,2.04170,0.00448,,,,,,100.00,2.04543,6.46590,0
+129.37,bulk,2.04320,1,2.04320,0.00439,,,,,,100.00,2.04686,6.46590,0
+129.75,bulk,2.04460,1,2.04460,0.00420,,,,,,100.00,2.04810,6.46590,0
+130.14,bulk,2.04580,1,2.04580,0.00390,,,,,,100.00,2.04905,6.46590,0
+130.51,bulk,2.04700,1,2.04700,0.00364,,,,,,100.00,2.05004,6.46590,0
+130.90,bulk,2.04800,1,2.04800,0.00329,,,,,,100.00,2.05074,6.46590,0
+131.28,bulk,2.04910,1,2.04910,0.00306,,,,,,100.00,2.05165,6.46590,0
+131.67,bulk,2.05010,1,2.05010,0.00286,,,,,,100.00,2.05249,6.46590,0
+132.04,bulk,2.05120,1,2.05120,0.00280,,,,,,100.00,2.05353,6.46590,0
+132.43,bulk,2.05230,1,2.05230,0.00276,,,,,,100.00,2.05460,6.46590,0
+132.80,bulk,2.05350,1,2.05350,0.00286,,,,,,100.00,2.05588,6.46590,0
+133.19,bulk,2.05480,1,2.05480,0.00298,,,,,,100.00,2.05728,6.46590,0
+133.58,bulk,2.05600,1,2.05600,0.00310,,,,,,100.00,2.05859,6.46590,0
+133.95,bulk,2.05730,1,2.05730,0.00321,,,,,,100.00,2.05997,6.46590,0
+134.34,bulk,2.05860,1,2.05860,0.00329,,,,,,100.00,2.06135,6.46590,0
+134.72,bulk,2.05990,1,2.05990,0.00333,,,,,,100.00,2.06268,6.46590,0
+135.11,bulk,2.06120,1,2.06120,0.00335,,,,,,100.00,2.06399,6.46590,0
+135.49,bulk,2.06250,1,2.06250,0.00340,,,,,,100.00,2.06534,6.46590,0
+135.88,bulk,2.06370,1,2.06370,0.00335,,,,,,100.00,2.06649,6.46590,0
+136.25,bulk,2.06480,1,2.06480,0.00327,,,,,,100.00,2.06752,6.46590,0
+136.64,bulk,2.06600,1,2.06600,0.00317,,,,,,100.00,2.06864,6.46590,0
+137.02,bulk,2.06720,1,2.06720,0.00312,,,,,,100.00,2.06980,6.46590,0
+137.40,bulk,2.06850,1,2.06850,0.00311,,,,,,100.00,2.07109,6.46590,0
+137.78,bulk,2.06980,1,2.06980,0.00320,,,,,,100.00,2.07247,6.46590,0
+138.17,bulk,2.07120,1,2.07120,0.00333,,,,,,100.00,2.07398,6.46590,0
+138.55,bulk,2.07260,1,2.07260,0.00346,,,,,,100.00,2.07549,6.46590,0
+138.94,bulk,2.07390,1,2.07390,0.00352,,,,,,100.00,2.07683,6.46590,0
+139.40,bulk,2.07570,1,2.07570,0.00359,,,,,,100.00,2.07870,6.46590,0
+139.80,bulk,2.07700,1,2.07700,0.00358,,,,,,100.00,2.07999,6.46590,0
+140.17,bulk,2.07850,1,2.07850,0.00362,,,,,,100.00,2.08152,6.46590,0
+140.56,bulk,2.07990,1,2.07990,0.00368,,,,,,100.00,2.08297,6.46590,0
+140.94,bulk,2.08130,1,2.08130,0.00369,,,,,,100.00,2.08438,6.46590,0
+141.33,bulk,2.08280,1,2.08280,0.00371,,,,,,100.00,2.08589,6.46590,0
+141.70,bulk,2.08450,1,2.08450,0.00387,,,,,,100.00,2.08773,6.46590,0
+142.09,bulk,2.08630,1,2.08630,0.00405,,,,,,100.00,2.08968,6.46590,0
+142.46,bulk,2.08800,1,2.08800,0.00429,,,,,,100.00,2.09157,6.46590,0
+142.86,bulk,2.08990,1,2.08990,0.00451,,,,,,100.00,2.09366,6.46590,0
+143.23,bulk,2.09150,1,2.09150,0.00460,,,,,,100.00,2.09534,6.46590,0
+143.62,bulk,2.09310,1,2.09310,0.00451,,,,,,100.00,2.09686,6.46590,0
+143.99,bulk,2.09450,1,2.09450,0.00434,,,,,,100.00,2.09811,6.46590,0
+144.39,bulk,2.09580,1,2.09580,0.00405,,,,,,100.00,2.09918,6.46590,0
+144.76,bulk,2.09710,1,2.09710,0.00376,,,,,,100.00,2.10024,6.46590,0
+145.15,bulk,2.09840,1,2.09840,0.00356,,,,,,100.00,2.10137,6.46590,0
+145.62,bulk,2.10010,1,2.10010,0.00343,,,,,,100.00,2.10296,6.46590,0
+146.02,bulk,2.10150,1,2.10150,0.00350,,,,,,100.00,2.10442,6.46590,0
+146.39,bulk,2.10300,1,2.10300,0.00358,,,,,,100.00,2.10598,6.46590,0
+146.78,bulk,2.10450,1,2.10450,0.00376,,,,,,100.00,2.10763,6.46590,0
+147.15,bulk,2.10600,1,2.10600,0.00381,,,,,,100.00,2.10917,6.46590,0
+147.53,bulk,2.10740,1,2.10740,0.00385,,,,,,100.00,2.11061,6.46590,0
+147.93,bulk,2.10880,1,2.10880,0.00383,,,,,,100.00,2.11199,6.46590,0
+148.30,bulk,2.11010,1,2.11010,0.00372,,,,,,100.00,2.11320,6.46590,0
+148.69,bulk,2.11140,1,2.11140,0.00360,,,,,,100.00,2.11440,6.46590,0
+149.07,bulk,2.11270,1,2.11270,0.00349,,,,,,100.00,2.11561,6.46590,0
+149.35,bulk,2.11360,1,2.11360,0.00341,,,,,,100.00,2.11645,6.46590,0
+149.74,bulk,2.11490,1,2.11490,0.00335,,,,,,100.00,2.11770,6.46590,0
+150.12,bulk,2.11610,1,2.11610,0.00330,,,,,,100.00,2.11886,6.46590,0
+150.40,bulk,2.11700,1,2.11700,0.00326,,,,,,100.00,2.11972,6.46590,0
+150.79,bulk,2.11820,1,2.11820,0.00321,,,,,,100.00,2.12087,6.46590,0
+151.18,bulk,2.11950,1,2.11950,0.00322,,,,,,100.00,2.12218,6.46590,0
+151.56,bulk,2.12070,1,2.12070,0.00320,,,,,,100.00,2.12337,6.46590,0
+151.93,bulk,2.12200,1,2.12200,0.00324,,,,,,100.00,2.12470,6.46590,0
+152.32,bulk,2.12340,1,2.12340,0.00332,,,,,,100.00,2.12617,6.46590,0
+152.70,bulk,2.12470,1,2.12470,0.00340,,,,,,100.00,2.12753,6.46590,0
+153.09,bulk,2.12600,1,2.12600,0.00343,,,,,,100.00,2.12886,6.46590,0
+153.46,bulk,2.12740,1,2.12740,0.00350,,,,,,100.00,2.13032,6.46590,0
+153.86,bulk,2.12870,1,2.12870,0.00349,,,,,,100.00,2.13161,6.46590,0
+154.23,bulk,2.12990,1,2.12990,0.00343,,,,,,100.00,2.13276,6.46590,0
+154.62,bulk,2.13100,1,2.13100,0.00331,,,,,,100.00,2.13376,6.46590,0
+154.99,bulk,2.13210,1,2.13210,0.00318,,,,,,100.00,2.13475,6.46590,0
+155.38,bulk,2.13310,1,2.13310,0.00297,,,,,,100.00,2.13557,6.46590,0
+155.76,bulk,2.13410,1,2.13410,0.00282,,,,,,100.00,2.13645,6.46590,0
+156.15,bulk,2.13510,1,2.13510,0.00271,,,,,,100.00,2.13736,6.46590,0
+156.52,bulk,2.13610,1,2.13610,0.00266,,,,,,100.00,2.13832,6.46590,0
+156.92,bulk,2.13710,1,2.13710,0.00261,,,,,,100.00,2.13927,6.46590,0
+157.29,bulk,2.13810,1,2.13810,0.00262,,,,,,100.00,2.14028,6.46590,0
+157.67,bulk,2.13910,1,2.13910,0.00262,,,,,,100.00,2.14128,6.46590,0
+157.96,bulk,2.13990,1,2.13990,0.00264,,,,,,100.00,2.14210,6.46590,0
+158.35,bulk,2.14090,1,2.14090,0.00264,,,,,,100.00,2.14310,6.46590,0
+158.73,bulk,2.14190,1,2.14190,0.00265,,,,,,100.00,2.14411,6.46590,0
+159.12,bulk,2.14290,1,2.14290,0.00263,,,,,,100.00,2.14509,6.46590,0
+159.49,bulk,2.14390,1,2.14390,0.00263,,,,,,100.00,2.14609,6.46590,0
+159.88,bulk,2.14480,1,2.14480,0.00257,,,,,,100.00,2.14695,6.46590,0
+160.25,bulk,2.14580,1,2.14580,0.00256,,,,,,100.00,2.14794,6.46590,0
+160.65,bulk,2.14680,1,2.14680,0.00254,,,,,,100.00,2.14892,6.46590,0
+161.02,bulk,2.14780,1,2.14780,0.00256,,,,,,100.00,2.14993,6.46590,0
+161.41,bulk,2.14880,1,2.14880,0.00257,,,,,,100.00,2.15094,6.46590,0
+161.78,bulk,2.14980,1,2.14980,0.00262,,,,,,100.00,2.15198,6.46590,0
+162.18,bulk,2.15080,1,2.15080,0.00261,,,,,,100.00,2.15297,6.46590,0
+162.55,bulk,2.15190,1,2.15190,0.00265,,,,,,100.00,2.15411,6.46590,0
+162.94,bulk,2.15300,1,2.15300,0.00270,,,,,,100.00,2.15526,6.46590,0
+163.31,bulk,2.15400,1,2.15400,0.00275,,,,,,100.00,2.15629,6.46590,0
+163.70,bulk,2.15510,1,2.15510,0.00278,,,,,,100.00,2.15742,6.46590,0
+164.09,bulk,2.15610,1,2.15610,0.00277,,,,,,100.00,2.15841,6.46590,0
+164.46,bulk,2.15700,1,2.15700,0.00268,,,,,,100.00,2.15924,6.46590,0
+164.85,bulk,2.15790,1,2.15790,0.00257,,,,,,100.00,2.16005,6.46590,0
+165.23,bulk,2.15880,1,2.15880,0.00248,,,,,,100.00,2.16087,6.46590,0
+165.62,bulk,2.15970,1,2.15970,0.00239,,,,,,100.00,2.16169,6.46590,0
+165.99,bulk,2.16070,1,2.16070,0.00240,,,,,,100.00,2.16270,6.46590,0
+166.38,bulk,2.16160,1,2.16160,0.00241,,,,,,100.00,2.16361,6.46590,0
+166.76,bulk,2.16250,1,2.16250,0.00242,,,,,,100.00,2.16452,6.46590,0
+167.15,bulk,2.16330,1,2.16330,0.00237,,,,,,100.00,2.16528,6.46590,0
+167.52,bulk,2.16390,1,2.16390,0.00222,,,,,,100.00,2.16575,6.46590,0
+167.91,bulk,2.16450,1,2.16450,0.00199,,,,,,100.00,2.16616,6.46590,0
+168.29,bulk,2.16500,1,2.16500,0.00177,,,,,,100.00,2.16647,6.46590,0
+168.68,bulk,2.16540,1,2.16540,0.00151,,,,,,100.00,2.16666,6.46590,0
+169.05,bulk,2.16570,1,2.16570,0.00127,,,,,,100.00,2.16676,6.46590,0
+169.43,bulk,2.16610,1,2.16610,0.00112,,,,,,100.00,2.16704,6.46590,0
+169.82,bulk,2.16650,1,2.16650,0.00102,,,,,,100.00,2.16735,6.46590,0
+170.21,bulk,2.16690,1,2.16690,0.00099,,,,,,100.00,2.16772,6.46590,0
+170.58,bulk,2.16720,1,2.16720,0.00097,,,,,,100.00,2.16801,6.46590,0
+170.87,bulk,2.16740,1,2.16740,0.00095,,,,,,100.00,2.16819,6.46590,0
+171.26,bulk,2.16770,1,2.16770,0.00087,,,,,,100.00,2.16843,6.46590,0
+171.63,bulk,2.16800,1,2.16800,0.00081,,,,,,100.00,2.16867,6.46590,0
+171.92,bulk,2.16820,1,2.16820,0.00076,,,,,,100.00,2.16883,6.46590,0
+172.31,bulk,2.16850,1,2.16850,0.00076,,,,,,100.00,2.16913,6.46590,0
+172.69,bulk,2.16880,1,2.16880,0.00077,,,,,,100.00,2.16944,6.46590,0
+173.08,bulk,2.16910,1,2.16910,0.00077,,,,,,100.00,2.16974,6.46590,0
+173.45,bulk,2.16930,1,2.16930,0.00074,,,,,,100.00,2.16991,6.46590,0
+173.84,bulk,2.16960,1,2.16960,0.00072,,,,,,100.00,2.17020,6.46590,0
+174.22,bulk,2.16990,1,2.16990,0.00072,,,,,,100.00,2.17050,6.46590,0
+174.61,bulk,2.17030,1,2.17030,0.00076,,,,,,100.00,2.17093,6.46590,0
+174.98,bulk,2.17060,1,2.17060,0.00081,,,,,,100.00,2.17127,6.46590,0
+175.37,bulk,2.17090,1,2.17090,0.00085,,,,,,100.00,2.17161,6.46590,0
+175.84,bulk,2.17120,1,2.17120,0.00079,,,,,,100.00,2.17186,6.46590,0
+176.23,bulk,2.17150,1,2.17150,0.00073,,,,,,100.00,2.17211,6.46590,0
+176.61,bulk,2.17170,1,2.17170,0.00068,,,,,,100.00,2.17227,6.46590,0
+177.00,bulk,2.17200,1,2.17200,0.00067,,,,,,100.00,2.17256,6.46590,0
+177.37,bulk,2.17230,1,2.17230,0.00069,,,,,,100.00,2.17288,6.46590,0
+177.76,bulk,2.17260,1,2.17260,0.00072,,,,,,100.00,2.17320,6.46590,0
+178.14,bulk,2.17300,1,2.17300,0.00079,,,,,,100.00,2.17366,6.46590,0
+178.43,bulk,2.17320,1,2.17320,0.00084,,,,,,100.00,2.17390,6.46590,0
+178.81,bulk,2.17350,1,2.17350,0.00084,,,,,,100.00,2.17420,6.46590,0
+179.20,bulk,2.17380,1,2.17380,0.00083,,,,,,100.00,2.17449,6.46590,0
+179.57,bulk,2.17400,1,2.17400,0.00077,,,,,,100.00,2.17464,6.46590,0
+179.86,bulk,2.17420,1,2.17420,0.00070,,,,,,100.00,2.17478,6.46590,0
+180.25,bulk,2.17450,1,2.17450,0.00070,,,,,,100.00,2.17508,6.46590,0
+180.63,bulk,2.17490,1,2.17490,0.00074,,,,,,100.00,2.17552,6.46590,0
+181.02,bulk,2.17530,1,2.17530,0.00083,,,,,,100.00,2.17599,6.46590,0
+181.39,bulk,2.17580,1,2.17580,0.00098,,,,,,100.00,2.17662,6.46590,0
+181.77,bulk,2.17640,1,2.17640,0.00114,,,,,,100.00,2.17735,6.46590,0
+182.17,bulk,2.17690,1,2.17690,0.00127,,,,,,100.00,2.17796,6.46590,0
+182.54,bulk,2.17750,1,2.17750,0.00137,,,,,,100.00,2.17865,6.46590,0
+182.93,bulk,2.17800,1,2.17800,0.00143,,,,,,100.00,2.17919,6.46590,0
+183.30,bulk,2.17860,1,2.17860,0.00145,,,,,,100.00,2.17981,6.46590,0
+183.69,bulk,2.17910,1,2.17910,0.00142,,,,,,100.00,2.18029,6.46590,0
+184.07,bulk,2.17950,1,2.17950,0.00138,,,,,,100.00,2.18065,6.46590,0
+184.35,bulk,2.17980,1,2.17980,0.00128,,,,,,100.00,2.18087,6.46590,0
+184.75,bulk,2.18010,1,2.18010,0.00115,,,,,,100.00,2.18106,6.46590,0
+185.12,bulk,2.18040,1,2.18040,0.00098,,,,,,100.00,2.18122,6.46590,0
+185.50,bulk,2.18070,1,2.18070,0.00087,,,,,,100.00,2.18143,6.46590,0
+185.89,bulk,2.18110,1,2.18110,0.00085,,,,,,100.00,2.18181,6.46590,0
+186.27,bulk,2.18140,1,2.18140,0.00084,,,,,,100.00,2.18210,6.46590,0
+186.66,bulk,2.18170,1,2.18170,0.00085,,,,,,100.00,2.18241,6.46590,0
+187.03,bulk,2.18210,1,2.18210,0.00088,,,,,,100.00,2.18283,6.46590,0
+187.44,bulk,2.18230,1,2.18230,0.00084,,,,,,100.00,2.18300,6.46590,0
+187.89,bulk,2.18260,1,2.18260,0.00076,,,,,,100.00,2.18324,6.46590,0
+188.28,bulk,2.18280,1,2.18280,0.00065,,,,,,100.00,2.18335,6.46590,0
+188.66,bulk,2.18310,1,2.18310,0.00066,,,,,,100.00,2.18365,6.46590,0
+188.95,bulk,2.18320,1,2.18320,0.00059,,,,,,100.00,2.18369,6.46590,0
+189.34,bulk,2.18350,1,2.18350,0.00062,,,,,,100.00,2.18402,6.46590,0
+189.71,bulk,2.18370,1,2.18370,0.00062,,,,,,100.00,2.18421,6.46590,0
+190.10,bulk,2.18400,1,2.18400,0.00064,,,,,,100.00,2.18454,6.46590,0
+190.48,bulk,2.18430,1,2.18430,0.00067,,,,,,100.00,2.18486,6.46590,0
+190.87,bulk,2.18460,1,2.18460,0.00072,,,,,,100.00,2.18520,6.46590,0
+191.24,bulk,2.18490,1,2.18490,0.00075,,,,,,100.00,2.18552,6.46590,0
+191.63,bulk,2.18520,1,2.18520,0.00078,,,,,,100.00,2.18585,6.46590,0
+192.01,bulk,2.18560,1,2.18560,0.00082,,,,,,100.00,2.18629,6.46590,0
+192.40,bulk,2.18600,1,2.18600,0.00088,,,,,,100.00,2.18673,6.46590,0
+192.77,bulk,2.18630,1,2.18630,0.00091,,,,,,100.00,2.18706,6.46590,0
+193.16,bulk,2.18670,1,2.18670,0.00095,,,,,,100.00,2.18749,6.46590,0
+193.54,bulk,2.18710,1,2.18710,0.00098,,,,,,100.00,2.18792,6.46590,0
+193.92,bulk,2.18740,1,2.18740,0.00095,,,,,,100.00,2.18819,6.46590,0
+194.31,bulk,2.18770,1,2.18770,0.00091,,,,,,100.00,2.18846,6.46590,0
+194.68,bulk,2.18800,1,2.18800,0.00088,,,,,,100.00,2.18873,6.46590,0
+195.07,bulk,2.18830,1,2.18830,0.00082,,,,,,100.00,2.18899,6.46590,0
+195.35,bulk,2.18840,1,2.18840,0.00074,,,,,,100.00,2.18902,6.46590,0
+195.74,bulk,2.18870,1,2.18870,0.00071,,,,,,100.00,2.18929,6.46590,0
+196.12,bulk,2.18890,1,2.18890,0.00066,,,,,,100.00,2.18945,6.46590,0
+196.41,bulk,2.18910,1,2.18910,0.00063,,,,,,100.00,2.18962,6.46590,0
+196.80,bulk,2.18940,1,2.18940,0.00064,,,,,,100.00,2.18993,6.46590,0
+197.17,bulk,2.18960,1,2.18960,0.00066,,,,,,100.00,2.19015,6.46590,0
+197.46,bulk,2.18970,1,2.18970,0.00061,,,,,,100.00,2.19021,6.46590,0
+197.85,bulk,2.18990,1,2.18990,0.00058,,,,,,100.00,2.19038,6.46590,0
+198.22,bulk,2.19010,1,2.19010,0.00053,,,,,,100.00,2.19054,6.46590,0
+198.61,bulk,2.19030,1,2.19030,0.00049,,,,,,100.00,2.19071,6.46590,0
+198.99,bulk,2.19050,1,2.19050,0.00050,,,,,,100.00,2.19092,6.46590,0
+199.38,bulk,2.19080,1,2.19080,0.00056,,,,,,100.00,2.19127,6.46590,0
+199.76,bulk,2.19110,1,2.19110,0.00062,,,,,,100.00,2.19162,6.46590,0
+200.13,bulk,2.19140,1,2.19140,0.00069,,,,,,100.00,2.19197,6.46590,0
+200.53,bulk,2.19160,1,2.19160,0.00071,,,,,,100.00,2.19219,6.46590,0
+200.90,bulk,2.19190,1,2.19190,0.00072,,,,,,100.00,2.19250,6.46590,0
+201.29,bulk,2.19220,1,2.19220,0.00072,,,,,,100.00,2.19280,6.46590,0
+201.66,bulk,2.19250,1,2.19250,0.00073,,,,,,100.00,2.19310,6.46590,0
+201.95,bulk,2.19270,1,2.19270,0.00074,,,,,,100.00,2.19331,6.46590,0
+202.34,bulk,2.19300,1,2.19300,0.00077,,,,,,100.00,2.19364,6.46590,0
+202.72,bulk,2.19340,1,2.19340,0.00081,,,,,,100.00,2.19407,6.46590,0
+203.11,bulk,2.19370,1,2.19370,0.00083,,,,,,100.00,2.19440,6.46590,0
+203.48,bulk,2.19400,1,2.19400,0.00084,,,,,,100.00,2.19470,6.46590,0
+203.87,bulk,2.19430,1,2.19430,0.00084,,,,,,100.00,2.19500,6.46590,0
+204.25,bulk,2.19460,1,2.19460,0.00082,,,,,,100.00,2.19529,6.46590,0
+204.64,bulk,2.19480,1,2.19480,0.00074,,,,,,100.00,2.19542,6.46590,0
+205.01,bulk,2.19510,1,2.19510,0.00072,,,,,,100.00,2.19570,6.46590,0
+205.40,bulk,2.19540,1,2.19540,0.00072,,,,,,100.00,2.19600,6.46590,0
+205.78,bulk,2.19570,1,2.19570,0.00072,,,,,,100.00,2.19630,6.46590,0
+206.16,bulk,2.19590,1,2.19590,0.00071,,,,,,100.00,2.19649,6.46590,0
+206.45,bulk,2.19620,1,2.19620,0.00075,,,,,,100.00,2.19683,6.46590,0
+206.84,bulk,2.19650,1,2.19650,0.00076,,,,,,100.00,2.19713,6.46590,0
+207.21,bulk,2.19690,1,2.19690,0.00082,,,,,,100.00,2.19758,6.46590,0
+207.60,bulk,2.19730,1,2.19730,0.00090,,,,,,100.00,2.19805,6.46590,0
+207.98,bulk,2.19760,1,2.19760,0.00094,,,,,,100.00,2.19839,6.46590,0
+208.37,bulk,2.19790,1,2.19790,0.00091,,,,,,100.00,2.19866,6.46590,0
+208.74,bulk,2.19820,1,2.19820,0.00088,,,,,,100.00,2.19894,6.46590,0
+209.13,bulk,2.19850,1,2.19850,0.00082,,,,,,100.00,2.19918,6.46590,0
+209.51,bulk,2.19880,1,2.19880,0.00079,,,,,,100.00,2.19946,6.46590,0
+209.90,bulk,2.19910,1,2.19910,0.00078,,,,,,100.00,2.19975,6.46590,0
+210.27,bulk,2.19950,1,2.19950,0.00082,,,,,,100.00,2.20019,6.46590,0
+210.66,bulk,2.19990,1,2.19990,0.00088,,,,,,100.00,2.20063,6.46590,0
+211.04,bulk,2.20040,1,2.20040,0.00099,,,,,,100.00,2.20122,6.46590,0
+211.43,bulk,2.20100,1,2.20100,0.00114,,,,,,100.00,2.20195,6.46590,0
+211.81,bulk,2.20150,1,2.20150,0.00127,,,,,,100.00,2.20256,6.46590,0
+212.18,bulk,2.20200,1,2.20200,0.00134,,,,,,100.00,2.20311,6.46590,0
+212.57,bulk,2.20240,1,2.20240,0.00133,,,,,,100.00,2.20351,6.46590,0
+212.95,bulk,2.20280,1,2.20280,0.00125,,,,,,100.00,2.20384,6.46590,0
+213.34,bulk,2.20300,1,2.20300,0.00107,,,,,,100.00,2.20389,6.46590,0
+213.71,bulk,2.20330,1,2.20330,0.00093,,,,,,100.00,2.20407,6.46590,0
+214.11,bulk,2.20350,1,2.20350,0.00077,,,,,,100.00,2.20415,6.46590,0
+214.48,bulk,2.20370,1,2.20370,0.00066,,,,,,100.00,2.20425,6.46590,0
+214.87,bulk,2.20400,1,2.20400,0.00062,,,,,,100.00,2.20452,6.46590,0
+215.24,bulk,2.20430,1,2.20430,0.00066,,,,,,100.00,2.20485,6.46590,0
+215.64,bulk,2.20460,1,2.20460,0.00069,,,,,,100.00,2.20517,6.46590,0
+216.01,bulk,2.20490,1,2.20490,0.00075,,,,,,100.00,2.20552,6.46590,0
+216.40,bulk,2.20530,1,2.20530,0.00082,,,,,,100.00,2.20598,6.46590,0
+216.77,bulk,2.20570,1,2.20570,0.00088,,,,,,100.00,2.20644,6.46590,0
+217.17,bulk,2.20610,1,2.20610,0.00095,,,,,,100.00,2.20689,6.46590,0
+217.54,bulk,2.20650,1,2.20650,0.00101,,,,,,100.00,2.20734,6.46590,0
+217.92,bulk,2.20700,1,2.20700,0.00108,,,,,,100.00,2.20790,6.46590,0
+218.31,bulk,2.20750,1,2.20750,0.00114,,,,,,100.00,2.20845,6.46590,0
+218.69,bulk,2.20800,1,2.20800,0.00121,,,,,,100.00,2.20901,6.46590,0
+219.08,bulk,2.20860,1,2.20860,0.00131,,,,,,100.00,2.20969,6.46590,0
+219.45,bulk,2.20920,1,2.20920,0.00140,,,,,,100.00,2.21037,6.46590,0
+219.84,bulk,2.20970,1,2.20970,0.00143,,,,,,100.00,2.21089,6.46590,0
+220.24,bulk,2.21030,1,2.21030,0.00147,,,,,,100.00,2.21153,6.46590,0
+220.61,bulk,2.21100,1,2.21100,0.00154,,,,,,100.00,2.21228,6.46590,0
+220.98,bulk,2.21180,1,2.21180,0.00165,,,,,,100.00,2.21317,6.46590,0
+221.38,bulk,2.21270,1,2.21270,0.00182,,,,,,100.00,2.21422,6.46590,0
+221.75,bulk,2.21380,1,2.21380,0.00213,,,,,,100.00,2.21558,6.46590,0
+222.14,bulk,2.21490,1,2.21490,0.00241,,,,,,100.00,2.21691,6.46590,0
+222.51,bulk,2.21580,1,2.21580,0.00257,,,,,,100.00,2.21795,6.46590,0
+222.90,bulk,2.21660,1,2.21660,0.00257,,,,,,100.00,2.21874,6.46590,0
+223.28,bulk,2.21710,1,2.21710,0.00234,,,,,,100.00,2.21905,6.46590,0
+223.67,bulk,2.21750,1,2.21750,0.00193,,,,,,100.00,2.21911,6.46590,0
+224.14,bulk,2.21780,1,2.21780,0.00144,,,,,,100.00,2.21900,6.46590,0
+224.43,bulk,2.21810,1,2.21810,0.00113,,,,,,100.00,2.21904,6.46590,0
+224.82,bulk,2.21850,1,2.21850,0.00095,,,,,,100.00,2.21929,6.46590,0
+225.19,bulk,2.21910,1,2.21910,0.00100,,,,,,100.00,2.21993,6.46590,0
+225.58,bulk,2.21970,1,2.21970,0.00117,,,,,,100.00,2.22067,6.46590,0
+225.96,bulk,2.22020,1,2.22020,0.00135,,,,,,100.00,2.22133,6.46590,0
+226.35,bulk,2.22070,1,2.22070,0.00139,,,,,,100.00,2.22186,6.46590,0
+226.72,bulk,2.22100,1,2.22100,0.00133,,,,,,100.00,2.22211,6.46590,0
+227.11,bulk,2.22130,1,2.22130,0.00115,,,,,,100.00,2.22226,6.46590,0
+227.49,bulk,2.22170,1,2.22170,0.00102,,,,,,100.00,2.22255,6.46590,0
+227.88,bulk,2.22220,1,2.22220,0.00099,,,,,,100.00,2.22303,6.46590,0
+228.25,bulk,2.22260,1,2.22260,0.00101,,,,,,100.00,2.22344,6.46590,0
+228.64,bulk,2.22310,1,2.22310,0.00111,,,,,,100.00,2.22403,6.46590,0
+229.02,bulk,2.22360,1,2.22360,0.00121,,,,,,100.00,2.22461,6.46590,0
+229.41,bulk,2.22390,1,2.22390,0.00117,,,,,,100.00,2.22488,6.46590,0
+229.78,bulk,2.22420,1,2.22420,0.00108,,,,,,100.00,2.22510,6.46590,0
+230.16,bulk,2.22460,1,2.22460,0.00102,,,,,,100.00,2.22545,6.46590,0
+230.45,bulk,2.22480,1,2.22480,0.00092,,,,,,100.00,2.22557,6.46590,0
+230.84,bulk,2.22520,1,2.22520,0.00088,,,,,,100.00,2.22593,6.46590,0
+231.22,bulk,2.22560,1,2.22560,0.00094,,,,,,100.00,2.22638,6.46590,0
+231.61,bulk,2.22600,1,2.22600,0.00098,,,,,,100.00,2.22682,6.46590,0
+231.98,bulk,2.22630,1,2.22630,0.00097,,,,,,100.00,2.22711,6.46590,0
+232.37,bulk,2.22660,1,2.22660,0.00095,,,,,,100.00,2.22739,6.46590,0
+232.74,bulk,2.22700,1,2.22700,0.00092,,,,,,100.00,2.22777,6.46590,0
+233.14,bulk,2.22740,1,2.22740,0.00092,,,,,,100.00,2.22816,6.46590,0
+233.51,bulk,2.22790,1,2.22790,0.00099,,,,,,100.00,2.22872,6.46590,0
+233.90,bulk,2.22850,1,2.22850,0.00114,,,,,,100.00,2.22945,6.46590,0
+234.27,bulk,2.22910,1,2.22910,0.00131,,,,,,100.00,2.23019,6.46590,0
+234.67,bulk,2.22960,1,2.22960,0.00139,,,,,,100.00,2.23076,6.46590,0
+235.04,bulk,2.23010,1,2.23010,0.00144,,,,,,100.00,2.23130,6.46590,0
+235.43,bulk,2.23040,1,2.23040,0.00133,,,,,,100.00,2.23151,6.46590,0
+235.81,bulk,2.23080,1,2.23080,0.00119,,,,,,100.00,2.23179,6.46590,0
+236.19,bulk,2.23100,1,2.23100,0.00100,,,,,,100.00,2.23184,6.46590,0
+236.58,bulk,2.23120,1,2.23120,0.00083,,,,,,100.00,2.23189,6.46590,0
+236.96,bulk,2.23130,1,2.23130,0.00064,,,,,,100.00,2.23184,6.46590,0
+237.35,bulk,2.23150,1,2.23150,0.00054,,,,,,100.00,2.23195,6.46590,0
+237.72,bulk,2.23170,1,2.23170,0.00045,,,,,,100.00,2.23208,6.46590,0
+238.11,bulk,2.23190,1,2.23190,0.00046,,,,,,100.00,2.23229,6.46590,0
+238.48,bulk,2.23220,1,2.23220,0.00052,,,,,,100.00,2.23264,6.46590,0
+238.88,bulk,2.23260,1,2.23260,0.00066,,,,,,100.00,2.23315,6.46590,0
+239.25,bulk,2.23290,1,2.23290,0.00075,,,,,,100.00,2.23352,6.46590,0
+239.64,bulk,2.23310,1,2.23310,0.00078,,,,,,100.00,2.23375,6.46590,0
+240.01,bulk,2.23340,1,2.23340,0.00079,,,,,,100.00,2.23406,6.46590,0
+240.40,bulk,2.23370,1,2.23370,0.00075,,,,,,100.00,2.23433,6.46590,0
+240.78,bulk,2.23390,1,2.23390,0.00069,,,,,,100.00,2.23447,6.46590,0
+241.17,bulk,2.23420,1,2.23420,0.00069,,,,,,100.00,2.23477,6.46590,0
+241.55,bulk,2.23440,1,2.23440,0.00068,,,,,,100.00,2.23497,6.46590,0
+241.93,bulk,2.23460,1,2.23460,0.00063,,,,,,100.00,2.23512,6.46590,0
+242.31,bulk,2.23490,1,2.23490,0.00062,,,,,,100.00,2.23542,6.46590,0
+242.70,bulk,2.23510,1,2.23510,0.00062,,,,,,100.00,2.23562,6.46590,0
+243.07,bulk,2.23540,1,2.23540,0.00063,,,,,,100.00,2.23592,6.46590,0
+243.36,bulk,2.23560,1,2.23560,0.00066,,,,,,100.00,2.23615,6.46590,0
+243.75,bulk,2.23590,1,2.23590,0.00070,,,,,,100.00,2.23649,6.46590,0
+244.13,bulk,2.23630,1,2.23630,0.00077,,,,,,100.00,2.23694,6.46590,0
+244.42,bulk,2.23650,1,2.23650,0.00083,,,,,,100.00,2.23719,6.46590,0
+244.81,bulk,2.23670,1,2.23670,0.00079,,,,,,100.00,2.23736,6.46590,0
+245.18,bulk,2.23690,1,2.23690,0.00073,,,,,,100.00,2.23751,6.46590,0
+245.57,bulk,2.23700,1,2.23700,0.00059,,,,,,100.00,2.23749,6.46590,0
+245.94,bulk,2.23710,1,2.23710,0.00044,,,,,,100.00,2.23747,6.46590,0
+246.34,bulk,2.23720,1,2.23720,0.00036,,,,,,100.00,2.23750,6.46590,0
+246.71,bulk,2.23730,1,2.23730,0.00030,,,,,,100.00,2.23755,6.46590,0
+247.10,bulk,2.23750,1,2.23750,0.00030,,,,,,100.00,2.23775,6.46590,0
+247.47,bulk,2.23760,1,2.23760,0.00032,,,,,,100.00,2.23787,6.46590,0
+247.86,bulk,2.23780,1,2.23780,0.00037,,,,,,100.00,2.23810,6.46590,0
+248.25,bulk,2.23800,1,2.23800,0.00042,,,,,,100.00,2.23835,6.46590,0
+248.62,bulk,2.23810,1,2.23810,0.00043,,,,,,100.00,2.23845,6.46590,0
+248.91,bulk,2.23820,1,2.23820,0.00040,,,,,,100.00,2.23854,6.46590,0
+249.30,bulk,2.23830,1,2.23830,0.00038,,,,,,100.00,2.23862,6.46590,0
+249.67,bulk,2.23840,1,2.23840,0.00032,,,,,,100.00,2.23867,6.46590,0
+249.96,bulk,2.23840,1,2.23840,0.00025,,,,,,100.00,2.23861,6.46590,0
+250.35,bulk,2.23840,1,2.23840,0.00018,,,,,,100.00,2.23855,6.46590,0
+250.73,bulk,2.23850,1,2.23850,0.00014,,,,,,100.00,2.23862,6.46590,0
+251.12,bulk,2.23850,1,2.23850,0.00010,,,,,,100.00,2.23859,6.46590,0
+251.49,bulk,2.23860,1,2.23860,0.00011,,,,,,100.00,2.23869,6.46590,0
+251.88,bulk,2.23880,1,2.23880,0.00019,,,,,,100.00,2.23896,6.46590,0
+252.26,bulk,2.23890,1,2.23890,0.00026,,,,,,100.00,2.23912,6.46590,0
+252.65,bulk,2.23890,1,2.23890,0.00025,,,,,,100.00,2.23911,6.46590,0
+253.02,bulk,2.23900,1,2.23900,0.00026,,,,,,100.00,2.23922,6.46590,0
+253.41,bulk,2.23900,1,2.23900,0.00019,,,,,,100.00,2.23916,6.46590,0
+253.79,bulk,2.23940,1,2.23940,0.00025,,,,,,100.00,2.23961,6.46590,0
+254.17,bulk,2.23960,1,2.23960,0.00037,,,,,,100.00,2.23991,6.46590,0
+254.55,bulk,2.23980,1,2.23980,0.00050,,,,,,100.00,2.24022,6.46590,0
+254.96,bulk,2.24000,1,2.24000,0.00056,,,,,,100.00,2.24047,6.46590,0
+255.32,bulk,2.24010,1,2.24010,0.00056,,,,,,100.00,2.24057,6.46590,0
+255.71,bulk,2.24020,1,2.24020,0.00042,,,,,,100.00,2.24055,6.46590,0
+256.08,bulk,2.24040,1,2.24040,0.00040,,,,,,100.00,2.24073,6.46590,0
+256.48,bulk,2.24060,1,2.24060,0.00040,,,,,,100.00,2.24093,6.46590,0
+256.85,bulk,2.24070,1,2.24070,0.00039,,,,,,100.00,2.24103,6.46590,0
+257.24,bulk,2.24090,1,2.24090,0.00043,,,,,,100.00,2.24125,6.46590,0
+257.61,bulk,2.24100,1,2.24100,0.00042,,,,,,100.00,2.24135,6.46590,0
+257.99,bulk,2.24110,1,2.24110,0.00037,,,,,,100.00,2.24141,6.46590,0
+258.38,bulk,2.24120,1,2.24120,0.00032,,,,,,100.00,2.24147,6.46590,0
+258.76,bulk,2.24140,1,2.24140,0.00034,,,,,,100.00,2.24168,6.46590,0
+259.15,bulk,2.24160,1,2.24160,0.00036,,,,,,100.00,2.24190,6.46590,0
+259.53,bulk,2.24180,1,2.24180,0.00042,,,,,,100.00,2.24215,6.46590,0
+259.92,bulk,2.24200,1,2.24200,0.00048,,,,,,100.00,2.24240,6.46590,0
+260.30,bulk,2.24210,1,2.24210,0.00048,,,,,,100.00,2.24250,6.46590,0
+--- END trickle telemetry CSV ---

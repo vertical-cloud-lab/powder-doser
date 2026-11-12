@@ -1,0 +1,1127 @@
+powder_id,trial,target_g,t_s,phase,mass_g,stable,fresh,kf_mass_g,kf_rate_gps,kf_sigma_g,kf_balance_g,ff_gpr,rate_setpoint_gps,rate_err_gps,pi_integ,bulk_slope_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+al4047-9fxeqt,de4dd913,4.5095,7.0,bulk,0.0003,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,7.0,bulk,0.0010,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,7.0,bulk,0.0015,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,8.0,bulk,0.0084,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,8.0,bulk,0.0137,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,8.0,bulk,0.0198,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,9.0,bulk,0.0265,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,9.0,bulk,0.0326,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,10.0,bulk,0.0399,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,10.0,bulk,0.0458,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,10.0,bulk,0.0529,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,11.0,bulk,0.0582,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,11.0,bulk,0.0646,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,12.0,bulk,0.0723,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,12.0,bulk,0.0802,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,12.0,bulk,0.0858,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,13.0,bulk,0.0899,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,13.0,bulk,0.0957,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,13.0,bulk,0.1005,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,14.0,bulk,0.1054,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,14.0,bulk,0.1128,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,15.0,bulk,0.1175,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,15.0,bulk,0.1230,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,15.0,bulk,0.1297,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,16.0,bulk,0.1368,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,16.0,bulk,0.1435,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,16.0,bulk,0.1474,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,17.0,bulk,0.1509,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,17.0,bulk,0.1550,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,17.0,bulk,0.1585,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,18.0,bulk,0.1646,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,18.0,bulk,0.1686,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,19.0,bulk,0.1704,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,19.0,bulk,0.1749,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,19.0,bulk,0.1791,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,20.0,bulk,0.1822,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,20.0,bulk,0.1847,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,20.0,bulk,0.1877,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,21.0,bulk,0.1923,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,21.0,bulk,0.1966,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,22.0,bulk,0.1997,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,22.0,bulk,0.2053,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,22.0,bulk,0.2087,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,23.0,bulk,0.2135,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,23.0,bulk,0.2185,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,23.0,bulk,0.2216,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,24.0,bulk,0.2247,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,24.0,bulk,0.2275,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,24.0,bulk,0.2303,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,25.0,bulk,0.2343,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,25.0,bulk,0.2371,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,26.0,bulk,0.2407,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,26.0,bulk,0.2436,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,26.0,bulk,0.2458,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,27.0,bulk,0.2485,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,27.0,bulk,0.2500,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,27.0,bulk,0.2500,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,28.0,bulk,0.2508,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,28.0,bulk,0.2556,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,29.0,bulk,0.2596,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,29.0,bulk,0.2619,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,29.0,bulk,0.2655,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,30.0,bulk,0.2684,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,30.0,bulk,0.2696,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,30.0,bulk,0.2757,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,31.0,bulk,0.2768,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,31.0,bulk,0.2780,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,31.0,bulk,0.2830,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,32.0,bulk,0.2869,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,32.0,bulk,0.2924,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,33.0,bulk,0.2958,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,33.0,bulk,0.2998,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,33.0,bulk,0.3007,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,34.0,bulk,0.3016,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,34.0,bulk,0.3077,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,34.0,bulk,0.3107,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,35.0,bulk,0.3138,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,35.0,bulk,0.3188,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,35.0,bulk,0.3226,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,36.0,bulk,0.3260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,36.0,bulk,0.3305,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,37.0,bulk,0.3352,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,37.0,bulk,0.3382,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,37.0,bulk,0.3388,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,38.0,bulk,0.3431,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,38.0,bulk,0.3497,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,39.0,bulk,0.3520,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,39.0,bulk,0.3576,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,39.0,bulk,0.3650,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,40.0,bulk,0.3738,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,40.0,bulk,0.3815,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,40.0,bulk,0.3892,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,41.0,bulk,0.3961,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,41.0,bulk,0.4032,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,42.0,bulk,0.4099,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,42.0,bulk,0.4178,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,42.0,bulk,0.4230,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,43.0,bulk,0.4275,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,43.0,bulk,0.4354,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,43.0,bulk,0.4404,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,44.0,bulk,0.4454,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,44.0,bulk,0.4528,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,44.0,bulk,0.4602,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,45.0,bulk,0.4674,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,45.0,bulk,0.4753,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,46.0,bulk,0.4832,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,46.0,bulk,0.4891,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,46.0,bulk,0.4936,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,47.0,bulk,0.5004,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,47.0,bulk,0.5061,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,47.0,bulk,0.5143,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,48.0,bulk,0.5234,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,48.0,bulk,0.5306,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,48.0,bulk,0.5407,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,49.0,bulk,0.5506,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,49.0,bulk,0.5598,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,50.0,bulk,0.5686,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,50.0,bulk,0.5784,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,50.0,bulk,0.5869,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,51.0,bulk,0.5961,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,51.0,bulk,0.6025,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,52.0,bulk,0.6117,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,52.0,bulk,0.6223,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,52.0,bulk,0.6316,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,53.0,bulk,0.6399,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,53.0,bulk,0.6462,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,53.0,bulk,0.6517,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,54.0,bulk,0.6569,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,54.0,bulk,0.6617,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,54.0,bulk,0.6651,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,55.0,bulk,0.6719,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,55.0,bulk,0.6781,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,56.0,bulk,0.6804,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,56.0,bulk,0.6849,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,56.0,bulk,0.6889,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,57.0,bulk,0.6927,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,57.0,bulk,0.6977,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,57.0,bulk,0.7004,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,58.0,bulk,0.7050,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,58.0,bulk,0.7089,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,59.0,bulk,0.7140,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,59.0,bulk,0.7177,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,59.0,bulk,0.7222,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,60.0,bulk,0.7253,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,60.0,bulk,0.7300,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,60.0,bulk,0.7351,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,61.0,bulk,0.7373,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,61.0,bulk,0.7389,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,62.0,bulk,0.7434,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,62.0,bulk,0.7470,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,62.0,bulk,0.7493,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,63.0,bulk,0.7521,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,63.0,bulk,0.7550,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,63.0,bulk,0.7559,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,64.0,bulk,0.7590,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,64.0,bulk,0.7639,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,64.0,bulk,0.7685,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,65.0,bulk,0.7740,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,65.0,bulk,0.7804,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,66.0,bulk,0.7843,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,66.0,bulk,0.7876,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,66.0,bulk,0.7917,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,67.0,bulk,0.7972,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,67.0,bulk,0.8057,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,67.0,bulk,0.8127,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,68.0,bulk,0.8195,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,68.0,bulk,0.8247,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,68.0,bulk,0.8295,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,69.0,bulk,0.8352,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,69.0,bulk,0.8400,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,70.0,bulk,0.8444,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,70.0,bulk,0.8508,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,70.0,bulk,0.8586,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,71.0,bulk,0.8646,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,71.0,bulk,0.8713,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,71.0,bulk,0.8787,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,72.0,bulk,0.8853,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,72.0,bulk,0.8911,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,73.0,bulk,0.8973,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,73.0,bulk,0.9019,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,73.0,bulk,0.9048,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,74.0,bulk,0.9102,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,74.0,bulk,0.9145,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,74.0,bulk,0.9182,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,75.0,bulk,0.9218,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,75.0,bulk,0.9274,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,76.0,bulk,0.9296,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,76.0,bulk,0.9318,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,76.0,bulk,0.9341,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,77.0,bulk,0.9384,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,77.0,bulk,0.9420,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,77.0,bulk,0.9458,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,78.0,bulk,0.9500,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,78.0,bulk,0.9528,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,78.0,bulk,0.9576,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,79.0,bulk,0.9603,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,79.0,bulk,0.9670,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,79.0,bulk,0.9700,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,80.0,bulk,0.9709,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,80.0,bulk,0.9754,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,81.0,bulk,0.9786,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,81.0,bulk,0.9832,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,81.0,bulk,0.9862,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,82.0,bulk,0.9887,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,82.0,bulk,0.9917,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,82.0,bulk,0.9955,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,83.0,bulk,0.9993,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,83.0,bulk,1.0057,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,83.0,bulk,1.0097,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,84.0,bulk,1.0131,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,84.0,bulk,1.0145,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,85.0,bulk,1.0181,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,85.0,bulk,1.0223,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,85.0,bulk,1.0270,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,86.0,bulk,1.0320,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,86.0,bulk,1.0349,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,86.0,bulk,1.0389,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,87.0,bulk,1.0461,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,87.0,bulk,1.0478,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,88.0,bulk,1.0527,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,88.0,bulk,1.0596,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,88.0,bulk,1.0629,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,89.0,bulk,1.0685,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,89.0,bulk,1.0719,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,89.0,bulk,1.0748,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,90.0,bulk,1.0778,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,90.0,bulk,1.0810,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,90.0,bulk,1.0848,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,91.0,bulk,1.0885,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,91.0,bulk,1.0921,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,92.0,bulk,1.0942,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,92.0,bulk,1.0958,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,92.0,bulk,1.0996,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,93.0,bulk,1.1021,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,93.0,bulk,1.1071,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,93.0,bulk,1.1090,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,94.0,bulk,1.1096,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,94.0,bulk,1.1157,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,95.0,bulk,1.1216,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,95.0,bulk,1.1249,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,95.0,bulk,1.1251,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,96.0,bulk,1.1255,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,96.0,bulk,1.1294,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,96.0,bulk,1.1329,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,97.0,bulk,1.1347,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,97.0,bulk,1.1378,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,97.0,bulk,1.1405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,98.0,bulk,1.1445,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,98.0,bulk,1.1492,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,99.0,bulk,1.1539,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,99.0,bulk,1.1543,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,99.0,bulk,1.1545,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,100.0,bulk,1.1604,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,100.0,bulk,1.1639,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,100.0,bulk,1.1675,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,101.0,bulk,1.1701,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,101.0,bulk,1.1730,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,101.0,bulk,1.1737,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,102.0,bulk,1.1740,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,102.0,bulk,1.1804,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,103.0,bulk,1.1837,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,103.0,bulk,1.1863,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,103.0,bulk,1.1877,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,104.0,bulk,1.1888,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,104.0,bulk,1.1960,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,104.0,bulk,1.1995,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,105.0,bulk,1.2018,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,105.0,bulk,1.2048,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,105.0,bulk,1.2082,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,106.0,bulk,1.2142,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,106.0,bulk,1.2192,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,107.0,bulk,1.2228,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,107.0,bulk,1.2270,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,107.0,bulk,1.2314,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,108.0,bulk,1.2360,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,108.0,bulk,1.2398,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,109.0,bulk,1.2427,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,109.0,bulk,1.2465,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,109.0,bulk,1.2500,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,110.0,bulk,1.2518,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,110.0,bulk,1.2560,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,110.0,bulk,1.2591,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,111.0,bulk,1.2638,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,111.0,bulk,1.2680,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,112.0,bulk,1.2710,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,112.0,bulk,1.2752,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,112.0,bulk,1.2784,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,113.0,bulk,1.2811,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,113.0,bulk,1.2846,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,113.0,bulk,1.2886,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,114.0,bulk,1.2911,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,114.0,bulk,1.2957,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,114.0,bulk,1.2980,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,115.0,bulk,1.3004,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,115.0,bulk,1.3015,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,116.0,bulk,1.3070,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,116.0,bulk,1.3091,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,116.0,bulk,1.3141,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,117.0,bulk,1.3179,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,117.0,bulk,1.3224,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,118.0,bulk,1.3260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,118.0,bulk,1.3296,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,118.0,bulk,1.3319,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,119.0,bulk,1.3331,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,119.0,bulk,1.3371,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,119.0,bulk,1.3413,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,120.0,bulk,1.3457,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,120.0,bulk,1.3489,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,120.0,bulk,1.3513,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,121.0,bulk,1.3522,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,121.0,bulk,1.3528,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,122.0,bulk,1.3594,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,122.0,bulk,1.3626,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,122.0,bulk,1.3652,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,123.0,bulk,1.3666,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,123.0,bulk,1.3672,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,123.0,bulk,1.3683,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,124.0,bulk,1.3690,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,124.0,bulk,1.3774,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,124.0,bulk,1.3809,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,125.0,bulk,1.3837,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,125.0,bulk,1.3867,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,126.0,bulk,1.3895,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,126.0,bulk,1.3936,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,126.0,bulk,1.3984,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,127.0,bulk,1.4003,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,127.0,bulk,1.4016,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,127.0,bulk,1.4053,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,128.0,bulk,1.4063,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,128.0,bulk,1.4103,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,129.0,bulk,1.4115,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,129.0,bulk,1.4120,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,129.0,bulk,1.4165,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,130.0,bulk,1.4204,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,130.0,bulk,1.4235,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,130.0,bulk,1.4276,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,131.0,bulk,1.4295,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,131.0,bulk,1.4309,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,132.0,bulk,1.4317,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,132.0,bulk,1.4324,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,132.0,bulk,1.4377,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,133.0,bulk,1.4398,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,133.0,bulk,1.4405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,133.0,bulk,1.4434,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,134.0,bulk,1.4446,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,134.0,bulk,1.4523,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,135.0,bulk,1.4540,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,135.0,bulk,1.4547,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,135.0,bulk,1.4556,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,136.0,bulk,1.4623,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,136.0,bulk,1.4664,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,137.0,bulk,1.4690,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,137.0,bulk,1.4708,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,137.0,bulk,1.4754,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,138.0,bulk,1.4799,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,138.0,bulk,1.4820,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,138.0,bulk,1.4836,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,139.0,bulk,1.4870,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,139.0,bulk,1.4919,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,139.0,bulk,1.4934,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,140.0,bulk,1.4935,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,140.0,bulk,1.4973,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,140.0,bulk,1.5014,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,141.0,bulk,1.5018,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,141.0,bulk,1.5063,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,142.0,bulk,1.5092,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,142.0,bulk,1.5123,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,142.0,bulk,1.5138,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,143.0,bulk,1.5149,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,143.0,bulk,1.5184,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,143.0,bulk,1.5214,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,144.0,bulk,1.5253,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,144.0,bulk,1.5299,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,144.0,bulk,1.5327,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,145.0,bulk,1.5353,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,145.0,bulk,1.5394,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,146.0,bulk,1.5447,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,146.0,bulk,1.5474,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,146.0,bulk,1.5502,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,147.0,bulk,1.5543,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,147.0,bulk,1.5561,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,147.0,bulk,1.5569,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,148.0,bulk,1.5620,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,148.0,bulk,1.5655,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,148.0,bulk,1.5676,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,149.0,bulk,1.5684,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,149.0,bulk,1.5717,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,150.0,bulk,1.5745,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,150.0,bulk,1.5783,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,150.0,bulk,1.5830,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,151.0,bulk,1.5862,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,151.0,bulk,1.5877,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,151.0,bulk,1.5912,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,152.0,bulk,1.5940,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,152.0,bulk,1.5984,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,153.0,bulk,1.6020,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,153.0,bulk,1.6049,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,153.0,bulk,1.6072,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,154.0,bulk,1.6084,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,154.0,bulk,1.6093,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,154.0,bulk,1.6133,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,155.0,bulk,1.6162,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,155.0,bulk,1.6190,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,155.0,bulk,1.6214,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,156.0,bulk,1.6238,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,156.0,bulk,1.6268,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,157.0,bulk,1.6274,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,157.0,bulk,1.6320,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,157.0,bulk,1.6363,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,158.0,bulk,1.6405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,158.0,bulk,1.6430,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,158.0,bulk,1.6463,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,159.0,bulk,1.6510,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,159.0,bulk,1.6546,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,159.0,bulk,1.6589,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,160.0,bulk,1.6618,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,160.0,bulk,1.6636,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,161.0,bulk,1.6672,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,161.0,bulk,1.6694,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,161.0,bulk,1.6704,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,162.0,bulk,1.6712,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,162.0,bulk,1.6776,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,163.0,bulk,1.6788,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,163.0,bulk,1.6819,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,163.0,bulk,1.6838,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,164.0,bulk,1.6847,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,164.0,bulk,1.6886,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,164.0,bulk,1.6917,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,165.0,bulk,1.6942,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,165.0,bulk,1.6980,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,165.0,bulk,1.7013,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,166.0,bulk,1.7045,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,166.0,bulk,1.7105,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,166.0,bulk,1.7154,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,167.0,bulk,1.7202,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,167.0,bulk,1.7212,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,168.0,bulk,1.7220,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,168.0,bulk,1.7260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,168.0,bulk,1.7282,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,169.0,bulk,1.7290,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,169.0,bulk,1.7329,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,169.0,bulk,1.7364,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,170.0,bulk,1.7385,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,170.0,bulk,1.7426,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,170.0,bulk,1.7456,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,171.0,bulk,1.7495,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,171.0,bulk,1.7542,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,172.0,bulk,1.7560,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,172.0,bulk,1.7595,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,172.0,bulk,1.7636,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,173.0,bulk,1.7671,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,173.0,bulk,1.7703,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,173.0,bulk,1.7730,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,174.0,bulk,1.7750,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,174.0,bulk,1.7781,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,175.0,bulk,1.7810,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,175.0,bulk,1.7854,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,175.0,bulk,1.7882,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,176.0,bulk,1.7930,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,176.0,bulk,1.7961,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,176.0,bulk,1.8002,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,177.0,bulk,1.8064,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,177.0,bulk,1.8108,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,177.0,bulk,1.8154,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,178.0,bulk,1.8189,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,178.0,bulk,1.8240,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,179.0,bulk,1.8331,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,179.0,bulk,1.8390,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,179.0,bulk,1.8436,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,180.0,bulk,1.8469,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,180.0,bulk,1.8497,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,180.0,bulk,1.8564,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,181.0,bulk,1.8604,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,181.0,bulk,1.8626,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,181.0,bulk,1.8660,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,182.0,bulk,1.8677,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,182.0,bulk,1.8689,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,183.0,bulk,1.8725,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,183.0,bulk,1.8751,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,183.0,bulk,1.8797,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,184.0,bulk,1.8830,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,184.0,bulk,1.8858,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,185.0,bulk,1.8910,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,185.0,bulk,1.8950,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,185.0,bulk,1.8988,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,186.0,bulk,1.9039,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,186.0,bulk,1.9065,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,186.0,bulk,1.9113,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,187.0,bulk,1.9145,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,187.0,bulk,1.9174,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,188.0,bulk,1.9186,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,188.0,bulk,1.9232,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,188.0,bulk,1.9268,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,189.0,bulk,1.9297,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,189.0,bulk,1.9329,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,189.0,bulk,1.9344,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,190.0,bulk,1.9386,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,190.0,bulk,1.9416,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,190.0,bulk,1.9465,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,191.0,bulk,1.9500,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,191.0,bulk,1.9534,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,192.0,bulk,1.9560,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,192.0,bulk,1.9598,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,192.0,bulk,1.9613,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,193.0,bulk,1.9650,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,193.0,bulk,1.9693,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,193.0,bulk,1.9714,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,194.0,bulk,1.9763,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,194.0,bulk,1.9794,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,194.0,bulk,1.9808,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,195.0,bulk,1.9822,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,195.0,bulk,1.9865,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,196.0,bulk,1.9876,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,196.0,bulk,1.9879,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,196.0,bulk,1.9889,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,197.0,bulk,1.9942,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,197.0,bulk,1.9987,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,197.0,bulk,2.0021,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,198.0,bulk,2.0023,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,198.0,bulk,2.0034,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,199.0,bulk,2.0040,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,199.0,bulk,2.0106,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,199.0,bulk,2.0118,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,200.0,bulk,2.0160,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,200.0,bulk,2.0197,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,200.0,bulk,2.0241,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,201.0,bulk,2.0285,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,201.0,bulk,2.0313,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,201.0,bulk,2.0346,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,202.0,bulk,2.0373,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,202.0,bulk,2.0416,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,203.0,bulk,2.0444,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,203.0,bulk,2.0472,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,203.0,bulk,2.0497,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,204.0,bulk,2.0513,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,204.0,bulk,2.0564,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,204.0,bulk,2.0611,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,205.0,bulk,2.0640,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,205.0,bulk,2.0687,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,205.0,bulk,2.0723,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,206.0,bulk,2.0764,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,206.0,bulk,2.0783,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,207.0,bulk,2.0826,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,207.0,bulk,2.0880,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,207.0,bulk,2.0903,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,208.0,bulk,2.0931,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,208.0,bulk,2.0976,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,208.0,bulk,2.1025,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,209.0,bulk,2.1075,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,209.0,bulk,2.1100,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,210.0,bulk,2.1164,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,210.0,bulk,2.1224,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,210.0,bulk,2.1266,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,211.0,bulk,2.1363,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,211.0,bulk,2.1422,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,211.0,bulk,2.1477,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,212.0,bulk,2.1540,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,212.0,bulk,2.1586,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,212.0,bulk,2.1637,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,213.0,bulk,2.1657,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,213.0,bulk,2.1696,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,214.0,bulk,2.1735,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,214.0,bulk,2.1779,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,214.0,bulk,2.1812,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,215.0,bulk,2.1873,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,215.0,bulk,2.1893,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,215.0,bulk,2.1949,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,216.0,bulk,2.1991,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,216.0,bulk,2.2031,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,216.0,bulk,2.2075,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,217.0,bulk,2.2119,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,217.0,bulk,2.2150,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,218.0,bulk,2.2193,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,218.0,bulk,2.2249,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,218.0,bulk,2.2300,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,219.0,bulk,2.2358,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,219.0,bulk,2.2405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,219.0,bulk,2.2437,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,220.0,bulk,2.2469,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,220.0,bulk,2.2509,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,221.0,bulk,2.2548,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,221.0,bulk,2.2584,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,221.0,bulk,2.2622,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,222.0,bulk,2.2648,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,222.0,bulk,2.2701,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,222.0,bulk,2.2723,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,223.0,bulk,2.2744,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,223.0,bulk,2.2755,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,223.0,bulk,2.2806,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,224.0,bulk,2.2851,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,224.0,bulk,2.2892,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,225.0,bulk,2.2934,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,225.0,bulk,2.2974,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,225.0,bulk,2.2993,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,226.0,bulk,2.3046,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,226.0,bulk,2.3087,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,227.0,bulk,2.3144,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,227.0,bulk,2.3194,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,227.0,bulk,2.3224,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,228.0,bulk,2.3287,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,228.0,bulk,2.3345,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,228.0,bulk,2.3394,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,229.0,bulk,2.3429,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,229.0,bulk,2.3459,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,229.0,bulk,2.3517,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,230.0,bulk,2.3585,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,230.0,bulk,2.3631,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,231.0,bulk,2.3673,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,231.0,bulk,2.3717,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,231.0,bulk,2.3756,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,232.0,bulk,2.3780,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,232.0,bulk,2.3824,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,232.0,bulk,2.3878,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,233.0,bulk,2.3912,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,233.0,bulk,2.3970,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,233.0,bulk,2.4017,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,234.0,bulk,2.4065,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,234.0,bulk,2.4119,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,235.0,bulk,2.4160,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,235.0,bulk,2.4205,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,235.0,bulk,2.4238,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,236.0,bulk,2.4301,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,236.0,bulk,2.4356,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,236.0,bulk,2.4405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,237.0,bulk,2.4445,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,237.0,bulk,2.4493,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,237.0,bulk,2.4549,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,238.0,bulk,2.4593,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,238.0,bulk,2.4644,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,239.0,bulk,2.4679,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,239.0,bulk,2.4728,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,239.0,bulk,2.4800,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,240.0,bulk,2.4844,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,240.0,bulk,2.4897,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,240.0,bulk,2.4955,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,241.0,bulk,2.5012,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,241.0,bulk,2.5053,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,242.0,bulk,2.5095,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,242.0,bulk,2.5148,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,242.0,bulk,2.5214,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,243.0,bulk,2.5264,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,243.0,bulk,2.5337,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,243.0,bulk,2.5392,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,244.0,bulk,2.5425,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,244.0,bulk,2.5467,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,245.0,bulk,2.5522,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,245.0,bulk,2.5539,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,245.0,bulk,2.5565,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,246.0,bulk,2.5606,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,246.0,bulk,2.5644,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,246.0,bulk,2.5696,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,247.0,bulk,2.5745,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,247.0,bulk,2.5788,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,247.0,bulk,2.5829,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,248.0,bulk,2.5850,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,248.0,bulk,2.5882,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,249.0,bulk,2.5938,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,249.0,bulk,2.5970,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,249.0,bulk,2.6010,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,250.0,bulk,2.6034,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,250.0,bulk,2.6054,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,250.0,bulk,2.6091,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,251.0,bulk,2.6129,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,251.0,bulk,2.6138,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,251.0,bulk,2.6138,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,252.0,bulk,2.6176,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,252.0,bulk,2.6200,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,253.0,bulk,2.6224,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,253.0,bulk,2.6260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,253.0,bulk,2.6289,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,254.0,bulk,2.6299,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,254.0,bulk,2.6345,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,254.0,bulk,2.6364,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,255.0,bulk,2.6370,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,255.0,bulk,2.6413,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,256.0,bulk,2.6447,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,256.0,bulk,2.6447,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,256.0,bulk,2.6452,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,257.0,bulk,2.6499,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,257.0,bulk,2.6533,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,257.0,bulk,2.6568,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,258.0,bulk,2.6598,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,258.0,bulk,2.6633,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,258.0,bulk,2.6668,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,259.0,bulk,2.6705,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,259.0,bulk,2.6730,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,260.0,bulk,2.6754,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,260.0,bulk,2.6765,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,260.0,bulk,2.6816,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,261.0,bulk,2.6838,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,261.0,bulk,2.6865,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,261.0,bulk,2.6894,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,262.0,bulk,2.6905,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,262.0,bulk,2.6912,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,262.0,bulk,2.6914,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,263.0,bulk,2.6949,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,263.0,bulk,2.6970,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,264.0,bulk,2.6979,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,264.0,bulk,2.6988,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,264.0,bulk,2.6995,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,265.0,bulk,2.7059,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,265.0,bulk,2.7070,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,265.0,bulk,2.7076,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,266.0,bulk,2.7083,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,266.0,bulk,2.7093,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,267.0,bulk,2.7103,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,267.0,bulk,2.7114,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,267.0,bulk,2.7125,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,268.0,bulk,2.7181,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,268.0,bulk,2.7196,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,268.0,bulk,2.7237,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,269.0,bulk,2.7249,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,269.0,bulk,2.7260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,269.0,bulk,2.7268,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,270.0,bulk,2.7312,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,270.0,bulk,2.7320,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,271.0,bulk,2.7325,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,271.0,bulk,2.7365,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,271.0,bulk,2.7386,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,272.0,bulk,2.7395,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,272.0,bulk,2.7432,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,272.0,bulk,2.7465,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,273.0,bulk,2.7488,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,273.0,bulk,2.7518,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,273.0,bulk,2.7528,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,274.0,bulk,2.7540,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,274.0,bulk,2.7597,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,275.0,bulk,2.7634,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,275.0,bulk,2.7660,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,275.0,bulk,2.7704,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,276.0,bulk,2.7737,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,276.0,bulk,2.7769,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,277.0,bulk,2.7807,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,277.0,bulk,2.7844,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,277.0,bulk,2.7897,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,278.0,bulk,2.7930,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,278.0,bulk,2.7952,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,278.0,bulk,2.7995,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,279.0,bulk,2.8023,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,279.0,bulk,2.8076,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,280.0,bulk,2.8108,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,280.0,bulk,2.8134,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,280.0,bulk,2.8160,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,281.0,bulk,2.8182,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,281.0,bulk,2.8238,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,281.0,bulk,2.8287,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,282.0,bulk,2.8317,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,282.0,bulk,2.8347,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,282.0,bulk,2.8376,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,283.0,bulk,2.8404,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,283.0,bulk,2.8424,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,284.0,bulk,2.8461,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,284.0,bulk,2.8503,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,284.0,bulk,2.8522,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,285.0,bulk,2.8556,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,285.0,bulk,2.8597,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,285.0,bulk,2.8638,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,286.0,bulk,2.8668,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,286.0,bulk,2.8671,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,286.0,bulk,2.8719,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,287.0,bulk,2.8769,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,287.0,bulk,2.8819,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,288.0,bulk,2.8840,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,288.0,bulk,2.8872,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,288.0,bulk,2.8917,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,289.0,bulk,2.8970,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,289.0,bulk,2.9031,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,290.0,bulk,2.9070,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,290.0,bulk,2.9114,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,290.0,bulk,2.9142,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,291.0,bulk,2.9170,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,291.0,bulk,2.9217,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,291.0,bulk,2.9281,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,292.0,bulk,2.9308,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,292.0,bulk,2.9356,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,292.0,bulk,2.9380,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,293.0,bulk,2.9424,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,293.0,bulk,2.9473,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,294.0,bulk,2.9498,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,294.0,bulk,2.9551,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,294.0,bulk,2.9607,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,295.0,bulk,2.9655,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,295.0,bulk,2.9696,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,295.0,bulk,2.9734,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,296.0,bulk,2.9775,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,296.0,bulk,2.9809,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,297.0,bulk,2.9858,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,297.0,bulk,2.9939,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,297.0,bulk,2.9997,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,298.0,bulk,3.0044,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,298.0,bulk,3.0097,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,298.0,bulk,3.0176,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,299.0,bulk,3.0236,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,299.0,bulk,3.0297,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,299.0,bulk,3.0348,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,300.0,bulk,3.0383,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,300.0,bulk,3.0408,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,301.0,bulk,3.0451,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,301.0,bulk,3.0504,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,301.0,bulk,3.0557,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,302.0,bulk,3.0609,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,302.0,bulk,3.0673,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,302.0,bulk,3.0722,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,303.0,bulk,3.0762,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,303.0,bulk,3.0806,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,304.0,bulk,3.0848,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,304.0,bulk,3.0878,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,304.0,bulk,3.0908,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,305.0,bulk,3.0968,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,305.0,bulk,3.1020,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,305.0,bulk,3.1073,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,306.0,bulk,3.1135,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,306.0,bulk,3.1213,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,306.0,bulk,3.1273,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,307.0,bulk,3.1315,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,307.0,bulk,3.1350,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,308.0,bulk,3.1414,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,308.0,bulk,3.1473,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,308.0,bulk,3.1542,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,309.0,bulk,3.1605,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,309.0,bulk,3.1663,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,309.0,bulk,3.1715,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,310.0,bulk,3.1809,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,310.0,bulk,3.1879,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,310.0,bulk,3.1981,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,311.0,bulk,3.2065,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,311.0,bulk,3.2121,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,312.0,bulk,3.2198,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,312.0,bulk,3.2234,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,312.0,bulk,3.2309,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,313.0,bulk,3.2367,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,313.0,bulk,3.2444,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,313.0,bulk,3.2528,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,314.0,bulk,3.2623,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,314.0,bulk,3.2683,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,315.0,bulk,3.2743,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,315.0,bulk,3.2813,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,315.0,bulk,3.2871,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,316.0,bulk,3.2922,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,316.0,bulk,3.2973,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,316.0,bulk,3.3041,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,317.0,bulk,3.3113,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,317.0,bulk,3.3171,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,318.0,bulk,3.3223,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,318.0,bulk,3.3268,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,318.0,bulk,3.3302,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,319.0,bulk,3.3371,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,319.0,bulk,3.3426,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,319.0,bulk,3.3487,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,320.0,bulk,3.3529,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,320.0,bulk,3.3613,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,320.0,bulk,3.3675,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,321.0,bulk,3.3745,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,321.0,bulk,3.3798,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,322.0,bulk,3.3866,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,322.0,bulk,3.3903,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,322.0,bulk,3.3942,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,323.0,bulk,3.3989,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,323.0,bulk,3.4056,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,323.0,bulk,3.4105,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,324.0,bulk,3.4156,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,324.0,bulk,3.4190,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,324.0,bulk,3.4260,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,325.0,bulk,3.4322,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,325.0,bulk,3.4367,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,326.0,bulk,3.4421,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,326.0,bulk,3.4482,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,326.0,bulk,3.4531,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,327.0,bulk,3.4590,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,327.0,bulk,3.4660,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,328.0,bulk,3.4702,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,328.0,bulk,3.4800,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,328.0,bulk,3.4904,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,329.0,bulk,3.4986,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,329.0,bulk,3.5055,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,329.0,bulk,3.5141,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,330.0,bulk,3.5171,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,330.0,bulk,3.5253,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,330.0,bulk,3.5334,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,331.0,bulk,3.5427,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,331.0,bulk,3.5488,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,332.0,bulk,3.5576,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,332.0,bulk,3.5637,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,332.0,bulk,3.5718,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,333.0,bulk,3.5766,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,333.0,bulk,3.5838,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,333.0,bulk,3.5913,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,334.0,bulk,3.5996,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,334.0,bulk,3.6047,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,335.0,bulk,3.6103,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,335.0,bulk,3.6166,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,335.0,bulk,3.6203,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,336.0,bulk,3.6245,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,336.0,bulk,3.6310,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,336.0,bulk,3.6356,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,337.0,bulk,3.6405,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,337.0,bulk,3.6489,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,337.0,bulk,3.6537,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,338.0,bulk,3.6589,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,338.0,bulk,3.6656,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,339.0,bulk,3.6738,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,339.0,bulk,3.6794,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,339.0,bulk,3.6854,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,340.0,bulk,3.6884,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,340.0,bulk,3.6970,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,340.0,bulk,3.7031,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,341.0,bulk,3.7109,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,341.0,bulk,3.7155,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,342.0,bulk,3.7221,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,342.0,bulk,3.7261,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,342.0,bulk,3.7291,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,343.0,bulk,3.7330,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,343.0,bulk,3.7379,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,343.0,bulk,3.7446,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,344.0,bulk,3.7493,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,344.0,bulk,3.7556,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,344.0,bulk,3.7588,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,345.0,bulk,3.7637,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,345.0,bulk,3.7678,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,346.0,bulk,3.7737,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,346.0,bulk,3.7797,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,346.0,bulk,3.7864,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,347.0,bulk,3.7932,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,347.0,bulk,3.7967,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,347.0,bulk,3.8004,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,348.0,bulk,3.8062,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,348.0,bulk,3.8104,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,348.0,bulk,3.8185,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,349.0,bulk,3.8225,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,349.0,bulk,3.8300,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,350.0,bulk,3.8354,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,350.0,bulk,3.8415,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,350.0,bulk,3.8464,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,351.0,bulk,3.8512,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,351.0,bulk,3.8568,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,351.0,bulk,3.8631,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,352.0,bulk,3.8715,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,352.0,bulk,3.8768,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,353.0,bulk,3.8861,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,353.0,bulk,3.8898,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,353.0,bulk,3.8949,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,354.0,bulk,3.9010,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,354.0,bulk,3.9072,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,354.0,bulk,3.9121,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,355.0,bulk,3.9152,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,355.0,bulk,3.9172,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,355.0,bulk,3.9249,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,356.0,bulk,3.9279,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,356.0,bulk,3.9333,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,357.0,bulk,3.9366,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,357.0,bulk,3.9419,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,357.0,bulk,3.9432,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,358.0,bulk,3.9470,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,358.0,bulk,3.9525,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,358.0,bulk,3.9584,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,359.0,bulk,3.9630,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,359.0,bulk,3.9686,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,359.0,bulk,3.9758,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,360.0,bulk,3.9809,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,360.0,bulk,3.9883,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,361.0,bulk,3.9914,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,361.0,bulk,3.9967,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,361.0,bulk,4.0003,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,362.0,bulk,4.0046,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,362.0,bulk,4.0087,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,363.0,bulk,4.0125,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,363.0,bulk,4.0177,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,363.0,bulk,4.0274,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,364.0,bulk,4.0318,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,364.0,bulk,4.0363,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,364.0,bulk,4.0429,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,365.0,bulk,4.0522,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,365.0,bulk,4.0597,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,365.0,bulk,4.0679,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,366.0,bulk,4.0771,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,366.0,bulk,4.0840,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,367.0,bulk,4.0940,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,367.0,bulk,4.1009,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,367.0,bulk,4.1093,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,368.0,bulk,4.1163,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,368.0,bulk,4.1232,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,368.0,bulk,4.1284,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,369.0,bulk,4.1350,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,369.0,bulk,4.1400,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,370.0,bulk,4.1450,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,370.0,bulk,4.1499,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,370.0,bulk,4.1545,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,371.0,bulk,4.1630,,,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,console
+al4047-9fxeqt,de4dd913,4.5095,374.0,bulk_settled,4.1729,,,,,,,,,,,,,,40.0,0.0,none,console
+al4047-9fxeqt,de4dd913,4.5095,378.1,trickle,,,,4.1735,0.04930,0.01180,,,0.05000,,,,4.2264,4.4745,10.0,14.7,none,console
+al4047-9fxeqt,de4dd913,4.5095,378.8,trickle,,,,4.1944,0.04430,0.00950,,,0.05000,,,,4.2408,4.4745,10.0,10.4,none,console
+al4047-9fxeqt,de4dd913,4.5095,379.5,trickle,,,,4.2107,0.04630,0.00910,,,0.05000,,,,4.2584,4.4745,10.0,8.7,none,console
+al4047-9fxeqt,de4dd913,4.5095,380.3,trickle,,,,4.2219,0.04790,0.00910,,,0.05000,,,,4.2710,4.4745,10.0,9.0,none,console
+al4047-9fxeqt,de4dd913,4.5095,381.1,trickle,,,,4.2277,0.04630,0.00910,,,0.05000,,,,4.2754,4.4745,10.0,9.7,none,console
+al4047-9fxeqt,de4dd913,4.5095,381.7,trickle,,,,4.2283,0.04170,0.00860,,,0.05000,,,,4.2716,4.4745,10.0,10.0,none,console
+al4047-9fxeqt,de4dd913,4.5095,382.4,trickle,,,,4.2291,0.03990,0.00830,,,0.05000,,,,4.2708,4.4745,10.0,10.1,none,console
+al4047-9fxeqt,de4dd913,4.5095,383.2,trickle,,,,4.2325,0.03900,0.00890,,,0.05000,,,,4.2739,4.4745,10.0,11.1,none,console
+al4047-9fxeqt,de4dd913,4.5095,383.9,trickle,,,,4.2320,0.03800,0.00910,,,0.05000,,,,4.2727,4.4745,10.0,12.3,none,console
+al4047-9fxeqt,de4dd913,4.5095,384.6,trickle,,,,4.2276,0.03660,0.00860,,,0.05000,,,,4.2667,4.4745,10.0,13.7,none,console
+al4047-9fxeqt,de4dd913,4.5095,385.4,trickle,,,,4.2277,0.03540,0.00900,,,0.05000,,,,4.2663,4.4745,10.0,15.2,none,console
+al4047-9fxeqt,de4dd913,4.5095,386.1,trickle,,,,4.2264,0.03400,0.00910,,,0.05000,,,,4.2638,4.4745,10.0,16.9,none,console
+al4047-9fxeqt,de4dd913,4.5095,386.8,trickle,,,,4.2237,0.03240,0.00890,,,0.05000,,,,4.2596,4.4745,10.0,18.6,none,console
+al4047-9fxeqt,de4dd913,4.5095,387.6,trickle,,,,4.2225,0.03090,0.00900,,,0.05000,,,,4.2573,4.4745,10.0,20.6,none,console
+al4047-9fxeqt,de4dd913,4.5095,388.3,trickle,,,,4.2208,0.02940,0.00910,,,0.05000,,,,4.2544,4.4745,10.0,22.8,none,console
+al4047-9fxeqt,de4dd913,4.5095,389.1,trickle,,,,4.2186,0.02780,0.00910,,,0.05000,,,,4.2510,4.4745,10.0,25.1,none,console
+al4047-9fxeqt,de4dd913,4.5095,389.8,trickle,,,,4.2149,0.02620,0.00860,,,0.05000,,,,4.2453,4.4745,10.0,27.5,none,console
+al4047-9fxeqt,de4dd913,4.5095,396.0,tap_burst,4.1780,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,399.0,tap_burst,4.1783,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,402.0,tap_burst,4.1778,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,405.0,tap_burst,4.1787,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,408.0,tap_burst,4.1785,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,412.0,tap_burst,4.1773,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,415.0,tap_burst,4.1766,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,421.0,tap_burst,4.1770,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,424.0,tap_burst,4.1754,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,427.0,tap_burst,4.1707,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,430.0,tap_burst,4.1715,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,434.0,tap_burst,4.1752,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,437.0,tap_burst,4.1725,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,440.0,tap_burst,4.1707,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,443.0,tap_burst,4.1697,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,449.0,tap_burst,4.1773,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,452.0,tap_burst,4.1843,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,455.0,tap_burst,4.1805,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,458.0,tap_burst,4.1788,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,462.0,tap_burst,4.1797,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,465.0,tap_burst,4.1798,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,468.0,tap_burst,4.1800,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,471.0,tap_burst,4.1798,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,475.0,tap_burst,4.1792,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,478.0,tap_burst,4.1789,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,483.0,tap_burst,4.1791,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,487.0,tap_burst,4.1797,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,490.0,tap_burst,4.1798,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,493.0,tap_burst,4.1805,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,496.0,tap_burst,4.1792,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,500.0,tap_burst,4.1792,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,503.0,tap_burst,4.1799,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,506.0,tap_burst,4.1797,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,510.0,tap_burst,4.1805,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,513.0,tap_burst,4.1802,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,516.0,tap_burst,4.1809,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,519.0,tap_burst,4.1807,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,523.0,tap_burst,4.1800,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,526.0,tap_burst,4.1815,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,529.0,tap_burst,4.1815,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,532.0,tap_burst,4.1821,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,536.0,tap_burst,4.1818,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,539.0,tap_burst,4.1817,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,542.0,tap_burst,4.1817,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,548.0,tap_burst,4.1824,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,551.0,tap_burst,4.1823,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,554.0,tap_burst,4.1821,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,558.0,tap_burst,4.1837,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,561.0,tap_burst,4.1823,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,564.0,tap_burst,4.1825,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,567.0,tap_burst,4.1831,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,571.0,tap_burst,4.1823,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,574.0,tap_burst,4.1825,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,577.0,tap_burst,4.1839,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,580.0,tap_burst,4.1829,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,584.0,tap_burst,4.1841,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,587.0,tap_burst,4.1823,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,590.0,tap_burst,4.1836,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,594.0,tap_burst,4.1833,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,597.0,tap_burst,4.1833,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,600.0,tap_burst,4.1826,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,606.0,tap_burst,4.1840,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,609.0,tap_burst,4.1839,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,612.0,tap_burst,4.1831,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,616.0,tap_burst,4.1831,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,621.0,tap_burst,4.1842,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,624.0,tap_burst,4.1846,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,628.0,tap_burst,4.1846,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,631.0,tap_burst,4.1837,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,634.0,tap_burst,4.1842,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,638.0,tap_burst,4.1845,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,641.0,tap_burst,4.1854,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,644.0,tap_burst,4.1864,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,648.0,tap_burst,4.1846,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,651.0,tap_burst,4.1860,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,654.0,tap_burst,4.1851,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,657.0,tap_burst,4.1865,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,661.0,tap_burst,4.1855,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,664.0,tap_burst,4.1853,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,667.0,tap_burst,4.1863,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,671.0,tap_burst,4.1862,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,674.0,tap_burst,4.1853,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,677.0,tap_burst,4.1858,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,680.0,tap_burst,4.1850,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,684.0,tap_burst,4.1860,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,687.0,tap_burst,4.1865,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,690.0,tap_burst,4.1869,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,694.0,tap_burst,4.1858,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,697.0,tap_burst,4.1861,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,700.0,tap_burst,4.1866,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,703.0,tap_burst,4.1861,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,706.0,tap_burst,4.1858,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,710.0,tap_burst,4.1869,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,713.0,tap_burst,4.1872,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,716.0,tap_burst,4.1876,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,719.0,tap_burst,4.1871,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,723.0,tap_burst,4.1896,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,726.0,tap_burst,4.1876,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,729.0,tap_burst,4.1877,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,733.0,tap_burst,4.1871,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,738.0,tap_burst,4.1876,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,741.0,tap_burst,4.1875,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,745.0,tap_burst,4.1888,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,748.0,tap_burst,4.1884,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,751.0,tap_burst,4.1880,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,754.0,tap_burst,4.1879,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,760.0,tap_burst,4.1883,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,763.0,tap_burst,4.1886,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,766.0,tap_burst,4.1877,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,770.0,tap_burst,4.1881,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,773.0,tap_burst,4.1886,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,776.0,tap_burst,4.1888,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,780.0,tap_burst,4.1884,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,783.0,tap_burst,4.1898,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,786.0,tap_burst,4.1887,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,789.0,tap_burst,4.1882,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,793.0,tap_burst,4.1894,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,796.0,tap_burst,4.1887,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,799.0,tap_burst,4.1875,,,,,,,,,,,,,,15.0,0.0,burst x2,console
+al4047-9fxeqt,de4dd913,4.5095,802.0,tap_burst,4.1899,,,,,,,,,,,,,,15.0,0.0,burst x2,console

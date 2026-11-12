@@ -1,0 +1,241 @@
+powder_id,trial,target_g,t_s,phase,mass_g,stable,fresh,kf_mass_g,kf_rate_gps,kf_sigma_g,kf_balance_g,ff_gpr,rate_setpoint_gps,rate_err_gps,pi_integ,bulk_slope_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+alsi10mg,64714f7c,8.0,7.93,bulk,-0.00113,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,8.32,bulk,-0.00133,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,8.71,bulk,-0.00173,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,9.08,bulk,-0.00223,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,9.47,bulk,-0.00253,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,9.86,bulk,0.00147,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,10.23,bulk,0.00107,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,10.51,bulk,0.00037,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,10.90,bulk,-0.00033,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,11.30,bulk,-0.00053,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,11.67,bulk,-0.00103,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,12.04,bulk,-0.00153,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,12.43,bulk,0.00037,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,12.82,bulk,0.00047,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,13.10,bulk,0.00047,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,13.49,bulk,0.00047,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,13.86,bulk,0.00087,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,14.25,bulk,0.00097,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,14.64,bulk,0.00117,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,15.01,bulk,0.00117,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,15.40,bulk,0.00127,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,15.78,bulk,0.00097,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,16.16,bulk,0.00057,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,16.54,bulk,0.00017,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,16.93,bulk,0.00047,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,17.30,bulk,0.00067,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,17.59,bulk,0.00067,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,17.98,bulk,0.00057,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,18.36,bulk,0.00037,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,18.75,bulk,0.00067,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,19.12,bulk,0.00487,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,19.51,bulk,0.00337,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,19.90,bulk,0.00317,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,20.27,bulk,0.00667,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,20.56,bulk,0.00617,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,20.94,bulk,0.00667,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,21.33,bulk,0.01027,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,21.70,bulk,0.01157,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,22.09,bulk,0.01227,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,22.48,bulk,0.01847,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,22.85,bulk,0.02277,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,23.24,bulk,0.02947,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,23.52,bulk,0.03457,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,23.91,bulk,0.04357,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,24.30,bulk,0.05527,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,24.67,bulk,0.06897,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,25.05,bulk,0.08607,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,25.44,bulk,0.10957,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,25.82,bulk,0.13827,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,26.10,bulk,0.16037,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,26.49,bulk,0.19297,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,26.88,bulk,0.22897,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,27.25,bulk,0.27327,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,27.54,bulk,0.30837,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,27.92,bulk,0.35967,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,28.31,bulk,0.41207,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,28.59,bulk,0.44567,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,28.98,bulk,0.50307,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,29.35,bulk,0.56027,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,29.74,bulk,0.62017,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,30.13,bulk,0.68827,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,30.50,bulk,0.75057,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,30.89,bulk,0.80967,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,31.28,bulk,0.88417,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,31.66,bulk,0.94797,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,32.03,bulk,1.02017,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,32.42,bulk,1.09517,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,32.81,bulk,1.16427,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,33.18,bulk,1.24277,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,33.57,bulk,1.31787,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,33.95,bulk,1.38617,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,34.33,bulk,1.47397,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,34.61,bulk,1.52677,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,35.00,bulk,1.60707,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,35.39,bulk,1.68587,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,35.76,bulk,1.76207,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,36.05,bulk,1.82797,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,36.43,bulk,1.90777,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,36.82,bulk,1.99037,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,37.10,bulk,2.04977,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,37.49,bulk,2.13967,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,37.86,bulk,2.22737,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,38.25,bulk,2.30787,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,38.54,bulk,2.37617,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,38.92,bulk,2.46277,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,39.31,bulk,2.54737,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,39.68,bulk,2.63597,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,40.07,bulk,2.71567,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,40.46,bulk,2.80207,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,40.83,bulk,2.89747,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,41.12,bulk,2.96347,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,41.50,bulk,3.05557,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,41.89,bulk,3.14167,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,42.26,bulk,3.23157,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,42.55,bulk,3.30177,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,42.94,bulk,3.39417,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,43.33,bulk,3.48917,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,43.70,bulk,3.57587,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,44.09,bulk,3.67487,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,44.47,bulk,3.77137,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,44.85,bulk,3.85497,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,45.23,bulk,3.95397,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,45.52,bulk,4.02487,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,45.90,bulk,4.11917,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,46.29,bulk,4.20817,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,46.66,bulk,4.29347,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,47.05,bulk,4.38777,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,47.44,bulk,4.48907,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,47.81,bulk,4.57447,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,48.10,bulk,4.64957,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,48.49,bulk,4.74107,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,48.87,bulk,4.83637,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,49.25,bulk,4.94117,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,49.53,bulk,5.01127,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,49.92,bulk,5.11057,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,50.30,bulk,5.20547,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,50.68,bulk,5.30687,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,51.07,bulk,5.40817,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,51.45,bulk,5.49327,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,51.83,bulk,5.58937,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,52.21,bulk,5.69097,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,52.50,bulk,5.76047,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,52.88,bulk,5.85417,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,53.27,bulk,5.94407,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,53.56,bulk,6.02017,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,53.94,bulk,6.10807,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,54.31,bulk,6.20377,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,54.60,bulk,6.27967,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,54.99,bulk,6.37317,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,55.38,bulk,6.47457,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,55.75,bulk,6.57287,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,56.04,bulk,6.64247,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,56.42,bulk,6.74327,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,56.81,bulk,6.83787,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,57.18,bulk,6.93407,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,57.57,bulk,7.02797,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,57.96,bulk,7.12137,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,58.33,bulk,7.23017,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,58.62,bulk,7.29917,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,59.00,bulk,7.40117,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,59.39,bulk,7.50157,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,59.77,bulk,7.60307,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,60.05,bulk,7.68757,,1,,,,,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+alsi10mg,64714f7c,8.0,62.83,bulk_settled,7.88195,,1,,,,,,,,,,,,40.0,0.0,none,telemetry
+alsi10mg,64714f7c,8.0,66.37,trickle,7.88237,,1,7.88235,0.00000,0.01285,,0.3500,0.04956,0.04956,0.0000,,7.89520,7.96500,10.0,0.00,none,telemetry
+alsi10mg,64714f7c,8.0,66.75,trickle,7.88257,,1,7.88244,0.06390,0.01179,,0.3500,0.04951,-0.01439,0.0191,,7.94750,7.96500,10.0,14.68,none,telemetry
+alsi10mg,64714f7c,8.0,67.13,trickle,7.88237,,1,7.90678,0.01508,0.00662,,0.3500,0.03491,0.01984,0.0137,,7.92597,7.96500,10.0,0.00,none,telemetry
+alsi10mg,64714f7c,8.0,67.52,trickle,7.88227,,1,7.91189,0.03761,0.00777,,0.3500,0.03185,-0.00576,0.0213,,7.95101,7.96500,10.0,7.51,none,telemetry
+alsi10mg,64714f7c,8.0,67.91,trickle,7.88227,,1,7.92256,0.01278,0.00837,,0.3500,0.02545,0.01267,0.0190,,7.94159,7.96500,10.0,0.84,none,telemetry
+alsi10mg,64714f7c,8.0,68.29,trickle,7.88237,,1,7.91990,0.02971,0.00886,,0.3500,0.02705,-0.00267,0.0238,,7.95353,7.96500,10.0,6.02,none,telemetry
+alsi10mg,64714f7c,8.0,68.66,trickle,7.88767,,1,7.92310,0.01607,0.00899,,0.3500,0.02513,0.00905,0.0227,,7.94549,7.96500,10.0,2.06,none,telemetry
+alsi10mg,64714f7c,8.0,69.04,trickle,7.88857,,1,7.92018,0.02744,0.00906,,0.3500,0.02688,-0.00056,0.0261,,7.95211,7.96500,10.0,5.40,none,telemetry
+alsi10mg,64714f7c,8.0,69.43,trickle,7.89137,,1,7.92276,0.01941,0.00911,,0.3500,0.02533,0.00592,0.0259,,7.94806,7.96500,10.0,2.97,none,telemetry
+alsi10mg,64714f7c,8.0,69.71,trickle,7.89207,,1,7.92109,0.02421,0.00856,,0.3500,0.02633,0.00212,0.0282,,7.94983,7.96500,10.0,4.86,none,telemetry
+alsi10mg,64714f7c,8.0,70.09,trickle,7.89837,,1,7.92500,0.02330,0.00880,,0.3500,0.02399,0.00068,0.0288,,7.95324,7.96500,10.0,3.99,none,telemetry
+alsi10mg,64714f7c,8.0,70.38,trickle,7.90167,,1,7.92734,0.02194,0.00834,,0.3292,0.02258,0.00064,0.0291,,7.95398,7.96500,10.0,3.66,none,telemetry
+alsi10mg,64714f7c,8.0,70.76,trickle,7.90937,,1,7.93271,0.02047,0.00869,,0.3111,0.01937,-0.00110,0.0293,,7.95846,7.96500,10.0,3.67,none,telemetry
+alsi10mg,64714f7c,8.0,71.05,trickle,7.91437,,1,7.93626,0.01806,0.00828,,0.2951,0.01724,-0.00082,0.0288,,7.95959,7.96500,10.0,3.19,none,telemetry
+alsi10mg,64714f7c,8.0,71.43,trickle,7.92057,,1,7.94107,0.01631,0.00868,,0.2812,0.01435,-0.00196,0.0286,,7.96335,7.96500,10.0,3.23,none,telemetry
+alsi10mg,64714f7c,8.0,71.81,trickle,7.92387,,1,7.94453,0.01397,0.00887,,0.2689,0.01228,-0.00169,0.0279,,7.96504,7.96500,10.0,2.85,none,telemetry
+alsi10mg,64714f7c,8.0,74.22,trickle_end,7.94217,,1,,,,,,,,,,,,10.0,0.0,none,telemetry
+alsi10mg,64714f7c,8.0,77.46,tap,7.94499,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,80.63,tap,7.94803,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,83.68,tap,7.94795,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,86.74,tap,7.94883,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,89.71,tap,7.94887,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,92.67,tap,7.95149,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,95.82,tap,7.95617,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,98.80,tap,7.95601,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,101.75,tap,7.95675,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,104.71,tap,7.96141,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,107.69,tap,7.96023,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,110.65,tap,7.96103,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,113.61,tap,7.96315,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,116.89,tap,7.96435,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,119.82,tap,7.96525,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,122.80,tap,7.96207,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,125.86,tap,7.96245,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,129.02,tap,7.96285,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,131.97,tap,7.96605,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,134.93,tap,7.96533,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,137.91,tap,7.96927,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,140.87,tap,7.96979,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,143.83,tap,7.97099,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,146.80,tap,7.97017,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,149.76,tap,7.97251,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,152.74,tap,7.97473,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,155.79,tap,7.97207,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,158.75,tap,7.97241,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,161.71,tap,7.97501,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,164.69,tap,7.97559,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,167.64,tap,7.97563,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,170.60,tap,7.97541,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,173.58,tap,7.97751,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,176.64,tap,7.97691,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,179.60,tap,7.97783,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,182.57,tap,7.97627,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,185.54,tap,7.97863,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,188.50,tap,7.97789,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,191.55,tap,7.98007,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,194.72,tap,7.97837,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,197.78,tap,7.97689,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,200.73,tap,7.98017,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,203.69,tap,7.97977,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,206.76,tap,7.97949,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,209.73,tap,7.98199,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,212.79,tap,7.98099,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,215.74,tap,7.98255,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,218.71,tap,7.98395,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,221.70,tap,7.98337,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,224.73,tap,7.98431,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,227.90,tap,7.98399,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,230.86,tap,7.98399,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,233.82,tap,7.98435,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,236.79,tap,7.98387,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,239.85,tap,7.98505,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,242.81,tap,7.98729,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,245.87,tap,7.98627,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,249.13,tap,7.98687,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,252.29,tap,7.98881,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,255.24,tap,7.98807,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,258.21,tap,7.98787,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,261.17,tap,7.98813,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,264.34,tap,7.98877,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,267.40,tap,7.98899,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,270.35,tap,7.99005,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,273.32,tap,7.98919,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,276.28,tap,7.98923,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,279.24,tap,7.98747,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,284.50,tap,7.99017,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,287.47,tap,7.99087,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,290.46,tap,7.99087,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,293.50,tap,7.99393,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,296.46,tap,7.99239,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,299.42,tap,7.99633,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,302.40,tap,7.99447,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,305.35,tap,7.99337,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,308.33,tap,7.99545,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,311.28,tap,7.99759,,1,,,,,,,,,,,,15.0,0.0,single x1,telemetry
+alsi10mg,64714f7c,8.0,314.54,final_scored,7.99277,,1,,,,,,,,,,,,15.0,0.0,none,outcome

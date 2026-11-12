@@ -1,0 +1,290 @@
+powder_id,trial,target_g,t_s,phase,mass_g,stable,fresh,kf_mass_g,kf_rate_gps,kf_sigma_g,kf_balance_g,ff_gpr,rate_setpoint_gps,rate_err_gps,pi_integ,bulk_slope_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+carboxymethyl-cellulose,cmc-t1,0.2,0.093,pre_drift,0.0032,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,0.281,pre_drift,0.0032,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,0.470,pre_drift,0.0031,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,0.660,pre_drift,0.0031,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,0.851,pre_drift,0.0030,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.043,pre_drift,0.0030,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.235,pre_drift,0.0028,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.426,pre_drift,0.0028,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.616,pre_drift,0.0027,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.808,pre_drift,0.0026,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,1.999,pre_drift,0.0026,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,2.191,pre_drift,0.0025,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,2.383,pre_drift,0.0024,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,2.572,pre_drift,0.0023,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,2.764,pre_drift,0.0023,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,2.956,pre_drift,0.0022,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,3.147,pre_drift,0.0021,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,3.337,pre_drift,0.0021,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,3.529,pre_drift,0.0020,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,3.721,pre_drift,0.0020,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,3.912,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,4.104,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,4.294,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,4.486,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,4.677,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,4.869,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,5.061,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,5.250,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,5.442,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,5.634,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,5.825,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.015,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.207,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.399,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.590,pre_drift,0.0019,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.782,pre_drift,0.0018,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,6.972,pre_drift,0.0018,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,7.164,pre_drift,0.0018,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,7.355,pre_drift,0.0018,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,7.547,pre_drift,0.0018,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,7.739,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,7.929,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,8.120,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,8.312,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,8.504,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,8.693,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,8.885,pre_drift,0.0017,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,9.077,pre_drift,0.0016,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,9.269,pre_drift,0.0016,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,9.469,pre_drift,0.0016,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,9.657,pre_drift,0.0016,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,9.845,pre_drift,0.0010,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.033,pre_drift,0.0009,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.224,pre_drift,0.0008,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.416,pre_drift,0.0007,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.606,pre_drift,0.0006,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.797,pre_drift,0.0005,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,10.989,pre_drift,0.0004,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,11.181,pre_drift,0.0003,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,11.370,pre_drift,0.0003,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,11.562,pre_drift,0.0002,U,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,11.754,pre_drift,0.0002,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,11.945,pre_drift,0.0002,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,12.137,pre_drift,0.0002,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,12.327,pre_drift,0.0002,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,12.518,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,12.710,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,12.902,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,13.094,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,13.283,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,13.475,pre_drift,0.0001,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,13.667,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,13.859,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,14.048,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,14.240,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,14.432,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,14.623,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,14.815,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,15.005,pre_drift,0.0000,S,,,,,,,,,,,,,,0.0,,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,15.197,baseline,0.0000,S,,,,,,,,,,,,,,0.0,,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,16.000,preroll,0.0000,S,1,0.0000,0.0000,0.01883,0.0000,0.3500,0.0000,,0.000,,0.0188,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,16.157,preroll,0.0000,S,0,0.0000,0.0000,0.02635,0.0000,0.3500,0.0000,,0.000,,0.0263,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,16.351,preroll,0.0000,S,1,0.0000,0.0000,0.02285,0.0000,0.3500,0.0000,,0.000,,0.0228,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,16.546,preroll,0.0000,S,0,0.0000,0.0000,0.03312,0.0000,0.3500,0.0000,,0.000,,0.0331,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,16.741,preroll,0.0000,S,1,0.0000,0.0000,0.02532,0.0000,0.3500,0.0000,,0.000,,0.0253,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,16.921,preroll,-0.0001,S,1,-0.0003,0.0000,0.02108,-0.0001,0.3500,0.0000,,0.000,,0.0208,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,17.118,preroll,-0.0005,U,1,-0.0011,0.0000,0.02198,-0.0005,0.3500,0.0000,,0.000,,0.0209,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,17.314,preroll,-0.0006,U,1,-0.0001,0.0018,0.02191,-0.0006,0.3500,0.0000,,0.000,,0.0224,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,17.498,preroll,-0.0007,U,1,-0.0012,0.0000,0.02058,-0.0007,0.3500,0.0000,,0.000,,0.0194,0.1650,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,17.845,trickle,-0.0008,U,1,0.0000,0.0007,0.04251,-0.0008,0.3500,0.0500,,0.000,,0.0427,0.1620,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,18.135,trickle,-0.0009,U,1,-0.0019,0.0472,0.03636,-0.0009,0.3500,0.0500,,0.017,,0.0487,0.1620,25.0,14.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,18.415,trickle,-0.0010,U,1,0.0130,0.0315,0.03649,-0.0010,0.3500,0.0500,,0.018,,0.0590,0.1620,25.0,2.9,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,18.607,trickle,-0.0013,U,1,-0.0037,0.0073,0.02673,-0.0010,0.3500,0.0500,,0.023,,0.0252,0.1620,25.0,7.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,18.904,trickle,-0.0285,U,1,-0.0632,0.0072,0.03676,-0.0275,0.3500,0.0500,,0.031,,-0.0243,0.1620,25.0,14.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,19.180,trickle,-0.0492,U,1,-0.0426,0.0703,0.03588,-0.0494,0.3500,0.0500,,0.044,,0.0144,0.1620,25.0,16.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,19.371,trickle,-0.0436,U,1,-0.0267,0.0465,0.02576,-0.0436,0.3500,0.0500,,0.038,,0.0130,0.1620,25.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,19.562,trickle,-0.0327,U,1,-0.0200,0.0379,0.02331,-0.0326,0.3500,0.0500,,0.039,,0.0147,0.1620,25.0,5.6,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,19.753,trickle,-0.0303,U,1,-0.0275,0.0195,0.02404,-0.0298,0.3500,0.0500,,0.041,,0.0023,0.1620,25.0,8.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,19.945,trickle,-0.0298,U,1,-0.0275,0.0365,0.02411,-0.0297,0.3500,0.0500,,0.047,,0.0076,0.1620,25.0,13.3,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,20.136,trickle,-0.0285,U,1,-0.0213,0.0422,0.02405,-0.0285,0.3500,0.0500,,0.050,,0.0153,0.1620,25.0,9.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,20.328,trickle,-0.0278,U,1,-0.0231,0.0300,0.02412,-0.0275,0.3500,0.0500,,0.051,,0.0100,0.1620,25.0,8.1,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,20.519,trickle,-0.0274,U,1,-0.0242,0.0346,0.02405,-0.0272,0.3500,0.0500,,0.055,,0.0102,0.1620,25.0,11.6,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,20.711,trickle,-0.0237,U,1,-0.0144,0.0500,0.02412,-0.0238,0.3500,0.0500,,0.058,,0.0247,0.1620,25.0,10.8,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,20.902,trickle,-0.0201,U,1,-0.0114,0.0370,0.02405,-0.0199,0.3500,0.0500,,0.058,,0.0238,0.1620,25.0,7.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,21.093,trickle,-0.0201,U,0,-0.0043,0.0463,0.03375,-0.0139,0.3500,0.0500,,0.061,,0.0433,0.1620,25.0,10.5,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,21.381,trickle,-0.0197,U,1,-0.0156,0.0336,0.03670,-0.0195,0.3500,0.0500,,0.061,,0.0312,0.1620,25.0,8.3,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,21.677,trickle,-0.0157,U,1,-0.0044,0.0561,0.03871,-0.0157,0.3500,0.0500,,0.066,,0.0511,0.1620,25.0,12.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,21.953,trickle,-0.0155,U,1,-0.0095,0.0291,0.03660,-0.0153,0.3500,0.0500,,0.064,,0.0358,0.1620,25.0,6.2,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,22.146,trickle,-0.0173,U,1,-0.0174,0.0319,0.02678,-0.0171,0.3500,0.0500,,0.070,,0.0190,0.1620,25.0,13.6,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,22.442,trickle,-0.0183,U,1,-0.0103,0.0573,0.03664,-0.0183,0.3500,0.0500,,0.073,,0.0435,0.1620,25.0,13.3,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,22.718,trickle,-0.0176,U,1,-0.0088,0.0352,0.03587,-0.0175,0.3500,0.0500,,0.071,,0.0376,0.1620,25.0,6.7,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,22.910,trickle,-0.0180,U,1,-0.0169,0.0314,0.02658,-0.0178,0.3500,0.0500,,0.075,,0.0191,0.1620,25.0,12.7,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,23.101,trickle,-0.0186,U,1,-0.0142,0.0463,0.02411,-0.0185,0.3500,0.0500,,0.079,,0.0238,0.1620,25.0,14.1,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,23.292,trickle,-0.0186,U,0,-0.0053,0.0520,0.03380,-0.0155,0.3500,0.0500,,0.080,,0.0441,0.1620,25.0,10.5,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,23.482,trickle,-0.0183,U,1,-0.0124,0.0366,0.02552,-0.0181,0.3500,0.0500,,0.079,,0.0241,0.1620,25.0,9.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,23.675,trickle,-0.0181,U,1,-0.0145,0.0394,0.02420,-0.0178,0.3500,0.0500,,0.082,,0.0215,0.1620,25.0,13.2,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,23.866,trickle,-0.0177,U,1,-0.0120,0.0454,0.02409,-0.0175,0.3500,0.0500,,0.084,,0.0258,0.1620,25.0,12.7,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,24.057,trickle,-0.0110,U,1,0.0028,0.0620,0.02403,-0.0112,0.3153,0.0500,,0.085,,0.0454,0.1641,25.0,11.3,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,24.249,trickle,-0.0127,U,1,-0.0110,0.0152,0.02412,-0.0118,0.3153,0.0500,,0.082,,0.0176,0.1641,25.0,6.9,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,24.441,trickle,-0.0136,U,1,-0.0134,0.0409,0.02415,-0.0134,0.3153,0.0500,,0.089,,0.0230,0.1641,25.0,19.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,24.730,trickle,-0.0083,U,1,0.0111,0.0675,0.03560,-0.0086,0.2847,0.0500,,0.091,,0.0669,0.1650,25.0,13.2,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,25.013,trickle,-0.0098,U,1,-0.0129,0.0104,0.03661,-0.0094,0.2847,0.0500,,0.086,,0.0268,0.1650,25.0,5.9,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,25.205,trickle,-0.0126,U,1,-0.0126,0.0435,0.02677,-0.0126,0.2847,0.0500,,0.097,,0.0272,0.1650,25.0,21.5,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,25.397,trickle,-0.0150,U,1,-0.0097,0.0437,0.02420,-0.0149,0.2847,0.0500,,0.098,,0.0276,0.1650,25.0,13.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,25.589,trickle,-0.0149,U,1,-0.0096,0.0397,0.02417,-0.0146,0.2847,0.0500,,0.099,,0.0265,0.1650,25.0,13.5,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,25.885,trickle,-0.0149,U,1,-0.0091,0.0490,0.03657,-0.0147,0.2847,0.0500,,0.101,,0.0422,0.1650,25.0,14.7,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,26.161,trickle,-0.0144,U,1,-0.0062,0.0457,0.03584,-0.0143,0.2847,0.0500,,0.102,,0.0433,0.1650,25.0,12.5,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,26.353,trickle,-0.0099,U,1,-0.0003,0.0489,0.02658,-0.0099,0.2847,0.0500,,0.103,,0.0410,0.1650,25.0,13.4,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,26.545,trickle,-0.0093,U,1,-0.0049,0.0338,0.02420,-0.0089,0.2847,0.0500,,0.103,,0.0294,0.1650,25.0,12.6,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,30.497,trickle_end,-0.0023,S,,,,,,,,,,,,,0.0,0.0,none,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,32.602,tap,0.0055,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,34.896,tap,0.0028,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,36.617,tap,0.0073,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,39.297,tap,0.0008,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,41.208,tap,0.0040,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,43.121,tap,0.0039,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,44.842,tap,0.0000,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,48.093,tap,0.0014,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,50.580,tap,0.0007,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,52.302,tap,0.0064,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,54.404,tap,0.0057,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,58.231,tap,0.0040,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,60.144,tap,0.0000,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,65.499,tap,0.0090,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,67.028,tap,0.0035,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,68.750,tap,-0.0109,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,70.663,tap,0.0000,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,72.576,tap,0.0024,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,74.488,tap,0.0075,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,76.413,tap,0.0002,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,78.129,tap,0.0030,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,80.417,tap,0.0096,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,83.095,tap,0.0039,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,84.625,tap,0.0039,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,86.729,tap,0.0007,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,92.657,tap,0.0077,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,94.954,tap,0.0032,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,96.867,tap,0.0051,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,99.353,tap,0.0076,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,103.369,tap,0.0050,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,105.281,tap,0.0022,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,108.916,tap,0.0058,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,110.839,tap,0.0100,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,112.555,tap,0.0030,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,114.654,tap,0.0041,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,118.097,tap,0.0061,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,120.009,tap,0.0123,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,121.921,tap,0.0076,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,123.833,tap,0.0070,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,125.746,tap,0.0056,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,131.293,tap,0.0125,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,134.163,tap,0.0181,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,138.944,tap,0.0181,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,140.856,tap,0.0161,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,143.342,tap,0.0149,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,148.889,tap,0.0236,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,150.610,tap,0.0281,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,152.523,tap,0.0276,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,155.584,tap,0.0286,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,157.879,tap,0.0204,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,159.600,tap,0.0234,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,162.469,tap,0.0214,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,164.956,tap,0.0202,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,168.208,tap,0.0219,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,169.738,tap,0.0215,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,171.650,tap,0.0272,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,173.563,tap,0.0223,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,175.474,tap,0.0295,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,177.771,tap,0.0315,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,179.492,tap,0.0200,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,181.978,tap,0.0240,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,183.517,tap,0.0238,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,188.482,tap,0.0238,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,190.394,tap,0.0268,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,192.307,tap,0.0289,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,194.028,tap,0.0209,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,195.940,tap,0.0277,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,197.853,tap,0.0223,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,199.957,tap,0.0214,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,202.062,tap,0.0168,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,207.418,tap,0.0209,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,209.328,tap,0.0243,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,212.773,tap,0.0262,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,214.302,tap,0.0252,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,216.023,tap,0.0228,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,217.744,tap,0.0279,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,219.466,tap,0.0306,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,221.770,tap,0.0282,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,224.248,tap,0.0270,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,226.351,tap,0.0298,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,228.455,tap,0.0239,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,230.176,tap,0.0282,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,232.281,tap,0.0255,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,234.002,tap,0.0318,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,235.532,tap,0.0187,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,237.253,tap,0.0244,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,239.549,tap,0.0275,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,241.270,tap,0.0306,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,243.373,tap,0.0249,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,245.286,tap,0.0266,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,247.199,tap,0.0152,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,249.494,tap,0.0249,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,251.406,tap,0.0103,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,253.319,tap,0.0193,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,255.040,tap,0.0278,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,256.762,tap,0.0229,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,258.866,tap,0.0189,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,260.969,tap,0.0213,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,262.501,tap,0.0210,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,264.424,tap,0.0212,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,266.710,tap,0.0266,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,268.812,tap,0.0276,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,271.107,tap,0.0205,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,272.828,tap,0.0293,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,274.741,tap,0.0163,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,276.845,tap,0.0276,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,281.053,tap,0.0232,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,282.965,tap,0.0223,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,284.878,tap,0.0315,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,287.173,tap,0.0259,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,288.894,tap,0.0170,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,290.424,tap,0.0166,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,296.354,tap,0.0246,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,298.267,tap,0.0198,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,300.370,tap,0.0238,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,301.901,tap,0.0234,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,304.004,tap,0.0296,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,305.917,tap,0.0218,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,307.638,tap,0.0301,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,309.359,tap,0.0265,S,,,,,,,,,,,,,0.0,0.0,single x1,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,309.455,final_settle,0.0265,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,309.647,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,309.838,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.028,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.220,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.412,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.603,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.795,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,310.985,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,311.177,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,311.368,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,311.560,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,311.752,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,311.941,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,312.133,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,312.325,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,312.517,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,312.706,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,312.898,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,313.090,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,313.282,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,313.473,final_settled,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_P
+carboxymethyl-cellulose,cmc-t1,0.2,313.567,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,313.759,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,313.951,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,314.142,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,314.334,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,314.524,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,314.716,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,314.907,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,315.099,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,315.291,final_settle,0.0264,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,315.481,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,315.672,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,315.864,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,316.055,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,316.245,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,316.437,final_settle,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_D
+carboxymethyl-cellulose,cmc-t1,0.2,316.629,final_scored,0.0263,S,,,,,,,,,,,,,0.0,0.0,none,log_P
