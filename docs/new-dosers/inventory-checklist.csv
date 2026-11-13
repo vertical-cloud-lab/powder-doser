@@ -1,0 +1,44 @@
+﻿Category,Item,Part number / source,Per doser,Need for 25,Status in PR #115 (as of 2026-10-02),On hand,Short,Notes
+Printed (A1 mini),Mounting plate (one piece with both 28T tilt gears and links),https://cad.onshape.com/documents/53e9cce7f09a50f89c120028 (#193),1,25,Print in-house,,,150.4 x 108.2 x 55.3 mm; one per A1 mini plate. Print as one part
+Printed (A1 mini),Flexible bracket (C-clip) for the auger,https://cad.onshape.com/documents/5e6db88e8a8d5328b172ba6d (#193),2,50,Print in-house,,,Replaces the old split-clamp auger bracket
+Printed (A1 mini),Tap collar,https://cad.onshape.com/documents/b0b9aed3e11591e566530a68 (#193),1,25,Print in-house,,,
+Printed (A1 mini),Tap-collar base (hard stop),PR #170 components/ai-step/tap-collar-base.step (PR #51); the #193 assembly uses this file,1,25,Print in-house,,,
+Printed (A1 mini),Auger cap,Fusion https://a360.co/4w9kRE5; the #193 assembly uses this file,1,25,Print in-house,,,
+Printed (A1 mini),Servo pinion 14T,https://cad.onshape.com/documents/35ecacf511109e3b823b3ed0 (#193),2,50,Print in-house,,,
+Printed (A1 mini),Stepper pinion 20T,https://cad.onshape.com/documents/0401d55bca2deb006cc69926 (#193),1,25,Print in-house,,,Check it meshes with the auger's 44T gear before printing 25: in #193 it is module 1.3 (tip 28.7 mm) and the auger gear is module 1.0
+Printed (A1 mini),"Stand bracket, side (1 left + 1 right)",https://cad.onshape.com/documents/3493a07ffbb9b140e0fcdf21 (#193),2,50,Print in-house,,,116 x 74.3 x 25 mm. Left and right are separate tabs (mirror images)
+Printed (H2D),"Stand bracket, back",https://cad.onshape.com/documents/6cb5182c1e0e0193cfea81bb (#193),1,25,Print in-house,,,212.9 x 72 x 25 mm: too long for the A1 mini
+Printed (H2D),Base (stand),https://cad.onshape.com/documents/68b18e694d8672d95f496279 (#193),1,25,Print in-house,,,190 x 190 x 52.2 mm: too big for the A1 mini. Replaces the Fusion baseplate
+Printed (H2D),"Auger (threaded storage, 44T gear)",https://cad.onshape.com/documents/51aa3e7d16cc046d79714a7a (#193),1,25,Print in-house,,,250 mm tall. 0.4 mm nozzle at most (#193). Label each with a 6-character ID (#134)
+Printed,PLA filament (1 kg spools),about 420 g per doser,,12,Thought to be on the original order; not on the 2026-09-24 missing list,,,"About 10.5 kg for the #193 parts x 25, plus failures (estimated from part volumes)"
+Motion,MG996R servo,DigiKey FXX-3037-TOP or TowerPro MG996R,2,50,On the DigiKey re-order (check placed/arrived),,50,
+Motion,NEMA-11 stepper,StepperOnline 11HS18-0674S,1,25,Arrived x25 (2026-09-15),25,,
+Motion,Push-pull solenoid 12 V,Adafruit 412,1,25,Arrived x25,25,,
+Motion,ERM coin vibration motor,Adafruit 1201,1,25,Arrived x25,25,,
+Electronics,V2 PCB,hardware/PCBs/POWDER_DOSER_V2.zip (JLCPCB),1,25,4 spare at BYU; 25+ still to order,4,21,
+Electronics,Raspberry Pi Pico 2 WH,DigiKey SC1634,1,25,On the DigiKey re-order (check placed/arrived),1,,RP2350: needs the RP2350 MicroPython build
+Electronics,Waveshare Pico-2CH-RS232,Amazon / PiShop,1,25,Arrived x25,25,,
+Electronics,Tic T500 stepper controller,Pololu 3135,1,25,Arrived x25,25,,
+Electronics,Shunt regulator 33 V,Pololu 3776,1,25,Arrived x25,25,,
+Electronics,DRV8871 motor driver,Adafruit 3190,1,25,Arrived x25,25,,
+Electronics,DRV2605L haptic driver,Adafruit 2305,1,25,Arrived x25,25,,
+Electronics,5 V buck regulator,Pololu D24V22F5 (2858),1,25,Missing (2026-09-24),,25,
+Electronics,PCB-mount 12 V barrel jack 5.5 x 2.1 mm,Match the BYU boards (PR #115 suggested Same Sky PJ-002AH),1,25,Not on any order,,25,
+Electronics,Electrolytic capacitor,Values as on the BYU boards (BOM: 100 uF 25 V),4,100,Optional line on the DigiKey re-order (ECA-1EM101B x100),,,V2 pads are 5.0 mm apart; ECA-1EM101B leads are 2.5 mm
+Electronics,0.1 in male headers (40-pos breakaway),DigiKey PRPC040SAAN-RC,1,25,On the DigiKey re-order,,,Count strips that came with the breakouts first
+Electronics,12 V 5 A power brick,Mean Well GST60A12-P1J,1,25,On the DigiKey re-order,,,
+Electronics,AC cord for the brick,Mean Well YP12-YC12,1,25,On the DigiKey re-order,,,
+Electronics,Wiring (stepper lead to board; servo/solenoid/ERM leads),Ask William what the BYU boards use,,,Not on any order,3,,
+Electronics,USB cable for the Pico,Micro-USB,1,25,Not on any order,,,
+Fasteners,M3 x 14 socket head screw,McMaster 91292A027,8,200,M3/M5 missing (2026-09-24),20,180,Servos to the base's posts. The old bracket clamps' 2 are gone
+Fasteners,M3 nylon-insert locknut,McMaster 93625A100,15,375,M3/M5 missing,95,280,"Every M3 nut is a locknut: servos 8, C-clip brackets 4, tap-collar base 2, tap-collar clamp 1"
+Fasteners,M3 x 10 socket head screw,McMaster 91292A113,2,50,M3/M5 missing,,,"Servo pinions, into the servo shaft"
+Fasteners,M5 x 40 button head screw,"McMaster 92095A series, M5 x 0.8 x 40 mm (look up the number; the x 45 was 92095A223)",2,50,M3/M5 missing,0,50,Hinge. Was M5 x 45; the 2 x 45 bought before the change aren't counted. Check the locknut grips: the CAD hinge stack is 37.8 mm (assembly/README.md)
+Fasteners,M5 nylon-insert locknut,McMaster 93625A200,2,50,M3/M5 missing,,,"Hinge, on the inside of each plate knuckle: the screw can only go in from outside the 28T gear (assembly/README.md)"
+Fasteners,M2.5 x 8 socket head screw,McMaster 91292A012,4,100,M3/M5 missing,8,92,Stepper to the plate
+Fasteners,M3 x 25 button head screw,McMaster 92095A186,1,25,M3/M5 missing,2,23,"Tap-collar base, plain hole"
+Fasteners,M3 x 30 flat head screw,McMaster 92125A140,1,25,M3/M5 missing,,,"Tap-collar base, countersunk hole"
+Fasteners,M3 x 20 button head screw,McMaster 92095A185,5,125,M3/M5 missing,10,115,"C-clip brackets to the plate (4), tap-collar clamp (1)"
+Fasteners,M3 x 5 socket head screw,McMaster 91292A110,2,50,M3/M5 missing,4,46,Solenoid to the tap collar; if its ears are clearance holes use M3 x 8 + locknut
+Fasteners,"Stand bolt with nut, for 7 mm holes (1/4-20 or M6, about 25 mm long)",Size not chosen yet: match what the bench rig's stand uses,12,300,Not on any order,,,"Legs to stand brackets 6, stand brackets to the base 6 (2 each; #193 mates only 1 for the back bracket, which would pivot). Each joint clamps 15.5 to 16 mm"
+Mounting,"Wood leg, 9.5 x 59 x 250 mm (3/8 in board)",https://cad.onshape.com/documents/659ee3322c5c9c9ce8146b43 (#193),3,75,Not on any order,,,"Cut in-house. Two columns of eight 7 mm holes, 40 mm apart at 15 mm pitch, the first 17.5 mm from the top (height adjustment). Replaces the 38 mm board"

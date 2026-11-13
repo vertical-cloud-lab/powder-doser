@@ -1,0 +1,1055 @@
+{
+ "assembly": {
+  "documentId": "f866631c78fbefd61e6856e4",
+  "elementId": "3156bac055c13d8160e229b4",
+  "documentMicroversion": "a29e4b9e2e77eeb6ca022df6",
+  "url": "https://cad.onshape.com/documents/f866631c78fbefd61e6856e4/w/043fe020d0194e41cea13bc2/e/3156bac055c13d8160e229b4",
+  "document_modified": "2026-11-07T23:47:22Z",
+  "read": "2026-11-10"
+ },
+ "instances": [
+  {
+   "name": "Part 1 <7>",
+   "documentId": "659ee3322c5c9c9ce8146b43",
+   "documentVersion": "10a486fe205b7a7de86a13d3",
+   "elementId": "bbd4667923221cda37cd63e1",
+   "partId": "JHD",
+   "transform_m": [
+    1.0,
+    0.0,
+    0.0,
+    -0.016379845045865704,
+    0.0,
+    -1.0,
+    0.0,
+    0.20730740325526115,
+    0.0,
+    0.0,
+    -1.0,
+    0.13081525975109534,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <3>",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "documentVersion": "119ff9d1623649f51b8997c9",
+   "elementId": "7c0d89ca7e487cdf4a761fd7",
+   "partId": "JHD",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    0.09860915495413433,
+    -1.0,
+    0.0,
+    0.0,
+    -0.06909259674473882,
+    0.0,
+    0.0,
+    1.0,
+    -0.010184740248904657,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Stepper Pinion <1>",
+   "documentId": "0401d55bca2deb006cc69926",
+   "documentVersion": "3a977107d507a934cbe945a2",
+   "elementId": "5fa50b725c9798e330133171",
+   "partId": "JHD",
+   "transform_m": [
+    5.584782732730025e-15,
+    -3.8230626662161583e-16,
+    -1.0000000000000098,
+    0.01575915495413417,
+    -0.029220245120722254,
+    -0.9995729974719746,
+    -1.3869600539821242e-15,
+    0.008110878018538508,
+    -0.9995729974719643,
+    0.0292202451207227,
+    -4.7276830966491884e-15,
+    -0.03940103077339712,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Spur gear (14 teeth) <1>",
+   "documentId": "35ecacf511109e3b823b3ed0",
+   "documentVersion": "2195478027cde74d501f135b",
+   "elementId": "ce683b15c3b969067abfe902",
+   "partId": "JHD",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    -0.05804084504586571,
+    0.5606568835927831,
+    0.0,
+    -0.8280482225571328,
+    -0.05964259674473886,
+    -0.8280482225571328,
+    0.0,
+    -0.5606568835927831,
+    -0.010184740248904658,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "auger_cap <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFfT",
+   "transform_m": [
+    -0.8367621686683941,
+    -0.5475665010621052,
+    1.17961196366427e-16,
+    -0.015470966904312057,
+    -0.016000027380930672,
+    0.024450395676232053,
+    0.9995729974719951,
+    0.17970143623871132,
+    -0.5473326887818744,
+    0.8364048691070143,
+    -0.029220245120721938,
+    -0.04452458060523692,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "MG-996R <1>",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFD",
+   "transform_m": [
+    0.0,
+    -1.0,
+    0.0,
+    -0.026990845045865727,
+    0.0,
+    0.0,
+    1.0000000000000004,
+    -0.06964259674473887,
+    -1.0000000000000004,
+    0.0,
+    0.0,
+    0.019315259751095354,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <4>",
+   "documentId": "68b18e694d8672d95f496279",
+   "documentVersion": "62b5a42c09002d0c2f974a81",
+   "elementId": "9f7a9b5e682bc05529f15125",
+   "partId": "JHD",
+   "transform_m": [
+    -1.0,
+    0.0,
+    0.0,
+    -0.016390845045865687,
+    0.0,
+    1.0,
+    0.0,
+    0.06040740325526117,
+    0.0,
+    0.0,
+    -1.0,
+    0.005815259751095342,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "MG-996R <4>",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFH",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    -0.10999084504586572,
+    1.0,
+    0.0,
+    0.0,
+    -0.08914259674473886,
+    0.0,
+    0.0,
+    -1.0,
+    -0.00018474024890465825,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Body1 <1>",
+   "documentId": "b0b9aed3e11591e566530a68",
+   "documentVersion": "10bff3d869f7d14b5d83ebb8",
+   "elementId": "cf844b34a00ef7d2d52191c1",
+   "partId": "JFD",
+   "transform_m": [
+    -0.7574914816442319,
+    1.1796119636642434e-16,
+    -0.6528450468805197,
+    -0.016240845045858234,
+    0.019076292295696188,
+    0.9995729974719775,
+    -0.022134086770506364,
+    -0.009881435935947024,
+    0.6525662803950814,
+    -0.029220245120721498,
+    -0.7571680308666122,
+    -0.03887506636122336,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <11>",
+   "documentId": "51aa3e7d16cc046d79714a7a",
+   "documentVersion": "c0b9d775bd4b0993a30d794d",
+   "elementId": "3c166b7f26f467535e63234e",
+   "partId": "JHD",
+   "transform_m": [
+    -0.6025791176050128,
+    -0.7980591500799712,
+    1.0114998318681394e-16,
+    -0.016240845045858245,
+    -0.02331948398617146,
+    0.01760750952104653,
+    0.9995729974719643,
+    -0.07018867359243286,
+    -0.7977183768053646,
+    0.6023218147984521,
+    -0.029220245120720956,
+    -0.03711212131235463,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "tap_collar_base <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFXT",
+   "transform_m": [
+    0.9999999999999983,
+    -3.3580953368635588e-18,
+    2.1385291698717857e-16,
+    -0.01624084504586575,
+    1.5641126386984866e-16,
+    -0.9995729974719718,
+    -0.029220245120721244,
+    -3.058678890843833e-05,
+    -6.950005905040413e-18,
+    0.029220245120722473,
+    -0.9995729974719689,
+    -0.009900538391255997,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "MG-996R <2>",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFH",
+   "transform_m": [
+    0.0,
+    -1.0,
+    0.0,
+    0.07720915495413434,
+    1.0,
+    0.0,
+    0.0,
+    -0.08914259674473886,
+    0.0,
+    0.0,
+    1.0,
+    -0.02018474024890466,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <8>",
+   "documentId": "53e9cce7f09a50f89c120028",
+   "documentVersion": "c2adfee7bd3e884308866c96",
+   "elementId": "224d71f16476d8c27dc6e3e0",
+   "partId": "JHD",
+   "transform_m": [
+    -0.9999999999999978,
+    -8.784968994974114e-18,
+    2.2079181089108582e-16,
+    -0.01624084504586575,
+    -1.5645037348965831e-16,
+    0.999572997471975,
+    -0.02922024512072113,
+    -0.0010877388240670552,
+    6.938893903907228e-18,
+    -0.029220245120722712,
+    -0.9995729974719715,
+    -0.0038670718441903237,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Spur gear (14 teeth) <2>",
+   "documentId": "35ecacf511109e3b823b3ed0",
+   "documentVersion": "2195478027cde74d501f135b",
+   "elementId": "ce683b15c3b969067abfe902",
+   "partId": "JHD",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    0.03785915495413432,
+    0.07734765464558423,
+    0.0,
+    0.9970041826997679,
+    -0.05964259674473886,
+    0.9970041826997679,
+    0.0,
+    -0.07734765464558423,
+    -0.010184740248904658,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <6>",
+   "documentId": "659ee3322c5c9c9ce8146b43",
+   "documentVersion": "10a486fe205b7a7de86a13d3",
+   "elementId": "bbd4667923221cda37cd63e1",
+   "partId": "JHD",
+   "transform_m": [
+    4.419677645800783e-16,
+    1.0,
+    -1.1479437019748901e-40,
+    -0.1318908450458658,
+    1.0,
+    -4.419677645800783e-16,
+    0.0,
+    -0.06459259674473886,
+    -2.005086420600254e-41,
+    1.1479437019748901e-40,
+    -1.0,
+    0.11481525975109534,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "stepper_motor <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFnT",
+   "transform_m": [
+    4.740539440281416e-15,
+    -0.9999999999999999,
+    3.9978298910116524e-16,
+    0.015759154954134175,
+    -0.029220245120722358,
+    1.2147339062357523e-16,
+    0.9995729974719639,
+    0.030101483962941725,
+    -0.9995729974719639,
+    -4.737436921660082e-15,
+    -0.029220245120722414,
+    -0.0400438761660536,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "solenoid_coil <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFXU",
+   "transform_m": [
+    0.6030742974842515,
+    -0.4583609238116466,
+    0.652845046880521,
+    -0.04621601843464108,
+    0.5896578269026456,
+    0.8073498184648958,
+    0.022134086770506007,
+    0.0036587576134698807,
+    -0.537219730544563,
+    0.371606692818134,
+    0.7571680308666157,
+    -0.06757484693408988,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <1>",
+   "documentId": "6cb5182c1e0e0193cfea81bb",
+   "documentVersion": "7a9139fa822d9a086eb96ea9",
+   "elementId": "ea82a43a82cf5f861b73a9e3",
+   "partId": "JHD",
+   "transform_m": [
+    1.0,
+    0.0,
+    0.0,
+    -0.016379845045865704,
+    0.0,
+    1.0,
+    0.0,
+    0.22330740325526116,
+    0.0,
+    0.0,
+    1.0,
+    0.005815259751095342,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "solenoid_plunger <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KF7T",
+   "transform_m": [
+    0.3441023765501862,
+    0.6748236060009405,
+    -0.6528450468805215,
+    -0.03835675408534565,
+    0.8818201567766103,
+    -0.4710661241326056,
+    -0.022134086770506003,
+    -0.005292629907471236,
+    -0.3224697901431752,
+    -0.5680755297305272,
+    -0.7571680308666164,
+    -0.07423731943828084,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <10>",
+   "documentId": "5e6db88e8a8d5328b172ba6d",
+   "documentVersion": "a9beffa67344022457765a6c",
+   "elementId": "59890746941ebde49fa31a66",
+   "partId": "JHD",
+   "transform_m": [
+    1.0,
+    2.9421367541818484e-17,
+    -5.88087974985587e-17,
+    -0.016240845045864424,
+    -2.632618677797394e-16,
+    -0.999572997472012,
+    -0.02922024512072312,
+    -0.02202119273329212,
+    -1.3914870688377445e-17,
+    0.029220245120722833,
+    -0.9995729974720098,
+    -0.00925769299860016,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <2>",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "documentVersion": "e96578563a1e02953f8b5a49",
+   "elementId": "cbbebd3d1064640d9bce4c7f",
+   "partId": "JVD",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    -0.18139084504586572,
+    -1.0,
+    0.0,
+    0.0,
+    -0.06909259674473883,
+    0.0,
+    0.0,
+    1.0,
+    -0.010184740248904655,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "MG-996R <3>",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFD",
+   "transform_m": [
+    0.0,
+    1.0,
+    0.0,
+    -0.0057908450458656405,
+    0.0,
+    0.0,
+    1.0000000000000002,
+    -0.06964259674473885,
+    1.0000000000000002,
+    0.0,
+    0.0,
+    -0.039684740248904664,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "solenoid_yoke <1>",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFbU",
+   "transform_m": [
+    0.7574914816442337,
+    -3.1292785203361447e-16,
+    0.6528450468805173,
+    -0.04300749196795955,
+    -0.01907629229569644,
+    0.9995729974719726,
+    0.02213408677050574,
+    0.005004319866519423,
+    -0.6525662803950799,
+    -0.029220245120721446,
+    0.7571680308666117,
+    -0.07038063549966185,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <9>",
+   "documentId": "5e6db88e8a8d5328b172ba6d",
+   "documentVersion": "a9beffa67344022457765a6c",
+   "elementId": "59890746941ebde49fa31a66",
+   "partId": "JHD",
+   "transform_m": [
+    1.0,
+    -1.1174649913111629e-16,
+    -5.88087974985561e-17,
+    -0.016240845045867085,
+    -1.1341719057165021e-16,
+    -0.9995729974719652,
+    -0.02922024512072116,
+    0.05961093525125197,
+    -5.551842589735995e-17,
+    0.02922024512072116,
+    -0.9995729974719652,
+    -0.011644022756874178,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  {
+   "name": "Part 1 <5>",
+   "documentId": "659ee3322c5c9c9ce8146b43",
+   "documentVersion": "10a486fe205b7a7de86a13d3",
+   "elementId": "bbd4667923221cda37cd63e1",
+   "partId": "JHD",
+   "transform_m": [
+    4.4196776458007807e-16,
+    -1.0,
+    -9.29834398599661e-40,
+    0.09910915495413437,
+    -1.0,
+    -4.4196776458007856e-16,
+    0.0,
+    -0.0645925967447388,
+    -3.432972120849165e-41,
+    -9.29834398599661e-40,
+    -1.0,
+    0.11481525975109534,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  }
+ ],
+ "mates": [
+  {
+   "name": "Cylindrical 1",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <7>",
+    "Part 1 <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 2",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <7>",
+    "Part 1 <1>"
+   ]
+  },
+  {
+   "name": "Planar 1",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <4>",
+    "Part 1 <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 4",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <4>",
+    "Part 1 <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 7",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <3>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 8",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <3>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 3",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <5>",
+    "Part 1 <3>"
+   ]
+  },
+  {
+   "name": "Cylindrical 9",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <5>",
+    "Part 1 <3>"
+   ]
+  },
+  {
+   "name": "Cylindrical 10",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <6>",
+    "Part 1 <2>"
+   ]
+  },
+  {
+   "name": "Cylindrical 11",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <6>",
+    "Part 1 <2>"
+   ]
+  },
+  {
+   "name": "Cylindrical 12",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <8>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Planar 4",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <4>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 13",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Spur gear (14 teeth) <1>",
+    "MG-996R <4>"
+   ]
+  },
+  {
+   "name": "Planar 5",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <8>",
+    "Spur gear (14 teeth) <1>"
+   ]
+  },
+  {
+   "name": "Planar 6",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <4>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Planar 7",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <2>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Planar 8",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <2>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 14",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Spur gear (14 teeth) <2>",
+    "MG-996R <2>"
+   ]
+  },
+  {
+   "name": "Planar 10",
+   "type": "PLANAR",
+   "between": [
+    "Spur gear (14 teeth) <2>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 17",
+   "type": "CYLINDRICAL",
+   "between": [
+    "MG-996R <3>",
+    "MG-996R <2>"
+   ]
+  },
+  {
+   "name": "Planar 12",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <3>",
+    "MG-996R <2>"
+   ]
+  },
+  {
+   "name": "Cylindrical 18",
+   "type": "CYLINDRICAL",
+   "between": [
+    "MG-996R <1>",
+    "MG-996R <4>"
+   ]
+  },
+  {
+   "name": "Planar 13",
+   "type": "PLANAR",
+   "between": [
+    "MG-996R <1>",
+    "MG-996R <4>"
+   ]
+  },
+  {
+   "name": "Planar 14",
+   "type": "PLANAR",
+   "between": [
+    "stepper_motor <1>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Planar 9",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <10>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Planar 11",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <9>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 15",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <10>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 16",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <8>",
+    "Part 1 <10>"
+   ]
+  },
+  {
+   "name": "Cylindrical 19",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <9>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 20",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <9>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Parallel 1",
+   "type": "PARALLEL",
+   "between": [
+    "Stepper Pinion <1>",
+    "stepper_motor <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 23",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Stepper Pinion <1>",
+    "stepper_motor <1>"
+   ]
+  },
+  {
+   "name": "Planar 15",
+   "type": "PLANAR",
+   "between": [
+    "stepper_motor <1>",
+    "Stepper Pinion <1>"
+   ]
+  },
+  {
+   "name": "Planar 2",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <2>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 5",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <2>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 6",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <4>",
+    "Part 1 <2>"
+   ]
+  },
+  {
+   "name": "Planar 3",
+   "type": "PLANAR",
+   "between": [
+    "Part 1 <3>",
+    "Part 1 <4>"
+   ]
+  },
+  {
+   "name": "Cylindrical 24",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <11>",
+    "Part 1 <9>"
+   ]
+  },
+  {
+   "name": "Cylindrical 25",
+   "type": "CYLINDRICAL",
+   "between": [
+    "auger_cap <1>",
+    "Part 1 <11>"
+   ]
+  },
+  {
+   "name": "Planar 16",
+   "type": "PLANAR",
+   "between": [
+    "auger_cap <1>",
+    "Part 1 <11>"
+   ]
+  },
+  {
+   "name": "Cylindrical 26",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Body1 <1>",
+    "Part 1 <11>"
+   ]
+  },
+  {
+   "name": "Planar 17",
+   "type": "PLANAR",
+   "between": [
+    "Stepper Pinion <1>",
+    "Part 1 <11>"
+   ]
+  },
+  {
+   "name": "Cylindrical 21",
+   "type": "CYLINDRICAL",
+   "between": [
+    "stepper_motor <1>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 22",
+   "type": "CYLINDRICAL",
+   "between": [
+    "stepper_motor <1>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Planar 18",
+   "type": "PLANAR",
+   "between": [
+    "tap_collar_base <1>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 27",
+   "type": "CYLINDRICAL",
+   "between": [
+    "tap_collar_base <1>",
+    "Part 1 <8>"
+   ]
+  },
+  {
+   "name": "Cylindrical 28",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Part 1 <8>",
+    "tap_collar_base <1>"
+   ]
+  },
+  {
+   "name": "Planar 19",
+   "type": "PLANAR",
+   "between": [
+    "solenoid_yoke <1>",
+    "Body1 <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 29",
+   "type": "CYLINDRICAL",
+   "between": [
+    "solenoid_yoke <1>",
+    "Body1 <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 30",
+   "type": "CYLINDRICAL",
+   "between": [
+    "Body1 <1>",
+    "solenoid_yoke <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 31",
+   "type": "CYLINDRICAL",
+   "between": [
+    "solenoid_plunger <1>",
+    "solenoid_yoke <1>"
+   ]
+  },
+  {
+   "name": "Cylindrical 32",
+   "type": "CYLINDRICAL",
+   "between": [
+    "solenoid_coil <1>",
+    "solenoid_plunger <1>"
+   ]
+  }
+ ]
+}
