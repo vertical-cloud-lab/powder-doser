@@ -1,0 +1,108 @@
+{
+ "id": "mc-packing",
+ "method": "Monte Carlo / geometric sphere packing: random sequential addition, sequential drop-and-roll deposition (Visscher-Bolsterli / Jullien-Meakin) with a stick-probability cohesion proxy, force-biased (FIRE overlap-removal) compression",
+ "code": "own Python + numba (packing_kernels.py)",
+ "version": "python 3.12.3, numpy 2.5.4, numba 0.68.1",
+ "status": "ran",
+ "wall_s": 583.4,
+ "cores": 1,
+ "key_results": {
+  "units": "packing fraction phi (solid volume / total volume), dimensionless",
+  "wall_s_breakdown": {
+   "rsa": {
+    "mono": 4.6,
+    "salt": 8.7,
+    "alsi10mg": 288.6
+   },
+   "deposition_all_runs": 1.84,
+   "compression": {
+    "mono": 121.0,
+    "salt": 117.4,
+    "alsi10mg": 23.8
+   },
+   "plots_animation_numba_compile": 17.4
+  },
+  "mono": {
+   "rsa_phi_at_1e7_attempts": 0.3654,
+   "rsa_phi_feder_extrapolated": 0.3795,
+   "drop_and_roll_phi_loose": 0.5809,
+   "sticky_ballistic_phi": 0.1624,
+   "compression_phi_dense": 0.632,
+   "hausner_analog_cohesionless": 1.088,
+   "hausner_analog_sticky": 3.891,
+   "max_rel_overlap_any_packing": 0.00019955043202567535,
+   "deposition_particles_hitting_transition_cap": 0
+  },
+  "salt": {
+   "rsa_phi_at_1e7_attempts": 0.3922,
+   "rsa_phi_feder_extrapolated": 0.4151,
+   "drop_and_roll_phi_loose": 0.5827,
+   "sticky_ballistic_phi": 0.1594,
+   "compression_phi_dense": 0.6326,
+   "hausner_analog_cohesionless": 1.0855,
+   "hausner_analog_sticky": 3.968,
+   "phi_loose_vs_p_stick": {
+    "0.0": 0.5827,
+    "0.1": 0.5313,
+    "0.25": 0.4174,
+    "0.5": 0.2633,
+    "0.75": 0.1931,
+    "1.0": 0.1594
+   },
+   "hausner_vs_p_stick": {
+    "0.0": 1.085,
+    "0.1": 1.19,
+    "0.25": 1.515,
+    "0.5": 2.403,
+    "0.75": 3.275,
+    "1.0": 3.968
+   },
+   "implied_bulk_density_kg_m3_drop_and_roll": 1262.0,
+   "implied_dense_density_kg_m3_compression": 1370.0,
+   "implied_bulk_density_kg_m3_sticky": 345.0,
+   "generated_volume_d10_d50_d90_mm": [
+    0.381,
+    0.4398,
+    0.4811
+   ],
+   "max_rel_overlap_any_packing": 0.00019931511320335596,
+   "deposition_particles_hitting_transition_cap": 0
+  },
+  "alsi10mg": {
+   "rsa_phi_at_1e7_attempts": 0.416,
+   "rsa_phi_feder_extrapolated": 0.4524,
+   "drop_and_roll_phi_loose": 0.6083,
+   "sticky_ballistic_phi": 0.153,
+   "compression_phi_dense": 0.6662,
+   "hausner_analog_cohesionless": 1.0952,
+   "hausner_analog_sticky": 4.354,
+   "phi_loose_vs_p_stick": {
+    "0.0": 0.6083,
+    "0.1": 0.5508,
+    "0.25": 0.3981,
+    "0.5": 0.2709,
+    "0.75": 0.1804,
+    "1.0": 0.153
+   },
+   "hausner_vs_p_stick": {
+    "0.0": 1.095,
+    "0.1": 1.209,
+    "0.25": 1.674,
+    "0.5": 2.459,
+    "0.75": 3.694,
+    "1.0": 4.354
+   },
+   "implied_bulk_density_kg_m3_drop_and_roll": 1624.0,
+   "implied_dense_density_kg_m3_compression": 1779.0,
+   "implied_bulk_density_kg_m3_sticky": 409.0,
+   "generated_volume_d10_d50_d90_mm": [
+    0.0216,
+    0.0343,
+    0.0543
+   ],
+   "max_rel_overlap_any_packing": 0.00019995828201393269,
+   "deposition_particles_hitting_transition_cap": 0
+  }
+ },
+ "notes": "3D, periodic in x-y (deposition: flat floor, phi measured in a bulk slab 3 d_max above the floor to 2 d_max below the 10th-percentile surface height; RSA and compression: fully periodic cube). Geometric packings are scale-free, so NaCl vs AlSi10Mg differ only through PSD shape; cohesion enters only through p_stick. Monodisperse runs are validation against literature."
+}

@@ -1,0 +1,81 @@
+{
+ "id": "gns-gnn-simulator",
+ "method": "Learned graph-network simulator (GNS, Sanchez-Gonzalez et al. 2020; Kumar & Vantassel 2023) trained on a self-generated 2D numba-DEM granular column-collapse dataset; rollout vs DEM on held-out columns",
+ "code": "geoelements/gns LearnedSimulator (own training loop with the gns loss/noise) + self-written numba DEM",
+ "version": "gns commit 3b8fb5c, torch 2.5.1+cpu, torch_geometric 2.6.1, torch_cluster 1.6.3",
+ "status": "partial",
+ "wall_s": 857.5,
+ "cores": 1,
+ "key_results": {
+  "route": "self-generated dataset (no small pretrained 2D sand GNS model available; gns-sample has only WaterDropSample data, no checkpoint)",
+  "dataset": {
+   "train": 40,
+   "valid": 2,
+   "test": 3,
+   "frames": 151,
+   "N_train_range": [
+    36,
+    264
+   ],
+   "train_aspect_H_over_W_requested": [
+    0.73,
+    2.39
+   ],
+   "datagen_wall_s": 68.6
+  },
+  "model": {
+   "latent": 64,
+   "mlp_hidden": 64,
+   "message_passing_steps": 5,
+   "connectivity_radius": 0.035,
+   "params": 215250,
+   "noise_std": 0.0002504167496226728
+  },
+  "training": {
+   "steps": 5148,
+   "train_s": 780.1,
+   "batch": "2 windows",
+   "lr": "1e-3 -> 1e-4 exponential"
+  },
+  "rollout_s_3_cases": 8.8,
+  "test_cases": {
+   "test_0": {
+    "N": 145,
+    "W": 0.1628,
+    "H0": 0.2133,
+    "rms_err_final_over_d": 2.1616,
+    "rms_err_mid_over_d": 1.3242,
+    "runout_true_final": 0.3239,
+    "runout_gns_final": 0.3143,
+    "runout_rel_err": -0.06,
+    "height_true_final": 0.2007,
+    "height_gns_final": 0.1999
+   },
+   "test_1": {
+    "N": 161,
+    "W": 0.1325,
+    "H0": 0.2913,
+    "rms_err_final_over_d": 9.9045,
+    "rms_err_mid_over_d": 4.9698,
+    "runout_true_final": 0.3144,
+    "runout_gns_final": 0.7487,
+    "runout_rel_err": 2.3816,
+    "height_true_final": 0.2233,
+    "height_gns_final": 0.1133
+   },
+   "test_2": {
+    "N": 120,
+    "W": 0.1926,
+    "H0": 0.1521,
+    "rms_err_final_over_d": 0.4896,
+    "rms_err_mid_over_d": 0.5551,
+    "runout_true_final": 0.2818,
+    "runout_gns_final": 0.2997,
+    "runout_rel_err": 0.2007,
+    "height_true_final": 0.1499,
+    "height_gns_final": 0.1428
+   }
+  }
+ },
+ "notes": "Reduced GNS (5 message-passing steps, latent 64) trained ~5000 steps on 1 CPU thread, versus ~1e6+ steps in the papers. Rollouts track the DEM for the two in-range columns (runout within -6 % and +20 % of the DEM runout distance) and blow up for the taller, out-of-range column (test_1, H/W 2.6)."
+}

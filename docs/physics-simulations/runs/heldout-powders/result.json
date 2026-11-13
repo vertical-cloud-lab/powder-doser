@@ -1,0 +1,196 @@
+{
+ "id": "heldout-powders",
+ "method": "Leave-one-powder-out prediction of Sam's #116 battery (12 powders) from literature properties: DEM repose-angle path + #180 auger twin along the same path (protocol C, 30 rpm) vs. no-simulation baselines; correlations; inverse (AoR from the dosing fingerprint)",
+ "code": "LIGGGHTS-PUBLIC + numpy/scipy",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": 20925.0,
+ "cores": 4,
+ "key_results": {
+  "twin_salt_mg_rev": {
+   "d45_P1": 285.81,
+   "d22_P1": 138.39,
+   "d45_P1_d035": 549.05
+  },
+  "lopo_45deg": {
+   "mean": {
+    "rmse_log10": 1.125,
+    "median_fold_error": 6.31,
+    "spearman_rho": -1.0,
+    "flow_class_correct": 2
+   },
+   "aor_ols": {
+    "rmse_log10": 0.736,
+    "median_fold_error": 2.48,
+    "spearman_rho": 0.811,
+    "flow_class_correct": 11
+   },
+   "aor_iso": {
+    "rmse_log10": 0.819,
+    "median_fold_error": 1.37,
+    "spearman_rho": 0.781,
+    "flow_class_correct": 11
+   },
+   "bev0": {
+    "rmse_log10": 1.562,
+    "median_fold_error": 4.5,
+    "spearman_rho": 0.329,
+    "flow_class_correct": 7
+   },
+   "bond_ols": {
+    "rmse_log10": 1.072,
+    "median_fold_error": 4.5,
+    "spearman_rho": 0.133,
+    "flow_class_correct": 7
+   },
+   "dem0": {
+    "rmse_log10": 1.23,
+    "median_fold_error": 5.48,
+    "spearman_rho": 0.839,
+    "flow_class_correct": 9
+   },
+   "dem_shift": {
+    "rmse_log10": 0.713,
+    "median_fold_error": 1.93,
+    "spearman_rho": 0.797,
+    "flow_class_correct": 11
+   }
+  },
+  "lopo_22p5deg": {
+   "mean": {
+    "rmse_log10": 1.234,
+    "median_fold_error": 7.36,
+    "spearman_rho": -1.0,
+    "flow_class_correct": 4
+   },
+   "aor_ols": {
+    "rmse_log10": 0.838,
+    "median_fold_error": 3.2,
+    "spearman_rho": 0.727,
+    "flow_class_correct": 11
+   },
+   "aor_iso": {
+    "rmse_log10": 0.881,
+    "median_fold_error": 1.6,
+    "spearman_rho": 0.699,
+    "flow_class_correct": 11
+   },
+   "bev0": {
+    "rmse_log10": 1.653,
+    "median_fold_error": 4.33,
+    "spearman_rho": 0.427,
+    "flow_class_correct": 7
+   },
+   "bond_ols": {
+    "rmse_log10": 1.213,
+    "median_fold_error": 4.2,
+    "spearman_rho": -0.035,
+    "flow_class_correct": 7
+   },
+   "dem0": {
+    "rmse_log10": 1.533,
+    "median_fold_error": 5.97,
+    "spearman_rho": 0.631,
+    "flow_class_correct": 9
+   },
+   "dem_shift": {
+    "rmse_log10": 0.946,
+    "median_fold_error": 1.45,
+    "spearman_rho": 0.792,
+    "flow_class_correct": 11
+   }
+  },
+  "spearman_aor_vs_log_mg_rev_45": {
+   "rho": -0.844,
+   "p": 0.0006
+  },
+  "inverse_aor": {
+   "inv_ols": {
+    "rmse_deg": 3.53,
+    "mae_deg": 2.86,
+    "spearman_rho": 0.704,
+    "spearman_p": 0.0106
+   },
+   "inv_dem": {
+    "rmse_deg": 7.0,
+    "mae_deg": 5.67,
+    "spearman_rho": 0.641,
+    "spearman_p": 0.0247
+   },
+   "inv_dem_noshift": {
+    "rmse_deg": 10.54,
+    "mae_deg": 8.36,
+    "spearman_rho": 0.641,
+    "spearman_p": 0.0247
+   },
+   "mean": {
+    "rmse_deg": 5.88,
+    "mae_deg": 5.36
+   }
+  },
+  "fitted_aor_offset_deg_45": [
+   6.25,
+   4.5,
+   6.75,
+   6.5,
+   5.75,
+   6.5,
+   6.25,
+   6.25,
+   6.25,
+   7.0,
+   6.25,
+   6.25
+  ],
+  "speed_check": {
+   "P1": {
+    "mg_rev_30rpm": 138.39,
+    "mg_rev_90rpm": 114.22,
+    "speed_exponent": 0.825
+   },
+   "k750": {
+    "mg_rev_30rpm": 132.07,
+    "mg_rev_90rpm": 47.13,
+    "speed_exponent": 0.062
+   }
+  },
+  "few_shot_45_from_22p5": {
+   "dem": {
+    "n": 12,
+    "rmse_log10": 0.476,
+    "mae_log10": 0.339,
+    "median_fold_error": 1.57,
+    "spearman_rho": 0.93,
+    "spearman_p": 0.0,
+    "flow_class_correct": 12
+   },
+   "median_ratio": {
+    "n": 12,
+    "rmse_log10": 0.357,
+    "mae_log10": 0.21,
+    "median_fold_error": 1.24,
+    "spearman_rho": 0.902,
+    "spearman_p": 0.0001,
+    "flow_class_correct": 12
+   },
+   "paired_dem_vs_ratio": {
+    "median_abs_err_diff_log10": 0.068,
+    "wilcoxon_p": 0.064,
+    "a_better": 2,
+    "b_better": 10
+   }
+  },
+  "coarse_graining_check_45deg_mg_rev_0p25_0p49rev": {
+   "d0.425": {
+    "salt": 293.1,
+    "k1500": 16.3,
+    "ratio": 0.056
+   },
+   "d0.35": {
+    "salt": 543.0,
+    "k1500": 103.8,
+    "ratio": 0.191
+   }
+  }
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "id": "dem-tribocharge-numba",
+ "method": "Self-written quasi-2D DEM (numba) of salt in a rotating PLA tube cross-section with condenser-model contact charging, Coulomb + image forces, gas-breakdown charge caps (air vs dry argon)",
+ "code": "self-written Python/numba (run.py)",
+ "version": "numba 0.68.1, numpy 1.26.4",
+ "status": "ran",
+ "wall_s": 278.8,
+ "cores": 1,
+ "key_results": {
+  "N_grains": 600,
+  "revolutions_charged": 6.0,
+  "time_compression_K_ACC": 1.0,
+  "breakdown_field_V_per_m": {
+   "air": 5975943.2841914985,
+   "argon": 3095862.1209625606
+  },
+  "sigma_cap_C_per_m2": {
+   "air": 5.291100183823152e-05,
+   "argon": 2.741076321900251e-05
+  },
+  "q_over_m_cap_single_grain_uC_per_kg_d042": {
+   "air": 349.13231170063693,
+   "argon": 180.86943727484334
+  },
+  "air": {
+   "q_over_m_saturated_uC_per_kg": 27.476,
+   "rev_to_95pct_saturation": 0.75,
+   "stuck_top_pct_mean_sd_rev1to6": [
+    5.16,
+    0.61
+   ],
+   "wall_contact_pct_mean_sd_rev1to6": [
+    19.34,
+    0.44
+   ],
+   "frac_grains_at_cap_end": 0.0,
+   "wall_patches_at_cap_end": 1.0,
+   "charge_conservation_error_C": 3.7223127564886245e-24,
+   "wall_s": 101.2
+  },
+  "argon": {
+   "q_over_m_saturated_uC_per_kg": 14.235,
+   "rev_to_95pct_saturation": 0.6666666666666666,
+   "stuck_top_pct_mean_sd_rev1to6": [
+    4.0,
+    0.97
+   ],
+   "wall_contact_pct_mean_sd_rev1to6": [
+    17.12,
+    0.99
+   ],
+   "frac_grains_at_cap_end": 0.02,
+   "wall_patches_at_cap_end": 1.0,
+   "charge_conservation_error_C": 2.0679515313825692e-25,
+   "wall_s": 108.3
+  },
+  "uncharged_control": {
+   "stuck_top_pct_mean_sd": [
+    0.0,
+    0.0
+   ],
+   "wall_contact_pct_mean_sd": [
+    8.55,
+    0.32
+   ],
+   "revolutions": 3.0,
+   "wall_s": 69.4
+  },
+  "argon_over_air_q_over_m": 0.518
+ },
+ "notes": "Quasi-2D monolayer, 600 grains, soft contacts (k_n = 5 N/m), no grain rotation, no humidity leakage. Wall counter-charge capped at the same breakdown density over patch area (arc x one grain diameter); this wall capacity, not the per-grain cap, limits q/m. No time compression (K_ACC = 1)."
+}
