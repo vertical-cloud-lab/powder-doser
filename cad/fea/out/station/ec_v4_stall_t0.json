@@ -1,0 +1,68 @@
+{
+ "module": "station",
+ "case": "ec_v4_stall_t0",
+ "design": "chain-carousel-v4",
+ "part": "electronics carriage (printed PETG)",
+ "load_case": "stall at 0 deg",
+ "loads": {
+  "P16_N": 50.0,
+  "contact_normal_N": {
+   "A": -5.67,
+   "B": 24.43,
+   "C": 35.48
+  },
+  "A_lateral_N": 0.0,
+  "pin_reaction_N": [
+   0.69,
+   -0.0,
+   -50.63
+  ],
+  "pin_reaction_moment_Nmm": [
+   4.8,
+   -105.0,
+   13.5
+  ],
+  "statics_P16_vector_N": [
+   0.0,
+   0.0,
+   -50.0
+  ],
+  "gear_scale": 0.0,
+  "seated": false
+ },
+ "nodes": 105477,
+ "elements": 58672,
+ "mesh_mm": 2.2,
+ "wall_s": 29.4,
+ "parts": [
+  {
+   "part": "EC",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 1.17999,
+   "vm_max_MPa": 26.601,
+   "vm_max_at": [
+    64.2,
+    19.7,
+    -5.3
+   ],
+   "vm_excl_MPa": 26.601,
+   "vm_excl_at": [
+    64.2,
+    19.7,
+    -5.3
+   ],
+   "allow_MPa": 23.0,
+   "sf": 0.86
+  }
+ ],
+ "key_disp": {
+  "cone A |u|": 0.93816,
+  "vee B |u|": 1.14006,
+  "flat C |u|": 0.92358,
+  "motor face |u|": 0.21514,
+  "centre-distance change at the mesh (mm, + opens)": 0.17583
+ },
+ "notes": "EC v4 as drawn (one solid); EC weight smeared over the printed body (mesh COM [41.9, 2.8, 36.9] vs statics [54.0, 0.0, 36.0])",
+ "mass_kg": 0.0485,
+ "png": "out/station/ec_v4_stall_t0.png"
+}

@@ -1,0 +1,47 @@
+{
+ "module": "station",
+ "case": "latch_rail_v3_unit",
+ "design": "chain-carousel-v3",
+ "part": "latch rail (printed PETG)",
+ "load_case": "unit",
+ "loads": {
+  "ramp_N": 10.0,
+  "post_reaction": [
+   -9.06,
+   4.23,
+   -0.0
+  ]
+ },
+ "nodes": 8621,
+ "elements": 5027,
+ "mesh_mm": 1.6,
+ "wall_s": 1.1,
+ "parts": [
+  {
+   "part": "latch rail",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.00189,
+   "vm_max_MPa": 1.048,
+   "vm_max_at": [
+    129.5,
+    -9.0,
+    -29.6
+   ],
+   "vm_excl_MPa": 0.654,
+   "vm_excl_at": [
+    129.4,
+    -7.8,
+    -23.6
+   ],
+   "allow_MPa": 23.0,
+   "sf": 35.16
+  }
+ ],
+ "key_disp": {
+  "max |u| (mm)": 0.00189,
+  "ramp normal force N": 10.0
+ },
+ "notes": "its post pad bonded to the 2020 post's end (an M6 into the centre bore)",
+ "mass_kg": 0.0035,
+ "png": "out/station/latch_rail_v3_unit.png"
+}
