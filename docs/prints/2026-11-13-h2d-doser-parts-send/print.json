@@ -18,7 +18,9 @@
   "version": "02.08.02.61 (AppImage) on the runner, Xvfb :99, ubuntu 26.04 image",
   "login": "password, then the first authenticator code from bambu-totp (Log In 06:15:21, code 06:15:41, Confirm 06:15:42 UTC); no e-mailed code asked for",
   "selected_at_login": "Thumbelina, the A1 Mini (the account's last-selected printer); the H2D selected by hand at 06:16:30",
-  "refresh_pressed": false
+  "refresh_pressed": false,
+  "signed_out_utc": "2026-11-13T11:47:14Z",
+  "closed_and_config_deleted": true
  },
  "printer": {
   "name": "BYU VCL H2D - Théoden",
@@ -224,6 +226,42 @@
   [
    "09:31:21",
    "layer 204, 53 %"
+  ],
+  [
+   "09:50:36",
+   "layer 261 (52.2 mm), the baseplate's last"
+  ],
+  [
+   "10:14:49",
+   "layer 372, 67 %"
+  ],
+  [
+   "10:59:13",
+   "layer 458, 80 %: the auger's gear done"
+  ],
+  [
+   "11:21:35",
+   "layer 751, 87 %, 41 min left"
+  ],
+  [
+   "11:21:58",
+   "PAUSED: 'AMS filament ran out. Please insert a new filament into the same AMS slot. [0700-8011 112113]'; A2 empty"
+  ],
+  [
+   "11:46:45",
+   "still paused (nozzle 42 C, bed 55 C)"
+  ],
+  [
+   "11:47:14",
+   "signed out of the Bambu account"
+  ],
+  [
+   "11:47:33",
+   "Studio closed; config and /tmp/bamboo_model deleted"
+  ],
+  [
+   "11:47:38",
+   "recorder stopped"
   ]
  ],
  "a1mini": {
@@ -252,6 +290,44 @@
   "06:53:35",
   "07:39:5x",
   "08:24:4x",
-  "09:09:2x"
- ]
+  "09:09:2x",
+  "10:17:1x",
+  "11:02:2x",
+  "11:46:4x"
+ ],
+ "outcome": {
+  "state_at_sign_out": "paused at layer 751/1250 (150.2 mm of 250), 87 %, 41 min of printing left",
+  "cause": "AMS A2 black PLA ran out (HMS 0700-8011); no other black PLA loaded, so no auto-refill",
+  "finished_parts": "the baseplate (layers 1-261) and the auger's 44T gear",
+  "left": "the top of the auger tube, layers 752-1250",
+  "to_finish": "load black PLA in A2, let the AMS load it, press Resume on the H2D or in Bambu Handy",
+  "clicked_in_warning": "nothing (window moved aside with wmctrl, not closed)",
+  "filament_left_g": "about 17 g (G-code: 143.9 g through layer 751 of 160.7 g)"
+ },
+ "watch": {
+  "how": "watch_studio.py (byu-vcl 49677cf) with a thread poll added: OCR of the Device page every 10 s, frames every 30-300 s, PR #200 polled every 60 s",
+  "log": "watch/monitor.jsonl",
+  "gaps": "a few minutes between segments, and while the Device page showed the A1 mini (07:38:50-07:39:50, 09:09:30-09:10:10, 09:31:50-09:33:16)",
+  "replies_during_print": []
+ },
+ "recording": {
+  "file": "recording-cut-20261113.mp4",
+  "length_s": 201.2,
+  "raw": "06:12-11:47 UTC at 10 fps in 5 min segments; deleted on the runner after cutting (they show the login)",
+  "parts": [
+   [
+    "06:16:25",
+    "06:26:10",
+    "4x speed (Device page, nozzle reads, Send dialog, Send)"
+   ],
+   [
+    "06:26:10",
+    "11:46:48",
+    "timelapse of keyframes (about one per 25 s), without 07:38:45-07:40:00, 09:09:25-09:10:10, 09:31:45-09:33:20 (A1 mini checks)"
+   ]
+  ],
+  "blurred": "the camera pane's upper corners (room), except over the Send dialog",
+  "uploaded": false,
+  "why_not_uploaded": "no YouTube token in a print run"
+ }
 }

@@ -1,4 +1,4 @@
-# Baseplate and auger on the H2D, black PLA (2026-11-13): sent at 06:25:24 UTC
+# Baseplate and auger on the H2D, black PLA (2026-11-13): sent at 06:25:24 UTC, paused at layer 751/1250 out of filament
 
 [Joshua at 06:08 UTC](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6845617257), with
 `@claude-print`: "re-run last ping. Print immediatly. Note the nozzles have been replaced." The
@@ -12,7 +12,11 @@ the H2D's right nozzle still read 0.6 mm. It, and the run watching the A1 mini, 
 
 **Outcome:** the right nozzle was set to 0.4 mm on the printer at 06:18–06:19 UTC, while this
 run was posting its first frame. Both nozzles then read 0.4 mm, the plate was empty, nobody
-replied, and the plate was sent at 06:25:24 UTC. See [Progress](#progress) for how it went.
+replied, and the plate was sent at 06:25:24 UTC. It printed cleanly until **11:21:58 UTC, when the
+black PLA in AMS slot A2 ran out and the H2D paused itself at layer 751 of 1250** (HMS
+0700-8011). The baseplate and the auger's gear were finished by then; the top 100 mm of the
+auger tube, 41 min of printing, is left. It was still paused when this run signed out at 11:47:14.
+See [The pause](#the-pause-at-layer-751) for how to finish it.
 
 ## The first frame, 06:16:36 UTC
 
@@ -87,6 +91,12 @@ replied, and the plate was sent at 06:25:24 UTC. See [Progress](#progress) for h
 | 08:23:18 | Layer 30, 32 % |
 | 09:10:16 | Layer 143, 46 %, finish estimate 12:03 |
 | 09:31:21 | Layer 204, 53 % |
+| 09:50:36 | Layer 261 (52.2 mm), the baseplate's last; the auger alone from here |
+| 10:14:49 | Layer 372, 67 % |
+| 10:59:13 | Layer 458, 80 %: the auger's 44T gear done on its tree supports |
+| 11:21:35 | Layer 751, 87 %, 41 min left, finish estimate 12:02 |
+| **11:21:58** | **Paused: AMS filament ran out (0700-8011)** |
+| 11:46:45 | Still paused; nozzle 42 °C, bed 55 °C held |
 
 ![The start, 06:27 to 06:52 UTC](watch/start-montage-0627-0652.jpg)
 
@@ -95,7 +105,50 @@ replied, and the plate was sent at 06:25:24 UTC. See [Progress](#progress) for h
 - The watcher ([`monitor.jsonl`](watch/monitor.jsonl)) read the Device page every 10 s by OCR,
   saved camera frames, and polled the thread every minute. Selected frames are in
   [`watch/`](watch/).
-- No HMS fault, dialog or reply during the print.
+- No HMS fault or dialog until the run-out, and no reply on the thread all session.
+
+![Layer 458, 10:59:13 UTC](watch/20261113T105913Z_L458.jpg)
+
+*Layer 458, 10:59:13 UTC: the baseplate finished, the auger's gear on its tree supports.*
+
+## The pause at layer 751
+
+![Warning 0700-8011](warning-0700-8011-20261113T112212Z.png)
+
+- **11:21:58 UTC:** Studio's *Warning*: *"AMS filament ran out. Please insert a new filament into
+  the same AMS slot. [0700-8011 112113]"*, with *Resume (problem solved)* and *Check Assistant*
+  ([Device page](device-page-h2d-runout-20261113T112212Z.png)). The job panel showed 87 %, layer
+  751/1250, 41 min left.
+- **A2 read *Empty* afterwards.** It was the only black PLA loaded (A3 white PLA, A4 light-blue
+  PLA, A1 empty), so the AMS had no backup to switch to. The plate needs 160.7 g; the spool ran out
+  around 140 g in.
+- **While paused,** the bed held 55 °C and the left nozzle cooled to 42 °C
+  ([11:46:45](device-page-h2d-paused-20261113T114645Z.png)).
+- **Nothing was clicked.** *Resume* would have had no filament to feed, and the run can't load a
+  spool. The *Warning* window was moved aside, not closed.
+
+![Paused, 11:46:45 UTC](watch/20261113T114645Z_L751_paused.jpg)
+
+**To finish it:** put a new spool of black PLA in **A2** of the left AMS (the same slot), let the
+AMS load it, then press **Resume** on the H2D's screen or in Bambu Handy on the lab account.
+Expect a seam on the auger tube at 150 mm, where it paused. Finishing in A3's white PLA instead
+would make the top 100 mm of the tube white; that is a person's call.
+
+## Clean-up
+
+- **Signed out** of the Bambu account at 11:47:14 UTC (Home → account menu → *Log out*), then
+  closed Studio (11:47:33) and deleted its config (`~/.config/BambuStudio`, which holds the
+  printers' LAN access codes) and its slice cache, `/tmp/bamboo_model`.
+- **Recording.** The screen was recorded from 06:12 to 11:47 UTC. The raw segments, which show the
+  login, were deleted on the runner. [`recording-cut-20261113.mp4`](recording-cut-20261113.mp4)
+  (3 min 21 s, 720p) is cut from them by wall-clock time: 06:16:25–06:26:10 at 4× speed (the H2D's
+  Device page, the nozzle reads, the Send dialog, Send), then the print as a timelapse of the
+  recorder's keyframes, about one every 25 s, to 11:46:48. It leaves out the login, the account menu
+  and the three A1 mini checks (07:38:50–07:40:00, 09:09:25–09:10:10 and 09:31:45–09:33:20).
+  The camera pane's upper corners, where the room shows, are blurred. There's no YouTube token in a
+  print run, so it isn't uploaded.
+- **GitHub token** re-minted with `scripts/refresh_github_app_token.py` at 06:53, 07:40, 08:24,
+  09:09, 10:17, 11:02 and 11:46 UTC.
 
 ## The A1 mini's plate (read only)
 
