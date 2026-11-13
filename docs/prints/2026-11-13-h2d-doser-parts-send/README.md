@@ -120,8 +120,8 @@ See [The pause](#the-pause-at-layer-751) for how to finish it.
   ([Device page](device-page-h2d-runout-20261113T112212Z.png)). The job panel showed 87 %, layer
   751/1250, 41 min left.
 - **A2 read *Empty* afterwards.** It was the only black PLA loaded (A3 white PLA, A4 light-blue
-  PLA, A1 empty), so the AMS had no backup to switch to. The plate needs 160.7 g; the spool ran out
-  around 140 g in.
+  PLA, A1 empty), so the AMS had no backup to switch to. By the G-code, layers 1–751 take 143.9 g
+  of the plate's 160.7 g, so about 17 g is left to print.
 - **While paused,** the bed held 55 °C and the left nozzle cooled to 42 °C
   ([11:46:45](device-page-h2d-paused-20261113T114645Z.png)).
 - **Nothing was clicked.** *Resume* would have had no filament to feed, and the run can't load a
