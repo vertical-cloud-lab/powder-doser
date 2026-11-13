@@ -5,7 +5,8 @@ powders, and use it for the simulation and ML predictions? This is a draft of wh
 on the salt check in [`README.md`](README.md) (run 34), on run 33 ([`../ml-property-dose/`](../ml-property-dose/)),
 on the in-house tests of [#205](https://github.com/vertical-cloud-lab/powder-doser/pull/205) and on the plan in
 [`OUTLINE.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/ec30713/paper/optimization/OUTLINE.md#L90)
-§4. Nothing here has been run.
+§4. Nothing here has been run. What has to be done before the first session is in [`READINESS.md`](READINESS.md)
+(13 Nov 2026).
 
 ## In short
 * **Yes, if each campaign is run as a "session" on one jar, with fixed blocks around the BO.** The BO doses alone

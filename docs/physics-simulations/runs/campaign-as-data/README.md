@@ -118,6 +118,10 @@ phase is clean.
 
 ## Limitations
 * One powder and one campaign. The model is empirical: log-linear in tilt, inside a 15–40° box.
+* A second salt campaign is not included: the 9-knob margin campaign `salt-margin-20261013T191339Z` (13 and 15
+  Oct, on #166's branch). On 15 Oct its feed at 40° and 20 rpm fell from 35 to 7.5 mg/s, which points to an empty
+  or caked hopper, and its tap release was a fifth of the earlier sessions'. Both are more drift of the kind
+  described above. [`READINESS.md`](READINESS.md) uses its run notes.
 * Sam's fingerprint is from August, and #180 left open which auger produced which dataset (§4.A1). The −16 % mixes
   a session offset with a method offset.
 * Spin time is taken from the poll clock, so it is good to about one poll (0.29 s, i.e. 0.1–0.5 rev). That is
