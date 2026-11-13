@@ -1,0 +1,1 @@
+FETCH ERROR: Failed to scrape https://doi.org/10.1016/j.addma.2020.101082 (HTTP 403). The website you target respond with an unexpected status code (>400) - The scrapped url: https://www.sciencedirect.com/science/article/pii/S2214860419304397?via%3Dihub respond with 403 - Forbidden: . Hint: Retry in a few seconds.

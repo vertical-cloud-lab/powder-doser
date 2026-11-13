@@ -1,0 +1,157 @@
+{
+ "campaign_id": "salt-20260929T014732Z",
+ "observed_feasible_front": [
+  {
+   "t_total_s": 24.04,
+   "abs_error_mg": 6.8,
+   "label": "recenter-02",
+   "mode": "recenter",
+   "params": {
+    "bulk_tilt_deg": 27.5,
+    "trickle_tilt_deg": 20.0,
+    "tap_tilt_deg": 7.5,
+    "bulk_rpm": 60.0,
+    "trickle_start_remaining_g": 0.175,
+    "tolerance_g": 0.009,
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "tau_afterflow_s": 0.8338
+   }
+  },
+  {
+   "t_total_s": 51.81,
+   "abs_error_mg": 0.66,
+   "label": "corner-09",
+   "mode": "screen",
+   "params": {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.05,
+    "tolerance_g": 0.003,
+    "bulk_tap": "2hz",
+    "trim_tap": "off"
+   }
+  },
+  {
+   "t_total_s": 65.54,
+   "abs_error_mg": 0.6,
+   "label": "corner-05",
+   "mode": "screen",
+   "params": {
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003,
+    "bulk_tap": "off",
+    "trim_tap": "2hz"
+   }
+  }
+ ],
+ "model_pareto": [
+  {
+   "trial_index": 33,
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003
+   },
+   "predicted_means": {
+    "abs_error_mg": 0.865781461814402,
+    "t_total_s": 102.13506584667505
+   }
+  },
+  {
+   "trial_index": 31,
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 30.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003
+   },
+   "predicted_means": {
+    "abs_error_mg": 0.25255218811811275,
+    "t_total_s": 118.15733489551928
+   }
+  },
+  {
+   "trial_index": 40,
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "2hz",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.003
+   },
+   "predicted_means": {
+    "abs_error_mg": 5.302204804243875,
+    "t_total_s": 99.2619994969611
+   }
+  },
+  {
+   "trial_index": 38,
+   "params": {
+    "bulk_tap": "2hz",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 100.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015
+   },
+   "predicted_means": {
+    "abs_error_mg": 12.088981467215458,
+    "t_total_s": 57.339183805077255
+   }
+  },
+  {
+   "trial_index": 39,
+   "params": {
+    "bulk_tap": "off",
+    "trim_tap": "off",
+    "bulk_tilt_deg": 40.0,
+    "trickle_tilt_deg": 10.0,
+    "tap_tilt_deg": 15.0,
+    "bulk_rpm": 20.0,
+    "trickle_start_remaining_g": 0.3,
+    "tolerance_g": 0.015
+   },
+   "predicted_means": {
+    "abs_error_mg": 11.057673834571464,
+    "t_total_s": 98.98446372575283
+   }
+  }
+ ],
+ "baseline": {
+  "tuned_tau": {
+   "n": 2,
+   "median_t_total_s": 297.255,
+   "median_abs_error_mg": 4.15
+  },
+  "fitted_tau": {
+   "n": 2,
+   "median_t_total_s": 209.175,
+   "median_abs_error_mg": 4.6
+  }
+ },
+ "front_points_beating_baseline": [
+  "corner-09",
+  "corner-05"
+ ]
+}

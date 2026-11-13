@@ -1,0 +1,34 @@
+{
+  "audit": {
+    "fold_delivery": 24.0625,
+    "salt_speed_ratio": 3.141025641025641,
+    "salt_time_reduction_pct": 68.16326530612244,
+    "validation_error_reduction_pct": 60.86956521739131,
+    "AlSi10Mg_signed_error_pct": -0.08749999999999591,
+    "bo005_success_95pct_two_sided_lower": 0.6305833524471807,
+    "bo005_success_95pct_one_sided_lower": 0.6876560219336321,
+    "zero_overshoot_8_95pct_one_sided_upper": 0.31234397806636793,
+    "zero_failures_n_needed_for_95pct_success_one_sided": 59,
+    "zero_overshoots_n_needed_for_1pct_upper_one_sided": 299,
+    "bonferroni_42_p001": 0.042,
+    "dem_rel_error_0deg_pct": 17.857142857142858,
+    "dem_rel_error_45deg_pct": -21.53846153846154,
+    "dem_rel_error_22_5deg_90rpm_pct_range": [
+      -33.0188679245283,
+      -35.45454545454545
+    ],
+    "delivery_speed_scale_at_alpha078_30to60": 0.8585654364377537
+  },
+  "Figure2_verified_endpoints": [
+    {
+      "powder": "white rice flour",
+      "figure_min_g": 0.8399036331364425,
+      "figure_max_g": 0.886803531312311
+    },
+    {
+      "powder": "sodium alginate",
+      "figure_min_g": 0.692803464825908,
+      "figure_max_g": 0.728503462001195
+    }
+  ]
+}
