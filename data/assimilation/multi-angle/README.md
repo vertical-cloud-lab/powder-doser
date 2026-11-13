@@ -28,7 +28,8 @@ Mass per auger turn rises with the tube angle for all five powders, by 4.8–8.6
 | barium chloride | 0.0233 | 0.1847 | 0.2004 | 0.0374 | 0.1908 | 32.6 °C / 26 % |
 
 Each value is the mean of the six Block C turns, or of the eight Block E re-feed turns, at that
-angle. No powder fell out on its own during the Block B holds at any angle.
+angle. The weather is at the start of Block B. No powder fell out on its own during the Block B
+holds at any angle.
 
 ## Files
 
@@ -45,7 +46,9 @@ angle. No powder fell out on its own during the Block B holds at any angle.
 - The five runs' raw files (serial log, trials, retries, run record, MongoDB document) are in
   [`../single-dispense/source/`](../single-dispense/source). The nine others are in
   [`source/`](source/), copied from commit `f754450` on branch `claude/issue-116-20260915-1622`,
-  with each run's document from MongoDB `powder_doser.battery_runs` (read 2026-11-13).
+  with each run's document from MongoDB `powder_doser.battery_runs` (read 2026-11-13). The raw
+  serial logs of AlSi10Mg (2026-08-21) and brown rice flour aren't on any branch; their trials
+  files, run records and MongoDB documents are.
 - [`weather/`](weather/): the weather reports for 2026-08-04 to 08-12. The 2026-08-20/21 reports
   are in [`../single-dispense/weather/`](../single-dispense/weather).
 - [`extract.py`](extract.py) rebuilds every CSV here (see [Rebuilding](#rebuilding)).
@@ -125,9 +128,8 @@ an angle take about 70 s. The only continuous readings in these runs are Block D
   and 2.1 mg at 22.5°.
 - **Block B found no spontaneous flow.** Barium chloride's holds read exactly 0.0000 g. The other
   runs' holds read between −34 and +120 mg, and all but one are flagged. Sodium sulfate's run
-  notes put its +120 mg at 0° down
-  to a bump during the hold, since a flat tube is the least likely to discharge. Powder only moves
-  when the auger turns.
+  notes put its +120 mg at 0° down to a bump during the hold, since a flat tube is the least
+  likely to discharge. Powder only moves when the auger turns.
 
 ## Temperature and humidity
 
@@ -179,7 +181,7 @@ powders not in the main set, and two are earlier salt runs. All are in
   [notes](https://github.com/vertical-cloud-lab/powder-doser/blob/f754450/docs/battery-runs/2026-08-05-carboxymethyl-cellulose.md#block-c--the-feed-factor-peaks-at-45)
   put this down to the powder arching over the auger's intake when the tube is steep.
 - Brown rice flour and silicon −325 barely moved at any angle (QC verdict "conveying slowly"),
-  and white rice flour and sodium alginate delivered a few mg per turn.
+  and white rice flour and sodium alginate delivered 1–37 mg per turn.
 
 Five more runs with Block C were left out, because their angles or their feed can't be trusted:
 
@@ -195,8 +197,8 @@ Their files are under `data/battery/` at commit `f754450`, and their documents a
 
 ## Continuous readings at several angles
 
-No run of more than one powder has continuous readings at more than one angle. These are the
-closest, none of them extracted here:
+Only salt, and briefly Al 4047, has continuous readings at more than one angle. These are the
+closest data, none of them extracted here:
 
 - **Salt, 0.5 g optimization campaigns** `salt-20260929T014732Z` (60 doses, 2026-09-29 to 10-06)
   and `salt-margin-20261013T191339Z` (43 doses, 2026-10-13 to 10-15). The tube angle of each
