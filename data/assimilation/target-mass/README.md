@@ -7,7 +7,8 @@ reached, or when the controller gave up (stalled, timed out or ran out of cycles
 re-measured; the data was on unmerged branches and in MongoDB.
 
 **12 powders have such a dose. 9 of them reached the target.** Barium chloride, silicon −325
-and sodium alginate never did: the powder stopped feeding first.
+and sodium alginate never did: the powder stopped feeding, or fed too slowly, before the
+controller gave up.
 
 ## Files
 
@@ -31,7 +32,7 @@ and sodium alginate never did: the powder stopped feeding first.
 
 | powder | controller | target | final | error | status | time | readings | date (UTC) | outdoor temp / RH |
 |---|---|---|---|---|---|---|---|---|---|
-| salt | `pid_single_loop` | 1 g | 1.0012 g | +1.2 mg | ok | 35.1 s | 356, every 0.1 s | 2026-07-29 | 30.6 °C / 34 % |
+| salt | `pid_single_loop` | 1 g | 1.0012 g | +1.2 mg | ok | 35.1 s | 356 every 0.1 s (140 while dosing) | 2026-07-29 | 30.6 °C / 34 % |
 | Al 4047 | `bulk_only` | 0.3189 g | 0.3199 g | +1.0 mg | ok | 65.0 s | 141, every 0.38 s | 2026-09-30 | 22.2 °C / 42 % |
 | sodium sulfate | `three_phase` | 1 g | 0.9971 g | −2.9 mg | ok | 86 s | 30 | 2026-09-10 | 12.7 °C / 43 % |
 | AlSi10Mg | `three_phase` | 1 g | 0.9989 g | −1.1 mg | ok | 193 s | 60 | 2026-09-10 | 25.2 °C / 31 % |
@@ -63,11 +64,13 @@ powders, the largest target that finished `ok`, then the smallest error. Where n
 | silicon −325 | 12 (two runs) | 0 | 0.05, 0.2, 1 g |
 
 The August runs dosed 1 g three times (Block G). The September runs dosed 0.05 g three times and
-then 0.2 g three times (Block H), and some also dosed 1 g three times first (Block G).
+then 0.2 g three times (Block H). Five of them dosed 1 g three times first (Block G), a short salt
+run on 2026-09-04 dosed 1 g once, and the calcium lactate run stopped after five doses.
 `doses_summary.csv` has each run's quality verdict (`run_qc_verdict`) and a link to its notes.
 
-Not here: brown rice flour (three 1 g doses on 2026-08-05 that stalled within 8 s with nothing
-delivered; the run's serial log is on no branch, and the two earlier runs had a suspect auger),
+Not here: brown rice flour (three 1 g doses on 2026-08-05 that stalled within 8 s, having
+delivered 0 to 1.8 mg; the run's serial log is on no branch, and the two earlier runs had a
+suspect auger),
 fumed silica (no dose block), and a few runs with a hardware fault: AlSi10Mg 2026-08-11 (tilt
 servos), salt 2026-09-03 16:35 and 17:04 (balance unreadable), CMC 2026-09-08 17:27 (outlet
 misaligned).
@@ -90,15 +93,16 @@ reading plus 0.83 s of flow reaches the target minus 1.5 mg. The balance was rea
 0.28–0.47 s. Two doses finished `ok`: `56a01060` (freshly atomized lot 9fxeqt, 2026-09-30, the
 pick) and `5851b6d6` (atomizer-cup lot, 2026-10-20). Al 4047's other eight controller doses
 stalled, timed out, ran out of cycles or crashed; they are in set C on branch
-`claude/issue-210-20261112-0137`. Five more Al 4047 records in `opt_trials` are `manual` (an
-operator dosing by hand), so they are left out.
+`claude/issue-210-20261112-0137`. Five more Al 4047 records in `opt_trials` are in `manual`
+mode rather than a controller mode, so they are left out.
 
 **`three_phase`, the powder battery (issue #116).** Three stages, each ending at a set mass to
 go:
 
-1. bulk: tilt 45, auger turning continuously at 55 rpm, balance polled every 250 ms. It stops at
-   0.5 g to go for a 1 g target (0.2 or 0.05 g to go for the smaller targets, so it rarely runs
-   there), then a settled reading;
+1. bulk: tilt 45, auger turning continuously at 55 rpm, balance polled every 250 ms. It aims to
+   end at 0.5 g to go for a 1 g target, halting the auger 0.12 g early for the powder still
+   falling, then takes a settled reading. For the smaller targets it would end at 0.2 or 0.05 g to
+   go, so it rarely runs there;
 2. fine: tilt 22.5, 45° auger steps at 30 rpm, one settled reading after each step (about every
    5 s), until 0.05 g to go (0.025 g for 0.05 g targets);
 3. tap: tilt 0, auger still, two taps per cycle, one settled reading per cycle (about every 3 s),
@@ -140,13 +144,18 @@ event times) and `file`.
 
 - **Only salt and Al 4047 have a single continuous dispense to a target.** Every other powder
   was only dosed to a target by the battery's three-stage controller, so that is what the other
-  ten picks are.
+  ten picks are. MongoDB `dose_runs` has more single-dispense salt doses that aren't copied here:
+  three more runs of the same PID controller on 2026-07-30 (all overshot 1 g by 36–72 mg, 0.1 s
+  readings) and 24 trials on 2026-08-17 that ran the auger continuously at 55 or 90 rpm and
+  stopped it on a prediction of the final mass, mostly from a Kalman filter (targets 0.1 to 2 g,
+  four stopping rules compared).
 - **The battery readings are not continuous.** The bulk stage polls every 250 ms, but the
   console printed whole seconds, so 2–4 polls share each `t_s`. The fine and tap stages give one
   settled reading per step, 3–5 s apart. Only the PID and `bulk_only` doses have readings at a
   steady fast rate with sub-second times.
-- **Readings go slightly negative after the tare.** The first bulk polls can read down to −38 mg,
-  so check before treating a series as monotone.
+- **Readings can go negative after the tare.** 76 battery rows read below −5 mg, down to
+  −44.5 mg (xanthan gum, 2026-09-04 dose H1, 26 s in), so check before treating a series as
+  monotone.
 - **Small doses have few readings.** A 0.05 g dose that overshot in one fine step has 1–3
   readings. The picks have 9 to 356.
 - **Doses within a run were back to back.** Every battery run was unattended (`attended` = 0):
