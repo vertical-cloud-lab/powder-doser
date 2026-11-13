@@ -1,0 +1,20 @@
+{
+ "kind": "store",
+ "seed": 0,
+ "seconds": 2.0,
+ "taps": "4 N x 10 ms at 2 Hz",
+ "tag": "store_a0",
+ "alpha_deg": 0.0,
+ "n_grains": 1100,
+ "rp_mm": 1.0,
+ "z_cut_mm": 8.666666666666666,
+ "m_grain_mg": 9.047786842338606,
+ "exits_by_phase": {
+  "taps": 1
+ },
+ "exits_by_phase_mg": {
+  "taps": 9.047786842338606
+ },
+ "n_out_total": 1,
+ "near_exit_final": 188
+}

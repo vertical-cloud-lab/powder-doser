@@ -1,0 +1,30 @@
+{
+ "tilt": 30.0,
+ "rpm": 30.0,
+ "config": "proposed",
+ "powder_g": 0.0,
+ "load_Nm": null,
+ "ecc_mm": 0.0,
+ "pitch_err_rad": 0.0,
+ "v_supply": 24.0,
+ "tooth_jumps": 0,
+ "first_jump_s": null,
+ "stall_s": 0.7046000000004231,
+ "centre_distance_mm": {
+  "mean": 32.07881435099093,
+  "max": 32.14493281659657,
+  "min": 32.05311790900156
+ },
+ "rim_gap_front_mm_max": 0.4810908437958531,
+ "rim_gap_back_mm_max": 0.14115243093958282,
+ "mag_gap_mm_max": 0.07469492620964793,
+ "lift_deg_max": 0.02306743577058257,
+ "actuator_N": {
+  "min": 0.3073705292408362,
+  "max": 13.049157956049267
+ },
+ "wall_s": 4.1,
+ "sim_s": 0.7546000000004731,
+ "mode": "motor stall",
+ "load_at_failure_Nm": 0.18923565392756547
+}

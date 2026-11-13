@@ -1,0 +1,81 @@
+[00:00] Cool. >> Okay. Ready? >> Yeah. Yeah. >> Okay. >> Just pretend like I don't have a camera strapped to my chest. So, >> um Okay. So, here's the idea. So, and we were talking about um isolating the tilt >> when we're in another one. And then we were thinking maybe that's still helpful
+
+[00:20] to have the tilt. >> Yeah. >> But I was thinking the more that we can isolate the better and just how can we make this as easy for ourselves as possible. >> Yeah. So, um, >> when you say isolate the tilt, you mean like get rid of the tilt, >> um, >> or >> Yeah. like you're talking about getting rid of the tilt, like just holding it, um, >> vertical or horizontal, >> but it might still be helpful to have the tilt anyways. >> Yeah. >>
+
+[00:40] Um, so I've been thinking, how do we make this as as easy for ourselves as possible? >> Yeah. >> So, um, the idea hinges around, um, so this is the base plate. >> Okay. >> And this is the mounting plate. Okay. And this is the equivalent of this where where this mounts is this piece. >> So um and
+
+[01:01] these have um a hinge. So these these can just like a free pinned hinge can just rotate like that. >> Yeah. >> And then the base plate is connected to the roller chains. Okay. So this moves along and this has a hinge on it. So these move along together. Okay. >> And then if you just you know push on this then it can move. >> Yeah. >> That's the idea. And
+
+[01:21] so this would be here. That's basically that. So all the carriages that go along along the roller chain would be this. Does that make sense? >> Just give me a moment to >> do it. So >> can we take this over here for a second? And if you grab the base
+
+[01:51] uh base plate, no, no, base plate. >> This is the mounting plate and this is the base >> mounting plate. >> Oh, blue still. >> Blue still. Yeah. >> Okay. >> So, the idea being um the augur is still mounted to something that can hinge separate from from the base plate. Okay. >> This base plate is what's connected to the roller chains. Mhm. >> So, this base plate can move is what's being pulled along and this the
+
+[02:12] mounting plate here is just attached to it by a hinge. >> So, you're saying multiple base plates, but they're not going to have these servos here because the tilt's going to be handled >> a secret other way. >> A secret other way. Okay. Okay. Yeah. So, >> yeah. So, just a free hinge. >> Yeah. So, more 3D printed parts, but not a big deal because Yeah. They're just cheap 3D printed parts. No electronics,
+
+[02:33] all that. >> Yeah. Right now, just Okay. Yeah. And then would tapping be? >> So tapping >> I'll let you Yeah. No electronics so far. Just this base plate. >> Yeah. >> Um Okay. Bring it back over >> which is uh basically like a carrier. >> It's okay. Yeah. So kind of >>
+
+[02:53] in place. Um but importantly it has that hinge so you can back and forth. >> Yeah. >> So then um Okay. Put that aside for a second. a hinge but no electronics to be able to actuate the hinge. >> You can move with your hand or something but nothing >> and it's not going to stay. It's just like a free >> just a free pin. >> Okay, sounds good. >> Okay, so
+
+[03:13] then underneath that um separate this is static. So this is the carriage that goes along with the roller chain. This is um would be like the scale is here situated behind it. >> Yeah, >> that's where we have a little module that has none of this is to scale, right? Okay. But um the stepper and the solenoid. >> Okay. >>
+
+[03:34] So the idea is if these can um interface with that somehow >> then we can move these carriages back and forth cheap way and then have um one stepper and one solenoid just interface with um with the augur do the thing and then step away. So is the thought there like
+
+[03:55] would you be taking this plus the stepper and maybe like doing a insertion and retraction of it or >> Yeah. So um so this would all be on the underside. So this would have like a cutout or something. So this sits like flush with this. >> Okay. >> So this fits underneath. >> Mhm. >> Um and so as this um Yeah.
+
+[04:16] So, um, so then this would be almost free floating. Um, but then it would have like those those, um, cone connector things I was telling you about. >> Yeah. >> So, it has like four one of those in each of these corners. >> Yeah. Kinematic coupling. >> Yeah, >> I think it's the Okay, I will. Yeah, I like that. That makes sense. >>
+
+[04:36] I learned about it from another open source project. Science Jubilee was one tool changing, you know. >> Yeah. Yeah. Yeah. So, >> yeah. Okay. a kinematic coupling. So then um and then below that we have a linear actuator. >> Okay. >> Okay. So this can move up and down. >> Yeah. >> And this has something like just a pin as well. So it's just free floating here. Just move. >>
+
+[04:57] And so then um and maybe has like a little bit of um some more kinematic couplings underneath so it doesn't just like clo all over the place. >> But it's like that. So the idea being that um as this carriage moves over here, this linear actuator pushes this up. >> Yeah. >> Interfaces with with um with the mounting plate.
+
+[05:18] >> Mhm. >> And then through a hole in this and it pushes this up and they move together. >> Yeah. >> On the tilt. >> And then when it's done, this can the linear can pull a little bit back and it releases pushes back underneath and then this moves on to the next one. >> Okay. So linear actuator from below gives you the tilt >>
+
+[05:39] uh which can fully disengage from >> from the carriage >> from the carriage uh allowing for rotation with the some massive stepper or planetary gearbox something like that going around. And then I think what I'm still not quite clear on is how the servo
+
+[06:01] driving the rotation or sorry the stepper motor driving the rotation and the uh solenoid engage and disengage with the >> Yeah. So um so this base plate >> would have a cutout. So it's like a >> Okay. Yeah. You're talking
+
+[06:21] about the >> Yeah. just cut out. >> Sure. Uh the number of times I've looked for scissors in a lab context is uh ridiculously high. >> Yes. Yes, we do. You know, I just need to buy like five scissors. >>
+
+[06:45] I'll just pause this real quick. You You should have been more prepared for my impromptu. [laughter] This is my my conversation with Willow yesterday as well. It's like and then how does it work? Okay, so the glove box moves this way and then the random piece of paper moves this way. Yeah. Okay.
+
+[07:19] So, this is the carriage, right? It sits like this. >> This This can move. >> Okay. >> As as it likes. >> And this can't go beneath. Is that right? Okay. So, so it sits here, but then it can freely move. >> Yeah. >> Up and down like that. >> Sounds good. Yeah. >> And >> and there's one of these, one of these per augur. Is that
+
+[07:39] right? Okay. >> Yes. The auger sits on here. And this this this can >> Okay. So, this is like one repeatable unit right now. >> Yes. This is this is end modules with this. >> Yeah. And no electronics at all. >> No electronics at all. Yeah. Just um Yeah. The most Yeah. The only mechanism here is that hinge joint. That's it. And then it connects. And then this this is
+
+[07:59] the part that connects to the um to the roller chain. >> Okay. >> This has like pins here, pins here, something that connects to the roller chain. >> Okay. Yes. >> And then um yeah, it's like this. This all this together can move like that. >> Yeah. Okay. Um and then so then how it um
+
+[08:20] this interfaces is as this moves over it's pretty close um it's pretty close to this but not touching. >> Okay. >> The bottom part. >> Sure. Sure. >> And so then um the linear actuator moves up a little bit and then we have the kinematic couplings. Yeah. >> And connect it with >> with this. >> Sure. >> So these so these connect >> and then the actuator as um
+
+[08:41] as it continues to push >> because we have that pin there. >> Yeah. that moves. >> That part makes sense. >> Does that answer your question? >> Uh, that part makes sense, but the solenoid and the stepper motor for the auger >> just like um just like how they actually come together. >> Oh, so I was picturing this only being the actuation for
+
+[09:03] tilt. How is that also getting Maybe that's that's the part I'm still missing. So like I I think I I get the a linear actuator being here to engage tilt. Uh >> yeah. So the thing that linear act so we have kind of a second carriage that has all this stuff. >> And so this would sit like this. >> Mhm. Yeah.
+
+[09:24] >> And so as it comes over it's almost engaging and then as it pushes up a little bit then it engages with the stepper motor there >> and a solenoid like at another hole like right there. That makes sense. >> I think it I think that does. So then uh with that engaging
+
+[09:46] is the idea that this would be held down only by the weight of itself. >> Um I was going to have the the same clips that I have on that one. Okay. >> The um the compliant clips. >> Okay. How would those clips uh how would you get this into the clips without
+
+[10:09] um something constraining it from above? >> Um head over there. >> Yeah. Yeah. >> So that would be like like this this is held by itself, right? Yeah, these kind of clips. So when you're first preparing the augers, you fill them up, you
+
+[10:29] put them into the machine, you would lock them into this. This is on the mounting plate on the carriage. >> I see. I see. >> So these are all held in by these clips, >> right, >> the whole time until the person takes them off. >> And right now this tap collar is fixed on there. Or would you be like okay
+
+[10:50] so lifting you would be lifting the solenoid up to the point where you can tap on the side of the augur >> and you would also be lifting >> the stepper motor such that it engages with >> this. Yeah. >> Right. >> So this solenoid would be here >>
+
+[11:10] like is this be locked into that carriage. This carriage is with a linear auction would move up. would engage with this and make it move >> like that. Okay, makes >> sense, >> I think. So, yeah. >> And these would be underneath because this doesn't matter what orientation. >> Yeah. Yeah. Yeah. >> These would be underneath. And so, as they come up, then you're close enough that the solar can hit, stepper can move
+
+[11:31] it together. >> Um, and they're held just by those kinematic couplings and gravity. Maybe some light magnets or something as well. >> Um, and then yeah, they move together up and back. >> Yeah. and then it disengages and then carries. >> Okay. And with the uh so
+
+[11:52] we don't have servos here anymore. That can probably allow us to decrease the width. Uh >> yeah, >> the uh that so like this being clipped in uh I'm
+
+[12:13] sure we could we could design it so that uh well basically like I'm not too worried about this coming out of the clips but in pushing up to get enough of a >>
+
+[12:33] clear clear clearance minimum. Getting the right distance between the two uh the two companion gears uh >> would require at least some force >> to keep it is the the roller chain I guess is going to take the >> that opposing force to keep >> uh it's like this is
+
+[12:53] going to have to get lifted >> up. >> Yeah. against the clips or >> Yeah, >> that like there's going to be some force that then gets carried by the >> Yeah, >> the roller chain. >> Yeah, right. >> Um yeah, roller chain. You could also have it so that that specific section has more um um the roller
+
+[13:14] chains up against um it's called a wear strip. >> Okay. >> Or something like that. So it's it's pushing against some other >> like standoffs that we have or something like that. >> Um >> yeah. So that just just a roaming but like it's fixed in something. >> Yeah, I got you. >> Yeah, >> I think I get the I think I get
+
+[13:34] the idea. >> I'll model it. I'll show it to you and then makes it count. >> Okay. Yeah, sounds good. I >> think the second wheel yesterday I think it's the simplest way I've come up with so far to get it all >> Yeah. of having a having the tilt separated from the electronics basically, right? >> Yeah. Yeah.
+
+[13:55] Cool. >> You don't have to have an arm that grabs something and moves it over or something like that. Like it's just Yeah. It stays where it is the whole time. >> Yeah, that's right. It really just becomes a Yeah, there's no transfer of augur. >> Yeah, >> it's just getting the augur into position. Yeah. >> Cool. >> I like that. >>
+
+[14:15] Yeah. Thanks for Thanks for explaining that. Yeah.

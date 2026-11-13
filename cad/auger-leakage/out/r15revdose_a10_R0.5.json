@@ -1,0 +1,32 @@
+{
+ "kind": "branch",
+ "seed": 0,
+ "prefix": "prefix15",
+ "hold_s": 0.0,
+ "protocol": "revdose",
+ "R_rev": 0.5,
+ "transit": "pat",
+ "transit_s": 2.0,
+ "vib_g": null,
+ "vib_hz": null,
+ "tilt_rate_deg_s": 20.0,
+ "dose_tilt_world": 15.0,
+ "tag": "r15revdose_a10_R0.5",
+ "alpha_deg": 10.0,
+ "n_grains": 1100,
+ "rp_mm": 1.0,
+ "z_cut_mm": 8.666666666666666,
+ "m_grain_mg": 9.047786842338606,
+ "exits_by_phase": {
+  "dose": 228,
+  "reverse at dose tilt": 6,
+  "return to rest": 1
+ },
+ "exits_by_phase_mg": {
+  "dose": 2062.895400053202,
+  "reverse at dose tilt": 54.28672105403164,
+  "return to rest": 9.047786842338606
+ },
+ "n_out_total": 235,
+ "near_exit_final": 116
+}

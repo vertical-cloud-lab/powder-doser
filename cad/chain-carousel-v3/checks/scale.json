@@ -1,0 +1,150 @@
+{
+ "check": "scale",
+ "clashes": [
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Base rail +y",
+   "mm3": 4246.75
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Base cross rail front",
+   "mm3": 34310.46
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Station rail (actuator)",
+   "mm3": 34310.46
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Corner bracket (station rail)",
+   "mm3": 2011.86
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Corner bracket (station rail)",
+   "mm3": 4535.93
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Leveling foot (swivel)",
+   "mm3": 0.02
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Corner bracket (post foot)",
+   "mm3": 2011.86
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Post",
+   "mm3": 1094.51
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Corner bracket (post foot)",
+   "mm3": 201.2
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Corner bracket (post foot)",
+   "mm3": 4535.93
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Hold-down (front, printed)",
+   "mm3": 4704.0
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Hold-down screw M5x16",
+   "mm3": 0.58
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Hold-down screw M5x16",
+   "mm3": 0.58
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Actuator base clevis (printed)",
+   "mm3": 12682.15
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Shoulder screw 4 x 16 mm, M3 (P16 base pin)",
+   "mm3": 316.03
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "M3 locknut (P16 base pin)",
+   "mm3": 70.81
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Actuonix P16-150-22-12-P (pot feedback)",
+   "mm3": 8732.67
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Electronics carriage v3 (Sam's Oct 13 + dock, base, clevis, door finger; printed)",
+   "mm3": 10362.82
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "NEMA 11 11HS18-0674S (auger drive)",
+   "mm3": 21869.04
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "20T steel pinion (KHK SS1-20A, hub faced off)",
+   "mm3": 2308.43
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Dowel 1/8 x 5/16in (EC dock vee)",
+   "mm3": 17.84
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Magnet D44-N52 (under an EC dock seat)",
+   "mm3": 0.51
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Magnet D44-N52 (under an EC dock seat)",
+   "mm3": 0.51
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Guide cradle with the EC's parking seat (printed)",
+   "mm3": 4037.34
+  },
+  {
+   "a": "A&D HR-100A balance (body)",
+   "b": "Cradle post (2020)",
+   "mm3": 7884.91
+  },
+  {
+   "a": "A&D HR-100A breeze break (glass)",
+   "b": "Guide cradle with the EC's parking seat (printed)",
+   "mm3": 45.58
+  },
+  {
+   "a": "A&D HR-100A breeze break (glass)",
+   "b": "Cradle post (2020)",
+   "mm3": 511.86
+  },
+  {
+   "a": "A&D HR-100A pan",
+   "b": "Actuonix P16-150-22-12-P (pot feedback)",
+   "mm3": 501.07
+  }
+ ],
+ "pan_centre": [
+  33.4,
+  4.76
+ ],
+ "note": "the balance at the dose point, the station parked; these parts are in its way"
+}

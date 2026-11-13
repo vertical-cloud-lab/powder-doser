@@ -1,0 +1,24 @@
+[
+ {
+  "key": "bearing_6202-2RSH",
+  "kind": "screenshot",
+  "file": "files/skf/bearing_6202-2RSH.png",
+  "page": "https://www.skf.com/group/products/rolling-bearings/ball-bearings/deep-groove-ball-bearings/productid-6202-2RSH",
+  "url": "https://www.skf.com/group/products/rolling-bearings/ball-bearings/deep-groove-ball-bearings/productid-6202-2RSH",
+  "sha256": "0e845d6bbd15412d559afa65429211df2752bc504f0edd1c9dc6bb3516407078",
+  "bytes": 248264,
+  "retrieved": "2026-10-27",
+  "note": "6202-2RSH - Deep groove ball bearings | SKF"
+ },
+ {
+  "key": "bearing_6202-2RSH",
+  "kind": "text",
+  "file": "files/skf/bearing_6202-2RSH.txt",
+  "page": "https://www.skf.com/group/products/rolling-bearings/ball-bearings/deep-groove-ball-bearings/productid-6202-2RSH",
+  "url": "https://www.skf.com/group/products/rolling-bearings/ball-bearings/deep-groove-ball-bearings/productid-6202-2RSH",
+  "sha256": "27a783f50e54f05699bb3c1a6dad72e54287c0beb1ea750aceaa34d696986143",
+  "bytes": 3050,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

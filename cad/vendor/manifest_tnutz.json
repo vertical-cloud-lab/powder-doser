@@ -1,0 +1,24 @@
+[
+ {
+  "key": "foot_LF-020-A",
+  "kind": "screenshot",
+  "file": "files/tnutz/foot_LF-020-A.png",
+  "page": "https://www.tnutz.com/product/lf-020-a/",
+  "url": "https://www.tnutz.com/product/lf-020-a/",
+  "sha256": "c598c7975f7888a338b3d6bda24b76838c36120d3fed25ac01ca9683ec0c107a",
+  "bytes": 530820,
+  "retrieved": "2026-10-27",
+  "note": "(LF-020-A) M6 x 40 Adjustable Leveling Foot, Small Base | TNUTZ"
+ },
+ {
+  "key": "foot_LF-020-A",
+  "kind": "text",
+  "file": "files/tnutz/foot_LF-020-A.txt",
+  "page": "https://www.tnutz.com/product/lf-020-a/",
+  "url": "https://www.tnutz.com/product/lf-020-a/",
+  "sha256": "a7618c3d24c21613bcbbaeafa0c8199167c7dbd29875511860e03a741440ed37",
+  "bytes": 2873,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

@@ -1,0 +1,588 @@
+{
+ "design": "paternoster",
+ "bambu_studio": "02.08.02.61",
+ "bed_type": "Textured PEI Plate",
+ "presets": {
+  "h2d": {
+   "machine": "Bambu Lab H2D 0.4 nozzle",
+   "process": "0.20mm Standard @BBL H2D",
+   "filament": "Bambu PETG Basic @BBL H2D 0.4 nozzle"
+  },
+  "a1m": {
+   "machine": "Bambu Lab A1 mini 0.4 nozzle",
+   "process": "0.20mm Standard @BBL A1M",
+   "filament": "Bambu PETG Basic @BBL A1M 0.4 nozzle"
+  }
+ },
+ "process_overrides": {
+  "wall_loops": "3",
+  "sparse_infill_density": "25%",
+  "enable_support": "0"
+ },
+ "support_settings_when_on": {
+  "enable_support": "1",
+  "support_type": "tree(auto)",
+  "support_on_build_plate_only": "1"
+ },
+ "brim_settings_when_on": {
+  "brim_type": "outer_only",
+  "brim_width": "3"
+ },
+ "quantities": {
+  "gondola": 12,
+  "uyoke_base": 1,
+  "yoke_stop": 1,
+  "yoke_stop_m": 1,
+  "pin_boss": 1,
+  "pin_boss_m": 1,
+  "magnet_bracket": 1,
+  "fork": 1,
+  "fork_arm": 1,
+  "clevis_bracket": 1,
+  "vial_cup": 1,
+  "vial_funnel": 1,
+  "hold_bracket": 4,
+  "sam_mounting_plate": 12
+ },
+ "quantities_note": "quantities from layout.placements() (the BoM's counts)",
+ "plates": [
+  {
+   "plate": "gondolas_1",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "gondola": 4
+   },
+   "support": false,
+   "positions": [
+    [
+     "gondola",
+     162.5,
+     55.0
+    ],
+    [
+     "gondola",
+     162.5,
+     125.0
+    ],
+    [
+     "gondola",
+     162.5,
+     195.0
+    ],
+    [
+     "gondola",
+     162.5,
+     265.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 31527,
+   "print_time": "8h 45m 27s",
+   "filament_g": 340.88,
+   "filament_m": 113.38,
+   "layers": 275,
+   "max_z_mm": 55.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 275,
+    "Bridge": 809,
+    "Custom": 302,
+    "Flush": 26,
+    "Gap infill": 272,
+    "Inner wall": 9179,
+    "Internal solid infill": 2452,
+    "Outer wall": 5503,
+    "Overhang wall": 48,
+    "Sparse infill": 8565,
+    "Top surface": 460,
+    "Travel": 3610,
+    "Undefined": 3603
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "gcode_3mf": "plates/gondolas_1.gcode.3mf",
+   "gcode_3mf_mb": 2.87,
+   "studio_png": "plates/gondolas_1.png",
+   "toolpath_png": "plates/gondolas_1_toolpath.png"
+  },
+  {
+   "plate": "gondolas_2",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "gondola": 4
+   },
+   "support": false,
+   "positions": [
+    [
+     "gondola",
+     162.5,
+     55.0
+    ],
+    [
+     "gondola",
+     162.5,
+     125.0
+    ],
+    [
+     "gondola",
+     162.5,
+     195.0
+    ],
+    [
+     "gondola",
+     162.5,
+     265.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 31529,
+   "print_time": "8h 45m 29s",
+   "filament_g": 340.88,
+   "filament_m": 113.38,
+   "layers": 275,
+   "max_z_mm": 55.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 275,
+    "Bridge": 809,
+    "Custom": 302,
+    "Flush": 26,
+    "Gap infill": 272,
+    "Inner wall": 9179,
+    "Internal solid infill": 2452,
+    "Outer wall": 5503,
+    "Overhang wall": 48,
+    "Sparse infill": 8565,
+    "Top surface": 460,
+    "Travel": 3612,
+    "Undefined": 3604
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "gcode_3mf": "plates/gondolas_2.gcode.3mf",
+   "gcode_3mf_mb": 2.87,
+   "studio_png": "plates/gondolas_2.png",
+   "toolpath_png": "plates/gondolas_2_toolpath.png"
+  },
+  {
+   "plate": "gondolas_3",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "gondola": 4
+   },
+   "support": false,
+   "positions": [
+    [
+     "gondola",
+     162.5,
+     55.0
+    ],
+    [
+     "gondola",
+     162.5,
+     125.0
+    ],
+    [
+     "gondola",
+     162.5,
+     195.0
+    ],
+    [
+     "gondola",
+     162.5,
+     265.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 31537,
+   "print_time": "8h 45m 37s",
+   "filament_g": 340.88,
+   "filament_m": 113.38,
+   "layers": 275,
+   "max_z_mm": 55.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 275,
+    "Bridge": 809,
+    "Custom": 302,
+    "Flush": 26,
+    "Gap infill": 272,
+    "Inner wall": 9179,
+    "Internal solid infill": 2452,
+    "Outer wall": 5503,
+    "Overhang wall": 48,
+    "Sparse infill": 8565,
+    "Top surface": 465,
+    "Travel": 3616,
+    "Undefined": 3609
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "gcode_3mf": "plates/gondolas_3.gcode.3mf",
+   "gcode_3mf_mb": 2.87,
+   "studio_png": "plates/gondolas_3.png",
+   "toolpath_png": "plates/gondolas_3_toolpath.png"
+  },
+  {
+   "plate": "station",
+   "printer": "Bambu Lab A1 mini",
+   "printer_key": "a1m",
+   "bed_mm": [
+    180.0,
+    180.0
+   ],
+   "parts": {
+    "uyoke_base": 1,
+    "yoke_stop": 1,
+    "yoke_stop_m": 1,
+    "pin_boss": 1,
+    "pin_boss_m": 1,
+    "magnet_bracket": 1,
+    "fork": 1,
+    "fork_arm": 1,
+    "clevis_bracket": 1,
+    "vial_cup": 1,
+    "vial_funnel": 1,
+    "hold_bracket": 4
+   },
+   "support": false,
+   "brim_mm": 3.0,
+   "positions": [
+    [
+     "uyoke_base",
+     137.8,
+     44.5
+    ],
+    [
+     "yoke_stop",
+     151.0,
+     149.5
+    ],
+    [
+     "yoke_stop_m",
+     165.0,
+     149.5
+    ],
+    [
+     "pin_boss",
+     86.0,
+     126.0
+    ],
+    [
+     "pin_boss_m",
+     116.0,
+     126.0
+    ],
+    [
+     "magnet_bracket",
+     51.5,
+     90.5
+    ],
+    [
+     "fork",
+     42.0,
+     126.0
+    ],
+    [
+     "fork_arm",
+     130.0,
+     149.5
+    ],
+    [
+     "clevis_bracket",
+     49.2,
+     44.5
+    ],
+    [
+     "vial_cup",
+     113.1,
+     90.5
+    ],
+    [
+     "vial_funnel",
+     97.0,
+     44.5
+    ],
+    [
+     "hold_bracket",
+     149.0,
+     126.0
+    ],
+    [
+     "hold_bracket",
+     26.0,
+     149.5
+    ],
+    [
+     "hold_bracket",
+     62.0,
+     149.5
+    ],
+    [
+     "hold_bracket",
+     98.0,
+     149.5
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 8475,
+   "print_time": "2h 21m 15s",
+   "filament_g": 64.71,
+   "filament_m": 21.52,
+   "layers": 195,
+   "max_z_mm": 39.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "2",
+     "code": "10018003"
+    },
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "3",
+     "code": "1000C003"
+    }
+   ],
+   "feature_time_s": {
+    "Bottom surface": 279,
+    "Bridge": 325,
+    "Brim": 220,
+    "Custom": 354,
+    "Flush": 28,
+    "Gap infill": 180,
+    "Inner wall": 1941,
+    "Internal solid infill": 782,
+    "Outer wall": 1263,
+    "Overhang wall": 36,
+    "Sparse infill": 1628,
+    "Top surface": 255,
+    "Travel": 1202,
+    "Undefined": 1183
+   },
+   "pngs_in_3mf": [],
+   "gcode_3mf": "plates/station.gcode.3mf",
+   "gcode_3mf_mb": 1.19,
+   "toolpath_png": "plates/station_toolpath.png"
+  },
+  {
+   "plate": "mounting_plates_1",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "sam_mounting_plate": 6
+   },
+   "support": false,
+   "positions": [
+    [
+     "sam_mounting_plate",
+     106.6,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     106.6,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     106.6,
+     222.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     222.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 17713,
+   "print_time": "4h 55m 13s",
+   "filament_g": 131.36,
+   "filament_m": 43.69,
+   "layers": 163,
+   "max_z_mm": 32.6,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 644,
+    "Bridge": 890,
+    "Custom": 303,
+    "Flush": 26,
+    "Gap infill": 398,
+    "Inner wall": 2981,
+    "Internal solid infill": 2535,
+    "Outer wall": 3780,
+    "Overhang wall": 25,
+    "Sparse infill": 1980,
+    "Top surface": 450,
+    "Travel": 3706,
+    "Undefined": 3698
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "gcode_3mf": "plates/mounting_plates_1.gcode.3mf",
+   "gcode_3mf_mb": 2.7,
+   "studio_png": "plates/mounting_plates_1.png",
+   "toolpath_png": "plates/mounting_plates_1_toolpath.png"
+  },
+  {
+   "plate": "mounting_plates_2",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "sam_mounting_plate": 6
+   },
+   "support": false,
+   "positions": [
+    [
+     "sam_mounting_plate",
+     106.6,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     106.6,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     106.6,
+     222.0
+    ],
+    [
+     "sam_mounting_plate",
+     218.4,
+     222.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 17684,
+   "print_time": "4h 54m 44s",
+   "filament_g": 131.35,
+   "filament_m": 43.69,
+   "layers": 163,
+   "max_z_mm": 32.6,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 644,
+    "Bridge": 890,
+    "Custom": 303,
+    "Flush": 26,
+    "Gap infill": 398,
+    "Inner wall": 2981,
+    "Internal solid infill": 2492,
+    "Outer wall": 3780,
+    "Overhang wall": 25,
+    "Sparse infill": 1982,
+    "Top surface": 450,
+    "Travel": 3718,
+    "Undefined": 3710
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "gcode_3mf": "plates/mounting_plates_2.gcode.3mf",
+   "gcode_3mf_mb": 2.7,
+   "studio_png": "plates/mounting_plates_2.png",
+   "toolpath_png": "plates/mounting_plates_2_toolpath.png"
+  }
+ ],
+ "total_print_time_h": 38.5,
+ "total_filament_g": 1350.1
+}

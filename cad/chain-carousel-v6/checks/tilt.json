@@ -1,0 +1,165 @@
+{
+ "check": "tilt",
+ "exts_mm": [
+  0.0,
+  10.0,
+  19.5,
+  28.0
+ ],
+ "angles_deg": [
+  5.0,
+  10.0,
+  20.0,
+  30.0,
+  40.0,
+  50.0,
+  60.0,
+  70.0,
+  80.0,
+  90.0
+ ],
+ "clashes_before_fix": [
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @ext0",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @ext0",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @ext10",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @ext10",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @ext19.5",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @ext19.5",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @ext28",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @ext28",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt5",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt5",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt10",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt10",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt20",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt20",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt30",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt30",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt40",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt40",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt50",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt50",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt60",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt60",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt70",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt70",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt80",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt80",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) -y @tilt90",
+   "b": "Lift guide -y (printed, on the upper rung: slot, funnel mouth, cone seat)",
+   "mm3": 75.6
+  },
+  {
+   "a": "Actuonix P16-50-22-12-P (lift, pot feedback) +y @tilt90",
+   "b": "Lift guide +y (printed, on the upper rung: slot, funnel mouth, vee seat)",
+   "mm3": 50.37
+  }
+ ],
+ "clashes": [],
+ "note": "v6, 2026-11-10: run as two processes (tilt_a: the rise 0-28 mm and 5-40 deg; tilt_b: 50-90 deg) before the guides' last fix. Every pose's only clash was the lift P16-50s' tubes in their guides' floors (0.9 mm deep), which the guides' 1.5 mm shallower depth fixed (checks/guide_recheck.json: 0). So 0 clashes from the rise through 90 deg."
+}

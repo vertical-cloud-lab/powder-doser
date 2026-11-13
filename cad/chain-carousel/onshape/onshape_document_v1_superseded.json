@@ -1,0 +1,233 @@
+{
+ "documentId": "f4ba4525afa4d2479f3c8c9d",
+ "workspaceId": "3f16b2be247ad453d591684a",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/f4ba4525afa4d2479f3c8c9d/w/3f16b2be247ad453d591684a",
+ "translationId": "6ac9e059342b13623518c29a",
+ "importedElementIds": [
+  "0938523b38ff6b017b8e640b",
+  "92128ddedbf36c61abae4518",
+  "d1fe8485fb4e88b91d226c53",
+  "fc4c7b3200ac7e12e4439a43",
+  "554cd40c77770eecb1112a68",
+  "eee01a5138a491fe3764ddcd",
+  "8e04502e4ca93e062a561b4a",
+  "ac28ec127f53288f70bef677",
+  "e356e59ab13960c6337d8eb8",
+  "003410eb5fe072dc81f61646",
+  "9702b013a47800608e74dc26",
+  "5ccc5d98b8c1c38f4882c26c",
+  "46e703f080e3cd90d0c9538d",
+  "8cbdc48778c164ed454319ca",
+  "d8667f6621014dd3522e9b99",
+  "a93847170ff88133cb7eb278",
+  "6bf52982f4f9b425f7f82472",
+  "e8319ebc5a6cb6a26c727bc9"
+ ],
+ "elements": [
+  {
+   "id": "e8319ebc5a6cb6a26c727bc9",
+   "name": "Chain carousel test rig",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "6bf52982f4f9b425f7f82472",
+   "name": "01 Frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a93847170ff88133cb7eb278",
+   "name": "02 Legs and leveling feet",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d8667f6621014dd3522e9b99",
+   "name": "05 Idler",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8cbdc48778c164ed454319ca",
+   "name": "Long rail front",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "46e703f080e3cd90d0c9538d",
+   "name": "Cross member 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "5ccc5d98b8c1c38f4882c26c",
+   "name": "Leg",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "9702b013a47800608e74dc26",
+   "name": "Idler sprocket 19T (bearing)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "003410eb5fe072dc81f61646",
+   "name": "03 NEMA 34 on its motor plate",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e356e59ab13960c6337d8eb8",
+   "name": "04 Deck onto the frame; motor plate up into the deck",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ac28ec127f53288f70bef677",
+   "name": "06 Drive sprocket on the motor shaft",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8e04502e4ca93e062a561b4a",
+   "name": "07 Hall sensors (index, home) into the deck",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "eee01a5138a491fe3764ddcd",
+   "name": "08 Chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "554cd40c77770eecb1112a68",
+   "name": "09 Carriages",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "fc4c7b3200ac7e12e4439a43",
+   "name": "10 Station hold-down blocks",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d1fe8485fb4e88b91d226c53",
+   "name": "11 Module 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "92128ddedbf36c61abae4518",
+   "name": "12 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0938523b38ff6b017b8e640b",
+   "name": "chain_carousel_rig parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "a82f8eea87b14aac71094ee0",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "3f1f2cc4ac64994315c1e413",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2e17ec6137cffe0b9af09465",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f79b8f90e9e4f8d0df9d4562",
+   "name": "chain_carousel_rig.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "150a02f5274fd7b87a57e898",
+   "name": "BOM : 05 Idler",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b8d266ccf380975ff01f6fbe",
+   "name": "BOM : 03 NEMA 34 on its motor plate",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "173d4a3c6ed2445886daf2e9",
+   "name": "BOM : 01 Frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "01f1b2961ea35e0556df6dde",
+   "name": "BOM : Leg",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "74b9c579241fd1e17730f294",
+   "name": "BOM : 08 Chain",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0b540175d878bd1564c0039b",
+   "name": "BOM : 04 Deck onto the frame; motor plate up into the deck",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "5e6a9cd986dcc6afd3c19915",
+   "name": "BOM : 12 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "89446dc72cf897ab5d8c9e23",
+   "name": "BOM : 02 Legs and leveling feet",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ba1a8dd69607a1e414ff61f1",
+   "name": "BOM : 09 Carriages",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "857bff2ffd93c27de0250bc3",
+   "name": "BOM : 06 Drive sprocket on the motor shaft",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "81f0cbf4b16f82da4efed579",
+   "name": "BOM : Long rail front",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a1cafe3e8c9377a9568b9c7d",
+   "name": "BOM : 10 Station hold-down blocks",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e954c355db7c595a8395bb02",
+   "name": "BOM : Idler sprocket 19T (bearing)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e4266c7f328c20300253bf24",
+   "name": "BOM : 11 Module 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c23f3d9e3a55fdc9473a9761",
+   "name": "BOM : 07 Hall sensors (index, home) into the deck",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "93d95ede10564c1f66793f8b",
+   "name": "BOM : Chain carousel test rig",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0b2bb9786189af9a6eb367bb",
+   "name": "BOM : Cross member 1",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "e8319ebc5a6cb6a26c727bc9",
+ "assemblyUrl": "https://cad.onshape.com/documents/f4ba4525afa4d2479f3c8c9d/w/3f16b2be247ad453d591684a/e/e8319ebc5a6cb6a26c727bc9",
+ "version": {
+  "id": "d31389fa6f94096c182991bd",
+  "name": "v1 chain test rig"
+ },
+ "api_calls": 9,
+ "superseded_by": "https://cad.onshape.com/documents/c9896149cba99f2afec4806f/w/3f1508df6e8733bea9d712ac"
+}

@@ -1,0 +1,309 @@
+{
+ "documentId": "7781103e41ea031038274d53",
+ "workspaceId": "be93cab60ae7d8dd4c301dd0",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0",
+ "translationId": "6af368c4ffbfb78be3e6604d",
+ "importedElementIds": [
+  "e9bfb131f998541420666839",
+  "671eb6091f8e09ff2fa5eb53",
+  "87a5a6b26078cbd714411b3d",
+  "f5e3f146d0753eb2e84930ed",
+  "695a324c09bb9f9f5860bf4b",
+  "d5408858ad66796f415c509e",
+  "e4840613ea5de52462259d9f",
+  "992a1a8121cae4ddbb0bd07b",
+  "4a6560d144da9500c1a7b9df",
+  "aad06c34d9cfc62631204872",
+  "2d83b8f801ae158f10d99f4f",
+  "0b77ff41eab4942576b73c6f",
+  "fd22f0f41bae5fed770b45b3",
+  "878aa9e817ea788bdf49c586",
+  "8ecec1acaf592eda3ebc7d2c",
+  "dbf6eed30554edbf8b89a93d",
+  "49ef328c6755bc1c319bdfe2",
+  "3b68ea75c5791e15319a1871",
+  "fc149783f11f9cfe8af47922",
+  "3d9fc2c2a8e0b3d698885f4d",
+  "7345c9de2c4e7c4b71f4f79e",
+  "c5d7feac2af61232c324f183",
+  "4301dd6e18315a795753be61",
+  "ae27764c0927c61559fee155",
+  "c7483f9da46de0305e71e071"
+ ],
+ "elements": [
+  {
+   "id": "c7483f9da46de0305e71e071",
+   "name": "Chain carousel test rig v5",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ae27764c0927c61559fee155",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "4301dd6e18315a795753be61",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c5d7feac2af61232c324f183",
+   "name": "08 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "7345c9de2c4e7c4b71f4f79e",
+   "name": "09 Modules on the bench",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3d9fc2c2a8e0b3d698885f4d",
+   "name": "10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "fc149783f11f9cfe8af47922",
+   "name": "Bearing locknut 1-4-20 (nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3b68ea75c5791e15319a1871",
+   "name": "Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "49ef328c6755bc1c319bdfe2",
+   "name": "Actuonix P16-150-22-12-P (pot feedback) -y",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "dbf6eed30554edbf8b89a93d",
+   "name": "Actuonix rod -y",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8ecec1acaf592eda3ebc7d2c",
+   "name": "M3 locknut (P16 base pin -y)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "878aa9e817ea788bdf49c586",
+   "name": "Outlet door spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "fd22f0f41bae5fed770b45b3",
+   "name": "Outlet door housing (printed) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0b77ff41eab4942576b73c6f",
+   "name": "Outlet door spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2d83b8f801ae158f10d99f4f",
+   "name": "Carriage 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "aad06c34d9cfc62631204872",
+   "name": "Tab locknut M3 (in the hook) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "4a6560d144da9500c1a7b9df",
+   "name": "Latch spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "992a1a8121cae4ddbb0bd07b",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e4840613ea5de52462259d9f",
+   "name": "02 Posts and top frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d5408858ad66796f415c509e",
+   "name": "03 Side plates onto the posts",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "695a324c09bb9f9f5860bf4b",
+   "name": "05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f5e3f146d0753eb2e84930ed",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "87a5a6b26078cbd714411b3d",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "671eb6091f8e09ff2fa5eb53",
+   "name": "12 Enclosure",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e9bfb131f998541420666839",
+   "name": "chain_carousel_rig_v5 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "b5f66f4bd4db9e522d775976",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "ebe0bc41901da5b11422e49f",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "9d918e280f082eb5eee2b6da",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e96c6079a263877d37521f4b",
+   "name": "chain_carousel_rig_v5.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "4864a7882219a727e7b5c150",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "dcf77d6faaa8523eb5d9f4b4",
+   "name": "BOM : 12 Enclosure",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "820e9e99d65a808d4da3c366",
+   "name": "BOM : 02 Posts and top frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ac0e3efc7509fc4038bf139b",
+   "name": "BOM : Latch spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "07abe94d1c40db6c4851e57d",
+   "name": "BOM : Outlet door spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "3b2fab6776258848164c4ad5",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a1ed72dae1e0721af82522ed",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2ffec110a42b19a18bf4f2fe",
+   "name": "BOM : Actuonix rod -y",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a998cd335508f43db07878f0",
+   "name": "BOM : 09 Modules on the bench",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "da7187e0be3f92f2d02ec905",
+   "name": "BOM : 10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d124ba4c2ada330c214b4d1e",
+   "name": "BOM : 08 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "328b5c1d21286b5da5655865",
+   "name": "BOM : Carriage 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "22591622d4a50c4f428008d9",
+   "name": "BOM : Bearing locknut 1-4-20 (nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "13d1e1d2b73d08232d2b22f2",
+   "name": "BOM : 03 Side plates onto the posts",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e91719a7c1a4144a47de34f7",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "5eabe28c95758319407bd45a",
+   "name": "BOM : Tab locknut M3 (in the hook) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f7e1354c905ec9219d5a65ed",
+   "name": "BOM : Actuonix P16-150-22-12-P (pot feedback) -y",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "982b4ac5d28ac45f42ad0787",
+   "name": "BOM : Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "13da863de917780f4a9ed177",
+   "name": "BOM : Outlet door housing (printed) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2c24752e4ce27b0fe1775214",
+   "name": "BOM : Chain carousel test rig v5",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2bd736f3f7be525fbdef3f1e",
+   "name": "BOM : 05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "fc05843baae6f77415c56f4a",
+   "name": "BOM : Outlet door spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ea5a076cd92b2e567294369d",
+   "name": "BOM : M3 locknut (P16 base pin -y)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d1a6e4fd3c9355c5f053c0db",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "c7483f9da46de0305e71e071",
+ "assemblyUrl": "https://cad.onshape.com/documents/7781103e41ea031038274d53/w/be93cab60ae7d8dd4c301dd0/e/c7483f9da46de0305e71e071",
+ "version": {
+  "id": "f0992e4da92bfd3bcc63bdb2",
+  "name": "v5 HR-202i station"
+ },
+ "api_calls": 11
+}

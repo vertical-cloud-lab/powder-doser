@@ -1,0 +1,64 @@
+{
+ "cycle": {
+  "off_mm": 1.0,
+  "seated": true,
+  "dock_error_mm": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "dock_error_deg": 0.0,
+  "F_act_peak_N": 4.64,
+  "carriage_pulled_back_mm": 0.001,
+  "carriage_y_end_mm": 0.999,
+  "module_lift_peak_deg": 0.0,
+  "contact_A_N": 2.37,
+  "contact_B_N": 1.01,
+  "contact_C_N": 7.92,
+  "coil_face_N": 0.0,
+  "seat_pulls_N": [
+   3.58,
+   0.72
+  ],
+  "coil_N": 10.59,
+  "coil_gap_mm": 0.15,
+  "wall_force_peak_N": 10.9,
+  "door_open_mm": 6.0,
+  "finger_force_N": 0.649,
+  "ec_lean_deg": -3.308,
+  "tilt_reached": 29.72,
+  "F_act_peak_cycle_N": 9.15,
+  "F_act_pull_off_N": -0.38,
+  "dock_error_dose_max_mm": 0.0003,
+  "door_open_during_tilt_min_mm": 6.0,
+  "door_shut_at_ext_mm": 15.56,
+  "balls_leave_at_ext_mm": 18.19,
+  "parked_on_seat_end": true,
+  "seat_force_end_N": 3.38,
+  "module_back_down_deg": -0.0
+ },
+ "cycle_T": {
+  "rise0": 0.3,
+  "rise1": 1.4666666666666668,
+  "coil": 1.3,
+  "float": 1.7666666666666668,
+  "seat_end": 2.166666666666667,
+  "tilt0": 2.166666666666667,
+  "tilt1": 4.432480610485251,
+  "dose0": 4.732480610485251,
+  "dose1": 5.732480610485251,
+  "back0": 5.932480610485251,
+  "back1": 8.198294554303835,
+  "float2": 8.498294554303836,
+  "coiloff": 8.698294554303835,
+  "down0": 8.898294554303835,
+  "down1": 10.0649612209705,
+  "end": 10.5649612209705
+ },
+ "settings": {
+  "base_dx": 0.0,
+  "swing_preload_Nm": 0.3,
+  "finger_fix": true,
+  "ey_free_mm": 3.0
+ }
+}

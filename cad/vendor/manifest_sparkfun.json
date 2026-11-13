@@ -1,0 +1,35 @@
+[
+ {
+  "key": "loadcell_SEN-14727",
+  "kind": "datasheet",
+  "file": "files/sparkfun/TAL221.pdf",
+  "page": "https://www.sparkfun.com/products/14727",
+  "url": "https://cdn.sparkfun.com/assets/9/9/a/f/3/TAL221.pdf",
+  "sha256": "bcef16365d00b6c8ec4a100403298e289a5f57dcbb6a661b364463ea8949e377",
+  "bytes": 288908,
+  "retrieved": "2026-10-27",
+  "note": "TAL221.pdf"
+ },
+ {
+  "key": "loadcell_SEN-14727",
+  "kind": "screenshot",
+  "file": "files/sparkfun/loadcell_SEN-14727.png",
+  "page": "https://www.sparkfun.com/mini-load-cell-100g-straight-bar-tal221.html",
+  "url": "https://www.sparkfun.com/mini-load-cell-100g-straight-bar-tal221.html",
+  "sha256": "484f00dc84e8edc1362865411978da69e2adbb0345d339b1c054c9422b8b45b4",
+  "bytes": 714602,
+  "retrieved": "2026-10-27",
+  "note": "Mini Load Cell - 100g, Straight Bar (TAL221) - SparkFun Electronics"
+ },
+ {
+  "key": "loadcell_SEN-14727",
+  "kind": "text",
+  "file": "files/sparkfun/loadcell_SEN-14727.txt",
+  "page": "https://www.sparkfun.com/mini-load-cell-100g-straight-bar-tal221.html",
+  "url": "https://www.sparkfun.com/mini-load-cell-100g-straight-bar-tal221.html",
+  "sha256": "7268bdb83db58dd72248908fc9ee11a6619adeeabb6bd2cce817ac16a0695dcd",
+  "bytes": 5739,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

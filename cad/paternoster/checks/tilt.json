@@ -1,0 +1,10 @@
+{
+ "check": "tilt",
+ "clashes": [
+  {
+   "a": "Actuonix P16-P 150 mm (feedback) @ext0",
+   "b": "U-yoke crossbar with guide tongue (printed)",
+   "mm3": 65.58
+  }
+ ]
+}

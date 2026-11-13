@@ -1,0 +1,198 @@
+{
+ "cycle": [
+  {
+   "magnet": true,
+   "powder_g": 50.0,
+   "tilt_world": 30.0,
+   "tilt_frame": 30.0,
+   "tilt_reached": 30.33,
+   "F_act_peak_N": 26.09,
+   "F_act_dock_N": 7.43,
+   "F_act_dose_N": 7.59,
+   "dock_gap_dose_max_mm": -0.119,
+   "dock_gap_stall_max_mm": -0.097,
+   "magnet_force_dose_N": 20.0,
+   "hinge_up_peak_N": 4.78,
+   "hinge_down_peak_N": -20.38,
+   "lip_force_peak_N": 11.19,
+   "foot_force_peak_N": 0.0,
+   "tab_lift_peak_mm": 1.988,
+   "tab_drop_peak_mm": -0.89,
+   "relatched": true,
+   "tilt_end": -0.003,
+   "dock_holds_dose": true,
+   "dock_N_min_dose": 19.03,
+   "dock_cp_margin_min_dose_mm": 6.87,
+   "dock_holds_stall": true,
+   "dock_N_min_stall": 18.31,
+   "dock_cp_margin_min_stall_mm": 21.82,
+   "dock_holds_tilt": true,
+   "dock_N_min_tilt": 22.14,
+   "dock_cp_margin_min_tilt_mm": 18.3,
+   "dock_holds_back": true,
+   "dock_N_min_back": 16.79,
+   "dock_cp_margin_min_back_mm": 0.4
+  },
+  {
+   "magnet": false,
+   "powder_g": 50.0,
+   "tilt_world": 30.0,
+   "tilt_frame": 30.0,
+   "tilt_reached": 30.5,
+   "F_act_peak_N": 25.99,
+   "F_act_dock_N": 7.26,
+   "F_act_dose_N": 7.41,
+   "dock_gap_dose_max_mm": 0.674,
+   "dock_gap_stall_max_mm": 0.703,
+   "magnet_force_dose_N": 0.0,
+   "hinge_up_peak_N": 5.06,
+   "hinge_down_peak_N": -20.26,
+   "lip_force_peak_N": 11.1,
+   "foot_force_peak_N": 0.0,
+   "tab_lift_peak_mm": 1.987,
+   "tab_drop_peak_mm": -0.979,
+   "relatched": true,
+   "tilt_end": -0.003,
+   "dock_holds_dose": false,
+   "dock_N_min_dose": -1.06,
+   "dock_cp_margin_min_dose_mm": -14.7,
+   "dock_holds_stall": false,
+   "dock_N_min_stall": -1.82,
+   "dock_cp_margin_min_stall_mm": -2310.82,
+   "dock_holds_tilt": false,
+   "dock_N_min_tilt": 2.03,
+   "dock_cp_margin_min_tilt_mm": -8.89,
+   "dock_holds_back": false,
+   "dock_N_min_back": -3.63,
+   "dock_cp_margin_min_back_mm": -12140.56
+  }
+ ],
+ "threshold": [
+  {
+   "tilt_frame": 0.0,
+   "tilt_actual": -0.0,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 13.28,
+   "F_tan_open_N": 24.15,
+   "pinion_torque_open_Nm": 0.2415
+  },
+  {
+   "tilt_frame": 15.0,
+   "tilt_actual": 14.94,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 13.32,
+   "F_tan_open_N": 24.22,
+   "pinion_torque_open_Nm": 0.2422
+  },
+  {
+   "tilt_frame": 30.0,
+   "tilt_actual": 30.22,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 13.28,
+   "F_tan_open_N": 24.15,
+   "pinion_torque_open_Nm": 0.2415
+  },
+  {
+   "tilt_frame": 45.0,
+   "tilt_actual": 45.42,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 11.92,
+   "F_tan_open_N": 21.67,
+   "pinion_torque_open_Nm": 0.2167
+  },
+  {
+   "tilt_frame": 60.0,
+   "tilt_actual": 60.8,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 9.64,
+   "F_tan_open_N": 17.53,
+   "pinion_torque_open_Nm": 0.1753
+  },
+  {
+   "tilt_frame": 75.0,
+   "tilt_actual": 75.97,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 7.8,
+   "F_tan_open_N": 14.18,
+   "pinion_torque_open_Nm": 0.1418
+  },
+  {
+   "tilt_frame": 90.0,
+   "tilt_actual": 91.8,
+   "magnet": true,
+   "powder_g": 0.0,
+   "F_sep_open_N": 7.04,
+   "F_tan_open_N": 12.8,
+   "pinion_torque_open_Nm": 0.128
+  },
+  {
+   "tilt_frame": 0.0,
+   "tilt_actual": -0.0,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 15.0,
+   "tilt_actual": 15.08,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 30.0,
+   "tilt_actual": 30.33,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 45.0,
+   "tilt_actual": 45.51,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 60.0,
+   "tilt_actual": 60.9,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 75.0,
+   "tilt_actual": 76.1,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  },
+  {
+   "tilt_frame": 90.0,
+   "tilt_actual": 91.94,
+   "magnet": false,
+   "powder_g": 0.0,
+   "F_sep_open_N": 0.04,
+   "F_tan_open_N": 0.07,
+   "pinion_torque_open_Nm": 0.0007
+  }
+ ]
+}

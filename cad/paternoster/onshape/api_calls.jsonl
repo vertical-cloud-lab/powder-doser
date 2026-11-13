@@ -1,0 +1,14 @@
+{"run": "check-sam-doc", "n": 1, "method": "GET", "path": "/documents/581956d5528927957a4c0b98", "status": 200, "utc": "2026-10-16T13:32:58Z"}
+{"run": "sam-doc-elements", "n": 1, "method": "GET", "path": "/documents/d/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/elements", "status": 200, "utc": "2026-10-16T13:33:07Z"}
+{"run": "sam-partstudio-export", "n": 1, "method": "POST", "path": "/partstudios/d/581956d5528927957a4c0b98/w/5778b22212c6736ada520515/e/24d73974055f92c0f2fa292f/translations", "status": 200, "utc": "2026-10-16T13:33:16Z"}
+{"run": "sam-partstudio-export", "n": 2, "method": "GET", "path": "/translations/6ad2279b798239aaade0dbc3", "status": 200, "utc": "2026-10-16T13:33:22Z"}
+{"run": "sam-partstudio-export", "n": 3, "method": "GET", "path": "/documents/d/581956d5528927957a4c0b98/externaldata/6ad2279e728616c72e9d4522", "status": 200, "utc": "2026-10-16T13:33:22Z"}
+{"run": "create-document-paternoster", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-10T19:49:27Z"}
+{"run": "create-document-paternoster", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-10T19:49:27Z"}
+{"run": "create-document-paternoster", "n": 3, "method": "POST", "path": "/blobelements/d/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0", "status": 200, "utc": "2026-11-10T19:49:32Z"}
+{"run": "create-document-paternoster", "n": 4, "method": "GET", "path": "/translations/6af3754c830999c232a535bf", "status": 200, "utc": "2026-11-10T19:53:32Z"}
+{"run": "create-document-paternoster", "n": 5, "method": "GET", "path": "/documents/d/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0/elements", "status": 200, "utc": "2026-11-10T19:53:32Z"}
+{"run": "create-document-paternoster", "n": 6, "method": "GET", "path": "/assemblies/d/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0/e/6b9996c7edfe35c66c55e27b/shadedviews", "status": 200, "utc": "2026-11-10T19:53:34Z"}
+{"run": "create-document-paternoster", "n": 7, "method": "GET", "path": "/assemblies/d/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0/e/6b9996c7edfe35c66c55e27b/shadedviews", "status": 200, "utc": "2026-11-10T19:53:35Z"}
+{"run": "create-document-paternoster", "n": 8, "method": "POST", "path": "/documents/d/ba4455c0f17bed3b77763e4a/versions", "status": 200, "utc": "2026-11-10T19:53:36Z"}
+{"run": "check-public", "n": 1, "method": "GET", "path": "/documents/ba4455c0f17bed3b77763e4a", "status": 200, "utc": "2026-11-10T19:54:34Z"}
