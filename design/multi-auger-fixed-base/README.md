@@ -424,6 +424,56 @@ holes 9.1 mm above the base) and #8-32 screws.
   rear lug), not from Actuonix's STEP file.
 - Everything else is as in the sections above.
 
+#### The gearless mounting plate against today's (added 13 Nov)
+
+Ethan asked whether the tri-star's mounting plate has the same dimensions as
+the current one, just without the gears. **Yes.** It is PR #170's plate body
+exactly as it is, the same part as #193's Onshape document (Ethan's #203
+assembly matched it to a median of 0.38 mm). In PR #170's STEP file the plate
+is five bodies: the plate, two 28T gears and two webs. The tri-star drops the
+gears and the webs and adds the clevis block's two holes. Nothing else on the
+plate changes. [`plate.py`](plate.py) measures it into [`plate.json`](plate.json).
+
+| | Today, with gears | Tri-star, gearless |
+|---|---|---|
+| Width, along the hinge | 108.2 mm | 108.2 mm |
+| Length, front to back | 149.5 mm | 137.5 mm |
+| Height | 54.7 mm | 53.35 mm |
+| Plastic | 93.7 cm³ | 64.8 cm³ (31% less) |
+
+- **The width stays** because the floor's front wings, which carried the
+  webs, are as wide as the gears (|x| up to 54.1 mm).
+- **The length and height drop only because the gear teeth stuck out:** 19.5
+  mm in front of the hinge, where the knuckles reach 7.5 mm, and 19.5 mm above
+  it, where the stepper wall reaches 18.1 mm.
+- **Unchanged:** the 6 mm floor; the knuckles (Ø15, 12.5 mm long, Ø5.7 bore);
+  the notches for the towers; the stepper wall with its Ø22 bore and four M3
+  holes; the six Ø3.4 floor holes.
+- **Floor holes in the tri-star** (x from the centreline, y behind the hinge):
+  - the rear bracket uses (±24, 124), as today;
+  - #203's tap bracket screws into the front bracket's two holes (±24, 58.33)
+    and one of the collar base's (−24, 42.33). Its holes line up with the
+    plate's;
+  - the collar base's other hole (+24, 42.33) is unused, under the bracket;
+  - the clevis block adds two at (±11, 95), 29 mm in front of the rear
+    bracket's holes.
+
+![The gearless plate against today's](renders/plate_compare.png)
+
+**Two things to decide before drawing it in Onshape:**
+1. **The floor wings now carry nothing.** They can stay, as drawn, or be
+   trimmed to the 68 mm floor. Trimmed, the plate is 88.1 mm wide overall (the
+   stepper tab sets that). Either way the tri-star spacing stays 32 mm,
+   because the towers set it.
+2. **Today each gear is also an outer cheek of the hinge.** The knuckle, the
+   tower and the gear all have a bore on the hinge axis (Ø5.7, Ø5.3, Ø5.7), so
+   each tower sits between two parts of the plate: 0.3 mm from the knuckle and
+   0.6 mm from the gear. Gearless, the knuckle alone holds the plate on each
+   side. The renders and clearance checks assume that, with 8.1 mm towers. To
+   keep the plate on both sides of each tower, a plain cheek could replace
+   each gear. That widens the module at the hinge, so the tri-star spacing
+   would need checking again.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -485,6 +535,7 @@ between bulk doses. This was not modelled.
 | [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
 | [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
 | [`components.py`](components.py), [`parts.json`](parts.json) | The tri-star's parts: each one rendered alone ([`renders/components/`](renders/components/)), the reused/new/removed sheets, the exploded module, the status-coloured station, the actuator connection and its checks |
+| [`plate.py`](plate.py), [`plate.json`](plate.json) | The gearless mounting plate against today's: sizes, volumes, floor holes and what uses each, the hinge stack; renders `plate_compare.png` |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -495,6 +546,7 @@ xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (ab
 python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
 xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
 xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
+xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
 ```
 
 **Limits.**
