@@ -41,6 +41,8 @@ LINKS = {
     "Baseplate": "68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
     "Mounting plate": "53e9cce7f09a50f89c120028/w/d45f5e9d7335aff0b1f1e88d/e/224d71f16476d8c27dc6e3e0",
     "Auger": "51aa3e7d16cc046d79714a7a/w/e4a7f050613025f7f2cb4fb6/e/3c166b7f26f467535e63234e",
+    # Added to #193 after the 2026-11-03 snapshot: the C-clips that hold the auger.
+    "Brackets (for auger)": "5e6db88e8a8d5328b172ba6d/w/7b4b2baa5fa65b95b0004aa0/e/59890746941ebde49fa31a66",
     "Tap collar": "b0b9aed3e11591e566530a68/w/7dc93c75a03ccff73030ba25/e/cf844b34a00ef7d2d52191c1",
     "Servo pinion": "35ecacf511109e3b823b3ed0",
     "Stepper pinion": "0401d55bca2deb006cc69926",

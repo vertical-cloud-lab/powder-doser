@@ -1,0 +1,1002 @@
+{
+ "started_utc": "2026-11-13T04:07:20Z",
+ "assembly": "Assembly / Assembly 1 (#193)",
+ "parts": [
+  {
+   "label": "MG-996R output spline",
+   "onshape_name": "MG-996R",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFD",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "file": "assembly/parts/mg-996r-jfd.stl",
+   "sha256": "a3ac6209858eedf8ccfd722c1a7896b23b1bec845cd9d2b644987ecb03242bfe",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 2,
+   "instances": [
+    {
+     "name": "MG-996R <1>",
+     "transform": [
+      0.0,
+      -1.0,
+      0.0,
+      -0.026990845045865727,
+      0.0,
+      0.0,
+      1.0000000000000004,
+      -0.06964259674473887,
+      -1.0000000000000004,
+      0.0,
+      0.0,
+      0.019315259751095354,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "MG-996R <3>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      -0.0057908450458656405,
+      0.0,
+      0.0,
+      1.0000000000000002,
+      -0.06964259674473885,
+      1.0000000000000002,
+      0.0,
+      0.0,
+      -0.039684740248904664,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 1126,
+   "watertight": true,
+   "volume_cm3": 0.084,
+   "extent_mm": [
+    4.99,
+    5.0,
+    4.99
+   ]
+  },
+  {
+   "label": "Stand bracket (back)",
+   "onshape_name": "Part 1",
+   "documentId": "6cb5182c1e0e0193cfea81bb",
+   "elementId": "ea82a43a82cf5f861b73a9e3",
+   "partId": "JHD",
+   "documentVersion": "7a9139fa822d9a086eb96ea9",
+   "file": "stand-bracket-back/part-studio-1/stl/part-studio-1-part-1.stl",
+   "sha256": "e961a66007dab0b40db84ed2f0f317124e6731f9c1547f1d08adcee724229174",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <1>",
+     "transform": [
+      1.0,
+      0.0,
+      0.0,
+      -0.016379845045865704,
+      0.0,
+      1.0,
+      0.0,
+      0.22330740325526116,
+      0.0,
+      0.0,
+      1.0,
+      0.005815259751095342,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 3402,
+   "watertight": true,
+   "volume_cm3": 92.653,
+   "extent_mm": [
+    72.0,
+    206.9,
+    25.0
+   ]
+  },
+  {
+   "label": "Stand bracket (left side)",
+   "onshape_name": "Part 1",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "elementId": "7c0d89ca7e487cdf4a761fd7",
+   "partId": "JHD",
+   "documentVersion": "119ff9d1623649f51b8997c9",
+   "file": "stand-bracket-sides/left-side/stl/left-side-part-1.stl",
+   "sha256": "12cbf90a6745e274a12e6749701bc320abff53609ee2be7fe99f34ac6b51a39e",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <3>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      0.09860915495413433,
+      -1.0,
+      0.0,
+      0.0,
+      -0.06909259674473882,
+      0.0,
+      0.0,
+      1.0,
+      -0.010184740248904657,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 3378,
+   "watertight": true,
+   "volume_cm3": 44.902,
+   "extent_mm": [
+    116.0,
+    74.3,
+    25.0
+   ]
+  },
+  {
+   "label": "Wood leg",
+   "onshape_name": "Part 1",
+   "documentId": "659ee3322c5c9c9ce8146b43",
+   "elementId": "bbd4667923221cda37cd63e1",
+   "partId": "JHD",
+   "documentVersion": "10a486fe205b7a7de86a13d3",
+   "file": "wood-leg/part-studio-1/stl/part-studio-1-part-1.stl",
+   "sha256": "f329682f6323ad387b0da2aac32c33dee1d7ae6b06486700d497fca23fda94fb",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "wood",
+   "count": 3,
+   "instances": [
+    {
+     "name": "Part 1 <5>",
+     "transform": [
+      4.4196776458007807e-16,
+      -1.0,
+      -9.29834398599661e-40,
+      0.09910915495413437,
+      -1.0,
+      -4.4196776458007856e-16,
+      0.0,
+      -0.0645925967447388,
+      -3.432972120849165e-41,
+      -9.29834398599661e-40,
+      -1.0,
+      0.11481525975109534,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "Part 1 <6>",
+     "transform": [
+      4.419677645800783e-16,
+      1.0,
+      -1.1479437019748901e-40,
+      -0.1318908450458658,
+      1.0,
+      -4.419677645800783e-16,
+      0.0,
+      -0.06459259674473886,
+      -2.005086420600254e-41,
+      1.1479437019748901e-40,
+      -1.0,
+      0.11481525975109534,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "Part 1 <7>",
+     "transform": [
+      1.0,
+      0.0,
+      0.0,
+      -0.016379845045865704,
+      0.0,
+      -1.0,
+      0.0,
+      0.20730740325526115,
+      0.0,
+      0.0,
+      -1.0,
+      0.13081525975109534,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 4828,
+   "watertight": true,
+   "volume_cm3": 134.283,
+   "extent_mm": [
+    59.0,
+    9.5,
+    250.0
+   ]
+  },
+  {
+   "label": "Baseplate",
+   "onshape_name": "Part 1",
+   "documentId": "68b18e694d8672d95f496279",
+   "elementId": "9f7a9b5e682bc05529f15125",
+   "partId": "JHD",
+   "documentVersion": "62b5a42c09002d0c2f974a81",
+   "file": "baseplate/base/stl/base-part-1.stl",
+   "sha256": "e14f870709692b06834c01393cbb02ddafbf13e445d99c6fd379cb2af6b4d1e0",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <4>",
+     "transform": [
+      -1.0,
+      0.0,
+      0.0,
+      -0.016390845045865687,
+      0.0,
+      1.0,
+      0.0,
+      0.06040740325526117,
+      0.0,
+      0.0,
+      -1.0,
+      0.005815259751095342,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 10802,
+   "watertight": true,
+   "volume_cm3": 150.819,
+   "extent_mm": [
+    190.0,
+    190.0,
+    52.25
+   ]
+  },
+  {
+   "label": "Stand bracket (right side)",
+   "onshape_name": "Part 1",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "elementId": "cbbebd3d1064640d9bce4c7f",
+   "partId": "JVD",
+   "documentVersion": "e96578563a1e02953f8b5a49",
+   "file": "stand-bracket-sides/right-side/stl/right-side-part-1.stl",
+   "sha256": "2d0e9a5c608e2e31ed93fbdb814321227d65c6802807503952ccbb92dca97e07",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <2>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      -0.18139084504586572,
+      -1.0,
+      0.0,
+      0.0,
+      -0.06909259674473883,
+      0.0,
+      0.0,
+      1.0,
+      -0.010184740248904655,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 3374,
+   "watertight": true,
+   "volume_cm3": 44.902,
+   "extent_mm": [
+    116.0,
+    74.3,
+    25.0
+   ]
+  },
+  {
+   "label": "Mounting plate",
+   "onshape_name": "Part 1",
+   "documentId": "53e9cce7f09a50f89c120028",
+   "elementId": "224d71f16476d8c27dc6e3e0",
+   "partId": "JHD",
+   "documentVersion": "c2adfee7bd3e884308866c96",
+   "file": "mounting-plate/part-studio-1/stl/part-studio-1-part-1.stl",
+   "sha256": "fdf08faeba2a1a85500a5c76b26b7efadcaf31500926cbefdc5f8d4ed97fcacb",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <8>",
+     "transform": [
+      -0.9999999999999978,
+      -8.784968994974114e-18,
+      2.2079181089108582e-16,
+      -0.01624084504586575,
+      -1.5645037348965831e-16,
+      0.999572997471975,
+      -0.02922024512072113,
+      -0.0010877388240670552,
+      6.938893903907228e-18,
+      -0.029220245120722712,
+      -0.9995729974719715,
+      -0.0038670718441903237,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 12156,
+   "watertight": true,
+   "volume_cm3": 91.646,
+   "extent_mm": [
+    108.2,
+    149.46,
+    54.72
+   ]
+  },
+  {
+   "label": "MG-996R servo",
+   "onshape_name": "MG-996R",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "partId": "JFH",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "file": "assembly/parts/mg-996r-jfh.stl",
+   "sha256": "4cf02b97ef4c86f720e1e6b4ee2e443de940da08fdfe507eefd003acf72ad3bf",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 2,
+   "instances": [
+    {
+     "name": "MG-996R <2>",
+     "transform": [
+      0.0,
+      -1.0,
+      0.0,
+      0.07720915495413434,
+      1.0,
+      0.0,
+      0.0,
+      -0.08914259674473886,
+      0.0,
+      0.0,
+      1.0,
+      -0.02018474024890466,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "MG-996R <4>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      -0.10999084504586572,
+      1.0,
+      0.0,
+      0.0,
+      -0.08914259674473886,
+      0.0,
+      0.0,
+      -1.0,
+      -0.00018474024890465825,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 20148,
+   "watertight": true,
+   "volume_cm3": 29.665,
+   "extent_mm": [
+    52.8,
+    39.0,
+    20.0
+   ]
+  },
+  {
+   "label": "Servo pinion (Complete Servo Pinion)",
+   "onshape_name": "Spur gear (14 teeth)",
+   "documentId": "35ecacf511109e3b823b3ed0",
+   "elementId": "ce683b15c3b969067abfe902",
+   "partId": "JHD",
+   "documentVersion": "2195478027cde74d501f135b",
+   "file": "servo-pinion/complete-servo-pinion/stl/complete-servo-pinion-spur-gear-14-teeth.stl",
+   "sha256": "7361e8b68de113408ed029f732de479f18c23f86da933bb53ee4d9c4388cf368",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 2,
+   "instances": [
+    {
+     "name": "Spur gear (14 teeth) <1>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      -0.05804084504586571,
+      0.5606568835927831,
+      0.0,
+      -0.8280482225571328,
+      -0.05964259674473886,
+      -0.8280482225571328,
+      0.0,
+      -0.5606568835927831,
+      -0.010184740248904658,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "Spur gear (14 teeth) <2>",
+     "transform": [
+      0.0,
+      1.0,
+      0.0,
+      0.03785915495413432,
+      0.07734765464558423,
+      0.0,
+      0.9970041826997679,
+      -0.05964259674473886,
+      0.9970041826997679,
+      0.0,
+      -0.07734765464558423,
+      -0.010184740248904658,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 3536,
+   "watertight": true,
+   "volume_cm3": 2.986,
+   "extent_mm": [
+    20.45,
+    12.3,
+    20.78
+   ]
+  },
+  {
+   "label": "stepper_motor",
+   "onshape_name": "stepper_motor",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFnT",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/stepper-motor.stl",
+   "sha256": "e9315d8296cb7dcc2e776bf8abf6693fb833791e6de618e22ba74d028dd2394f",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 1,
+   "instances": [
+    {
+     "name": "stepper_motor <1>",
+     "transform": [
+      4.740539440281416e-15,
+      -0.9999999999999999,
+      3.9978298910116524e-16,
+      0.015759154954134175,
+      -0.029220245120722358,
+      1.2147339062357523e-16,
+      0.9995729974719639,
+      0.030101483962941725,
+      -0.9995729974719639,
+      -4.737436921660082e-15,
+      -0.029220245120722414,
+      -0.0400438761660536,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 41672,
+   "watertight": true,
+   "volume_cm3": 35.818,
+   "extent_mm": [
+    28.2,
+    31.2,
+    64.5
+   ]
+  },
+  {
+   "label": "Auger clip (Bracket Recreation)",
+   "onshape_name": "Part 1",
+   "documentId": "5e6db88e8a8d5328b172ba6d",
+   "elementId": "59890746941ebde49fa31a66",
+   "partId": "JHD",
+   "documentVersion": "a9beffa67344022457765a6c",
+   "file": "brackets-for-auger/bracket-recreation/stl/bracket-recreation-part-1.stl",
+   "sha256": "63be102031b66e1a05afab9c3d7cb1f57b8fe28a8461aa9c1f4a26411c2687d8",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 2,
+   "instances": [
+    {
+     "name": "Part 1 <9>",
+     "transform": [
+      1.0,
+      -1.1174649913111629e-16,
+      -5.88087974985561e-17,
+      -0.016240845045867085,
+      -1.1341719057165021e-16,
+      -0.9995729974719652,
+      -0.02922024512072116,
+      0.05961093525125197,
+      -5.551842589735995e-17,
+      0.02922024512072116,
+      -0.9995729974719652,
+      -0.011644022756874178,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    {
+     "name": "Part 1 <10>",
+     "transform": [
+      1.0,
+      2.9421367541818484e-17,
+      -5.88087974985587e-17,
+      -0.016240845045864424,
+      -2.632618677797394e-16,
+      -0.999572997472012,
+      -0.02922024512072312,
+      -0.02202119273329212,
+      -1.3914870688377445e-17,
+      0.029220245120722833,
+      -0.9995729974720098,
+      -0.00925769299860016,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 1748,
+   "watertight": true,
+   "volume_cm3": 10.767,
+   "extent_mm": [
+    60.0,
+    12.0,
+    49.84
+   ]
+  },
+  {
+   "label": "Stepper pinion (Stepper Pinion)",
+   "onshape_name": "Stepper Pinion",
+   "documentId": "0401d55bca2deb006cc69926",
+   "elementId": "5fa50b725c9798e330133171",
+   "partId": "JHD",
+   "documentVersion": "3a977107d507a934cbe945a2",
+   "file": "stepper-pinion/stepper-pinion/stl/stepper-pinion-stepper-pinion.stl",
+   "sha256": "427c260de0f74fa78688f0fa7cca712af351a9b281eccc6f1894766d2ef35b1a",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Stepper Pinion <1>",
+     "transform": [
+      5.584782732730025e-15,
+      -3.8230626662161583e-16,
+      -1.0000000000000098,
+      0.01575915495413417,
+      -0.029220245120722254,
+      -0.9995729974719746,
+      -1.3869600539821242e-15,
+      0.008110878018538508,
+      -0.9995729974719643,
+      0.0292202451207227,
+      -4.7276830966491884e-15,
+      -0.03940103077339712,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 4844,
+   "watertight": true,
+   "volume_cm3": 5.261,
+   "extent_mm": [
+    28.38,
+    16.1,
+    28.38
+   ]
+  },
+  {
+   "label": "Auger",
+   "onshape_name": "Part 1",
+   "documentId": "51aa3e7d16cc046d79714a7a",
+   "elementId": "3c166b7f26f467535e63234e",
+   "partId": "JHD",
+   "documentVersion": "c0b9d775bd4b0993a30d794d",
+   "file": "auger/part-studio-1/stl/part-studio-1-part-1.stl",
+   "sha256": "e5c2efcfc59ee0a576ac2cbdcadda671cdcdc09e0f4991f0a9fe23e95c72f844",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Part 1 <11>",
+     "transform": [
+      -0.6025791176050128,
+      -0.7980591500799712,
+      1.0114998318681394e-16,
+      -0.016240845045858245,
+      -0.02331948398617146,
+      0.01760750952104653,
+      0.9995729974719643,
+      -0.07018867359243286,
+      -0.7977183768053646,
+      0.6023218147984521,
+      -0.029220245120720956,
+      -0.03711212131235463,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 68732,
+   "watertight": true,
+   "volume_cm3": 53.307,
+   "extent_mm": [
+    45.99,
+    45.99,
+    250.0
+   ]
+  },
+  {
+   "label": "auger_cap",
+   "onshape_name": "auger_cap",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFfT",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/auger-cap.stl",
+   "sha256": "634ad471b15b331ee1dfd23bf08c4a5306ea70a59b430980b0856ac22177eb8b",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "auger_cap <1>",
+     "transform": [
+      -0.8367621686683941,
+      -0.5475665010621052,
+      1.17961196366427e-16,
+      -0.015470966904312057,
+      -0.016000027380930672,
+      0.024450395676232053,
+      0.9995729974719951,
+      0.17970143623871132,
+      -0.5473326887818744,
+      0.8364048691070143,
+      -0.029220245120721938,
+      -0.04452458060523692,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 98042,
+   "watertight": true,
+   "volume_cm3": 4.363,
+   "extent_mm": [
+    29.0,
+    29.0,
+    27.0
+   ]
+  },
+  {
+   "label": "Tap collar (tapcollar)",
+   "onshape_name": "Body1",
+   "documentId": "b0b9aed3e11591e566530a68",
+   "elementId": "cf844b34a00ef7d2d52191c1",
+   "partId": "JFD",
+   "documentVersion": "10bff3d869f7d14b5d83ebb8",
+   "file": "tap-collar/tapcollar/stl/tapcollar-body1.stl",
+   "sha256": "228c39651ea2c163508826261fa863ef1e0e241594b8b644ddc2e8995aa2491d",
+   "source": "#193 Part Studio, workspace (scripts/onshape_export.py)",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "Body1 <1>",
+     "transform": [
+      -0.3660452344819587,
+      -4.3590348344779706e-16,
+      -0.9305970590502967,
+      -0.01624084504585825,
+      0.027192274174070077,
+      0.9995729974719769,
+      -0.010695931476838793,
+      -0.009881435935946987,
+      0.9301996917534873,
+      -0.029220245120721286,
+      -0.36588893224146385,
+      -0.038875066361223384,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 2294,
+   "watertight": true,
+   "volume_cm3": 12.94,
+   "extent_mm": [
+    45.95,
+    17.0,
+    70.09
+   ]
+  },
+  {
+   "label": "tap_collar_base",
+   "onshape_name": "tap_collar_base",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFXT",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/tap-collar-base.stl",
+   "sha256": "4859db265e712980478677efe1ea471df5d2f237f0bca9fd2624652dce043431",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "printed",
+   "count": 1,
+   "instances": [
+    {
+     "name": "tap_collar_base <1>",
+     "transform": [
+      0.9999999999999983,
+      -3.3580953368635588e-18,
+      2.1385291698717857e-16,
+      -0.01624084504586575,
+      1.5641126386984866e-16,
+      -0.9995729974719718,
+      -0.029220245120721244,
+      -3.058678890843833e-05,
+      -6.950005905040413e-18,
+      0.029220245120722473,
+      -0.9995729974719689,
+      -0.009900538391255997,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 948,
+   "watertight": true,
+   "volume_cm3": 15.746,
+   "extent_mm": [
+    60.0,
+    18.0,
+    21.0
+   ]
+  },
+  {
+   "label": "solenoid_coil",
+   "onshape_name": "solenoid_coil",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFXU",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/solenoid-coil.stl",
+   "sha256": "b3e5c0002dfdbf7bf4d2459e374388300df8b6d885e5ec8b8a945a07e836d61f",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 1,
+   "instances": [
+    {
+     "name": "solenoid_coil <1>",
+     "transform": [
+      0.29142568330028074,
+      -0.2214953380997379,
+      0.930597059050299,
+      -0.0559457918336186,
+      0.5831963152064452,
+      0.8122608294011731,
+      0.01069593147683824,
+      0.004162099057064222,
+      -0.758256637981254,
+      0.5396037066409014,
+      0.3658889322414658,
+      -0.05035642479369944,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 576,
+   "watertight": true,
+   "volume_cm3": 2.104,
+   "extent_mm": [
+    11.2,
+    11.2,
+    26.7
+   ]
+  },
+  {
+   "label": "solenoid_plunger",
+   "onshape_name": "solenoid_plunger",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KF7T",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/solenoid-plunger.stl",
+   "sha256": "c8b44a895453f0001b23eafd6a312ea46acc06a6305eca97d53b5f480aa3e8b1",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 1,
+   "instances": [
+    {
+     "name": "solenoid_plunger <1>",
+     "transform": [
+      0.023596822935270757,
+      0.3652838671968971,
+      -0.9305970590502999,
+      -0.039492023296660836,
+      0.995740975289802,
+      -0.09157241494441785,
+      -0.01069593147683824,
+      -0.002022829777429691,
+      -0.08912407125053826,
+      -0.926381233179394,
+      -0.3658889322414659,
+      -0.05576403830719352,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 576,
+   "watertight": true,
+   "volume_cm3": 1.062,
+   "extent_mm": [
+    9.0,
+    9.0,
+    51.9
+   ]
+  },
+  {
+   "label": "solenoid_yoke",
+   "onshape_name": "solenoid_yoke",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "partId": "KFbU",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "file": "assembly/parts/solenoid-yoke.stl",
+   "sha256": "af95d6361ff4b44fe7369164770b4303e6d7b109c9faedd4343503504b2402f3",
+   "source": "this script: the one part, at the document version the assembly references",
+   "kind": "bought",
+   "count": 1,
+   "instances": [
+    {
+     "name": "solenoid_yoke <1>",
+     "transform": [
+      0.3660452344819619,
+      -8.1900632109555005e-16,
+      0.9305970590502937,
+      -0.054395324466920414,
+      -0.027192274174070375,
+      0.9995729974719721,
+      0.01069593147683818,
+      0.005473284233559816,
+      -0.9301996917534865,
+      -0.029220245120721074,
+      0.3658889322414638,
+      -0.05433819245603078,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ]
+    }
+   ],
+   "triangles": 1320,
+   "watertight": true,
+   "volume_cm3": 1.679,
+   "extent_mm": [
+    24.2,
+    14.0,
+    30.2
+   ]
+  }
+ ],
+ "finished_utc": "2026-11-13T04:07:24Z",
+ "calls_counted": 5,
+ "calls": [
+  {
+   "utc": "2026-11-13T04:07:20Z",
+   "method": "GET",
+   "path": "/assemblies/d/{id}/w/{id}/e/{id}",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:07:21Z",
+   "method": "GET",
+   "path": "/parts/d/{id}/v/{id}/e/{id}/partid/JFD/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:07:22Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:07:23Z",
+   "method": "GET",
+   "path": "/parts/d/{id}/v/{id}/e/{id}/partid/JFH/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:07:23Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  }
+ ]
+}

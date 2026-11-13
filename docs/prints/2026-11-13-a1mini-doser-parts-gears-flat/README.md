@@ -41,7 +41,7 @@ ready to send.
 ## The parts
 
 All are unchanged in Onshape since the 11-12 export (anonymous `sourceMicroversion` checks at
-00:31 UTC). The C-clip was exported today (2 counted API calls; [record](../../../cad/onshape-193/brackets/export-20261113.json)).
+00:31 UTC). The C-clip was exported today (2 counted API calls; [record](../../../cad/onshape-193/brackets-for-auger/bracket-recreation/export-20261113.json)).
 
 | Part | Count | Onshape source | STL here |
 |---|---|---|---|

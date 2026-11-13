@@ -210,6 +210,6 @@
   "servo_pinion": "imported 'Servo_pinion' (5.5 mm socket, 3.4 mm hole, 6.0 mm counterbore) instead of native 'Complete Servo Pinion', whose rollback bar sits after its first of 6 features so its export is the bare gear",
   "tap_collar": "imported 'tapcollar' (split ring; the #193 assembly's collar) instead of 'Tap Collar Recreation', whose clamp slot stops about 4 mm short of the bore"
  },
- "onshape": "2 counted calls for the C-clip STL and 2 for a servo-pinion rollback test; the rest anonymous (cad/onshape-193/brackets/export-20261113.json)",
+ "onshape": "2 counted calls for the C-clip STL and 2 for a servo-pinion rollback test; the rest anonymous (cad/onshape-193/brackets-for-auger/bracket-recreation/export-20261113.json)",
  "github_token": "re-minted at 01:03 and 01:54 UTC with scripts/refresh_github_app_token.py"
 }

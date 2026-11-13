@@ -1,5 +1,5 @@
 {
- "fetched_utc": "2026-11-04T06:20:53Z",
+ "fetched_utc": "2026-11-13T04:01:53Z",
  "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/193",
  "method": "anonymous Onshape REST requests (no API key, no API calls counted)",
  "mm_per_px": 0.2,
@@ -78,14 +78,14 @@
    "linked_element": "224d71f16476d8c27dc6e3e0",
    "public": true,
    "owner": "Vertical Cloud Lab",
-   "modifiedAt": "2026-10-24T03:41:52.617+00:00",
+   "modifiedAt": "2026-11-10T17:56:27.100+00:00",
    "elements": [
     {
      "id": "224d71f16476d8c27dc6e3e0",
      "name": "Part Studio 1",
      "type": "PARTSTUDIO",
      "linked": true,
-     "sourceMicroversion": "abdcba8fa5eec45fad91fa92",
+     "sourceMicroversion": "2e3da59d43f2034b433fce12",
      "features": [
       "Base shape sketch (newSketch)",
       "Base shape extrude (extrude)",
@@ -108,7 +108,9 @@
       "Plane 1 (cPlane)",
       "Extrude 2 (extrude)",
       "Sketch 3 (newSketch)",
-      "Extrude 3 (extrude)"
+      "Extrude 3 (extrude)",
+      "Arm 2 inset (extrude)",
+      "Arm 1 inset (extrude)"
      ],
      "views": {
       "top": {
@@ -228,6 +230,96 @@
      "id": "7fcd91b9ef2c6f2a15a97b8a",
      "name": "Auger variables",
      "type": "VARIABLESTUDIO",
+     "linked": false
+    }
+   ]
+  },
+  {
+   "name": "Brackets (for auger)",
+   "document": "Flexible Bracket",
+   "url": "https://cad.onshape.com/documents/5e6db88e8a8d5328b172ba6d/w/7b4b2baa5fa65b95b0004aa0/e/59890746941ebde49fa31a66",
+   "did": "5e6db88e8a8d5328b172ba6d",
+   "wid": "7b4b2baa5fa65b95b0004aa0",
+   "linked_element": "59890746941ebde49fa31a66",
+   "public": false,
+   "owner": "Vertical Cloud Lab",
+   "modifiedAt": "2026-11-07T22:47:32.269+00:00",
+   "elements": [
+    {
+     "id": "59890746941ebde49fa31a66",
+     "name": "Bracket Recreation",
+     "type": "PARTSTUDIO",
+     "linked": true,
+     "sourceMicroversion": "9d1029820bf215b586895082",
+     "features": [
+      "Outline Copy (newSketch)",
+      "Bracket (extrude)",
+      "Holes (newSketch)",
+      "Holes (extrude)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 60.4,
+       "h_mm": 12.4
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 60.4,
+       "h_mm": 50.2
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 12.4,
+       "h_mm": 50.2
+      }
+     },
+     "extent_mm": [
+      60.4,
+      12.4,
+      50.2
+     ],
+     "dir": "brackets-for-auger/bracket-recreation"
+    },
+    {
+     "id": "b87cd85502d7cabbcb749baf",
+     "name": "Flexible+Bracket (original)",
+     "type": "PARTSTUDIO",
+     "linked": false,
+     "sourceMicroversion": "9d1029820bf215b586895082",
+     "features": [
+      "Import 1 (importForeign)",
+      "Sketch 1 (newSketch)",
+      "Offset surface 1 (offsetSurface)"
+     ],
+     "views": {
+      "top": {
+       "mm_per_px": 0.2,
+       "w_mm": 60.4,
+       "h_mm": 50.2
+      },
+      "front": {
+       "mm_per_px": 0.2,
+       "w_mm": 60.4,
+       "h_mm": 12.4
+      },
+      "right": {
+       "mm_per_px": 0.2,
+       "w_mm": 50.2,
+       "h_mm": 12.4
+      }
+     },
+     "extent_mm": [
+      60.4,
+      50.2,
+      12.4
+     ],
+     "dir": "brackets-for-auger/flexible-bracket-original"
+    },
+    {
+     "id": "891ec53ffcc7ea766c703e9f",
+     "name": "Flexible+Bracket.stp",
+     "type": "BLOB",
      "linked": false
     }
    ]
@@ -427,7 +519,7 @@
    "linked_element": null,
    "public": true,
    "owner": "Vertical Cloud Lab",
-   "modifiedAt": "2026-10-21T01:21:29.176+00:00",
+   "modifiedAt": "2026-11-07T21:16:01.270+00:00",
    "elements": [
     {
      "id": "5fa50b725c9798e330133171",
@@ -750,14 +842,14 @@
    "linked_element": "3156bac055c13d8160e229b4",
    "public": true,
    "owner": "Vertical Cloud Lab",
-   "modifiedAt": "2026-10-30T23:50:37.148+00:00",
+   "modifiedAt": "2026-11-12T22:41:56.663+00:00",
    "elements": [
     {
      "id": "b7fe173d0fcdee4c1e00e6e8",
      "name": "Part Studio 1",
      "type": "PARTSTUDIO",
      "linked": false,
-     "sourceMicroversion": "014223ee356054ab9ad6d0b9",
+     "sourceMicroversion": "8b99de7b37f5503801be885c",
      "features": [],
      "views": {
       "top": null,
@@ -774,24 +866,24 @@
      "views": {
       "top": {
        "mm_per_px": 0.2,
-       "w_mm": 223.4,
+       "w_mm": 263.4,
        "h_mm": 353.4
       },
       "front": {
        "mm_per_px": 0.2,
-       "w_mm": 223.4,
-       "h_mm": 374.2
+       "w_mm": 263.4,
+       "h_mm": 326.8
       },
       "right": {
        "mm_per_px": 0.2,
        "w_mm": 353.4,
-       "h_mm": 374.2
+       "h_mm": 326.8
       }
      },
      "extent_mm": [
-      223.4,
+      263.4,
       353.4,
-      374.2
+      326.8
      ],
      "dir": "assembly/assembly-1"
     },
@@ -805,9 +897,9 @@
   }
  ],
  "requests": {
-  "total": 136,
+  "total": 154,
   "by_status": {
-   "200": 136
+   "200": 154
   }
  }
 }

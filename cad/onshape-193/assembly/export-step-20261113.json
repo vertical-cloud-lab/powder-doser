@@ -1,0 +1,45 @@
+{
+ "started_utc": "2026-11-13T04:09:22Z",
+ "api": "https://cad.onshape.com/api/v6",
+ "snapshot_fetched_utc": "2026-11-13T04:01:53Z",
+ "max_calls": 12,
+ "estimate": 5,
+ "elements": [
+  {
+   "entry": "Assembly",
+   "element": "Assembly 1",
+   "type": "ASSEMBLY",
+   "id": "3156bac055c13d8160e229b4",
+   "dir": "assembly/assembly-1",
+   "snapshot_microversion": null,
+   "step_translation": "6af68d725f6f1c045b6560aa",
+   "step": {
+    "file": "assembly/assembly-1/assembly-1.step",
+    "bytes": 7122902,
+    "sha256": "1e257e51c2ede743484b875cfbc84faf0e3f3587f6c38ba7d9c6225927469681"
+   }
+  }
+ ],
+ "finished_utc": "2026-11-13T04:09:31Z",
+ "calls_counted": 3,
+ "calls": [
+  {
+   "utc": "2026-11-13T04:09:25Z",
+   "method": "POST",
+   "path": "/assemblies/d/{id}/w/{id}/e/{id}/translations",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:09:30Z",
+   "method": "GET",
+   "path": "/translations/{id}",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:09:31Z",
+   "method": "GET",
+   "path": "/documents/d/{id}/externaldata/{id}",
+   "status": 200
+  }
+ ]
+}

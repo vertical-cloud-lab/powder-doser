@@ -25,6 +25,45 @@ The `@claude` run that retried started at 06:15 UTC, so it got the repo secrets 
   native one's. They now have separate folders: `stepper-pinion/stepper-pinion/` (native) and
   `stepper-pinion/stepper-pinion-34e4bc/` (imported STEP).
 
+## 2026-11-13: every part downloaded, including the auger clips
+
+The 11-03 snapshot missed the **auger clips** ("Brackets (for auger)", the *Flexible Bracket*
+document), which #193 lists but the snapshot script didn't. The assembly also uses parts from two
+documents #193 doesn't link. The keys answer again, so this run downloaded everything
+([PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200)):
+
+![Every part in the assembly, drawn from the downloaded STLs](assembly/all-parts.png)
+
+![The assembly drawn from the same STLs](assembly/assembly-from-stl.png)
+
+- **Snapshot (anonymous, not counted):** the clips' document is now in
+  [`scripts/onshape_public_snapshot.py`](../../scripts/onshape_public_snapshot.py), and the snapshot,
+  `manifest.json` and [`overview.png`](overview.png) were re-run at 04:01 UTC (154 requests, all 200).
+  Since 11-04, only the assembly changed (edited 2026-11-12 22:41 UTC; it now holds the auger cap,
+  tap collar base, solenoid and stepper motor). The mounting plate's microversion moved, but its renders
+  and extent didn't, and its STL from 11-12 already has the current microversion.
+- **STLs of the rest of the #193 Part Studios** (`--log export-20261113-missing.json`, 14 calls): the
+  Baseplate, both auger-clip Part Studios, the back and side stand brackets and the wood leg. The
+  Bracket Recreation STL is byte-identical to the one exported at 00:32 UTC, which moved here from
+  `brackets/`.
+- **The assembly's own parts** ([`scripts/onshape_assembly_parts.py`](../../scripts/onshape_assembly_parts.py),
+  20 calls): its definition ([`assembly/assembly-1/definition.json`](assembly/assembly-1/definition.json)),
+  and one STL per part that no #193 Part Studio covers, at the version the assembly references
+  ([`assembly/parts/`](assembly/parts)): `auger_cap`, `tap_collar_base`, `stepper_motor`, the solenoid's
+  coil, plunger and yoke (document *assembly_current.step*), and the MG-996R servo body and output
+  spline (document *Github parts*). 2 of those calls fetched a file that was then overwritten (two
+  MG-996R parts share a name) and re-fetched after the fix.
+- **The whole assembly as STEP** ([`assembly/assembly-1/assembly-1.step`](assembly/assembly-1/assembly-1.step),
+  7.1 MB, 3 calls, `--log assembly/export-step-20261113.json`).
+- [`assembly/parts.json`](assembly/parts.json) lists all 19 distinct parts and 25 instances: which
+  file, how many, size, printed, wood or bought, and each placement.
+- 4 more calls read the two unlisted documents' names and element lists, and 1 read the assembly
+  definition before the script existed: **42 counted calls in all.**
+
+**The assembly uses the native pinions:** *Complete Servo Pinion* (×2) and *Stepper Pinion*. The
+11-13 A1 mini plate used the imported *Servo_pinion* and *stepper_pinion* instead, because the native
+servo pinion exports without its spline socket and the native stepper pinion is module 1.3.
+
 So this folder holds what Onshape *would* give, fetched by
 [`scripts/onshape_public_snapshot.py`](../../scripts/onshape_public_snapshot.py) at 05:59 UTC on
 2026-11-03 and again at 06:20 UTC on 2026-11-04 (136 anonymous requests each time, all 200, none

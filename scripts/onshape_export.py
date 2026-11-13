@@ -240,6 +240,7 @@ def main():
     ap.add_argument("--no-step", action="store_true")
     ap.add_argument("--no-assembly", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--log", default="export.json", help="log file name inside SNAPSHOT_DIR")
     a = ap.parse_args()
 
     m = json.loads((a.snapshot / "manifest.json").read_text())
@@ -308,8 +309,8 @@ def main():
         for r in record["elements"]:  # repo-relative paths
             for f in r.get("stl", []) + ([r["step"]] if r.get("step") else []):
                 f["file"] = str(Path(f["file"]).relative_to(a.snapshot))
-        (a.snapshot / "export.json").write_text(json.dumps(record, indent=1) + "\n")
-        print(f"counted calls: {os_.counted}; wrote {a.snapshot / 'export.json'}", flush=True)
+        (a.snapshot / a.log).write_text(json.dumps(record, indent=1) + "\n")
+        print(f"counted calls: {os_.counted}; wrote {a.snapshot / a.log}", flush=True)
     return code
 
 
