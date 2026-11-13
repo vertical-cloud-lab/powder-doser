@@ -44,7 +44,7 @@ This note checks the plan against these sources:
 | Planned hardware changes | None has reached this rig. The new tap bracket (#203) is in Onshape but not printed. The multi-auger design (#204) exists only as renders. A linear actuator (#202) was recommended but not ordered. The 12–13 Nov prints (#200) are parts for the new dosers | [#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203#issuecomment-6714762206), [#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6838113787), [#202](https://github.com/vertical-cloud-lab/powder-doser/issues/202#issuecomment-6624329180) |
 | Camera | On a separate camera Pi. On 20 Oct it froze for nearly 6 h during Wi-Fi drops. During an unattended run it is the only way to look at the plate | [#186](https://github.com/vertical-cloud-lab/powder-doser/issues/186#issuecomment-6305840509) |
 | Temperature and RH | No sensor, and no code that reads one. The Pico is the only USB device on the Zero, and the header's I²C bus (`i2c-1`) isn't enabled. #210 uses outdoor readings from the Provo airport instead | Pi, read-only; code search on `main`, #166 and #116; [#210](https://github.com/vertical-cloud-lab/powder-doser/issues/210#issuecomment-6812206767) |
-| Balance | On 13 Oct the pan read −24.7 g. Its zero still included powder that had since been emptied from the cup, and the balance ignores a tare below zero, so it needed a serial `Z`. It has been noisier since the August move into the fume hood. Its drift was fixed on 15 Sep. Calibration with a weight was still owed then, because there was no weight in its box, and no later calibration is recorded. The firmware assumes a 0.7 s lag; drop tests give 0.16 s | `run_20261013.md`; base paper; [#157](https://github.com/vertical-cloud-lab/powder-doser/issues/157#issuecomment-5685921132); `OUTLINE.md` §4.A9 |
+| Balance | On 13 Oct the pan read −24.7 g. Its zero still included powder that had since been emptied from the cup, and the balance ignores a tare below zero, so it needed a serial `Z`. The drift seen in the fume hood in August and September came from powder under a misaligned dust plate, and was fixed on 15 Sep. A check with a calibration weight was still owed then, because there was no weight in its box, and none is recorded since. The firmware assumes a 0.7 s lag; drop tests give 0.16 s | `run_20261013.md`; base paper; [#157](https://github.com/vertical-cloud-lab/powder-doser/issues/157#issuecomment-5685921132); `OUTLINE.md` §4.A9 |
 | Taps | At the 15° tap tilt, the median release per tap fell from 1.2–1.7 mg (29 Sep, 6 Oct) to 0.26–0.33 mg (13 and 15 Oct). The cause was never found; the 15 Oct advice was to check the tube's lip and the hopper | [`run_20261015.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/salt-margin-20261013T191339Z/run_20261015.md) |
 | #205 fixtures | Concept designs, plus a dimensioned drawing of the standard auger (13 Nov) for fixtures that take its place. Nothing printed or built yet. On 10 Nov William asked Sterling which tests to build first; no answer yet | #205 at `626da9b` |
 
@@ -84,8 +84,8 @@ Before the first real session, dry-run the session runner without powder. The ca
 5. **Temperature and RH sensor.** Wire an SHT4x or BME280 breakout to the Zero's I²C, or use a USB logger, for
    roughly $10–30. Failing that, put a standalone logger next to the doser and type its reading in at each prompt.
 6. **Tapper.** Confirm the solenoid (an Adafruit 412) and its 12 V supply (`OUTLINE.md` §4.A1), and look at the
-   tube's lip. Decide whether the new tap bracket (#203) goes on before the series. Tap release fell about fivefold in October, and protocol E and every dose's endgame
-   depend on the tapper.
+   tube's lip. Decide whether the new tap bracket (#203) goes on before the series. Tap release fell about
+   fivefold in October, and protocol E and every dose's endgame depend on the tapper.
 
 ### 2.3 Decisions
 These fix the session for every powder after the pilot, so they are hard to change later.
@@ -109,8 +109,8 @@ These fix the session for every powder after the pilot, so they are hard to chan
 * The doser's Pi also relays other sessions' browser tunnels (Onshape, full texts). Agree that none runs during a
   session. The Zero also dropped off the tailnet once, on 3 Nov, so a session driven over the tailnet should expect
   to need a `--resume`.
-* Tell Xavier (#210). The session supplies data that #210 lacks: continuous readings at several tilts, and RH and
-  temperature at the bench.
+* Coordinate with the data-assimilation project (#210). A session supplies data it lacks: continuous readings at
+  several tilts, and RH and temperature at the bench.
 
 ## 3. Before sessions on other powders
 * **The #205 tier-1 tests:** heap angle of repose, bulk and tapped density, the tilting plate and size distribution
@@ -132,7 +132,7 @@ These fix the session for every powder after the pilot, so they are hard to chan
 
     The written version is only on an unmerged branch.
   * A hazard review for combustible fines such as Al (`OUTLINE.md` §4.A11).
-  * The balance is noisier in the fume hood (#157), so run protocol A before each session.
+  * The balance drifted in the fume hood until 15 Sep (#157), so run protocol A before each session.
 * **Firmware for powders that creep:** level the tube when a dose stops. With the auger stopped at 40°, Al 4047
   crept out at 1.8 mg in 30 s (#186).
 * **A frozen rig.** None of the planned changes (#202, #203, #204) is on the rig yet. Decide whether they go on before
