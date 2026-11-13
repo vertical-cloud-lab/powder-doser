@@ -1,0 +1,282 @@
+import powder_battery
+>>> powder_battery.run(powder_id='silicon-325', attended=False, blocks="ABCDEG")
+[vib] DRV2605L unavailable ([Errno 5] EIO); skipping init
+RUN,BEGIN
+META,powder_id,silicon-325
+META,battery_version,2
+META,blocks,ABCDEG
+META,tilts_deg,0.0;45.0;90.0
+META,baseline_reads,8
+META,hold_s,15
+META,rotation_trials,6
+META,rotation_step_deg,360.0
+META,rotation_rpm,30.0
+META,speed_rpms,15.0;45.0;90.0
+META,speed_revs,3.0
+META,tap_tilts,0.0;45.0
+META,tap_trials,8
+META,taps_per_point,1
+META,refeed_deg,360.0
+META,vib_bursts,3
+META,dose_repeats,3
+META,dose_target_g,1.0
+META,settle_ms,2000
+META,min_flow_g,0.0005
+META,bracket_n,6
+META,bracket_ms,400
+META,shock_g,0.01
+META,max_resid_g,0.0015
+META,quiet_tries,8
+META,max_trial_retries,2
+META,drift_correct,1
+META,attended,0
+META,config.SCALE_BAUD,19200
+META,config.SCALE_BITS,8
+META,config.SCALE_PARITY,0
+META,config.SCALE_STABLE_TIMEOUT_MS,10000
+META,config.SCALE_STOP,1
+META,config.SERVO_SPEED_DEG_PER_S,60
+META,config.STEPPER_ACCEL_REV_PER_S2,4.0
+META,config.STEPPER_FULL_STEPS_REV,200
+META,config.STEPPER_MICROSTEPS,8
+META,config.STEPPER_SPEED_RPM,60
+META,config.TAP_OFF_MS,150
+META,config.TAP_ON_MS,60
+META,config.TAP_PWM_DUTY,1.0
+[battery] block A
+META,tare,ok
+CSV,A,45.0,baseline,0,,,0.0000,0.0000,0.0000,,18347,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,1,,,0.0000,0.0000,0.0000,,22830,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,2,,,0.0000,0.0000,0.0000,,27337,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,3,,,0.0000,0.0000,0.0000,,31818,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,4,,,0.0000,0.0000,0.0000,,36315,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,5,,,0.0000,0.0000,0.0000,,40807,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,6,,,0.0000,0.0000,0.0000,,45302,0.0000,0.0000,0.0000,0,ok
+CSV,A,45.0,baseline,7,,,0.0000,0.0000,0.0000,,49797,0.0000,0.0000,0.0000,0,ok
+SUM,A,45.0,baseline,8,0.0000,0.0000,0.0000,0.0000,0.0000
+[battery] block B
+META,tare,refused
+CSV,B,0.0,hold,0,15,,0.0000,0.0000,0.0000,,83761,0.0000,0.0000,0.0000,0,ok
+META,tare,refused
+CSV,B,45.0,hold,0,15,,0.0000,0.0000,0.0000,,117712,0.0000,0.0000,0.0000,0,ok
+META,tare,refused
+CSV,B,90.0,hold,0,15,,0.0000,0.0000,0.0000,,151648,0.0000,0.0000,0.0000,0,ok
+[battery] block C
+PROMPT,block C at tilt 0.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+META,tare,refused
+CSV,C,0.0,rotation,0,360.0,30,0.0000,0.0000,0.0000,lowflow,175268,0.0000,0.0000,0.0000,0,ok
+CSV,C,0.0,rotation,1,360.0,30,0.0000,0.0000,0.0000,lowflow,186839,0.0000,0.0000,0.0000,0,ok
+CSV,C,0.0,rotation,2,360.0,30,0.0000,0.0000,0.0000,lowflow,198424,0.0000,0.0000,0.0000,0,ok
+CSV,C,0.0,rotation,3,360.0,30,0.0000,0.0000,0.0000,lowflow,209982,0.0000,0.0000,0.0000,0,ok
+PROMPT,4 consecutive trials moved <0.0005 g (block C, tilt 0.0) -- hopper empty?  Refill and press Enter to continue, 'keep' to accept low flow as this powder's behaviour, 'skip'/'abort'
+CSV,C,0.0,rotation,4,360.0,30,0.0000,0.0000,0.0000,,221564,0.0000,0.0000,0.0000,0,ok
+CSV,C,0.0,rotation,5,360.0,30,0.0000,0.0000,0.0000,,233123,0.0000,0.0000,0.0000,0,ok
+SUM,C,0.0,rotation,6,0.0000,0.0000,0.0000,0.0000,0.0000
+PROMPT,block C at tilt 45.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+META,tare,refused
+CSV,C,45.0,rotation,0,360.0,30,0.0000,0.0000,0.0000,lowflow,255980,0.0000,0.0000,0.0000,0,ok
+CSV,C,45.0,rotation,1,360.0,30,0.0000,0.0000,0.0000,lowflow,267552,0.0000,0.0000,0.0000,0,ok
+CSV,C,45.0,rotation,2,360.0,30,0.0000,0.0000,0.0000,lowflow,279133,0.0000,0.0000,0.0000,0,ok
+CSV,C,45.0,rotation,3,360.0,30,0.0000,0.0000,0.0000,lowflow,290694,0.0000,0.0000,0.0000,0,ok
+PROMPT,4 consecutive trials moved <0.0005 g (block C, tilt 45.0) -- hopper empty?  Refill and press Enter to continue, 'keep' to accept low flow as this powder's behaviour, 'skip'/'abort'
+CSV,C,45.0,rotation,4,360.0,30,0.0000,0.0000,0.0000,,302276,0.0000,0.0000,0.0000,0,ok
+CSV,C,45.0,rotation,5,360.0,30,0.0000,0.0000,0.0000,,313845,0.0000,0.0000,0.0000,0,ok
+SUM,C,45.0,rotation,6,0.0000,0.0000,0.0000,0.0000,0.0000
+PROMPT,block C at tilt 90.0 -- empty the collection cup if it is getting full, then Enter ('skip'/'abort')
+META,tare,refused
+CSV,C,90.0,rotation,0,360.0,30,0.0000,0.0000,0.0000,lowflow,336692,0.0000,0.0000,0.0000,0,ok
+CSV,C,90.0,rotation,1,360.0,30,0.0000,0.0000,0.0000,lowflow,348264,0.0000,0.0000,0.0000,0,ok
+CSV,C,90.0,rotation,2,360.0,30,0.0000,0.0000,0.0000,lowflow,359845,0.0000,0.0000,0.0000,0,ok
+CSV,C,90.0,rotation,3,360.0,30,0.0000,0.0000,0.0000,lowflow,371407,0.0000,0.0000,0.0000,0,ok
+PROMPT,4 consecutive trials moved <0.0005 g (block C, tilt 90.0) -- hopper empty?  Refill and press Enter to continue, 'keep' to accept low flow as this powder's behaviour, 'skip'/'abort'
+CSV,C,90.0,rotation,4,360.0,30,0.0000,0.0000,0.0000,,382989,0.0000,0.0000,0.0000,0,ok
+CSV,C,90.0,rotation,5,360.0,30,0.0000,0.0072,0.0072,,394547,0.0000,0.0000,0.0000,0,ok
+SUM,C,90.0,rotation,6,0.0012,0.0030,0.0012,0.0000,0.0072
+[battery] block D
+META,tare,ok
+POLL,D,45.0,15,408695,0.0000,1
+POLL,D,45.0,15,409081,0.0000,1
+POLL,D,45.0,15,409467,0.0000,1
+POLL,D,45.0,15,409853,0.0000,1
+POLL,D,45.0,15,410224,0.0000,1
+POLL,D,45.0,15,410609,0.0000,1
+POLL,D,45.0,15,410996,0.0006,0
+POLL,D,45.0,15,411383,0.0008,0
+POLL,D,45.0,15,411753,0.0012,0
+POLL,D,45.0,15,412140,0.0014,0
+POLL,D,45.0,15,412527,0.0017,0
+POLL,D,45.0,15,412901,0.0019,0
+POLL,D,45.0,15,413288,0.0021,0
+POLL,D,45.0,15,413675,0.0023,0
+POLL,D,45.0,15,414047,0.0025,0
+POLL,D,45.0,15,414434,0.0027,0
+POLL,D,45.0,15,414821,0.0029,0
+POLL,D,45.0,15,415195,0.0032,0
+POLL,D,45.0,15,415582,0.0034,0
+POLL,D,45.0,15,415969,0.0039,0
+POLL,D,45.0,15,416344,0.0046,0
+POLL,D,45.0,15,416731,0.0054,0
+POLL,D,45.0,15,417111,0.0060,0
+POLL,D,45.0,15,417498,0.0066,0
+POLL,D,45.0,15,417885,0.0071,0
+POLL,D,45.0,15,418257,0.0075,0
+POLL,D,45.0,15,418644,0.0079,0
+POLL,D,45.0,15,419031,0.0083,0
+POLL,D,45.0,15,419403,0.0089,0
+POLL,D,45.0,15,419790,0.0094,0
+POLL,D,45.0,15,420177,0.0097,0
+POLL,D,45.0,15,420551,0.0102,0
+POLL,D,45.0,15,420937,0.0106,0
+POLL,D,45.0,15,421323,0.0109,0
+POLL,D,45.0,15,421710,0.0112,0
+POLL,D,45.0,15,422080,0.0113,0
+POLL,D,45.0,15,422466,0.0113,1
+POLL,D,45.0,15,422852,0.0114,1
+POLL,D,45.0,15,423238,0.0114,1
+POLL,D,45.0,15,423624,0.0115,1
+POLL,D,45.0,15,423993,0.0169,0
+POLL,D,45.0,15,424379,0.0176,0
+POLL,D,45.0,15,424765,0.0179,0
+POLL,D,45.0,15,425151,0.0182,0
+POLL,D,45.0,15,425525,0.0183,0
+POLL,D,45.0,15,425911,0.0184,0
+POLL,D,45.0,15,426297,0.0185,0
+POLL,D,45.0,15,426671,0.0190,0
+CSV,D,45.0,speed,0,3.0,15,0.0000,0.0214,0.0214,,431569,0.0000,0.0000,0.0000,0,ok
+POLL,D,45.0,45,434420,0.0214,1
+POLL,D,45.0,45,434806,0.0214,1
+POLL,D,45.0,45,435192,0.0214,1
+POLL,D,45.0,45,435566,0.0214,1
+POLL,D,45.0,45,435952,0.0215,1
+POLL,D,45.0,45,436338,0.0215,1
+POLL,D,45.0,45,436724,0.0221,0
+POLL,D,45.0,45,437094,0.0226,0
+POLL,D,45.0,45,437480,0.0267,0
+POLL,D,45.0,45,437866,0.0280,0
+POLL,D,45.0,45,438246,0.0314,0
+POLL,D,45.0,45,438633,0.0315,0
+POLL,D,45.0,45,439019,0.0319,0
+POLL,D,45.0,45,439390,0.0323,0
+POLL,D,45.0,45,439777,0.0328,0
+POLL,D,45.0,45,440163,0.0333,0
+CSV,D,45.0,speed,1,3.0,45,0.0214,0.0354,0.0140,,445042,0.0000,0.0000,0.0000,0,ok
+POLL,D,45.0,90,447902,0.0354,1
+POLL,D,45.0,90,448289,0.0354,1
+POLL,D,45.0,90,448675,0.0354,1
+POLL,D,45.0,90,449061,0.0354,1
+POLL,D,45.0,90,449433,0.0354,1
+POLL,D,45.0,90,449820,0.0363,0
+POLL,D,45.0,90,450206,0.0373,0
+POLL,D,45.0,90,450578,0.0443,0
+CSV,D,45.0,speed,2,3.0,90,0.0354,0.0524,0.0170,,455477,0.0000,0.0000,0.0000,0,ok
+SUM,D,45.0,speed,3,0.0175,0.0037,0.0022,0.0140,0.0214
+[battery] block E
+META,tare,ok
+CSV,E,0.0,refeed,0,360.0,30,0.0000,0.0000,0.0000,lowflow,478320,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,0,1,,0.0000,0.0000,0.0000,,485887,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,refeed,1,360.0,30,0.0000,0.0012,0.0012,,497448,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,1,1,,0.0014,0.0012,-0.0002,,505015,0.0001,0.0002,0.0000,0,ok
+CSV,E,0.0,refeed,2,360.0,30,0.0013,0.0015,0.0002,lowflow,516586,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,2,1,,0.0015,0.0015,-0.0001,,524133,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,refeed,3,360.0,30,0.0019,0.0018,-0.0002,lowflow,535700,0.0001,0.0005,0.0000,0,ok
+CSV,E,0.0,tap,3,1,,0.0017,0.0016,-0.0001,,543255,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,refeed,4,360.0,30,0.0016,0.0020,0.0004,lowflow,554839,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,4,1,,0.0023,0.0020,-0.0003,,562386,0.0001,0.0002,0.0000,0,ok
+CSV,E,0.0,refeed,5,360.0,30,0.0020,0.0022,0.0002,lowflow,573953,0.0000,0.0000,0.0000,0,ok
+PROMPT,4 consecutive trials moved <0.0005 g (block E, tilt 0.0) -- hopper empty?  Refill and press Enter to continue, 'keep' to accept low flow as this powder's behaviour, 'skip'/'abort'
+CSV,E,0.0,tap,5,1,,0.0022,0.0023,0.0001,,581508,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,refeed,6,360.0,30,0.0023,0.0028,0.0005,,593091,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,6,1,,0.0025,0.0028,0.0003,,600634,0.0001,-0.0003,0.0000,0,ok
+CSV,E,0.0,refeed,7,360.0,30,0.0028,0.0030,0.0002,,612205,0.0000,0.0000,0.0000,0,ok
+CSV,E,0.0,tap,7,1,,0.0030,0.0031,0.0000,,619773,0.0000,0.0000,0.0000,0,ok
+SUM,E,0.0,refeed,8,0.0003,0.0004,0.0001,-0.0002,0.0012
+SUM,E,0.0,tap,8,-0.0000,0.0002,0.0001,-0.0003,0.0003
+META,tare,ok
+CSV,E,45.0,refeed,0,360.0,30,0.0000,0.0055,0.0055,,642631,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,0,1,,0.0055,0.0055,-0.0000,,650170,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,1,360.0,30,0.0055,0.0071,0.0016,,661746,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,1,1,,0.0071,0.0072,0.0001,,669298,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,2,360.0,30,0.0072,0.0079,0.0007,,680869,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,2,1,,0.0079,0.0079,-0.0000,,688423,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,3,360.0,30,0.0084,0.0082,-0.0002,lowflow,699994,0.0001,0.0004,0.0000,0,ok
+CSV,E,45.0,tap,3,1,,0.0082,0.0107,0.0025,,707561,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,4,360.0,30,0.0102,0.0110,0.0009,,719122,0.0001,-0.0005,0.0000,0,ok
+CSV,E,45.0,tap,4,1,,0.0111,0.0122,0.0011,,726679,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,5,360.0,30,0.0122,0.0122,0.0000,lowflow,738259,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,5,1,,0.0125,0.0123,-0.0002,,745800,0.0001,0.0002,0.0000,0,ok
+CSV,E,45.0,refeed,6,360.0,30,0.0123,0.0125,0.0002,lowflow,757377,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,6,1,,0.0126,0.0125,-0.0001,,764928,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,refeed,7,360.0,30,0.0125,0.0126,0.0001,lowflow,776499,0.0000,0.0000,0.0000,0,ok
+CSV,E,45.0,tap,7,1,,0.0128,0.0138,0.0010,,784056,0.0001,0.0002,0.0000,0,ok
+SUM,E,45.0,refeed,8,0.0011,0.0019,0.0007,-0.0002,0.0055
+SUM,E,45.0,tap,8,0.0005,0.0009,0.0003,-0.0002,0.0025
+[battery] block G
+PROMPT,block G (three-phase doses): EMPTY the collection cup now, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 4: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 5: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 6: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 7: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 8: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 9: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 10: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0001 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 11: mass 0.0000 / 1.0000 g (1.0000 g to go, -0.0001 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 12: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (12 cycles): mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this phase), elapsed 7.0 s
+[dose] done: DoseResult(stalled: 0.0000/1.0000 g in 7.0s; cycles bulk:12; 4.58 auger rev, 0 taps)
+DOSE,0,1.0000,0.0000,-1.0000,stalled,7.0,4.58,0,bulk:12,791047
+PROMPT,dose 1 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1 (unstable): mass 0.0005 / 1.0000 g (0.9995 g to go, +0.0005 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 2 (unstable): mass 0.0007 / 1.0000 g (0.9993 g to go, +0.0002 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 3: mass 0.0007 / 1.0000 g (0.9993 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 4: mass 0.0008 / 1.0000 g (0.9992 g to go, +0.0001 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 5: mass 0.0008 / 1.0000 g (0.9992 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 6: mass 0.0008 / 1.0000 g (0.9992 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 7: mass 0.0009 / 1.0000 g (0.9991 g to go, +0.0001 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 8: mass 0.0009 / 1.0000 g (0.9991 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0012 / 1.0000 g (0.9988 g to go, +0.0003 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0014 / 1.0000 g (0.9986 g to go, +0.0002 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0015 / 1.0000 g (0.9985 g to go, +0.0001 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.0016 / 1.0000 g (0.9984 g to go, +0.0001 g this poll), elapsed 6.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (12 cycles): mass 0.0016 / 1.0000 g (0.9984 g to go, +0.0016 g this phase), elapsed 6.0 s
+[dose] done: DoseResult(stalled: 0.0016/1.0000 g in 6.0s; cycles bulk:12; 4.58 auger rev, 0 taps)
+DOSE,1,1.0000,0.0016,-0.9984,stalled,6.0,4.58,0,bulk:12,797259
+PROMPT,dose 2 done -- empty the cup for the next dose, then Enter ('skip'/'abort')
+[dose] three-phase dose to 1.0000 g; taring scale
+=== phase 1/3 'bulk' start: 1.0000 g to go, exit at 0.5000 g to go; angle 45.0 plate deg, CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g), settle 800 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 2.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 4: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 5: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 3.0 s
+[phase 1 bulk] poll 6: mass 0.0000 / 1.0000 g (1.0000 g to go, +0.0000 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 7: mass 0.0001 / 1.0000 g (0.9999 g to go, +0.0001 g this poll), elapsed 4.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0005 / 1.0000 g (0.9995 g to go, +0.0004 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 9: mass 0.0005 / 1.0000 g (0.9995 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 10: mass 0.0004 / 1.0000 g (0.9996 g to go, -0.0001 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 11: mass 0.0004 / 1.0000 g (0.9996 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 12: mass 0.0004 / 1.0000 g (0.9996 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 13: mass 0.0004 / 1.0000 g (0.9996 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 14: mass 0.0004 / 1.0000 g (0.9996 g to go, +0.0000 g this poll), elapsed 7.0 s
+[phase 1 bulk] no powder flow for 4.0 s while spinning -- hopper empty or jam
+=== phase 1/3 'bulk' end (14 cycles): mass 0.0004 / 1.0000 g (0.9996 g to go, +0.0004 g this phase), elapsed 7.0 s
+[dose] done: DoseResult(stalled: 0.0004/1.0000 g in 7.0s; cycles bulk:14; 4.58 auger rev, 0 taps)
+DOSE,2,1.0000,0.0004,-0.9996,stalled,7.0,4.58,0,bulk:14,804248
+META,park_tilt_deg,0.0
+META,env.brackets,141
+META,env.disturbed_trials,0
+META,env.drift_corrected_g,0.0025
+META,env.quiet_waits,0
+META,env.retries,0
+META,env.shock_events,0
+META,env.shock_total_g,0.0000
+META,env.unsettled_brackets,0
+RUN,END,ok
