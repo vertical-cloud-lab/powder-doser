@@ -33,12 +33,12 @@ This note checks the plan against these sources:
 
 | Part | State | Source |
 |---|---|---|
-| Campaign loop, executor and report (`opt_campaign.py`, `opt_dose_capture.py`, `opt_report.py`) | Work. Used for three salt campaign sessions and for production doses. They exist only on PR #166's branch, not on `main` | #166 at `d14a50d` |
+| Campaign loop, executor and report (`opt_campaign.py`, `opt_dose_capture.py`, `opt_report.py`) | Work. Used for two salt campaigns (four sessions, 29 Sep to 15 Oct) and for production doses. They exist only on PR #166's branch, not on `main` | #166 at `d14a50d` |
 | Campaign firmware (`/trickle_tap` on the Pico, id `trickle_tap/2026-10-15`) | Works, with the 15 Oct `MemoryError` fix. Bulk revolutions are still timed with a 1 s clock | [`main_three_phase.py` L1102](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/hardware/test-module/firmware/trickle_tap/main_three_phase.py#L1102) |
 | Fingerprint firmware (`powder_battery.py`, blocks A–H, at the Pico's root) and its capture script (`scripts/powder_battery_capture.py`) | Only on Sam's #116 branch. The Zero's checkout is the #166 branch, sparse (`scripts/` only), so the capture script isn't on it. Block D still times its spin by counting poll intervals | [`powder_battery.py` L781–783](https://github.com/vertical-cloud-lab/powder-doser/blob/f754450/hardware/test-module/firmware/powder_battery.py#L781-L783) |
 | The last salt campaign, `salt-margin-20261013T191339Z` | `paused`, not finished. On 15 Oct the feed fell from 35 to 7.5 mg/s, so the hopper was probably empty or caked. Four doses may need voiding, and there is no void command | [`run_20261015.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/salt-margin-20261013T191339Z/run_20261015.md) |
 | Rig | Last used 20 Oct for the atomizer cups (Al 4047, #186). Plate at 0°, Pico back at its power-on `main.py`, and the rig notice says the rig is free | Pi, read-only |
-| Temperature and RH | No sensor. The Zero has no I²C sensor bus enabled and no USB sensor; the Pico is the only USB device | Pi, read-only |
+| Temperature and RH | No sensor, and no code that reads one. The Pico is the only USB device on the Zero, and the header's I²C bus (`i2c-1`) isn't enabled | Pi, read-only; code search on `main`, #166 and #116 |
 | Balance | Between October sessions the pan drifted to −24.7 g against its zero, and needed a serial `Z`. It has been noisier since the August move into the fume hood. The firmware assumes a 0.7 s lag; drop tests give 0.16 s | `run_20261013.md`; base paper; `OUTLINE.md` §4.A9 |
 | Taps | At the 15° tap tilt, the median release per tap fell from 1.2–1.7 mg (29 Sep, 6 Oct) to 0.26–0.33 mg (13 and 15 Oct) | [`run_20261015.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/d14a50d/data/opt/salt-margin-20261013T191339Z/run_20261015.md) |
 | #205 fixtures | Concept designs only | #205 |
@@ -60,12 +60,13 @@ This note checks the plan against these sources:
 The dose-range block (0.05, 0.5 and 5 g) needs no new code. `dose.py --target-g 0.05`, and the same with `5`, doses
 the validated profile at other targets and logs those doses as production doses. Only the session id needs adding.
 
-Before the first real session, run the whole session against the virtual plant (`--simulate`). That checks the
-runner without powder.
+Before the first real session, dry-run the session runner without powder. The campaign half has a virtual plant
+(`opt_campaign.py --simulate`), and the battery has its own simulation tests (`sim/test_powder_battery.py`).
 
 ### 2.2 Bench (about half a day)
 1. **Auger.** Take off the auger used for the atomizer cups, mount the salt auger and record which one it is
-   (`auger_id`). Clean the outlet, and check the salt for caking.
+   (`auger_id`). Clean the outlet, and check the salt for caking. Then run the battery's one-minute feed check
+   (`battery_preflight.py`), which tells a feeding auger from a blocked or empty one.
 2. **Exit.** Measure the as-printed exit bore and the core-tip gap (`OUTLINE.md` §4.A1). In the DEM, moving the tip
    by 1 mm doubles delivery.
 3. **Balance.**
@@ -86,13 +87,14 @@ These fix the session for every powder after the pilot, so they are hard to chan
 
 | # | Decision | Options and facts |
 |---|---|---|
-| D1 | Controller variant and screen | The 8-knob three-stage variant (16 corners, 29 Sep) or the 9-knob margin variant (32 corners, 13 Oct). PLAN's 22-dose screen assumes 8 knobs |
+| D1 | Controller variant, which sets the screen | `three-stage`: 8 knobs; 16 corners, 4 centres and 2 baselines, the 22 doses PLAN assumes. `three-stage-margin`: 9 knobs; a powder with no three-stage campaign of its own gets 32 corners, so about 36 screen doses. `bulk-tap`: 8 knobs, no PI trickle. On salt, the margin campaign's best doses were at a 0 mg margin |
 | D2 | The box | The salt BO pushed against the 40° and 100 rpm edges. Should it be widened (for example to 45°, the fingerprint's top tilt) before it is frozen for all powders? |
 | D3 | Fill mass and cup returns | Fill mass from the drawdown test. Returning the cup every 10 doses needs a person at the rig every 20–30 min; `--unattended` never empties the cup |
 | D4 | Attended or unattended, and run from where | A CI job is capped at 180 min, so from CI a 5–6 h session is split over two or three jobs with `--resume`. The other option is a laptop at the bench |
 | D5 | Screen target | 0.5 g for every powder, or scaled by bulk density (PLAN §8) |
 | D6 | The paused margin campaign | Close it. Void `bo-013`, `bo-015`, `bo-017` and `bo-018` if they were starved doses |
 | D7 | Balance lag τ<sub>bal</sub> | 0.7 s (datasheet) or 0.16 s (drop tests) (`OUTLINE.md` §4.A9). Afterflow τ includes it |
+| D8 | The BO's objectives | Keep time and \|error\|, as on salt, or switch now to the planned one-sided error with a P(overshoot) limit and repeatability (`OUTLINE.md` §4.B1, #162). The multi-task GP pools the sessions, so every powder's BO should use the same ones |
 
 ### 2.4 People and rig time
 * One rig day. Someone at the bench for the first hour (bench reset, fingerprint prompts) and at each cup return.
@@ -107,8 +109,9 @@ These fix the session for every powder after the pilot, so they are hard to chan
   §4.A3 campaign powders must be in hand: AlSi10Mg, 316L, sieved Al 4047 and one precursor. Sieves are on order
   (byu-vcl#262).
 * **Augers:** one per powder, as in Sam's battery, or a written cleaning rule. Record the `auger_id` either way.
-* **Metal powders:** the fume-hood handling rules (#141). The balance is noisier there (#157), so check protocol A
-  before each session.
+* **Metal powders:** a hazard review for combustible fines such as Al (`OUTLINE.md` §4.A11, #141), and the
+  fume-hood handling rules. The balance is noisier in the fume hood (#157), so check protocol A before each
+  session.
 * **A frozen rig.** New prints (#197, #200), the tap collar (#203) and the multi-auger design (#204) are in
   progress. A series of sessions has to run on one configuration, or repeat the salt reference after every change.
 
@@ -118,8 +121,8 @@ These fix the session for every powder after the pilot, so they are hard to chan
 * Merging #166 into `main`. Sessions can run from a pinned commit in the meantime.
 
 ## 5. Suggested order
-1. Decisions D1–D7, in one meeting.
-2. Code C1–C6, then one whole session against the virtual plant.
+1. Decisions D1–D8, in one meeting.
+2. Code C1–C6, then a dry run of the session runner without powder.
 3. Bench reset and drawdown test (about half a day).
 4. The salt pilot session.
 5. Meanwhile, build #205's tier 1 and get the powders.
