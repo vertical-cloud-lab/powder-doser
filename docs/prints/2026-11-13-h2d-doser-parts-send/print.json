@@ -1,0 +1,257 @@
+{
+ "request": {
+  "pr": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6845617257",
+  "by": "jss265",
+  "text": "@claude-print re-run last ping. Print immediatly. Note the nozzles have been replaced.",
+  "re_run_of": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6844173130",
+  "requested_utc": "2026-11-13T06:08:32Z",
+  "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/43376636768",
+  "job_started_utc": "2026-11-13T06:08:52Z",
+  "job_timeout_utc": "2026-11-13T12:08:52Z (timeout-minutes 360)",
+  "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6845625577",
+  "previous_runs": [
+   "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/43366921258 (H2D, sliced and held for the 0.6 mm right nozzle; cancelled 2026-11-13T06:07:44Z, nothing sent)",
+   "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/43364415428 (A1 mini, sent 04:31:39 and watching; cancelled 2026-11-13T06:07:48Z)"
+  ]
+ },
+ "studio": {
+  "version": "02.08.02.61 (AppImage) on the runner, Xvfb :99, ubuntu 26.04 image",
+  "login": "password, then the first authenticator code from bambu-totp (Log In 06:15:21, code 06:15:41, Confirm 06:15:42 UTC); no e-mailed code asked for",
+  "selected_at_login": "Thumbelina, the A1 Mini (the account's last-selected printer); the H2D selected by hand at 06:16:30",
+  "refresh_pressed": false
+ },
+ "printer": {
+  "name": "BYU VCL H2D - Théoden",
+  "state_before": "idle; last job aurora_camera_mounts_zero_hq_H2D 100 %, 556/556, Finished; left nozzle 28 C, right 30 C (target 30), bed 25 C, chamber 27 C",
+  "hms_before": "only the rail-lubrication reminder ('Please clean and lubricate the X-axis linear rail, YZ-axis linear rods, and the extruder lift linear rail.'), 06:18:14 UTC",
+  "ams": "AMS 2 Pro (left): A1 empty, A2 black PLA, A3 white PLA, A4 light-blue PLA; AMS HT (right) empty; external spool unknown",
+  "nozzle_reads": [
+   {
+    "utc": "06:17:43",
+    "left": "0.4 mm hardened steel, Standard",
+    "right": "0.6 mm hardened steel, TPU High flow",
+    "file": "printer-parts-20261113T061743Z.png"
+   },
+   {
+    "utc": "06:19:58",
+    "left": "0.4 mm hardened steel, Standard",
+    "right": "0.4 mm hardened steel, Standard",
+    "file": "printer-parts-20261113T061958Z.png"
+   },
+   {
+    "utc": "06:24:00",
+    "left": "0.4 mm hardened steel, Standard",
+    "right": "0.4 mm hardened steel, Standard",
+    "file": "printer-parts-20261113T062400Z.png"
+   }
+  ],
+  "nozzles_ok_for_this_repo_at_send": true
+ },
+ "plate_check": {
+  "frames": [
+   {
+    "utc": "06:16:36",
+    "file": "h2d-frame-20261113T061636Z.png",
+    "kind": "Studio Printer Preview still",
+    "posted_utc": "06:18:56",
+    "mean_luma": 82.9,
+    "read": "empty: textured PEI plate with its logo outline, toolhead top right; blue part beyond the bed is outside the chamber"
+   },
+   {
+    "utc": "06:20:50",
+    "file": "h2d-live-20261113T062050Z.png",
+    "kind": "live view",
+    "posted_utc": "06:21:32",
+    "mean_luma": 112.9,
+    "read": "empty; bed lower and toolhead moved since 06:16:36; a hand at the bottom right, past the bed's edge"
+   },
+   {
+    "utc": "06:23:55",
+    "file": "h2d-live-20261113T062355Z.png",
+    "kind": "live view",
+    "posted_utc": null,
+    "mean_luma": 106.6,
+    "read": "empty"
+   },
+   {
+    "utc": "06:24:22",
+    "file": "h2d-live-20261113T062422Z.png",
+    "kind": "live view, last before Send",
+    "posted_utc": "06:26:23 (after Send)",
+    "read": "empty; identical to 06:23:55 (MAE 0.04/255)"
+   }
+  ],
+  "plate_type_sliced_for": "Textured PEI Plate"
+ },
+ "go": {
+  "frame": "h2d-frame-20261113T061636Z.png, posted 06:18:56; re-framed with h2d-live-20261113T062050Z.png, posted 06:21:32",
+  "wait_ended_utc": "06:23:02 (90 s after the second post)",
+  "replies": [],
+  "thread_checked_before_send_utc": "06:25:14 and 06:25:24 (issue comments, review comments, reviews)",
+  "requester_note": "the 06:08:32 request said 'Print immediatly'; the run still waited the 90 s after its frame"
+ },
+ "sent": true,
+ "send_utc": "2026-11-13T06:25:24Z",
+ "on_printer_by_utc": "2026-11-13T06:25:49Z",
+ "send_options": {
+  "printer": "BYU VCL H2D - Théoden (Bambu Lab H2D 0.4/0.4mm)",
+  "plate": "PEI (textured)",
+  "filament_mapping": "PLA (filament 1, left nozzle) -> AMS A2 black PLA; the dialog defaulted to A3 (white PLA) both times it opened",
+  "timelapse": "off",
+  "auto_bed_leveling": "on",
+  "flow_dynamics_calibration": "on",
+  "nozzle_offset_calibration": "off (default)",
+  "upload": "Sending print job with LAN acceleration"
+ },
+ "file": {
+  "path": "docs/prints/2026-11-13-h2d-doser-parts/doser_baseplate_auger_H2D_PLA.gcode.3mf",
+  "commit": "c372d19",
+  "re_sliced": false,
+  "plate_gcode_md5": "744a58793916bd43ce7dbd456284821f",
+  "objects": [
+   "baseplate.stl",
+   "auger_44T.stl"
+  ],
+  "printer_preset": "Bambu Lab H2D 0.4 nozzle",
+  "process": "0.20mm Standard @BBL H2D; wall_loops 3; sparse_infill_density 25%; tree(auto) supports, 30 deg, build plate only; auto brim",
+  "filament": "Bambu PLA Basic @BBL H2D, 220 C, on the left nozzle (filament_map 1)",
+  "nozzle_diameter": "0.4,0.4",
+  "nozzle_volume_type": "Standard,TPU High Flow (as sliced; the right nozzle is unused)",
+  "bed": "Textured PEI Plate, 55 C",
+  "layers": 1250,
+  "max_z_mm": 250.0,
+  "weight_g": 160.71,
+  "length_m": 53.03,
+  "estimate": "prediction 19533 s (5 h 25 min 33 s); first layer 881 s"
+ },
+ "timeline_utc": [
+  [
+   "06:08:32",
+   "request"
+  ],
+  [
+   "06:08:52",
+   "job started (approved)"
+  ],
+  [
+   "06:12:13",
+   "Xvfb, openbox and the screen recorder started; Studio's first run"
+  ],
+  [
+   "06:15:21",
+   "Log In pressed"
+  ],
+  [
+   "06:15:42",
+   "authenticator code confirmed"
+  ],
+  [
+   "06:16:01",
+   "Device page (A1 mini selected by Studio, printing at 32 %)"
+  ],
+  [
+   "06:16:30",
+   "H2D selected; Printer Preview still 06:16:36"
+  ],
+  [
+   "06:17:43",
+   "Printer Parts: left 0.4 Standard, right 0.6 TPU High flow"
+  ],
+  [
+   "06:18:14",
+   "HMS: rail-lubrication reminder only"
+  ],
+  [
+   "06:18:56",
+   "first frame posted; Send held for the right nozzle"
+  ],
+  [
+   "06:19:58",
+   "Printer Parts: left 0.4 Standard, right 0.4 Standard"
+  ],
+  [
+   "06:20:50",
+   "live frame: bed and toolhead moved, plate empty"
+  ],
+  [
+   "06:21:32",
+   "second frame posted; 90 s wait restarted"
+  ],
+  [
+   "06:22:16",
+   "file opened in Studio (Slice ok, 5h26m, 160.71 g)"
+  ],
+  [
+   "06:23:02",
+   "wait ended, no replies"
+  ],
+  [
+   "06:24:22",
+   "final frame, plate empty"
+  ],
+  [
+   "06:25:24",
+   "Send"
+  ],
+  [
+   "06:25:49",
+   "on the printer: layer 0/1250, finish estimate 11:50"
+  ],
+  [
+   "06:37:17",
+   "layer 1"
+  ],
+  [
+   "06:52:54",
+   "layer 2, 6 %"
+  ],
+  [
+   "07:37:37",
+   "layer 22, 19 %"
+  ],
+  [
+   "08:00",
+   "layer 26 done (14 min)"
+  ],
+  [
+   "08:23:18",
+   "layer 30, 32 %"
+  ],
+  [
+   "09:10:16",
+   "layer 143, 46 %, finish estimate 12:03"
+  ],
+  [
+   "09:31:21",
+   "layer 204, 53 %"
+  ]
+ ],
+ "a1mini": {
+  "job": "doser_parts_gears_flat_A1mini_PLA.gcode (sent 04:31:39 UTC by run 43364415428)",
+  "reads": [
+   [
+    "06:16:19",
+    "32 %, nozzle 219/220, bed 64/65, finish estimate 09:30"
+   ],
+   [
+    "07:39:25",
+    "layer 189/541, 62 %"
+   ],
+   [
+    "09:09:46",
+    "layer 498/541, 94 %, finish estimate 09:26"
+   ],
+   [
+    "09:32:07",
+    "100 %, layer 541/541, Finished; nozzle 74 C, bed 50 C cooling; no HMS"
+   ]
+  ],
+  "camera": "a1mini-cam-finished-20261113T093229Z.jpg: the live view played at 09:32:29 (it had failed since 11-12); tap collar, two C-clips and three pinions flat on the plate, mounting plate at the frame's left edge"
+ },
+ "github_token_reminted_utc": [
+  "06:53:35",
+  "07:39:5x",
+  "08:24:4x",
+  "09:09:2x"
+ ]
+}
