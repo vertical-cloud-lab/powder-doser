@@ -1,0 +1,26 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,6.0,2026-09-10T13:41:08.220+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,6.0,2026-09-10T13:41:08.220+00:00,bulk,poll,0.0156,0.9844,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,6.0,2026-09-10T13:41:08.220+00:00,bulk,poll,0.0352,0.9648,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,6.0,2026-09-10T13:41:08.220+00:00,bulk,poll,0.0833,0.9167,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,7.0,2026-09-10T13:41:09.220+00:00,bulk,poll,0.2036,0.7964,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,7.0,2026-09-10T13:41:09.220+00:00,bulk,poll,0.3194,0.6806,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,7.0,2026-09-10T13:41:09.220+00:00,bulk,poll,0.3792,0.6208,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,8.0,2026-09-10T13:41:10.220+00:00,bulk,poll,0.4288,0.5712,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,10.0,2026-09-10T13:41:12.220+00:00,bulk_settled,settled,0.6762,0.3238,,45.0,0,0,"auger halted, settling",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,16.0,2026-09-10T13:41:18.220+00:00,fine,settled,0.6812,0.3188,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,21.0,2026-09-10T13:41:23.220+00:00,fine,settled,0.7068,0.2932,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,27.0,2026-09-10T13:41:29.220+00:00,fine,settled,0.7609,0.2391,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,32.0,2026-09-10T13:41:34.220+00:00,fine,settled,0.8228,0.1772,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,37.0,2026-09-10T13:41:39.220+00:00,fine,settled,0.8810,0.1190,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.2,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,42.0,2026-09-10T13:41:44.220+00:00,fine,settled,0.9705,0.0295,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,46.0,2026-09-10T13:41:48.220+00:00,tap,settled,0.9726,0.0274,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,50.0,2026-09-10T13:41:52.220+00:00,tap,settled,0.9753,0.0247,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,53.0,2026-09-10T13:41:55.220+00:00,tap,settled,0.9787,0.0213,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,57.0,2026-09-10T13:41:59.220+00:00,tap,settled,0.9830,0.0170,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,60.0,2026-09-10T13:42:02.220+00:00,tap,settled,0.9845,0.0155,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,63.0,2026-09-10T13:42:05.220+00:00,tap,settled,0.9880,0.0120,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,66.0,2026-09-10T13:42:08.220+00:00,tap,settled,0.9895,0.0105,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,70.0,2026-09-10T13:42:12.220+00:00,tap,settled,0.9925,0.0075,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,73.0,2026-09-10T13:42:15.220+00:00,tap,settled,0.9953,0.0047,,0.0,0,18,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",12.8,43.1,0.6
+sodium-sulfate,sodium-sulfate_20260910_G1_1g,three_phase,1,73.0,2026-09-10T13:42:15.220+00:00,final,final,0.9953,0.0047,,,0,18,dose result,12.8,43.1,0.6

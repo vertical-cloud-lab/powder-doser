@@ -1,0 +1,17 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,4.0,2026-09-10T17:09:37.885+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,5.0,2026-09-10T17:09:38.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,5.0,2026-09-10T17:09:38.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,5.0,2026-09-10T17:09:38.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,6.0,2026-09-10T17:09:39.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,6.0,2026-09-10T17:09:39.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,6.0,2026-09-10T17:09:39.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,7.0,2026-09-10T17:09:40.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,7.0,2026-09-10T17:09:40.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,7.0,2026-09-10T17:09:40.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,7.0,2026-09-10T17:09:40.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,8.0,2026-09-10T17:09:41.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,8.0,2026-09-10T17:09:41.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,8.0,2026-09-10T17:09:41.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,9.0,2026-09-10T17:09:42.885+00:00,bulk,poll,0.0001,0.9999,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",20.5,34.1,4.1
+barium-chloride,barium-chloride_20260910_G1_1g,three_phase,1,9.0,2026-09-10T17:09:42.885+00:00,final,final,0.0001,0.9999,,,0,0,dose result,20.5,34.1,4.1

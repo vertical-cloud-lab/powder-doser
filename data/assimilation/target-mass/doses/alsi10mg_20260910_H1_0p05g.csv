@@ -1,0 +1,4 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+alsi10mg,alsi10mg_20260910_H1_0p05g,three_phase,0.05,10.0,2026-09-10T19:51:03.580+00:00,fine,settled,0.0099,0.0401,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.4,30.4,6.7
+alsi10mg,alsi10mg_20260910_H1_0p05g,three_phase,0.05,15.0,2026-09-10T19:51:08.580+00:00,fine,settled,0.0681,-0.0181,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.4,30.4,6.7
+alsi10mg,alsi10mg_20260910_H1_0p05g,three_phase,0.05,15.0,2026-09-10T19:51:08.580+00:00,final,final,0.0681,-0.0181,,,0,0,dose result,25.4,30.4,6.7

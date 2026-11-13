@@ -1,0 +1,18 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,6.0,2026-09-10T19:46:02.145+00:00,bulk,poll,0.0065,0.9935,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,6.0,2026-09-10T19:46:02.145+00:00,bulk,poll,0.0102,0.9898,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,6.0,2026-09-10T19:46:02.145+00:00,bulk,poll,0.0606,0.9394,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,7.0,2026-09-10T19:46:03.145+00:00,bulk,poll,0.1600,0.8400,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,7.0,2026-09-10T19:46:03.145+00:00,bulk,poll,0.2462,0.7538,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,7.0,2026-09-10T19:46:03.145+00:00,bulk,poll,0.3196,0.6804,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,8.0,2026-09-10T19:46:04.145+00:00,bulk,poll,0.4423,0.5577,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,10.0,2026-09-10T19:46:06.145+00:00,bulk_settled,settled,0.6676,0.3324,,45.0,0,0,"auger halted, settling",25.2,30.9,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,16.0,2026-09-10T19:46:12.145+00:00,fine,settled,0.7388,0.2612,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,21.0,2026-09-10T19:46:17.145+00:00,fine,settled,0.7627,0.2373,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,26.0,2026-09-10T19:46:22.145+00:00,fine,settled,0.8255,0.1745,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,31.0,2026-09-10T19:46:27.145+00:00,fine,settled,0.8710,0.1290,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,37.0,2026-09-10T19:46:33.145+00:00,fine,settled,0.8989,0.1011,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,42.0,2026-09-10T19:46:38.145+00:00,fine,settled,0.9253,0.0747,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,47.0,2026-09-10T19:46:43.145+00:00,fine,settled,0.9478,0.0522,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,53.0,2026-09-10T19:46:49.145+00:00,fine,settled,1.0094,-0.0094,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G1_1g,three_phase,1,53.0,2026-09-10T19:46:49.145+00:00,final,final,1.0094,-0.0094,,,0,0,dose result,25.2,30.8,6.8

@@ -1,0 +1,26 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+salt,salt_20260904_G0_1g,three_phase,1,7.0,2026-09-04T00:18:31.168+00:00,bulk,poll,0.2084,0.7916,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,7.0,2026-09-04T00:18:31.168+00:00,bulk,poll,0.2282,0.7718,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,7.0,2026-09-04T00:18:31.168+00:00,bulk,poll,0.2786,0.7214,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,8.0,2026-09-04T00:18:32.168+00:00,bulk,poll,0.3257,0.6743,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,8.0,2026-09-04T00:18:32.168+00:00,bulk,poll,0.3953,0.6047,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,10.0,2026-09-04T00:18:34.168+00:00,bulk_settled,settled,0.5953,0.4047,,45.0,0,0,"auger halted, settling",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,16.0,2026-09-04T00:18:40.168+00:00,fine,settled,0.6416,0.3584,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.8,6.9
+salt,salt_20260904_G0_1g,three_phase,1,21.0,2026-09-04T00:18:45.168+00:00,fine,settled,0.7091,0.2909,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.9,6.9
+salt,salt_20260904_G0_1g,three_phase,1,26.0,2026-09-04T00:18:50.168+00:00,fine,settled,0.7198,0.2802,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.9,6.9
+salt,salt_20260904_G0_1g,three_phase,1,32.0,2026-09-04T00:18:56.168+00:00,fine,settled,0.7712,0.2288,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.9,6.9
+salt,salt_20260904_G0_1g,three_phase,1,37.0,2026-09-04T00:19:01.168+00:00,fine,settled,0.8220,0.1780,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.9,6.9
+salt,salt_20260904_G0_1g,three_phase,1,42.0,2026-09-04T00:19:06.168+00:00,fine,settled,0.8483,0.1517,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,27.9,6.9
+salt,salt_20260904_G0_1g,three_phase,1,47.0,2026-09-04T00:19:11.168+00:00,fine,settled,0.8692,0.1308,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,28.0,6.9
+salt,salt_20260904_G0_1g,three_phase,1,53.0,2026-09-04T00:19:17.168+00:00,fine,settled,0.9080,0.0920,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,28.0,6.9
+salt,salt_20260904_G0_1g,three_phase,1,58.0,2026-09-04T00:19:22.168+00:00,fine,settled,0.9289,0.0711,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,28.0,6.9
+salt,salt_20260904_G0_1g,three_phase,1,63.0,2026-09-04T00:19:27.168+00:00,fine,settled,0.9948,0.0052,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",27.6,28.0,7.0
+salt,salt_20260904_G0_1g,three_phase,1,67.0,2026-09-04T00:19:31.168+00:00,tap,settled,0.9759,0.0241,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,71.0,2026-09-04T00:19:35.168+00:00,tap,settled,0.9385,0.0615,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,74.0,2026-09-04T00:19:38.168+00:00,tap,settled,0.9860,0.0140,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,77.0,2026-09-04T00:19:41.168+00:00,tap,settled,0.9736,0.0264,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,80.0,2026-09-04T00:19:44.168+00:00,tap,settled,0.9743,0.0257,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,84.0,2026-09-04T00:19:48.168+00:00,tap,settled,0.9697,0.0303,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,87.0,2026-09-04T00:19:51.168+00:00,tap,settled,0.9795,0.0205,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.1,7.0
+salt,salt_20260904_G0_1g,three_phase,1,90.0,2026-09-04T00:19:54.168+00:00,tap,settled,1.0040,-0.0040,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",27.6,28.2,7.0
+salt,salt_20260904_G0_1g,three_phase,1,90.0,2026-09-04T00:19:54.168+00:00,final,final,1.0040,-0.0040,,,0,16,dose result,27.6,28.2,7.0

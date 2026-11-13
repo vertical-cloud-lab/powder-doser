@@ -1,0 +1,84 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,2.0,2026-08-06T14:12:34.266+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,3.0,2026-08-06T14:12:35.266+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,3.0,2026-08-06T14:12:35.266+00:00,bulk,poll,0.0119,0.9881,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,3.0,2026-08-06T14:12:35.266+00:00,bulk,poll,0.0207,0.9793,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,4.0,2026-08-06T14:12:36.266+00:00,bulk,poll,0.0294,0.9706,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,4.0,2026-08-06T14:12:36.266+00:00,bulk,poll,0.0523,0.9477,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,4.0,2026-08-06T14:12:36.266+00:00,bulk,poll,0.0895,0.9105,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,4.0,2026-08-06T14:12:36.266+00:00,bulk,poll,0.1273,0.8727,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,5.0,2026-08-06T14:12:37.266+00:00,bulk,poll,0.1431,0.8569,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,5.0,2026-08-06T14:12:37.266+00:00,bulk,poll,0.1599,0.8401,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,5.0,2026-08-06T14:12:37.266+00:00,bulk,poll,0.2005,0.7995,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,6.0,2026-08-06T14:12:38.266+00:00,bulk,poll,0.2355,0.7645,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,6.0,2026-08-06T14:12:38.266+00:00,bulk,poll,0.2420,0.7580,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,6.0,2026-08-06T14:12:38.266+00:00,bulk,poll,0.2811,0.7189,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,7.0,2026-08-06T14:12:39.266+00:00,bulk,poll,0.3254,0.6746,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,7.0,2026-08-06T14:12:39.266+00:00,bulk,poll,0.3423,0.6577,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,7.0,2026-08-06T14:12:39.266+00:00,bulk,poll,0.3545,0.6455,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,7.0,2026-08-06T14:12:39.266+00:00,bulk,poll,0.3949,0.6051,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,10.0,2026-08-06T14:12:42.266+00:00,bulk_settled,settled,0.5326,0.4674,,45.0,0,0,"auger halted, settling",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,15.0,2026-08-06T14:12:47.266+00:00,fine,settled,0.5573,0.4427,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,19.0,2026-08-06T14:12:51.266+00:00,fine,settled,0.5833,0.4167,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,23.0,2026-08-06T14:12:55.266+00:00,fine,settled,0.6023,0.3977,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,34.0,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,27.0,2026-08-06T14:12:59.266+00:00,fine,settled,0.6127,0.3873,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,33.9,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,31.0,2026-08-06T14:13:03.266+00:00,fine,settled,0.6177,0.3823,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,33.9,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,35.0,2026-08-06T14:13:07.266+00:00,fine,settled,0.6186,0.3814,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,33.9,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,41.0,2026-08-06T14:13:13.266+00:00,fine,settled,0.6519,0.3481,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.4,33.9,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,45.0,2026-08-06T14:13:17.266+00:00,fine,settled,0.7027,0.2973,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.9,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,49.0,2026-08-06T14:13:21.266+00:00,fine,settled,0.7431,0.2569,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,53.0,2026-08-06T14:13:25.266+00:00,fine,settled,0.7707,0.2293,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,57.0,2026-08-06T14:13:29.266+00:00,fine,settled,0.7914,0.2086,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,61.0,2026-08-06T14:13:33.266+00:00,fine,settled,0.8038,0.1962,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.8
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,65.0,2026-08-06T14:13:37.266+00:00,fine,settled,0.8101,0.1899,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,69.0,2026-08-06T14:13:41.266+00:00,fine,settled,0.8111,0.1889,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.8,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,73.0,2026-08-06T14:13:45.266+00:00,fine,settled,0.8489,0.1511,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,77.0,2026-08-06T14:13:49.266+00:00,fine,settled,0.9055,0.0945,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,81.0,2026-08-06T14:13:53.266+00:00,fine,settled,0.9405,0.0595,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,85.0,2026-08-06T14:13:57.266+00:00,fine,settled,0.9644,0.0356,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,88.0,2026-08-06T14:14:00.266+00:00,tap,settled,0.9645,0.0355,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,90.0,2026-08-06T14:14:02.266+00:00,tap,settled,0.9645,0.0355,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,92.0,2026-08-06T14:14:04.266+00:00,tap,settled,0.9645,0.0355,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.7,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,96.0,2026-08-06T14:14:08.266+00:00,tap,settled,0.9645,0.0355,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,98.0,2026-08-06T14:14:10.266+00:00,tap,settled,0.9645,0.0355,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,100.0,2026-08-06T14:14:12.266+00:00,tap,settled,0.9646,0.0354,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,104.0,2026-08-06T14:14:16.266+00:00,tap,settled,0.9646,0.0354,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,106.0,2026-08-06T14:14:18.266+00:00,tap,settled,0.9646,0.0354,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,108.0,2026-08-06T14:14:20.266+00:00,tap,settled,0.9646,0.0354,,0.0,0,18,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,113.0,2026-08-06T14:14:25.266+00:00,tap,settled,0.9647,0.0353,,0.0,0,20,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,115.0,2026-08-06T14:14:27.266+00:00,tap,settled,0.9647,0.0353,,0.0,0,22,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.6,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,117.0,2026-08-06T14:14:29.266+00:00,tap,settled,0.9647,0.0353,,0.0,0,24,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,121.0,2026-08-06T14:14:33.266+00:00,tap,settled,0.9649,0.0351,,0.0,0,26,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,123.0,2026-08-06T14:14:35.266+00:00,tap,settled,0.9650,0.0350,,0.0,0,28,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,125.0,2026-08-06T14:14:37.266+00:00,tap,settled,0.9651,0.0349,,0.0,0,30,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,127.0,2026-08-06T14:14:39.266+00:00,tap,settled,0.9652,0.0348,,0.0,0,32,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,131.0,2026-08-06T14:14:43.266+00:00,tap,settled,0.9654,0.0346,,0.0,0,34,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,133.0,2026-08-06T14:14:45.266+00:00,tap,settled,0.9655,0.0345,,0.0,0,36,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,135.0,2026-08-06T14:14:47.266+00:00,tap,settled,0.9656,0.0344,,0.0,0,38,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.5,33.5,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,140.0,2026-08-06T14:14:52.266+00:00,tap,settled,0.9659,0.0341,,0.0,0,40,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,142.0,2026-08-06T14:14:54.266+00:00,tap,settled,0.9661,0.0339,,0.0,0,42,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,144.0,2026-08-06T14:14:56.266+00:00,tap,settled,0.9662,0.0338,,0.0,0,44,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,146.0,2026-08-06T14:14:58.266+00:00,tap,settled,0.9663,0.0337,,0.0,0,46,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,150.0,2026-08-06T14:15:02.266+00:00,tap,settled,0.9666,0.0334,,0.0,0,48,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,152.0,2026-08-06T14:15:04.266+00:00,tap,settled,0.9667,0.0333,,0.0,0,50,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,154.0,2026-08-06T14:15:06.266+00:00,tap,settled,0.9668,0.0332,,0.0,0,52,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.7
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,156.0,2026-08-06T14:15:08.266+00:00,tap,settled,0.9669,0.0331,,0.0,0,54,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,160.0,2026-08-06T14:15:12.266+00:00,tap,settled,0.9671,0.0329,,0.0,0,56,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,162.0,2026-08-06T14:15:14.266+00:00,tap,settled,0.9672,0.0328,,0.0,0,58,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.4,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,164.0,2026-08-06T14:15:16.266+00:00,tap,settled,0.9673,0.0327,,0.0,0,60,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,166.0,2026-08-06T14:15:18.266+00:00,tap,settled,0.9675,0.0325,,0.0,0,62,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,171.0,2026-08-06T14:15:23.266+00:00,tap,settled,0.9678,0.0322,,0.0,0,64,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,173.0,2026-08-06T14:15:25.266+00:00,tap,settled,0.9681,0.0319,,0.0,0,66,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,175.0,2026-08-06T14:15:27.266+00:00,tap,settled,0.9683,0.0317,,0.0,0,68,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,177.0,2026-08-06T14:15:29.266+00:00,tap,settled,0.9685,0.0315,,0.0,0,70,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,179.0,2026-08-06T14:15:31.266+00:00,tap,settled,0.9686,0.0314,,0.0,0,72,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,181.0,2026-08-06T14:15:33.266+00:00,tap,settled,0.9687,0.0313,,0.0,0,74,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,183.0,2026-08-06T14:15:35.266+00:00,tap,settled,0.9689,0.0311,,0.0,0,76,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,185.0,2026-08-06T14:15:37.266+00:00,tap,settled,0.9690,0.0310,,0.0,0,78,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.3,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,187.0,2026-08-06T14:15:39.266+00:00,tap,settled,0.9691,0.0309,,0.0,0,80,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,189.0,2026-08-06T14:15:41.266+00:00,tap,settled,0.9693,0.0307,,0.0,0,82,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,193.0,2026-08-06T14:15:45.266+00:00,tap,settled,0.9695,0.0305,,0.0,0,84,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,195.0,2026-08-06T14:15:47.266+00:00,tap,settled,0.9696,0.0304,,0.0,0,86,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,197.0,2026-08-06T14:15:49.266+00:00,tap,settled,0.9698,0.0302,,0.0,0,88,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,199.0,2026-08-06T14:15:51.266+00:00,tap,settled,0.9699,0.0301,,0.0,0,90,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",19.6,33.2,2.6
+xanthan-gum,xanthan-gum_20260806_G1_1g,three_phase,1,199.0,2026-08-06T14:15:51.266+00:00,final,final,0.9699,0.0301,,,0,90,dose result,19.6,33.2,2.6

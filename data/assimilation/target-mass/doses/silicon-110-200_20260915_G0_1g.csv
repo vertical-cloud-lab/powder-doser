@@ -1,0 +1,56 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,5.0,2026-09-15T02:56:03.718+00:00,bulk,poll,0.0003,0.9997,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,6.0,2026-09-15T02:56:04.718+00:00,bulk,poll,0.0001,0.9999,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,6.0,2026-09-15T02:56:04.718+00:00,bulk,poll,0.0002,0.9998,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,6.0,2026-09-15T02:56:04.718+00:00,bulk,poll,0.0406,0.9594,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,6.0,2026-09-15T02:56:04.718+00:00,bulk,poll,0.1293,0.8707,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,7.0,2026-09-15T02:56:05.718+00:00,bulk,poll,0.1948,0.8052,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,7.0,2026-09-15T02:56:05.718+00:00,bulk,poll,0.2109,0.7891,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,7.0,2026-09-15T02:56:05.718+00:00,bulk,poll,0.2761,0.7239,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,8.0,2026-09-15T02:56:06.718+00:00,bulk,poll,0.3596,0.6404,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,8.0,2026-09-15T02:56:06.718+00:00,bulk,poll,0.4042,0.5958,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,10.0,2026-09-15T02:56:08.718+00:00,bulk_settled,settled,0.5926,0.4074,,45.0,0,0,"auger halted, settling",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,16.0,2026-09-15T02:56:14.718+00:00,fine,settled,0.6743,0.3257,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.7,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,21.0,2026-09-15T02:56:19.718+00:00,fine,settled,0.6835,0.3165,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,27.0,2026-09-15T02:56:25.718+00:00,fine,settled,0.7134,0.2866,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,32.0,2026-09-15T02:56:30.718+00:00,fine,settled,0.7200,0.2800,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,37.0,2026-09-15T02:56:35.718+00:00,fine,settled,0.7611,0.2389,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,43.0,2026-09-15T02:56:41.718+00:00,fine,settled,0.7867,0.2133,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,48.0,2026-09-15T02:56:46.718+00:00,fine,settled,0.8415,0.1585,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,53.0,2026-09-15T02:56:51.718+00:00,fine,settled,0.8955,0.1045,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,58.0,2026-09-15T02:56:56.718+00:00,fine,settled,0.9389,0.0611,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,63.0,2026-09-15T02:57:01.718+00:00,fine,settled,0.9549,0.0451,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,67.0,2026-09-15T02:57:05.718+00:00,tap,settled,0.9689,0.0311,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,71.0,2026-09-15T02:57:09.718+00:00,tap,settled,0.9771,0.0229,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,74.0,2026-09-15T02:57:12.718+00:00,tap,settled,0.9809,0.0191,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,77.0,2026-09-15T02:57:15.718+00:00,tap,settled,0.9719,0.0281,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,81.0,2026-09-15T02:57:19.718+00:00,tap,settled,0.9711,0.0289,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,84.0,2026-09-15T02:57:22.718+00:00,tap,settled,0.9805,0.0195,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,87.0,2026-09-15T02:57:25.718+00:00,tap,settled,0.9658,0.0342,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,91.0,2026-09-15T02:57:29.718+00:00,tap,settled,0.9618,0.0382,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,94.0,2026-09-15T02:57:32.718+00:00,tap,settled,0.9624,0.0376,,0.0,0,18,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,97.0,2026-09-15T02:57:35.718+00:00,tap,settled,0.9717,0.0283,,0.0,0,20,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,100.0,2026-09-15T02:57:38.718+00:00,tap,settled,0.9806,0.0194,,0.0,0,22,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,103.0,2026-09-15T02:57:41.718+00:00,tap,settled,0.9786,0.0214,,0.0,0,24,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,107.0,2026-09-15T02:57:45.718+00:00,tap,settled,0.9870,0.0130,,0.0,0,26,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,110.0,2026-09-15T02:57:48.718+00:00,tap,settled,0.9794,0.0206,,0.0,0,28,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,113.0,2026-09-15T02:57:51.718+00:00,tap,settled,0.9767,0.0233,,0.0,0,30,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.8,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,117.0,2026-09-15T02:57:55.718+00:00,tap,settled,0.9731,0.0269,,0.0,0,32,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,122.0,2026-09-15T02:58:00.718+00:00,tap,settled,0.9784,0.0216,,0.0,0,34,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,126.0,2026-09-15T02:58:04.718+00:00,tap,settled,0.9721,0.0279,,0.0,0,36,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,129.0,2026-09-15T02:58:07.718+00:00,tap,settled,0.9834,0.0166,,0.0,0,38,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,132.0,2026-09-15T02:58:10.718+00:00,tap,settled,0.9748,0.0252,,0.0,0,40,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,135.0,2026-09-15T02:58:13.718+00:00,tap,settled,0.9798,0.0202,,0.0,0,42,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,139.0,2026-09-15T02:58:17.718+00:00,tap,settled,0.9849,0.0151,,0.0,0,44,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,142.0,2026-09-15T02:58:20.718+00:00,tap,settled,0.9812,0.0188,,0.0,0,46,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,145.0,2026-09-15T02:58:23.718+00:00,tap,settled,0.9812,0.0188,,0.0,0,48,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,148.0,2026-09-15T02:58:26.718+00:00,tap,settled,0.9693,0.0307,,0.0,0,50,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,154.0,2026-09-15T02:58:32.718+00:00,tap,settled,0.9664,0.0336,,0.0,0,52,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,157.0,2026-09-15T02:58:35.718+00:00,tap,settled,0.9878,0.0122,,0.0,0,54,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,161.0,2026-09-15T02:58:39.718+00:00,tap,settled,0.9931,0.0069,,0.0,0,56,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,164.0,2026-09-15T02:58:42.718+00:00,tap,settled,0.9923,0.0077,,0.0,0,58,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,167.0,2026-09-15T02:58:45.718+00:00,tap,settled,0.9886,0.0114,,0.0,0,60,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,170.0,2026-09-15T02:58:48.718+00:00,tap,settled,0.9898,0.0102,,0.0,0,62,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,174.0,2026-09-15T02:58:52.718+00:00,tap,settled,0.9899,0.0101,,0.0,0,64,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,177.0,2026-09-15T02:58:55.718+00:00,tap,settled,0.9995,0.0005,,0.0,0,66,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",18.3,32.9,1.7
+silicon-110-200,silicon-110-200_20260915_G0_1g,three_phase,1,177.0,2026-09-15T02:58:55.718+00:00,final,final,0.9995,0.0005,,,0,66,dose result,18.3,32.9,1.7

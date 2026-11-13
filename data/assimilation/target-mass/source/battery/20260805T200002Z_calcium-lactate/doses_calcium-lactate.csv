@@ -1,0 +1,4 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms
+calcium-lactate,0,1.0,0.9846,-0.0154,stalled,265.0,4.89,166,bulk:13;fine:16;tap:83,680541
+calcium-lactate,1,1.0,0.9654,-0.0346,stalled,263.0,5.81,164,bulk:15;fine:16;tap:82,943622
+calcium-lactate,2,1.0,0.9705,-0.0295,stalled,215.0,5.81,114,bulk:15;fine:16;tap:57,1158400

@@ -1,0 +1,7 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,9.0,2026-09-10T17:12:36.073+00:00,fine,settled,0.0002,0.1998,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",20.6,34.0,4.2
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,15.0,2026-09-10T17:12:42.073+00:00,fine,settled,0.0003,0.1997,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",20.6,34.0,4.2
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,20.0,2026-09-10T17:12:47.073+00:00,fine,settled,0.0003,0.1997,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",20.6,34.0,4.2
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,25.0,2026-09-10T17:12:52.073+00:00,fine,settled,0.0004,0.1996,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",20.6,34.0,4.2
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,31.0,2026-09-10T17:12:58.073+00:00,fine,settled,0.0006,0.1994,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",20.6,34.0,4.2
+barium-chloride,barium-chloride_20260910_H4_0p2g,three_phase,0.2,31.0,2026-09-10T17:12:58.073+00:00,final,final,0.0006,0.1994,,,0,0,dose result,20.6,34.0,4.2

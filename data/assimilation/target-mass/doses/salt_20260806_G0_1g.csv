@@ -1,0 +1,96 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+salt,salt_20260806_G0_1g,three_phase,1,2.0,2026-08-06T14:58:15.261+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,2.0,2026-08-06T14:58:15.261+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,2.0,2026-08-06T14:58:15.261+00:00,bulk,poll,0.0000,1.0000,1,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,3.0,2026-08-06T14:58:16.261+00:00,bulk,poll,0.0296,0.9704,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,3.0,2026-08-06T14:58:16.261+00:00,bulk,poll,0.0843,0.9157,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,3.0,2026-08-06T14:58:16.261+00:00,bulk,poll,0.1129,0.8871,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,3.0,2026-08-06T14:58:16.261+00:00,bulk,poll,0.1201,0.8799,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,4.0,2026-08-06T14:58:17.261+00:00,bulk,poll,0.1578,0.8422,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,4.0,2026-08-06T14:58:17.261+00:00,bulk,poll,0.2125,0.7875,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,4.0,2026-08-06T14:58:17.261+00:00,bulk,poll,0.2314,0.7686,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,5.0,2026-08-06T14:58:18.261+00:00,bulk,poll,0.2384,0.7616,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,5.0,2026-08-06T14:58:18.261+00:00,bulk,poll,0.2672,0.7328,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,5.0,2026-08-06T14:58:18.261+00:00,bulk,poll,0.3143,0.6857,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,5.0,2026-08-06T14:58:18.261+00:00,bulk,poll,0.3293,0.6707,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,6.0,2026-08-06T14:58:19.261+00:00,bulk,poll,0.3429,0.6571,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,6.0,2026-08-06T14:58:19.261+00:00,bulk,poll,0.3900,0.6100,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,8.0,2026-08-06T14:58:21.261+00:00,bulk_settled,settled,0.4763,0.5237,,45.0,0,0,"auger halted, settling",22.3,22.7,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,13.0,2026-08-06T14:58:26.261+00:00,fine,settled,0.5051,0.4949,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,17.0,2026-08-06T14:58:30.261+00:00,fine,settled,0.5271,0.4729,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,21.0,2026-08-06T14:58:34.261+00:00,fine,settled,0.5364,0.4636,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,25.0,2026-08-06T14:58:38.261+00:00,fine,settled,0.5438,0.4562,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,29.0,2026-08-06T14:58:42.261+00:00,fine,settled,0.5459,0.4541,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,33.0,2026-08-06T14:58:46.261+00:00,fine,settled,0.5460,0.4540,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,37.0,2026-08-06T14:58:50.261+00:00,fine,settled,0.5474,0.4526,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,41.0,2026-08-06T14:58:54.261+00:00,fine,settled,0.5611,0.4389,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,45.0,2026-08-06T14:58:58.261+00:00,fine,settled,0.5888,0.4112,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,49.0,2026-08-06T14:59:02.261+00:00,fine,settled,0.6087,0.3913,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,53.0,2026-08-06T14:59:06.261+00:00,fine,settled,0.6189,0.3811,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,57.0,2026-08-06T14:59:10.261+00:00,fine,settled,0.6244,0.3756,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,61.0,2026-08-06T14:59:14.261+00:00,fine,settled,0.6276,0.3724,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,65.0,2026-08-06T14:59:18.261+00:00,fine,settled,0.6281,0.3719,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,69.0,2026-08-06T14:59:22.261+00:00,fine,settled,0.6293,0.3707,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,73.0,2026-08-06T14:59:26.261+00:00,fine,settled,0.6501,0.3499,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,78.0,2026-08-06T14:59:31.261+00:00,fine,settled,0.6756,0.3244,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,82.0,2026-08-06T14:59:35.261+00:00,fine,settled,0.6954,0.3046,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,86.0,2026-08-06T14:59:39.261+00:00,fine,settled,0.7081,0.2919,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.6,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,90.0,2026-08-06T14:59:43.261+00:00,fine,settled,0.7152,0.2848,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,94.0,2026-08-06T14:59:47.261+00:00,fine,settled,0.7175,0.2825,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,98.0,2026-08-06T14:59:51.261+00:00,fine,settled,0.7177,0.2823,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,102.0,2026-08-06T14:59:55.261+00:00,fine,settled,0.7208,0.2792,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,106.0,2026-08-06T14:59:59.261+00:00,fine,settled,0.7365,0.2635,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,110.0,2026-08-06T15:00:03.261+00:00,fine,settled,0.7617,0.2383,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,114.0,2026-08-06T15:00:07.261+00:00,fine,settled,0.7844,0.2156,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,118.0,2026-08-06T15:00:11.261+00:00,fine,settled,0.7951,0.2049,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,122.0,2026-08-06T15:00:15.261+00:00,fine,settled,0.8027,0.1973,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,126.0,2026-08-06T15:00:19.261+00:00,fine,settled,0.8048,0.1952,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,130.0,2026-08-06T15:00:23.261+00:00,fine,settled,0.8048,0.1952,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,134.0,2026-08-06T15:00:27.261+00:00,fine,settled,0.8078,0.1922,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,138.0,2026-08-06T15:00:31.261+00:00,fine,settled,0.8301,0.1699,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,142.0,2026-08-06T15:00:35.261+00:00,fine,settled,0.8577,0.1423,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,146.0,2026-08-06T15:00:39.261+00:00,fine,settled,0.8804,0.1196,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.3,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,150.0,2026-08-06T15:00:43.261+00:00,fine,settled,0.8899,0.1101,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,154.0,2026-08-06T15:00:47.261+00:00,fine,settled,0.8953,0.1047,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,158.0,2026-08-06T15:00:51.261+00:00,fine,settled,0.8975,0.1025,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,162.0,2026-08-06T15:00:55.261+00:00,fine,settled,0.8977,0.1023,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,166.0,2026-08-06T15:00:59.261+00:00,fine,settled,0.9035,0.0965,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.5,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,170.0,2026-08-06T15:01:03.261+00:00,fine,settled,0.9174,0.0826,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,174.0,2026-08-06T15:01:07.261+00:00,fine,settled,0.9483,0.0517,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,178.0,2026-08-06T15:01:11.261+00:00,fine,settled,0.9706,0.0294,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,182.0,2026-08-06T15:01:15.261+00:00,tap,settled,0.9722,0.0278,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,185.0,2026-08-06T15:01:18.261+00:00,tap,settled,0.9732,0.0268,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,188.0,2026-08-06T15:01:21.261+00:00,tap,settled,0.9742,0.0258,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.1
+salt,salt_20260806_G0_1g,three_phase,1,191.0,2026-08-06T15:01:24.261+00:00,tap,settled,0.9757,0.0243,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,195.0,2026-08-06T15:01:28.261+00:00,tap,settled,0.9766,0.0234,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,197.0,2026-08-06T15:01:30.261+00:00,tap,settled,0.9767,0.0233,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,199.0,2026-08-06T15:01:32.261+00:00,tap,settled,0.9774,0.0226,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,201.0,2026-08-06T15:01:34.261+00:00,tap,settled,0.9781,0.0219,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,204.0,2026-08-06T15:01:37.261+00:00,tap,settled,0.9798,0.0202,,0.0,0,18,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,207.0,2026-08-06T15:01:40.261+00:00,tap,settled,0.9811,0.0189,,0.0,0,20,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,209.0,2026-08-06T15:01:42.261+00:00,tap,settled,0.9813,0.0187,,0.0,0,22,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,211.0,2026-08-06T15:01:44.261+00:00,tap,settled,0.9820,0.0180,,0.0,0,24,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,213.0,2026-08-06T15:01:46.261+00:00,tap,settled,0.9827,0.0173,,0.0,0,26,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,215.0,2026-08-06T15:01:48.261+00:00,tap,settled,0.9831,0.0169,,0.0,0,28,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,219.0,2026-08-06T15:01:52.261+00:00,tap,settled,0.9844,0.0156,,0.0,0,30,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,221.0,2026-08-06T15:01:54.261+00:00,tap,settled,0.9845,0.0155,,0.0,0,32,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,223.0,2026-08-06T15:01:56.261+00:00,tap,settled,0.9847,0.0153,,0.0,0,34,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,225.0,2026-08-06T15:01:58.261+00:00,tap,settled,0.9855,0.0145,,0.0,0,36,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,227.0,2026-08-06T15:02:00.261+00:00,tap,settled,0.9861,0.0139,,0.0,0,38,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,230.0,2026-08-06T15:02:03.261+00:00,tap,settled,0.9872,0.0128,,0.0,0,40,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,232.0,2026-08-06T15:02:05.261+00:00,tap,settled,0.9874,0.0126,,0.0,0,42,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,234.0,2026-08-06T15:02:07.261+00:00,tap,settled,0.9882,0.0118,,0.0,0,44,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,236.0,2026-08-06T15:02:09.261+00:00,tap,settled,0.9885,0.0115,,0.0,0,46,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,239.0,2026-08-06T15:02:12.261+00:00,tap,settled,0.9895,0.0105,,0.0,0,48,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,241.0,2026-08-06T15:02:14.261+00:00,tap,settled,0.9896,0.0104,,0.0,0,50,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,243.0,2026-08-06T15:02:16.261+00:00,tap,settled,0.9898,0.0102,,0.0,0,52,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,245.0,2026-08-06T15:02:18.261+00:00,tap,settled,0.9904,0.0096,,0.0,0,54,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.4,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,248.0,2026-08-06T15:02:21.261+00:00,tap,settled,0.9913,0.0087,,0.0,0,56,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,250.0,2026-08-06T15:02:23.261+00:00,tap,settled,0.9914,0.0086,,0.0,0,58,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,253.0,2026-08-06T15:02:26.261+00:00,tap,settled,0.9927,0.0073,,0.0,0,60,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,255.0,2026-08-06T15:02:28.261+00:00,tap,settled,0.9929,0.0071,,0.0,0,62,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,259.0,2026-08-06T15:02:32.261+00:00,tap,settled,0.9940,0.0060,,0.0,0,64,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,261.0,2026-08-06T15:02:34.261+00:00,tap,settled,0.9941,0.0059,,0.0,0,66,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,263.0,2026-08-06T15:02:36.261+00:00,tap,settled,0.9949,0.0051,,0.0,0,68,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,265.0,2026-08-06T15:02:38.261+00:00,tap,settled,0.9953,0.0047,,0.0,0,70,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",22.4,22.3,-0.2
+salt,salt_20260806_G0_1g,three_phase,1,265.0,2026-08-06T15:02:38.261+00:00,final,final,0.9953,0.0047,,,0,70,dose result,22.4,22.3,-0.2

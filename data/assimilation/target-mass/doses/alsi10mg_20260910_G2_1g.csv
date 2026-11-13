@@ -1,0 +1,62 @@
+powder_id,dose_id,controller,target_g,t_s,utc,phase,read_type,mass_g,to_go_g,stable,tilt_setting_deg,auger_rpm_cmd,taps_cum,actuation,outdoor_temp_c,outdoor_rh_pct,outdoor_dewpoint_c
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,5.0,2026-09-10T19:46:53.842+00:00,bulk,poll,-0.0151,1.0151,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,5.0,2026-09-10T19:46:53.842+00:00,bulk,poll,-0.0109,1.0109,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,6.0,2026-09-10T19:46:54.842+00:00,bulk,poll,0.0268,0.9732,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,6.0,2026-09-10T19:46:54.842+00:00,bulk,poll,0.1218,0.8782,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,6.0,2026-09-10T19:46:54.842+00:00,bulk,poll,0.2317,0.7683,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,7.0,2026-09-10T19:46:55.842+00:00,bulk,poll,0.2757,0.7243,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,7.0,2026-09-10T19:46:55.842+00:00,bulk,poll,0.3677,0.6323,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,7.0,2026-09-10T19:46:55.842+00:00,bulk,poll,0.4970,0.5030,0,45.0,55,0,"CONTINUOUS @ 55 auger rpm (poll 250 ms, anticipation 0.1200 g)",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,9.0,2026-09-10T19:46:57.842+00:00,bulk_settled,settled,0.7167,0.2833,,45.0,0,0,"auger halted, settling",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,15.0,2026-09-10T19:47:03.842+00:00,fine,settled,0.7728,0.2272,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,20.0,2026-09-10T19:47:08.842+00:00,fine,settled,0.8200,0.1800,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.8,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,26.0,2026-09-10T19:47:14.842+00:00,fine,settled,0.8677,0.1323,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.7,6.8
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,31.0,2026-09-10T19:47:19.842+00:00,fine,settled,0.9321,0.0679,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,36.0,2026-09-10T19:47:24.842+00:00,fine,settled,0.9577,0.0423,,22.5,30,0,"45 auger deg/cycle @ 30 rpm, 0 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,40.0,2026-09-10T19:47:28.842+00:00,tap,settled,0.9505,0.0495,,0.0,0,2,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,43.0,2026-09-10T19:47:31.842+00:00,tap,settled,0.9766,0.0234,,0.0,0,4,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,47.0,2026-09-10T19:47:35.842+00:00,tap,settled,0.9403,0.0597,,0.0,0,6,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,50.0,2026-09-10T19:47:38.842+00:00,tap,settled,0.9490,0.0510,,0.0,0,8,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.2,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,53.0,2026-09-10T19:47:41.842+00:00,tap,settled,0.9508,0.0492,,0.0,0,10,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,56.0,2026-09-10T19:47:44.842+00:00,tap,settled,0.9574,0.0426,,0.0,0,12,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,60.0,2026-09-10T19:47:48.842+00:00,tap,settled,0.9495,0.0505,,0.0,0,14,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,63.0,2026-09-10T19:47:51.842+00:00,tap,settled,0.9461,0.0539,,0.0,0,16,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,66.0,2026-09-10T19:47:54.842+00:00,tap,settled,0.9406,0.0594,,0.0,0,18,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,72.0,2026-09-10T19:48:00.842+00:00,tap,settled,0.9461,0.0539,,0.0,0,20,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,75.0,2026-09-10T19:48:03.842+00:00,tap,settled,0.9472,0.0528,,0.0,0,22,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,78.0,2026-09-10T19:48:06.842+00:00,tap,settled,0.9513,0.0487,,0.0,0,24,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,81.0,2026-09-10T19:48:09.842+00:00,tap,settled,0.9615,0.0385,,0.0,0,26,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,85.0,2026-09-10T19:48:13.842+00:00,tap,settled,0.9433,0.0567,,0.0,0,28,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.7,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,88.0,2026-09-10T19:48:16.842+00:00,tap,settled,0.9500,0.0500,,0.0,0,30,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,91.0,2026-09-10T19:48:19.842+00:00,tap,settled,0.9365,0.0635,,0.0,0,32,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,94.0,2026-09-10T19:48:22.842+00:00,tap,settled,0.9386,0.0614,,0.0,0,34,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,98.0,2026-09-10T19:48:26.842+00:00,tap,settled,0.9594,0.0406,,0.0,0,36,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,101.0,2026-09-10T19:48:29.842+00:00,tap,settled,0.9579,0.0421,,0.0,0,38,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,104.0,2026-09-10T19:48:32.842+00:00,tap,settled,0.9546,0.0454,,0.0,0,40,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,107.0,2026-09-10T19:48:35.842+00:00,tap,settled,0.9528,0.0472,,0.0,0,42,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,113.0,2026-09-10T19:48:41.842+00:00,tap,settled,0.9407,0.0593,,0.0,0,44,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,116.0,2026-09-10T19:48:44.842+00:00,tap,settled,0.9453,0.0547,,0.0,0,46,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,119.0,2026-09-10T19:48:47.842+00:00,tap,settled,0.9439,0.0561,,0.0,0,48,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,123.0,2026-09-10T19:48:51.842+00:00,tap,settled,0.9615,0.0385,,0.0,0,50,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,126.0,2026-09-10T19:48:54.842+00:00,tap,settled,0.9555,0.0445,,0.0,0,52,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,129.0,2026-09-10T19:48:57.842+00:00,tap,settled,0.9556,0.0444,,0.0,0,54,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,132.0,2026-09-10T19:49:00.842+00:00,tap,settled,0.9479,0.0521,,0.0,0,56,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,138.0,2026-09-10T19:49:06.842+00:00,tap,settled,0.9532,0.0468,,0.0,0,58,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,141.0,2026-09-10T19:49:09.842+00:00,tap,settled,0.9578,0.0422,,0.0,0,60,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,144.0,2026-09-10T19:49:12.842+00:00,tap,settled,0.9548,0.0452,,0.0,0,62,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,147.0,2026-09-10T19:49:15.842+00:00,tap,settled,0.9749,0.0251,,0.0,0,64,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,151.0,2026-09-10T19:49:19.842+00:00,tap,settled,0.9521,0.0479,,0.0,0,66,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.6,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,154.0,2026-09-10T19:49:22.842+00:00,tap,settled,0.9481,0.0519,,0.0,0,68,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,157.0,2026-09-10T19:49:25.842+00:00,tap,settled,0.9618,0.0382,,0.0,0,70,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,160.0,2026-09-10T19:49:28.842+00:00,tap,settled,0.9695,0.0305,,0.0,0,72,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,164.0,2026-09-10T19:49:32.842+00:00,tap,settled,0.9644,0.0356,,0.0,0,74,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,167.0,2026-09-10T19:49:35.842+00:00,tap,settled,0.9799,0.0201,,0.0,0,76,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,170.0,2026-09-10T19:49:38.842+00:00,tap,settled,0.9507,0.0493,,0.0,0,78,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,174.0,2026-09-10T19:49:42.842+00:00,tap,settled,0.9692,0.0308,,0.0,0,80,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,177.0,2026-09-10T19:49:45.842+00:00,tap,settled,0.9615,0.0385,,0.0,0,82,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,180.0,2026-09-10T19:49:48.842+00:00,tap,settled,0.9639,0.0361,,0.0,0,84,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,183.0,2026-09-10T19:49:51.842+00:00,tap,settled,0.9395,0.0605,,0.0,0,86,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,186.0,2026-09-10T19:49:54.842+00:00,tap,settled,0.9778,0.0222,,0.0,0,88,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,189.0,2026-09-10T19:49:57.842+00:00,tap,settled,0.9658,0.0342,,0.0,0,90,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,193.0,2026-09-10T19:50:01.842+00:00,tap,settled,0.9989,0.0011,,0.0,0,92,"0 auger deg/cycle @ 0 rpm, 2 taps/cycle",25.3,30.5,6.7
+alsi10mg,alsi10mg_20260910_G2_1g,three_phase,1,193.0,2026-09-10T19:50:01.842+00:00,final,final,0.9989,0.0011,,,0,92,dose result,25.3,30.5,6.7

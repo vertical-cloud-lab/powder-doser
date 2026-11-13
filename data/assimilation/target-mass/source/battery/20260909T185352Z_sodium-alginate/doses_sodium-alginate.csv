@@ -1,0 +1,7 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+sodium-alginate,0,0.05,0.0222,-0.0278,stalled,561.0,5.14,196,bulk:0;fine:40;tap:98,561661,H
+sodium-alginate,1,0.05,0.0387,-0.0113,timeout,902.0,6.75,360,bulk:0;fine:53;tap:180,1463476,H
+sodium-alginate,2,0.05,0.0303,-0.0197,stalled,405.0,3.39,142,bulk:1;fine:26;tap:71,1868939,H
+sodium-alginate,3,0.2,0.1333,-0.0667,timeout,905.0,22.04,0,bulk:1;fine:169,2773607,H
+sodium-alginate,4,0.2,0.1479,-0.0521,timeout,903.0,17.49,84,bulk:1;fine:139;tap:42,3676556,H
+sodium-alginate,5,0.2,0.0143,-0.1857,stalled,207.0,4.75,0,bulk:0;fine:38,3883432,H

@@ -1,0 +1,6 @@
+powder_id,n,target_g,dispensed_g,error_g,status,elapsed_s,auger_rev,taps,phase_cycles,t_ms,block
+calcium-lactate,0,0.05,0.0487,-0.0013,ok,47.0,0.5,12,bulk:0;fine:4;tap:6,46825,H
+calcium-lactate,1,0.05,0.071,0.021,overshoot,12.0,0.92,2,bulk:1;fine:0;tap:1,59637,H
+calcium-lactate,2,0.05,0.0621,0.0121,overshoot,9.0,0.0,0,bulk:1;fine:0;tap:0,67780,H
+calcium-lactate,3,0.2,0.1951,-0.0049,ok,220.0,0.5,116,bulk:1;fine:4;tap:58,287826,H
+calcium-lactate,4,0.2,0.191,-0.009,cycle-budget,707.0,0.6,400,bulk:1;fine:4;tap:200,995211,H
