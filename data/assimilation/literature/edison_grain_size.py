@@ -18,7 +18,7 @@ Run from the repo root with ``EDISON_PLATFORM_API_KEY`` set. ``edison-client``
     python -m venv /tmp/edison-venv && /tmp/edison-venv/bin/pip install edison-client
     /tmp/edison-venv/bin/python data/assimilation/literature/edison_grain_size.py submit
     /tmp/edison-venv/bin/python data/assimilation/literature/edison_grain_size.py wait
-    /tmp/edison-venv/bin/python data/assimilation/literature/edison_grain_size.py fetch
+    /tmp/edison-venv/bin/python data/assimilation/literature/edison_grain_size.py fetch [key ...]
 
 ``submit`` writes ``_task_id.json`` (the literature review) and
 ``_task_id_precedent.json``. ``wait`` blocks, polling every 240 s, until both
@@ -157,9 +157,11 @@ def _find(obj, key):
     return None
 
 
-def fetch() -> None:
+def fetch(keys: list[str] | None = None) -> None:
     c = client()
     for key, tid in task_ids().items():
+        if keys and key not in keys:
+            continue
         verbose = c.get_task(task_id=tid, verbose=True)
         data = verbose.model_dump(mode="json")
         (OUT / f"{key}.task.json").write_text(json.dumps(data, indent=1, default=str) + "\n")
@@ -212,8 +214,12 @@ def fetch() -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("cmd", choices=["submit", "wait", "fetch"])
+    ap.add_argument("keys", nargs="*", help="fetch only these tasks (default: all)")
     args = ap.parse_args()
-    {"submit": submit, "wait": wait, "fetch": fetch}[args.cmd]()
+    if args.cmd == "fetch":
+        fetch(args.keys)
+    else:
+        {"submit": submit, "wait": wait}[args.cmd]()
 
 
 if __name__ == "__main__":

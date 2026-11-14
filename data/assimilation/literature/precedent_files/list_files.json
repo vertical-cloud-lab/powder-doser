@@ -1,0 +1,85 @@
+{
+ "data": [
+  {
+   "id": 30794913,
+   "data_storage_id": "97d9990c-ac63-43cc-b215-c0629b78e33d",
+   "operation": "create",
+   "actor_id": "50266324-3372-4acb-921c-37547a9512d4",
+   "actor_type": "trajectory",
+   "timestamp": "2026-11-14T22:10:35.317799Z",
+   "data_storage": {
+    "name": "pqa:docs:50266324-3372-4acb-921c-37547a9512d4",
+    "description": null,
+    "is_collection": false,
+    "status": "active",
+    "content": null,
+    "embedding": null,
+    "user_id": "UxTMERa8SbeYkryBDMlwEgoJNF53",
+    "group_id": null,
+    "created_by": null,
+    "label": "7d5134554818",
+    "parent_id": null,
+    "dataset_id": "f7271c38-dbe6-4f10-9891-910db74f9625",
+    "project_id": null,
+    "share_status": "private",
+    "short_alias": null,
+    "id": "97d9990c-ac63-43cc-b215-c0629b78e33d",
+    "path": "7d5134554818",
+    "created_at": "2026-11-14T22:10:35.225802Z",
+    "modified_at": "2026-11-14T22:10:39.700454Z",
+    "tags": null,
+    "file_path": "/tmp/tmpzdhofwfr.pkl",
+    "metadata": {
+     "size": 173740907
+    },
+    "trajectory_id": null,
+    "project_name": null,
+    "project_description": null,
+    "is_kosmos_project": null
+   }
+  },
+  {
+   "id": 30794908,
+   "data_storage_id": "56116f97-0281-4c9a-948e-cf4ae495d76d",
+   "operation": "create",
+   "actor_id": "50266324-3372-4acb-921c-37547a9512d4",
+   "actor_type": "trajectory",
+   "timestamp": "2026-11-14T22:06:34.444599Z",
+   "data_storage": {
+    "name": "Feeder Gravimetry and Particle Size",
+    "description": "The closest published studies use particle size as an independently measured input or infer feeder phenomena such as density change and screw layering. None of the listed studies reconstructs particle size or PSD from gravimetric feeder data alone.",
+    "is_collection": false,
+    "status": "active",
+    "content": null,
+    "embedding": null,
+    "user_id": "UxTMERa8SbeYkryBDMlwEgoJNF53",
+    "group_id": null,
+    "created_by": null,
+    "label": "b6812b54e4cb",
+    "parent_id": null,
+    "dataset_id": "51268977-7de9-48fe-b722-b8c023eb9c4d",
+    "project_id": null,
+    "share_status": "private",
+    "short_alias": null,
+    "id": "56116f97-0281-4c9a-948e-cf4ae495d76d",
+    "path": "b6812b54e4cb",
+    "created_at": "2026-11-14T22:06:34.392447Z",
+    "modified_at": "2026-11-14T22:06:34.444599Z",
+    "tags": null,
+    "file_path": null,
+    "metadata": {
+     "session_id": "50266324-3372-4acb-921c-37547a9512d4",
+     "artifact_id": "86508ede-8d39-49e0-97eb-81dfc799c23d",
+     "state_artifact_id": "artifact-00",
+     "artifact_type": "table",
+     "artifact_title": "Feeder Gravimetry and Particle Size",
+     "artifact_caption": "The closest published studies use particle size as an independently measured input or infer feeder phenomena such as density change and screw layering. None of the listed studies reconstructs particle size or PSD from gravimetric feeder data alone."
+    },
+    "trajectory_id": null,
+    "project_name": null,
+    "project_description": null,
+    "is_kosmos_project": null
+   }
+  }
+ ]
+}

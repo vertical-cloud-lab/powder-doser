@@ -1,0 +1,3 @@
+# PaperQA document indexes (pqa:docs) hold full text of copyrighted papers; see README.md
+*.pkl
+*.pkl.gz
