@@ -1,0 +1,1752 @@
+{
+ "lead_g": 0.0385,
+ "safety_g": 0.01,
+ "fingerprints": {
+  "salt (09-29, 10-06)": {
+   "q20": 0.05742,
+   "q100": 0.113525,
+   "tau": 0.8338,
+   "tap15": 1.2419240953221535,
+   "min_tilt": 0.0,
+   "source": "60 salt doses",
+   "estimated": []
+  },
+  "salt (10-13, 10-15)": {
+   "q20": 0.01181,
+   "q100": 0.11851500000000001,
+   "tau": 0.8338,
+   "tap15": 0.4294314381270902,
+   "min_tilt": 0.0,
+   "source": "35 salt doses",
+   "estimated": []
+  },
+  "AlSi10Mg": {
+   "q20": 0.08240833333333333,
+   "q100": 0.16292939814814814,
+   "q100_steady_8g": 0.26512,
+   "tau": 0.7331774290887145,
+   "tap15": 0.7051282051282052,
+   "min_tilt": 10.0,
+   "source": "1 production dose + #116 feed ratio 1.44",
+   "estimated": [
+    "q20",
+    "q100"
+   ]
+  },
+  "Al 4047 (clogged)": {
+   "q100": 0.01488,
+   "q20": 0.007526180136533804,
+   "tau": 0.8338,
+   "tap15": 0.058333333333333334,
+   "min_tilt": 35.0,
+   "source": "3 production doses",
+   "estimated": [
+    "q20",
+    "tau"
+   ]
+  }
+ },
+ "boxes": {
+  "salt (09-29, 10-06)": {
+   "variant": "three-stage-margin",
+   "space": [
+    {
+     "name": "bulk_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "trim_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "bulk_tilt_deg",
+     "type": "range",
+     "bounds": [
+      15.0,
+      40.0
+     ]
+    },
+    {
+     "name": "trickle_tilt_deg",
+     "type": "range",
+     "bounds": [
+      10.0,
+      30.0
+     ]
+    },
+    {
+     "name": "tap_tilt_deg",
+     "type": "range",
+     "bounds": [
+      0.0,
+      15.0
+     ]
+    },
+    {
+     "name": "bulk_rpm",
+     "type": "range",
+     "bounds": [
+      20.0,
+      100.0
+     ]
+    },
+    {
+     "name": "trickle_start_remaining_g",
+     "type": "range",
+     "bounds": [
+      0.05,
+      0.3
+     ]
+    },
+    {
+     "name": "tolerance_g",
+     "type": "range",
+     "bounds": [
+      0.003,
+      0.015
+     ]
+    },
+    {
+     "name": "cutoff_margin_g",
+     "type": "range",
+     "bounds": [
+      0.0,
+      0.035
+     ]
+    }
+   ],
+   "constraints": [
+    "0.000584754*bulk_rpm - trickle_start_remaining_g <= -0.00768171"
+   ],
+   "rules": [
+    [
+     "R1",
+     "threshold >= 0.019 g at 20 rpm, 0.066 g at 100 rpm"
+    ]
+   ],
+   "volume_fraction": 0.9888,
+   "context": {
+    "ctx_log10_feed": -1.2409,
+    "ctx_log10_tap": 0.0941
+   }
+  },
+  "salt (10-13, 10-15)": {
+   "variant": "three-stage-margin",
+   "space": [
+    {
+     "name": "bulk_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "trim_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "bulk_tilt_deg",
+     "type": "range",
+     "bounds": [
+      15.0,
+      40.0
+     ]
+    },
+    {
+     "name": "trickle_tilt_deg",
+     "type": "range",
+     "bounds": [
+      10.0,
+      30.0
+     ]
+    },
+    {
+     "name": "tap_tilt_deg",
+     "type": "range",
+     "bounds": [
+      0.0,
+      15.0
+     ]
+    },
+    {
+     "name": "bulk_rpm",
+     "type": "range",
+     "bounds": [
+      20.0,
+      100.0
+     ]
+    },
+    {
+     "name": "trickle_start_remaining_g",
+     "type": "range",
+     "bounds": [
+      0.05,
+      0.3
+     ]
+    },
+    {
+     "name": "tolerance_g",
+     "type": "range",
+     "bounds": [
+      0.003,
+      0.015
+     ]
+    },
+    {
+     "name": "cutoff_margin_g",
+     "type": "range",
+     "bounds": [
+      0.0,
+      0.035
+     ]
+    }
+   ],
+   "constraints": [
+    "0.00111213*bulk_rpm - trickle_start_remaining_g <= 0.0408955"
+   ],
+   "rules": [
+    [
+     "R1",
+     "threshold >= -0.019 g at 20 rpm, 0.070 g at 100 rpm"
+    ]
+   ],
+   "volume_fraction": 0.9908,
+   "context": {
+    "ctx_log10_feed": -1.9278,
+    "ctx_log10_tap": -0.3671
+   }
+  },
+  "AlSi10Mg": {
+   "variant": "three-stage-margin",
+   "space": [
+    {
+     "name": "bulk_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "trim_tap",
+     "type": "choice",
+     "is_ordered": false,
+     "values": [
+      "off",
+      "2hz"
+     ]
+    },
+    {
+     "name": "bulk_tilt_deg",
+     "type": "range",
+     "bounds": [
+      15.0,
+      40.0
+     ]
+    },
+    {
+     "name": "trickle_tilt_deg",
+     "type": "range",
+     "bounds": [
+      10.0,
+      30.0
+     ]
+    },
+    {
+     "name": "tap_tilt_deg",
+     "type": "range",
+     "bounds": [
+      0.0,
+      15.0
+     ]
+    },
+    {
+     "name": "bulk_rpm",
+     "type": "range",
+     "bounds": [
+      20.0,
+      100.0
+     ]
+    },
+    {
+     "name": "trickle_start_remaining_g",
+     "type": "range",
+     "bounds": [
+      0.05,
+      0.3
+     ]
+    },
+    {
+     "name": "tolerance_g",
+     "type": "range",
+     "bounds": [
+      0.003,
+      0.015
+     ]
+    },
+    {
+     "name": "cutoff_margin_g",
+     "type": "range",
+     "bounds": [
+      0.0,
+      0.035
+     ]
+    }
+   ],
+   "constraints": [
+    "0.000737953*bulk_rpm - trickle_start_remaining_g <= -0.0171609"
+   ],
+   "rules": [
+    [
+     "R1",
+     "threshold >= 0.032 g at 20 rpm, 0.091 g at 100 rpm"
+    ]
+   ],
+   "volume_fraction": 0.9413,
+   "context": {
+    "ctx_log10_feed": -1.084,
+    "ctx_log10_tap": -0.1517
+   }
+  },
+  "Al 4047 (clogged)": {
+   "variant": "bulk-only",
+   "space": null,
+   "constraints": [],
+   "rules": [
+    [
+     "R4",
+     "no feed below 35 deg, above the trickle-tilt box's 30 deg: search a bulk-only or bulk-tap dose instead"
+    ]
+   ],
+   "volume_fraction": 0.0,
+   "context": {
+    "ctx_log10_feed": -2.1234,
+    "ctx_log10_tap": -1.2341
+   }
+  }
+ },
+ "retrospective": {
+  "salt (09-29, 10-06)": {
+   "doses": 42,
+   "overshoots": 8,
+   "excluded": [
+    [
+     "corner-04",
+     "overshoot",
+     14.66,
+     47.6
+    ],
+    [
+     "corner-08",
+     "overshoot",
+     13.99,
+     34.04
+    ],
+    [
+     "corner-11",
+     "overshoot",
+     14.95,
+     62.9
+    ],
+    [
+     "corner-13",
+     "overshoot",
+     15.29,
+     25.24
+    ],
+    [
+     "bo-004",
+     "overshoot",
+     14.24,
+     21.1
+    ]
+   ],
+   "excluded_overshoots": 5,
+   "excluded_feasible": 0,
+   "feasible": 18
+  },
+  "salt (10-13, 10-15)": {
+   "doses": 35,
+   "overshoots": 5,
+   "excluded": [
+    [
+     "corner-04",
+     "overshoot",
+     14.57,
+     29.3
+    ],
+    [
+     "corner-08",
+     "overshoot",
+     14.06,
+     79.7
+    ],
+    [
+     "corner-11",
+     "overshoot",
+     15.19,
+     12.1
+    ],
+    [
+     "corner-13",
+     "cycle-budget",
+     430.79,
+     15.12
+    ]
+   ],
+   "excluded_overshoots": 3,
+   "excluded_feasible": 0,
+   "feasible": 12
+  }
+ },
+ "afterflow_check": [
+  {
+   "label": "baseline-00",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 55.0,
+   "thr": 0.25,
+   "afterflow_g": 0.10126,
+   "afterflow_halt_rate_g": 0.108835914,
+   "afterflow_prior_g": 0.0683431986875,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-00",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.14386,
+   "afterflow_halt_rate_g": 0.037987928000000004,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-01",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.04548,
+   "afterflow_halt_rate_g": 0.047876796,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-02",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0415,
+   "afterflow_halt_rate_g": 0.038913446000000004,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-03",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.02342,
+   "afterflow_halt_rate_g": 0.049961296,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-04",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.12936,
+   "afterflow_halt_rate_g": 0.128922156,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-05",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.12936,
+   "afterflow_halt_rate_g": 0.064877978,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-06",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.02608,
+   "afterflow_halt_rate_g": 0.046450998,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-07",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.13892,
+   "afterflow_halt_rate_g": 0.099122144,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": true,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-08",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.12146,
+   "afterflow_halt_rate_g": 0.132265694,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-09",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.05756,
+   "afterflow_halt_rate_g": 0.041464874,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-10",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.13196,
+   "afterflow_halt_rate_g": 0.091025946,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-11",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.13482,
+   "afterflow_halt_rate_g": 0.111712524,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-12",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.12382,
+   "afterflow_halt_rate_g": 0.108035466,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-13",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.11086,
+   "afterflow_halt_rate_g": 0.12548689999999998,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-14",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.11034,
+   "afterflow_halt_rate_g": 0.08142057,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-15",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.04262,
+   "afterflow_halt_rate_g": 0.025164084,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "center-00",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.08762,
+   "afterflow_halt_rate_g": 0.08737390199999999,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "center-01",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.07202,
+   "afterflow_halt_rate_g": 0.076526164,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "center-02",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.08518,
+   "afterflow_halt_rate_g": 0.085414472,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "center-03",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.08754,
+   "afterflow_halt_rate_g": 0.096754152,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "baseline-01",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 55.0,
+   "thr": 0.25,
+   "afterflow_g": 0.08222,
+   "afterflow_halt_rate_g": 0.073057556,
+   "afterflow_prior_g": 0.0683431986875,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "rebaseline-00",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 55.0,
+   "thr": 0.25,
+   "afterflow_g": 0.08608,
+   "afterflow_halt_rate_g": 0.067295998,
+   "afterflow_prior_g": 0.0683431986875,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "recenter-00",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.07772,
+   "afterflow_halt_rate_g": 0.081078712,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "recenter-01",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.08328,
+   "afterflow_halt_rate_g": 0.089600148,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "recenter-02",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.08292,
+   "afterflow_halt_rate_g": 0.089650176,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "recenter-03",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 60.0,
+   "thr": 0.175,
+   "afterflow_g": 0.07146,
+   "afterflow_halt_rate_g": 0.086556778,
+   "afterflow_prior_g": 0.0712669705,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "rebaseline-01",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 55.0,
+   "thr": 0.25,
+   "afterflow_g": 0.08966,
+   "afterflow_halt_rate_g": 0.077326612,
+   "afterflow_prior_g": 0.0683431986875,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-000",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 40.28696060180664,
+   "thr": 0.2768485724925995,
+   "afterflow_g": 0.05386,
+   "afterflow_halt_rate_g": 0.062384916,
+   "afterflow_prior_g": 0.05973968471377206,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-001",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 72.51125372946262,
+   "thr": 0.0936645932495594,
+   "afterflow_g": 0.08324,
+   "afterflow_halt_rate_g": 0.081237134,
+   "afterflow_prior_g": 0.07858298069864766,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-002",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.02136,
+   "afterflow_halt_rate_g": 0.052846244,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-003",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.12442,
+   "afterflow_halt_rate_g": 0.07155671599999999,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-004",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.1064,
+   "afterflow_halt_rate_g": 0.12416949599999999,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "bo-005",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.12188,
+   "afterflow_halt_rate_g": 0.085539542,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-006",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.11268,
+   "afterflow_halt_rate_g": 0.040864538,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-007",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0991,
+   "afterflow_halt_rate_g": 0.101706924,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-008",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.13962539674555707,
+   "afterflow_g": 0.1045,
+   "afterflow_halt_rate_g": 0.110787006,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-009",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.09472,
+   "afterflow_halt_rate_g": 0.102907596,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": true,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-010",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.11626,
+   "afterflow_halt_rate_g": 0.092952024,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-011",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.03194,
+   "afterflow_halt_rate_g": 0.062643394,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-012",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1017,
+   "afterflow_halt_rate_g": 0.103924832,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-013",
+   "date": "2026-09-29",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.02352,
+   "afterflow_halt_rate_g": 0.02901624,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "val-bo-005-00",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.16484,
+   "afterflow_halt_rate_g": 0.12166809599999999,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-01",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1337,
+   "afterflow_halt_rate_g": 0.07829382,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-00",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1044,
+   "afterflow_halt_rate_g": 0.096362266,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-01",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1346,
+   "afterflow_halt_rate_g": 0.07513371799999999,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-02",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1017,
+   "afterflow_halt_rate_g": 0.086940326,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-03",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1068,
+   "afterflow_halt_rate_g": 0.0892166,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-04",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.1077,
+   "afterflow_halt_rate_g": 0.08749897200000001,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-05",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.14874,
+   "afterflow_halt_rate_g": 0.075033662,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-06",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.11652,
+   "afterflow_halt_rate_g": 0.091067636,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-bo-005-07",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.14154,
+   "afterflow_halt_rate_g": 0.074116482,
+   "afterflow_prior_g": 0.094657145,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-corner-09-00",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.0313,
+   "afterflow_halt_rate_g": 0.050970193999999996,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "val-corner-09-01",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.06222,
+   "afterflow_halt_rate_g": 0.045750606,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-corner-09-02",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.05518,
+   "afterflow_halt_rate_g": 0.034552672,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-corner-09-03",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.06892,
+   "afterflow_halt_rate_g": 0.04777674,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-corner-09-04",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.06442,
+   "afterflow_halt_rate_g": 0.038179701999999996,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "val-corner-09-05",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.0225,
+   "afterflow_halt_rate_g": 0.057790678,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "val-corner-09-06",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.02592,
+   "afterflow_halt_rate_g": 0.05065335,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "val-corner-09-07",
+   "date": "2026-10-06",
+   "session": "salt (09-29, 10-06)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.0301,
+   "afterflow_halt_rate_g": 0.048618878,
+   "afterflow_prior_g": 0.047876796,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-00",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.05058,
+   "afterflow_halt_rate_g": 0.06761284199999999,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-01",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0807,
+   "afterflow_halt_rate_g": 0.037087424,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-02",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.04104,
+   "afterflow_halt_rate_g": 0.0321013,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-03",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.03732,
+   "afterflow_halt_rate_g": 0.027398668,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-04",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.10496,
+   "afterflow_halt_rate_g": 0.114005474,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-05",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0212,
+   "afterflow_halt_rate_g": 0.057207018000000005,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-06",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.04518,
+   "afterflow_halt_rate_g": 0.027156866,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": true,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-07",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.15302,
+   "afterflow_halt_rate_g": 0.11052019,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": true,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-08",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.142,
+   "afterflow_halt_rate_g": 0.141254058,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-09",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.05742,
+   "afterflow_halt_rate_g": 0.060417148,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-10",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.11642,
+   "afterflow_halt_rate_g": 0.09364407799999999,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-11",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.10066,
+   "afterflow_halt_rate_g": 0.108535746,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": true,
+   "overshoot": true,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-12",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.09266,
+   "afterflow_halt_rate_g": 0.087115424,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "corner-13",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.05,
+   "afterflow_g": 0.0399,
+   "afterflow_halt_rate_g": 0.050703378,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": true,
+   "feasible": false
+  },
+  {
+   "label": "corner-14",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0232,
+   "afterflow_halt_rate_g": 0.019669342,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "corner-15",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0041,
+   "afterflow_halt_rate_g": 0.023187978,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-000",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 40.28696060180664,
+   "thr": 0.2768485724925995,
+   "afterflow_g": 0.01022,
+   "afterflow_halt_rate_g": 0.012406944000000001,
+   "afterflow_prior_g": 0.032408973565511943,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-001",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.01206,
+   "afterflow_halt_rate_g": 0.00212619,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-002",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.01282,
+   "afterflow_halt_rate_g": 0.00591998,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-003",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 67.0379574265854,
+   "thr": 0.3,
+   "afterflow_g": 0.01886,
+   "afterflow_halt_rate_g": 0.025147408,
+   "afterflow_prior_g": 0.06215963623898155,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-004",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 45.05186360571181,
+   "thr": 0.3,
+   "afterflow_g": 0.01,
+   "afterflow_halt_rate_g": 0.009321884,
+   "afterflow_prior_g": 0.03770817878277985,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-005",
+   "date": "2026-10-13",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.22811658441197274,
+   "afterflow_g": 0.00364,
+   "afterflow_halt_rate_g": 0.004485844,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-006",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0131,
+   "afterflow_halt_rate_g": 0.010230725999999999,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-007",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0234,
+   "afterflow_halt_rate_g": 0.030692178,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-008",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0082,
+   "afterflow_halt_rate_g": 0.00275154,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-009",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.00752,
+   "afterflow_halt_rate_g": 0.009847178,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-010",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.00922,
+   "afterflow_halt_rate_g": 0.007720987999999999,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-011",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0202,
+   "afterflow_halt_rate_g": 0.00717068,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-012",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.00596,
+   "afterflow_halt_rate_g": 0.013115674,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-013",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 55.148419631645574,
+   "thr": 0.05,
+   "afterflow_g": 0.0115,
+   "afterflow_halt_rate_g": 0.015233526,
+   "afterflow_prior_g": 0.048936890537293186,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-014",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.16492799022213994,
+   "afterflow_g": 0.00592,
+   "afterflow_halt_rate_g": 0.0070205960000000005,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": true
+  },
+  {
+   "label": "bo-015",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.0085,
+   "afterflow_halt_rate_g": 0.00783772,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-016",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.05,
+   "afterflow_g": 0.01,
+   "afterflow_halt_rate_g": 0.0035019599999999997,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-017",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 100.0,
+   "thr": 0.3,
+   "afterflow_g": 0.00894,
+   "afterflow_halt_rate_g": 0.016125692,
+   "afterflow_prior_g": 0.09881780700000001,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  },
+  {
+   "label": "bo-018",
+   "date": "2026-10-15",
+   "session": "salt (10-13, 10-15)",
+   "rpm": 20.0,
+   "thr": 0.3,
+   "afterflow_g": 0.00086,
+   "afterflow_halt_rate_g": 0.0006753779999999999,
+   "afterflow_prior_g": 0.009847178,
+   "bulk_overshoot": false,
+   "overshoot": false,
+   "excluded": false,
+   "feasible": false
+  }
+ ]
+}

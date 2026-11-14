@@ -1,0 +1,502 @@
+--- session 2026-10-13T19:54:04.917326+00:00 ---
+>> 
+>> s
+firmware: trickle_tap/2026-10-09
+heap: 106720 bytes free, 98720 used
+stepper: 60 auger rpm (max ~109), 1/8 microsteps; plate at 15.0 deg; scale UART0 @ 19200
+trickle parameters ('set <key> <value>' to change):
+  bulk_anticipation_g = 0.05
+  bulk_boost_s = 3.0
+  bulk_enabled = True
+  bulk_halt_kf = False
+  bulk_max_passes = 8
+  bulk_min_rpm = 20.0
+  bulk_only = False
+  bulk_poll_ms = 250
+  bulk_rpm = 100.0
+  bulk_settle_ms = 1500
+  bulk_stop_margin_g = 0.01
+  bulk_tap = False
+  bulk_taper_start_g = 0.1
+  bulk_tilt_deg = 15.0
+  cutoff_margin_g = 0.0
+  dose_timeout_s = 600
+  ff_prior_g_per_rev = 0.35
+  final_settle_ms = 2000
+  goal_mass_g = 0.75
+  k_sigma = 1.0
+  kf_q_var = 0.0002
+  log_max_rows = 1200
+  log_min_free_bytes = 24000
+  log_to_flash = False
+  max_poll_misses = 10
+  noisy_sd_g = 0.008
+  overshoot_abort_g = 0.1
+  post_trickle_settle_ms = 1200
+  print_every_n_polls = 2
+  quiet_sd_g = 0.0005
+  rate_tau_s = 0.5
+  stall_bail_s = 8.0
+  tap_burst_above_g = 0.0
+  tap_burst_taps = 2
+  tap_cadence_off_ms = 440
+  tap_cadence_on_ms = 60
+  tap_max_cycles = 120
+  tap_max_nudges = 20
+  tap_nudge_deg = 5.0
+  tap_settle_ms = 1500
+  tap_tilt_deg = 15.0
+  taps_per_cycle = 1
+  tau_afterflow_s = 0.3
+  tau_bal_s = 0.7
+  tolerance_g = 0.003
+  trickle_dt_s = 0.25
+  trickle_enabled = True
+  trickle_integ_clamp = 0.5
+  trickle_ki = 120.0
+  trickle_kp = 250.0
+  trickle_max_rate_gps = 0.05
+  trickle_min_rate_gps = 0.003
+  trickle_rpm_cap = 45.0
+  trickle_start_remaining_g = 0.3
+  trickle_tap = False
+  trickle_tilt_deg = 30.0
+>> set bulk_anticipation_g 0.05
+[set] bulk_anticipation_g = 0.05 (was 0.05)
+>> set bulk_boost_s 3
+[set] bulk_boost_s = 3.0 (was 3.0)
+>> set bulk_enabled 1
+[set] bulk_enabled = True (was True)
+>> set bulk_halt_kf 0
+[set] bulk_halt_kf = False (was False)
+>> set bulk_max_passes 8
+[set] bulk_max_passes = 8 (was 8)
+>> set bulk_min_rpm 20
+[set] bulk_min_rpm = 20.0 (was 20.0)
+>> set bulk_only 0
+[set] bulk_only = False (was False)
+>> set bulk_poll_ms 250
+[set] bulk_poll_ms = 250 (was 250)
+>> set bulk_settle_ms 1500
+[set] bulk_settle_ms = 1500 (was 1500)
+>> set bulk_stop_margin_g 0.01
+[set] bulk_stop_margin_g = 0.01 (was 0.01)
+>> set bulk_taper_start_g 0.1
+[set] bulk_taper_start_g = 0.1 (was 0.1)
+>> set dose_timeout_s 600
+[set] dose_timeout_s = 600 (was 600)
+>> set ff_prior_g_per_rev 0.35
+[set] ff_prior_g_per_rev = 0.35 (was 0.35)
+>> set final_settle_ms 2000
+[set] final_settle_ms = 2000 (was 2000)
+>> set k_sigma 1
+[set] k_sigma = 1.0 (was 1.0)
+>> set kf_q_var 0.0002
+[set] kf_q_var = 0.0002 (was 0.0002)
+>> set log_max_rows 1200
+[set] log_max_rows = 1200 (was 1200)
+>> set log_min_free_bytes 24000
+[set] log_min_free_bytes = 24000 (was 24000)
+>> set log_to_flash 0
+[set] log_to_flash = False (was False)
+>> set max_poll_misses 10
+[set] max_poll_misses = 10 (was 10)
+>> set noisy_sd_g 0.008
+[set] noisy_sd_g = 0.008 (was 0.008)
+>> set overshoot_abort_g 0.1
+[set] overshoot_abort_g = 0.1 (was 0.1)
+>> set post_trickle_settle_ms 1200
+[set] post_trickle_settle_ms = 1200 (was 1200)
+>> set print_every_n_polls 2
+[set] print_every_n_polls = 2 (was 2)
+>> set quiet_sd_g 0.0005
+[set] quiet_sd_g = 0.0005 (was 0.0005)
+>> set rate_tau_s 0.5
+[set] rate_tau_s = 0.5 (was 0.5)
+>> set stall_bail_s 8
+[set] stall_bail_s = 8.0 (was 8.0)
+>> set tap_burst_above_g 0
+[set] tap_burst_above_g = 0.0 (was 0.0)
+>> set tap_burst_taps 2
+[set] tap_burst_taps = 2 (was 2)
+>> set tap_cadence_off_ms 440
+[set] tap_cadence_off_ms = 440 (was 440)
+>> set tap_cadence_on_ms 60
+[set] tap_cadence_on_ms = 60 (was 60)
+>> set tap_max_cycles 120
+[set] tap_max_cycles = 120 (was 120)
+>> set tap_max_nudges 20
+[set] tap_max_nudges = 20 (was 20)
+>> set tap_nudge_deg 5
+[set] tap_nudge_deg = 5.0 (was 5.0)
+>> set tap_settle_ms 1500
+[set] tap_settle_ms = 1500 (was 1500)
+>> set taps_per_cycle 1
+[set] taps_per_cycle = 1 (was 1)
+>> set tau_afterflow_s 0.3
+[set] tau_afterflow_s = 0.3 (was 0.3)
+>> set tau_bal_s 0.7
+[set] tau_bal_s = 0.7 (was 0.7)
+>> set trickle_dt_s 0.25
+[set] trickle_dt_s = 0.25 (was 0.25)
+>> set trickle_integ_clamp 0.5
+[set] trickle_integ_clamp = 0.5 (was 0.5)
+>> set trickle_ki 120
+[set] trickle_ki = 120.0 (was 120.0)
+>> set trickle_kp 250
+[set] trickle_kp = 250.0 (was 250.0)
+>> set trickle_max_rate_gps 0.05
+[set] trickle_max_rate_gps = 0.05 (was 0.05)
+>> set trickle_min_rate_gps 0.003
+[set] trickle_min_rate_gps = 0.003 (was 0.003)
+>> set trickle_rpm_cap 45
+[set] trickle_rpm_cap = 45.0 (was 45.0)
+>> set bulk_tap 1
+[set] bulk_tap = True (was False)
+>> set trickle_tap 1
+[set] trickle_tap = True (was False)
+>> set bulk_tilt_deg 15
+[set] bulk_tilt_deg = 15.0 (was 15.0)
+>> set trickle_tilt_deg 30
+[set] trickle_tilt_deg = 30.0 (was 30.0)
+>> set tap_tilt_deg 0
+[set] tap_tilt_deg = 0.0 (was 15.0)
+>> set bulk_rpm 20
+[set] bulk_rpm = 20.0 (was 100.0)
+>> set trickle_start_remaining_g 0.3
+[set] trickle_start_remaining_g = 0.3 (was 0.3)
+>> set tolerance_g 0.003
+[set] tolerance_g = 0.003 (was 0.003)
+>> set cutoff_margin_g 0
+[set] cutoff_margin_g = 0.0 (was 0.0)
+>> set trickle_enabled 1
+[set] trickle_enabled = True (was True)
+>> g 0.5000
+[dose] trickle-tap dose to 0.5000 g (tol 3.0 mg, trickle tilt 30.0 plate deg); taring scale
+[dose] tared: baseline +0.0 mg (subtracted), drift +0.0 mg/min, read noise 0.00 mg
+=== stage 1 'bulk': 0.5000 g to go, velocity mode @ 20 rpm until 0.3500 g to go
+[phase 1 bulk] cadence taps on: one 60 ms pulse per 500 ms
+[phase 1 bulk] poll 1: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 2: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 5.0 s
+[phase 1 bulk] poll 3: mass 0.0000 / 0.5000 g (0.5000 g to go, +0.0000 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 4 (unstable): mass 0.0006 / 0.5000 g (0.4994 g to go, +0.0006 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 5 (unstable): mass 0.0125 / 0.5000 g (0.4875 g to go, +0.0119 g this poll), elapsed 6.0 s
+[phase 1 bulk] poll 6 (unstable): mass 0.0283 / 0.5000 g (0.4717 g to go, +0.0158 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 7 (unstable): mass 0.0488 / 0.5000 g (0.4512 g to go, +0.0205 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 8 (unstable): mass 0.0596 / 0.5000 g (0.4404 g to go, +0.0108 g this poll), elapsed 7.0 s
+[phase 1 bulk] poll 9 (unstable): mass 0.0636 / 0.5000 g (0.4364 g to go, +0.0040 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 10 (unstable): mass 0.0670 / 0.5000 g (0.4330 g to go, +0.0034 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 11 (unstable): mass 0.0689 / 0.5000 g (0.4311 g to go, +0.0019 g this poll), elapsed 8.0 s
+[phase 1 bulk] poll 12 (unstable): mass 0.0700 / 0.5000 g (0.4300 g to go, +0.0011 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 13 (unstable): mass 0.0706 / 0.5000 g (0.4294 g to go, +0.0006 g this poll), elapsed 9.0 s
+[phase 1 bulk] poll 14 (unstable): mass 0.0775 / 0.5000 g (0.4225 g to go, +0.0069 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 15 (unstable): mass 0.0896 / 0.5000 g (0.4104 g to go, +0.0121 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 16 (unstable): mass 0.0979 / 0.5000 g (0.4021 g to go, +0.0083 g this poll), elapsed 10.0 s
+[phase 1 bulk] poll 17 (unstable): mass 0.1015 / 0.5000 g (0.3985 g to go, +0.0036 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 18 (unstable): mass 0.1041 / 0.5000 g (0.3959 g to go, +0.0026 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 19 (unstable): mass 0.1061 / 0.5000 g (0.3939 g to go, +0.0020 g this poll), elapsed 11.0 s
+[phase 1 bulk] poll 20 (unstable): mass 0.1081 / 0.5000 g (0.3919 g to go, +0.0020 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 21 (unstable): mass 0.1111 / 0.5000 g (0.3889 g to go, +0.0030 g this poll), elapsed 12.0 s
+[phase 1 bulk] poll 22 (unstable): mass 0.1236 / 0.5000 g (0.3764 g to go, +0.0125 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 23 (unstable): mass 0.1402 / 0.5000 g (0.3598 g to go, +0.0166 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 24 (unstable): mass 0.1485 / 0.5000 g (0.3515 g to go, +0.0083 g this poll), elapsed 13.0 s
+[phase 1 bulk] poll 25 (unstable): mass 0.1526 / 0.5000 g (0.3474 g to go, +0.0041 g this poll), elapsed 14.0 s
+[phase 1 bulk] auger halted at 0.3474 g to go (halt threshold 0.3500 g); settling 1500 ms
+[phase 1 bulk] settled: mass 0.1567 / 0.5000 g (0.3433 g to go, +0.0041 g while settling), elapsed 16.0 s
+[trickle] cadence taps on: one 60 ms pulse per 500 ms
+[trickle] seeded at 0.1569 g; cutoff when m+r*0.30s+1.0*sigma >= 0.5000 g
+[trickle]  19.4s m 0.1569 r  63.6 mg/s (sp  50.0) rpm  14.2 pred 0.1859/0.5000 sigma 9.9 mg
+[trickle]  20.2s m 0.1842 r  55.2 mg/s (sp  50.0) rpm  11.4 pred 0.2091/0.5000 sigma 8.4 mg
+[trickle]  20.9s m 0.2001 r  56.9 mg/s (sp  50.0) rpm  11.6 pred 0.2247/0.5000 sigma 7.5 mg
+[trickle]  21.7s m 0.2156 r  57.6 mg/s (sp  50.0) rpm  11.8 pred 0.2402/0.5000 sigma 7.3 mg
+[trickle]  22.5s m 0.2323 r  54.9 mg/s (sp  50.0) rpm  12.4 pred 0.2560/0.5000 sigma 7.3 mg
+[trickle]  23.2s m 0.2503 r  50.9 mg/s (sp  50.0) rpm  11.6 pred 0.2729/0.5000 sigma 7.3 mg
+[trickle]  24.0s m 0.2693 r  46.5 mg/s (sp  50.0) rpm  11.0 pred 0.2906/0.5000 sigma 7.3 mg
+[trickle]  24.8s m 0.2841 r  43.7 mg/s (sp  50.0) rpm  10.7 pred 0.3046/0.5000 sigma 7.3 mg
+[trickle]  25.5s m 0.2906 r  42.3 mg/s (sp  50.0) rpm  11.0 pred 0.3106/0.5000 sigma 7.3 mg
+[trickle]  26.2s m 0.2907 r  41.0 mg/s (sp  50.0) rpm  11.5 pred 0.3101/0.5000 sigma 7.0 mg
+[trickle]  27.0s m 0.2990 r  40.9 mg/s (sp  50.0) rpm  12.2 pred 0.3184/0.5000 sigma 7.1 mg
+[trickle]  27.7s m 0.3085 r  40.6 mg/s (sp  50.0) rpm  13.2 pred 0.3279/0.5000 sigma 7.3 mg
+[trickle]  28.5s m 0.3202 r  40.3 mg/s (sp  50.0) rpm  14.1 pred 0.3396/0.5000 sigma 7.3 mg
+[trickle]  29.3s m 0.3434 r  40.1 mg/s (sp  50.0) rpm  15.0 pred 0.3628/0.5000 sigma 7.3 mg
+[trickle]  30.0s m 0.3630 r  39.9 mg/s (sp  50.0) rpm  16.0 pred 0.3823/0.5000 sigma 7.3 mg
+[trickle]  30.8s m 0.3738 r  39.8 mg/s (sp  50.0) rpm  17.0 pred 0.3930/0.5000 sigma 7.3 mg
+[trickle]  31.6s m 0.3805 r  39.7 mg/s (sp  50.0) rpm  17.9 pred 0.3998/0.5000 sigma 7.3 mg
+[trickle]  32.3s m 0.3901 r  39.6 mg/s (sp  50.0) rpm  18.9 pred 0.4093/0.5000 sigma 7.3 mg
+[trickle]  33.1s m 0.4124 r  39.6 mg/s (sp  50.0) rpm  19.9 pred 0.4316/0.5000 sigma 7.3 mg
+[trickle]  33.8s m 0.4322 r  39.4 mg/s (sp  50.0) rpm  20.8 pred 0.4514/0.5000 sigma 7.3 mg
+[trickle]  34.6s m 0.4419 r  39.4 mg/s (sp  50.0) rpm  21.9 pred 0.4611/0.5000 sigma 7.3 mg
+[trickle]  35.4s m 0.4483 r  39.3 mg/s (sp  50.0) rpm  22.9 pred 0.4674/0.5000 sigma 7.3 mg
+[trickle]  36.1s m 0.4642 r  39.3 mg/s (sp  50.0) rpm  23.8 pred 0.4833/0.5000 sigma 7.3 mg
+[trickle]  36.9s m 0.4759 r  38.5 mg/s (sp  40.2) rpm  24.4 pred 0.4947/0.5000 sigma 7.3 mg
+[trickle]  37.7s m 0.4821 r  33.2 mg/s (sp  29.8) rpm  21.7 pred 0.4994/0.5000 sigma 7.3 mg
+[trickle] predictive cutoff: m 0.4840 + r*tau 0.0094 + k*sigma 0.0073 >= 0.5000 g
+[trickle] halted; settled at 0.4600 g (-24.1 mg vs KF m_hat, 0.0400 g to go), 51 polls, 0 KF clamps, ff 0.087 g/rev
+=== stage 3 'tap': 0.0400 g to go, single taps at 0.0 plate deg
+[phase 3 tap] cycle 1: mass 0.4599 / 0.5000 g (0.0401 g to go, -0.0001 g this cycle), elapsed 45.0 s
+[phase 3 tap] cycle 2: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 48.0 s
+[phase 3 tap] cycle 3: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 51.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 1/20)
+[phase 3 tap] cycle 4: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 57.0 s
+[phase 3 tap] cycle 5: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 60.0 s
+[phase 3 tap] cycle 6: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 63.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 2/20)
+[phase 3 tap] cycle 7: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 68.0 s
+[phase 3 tap] cycle 8: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 71.0 s
+[phase 3 tap] cycle 9: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 75.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 3/20)
+[phase 3 tap] cycle 10: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 80.0 s
+[phase 3 tap] cycle 11: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 83.0 s
+[phase 3 tap] cycle 12: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 86.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 4/20)
+[phase 3 tap] cycle 13: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 92.0 s
+[phase 3 tap] cycle 14: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 95.0 s
+[phase 3 tap] cycle 15: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 98.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 5/20)
+[phase 3 tap] cycle 16: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 103.0 s
+[phase 3 tap] cycle 17: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 106.0 s
+[phase 3 tap] cycle 18: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 109.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 6/20)
+[phase 3 tap] cycle 19: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 115.0 s
+[phase 3 tap] cycle 20: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 118.0 s
+[phase 3 tap] cycle 21: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 121.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 7/20)
+[phase 3 tap] cycle 22: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 126.0 s
+[phase 3 tap] cycle 23: mass 0.4599 / 0.5000 g (0.0401 g to go, +0.0000 g this cycle), elapsed 129.0 s
+[phase 3 tap] cycle 24: mass 0.4600 / 0.5000 g (0.0400 g to go, +0.0001 g this cycle), elapsed 132.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 8/20)
+[phase 3 tap] cycle 25: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0001 g this cycle), elapsed 138.0 s
+[phase 3 tap] cycle 26: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 141.0 s
+[phase 3 tap] cycle 27: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 144.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 9/20)
+[phase 3 tap] cycle 28: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 150.0 s
+[phase 3 tap] cycle 29: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 153.0 s
+[phase 3 tap] cycle 30: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 156.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 10/20)
+[phase 3 tap] cycle 31: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 161.0 s
+[phase 3 tap] cycle 32: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 164.0 s
+[phase 3 tap] cycle 33: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 167.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 11/20)
+[phase 3 tap] cycle 34: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 173.0 s
+[phase 3 tap] cycle 35: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 176.0 s
+[phase 3 tap] cycle 36: mass 0.4600 / 0.5000 g (0.0400 g to go, -0.0001 g this cycle), elapsed 179.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 12/20)
+[phase 3 tap] cycle 37: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0001 g this cycle), elapsed 184.0 s
+[phase 3 tap] cycle 38: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 187.0 s
+[phase 3 tap] cycle 39: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 190.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 13/20)
+[phase 3 tap] cycle 40: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 195.0 s
+[phase 3 tap] cycle 41: mass 0.4601 / 0.5000 g (0.0399 g to go, +0.0000 g this cycle), elapsed 198.0 s
+[phase 3 tap] cycle 42: mass 0.4602 / 0.5000 g (0.0398 g to go, +0.0001 g this cycle), elapsed 202.0 s
+[phase 3 tap] lip empty; nudging auger 5.0 deg (nudge 14/20)
+[phase 3 tap] cycle 43: mass 0.4602 / 0.5000 g (0.0398 g to go, +0.0000 g this cycle), elapsed 207.0 s
+[phase 3 tap] cycle 44: mass 0.4604 / 0.5000 g (0.0396 g to go, +0.0002 g this cycle), elapsed 210.0 s
+[phase 3 tap] cycle 45: mass 0.4610 / 0.5000 g (0.0390 g to go, +0.0006 g this cycle), elapsed 213.0 s
+[phase 3 tap] cycle 46: mass 0.4613 / 0.5000 g (0.0387 g to go, +0.0003 g this cycle), elapsed 216.0 s
+[phase 3 tap] cycle 47: mass 0.4620 / 0.5000 g (0.0380 g to go, +0.0007 g this cycle), elapsed 219.0 s
+[phase 3 tap] cycle 48: mass 0.4629 / 0.5000 g (0.0371 g to go, +0.0009 g this cycle), elapsed 222.0 s
+[phase 3 tap] cycle 49: mass 0.4631 / 0.5000 g (0.0369 g to go, +0.0002 g this cycle), elapsed 226.0 s
+[phase 3 tap] cycle 50: mass 0.4632 / 0.5000 g (0.0368 g to go, +0.0001 g this cycle), elapsed 229.0 s
+[phase 3 tap] cycle 51: mass 0.4647 / 0.5000 g (0.0353 g to go, +0.0015 g this cycle), elapsed 232.0 s
+[phase 3 tap] cycle 52: mass 0.4656 / 0.5000 g (0.0344 g to go, +0.0010 g this cycle), elapsed 235.0 s
+[phase 3 tap] cycle 53: mass 0.4666 / 0.5000 g (0.0334 g to go, +0.0009 g this cycle), elapsed 238.0 s
+[phase 3 tap] cycle 54: mass 0.4673 / 0.5000 g (0.0327 g to go, +0.0007 g this cycle), elapsed 241.0 s
+[phase 3 tap] cycle 55: mass 0.4682 / 0.5000 g (0.0318 g to go, +0.0010 g this cycle), elapsed 244.0 s
+[phase 3 tap] cycle 56: mass 0.4691 / 0.5000 g (0.0309 g to go, +0.0009 g this cycle), elapsed 247.0 s
+[phase 3 tap] cycle 57: mass 0.4704 / 0.5000 g (0.0296 g to go, +0.0012 g this cycle), elapsed 250.0 s
+[phase 3 tap] cycle 58: mass 0.4714 / 0.5000 g (0.0286 g to go, +0.0011 g this cycle), elapsed 253.0 s
+[phase 3 tap] cycle 59: mass 0.4723 / 0.5000 g (0.0277 g to go, +0.0008 g this cycle), elapsed 256.0 s
+[phase 3 tap] cycle 60: mass 0.4732 / 0.5000 g (0.0268 g to go, +0.0009 g this cycle), elapsed 259.0 s
+[phase 3 tap] cycle 61: mass 0.4738 / 0.5000 g (0.0262 g to go, +0.0007 g this cycle), elapsed 263.0 s
+[phase 3 tap] cycle 62: mass 0.4748 / 0.5000 g (0.0252 g to go, +0.0010 g this cycle), elapsed 266.0 s
+[phase 3 tap] cycle 63: mass 0.4751 / 0.5000 g (0.0249 g to go, +0.0003 g this cycle), elapsed 269.0 s
+[phase 3 tap] cycle 64: mass 0.4770 / 0.5000 g (0.0230 g to go, +0.0018 g this cycle), elapsed 272.0 s
+[phase 3 tap] cycle 65: mass 0.4775 / 0.5000 g (0.0225 g to go, +0.0005 g this cycle), elapsed 275.0 s
+[phase 3 tap] cycle 66: mass 0.4784 / 0.5000 g (0.0216 g to go, +0.0009 g this cycle), elapsed 278.0 s
+[phase 3 tap] cycle 67: mass 0.4797 / 0.5000 g (0.0203 g to go, +0.0012 g this cycle), elapsed 281.0 s
+[phase 3 tap] cycle 68: mass 0.4806 / 0.5000 g (0.0194 g to go, +0.0009 g this cycle), elapsed 284.0 s
+[phase 3 tap] cycle 69: mass 0.4828 / 0.5000 g (0.0172 g to go, +0.0021 g this cycle), elapsed 287.0 s
+[phase 3 tap] cycle 70: mass 0.4837 / 0.5000 g (0.0163 g to go, +0.0009 g this cycle), elapsed 290.0 s
+[phase 3 tap] cycle 71: mass 0.4842 / 0.5000 g (0.0158 g to go, +0.0005 g this cycle), elapsed 293.0 s
+[phase 3 tap] cycle 72: mass 0.4852 / 0.5000 g (0.0148 g to go, +0.0010 g this cycle), elapsed 297.0 s
+[phase 3 tap] cycle 73: mass 0.4861 / 0.5000 g (0.0139 g to go, +0.0009 g this cycle), elapsed 300.0 s
+[phase 3 tap] cycle 74: mass 0.4864 / 0.5000 g (0.0136 g to go, +0.0003 g this cycle), elapsed 303.0 s
+[phase 3 tap] cycle 75: mass 0.4875 / 0.5000 g (0.0125 g to go, +0.0011 g this cycle), elapsed 306.0 s
+[phase 3 tap] cycle 76: mass 0.4887 / 0.5000 g (0.0113 g to go, +0.0012 g this cycle), elapsed 309.0 s
+[phase 3 tap] cycle 77: mass 0.4899 / 0.5000 g (0.0101 g to go, +0.0012 g this cycle), elapsed 312.0 s
+[phase 3 tap] cycle 78: mass 0.4917 / 0.5000 g (0.0083 g to go, +0.0018 g this cycle), elapsed 315.0 s
+[phase 3 tap] cycle 79: mass 0.4925 / 0.5000 g (0.0075 g to go, +0.0009 g this cycle), elapsed 318.0 s
+[phase 3 tap] cycle 80: mass 0.4936 / 0.5000 g (0.0064 g to go, +0.0010 g this cycle), elapsed 321.0 s
+[phase 3 tap] cycle 81: mass 0.4939 / 0.5000 g (0.0061 g to go, +0.0003 g this cycle), elapsed 324.0 s
+[phase 3 tap] cycle 82: mass 0.4954 / 0.5000 g (0.0046 g to go, +0.0015 g this cycle), elapsed 327.0 s
+[phase 3 tap] cycle 83: mass 0.4965 / 0.5000 g (0.0035 g to go, +0.0012 g this cycle), elapsed 330.0 s
+[phase 3 tap] cycle 84: mass 0.4974 / 0.5000 g (0.0026 g to go, +0.0009 g this cycle), elapsed 333.0 s
+[dose] final settle 2000 ms before the scoring reading
+[dose] done: DoseResult(ok: 0.4976/0.5000 g in 337.0s; cycles bulk:25, trickle:51, tap:84; 8.21 auger rev, 140 taps)
+RESULT {"phase_cycles": {"tap": 84, "bulk": 25, "trickle": 51}, "t_total_s": 336.61, "ff_g_per_rev": 0.0873, "stop_events": [{"settled_g": 0.1567, "rate_slope_gps": 0.02781, "rpm": 20.0, "rate_kf_gps": null, "t_stop_s": 16.25, "m_stop_g": 0.1526, "tau_s": 0.3, "afterflow_g": 0.0041, "stalled": 0, "phase": "bulk"}, {"phase": "trickle", "rate_kf_gps": 0.03146, "settled_g": 0.45996, "stalled": 0, "tau_s": 0.3, "m_stop_g": 0.48403, "afterflow_g": -0.02407, "rate_slope_gps": 0.00808, "t_stop_s": 38.06}], "error_mg": -2.4, "t_settle_s": 3.44, "t_tap_s": 292.52, "nudges": 14, "telemetry_rows": 162, "telemetry_truncated": 0, "fw": "trickle_tap/2026-10-09", "v": 1, "target_g": 0.5, "status": "ok", "settled_final": 1, "auger_rev": 8.21, "baseline_g": 0.0, "final_g": 0.4976, "t_bulk_s": 11.96, "read_retries": 0, "dose_n": 16, "params": {"tap_cadence_on_ms": 60, "trickle_start_remaining_g": 0.3, "bulk_min_rpm": 20.0, "bulk_boost_s": 3.0, "tap_burst_taps": 2, "bulk_halt_kf": false, "cutoff_margin_g": 0.0, "k_sigma": 1.0, "bulk_taper_start_g": 0.1, "bulk_max_passes": 8, "taps_per_cycle": 1, "final_settle_ms": 2000, "overshoot_abort_g": 0.1, "tap_cadence_off_ms": 440, "tau_afterflow_s": 0.3, "trickle_tilt_deg": 30.0, "trickle_enabled": true, "bulk_only": false, "tap_burst_above_g": 0.0, "tap_tilt_deg": 0.0, "trickle_tap": true, "goal_mass_g": 0.75, "bulk_tap": true, "tolerance_g": 0.003, "bulk_rpm": 20.0, "bulk_tilt_deg": 15.0, "bulk_stop_margin_g": 0.01}, "t_trickle_s": 24.4, "taps": 140, "log_path": null}
+>> log
+--- BEGIN trickle telemetry CSV ---
+t_s,phase,z_g,fresh,m_g,r_gps,sigma_g,ff_gpr,r_sp_gps,err_gps,integ,rpm_cmd,pred_g,cutoff_g,clamp_hits
+4.67,bulk,0.00000,1,0.00000,,,,,,,,,,
+5.05,bulk,0.00000,1,0.00000,,,,,,,,,,
+5.44,bulk,0.00000,1,0.00000,,,,,,,,,,
+5.72,bulk,0.00060,1,0.00060,,,,,,,,,,
+6.10,bulk,0.01250,1,0.01250,,,,,,,,,,
+6.49,bulk,0.02830,1,0.02830,,,,,,,,,,
+6.87,bulk,0.04880,1,0.04880,,,,,,,,,,
+7.25,bulk,0.05960,1,0.05960,,,,,,,,,,
+7.64,bulk,0.06360,1,0.06360,,,,,,,,,,
+8.02,bulk,0.06700,1,0.06700,,,,,,,,,,
+8.30,bulk,0.06890,1,0.06890,,,,,,,,,,
+8.69,bulk,0.07000,1,0.07000,,,,,,,,,,
+9.07,bulk,0.07060,1,0.07060,,,,,,,,,,
+9.46,bulk,0.07750,1,0.07750,,,,,,,,,,
+9.83,bulk,0.08960,1,0.08960,,,,,,,,,,
+10.22,bulk,0.09790,1,0.09790,,,,,,,,,,
+10.61,bulk,0.10150,1,0.10150,,,,,,,,,,
+10.98,bulk,0.10410,1,0.10410,,,,,,,,,,
+11.27,bulk,0.10610,1,0.10610,,,,,,,,,,
+11.65,bulk,0.10810,1,0.10810,,,,,,,,,,
+12.04,bulk,0.11110,1,0.11110,,,,,,,,,,
+12.41,bulk,0.12360,1,0.12360,,,,,,,,,,
+12.70,bulk,0.14020,1,0.14020,,,,,,,,,,
+13.09,bulk,0.14850,1,0.14850,,,,,,,,,,
+13.47,bulk,0.15260,1,0.15260,,,,,,,,,,
+16.24,bulk,0.15670,1,0.15670,,,,,,,,,,
+19.01,trickle,0.15690,1,0.15694,0.00000,0.00850,0.3500,0.05000,0.05000,0.0000,0.00,0.16544,0.50000,0
+19.40,trickle,0.15690,1,0.15693,0.06358,0.00988,0.3500,0.05000,-0.01358,0.0141,14.19,0.18588,0.50000,0
+19.78,trickle,0.15690,1,0.18113,0.01513,0.00931,0.3500,0.05000,0.03487,0.0089,0.00,0.19498,0.50000,0
+20.17,trickle,0.16200,1,0.18415,0.05523,0.00841,0.3500,0.05000,-0.00523,0.0222,11.38,0.20913,0.50000,0
+20.54,trickle,0.16410,1,0.20038,0.01883,0.00779,0.3500,0.05000,0.03117,0.0201,1.11,0.21382,0.50000,0
+20.93,trickle,0.16520,1,0.20006,0.05691,0.00753,0.3500,0.05000,-0.00691,0.0317,11.60,0.22466,0.50000,0
+21.31,trickle,0.17130,1,0.21520,0.02170,0.00738,0.3500,0.05000,0.02830,0.0290,1.75,0.22909,0.50000,0
+21.69,trickle,0.17590,1,0.21562,0.05759,0.00732,0.3326,0.05000,-0.00759,0.0396,11.83,0.24022,0.50000,0
+22.08,trickle,0.18350,1,0.23149,0.02297,0.00736,0.3206,0.05000,0.02703,0.0367,2.51,0.24573,0.50000,0
+22.46,trickle,0.19050,1,0.23227,0.05489,0.00731,0.3061,0.05000,-0.00489,0.0474,12.44,0.25604,0.50000,0
+22.84,trickle,0.19900,1,0.24659,0.02921,0.00730,0.2953,0.05000,0.02079,0.0456,4.24,0.26266,0.50000,0
+23.23,trickle,0.20650,1,0.25031,0.05091,0.00734,0.2833,0.05000,-0.00091,0.0535,11.62,0.27293,0.50000,0
+23.60,trickle,0.21750,1,0.26336,0.03440,0.00731,0.2737,0.05000,0.01560,0.0532,6.15,0.28099,0.50000,0
+24.00,trickle,0.22400,1,0.26930,0.04647,0.00734,0.2639,0.05000,0.00353,0.0590,10.98,0.29058,0.50000,0
+24.37,trickle,0.23190,1,0.27936,0.03820,0.00731,0.2552,0.05000,0.01180,0.0604,8.13,0.29813,0.50000,0
+24.76,trickle,0.23360,1,0.28414,0.04374,0.00735,0.2464,0.05000,0.00626,0.0648,10.72,0.30461,0.50000,0
+25.14,trickle,0.23440,1,0.28844,0.04022,0.00732,0.2378,0.05000,0.00978,0.0672,9.64,0.30782,0.50000,0
+25.53,trickle,0.23530,1,0.29061,0.04230,0.00734,0.2290,0.05000,0.00770,0.0709,10.95,0.31064,0.50000,0
+25.90,trickle,0.23580,1,0.29206,0.04098,0.00729,0.2202,0.05000,0.00902,0.0739,10.79,0.31165,0.50000,0
+26.19,trickle,0.23640,1,0.29075,0.04104,0.00700,0.2113,0.05000,0.00896,0.0772,11.52,0.31006,0.50000,0
+26.57,trickle,0.24130,1,0.29423,0.04107,0.00701,0.2028,0.05000,0.00893,0.0798,11.82,0.31356,0.50000,0
+26.96,trickle,0.24670,1,0.29896,0.04092,0.00714,0.1947,0.05000,0.00908,0.0832,12.22,0.31837,0.50000,0
+27.34,trickle,0.25190,1,0.30340,0.04072,0.00721,0.1869,0.05000,0.00928,0.0868,12.69,0.32282,0.50000,0
+27.72,trickle,0.25810,1,0.30849,0.04057,0.00726,0.1796,0.05000,0.00943,0.0903,13.16,0.32792,0.50000,0
+28.10,trickle,0.26310,1,0.31330,0.04038,0.00728,0.1727,0.05000,0.00962,0.0939,13.63,0.33269,0.50000,0
+28.49,trickle,0.27270,1,0.32017,0.04029,0.00733,0.1662,0.05000,0.00971,0.0976,14.11,0.33958,0.50000,0
+28.86,trickle,0.29030,1,0.33068,0.04023,0.00731,0.1604,0.05000,0.00977,0.1014,14.59,0.35006,0.50000,0
+29.26,trickle,0.30430,1,0.34337,0.04013,0.00735,0.1553,0.05000,0.00987,0.1050,15.04,0.36276,0.50000,0
+29.63,trickle,0.31430,1,0.35469,0.04007,0.00732,0.1508,0.05000,0.00993,0.1089,15.54,0.37403,0.50000,0
+30.01,trickle,0.31750,1,0.36305,0.03994,0.00730,0.1466,0.05000,0.01006,0.1126,16.00,0.38233,0.50000,0
+30.40,trickle,0.32040,1,0.36950,0.03993,0.00734,0.1425,0.05000,0.01007,0.1164,16.49,0.38881,0.50000,0
+30.78,trickle,0.32310,1,0.37378,0.03983,0.00731,0.1385,0.05000,0.01017,0.1204,16.96,0.39304,0.50000,0
+31.16,trickle,0.32470,1,0.37697,0.03977,0.00730,0.1346,0.05000,0.01023,0.1242,17.44,0.39619,0.50000,0
+31.55,trickle,0.32870,1,0.38051,0.03975,0.00733,0.1307,0.05000,0.01025,0.1281,17.93,0.39976,0.50000,0
+31.92,trickle,0.33440,1,0.38435,0.03963,0.00731,0.1269,0.05000,0.01037,0.1321,18.41,0.40355,0.50000,0
+32.31,trickle,0.34240,1,0.39010,0.03960,0.00734,0.1232,0.05000,0.01040,0.1360,18.91,0.40932,0.50000,0
+32.69,trickle,0.35930,1,0.39983,0.03961,0.00731,0.1199,0.05000,0.01039,0.1400,19.40,0.41902,0.50000,0
+33.08,trickle,0.37450,1,0.41242,0.03959,0.00734,0.1169,0.05000,0.01041,0.1439,19.87,0.43164,0.50000,0
+33.45,trickle,0.38430,1,0.42371,0.03954,0.00731,0.1143,0.05000,0.01046,0.1480,20.36,0.44288,0.50000,0
+33.84,trickle,0.38740,1,0.43224,0.03944,0.00731,0.1118,0.05000,0.01056,0.1519,20.84,0.45138,0.50000,0
+34.22,trickle,0.38930,1,0.43795,0.03939,0.00730,0.1093,0.05000,0.01061,0.1560,21.36,0.45707,0.50000,0
+34.61,trickle,0.39030,1,0.44190,0.03937,0.00734,0.1068,0.05000,0.01063,0.1600,21.85,0.46106,0.50000,0
+34.98,trickle,0.39130,1,0.44398,0.03926,0.00731,0.1043,0.05000,0.01074,0.1642,22.36,0.46306,0.50000,0
+35.37,trickle,0.39870,1,0.44828,0.03931,0.00734,0.1019,0.05000,0.01069,0.1682,22.87,0.46741,0.50000,0
+35.75,trickle,0.40960,1,0.45475,0.03929,0.00731,0.0995,0.05000,0.01071,0.1724,23.35,0.47385,0.50000,0
+36.14,trickle,0.42240,1,0.46419,0.03931,0.00734,0.0973,0.05000,0.01069,0.1764,23.84,0.48332,0.50000,0
+36.51,trickle,0.42550,1,0.47089,0.03916,0.00730,0.0952,0.04851,0.00935,0.1806,24.34,0.48995,0.50000,0
+36.90,trickle,0.42660,1,0.47585,0.03853,0.00733,0.0932,0.04024,0.00171,0.1840,24.42,0.49474,0.50000,0
+37.28,trickle,0.43030,1,0.47959,0.03558,0.00731,0.0912,0.03401,-0.00157,0.1847,22.59,0.49758,0.50000,0
+37.67,trickle,0.43330,1,0.48211,0.03320,0.00734,0.0892,0.02982,-0.00337,0.1841,21.70,0.49941,0.50000,0
+38.05,trickle,0.43860,1,0.48403,0.03146,0.00731,0.0873,0.02662,-0.00485,0.1828,21.09,0.50078,0.50000,0
+40.64,trickle_end,0.45996,1,0.45996,,,,,,,,,,0
+44.85,tap,0.45990,1,0.45990,,,,,,,,,,
+47.90,tap,0.45990,1,0.45990,,,,,,,,,,
+50.96,tap,0.45990,1,0.45990,,,,,,,,,,
+56.42,tap,0.45990,1,0.45990,,,,,,,,,,
+59.56,tap,0.45990,1,0.45990,,,,,,,,,,
+62.73,tap,0.45990,1,0.45990,,,,,,,,,,
+68.17,tap,0.45990,1,0.45990,,,,,,,,,,
+71.34,tap,0.45990,1,0.45990,,,,,,,,,,
+74.39,tap,0.45990,1,0.45990,,,,,,,,,,
+79.74,tap,0.45990,1,0.45990,,,,,,,,,,
+82.91,tap,0.45990,1,0.45990,,,,,,,,,,
+86.07,tap,0.45990,1,0.45990,,,,,,,,,,
+91.42,tap,0.45990,1,0.45990,,,,,,,,,,
+94.48,tap,0.45990,1,0.45990,,,,,,,,,,
+97.53,tap,0.45990,1,0.45990,,,,,,,,,,
+102.88,tap,0.45990,1,0.45990,,,,,,,,,,
+106.05,tap,0.45990,1,0.45990,,,,,,,,,,
+109.11,tap,0.45990,1,0.45990,,,,,,,,,,
+114.56,tap,0.45990,1,0.45990,,,,,,,,,,
+117.71,tap,0.45990,1,0.45990,,,,,,,,,,
+120.77,tap,0.45990,1,0.45990,,,,,,,,,,
+126.13,tap,0.45990,1,0.45990,,,,,,,,,,
+129.29,tap,0.45990,1,0.45990,,,,,,,,,,
+132.24,tap,0.46000,1,0.46000,,,,,,,,,,
+137.61,tap,0.46010,1,0.46010,,,,,,,,,,
+140.75,tap,0.46010,1,0.46010,,,,,,,,,,
+143.92,tap,0.46010,1,0.46010,,,,,,,,,,
+149.37,tap,0.46010,1,0.46010,,,,,,,,,,
+152.43,tap,0.46010,1,0.46010,,,,,,,,,,
+155.49,tap,0.46010,1,0.46010,,,,,,,,,,
+160.95,tap,0.46010,1,0.46010,,,,,,,,,,
+164.00,tap,0.46010,1,0.46010,,,,,,,,,,
+167.05,tap,0.46010,1,0.46010,,,,,,,,,,
+172.41,tap,0.46010,1,0.46010,,,,,,,,,,
+175.57,tap,0.46010,1,0.46010,,,,,,,,,,
+178.53,tap,0.46000,1,0.46000,,,,,,,,,,
+183.79,tap,0.46010,1,0.46010,,,,,,,,,,
+186.95,tap,0.46010,1,0.46010,,,,,,,,,,
+190.00,tap,0.46010,1,0.46010,,,,,,,,,,
+195.27,tap,0.46010,1,0.46010,,,,,,,,,,
+198.34,tap,0.46014,1,0.46014,,,,,,,,,,
+201.40,tap,0.46020,1,0.46020,,,,,,,,,,
+206.83,tap,0.46020,1,0.46020,,,,,,,,,,
+210.00,tap,0.46036,1,0.46036,,,,,,,,,,
+213.05,tap,0.46098,1,0.46098,,,,,,,,,,
+216.21,tap,0.46128,1,0.46128,,,,,,,,,,
+219.17,tap,0.46198,1,0.46198,,,,,,,,,,
+222.34,tap,0.46288,1,0.46288,,,,,,,,,,
+225.48,tap,0.46306,1,0.46306,,,,,,,,,,
+228.65,tap,0.46320,1,0.46320,,,,,,,,,,
+231.60,tap,0.46466,1,0.46466,,,,,,,,,,
+234.67,tap,0.46564,1,0.46564,,,,,,,,,,
+237.63,tap,0.46656,1,0.46656,,,,,,,,,,
+240.79,tap,0.46728,1,0.46728,,,,,,,,,,
+243.75,tap,0.46824,1,0.46824,,,,,,,,,,
+246.82,tap,0.46914,1,0.46914,,,,,,,,,,
+249.88,tap,0.47038,1,0.47038,,,,,,,,,,
+252.85,tap,0.47144,1,0.47144,,,,,,,,,,
+256.10,tap,0.47228,1,0.47228,,,,,,,,,,
+259.24,tap,0.47316,1,0.47316,,,,,,,,,,
+262.41,tap,0.47384,1,0.47384,,,,,,,,,,
+265.47,tap,0.47482,1,0.47482,,,,,,,,,,
+268.53,tap,0.47514,1,0.47514,,,,,,,,,,
+271.59,tap,0.47698,1,0.47698,,,,,,,,,,
+274.65,tap,0.47752,1,0.47752,,,,,,,,,,
+277.60,tap,0.47844,1,0.47844,,,,,,,,,,
+280.76,tap,0.47968,1,0.47968,,,,,,,,,,
+283.92,tap,0.48062,1,0.48062,,,,,,,,,,
+286.98,tap,0.48276,1,0.48276,,,,,,,,,,
+290.13,tap,0.48366,1,0.48366,,,,,,,,,,
+293.30,tap,0.48418,1,0.48418,,,,,,,,,,
+296.36,tap,0.48518,1,0.48518,,,,,,,,,,
+299.41,tap,0.48608,1,0.48608,,,,,,,,,,
+302.47,tap,0.48640,1,0.48640,,,,,,,,,,
+305.43,tap,0.48746,1,0.48746,,,,,,,,,,
+308.59,tap,0.48866,1,0.48866,,,,,,,,,,
+311.55,tap,0.48986,1,0.48986,,,,,,,,,,
+314.70,tap,0.49168,1,0.49168,,,,,,,,,,
+317.77,tap,0.49254,1,0.49254,,,,,,,,,,
+320.92,tap,0.49358,1,0.49358,,,,,,,,,,
+323.90,tap,0.49390,1,0.49390,,,,,,,,,,
+327.04,tap,0.49538,1,0.49538,,,,,,,,,,
+330.02,tap,0.49654,1,0.49654,,,,,,,,,,
+333.16,tap,0.49744,1,0.49744,,,,,,,,,,
+--- END trickle telemetry CSV ---
