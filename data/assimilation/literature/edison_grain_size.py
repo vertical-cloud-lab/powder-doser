@@ -212,7 +212,9 @@ def fetch(keys: list[str] | None = None) -> None:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap = argparse.ArgumentParser(
+        description="Edison literature search for issue #210: grain size from powder flow data."
+    )
     ap.add_argument("cmd", choices=["submit", "wait", "fetch"])
     ap.add_argument("keys", nargs="*", help="fetch only these tasks (default: all)")
     args = ap.parse_args()
