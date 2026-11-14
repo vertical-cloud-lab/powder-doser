@@ -474,6 +474,89 @@ plate changes. [`plate.py`](plate.py) measures it into [`plate.json`](plate.json
    each gear. That widens the module at the hinge, so the tri-star spacing
    would need checking again.
 
+#### The base, with the hinge towers merged in (added 13 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for detailed dimensions of the base, with the hinge towers made part of it.
+He has also cut the gears and their arms off the mounting plate, so the
+plate is now widest at the stepper mount. [`base.py`](base.py) models both.
+It writes the drawing below, [`base/base.step`](base/base.step) and
+[`base/base.stl`](base/base.stl), and [`base.json`](base.json). In the STEP
+and STL files the origin is on the beaker axis, with z = 0 on the base's
+underside. Nothing was modelled in Onshape.
+
+![The base, dimensioned](renders/base_drawing.png)
+
+![The base alone, and with the three modules](renders/base_iso.png)
+
+**The plate as Ethan has it now.** This is PR #170's plate body without the
+gears and webs. Its floor is trimmed to |x| ≤ 34 mm as far as 70 mm behind
+the hinge, which removes the front wings. The plate is then 88.1 mm wide:
+54.1 mm out on the stepper side and 34 mm on the other. It is still 137.5 mm
+long and 59.6 cm³. I modelled it from PR #170's STEP; it is not an export of
+Ethan's Onshape plate.
+
+**The base is one printed part** (mm; along a module's centre line the
+distances are measured from the beaker axis):
+
+| Feature | Dimensions |
+|---|---|
+| Overall | 320.5 × 280.2 × 52.25, inside the 325 × 320 a single H2D nozzle reaches |
+| Shelf | 6 thick, like today's baseplate. Top 37.25 below the hinge axes |
+| Lobes | 3, at 120°. Each is 100 wide (±50 about its centre line) out to 82 from the beaker axis, then tapers straight to 48 wide (±24) at 174 |
+| Outline corners | all 15 R10: 3 between lobes, 6 where the taper starts, 6 at the lobe ends |
+| Window | Ø78 on the beaker axis |
+| Hinge axes | 32 from the beaker axis; 37.25 above the shelf top (43.25 above the underside) |
+| Towers | 6, today's baseplate towers (cut from PR #170's `baseplate.step`): 12.3 wide. In each pair the inner faces are 57.8 apart (28.9 either side of the centre line) and the outer faces 82.4 apart |
+| Tower profile | in (y behind the hinge axis, z above it). Foot from y = 10 to 35. Front face straight from (10, −37.25) up to (0, −9), the bottom of an R9 nose round the hinge axis. Flat top at z = 9, 12.93 long, then R10. Rear face straight from (22.36, 2.34) down to (35, −33.38), then vertical to the shelf |
+| Hinge bore | Ø5.3 through each tower, on the hinge axis, as today (M5) |
+| Slot, each lobe | 34 wide, through, from 65 to 144 from the beaker axis (33 to 112 behind the hinge), for the clevis block and the actuator rod |
+| Hanger holes, each lobe | 4 × Ø4.5 through (M4), ±14.5 either side of the centre line, at 151 and 165 from the beaker axis |
+
+**What changed from the earlier placeholder base:**
+- **Towers:** the earlier ones were 8.1 mm blocks. These are today's real towers, 12.3 mm wide.
+- **Lobes:** they were 200 mm wide and reached 222 mm from the beaker axis.
+  Now they are 100 mm tapering to 48, and reach 174. That is what lets the
+  base fit one H2D nozzle.
+- **Slot:** it ends 112 mm behind the hinge instead of 120. The rod still
+  clears its end by 4.4 mm (at 25°).
+- **Legs:** the old placeholder legs stood 165–185 mm behind the hinge, which
+  is past the new lobes' ends. They can bolt to the hanger holes instead. Or
+  each hanger can carry on down to the bench: on the shortest stand (217 mm)
+  its foot is already at bench level.
+
+**Checks.** These are mesh clearances (fcl). One module was swept over 0–90°
+in 5° steps; all three were checked at the ten B2T tilt cases.
+- **Modules to each other:** 5.8 mm at the closest, tap bracket to tap
+  bracket with both at 90°, as before.
+- **Moving parts to the base:** 1.26 mm at 0°. That is the end of the plate
+  floor's notch, 37 mm behind the hinge, against the tower's foot. Today's
+  doser has the same gap, because it is the same plate and the same tower. It
+  is 4.1 mm by 5°.
+- **Everything else** clears the base by 4.4 mm or more. The closest is the
+  P16 rod at the slot's end, at 25°.
+- **Hinge:** the knuckles run 0.3 mm inside the towers, as today.
+- **Neighbouring towers meet** near their noses, so in one part they merge
+  into a block between modules.
+- **The M5 hinge screw still goes in from outside.** A Ø10 rod along each
+  hinge axis, standing in for the screw head and the hex key, clears the
+  next tower by 2.9 mm.
+
+**Choices before drawing it in Onshape:**
+1. **Tower width:** today's 12.3 mm, as drawn, or 8.1 mm. With 8.1 mm the
+   neighbouring towers stay apart, with a gap of about 3 mm between them.
+2. **The 1.26 mm at 0°:** for 2 mm, take about 0.8 mm off the back of the
+   tower's foot, or lengthen the plate's notch by as much.
+3. **Stiffness:** the shelf is 6 mm, like today's baseplate, but it is 320 mm
+   across. Ribs underneath, clear of the slots, would stiffen it.
+
+**Printing.**
+- **Orientation:** print it shelf-down.
+- **Overhangs:** the towers' faces lean 19.5° from vertical. The only real
+  overhang is the underside of each R9 nose, which today's baseplate has too.
+- **Bed:** at 320.5 mm, it leaves 4.5 mm of the H2D's 325 mm single-nozzle
+  width for a brim or skirt.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -536,10 +619,12 @@ between bulk doses. This was not modelled.
 | [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
 | [`components.py`](components.py), [`parts.json`](parts.json) | The tri-star's parts: each one rendered alone ([`renders/components/`](renders/components/)), the reused/new/removed sheets, the exploded module, the status-coloured station, the actuator connection and its checks |
 | [`plate.py`](plate.py), [`plate.json`](plate.json) | The gearless mounting plate against today's: sizes, volumes, floor holes and what uses each, the hinge stack; renders `plate_compare.png` |
+| [`base.py`](base.py), [`base.json`](base.json) | The one-piece base with today's hinge towers, and the plate trimmed as Ethan has it: dimensions, clearance checks, `base_drawing.png` and `base_iso.png` |
+| [`base/`](base/) | `base.step` and `base.stl`: the base, origin on the beaker axis, z = 0 on its underside |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
-pip install cadquery trimesh python-fcl rtree vtk pillow numpy
+pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib
 xvfb-run -a python concepts.py              # sweeps + figures, about 4 min on 4 cores
 xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
 xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
@@ -547,6 +632,7 @@ python tap_bracket.py                       # re-export the bracket from Onshape
 xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
 xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
 xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
+xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
 ```
 
 **Limits.**

@@ -4,8 +4,8 @@
  "lobe": {
   "half_w": 50.0,
   "y_wide": 50.0,
-  "half_w_end": 25.0,
-  "y_end": 150.0,
+  "half_w_end": 24.0,
+  "y_end": 142.0,
   "root": 15.0,
   "r": 10.0
  },
@@ -13,13 +13,13 @@
  "slot": {
   "x": 17.0,
   "y0": 33.0,
-  "y1": 120.0
+  "y1": 112.0
  },
  "pad": {
   "x": 14.5,
   "y": [
-   126.0,
-   142.0
+   119.0,
+   133.0
   ],
   "d": 4.5
  },
@@ -144,25 +144,29 @@
  ],
  "export": {
   "x": [
-   -167.55,
-   167.55
+   -160.25,
+   160.25
   ],
   "y": [
-   -110.89,
-   182.0
+   -106.24,
+   174.0
   ],
   "z": [
    -0.01,
    52.25
   ],
-  "volume_cm3": 266.1
+  "volume_cm3": 258.6
  },
- "print_footprint": {
-  "angle_deg": 15.0,
+ "fits_h2d_one_nozzle": {
+  "bed": [
+   325.0,
+   320.0
+  ],
   "size": [
-   324.4,
-   324.4
-  ]
+   320.5,
+   280.2
+  ],
+  "fits": true
  },
  "checks": {
   "one_module_to_base": {
@@ -173,14 +177,14 @@
     "0": 1.26,
     "5": 4.07,
     "10": 6.34,
-    "15": 8.8,
-    "20": 11.44,
-    "25": 12.38,
-    "30": 12.98,
-    "35": 13.0,
-    "40": 13.0,
-    "45": 13.0,
-    "50": 13.0,
+    "15": 5.27,
+    "20": 4.46,
+    "25": 4.39,
+    "30": 4.98,
+    "35": 6.17,
+    "40": 7.87,
+    "45": 10.04,
+    "50": 12.62,
     "55": 13.0,
     "60": 13.0,
     "65": 13.0,
@@ -199,20 +203,20 @@
     "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
    },
    "30,30,30": {
-    "mm": 12.98,
-    "between": "A:P16 rod / base",
+    "mm": 4.98,
+    "between": "B:P16 rod / base",
     "modules_only_mm": 13.85,
     "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
    },
    "45,45,45": {
-    "mm": 13.0,
+    "mm": 10.04,
     "between": "C:P16 rod / base",
     "modules_only_mm": 13.87,
     "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
    },
    "60,60,60": {
     "mm": 13.0,
-    "between": "C:P16 rod / base",
+    "between": "A:P16 rod / base",
     "modules_only_mm": 13.84,
     "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
    },
