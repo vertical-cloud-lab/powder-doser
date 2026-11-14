@@ -1,0 +1,195 @@
+{
+  "request": {
+    "pr": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6642779777",
+    "by": "sgbaird",
+    "text": "what is the link / what are the details of the manual print? Don't send anything, this is meant as a read-only",
+    "requested_utc": "2026-11-04T21:38:52Z",
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/41918039553",
+    "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6642790988",
+    "read_only": true
+  },
+  "announced": {
+    "by": "brandonmunk",
+    "utc": "2026-11-04T21:09:00Z",
+    "url": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6642168123",
+    "text": "Started manual print on the H2D for the baseplate. Estimated print time is roughly 2.5hrs."
+  },
+  "job": {
+    "source_of_these_fields": "Bambu Studio 02.08.02.61, home page -> Print History -> Base (the lab account's cloud task list), runner clock in UTC",
+    "project": "Base",
+    "plate": "Plate 1",
+    "printer": "BYU VCL H2D - Théoden",
+    "started_utc": "2026-11-04T19:38Z (minute resolution)",
+    "build_plate": "Textured PEI Plate",
+    "filament": {
+      "type": "PLA",
+      "colour": "black",
+      "grams": 79.42,
+      "ams_slot": "A2 (left AMS)",
+      "nozzle": "left"
+    },
+    "kind": "Gcode: a sliced file sent from Studio; not cloud-sliced and not a public MakerWorld profile",
+    "studio_estimate": "2 h 32 min 27 s",
+    "layers": 261,
+    "public_link": null,
+    "public_link_note": "Bambu gives a cloud print task no shareable URL; it is visible only when logged in to the lab account (Studio Print History or Bambu Handy)"
+  },
+  "device_page_first_read": {
+    "utc": "2026-11-04T21:46:42Z/21:47:22Z",
+    "progress": "80 %, layer 109 -> 112 of 261, 30 -> 29 min left, estimated finish 22:16 UTC",
+    "temperatures_c": {
+      "left_nozzle": "220/220",
+      "right_nozzle": "38/38",
+      "bed": "55/55",
+      "chamber": "26 (target 0)"
+    },
+    "speed": "100 %",
+    "lamp": "on",
+    "ams": "left AMS (16 % humidity): A2 black PLA (feeding the left nozzle), A4 blue PLA, A1 and A3 empty; right AMS (6 %): empty; external spool: TPU (feeding the right nozzle)",
+    "hms": "one maintenance reminder, no faults: 'Please clean and lubricate the X-axis linear rail, YZ-axis linear rods, and the extruder lift linear rail.'"
+  },
+  "nozzles": {
+    "read_utc": "2026-11-04T21:48:32Z",
+    "screenshot": "printer-parts-20261104T214832Z.png",
+    "installed": [
+      "hardened steel 0.4 mm, Standard flow",
+      "hardened steel 0.6 mm, TPU High flow"
+    ],
+    "sides": "not labelled in the dialog; the job prints from the left nozzle and the right one is fed TPU, so the 0.4 mm Standard nozzle is most likely the left one",
+    "earlier_today": "04:32-05:41 UTC: both 0.6 mm (Standard and TPU High flow), docs/prints/2026-11-04-baseplate-h2d/",
+    "refresh_pressed": false
+  },
+  "source": {
+    "onshape": "https://cad.onshape.com/documents/68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
+    "part_studio": "Base",
+    "document_modified_utc": "2026-11-01T02:10:28.945Z",
+    "microversion": "2a508062f03fe6fb748aaf74",
+    "checked_utc": "2026-11-04T21:51Z (anonymous, unchanged since the 2026-11-03 snapshot)",
+    "extent_mm": [
+      190.4,
+      190.4,
+      52.6
+    ],
+    "match": "the job's thumbnail shows the same part as Onshape's render (cad/onshape-193/baseplate/base/iso.png)"
+  },
+  "file": {
+    "in_repo": false,
+    "why": "the sent 3MF is in the printer's cache, which Studio's Storage tab does not list (its Model list holds only five files from 2026-08); reading /cache needs LAN FTPS, which a print run doesn't have; Studio's cloud token is encrypted on disk, so the task's file wasn't fetched through Bambu's API either"
+  },
+  "watch": {
+    "method": "Device page screenshots every 30 s, OCR of the job panel; never clicked",
+    "first": {
+      "utc": "20261104T215501Z",
+      "layer": [
+        147,
+        261
+      ],
+      "percent": 85,
+      "left_nozzle_c": [
+        220,
+        220
+      ],
+      "bed_c": [
+        55,
+        55
+      ],
+      "camera_mean_luma": 99.6
+    },
+    "last": {
+      "utc": "20261104T221836Z",
+      "layer": [
+        261,
+        261
+      ],
+      "percent": null,
+      "left_nozzle_c": [
+        204,
+        0
+      ],
+      "bed_c": [
+        53,
+        0
+      ],
+      "camera_mean_luma": 101.0
+    },
+    "samples": 45,
+    "log": "watch-log.jsonl"
+  },
+  "final": {
+    "finished_utc": "2026-11-04T22:18Z (job panel: 100 %, layer 261/261, Finished; the Printing label went between 22:18:04 and 22:18:36; bed target 0 by 22:18:04, left nozzle target 0 by 22:18:36)",
+    "frame": "h2d-frame-20261104T221854Z.png",
+    "frame_utc": "2026-11-04T22:18:54Z",
+    "elapsed_from_start": "about 2 h 40 min from 19:38 (Studio estimate 2 h 32 min 27 s, which leaves out heating and calibration)",
+    "read": "the part looks complete on the textured PEI plate, toolhead parked top left; what looks like a slim support stands under each hinge block; nothing loose or stringy that I can see",
+    "hms": "no dialog appeared during the watch; the HMS list was not re-read after the finish",
+    "thread": "polled every 30 s from 21:55 to 22:18 UTC; no new comments"
+  },
+  "sent": false,
+  "studio": {
+    "version": "02.08.02.61",
+    "login": "password, then the first authenticator code from bambu-totp (Log In 21:45:14, code typed 21:45:38, Confirm 21:45:40 UTC); no e-mailed code asked for",
+    "h2d_selected_utc": "2026-11-04T21:46:31Z",
+    "clicked": "Device page: printer list, camera play, Status/Storage/Assistant (HMS) tabs, Storage's Model view, Printer Parts (closed without Refresh); home page: Print History and the Base card",
+    "recording": "none: nothing was to be sent",
+    "signed_out_utc": "2026-11-04T22:20:05Z",
+    "closed_and_config_deleted": true
+  },
+  "followup_2026_11_10": {
+    "asked": {
+      "by": "sgbaird",
+      "utc": "2026-11-10T01:08:36Z",
+      "url": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6755950292",
+      "text": "how did this print go?"
+    },
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/42733613285",
+    "kind": "plain @claude run, no Bambu login; read only over the LAN from the doser Pi",
+    "reports_since_11_04": "none on #197, #193, #191 or PR #200; PR #181 has 'Started first assembly' (lshuldberg, 2026-11-05T22:32:25Z) without naming the baseplate",
+    "printer_state": {
+      "read_utc": [
+        "2026-11-10T01:13:30Z",
+        "2026-11-10T01:21:02Z"
+      ],
+      "busy": "printing another lab job (layer 2, then 3, of 556; print_error 0), so only folder listings and two small downloads were made",
+      "sent_to_printer": "one MQTT pushall status request per read; nothing else"
+    },
+    "nozzles": {
+      "left": "device nozzle 1: 0.4 mm HS01 (hardened steel, standard flow), 220/220 C for the other job",
+      "right": "device nozzle 0: 0.6 mm HU01 (hardened steel, TPU high flow), cold",
+      "mapping": "Bambu Studio maps DEPUTY_EXTRUDER_ID (1) to the left nozzle and MAIN_EXTRUDER_ID (0) to the right: https://github.com/bambulab/BambuStudio/blob/1ca1aadfc0a4894430194abbe4e51f077288cc02/src/slic3r/GUI/DeviceTab/wgtDeviceNozzleSelect.cpp#L126-L127",
+      "base_print": "same pair as Printer Parts on 11-04, and the Base printed from the left nozzle, so it was printed with 0.4 mm",
+      "claude_print_rule": "the right nozzle is still 0.6 mm, so a @claude-print run would hold an H2D print",
+      "script": "scripts/bambu_lan_status.py"
+    },
+    "timelapse": {
+      "printer_path": "/timelapse/video_2026-11-05_03-49-46.mp4",
+      "printer_mtime_utc": "2026-11-04T22:18Z",
+      "started_utc": "2026-11-04T19:49:46Z (the file name is in the printer's UTC+8 clock)",
+      "bytes": 5309160,
+      "sha256": "5090e7e8de581f7bad416f39d60eb6ea0db57e3c3d1e6ecec810d6803fb0b9f3",
+      "video": "1680x1080 h264, 24 fps, 300 frames, 12.46 s: one frame per layer for 261 layers, then a 39-frame hold",
+      "thumbnail": {
+        "printer_path": "/timelapse/thumbnail/video_2026-11-05_03-49-46.jpg",
+        "bytes": 23963,
+        "sha256": "3b9ab5c4af92ff0d60f7daa70ba0f1965227c73d631146803f736dfb38e894fa"
+      },
+      "download": "FTPS port 990 with curl on the Pi, its config (with the access code) on stdin, limit-rate 400k; 01:14:58-01:15:14 UTC; sizes matched the listing",
+      "committed": [
+        "timelapse/video_2026-11-05_03-49-46.mp4",
+        "timelapse/video_2026-11-05_03-49-46.jpg",
+        "timelapse/timelapse.gif",
+        "timelapse/keyframes.jpg",
+        "timelapse/final-closeups.jpg"
+      ]
+    },
+    "ipcam_recording": {
+      "printer_paths": "/ipcam/ipcam-record.2026-11-05_03-49-14.32.mp4 to .50.mp4",
+      "files": 19,
+      "bytes": 4725397502,
+      "span_utc": "2026-11-04T19:49:14Z to 22:18Z",
+      "downloaded": false,
+      "why": "4.73 GB is too much for the Pi's Wi-Fi"
+    },
+    "sliced_file": "still not readable: the FTPS root has no cache folder, and its only .gcode.3mf files are from 2026-08",
+    "read": "clean from the first layer to the last: flat first layer, no layer shift, no spaghetti, both tree supports under the hinge bosses stood to the end, no corner lift in the last frame. Dimensions, hole sizes, the underside and support removal can't be judged from the camera"
+  }
+}

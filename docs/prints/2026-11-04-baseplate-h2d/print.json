@@ -1,0 +1,73 @@
+{
+  "request": {
+    "pr": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6622491382",
+    "issue": "https://github.com/vertical-cloud-lab/powder-doser/issues/197",
+    "by": "brandonmunk",
+    "text": "The H2D should be back online, try printing the downloaded baseplate file with a .4mm nozzle.",
+    "requested_utc": "2026-11-04T04:23:08Z",
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/41772878995",
+    "run_started_utc": "2026-11-04T04:23:57Z",
+    "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6622502125"
+  },
+  "file": {
+    "source": "https://cad.onshape.com/documents/68b18e694d8672d95f496279/w/ca6615cd1f43e41c93dbf2f5/e/9f7a9b5e682bc05529f15125",
+    "onshape_document_modified_utc": "2026-11-01T02:10:28Z",
+    "exported": false,
+    "why_not_exported": "the run's ONSHAPE_ACCESS_KEY/ONSHAPE_SECRET_KEY get HTTP 402 'API limit exceeded' on document requests (sessioninfo 200); anonymous requests can't export",
+    "onshape_402_utc": [
+      "04:27",
+      "04:42:46",
+      "04:43:09 (Auger document)",
+      "every 5 min 04:49-05:41 (11 tries)"
+    ],
+    "reply_about_onshape": {
+      "by": "brandonmunk",
+      "utc": "2026-11-04T04:42:17Z",
+      "url": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6622749892",
+      "text": "Last time you tried downloading the onshape files you encountered an error \"API limit exceeded\". That should be fixed now, try downloading the files again."
+    }
+  },
+  "printer": {
+    "name": "BYU VCL H2D - Théoden",
+    "online": true,
+    "selected_utc": "2026-11-04T04:30:59Z",
+    "state": "idle, heaters off (left nozzle 26 C, right nozzle 24 C, bed 23 C, chamber 25 C); last job 'Part 1' 457/457 layers, 100 %, Finished (3 h 8 min, 175.70 g)",
+    "nozzles": "two hardened-steel nozzles, 0.6 mm each, flow 'Standard' and 'TPU High flow' (Printer Parts dialog; not labelled left/right); 17 reads 04:32-05:41 UTC, all the same",
+    "nozzles_ok_for_this_repo": false,
+    "hms": "one maintenance reminder, no faults: 'Please clean and lubricate the X-axis linear rail, YZ-axis linear rods, and the extruder lift linear rail.'",
+    "ams": "left AMS: A2 black PLA, A4 blue PLA, A1 and A3 empty (16 % humidity); right AMS slot A empty; external spool TPU",
+    "other_printer_on_account": "Thumbelina (A1 mini): selected by Studio at login, idle, last job issue55_main_shell_A1mini_PLA at 100 %, Finished"
+  },
+  "plate_check": {
+    "frame": "h2d-frame-20261104T043154Z.png",
+    "frame_utc": "2026-11-04T04:31:54Z",
+    "frame_posted_utc": "2026-11-04T04:34:33Z",
+    "mean_luma": 96.4,
+    "read": "textured PEI plate with its printed logo outline and the toolhead parked top left; nothing on the plate; front-left corner just out of frame",
+    "last_frame": "h2d-frame-20261104T054535Z.png",
+    "plate_diff_from_first_frame": "5.1-5.4 of 255 in every frame with the live view playing; 88.4 at 04:39:55 was the live view closed",
+    "thread_polled": "every 30 s from 04:34 to 05:45 UTC (stated cutoff)",
+    "replies": [
+      {
+        "by": "brandonmunk",
+        "utc": "2026-11-04T04:42:17Z",
+        "about": "Onshape API limit should be fixed"
+      }
+    ]
+  },
+  "go": null,
+  "sent": false,
+  "why_not_sent": [
+    "Both nozzles report 0.6 mm; this repo needs 0.2 or 0.4 mm in every nozzle and the request was for 0.4 mm",
+    "No baseplate file: the Onshape keys still got HTTP 402 through 05:41 UTC, and nothing had been downloaded before",
+    "After hours (21:31-22:45 MST) with nobody confirmed at the printer"
+  ],
+  "studio": {
+    "version": "02.08.02.61",
+    "login": "password, then the first authenticator code from bambu-totp (Log In 04:29:59, code 04:30:14, Confirm 04:30:16 UTC); no e-mailed code asked for",
+    "signed_out_utc": "2026-11-04T05:46:05Z",
+    "closed_and_config_deleted": true,
+    "recording": "raw recording deleted unpublished: nothing was printed, and it showed the login"
+  },
+  "github_token": "re-minted at 05:15 UTC with scripts/refresh_github_app_token.py"
+}

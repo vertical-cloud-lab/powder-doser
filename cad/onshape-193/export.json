@@ -1,0 +1,389 @@
+{
+ "started_utc": "2026-11-12T23:48:35Z",
+ "api": "https://cad.onshape.com/api/v6",
+ "snapshot_fetched_utc": "2026-11-04T06:20:53Z",
+ "max_calls": 40,
+ "estimate": 16,
+ "elements": [
+  {
+   "entry": "Mounting plate",
+   "element": "Part Studio 1",
+   "type": "PARTSTUDIO",
+   "id": "224d71f16476d8c27dc6e3e0",
+   "dir": "mounting-plate/part-studio-1",
+   "snapshot_microversion": "abdcba8fa5eec45fad91fa92",
+   "microversion_at_export": "2e3da59d43f2034b433fce12",
+   "unchanged_since_snapshot": false,
+   "stl": [
+    {
+     "file": "mounting-plate/part-studio-1/stl/part-studio-1-part-1.stl",
+     "part": "Part Studio 1 - Part 1",
+     "bytes": 607884,
+     "sha256": "fdf08faeba2a1a85500a5c76b26b7efadcaf31500926cbefdc5f8d4ed97fcacb",
+     "triangles": 12156,
+     "watertight": true,
+     "volume_cm3": 91.646,
+     "extent_mm": [
+      108.2,
+      149.46,
+      54.72
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 12156, watertight True, volume 91.65 cm3",
+    "extent mm: [108.2, 149.46, 54.72]",
+    "top: onshape 108.4 x 149.8 mm, stl 108.4 x 149.8 mm, IoU 0.9931, mismatched px 1674 (shift 1,0)",
+    "front: onshape 108.6 x 55.2 mm, stl 108.4 x 55.0 mm, IoU 0.9850, mismatched px 1292 (shift 2,1)",
+    "right: onshape 149.8 x 55.2 mm, stl 149.8 x 55.0 mm, IoU 0.9758, mismatched px 1299 (shift 1,1)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Auger",
+   "element": "Part Studio 1",
+   "type": "PARTSTUDIO",
+   "id": "3c166b7f26f467535e63234e",
+   "dir": "auger/part-studio-1",
+   "snapshot_microversion": "e7c79c28b4efc1804f70ebe5",
+   "microversion_at_export": "e7c79c28b4efc1804f70ebe5",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "auger/part-studio-1/stl/part-studio-1-part-1.stl",
+     "part": "Part Studio 1 - Part 1",
+     "bytes": 3436684,
+     "sha256": "e5c2efcfc59ee0a576ac2cbdcadda671cdcdc09e0f4991f0a9fe23e95c72f844",
+     "triangles": 68732,
+     "watertight": true,
+     "volume_cm3": 53.307,
+     "extent_mm": [
+      45.99,
+      45.99,
+      250.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 68732, watertight True, volume 53.31 cm3",
+    "extent mm: [45.99, 45.99, 250.0]",
+    "top: onshape 46.4 x 46.4 mm, stl 46.2 x 46.2 mm, IoU 0.9852, mismatched px 578 (shift 1,1)",
+    "front: onshape 46.4 x 250.4 mm, stl 46.2 x 250.2 mm, IoU 0.9960, mismatched px 654 (shift 0,1)",
+    "right: onshape 46.4 x 250.4 mm, stl 46.2 x 250.2 mm, IoU 0.9959, mismatched px 670 (shift 0,1)",
+    "all silhouettes IoU >= 0.98: True"
+   ]
+  },
+  {
+   "entry": "Tap collar",
+   "element": "tapcollar",
+   "type": "PARTSTUDIO",
+   "id": "cf844b34a00ef7d2d52191c1",
+   "dir": "tap-collar/tapcollar",
+   "snapshot_microversion": "a6489481abd385ea371f62a0",
+   "microversion_at_export": "a6489481abd385ea371f62a0",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "tap-collar/tapcollar/stl/tapcollar-body1.stl",
+     "part": "tapcollar - Body1",
+     "bytes": 114784,
+     "sha256": "228c39651ea2c163508826261fa863ef1e0e241594b8b644ddc2e8995aa2491d",
+     "triangles": 2294,
+     "watertight": true,
+     "volume_cm3": 12.94,
+     "extent_mm": [
+      45.95,
+      17.0,
+      70.09
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 2294, watertight True, volume 12.94 cm3",
+    "extent mm: [45.95, 17.0, 70.09]",
+    "top: onshape 46.4 x 17.4 mm, stl 46.2 x 17.2 mm, IoU 0.9797, mismatched px 400 (shift 1,1)",
+    "front: onshape 46.4 x 70.6 mm, stl 46.2 x 70.4 mm, IoU 0.9837, mismatched px 624 (shift 1,1)",
+    "right: onshape 17.4 x 70.6 mm, stl 17.2 x 70.4 mm, IoU 0.9889, mismatched px 213 (shift 1,1)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Tap collar",
+   "element": "Tap Collar Recreation",
+   "type": "PARTSTUDIO",
+   "id": "5698e113586ac646eea0efd1",
+   "dir": "tap-collar/tap-collar-recreation",
+   "snapshot_microversion": "a6489481abd385ea371f62a0",
+   "microversion_at_export": "a6489481abd385ea371f62a0",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "tap-collar/tap-collar-recreation/stl/tap-collar-recreation-part-1.stl",
+     "part": "Tap Collar Recreation - Part 1",
+     "bytes": 115684,
+     "sha256": "7365f0dc581287fa7902d007dd22ae9ccae644c332180e4cd6bfcc1c331ac2f6",
+     "triangles": 2312,
+     "watertight": true,
+     "volume_cm3": 13.085,
+     "extent_mm": [
+      45.92,
+      17.0,
+      70.09
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 2312, watertight True, volume 13.08 cm3",
+    "extent mm: [45.92, 17.0, 70.09]",
+    "top: onshape 46.4 x 17.4 mm, stl 46.2 x 17.2 mm, IoU 0.9798, mismatched px 399 (shift 1,1)",
+    "front: onshape 46.4 x 70.6 mm, stl 46.2 x 70.4 mm, IoU 0.9836, mismatched px 632 (shift 1,1)",
+    "right: onshape 17.4 x 70.6 mm, stl 17.2 x 70.4 mm, IoU 0.9889, mismatched px 213 (shift 1,1)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Servo pinion",
+   "element": "Complete Servo Pinion",
+   "type": "PARTSTUDIO",
+   "id": "ce683b15c3b969067abfe902",
+   "dir": "servo-pinion/complete-servo-pinion",
+   "snapshot_microversion": "f9cfc5f98ab823d0599f7bdf",
+   "microversion_at_export": "f9cfc5f98ab823d0599f7bdf",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "servo-pinion/complete-servo-pinion/stl/complete-servo-pinion-spur-gear-14-teeth.stl",
+     "part": "Complete Servo Pinion - Spur gear (14 teeth)",
+     "bytes": 176884,
+     "sha256": "7361e8b68de113408ed029f732de479f18c23f86da933bb53ee4d9c4388cf368",
+     "triangles": 3536,
+     "watertight": true,
+     "volume_cm3": 2.986,
+     "extent_mm": [
+      20.45,
+      12.3,
+      20.78
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 3536, watertight True, volume 2.99 cm3",
+    "extent mm: [20.45, 12.3, 20.78]",
+    "top: onshape 20.8 x 12.6 mm, stl 20.8 x 12.6 mm, IoU 0.9904, mismatched px 63 (shift 0,-3)",
+    "front: onshape 20.8 x 21.2 mm, stl 20.8 x 21.0 mm, IoU 0.9558, mismatched px 295 (shift 1,1)",
+    "right: onshape 12.6 x 21.2 mm, stl 12.6 x 21.0 mm, IoU 0.9751, mismatched px 166 (shift 0,-3)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Servo pinion",
+   "element": "Servo_pinion",
+   "type": "PARTSTUDIO",
+   "id": "925f1d8151cdcbb5fbc3edd8",
+   "dir": "servo-pinion/servo-pinion",
+   "snapshot_microversion": "f9cfc5f98ab823d0599f7bdf",
+   "microversion_at_export": "f9cfc5f98ab823d0599f7bdf",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "servo-pinion/servo-pinion/stl/servo-pinion-spur-gear-14-teeth.stl",
+     "part": "Servo_pinion - Spur Gear (14 teeth)",
+     "bytes": 208284,
+     "sha256": "aa2dba7427285c5d2462d57f2b49238dd350d0559528ccf9dd9188f866a3bd6d",
+     "triangles": 4164,
+     "watertight": true,
+     "volume_cm3": 2.904,
+     "extent_mm": [
+      20.75,
+      20.42,
+      12.3
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 4164, watertight True, volume 2.90 cm3",
+    "extent mm: [20.75, 20.42, 12.3]",
+    "top: onshape 21.2 x 20.8 mm, stl 21.0 x 20.8 mm, IoU 0.9573, mismatched px 286 (shift 1,0)",
+    "front: onshape 21.2 x 12.6 mm, stl 21.0 x 12.6 mm, IoU 0.9667, mismatched px 222 (shift 1,-3)",
+    "right: onshape 20.8 x 12.6 mm, stl 20.8 x 12.6 mm, IoU 0.9753, mismatched px 162 (shift 0,0)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Stepper pinion",
+   "element": "Stepper Pinion",
+   "type": "PARTSTUDIO",
+   "id": "5fa50b725c9798e330133171",
+   "dir": "stepper-pinion/stepper-pinion",
+   "snapshot_microversion": "120eff16b37d4b2f206ebab4",
+   "microversion_at_export": "120eff16b37d4b2f206ebab4",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "stepper-pinion/stepper-pinion/stl/stepper-pinion-stepper-pinion.stl",
+     "part": "Stepper Pinion - Stepper Pinion",
+     "bytes": 242284,
+     "sha256": "427c260de0f74fa78688f0fa7cca712af351a9b281eccc6f1894766d2ef35b1a",
+     "triangles": 4844,
+     "watertight": true,
+     "volume_cm3": 5.261,
+     "extent_mm": [
+      28.38,
+      16.1,
+      28.38
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 4844, watertight True, volume 5.26 cm3",
+    "extent mm: [28.38, 16.1, 28.38]",
+    "top: onshape 28.8 x 16.4 mm, stl 28.6 x 16.4 mm, IoU 0.9777, mismatched px 198 (shift 0,0)",
+    "front: onshape 28.8 x 28.8 mm, stl 28.6 x 28.6 mm, IoU 0.9659, mismatched px 456 (shift 1,1)",
+    "right: onshape 16.4 x 28.8 mm, stl 16.4 x 28.6 mm, IoU 0.9780, mismatched px 195 (shift 0,2)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Stepper pinion",
+   "element": "stepper_pinion",
+   "type": "PARTSTUDIO",
+   "id": "34e4bc84d0ac2aa4e927b73b",
+   "dir": "stepper-pinion/stepper-pinion-34e4bc",
+   "snapshot_microversion": "120eff16b37d4b2f206ebab4",
+   "microversion_at_export": "120eff16b37d4b2f206ebab4",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "stepper-pinion/stepper-pinion-34e4bc/stl/stepper-pinion-spur-gear-20-teeth.stl",
+     "part": "stepper_pinion - Spur Gear (20 teeth)",
+     "bytes": 257884,
+     "sha256": "a25d23bea008842b2aee49d8f08e7914deb5986f7f0448aee078c806f0bee8c0",
+     "triangles": 5156,
+     "watertight": true,
+     "volume_cm3": 3.167,
+     "extent_mm": [
+      21.99,
+      21.99,
+      16.1
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 5156, watertight True, volume 3.17 cm3",
+    "extent mm: [21.99, 21.99, 16.1]",
+    "top: onshape 22.4 x 22.4 mm, stl 22.2 x 22.2 mm, IoU 0.9642, mismatched px 282 (shift 1,1)",
+    "front: onshape 22.4 x 16.4 mm, stl 22.2 x 16.4 mm, IoU 0.9782, mismatched px 157 (shift 0,0)",
+    "right: onshape 22.4 x 16.4 mm, stl 22.2 x 16.4 mm, IoU 0.9774, mismatched px 163 (shift 0,0)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  }
+ ],
+ "finished_utc": "2026-11-12T23:49:01Z",
+ "calls_counted": 16,
+ "calls": [
+  {
+   "utc": "2026-11-12T23:48:36Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:38Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:39Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:41Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:44Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:45Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:46Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:47Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:50Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:51Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:53Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:55Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:56Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:48:57Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-12T23:48:59Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-12T23:49:00Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  }
+ ]
+}

@@ -1,0 +1,1249 @@
+{
+ "partStudioFeatures": [],
+ "parts": [
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "5e6db88e8a8d5328b172ba6d",
+   "documentMicroversion": "c3b96ca15df8403343e6fd7b",
+   "documentVersion": "a9beffa67344022457765a6c",
+   "elementId": "59890746941ebde49fa31a66",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/5e6db88e8a8d5328b172ba6d/v/a9beffa67344022457765a6c/e/59890746941ebde49fa31a66/pi/026363f24bbf60119d2159bf?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "documentMicroversion": "8b3a62aa97efda8d5ae1af79",
+   "documentVersion": "119ff9d1623649f51b8997c9",
+   "elementId": "7c0d89ca7e487cdf4a761fd7",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/3493a07ffbb9b140e0fcdf21/v/119ff9d1623649f51b8997c9/e/7c0d89ca7e487cdf4a761fd7/pi/0be4fb6bc6678c357da45588?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "b0b9aed3e11591e566530a68",
+   "documentMicroversion": "fb7d57b2a01e2d39a95ca907",
+   "documentVersion": "10bff3d869f7d14b5d83ebb8",
+   "elementId": "cf844b34a00ef7d2d52191c1",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/b0b9aed3e11591e566530a68/v/10bff3d869f7d14b5d83ebb8/e/cf844b34a00ef7d2d52191c1/pi/b8b65a7c931bfc93674162b9?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JFD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "53e9cce7f09a50f89c120028",
+   "documentMicroversion": "2ad94786158e7469c62b7760",
+   "documentVersion": "c2adfee7bd3e884308866c96",
+   "elementId": "224d71f16476d8c27dc6e3e0",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/53e9cce7f09a50f89c120028/v/c2adfee7bd3e884308866c96/e/224d71f16476d8c27dc6e3e0/pi/4caa8a5c72263142c4fb73a8?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "659ee3322c5c9c9ce8146b43",
+   "documentMicroversion": "2ca0beddee1b97b2c432aae8",
+   "documentVersion": "10a486fe205b7a7de86a13d3",
+   "elementId": "bbd4667923221cda37cd63e1",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/659ee3322c5c9c9ce8146b43/v/10a486fe205b7a7de86a13d3/e/bbd4667923221cda37cd63e1/pi/1f7f04679439b0f1754329d5?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "6cb5182c1e0e0193cfea81bb",
+   "documentMicroversion": "3a70e77770977ea040750697",
+   "documentVersion": "7a9139fa822d9a086eb96ea9",
+   "elementId": "ea82a43a82cf5f861b73a9e3",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/6cb5182c1e0e0193cfea81bb/v/7a9139fa822d9a086eb96ea9/e/ea82a43a82cf5f861b73a9e3/pi/cc90fe696e8d3a239f3a2c81?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "68b18e694d8672d95f496279",
+   "documentMicroversion": "f1553b56d9576398ae881ef1",
+   "documentVersion": "62b5a42c09002d0c2f974a81",
+   "elementId": "9f7a9b5e682bc05529f15125",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/68b18e694d8672d95f496279/v/62b5a42c09002d0c2f974a81/e/9f7a9b5e682bc05529f15125/pi/48a20c1ffc512bdaa5ea1089?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "0401d55bca2deb006cc69926",
+   "documentMicroversion": "120eff16b37d4b2f206ebab4",
+   "documentVersion": "3a977107d507a934cbe945a2",
+   "elementId": "5fa50b725c9798e330133171",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/0401d55bca2deb006cc69926/v/3a977107d507a934cbe945a2/e/5fa50b725c9798e330133171/pi/5e69640a06610d1c19364a27?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "35ecacf511109e3b823b3ed0",
+   "documentMicroversion": "5f8fa7cedf0cb1c1b5663cbb",
+   "documentVersion": "2195478027cde74d501f135b",
+   "elementId": "ce683b15c3b969067abfe902",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/35ecacf511109e3b823b3ed0/v/2195478027cde74d501f135b/e/ce683b15c3b969067abfe902/pi/2d4d63b7cf1cf6bb32e7dd29?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "51aa3e7d16cc046d79714a7a",
+   "documentMicroversion": "d97a0d5b25a4e5fa91389bc4",
+   "documentVersion": "c0b9d775bd4b0993a30d794d",
+   "elementId": "3c166b7f26f467535e63234e",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/51aa3e7d16cc046d79714a7a/v/c0b9d775bd4b0993a30d794d/e/3c166b7f26f467535e63234e/pi/ceab0cb6264f11a20e4b173c?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JHD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/029c3d7702f5bd9ee0537acc?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KFnT"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/5c391ff60c3ce7521ce768d9?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KFXT"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/b26aa198710df1e1da3768d0?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KFfT"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/c723815a4e36bcf9dea43080?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KFXU"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/3422d246f5fe5232a36f4a5c?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KF7T"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "ed14141d244f2b1f61474c0e",
+   "documentMicroversion": "7917447ae7ce902bcddb5a76",
+   "documentVersion": "5a25ce4a77c82f318c7bdc22",
+   "elementId": "fe0de1238e9c7c987d776d58",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/ed14141d244f2b1f61474c0e/v/5a25ce4a77c82f318c7bdc22/e/fe0de1238e9c7c987d776d58/pi/a2bffa0aad5d4599c54ec6b4?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "KFbU"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentMicroversion": "6042afad597d67f8c1d73d30",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/862c1d747b6c2d4728dee1aa/v/d636057a9523d81af8ba00aa/e/d225d5f2665d66733c3b5fd4/pi/eaee40bd365aa81823d76d4d?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JFD"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "862c1d747b6c2d4728dee1aa",
+   "documentMicroversion": "6042afad597d67f8c1d73d30",
+   "documentVersion": "d636057a9523d81af8ba00aa",
+   "elementId": "d225d5f2665d66733c3b5fd4",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/862c1d747b6c2d4728dee1aa/v/d636057a9523d81af8ba00aa/e/d225d5f2665d66733c3b5fd4/pi/254f2aac9449ffcf2d698088?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JFH"
+  },
+  {
+   "bodyType": "solid",
+   "configuration": "default",
+   "documentId": "3493a07ffbb9b140e0fcdf21",
+   "documentMicroversion": "8b3a62aa97efda8d5ae1af79",
+   "documentVersion": "e96578563a1e02953f8b5a49",
+   "elementId": "cbbebd3d1064640d9bce4c7f",
+   "fullConfiguration": "default",
+   "isStandardContent": false,
+   "metadataHref": "https://cad.onshape.com/api/metadata/d/3493a07ffbb9b140e0fcdf21/v/e96578563a1e02953f8b5a49/e/cbbebd3d1064640d9bce4c7f/pi/db82d3f094950ab07d3ab0d7?configuration=default&linkDocumentId=f866631c78fbefd61e6856e4",
+   "partId": "JVD"
+  }
+ ],
+ "rootAssembly": {
+  "configuration": "default",
+  "documentId": "f866631c78fbefd61e6856e4",
+  "documentMicroversion": "8b99de7b37f5503801be885c",
+  "elementId": "3156bac055c13d8160e229b4",
+  "fullConfiguration": "default",
+  "instances": [
+   {
+    "configuration": "default",
+    "documentId": "862c1d747b6c2d4728dee1aa",
+    "documentMicroversion": "6042afad597d67f8c1d73d30",
+    "documentVersion": "d636057a9523d81af8ba00aa",
+    "elementId": "d225d5f2665d66733c3b5fd4",
+    "fullConfiguration": "default",
+    "id": "MAhKJvPmRa/gp9fs9",
+    "isStandardContent": false,
+    "name": "MG-996R <1>",
+    "partId": "JFD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "6cb5182c1e0e0193cfea81bb",
+    "documentMicroversion": "3a70e77770977ea040750697",
+    "documentVersion": "7a9139fa822d9a086eb96ea9",
+    "elementId": "ea82a43a82cf5f861b73a9e3",
+    "fullConfiguration": "default",
+    "id": "MgbUrjcoD8rKbJEe1",
+    "isStandardContent": false,
+    "name": "Part 1 <1>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "3493a07ffbb9b140e0fcdf21",
+    "documentMicroversion": "8b3a62aa97efda8d5ae1af79",
+    "documentVersion": "119ff9d1623649f51b8997c9",
+    "elementId": "7c0d89ca7e487cdf4a761fd7",
+    "fullConfiguration": "default",
+    "id": "M5yczsnIsdTzEO21/",
+    "isStandardContent": false,
+    "name": "Part 1 <3>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "659ee3322c5c9c9ce8146b43",
+    "documentMicroversion": "2ca0beddee1b97b2c432aae8",
+    "documentVersion": "10a486fe205b7a7de86a13d3",
+    "elementId": "bbd4667923221cda37cd63e1",
+    "fullConfiguration": "default",
+    "id": "MssYGIqAyXxOjYpLz",
+    "isStandardContent": false,
+    "name": "Part 1 <5>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "659ee3322c5c9c9ce8146b43",
+    "documentMicroversion": "2ca0beddee1b97b2c432aae8",
+    "documentVersion": "10a486fe205b7a7de86a13d3",
+    "elementId": "bbd4667923221cda37cd63e1",
+    "fullConfiguration": "default",
+    "id": "MXsD6qEU/GRnHXD0z",
+    "isStandardContent": false,
+    "name": "Part 1 <6>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "659ee3322c5c9c9ce8146b43",
+    "documentMicroversion": "2ca0beddee1b97b2c432aae8",
+    "documentVersion": "10a486fe205b7a7de86a13d3",
+    "elementId": "bbd4667923221cda37cd63e1",
+    "fullConfiguration": "default",
+    "id": "M5+IUkjgjuqeXEwZz",
+    "isStandardContent": false,
+    "name": "Part 1 <7>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "68b18e694d8672d95f496279",
+    "documentMicroversion": "f1553b56d9576398ae881ef1",
+    "documentVersion": "62b5a42c09002d0c2f974a81",
+    "elementId": "9f7a9b5e682bc05529f15125",
+    "fullConfiguration": "default",
+    "id": "MD1Xf/JEYdZvOXLue",
+    "isStandardContent": false,
+    "name": "Part 1 <4>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "3493a07ffbb9b140e0fcdf21",
+    "documentMicroversion": "8b3a62aa97efda8d5ae1af79",
+    "documentVersion": "e96578563a1e02953f8b5a49",
+    "elementId": "cbbebd3d1064640d9bce4c7f",
+    "fullConfiguration": "default",
+    "id": "MluC0roPhyce0Tqiq",
+    "isStandardContent": false,
+    "name": "Part 1 <2>",
+    "partId": "JVD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "53e9cce7f09a50f89c120028",
+    "documentMicroversion": "2ad94786158e7469c62b7760",
+    "documentVersion": "c2adfee7bd3e884308866c96",
+    "elementId": "224d71f16476d8c27dc6e3e0",
+    "fullConfiguration": "default",
+    "id": "MVDUen5/tCjTJcs56",
+    "isStandardContent": false,
+    "name": "Part 1 <8>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "862c1d747b6c2d4728dee1aa",
+    "documentMicroversion": "6042afad597d67f8c1d73d30",
+    "documentVersion": "d636057a9523d81af8ba00aa",
+    "elementId": "d225d5f2665d66733c3b5fd4",
+    "fullConfiguration": "default",
+    "id": "MOTGGuN050Z/fTXNV",
+    "isStandardContent": false,
+    "name": "MG-996R <2>",
+    "partId": "JFH",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "862c1d747b6c2d4728dee1aa",
+    "documentMicroversion": "6042afad597d67f8c1d73d30",
+    "documentVersion": "d636057a9523d81af8ba00aa",
+    "elementId": "d225d5f2665d66733c3b5fd4",
+    "fullConfiguration": "default",
+    "id": "Mo77VGKmsHa82q0Y/",
+    "isStandardContent": false,
+    "name": "MG-996R <3>",
+    "partId": "JFD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "862c1d747b6c2d4728dee1aa",
+    "documentMicroversion": "6042afad597d67f8c1d73d30",
+    "documentVersion": "d636057a9523d81af8ba00aa",
+    "elementId": "d225d5f2665d66733c3b5fd4",
+    "fullConfiguration": "default",
+    "id": "MEEjavaT3o1hPzPXo",
+    "isStandardContent": false,
+    "name": "MG-996R <4>",
+    "partId": "JFH",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "35ecacf511109e3b823b3ed0",
+    "documentMicroversion": "5f8fa7cedf0cb1c1b5663cbb",
+    "documentVersion": "2195478027cde74d501f135b",
+    "elementId": "ce683b15c3b969067abfe902",
+    "fullConfiguration": "default",
+    "id": "M82kq4UPSDOAqIEvD",
+    "isStandardContent": false,
+    "name": "Spur gear (14 teeth) <1>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "35ecacf511109e3b823b3ed0",
+    "documentMicroversion": "5f8fa7cedf0cb1c1b5663cbb",
+    "documentVersion": "2195478027cde74d501f135b",
+    "elementId": "ce683b15c3b969067abfe902",
+    "fullConfiguration": "default",
+    "id": "MWa8IV5bui5C/1rXX",
+    "isStandardContent": false,
+    "name": "Spur gear (14 teeth) <2>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "MYYCFTUKhKp7IuKBo",
+    "isStandardContent": false,
+    "name": "stepper_motor <1>",
+    "partId": "KFnT",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "5e6db88e8a8d5328b172ba6d",
+    "documentMicroversion": "c3b96ca15df8403343e6fd7b",
+    "documentVersion": "a9beffa67344022457765a6c",
+    "elementId": "59890746941ebde49fa31a66",
+    "fullConfiguration": "default",
+    "id": "Mr/KICkNND0anY4ci",
+    "isStandardContent": false,
+    "name": "Part 1 <9>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "5e6db88e8a8d5328b172ba6d",
+    "documentMicroversion": "c3b96ca15df8403343e6fd7b",
+    "documentVersion": "a9beffa67344022457765a6c",
+    "elementId": "59890746941ebde49fa31a66",
+    "fullConfiguration": "default",
+    "id": "Ml0FiJUa8I8OLFKbf",
+    "isStandardContent": false,
+    "name": "Part 1 <10>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "0401d55bca2deb006cc69926",
+    "documentMicroversion": "120eff16b37d4b2f206ebab4",
+    "documentVersion": "3a977107d507a934cbe945a2",
+    "elementId": "5fa50b725c9798e330133171",
+    "fullConfiguration": "default",
+    "id": "M7wPDCCz7tdz3sQ5g",
+    "isStandardContent": false,
+    "name": "Stepper Pinion <1>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "51aa3e7d16cc046d79714a7a",
+    "documentMicroversion": "d97a0d5b25a4e5fa91389bc4",
+    "documentVersion": "c0b9d775bd4b0993a30d794d",
+    "elementId": "3c166b7f26f467535e63234e",
+    "fullConfiguration": "default",
+    "id": "MJk8Qm09kt/s3IQk/",
+    "isStandardContent": false,
+    "name": "Part 1 <11>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "MA/mRsb6Eem9aC1Ah",
+    "isStandardContent": false,
+    "name": "auger_cap <1>",
+    "partId": "KFfT",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "b0b9aed3e11591e566530a68",
+    "documentMicroversion": "fb7d57b2a01e2d39a95ca907",
+    "documentVersion": "10bff3d869f7d14b5d83ebb8",
+    "elementId": "cf844b34a00ef7d2d52191c1",
+    "fullConfiguration": "default",
+    "id": "MJYKEZD8eK0X0V50N",
+    "isStandardContent": false,
+    "name": "Body1 <1>",
+    "partId": "JFD",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "ML//rmskIOv6ReoRG",
+    "isStandardContent": false,
+    "name": "tap_collar_base <1>",
+    "partId": "KFXT",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "MgBeyBSbzU7dRWy0i",
+    "isStandardContent": false,
+    "name": "solenoid_coil <1>",
+    "partId": "KFXU",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "Mh0Cd2q8KdkC04B+E",
+    "isStandardContent": false,
+    "name": "solenoid_plunger <1>",
+    "partId": "KF7T",
+    "suppressed": false,
+    "type": "Part"
+   },
+   {
+    "configuration": "default",
+    "documentId": "ed14141d244f2b1f61474c0e",
+    "documentMicroversion": "7917447ae7ce902bcddb5a76",
+    "documentVersion": "5a25ce4a77c82f318c7bdc22",
+    "elementId": "fe0de1238e9c7c987d776d58",
+    "fullConfiguration": "default",
+    "id": "Mqk3VqWpSP2plwI8o",
+    "isStandardContent": false,
+    "name": "solenoid_yoke <1>",
+    "partId": "KFbU",
+    "suppressed": false,
+    "type": "Part"
+   }
+  ],
+  "isRigid": false,
+  "metadataHref": "https://cad.onshape.com/api/metadata/d/f866631c78fbefd61e6856e4/w/043fe020d0194e41cea13bc2/e/3156bac055c13d8160e229b4?configuration=default",
+  "occurrences": [
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "M5+IUkjgjuqeXEwZz"
+    ],
+    "transform": [
+     1.0,
+     0.0,
+     0.0,
+     -0.016379845045865704,
+     0.0,
+     -1.0,
+     0.0,
+     0.20730740325526115,
+     0.0,
+     0.0,
+     -1.0,
+     0.13081525975109534,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "M5yczsnIsdTzEO21/"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     0.09860915495413433,
+     -1.0,
+     0.0,
+     0.0,
+     -0.06909259674473882,
+     0.0,
+     0.0,
+     1.0,
+     -0.010184740248904657,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "M7wPDCCz7tdz3sQ5g"
+    ],
+    "transform": [
+     5.584782732730025e-15,
+     -3.8230626662161583e-16,
+     -1.0000000000000098,
+     0.01575915495413417,
+     -0.029220245120722254,
+     -0.9995729974719746,
+     -1.3869600539821242e-15,
+     0.008110878018538508,
+     -0.9995729974719643,
+     0.0292202451207227,
+     -4.7276830966491884e-15,
+     -0.03940103077339712,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "M82kq4UPSDOAqIEvD"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     -0.05804084504586571,
+     0.5606568835927831,
+     0.0,
+     -0.8280482225571328,
+     -0.05964259674473886,
+     -0.8280482225571328,
+     0.0,
+     -0.5606568835927831,
+     -0.010184740248904658,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MA/mRsb6Eem9aC1Ah"
+    ],
+    "transform": [
+     -0.8367621686683941,
+     -0.5475665010621052,
+     1.17961196366427e-16,
+     -0.015470966904312057,
+     -0.016000027380930672,
+     0.024450395676232053,
+     0.9995729974719951,
+     0.17970143623871132,
+     -0.5473326887818744,
+     0.8364048691070143,
+     -0.029220245120721938,
+     -0.04452458060523692,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MAhKJvPmRa/gp9fs9"
+    ],
+    "transform": [
+     0.0,
+     -1.0,
+     0.0,
+     -0.026990845045865727,
+     0.0,
+     0.0,
+     1.0000000000000004,
+     -0.06964259674473887,
+     -1.0000000000000004,
+     0.0,
+     0.0,
+     0.019315259751095354,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": true,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MD1Xf/JEYdZvOXLue"
+    ],
+    "transform": [
+     -1.0,
+     0.0,
+     0.0,
+     -0.016390845045865687,
+     0.0,
+     1.0,
+     0.0,
+     0.06040740325526117,
+     0.0,
+     0.0,
+     -1.0,
+     0.005815259751095342,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MEEjavaT3o1hPzPXo"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     -0.10999084504586572,
+     1.0,
+     0.0,
+     0.0,
+     -0.08914259674473886,
+     0.0,
+     0.0,
+     -1.0,
+     -0.00018474024890465825,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MJYKEZD8eK0X0V50N"
+    ],
+    "transform": [
+     -0.3660452344819587,
+     -4.3590348344779706e-16,
+     -0.9305970590502967,
+     -0.01624084504585825,
+     0.027192274174070077,
+     0.9995729974719769,
+     -0.010695931476838793,
+     -0.009881435935946987,
+     0.9301996917534873,
+     -0.029220245120721286,
+     -0.36588893224146385,
+     -0.038875066361223384,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MJk8Qm09kt/s3IQk/"
+    ],
+    "transform": [
+     -0.6025791176050128,
+     -0.7980591500799712,
+     1.0114998318681394e-16,
+     -0.016240845045858245,
+     -0.02331948398617146,
+     0.01760750952104653,
+     0.9995729974719643,
+     -0.07018867359243286,
+     -0.7977183768053646,
+     0.6023218147984521,
+     -0.029220245120720956,
+     -0.03711212131235463,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "ML//rmskIOv6ReoRG"
+    ],
+    "transform": [
+     0.9999999999999983,
+     -3.3580953368635588e-18,
+     2.1385291698717857e-16,
+     -0.01624084504586575,
+     1.5641126386984866e-16,
+     -0.9995729974719718,
+     -0.029220245120721244,
+     -3.058678890843833e-05,
+     -6.950005905040413e-18,
+     0.029220245120722473,
+     -0.9995729974719689,
+     -0.009900538391255997,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MOTGGuN050Z/fTXNV"
+    ],
+    "transform": [
+     0.0,
+     -1.0,
+     0.0,
+     0.07720915495413434,
+     1.0,
+     0.0,
+     0.0,
+     -0.08914259674473886,
+     0.0,
+     0.0,
+     1.0,
+     -0.02018474024890466,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MVDUen5/tCjTJcs56"
+    ],
+    "transform": [
+     -0.9999999999999978,
+     -8.784968994974114e-18,
+     2.2079181089108582e-16,
+     -0.01624084504586575,
+     -1.5645037348965831e-16,
+     0.999572997471975,
+     -0.02922024512072113,
+     -0.0010877388240670552,
+     6.938893903907228e-18,
+     -0.029220245120722712,
+     -0.9995729974719715,
+     -0.0038670718441903237,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MWa8IV5bui5C/1rXX"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     0.03785915495413432,
+     0.07734765464558423,
+     0.0,
+     0.9970041826997679,
+     -0.05964259674473886,
+     0.9970041826997679,
+     0.0,
+     -0.07734765464558423,
+     -0.010184740248904658,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MXsD6qEU/GRnHXD0z"
+    ],
+    "transform": [
+     4.419677645800783e-16,
+     1.0,
+     -1.1479437019748901e-40,
+     -0.1318908450458658,
+     1.0,
+     -4.419677645800783e-16,
+     0.0,
+     -0.06459259674473886,
+     -2.005086420600254e-41,
+     1.1479437019748901e-40,
+     -1.0,
+     0.11481525975109534,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MYYCFTUKhKp7IuKBo"
+    ],
+    "transform": [
+     4.740539440281416e-15,
+     -0.9999999999999999,
+     3.9978298910116524e-16,
+     0.015759154954134175,
+     -0.029220245120722358,
+     1.2147339062357523e-16,
+     0.9995729974719639,
+     0.030101483962941725,
+     -0.9995729974719639,
+     -4.737436921660082e-15,
+     -0.029220245120722414,
+     -0.0400438761660536,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MgBeyBSbzU7dRWy0i"
+    ],
+    "transform": [
+     0.29142568330028074,
+     -0.2214953380997379,
+     0.930597059050299,
+     -0.0559457918336186,
+     0.5831963152064452,
+     0.8122608294011731,
+     0.01069593147683824,
+     0.004162099057064222,
+     -0.758256637981254,
+     0.5396037066409014,
+     0.3658889322414658,
+     -0.05035642479369944,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MgbUrjcoD8rKbJEe1"
+    ],
+    "transform": [
+     1.0,
+     0.0,
+     0.0,
+     -0.016379845045865704,
+     0.0,
+     1.0,
+     0.0,
+     0.22330740325526116,
+     0.0,
+     0.0,
+     1.0,
+     0.005815259751095342,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "Mh0Cd2q8KdkC04B+E"
+    ],
+    "transform": [
+     0.023596822935270757,
+     0.3652838671968971,
+     -0.9305970590502999,
+     -0.039492023296660836,
+     0.995740975289802,
+     -0.09157241494441785,
+     -0.01069593147683824,
+     -0.002022829777429691,
+     -0.08912407125053826,
+     -0.926381233179394,
+     -0.3658889322414659,
+     -0.05576403830719352,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "Ml0FiJUa8I8OLFKbf"
+    ],
+    "transform": [
+     1.0,
+     2.9421367541818484e-17,
+     -5.88087974985587e-17,
+     -0.016240845045864424,
+     -2.632618677797394e-16,
+     -0.999572997472012,
+     -0.02922024512072312,
+     -0.02202119273329212,
+     -1.3914870688377445e-17,
+     0.029220245120722833,
+     -0.9995729974720098,
+     -0.00925769299860016,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MluC0roPhyce0Tqiq"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     -0.18139084504586572,
+     -1.0,
+     0.0,
+     0.0,
+     -0.06909259674473883,
+     0.0,
+     0.0,
+     1.0,
+     -0.010184740248904655,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "Mo77VGKmsHa82q0Y/"
+    ],
+    "transform": [
+     0.0,
+     1.0,
+     0.0,
+     -0.0057908450458656405,
+     0.0,
+     0.0,
+     1.0000000000000002,
+     -0.06964259674473885,
+     1.0000000000000002,
+     0.0,
+     0.0,
+     -0.039684740248904664,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "Mqk3VqWpSP2plwI8o"
+    ],
+    "transform": [
+     0.3660452344819619,
+     -8.1900632109555005e-16,
+     0.9305970590502937,
+     -0.054395324466920414,
+     -0.027192274174070375,
+     0.9995729974719721,
+     0.01069593147683818,
+     0.005473284233559816,
+     -0.9301996917534865,
+     -0.029220245120721074,
+     0.3658889322414638,
+     -0.05433819245603078,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "Mr/KICkNND0anY4ci"
+    ],
+    "transform": [
+     1.0,
+     -1.1174649913111629e-16,
+     -5.88087974985561e-17,
+     -0.016240845045867085,
+     -1.1341719057165021e-16,
+     -0.9995729974719652,
+     -0.02922024512072116,
+     0.05961093525125197,
+     -5.551842589735995e-17,
+     0.02922024512072116,
+     -0.9995729974719652,
+     -0.011644022756874178,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "fixed": false,
+    "hidden": false,
+    "mateStatuses": null,
+    "path": [
+     "MssYGIqAyXxOjYpLz"
+    ],
+    "transform": [
+     4.4196776458007807e-16,
+     -1.0,
+     -9.29834398599661e-40,
+     0.09910915495413437,
+     -1.0,
+     -4.4196776458007856e-16,
+     0.0,
+     -0.0645925967447388,
+     -3.432972120849165e-41,
+     -9.29834398599661e-40,
+     -1.0,
+     0.11481525975109534,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   }
+  ],
+  "parametricInstances": [],
+  "patterns": []
+ },
+ "subAssemblies": []
+}
