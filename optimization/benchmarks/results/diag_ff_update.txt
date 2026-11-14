@@ -1,0 +1,41 @@
+
+=== 1. what would the bulk stage identify? (learn=on, 2 g doses) ===
+  live EWMA vs truth at the bang's halt; 'conveyed' = out of the hopper,
+  'landed' = in the cup -- the gap is the committed inventory in the screw/lip/air
+powder     revs bang s |  ff@1rev ff@halt |  landed/rev conveyed/rev |  bias vs conveyed  inventory
+salt        8.5    5.5 |    0.353   0.201 |       0.181        0.185 |                9%      71 mg
+lactose    10.8    6.7 |    0.350   0.166 |       0.152        0.152 |                9%      35 mg
+AlSi10Mg   15.3    9.2 |    0.342   0.113 |       0.111        0.115 |               -2%      59 mg
+
+  pooled: after 1 auger rev the EWMA has closed only 43% of the gap from its 0.50 prior to truth;
+  at the halt it reads +1% vs true conveyed (prior residue, amplified by the KF input-model coupling),
+  while its raw argument landed/rev reads -4% (+59 mg of the 1712 mg conveyed still in the screw/lip/air)
+
+=== 2. bang sensitivity to ff, and does learning it live help? (2 g doses) ===
+  nominal bang stop line is target - guard = 1.700 g; 'halt' is true mass there
+  bulk ff model                      halt vs stop     med    p95  over%  abort%  tmo%  med t
+  prior 0.50 (default), no update         -844 mg    -4.3    9.1     16       7     1     75
+  prior 0.50 + bulk EWMA                   -55 mg  -158.4   14.4     17       9    56    301
+  prior 0.10 (5x low), no update           121 mg   -59.3  210.0     38      36    57    301
+  prior 0.10 + bulk EWMA                    40 mg  -112.2   25.5     13      11    67    302
+  (m_hat ~ b_hat + r_hat*tau_bal: the input-model ff biases r_hat, and the 0.7 s
+   lag deconvolution turns that into the halt position -- high prior = early/safe,
+   low prior = late/overshoot.  The EWMA partially rescues a low prior (aborts
+   36%->11%), but any bang that halts near the nominal stop line hands the
+   trickle a small remaining gap, and there trickle_tap's FIRST-TICK k*sigma
+   (~229 mg: the freshly seeded KF's initial covariance, never yet shrunk by a
+   measurement) fires the cutoff immediately -- tap_finish is left to close
+   0.15-0.28 g at ~1 mg/tap and the dose times out short.)
+
+=== 3. carrying the bulk-identified ff into the trickle (2 g doses, 25 seeds x 3 powders x 2 contexts) ===
+variant                                         med    p95  over%  +/-5mg%  med t ff@cutoff
+as implemented (fixed trickle prior 0.35)      -4.3    9.1     16       54     75     0.107
+bulk EWMA, self-consumed only                -158.4   14.4     17       20    301     0.350
+bulk EWMA -> trickle prior, raw              -134.4   31.8     29       13    301     0.109
+bulk EWMA -> trickle prior, tilt-rescaled    -134.4   33.8     39       11    301     0.102
+  (ff@cutoff 0.350 = the trickle's own EWMA never ran: the cutoff fired on its
+   first tick via the fresh-covariance k*sigma, see section 2.  The carry
+   variants inherit the same collapse, so their trickle priors never matter.)
+
+  paired-seed equivalence of the learn=off variant vs stock BangBangTrim: exact
+  calibrated tilt-gain ratio g(20 deg)/g(45 deg): salt 0.73, lactose 0.84, AlSi10Mg 0.82
