@@ -1660,7 +1660,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/c508805ca39d2b6c9b92c7094453faac019692e9/cad/full-assembly/renders/assembly_iso_az090_hires_annotated_white.png" width="300">
 
-**Outcome ⚠️ — brackets out of date** ([PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-6237498939)): on 17 Oct a team member found that the brackets are the old bolted split clamp; the rig's snap-in C-clip was saved as a separate Fusion file that was never shared, so it is not in the render. Whether #97 adopted the new panel is not recorded in this thread.
+**Outcome ⚠️ — brackets out of date** ([PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-6237489651)): on 17 Oct a team member found that every bracket in the render is the old bolted split clamp. The file for the rig's snap-in C-clip had never been shared, so it could not be added ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-6237498939)). Whether #97 adopted the new panel is not recorded in this thread.
 
 ---
 
@@ -1976,7 +1976,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 <a id="e157"></a>
 ### 2026-10-23 — Repeat-doser mounting plate v2 · PR #181
 **Trigger:** A team member reported that the gears and arms had printed as separate parts ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376796564)), and another asked the AI agent (Claude) to make any redesign needed in Onshape ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6379304832)).
-**Design:** The plate, both 28T tilt gears and both links as one solid. The AI agent first fused PR #170's five bodies (`c960e12`), then switched to a team member's Onshape Mounting plate, already one part, after moving its NEMA-11 holes from 24.4 × 23.0 mm onto the motor's 23 mm square (`52aaf8f`, [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6379308649)). It was sliced flat for the A1 mini with tree supports under both gears, both hinge knuckles and into the stepper bore: 68.71 g, 274 layers, 2 h 32 min.
+**Design:** The plate, both 28T tilt gears and both links as one solid. The AI agent first fused PR #170's five bodies (`c960e12`), then switched to a team member's Onshape Mounting plate, already one part, after moving its NEMA-11 holes from 24.4 × 23.0 mm onto the motor's 23 mm square (`52aaf8f`, [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6379308649)). It was sliced flat for the A1 mini with tree supports under both gears, both hinge knuckles and into the stepper bore: 68.71 g, 274 layers, 2 h 32 min ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6380386245)).
 **Rationale:** Each link's end sits inside its gear's hub, and both the team's slicer sheet and the Onshape model treat plate, gears and links as one part ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376552823)).
 
 <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/76c35c42aef5bbe496e215d763c869c4140b82af/docs/new-dosers/print-files/mounting_plate_one_piece_onshape.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/b6a83d070560beb806088ee1aa86728fe72f6e3a/docs/new-dosers/print-files/mounting_plate_one_piece_A1mini_preview.png" width="300">
