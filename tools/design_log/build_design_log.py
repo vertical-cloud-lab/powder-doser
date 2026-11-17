@@ -68,12 +68,16 @@ PR_SUBSYSTEM = {
 # a ``sub=<slug>`` key on the ENTRY marker. When present it overrides ``pr=``.
 SUB_SLUG = {
     "auger": "Auger",
+    "bracket": "Auger bracket",
+    "tap-collar": "Tap collar",
     "module": "Doser module",
     "mounting": "Mounting plate & hinge",
     "electronics": "Electronics & PCB",
     "firmware": "Firmware & control",
     "test-rig": "Test method & rig",
+    "powder-tests": "Powder characterization",
     "multi-doser": "Multi-doser",
+    "sim": "Simulation & digital twin",
     "tooling": "Design tooling",
 }
 
@@ -90,7 +94,9 @@ SUBSYSTEM_ORDER = [
     "Electronics & PCB",
     "Firmware & control",
     "Test method & rig",
+    "Powder characterization",
     "Multi-doser",
+    "Simulation & digital twin",
     "Design tooling",
 ]
 
