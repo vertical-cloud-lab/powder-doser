@@ -56,11 +56,13 @@ This note checks the plan against these sources:
 |---|---|---|---|
 | C1 | Time the bulk spin with `ticks_ms`. Bump `FIRMWARE_ID` in `opt_common.py` with it, rerun the simulation tests, upload to `/trickle_tap` and check the sha256 | Each dose's mg/rev is off by a median 8 %, and by up to 25 % (run 34) | `main_three_phase.py` L1102 (`_now` is `time.time()`, whole seconds) |
 | C2 | Protocol D: loop on the elapsed `ticks_diff`, not on `waited_ms += poll` | In August the auger turned 15–54 % further than commanded; #210 counted about 4.6 revolutions logged as 3. The pilot's speed-exponent check needs protocol D right | `powder_battery.py` L781–783 |
-| C3 | One session runner on the laptop. It runs blocks A, C, D and E, then the screen, the BO and validation, then the closing protocol C and the salt reference. It stamps one `session_id` on every record, and hands the Pico's port between the battery capture and the executor | Today these are two firmware builds and two capture scripts on two branches. The battery capture takes no port lock (campaign-setup §5.1, item 6) | new; also bring both branches' scripts into the Zero's checkout |
+| C3 | One session runner on the laptop. It runs blocks A, C, D and E, then the screen, the BO and validation, then the closing protocol C and the salt reference. It stamps one `session_id` on every record, and hands the Pico's port between the battery capture and the executor. It halts between blocks with a checklist for the lab worker, and `--resume` continues from the next block (D3, D4) | Today these are two firmware builds and two capture scripts on two branches. The battery capture takes no port lock (campaign-setup §5.1, item 6) | new; also bring both branches' scripts into the Zero's checkout |
 | C4 | Fields on every dose and fingerprint record: `session_id`, `jar_id` and lot, `auger_id`, the hopper fill at the start and at every cup return, temperature and RH, and the `tau_bal` used | PLAN §3. The cup-return prompt already exists (`--cup-every`), but it only counts returns; it doesn't ask what the hopper holds | campaign document and prompts in `opt_campaign.py` |
 | C5 | A hopper limit: pause, or prompt, before the hopper falls below its working fill (fill at the start minus powder in the cup) | On 15 Oct an empty hopper looked like a jam to the unattended loop. Four doses were spoiled and the campaign stopped | `opt_campaign.py` limits (§5.5) |
 | C6 | Retry a missing telemetry pull, and upload every balance reading to MongoDB | 2 of the 60 salt doses had none. #210 (data assimilation) needs continuous readings at several tilts, and its `scale_raw` stream is empty | `opt_dose_capture.py` |
 | C7 | Optional for the pilot: record the lip state at the tap hand-over | Tap release depends on it | firmware stop event |
+| C8 | Widen the bulk tilt box from 15–40° to 15–45° (D2). Bulk rpm stays 20–100 | The salt BO put 11 of its 14 doses on the 40° edge | `SEARCH_SPACE_AX` in `opt_common.py` (the margin variant's box is built from it); `BULK_TAP_SEARCH_SPACE_AX` too if `bulk-tap` is chosen |
+| C9 | Set `TAU_BAL_S` to 0.16 s (D7) | The Kalman filter de-lags the balance with it; at 0.7 s its mass estimate runs about 12 mg ahead at trickle rates | `trickle_params.py`, whose values the laptop pushes with every campaign dose; or `--frozen-set tau_bal_s=0.16` on a cold start |
 
 The dose-range block (0.05, 0.5 and 5 g) needs no new code. `dose.py --target-g 0.05`, and the same with `5`, doses
 the validated profile at other targets and logs those doses as production doses. Only the session id needs adding.
@@ -100,6 +102,20 @@ These fix the session for every powder after the pilot, so they are hard to chan
 | D6 | The paused margin campaign | Close it. Void `bo-013`, `bo-015`, `bo-017` and `bo-018` if they were starved doses |
 | D7 | Balance lag τ<sub>bal</sub> | 0.7 s (datasheet) or 0.16 s (drop tests) (`OUTLINE.md` §4.A9). Afterflow τ includes it |
 | D8 | The BO's objectives | Keep time and \|error\|, as on salt, or switch now to the planned one-sided error with a P(overshoot) limit and repeatability (`OUTLINE.md` §4.B1, #162). The multi-task GP pools the sessions, so every powder's BO should use the same ones |
+
+**Decided on 17 Nov** (William, [#196](https://github.com/vertical-cloud-lab/powder-doser/pull/196#issuecomment-6962328765)):
+* **D2:** widen the tilt; the speed box stays 20–100 rpm. Proposed: bulk tilt 15–45° (C8). 45° is the steepest tilt
+  on record (the fingerprint's top tilt); anything steeper needs a bench check first. The tap tilt also sat on its
+  15° top edge in 12 of the 14 salt BO doses; whether to widen it too is still open.
+* **D3, D4:** attended, halt and resume. The session halts at planned points (cup returns every 10 doses, hopper
+  top-ups, the changes between fingerprint and campaign blocks), a lab worker sets up, and the session resumes. No
+  unattended runs. The loop runs on a computer at the bench, because its prompts need someone at a keyboard; in a CI
+  job nobody can answer them.
+* **D7:** τ<sub>bal</sub> = 0.16 s, the drop-test value (C9). The drop tests predate the rig's move (comment in
+  `trickle_params.py`), so repeating one during the bench reset is cheap insurance.
+* **D8:** keep the salt campaigns' objectives: minimize dose time and |error|, with reference thresholds of 180 s and
+  20 mg.
+* **Still open:** D1, D5 and D6.
 
 ### 2.4 People and rig time
 * One rig day. Someone at the bench for the first hour (bench reset, fingerprint prompts) and at each cup return.
@@ -146,8 +162,8 @@ These fix the session for every powder after the pilot, so they are hard to chan
 * Merging #166 into `main`. Sessions can run from a pinned commit in the meantime.
 
 ## 5. Suggested order
-1. Decisions D1–D8, in one meeting.
-2. Code C1–C6, then a dry run of the session runner without powder.
+1. The open decisions (D1, D5, D6). D2, D3, D4, D7 and D8 were decided on 17 Nov.
+2. Code C1–C6, C8 and C9, then a dry run of the session runner without powder.
 3. Bench reset and drawdown test (about half a day).
 4. The salt pilot session.
 5. Meanwhile, build #205's tier 1 and get the powders.
