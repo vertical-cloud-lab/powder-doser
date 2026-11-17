@@ -1,0 +1,17 @@
+{
+  "target": "sandbox",
+  "deposition_id": 627395,
+  "concept_id": "627391",
+  "doi": "10.5072/zenodo.627395",
+  "concept_doi": "10.5072/zenodo.627391",
+  "state": "done",
+  "submitted": true,
+  "html": "https://sandbox.zenodo.org/records/627395",
+  "files": [
+    "README.md",
+    "DATA-DICTIONARY.md",
+    "powder-doser-tidy-data.zip",
+    "powder-doser-raw-runs.zip"
+  ],
+  "updated": "2026-10-28T23:28:51+00:00"
+}
