@@ -14,9 +14,10 @@ is the other variation. v9 follows Sam's note of 2026-11-17 ([PR #185](https://g
 
 Nothing is built. Every number here is a prediction from the CAD, except the single doser's, which is estimated from photos.
 
-**Onshape (public):** see [`onshape/onshape_document.json`](onshape/onshape_document.json) (imported from
-`step/chain_carousel_rig_v9.step` by [`onshape/onshape_build.py`](onshape/onshape_build.py); every call in
-[`onshape/api_calls.jsonl`](onshape/api_calls.jsonl)). Earlier versions:
+**Onshape (public):** [Multi-doser chain carousel, test rig v9](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590)
+(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 13 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl):
+12 for the import, 1 to confirm it is public). It was imported from `step/chain_carousel_rig_v9.step` by
+[`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions:
 [v8](https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b),
 [v7 (main)](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6),
 [v6](https://cad.onshape.com/documents/29870b97e25aa1033c07144d/w/3c2b496fc08f7472605d17c2/e/a75fe90d184f765ada5d65de),

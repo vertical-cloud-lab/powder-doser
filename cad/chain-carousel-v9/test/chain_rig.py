@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v7 (v6's frame and plate, one P16 under the station; Sam, 2026-11-10) from a
-Raspberry Pi (issue #128).
+"""Drive and log the chain-carousel test rig v9 (v7's frame, plate and station, unchanged geometry: v9 only takes the balance's
+draft cage off, puts the balance on a granite block with the beaker on the pan 32 mm under the exit, and cuts v7's EC back
+where it hung over the beaker; Sam, 2026-11-17) from a Raspberry Pi (issue #128). The P16's tables below are v7's, which
+v9 shares (layout.p16_7_ext). v7: v6's frame and plate, one P16 under the station; Sam, 2026-11-10.
 
 Hardware (see BOM.md):
 * CL86T closed-loop driver for the NEMA 34 on step/dir/enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to
