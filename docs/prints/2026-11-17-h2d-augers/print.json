@@ -1,0 +1,290 @@
+{
+  "request": {
+    "pr": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6956025690",
+    "by": "brandonmunk",
+    "text": "@claude-print Print 2 augers on the H2D",
+    "requested_utc": "2026-11-17T17:41:59Z",
+    "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44139848563",
+    "job_started_utc": "2026-11-17T17:46:43Z",
+    "job_timeout_utc": "2026-11-17T23:46:43Z (timeout-minutes 360)",
+    "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6956144503"
+  },
+  "studio": {
+    "version": "02.08.02.61 (AppImage) on the runner, Xvfb :99",
+    "login": "password, then the first authenticator code from bambu-totp (Log In 17:52:15, code confirmed 17:52:31); no e-mailed code",
+    "selected_at_login": "Thumbelina, the A1 Mini (the account's last-selected printer); the H2D selected by hand at 17:53:15",
+    "refresh_pressed": false,
+    "signed_out_utc": "2026-11-17T23:31:30Z",
+    "closed_and_config_deleted": true
+  },
+  "printer": {
+    "name": "BYU VCL H2D - Théoden",
+    "state_before": "idle; last job vial_holder_20ml_x6 100 %, 115/115, Finished; left nozzle 28 C, right 26 C, bed 25 C, chamber 26 C, all targets 0",
+    "hms_before": [
+      "Please clean and lubricate the X-axis linear rail, YZ-axis linear rods, and the extruder lift linear rail.",
+      "Threaded rods need lubrication now."
+    ],
+    "ams": "AMS 2 Pro (left): A1 empty, A2 PLA labelled black (hand-set, pencil icon), A3 white PLA (RFID), A4 light-blue PLA; AMS HT (right) empty; external unknown",
+    "nozzle_reads": [
+      {
+        "utc": "17:54:14",
+        "left": "0.4 mm hardened steel, Standard",
+        "right": "0.6 mm hardened steel, TPU High flow"
+      },
+      {
+        "utc": "17:57:43",
+        "source": "Studio 'Switch diameter' prompt after Sync info",
+        "left": "0.4mm",
+        "right": "0.6mm"
+      },
+      {
+        "utc": "18:10:42",
+        "left": "0.4 mm hardened steel, Standard",
+        "right": "0.6 mm hardened steel, TPU High flow"
+      }
+    ],
+    "nozzles_ok_for_this_repo_at_send": "yes: the print uses only the left 0.4 mm nozzle; the unused right nozzle is 0.6 mm, allowed by the 2026-11-13 rule"
+  },
+  "plate_check": {
+    "frames": [
+      {
+        "utc": "17:53:22",
+        "file": "h2d-frame-20261117T175322Z.png",
+        "kind": "Studio Printer Preview still",
+        "posted_utc": "17:55:13",
+        "commit": "9f96c1c",
+        "mean_luma": 91.2,
+        "read": "empty textured PEI plate"
+      },
+      {
+        "utc": "18:10:20",
+        "file": "h2d-frame-20261117T181020Z.png",
+        "kind": "Studio Printer Preview still",
+        "plate_mae_vs_first": 3.01,
+        "read": "unchanged, empty"
+      }
+    ],
+    "plate_type_sliced_for": "Textured PEI Plate"
+  },
+  "go": {
+    "frame": "h2d-frame-20261117T175322Z.png, posted 17:55:13",
+    "wait_ended_utc": "17:56:43 (90 s after the post)",
+    "replies": [],
+    "thread_checked_utc": [
+      "17:56:54",
+      "18:02:24",
+      "18:08:21",
+      "18:09:57",
+      "18:10:53",
+      "18:12:10"
+    ],
+    "second_frame": "18:10:20, plate unchanged, so no new wait"
+  },
+  "sent": true,
+  "send_utc": "2026-11-17T18:12:11Z",
+  "on_printer_by_utc": "2026-11-17T18:12:38Z",
+  "send_options": {
+    "printer": "BYU VCL H2D - Théoden (Bambu Lab H2D 0.4/0.6mm)",
+    "plate": "PEI (textured)",
+    "filament_mapping": "PLA (filament 1, left nozzle) -> AMS A2 (labelled black PLA); the dialog defaulted to A3 (white PLA)",
+    "timelapse": "off",
+    "auto_bed_leveling": "on",
+    "flow_dynamics_calibration": "on",
+    "nozzle_offset_calibration": "off (default)",
+    "job_name": "auger_44T",
+    "upload": "Sending print job with LAN acceleration"
+  },
+  "file": {
+    "path": "docs/prints/2026-11-17-h2d-augers/augers_x2_H2D_PLA.gcode.3mf",
+    "commit": "8159b5f",
+    "re_sliced": false,
+    "plate_gcode_md5": "cfb8127e0452f32aa99ec70ff6164a96",
+    "sent_3mf_plate_gcode_md5": "cfb8127e0452f32aa99ec70ff6164a96",
+    "objects": [
+      "auger_44T.stl",
+      "auger_44T.stl"
+    ],
+    "object_centres_mm": [
+      [
+        122.5,
+        160.0
+      ],
+      [
+        202.5,
+        160.0
+      ]
+    ],
+    "extrusion_extent_mm": {
+      "x": [
+        92.3,
+        232.5
+      ],
+      "y": [
+        133.0,
+        187.0
+      ]
+    },
+    "source_stl": "docs/prints/2026-11-13-h2d-doser-parts/stl/auger_44T.stl",
+    "onshape_auger_microversion": "e7c79c28b4efc1804f70ebe5 (modified 2026-10-29T18:15:38Z; checked 2026-11-17 17:57 UTC without a key)",
+    "printer_preset": "Bambu Lab H2D 0.4 nozzle",
+    "process": "0.20mm Standard @BBL H2D; wall_loops 3; sparse_infill_density 25%; tree(auto) supports, 30 deg, build plate only; auto brim",
+    "filament": "Bambu PLA Basic @BBL H2D, 220 C, on the left nozzle (filament_map 1, custom grouping)",
+    "project_settings_vs_2026_11_13_file": "581 keys, 0 differ",
+    "nozzle_diameter": "0.4,0.4",
+    "nozzle_volume_type": "Standard,TPU High Flow (as sliced; the right nozzle is unused)",
+    "bed": "Textured PEI Plate, 55 C",
+    "layers": 1250,
+    "max_z_mm": 250.0,
+    "weight_g": 124.77,
+    "length_m": 41.17,
+    "estimate": "prediction 20445 s (5 h 40 min 45 s); first layer 270 s"
+  },
+  "filament_observed": {
+    "colour": "white (or natural)",
+    "from_slot": "A2 (feed path shown from A2 at 18:37:57)",
+    "slot_info": "PLA, black, hand-set (pencil icon)",
+    "first_seen": "layer 1, 18:23",
+    "decision": "kept printing: the request named no colour; said in the thread at 18:38:55 with a 'reply stop' option; no reply"
+  },
+  "timeline_utc": [
+    [
+      "17:41:59",
+      "request"
+    ],
+    [
+      "17:46:43",
+      "job started (approved)"
+    ],
+    [
+      "17:49:31",
+      "Xvfb, openbox, the screen recorder and Studio started"
+    ],
+    [
+      "17:52:15",
+      "Log In pressed (password)"
+    ],
+    [
+      "17:52:31",
+      "authenticator code confirmed; logged in"
+    ],
+    [
+      "17:53:22",
+      "first frame (Printer Preview still)"
+    ],
+    [
+      "17:54:14",
+      "Printer Parts: 0.4 / 0.6"
+    ],
+    [
+      "17:55:13",
+      "frame posted in the tracking comment"
+    ],
+    [
+      "17:56:43",
+      "90 s window over; no replies"
+    ],
+    [
+      "17:57:43",
+      "Sync info; Switch diameter: left 0.4 mm chosen"
+    ],
+    [
+      "18:00:23",
+      "first slice (Arrange layout)"
+    ],
+    [
+      "18:07:33",
+      "re-sliced with the augers 80 mm apart"
+    ],
+    [
+      "18:09:57",
+      "plate committed (8159b5f)"
+    ],
+    [
+      "18:10:20",
+      "second frame, plate unchanged"
+    ],
+    [
+      "18:12:11",
+      "Send"
+    ],
+    [
+      "18:12:38",
+      "on the printer"
+    ],
+    [
+      "18:23:15",
+      "layer 1"
+    ],
+    [
+      "18:37:57",
+      "white filament seen; AMS feed from A2"
+    ],
+    [
+      "18:38:55",
+      "said so in the thread"
+    ],
+    [
+      "23:30:51",
+      "layer 1250/1250, 100 %, bed off"
+    ],
+    [
+      "23:31:30",
+      "signed out"
+    ],
+    [
+      "23:31:52",
+      "Studio closed, config deleted"
+    ]
+  ],
+  "github_token_reminted_utc": [
+    "18:37:24",
+    "19:27:15",
+    "20:19:17",
+    "21:08:23",
+    "21:56:38",
+    "22:44:41"
+  ],
+  "outcome": {
+    "state_at_sign_out": "layer 1250/1250, 100 %, bed heater off (23:30:51); the job's end sequence was running",
+    "finished_parts": "both augers, layers 1-1250",
+    "filament": "white (from A2, labelled black PLA)",
+    "hms_or_dialogs_during_print": "none",
+    "parts_checked_off_plate": false
+  },
+  "watch": {
+    "how": "watch_studio.py (byu-vcl 49677cf) with a thread poll added: OCR of the Device page every 10 s, frames every 2-5 min, thread polled every minute",
+    "log": "watch/monitor.jsonl",
+    "replies_during_print": [],
+    "dialogs": "none"
+  },
+  "recording": {
+    "file": "recording-cut-20261117.mp4",
+    "length_s": 297.0,
+    "raw": "17:49-23:32 UTC at 15 fps in 5 min segments; deleted on the runner after cutting (they show the login)",
+    "parts": [
+      [
+        "17:53:00",
+        "17:56:30",
+        "4x speed"
+      ],
+      [
+        "17:56:30",
+        "18:10:00",
+        "8x speed"
+      ],
+      [
+        "18:10:00",
+        "18:14:30",
+        "4x speed"
+      ],
+      [
+        "18:14:30",
+        "23:30:55",
+        "timelapse of keyframes, one every 16.7 s"
+      ]
+    ],
+    "blurred": "the right side of the camera pane, where the room shows",
+    "uploaded": false,
+    "why_not_uploaded": "no YouTube token in a print run"
+  }
+}
