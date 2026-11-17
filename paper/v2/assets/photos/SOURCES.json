@@ -17,6 +17,18 @@
   "date": "2026-09-10",
   "note": "Eight labelled augers of the food-safe set"
  },
+ "augers_lineup_2026-11-17.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/209#issuecomment-6959667004 (attachment 7e2de467-3d21-40de-9420-48a2d8e31ccc)",
+  "author": "swcharles",
+  "date": "2026-11-17",
+  "note": "For Fig. 5d (review of 17 Nov), replacing augers_lineup_2026-09-10.jpg. Eight capped augers in a staggered row, labels up, top to bottom: brown rice flour (auger 1), brown rice flour (auger 2), white rice flour, sodium alginate, calcium lactate, carboxymethyl cellulose, xanthan gum, sodium chloride (black tube). Seven powders, all food-safe surrogates. Original file as posted, 4032 x 3024; the only EXIF tags are orientation (upright), resolution and pixel size, so no location, date or camera. 'date' is the posting date; the date taken is not recorded."
+ },
+ "solenoid_bracket_2026-11-17.jpg": {
+  "source": "https://github.com/vertical-cloud-lab/powder-doser/pull/209#issuecomment-6959667004 (attachment eed047ad-7bfd-4a40-b6e7-a0d1dfdd3088)",
+  "author": "swcharles (photo); ethanw-24 (design, issue #203)",
+  "date": "2026-11-17",
+  "note": "For Fig. 3a, last image (review of 17 Nov). Ethan's solenoid bracket (#203; first version in Onshape 7 Nov): one printed base carrying a flexible snap-in clip for the auger and a mount for the solenoid, with no collar around the auger. Printed in blue, solenoid fitted. The solenoid's part-number label is legible at full size. Original file as posted, 4032 x 3024; EXIF has orientation, resolution and pixel size only. 'date' is the posting date."
+ },
  "augers_box_2026-08-04.jpg": {
   "source": "https://github.com/vertical-cloud-lab/powder-doser/issues/134#issuecomment-5183033746",
   "author": "swcharles",

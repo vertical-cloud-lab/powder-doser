@@ -67,7 +67,14 @@
     "path": "cad/auger-bracket/views/iso.png",
     "commit": "e455a3a11e94d3875f604ede368854b95c5d98cd",
     "commit_date": "2026-05-18",
-    "note": "PR #47, auger bracket from the issue #46 drawing"
+    "note": "CORRECTED 17 Nov 2026: this is PR #53, not PR #47. Branch copilot/design-bracket-for-auger is PR #53 (issue #52, 'Designing a simple part with zoo.dev', 15 May): the Copilot coding agent's OpenSCAD clamp bracket, v2 of 18 May (see the design log, PR #74, entry e064). It was used until 17 Nov as 'the bracket from the #46 drawing, 14 May' in Figs. 2a and 3c; those now use ai_bracket_pr47_2026-05-14.png. No longer used in a figure."
+  },
+  "ai_bracket_pr47_2026-05-14.png": {
+    "branch": "copilot/part-by-part-powder-doser",
+    "path": "design/cad/auger-bracket/renders/auger_bracket_iso.png",
+    "commit": "ff07420bb76486d109e7ca7b02ba67621632515a",
+    "commit_date": "2026-05-14",
+    "note": "PR #47, the Copilot coding agent's CadQuery bracket from Sam's dimensioned drawing in issue #46: v4 of 14 May, resized to the 25 mm auger of PR #16 (25.5 mm bore) on the same day as the drawing (design log, PR #74, entry e052). The first model (v1, commit 7ffcf97, same path) followed the drawing with an assumed bore; v5 (2e5060d, 15 May) thickened the plate for the geared auger. For Figs. 2a and 3c."
   },
   "ai_cadsmithstyle_bracket.png": {
     "branch": "copilot/design-simple-bracket-cadsmith",
