@@ -43,7 +43,7 @@ rather than a tilde; say "not reported" where the record is silent.
 | --- | --- | --- | --: | --- |
 | 2026-06-06 | Copilot | 2026-05-28 | 97 | Original log (#73). |
 | 2026-10-01 | Claude | 2026-10-01 | 128 | June–October entries e098–e128. |
-| 2026-11-17 | Claude ([run](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44167457665)) | in progress | — | Inventory of Oct–Nov threads below; drafting in parallel by thread group. |
+| 2026-11-17 | Claude ([run](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44167457665)) | 2026-11-17 | 164 | 36 entries from five thread groups; multi-doser group still being drafted. Two new entries predate the old e128 (PCB v3 on 29 Sep, bulk-to-tap on 1 Oct), so the 1 Oct render is now e130. |
 
 ## Threads with activity since 2026-10-01
 
@@ -51,36 +51,49 @@ Status: `todo` · `drafting` · `done` · `skipped (reason)`.
 
 | Group | Thread | Topic | Status |
 | --- | --- | --- | --- |
-| single-doser | PR #170 | Current-design render; re-render with Fusion parts | drafting |
-| single-doser | Issue #177 | Centering device | drafting |
-| single-doser | Issue #191 | Manufacturing design reviews | drafting |
-| single-doser | Issue #193 | Current CAD and print specs (10/2026) | drafting |
-| single-doser | Issue #203 | New tap collar / solenoid setup | drafting |
-| single-doser | main 8284d63, dfaf8ca, 046d099 (2 Oct) | Gerber for the single-doser PCB | drafting |
-| build-prints | PR #181 | New dosers: print plan, inventory, build order | drafting |
-| build-prints | Issue #197 / PR #200 | Assembly prints with new files only | drafting |
+| single-doser | PR #170 | Current-design render; re-render with Fusion parts | done (render v2, Onshape API assembly, fastener BOM/walkthrough) |
+| single-doser | Issue #177 | Centering device | done (centering device v1, v2) |
+| single-doser | Issue #191 | Manufacturing design reviews | done (review fixes; hinge-bolt nut inset) |
+| single-doser | Issue #193 | Current CAD and print specs (10/2026) | done (Onshape recreations; print guidance v2) |
+| single-doser | Issue #203 | New tap collar / solenoid setup | done (tapper concepts; solenoid bracket v1) |
+| single-doser | main 8284d63, dfaf8ca, 046d099 (2 Oct) | Gerber for the single-doser PCB | done (Doser PCB v3; 8284d63/046d099 only add and delete a placeholder) |
+| build-prints | PR #181 | New dosers: print plan, inventory, build order | done (mounting plate v1, v2; remote printing; 25-auger batch; build hardware) |
+| build-prints | Issue #197 / PR #200 | Assembly prints with new files only | done (mounting plate v3) |
 | multi-doser | Issue #128 | Multi-doser design (from 1 Oct) | drafting |
 | multi-doser | PR #185 | Chain carousel v2, vertical twin-chain test rig | drafting |
 | multi-doser | PR #188 | CalculiX FEA of carousel parts | drafting |
 | multi-doser | Issue #202 | Linear actuator selection | drafting |
 | multi-doser | Issue #204 | Fixed multi-auger design | drafting |
 | multi-doser | PR #115 | BOM, carousel parts list and mechanism panel (from 1 Oct) | drafting |
-| cad-tooling | Issue #171 | Fusion 360 agent mode | drafting |
-| cad-tooling | Issue #172 / PR #176 | text-to-cad recreation, servos-above variant | drafting |
-| cad-tooling | PR #178 | fsgen: servos-above baseplate as an Onshape tree | drafting |
-| cad-tooling | Issue #158 | Digital-twin environments (from 1 Oct) | drafting |
-| sim-powder | PR #180 | DEM digital twin, micro-auger geometry sweep | drafting |
-| sim-powder | PR #196 | Physics-based simulation survey and runs | drafting |
-| sim-powder | Issue #163 | Powder property characterization (from 1 Oct) | drafting |
-| sim-powder | PR #190 | Animated walkthroughs of powder-property tests | drafting |
-| sim-powder | PR #205 | In-house powder-property tests on the doser | drafting |
-| sim-powder | Issue #159 | Medical / drug-discovery applications | drafting |
-| control | PR #131 | Data collection (from 1 Oct) | drafting |
-| control | PR #166 | Optimization campaign (after e127) | drafting |
-| control | PR #124 | Optimization problem (from 1 Oct) | drafting |
-| control | PR #154 | Trim method (after e125) | drafting |
-| control | Issue #117 | University of Utah testing (from 1 Oct) | drafting |
-| control | Issue #179 | Optimization draft | drafting |
-| control | Issue #186 | Dosing for atomizer runs | drafting |
-| control | Issue #210 | Data assimilation project | drafting |
-| control | Issue #144 | Usage instructions | drafting |
+| cad-tooling | Issue #171 | Fusion 360 agent mode | done (folded into the fsgen entry) |
+| cad-tooling | Issue #172 / PR #176 | text-to-cad recreation, servos-above variant | done (text-to-cad recreation; servos-above v1, v2; native Onshape trees) |
+| cad-tooling | PR #178 | fsgen: servos-above baseplate as an Onshape tree | done |
+| cad-tooling | Issue #158 | Digital-twin environments (from 1 Oct) | skipped (literature only after 1 Oct; DEM moved to PR #180) |
+| sim-powder | PR #180 | DEM digital twin, micro-auger geometry sweep | done (DEM twin; micro-auger sweep) |
+| sim-powder | PR #196 | Physics-based simulation survey and runs | done (method survey; per-jar session plan) |
+| sim-powder | Issue #163 | Powder property characterization (from 1 Oct) | done (flowability proxies) |
+| sim-powder | PR #190 | Animated walkthroughs of powder-property tests | skipped (documentation, no adopted method) |
+| sim-powder | PR #205 | In-house powder-property tests on the doser | done (in-house test concepts) |
+| sim-powder | Issue #159 | Medical / drug-discovery applications | skipped (outreach and literature only) |
+| control | PR #131 | Data collection (from 1 Oct) | done (folded into the replicate-validation entry) |
+| control | PR #166 | Optimization campaign (after e127) | done (bulk-to-tap; validation; cutoff margin; fingerprint transfer) |
+| control | PR #124 | Optimization problem (from 1 Oct) | skipped (ideas and literature, nothing built or run) |
+| control | PR #154 | Trim method (after e125) | done (refill-tap endgame) |
+| control | Issue #117 | University of Utah testing (from 1 Oct) | skipped (requirements questions for a co-dosing rig; no design yet) |
+| control | Issue #179 | Optimization draft | skipped (paper draft) |
+| control | Issue #186 | Dosing for atomizer runs | done (Al 4047 atomizer-cup dosing) |
+| control | Issue #210 | Data assimilation project | skipped (data requests and literature; notes no temperature/RH logging) |
+| control | Issue #144 | Usage instructions | done (print guidance v1) |
+
+## Open items
+
+- **Multi-doser group** (Issue #128 from 1 Oct, PR #185, PR #188, Issue #202, Issue #204,
+  PR #115): drafting in this session; if the table above still says `drafting`, redo it.
+  Issue #204 has many session branches (`claude/issue-204-*`) holding its renders.
+- **New stand (fitted 2 Oct 2026):** back and side stand brackets, wood legs and a
+  printed Base, designed only in a lab Onshape document. It is mentioned inside the
+  Onshape-recreation and build-hardware entries but has no entry of its own. Sources:
+  [PR #176 comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6094125789)
+  and a team member's 13 Oct explanation on PR #176.
+- **Anchors moved once:** the old `#e128` (1 Oct render) is now `#e130`, because two
+  entries dated earlier were added before it. Later updates should append only.
