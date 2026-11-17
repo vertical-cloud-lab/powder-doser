@@ -1,0 +1,54 @@
+{
+ "id": "dem-yade-capillary",
+ "method": "DEM column collapse of coarse-grained salt with pendular liquid bridges (Willett 2000 capillary force), dry vs two liquid contents",
+ "code": "Yade (ViscElCapMat + Law2_ScGeom_ViscElCapPhys_Basic, CapillarType Willett_numeric)",
+ "version": "yadedaily 20261024-9637~157eec7~noble1 (upstream .deb for Ubuntu 24.04 from yade-dem.org/packages)",
+ "status": "partial",
+ "wall_s": 485.7,
+ "cores": 1,
+ "particles": 1200,
+ "key_results": {
+  "bond_number_mean_particle": 7.04,
+  "H0_mm": {
+   "dry": 27.25,
+   "wet01": 28.37,
+   "wet1": 28.13
+  },
+  "Hf_over_H0": {
+   "dry": 0.072,
+   "wet01": 0.247,
+   "wet1": 0.33
+  },
+  "runout_Rf_over_R0": {
+   "dry": 13.44,
+   "wet01": 3.33,
+   "wet1": 2.25
+  },
+  "aspect_angle_atan_Hf_over_Rf_deg": {
+   "dry": 1.0,
+   "wet01": 13.9,
+   "wet1": 25.9
+  },
+  "separated_liquid_bridges_at_end": {
+   "dry": 0,
+   "wet01": 406,
+   "wet1": 868
+  },
+  "liquid_content_W_vol_per_vol_solid": {
+   "dry": 0.0,
+   "wet01": 0.001,
+   "wet1": 0.01
+  },
+  "bridge_volume_m3": {
+   "dry": 0.0,
+   "wet01": 8.924811222495762e-13,
+   "wet1": 8.924811222495762e-12
+  },
+  "kinetic_energy_at_end_J": {
+   "dry": 3.7e-05,
+   "wet01": 7.95e-07,
+   "wet1": 6.15e-09
+  }
+ },
+ "notes": "Ran as intended at reduced scale (diameters coarse-grained x4, N=1200, 0.4 s after release). Marked partial because the dry baseline has no rolling resistance on a smooth floor and spreads into a monolayer, so no repose angle could be measured. The trend with liquid content is clear, but the dry-to-wet contrast is larger than real salt would show. Yade's ViscEl rolling resistance is viscous as coded (M = -mR*|Fn|*omega_rel), so mR was set to 0. Only the W=1% case was at rest at the 0.4 s cap; the dry runout is a lower bound (grains still rolling), and W=0.1% was still creeping (KE 8e-7 J)."
+}

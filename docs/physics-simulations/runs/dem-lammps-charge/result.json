@@ -1,0 +1,80 @@
+{
+ "id": "dem-lammps-charge",
+ "method": "DEM pour of unipolar tribocharged grains beside an oppositely charged wall (coul/cut)",
+ "code": "LAMMPS (GRANULAR + coul/cut, atom_style hybrid sphere charge)",
+ "version": "7 Feb 2024 Update 1 (Ubuntu lammps 20240207+dfsg-1.1build3)",
+ "status": "ran",
+ "wall_s": 200,
+ "cores": 1,
+ "particles": 800,
+ "key_results": {
+  "A": {
+   "bed_height_mm": 3.375,
+   "phi_bulk": 0.6268,
+   "grains_touching_wall": 60,
+   "grains_on_wall_above_bed": 1,
+   "n_mobile": 800,
+   "grains_near_lid": 0,
+   "final_time_s": 0.2,
+   "final_kinetic_energy_J": 3.574e-14,
+   "q_over_m_C_per_kg": 0.0,
+   "wall_sigma_C_per_m2": 0.0
+  },
+  "B": {
+   "bed_height_mm": 3.375,
+   "phi_bulk": 0.6119,
+   "grains_touching_wall": 69,
+   "grains_on_wall_above_bed": 2,
+   "n_mobile": 800,
+   "grains_near_lid": 0,
+   "final_time_s": 0.2,
+   "final_kinetic_energy_J": 1.232e-12,
+   "q_over_m_C_per_kg": -1e-05,
+   "wall_sigma_C_per_m2": 1e-05
+  },
+  "C": {
+   "bed_height_mm": null,
+   "phi_bulk": 0.167,
+   "grains_touching_wall": 210,
+   "grains_on_wall_above_bed": 136,
+   "n_mobile": 800,
+   "grains_near_lid": 0,
+   "final_time_s": 0.2,
+   "final_kinetic_energy_J": 7.217e-08,
+   "q_over_m_C_per_kg": -0.0001,
+   "wall_sigma_C_per_m2": 1e-05
+  },
+  "D": {
+   "bed_height_mm": null,
+   "phi_bulk": 0.1683,
+   "grains_touching_wall": 156,
+   "grains_on_wall_above_bed": 88,
+   "n_mobile": 800,
+   "grains_near_lid": 0,
+   "final_time_s": 0.2,
+   "final_kinetic_energy_J": 6.288e-08,
+   "q_over_m_C_per_kg": -0.0001,
+   "wall_sigma_C_per_m2": 0.0
+  },
+  "Clong": {
+   "bed_height_mm": null,
+   "phi_bulk": 0.1628,
+   "grains_touching_wall": 210,
+   "grains_on_wall_above_bed": 135,
+   "n_mobile": 800,
+   "grains_near_lid": 0,
+   "final_time_s": 0.6,
+   "final_kinetic_energy_J": 2.756e-08,
+   "q_over_m_C_per_kg": -0.0001,
+   "wall_sigma_C_per_m2": 1e-05
+  }
+ },
+ "notes": "800 mobile grains + 300 frozen charged wall spheres. q/m values: 0, -1e-5 (task-brief range), -1e-4 C/kg (near the 1.7e-4 C/kg Gauss limit of a 0.425 mm grain); wall sigma 1e-5 C/m^2 (assumed, below the 2.7e-5 C/m^2 breakdown limit). coul/cut 1.2 mm, no image charges, fixed charges.",
+ "wall_s_per_case": {
+  "A": 41,
+  "B": 44,
+  "C": 26,
+  "D": 21,
+  "Clong": 68
+ }
+}

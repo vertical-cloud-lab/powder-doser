@@ -1,0 +1,67 @@
+{
+ "id": "dem-liggghts-shear",
+ "method": "plane (unrolled Schulze ring) shear cell: pre-shear at 200 Pa, shear to failure at 50/100/150 Pa",
+ "code": "LIGGGHTS-PUBLIC",
+ "version": "3.8.0 (Debian package liggghts)",
+ "status": "ran",
+ "wall_s": 339.3,
+ "cores": 1,
+ "particles": 2056,
+ "key_results": {
+  "dry": {
+   "cohesion_Pa": 6.55,
+   "phi_i_deg": 24.8,
+   "preshear_sigma_Pa": 200.0,
+   "preshear_tau_Pa": 87.5,
+   "sigma_c_Pa": 20.5,
+   "sigma_1_Pa": 426.8,
+   "ffc": 20.8,
+   "points_sigma_tau_peak_Pa": [
+    [
+     55.2,
+     31.2
+    ],
+    [
+     107.9,
+     58.0
+    ],
+    [
+     165.6,
+     82.2
+    ]
+   ]
+  },
+  "coh": {
+   "cohesion_Pa": 11.86,
+   "phi_i_deg": 32.3,
+   "preshear_sigma_Pa": 201.1,
+   "preshear_tau_Pa": 115.0,
+   "sigma_c_Pa": 43.0,
+   "sigma_1_Pa": 594.9,
+   "ffc": 13.8,
+   "points_sigma_tau_peak_Pa": [
+    [
+     66.6,
+     53.0
+    ],
+    [
+     111.8,
+     84.3
+    ],
+    [
+     158.6,
+     111.2
+    ]
+   ]
+  }
+ },
+ "notes": "Real-size salt, E = 2e5 Pa, so normal stresses are kept at 50-200 Pa (overlaps < ~3 % of d); this is the stress range of a few mm to cm of powder head, i.e. the doser's, far below FT4/Schulze test stresses (kPa). Gravity off during shearing. ffc from Mohr circles on a straight yield locus through the three peak points.",
+ "wall_s_by_variant": {
+  "dry": 193.6,
+  "coh": 145.7
+ },
+ "particles_detail": {
+  "grains": 1800,
+  "wall_grains": 256
+ }
+}

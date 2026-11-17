@@ -1,0 +1,64 @@
+{
+ "id": "mpm-taichi",
+ "method": "Material Point Method (MLS-MPM) with Drucker-Prager elastoplasticity (Klar et al. 2016)",
+ "code": "Taichi (self-written MLS-MPM kernel, run.py)",
+ "version": "taichi 1.7.4 (LLVM 15), python 3.12",
+ "status": "ran",
+ "wall_s": 234.5,
+ "cores": 1,
+ "key_results": {
+  "column_c0": {
+   "runout_ratio": 3.0625000000000004,
+   "height_ratio": 0.5514518668254216,
+   "mean_slope_deg": 15.188794910144715,
+   "fitted_mid_slope_deg": 18.46565273523645,
+   "runout_Linf_m": 0.16250000000000003
+  },
+  "column_c100Pa": {
+   "runout_ratio": 1.109375,
+   "height_ratio": 0.5273125444849331,
+   "mean_slope_deg": 26.563694972157716,
+   "fitted_mid_slope_deg": 13.897988913844518,
+   "runout_Linf_m": 0.084375
+  },
+  "silo_W_kg_per_m_s": {
+   "D8mm": 0.6372593333968822,
+   "D12mm": 2.0223771511617965,
+   "D16mm": 7.23359903674099
+  },
+  "loglog_exponent_W_vs_D": 3.46166893447276,
+  "three_halves_law_through_12_16mm": {
+   "C": 3.1630484073750247,
+   "D0_mm": 9.012271041059474,
+   "D0_over_dx": 5.767853466278063,
+   "predicted_W_8mm": 0.0,
+   "MPM_W_8mm": 0.6372593333968822
+  },
+  "beverloo_C1p03_k0_W": {
+   "D8mm": 2.885471053398388,
+   "D12mm": 5.300948811297841,
+   "D16mm": 8.161344595101962
+  },
+  "free_3param_fit_attempt": {
+   "C": 3.163048407374992,
+   "D0_m": 0.009012271041059705,
+   "D0_over_dx": 5.76785346627821,
+   "loglog_exponent_no_offset": 3.46166893447276,
+   "residuals_rel": [
+    0.9999999993854826,
+    1.262629453250568e-13,
+    5.979635976461835e-14
+   ]
+  },
+  "resolution_check_256grid": [
+   {
+    "D_m": 0.012,
+    "D_over_dx": 15.36,
+    "n_particles": 41205,
+    "wall_s": 130.4,
+    "W_kg_per_m_s": 4.463408682537418
+   }
+  ]
+ },
+ "notes": "2D plane strain, per metre depth; rho_bulk 1250 kg/m3 assumed; E=0.3 MPa (soft for speed); no grain size in the continuum, so the k*d term becomes a grid-scale offset. Resolution check: 12 mm slot on a 256^2 grid gives W = 4.46 kg/(m s) vs 2.02 on 128^2 (Beverloo C=1.03: 5.30), so low W at small D/dx is mostly a resolution artefact."
+}

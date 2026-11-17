@@ -1,0 +1,25 @@
+{
+ "id": "cfd-dem",
+ "method": "coupled CFD-DEM (unresolved, volume-averaged gas + soft-sphere DEM, two-way momentum coupling)",
+ "code": "OpenFOAM DPMFoam (MFiX attempted: not installable from public conda channels)",
+ "version": "OpenFOAM v1912 (Ubuntu 24.04 package 1912.200626-2build3)",
+ "status": "partial",
+ "wall_s": 417,
+ "cores": 1,
+ "particles": 846,
+ "key_results": {
+  "vacuum_t50_ms": 76.0,
+  "twoway_t10_ms": 78.0,
+  "twoway_t50_ms": 80.0,
+  "twoway_t90_ms": 84.0,
+  "twoway_spread_10_90_ms": 6.0,
+  "oneway_t50_ms_all_particles": 104.0,
+  "oneway_fraction_crossed_by_130ms": 0.85,
+  "isolated_100um_ode_arrival_ms": 93.1,
+  "isolated_35um_ode_arrival_ms": 307.1,
+  "point_free_fall_ms": 75.6,
+  "max_entrained_air_downflow_m_s": 0.59,
+  "arrival_definition": "first crossing of y = 3 mm (plug released at y = 31 mm); output every 2 ms"
+ },
+ "notes": "Reduced scale: AlSi10Mg coarse-grained 35->100 um, 846 particles, E=1e4 Pa, 0.13 s. MFiX failed: PackagesNotFoundInChannelsError for 'mfix' on conda-forge/mfix channels. One-way reference has contacts off (DPM)."
+}

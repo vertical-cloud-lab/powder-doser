@@ -1,0 +1,27 @@
+{
+ "id": "dem-fem-coupling",
+ "method": "two-way partitioned DEM-FEM coupling (4C PASI): DEM grains falling onto a clamped nonlinear neo-Hookean membrane",
+ "code": "4C (open-source successor of BACI), Docker image ghcr.io/4c-multiphysics/4c:main",
+ "version": "2026.4.0-dev (git 1f2ed686d9)",
+ "status": "partial",
+ "wall_s": 698.7,
+ "cores": 1,
+ "particles": 128,
+ "key_results": {
+  "regression_test_pasi_twoway_disprelax": "OK (9/9 checks)",
+  "dose_mass_mg": 11.1,
+  "drop_height_mm": 3.0,
+  "first_contact_ms": 24,
+  "peak_centre_deflection_mm_negative_down": -0.3794,
+  "t_peak_ms": 28.0,
+  "max_upward_rebound_mm": 0.1385,
+  "t_max_upward_ms": 48.0,
+  "t_first_upward_ms": 42.0,
+  "simulated_ms": 48.0,
+  "steps_done": 9627,
+  "steps_planned": 14000,
+  "steps_not_converged": 1,
+  "mean_coupling_iterations_in_contact": 11.9
+ },
+ "notes": "4 earlier attempts with Aitken relaxation/tight tolerances aborted at impact with 'The partitioned PASI solver did not converge in ITEMAX steps!'; final run uses fixed relaxation 0.5, disp tol 1e-5 m, IGNORE_CONV_CHECK."
+}
