@@ -1,0 +1,56 @@
+{
+ "layers": 550,
+ "height_mm": 110.0,
+ "flight_pitch_mm": 10.42,
+ "flight_hand": "right",
+ "gear_teeth": 44,
+ "gear_z_mm": [
+  78.6,
+  88.4
+ ],
+ "gear_tip_r_mm": 22.8206891213443,
+ "z0.4": {
+  "bore_r": 9.92,
+  "core_r": 0.0
+ },
+ "z1": {
+  "bore_r": 9.92,
+  "core_r": 0.0
+ },
+ "z2": {
+  "bore_r": 9.96,
+  "core_r": 2.04
+ },
+ "z4": {
+  "bore_r": 10.06,
+  "core_r": 3.04
+ },
+ "z6": {
+  "bore_r": 10.17,
+  "core_r": 4.04
+ },
+ "z8": {
+  "bore_r": 10.21,
+  "core_r": 5.04
+ },
+ "z10": {
+  "bore_r": 10.31,
+  "core_r": 6.04
+ },
+ "z12": {
+  "bore_r": 10.37,
+  "core_r": 7.04
+ },
+ "z20": {
+  "bore_r": 10.42,
+  "core_r": 7.09
+ },
+ "z40": {
+  "bore_r": 10.42,
+  "core_r": 7.09
+ },
+ "z60": {
+  "bore_r": 10.42,
+  "core_r": 7.09
+ }
+}
