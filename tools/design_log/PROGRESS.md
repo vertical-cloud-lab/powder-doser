@@ -12,6 +12,11 @@ any change to the log.
    with `date=`, `pr=`, `sub=`; Trigger / Design / Rationale / image / Outcome).
 3. Insert entries in date order, run `python3 tools/design_log/build_design_log.py`
    (then `--check`), check that new image URLs return HTTP 200, and commit.
+   **Python (and Node) are blocked for `@claude` runs on this PR**, because the Claude
+   app did not open it. Use the GNU awk port instead, which reproduces the Python
+   output byte for byte (checked on 2026-11-17 against all 128 entries, including a
+   rebuild from a copy with every anchor and generated block stripped):
+   `LC_ALL=C gawk -f tools/design_log/build_design_log.awk DESIGN-LOG.md > /tmp/log.md && cp /tmp/log.md DESIGN-LOG.md`.
 4. Mark the thread `done` (or `skipped`, with the reason) here and note the newest
    entry added under "Sessions".
 

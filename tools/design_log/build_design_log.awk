@@ -1,0 +1,165 @@
+#!/usr/bin/env -S gawk -f
+# GNU awk port of build_design_log.py's render(), for sessions that cannot run
+# Python (e.g. an @claude run on a pull request that the Claude app did not open).
+# build_design_log.py stays the canonical generator: keep the tables below in step
+# with it, and when Python is available, confirm the two agree with
+#   python3 tools/design_log/build_design_log.py --check
+#
+# Usage (writes the regenerated log to stdout; LC_ALL=C makes it byte-exact):
+#   LC_ALL=C gawk -f tools/design_log/build_design_log.awk DESIGN-LOG.md > /tmp/log.md
+#   cmp -s /tmp/log.md DESIGN-LOG.md || cp /tmp/log.md DESIGN-LOG.md
+BEGIN {
+    # PR number -> subsystem (PR_SUBSYSTEM in the Python).
+    PRS["0"] = "Scoop / excavator";  PRS["2"] = "Scoop / excavator"
+    PRS["5"] = "Scoop / excavator";  PRS["13"] = "Sieve-cup alternatives (A–H)"
+    PRS["16"] = "Auger";             PRS["25"] = "Electronics & PCB"
+    PRS["31"] = "Doser module";      PRS["35"] = "Doser module"
+    PRS["37"] = "Sealing cap";       PRS["45"] = "Electronics & PCB"
+    PRS["47"] = "Auger bracket";     PRS["49"] = "Auger"
+    PRS["51"] = "Tap collar";        PRS["53"] = "Auger bracket"
+    PRS["55"] = "Auger bracket";     PRS["57"] = "Mounting plate & hinge"
+    PRS["59"] = "Mounting plate & hinge"; PRS["61"] = "Electronics & PCB"
+    PRS["63"] = "Mounting plate & hinge"; PRS["66"] = "Mounting plate & hinge"
+    PRS["68"] = "Auger"
+    # sub= slug -> subsystem (SUB_SLUG in the Python).
+    SLUG["auger"] = "Auger";                  SLUG["bracket"] = "Auger bracket"
+    SLUG["tap-collar"] = "Tap collar";        SLUG["module"] = "Doser module"
+    SLUG["mounting"] = "Mounting plate & hinge"
+    SLUG["electronics"] = "Electronics & PCB"; SLUG["firmware"] = "Firmware & control"
+    SLUG["test-rig"] = "Test method & rig";   SLUG["powder-tests"] = "Powder characterization"
+    SLUG["multi-doser"] = "Multi-doser";      SLUG["sim"] = "Simulation & digital twin"
+    SLUG["tooling"] = "Design tooling"
+    # Display order (SUBSYSTEM_ORDER in the Python).
+    n_order = split("Scoop / excavator|Sieve-cup alternatives (A–H)|Auger|Auger bracket|" \
+        "Sealing cap|Tap collar|Doser module|Mounting plate & hinge|Electronics & PCB|" \
+        "Firmware & control|Test method & rig|Powder characterization|Multi-doser|" \
+        "Simulation & digital twin|Design tooling", ORDER, "|")
+    EMDASH = "—"; MIDDOT = "·"; ARROW = " → "
+}
+
+# Drop previously generated anchors; they are re-added after each ENTRY marker.
+/^<a id="e[0-9]+"><\/a>$/ { next }
+{ L[++n] = $0 }
+
+function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s); return s }
+
+function ver_label(name, day,    p, c) {
+    if (match(name, /v[0-9][[:alnum:]_.-]*$/)) {
+        p = RSTART
+        c = (p > 1) ? substr(name, p - 1, 1) : ""
+        if (c == "" || c !~ /[[:alnum:]_]/) return substr(name, p)
+    }
+    return day
+}
+
+END {
+    # Pass 1: rebuild the line list with anchors, and collect entry metadata.
+    m = 0; ne = 0
+    for (i = 1; i <= n; i++) {
+        O[++m] = L[i]
+        if (L[i] ~ /<!-- ENTRY [^>]*-->$/) {
+            ne++
+            O[++m] = sprintf("<a id=\"e%03d\"></a>", ne)
+            meta = L[i]; sub(/^.*<!-- ENTRY /, "", meta); sub(/-->$/, "", meta)
+            date = ""; pr = "0"; slug = ""
+            k = split(meta, kvs, /[ \t]+/)
+            for (j = 1; j <= k; j++) {
+                if (kvs[j] ~ /^date=/) date = substr(kvs[j], 6)
+                else if (kvs[j] ~ /^pr=/) pr = substr(kvs[j], 4)
+                else if (kvs[j] ~ /^sub=/) slug = substr(kvs[j], 5)
+            }
+            head = ""
+            for (j = i + 1; j <= n; j++) if (L[j] ~ /^### /) { head = substr(L[j], 5); break }
+            if (head == "") { print "entry " ne " has no '### ' heading" > "/dev/stderr"; exit 2 }
+            if (slug != "" && !(slug in SLUG)) { print "unknown sub=" slug > "/dev/stderr"; exit 2 }
+            name = head
+            p = index(head, EMDASH)
+            if (p) {
+                rest = substr(head, p + length(EMDASH))
+                q = index(rest, MIDDOT)
+                if (q > 1) name = trim(substr(rest, 1, q - 1))
+            }
+            base = name; sub(/[ \t]+v[0-9][[:alnum:]_.-]*$/, "", base)
+            E_day[ne] = substr(date, 1, 10)
+            E_name[ne] = name; E_base[ne] = base
+            E_sub[ne] = (slug != "") ? SLUG[slug] : ((pr in PRS) ? PRS[pr] : "Other")
+            E_anchor[ne] = sprintf("e%03d", ne)
+        }
+    }
+
+    # Front-matter.
+    dmin = ""; dmax = ""
+    for (e = 1; e <= ne; e++) {
+        if (dmin == "" || E_day[e] < dmin) dmin = E_day[e]
+        if (dmax == "" || E_day[e] > dmax) dmax = E_day[e]
+        cnt[E_sub[e]]++
+        key = E_sub[e] SUBSEP E_base[e]
+        if (++chainlen[key] == 2) nchains++
+        if (!(E_sub[e] in seen_sub)) { seen_sub[E_sub[e]] = 1; subs_seen[++ns] = E_sub[e] }
+    }
+    fm = "<!-- FRONTMATTER:START -->\n" \
+         "<!-- Machine-readable summary; regenerated by tools/design_log/build_design_log.py -->\n" \
+         "```yaml\n" \
+         "title: \"Record of Designs\"\n" \
+         "kind: design-log\n" \
+         "entries: " ne "\n" \
+         "date_span: [" dmin ", " dmax "]\n" \
+         "iteration_chains: " (nchains + 0) "\n" \
+         "subsystems:"
+    for (o = 1; o <= n_order; o++)
+        if (cnt[ORDER[o]] > 0)
+            fm = fm "\n  - name: \"" ORDER[o] "\"\n    entries: " cnt[ORDER[o]]
+    fm = fm "\n```\n<!-- FRONTMATTER:END -->"
+
+    # Index: known subsystems in display order, then any others by first appearance.
+    nsub = 0
+    for (o = 1; o <= n_order; o++) SUBS[++nsub] = ORDER[o]
+    for (s = 1; s <= ns; s++) {
+        known = 0
+        for (o = 1; o <= n_order; o++) if (subs_seen[s] == ORDER[o]) known = 1
+        if (!known) SUBS[++nsub] = subs_seen[s]
+    }
+    idx = "<!-- INDEX:START -->\n## Index by subsystem\n\n" \
+          "Designs are logged chronologically below, but iterations of one object are scattered across that timeline. " \
+          "This index regroups them. Within a multi-version **iteration chain** each version is superseded by the next " \
+          "(`v1 → v2 → …`); follow a link to jump to that exact iteration.\n\n" \
+          "| Subsystem | Entries | Iteration chains (oldest → newest) |\n" \
+          "| --- | --: | --- |"
+    for (s = 1; s <= nsub; s++) {
+        S = SUBS[s]
+        if (!(cnt[S] > 0)) continue
+        nb = 0; delete bases; delete members; delete nmem
+        for (e = 1; e <= ne; e++) {
+            if (E_sub[e] != S) continue
+            b = E_base[e]
+            if (!(b in nmem)) { bases[++nb] = b; nmem[b] = 0 }
+            members[b, ++nmem[b]] = e
+        }
+        cells = ""
+        for (t = 1; t <= nb; t++) {
+            b = bases[t]
+            if (nmem[b] > 1) {
+                cell = "**" b ":** "
+                for (u = 1; u <= nmem[b]; u++) {
+                    e = members[b, u]
+                    cell = cell (u > 1 ? ARROW : "") "[" ver_label(E_name[e], E_day[e]) "](#" E_anchor[e] ")"
+                }
+            } else {
+                e = members[b, 1]
+                cell = "[" b "](#" E_anchor[e] ")"
+            }
+            cells = cells (t > 1 ? "<br>" : "") cell
+        }
+        idx = idx "\n| " S " | " cnt[S] " | " cells " |"
+    }
+    idx = idx "\n\n<!-- INDEX:END -->"
+
+    # Pass 2: print, swapping each generated block for its rebuilt version.
+    skip = 0
+    for (i = 1; i <= m; i++) {
+        if (O[i] == "<!-- FRONTMATTER:START -->") { print fm; skip = 1; continue }
+        if (O[i] == "<!-- INDEX:START -->") { print idx; skip = 1; continue }
+        if (skip) { if (O[i] == "<!-- FRONTMATTER:END -->" || O[i] == "<!-- INDEX:END -->") skip = 0; continue }
+        print O[i]
+    }
+}
