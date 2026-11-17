@@ -557,6 +557,61 @@ in 5° steps; all three were checked at the ten B2T tilt cases.
 - **Bed:** at 320.5 mm, it leaves 4.5 mm of the H2D's 325 mm single-nozzle
   width for a brim or skirt.
 
+#### Where the clevis block's holes go in the plate (added 17 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+where the two new holes for the clevis block go in the mounting plate.
+[`holes.py`](holes.py) measures them on the plate as he has it now (no
+gears, arms or front wings, as `base.py` models it), from features that can
+be picked in an Onshape sketch. It draws the figure below and writes
+[`holes.json`](holes.json). Nothing was modelled in Onshape.
+
+![Clevis block holes, dimensioned](renders/clevis_holes.png)
+
+**The two holes** (mm):
+
+| | |
+|---|---|
+| Size | Ø3.4 through the 6 mm floor, for M3 |
+| Across | 22 apart, 11 either side of the plate's centre line |
+| Along | 35 in front of the floor's rear edge, which puts them 95 behind the hinge axis |
+
+**Cross-checks:**
+- 23 from each side edge of the floor. On the stepper side that is the edge
+  behind the stepper tab.
+- 29 in front of the rear Flexible Bracket's holes and 13 inboard of them.
+- 36.67 behind the tap bracket's rear holes, and 13 inboard of them.
+- 5.67 behind the stepper wall's rear face. On the stepper side the hole's
+  edge is 3.97 from the wall, and the screw head 3.6.
+- The clevis pin sits right under the line of the holes, 9.75 below the
+  floor's underside. Keep the holes 95 behind the hinge; moving them moves
+  the pin and changes the stroke table.
+
+**Every floor hole** (x from the centre line, + away from the stepper; y
+behind the hinge axis):
+
+| Hole (x, y) | From the rear edge | Used by |
+|---|---|---|
+| ±24, 124 | 6 | rear Flexible Bracket |
+| **±11, 95 (new)** | **35** | **clevis block** |
+| ±24, 58.33 | 71.67 | #203's tap bracket |
+| −24, 42.33 | 87.67 | #203's tap bracket |
+| +24, 42.33 | 87.67 | not used |
+
+**Fitting the block.** The auger tube passes 19.9 mm above the floor's top
+over the screw heads (23.3 mm on the hole axes), so a hex key can't go
+straight down onto them once the auger is in. Screw the block on before the
+auger goes in, or turn the screws over, with the heads in the block and the
+nuts on top of the floor. The screws are at least 14 mm from the stepper and
+15 mm from the tube. The block's own holes match: 22 apart on its centre
+line, 4 from its ends.
+
+**Limits.** Measured on PR #170's plate (`mounting-plate.step` at `7f5b3b7`),
+trimmed as `base.py` does; Ethan's Onshape plate matched it to a median of
+0.38 mm. In that STEP file's own frame the hole centres on the floor's top
+face are (−95, −29.25, −30.8) and (−95, −29.25, −52.8). I haven't checked
+that frame against the Onshape part studio's.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -621,6 +676,7 @@ between bulk doses. This was not modelled.
 | [`plate.py`](plate.py), [`plate.json`](plate.json) | The gearless mounting plate against today's: sizes, volumes, floor holes and what uses each, the hinge stack; renders `plate_compare.png` |
 | [`base.py`](base.py), [`base.json`](base.json) | The one-piece base with today's hinge towers, and the plate trimmed as Ethan has it: dimensions, clearance checks, `base_drawing.png` and `base_iso.png` |
 | [`base/`](base/) | `base.step` and `base.stl`: the base, origin on the beaker axis, z = 0 on its underside |
+| [`holes.py`](holes.py), [`holes.json`](holes.json) | Where the clevis block's two M3 holes go in the plate's floor, measured from its edges, holes, stepper wall and hinge axis; what sits over and under them; renders `clevis_holes.png` |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -633,6 +689,7 @@ xvfb-run -a python clearance.py             # room under the tri-star (about 20 
 xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
 xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
 xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
+xvfb-run -a python holes.py                 # where the clevis block's holes go in the plate (about 10 s)
 ```
 
 **Limits.**
