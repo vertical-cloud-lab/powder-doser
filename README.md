@@ -340,3 +340,11 @@ RSC-specific assets (`rsc.bst`, `rsc.bib`, `headers/`) are vendored in
 cd paper
 latexmk -pdf main.tex
 ```
+
+## Commercial / alternative powder dosing equipment
+
+A survey of commercial powder-dosing instruments (MTI AM-PD6, MTI
+AM-PD16, MTI PF-A, Labman MultiDose, METTLER TOLEDO Chronect XPR) used
+as reference points for this project — including vendor links, public
+specs, a reusable quote-request template, and a quote tracker — is in
+[`docs/alternative-dosing/`](docs/alternative-dosing/README.md).
