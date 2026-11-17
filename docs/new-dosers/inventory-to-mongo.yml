@@ -1,0 +1,71 @@
+# GitHub Action: each time a new version of docs/new-dosers/inventory-checklist.csv
+# is pushed, send it to MongoDB (powder_doser.parts_inventory) as a new snapshot,
+# using inventory_to_mongo.py. The CSV in the repo is the master copy.
+#
+# NOT SWITCHED ON YET. GitHub only runs workflow files kept in .github/workflows/,
+# and Claude's GitHub App isn't allowed to write there. To switch it on, someone
+# with write access copies this file, unchanged, to
+# .github/workflows/inventory-to-mongo.yml on the same branch (on GitHub:
+# Add file -> Create new file, paste, Commit changes). See README section 3.
+#
+# It uses the repo secret PI_MONGODB_URI, which can only read and write the
+# powder_doser database. If the CSV is the same file as the newest snapshot
+# already in MongoDB, nothing is written, so re-runs and merges add no copies.
+
+name: Inventory CSV to MongoDB
+
+on:
+  push:
+    branches: [main, claude/new-doser-getting-started]
+    paths: [docs/new-dosers/inventory-checklist.csv]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inventory-to-mongo
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Only the two files it needs; the repo's print files and videos are large.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docs/new-dosers/inventory-checklist.csv
+            docs/new-dosers/inventory_to_mongo.py
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pymongo
+
+      - name: Send the CSV to MongoDB
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PI_MONGODB_URI: ${{ secrets.PI_MONGODB_URI }}
+        run: |
+          f=docs/new-dosers/inventory-checklist.csv
+          # The commit that last changed the CSV says who posted this count, when, and why.
+          gh api "repos/$GITHUB_REPOSITORY/commits?path=$f&sha=$GITHUB_SHA&per_page=1" > "$RUNNER_TEMP/commit.json"
+          sha=$(jq -r '.[0].sha' "$RUNNER_TEMP/commit.json")
+          login=$(jq -r '.[0].author.login // empty' "$RUNNER_TEMP/commit.json")
+          jq -r '.[0].commit.message' "$RUNNER_TEMP/commit.json" > "$RUNNER_TEMP/message.txt"
+          repo="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          {
+            echo '```'
+            python docs/new-dosers/inventory_to_mongo.py "$f" \
+              --source-url "$repo/blob/$sha/$f" \
+              --file-url "$repo/raw/$sha/$f" \
+              --author "${login:-$GITHUB_ACTOR}" \
+              --taken-at "$(jq -r '.[0].commit.author.date' "$RUNNER_TEMP/commit.json")" \
+              --comment-file "$RUNNER_TEMP/message.txt"
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
