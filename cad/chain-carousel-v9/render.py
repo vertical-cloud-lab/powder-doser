@@ -68,7 +68,7 @@ _PD: dict[str, vtk.vtkPolyData] = {}
 def default_opacity(p) -> float:
     """Acrylic and glass are see-through (and outlined); the HR-100A is drawn as a ghost where it has to stand (it collides
     with the station there: see the scale-fit study)."""
-    if p.key.startswith(("panel_", "hatch_")):
+    if p.key.startswith(("panel_", "hatch_", "bay9_", "baffle9_", "deck9")):
         return 0.22
     if p.key == "hr100a_body":
         return 0.40
@@ -77,9 +77,10 @@ def default_opacity(p) -> float:
     return 1.0
 
 
-OUTLINED = ("panel_", "hatch_", "hr100a_body", "hr100a_glass")
+OUTLINED = ("panel_", "hatch_", "hr100a_body", "hr100a_glass", "bay9_", "baffle9_", "deck9")
 TINT = {"hr100a_body": (0.50, 0.56, 0.68), "hr100a_glass": (0.55, 0.75, 0.90)}
-for _k in ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side"):
+for _k in ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side", "panel_front_bay",
+           "bay9_front", "bay9_top", "bay9_side_p", "bay9_side_m", "bay9_door", "baffle9_side_p", "baffle9_side_m", "baffle9_back", "deck9"):
     TINT[_k] = (0.60, 0.76, 0.90)
 
 
