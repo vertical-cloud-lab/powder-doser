@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/servo_pinion.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/servo-pinion.step",
+ "volume_new_mm3": 2906.0,
+ "volume_ref_mm3": 2904.6,
+ "volume_intersection_mm3": 2904.7,
+ "volume_error_pct": 0.05,
+ "iou": 0.9996,
+ "bbox_min_delta_mm": [
+  -0.0,
+  -0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.0009927965403270064,
+  "p95": 0.004698471436683365,
+  "max": 0.010128796711667443
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.0009633743604542499,
+  "p95": 0.004619744299791466,
+  "max": 0.010242400654786989
+ },
+ "faces_new": 119,
+ "faces_ref": 119,
+ "seconds": 95.1
+}

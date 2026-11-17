@@ -1,0 +1,32 @@
+{
+ "new": "tmp/fasteners/out/shcs_m3x10.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/shcs_m3x10.step",
+ "volume_new_mm3": 128.1,
+ "volume_ref_mm3": 117.3,
+ "volume_intersection_mm3": 114.0,
+ "volume_error_pct": 9.22,
+ "iou": 0.8672,
+ "bbox_min_delta_mm": [
+  0.0,
+  -0.0,
+  -0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.0710329241014687,
+  "p95": 0.18597024159897624,
+  "max": 0.8830725139119768
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.0884050416374439,
+  "p95": 0.27246826131276686,
+  "max": 0.8246781180401853
+ },
+ "faces_new": 16,
+ "faces_ref": 49,
+ "seconds": 32.7
+}

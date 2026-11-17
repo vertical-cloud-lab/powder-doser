@@ -1,0 +1,32 @@
+{
+ "new": "STEP/parts/mounting_plate.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/fusion-step/mounting-plate.step",
+ "volume_new_mm3": 91532.4,
+ "volume_ref_mm3": 91523.7,
+ "volume_intersection_mm3": 91514.1,
+ "volume_error_pct": 0.01,
+ "iou": 0.9997,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  -0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.00016721871544455637,
+  "p95": 0.0014659519593245333,
+  "max": 0.011802325848664492
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.00016353501664182876,
+  "p95": 0.0014493746274978892,
+  "max": 0.011606562734682095
+ },
+ "faces_new": 260,
+ "faces_ref": 260,
+ "seconds": 129.8
+}

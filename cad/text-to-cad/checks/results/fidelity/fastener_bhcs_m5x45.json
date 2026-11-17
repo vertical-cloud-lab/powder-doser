@@ -1,0 +1,35 @@
+{
+ "new": "tmp/fasteners/out/bhcs_m5x45.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/bhcs_m5x45.step",
+ "volume_new_mm3": 724.0,
+ "volume_ref_mm3": 839.0,
+ "volume_intersection_mm3": 0.0,
+ "volume_error_pct": -13.71,
+ "iou": 0.0,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  -0.222
+ ],
+ "bbox_max_delta_mm": [
+  -0.0,
+  -0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.14351096332712376,
+  "p95": 0.3768104472221267,
+  "max": 0.8779763555164648
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.20447068870731966,
+  "p95": 0.4254549808046157,
+  "max": 0.9508759854116541
+ },
+ "faces_new": 12,
+ "faces_ref": 120,
+ "seconds": 47.8,
+ "volume_intersection_unnudged_mm3": 700.8,
+ "iou_unnudged": 0.8128,
+ "note": "fidelity.py's nudged BRepAlgoAPI_Common (NUDGE ~1.8 um) returns an empty result for this pair although both solids are valid (BRepCheck) with 1e-7 tolerances; the un-nudged common gives the *_unnudged figures (added by the fasteners task, not by fidelity.py)."
+}

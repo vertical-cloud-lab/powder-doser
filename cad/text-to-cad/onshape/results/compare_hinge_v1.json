@@ -1,0 +1,195 @@
+{
+ "tag": "v1",
+ "drop_mm": 5.0,
+ "placements": {
+  "solids": 100,
+  "fixed": 6,
+  "moved": 94,
+  "max_bbox_error_mm": 0.1803662985323058,
+  "tilting_solids": 58
+ },
+ "baseplate": {
+  "onshape_volume_mm3": 146494.07356782162,
+  "text_to_cad_volume_mm3": 137661.0016528815,
+  "onshape_bbox_mm": [
+   [
+    -95.0,
+    27.3,
+    -0.0
+   ],
+   [
+    95.0,
+    170.0,
+    75.66
+   ]
+  ],
+  "text_to_cad_bbox_mm": [
+   [
+    -95.0,
+    27.3,
+    0.0
+   ],
+   [
+    95.0,
+    170.0,
+    75.66
+   ]
+  ],
+  "iou_onshape_vs_text_to_cad": 0.9349127589557187
+ },
+ "tilt_sweep_vs_baseplate": {
+  "0": [
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 12.1585
+   },
+   {
+    "centroid_mm": [
+     -24.0,
+     87.7,
+     1.8
+    ],
+    "overlap_mm3": 0.0917
+   }
+  ],
+  "0.5": [
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 8.3436
+   },
+   {
+    "centroid_mm": [
+     -24.0,
+     87.7,
+     1.8
+    ],
+    "overlap_mm3": 0.0719
+   }
+  ],
+  "1": [
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 5.2013
+   },
+   {
+    "centroid_mm": [
+     -24.0,
+     87.7,
+     1.8
+    ],
+    "overlap_mm3": 0.052
+   }
+  ],
+  "1.5": [
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 2.7637
+   },
+   {
+    "centroid_mm": [
+     -24.0,
+     87.7,
+     1.8
+    ],
+    "overlap_mm3": 0.032
+   }
+  ],
+  "2": [
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 1.0673
+   },
+   {
+    "centroid_mm": [
+     -24.0,
+     87.7,
+     1.8
+    ],
+    "overlap_mm3": 0.0117
+   }
+  ],
+  "2.5": [
+   {
+    "centroid_mm": [
+     -5.2,
+     112.1,
+     12.3
+    ],
+    "overlap_mm3": 2.1403
+   },
+   {
+    "centroid_mm": [
+     -1.7,
+     87.7,
+     16.7
+    ],
+    "overlap_mm3": 0.1534
+   }
+  ],
+  "3": [
+   {
+    "centroid_mm": [
+     -5.2,
+     112.1,
+     12.3
+    ],
+    "overlap_mm3": 7.3752
+   }
+  ],
+  "3.5": [
+   {
+    "centroid_mm": [
+     -5.2,
+     112.1,
+     12.3
+    ],
+    "overlap_mm3": 5.5171
+   }
+  ],
+  "4": [
+   {
+    "centroid_mm": [
+     -5.2,
+     112.1,
+     12.3
+    ],
+    "overlap_mm3": 2.1191
+   }
+  ],
+  "4.5": [
+   {
+    "centroid_mm": [
+     -5.2,
+     112.1,
+     12.3
+    ],
+    "overlap_mm3": 0.1021
+   }
+  ],
+  "5": [],
+  "15": [],
+  "30": [],
+  "45": []
+ },
+ "tilt_sweep_clean": false
+}

@@ -1,0 +1,32 @@
+{
+ "new": "tmp/fasteners/out/hexnut_m3.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/hexnut_m3.step",
+ "volume_new_mm3": 45.2,
+ "volume_ref_mm3": 48.5,
+ "volume_intersection_mm3": 44.6,
+ "volume_error_pct": -6.81,
+ "iou": 0.9081,
+ "bbox_min_delta_mm": [
+  0.0,
+  -0.0,
+  -0.0
+ ],
+ "bbox_max_delta_mm": [
+  -0.0,
+  0.0,
+  -0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 0.029095164534886885,
+  "p95": 0.15101094790147326,
+  "max": 0.21747142614394002
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 0.058119078428761295,
+  "p95": 0.27682496735688167,
+  "max": 0.36067135216971097
+ },
+ "faces_new": 29,
+ "faces_ref": 20,
+ "seconds": 15.3
+}

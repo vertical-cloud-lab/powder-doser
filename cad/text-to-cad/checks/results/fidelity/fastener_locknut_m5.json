@@ -1,0 +1,32 @@
+{
+ "new": "tmp/fasteners/out/locknut_m5.step",
+ "ref": "/tmp/pr170/cad/full-assembly/components/hardware/locknut_m5.step",
+ "volume_new_mm3": 176.3,
+ "volume_ref_mm3": 176.3,
+ "volume_intersection_mm3": 176.2,
+ "volume_error_pct": -0.0,
+ "iou": 0.9984,
+ "bbox_min_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "bbox_max_delta_mm": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "surface_dev_new_to_ref_mm": {
+  "mean": 2.5469366590820627e-15,
+  "p95": 1.3607542828517103e-14,
+  "max": 4.110906254805721e-13
+ },
+ "surface_dev_ref_to_new_mm": {
+  "mean": 2.4403654215822064e-15,
+  "p95": 1.3309943114092396e-14,
+  "max": 2.7992921253877374e-13
+ },
+ "faces_new": 26,
+ "faces_ref": 26,
+ "seconds": 20.3
+}
