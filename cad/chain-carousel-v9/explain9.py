@@ -175,7 +175,7 @@ def drop(preview=False):
                                      text="Docking lifts the finger 10 mm: it pushes the door's strip up 6 mm, and the exit opens.", save_as="d2" if preview else None))
     c.move(1.2, lambda t, i, n: dict(st=L.State(tilt=30.0 * t, **S0), cam=cam, hide=near_cut, focus=foc, opacity=opac, readout=tilt_ro,
                                      text="The exit is on the hinge axis, so the stream falls from the same point at every tilt.", save_as="d3" if preview else None))
-    _dose(c, 2.0, foc=foc, cam=cam, text="32 mm from the exit to the rim, 81 mm to the beaker's floor (v7: 154 and 201; single doser: about 85 "
+    _dose(c, 2.0, foc=foc, cam=cam, text="32 mm from the exit to the rim, 80 mm to the beaker's floor (v7: 154 and 201; single doser: about 85 "
                                           "and 153).", save="d4" if preview else None)
     c.hold(1.0)
     c.done()
@@ -318,7 +318,7 @@ def enclosure(preview=False):
     cam1 = ((-40.0, 0.0, 330.0), (-1.0, -0.75, 0.32), 1250)
     foc1 = lambda p: p.group in ("enclosure", "scale", "chamber")                             # noqa: E731
     lab1 = [("Bay window: 100 mm proud\nof the front panel", part("bay9_top", local=(-115.0, -60.0, 408.0)), "L"),
-            ("Door for the beaker\n(200 x 112 mm)", part("bay9_door", local=(100.0, 56.0, 0.0)), "L"),
+            ("Door for the beaker\n(200 x 115 mm)", part("bay9_door", local=(100.0, 56.0, 0.0)), "L"),
             ("Balance on its block, inside\nthe bay (display nose 79 mm out)", part("bal9_display"), "R"),
             ("Side hatch for swaps (v7's)", part("hatch_side", local=(100.0, 100.0, 0.0)), "R")]
     c.chapter(1, "1. A bay window round the balance")

@@ -1,7 +1,7 @@
-"""Bill of materials for the chain-carousel test rig v7 (Sam's second note of 2026-11-10: v6's ladder and long plate kept; the
-dock on three posts printed on the plate past the auger, so the EC has no arms; ONE P16-150 under the station again, behind the
-balance, lifting and tilting the EC 0-90 deg; two cross bars between the rungs; the balance drawn as a base and a draft cage
-with a dosing lid. v6 had two lift P16-50s, a lift frame and a tilt P16 on the back side plate).
+"""Bill of materials for the chain-carousel test rig v9 (Sam, 2026-11-17: a variation on v7, which stays the main version): v7's
+carousel, station, EC and plate, with the balance's draft cage removed, the balance on a granite block, the beaker straight on
+the pan 32 mm under the exit, v7's EC cut back where it hung over the beaker, a bay window round the balance and a weighing
+chamber inside the frame. v7's dosing lid, beaker riser, front hatch door and brush strip are gone.
 
 ITEMS is the single table: item number, what, where to buy it, price, and
 which assembly step uses it. Quantities of modelled parts are counted from
@@ -22,10 +22,9 @@ HERE = Path(__file__).resolve().parent
 #  vendor, part number, url, unit price USD, price source, steps, category)
 V = "verified 2026-10-18"
 # v5: the balance, checked against A&D's HR-i manual (p.59-60) and A&D Japan's DXF on 2026-11-04 (README, "The balance")
-HR202I_DESC = ("Analytical balance, 0.1 mg (v7: drawn as a weighing base and a draft cage with nothing tall behind the cage, as Sam "
-               "describes the lab's balances; v5's HR-202i chamber, pan and dose height, 200 x 263 x 311 mm, close to the lab's HR-100A's "
-               "198 x 253 x 315), RS-232C (2400 7E1): under the station, its pan under the dose point, on the bench (it touches nothing of "
-               "the doser). Counted as the lab's, as asked. A new HR-202i (220 g x 0.1 mg) was $2,989 at MNM Scales (out of stock, "
+HR202I_DESC = ("Analytical balance, 0.1 mg (v9: its draft cage taken off, so drawn as v7's weighing base, display and pan only, "
+               "200 x 263 mm, the pan 50 mm over its feet; the lab's HR-100A is 198 x 253 with its pan at 86.5), RS-232C (2400 7E1): "
+               "on the granite block (item 104), its pan's centre 7 mm in front of the dose point (it touches nothing of the doser). Counted as the lab's, as asked. A new HR-202i (220 g x 0.1 mg) was $2,989 at MNM Scales (out of stock, "
                "2026-11-04; A&D's replacement is the GH-202)")
 HR202I_URL = "https://www.aandd.co.jp/products/weighing/balance/bal-analytical/hr/"
 HR202I_USD = 0.0
@@ -131,10 +130,10 @@ ITEMS = [
      "filament at $20/kg (about 60 g)", (10,), "Printed"),
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
      "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
-    (38, ("clevis_bracket", "guide7_cone", "guide7_vee", "beaker_riser", "latch_rail", "side_tab", "side_tab_m", "catch"), None,
-     "Station and enclosure parts, PETG. v7: the P16's base clevis (v4's, on the P16 cross bar), 2 guides with v6's funnel mouths and a "
-     "cone or vee seat round the EC's tail shoes (on the guide cross bar), the beaker riser, the latch cam with its arm to the back side "
-     "plate, 2 side tabs, 2 turn buttons (v6's lift shelves, lift guides, end blocks and tilt bracket are gone)",
+    (38, ("clevis_bracket", "guide7_cone", "guide7_vee", "latch_rail", "side_tab", "side_tab_m", "catch"), None,
+     "Station and enclosure parts, PETG. v7's: the P16's base clevis (v4's, on the P16 cross bar), 2 guides with v6's funnel mouths and a "
+     "cone or vee seat round the EC's tail shoes (on the guide cross bar), the latch cam with its arm to the back side plate, 2 side "
+     "tabs, 2 turn buttons (side hatch, bay door). v9: no beaker riser (the beaker sits on the pan)",
      "printed", "stl/", "", 0.6, "filament", (8, 12), "Printed"),
     (39, ("sam_mounting_plate",), None, "Mounting plate v7: v6's (Sam's Oct 13 plate carried on to the cap's end: clip 2, cap saddle, the "
      "latch keeper on its back end, the door housing's inserts) with the dock moved onto three 8 x 8 mm posts beside the tube that "
@@ -178,11 +177,11 @@ ITEMS = [
     (74, None, 1, "DC motor driver DRV8871 breakout (the 12 V tap solenoid)", "Adafruit", "3190", "https://www.adafruit.com/product/3190", 7.50,
      "estimate (list price in hardware/vibration-motor-and-solenoid.md, not re-checked)", (11,), "Electronics"),
     # ---- v3: kinematic dock and guide (items 1-2 of Sam's 2026-10-29 review)
-    (77, ("sam_electronics_carriage",), None, "Electronics carriage v7: Sam's Oct 13 carriage printed upside down (mirrored) with no arms "
-     "(v4-v6 reached round the auger to the plate's face): the cone (A), the dowel vee (B) and ball C on three ears at its rim, an N52 "
-     "behind each, v4's door finger, and a tail behind its back wall (under the 44T gear) with the P16's rod-end clevis and two guide "
-     "shoes with conical noses (v6's hooks and tilt arm are gone); the doser's NEMA 11 and 12 V solenoid move into it",
-     "printed", "stl/electronics_carriage_v7.stl", "", 1.3, "filament (about 65 g)", (8,), "Printed"),
+    (77, ("sam_electronics_carriage",), None, "Electronics carriage v9: v7's (Sam's Oct 13 carriage printed upside down, the cone (A), "
+     "the dowel vee (B) and ball C on three ears at its rim with an N52 behind each, a tail under the 44T gear with the P16's rod-end "
+     "clevis and two guide shoes) with its front 18 mm cut off and a new front wall in front of the NEMA 11, the door finger a slim "
+     "3 x 4 mm arm, and a cradle for the solenoid in the tail's web behind the gear; the doser's NEMA 11 and 12 V solenoid move into it",
+     "printed", "stl/electronics_carriage_v9.stl", "", 1.3, "filament (about 60 g)", (8,), "Printed"),
     (78, None, 1, "Precision ball, 1/4 in, hardened 52100 chrome steel (Rockwell C60, ground and polished, diameter +/-0.00005 in; "
      "McMaster gives no ABMA grade), pack of 2: 1 used, ball C on the EC (v6: the plates' two balls are printed domes; v5 bought 18 "
      "packs). The only 1/4 in 52100 ball McMaster lists; its 6 mm 52100 balls are $5.87 per 50 (9292K41) if the seats are "
@@ -218,15 +217,19 @@ ITEMS = [
      "McMaster-Carr", "to select (8969T family)", f"{MC}/compression-springs/", 4.88,
      "estimate (the 8969T family's pack-of-1 price, verified 2026-10-29)", (10,), "Doors"),
     # ---- v3: enclosure (item 5) and side tabs (5a)
-    (89, None, 5, "Clear cast acrylic sheet, 1/8 in (-0.025/+0.015 in), 24 x 48 in, scratch and UV resistant: two side panels, front, "
-     "back, top and the two hatch doors, laser cut from dxf/. v5: the four walls are 850 mm tall (80 mm more) and 400-418 mm wide, so "
-     "each takes a sheet's length, and the top and the doors a fifth. v7: the balance's dosing lid (item 103) comes from the fifth "
-     "sheet's offcut", "McMaster-Carr", "8560K262", f"{MC}/8560K262/", 70.99, "verified 2026-10-29 (McMaster page, logged out)",
+    (89, None, 6, "Clear cast acrylic sheet, 1/8 in (-0.025/+0.015 in), 24 x 48 in, scratch and UV resistant: two side panels, front "
+     "(with the bay window's opening), back, top and the side hatch door, laser cut from dxf/; the four walls are 850 mm tall and "
+     "400-418 mm wide, so each takes a sheet's length, the top and the door a fifth. v9: a sixth sheet for the bay window (front, two "
+     "sides, top, door: 0.23 m2) and the weighing chamber (two side baffles, the back baffle, the deck: 0.33 m2)", "McMaster-Carr", "8560K262", f"{MC}/8560K262/", 70.99, "verified 2026-10-29 (McMaster page, logged out)",
      (12,), "Enclosure"),
-    (103, ("bal7_lid",), None, "Dosing lid for the balance (v7): replaces the draft cage's top door glass: 3 mm cast acrylic (item 89's "
-     "offcut), laser cut 162.5 x 181 mm with a 30 mm hole on the pan's axis, and a printed PETG collar bonded round the hole. The exit "
-     "stays on the hinge axis, so the stream falls through the same hole at every tilt; the beaker goes in and out through a side door",
-     "laser cut + printed", "", "", 0.30, "estimate (offcut; collar filament)", (12,), "Enclosure"),
+    (104, ("block9",), None, "Balance block (v9): granite, 252 x 210 x 305 mm (about 43 kg), flat and level on top, standing on the "
+     "bench inside the frame's U-shaped base and touching nothing of the doser; it puts the beaker's rim 32 mm under the exit without "
+     "lowering the carousel (Sam). The lab's isolating paver idea (#146) made taller: a cut-to-size block, or a stack of 2-3 in granite "
+     "pavers or surface plates with the top one at least 252 x 210. With the lab's HR-100A (pan 86.5 mm over its feet) it is 36.5 mm "
+     "lower", "stone yard / granite fabricator", "cut to size", "", 120.0, "estimate (cut granite, about $2.8/kg)", (12,), "Station"),
+    (105, None, 1, "Acrylic cement (Weld-On 4, 4 oz with an applicator bottle) and 12 printed corner clips: the bay window's four sheets "
+     "to each other and to the front panel, the weighing chamber's baffles to the deck", "TAP Plastics", "Weld-On 4", "", 14.0,
+     "estimate", (12,), "Enclosure"),
     (90, None, 1, "Nylon spacers for M5, 10 mm OD: 20 x 6 mm (93657A075, $0.89 each at 10 or more; 18 used) and 8 x 25 mm (93657A093, "
      "$1.78 each; 6 used, the back panel past the drive sprocket). The CAD's back standoff is 25.6 mm (this line said 30): 25 mm leaves "
      "2.4 mm to the sprocket's hub instead of 3", "McMaster-Carr", "93657A075 + 93657A093", f"{MC}/93657A075/", 32.04, "verified 2026-10-29 (McMaster page, logged out)", (12,),
@@ -237,15 +240,13 @@ ITEMS = [
      "countersunk holes per leaf for No. 8 screws (hatch doors) + 16 M4 flat head screws and nylocks (the line had 8 M3): the nearest "
      "McMaster stainless hinge to the 1-1/2 x 1-1/2 in noted", "McMaster-Carr", "1586A22", f"{MC}/1586A22/", 12.29, "verified 2026-10-29 (McMaster page, logged out)", (12,),
      "Enclosure"),
-    (93, ("hatch_front", "hatch_side"), None, "Hatch door knob (printed, bonded to the acrylic)", "printed", "", "", 0.05, "filament", (12,),
+    (93, ("bay9_door", "hatch_side"), None, "Door knob (printed, bonded to the acrylic): the bay window's door and the side hatch", "printed", "", "", 0.05, "filament", (12,),
      "Printed"),
     # ---- v3: the scale (item 6)
     (94, None, 1, HR202I_DESC, "A&D Weighing", "HR-202i", HR202I_URL, HR202I_USD, HR202I_SRC, (12,), "Station"),
-    (99, None, 1, "Brush strip, 1/4 in nylon bristles, self-adhesive, 1 m: closes the gap round the HR-202i's display unit under the front "
-     "hatch door", "McMaster-Carr", "brush strip", f"{MC}/products/brush-strips/", 12.0, E, (12,), "Enclosure"),
     (95, None, 1, "RS-232 to 3.3 V level shifter (MAX3232 breakout) for the balance's serial port", "SparkFun", "BOB-11189",
      "https://www.sparkfun.com/products/11189", 4.50, E, (11,), "Electronics"),
-    (96, None, 1, "Beaker, 25 mL low form, borosilicate (lab stock)", "lab", "", "", 0.0, "existing", (12,), "Station"),
+    (96, None, 1, "Beaker, 25 mL low form, borosilicate (lab stock): straight on the pan in v9, its rim 32 mm under the exit", "lab", "", "", 0.0, "existing", (12,), "Station"),
     # ---- sensing & electronics
     (53, ("hall_switch",), None, "Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME", "Adafruit", "158",
      "https://www.adafruit.com/product/158", 2.00, V10, (8,), "Electronics"),

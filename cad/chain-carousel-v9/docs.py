@@ -175,10 +175,11 @@ CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", 
 def write_bom(rs: list[dict]) -> None:
     rs = sorted(rs, key=lambda r: (CATS.index(r["category"]), r["item"]))
     t = bom.totals(rs)
-    lines = ["# Bill of materials: chain-carousel test rig v7", "",
+    lines = ["# Bill of materials: chain-carousel test rig v9", "",
              "Every line is a real, orderable part (or one of the lab's own). Quantities of modelled parts are "
              "counted from the CAD (`layout.placements()`). Prices are USD on the date shown on each line and will "
-             "drift. **Step** is the assembly step that uses the line ([ASSEMBLY.md](ASSEMBLY.md)). `bom.csv` has the "
+             "drift. **Step** is the assembly step that uses the line (`layout.STEPS`; v9's step 12 is the balance on its block, the "
+             "weighing chamber and the bay window). `bom.csv` has the "
              "same data.", "",
              f"**Total ${t['total']:,.2f}; rig without test gear ${t['without_test']:,.2f}.** Lines marked estimate "
              f"add up to ${t['estimated']:,.2f}. The NEMA 34, the CL86T, the 13 augers (#134's batch "

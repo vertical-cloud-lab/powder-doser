@@ -1,15 +1,15 @@
-"""Export the chain-carousel test rig v7 (v6 with Sam's second 2026-11-10 note: one P16 under the station, the dock on posts past the auger, cross bars, the balance re-modelled).
+"""Export the chain-carousel test rig v9 (v7 with Sam's 2026-11-17 note: no draft cage, the balance on a granite block, the beaker on the pan 32 mm under the exit, v7's EC cut back where it hung over the beaker, a bay window and a weighing chamber).
 
     python build.py
 
-* step/chain_carousel_rig_v7.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v9.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
 * step/components/<key>.step     every unique part on its own (reference parts: reference/).
 * stl/<part>.stl                 the printed parts, print-ready orientation.
 * dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1); the acrylic
-  panels and hatch doors (laser cut from 1/8 in cast acrylic).
+  panels, the bay window's sheets and door, the weighing chamber's baffles and deck (laser cut from 1/8 in cast acrylic).
 * placements.json                every instance: key, name, step, 4x4 transform.
 """
 from __future__ import annotations
@@ -24,10 +24,11 @@ import layout as L
 
 HERE = Path(__file__).resolve().parent
 PRINTED = ("carriage", "hold_down", "tensioner_block", "clevis_bracket", "latch_rail", "latch_bolt", "door_housing", "door_shutter",
-           "side_tab", "side_tab_m", "catch", "guide7_cone", "guide7_vee", "beaker_riser")   # v7: the two guides; the clevis is the P16's base
-PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v7", "sam_mounting_plate": "mounting_plate_v7"}   # Sam's parts + v4-v6 features
-ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side")
-STEP_FILE = "chain_carousel_rig_v7.step"
+           "side_tab", "side_tab_m", "catch", "guide7_cone", "guide7_vee")   # v7: the two guides; the clevis is the P16's base (v9: no riser)
+PRINTED_REF = {"sam_electronics_carriage": "electronics_carriage_v9", "sam_mounting_plate": "mounting_plate_v7"}   # Sam's parts + v4-v7 features; v9's EC
+ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_bay", "panel_back", "panel_top", "hatch_side", "bay9_door")
+WORLD_ACRYLIC = ("bay9_front", "bay9_top", "bay9_side_p", "bay9_side_m", "baffle9_side_p", "baffle9_side_m", "baffle9_back", "deck9")   # built in place
+STEP_FILE = "chain_carousel_rig_v9.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -40,7 +41,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v7")
+    asm = cq.Assembly(name="Chain carousel test rig v9")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
@@ -87,10 +88,21 @@ def main() -> None:
     for k in ACRYLIC:
         sec = cq.Workplane("XY").add(L.shape(k)).section(L.ACRYLIC_T / 2)
         cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
-    # v7: the dosing lid (replaces the balance's top door), cut at its mid-thickness
-    z_lid = L.HR2_PAN_TOP + L.HR2_CH[2] + 1.5
-    sec = cq.Workplane("XY").add(L.P7.balance_v7()["bal7_lid"].val()).section(z_lid)
-    cq.exporters.export(sec, str(HERE / "dxf" / "dosing_lid.dxf"))
+    # v9: the bay window's sheets and the weighing chamber's baffles and deck are built in place (world): turn each so its thickness
+    # runs along z, then cut it at mid-thickness
+    for k in WORLD_ACRYLIC:
+        sh = L.shape(k)
+        bb = sh.BoundingBox()
+        ext = {"x": bb.xlen, "y": bb.ylen, "z": bb.zlen}
+        thin = min(ext, key=ext.get)
+        if thin == "x":
+            sh = sh.rotate((0, 0, 0), (0, 1, 0), -90)
+        elif thin == "y":
+            sh = sh.rotate((0, 0, 0), (1, 0, 0), 90)
+        bb = sh.BoundingBox()
+        sh = sh.translate((-bb.xmin, -bb.ymin, -bb.zmin))
+        sec = cq.Workplane("XY").add(sh).section(L.ACRYLIC_T / 2)
+        cq.exporters.export(sec, str(HERE / "dxf" / f"{k}.dxf"))
     asm = assembly()
     asm.save(str(HERE / "step" / STEP_FILE), exportType="STEP")
     pl = [dict(key=p.key, name=p.name, step=p.step, M=np.round(p.M, 6).tolist()) for p in L.placements()]

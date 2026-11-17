@@ -626,7 +626,7 @@ SOL9_CRADLE = (89.0, 109.0, 10.5, 2.5)   # its cradle under the tail's web: x0, 
 D9 = 32.0                            # world: exit -> beaker's rim. The parked finger's underside is 29.0 under the exit (3 mm over
                                      # the rim); every passing module's push strip 22.0; the tube 12.5
 PAN9_AHEAD = 7.0                     # world: the pan's (and the beaker's) centre this far in front (-x) of the exit: the lip ends
-                                     # 5.5 mm in front of the EC's new face, the stream lands 7.4 mm behind the beaker's centre
+                                     # 7.1 mm in front of the EC's new face, the stream lands 7.4 mm behind the beaker's centre
                                      # (10 mm inside its wall), and the balance's back stays 4.9 mm clear of the guides
 BEAKER9_RIM_Z = None                 # set below
 BAL9_PAN_TOP = 50.0                  # v7's balance model: the pan's top above the balance's feet (A&D's HR-i drawing; the
@@ -639,7 +639,8 @@ BAY9_DEPTH = 100.0                   # world: the bay stands this far proud of t
                                      # nose is 79 mm proud of it)
 BAY9_HW = 118.0                      # world: the bay's (and the chamber's) half width about the station, outer faces
 BAY9_TOP = 408.0                     # world: the bay's top and the chamber's deck (top face)
-BAY9_DOOR = (200.0, 112.0)           # its front door (y width, z height), hinged on its -y edge, top edge 6 mm under the bay's top
+BAY9_DOOR = (200.0, 115.0)           # its front door's opening (y width, z height), up to the bay's top (405): the beaker (rim 403.65)
+                                     # slides out level under the deck and the bay's top (1.35 mm) and the parked finger (2.8 mm)
 DECK9_X1 = 160.0                     # world: the chamber's deck and side baffles end here; the back baffle stands at x 160-163,
                                      # 3 mm in front of the NEMA 34 (x 166); the tilting EC sweeps x <= 156.5 below the deck
 DECK9_CUT = (27.0, 160.0, -27.5, 27.5)   # world (x0, x1, y0 - STATION_Y, y1 - STATION_Y): the deck's station opening: the EC

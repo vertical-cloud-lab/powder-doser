@@ -96,8 +96,8 @@ def bay_v9(xf_out: float, sy: float) -> dict[str, cq.Workplane]:
     xb = xf_out - BAY9_DEPTH                                 # the bay front's outer face
     dw, dh = BAY9_DOOR
     z1 = BAY9_TOP
-    dz1 = z1 - 6.0
-    out = {"bay9_front": _panel_x(xb, sy - BAY9_HW, sy + BAY9_HW, 0.0, z1 - t, cut=(sy - dw / 2, dz1 - dh, sy + dw / 2, dz1)),
+    dz1 = z1 - t                                             # the opening runs up to the bay's top, so the beaker slides out level
+    out = {"bay9_front": _panel_x(xb, sy - BAY9_HW, sy + BAY9_HW, 0.0, z1 - t, cut=(sy - dw / 2, dz1 - dh, sy + dw / 2, dz1 + 1.0)),
            "bay9_top": _box(xb, xf_out, sy - BAY9_HW, sy + BAY9_HW, z1 - t, z1)}
     for s in (-1, 1):
         y0 = sy + s * BAY9_HW - (t if s > 0 else 0.0)
@@ -108,7 +108,7 @@ def bay_v9(xf_out: float, sy: float) -> dict[str, cq.Workplane]:
 def bay9_door_opening(xf_out: float, sy: float) -> tuple:
     """(x of the bay front's outer face, y0, z0, y1, z1) of the door's opening."""
     dw, dh = BAY9_DOOR
-    dz1 = BAY9_TOP - 6.0
+    dz1 = BAY9_TOP - ACRYLIC_T
     return (xf_out - BAY9_DEPTH, sy - dw / 2, dz1 - dh, sy + dw / 2, dz1)
 
 
