@@ -112,6 +112,24 @@ continuously. That is worth a paragraph in the Results: it sets the resolution o
 dosing, and it is why the controller slows down and taps near the target. Data:
 `paper/figures/candidates/data/polls.csv` (`rpm` 15.0).
 
+## Fig. 7: dose error in milligrams
+
+What the versions in milligrams will show, computed on 17 Nov from
+`paper/figures/data/doses_all.csv` (valid protocol G and H doses; the counts match Table 3):
+
+| Target | Doses | Within limit | Limit in mg | Median error (mg) | Middle half of errors (mg) | Median absolute error (mg) | Delivered under 10% of target |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 50 mg | 30 | 14 | ±5 | −1.7 | −4.9 to +11.3 | 7.1 | 3 |
+| 200 mg | 30 | 18 | ±10 | −4.5 | −30.2 to +1.7 | 5.0 | 4 |
+| 1 g | 39 | 24 | ±50 | −34.6 | −301 to −4.0 | 34.6 | 9 |
+
+In milligrams the picture reverses: the typical miss is smallest at 200 mg and largest at 1 g,
+while in percent the 1 g doses are the most accurate. The errors run from −1000 mg (a 1 g dose
+that delivered nothing) to +60 mg, so a shared milligram axis needs off-scale markers, as now,
+or a symmetric-log axis. The suggested limits are about ±60 mg with off-scale arrows, the three
+limit bands drawn as ±5, ±10 and ±50 mg, and the 16 doses that delivered under 10% of their
+target listed in the caption or the notes.
+
 ## Pictures needed
 
 | For | What | From |
