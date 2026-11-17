@@ -1,0 +1,39 @@
+1. (canty2025scienceaccelerationand pages 1-2): Richard B. Canty, Jeffrey A. Bennett, Keith A. Brown, Tonio Buonassisi, Sergei V. Kalinin, John R. Kitchin, Benji Maruyama, Robert G. Moore, Joshua Schrier, Martin Seifrid, Shijing Sun, Tejs Vegge, and Milad Abolhasani. Science acceleration and accessibility with self-driving labs. Nature Communications, Apr 2025. URL: https://doi.org/10.1038/s41467-025-59231-1, doi:10.1038/s41467-025-59231-1. This article has 87 citations and is from a highest quality peer-reviewed journal.
+
+2. (abolhasani2023theriseof pages 1-2): Milad Abolhasani and Eugenia Kumacheva. The rise of self-driving labs in chemical and materials sciences. Nature Synthesis, 2:483-492, Jan 2023. URL: https://doi.org/10.1038/s44160-022-00231-0, doi:10.1038/s44160-022-00231-0. This article has 697 citations and is from a peer-reviewed journal.
+
+3. (volk2024performancemetricsto pages 1-2): Amanda A. Volk and Milad Abolhasani. Performance metrics to unleash the power of self-driving labs in chemistry and materials science. Nature Communications, Feb 2024. URL: https://doi.org/10.1038/s41467-024-45569-5, doi:10.1038/s41467-024-45569-5. This article has 88 citations and is from a highest quality peer-reviewed journal.
+
+4. (deneault2021towardautonomousadditive pages 1-2): James R. Deneault, Jorge Chang, Jay Myung, Daylond Hooper, Andrew Armstrong, Mark Pitt, and Benji Maruyama. Toward autonomous additive manufacturing: bayesian optimization on a 3d printer. MRS Bulletin, 46:566-575, Apr 2021. URL: https://doi.org/10.1557/s43577-021-00051-1, doi:10.1557/s43577-021-00051-1. This article has 196 citations and is from a domain leading peer-reviewed journal.
+
+5. (myung2025multiobjectivebayesianoptimization pages 1-2): Jay I. Myung, James R. Deneault, Jorge Chang, Inhan Kang, Benji Maruyama, and Mark A. Pitt. Multi-objective bayesian optimization: a case study in material extrusion. Digital Discovery, 4:464-476, Jan 2025. URL: https://doi.org/10.1039/d4dd00281d, doi:10.1039/d4dd00281d. This article has 17 citations and is from a peer-reviewed journal.
+
+6. (maffettoneUnknownyearwhatismissing pages 1-3): PM Maffettone, P Friederich, SG Baird, and B Blaiszik. What is missing in autonomous discovery. Unknown journal, Unknown year.
+
+7. (wang2025highthroughputdiscoveryof pages 1-2): Weiqi Wang, Jian Liu, Chenyang Li, Yi-Cheng Lai, Wei Chen, Yunzhuo Lu, and Wen Chen. High-throughput discovery of ultrahigh-temperature multi-principal element alloys by combinatorial additive manufacturing. Nature Communications, Dec 2025. URL: https://doi.org/10.1038/s41467-025-67301-7, doi:10.1038/s41467-025-67301-7. This article has 3 citations and is from a highest quality peer-reviewed journal.
+
+8. (mooraj2024additivemanufacturingof pages 1-2): Shahryar Mooraj, George Kim, Xuesong Fan, Shmuel Samuha, Yujun Xie, Tianyi Li, Jaimie S. Tiley, Yan Chen, Dunji Yu, Ke An, Peter Hosemann, Peter K. Liaw, Wei Chen, and Wen Chen. Additive manufacturing of defect-free tizrnbta refractory high-entropy alloy with enhanced elastic isotropy via in-situ alloying of elemental powders. Communications Materials, Feb 2024. URL: https://doi.org/10.1038/s43246-024-00452-0, doi:10.1038/s43246-024-00452-0. This article has 57 citations and is from a peer-reviewed journal.
+
+9. (ren2022strongyetductile pages 1-3): Jie Ren, Yin Zhang, Dexin Zhao, Yan Chen, Shuai Guan, Yanfang Liu, Liang Liu, Siyuan Peng, Fanyue Kong, Jonathan D. Poplawsky, Guanhui Gao, Thomas Voisin, Ke An, Y. Morris Wang, Kelvin Y. Xie, Ting Zhu, and Wen Chen. Strong yet ductile nanolamellar high-entropy alloys by additive manufacturing. Nature, 608:62-68, Aug 2022. URL: https://doi.org/10.1038/s41586-022-04914-8, doi:10.1038/s41586-022-04914-8. This article has 744 citations and is from a highest quality peer-reviewed journal.
+
+10. (nelaturu2024multiprincipalelementalloy pages 20-23): Phalgun Nelaturu, Jason R. Hattrick-Simpers, Michael Moorehead, Vrishank Jambur, Izabela Szlufarska, Adrien Couet, and Dan J. Thoma. Multi-principal element alloy discovery using directed energy deposition and machine learning. Materials Science and Engineering: A, 891:145945, Jan 2024. URL: https://doi.org/10.1016/j.msea.2023.145945, doi:10.1016/j.msea.2023.145945. This article has 42 citations.
+
+11. (nelaturu2024multiprincipalelementalloy pages 1-4): Phalgun Nelaturu, Jason R. Hattrick-Simpers, Michael Moorehead, Vrishank Jambur, Izabela Szlufarska, Adrien Couet, and Dan J. Thoma. Multi-principal element alloy discovery using directed energy deposition and machine learning. Materials Science and Engineering: A, 891:145945, Jan 2024. URL: https://doi.org/10.1016/j.msea.2023.145945, doi:10.1016/j.msea.2023.145945. This article has 42 citations.
+
+12. (wu2026aidrivengenerationof pages 35-36): Wenzheng Wu, Kang Wu, Siyuan Xing, Yifei Li, Xiao-Ming Fu, Falai Chen, and Ligang Liu. Ai-driven generation of 3d cad models: a survey. Jun 2026. URL: https://doi.org/10.26599/cvm.2025.9450521, doi:10.26599/cvm.2025.9450521. This article has 0 citations and is from a peer-reviewed journal.
+
+13. (guan2025cadcodertexttocadgeneration pages 16-17): Yandong Guan, Xilin Wang, Xingxi Ming, Jing Zhang, Dong Xu, and Qian Yu. Cad-coder: text-to-cad generation with chain-of-thought and geometric reward. ArXiv, May 2026. URL: https://doi.org/10.48550/arxiv.2505.19713, doi:10.48550/arxiv.2505.19713. This article has 18 citations.
+
+14. (zhang2026largelanguagemodels pages 26-27): Licheng Zhang, Bach Le, Naveed Akhtar, Siew-Kei Lam, and Duc Ngo. Large language models for computer-aided design: a survey. ACM Computing Surveys, 58(9):1-39, Feb 2026. URL: https://doi.org/10.1145/3787499, doi:10.1145/3787499. This article has 22 citations and is from a highest quality peer-reviewed journal.
+
+15. (man2025fromsketchto pages 84-84): KYB Man. From sketch to cad code: multimodal ai for controllable design generation. Unknown journal, 2025.
+
+16. (delgadolicona2023researchaccelerationin pages 9-10): Fernando Delgado-Licona and Milad Abolhasani. Research acceleration in self‐driving labs: technological roadmap toward accelerated materials and molecular discovery. Advanced Intelligent Systems, Dec 2023. URL: https://doi.org/10.1002/aisy.202200331, doi:10.1002/aisy.202200331. This article has 76 citations and is from a peer-reviewed journal.
+
+17. (pyatov2026cadfsabig pages 20-21): CADFS: A Big CAD Program Dataset and Framework for Computer-Aided Design with Large Language Models This article has 0 citations.
+
+18. (rukhovich2025cadrecodereverseengineering pages 20-21): Danila Rukhovich, Elona Dupont, Dimitrios Mallis, Kseniya Cherenkova, Anis Kacem, and Djamila Aouada. Cad-recode: reverse engineering cad code from point clouds. ArXiv, Dec 2025. URL: https://doi.org/10.48550/arxiv.2412.14042, doi:10.48550/arxiv.2412.14042. This article has 61 citations.
+
+19. (seifrid2022autonomouschemicalexperiments pages 9-10): Martin Seifrid, Robert Pollice, Andrés Aguilar-Granda, Zamyla Morgan Chan, Kazuhiro Hotta, Cher Tian Ser, Jenya Vestfrid, Tony C. Wu, and Alán Aspuru-Guzik. Autonomous chemical experiments: challenges and perspectives on establishing a self-driving lab. Accounts of Chemical Research, 55:2454-2466, Aug 2022. URL: https://doi.org/10.1021/acs.accounts.2c00220, doi:10.1021/acs.accounts.2c00220. This article has 336 citations and is from a domain leading peer-reviewed journal.
+
+20. (seifrid2022autonomouschemicalexperiments pages 1-2): Martin Seifrid, Robert Pollice, Andrés Aguilar-Granda, Zamyla Morgan Chan, Kazuhiro Hotta, Cher Tian Ser, Jenya Vestfrid, Tony C. Wu, and Alán Aspuru-Guzik. Autonomous chemical experiments: challenges and perspectives on establishing a self-driving lab. Accounts of Chemical Research, 55:2454-2466, Aug 2022. URL: https://doi.org/10.1021/acs.accounts.2c00220, doi:10.1021/acs.accounts.2c00220. This article has 336 citations and is from a domain leading peer-reviewed journal.
