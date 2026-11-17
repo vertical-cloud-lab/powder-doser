@@ -69,8 +69,9 @@ def prep(name: str, crop: tuple[float, float, float, float] | None = None) -> np
         im = im.crop((int(crop[0] * w), int(crop[1] * h),
                       int(crop[2] * w), int(crop[3] * h)))
     a = np.asarray(im).astype(float) / 255
-    if a.mean() < 0.35:                         # wireframe on black
-        a = 1 - a
+    is_photo = name.lower().endswith((".jpg", ".jpeg"))
+    if a.mean() < 0.35 and not is_photo:        # wireframe on black; never invert a
+        a = 1 - a                               # photo (17 Nov: a dark mat would trip it)
     bg = a[0, 0]
     mask = np.abs(a - bg).sum(axis=2) > 0.08
     if mask.any():
@@ -89,7 +90,7 @@ AI_ITEMS = [
     ("2026-04-24", "ai_excavator.png", None, "Powder excavator", "Copilot", "Opus 4.7"),
     ("2026-04-24", "ai_first_auger.png", None, "First auger", "Claude Code", "Sonnet 4.6"),
     ("2026-05-13", "ai_whole_module_iso.png", None, "Whole module,\none request", "Copilot", "Opus 4.7"),
-    ("2026-05-14", "ai_bracket.png", None, "Bracket from\nthe drawing", "Copilot", "Opus 4.7"),
+    ("2026-05-14", "ai_bracket_pr47_2026-05-14.png", None, "Bracket from\nthe drawing", "Copilot", "Opus 4.7"),
     ("2026-05-15", "ai_tap_collar_v1.png", None, "First tap collar", "Copilot", "Opus 4.7"),
     ("2026-06-10", "ai_tap_collar_revised.png", None, "Tap collar,\nafter review", "Copilot", "Opus 4.7,\nFable 5"),
     ("2026-06-16", "ai_storage_auger_xsec.png", None, "Storage auger,\nscrew cap", "Copilot", "Opus 4.8"),
@@ -316,20 +317,28 @@ PAIRS = {
         ("ai_tap_collar_v1.png", None, [("AI, 15 May", INK), ("Copilot", AI_EDGE), ("Opus 4.7", MODEL_GREY)], AI_EDGE),
         ("ai_tap_collar_revised.png", None, [("AI, after review", INK), ("Copilot, by 10 Jun", AI_EDGE), ("Opus 4.7, Fable 5", MODEL_GREY)], AI_EDGE),
         ("eng_tapcollar_rig_2026-09-11.jpg", None, [("On the rig in the tests", INK), ("photo, 11 Sep", MODEL_GREY)], ENG_EDGE),
-        ("eng_tapcollar_new_2026-10-08.jpg", None, [("Team's new block", INK), ("photo, 8 Oct", MODEL_GREY)], ENG_EDGE),
+        # review of 17 Nov, point 3.1: not the 8 Oct block (electronics carriage,
+        # multi-doser), but Ethan's solenoid bracket (#203), photo posted by Sam on
+        # 17 Nov.  The crop is estimated from the photo; check it on the first build.
+        ("../photos/solenoid_bracket_2026-11-17.jpg", (0.15, 0.12, 0.85, 0.88),
+         [("Solenoid bracket, #203", INK), ("Ethan, Onshape", ENG_EDGE), ("photo, 17 Nov", MODEL_GREY)], ENG_EDGE),
     ],
     "redesign_b_auger": [
+        # review of 17 Nov, point 3.2: start with the first auger, in section: the
+        # version printed and run with NaCl on 14 May (#16).  The storage auger stays
+        # in the middle because the Fusion 360 auger recreates it (open question 3).
+        ("ai_first_auger_xsec_2026-05-13.png", None, [("AI, 13 May", INK), ("Copilot", AI_EDGE), ("Opus 4.7; tested 14 May", MODEL_GREY)], AI_EDGE),
         ("ai_storage_auger_xsec.png", None, [("AI, 16 Jun", INK), ("Copilot", AI_EDGE), ("Opus 4.8; 16:48 gears", MODEL_GREY)], AI_EDGE),
         ("eng_fusion_auger.png", None, [("Team, 17 Jul", INK), ("Fusion 360", ENG_EDGE), ("20:44 gears; tested", MODEL_GREY)], ENG_EDGE),
     ],
     "redesign_c_bracket": [
         ("eng_bracket_drawing.png", None, [("Team drawing, 14 May", INK), ("hand drawing", MODEL_GREY)], ENG_EDGE),
-        ("ai_bracket.png", None, [("AI model, 14 May", INK), ("Copilot", AI_EDGE), ("Opus 4.7", MODEL_GREY)], AI_EDGE),
+        ("ai_bracket_pr47_2026-05-14.png", None, [("AI model, 14 May", INK), ("Copilot", AI_EDGE), ("Opus 4.7", MODEL_GREY)], AI_EDGE),
     ],
 }
 PAIR_SIZE = {"redesign_a_tapcollar": (W_IN, 1.55),
-             "redesign_b_auger": (2.35, 2.0),
-             "redesign_c_bracket": (4.15, 2.0)}
+             "redesign_b_auger": (3.0, 2.0),       # three images since 17 Nov
+             "redesign_c_bracket": (3.5, 2.0)}     # (b) + (c) = 6.5 in, as before
 
 
 def fig3_redesign() -> None:

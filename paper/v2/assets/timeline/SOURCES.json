@@ -83,6 +83,13 @@
     "commit_date": "2026-05-18",
     "note": "PR #55, 'CADSmith-style' bracket written by the coding agent"
   },
+  "ai_first_auger_xsec_2026-05-13.png": {
+    "branch": "feature/archimedes-auger-attachment",
+    "path": "cad/auger/archimedes-auger-cutaway.png",
+    "commit": "5965950dde76ae1b5b39c34302f6bb3d45fdf129",
+    "commit_date": "2026-05-13",
+    "note": "PR #16, the first auger in section: the Copilot coding agent's 250 x 25 mm integrated auger (invoked as copilot+claude-opus-4.7), v4.2 with a central support shaft under the flight (design log, PR #74, entry e044). Sterling printed this STL on 13 May and ran it with NaCl on 14 May (issue #16 comments of 13 May 22:24 and 14 May 18:39 UTC), so it is the first auger printed and tested. The previous version (v4, 8382cd7, 12 May) failed to print; the next two (v5 68fb3b3, v6 3c4b80f) removed the flight and shaft and were not the ones tested on 14 May, although the design log attaches the NaCl test to v6. For Fig. 3b, first image (review of 17 Nov, point 3.2)."
+  },
   "ai_storage_auger.png": {
     "branch": "copilot/add-new-auger-design",
     "path": "cad/auger-geared/threaded_archimedes-auger-storage-test-iso.png",

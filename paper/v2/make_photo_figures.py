@@ -340,23 +340,31 @@ def fig_dosing() -> None:
 # ----------------------------------------------------------------------------
 # Fig. 4  using the doser: fill, fit, dose; one auger per powder
 # ----------------------------------------------------------------------------
-LINEUP = [  # handwritten label (top to bottom in the rotated photo), powder id
-    ("Sodium chloride (table salt)", "salt"),
-    ("Carboxymethyl cellulose", "carboxymethyl-cellulose"),
-    ("Sodium alginate", "sodium-alginate"),
-    ("Brown rice flour (auger 2)", "brown-rice-flour"),
+# Sam's photo of 17 Nov 2026 (review of 17 Nov, point 5.4), replacing the 10 Sep one.
+# The augers lie horizontally, staggered, caps to the right, so no rotation is needed.
+LINEUP_PHOTO = "augers_lineup_2026-11-17.jpg"
+LINEUP_BOX = (1430, 242, 3690, 2812)   # pixel crop of the 4032 x 3024 original:
+                                       # labels and caps, keeping (d) 2.75 in wide
+LINEUP = [  # handwritten label (top to bottom in the photo), powder id
     ("Brown rice flour (auger 1)", "brown-rice-flour"),
-    ("Xanthan gum", "xanthan-gum"),
+    ("Brown rice flour (auger 2)", "brown-rice-flour"),
     ("White rice flour", "white-rice-flour"),
+    ("Sodium alginate", "sodium-alginate"),
     ("Calcium lactate", "calcium-lactate"),
+    ("Carboxymethyl cellulose", "carboxymethyl-cellulose"),
+    ("Xanthan gum", "xanthan-gum"),
+    ("Sodium chloride (table salt)", "salt"),
 ]
 
 
-# tape-label positions on the rotated, cropped lineup photo (pixels), same order
-LINEUP_XY = [(760, 80), (670, 160), (540, 230), (510, 390), (440, 510),
-             (330, 610), (250, 735), (170, 895)]
-LINEUP_NAME = ["NaCl (table salt)", "CMC", "Sodium alginate", "Brown rice flour (2)",
-               "Brown rice flour (1)", "Xanthan gum", "White rice flour", "Calcium lactate"]
+# Callout points: the centre of each auger's cap (the black NaCl tube's end), in
+# pixels of the cropped photo, same order.  Estimated on 17 Nov from the photo
+# without a render (Python was blocked); check them on the first build.
+LINEUP_XY = [(1094, 242), (1213, 488), (1328, 770), (1449, 1042), (1578, 1351),
+             (1725, 1669), (1872, 1996), (2112, 2359)]
+LINEUP_NAME = ["Brown rice flour (1)", "Brown rice flour (2)", "White rice flour",
+               "Sodium alginate", "Calcium lactate", "CMC", "Xanthan gum",
+               "NaCl (table salt)"]
 
 
 USE_H = 2.15            # inches: every panel of the row has this height
@@ -390,10 +398,7 @@ def fig_use_panels() -> None:
         save(fig, stem)
 
     # (d) one auger per powder, stored filled; callouts from the data
-    img = photo("augers_lineup_2026-09-10.jpg", rotate=-27)
-    H, W = img.shape[:2]
-    img = img[int(0.06 * H):int(0.86 * H), int(0.20 * W):int(0.80 * W)]
-    img = img[380 + 280:380 + 1300, 450:]
+    img = photo(LINEUP_PHOTO, box=LINEUP_BOX)
     w_photo = USE_H * img.shape[1] / img.shape[0]
     w_text = 0.86
     fig = plt.figure(figsize=(w_photo + w_text, USE_H))
@@ -402,11 +407,13 @@ def fig_use_panels() -> None:
     bare(axl)
     xt = (w_photo + 0.06) / (w_photo + w_text)
     ys = np.linspace(0.93, 0.07, len(LINEUP))
-    for i, ((_, pid), name, (px, py), yy) in enumerate(zip(LINEUP, LINEUP_NAME, LINEUP_XY, ys)):
+    star = "*"                  # on the first value only; the caption explains it
+    for (_, pid), name, (px, py), yy in zip(LINEUP, LINEUP_NAME, LINEUP_XY, ys):
         if pid in m.DID_NOT_CONVEY:
             val = "none measurable"
         else:
-            val = f"{m.per_turn(m.REP_RUN[pid], 45.0)[0]:.0f} mg per rev." + ("*" if i == 0 else "")
+            val = f"{m.per_turn(m.REP_RUN[pid], 45.0)[0]:.0f} mg per rev." + star
+            star = ""
         fig.text(xt, yy, f"{name}\n{val}", fontsize=5.4, color=m.colour(pid),
                  va="center", linespacing=1.1)
         con = ConnectionPatch(xyA=(px, py), coordsA=axl.transData,

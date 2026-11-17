@@ -110,9 +110,12 @@ FIGURES = [
             "review (#51, by 10 Jun), the collar on the rig during the tests (11 Sep, #156), and "
             "Ethan's solenoid bracket, which mounts the solenoid on the plate without a collar so "
             "that an auger can be swapped without taking the tapper off (first version 7 Nov, "
-            "Onshape, #203). "
-            "(b) Auger: the first auger, from the hackathon (24 Apr, #16), and the team's "
-            "Fusion 360 recreation with 20:44 gears (17 Jul, #120), which turned in every test. "
+            "Onshape, #203; photographed 17 Nov). "
+            "(b) Auger, in section: the first auger to be printed and tested, begun at the "
+            "hackathon and shown as the agent's version of 13 May with the flight on a central "
+            "shaft, run with NaCl on 14 May (#16); the agent's storage auger with 16:48 gears "
+            "(16 Jun, #49); and the team's Fusion 360 recreation of it with 20:44 gears (17 Jul, "
+            "#120), which turned in every test. "
             "(c) Bracket: the team's dimensioned drawing (#46) and the agent's model of it (#47), "
             "both 14 May, then the team's later iterations, ending with the flexible snap-in "
             "brackets on the current doser (Onshape)."),
@@ -149,8 +152,9 @@ FIGURES = [
             "aluminium cup that stands in the glass beaker. The aluminium cup is part of the alloy "
             "workflow itself: the dose lands directly in the cup used for the next step in making "
             "the alloy, so the powder is never transferred. "
-            "(d) Eight of the labelled augers, with each label and the mass one auger revolution "
-            "delivered (\\*at 22.5° tilt; Fig. 6a)."),
+            "(d) The eight augers of the food-safe set (seven powders), capped and labelled "
+            "(17 Nov 2026), each with the mass one auger revolution delivered (\\*at 22.5° tilt; "
+            "Fig. 6a)."),
         tex=r"""
 \begin{subfigure}[b]{W(use_a_fill)}\includegraphics{figures/use_a_fill.pdf}\caption{Fill}\end{subfigure}\hfill\raisebox{1.1in}{$\rightarrow$}\hfill
 \begin{subfigure}[b]{W(use_b_fit)}\includegraphics{figures/use_b_fit.pdf}\caption{Fit}\end{subfigure}\hfill\raisebox{1.1in}{$\rightarrow$}\hfill

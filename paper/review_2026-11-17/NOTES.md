@@ -132,18 +132,76 @@ target listed in the caption or the notes.
 
 ## Pictures needed
 
-| For | What | From |
+Updated after Sam's second comment of 17 Nov (photos, and "check #74").
+
+| For | What | Status |
 |---|---|---|
-| Fig. 3a, last image | Ethan's solenoid bracket (#203, first version 7 Nov): a render or a photo, ideally on the doser | Ethan (an Onshape PNG or STEP export is enough). The workflow has no Onshape API keys in `claude.yml`, so the agent cannot export it. |
-| Fig. 3b, first image | Cross-section of the first auger (#16) | No picture needed: it can be rendered from `cad/auger/archimedes-auger.scad`. A photo of a cut print would also work, if one exists. |
-| Fig. 3c | Who made the two flexible-bracket versions, and when; any bracket between the AI model (14 May) and the flexible bracket | Sam or Ethan |
-| Fig. 5d | All the labelled augers side by side | Sam (on the way) |
+| Fig. 3a, last image | Ethan's solenoid bracket (#203) | **Received 17 Nov** (Sam's photo): `assets/photos/solenoid_bracket_2026-11-17.jpg`. Wired into `make_fig2_timeline.py` (`PAIRS`, with a fractional crop); not yet rendered. |
+| Fig. 3b, first image | Cross-section of the first auger (#16) | **Found, no render needed:** the committed cutaway of the version printed and tested on 14 May, `assets/timeline/ai_first_auger_xsec_2026-05-13.png` (see "What #74 settled", item 3). Wired in as the first of three images in (b); not yet rendered. |
+| Fig. 3c | Who made the team's brackets: the closed collars on the tested rig (11 Sep photo) and the two flexible snap-in versions, and when | **Still needed** from Sam or Ethan; #74's design log ends on 28 May. |
+| Fig. 5d | All the labelled augers side by side | **Received 17 Nov**: `assets/photos/augers_lineup_2026-11-17.jpg`. Wired into `make_photo_figures.py` (crop and callout points estimated); not yet rendered. Like the 10 Sep photo, it shows the 8 food-safe augers (7 powders), none of the 6 research powders. |
 | Fig. 2a, last engineer slot | The final doser on the new stand | Team |
 | SI Fig. S4 | The new stand: CAD or photos, including two heights | Will (see the 12 Nov answer on PR #209) |
 
+## What #74 settled (design log, branch `copilot/record-of-designs`)
+
+Checked on 17 Nov against the PRs and commits it cites.
+
+1. **The bracket image in Figs. 2a and 3c was the wrong part.** `assets/timeline/ai_bracket.png`
+   comes from branch `copilot/design-bracket-for-auger`, which is **PR #53** (issue #52, "Designing a
+   simple part with zoo.dev"; the coding agent wrote OpenSCAD; render of 18 May), not PR #47. The
+   agent's model of Sam's #46 drawing is on `copilot/part-by-part-powder-doser` (PR #47, CadQuery,
+   14 May). Replaced in both figures by `ai_bracket_pr47_2026-05-14.png` (v4, `ff07420`, resized to
+   the 25 mm auger the same day); `SOURCES.json` corrected. The captions ("#46, #47", "14 May") were
+   right; the image was not.
+2. **Hackathon sketch (open question 2):** it came with issue #1, opened by Sterling on 23 Apr with a
+   hand sketch of the powder excavator (log entry e001). Tag it "Sterling, hand drawing" unless
+   Sterling says someone else drew it.
+3. **First auger (Fig. 3b):** Devora committed the first two OpenSCAD versions at the hackathon (24 Apr,
+   the Claude Code / Sonnet 4.6 work in Table 4). From `c3cfab1` (24 Apr, evening) on, every version
+   is the Copilot coding agent's (invoked as `copilot+claude-opus-4.7`). The #16 comments give the
+   printing history; the design log is one version off:
+   - 7 May: Sterling reported that an earlier print of the integrated auger "seemed to do fine"
+     with xanthan gum.
+   - 12–13 May: v4 (`8382cd7`, 250 × 25 mm) was printed and failed; the flight came out as strings.
+   - 13 May, 22:24 UTC: Sterling printed v4.2 (`5965950`), which carries the flight on a central
+     support shaft. On 14 May he reported it "seemed to print fine" and ran it with NaCl.
+   - v5 (`68fb3b3`, 13 May) and v6 (`3c4b80f`, 15 May) then **removed the flight and the shaft**,
+     leaving a hollow tube. The design log attaches the 14 May NaCl test to v6, which did not exist
+     until the next day.
+
+   The committed cutaway of v4.2 shows the flight and shaft in section, so it is now Fig. 3b's first
+   image (`ai_first_auger_xsec_2026-05-13.png`). No new render is needed.
+4. **Fig. 2a "First auger" is mixed up:** it is dated 24 Apr and tagged "Claude Code, Sonnet 4.6".
+   Its image, `ai_first_auger.png`, is v6 of 15 May by the Copilot coding agent: a hollow tube with
+   no flight. There are three ways to fix it:
+   - Use a 24 Apr render to match the tag (`c3cfab1`'s iso, or Devora's `1ee245c` preview SVG).
+   - Use the tested v4.2 and re-tag it "Copilot, Opus 4.7, 13 May".
+   - Keep v6 and re-tag it "Copilot, 15 May".
+
+   **To decide.**
+5. **Bracket iterations for Fig. 3c (AI side):** PR #47 v1–v5 (14–15 May; v5 thickened the plate to
+   14 mm for the geared auger), PR #53 v1–v2 (18 May) and the "CADSmith-style" bracket of PR #55
+   (18 May), all by the Copilot coding agent. Renders: `design/cad/auger-bracket/renders/` on PR #47's
+   branch, `cad/auger-bracket/views/` on PR #53's and PR #55's. The team's brackets after May are not
+   in the log (point "Fig. 3c" in the table above).
+6. **Not in #74:** the aluminium cup grade, and the reading of "swap" in Fig. 2a (open questions 1
+   and 4).
+
 ## Open questions
 
-1. **Fig. 2a:** is the reading of "swap" in point 2.1 right?
-2. **Fig. 2a:** who drew the hackathon sketch (#2)?
+Status after Sam's second comment of 17 Nov.
+
+1. **Fig. 2a:** is the reading of "swap" in point 2.1 right? *(Open.)*
+2. **Fig. 2a:** who drew the hackathon sketch (#2)? *(Probably answered by #74: Sterling posted it
+   with issue #1. Sterling to confirm.)*
 3. **Fig. 3b:** replace the AI storage auger with the first auger, or keep it as the middle image?
-4. **Fig. 5c:** is the wording about the aluminium cup right, and what is the grade?
+   *(Kept for now: (b) is first auger → storage auger → Fusion 360 auger, because the Fusion 360
+   auger recreates the storage auger. Say if (b) should be two images.)*
+4. **Fig. 5c:** is the wording about the aluminium cup right, and what is the grade? *(Open.)*
+5. **Fig. 3c:** who made the closed collar brackets on the tested rig (11 Sep photo), and who made
+   the two flexible snap-in versions, and when? *(New; not in #74.)*
+6. **Fig. 2a:** how to fix the "First auger" item (see "What #74 settled", item 4). *(New.)*
+7. **Fig. 5d:** the new photo, like the old one, shows the eight food-safe augers (seven powders),
+   none of the six research powders. Keep it, with the caption saying "the food-safe set", or add a
+   photo of the research-powder augers? *(New.)*
