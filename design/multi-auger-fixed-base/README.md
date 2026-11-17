@@ -349,7 +349,7 @@ own into [`renders/components/`](renders/components/) and writes
 | 13 | Stand leg | 3 | **new** | 217 mm, the shortest stand |
 | 14 | Actuonix P16-150-22-12-P | 3 | bought | plus an LAC board each |
 | 15 | P16 mounting bracket | 3 | bought | ships with the P16 (two per actuator; one is used) |
-| 16 | Screws and pins | a set per module | hardware | M4 × 20 + nyloc (× 25 leaves more thread past the nyloc), 2 × M3 × 10 + nuts, the P16's #8-32 screw |
+| 16 | Screws and pins | a set per module | hardware | M4 × 20 + nyloc (not × 25: it clips the base's slot at 0°; see the clevis block section), 2 × M3 × 10 + nuts, the P16's #8-32 screw |
 
 Per module, six parts come over unchanged (counting the solenoid) and one is
 modified (the plate). One more is #203's bracket. The rest are the new base
@@ -612,6 +612,82 @@ trimmed as `base.py` does; Ethan's Onshape plate matched it to a median of
 face are (−95, −29.25, −30.8) and (−95, −29.25, −52.8). I haven't checked
 that frame against the Onshape part studio's.
 
+#### The clevis block's dimensions (added 17 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for the clevis block's dimensions. [`clevis.py`](clevis.py) builds the block
+as a part on its own, from the same numbers `components.py` uses. It checks
+the fit again, exports the block, and draws the sheet below. It writes
+[`clevis.json`](clevis.json). Nothing was modelled in Onshape.
+
+![Clevis block, dimensioned](renders/clevis_block.png)
+
+**The block** (mm). Origin: the centre of the pad's top face, which sits
+against the floor's underside. x runs along the pin, y along the plate and z
+up:
+
+| Feature | Dimensions |
+|---|---|
+| Overall | 30 (x) × 24 (y) × 16.75 (z) |
+| Pad | 30 × 24 × 4. Its top face screws flat to the floor's underside |
+| Lugs | 2, each 4 thick (x) and 14 wide (y), centred on the pad. 6.5 apart (inner faces at ±3.25), 14.5 over both (outer faces at ±7.25). They hang 12.75 below the pad |
+| Lug ends | R7 about the pin axis, so the rod end's 9 mm hub can swing past |
+| Pin hole | Ø4.25 through both lugs (M4), on the centre line, 9.75 below the pad's top face (5.75 below its underside) |
+| Screw holes | 2 × Ø3.4 through the pad (M3), 22 apart (±11), on the pin's line (y = 0). They sit 4 from the pad's ends and 12 from its sides |
+| Nut pockets | 2 × hexagon, 5.8 across flats (6.70 across corners), 2.6 deep from the pad's underside, on the screw holes. The flats face the pad's ends. That leaves a 1.1 mm wall to the ends and 1.4 mm of pad between each nut and the floor |
+| Volume | 3.85 cm³, about 5 g of PLA if printed solid |
+
+**One change from the 12 Nov placeholder:** the nut pockets are hexagonal
+instead of round (Ø6.4). That stops a nut from turning while its screw is
+tightened from above. A socket head (Ø5.5) also fits the pocket, if you'd
+rather put the screws in from below. Otherwise the block is unchanged. With
+round pockets, `clevis.py`'s block is the same solid as `components.py`'s
+(the volume difference is 0).
+
+**Hardware, per block:**
+- 2 × M3 × 10 socket head cap screws, heads on the floor's top, and 2 × M3
+  hex nuts in the pockets. Each screw's end comes flush with the pad's
+  underside. An M3 × 12 also fits: it sticks 2 mm out beside the lugs.
+- 1 × M4 × 20 socket head cap screw as the pin (head on the plain-side lug),
+  and 1 × M4 nyloc nut. Tighten it snug, not tight, so the lugs don't pinch
+  the rod end. The screw ends 0.5 mm past the nyloc.
+- **Not M4 × 25.** The parts table above suggested it for more thread past
+  the nyloc. But at 0° the pin sits in the base's slot, and an M4 × 25 sticks
+  0.75 mm past the slot's 34 mm width. It would clip the slot's side (the
+  pin's top is 0.25 mm above the shelf's underside there). To use one, widen
+  the slot to 36 mm.
+
+**Checks over 0–90°** (module A, components.py's actuator geometry, every 2.5°):
+- **Rod end in the clevis.** It turns 81.7° in the clevis by 90°, toward the
+  hinge. Its hub and rod stay at least 1.5 mm from the lugs, closest at
+  67.5°. Its tab is 1.25 mm below the pad at 0°, and has 0.25 mm each side in
+  the 6.5 mm gap.
+- **Against the base** (`base.py`'s one-piece base, every 1° to 20°, then
+  every 5°). All of these are closest at 0°:
+  - the block: 2.0 mm, from the pad's ends to the slot's sides;
+  - the M3 screws: 4.5 mm; the nuts: 3.25 mm;
+  - the M4 × 20 pin: 4.25 mm; the nyloc: 4.75 mm.
+
+**Printing.** Print it lugs up, with the pad's top face on the bed. It needs
+no supports: the pockets open upward, and the only overhang is the top of the
+Ø4.25 hole.
+
+**Files** in [`clevis/`](clevis/):
+- `clevis_block.step`: the block in the frame above.
+- `clevis_block_print.stl`: the block flipped for printing.
+- `clevis_block_with_hardware.step`: the block with its screws, nuts, pin,
+  nyloc and the P16's rod end at 0°.
+
+You can import the STEP files into Onshape for reference without using API
+calls.
+
+**Limits.**
+- The rod end (6 mm tab, Ø9 hub 8.5–14.5 mm from the pin) is drawn from
+  Actuonix's P16 drawing, as in `components.py`, not from a real actuator.
+  Check that the tab slides into the 6.5 mm gap before printing three.
+- Printed holes often come out small. If the pin or screws bind, drill the
+  holes out to 4.3 and 3.4.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -677,6 +753,8 @@ between bulk doses. This was not modelled.
 | [`base.py`](base.py), [`base.json`](base.json) | The one-piece base with today's hinge towers, and the plate trimmed as Ethan has it: dimensions, clearance checks, `base_drawing.png` and `base_iso.png` |
 | [`base/`](base/) | `base.step` and `base.stl`: the base, origin on the beaker axis, z = 0 on its underside |
 | [`holes.py`](holes.py), [`holes.json`](holes.json) | Where the clevis block's two M3 holes go in the plate's floor, measured from its edges, holes, stepper wall and hinge axis; what sits over and under them; renders `clevis_holes.png` |
+| [`clevis.py`](clevis.py), [`clevis.json`](clevis.json) | The clevis block on its own: every dimension, hex nut pockets, the rod end's swing and the block, pin and screws against the base; renders `clevis_block.png` |
+| [`clevis/`](clevis/) | `clevis_block.step` (origin at the pad's top face), `clevis_block_print.stl` (flipped for printing), `clevis_block_with_hardware.step` |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -690,6 +768,7 @@ xvfb-run -a python components.py            # parts breakdown and the actuator m
 xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
 xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
 xvfb-run -a python holes.py                 # where the clevis block's holes go in the plate (about 10 s)
+xvfb-run -a python clevis.py                # the clevis block: dimensions, checks, STEP/STL, drawing (about 1 min)
 ```
 
 **Limits.**

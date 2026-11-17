@@ -1,0 +1,371 @@
+{
+ "what": "Rod-end clevis block for the tri-star (B2) module: printed, screwed under the gearless mounting plate's floor, holds the Actuonix P16's rod end on an M4 pin",
+ "frame": "block frame: origin at the centre of the pad's top face (against the floor's underside); x along the pin (+x = the plate's plain side), y along the plate (+y = toward the rear), z up; the block hangs below z = 0",
+ "origin_in_unit_frame": [
+  0.0,
+  95.0,
+  -35.25
+ ],
+ "overall": {
+  "x": 30.0,
+  "y": 24.0,
+  "z": 16.75
+ },
+ "pad": {
+  "x": 30.0,
+  "y": 24.0,
+  "thickness": 4.0
+ },
+ "lugs": {
+  "count": 2,
+  "thickness": 4.0,
+  "width": 14.0,
+  "gap_between": 6.5,
+  "inner_faces_x": [
+   -3.25,
+   3.25
+  ],
+  "outer_faces_x": [
+   -7.25,
+   7.25
+  ],
+  "over_both": 14.5,
+  "end_radius": 7.0,
+  "end_round_about": "the pin axis",
+  "hang_below_pad": 12.75
+ },
+ "pin_hole": {
+  "dia": 4.25,
+  "through": "both lugs",
+  "axis_below_top_face": 9.75,
+  "axis_below_pad_underside": 5.75,
+  "axis_y": 0.0
+ },
+ "screw_holes": {
+  "dia": 3.4,
+  "through": "the pad",
+  "x": [
+   -11.0,
+   11.0
+  ],
+  "centre_to_centre": 22.0,
+  "from_pad_ends": 4.0,
+  "from_pad_sides": 12.0,
+  "y": 0.0
+ },
+ "nut_pockets": {
+  "shape": "hexagon",
+  "across_flats": 5.8,
+  "across_corners": 6.7,
+  "depth": 2.6,
+  "opens_on": "the pad's underside",
+  "flats_face": "the pad's ends (x)",
+  "wall_to_pad_end": 1.1,
+  "roof_under_floor": 1.4,
+  "was": "round, 6.4 dia, 2.6 deep (components.py placeholder)"
+ },
+ "hardware": [
+  {
+   "item": "M3 x 10 socket head cap screw (ISO 4762)",
+   "qty": 2,
+   "note": "head on the floor's top"
+  },
+  {
+   "item": "M3 hex nut (ISO 4032)",
+   "qty": 2,
+   "note": "in the hex pockets"
+  },
+  {
+   "item": "M4 x 20 socket head cap screw (ISO 4762)",
+   "qty": 1,
+   "note": "the pin; head on the +x lug"
+  },
+  {
+   "item": "M4 nyloc nut (DIN 985)",
+   "qty": 1,
+   "note": "on the -x lug; snug, not tight"
+  }
+ ],
+ "p16_rod_end": {
+  "tab": 6.0,
+  "hole": 4.25,
+  "hub_dia": 9.0,
+  "hub_from_pin": [
+   8.5,
+   14.5
+  ],
+  "source": "Actuonix P16 drawing, as components.py"
+ },
+ "print": {
+  "orientation": "lugs up, the pad's top face on the bed",
+  "supports": "none"
+ },
+ "files": [
+  "clevis/clevis_block.step",
+  "clevis/clevis_block_print.stl",
+  "clevis/clevis_block_with_hardware.step"
+ ],
+ "checks": {
+  "model": {
+   "same_as_components_py_with_round_pockets": true,
+   "volume_difference_mm3": 0.0,
+   "bounding_box": {
+    "x": [
+     -15.0,
+     15.0
+    ],
+    "y": [
+     -12.0,
+     12.0
+    ],
+    "z": [
+     -16.75,
+     0.0
+    ]
+   },
+   "volume_cm3": 3.85,
+   "mass_g_pla_solid": 4.8
+  },
+  "rod_swing": {
+   "rod_turned_in_clevis_deg": {
+    "at_0": -0.0,
+    "at_90": 81.7,
+    "toward": "-y, the hinge side"
+   },
+   "hub_and_rod_to_block_min": {
+    "mm": 1.5,
+    "at_tilt": 67.5
+   },
+   "tab_to_pad_min": {
+    "mm": 1.25,
+    "at_tilt": 0.0
+   },
+   "tab_side_gap_each_side": 0.25,
+   "by_tilt": {
+    "0": {
+     "rod_turned_in_clevis_deg": -0.0,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "2.5": {
+     "rod_turned_in_clevis_deg": 3.0,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "5": {
+     "rod_turned_in_clevis_deg": 6.0,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "7.5": {
+     "rod_turned_in_clevis_deg": 8.8,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "10": {
+     "rod_turned_in_clevis_deg": 11.7,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "12.5": {
+     "rod_turned_in_clevis_deg": 14.4,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "15": {
+     "rod_turned_in_clevis_deg": 17.1,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "17.5": {
+     "rod_turned_in_clevis_deg": 19.7,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "20": {
+     "rod_turned_in_clevis_deg": 22.3,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "22.5": {
+     "rod_turned_in_clevis_deg": 24.9,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "25": {
+     "rod_turned_in_clevis_deg": 27.4,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "27.5": {
+     "rod_turned_in_clevis_deg": 29.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "30": {
+     "rod_turned_in_clevis_deg": 32.2,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "32.5": {
+     "rod_turned_in_clevis_deg": 34.5,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "35": {
+     "rod_turned_in_clevis_deg": 36.9,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "37.5": {
+     "rod_turned_in_clevis_deg": 39.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "40": {
+     "rod_turned_in_clevis_deg": 41.4,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "42.5": {
+     "rod_turned_in_clevis_deg": 43.6,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "45": {
+     "rod_turned_in_clevis_deg": 45.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "47.5": {
+     "rod_turned_in_clevis_deg": 48.0,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "50": {
+     "rod_turned_in_clevis_deg": 50.1,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "52.5": {
+     "rod_turned_in_clevis_deg": 52.2,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "55": {
+     "rod_turned_in_clevis_deg": 54.3,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "57.5": {
+     "rod_turned_in_clevis_deg": 56.4,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "60": {
+     "rod_turned_in_clevis_deg": 58.4,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "62.5": {
+     "rod_turned_in_clevis_deg": 60.4,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.26
+    },
+    "65": {
+     "rod_turned_in_clevis_deg": 62.4,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "67.5": {
+     "rod_turned_in_clevis_deg": 64.4,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "70": {
+     "rod_turned_in_clevis_deg": 66.4,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "72.5": {
+     "rod_turned_in_clevis_deg": 68.3,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.26
+    },
+    "75": {
+     "rod_turned_in_clevis_deg": 70.3,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "77.5": {
+     "rod_turned_in_clevis_deg": 72.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "80": {
+     "rod_turned_in_clevis_deg": 74.1,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "82.5": {
+     "rod_turned_in_clevis_deg": 76.0,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "85": {
+     "rod_turned_in_clevis_deg": 77.9,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "87.5": {
+     "rod_turned_in_clevis_deg": 79.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "90": {
+     "rod_turned_in_clevis_deg": 81.7,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    }
+   }
+  },
+  "base": {
+   "block": {
+    "mm": 2.0,
+    "at_tilt": 0
+   },
+   "M3 x 10 screws": {
+    "mm": 4.5,
+    "at_tilt": 0
+   },
+   "M3 x 12 screws": {
+    "mm": 4.5,
+    "at_tilt": 0
+   },
+   "M3 nuts": {
+    "mm": 3.25,
+    "at_tilt": 0
+   },
+   "M4 x 20 pin": {
+    "mm": 4.25,
+    "at_tilt": 0
+   },
+   "M4 x 25 pin": {
+    "mm": 0.0,
+    "at_tilt": 0,
+    "overlaps": true,
+    "overlap_mm3": 0.245
+   },
+   "M4 nyloc": {
+    "mm": 4.75,
+    "at_tilt": 0
+   },
+   "slot_half_width": 17.0,
+   "pin_free_end_x": {
+    "M4 x 20": -12.75,
+    "M4 x 25": -17.75
+   },
+   "pin_top_above_shelf_underside_at_0": 0.25
+  }
+ }
+}
